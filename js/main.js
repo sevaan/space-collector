@@ -1,14 +1,14 @@
-import { VERSION } from './version.js?v=0.1.15';
-import { loadCatalog, frame, look, track, motion, nextVisiblePass, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, setBinocularMode } from './orbit.js?v=0.1.15';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.15';
-import { SkyView, shortName } from './sky.js?v=0.1.15';
-import { loadSky, eqToEnu, solarSystem, galacticPlane } from './celestial.js?v=0.1.15';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.15';
-import { cardArt } from './art.js?v=0.1.15';
-import { TIER_INFO } from './rarity.js?v=0.1.15';
-import { SETS } from './sets.js?v=0.1.15';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.15';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.15';
+import { VERSION } from './version.js?v=0.1.16';
+import { loadCatalog, frame, look, track, motion, nextVisiblePass, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, setBinocularMode } from './orbit.js?v=0.1.16';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.16';
+import { SkyView, shortName } from './sky.js?v=0.1.16';
+import { loadSky, eqToEnu, solarSystem, galacticPlane } from './celestial.js?v=0.1.16';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.16';
+import { cardArt } from './art.js?v=0.1.16';
+import { TIER_INFO } from './rarity.js?v=0.1.16';
+import { SETS } from './sets.js?v=0.1.16';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.16';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.16';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -21,7 +21,7 @@ const state = {
   drag: { on: false, az: 180, el: 35 },
   showDim: false,
   showStars: true,
-  showLines: true,
+  showLines: readPref('lines', false),
   night: readPref('night', false),
   sky: null,       // stars/constellations from data/sky.json (equatorial vectors)
   skyEnu: null,    // same, rotated into the local sky, refreshed every second
@@ -590,7 +590,8 @@ $('chk-drag').addEventListener('change', (e) => {
 });
 $('chk-dim').addEventListener('change', (e) => { state.showDim = e.target.checked; state.trails.clear(); });
 $('chk-stars').addEventListener('change', (e) => { state.showStars = e.target.checked; });
-$('chk-lines').addEventListener('change', (e) => { state.showLines = e.target.checked; });
+$('chk-lines').checked = state.showLines;
+$('chk-lines').addEventListener('change', (e) => { state.showLines = e.target.checked; writePref('lines', state.showLines); });
 $('chk-any').addEventListener('change', (e) => { state.captureAny = e.target.checked; });
 $('chk-bino').checked = state.binoculars;
 $('chk-bino').addEventListener('change', (e) => {
