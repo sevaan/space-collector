@@ -2,6 +2,7 @@ import { VERSION } from './version.js';
 import { loadCatalog, frame, look, track, motion, nextVisiblePass, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION } from './orbit.js';
 import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js';
 import { SkyView, shortName } from './sky.js';
+import { loadSky, eqToEnu, solarSystem } from './celestial.js';
 import { addSighting, allSightings, deleteSighting } from './store.js';
 
 const $ = (id) => document.getElementById(id);
@@ -14,6 +15,11 @@ const state = {
   timeOffsetMs: 0,
   drag: { on: false, az: 180, el: 35 },
   showDim: false,
+  showStars: true,
+  showLines: true,
+  sky: null,       // stars/constellations from data/sky.json (equatorial vectors)
+  skyEnu: null,    // same, rotated into the local sky, refreshed every second
+  bodies: [],      // Sun, Moon, planets in the local sky
   captureAny: false,
   above: [],       // objects above horizon, refreshed every second: [{ obj, look }]
   trails: new Map(),
@@ -130,7 +136,19 @@ function refreshAbove() {
     if (t && Math.abs(d - t.at) < 10000) continue;
     state.trails.set(obj.id, { at: d.getTime(), pts: track(obj, d, state.observer, -60, 180, 10) });
   }
+  refreshCelestial(d);
   updateStatus(f);
+}
+
+function refreshCelestial(d) {
+  const toEnu = eqToEnu(d, state.observer);
+  state.bodies = solarSystem(d, state.observer).map((b) => ({ ...b, enu: toEnu(b.v) }));
+  if (!state.sky) return;
+  state.skyEnu = {
+    stars: state.sky.stars.map((s) => ({ ...s, enu: toEnu(s.v) })),
+    lines: state.sky.lines.map((seg) => seg.map(toEnu)),
+    constellations: state.sky.constellations.map((c) => ({ ...c, enu: toEnu(c.v) })),
+  };
 }
 
 function updateStatus(f) {
@@ -218,7 +236,12 @@ function tick(ts) {
     .slice(0, 4);
   for (const id of state.sticky.keys()) if (t - state.sticky.get(id) > 1500) state.sticky.delete(id);
 
-  sky.draw(basis, items, { showDim: state.showDim });
+  sky.draw(basis, items, {
+    showDim: state.showDim,
+    sky: state.showStars ? state.skyEnu : null,
+    bodies: state.showStars ? state.bodies : null,
+    lines: state.showLines,
+  });
   renderCandidates(cands, d);
 }
 
@@ -375,6 +398,8 @@ $('chk-drag').addEventListener('change', (e) => {
   }
 });
 $('chk-dim').addEventListener('change', (e) => { state.showDim = e.target.checked; state.trails.clear(); });
+$('chk-stars').addEventListener('change', (e) => { state.showStars = e.target.checked; });
+$('chk-lines').addEventListener('change', (e) => { state.showLines = e.target.checked; });
 $('chk-any').addEventListener('change', (e) => { state.captureAny = e.target.checked; });
 document.querySelectorAll('[data-nudge]').forEach((b) => b.addEventListener('click', () => {
   nudgeHeading(Number(b.dataset.nudge));
@@ -431,6 +456,7 @@ async function boot() {
     $('start-note').textContent = `Couldn't load satellite data: ${e.message}`;
     return;
   }
+  try { state.sky = await loadSky('data/sky.json'); } catch {}
   await loadSightings();
   checkForUpdate();
   requestAnimationFrame(tick);

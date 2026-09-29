@@ -14,6 +14,14 @@ export const COLORS = {
   visible: '#ff6a55',
   hot: '#ffd2c8',
   reticle: 'rgba(255, 90, 70, 0.7)',
+  constLine: 'rgba(255, 120, 100, 0.13)',
+  constLabel: 'rgba(255, 120, 100, 0.28)',
+  starLabel: 'rgba(255, 170, 150, 0.55)',
+  body: 'rgba(255, 200, 150, 0.9)',
+  planet: 'rgba(255, 200, 140, 0.95)',
+  moonLit: 'rgba(255, 225, 210, 0.95)',
+  moonDark: 'rgba(60, 20, 16, 0.9)',
+  moonEdge: 'rgba(255, 150, 130, 0.35)',
 };
 
 export class SkyView {
@@ -64,12 +72,12 @@ export class SkyView {
   }
 
   // Draw a polyline through ENU points, breaking where it goes behind the phone.
-  path(vectors) {
+  path(vectors, minUp = -Infinity) {
     const ctx = this.ctx;
     let drawing = false;
     ctx.beginPath();
     for (const v of vectors) {
-      const p = this.project(v);
+      const p = v[2] >= minUp ? this.project(v) : null;
       if (!p || Math.abs(p.x) > 1e5 || Math.abs(p.y) > 1e5) { drawing = false; continue; }
       if (drawing) ctx.lineTo(p.x, p.y); else { ctx.moveTo(p.x, p.y); drawing = true; }
     }
@@ -119,13 +127,116 @@ export class SkyView {
     return Math.max(2.5, Math.min(9, 7 - mag * 1.1));
   }
 
+  // Stars, constellation lines and labels. sky: { stars, lines, constellations } with ENU vectors.
+  drawStars(sky, { lines }) {
+    const ctx = this.ctx;
+    if (lines) {
+      ctx.strokeStyle = COLORS.constLine;
+      ctx.lineWidth = 1;
+      for (const seg of sky.lines) this.path(seg, -0.01);
+      ctx.fillStyle = COLORS.constLabel;
+      ctx.font = '500 11px -apple-system, system-ui, sans-serif';
+      ctx.textAlign = 'center';
+      for (const c of sky.constellations) {
+        if (c.rank > 2 || c.enu[2] < 0) continue;
+        const p = this.project(c.enu);
+        if (this.onScreen(p)) ctx.fillText(c.name.toUpperCase(), p.x, p.y);
+      }
+    }
+    ctx.font = '11px -apple-system, system-ui, sans-serif';
+    ctx.textAlign = 'left';
+    for (const s of sky.stars) {
+      if (s.enu[2] < -0.02) continue;
+      const p = this.project(s.enu);
+      if (!this.onScreen(p)) continue;
+      const r = Math.max(0.7, 2.6 - 0.42 * s.mag);
+      const a = Math.max(0.25, Math.min(1, 0.95 - 0.13 * s.mag));
+      ctx.fillStyle = `rgba(255, 215, 205, ${a})`;
+      ctx.beginPath(); ctx.arc(p.x, p.y, r, 0, Math.PI * 2); ctx.fill();
+      if (s.name && s.mag < 1.6) {
+        ctx.fillStyle = COLORS.starLabel;
+        ctx.fillText(s.name, p.x + r + 4, p.y + 3);
+      }
+    }
+  }
+
+  // Sun, Moon and planets. bodies: [{ name, kind, enu, mag, illum, phaseAngle, phaseName }]
+  drawBodies(bodies) {
+    const ctx = this.ctx;
+    const sun = bodies.find((b) => b.kind === 'sun');
+    for (const b of bodies) {
+      if (b.enu[2] < -0.02) continue;
+      const p = this.project(b.enu);
+      if (!this.onScreen(p, 30)) continue;
+      ctx.textAlign = 'left';
+      if (b.kind === 'moon') {
+        const R = 15;
+        this.drawMoon(p, R, this.brightLimbAngle(b.enu, sun.enu, p), b.phaseAngle);
+        ctx.fillStyle = COLORS.body;
+        ctx.font = '600 12px -apple-system, system-ui, sans-serif';
+        ctx.fillText('Moon', p.x + R + 6, p.y);
+        ctx.fillStyle = COLORS.starLabel;
+        ctx.font = '11px -apple-system, system-ui, sans-serif';
+        ctx.fillText(`${b.phaseName} · ${Math.round(b.illum * 100)}%`, p.x + R + 6, p.y + 14);
+      } else if (b.kind === 'sun') {
+        ctx.fillStyle = 'rgba(255, 120, 60, 0.9)';
+        ctx.beginPath(); ctx.arc(p.x, p.y, 16, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = COLORS.body;
+        ctx.font = '600 12px -apple-system, system-ui, sans-serif';
+        ctx.fillText('Sun', p.x + 22, p.y + 4);
+      } else {
+        const r = Math.max(2.5, Math.min(5.5, 3.2 - 0.6 * b.mag));
+        ctx.fillStyle = COLORS.planet;
+        ctx.beginPath(); ctx.arc(p.x, p.y, r, 0, Math.PI * 2); ctx.fill();
+        ctx.strokeStyle = COLORS.planet;
+        ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.arc(p.x, p.y, r + 3.5, 0, Math.PI * 2); ctx.stroke();
+        ctx.fillStyle = COLORS.body;
+        ctx.font = '600 12px -apple-system, system-ui, sans-serif';
+        ctx.fillText(b.name, p.x + r + 8, p.y + 4);
+      }
+    }
+  }
+
+  // Screen angle from the Moon toward the Sun, so the lit edge faces the right way.
+  brightLimbAngle(moon, sun, p) {
+    const d = moon[0] * sun[0] + moon[1] * sun[1] + moon[2] * sun[2];
+    const t = [sun[0] - d * moon[0], sun[1] - d * moon[1], sun[2] - d * moon[2]];
+    const l = Math.hypot(...t) || 1;
+    const q = this.project([moon[0] + 0.01 * t[0] / l, moon[1] + 0.01 * t[1] / l, moon[2] + 0.01 * t[2] / l]);
+    return q ? Math.atan2(q.y - p.y, q.x - p.x) : 0;
+  }
+
+  // Moon disc with the correct phase. phaseAngle: 0 = full, 180 = new.
+  drawMoon(p, R, brightAngle, phaseAngle) {
+    const ctx = this.ctx;
+    ctx.save();
+    ctx.translate(p.x, p.y);
+    ctx.rotate(brightAngle);
+    ctx.fillStyle = COLORS.moonDark;
+    ctx.beginPath(); ctx.arc(0, 0, R, 0, Math.PI * 2); ctx.fill();
+    const k = Math.cos(phaseAngle * RAD); // 1 = full, 0 = quarter, -1 = new
+    ctx.fillStyle = COLORS.moonLit;
+    ctx.beginPath();
+    // Lit half on the Sun side (+x), closed by the terminator ellipse.
+    ctx.arc(0, 0, R, -Math.PI / 2, Math.PI / 2);
+    ctx.ellipse(0, 0, Math.abs(k) * R, R, 0, Math.PI / 2, -Math.PI / 2, k < 0);
+    ctx.fill();
+    ctx.strokeStyle = COLORS.moonEdge;
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.arc(0, 0, R, 0, Math.PI * 2); ctx.stroke();
+    ctx.restore();
+  }
+
   // items: [{ obj, look, trail: [{t, az, el}], candidate, selected }]
-  draw(basis, items, { showDim }) {
+  draw(basis, items, { showDim, sky, bodies, lines = true }) {
     this.basis = basis;
     const ctx = this.ctx;
     ctx.fillStyle = COLORS.bg;
     ctx.fillRect(0, 0, this.w, this.h);
+    if (sky) this.drawStars(sky, { lines });
     this.drawGrid();
+    if (bodies) this.drawBodies(bodies);
 
     const offscreen = [];
     for (const it of items) {

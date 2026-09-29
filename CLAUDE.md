@@ -19,6 +19,8 @@ Live: https://sevaan.github.io/space-collector/ (GitHub Pages, deploys from `mai
   dark sky + brightness), magnitude estimate, pass search. No DOM, keep it portable (Capacitor later).
 - `js/sensors.js` – DeviceOrientation → camera basis (right/up/back in East-North-Up). iOS uses
   `webkitCompassHeading` to fix alpha's arbitrary zero via a smoothed heading offset.
+- `js/celestial.js` – stars/constellations (from `data/sky.json`, built by `scripts/build-sky.mjs`
+  from d3-celestial), plus Sun, Moon (with phase) and planets via Schlyter's low-precision formulas.
 - `js/sky.js` – canvas renderer, gnomonic projection centred on the reticle.
 - `js/main.js` – app state, render loop, candidates/capture, sim panel, sighting log.
 - `js/store.js` – IndexedDB sighting log.
