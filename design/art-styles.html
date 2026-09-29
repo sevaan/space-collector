@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Card Art Styles</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Bebas+Neue&family=Space+Grotesk:wght@400;600;700&family=IBM+Plex+Mono:wght@400;600&family=Archivo+Black&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Bebas+Neue&family=Space+Grotesk:wght@400;600;700&family=IBM+Plex+Mono:wght@400;600&family=Archivo+Black&family=Cormorant+Garamond:wght@500;700&family=Playfair+Display:wght@700;900&family=Inter:wght@400;600&display=swap" rel="stylesheet">
 <style>
   :root { --bg: #101218; --text: #e9ecf2; --muted: #9aa3b2; }
   body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.5 system-ui, sans-serif; padding: 24px 16px 60px; }
@@ -75,6 +75,34 @@
   .pixel .bar b i { position: absolute; inset: 0 auto 0 0; background: #58e07a; }
   .pixel .txt { font-size: 7px; line-height: 1.8; padding: 8px 16px; color: #c9b8ff; }
   .pixel .rar { font-size: 8px; text-align: center; color: #ffd23f; }
+
+  /* F. Flat, Reigns-like */
+  .flat { background: #e9dcc3; font-family: 'Cormorant Garamond', serif; color: #2d2a26; border-radius: 10px; }
+  .flat .icons { display: flex; justify-content: space-around; padding: 12px 18px 6px; }
+  .flat .ic { width: 30px; text-align: center; font-family: 'Inter', sans-serif; font-size: 8px; letter-spacing: 0.08em; color: #6b6358; }
+  .flat .ic svg { width: 26px; height: 26px; margin: 0 auto 2px; }
+  .flat .panel { margin: 4px 16px; height: 200px; border-radius: 8px; overflow: hidden; }
+  .flat .nm { text-align: center; font-size: 26px; font-weight: 700; letter-spacing: 0.04em; margin-top: 10px; }
+  .flat .sub { text-align: center; font-size: 15px; font-style: italic; color: #6b6358; }
+  .flat .say { text-align: center; font-size: 14px; padding: 8px 22px 0; line-height: 1.3; }
+
+  /* G. Realistic */
+  .real { background: #000; font-family: 'Inter', sans-serif; color: #fff; }
+  .real .art { position: absolute; inset: 0; }
+  .real .cap { position: absolute; left: 0; right: 0; bottom: 0; padding: 40px 16px 14px; background: linear-gradient(transparent, #000c 40%); }
+  .real .nm { font-size: 22px; font-weight: 600; letter-spacing: 0.01em; }
+  .real .meta { font-size: 11px; color: #c9ced8; margin-top: 2px; }
+  .real .row { display: flex; gap: 14px; margin-top: 10px; font-size: 12px; font-weight: 600; }
+  .real .row small { display: block; font-size: 8.5px; color: #9aa3b2; font-weight: 400; letter-spacing: 0.08em; }
+  .real .tag { position: absolute; top: 12px; left: 12px; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; background: #0008; border: 1px solid #ffc54588; color: #ffc545; padding: 3px 8px; border-radius: 999px; }
+
+  /* H. Playing card */
+  .deck { background: #fbf8f1; color: #b3202a; font-family: 'Playfair Display', serif; border: 1px solid #d8d1c2; }
+  .deck .idx { position: absolute; text-align: center; line-height: 0.95; font-weight: 900; }
+  .deck .idx b { display: block; font-size: 28px; } .deck .idx span { font-size: 20px; }
+  .deck .tl { top: 12px; left: 12px; } .deck .br { bottom: 12px; right: 12px; transform: rotate(180deg); }
+  .deck .face { position: absolute; inset: 48px 40px; border: 2px solid #b3202a; border-radius: 6px; overflow: hidden; }
+  .deck .lbl { position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); text-align: center; font-size: 11px; letter-spacing: 0.2em; color: #1f2a44; font-family: 'Inter', sans-serif; font-weight: 600; background: #fbf8f1; padding: 3px 0; border-block: 1px solid #b3202a; }
 </style>
 </head>
 <body>
@@ -152,6 +180,48 @@
       </div>
       <h2>E. Pixel art</h2>
       <p>16-bit game sprites with chunky frames and stat bars. Playful and very "game", and cheap to produce hundreds of consistent sprites.</p>
+    </div>
+
+
+    <div class="opt">
+      <div class="card flat">
+        <div class="icons">
+          <div class="ic"><svg viewBox="0 0 26 26"><rect x="3" y="3" width="20" height="20" rx="10" fill="#cbbd9f"/><rect x="3" y="12" width="20" height="11" rx="0" fill="#2d2a26" clip-path="circle(10px at 10px 0px)"/><circle cx="13" cy="13" r="10" fill="none" stroke="#2d2a26" stroke-width="1.5"/><path d="M13 13 V7 M13 13 L17 15" stroke="#2d2a26" stroke-width="1.5"/></svg>AGE</div>
+          <div class="ic"><svg viewBox="0 0 26 26"><path d="M13 3 L21 23 H5 Z" fill="#cbbd9f"/><path d="M13 3 L17 13 H9 Z" fill="#2d2a26"/></svg>HEIGHT</div>
+          <div class="ic"><svg viewBox="0 0 26 26"><path d="M3 18 Q13 2 23 18" fill="none" stroke="#cbbd9f" stroke-width="4"/><path d="M3 18 Q8 9 14 8" fill="none" stroke="#2d2a26" stroke-width="4"/></svg>SPEED</div>
+          <div class="ic"><svg viewBox="0 0 26 26"><rect x="3" y="3" width="20" height="20" fill="#cbbd9f"/><rect x="3" y="3" width="20" height="20" fill="#2d2a26"/></svg>SIZE</div>
+        </div>
+        <div class="panel" id="f-art"></div>
+        <div class="nm">The Station</div>
+        <div class="sub">Legendary · since 1998</div>
+        <div class="say">"Someone up here is awake right now, looking down at you."</div>
+      </div>
+      <h2>F. Flat, like Reigns</h2>
+      <p>Limited palette, bold flat shapes, no outlines, and a warm paper tone. The stat icons fill up like Reigns' meters (age, height, speed, size), and each object gets a one-line voice. It's calm and elegant, and it scales well to hundreds of cards.</p>
+    </div>
+
+    <div class="opt">
+      <div class="card real">
+        <div class="art" id="g-art"></div>
+        <span class="tag">★ LEGENDARY</span>
+        <div class="cap">
+          <div class="nm">International Space Station</div>
+          <div class="meta">NORAD 25544 · Launched 20 Nov 1998 · Baikonur</div>
+          <div class="row"><span><small>ALTITUDE</small>420 km</span><span><small>SPEED</small>7.7 km/s</span><span><small>CREWED</small>since 2000</span></div>
+        </div>
+      </div>
+      <h2>G. Realistic</h2>
+      <p>A photographic look: sunlit hardware, real cloud texture on Earth, atmosphere glow and a museum-style caption. This is closest to what's really up there. Rendering it well for hundreds of objects is the hardest of the three; it might mean one realistic model per object type with lighting varied per card.</p>
+    </div>
+
+    <div class="opt">
+      <div class="card deck">
+        <div class="idx tl"><b>A</b><span>♥</span></div>
+        <div class="idx br"><b>A</b><span>♥</span></div>
+        <div class="face" id="h-art"><div class="lbl">SPACE STATION</div></div>
+      </div>
+      <h2>H. Playing card</h2>
+      <p>A classic deck with corner indices and a mirrored face-card picture. Suit = type (♥ stations, ♠ rocket stages, ♦ satellites, ♣ debris) and rank = rarity (Ace Legendary, King Epic, Queen Rare, Jack Uncommon, numbers Common). The ISS is the Ace of Hearts. A full collection could even be a playable deck.</p>
     </div>
 
   </div>
@@ -233,6 +303,66 @@ document.getElementById('d-art').innerHTML = svg(280, 190, `
   map.forEach((row, y) => [...row].forEach((c, x) => { if (col[c]) out += `<rect x="${ox + x * px}" y="${oy + y * px}" width="${px}" height="${px}" fill="${col[c]}"/>`; }));
   for (let x = 0; x < 300; x += 10) out += `<rect x="${x}" y="${130 + Math.round(Math.abs(x - 150) ** 2 / 2000) * 4}" width="10" height="60" fill="${x % 30 ? '#2a6ad6' : '#58e07a'}"/>`;
   document.getElementById('e-art').innerHTML = svg(300, 160, out);
+})();
+
+// F: Reigns-style flat
+document.getElementById('f-art').innerHTML = svg(250, 200, `
+  <rect width="250" height="200" fill="#3f6f73"/>
+  <circle cx="36" cy="34" r="16" fill="#e9dcc3"/><circle cx="43" cy="29" r="14" fill="#3f6f73"/>
+  <circle cx="125" cy="330" r="190" fill="#2b4f55"/><path d="M-10 170 Q60 140 125 150 T260 160 V200 H-10Z" fill="#d48a4a"/>
+  <path d="M-10 185 Q70 170 140 178 T260 180 V200 H-10Z" fill="#b76e34"/>
+  <g transform="translate(125 82) scale(.8)">
+    ${[-92, -58, 58, 92].map(x => `<rect x="${x - 9}" y="-62" width="18" height="52" fill="#e9dcc3"/><rect x="${x - 9}" y="10" width="18" height="52" fill="#e9dcc3"/><rect x="${x - 9}" y="-62" width="9" height="52" fill="#cbbd9f"/><rect x="${x - 9}" y="10" width="9" height="52" fill="#cbbd9f"/>`).join('')}
+    <rect x="-110" y="-3" width="220" height="6" fill="#2d2a26"/>
+    <rect x="-36" y="-11" width="72" height="22" rx="11" fill="#2d2a26"/><rect x="-12" y="-30" width="24" height="60" rx="12" fill="#2d2a26"/>
+    <rect x="-36" y="-11" width="36" height="22" rx="0" fill="#403b35"/>
+  </g>`);
+
+// G: realistic, with turbulence textures for Earth and clouds
+document.getElementById('g-art').innerHTML = svg(280, 392, `
+  <defs>
+    <filter id="land" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".012" numOctaves="5" seed="4"/>
+      <feColorMatrix values="0 0 0 0 .12  0 0 0 0 .22  0 0 0 0 .5  2.2 0 0 0 -1.05" result="sea"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".02" numOctaves="4" seed="9"/><feColorMatrix values="0 0 0 0 .38  0 0 0 0 .42  0 0 0 0 .22  3 0 0 0 -1.7"/></filter>
+    <filter id="cloud" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".018 .04" numOctaves="5" seed="21"/>
+      <feColorMatrix values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  2.6 0 0 0 -1.3"/></filter>
+    <radialGradient id="shade" cx="30%" cy="10%" r="95%"><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".85"/></radialGradient>
+    <radialGradient id="flare" cx="85%" cy="12%" r="45%"><stop offset="0" stop-color="#fff8e6" stop-opacity=".95"/><stop offset=".08" stop-color="#ffe3a6" stop-opacity=".5"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+    <linearGradient id="cell" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#e2b35a"/><stop offset=".45" stop-color="#8f5d1c"/><stop offset=".55" stop-color="#b98437"/><stop offset="1" stop-color="#4a2d0a"/></linearGradient>
+    <linearGradient id="cyl" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#fdfdfd"/><stop offset=".45" stop-color="#d9dde3"/><stop offset=".8" stop-color="#8d949f"/><stop offset="1" stop-color="#5a616c"/></linearGradient>
+    <pattern id="cells" width="4" height="4" patternUnits="userSpaceOnUse"><rect width="4" height="4" fill="none" stroke="#2a1800" stroke-width=".35" opacity=".6"/></pattern>
+    <clipPath id="globe"><circle cx="140" cy="470" r="330"/></clipPath>
+  </defs>
+  <rect width="280" height="392" fill="#010208"/>${stars(40, 280, 200, '#fff', 13)}
+  <g clip-path="url(#globe)"><rect x="-200" y="130" width="700" height="700" fill="#0d2a5c"/>
+    <rect x="-200" y="130" width="700" height="700" filter="url(#land)"/><rect x="-200" y="130" width="700" height="700" filter="url(#cloud)" opacity=".85"/>
+    <circle cx="140" cy="470" r="330" fill="url(#shade)"/></g>
+  <circle cx="140" cy="470" r="331" fill="none" stroke="#7fc4ff" stroke-width="3" opacity=".8"/>
+  <circle cx="140" cy="470" r="337" fill="none" stroke="#4f9cff" stroke-width="10" opacity=".22"/>
+  <g transform="translate(140 92) rotate(-14) scale(.9)">
+    ${[-100, -64, 64, 100].map(x => [-70, 12].map(y => `<rect x="${x - 10}" y="${y}" width="20" height="58" fill="url(#cell)"/><rect x="${x - 10}" y="${y}" width="20" height="58" fill="url(#cells)"/>`).join('')).join('')}
+    <rect x="-118" y="-3.5" width="236" height="7" fill="#b9bec7"/><rect x="-118" y="-3.5" width="236" height="2" fill="#fff" opacity=".7"/>
+    <rect x="-30" y="-44" width="14" height="30" fill="#f1f3f6" opacity=".9"/><rect x="16" y="14" width="14" height="30" fill="#f1f3f6" opacity=".9"/>
+    <rect x="-42" y="-11" width="84" height="22" rx="10" fill="url(#cyl)"/>
+    <rect x="-12" y="-36" width="24" height="72" rx="11" fill="url(#cyl)"/>
+    <rect x="-7" y="36" width="14" height="14" rx="5" fill="#d0a24a"/>
+  </g>
+  <rect width="280" height="392" fill="url(#flare)"/>`);
+
+// H: playing card mirrored face
+(() => {
+  const half = `<g>
+    <rect width="196" height="148" fill="#f3ead6"/>
+    ${stars(18, 196, 148, '#1f2a44', 17)}
+    <g transform="translate(98 70) scale(.62)">
+      ${[-92, -58, 58, 92].map(x => [-62, 10].map(y => `<rect x="${x - 9}" y="${y}" width="18" height="52" fill="#1f2a44"/><rect x="${x - 6}" y="${y + 3}" width="12" height="46" fill="none" stroke="#e6c35c" stroke-width="1.2"/>`).join('')).join('')}
+      <rect x="-110" y="-3" width="220" height="6" fill="#b3202a"/>
+      <rect x="-36" y="-11" width="72" height="22" rx="11" fill="#b3202a"/><rect x="-12" y="-30" width="24" height="60" rx="12" fill="#b3202a"/>
+      <circle r="6" fill="#e6c35c"/>
+    </g>
+    <path d="M0 140 Q98 118 196 140 V148 H0Z" fill="#1f2a44"/>
+  </g>`;
+  document.getElementById('h-art').insertAdjacentHTML('afterbegin', svg(196, 296, `${half}<g transform="rotate(180 98 148)">${half}</g><line x1="0" y1="148" x2="196" y2="148" stroke="#b3202a"/>`));
 })();
 </script>
 </body>
