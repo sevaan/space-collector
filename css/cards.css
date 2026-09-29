@@ -1,0 +1,149 @@
+/* Mission cards. 1em = 1/28 of the card width; set font-size on .card to size it. */
+
+.card {
+  --set: #e8412c;
+  --tier: #ffc545;
+  --ink: #1d1d1b;
+  --grey: #6f6b62;
+  --mx: 50%; --my: 50%; --rx: 0deg; --ry: 0deg; --bgx: 50%; --bgy: 50%; --hyp: 0;
+  font-size: 10px;
+  width: 28em;
+  height: 39.2em;
+  perspective: 90em;
+  font-family: Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color: var(--ink);
+  -webkit-user-select: none; user-select: none;
+  touch-action: none;
+  flex: none;
+}
+.card__rotator {
+  width: 100%; height: 100%;
+  transform: rotateX(var(--rx)) rotateY(var(--ry));
+  transition: transform 0.5s cubic-bezier(.2, .9, .3, 1.2);
+  transform-style: preserve-3d;
+  border-radius: 1.2em;
+  box-shadow: 0 1em 3em rgba(0, 0, 0, 0.45);
+}
+.card.active .card__rotator { transition: transform 0.08s linear; }
+.card__face {
+  position: relative; width: 100%; height: 100%;
+  background: #fff;
+  border-radius: 1.2em;
+  overflow: hidden;
+  display: flex; flex-direction: column;
+}
+
+/* Level frame: bronze / silver / gold ring for repeat sightings */
+.card.level-bronze .card__face { box-shadow: inset 0 0 0 0.35em #b8793e; }
+.card.level-silver .card__face { box-shadow: inset 0 0 0 0.35em #b9c1cc; }
+.card.level-gold .card__face { box-shadow: inset 0 0 0 0.35em #e2b53c; }
+
+.card__setbar {
+  background: var(--set); color: #fff;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0.7em 1.4em;
+  font-size: 0.95em; font-weight: 700; letter-spacing: 0.16em;
+}
+.card__top { display: flex; justify-content: space-between; align-items: center; padding: 1em 1.4em 0; }
+.card__tier { font-size: 0.9em; font-weight: 800; letter-spacing: 0.16em; }
+.card__tier i { font-style: normal; color: var(--tier); -webkit-text-stroke: 0.04em rgba(0,0,0,0.25); }
+.card.tier-common .card__tier i { color: #8a929c; }
+.card__label { font-size: 0.8em; font-weight: 700; letter-spacing: 0.14em; color: var(--grey); }
+.card__mono { font-family: 'IBM Plex Mono', ui-monospace, Menlo, monospace; }
+.card__name {
+  margin: 0; padding: 0.3em 1.4em 0.8em;
+  font-size: 2.4em; font-weight: 800; line-height: 1.02; letter-spacing: -0.02em;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.card.long-name .card__name { font-size: 2em; }
+.card__art { position: relative; margin: 0 1.4em; height: 9.2em; border-radius: 0.4em; overflow: hidden; flex: none; }
+.card__art svg { display: block; }
+.card__agebar { display: flex; align-items: center; justify-content: space-between; margin: 1em 1.4em 0.8em; }
+.card__age {
+  display: inline-flex; align-items: baseline; gap: 0.35em;
+  background: var(--ink); color: #fff; border-radius: 99em;
+  padding: 0.3em 1em 0.4em; font-weight: 800; font-size: 1.3em;
+}
+.card__age small { font-size: 0.68em; font-weight: 700; letter-spacing: 0.08em; }
+.card.level-bronze .card__seen { color: #9a5f27; }
+.card.level-silver .card__seen { color: #7d8794; }
+.card.level-gold .card__seen { color: #b3860f; }
+.card__fact {
+  margin: 0 1.4em; padding: 0.8em 1em;
+  border-left: 0.4em solid var(--set); background: rgba(0, 0, 0, 0.045);
+  font-size: 1.25em; line-height: 1.35; font-weight: 500;
+  flex: 1 1 auto; min-height: 0; overflow: hidden;
+}
+.card__fact b { font-weight: 800; }
+.card__stats { display: grid; grid-template-columns: repeat(3, 1fr); margin: 0.8em 1.4em 1.2em; border-top: 0.2em solid var(--ink); }
+.card__stats div { padding-top: 0.5em; display: flex; flex-direction: column; gap: 0.15em; }
+.card__stats b { font-size: 1.3em; font-weight: 800; }
+
+/* Uncaught: silhouette art, facts hidden */
+.card.uncaught .card__name { color: #55524b; }
+.card.uncaught .card__fact { color: var(--grey); font-style: italic; font-weight: 500; }
+.card.uncaught .card__age { background: #8b877e; }
+
+/* Extinct: memorial */
+.card.extinct .card__face > *:not(.card__stamp) { filter: grayscale(1); }
+.card__stamp {
+  position: absolute; left: 50%; top: 44%; transform: translate(-50%, -50%) rotate(-12deg);
+  border: 0.3em solid #b3202a; color: #b3202a; border-radius: 0.5em;
+  padding: 0.4em 1.2em; font-weight: 800; font-size: 1.8em; letter-spacing: 0.12em; text-align: center;
+  background: rgba(255, 255, 255, 0.85); z-index: 8;
+}
+.card__stamp small { display: block; font-size: 0.5em; letter-spacing: 0.16em; }
+
+/* ---------- Shine, by rarity ---------- */
+.card__shine, .card__glare, .card__foil { position: absolute; inset: 0; pointer-events: none; }
+.card__glare {
+  z-index: 7;
+  background: radial-gradient(farthest-corner circle at var(--mx) var(--my), rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0.12) 35%, rgba(0, 0, 0, 0.12) 90%);
+  mix-blend-mode: overlay; opacity: 0; transition: opacity 0.3s;
+}
+.card.active .card__glare { opacity: 0.8; }
+
+/* Uncommon: a soft sheen sweeping across */
+.card.tier-uncommon .card__shine {
+  z-index: 6;
+  background: linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, 0.7) 45%, transparent 60%);
+  background-size: 250% 250%; background-position: var(--bgx) var(--bgy);
+  mix-blend-mode: soft-light; opacity: 0; transition: opacity 0.3s;
+}
+.card.tier-uncommon.active .card__shine { opacity: 0.7; }
+
+/* Rare, Epic, Legendary: rainbow holo foil on the art window */
+.card.tier-rare .card__foil, .card.tier-epic .card__foil, .card.tier-legendary .card__foil {
+  background:
+    repeating-linear-gradient(110deg,
+      hsl(2, 90%, 70%) 0%, hsl(53, 90%, 70%) 7%, hsl(93, 85%, 65%) 14%, hsl(176, 85%, 65%) 21%,
+      hsl(228, 85%, 72%) 28%, hsl(283, 85%, 72%) 35%, hsl(2, 90%, 70%) 42%);
+  background-size: 400% 400%; background-position: var(--bgx) var(--bgy);
+  mix-blend-mode: color-dodge; opacity: 0; transition: opacity 0.3s;
+}
+.card.active .card__foil { opacity: calc(0.2 + var(--hyp) * 0.5); }
+.card.uncaught .card__foil { display: none; }
+
+/* Epic: fine glitter over the whole card */
+.card.tier-epic .card__shine {
+  z-index: 6;
+  background:
+    radial-gradient(circle at 20% 30%, #fff 0 0.08em, transparent 0.1em) 0 0 / 1.3em 1.3em,
+    radial-gradient(circle at 70% 80%, #fff 0 0.06em, transparent 0.08em) 0.6em 0.4em / 1.7em 1.7em,
+    repeating-linear-gradient(120deg, hsl(280, 80%, 75%) 0%, hsl(200, 80%, 70%) 10%, hsl(320, 80%, 75%) 20%) var(--bgx) var(--bgy) / 300% 300%;
+  mix-blend-mode: color-dodge; opacity: 0; transition: opacity 0.3s;
+}
+.card.tier-epic.active .card__shine { opacity: calc(0.12 + var(--hyp) * 0.3); }
+
+/* Legendary: stronger art foil, a gold glint sweeping the whole card, and a gold edge */
+.card.tier-legendary .card__shine {
+  z-index: 6;
+  background: linear-gradient(115deg, transparent 38%, rgba(255, 226, 150, 0.9) 47%, rgba(255, 255, 255, 0.95) 50%, rgba(255, 226, 150, 0.9) 53%, transparent 62%)
+    var(--bgx) var(--bgy) / 300% 300%;
+  mix-blend-mode: soft-light; opacity: 0; transition: opacity 0.3s;
+}
+.card.tier-legendary.active .card__shine { opacity: 0.9; }
+.card.tier-legendary.active .card__foil { opacity: calc(0.35 + var(--hyp) * 0.5); }
+.card.tier-legendary .card__rotator { box-shadow: 0 0 0 0.25em #e8c35a, 0 1em 3em rgba(0, 0, 0, 0.45); }
+.card.tier-legendary.uncaught .card__shine { display: none; }
+.card.extinct .card__shine, .card.extinct .card__foil { display: none; }

@@ -108,12 +108,16 @@ function showBanner(text, action = null) {
 $('banner').addEventListener('click', () => bannerAction?.());
 
 let toastTimer;
-function toast(html, ms = 2200) {
+let toastHref = null;
+function toast(html, ms = 2200, href = null) {
   $('toast').innerHTML = html;
   $('toast').hidden = false;
+  toastHref = href;
+  $('toast').classList.toggle('linked', !!href);
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => { $('toast').hidden = true; }, ms);
 }
+$('toast').addEventListener('click', () => { if (toastHref) location.href = toastHref; })
 
 // ---------- sky computation ----------
 
@@ -298,7 +302,8 @@ async function capture(obj) {
   await loadSightings();
   chirp([660, 880, 1320], 0.08);
   const age = obj.year ? `Launched ${obj.year}` : '';
-  toast(`<span class="big-line">Captured!</span>${escapeHtml(shortName(obj.name))}<br><small>${age}${before ? ' · seen before' : ' · first sighting'}</small>`);
+  const cardLink = sighting.sim ? '' : '<br><small><u>Tap to see your card</u></small>';
+  toast(`<span class="big-line">${before ? 'Captured!' : 'New card!'}</span>${escapeHtml(shortName(obj.name))}<br><small>${age}${before ? ' · seen before' : ' · first sighting'}</small>${cardLink}`, 3500, sighting.sim ? null : `cards.html#${obj.id}`);
 }
 
 function escapeHtml(s) {

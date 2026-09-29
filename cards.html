@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b0d12">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Space Collector Cards</title>
+  <link rel="apple-touch-icon" href="icons/icon-180.png">
+  <link rel="icon" href="icons/icon-192.png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/cards.css">
+  <style>
+    :root { --bg: #0b0d12; --text: #eef1f6; --muted: #98a1b0; --line: #262b35; --safe-top: env(safe-area-inset-top, 0px); --safe-bottom: env(safe-area-inset-bottom, 0px); }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.4 Inter, system-ui, sans-serif; }
+    header { position: sticky; top: 0; z-index: 10; background: rgba(11, 13, 18, 0.94); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      padding: calc(var(--safe-top) + 10px) 16px 10px; border-bottom: 1px solid var(--line); }
+    .row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    h1 { font-size: 20px; margin: 0; font-weight: 800; }
+    a.back { color: var(--muted); text-decoration: none; font-size: 14px; }
+    #count { font-size: 13px; color: var(--muted); }
+    .chips { display: flex; gap: 6px; overflow-x: auto; padding: 10px 0 2px; scrollbar-width: none; }
+    .chips::-webkit-scrollbar { display: none; }
+    .chip { flex: none; border: 1px solid var(--line); background: transparent; color: var(--text); border-radius: 99px; padding: 6px 12px; font: 600 13px Inter, sans-serif; cursor: pointer; }
+    .chip.on { background: var(--text); color: var(--bg); border-color: var(--text); }
+    .chip .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: 0; }
+    label.preview { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); margin-top: 8px; }
+    label.preview input { width: 18px; height: 18px; }
+    main { padding: 16px 12px calc(var(--safe-bottom) + 32px); }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 18px 12px; justify-items: center; }
+    .grid .card { font-size: 5.3px; cursor: pointer; touch-action: auto; }
+    .grid .card .card__rotator { box-shadow: 0 0.6em 1.6em rgba(0,0,0,0.5); }
+    .empty { grid-column: 1 / -1; color: var(--muted); text-align: center; padding: 40px 0; }
+
+    #viewer { position: fixed; inset: 0; z-index: 50; background: rgba(5, 6, 10, 0.97); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px;
+      padding: calc(var(--safe-top) + 12px) 12px calc(var(--safe-bottom) + 12px); touch-action: none; }
+    #viewer[hidden] { display: none; }
+    #viewer .bar { display: flex; gap: 10px; }
+    #viewer button { font: 600 14px Inter, sans-serif; color: var(--text); background: #1a1e27; border: 1px solid var(--line); border-radius: 99px; padding: 10px 16px; min-height: 44px; cursor: pointer; }
+    #viewer .close { position: absolute; top: calc(var(--safe-top) + 12px); right: 12px; }
+    #slot { display: flex; align-items: center; justify-content: center; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="row">
+      <a class="back" href="./">← Sky</a>
+      <h1>Cards</h1>
+      <span id="count"></span>
+    </div>
+    <div class="chips" id="chips"></div>
+    <label class="preview"><input type="checkbox" id="preview"> Preview mode: show every card as if caught</label>
+  </header>
+  <main><div class="grid" id="grid"></div></main>
+
+  <div id="viewer" hidden>
+    <button class="close" id="v-close">Done</button>
+    <div id="slot"></div>
+    <div class="bar">
+      <button id="v-prev" aria-label="Previous card">←</button>
+      <button id="v-gyro">Tilt with phone</button>
+      <button id="v-next" aria-label="Next card">→</button>
+    </div>
+  </div>
+
+  <script type="module" src="js/cards-page.js"></script>
+</body>
+</html>

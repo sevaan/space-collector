@@ -24,6 +24,12 @@ Live: https://sevaan.github.io/space-collector/ (GitHub Pages, deploys from `mai
 - `js/sky.js` – canvas renderer, gnomonic projection centred on the reticle.
 - `js/main.js` – app state, render loop, candidates/capture, sim panel, sighting log.
 - `js/store.js` – IndexedDB sighting log.
+- Cards (NASA data-sheet style, chosen 2026-09-29; no paper texture): `cards.html` + `js/cards-page.js`
+  (gallery), `js/card.js` (render + tilt), `css/cards.css` (layout + rarity shine), `js/art.js` (flat
+  navy art per object type). `js/rarity.js` = tier rules (run at catalogue build). `js/sets.js` = set
+  rules, primary set sets the colour bar + card number. `js/lore.js` = titles/facts: `data/lore.json`
+  hand-written first, then rocket-family facts, then computed facts. Every fact must be true.
+- `design/` – style boards used to pick the card look. Not part of the app.
 
 ## Deliberately out of scope for now
-Collections, rarity, sets, cards/lore, alerts, service worker, accounts, daily data cron.
+Alerts, service worker, accounts, daily data cron, capture reveal animation, secret sets/feats.

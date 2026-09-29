@@ -1,0 +1,47 @@
+{
+  "_about": "Hand-written card facts, keyed by NORAD id. 'fact' shows on the card; 'stats' can override the third stat. Keep every fact true and checkable. Objects without an entry get a computed fact (see js/lore.js).",
+  "25544": {
+    "title": "International Space Station",
+    "fact": "It's about the size of a football field and flies at **28,000 km/h**. It could cross Canada in about 12 minutes.",
+    "stat": [
+      "CREW",
+      "7"
+    ]
+  },
+  "48274": {
+    "title": "Tiangong Space Station",
+    "fact": "China's own space station. Its name means **Heavenly Palace**, and astronauts have lived aboard since 2021.",
+    "stat": [
+      "CREW",
+      "3"
+    ]
+  },
+  "20580": {
+    "title": "Hubble Space Telescope",
+    "fact": "About the size of a school bus. Astronauts visited it **five times** to repair and upgrade it in orbit.",
+    "stat": [
+      "MIRROR",
+      "2.4 m"
+    ]
+  },
+  "16908": {
+    "title": "Ajisai, the mirror ball",
+    "fact": "Covered in **318 mirrors**. As it spins it throws flashes of sunlight at the ground, so watch for it twinkling."
+  },
+  "3597": {
+    "title": "OAO 2 Space Telescope",
+    "fact": "One of the **first successful space telescopes**, launched in 1968 to study stars in ultraviolet light the atmosphere blocks."
+  },
+  "6153": {
+    "title": "Copernicus Telescope",
+    "fact": "Named after Nicolaus Copernicus, it launched the year before his **500th birthday**. It studied ultraviolet light from stars until 1981."
+  },
+  "3669": {
+    "title": "ISIS 1",
+    "fact": "A **Canadian** satellite from 1969, built to study the upper atmosphere that bounces radio signals around the world."
+  },
+  "4327": {
+    "title": "SERT 2",
+    "fact": "A NASA test of **ion engines**, which push with a gentle stream of charged gas. The idea now flies on deep-space probes."
+  }
+}

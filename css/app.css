@@ -39,7 +39,13 @@ button {
 }
 button:active { background: rgba(255, 90, 70, 0.3); }
 
-.pill { padding: 8px 14px; min-height: 40px; }
+.pill { padding: 8px 12px; min-height: 40px; white-space: nowrap; }
+a.pill {
+  display: inline-flex; align-items: center; text-decoration: none; font: inherit;
+  color: var(--red); background: var(--red-faint); border: 1px solid var(--red-dim); border-radius: 999px;
+}
+#topbar a { pointer-events: auto; }
+#toast.linked { pointer-events: auto; cursor: pointer; }
 .pill.accent { border-color: var(--red); }
 .big { width: 100%; padding: 18px; font-size: 20px; font-weight: 600; min-height: 64px; }
 
@@ -51,8 +57,9 @@ button:active { background: rgba(255, 90, 70, 0.3); }
   pointer-events: none;
 }
 #topbar button { pointer-events: auto; }
-.top-actions { display: flex; gap: 8px; }
-#status-main { font-weight: 600; font-size: 17px; }
+.top-actions { display: flex; gap: 6px; flex: none; }
+#status { min-width: 0; }
+#status-main { font-weight: 600; font-size: 16px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 #status-sub { font-size: 13px; color: var(--red-dim); }
 
 #banner {
