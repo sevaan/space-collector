@@ -1,9 +1,9 @@
-import { renderCard, renderCardTile, attachTilt, attachGyro } from './card.js?v=0.1.20';
-import { buildCards, cardKeyFor } from './card-model.js?v=0.1.20';
-import { SETS, assignSets } from './sets.js?v=0.1.20';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.20';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.20';
-import { allSightings } from './store.js?v=0.1.20';
+import { renderCard, renderCardTile, attachTilt, attachGyro } from './card.js?v=0.1.22';
+import { buildCards, cardKeyFor } from './card-model.js?v=0.1.22';
+import { SETS, assignSets } from './sets.js?v=0.1.22';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.22';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.22';
+import { allSightings, deleteSighting } from './store.js?v=0.1.22';
 
 const $ = (id) => document.getElementById(id);
 const state = { cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -168,15 +168,28 @@ function showCard() {
   if (!reducedMotion.matches && motionPermission !== 'denied') stopGyro = attachGyro(el, tilt);
   $('v-position').textContent = `${state.index + 1} / ${state.list.length.toLocaleString()}`;
   $('v-prev').disabled = $('v-next').disabled = state.list.length < 2;
-  $('v-status').textContent = sightings.length ? `Part of your collection · first observed ${dateLabel(sightings[sightings.length - 1].time)}${c.archived ? ' · saved from an earlier catalogue' : ''}` : state.preview ? 'Artwork preview · this card has not been added to your collection.' : 'Not yet collected · record a live sighting to earn this card.';
+  const firstTime = sightings.length ? Math.min(...sightings.map((s) => s.time)) : 0;
+  $('v-status').textContent = sightings.length ? `Collected ${dateLabel(firstTime)}${c.archived ? ' · saved from an earlier catalogue' : ''}` : state.preview ? 'Artwork preview · this card has not been added to your collection.' : 'Not yet collected · record a live sighting to earn this card.';
   $('v-preview').hidden = sightings.length > 0;
   $('v-preview').textContent = state.preview ? 'Back to uncollected card' : 'Preview artwork & story';
   $('v-history').replaceChildren();
   if (sightings.length) {
-    const heading = document.createElement('h2'); heading.textContent = 'Your field notes'; $('v-history').append(heading);
-    for (const s of sightings.slice(0, 5)) {
+    const heading = document.createElement('h2');
+    heading.textContent = sightings.length === 1 ? 'When you saw it' : `When you saw it · ${sightings.length} times`;
+    $('v-history').append(heading);
+    const points = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+    for (const s of [...sightings].sort((a, b) => b.time - a.time)) {
       const row = document.createElement('p');
-      row.innerHTML = `<span>${esc(dateLabel(s.time))}</span><span>${esc(new Date(s.time).toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' }))}</span>`;
+      const when = `${dateLabel(s.time)} · ${new Date(s.time).toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' })}`;
+      const where = s.el != null ? `${Math.round(s.el)}° up in the ${points[Math.round(((s.az % 360) + 360) % 360 / 45) % 8]}` : '';
+      row.innerHTML = `<span>${esc(when)}</span><span>${esc(where)}</span><button type="button" class="history-delete" aria-label="Delete this sighting">×</button>`;
+      row.querySelector('button').addEventListener('click', async () => {
+        if (!confirm('Delete this sighting? If it was your only one, the card leaves your collection.')) return;
+        try { await deleteSighting(s.key); } catch { notice('That sighting could not be deleted. Try again.'); return; }
+        const left = (state.sightingsByKey.get(c.key) ?? []).filter((x) => x.key !== s.key);
+        if (left.length) state.sightingsByKey.set(c.key, left); else { state.sightingsByKey.delete(c.key); state.seenMembers.delete(c.key); }
+        showCard(); render();
+      });
       $('v-history').append(row);
     }
   }

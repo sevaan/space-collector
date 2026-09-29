@@ -34,7 +34,9 @@ Live: https://sevaan.github.io/space-collector/ (GitHub Pages, deploys from `mai
 - `js/sky.js` – canvas renderer, gnomonic projection centred on the reticle. Two themes: `glass`
   (default, navy/gold/cyan, based on Sevaan's mockup: Milky Way glow, tree line, beaded paths,
   sparkle reticle) and `night` (all red). UI chrome in `index.html` + `css/app.css` (body.night).
-- `js/main.js` – app state, render loop, candidates/capture, sim panel, sighting log.
+- `js/main.js` – app state, render loop, candidates/capture, settings panel. No journal (removed
+  2026-09-29): the collection is the record. Cards show when you collected them; the card viewer
+  lists each sighting (when, where) with delete.
 - `js/store.js` – IndexedDB sighting log.
 - Cards (NASA data-sheet style, chosen 2026-09-29; no paper texture): `cards.html` + `js/cards-page.js`
   (gallery), `js/card.js` (render + tilt), `css/cards.css` (layout + rarity shine), `js/art.js` (flat

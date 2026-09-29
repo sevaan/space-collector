@@ -1,17 +1,17 @@
-import { VERSION } from './version.js?v=0.1.20';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, setBinocularMode } from './orbit.js?v=0.1.20';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.20';
-import { SkyView, shortName } from './sky.js?v=0.1.20';
-import { loadSky, eqToEnu, solarSystem, galacticPlane } from './celestial.js?v=0.1.20';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.20';
-import { cardArt } from './art.js?v=0.1.20';
-import { renderCard, attachTilt, attachGyro } from './card.js?v=0.1.20';
-import { buildCards } from './card-model.js?v=0.1.20';
-import { collectedDuringPass, canCapture } from './observation.js?v=0.1.20';
-import { TIER_INFO } from './rarity.js?v=0.1.20';
-import { SETS } from './sets.js?v=0.1.20';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.20';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.20';
+import { VERSION } from './version.js?v=0.1.22';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, setBinocularMode } from './orbit.js?v=0.1.22';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.22';
+import { SkyView, shortName } from './sky.js?v=0.1.22';
+import { loadSky, eqToEnu, solarSystem, galacticPlane } from './celestial.js?v=0.1.22';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.22';
+import { cardArt } from './art.js?v=0.1.22';
+import { renderCard, attachTilt, attachGyro } from './card.js?v=0.1.22';
+import { buildCards } from './card-model.js?v=0.1.22';
+import { collectedDuringPass, canCapture } from './observation.js?v=0.1.22';
+import { TIER_INFO } from './rarity.js?v=0.1.22';
+import { SETS } from './sets.js?v=0.1.22';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.22';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.22';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -517,7 +517,6 @@ async function capture(obj) {
   try {
     const key = await addSighting(sighting);
     state.sightings.unshift({ ...sighting, key });
-    $('log-count').textContent = state.sightings.filter(s => !s.sim).length || '';
     chirp([660, 880, 1320], .08);
     showCaptureCard(obj, !before);
   } catch {
@@ -525,33 +524,12 @@ async function capture(obj) {
   } finally { state.captureBusy = false; setAction(collectedThisPass(obj, d)); }
 }
 
-// ---------- journal (sighting log) ----------
+// ---------- sightings ----------
 
 async function loadSightings() {
   try { state.sightings = await allSightings(); state.storageReady = true; } catch { state.storageReady = false; }
-  $('log-count').textContent = state.sightings.filter(s => !s.sim).length || '';
 }
 
-function renderLog() {
-  const list = $('log-list');
-  const sightings = state.sightings.filter(s => !s.sim).sort((a,b) => (b.loggedAt ?? b.time) - (a.loggedAt ?? a.time));
-  list.innerHTML = '';
-  if (!sightings.length) { list.innerHTML = `<div class="empty">${state.storageReady ? 'Your story starts with a moving light. Collect your first object to begin.' : 'Your journal could not be read. Browser storage may be unavailable.'}</div>`; return; }
-  let day = '';
-  for (const s of sightings) {
-    const date = new Date(s.loggedAt ?? s.time), group = date.toLocaleDateString([], { weekday:'long', month:'long', day:'numeric', year:'numeric' });
-    if (group !== day) { const h = document.createElement('h3'); h.className='session-title'; h.textContent=group; list.appendChild(h); day=group; }
-    const row = document.createElement('div'); row.className='sighting';
-    const key = s.cardKey ?? String(s.objectId), model = state.cardModels.get(key) ?? s.cardSnapshot;
-    const name = model ? titleFor(model) : shortName(s.name);
-    row.innerHTML = `<div class="grow"><a class="name" href="cards.html#${encodeURIComponent(key)}">${escapeHtml(name)} ↗</a><div class="meta">${date.toLocaleTimeString([], {hour:'numeric',minute:'2-digit'})}${s.el != null ? ` · ${Math.round(s.el)}° up in the ${compassPoint(s.az)}` : ''}</div></div><details><summary aria-label="Sighting actions">···</summary><button type="button">Delete sighting</button></details>`;
-    row.querySelector('button').addEventListener('click', async () => {
-      if (!confirm(`Delete this sighting of ${name}?`)) return;
-      try { await deleteSighting(s.key); await loadSightings(); renderLog(); } catch { toast('Could not delete this sighting. Try again.'); }
-    });
-    list.appendChild(row);
-  }
-}
 
 // ---------- visible now ----------
 
@@ -617,7 +595,6 @@ function closePanel(id = activePanel) {
 }
 function openDebug() { renderDebug(); renderLocation(); openPanel('debug'); }
 $('nav-more').addEventListener('click', openDebug);
-$('nav-journal').addEventListener('click', () => { renderLog(); openPanel('log'); });
 $('nav-explore').addEventListener('click', () => closePanel());
 $('location-status').addEventListener('click', openDebug);
 $('reveal-continue').addEventListener('click', () => closePanel('reveal'));
@@ -826,7 +803,6 @@ async function boot() {
         state.timeOffsetMs=saved.timeOffsetMs??0; state.drag=saved.drag; state.preview=!!saved.preview; state.followPreview=!!saved.followPreview; state.pinnedId=saved.pinnedId;
         if(!state.preview && !state.drag.on) { startSensors().catch(()=>{}); requestLocation(); }
         renderLocation(); enterSky();
-        if(params.get('panel')==='journal') { renderLog(); openPanel('log'); }
       }
     } catch {}
   } else if (readPref('started', false) || loadSavedLocation()) quickStart(); // anyone who has used the app before

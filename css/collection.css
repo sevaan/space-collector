@@ -63,7 +63,9 @@ h1 { margin: 13px 0 13px; font-size: clamp(34px, 7vw, 49px); line-height: 1.06; 
 .viewer-history { margin: 20px auto 0; max-width: 390px; border-top: 1px solid var(--line); text-align: left; }
 .viewer-history:empty { display: none; }
 .viewer-history h2 { font-size: 11px; font-weight: 600; color: var(--accent); letter-spacing: .12em; text-transform: uppercase; margin: 20px 0 13px; }
-.viewer-history p { display: flex; gap: 10px; justify-content: space-between; font-size: 12px; color: var(--muted); margin: 10px 0; }
+.viewer-history p { display: flex; gap: 10px; justify-content: space-between; align-items: center; font-size: 12px; color: var(--muted); margin: 10px 0; }
+.viewer-history p span:first-child { color: var(--text); }
+#viewer .history-delete { min-height: 32px; padding: 2px 10px; font-size: 16px; line-height: 1; background: transparent; border-color: transparent; color: var(--muted); }
 .viewer-controls { display: flex; justify-content: center; gap: 12px; width: 100%; padding: 11px 16px calc(var(--safe-bottom) + 12px); border-top: 1px solid var(--line); flex: none; background: var(--bg); }
 #v-gyro { min-width: 150px; }
 #viewer button:disabled { opacity: .45; cursor: default; }

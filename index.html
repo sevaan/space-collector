@@ -13,8 +13,8 @@
   <link rel="apple-touch-icon" href="icons/icon-180.png">
   <link rel="icon" href="icons/icon-192.png">
   <script>try { if (localStorage.getItem("night") === "1") document.documentElement.dataset.theme = "night"; } catch {}</script>
-  <link rel="stylesheet" href="css/cards.css?v=0.1.20">
-  <link rel="stylesheet" href="css/app.css?v=0.1.20">
+  <link rel="stylesheet" href="css/cards.css?v=0.1.22">
+  <link rel="stylesheet" href="css/app.css?v=0.1.22">
 </head>
 <body>
   <canvas id="sky" role="img" aria-label="Sky map aligned with your viewing direction"></canvas>
@@ -77,7 +77,6 @@
     <nav id="nav">
       <button class="nav-item active" id="nav-explore"><span class="ico" data-ico="planet"></span>Explore</button>
       <a class="nav-item" id="nav-collection" href="cards.html"><span class="ico" data-ico="bag"></span>Collection</a>
-      <button class="nav-item" id="nav-journal"><span class="ico" data-ico="book"></span>Journal<i id="log-count"></i></button>
       <button class="nav-item" id="nav-more"><span class="ico" data-ico="sliders"></span>More</button>
     </nav>
   </div>
@@ -113,14 +112,6 @@
     <p class="hint" id="visible-hint"></p>
     <p class="hint small" id="next-pass-info"></p>
     <div id="visible-list"></div>
-  </section>
-
-  <section id="log" class="overlay panel" role="dialog" aria-modal="true" aria-label="Journal" hidden>
-    <div class="panel-head">
-      <h2>Journal</h2>
-      <button class="pill" data-close="log">Done</button>
-    </div>
-    <p class="hint">The nights behind your discoveries.</p><div id="log-list"></div>
   </section>
 
   <section id="debug" class="overlay panel" role="dialog" aria-modal="true" aria-label="Observing settings" hidden>
@@ -169,6 +160,6 @@
     <pre id="debug-info"></pre></details>
   </section>
 
-  <script type="module" src="js/main.js?v=0.1.20"></script>
+  <script type="module" src="js/main.js?v=0.1.22"></script>
 </body>
 </html>
