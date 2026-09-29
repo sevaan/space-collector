@@ -35,7 +35,7 @@ a { color:var(--cyan); }
 #visible-pill small { font-size:12px; }
 #visible-pill .chev { width:10px;height:10px;fill:none;stroke:var(--muted);stroke-width:1.5; }
 #observing-status { position:fixed; top:calc(var(--safe-top) + 145px);left:16px;right:16px;display:flex;align-items:center;gap:8px; flex-wrap:wrap; font-size:11px; }
-#mode-label { color:var(--gold); font-weight:650;letter-spacing:1px; }
+
 #location-status,#btn-live { font-size:11px;min-height:32px;padding:4px 0;color:var(--muted); }
 #location-status { text-decoration:underline;text-decoration-color:var(--edge);text-underline-offset:4px; }
 #btn-live { margin-left:auto;color:var(--cyan); }

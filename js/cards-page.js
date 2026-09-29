@@ -1,9 +1,9 @@
-import { renderCard, renderCardTile, attachTilt, attachGyro } from './card.js?v=0.1.18';
-import { buildCards, cardKeyFor } from './card-model.js?v=0.1.18';
-import { SETS, assignSets } from './sets.js?v=0.1.18';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.18';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.18';
-import { allSightings } from './store.js?v=0.1.18';
+import { renderCard, renderCardTile, attachTilt, attachGyro } from './card.js?v=0.1.19';
+import { buildCards, cardKeyFor } from './card-model.js?v=0.1.19';
+import { SETS, assignSets } from './sets.js?v=0.1.19';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.19';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.19';
+import { allSightings } from './store.js?v=0.1.19';
 
 const $ = (id) => document.getElementById(id);
 const state = { cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -146,14 +146,17 @@ $('search').addEventListener('input', (e) => { clearTimeout(searchTimer); state.
 $('set-filter').addEventListener('change', (e) => { state.set = e.target.value; if (state.ready) render(); });
 $('rarity-filter').addEventListener('change', (e) => { state.rarity = e.target.value; if (state.ready) render(); });
 
-let tilt = null, stopGyro = null, gyroEnabled = false, lastFocus = null;
+let tilt = null, stopGyro = null, lastFocus = null;
 function stopEffects() { stopGyro?.(); stopGyro = null; tilt?.destroy(); tilt = null; }
-function syncGyroButton() {
-  const unsupported = !('DeviceOrientationEvent' in window);
-  $('v-gyro').disabled = unsupported || reducedMotion.matches;
-  $('v-gyro').textContent = reducedMotion.matches ? 'Reduced motion on' : unsupported ? 'Pointer tilt enabled' : gyroEnabled ? 'Stop phone tilt' : 'Tilt with phone';
-  $('v-gyro').setAttribute('aria-pressed', String(gyroEnabled));
-  $('v-hint').textContent = reducedMotion.matches ? 'Motion is reduced to match your device preference.' : gyroEnabled ? 'Gently tilt your phone to catch the light.' : 'Move across the card to catch the light.';
+
+// Phone tilt is always on in the viewer. iOS needs permission once, asked from the tap that opens a card.
+let motionPermission = typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function' ? 'unknown' : 'granted';
+function askMotion() {
+  if (motionPermission !== 'unknown') return;
+  motionPermission = 'asking';
+  DeviceOrientationEvent.requestPermission()
+    .then((r) => { motionPermission = r === 'granted' ? 'granted' : 'denied'; if (motionPermission === 'granted' && tilt && !stopGyro) stopGyro = attachGyro($('slot').firstElementChild, tilt); })
+    .catch(() => { motionPermission = 'unknown'; }); // not from a tap (e.g. a deep link); try again on the next tap
 }
 function showCard() {
   stopEffects();
@@ -162,8 +165,7 @@ function showCard() {
   const el = renderCard(c, { sightings, seenMembers: state.seenMembers.get(c.key)?.size ?? 0, preview: state.preview });
   $('slot').replaceChildren(el);
   tilt = attachTilt(el);
-  if (gyroEnabled && !reducedMotion.matches) stopGyro = attachGyro(el, tilt);
-  syncGyroButton();
+  if (!reducedMotion.matches && motionPermission !== 'denied') stopGyro = attachGyro(el, tilt);
   $('v-position').textContent = `${state.index + 1} / ${state.list.length.toLocaleString()}`;
   $('v-prev').disabled = $('v-next').disabled = state.list.length < 2;
   $('v-status').textContent = sightings.length ? `Part of your collection · first observed ${dateLabel(sightings[sightings.length - 1].time)}${c.archived ? ' · saved from an earlier catalogue' : ''}` : state.preview ? 'Artwork preview · this card has not been added to your collection.' : 'Not yet collected · record a live sighting to earn this card.';
@@ -181,6 +183,7 @@ function showCard() {
 }
 function openViewer(i) {
   if (i < 0 || i >= state.list.length) return;
+  askMotion();
   state.index = i; state.preview = false;
   lastFocus = document.activeElement;
   showCard();
@@ -196,27 +199,15 @@ function step(d) {
   $('viewer').querySelector('.viewer-scroll').scrollTop = 0;
 }
 $('v-close').addEventListener('click', () => $('viewer').close());
-$('viewer').addEventListener('close', () => { stopEffects(); gyroEnabled = false; document.body.style.overflow = ''; lastFocus?.focus(); });
+$('viewer').addEventListener('close', () => { stopEffects(); document.body.style.overflow = ''; lastFocus?.focus(); });
+$('slot').addEventListener('pointerdown', askMotion);
 $('v-prev').addEventListener('click', () => step(-1));
 $('v-next').addEventListener('click', () => step(1));
 $('v-preview').addEventListener('click', () => { state.preview = !state.preview; showCard(); });
 $('viewer').addEventListener('keydown', (e) => {
   if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') { e.preventDefault(); step(e.key === 'ArrowLeft' ? -1 : 1); }
 });
-$('v-gyro').addEventListener('click', async () => {
-  if (gyroEnabled) { gyroEnabled = false; stopGyro?.(); stopGyro = null; syncGyroButton(); return; }
-  try {
-    if (typeof DeviceOrientationEvent.requestPermission === 'function' && await DeviceOrientationEvent.requestPermission() !== 'granted') {
-      $('v-hint').textContent = 'Motion access was declined. You can still move across the card with a finger.'; return;
-    }
-  } catch { $('v-hint').textContent = 'Phone tilt is unavailable here. Touch the card to move its light.'; return; }
-  if (!$('viewer').open || !tilt || reducedMotion.matches) return;
-  gyroEnabled = true; stopGyro = attachGyro($('slot').firstElementChild, tilt); syncGyroButton();
-});
-reducedMotion.addEventListener('change', () => {
-  if (reducedMotion.matches) { gyroEnabled = false; stopGyro?.(); stopGyro = null; tilt?.reset(); }
-  syncGyroButton();
-});
+reducedMotion.addEventListener('change', () => { if (reducedMotion.matches) { stopGyro?.(); stopGyro = null; tilt?.reset(); } });
 boot().catch(() => {
   notice('The field guide could not open. Refresh this page to try again.');
   $('count').textContent = 'Your next discovery is waiting.';

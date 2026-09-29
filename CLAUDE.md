@@ -17,8 +17,12 @@ Live: https://sevaan.github.io/space-collector/ (GitHub Pages, deploys from `mai
   Starlink/OneWeb/Qianfan/Kuiper satellites share one card per launch (`card` = `FAMILY:YYYY-NNN`).
 - Sky view uses `SkyModel` (js/orbit.js): sweeps the catalogue in slices, interpolates 1 s samples.
   Don't loop the full catalogue per frame.
-- Local preview: `python3 -m http.server 8765`, then open http://localhost:8765 and use ⚙ → "Jump to
-  next visible pass" + drag mode to test during the day.
+- Local preview: `python3 -m http.server 8765`, then open http://localhost:8765 and use More → Testing
+  tools → "Jump to next visible pass" + drag mode to test during the day.
+- No practice mode (Sevaan removed it 2026-09-29): every capture counts. Legacy `sim: true` records stay
+  hidden. Time travel lives only in More → Testing tools. "Find a visible pass" reports when/where, no jump.
+- Card viewer: the card owns touch (touch-action: none) and phone tilt is always on (iOS permission is
+  asked from the tap that opens a card). A finger on the card overrides tilt.
 
 ## Layout
 - `js/orbit.js` – SGP4 propagation (vendored satellite.js 6.0.2 in `js/lib/`), visibility (sunlit +

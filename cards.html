@@ -11,8 +11,8 @@
   <link rel="apple-touch-icon" href="icons/icon-180.png">
   <link rel="icon" href="icons/icon-192.png">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600;650;700;750;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/cards.css?v=0.1.18">
-  <link rel="stylesheet" href="css/collection.css?v=0.1.18">
+  <link rel="stylesheet" href="css/cards.css?v=0.1.19">
+  <link rel="stylesheet" href="css/collection.css?v=0.1.19">
 </head>
 <body>
   <header class="collection-header">
@@ -26,15 +26,15 @@
     <div class="result-row"><span id="results" aria-live="polite"></span><button type="button" id="reset-filters" hidden>Clear filters</button></div>
     <p class="collection-notice" id="notice" role="status" hidden></p>
     <div class="grid" id="grid" aria-label="Collectible cards"><p class="loading">Opening the field guide…</p></div>
-    <p class="storage-note">Your sightings live on this device. Practice captures stay in your journal.</p>
+    <p class="storage-note">Your sightings live on this device.</p>
   </main>
   <nav class="bottom-nav" aria-label="Main navigation"><a href="./?resume=1"><span aria-hidden="true">✧</span>Explore</a><a href="cards.html" aria-current="page"><span aria-hidden="true">▱</span>Collection</a><a href="./?resume=1&amp;panel=journal"><span aria-hidden="true">▤</span>Journal</a></nav>
 
   <dialog id="viewer" aria-label="Collectible card viewer">
     <div class="viewer-header"><span id="v-position"></span><button class="close" id="v-close" type="button" autofocus>Done <span aria-hidden="true">×</span></button></div>
-    <div class="viewer-scroll"><div id="slot"></div><p id="v-status" class="viewer-status" aria-live="polite"></p><button id="v-preview" class="preview-button" type="button" hidden>Preview artwork &amp; story</button><p class="viewer-hint" id="v-hint">Move across the card to catch the light.</p><div id="v-history" class="viewer-history"></div></div>
-    <div class="viewer-controls"><button id="v-prev" type="button" aria-label="Previous card">←</button><button id="v-gyro" type="button" aria-pressed="false">Tilt with phone</button><button id="v-next" type="button" aria-label="Next card">→</button></div>
+    <div class="viewer-scroll"><div id="slot"></div><p id="v-status" class="viewer-status" aria-live="polite"></p><button id="v-preview" class="preview-button" type="button" hidden>Preview artwork &amp; story</button><p class="viewer-hint" id="v-hint">Tilt your phone or drag across the card to catch the light.</p><div id="v-history" class="viewer-history"></div></div>
+    <div class="viewer-controls"><button id="v-prev" type="button" aria-label="Previous card">←</button><button id="v-next" type="button" aria-label="Next card">→</button></div>
   </dialog>
-  <script type="module" src="js/cards-page.js?v=0.1.18"></script>
+  <script type="module" src="js/cards-page.js?v=0.1.19"></script>
 </body>
 </html>

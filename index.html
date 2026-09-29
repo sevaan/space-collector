@@ -13,8 +13,8 @@
   <link rel="apple-touch-icon" href="icons/icon-180.png">
   <link rel="icon" href="icons/icon-192.png">
   <script>try { if (localStorage.getItem("night") === "1") document.documentElement.dataset.theme = "night"; } catch {}</script>
-  <link rel="stylesheet" href="css/cards.css?v=0.1.18">
-  <link rel="stylesheet" href="css/app.css?v=0.1.18">
+  <link rel="stylesheet" href="css/cards.css?v=0.1.19">
+  <link rel="stylesheet" href="css/app.css?v=0.1.19">
 </head>
 <body>
   <canvas id="sky" role="img" aria-label="Sky map aligned with your viewing direction"></canvas>
@@ -46,7 +46,7 @@
       <svg viewBox="0 0 16 16" class="chev" aria-hidden="true"><path d="M6 3l5 5-5 5"/></svg>
     </button>
 
-    <div id="observing-status"><span id="mode-label">PRACTICE</span><button id="location-status">Example location</button><button id="btn-live" hidden>Return to live</button></div>
+    <div id="observing-status"><button id="location-status">Example location</button><button id="btn-live" hidden>Back to now</button></div>
     <div id="status-line"></div>
     <div id="guidance" aria-live="polite" hidden></div>
     <section id="sky-empty" hidden><span class="eyebrow" id="empty-eyebrow">YOUR NEXT DISCOVERY</span><h2 id="empty-title">The sky is worth waiting for.</h2><p id="empty-copy">Find your next opportunity to collect.</p><p id="next-pass-info" class="hint small"></p><button id="empty-next" class="big">Find a visible pass</button><button id="empty-iss" class="text-button">Preview the ISS card</button></section>
@@ -95,8 +95,7 @@
       <h1>Look up.<br>Find something<br>extraordinary.</h1>
       <p>That moving light has a story. Point your phone, discover what’s in orbit, and collect a little piece of space history.</p>
       <button id="btn-start" class="big" disabled>Loading the sky…</button>
-      <button id="btn-preview" class="text-button" disabled>Try a practice pass →</button>
-      <p class="hint small" id="start-note">Observe uses your location and motion sensors. Practice lets you explore without permissions.</p>
+      <p class="hint small" id="start-note">Uses your location and motion sensors so the sky lines up with where you point.</p>
       <a class="text-button" href="cards.html">Browse the collection</a>
     </div>
   </section>
@@ -104,7 +103,7 @@
   <section id="reveal" class="overlay panel" role="dialog" aria-modal="true" aria-labelledby="reveal-title" hidden>
     <div class="reveal-inner"><div class="panel-head"><span class="eyebrow" id="reveal-eyebrow">FIRST DISCOVERY</span><button class="pill" data-close="reveal">Done</button></div>
     <h2 id="reveal-title">A piece of space history.</h2><p id="reveal-note" class="hint"></p><div id="reveal-card"></div>
-    <p class="hint small tilt-hint">Move your finger across the card to catch the light.</p><a id="reveal-view" class="big" href="cards.html">View in collection</a><button id="reveal-continue" class="text-button">Keep exploring →</button></div>
+    <p class="hint small tilt-hint">Tilt your phone or drag across the card to catch the light.</p><a id="reveal-view" class="big" href="cards.html">View in collection</a><button id="reveal-continue" class="text-button">Keep exploring →</button></div>
   </section>
 
   <section id="visible" class="overlay panel" role="dialog" aria-modal="true" aria-label="Visible now" hidden>
@@ -121,7 +120,7 @@
       <h2>Journal</h2>
       <button class="pill" data-close="log">Done</button>
     </div>
-    <p class="hint">The nights behind your discoveries.</p><label class="row"><input type="checkbox" id="journal-practice"> Show practice sightings</label><div id="log-list"></div>
+    <p class="hint">The nights behind your discoveries.</p><div id="log-list"></div>
   </section>
 
   <section id="debug" class="overlay panel" role="dialog" aria-modal="true" aria-label="Observing settings" hidden>
@@ -138,6 +137,17 @@
     <label class="row"><input type="checkbox" id="chk-lines"> Constellation lines and names</label>
     <label class="row"><input type="checkbox" id="chk-bino"> Binocular mode: also show objects too faint for the naked eye (down to magnitude 8)</label>
 
+    <h3>Pointing</h3>
+    <label class="row"><input type="checkbox" id="chk-drag"> Drag to look around (instead of motion sensors)</label>
+    <div class="row wrap">
+      <span>Compass nudge</span>
+      <button class="pill" data-nudge="-5">−5°</button>
+      <button class="pill" data-nudge="5">+5°</button>
+      <span id="nudge-label"></span>
+    </div>
+
+    <details><summary>Testing tools</summary>
+    <p class="hint small">For trying the app in daylight: move the clock and look around by dragging.</p>
     <h3>Time</h3>
     <div class="row" id="sim-time-label"></div>
     <div class="row wrap">
@@ -148,19 +158,10 @@
       <button class="pill" data-time="now">Now</button>
     </div>
     <div class="row wrap">
-      <button class="pill accent" id="btn-next-pass">Preview next visible pass</button>
+      <button class="pill accent" id="btn-next-pass">Jump to next visible pass</button>
     </div>
 
-    <h3>Pointing</h3>
-    <label class="row"><input type="checkbox" id="chk-drag"> Drag to look around (instead of motion sensors)</label>
-    <div class="row wrap">
-      <span>Compass nudge</span>
-      <button class="pill" data-nudge="-5">−5°</button>
-      <button class="pill" data-nudge="5">+5°</button>
-      <span id="nudge-label"></span>
-    </div>
 
-    <details><summary>Advanced practice controls</summary><p class="hint small">These controls always record practice sightings, which never earn cards.</p>
     <label class="row"><input type="checkbox" id="chk-dim"> Show objects that aren't visible (shadowed, faint, daylight)</label>
     <label class="row"><input type="checkbox" id="chk-any"> Allow capturing objects that aren't visible</label>
 
@@ -168,6 +169,6 @@
     <pre id="debug-info"></pre></details>
   </section>
 
-  <script type="module" src="js/main.js?v=0.1.18"></script>
+  <script type="module" src="js/main.js?v=0.1.19"></script>
 </body>
 </html>

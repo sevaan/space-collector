@@ -1,9 +1,9 @@
 // Archival field cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { cardArt } from './art.js?v=0.1.18';
-import { TIER_INFO } from './rarity.js?v=0.1.18';
-import { SET_BY_ID } from './sets.js?v=0.1.18';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.18';
-import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText } from './lore.js?v=0.1.18';
+import { cardArt } from './art.js?v=0.1.19';
+import { TIER_INFO } from './rarity.js?v=0.1.19';
+import { SET_BY_ID } from './sets.js?v=0.1.19';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.19';
+import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText } from './lore.js?v=0.1.19';
 
 export function levelFor(count) {
   return count >= 25 ? 'gold' : count >= 5 ? 'silver' : count >= 1 ? 'bronze' : 'none';
@@ -78,26 +78,43 @@ export function attachTilt(el) {
     el.style.setProperty('--bgy', `${(40 + py * 20).toFixed(1)}%`);
     el.style.setProperty('--hyp', Math.min(1, Math.hypot(px - .5, py - .5) * 2).toFixed(3));
   };
+  const state = { touching: false };
   const onMove = (e) => {
     if (reducedMotion()) return;
+    if (e.pointerType !== 'mouse') state.touching = true;
     const b = el.getBoundingClientRect();
     el.classList.add('active');
     set(Math.max(0, Math.min(1, (e.clientX - b.left) / b.width)), Math.max(0, Math.min(1, (e.clientY - b.top) / b.height)));
   };
-  const reset = () => { el.classList.remove('active'); set(.5, .5); };
-  const events = { pointermove: onMove, pointerdown: onMove, pointerleave: reset, pointercancel: reset, pointerup: (e) => { if (e.pointerType !== 'mouse') reset(); } };
+  const reset = () => { state.touching = false; el.classList.remove('active'); set(.5, .5); };
+  const release = () => { state.touching = false; };
+  const events = { pointermove: onMove, pointerdown: onMove, pointerleave: reset, pointercancel: release, pointerup: (e) => { if (e.pointerType !== 'mouse') release(); } };
   for (const [name, handler] of Object.entries(events)) el.addEventListener(name, handler);
+  // iOS can still start a page scroll from a touch; stop it so a finger on the card only tilts it.
+  const noScroll = (e) => e.preventDefault();
+  el.addEventListener('touchmove', noScroll, { passive: false });
   reset();
-  return { set, reset, destroy() { for (const [name, handler] of Object.entries(events)) el.removeEventListener(name, handler); reset(); } };
+  return {
+    set, reset, get touching() { return state.touching; },
+    destroy() { for (const [name, handler] of Object.entries(events)) el.removeEventListener(name, handler); el.removeEventListener('touchmove', noScroll); reset(); },
+  };
 }
 
+// Phone tilt moves the card and its foil. The resting angle is whatever the phone was at when the
+// card opened, and it slowly follows you so the card settles back if you just change how you hold it.
+// A finger on the card takes over until it lifts.
 export function attachGyro(el, tilt) {
-  let base = null;
+  let base = null, px = .5, py = .5;
   const onOri = (e) => {
-    if (e.beta == null || e.gamma == null || reducedMotion()) return;
+    if (e.beta == null || e.gamma == null || reducedMotion() || tilt.touching) return;
     base ??= { b: e.beta, g: e.gamma };
+    base.b += (e.beta - base.b) * 0.01;
+    base.g += (e.gamma - base.g) * 0.01;
+    const tx = .5 + Math.max(-1, Math.min(1, (e.gamma - base.g) / 20)) * .5;
+    const ty = .5 + Math.max(-1, Math.min(1, (e.beta - base.b) / 20)) * .5;
+    px += (tx - px) * 0.35; py += (ty - py) * 0.35; // smooth out sensor jitter
     el.classList.add('active');
-    tilt.set(.5 + Math.max(-1, Math.min(1, (e.gamma - base.g) / 25)) * .5, .5 + Math.max(-1, Math.min(1, (e.beta - base.b) / 25)) * .5);
+    tilt.set(px, py);
   };
   window.addEventListener('deviceorientation', onOri);
   return () => { window.removeEventListener('deviceorientation', onOri); tilt.reset(); };

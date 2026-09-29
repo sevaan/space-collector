@@ -1,17 +1,17 @@
-import { VERSION } from './version.js?v=0.1.18';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, setBinocularMode } from './orbit.js?v=0.1.18';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.18';
-import { SkyView, shortName } from './sky.js?v=0.1.18';
-import { loadSky, eqToEnu, solarSystem, galacticPlane } from './celestial.js?v=0.1.18';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.18';
-import { cardArt } from './art.js?v=0.1.18';
-import { renderCard, attachTilt } from './card.js?v=0.1.18';
-import { buildCards } from './card-model.js?v=0.1.18';
-import { isPractice, collectedDuringPass, canCapture } from './observation.js?v=0.1.18';
-import { TIER_INFO } from './rarity.js?v=0.1.18';
-import { SETS } from './sets.js?v=0.1.18';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.18';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.18';
+import { VERSION } from './version.js?v=0.1.19';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, setBinocularMode } from './orbit.js?v=0.1.19';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.19';
+import { SkyView, shortName } from './sky.js?v=0.1.19';
+import { loadSky, eqToEnu, solarSystem, galacticPlane } from './celestial.js?v=0.1.19';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.19';
+import { cardArt } from './art.js?v=0.1.19';
+import { renderCard, attachTilt, attachGyro } from './card.js?v=0.1.19';
+import { buildCards } from './card-model.js?v=0.1.19';
+import { collectedDuringPass, canCapture } from './observation.js?v=0.1.19';
+import { TIER_INFO } from './rarity.js?v=0.1.19';
+import { SETS } from './sets.js?v=0.1.19';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.19';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.19';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -58,7 +58,7 @@ const sky = new SkyView($('sky'));
 $('version').textContent = `v${VERSION}`;
 
 function now() { return new Date(Date.now() + state.timeOffsetMs); }
-function isSim() { return isPractice({ timeOffsetMs: state.timeOffsetMs, dragOn: state.drag.on, sensorsLive: hasLiveSensors(), locationReady: state.locationStatus === 'manual' || (state.locationStatus === 'ready' && Date.now() - state.observer.fixedAt < 15 * 60 * 1000), captureAny: state.captureAny, preview: state.preview }); }
+// Every sighting counts. (Older builds had a practice mode; its records carry `sim: true` and stay hidden.)
 
 // ---------- prefs & location ----------
 
@@ -89,7 +89,7 @@ async function requestLocation() {
   ));
 }
 function renderLocation() {
-  const labels = { waiting: 'Finding your location…', ready: 'Current location', manual: 'Chosen location', denied: 'Location denied · practice', unavailable: 'Location unavailable · practice', example: state.observer.label ?? 'Example location', saved: 'Saved location · unverified', stale: 'Location needs refreshing · practice' };
+  const labels = { waiting: 'Finding your location…', ready: 'Current location', manual: 'Chosen location', denied: 'Location denied', unavailable: 'Location unavailable', example: state.observer.label ?? 'Example location', saved: 'Saved location · unverified', stale: 'Location needs refreshing' };
   const label = labels[state.locationStatus] ?? 'Location needs checking';
   $('location-status').textContent = label;
   $('location-note').textContent = `${label}. Sky shown for ${state.observer.lat.toFixed(2)}°, ${state.observer.lon.toFixed(2)}°. ${['ready', 'manual'].includes(state.locationStatus) ? '' : 'Use your location or choose coordinates for real observing.'}`;
@@ -248,9 +248,7 @@ function updateStatus(f) {
   if (state.locationStatus === 'ready' && Date.now() - state.observer.fixedAt >= 15 * 60 * 1000) { state.locationStatus = 'stale'; renderLocation(); }
   const visible = state.items.filter(a => a.look.visible).length;
   $('visible-count').textContent = visible;
-  const practice = isSim();
-  $('mode-label').textContent = practice ? 'PRACTICE' : 'OBSERVING';
-  $('btn-live').hidden = !practice;
+  $('btn-live').hidden = !state.timeOffsetMs;
   const d = now();
   const time = d.toLocaleString([], { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
   const bits = [time, f.sunEl > DARK_SUN_ELEVATION ? 'daylight / twilight' : 'dark sky'];
@@ -259,15 +257,15 @@ function updateStatus(f) {
   $('status-line').textContent = bits.join(' · ');
   if (!bannerKey.startsWith('New build')) {
     if (pointing.source === 'ios' && (pointing.compassAccuracy < 0 || pointing.compassAccuracy > 25) && !state.drag.on) showBanner('Compass needs aligning. Move your phone in a figure eight, then aim at a known star.', openDebug);
-    else if (!practice && pointing.source === 'relative') showBanner('Check your heading against a known landmark. Adjust the compass in settings.', openDebug);
+    else if (pointing.source === 'relative') showBanner('Check your heading against a known landmark. Adjust the compass in settings.', openDebug);
     else showBanner('');
   }
   $('sky-empty').hidden = !!state.activeTarget;
   if (!state.activeTarget) {
     const daylight = f.sunEl > DARK_SUN_ELEVATION;
-    $('empty-eyebrow').textContent = practice ? 'EXPLORE IN PRACTICE' : 'YOUR NEXT DISCOVERY';
+    $('empty-eyebrow').textContent = 'YOUR NEXT DISCOVERY';
     $('empty-title').textContent = visible ? 'A little space history is overhead.' : daylight ? 'Your next discovery starts after dusk.' : 'The sky is worth waiting for.';
-    $('empty-copy').textContent = visible ? 'Choose an object and we’ll help you find it.' : 'Find a predicted viewing opportunity, then try the pass in practice. Practice sightings do not earn cards.';
+    $('empty-copy').textContent = visible ? 'Choose an object and we’ll help you find it.' : 'Nothing bright is up right now. Find out when the next good pass is.';
     $('empty-next').textContent = passBusy ? 'Searching for a pass…' : visible ? 'Choose a visible object' : 'Find a visible pass';
     $('empty-next').disabled = passBusy;
   }
@@ -451,13 +449,13 @@ function renderTarget(target, d) {
     card.hidden = false;
   }
   const aligned = target.angCos > Math.cos(sky.reticleDeg * RAD);
-  const eligible = canCapture({ visible: l.visible, aligned, practice: isSim(), allowAny: state.captureAny });
+  const eligible = canCapture({ visible: l.visible, aligned, practice: state.captureAny, allowAny: state.captureAny });
   $('t-unpin').hidden = !state.pinnedId;
   setAction(collectedThisPass(o, d), eligible);
   const currentAz = state.basis ? (Math.atan2(state.basis.back[0], state.basis.back[1]) / RAD + 360) % 360 : state.drag.az;
   const currentEl = state.basis ? Math.asin(state.basis.back[2]) / RAD : state.drag.el;
   const turn = ((l.az - currentAz + 540) % 360) - 180;
-  $('guidance').textContent = l.el < 0 ? 'This pass has ended. Choose another object.' : !l.visible && !state.captureAny ? 'This object is not visible right now.' : aligned ? (isSim() ? 'Practice target aligned · ready to capture' : 'Target aligned · look up and confirm the moving light') : `${Math.abs(turn) > 8 ? (turn > 0 ? 'Turn right' : 'Turn left') : l.el > currentEl ? 'Raise your phone' : 'Lower your phone'} · ${Math.round(l.el)}° up in the ${compassPoint(l.az)}`;
+  $('guidance').textContent = l.el < 0 ? 'This pass has ended. Choose another object.' : !l.visible && !state.captureAny ? 'This object is not visible right now.' : aligned ? 'Target aligned · look up and confirm the moving light' : `${Math.abs(turn) > 8 ? (turn > 0 ? 'Turn right' : 'Turn left') : l.el > currentEl ? 'Raise your phone' : 'Lower your phone'} · ${Math.round(l.el)}° up in the ${compassPoint(l.az)}`;
   const n = state.candidates.length;
   const candidateIndex = state.candidates.findIndex(c => c.obj.id === o.id);
   $('t-switch').hidden = n < 2 || candidateIndex < 0;
@@ -477,57 +475,60 @@ $('t-switch').addEventListener('click', () => {
 // Collected during this pass (the last 20 minutes of sky time)? Then the button offers View instead.
 // A later pass can be collected again, which is what levels a card up.
 function collectedThisPass(o, d) {
-  return collectedDuringPass(state.sightings, o.id, d.getTime(), isSim());
+  return collectedDuringPass(state.sightings, o.id, d.getTime(), false);
 }
 $('t-unpin').addEventListener('click', () => { state.pinnedId = null; state.targetId = null; state.sticky.clear(); });
 $('t-action').addEventListener('click', () => {
   const target = state.activeTarget;
   unlockAudio();
   if (!target || state.captureBusy) return;
-  if (collectedThisPass(target.obj, now())) { showCaptureCard(target.obj, isSim(), false); return; }
+  if (collectedThisPass(target.obj, now())) { showCaptureCard(target.obj, false); return; }
   capture(target.obj);
 });
 function setAction(collected, eligible = true) {
-  const btn = $('t-action'), practice = isSim();
+  const btn = $('t-action');
   btn.dataset.state = collected ? 'view' : 'collect';
   btn.className = collected ? 'view' : 'collect';
   btn.disabled = state.captureBusy || (!collected && !eligible);
-  btn.textContent = state.captureBusy ? 'Saving…' : collected ? (practice ? 'View practice card' : 'View your card') : !eligible ? 'Line up the target' : practice ? 'Practice capture' : 'Collect';
+  btn.textContent = state.captureBusy ? 'Saving…' : collected ? 'View your card' : !eligible ? 'Line up the target' : 'Collect';
 }
 function cardModel(obj) { return state.cardModels.get(obj.card ?? String(obj.id)) ?? obj; }
 function cardSnapshot(obj) {
   const { satrec, _label, _setColor, ...card } = cardModel(obj);
   return card;
 }
-function showCaptureCard(obj, practice, fresh) {
+let revealStop = null;
+function showCaptureCard(obj, fresh) {
   const model = cardModel(obj), key = obj.card ?? String(obj.id);
   const sightings = state.sightings.filter(s => !s.sim && (s.cardKey ?? String(s.objectId)) === key);
-  $('reveal-eyebrow').textContent = practice ? 'PRACTICE COMPLETE' : fresh ? 'FIRST DISCOVERY' : 'SIGHTING RECORDED';
-  $('reveal-title').textContent = practice ? 'This is what discovery feels like.' : fresh ? 'A piece of space history.' : 'A familiar light. A new memory.';
-  $('reveal-note').textContent = practice ? 'Practice sightings stay in your practice journal. Observe the real sky to earn this card.' : `${label(obj)} · saved on this device`;
-  const card = renderCard(model, { preview: practice, sightings: practice ? [] : sightings, seenMembers: new Set(sightings.map(s => s.objectId)).size });
-  $('reveal-card').replaceChildren(card); attachTilt(card);
-  $('reveal-view').hidden = practice;
+  $('reveal-eyebrow').textContent = fresh ? 'FIRST DISCOVERY' : 'SIGHTING RECORDED';
+  $('reveal-title').textContent = fresh ? 'A piece of space history.' : 'A familiar light. A new memory.';
+  $('reveal-note').textContent = `${label(obj)} · saved on this device`;
+  const card = renderCard(model, { sightings, seenMembers: new Set(sightings.map(s => s.objectId)).size });
+  revealStop?.();
+  $('reveal-card').replaceChildren(card);
+  const t = attachTilt(card), g = attachGyro(card, t);
+  revealStop = () => { g(); t.destroy(); revealStop = null; };
   $('reveal-view').href = `cards.html#${encodeURIComponent(key)}`;
   openPanel('reveal');
 }
 async function capture(obj) {
   if (state.captureBusy) return;
-  const d = now(), f = frame(d, state.observer), l = look(obj, f), practice = isSim();
+  const d = now(), f = frame(d, state.observer), l = look(obj, f);
   const basis = currentBasis();
   const aligned = l && dot(enuFromAzEl(l.az, l.el), basis.back) > Math.cos(sky.reticleDeg * RAD);
-  if (!l || !canCapture({ visible: l.visible, aligned, practice, allowAny: state.captureAny })) { toast('Line up the object while it is visible to capture it.'); return; }
-  if (collectedDuringPass(state.sightings, obj.id, d.getTime(), practice)) { showCaptureCard(obj, practice, false); return; }
+  if (!l || !canCapture({ visible: l.visible, aligned, practice: state.captureAny, allowAny: state.captureAny })) { toast('Line up the object while it is visible to capture it.'); return; }
+  if (collectedDuringPass(state.sightings, obj.id, d.getTime(), false)) { showCaptureCard(obj, false); return; }
   const m = motion(obj, d, state.observer), key = obj.card ?? String(obj.id);
   const before = state.sightings.some(s => !s.sim && (s.cardKey ?? String(s.objectId)) === key);
-  const sighting = { objectId: obj.id, cardKey: key, name: obj.name, type: obj.type, year: obj.year, time: d.getTime(), loggedAt: Date.now(), lat: state.observer.lat, lon: state.observer.lon, az: l.az, el: l.el, mag: l.mag, rangeKm: l.rangeKm, heading: m?.heading, sim: practice, appVersion: VERSION, cardSnapshot: cardSnapshot(obj) };
+  const sighting = { objectId: obj.id, cardKey: key, name: obj.name, type: obj.type, year: obj.year, time: d.getTime(), loggedAt: Date.now(), lat: state.observer.lat, lon: state.observer.lon, az: l.az, el: l.el, mag: l.mag, rangeKm: l.rangeKm, heading: m?.heading, sim: false, appVersion: VERSION, cardSnapshot: cardSnapshot(obj) };
   state.captureBusy = true; setAction(false);
   try {
     const key = await addSighting(sighting);
     state.sightings.unshift({ ...sighting, key });
     $('log-count').textContent = state.sightings.filter(s => !s.sim).length || '';
     chirp([660, 880, 1320], .08);
-    showCaptureCard(obj, practice, !before);
+    showCaptureCard(obj, !before);
   } catch {
     toast('Your sighting could not be saved. Check that browser storage is available, then try again.', 5000);
   } finally { state.captureBusy = false; setAction(collectedThisPass(obj, d)); }
@@ -541,10 +542,10 @@ async function loadSightings() {
 }
 
 function renderLog() {
-  const list = $('log-list'), practice = $('journal-practice').checked;
-  const sightings = state.sightings.filter(s => !!s.sim === practice).sort((a,b) => (b.loggedAt ?? b.time) - (a.loggedAt ?? a.time));
+  const list = $('log-list');
+  const sightings = state.sightings.filter(s => !s.sim).sort((a,b) => (b.loggedAt ?? b.time) - (a.loggedAt ?? a.time));
   list.innerHTML = '';
-  if (!sightings.length) { list.innerHTML = `<div class="empty">${state.storageReady ? practice ? 'No practice sightings yet. Try a pass to learn the flow.' : 'Your story starts with a moving light. Collect your first object to begin.' : 'Your journal could not be read. Browser storage may be unavailable.'}</div>`; return; }
+  if (!sightings.length) { list.innerHTML = `<div class="empty">${state.storageReady ? 'Your story starts with a moving light. Collect your first object to begin.' : 'Your journal could not be read. Browser storage may be unavailable.'}</div>`; return; }
   let day = '';
   for (const s of sightings) {
     const date = new Date(s.loggedAt ?? s.time), group = date.toLocaleDateString([], { weekday:'long', month:'long', day:'numeric', year:'numeric' });
@@ -552,7 +553,7 @@ function renderLog() {
     const row = document.createElement('div'); row.className='sighting';
     const key = s.cardKey ?? String(s.objectId), model = state.cardModels.get(key) ?? s.cardSnapshot;
     const name = model ? titleFor(model) : shortName(s.name);
-    row.innerHTML = `<div class="grow">${s.sim ? `<span class="name">${escapeHtml(name)}</span><span class="badge">PRACTICE</span>` : `<a class="name" href="cards.html#${encodeURIComponent(key)}">${escapeHtml(name)} ↗</a>`}<div class="meta">${date.toLocaleTimeString([], {hour:'numeric',minute:'2-digit'})}${s.el != null ? ` · ${Math.round(s.el)}° up in the ${compassPoint(s.az)}` : ''}${s.sim ? '<br>Not part of your earned collection' : ''}</div></div><details><summary aria-label="Sighting actions">···</summary><button type="button">Delete sighting</button></details>`;
+    row.innerHTML = `<div class="grow"><a class="name" href="cards.html#${encodeURIComponent(key)}">${escapeHtml(name)} ↗</a><div class="meta">${date.toLocaleTimeString([], {hour:'numeric',minute:'2-digit'})}${s.el != null ? ` · ${Math.round(s.el)}° up in the ${compassPoint(s.az)}` : ''}</div></div><details><summary aria-label="Sighting actions">···</summary><button type="button">Delete sighting</button></details>`;
     row.querySelector('button').addEventListener('click', async () => {
       if (!confirm(`Delete this sighting of ${name}?`)) return;
       try { await deleteSighting(s.key); await loadSightings(); renderLog(); } catch { toast('Could not delete this sighting. Try again.'); }
@@ -560,7 +561,6 @@ function renderLog() {
     list.appendChild(row);
   }
 }
-$('journal-practice').addEventListener('change', renderLog);
 
 // ---------- visible now ----------
 
@@ -569,9 +569,9 @@ function renderVisible() {
   const vis = state.items.filter((i) => i.look.visible).sort((a, b) => a.look.mag - b.look.mag);
   $('visible-hint').textContent = vis.length
     ? `Brightest first. ${state.drag.on || !hasLiveSensors() ? 'Tap one to look at it.' : 'Look where it says and hold your phone up.'}`
-    : 'Nothing visible right now. Find a predicted pass and try it in practice.';
+    : 'Nothing visible right now. Find out when the next bright pass is.';
   list.innerHTML = '';
-  if (!vis.length) { const b=document.createElement('button'); b.className='big'; b.textContent='Find a visible pass'; b.addEventListener('click',()=>previewPass()); list.appendChild(b); }
+  if (!vis.length) { const b=document.createElement('button'); b.className='big'; b.textContent='Find a visible pass'; b.addEventListener('click',()=>findPass()); list.appendChild(b); }
   for (const it of vis.slice(0, 60)) {
     const o = it.obj, tier = TIER_INFO[o.tier] ?? TIER_INFO.common;
     const row = document.createElement('button');
@@ -620,6 +620,7 @@ function openPanel(id) {
 }
 function closePanel(id = activePanel) {
   if (!id) return;
+  if (id === 'reveal') revealStop?.();
   $(id).hidden = true; activePanel = null; $('hud').inert = false;
   if (panelReturn?.isConnected) panelReturn.focus({ preventScroll: true });
 }
@@ -659,7 +660,8 @@ document.querySelectorAll('[data-time]').forEach((b) => b.addEventListener('clic
 
 let passWorker = null, passRequest = 0, passBusy = false, passTimer = null;
 function cancelPassSearch() { passRequest++; passWorker?.terminate(); passWorker=null; passBusy=false; clearTimeout(passTimer); $('btn-next-pass').disabled=false; $('empty-iss').disabled=false; $('empty-next').disabled=false; }
-function previewPass(objectId = null) {
+function findPass() { previewPass(null, false); }
+function previewPass(objectId = null, jump = true) {
   if (!state.catalog || passBusy) return;
   cancelPassSearch(); passBusy=true;
   const requestId = ++passRequest;
@@ -676,16 +678,23 @@ function previewPass(objectId = null) {
       cancelPassSearch();
       if (data.error || !data.pass) { $('next-pass-info').textContent=objectId ? 'No suitable ISS pass found in the next 48 hours for this place. Try another visible object.' : 'No bright pass found in the next 48 hours. Try another location or binocular mode.'; toast($('next-pass-info').textContent,5000); return; }
       const pass=data.pass, obj=state.byId.get(pass.objectId);
+      if (!jump) {
+        const when=new Date(pass.dateMs), today=when.toDateString()===new Date().toDateString();
+        const whenText=`${today ? 'Tonight' : when.toLocaleDateString([], { weekday:'long' })} at ${when.toLocaleTimeString([], { hour:'numeric', minute:'2-digit' })}`;
+        $('next-pass-info').textContent=`Next bright pass: ${label(obj)} · ${whenText} · ${Math.round(pass.look.el)}° up in the ${compassPoint(pass.look.az)}`;
+        toast(`<span class="big-line">${escapeHtml(label(obj))}</span>${escapeHtml(whenText)}<br><small>${Math.round(pass.look.el)}° up in the ${compassPoint(pass.look.az)}</small>`,6000);
+        return;
+      }
       state.preview=true; state.followPreview=true; state.timeOffsetMs=pass.dateMs-Date.now(); state.drag.on=true; state.drag.az=pass.look.az; state.drag.el=pass.look.el; state.pinnedId=obj.id; state.targetId=obj.id;
       afterTimeJump(); closePanel();
       $('next-pass-info').textContent='';
-      toast(`<span class="big-line">Practice pass</span>${escapeHtml(label(obj))}<br><small>${new Date(pass.dateMs).toLocaleString()} · ${escapeHtml(state.observer.label)}</small>`,4000);
+      toast(`<span class="big-line">Jumped ahead</span>${escapeHtml(label(obj))}<br><small>${new Date(pass.dateMs).toLocaleString()} · ${escapeHtml(state.observer.label)}</small>`,4000);
     };
     passWorker.postMessage({requestId,objects:state.catalog.objects.filter(o=>o.stdMag<=4.5 || o.id===objectId),objectId,dateMs:start.getTime(),observer:state.observer,binoculars:state.binoculars});
   } catch { cancelPassSearch(); toast('Pass preview is unavailable in this browser. Try the visible-object list.'); }
 }
 $('btn-next-pass').addEventListener('click', () => previewPass());
-$('empty-next').addEventListener('click', () => { if (state.items.some(i=>i.look.visible)) { renderVisible(); openPanel('visible'); } else previewPass(); });
+$('empty-next').addEventListener('click', () => { if (state.items.some(i=>i.look.visible)) { renderVisible(); openPanel('visible'); } else findPass(); });
 $('empty-iss').addEventListener('click', () => { saveExploreState(); location.href = 'cards.html#25544'; });
 $('btn-live').addEventListener('click', async () => {
   cancelPassSearch(); state.preview=false; state.followPreview=false; state.timeOffsetMs=0; state.captureAny=false; state.showDim=false; state.pinnedId=null; $('chk-any').checked=false; $('chk-dim').checked=false;
@@ -696,7 +705,7 @@ $('btn-live').addEventListener('click', async () => {
 async function enableMotion() {
   let ok=false; try { ok=await startSensors(); } catch {}
   state.drag.on=!ok;
-  if (!ok) toast('Motion is unavailable. You can drag to explore in practice.',4000);
+  if (!ok) toast('Motion is unavailable, so drag the sky to look around.',4000);
   $('chk-drag').checked=state.drag.on;
   return ok;
 }
@@ -776,9 +785,6 @@ $('btn-start').addEventListener('click', async () => {
   requestLocation(); keepAwake(); navigator.storage?.persist?.().catch(() => {});
   state.preview=false; enterSky();
 });
-$('btn-preview').addEventListener('click', () => {
-  state.preview=true; state.drag.on=true; enterSky(); previewPass();
-});
 function saveExploreState() {
   if (!state.started) return;
   try { sessionStorage.setItem('space-collector.explore',JSON.stringify({ observer:state.observer, locationStatus:state.locationStatus, timeOffsetMs:state.timeOffsetMs, drag:state.drag, preview:state.preview, followPreview:state.followPreview, pinnedId:state.pinnedId })); } catch {}
@@ -801,7 +807,7 @@ async function boot() {
   await loadLore(); await loadSightings();
   state.locationStatus=loadSavedLocation()?'saved':'example'; renderLocation();
   const iss=state.byId.get(25544); if (iss) $('start-art').innerHTML=cardArt(iss,{w:380,h:200});
-  $('btn-start').textContent='Observe the sky'; $('btn-start').disabled=false; $('btn-preview').disabled=false;
+  $('btn-start').textContent='Observe the sky'; $('btn-start').disabled=false;
   const params=new URLSearchParams(location.search);
   if(params.has('resume')) {
     try {

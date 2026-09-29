@@ -4,7 +4,7 @@
   --mx: 50%; --my: 50%; --rx: 0deg; --ry: 0deg; --bgx: 50%; --bgy: 50%; --hyp: 0;
   font-size: 10px; width: 28em; min-height: 39.2em; perspective: 90em; flex: none;
   font-family: Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif; color: var(--ink);
-  -webkit-user-select: none; user-select: none; touch-action: pan-y; text-align: left;
+  -webkit-user-select: none; user-select: none; touch-action: none; text-align: left; /* the card owns the finger: drag tilts, never scrolls */
 }
 .card *, .card *::before, .card *::after { box-sizing: border-box; }
 .card__rotator { width: 100%; min-height: inherit; transform: rotateX(var(--rx)) rotateY(var(--ry)); transition: transform .5s cubic-bezier(.2,.9,.3,1.2); transform-style: preserve-3d; border-radius: 1.15em; box-shadow: 0 1em 3em #0007; }
