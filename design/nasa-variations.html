@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mission Card Variations</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root { --bg: #15171c; --text: #e9ecf2; --muted: #9aa3b2; --ink: #1d1d1b; --paper: #f3eee3; --grey: #6f6b62; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.5 Inter, system-ui, sans-serif; padding: 24px 16px 60px; }
+  h1 { font-size: 22px; margin: 0 0 4px; }
+  .intro { color: var(--muted); margin: 0 0 14px; max-width: 760px; }
+  .toggle { display: inline-flex; gap: 8px; align-items: center; margin-bottom: 24px; font-size: 14px; cursor: pointer; user-select: none; }
+  .toggle input { width: 18px; height: 18px; }
+  .board { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 36px 24px; }
+  .opt h2 { font-size: 16px; margin: 12px 0 2px; }
+  .opt p { color: var(--muted); font-size: 13px; margin: 0; }
+
+  .card { --set: #fc3d21; width: 280px; height: 392px; margin: 0 auto; position: relative; overflow: hidden; border-radius: 12px;
+    background: var(--paper); color: var(--ink); font-family: Inter, 'Helvetica Neue', Helvetica, sans-serif; box-shadow: 0 10px 30px #0009; }
+  .card svg { display: block; }
+  .set-bar { background: var(--set); color: #fff; display: flex; justify-content: space-between; align-items: center; padding: 7px 14px; font-size: 9.5px; font-weight: 700; letter-spacing: 0.16em; }
+  .set-bar.thin { padding: 0; height: 8px; }
+  .kicker { font-size: 9px; font-weight: 700; letter-spacing: 0.16em; color: var(--set); }
+  .mono { font-family: 'IBM Plex Mono', monospace; }
+  .rule { border: 0; border-top: 2px solid var(--ink); margin: 0; }
+  .fact { position: relative; font-size: 12.5px; line-height: 1.35; font-weight: 500; }
+  .fact b { font-weight: 800; }
+  .label { font-size: 8px; font-weight: 700; letter-spacing: 0.14em; color: var(--grey); }
+  .age-pill { display: inline-flex; align-items: baseline; gap: 4px; background: var(--ink); color: var(--paper); border-radius: 999px; padding: 3px 10px 4px; font-weight: 700; font-size: 13px; }
+  .age-pill small { font-size: 9px; font-weight: 600; letter-spacing: 0.08em; }
+  .stat-row { display: grid; grid-template-columns: repeat(3, 1fr); }
+  .stat-row div { font-size: 13px; font-weight: 700; padding: 5px 0; }
+  .foot { position: absolute; left: 14px; right: 14px; bottom: 10px; display: flex; justify-content: space-between; font-size: 8px; font-weight: 700; letter-spacing: 0.14em; color: var(--grey); }
+  .rar { color: var(--set); }
+
+  /* Paper texture: fine grain + long fibres + soft vignette, multiplied over everything (art included) */
+  .card::before, .card::after { content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 5; transition: opacity 0.3s; }
+  .card::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .4 0 0 0 0 .32 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+      radial-gradient(120% 90% at 50% 40%, transparent 60%, rgba(90, 70, 40, 0.22));
+    mix-blend-mode: multiply; opacity: 0.55;
+  }
+  .card::after {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.004 .09' numOctaves='2' seed='8' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .43 0 0 0 0 .33 0 0 0 1.6 -.72'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
+    mix-blend-mode: multiply; opacity: 0.18; transform: rotate(-8deg) scale(1.3);
+  }
+  .card .art-wrap { position: relative; }
+  .card .art-wrap svg { filter: saturate(0.88) contrast(0.95); }
+  body.no-paper .card::before, body.no-paper .card::after { opacity: 0; }
+  body.no-paper .card { background: #fff; }
+  body.no-paper .card .art-wrap svg { filter: none; }
+
+  /* V1 Data sheet */
+  .v1 .top { padding: 10px 14px 0; display: flex; justify-content: space-between; }
+  .v1 .nm { font-size: 24px; font-weight: 800; line-height: 1.02; letter-spacing: -0.02em; padding: 4px 14px 8px; }
+  .v1 .art-wrap { margin: 0 14px; height: 92px; border-radius: 4px; overflow: hidden; }
+  .v1 .agebar { display: flex; align-items: center; justify-content: space-between; margin: 10px 14px 8px; }
+  .v1 .fact { margin: 0 14px; padding: 8px 10px; border-left: 4px solid var(--set); background: rgba(0,0,0,0.045); }
+  .v1 .stat-row { margin: 8px 14px 0; border-top: 2px solid var(--ink); }
+
+  /* V2 Big number */
+  .v2 .body { padding: 10px 14px; }
+  .v2 .big { font-size: 110px; font-weight: 800; line-height: 0.8; letter-spacing: -0.06em; margin-top: 8px; }
+  .v2 .big-lbl { font-size: 15px; font-weight: 700; margin-top: 6px; }
+  .v2 .nm { font-size: 17px; font-weight: 800; letter-spacing: -0.01em; margin-top: 2px; }
+  .v2 .art-wrap { position: absolute; right: 0; top: 44px; width: 170px; height: 120px; }
+  .v2 .fact { margin-top: 12px; padding-top: 8px; border-top: 2px solid var(--ink); }
+
+  /* V3 Poster */
+  .v3 .art-wrap { height: 176px; }
+  .v3 .strip { height: 6px; background: var(--set); }
+  .v3 .body { padding: 10px 14px 0; }
+  .v3 .nm { font-size: 22px; font-weight: 800; line-height: 1.05; letter-spacing: -0.02em; margin: 4px 0 8px; }
+  .v3 .fact { font-size: 13px; }
+  .v3 .fact { border-left: 4px solid var(--set); padding-left: 10px; }
+
+  /* V4 Fact file */
+  .v4 { background-image: linear-gradient(rgba(29,29,27,0.07) 1px, transparent 1px); background-size: 100% 18px; background-position: 0 6px; }
+  .v4 .hd { display: grid; grid-template-columns: 1fr auto; gap: 2px 8px; padding: 10px 14px 8px; border-bottom: 2px solid var(--ink); }
+  .v4 .nm { font-size: 20px; font-weight: 800; line-height: 1.05; letter-spacing: -0.01em; }
+  .v4 .agebox { grid-row: span 2; text-align: center; border: 2px solid var(--ink); border-radius: 6px; padding: 4px 8px; align-self: start; }
+  .v4 .agebox b { display: block; font-size: 26px; line-height: 1; font-weight: 800; }
+  .v4 .agebox small { font-size: 8px; font-weight: 700; letter-spacing: 0.1em; }
+  .v4 .art-wrap { margin: 10px 14px; height: 110px; border: 2px solid var(--ink); border-radius: 4px; overflow: hidden; }
+  .v4 .facts { margin: 0 14px; display: grid; gap: 6px; }
+  .v4 .fact { display: grid; grid-template-columns: 26px 1fr; font-size: 12px; }
+  .v4 .fact span:first-child { font-family: 'IBM Plex Mono', monospace; font-weight: 600; color: var(--set); }
+</style>
+</head>
+<body>
+  <h1>Mission card variations</h1>
+  <p class="intro">NASA-style cards, each with a fun fact and the age in plain words. The colour across the top belongs to the card's set, so a rocket stage from the Space Race looks different from a station. Tap the switch to compare with and without the paper texture.</p>
+  <label class="toggle"><input type="checkbox" id="paper" checked> Paper texture</label>
+
+  <div class="board">
+
+    <div class="opt">
+      <div class="card v1" style="--set:#e8412c">
+        <div class="set-bar"><span>STATIONS</span><span>01 / 12</span></div>
+        <div class="top"><span class="kicker">★ LEGENDARY</span><span class="label mono">NORAD 25544</span></div>
+        <div class="nm">International<br>Space Station</div>
+        <div class="art-wrap" id="iss1"></div>
+        <div class="agebar"><span class="age-pill">27 <small>YEARS IN ORBIT</small></span><span class="label">SEEN 3×</span></div>
+        <div class="fact">It's about the size of a football field and flies at <b>28,000 km/h</b>. It could cross Canada in about 12 minutes.</div>
+        <div class="stat-row"><div><span class="label">HEIGHT</span><br>420 km</div><div><span class="label">LAPS A DAY</span><br>16</div><div><span class="label">CREW</span><br>7</div></div>
+      </div>
+      <h2>1. Data sheet</h2>
+      <p>The closest to the original J. The set name and card number sit on the coloured bar, the age is a pill you can't miss, and the fact gets its own highlighted block. It has the most information of the four.</p>
+    </div>
+
+    <div class="opt">
+      <div class="card v2" style="--set:#e8a33d">
+        <div class="set-bar"><span>SPACE RACE RELICS</span><span>04 / 23</span></div>
+        <div class="art-wrap" id="rb2"></div>
+        <div class="body">
+          <span class="kicker">★ LEGENDARY · ROCKET STAGE</span>
+          <div class="big">62</div>
+          <div class="big-lbl">years circling Earth</div>
+          <div class="nm">SL-3 Rocket Stage</div>
+          <div class="fact">Built from the same rocket family that carried <b>Yuri Gagarin</b>, the first human in space, in 1961. It's been up there since before the Beatles broke up.</div>
+        </div>
+        <div class="foot"><span>SOVIET UNION · 1964</span><span class="mono">NORAD 877</span></div>
+      </div>
+      <h2>2. Big number</h2>
+      <p>The age is the hero, set huge in bold type like a museum wall label. "62 years circling Earth" lands instantly. The fact is written to be fun to read out loud. The mustard bar marks Space Race Relics.</p>
+    </div>
+
+    <div class="opt">
+      <div class="card v3" style="--set:#1f6fd1">
+        <div class="set-bar thin"></div>
+        <div class="art-wrap" id="aj3"></div>
+        <div class="strip"></div>
+        <div class="body">
+          <div style="display:flex;justify-content:space-between;align-items:center"><span class="kicker">◆ UNCOMMON · LAUNCH NATIONS · JAPAN</span></div>
+          <div class="nm">Ajisai, the mirror ball</div>
+          <div style="margin-bottom:8px"><span class="age-pill">40 <small>YEARS UP</small></span></div>
+          <div class="fact">Covered in <b>318 mirrors</b>. As it spins it throws flashes of sunlight at the ground, so watch for it twinkling.</div>
+        </div>
+        <div class="foot"><span>SEEN 0× · CATCH IT TONIGHT</span><span class="mono">16908</span></div>
+      </div>
+      <h2>3. Poster</h2>
+      <p>Big art at the top, a coloured stripe, then a short friendly title and one fact. It's the most "fun" of the four and the least like a data sheet. Blue marks Launch Nations.</p>
+    </div>
+
+    <div class="opt">
+      <div class="card v4" style="--set:#e8412c">
+        <div class="hd">
+          <span class="kicker">STATIONS · ★ LEGENDARY</span>
+          <div class="agebox"><b>27</b><small>YEARS</small></div>
+          <div class="nm">International<br>Space Station</div>
+        </div>
+        <div class="art-wrap" id="iss4"></div>
+        <div class="facts">
+          <div class="fact"><span>01</span><span>People have lived aboard without a break since <b>November 2000</b>.</span></div>
+          <div class="fact"><span>02</span><span>It laps the planet <b>16 times a day</b>, so the crew see 16 sunrises.</span></div>
+          <div class="fact"><span>03</span><span>It can be the <b>third-brightest</b> thing in the sky, after the Sun and the Moon.</span></div>
+        </div>
+        <div class="foot"><span>FILE 25544</span><span>SPACE COLLECTOR</span></div>
+      </div>
+      <h2>4. Fact file</h2>
+      <p>A lined index card with an age stamp in the corner and three numbered facts, like a field notebook. It carries more story and less data. The facts could unlock one at a time as you see the object again.</p>
+    </div>
+
+  </div>
+
+<script>
+document.getElementById('paper').addEventListener('change', (e) => document.body.classList.toggle('no-paper', !e.target.checked));
+
+const svg = (w, h, inner) => `<svg viewBox="0 0 ${w} ${h}" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">${inner}</svg>`;
+function stars(n, w, h, color = '#fff', seed = 7) {
+  let s = seed, out = '';
+  const r = () => ((s = (s * 16807) % 2147483647) / 2147483647);
+  for (let i = 0; i < n; i++) out += `<circle cx="${(r() * w).toFixed(1)}" cy="${(r() * h).toFixed(1)}" r="${(r() * 1.1 + 0.3).toFixed(2)}" fill="${color}" opacity="${(0.35 + r() * 0.65).toFixed(2)}"/>`;
+  return out;
+}
+function issShape(c) {
+  let wings = '';
+  for (const x of [-92, -58, 58, 92]) for (const y of [-62, 10]) wings += `<rect x="${x - 9}" y="${y}" width="18" height="52" fill="${c.panel}"/><line x1="${x}" x2="${x}" y1="${y}" y2="${y + 52}" stroke="${c.line}" stroke-width="1"/>`;
+  return `<rect x="-110" y="-3" width="220" height="6" fill="${c.truss}"/>${wings}
+    <rect x="-12" y="-30" width="24" height="60" rx="11" fill="${c.body}"/>
+    <rect x="-38" y="-10" width="76" height="20" rx="9" fill="${c.accent}"/>`;
+}
+const NAVY = '#0f2548', EARTH = '#2466b8';
+
+function issScene(w, h, set) {
+  return svg(w, h, `<rect width="${w}" height="${h}" fill="${NAVY}"/>${stars(28, w, h * 0.7, '#fff', 3)}
+    <circle cx="${w / 2}" cy="${h + 200}" r="${240}" fill="${EARTH}"/><circle cx="${w / 2}" cy="${h + 200}" r="240" fill="none" stroke="#fff" stroke-width="1.2" opacity=".8"/>
+    <g transform="translate(${w / 2} ${h * 0.44}) scale(${h / 190})">${issShape({ panel: '#fff', line: NAVY, truss: '#fff', body: '#fff', accent: set })}</g>`);
+}
+document.getElementById('iss1').innerHTML = issScene(252, 108, '#e8412c');
+document.getElementById('iss4').innerHTML = issScene(252, 110, '#e8412c');
+
+// Rocket stage, drawn flat, no background (sits on the paper)
+document.getElementById('rb2').innerHTML = svg(210, 140, `
+  <g transform="translate(118 70) rotate(-58)">
+    <path d="M-15 50 L-22 72 L22 72 L15 50Z" fill="#1d1d1b"/>
+    <rect x="-17" y="-62" width="34" height="114" rx="3" fill="#1d1d1b"/>
+    <rect x="-17" y="-40" width="34" height="8" fill="#e8a33d"/>
+    <rect x="-17" y="10" width="34" height="5" fill="#e8a33d"/>
+    <rect x="-11" y="-56" width="6" height="100" fill="#f3eee3" opacity=".25"/>
+  </g>
+  <path d="M10 130 Q110 80 205 20" fill="none" stroke="#1d1d1b" stroke-width="1" stroke-dasharray="3 4" opacity=".6"/>`);
+
+// Ajisai: faceted mirror ball
+(() => {
+  let facets = '';
+  for (let lat = -75; lat <= 75; lat += 15) {
+    const y = Math.sin(lat * Math.PI / 180) * 46, rw = Math.cos(lat * Math.PI / 180) * 46;
+    for (let lon = -80; lon <= 80; lon += 16) {
+      const x = Math.sin(lon * Math.PI / 180) * rw;
+      const sc = Math.cos(lon * Math.PI / 180) * Math.cos(lat * Math.PI / 180);
+      const lit = (lon < -20 && lat < 10) ? '#ffffff' : (sc > 0.7 ? '#cfe0f5' : '#8fa8c8');
+      facets += `<rect x="${(x - 3.2 * sc - 1).toFixed(1)}" y="${(y - 2.6).toFixed(1)}" width="${(6.4 * sc + 1).toFixed(1)}" height="5.2" fill="${lit}"/>`;
+    }
+  }
+  document.getElementById('aj3').innerHTML = svg(280, 176, `<rect width="280" height="176" fill="${NAVY}"/>${stars(40, 280, 176, '#fff', 9)}
+    <circle cx="140" cy="360" r="220" fill="${EARTH}"/><circle cx="140" cy="360" r="220" fill="none" stroke="#fff" stroke-width="1.2" opacity=".8"/>
+    <g transform="translate(140 78)"><circle r="48" fill="#5a7396"/>${facets}<circle r="48" fill="none" stroke="#fff" stroke-width="1.2"/></g>
+    ${[[-70, -30], [-58, 20], [64, -40]].map(([dx, dy]) => `<path d="M${140 + dx} ${78 + dy} l4 -9 l4 9 l-4 9z" fill="#fff"/>`).join('')}`);
+})();
+</script>
+</body>
+</html>
