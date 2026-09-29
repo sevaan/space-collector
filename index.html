@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#000000">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Space Collector">
+  <title>Space Collector</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="icons/icon-180.png">
+  <link rel="icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+  <canvas id="sky"></canvas>
+
+  <header id="topbar" hidden>
+    <div id="status">
+      <div id="status-main">Loading…</div>
+      <div id="status-sub"></div>
+    </div>
+    <div class="top-actions">
+      <button id="btn-log" class="pill">Log <span id="log-count">0</span></button>
+      <button id="btn-debug" class="pill" aria-label="Settings and sim">⚙</button>
+    </div>
+  </header>
+
+  <div id="banner" hidden></div>
+
+  <section id="sheet" hidden>
+    <div id="sheet-title">Tap what you're watching</div>
+    <div id="candidates"></div>
+  </section>
+
+  <div id="toast" hidden></div>
+  <div id="version"></div>
+
+  <section id="start" class="overlay">
+    <div class="start-inner">
+      <h1>Space Collector</h1>
+      <p>Hold your phone up at a moving light in the night sky, then tap it to log what you saw.</p>
+      <p class="hint">Satellites show up for a couple of hours after dusk and before dawn, when your sky is dark but they're still lit by the sun.</p>
+      <button id="btn-start" class="big">Start sky view</button>
+      <p class="hint small" id="start-note">We'll ask for motion &amp; location access so the sky lines up with where you point.</p>
+    </div>
+  </section>
+
+  <section id="log" class="overlay panel" hidden>
+    <div class="panel-head">
+      <h2>Sightings</h2>
+      <button class="pill" data-close="log">Done</button>
+    </div>
+    <div id="log-list"></div>
+  </section>
+
+  <section id="debug" class="overlay panel" hidden>
+    <div class="panel-head">
+      <h2>Sim &amp; settings</h2>
+      <button class="pill" data-close="debug">Done</button>
+    </div>
+
+    <h3>Time</h3>
+    <div class="row" id="sim-time-label"></div>
+    <div class="row wrap">
+      <button class="pill" data-time="-3600">−1h</button>
+      <button class="pill" data-time="-600">−10m</button>
+      <button class="pill" data-time="600">+10m</button>
+      <button class="pill" data-time="3600">+1h</button>
+      <button class="pill" data-time="now">Now</button>
+    </div>
+    <div class="row wrap">
+      <button class="pill accent" id="btn-next-pass">Jump to next visible pass</button>
+    </div>
+
+    <h3>Pointing</h3>
+    <label class="row"><input type="checkbox" id="chk-drag"> Drag to look around (instead of motion sensors)</label>
+    <div class="row wrap">
+      <span>Compass nudge</span>
+      <button class="pill" data-nudge="-5">−5°</button>
+      <button class="pill" data-nudge="5">+5°</button>
+      <span id="nudge-label"></span>
+    </div>
+    <label class="row"><input type="checkbox" id="chk-dim"> Show objects that aren't visible (shadowed, faint, daylight)</label>
+    <label class="row"><input type="checkbox" id="chk-any"> Allow capturing objects that aren't visible (testing)</label>
+
+    <h3>Info</h3>
+    <pre id="debug-info"></pre>
+  </section>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
