@@ -1,10 +1,14 @@
-// Fetches orbital elements from CelesTrak and writes data/catalog.json.
+// Fetches orbital elements and catalogue facts from CelesTrak and writes data/catalog.json.
 // Run: node scripts/build-catalog.mjs
 // Be polite: CelesTrak blocks clients that pull too often. Once a day is plenty.
+// The full SATCAT (~7 MB) is cached in scripts/.cache for 12 hours.
 
-import { writeFileSync } from 'node:fs';
+import { writeFileSync, readFileSync, mkdirSync, statSync } from 'node:fs';
+import { tierFor } from '../js/rarity.js';
 
-const BASE = 'https://celestrak.org/NORAD/elements/gp.php';
+const GP = 'https://celestrak.org/NORAD/elements/gp.php';
+const SATCAT_URL = 'https://celestrak.org/pub/satcat.csv';
+const CACHE = new URL('./.cache/', import.meta.url);
 
 // The "visual" group is CelesTrak's list of the brightest ~150 objects.
 const GROUPS = ['visual'];
@@ -17,7 +21,7 @@ const EXTRA_IDS = [
 ];
 
 // Standard magnitude (brightness at 1000 km, half lit). Lower = brighter.
-// Objects not listed get a default estimate from their type.
+// Objects not listed get an estimate from radar cross-section, or a type default.
 const STD_MAG = {
   25544: -1.8,
   48274: -0.8,
@@ -25,7 +29,7 @@ const STD_MAG = {
 };
 
 async function fetchTle(query) {
-  const res = await fetch(`${BASE}?${query}&FORMAT=tle`);
+  const res = await fetch(`${GP}?${query}&FORMAT=tle`);
   if (!res.ok) throw new Error(`CelesTrak ${query}: HTTP ${res.status}`);
   return parseTle(await res.text());
 }
@@ -41,48 +45,92 @@ function parseTle(text) {
   return out;
 }
 
-function guessType(name) {
-  if (/R\/B|ROCKET|CENTAUR|AGENA|DELTA|ATLAS|TITAN|ARIANE|H-2A|CZ-|SL-/i.test(name)) return 'rocket-body';
-  if (/DEB/i.test(name)) return 'debris';
-  if (/ISS|TIANHE|TIANGONG|CSS/i.test(name)) return 'station';
+async function loadSatcat() {
+  mkdirSync(CACHE, { recursive: true });
+  const file = new URL('satcat.csv', CACHE);
+  let text;
+  try {
+    if (Date.now() - statSync(file).mtimeMs < 12 * 3600 * 1000) text = readFileSync(file, 'utf8');
+  } catch {}
+  if (!text) {
+    const res = await fetch(SATCAT_URL);
+    if (!res.ok) throw new Error(`SATCAT: HTTP ${res.status}`);
+    text = await res.text();
+    writeFileSync(file, text);
+  }
+  const [header, ...rows] = text.trim().split(/\r?\n/);
+  const cols = header.split(',');
+  const byId = new Map();
+  for (const row of rows) {
+    const v = row.split(','); // SATCAT has no quoted commas
+    const r = Object.fromEntries(cols.map((c, i) => [c, v[i]]));
+    byId.set(Number(r.NORAD_CAT_ID), r);
+  }
+  return byId;
+}
+
+function kindToType(kind, name, id) {
+  if ([25544, 48274].includes(id) || /^(ISS|CSS|TIANHE|TIANGONG)/.test(name)) return 'station';
+  if (kind === 'R/B') return 'rocket-body';
+  if (kind === 'DEB') return 'debris';
   return 'satellite';
 }
 
-function defaultStdMag(type) {
+// Rough standard magnitude from radar cross-section (m²). Bigger reflects more light.
+function stdMagFrom(rcs, type) {
+  if (rcs > 0) return Math.max(1.5, Math.min(6, 5.2 - 2.5 * Math.log10(rcs)));
   return type === 'rocket-body' ? 3.5 : 4.0;
 }
 
-// International designator (e.g. 63047A) -> launch year
-function launchYear(l1) {
-  const yy = Number(l1.slice(9, 11));
-  if (Number.isNaN(yy)) return null;
-  return yy < 57 ? 2000 + yy : 1900 + yy;
-}
+const num = (s) => (s === undefined || s === '' ? null : Number(s));
 
-const byId = new Map();
-for (const g of GROUPS) {
-  for (const o of await fetchTle(`GROUP=${g}`)) byId.set(o.id, o);
-}
+const satcat = await loadSatcat();
+const tles = new Map();
+for (const g of GROUPS) for (const o of await fetchTle(`GROUP=${g}`)) tles.set(o.id, o);
 for (const id of EXTRA_IDS) {
-  if (byId.has(id)) continue;
-  for (const o of await fetchTle(`CATNR=${id}`)) byId.set(o.id, o);
+  if (!tles.has(id)) for (const o of await fetchTle(`CATNR=${id}`)) tles.set(o.id, o);
 }
 
-const objects = [...byId.values()]
-  .map((o) => {
-    const type = guessType(o.name);
-    return {
-      id: o.id,
-      name: o.name,
-      type,
-      year: launchYear(o.l1),
-      stdMag: STD_MAG[o.id] ?? defaultStdMag(type),
-      l1: o.l1,
-      l2: o.l2,
-    };
-  })
-  .sort((a, b) => a.id - b.id);
+// Main payload of each launch, so a rocket stage's card can say what it carried.
+const payloadByLaunch = new Map();
+for (const r of satcat.values()) {
+  if (r.OBJECT_TYPE !== 'PAY') continue;
+  const launch = r.OBJECT_ID.slice(0, 8); // e.g. 1969-011
+  if (!payloadByLaunch.has(launch) || r.OBJECT_ID.endsWith('A')) payloadByLaunch.set(launch, r.OBJECT_NAME);
+}
+
+const objects = [...tles.values()].map((t) => {
+  const s = satcat.get(t.id) ?? {};
+  const kind = s.OBJECT_TYPE ?? 'UNK';
+  const type = kindToType(kind, t.name, t.id);
+  const cospar = s.OBJECT_ID ?? null;
+  const o = {
+    id: t.id,
+    name: t.name,
+    cospar,
+    kind,
+    type,
+    owner: s.OWNER ?? null,
+    launch: s.LAUNCH_DATE || null,
+    site: s.LAUNCH_SITE || null,
+    decay: s.DECAY_DATE || null,
+    ops: s.OPS_STATUS_CODE || null,
+    period: num(s.PERIOD),
+    incl: num(s.INCLINATION),
+    apogee: num(s.APOGEE),
+    perigee: num(s.PERIGEE),
+    rcs: num(s.RCS),
+    parent: kind !== 'PAY' && cospar ? payloadByLaunch.get(cospar.slice(0, 8)) ?? null : null,
+    l1: t.l1,
+    l2: t.l2,
+  };
+  o.year = o.launch ? Number(o.launch.slice(0, 4)) : null;
+  o.stdMag = STD_MAG[t.id] ?? stdMagFrom(o.rcs, type);
+  o.tier = tierFor(o);
+  return o;
+}).sort((a, b) => a.id - b.id);
 
 const catalog = { generated: new Date().toISOString(), source: 'CelesTrak', count: objects.length, objects };
 writeFileSync(new URL('../data/catalog.json', import.meta.url), JSON.stringify(catalog));
-console.log(`Wrote ${objects.length} objects to data/catalog.json`);
+const tally = objects.reduce((m, o) => ((m[o.tier] = (m[o.tier] ?? 0) + 1), m), {});
+console.log(`Wrote ${objects.length} objects to data/catalog.json`, tally);
