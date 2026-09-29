@@ -1,11 +1,11 @@
 // Mission cards (NASA data-sheet style) and the tilt/shine interaction. All sizes are in em
 // (a card is 28em × 39.2em), so the same markup works large or as a grid thumbnail.
 
-import { cardArt } from './art.js?v=0.1.12';
-import { TIER_INFO } from './rarity.js?v=0.1.12';
-import { SET_BY_ID } from './sets.js?v=0.1.12';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.12';
-import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText } from './lore.js?v=0.1.12';
+import { cardArt } from './art.js?v=0.1.15';
+import { TIER_INFO } from './rarity.js?v=0.1.15';
+import { SET_BY_ID } from './sets.js?v=0.1.15';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.15';
+import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText } from './lore.js?v=0.1.15';
 
 export function levelFor(count) {
   if (count >= 25) return 'gold';

@@ -1,14 +1,14 @@
-import { VERSION } from './version.js?v=0.1.12';
-import { loadCatalog, frame, look, track, motion, nextVisiblePass, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, setBinocularMode } from './orbit.js?v=0.1.12';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.12';
-import { SkyView, shortName } from './sky.js?v=0.1.12';
-import { loadSky, eqToEnu, solarSystem, galacticPlane } from './celestial.js?v=0.1.12';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.12';
-import { cardArt } from './art.js?v=0.1.12';
-import { TIER_INFO } from './rarity.js?v=0.1.12';
-import { SETS } from './sets.js?v=0.1.12';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.12';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.12';
+import { VERSION } from './version.js?v=0.1.15';
+import { loadCatalog, frame, look, track, motion, nextVisiblePass, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, setBinocularMode } from './orbit.js?v=0.1.15';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.15';
+import { SkyView, shortName } from './sky.js?v=0.1.15';
+import { loadSky, eqToEnu, solarSystem, galacticPlane } from './celestial.js?v=0.1.15';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.15';
+import { cardArt } from './art.js?v=0.1.15';
+import { TIER_INFO } from './rarity.js?v=0.1.15';
+import { SETS } from './sets.js?v=0.1.15';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.15';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.15';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -355,8 +355,6 @@ let shownTargetId = null;
 let shownCount = 0;
 function renderTarget(target, d) {
   const card = $('target');
-  $('capture').classList.toggle('locked', !!target);
-  $('capture').classList.toggle('idle', !target);
   if (!target) { card.hidden = true; shownTargetId = null; return; }
   const o = target.obj, l = target.look;
   const tier = TIER_INFO[o.tier] ?? TIER_INFO.common;
@@ -386,15 +384,14 @@ function renderTarget(target, d) {
       + (who ? `<span class="chip human">${escapeHtml(who)}</span>` : '')
       + (o.bino ? '<span class="chip">Binoculars</span>' : '');
     $('t-fact').innerHTML = richText(objectFact(o));
-    $('t-open').href = `cards.html#${encodeURIComponent(o.card ?? o.id)}`;
     const n = state.candidates.length;
     $('t-switch').hidden = n < 2;
     card.hidden = false;
   }
+  setAction(collectedThisPass(o, d));
   const n = state.candidates.length;
   if (n > 1) $('t-switch').textContent = `${state.candidates.findIndex((c) => c.obj.id === o.id) + 1} of ${n} ›`;
-  $('t-stats').innerHTML = `<span class="chip"><span class="ico" data-ico="spark"></span>Mag ${mag}</span>`
-    + `<span class="chip"><span class="ico" data-ico="height"></span>${Math.round(l.el)}° up</span>`
+  $('t-stats').innerHTML = `<span class="chip"><span class="ico" data-ico="height"></span>${Math.round(l.el)}° up</span>`
     + (st ? `<span class="chip"><span class="ico" data-ico="rocket"></span>${st.speed.toFixed(1)} km/s</span>` : '');
 }
 
@@ -405,12 +402,33 @@ $('t-switch').addEventListener('click', () => {
   state.targetId = c[(i + 1) % c.length].obj.id;
 });
 
-$('capture').addEventListener('click', () => {
+// Collected during this pass (the last 20 minutes of sky time)? Then the button offers View instead.
+// A later pass can be collected again, which is what levels a card up.
+const PASS_MS = 20 * 60 * 1000;
+function collectedThisPass(o, d) {
+  return state.sightings.some((s) => s.objectId === o.id && Math.abs(d.getTime() - s.time) < PASS_MS);
+}
+
+$('t-action').addEventListener('click', () => {
   unlockAudio();
   const target = state.candidates.find((c) => c.obj.id === state.targetId);
-  if (!target) { toast('Point the circle at a moving light first.', 1800); return; }
+  if (!target) return;
+  if ($('t-action').dataset.state === 'view') {
+    location.href = `cards.html#${encodeURIComponent(target.obj.card ?? target.obj.id)}`;
+    return;
+  }
   capture(target.obj);
 });
+
+// Sets the card's button to Collect or View.
+function setAction(collected) {
+  const btn = $('t-action');
+  const want = collected ? 'view' : 'collect';
+  if (btn.dataset.state === want) return;
+  btn.dataset.state = want;
+  btn.className = want;
+  btn.textContent = collected ? 'View' : 'Collect';
+}
 
 async function capture(obj) {
   const d = now();
@@ -435,6 +453,7 @@ async function capture(obj) {
   await addSighting(sighting);
   const before = state.sightings.some((s) => !s.sim && (s.cardKey ?? String(s.objectId)) === obj.card);
   await loadSightings();
+  if (state.targetId === obj.id) setAction(true);
   chirp([660, 880, 1320], 0.08);
   const age = obj.year ? `Launched ${obj.year}` : '';
   const cardLink = sighting.sim ? '' : '<br><small><u>Tap to see your card</u></small>';
@@ -452,7 +471,7 @@ function renderLog() {
   const list = $('log-list');
   list.innerHTML = '';
   if (!state.sightings.length) {
-    list.innerHTML = '<div class="empty">Nothing yet. Point at a moving light and tap the capture button.</div>';
+    list.innerHTML = '<div class="empty">Nothing yet. Point at a moving light and tap Collect.</div>';
     return;
   }
   for (const s of state.sightings) {

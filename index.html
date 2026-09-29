@@ -12,7 +12,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="apple-touch-icon" href="icons/icon-180.png">
   <link rel="icon" href="icons/icon-192.png">
-  <link rel="stylesheet" href="css/app.css?v=0.1.12">
+  <link rel="stylesheet" href="css/app.css?v=0.1.15">
 </head>
 <body>
   <canvas id="sky"></canvas>
@@ -61,15 +61,16 @@
         </div>
         <div class="chips" id="t-chips"></div>
         <p id="t-fact"></p>
-        <div class="chips stats" id="t-stats"></div>
+        <div class="t-bottom">
+          <div class="chips stats" id="t-stats"></div>
+          <button id="t-action" class="collect">Collect</button>
+        </div>
       </div>
-      <a id="t-open" aria-label="Open card"><svg viewBox="0 0 16 16"><path d="M6 3l5 5-5 5"/></svg></a>
     </section>
 
     <nav id="nav">
       <button class="nav-item active" id="nav-explore"><span class="ico" data-ico="planet"></span>Explore</button>
       <a class="nav-item" id="nav-collection" href="cards.html"><span class="ico" data-ico="bag"></span>Collection</a>
-      <button id="capture" aria-label="Capture"><span class="ico" data-ico="crosshair"></span></button>
       <button class="nav-item" id="nav-journal"><span class="ico" data-ico="book"></span>Journal<i id="log-count"></i></button>
       <button class="nav-item" id="nav-more"><span class="ico" data-ico="sliders"></span>More</button>
     </nav>
@@ -83,7 +84,7 @@
     <div class="start-inner">
       <div class="start-badge"><span class="ico" data-ico="crosshair"></span></div>
       <h1>Space Collector</h1>
-      <p>Hold your phone up at a moving light in the night sky, see what it is, and capture it for your collection.</p>
+      <p>Hold your phone up at a moving light in the night sky, see what it is, and collect it.</p>
       <p class="hint">Satellites show up for a couple of hours after dusk and before dawn, when your sky is dark but they're still lit by the sun.</p>
       <button id="btn-start" class="big">Start sky view</button>
       <p class="hint small" id="start-note">We'll ask for motion &amp; location access so the sky lines up with where you point.</p>
@@ -149,6 +150,6 @@
     <pre id="debug-info"></pre>
   </section>
 
-  <script type="module" src="js/main.js?v=0.1.12"></script>
+  <script type="module" src="js/main.js?v=0.1.15"></script>
 </body>
 </html>
