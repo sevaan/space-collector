@@ -1,100 +1,55 @@
-/* Mission cards. 1em = 1/28 of the card width; set font-size on .card to size it. */
-
+/* Field cards retain the original interactive tilt, foil, glitter and glare layers. */
 .card {
-  --set: #e8412c;
-  --tier: #ffc545;
-  --ink: #1d1d1b;
-  --grey: #6f6b62;
+  --set: #d74730; --tier: #e1b955; --paper: #f1efdf; --ink: #193639; --grey: #596c66;
   --mx: 50%; --my: 50%; --rx: 0deg; --ry: 0deg; --bgx: 50%; --bgy: 50%; --hyp: 0;
-  font-size: 10px;
-  width: 28em;
-  height: 39.2em;
-  perspective: 90em;
-  font-family: Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  color: var(--ink);
-  -webkit-user-select: none; user-select: none;
-  touch-action: none;
-  flex: none;
+  font-size: 10px; width: 28em; min-height: 39.2em; perspective: 90em; flex: none;
+  font-family: Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif; color: var(--ink);
+  -webkit-user-select: none; user-select: none; touch-action: pan-y; text-align: left;
 }
-.card__rotator {
-  width: 100%; height: 100%;
-  transform: rotateX(var(--rx)) rotateY(var(--ry));
-  transition: transform 0.5s cubic-bezier(.2, .9, .3, 1.2);
-  transform-style: preserve-3d;
-  border-radius: 1.2em;
-  box-shadow: 0 1em 3em rgba(0, 0, 0, 0.45);
-}
-.card.active .card__rotator { transition: transform 0.08s linear; }
-.card__face {
-  position: relative; width: 100%; height: 100%;
-  background: #fff;
-  border-radius: 1.2em;
-  overflow: hidden;
-  display: flex; flex-direction: column;
-}
-
-/* Level frame: bronze / silver / gold ring for repeat sightings */
-.card.level-bronze .card__face { box-shadow: inset 0 0 0 0.35em #b8793e; }
-.card.level-silver .card__face { box-shadow: inset 0 0 0 0.35em #b9c1cc; }
-.card.level-gold .card__face { box-shadow: inset 0 0 0 0.35em #e2b53c; }
-
-.card__setbar {
-  background: var(--set); color: #fff;
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 0.7em 1.4em;
-  font-size: 0.95em; font-weight: 700; letter-spacing: 0.16em;
-}
-.card__top { display: flex; justify-content: space-between; align-items: center; padding: 1em 1.4em 0; }
-.card__tier { font-size: 0.9em; font-weight: 800; letter-spacing: 0.16em; }
-.card__tier i { font-style: normal; color: var(--tier); -webkit-text-stroke: 0.04em rgba(0,0,0,0.25); }
-.card.tier-common .card__tier i { color: #8a929c; }
-.card__label { font-size: 0.8em; font-weight: 700; letter-spacing: 0.14em; color: var(--grey); }
-.card__bino { font-family: Inter, sans-serif; color: #fff; background: #3b6fb6; border-radius: 0.3em; padding: 0.1em 0.45em; letter-spacing: 0.1em; margin-right: 0.3em; }
+.card *, .card *::before, .card *::after { box-sizing: border-box; }
+.card__rotator { width: 100%; min-height: inherit; transform: rotateX(var(--rx)) rotateY(var(--ry)); transition: transform .5s cubic-bezier(.2,.9,.3,1.2); transform-style: preserve-3d; border-radius: 1.15em; box-shadow: 0 1em 3em #0007; }
+.card.active .card__rotator { transition: transform .08s linear; }
+.card__face { position: relative; width: 100%; min-height: inherit; border-radius: 1.15em; overflow: hidden; display: flex; flex-direction: column; background: radial-gradient(ellipse at 10% 10%, #fff8 0, transparent 75%), var(--paper); border: .07em solid #c5cbbd; }
+.card.level-bronze .card__face { border-color: #b8793e; }
+.card.level-silver .card__face { border-color: #b9c1cc; }
+.card.level-gold .card__face { border-color: #e2b53c; }
+.card__setbar { display: flex; justify-content: space-between; align-items: center; gap: 1em; min-height: 2.6em; padding: .65em 1.35em; background: linear-gradient(110deg, transparent 54%, #0002), var(--set); color: #fff6e7; font-size: .87em; font-weight: 750; letter-spacing: .12em; }
+.card__setbar > span:first-child { display: flex; align-items: center; gap: .7em; }
+.card__setbar > span:last-child { white-space: nowrap; font-variant-numeric: tabular-nums; }
+.card__setbar svg { width: 1.9em; height: 1.4em; stroke: currentColor; stroke-width: 1.5; flex: none; }
+.card__top { display: flex; justify-content: space-between; gap: 1em; align-items: center; padding: 1.1em 1.35em .6em; }
+.card__tier { font-size: max(10px, .79em); font-weight: 800; letter-spacing: .14em; }
+.card__tier i { font-style: normal; color: #b08a34; margin-right: .15em; }
+.card__label { font-size: max(10px, .72em); font-weight: 750; letter-spacing: .12em; color: var(--grey); }
 .card__mono { font-family: 'IBM Plex Mono', ui-monospace, Menlo, monospace; }
-.card__name {
-  margin: 0; padding: 0.3em 1.4em 0.8em;
-  font-size: 2.4em; font-weight: 800; line-height: 1.02; letter-spacing: -0.02em;
-  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
-}
-.card.long-name .card__name { font-size: 2em; }
-.card__art { position: relative; margin: 0 1.4em; height: 9.2em; border-radius: 0.4em; overflow: hidden; flex: none; }
-.card__art svg { display: block; }
-.card__agebar { display: flex; align-items: center; justify-content: space-between; margin: 1em 1.4em 0.8em; }
-.card__age {
-  display: inline-flex; align-items: baseline; gap: 0.35em;
-  background: var(--ink); color: #fff; border-radius: 99em;
-  padding: 0.3em 1em 0.4em; font-weight: 800; font-size: 1.3em;
-}
-.card__age small { font-size: 0.68em; font-weight: 700; letter-spacing: 0.08em; }
-.card.level-bronze .card__seen { color: #9a5f27; }
-.card.level-silver .card__seen { color: #7d8794; }
-.card.level-gold .card__seen { color: #b3860f; }
-.card__fact {
-  margin: 0 1.4em; padding: 0.8em 1em;
-  border-left: 0.4em solid var(--set); background: rgba(0, 0, 0, 0.045);
-  font-size: 1.25em; line-height: 1.35; font-weight: 500;
-  flex: 1 1 auto; min-height: 0; overflow: hidden;
-}
+.card__name { margin: 0; padding: 0 .56em; font-size: 2.42em; font-weight: 800; line-height: 1.02; letter-spacing: -.045em; overflow-wrap: anywhere; }
+.card.long-name .card__name { font-size: 2.36em; }
+.card__identity { margin: .75em 1.65em 1em; display: flex; justify-content: space-between; gap: .6em; font-size: max(10px, .81em); color: var(--grey); }
+.card__identity > span:last-child { text-align: right; }
+.card__art { position: relative; height: 13.95em; margin: 0 1.35em; overflow: hidden; border-radius: .62em; border: .07em solid #214551; flex: none; background: #102e37; }
+.card__art svg, .card-art-image { display: block; width: 100%; height: 100%; object-fit: cover; }
+.card-art-image.silhouette { filter: grayscale(1) brightness(.45); }
+.card__agebar { display: flex; align-items: center; justify-content: space-between; gap: .75em; margin: 1.1em 1.35em; }
+.card__age { display: inline-flex; align-items: center; gap: .45em; font-size: 1.8em; font-weight: 800; white-space: nowrap; letter-spacing: -.05em; }
+.card__age small { display: inline-block; max-width: 7.5em; white-space: normal; font-size: max(9px, .36em); line-height: 1.3; font-weight: 750; letter-spacing: .12em; }
+.card__seen { font-size: max(10px, .72em); text-align: right; font-weight: 800; letter-spacing: .08em; padding: .65em .8em; border: .12em solid currentColor; border-radius: .3em; color: #667951; }
+.card.not-owned .card__seen { color: var(--grey); }
+.card.level-silver .card__seen { color: #667681; }
+.card.level-gold .card__seen { color: #94711e; }
+.card__fact { margin: 0 1.35em; padding: .05em 0 .05em 1em; border-left: .24em solid var(--set); }
+.card__note-label { display: block; font-size: max(10px, .7em); font-weight: 750; color: var(--grey); letter-spacing: .17em; }
+.card__fact p { margin: .45em 0 0; font-size: max(13px, 1.03em); line-height: 1.45; font-weight: 450; }
 .card__fact b { font-weight: 800; }
-.card__stats { display: grid; grid-template-columns: repeat(3, 1fr); margin: 0.8em 1.4em 1.2em; border-top: 0.2em solid var(--ink); }
-.card__stats div { padding-top: 0.5em; display: flex; flex-direction: column; gap: 0.15em; }
-.card__stats b { font-size: 1.3em; font-weight: 800; }
-
-/* Uncaught: silhouette art, facts hidden */
-.card.uncaught .card__name { color: #55524b; }
-.card.uncaught .card__fact { color: var(--grey); font-style: italic; font-weight: 500; }
-.card.uncaught .card__age { background: #8b877e; }
-
-/* Extinct: memorial */
-.card.extinct .card__face > *:not(.card__stamp) { filter: grayscale(1); }
-.card__stamp {
-  position: absolute; left: 50%; top: 44%; transform: translate(-50%, -50%) rotate(-12deg);
-  border: 0.3em solid #b3202a; color: #b3202a; border-radius: 0.5em;
-  padding: 0.4em 1.2em; font-weight: 800; font-size: 1.8em; letter-spacing: 0.12em; text-align: center;
-  background: rgba(255, 255, 255, 0.85); z-index: 8;
-}
-.card__stamp small { display: block; font-size: 0.5em; letter-spacing: 0.16em; }
-
+.card__stats { display: grid; grid-template-columns: 1.15fr 1fr 1fr; margin: 1.25em 1.35em .9em; border-top: .1em solid #b6c0ad; padding-top: .75em; }
+.card__stats > div { display: flex; flex-direction: column; gap: .3em; padding-left: .65em; border-left: .08em solid #c5cbbc; }
+.card__stats > div:first-child { padding-left: 0; border-left: 0; }
+.card__stats b { font-size: 1.48em; font-weight: 800; overflow-wrap: anywhere; }
+.card__stats b small { font-size: max(10px, .58em); font-weight: 600; }
+.card__footer { display: flex; justify-content: space-between; gap: 1em; margin: auto 2.1em 1.7em; padding-top: .25em; color: var(--grey); font: 600 max(9px, .65em)/1.3 'IBM Plex Mono', monospace; letter-spacing: .08em; }
+.card.uncaught .card__fact { color: var(--grey); }
+.card__stamp { position: absolute; left: 50%; top: 46%; transform: translate(-50%,-50%) rotate(-12deg); border: .2em solid #9c312b; color: #9c312b; border-radius: .35em; padding: .35em .7em; font-weight: 800; font-size: 1.8em; letter-spacing: .1em; text-align: center; background: #f1efdfef; z-index: 8; }
+.card__stamp small { display: block; font-size: .5em; letter-spacing: .1em; white-space: nowrap; }
+.card.extinct .card__art { filter: grayscale(.85); }
 /* ---------- Shine, by rarity ---------- */
 .card__shine, .card__glare, .card__foil { position: absolute; inset: 0; pointer-events: none; }
 .card__glare {
@@ -148,3 +103,35 @@
 .card.tier-legendary .card__rotator { box-shadow: 0 0 0 0.25em #e8c35a, 0 1em 3em rgba(0, 0, 0, 0.45); }
 .card.tier-legendary.uncaught .card__shine { display: none; }
 .card.extinct .card__shine, .card.extinct .card__foil { display: none; }
+
+/* Thumbnail typography is deliberately independent of the full card's scale. */
+.card-tile { display: flex; flex-direction: column; width: 100%; padding: 0; text-align: left; font: inherit; color: #193639; background: #eeecdf; border: 1px solid #d1d4c5; border-radius: 12px; overflow: hidden; cursor: pointer; transition: transform .2s, box-shadow .2s; }
+.card-tile:hover { transform: translateY(-3px); box-shadow: 0 12px 25px #0005; }
+.card-tile:focus-visible { outline: 3px solid #8fdfd7; outline-offset: 5px; }
+.card-tile__set { min-height: 27px; padding: 8px 11px 7px; background: var(--set); color: #fff8ea; font-size: 11px; line-height: 1.35; font-weight: 750; letter-spacing: .11em; text-transform: uppercase; }
+.card-tile__art { display: block; height: 108px; margin: 10px 10px 0; border-radius: 6px; overflow: hidden; background: #0d2933; }
+.card-tile__art svg { display: block; width: 100%; height: 100%; }
+.card-tile__body { display: flex; flex-direction: column; flex: 1; padding: 11px; }
+.card-tile__tier { font: 650 11px/1.2 'IBM Plex Mono', monospace; letter-spacing: .07em; text-transform: uppercase; color: #5d6a5e; }
+.card-tile__name { display: block; font-size: 15px; font-weight: 800; line-height: 1.12; letter-spacing: -.025em; overflow-wrap: anywhere; margin-top: 7px; margin-bottom: 16px; }
+.card-tile__status { display: flex; justify-content: space-between; gap: 4px; margin-top: auto; padding-top: 8px; border-top: 1px solid #c9d0bf; font-size: 11px; color: #5f6d60; }
+.card-tile.is-owned .card-tile__status { color: #3f6b4a; }
+
+/* Night mode transforms the card stock as well as artwork; no ivory surface flashes. */
+:where(html[data-theme="night"], body.night) .card { --paper: #130606; --ink: #be6660; --grey: #a45650; --set: #4c1313 !important; --tier: #a74740 !important; }
+:where(html[data-theme="night"], body.night) .card__face { background: var(--paper); border-color: #4d1b18 !important; }
+:where(html[data-theme="night"], body.night) .card__setbar { background: #3d1010; color: #ba615b; }
+:where(html[data-theme="night"], body.night) .card__art, :where(html[data-theme="night"], body.night) .card-tile__art { filter: grayscale(1) brightness(.48) sepia(1) saturate(5) hue-rotate(318deg) !important; border-color: #55211f; }
+:where(html[data-theme="night"], body.night) .card__seen, :where(html[data-theme="night"], body.night) .card__tier i { color: #a45650 !important; }
+:where(html[data-theme="night"], body.night) .card__stats, :where(html[data-theme="night"], body.night) .card__stats > div { border-color: #52221f; }
+:where(html[data-theme="night"], body.night) .card__rotator { box-shadow: 0 0 0 .16em #55211f, 0 1em 3em #0007 !important; }
+:where(html[data-theme="night"], body.night) .card__shine, :where(html[data-theme="night"], body.night) .card__foil { filter: grayscale(1) brightness(.25) sepia(1) saturate(5) hue-rotate(318deg); }
+:where(html[data-theme="night"], body.night) .card__glare { background: radial-gradient(circle at var(--mx) var(--my), #9b322833, transparent 70%); }
+:where(html[data-theme="night"], body.night) .card__stamp { background: #210908eb; color: #a5534b; }
+:where(html[data-theme="night"], body.night) .card-tile { background: #160807; color: #b35c56; border-color: #52221f; }
+:where(html[data-theme="night"], body.night) .card-tile__set { background: #3d1010; color: #b35c56; }
+:where(html[data-theme="night"], body.night) .card-tile__tier, :where(html[data-theme="night"], body.night) .card-tile__status { color: #a45650; border-color: #52221f; }
+@media (prefers-reduced-motion: reduce) {
+  .card__rotator, .card-tile { transform: none !important; transition: none !important; }
+  .card__shine, .card__glare, .card__foil { transition: none !important; background-position: 50% 50% !important; }
+}

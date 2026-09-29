@@ -1,236 +1,224 @@
-// Card gallery: every collectible card, caught ones in full, uncaught as silhouettes.
-// Constellation satellites (Starlink, OneWeb, ...) share one card per launch.
-
-import { renderCard, attachTilt, attachGyro } from './card.js?v=0.1.16';
-import { SETS, assignSets } from './sets.js?v=0.1.16';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.16';
-import { loadLore } from './lore.js?v=0.1.16';
-import { allSightings } from './store.js?v=0.1.16';
+import { renderCard, renderCardTile, attachTilt, attachGyro } from './card.js?v=0.1.18';
+import { buildCards, cardKeyFor } from './card-model.js?v=0.1.18';
+import { SETS, assignSets } from './sets.js?v=0.1.18';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.18';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.18';
+import { allSightings } from './store.js?v=0.1.18';
 
 const $ = (id) => document.getElementById(id);
+const state = { cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const hasSightings = (c) => state.sightingsByKey.has(c.key);
+const dateLabel = (time) => new Date(time).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-const state = {
-  cards: [],
-  byKey: new Map(),
-  sightingsByKey: new Map(),
-  seenMembers: new Map(), // card key -> Set of object ids seen
-  filter: 'all',
-  preview: readPref('cards.preview', true),
-  list: [],
-  index: 0,
-};
-
-function readPref(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : v === '1'; } catch { return d; } }
-function writePref(k, v) { try { localStorage.setItem(k, v ? '1' : '0'); } catch {} }
-
-const avg = (list, f) => {
-  const v = list.map(f).filter((x) => x != null);
-  return v.length ? v.reduce((a, b) => a + b, 0) / v.length : null;
-};
-
-// Turn catalogue objects into cards: one per object, or one per launch for constellations.
-function buildCards(cat) {
-  const groups = new Map();
-  for (const o of cat.objects) {
-    const key = o.card ?? String(o.id);
-    if (!groups.has(key)) groups.set(key, []);
-    groups.get(key).push(o);
-  }
-  const cards = [];
-  for (const [key, members] of groups) {
-    const first = members[0];
-    if (!first.family) { cards.push({ ...first, key }); continue; }
-    const fam = cat.families?.[first.family] ?? { name: first.family };
-    cards.push({
-      key,
-      id: key,
-      family: first.family,
-      familyName: fam.name,
-      maker: fam.maker,
-      owner: fam.owner,
-      name: `${fam.name} launch`,
-      cospar: first.cospar?.slice(0, 8),
-      launch: first.launch,
-      year: first.launch ? Number(first.launch.slice(0, 4)) : null,
-      kind: 'PAY', type: 'satellite', tier: 'common',
-      bino: members.every((m) => m.bino) ? 1 : undefined,
-      period: avg(members, (m) => m.period),
-      incl: avg(members, (m) => m.incl),
-      apogee: avg(members, (m) => m.apogee),
-      perigee: avg(members, (m) => m.perigee),
-      members: members.map((m) => m.id),
-    });
-  }
-  return cards;
+function notice(message) { $('notice').hidden = !message; $('notice').textContent = message; }
+function setNight(on) {
+  document.documentElement.dataset.theme = on ? 'night' : 'default';
+  document.body.classList.toggle('night', on);
+  $('night-toggle').setAttribute('aria-pressed', String(on));
+  $('night-toggle').setAttribute('aria-label', on ? 'Turn off red night mode' : 'Turn on red night mode');
+  document.querySelector('meta[name=theme-color]').content = on ? '#090303' : '#080f18';
 }
+setNight(document.documentElement.dataset.theme === 'night');
+$('night-toggle').addEventListener('click', () => {
+  const on = document.documentElement.dataset.theme !== 'night';
+  setNight(on);
+  try { localStorage.setItem('night', on ? '1' : '0'); } catch {}
+});
+window.addEventListener('storage', (e) => { if (e.key === 'night') setNight(e.newValue === '1'); });
+
+for (const set of SETS) $('set-filter').add(new Option(set.name, set.id));
+for (const tier of TIERS.slice().reverse()) $('rarity-filter').add(new Option(TIER_INFO[tier].label, tier));
 
 async function boot() {
-  const [cat] = await Promise.all([fetch('data/catalog.json', { cache: 'no-cache' }).then((r) => r.json()), loadLore()]);
-  const keyOfId = new Map(cat.objects.map((o) => [o.id, o.card ?? String(o.id)]));
+  const [catalogueResult, sightingResult] = await Promise.allSettled([
+    fetch('data/catalog.json', { cache: 'no-cache' }).then((r) => { if (!r.ok) throw new Error('catalogue'); return r.json(); }),
+    allSightings(),
+    loadLore(),
+  ]);
+  const cat = catalogueResult.status === 'fulfilled' ? catalogueResult.value : { objects: [] };
   state.cards = buildCards(cat);
-  assignSets(state.cards);
-  const order = Object.fromEntries(SETS.map((s, i) => [s.id, i]));
-  state.cards.sort((a, b) => order[a.set] - order[b.set] || a.setNumber - b.setNumber);
   state.byKey = new Map(state.cards.map((c) => [c.key, c]));
-  try {
-    for (const s of await allSightings()) {
-      if (s.sim) continue; // sim test captures don't count toward the collection
-      const key = s.cardKey ?? keyOfId.get(s.objectId) ?? String(s.objectId);
-      if (!state.sightingsByKey.has(key)) state.sightingsByKey.set(key, []);
-      state.sightingsByKey.get(key).push(s);
-      if (!state.seenMembers.has(key)) state.seenMembers.set(key, new Set());
-      state.seenMembers.get(key).add(s.objectId);
+  const keyOfId = new Map(cat.objects.map((o) => [String(o.id), cardKeyFor(o)]));
+  const sightings = sightingResult.status === 'fulfilled' ? sightingResult.value : [];
+  for (const s of sightings) {
+    if (s.sim) continue;
+    const key = String(s.cardKey ?? keyOfId.get(String(s.objectId)) ?? s.objectId);
+    if (!state.sightingsByKey.has(key)) state.sightingsByKey.set(key, []);
+    state.sightingsByKey.get(key).push(s);
+    if (!state.seenMembers.has(key)) state.seenMembers.set(key, new Set());
+    state.seenMembers.get(key).add(s.objectId);
+    // A saved card stays in the collection after it leaves the current orbital catalogue.
+    if (!state.byKey.has(key)) {
+      const saved = s.cardSnapshot ?? { id: s.objectId, name: s.name ?? `Object ${s.objectId}`, type: s.type ?? 'satellite', year: s.year, tier: 'common' };
+      const card = { ...saved, key, archived: true };
+      if (!card.set) assignSets([card]);
+      state.cards.push(card); state.byKey.set(key, card);
     }
-  } catch {}
-  $('preview').checked = state.preview;
-  renderChips();
+  }
+  if (catalogueResult.status === 'rejected') notice('The catalogue could not load. Your saved field records are still shown. Refresh to try again.');
+  if (sightingResult.status === 'rejected') notice('Your saved sightings could not be opened. You can explore the field guide; refresh to retry your collection.');
+  state.ready = true;
   render();
-  // cards.html#25544 or #STARLINK:2026-123 opens that card straight away (used after a capture).
-  const key = decodeURIComponent(location.hash.slice(1));
-  if (key) {
-    state.filter = 'all';
-    const i = state.list.findIndex((c) => c.key === key);
-    if (i >= 0) openViewer(i);
-  }
-}
-
-function renderChips() {
-  const chips = [
-    { id: 'all', label: 'All' },
-    { id: 'caught', label: 'Caught' },
-    ...TIERS.slice().reverse().map((t) => ({ id: `tier:${t}`, label: TIER_INFO[t].label, dot: TIER_INFO[t].color })),
-    { id: 'bino', label: 'Binoculars', dot: '#3b6fb6' },
-    ...SETS.map((s) => ({ id: `set:${s.id}`, label: s.name, dot: s.color })),
-  ];
-  $('chips').innerHTML = '';
-  for (const c of chips) {
-    const b = document.createElement('button');
-    b.className = `chip${state.filter === c.id ? ' on' : ''}`;
-    b.innerHTML = `${c.dot ? `<span class="dot" style="background:${c.dot}"></span>` : ''}${c.label}`;
-    b.addEventListener('click', () => { state.filter = c.id; renderChips(); render(); });
-    $('chips').appendChild(b);
-  }
+  let key = '';
+  try { key = decodeURIComponent(location.hash.slice(1)); } catch {}
+  if (key && state.byKey.has(key)) {
+    if (!state.sightingsByKey.has(key)) setView('discover');
+    openViewer(state.list.findIndex((c) => c.key === key));
+  } else if (key) notice('That card is not in this catalogue or your saved collection. Search the field guide to find another target.');
 }
 
 function matches(c) {
-  const f = state.filter;
-  if (f === 'all') return true;
-  if (f === 'caught') return state.sightingsByKey.has(c.key);
-  if (f === 'bino') return !!c.bino;
-  if (f.startsWith('tier:')) return c.tier === f.slice(5);
-  if (f.startsWith('set:')) return c.set === f.slice(4);
+  if (state.view === 'owned' && !hasSightings(c)) return false;
+  if (state.set !== 'all' && c.set !== state.set) return false;
+  if (state.rarity !== 'all' && c.tier !== state.rarity) return false;
+  if (state.query) {
+    const haystack = `${titleFor(c)} ${c.name} ${c.id} ${c.cospar ?? ''} ${factFor(c)} ${SETS.find((s) => s.id === c.set)?.name ?? ''}`.toLowerCase();
+    if (!haystack.includes(state.query)) return false;
+  }
   return true;
 }
 
-function cardFor(c) {
-  return renderCard(c, {
-    sightings: state.sightingsByKey.get(c.key) ?? [],
-    seenMembers: state.seenMembers.get(c.key)?.size ?? 0,
-    preview: state.preview,
-  });
-}
-
-// Thousands of cards: render each one only when it scrolls near the screen.
 const observer = new IntersectionObserver((entries) => {
-  for (const e of entries) {
-    if (!e.isIntersecting) continue;
-    const slot = e.target;
-    observer.unobserve(slot);
-    const i = Number(slot.dataset.i);
-    const el = cardFor(state.list[i]);
-    el.addEventListener('click', () => openViewer(i));
-    slot.replaceChildren(el);
+  for (const { isIntersecting, target } of entries) {
+    if (!isIntersecting) continue;
+    observer.unobserve(target);
+    const c = state.byKey.get(target.dataset.key);
+    if (!c) continue;
+    const tile = renderCardTile(c, { sightings: state.sightingsByKey.get(c.key) ?? [] });
+    tile.addEventListener('click', () => openViewer(state.list.findIndex((card) => card.key === c.key)));
+    target.replaceChildren(tile);
   }
-}, { rootMargin: '800px 0px' });
+}, { rootMargin: '500px 0px' });
 
 function render() {
-  const caught = state.cards.filter((c) => state.sightingsByKey.has(c.key)).length;
-  $('count').textContent = `${caught.toLocaleString()} / ${state.cards.length.toLocaleString()} caught`;
-  state.list = state.cards.filter(matches);
-  const grid = $('grid');
+  const caught = state.cards.filter(hasSightings).length;
+  $('owned-count').textContent = caught.toLocaleString();
+  $('count').textContent = caught ? `${caught.toLocaleString()} ${caught === 1 ? 'story' : 'stories'} collected. Every one, a moment under the sky.` : 'Real objects. Remarkable stories. Yours to discover.';
+  state.list = state.cards.filter(matches).sort((a, b) => {
+    if (state.view === 'owned') return (state.sightingsByKey.get(b.key)?.[0]?.time ?? 0) - (state.sightingsByKey.get(a.key)?.[0]?.time ?? 0);
+    // Lead discovery with the familiar ISS and distinctive rarities, then catalogue order.
+    if (String(a.id) === '25544') return -1;
+    if (String(b.id) === '25544') return 1;
+    return TIERS.indexOf(b.tier) - TIERS.indexOf(a.tier) || (a.set ?? '').localeCompare(b.set ?? '') || (a.setNumber ?? 0) - (b.setNumber ?? 0);
+  });
+  const total = state.list.length;
+  $('results').textContent = `${total.toLocaleString()} ${total === 1 ? 'card' : 'cards'}${state.view === 'owned' ? ' in your collection' : ' in the field guide'}`;
+  $('reset-filters').hidden = !state.query && state.set === 'all' && state.rarity === 'all';
   observer.disconnect();
-  grid.innerHTML = '';
-  if (!state.list.length) {
-    grid.innerHTML = `<div class="empty">${state.filter === 'caught' ? 'No catches yet. Head outside after dusk and point at a moving light.' : 'Nothing here.'}</div>`;
-    return;
+  $('grid').replaceChildren();
+  if (!total) {
+    const empty = document.createElement('div'); empty.className = 'empty';
+    if (state.view === 'owned' && !caught) {
+      empty.innerHTML = '<span class="empty__orbit" aria-hidden="true">✧</span><h2>Your first story is up there.</h2><p>Record a sighting in the live sky to earn your first card. The ISS is a wonderful place to start.</p><a href="./?resume=1">Explore the sky ↗</a><button type="button" class="secondary">Browse the field guide</button>';
+      empty.querySelector('button').addEventListener('click', () => setView('discover'));
+    } else {
+      empty.innerHTML = '<span class="empty__orbit" aria-hidden="true">⌕</span><h2>No cards found.</h2><p>Try a different name, collection or rarity.</p><button type="button">Clear filters</button>';
+      empty.querySelector('button').addEventListener('click', resetFilters);
+    }
+    $('grid').append(empty); return;
   }
   const frag = document.createDocumentFragment();
-  state.list.forEach((c, i) => {
-    const slot = document.createElement('div');
-    slot.className = 'slot';
-    slot.dataset.i = i;
-    frag.appendChild(slot);
-  });
-  grid.appendChild(frag);
-  for (const slot of grid.children) observer.observe(slot);
+  for (const c of state.list) {
+    const slot = document.createElement('div'); slot.className = 'tile-slot'; slot.dataset.key = c.key;
+    frag.append(slot);
+  }
+  $('grid').append(frag);
+  for (const slot of $('grid').children) observer.observe(slot);
 }
-
-$('preview').addEventListener('change', (e) => {
-  state.preview = e.target.checked;
-  writePref('cards.preview', state.preview);
-  render();
-});
-
-// ---------- viewer ----------
-
-let stopGyro = null;
-let tilt = null;
-
-function cardFontSize() {
-  const w = window.innerWidth - 32, h = window.innerHeight - 170;
-  return Math.max(6, Math.min(w / 28, h / 39.2, 14));
+function setView(view) {
+  state.view = view;
+  $('tab-owned').setAttribute('aria-pressed', String(view === 'owned'));
+  $('tab-discover').setAttribute('aria-pressed', String(view === 'discover'));
+  if (state.ready) render();
 }
+function resetFilters() {
+  state.query = ''; state.set = 'all'; state.rarity = 'all';
+  $('search').value = ''; $('set-filter').value = 'all'; $('rarity-filter').value = 'all';
+  if (state.ready) render();
+}
+$('tab-owned').addEventListener('click', () => setView('owned'));
+$('tab-discover').addEventListener('click', () => setView('discover'));
+$('reset-filters').addEventListener('click', resetFilters);
+let searchTimer;
+$('search').addEventListener('input', (e) => { clearTimeout(searchTimer); state.query = e.target.value.trim().toLowerCase(); searchTimer = setTimeout(() => { if (state.ready) render(); }, 120); });
+$('set-filter').addEventListener('change', (e) => { state.set = e.target.value; if (state.ready) render(); });
+$('rarity-filter').addEventListener('change', (e) => { state.rarity = e.target.value; if (state.ready) render(); });
 
+let tilt = null, stopGyro = null, gyroEnabled = false, lastFocus = null;
+function stopEffects() { stopGyro?.(); stopGyro = null; tilt?.destroy(); tilt = null; }
+function syncGyroButton() {
+  const unsupported = !('DeviceOrientationEvent' in window);
+  $('v-gyro').disabled = unsupported || reducedMotion.matches;
+  $('v-gyro').textContent = reducedMotion.matches ? 'Reduced motion on' : unsupported ? 'Pointer tilt enabled' : gyroEnabled ? 'Stop phone tilt' : 'Tilt with phone';
+  $('v-gyro').setAttribute('aria-pressed', String(gyroEnabled));
+  $('v-hint').textContent = reducedMotion.matches ? 'Motion is reduced to match your device preference.' : gyroEnabled ? 'Gently tilt your phone to catch the light.' : 'Move across the card to catch the light.';
+}
 function showCard() {
-  const el = cardFor(state.list[state.index]);
-  el.style.fontSize = `${cardFontSize()}px`;
+  stopEffects();
+  const c = state.list[state.index]; if (!c) return;
+  const sightings = state.sightingsByKey.get(c.key) ?? [];
+  const el = renderCard(c, { sightings, seenMembers: state.seenMembers.get(c.key)?.size ?? 0, preview: state.preview });
   $('slot').replaceChildren(el);
   tilt = attachTilt(el);
-  if (stopGyro) { stopGyro(); stopGyro = attachGyro(el, tilt); }
+  if (gyroEnabled && !reducedMotion.matches) stopGyro = attachGyro(el, tilt);
+  syncGyroButton();
+  $('v-position').textContent = `${state.index + 1} / ${state.list.length.toLocaleString()}`;
+  $('v-prev').disabled = $('v-next').disabled = state.list.length < 2;
+  $('v-status').textContent = sightings.length ? `Part of your collection · first observed ${dateLabel(sightings[sightings.length - 1].time)}${c.archived ? ' · saved from an earlier catalogue' : ''}` : state.preview ? 'Artwork preview · this card has not been added to your collection.' : 'Not yet collected · record a live sighting to earn this card.';
+  $('v-preview').hidden = sightings.length > 0;
+  $('v-preview').textContent = state.preview ? 'Back to uncollected card' : 'Preview artwork & story';
+  $('v-history').replaceChildren();
+  if (sightings.length) {
+    const heading = document.createElement('h2'); heading.textContent = 'Your field notes'; $('v-history').append(heading);
+    for (const s of sightings.slice(0, 5)) {
+      const row = document.createElement('p');
+      row.innerHTML = `<span>${esc(dateLabel(s.time))}</span><span>${esc(new Date(s.time).toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' }))}</span>`;
+      $('v-history').append(row);
+    }
+  }
 }
-
 function openViewer(i) {
-  state.index = i;
-  $('viewer').hidden = false;
+  if (i < 0 || i >= state.list.length) return;
+  state.index = i; state.preview = false;
+  lastFocus = document.activeElement;
   showCard();
+  $('viewer').showModal();
+  document.body.style.overflow = 'hidden';
+  $('v-close').focus();
+  $('viewer').querySelector('.viewer-scroll').scrollTop = 0;
 }
-
 function step(d) {
   state.index = (state.index + d + state.list.length) % state.list.length;
+  state.preview = false;
   showCard();
+  $('viewer').querySelector('.viewer-scroll').scrollTop = 0;
 }
-
-$('v-close').addEventListener('click', () => { $('viewer').hidden = true; stopGyro?.(); stopGyro = null; $('v-gyro').textContent = 'Tilt with phone'; });
+$('v-close').addEventListener('click', () => $('viewer').close());
+$('viewer').addEventListener('close', () => { stopEffects(); gyroEnabled = false; document.body.style.overflow = ''; lastFocus?.focus(); });
 $('v-prev').addEventListener('click', () => step(-1));
 $('v-next').addEventListener('click', () => step(1));
-document.addEventListener('keydown', (e) => {
-  if ($('viewer').hidden) return;
-  if (e.key === 'ArrowLeft') step(-1);
-  if (e.key === 'ArrowRight') step(1);
-  if (e.key === 'Escape') $('v-close').click();
+$('v-preview').addEventListener('click', () => { state.preview = !state.preview; showCard(); });
+$('viewer').addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') { e.preventDefault(); step(e.key === 'ArrowLeft' ? -1 : 1); }
 });
-
-// Swipe left/right on the viewer background to change cards.
-let swipe = null;
-$('viewer').addEventListener('pointerdown', (e) => { if (e.target === $('viewer') || e.target === $('slot')) swipe = { x: e.clientX, y: e.clientY }; });
-$('viewer').addEventListener('pointerup', (e) => {
-  if (!swipe) return;
-  const dx = e.clientX - swipe.x;
-  if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(e.clientY - swipe.y)) step(dx < 0 ? 1 : -1);
-  swipe = null;
-});
-
 $('v-gyro').addEventListener('click', async () => {
-  if (stopGyro) { stopGyro(); stopGyro = null; $('v-gyro').textContent = 'Tilt with phone'; tilt?.reset(); return; }
+  if (gyroEnabled) { gyroEnabled = false; stopGyro?.(); stopGyro = null; syncGyroButton(); return; }
   try {
-    if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
-      if (await DeviceOrientationEvent.requestPermission() !== 'granted') return;
+    if (typeof DeviceOrientationEvent.requestPermission === 'function' && await DeviceOrientationEvent.requestPermission() !== 'granted') {
+      $('v-hint').textContent = 'Motion access was declined. You can still move across the card with a finger.'; return;
     }
-  } catch { return; }
-  stopGyro = attachGyro($('slot').firstElementChild, tilt);
-  $('v-gyro').textContent = 'Stop tilt';
+  } catch { $('v-hint').textContent = 'Phone tilt is unavailable here. Touch the card to move its light.'; return; }
+  if (!$('viewer').open || !tilt || reducedMotion.matches) return;
+  gyroEnabled = true; stopGyro = attachGyro($('slot').firstElementChild, tilt); syncGyroButton();
 });
-
-window.addEventListener('resize', () => { if (!$('viewer').hidden) $('slot').firstElementChild.style.fontSize = `${cardFontSize()}px`; });
-
-boot();
+reducedMotion.addEventListener('change', () => {
+  if (reducedMotion.matches) { gyroEnabled = false; stopGyro?.(); stopGyro = null; tilt?.reset(); }
+  syncGyroButton();
+});
+boot().catch(() => {
+  notice('The field guide could not open. Refresh this page to try again.');
+  $('count').textContent = 'Your next discovery is waiting.';
+  $('grid').replaceChildren();
+});

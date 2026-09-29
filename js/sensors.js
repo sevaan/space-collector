@@ -74,8 +74,11 @@ export function needsPermission() {
   return typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function';
 }
 
+let listening = false;
+
 // Must be called from a user tap on iOS.
 export async function startSensors() {
+  if (listening) return true;
   if (typeof DeviceOrientationEvent === 'undefined') return false;
   if (needsPermission()) {
     const result = await DeviceOrientationEvent.requestPermission();
@@ -83,6 +86,7 @@ export async function startSensors() {
   }
   window.addEventListener('deviceorientationabsolute', (e) => onOrientation(e, true));
   window.addEventListener('deviceorientation', (e) => onOrientation(e, e.absolute === true));
+  listening = true;
   return true;
 }
 

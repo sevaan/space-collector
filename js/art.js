@@ -2,7 +2,8 @@
 // drawn in white with one accent in the card's set colour. Deterministic per NORAD id.
 // silhouette: true draws an outline only (uncaught cards).
 
-const NAVY = '#0f2548';
+const NAVY = '#0b2632';
+let artworkId = 0;
 const EARTH = '#2466b8';
 
 function rng(seed) {
@@ -10,23 +11,34 @@ function rng(seed) {
   return () => ((s = (s ^= s << 13, s ^= s >>> 17, s ^= s << 5) >>> 0) / 4294967296);
 }
 
-export function cardArt(o, { accent = '#e8412c', silhouette = false, w = 252, h = 100 } = {}) {
-  const r = rng(o.id);
+export function cardArt(o, { accent = '#d74730', silhouette = false, w = 760, h = 420 } = {}) {
+  if (String(o.id) === '25544') {
+    return `<img class="card-art-image${silhouette ? ' silhouette' : ''}" src="assets/art/iss-hero.svg" alt="Illustration of the International Space Station above Earth" loading="lazy" decoding="async">`;
+  }
+  const seed = [...String(o.id)].reduce((n, c) => Math.imul(n, 31) + c.charCodeAt(0), 7);
+  const r = rng(seed);
+  const id = `art-${++artworkId}`;
   let stars = '';
-  for (let i = 0; i < 34; i++) {
-    stars += `<circle cx="${(r() * w).toFixed(1)}" cy="${(r() * h * 0.8).toFixed(1)}" r="${(r() ** 2 * 1.1 + 0.35).toFixed(2)}" fill="#fff" opacity="${(0.35 + r() * 0.65).toFixed(2)}"/>`;
+  for (let i = 0; i < 64; i++) {
+    stars += `<circle cx="${(r() * w).toFixed(1)}" cy="${(r() * h * 0.88).toFixed(1)}" r="${(r() ** 2 * 1.8 + 0.4).toFixed(2)}" fill="#e1efeb" opacity="${(0.18 + r() * 0.65).toFixed(2)}"/>`;
   }
   const c = silhouette
-    ? { fill: 'none', stroke: 'rgba(255,255,255,0.45)', sw: 1.4, accent: 'none', line: 'rgba(255,255,255,0.25)' }
-    : { fill: '#fff', stroke: 'none', sw: 0, accent, line: NAVY };
-  const tilt = (r() * 30 - 15).toFixed(1);
-  const scale = (h / 190).toFixed(3);
-  const earthR = w * 1.1;
-  return `<svg viewBox="0 0 ${w} ${h}" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-  <rect width="${w}" height="${h}" fill="${NAVY}"/>${stars}
-  <circle cx="${w / 2}" cy="${h + earthR - h * 0.26}" r="${earthR}" fill="${EARTH}"/>
-  <circle cx="${w / 2}" cy="${h + earthR - h * 0.26}" r="${earthR}" fill="none" stroke="#fff" stroke-width="1.2" opacity=".85"/>
-  <g transform="translate(${w / 2} ${h * 0.42}) rotate(${tilt}) scale(${scale})">${shape(o, c, r)}</g>
+    ? { fill: 'none', stroke: '#879ca1', sw: 1.4, accent: 'none', line: '#607a80' }
+    : { fill: `url(#${id}-metal)`, stroke: '#8aa3a9', sw: 0.6, accent, line: '#466570' };
+  const tilt = (r() * 26 - 13).toFixed(1);
+  const scale = (Math.min(w / 310, h / 205)).toFixed(3);
+  const earthR = w * 0.95;
+  return `<svg aria-hidden="true" viewBox="0 0 ${w} ${h}" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="${id}-sky" x2="1" y2="1"><stop stop-color="#081a24"/><stop offset="1" stop-color="#214c59"/></linearGradient>
+    <linearGradient id="${id}-metal"><stop stop-color="#789295"/><stop offset=".4" stop-color="#f6edcd"/><stop offset=".58" stop-color="#d5dfd5"/><stop offset="1" stop-color="#58737b"/></linearGradient>
+    <linearGradient id="${id}-earth" x2=".2" y2="1"><stop stop-color="#649799"/><stop offset=".15" stop-color="#39636d"/><stop offset="1" stop-color="#173749"/></linearGradient>
+  </defs>
+  <rect width="${w}" height="${h}" fill="url(#${id}-sky)"/>${stars}
+  <g fill="none" stroke="#93b5bb" stroke-width=".6" opacity=".14"><ellipse cx="${w * .58}" cy="${h * .48}" rx="${w * .6}" ry="${h * .29}" transform="rotate(-23 ${w * .58} ${h * .48})"/><path d="M0 ${h * .4}H${w}M${w * .7} 0V${h}"/></g>
+  <circle cx="${w * .4}" cy="${h + earthR - h * .15}" r="${earthR}" fill="url(#${id}-earth)" stroke="#9acece" stroke-width="${h / 110}"/>
+  <circle cx="${w * .4}" cy="${h + earthR - h * .15}" r="${earthR - 5}" fill="none" stroke="#d9e6d0" stroke-width="1" opacity=".45"/>
+  <g transform="translate(${w / 2} ${h * .44}) rotate(${tilt}) scale(${scale})">${shape(o, c, r)}</g>
 </svg>`;
 }
 

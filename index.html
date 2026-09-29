@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#050a18">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
@@ -12,12 +12,15 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="apple-touch-icon" href="icons/icon-180.png">
   <link rel="icon" href="icons/icon-192.png">
-  <link rel="stylesheet" href="css/app.css?v=0.1.16">
+  <script>try { if (localStorage.getItem("night") === "1") document.documentElement.dataset.theme = "night"; } catch {}</script>
+  <link rel="stylesheet" href="css/cards.css?v=0.1.18">
+  <link rel="stylesheet" href="css/app.css?v=0.1.18">
 </head>
 <body>
-  <canvas id="sky"></canvas>
+  <canvas id="sky" role="img" aria-label="Sky map aligned with your viewing direction"></canvas>
 
   <div id="hud" hidden>
+    <header id="sky-header"><a class="wordmark" href="./">SPACE COLLECTOR<span>FIELD NOTES FROM ORBIT</span></a><button id="night-toggle" class="icon-button" aria-label="Turn on red night mode" aria-pressed="false">☾</button></header>
     <div id="compass" aria-label="Compass">
       <svg viewBox="0 0 100 100" aria-hidden="true">
         <circle cx="50" cy="50" r="46" class="c-ring"/>
@@ -43,7 +46,10 @@
       <svg viewBox="0 0 16 16" class="chev" aria-hidden="true"><path d="M6 3l5 5-5 5"/></svg>
     </button>
 
+    <div id="observing-status"><span id="mode-label">PRACTICE</span><button id="location-status">Example location</button><button id="btn-live" hidden>Return to live</button></div>
     <div id="status-line"></div>
+    <div id="guidance" aria-live="polite" hidden></div>
+    <section id="sky-empty" hidden><span class="eyebrow" id="empty-eyebrow">YOUR NEXT DISCOVERY</span><h2 id="empty-title">The sky is worth waiting for.</h2><p id="empty-copy">Find your next opportunity to collect.</p><p id="next-pass-info" class="hint small"></p><button id="empty-next" class="big">Find a visible pass</button><button id="empty-iss" class="text-button">Preview the ISS card</button></section>
 
     <div id="callout" hidden>
       <div class="co-head"><span id="co-name"></span><span id="co-tier" class="tier-pill"></span></div>
@@ -55,6 +61,7 @@
     <section id="target" hidden>
       <div id="t-thumb"><div id="t-art"></div><span id="t-tier" class="tier-pill lg"></span></div>
       <div id="t-body">
+        <div class="target-eyebrow"><span id="t-collection"></span><button id="t-unpin" hidden aria-label="Stop following this object">×</button></div>
         <div class="t-top">
           <h2 id="t-name"></h2>
           <button id="t-switch" hidden aria-label="Next object in the circle"></button>
@@ -76,22 +83,31 @@
     </nav>
   </div>
 
-  <div id="banner" hidden></div>
-  <div id="toast" hidden></div>
+  <button id="banner" hidden></button>
+  <div id="toast" role="status" hidden></div>
   <div id="version"></div>
 
   <section id="start" class="overlay">
     <div class="start-inner">
-      <div class="start-badge"><span class="ico" data-ico="crosshair"></span></div>
-      <h1>Space Collector</h1>
-      <p>Hold your phone up at a moving light in the night sky, see what it is, and collect it.</p>
-      <p class="hint">Satellites show up for a couple of hours after dusk and before dawn, when your sky is dark but they're still lit by the sun.</p>
-      <button id="btn-start" class="big">Start sky view</button>
-      <p class="hint small" id="start-note">We'll ask for motion &amp; location access so the sky lines up with where you point.</p>
+      <div class="wordmark">SPACE COLLECTOR<span>FIELD NOTES FROM ORBIT</span></div>
+      <div id="start-art" aria-hidden="true"></div>
+      <span class="eyebrow">REAL OBJECTS. REMARKABLE STORIES.</span>
+      <h1>Look up.<br>Find something<br>extraordinary.</h1>
+      <p>That moving light has a story. Point your phone, discover what’s in orbit, and collect a little piece of space history.</p>
+      <button id="btn-start" class="big" disabled>Loading the sky…</button>
+      <button id="btn-preview" class="text-button" disabled>Try a practice pass →</button>
+      <p class="hint small" id="start-note">Observe uses your location and motion sensors. Practice lets you explore without permissions.</p>
+      <a class="text-button" href="cards.html">Browse the collection</a>
     </div>
   </section>
 
-  <section id="visible" class="overlay panel" hidden>
+  <section id="reveal" class="overlay panel" role="dialog" aria-modal="true" aria-labelledby="reveal-title" hidden>
+    <div class="reveal-inner"><div class="panel-head"><span class="eyebrow" id="reveal-eyebrow">FIRST DISCOVERY</span><button class="pill" data-close="reveal">Done</button></div>
+    <h2 id="reveal-title">A piece of space history.</h2><p id="reveal-note" class="hint"></p><div id="reveal-card"></div>
+    <p class="hint small tilt-hint">Move your finger across the card to catch the light.</p><a id="reveal-view" class="big" href="cards.html">View in collection</a><button id="reveal-continue" class="text-button">Keep exploring →</button></div>
+  </section>
+
+  <section id="visible" class="overlay panel" role="dialog" aria-modal="true" aria-label="Visible now" hidden>
     <div class="panel-head">
       <h2>Visible now</h2>
       <button class="pill" data-close="visible">Done</button>
@@ -100,20 +116,22 @@
     <div id="visible-list"></div>
   </section>
 
-  <section id="log" class="overlay panel" hidden>
+  <section id="log" class="overlay panel" role="dialog" aria-modal="true" aria-label="Journal" hidden>
     <div class="panel-head">
       <h2>Journal</h2>
       <button class="pill" data-close="log">Done</button>
     </div>
-    <div id="log-list"></div>
+    <p class="hint">The nights behind your discoveries.</p><label class="row"><input type="checkbox" id="journal-practice"> Show practice sightings</label><div id="log-list"></div>
   </section>
 
-  <section id="debug" class="overlay panel" hidden>
+  <section id="debug" class="overlay panel" role="dialog" aria-modal="true" aria-label="Observing settings" hidden>
     <div class="panel-head">
-      <h2>More</h2>
+      <h2>Observing settings</h2>
       <button class="pill" data-close="debug">Done</button>
     </div>
 
+    <h3>Your location</h3><p id="location-note" class="hint"></p><button class="pill" id="retry-location">Use my current location</button><button class="pill" id="retry-motion">Enable motion</button>
+    <details><summary>Set observing coordinates</summary><p class="hint small">Use a known observing place. South and west use negative values.</p><form id="location-form"><div class="row wrap"><label>Latitude<input id="latitude" type="number" min="-90" max="90" step="any" required inputmode="decimal"></label><label>Longitude<input id="longitude" type="number" min="-180" max="180" step="any" required inputmode="decimal"></label></div><button class="pill" type="submit">Use this location</button></form></details>
     <h3>Display</h3>
     <label class="row"><input type="checkbox" id="chk-night"> Red night mode (keeps your eyes adjusted to the dark)</label>
     <label class="row"><input type="checkbox" id="chk-stars" checked> Stars, planets &amp; Moon</label>
@@ -130,7 +148,7 @@
       <button class="pill" data-time="now">Now</button>
     </div>
     <div class="row wrap">
-      <button class="pill accent" id="btn-next-pass">Jump to next visible pass</button>
+      <button class="pill accent" id="btn-next-pass">Preview next visible pass</button>
     </div>
 
     <h3>Pointing</h3>
@@ -142,14 +160,14 @@
       <span id="nudge-label"></span>
     </div>
 
-    <h3>Testing</h3>
+    <details><summary>Advanced practice controls</summary><p class="hint small">These controls always record practice sightings, which never earn cards.</p>
     <label class="row"><input type="checkbox" id="chk-dim"> Show objects that aren't visible (shadowed, faint, daylight)</label>
     <label class="row"><input type="checkbox" id="chk-any"> Allow capturing objects that aren't visible</label>
 
-    <h3>Info</h3>
-    <pre id="debug-info"></pre>
+    </details><details><summary>Technical information</summary>
+    <pre id="debug-info"></pre></details>
   </section>
 
-  <script type="module" src="js/main.js?v=0.1.16"></script>
+  <script type="module" src="js/main.js?v=0.1.18"></script>
 </body>
 </html>

@@ -1,21 +1,34 @@
-import { VERSION } from './version.js?v=0.1.16';
-import { loadCatalog, frame, look, track, motion, nextVisiblePass, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, setBinocularMode } from './orbit.js?v=0.1.16';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.16';
-import { SkyView, shortName } from './sky.js?v=0.1.16';
-import { loadSky, eqToEnu, solarSystem, galacticPlane } from './celestial.js?v=0.1.16';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.16';
-import { cardArt } from './art.js?v=0.1.16';
-import { TIER_INFO } from './rarity.js?v=0.1.16';
-import { SETS } from './sets.js?v=0.1.16';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.16';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.16';
+import { VERSION } from './version.js?v=0.1.18';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, setBinocularMode } from './orbit.js?v=0.1.18';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.18';
+import { SkyView, shortName } from './sky.js?v=0.1.18';
+import { loadSky, eqToEnu, solarSystem, galacticPlane } from './celestial.js?v=0.1.18';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.18';
+import { cardArt } from './art.js?v=0.1.18';
+import { renderCard, attachTilt } from './card.js?v=0.1.18';
+import { buildCards } from './card-model.js?v=0.1.18';
+import { isPractice, collectedDuringPass, canCapture } from './observation.js?v=0.1.18';
+import { TIER_INFO } from './rarity.js?v=0.1.18';
+import { SETS } from './sets.js?v=0.1.18';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.18';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.18';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
-const DEFAULT_LOCATION = { lat: 44.3091, lon: -78.3197, label: 'Peterborough (default)' };
+const DEFAULT_LOCATION = { lat: 44.3091, lon: -78.3197, label: 'Example: Peterborough' };
 
 const state = {
   catalog: null,
+  cardModels: new Map(),
+  byId: new Map(),
+  preview: false,
+  followPreview: false,
+  locationStatus: 'example',
+  pinnedId: null,
+  activeTarget: null,
+  captureBusy: false,
+  storageReady: true,
+  started: false,
   observer: loadSavedLocation() ?? { ...DEFAULT_LOCATION },
   timeOffsetMs: 0,
   drag: { on: false, az: 180, el: 35 },
@@ -45,7 +58,7 @@ const sky = new SkyView($('sky'));
 $('version').textContent = `v${VERSION}`;
 
 function now() { return new Date(Date.now() + state.timeOffsetMs); }
-function isSim() { return state.timeOffsetMs !== 0 || state.drag.on || !hasLiveSensors(); }
+function isSim() { return isPractice({ timeOffsetMs: state.timeOffsetMs, dragOn: state.drag.on, sensorsLive: hasLiveSensors(), locationReady: state.locationStatus === 'manual' || (state.locationStatus === 'ready' && Date.now() - state.observer.fixedAt < 15 * 60 * 1000), captureAny: state.captureAny, preview: state.preview }); }
 
 // ---------- prefs & location ----------
 
@@ -56,22 +69,38 @@ function loadSavedLocation() {
   try { return JSON.parse(localStorage.getItem('observer')); } catch { return null; }
 }
 
-function requestLocation() {
-  if (!navigator.geolocation) return;
-  navigator.geolocation.getCurrentPosition(
-    (p) => {
-      state.observer = { lat: p.coords.latitude, lon: p.coords.longitude, heightKm: (p.coords.altitude ?? 0) / 1000, label: 'GPS' };
-      try { localStorage.setItem('observer', JSON.stringify({ ...state.observer, label: 'last GPS fix' })); } catch {}
-      state.trails.clear();
-      state.model?.reset();
+let locationRequest = 0;
+async function requestLocation() {
+  const requestId = ++locationRequest;
+  state.locationStatus = 'waiting';
+  renderLocation();
+  if (!navigator.geolocation) { state.locationStatus = 'unavailable'; renderLocation(); return false; }
+  return new Promise(resolve => navigator.geolocation.getCurrentPosition(
+    p => {
+      if (requestId !== locationRequest) { resolve(false); return; }
+      state.observer = { lat: p.coords.latitude, lon: p.coords.longitude, heightKm: (p.coords.altitude ?? 0) / 1000, label: 'Current location', fixedAt: Date.now() };
+      state.locationStatus = 'ready';
+      try { localStorage.setItem('observer', JSON.stringify({ ...state.observer, label: 'Saved location' })); } catch {}
+      state.trails.clear(); state.model?.reset(); cancelPassSearch();
+      renderLocation(); resolve(true);
     },
-    () => {},
-    { enableHighAccuracy: false, timeout: 15000, maximumAge: 10 * 60 * 1000 },
-  );
+    error => { if (requestId !== locationRequest) { resolve(false); return; } state.locationStatus = error.code === 1 ? 'denied' : 'unavailable'; renderLocation(); resolve(false); },
+    { enableHighAccuracy: false, timeout: 15000, maximumAge: 60000 },
+  ));
+}
+function renderLocation() {
+  const labels = { waiting: 'Finding your location…', ready: 'Current location', manual: 'Chosen location', denied: 'Location denied · practice', unavailable: 'Location unavailable · practice', example: state.observer.label ?? 'Example location', saved: 'Saved location · unverified', stale: 'Location needs refreshing · practice' };
+  const label = labels[state.locationStatus] ?? 'Location needs checking';
+  $('location-status').textContent = label;
+  $('location-note').textContent = `${label}. Sky shown for ${state.observer.lat.toFixed(2)}°, ${state.observer.lon.toFixed(2)}°. ${['ready', 'manual'].includes(state.locationStatus) ? '' : 'Use your location or choose coordinates for real observing.'}`;
+  $('latitude').value = state.observer.lat; $('longitude').value = state.observer.lon;
 }
 
 function applyTheme() {
   document.body.classList.toggle('night', state.night);
+  document.documentElement.dataset.theme = state.night ? 'night' : 'glass';
+  $('night-toggle').setAttribute('aria-pressed', String(state.night));
+  $('night-toggle').setAttribute('aria-label', state.night ? 'Turn off red night mode' : 'Turn on red night mode');
   sky.setTheme(state.night ? 'night' : 'glass');
   document.querySelector('meta[name=theme-color]').content = state.night ? '#000000' : '#050a18';
 }
@@ -81,7 +110,7 @@ applyTheme();
 
 let audio;
 function unlockAudio() {
-  try { audio ??= new (window.AudioContext || window.webkitAudioContext)(); audio.resume(); } catch {}
+  try { audio ??= new (window.AudioContext || window.webkitAudioContext)(); audio.resume().catch(() => {}); } catch {}
 }
 function chirp(freqs = [660, 990], dur = 0.09) {
   if (!audio) return;
@@ -105,7 +134,7 @@ async function keepAwake() {
   try { wakeLock = await navigator.wakeLock?.request('screen'); } catch {}
 }
 document.addEventListener('visibilitychange', () => {
-  if (document.visibilityState === 'visible') { keepAwake(); checkForUpdate(); }
+  if (document.visibilityState === 'visible' && state.started) { keepAwake(); checkForUpdate(); }
 });
 
 // ---------- updates ----------
@@ -174,7 +203,7 @@ function objectFact(obj) {
 
 // ---------- sky computation ----------
 
-const MAX_TRAILS = 12;
+const MAX_TRAILS = 4;
 
 // Once a second: trails, Sun/Moon/stars, status line.
 function refreshAbove() {
@@ -189,7 +218,7 @@ function refreshAbove() {
   const nearest = state.items
     .filter((it) => it.look.visible || state.showDim)
     .map((it) => ({ it, c: dot(enuFromAzEl(it.look.az, it.look.el), back) }))
-    .sort((a, b) => b.c - a.c)
+    .sort((a, b) => Number(b.it.obj.id === state.pinnedId) - Number(a.it.obj.id === state.pinnedId) || b.c - a.c)
     .slice(0, MAX_TRAILS);
   const keep = new Set();
   for (const { it } of nearest) {
@@ -216,23 +245,31 @@ function refreshCelestial(d) {
 }
 
 function updateStatus(f) {
-  const visible = state.items.filter((a) => a.look.visible).length;
+  if (state.locationStatus === 'ready' && Date.now() - state.observer.fixedAt >= 15 * 60 * 1000) { state.locationStatus = 'stale'; renderLocation(); }
+  const visible = state.items.filter(a => a.look.visible).length;
   $('visible-count').textContent = visible;
+  const practice = isSim();
+  $('mode-label').textContent = practice ? 'PRACTICE' : 'OBSERVING';
+  $('btn-live').hidden = !practice;
   const d = now();
-  const bits = [d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })];
-  if (state.timeOffsetMs) bits.push('sim');
-  if (f.sunEl > -0.8) bits.push('daylight');
-  else if (f.sunEl > DARK_SUN_ELEVATION) bits.push('twilight');
-  if (state.drag.on || !hasLiveSensors()) bits.push('drag to look');
+  const time = d.toLocaleString([], { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+  const bits = [time, f.sunEl > DARK_SUN_ELEVATION ? 'daylight / twilight' : 'dark sky'];
+  if (state.drag.on || !hasLiveSensors()) bits.push('drag to explore');
   if (state.binoculars) bits.push('binoculars');
   $('status-line').textContent = bits.join(' · ');
-
-  if (f.sunEl > DARK_SUN_ELEVATION && visible === 0) {
-    showBanner('Sky is too bright for satellites right now. Tap More → "Jump to next visible pass" to try it out.', openDebug);
-  } else if (pointing.source === 'ios' && (pointing.compassAccuracy < 0 || pointing.compassAccuracy > 25) && !state.drag.on) {
-    showBanner('Compass is fuzzy. Wave your phone in a figure-8 to calibrate.');
-  } else if (!bannerKey.startsWith('New build')) {
-    showBanner('');
+  if (!bannerKey.startsWith('New build')) {
+    if (pointing.source === 'ios' && (pointing.compassAccuracy < 0 || pointing.compassAccuracy > 25) && !state.drag.on) showBanner('Compass needs aligning. Move your phone in a figure eight, then aim at a known star.', openDebug);
+    else if (!practice && pointing.source === 'relative') showBanner('Check your heading against a known landmark. Adjust the compass in settings.', openDebug);
+    else showBanner('');
+  }
+  $('sky-empty').hidden = !!state.activeTarget;
+  if (!state.activeTarget) {
+    const daylight = f.sunEl > DARK_SUN_ELEVATION;
+    $('empty-eyebrow').textContent = practice ? 'EXPLORE IN PRACTICE' : 'YOUR NEXT DISCOVERY';
+    $('empty-title').textContent = visible ? 'A little space history is overhead.' : daylight ? 'Your next discovery starts after dusk.' : 'The sky is worth waiting for.';
+    $('empty-copy').textContent = visible ? 'Choose an object and we’ll help you find it.' : 'Find a predicted viewing opportunity, then try the pass in practice. Practice sightings do not earn cards.';
+    $('empty-next').textContent = passBusy ? 'Searching for a pass…' : visible ? 'Choose a visible object' : 'Find a visible pass';
+    $('empty-next').disabled = passBusy;
   }
 }
 
@@ -259,6 +296,10 @@ const dot = (a, b) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
 const norm = (v) => { const l = Math.hypot(v[0], v[1], v[2]) || 1; return [v[0] / l, v[1] / l, v[2] / l]; };
 
 function currentBasis() {
+  if (state.preview && state.followPreview && state.pinnedId) {
+    const selected = state.items.find(it => it.obj.id === state.pinnedId);
+    if (selected) { state.drag.az = selected.look.az; state.drag.el = selected.look.el; }
+  }
   if (!state.drag.on && hasLiveSensors()) return smoothBasis(trueBasis());
   state.smooth = null;
   return basisFromAzEl(state.drag.az, state.drag.el);
@@ -268,9 +309,10 @@ function currentBasis() {
 
 let lastAbove = 0;
 let lastPanel = 0;
+let uiSafeTop = 202, uiSafeBottom = 320;
 function tick(ts) {
   requestAnimationFrame(tick);
-  if (!state.catalog || !$('start').hidden) return;
+  if (!state.catalog || !state.started || document.hidden || activePanel) return;
   const d = now();
   state.model.update(d, state.observer);
   state.items = state.model.items(d);
@@ -284,7 +326,7 @@ function tick(ts) {
   const items = [];
   for (const a of state.items) {
     const l = a.look;
-    if (!l.visible && !state.showDim && !state.captureAny) continue;
+    if (!l.visible && !state.showDim && !state.captureAny && a.obj.id !== state.pinnedId) continue;
     const trail = state.trails.get(a.obj.id);
     const pts = trail ? trail.pts.map((p) => ({ ...p, t: p.t + (trail.at - d.getTime()) / 1000 })) : null;
     const angCos = dot(enuFromAzEl(l.az, l.el), basis.back);
@@ -301,12 +343,21 @@ function tick(ts) {
     .slice(0, 5);
   for (const id of state.sticky.keys()) if (t - state.sticky.get(id) > 1500) state.sticky.delete(id);
   state.candidates = cands;
-  if (!cands.some((c) => c.obj.id === state.targetId)) {
-    const prev = state.targetId;
-    state.targetId = cands[0]?.obj.id ?? null;
-    if (state.targetId && !prev) chirp([880], 0.05);
+  let target;
+  if (state.pinnedId) {
+    target = items.find(it => it.obj.id === state.pinnedId);
+    if (!target) {
+      const obj = state.byId.get(state.pinnedId);
+      const l = obj && look(obj, frame(d, state.observer));
+      if (l) { target = { obj, label: label(obj), look: l, angCos: dot(enuFromAzEl(l.az, l.el), basis.back) }; items.push(target); }
+    }
+    state.targetId = state.pinnedId;
+  } else {
+    if (!cands.some(c => c.obj.id === state.targetId)) state.targetId = cands[0]?.obj.id ?? null;
+    target = cands.find(c => c.obj.id === state.targetId);
   }
-  const target = cands.find((c) => c.obj.id === state.targetId) ?? null;
+  target ??= null;
+  state.activeTarget = target;
 
   sky.draw(basis, items, {
     showDim: state.showDim,
@@ -316,11 +367,13 @@ function tick(ts) {
     lines: state.showLines,
     targetId: state.targetId,
     time: t,
+    safeTop: uiSafeTop,
+    safeBottom: uiSafeBottom,
   });
 
   updateCompass(basis);
   placeCallout(target);
-  if (t - lastPanel > 250 || target?.obj.id !== shownTargetId) { renderTarget(target, d); lastPanel = t; }
+  if (t - lastPanel > 250 || target?.obj.id !== shownTargetId) { renderTarget(target, d); measureSkySpace(); lastPanel = t; }
 }
 
 function updateCompass(basis) {
@@ -338,23 +391,31 @@ function updateCompass(basis) {
 
 // ---------- target: callout + card ----------
 
+function measureSkySpace() {
+  const box = $('target').hidden ? $('sky-empty') : $('target');
+  const rect = box.getBoundingClientRect();
+  uiSafeTop = $('status-line').getBoundingClientRect().bottom + 16;
+  if (!$('banner').hidden) uiSafeTop = $('banner').getBoundingClientRect().bottom + 12;
+  uiSafeBottom = box.hidden ? 100 : Math.max(100, window.innerHeight - rect.top + 34);
+  $('guidance').style.bottom = `${uiSafeBottom - 26}px`;
+}
 function placeCallout(target) {
-  const el = $('callout');
-  const p = sky.targetPos;
-  if (!target || !p) { el.hidden = true; return; }
+  const el = $('callout'), p = sky.targetPos;
+  if (!target || !p || !target.look.visible) { el.hidden = true; return; }
   el.hidden = false;
-  const w = el.offsetWidth || 200, h = el.offsetHeight || 90;
-  let x = p.x + sky.reticlePx * 0.5 + 18;
-  if (x + w > window.innerWidth - 10) x = p.x - sky.reticlePx * 0.5 - 18 - w;
-  x = Math.max(10, x);
-  const y = Math.max(110, Math.min(p.y - h - 10, window.innerHeight - 380));
-  el.style.transform = `translate(${x.toFixed(0)}px, ${y.toFixed(0)}px)`;
+  const w = el.offsetWidth || 150, h = el.offsetHeight || 32;
+  let x = p.x + 18;
+  if (x + w > window.innerWidth - 12) x = p.x - 18 - w;
+  const y = Math.max(uiSafeTop, Math.min(p.y - h - 15, window.innerHeight - uiSafeBottom - h));
+  el.style.transform = `translate(${Math.max(12,x).toFixed(0)}px, ${y.toFixed(0)}px)`;
 }
 
 let shownTargetId = null;
 let shownCount = 0;
 function renderTarget(target, d) {
   const card = $('target');
+  $('sky-empty').hidden = !!target;
+  $('guidance').hidden = !target;
   if (!target) { card.hidden = true; shownTargetId = null; return; }
   const o = target.obj, l = target.look;
   const tier = TIER_INFO[o.tier] ?? TIER_INFO.common;
@@ -378,6 +439,7 @@ function renderTarget(target, d) {
     $('t-tier').textContent = tier.label;
     $('t-tier').style.setProperty('--tier', tier.color);
     $('t-name').textContent = label(o);
+    $('t-collection').textContent = `${tier.label} · ${(SETS.find(s => s.test(o)) ?? SETS[SETS.length - 1]).name}`;
     const typeLabel = o.family ? `${familyName(o)} satellite` : (TYPE_LABEL[o.type] ?? 'Object');
     const who = o.family ? state.catalog.families?.[o.family]?.maker : ownerName(o.owner);
     $('t-chips').innerHTML = `<span class="chip"><span class="ico" data-ico="type"></span>${escapeHtml(typeLabel)}</span>`
@@ -388,11 +450,20 @@ function renderTarget(target, d) {
     $('t-switch').hidden = n < 2;
     card.hidden = false;
   }
-  setAction(collectedThisPass(o, d));
+  const aligned = target.angCos > Math.cos(sky.reticleDeg * RAD);
+  const eligible = canCapture({ visible: l.visible, aligned, practice: isSim(), allowAny: state.captureAny });
+  $('t-unpin').hidden = !state.pinnedId;
+  setAction(collectedThisPass(o, d), eligible);
+  const currentAz = state.basis ? (Math.atan2(state.basis.back[0], state.basis.back[1]) / RAD + 360) % 360 : state.drag.az;
+  const currentEl = state.basis ? Math.asin(state.basis.back[2]) / RAD : state.drag.el;
+  const turn = ((l.az - currentAz + 540) % 360) - 180;
+  $('guidance').textContent = l.el < 0 ? 'This pass has ended. Choose another object.' : !l.visible && !state.captureAny ? 'This object is not visible right now.' : aligned ? (isSim() ? 'Practice target aligned · ready to capture' : 'Target aligned · look up and confirm the moving light') : `${Math.abs(turn) > 8 ? (turn > 0 ? 'Turn right' : 'Turn left') : l.el > currentEl ? 'Raise your phone' : 'Lower your phone'} · ${Math.round(l.el)}° up in the ${compassPoint(l.az)}`;
   const n = state.candidates.length;
-  if (n > 1) $('t-switch').textContent = `${state.candidates.findIndex((c) => c.obj.id === o.id) + 1} of ${n} ›`;
-  $('t-stats').innerHTML = `<span class="chip"><span class="ico" data-ico="height"></span>${Math.round(l.el)}° up</span>`
-    + (st ? `<span class="chip"><span class="ico" data-ico="rocket"></span>${st.speed.toFixed(1)} km/s</span>` : '');
+  const candidateIndex = state.candidates.findIndex(c => c.obj.id === o.id);
+  $('t-switch').hidden = n < 2 || candidateIndex < 0;
+  if (n > 1 && candidateIndex >= 0) $('t-switch').textContent = `${candidateIndex + 1} of ${n} ›`;
+  $('t-stats').innerHTML = `<span class="chip">${escapeHtml(brightnessWord(l.mag))}</span><span class="chip">${Math.round(l.el)}° up · ${compassPoint(l.az)}</span>`;
+
 }
 
 $('t-switch').addEventListener('click', () => {
@@ -400,98 +471,96 @@ $('t-switch').addEventListener('click', () => {
   if (c.length < 2) return;
   const i = c.findIndex((x) => x.obj.id === state.targetId);
   state.targetId = c[(i + 1) % c.length].obj.id;
+  state.pinnedId = state.targetId;
 });
 
 // Collected during this pass (the last 20 minutes of sky time)? Then the button offers View instead.
 // A later pass can be collected again, which is what levels a card up.
-const PASS_MS = 20 * 60 * 1000;
 function collectedThisPass(o, d) {
-  return state.sightings.some((s) => s.objectId === o.id && Math.abs(d.getTime() - s.time) < PASS_MS);
+  return collectedDuringPass(state.sightings, o.id, d.getTime(), isSim());
 }
-
+$('t-unpin').addEventListener('click', () => { state.pinnedId = null; state.targetId = null; state.sticky.clear(); });
 $('t-action').addEventListener('click', () => {
+  const target = state.activeTarget;
   unlockAudio();
-  const target = state.candidates.find((c) => c.obj.id === state.targetId);
-  if (!target) return;
-  if ($('t-action').dataset.state === 'view') {
-    location.href = `cards.html#${encodeURIComponent(target.obj.card ?? target.obj.id)}`;
-    return;
-  }
+  if (!target || state.captureBusy) return;
+  if (collectedThisPass(target.obj, now())) { showCaptureCard(target.obj, isSim(), false); return; }
   capture(target.obj);
 });
-
-// Sets the card's button to Collect or View.
-function setAction(collected) {
-  const btn = $('t-action');
-  const want = collected ? 'view' : 'collect';
-  if (btn.dataset.state === want) return;
-  btn.dataset.state = want;
-  btn.className = want;
-  btn.textContent = collected ? 'View' : 'Collect';
+function setAction(collected, eligible = true) {
+  const btn = $('t-action'), practice = isSim();
+  btn.dataset.state = collected ? 'view' : 'collect';
+  btn.className = collected ? 'view' : 'collect';
+  btn.disabled = state.captureBusy || (!collected && !eligible);
+  btn.textContent = state.captureBusy ? 'Saving…' : collected ? (practice ? 'View practice card' : 'View your card') : !eligible ? 'Line up the target' : practice ? 'Practice capture' : 'Collect';
 }
-
+function cardModel(obj) { return state.cardModels.get(obj.card ?? String(obj.id)) ?? obj; }
+function cardSnapshot(obj) {
+  const { satrec, _label, _setColor, ...card } = cardModel(obj);
+  return card;
+}
+function showCaptureCard(obj, practice, fresh) {
+  const model = cardModel(obj), key = obj.card ?? String(obj.id);
+  const sightings = state.sightings.filter(s => !s.sim && (s.cardKey ?? String(s.objectId)) === key);
+  $('reveal-eyebrow').textContent = practice ? 'PRACTICE COMPLETE' : fresh ? 'FIRST DISCOVERY' : 'SIGHTING RECORDED';
+  $('reveal-title').textContent = practice ? 'This is what discovery feels like.' : fresh ? 'A piece of space history.' : 'A familiar light. A new memory.';
+  $('reveal-note').textContent = practice ? 'Practice sightings stay in your practice journal. Observe the real sky to earn this card.' : `${label(obj)} · saved on this device`;
+  const card = renderCard(model, { preview: practice, sightings: practice ? [] : sightings, seenMembers: new Set(sightings.map(s => s.objectId)).size });
+  $('reveal-card').replaceChildren(card); attachTilt(card);
+  $('reveal-view').hidden = practice;
+  $('reveal-view').href = `cards.html#${encodeURIComponent(key)}`;
+  openPanel('reveal');
+}
 async function capture(obj) {
-  const d = now();
-  const f = frame(d, state.observer);
-  const l = look(obj, f);
-  const m = motion(obj, d, state.observer);
-  const sighting = {
-    objectId: obj.id,
-    cardKey: obj.card,
-    name: obj.name,
-    type: obj.type,
-    year: obj.year,
-    time: d.getTime(),
-    loggedAt: Date.now(),
-    lat: state.observer.lat,
-    lon: state.observer.lon,
-    az: l?.az, el: l?.el, mag: l?.mag, rangeKm: l?.rangeKm,
-    heading: m?.heading,
-    sim: isSim(),
-    appVersion: VERSION,
-  };
-  await addSighting(sighting);
-  const before = state.sightings.some((s) => !s.sim && (s.cardKey ?? String(s.objectId)) === obj.card);
-  await loadSightings();
-  if (state.targetId === obj.id) setAction(true);
-  chirp([660, 880, 1320], 0.08);
-  const age = obj.year ? `Launched ${obj.year}` : '';
-  const cardLink = sighting.sim ? '' : '<br><small><u>Tap to see your card</u></small>';
-  toast(`<span class="big-line">${before ? 'Captured!' : 'New card!'}</span>${escapeHtml(label(obj))}<br><small>${age}${before ? ' · seen before' : ' · first sighting'}</small>${cardLink}`, 3500, sighting.sim ? null : `cards.html#${encodeURIComponent(obj.card)}`);
+  if (state.captureBusy) return;
+  const d = now(), f = frame(d, state.observer), l = look(obj, f), practice = isSim();
+  const basis = currentBasis();
+  const aligned = l && dot(enuFromAzEl(l.az, l.el), basis.back) > Math.cos(sky.reticleDeg * RAD);
+  if (!l || !canCapture({ visible: l.visible, aligned, practice, allowAny: state.captureAny })) { toast('Line up the object while it is visible to capture it.'); return; }
+  if (collectedDuringPass(state.sightings, obj.id, d.getTime(), practice)) { showCaptureCard(obj, practice, false); return; }
+  const m = motion(obj, d, state.observer), key = obj.card ?? String(obj.id);
+  const before = state.sightings.some(s => !s.sim && (s.cardKey ?? String(s.objectId)) === key);
+  const sighting = { objectId: obj.id, cardKey: key, name: obj.name, type: obj.type, year: obj.year, time: d.getTime(), loggedAt: Date.now(), lat: state.observer.lat, lon: state.observer.lon, az: l.az, el: l.el, mag: l.mag, rangeKm: l.rangeKm, heading: m?.heading, sim: practice, appVersion: VERSION, cardSnapshot: cardSnapshot(obj) };
+  state.captureBusy = true; setAction(false);
+  try {
+    const key = await addSighting(sighting);
+    state.sightings.unshift({ ...sighting, key });
+    $('log-count').textContent = state.sightings.filter(s => !s.sim).length || '';
+    chirp([660, 880, 1320], .08);
+    showCaptureCard(obj, practice, !before);
+  } catch {
+    toast('Your sighting could not be saved. Check that browser storage is available, then try again.', 5000);
+  } finally { state.captureBusy = false; setAction(collectedThisPass(obj, d)); }
 }
 
 // ---------- journal (sighting log) ----------
 
 async function loadSightings() {
-  state.sightings = await allSightings();
-  $('log-count').textContent = state.sightings.length || '';
+  try { state.sightings = await allSightings(); state.storageReady = true; } catch { state.storageReady = false; }
+  $('log-count').textContent = state.sightings.filter(s => !s.sim).length || '';
 }
 
 function renderLog() {
-  const list = $('log-list');
+  const list = $('log-list'), practice = $('journal-practice').checked;
+  const sightings = state.sightings.filter(s => !!s.sim === practice).sort((a,b) => (b.loggedAt ?? b.time) - (a.loggedAt ?? a.time));
   list.innerHTML = '';
-  if (!state.sightings.length) {
-    list.innerHTML = '<div class="empty">Nothing yet. Point at a moving light and tap Collect.</div>';
-    return;
-  }
-  for (const s of state.sightings) {
-    const row = document.createElement('div');
-    row.className = 'sighting';
-    const when = new Date(s.time).toLocaleString([], { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
-    const where = s.el != null ? `${Math.round(s.el)}° up in the ${compassPoint(s.az)}` : '';
-    const meta = [when, where, s.heading && `moving ${s.heading}`, s.year && `launched ${s.year}`, `#${s.objectId}`].filter(Boolean).join(' · ');
-    row.innerHTML = `<div><div><span class="name"></span>${s.sim ? '<span class="badge">SIM</span>' : ''}</div><div class="meta"></div></div><button>Delete</button>`;
-    row.querySelector('.name').textContent = shortName(s.name);
-    row.querySelector('.meta').textContent = meta;
+  if (!sightings.length) { list.innerHTML = `<div class="empty">${state.storageReady ? practice ? 'No practice sightings yet. Try a pass to learn the flow.' : 'Your story starts with a moving light. Collect your first object to begin.' : 'Your journal could not be read. Browser storage may be unavailable.'}</div>`; return; }
+  let day = '';
+  for (const s of sightings) {
+    const date = new Date(s.loggedAt ?? s.time), group = date.toLocaleDateString([], { weekday:'long', month:'long', day:'numeric', year:'numeric' });
+    if (group !== day) { const h = document.createElement('h3'); h.className='session-title'; h.textContent=group; list.appendChild(h); day=group; }
+    const row = document.createElement('div'); row.className='sighting';
+    const key = s.cardKey ?? String(s.objectId), model = state.cardModels.get(key) ?? s.cardSnapshot;
+    const name = model ? titleFor(model) : shortName(s.name);
+    row.innerHTML = `<div class="grow">${s.sim ? `<span class="name">${escapeHtml(name)}</span><span class="badge">PRACTICE</span>` : `<a class="name" href="cards.html#${encodeURIComponent(key)}">${escapeHtml(name)} ↗</a>`}<div class="meta">${date.toLocaleTimeString([], {hour:'numeric',minute:'2-digit'})}${s.el != null ? ` · ${Math.round(s.el)}° up in the ${compassPoint(s.az)}` : ''}${s.sim ? '<br>Not part of your earned collection' : ''}</div></div><details><summary aria-label="Sighting actions">···</summary><button type="button">Delete sighting</button></details>`;
     row.querySelector('button').addEventListener('click', async () => {
-      if (!confirm(`Delete this sighting of ${shortName(s.name)}?`)) return;
-      await deleteSighting(s.key);
-      await loadSightings();
-      renderLog();
+      if (!confirm(`Delete this sighting of ${name}?`)) return;
+      try { await deleteSighting(s.key); await loadSightings(); renderLog(); } catch { toast('Could not delete this sighting. Try again.'); }
     });
     list.appendChild(row);
   }
 }
+$('journal-practice').addEventListener('change', renderLog);
 
 // ---------- visible now ----------
 
@@ -500,8 +569,9 @@ function renderVisible() {
   const vis = state.items.filter((i) => i.look.visible).sort((a, b) => a.look.mag - b.look.mag);
   $('visible-hint').textContent = vis.length
     ? `Brightest first. ${state.drag.on || !hasLiveSensors() ? 'Tap one to look at it.' : 'Look where it says and hold your phone up.'}`
-    : 'Nothing visible right now. Satellites show up after dusk and before dawn.';
+    : 'Nothing visible right now. Find a predicted pass and try it in practice.';
   list.innerHTML = '';
+  if (!vis.length) { const b=document.createElement('button'); b.className='big'; b.textContent='Find a visible pass'; b.addEventListener('click',()=>previewPass()); list.appendChild(b); }
   for (const it of vis.slice(0, 60)) {
     const o = it.obj, tier = TIER_INFO[o.tier] ?? TIER_INFO.common;
     const row = document.createElement('button');
@@ -511,25 +581,22 @@ function renderVisible() {
     row.querySelector('.name').textContent = label(o);
     row.querySelector('.meta').textContent = `${tier.label} · mag ${it.look.mag.toFixed(1)} (${brightnessWord(it.look.mag)}) · ${Math.round(it.look.el)}° up in the ${compassPoint(it.look.az)}`;
     row.addEventListener('click', () => {
-      if (state.drag.on || !hasLiveSensors()) {
-        state.drag.on = true;
-        state.drag.az = it.look.az;
-        state.drag.el = it.look.el;
-        $('visible').hidden = true;
-      } else {
-        toast(`Look <b>${Math.round(it.look.el)}° up</b> in the <b>${compassPoint(it.look.az)}</b>`, 2500);
-      }
+      cancelPassSearch();
+      state.pinnedId = o.id; state.targetId = o.id;
+      if (state.drag.on || !hasLiveSensors()) { state.drag.on = true; state.drag.az = it.look.az; state.drag.el = it.look.el; }
+      closePanel('visible');
     });
     list.appendChild(row);
   }
 }
-$('visible-pill').addEventListener('click', () => { renderVisible(); $('visible').hidden = false; });
+$('visible-pill').addEventListener('click', () => { renderVisible(); openPanel('visible'); });
 
 // ---------- drag to look ----------
 
 let dragStart = null;
 $('sky').addEventListener('pointerdown', (e) => {
   if (!state.drag.on && hasLiveSensors()) return;
+  state.followPreview = false;
   dragStart = { x: e.clientX, y: e.clientY, az: state.drag.az, el: state.drag.el };
   $('sky').setPointerCapture(e.pointerId);
 });
@@ -544,30 +611,95 @@ $('sky').addEventListener('pointercancel', () => { dragStart = null; });
 
 // ---------- nav & panels ----------
 
-function openDebug() { renderDebug(); $('debug').hidden = false; }
+let activePanel = null, panelReturn = null;
+function openPanel(id) {
+  if (activePanel) $(activePanel).hidden = true;
+  else panelReturn = document.activeElement;
+  activePanel = id; $(id).hidden = false; $('hud').inert = true;
+  $(id).querySelector('button, a, input')?.focus({ preventScroll: true });
+}
+function closePanel(id = activePanel) {
+  if (!id) return;
+  $(id).hidden = true; activePanel = null; $('hud').inert = false;
+  if (panelReturn?.isConnected) panelReturn.focus({ preventScroll: true });
+}
+function openDebug() { renderDebug(); renderLocation(); openPanel('debug'); }
 $('nav-more').addEventListener('click', openDebug);
-$('nav-journal').addEventListener('click', () => { renderLog(); $('log').hidden = false; });
-$('nav-explore').addEventListener('click', () => { for (const id of ['log', 'debug', 'visible']) $(id).hidden = true; });
-document.querySelectorAll('[data-close]').forEach((b) => b.addEventListener('click', () => { $(b.dataset.close).hidden = true; }));
+$('nav-journal').addEventListener('click', () => { renderLog(); openPanel('log'); });
+$('nav-explore').addEventListener('click', () => closePanel());
+$('location-status').addEventListener('click', openDebug);
+$('reveal-continue').addEventListener('click', () => closePanel('reveal'));
+$('retry-location').addEventListener('click', requestLocation);
+$('retry-motion').addEventListener('click', enableMotion);
+$('location-form').addEventListener('submit', e => {
+  e.preventDefault();
+  const lat = Number($('latitude').value), lon = Number($('longitude').value);
+  if (!Number.isFinite(lat) || !Number.isFinite(lon) || Math.abs(lat)>90 || Math.abs(lon)>180) return;
+  locationRequest++;
+  state.observer = { lat, lon, label:'Chosen location' }; state.locationStatus='manual';
+  state.model?.reset(); state.trails.clear(); cancelPassSearch(); renderLocation(); refreshAbove();
+});
+document.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', () => closePanel(b.dataset.close)));
+document.addEventListener('keydown', e => {
+  if (!activePanel) return;
+  if (e.key === 'Escape') { closePanel(); return; }
+  if (e.key !== 'Tab') return;
+  const focusables = [...$(activePanel).querySelectorAll('button,a[href],input,summary')].filter(n => !n.disabled && n.getClientRects().length);
+  const first=focusables[0], last=focusables.at(-1);
+  if (e.shiftKey && document.activeElement===first) { e.preventDefault(); last?.focus(); }
+  else if (!e.shiftKey && document.activeElement===last) { e.preventDefault(); first?.focus(); }
+});
 
 document.querySelectorAll('[data-time]').forEach((b) => b.addEventListener('click', () => {
+  cancelPassSearch();
   const v = b.dataset.time;
   state.timeOffsetMs = v === 'now' ? 0 : state.timeOffsetMs + Number(v) * 1000;
   afterTimeJump();
 }));
 
-$('btn-next-pass').addEventListener('click', () => {
-  const pass = nextVisiblePass(state.catalog.objects, new Date(now().getTime() + 60000), state.observer, 48);
-  if (!pass) { toast('No visible passes in the next 48 hours.'); return; }
-  state.timeOffsetMs = pass.date.getTime() - Date.now();
-  if (state.drag.on || !hasLiveSensors()) {
-    state.drag.az = pass.look.az;
-    state.drag.el = pass.look.el;
-  }
+let passWorker = null, passRequest = 0, passBusy = false, passTimer = null;
+function cancelPassSearch() { passRequest++; passWorker?.terminate(); passWorker=null; passBusy=false; clearTimeout(passTimer); $('btn-next-pass').disabled=false; $('empty-iss').disabled=false; $('empty-next').disabled=false; }
+function previewPass(objectId = null) {
+  if (!state.catalog || passBusy) return;
+  cancelPassSearch(); passBusy=true;
+  const requestId = ++passRequest;
+  $('btn-next-pass').disabled=true; $('empty-iss').disabled=true; $('empty-next').disabled=true;
+  $('next-pass-info').textContent='Searching predicted passes in the next 48 hours…';
+  const start = new Date(Math.max(Date.now(), now().getTime()) + 60000);
+  try {
+    passWorker = new Worker(new URL(`./pass-worker.js?v=${VERSION}`, import.meta.url), { type:'module' });
+    const fail = () => { if (requestId!==passRequest) return; cancelPassSearch(); $('next-pass-info').textContent='Pass search could not finish. Try again.'; toast('Pass search could not finish. You can retry or browse the visible sky.',4500); };
+    passWorker.onerror = fail;
+    passTimer=setTimeout(fail,45000);
+    passWorker.onmessage = ({data}) => {
+      if (data.requestId!==passRequest) return;
+      cancelPassSearch();
+      if (data.error || !data.pass) { $('next-pass-info').textContent=objectId ? 'No suitable ISS pass found in the next 48 hours for this place. Try another visible object.' : 'No bright pass found in the next 48 hours. Try another location or binocular mode.'; toast($('next-pass-info').textContent,5000); return; }
+      const pass=data.pass, obj=state.byId.get(pass.objectId);
+      state.preview=true; state.followPreview=true; state.timeOffsetMs=pass.dateMs-Date.now(); state.drag.on=true; state.drag.az=pass.look.az; state.drag.el=pass.look.el; state.pinnedId=obj.id; state.targetId=obj.id;
+      afterTimeJump(); closePanel();
+      $('next-pass-info').textContent='';
+      toast(`<span class="big-line">Practice pass</span>${escapeHtml(label(obj))}<br><small>${new Date(pass.dateMs).toLocaleString()} · ${escapeHtml(state.observer.label)}</small>`,4000);
+    };
+    passWorker.postMessage({requestId,objects:state.catalog.objects.filter(o=>o.stdMag<=4.5 || o.id===objectId),objectId,dateMs:start.getTime(),observer:state.observer,binoculars:state.binoculars});
+  } catch { cancelPassSearch(); toast('Pass preview is unavailable in this browser. Try the visible-object list.'); }
+}
+$('btn-next-pass').addEventListener('click', () => previewPass());
+$('empty-next').addEventListener('click', () => { if (state.items.some(i=>i.look.visible)) { renderVisible(); openPanel('visible'); } else previewPass(); });
+$('empty-iss').addEventListener('click', () => { saveExploreState(); location.href = 'cards.html#25544'; });
+$('btn-live').addEventListener('click', async () => {
+  cancelPassSearch(); state.preview=false; state.followPreview=false; state.timeOffsetMs=0; state.captureAny=false; state.showDim=false; state.pinnedId=null; $('chk-any').checked=false; $('chk-dim').checked=false;
+  await enableMotion();
+  if (!['ready','manual'].includes(state.locationStatus)) requestLocation();
   afterTimeJump();
-  $('debug').hidden = true;
-  toast(`<span class="big-line">${escapeHtml(label(pass.obj))}</span>${Math.round(pass.look.el)}° up in the ${compassPoint(pass.look.az)}`);
 });
+async function enableMotion() {
+  let ok=false; try { ok=await startSensors(); } catch {}
+  state.drag.on=!ok;
+  if (!ok) toast('Motion is unavailable. You can drag to explore in practice.',4000);
+  $('chk-drag').checked=state.drag.on;
+  return ok;
+}
 
 function afterTimeJump() {
   state.model?.reset();
@@ -579,7 +711,9 @@ function afterTimeJump() {
 }
 
 $('chk-night').checked = state.night;
-$('chk-night').addEventListener('change', (e) => { state.night = e.target.checked; writePref('night', state.night); applyTheme(); });
+function toggleNight(on) { state.night=on; $('chk-night').checked=on; writePref('night',on); applyTheme(); }
+$('chk-night').addEventListener('change', e => toggleNight(e.target.checked));
+$('night-toggle').addEventListener('click', () => toggleNight(!state.night));
 $('chk-drag').addEventListener('change', (e) => {
   state.drag.on = e.target.checked;
   if (state.drag.on && state.basis) {
@@ -595,6 +729,7 @@ $('chk-lines').addEventListener('change', (e) => { state.showLines = e.target.ch
 $('chk-any').addEventListener('change', (e) => { state.captureAny = e.target.checked; });
 $('chk-bino').checked = state.binoculars;
 $('chk-bino').addEventListener('change', (e) => {
+  cancelPassSearch();
   state.binoculars = e.target.checked;
   writePref('binoculars', state.binoculars);
   setBinocularMode(state.binoculars);
@@ -608,7 +743,7 @@ document.querySelectorAll('[data-nudge]').forEach((b) => b.addEventListener('cli
 
 function renderDebug() {
   const d = now();
-  $('sim-time-label').textContent = `${d.toLocaleString()}${state.timeOffsetMs ? ' (simulated)' : ' (live)'}`;
+  $('sim-time-label').textContent = `${d.toLocaleString()}${state.timeOffsetMs ? ' (simulated)' : ' (current time)'}`;
   const n = getNudge();
   $('nudge-label').textContent = n ? `${n > 180 ? n - 360 : n}°` : '';
   $('chk-drag').checked = state.drag.on;
@@ -618,7 +753,7 @@ function renderDebug() {
   $('debug-info').textContent = [
     `version        v${VERSION}`,
     `location       ${state.observer.lat.toFixed(3)}, ${state.observer.lon.toFixed(3)} (${state.observer.label ?? ''})`,
-    `sensors        ${pointing.source}${hasLiveSensors() ? ' (live)' : ' (none)'}`,
+    `sensors        ${pointing.source}${hasLiveSensors() ? ' (current time)' : ' (none)'}`,
     `compass acc.   ${pointing.compassAccuracy ?? 'n/a'}`,
     `heading offset ${pointing.headingOffset.toFixed(1)}°`,
     `sun elevation  ${f ? f.sunEl.toFixed(1) : '?'}°`,
@@ -628,42 +763,58 @@ function renderDebug() {
   ].join('\n');
 }
 
-// ---------- start ----------
-
+// ---------- start and return from the collection ----------
+function enterSky() {
+  state.started=true; $('start').hidden=true; $('hud').hidden=false;
+  if (!state.storageReady) toast('Browser storage is unavailable. Captures may not save.',5000);
+  refreshAbove();
+}
 $('btn-start').addEventListener('click', async () => {
-  unlockAudio();
-  $('btn-start').disabled = true;
-  $('btn-start').textContent = 'Starting…';
-  let sensorsOk = false;
-  try { sensorsOk = await startSensors(); } catch {}
-  requestLocation();
-  keepAwake();
-  navigator.storage?.persist?.();
-  $('start').hidden = true;
-  $('hud').hidden = false;
-  // Desktop / no sensors: fall back to drag mode after a moment with no orientation events.
-  setTimeout(() => {
-    if (!hasLiveSensors()) {
-      state.drag.on = true;
-      toast(sensorsOk ? 'No motion data yet, so drag to look around.' : 'No motion sensors here. Drag to look around.');
-    }
-  }, 1500);
+  if (!state.catalog) { location.reload(); return; }
+  $('btn-start').disabled=true;
+  await enableMotion();
+  requestLocation(); keepAwake(); navigator.storage?.persist?.().catch(() => {});
+  state.preview=false; enterSky();
 });
-
+$('btn-preview').addEventListener('click', () => {
+  state.preview=true; state.drag.on=true; enterSky(); previewPass();
+});
+function saveExploreState() {
+  if (!state.started) return;
+  try { sessionStorage.setItem('space-collector.explore',JSON.stringify({ observer:state.observer, locationStatus:state.locationStatus, timeOffsetMs:state.timeOffsetMs, drag:state.drag, preview:state.preview, followPreview:state.followPreview, pinnedId:state.pinnedId })); } catch {}
+}
+document.addEventListener('click', e => { if (e.target.closest('a[href^="cards.html"]')) saveExploreState(); });
+window.addEventListener('pagehide',saveExploreState);
 async function boot() {
   try {
-    state.catalog = await loadCatalog('data/catalog.json');
-    state.model = new SkyModel(state.catalog.objects);
-    setBinocularMode(state.binoculars);
-    for (const o of state.catalog.objects) if (o.family) state.familyCounts.set(o.card, (state.familyCounts.get(o.card) ?? 0) + 1);
-  } catch (e) {
-    $('start-note').textContent = `Couldn't load satellite data: ${e.message}`;
-    return;
+    state.catalog=await loadCatalog('data/catalog.json');
+    state.byId=new Map(state.catalog.objects.map(o=>[o.id,o]));
+    state.cardModels=new Map(buildCards(state.catalog).map(c=>[c.key,c]));
+    state.model=new SkyModel(state.catalog.objects); setBinocularMode(state.binoculars);
+    for (const o of state.catalog.objects) if (o.family) state.familyCounts.set(o.card,(state.familyCounts.get(o.card)??0)+1);
+  } catch {
+    $('start-note').textContent='Satellite data could not load. Check your connection and reload to try again.';
+    $('btn-start').textContent='Reload satellite data'; $('btn-start').disabled=false;
+    $('btn-start').onclick=()=>location.reload(); return;
   }
-  try { state.sky = await loadSky('data/sky.json'); } catch {}
-  await loadLore();
-  await loadSightings();
-  checkForUpdate();
-  requestAnimationFrame(tick);
+  try { state.sky=await loadSky('data/sky.json'); } catch {}
+  await loadLore(); await loadSightings();
+  state.locationStatus=loadSavedLocation()?'saved':'example'; renderLocation();
+  const iss=state.byId.get(25544); if (iss) $('start-art').innerHTML=cardArt(iss,{w:380,h:200});
+  $('btn-start').textContent='Observe the sky'; $('btn-start').disabled=false; $('btn-preview').disabled=false;
+  const params=new URLSearchParams(location.search);
+  if(params.has('resume')) {
+    try {
+      const saved=JSON.parse(sessionStorage.getItem('space-collector.explore'));
+      if(saved) {
+        state.observer=saved.observer; state.locationStatus=['manual','example'].includes(saved.locationStatus)?saved.locationStatus:'saved';
+        state.timeOffsetMs=saved.timeOffsetMs??0; state.drag=saved.drag; state.preview=!!saved.preview; state.followPreview=!!saved.followPreview; state.pinnedId=saved.pinnedId;
+        if(!state.preview && !state.drag.on) { startSensors().catch(()=>{}); requestLocation(); }
+        renderLocation(); enterSky();
+        if(params.get('panel')==='journal') { renderLog(); openPanel('log'); }
+      }
+    } catch {}
+  }
+  checkForUpdate(); requestAnimationFrame(tick);
 }
 boot();
