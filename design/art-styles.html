@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Card Art Styles</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Bebas+Neue&family=Space+Grotesk:wght@400;600;700&family=IBM+Plex+Mono:wght@400;600&family=Archivo+Black&family=Cormorant+Garamond:wght@500;700&family=Playfair+Display:wght@700;900&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Bebas+Neue&family=Space+Grotesk:wght@400;600;700&family=IBM+Plex+Mono:wght@400;600&family=Archivo+Black&family=Cormorant+Garamond:wght@500;700&family=Playfair+Display:wght@700;900&family=Inter:wght@400;600&family=Pixelify+Sans:wght@400;600&family=Barlow:wght@300;500;600&family=Barlow+Condensed:wght@500;600&display=swap" rel="stylesheet">
 <style>
   :root { --bg: #101218; --text: #e9ecf2; --muted: #9aa3b2; }
   body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.5 system-ui, sans-serif; padding: 24px 16px 60px; }
@@ -103,6 +103,40 @@
   .deck .tl { top: 12px; left: 12px; } .deck .br { bottom: 12px; right: 12px; transform: rotate(180deg); }
   .deck .face { position: absolute; inset: 48px 40px; border: 2px solid #b3202a; border-radius: 6px; overflow: hidden; }
   .deck .lbl { position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); text-align: center; font-size: 11px; letter-spacing: 0.2em; color: #1f2a44; font-family: 'Inter', sans-serif; font-weight: 600; background: #fbf8f1; padding: 3px 0; border-block: 1px solid #b3202a; }
+
+  /* I. Stardew-like cozy pixel */
+  .dew { background: #b86f32; border-radius: 10px; padding: 7px; box-sizing: border-box; font-family: 'Pixelify Sans', sans-serif; box-shadow: inset 0 0 0 3px #6b3a17, inset 0 0 0 5px #e39a4e, 0 10px 30px #0008; }
+  .dew .in { background: #f7deb0; height: 100%; border-radius: 6px; box-shadow: inset 0 0 0 3px #d69c5a; padding: 10px; box-sizing: border-box; color: #4a2a12; }
+  .dew .art { height: 150px; border-radius: 4px; overflow: hidden; box-shadow: 0 0 0 3px #6b3a17; image-rendering: pixelated; }
+  .dew .nm { font-size: 22px; font-weight: 600; margin-top: 10px; }
+  .dew .cat { font-size: 14px; color: #c4531c; }
+  .dew hr { border: 0; border-top: 2px solid #d69c5a; margin: 6px 0; }
+  .dew .desc { font-size: 14px; line-height: 1.25; }
+  .dew .st { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 14px; margin-top: 6px; }
+  .dew .st span::before { content: '◆ '; color: #3c8a3f; }
+  .dew .gold { margin-top: 6px; font-size: 14px; } .dew .gold b { color: #b8860b; }
+
+  /* J. NASA-inspired Swiss modernism */
+  .nasa { background: #fff; color: #111; font-family: 'Inter', 'Helvetica Neue', Helvetica, sans-serif; border: 1px solid #ddd; }
+  .nasa .bar { height: 10px; background: #fc3d21; }
+  .nasa .hd { display: flex; justify-content: space-between; padding: 10px 14px 0; font-size: 9px; letter-spacing: 0.12em; font-weight: 600; color: #fc3d21; }
+  .nasa .nm { font-size: 30px; font-weight: 600; line-height: 1; letter-spacing: -0.02em; padding: 8px 14px 10px; }
+  .nasa .art { height: 118px; margin: 0 14px; }
+  .nasa .grid { display: grid; grid-template-columns: 1fr 1fr; margin: 10px 14px 0; border-top: 2px solid #111; }
+  .nasa .grid div { padding: 5px 0; border-bottom: 1px solid #ccc; font-size: 12px; font-weight: 600; }
+  .nasa .grid small { display: block; font-size: 8px; letter-spacing: 0.12em; color: #777; font-weight: 600; }
+  .nasa .ft { position: absolute; bottom: 10px; left: 14px; right: 14px; display: flex; justify-content: space-between; font-size: 8.5px; letter-spacing: 0.12em; color: #777; font-weight: 600; }
+
+  /* K. SpaceX-inspired */
+  .sx { background: #000; color: #fff; font-family: 'Barlow', sans-serif; }
+  .sx .art { position: absolute; inset: 0; filter: grayscale(1) contrast(1.25) brightness(0.9); }
+  .sx .veil { position: absolute; inset: 0; background: linear-gradient(#000a, transparent 30%, transparent 55%, #000 85%); }
+  .sx .top { position: absolute; top: 14px; left: 16px; right: 16px; display: flex; justify-content: space-between; font-size: 9px; letter-spacing: 0.25em; font-weight: 500; color: #ccc; }
+  .sx .body { position: absolute; left: 16px; right: 16px; bottom: 16px; }
+  .sx .nm { font-family: 'Barlow Condensed', sans-serif; font-size: 30px; font-weight: 600; letter-spacing: 0.08em; line-height: 1; text-transform: uppercase; }
+  .sx .specs { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 12px; border-top: 1px solid #fff5; padding-top: 8px; }
+  .sx .specs div { font-size: 16px; font-weight: 300; } .sx .specs small { display: block; font-size: 8px; letter-spacing: 0.22em; color: #aaa; font-weight: 500; }
+  .sx .btn { display: inline-block; margin-top: 12px; border: 1px solid #fff; padding: 7px 16px; font-size: 10px; letter-spacing: 0.25em; font-weight: 600; }
 </style>
 </head>
 <body>
@@ -222,6 +256,53 @@
       </div>
       <h2>H. Playing card</h2>
       <p>A classic deck with corner indices and a mirrored face-card picture. Suit = type (♥ stations, ♠ rocket stages, ♦ satellites, ♣ debris) and rank = rarity (Ace Legendary, King Epic, Queen Rare, Jack Uncommon, numbers Common). The ISS is the Ace of Hearts. A full collection could even be a playable deck.</p>
+    </div>
+
+
+    <div class="opt">
+      <div class="card dew"><div class="in">
+        <div class="art" id="i-art"></div>
+        <div class="nm">Space Station</div>
+        <div class="cat">Legendary Station</div>
+        <hr>
+        <div class="desc">A cozy little house in the sky. Someone up there is probably having breakfast.</div>
+        <div class="st"><span>420 km up</span><span>7.7 km/s</span><span>27 yrs old</span></div>
+        <div class="gold">Times seen: <b>3</b></div>
+      </div></div>
+      <h2>I. Stardew Valley style</h2>
+      <p>Warm cozy pixel art with a wooden frame and a parchment item tooltip. Soft dusk colours, gentle funny descriptions, and it reads like an item you found. Friendly and relaxing.</p>
+    </div>
+
+    <div class="opt">
+      <div class="card nasa">
+        <div class="bar"></div>
+        <div class="hd"><span>OBJECT 25544</span><span>1998-067A</span></div>
+        <div class="nm">International<br>Space Station</div>
+        <div class="art" id="j-art"></div>
+        <div class="grid">
+          <div><small>CLASS</small>Legendary</div><div><small>TYPE</small>Crewed station</div>
+          <div><small>LAUNCH</small>20 Nov 1998</div><div><small>SITE</small>Baikonur</div>
+          <div><small>ALTITUDE</small>420 km</div><div><small>INCLINATION</small>51.6°</div>
+        </div>
+        <div class="ft"><span>SPACE COLLECTOR</span><span>001</span></div>
+      </div>
+      <h2>J. NASA design</h2>
+      <p>Inspired by the 1975 NASA graphics manual: Helvetica-style type, one bold red, a strict grid and clean flat art. Official and timeless. We'd borrow the look only, not NASA's logos, which it restricts.</p>
+    </div>
+
+    <div class="opt">
+      <div class="card sx">
+        <div class="art" id="k-art"></div>
+        <div class="veil"></div>
+        <div class="top"><span>LEGENDARY</span><span>25544</span></div>
+        <div class="body">
+          <div class="nm">International<br>Space Station</div>
+          <div class="specs"><div><small>ALTITUDE</small>420 KM</div><div><small>SPEED</small>7.7 KM/S</div><div><small>IN ORBIT</small>27 YRS</div></div>
+          <span class="btn">NEXT PASS  21:42</span>
+        </div>
+      </div>
+      <h2>K. SpaceX design</h2>
+      <p>Black and white, cinematic dark imagery, wide uppercase letter spacing and thin rules. It's minimal, premium and serious, and it feels like a mission-control product. Again the look only, no SpaceX branding.</p>
     </div>
 
   </div>
@@ -364,6 +445,50 @@ document.getElementById('g-art').innerHTML = svg(280, 392, `
   </g>`;
   document.getElementById('h-art').insertAdjacentHTML('afterbegin', svg(196, 296, `${half}<g transform="rotate(180 98 148)">${half}</g><line x1="0" y1="148" x2="196" y2="148" stroke="#b3202a"/>`));
 })();
+
+// I: Stardew-like pixel scene
+(() => {
+  const P = 5, W = 60, H = 30;
+  let out = '';
+  const bands = ['#3b2a6b', '#5a3a86', '#8a4d93', '#c2638a', '#ec8a6e', '#f7b76b'];
+  for (let y = 0; y < 22; y++) for (let x = 0; x < W; x++) {
+    const t = y / 22 * (bands.length - 1), i = Math.floor(t), f = t - i;
+    const c = ((x + y) % 2 === 0 && f > 0.5) ? bands[Math.min(i + 1, bands.length - 1)] : bands[i];
+    out += `<rect x="${x * P}" y="${y * P}" width="${P}" height="${P}" fill="${c}"/>`;
+  }
+  let s = 3; const r = () => ((s = (s * 16807) % 2147483647) / 2147483647);
+  for (let i = 0; i < 22; i++) { const x = Math.floor(r() * W), y = Math.floor(r() * 10); out += `<rect x="${x * P}" y="${y * P}" width="${P}" height="${P}" fill="#fff8d6" opacity="${.5 + r() * .5}"/>`; }
+  for (let x = 0; x < W; x++) {
+    const h1 = 22 + Math.round(Math.sin(x / 7) * 2 + Math.sin(x / 3) * 0.7);
+    for (let y = h1; y < H; y++) out += `<rect x="${x * P}" y="${y * P}" width="${P}" height="${P}" fill="${y === h1 ? '#6fb356' : '#3f7d3a'}"/>`;
+  }
+  for (const tx of [6, 11, 47, 53]) {
+    for (let k = 0; k < 4; k++) for (let dx = -k; dx <= k; dx++) out += `<rect x="${(tx + dx) * P}" y="${(15 + k) * P}" width="${P}" height="${P}" fill="#2f5e2c"/>`;
+    out += `<rect x="${tx * P}" y="${19 * P}" width="${P}" height="${P * 3}" fill="#6b3a17"/>`;
+  }
+  const iss = [
+    'pp.pp....pp.pp',
+    'pp.pp....pp.pp',
+    'pp.pp.ww.pp.pp',
+    'tttttwwwwttttt',
+    'pp.pp.ww.pp.pp',
+    'pp.pp....pp.pp',
+  ];
+  const col = { p: '#4d6fd1', t: '#d8d2e8', w: '#ffffff' };
+  iss.forEach((row, y) => [...row].forEach((c, x) => { if (col[c]) out += `<rect x="${95 + x * 8}" y="${22 + y * 8}" width="8" height="8" fill="${col[c]}"/>`; }));
+  
+  document.getElementById('i-art').innerHTML = svg(W * P, H * P, out);
+})();
+
+// J: NASA-style flat, clean
+document.getElementById('j-art').innerHTML = svg(252, 150, `
+  <rect width="252" height="150" fill="#0b1e3f"/>
+  ${stars(30, 252, 100, '#fff', 23)}
+  <circle cx="126" cy="360" r="250" fill="#1f5fae"/><circle cx="126" cy="360" r="250" fill="none" stroke="#fff" stroke-width="1.2"/>
+  <g transform="translate(126 62) scale(.78)">${issShape({ panel: '#ffffff', body: '#ffffff', truss: '#ffffff' })}<rect x="-38" y="-10" width="76" height="20" rx="9" fill="#fc3d21"/></g>`);
+
+// K: SpaceX-style, reuse realistic render in monochrome
+document.getElementById('k-art').innerHTML = document.getElementById('g-art').innerHTML;
 </script>
 </body>
 </html>
