@@ -1,9 +1,13 @@
 // Card titles and facts. Order: hand-written (data/lore.json) → rocket/satellite family fact →
 // a fact computed from the orbit. Facts use **bold** for emphasis. Keep every fact true.
 
-import { orbitStats, titleCase } from './facts.js';
+import { orbitStats, titleCase } from './facts.js?v=0.1.9';
 
 const FAMILY = [
+  [/^IRIDIUM 33 DEB/, 'A piece of the **first-ever crash between two satellites**: Iridium 33 hit the dead Cosmos 2251 in 2009.'],
+  [/^COSMOS 2251 DEB/, 'Left over from the **first-ever crash between two satellites**, when this dead satellite hit Iridium 33 in 2009.'],
+  [/^FENGYUN 1C DEB/, 'Debris from a weather satellite China **destroyed with a missile** in a 2007 test, which created a huge cloud of junk.'],
+  [/^COSMOS 1408 DEB/, 'Debris from an old satellite Russia **destroyed with a missile** in 2021. The ISS crew had to shelter from the cloud.'],
   [/^SL-3\b/, 'Same rocket family that carried **Yuri Gagarin**, the first human in space, in 1961.'],
   [/^SL-8\b/, 'From the Kosmos-3M, a Soviet workhorse rocket that flew **more than 400 times**.'],
   [/^SL-14\b/, 'From a Tsyklon-3, a Ukrainian-built rocket launched from Plesetsk in **Russia\'s far north**.'],
@@ -28,7 +32,10 @@ export async function loadLore(url = 'data/lore.json') {
   return loreCache;
 }
 
+const shortDate = (iso) => new Date(`${iso}T12:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+
 export function titleFor(o) {
+  if (o.members) return `${o.familyName} train, ${o.launch ? shortDate(o.launch) : 'unknown date'}`;
   const hand = loreCache?.[o.id]?.title;
   if (hand) return hand;
   return titleCase(o.name)
@@ -76,7 +83,15 @@ export function computedFacts(o, now = new Date()) {
   return out;
 }
 
+function familyFact(o, now) {
+  const days = o.launch ? (now - new Date(`${o.launch}T00:00:00Z`)) / 86400000 : 999;
+  const lead = `**${o.members.length} ${o.familyName} satellites** from one launch${o.maker ? ` by ${o.maker}` : ''}.`;
+  if (days < 30) return `${lead} Fresh from launch, they still fly in a line like a **string of pearls**.`;
+  return `${lead} They've since spread out into a web around the planet. Catch as many as you can.`;
+}
+
 export function factFor(o, now = new Date()) {
+  if (o.members) return familyFact(o, now);
   const hand = loreCache?.[o.id]?.fact;
   if (hand) return hand;
   const fam = FAMILY.find(([re]) => re.test(o.name));
@@ -86,7 +101,8 @@ export function factFor(o, now = new Date()) {
 }
 
 // Third stat on the card: hand-written override, or size.
-export function thirdStat(o, sizeLabel) {
+export function thirdStat(o, sizeLabel, seenMembers = 0) {
+  if (o.members) return { label: 'SEEN', value: `${seenMembers} / ${o.members.length}` };
   const s = loreCache?.[o.id]?.stat;
   return s ? { label: s[0], value: s[1] } : { label: 'SIZE', value: sizeLabel };
 }

@@ -11,7 +11,8 @@ export const SETS = [
   { id: 'red-stars', name: 'Red Stars', color: '#8c2334', test: (o) => o.type === 'rocket-body' && o.owner === 'CIS' },
   { id: 'rocket-stages', name: 'Rocket Stages', color: '#2f3237', test: (o) => o.type === 'rocket-body' },
   { id: 'dead-sats', name: 'Dead Satellites Society', color: '#6b5b95', test: isDead },
-  { id: 'mega', name: 'Mega-constellations', color: '#7c8591', test: (o) => /^(STARLINK|ONEWEB|QIANFAN|GUOWANG|KUIPER|IRIDIUM|GLOBALSTAR|ORBCOMM|SPACEMOBILE|BLUEBIRD)/.test(o.name) },
+  { id: 'junk', name: 'Space Junk', color: '#a0673a', test: (o) => o.type === 'debris' },
+  { id: 'mega', name: 'Mega-constellations', color: '#7c8591', test: (o) => !!o.family || /^(STARLINK|ONEWEB|QIANFAN|GUOWANG|KUIPER|IRIDIUM|GLOBALSTAR|ORBCOMM|SPACEMOBILE|BLUEBIRD)/.test(o.name) },
   { id: 'nations', name: 'Launch Nations', color: '#1f6fd1', test: () => true },
 ];
 

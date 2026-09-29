@@ -12,7 +12,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="apple-touch-icon" href="icons/icon-180.png">
   <link rel="icon" href="icons/icon-192.png">
-  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/app.css?v=0.1.9">
 </head>
 <body>
   <canvas id="sky"></canvas>
@@ -87,6 +87,7 @@
     <h3>Sky</h3>
     <label class="row"><input type="checkbox" id="chk-stars" checked> Stars, planets &amp; Moon</label>
     <label class="row"><input type="checkbox" id="chk-lines" checked> Constellation lines</label>
+    <label class="row"><input type="checkbox" id="chk-bino"> Binocular mode: also show objects too faint for the naked eye (down to magnitude 8)</label>
     <label class="row"><input type="checkbox" id="chk-dim"> Show objects that aren't visible (shadowed, faint, daylight)</label>
     <label class="row"><input type="checkbox" id="chk-any"> Allow capturing objects that aren't visible (testing)</label>
 
@@ -94,6 +95,6 @@
     <pre id="debug-info"></pre>
   </section>
 
-  <script type="module" src="js/main.js"></script>
+  <script type="module" src="js/main.js?v=0.1.9"></script>
 </body>
 </html>

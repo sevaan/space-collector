@@ -1,0 +1,33 @@
+# Refreshes the satellite catalogue from CelesTrak once a day, so new Starlink trains show up and
+# objects that have reentered drop out. Only commits when the data changed.
+name: Daily catalogue
+
+on:
+  schedule:
+    - cron: '17 9 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: node scripts/build-catalog.mjs
+      - name: Commit if changed
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if git diff --quiet -- data/catalog.json; then echo "No change"; exit 0; fi
+          git config user.name "catalogue-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/catalog.json
+          git commit -m "Daily catalogue refresh"
+          git push
+          gh api -X POST "repos/${{ github.repository }}/pages/builds" || true

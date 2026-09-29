@@ -1,9 +1,9 @@
-import { VERSION } from './version.js';
-import { loadCatalog, frame, look, track, motion, nextVisiblePass, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION } from './orbit.js';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js';
-import { SkyView, shortName } from './sky.js';
-import { loadSky, eqToEnu, solarSystem } from './celestial.js';
-import { addSighting, allSightings, deleteSighting } from './store.js';
+import { VERSION } from './version.js?v=0.1.9';
+import { loadCatalog, frame, look, track, motion, nextVisiblePass, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, setBinocularMode } from './orbit.js?v=0.1.9';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.9';
+import { SkyView, shortName } from './sky.js?v=0.1.9';
+import { loadSky, eqToEnu, solarSystem } from './celestial.js?v=0.1.9';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.9';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -21,7 +21,9 @@ const state = {
   skyEnu: null,    // same, rotated into the local sky, refreshed every second
   bodies: [],      // Sun, Moon, planets in the local sky
   captureAny: false,
-  above: [],       // objects above horizon, refreshed every second: [{ obj, look }]
+  model: null,     // SkyModel: tracks what's above the horizon
+  items: [],       // latest interpolated positions: [{ obj, look }]
+  binoculars: readPref('binoculars', false),
   trails: new Map(),
   sticky: new Map(), // candidate id -> last time it was in the reticle
   smooth: null,
@@ -36,6 +38,9 @@ function isSim() { return state.timeOffsetMs !== 0 || state.drag.on || !hasLiveS
 
 // ---------- location ----------
 
+function readPref(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : v === '1'; } catch { return d; } }
+function writePref(k, v) { try { localStorage.setItem(k, v ? '1' : '0'); } catch {} }
+
 function loadSavedLocation() {
   try { return JSON.parse(localStorage.getItem('observer')); } catch { return null; }
 }
@@ -47,6 +52,7 @@ function requestLocation() {
       state.observer = { lat: p.coords.latitude, lon: p.coords.longitude, heightKm: (p.coords.altitude ?? 0) / 1000, label: 'GPS' };
       try { localStorage.setItem('observer', JSON.stringify({ ...state.observer, label: 'last GPS fix' })); } catch {}
       state.trails.clear();
+      state.model?.reset();
     },
     () => {},
     { enableHighAccuracy: false, timeout: 15000, maximumAge: 10 * 60 * 1000 },
@@ -121,25 +127,31 @@ $('toast').addEventListener('click', () => { if (toastHref) location.href = toas
 
 // ---------- sky computation ----------
 
+const MAX_TRAILS = 12;
+
+// Once a second: trails, Sun/Moon/stars, status line.
 function refreshAbove() {
   if (!state.catalog) return;
   const d = now();
   const f = frame(d, state.observer);
   state.frame = f;
-  const above = [];
-  for (const obj of state.catalog.objects) {
-    const l = look(obj, f);
-    if (l && l.el > -2) above.push({ obj, look: l });
-  }
-  state.above = above;
 
-  // Trails for visible objects: 60 s back, 3 min ahead. Refreshed every 10 s of sky time.
-  for (const { obj, look: l } of above) {
-    if (!l.visible && !state.showDim) continue;
-    const t = state.trails.get(obj.id);
+  // Trails (60 s back, 3 min ahead) for the visible objects nearest where you're pointing.
+  // Refreshed every 10 s of sky time; capped so a sky full of Starlinks stays smooth.
+  const back = state.basis?.back ?? [0, 1, 0];
+  const nearest = state.items
+    .filter((it) => it.look.visible || state.showDim)
+    .map((it) => ({ it, c: dot(enuFromAzEl(it.look.az, it.look.el), back) }))
+    .sort((a, b) => b.c - a.c)
+    .slice(0, MAX_TRAILS);
+  const keep = new Set();
+  for (const { it } of nearest) {
+    keep.add(it.obj.id);
+    const t = state.trails.get(it.obj.id);
     if (t && Math.abs(d - t.at) < 10000) continue;
-    state.trails.set(obj.id, { at: d.getTime(), pts: track(obj, d, state.observer, -60, 180, 10) });
+    state.trails.set(it.obj.id, { at: d.getTime(), pts: track(it.obj, d, state.observer, -60, 180, 10) });
   }
+  for (const id of state.trails.keys()) if (!keep.has(id)) state.trails.delete(id);
   refreshCelestial(d);
   updateStatus(f);
 }
@@ -156,7 +168,7 @@ function refreshCelestial(d) {
 }
 
 function updateStatus(f) {
-  const visible = state.above.filter((a) => a.look.visible).length;
+  const visible = state.items.filter((a) => a.look.visible).length;
   const d = now();
   const time = d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
   $('status-main').textContent = `${visible} visible · ${time}${state.timeOffsetMs ? ' (sim)' : ''}`;
@@ -211,19 +223,20 @@ let lastAbove = 0;
 function tick(ts) {
   requestAnimationFrame(tick);
   if (!state.catalog || !$('start').hidden) return;
+  const d = now();
+  state.model.update(d, state.observer);
+  state.items = state.model.items(d);
   if (ts - lastAbove > 1000) { refreshAbove(); lastAbove = ts; }
 
-  const d = now();
-  const f = frame(d, state.observer);
   const basis = currentBasis();
   state.basis = basis;
   const reticleCos = Math.cos(sky.reticleDeg * RAD);
   const t = performance.now();
 
   const items = [];
-  for (const a of state.above) {
-    const l = look(a.obj, f) ?? a.look;
-    if (l.el < 0) continue;
+  for (const a of state.items) {
+    const l = a.look;
+    if (!l.visible && !state.showDim && !state.captureAny) continue;
     const trail = state.trails.get(a.obj.id);
     const pts = trail ? trail.pts.map((p) => ({ ...p, t: p.t + (trail.at - d.getTime()) / 1000 })) : null;
     const angCos = dot(enuFromAzEl(l.az, l.el), basis.back);
@@ -237,7 +250,7 @@ function tick(ts) {
   const cands = items
     .filter((it) => (it.look.visible || state.captureAny) && t - (state.sticky.get(it.obj.id) ?? -1e9) < 1500)
     .sort((a, b) => b.angCos - a.angCos)
-    .slice(0, 4);
+    .slice(0, 3);
   for (const id of state.sticky.keys()) if (t - state.sticky.get(id) > 1500) state.sticky.delete(id);
 
   sky.draw(basis, items, {
@@ -268,7 +281,9 @@ function renderCandidates(cands, d) {
     const bits = [];
     if (c.look.mag !== null) bits.push(`mag ${c.look.mag.toFixed(1)}`);
     if (m) bits.push(`moving ${m.heading}${m.rising ? ', rising' : ', sinking'}`);
-    if (c.obj.year) bits.push(`${c.obj.year}`);
+    if (c.obj.family) bits.push(`${state.catalog.families[c.obj.family]?.name ?? ''}, launched ${c.obj.launch ? new Date(`${c.obj.launch}T12:00:00Z`).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : '?'}`);
+    else if (c.obj.year) bits.push(`${c.obj.year}`);
+    if (c.obj.bino) bits.push('binoculars');
     if (!c.look.visible) bits.push('not visible');
     b.innerHTML = `<span><span class="name"></span><br><span class="meta"></span></span><span class="go">Capture</span>`;
     b.querySelector('.name').textContent = shortName(c.obj.name);
@@ -285,6 +300,7 @@ async function capture(obj) {
   const m = motion(obj, d, state.observer);
   const sighting = {
     objectId: obj.id,
+    cardKey: obj.card,
     name: obj.name,
     type: obj.type,
     year: obj.year,
@@ -298,12 +314,12 @@ async function capture(obj) {
     appVersion: VERSION,
   };
   await addSighting(sighting);
-  const before = state.sightings.some((s) => s.objectId === obj.id);
+  const before = state.sightings.some((s) => !s.sim && (s.cardKey ?? String(s.objectId)) === obj.card);
   await loadSightings();
   chirp([660, 880, 1320], 0.08);
   const age = obj.year ? `Launched ${obj.year}` : '';
   const cardLink = sighting.sim ? '' : '<br><small><u>Tap to see your card</u></small>';
-  toast(`<span class="big-line">${before ? 'Captured!' : 'New card!'}</span>${escapeHtml(shortName(obj.name))}<br><small>${age}${before ? ' · seen before' : ' · first sighting'}</small>${cardLink}`, 3500, sighting.sim ? null : `cards.html#${obj.id}`);
+  toast(`<span class="big-line">${before ? 'Captured!' : 'New card!'}</span>${escapeHtml(shortName(obj.name))}<br><small>${age}${before ? ' · seen before' : ' · first sighting'}</small>${cardLink}`, 3500, sighting.sim ? null : `cards.html#${encodeURIComponent(obj.card)}`);
 }
 
 function escapeHtml(s) {
@@ -387,6 +403,7 @@ $('btn-next-pass').addEventListener('click', () => {
 });
 
 function afterTimeJump() {
+  state.model?.reset();
   state.trails.clear();
   state.sticky.clear();
   lastAbove = 0;
@@ -406,6 +423,14 @@ $('chk-dim').addEventListener('change', (e) => { state.showDim = e.target.checke
 $('chk-stars').addEventListener('change', (e) => { state.showStars = e.target.checked; });
 $('chk-lines').addEventListener('change', (e) => { state.showLines = e.target.checked; });
 $('chk-any').addEventListener('change', (e) => { state.captureAny = e.target.checked; });
+$('chk-bino').checked = state.binoculars;
+$('chk-bino').addEventListener('change', (e) => {
+  state.binoculars = e.target.checked;
+  writePref('binoculars', state.binoculars);
+  setBinocularMode(state.binoculars);
+  state.model?.reset();
+  state.trails.clear();
+});
 document.querySelectorAll('[data-nudge]').forEach((b) => b.addEventListener('click', () => {
   nudgeHeading(Number(b.dataset.nudge));
   renderDebug();
@@ -428,7 +453,8 @@ function renderDebug() {
     `heading offset ${pointing.headingOffset.toFixed(1)}°`,
     `sun elevation  ${f ? f.sunEl.toFixed(1) : '?'}°`,
     `catalogue      ${cat?.objects.length ?? 0} objects, data ${ageH} h old`,
-    `above horizon  ${state.above.length}`,
+    `above horizon  ${state.model?.above.size ?? 0} (${state.items.filter((i) => i.look.visible).length} visible)`,
+    `binoculars     ${state.binoculars ? 'on (to mag 8)' : 'off (naked eye, to mag 5)'}`,
   ].join('\n');
 }
 
@@ -457,6 +483,8 @@ $('btn-start').addEventListener('click', async () => {
 async function boot() {
   try {
     state.catalog = await loadCatalog('data/catalog.json');
+    state.model = new SkyModel(state.catalog.objects);
+    setBinocularMode(state.binoculars);
   } catch (e) {
     $('start-note').textContent = `Couldn't load satellite data: ${e.message}`;
     return;

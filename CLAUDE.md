@@ -7,10 +7,16 @@ Live: https://sevaan.github.io/space-collector/ (GitHub Pages, deploys from `mai
 
 ## Workflow (Sevaan often edits from his phone and tests under the real sky)
 - Plain HTML/CSS/ES modules. No build step, no bundler, no npm install. Keep it that way.
-- **Before every commit:** `node scripts/bump.mjs` — bumps `js/version.js` and `version.json`.
-  The version shows bottom-right in the app, and the app banners when a newer build is deployed.
-- Refresh satellite data: `node scripts/build-catalog.mjs` (writes `data/catalog.json`). Orbital
-  elements go stale after about a week; positions drift. Don't hit CelesTrak more than a few times a day.
+- **Before every commit:** `node scripts/bump.mjs` — bumps `js/version.js` and `version.json`, and
+  stamps `?v=VERSION` onto every relative import in `js/*.js` and every js/css reference in `*.html`
+  (cache-busting; GitHub Pages caches files for 10 min). New imports get stamped on the next bump.
+- Satellite data: `node scripts/build-catalog.mjs` writes `data/catalog.json` (~16k objects, ~4.7k cards):
+  every tracked object with perigee < 2000 km whose best-case magnitude is ≤ 8 (≤ 5 naked eye, 5–8
+  flagged `bino`). Pulls CelesTrak SATCAT + elements per launch year (~72 requests, cached 12 h in
+  scripts/.cache). `.github/workflows/catalog.yml` reruns it daily at 09:17 UTC and commits if changed.
+  Starlink/OneWeb/Qianfan/Kuiper satellites share one card per launch (`card` = `FAMILY:YYYY-NNN`).
+- Sky view uses `SkyModel` (js/orbit.js): sweeps the catalogue in slices, interpolates 1 s samples.
+  Don't loop the full catalogue per frame.
 - Local preview: `python3 -m http.server 8765`, then open http://localhost:8765 and use ⚙ → "Jump to
   next visible pass" + drag mode to test during the day.
 
@@ -32,4 +38,4 @@ Live: https://sevaan.github.io/space-collector/ (GitHub Pages, deploys from `mai
 - `design/` – style boards used to pick the card look. Not part of the app.
 
 ## Deliberately out of scope for now
-Alerts, service worker, accounts, daily data cron, capture reveal animation, secret sets/feats.
+Alerts, service worker, accounts, capture reveal animation, secret sets/feats.

@@ -33,6 +33,7 @@ export function cardArt(o, { accent = '#e8412c', silhouette = false, w = 252, h 
 const attrs = (c) => `fill="${c.fill}" stroke="${c.stroke}" stroke-width="${c.sw}"`;
 
 function shape(o, c, r) {
+  if (o.members) return train(c, r);
   if (o.type === 'station') return station(c);
   if (o.type === 'rocket-body') return rocket(c, r);
   if (o.type === 'debris') return debris(c, r);
@@ -73,6 +74,16 @@ function satellite(c, r) {
     ${c.accent === 'none' ? '' : `<rect x="${-bw / 2}" y="${-bh / 2 + bh * 0.4}" width="${bw}" height="${bh * 0.2}" fill="${c.accent}"/>`}
     <line x1="0" y1="${-bh / 2}" x2="0" y2="${-bh / 2 - 14}" stroke="${c.fill === 'none' ? c.stroke : '#fff'}" stroke-width="2.5"/>
     <ellipse cx="0" cy="${-bh / 2 - 19}" rx="16" ry="7" ${attrs(c)}/>`;
+}
+
+// A line of flat satellites, like a fresh Starlink train.
+function train(c, r) {
+  let s = '';
+  for (let i = -3; i <= 3; i++) {
+    const x = i * 44, y = -i * 12 + (r() - 0.5) * 6;
+    s += `<g transform="translate(${x} ${y}) scale(0.42)">${flatSat(c)}</g>`;
+  }
+  return `<g transform="rotate(-6)">${s}</g>`;
 }
 
 function flatSat(c) {

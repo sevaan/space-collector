@@ -43,5 +43,13 @@
   "4327": {
     "title": "SERT 2",
     "fact": "A NASA test of **ion engines**, which push with a gentle stream of charged gas. The idea now flies on deep-space probes."
+  },
+  "5": {
+    "title": "Vanguard 1",
+    "fact": "The **oldest human-made object still in orbit**. Launched in 1958, it will keep circling for centuries.",
+    "stat": [
+      "WEIGHT",
+      "1.5 kg"
+    ]
   }
 }

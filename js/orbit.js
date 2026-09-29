@@ -1,7 +1,7 @@
 // Orbit math: where every object is in the observer's sky, and whether it can be seen.
 // Pure functions, no DOM, so this module carries over unchanged to a native wrapper.
 
-import * as sat from './lib/satellite.js';
+import * as sat from './lib/satellite.js?v=0.1.9';
 
 const RAD = Math.PI / 180;
 const EARTH_RADIUS_KM = 6371;
@@ -9,19 +9,29 @@ const AU_KM = 149597870.7;
 
 // Sun must be this far below the horizon before satellites stand out (nautical twilight).
 export const DARK_SUN_ELEVATION = -6;
-// Faintest magnitude we count as naked-eye visible from a darkish backyard.
-export const FAINTEST_MAG = 5.0;
+// Faintest magnitude we count as visible: naked eye from a darkish backyard, or with binoculars.
+export const NAKED_EYE_MAG = 5.0;
+export const BINOCULAR_MAG = 8.0;
+let faintest = NAKED_EYE_MAG;
+export function setBinocularMode(on) { faintest = on ? BINOCULAR_MAG : NAKED_EYE_MAG; }
 
 export async function loadCatalog(url) {
   const res = await fetch(url, { cache: 'no-cache' });
   const data = await res.json();
   const objects = [];
+  const families = data.families ?? {};
   for (const o of data.objects) {
     const satrec = sat.twoline2satrec(o.l1, o.l2);
     if (satrec.error) continue;
-    objects.push({ ...o, satrec });
+    // Constellation members share their family's facts to keep the file small.
+    const fam = o.family ? families[o.family] : null;
+    if (fam) Object.assign(o, { kind: 'PAY', type: 'satellite', tier: 'common', stdMag: fam.stdMag, owner: fam.owner, year: o.launch ? Number(o.launch.slice(0, 4)) : null });
+    o.card ??= String(o.id);
+    o.satrec = satrec;
+    delete o.l1; delete o.l2;
+    objects.push(o);
   }
-  return { generated: new Date(data.generated), objects };
+  return { generated: new Date(data.generated), families, objects };
 }
 
 // Observer: { lat, lon, heightKm } in degrees
@@ -88,7 +98,7 @@ export function look(obj, f) {
   const sunlit = isSunlit(r, f.sunDir);
   const dark = f.sunEl < DARK_SUN_ELEVATION;
   const mag = sunlit ? apparentMag(obj.stdMag, la.rangeSat, r, f) : null;
-  const bright = mag !== null && mag <= FAINTEST_MAG;
+  const bright = mag !== null && mag <= faintest;
   return { az, el, rangeKm: la.rangeSat, sunlit, dark, bright, visible: sunlit && dark && bright, mag };
 }
 
@@ -118,12 +128,14 @@ export function motion(obj, date, obs) {
   return { dirAz, heading: compassPoint(dirAz), rising: b.el > a.el };
 }
 
-// Find the next time something in the catalogue is visible. Coarse 1-minute scan.
-export function nextVisiblePass(objects, date, obs, hours = 24) {
-  for (let m = 0; m <= hours * 60; m++) {
+// Find the next time something bright is visible. Coarse 2-minute scan over the brighter objects only,
+// so it stays quick with a catalogue of thousands.
+export function nextVisiblePass(allObjects, date, obs, hours = 24) {
+  const objects = allObjects.filter((o) => o.stdMag <= 4.5);
+  for (let m = 0; m <= hours * 60; m += 2) {
     const d = new Date(date.getTime() + m * 60000);
     const f = frame(d, obs);
-    if (f.sunEl >= DARK_SUN_ELEVATION) { m += 9; continue; }
+    if (f.sunEl >= DARK_SUN_ELEVATION) { m += 8; continue; }
     let best = null;
     for (const o of objects) {
       const l = look(o, f);
@@ -132,4 +144,95 @@ export function nextVisiblePass(objects, date, obs, hours = 24) {
     if (best) return { date: d, ...best };
   }
   return null;
+}
+
+// Keeps track of what's above the horizon without recomputing the whole catalogue every frame.
+// Each frame it checks a slice of the catalogue (a full sweep takes ~3 s), and for objects above the
+// horizon it keeps two exact samples one second apart and interpolates between them.
+const SAMPLE_MS = 1000;
+const SWEEP_FRAMES = 180;
+
+export class SkyModel {
+  constructor(objects) {
+    this.objects = objects;
+    this.cursor = 0;
+    this.above = new Map(); // id -> { obj, t0, s0, t1, s1 }
+    this.frames = new Map();
+    this.lastT = null;
+  }
+
+  frameAt(t, obs) {
+    let f = this.frames.get(t);
+    if (!f) {
+      if (this.frames.size > 24) this.frames.clear();
+      f = frame(new Date(t), obs);
+      this.frames.set(t, f);
+    }
+    return f;
+  }
+
+  // Forget everything (after a time jump or location change).
+  reset() { this.above.clear(); this.frames.clear(); this.cursor = 0; this.primed = false; }
+
+  // Full sweep at once, used right after a reset so the sky isn't empty for 3 seconds.
+  prime(date, obs) {
+    const f = frame(date, obs);
+    for (const o of this.objects) {
+      const l = look(o, f);
+      if (l && l.el > -3) this.add(o, date.getTime(), obs);
+    }
+    this.primed = true;
+  }
+
+  add(o, t, obs) {
+    const q = Math.floor(t / 250) * 250;
+    const t0 = q, t1 = q + SAMPLE_MS + 250 * (o.id % 4); // stagger resampling across frames
+    const s0 = look(o, this.frameAt(t0, obs)), s1 = look(o, this.frameAt(t1, obs));
+    if (s0 && s1) this.above.set(o.id, { obj: o, t0, s0, t1, s1 });
+  }
+
+  update(date, obs) {
+    const t = date.getTime();
+    if (this.lastT !== null && Math.abs(t - this.lastT) > 5000) this.reset();
+    this.lastT = t;
+    if (!this.primed) this.prime(date, obs);
+
+    // Sweep a slice of the catalogue for objects rising above the horizon.
+    const n = this.objects.length;
+    const slice = Math.ceil(n / SWEEP_FRAMES);
+    const f = this.frameAt(Math.floor(t / 250) * 250, obs);
+    for (let i = 0; i < slice; i++) {
+      const o = this.objects[this.cursor];
+      this.cursor = (this.cursor + 1) % n;
+      if (this.above.has(o.id)) continue;
+      const l = look(o, f);
+      if (l && l.el > -3) this.add(o, t, obs);
+    }
+
+    // Advance samples for objects we're tracking; drop ones that have set.
+    for (const [id, e] of this.above) {
+      if (t < e.t1) continue;
+      const next = e.t1 + SAMPLE_MS;
+      const s = look(e.obj, this.frameAt(next, obs));
+      if (!s || (s.el < -3 && e.s1.el < -3)) { this.above.delete(id); continue; }
+      e.t0 = e.t1; e.s0 = e.s1; e.t1 = next; e.s1 = s;
+    }
+  }
+
+  // Current interpolated positions: [{ obj, look }] for everything above the horizon.
+  items(date) {
+    const t = date.getTime();
+    const out = [];
+    for (const e of this.above.values()) {
+      const u = Math.max(0, Math.min(1.5, (t - e.t0) / (e.t1 - e.t0)));
+      const a = enuFromAzEl(e.s0.az, e.s0.el), b = enuFromAzEl(e.s1.az, e.s1.el);
+      const v = [a[0] + (b[0] - a[0]) * u, a[1] + (b[1] - a[1]) * u, a[2] + (b[2] - a[2]) * u];
+      const l = Math.hypot(v[0], v[1], v[2]) || 1;
+      const { az, el } = azElFromEnu([v[0] / l, v[1] / l, v[2] / l]);
+      if (el < 0) continue;
+      const s = u < 0.5 ? e.s0 : e.s1;
+      out.push({ obj: e.obj, look: { ...s, az, el } });
+    }
+    return out;
+  }
 }

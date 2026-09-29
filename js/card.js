@@ -1,11 +1,11 @@
 // Mission cards (NASA data-sheet style) and the tilt/shine interaction. All sizes are in em
 // (a card is 28em × 39.2em), so the same markup works large or as a grid thumbnail.
 
-import { cardArt } from './art.js';
-import { TIER_INFO } from './rarity.js';
-import { SET_BY_ID } from './sets.js';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js';
-import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText } from './lore.js';
+import { cardArt } from './art.js?v=0.1.9';
+import { TIER_INFO } from './rarity.js?v=0.1.9';
+import { SET_BY_ID } from './sets.js?v=0.1.9';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.9';
+import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText } from './lore.js?v=0.1.9';
 
 export function levelFor(count) {
   if (count >= 25) return 'gold';
@@ -33,7 +33,7 @@ export function renderCard(o, opts = {}) {
   const stats = orbitStats(o);
   const age = ageText(yearsUp(o));
   const laps = lapsPerDay(o);
-  const third = thirdStat(o, sizeLabel(o.rcs));
+  const third = thirdStat(o, sizeLabel(o.rcs), opts.seenMembers ?? 0);
   const title = titleFor(o);
   const q = (v) => (caught ? v : '?');
 
@@ -50,7 +50,7 @@ export function renderCard(o, opts = {}) {
       <div class="card__setbar"><span>${esc(set.name.toUpperCase())}</span><span>${String(o.setNumber ?? 0).padStart(2, '0')} / ${String(o.setSize ?? 0).padStart(2, '0')}</span></div>
       <div class="card__top">
         <span class="card__tier"><i>${tier.gem}</i> ${tier.label.toUpperCase()}</span>
-        <span class="card__label card__mono">NORAD ${o.id}</span>
+        <span class="card__label card__mono">${o.bino ? '<span class="card__bino">BINOCULARS</span> ' : ''}${o.members ? `LAUNCH ${esc(o.cospar ?? '')}` : `NORAD ${o.id}`}</span>
       </div>
       <h3 class="card__name">${esc(title)}</h3>
       <div class="card__art">${cardArt(o, { accent: set.color, silhouette: !caught })}<div class="card__foil"></div></div>

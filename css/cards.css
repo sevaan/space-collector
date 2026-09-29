@@ -49,6 +49,7 @@
 .card__tier i { font-style: normal; color: var(--tier); -webkit-text-stroke: 0.04em rgba(0,0,0,0.25); }
 .card.tier-common .card__tier i { color: #8a929c; }
 .card__label { font-size: 0.8em; font-weight: 700; letter-spacing: 0.14em; color: var(--grey); }
+.card__bino { font-family: Inter, sans-serif; color: #fff; background: #3b6fb6; border-radius: 0.3em; padding: 0.1em 0.45em; letter-spacing: 0.1em; margin-right: 0.3em; }
 .card__mono { font-family: 'IBM Plex Mono', ui-monospace, Menlo, monospace; }
 .card__name {
   margin: 0; padding: 0.3em 1.4em 0.8em;

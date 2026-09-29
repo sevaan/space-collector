@@ -1,6 +1,6 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
 
-import { enuFromAzEl, compassPoint } from './orbit.js';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.9';
 
 const RAD = Math.PI / 180;
 
@@ -239,6 +239,12 @@ export class SkyView {
     if (bodies) this.drawBodies(bodies);
 
     const offscreen = [];
+    // Label only what matters: candidates, bright objects, and a few nearest the reticle.
+    const labelIds = new Set(items
+      .filter((it) => it.look.visible)
+      .sort((a, b) => (b.candidate - a.candidate) || (b.angCos ?? 0) - (a.angCos ?? 0))
+      .filter((it, i) => it.candidate || it.look.mag < 1 || i < 6)
+      .map((it) => it.obj.id));
     for (const it of items) {
       const { look } = it;
       if (!look.visible && !showDim) continue;
@@ -266,7 +272,7 @@ export class SkyView {
       }
       ctx.fillStyle = look.visible ? (it.candidate ? COLORS.hot : COLORS.visible) : COLORS.dim;
       ctx.beginPath(); ctx.arc(p.x, p.y, r, 0, Math.PI * 2); ctx.fill();
-      if (look.visible) {
+      if (look.visible && labelIds.has(it.obj.id)) {
         ctx.fillStyle = it.candidate ? COLORS.hot : COLORS.label;
         ctx.font = `${it.candidate ? 600 : 500} 12px -apple-system, system-ui, sans-serif`;
         ctx.textAlign = 'left';
@@ -282,7 +288,8 @@ export class SkyView {
   drawOffscreen(list) {
     const ctx = this.ctx;
     const margin = 26;
-    for (const { it, c } of list.slice(0, 6)) {
+    list.sort((a, b) => (a.it.look.mag ?? 9) - (b.it.look.mag ?? 9));
+    for (const { it, c } of list.slice(0, 3)) {
       const ang = Math.atan2(-c.y, c.x);
       const dx = Math.cos(ang), dy = Math.sin(ang);
       const sx = dx > 0 ? (this.w - margin - this.cx) / dx : (margin - this.cx) / dx;

@@ -84,12 +84,12 @@ a.pill {
 .cand {
   display: flex; align-items: center; justify-content: space-between; gap: 12px;
   width: 100%; text-align: left;
-  padding: 14px 18px; min-height: 64px;
+  padding: 10px 16px; min-height: 54px;
   border-radius: 16px;
   background: rgba(40, 8, 6, 0.9);
 }
 .cand.top { border-color: var(--red-hot); color: var(--red-hot); }
-.cand .name { font-weight: 600; font-size: 18px; }
+.cand .name { font-weight: 600; font-size: 17px; }
 .cand .meta { font-size: 13px; color: var(--red-dim); }
 .cand.top .meta { color: rgba(255, 210, 200, 0.7); }
 .cand .go { font-weight: 700; font-size: 15px; white-space: nowrap; }
