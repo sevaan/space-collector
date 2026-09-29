@@ -1,9 +1,9 @@
-import { renderCard, renderCardTile, attachTilt, attachGyro } from './card.js?v=0.1.19';
-import { buildCards, cardKeyFor } from './card-model.js?v=0.1.19';
-import { SETS, assignSets } from './sets.js?v=0.1.19';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.19';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.19';
-import { allSightings } from './store.js?v=0.1.19';
+import { renderCard, renderCardTile, attachTilt, attachGyro } from './card.js?v=0.1.20';
+import { buildCards, cardKeyFor } from './card-model.js?v=0.1.20';
+import { SETS, assignSets } from './sets.js?v=0.1.20';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.20';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.20';
+import { allSightings } from './store.js?v=0.1.20';
 
 const $ = (id) => document.getElementById(id);
 const state = { cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };

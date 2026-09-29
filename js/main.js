@@ -1,17 +1,17 @@
-import { VERSION } from './version.js?v=0.1.19';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, setBinocularMode } from './orbit.js?v=0.1.19';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.19';
-import { SkyView, shortName } from './sky.js?v=0.1.19';
-import { loadSky, eqToEnu, solarSystem, galacticPlane } from './celestial.js?v=0.1.19';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.19';
-import { cardArt } from './art.js?v=0.1.19';
-import { renderCard, attachTilt, attachGyro } from './card.js?v=0.1.19';
-import { buildCards } from './card-model.js?v=0.1.19';
-import { collectedDuringPass, canCapture } from './observation.js?v=0.1.19';
-import { TIER_INFO } from './rarity.js?v=0.1.19';
-import { SETS } from './sets.js?v=0.1.19';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.19';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.19';
+import { VERSION } from './version.js?v=0.1.20';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, setBinocularMode } from './orbit.js?v=0.1.20';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.20';
+import { SkyView, shortName } from './sky.js?v=0.1.20';
+import { loadSky, eqToEnu, solarSystem, galacticPlane } from './celestial.js?v=0.1.20';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.20';
+import { cardArt } from './art.js?v=0.1.20';
+import { renderCard, attachTilt, attachGyro } from './card.js?v=0.1.20';
+import { buildCards } from './card-model.js?v=0.1.20';
+import { collectedDuringPass, canCapture } from './observation.js?v=0.1.20';
+import { TIER_INFO } from './rarity.js?v=0.1.20';
+import { SETS } from './sets.js?v=0.1.20';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.20';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.20';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -256,18 +256,10 @@ function updateStatus(f) {
   if (state.binoculars) bits.push('binoculars');
   $('status-line').textContent = bits.join(' · ');
   if (!bannerKey.startsWith('New build')) {
-    if (pointing.source === 'ios' && (pointing.compassAccuracy < 0 || pointing.compassAccuracy > 25) && !state.drag.on) showBanner('Compass needs aligning. Move your phone in a figure eight, then aim at a known star.', openDebug);
+    if (state.needsMotionTap) showBanner('Tap anywhere to line the sky up with your phone.');
+    else if (pointing.source === 'ios' && (pointing.compassAccuracy < 0 || pointing.compassAccuracy > 25) && !state.drag.on) showBanner('Compass needs aligning. Move your phone in a figure eight, then aim at a known star.', openDebug);
     else if (pointing.source === 'relative') showBanner('Check your heading against a known landmark. Adjust the compass in settings.', openDebug);
     else showBanner('');
-  }
-  $('sky-empty').hidden = !!state.activeTarget;
-  if (!state.activeTarget) {
-    const daylight = f.sunEl > DARK_SUN_ELEVATION;
-    $('empty-eyebrow').textContent = 'YOUR NEXT DISCOVERY';
-    $('empty-title').textContent = visible ? 'A little space history is overhead.' : daylight ? 'Your next discovery starts after dusk.' : 'The sky is worth waiting for.';
-    $('empty-copy').textContent = visible ? 'Choose an object and we’ll help you find it.' : 'Nothing bright is up right now. Find out when the next good pass is.';
-    $('empty-next').textContent = passBusy ? 'Searching for a pass…' : visible ? 'Choose a visible object' : 'Find a visible pass';
-    $('empty-next').disabled = passBusy;
   }
 }
 
@@ -390,7 +382,7 @@ function updateCompass(basis) {
 // ---------- target: callout + card ----------
 
 function measureSkySpace() {
-  const box = $('target').hidden ? $('sky-empty') : $('target');
+  const box = $('target');
   const rect = box.getBoundingClientRect();
   uiSafeTop = $('status-line').getBoundingClientRect().bottom + 16;
   if (!$('banner').hidden) uiSafeTop = $('banner').getBoundingClientRect().bottom + 12;
@@ -412,7 +404,6 @@ let shownTargetId = null;
 let shownCount = 0;
 function renderTarget(target, d) {
   const card = $('target');
-  $('sky-empty').hidden = !!target;
   $('guidance').hidden = !target;
   if (!target) { card.hidden = true; shownTargetId = null; return; }
   const o = target.obj, l = target.look;
@@ -659,13 +650,13 @@ document.querySelectorAll('[data-time]').forEach((b) => b.addEventListener('clic
 }));
 
 let passWorker = null, passRequest = 0, passBusy = false, passTimer = null;
-function cancelPassSearch() { passRequest++; passWorker?.terminate(); passWorker=null; passBusy=false; clearTimeout(passTimer); $('btn-next-pass').disabled=false; $('empty-iss').disabled=false; $('empty-next').disabled=false; }
+function cancelPassSearch() { passRequest++; passWorker?.terminate(); passWorker=null; passBusy=false; clearTimeout(passTimer); $('btn-next-pass').disabled=false; }
 function findPass() { previewPass(null, false); }
 function previewPass(objectId = null, jump = true) {
   if (!state.catalog || passBusy) return;
   cancelPassSearch(); passBusy=true;
   const requestId = ++passRequest;
-  $('btn-next-pass').disabled=true; $('empty-iss').disabled=true; $('empty-next').disabled=true;
+  $('btn-next-pass').disabled=true;
   $('next-pass-info').textContent='Searching predicted passes in the next 48 hours…';
   const start = new Date(Math.max(Date.now(), now().getTime()) + 60000);
   try {
@@ -694,8 +685,6 @@ function previewPass(objectId = null, jump = true) {
   } catch { cancelPassSearch(); toast('Pass preview is unavailable in this browser. Try the visible-object list.'); }
 }
 $('btn-next-pass').addEventListener('click', () => previewPass());
-$('empty-next').addEventListener('click', () => { if (state.items.some(i=>i.look.visible)) { renderVisible(); openPanel('visible'); } else findPass(); });
-$('empty-iss').addEventListener('click', () => { saveExploreState(); location.href = 'cards.html#25544'; });
 $('btn-live').addEventListener('click', async () => {
   cancelPassSearch(); state.preview=false; state.followPreview=false; state.timeOffsetMs=0; state.captureAny=false; state.showDim=false; state.pinnedId=null; $('chk-any').checked=false; $('chk-dim').checked=false;
   await enableMotion();
@@ -783,8 +772,28 @@ $('btn-start').addEventListener('click', async () => {
   $('btn-start').disabled=true;
   await enableMotion();
   requestLocation(); keepAwake(); navigator.storage?.persist?.().catch(() => {});
+  writePref('started', true);
   state.preview=false; enterSky();
 });
+
+// Returning users skip the start screen and go straight to the sky. iPhones only allow motion
+// access from a tap, so if it isn't available yet the first tap anywhere turns it on.
+async function quickStart() {
+  enterSky(); requestLocation(); keepAwake();
+  let ok = false;
+  try { ok = await startSensors(); } catch {}
+  state.drag.on = !ok;
+  state.needsMotionTap = !ok;
+}
+document.addEventListener('pointerdown', async () => {
+  if (!state.needsMotionTap) return;
+  state.needsMotionTap = false;
+  let ok = false;
+  try { ok = await startSensors(); } catch {}
+  state.drag.on = !ok;
+  $('chk-drag').checked = state.drag.on;
+  if (ok) showBanner('');
+}, true);
 function saveExploreState() {
   if (!state.started) return;
   try { sessionStorage.setItem('space-collector.explore',JSON.stringify({ observer:state.observer, locationStatus:state.locationStatus, timeOffsetMs:state.timeOffsetMs, drag:state.drag, preview:state.preview, followPreview:state.followPreview, pinnedId:state.pinnedId })); } catch {}
@@ -820,7 +829,7 @@ async function boot() {
         if(params.get('panel')==='journal') { renderLog(); openPanel('log'); }
       }
     } catch {}
-  }
+  } else if (readPref('started', false) || loadSavedLocation()) quickStart(); // anyone who has used the app before
   checkForUpdate(); requestAnimationFrame(tick);
 }
 boot();

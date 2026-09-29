@@ -13,8 +13,8 @@
   <link rel="apple-touch-icon" href="icons/icon-180.png">
   <link rel="icon" href="icons/icon-192.png">
   <script>try { if (localStorage.getItem("night") === "1") document.documentElement.dataset.theme = "night"; } catch {}</script>
-  <link rel="stylesheet" href="css/cards.css?v=0.1.19">
-  <link rel="stylesheet" href="css/app.css?v=0.1.19">
+  <link rel="stylesheet" href="css/cards.css?v=0.1.20">
+  <link rel="stylesheet" href="css/app.css?v=0.1.20">
 </head>
 <body>
   <canvas id="sky" role="img" aria-label="Sky map aligned with your viewing direction"></canvas>
@@ -49,7 +49,6 @@
     <div id="observing-status"><button id="location-status">Example location</button><button id="btn-live" hidden>Back to now</button></div>
     <div id="status-line"></div>
     <div id="guidance" aria-live="polite" hidden></div>
-    <section id="sky-empty" hidden><span class="eyebrow" id="empty-eyebrow">YOUR NEXT DISCOVERY</span><h2 id="empty-title">The sky is worth waiting for.</h2><p id="empty-copy">Find your next opportunity to collect.</p><p id="next-pass-info" class="hint small"></p><button id="empty-next" class="big">Find a visible pass</button><button id="empty-iss" class="text-button">Preview the ISS card</button></section>
 
     <div id="callout" hidden>
       <div class="co-head"><span id="co-name"></span><span id="co-tier" class="tier-pill"></span></div>
@@ -112,6 +111,7 @@
       <button class="pill" data-close="visible">Done</button>
     </div>
     <p class="hint" id="visible-hint"></p>
+    <p class="hint small" id="next-pass-info"></p>
     <div id="visible-list"></div>
   </section>
 
@@ -169,6 +169,6 @@
     <pre id="debug-info"></pre></details>
   </section>
 
-  <script type="module" src="js/main.js?v=0.1.19"></script>
+  <script type="module" src="js/main.js?v=0.1.20"></script>
 </body>
 </html>
