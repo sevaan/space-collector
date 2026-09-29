@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
-  <meta name="theme-color" content="#000000">
+  <meta name="theme-color" content="#050a18">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -12,46 +12,96 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="apple-touch-icon" href="icons/icon-180.png">
   <link rel="icon" href="icons/icon-192.png">
-  <link rel="stylesheet" href="css/app.css?v=0.1.9">
+  <link rel="stylesheet" href="css/app.css?v=0.1.12">
 </head>
 <body>
   <canvas id="sky"></canvas>
 
-  <header id="topbar" hidden>
-    <div id="status">
-      <div id="status-main">Loading…</div>
-      <div id="status-sub"></div>
+  <div id="hud" hidden>
+    <div id="compass" aria-label="Compass">
+      <svg viewBox="0 0 100 100" aria-hidden="true">
+        <circle cx="50" cy="50" r="46" class="c-ring"/>
+        <text id="c-N" class="c-n">N</text>
+        <text id="c-E">E</text>
+        <text id="c-S">S</text>
+        <text id="c-W">W</text>
+        <g id="compass-rose">
+          <g class="c-ticks">
+            <line x1="50" y1="6" x2="50" y2="11"/><line x1="94" y1="50" x2="89" y2="50"/>
+            <line x1="50" y1="94" x2="50" y2="89"/><line x1="6" y1="50" x2="11" y2="50"/>
+          </g>
+        </g>
+        <path d="M50 30 L60 62 L50 55 L40 62 Z" class="c-needle"/>
+      </svg>
     </div>
-    <div class="top-actions">
-      <a id="btn-cards" class="pill" href="cards.html">Cards</a>
-      <button id="btn-log" class="pill">Log <span id="log-count">0</span></button>
-      <button id="btn-debug" class="pill" aria-label="Settings and sim">⚙</button>
+
+    <button id="visible-pill" aria-label="What's visible now">
+      <svg viewBox="0 0 32 32" class="planet" aria-hidden="true">
+        <circle cx="16" cy="16" r="8"/><ellipse cx="16" cy="16" rx="14" ry="4.5" transform="rotate(-20 16 16)"/>
+      </svg>
+      <span><b id="visible-count">0</b><small>visible now</small></span>
+      <svg viewBox="0 0 16 16" class="chev" aria-hidden="true"><path d="M6 3l5 5-5 5"/></svg>
+    </button>
+
+    <div id="status-line"></div>
+
+    <div id="callout" hidden>
+      <div class="co-head"><span id="co-name"></span><span id="co-tier" class="tier-pill"></span></div>
+      <div class="co-row"><span class="ico" data-ico="type"></span><span id="co-type"></span></div>
+      <div class="co-row"><span class="ico" data-ico="spark"></span><span id="co-mag"></span></div>
+      <div class="co-row"><span class="ico" data-ico="rocket"></span><span id="co-motion"></span></div>
     </div>
-  </header>
+
+    <section id="target" hidden>
+      <div id="t-thumb"><div id="t-art"></div><span id="t-tier" class="tier-pill lg"></span></div>
+      <div id="t-body">
+        <div class="t-top">
+          <h2 id="t-name"></h2>
+          <button id="t-switch" hidden aria-label="Next object in the circle"></button>
+        </div>
+        <div class="chips" id="t-chips"></div>
+        <p id="t-fact"></p>
+        <div class="chips stats" id="t-stats"></div>
+      </div>
+      <a id="t-open" aria-label="Open card"><svg viewBox="0 0 16 16"><path d="M6 3l5 5-5 5"/></svg></a>
+    </section>
+
+    <nav id="nav">
+      <button class="nav-item active" id="nav-explore"><span class="ico" data-ico="planet"></span>Explore</button>
+      <a class="nav-item" id="nav-collection" href="cards.html"><span class="ico" data-ico="bag"></span>Collection</a>
+      <button id="capture" aria-label="Capture"><span class="ico" data-ico="crosshair"></span></button>
+      <button class="nav-item" id="nav-journal"><span class="ico" data-ico="book"></span>Journal<i id="log-count"></i></button>
+      <button class="nav-item" id="nav-more"><span class="ico" data-ico="sliders"></span>More</button>
+    </nav>
+  </div>
 
   <div id="banner" hidden></div>
-
-  <section id="sheet" hidden>
-    <div id="sheet-title">Tap what you're watching</div>
-    <div id="candidates"></div>
-  </section>
-
   <div id="toast" hidden></div>
   <div id="version"></div>
 
   <section id="start" class="overlay">
     <div class="start-inner">
+      <div class="start-badge"><span class="ico" data-ico="crosshair"></span></div>
       <h1>Space Collector</h1>
-      <p>Hold your phone up at a moving light in the night sky, then tap it to log what you saw.</p>
+      <p>Hold your phone up at a moving light in the night sky, see what it is, and capture it for your collection.</p>
       <p class="hint">Satellites show up for a couple of hours after dusk and before dawn, when your sky is dark but they're still lit by the sun.</p>
       <button id="btn-start" class="big">Start sky view</button>
       <p class="hint small" id="start-note">We'll ask for motion &amp; location access so the sky lines up with where you point.</p>
     </div>
   </section>
 
+  <section id="visible" class="overlay panel" hidden>
+    <div class="panel-head">
+      <h2>Visible now</h2>
+      <button class="pill" data-close="visible">Done</button>
+    </div>
+    <p class="hint" id="visible-hint"></p>
+    <div id="visible-list"></div>
+  </section>
+
   <section id="log" class="overlay panel" hidden>
     <div class="panel-head">
-      <h2>Sightings</h2>
+      <h2>Journal</h2>
       <button class="pill" data-close="log">Done</button>
     </div>
     <div id="log-list"></div>
@@ -59,9 +109,15 @@
 
   <section id="debug" class="overlay panel" hidden>
     <div class="panel-head">
-      <h2>Sim &amp; settings</h2>
+      <h2>More</h2>
       <button class="pill" data-close="debug">Done</button>
     </div>
+
+    <h3>Display</h3>
+    <label class="row"><input type="checkbox" id="chk-night"> Red night mode (keeps your eyes adjusted to the dark)</label>
+    <label class="row"><input type="checkbox" id="chk-stars" checked> Stars, planets &amp; Moon</label>
+    <label class="row"><input type="checkbox" id="chk-lines" checked> Constellation lines</label>
+    <label class="row"><input type="checkbox" id="chk-bino"> Binocular mode: also show objects too faint for the naked eye (down to magnitude 8)</label>
 
     <h3>Time</h3>
     <div class="row" id="sim-time-label"></div>
@@ -84,17 +140,15 @@
       <button class="pill" data-nudge="5">+5°</button>
       <span id="nudge-label"></span>
     </div>
-    <h3>Sky</h3>
-    <label class="row"><input type="checkbox" id="chk-stars" checked> Stars, planets &amp; Moon</label>
-    <label class="row"><input type="checkbox" id="chk-lines" checked> Constellation lines</label>
-    <label class="row"><input type="checkbox" id="chk-bino"> Binocular mode: also show objects too faint for the naked eye (down to magnitude 8)</label>
+
+    <h3>Testing</h3>
     <label class="row"><input type="checkbox" id="chk-dim"> Show objects that aren't visible (shadowed, faint, daylight)</label>
-    <label class="row"><input type="checkbox" id="chk-any"> Allow capturing objects that aren't visible (testing)</label>
+    <label class="row"><input type="checkbox" id="chk-any"> Allow capturing objects that aren't visible</label>
 
     <h3>Info</h3>
     <pre id="debug-info"></pre>
   </section>
 
-  <script type="module" src="js/main.js?v=0.1.9"></script>
+  <script type="module" src="js/main.js?v=0.1.12"></script>
 </body>
 </html>

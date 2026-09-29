@@ -1,11 +1,11 @@
 // Card gallery: every collectible card, caught ones in full, uncaught as silhouettes.
 // Constellation satellites (Starlink, OneWeb, ...) share one card per launch.
 
-import { renderCard, attachTilt, attachGyro } from './card.js?v=0.1.9';
-import { SETS, assignSets } from './sets.js?v=0.1.9';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.9';
-import { loadLore } from './lore.js?v=0.1.9';
-import { allSightings } from './store.js?v=0.1.9';
+import { renderCard, attachTilt, attachGyro } from './card.js?v=0.1.12';
+import { SETS, assignSets } from './sets.js?v=0.1.12';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.12';
+import { loadLore } from './lore.js?v=0.1.12';
+import { allSightings } from './store.js?v=0.1.12';
 
 const $ = (id) => document.getElementById(id);
 

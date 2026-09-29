@@ -1,9 +1,14 @@
-import { VERSION } from './version.js?v=0.1.9';
-import { loadCatalog, frame, look, track, motion, nextVisiblePass, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, setBinocularMode } from './orbit.js?v=0.1.9';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.9';
-import { SkyView, shortName } from './sky.js?v=0.1.9';
-import { loadSky, eqToEnu, solarSystem } from './celestial.js?v=0.1.9';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.9';
+import { VERSION } from './version.js?v=0.1.12';
+import { loadCatalog, frame, look, track, motion, nextVisiblePass, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, setBinocularMode } from './orbit.js?v=0.1.12';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.12';
+import { SkyView, shortName } from './sky.js?v=0.1.12';
+import { loadSky, eqToEnu, solarSystem, galacticPlane } from './celestial.js?v=0.1.12';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.12';
+import { cardArt } from './art.js?v=0.1.12';
+import { TIER_INFO } from './rarity.js?v=0.1.12';
+import { SETS } from './sets.js?v=0.1.12';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.12';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.12';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -17,8 +22,11 @@ const state = {
   showDim: false,
   showStars: true,
   showLines: true,
+  night: readPref('night', false),
   sky: null,       // stars/constellations from data/sky.json (equatorial vectors)
   skyEnu: null,    // same, rotated into the local sky, refreshed every second
+  milkyEq: galacticPlane(),
+  milkyEnu: null,
   bodies: [],      // Sun, Moon, planets in the local sky
   captureAny: false,
   model: null,     // SkyModel: tracks what's above the horizon
@@ -26,8 +34,11 @@ const state = {
   binoculars: readPref('binoculars', false),
   trails: new Map(),
   sticky: new Map(), // candidate id -> last time it was in the reticle
+  candidates: [],
+  targetId: null,
   smooth: null,
   sightings: [],
+  familyCounts: new Map(), // card key -> number of satellites in that launch
 };
 
 const sky = new SkyView($('sky'));
@@ -36,7 +47,7 @@ $('version').textContent = `v${VERSION}`;
 function now() { return new Date(Date.now() + state.timeOffsetMs); }
 function isSim() { return state.timeOffsetMs !== 0 || state.drag.on || !hasLiveSensors(); }
 
-// ---------- location ----------
+// ---------- prefs & location ----------
 
 function readPref(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : v === '1'; } catch { return d; } }
 function writePref(k, v) { try { localStorage.setItem(k, v ? '1' : '0'); } catch {} }
@@ -58,6 +69,13 @@ function requestLocation() {
     { enableHighAccuracy: false, timeout: 15000, maximumAge: 10 * 60 * 1000 },
   );
 }
+
+function applyTheme() {
+  document.body.classList.toggle('night', state.night);
+  sky.setTheme(state.night ? 'night' : 'glass');
+  document.querySelector('meta[name=theme-color]').content = state.night ? '#000000' : '#050a18';
+}
+applyTheme();
 
 // ---------- sound ----------
 
@@ -123,7 +141,36 @@ function toast(html, ms = 2200, href = null) {
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => { $('toast').hidden = true; }, ms);
 }
-$('toast').addEventListener('click', () => { if (toastHref) location.href = toastHref; })
+$('toast').addEventListener('click', () => { if (toastHref) location.href = toastHref; });
+
+function escapeHtml(s) {
+  return String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
+// ---------- object descriptions ----------
+
+function label(obj) { return (obj._label ??= titleFor(obj)); }
+function setColor(obj) { return (obj._setColor ??= (SETS.find((s) => s.test(obj)) ?? SETS[SETS.length - 1]).color); }
+
+function brightnessWord(mag) {
+  if (mag == null) return 'not lit';
+  if (mag < -1) return 'very bright';
+  if (mag < 1.5) return 'bright';
+  if (mag < 3.5) return 'easy to see';
+  if (mag < 5) return 'faint';
+  return 'binoculars';
+}
+
+function familyName(obj) { return state.catalog.families?.[obj.family]?.name ?? obj.family; }
+
+function objectFact(obj) {
+  if (obj.family) {
+    const n = state.familyCounts.get(obj.card) ?? 0;
+    const when = obj.launch ? new Date(`${obj.launch}T12:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : 'an unknown date';
+    return `One of **${n} ${familyName(obj)} satellites** launched together on ${when}. Catch more from this launch to fill its card.`;
+  }
+  return factFor(obj);
+}
 
 // ---------- sky computation ----------
 
@@ -159,6 +206,7 @@ function refreshAbove() {
 function refreshCelestial(d) {
   const toEnu = eqToEnu(d, state.observer);
   state.bodies = solarSystem(d, state.observer).map((b) => ({ ...b, enu: toEnu(b.v) }));
+  state.milkyEnu = state.milkyEq.map((p) => ({ enu: toEnu(p.v), weight: p.weight }));
   if (!state.sky) return;
   state.skyEnu = {
     stars: state.sky.stars.map((s) => ({ ...s, enu: toEnu(s.v) })),
@@ -169,19 +217,18 @@ function refreshCelestial(d) {
 
 function updateStatus(f) {
   const visible = state.items.filter((a) => a.look.visible).length;
+  $('visible-count').textContent = visible;
   const d = now();
-  const time = d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
-  $('status-main').textContent = `${visible} visible · ${time}${state.timeOffsetMs ? ' (sim)' : ''}`;
-
-  const sub = [];
-  if (f.sunEl > -0.8) sub.push('Daylight');
-  else if (f.sunEl > DARK_SUN_ELEVATION) sub.push('Twilight, too bright');
-  else sub.push('Dark sky');
-  if (state.drag.on || !hasLiveSensors()) sub.push('drag mode');
-  $('status-sub').textContent = sub.join(' · ');
+  const bits = [d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })];
+  if (state.timeOffsetMs) bits.push('sim');
+  if (f.sunEl > -0.8) bits.push('daylight');
+  else if (f.sunEl > DARK_SUN_ELEVATION) bits.push('twilight');
+  if (state.drag.on || !hasLiveSensors()) bits.push('drag to look');
+  if (state.binoculars) bits.push('binoculars');
+  $('status-line').textContent = bits.join(' · ');
 
   if (f.sunEl > DARK_SUN_ELEVATION && visible === 0) {
-    showBanner('Sky is too bright for satellites right now. Tap ⚙ → "Jump to next visible pass" to try it out.', openDebug);
+    showBanner('Sky is too bright for satellites right now. Tap More → "Jump to next visible pass" to try it out.', openDebug);
   } else if (pointing.source === 'ios' && (pointing.compassAccuracy < 0 || pointing.compassAccuracy > 25) && !state.drag.on) {
     showBanner('Compass is fuzzy. Wave your phone in a figure-8 to calibrate.');
   } else if (!bannerKey.startsWith('New build')) {
@@ -220,6 +267,7 @@ function currentBasis() {
 // ---------- render loop ----------
 
 let lastAbove = 0;
+let lastPanel = 0;
 function tick(ts) {
   requestAnimationFrame(tick);
   if (!state.catalog || !$('start').hidden) return;
@@ -243,55 +291,126 @@ function tick(ts) {
     const capturable = l.visible || state.captureAny;
     const inReticle = capturable && angCos > reticleCos;
     if (inReticle) state.sticky.set(a.obj.id, t);
-    items.push({ obj: a.obj, look: l, trail: pts, candidate: inReticle, angCos });
+    items.push({ obj: a.obj, label: label(a.obj), look: l, trail: pts, candidate: inReticle, angCos });
   }
 
-  // Candidates stay listed for 1.5 s after leaving the circle so the buttons don't flicker away.
+  // Candidates stay selectable for 1.5 s after leaving the circle so the card doesn't flicker away.
   const cands = items
     .filter((it) => (it.look.visible || state.captureAny) && t - (state.sticky.get(it.obj.id) ?? -1e9) < 1500)
     .sort((a, b) => b.angCos - a.angCos)
-    .slice(0, 3);
+    .slice(0, 5);
   for (const id of state.sticky.keys()) if (t - state.sticky.get(id) > 1500) state.sticky.delete(id);
+  state.candidates = cands;
+  if (!cands.some((c) => c.obj.id === state.targetId)) {
+    const prev = state.targetId;
+    state.targetId = cands[0]?.obj.id ?? null;
+    if (state.targetId && !prev) chirp([880], 0.05);
+  }
+  const target = cands.find((c) => c.obj.id === state.targetId) ?? null;
 
   sky.draw(basis, items, {
     showDim: state.showDim,
     sky: state.showStars ? state.skyEnu : null,
     bodies: state.showStars ? state.bodies : null,
+    milky: state.showStars ? state.milkyEnu : null,
     lines: state.showLines,
+    targetId: state.targetId,
+    time: t,
   });
-  renderCandidates(cands, d);
+
+  updateCompass(basis);
+  placeCallout(target);
+  if (t - lastPanel > 250 || target?.obj.id !== shownTargetId) { renderTarget(target, d); lastPanel = t; }
 }
 
-// ---------- candidates & capture ----------
-
-let lastCandKey = '';
-function renderCandidates(cands, d) {
-  const key = cands.map((c) => c.obj.id).join(',');
-  if (key === lastCandKey) return;
-  if (key && !lastCandKey) chirp([880], 0.05);
-  lastCandKey = key;
-  $('sheet').hidden = cands.length === 0;
-  $('sheet-title').textContent = cands.length > 1 ? "Which one are you watching?" : 'Is this it?';
-  const box = $('candidates');
-  box.innerHTML = '';
-  cands.forEach((c, i) => {
-    const m = motion(c.obj, d, state.observer);
-    const b = document.createElement('button');
-    b.className = `cand${i === 0 ? ' top' : ''}`;
-    const bits = [];
-    if (c.look.mag !== null) bits.push(`mag ${c.look.mag.toFixed(1)}`);
-    if (m) bits.push(`moving ${m.heading}${m.rising ? ', rising' : ', sinking'}`);
-    if (c.obj.family) bits.push(`${state.catalog.families[c.obj.family]?.name ?? ''}, launched ${c.obj.launch ? new Date(`${c.obj.launch}T12:00:00Z`).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : '?'}`);
-    else if (c.obj.year) bits.push(`${c.obj.year}`);
-    if (c.obj.bino) bits.push('binoculars');
-    if (!c.look.visible) bits.push('not visible');
-    b.innerHTML = `<span><span class="name"></span><br><span class="meta"></span></span><span class="go">Capture</span>`;
-    b.querySelector('.name').textContent = shortName(c.obj.name);
-    b.querySelector('.meta').textContent = bits.join(' · ');
-    b.addEventListener('click', () => capture(c.obj));
-    box.appendChild(b);
-  });
+function updateCompass(basis) {
+  const b = basis.back;
+  const heading = (Math.atan2(b[0], b[1]) / RAD + 360) % 360;
+  $('compass-rose').setAttribute('transform', `rotate(${(-heading).toFixed(1)} 50 50)`);
+  // Letters move around the ring but stay upright.
+  for (const [id, az] of [['c-N', 0], ['c-E', 90], ['c-S', 180], ['c-W', 270]]) {
+    const a = (az - heading) * RAD;
+    const el = $(id);
+    el.setAttribute('x', (50 + Math.sin(a) * 32).toFixed(1));
+    el.setAttribute('y', (55 - Math.cos(a) * 32).toFixed(1));
+  }
 }
+
+// ---------- target: callout + card ----------
+
+function placeCallout(target) {
+  const el = $('callout');
+  const p = sky.targetPos;
+  if (!target || !p) { el.hidden = true; return; }
+  el.hidden = false;
+  const w = el.offsetWidth || 200, h = el.offsetHeight || 90;
+  let x = p.x + sky.reticlePx * 0.5 + 18;
+  if (x + w > window.innerWidth - 10) x = p.x - sky.reticlePx * 0.5 - 18 - w;
+  x = Math.max(10, x);
+  const y = Math.max(110, Math.min(p.y - h - 10, window.innerHeight - 380));
+  el.style.transform = `translate(${x.toFixed(0)}px, ${y.toFixed(0)}px)`;
+}
+
+let shownTargetId = null;
+let shownCount = 0;
+function renderTarget(target, d) {
+  const card = $('target');
+  $('capture').classList.toggle('locked', !!target);
+  $('capture').classList.toggle('idle', !target);
+  if (!target) { card.hidden = true; shownTargetId = null; return; }
+  const o = target.obj, l = target.look;
+  const tier = TIER_INFO[o.tier] ?? TIER_INFO.common;
+  const st = orbitStats(o);
+  const mag = l.mag != null ? l.mag.toFixed(1) : '—';
+
+  // Callout (small, next to the object)
+  $('co-name').textContent = label(o);
+  $('co-tier').textContent = tier.label;
+  $('co-tier').style.setProperty('--tier', tier.color);
+  $('co-type').textContent = o.family ? `${familyName(o)} satellite` : (TYPE_LABEL[o.type] ?? 'Object');
+  $('co-mag').textContent = `Mag ${mag} (${brightnessWord(l.mag)})`;
+  $('co-motion').textContent = `${Math.round(l.el)}° up${st ? ` · ${st.speed.toFixed(1)} km/s` : ''}`;
+
+  // Bottom card: rebuild only when the target changes, refresh the live numbers otherwise.
+  if (o.id !== shownTargetId || state.candidates.length !== shownCount) {
+    shownTargetId = o.id;
+    shownCount = state.candidates.length;
+    card.style.setProperty('--tier', tier.color);
+    $('t-art').innerHTML = cardArt(o, { accent: setColor(o), w: 120, h: 130 });
+    $('t-tier').textContent = tier.label;
+    $('t-tier').style.setProperty('--tier', tier.color);
+    $('t-name').textContent = label(o);
+    const typeLabel = o.family ? `${familyName(o)} satellite` : (TYPE_LABEL[o.type] ?? 'Object');
+    const who = o.family ? state.catalog.families?.[o.family]?.maker : ownerName(o.owner);
+    $('t-chips').innerHTML = `<span class="chip"><span class="ico" data-ico="type"></span>${escapeHtml(typeLabel)}</span>`
+      + (who ? `<span class="chip human">${escapeHtml(who)}</span>` : '')
+      + (o.bino ? '<span class="chip">Binoculars</span>' : '');
+    $('t-fact').innerHTML = richText(objectFact(o));
+    $('t-open').href = `cards.html#${encodeURIComponent(o.card ?? o.id)}`;
+    const n = state.candidates.length;
+    $('t-switch').hidden = n < 2;
+    card.hidden = false;
+  }
+  const n = state.candidates.length;
+  if (n > 1) $('t-switch').textContent = `${state.candidates.findIndex((c) => c.obj.id === o.id) + 1} of ${n} ›`;
+  $('t-stats').innerHTML = `<span class="chip"><span class="ico" data-ico="spark"></span>Mag ${mag}</span>`
+    + `<span class="chip"><span class="ico" data-ico="height"></span>${Math.round(l.el)}° up</span>`
+    + (st ? `<span class="chip"><span class="ico" data-ico="rocket"></span>${st.speed.toFixed(1)} km/s</span>` : '');
+}
+
+$('t-switch').addEventListener('click', () => {
+  const c = state.candidates;
+  if (c.length < 2) return;
+  const i = c.findIndex((x) => x.obj.id === state.targetId);
+  state.targetId = c[(i + 1) % c.length].obj.id;
+});
+
+$('capture').addEventListener('click', () => {
+  unlockAudio();
+  const target = state.candidates.find((c) => c.obj.id === state.targetId);
+  if (!target) { toast('Point the circle at a moving light first.', 1800); return; }
+  capture(target.obj);
+});
 
 async function capture(obj) {
   const d = now();
@@ -319,25 +438,21 @@ async function capture(obj) {
   chirp([660, 880, 1320], 0.08);
   const age = obj.year ? `Launched ${obj.year}` : '';
   const cardLink = sighting.sim ? '' : '<br><small><u>Tap to see your card</u></small>';
-  toast(`<span class="big-line">${before ? 'Captured!' : 'New card!'}</span>${escapeHtml(shortName(obj.name))}<br><small>${age}${before ? ' · seen before' : ' · first sighting'}</small>${cardLink}`, 3500, sighting.sim ? null : `cards.html#${encodeURIComponent(obj.card)}`);
+  toast(`<span class="big-line">${before ? 'Captured!' : 'New card!'}</span>${escapeHtml(label(obj))}<br><small>${age}${before ? ' · seen before' : ' · first sighting'}</small>${cardLink}`, 3500, sighting.sim ? null : `cards.html#${encodeURIComponent(obj.card)}`);
 }
 
-function escapeHtml(s) {
-  return s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-}
-
-// ---------- sighting log ----------
+// ---------- journal (sighting log) ----------
 
 async function loadSightings() {
   state.sightings = await allSightings();
-  $('log-count').textContent = state.sightings.length;
+  $('log-count').textContent = state.sightings.length || '';
 }
 
 function renderLog() {
   const list = $('log-list');
   list.innerHTML = '';
   if (!state.sightings.length) {
-    list.innerHTML = '<div class="empty">Nothing yet. Point at a moving light and tap Capture.</div>';
+    list.innerHTML = '<div class="empty">Nothing yet. Point at a moving light and tap the capture button.</div>';
     return;
   }
   for (const s of state.sightings) {
@@ -359,6 +474,38 @@ function renderLog() {
   }
 }
 
+// ---------- visible now ----------
+
+function renderVisible() {
+  const list = $('visible-list');
+  const vis = state.items.filter((i) => i.look.visible).sort((a, b) => a.look.mag - b.look.mag);
+  $('visible-hint').textContent = vis.length
+    ? `Brightest first. ${state.drag.on || !hasLiveSensors() ? 'Tap one to look at it.' : 'Look where it says and hold your phone up.'}`
+    : 'Nothing visible right now. Satellites show up after dusk and before dawn.';
+  list.innerHTML = '';
+  for (const it of vis.slice(0, 60)) {
+    const o = it.obj, tier = TIER_INFO[o.tier] ?? TIER_INFO.common;
+    const row = document.createElement('button');
+    row.className = 'vis-row';
+    row.style.setProperty('--tier', tier.color);
+    row.innerHTML = '<span class="dot"></span><span class="grow"><div class="name"></div><div class="meta"></div></span>';
+    row.querySelector('.name').textContent = label(o);
+    row.querySelector('.meta').textContent = `${tier.label} · mag ${it.look.mag.toFixed(1)} (${brightnessWord(it.look.mag)}) · ${Math.round(it.look.el)}° up in the ${compassPoint(it.look.az)}`;
+    row.addEventListener('click', () => {
+      if (state.drag.on || !hasLiveSensors()) {
+        state.drag.on = true;
+        state.drag.az = it.look.az;
+        state.drag.el = it.look.el;
+        $('visible').hidden = true;
+      } else {
+        toast(`Look <b>${Math.round(it.look.el)}° up</b> in the <b>${compassPoint(it.look.az)}</b>`, 2500);
+      }
+    });
+    list.appendChild(row);
+  }
+}
+$('visible-pill').addEventListener('click', () => { renderVisible(); $('visible').hidden = false; });
+
 // ---------- drag to look ----------
 
 let dragStart = null;
@@ -376,11 +523,12 @@ $('sky').addEventListener('pointermove', (e) => {
 $('sky').addEventListener('pointerup', () => { dragStart = null; });
 $('sky').addEventListener('pointercancel', () => { dragStart = null; });
 
-// ---------- panels ----------
+// ---------- nav & panels ----------
 
 function openDebug() { renderDebug(); $('debug').hidden = false; }
-$('btn-debug').addEventListener('click', openDebug);
-$('btn-log').addEventListener('click', () => { renderLog(); $('log').hidden = false; });
+$('nav-more').addEventListener('click', openDebug);
+$('nav-journal').addEventListener('click', () => { renderLog(); $('log').hidden = false; });
+$('nav-explore').addEventListener('click', () => { for (const id of ['log', 'debug', 'visible']) $(id).hidden = true; });
 document.querySelectorAll('[data-close]').forEach((b) => b.addEventListener('click', () => { $(b.dataset.close).hidden = true; }));
 
 document.querySelectorAll('[data-time]').forEach((b) => b.addEventListener('click', () => {
@@ -399,7 +547,7 @@ $('btn-next-pass').addEventListener('click', () => {
   }
   afterTimeJump();
   $('debug').hidden = true;
-  toast(`<span class="big-line">${escapeHtml(shortName(pass.obj.name))}</span>${Math.round(pass.look.el)}° up in the ${compassPoint(pass.look.az)}`);
+  toast(`<span class="big-line">${escapeHtml(label(pass.obj))}</span>${Math.round(pass.look.el)}° up in the ${compassPoint(pass.look.az)}`);
 });
 
 function afterTimeJump() {
@@ -411,6 +559,8 @@ function afterTimeJump() {
   renderDebug();
 }
 
+$('chk-night').checked = state.night;
+$('chk-night').addEventListener('change', (e) => { state.night = e.target.checked; writePref('night', state.night); applyTheme(); });
 $('chk-drag').addEventListener('change', (e) => {
   state.drag.on = e.target.checked;
   if (state.drag.on && state.basis) {
@@ -470,7 +620,7 @@ $('btn-start').addEventListener('click', async () => {
   keepAwake();
   navigator.storage?.persist?.();
   $('start').hidden = true;
-  $('topbar').hidden = false;
+  $('hud').hidden = false;
   // Desktop / no sensors: fall back to drag mode after a moment with no orientation events.
   setTimeout(() => {
     if (!hasLiveSensors()) {
@@ -485,11 +635,13 @@ async function boot() {
     state.catalog = await loadCatalog('data/catalog.json');
     state.model = new SkyModel(state.catalog.objects);
     setBinocularMode(state.binoculars);
+    for (const o of state.catalog.objects) if (o.family) state.familyCounts.set(o.card, (state.familyCounts.get(o.card) ?? 0) + 1);
   } catch (e) {
     $('start-note').textContent = `Couldn't load satellite data: ${e.message}`;
     return;
   }
   try { state.sky = await loadSky('data/sky.json'); } catch {}
+  await loadLore();
   await loadSightings();
   checkForUpdate();
   requestAnimationFrame(tick);

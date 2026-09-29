@@ -2,7 +2,7 @@
 // Planet and Moon positions use Paul Schlyter's low-precision method ("How to compute planetary
 // positions"), good to a few arcminutes — far better than a phone compass.
 
-import { gstime } from './lib/satellite.js?v=0.1.9';
+import { gstime } from './lib/satellite.js?v=0.1.12';
 
 const RAD = Math.PI / 180;
 const sin = (d) => Math.sin(d * RAD), cos = (d) => Math.cos(d * RAD);
@@ -143,4 +143,18 @@ function phaseName(illum, waxing) {
   if (illum > 0.97) return 'Full moon';
   if (Math.abs(illum - 0.5) < 0.06) return waxing ? 'First quarter' : 'Last quarter';
   return `${waxing ? 'Waxing' : 'Waning'} ${illum < 0.5 ? 'crescent' : 'gibbous'}`;
+}
+
+// The Milky Way's midline (galactic equator) as equatorial unit vectors, with a brightness weight
+// that peaks toward the galactic centre in Sagittarius. J2000 galactic pole: RA 192.86°, Dec 27.13°.
+export function galacticPlane(stepDeg = 4) {
+  const raG = 192.85948, decG = 27.12825, lNcp = 122.93192;
+  const out = [];
+  for (let l = 0; l <= 360; l += stepDeg) {
+    const d = lNcp - l;
+    const dec = Math.asin(cos(decG) * cos(d)) / RAD;
+    const ra = raG + Math.atan2(sin(d), -sin(decG) * cos(d)) / RAD;
+    out.push({ v: eq(ra, dec), weight: 0.45 + 0.55 * Math.max(0, cos(l)) ** 2 });
+  }
+  return out;
 }

@@ -27,7 +27,9 @@ Live: https://sevaan.github.io/space-collector/ (GitHub Pages, deploys from `mai
   `webkitCompassHeading` to fix alpha's arbitrary zero via a smoothed heading offset.
 - `js/celestial.js` – stars/constellations (from `data/sky.json`, built by `scripts/build-sky.mjs`
   from d3-celestial), plus Sun, Moon (with phase) and planets via Schlyter's low-precision formulas.
-- `js/sky.js` – canvas renderer, gnomonic projection centred on the reticle.
+- `js/sky.js` – canvas renderer, gnomonic projection centred on the reticle. Two themes: `glass`
+  (default, navy/gold/cyan, based on Sevaan's mockup: Milky Way glow, tree line, beaded paths,
+  sparkle reticle) and `night` (all red). UI chrome in `index.html` + `css/app.css` (body.night).
 - `js/main.js` – app state, render loop, candidates/capture, sim panel, sighting log.
 - `js/store.js` – IndexedDB sighting log.
 - Cards (NASA data-sheet style, chosen 2026-09-29; no paper texture): `cards.html` + `js/cards-page.js`
