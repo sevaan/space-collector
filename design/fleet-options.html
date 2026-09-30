@@ -54,6 +54,13 @@
   .fl-dots .grid i { aspect-ratio: 1; border-radius: 50%; background: #d4d8c9; }
   .fl-dots .grid i.on { background: var(--ink-stamp); box-shadow: 0 0 0 .08em #f1efdf, 0 0 0 .2em color-mix(in srgb, var(--ink-stamp) 40%, transparent); }
   .fl-dots .yr { display: flex; justify-content: space-between; margin-top: .4em; font: 600 max(9px, .62em) 'IBM Plex Mono', monospace; color: var(--grey); }
+  .fl-dots .grid i.latest { background: var(--ink-stamp); box-shadow: 0 0 0 .12em #f1efdf, 0 0 0 .32em var(--ink-stamp); position: relative; z-index: 1; }
+  .opt.mix { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1fr); }
+  @media (min-width: 720px) { .opt.mix { grid-template-columns: 300px 1fr; column-gap: 36px; align-items: start; } .opt.mix > h2, .opt.mix > p { grid-column: 1 / -1; } .opt.mix .below { margin: 0; max-width: 360px; } }
+  .opt.mix { border: 1px solid #3a4a68; border-radius: 16px; padding: 18px; background: #0a1120; }
+  .latest-note { display: flex; gap: 12px; align-items: center; margin: 0 0 14px; font-size: 12px; color: var(--muted); }
+  .latest-note .stamp { flex: none; }
+  .latest-note > span b { color: var(--text); font-weight: 600; }
   .timeline { background: #0d1626; border: 1px solid var(--line); border-radius: 10px; padding: 12px; }
   .timeline .grid { display: grid; grid-template-columns: repeat(var(--cols), 1fr); gap: 3px; }
   .timeline .grid i { aspect-ratio: 1; border-radius: 50%; background: #25324a; }
@@ -63,7 +70,7 @@
 </style>
 </head>
 <body>
-  <h1>Fleet cards: three looks</h1>
+  <h1>Fleet cards: three looks and a mix</h1>
   <p class="intro">One card per fleet, with a stamp for each launch you catch. Built with the real card renderer and the real launch list (Starlink has 420 launches in the catalogue). Levels count launches stamped: bronze at 1, silver at 10, gold at 50 for Starlink, scaled down for the smaller fleets. Under each card is what the card viewer would show instead of today's sighting list.</p>
   <div class="controls" id="controls"></div>
   <div class="board" id="board"></div>
@@ -112,7 +119,29 @@ function baseCard(f) {
 }
 const stampHtml = (s, i) => `<div class="stamp" style="--r:${[-8, 6, -3, 10, -12, 4, 8, -6][i % 8]}deg"><span><b>${s.cospar}</b>${fmt(s.launch).toUpperCase().replace(/ \d{4}$/, '')}<br>SEEN ${s.seen.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }).toUpperCase()}</span></div>`;
 
+// Dot-map face shared by C and the mix.
+function dotFace(f, { latest = false } = {}) {
+  const el = baseCard(f);
+  el.querySelector('.card__agebar').innerHTML = `<span class="fl-count">${f.stamped.size}<em>/ ${f.launches.length}</em><small>LAUNCHES STAMPED</small></span><span class="card__seen">${f.level.toUpperCase()} · ${f.next}</span>`;
+  const n = f.launches.length, cols = n > 200 ? 30 : n > 60 ? 16 : Math.min(10, n), gap = n > 200 ? '.18em' : '.45em';
+  const newest = f.seen[0]?.key;
+  const dots = f.launches.map((l) => `<i class="${f.stamped.has(l.key) ? 'on' : ''}${latest && l.key === newest ? ' latest' : ''}" title="${l.cospar}"></i>`).join('');
+  el.querySelector('.card__fact').outerHTML = `<div class="fl-dots"><span class="card__note-label">EVERY ${esc(f.fam.name.toUpperCase())} LAUNCH</span><div class="grid" style="--cols:${cols};--gap:${gap}">${dots}</div><div class="yr"><span>${f.launches[0].launch.slice(0, 4)}</span><span>${f.launches.at(-1).launch.slice(0, 4)}</span></div></div>`;
+  return el;
+}
+
 const OPTIONS = [
+  { name: 'Mix: dot map on the card, stamp passport in the viewer', mix: true, text: 'C\'s card face with B\'s passport underneath. The card keeps its orbit stats and shows the whole fleet as dots, so you see how much is left to find. Your newest stamp is the ringed dot. Open the card and the viewer is your passport: the newest stamp first and larger, then every stamp you own as a dated ink stamp, then a few empty slots showing what\'s next. Catching a new launch in the sky lands a fresh stamp here and lights up its dot.',
+    build(f) {
+      const el = dotFace(f, { latest: true });
+      const [newest, ...rest] = f.seen;
+      const empty = Math.max(0, 8 - rest.length);
+      const nextLine = f.level === 'gold' ? 'Top level reached.' : `${f.next.replace(/^(\w+)/, (m) => m[0] + m.slice(1).toLowerCase()).replace(' AT ', ' at ')} launches.`;
+      const below = `<h3>Passport · ${f.stamped.size} of ${f.launches.length} launches</h3>
+        <div class="latest-note">${stampHtml(newest, 0).replace('class="stamp"', 'class="stamp" style="width:78px;height:78px;--r:-6deg"')}<span>Newest stamp: <b>launch ${newest.cospar}</b>, ${newest.n} satellites launched ${fmt(newest.launch)}.<br>Seen ${newest.seen.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}. ${nextLine}</span></div>
+        <div class="stamps">${rest.map((s, i) => stampHtml(s, i + 1)).join('')}${'<div class="empty">?</div>'.repeat(empty)}</div>`;
+      return [el, below];
+    } },
   { name: 'A. Launch counter', text: 'Smallest change. The age pill becomes a big "12 / 420 launches" counter and the seen box shows your level and the next one. The viewer lists your stamps like today\'s sighting list. Clear, but the least magical.',
     build(f) {
       const el = baseCard(f);
@@ -134,11 +163,8 @@ const OPTIONS = [
     } },
   { name: 'C. Every launch as a dot', text: 'The fact area becomes a map of every launch in the fleet, oldest to newest: a dot per launch, filled when you\'ve stamped it. Starlink is a dense 420-dot field you slowly light up; Kuiper is 14 big dots. A strong "fill the grid" pull. The viewer shows the same map larger with the list.',
     build(f) {
-      const el = baseCard(f);
-      el.querySelector('.card__agebar').innerHTML = `<span class="fl-count">${f.stamped.size}<em>/ ${f.launches.length}</em><small>LAUNCHES STAMPED</small></span><span class="card__seen">${f.level.toUpperCase()} · ${f.next}</span>`;
-      const n = f.launches.length, cols = n > 200 ? 30 : n > 60 ? 16 : Math.min(10, n), gap = n > 200 ? '.18em' : '.45em';
-      const dots = f.launches.map((l) => `<i class="${f.stamped.has(l.key) ? 'on' : ''}" title="${l.cospar}"></i>`).join('');
-      el.querySelector('.card__fact').outerHTML = `<div class="fl-dots"><span class="card__note-label">EVERY ${esc(f.fam.name.toUpperCase())} LAUNCH</span><div class="grid" style="--cols:${cols};--gap:${gap}">${dots}</div><div class="yr"><span>${f.launches[0].launch.slice(0, 4)}</span><span>${f.launches.at(-1).launch.slice(0, 4)}</span></div></div>`;
+      const el = dotFace(f);
+      const n = f.launches.length;
       const vcols = n > 200 ? 24 : Math.min(12, n);
       const below = `<h3>Launch map</h3><div class="timeline"><div class="grid" style="--cols:${vcols}">${f.launches.map((l) => `<i class="${f.stamped.has(l.key) ? 'on' : ''}"></i>`).join('')}</div>
         <p class="note">Tap a dot to see that launch. Latest stamp: <b>launch ${f.seen[0].cospar}</b> (${fmt(f.seen[0].launch)}), seen ${f.seen[0].seen.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}.</p></div>`;
@@ -152,7 +178,7 @@ function draw() {
   const board = document.getElementById('board'); board.innerHTML = '';
   for (const o of OPTIONS) {
     const [card, below] = o.build(data[current]);
-    const box = document.createElement('div'); box.className = 'opt';
+    const box = document.createElement('div'); box.className = `opt${o.mix ? ' mix' : ''}`;
     box.innerHTML = `<h2>${o.name}</h2><p>${o.text}</p><div class="slot"></div><div class="below">${below}</div>`;
     box.querySelector('.slot').append(card);
     board.append(box);
