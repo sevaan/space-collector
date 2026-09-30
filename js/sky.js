@@ -1,8 +1,8 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
 // Two themes: 'glass' (navy sky, gold satellites, cyan reticle) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.53';
-import { TIER_INFO } from './rarity.js?v=0.1.53';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.54';
+import { TIER_INFO } from './rarity.js?v=0.1.54';
 
 const RAD = Math.PI / 180;
 const FONT = '-apple-system, "SF Pro Text", system-ui, sans-serif';
@@ -514,7 +514,7 @@ export class SkyView {
   }
 
   // Stars, constellation lines and labels. sky: { stars, lines, constellations } with ENU vectors.
-  drawStars(sky, { lines }) {
+  drawStars(sky, { lines, time = 0 }) {
     const ctx = this.ctx, t = this.theme;
     if (lines) {
       ctx.strokeStyle = t.constLine;
@@ -525,13 +525,28 @@ export class SkyView {
         this.queueLabel(t.constCase(c.name), this.project(c.enu), { color: t.constLabel, size: 11, weight: 400, priority: 2, align: 'center' });
       }
     }
-    for (const s of sky.stars) {
+    // Stars towards the edges of the screen twinkle, ever so slightly; the middle, where you're aiming,
+    // stays still. Each star gets its own slow, irregular rhythm (two sines, per-star phase and speed).
+    const sec = time / 1000, hw = this.w / 2, hh = this.h / 2;
+    for (let i = 0; i < sky.stars.length; i++) {
+      const s = sky.stars[i];
       if (s.enu[2] < 0) continue;
       const p = this.project(s.enu);
       if (!this.onScreen(p, 12)) continue;
       const r = Math.max(0.38, Math.min(2.4, 1.9 - 0.27 * s.mag));
-      const a = Math.max(0.14, Math.min(1, 0.98 - 0.125 * s.mag));
-      if (s.mag < 2.2) this.glow(p.x, p.y, r * (s.mag < 0.6 ? 7 : 4.5), t.starRGB, s.mag < 0.6 ? 0.62 : 0.26);
+      let a = Math.max(0.14, Math.min(1, 0.98 - 0.125 * s.mag)), tw = 1;
+      if (time) {
+        // 0 in the middle of the screen, rising to 1 at any edge (the outer ~40% of the way out).
+        const edge = Math.max(Math.abs(p.x - hw) / hw, Math.abs(p.y - hh) / hh);
+        const e = Math.min(1, Math.max(0, (edge - 0.58) / 0.38));
+        if (e > 0) {
+          const ph = i * 2.39996, f = 0.7 + ((i * 0.618034) % 1) * 1.3;
+          const wave = 0.5 + 0.25 * Math.sin(sec * f + ph) + 0.25 * Math.sin(sec * f * 2.3 + ph * 3.1); // 0..1
+          tw = 1 - 0.5 * e * e * (3 - 2 * e) * wave;
+          a *= tw;
+        }
+      }
+      if (s.mag < 2.2) this.glow(p.x, p.y, r * (s.mag < 0.6 ? 7 : 4.5), t.starRGB, (s.mag < 0.6 ? 0.62 : 0.26) * (0.4 + 0.6 * tw));
       ctx.fillStyle = t.star(a);
       ctx.beginPath(); ctx.arc(p.x, p.y, r, 0, Math.PI * 2); ctx.fill();
       if (s.name && s.mag < 1.2) this.queueLabel(s.name, p, { color: t.starLabel, gap: r + 6, priority: 0 });
@@ -626,7 +641,7 @@ export class SkyView {
     const ctx = this.ctx, t = this.theme;
     this.drawBackground();
     this.drawMilkyWay(milky);
-    if (sky) this.drawStars(sky, { lines });
+    if (sky) this.drawStars(sky, { lines, time: this.reducedMotion ? 0 : time });
     if (bodies) this.drawBodies(bodies);
     this.drawGround();
     if (landscape) this.drawLandscape();
