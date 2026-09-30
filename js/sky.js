@@ -1,7 +1,7 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
 // Two themes: 'glass' (navy sky, gold satellites, cyan reticle) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.39';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.40';
 
 const RAD = Math.PI / 180;
 const FONT = '-apple-system, "SF Pro Text", system-ui, sans-serif';
@@ -223,7 +223,7 @@ export class SkyView {
     // 1. The glow, airbrushed: soft spots every degree along the band, overlapping so heavily that
     //    they blend into one smooth band (sparse spots are what made it look like a string of dots).
     const spine = milky.spine;
-    for (const [widthK, strength] of [[1.25, 0.85], [0.55, 0.75]]) {
+    for (const [widthK, strength] of [[1.25, 0.3], [0.55, 0.26]]) {
       for (const pt of spine) {
         const p = this.project(pt.enu);
         if (!p) continue;
@@ -233,7 +233,7 @@ export class SkyView {
         if (!this.onScreen(p, radius)) continue;
         // Divide by how many neighbours overlap this spot so the total stays even.
         const overlap = Math.max(1, (2 * pt.width * widthK) / 1);
-        this.glow(p.x, p.y, radius, this.theme.milky, Math.min(0.7, strength * pt.bright * f / overlap * 3));
+        this.glow(p.x, p.y, radius, this.theme.milky, Math.min(0.3, strength * pt.bright * f / overlap * 3));
       }
     }
     // 2. The Great Rift: a dark lane of dust through Cygnus and Aquila, airbrushed the same way.
@@ -243,7 +243,7 @@ export class SkyView {
       if (!p) continue;
       const radius = pt.w * pxPerDeg / Math.max(0.25, p.c.z);
       if (!this.onScreen(p, radius)) continue;
-      this.glow(p.x, p.y, radius, dark, 0.38 * fade(pt.enu));
+      this.glow(p.x, p.y, radius, dark, 0.16 * fade(pt.enu));
     }
     // 3. Star-cloud grain: thousands of faint specks, batched by brightness for speed.
     const buckets = [[], [], []];
@@ -255,7 +255,7 @@ export class SkyView {
     }
     buckets.forEach((list, k) => {
       if (!list.length) return;
-      ctx.fillStyle = `rgba(${Math.min(255, r + 80)}, ${Math.min(255, g + 80)}, ${Math.min(255, b + 70)}, ${[0.28, 0.44, 0.62][k]})`;
+      ctx.fillStyle = `rgba(${Math.min(255, r + 80)}, ${Math.min(255, g + 80)}, ${Math.min(255, b + 70)}, ${[0.1, 0.17, 0.26][k]})`;
       ctx.beginPath();
       for (let i = 0; i < list.length; i += 3) ctx.rect(list[i], list[i + 1], list[i + 2], list[i + 2]);
       ctx.fill();
