@@ -1,9 +1,9 @@
-import { renderCard, renderCardTile, attachTilt, attachGyro } from './card.js?v=0.1.55';
-import { buildCards, cardKeyFor } from './card-model.js?v=0.1.55';
-import { SETS, assignSets } from './sets.js?v=0.1.55';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.55';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.55';
-import { allSightings, deleteSighting } from './store.js?v=0.1.55';
+import { renderCard, renderCardTile, renderPassport, attachTilt, attachGyro } from './card.js?v=0.1.56';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.56';
+import { SETS, assignSets } from './sets.js?v=0.1.56';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.56';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.56';
+import { allSightings, deleteSighting } from './store.js?v=0.1.56';
 
 const $ = (id) => document.getElementById(id);
 const state = { cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -42,9 +42,11 @@ async function boot() {
   state.byKey = new Map(state.cards.map((c) => [c.key, c]));
   const keyOfId = new Map(cat.objects.map((o) => [String(o.id), cardKeyFor(o)]));
   const sightings = sightingResult.status === 'fulfilled' ? sightingResult.value : [];
-  for (const s of sightings) {
-    if (s.sim) continue;
-    const key = String(s.cardKey ?? keyOfId.get(String(s.objectId)) ?? s.objectId);
+  for (const raw of sightings) {
+    if (raw.sim) continue;
+    // Launch-keyed sightings from before fleet cards read as fleet card + stamp.
+    const s = normalizeSighting(raw.cardKey ? raw : { ...raw, cardKey: keyOfId.get(String(raw.objectId)) ?? String(raw.objectId) });
+    const key = s.cardKey;
     if (!state.sightingsByKey.has(key)) state.sightingsByKey.set(key, []);
     state.sightingsByKey.get(key).push(s);
     if (!state.seenMembers.has(key)) state.seenMembers.set(key, new Set());
@@ -63,6 +65,7 @@ async function boot() {
   render();
   let key = '';
   try { key = decodeURIComponent(location.hash.slice(1)); } catch {}
+  if (!state.byKey.has(key) && /^[A-Z]+:/.test(key)) key = key.split(':')[0]; // old launch-card link
   if (key && state.byKey.has(key)) {
     if (!state.sightingsByKey.has(key)) setView('discover');
     openViewer(state.list.findIndex((c) => c.key === key));
@@ -172,9 +175,10 @@ function showCard() {
   $('v-preview').hidden = sightings.length > 0;
   $('v-preview').textContent = state.preview ? 'Back to uncollected card' : 'Preview artwork & story';
   $('v-history').replaceChildren();
+  if (sightings.length && c.launches) $('v-history').append(renderPassport(c, sightings));
   if (sightings.length) {
     const heading = document.createElement('h2');
-    heading.textContent = sightings.length === 1 ? 'When you saw it' : `When you saw it · ${sightings.length} times`;
+    heading.textContent = c.launches ? `Every sighting · ${sightings.length}` : sightings.length === 1 ? 'When you saw it' : `When you saw it · ${sightings.length} times`;
     $('v-history').append(heading);
     const points = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
     for (const s of [...sightings].sort((a, b) => b.time - a.time)) {

@@ -5,8 +5,8 @@
 //  Everything scales with rarity (Legendary dims the sky, shockwave, held breath, slow flip, fanfare).
 // Waits use timers, not animation.finished, so a paused tab can never freeze the sequence.
 
-import { TIER_INFO } from './rarity.js?v=0.1.55';
-import { levelFor, attachTilt, attachGyro } from './card.js?v=0.1.55';
+import { TIER_INFO } from './rarity.js?v=0.1.56';
+import { levelFor, attachTilt, attachGyro } from './card.js?v=0.1.56';
 
 const FX = {
   common:    { particles: 14,  flip: 520,  spin: 0,   dim: 0,   shock: false, notes: [880],                            hold: 0 },
@@ -94,17 +94,21 @@ function sizeCard(cardEl) {
 
 // card: rendered card element. o: catalogue card (for tier). seen: sightings of this card incl. this one.
 // origin: {x, y} screen point the object was at (the reticle centre).
-export async function playReveal({ card, o, seen, origin }) {
+// fleet (fleet cards only): { newStamp, stamps, total, cospar, level, before }. A launch seen for the
+// first time lands a NEW STAMP on the card, and the card's level counts stamps, not sightings.
+export async function playReveal({ card, o, seen, origin, fleet = null }) {
   stopReveal();
   const my = run;
   const fresh = seen <= 1;
   const tierKey = FX[o.tier] ? o.tier : 'common';
   const fx = FX[tierKey], color = (TIER_INFO[tierKey] ?? TIER_INFO.common).color;
-  const level = levelFor(seen), levelUp = !fresh && level !== levelFor(seen - 1);
+  const level = fleet ? fleet.level : levelFor(seen);
+  const levelUp = !fresh && (fleet ? fleet.level !== fleet.before : level !== levelFor(seen - 1));
+  const newStamp = !fresh && !!fleet?.newStamp;
   const root = $('reveal');
   root.style.setProperty('--fx', color);
   root.classList.remove('rv-done');
-  $('reveal-eyebrow').textContent = fresh ? 'FIRST DISCOVERY' : levelUp ? `${LEVEL_NAME[level]} CARD UNLOCKED` : 'SIGHTING RECORDED';
+  $('reveal-eyebrow').textContent = fresh ? 'FIRST DISCOVERY' : levelUp ? `${LEVEL_NAME[level]} CARD UNLOCKED` : newStamp ? 'NEW LAUNCH STAMP' : 'SIGHTING RECORDED';
   $('reveal-card').replaceChildren(card);
   for (const id of ['rv-holder', 'rv-flipper', 'rv-stamp', 'rv-dot', 'rv-dim', 'rv-flash', 'rv-shock']) $(id).getAnimations().forEach((a) => a.cancel());
   $('rv-holder').style.opacity = 0; $('rv-holder').classList.remove('live');
@@ -139,7 +143,7 @@ export async function playReveal({ card, o, seen, origin }) {
     $('rv-flipper').style.transform = 'rotateY(180deg)';
     await play($('rv-holder'), [{ opacity: 0, transform: 'scale(.5) translateY(40px)' }, { opacity: 1, transform: 'scale(1.04)' }, { opacity: 1, transform: 'scale(1)' }], { duration: 480, easing: 'cubic-bezier(.2,.9,.3,1.2)', fill: 'forwards' });
     if (!alive()) return;
-    return finish({ fx, color, fresh, seen, level, levelUp, card, alive });
+    return finish({ fx, color, fresh, seen, level, levelUp, card, alive, fleet, newStamp });
   }
 
   // 2. A sealed card lands, glowing in its rarity colour, and waits for your tap.
@@ -166,11 +170,12 @@ export async function playReveal({ card, o, seen, origin }) {
   setTimeout(() => { if (alive()) showFace('front'); }, flipMs / 2); // edge-on: swap faces
   await flipped;
   if (!alive()) return;
-  return finish({ fx, color, fresh, seen, level, levelUp, card, alive });
+  return finish({ fx, color, fresh, seen, level, levelUp, card, alive, fleet, newStamp });
 }
 
 // 4. Light sweeps the card, sparks fly, the stamp lands, and the card is yours to tilt.
-async function finish({ fx, color, fresh, seen, level, levelUp, card, alive }) {
+const STAMP_INK = '#8fb8ff';
+async function finish({ fx, color, fresh, seen, level, levelUp, card, alive, fleet = null, newStamp = false }) {
   const r = $('rv-holder').getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height / 2;
   fanfare(levelUp ? [...fx.notes, 1568, 2093] : fx.notes);
   burst(cx, cy, fx.particles + (levelUp ? 60 : 0), color);
@@ -179,9 +184,11 @@ async function finish({ fx, color, fresh, seen, level, levelUp, card, alive }) {
   await sleep(500);
   if (!alive()) return;
   const date = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }).toUpperCase();
-  $('rv-stamp').innerHTML = fresh ? `FIRST SIGHTING<small>${date}</small>`
+  const stampLine = fleet ? `LAUNCH ${fleet.cospar} · ${fleet.stamps} OF ${fleet.total}` : '';
+  $('rv-stamp').innerHTML = fresh ? `FIRST SIGHTING<small>${fleet ? stampLine : date}</small>`
+    : newStamp ? `NEW STAMP<small>${levelUp ? `${LEVEL_NAME[level]} CARD UNLOCKED` : stampLine}</small>`
     : levelUp ? `SEEN ${seen}×<small>${LEVEL_NAME[level]} CARD UNLOCKED</small>` : `SEEN ${seen}×<small>${date}</small>`;
-  $('rv-stamp').style.setProperty('--stamp', levelUp ? LEVEL_COLOR[level] : color);
+  $('rv-stamp').style.setProperty('--stamp', levelUp ? LEVEL_COLOR[level] : newStamp ? STAMP_INK : color);
   await play($('rv-stamp'), [
     { opacity: 0, transform: 'translate(-50%,-50%) rotate(-9deg) scale(2.6)' },
     { opacity: 1, transform: 'translate(-50%,-50%) rotate(-9deg) scale(.95)', offset: .7 },

@@ -1,19 +1,19 @@
-import { VERSION } from './version.js?v=0.1.55';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode } from './orbit.js?v=0.1.55';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.55';
-import { SkyView, shortName } from './sky.js?v=0.1.55';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.55';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.55';
-import { cardArt } from './art.js?v=0.1.55';
-import { renderCard } from './card.js?v=0.1.55';
-import { playReveal, primeReveal, stopReveal } from './reveal.js?v=0.1.55';
-import { buildCards } from './card-model.js?v=0.1.55';
-import { collectedDuringPass, canCapture } from './observation.js?v=0.1.55';
-import { TIER_INFO } from './rarity.js?v=0.1.55';
-import { SETS } from './sets.js?v=0.1.55';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.55';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.55';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter } from './planes.js?v=0.1.55';
+import { VERSION } from './version.js?v=0.1.56';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode } from './orbit.js?v=0.1.56';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.56';
+import { SkyView, shortName } from './sky.js?v=0.1.56';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.56';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.56';
+import { cardArt } from './art.js?v=0.1.56';
+import { renderCard } from './card.js?v=0.1.56';
+import { playReveal, primeReveal, stopReveal } from './reveal.js?v=0.1.56';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.56';
+import { collectedDuringPass, canCapture } from './observation.js?v=0.1.56';
+import { TIER_INFO } from './rarity.js?v=0.1.56';
+import { SETS } from './sets.js?v=0.1.56';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.56';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.56';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter } from './planes.js?v=0.1.56';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -259,7 +259,7 @@ function updateStatus(f) {
   if (state.locationStatus === 'ready' && Date.now() - state.observer.fixedAt >= 15 * 60 * 1000) { state.locationStatus = 'stale'; renderLocation(); }
   const visible = state.items.filter(a => a.look.visible).length;
   $('visible-count').textContent = visible;
-  $('new-count').textContent = state.items.filter(a => a.look.visible && !ownsCard(a.obj)).length;
+  $('new-count').textContent = state.items.filter(a => a.look.visible && isNewFind(a.obj)).length;
   if (!bannerKey.startsWith('New build')) {
     if (state.timeOffsetMs) showBanner(`Showing the sky at ${now().toLocaleString([], { weekday: 'short', hour: 'numeric', minute: '2-digit' })}. Tap to go back to now.`, backToNow);
     else if (state.needsMotionTap) showBanner('Tap anywhere to line the sky up with your phone.');
@@ -457,7 +457,7 @@ function updateCompass(basis) {
   for (const it of state.items) {
     if (!it.look.visible) continue;
     const [x, y] = at(it.look.az, it.look.el);
-    const isNew = !ownsCard(it.obj), isTarget = it.obj.id === state.targetId;
+    const isNew = isNewFind(it.obj), isTarget = it.obj.id === state.targetId;
     ctx.fillStyle = isNew ? '#ffffff' : C.gold;
     ctx.beginPath(); ctx.arc(x, y, isNew ? 1.6 : 1.3, 0, Math.PI * 2); ctx.fill();
     if (isTarget) { ctx.strokeStyle = C.cyan; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.arc(x, y, 4.5, 0, Math.PI * 2); ctx.stroke(); }
@@ -504,12 +504,20 @@ let shownTargetId = null, barTargetId = null;
 //  - already in your collection: a slim one-line bar with Collect (repeat sightings level cards up).
 // Off target, both just say which way to turn.
 let ownedKeys = null, ownedFrom = null;
-function ownsCard(o) {
-  if (ownedFrom !== state.sightings || ownedKeys?.size === undefined || ownedKeys.n !== state.sightings.length) {
-    ownedKeys = new Set(state.sightings.filter((s) => !s.sim).map((s) => String(s.cardKey ?? s.objectId)));
-    ownedKeys.n = state.sightings.length; ownedFrom = state.sightings;
-  }
-  return ownedKeys.has(String(o.card ?? o.id));
+let ownedStamps = null;
+function refreshOwned() {
+  if (ownedFrom === state.sightings && ownedKeys?.n === state.sightings.length) return;
+  const real = state.sightings.filter((s) => !s.sim);
+  ownedKeys = new Set(real.map((s) => s.cardKey));
+  ownedStamps = new Set(real.map((s) => s.stampKey).filter(Boolean));
+  ownedKeys.n = state.sightings.length; ownedFrom = state.sightings;
+}
+function ownsCard(o) { refreshOwned(); return ownedKeys.has(cardKeyFor(o)); }
+// New to you: a card you don't have yet, or a fleet launch you haven't stamped.
+function isNewFind(o) {
+  refreshOwned();
+  const stamp = stampKeyFor(o);
+  return !ownedKeys.has(cardKeyFor(o)) || (!!stamp && !ownedStamps.has(stamp));
 }
 function turnHint(l) {
   if (l.el < 0) return 'This pass has ended';
@@ -536,14 +544,15 @@ function renderTarget(target, d) {
   const collected = collectedThisPass(o, d);
   const sw = switchLabel(o);
 
-  if (!ownsCard(o) && !collected) {
+  if (isNewFind(o) && !collected) {
     // New find
     bar.hidden = true;
     state.newFind = eligible;
     if (eligible) {
       disc.hidden = false; guide.hidden = true;
-      $('d-tier').textContent = tier.label;
-      $('d-tier').style.color = tier.color;
+      const newStamp = ownsCard(o); // fleet card already owned: this launch is a new stamp
+      $('d-tier').textContent = newStamp ? 'New stamp' : tier.label;
+      $('d-tier').style.color = newStamp ? '#8fb8ff' : tier.color;
       $('d-name').textContent = label(o);
       $('d-switch').hidden = !sw; $('d-switch').textContent = sw;
     } else {
@@ -620,22 +629,31 @@ function setAction(collected, eligible = true) {
   btn.disabled = state.captureBusy;
   btn.textContent = state.captureBusy ? 'Saving…' : collected ? 'View' : 'Collect';
 }
-function cardModel(obj) { return state.cardModels.get(obj.card ?? String(obj.id)) ?? obj; }
+function cardModel(obj) { return state.cardModels.get(cardKeyFor(obj)) ?? obj; }
 function cardSnapshot(obj) {
-  const { satrec, _label, _setColor, ...card } = cardModel(obj);
+  // Fleet cards list every member and launch; the snapshot keeps just the card's own facts.
+  const { satrec, _label, _setColor, members, launches, ...card } = cardModel(obj);
   return card;
 }
 // The magic moment (js/reveal.js): sealed card + flip for a first sighting, straight-in card with a
 // count stamp for repeats, all scaled by rarity.
 function showCaptureCard(obj) {
-  const model = cardModel(obj), key = obj.card ?? String(obj.id);
-  const sightings = state.sightings.filter(s => !s.sim && (s.cardKey ?? String(s.objectId)) === key);
+  const model = cardModel(obj), key = cardKeyFor(obj), stampKey = stampKeyFor(obj);
+  const sightings = state.sightings.filter(s => !s.sim && s.cardKey === key);
   const card = renderCard(model, { sightings, seenMembers: new Set(sightings.map(s => s.objectId)).size });
   $('reveal-view').href = `cards.html#${encodeURIComponent(key)}`;
   openPanel('reveal');
-  playReveal({ card, o: model, seen: sightings.length, origin: { x: sky.ring?.x ?? sky.cx, y: sky.ring?.y ?? sky.cy } });
+  // Fleet cards: a launch seen for the first time lands a stamp, and levels count stamps.
+  let fleet = null;
+  if (model.launches && stampKey) {
+    const stamps = stampsIn(sightings).size;
+    const newStamp = sightings.filter((s) => s.stampKey === stampKey).length === 1;
+    fleet = { newStamp, stamps, total: model.launches.length, cospar: stampKey.split(':')[1],
+      level: fleetLevel(model.family, stamps), before: fleetLevel(model.family, newStamp ? stamps - 1 : stamps) };
+  }
+  playReveal({ card, o: model, seen: sightings.length, fleet, origin: { x: sky.ring?.x ?? sky.cx, y: sky.ring?.y ?? sky.cy } });
 }
-function openCard(obj) { saveExploreState(); location.href = `cards.html#${encodeURIComponent(obj.card ?? String(obj.id))}`; }
+function openCard(obj) { saveExploreState(); location.href = `cards.html#${encodeURIComponent(cardKeyFor(obj))}`; }
 async function capture(obj) {
   if (state.captureBusy) return;
   const d = now(), f = frame(d, state.observer), l = look(obj, f);
@@ -643,9 +661,8 @@ async function capture(obj) {
   const aligned = l && dot(enuFromAzEl(l.az, l.el), basis.back) > Math.cos(sky.reticleDeg * RAD);
   if (!l || !canCapture({ visible: l.visible, aligned, practice: state.captureAny, allowAny: state.captureAny })) { toast('Line up the object while it is visible to capture it.'); return; }
   if (collectedDuringPass(state.sightings, obj.id, d.getTime(), false)) { openCard(obj); return; }
-  const m = motion(obj, d, state.observer), key = obj.card ?? String(obj.id);
-  const before = state.sightings.some(s => !s.sim && (s.cardKey ?? String(s.objectId)) === key);
-  const sighting = { objectId: obj.id, cardKey: key, name: obj.name, type: obj.type, year: obj.year, time: d.getTime(), loggedAt: Date.now(), lat: state.observer.lat, lon: state.observer.lon, az: l.az, el: l.el, mag: l.mag, rangeKm: l.rangeKm, heading: m?.heading, sim: false, appVersion: VERSION, cardSnapshot: cardSnapshot(obj) };
+  const m = motion(obj, d, state.observer), key = cardKeyFor(obj);
+  const sighting = { objectId: obj.id, cardKey: key, ...(stampKeyFor(obj) ? { stampKey: stampKeyFor(obj) } : {}), name: obj.name, type: obj.type, year: obj.year, time: d.getTime(), loggedAt: Date.now(), lat: state.observer.lat, lon: state.observer.lon, az: l.az, el: l.el, mag: l.mag, rangeKm: l.rangeKm, heading: m?.heading, sim: false, appVersion: VERSION, cardSnapshot: cardSnapshot(obj) };
   state.captureBusy = true; setAction(false);
   try {
     const key = await addSighting(sighting);
@@ -660,7 +677,7 @@ async function capture(obj) {
 // ---------- sightings ----------
 
 async function loadSightings() {
-  try { state.sightings = await allSightings(); state.storageReady = true; } catch { state.storageReady = false; }
+  try { state.sightings = (await allSightings()).map(normalizeSighting); state.storageReady = true; } catch { state.storageReady = false; }
 }
 
 

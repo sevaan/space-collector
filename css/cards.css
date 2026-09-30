@@ -50,6 +50,34 @@
 .card__stamp { position: absolute; left: 50%; top: 46%; transform: translate(-50%,-50%) rotate(-12deg); border: .2em solid #9c312b; color: #9c312b; border-radius: .35em; padding: .35em .7em; font-weight: 800; font-size: 1.8em; letter-spacing: .1em; text-align: center; background: #f1efdfef; z-index: 8; }
 .card__stamp small { display: block; font-size: .5em; letter-spacing: .1em; white-space: nowrap; }
 .card.extinct .card__art { filter: grayscale(.85); }
+/* ---------- Fleet cards: launches stamped + a dot per launch (design/fleet-options.html, the mix) ---------- */
+.card { --ink-stamp: #2d4f86; }
+.fl-count { display: inline-flex; align-items: baseline; gap: .3em; font-size: 1.8em; font-weight: 800; letter-spacing: -.05em; white-space: nowrap; }
+.fl-count em { font-style: normal; font-size: .55em; color: var(--grey); letter-spacing: 0; }
+.fl-count small { display: inline-block; max-width: 6.5em; white-space: normal; font-size: max(9px, .36em); line-height: 1.3; font-weight: 750; letter-spacing: .12em; margin-left: .3em; }
+.fl-dots { margin: 0 1.35em; }
+.fl-grid { display: grid; grid-template-columns: repeat(var(--cols), 1fr); gap: var(--gap); margin-top: .55em; }
+.fl-grid i { aspect-ratio: 1; border-radius: 50%; background: #d4d8c9; }
+.fl-grid i.on { background: var(--ink-stamp); box-shadow: 0 0 0 .08em var(--paper), 0 0 0 .2em color-mix(in srgb, var(--ink-stamp) 40%, transparent); }
+.fl-grid i.latest { box-shadow: 0 0 0 .12em var(--paper), 0 0 0 .32em var(--ink-stamp); position: relative; z-index: 1; }
+.fl-years { display: flex; justify-content: space-between; margin-top: .4em; font: 600 max(9px, .62em) 'IBM Plex Mono', monospace; color: var(--grey); }
+/* Ink stamps, in the viewer's passport */
+.passport { max-width: 390px; margin: 20px auto 0; text-align: left; --ink-stamp: #2d4f86; }
+.passport h2 { font-size: 11px; font-weight: 600; color: var(--accent, #e6c68a); letter-spacing: .12em; text-transform: uppercase; margin: 0 0 12px; }
+.passport__latest { display: flex; gap: 14px; align-items: center; margin-bottom: 14px; }
+.passport .passport__latest p { display: block; margin: 0; font-size: 12px; line-height: 1.5; color: var(--muted, #9fb3dc); }
+.passport .passport__latest p b { color: var(--text, #eef3ff); font-weight: 600; }
+.passport__stamps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; justify-items: center; background: #f1efdf; border-radius: 10px; padding: 14px 8px; }
+.ink-stamp { flex: none; width: 64px; height: 64px; border-radius: 50%; border: 2.5px solid var(--ink-stamp); color: var(--ink-stamp); display: grid; place-items: center; text-align: center;
+  transform: rotate(var(--r, 0deg)); font: 800 7.5px/1.15 'IBM Plex Mono', monospace; letter-spacing: .01em; position: relative; background: #f1efdf; }
+.ink-stamp::before { content: ''; position: absolute; inset: 3px; border-radius: 50%; border: 1px dashed currentColor; opacity: .7; }
+.ink-stamp b { display: block; font: 800 10px Inter, sans-serif; letter-spacing: .06em; color: inherit; }
+.ink-stamp.big { width: 78px; height: 78px; }
+.ink-stamp.blank { border: 1.5px dashed #b9bfb0; color: #9aa293; font-weight: 600; font-size: 10px; }
+.ink-stamp.blank::before { display: none; }
+:where(html[data-theme="night"], body.night) .card, :where(html[data-theme="night"], body.night) .passport { --ink-stamp: #be6660; }
+:where(html[data-theme="night"], body.night) .fl-grid i { background: #3a1512; }
+:where(html[data-theme="night"], body.night) .passport__stamps, :where(html[data-theme="night"], body.night) .ink-stamp { background: #130606; }
 /* ---------- Shine, by rarity ---------- */
 .card__shine, .card__glare, .card__foil { position: absolute; inset: 0; pointer-events: none; }
 .card__glare {

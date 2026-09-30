@@ -1,7 +1,7 @@
 // Card titles and facts. Order: hand-written (data/lore.json) → rocket/satellite family fact →
 // a fact computed from the orbit. Facts use **bold** for emphasis. Keep every fact true.
 
-import { orbitStats, titleCase } from './facts.js?v=0.1.55';
+import { orbitStats, titleCase } from './facts.js?v=0.1.56';
 
 const FAMILY = [
   [/^IRIDIUM 33 DEB/, 'A piece of the **first-ever crash between two satellites**: Iridium 33 hit the dead Cosmos 2251 in 2009.'],
@@ -35,6 +35,7 @@ export async function loadLore(url = 'data/lore.json') {
 const shortDate = (iso) => new Date(`${iso}T12:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 
 export function titleFor(o) {
+  if (o.launches) return o.familyName;
   if (o.members) return `${o.familyName} train, ${o.launch ? shortDate(o.launch) : 'unknown date'}`;
   const hand = loreCache?.[o.id]?.title;
   if (hand) return hand;
@@ -90,7 +91,13 @@ function familyFact(o, now) {
   return `${lead} They've since spread out into a web around the planet. Catch as many as you can.`;
 }
 
+function fleetFact(o) {
+  const n = o.members.length.toLocaleString('en-US'), first = o.launches[0]?.launch?.slice(0, 4);
+  return `**${n} ${o.familyName} satellites** from ${o.launches.length} launches${first ? ` since ${first}` : ''}. Each launch you catch adds a stamp to this card.`;
+}
+
 export function factFor(o, now = new Date()) {
+  if (o.launches) return fleetFact(o);
   if (o.members) return familyFact(o, now);
   const hand = loreCache?.[o.id]?.fact;
   if (hand) return hand;
@@ -102,6 +109,7 @@ export function factFor(o, now = new Date()) {
 
 // Third stat on the card: hand-written override, or size.
 export function thirdStat(o, sizeLabel, seenMembers = 0) {
+  if (o.launches) return { label: 'FIRST LAUNCH', value: o.launches[0]?.launch?.slice(0, 4) ?? '—' };
   if (o.members) return { label: 'SEEN', value: `${seenMembers} / ${o.members.length}` };
   const s = loreCache?.[o.id]?.stat;
   // Default: the launch year, so every card shows when it's from as well as how long it's been up.
