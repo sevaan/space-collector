@@ -113,7 +113,7 @@ details { border-bottom:1px solid var(--edge-soft); }
 #reveal { background:radial-gradient(ellipse at 50% 0,#283530,transparent 55%),var(--bg); }
 #reveal-card { display:flex;justify-content:center;padding:7px 4px;perspective:1000px; }
 #reveal-card .card { font-size:clamp(7px,min(calc((100vw - 56px)/28),calc((100dvh - var(--safe-top) - var(--safe-bottom) - 110px)/39.2)),13px); } /* whole card fits on screen */
-#reveal .tilt-hint { text-align:center;margin:18px 0; }
+#reveal-view { margin-top:18px; }
 #reveal-continue { width:100%; }
 html[data-theme=night] #start,body.night #start,body.night #reveal { background:var(--bg); }
 body.night #start-art,body.night #t-art { filter:grayscale(1) sepia(1) saturate(3) hue-rotate(310deg) brightness(.6); }
