@@ -1,7 +1,7 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
 // Two themes: 'glass' (navy sky, gold satellites, cyan reticle) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.26';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.27';
 
 const RAD = Math.PI / 180;
 const FONT = '-apple-system, "SF Pro Text", system-ui, sans-serif';
@@ -163,6 +163,9 @@ export class SkyView {
 
   queueLabel(text, p, { color = this.theme.labelDim, size = 11, weight = 400, gap = 9, priority = 0, align = 'auto' } = {}) {
     if (!text || !this.inSky(p)) return;
+    // Keep the area around a new find clear so its name and "tap to collect" are easy to read.
+    const z = this.clearZone;
+    if (z && p.x > z.left && p.x < z.right && p.y > z.top && p.y < z.bottom) return;
     this.labelQueue.push({ text, p, color, size, weight, gap, priority, align });
   }
 
@@ -380,6 +383,8 @@ export class SkyView {
     this.safeBottom = Math.max(12, Math.min(safeBottom, this.h - this.safeTop - 100));
     this.cy = Number.isFinite(centerY) ? Math.max(this.safeTop + 20, Math.min(centerY, this.h - this.safeBottom - 20)) : (this.safeTop + this.h - this.safeBottom) / 2;
     this.labelQueue = [];
+    const r = this.reticlePx;
+    this.clearZone = newFind ? { left: this.cx - 170, right: this.cx + 170, top: this.cy - r - 90, bottom: this.cy + r + 60 } : null;
     const ctx = this.ctx, t = this.theme;
     this.drawBackground();
     this.drawMilkyWay(milky);
