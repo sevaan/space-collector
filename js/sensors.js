@@ -43,25 +43,47 @@ function blendAngle(prev, next, k) {
   return (prev + d * k + 360) % 360;
 }
 
-let offsetSeeded = false;
+// iOS heading calibration. webkitCompassHeading is only trustworthy as "the direction the camera faces"
+// while the phone is held roughly upright (top edge up, camera near the horizon). Tip the phone back
+// overhead and iOS switches to measuring from the top edge instead, so the reading swings ~180°; if we
+// kept blending that in, the whole sky would slowly spin. So: calibrate only in the upright pose, and
+// once calibrated, ignore readings that disagree wildly (a flipped or disturbed compass).
+let offsetSeeded = false;   // any estimate at all
+let offsetTrusted = false;  // estimate came from the upright pose
+let goodSamples = 0;
+let rejectStreak = 0;
+function updateHeadingOffset(heading, basis) {
+  const elBack = Math.asin(Math.max(-1, Math.min(1, basis.back[2]))) / RAD;
+  const upright = basis.up[2] > 0.6 && Math.abs(elBack) < 40;
+  const measured = (heading - rawAzimuth(basis.back) + 360) % 360;
+  if (!offsetSeeded) { pointing.headingOffset = measured; offsetSeeded = true; offsetTrusted = upright; return; }
+  if (!upright) return; // hold the last good offset while pointing high or at odd angles
+  const diff = Math.abs(((measured - pointing.headingOffset + 540) % 360) - 180);
+  if (!offsetTrusted) { // first upright reading replaces a guess taken in a bad pose
+    pointing.headingOffset = measured; offsetTrusted = true; goodSamples = 1; return;
+  }
+  if (goodSamples > 20 && diff > 35) {
+    // A sudden big disagreement: usually interference or a flip. Only accept it if it persists.
+    if (++rejectStreak < 90) return; // ~1.5 s of consistent readings at 60 Hz
+  }
+  rejectStreak = 0;
+  goodSamples++;
+  pointing.headingOffset = blendAngle(pointing.headingOffset, measured, goodSamples < 30 ? 0.2 : 0.04);
+}
+
 function onOrientation(e, absolute) {
   if (e.alpha === null || e.beta === null || e.gamma === null) return;
+  // Android sends both absolute (north-referenced) and relative events; mixing them makes the sky jump.
+  if (!absolute && pointing.source === 'absolute') return;
   const basis = basisFromEuler(e.alpha, e.beta, e.gamma);
   pointing.basis = basis;
   pointing.lastEvent = performance.now();
 
   if (typeof e.webkitCompassHeading === 'number' && e.webkitCompassHeading >= 0) {
-    // iOS: alpha has an arbitrary zero. webkitCompassHeading is the direction the camera faces,
-    // so the difference between the two is a (nearly constant) offset we track and smooth.
+    // iOS: alpha has an arbitrary zero; the compass heading pins it to true directions.
     pointing.source = 'ios';
     pointing.compassAccuracy = e.webkitCompassAccuracy;
-    const elBack = Math.asin(Math.max(-1, Math.min(1, basis.back[2]))) / RAD;
-    // Near straight up/down the compass heading is unreliable; keep the last offset.
-    if (elBack > -50 && elBack < 65) {
-      const measured = (e.webkitCompassHeading - rawAzimuth(basis.back) + 360) % 360;
-      pointing.headingOffset = offsetSeeded ? blendAngle(pointing.headingOffset, measured, 0.05) : measured;
-      offsetSeeded = true;
-    }
+    updateHeadingOffset(e.webkitCompassHeading, basis);
   } else if (absolute) {
     pointing.source = 'absolute';
     pointing.headingOffset = 0;

@@ -28,7 +28,9 @@ Live: https://sevaan.github.io/space-collector/ (GitHub Pages, deploys from `mai
 - `js/orbit.js` – SGP4 propagation (vendored satellite.js 6.0.2 in `js/lib/`), visibility (sunlit +
   dark sky + brightness), magnitude estimate, pass search. No DOM, keep it portable (Capacitor later).
 - `js/sensors.js` – DeviceOrientation → camera basis (right/up/back in East-North-Up). iOS uses
-  `webkitCompassHeading` to fix alpha's arbitrary zero via a smoothed heading offset.
+  `webkitCompassHeading` to fix alpha's arbitrary zero via a smoothed heading offset, calibrated ONLY
+  while the phone is upright (iOS flips the reading ~180° when tipped overhead, which spun the sky).
+  Sudden big disagreements are ignored unless they persist ~1.5 s. Tests: `node --test tests/`.
 - `js/celestial.js` – stars/constellations (from `data/sky.json`, built by `scripts/build-sky.mjs`
   from d3-celestial), plus Sun, Moon (with phase) and planets via Schlyter's low-precision formulas.
 - `js/sky.js` – canvas renderer, gnomonic projection centred on the reticle. Two themes: `glass`
