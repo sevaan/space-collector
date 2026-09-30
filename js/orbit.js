@@ -1,7 +1,7 @@
 // Orbit math: where every object is in the observer's sky, and whether it can be seen.
 // Pure functions, no DOM, so this module carries over unchanged to a native wrapper.
 
-import * as sat from './lib/satellite.js?v=0.1.54';
+import * as sat from './lib/satellite.js?v=0.1.55';
 
 const RAD = Math.PI / 180;
 const EARTH_RADIUS_KM = 6371;
@@ -21,17 +21,26 @@ export async function loadCatalog(url) {
   const objects = [];
   const families = data.families ?? {};
   for (const o of data.objects) {
-    const satrec = sat.twoline2satrec(o.l1, o.l2);
-    if (satrec.error) continue;
+    const satrec = satrecFor(o);
+    if (!satrec || satrec.error) continue;
     // Constellation members share their family's facts to keep the file small.
     const fam = o.family ? families[o.family] : null;
     if (fam) Object.assign(o, { kind: 'PAY', type: 'satellite', tier: 'common', stdMag: fam.stdMag, owner: fam.owner, year: o.launch ? Number(o.launch.slice(0, 4)) : null });
     o.card ??= String(o.id);
     o.satrec = satrec;
-    delete o.l1; delete o.l2;
+    delete o.el; delete o.l1; delete o.l2;
     objects.push(o);
   }
   return { generated: new Date(data.generated), families, objects };
+}
+
+// Orbital elements come as JSON (OMM) values in scripts/build-catalog.mjs EL_FIELDS order. Older
+// catalogues carried TLE lines, which can't hold catalogue numbers above 99999.
+const EL_FIELDS = ['EPOCH', 'MEAN_MOTION', 'ECCENTRICITY', 'INCLINATION', 'RA_OF_ASC_NODE', 'ARG_OF_PERICENTER', 'MEAN_ANOMALY', 'BSTAR', 'MEAN_MOTION_DOT', 'MEAN_MOTION_DDOT'];
+function satrecFor(o) {
+  if (o.el) return sat.json2satrec({ NORAD_CAT_ID: o.id, ...Object.fromEntries(EL_FIELDS.map((k, i) => [k, o.el[i]])) });
+  if (o.l1 && o.l2) return sat.twoline2satrec(o.l1, o.l2);
+  return null;
 }
 
 // Observer: { lat, lon, heightKm } in degrees

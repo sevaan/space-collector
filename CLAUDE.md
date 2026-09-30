@@ -13,7 +13,8 @@ Live: https://sevaan.github.io/space-collector/ (GitHub Pages, deploys from `mai
 - Satellite data: `node scripts/build-catalog.mjs` writes `data/catalog.json` (~16k objects, ~4.7k cards):
   every tracked object with perigee < 2000 km whose best-case magnitude is ≤ 8 (≤ 5 naked eye, 5–8
   flagged `bino`). Pulls CelesTrak SATCAT + elements per launch year (~72 requests, cached 12 h in
-  scripts/.cache). `.github/workflows/catalog.yml` reruns it daily at 09:17 UTC and commits if changed.
+  scripts/.cache). Elements are JSON/OMM (`el` array, rebuilt with `json2satrec` in js/orbit.js), never TLE:
+  catalogue numbers passed 69999 in July 2026 and TLE silently dropped every newer object. `.github/workflows/catalog.yml` reruns it daily at 09:17 UTC and commits if changed.
   Starlink/OneWeb/Qianfan/Kuiper satellites share one card per launch (`card` = `FAMILY:YYYY-NNN`).
 - Sky view uses `SkyModel` (js/orbit.js): sweeps the catalogue in slices, interpolates 1 s samples.
   Don't loop the full catalogue per frame.

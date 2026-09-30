@@ -3,7 +3,8 @@
 // Run: node scripts/build-catalog.mjs   (add --fresh to ignore the 12-hour cache)
 //
 // Sources (CelesTrak): the full SATCAT for facts, and orbital elements fetched per launch year
-// (gp.php?INTDES=YYYY), which together cover the whole public catalogue. Be polite: responses are
+// (gp.php?INTDES=YYYY&FORMAT=json), which together cover the whole public catalogue. Elements are JSON
+// (OMM), not TLE: catalogue numbers passed 69999 in July 2026 and the TLE format can't hold them. Be polite: responses are
 // cached in scripts/.cache for 12 hours and requests are spaced out.
 
 import { writeFileSync, readFileSync, mkdirSync, statSync } from 'node:fs';
@@ -52,15 +53,15 @@ async function cached(name, url, delayMs = 0) {
   return text;
 }
 
-function parseTle(text) {
-  const lines = text.split(/\r?\n/).map((l) => l.trimEnd()).filter(Boolean);
-  const out = [];
-  for (let i = 0; i + 2 < lines.length; i += 3) {
-    const [name, l1, l2] = lines.slice(i, i + 3);
-    if (!l1?.startsWith('1 ') || !l2?.startsWith('2 ')) continue;
-    out.push({ name: name.trim(), l1, l2, id: Number(l1.slice(2, 7)) });
-  }
-  return out;
+// Compact orbital elements, in the order js/orbit.js expects (it rebuilds the OMM record for SGP4).
+const EL_FIELDS = ['EPOCH', 'MEAN_MOTION', 'ECCENTRICITY', 'INCLINATION', 'RA_OF_ASC_NODE', 'ARG_OF_PERICENTER', 'MEAN_ANOMALY', 'BSTAR', 'MEAN_MOTION_DOT', 'MEAN_MOTION_DDOT'];
+function parseGp(text) {
+  let rows;
+  try { rows = JSON.parse(text); } catch { return []; } // "No GP data found" is plain text
+  if (!Array.isArray(rows)) return [];
+  return rows
+    .filter((r) => r.NORAD_CAT_ID && r.EPOCH && r.MEAN_MOTION > 0)
+    .map((r) => ({ name: String(r.OBJECT_NAME).trim(), id: Number(r.NORAD_CAT_ID), el: EL_FIELDS.map((k) => r[k] ?? 0) }));
 }
 
 async function loadSatcat() {
@@ -76,12 +77,12 @@ async function loadSatcat() {
   return byId;
 }
 
-async function loadAllTles() {
+async function loadAllElements() {
   const tles = new Map();
   const thisYear = new Date().getUTCFullYear();
   for (let y = 1958; y <= thisYear; y++) {
-    const text = await cached(`gp-${y}.tle`, `${GP}?INTDES=${y}&FORMAT=tle`, 1200);
-    for (const t of parseTle(text)) tles.set(t.id, t);
+    const text = await cached(`gp-${y}.json`, `${GP}?INTDES=${y}&FORMAT=json`, 1200);
+    for (const t of parseGp(text)) tles.set(t.id, t);
     process.stdout.write(`\rOrbital elements: ${y} (${tles.size} objects)`);
   }
   process.stdout.write('\n');
@@ -109,7 +110,7 @@ function stdMagFor(o, family) {
 const num = (s) => (s === undefined || s === '' ? null : Number(s));
 
 const satcat = await loadSatcat();
-const tles = await loadAllTles();
+const tles = await loadAllElements();
 
 // Main payload of each launch, so a rocket stage's card can say what it carried.
 const payloadByLaunch = new Map();
@@ -159,8 +160,7 @@ for (const t of tles.values()) {
   o.card = family && o.cospar ? `${family.id}:${o.cospar.slice(0, 8)}` : String(o.id);
   if (!family && kind !== 'PAY' && o.cospar) o.parent = payloadByLaunch.get(o.cospar.slice(0, 8)) ?? null;
   o.tier = family ? 'common' : tierFor(o);
-  o.l1 = t.l1;
-  o.l2 = t.l2;
+  o.el = t.el;
   objects.push(o);
 }
 objects.sort((a, b) => a.id - b.id);
