@@ -1,6 +1,6 @@
 // Shared catalogue → card mapping. One collectible per constellation launch.
-import { assignSets } from './sets.js?v=0.1.42';
-import { tierFor } from './rarity.js?v=0.1.42';
+import { assignSets } from './sets.js?v=0.1.44';
+import { tierFor } from './rarity.js?v=0.1.44';
 
 export const cardKeyFor = (o) => String(o.card ?? o.key ?? o.id);
 const avg = (list, field) => {

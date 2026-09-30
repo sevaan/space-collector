@@ -1,7 +1,7 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
 // Two themes: 'glass' (navy sky, gold satellites, cyan reticle) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.42';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.44';
 
 const RAD = Math.PI / 180;
 const FONT = '-apple-system, "SF Pro Text", system-ui, sans-serif';
@@ -14,7 +14,7 @@ const THEMES = {
     horizon: 'rgba(119, 174, 187, 0.30)',
     ground: '#050e17', groundEdge: 'rgba(117, 163, 171, 0.10)',
     hills: '#0e2031', haze: 'rgb(120, 150, 185)',
-    groundInk: 'rgba(143, 211, 232, 0.16)', groundText: 'rgba(190, 225, 235, 0.42)', groundNorth: 'rgba(230, 198, 138, 0.75)', ghost: 'rgba(255, 214, 140, 0.75)', ghostText: 'rgba(143, 211, 232, 0.85)',
+    groundInk: 'rgba(143, 211, 232, 0.16)', groundText: 'rgba(190, 225, 235, 0.42)', groundNorth: 'rgba(230, 198, 138, 0.75)', ghost: 'rgba(255, 214, 140, 0.95)', ghostText: 'rgba(160, 222, 240, 0.95)', ghostPill: 'rgba(5, 12, 24, 0.85)',
     label: 'rgba(225, 235, 255, 0.92)', labelDim: 'rgba(200, 215, 255, 0.65)',
     compass: 'rgba(200, 220, 255, 0.75)',
     sat: '#d6bb83', satGlow: [213, 177, 107], satHot: '#f6e5b8',
@@ -34,7 +34,7 @@ const THEMES = {
     horizon: 'rgba(255, 70, 50, 0.55)',
     ground: '#0a0100', groundEdge: 'rgba(255, 70, 50, 0.08)',
     hills: '#140200', haze: 'rgb(150, 30, 20)',
-    groundInk: 'rgba(255, 70, 50, 0.14)', groundText: 'rgba(255, 90, 70, 0.4)', groundNorth: 'rgba(255, 110, 90, 0.7)', ghost: 'rgba(255, 106, 85, 0.7)', ghostText: 'rgba(255, 110, 90, 0.8)',
+    groundInk: 'rgba(255, 70, 50, 0.14)', groundText: 'rgba(255, 90, 70, 0.4)', groundNorth: 'rgba(255, 110, 90, 0.7)', ghost: 'rgba(255, 106, 85, 0.9)', ghostText: 'rgba(255, 120, 100, 0.9)', ghostPill: 'rgba(12, 1, 0, 0.85)',
     label: 'rgba(255, 110, 90, 0.85)', labelDim: 'rgba(255, 110, 90, 0.55)',
     compass: 'rgba(255, 110, 90, 0.85)',
     sat: '#bb3c32', satGlow: [161, 32, 24], satHot: '#da5140',
@@ -386,23 +386,45 @@ export class SkyView {
   drawRising(rising) {
     if (!rising?.length) return;
     const ctx = this.ctx, t = this.theme;
-    ctx.save();
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'top';
+    // Project, then merge ghosts that would sit on top of each other into one ("+ 1 more").
+    const pts = [];
     for (const r of rising) {
       const p = this.project(enuFromAzEl(r.az, -3.5));
       if (!p || p.x < 40 || p.x > this.w - 40 || p.y < this.safeTop + 20 || p.y > this.h - this.safeBottom - 40) continue;
+      pts.push({ ...r, x: p.x, y: p.y });
+    }
+    pts.sort((a, b) => a.mins - b.mins);
+    const groups = [];
+    for (const p of pts) {
+      const g = groups.find((g) => Math.abs(g.x - p.x) < 150 && Math.abs(g.y - p.y) < 44);
+      if (g) g.more++; else groups.push({ ...p, more: 0 });
+    }
+    ctx.save();
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    for (const g of groups) {
+      // Ghost marker
       ctx.strokeStyle = t.ghost; ctx.lineWidth = 1.5; ctx.setLineDash([2, 3]);
-      ctx.beginPath(); ctx.arc(p.x, p.y, 6, 0, Math.PI * 2); ctx.stroke();
+      ctx.beginPath(); ctx.arc(g.x, g.y, 6, 0, Math.PI * 2); ctx.stroke();
       ctx.setLineDash([]);
-      ctx.beginPath(); ctx.moveTo(p.x, p.y - 10); ctx.lineTo(p.x - 4, p.y - 6); ctx.moveTo(p.x, p.y - 10); ctx.lineTo(p.x + 4, p.y - 6); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(g.x, g.y - 11); ctx.lineTo(g.x - 4, g.y - 7); ctx.moveTo(g.x, g.y - 11); ctx.lineTo(g.x + 4, g.y - 7); ctx.stroke();
+      // Label on a dark pill so it reads over lines, stars and other labels.
+      const name = g.more ? `${g.name} + ${g.more} more` : g.name;
+      const when = g.mins <= 1 ? 'rising now' : `rises in ${g.mins} min`;
+      ctx.font = `600 12px ${FONT}`;
+      const w = Math.max(ctx.measureText(name).width, (ctx.font = `500 11px ${FONT}`, ctx.measureText(when).width)) + 16;
+      const top = g.y + 12, h = 36;
+      const x = Math.max(8 + w / 2, Math.min(this.w - 8 - w / 2, g.x));
+      ctx.fillStyle = t.ghostPill ?? 'rgba(5, 12, 24, 0.82)';
+      ctx.beginPath(); if (ctx.roundRect) ctx.roundRect(x - w / 2, top, w, h, 9); else ctx.rect(x - w / 2, top, w, h); ctx.fill();
       ctx.font = `600 12px ${FONT}`; ctx.fillStyle = t.ghost;
-      ctx.fillText(r.name, p.x, p.y + 11);
+      ctx.fillText(name, x, top + 12);
       ctx.font = `500 11px ${FONT}`; ctx.fillStyle = t.ghostText;
-      ctx.fillText(r.mins <= 1 ? 'rising now' : `rises in ${r.mins} min`, p.x, p.y + 27);
+      ctx.fillText(when, x, top + 26);
     }
     ctx.restore();
   }
+
 
   drawGrid() {
     const ctx = this.ctx, t = this.theme;
