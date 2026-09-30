@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Visible Now Options</title>
+<style>
+  :root { --text: #eef3ff; --muted: #9fb3dc; --gold: #e6c68a; --cyan: #8fd3e8; --glass: rgba(14, 26, 48, 0.78); --edge: rgba(140, 180, 220, 0.28); }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #05080f; color: var(--text); font: 15px/1.45 -apple-system, "SF Pro Text", system-ui, sans-serif; padding: 22px 14px 60px; }
+  h1 { font-size: 22px; margin: 0 0 6px; }
+  .intro { color: var(--muted); margin: 0 0 22px; max-width: 720px; }
+  .board { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 30px 22px; }
+  .opt h2 { font-size: 16px; margin: 12px 0 4px; }
+  .opt p { color: var(--muted); font-size: 13px; margin: 0; }
+  .scene { position: relative; height: 150px; border-radius: 16px; overflow: hidden; border: 1px solid #1a2433;
+    background: radial-gradient(120% 90% at 70% 10%, #16294d, #0a1430 55%, #060b18); }
+  .scene::before { content: ''; position: absolute; inset: 0; background:
+    radial-gradient(1px 1px at 12% 30%, #fff9, transparent), radial-gradient(1px 1px at 40% 70%, #fff7, transparent),
+    radial-gradient(1px 1px at 66% 22%, #fffa, transparent), radial-gradient(1px 1px at 86% 60%, #fff8, transparent),
+    radial-gradient(1px 1px at 25% 85%, #fff6, transparent), radial-gradient(1px 1px at 55% 45%, #fff8, transparent); }
+  .compass { position: absolute; left: 14px; top: 16px; width: 57px; height: 57px; border-radius: 50%; border: 1px solid var(--edge); background: var(--glass); }
+  .compass::after { content: 'N'; position: absolute; left: 50%; top: 6px; transform: translateX(-50%); font-size: 11px; color: var(--gold); font-weight: 700; }
+  .slot { position: absolute; right: 14px; top: 16px; }
+  .glass { background: var(--glass); border: 1px solid var(--edge); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+  .muted { color: var(--muted); }
+
+  /* A. Compact counter */
+  .a { display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px 7px 10px; border-radius: 999px; font-size: 13px; }
+  .a .live { width: 8px; height: 8px; border-radius: 50%; background: #6fe3a0; box-shadow: 0 0 0 0 #6fe3a080; animation: ping 1.8s infinite; }
+  @keyframes ping { 70% { box-shadow: 0 0 0 7px #6fe3a000; } 100% { box-shadow: 0 0 0 0 #6fe3a000; } }
+  .a b { font-size: 15px; }
+
+  /* B. New for you */
+  .b { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: 16px; }
+  .b .num { font-size: 26px; font-weight: 800; color: var(--gold); line-height: 1; }
+  .b .txt { line-height: 1.15; font-size: 12px; }
+  .b .txt b { display: block; font-size: 13px; color: var(--text); }
+
+  /* C. Rarity pips */
+  .c { padding: 8px 12px; border-radius: 16px; min-width: 170px; }
+  .c .top { display: flex; justify-content: space-between; align-items: baseline; font-size: 12px; }
+  .c .top b { font-size: 18px; }
+  .c .bar { display: flex; height: 5px; border-radius: 3px; overflow: hidden; margin: 7px 0 5px; background: #ffffff10; }
+  .c .bar i { display: block; }
+  .c .keys { display: flex; gap: 8px; font-size: 10px; color: var(--muted); }
+  .c .keys span::before { content: ''; display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-right: 4px; background: var(--k); }
+
+  /* D. Mini radar */
+  .d { width: 78px; height: 78px; border-radius: 50%; position: relative; }
+  .d .ring { position: absolute; inset: 14px; border-radius: 50%; border: 1px solid var(--edge); }
+  .d .ring2 { position: absolute; inset: 28px; border-radius: 50%; border: 1px solid var(--edge); }
+  .d i { position: absolute; width: 5px; height: 5px; border-radius: 50%; background: #ffd98a; box-shadow: 0 0 5px #ffd98a; }
+  .d i.new { background: #fff; box-shadow: 0 0 7px #fff; width: 6px; height: 6px; }
+  .d .count { position: absolute; left: 50%; bottom: -9px; transform: translateX(-50%); font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+
+  /* E. Best right now */
+  .e { display: flex; align-items: center; gap: 10px; padding: 7px 12px 7px 8px; border-radius: 16px; max-width: 240px; }
+  .e .dot { width: 30px; height: 30px; border-radius: 9px; background: linear-gradient(160deg, #1d3350, #0d1a2e); border: 1px solid #ffc54588; display: grid; place-items: center; color: #ffc545; font-size: 14px; flex: none; }
+  .e .txt { font-size: 11.5px; line-height: 1.2; min-width: 0; }
+  .e .txt b { display: block; font-size: 13.5px; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .e .txt small { color: var(--gold); letter-spacing: .08em; font-weight: 700; font-size: 9.5px; }
+
+  /* F. Just the number */
+  .f { text-align: right; line-height: 1; }
+  .f b { font-size: 34px; font-weight: 800; letter-spacing: -1px; }
+  .f span { display: block; font-size: 10px; letter-spacing: .16em; color: var(--muted); margin-top: 3px; }
+</style>
+</head>
+<body>
+  <h1>"Visible now" options</h1>
+  <p class="intro">Six takes on the top-right counter, drawn at real size next to the compass. Tapping any of them would still open the list of what's up.</p>
+  <div class="board">
+
+    <div class="opt"><div class="scene"><div class="compass"></div><div class="slot">
+      <div class="a glass"><span class="live"></span><b>89</b><span class="muted">up now</span></div>
+    </div></div>
+      <h2>A. Small live counter</h2>
+      <p>Half the size of today's pill: a gently pulsing green "live" dot, the number, and "up now". Quiet, and it gives most of that corner back to the sky.</p>
+    </div>
+
+    <div class="opt"><div class="scene"><div class="compass"></div><div class="slot">
+      <div class="b glass"><span class="num">12</span><span class="txt"><b>new for you</b><span class="muted">of 89 up now</span></span></div>
+    </div></div>
+      <h2>B. New for you</h2>
+      <p>Leads with what matters for collecting: how many of the visible objects you don't have yet. The total sits underneath. It makes the counter a reason to go hunting.</p>
+    </div>
+
+    <div class="opt"><div class="scene"><div class="compass"></div><div class="slot">
+      <div class="c glass">
+        <div class="top"><span><b>89</b> up now</span><span class="muted">12 new</span></div>
+        <div class="bar"><i style="width:3%;background:#ffc545"></i><i style="width:9%;background:#b57bff"></i><i style="width:20%;background:#4aa8ff"></i><i style="width:28%;background:#5fd08a"></i><i style="width:40%;background:#9aa4b1"></i></div>
+        <div class="keys"><span style="--k:#ffc545">1 Legendary</span><span style="--k:#b57bff">3 Epic</span><span style="--k:#4aa8ff">18 Rare</span></div>
+      </div>
+    </div></div>
+      <h2>C. Rarity at a glance</h2>
+      <p>The count plus a thin bar split by rarity, with the best ones called out. You see instantly if a Legendary is up tonight, which gives you a reason to look.</p>
+    </div>
+
+    <div class="opt"><div class="scene"><div class="compass"></div><div class="slot">
+      <div class="d glass"><div class="ring"></div><div class="ring2"></div>
+        <i style="left:22px;top:20px"></i><i style="left:50px;top:28px"></i><i class="new" style="left:36px;top:12px"></i><i style="left:58px;top:48px"></i><i style="left:18px;top:50px"></i><i style="left:40px;top:58px"></i><i style="left:30px;top:36px"></i><i class="new" style="left:62px;top:22px"></i>
+        <span class="count glass">89 up</span></div>
+    </div></div>
+      <h2>D. Mini radar</h2>
+      <p>A little all-sky map: overhead is the centre, the horizon is the edge, and each dot is something visible (new ones brighter). It shows where to turn, not just how many. It pairs naturally with the compass on the left.</p>
+    </div>
+
+    <div class="opt"><div class="scene"><div class="compass"></div><div class="slot">
+      <div class="e glass"><span class="dot">★</span><span class="txt"><small>BEST RIGHT NOW</small><b>International Space Station</b><span class="muted">62° up in the NW · +88 more</span></span></div>
+    </div></div>
+      <h2>E. Best right now</h2>
+      <p>Instead of a number, it names the most exciting thing up there: rarest first, then brightest. Tap it to be guided straight to it. It's the most "go look!" of the six.</p>
+    </div>
+
+    <div class="opt"><div class="scene"><div class="compass"></div><div class="slot">
+      <div class="f"><b>89</b><span>VISIBLE</span></div>
+    </div></div>
+      <h2>F. Just the number</h2>
+      <p>No box at all: a big bold number and a tiny label, floating on the sky like a heads-up display. The cleanest, and it matches the "field notes" type style.</p>
+    </div>
+
+  </div>
+</body>
+</html>
