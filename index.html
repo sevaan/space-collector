@@ -13,8 +13,8 @@
   <link rel="apple-touch-icon" href="icons/icon-180.png">
   <link rel="icon" href="icons/icon-192.png">
   <script>try { if (localStorage.getItem("night") === "1") document.documentElement.dataset.theme = "night"; } catch {}</script>
-  <link rel="stylesheet" href="css/cards.css?v=0.1.27">
-  <link rel="stylesheet" href="css/app.css?v=0.1.27">
+  <link rel="stylesheet" href="css/cards.css?v=0.1.28">
+  <link rel="stylesheet" href="css/app.css?v=0.1.28">
 </head>
 <body>
   <canvas id="sky" role="img" aria-label="Sky map aligned with your viewing direction"></canvas>
@@ -97,9 +97,9 @@
     </div>
   </section>
 
-  <section id="reveal" class="overlay panel" role="dialog" aria-modal="true" aria-labelledby="reveal-title" hidden>
+  <section id="reveal" class="overlay panel" role="dialog" aria-modal="true" aria-labelledby="reveal-eyebrow" hidden>
     <div class="reveal-inner"><div class="panel-head"><span class="eyebrow" id="reveal-eyebrow">FIRST DISCOVERY</span><button class="pill" data-close="reveal">Done</button></div>
-    <h2 id="reveal-title">A piece of space history.</h2><p id="reveal-note" class="hint"></p><div id="reveal-card"></div>
+    <div id="reveal-card"></div>
     <p class="hint small tilt-hint">Tilt your phone or drag across the card to catch the light.</p><a id="reveal-view" class="big" href="cards.html">View in collection</a><button id="reveal-continue" class="text-button">Keep exploring →</button></div>
   </section>
 
@@ -159,6 +159,6 @@
     <pre id="debug-info"></pre></details>
   </section>
 
-  <script type="module" src="js/main.js?v=0.1.27"></script>
+  <script type="module" src="js/main.js?v=0.1.28"></script>
 </body>
 </html>
