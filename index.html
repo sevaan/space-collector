@@ -13,9 +13,9 @@
   <link rel="apple-touch-icon" href="icons/icon-180.png">
   <link rel="icon" href="icons/icon-192.png">
   <script>try { if (localStorage.getItem("night") === "1") document.documentElement.dataset.theme = "night"; } catch {}</script>
-  <link rel="stylesheet" href="css/cards.css?v=0.1.40">
-  <link rel="stylesheet" href="css/app.css?v=0.1.40">
-  <link rel="stylesheet" href="css/reveal.css?v=0.1.40">
+  <link rel="stylesheet" href="css/cards.css?v=0.1.42">
+  <link rel="stylesheet" href="css/app.css?v=0.1.42">
+  <link rel="stylesheet" href="css/reveal.css?v=0.1.42">
 </head>
 <body>
   <canvas id="sky" role="img" aria-label="Sky map aligned with your viewing direction"></canvas>
@@ -133,6 +133,7 @@
     <label class="row"><input type="checkbox" id="chk-night"> Red night mode (keeps your eyes adjusted to the dark)</label>
     <label class="row"><input type="checkbox" id="chk-stars" checked> Stars, planets &amp; Moon</label>
     <label class="row"><input type="checkbox" id="chk-lines"> Constellation lines and names</label>
+    <label class="row"><input type="checkbox" id="chk-landscape"> Landscape: hills and a tree line along the horizon</label>
     <label class="row"><input type="checkbox" id="chk-bino"> Binocular mode: also show objects too faint for the naked eye (down to magnitude 8)</label>
 
     <h3>Pointing</h3>
@@ -167,6 +168,6 @@
     <pre id="debug-info"></pre></details>
   </section>
 
-  <script type="module" src="js/main.js?v=0.1.40"></script>
+  <script type="module" src="js/main.js?v=0.1.42"></script>
 </body>
 </html>

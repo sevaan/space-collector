@@ -1,7 +1,7 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
 // Two themes: 'glass' (navy sky, gold satellites, cyan reticle) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.40';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.42';
 
 const RAD = Math.PI / 180;
 const FONT = '-apple-system, "SF Pro Text", system-ui, sans-serif';
@@ -13,6 +13,8 @@ const THEMES = {
     grid: 'rgba(137, 186, 203, 0.045)',
     horizon: 'rgba(119, 174, 187, 0.30)',
     ground: '#050e17', groundEdge: 'rgba(117, 163, 171, 0.10)',
+    hills: '#0e2031', haze: 'rgb(120, 150, 185)',
+    groundInk: 'rgba(143, 211, 232, 0.16)', groundText: 'rgba(190, 225, 235, 0.42)', groundNorth: 'rgba(230, 198, 138, 0.75)', ghost: 'rgba(255, 214, 140, 0.75)', ghostText: 'rgba(143, 211, 232, 0.85)',
     label: 'rgba(225, 235, 255, 0.92)', labelDim: 'rgba(200, 215, 255, 0.65)',
     compass: 'rgba(200, 220, 255, 0.75)',
     sat: '#d6bb83', satGlow: [213, 177, 107], satHot: '#f6e5b8',
@@ -31,6 +33,8 @@ const THEMES = {
     grid: 'rgba(255, 70, 50, 0.14)',
     horizon: 'rgba(255, 70, 50, 0.55)',
     ground: '#0a0100', groundEdge: 'rgba(255, 70, 50, 0.08)',
+    hills: '#140200', haze: 'rgb(150, 30, 20)',
+    groundInk: 'rgba(255, 70, 50, 0.14)', groundText: 'rgba(255, 90, 70, 0.4)', groundNorth: 'rgba(255, 110, 90, 0.7)', ghost: 'rgba(255, 106, 85, 0.7)', ghostText: 'rgba(255, 110, 90, 0.8)',
     label: 'rgba(255, 110, 90, 0.85)', labelDim: 'rgba(255, 110, 90, 0.55)',
     compass: 'rgba(255, 110, 90, 0.85)',
     sat: '#bb3c32', satGlow: [161, 32, 24], satHot: '#da5140',
@@ -44,6 +48,25 @@ const THEMES = {
     sun: 'rgba(255, 120, 60, 0.9)',
   },
 };
+
+// Optional night landscape along the horizon: far hills and a tree line, kept low (under ~2.5°)
+// so nothing real is hidden, and satellites are always drawn on top.
+const LANDSCAPE = (() => {
+  let seed = 4242;
+  const r = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+  const hills = [];
+  const p1 = r() * 6, p2 = r() * 6, p3 = r() * 6;
+  for (let az = 0; az <= 360; az += 2) {
+    const a = az * Math.PI / 180;
+    hills.push([az, Math.max(0.3, 1.2 + 0.7 * Math.sin(a * 2 + p1) + 0.4 * Math.sin(a * 5 + p2) + 0.2 * Math.sin(a * 11 + p3))]);
+  }
+  const trees = [];
+  for (let az = 0; az < 360; az += 0.5 + r() * 1.0) {
+    if (r() < 0.06) { az += 2 + r() * 6; continue; } // clearings
+    trees.push([az, 1.2 + r() ** 1.6 * 2.2, 0.7 + r() * 0.9]);
+  }
+  return { hills, trees };
+})();
 
 export class SkyView {
   constructor(canvas) {
@@ -287,6 +310,100 @@ export class SkyView {
     ctx.fill();
   }
 
+  drawLandscape() {
+    const ctx = this.ctx, t = this.theme;
+    ctx.save();
+    // Haze glowing just above the horizon (a touch of distant light pollution).
+    for (const [w, alpha] of [[5, 0.05], [2.5, 0.06]]) {
+      ctx.strokeStyle = t.haze ?? 'rgba(120, 150, 180, 1)';
+      ctx.globalAlpha = alpha;
+      ctx.lineWidth = w * this.f * RAD;
+      const pts = [];
+      for (let az = 0; az <= 360; az += 3) pts.push(enuFromAzEl(az, w * 0.3));
+      this.path(pts);
+    }
+    ctx.globalAlpha = 1;
+    // Far hills, a shade lighter than the ground.
+    ctx.fillStyle = t.hills ?? '#0a1826';
+    const h = LANDSCAPE.hills;
+    for (let i = 0; i < h.length - 1; i += 3) {
+      const seg = h.slice(i, i + 4);
+      this.poly([...seg, [seg[seg.length - 1][0], -2], [seg[0][0], -2]]);
+    }
+    // Tree line: two stacked triangles make a pine.
+    ctx.fillStyle = t.ground;
+    for (const [az, ht, w] of LANDSCAPE.trees) {
+      this.poly([[az - w / 2, -0.3], [az + w / 2, -0.3], [az, ht * 0.7]]);
+      this.poly([[az - w * 0.35, ht * 0.35], [az + w * 0.35, ht * 0.35], [az, ht]]);
+    }
+    ctx.restore();
+  }
+
+  // A compass painted on the ground at your feet: rings, spokes every 30°, ticks every 10°,
+  // bearings, and big N/E/S/W. Point the phone down to orient yourself.
+  drawGroundCompass() {
+    const ctx = this.ctx, t = this.theme;
+    ctx.save();
+    ctx.strokeStyle = t.groundInk;
+    ctx.lineWidth = 1;
+    for (const el of [-20, -45, -70]) {
+      const pts = [];
+      for (let az = 0; az <= 360; az += 3) pts.push(enuFromAzEl(az, el));
+      this.path(pts);
+    }
+    for (let az = 0; az < 360; az += 30) {
+      const pts = [];
+      for (let el = -4; el >= -88; el -= 4) pts.push(enuFromAzEl(az, el));
+      ctx.lineWidth = az % 90 ? 1 : 1.6;
+      this.path(pts);
+    }
+    ctx.lineWidth = 1;
+    for (let az = 0; az < 360; az += 10) {
+      const long = az % 30 === 0;
+      this.path([enuFromAzEl(az, -7), enuFromAzEl(az, long ? -13 : -10)]);
+    }
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.font = `500 11px ${FONT}`;
+    ctx.fillStyle = t.groundText;
+    for (let az = 0; az < 360; az += 30) {
+      if (az % 90 === 0) continue;
+      const p = this.project(enuFromAzEl(az, -16));
+      if (this.onScreen(p)) ctx.fillText(`${az}°`, p.x, p.y);
+    }
+    ctx.font = `800 24px ${FONT}`;
+    for (const [az, letter] of [[0, 'N'], [90, 'E'], [180, 'S'], [270, 'W']]) {
+      const p = this.project(enuFromAzEl(az, -30));
+      if (!this.onScreen(p)) continue;
+      ctx.fillStyle = az === 0 ? t.groundNorth : t.groundText;
+      ctx.fillText(letter, p.x, p.y);
+    }
+    ctx.restore();
+  }
+
+  // "Coming up": ghosts just below the horizon where something will rise soon.
+  // rising: [{ az, name, mins }]
+  drawRising(rising) {
+    if (!rising?.length) return;
+    const ctx = this.ctx, t = this.theme;
+    ctx.save();
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+    for (const r of rising) {
+      const p = this.project(enuFromAzEl(r.az, -3.5));
+      if (!p || p.x < 40 || p.x > this.w - 40 || p.y < this.safeTop + 20 || p.y > this.h - this.safeBottom - 40) continue;
+      ctx.strokeStyle = t.ghost; ctx.lineWidth = 1.5; ctx.setLineDash([2, 3]);
+      ctx.beginPath(); ctx.arc(p.x, p.y, 6, 0, Math.PI * 2); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.beginPath(); ctx.moveTo(p.x, p.y - 10); ctx.lineTo(p.x - 4, p.y - 6); ctx.moveTo(p.x, p.y - 10); ctx.lineTo(p.x + 4, p.y - 6); ctx.stroke();
+      ctx.font = `600 12px ${FONT}`; ctx.fillStyle = t.ghost;
+      ctx.fillText(r.name, p.x, p.y + 11);
+      ctx.font = `500 11px ${FONT}`; ctx.fillStyle = t.ghostText;
+      ctx.fillText(r.mins <= 1 ? 'rising now' : `rises in ${r.mins} min`, p.x, p.y + 27);
+    }
+    ctx.restore();
+  }
+
   drawGrid() {
     const ctx = this.ctx, t = this.theme;
     ctx.lineWidth = 1;
@@ -416,7 +533,7 @@ export class SkyView {
 
   // safeTop/safeBottom are HUD insets in CSS pixels; centerY is an optional pixel
   // override. Projection and the reticle always share the same cx/cy.
-  draw(basis, items, { showDim, sky, bodies, milky, lines = true, targetId = null, time = 0, safeTop = 150, safeBottom = 230, centerY, newFind = false } = {}) {
+  draw(basis, items, { showDim, sky, bodies, milky, lines = true, targetId = null, time = 0, safeTop = 150, safeBottom = 230, centerY, newFind = false, rising = null, landscape = false } = {}) {
     this.basis = basis;
     this.safeTop = Math.max(12, Math.min(safeTop, this.h * 0.45));
     this.safeBottom = Math.max(12, Math.min(safeBottom, this.h - this.safeTop - 100));
@@ -430,6 +547,9 @@ export class SkyView {
     if (sky) this.drawStars(sky, { lines });
     if (bodies) this.drawBodies(bodies);
     this.drawGround();
+    if (landscape) this.drawLandscape();
+    this.drawGroundCompass();
+    this.drawRising(rising);
     this.drawGrid();
 
     const offscreen = [];

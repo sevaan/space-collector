@@ -1,7 +1,7 @@
 // Orbit math: where every object is in the observer's sky, and whether it can be seen.
 // Pure functions, no DOM, so this module carries over unchanged to a native wrapper.
 
-import * as sat from './lib/satellite.js?v=0.1.40';
+import * as sat from './lib/satellite.js?v=0.1.42';
 
 const RAD = Math.PI / 180;
 const EARTH_RADIUS_KM = 6371;
@@ -234,5 +234,48 @@ export class SkyModel {
       out.push({ obj: e.obj, look: { ...s, az, el } });
     }
     return out;
+  }
+}
+
+// "Coming up": interesting objects that are below the horizon now but will rise, lit and visible,
+// within the next 10 minutes. Checks a slice of candidates each frame (full sweep every ~10 s) and
+// reuses one frame per minute, so it stays cheap.
+export class RisingSoon {
+  constructor(objects) {
+    this.pool = objects.filter((o) => !o.family && !o.bino && (o.stdMag <= 4 || o.tier === 'legendary' || o.tier === 'epic'));
+    this.cursor = 0;
+    this.found = new Map();
+    this.frames = new Map();
+  }
+  reset() { this.found.clear(); this.frames.clear(); this.cursor = 0; }
+  frameAt(ms, obs) {
+    let f = this.frames.get(ms);
+    if (!f) { if (this.frames.size > 30) this.frames.clear(); f = frame(new Date(ms), obs); this.frames.set(ms, f); }
+    return f;
+  }
+  update(date, obs, perFrame = 4) {
+    const n = this.pool.length;
+    if (!n) return;
+    const t = date.getTime(), base = Math.floor(t / 60000) * 60000;
+    for (let i = 0; i < perFrame; i++) {
+      const o = this.pool[this.cursor];
+      this.cursor = (this.cursor + 1) % n;
+      const now = look(o, this.frameAt(base, obs));
+      if (!now || now.el > 0) { this.found.delete(o.id); continue; }
+      let hit = null;
+      for (let m = 1; m <= 10; m++) {
+        const l = look(o, this.frameAt(base + m * 60000, obs));
+        if (l && l.el > 0) { hit = { m, l }; break; }
+      }
+      if (!hit) { this.found.delete(o.id); continue; }
+      const after = look(o, this.frameAt(base + (hit.m + 1) * 60000, obs));
+      if (hit.l.visible || after?.visible) this.found.set(o.id, { obj: o, at: base + hit.m * 60000 - 30000, az: hit.l.az });
+      else this.found.delete(o.id);
+    }
+    for (const [id, e] of this.found) if (e.at < t - 30000) this.found.delete(id);
+  }
+  list(date, max = 6) {
+    const t = date.getTime();
+    return [...this.found.values()].filter((e) => e.at > t - 30000).sort((a, b) => a.at - b.at).slice(0, max);
   }
 }

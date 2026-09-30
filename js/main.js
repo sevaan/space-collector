@@ -1,18 +1,18 @@
-import { VERSION } from './version.js?v=0.1.40';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, setBinocularMode } from './orbit.js?v=0.1.40';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.40';
-import { SkyView, shortName } from './sky.js?v=0.1.40';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.40';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.40';
-import { cardArt } from './art.js?v=0.1.40';
-import { renderCard } from './card.js?v=0.1.40';
-import { playReveal, primeReveal, stopReveal } from './reveal.js?v=0.1.40';
-import { buildCards } from './card-model.js?v=0.1.40';
-import { collectedDuringPass, canCapture } from './observation.js?v=0.1.40';
-import { TIER_INFO } from './rarity.js?v=0.1.40';
-import { SETS } from './sets.js?v=0.1.40';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.40';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.40';
+import { VERSION } from './version.js?v=0.1.42';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode } from './orbit.js?v=0.1.42';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.42';
+import { SkyView, shortName } from './sky.js?v=0.1.42';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.42';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.42';
+import { cardArt } from './art.js?v=0.1.42';
+import { renderCard } from './card.js?v=0.1.42';
+import { playReveal, primeReveal, stopReveal } from './reveal.js?v=0.1.42';
+import { buildCards } from './card-model.js?v=0.1.42';
+import { collectedDuringPass, canCapture } from './observation.js?v=0.1.42';
+import { TIER_INFO } from './rarity.js?v=0.1.42';
+import { SETS } from './sets.js?v=0.1.42';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.42';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.42';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -36,6 +36,7 @@ const state = {
   showDim: false,
   showStars: true,
   showLines: readPref('lines', false),
+  landscape: readPref('landscape', false),
   night: readPref('night', false),
   sky: null,       // stars/constellations from data/sky.json (equatorial vectors)
   skyEnu: null,    // same, rotated into the local sky, refreshed every second
@@ -82,7 +83,7 @@ async function requestLocation() {
       state.observer = { lat: p.coords.latitude, lon: p.coords.longitude, heightKm: (p.coords.altitude ?? 0) / 1000, label: 'Current location', fixedAt: Date.now() };
       state.locationStatus = 'ready';
       try { localStorage.setItem('observer', JSON.stringify({ ...state.observer, label: 'Saved location' })); } catch {}
-      state.trails.clear(); state.model?.reset(); cancelPassSearch();
+      state.trails.clear(); state.model?.reset(); state.rising?.reset(); cancelPassSearch();
       renderLocation(); resolve(true);
     },
     error => { if (requestId !== locationRequest) { resolve(false); return; } state.locationStatus = error.code === 1 ? 'denied' : 'unavailable'; renderLocation(); resolve(false); },
@@ -312,6 +313,7 @@ function tick(ts) {
   const d = now();
   state.model.update(d, state.observer);
   state.items = state.model.items(d);
+  state.rising?.update(d, state.observer);
   if (ts - lastAbove > 1000) { refreshAbove(); lastAbove = ts; }
 
   const basis = currentBasis();
@@ -363,6 +365,8 @@ function tick(ts) {
     lines: state.showLines,
     targetId: state.targetId,
     newFind: !!state.newFind,
+    landscape: !!state.landscape,
+    rising: state.rising?.list(d).map((e) => ({ az: e.az, name: label(e.obj), mins: Math.max(1, Math.round((e.at - d.getTime()) / 60000)) })),
     time: t,
     safeTop: uiSafeTop,
     safeBottom: uiSafeBottom,
@@ -716,6 +720,7 @@ async function enableMotion() {
 
 function afterTimeJump() {
   state.model?.reset();
+  state.rising?.reset();
   state.trails.clear();
   state.sticky.clear();
   lastAbove = 0;
@@ -737,6 +742,8 @@ $('chk-drag').addEventListener('change', (e) => {
 });
 $('chk-dim').addEventListener('change', (e) => { state.showDim = e.target.checked; state.trails.clear(); });
 $('chk-stars').addEventListener('change', (e) => { state.showStars = e.target.checked; });
+$('chk-landscape').checked = state.landscape;
+$('chk-landscape').addEventListener('change', (e) => { state.landscape = e.target.checked; writePref('landscape', state.landscape); });
 $('chk-lines').checked = state.showLines;
 $('chk-lines').addEventListener('change', (e) => { state.showLines = e.target.checked; writePref('lines', state.showLines); });
 $('chk-any').addEventListener('change', (e) => { state.captureAny = e.target.checked; });
@@ -821,6 +828,7 @@ async function boot() {
     state.byId=new Map(state.catalog.objects.map(o=>[o.id,o]));
     state.cardModels=new Map(buildCards(state.catalog).map(c=>[c.key,c]));
     state.model=new SkyModel(state.catalog.objects); setBinocularMode(state.binoculars);
+    state.rising=new RisingSoon(state.catalog.objects);
     for (const o of state.catalog.objects) if (o.family) state.familyCounts.set(o.card,(state.familyCounts.get(o.card)??0)+1);
   } catch {
     $('start-note').textContent='Satellite data could not load. Check your connection and reload to try again.';
