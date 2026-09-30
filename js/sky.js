@@ -1,8 +1,8 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
 // Two themes: 'glass' (navy sky, gold satellites, cyan reticle) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.52';
-import { TIER_INFO } from './rarity.js?v=0.1.52';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.53';
+import { TIER_INFO } from './rarity.js?v=0.1.53';
 
 const RAD = Math.PI / 180;
 const FONT = '-apple-system, "SF Pro Text", system-ui, sans-serif';
@@ -21,7 +21,7 @@ const THEMES = {
     sat: '#d6bb83', satGlow: [213, 177, 107], satHot: '#f6e5b8',
     dim: 'rgba(170, 190, 230, 0.35)',
     bead: [223, 196, 143], trailPast: 'rgba(223, 196, 143, 0.17)',
-    reticle: '#86b9bc', reticleSoft: 'rgba(134, 185, 188, 0.08)', tick: '#dfc48f',
+    reticle: '#86b9bc', reticleSoft: 'rgba(134, 185, 188, 0.08)', tick: '#dfc48f', plane: '#ff5a4e', planeDim: '#ff8a80',
     constLine: 'rgba(129, 170, 199, 0.19)', constLabel: 'rgba(185, 211, 223, 0.58)', constCase: (s) => s,
     starRGB: [215, 231, 245], star: (a) => `rgba(215, 231, 245, ${a})`, starLabel: 'rgba(177, 201, 216, 0.54)',
     body: 'rgba(240, 244, 255, 0.95)', planet: '#ffffff',
@@ -41,7 +41,7 @@ const THEMES = {
     sat: '#bb3c32', satGlow: [161, 32, 24], satHot: '#da5140',
     dim: 'rgba(255, 80, 60, 0.28)',
     bead: [255, 106, 85], trailPast: 'rgba(255, 90, 70, 0.2)',
-    reticle: 'rgba(194, 50, 35, 0.8)', reticleSoft: 'rgba(194, 50, 35, 0.08)', tick: '#d94f38',
+    reticle: 'rgba(194, 50, 35, 0.8)', reticleSoft: 'rgba(194, 50, 35, 0.08)', tick: '#d94f38', plane: '#ff3b2b', planeDim: '#b8332a',
     constLine: 'rgba(255, 120, 100, 0.13)', constLabel: 'rgba(255, 120, 100, 0.3)', constCase: (s) => s.toUpperCase(),
     starRGB: [180, 44, 31], star: (a) => `rgba(180, 44, 31, ${a})`, starLabel: 'rgba(190, 57, 43, 0.55)',
     body: 'rgba(208, 61, 43, 0.9)', planet: 'rgba(218, 67, 45, 0.95)',
@@ -487,6 +487,13 @@ export class SkyView {
       if (ctx.roundRect) ctx.roundRect(-0.95 * u, -0.26 * u, 1.55 * u, 0.52 * u, 0.12 * u); else ctx.rect(-0.95 * u, -0.26 * u, 1.55 * u, 0.52 * u);
       ctx.fill();
       ctx.beginPath(); ctx.moveTo(0.6 * u, -0.2 * u); ctx.lineTo(0.98 * u, -0.34 * u); ctx.lineTo(0.98 * u, 0.34 * u); ctx.lineTo(0.6 * u, 0.2 * u); ctx.closePath(); ctx.fill(); // nozzle
+    } else if (kind === 'plane') {
+      // Points along +x (the caller rotates it to the direction of travel).
+      rect(-0.9, -0.1, 1.8, 0.2);                     // fuselage
+      ctx.beginPath(); ctx.moveTo(0.25 * u, 0); ctx.lineTo(-0.2 * u, -0.95 * u); ctx.lineTo(-0.42 * u, -0.95 * u); ctx.lineTo(-0.2 * u, 0);
+      ctx.lineTo(-0.42 * u, 0.95 * u); ctx.lineTo(-0.2 * u, 0.95 * u); ctx.closePath(); ctx.fill(); // wings
+      ctx.beginPath(); ctx.moveTo(-0.62 * u, 0); ctx.lineTo(-0.85 * u, -0.4 * u); ctx.lineTo(-0.98 * u, -0.4 * u); ctx.lineTo(-0.9 * u, 0);
+      ctx.lineTo(-0.98 * u, 0.4 * u); ctx.lineTo(-0.85 * u, 0.4 * u); ctx.closePath(); ctx.fill(); // tail
     } else if (kind === 'station') {
       ctx.rotate(-0.2);
       rect(-1.0, -0.06, 2.0, 0.12);                   // truss
@@ -607,7 +614,7 @@ export class SkyView {
 
   // safeTop/safeBottom are HUD insets in CSS pixels; centerY is an optional pixel
   // override. Projection and the reticle always share the same cx/cy.
-  draw(basis, items, { showDim, sky, bodies, milky, lines = true, targetId = null, time = 0, safeTop = 150, safeBottom = 230, centerY, newFind = false, rising = null, landscape = false, lockedOn = null } = {}) {
+  draw(basis, items, { showDim, sky, bodies, milky, lines = true, targetId = null, time = 0, safeTop = 150, safeBottom = 230, centerY, newFind = false, rising = null, landscape = false, lockedOn = null, planes = null, planeHit = null } = {}) {
     this.basis = basis;
     this.safeTop = Math.max(12, Math.min(safeTop, this.h * 0.45));
     this.safeBottom = Math.max(12, Math.min(safeBottom, this.h - this.safeTop - 100));
@@ -615,7 +622,7 @@ export class SkyView {
     this.labelQueue = [];
     const r = this.reticlePx;
     const rc = this.ring ?? { x: this.cx, y: this.cy };
-    this.clearZone = newFind ? { left: rc.x - 170, right: rc.x + 170, top: rc.y - r - 90, bottom: rc.y + r + 60 } : null;
+    this.clearZone = newFind || planeHit ? { left: rc.x - 170, right: rc.x + 170, top: rc.y - r - 90, bottom: rc.y + r + 60 } : null;
     const ctx = this.ctx, t = this.theme;
     this.drawBackground();
     this.drawMilkyWay(milky);
@@ -662,11 +669,38 @@ export class SkyView {
       if (look.visible && labelIds.has(it.obj.id)) this.queueLabel(it.label ?? shortName(it.obj.name), p, { color: it.candidate ? t.label : t.labelDim, size: 11, weight: it.candidate ? 500 : 400, gap: radius + 8, priority: it.candidate ? 7 : 4 });
     }
 
+    const planeAt = this.drawPlanes(planes, planeHit);
     this.drawOffscreen(offscreen, targetId);
     // The app decides what counts as locked on, so the ring, labels and tap area always agree.
     const locked = lockedOn ?? (!!focus && focus.obj.id === targetId && !!focus.candidate);
-    this.drawReticle(locked, this.reducedMotion ? 0 : time, newFind && locked);
+    if (planeAt && !locked) this.drawReticle(true, 0, false, planeAt);
+    else this.drawReticle(locked, this.reducedMotion ? 0 : time, newFind && locked);
     this.drawLabels();
+  }
+
+  // Aircraft from js/planes.js: small red plane shapes pointing the way they're flying. Returns the
+  // screen position of the one in the circle (planeHit is its hex), if any.
+  drawPlanes(planes, planeHit) {
+    if (!planes?.length) return null;
+    const ctx = this.ctx, t = this.theme;
+    let hitAt = null;
+    for (const a of planes) {
+      const p = this.project(a.enu);
+      if (!this.onScreen(p, 10)) continue;
+      // Direction of travel on screen: project a point 1 km further along its track.
+      const tr = a.plane.track * RAD, k = a.rangeKm;
+      const w = [a.enu[0] * k + Math.sin(tr), a.enu[1] * k + Math.cos(tr), a.enu[2] * k], L = Math.hypot(...w);
+      const q = this.project([w[0] / L, w[1] / L, w[2] / L]);
+      const hit = a.plane.hex === planeHit;
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      if (q) ctx.rotate(Math.atan2(q.y - p.y, q.x - p.x));
+      ctx.globalAlpha = hit ? 1 : 0.55;
+      this.drawIcon('plane', 0, 0, hit ? 17 : 12, hit ? t.plane : t.planeDim);
+      ctx.restore();
+      if (hit) hitAt = { x: p.x, y: p.y };
+    }
+    return hitAt;
   }
 
   drawOffscreen(list, targetId) {
@@ -698,9 +732,9 @@ export class SkyView {
 
   // The ring you aim with. When it locks on, it shrinks a little and glides onto the object, then
   // eases back when the lock is released. this.ring is what's drawn (the tap area follows it).
-  updateRing(locked) {
-    const want = locked && this.targetPos
-      ? { x: this.targetPos.x, y: this.targetPos.y, r: this.reticlePx * 0.8 }
+  updateRing(locked, at = this.targetPos) {
+    const want = locked && at
+      ? { x: at.x, y: at.y, r: this.reticlePx * 0.8 }
       : { x: this.cx, y: this.cy, r: this.reticlePx };
     const now = performance.now(), dt = Math.min(0.1, (now - (this._ringT ?? now)) / 1000);
     this._ringT = now;
@@ -710,10 +744,19 @@ export class SkyView {
     return this.ring;
   }
 
-  drawReticle(locked, time = 0, newFind = false) {
+  drawReticle(locked, time = 0, newFind = false, plane = null) {
     const ctx = this.ctx, t = this.theme;
-    const { r: radius, x: cx, y: cy } = this.updateRing(locked);
+    const { r: radius, x: cx, y: cy } = this.updateRing(locked, plane ?? this.targetPos);
     ctx.save();
+    if (plane) {
+      // Lined up a plane, not a satellite: the ring turns solid red.
+      ctx.strokeStyle = t.plane; ctx.globalAlpha = 0.16; ctx.lineWidth = 12;
+      ctx.beginPath(); ctx.arc(cx, cy, radius, 0, Math.PI * 2); ctx.stroke();
+      ctx.globalAlpha = 0.95; ctx.lineWidth = 2.5;
+      ctx.beginPath(); ctx.arc(cx, cy, radius, 0, Math.PI * 2); ctx.stroke();
+      ctx.restore();
+      return;
+    }
     if (newFind) {
       // Never-seen object lined up: the whole ring glows gold and gently breathes. Tap it to collect.
       const pulse = 0.75 + 0.25 * Math.sin(time / 400);

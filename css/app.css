@@ -46,6 +46,14 @@ a { color:var(--cyan); }
 #discover .d-label { position:absolute;left:var(--cx);top:calc(var(--cy) - var(--r) - 14px);transform:translate(-50%,-100%);text-align:center;white-space:nowrap;text-shadow:0 1px 6px #000,0 0 14px #000; }
 #d-tier { display:block;font-size:10px;letter-spacing:.14em;font-weight:700;color:var(--gold);text-transform:uppercase; }
 #d-name { display:block;font-size:20px;font-weight:800; }
+/* Lined up a plane by mistake: red ring (js/sky.js), who it is above, where it's going below. */
+#plane { position:fixed;inset:0;pointer-events:none;z-index:2;--plane:#ff5a4e; }
+#plane .p-label { position:absolute;left:var(--cx);top:calc(var(--cy) - var(--r) - 14px);transform:translate(-50%,-100%);text-align:center;white-space:nowrap;text-shadow:0 1px 6px #000,0 0 14px #000; }
+#p-kind { display:block;font-size:10px;letter-spacing:.14em;font-weight:700;color:var(--plane);text-transform:uppercase; }
+#p-name { display:block;font-size:20px;font-weight:800; }
+#plane .p-info { position:absolute;left:var(--cx);top:calc(var(--cy) + var(--r) + 16px);transform:translateX(-50%);width:min(88vw,340px);text-align:center;font-size:13px;line-height:1.4;color:var(--muted);text-shadow:0 1px 6px #000,0 0 14px #000; }
+#plane .p-info b { color:var(--text);font-weight:600; }
+body.night #plane { --plane:#ff3b2b; }
 #d-hit { position:absolute;left:calc(var(--cx) - var(--r) - 16px);top:calc(var(--cy) - var(--r) - 16px);width:calc(var(--r) * 2 + 32px);height:calc(var(--r) * 2 + 32px);border-radius:50%;background:transparent;border:0;pointer-events:auto;cursor:pointer; }
 #d-hit:active { background:rgba(230,198,138,.12); }
 #d-cta { position:absolute;left:var(--cx);top:calc(var(--cy) + var(--r) + 16px);transform:translateX(-50%);font-size:12px;font-weight:800;letter-spacing:.14em;color:var(--gold);white-space:nowrap;text-shadow:0 1px 6px #000; }

@@ -1,18 +1,19 @@
-import { VERSION } from './version.js?v=0.1.52';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode } from './orbit.js?v=0.1.52';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.52';
-import { SkyView, shortName } from './sky.js?v=0.1.52';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.52';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.52';
-import { cardArt } from './art.js?v=0.1.52';
-import { renderCard } from './card.js?v=0.1.52';
-import { playReveal, primeReveal, stopReveal } from './reveal.js?v=0.1.52';
-import { buildCards } from './card-model.js?v=0.1.52';
-import { collectedDuringPass, canCapture } from './observation.js?v=0.1.52';
-import { TIER_INFO } from './rarity.js?v=0.1.52';
-import { SETS } from './sets.js?v=0.1.52';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.52';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.52';
+import { VERSION } from './version.js?v=0.1.53';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode } from './orbit.js?v=0.1.53';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.53';
+import { SkyView, shortName } from './sky.js?v=0.1.53';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.53';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.53';
+import { cardArt } from './art.js?v=0.1.53';
+import { renderCard } from './card.js?v=0.1.53';
+import { playReveal, primeReveal, stopReveal } from './reveal.js?v=0.1.53';
+import { buildCards } from './card-model.js?v=0.1.53';
+import { collectedDuringPass, canCapture } from './observation.js?v=0.1.53';
+import { TIER_INFO } from './rarity.js?v=0.1.53';
+import { SETS } from './sets.js?v=0.1.53';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.53';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.53';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter } from './planes.js?v=0.1.53';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -54,6 +55,9 @@ const state = {
   smooth: null,
   sightings: [],
   familyCounts: new Map(), // card key -> number of satellites in that launch
+  planes: new PlaneTracker(), // live aircraft (js/planes.js), for "Just a plane"
+  planeItems: null,
+  planeHit: null,  // { hex, at }: the plane in the circle, kept briefly so it doesn't flicker
 };
 
 const sky = new SkyView($('sky'));
@@ -354,6 +358,7 @@ function tick(ts) {
   // Locked on = the target is inside the circle right now and can be collected. The ring shrinks onto
   // it, and the gold circle / Collect button use the same answer.
   state.lockedOn = !!target && target.angCos > Math.cos(sky.reticleDeg * RAD) && (target.look.visible || state.captureAny);
+  const plane = findPlane(basis, t);
 
   sky.draw(basis, items, {
     showDim: state.showDim,
@@ -363,6 +368,8 @@ function tick(ts) {
     lines: state.showLines,
     targetId: state.targetId,
     lockedOn: state.lockedOn,
+    planes: state.planeItems,
+    planeHit: plane?.plane.hex ?? null,
     newFind: !!state.newFind,
     landscape: !!state.landscape,
     rising: state.rising?.list(d).map((e) => ({ az: e.az, name: label(e.obj), mins: Math.max(1, Math.round((e.at - d.getTime()) / 60000)) })),
@@ -375,6 +382,45 @@ function tick(ts) {
   placeDiscover();
   if (t - lastPanel > 250 || target?.obj.id !== shownTargetId || state.lockedOn !== lastLocked) {
     lastLocked = state.lockedOn; renderTarget(target, d); measureSkySpace(); lastPanel = t; }
+  renderPlane(plane, t);
+}
+
+// ---------- planes ----------
+// Live aircraft only (no time travel). When no satellite is locked on and a plane is in the circle,
+// the ring turns red and says what it is. A little slack on the circle: positions are a few seconds old.
+function findPlane(basis, t) {
+  if (!planesAvailable() || state.timeOffsetMs) { state.planeItems = null; state.planeHit = null; return null; }
+  state.planes.update(state.observer);
+  const list = state.planeItems = state.planes.positions(state.observer);
+  if (state.lockedOn) { state.planeHit = null; return null; }
+  const inCos = Math.cos((sky.reticleDeg + 2) * RAD), keepCos = Math.cos((sky.reticleDeg + 5) * RAD);
+  let best = null;
+  for (const a of list) { a.angCos = dot(a.enu, basis.back); if (a.angCos > inCos && (!best || a.angCos > best.angCos)) best = a; }
+  // Keep the last plane for a second after it slips out, as long as it's still close.
+  const kept = state.planeHit && list.find((a) => a.plane.hex === state.planeHit.hex);
+  if (!best && kept && kept.angCos > keepCos && t - state.planeHit.at < 1000) return kept;
+  state.planeHit = best ? { hex: best.plane.hex, at: t } : null;
+  return best;
+}
+
+let planeShown = null, planeText = 0;
+function renderPlane(hit, t) {
+  const el = $('plane');
+  if (!hit) { if (!el.hidden) el.hidden = true; planeShown = null; return; }
+  $('guidance').hidden = true;
+  const ring = sky.ring ?? { x: sky.cx, y: sky.cy, r: sky.reticlePx };
+  el.style.setProperty('--cx', `${ring.x}px`); el.style.setProperty('--cy', `${ring.y}px`); el.style.setProperty('--r', `${ring.r}px`);
+  if (planeShown === hit.plane.hex && t - planeText < 500) return;
+  planeShown = hit.plane.hex; planeText = t;
+  el.hidden = false;
+  const p = hit.plane, route = state.planes.route(p.callsign);
+  const number = route?.flight?.replace(/^[A-Z0-9]{2}(?=\d)/, '');
+  $('p-kind').textContent = isHelicopter(p) ? 'Just a helicopter' : 'Just a plane';
+  $('p-name').textContent = route?.airline && number ? `${route.airline} ${number}` : p.callsign || p.reg || 'Unknown flight';
+  const km = p.hKm >= 3 ? `${p.hKm.toFixed(p.hKm < 10 ? 1 : 0)} km up` : `${Math.round(p.hKm * 1000 / 10) * 10} m up`;
+  const bits = [aircraftName(p), km, `${Math.round(hit.rangeKm)} km away`].filter(Boolean);
+  const where = route?.from && route?.to ? `<b>${escapeHtml(route.from)} → ${escapeHtml(route.to)}</b><br>` : '';
+  $('p-info').innerHTML = where + escapeHtml(bits.join(' · '));
 }
 
 // Radar (top-left): a heading-up map of the whole sky. Centre = overhead, edge = horizon. Gold dots
@@ -415,6 +461,11 @@ function updateCompass(basis) {
     ctx.fillStyle = isNew ? '#ffffff' : C.gold;
     ctx.beginPath(); ctx.arc(x, y, isNew ? 1.6 : 1.3, 0, Math.PI * 2); ctx.fill();
     if (isTarget) { ctx.strokeStyle = C.cyan; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.arc(x, y, 4.5, 0, Math.PI * 2); ctx.stroke(); }
+  }
+  // Planes as tiny red dots.
+  if (state.planeItems) {
+    ctx.fillStyle = '#ff6b60';
+    for (const a of state.planeItems) { const [x, y] = at(a.az, a.el); ctx.beginPath(); ctx.arc(x, y, 1.2, 0, Math.PI * 2); ctx.fill(); }
   }
   // Letters around the edge (heading-up, so they turn as you turn) and the facing notch.
   ctx.font = '700 10px -apple-system, system-ui, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
