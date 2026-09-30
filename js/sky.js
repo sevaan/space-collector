@@ -1,7 +1,7 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
 // Two themes: 'glass' (navy sky, gold satellites, cyan reticle) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.36';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.38';
 
 const RAD = Math.PI / 180;
 const FONT = '-apple-system, "SF Pro Text", system-ui, sans-serif';
@@ -212,18 +212,57 @@ export class SkyView {
   }
 
   // Each glow follows a supplied point on the true galactic equator.
+  // milky: { spine: [{enu, width°, bright}], specks: [{enu, a, s}], rift: [{enu, w°}] }
   drawMilkyWay(milky) {
-    if (!milky) return;
-    for (const point of milky) {
-      if (point.enu[2] < -0.08) continue;
-      const p = this.project(point.enu);
-      if (!p) continue;
-      const radius = Math.min(this.w * 0.85, this.f * Math.tan(9 * RAD) / p.c.z);
-      if (!this.onScreen(p, radius)) continue;
-      const horizonFade = Math.min(1, Math.max(0, (point.enu[2] + 0.08) / 0.25));
-      this.glow(p.x, p.y, radius, this.theme.milky, (0.17 + point.weight * 0.18) * horizonFade);
+    if (!milky?.spine) return;
+    const ctx = this.ctx, [r, g, b] = this.theme.milky;
+    const pxPerDeg = this.f * RAD;
+    const fade = (enu) => Math.max(0, Math.min(1, (enu[2] + 0.02) / 0.2)); // melt into the horizon
+    ctx.save();
+    ctx.lineCap = 'butt'; ctx.lineJoin = 'round';
+    // 1. The glow, airbrushed: soft spots every degree along the band, overlapping so heavily that
+    //    they blend into one smooth band (sparse spots are what made it look like a string of dots).
+    const spine = milky.spine;
+    for (const [widthK, strength] of [[1.25, 0.55], [0.55, 0.5]]) {
+      for (const pt of spine) {
+        const p = this.project(pt.enu);
+        if (!p) continue;
+        const f = fade(pt.enu);
+        if (!f) continue;
+        const radius = Math.min(this.w * 1.2, pt.width * widthK * pxPerDeg / Math.max(0.25, p.c.z));
+        if (!this.onScreen(p, radius)) continue;
+        // Divide by how many neighbours overlap this spot so the total stays even.
+        const overlap = Math.max(1, (2 * pt.width * widthK) / 1);
+        this.glow(p.x, p.y, radius, this.theme.milky, Math.min(0.5, strength * pt.bright * f / overlap * 3));
+      }
     }
+    // 2. The Great Rift: a dark lane of dust through Cygnus and Aquila, airbrushed the same way.
+    const dark = this.theme.riftRgb ?? [4, 10, 22];
+    for (const pt of milky.rift) {
+      const p = this.project(pt.enu);
+      if (!p) continue;
+      const radius = pt.w * pxPerDeg / Math.max(0.25, p.c.z);
+      if (!this.onScreen(p, radius)) continue;
+      this.glow(p.x, p.y, radius, dark, 0.28 * fade(pt.enu));
+    }
+    // 3. Star-cloud grain: thousands of faint specks, batched by brightness for speed.
+    const buckets = [[], [], []];
+    for (const sp of milky.specks) {
+      if (sp.enu[2] < 0) continue;
+      const p = this.project(sp.enu);
+      if (!p || p.x < 0 || p.y < 0 || p.x > this.w || p.y > this.h) continue;
+      buckets[Math.min(2, Math.floor(sp.a * fade(sp.enu) * 3))].push(p.x, p.y, sp.s);
+    }
+    buckets.forEach((list, k) => {
+      if (!list.length) return;
+      ctx.fillStyle = `rgba(${Math.min(255, r + 80)}, ${Math.min(255, g + 80)}, ${Math.min(255, b + 70)}, ${[0.2, 0.32, 0.48][k]})`;
+      ctx.beginPath();
+      for (let i = 0; i < list.length; i += 3) ctx.rect(list[i], list[i + 1], list[i + 2], list[i + 2]);
+      ctx.fill();
+    });
+    ctx.restore();
   }
+
 
   drawGround() {
     // Clip the viewport by the real horizon plane. This also works when looking down

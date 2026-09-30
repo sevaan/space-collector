@@ -1,18 +1,18 @@
-import { VERSION } from './version.js?v=0.1.36';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, setBinocularMode } from './orbit.js?v=0.1.36';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.36';
-import { SkyView, shortName } from './sky.js?v=0.1.36';
-import { loadSky, eqToEnu, solarSystem, galacticPlane } from './celestial.js?v=0.1.36';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.36';
-import { cardArt } from './art.js?v=0.1.36';
-import { renderCard } from './card.js?v=0.1.36';
-import { playReveal, primeReveal, stopReveal } from './reveal.js?v=0.1.36';
-import { buildCards } from './card-model.js?v=0.1.36';
-import { collectedDuringPass, canCapture } from './observation.js?v=0.1.36';
-import { TIER_INFO } from './rarity.js?v=0.1.36';
-import { SETS } from './sets.js?v=0.1.36';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.36';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.36';
+import { VERSION } from './version.js?v=0.1.38';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, setBinocularMode } from './orbit.js?v=0.1.38';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.38';
+import { SkyView, shortName } from './sky.js?v=0.1.38';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.38';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.38';
+import { cardArt } from './art.js?v=0.1.38';
+import { renderCard } from './card.js?v=0.1.38';
+import { playReveal, primeReveal, stopReveal } from './reveal.js?v=0.1.38';
+import { buildCards } from './card-model.js?v=0.1.38';
+import { collectedDuringPass, canCapture } from './observation.js?v=0.1.38';
+import { TIER_INFO } from './rarity.js?v=0.1.38';
+import { SETS } from './sets.js?v=0.1.38';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.38';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.38';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -39,7 +39,7 @@ const state = {
   night: readPref('night', false),
   sky: null,       // stars/constellations from data/sky.json (equatorial vectors)
   skyEnu: null,    // same, rotated into the local sky, refreshed every second
-  milkyEq: galacticPlane(),
+  milkyEq: milkyWayModel(),
   milkyEnu: null,
   bodies: [],      // Sun, Moon, planets in the local sky
   captureAny: false,
@@ -236,7 +236,12 @@ function refreshAbove() {
 function refreshCelestial(d) {
   const toEnu = eqToEnu(d, state.observer);
   state.bodies = solarSystem(d, state.observer).map((b) => ({ ...b, enu: toEnu(b.v) }));
-  state.milkyEnu = state.milkyEq.map((p) => ({ enu: toEnu(p.v), weight: p.weight }));
+  const m = state.milkyEq;
+  state.milkyEnu = {
+    spine: m.spine.map((p) => ({ enu: toEnu(p.v), width: p.width, bright: p.bright })),
+    specks: m.specks.map((p) => ({ enu: toEnu(p.v), a: p.a, s: p.s })),
+    rift: m.rift.map((p) => ({ enu: toEnu(p.v), w: p.w })),
+  };
   if (!state.sky) return;
   state.skyEnu = {
     stars: state.sky.stars.map((s) => ({ ...s, enu: toEnu(s.v) })),

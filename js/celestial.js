@@ -2,7 +2,7 @@
 // Planet and Moon positions use Paul Schlyter's low-precision method ("How to compute planetary
 // positions"), good to a few arcminutes — far better than a phone compass.
 
-import { gstime } from './lib/satellite.js?v=0.1.36';
+import { gstime } from './lib/satellite.js?v=0.1.38';
 
 const RAD = Math.PI / 180;
 const sin = (d) => Math.sin(d * RAD), cos = (d) => Math.cos(d * RAD);
@@ -157,4 +157,50 @@ export function galacticPlane(stepDeg = 4) {
     out.push({ v: eq(ra, dec), weight: 0.45 + 0.55 * Math.max(0, cos(l)) ** 2 });
   }
   return out;
+}
+
+// ---------- Milky Way ----------
+// A light-weight model of how the Milky Way really looks to the eye: a band along the galactic
+// equator that's broad and bright toward the centre (Sagittarius) and thin and faint toward the
+// anticentre (Auriga), grainy star clouds, a few famous bright patches, and the Great Rift, the
+// dark dust lane that splits it from Cygnus down to Aquila.
+const GAL = { ra: 192.85948, dec: 27.12825, lNcp: 122.93192 };
+function galToEq(l, b) {
+  const d = GAL.lNcp - l;
+  const sinDec = sin(GAL.dec) * sin(b) + cos(GAL.dec) * cos(b) * cos(d);
+  const dec = Math.asin(Math.max(-1, Math.min(1, sinDec))) / RAD;
+  const ra = GAL.ra + Math.atan2(cos(b) * sin(d), cos(GAL.dec) * sin(b) - sin(GAL.dec) * cos(b) * cos(d)) / RAD;
+  return eq(ra, dec);
+}
+const lDist = (l, c) => Math.abs(((l - c + 540) % 360) - 180);
+// Bright regions: [centre l, spread °, extra brightness, offset b]
+const PATCHES = [[0, 25, 0.55, -2], [27, 6, 0.3, -2], [75, 12, 0.3, 1], [285, 14, 0.25, -1], [305, 10, 0.2, 0], [340, 12, 0.25, -1]];
+function bandAt(l) {
+  const c = lDist(l, 0);
+  const width = 5 + 13 * Math.exp(-((c / 55) ** 2));           // half-width in degrees
+  let bright = 0.22 + 0.5 * Math.exp(-((c / 70) ** 2));
+  for (const [pl, spread, extra] of PATCHES) bright += extra * Math.exp(-((lDist(l, pl) / spread) ** 2));
+  return { width, bright: Math.min(1.2, bright) };
+}
+const inRift = (l, b) => l > 14 && l < 78 && b > 0.2 + (l - 14) * 0.02 && b < 3.8 + (l - 14) * 0.03;
+
+export function milkyWayModel() {
+  const spine = [];
+  for (let l = 0; l <= 360; l += 1) spine.push({ v: galToEq(l, 0), l, ...bandAt(l) });
+  // Star-cloud grain: deterministic random points, denser where the band is brighter.
+  let seed = 20260929;
+  const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+  const gauss = () => { let u = 0; for (let i = 0; i < 4; i++) u += rnd(); return (u - 2) / 0.58; };
+  const specks = [];
+  while (specks.length < 4000) {
+    const l = rnd() * 360, band = bandAt(l);
+    if (rnd() > band.bright / 1.2) continue;
+    const patch = PATCHES.find(([pl, spread]) => lDist(l, pl) < spread);
+    const b = gauss() * band.width * 0.45 + (patch ? patch[3] : 0);
+    if (inRift(l, b) && rnd() < 0.85) continue;
+    specks.push({ v: galToEq(l, b), a: Math.min(1, band.bright * (0.35 + rnd() * 0.65)), s: rnd() < 0.12 ? 1.6 : 1 });
+  }
+  const rift = [];
+  for (let l = 14; l <= 78; l += 1) rift.push({ v: galToEq(l, 2 + (l - 14) * 0.025), w: 1.6 + 1.2 * Math.sin(((l - 14) / 64) * Math.PI) });
+  return { spine, specks, rift };
 }
