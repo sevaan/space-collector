@@ -1,7 +1,7 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
 // Two themes: 'glass' (navy sky, gold satellites, cyan reticle) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.46';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.48';
 
 const RAD = Math.PI / 180;
 const FONT = '-apple-system, "SF Pro Text", system-ui, sans-serif';
@@ -449,6 +449,57 @@ export class SkyView {
     }
   }
 
+  // Tiny silhouettes instead of dots: satellites get solar panels, constellation satellites one long
+  // panel, rocket stages a cylinder and nozzle, stations a truss of panels, debris a shard.
+  iconKind(o) {
+    if (o.type === 'station') return 'station';
+    if (o.type === 'rocket-body') return 'rocket';
+    if (o.type === 'debris') return 'debris';
+    if (o.family) return 'flat';
+    return 'sat';
+  }
+  iconSize(mag, o) {
+    const base = mag == null ? 9 : Math.max(9, Math.min(17, 13.5 - mag * 1.1));
+    return o?.type === 'station' ? Math.max(base, 16) : base;
+  }
+  drawIcon(kind, x, y, size, color) {
+    const ctx = this.ctx, u = size / 2;
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.fillStyle = color; ctx.strokeStyle = color;
+    const rect = (x0, y0, w, h) => ctx.fillRect(x0 * u, y0 * u, w * u, h * u);
+    if (kind === 'sat') {
+      ctx.rotate(-0.35);
+      rect(-0.26, -0.26, 0.52, 0.52);                 // body
+      ctx.globalAlpha *= 0.85;
+      rect(-1.0, -0.2, 0.62, 0.4); rect(0.38, -0.2, 0.62, 0.4);  // panels
+      ctx.globalAlpha /= 0.85;
+      rect(-0.4, -0.04, 0.8, 0.08);                   // boom
+    } else if (kind === 'flat') {
+      ctx.rotate(-0.35);
+      rect(-0.75, -0.14, 0.55, 0.28);                 // flat body
+      ctx.globalAlpha *= 0.85;
+      rect(-0.12, -0.24, 1.0, 0.48);                  // one long panel
+    } else if (kind === 'rocket') {
+      ctx.rotate(-0.7);
+      ctx.beginPath();
+      if (ctx.roundRect) ctx.roundRect(-0.95 * u, -0.26 * u, 1.55 * u, 0.52 * u, 0.12 * u); else ctx.rect(-0.95 * u, -0.26 * u, 1.55 * u, 0.52 * u);
+      ctx.fill();
+      ctx.beginPath(); ctx.moveTo(0.6 * u, -0.2 * u); ctx.lineTo(0.98 * u, -0.34 * u); ctx.lineTo(0.98 * u, 0.34 * u); ctx.lineTo(0.6 * u, 0.2 * u); ctx.closePath(); ctx.fill(); // nozzle
+    } else if (kind === 'station') {
+      ctx.rotate(-0.2);
+      rect(-1.0, -0.06, 2.0, 0.12);                   // truss
+      ctx.globalAlpha *= 0.85;
+      for (const px of [-0.85, -0.55, 0.45, 0.75]) { rect(px, -0.62, 0.22, 0.5); rect(px, 0.12, 0.22, 0.5); }  // panel pairs
+      ctx.globalAlpha /= 0.85;
+      rect(-0.3, -0.16, 0.6, 0.32); rect(-0.1, -0.34, 0.2, 0.68); // modules
+    } else {
+      ctx.rotate(0.6);
+      ctx.beginPath(); ctx.moveTo(-0.7 * u, -0.2 * u); ctx.lineTo(-0.1 * u, -0.6 * u); ctx.lineTo(0.7 * u, -0.25 * u); ctx.lineTo(0.45 * u, 0.5 * u); ctx.lineTo(-0.35 * u, 0.4 * u); ctx.closePath(); ctx.fill();
+    }
+    ctx.restore();
+  }
+
   dotRadius(mag) {
     if (mag == null) return 2;
     return Math.max(2, Math.min(4.6, 3.5 - mag * 0.35));
@@ -592,12 +643,12 @@ export class SkyView {
         if (isTarget || !this.onScreen(p, 10)) continue;
       }
       if (isTarget) this.targetPos = { x: p.x, y: p.y };
-      const radius = look.visible ? this.dotRadius(look.mag) : 2;
+      const size = look.visible || isTarget ? this.iconSize(look.mag, it.obj) * (isTarget ? 1.3 : 1) : 7;
+      const radius = size / 2;
       ctx.save();
       if (targetId && !isTarget) ctx.globalAlpha = look.visible ? 0.60 : 0.35;
-      if (look.visible || isTarget) this.glow(p.x, p.y, radius * (isTarget ? 6 : 3), t.satGlow, isTarget ? 0.86 : 0.38);
-      ctx.fillStyle = look.visible || isTarget ? (isTarget ? t.satHot : t.sat) : t.dim;
-      ctx.beginPath(); ctx.arc(p.x, p.y, radius, 0, Math.PI * 2); ctx.fill();
+      if (look.visible || isTarget) this.glow(p.x, p.y, radius * (isTarget ? 3.6 : 1.8), t.satGlow, isTarget ? 0.86 : 0.32);
+      this.drawIcon(this.iconKind(it.obj), p.x, p.y, size, look.visible || isTarget ? (isTarget ? t.satHot : t.sat) : t.dim);
       if (isTarget) {
         ctx.strokeStyle = t.tick;
         ctx.lineWidth = 1;
