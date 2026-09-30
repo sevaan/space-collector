@@ -1,18 +1,18 @@
-import { VERSION } from './version.js?v=0.1.48';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode } from './orbit.js?v=0.1.48';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.48';
-import { SkyView, shortName } from './sky.js?v=0.1.48';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.48';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.48';
-import { cardArt } from './art.js?v=0.1.48';
-import { renderCard } from './card.js?v=0.1.48';
-import { playReveal, primeReveal, stopReveal } from './reveal.js?v=0.1.48';
-import { buildCards } from './card-model.js?v=0.1.48';
-import { collectedDuringPass, canCapture } from './observation.js?v=0.1.48';
-import { TIER_INFO } from './rarity.js?v=0.1.48';
-import { SETS } from './sets.js?v=0.1.48';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.48';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.48';
+import { VERSION } from './version.js?v=0.1.50';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode } from './orbit.js?v=0.1.50';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.50';
+import { SkyView, shortName } from './sky.js?v=0.1.50';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.50';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.50';
+import { cardArt } from './art.js?v=0.1.50';
+import { renderCard } from './card.js?v=0.1.50';
+import { playReveal, primeReveal, stopReveal } from './reveal.js?v=0.1.50';
+import { buildCards } from './card-model.js?v=0.1.50';
+import { collectedDuringPass, canCapture } from './observation.js?v=0.1.50';
+import { TIER_INFO } from './rarity.js?v=0.1.50';
+import { SETS } from './sets.js?v=0.1.50';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.50';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.50';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -300,7 +300,7 @@ function currentBasis() {
 // ---------- render loop ----------
 
 let lastAbove = 0;
-let lastPanel = 0;
+let lastPanel = 0, lastLocked = false;
 let uiSafeTop = 202, uiSafeBottom = 320;
 function tick(ts) {
   requestAnimationFrame(tick);
@@ -351,6 +351,9 @@ function tick(ts) {
   }
   target ??= null;
   state.activeTarget = target;
+  // Locked on = the target is inside the circle right now and can be collected. The ring shrinks onto
+  // it, and the gold circle / Collect button use the same answer.
+  state.lockedOn = !!target && target.angCos > Math.cos(sky.reticleDeg * RAD) && (target.look.visible || state.captureAny);
 
   sky.draw(basis, items, {
     showDim: state.showDim,
@@ -359,6 +362,7 @@ function tick(ts) {
     milky: state.showStars ? state.milkyEnu : null,
     lines: state.showLines,
     targetId: state.targetId,
+    lockedOn: state.lockedOn,
     newFind: !!state.newFind,
     landscape: !!state.landscape,
     rising: state.rising?.list(d).map((e) => ({ az: e.az, name: label(e.obj), mins: Math.max(1, Math.round((e.at - d.getTime()) / 60000)) })),
@@ -369,7 +373,8 @@ function tick(ts) {
 
   updateCompass(basis);
   placeDiscover();
-  if (t - lastPanel > 250 || target?.obj.id !== shownTargetId) { renderTarget(target, d); measureSkySpace(); lastPanel = t; }
+  if (t - lastPanel > 250 || target?.obj.id !== shownTargetId || state.lockedOn !== lastLocked) {
+    lastLocked = state.lockedOn; renderTarget(target, d); measureSkySpace(); lastPanel = t; }
 }
 
 // Radar (top-left): a heading-up map of the whole sky. Centre = overhead, edge = horizon. Gold dots
@@ -475,7 +480,7 @@ function renderTarget(target, d) {
   shownTargetId = target.obj.id;
   const o = target.obj, l = target.look;
   const tier = TIER_INFO[o.tier] ?? TIER_INFO.common;
-  const aligned = target.angCos > Math.cos(sky.reticleDeg * RAD);
+  const aligned = state.lockedOn;
   const eligible = canCapture({ visible: l.visible, aligned, practice: state.captureAny, allowAny: state.captureAny });
   const collected = collectedThisPass(o, d);
   const sw = switchLabel(o);
@@ -518,12 +523,13 @@ function renderTarget(target, d) {
 // Keep the tap-the-circle overlay on top of the reticle wherever the sky view puts it.
 function placeDiscover() {
   const guide = $('guidance');
-  if (!guide.hidden) { guide.style.top = `${sky.cy + sky.reticlePx + 18}px`; guide.style.bottom = 'auto'; }
+  const ring = sky.ring ?? { x: sky.cx, y: sky.cy, r: sky.reticlePx };
+  if (!guide.hidden) { guide.style.top = `${ring.y + ring.r + 18}px`; guide.style.bottom = 'auto'; }
   const disc = $('discover');
   if (disc.hidden) return;
-  disc.style.setProperty('--cx', `${sky.cx}px`);
-  disc.style.setProperty('--cy', `${sky.cy}px`);
-  disc.style.setProperty('--r', `${sky.reticlePx}px`);
+  disc.style.setProperty('--cx', `${ring.x}px`);
+  disc.style.setProperty('--cy', `${ring.y}px`);
+  disc.style.setProperty('--r', `${ring.r}px`);
 }
 $('d-hit').addEventListener('click', () => {
   unlockAudio();
@@ -576,7 +582,7 @@ function showCaptureCard(obj) {
   const card = renderCard(model, { sightings, seenMembers: new Set(sightings.map(s => s.objectId)).size });
   $('reveal-view').href = `cards.html#${encodeURIComponent(key)}`;
   openPanel('reveal');
-  playReveal({ card, o: model, seen: sightings.length, origin: { x: sky.cx, y: sky.cy } });
+  playReveal({ card, o: model, seen: sightings.length, origin: { x: sky.ring?.x ?? sky.cx, y: sky.ring?.y ?? sky.cy } });
 }
 function openCard(obj) { saveExploreState(); location.href = `cards.html#${encodeURIComponent(obj.card ?? String(obj.id))}`; }
 async function capture(obj) {

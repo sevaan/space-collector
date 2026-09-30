@@ -1,7 +1,7 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
 // Two themes: 'glass' (navy sky, gold satellites, cyan reticle) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.48';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.50';
 
 const RAD = Math.PI / 180;
 const FONT = '-apple-system, "SF Pro Text", system-ui, sans-serif';
@@ -606,14 +606,15 @@ export class SkyView {
 
   // safeTop/safeBottom are HUD insets in CSS pixels; centerY is an optional pixel
   // override. Projection and the reticle always share the same cx/cy.
-  draw(basis, items, { showDim, sky, bodies, milky, lines = true, targetId = null, time = 0, safeTop = 150, safeBottom = 230, centerY, newFind = false, rising = null, landscape = false } = {}) {
+  draw(basis, items, { showDim, sky, bodies, milky, lines = true, targetId = null, time = 0, safeTop = 150, safeBottom = 230, centerY, newFind = false, rising = null, landscape = false, lockedOn = null } = {}) {
     this.basis = basis;
     this.safeTop = Math.max(12, Math.min(safeTop, this.h * 0.45));
     this.safeBottom = Math.max(12, Math.min(safeBottom, this.h - this.safeTop - 100));
     this.cy = Number.isFinite(centerY) ? Math.max(this.safeTop + 20, Math.min(centerY, this.h - this.safeBottom - 20)) : (this.safeTop + this.h - this.safeBottom) / 2;
     this.labelQueue = [];
     const r = this.reticlePx;
-    this.clearZone = newFind ? { left: this.cx - 170, right: this.cx + 170, top: this.cy - r - 90, bottom: this.cy + r + 60 } : null;
+    const rc = this.ring ?? { x: this.cx, y: this.cy };
+    this.clearZone = newFind ? { left: rc.x - 170, right: rc.x + 170, top: rc.y - r - 90, bottom: rc.y + r + 60 } : null;
     const ctx = this.ctx, t = this.theme;
     this.drawBackground();
     this.drawMilkyWay(milky);
@@ -659,7 +660,8 @@ export class SkyView {
     }
 
     this.drawOffscreen(offscreen, targetId);
-    const locked = !!focus && focus.obj.id === targetId && !!focus.candidate;
+    // The app decides what counts as locked on, so the ring, labels and tap area always agree.
+    const locked = lockedOn ?? (!!focus && focus.obj.id === targetId && !!focus.candidate);
     this.drawReticle(locked, this.reducedMotion ? 0 : time, newFind && locked);
     this.drawLabels();
   }
@@ -691,9 +693,23 @@ export class SkyView {
     }
   }
 
+  // The ring you aim with. When it locks on, it shrinks a little and glides onto the object, then
+  // eases back when the lock is released. this.ring is what's drawn (the tap area follows it).
+  updateRing(locked) {
+    const want = locked && this.targetPos
+      ? { x: this.targetPos.x, y: this.targetPos.y, r: this.reticlePx * 0.8 }
+      : { x: this.cx, y: this.cy, r: this.reticlePx };
+    const now = performance.now(), dt = Math.min(0.1, (now - (this._ringT ?? now)) / 1000);
+    this._ringT = now;
+    const k = this.reducedMotion ? 1 : 1 - Math.exp(-dt * (locked ? 14 : 9)); // snappy lock, softer release
+    this.ring ??= { ...want };
+    for (const key of ['x', 'y', 'r']) this.ring[key] += (want[key] - this.ring[key]) * k;
+    return this.ring;
+  }
+
   drawReticle(locked, time = 0, newFind = false) {
     const ctx = this.ctx, t = this.theme;
-    const radius = this.reticlePx, cx = this.cx, cy = this.cy;
+    const { r: radius, x: cx, y: cy } = this.updateRing(locked);
     ctx.save();
     if (newFind) {
       // Never-seen object lined up: the whole ring glows gold and gently breathes. Tap it to collect.
