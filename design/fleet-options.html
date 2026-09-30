@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fleet Card Options</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/cards.css">
+<style>
+  :root { --text: #eef3ff; --muted: #9fb3dc; --gold: #e6c68a; --line: #1f2c44; --ink-stamp: #2d4f86; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #05080f; color: var(--text); font: 15px/1.45 Inter, -apple-system, system-ui, sans-serif; padding: 22px 16px 70px; }
+  h1 { font-size: 22px; margin: 0 0 6px; }
+  .intro { color: var(--muted); margin: 0 0 14px; max-width: 760px; }
+  .controls { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 26px; }
+  .controls button { font: 600 13px Inter, sans-serif; color: var(--text); background: #111b2e; border: 1px solid #2a3a58; border-radius: 999px; padding: 7px 14px; cursor: pointer; }
+  .controls button.on { background: #e6c68a; color: #1b1406; border-color: #e6c68a; }
+  .board { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 44px 26px; }
+  .opt > h2 { font-size: 17px; margin: 0 0 4px; }
+  .opt > p { color: var(--muted); font-size: 13px; margin: 0 0 16px; }
+  .slot { display: flex; justify-content: center; }
+  .below { max-width: 300px; margin: 18px auto 0; }
+  .below h3 { font-size: 11px; font-weight: 600; color: var(--gold); letter-spacing: .12em; text-transform: uppercase; margin: 0 0 10px; }
+
+  /* A: launch counter on the face, list underneath */
+  .fl-count { display: inline-flex; align-items: baseline; gap: .3em; font-size: 1.8em; font-weight: 800; letter-spacing: -.05em; white-space: nowrap; }
+  .fl-count em { font-style: normal; font-size: .55em; color: var(--grey); letter-spacing: 0; }
+  .fl-count small { display: inline-block; max-width: 6.5em; white-space: normal; font-size: max(9px, .36em); line-height: 1.3; font-weight: 750; letter-spacing: .12em; margin-left: .3em; }
+  .list p { display: flex; justify-content: space-between; gap: 10px; font-size: 12px; color: var(--muted); margin: 0; padding: 9px 0; border-top: 1px solid var(--line); }
+  .list p span:first-child { color: var(--text); }
+
+  /* Ink stamps (B, and the grid under B/C) */
+  .stamp { --r: 0deg; width: 64px; height: 64px; border-radius: 50%; border: 2.5px solid var(--ink-stamp); color: var(--ink-stamp); display: grid; place-items: center; text-align: center;
+    transform: rotate(var(--r)); font: 800 8px/1.15 'IBM Plex Mono', monospace; letter-spacing: .04em; position: relative; background: #f1efdf; }
+  .stamp::before { content: ''; position: absolute; inset: 3px; border-radius: 50%; border: 1px dashed currentColor; opacity: .7; }
+  .stamp b { display: block; font: 800 10px Inter, sans-serif; letter-spacing: .06em; }
+  .stamps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; justify-items: center; background: #f1efdf; border-radius: 10px; padding: 14px 8px; }
+  .stamps .empty { width: 64px; height: 64px; border-radius: 50%; border: 1.5px dashed #b9bfb0; display: grid; place-items: center; color: #9aa293; font: 600 9px 'IBM Plex Mono', monospace; }
+  .more { text-align: center; color: var(--muted); font-size: 12px; margin-top: 10px; }
+  /* B: a strip of recent stamps on the face */
+  .fl-strip { margin: .9em 1.35em .2em; }
+  .fl-strip .row { display: flex; gap: .7em; align-items: center; }
+  .fl-strip .stamp { width: 4.9em; height: 4.9em; border-width: .2em; font: 700 .8em/1.1 'IBM Plex Mono', monospace; }
+  .fl-strip .stamp::before { inset: .25em; }
+  .fl-strip .stamp b { font-size: 1.45em; }
+  .fl-strip .plus { font: 700 .9em 'IBM Plex Mono', monospace; color: var(--grey); margin-left: .2em; }
+  .fl-bar { display: flex; align-items: center; gap: .7em; margin-top: .8em; font: 700 max(10px, .72em) Inter, sans-serif; letter-spacing: .1em; color: var(--grey); }
+  .fl-bar i { flex: 1; height: .45em; border-radius: .3em; background: #d9dccd; overflow: hidden; }
+  .fl-bar i::before { content: ''; display: block; height: 100%; width: var(--p); background: var(--ink-stamp); }
+
+  /* C: every launch as a dot on the face */
+  .fl-dots { margin: 0 1.35em; }
+  .fl-dots .grid { display: grid; grid-template-columns: repeat(var(--cols), 1fr); gap: var(--gap); margin-top: .55em; }
+  .fl-dots .grid i { aspect-ratio: 1; border-radius: 50%; background: #d4d8c9; }
+  .fl-dots .grid i.on { background: var(--ink-stamp); box-shadow: 0 0 0 .08em #f1efdf, 0 0 0 .2em color-mix(in srgb, var(--ink-stamp) 40%, transparent); }
+  .fl-dots .yr { display: flex; justify-content: space-between; margin-top: .4em; font: 600 max(9px, .62em) 'IBM Plex Mono', monospace; color: var(--grey); }
+  .timeline { background: #0d1626; border: 1px solid var(--line); border-radius: 10px; padding: 12px; }
+  .timeline .grid { display: grid; grid-template-columns: repeat(var(--cols), 1fr); gap: 3px; }
+  .timeline .grid i { aspect-ratio: 1; border-radius: 50%; background: #25324a; }
+  .timeline .grid i.on { background: #8fb8ff; box-shadow: 0 0 6px #8fb8ff; }
+  .timeline .note { font-size: 12px; color: var(--muted); margin: 10px 0 0; }
+  .timeline .note b { color: var(--text); font-weight: 600; }
+</style>
+</head>
+<body>
+  <h1>Fleet cards: three looks</h1>
+  <p class="intro">One card per fleet, with a stamp for each launch you catch. Built with the real card renderer and the real launch list (Starlink has 420 launches in the catalogue). Levels count launches stamped: bronze at 1, silver at 10, gold at 50 for Starlink, scaled down for the smaller fleets. Under each card is what the card viewer would show instead of today's sighting list.</p>
+  <div class="controls" id="controls"></div>
+  <div class="board" id="board"></div>
+
+<script type="module">
+import { renderCard } from '../js/card.js';
+import { loadLore } from '../js/lore.js';
+await loadLore('../data/lore.json');
+const cat = await (await fetch('../data/catalog.json')).json();
+
+const FLEETS = { STARLINK: 12, ONEWEB: 3, QIANFAN: 2, KUIPER: 1 }; // how many launches the pretend collection has stamped
+const fmt = (iso) => new Date(`${iso}T12:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+const esc = (s) => String(s).replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+
+function fleetData(id) {
+  const fam = cat.families[id], members = cat.objects.filter((o) => o.family === id);
+  const byLaunch = new Map();
+  for (const o of members) { if (!byLaunch.has(o.card)) byLaunch.set(o.card, { key: o.card, cospar: o.card.split(':')[1], launch: o.launch, n: 0 }); byLaunch.get(o.card).n++; }
+  const launches = [...byLaunch.values()].sort((a, b) => a.launch.localeCompare(b.launch));
+  // Pretend collection: stamps spread through the list, seen on recent nights.
+  const want = FLEETS[id], stamped = new Set();
+  for (let i = 0; i < want; i++) stamped.add(launches[Math.floor(((i + 0.5) / want) * launches.length)].key);
+  const seen = [...stamped].map((k, i) => ({ ...byLaunch.get(k), seen: new Date(Date.UTC(2026, 8, 30 - i * 2, 2)) }));
+  const avg = (f) => members.reduce((s, o) => s + (o[f] ?? 0), 0) / members.length;
+  const card = {
+    key: id, id, family: id, familyName: fam.name, maker: fam.maker, owner: fam.owner, name: fam.name, kind: 'PAY', type: 'satellite', tier: 'common',
+    launch: launches[0].launch, year: Number(launches[0].launch.slice(0, 4)), period: avg('period'), incl: avg('incl'), apogee: avg('apogee'), perigee: avg('perigee'),
+    members: members.map((m) => m.id), set: 'mega', setNumber: Object.keys(FLEETS).indexOf(id) + 1, setSize: 180,
+  };
+  const levels = id === 'STARLINK' ? [1, 10, 50] : [1, 5, Math.max(8, Math.round(launches.length * 0.6))];
+  const level = want >= levels[2] ? 'gold' : want >= levels[1] ? 'silver' : 'bronze';
+  const next = level === 'bronze' ? `SILVER AT ${levels[1]}` : level === 'silver' ? `GOLD AT ${levels[2]}` : 'TOP LEVEL';
+  return { fam, members, launches, stamped, seen, card, level, next };
+}
+
+function baseCard(f) {
+  const sightings = f.seen.map((s) => ({ time: s.seen.getTime() }));
+  const el = renderCard(f.card, { sightings, forceLevel: f.level, seenMembers: 0 });
+  el.querySelector('.card__name').textContent = f.fam.name;
+  el.querySelector('.card__label.card__mono').textContent = `${f.members.length.toLocaleString('en-US')} SATELLITES`;
+  el.querySelector('.card__identity').innerHTML = `<span>Satellite fleet · ${esc(f.fam.maker)}</span><span>${f.launches.length} launches</span>`;
+  el.querySelector('.card__fact p').innerHTML = `<b>${f.members.length.toLocaleString('en-US')} ${esc(f.fam.name)} satellites</b> from ${f.launches.length} launches since ${f.launches[0].launch.slice(0, 4)}. Each launch you catch adds a stamp to this card.`;
+  const stats = el.querySelectorAll('.card__stats > div');
+  stats[2].innerHTML = `<span class="card__label">FIRST LAUNCH</span><b>${f.launches[0].launch.slice(0, 4)}</b>`;
+  return el;
+}
+const stampHtml = (s, i) => `<div class="stamp" style="--r:${[-8, 6, -3, 10, -12, 4, 8, -6][i % 8]}deg"><span><b>${s.cospar}</b>${fmt(s.launch).toUpperCase().replace(/ \d{4}$/, '')}<br>SEEN ${s.seen.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }).toUpperCase()}</span></div>`;
+
+const OPTIONS = [
+  { name: 'A. Launch counter', text: 'Smallest change. The age pill becomes a big "12 / 420 launches" counter and the seen box shows your level and the next one. The viewer lists your stamps like today\'s sighting list. Clear, but the least magical.',
+    build(f) {
+      const el = baseCard(f);
+      el.querySelector('.card__agebar').innerHTML = `<span class="fl-count">${f.stamped.size}<em>/ ${f.launches.length}</em><small>LAUNCHES STAMPED</small></span><span class="card__seen">${f.level.toUpperCase()} · ${f.next}</span>`;
+      const below = `<h3>Your stamps · ${f.stamped.size} of ${f.launches.length}</h3><div class="list">${f.seen.map((s) => `<p><span>Launch ${s.cospar} · ${fmt(s.launch)}</span><span>seen ${s.seen.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}</span></p>`).join('')}</div>`;
+      return [el, below];
+    } },
+  { name: 'B. Stamp strip', text: 'Your latest stamps sit on the face as little rotated ink stamps, with a progress bar underneath. The viewer opens a passport page of every stamp you own plus a few empty slots. The most "collectible" feel: stamps are the reward you see.',
+    build(f) {
+      const el = baseCard(f);
+      const recent = f.seen.slice(0, 4);
+      const mini = (s, i) => `<div class="stamp" style="--r:${[-8, 6, -3, 10][i]}deg"><span>${s.cospar.slice(0, 4)}<b>${s.cospar.slice(5)}</b></span></div>`;
+      el.querySelector('.card__agebar').outerHTML = `<div class="fl-strip"><div class="row">${recent.map(mini).join('')}${f.seen.length > recent.length ? `<span class="plus">+${f.seen.length - recent.length}</span>` : ''}</div>
+        <div class="fl-bar" style="--p:${((f.stamped.size / f.launches.length) * 100).toFixed(1)}%"><span>${f.stamped.size} / ${f.launches.length}</span><i></i><span>${f.level.toUpperCase()}</span></div></div>`;
+      el.querySelector('.card__stats')?.remove(); // make room: stats move to the viewer
+      const empty = Math.max(0, 8 - f.seen.length);
+      const below = `<h3>Passport · ${f.stamped.size} of ${f.launches.length} launches</h3><div class="stamps">${f.seen.map(stampHtml).join('')}${'<div class="empty">?</div>'.repeat(empty)}</div><p class="more">${f.level === 'gold' ? 'Top level reached' : `${f.next.toLowerCase().replace(/^./, (c) => c.toUpperCase())} launches`}</p>`;
+      return [el, below];
+    } },
+  { name: 'C. Every launch as a dot', text: 'The fact area becomes a map of every launch in the fleet, oldest to newest: a dot per launch, filled when you\'ve stamped it. Starlink is a dense 420-dot field you slowly light up; Kuiper is 14 big dots. A strong "fill the grid" pull. The viewer shows the same map larger with the list.',
+    build(f) {
+      const el = baseCard(f);
+      el.querySelector('.card__agebar').innerHTML = `<span class="fl-count">${f.stamped.size}<em>/ ${f.launches.length}</em><small>LAUNCHES STAMPED</small></span><span class="card__seen">${f.level.toUpperCase()} · ${f.next}</span>`;
+      const n = f.launches.length, cols = n > 200 ? 30 : n > 60 ? 16 : Math.min(10, n), gap = n > 200 ? '.18em' : '.45em';
+      const dots = f.launches.map((l) => `<i class="${f.stamped.has(l.key) ? 'on' : ''}" title="${l.cospar}"></i>`).join('');
+      el.querySelector('.card__fact').outerHTML = `<div class="fl-dots"><span class="card__note-label">EVERY ${esc(f.fam.name.toUpperCase())} LAUNCH</span><div class="grid" style="--cols:${cols};--gap:${gap}">${dots}</div><div class="yr"><span>${f.launches[0].launch.slice(0, 4)}</span><span>${f.launches.at(-1).launch.slice(0, 4)}</span></div></div>`;
+      const vcols = n > 200 ? 24 : Math.min(12, n);
+      const below = `<h3>Launch map</h3><div class="timeline"><div class="grid" style="--cols:${vcols}">${f.launches.map((l) => `<i class="${f.stamped.has(l.key) ? 'on' : ''}"></i>`).join('')}</div>
+        <p class="note">Tap a dot to see that launch. Latest stamp: <b>launch ${f.seen[0].cospar}</b> (${fmt(f.seen[0].launch)}), seen ${f.seen[0].seen.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}.</p></div>`;
+      return [el, below];
+    } },
+];
+
+const data = Object.fromEntries(Object.keys(FLEETS).map((id) => [id, fleetData(id)]));
+let current = 'STARLINK';
+function draw() {
+  const board = document.getElementById('board'); board.innerHTML = '';
+  for (const o of OPTIONS) {
+    const [card, below] = o.build(data[current]);
+    const box = document.createElement('div'); box.className = 'opt';
+    box.innerHTML = `<h2>${o.name}</h2><p>${o.text}</p><div class="slot"></div><div class="below">${below}</div>`;
+    box.querySelector('.slot').append(card);
+    board.append(box);
+  }
+  document.querySelectorAll('#controls button').forEach((b) => b.classList.toggle('on', b.dataset.id === current));
+}
+document.getElementById('controls').innerHTML = Object.keys(FLEETS).map((id) => `<button data-id="${id}">${cat.families[id].name} · ${data[id].launches.length} launches</button>`).join('');
+document.getElementById('controls').addEventListener('click', (e) => { const id = e.target.dataset?.id; if (id) { current = id; draw(); } });
+draw();
+</script>
+</body>
+</html>
