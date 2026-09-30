@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#050a18">
+<title>Card Reveal Demo</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<base href="../">
+<link rel="stylesheet" href="css/cards.css">
+<style>
+  :root { --bg: #050a18; --text: #eef3ff; --muted: #9fb3dc; --gold: #e6c68a; --cyan: #8fd3e8; --fx: #ffc545; --safe-top: env(safe-area-inset-top, 0px); --safe-bottom: env(safe-area-inset-bottom, 0px); }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; height: 100%; overflow: hidden; background: var(--bg); color: var(--text); font: 15px/1.4 -apple-system, "SF Pro Text", system-ui, sans-serif; -webkit-user-select: none; user-select: none; }
+
+  #stage { position: fixed; inset: 0; background: radial-gradient(120% 70% at 60% 25%, #15284f 0%, #0a1430 45%, #050a18 100%); overflow: hidden; }
+  #stage::before { content: ''; position: absolute; inset: 0; background:
+    radial-gradient(1px 1px at 12% 22%, #fffa, transparent), radial-gradient(1px 1px at 78% 12%, #fff9, transparent),
+    radial-gradient(1.4px 1.4px at 38% 64%, #fff8, transparent), radial-gradient(1px 1px at 88% 44%, #fffb, transparent),
+    radial-gradient(1px 1px at 8% 80%, #fff7, transparent), radial-gradient(1.2px 1.2px at 58% 88%, #fff9, transparent),
+    radial-gradient(1px 1px at 66% 36%, #fff8, transparent), radial-gradient(1px 1px at 24% 46%, #fff6, transparent),
+    linear-gradient(115deg, transparent 30%, rgba(170, 190, 255, 0.07) 48%, transparent 66%); }
+  #dim { position: absolute; inset: 0; background: #000; opacity: 0; pointer-events: none; }
+
+  #ret { position: absolute; left: 50%; top: 40%; width: 120px; height: 120px; margin: -60px 0 0 -60px; border-radius: 50%; border: 2.5px solid var(--gold); box-shadow: 0 0 22px rgba(230,198,138,.5), inset 0 0 18px rgba(230,198,138,.2); }
+  #dot { position: absolute; left: 50%; top: 40%; width: 12px; height: 12px; margin: -6px 0 0 -6px; border-radius: 50%; background: #ffe2a0; box-shadow: 0 0 14px 4px #ffd98a; }
+  #ret-label { position: absolute; left: 50%; top: calc(40% - 104px); transform: translateX(-50%); text-align: center; white-space: nowrap; text-shadow: 0 1px 6px #000; }
+  #ret-label small { display: block; font-size: 10px; letter-spacing: .14em; font-weight: 700; color: var(--fx); }
+  #ret-label b { font-size: 20px; }
+  #ret-cta { position: absolute; left: 50%; top: calc(40% + 76px); transform: translateX(-50%); font-size: 12px; letter-spacing: .14em; font-weight: 800; color: var(--gold); white-space: nowrap; }
+  #ret-hit { position: absolute; left: 50%; top: 40%; width: 170px; height: 170px; margin: -85px 0 0 -85px; border-radius: 50%; background: transparent; border: 0; cursor: pointer; }
+
+  #fx { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+  #flash { position: absolute; inset: 0; background: radial-gradient(circle at 50% 45%, #fff, transparent 60%); opacity: 0; pointer-events: none; }
+  #shock { position: absolute; left: 50%; top: 45%; width: 40px; height: 40px; margin: -20px 0 0 -20px; border-radius: 50%; border: 3px solid var(--fx); opacity: 0; pointer-events: none; }
+
+  #holder { position: absolute; left: 50%; top: 44%; width: calc(28 * var(--cf)); height: calc(var(--ch, 39.2) * var(--cf)); margin-left: calc(-14 * var(--cf)); margin-top: calc(var(--ch, 39.2) * var(--cf) / -2); perspective: 1400px; opacity: 0; pointer-events: none; }
+  #holder.live { pointer-events: auto; }
+  #flipper { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; }
+  .side { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+  .side.front { transform: rotateY(180deg); }
+  .side.front .card { font-size: var(--cf); }
+
+  /* The card back: sealed until you tap */
+  .back { border-radius: 1.15em; font-size: var(--cf); overflow: hidden; background:
+      radial-gradient(circle at 50% 42%, color-mix(in srgb, var(--fx) 30%, transparent) 0%, transparent 45%),
+      repeating-linear-gradient(45deg, rgba(255,255,255,.035) 0 2px, transparent 2px 14px),
+      linear-gradient(160deg, #13244a, #081230 70%);
+    border: .25em solid color-mix(in srgb, var(--fx) 70%, #0000); display: grid; place-items: center; }
+  .back .mark { text-align: center; }
+  .back svg { width: 9em; height: 7em; stroke: var(--fx); stroke-width: 1.6; fill: none; filter: drop-shadow(0 0 .6em var(--fx)); }
+  .back .word { margin-top: 1.4em; font: 800 1.3em Inter, sans-serif; letter-spacing: .3em; color: #dfe8ff; }
+  .back .tap { margin-top: .6em; font: 600 .95em Inter, sans-serif; letter-spacing: .2em; color: var(--fx); opacity: .9; }
+  .back.glow { animation: backPulse 1.4s ease-in-out infinite; }
+  @keyframes backPulse { 50% { box-shadow: 0 0 2.2em .4em color-mix(in srgb, var(--fx) 55%, transparent); } }
+
+  #sweep { position: absolute; inset: 0; border-radius: 1.15em; overflow: hidden; pointer-events: none; }
+  #sweep::after { content: ''; position: absolute; top: -20%; bottom: -20%; width: 40%; left: -60%; background: linear-gradient(100deg, transparent, rgba(255,255,255,.75), transparent); transform: skewX(-12deg); opacity: 0; }
+  #sweep.go::after { animation: sweep .9s ease-out forwards; }
+  @keyframes sweep { 0% { left: -60%; opacity: 0; } 15% { opacity: 1; } 100% { left: 120%; opacity: 0; } }
+
+  #stamp { position: absolute; left: 50%; top: 58%; transform: translate(-50%, -50%) rotate(-9deg); padding: .5em 1em; border: .22em solid var(--fx); border-radius: .5em; color: var(--fx); background: rgba(5, 10, 24, .82); font: 800 calc(var(--cf) * 1.35) Inter, sans-serif; letter-spacing: .12em; text-align: center; white-space: nowrap; opacity: 0; pointer-events: none; }
+  #stamp small { display: block; font-size: .62em; letter-spacing: .16em; margin-top: .2em; opacity: .85; }
+
+  #controls { position: fixed; left: 0; right: 0; bottom: 0; padding: 10px 12px calc(var(--safe-bottom) + 12px); background: linear-gradient(transparent, #050a18 35%); }
+  #controls .row { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; margin-bottom: 8px; }
+  #controls .row::-webkit-scrollbar { display: none; }
+  .chip { flex: none; padding: 8px 12px; border-radius: 999px; border: 1px solid rgba(140,170,220,.3); background: rgba(16,26,46,.8); color: var(--text); font: 600 13px -apple-system, system-ui, sans-serif; }
+  .chip.on { background: var(--text); color: #050a18; }
+  .chip i { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
+  #again { width: 100%; padding: 13px; border-radius: 999px; border: 0; font: 800 15px -apple-system, system-ui, sans-serif; background: var(--gold); color: #241800; }
+  #title { position: fixed; top: calc(var(--safe-top) + 14px); left: 16px; right: 16px; font-size: 11px; letter-spacing: .16em; color: var(--muted); text-transform: uppercase; }
+  #title b { color: var(--text); letter-spacing: .1em; }
+</style>
+</head>
+<body>
+  <div id="stage">
+    <div id="dim"></div>
+    <div id="ret"></div><div id="dot"></div>
+    <div id="ret-label"><small id="ret-tier"></small><b id="ret-name"></b></div>
+    <div id="ret-cta">TAP TO COLLECT</div>
+    <button id="ret-hit" aria-label="Collect"></button>
+    <canvas id="fx"></canvas>
+    <div id="flash"></div>
+    <div id="shock"></div>
+    <div id="holder"><div id="flipper">
+      <div class="side back"><div class="mark">
+        <svg viewBox="0 0 64 48"><circle cx="32" cy="24" r="12"/><ellipse cx="32" cy="24" rx="29" ry="9" transform="rotate(-24 32 24)"/></svg>
+        <div class="word">SPACE COLLECTOR</div><div class="tap">TAP TO REVEAL</div>
+      </div></div>
+      <div class="side front" id="front"></div>
+    </div><div id="sweep"></div><div id="stamp"></div></div>
+  </div>
+  <div id="title"><b>Reveal demo</b> · pick a rarity, then tap the circle</div>
+  <div id="controls">
+    <div class="row" id="tiers"></div>
+    <div class="row" id="modes"></div>
+    <button id="again">Reset</button>
+  </div>
+
+<script type="module">
+// Load the same version-stamped modules the app uses, so there's one shared copy of each.
+const { version } = await fetch('version.json', { cache: 'no-store' }).then((r) => r.json());
+const v = `?v=${version}`;
+const { renderCard, attachTilt, attachGyro } = await import(`./js/card.js${v}`);
+const { buildCards } = await import(`./js/card-model.js${v}`);
+const { loadLore, titleFor } = await import(`./js/lore.js${v}`);
+const { TIER_INFO } = await import(`./js/rarity.js${v}`);
+
+const $ = (id) => document.getElementById(id);
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+// Start an animation and wait for its duration. (Not animation.finished: that never resolves when the
+// browser pauses animations, e.g. in a background tab, which would freeze the whole sequence.)
+function play(el, frames, opts) { el.animate(frames, opts); return sleep((opts.duration ?? 0) * (opts.iterations ?? 1)); }
+
+// How big each moment is, by rarity.
+const FX = {
+  common:    { particles: 14,  flip: 520, spin: 0,   dim: 0,    shock: false, notes: [880],                    hold: 0 },
+  uncommon:  { particles: 24,  flip: 560, spin: 0,   dim: 0,    shock: false, notes: [784, 1175],              hold: 0 },
+  rare:      { particles: 50,  flip: 650, spin: 0,   dim: .25,  shock: false, notes: [659, 988, 1319],         hold: 300 },
+  epic:      { particles: 90,  flip: 800, spin: 360, dim: .45,  shock: true,  notes: [523, 784, 1047, 1568],   hold: 600 },
+  legendary: { particles: 160, flip: 1100, spin: 0,  dim: .7,   shock: true,  notes: [392, 523, 659, 784, 1047, 1319], hold: 1100 },
+};
+
+const state = { cards: {}, tier: 'legendary', repeat: false, phase: 'ready', tilt: null, stopGyro: null };
+
+// ---------- sound (WebAudio; iPhones can't vibrate from the web, so sound carries the "thump") ----------
+let audio;
+function unlock() { try { audio ??= new (window.AudioContext || window.webkitAudioContext)(); audio.resume(); } catch {} }
+function tone(freq, at, dur, gain = .16, type = 'sine') {
+  if (!audio) return;
+  const o = audio.createOscillator(), g = audio.createGain();
+  o.type = type; o.frequency.value = freq;
+  g.gain.setValueAtTime(.0001, at); g.gain.exponentialRampToValueAtTime(gain, at + .015); g.gain.exponentialRampToValueAtTime(.0001, at + dur);
+  o.connect(g).connect(audio.destination); o.start(at); o.stop(at + dur + .05);
+}
+function whoosh() { if (!audio) return; const t = audio.currentTime; for (let i = 0; i < 6; i++) tone(300 + i * 140, t + i * .03, .12, .05, 'triangle'); }
+function thump() { if (!audio) return; const t = audio.currentTime; tone(90, t, .25, .35, 'sine'); tone(180, t, .12, .12, 'triangle'); }
+function fanfare(notes) { if (!audio) return; const t = audio.currentTime; notes.forEach((f, i) => { tone(f, t + i * .09, .5, .13); tone(f * 2, t + i * .09, .3, .04); }); }
+
+// ---------- particles ----------
+const cv = $('fx'), ctx = cv.getContext('2d');
+let parts = [];
+function resize() { const d = devicePixelRatio || 1; cv.width = innerWidth * d; cv.height = innerHeight * d; ctx.setTransform(d, 0, 0, d, 0, 0); }
+addEventListener('resize', () => { resize(); sizeCard(); });
+function burst(x, y, n, color) {
+  for (let i = 0; i < n; i++) {
+    const a = Math.random() * Math.PI * 2, v = 2 + Math.random() * 7;
+    parts.push({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 2, life: 1, size: 1.5 + Math.random() * 3, color, star: Math.random() < .35 });
+  }
+}
+function drawStar(x, y, s) { ctx.beginPath(); ctx.moveTo(x, y - s); ctx.quadraticCurveTo(x, y, x + s, y); ctx.quadraticCurveTo(x, y, x, y + s); ctx.quadraticCurveTo(x, y, x - s, y); ctx.quadraticCurveTo(x, y, x, y - s); ctx.fill(); }
+(function loop() {
+  requestAnimationFrame(loop);
+  ctx.clearRect(0, 0, innerWidth, innerHeight);
+  parts = parts.filter((p) => p.life > 0);
+  for (const p of parts) {
+    p.x += p.vx; p.y += p.vy; p.vy += .12; p.vx *= .985; p.life -= .012;
+    ctx.globalAlpha = Math.max(0, p.life); ctx.fillStyle = p.color;
+    if (p.star) drawStar(p.x, p.y, p.size * 2.2); else { ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill(); }
+  }
+  ctx.globalAlpha = 1;
+})();
+
+// ---------- card sizing ----------
+let cardEm = 39.2; // card height in em, measured from the real card
+function sizeCard() {
+  const cf = Math.max(7, Math.min((innerWidth - 48) / 28, (innerHeight - 250) / cardEm, 13));
+  document.documentElement.style.setProperty('--cf', `${cf}px`);
+  document.documentElement.style.setProperty('--ch', cardEm);
+}
+
+// ---------- the sequence ----------
+function reset() {
+  state.stopGyro?.(); state.tilt?.destroy(); state.stopGyro = state.tilt = null;
+  state.phase = 'ready';
+  const c = state.cards[state.tier];
+  const tier = TIER_INFO[c.tier];
+  document.documentElement.style.setProperty('--fx', tier.color);
+  $('ret-tier').textContent = tier.label; $('ret-tier').style.color = tier.color;
+  $('ret-name').textContent = titleFor(c);
+  for (const id of ['ret', 'dot', 'ret-label', 'ret-cta']) { $(id).getAnimations().forEach((a) => a.cancel()); $(id).style.opacity = 1; }
+  $('ret-hit').hidden = false;
+  $('holder').getAnimations().forEach((a) => a.cancel()); $('holder').style.opacity = 0; $('holder').classList.remove('live');
+  $('flipper').getAnimations().forEach((a) => a.cancel()); $('flipper').style.transform = '';
+  $('stamp').getAnimations().forEach((a) => a.cancel()); $('stamp').style.opacity = 0;
+  $('dim').style.transition = 'none'; $('dim').style.opacity = 0;
+  document.querySelector('.back').classList.remove('glow');
+  $('sweep').classList.remove('go');
+  // Front: the real card, as it will look once collected.
+  const seen = state.repeat ? 5 : 1;
+  const sightings = Array.from({ length: seen }, (_, i) => ({ time: Date.now() - i * 86400000 * 3, objectId: c.id }));
+  $('front').replaceChildren(renderCard(c, { sightings, seenMembers: c.members ? 3 : 0 }));
+  const el = $('front').querySelector('.card');
+  const cf = parseFloat(getComputedStyle(el).fontSize);
+  cardEm = Math.max(39.2, el.getBoundingClientRect().height / cf);
+  sizeCard();
+}
+
+async function collect() {
+  if (state.phase !== 'ready') return;
+  unlock();
+  state.phase = 'flying';
+  const fx = FX[state.tier], color = TIER_INFO[state.cards[state.tier].tier].color;
+  $('ret-hit').hidden = true;
+  const r = $('ret').getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+
+  // 1. Pulled from orbit: the dot swells, the ring snaps shut, a flash, and it rushes toward you.
+  whoosh();
+  $('ret-label').animate([{ opacity: 1 }, { opacity: 0 }], { duration: 200, fill: 'forwards' });
+  $('ret-cta').animate([{ opacity: 1 }, { opacity: 0 }], { duration: 200, fill: 'forwards' });
+  $('ret').animate([{ transform: 'scale(1)', opacity: 1 }, { transform: 'scale(.15)', opacity: 0 }], { duration: 380, easing: 'cubic-bezier(.6,0,.9,.4)', fill: 'forwards' });
+  if (fx.dim) { $('dim').style.transition = 'opacity .5s'; $('dim').style.opacity = fx.dim; }
+  await play($('dot'), [
+    { transform: 'scale(1)', filter: 'blur(0)' },
+    { transform: 'scale(2.2)', filter: 'blur(0)', offset: .45 },
+    { transform: 'scale(40)', filter: 'blur(6px)', opacity: 0 },
+  ], { duration: 620, easing: 'cubic-bezier(.5,0,.8,.3)', fill: 'forwards' });
+  $('flash').animate([{ opacity: 0 }, { opacity: .9 }, { opacity: 0 }], { duration: 420 });
+  thump();
+  burst(cx, cy + 20, Math.round(fx.particles / 2), color);
+  if (fx.shock) $('shock').animate([{ transform: 'scale(1)', opacity: 1 }, { transform: 'scale(22)', opacity: 0 }], { duration: 900, easing: 'ease-out' });
+
+  // Repeat sighting: straight to the card, then the stamp.
+  if (state.repeat) {
+    $('flipper').style.transform = 'rotateY(180deg)';
+    await play($('holder'), [{ opacity: 0, transform: 'scale(.5) translateY(40px)' }, { opacity: 1, transform: 'scale(1.04)' }, { opacity: 1, transform: 'scale(1)' }], { duration: 480, easing: 'cubic-bezier(.2,.9,.3,1.2)', fill: 'forwards' });
+    await finish(fx, color, cx, cy, true);
+    return;
+  }
+
+  // 2. A sealed card lands, glowing in its rarity colour. It waits for your tap.
+  await play($('holder'), [{ opacity: 0, transform: 'scale(.4) translateY(60px) rotate(-8deg)' }, { opacity: 1, transform: 'scale(1.05) rotate(2deg)' }, { opacity: 1, transform: 'scale(1) rotate(0)' }], { duration: 520, easing: 'cubic-bezier(.2,.9,.3,1.3)', fill: 'forwards' });
+  document.querySelector('.back').classList.add('glow');
+  $('holder').classList.add('live');
+  state.phase = 'sealed';
+}
+
+async function reveal() {
+  if (state.phase !== 'sealed') return;
+  state.phase = 'flipping';
+  const fx = FX[state.tier], color = TIER_INFO[state.cards[state.tier].tier].color;
+  const r = $('holder').getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+  document.querySelector('.back').classList.remove('glow');
+  // Legendary: a held breath before the flip; the card shivers.
+  if (fx.hold) await play($('flipper'), [{ transform: 'rotate(0)' }, { transform: 'rotate(-1.5deg)' }, { transform: 'rotate(1.5deg)' }, { transform: 'rotate(0)' }], { duration: fx.hold, iterations: 1, easing: 'ease-in-out' });
+  // 3. The flip (Epic adds a full spin on the way).
+  await play($('flipper'), [
+    { transform: 'rotateY(0) scale(1)' },
+    { transform: `rotateY(${90 + fx.spin / 2}deg) scale(1.12)`, offset: .5 },
+    { transform: `rotateY(${180 + fx.spin}deg) scale(1)` },
+  ], { duration: fx.flip, easing: 'cubic-bezier(.4,0,.2,1)', fill: 'forwards' });
+  await finish(fx, color, cx, cy, false);
+}
+
+// 4. Light sweeps the card, sparkles fly, the stamp lands.
+async function finish(fx, color, cx, cy, repeat) {
+  fanfare(fx.notes);
+  burst(cx, cy, fx.particles, color);
+  if (fx.particles > 60) setTimeout(() => burst(cx, cy - 60, fx.particles / 2, '#ffffff'), 180);
+  $('sweep').classList.remove('go'); void $('sweep').offsetWidth; $('sweep').classList.add('go');
+  await sleep(500);
+  const date = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }).toUpperCase();
+  $('stamp').innerHTML = repeat ? `SEEN 5×<small>SILVER CARD UNLOCKED</small>` : `FIRST SIGHTING<small>${date}</small>`;
+  await play($('stamp'), [
+    { opacity: 0, transform: 'translate(-50%,-50%) rotate(-9deg) scale(2.6)' },
+    { opacity: 1, transform: 'translate(-50%,-50%) rotate(-9deg) scale(.95)', offset: .7 },
+    { opacity: 1, transform: 'translate(-50%,-50%) rotate(-9deg) scale(1)' },
+  ], { duration: 360, easing: 'cubic-bezier(.5,0,.8,.4)', fill: 'forwards' });
+  thump();
+  $('stage').animate([{ transform: 'translate(0,0)' }, { transform: 'translate(-3px,2px)' }, { transform: 'translate(3px,-2px)' }, { transform: 'translate(0,0)' }], { duration: 180 });
+  if (repeat) {
+    const face = $('front').querySelector('.card__face');
+    face?.animate([{ borderColor: '#b8793e', boxShadow: '0 0 0 transparent' }, { borderColor: '#dfe6ee', boxShadow: '0 0 30px #dfe6ee' }, { borderColor: '#b9c1cc', boxShadow: '0 0 0 transparent' }], { duration: 1200 });
+  }
+  // Now the card is yours: it tilts with the phone and your finger.
+  const el = $('front').querySelector('.card');
+  state.tilt = attachTilt(el);
+  state.stopGyro = attachGyro(el, state.tilt);
+  setTimeout(() => $('stamp').animate([{ opacity: 1 }, { opacity: 0 }], { duration: 600, fill: 'forwards' }), 2200);
+  state.phase = 'done';
+}
+
+// ---------- controls ----------
+function renderControls() {
+  $('tiers').innerHTML = '';
+  for (const t of ['common', 'uncommon', 'rare', 'epic', 'legendary']) {
+    const b = document.createElement('button');
+    b.className = `chip${state.tier === t ? ' on' : ''}`;
+    b.innerHTML = `<i style="background:${TIER_INFO[t].color}"></i>${TIER_INFO[t].label}`;
+    b.onclick = () => { state.tier = t; renderControls(); reset(); };
+    $('tiers').append(b);
+  }
+  $('modes').innerHTML = '';
+  for (const [rep, text] of [[false, 'First sighting'], [true, 'Seen before (5th time)']]) {
+    const b = document.createElement('button');
+    b.className = `chip${state.repeat === rep ? ' on' : ''}`;
+    b.textContent = text;
+    b.onclick = () => { state.repeat = rep; renderControls(); reset(); };
+    $('modes').append(b);
+  }
+}
+$('ret-hit').onclick = collect;
+$('holder').onclick = () => { unlock(); if (state.phase === 'sealed' && typeof DeviceOrientationEvent?.requestPermission === 'function') DeviceOrientationEvent.requestPermission().catch(() => {}); reveal(); };
+$('again').onclick = reset;
+
+// ---------- data: one real card per rarity ----------
+const [cat] = await Promise.all([fetch('data/catalog.json').then((r) => r.json()), loadLore('data/lore.json')]);
+const cards = buildCards(cat);
+const pick = (fn) => cards.find(fn);
+state.cards = {
+  legendary: pick((c) => c.key === '25544'),
+  epic: pick((c) => c.tier === 'epic' && c.type === 'satellite' && c.year >= 1975) ?? pick((c) => c.tier === 'epic'),
+  rare: pick((c) => c.tier === 'rare' && c.type === 'rocket-body' && /SL-16/.test(c.name)) ?? pick((c) => c.tier === 'rare'),
+  uncommon: pick((c) => c.key === '16908') ?? pick((c) => c.tier === 'uncommon'),
+  common: cards.filter((c) => c.family === 'STARLINK').sort((a, b) => (b.launch ?? '').localeCompare(a.launch ?? ''))[0],
+};
+const params = new URLSearchParams(location.search);
+if (params.get('tier') in FX) state.tier = params.get('tier');
+state.repeat = params.get('repeat') === '1';
+resize(); sizeCard(); renderControls(); reset();
+// ?auto=1 plays the whole sequence by itself (handy for previews).
+if (params.has('auto')) {
+  setInterval(() => { document.body.dataset.phase = state.phase; }, 50);
+  addEventListener('error', (e) => { document.body.dataset.err = e.message; });
+  addEventListener('unhandledrejection', (e) => { document.body.dataset.err = String(e.reason); });
+  setTimeout(collect, 300);
+  const wait = setInterval(() => { if (state.phase === 'sealed') { clearInterval(wait); setTimeout(reveal, 500); } }, 50);
+}
+</script>
+</body>
+</html>
