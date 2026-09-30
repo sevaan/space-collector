@@ -1,7 +1,7 @@
 // Card titles and facts. Order: hand-written (data/lore.json) → rocket/satellite family fact →
 // a fact computed from the orbit. Facts use **bold** for emphasis. Keep every fact true.
 
-import { orbitStats, titleCase } from './facts.js?v=0.1.30';
+import { orbitStats, titleCase } from './facts.js?v=0.1.31';
 
 const FAMILY = [
   [/^IRIDIUM 33 DEB/, 'A piece of the **first-ever crash between two satellites**: Iridium 33 hit the dead Cosmos 2251 in 2009.'],

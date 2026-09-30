@@ -1,17 +1,17 @@
-import { VERSION } from './version.js?v=0.1.30';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, setBinocularMode } from './orbit.js?v=0.1.30';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.30';
-import { SkyView, shortName } from './sky.js?v=0.1.30';
-import { loadSky, eqToEnu, solarSystem, galacticPlane } from './celestial.js?v=0.1.30';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.30';
-import { cardArt } from './art.js?v=0.1.30';
-import { renderCard, attachTilt, attachGyro } from './card.js?v=0.1.30';
-import { buildCards } from './card-model.js?v=0.1.30';
-import { collectedDuringPass, canCapture } from './observation.js?v=0.1.30';
-import { TIER_INFO } from './rarity.js?v=0.1.30';
-import { SETS } from './sets.js?v=0.1.30';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.30';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.30';
+import { VERSION } from './version.js?v=0.1.31';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, setBinocularMode } from './orbit.js?v=0.1.31';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.31';
+import { SkyView, shortName } from './sky.js?v=0.1.31';
+import { loadSky, eqToEnu, solarSystem, galacticPlane } from './celestial.js?v=0.1.31';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.31';
+import { cardArt } from './art.js?v=0.1.31';
+import { renderCard, attachTilt, attachGyro } from './card.js?v=0.1.31';
+import { buildCards } from './card-model.js?v=0.1.31';
+import { collectedDuringPass, canCapture } from './observation.js?v=0.1.31';
+import { TIER_INFO } from './rarity.js?v=0.1.31';
+import { SETS } from './sets.js?v=0.1.31';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.31';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.31';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -370,7 +370,10 @@ function tick(ts) {
 function updateCompass(basis) {
   const b = basis.back;
   const heading = (Math.atan2(b[0], b[1]) / RAD + 360) % 360;
+  // Like a real compass: the needle and letters swing to point at true north; the notch at the top
+  // of the ring is the direction you're facing.
   $('compass-rose').setAttribute('transform', `rotate(${(-heading).toFixed(1)} 50 50)`);
+  $('c-needle').setAttribute('transform', `rotate(${(-heading).toFixed(1)} 50 50)`);
   // Letters move around the ring but stay upright.
   for (const [id, az] of [['c-N', 0], ['c-E', 90], ['c-S', 180], ['c-W', 270]]) {
     const a = (az - heading) * RAD;

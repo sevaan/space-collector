@@ -13,8 +13,8 @@
   <link rel="apple-touch-icon" href="icons/icon-180.png">
   <link rel="icon" href="icons/icon-192.png">
   <script>try { if (localStorage.getItem("night") === "1") document.documentElement.dataset.theme = "night"; } catch {}</script>
-  <link rel="stylesheet" href="css/cards.css?v=0.1.30">
-  <link rel="stylesheet" href="css/app.css?v=0.1.30">
+  <link rel="stylesheet" href="css/cards.css?v=0.1.31">
+  <link rel="stylesheet" href="css/app.css?v=0.1.31">
 </head>
 <body>
   <canvas id="sky" role="img" aria-label="Sky map aligned with your viewing direction"></canvas>
@@ -34,7 +34,8 @@
             <line x1="50" y1="94" x2="50" y2="89"/><line x1="6" y1="50" x2="11" y2="50"/>
           </g>
         </g>
-        <path d="M50 30 L60 62 L50 55 L40 62 Z" class="c-needle"/>
+        <g id="c-needle"><path d="M50 26 L56 50 L44 50 Z" class="c-north"/><path d="M50 74 L56 50 L44 50 Z" class="c-south"/></g>
+        <path d="M50 3 L54 9 L46 9 Z" class="c-facing"/>
       </svg>
     </div>
 
@@ -159,6 +160,6 @@
     <pre id="debug-info"></pre></details>
   </section>
 
-  <script type="module" src="js/main.js?v=0.1.30"></script>
+  <script type="module" src="js/main.js?v=0.1.31"></script>
 </body>
 </html>
