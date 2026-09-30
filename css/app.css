@@ -111,12 +111,6 @@ details { border-bottom:1px solid var(--edge-soft); }
 .sighting .badge { margin-left:8px;font-size:10px;color:var(--gold);letter-spacing:1px; }
 .vis-row .dot { width:8px;height:8px;border-radius:50%;background:var(--tier,var(--gold)); }
 .empty { padding:30px 0;color:var(--muted);font-size:14px;line-height:1.6; }
-.reveal-inner { width:100%;max-width:420px;margin:auto; }
-#reveal { background:radial-gradient(ellipse at 50% 0,#283530,transparent 55%),var(--bg); }
-#reveal-card { display:flex;justify-content:center;padding:7px 4px;perspective:1000px; }
-#reveal-card .card { font-size:max(7px,min(14px,calc((100vw - 58px)/28),calc((100dvh - var(--safe-top) - var(--safe-bottom) - 100px)/44))); } /* same size as the collection viewer; only shrinks on very short screens */
-#reveal-view { margin-top:18px; }
-#reveal-continue { width:100%; }
 html[data-theme=night] #start,body.night #start,body.night #reveal { background:var(--bg); }
 body.night #start-art,body.night #t-art { filter:grayscale(1) sepia(1) saturate(3) hue-rotate(310deg) brightness(.6); }
 body.night .vis-row .dot { background:var(--cyan); }

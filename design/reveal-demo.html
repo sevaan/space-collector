@@ -177,6 +177,11 @@ function sizeCard() {
 }
 
 // ---------- the sequence ----------
+// Safari doesn't reliably hide the reverse face of a 3D card, so show one face at a time ourselves.
+function showFace(which) {
+  document.querySelector('.back').style.visibility = which === 'back' ? 'visible' : 'hidden';
+  $('front').style.visibility = which === 'front' ? 'visible' : 'hidden';
+}
 function reset() {
   state.stopGyro?.(); state.tilt?.destroy(); state.stopGyro = state.tilt = null;
   state.phase = 'ready';
@@ -194,6 +199,7 @@ function reset() {
   $('dim').style.transition = 'none'; $('dim').style.opacity = 0;
   document.querySelector('.back').classList.remove('glow');
   $('sweep').classList.remove('go');
+  showFace(state.repeat ? 'front' : 'back');
   // Front: the real card, as it will look once collected.
   const seen = state.repeat ? 5 : 1;
   const sightings = Array.from({ length: seen }, (_, i) => ({ time: Date.now() - i * 86400000 * 3, objectId: c.id }));
@@ -253,11 +259,13 @@ async function reveal() {
   // Legendary: a held breath before the flip; the card shivers.
   if (fx.hold) await play($('flipper'), [{ transform: 'rotate(0)' }, { transform: 'rotate(-1.5deg)' }, { transform: 'rotate(1.5deg)' }, { transform: 'rotate(0)' }], { duration: fx.hold, iterations: 1, easing: 'ease-in-out' });
   // 3. The flip (Epic adds a full spin on the way).
-  await play($('flipper'), [
+  const flipped = play($('flipper'), [
     { transform: 'rotateY(0) scale(1)' },
     { transform: `rotateY(${90 + fx.spin / 2}deg) scale(1.12)`, offset: .5 },
     { transform: `rotateY(${180 + fx.spin}deg) scale(1)` },
   ], { duration: fx.flip, easing: 'cubic-bezier(.4,0,.2,1)', fill: 'forwards' });
+  setTimeout(() => showFace('front'), fx.flip / 2);
+  await flipped;
   await finish(fx, color, cx, cy, false);
 }
 

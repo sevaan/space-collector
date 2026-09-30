@@ -1,0 +1,42 @@
+/* The capture reveal (js/reveal.js). */
+#reveal { overflow: hidden; background: radial-gradient(ellipse at 50% 35%, rgba(20, 38, 80, .92), rgba(3, 6, 14, .97) 70%); touch-action: none; }
+#rv-dim { position: absolute; inset: 0; background: #000; opacity: 0; pointer-events: none; }
+#rv-fx { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 3; }
+#rv-flash { position: absolute; inset: 0; background: radial-gradient(circle at 50% 45%, #fff, transparent 60%); opacity: 0; pointer-events: none; z-index: 2; }
+#rv-shock { position: absolute; width: 40px; height: 40px; border-radius: 50%; border: 3px solid var(--fx); opacity: 0; transform: translate(-50%, -50%); pointer-events: none; }
+#rv-dot { position: absolute; width: 14px; height: 14px; border-radius: 50%; background: #ffe2a0; box-shadow: 0 0 16px 5px #ffd98a; transform: translate(-50%, -50%); pointer-events: none; }
+
+#rv-top { position: absolute; top: calc(var(--safe-top) + 14px); left: 16px; right: 16px; display: flex; justify-content: space-between; align-items: center; z-index: 4; }
+#rv-top .eyebrow { color: var(--fx); }
+.rv-buttons { display: flex; gap: 8px; }
+#reveal-view { opacity: 0; pointer-events: none; transition: opacity .4s .5s; }
+#reveal.rv-done #reveal-view { opacity: 1; pointer-events: auto; }
+
+#rv-holder { position: absolute; left: 50%; top: calc(50% + 22px); width: calc(28 * var(--cf)); height: calc(var(--ch, 39.2) * var(--cf)); transform-origin: center; margin-left: calc(-14 * var(--cf)); margin-top: calc(var(--ch, 39.2) * var(--cf) / -2); perspective: 1400px; opacity: 0; }
+#rv-holder.live { cursor: pointer; }
+#rv-flipper { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; }
+.rv-side { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.rv-front { transform: rotateY(180deg); }
+#reveal-card { display: block; padding: 0; perspective: none; }
+#reveal-card .card { font-size: var(--cf); }
+
+.rv-back { border-radius: 1.15em; font-size: var(--cf); overflow: hidden; display: grid; place-items: center;
+  background: radial-gradient(circle at 50% 42%, color-mix(in srgb, var(--fx) 30%, transparent) 0%, transparent 45%),
+    repeating-linear-gradient(45deg, rgba(255,255,255,.035) 0 2px, transparent 2px 14px), linear-gradient(160deg, #13244a, #081230 70%);
+  border: .25em solid color-mix(in srgb, var(--fx) 70%, #0000); }
+.rv-back .mark { text-align: center; }
+.rv-back svg { width: 9em; height: 7em; stroke: var(--fx); stroke-width: 1.6; fill: none; filter: drop-shadow(0 0 .6em var(--fx)); }
+.rv-back .word { margin-top: 1.4em; font: 800 1.3em Inter, system-ui, sans-serif; letter-spacing: .3em; color: #dfe8ff; }
+.rv-back .tap { margin-top: .6em; font: 600 .95em Inter, system-ui, sans-serif; letter-spacing: .2em; color: var(--fx); }
+.rv-back.glow { animation: rvPulse 1.4s ease-in-out infinite; }
+@keyframes rvPulse { 50% { box-shadow: 0 0 2.2em .4em color-mix(in srgb, var(--fx) 55%, transparent); } }
+
+#rv-sweep { position: absolute; inset: 0; border-radius: 1.15em; overflow: hidden; pointer-events: none; }
+#rv-sweep::after { content: ''; position: absolute; top: -20%; bottom: -20%; width: 40%; left: -60%; background: linear-gradient(100deg, transparent, rgba(255,255,255,.75), transparent); transform: skewX(-12deg); opacity: 0; }
+#rv-sweep.go::after { animation: rvSweep .9s ease-out forwards; }
+@keyframes rvSweep { 0% { left: -60%; opacity: 0; } 15% { opacity: 1; } 100% { left: 120%; opacity: 0; } }
+
+#rv-stamp { position: absolute; left: 50%; top: 58%; transform: translate(-50%, -50%) rotate(-9deg); padding: .5em 1em; border: .22em solid var(--stamp, var(--fx)); border-radius: .5em; color: var(--stamp, var(--fx)); background: rgba(5, 10, 24, .85); font: 800 calc(var(--cf) * 1.35) Inter, system-ui, sans-serif; letter-spacing: .12em; text-align: center; white-space: nowrap; opacity: 0; pointer-events: none; }
+#rv-stamp small { display: block; font-size: .62em; letter-spacing: .16em; margin-top: .2em; opacity: .85; }
+
+body.night #reveal { background: #000; }

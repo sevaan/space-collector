@@ -50,5 +50,11 @@ Live: https://sevaan.github.io/space-collector/ (GitHub Pages, deploys from `mai
   hand-written first, then rocket-family facts, then computed facts. Every fact must be true.
 - `design/` – style boards used to pick the card look. Not part of the app.
 
+- Capture reveal (`js/reveal.js` + `css/reveal.css`, from `design/reveal-demo.html`): first sighting =
+  object rushes in, sealed card glowing in rarity colour, tap to flip, sweep, FIRST SIGHTING stamp;
+  repeat = card flies in face-up with SEEN n× stamp (+ level-up at 5/25). Scales with rarity. Faces
+  are swapped by JS at the flip midpoint (Safari ignores backface-visibility here). Waits use timers,
+  never animation.finished. Test Safari with Playwright WebKit (see scratchpad scripts), not just Chrome.
+
 ## Deliberately out of scope for now
-Alerts, service worker, accounts, capture reveal animation, secret sets/feats.
+Alerts, service worker, accounts, secret sets/feats.

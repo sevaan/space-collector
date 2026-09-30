@@ -1,17 +1,18 @@
-import { VERSION } from './version.js?v=0.1.32';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, setBinocularMode } from './orbit.js?v=0.1.32';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.32';
-import { SkyView, shortName } from './sky.js?v=0.1.32';
-import { loadSky, eqToEnu, solarSystem, galacticPlane } from './celestial.js?v=0.1.32';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.32';
-import { cardArt } from './art.js?v=0.1.32';
-import { renderCard, attachTilt, attachGyro } from './card.js?v=0.1.32';
-import { buildCards } from './card-model.js?v=0.1.32';
-import { collectedDuringPass, canCapture } from './observation.js?v=0.1.32';
-import { TIER_INFO } from './rarity.js?v=0.1.32';
-import { SETS } from './sets.js?v=0.1.32';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.32';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.32';
+import { VERSION } from './version.js?v=0.1.36';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, setBinocularMode } from './orbit.js?v=0.1.36';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.36';
+import { SkyView, shortName } from './sky.js?v=0.1.36';
+import { loadSky, eqToEnu, solarSystem, galacticPlane } from './celestial.js?v=0.1.36';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.36';
+import { cardArt } from './art.js?v=0.1.36';
+import { renderCard } from './card.js?v=0.1.36';
+import { playReveal, primeReveal, stopReveal } from './reveal.js?v=0.1.36';
+import { buildCards } from './card-model.js?v=0.1.36';
+import { collectedDuringPass, canCapture } from './observation.js?v=0.1.36';
+import { TIER_INFO } from './rarity.js?v=0.1.36';
+import { SETS } from './sets.js?v=0.1.36';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.36';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.36';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -484,6 +485,7 @@ function placeDiscover() {
 }
 $('d-hit').addEventListener('click', () => {
   unlockAudio();
+  primeReveal();
   const target = state.activeTarget;
   if (target && !state.captureBusy) capture(target.obj);
 });
@@ -506,8 +508,9 @@ $('t-unpin').addEventListener('click', () => { state.pinnedId = null; state.targ
 $('t-action').addEventListener('click', () => {
   const target = state.activeTarget;
   unlockAudio();
+  primeReveal();
   if (!target || state.captureBusy) return;
-  if (collectedThisPass(target.obj, now())) { showCaptureCard(target.obj, false); return; }
+  if (collectedThisPass(target.obj, now())) { openCard(target.obj); return; }
   capture(target.obj);
 });
 function setAction(collected, eligible = true) {
@@ -523,26 +526,24 @@ function cardSnapshot(obj) {
   const { satrec, _label, _setColor, ...card } = cardModel(obj);
   return card;
 }
-let revealStop = null;
-function showCaptureCard(obj, fresh) {
+// The magic moment (js/reveal.js): sealed card + flip for a first sighting, straight-in card with a
+// count stamp for repeats, all scaled by rarity.
+function showCaptureCard(obj) {
   const model = cardModel(obj), key = obj.card ?? String(obj.id);
   const sightings = state.sightings.filter(s => !s.sim && (s.cardKey ?? String(s.objectId)) === key);
-  $('reveal-eyebrow').textContent = fresh ? 'FIRST DISCOVERY' : 'SIGHTING RECORDED';
   const card = renderCard(model, { sightings, seenMembers: new Set(sightings.map(s => s.objectId)).size });
-  revealStop?.();
-  $('reveal-card').replaceChildren(card);
-  const t = attachTilt(card), g = attachGyro(card, t);
-  revealStop = () => { g(); t.destroy(); revealStop = null; };
   $('reveal-view').href = `cards.html#${encodeURIComponent(key)}`;
   openPanel('reveal');
+  playReveal({ card, o: model, seen: sightings.length, origin: { x: sky.cx, y: sky.cy } });
 }
+function openCard(obj) { saveExploreState(); location.href = `cards.html#${encodeURIComponent(obj.card ?? String(obj.id))}`; }
 async function capture(obj) {
   if (state.captureBusy) return;
   const d = now(), f = frame(d, state.observer), l = look(obj, f);
   const basis = currentBasis();
   const aligned = l && dot(enuFromAzEl(l.az, l.el), basis.back) > Math.cos(sky.reticleDeg * RAD);
   if (!l || !canCapture({ visible: l.visible, aligned, practice: state.captureAny, allowAny: state.captureAny })) { toast('Line up the object while it is visible to capture it.'); return; }
-  if (collectedDuringPass(state.sightings, obj.id, d.getTime(), false)) { showCaptureCard(obj, false); return; }
+  if (collectedDuringPass(state.sightings, obj.id, d.getTime(), false)) { openCard(obj); return; }
   const m = motion(obj, d, state.observer), key = obj.card ?? String(obj.id);
   const before = state.sightings.some(s => !s.sim && (s.cardKey ?? String(s.objectId)) === key);
   const sighting = { objectId: obj.id, cardKey: key, name: obj.name, type: obj.type, year: obj.year, time: d.getTime(), loggedAt: Date.now(), lat: state.observer.lat, lon: state.observer.lon, az: l.az, el: l.el, mag: l.mag, rangeKm: l.rangeKm, heading: m?.heading, sim: false, appVersion: VERSION, cardSnapshot: cardSnapshot(obj) };
@@ -550,8 +551,8 @@ async function capture(obj) {
   try {
     const key = await addSighting(sighting);
     state.sightings.unshift({ ...sighting, key });
-    chirp([660, 880, 1320], .08);
-    showCaptureCard(obj, !before);
+
+    showCaptureCard(obj);
   } catch {
     toast('Your sighting could not be saved. Check that browser storage is available, then try again.', 5000);
   } finally { state.captureBusy = false; setAction(collectedThisPass(obj, d)); }
@@ -622,7 +623,7 @@ function openPanel(id) {
 }
 function closePanel(id = activePanel) {
   if (!id) return;
-  if (id === 'reveal') revealStop?.();
+  if (id === 'reveal') stopReveal();
   $(id).hidden = true; activePanel = null; $('hud').inert = false;
   if (panelReturn?.isConnected) panelReturn.focus({ preventScroll: true });
 }
@@ -630,7 +631,6 @@ function openDebug() { renderDebug(); renderLocation(); openPanel('debug'); }
 $('nav-more').addEventListener('click', openDebug);
 $('nav-explore').addEventListener('click', () => closePanel());
 $('location-status').addEventListener('click', openDebug);
-$('reveal-continue').addEventListener('click', () => closePanel('reveal'));
 $('retry-location').addEventListener('click', requestLocation);
 $('retry-motion').addEventListener('click', enableMotion);
 $('location-form').addEventListener('submit', e => {
