@@ -1,9 +1,9 @@
 // Archival field cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { cardArt } from './art.js?v=0.1.31';
-import { TIER_INFO } from './rarity.js?v=0.1.31';
-import { SET_BY_ID } from './sets.js?v=0.1.31';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.31';
-import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText } from './lore.js?v=0.1.31';
+import { cardArt } from './art.js?v=0.1.32';
+import { TIER_INFO } from './rarity.js?v=0.1.32';
+import { SET_BY_ID } from './sets.js?v=0.1.32';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.32';
+import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText } from './lore.js?v=0.1.32';
 
 export function levelFor(count) {
   return count >= 25 ? 'gold' : count >= 5 ? 'silver' : count >= 1 ? 'bronze' : 'none';
