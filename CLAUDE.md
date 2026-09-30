@@ -39,6 +39,8 @@ Live: https://sevaan.github.io/space-collector/ (GitHub Pages, deploys from `mai
 - Target UI (chosen 2026-09-29): never-collected object lined up → no card, the reticle glows gold,
   name above, "TAP TO COLLECT" below, tap the circle (`#discover`). Already collected → slim one-line
   bar (`#target`) with Collect / View. Off target both just show a turn hint. No "line up" button.
+- Top-left radar (`#radar`, drawn in `updateCompass`): heading-up all-sky map + compass + "N up · N new"
+  tab; tap opens the visible list. Replaced the compass, the visible-now pill and the status text.
 - `js/main.js` – app state, render loop, candidates/capture, settings panel. No journal (removed
   2026-09-29): the collection is the record. Cards show when you collected them; the card viewer
   lists each sighting (when, where) with delete.

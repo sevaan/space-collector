@@ -1,18 +1,18 @@
-import { VERSION } from './version.js?v=0.1.44';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode } from './orbit.js?v=0.1.44';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.44';
-import { SkyView, shortName } from './sky.js?v=0.1.44';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.44';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.44';
-import { cardArt } from './art.js?v=0.1.44';
-import { renderCard } from './card.js?v=0.1.44';
-import { playReveal, primeReveal, stopReveal } from './reveal.js?v=0.1.44';
-import { buildCards } from './card-model.js?v=0.1.44';
-import { collectedDuringPass, canCapture } from './observation.js?v=0.1.44';
-import { TIER_INFO } from './rarity.js?v=0.1.44';
-import { SETS } from './sets.js?v=0.1.44';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.44';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.44';
+import { VERSION } from './version.js?v=0.1.46';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode } from './orbit.js?v=0.1.46';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.46';
+import { SkyView, shortName } from './sky.js?v=0.1.46';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.46';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.46';
+import { cardArt } from './art.js?v=0.1.46';
+import { renderCard } from './card.js?v=0.1.46';
+import { playReveal, primeReveal, stopReveal } from './reveal.js?v=0.1.46';
+import { buildCards } from './card-model.js?v=0.1.46';
+import { collectedDuringPass, canCapture } from './observation.js?v=0.1.46';
+import { TIER_INFO } from './rarity.js?v=0.1.46';
+import { SETS } from './sets.js?v=0.1.46';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.46';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.46';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -93,12 +93,12 @@ async function requestLocation() {
 function renderLocation() {
   const labels = { waiting: 'Finding your location…', ready: 'Current location', manual: 'Chosen location', denied: 'Location denied', unavailable: 'Location unavailable', example: state.observer.label ?? 'Example location', saved: 'Saved location · unverified', stale: 'Location needs refreshing' };
   const label = labels[state.locationStatus] ?? 'Location needs checking';
-  $('location-status').textContent = label;
   $('location-note').textContent = `${label}. Sky shown for ${state.observer.lat.toFixed(2)}°, ${state.observer.lon.toFixed(2)}°. ${['ready', 'manual'].includes(state.locationStatus) ? '' : 'Use your location or choose coordinates for real observing.'}`;
   $('latitude').value = state.observer.lat; $('longitude').value = state.observer.lon;
 }
 
 function applyTheme() {
+  radarColors = null;
   document.body.classList.toggle('night', state.night);
   document.documentElement.dataset.theme = state.night ? 'night' : 'glass';
   $('night-toggle').setAttribute('aria-pressed', String(state.night));
@@ -255,15 +255,10 @@ function updateStatus(f) {
   if (state.locationStatus === 'ready' && Date.now() - state.observer.fixedAt >= 15 * 60 * 1000) { state.locationStatus = 'stale'; renderLocation(); }
   const visible = state.items.filter(a => a.look.visible).length;
   $('visible-count').textContent = visible;
-  $('btn-live').hidden = !state.timeOffsetMs;
-  const d = now();
-  const time = d.toLocaleString([], { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
-  const bits = [time, f.sunEl > DARK_SUN_ELEVATION ? 'daylight / twilight' : 'dark sky'];
-  if (state.drag.on || !hasLiveSensors()) bits.push('drag to explore');
-  if (state.binoculars) bits.push('binoculars');
-  $('status-line').textContent = bits.join(' · ');
+  $('new-count').textContent = state.items.filter(a => a.look.visible && !ownsCard(a.obj)).length;
   if (!bannerKey.startsWith('New build')) {
-    if (state.needsMotionTap) showBanner('Tap anywhere to line the sky up with your phone.');
+    if (state.timeOffsetMs) showBanner(`Showing the sky at ${now().toLocaleString([], { weekday: 'short', hour: 'numeric', minute: '2-digit' })}. Tap to go back to now.`, backToNow);
+    else if (state.needsMotionTap) showBanner('Tap anywhere to line the sky up with your phone.');
     else if (pointing.source === 'ios' && (pointing.compassAccuracy < 0 || pointing.compassAccuracy > 25) && !state.drag.on) showBanner('Compass needs aligning. Move your phone in a figure eight, then aim at a known star.', openDebug);
     else if (pointing.source === 'relative') showBanner('Check your heading against a known landmark. Adjust the compass in settings.', openDebug);
     else showBanner('');
@@ -377,20 +372,54 @@ function tick(ts) {
   if (t - lastPanel > 250 || target?.obj.id !== shownTargetId) { renderTarget(target, d); measureSkySpace(); lastPanel = t; }
 }
 
+// Radar (top-left): a heading-up map of the whole sky. Centre = overhead, edge = horizon. Gold dots
+// are visible objects, bright white ones are new to you, the cyan wedge is what's on screen, and the
+// notch at the top is the way you're facing. Doubles as the compass.
+var radarColors = null; // var: applyTheme() runs before this line and resets it
+function readRadarColors() {
+  const cs = getComputedStyle(document.body), v = (n) => cs.getPropertyValue(n).trim();
+  radarColors = { glass: v('--glass') || 'rgba(14,26,48,.82)', edge: v('--edge') || 'rgba(140,180,220,.3)', gold: v('--gold') || '#e6c68a', cyan: v('--cyan') || '#8fd3e8', muted: v('--muted') || '#9fb3dc', text: v('--text') || '#eef3ff' };
+}
 function updateCompass(basis) {
+  const cv = $('radar-canvas');
+  const dpr = window.devicePixelRatio || 1, size = 108;
+  if (cv.width !== size * dpr) { cv.width = cv.height = size * dpr; }
+  if (!radarColors) readRadarColors();
+  const C = radarColors, ctx = cv.getContext('2d');
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.clearRect(0, 0, size, size);
+  const c = size / 2, R = 40;
   const b = basis.back;
   const heading = (Math.atan2(b[0], b[1]) / RAD + 360) % 360;
-  // Like a real compass: the needle and letters swing to point at true north; the notch at the top
-  // of the ring is the direction you're facing.
-  $('compass-rose').setAttribute('transform', `rotate(${(-heading).toFixed(1)} 50 50)`);
-  $('c-needle').setAttribute('transform', `rotate(${(-heading).toFixed(1)} 50 50)`);
-  // Letters move around the ring but stay upright.
-  for (const [id, az] of [['c-N', 0], ['c-E', 90], ['c-S', 180], ['c-W', 270]]) {
-    const a = (az - heading) * RAD;
-    const el = $(id);
-    el.setAttribute('x', (50 + Math.sin(a) * 32).toFixed(1));
-    el.setAttribute('y', (55 - Math.cos(a) * 32).toFixed(1));
+  const at = (az, el) => { const r = R * (1 - Math.max(0, el) / 90), a = (az - heading) * RAD; return [c + r * Math.sin(a), c - r * Math.cos(a)]; };
+  // Disc and rings
+  ctx.fillStyle = C.glass; ctx.strokeStyle = C.edge; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.arc(c, c, R, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+  ctx.globalAlpha = 0.45;
+  for (const k of [0.66, 0.33]) { ctx.beginPath(); ctx.arc(c, c, R * k, 0, Math.PI * 2); ctx.stroke(); }
+  ctx.globalAlpha = 1;
+  // What's on screen: a wedge as wide as the view.
+  const half = Math.atan((sky.w / 2) / sky.f);
+  ctx.fillStyle = 'rgba(143, 211, 232, 0.14)'; ctx.strokeStyle = 'rgba(143, 211, 232, 0.4)';
+  ctx.beginPath(); ctx.moveTo(c, c); ctx.arc(c, c, R, -Math.PI / 2 - half, -Math.PI / 2 + half); ctx.closePath(); ctx.fill(); ctx.stroke();
+  // Objects
+  for (const it of state.items) {
+    if (!it.look.visible) continue;
+    const [x, y] = at(it.look.az, it.look.el);
+    const isNew = !ownsCard(it.obj), isTarget = it.obj.id === state.targetId;
+    ctx.fillStyle = isNew ? '#ffffff' : C.gold;
+    ctx.beginPath(); ctx.arc(x, y, isNew ? 1.6 : 1.3, 0, Math.PI * 2); ctx.fill();
+    if (isTarget) { ctx.strokeStyle = C.cyan; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.arc(x, y, 4.5, 0, Math.PI * 2); ctx.stroke(); }
   }
+  // Letters around the edge (heading-up, so they turn as you turn) and the facing notch.
+  ctx.font = '700 10px -apple-system, system-ui, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  for (const [az, L] of [[0, 'N'], [90, 'E'], [180, 'S'], [270, 'W']]) {
+    const a = (az - heading) * RAD, r = R + 8;
+    ctx.fillStyle = az === 0 ? C.gold : C.muted;
+    ctx.fillText(L, c + r * Math.sin(a), c - r * Math.cos(a));
+  }
+  ctx.fillStyle = C.cyan;
+  ctx.beginPath(); ctx.moveTo(c, c - R - 1); ctx.lineTo(c - 4, c - R - 7); ctx.lineTo(c + 4, c - R - 7); ctx.closePath(); ctx.fill();
 }
 
 // ---------- target: callout + card ----------
@@ -398,7 +427,7 @@ function updateCompass(basis) {
 function measureSkySpace() {
   const box = $('target');
   const rect = box.getBoundingClientRect();
-  uiSafeTop = $('status-line').getBoundingClientRect().bottom + 16;
+  uiSafeTop = $('radar').getBoundingClientRect().bottom + 12;
   if (!$('banner').hidden) uiSafeTop = $('banner').getBoundingClientRect().bottom + 12;
   uiSafeBottom = box.hidden ? 100 : Math.max(100, window.innerHeight - rect.top + 34);
 }
@@ -418,9 +447,13 @@ let shownTargetId = null, barTargetId = null;
 //  - never collected: no card at all. The circle glows gold, the name sits above it, tap the circle.
 //  - already in your collection: a slim one-line bar with Collect (repeat sightings level cards up).
 // Off target, both just say which way to turn.
+let ownedKeys = null, ownedFrom = null;
 function ownsCard(o) {
-  const key = o.card ?? String(o.id);
-  return state.sightings.some((s) => !s.sim && (s.cardKey ?? String(s.objectId)) === key);
+  if (ownedFrom !== state.sightings || ownedKeys?.size === undefined || ownedKeys.n !== state.sightings.length) {
+    ownedKeys = new Set(state.sightings.filter((s) => !s.sim).map((s) => String(s.cardKey ?? s.objectId)));
+    ownedKeys.n = state.sightings.length; ownedFrom = state.sightings;
+  }
+  return ownedKeys.has(String(o.card ?? o.id));
 }
 function turnHint(l) {
   if (l.el < 0) return 'This pass has ended';
@@ -601,7 +634,7 @@ function renderVisible() {
     list.appendChild(row);
   }
 }
-$('visible-pill').addEventListener('click', () => { renderVisible(); openPanel('visible'); });
+$('radar').addEventListener('click', () => { renderVisible(); openPanel('visible'); });
 
 // ---------- drag to look ----------
 
@@ -639,7 +672,6 @@ function closePanel(id = activePanel) {
 function openDebug() { renderDebug(); renderLocation(); openPanel('debug'); }
 $('nav-more').addEventListener('click', openDebug);
 $('nav-explore').addEventListener('click', () => closePanel());
-$('location-status').addEventListener('click', openDebug);
 $('retry-location').addEventListener('click', requestLocation);
 $('retry-motion').addEventListener('click', enableMotion);
 $('location-form').addEventListener('submit', e => {
@@ -704,12 +736,13 @@ function previewPass(objectId = null, jump = true) {
   } catch { cancelPassSearch(); toast('Pass preview is unavailable in this browser. Try the visible-object list.'); }
 }
 $('btn-next-pass').addEventListener('click', () => previewPass());
-$('btn-live').addEventListener('click', async () => {
+async function backToNow() {
   cancelPassSearch(); state.preview=false; state.followPreview=false; state.timeOffsetMs=0; state.captureAny=false; state.showDim=false; state.pinnedId=null; $('chk-any').checked=false; $('chk-dim').checked=false;
   await enableMotion();
   if (!['ready','manual'].includes(state.locationStatus)) requestLocation();
   afterTimeJump();
-});
+  showBanner('');
+}
 async function enableMotion() {
   let ok=false; try { ok=await startSensors(); } catch {}
   state.drag.on=!ok;
