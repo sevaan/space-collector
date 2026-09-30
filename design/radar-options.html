@@ -34,7 +34,7 @@
 const dots = [[20,60,0],[65,35,1],[110,20,0],[150,50,0],[200,25,1],[235,70,0],[260,40,0],[300,15,0],[330,45,1],[10,25,0],[180,65,0],[95,55,0],[285,60,0],[45,12,0]];
 const heading = 300; // phone facing NW
 function radar(size, { north = true, cone = false, letters = false, center = '' , sub = '', ringArcs = false } = {}) {
-  const c = size / 2, R = c - 6;
+  const c = size / 2, R = c - 13;
   const pos = (az, el) => { const r = R * (1 - el / 90); const a = (az - heading) * Math.PI / 180; return [c + r * Math.sin(a), c - r * Math.cos(a)]; };
   let s = `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">`;
   s += `<circle cx="${c}" cy="${c}" r="${R}" fill="rgba(14,26,48,.82)" stroke="rgba(140,180,220,.35)"/>`;
@@ -46,19 +46,19 @@ function radar(size, { north = true, cone = false, letters = false, center = '' 
     for (const [col, f] of parts) { const a1 = a0 + f * 360 - 2; const r = R + 3; const p = (a) => [c + r * Math.cos(a * Math.PI / 180), c + r * Math.sin(a * Math.PI / 180)]; const [x0, y0] = p(a0), [x1, y1] = p(a1); s += `<path d="M${x0} ${y0} A${r} ${r} 0 ${f > .5 ? 1 : 0} 1 ${x1} ${y1}" stroke="${col}" stroke-width="3" fill="none" stroke-linecap="round"/>`; a0 = a1 + 2; }
   }
   for (const [az, el, isNew] of dots) { const [x, y] = pos(az, el); s += `<circle cx="${x}" cy="${y}" r="${isNew ? 2.6 : 2}" fill="${isNew ? '#fff' : '#ffd98a'}" ${isNew ? 'style="filter:drop-shadow(0 0 3px #fff)"' : ''}/>`; }
-  if (letters) for (const [az, L] of [[0, 'N'], [90, 'E'], [180, 'S'], [270, 'W']]) { const [x, y] = pos(az, -9); s += `<text x="${x}" y="${y + 3.5}" text-anchor="middle" font-size="9.5" font-weight="700" fill="${az === 0 ? '#e6c68a' : '#9fb3dc'}">${L}</text>`; }
+  if (letters) for (const [az, L] of [[0, 'N'], [90, 'E'], [180, 'S'], [270, 'W']]) { const [x, y] = pos(az, -11); s += `<text x="${x}" y="${y + 3.5}" text-anchor="middle" font-size="9.5" font-weight="700" fill="${az === 0 ? '#e6c68a' : '#9fb3dc'}">${L}</text>`; }
   else if (north) { const [x, y] = pos(0, -9); s += `<text x="${x}" y="${y + 3.5}" text-anchor="middle" font-size="9.5" font-weight="700" fill="#e6c68a">N</text>`; }
-  s += `<path d="M${c} 1 L${c + 4} 7 L${c - 4} 7 Z" fill="#8fd3e8"/>`; // facing notch
+  s += `<path d="M${c} ${c - R - 6} L${c + 4} ${c - R} L${c - 4} ${c - R} Z" fill="#8fd3e8"/>`; // facing notch
   if (center) s += `<text x="${c}" y="${c + (sub ? 2 : 6)}" text-anchor="middle" font-size="${size * 0.22}" font-weight="800" fill="#eef3ff" style="paint-order:stroke;stroke:rgba(10,18,36,.85);stroke-width:4px">${center}</text>`;
   if (sub) s += `<text x="${c}" y="${c + size * 0.16}" text-anchor="middle" font-size="${size * 0.085}" font-weight="600" letter-spacing=".08em" fill="#9fb3dc" style="paint-order:stroke;stroke:rgba(10,18,36,.85);stroke-width:3px">${sub}</text>`;
   return s + '</svg>';
 }
 const options = [
-  { name: '1. Number in the middle', html: `<div style="position:absolute;right:14px;top:14px">${radar(104, { letters: true, center: '89', sub: 'UP NOW', cone: true })}</div>`,
+  { name: '1. Number in the middle', html: `<div style="position:absolute;right:14px;top:14px">${radar(116, { letters: true, center: '89', sub: 'UP NOW', cone: true })}</div>`,
     text: 'One round widget that replaces the compass. The count sits in the middle of the radar, the letters sit around the edge, and a cyan wedge shows where you\'re pointing. Everything is in one place.' },
-  { name: '2. Radar + pill', html: `<div style="position:absolute;left:14px;top:16px;width:57px;height:57px;border-radius:50%" class="glass"></div><div class="glass" style="position:absolute;right:14px;top:14px;display:flex;align-items:center;gap:10px;padding:5px 14px 5px 5px;border-radius:999px">${radar(58, { cone: true })}<span style="line-height:1.1"><b style="font-size:22px">89</b> <span class="muted" style="font-size:12px">up now</span><br><span style="font-size:12px;color:#e6c68a;font-weight:600">12 new for you</span></span></div>`,
+  { name: '2. Radar + pill', html: `<div style="position:absolute;left:14px;top:16px;width:57px;height:57px;border-radius:50%" class="glass"></div><div class="glass" style="position:absolute;right:14px;top:14px;display:flex;align-items:center;gap:10px;padding:5px 14px 5px 5px;border-radius:999px">${radar(64, { cone: true, north: false })}<span style="line-height:1.1"><b style="font-size:22px">89</b> <span class="muted" style="font-size:12px">up now</span><br><span style="font-size:12px;color:#e6c68a;font-weight:600">12 new for you</span></span></div>`,
     text: 'Closest to today\'s pill, with a small radar sitting on its end instead of the planet icon. The compass stays on the left. It reads "89 up now" and "12 new for you" at a glance.' },
-  { name: '3. Rarity ring', html: `<div style="position:absolute;right:14px;top:12px">${radar(110, { letters: true, center: '89', sub: '12 NEW', ringArcs: true, cone: true })}</div>`,
+  { name: '3. Rarity ring', html: `<div style="position:absolute;right:14px;top:12px">${radar(122, { letters: true, center: '89', sub: '12 NEW', ringArcs: true, cone: true })}</div>`,
     text: 'Option 1 plus a ring around the outside split by rarity colour (gold Legendary, purple Epic, blue Rare, and so on). You can see what\'s up tonight without opening anything. The most information packed into one widget.' },
   { name: '4. Horizon strip', html: (() => {
       const W = 330, H = 46; let s = `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}"><rect x=".5" y=".5" width="${W - 1}" height="${H - 1}" rx="12" fill="rgba(14,26,48,.82)" stroke="rgba(140,180,220,.3)"/>`;
@@ -70,7 +70,7 @@ const options = [
       s += `<text x="${W - 36}" y="23" text-anchor="middle" font-size="20" font-weight="800" fill="#eef3ff">89</text><text x="${W - 36}" y="36" text-anchor="middle" font-size="8.5" font-weight="600" letter-spacing=".1em" fill="#9fb3dc">UP NOW</text>`;
       return `<div style="position:absolute;left:14px;right:14px;top:14px">${s}</svg></div>`; })(),
     text: 'A 360° strip across the top. Everything visible is laid out left to right by direction and height, the box is where you\'re facing, and the count is on the right. It works like a car\'s compass strip and takes very little height.' },
-  { name: '5. Radar with a count tab', html: `<div style="position:absolute;right:14px;top:12px;text-align:center">${radar(96, { letters: true, cone: true })}<div class="glass" style="margin:-10px auto 0;position:relative;display:inline-block;padding:3px 11px;border-radius:999px;font-size:12px"><b>89</b> up · <span style="color:#e6c68a">12 new</span></div></div>`,
+  { name: '5. Radar with a count tab', html: `<div style="position:absolute;right:14px;top:10px;display:flex;flex-direction:column;align-items:center">${radar(108, { letters: true, cone: true })}<div class="glass" style="margin-top:-12px;position:relative;padding:3px 11px;border-radius:999px;font-size:12px;white-space:nowrap"><b>89</b> up · <span style="color:#e6c68a">12 new</span></div></div>`,
     text: 'A clean radar that doubles as the compass, with a small tab hanging underneath carrying the numbers. It\'s tidier than having the number over the dots, and keeps the radar easy to read.' },
 ];
 document.getElementById('board').innerHTML = options.map((o) => `<div class="opt"><div class="scene">${o.html}</div><h2>${o.name}</h2><p>${o.text}</p></div>`).join('');
