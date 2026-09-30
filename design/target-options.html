@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Target Card Options</title>
+<style>
+  :root { --bg: #0b0f18; --text: #eef3ff; --muted: #9fb3dc; --gold: #e6c68a; --cyan: #8fd3e8; --glass: rgba(16, 26, 46, 0.86); --edge: rgba(140, 170, 220, 0.28); }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #06080d; color: var(--text); font: 15px/1.45 -apple-system, "SF Pro Text", system-ui, sans-serif; padding: 24px 16px 60px; }
+  h1 { font-size: 22px; margin: 0 0 6px; }
+  .intro { color: var(--muted); max-width: 760px; margin: 0 0 26px; }
+  .board { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 34px 22px; }
+  .opt h2 { font-size: 16px; margin: 14px 0 4px; }
+  .opt p { color: var(--muted); font-size: 13px; margin: 0; }
+  .pair { display: flex; gap: 10px; justify-content: center; }
+  .caption { text-align: center; font-size: 11px; color: var(--muted); margin-top: 6px; }
+
+  /* phone */
+  .phone { position: relative; width: 190px; height: 400px; border-radius: 26px; overflow: hidden; border: 1px solid #222a38;
+    background: radial-gradient(120% 60% at 70% 20%, #16264a 0%, #0b1530 45%, #070c1a 100%); }
+  .phone::before { content: ''; position: absolute; inset: 0; background:
+    radial-gradient(1px 1px at 20% 30%, #fff9, transparent), radial-gradient(1px 1px at 70% 15%, #fff8, transparent),
+    radial-gradient(1px 1px at 40% 60%, #fff7, transparent), radial-gradient(1px 1px at 85% 45%, #fffa, transparent),
+    radial-gradient(1px 1px at 10% 75%, #fff6, transparent), radial-gradient(1px 1px at 55% 85%, #fff8, transparent),
+    linear-gradient(115deg, transparent 35%, rgba(170, 190, 255, 0.07) 50%, transparent 65%); }
+  .ret { position: absolute; left: 50%; top: 40%; width: 72px; height: 72px; margin: -36px 0 0 -36px; border-radius: 50%; border: 2px solid rgba(230, 198, 138, 0.8); }
+  .ret.cyan { border-color: rgba(143, 211, 232, 0.8); }
+  .sat { position: absolute; left: 47%; top: 39%; width: 9px; height: 9px; border-radius: 50%; background: #ffd98a; box-shadow: 0 0 10px #ffd98a; }
+  .sat.off { left: 22%; top: 30%; }
+  .nav { position: absolute; left: 0; right: 0; bottom: 0; height: 38px; display: flex; justify-content: space-around; align-items: center; font-size: 9px; color: var(--muted); background: #070b14; border-top: 1px solid #1c2433; }
+  .nav b { color: var(--cyan); font-weight: 500; }
+  .hint { position: absolute; left: 0; right: 0; text-align: center; font-size: 9px; color: var(--cyan); }
+
+  .glass { background: var(--glass); border: 1px solid var(--edge); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+  .pill-btn { border-radius: 999px; background: linear-gradient(180deg, #f2d9a4, #d9b06a); color: #2a1d00; font-weight: 800; font-size: 10px; padding: 6px 12px; white-space: nowrap; }
+  .tier { font-size: 7px; letter-spacing: .12em; font-weight: 700; color: var(--gold); }
+  .name { font-weight: 800; font-size: 13px; line-height: 1.1; }
+  .meta { font-size: 8.5px; color: var(--muted); }
+  .thumb { width: 30px; height: 30px; border-radius: 7px; flex: none; background: linear-gradient(160deg, #1d3350, #0d1a2e); border: 1px solid rgba(143, 211, 232, 0.4); position: relative; overflow: hidden; }
+  .thumb::after { content: ''; position: absolute; left: 5px; right: 5px; top: 12px; height: 5px; background: linear-gradient(90deg, #cfd6e0 35%, #3d6fb5 35% 65%, #cfd6e0 65%); border-radius: 1px; }
+
+  /* A. Slim bar */
+  .a-bar { position: absolute; left: 8px; right: 8px; bottom: 46px; border-radius: 16px; padding: 7px 8px; display: flex; align-items: center; gap: 8px; }
+  .a-bar .txt { flex: 1; min-width: 0; }
+  .a-bar .name { font-size: 12px; }
+
+  /* B. Tag on the object */
+  .b-tag { position: absolute; left: 57%; top: 25%; border-radius: 12px; padding: 6px 7px 6px 9px; display: flex; align-items: center; gap: 7px; }
+  .b-tag::before { content: ''; position: absolute; left: -12px; top: 60%; width: 12px; height: 1px; background: var(--edge); }
+  .b-tag .name { font-size: 11px; }
+  .b-mini { position: absolute; left: 50%; top: 25%; transform: translateX(-50%); border-radius: 10px; padding: 4px 8px; font-size: 9px; }
+
+  /* C. Peek sheet */
+  .c-sheet { position: absolute; left: 0; right: 0; bottom: 38px; border-radius: 18px 18px 0 0; padding: 6px 10px 9px; }
+  .c-grab { width: 26px; height: 3px; border-radius: 2px; background: #56627a; margin: 0 auto 6px; }
+  .c-row { display: flex; align-items: center; gap: 8px; }
+  .c-row .txt { flex: 1; min-width: 0; }
+  .c-open { position: absolute; left: 0; right: 0; bottom: 38px; border-radius: 18px 18px 0 0; padding: 6px 10px 10px; }
+  .c-open .fact { font-size: 8.5px; margin: 6px 0; color: #d9e2f2; }
+
+  /* D. Reticle is the button */
+  .d-label { position: absolute; left: 50%; top: calc(40% - 58px); transform: translateX(-50%); text-align: center; white-space: nowrap; }
+  .d-label .name { font-size: 12px; text-shadow: 0 1px 4px #000; }
+  .d-ring { position: absolute; left: 50%; top: 40%; width: 84px; height: 84px; margin: -42px 0 0 -42px; border-radius: 50%; border: 2.5px solid #e6c68a; box-shadow: 0 0 18px rgba(230, 198, 138, 0.55), inset 0 0 14px rgba(230, 198, 138, 0.25); }
+  .d-cta { position: absolute; left: 50%; top: calc(40% + 50px); transform: translateX(-50%); font-size: 9px; font-weight: 800; color: var(--gold); letter-spacing: .08em; white-space: nowrap; }
+</style>
+</head>
+<body>
+  <h1>Target card options</h1>
+  <p class="intro">Four ways to show the object you're pointing at, all much smaller than today's card. Each shows two states: lined up (ready to collect), and not lined up (it just tells you which way to turn, no button).</p>
+
+  <div class="board">
+
+    <div class="opt">
+      <div class="pair">
+        <div><div class="phone">
+          <div class="sat"></div><div class="ret"></div>
+          <div class="a-bar glass"><div class="thumb"></div><div class="txt"><div class="tier">UNCOMMON</div><div class="name">Sj-7</div><div class="meta">Easy to see · 57° up NE</div></div><div class="pill-btn">Collect</div></div>
+          <div class="nav"><b>Explore</b><span>Collection</span><span>More</span></div>
+        </div><div class="caption">Lined up</div></div>
+        <div><div class="phone">
+          <div class="sat off"></div><div class="ret cyan"></div>
+          <div class="a-bar glass"><div class="thumb"></div><div class="txt"><div class="tier">COMMON</div><div class="name">Starlink-32669</div><div class="meta" style="color:var(--cyan)">← Turn left · 32° up E</div></div></div>
+          <div class="nav"><b>Explore</b><span>Collection</span><span>More</span></div>
+        </div><div class="caption">Not lined up</div></div>
+      </div>
+      <h2>A. Slim bar</h2>
+      <p>Today's card shrunk to one row just above the nav: a tiny thumbnail, the name, one line of info, and Collect on the right. When you're off target, the button disappears and the info line says which way to turn. About a quarter of the current height.</p>
+    </div>
+
+    <div class="opt">
+      <div class="pair">
+        <div><div class="phone">
+          <div class="sat"></div><div class="ret"></div>
+          <div class="b-tag glass"><div><div class="tier">UNCOMMON</div><div class="name">Sj-7</div><div class="meta">57° up NE</div></div><div class="pill-btn">Collect</div></div>
+          <div class="nav"><b>Explore</b><span>Collection</span><span>More</span></div>
+        </div><div class="caption">Lined up</div></div>
+        <div><div class="phone">
+          <div class="sat off"></div><div class="ret cyan"></div>
+          <div class="b-mini glass" style="top:20%;left:30%">Starlink-32669 · turn left</div>
+          <div class="nav"><b>Explore</b><span>Collection</span><span>More</span></div>
+        </div><div class="caption">Not lined up</div></div>
+      </div>
+      <h2>B. Tag on the object</h2>
+      <p>No bottom card at all. A small tag floats next to the object with its name and a Collect button, like a label in AR. The bottom of the screen stays sky. Off target, you only get a tiny name tag with a direction.</p>
+    </div>
+
+    <div class="opt">
+      <div class="pair">
+        <div><div class="phone">
+          <div class="sat"></div><div class="ret"></div>
+          <div class="c-sheet glass"><div class="c-grab"></div><div class="c-row"><div class="thumb"></div><div class="txt"><div class="name">Sj-7</div><div class="meta">Uncommon · easy to see</div></div><div class="pill-btn">Collect</div></div></div>
+          <div class="nav"><b>Explore</b><span>Collection</span><span>More</span></div>
+        </div><div class="caption">Collapsed (default)</div></div>
+        <div><div class="phone">
+          <div class="sat"></div><div class="ret"></div>
+          <div class="c-open glass"><div class="c-grab"></div><div class="c-row"><div class="thumb" style="width:44px;height:44px"></div><div class="txt"><div class="tier">UNCOMMON · LAUNCH NATIONS</div><div class="name">Sj-7</div><div class="meta">Easy to see · 57° up NE</div></div></div><div class="fact">It has lapped Earth about <b>118,000 times</b> since launch.</div><div class="pill-btn" style="text-align:center">Collect</div></div>
+          <div class="nav"><b>Explore</b><span>Collection</span><span>More</span></div>
+        </div><div class="caption">Swiped up</div></div>
+      </div>
+      <h2>C. Peek sheet</h2>
+      <p>A slim bar docked to the nav, like Apple Maps. Swipe it up to see the fact and bigger art, swipe down to tuck it away. Small by default, with the full story when you want it.</p>
+    </div>
+
+    <div class="opt">
+      <div class="pair">
+        <div><div class="phone">
+          <div class="sat"></div><div class="d-ring"></div>
+          <div class="d-label"><div class="tier">UNCOMMON</div><div class="name">Sj-7</div></div>
+          <div class="d-cta">TAP TO COLLECT</div>
+          <div class="nav"><b>Explore</b><span>Collection</span><span>More</span></div>
+        </div><div class="caption">Lined up</div></div>
+        <div><div class="phone">
+          <div class="sat off"></div><div class="ret cyan"></div>
+          <div class="hint" style="top:calc(40% + 46px)">← Starlink-32669 · turn left</div>
+          <div class="nav"><b>Explore</b><span>Collection</span><span>More</span></div>
+        </div><div class="caption">Not lined up</div></div>
+      </div>
+      <h2>D. Tap the circle</h2>
+      <p>The most minimal. When something's lined up, the circle glows gold, its name sits just above it, and you tap the circle itself to collect. No card and no button, just the sky. The fact appears on the card you get afterwards.</p>
+    </div>
+
+  </div>
+</body>
+</html>
