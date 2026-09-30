@@ -54,7 +54,7 @@ h1 { margin: 13px 0 13px; font-size: clamp(34px, 7vw, 49px); line-height: 1.06; 
 #viewer button { min-height: 44px; padding: 10px 16px; border: 1px solid var(--line); border-radius: 7px; background: var(--panel); color: var(--text); font-size: 12px; }
 #viewer .close { background: transparent; border: 0; font-size: 14px; display: flex; gap: 15px; align-items: center; }
 #viewer .close > span { font-size: 22px; }
-.viewer-scroll { width: 100%; min-height: 0; flex: 1; overflow: auto; overscroll-behavior: contain; padding: 18px 20px 22px; text-align: center; }
+.viewer-scroll { width: 100%; min-height: 0; flex: 1; overflow-x: hidden; overflow-y: auto; padding-bottom: calc(var(--safe-bottom) + 22px) !important; overscroll-behavior: contain; padding: 18px 20px 22px; text-align: center; }
 #slot { display: flex; align-items: flex-start; justify-content: center; width: 100%; padding: 7px 0; }
 #slot .card { font-size: min(14px, calc((100vw - 58px) / 28)); }
 .viewer-status { max-width: 380px; margin: 20px auto 8px; color: var(--muted); font-size: 12px; }
@@ -66,7 +66,6 @@ h1 { margin: 13px 0 13px; font-size: clamp(34px, 7vw, 49px); line-height: 1.06; 
 .viewer-history p { display: flex; gap: 10px; justify-content: space-between; align-items: center; font-size: 12px; color: var(--muted); margin: 10px 0; }
 .viewer-history p span:first-child { color: var(--text); }
 #viewer .history-delete { min-height: 32px; padding: 2px 10px; font-size: 16px; line-height: 1; background: transparent; border-color: transparent; color: var(--muted); }
-.viewer-controls { display: flex; justify-content: center; gap: 12px; width: 100%; padding: 11px 16px calc(var(--safe-bottom) + 12px); border-top: 1px solid var(--line); flex: none; background: var(--bg); }
 #v-gyro { min-width: 150px; }
 #viewer button:disabled { opacity: .45; cursor: default; }
 @media (max-width: 550px) {

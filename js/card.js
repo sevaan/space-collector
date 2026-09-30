@@ -1,9 +1,9 @@
 // Archival field cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { cardArt } from './art.js?v=0.1.22';
-import { TIER_INFO } from './rarity.js?v=0.1.22';
-import { SET_BY_ID } from './sets.js?v=0.1.22';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.22';
-import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText } from './lore.js?v=0.1.22';
+import { cardArt } from './art.js?v=0.1.23';
+import { TIER_INFO } from './rarity.js?v=0.1.23';
+import { SET_BY_ID } from './sets.js?v=0.1.23';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.23';
+import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText } from './lore.js?v=0.1.23';
 
 export function levelFor(count) {
   return count >= 25 ? 'gold' : count >= 5 ? 'silver' : count >= 1 ? 'bronze' : 'none';
@@ -35,7 +35,7 @@ export function renderCard(o, opts = {}) {
   const first = caught ? Math.min(...sightings.map((s) => s.time)) : null;
   const firstDate = first ? new Date(first).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase() : '';
   const seen = caught ? `COLLECTED ${firstDate}${sightings.length > 1 ? ` · SEEN ${sightings.length}×` : ''}` : opts.preview ? 'PREVIEW · NOT COLLECTED' : 'NOT YET COLLECTED';
-  const ageLabel = age === 0 ? 'LAUNCHED THIS YEAR' : age === 1 ? 'YEAR SINCE LAUNCH' : 'YEARS SINCE LAUNCH';
+  const ageLabel = age === 0 ? 'UNDER A YEAR IN ORBIT' : age === 1 ? 'YEAR SINCE LAUNCH' : 'YEARS SINCE LAUNCH';
   const number = o.setNumber ? `${String(o.setNumber).padStart(2, '0')} / ${String(o.setSize).padStart(2, '0')}` : 'ARCHIVE';
   el.innerHTML = `
   <div class="card__rotator"><div class="card__face">
@@ -82,7 +82,7 @@ export function attachTilt(el) {
   };
   const state = { touching: false };
   const onMove = (e) => {
-    if (reducedMotion()) return;
+    if (reducedMotion() || el.dataset.swiping) return;
     if (e.pointerType !== 'mouse') state.touching = true;
     const b = el.getBoundingClientRect();
     el.classList.add('active');

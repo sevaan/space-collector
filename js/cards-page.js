@@ -1,9 +1,9 @@
-import { renderCard, renderCardTile, attachTilt, attachGyro } from './card.js?v=0.1.22';
-import { buildCards, cardKeyFor } from './card-model.js?v=0.1.22';
-import { SETS, assignSets } from './sets.js?v=0.1.22';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.22';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.22';
-import { allSightings, deleteSighting } from './store.js?v=0.1.22';
+import { renderCard, renderCardTile, attachTilt, attachGyro } from './card.js?v=0.1.23';
+import { buildCards, cardKeyFor } from './card-model.js?v=0.1.23';
+import { SETS, assignSets } from './sets.js?v=0.1.23';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.23';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.23';
+import { allSightings, deleteSighting } from './store.js?v=0.1.23';
 
 const $ = (id) => document.getElementById(id);
 const state = { cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -167,7 +167,6 @@ function showCard() {
   tilt = attachTilt(el);
   if (!reducedMotion.matches && motionPermission !== 'denied') stopGyro = attachGyro(el, tilt);
   $('v-position').textContent = `${state.index + 1} / ${state.list.length.toLocaleString()}`;
-  $('v-prev').disabled = $('v-next').disabled = state.list.length < 2;
   const firstTime = sightings.length ? Math.min(...sightings.map((s) => s.time)) : 0;
   $('v-status').textContent = sightings.length ? `Collected ${dateLabel(firstTime)}${c.archived ? ' · saved from an earlier catalogue' : ''}` : state.preview ? 'Artwork preview · this card has not been added to your collection.' : 'Not yet collected · record a live sighting to earn this card.';
   $('v-preview').hidden = sightings.length > 0;
@@ -211,11 +210,55 @@ function step(d) {
   showCard();
   $('viewer').querySelector('.viewer-scroll').scrollTop = 0;
 }
+
+// Swipe between cards. A clear sideways drag (or a quick flick) moves the card with your finger and
+// changes card on release; anything else is a touch that tilts the card.
+const slot = $('slot');
+let swipe = null;
+function slideTo(x, ms) {
+  slot.style.transition = ms ? `transform ${ms}ms cubic-bezier(.2,.8,.3,1), opacity ${ms}ms` : 'none';
+  slot.style.transform = x ? `translateX(${x}px) rotate(${x / 40}deg)` : '';
+  slot.style.opacity = x ? String(Math.max(0.3, 1 - Math.abs(x) / window.innerWidth)) : '';
+}
+slot.addEventListener('pointerdown', (e) => {
+  if (state.list.length < 2 || (e.pointerType === 'mouse' && e.button !== 0)) return;
+  swipe = { id: e.pointerId, x: e.clientX, y: e.clientY, t: performance.now(), dx: 0, active: false };
+});
+slot.addEventListener('pointermove', (e) => {
+  if (!swipe || e.pointerId !== swipe.id) return;
+  const dx = e.clientX - swipe.x, dy = e.clientY - swipe.y;
+  if (!swipe.active && Math.abs(dx) > 14 && Math.abs(dx) > Math.abs(dy) * 1.3) {
+    swipe.active = true;
+    slot.setPointerCapture(e.pointerId);
+    const card = slot.firstElementChild;
+    if (card) card.dataset.swiping = '1';
+    tilt?.reset();
+  }
+  if (swipe.active) { swipe.dx = dx; slideTo(dx, 0); }
+});
+function endSwipe(e) {
+  if (!swipe || e.pointerId !== swipe.id) return;
+  const { active, dx, t } = swipe;
+  swipe = null;
+  const card = slot.firstElementChild;
+  if (card) delete card.dataset.swiping;
+  if (!active) return;
+  const fast = Math.abs(dx) / Math.max(1, performance.now() - t) > 0.5; // px per ms
+  if (Math.abs(dx) > window.innerWidth * 0.22 || (fast && Math.abs(dx) > 40)) {
+    const dir = dx < 0 ? 1 : -1;
+    slideTo(-dir * window.innerWidth, 180);
+    setTimeout(() => {
+      step(dir);
+      slideTo(dir * window.innerWidth * 0.6, 0); // new card comes in from the other side
+      requestAnimationFrame(() => requestAnimationFrame(() => slideTo(0, 220)));
+    }, 180);
+  } else slideTo(0, 200);
+}
+slot.addEventListener('pointerup', endSwipe);
+slot.addEventListener('pointercancel', endSwipe);
 $('v-close').addEventListener('click', () => $('viewer').close());
 $('viewer').addEventListener('close', () => { stopEffects(); document.body.style.overflow = ''; lastFocus?.focus(); });
 $('slot').addEventListener('pointerdown', askMotion);
-$('v-prev').addEventListener('click', () => step(-1));
-$('v-next').addEventListener('click', () => step(1));
 $('v-preview').addEventListener('click', () => { state.preview = !state.preview; showCard(); });
 $('viewer').addEventListener('keydown', (e) => {
   if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') { e.preventDefault(); step(e.key === 'ArrowLeft' ? -1 : 1); }
