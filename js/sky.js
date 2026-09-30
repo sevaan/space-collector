@@ -1,7 +1,7 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
 // Two themes: 'glass' (navy sky, gold satellites, cyan reticle) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.24';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.26';
 
 const RAD = Math.PI / 180;
 const FONT = '-apple-system, "SF Pro Text", system-ui, sans-serif';
@@ -374,7 +374,7 @@ export class SkyView {
 
   // safeTop/safeBottom are HUD insets in CSS pixels; centerY is an optional pixel
   // override. Projection and the reticle always share the same cx/cy.
-  draw(basis, items, { showDim, sky, bodies, milky, lines = true, targetId = null, time = 0, safeTop = 150, safeBottom = 230, centerY } = {}) {
+  draw(basis, items, { showDim, sky, bodies, milky, lines = true, targetId = null, time = 0, safeTop = 150, safeBottom = 230, centerY, newFind = false } = {}) {
     this.basis = basis;
     this.safeTop = Math.max(12, Math.min(safeTop, this.h * 0.45));
     this.safeBottom = Math.max(12, Math.min(safeBottom, this.h - this.safeTop - 100));
@@ -423,7 +423,7 @@ export class SkyView {
 
     this.drawOffscreen(offscreen, targetId);
     const locked = !!focus && focus.obj.id === targetId && !!focus.candidate;
-    this.drawReticle(locked, this.reducedMotion ? 0 : time);
+    this.drawReticle(locked, this.reducedMotion ? 0 : time, newFind && locked);
     this.drawLabels();
   }
 
@@ -454,10 +454,20 @@ export class SkyView {
     }
   }
 
-  drawReticle(locked) {
+  drawReticle(locked, time = 0, newFind = false) {
     const ctx = this.ctx, t = this.theme;
     const radius = this.reticlePx, cx = this.cx, cy = this.cy;
     ctx.save();
+    if (newFind) {
+      // Never-seen object lined up: the whole ring glows gold and gently breathes. Tap it to collect.
+      const pulse = 0.75 + 0.25 * Math.sin(time / 400);
+      ctx.strokeStyle = t.tick; ctx.globalAlpha = 0.18 * pulse; ctx.lineWidth = 14;
+      ctx.beginPath(); ctx.arc(cx, cy, radius, 0, Math.PI * 2); ctx.stroke();
+      ctx.globalAlpha = 0.95; ctx.lineWidth = 2.5;
+      ctx.beginPath(); ctx.arc(cx, cy, radius, 0, Math.PI * 2); ctx.stroke();
+      ctx.restore();
+      return;
+    }
     ctx.strokeStyle = t.reticleSoft;
     ctx.lineWidth = 5;
     ctx.beginPath(); ctx.arc(cx, cy, radius, 0, Math.PI * 2); ctx.stroke();

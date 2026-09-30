@@ -1,17 +1,17 @@
-import { VERSION } from './version.js?v=0.1.24';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, setBinocularMode } from './orbit.js?v=0.1.24';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.24';
-import { SkyView, shortName } from './sky.js?v=0.1.24';
-import { loadSky, eqToEnu, solarSystem, galacticPlane } from './celestial.js?v=0.1.24';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.24';
-import { cardArt } from './art.js?v=0.1.24';
-import { renderCard, attachTilt, attachGyro } from './card.js?v=0.1.24';
-import { buildCards } from './card-model.js?v=0.1.24';
-import { collectedDuringPass, canCapture } from './observation.js?v=0.1.24';
-import { TIER_INFO } from './rarity.js?v=0.1.24';
-import { SETS } from './sets.js?v=0.1.24';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.24';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.24';
+import { VERSION } from './version.js?v=0.1.26';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, setBinocularMode } from './orbit.js?v=0.1.26';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.26';
+import { SkyView, shortName } from './sky.js?v=0.1.26';
+import { loadSky, eqToEnu, solarSystem, galacticPlane } from './celestial.js?v=0.1.26';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.26';
+import { cardArt } from './art.js?v=0.1.26';
+import { renderCard, attachTilt, attachGyro } from './card.js?v=0.1.26';
+import { buildCards } from './card-model.js?v=0.1.26';
+import { collectedDuringPass, canCapture } from './observation.js?v=0.1.26';
+import { TIER_INFO } from './rarity.js?v=0.1.26';
+import { SETS } from './sets.js?v=0.1.26';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.26';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.26';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -356,13 +356,14 @@ function tick(ts) {
     milky: state.showStars ? state.milkyEnu : null,
     lines: state.showLines,
     targetId: state.targetId,
+    newFind: !!state.newFind,
     time: t,
     safeTop: uiSafeTop,
     safeBottom: uiSafeBottom,
   });
 
   updateCompass(basis);
-  placeCallout(target);
+  placeDiscover();
   if (t - lastPanel > 250 || target?.obj.id !== shownTargetId) { renderTarget(target, d); measureSkySpace(); lastPanel = t; }
 }
 
@@ -387,7 +388,6 @@ function measureSkySpace() {
   uiSafeTop = $('status-line').getBoundingClientRect().bottom + 16;
   if (!$('banner').hidden) uiSafeTop = $('banner').getBoundingClientRect().bottom + 12;
   uiSafeBottom = box.hidden ? 100 : Math.max(100, window.innerHeight - rect.top + 34);
-  $('guidance').style.bottom = `${uiSafeBottom - 26}px`;
 }
 function placeCallout(target) {
   const el = $('callout'), p = sky.targetPos;
@@ -400,60 +400,91 @@ function placeCallout(target) {
   el.style.transform = `translate(${Math.max(12,x).toFixed(0)}px, ${y.toFixed(0)}px)`;
 }
 
-let shownTargetId = null;
-let shownCount = 0;
-function renderTarget(target, d) {
-  const card = $('target');
-  $('guidance').hidden = !target;
-  if (!target) { card.hidden = true; shownTargetId = null; return; }
-  const o = target.obj, l = target.look;
-  const tier = TIER_INFO[o.tier] ?? TIER_INFO.common;
-  const st = orbitStats(o);
-  const mag = l.mag != null ? l.mag.toFixed(1) : '—';
-
-  // Callout (small, next to the object)
-  $('co-name').textContent = label(o);
-  $('co-tier').textContent = tier.label;
-  $('co-tier').style.setProperty('--tier', tier.color);
-  $('co-type').textContent = o.family ? `${familyName(o)} satellite` : (TYPE_LABEL[o.type] ?? 'Object');
-  $('co-mag').textContent = `Mag ${mag} (${brightnessWord(l.mag)})`;
-  $('co-motion').textContent = `${Math.round(l.el)}° up${st ? ` · ${st.speed.toFixed(1)} km/s` : ''}`;
-
-  // Bottom card: rebuild only when the target changes, refresh the live numbers otherwise.
-  if (o.id !== shownTargetId || state.candidates.length !== shownCount) {
-    shownTargetId = o.id;
-    shownCount = state.candidates.length;
-    card.style.setProperty('--tier', tier.color);
-    $('t-art').innerHTML = cardArt(o, { accent: setColor(o), w: 120, h: 130 });
-    $('t-tier').textContent = tier.label;
-    $('t-tier').style.setProperty('--tier', tier.color);
-    $('t-name').textContent = label(o);
-    $('t-collection').textContent = `${tier.label} · ${(SETS.find(s => s.test(o)) ?? SETS[SETS.length - 1]).name}`;
-    const typeLabel = o.family ? `${familyName(o)} satellite` : (TYPE_LABEL[o.type] ?? 'Object');
-    const who = o.family ? state.catalog.families?.[o.family]?.maker : ownerName(o.owner);
-    $('t-chips').innerHTML = `<span class="chip"><span class="ico" data-ico="type"></span>${escapeHtml(typeLabel)}</span>`
-      + (who ? `<span class="chip human">${escapeHtml(who)}</span>` : '')
-      + (o.bino ? '<span class="chip">Binoculars</span>' : '');
-    $('t-fact').innerHTML = richText(objectFact(o));
-    const n = state.candidates.length;
-    $('t-switch').hidden = n < 2;
-    card.hidden = false;
-  }
-  const aligned = target.angCos > Math.cos(sky.reticleDeg * RAD);
-  const eligible = canCapture({ visible: l.visible, aligned, practice: state.captureAny, allowAny: state.captureAny });
-  $('t-unpin').hidden = !state.pinnedId;
-  setAction(collectedThisPass(o, d), eligible);
+let shownTargetId = null, barTargetId = null;
+// Two looks for the thing you're pointing at:
+//  - never collected: no card at all. The circle glows gold, the name sits above it, tap the circle.
+//  - already in your collection: a slim one-line bar with Collect (repeat sightings level cards up).
+// Off target, both just say which way to turn.
+function ownsCard(o) {
+  const key = o.card ?? String(o.id);
+  return state.sightings.some((s) => !s.sim && (s.cardKey ?? String(s.objectId)) === key);
+}
+function turnHint(l) {
+  if (l.el < 0) return 'This pass has ended';
+  if (!l.visible && !state.captureAny) return 'Not visible right now';
   const currentAz = state.basis ? (Math.atan2(state.basis.back[0], state.basis.back[1]) / RAD + 360) % 360 : state.drag.az;
   const currentEl = state.basis ? Math.asin(state.basis.back[2]) / RAD : state.drag.el;
   const turn = ((l.az - currentAz + 540) % 360) - 180;
-  $('guidance').textContent = l.el < 0 ? 'This pass has ended. Choose another object.' : !l.visible && !state.captureAny ? 'This object is not visible right now.' : aligned ? 'Target aligned · look up and confirm the moving light' : `${Math.abs(turn) > 8 ? (turn > 0 ? 'Turn right' : 'Turn left') : l.el > currentEl ? 'Raise your phone' : 'Lower your phone'} · ${Math.round(l.el)}° up in the ${compassPoint(l.az)}`;
-  const n = state.candidates.length;
-  const candidateIndex = state.candidates.findIndex(c => c.obj.id === o.id);
-  $('t-switch').hidden = n < 2 || candidateIndex < 0;
-  if (n > 1 && candidateIndex >= 0) $('t-switch').textContent = `${candidateIndex + 1} of ${n} ›`;
-  $('t-stats').innerHTML = `<span class="chip">${escapeHtml(brightnessWord(l.mag))}</span><span class="chip">${Math.round(l.el)}° up · ${compassPoint(l.az)}</span>`;
-
+  const move = Math.abs(turn) > 8 ? (turn > 0 ? 'Turn right →' : '← Turn left') : l.el > currentEl ? '↑ Raise your phone' : '↓ Lower your phone';
+  return `${move} · ${Math.round(l.el)}° up in the ${compassPoint(l.az)}`;
 }
+function switchLabel(o) {
+  const n = state.candidates.length, i = state.candidates.findIndex((c) => c.obj.id === o.id);
+  return n > 1 && i >= 0 ? `${i + 1} of ${n} ›` : '';
+}
+function renderTarget(target, d) {
+  const bar = $('target'), disc = $('discover'), guide = $('guidance');
+  $('callout').hidden = true;
+  if (!target) { bar.hidden = disc.hidden = guide.hidden = true; state.newFind = false; shownTargetId = barTargetId = null; return; }
+  shownTargetId = target.obj.id;
+  const o = target.obj, l = target.look;
+  const tier = TIER_INFO[o.tier] ?? TIER_INFO.common;
+  const aligned = target.angCos > Math.cos(sky.reticleDeg * RAD);
+  const eligible = canCapture({ visible: l.visible, aligned, practice: state.captureAny, allowAny: state.captureAny });
+  const collected = collectedThisPass(o, d);
+  const sw = switchLabel(o);
+
+  if (!ownsCard(o) && !collected) {
+    // New find
+    bar.hidden = true;
+    state.newFind = eligible;
+    if (eligible) {
+      disc.hidden = false; guide.hidden = true;
+      $('d-tier').textContent = tier.label;
+      $('d-tier').style.color = tier.color;
+      $('d-name').textContent = label(o);
+      $('d-switch').hidden = !sw; $('d-switch').textContent = sw;
+    } else {
+      disc.hidden = true; guide.hidden = false;
+      guide.textContent = `${label(o)} · ${turnHint(l)}`;
+    }
+    barTargetId = null;
+    return;
+  }
+
+  // Seen before
+  state.newFind = false;
+  disc.hidden = true; guide.hidden = true; bar.hidden = false;
+  if (o.id !== barTargetId) {
+    barTargetId = o.id;
+    bar.style.setProperty('--tier', tier.color);
+    $('t-art').innerHTML = cardArt(o, { accent: setColor(o), w: 80, h: 80 });
+    $('t-name').textContent = label(o);
+  }
+  $('t-switch').hidden = !sw; $('t-switch').textContent = sw;
+  $('t-unpin').hidden = !state.pinnedId;
+  const meta = $('t-meta');
+  if (eligible || collected) { meta.className = ''; meta.textContent = `${tier.label} · in your collection · ${brightnessWord(l.mag)}`; }
+  else { meta.className = 'turn'; meta.textContent = turnHint(l); }
+  setAction(collected, eligible);
+}
+
+// Keep the tap-the-circle overlay on top of the reticle wherever the sky view puts it.
+function placeDiscover() {
+  const guide = $('guidance');
+  if (!guide.hidden) { guide.style.top = `${sky.cy + sky.reticlePx + 18}px`; guide.style.bottom = 'auto'; }
+  const disc = $('discover');
+  if (disc.hidden) return;
+  disc.style.setProperty('--cx', `${sky.cx}px`);
+  disc.style.setProperty('--cy', `${sky.cy}px`);
+  disc.style.setProperty('--r', `${sky.reticlePx}px`);
+}
+$('d-hit').addEventListener('click', () => {
+  unlockAudio();
+  const target = state.activeTarget;
+  if (target && !state.captureBusy) capture(target.obj);
+});
+$('d-switch').addEventListener('click', () => $('t-switch').click());
 
 $('t-switch').addEventListener('click', () => {
   const c = state.candidates;
@@ -480,8 +511,9 @@ function setAction(collected, eligible = true) {
   const btn = $('t-action');
   btn.dataset.state = collected ? 'view' : 'collect';
   btn.className = collected ? 'view' : 'collect';
-  btn.disabled = state.captureBusy || (!collected && !eligible);
-  btn.textContent = state.captureBusy ? 'Saving…' : collected ? 'View your card' : !eligible ? 'Line up the target' : 'Collect';
+  btn.hidden = !collected && !eligible; // off target there's nothing to press, just the turn hint
+  btn.disabled = state.captureBusy;
+  btn.textContent = state.captureBusy ? 'Saving…' : collected ? 'View' : 'Collect';
 }
 function cardModel(obj) { return state.cardModels.get(obj.card ?? String(obj.id)) ?? obj; }
 function cardSnapshot(obj) {
