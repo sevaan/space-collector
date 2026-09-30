@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Radar Counter Options</title>
+<style>
+  :root { --text: #eef3ff; --muted: #9fb3dc; --gold: #e6c68a; --cyan: #8fd3e8; --glass: rgba(14, 26, 48, 0.8); --edge: rgba(140, 180, 220, 0.3); }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #05080f; color: var(--text); font: 15px/1.45 -apple-system, "SF Pro Text", system-ui, sans-serif; padding: 22px 14px 60px; }
+  h1 { font-size: 22px; margin: 0 0 6px; }
+  .intro { color: var(--muted); margin: 0 0 22px; max-width: 720px; }
+  .board { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 30px 22px; }
+  .opt h2 { font-size: 16px; margin: 12px 0 4px; }
+  .opt p { color: var(--muted); font-size: 13px; margin: 0; }
+  .scene { position: relative; height: 170px; border-radius: 16px; overflow: hidden; border: 1px solid #1a2433;
+    background: radial-gradient(120% 90% at 70% 10%, #16294d, #0a1430 55%, #060b18); }
+  .scene::before { content: ''; position: absolute; inset: 0; background:
+    radial-gradient(1px 1px at 12% 70%, #fff9, transparent), radial-gradient(1px 1px at 40% 80%, #fff7, transparent),
+    radial-gradient(1px 1px at 66% 72%, #fffa, transparent), radial-gradient(1px 1px at 86% 90%, #fff8, transparent),
+    radial-gradient(1px 1px at 25% 95%, #fff6, transparent), radial-gradient(1px 1px at 55% 60%, #fff8, transparent); }
+  .glass { background: var(--glass); border: 1px solid var(--edge); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+  .muted { color: var(--muted); }
+  svg text { font-family: -apple-system, system-ui, sans-serif; }
+</style>
+</head>
+<body>
+  <h1>Radar + count options</h1>
+  <p class="intro">Five ways to combine a mini sky radar with the visible count. In each radar, the centre is straight overhead and the edge is the horizon. Gold dots are visible objects and white dots are ones you haven't collected yet. Options 1, 3 and 5 also take over from the compass, so the top of the screen has one widget instead of two.</p>
+  <div class="board" id="board"></div>
+
+<script>
+// Deterministic sample sky: [azimuth°, elevation°, isNew]
+const dots = [[20,60,0],[65,35,1],[110,20,0],[150,50,0],[200,25,1],[235,70,0],[260,40,0],[300,15,0],[330,45,1],[10,25,0],[180,65,0],[95,55,0],[285,60,0],[45,12,0]];
+const heading = 300; // phone facing NW
+function radar(size, { north = true, cone = false, letters = false, center = '' , sub = '', ringArcs = false } = {}) {
+  const c = size / 2, R = c - 6;
+  const pos = (az, el) => { const r = R * (1 - el / 90); const a = (az - heading) * Math.PI / 180; return [c + r * Math.sin(a), c - r * Math.cos(a)]; };
+  let s = `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">`;
+  s += `<circle cx="${c}" cy="${c}" r="${R}" fill="rgba(14,26,48,.82)" stroke="rgba(140,180,220,.35)"/>`;
+  s += `<circle cx="${c}" cy="${c}" r="${R * 0.66}" fill="none" stroke="rgba(140,180,220,.14)"/><circle cx="${c}" cy="${c}" r="${R * 0.33}" fill="none" stroke="rgba(140,180,220,.14)"/>`;
+  if (cone) { const w = 18 * Math.PI / 180; s += `<path d="M${c} ${c} L${c + R * Math.sin(-w)} ${c - R * Math.cos(-w)} A${R} ${R} 0 0 1 ${c + R * Math.sin(w)} ${c - R * Math.cos(w)} Z" fill="rgba(143,211,232,.16)" stroke="rgba(143,211,232,.4)"/>`; }
+  if (ringArcs) {
+    const parts = [['#ffc545', .03], ['#b57bff', .09], ['#4aa8ff', .2], ['#5fd08a', .28], ['#9aa4b1', .4]];
+    let a0 = -90;
+    for (const [col, f] of parts) { const a1 = a0 + f * 360 - 2; const r = R + 3; const p = (a) => [c + r * Math.cos(a * Math.PI / 180), c + r * Math.sin(a * Math.PI / 180)]; const [x0, y0] = p(a0), [x1, y1] = p(a1); s += `<path d="M${x0} ${y0} A${r} ${r} 0 ${f > .5 ? 1 : 0} 1 ${x1} ${y1}" stroke="${col}" stroke-width="3" fill="none" stroke-linecap="round"/>`; a0 = a1 + 2; }
+  }
+  for (const [az, el, isNew] of dots) { const [x, y] = pos(az, el); s += `<circle cx="${x}" cy="${y}" r="${isNew ? 2.6 : 2}" fill="${isNew ? '#fff' : '#ffd98a'}" ${isNew ? 'style="filter:drop-shadow(0 0 3px #fff)"' : ''}/>`; }
+  if (letters) for (const [az, L] of [[0, 'N'], [90, 'E'], [180, 'S'], [270, 'W']]) { const [x, y] = pos(az, -9); s += `<text x="${x}" y="${y + 3.5}" text-anchor="middle" font-size="9.5" font-weight="700" fill="${az === 0 ? '#e6c68a' : '#9fb3dc'}">${L}</text>`; }
+  else if (north) { const [x, y] = pos(0, -9); s += `<text x="${x}" y="${y + 3.5}" text-anchor="middle" font-size="9.5" font-weight="700" fill="#e6c68a">N</text>`; }
+  s += `<path d="M${c} 1 L${c + 4} 7 L${c - 4} 7 Z" fill="#8fd3e8"/>`; // facing notch
+  if (center) s += `<text x="${c}" y="${c + (sub ? 2 : 6)}" text-anchor="middle" font-size="${size * 0.22}" font-weight="800" fill="#eef3ff" style="paint-order:stroke;stroke:rgba(10,18,36,.85);stroke-width:4px">${center}</text>`;
+  if (sub) s += `<text x="${c}" y="${c + size * 0.16}" text-anchor="middle" font-size="${size * 0.085}" font-weight="600" letter-spacing=".08em" fill="#9fb3dc" style="paint-order:stroke;stroke:rgba(10,18,36,.85);stroke-width:3px">${sub}</text>`;
+  return s + '</svg>';
+}
+const options = [
+  { name: '1. Number in the middle', html: `<div style="position:absolute;right:14px;top:14px">${radar(104, { letters: true, center: '89', sub: 'UP NOW', cone: true })}</div>`,
+    text: 'One round widget that replaces the compass. The count sits in the middle of the radar, the letters sit around the edge, and a cyan wedge shows where you\'re pointing. Everything is in one place.' },
+  { name: '2. Radar + pill', html: `<div style="position:absolute;left:14px;top:16px;width:57px;height:57px;border-radius:50%" class="glass"></div><div class="glass" style="position:absolute;right:14px;top:14px;display:flex;align-items:center;gap:10px;padding:5px 14px 5px 5px;border-radius:999px">${radar(58, { cone: true })}<span style="line-height:1.1"><b style="font-size:22px">89</b> <span class="muted" style="font-size:12px">up now</span><br><span style="font-size:12px;color:#e6c68a;font-weight:600">12 new for you</span></span></div>`,
+    text: 'Closest to today\'s pill, with a small radar sitting on its end instead of the planet icon. The compass stays on the left. It reads "89 up now" and "12 new for you" at a glance.' },
+  { name: '3. Rarity ring', html: `<div style="position:absolute;right:14px;top:12px">${radar(110, { letters: true, center: '89', sub: '12 NEW', ringArcs: true, cone: true })}</div>`,
+    text: 'Option 1 plus a ring around the outside split by rarity colour (gold Legendary, purple Epic, blue Rare, and so on). You can see what\'s up tonight without opening anything. The most information packed into one widget.' },
+  { name: '4. Horizon strip', html: (() => {
+      const W = 330, H = 46; let s = `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}"><rect x=".5" y=".5" width="${W - 1}" height="${H - 1}" rx="12" fill="rgba(14,26,48,.82)" stroke="rgba(140,180,220,.3)"/>`;
+      const x0 = 12, x1 = W - 70; const xa = (az) => x0 + (((az - heading + 540) % 360) / 360) * (x1 - x0);
+      for (const [az, L] of [[0, 'N'], [90, 'E'], [180, 'S'], [270, 'W']]) s += `<text x="${xa(az)}" y="${H - 7}" text-anchor="middle" font-size="9" font-weight="700" fill="${az === 0 ? '#e6c68a' : '#6f84a8'}">${L}</text>`;
+      s += `<line x1="${x0}" y1="${H - 17}" x2="${x1}" y2="${H - 17}" stroke="rgba(140,180,220,.25)"/>`;
+      for (const [az, el, n] of dots) s += `<circle cx="${xa(az)}" cy="${H - 18 - el / 90 * 20}" r="${n ? 2.6 : 2}" fill="${n ? '#fff' : '#ffd98a'}"/>`;
+      const cx = xa(heading); s += `<rect x="${cx - 16}" y="4" width="32" height="${H - 12}" rx="5" fill="rgba(143,211,232,.12)" stroke="rgba(143,211,232,.45)"/>`;
+      s += `<text x="${W - 36}" y="23" text-anchor="middle" font-size="20" font-weight="800" fill="#eef3ff">89</text><text x="${W - 36}" y="36" text-anchor="middle" font-size="8.5" font-weight="600" letter-spacing=".1em" fill="#9fb3dc">UP NOW</text>`;
+      return `<div style="position:absolute;left:14px;right:14px;top:14px">${s}</svg></div>`; })(),
+    text: 'A 360° strip across the top. Everything visible is laid out left to right by direction and height, the box is where you\'re facing, and the count is on the right. It works like a car\'s compass strip and takes very little height.' },
+  { name: '5. Radar with a count tab', html: `<div style="position:absolute;right:14px;top:12px;text-align:center">${radar(96, { letters: true, cone: true })}<div class="glass" style="margin:-10px auto 0;position:relative;display:inline-block;padding:3px 11px;border-radius:999px;font-size:12px"><b>89</b> up · <span style="color:#e6c68a">12 new</span></div></div>`,
+    text: 'A clean radar that doubles as the compass, with a small tab hanging underneath carrying the numbers. It\'s tidier than having the number over the dots, and keeps the radar easy to read.' },
+];
+document.getElementById('board').innerHTML = options.map((o) => `<div class="opt"><div class="scene">${o.html}</div><h2>${o.name}</h2><p>${o.text}</p></div>`).join('');
+</script>
+</body>
+</html>
