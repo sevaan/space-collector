@@ -1,7 +1,8 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
 // Two themes: 'glass' (navy sky, gold satellites, cyan reticle) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.50';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.52';
+import { TIER_INFO } from './rarity.js?v=0.1.52';
 
 const RAD = Math.PI / 180;
 const FONT = '-apple-system, "SF Pro Text", system-ui, sans-serif';
@@ -649,7 +650,9 @@ export class SkyView {
       ctx.save();
       if (targetId && !isTarget) ctx.globalAlpha = look.visible ? 0.60 : 0.35;
       if (look.visible || isTarget) this.glow(p.x, p.y, radius * (isTarget ? 3.6 : 1.8), t.satGlow, isTarget ? 0.86 : 0.32);
-      this.drawIcon(this.iconKind(it.obj), p.x, p.y, size, look.visible || isTarget ? (isTarget ? t.satHot : t.sat) : t.dim);
+      // Locked on: the object takes its rarity colour (matching its label); Common stays gold.
+      const tierColor = isTarget && this.theme !== THEMES.night && it.obj.tier && it.obj.tier !== 'common' ? TIER_INFO[it.obj.tier]?.color : null;
+      this.drawIcon(this.iconKind(it.obj), p.x, p.y, size, look.visible || isTarget ? (tierColor ?? (isTarget ? t.satHot : t.sat)) : t.dim);
       if (isTarget) {
         ctx.strokeStyle = t.tick;
         ctx.lineWidth = 1;

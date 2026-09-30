@@ -14,6 +14,8 @@ a { color:var(--cyan); }
 .pill.accent { color:var(--gold); }
 .big { display:block; text-align:center; width:100%; padding:15px 18px; min-height:52px; border-radius:12px; background:var(--gold); color:var(--ink-on-gold); font-size:16px;line-height:1.5; font-weight:650; text-decoration:none; }
 .text-button { display:inline-flex; justify-content:center; align-items:center; padding:10px 2px; min-height:44px; color:var(--cyan); font-size:14px; text-decoration:none; }
+.header-buttons { display:flex; gap:10px; }
+#nav-more .ico { width:22px; height:22px; }
 .icon-button { width:44px; height:44px; border:1px solid var(--edge); border-radius:50%; display:grid; place-items:center; font-size:24px; color:var(--muted); }
 .wordmark { color:var(--text); text-decoration:none; font-size:13px; font-weight:700; letter-spacing:1.6px; line-height:1.4; }
 .wordmark span { display:block; color:var(--muted); font-size:10px; letter-spacing:1.35px; font-weight:400; margin-top:3px; }
@@ -50,7 +52,7 @@ a { color:var(--cyan); }
 #d-switch { position:absolute;left:var(--cx);top:calc(var(--cy) + var(--r) + 38px);transform:translateX(-50%);pointer-events:auto;font-size:12px;color:var(--cyan);background:none;border:0; }
 .chip { font-size:12px;color:var(--muted);display:inline-flex;align-items:center;gap:5px; }
 .chip .ico { width:13px;height:13px; }
-#nav { position:fixed;left:0;right:0;bottom:0;height:calc(var(--nav-h) + var(--safe-bottom));padding:7px 8px calc(8px + var(--safe-bottom));display:grid;grid-template-columns:repeat(3,1fr);background:var(--bg);border-top:1px solid var(--edge); }
+#nav { position:fixed;left:0;right:0;bottom:0;height:calc(var(--nav-h) + var(--safe-bottom));padding:7px 8px calc(8px + var(--safe-bottom));display:grid;grid-template-columns:repeat(2,1fr);background:var(--bg);border-top:1px solid var(--edge); }
 .nav-item { position:relative;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:6px;min-height:48px;color:var(--muted);text-decoration:none;font-size:11px; }
 .nav-item.active { color:var(--cyan); }
 .nav-item .ico { width:21px;height:21px; }
