@@ -1,7 +1,7 @@
 // Card titles and facts. Order: hand-written (data/lore.json) → rocket/satellite family fact →
 // a fact computed from the orbit. Facts use **bold** for emphasis. Keep every fact true.
 
-import { orbitStats, titleCase } from './facts.js?v=0.1.29';
+import { orbitStats, titleCase } from './facts.js?v=0.1.30';
 
 const FAMILY = [
   [/^IRIDIUM 33 DEB/, 'A piece of the **first-ever crash between two satellites**: Iridium 33 hit the dead Cosmos 2251 in 2009.'],
@@ -104,7 +104,8 @@ export function factFor(o, now = new Date()) {
 export function thirdStat(o, sizeLabel, seenMembers = 0) {
   if (o.members) return { label: 'SEEN', value: `${seenMembers} / ${o.members.length}` };
   const s = loreCache?.[o.id]?.stat;
-  return s ? { label: s[0], value: s[1] } : { label: 'SIZE', value: sizeLabel };
+  // Default: the launch year, so every card shows when it's from as well as how long it's been up.
+  return s ? { label: s[0], value: s[1] } : { label: 'LAUNCHED', value: o.launch?.slice(0, 4) ?? String(o.year ?? '—') };
 }
 
 // **bold** → <b>, everything else escaped.
