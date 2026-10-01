@@ -1,5 +1,5 @@
 // Live aircraft near you, so the app can say "Just a plane" when you line one up by mistake.
-// Positions come from adsb.lol (community ADS-B receivers) through our relay (relay/main.ts, on Deno Deploy), because
+// Positions come from adsb.lol (community ADS-B receivers) through our relay (relay/handler.ts), because
 // adsb.lol doesn't allow browser requests directly. Routes come from adsbdb.com, which does.
 // No DOM here. Positions are extrapolated between fetches using ground speed, track and climb rate.
 
