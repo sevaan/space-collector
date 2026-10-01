@@ -54,7 +54,10 @@ Live: https://sevaan.github.io/space-collector/ (GitHub Pages, deploys from `mai
   (gallery), `js/card.js` (render + tilt), `css/cards.css` (layout + rarity shine), `js/art.js` (flat
   navy art per object type). `js/rarity.js` = tier rules (run at catalogue build). `js/sets.js` = set
   rules, primary set sets the colour bar + card number. `js/lore.js` = titles/facts: `data/lore.json`
-  hand-written first, then rocket-family facts, then computed facts. Every fact must be true.
+  hand-written first, then rocket-family facts, then computed facts. Every fact must be TRUE: computed facts
+  only state today's catalogue data (orbit, launch date/site) or date comparisons, never lifetime laps or
+  distance; speed only for near-circular orbits; family facts can be limited by object kind.
+  tests/facts.test.mjs checks every card in the real catalogue.
 - `design/` – style boards used to pick the card look. Not part of the app.
 
 - Capture reveal (`js/reveal.js` + `css/reveal.css`, from `design/reveal-demo.html`): first sighting =

@@ -1,30 +1,35 @@
 // Card titles and facts. Order: hand-written (data/lore.json) → rocket/satellite family fact →
-// a fact computed from the orbit. Facts use **bold** for emphasis. Keep every fact true.
+// a fact computed from the catalogue. Facts use **bold** for emphasis. Keep every fact TRUE: computed
+// facts only state what the catalogue says today (orbit, launch date and site) or simple date
+// comparisons. No extrapolating today's orbit back over decades (lifetime laps or distance).
 
-import { orbitStats, titleCase } from './facts.js?v=0.1.58';
+import { orbitStats, titleCase, siteName, ownerName } from './facts.js?v=0.1.59';
 
 const FAMILY = [
   [/^IRIDIUM 33 DEB/, 'A piece of the **first-ever crash between two satellites**: Iridium 33 hit the dead Cosmos 2251 in 2009.'],
   [/^COSMOS 2251 DEB/, 'Left over from the **first-ever crash between two satellites**, when this dead satellite hit Iridium 33 in 2009.'],
   [/^FENGYUN 1C DEB/, 'Debris from a weather satellite China **destroyed with a missile** in a 2007 test, which created a huge cloud of junk.'],
   [/^COSMOS 1408 DEB/, 'Debris from an old satellite Russia **destroyed with a missile** in 2021. The ISS crew had to shelter from the cloud.'],
-  [/^SL-3\b/, 'Same rocket family that carried **Yuri Gagarin**, the first human in space, in 1961.'],
+  [/^SL-3\b/, 'Same rocket family that carried **Yuri Gagarin**, the first human in space, in 1961.', ['R/B']],
   [/^SL-8\b/, 'From the Kosmos-3M, a Soviet workhorse rocket that flew **more than 400 times**.'],
   [/^SL-14\b/, 'From a Tsyklon-3, a Ukrainian-built rocket launched from Plesetsk in **Russia\'s far north**.'],
-  [/^SL-16\b/, 'A Zenit upper stage, one of the **biggest pieces of junk** in low orbit: about the size of a bus.'],
+  [/^SL-16\b/, 'A Zenit upper stage, one of the **biggest pieces of junk** in low orbit: about the size of a bus.', ['R/B']],
   [/^CZ-/, 'Part of China\'s **Long March** rocket family, named after the Red Army\'s march in the 1930s.'],
   [/CENTAUR/, 'Centaur was the **first rocket stage to burn liquid hydrogen**, the same fuel as the Space Shuttle.'],
   [/AGENA/, 'Agena stages also served as **docking targets** for Gemini astronauts in 1966.'],
   [/^ARIANE/, 'Europe\'s Ariane rockets launch from **French Guiana**, close to the equator, where Earth\'s spin gives them a boost.'],
   [/^DELTA/, 'Delta rockets grew out of the Thor missile and kept flying for **more than 60 years**.'],
   [/^H-2A/, 'Japan\'s H-IIA launched from **Tanegashima**, an island launch site in southern Japan.'],
-  [/^(COSMOS|KOSMOS)/, '"Kosmos" was the name the Soviets gave **thousands of satellites**, which kept their real jobs a secret.'],
-  [/^METEOR/, 'A Soviet **weather satellite**, one of a family that has been photographing clouds since the 1960s.'],
-  [/^NOAA/, 'An American **weather satellite**. Its pictures helped forecasters track storms around the world.'],
+  // Satellite families: only for the satellites themselves, not their debris or rocket stages.
+  [/^(COSMOS|KOSMOS)/, '"Kosmos" is the name the Soviet Union, and then Russia, gave **thousands of satellites**, many of them military, without saying what each one was for.', ['PAY']],
+  [/^METEOR/, 'A **weather satellite** from the Meteor family, which the Soviet Union and then Russia have flown since the 1960s.', ['PAY']],
+  [/^NOAA \d/, 'An American **weather satellite** run by NOAA, part of a series that has watched the world\'s weather from orbit for decades.', ['PAY']],
 ];
 
 const APOLLO_11 = '1969-07-20';
-const MOON_ROUND_TRIP_KM = 768800;
+const WEB = '1989-03-12';      // Tim Berners-Lee's proposal for the World Wide Web
+const GOOGLE = '1998-09-04';   // Google founded
+const IPHONE = '2007-06-29';   // first iPhone on sale
 
 let loreCache = null;
 export async function loadLore(url = 'data/lore.json') {
@@ -57,31 +62,31 @@ export function lapsPerDay(o) {
   return o.period ? 1440 / o.period : null;
 }
 
-function fmtBig(n) {
-  if (n >= 1e9) return `${(n / 1e9).toFixed(n >= 1e10 ? 0 : 1)} billion`;
-  if (n >= 1e6) return `${(n / 1e6).toFixed(n >= 1e7 ? 0 : 1)} million`;
-  if (n >= 10000) return (Math.round(n / 1000) * 1000).toLocaleString('en-US');
-  return Math.round(n).toLocaleString('en-US');
-}
+const launchDay = (iso) => new Date(`${iso}T12:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 
-// Facts computed from the orbit, for objects without a hand-written or family fact.
-export function computedFacts(o, now = new Date()) {
+// Facts computed from the catalogue, for objects without a hand-written or family fact. Each one is
+// true as stated: today's orbit, the launch record, or a date comparison.
+export function computedFacts(o) {
   const out = [];
-  const days = o.launch ? (now - new Date(`${o.launch}T00:00:00Z`)) / 86400000 : null;
   const st = orbitStats(o);
-  if (days && o.period) {
-    const laps = (days * 1440) / o.period;
-    out.push(`It has lapped Earth about **${fmtBig(laps)} times** since launch.`);
-    if (st) {
-      const km = laps * 2 * Math.PI * (6371 + st.alt);
-      const trips = km / MOON_ROUND_TRIP_KM;
-      if (trips >= 2) out.push(`It has travelled about **${fmtBig(km)} km**, enough for ${fmtBig(trips)} trips to the Moon and back.`);
-    }
-  }
+  const ecc = o.apogee != null && o.perigee != null ? o.apogee - o.perigee : null;
+  // What launched it, or what launch it came from (rocket stages and debris share their payload's launch).
+  if (o.parent && o.type === 'rocket-body') out.push(`It carried **${titleCase(o.parent)}** into orbit, then stayed up there itself.`);
+  if (o.parent && o.type === 'debris') out.push(`A piece left over from the launch of **${titleCase(o.parent)}**.`);
+  // Date comparisons.
   if (o.launch && o.launch < APOLLO_11) out.push('It was **already up there** when Apollo 11 landed on the Moon.');
-  else if (o.year && o.year < 1991) out.push('It\'s **older than the World Wide Web**.');
-  if (st) out.push(`It moves **${st.speed.toFixed(1)} km every second**. That's Toronto to Montreal in about ${Math.round(504 / st.speed)} seconds.`);
-  if (o.parent && o.type !== 'satellite') out.push(`It carried **${titleCase(o.parent)}** into orbit, then stayed up there itself.`);
+  else if (o.launch && o.launch < WEB) out.push('It\'s **older than the World Wide Web**.');
+  else if (o.launch && o.launch < GOOGLE) out.push('It was launched **before Google existed**.');
+  else if (o.launch && o.launch < IPHONE) out.push('It was launched **before the first iPhone** went on sale.');
+  // Today's orbit.
+  if (ecc != null && ecc > 1500) out.push(`Its orbit is a long oval: it swoops from **${o.perigee.toLocaleString('en-US')} km** to **${o.apogee.toLocaleString('en-US')} km** above Earth.`);
+  if (o.incl > 90) out.push('It orbits **against Earth\'s spin**, heading west, which takes extra rocket power to reach.');
+  else if (o.incl >= 80) out.push('Its orbit runs **over the poles**, so over time it passes above almost every part of Earth.');
+  if (st && ecc != null && ecc < 300) out.push(`It moves about **${st.speed.toFixed(1)} km every second**. That's Toronto to Montreal in about ${Math.round(504 / st.speed)} seconds.`);
+  if (o.period) out.push(`It goes all the way around Earth in **${Math.round(o.period)} minutes**, about ${(1440 / o.period).toFixed(o.period > 144 ? 1 : 0)} times a day.`);
+  // The launch record.
+  if (o.launch && o.site && siteName(o.site) !== o.site) out.push(`Launched on **${launchDay(o.launch)}** from ${siteName(o.site)}.`);
+  else if (o.launch) out.push(`Launched on **${launchDay(o.launch)}**${o.owner && ownerName(o.owner) !== o.owner ? ` by ${ownerName(o.owner)}` : ''}.`);
   return out;
 }
 
@@ -103,10 +108,18 @@ export function factFor(o, now = new Date()) {
   if (o.members) return familyFact(o, now);
   const hand = loreCache?.[o.id]?.fact;
   if (hand) return hand;
-  const fam = FAMILY.find(([re]) => re.test(o.name));
+  const fam = FAMILY.find(([re, , kinds]) => re.test(o.name) && (!kinds || kinds.includes(o.kind)));
   if (fam) return fam[1];
-  const list = computedFacts(o, now);
-  return list.length ? list[o.id % list.length] : 'Catch it again to learn more.';
+  const list = computedFacts(o);
+  return list.length ? list[Number(o.id) % list.length] : 'A tracked object in Earth orbit.';
+}
+
+// Where a card's fact comes from (for the catalogue export and checks).
+export function factSourceFor(o) {
+  if (o.natural || loreCache?.[o.id]?.fact) return 'Hand-written';
+  if (o.launches) return 'Fleet summary';
+  if (FAMILY.some(([re, , kinds]) => re.test(o.name) && (!kinds || kinds.includes(o.kind)))) return 'Rocket/satellite family';
+  return 'From the catalogue';
 }
 
 // Third stat on the card: hand-written override, or size.
