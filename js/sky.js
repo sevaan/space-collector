@@ -1,8 +1,8 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
 // Two themes: 'glass' (navy sky, gold satellites, cyan reticle) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.56';
-import { TIER_INFO } from './rarity.js?v=0.1.56';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.57';
+import { TIER_INFO } from './rarity.js?v=0.1.57';
 
 const RAD = Math.PI / 180;
 const FONT = '-apple-system, "SF Pro Text", system-ui, sans-serif';
@@ -629,7 +629,7 @@ export class SkyView {
 
   // safeTop/safeBottom are HUD insets in CSS pixels; centerY is an optional pixel
   // override. Projection and the reticle always share the same cx/cy.
-  draw(basis, items, { showDim, sky, bodies, milky, lines = true, targetId = null, time = 0, safeTop = 150, safeBottom = 230, centerY, newFind = false, rising = null, landscape = false, lockedOn = null, planes = null, planeHit = null } = {}) {
+  draw(basis, items, { showDim, sky, bodies, milky, lines = true, targetId = null, time = 0, safeTop = 150, safeBottom = 230, centerY, newFind = false, rising = null, landscape = false, lockedOn = null, planes = null, planeHit = null, naturalTarget = null } = {}) {
     this.basis = basis;
     this.safeTop = Math.max(12, Math.min(safeTop, this.h * 0.45));
     this.safeBottom = Math.max(12, Math.min(safeBottom, this.h - this.safeTop - 100));
@@ -684,6 +684,15 @@ export class SkyView {
       if (look.visible && labelIds.has(it.obj.id)) this.queueLabel(it.label ?? shortName(it.obj.name), p, { color: it.candidate ? t.label : t.labelDim, size: 11, weight: it.candidate ? 500 : 400, gap: radius + 8, priority: it.candidate ? 7 : 4 });
     }
 
+    // Moon, planet or star as the target: the sky already draws it, so just mark it and let the ring lock on.
+    if (naturalTarget) {
+      const p = this.project(naturalTarget);
+      if (p && this.onScreen(p, 10)) {
+        this.targetPos = { x: p.x, y: p.y };
+        ctx.save(); ctx.strokeStyle = t.tick; ctx.lineWidth = 1; ctx.globalAlpha = 0.8;
+        ctx.beginPath(); ctx.arc(p.x, p.y, 15, 0, Math.PI * 2); ctx.stroke(); ctx.restore();
+      }
+    }
     const planeAt = this.drawPlanes(planes, planeHit);
     this.drawOffscreen(offscreen, targetId);
     // The app decides what counts as locked on, so the ring, labels and tap area always agree.

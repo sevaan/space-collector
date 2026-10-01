@@ -6,6 +6,8 @@ const isDead = (o) => o.kind === 'PAY' && (o.ops === '-' || o.ops === 'D' || ((!
 
 // Order matters: the first matching set is the card's primary set.
 export const SETS = [
+  { id: 'wanderers', name: 'The Wanderers', color: '#c08a2e', test: (o) => o.type === 'moon' || o.type === 'planet' },
+  { id: 'bright-stars', name: 'Bright Stars', color: '#3f58a8', test: (o) => o.type === 'star' },
   { id: 'stations', name: 'Stations', color: '#e8412c', test: (o) => o.type === 'station' || /^(DRAGON|CREW DRAGON|SOYUZ|PROGRESS|SHENZHOU|TIANZHOU|CYGNUS)/.test(o.name) },
   { id: 'space-race', name: 'Space Race Relics', color: '#e8a33d', test: (o) => year(o) && year(o) <= 1975 },
   { id: 'red-stars', name: 'Red Stars', color: '#8c2334', test: (o) => o.type === 'rocket-body' && o.owner === 'CIS' },
@@ -27,7 +29,7 @@ export function assignSets(objects) {
     members.get(s.id).push(o);
   }
   for (const [id, list] of members) {
-    list.sort((a, b) => (a.launch ?? '9999').localeCompare(b.launch ?? '9999') || a.id - b.id);
+    list.sort((a, b) => (a.order ?? 0) - (b.order ?? 0) || (a.launch ?? '9999').localeCompare(b.launch ?? '9999') || a.id - b.id);
     list.forEach((o, i) => { o.setNumber = i + 1; o.setSize = list.length; });
   }
   return members;

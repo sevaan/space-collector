@@ -20,7 +20,7 @@ test('fleet members belong to one fleet card; the launch is the stamp', () => {
 });
 
 test('buildCards makes one Starlink card with its launches oldest first', () => {
-  const cards = buildCards(cat);
+  const cards = buildCards(cat).filter((c) => !c.natural);
   assert.equal(cards.length, 2);
   const fleet = cards.find((c) => c.key === 'STARLINK');
   assert.equal(fleet.name, 'Starlink');

@@ -47,6 +47,9 @@ export const TYPE_LABEL = {
   satellite: 'Satellite',
   station: 'Space Station',
   debris: 'Debris',
+  moon: 'Moon',
+  planet: 'Planet',
+  star: 'Star',
 };
 
 export function ownerName(code) { return OWNERS[code]?.name ?? code ?? 'Unknown'; }

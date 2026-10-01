@@ -63,5 +63,14 @@ Live: https://sevaan.github.io/space-collector/ (GitHub Pages, deploys from `mai
   are swapped by JS at the flip midpoint (Safari ignores backface-visibility here). Waits use timers,
   never animation.finished. Test Safari with Playwright WebKit (see scratchpad scripts), not just Chrome.
 
+- Natural cards (2026-09-30): `js/natural.js` = Moon, 5 naked-eye planets, 21 brightest stars (facts must
+  stay true; approximate values marked ~). Sets "The Wanderers" and "Bright Stars". They join the reticle
+  candidates in `tick` (behind satellites), drawn by the sky view itself (`naturalTarget` marks them).
+  Visible: Moon above horizon and not new (daylight OK); planets el > 2° with Sun < −3°; stars el > 3°
+  with Sun < −6°. Collectable once per observing night.
+- Levels count observing nights (local noon→noon by the sighting's longitude, `nightKey` in
+  js/observation.js): bronze 1, silver 3, gold 10. Silver/gold earned under the old sightings rule
+  (5/25, before 2026-10-01) are kept (`cardLevel` in js/card.js). Fleet cards count stamps instead.
+
 ## Deliberately out of scope for now
 Alerts, service worker, accounts, secret sets/feats.

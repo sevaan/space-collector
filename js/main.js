@@ -1,19 +1,20 @@
-import { VERSION } from './version.js?v=0.1.56';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode } from './orbit.js?v=0.1.56';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.56';
-import { SkyView, shortName } from './sky.js?v=0.1.56';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.56';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.56';
-import { cardArt } from './art.js?v=0.1.56';
-import { renderCard } from './card.js?v=0.1.56';
-import { playReveal, primeReveal, stopReveal } from './reveal.js?v=0.1.56';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.56';
-import { collectedDuringPass, canCapture } from './observation.js?v=0.1.56';
-import { TIER_INFO } from './rarity.js?v=0.1.56';
-import { SETS } from './sets.js?v=0.1.56';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.56';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.56';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter } from './planes.js?v=0.1.56';
+import { VERSION } from './version.js?v=0.1.57';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode } from './orbit.js?v=0.1.57';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.57';
+import { SkyView, shortName } from './sky.js?v=0.1.57';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.57';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.57';
+import { cardArt } from './art.js?v=0.1.57';
+import { renderCard, cardLevel } from './card.js?v=0.1.57';
+import { playReveal, primeReveal, stopReveal } from './reveal.js?v=0.1.57';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.57';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.57';
+import { naturalTargets } from './natural.js?v=0.1.57';
+import { TIER_INFO } from './rarity.js?v=0.1.57';
+import { SETS } from './sets.js?v=0.1.57';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.57';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.57';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter } from './planes.js?v=0.1.57';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -333,16 +334,27 @@ function tick(ts) {
     items.push({ obj: a.obj, label: label(a.obj), look: l, trail: pts, candidate: inReticle, angCos });
   }
 
+  // The Moon, planets and bright stars (js/natural.js). The sky view draws them itself; here they only
+  // join the candidates for the circle, behind any satellite (satellites don't wait around).
+  const naturals = [];
+  for (const n of naturalTargets(state.bodies, state.skyEnu?.stars)) {
+    if (!n.look.visible) continue;
+    const angCos = dot(n.look.enu, basis.back);
+    if (angCos > reticleCos) state.sticky.set(n.obj.id, t);
+    naturals.push({ obj: n.obj, label: label(n.obj), look: n.look, candidate: angCos > reticleCos, angCos });
+  }
+  state.naturals = naturals;
+
   // Candidates stay selectable for 1.5 s after leaving the circle so the card doesn't flicker away.
-  const cands = items
+  const cands = [...items, ...naturals]
     .filter((it) => (it.look.visible || state.captureAny) && t - (state.sticky.get(it.obj.id) ?? -1e9) < 1500)
-    .sort((a, b) => b.angCos - a.angCos)
+    .sort((a, b) => Number(!!a.obj.natural) - Number(!!b.obj.natural) || b.angCos - a.angCos)
     .slice(0, 5);
   for (const id of state.sticky.keys()) if (t - state.sticky.get(id) > 1500) state.sticky.delete(id);
   state.candidates = cands;
   let target;
   if (state.pinnedId) {
-    target = items.find(it => it.obj.id === state.pinnedId);
+    target = items.find(it => it.obj.id === state.pinnedId) ?? naturals.find(it => it.obj.id === state.pinnedId);
     if (!target) {
       const obj = state.byId.get(state.pinnedId);
       const l = obj && look(obj, frame(d, state.observer));
@@ -368,6 +380,7 @@ function tick(ts) {
     lines: state.showLines,
     targetId: state.targetId,
     lockedOn: state.lockedOn,
+    naturalTarget: target?.obj.natural ? target.look.enu : null,
     planes: state.planeItems,
     planeHit: plane?.plane.hex ?? null,
     newFind: !!state.newFind,
@@ -609,7 +622,9 @@ $('t-switch').addEventListener('click', () => {
 
 // Collected during this pass (the last 20 minutes of sky time)? Then the button offers View instead.
 // A later pass can be collected again, which is what levels a card up.
+// The Moon, planets and stars: once per observing night instead.
 function collectedThisPass(o, d) {
+  if (o.natural) return collectedTonight(state.sightings, cardKeyFor(o), d.getTime(), state.observer.lon);
   return collectedDuringPass(state.sightings, o.id, d.getTime(), false);
 }
 $('t-unpin').addEventListener('click', () => { state.pinnedId = null; state.targetId = null; state.sticky.clear(); });
@@ -651,18 +666,21 @@ function showCaptureCard(obj) {
     fleet = { newStamp, stamps, total: model.launches.length, cospar: stampKey.split(':')[1],
       level: fleetLevel(model.family, stamps), before: fleetLevel(model.family, newStamp ? stamps - 1 : stamps) };
   }
-  playReveal({ card, o: model, seen: sightings.length, fleet, origin: { x: sky.ring?.x ?? sky.cx, y: sky.ring?.y ?? sky.cy } });
+  // Levels count observing nights; pass the level before and after this sighting.
+  const progress = { level: cardLevel(sightings), before: cardLevel(sightings.slice(1)), nights: nightsIn(sightings) };
+  playReveal({ card, o: model, seen: sightings.length, fleet, progress, origin: { x: sky.ring?.x ?? sky.cx, y: sky.ring?.y ?? sky.cy } });
 }
 function openCard(obj) { saveExploreState(); location.href = `cards.html#${encodeURIComponent(cardKeyFor(obj))}`; }
 async function capture(obj) {
   if (state.captureBusy) return;
-  const d = now(), f = frame(d, state.observer), l = look(obj, f);
+  const d = now(), f = frame(d, state.observer);
+  const l = obj.natural ? state.naturals?.find((n) => n.obj.id === obj.id)?.look : look(obj, f);
   const basis = currentBasis();
   const aligned = l && dot(enuFromAzEl(l.az, l.el), basis.back) > Math.cos(sky.reticleDeg * RAD);
   if (!l || !canCapture({ visible: l.visible, aligned, practice: state.captureAny, allowAny: state.captureAny })) { toast('Line up the object while it is visible to capture it.'); return; }
-  if (collectedDuringPass(state.sightings, obj.id, d.getTime(), false)) { openCard(obj); return; }
-  const m = motion(obj, d, state.observer), key = cardKeyFor(obj);
-  const sighting = { objectId: obj.id, cardKey: key, ...(stampKeyFor(obj) ? { stampKey: stampKeyFor(obj) } : {}), name: obj.name, type: obj.type, year: obj.year, time: d.getTime(), loggedAt: Date.now(), lat: state.observer.lat, lon: state.observer.lon, az: l.az, el: l.el, mag: l.mag, rangeKm: l.rangeKm, heading: m?.heading, sim: false, appVersion: VERSION, cardSnapshot: cardSnapshot(obj) };
+  if (collectedThisPass(obj, d)) { openCard(obj); return; }
+  const m = obj.natural ? null : motion(obj, d, state.observer), key = cardKeyFor(obj);
+  const sighting = { objectId: obj.id, cardKey: key, ...(stampKeyFor(obj) ? { stampKey: stampKeyFor(obj) } : {}), name: obj.name, type: obj.type, year: obj.year, time: d.getTime(), loggedAt: Date.now(), lat: state.observer.lat, lon: state.observer.lon, az: l.az, el: l.el, mag: l.mag, rangeKm: l.rangeKm, heading: m?.heading, ...(l.phaseName ? { phase: l.phaseName } : {}), sim: false, appVersion: VERSION, cardSnapshot: cardSnapshot(obj) };
   state.captureBusy = true; setAction(false);
   try {
     const key = await addSighting(sighting);

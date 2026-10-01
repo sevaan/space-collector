@@ -32,3 +32,17 @@ export function collectedDuringPass(sightings, objectId, time, practice, passMs 
 export function canCapture({ visible = false, aligned = false, practice = false, allowAny = false } = {}) {
   return Boolean(aligned && (visible || (practice && allowAny)));
 }
+
+// An observing night runs from local noon to the next local noon, using the longitude where the
+// sighting was made (local solar time), so it doesn't depend on the phone's time zone.
+export function nightKey(time, lon = 0) {
+  return Math.floor((Number(time) + (Number(lon) || 0) / 15 * 3600e3 - 12 * 3600e3) / 86400e3);
+}
+export function nightsIn(sightings) {
+  return new Set(sightings.filter((s) => !s.sim && !s.practice).map((s) => nightKey(s.time, s.lon))).size;
+}
+// Natural objects (Moon, planets, stars) can be collected once per observing night.
+export function collectedTonight(sightings, cardKey, time, lon) {
+  const k = nightKey(time, lon);
+  return sightings.some((s) => !s.sim && !s.practice && s.cardKey === cardKey && nightKey(s.time, s.lon) === k);
+}

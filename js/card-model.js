@@ -1,7 +1,8 @@
 // Shared catalogue → card mapping. Constellations (Starlink, OneWeb, Qianfan, Kuiper) are one fleet
 // card each; every launch in the fleet is a stamp on that card. Other objects are one card each.
-import { assignSets } from './sets.js?v=0.1.56';
-import { tierFor } from './rarity.js?v=0.1.56';
+import { assignSets } from './sets.js?v=0.1.57';
+import { tierFor } from './rarity.js?v=0.1.57';
+import { NATURAL } from './natural.js?v=0.1.57';
 
 // Fleet members carry their launch key in the catalogue (`card` = 'STARLINK:2024-012'). That's the
 // stamp; the card itself is the fleet ('STARLINK').
@@ -66,6 +67,8 @@ export function buildCards(cat) {
       launches,
     });
   }
+  // The Moon, planets and bright stars aren't in the orbital catalogue but are cards too.
+  for (const n of NATURAL) cards.push({ ...n });
   assignSets(cards);
   return cards;
 }
