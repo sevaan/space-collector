@@ -2,10 +2,14 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { buildCards } from '../js/card-model.js';
-import { factFor, computedFacts } from '../js/lore.js';
+import { factFor, computedFacts, factSourceFor, loadLore } from '../js/lore.js';
 
-const cat = JSON.parse(fs.readFileSync(new URL('../data/catalog.json', import.meta.url), 'utf8'));
+const read = (p) => JSON.parse(fs.readFileSync(new URL(`../${p}`, import.meta.url), 'utf8'));
+const cat = read('data/catalog.json');
 const cards = buildCards(cat);
+globalThis.fetch = async (u) => ({ json: async () => read(String(u)) });
+await loadLore('data/lore.json');
+const series = read('data/series.json'), lore = read('data/lore.json');
 
 test('every card has a real fact', () => {
   for (const c of cards) {
@@ -38,4 +42,22 @@ test('date comparisons use the real dates', () => {
   assert.ok(!at('1989-06-01').some((f) => f.includes('World Wide Web')));
   assert.ok(at('2007-06-28').some((f) => f.includes('iPhone')));
   assert.ok(!at('2007-06-30').some((f) => f.includes('iPhone')));
+});
+
+test('researched Kosmos series facts reach their satellites, and each series cites a source', () => {
+  for (const [key, ser] of Object.entries(series.series)) for (const src of [ser.source].flat()) assert.match(src, /^https:\/\//, key);
+  const byId = new Map(cards.map((c) => [String(c.id), c]));
+  for (const [id, key] of Object.entries(series.members)) {
+    const c = byId.get(id); if (!c) continue;
+    const ser = series.series[key];
+    const expected = lore[id]?.fact ?? (ser.facts ? ser.facts[Number(id) % ser.facts.length] : ser.fact);
+    assert.equal(factFor(c), expected, `${c.name} (${key})`);
+  }
+  assert.match(factFor(byId.get('13301')), /British Columbia/);   // Kosmos 1383, COSPAS 1
+  assert.equal(factSourceFor(byId.get('13301')), 'Hand-written');
+  assert.match(factFor(byId.get('22675')), /Iridium 33/);         // Kosmos 2251
+});
+
+test('every hand-written fact added with a source names it', () => {
+  for (const [id, entry] of Object.entries(lore)) if (entry?.source) assert.match(entry.source, /^https:\/\//, id);
 });

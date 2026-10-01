@@ -1,9 +1,10 @@
-// Card titles and facts. Order: hand-written (data/lore.json) → rocket/satellite family fact →
-// a fact computed from the catalogue. Facts use **bold** for emphasis. Keep every fact TRUE: computed
+// Card titles and facts. Order: hand-written (data/lore.json) → researched series fact
+// (data/series.json, mostly Kosmos programmes) → rocket/satellite family fact → a fact computed from
+// the catalogue. Facts use **bold** for emphasis. Keep every fact TRUE: computed
 // facts only state what the catalogue says today (orbit, launch date and site) or simple date
 // comparisons. No extrapolating today's orbit back over decades (lifetime laps or distance).
 
-import { orbitStats, titleCase, siteName, ownerName } from './facts.js?v=0.1.59';
+import { orbitStats, titleCase, siteName, ownerName } from './facts.js?v=0.1.60';
 
 const FAMILY = [
   [/^IRIDIUM 33 DEB/, 'A piece of the **first-ever crash between two satellites**: Iridium 33 hit the dead Cosmos 2251 in 2009.'],
@@ -31,11 +32,13 @@ const WEB = '1989-03-12';      // Tim Berners-Lee's proposal for the World Wide 
 const GOOGLE = '1998-09-04';   // Google founded
 const IPHONE = '2007-06-29';   // first iPhone on sale
 
-let loreCache = null;
-export async function loadLore(url = 'data/lore.json') {
-  try { loreCache = await (await fetch(url)).json(); } catch { loreCache = {}; }
+let loreCache = null, seriesCache = null;
+export async function loadLore(url = 'data/lore.json', seriesUrl = url.replace('lore.json', 'series.json')) {
+  const get = async (u) => { try { return await (await fetch(u)).json(); } catch { return {}; } };
+  [loreCache, seriesCache] = await Promise.all([get(url), get(seriesUrl)]);
   return loreCache;
 }
+const seriesOf = (o) => seriesCache?.series?.[seriesCache?.members?.[o.id]] ?? null;
 
 const shortDate = (iso) => new Date(`${iso}T12:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 
@@ -108,6 +111,8 @@ export function factFor(o, now = new Date()) {
   if (o.members) return familyFact(o, now);
   const hand = loreCache?.[o.id]?.fact;
   if (hand) return hand;
+  const series = seriesOf(o);
+  if (series) return series.facts ? series.facts[Number(o.id) % series.facts.length] : series.fact;
   const fam = FAMILY.find(([re, , kinds]) => re.test(o.name) && (!kinds || kinds.includes(o.kind)));
   if (fam) return fam[1];
   const list = computedFacts(o);
@@ -118,6 +123,7 @@ export function factFor(o, now = new Date()) {
 export function factSourceFor(o) {
   if (o.natural || loreCache?.[o.id]?.fact) return 'Hand-written';
   if (o.launches) return 'Fleet summary';
+  if (seriesOf(o)) return 'Researched series';
   if (FAMILY.some(([re, , kinds]) => re.test(o.name) && (!kinds || kinds.includes(o.kind)))) return 'Rocket/satellite family';
   return 'From the catalogue';
 }

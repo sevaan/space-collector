@@ -1,5 +1,5 @@
 {
-  "_about": "Hand-written card facts, keyed by NORAD id. 'fact' shows on the card; 'stats' can override the third stat. Keep every fact true and checkable. Objects without an entry get a computed fact (see js/lore.js).",
+  "_about": "Hand-written card facts, keyed by NORAD id. 'fact' shows on the card; 'source' is where it was checked; 'stats' can override the third stat. Keep every fact true and checkable. Objects without an entry get a computed fact (see js/lore.js).",
   "25544": {
     "title": "International Space Station",
     "fact": "It's about the size of a football field and flies at **28,000 km/h**. It could cross Canada in about 12 minutes.",
@@ -51,5 +51,33 @@
       "WEIGHT",
       "1.5 kg"
     ]
+  },
+  "1573": {
+    "fact": "One of only two Strela-1 test satellites that carried an experimental **nuclear battery** (an RTG) as well as solar cells.",
+    "source": "https://space.skyrocket.de/doc_sdat/strela-1.htm"
+  },
+  "1588": {
+    "fact": "One of only two Strela-1 test satellites that carried an experimental **nuclear battery** (an RTG) as well as solar cells.",
+    "source": "https://space.skyrocket.de/doc_sdat/strela-1.htm"
+  },
+  "18129": {
+    "fact": "A Tsikada navigation satellite that also carried two **ham radio** transponders, RS-10 and RS-11, for radio amateurs to use.",
+    "source": "https://space.skyrocket.de/doc_sdat/tsikada.htm"
+  },
+  "13301": {
+    "fact": "The very first **COSPAS search-and-rescue** satellite. In September 1982, a few months after launch, it helped a ground station in Ottawa find a plane that had crashed in the mountains of **British Columbia**, and everyone on board was rescued.",
+    "source": "https://ethw.org/Milestones:Human_Rescue_Enabled_by_Space_Technology,_1982"
+  },
+  "17369": {
+    "fact": "The **first satellite to fly a TOPAZ nuclear reactor**, launched in 1987 to test it together with a new kind of electric rocket engine.",
+    "source": "https://en.wikipedia.org/wiki/TOPAZ_nuclear_reactor"
+  },
+  "18187": {
+    "fact": "The second of two experimental Soviet satellites that tested the **TOPAZ nuclear reactor** in 1987.",
+    "source": "https://en.wikipedia.org/wiki/TOPAZ_nuclear_reactor"
+  },
+  "22675": {
+    "fact": "In 2009 this dead Strela-2M relay satellite was hit by Iridium 33, the **first-ever crash between two satellites**. More than 600 pieces of debris were tracked afterwards.",
+    "source": "https://space.skyrocket.de/doc_sdat/strela-2m.htm"
   }
 }
