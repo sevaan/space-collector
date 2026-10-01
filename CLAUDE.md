@@ -72,5 +72,10 @@ Live: https://sevaan.github.io/space-collector/ (GitHub Pages, deploys from `mai
   js/observation.js): bronze 1, silver 3, gold 10. Silver/gold earned under the old sightings rule
   (5/25, before 2026-10-01) are kept (`cardLevel` in js/card.js). Fleet cards count stamps instead.
 
+- "Just a plane" (js/planes.js): live aircraft from adsb.lol via the relay `relay/handler.ts`, deployed as a
+  Val Town HTTP val (URL in `RELAY`; Deno Deploy signups were closed). The relay only answers
+  sevaan.github.io and localhost. Routes from adsbdb.com (CORS-open). If the relay changes, paste
+  relay/handler.ts into a new val and update `RELAY`.
+
 ## Deliberately out of scope for now
 Alerts, service worker, accounts, secret sets/feats.

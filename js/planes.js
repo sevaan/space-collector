@@ -3,8 +3,8 @@
 // adsb.lol doesn't allow browser requests directly. Routes come from adsbdb.com, which does.
 // No DOM here. Positions are extrapolated between fetches using ground speed, track and climb rate.
 
-// Set once the relay is deployed. Empty = feature off. localStorage 'planeRelay' overrides it (testing).
-const RELAY = '';
+// Empty = feature off. localStorage 'planeRelay' overrides it (testing).
+const RELAY = 'https://sevaan--cd67f53abd3511f18ee51607ee4eb77e.web.val.run'; // relay/handler.ts on Val Town
 const ROUTE_API = 'https://api.adsbdb.com/v0/callsign/';
 const POLL_MS = 10000;
 const RADIUS_NM = 40;    // ~75 km: an airliner at cruise height is ~8° up at that distance
