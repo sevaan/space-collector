@@ -1,9 +1,9 @@
-import { renderCard, renderCardTile, renderPassport, attachTilt, attachGyro } from './card.js?v=0.1.61';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.61';
-import { SETS, assignSets } from './sets.js?v=0.1.61';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.61';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.61';
-import { allSightings, deleteSighting } from './store.js?v=0.1.61';
+import { renderCard, renderCardTile, renderPassport, attachTilt, attachGyro } from './card.js?v=0.1.62';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.62';
+import { SETS, assignSets } from './sets.js?v=0.1.62';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.62';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.62';
+import { allSightings, deleteSighting } from './store.js?v=0.1.62';
 
 const $ = (id) => document.getElementById(id);
 const state = { cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -90,7 +90,7 @@ const observer = new IntersectionObserver((entries) => {
     const c = state.byKey.get(target.dataset.key);
     if (!c) continue;
     const tile = renderCardTile(c, { sightings: state.sightingsByKey.get(c.key) ?? [] });
-    tile.addEventListener('click', () => openViewer(state.list.findIndex((card) => card.key === c.key)));
+    tile.addEventListener('click', () => openViewer(state.list.findIndex((card) => card.key === c.key), tile.getBoundingClientRect()));
     target.replaceChildren(tile);
   }
 }, { rootMargin: '500px 0px' });
@@ -197,7 +197,9 @@ function showCard() {
     }
   }
 }
-function openViewer(i) {
+// from: the tile's screen rect, when opened by tapping a tile. The card rises out of it with a full
+// spin (its back shows while it faces away), like taking a closer look at a real card.
+function openViewer(i, from = null) {
   if (i < 0 || i >= state.list.length) return;
   askMotion();
   state.index = i; state.preview = false;
@@ -207,6 +209,50 @@ function openViewer(i) {
   document.body.style.overflow = 'hidden';
   $('v-close').focus();
   $('viewer').querySelector('.viewer-scroll').scrollTop = 0;
+  fadeViewer(true);
+  spin($('slot').firstElementChild, from, true);
+}
+
+// The viewer's background, backdrop and text fade in (and out) around the spinning card, so you see
+// it leave the grid.
+function fadeViewer(opening) {
+  if (reducedMotion.matches) return;
+  const v = $('viewer'), bg = getComputedStyle(v).backgroundColor, ms = opening ? 450 : 420;
+  const dir = opening ? 'normal' : 'reverse';
+  v.animate([{ backgroundColor: 'rgba(0, 0, 0, 0)' }, { backgroundColor: bg }], { duration: ms, direction: dir, fill: opening ? 'none' : 'forwards' });
+  try { v.animate([{ opacity: 0 }, { opacity: 1 }], { duration: ms, direction: dir, fill: opening ? 'none' : 'forwards', pseudoElement: '::backdrop' }); } catch {}
+  for (const el of [v.querySelector('.viewer-header'), $('v-status'), $('v-history'), $('v-preview')]) {
+    el?.animate([{ opacity: 0 }, { opacity: 1 }], { duration: opening ? 350 : 200, delay: opening ? 400 : 0, direction: dir, fill: 'both' });
+  }
+}
+
+const SPIN = { duration: 760, easing: 'cubic-bezier(.25,.8,.25,1)' };
+function spin(card, rect, opening) {
+  if (!card || reducedMotion.matches) return Promise.resolve();
+  const to = card.getBoundingClientRect();
+  const dx = rect ? rect.left + rect.width / 2 - (to.left + to.width / 2) : 0;
+  const dy = rect ? rect.top + rect.height / 2 - (to.top + to.height / 2) : innerHeight * .35;
+  const s = rect ? Math.max(.15, rect.width / to.width) : .3;
+  const away = `perspective(1600px) translate(${dx}px, ${dy}px) scale(${s}) rotateY(0deg)`, here = 'perspective(1600px) translate(0, 0) scale(1) rotateY(360deg)';
+  const opts = opening ? SPIN : { ...SPIN, duration: 520, easing: 'cubic-bezier(.5,0,.75,0)' };
+  // Offsets are in eased progress (effect-level easing), so the back shows exactly while rotateY is 90°–270°.
+  const back = [{ opacity: 0 }, { opacity: 0, offset: .25 }, { opacity: 1, offset: .25 }, { opacity: 1, offset: .75 }, { opacity: 0, offset: .75 }, { opacity: 0 }];
+  card.querySelector('.card__back')?.animate(back, opts);
+  const a = card.animate(opening ? [{ transform: away }, { transform: here }] : [{ transform: here }, { transform: away, opacity: rect ? 1 : 0 }], { ...opts, fill: 'forwards' });
+  return new Promise((r) => setTimeout(() => { r(); if (opening) a.cancel(); }, opts.duration));
+}
+// Done: spin the card back into its tile if that tile is on screen, then close.
+async function closeViewer() {
+  const c = state.list[state.index], card = $('slot').firstElementChild;
+  const tile = c && document.querySelector(`.tile-slot[data-key="${CSS.escape(c.key)}"]`);
+  const r = tile?.getBoundingClientRect();
+  const onScreen = r && r.bottom > 0 && r.top < innerHeight && r.width > 0;
+  stopEffects();
+  fadeViewer(false);
+  await spin(card, onScreen ? r : null, false);
+  $('viewer').close();
+  const v = $('viewer'); // drop the held fade-outs (backdrop included) so the next open starts clean
+  document.getAnimations().forEach((an) => { const t = an.effect?.target; if (t && (t === v || v.contains(t))) an.cancel(); });
 }
 function step(d) {
   state.index = (state.index + d + state.list.length) % state.list.length;
@@ -260,7 +306,7 @@ function endSwipe(e) {
 }
 slot.addEventListener('pointerup', endSwipe);
 slot.addEventListener('pointercancel', endSwipe);
-$('v-close').addEventListener('click', () => $('viewer').close());
+$('v-close').addEventListener('click', closeViewer);
 $('viewer').addEventListener('close', () => { stopEffects(); document.body.style.overflow = ''; lastFocus?.focus(); });
 $('slot').addEventListener('pointerdown', askMotion);
 $('v-preview').addEventListener('click', () => { state.preview = !state.preview; showCard(); });

@@ -1,11 +1,11 @@
 // Archival field cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { cardArt } from './art.js?v=0.1.61';
-import { TIER_INFO } from './rarity.js?v=0.1.61';
-import { SET_BY_ID } from './sets.js?v=0.1.61';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.61';
-import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText } from './lore.js?v=0.1.61';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.61';
-import { nightsIn } from './observation.js?v=0.1.61';
+import { cardArt } from './art.js?v=0.1.62';
+import { TIER_INFO } from './rarity.js?v=0.1.62';
+import { SET_BY_ID } from './sets.js?v=0.1.62';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.62';
+import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText } from './lore.js?v=0.1.62';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.62';
+import { nightsIn } from './observation.js?v=0.1.62';
 
 // Levels count observing nights (local noon to noon): bronze 1, silver 3, gold 10. Before
 // 2026-10-01 levels counted sightings (5 silver, 25 gold); anything earned that way is kept.
@@ -75,6 +75,7 @@ export function renderCard(o, opts = {}) {
     ${nat ? `<div class="card__stats">${o.stats.map(([label, value, unit]) => `<div><span class="card__label">${esc(label)}</span><b${String(value).length > 9 ? ' class="small"' : ''}>${esc(value)}${unit ? ` <small>${esc(unit)}</small>` : ''}</b></div>`).join('')}</div>` : `<div class="card__stats"><div><span class="card__label">MEAN ALTITUDE</span><b>${stats ? `${stats.alt.toLocaleString('en-US')} <small>km</small>` : '—'}</b></div><div><span class="card__label">ORBITS / DAY</span><b>${laps ? laps.toFixed(laps < 10 ? 1 : 0) : '—'}</b></div><div><span class="card__label">${esc(third.label)}</span><b>${esc(third.value)}</b></div></div>`}
     <div class="card__footer"><span>SPACE COLLECTOR</span><span>${o.archived ? 'SAVED FIELD RECORD' : 'CURRENT CATALOGUE EDITION'}</span></div>
     <div class="card__shine"></div><div class="card__glare"></div>
+    <div class="card__back" aria-hidden="true"><div><svg viewBox="0 0 64 48"><circle cx="32" cy="24" r="12"/><ellipse cx="32" cy="24" rx="29" ry="9" transform="rotate(-24 32 24)"/></svg><span>SPACE COLLECTOR</span></div></div>
     ${extinct ? `<div class="card__stamp">REENTERED${o.decay ? `<small>${esc(formatDate(o.decay)).toUpperCase()}</small>` : ''}</div>` : ''}
   </div></div>`;
   return el;
@@ -147,36 +148,65 @@ export function renderCardTile(o, opts = {}) {
   return tile;
 }
 
+// Tilt, glare and foil follow the finger (or phone tilt, via attachGyro) through a spring, so the card
+// overshoots a touch as you move it and wobbles gently back to rest when you let go.
+const FOLLOW = { k: 0.085, d: 0.27 };   // while handled: quick and tight
+const SETTLE = { k: 0.03, d: 0.13 };    // let go: slower, with a little wobble
+const MAX_RX = 15, MAX_RY = 19;         // degrees
 export function attachTilt(el) {
+  const cur = { x: .5, y: .5, o: 0 }, vel = { x: 0, y: 0, o: 0 }, want = { x: .5, y: .5, o: 0 };
+  let spring = SETTLE, raf = 0;
+  const state = { touching: false };
+  const write = () => {
+    const { x, y } = cur, o = Math.max(0, Math.min(1, cur.o));
+    el.style.setProperty('--mx', `${(x * 100).toFixed(1)}%`);
+    el.style.setProperty('--my', `${(y * 100).toFixed(1)}%`);
+    el.style.setProperty('--rx', `${((.5 - y) * 2 * MAX_RX).toFixed(2)}deg`);
+    el.style.setProperty('--ry', `${((x - .5) * 2 * MAX_RY).toFixed(2)}deg`);
+    el.style.setProperty('--bgx', `${(37 + x * 26).toFixed(1)}%`);
+    el.style.setProperty('--bgy', `${(33 + y * 34).toFixed(1)}%`);
+    el.style.setProperty('--hyp', Math.min(1, Math.hypot(x - .5, y - .5) * 2).toFixed(3));
+    el.style.setProperty('--o', o.toFixed(3));
+  };
+  const step = () => {
+    let moving = false;
+    for (const key of ['x', 'y', 'o']) {
+      vel[key] += (want[key] - cur[key]) * spring.k;
+      vel[key] *= 1 - spring.d;
+      cur[key] += vel[key];
+      if (Math.abs(vel[key]) > 1e-4 || Math.abs(want[key] - cur[key]) > 1e-3) moving = true;
+    }
+    write();
+    raf = moving ? requestAnimationFrame(step) : 0;
+  };
+  const kick = () => { if (!raf) raf = requestAnimationFrame(step); };
   const set = (px, py) => {
     if (reducedMotion()) { px = .5; py = .5; }
-    el.style.setProperty('--mx', `${(px * 100).toFixed(1)}%`);
-    el.style.setProperty('--my', `${(py * 100).toFixed(1)}%`);
-    el.style.setProperty('--rx', `${((.5 - py) * 18).toFixed(2)}deg`);
-    el.style.setProperty('--ry', `${((px - .5) * 22).toFixed(2)}deg`);
-    el.style.setProperty('--bgx', `${(40 + px * 20).toFixed(1)}%`);
-    el.style.setProperty('--bgy', `${(40 + py * 20).toFixed(1)}%`);
-    el.style.setProperty('--hyp', Math.min(1, Math.hypot(px - .5, py - .5) * 2).toFixed(3));
+    want.x = px; want.y = py; want.o = 1; spring = FOLLOW;
+    el.classList.add('active');
+    kick();
   };
-  const state = { touching: false };
+  const reset = () => {
+    want.x = .5; want.y = .5; want.o = 0; spring = SETTLE;
+    el.classList.remove('active');
+    kick();
+  };
   const onMove = (e) => {
     if (reducedMotion() || el.dataset.swiping) return;
     if (e.pointerType !== 'mouse') state.touching = true;
     const b = el.getBoundingClientRect();
-    el.classList.add('active');
     set(Math.max(0, Math.min(1, (e.clientX - b.left) / b.width)), Math.max(0, Math.min(1, (e.clientY - b.top) / b.height)));
   };
-  const reset = () => { state.touching = false; el.classList.remove('active'); set(.5, .5); };
   const release = () => { state.touching = false; };
   const events = { pointermove: onMove, pointerdown: onMove, pointerleave: reset, pointercancel: release, pointerup: (e) => { if (e.pointerType !== 'mouse') release(); } };
   for (const [name, handler] of Object.entries(events)) el.addEventListener(name, handler);
   // iOS can still start a page scroll from a touch; stop it so a finger on the card only tilts it.
   const noScroll = (e) => e.preventDefault();
   el.addEventListener('touchmove', noScroll, { passive: false });
-  reset();
+  write();
   return {
     set, reset, get touching() { return state.touching; },
-    destroy() { for (const [name, handler] of Object.entries(events)) el.removeEventListener(name, handler); el.removeEventListener('touchmove', noScroll); reset(); },
+    destroy() { for (const [name, handler] of Object.entries(events)) el.removeEventListener(name, handler); el.removeEventListener('touchmove', noScroll); cancelAnimationFrame(raf); raf = 0; cur.x = cur.y = .5; cur.o = 0; write(); },
   };
 }
 
@@ -192,8 +222,7 @@ export function attachGyro(el, tilt) {
     base.g += (e.gamma - base.g) * 0.01;
     const tx = .5 + Math.max(-1, Math.min(1, (e.gamma - base.g) / 20)) * .5;
     const ty = .5 + Math.max(-1, Math.min(1, (e.beta - base.b) / 20)) * .5;
-    px += (tx - px) * 0.35; py += (ty - py) * 0.35; // smooth out sensor jitter
-    el.classList.add('active');
+    px += (tx - px) * 0.5; py += (ty - py) * 0.5; // take the edge off sensor jitter; the spring does the rest
     tilt.set(px, py);
   };
   window.addEventListener('deviceorientation', onOri);

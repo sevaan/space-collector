@@ -7,8 +7,10 @@
   -webkit-user-select: none; user-select: none; touch-action: none; text-align: left; /* the card owns the finger: drag tilts, never scrolls */
 }
 .card *, .card *::before, .card *::after { box-sizing: border-box; }
-.card__rotator { width: 100%; min-height: inherit; transform: rotateX(var(--rx)) rotateY(var(--ry)); transition: transform .5s cubic-bezier(.2,.9,.3,1.2); transform-style: preserve-3d; border-radius: 1.15em; box-shadow: 0 1em 3em #0007; }
-.card.active .card__rotator { transition: transform .08s linear; }
+/* Tilt is driven by a spring in js/card.js (attachTilt), so no CSS transition here. The shadow
+   grows as the card is lifted (--o). */
+.card__rotator { width: 100%; min-height: inherit; transform: rotateX(var(--rx)) rotateY(var(--ry)) scale(calc(1 + var(--o, 0) * .02)); transform-style: preserve-3d; border-radius: 1.15em;
+  box-shadow: 0 calc(1em + var(--o, 0) * 1em) calc(3em + var(--o, 0) * 2em) #0008; }
 .card__face { position: relative; width: 100%; min-height: inherit; border-radius: 1.15em; overflow: hidden; display: flex; flex-direction: column; background: radial-gradient(ellipse at 10% 10%, #fff8 0, transparent 75%), var(--paper); border: .07em solid #c5cbbd; }
 .card.level-bronze .card__face { border-color: #b8793e; }
 .card.level-silver .card__face { border-color: #b9c1cc; }
@@ -79,59 +81,76 @@
 :where(html[data-theme="night"], body.night) .card, :where(html[data-theme="night"], body.night) .passport { --ink-stamp: #be6660; }
 :where(html[data-theme="night"], body.night) .fl-grid i { background: #3a1512; }
 :where(html[data-theme="night"], body.night) .passport__stamps, :where(html[data-theme="night"], body.night) .ink-stamp { background: #130606; }
-/* ---------- Shine, by rarity ---------- */
+/* ---------- Shine, by rarity ----------
+   Our own take on the poke-holo idea: a glare that follows your finger, plus foil and glitter layers
+   that slide as the card turns. Driven by --mx/--my (pointer), --bgx/--bgy (foil position), --hyp
+   (distance from centre) and --o (0 at rest, 1 while handled), all from the spring in js/card.js.
+   The glitter is SVG noise thresholded into sparse specks, so there are no image files. */
+.card { --glitter: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.95' numOctaves='1' seed='4'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 11 -7.6'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E"); --glitter2: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.7' numOctaves='2' seed='11'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 12 -8.4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E"); --nbgx: calc(100% - var(--bgx)); --nbgy: calc(100% - var(--bgy)); }
 .card__shine, .card__glare, .card__foil { position: absolute; inset: 0; pointer-events: none; }
 .card__glare {
   z-index: 7;
-  background: radial-gradient(farthest-corner circle at var(--mx) var(--my), rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0.12) 35%, rgba(0, 0, 0, 0.12) 90%);
-  mix-blend-mode: overlay; opacity: 0; transition: opacity 0.3s;
+  background: radial-gradient(farthest-corner circle at var(--mx) var(--my), hsla(0, 0%, 100%, .8) 6%, hsla(0, 0%, 100%, .5) 16%, hsla(0, 0%, 0%, .3) 90%);
+  mix-blend-mode: overlay; opacity: calc(var(--o, 0) * .8);
 }
-.card.active .card__glare { opacity: 0.8; }
 
-/* Uncommon: a soft sheen sweeping across */
+/* Uncommon: a pastel sheen that slides across the whole card. */
 .card.tier-uncommon .card__shine {
   z-index: 6;
-  background: linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, 0.7) 45%, transparent 60%);
-  background-size: 250% 250%; background-position: var(--bgx) var(--bgy);
-  mix-blend-mode: soft-light; opacity: 0; transition: opacity 0.3s;
+  background: linear-gradient(115deg, transparent 22%, hsla(185, 90%, 78%, .55) 38%, hsla(300, 85%, 82%, .55) 47%, hsla(55, 95%, 78%, .55) 56%, transparent 72%) var(--bgx) var(--bgy) / 300% 300%;
+  mix-blend-mode: color-dodge; opacity: calc(var(--o, 0) * .45);
 }
-.card.tier-uncommon.active .card__shine { opacity: 0.7; }
 
-/* Rare, Epic, Legendary: rainbow holo foil on the art window */
+/* Rare and up: rainbow beams with glitter in the picture window. */
 .card.tier-rare .card__foil, .card.tier-epic .card__foil, .card.tier-legendary .card__foil {
   background:
-    repeating-linear-gradient(110deg,
-      hsl(2, 90%, 70%) 0%, hsl(53, 90%, 70%) 7%, hsl(93, 85%, 65%) 14%, hsl(176, 85%, 65%) 21%,
-      hsl(228, 85%, 72%) 28%, hsl(283, 85%, 72%) 35%, hsl(2, 90%, 70%) 42%);
-  background-size: 400% 400%; background-position: var(--bgx) var(--bgy);
-  mix-blend-mode: color-dodge; opacity: 0; transition: opacity 0.3s;
+    var(--glitter) var(--nbgx) var(--nbgy) / 16em 16em,
+    repeating-linear-gradient(90deg, hsl(355, 92%, 66%) 0%, hsl(42, 95%, 62%) 1.2%, hsl(110, 80%, 58%) 2.4%, hsl(185, 88%, 58%) 3.6%, hsl(235, 88%, 68%) 4.8%, hsl(295, 82%, 68%) 6%, hsl(355, 92%, 66%) 7.2%) var(--bgx) 50% / 400% 100%,
+    repeating-linear-gradient(90deg, hsla(0, 0%, 0%, .75) 0%, hsla(0, 0%, 100%, .2) 1.8%, hsla(0, 0%, 0%, .75) 3.6%) var(--nbgx) 50% / 300% 100%;
+  background-blend-mode: screen, hard-light, normal;
+  mix-blend-mode: color-dodge; filter: brightness(.55) contrast(1.7) saturate(1.2);
+  opacity: calc(var(--o, 0) * (.18 + var(--hyp, 0) * .45));
 }
-.card.active .card__foil { opacity: calc(0.2 + var(--hyp) * 0.5); }
 .card.uncaught .card__foil { display: none; }
 
-/* Epic: fine glitter over the whole card */
+/* Epic: a cosmos foil over the whole card. Two glitter fields drift in opposite directions over a
+   slow diagonal rainbow. */
 .card.tier-epic .card__shine {
   z-index: 6;
   background:
-    radial-gradient(circle at 20% 30%, #fff 0 0.08em, transparent 0.1em) 0 0 / 1.3em 1.3em,
-    radial-gradient(circle at 70% 80%, #fff 0 0.06em, transparent 0.08em) 0.6em 0.4em / 1.7em 1.7em,
-    repeating-linear-gradient(120deg, hsl(280, 80%, 75%) 0%, hsl(200, 80%, 70%) 10%, hsl(320, 80%, 75%) 20%) var(--bgx) var(--bgy) / 300% 300%;
-  mix-blend-mode: color-dodge; opacity: 0; transition: opacity 0.3s;
+    var(--glitter) var(--bgx) var(--bgy) / 13em 13em,
+    var(--glitter2) var(--nbgx) var(--nbgy) / 21em 21em,
+    repeating-linear-gradient(125deg, hsl(272, 85%, 70%) 0%, hsl(200, 88%, 66%) 7%, hsl(322, 85%, 72%) 14%, hsl(272, 85%, 70%) 21%) var(--bgx) var(--bgy) / 300% 300%;
+  background-blend-mode: screen, screen, normal;
+  mix-blend-mode: color-dodge; filter: brightness(.38) contrast(2.6) saturate(1.4);
+  opacity: calc(var(--o, 0) * (.35 + var(--hyp, 0) * .4));
 }
-.card.tier-epic.active .card__shine { opacity: calc(0.12 + var(--hyp) * 0.3); }
 
-/* Legendary: stronger art foil, a gold glint sweeping the whole card, and a gold edge */
+/* Legendary: gold. Two gold glitter fields slide past each other with a bright glint sweeping
+   across, a stronger art foil, and a gold edge. */
 .card.tier-legendary .card__shine {
   z-index: 6;
-  background: linear-gradient(115deg, transparent 38%, rgba(255, 226, 150, 0.9) 47%, rgba(255, 255, 255, 0.95) 50%, rgba(255, 226, 150, 0.9) 53%, transparent 62%)
-    var(--bgx) var(--bgy) / 300% 300%;
-  mix-blend-mode: soft-light; opacity: 0; transition: opacity 0.3s;
+  background:
+    linear-gradient(115deg, transparent 36%, rgba(255, 226, 150, .85) 46%, rgba(255, 255, 255, .95) 50%, rgba(255, 226, 150, .85) 54%, transparent 64%) var(--bgx) var(--bgy) / 300% 300%,
+    var(--glitter) var(--bgx) var(--bgy) / 12em 12em,
+    var(--glitter2) var(--nbgx) var(--nbgy) / 19em 19em,
+    linear-gradient(135deg, #8a6417, #f7d77a 35%, #b8862a 60%, #fbe7a6 85%);
+  background-blend-mode: normal, screen, screen, normal;
+  mix-blend-mode: soft-light; opacity: calc(var(--o, 0) * .9);
 }
-.card.tier-legendary.active .card__shine { opacity: 0.9; }
-.card.tier-legendary.active .card__foil { opacity: calc(0.35 + var(--hyp) * 0.5); }
-.card.tier-legendary .card__rotator { box-shadow: 0 0 0 0.25em #e8c35a, 0 1em 3em rgba(0, 0, 0, 0.45); }
+.card.tier-legendary .card__foil { opacity: calc(var(--o, 0) * (.3 + var(--hyp, 0) * .45)); }
+.card.tier-legendary .card__rotator { box-shadow: 0 0 0 .25em #e8c35a, 0 calc(1em + var(--o, 0) * 1em) calc(3em + var(--o, 0) * 2em) rgba(0, 0, 0, .5); }
 .card.tier-legendary.uncaught .card__shine { display: none; }
 .card.extinct .card__shine, .card.extinct .card__foil { display: none; }
+
+/* The back of the card, seen only mid-spin in the collection's closer look (js/cards-page.js). It is
+   pre-mirrored so it reads correctly while the card faces away. */
+.card__back { position: absolute; inset: 0; z-index: 9; border-radius: 1.15em; opacity: 0; pointer-events: none; transform: scaleX(-1);
+  display: grid; place-items: center; text-align: center; border: .25em solid var(--tier);
+  background: radial-gradient(circle at 50% 42%, color-mix(in srgb, var(--tier) 30%, transparent) 0%, transparent 45%),
+    repeating-linear-gradient(45deg, rgba(255, 255, 255, .035) 0 2px, transparent 2px 14px), linear-gradient(160deg, #13244a, #081230 70%); }
+.card__back svg { width: 9em; height: 7em; stroke: var(--tier); stroke-width: 1.6; fill: none; }
+.card__back span { display: block; margin-top: 1.2em; font: 800 1.3em Inter, system-ui, sans-serif; letter-spacing: .3em; color: #dfe8ff; }
 
 /* Thumbnail typography is deliberately independent of the full card's scale. */
 .card-tile { display: flex; flex-direction: column; width: 100%; padding: 0; text-align: left; font: inherit; color: #193639; background: #eeecdf; border: 1px solid #d1d4c5; border-radius: 12px; overflow: hidden; cursor: pointer; transition: transform .2s, box-shadow .2s; }
@@ -162,5 +181,5 @@
 :where(html[data-theme="night"], body.night) .card-tile__tier, :where(html[data-theme="night"], body.night) .card-tile__status { color: #a45650; border-color: #52221f; }
 @media (prefers-reduced-motion: reduce) {
   .card__rotator, .card-tile { transform: none !important; transition: none !important; }
-  .card__shine, .card__glare, .card__foil { transition: none !important; background-position: 50% 50% !important; }
+  .card__shine, .card__glare, .card__foil { background-position: 50% 50% !important; }
 }

@@ -28,6 +28,10 @@ Live: https://sevaan.github.io/space-collector/ (GitHub Pages, deploys from `mai
   hidden. Time travel lives only in More → Testing tools. "Find a visible pass" reports when/where, no jump.
 - Card viewer: the card owns touch (touch-action: none) and phone tilt is always on (iOS permission is
   asked from the tap that opens a card). A finger on the card overrides tilt.
+- Card feel (2026-10-02, after poke-holo.simey.me, written from scratch since that repo is GPL): tilt/glare/
+  foil run on a spring in `attachTilt` (js/card.js) feeding --rx/--ry/--mx/--my/--bgx/--bgy/--hyp/--o;
+  foils per rarity in css/cards.css (glitter = SVG noise data URIs). Collection "closer look": tile →
+  card spins a full turn into view, `.card__back` shows mid-spin; Done spins it back (js/cards-page.js).
 
 ## Layout
 - `js/orbit.js` – SGP4 propagation (vendored satellite.js 6.0.2 in `js/lib/`), visibility (sunlit +
