@@ -1,20 +1,20 @@
-import { VERSION } from './version.js?v=0.1.60';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode } from './orbit.js?v=0.1.60';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.60';
-import { SkyView, shortName } from './sky.js?v=0.1.60';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.60';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.60';
-import { cardArt } from './art.js?v=0.1.60';
-import { renderCard, cardLevel } from './card.js?v=0.1.60';
-import { playReveal, primeReveal, stopReveal } from './reveal.js?v=0.1.60';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.60';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.60';
-import { naturalTargets } from './natural.js?v=0.1.60';
-import { TIER_INFO } from './rarity.js?v=0.1.60';
-import { SETS } from './sets.js?v=0.1.60';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.60';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.60';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter } from './planes.js?v=0.1.60';
+import { VERSION } from './version.js?v=0.1.61';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode } from './orbit.js?v=0.1.61';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.61';
+import { SkyView, shortName } from './sky.js?v=0.1.61';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.61';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.61';
+import { cardArt } from './art.js?v=0.1.61';
+import { renderCard, cardLevel } from './card.js?v=0.1.61';
+import { playReveal, playView, primeReveal, stopReveal } from './reveal.js?v=0.1.61';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.61';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.61';
+import { naturalTargets } from './natural.js?v=0.1.61';
+import { TIER_INFO } from './rarity.js?v=0.1.61';
+import { SETS } from './sets.js?v=0.1.61';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.61';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.61';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter } from './planes.js?v=0.1.61';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -590,7 +590,7 @@ function renderTarget(target, d) {
   const meta = $('t-meta');
   if (eligible || collected) { meta.className = ''; meta.textContent = `${tier.label} · in your collection · ${brightnessWord(l.mag)}`; }
   else { meta.className = 'turn'; meta.textContent = turnHint(l); }
-  setAction(collected, eligible);
+  setAction();
 }
 
 // Keep the tap-the-circle overlay on top of the reticle wherever the sky view puts it.
@@ -628,21 +628,24 @@ function collectedThisPass(o, d) {
   return collectedDuringPass(state.sightings, o.id, d.getTime(), false);
 }
 $('t-unpin').addEventListener('click', () => { state.pinnedId = null; state.targetId = null; state.sticky.clear(); });
-$('t-action').addEventListener('click', () => {
+// Something already in your collection: the toast's View button spins the card out right here. If it's
+// in the circle and you haven't logged it this pass (or tonight, for the Moon, planets and stars),
+// viewing it also counts as seeing it again, which is what levels a card up.
+$('t-action').addEventListener('click', async () => {
   const target = state.activeTarget;
   unlockAudio();
   primeReveal();
   if (!target || state.captureBusy) return;
-  if (collectedThisPass(target.obj, now())) { openCard(target.obj); return; }
-  capture(target.obj);
+  const o = target.obj, d = now(), from = $('t-art').getBoundingClientRect();
+  let counted = false;
+  if (state.lockedOn && (target.look.visible || state.captureAny) && !collectedThisPass(o, d)) counted = !!(await recordSighting(o, d));
+  showViewCard(o, from, counted);
 });
-function setAction(collected, eligible = true) {
+function setAction() {
   const btn = $('t-action');
-  btn.dataset.state = collected ? 'view' : 'collect';
-  btn.className = collected ? 'view' : 'collect';
-  btn.hidden = !collected && !eligible; // off target there's nothing to press, just the turn hint
+  btn.className = 'view';
   btn.disabled = state.captureBusy;
-  btn.textContent = state.captureBusy ? 'Saving…' : collected ? 'View' : 'Collect';
+  btn.textContent = state.captureBusy ? 'Saving…' : 'View';
 }
 function cardModel(obj) { return state.cardModels.get(cardKeyFor(obj)) ?? obj; }
 function cardSnapshot(obj) {
@@ -670,7 +673,21 @@ function showCaptureCard(obj) {
   const progress = { level: cardLevel(sightings), before: cardLevel(sightings.slice(1)), nights: nightsIn(sightings) };
   playReveal({ card, o: model, seen: sightings.length, fleet, progress, origin: { x: sky.ring?.x ?? sky.cx, y: sky.ring?.y ?? sky.cy } });
 }
-function openCard(obj) { saveExploreState(); location.href = `cards.html#${encodeURIComponent(cardKeyFor(obj))}`; }
+// Open an owned card in place, spinning out of the toast. counted: this view also logged a sighting.
+function showViewCard(obj, from, counted) {
+  const model = cardModel(obj), key = cardKeyFor(obj);
+  const sightings = state.sightings.filter(s => !s.sim && s.cardKey === key);
+  const card = renderCard(model, { sightings, seenMembers: new Set(sightings.map(s => s.objectId)).size });
+  $('reveal-view').href = `cards.html#${encodeURIComponent(key)}`;
+  openPanel('reveal');
+  let sighting = null;
+  if (counted) {
+    const level = model.launches ? fleetLevel(model.family, stampsIn(sightings).size) : cardLevel(sightings);
+    const before = model.launches ? level : cardLevel(sightings.slice(1));
+    sighting = { seen: sightings.length, nights: nightsIn(sightings), level, levelUp: level !== before };
+  }
+  playView({ card, o: model, from, sighting });
+}
 async function capture(obj) {
   if (state.captureBusy) return;
   const d = now(), f = frame(d, state.observer);
@@ -678,18 +695,26 @@ async function capture(obj) {
   const basis = currentBasis();
   const aligned = l && dot(enuFromAzEl(l.az, l.el), basis.back) > Math.cos(sky.reticleDeg * RAD);
   if (!l || !canCapture({ visible: l.visible, aligned, practice: state.captureAny, allowAny: state.captureAny })) { toast('Line up the object while it is visible to capture it.'); return; }
-  if (collectedThisPass(obj, d)) { openCard(obj); return; }
+  if (collectedThisPass(obj, d)) { showViewCard(obj, null, false); return; }
+  if (await recordSighting(obj, d, l)) showCaptureCard(obj);
+}
+
+// Save a real sighting of obj at sky time d. Returns the saved record, or null (and says why).
+async function recordSighting(obj, d, l = null) {
+  l ??= obj.natural ? state.naturals?.find((n) => n.obj.id === obj.id)?.look : look(obj, frame(d, state.observer));
+  if (!l) return null;
   const m = obj.natural ? null : motion(obj, d, state.observer), key = cardKeyFor(obj);
   const sighting = { objectId: obj.id, cardKey: key, ...(stampKeyFor(obj) ? { stampKey: stampKeyFor(obj) } : {}), name: obj.name, type: obj.type, year: obj.year, time: d.getTime(), loggedAt: Date.now(), lat: state.observer.lat, lon: state.observer.lon, az: l.az, el: l.el, mag: l.mag, rangeKm: l.rangeKm, heading: m?.heading, ...(l.phaseName ? { phase: l.phaseName } : {}), sim: false, appVersion: VERSION, cardSnapshot: cardSnapshot(obj) };
-  state.captureBusy = true; setAction(false);
+  state.captureBusy = true; setAction();
   try {
     const key = await addSighting(sighting);
-    state.sightings.unshift({ ...sighting, key });
-
-    showCaptureCard(obj);
+    const saved = { ...sighting, key };
+    state.sightings.unshift(saved);
+    return saved;
   } catch {
     toast('Your sighting could not be saved. Check that browser storage is available, then try again.', 5000);
-  } finally { state.captureBusy = false; setAction(collectedThisPass(obj, d)); }
+    return null;
+  } finally { state.captureBusy = false; setAction(); }
 }
 
 // ---------- sightings ----------

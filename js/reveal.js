@@ -5,8 +5,8 @@
 //  Everything scales with rarity (Legendary dims the sky, shockwave, held breath, slow flip, fanfare).
 // Waits use timers, not animation.finished, so a paused tab can never freeze the sequence.
 
-import { TIER_INFO } from './rarity.js?v=0.1.60';
-import { levelFor, attachTilt, attachGyro } from './card.js?v=0.1.60';
+import { TIER_INFO } from './rarity.js?v=0.1.61';
+import { levelFor, attachTilt, attachGyro } from './card.js?v=0.1.61';
 
 const FX = {
   common:    { particles: 14,  flip: 520,  spin: 0,   dim: 0,   shock: false, notes: [880],                            hold: 0 },
@@ -173,6 +173,47 @@ export async function playReveal({ card, o, seen, origin, fleet = null, progress
   await flipped;
   if (!alive()) return;
   return finish({ fx, color, fresh, seen, level, levelUp, card, alive, fleet, newStamp, nights });
+}
+
+// Already in your collection: the card spins out of the toast's thumbnail and settles, ready to tilt.
+// from: the thumbnail's screen rect. sighting: { seen, nights, level, levelUp } when tapping View also
+// counted as seeing it again tonight (then a stamp lands), or null when you're only looking.
+export async function playView({ card, o, from, sighting = null }) {
+  stopReveal();
+  const my = run, alive = () => my === run;
+  const tierKey = FX[o.tier] ? o.tier : 'common';
+  const fx = FX[tierKey], color = (TIER_INFO[tierKey] ?? TIER_INFO.common).color;
+  const root = $('reveal');
+  root.style.setProperty('--fx', color);
+  root.classList.remove('rv-done');
+  $('reveal-eyebrow').textContent = !sighting ? 'IN YOUR COLLECTION' : sighting.levelUp ? `${LEVEL_NAME[sighting.level]} CARD UNLOCKED` : 'SEEN AGAIN';
+  $('reveal-card').replaceChildren(card);
+  for (const id of ['rv-holder', 'rv-flipper', 'rv-stamp', 'rv-dot', 'rv-dim', 'rv-flash', 'rv-shock']) $(id).getAnimations().forEach((a) => a.cancel());
+  $('rv-holder').classList.remove('live');
+  $('rv-stamp').style.opacity = 0;
+  $('rv-back').classList.remove('glow');
+  $('rv-dim').style.opacity = 0;
+  $('rv-dot').style.opacity = 0;
+  $('rv-flipper').style.transform = 'rotateY(180deg)';
+  showFace('front');
+  sizeCard(card);
+  // Start shrunk onto the thumbnail, spinning, and unwind into the middle of the screen.
+  const h = $('rv-holder').getBoundingClientRect();
+  const dx = from ? from.left + from.width / 2 - (h.left + h.width / 2) : 0;
+  const dy = from ? from.top + from.height / 2 - (h.top + h.height / 2) : innerHeight / 3;
+  const s = from ? Math.max(0.06, from.height / h.height) : 0.2;
+  whoosh();
+  await play($('rv-holder'), [
+    { opacity: 0.3, transform: `translate(${dx}px, ${dy}px) scale(${s}) rotate(-320deg)` },
+    { opacity: 1, transform: 'translate(0, 0) scale(1.04) rotate(6deg)', offset: 0.78 },
+    { opacity: 1, transform: 'translate(0, 0) scale(1) rotate(0deg)' },
+  ], { duration: reduced() ? 1 : 640, easing: 'cubic-bezier(.2,.8,.25,1)', fill: 'forwards' });
+  if (!alive()) return;
+  if (sighting) return finish({ fx, color, fresh: false, seen: sighting.seen, level: sighting.level, levelUp: sighting.levelUp, card, alive, nights: sighting.nights });
+  $('rv-sweep').classList.remove('go'); void $('rv-sweep').offsetWidth; $('rv-sweep').classList.add('go');
+  tilt = attachTilt(card);
+  stopGyro = attachGyro(card, tilt);
+  root.classList.add('rv-done');
 }
 
 // 4. Light sweeps the card, sparks fly, the stamp lands, and the card is yours to tilt.

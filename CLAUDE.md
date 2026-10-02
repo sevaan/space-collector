@@ -42,8 +42,10 @@ Live: https://sevaan.github.io/space-collector/ (GitHub Pages, deploys from `mai
   (default, navy/gold/cyan, based on Sevaan's mockup: Milky Way glow, tree line, beaded paths,
   sparkle reticle) and `night` (all red). UI chrome in `index.html` + `css/app.css` (body.night).
 - Target UI (chosen 2026-09-29): never-collected object lined up → no card, the reticle glows gold,
-  name above, "TAP TO COLLECT" below, tap the circle (`#discover`). Already collected → slim one-line
-  bar (`#target`) with Collect / View. Off target both just show a turn hint. No "line up" button.
+  name above, "TAP TO COLLECT" below, tap the circle (`#discover`). Already collected → a toast at the
+  bottom (`#target`) saying what it is, with View: the card spins out of the toast in place
+  (`playView` in js/reveal.js). If it's in the circle and not logged this pass (natural objects: tonight),
+  View also records a sighting (SEEN n× stamp, levels). No Collect button for owned objects (2026-10-02). Off target both just show a turn hint. No "line up" button.
 - Top-left radar (`#radar`, drawn in `updateCompass`): heading-up all-sky map + compass + "N up · N new"
   tab; tap opens the visible list. Replaced the compass, the visible-now pill and the status text.
 - `js/main.js` – app state, render loop, candidates/capture, settings panel. No journal (removed
