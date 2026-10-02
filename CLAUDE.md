@@ -49,7 +49,11 @@ Live: https://sevaan.github.io/space-collector/ (GitHub Pages, deploys from `mai
   name above, "TAP TO COLLECT" below, tap the circle (`#discover`). Already collected → a toast at the
   bottom (`#target`) saying what it is, with View: the card spins out of the toast in place
   (`playView` in js/reveal.js). If it's in the circle and not logged this pass (natural objects: tonight),
-  View also records a sighting (SEEN n× stamp, levels). No Collect button for owned objects (2026-10-02). Off target both just show a turn hint. No "line up" button.
+  View also records a sighting (SEEN n× stamp, levels). No Collect button for owned objects (2026-10-02).
+  The whole mini card is the button (no View button); × closes it (unpins a selection, or hides it until
+  you point at something else).
+- Selecting: tap an object in the sky (`tapSky`, hit test from `sky.hits` + natural targets) or a row in
+  Visible now (radar) to pin it; guidance shows which way to turn. Tap empty sky to let go. Off target both just show a turn hint. No "line up" button.
 - Top-left radar (`#radar`, drawn in `updateCompass`): heading-up all-sky map + compass + "N up · N new"
   tab; tap opens the visible list. Replaced the compass, the visible-now pill and the status text.
 - `js/main.js` – app state, render loop, candidates/capture, settings panel. No journal (removed

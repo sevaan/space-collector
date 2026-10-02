@@ -1,8 +1,8 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
 // Two themes: 'glass' (navy sky, gold satellites, cyan reticle) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.62';
-import { TIER_INFO } from './rarity.js?v=0.1.62';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.63';
+import { TIER_INFO } from './rarity.js?v=0.1.63';
 
 const RAD = Math.PI / 180;
 const FONT = '-apple-system, "SF Pro Text", system-ui, sans-serif';
@@ -654,6 +654,7 @@ export class SkyView {
     const focus = items.find((it) => it.obj.id === targetId) ?? (!targetId ? candidates.find((it) => it.candidate) : null);
     const labelIds = new Set(candidates.filter((it) => it.obj.id !== targetId).slice(0, targetId ? 2 : 4).map((it) => it.obj.id));
     this.targetPos = null;
+    this.hits = []; // where each visible satellite was drawn, for tap-to-select (js/main.js)
     if (focus?.trail?.length && focus.look.visible) this.drawTrail(focus.trail, true);
     for (const it of items) {
       const { look } = it;
@@ -667,6 +668,7 @@ export class SkyView {
         if (isTarget || !this.onScreen(p, 10)) continue;
       }
       if (isTarget) this.targetPos = { x: p.x, y: p.y };
+      if (look.visible) this.hits.push({ id: it.obj.id, x: p.x, y: p.y });
       const size = look.visible || isTarget ? this.iconSize(look.mag, it.obj) * (isTarget ? 1.3 : 1) : 7;
       const radius = size / 2;
       ctx.save();

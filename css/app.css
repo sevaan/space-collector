@@ -38,14 +38,16 @@ a { color:var(--cyan); }
 #t-switch { flex:none;font-size:11px;color:var(--cyan);background:none;border:0;padding:0; }
 #t-meta { font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
 #t-meta.turn { color:var(--cyan); }
-#t-action { flex:none;min-height:40px;padding:0 16px;border-radius:999px;font-weight:700;font-size:14px; }
-#t-action.view { background:var(--cyan);color:#06202a;border:0; }
+/* The whole mini card opens the card; › hints at that, × closes it. */
+#target { cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .12s,border-color .2s; }
+#target:active { transform:scale(.97); }
+#target.busy { opacity:.6; }
+#t-go { flex:none;font-size:26px;line-height:1;color:var(--cyan);padding:0 2px 3px; }
 /* Already in your collection: the toast rises from the bottom when you line one up. */
 #target:not([hidden]) { animation:toastIn .32s cubic-bezier(.2,.9,.3,1.15); }
 @keyframes toastIn { from { opacity:0; transform:translateY(24px) scale(.96); } to { opacity:1; transform:none; } }
 @media (prefers-reduced-motion: reduce) { #target:not([hidden]) { animation:none; } }
-body.night #t-action.view { background:#5a1a14;color:#ffb3a8; }
-#t-unpin { flex:none;width:28px;height:28px;border-radius:50%;background:none;border:0;color:var(--muted);font-size:18px; }
+#t-close { flex:none;width:36px;height:36px;margin:-4px -2px -4px 0;border-radius:50%;background:none;border:0;color:var(--muted);font-size:20px; }
 #discover { position:fixed;inset:0;pointer-events:none;z-index:2; }
 #discover .d-label { position:absolute;left:var(--cx);top:calc(var(--cy) - var(--r) - 14px);transform:translate(-50%,-100%);text-align:center;white-space:nowrap;text-shadow:0 1px 6px #000,0 0 14px #000; }
 #d-tier { display:block;font-size:10px;letter-spacing:.14em;font-weight:700;color:var(--gold);text-transform:uppercase; }

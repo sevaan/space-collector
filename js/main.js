@@ -1,20 +1,20 @@
-import { VERSION } from './version.js?v=0.1.62';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode } from './orbit.js?v=0.1.62';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.62';
-import { SkyView, shortName } from './sky.js?v=0.1.62';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.62';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.62';
-import { cardArt } from './art.js?v=0.1.62';
-import { renderCard, cardLevel } from './card.js?v=0.1.62';
-import { playReveal, playView, primeReveal, stopReveal } from './reveal.js?v=0.1.62';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.62';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.62';
-import { naturalTargets } from './natural.js?v=0.1.62';
-import { TIER_INFO } from './rarity.js?v=0.1.62';
-import { SETS } from './sets.js?v=0.1.62';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.62';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.62';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter } from './planes.js?v=0.1.62';
+import { VERSION } from './version.js?v=0.1.63';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode } from './orbit.js?v=0.1.63';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.63';
+import { SkyView, shortName } from './sky.js?v=0.1.63';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.63';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.63';
+import { cardArt } from './art.js?v=0.1.63';
+import { renderCard, cardLevel } from './card.js?v=0.1.63';
+import { playReveal, playView, primeReveal, stopReveal } from './reveal.js?v=0.1.63';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.63';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.63';
+import { naturalTargets } from './natural.js?v=0.1.63';
+import { TIER_INFO } from './rarity.js?v=0.1.63';
+import { SETS } from './sets.js?v=0.1.63';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.63';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.63';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter } from './planes.js?v=0.1.63';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -548,8 +548,9 @@ function switchLabel(o) {
 function renderTarget(target, d) {
   const bar = $('target'), disc = $('discover'), guide = $('guidance');
   $('callout').hidden = true;
-  if (!target) { bar.hidden = disc.hidden = guide.hidden = true; state.newFind = false; shownTargetId = barTargetId = null; return; }
+  if (!target) { bar.hidden = disc.hidden = guide.hidden = true; state.newFind = false; state.dismissedId = null; shownTargetId = barTargetId = null; return; }
   shownTargetId = target.obj.id;
+  if (state.dismissedId != null && target.obj.id !== state.dismissedId) state.dismissedId = null; // a closed mini card returns once you've moved on
   const o = target.obj, l = target.look;
   const tier = TIER_INFO[o.tier] ?? TIER_INFO.common;
   const aligned = state.lockedOn;
@@ -578,7 +579,11 @@ function renderTarget(target, d) {
 
   // Seen before
   state.newFind = false;
-  disc.hidden = true; guide.hidden = true; bar.hidden = false;
+  disc.hidden = true; guide.hidden = true;
+  // Closed with ×: stays hidden until you point at something else.
+  if (state.dismissedId === o.id) { bar.hidden = true; barTargetId = null; return; }
+  state.dismissedId = null;
+  bar.hidden = false;
   if (o.id !== barTargetId) {
     barTargetId = o.id;
     bar.style.setProperty('--tier', tier.color);
@@ -586,11 +591,10 @@ function renderTarget(target, d) {
     $('t-name').textContent = label(o);
   }
   $('t-switch').hidden = !sw; $('t-switch').textContent = sw;
-  $('t-unpin').hidden = !state.pinnedId;
+  bar.classList.toggle('busy', state.captureBusy);
   const meta = $('t-meta');
   if (eligible || collected) { meta.className = ''; meta.textContent = `${tier.label} · in your collection · ${brightnessWord(l.mag)}`; }
   else { meta.className = 'turn'; meta.textContent = turnHint(l); }
-  setAction();
 }
 
 // Keep the tap-the-circle overlay on top of the reticle wherever the sky view puts it.
@@ -627,11 +631,21 @@ function collectedThisPass(o, d) {
   if (o.natural) return collectedTonight(state.sightings, cardKeyFor(o), d.getTime(), state.observer.lon);
   return collectedDuringPass(state.sightings, o.id, d.getTime(), false);
 }
-$('t-unpin').addEventListener('click', () => { state.pinnedId = null; state.targetId = null; state.sticky.clear(); });
-// Something already in your collection: the toast's View button spins the card out right here. If it's
-// in the circle and you haven't logged it this pass (or tonight, for the Moon, planets and stars),
-// viewing it also counts as seeing it again, which is what levels a card up.
-$('t-action').addEventListener('click', async () => {
+// × closes the mini card. A selected object is let go; something you're just pointing at stays
+// hidden until you point at something else.
+$('t-close').addEventListener('click', (e) => {
+  e.stopPropagation();
+  const id = state.activeTarget?.obj.id;
+  if (state.pinnedId != null) { state.pinnedId = null; state.targetId = null; state.sticky.clear(); }
+  else if (id != null) state.dismissedId = id;
+  $('target').hidden = true; lastPanel = 0;
+});
+$('t-switch').addEventListener('click', (e) => e.stopPropagation(), true);
+// Something already in your collection: tap anywhere on the mini card and the card spins out right
+// here. If it's in the circle and you haven't logged it this pass (or tonight, for the Moon, planets and
+// stars), viewing it also counts as seeing it again, which is what levels a card up.
+$('target').addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); $('target').click(); } });
+$('target').addEventListener('click', async () => {
   const target = state.activeTarget;
   unlockAudio();
   primeReveal();
@@ -641,12 +655,6 @@ $('t-action').addEventListener('click', async () => {
   if (state.lockedOn && (target.look.visible || state.captureAny) && !collectedThisPass(o, d)) counted = !!(await recordSighting(o, d));
   showViewCard(o, from, counted);
 });
-function setAction() {
-  const btn = $('t-action');
-  btn.className = 'view';
-  btn.disabled = state.captureBusy;
-  btn.textContent = state.captureBusy ? 'Saving…' : 'View';
-}
 function cardModel(obj) { return state.cardModels.get(cardKeyFor(obj)) ?? obj; }
 function cardSnapshot(obj) {
   // Fleet cards list every member and launch; the snapshot keeps just the card's own facts.
@@ -705,7 +713,7 @@ async function recordSighting(obj, d, l = null) {
   if (!l) return null;
   const m = obj.natural ? null : motion(obj, d, state.observer), key = cardKeyFor(obj);
   const sighting = { objectId: obj.id, cardKey: key, ...(stampKeyFor(obj) ? { stampKey: stampKeyFor(obj) } : {}), name: obj.name, type: obj.type, year: obj.year, time: d.getTime(), loggedAt: Date.now(), lat: state.observer.lat, lon: state.observer.lon, az: l.az, el: l.el, mag: l.mag, rangeKm: l.rangeKm, heading: m?.heading, ...(l.phaseName ? { phase: l.phaseName } : {}), sim: false, appVersion: VERSION, cardSnapshot: cardSnapshot(obj) };
-  state.captureBusy = true; setAction();
+  state.captureBusy = true;
   try {
     const key = await addSighting(sighting);
     const saved = { ...sighting, key };
@@ -714,7 +722,7 @@ async function recordSighting(obj, d, l = null) {
   } catch {
     toast('Your sighting could not be saved. Check that browser storage is available, then try again.', 5000);
     return null;
-  } finally { state.captureBusy = false; setAction(); }
+  } finally { state.captureBusy = false; }
 }
 
 // ---------- sightings ----------
@@ -728,9 +736,10 @@ async function loadSightings() {
 
 function renderVisible() {
   const list = $('visible-list');
-  const vis = state.items.filter((i) => i.look.visible).sort((a, b) => a.look.mag - b.look.mag);
+  // Satellites plus the Moon, planets and bright stars that are up and collectable right now.
+  const vis = [...state.items.filter((i) => i.look.visible), ...(state.naturals ?? [])].sort((a, b) => a.look.mag - b.look.mag);
   $('visible-hint').textContent = vis.length
-    ? `Brightest first. ${state.drag.on || !hasLiveSensors() ? 'Tap one to look at it.' : 'Look where it says and hold your phone up.'}`
+    ? `Brightest first. ${state.drag.on || !hasLiveSensors() ? 'Tap one to look at it.' : 'Tap one to select it, then follow the directions. Tap empty sky to let go.'}`
     : 'Nothing visible right now. Find out when the next bright pass is.';
   list.innerHTML = '';
   if (!vis.length) { const b=document.createElement('button'); b.className='big'; b.textContent='Find a visible pass'; b.addEventListener('click',()=>findPass()); list.appendChild(b); }
@@ -741,7 +750,7 @@ function renderVisible() {
     row.style.setProperty('--tier', tier.color);
     row.innerHTML = '<span class="dot"></span><span class="grow"><div class="name"></div><div class="meta"></div></span>';
     row.querySelector('.name').textContent = label(o);
-    row.querySelector('.meta').textContent = `${tier.label} · mag ${it.look.mag.toFixed(1)} (${brightnessWord(it.look.mag)}) · ${Math.round(it.look.el)}° up in the ${compassPoint(it.look.az)}`;
+    row.querySelector('.meta').textContent = `${isNewFind(o) ? 'New · ' : ''}${tier.label} · mag ${it.look.mag.toFixed(1)} (${brightnessWord(it.look.mag)}) · ${Math.round(it.look.el)}° up in the ${compassPoint(it.look.az)}`;
     row.addEventListener('click', () => {
       cancelPassSearch();
       state.pinnedId = o.id; state.targetId = o.id;
@@ -755,8 +764,9 @@ $('radar').addEventListener('click', () => { renderVisible(); openPanel('visible
 
 // ---------- drag to look ----------
 
-let dragStart = null;
+let dragStart = null, tapStart = null;
 $('sky').addEventListener('pointerdown', (e) => {
+  tapStart = { x: e.clientX, y: e.clientY, t: performance.now() };
   if (!state.drag.on && hasLiveSensors()) return;
   state.followPreview = false;
   dragStart = { x: e.clientX, y: e.clientY, az: state.drag.az, el: state.drag.el };
@@ -768,8 +778,35 @@ $('sky').addEventListener('pointermove', (e) => {
   state.drag.az = (dragStart.az - (e.clientX - dragStart.x) * degPerPx + 360) % 360;
   state.drag.el = Math.max(-10, Math.min(89, dragStart.el + (e.clientY - dragStart.y) * degPerPx));
 });
-$('sky').addEventListener('pointerup', () => { dragStart = null; });
-$('sky').addEventListener('pointercancel', () => { dragStart = null; });
+$('sky').addEventListener('pointerup', (e) => {
+  // A tap (not a drag): select whatever is under your finger, or clear the selection.
+  const tap = tapStart && Math.hypot(e.clientX - tapStart.x, e.clientY - tapStart.y) < 10 && performance.now() - tapStart.t < 500;
+  dragStart = tapStart = null;
+  if (tap) tapSky(e.clientX, e.clientY);
+});
+$('sky').addEventListener('pointercancel', () => { dragStart = tapStart = null; });
+
+// Tap a satellite, the Moon, a planet or a bright star to select it: it stays the target and the
+// guidance tells you which way to turn. Tap empty sky to let go of the selection.
+const TAP_REACH = 30; // px: a fingertip
+function tapSky(cx, cy) {
+  const r = $('sky').getBoundingClientRect(), x = cx - r.left, y = cy - r.top;
+  let best = null, bestD = TAP_REACH;
+  for (const h of sky.hits ?? []) { const d = Math.hypot(h.x - x, h.y - y); if (d < bestD) { best = h.id; bestD = d; } }
+  for (const n of state.naturals ?? []) {
+    const p = sky.project(n.look.enu);
+    if (!p) continue;
+    const d = Math.hypot(p.x - x, p.y - y);
+    if (d < bestD) { best = n.obj.id; bestD = d; }
+  }
+  if (best != null) {
+    state.pinnedId = best; state.targetId = best; state.sticky.clear();
+    lastPanel = 0; // refresh the guidance straight away
+  } else if (state.pinnedId != null) {
+    state.pinnedId = null; state.targetId = null; state.sticky.clear();
+    lastPanel = 0;
+  }
+}
 
 // ---------- nav & panels ----------
 
