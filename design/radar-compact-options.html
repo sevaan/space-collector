@@ -29,6 +29,9 @@
 </style>
 </head>
 <body>
+  <h1>Rose + strip, combined</h1>
+  <p class="intro">Three ways to combine 2 (direction rose) and 4 (compass strip), with the number of objects in the sky to the right of the compass. Same sky as below: heading south, 289 up, 282 new.</p>
+  <div class="board" id="combo" style="margin-bottom:46px"></div>
   <h1>Compact radar: six options</h1>
   <p class="intro">The current radar draws a dot for every one of ~290 objects, so it becomes a white blob. Each option below is drawn at real size with the same sky (heading south, 289 up, 282 new, 7 already yours, 6 planes) and stays tappable to open the Visible now list. The cyan notch or wedge is the way you're facing.</p>
   <div class="board" id="board"></div>
@@ -123,6 +126,43 @@ const OPTIONS = [
   ['5. Pointer dial', pointer, 'The smallest: a tiny compass with one gold arrow pointing to where the most new objects are, and a chip that says "Most to the S". Turns the widget into a "go this way" hint rather than a map.'],
   ['6. Sunburst', sunburst, 'Three rings for low, middle and high in the sky, eight directions each; a cell lights up the more objects it holds. Shows both direction and height in a fixed, tidy pattern with the total in the centre.'],
 ];
+// ---------- combined: rose + strip with the count on the right ----------
+function roseSvg(S, R0, R, { count = false, n = 16 } = {}) {
+  const c = S / 2, b = sectors(n), max = Math.max(...b), w = 360 / n;
+  let s = disc(c, R + 1);
+  b.forEach((k, i) => { const a0 = i * w - heading + 1.2, a1 = a0 + w - 2.4, r1 = R0 + (R - R0) * Math.sqrt(k / max); s += `<path d="${arcPath(c, R0, r1, a0, a1)}" fill="#e6c68a" opacity="${(.25 + .75 * k / max).toFixed(2)}"/>`; });
+  if (count) s += `<text x="${c}" y="${c + 4}" text-anchor="middle" font-size="12" font-weight="800" fill="#eef3ff">${up}</text>`;
+  return `<svg width="${S}" height="${S}">${s}${letters(c, R, 8)}${notch(c, R + 1)}</svg>`;
+}
+const countBlock = (big = 20) => `<span style="display:flex;flex-direction:column;line-height:1.05"><b style="font-size:${big}px;font-weight:800;letter-spacing:-.5px">${up}</b><span style="font-size:10px;font-weight:600;letter-spacing:.08em;color:#9fb3dc">UP NOW</span><span style="font-size:11px;font-weight:700;color:#e6c68a;margin-top:2px">${fresh} NEW</span></span>`;
+// A: the rose as the compass, the strip's count to its right, in one glass pill.
+function comboPill() {
+  return `<div class="glass" style="display:flex;align-items:center;gap:12px;padding:4px 18px 4px 18px;border-radius:999px">${roseSvg(68, 13, 26)}${countBlock()}</div>`;
+}
+// B: the strip, with a small rose at its left end acting as the compass, and the count at the right.
+function comboStrip() {
+  const W = 168, H = 40, x0 = 6, x1 = W - 6, b = sectors(72), max = Math.max(...b);
+  const xa = (az) => x0 + ((rel(az) + 180) / 360) * (x1 - x0);
+  let s = '';
+  b.forEach((k, i) => { const x = xa(i * 5 + 2.5), h = 3 + 16 * k / max; s += `<rect x="${x - 1}" y="${24 - h}" width="2" height="${h}" rx="1" fill="#e6c68a" opacity="${(.3 + .7 * k / max).toFixed(2)}"/>`; });
+  for (const [az, L] of [[0, 'N'], [90, 'E'], [180, 'S'], [270, 'W']]) s += `<text x="${xa(az)}" y="35" text-anchor="middle" font-size="8.5" font-weight="700" fill="${az === 0 ? '#e6c68a' : '#6f84a8'}">${L}</text>`;
+  const cx = xa(heading); s += `<rect x="${cx - 12}" y="3" width="24" height="23" rx="4" fill="rgba(143,211,232,.1)" stroke="rgba(143,211,232,.55)"/>`;
+  return `<div class="glass" style="display:flex;align-items:center;gap:8px;padding:4px 14px 4px 16px;border-radius:16px">${roseSvg(52, 10, 19, { n: 12 })}<svg width="${W}" height="${H}">${s}</svg>${countBlock(18)}</div>`;
+}
+// C: the rose on top of a short "what's ahead" strip (90° either side of where you face), count to the right.
+function comboStack() {
+  const W = 92, H = 22, b = sectors(72), max = Math.max(...b);
+  let s = `<line x1="0" y1="16" x2="${W}" y2="16" stroke="rgba(140,180,220,.25)"/>`;
+  for (let i = 0; i < 72; i++) { const az = i * 5 + 2.5, r = rel(az); if (Math.abs(r) > 90) continue; const x = W / 2 + r / 90 * (W / 2), h = 2 + 12 * b[i] / max; s += `<rect x="${x - .9}" y="${16 - h}" width="1.8" height="${h}" rx=".9" fill="#e6c68a" opacity="${(.3 + .7 * b[i] / max).toFixed(2)}"/>`; }
+  s += `<path d="M${W / 2} 17 L${W / 2 - 3.5} 22 L${W / 2 + 3.5} 22Z" fill="#8fd3e8"/>`;
+  return `<div class="glass" style="display:flex;align-items:center;gap:12px;padding:6px 16px 6px 14px;border-radius:18px"><span style="display:flex;flex-direction:column;align-items:center;gap:2px">${roseSvg(64, 12, 24)}<svg width="${W}" height="${H}">${s}</svg></span>${countBlock()}</div>`;
+}
+const COMBOS = [
+  ['A. Rose pill', comboPill, 'The direction rose is the compass; the count sits to its right in one rounded pill: total up now, and how many are new to you. The simplest merge, about 140 × 76 px.'],
+  ['B. Rose + strip', comboStrip, 'One bar: a small rose at the left as the compass, then the heading strip showing how many objects are in each direction (the box is where you face), then the count. Wide but only about 60 px tall.'],
+  ['C. Rose over "ahead" strip', comboStack, 'The rose, with a short strip underneath showing just what\'s in front of you (90° either side), so you know if turning a little will help. Count to the right.'],
+];
+document.getElementById('combo').innerHTML = COMBOS.map(([name, fn, text]) => `<div class="opt"><div class="scene" style="height:${name.startsWith('C') ? 140 : 120}px"><div class="slot">${fn()}</div><span class="size">real size</span></div><h2>${name}</h2><p>${text}</p></div>`).join('');
 document.getElementById('board').innerHTML = OPTIONS.map(([name, fn, text]) => `<div class="opt"><div class="scene"><div class="slot">${fn()}</div><span class="size">real size</span></div><h2>${name}</h2><p>${text}</p></div>`).join('');
 </script>
 </body>
