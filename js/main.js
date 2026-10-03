@@ -1,20 +1,20 @@
-import { VERSION } from './version.js?v=0.1.63';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode } from './orbit.js?v=0.1.63';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.63';
-import { SkyView, shortName } from './sky.js?v=0.1.63';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.63';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.63';
-import { cardArt } from './art.js?v=0.1.63';
-import { renderCard, cardLevel } from './card.js?v=0.1.63';
-import { playReveal, playView, primeReveal, stopReveal } from './reveal.js?v=0.1.63';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.63';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.63';
-import { naturalTargets } from './natural.js?v=0.1.63';
-import { TIER_INFO } from './rarity.js?v=0.1.63';
-import { SETS } from './sets.js?v=0.1.63';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.63';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.63';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter } from './planes.js?v=0.1.63';
+import { VERSION } from './version.js?v=0.1.64';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode } from './orbit.js?v=0.1.64';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.64';
+import { SkyView, shortName } from './sky.js?v=0.1.64';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.64';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.64';
+import { cardArt } from './art.js?v=0.1.64';
+import { renderCard, cardLevel } from './card.js?v=0.1.64';
+import { playReveal, playView, primeReveal, stopReveal } from './reveal.js?v=0.1.64';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.64';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.64';
+import { naturalTargets } from './natural.js?v=0.1.64';
+import { TIER_INFO } from './rarity.js?v=0.1.64';
+import { SETS } from './sets.js?v=0.1.64';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.64';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.64';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter } from './planes.js?v=0.1.64';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -436,59 +436,70 @@ function renderPlane(hit, t) {
   $('p-info').innerHTML = where + escapeHtml(bits.join(' · '));
 }
 
-// Radar (top-left): a heading-up map of the whole sky. Centre = overhead, edge = horizon. Gold dots
-// are visible objects, bright white ones are new to you, the cyan wedge is what's on screen, and the
-// notch at the top is the way you're facing. Doubles as the compass.
+// Radar (top-left), the "heat radar" chosen 2026-10-02 (design/radar-compact-options.html, option 1):
+// a heading-up map of the whole sky (centre = overhead, edge = horizon) where every visible object is a
+// soft glow, so busy patches simply look brighter instead of turning into a blob of dots. Only Epic and
+// Legendary objects get their own dot in their rarity colour, and the target gets a cyan ring. The
+// notch at the top is the way you're facing; the count sits in a chip to the right.
 var radarColors = null; // var: applyTheme() runs before this line and resets it
+var glowSprite = null;  // one soft blob, drawn once and stamped for every object
+const RADAR = 84, RADAR_R = 30;
 function readRadarColors() {
   const cs = getComputedStyle(document.body), v = (n) => cs.getPropertyValue(n).trim();
   radarColors = { glass: v('--glass') || 'rgba(14,26,48,.82)', edge: v('--edge') || 'rgba(140,180,220,.3)', gold: v('--gold') || '#e6c68a', cyan: v('--cyan') || '#8fd3e8', muted: v('--muted') || '#9fb3dc', text: v('--text') || '#eef3ff' };
+  glowSprite = null;
+}
+function makeGlow(color, dpr) {
+  const r = 5.5, px = Math.ceil(r * 2 * dpr), cv = document.createElement('canvas');
+  cv.width = cv.height = px;
+  const g = cv.getContext('2d'), grad = g.createRadialGradient(px / 2, px / 2, 0, px / 2, px / 2, px / 2);
+  grad.addColorStop(0, color); grad.addColorStop(1, 'rgba(0,0,0,0)');
+  g.fillStyle = grad; g.fillRect(0, 0, px, px);
+  return { cv, r };
 }
 function updateCompass(basis) {
   const cv = $('radar-canvas');
-  const dpr = window.devicePixelRatio || 1, size = 108;
+  const dpr = window.devicePixelRatio || 1, size = RADAR;
   if (cv.width !== size * dpr) { cv.width = cv.height = size * dpr; }
   if (!radarColors) readRadarColors();
   const C = radarColors, ctx = cv.getContext('2d');
+  glowSprite ??= makeGlow(C.gold, dpr);
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   ctx.clearRect(0, 0, size, size);
-  const c = size / 2, R = 40;
+  const c = size / 2, R = RADAR_R;
   const b = basis.back;
   const heading = (Math.atan2(b[0], b[1]) / RAD + 360) % 360;
   const at = (az, el) => { const r = R * (1 - Math.max(0, el) / 90), a = (az - heading) * RAD; return [c + r * Math.sin(a), c - r * Math.cos(a)]; };
-  // Disc and rings
   ctx.fillStyle = C.glass; ctx.strokeStyle = C.edge; ctx.lineWidth = 1;
   ctx.beginPath(); ctx.arc(c, c, R, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-  ctx.globalAlpha = 0.45;
-  for (const k of [0.66, 0.33]) { ctx.beginPath(); ctx.arc(c, c, R * k, 0, Math.PI * 2); ctx.stroke(); }
-  ctx.globalAlpha = 1;
-  // What's on screen: a wedge as wide as the view.
-  const half = Math.atan((sky.w / 2) / sky.f);
-  ctx.fillStyle = 'rgba(143, 211, 232, 0.14)'; ctx.strokeStyle = 'rgba(143, 211, 232, 0.4)';
-  ctx.beginPath(); ctx.moveTo(c, c); ctx.arc(c, c, R, -Math.PI / 2 - half, -Math.PI / 2 + half); ctx.closePath(); ctx.fill(); ctx.stroke();
-  // Objects
+  // Everything visible as a faint glow; overlapping glows build up where the sky is busy.
+  ctx.save();
+  ctx.beginPath(); ctx.arc(c, c, R, 0, Math.PI * 2); ctx.clip();
+  ctx.globalAlpha = 0.16;
+  const { cv: spr, r: sr } = glowSprite;
+  let special = [], target = null;
   for (const it of state.items) {
     if (!it.look.visible) continue;
     const [x, y] = at(it.look.az, it.look.el);
-    const isNew = isNewFind(it.obj), isTarget = it.obj.id === state.targetId;
-    ctx.fillStyle = isNew ? '#ffffff' : C.gold;
-    ctx.beginPath(); ctx.arc(x, y, isNew ? 1.6 : 1.3, 0, Math.PI * 2); ctx.fill();
-    if (isTarget) { ctx.strokeStyle = C.cyan; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.arc(x, y, 4.5, 0, Math.PI * 2); ctx.stroke(); }
+    ctx.drawImage(spr, x - sr, y - sr, sr * 2, sr * 2);
+    if (it.obj.tier === 'epic' || it.obj.tier === 'legendary') special.push([x, y, it.obj.tier]);
+    if (it.obj.id === state.targetId) target = [x, y];
   }
-  // Planes as tiny red dots.
-  if (state.planeItems) {
-    ctx.fillStyle = '#ff6b60';
-    for (const a of state.planeItems) { const [x, y] = at(a.az, a.el); ctx.beginPath(); ctx.arc(x, y, 1.2, 0, Math.PI * 2); ctx.fill(); }
+  ctx.restore();
+  for (const [x, y, tier] of special) {
+    ctx.fillStyle = TIER_INFO[tier].color; ctx.strokeStyle = '#0a1430'; ctx.lineWidth = 0.8;
+    ctx.beginPath(); ctx.arc(x, y, 2.4, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
   }
+  if (target) { ctx.strokeStyle = C.cyan; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.arc(target[0], target[1], 4.5, 0, Math.PI * 2); ctx.stroke(); }
   // Letters around the edge (heading-up, so they turn as you turn) and the facing notch.
-  ctx.font = '700 10px -apple-system, system-ui, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.font = '700 9px -apple-system, system-ui, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
   for (const [az, L] of [[0, 'N'], [90, 'E'], [180, 'S'], [270, 'W']]) {
-    const a = (az - heading) * RAD, r = R + 8;
+    const a = (az - heading) * RAD, r = R + 7.5;
     ctx.fillStyle = az === 0 ? C.gold : C.muted;
     ctx.fillText(L, c + r * Math.sin(a), c - r * Math.cos(a));
   }
   ctx.fillStyle = C.cyan;
-  ctx.beginPath(); ctx.moveTo(c, c - R - 1); ctx.lineTo(c - 4, c - R - 7); ctx.lineTo(c + 4, c - R - 7); ctx.closePath(); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(c, c - R - 1); ctx.lineTo(c - 3.5, c - R - 6.5); ctx.lineTo(c + 3.5, c - R - 6.5); ctx.closePath(); ctx.fill();
 }
 
 // ---------- target: callout + card ----------

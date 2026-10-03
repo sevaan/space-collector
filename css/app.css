@@ -115,12 +115,12 @@ body.night .vis-row .dot { background:var(--cyan); }
 @media(orientation:landscape) and (max-height:600px) { #target { left:auto;right:16px;width:42%;max-height:calc(100dvh - 125px);bottom:95px; } #start { padding:20px; } #start-art { display:none; } #guidance { left:16px;right:50%; } }
 @media(prefers-reduced-motion:reduce) { *,*::before,*::after { animation-duration:.01ms!important;transition-duration:.01ms!important; } }
 
-#radar { position:fixed; left:12px; top:calc(var(--safe-top) + 74px); width:108px; padding:0; background:none; border:0; display:flex; flex-direction:column; align-items:center; z-index:2; }
-#radar-canvas { width:108px; height:108px; display:block; }
-#radar-tab { margin-top:-3px; position:relative; padding:3px 10px; border-radius:999px; font-size:12px; white-space:nowrap; color:var(--text); background:var(--glass); border:1px solid var(--edge); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); }
-#radar-tab b { font-weight:700; }
-#new-count { color:var(--gold); font-weight:600; }
-#new-count + * { color:var(--gold); }
+/* Heat radar + count chip to its right (js/main.js updateCompass). */
+#radar { position:fixed; left:10px; top:calc(var(--safe-top) + 76px); padding:0; background:none; border:0; display:flex; flex-direction:row; align-items:center; gap:6px; z-index:2; }
+#radar-canvas { width:84px; height:84px; display:block; flex:none; }
+#radar-tab { padding:4px 12px; border-radius:999px; font-size:13px; white-space:nowrap; color:var(--text); background:var(--glass); border:1px solid var(--edge); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); }
+#radar-tab b { font-weight:700; font-size:15px; }
+#radar-tab .new { color:var(--gold); }
 
 /* ---------- icons (inline SVG via CSS masks) ---------- */
 .ico { display: inline-block; width: 22px; height: 22px; background: currentColor; flex: none;

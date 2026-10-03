@@ -54,8 +54,10 @@ Live: https://sevaan.github.io/space-collector/ (GitHub Pages, deploys from `mai
   you point at something else).
 - Selecting: tap an object in the sky (`tapSky`, hit test from `sky.hits` + natural targets) or a row in
   Visible now (radar) to pin it; guidance shows which way to turn. Tap empty sky to let go. Off target both just show a turn hint. No "line up" button.
-- Top-left radar (`#radar`, drawn in `updateCompass`): heading-up all-sky map + compass + "N up · N new"
-  tab; tap opens the visible list. Replaced the compass, the visible-now pill and the status text.
+- Top-left radar (`#radar`, drawn in `updateCompass`): the "heat radar" (2026-10-02, design/radar-compact-
+  options.html #1): 84 px heading-up all-sky map where each visible object is a soft glow (one sprite
+  stamped per object), only Epic/Legendary get dots, cyan ring on the target; "N up · N new" chip to the
+  right. Tap opens the visible list. Planes are no longer drawn on it.
 - `js/main.js` – app state, render loop, candidates/capture, settings panel. No journal (removed
   2026-09-29): the collection is the record. Cards show when you collected them; the card viewer
   lists each sighting (when, where) with delete.

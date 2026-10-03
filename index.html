@@ -13,9 +13,9 @@
   <link rel="apple-touch-icon" href="icons/icon-180.png">
   <link rel="icon" href="icons/icon-192.png">
   <script>try { if (localStorage.getItem("night") === "1") document.documentElement.dataset.theme = "night"; } catch {}</script>
-  <link rel="stylesheet" href="css/cards.css?v=0.1.63">
-  <link rel="stylesheet" href="css/app.css?v=0.1.63">
-  <link rel="stylesheet" href="css/reveal.css?v=0.1.63">
+  <link rel="stylesheet" href="css/cards.css?v=0.1.64">
+  <link rel="stylesheet" href="css/app.css?v=0.1.64">
+  <link rel="stylesheet" href="css/reveal.css?v=0.1.64">
 </head>
 <body>
   <canvas id="sky" role="img" aria-label="Sky map aligned with your viewing direction"></canvas>
@@ -23,8 +23,8 @@
   <div id="hud" hidden>
     <header id="sky-header"><a class="wordmark" href="./">SPACE COLLECTOR<span>FIELD NOTES FROM ORBIT</span></a><span class="header-buttons"><button id="night-toggle" class="icon-button" aria-label="Turn on red night mode" aria-pressed="false">☾</button><button id="nav-more" class="icon-button" aria-label="Settings"><span class="ico" data-ico="sliders"></span></button></span></header>
     <button id="radar" aria-label="What's up now: open the list">
-      <canvas id="radar-canvas" width="108" height="108"></canvas>
-      <span id="radar-tab"><b id="visible-count">0</b> up · <span id="new-count">0</span> new</span>
+      <canvas id="radar-canvas" width="84" height="84"></canvas>
+      <span id="radar-tab"><b id="visible-count">0</b> up · <span class="new"><b id="new-count">0</b> new</span></span>
     </button>
     <div id="guidance" aria-live="polite" hidden></div>
 
@@ -147,6 +147,6 @@
     <pre id="debug-info"></pre></details>
   </section>
 
-  <script type="module" src="js/main.js?v=0.1.63"></script>
+  <script type="module" src="js/main.js?v=0.1.64"></script>
 </body>
 </html>
