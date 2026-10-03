@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Compact Radar Options</title>
+<style>
+  :root { --text: #eef3ff; --muted: #9fb3dc; --gold: #e6c68a; --cyan: #8fd3e8; --glass: rgba(14, 26, 48, .82); --edge: rgba(140, 180, 220, .3); --plane: #ff6b60; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #05080f; color: var(--text); font: 15px/1.45 -apple-system, "SF Pro Text", system-ui, sans-serif; padding: 22px 14px 60px; }
+  h1 { font-size: 22px; margin: 0 0 6px; }
+  .intro { color: var(--muted); margin: 0 0 22px; max-width: 760px; }
+  .board { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 30px 22px; }
+  .opt h2 { font-size: 16px; margin: 12px 0 4px; }
+  .opt p { color: var(--muted); font-size: 13px; margin: 0; }
+  .scene { position: relative; height: 150px; border-radius: 16px; overflow: hidden; border: 1px solid #1a2433;
+    background: radial-gradient(120% 90% at 70% 10%, #16294d, #0a1430 55%, #060b18); }
+  .scene::before { content: ''; position: absolute; inset: 0; background:
+    radial-gradient(1px 1px at 62% 30%, #fff9, transparent), radial-gradient(1px 1px at 80% 70%, #fff7, transparent),
+    radial-gradient(1px 1px at 46% 62%, #fffa, transparent), radial-gradient(1px 1px at 90% 20%, #fff8, transparent),
+    radial-gradient(1px 1px at 70% 88%, #fff6, transparent), radial-gradient(1px 1px at 55% 12%, #fff8, transparent); }
+  .slot { position: absolute; left: 14px; top: 12px; }
+  .glass { background: var(--glass); border: 1px solid var(--edge); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+  .chip { display: inline-flex; align-items: baseline; gap: 4px; padding: 3px 10px; border-radius: 999px; font-size: 12px; white-space: nowrap; }
+  .chip b { font-size: 14px; } .chip .new { color: var(--gold); } .chip .muted { color: var(--muted); }
+  svg { overflow: visible; }
+  svg text { font-family: -apple-system, system-ui, sans-serif; }
+  .size { position: absolute; right: 10px; bottom: 8px; font-size: 10px; color: #6f84a8; }
+</style>
+</head>
+<body>
+  <h1>Compact radar: six options</h1>
+  <p class="intro">The current radar draws a dot for every one of ~290 objects, so it becomes a white blob. Each option below is drawn at real size with the same sky (heading south, 289 up, 282 new, 7 already yours, 6 planes) and stays tappable to open the Visible now list. The cyan notch or wedge is the way you're facing.</p>
+  <div class="board" id="board"></div>
+
+<script>
+// ---------- a sky like the screenshot: two dense arcs of Starlinks plus scattered others ----------
+let seed = 7; const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+const objs = [];
+for (let i = 0; i < 289; i++) {
+  const arc = rnd();
+  let az, el;
+  if (arc < .42) { az = 150 + rnd() * 90; el = 10 + rnd() * 35; }        // arc in the S/SW
+  else if (arc < .78) { az = (300 + rnd() * 110) % 360; el = 8 + rnd() * 30; } // arc in the N
+  else { az = rnd() * 360; el = 5 + rnd() * 80; }
+  objs.push({ az, el, owned: i < 7, mag: 3 + rnd() * 2.5, tier: i === 3 ? 'legendary' : i === 5 ? 'epic' : rnd() < .06 ? 'rare' : 'common' });
+}
+const planes = Array.from({ length: 6 }, () => ({ az: rnd() * 360, el: 2 + rnd() * 10 }));
+const heading = 180, up = objs.length, fresh = objs.filter((o) => !o.owned).length;
+const TIER = { legendary: '#ffc545', epic: '#b57bff', rare: '#4aa8ff', common: '#9aa4b1' };
+const rel = (az) => ((az - heading + 540) % 360) - 180; // -180..180, 0 = ahead
+const polar = (c, R, az, el) => { const r = R * (1 - Math.max(0, el) / 90), a = rel(az) * Math.PI / 180; return [c + r * Math.sin(a), c - r * Math.cos(a)]; };
+const letters = (c, R, size = 9) => [[0, 'N'], [90, 'E'], [180, 'S'], [270, 'W']].map(([az, L]) => { const a = rel(az) * Math.PI / 180, r = R + size; return `<text x="${c + r * Math.sin(a)}" y="${c - r * Math.cos(a) + size * .36}" text-anchor="middle" font-size="${size}" font-weight="700" fill="${az === 0 ? '#e6c68a' : '#9fb3dc'}">${L}</text>`; }).join('');
+const notch = (c, R) => `<path d="M${c} ${c - R - 1} L${c - 3.5} ${c - R - 6.5} L${c + 3.5} ${c - R - 6.5} Z" fill="#8fd3e8"/>`;
+const disc = (c, R) => `<circle cx="${c}" cy="${c}" r="${R}" fill="rgba(14,26,48,.85)" stroke="rgba(140,180,220,.35)"/>`;
+const sectors = (n) => { const b = Array(n).fill(0); for (const o of objs) b[Math.floor(((o.az % 360) + 360) % 360 / (360 / n))]++; return b; };
+const arcPath = (c, r0, r1, a0, a1) => { const p = (r, a) => [c + r * Math.sin(a * Math.PI / 180), c - r * Math.cos(a * Math.PI / 180)]; const [x0, y0] = p(r1, a0), [x1, y1] = p(r1, a1), [x2, y2] = p(r0, a1), [x3, y3] = p(r0, a0); return `M${x0} ${y0} A${r1} ${r1} 0 0 1 ${x1} ${y1} L${x2} ${y2} A${r0} ${r0} 0 0 0 ${x3} ${y3}Z`; };
+
+// 1. Heat radar: density as a soft glow, only special things as dots.
+function heat() {
+  const S = 84, c = S / 2, R = 30;
+  let g = '';
+  for (const o of objs) { const [x, y] = polar(c, R, o.az, o.el); g += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="4.5" fill="#ffd98a" opacity=".06"/>`; }
+  let dots = '';
+  for (const o of objs.filter((o) => o.tier === 'legendary' || o.tier === 'epic')) { const [x, y] = polar(c, R, o.az, o.el); dots += `<circle cx="${x}" cy="${y}" r="2.4" fill="${TIER[o.tier]}" stroke="#0a1430" stroke-width=".8"/>`; }
+  return `<div style="display:flex;align-items:center;gap:6px"><svg width="${S}" height="${S}">${disc(c, R)}<g style="filter:blur(1.5px)">${g}</g>${dots}${letters(c, R, 8)}${notch(c, R)}</svg>
+    <span class="chip glass"><b>${up}</b> up · <b class="new">${fresh}</b> <span class="new">new</span></span></div>`;
+}
+// 2. Direction rose: 16 wedges sized by how many are that way; count in the middle.
+function rose() {
+  const S = 80, c = S / 2, R0 = 17, R = 31, b = sectors(16), max = Math.max(...b);
+  let s = disc(c, R + 1);
+  b.forEach((n, i) => { const a0 = i * 22.5 - heading + 1.2, a1 = a0 + 20.1, r1 = R0 + (R - R0) * Math.sqrt(n / max); s += `<path d="${arcPath(c, R0, r1, a0, a1)}" fill="#e6c68a" opacity="${(.25 + .75 * n / max).toFixed(2)}"/>`; });
+  s += `<text x="${c}" y="${c + 4}" text-anchor="middle" font-size="12" font-weight="800" fill="#eef3ff">${up}</text>`;
+  return `<div style="display:flex;align-items:center;gap:6px"><svg width="${S}" height="${S}">${s}${letters(c, R, 8)}${notch(c, R + 1)}</svg><span class="chip glass"><b class="new">${fresh}</b> <span class="new">new</span></span></div>`;
+}
+// 3. Best few: only the 8 most worth catching (rarest new, then brightest) as rarity-coloured dots.
+function best() {
+  const S = 72, c = S / 2, R = 27;
+  const pick = objs.filter((o) => !o.owned).sort((a, b) => Object.keys(TIER).indexOf(a.tier) - Object.keys(TIER).indexOf(b.tier) || a.mag - b.mag).slice(0, 8);
+  let s = disc(c, R) + `<circle cx="${c}" cy="${c}" r="${R * .5}" fill="none" stroke="rgba(140,180,220,.14)"/>`;
+  for (const o of pick) { const [x, y] = polar(c, R, o.az, o.el); s += `<circle cx="${x}" cy="${y}" r="2.6" fill="${TIER[o.tier] === TIER.common ? '#ffffff' : TIER[o.tier]}"/>`; }
+  return `<div style="display:flex;flex-direction:column;align-items:center"><svg width="${S}" height="${S}">${s}${letters(c, R, 8)}${notch(c, R)}</svg>
+    <span class="chip glass" style="margin-top:-6px;position:relative"><b>${up}</b> up · <span class="new">${fresh} new</span></span></div>`;
+}
+// 4. Compass strip: a heading tape with density bars, count at the end. Very little height.
+function strip() {
+  const W = 210, H = 38, x0 = 8, x1 = W - 58, b = sectors(72), max = Math.max(...b);
+  const xa = (az) => x0 + ((rel(az) + 180) / 360) * (x1 - x0);
+  let s = `<rect x=".5" y=".5" width="${W - 1}" height="${H - 1}" rx="12" fill="rgba(14,26,48,.85)" stroke="rgba(140,180,220,.3)"/>`;
+  b.forEach((n, i) => { const az = i * 5 + 2.5, x = xa(az), h = 3 + 15 * n / max; s += `<rect x="${x - 1}" y="${22 - h}" width="2" height="${h}" rx="1" fill="#e6c68a" opacity="${(.3 + .7 * n / max).toFixed(2)}"/>`; });
+  for (const [az, L] of [[0, 'N'], [45, 'NE'], [90, 'E'], [135, 'SE'], [180, 'S'], [225, 'SW'], [270, 'W'], [315, 'NW']]) s += `<text x="${xa(az)}" y="33" text-anchor="middle" font-size="${L.length > 1 ? 7 : 8.5}" font-weight="700" fill="${az === 0 ? '#e6c68a' : '#6f84a8'}">${L}</text>`;
+  const cx = xa(heading); s += `<path d="M${cx} 1 L${cx - 4} -4 M${cx} 1 L${cx + 4} -4" stroke="#8fd3e8"/><rect x="${cx - 13}" y="3" width="26" height="22" rx="4" fill="rgba(143,211,232,.1)" stroke="rgba(143,211,232,.55)"/>`;
+  s += `<text x="${W - 30}" y="18" text-anchor="middle" font-size="15" font-weight="800" fill="#eef3ff">${up}</text><text x="${W - 30}" y="30" text-anchor="middle" font-size="8.5" font-weight="600" fill="#e6c68a">${fresh} NEW</text>`;
+  return `<svg width="${W}" height="${H}" style="overflow:visible">${s}</svg>`;
+}
+// 5. Pointer dial: a small compass with one arrow to where the most new things are.
+function pointer() {
+  const S = 56, c = S / 2, R = 20, b = sectors(8), i = b.indexOf(Math.max(...b)), az = i * 45 + 22.5, a = rel(az) * Math.PI / 180;
+  const dirs = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+  let s = disc(c, R) + letters(c, R, 7.5).replace(/font-size="7.5"/g, 'font-size="7.5" opacity=".9"') + notch(c, R);
+  const tip = [c + (R - 3) * Math.sin(a), c - (R - 3) * Math.cos(a)], l = [c + 6 * Math.sin(a - 2.4), c - 6 * Math.cos(a - 2.4)], r2 = [c + 6 * Math.sin(a + 2.4), c - 6 * Math.cos(a + 2.4)];
+  s += `<path d="M${tip} L${l} L${c} ${c} L${r2}Z" fill="#e6c68a"/>`;
+  return `<div style="display:flex;align-items:center;gap:6px"><svg width="${S}" height="${S}">${s}</svg>
+    <span class="chip glass" style="flex-direction:column;align-items:flex-start;gap:0;border-radius:12px;padding:4px 10px;line-height:1.25"><span><b>${up}</b> up · <b class="new">${fresh}</b> <span class="new">new</span></span><span class="muted" style="font-size:11px">Most to the ${dirs[i]} · ${b[i]}</span></span></div>`;
+}
+// 6. Sunburst: 3 height bands × 8 directions; each cell lit by how many are there. Count inside.
+function sunburst() {
+  const S = 80, c = S / 2, bands = [[13, 20, 50, 90], [20, 26, 25, 50], [26, 32, 0, 25]]; // inner = high up
+  const cell = {}; for (const o of objs) { const bi = o.el >= 50 ? 0 : o.el >= 25 ? 1 : 2, si = Math.floor(((o.az % 360) + 360) % 360 / 45); cell[bi + ':' + si] = (cell[bi + ':' + si] ?? 0) + 1; }
+  const max = Math.max(...Object.values(cell));
+  let s = disc(c, 33);
+  bands.forEach(([r0, r1], bi) => { for (let si = 0; si < 8; si++) { const n = cell[bi + ':' + si] ?? 0, a0 = si * 45 - heading + 1.5, a1 = a0 + 42; s += `<path d="${arcPath(c, r0, r1, a0, a1)}" fill="#e6c68a" opacity="${n ? (.12 + .88 * n / max).toFixed(2) : .04}"/>`; } });
+  s += `<text x="${c}" y="${c + 3.5}" text-anchor="middle" font-size="10" font-weight="800" fill="#eef3ff">${up}</text>`;
+  return `<div style="display:flex;align-items:center;gap:6px"><svg width="${S}" height="${S}">${s}${letters(c, 32, 8)}${notch(c, 33)}</svg><span class="chip glass"><b class="new">${fresh}</b> <span class="new">new</span></span></div>`;
+}
+
+const OPTIONS = [
+  ['1. Heat radar', heat, 'Same radar, but objects become a soft glow, so dense patches look brighter instead of drawing hundreds of dots. Only Epic and Legendary objects get their own coloured dot. The count moves out to a chip. About two thirds of today\'s size.'],
+  ['2. Direction rose', rose, '16 wedges around the compass; each wedge grows with how many objects are that way. The total sits in the middle. You read "lots to the south" at a glance, and it never gets cluttered no matter how many are up.'],
+  ['3. Best few', best, 'A small radar that shows only the eight things most worth catching right now: rarest new ones first, then brightest. White = new Common, colour = rarity. The count tab stays underneath, as now.'],
+  ['4. Compass strip', strip, 'A 360° heading tape across the top: tick bars show how many objects are in each direction, the box is where you\'re facing, and the count sits at the end. Only 38 px tall, so it gives the most sky back.'],
+  ['5. Pointer dial', pointer, 'The smallest: a tiny compass with one gold arrow pointing to where the most new objects are, and a chip that says "Most to the S". Turns the widget into a "go this way" hint rather than a map.'],
+  ['6. Sunburst', sunburst, 'Three rings for low, middle and high in the sky, eight directions each; a cell lights up the more objects it holds. Shows both direction and height in a fixed, tidy pattern with the total in the centre.'],
+];
+document.getElementById('board').innerHTML = OPTIONS.map(([name, fn, text]) => `<div class="opt"><div class="scene"><div class="slot">${fn()}</div><span class="size">real size</span></div><h2>${name}</h2><p>${text}</p></div>`).join('');
+</script>
+</body>
+</html>
