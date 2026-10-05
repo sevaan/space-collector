@@ -1,10 +1,11 @@
 // Archival field cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { TIER_INFO } from './rarity.js?v=0.1.71';
-import { SET_BY_ID } from './sets.js?v=0.1.71';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.71';
-import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText } from './lore.js?v=0.1.71';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.71';
-import { nightsIn } from './observation.js?v=0.1.71';
+import { cardArt } from './art.js?v=0.1.72';
+import { TIER_INFO } from './rarity.js?v=0.1.72';
+import { SET_BY_ID } from './sets.js?v=0.1.72';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.72';
+import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText } from './lore.js?v=0.1.72';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.72';
+import { nightsIn } from './observation.js?v=0.1.72';
 
 // Levels count observing nights (local noon to noon): bronze 1, silver 3, gold 10. Before
 // 2026-10-01 levels counted sightings (5 silver, 25 gold); anything earned that way is kept.
@@ -58,8 +59,8 @@ export function renderCard(o, opts = {}) {
     <div class="card__setbar"><span>${orbitIcon}<span>${esc(set.name.toUpperCase())}</span></span><span class="card__tier"><i aria-hidden="true">${tier.gem}</i>${esc(tier.label.toUpperCase())}</span></div>
     <div class="card__heading"><h3 class="card__name">${String(o.id) === '25544' ? esc(title).replace('International Space Station', 'International<br>Space Station') : esc(title)}</h3>
     <div class="card__identity"><span>${esc(identity)}</span><span class="card__mono">${esc(identifier)}</span></div></div>
-    <div class="card__art" data-art-slot aria-hidden="true"></div>
-    ${nat ? `<div class="card__stats">${o.stats.map(([label, value, unit]) => `<div><span class="card__label">${esc(label)}</span><b${String(value).length > 9 ? ' class="small"' : ''}>${esc(value)}${unit ? ` <small>${esc(unit)}</small>` : ''}</b></div>`).join('')}</div>` : `<div class="card__stats"><div><span class="card__label">MEAN ALTITUDE</span><b>${stats ? `${stats.alt.toLocaleString('en-US')} <small>km</small>` : '—'}</b></div><div><span class="card__label">ORBITS / DAY</span><b>${laps ? laps.toFixed(laps < 10 ? 1 : 0) : '—'}</b></div><div><span class="card__label">${esc(third.label)}</span><b>${esc(third.value)}</b>${/LAUNCH/.test(third.label) && ageText ? `<span class="card__stat-detail">${esc(ageText)}</span>` : ''}</div></div>`}
+    <div class="card__art" data-art-slot aria-hidden="true">${cardArt(o, { accent: set.color, silhouette: !revealed })}<div class="card__foil"></div></div>
+    ${nat ? `<div class="card__stats">${o.stats.map(([label, value, unit]) => `<div><span class="card__label">${esc(label)}</span><b${statClass(value, unit)}>${esc(value)}${unit ? ` <small>${esc(unit)}</small>` : ''}</b></div>`).join('')}</div>` : `<div class="card__stats"><div><span class="card__label">MEAN ALTITUDE</span><b>${stats ? `${stats.alt.toLocaleString('en-US')} <small>km</small>` : '—'}</b></div><div><span class="card__label">ORBITS / DAY</span><b>${laps ? laps.toFixed(laps < 10 ? 1 : 0) : '—'}</b></div><div><span class="card__label">${esc(third.label)}</span><b>${esc(third.value)}</b>${/LAUNCH/.test(third.label) && ageText ? `<span class="card__stat-detail">${esc(ageText)}</span>` : ''}</div></div>`}
     ${factBlock}
     <div class="card__footer"><span class="card__status${caught ? ' is-collected' : ''}"><span class="card__status-icon" aria-hidden="true">${caught ? '✓' : ''}</span><span>${caught ? `COLLECTED · ${esc(firstDate)}` : 'NOT YET COLLECTED'}</span></span><span class="card__brand">SPACE COLLECTOR</span></div>
     <div class="card__shine"></div><div class="card__glare"></div>
@@ -67,6 +68,15 @@ export function renderCard(o, opts = {}) {
     ${extinct ? `<div class="card__stamp">REENTERED${o.decay ? `<small>${esc(formatDate(o.decay)).toUpperCase()}</small>` : ''}</div>` : ''}
   </div></div>`;
   return el;
+}
+
+// Natural-object stats: a number and its unit stay on one line, stepping down a size when long;
+// words (a constellation name) can wrap.
+function statClass(value, unit) {
+  const v = String(value);
+  if (!unit) return v.length > 9 ? ' class="small"' : '';
+  const n = (v + ' ' + unit).length;
+  return n >= 10 ? ' class="fit longer"' : n >= 8 ? ' class="fit long"' : ' class="fit"';
 }
 
 // ---------- fleet cards ----------
@@ -132,7 +142,7 @@ export function renderCardTile(o, opts = {}) {
   tile.className = `card-tile${caught ? ' is-owned' : ''}`;
   tile.style.setProperty('--set', set.color);
   tile.setAttribute('aria-label', `${title}, ${tier.label}, ${caught ? `collected, ${sightings.length} sightings` : 'not collected'}. View card`);
-  tile.innerHTML = `<span class="card-tile__set">${esc(set.name)}</span><span class="card-tile__art"></span><span class="card-tile__body"><span class="card-tile__tier">${tier.gem} ${tier.label}</span><span class="card-tile__name">${esc(title)}</span><span class="card-tile__status">${caught ? (o.launches ? `✓ ${stampsIn(sightings).size} of ${o.launches.length} launches` : `✓ Collected ${new Date(Math.min(...sightings.map((s) => s.time))).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`) : 'Not yet collected'}<span aria-hidden="true">↗</span></span></span>`;
+  tile.innerHTML = `<span class="card-tile__set">${esc(set.name)}</span><span class="card-tile__art">${cardArt(o, { accent: set.color, silhouette: !caught })}</span><span class="card-tile__body"><span class="card-tile__tier">${tier.gem} ${tier.label}</span><span class="card-tile__name">${esc(title)}</span><span class="card-tile__status">${caught ? (o.launches ? `✓ ${stampsIn(sightings).size} of ${o.launches.length} launches` : `✓ Collected ${new Date(Math.min(...sightings.map((s) => s.time))).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`) : 'Not yet collected'}<span aria-hidden="true">↗</span></span></span>`;
   return tile;
 }
 

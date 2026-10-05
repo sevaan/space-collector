@@ -18,7 +18,8 @@ const PLANETS = [
   ['Jupiter', 'common', 5, '43', '139,820', ['11.9', 'years'], ['9.9', 'hours'], 'The biggest planet: more than **1,300 Earths** would fit inside it. A pair of binoculars shows its four largest moons as tiny dots.'],
   ['Saturn', 'uncommon', 6, '79', '116,460', ['29.4', 'years'], ['10.7', 'hours'], 'Its rings are countless chunks of **ice and rock**. You need a telescope to see them, but they\'re there around that steady golden dot.'],
 ].map(([name, tier, order, lm, dia, year, day, fact]) => ({
-  key: `planet:${name.toLowerCase()}`, id: `planet:${name.toLowerCase()}`, natural: 'planet', type: 'planet', name, tier, order, code: 'PLANET',
+  key: `planet:${name.toLowerCase()}`, id: `planet:${name.toLowerCase()}`, natural: 'planet', type: 'planet', name, tier, order,
+  code: `${{ Mercury: '1ST', Venus: '2ND', Mars: '4TH', Jupiter: '5TH', Saturn: '6TH' }[name]} FROM THE SUN`,
   far: [lm, 'LIGHT-MINUTES FROM THE SUN'],
   stats: [['DIAMETER', dia, 'km'], ['ONE YEAR', ...year], ['ONE SPIN', ...day]],
   fact,
