@@ -1,9 +1,10 @@
-import { renderCard, renderCardTile, renderPassport, attachTilt, attachGyro } from './card.js?v=0.1.68';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.68';
-import { SETS, assignSets } from './sets.js?v=0.1.68';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.68';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.68';
-import { allSightings, deleteSighting } from './store.js?v=0.1.68';
+import { renderCard, renderCardTile, renderPassport, attachTilt, attachGyro } from './card.js?v=0.1.69';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.69';
+import { applyBack } from './card-backs.js?v=0.1.69';
+import { SETS, assignSets } from './sets.js?v=0.1.69';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.69';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.69';
+import { allSightings, deleteSighting } from './store.js?v=0.1.69';
 
 const $ = (id) => document.getElementById(id);
 const state = { cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -31,7 +32,6 @@ window.addEventListener('storage', (e) => { if (e.key === 'night') setNight(e.ne
 for (const set of SETS) $('set-filter').add(new Option(set.name, set.id));
 for (const tier of TIERS.slice().reverse()) $('rarity-filter').add(new Option(TIER_INFO[tier].label, tier));
 
-new Image().src = 'assets/art/card-back-astronaut.jpg'; // shown mid-spin in the closer look
 async function boot() {
   const [catalogueResult, sightingResult] = await Promise.allSettled([
     fetch('data/catalog.json', { cache: 'no-cache' }).then((r) => { if (!r.ok) throw new Error('catalogue'); return r.json(); }),
@@ -238,7 +238,9 @@ function spin(card, rect, opening) {
   const opts = opening ? SPIN : { ...SPIN, duration: 520, easing: 'cubic-bezier(.5,0,.75,0)' };
   // Offsets are in eased progress (effect-level easing), so the back shows exactly while rotateY is 90°–270°.
   const back = [{ opacity: 0 }, { opacity: 0, offset: .25 }, { opacity: 1, offset: .25 }, { opacity: 1, offset: .75 }, { opacity: 0, offset: .75 }, { opacity: 0 }];
-  card.querySelector('.card__back')?.animate(back, opts);
+  const backEl = card.querySelector('.card__back');
+  if (opening) applyBack(backEl);
+  backEl?.animate(back, opts);
   const a = card.animate(opening ? [{ transform: away }, { transform: here }] : [{ transform: here }, { transform: away, opacity: rect ? 1 : 0 }], { ...opts, fill: 'forwards' });
   return new Promise((r) => setTimeout(() => { r(); if (opening) a.cancel(); }, opts.duration));
 }

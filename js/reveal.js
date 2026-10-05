@@ -5,8 +5,9 @@
 //  Everything scales with rarity (Legendary dims the sky, shockwave, held breath, slow flip, fanfare).
 // Waits use timers, not animation.finished, so a paused tab can never freeze the sequence.
 
-import { TIER_INFO } from './rarity.js?v=0.1.68';
-import { levelFor, attachTilt, attachGyro } from './card.js?v=0.1.68';
+import { TIER_INFO } from './rarity.js?v=0.1.69';
+import { levelFor, attachTilt, attachGyro } from './card.js?v=0.1.69';
+import { applyBack } from './card-backs.js?v=0.1.69';
 
 const FX = {
   common:    { particles: 14,  flip: 520,  spin: 0,   dim: 0,   shock: false, notes: [880],                            hold: 0 },
@@ -119,6 +120,7 @@ export async function playReveal({ card, o, seen, origin, fleet = null, progress
   $('rv-back').classList.remove('glow');
   $('rv-dim').style.opacity = 0;
   // Safari doesn't reliably hide the reverse face of a 3D card, so show one face at a time ourselves.
+  if (fresh) applyBack($('rv-back'));
   showFace(fresh ? 'back' : 'front');
   sizeCard(card);
   const x = origin?.x ?? innerWidth / 2, y = origin?.y ?? innerHeight * .4;

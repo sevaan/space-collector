@@ -95,5 +95,11 @@ Live: https://sevaan.github.io/space-collector/ (GitHub Pages, deploys from `mai
   sevaan.github.io and localhost. Routes from adsbdb.com (CORS-open). If the relay changes, paste
   relay/handler.ts into a new val and update `RELAY`.
 
+- Card backs (2026-10-05): six retro posters from Desktop/cardbacks (EPS, Illustrator, font Jockey One) with
+  their titles replaced by SPACE COLLECTOR (same font, colour, stretch; lorem line removed), as 900 px WebP in
+  assets/art/backs/. `js/card-backs.js` picks a random one each time (never twice in a row) for the reveal's
+  sealed card and the collection spin; posters with a bottom title move TAP TO REVEAL to the top.
+  Full-size PNGs: Desktop/cardbacks/space-collector/.
+
 ## Deliberately out of scope for now
 Alerts, service worker, accounts, secret sets/feats.
