@@ -228,3 +228,31 @@
    (js/card.js statClass). Word values such as constellation names still wrap. */
 .card--v2 .card__stats b.fit { white-space: nowrap; }
 .card--v2 .card__stats b.long { font-size: 1.5em; }
+
+/* One left edge for the text (title, type, fleet dots), matching the stat labels; the big title is
+   nudged left a hair because heavy capitals carry space on their left. Fleet cards are kept close to
+   the others' height: shorter art window, denser dot grid, stamped count under the dots. */
+.card--v2 .card__heading { margin-left: 1.5em; margin-right: 1.5em; }
+.card--v2 .card__name { margin-left: -.035em; }
+.card--v2 .fl-dots { margin: .9em 1.5em .9em; }
+.card--v2.card--fleet .card__art { height: 8.5em; }
+/* ---------- Card backs: tilt + holo (sealed card in the reveal, collection spin, double-tap flip) ----------
+   Glare follows the finger; a rainbow-and-glitter holo slides as the card turns. Tilt values come from
+   attachTilt on an ancestor (the .card, or #rv-holder for the sealed card). */
+.back-holo, .back-glare { position: absolute; inset: 0; border-radius: inherit; pointer-events: none; }
+.rv-back, .card__back { --nbgx: calc(100% - var(--bgx, 50%)); --nbgy: calc(100% - var(--bgy, 50%)); }
+.back-holo {
+  background:
+    var(--glitter) var(--nbgx) var(--nbgy) / 13em 13em,
+    var(--glitter2) var(--bgx, 50%) var(--bgy, 50%) / 21em 21em,
+    repeating-linear-gradient(110deg, hsl(355, 92%, 66%) 0%, hsl(42, 95%, 62%) 1.4%, hsl(110, 80%, 58%) 2.8%, hsl(185, 88%, 58%) 4.2%, hsl(235, 88%, 68%) 5.6%, hsl(295, 82%, 68%) 7%, hsl(355, 92%, 66%) 8.4%) var(--bgx, 50%) var(--bgy, 50%) / 400% 400%;
+  background-blend-mode: screen, screen, normal;
+  mix-blend-mode: color-dodge; filter: brightness(.5) contrast(1.8) saturate(1.2);
+  opacity: calc(var(--o, 0) * (.2 + var(--hyp, 0) * .45));
+}
+.back-glare { background: radial-gradient(farthest-corner circle at var(--mx, 50%) var(--my, 50%), hsla(0, 0%, 100%, .75) 6%, hsla(0, 0%, 100%, .45) 18%, hsla(0, 0%, 0%, .3) 90%);
+  mix-blend-mode: overlay; opacity: calc(var(--o, 0) * .75); }
+:where(html[data-theme="night"], body.night) .back-holo { display: none; }
+
+.card--v2 .fl-years { align-items: baseline; gap: .8em; }
+.card--v2 .fl-sum { flex: 1; text-align: center; color: var(--ink); font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }

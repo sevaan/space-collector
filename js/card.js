@@ -1,11 +1,11 @@
 // Archival field cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { cardArt } from './art.js?v=0.1.75';
-import { TIER_INFO } from './rarity.js?v=0.1.75';
-import { SET_BY_ID } from './sets.js?v=0.1.75';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.75';
-import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText } from './lore.js?v=0.1.75';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.75';
-import { nightsIn } from './observation.js?v=0.1.75';
+import { cardArt } from './art.js?v=0.1.76';
+import { TIER_INFO } from './rarity.js?v=0.1.76';
+import { SET_BY_ID } from './sets.js?v=0.1.76';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.76';
+import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText } from './lore.js?v=0.1.76';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.76';
+import { nightsIn } from './observation.js?v=0.1.76';
 
 // Levels count observing nights (local noon to noon): bronze 1, silver 3, gold 10. Before
 // 2026-10-01 levels counted sightings (5 silver, 25 gold); anything earned that way is kept.
@@ -41,7 +41,7 @@ export function renderCard(o, opts = {}) {
   const third = loreStat.label === 'CREW' ? { label: 'LAUNCHED', value: o.launch?.slice(0, 4) ?? '—' } : loreStat;
   const title = titleFor(o);
   const el = document.createElement('article');
-  el.className = `card card--v2 tier-${o.tier ?? 'common'} level-${level}${revealed ? '' : ' uncaught'}${!caught ? ' not-owned' : ''}${extinct ? ' extinct' : ''}${title.length > 24 ? ' long-name' : ''}`;
+  el.className = `card card--v2${fleet ? ' card--fleet' : ''} tier-${o.tier ?? 'common'} level-${level}${revealed ? '' : ' uncaught'}${!caught ? ' not-owned' : ''}${extinct ? ' extinct' : ''}${title.length > 24 ? ' long-name' : ''}`;
   el.style.setProperty('--set', set.color);
   el.style.setProperty('--tier', tier.color);
   el.dataset.id = o.id;
@@ -52,7 +52,7 @@ export function renderCard(o, opts = {}) {
   const identifier = nat ? o.code : o.members ? `${o.members.length.toLocaleString('en-US')} SATELLITES` : `NORAD ${o.id}`;
   const identity = nat ? (o.type === 'star' ? `Star in ${o.constellation}` : o.type === 'moon' ? 'Natural satellite' : 'Planet') : fleet ? 'Satellite fleet' : TYPE_LABEL[o.type] ?? 'Orbital object';
   const ageText = age == null ? '' : age === 0 ? 'Less than a year ago' : `${age} ${age === 1 ? 'year' : 'years'} ago`;
-  const factBlock = fleet ? `<div class="card__fleet-summary">${stamps.size} / ${o.launches.length} launches stamped · ${esc(nextLevel(o.family, level))}</div>${dotMap(o, stamps, latestStamp(sightings))}`
+  const factBlock = fleet ? dotMap(o, stamps, latestStamp(sightings), `${stamps.size} / ${o.launches.length} stamped · ${nextLevel(o.family, level)}`)
     : `<div class="card__fact"><p>${revealed ? richText(factFor(o)) : `Observe this ${esc((TYPE_LABEL[o.type] ?? 'object').toLowerCase())} in the live sky to add its story to your collection.`}</p></div>`;
   el.innerHTML = `
   <div class="card__rotator"><div class="card__face">
@@ -64,7 +64,7 @@ export function renderCard(o, opts = {}) {
     ${factBlock}
     <div class="card__footer"><span class="card__status${caught ? ' is-collected' : ''}"><span class="card__status-icon" aria-hidden="true">${caught ? '✓' : ''}</span><span>${caught ? `COLLECTED · ${esc(firstDate)}` : 'NOT YET COLLECTED'}</span></span><span class="card__brand">SPACE COLLECTOR</span></div>
     <div class="card__shine"></div><div class="card__glare"></div>
-    <div class="card__back" aria-hidden="true"></div>
+    <div class="card__back" aria-hidden="true"><div class="back-holo"></div><div class="back-glare"></div></div>
     ${extinct ? `<div class="card__stamp">REENTERED${o.decay ? `<small>${esc(formatDate(o.decay)).toUpperCase()}</small>` : ''}</div>` : ''}
   </div></div>`;
   return el;
@@ -99,11 +99,12 @@ function stampHistory(sightings) {
 const latestStamp = (sightings) => stampHistory(sightings.filter((s) => !s.sim))[0]?.key ?? null;
 
 // Every launch in the fleet as a dot, oldest to newest; stamped ones filled, the newest ringed.
-function dotMap(o, stamps, latest) {
-  const n = o.launches.length, cols = n > 200 ? 30 : n > 60 ? 16 : Math.min(10, n), gap = n > 200 ? '.18em' : '.45em';
+// summary ("4 / 421 stamped · SILVER AT 10") sits between the first and last launch years, under the dots.
+function dotMap(o, stamps, latest, summary = '') {
+  const n = o.launches.length, cols = n > 200 ? 36 : n > 60 ? 18 : Math.min(14, Math.max(10, n)), gap = n > 200 ? '.15em' : '.45em';
   const dots = o.launches.map((l) => `<i class="${stamps.has(l.key) ? 'on' : ''}${l.key === latest ? ' latest' : ''}"></i>`).join('');
   const y0 = o.launches[0]?.launch?.slice(0, 4) ?? '', y1 = o.launches.at(-1)?.launch?.slice(0, 4) ?? '';
-  return `<div class="fl-dots"><span class="card__note-label">EVERY ${esc(String(o.familyName).toUpperCase())} LAUNCH</span><div class="fl-grid" style="--cols:${cols};--gap:${gap}">${dots}</div><div class="fl-years"><span>${esc(y0)}</span><span>${esc(y1)}</span></div></div>`;
+  return `<div class="fl-dots"><span class="card__note-label">EVERY ${esc(String(o.familyName).toUpperCase())} LAUNCH</span><div class="fl-grid" style="--cols:${cols};--gap:${gap}">${dots}</div><div class="fl-years"><span>${esc(y0)}</span>${summary ? `<span class="fl-sum">${esc(summary)}</span>` : ''}<span>${esc(y1)}</span></div></div>`;
 }
 
 const shortDay = (t) => new Date(t).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }).toUpperCase();
@@ -226,4 +227,35 @@ export function attachGyro(el, tilt) {
   };
   window.addEventListener('deviceorientation', onOri);
   return () => { window.removeEventListener('deviceorientation', onOri); tilt.reset(); };
+}
+
+// Double-tap (or double-click) a card to flip it over and see its back; do it again to flip it back.
+// onBack(backEl) dresses the back (a random poster, js/card-backs.js) each time it turns to the back.
+// The back is pre-mirrored in CSS, so it reads correctly while the card faces away.
+export function attachFlip(el, { onBack } = {}) {
+  let flipped = false, busy = false, lastTap = 0, lastX = 0, lastY = 0;
+  const back = el.querySelector('.card__back');
+  const flip = () => {
+    if (busy || !back) return;
+    busy = true; flipped = !flipped;
+    if (flipped) onBack?.(back);
+    const ms = reducedMotion() ? 1 : 560, from = flipped ? 0 : 180, to = flipped ? 180 : 360;
+    el.animate([{ transform: `perspective(1600px) rotateY(${from}deg)` }, { transform: `perspective(1600px) rotateY(${to}deg)` }],
+      { duration: ms, easing: 'cubic-bezier(.4,0,.2,1)', fill: 'forwards' });
+    setTimeout(() => { back.style.opacity = flipped ? '1' : ''; }, ms / 2); // edge-on: swap faces
+    setTimeout(() => { busy = false; }, ms);
+  };
+  const onUp = (e) => {
+    if (e.pointerType === 'mouse' || el.dataset.swiping) return; // mice use dblclick
+    const now = performance.now();
+    if (now - lastTap < 320 && Math.hypot(e.clientX - lastX, e.clientY - lastY) < 30) { lastTap = 0; flip(); }
+    else { lastTap = now; lastX = e.clientX; lastY = e.clientY; }
+  };
+  const onDbl = (e) => { e.preventDefault(); flip(); };
+  el.addEventListener('pointerup', onUp);
+  el.addEventListener('dblclick', onDbl);
+  return {
+    get flipped() { return flipped; },
+    destroy() { el.removeEventListener('pointerup', onUp); el.removeEventListener('dblclick', onDbl); },
+  };
 }

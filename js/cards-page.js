@@ -1,10 +1,10 @@
-import { renderCard, renderCardTile, renderPassport, attachTilt, attachGyro } from './card.js?v=0.1.75';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.75';
-import { applyBack } from './card-backs.js?v=0.1.75';
-import { SETS, assignSets } from './sets.js?v=0.1.75';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.75';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.75';
-import { allSightings, deleteSighting } from './store.js?v=0.1.75';
+import { renderCard, renderCardTile, renderPassport, attachTilt, attachGyro, attachFlip } from './card.js?v=0.1.76';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.76';
+import { applyBack } from './card-backs.js?v=0.1.76';
+import { SETS, assignSets } from './sets.js?v=0.1.76';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.76';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.76';
+import { allSightings, deleteSighting } from './store.js?v=0.1.76';
 
 const $ = (id) => document.getElementById(id);
 const state = { cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -169,6 +169,7 @@ function showCard() {
   const el = renderCard(c, { sightings, seenMembers: state.seenMembers.get(c.key)?.size ?? 0, preview: state.preview });
   $('slot').replaceChildren(el);
   tilt = attachTilt(el);
+  attachFlip(el, { onBack: applyBack });
   if (!reducedMotion.matches && motionPermission !== 'denied') stopGyro = attachGyro(el, tilt);
   $('v-position').textContent = `${state.index + 1} / ${state.list.length.toLocaleString()}`;
   const firstTime = sightings.length ? Math.min(...sightings.map((s) => s.time)) : 0;
@@ -241,6 +242,12 @@ function spin(card, rect, opening) {
   const backEl = card.querySelector('.card__back');
   if (opening) applyBack(backEl);
   backEl?.animate(back, opts);
+  // The holo sweeps across the back as it turns, finger or not.
+  backEl?.querySelector('.back-holo')?.animate([
+    { opacity: .55, backgroundPosition: '20% 20%, 80% 80%, 15% 25%' },
+    { opacity: .55, backgroundPosition: '80% 80%, 20% 20%, 85% 75%' },
+  ], opts);
+  backEl?.querySelector('.back-glare')?.animate([{ opacity: .5 }, { opacity: .5 }], opts);
   const a = card.animate(opening ? [{ transform: away }, { transform: here }] : [{ transform: here }, { transform: away, opacity: rect ? 1 : 0 }], { ...opts, fill: 'forwards' });
   return new Promise((r) => setTimeout(() => { r(); if (opening) a.cancel(); }, opts.duration));
 }

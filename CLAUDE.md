@@ -110,5 +110,10 @@ Live: https://sevaan.github.io/space-collector/ (GitHub Pages, deploys from `mai
   natural-object distance line. Frame: gold for Legendary, silver otherwise (our override at the end of
   cards.css, since old level colours won on specificity). Gallery tiles also have empty art.
 
+- Card backs everywhere share `.back-holo`/`.back-glare` (cards.css), driven by the tilt vars of an
+  ancestor. Double-tap / double-click any full card to flip it to a random poster back and back again
+  (`attachFlip` in js/card.js; used in the collection viewer, the reveal and the sky's View card).
+  Fleet cards: `card--fleet` (short art window, 36-col dot grid, "N / M stamped" between the years).
+
 ## Deliberately out of scope for now
 Alerts, service worker, accounts, secret sets/feats.

@@ -5,9 +5,9 @@
 //  Everything scales with rarity (Legendary dims the sky, shockwave, held breath, slow flip, fanfare).
 // Waits use timers, not animation.finished, so a paused tab can never freeze the sequence.
 
-import { TIER_INFO } from './rarity.js?v=0.1.75';
-import { levelFor, attachTilt, attachGyro } from './card.js?v=0.1.75';
-import { applyBack } from './card-backs.js?v=0.1.75';
+import { TIER_INFO } from './rarity.js?v=0.1.76';
+import { levelFor, attachTilt, attachGyro, attachFlip } from './card.js?v=0.1.76';
+import { applyBack } from './card-backs.js?v=0.1.76';
 
 const FX = {
   common:    { particles: 14,  flip: 520,  spin: 0,   dim: 0,   shock: false, notes: [880],                            hold: 0 },
@@ -223,6 +223,7 @@ export async function playView({ card, o, from, sighting = null }) {
   $('rv-sweep').classList.remove('go'); void $('rv-sweep').offsetWidth; $('rv-sweep').classList.add('go');
   tilt = attachTilt(card);
   stopGyro = attachGyro(card, tilt);
+  attachFlip(card, { onBack: applyBack });
   root.classList.add('rv-done');
 }
 
@@ -253,6 +254,7 @@ async function finish({ fx, color, fresh, seen, level, levelUp, card, alive, fle
   if (levelUp) card.querySelector('.card__face')?.animate([{ boxShadow: '0 0 0 transparent' }, { boxShadow: `0 0 34px ${LEVEL_COLOR[level]}` }, { boxShadow: '0 0 0 transparent' }], { duration: 1300 });
   tilt = attachTilt(card);
   stopGyro = attachGyro(card, tilt);
+  attachFlip(card, { onBack: applyBack });
   $('reveal').classList.add('rv-done');
   setTimeout(() => { if (alive()) $('rv-stamp').animate([{ opacity: 1 }, { opacity: 0 }], { duration: 600, fill: 'forwards' }); }, 2200);
 }
