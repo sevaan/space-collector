@@ -181,61 +181,70 @@
   .card__shine, .card__glare, .card__foil { background-position: 50% 50% !important; }
 }
 
-/* V2 concept layout. Scale with the existing .card font-size contract (28em wide).
-   Blank art slots intentionally contain no images, generated SVG, or foil. */
-.card.card--v2 { --paper:#f5f2e6; --ink:#07131e; --grey:#273c47; --edge:#adb8c1; --rule:#bec4bb; min-height:41.5em; }
-.card--v2.tier-legendary { --edge:#ecc95a; }
-.card--v2 .card__face { border:.26em solid var(--edge); border-radius:1.3em; box-shadow:inset 0 0 0 .08em #fff8; padding-bottom:.55em; }
-.card--v2 .card__rotator { border-radius:1.3em; box-shadow:0 1em 3em #0008; }
-.card--v2 .card__setbar { min-height:2.8em; padding:.7em 1.2em; font-size:.79em; letter-spacing:.065em; gap:.65em; background:linear-gradient(110deg,#fff1,#0002),var(--set); }
-.card--v2 .card__setbar > span:first-child { min-width:0; gap:.85em; }
-.card--v2 .card__setbar > span:first-child > span { overflow-wrap:anywhere; }
-.card--v2 .card__tier { display:flex; align-items:center; gap:.65em; flex:none; border-left:1px solid #fffa; padding-left:1em; font-size:1em; letter-spacing:.05em; font-weight:750; }
-.card--v2 .card__tier i { color:inherit; font-size:1.45em; margin:0; line-height:1; }
-.card--v2.tier-legendary .card__tier i { color:#ffe17b; }
-.card--v2 .card__heading { margin:1em 1.65em .65em; min-height:4.95em; display:flex; flex-direction:column; justify-content:space-between; gap:.45em; }
-.card--v2 .card__name { padding:0; font-size:3.05em; line-height:.96; font-weight:800; letter-spacing:-.055em; }
-.card--v2.long-name .card__name { font-size:2.35em; }
-.card--v2 .card__identity { margin:0; font-size:.82em; line-height:1.25; color:var(--ink); align-items:flex-end; }
-.card--v2 .card__identity .card__mono { font-size:.92em; letter-spacing:.07em; flex-shrink:0; }
-.card--v2 .card__art { margin:0 1.05em; height:17.9em; background:transparent; border:1px solid var(--rule); border-radius:.65em; }
-.card--v2 .card__stats { margin:.65em 1.05em 0; padding:.65em .45em .8em; grid-template-columns:1.04fr 1fr .95fr; border-top:1px solid var(--rule); border-bottom:1px solid var(--rule); min-height:5.6em; }
-.card--v2 .card__stats > div { padding-left:1.1em; gap:.42em; border-color:var(--rule); min-width:0; }
-.card--v2 .card__stats > div:first-child { padding-left:0; }
-.card--v2 .card__label { font:.62em/1.25 'IBM Plex Mono',ui-monospace,monospace; font-weight:600; letter-spacing:.11em; color:var(--ink); }
-.card--v2 .card__stats b { font-size:1.9em; line-height:1.1; letter-spacing:-.035em; }
-.card--v2 .card__stats b small { font-size:.55em; letter-spacing:0; }
-.card--v2 .card__stats b.small { font-size:1.1em; }
-.card--v2 .card__stat-detail { font:.68em/1.2 'IBM Plex Mono',monospace; letter-spacing:.015em; }
-.card--v2 .card__fact { margin:.65em 1.55em .7em; padding:0 0 0 1em; border-left:.2em solid var(--set); }
-.card--v2 .card__fact p { margin:0; font-size:1em; line-height:1.42; font-weight:400; }
-.card--v2 .card__fact b { font-weight:650; }
-.card--v2 .card__footer { margin:auto 1.05em 0; padding:.55em .4em .15em; border-top:1px solid var(--rule); color:var(--ink); font:600 .64em/1.35 'IBM Plex Mono',ui-monospace,monospace; letter-spacing:.09em; align-items:center; gap:.65em; }
-.card--v2 .card__footer { margin-left:1.64em; margin-right:1.64em; }
-.card--v2 .card__status { display:flex; align-items:center; gap:.75em; min-width:0; flex:1; }
-.card--v2 .card__status.is-collected { color:var(--set); }
-.card--v2 .card__status-icon { width:1.5em; height:1.5em; border:.1em solid currentColor; border-radius:50%; display:grid; place-items:center; font:700 1.5em/1 Arial,sans-serif; flex:none; }
-.card--v2 .is-collected .card__status-icon { color:var(--paper); background:var(--set); border-color:var(--set); }
-.card--v2 .card__brand { padding:.7em 0 .7em 1.3em; border-left:1px solid #87928c; letter-spacing:.2em; font-size:.9em; flex:none; }
-.card--v2 .card__fleet-summary { margin:.8em 1.5em; font-size:.85em; }
-.card--v2 .fl-dots { margin-bottom:1em; }
-:where(html[data-theme="night"],body.night) .card.card--v2 { --rule:#52221f; }
-/* V2 frame as its README describes: gold edge for Legendary, silver for the rest. Without these, the
-   older level colours (.level-bronze etc.) and the Legendary gold ring win on specificity. */
-.card.card--v2 .card__face { border-color: var(--edge); }
-.card.card--v2.tier-legendary .card__rotator { box-shadow: 0 1em 3em #0008; }
+/* Retro front. All dimensions follow the existing 28em card sizing contract. */
+@font-face{font-family:'SC Display';src:url('../fonts/RussoOne-Regular.ttf') format('truetype');font-weight:400;font-display:swap}
+@font-face{font-family:'SC Label';src:url('../fonts/BarlowCondensed-Medium.ttf') format('truetype');font-weight:500;font-display:swap}
+.card.card--retro { --paper:#080f1b;--ink:#fff2b3;--grey:#dfd7a7;--edge:#adbcc8;--rule:#bcb585;--accent:#fa8127;--display:'SC Display',Impact,sans-serif;--label:'SC Label','Arial Narrow',sans-serif;min-height:42em;color:var(--ink); }
+.card--retro .card__face { background:var(--paper);border:.28em solid var(--edge);border-radius:1.4em;box-shadow:inset 0 0 0 .09em #657786,inset 0 0 0 .17em #d4e0e7;padding:.75em 0 .5em; }
+.card--retro .card__rotator { border-radius:1.4em;box-shadow:0 1em 3em #0008; }
+.card--retro .card__setbar { min-height:2.4em;padding:.55em 1.15em;background:none;color:var(--ink);font:500 .87em/1.15 var(--label);letter-spacing:.16em;border-block:1px solid var(--rule);gap:.7em; }
+.card--retro .card__setbar > span:first-child {flex:1;min-width:0;gap:.6em;}
+.card--retro .card__setbar > span:first-child::after {content:'';height:1px;background:var(--rule);flex:1;min-width:.5em;}
+.card--retro .card__setbar svg {display:none;}
+.card--retro .card__tier {display:flex;align-items:center;gap:.6em;flex:none;border-left:1px solid var(--rule);padding-left:.8em;font:inherit;letter-spacing:.14em;}
+.card--retro .card__tier i {font-style:normal;color:var(--accent);font-size:1.3em;margin:0;line-height:1;}
+.card--retro .card__heading {margin:.85em 1.1em 0;display:flex;flex-direction:column;gap:.5em;min-height:6.5em;justify-content:space-between;}
+.card--retro .card__name {padding:0;font:400 2.7em/.99 var(--display);letter-spacing:-.035em;text-transform:uppercase;overflow-wrap:anywhere;}
+.card--retro.long-name .card__name {font-size:2.2em;}
+.card--retro .card__identity {margin:0;border-top:1px solid var(--rule);padding-top:.4em;color:var(--ink);font:500 .95em/1.2 var(--label);letter-spacing:.09em;align-items:center;}
+.card--retro .card__identity > span:last-child {border-left:1px solid var(--rule);padding-left:.8em;font:inherit;white-space:nowrap;}
+.card--retro .card__art {margin:.3em 0 0;height:17.3em;border:0;border-radius:0;background:transparent;}
+.card--retro .card__stats {margin:0 1.1em;padding:.65em 0 .7em;grid-template-columns:1.15fr 1fr 1fr;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);min-height:5.1em;}
+.card--retro .card__stats > div {padding:0 .65em;gap:.3em;border-color:var(--rule);min-width:0;text-align:center;}
+.card--retro .card__stats > div:first-child {padding-left:0;text-align:left;}
+.card--retro .card__stats > div:last-child {padding-right:0;}
+.card--retro .card__label {font:500 .82em/1.15 var(--label);letter-spacing:.08em;color:var(--ink);border-bottom:1px solid var(--rule);padding-bottom:.4em;}
+.card--retro .card__stats b {font:400 1.65em/1.15 var(--display);letter-spacing:-.04em;overflow-wrap:anywhere;}
+.card--retro .card__stats b small {font-size:.55em;letter-spacing:0;}
+.card--retro .card__stats b.small {font-size:1.1em;}
+.card--retro .card__stat-detail {font:500 .78em/1.2 var(--label);letter-spacing:.06em;}
+.card--retro .card__fact {margin:.65em 1.1em;padding:0 0 0 1em;border-left:.22em solid var(--accent);}
+.card--retro .card__fact p {margin:0;font:400 .87em/1.45 Georgia,'Times New Roman',serif;letter-spacing:.045em;}
+.card--retro .card__fact b {font-weight:700;}
+.card--retro.uncaught .card__fact {color:var(--grey);}
+.card--retro .card__footer {margin:auto 0 0;padding:.65em 1.35em .2em;border-top:1px solid var(--rule);color:var(--ink);font:500 .72em/1.3 var(--label);letter-spacing:.1em;align-items:center;gap:.65em;}
+.card--retro .card__status {display:flex;align-items:center;gap:.65em;flex:1;min-width:0;}
+.card--retro .card__status-icon {width:1.5em;height:1.5em;display:grid;place-items:center;flex:none;border:.08em solid currentColor;border-radius:50%;font:500 1.35em/1 Arial,sans-serif;}
+.card--retro .card__brand {font:400 .98em/1.2 var(--display);letter-spacing:-.04em;border-left:1px solid var(--rule);padding:.6em 0 .6em 1em;flex:none;}
+.card--retro .card__fleet-summary {margin:.7em 1.4em;font:500 .9em/1.3 var(--label);}
+.card--retro .fl-dots {margin-bottom:.7em;}
+.card--retro .fl-grid i {background:#344557;}
+.card--retro .fl-grid i.on {background:var(--accent);}
+.card--retro .card__stamp {background:#080f1bf2;color:var(--accent);border-color:var(--accent);}
+/* Preserve deep-red observing mode as an explicit app preference. */
+:where(html[data-theme='night'],body.night) .card.card--retro {--paper:#130606;--ink:#be6660;--grey:#a45650;--accent:#a5534b;--rule:#52221f;--edge:#4d1b18;}
+:where(html[data-theme='night'],body.night) .card--retro .card__face {box-shadow:inset 0 0 0 .1em #52221f;}
+.card-tile.card-tile--retro {background:#080f1b;color:#fff2b3;border:2px solid #adbcc8;box-shadow:inset 0 0 0 1px #657786;}
+.card-tile--retro .card-tile__set {background:none;color:inherit;border-bottom:1px solid #bcb585;font:500 12px/1.2 'SC Label',sans-serif;letter-spacing:.12em;}
+.card-tile--retro .card-tile__art {background:transparent;border-radius:0;}
+.card-tile--retro .card-tile__tier {color:#fa8127;font:500 12px/1.2 'SC Label',sans-serif;}
+.card-tile--retro .card-tile__name {font:400 17px/1.1 'SC Display',Impact,sans-serif;text-transform:uppercase;}
+.card-tile--retro .card-tile__status {color:#fff2b3;border-color:#bcb585;font:500 12px/1.3 'SC Label',sans-serif;}
+:where(html[data-theme='night'],body.night) .card-tile.card-tile--retro {background:#130606;color:#be6660;border-color:#52221f;}
+:where(html[data-theme='night'],body.night) .card-tile--retro .card-tile__status,:where(html[data-theme='night'],body.night) .card-tile--retro .card-tile__tier {color:#a45650;border-color:#52221f;}
+/* Retro frame: silver on every rarity, as the template intends. Without these, the older level colours
+   (.level-bronze etc.) and the Legendary gold ring win on specificity. */
+.card.card--retro .card__face { border-color: var(--edge); }
+.card.card--retro.tier-legendary .card__rotator { box-shadow: 0 1em 3em #0008; }
 /* Keep a stat's value and unit together ("10.7 hours"), shrinking long ones rather than wrapping
    (js/card.js statClass). Word values such as constellation names still wrap. */
-.card--v2 .card__stats b.fit { white-space: nowrap; }
-.card--v2 .card__stats b.long { font-size: 1.5em; }
+.card--retro .card__stats b.fit { white-space: nowrap; overflow-wrap: normal; }
+.card--retro .card__stats b.long { font-size: 1.3em; }
 
-/* One left edge for the text (title, type, fleet dots), matching the stat labels; the big title is
-   nudged left a hair because heavy capitals carry space on their left. Fleet cards are kept close to
-   the others' height: shorter art window, denser dot grid, stamped count under the dots. */
-.card--v2 .card__heading { margin-left: 1.5em; margin-right: 1.5em; }
-.card--v2 .card__name { margin-left: -.035em; }
-.card--v2 .fl-dots { margin: .9em 1.5em .9em; }
-.card--v2.card--fleet .card__art { height: 8.5em; }
+/* Fleet cards are kept close to the others' height: shorter art window, denser dot grid, stamped count
+   under the dots. */
+.card--retro .fl-dots { margin: .9em 1.1em .9em; }
+.card--retro.card--fleet .card__art { height: 8.5em; }
 /* ---------- Card backs: tilt + holo (sealed card in the reveal, collection spin, double-tap flip) ----------
    Glare follows the finger; a rainbow-and-glitter holo slides as the card turns. Tilt values come from
    attachTilt on an ancestor (the .card, or #rv-holder for the sealed card). */
@@ -254,5 +263,8 @@
   mix-blend-mode: overlay; opacity: calc(var(--o, 0) * .75); }
 :where(html[data-theme="night"], body.night) .back-holo { display: none; }
 
-.card--v2 .fl-years { align-items: baseline; gap: .8em; }
-.card--v2 .fl-sum { flex: 1; text-align: center; color: var(--ink); font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
+.card--retro .fl-years { align-items: baseline; gap: .8em; color: var(--grey); }
+.card--retro .fl-sum { flex: 1; text-align: center; color: var(--ink); font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
+/* Retro palette for the fleet's newest-stamp ring and the tile's collected line (older rules otherwise win). */
+.card--retro .fl-grid i.latest { background: var(--accent); box-shadow: 0 0 0 .12em var(--paper), 0 0 0 .32em var(--accent); }
+.card-tile--retro.is-owned .card-tile__status { color: #fff2b3; }

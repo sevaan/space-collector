@@ -103,6 +103,10 @@ Live: https://sevaan.github.io/space-collector/ (GitHub Pages, deploys from `mai
   #rv-holder (not the rotating back itself, or the pointer 'leaves' as it tilts); stops when it flips.
   Full-size PNGs: Desktop/cardbacks/space-collector/.
 
+- Card face RETRO (2026-10-05, Sevaan's space-collector-template-v2(1).zip): `card--retro` / `card-tile--retro`,
+  navy stock, cream ink, burnt-orange accents, silver double frame, fonts in fonts/ (Russo One display,
+  Barlow Condensed labels, OFL). Ported onto the V2 code below (kept: temp art, flip, holo backs, fleet
+  compaction, stat fit/units). Superseded V2 notes:
 - Card face V2 (2026-10-05, from Sevaan's space-collector-template-v2.zip): `card--v2` layout in js/card.js +
   css/cards.css. Rarity in the coloured header, title + type + NORAD, EMPTY art window (`[data-art-slot]`,
   for artwork to come; art.js is no longer used by cards, only by the sky toast thumbnail), three stats

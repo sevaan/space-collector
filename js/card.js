@@ -1,11 +1,11 @@
-// Archival field cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { cardArt } from './art.js?v=0.1.76';
-import { TIER_INFO } from './rarity.js?v=0.1.76';
-import { SET_BY_ID } from './sets.js?v=0.1.76';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.76';
-import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText } from './lore.js?v=0.1.76';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.76';
-import { nightsIn } from './observation.js?v=0.1.76';
+// Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
+import { cardArt } from './art.js?v=0.1.77';
+import { TIER_INFO } from './rarity.js?v=0.1.77';
+import { SET_BY_ID } from './sets.js?v=0.1.77';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.77';
+import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText } from './lore.js?v=0.1.77';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.77';
+import { nightsIn } from './observation.js?v=0.1.77';
 
 // Levels count observing nights (local noon to noon): bronze 1, silver 3, gold 10. Before
 // 2026-10-01 levels counted sightings (5 silver, 25 gold); anything earned that way is kept.
@@ -41,7 +41,7 @@ export function renderCard(o, opts = {}) {
   const third = loreStat.label === 'CREW' ? { label: 'LAUNCHED', value: o.launch?.slice(0, 4) ?? '—' } : loreStat;
   const title = titleFor(o);
   const el = document.createElement('article');
-  el.className = `card card--v2${fleet ? ' card--fleet' : ''} tier-${o.tier ?? 'common'} level-${level}${revealed ? '' : ' uncaught'}${!caught ? ' not-owned' : ''}${extinct ? ' extinct' : ''}${title.length > 24 ? ' long-name' : ''}`;
+  el.className = `card card--retro${fleet ? ' card--fleet' : ''} tier-${o.tier ?? 'common'} level-${level}${revealed ? '' : ' uncaught'}${!caught ? ' not-owned' : ''}${extinct ? ' extinct' : ''}${title.length > 24 ? ' long-name' : ''}`;
   el.style.setProperty('--set', set.color);
   el.style.setProperty('--tier', tier.color);
   el.dataset.id = o.id;
@@ -141,7 +141,7 @@ export function renderCardTile(o, opts = {}) {
   const title = titleFor(o);
   const tile = document.createElement('button');
   tile.type = 'button';
-  tile.className = `card-tile${caught ? ' is-owned' : ''}`;
+  tile.className = `card-tile card-tile--retro${caught ? ' is-owned' : ''}`;
   tile.style.setProperty('--set', set.color);
   tile.setAttribute('aria-label', `${title}, ${tier.label}, ${caught ? `collected, ${sightings.length} sightings` : 'not collected'}. View card`);
   tile.innerHTML = `<span class="card-tile__set">${esc(set.name)}</span><span class="card-tile__art">${cardArt(o, { accent: set.color, silhouette: !caught })}</span><span class="card-tile__body"><span class="card-tile__tier">${tier.gem} ${tier.label}</span><span class="card-tile__name">${esc(title)}</span><span class="card-tile__status">${caught ? (o.launches ? `✓ ${stampsIn(sightings).size} of ${o.launches.length} launches` : `✓ Collected ${new Date(Math.min(...sightings.map((s) => s.time))).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`) : 'Not yet collected'}<span aria-hidden="true">↗</span></span></span>`;
