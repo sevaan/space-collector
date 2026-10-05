@@ -39,7 +39,7 @@
 #rv-sweep.go::after { animation: rvSweep .9s ease-out forwards; }
 @keyframes rvSweep { 0% { left: -60%; opacity: 0; } 15% { opacity: 1; } 100% { left: 120%; opacity: 0; } }
 
-#rv-stamp { position: absolute; left: 50%; top: 58%; transform: translate(-50%, -50%) rotate(-9deg); padding: .5em 1em; border: .22em solid var(--stamp, var(--fx)); border-radius: .5em; color: var(--stamp, var(--fx)); background: rgba(5, 10, 24, .85); font: 800 calc(var(--cf) * 1.35) Inter, system-ui, sans-serif; letter-spacing: .12em; text-align: center; white-space: nowrap; opacity: 0; pointer-events: none; }
-#rv-stamp small { display: block; font-size: .62em; letter-spacing: .16em; margin-top: .2em; opacity: .85; }
+#rv-stamp { position: absolute; left: 50%; top: 58%; transform: translate(-50%, -50%) rotate(-9deg); padding: .5em 1em; border: .22em solid var(--stamp, var(--fx)); border-radius: .5em; color: var(--stamp, var(--fx)); background: rgba(5, 10, 24, .85); font: 400 calc(var(--cf) * 1.5) 'SC Display', Impact, sans-serif; letter-spacing: .06em; text-align: center; white-space: nowrap; opacity: 0; pointer-events: none; }
+#rv-stamp small { display: block; font: 500 .62em 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .3em; margin-top: .2em; opacity: .85; }
 
 body.night #reveal { background: #000; }

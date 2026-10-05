@@ -130,3 +130,4 @@ Alerts, service worker, accounts, secret sets/feats.
   Nano Banana 2 (gemini-3.1-flash-image) on Vertex AI, project space-collector-510722 (post-paid, gcloud login
   sevaan@gmail.com), poster style + a card back + curated references (~/Documents/Space Collector art references).
 - Reveal: once the card has landed, swipe it away in any direction to go back to the sky (`onRevealDismiss`).
+- Capture stamps (2026-10-05): a NEW card only gets a stamp at collection milestones (`MILESTONES` in js/reveal.js: 1 = "FIRST ITEM COLLECTED", then 10, 25, 50, 75, 100, 200 … 1000 "N ITEMS COLLECTED"); repeat sightings keep SEEN n× / NEW STAMP / level-up stamps. Front holo was toned down about a third (backs unchanged).

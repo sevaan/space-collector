@@ -91,14 +91,15 @@
 .card__glare {
   z-index: 7;
   background: radial-gradient(farthest-corner circle at var(--mx) var(--my), hsla(0, 0%, 100%, .8) 6%, hsla(0, 0%, 100%, .5) 16%, hsla(0, 0%, 0%, .3) 90%);
-  mix-blend-mode: overlay; opacity: calc(var(--o, 0) * .8);
+  mix-blend-mode: overlay; opacity: calc(var(--o, 0) * .55);
 }
 
-/* Uncommon: a pastel sheen that slides across the whole card. */
+/* Front holo toned down about a third (2026-10-05, Sevaan); card backs keep their own strength.
+   Uncommon: a pastel sheen that slides across the whole card. */
 .card.tier-uncommon .card__shine {
   z-index: 6;
   background: linear-gradient(115deg, transparent 22%, hsla(185, 90%, 78%, .55) 38%, hsla(300, 85%, 82%, .55) 47%, hsla(55, 95%, 78%, .55) 56%, transparent 72%) var(--bgx) var(--bgy) / 300% 300%;
-  mix-blend-mode: color-dodge; opacity: calc(var(--o, 0) * .45);
+  mix-blend-mode: color-dodge; opacity: calc(var(--o, 0) * .28);
 }
 
 /* Rare and up: rainbow beams with glitter in the picture window. */
@@ -109,7 +110,7 @@
     repeating-linear-gradient(90deg, hsla(0, 0%, 0%, .75) 0%, hsla(0, 0%, 100%, .2) 1.8%, hsla(0, 0%, 0%, .75) 3.6%) var(--nbgx) 50% / 300% 100%;
   background-blend-mode: screen, hard-light, normal;
   mix-blend-mode: color-dodge; filter: brightness(.55) contrast(1.7) saturate(1.2);
-  opacity: calc(var(--o, 0) * (.18 + var(--hyp, 0) * .45));
+  opacity: calc(var(--o, 0) * (.12 + var(--hyp, 0) * .3));
 }
 .card.uncaught .card__foil { display: none; }
 
@@ -123,7 +124,7 @@
     repeating-linear-gradient(125deg, hsl(272, 85%, 70%) 0%, hsl(200, 88%, 66%) 7%, hsl(322, 85%, 72%) 14%, hsl(272, 85%, 70%) 21%) var(--bgx) var(--bgy) / 300% 300%;
   background-blend-mode: screen, screen, normal;
   mix-blend-mode: color-dodge; filter: brightness(.38) contrast(2.6) saturate(1.4);
-  opacity: calc(var(--o, 0) * (.35 + var(--hyp, 0) * .4));
+  opacity: calc(var(--o, 0) * (.22 + var(--hyp, 0) * .27));
 }
 
 /* Legendary: gold. Two gold glitter fields slide past each other with a bright glint sweeping
@@ -136,9 +137,9 @@
     var(--glitter2) var(--nbgx) var(--nbgy) / 19em 19em,
     linear-gradient(135deg, #8a6417, #f7d77a 35%, #b8862a 60%, #fbe7a6 85%);
   background-blend-mode: normal, screen, screen, normal;
-  mix-blend-mode: soft-light; opacity: calc(var(--o, 0) * .9);
+  mix-blend-mode: soft-light; opacity: calc(var(--o, 0) * .6);
 }
-.card.tier-legendary .card__foil { opacity: calc(var(--o, 0) * (.3 + var(--hyp, 0) * .45)); }
+.card.tier-legendary .card__foil { opacity: calc(var(--o, 0) * (.2 + var(--hyp, 0) * .3)); }
 .card.tier-legendary .card__rotator { box-shadow: 0 0 0 .25em #e8c35a, 0 calc(1em + var(--o, 0) * 1em) calc(3em + var(--o, 0) * 2em) rgba(0, 0, 0, .5); }
 .card.tier-legendary.uncaught .card__shine { display: none; }
 .card.extinct .card__shine, .card.extinct .card__foil { display: none; }

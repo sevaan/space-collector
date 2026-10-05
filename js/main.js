@@ -1,20 +1,20 @@
-import { VERSION } from './version.js?v=0.1.79';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode } from './orbit.js?v=0.1.79';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.79';
-import { SkyView, shortName } from './sky.js?v=0.1.79';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.79';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.79';
-import { cardArt } from './art.js?v=0.1.79';
-import { renderCard, cardLevel } from './card.js?v=0.1.79';
-import { playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.79';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.79';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.79';
-import { naturalTargets } from './natural.js?v=0.1.79';
-import { TIER_INFO } from './rarity.js?v=0.1.79';
-import { SETS } from './sets.js?v=0.1.79';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.79';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.79';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter } from './planes.js?v=0.1.79';
+import { VERSION } from './version.js?v=0.1.80';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode } from './orbit.js?v=0.1.80';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.80';
+import { SkyView, shortName } from './sky.js?v=0.1.80';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.80';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.80';
+import { cardArt } from './art.js?v=0.1.80';
+import { renderCard, cardLevel } from './card.js?v=0.1.80';
+import { playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.80';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.80';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.80';
+import { naturalTargets } from './natural.js?v=0.1.80';
+import { TIER_INFO } from './rarity.js?v=0.1.80';
+import { SETS } from './sets.js?v=0.1.80';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.80';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.80';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter } from './planes.js?v=0.1.80';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -690,7 +690,8 @@ function showCaptureCard(obj) {
   }
   // Levels count observing nights; pass the level before and after this sighting.
   const progress = { level: cardLevel(sightings), before: cardLevel(sightings.slice(1)), nights: nightsIn(sightings) };
-  playReveal({ card, o: model, seen: sightings.length, fleet, progress, origin: { x: sky.ring?.x ?? sky.cx, y: sky.ring?.y ?? sky.cy } });
+  const collected = new Set(state.sightings.filter(s => !s.sim).map(s => s.cardKey)).size; // milestone stamps
+  playReveal({ card, o: model, seen: sightings.length, fleet, progress, collected, origin: { x: sky.ring?.x ?? sky.cx, y: sky.ring?.y ?? sky.cy } });
 }
 // Open an owned card in place, spinning out of the toast. counted: this view also logged a sighting.
 function showViewCard(obj, from, counted) {
