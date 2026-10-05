@@ -1,11 +1,11 @@
 // Archival field cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { cardArt } from './art.js?v=0.1.64';
-import { TIER_INFO } from './rarity.js?v=0.1.64';
-import { SET_BY_ID } from './sets.js?v=0.1.64';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.64';
-import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText } from './lore.js?v=0.1.64';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.64';
-import { nightsIn } from './observation.js?v=0.1.64';
+import { cardArt } from './art.js?v=0.1.65';
+import { TIER_INFO } from './rarity.js?v=0.1.65';
+import { SET_BY_ID } from './sets.js?v=0.1.65';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.65';
+import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText } from './lore.js?v=0.1.65';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.65';
+import { nightsIn } from './observation.js?v=0.1.65';
 
 // Levels count observing nights (local noon to noon): bronze 1, silver 3, gold 10. Before
 // 2026-10-01 levels counted sightings (5 silver, 25 gold); anything earned that way is kept.
@@ -75,7 +75,7 @@ export function renderCard(o, opts = {}) {
     ${nat ? `<div class="card__stats">${o.stats.map(([label, value, unit]) => `<div><span class="card__label">${esc(label)}</span><b${String(value).length > 9 ? ' class="small"' : ''}>${esc(value)}${unit ? ` <small>${esc(unit)}</small>` : ''}</b></div>`).join('')}</div>` : `<div class="card__stats"><div><span class="card__label">MEAN ALTITUDE</span><b>${stats ? `${stats.alt.toLocaleString('en-US')} <small>km</small>` : '—'}</b></div><div><span class="card__label">ORBITS / DAY</span><b>${laps ? laps.toFixed(laps < 10 ? 1 : 0) : '—'}</b></div><div><span class="card__label">${esc(third.label)}</span><b>${esc(third.value)}</b></div></div>`}
     <div class="card__footer"><span>SPACE COLLECTOR</span><span>${o.archived ? 'SAVED FIELD RECORD' : 'CURRENT CATALOGUE EDITION'}</span></div>
     <div class="card__shine"></div><div class="card__glare"></div>
-    <div class="card__back" aria-hidden="true"><div><svg viewBox="0 0 64 48"><circle cx="32" cy="24" r="12"/><ellipse cx="32" cy="24" rx="29" ry="9" transform="rotate(-24 32 24)"/></svg><span>SPACE COLLECTOR</span></div></div>
+    <div class="card__back" aria-hidden="true"></div>
     ${extinct ? `<div class="card__stamp">REENTERED${o.decay ? `<small>${esc(formatDate(o.decay)).toUpperCase()}</small>` : ''}</div>` : ''}
   </div></div>`;
   return el;

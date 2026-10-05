@@ -13,9 +13,9 @@
   <link rel="apple-touch-icon" href="icons/icon-180.png">
   <link rel="icon" href="icons/icon-192.png">
   <script>try { if (localStorage.getItem("night") === "1") document.documentElement.dataset.theme = "night"; } catch {}</script>
-  <link rel="stylesheet" href="css/cards.css?v=0.1.64">
-  <link rel="stylesheet" href="css/app.css?v=0.1.64">
-  <link rel="stylesheet" href="css/reveal.css?v=0.1.64">
+  <link rel="stylesheet" href="css/cards.css?v=0.1.65">
+  <link rel="stylesheet" href="css/app.css?v=0.1.65">
+  <link rel="stylesheet" href="css/reveal.css?v=0.1.65">
 </head>
 <body>
   <canvas id="sky" role="img" aria-label="Sky map aligned with your viewing direction"></canvas>
@@ -82,10 +82,7 @@
     <div id="rv-dim"></div><div id="rv-shock"></div><div id="rv-dot"></div><div id="rv-flash"></div><canvas id="rv-fx"></canvas>
     <div id="rv-top"><span class="eyebrow" id="reveal-eyebrow">FIRST DISCOVERY</span><span class="rv-buttons"><a id="reveal-view" class="pill" href="cards.html">View in collection</a><button class="pill" data-close="reveal">Done</button></span></div>
     <div id="rv-holder" aria-label="Tap to reveal your card"><div id="rv-flipper">
-      <div class="rv-side rv-back" id="rv-back"><div class="mark">
-        <svg viewBox="0 0 64 48" aria-hidden="true"><circle cx="32" cy="24" r="12"/><ellipse cx="32" cy="24" rx="29" ry="9" transform="rotate(-24 32 24)"/></svg>
-        <div class="word">SPACE COLLECTOR</div><div class="tap">TAP TO REVEAL</div>
-      </div></div>
+      <div class="rv-side rv-back" id="rv-back"><div class="tap">TAP TO REVEAL</div></div>
       <div class="rv-side rv-front" id="reveal-card"></div>
     </div><div id="rv-sweep"></div><div id="rv-stamp"></div></div>
   </section>
@@ -147,6 +144,6 @@
     <pre id="debug-info"></pre></details>
   </section>
 
-  <script type="module" src="js/main.js?v=0.1.64"></script>
+  <script type="module" src="js/main.js?v=0.1.65"></script>
 </body>
 </html>
