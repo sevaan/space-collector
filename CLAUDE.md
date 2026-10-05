@@ -15,7 +15,7 @@ Live: https://sevaan.github.io/space-collector/ (GitHub Pages, deploys from `mai
   flagged `bino`). Pulls CelesTrak SATCAT + elements per launch year (~72 requests, cached 12 h in
   scripts/.cache). Elements are JSON/OMM (`el` array, rebuilt with `json2satrec` in js/orbit.js), never TLE:
   catalogue numbers passed 69999 in July 2026 and TLE silently dropped every newer object. `.github/workflows/catalog.yml` reruns it daily at 09:17 UTC and commits if changed.
-  Fleet cards (2026-09-30, design/fleet-options.html "mix"): Starlink/OneWeb/Qianfan/Kuiper are ONE card
+  Fleet cards (2026-09-30, design/fleet-options.html "mix"): Starlink/OneWeb/Qianfan/Amazon Leo (family id KUIPER; renamed from Project Kuiper) are ONE card
   each (key = family id); each launch (`o.card` = `FAMILY:YYYY-NNN` in the catalogue) is a stamp on it.
   js/card-model.js owns the mapping: `cardKeyFor`, `stampKeyFor`, `sightingKeys` (old sightings saved with
   cardKey = launch key are read as card + stamp, never rewritten). Fleet levels count stamps: Starlink

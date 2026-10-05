@@ -32,7 +32,7 @@ const FAMILIES = [
   { id: 'STARLINK', re: /^STARLINK/, name: 'Starlink', stdMag: 5.8, owner: 'US', maker: 'SpaceX' },
   { id: 'ONEWEB', re: /^ONEWEB/, name: 'OneWeb', stdMag: 7.2, owner: 'UK', maker: 'Eutelsat OneWeb' },
   { id: 'QIANFAN', re: /^(QIANFAN|G60)/, name: 'Qianfan', stdMag: 5.8, owner: 'PRC', maker: 'Shanghai Spacecom' },
-  { id: 'KUIPER', re: /^KUIPER/, name: 'Kuiper', stdMag: 5.8, owner: 'US', maker: 'Amazon' },
+  { id: 'KUIPER', re: /^KUIPER/, name: 'Amazon Leo', stdMag: 5.8, owner: 'US', maker: 'Amazon' },
 ];
 
 const STATION_IDS = new Set([25544, 48274]);
