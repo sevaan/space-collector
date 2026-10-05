@@ -1,20 +1,20 @@
-import { VERSION } from './version.js?v=0.1.65';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode } from './orbit.js?v=0.1.65';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.65';
-import { SkyView, shortName } from './sky.js?v=0.1.65';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.65';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.65';
-import { cardArt } from './art.js?v=0.1.65';
-import { renderCard, cardLevel } from './card.js?v=0.1.65';
-import { playReveal, playView, primeReveal, stopReveal } from './reveal.js?v=0.1.65';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.65';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.65';
-import { naturalTargets } from './natural.js?v=0.1.65';
-import { TIER_INFO } from './rarity.js?v=0.1.65';
-import { SETS } from './sets.js?v=0.1.65';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.65';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.65';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter } from './planes.js?v=0.1.65';
+import { VERSION } from './version.js?v=0.1.66';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode } from './orbit.js?v=0.1.66';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.66';
+import { SkyView, shortName } from './sky.js?v=0.1.66';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.66';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.66';
+import { cardArt } from './art.js?v=0.1.66';
+import { renderCard, cardLevel } from './card.js?v=0.1.66';
+import { playReveal, playView, primeReveal, stopReveal } from './reveal.js?v=0.1.66';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.66';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.66';
+import { naturalTargets } from './natural.js?v=0.1.66';
+import { TIER_INFO } from './rarity.js?v=0.1.66';
+import { SETS } from './sets.js?v=0.1.66';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.66';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.66';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter } from './planes.js?v=0.1.66';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -1020,7 +1020,6 @@ function saveExploreState() {
 }
 document.addEventListener('click', e => { if (e.target.closest('a[href^="cards.html"]')) saveExploreState(); });
 window.addEventListener('pagehide',saveExploreState);
-new Image().src = 'assets/art/card-back.jpg'; // the sealed card in the reveal shows it straight away
 async function boot() {
   try {
     state.catalog=await loadCatalog('data/catalog.json');
