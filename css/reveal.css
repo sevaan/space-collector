@@ -21,7 +21,7 @@
 #reveal-card .card { font-size: var(--cf); }
 
 .rv-back { border-radius: 1.15em; font-size: var(--cf); overflow: hidden;
-  background: #1e2215 center / cover no-repeat;   /* a random poster back, set by js/card-backs.js */
+  background: #080e1a center / cover no-repeat;   /* a random poster back, set by js/card-backs.js */
   border: .25em solid color-mix(in srgb, var(--fx) 70%, #0000); }
 .rv-back .tap { position: absolute; left: 50%; bottom: 1.8em; transform: translateX(-50%); padding: .45em 1.1em; border-radius: 999px; white-space: nowrap;
   background: rgba(5, 10, 24, .78); border: .08em solid color-mix(in srgb, var(--fx) 60%, transparent);
