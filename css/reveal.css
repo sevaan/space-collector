@@ -20,14 +20,12 @@
 #reveal-card { display: block; padding: 0; perspective: none; }
 #reveal-card .card { font-size: var(--cf); }
 
-.rv-back { border-radius: 1.15em; font-size: var(--cf); overflow: hidden; display: grid; place-items: center;
-  background: radial-gradient(circle at 50% 42%, color-mix(in srgb, var(--fx) 30%, transparent) 0%, transparent 45%),
-    repeating-linear-gradient(45deg, rgba(255,255,255,.035) 0 2px, transparent 2px 14px), linear-gradient(160deg, #13244a, #081230 70%);
+.rv-back { border-radius: 1.15em; font-size: var(--cf); overflow: hidden;
+  background: #fff url('../assets/art/card-back-astronaut.jpg') center / contain no-repeat;   /* card back: Sevaan's watercolour astronaut (card.svg, rendered to JPEG) */
   border: .25em solid color-mix(in srgb, var(--fx) 70%, #0000); }
-.rv-back .mark { text-align: center; }
-.rv-back svg { width: 9em; height: 7em; stroke: var(--fx); stroke-width: 1.6; fill: none; filter: drop-shadow(0 0 .6em var(--fx)); }
-.rv-back .word { margin-top: 1.4em; font: 800 1.3em Inter, system-ui, sans-serif; letter-spacing: .3em; color: #dfe8ff; }
-.rv-back .tap { margin-top: .6em; font: 600 .95em Inter, system-ui, sans-serif; letter-spacing: .2em; color: var(--fx); }
+.rv-back .tap { position: absolute; left: 50%; bottom: 1.6em; transform: translateX(-50%); padding: .45em 1.1em; border-radius: 999px; white-space: nowrap;
+  background: rgba(5, 10, 24, .78); border: .08em solid color-mix(in srgb, var(--fx) 60%, transparent);
+  font: 700 .95em Inter, system-ui, sans-serif; letter-spacing: .2em; color: var(--fx); }
 .rv-back.glow { animation: rvPulse 1.4s ease-in-out infinite; }
 @keyframes rvPulse { 50% { box-shadow: 0 0 2.2em .4em color-mix(in srgb, var(--fx) 55%, transparent); } }
 

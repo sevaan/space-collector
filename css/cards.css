@@ -146,11 +146,8 @@
 /* The back of the card, seen only mid-spin in the collection's closer look (js/cards-page.js). It is
    pre-mirrored so it reads correctly while the card faces away. */
 .card__back { position: absolute; inset: 0; z-index: 9; border-radius: 1.15em; opacity: 0; pointer-events: none; transform: scaleX(-1);
-  display: grid; place-items: center; text-align: center; border: .25em solid var(--tier);
-  background: radial-gradient(circle at 50% 42%, color-mix(in srgb, var(--tier) 30%, transparent) 0%, transparent 45%),
-    repeating-linear-gradient(45deg, rgba(255, 255, 255, .035) 0 2px, transparent 2px 14px), linear-gradient(160deg, #13244a, #081230 70%); }
-.card__back svg { width: 9em; height: 7em; stroke: var(--tier); stroke-width: 1.6; fill: none; }
-.card__back span { display: block; margin-top: 1.2em; font: 800 1.3em Inter, system-ui, sans-serif; letter-spacing: .3em; color: #dfe8ff; }
+  border: .25em solid var(--tier);
+  background: #fff url('../assets/art/card-back-astronaut.jpg') center / contain no-repeat; }
 
 /* Thumbnail typography is deliberately independent of the full card's scale. */
 .card-tile { display: flex; flex-direction: column; width: 100%; padding: 0; text-align: left; font: inherit; color: #193639; background: #eeecdf; border: 1px solid #d1d4c5; border-radius: 12px; overflow: hidden; cursor: pointer; transition: transform .2s, box-shadow .2s; }
