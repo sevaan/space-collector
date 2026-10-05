@@ -5,9 +5,9 @@
 //  Everything scales with rarity (Legendary dims the sky, shockwave, held breath, slow flip, fanfare).
 // Waits use timers, not animation.finished, so a paused tab can never freeze the sequence.
 
-import { TIER_INFO } from './rarity.js?v=0.1.74';
-import { levelFor, attachTilt, attachGyro } from './card.js?v=0.1.74';
-import { applyBack } from './card-backs.js?v=0.1.74';
+import { TIER_INFO } from './rarity.js?v=0.1.75';
+import { levelFor, attachTilt, attachGyro } from './card.js?v=0.1.75';
+import { applyBack } from './card-backs.js?v=0.1.75';
 
 const FX = {
   common:    { particles: 14,  flip: 520,  spin: 0,   dim: 0,   shock: false, notes: [880],                            hold: 0 },
@@ -73,6 +73,8 @@ function burst(x, y, n, color) {
 
 // ---------- the sequence ----------
 let run = 0, tilt = null, stopGyro = null, onFlipTap = null;
+let backTilt = null, backGyro = null; // the sealed card tilts too, until it flips
+function stopBack() { backGyro?.(); backTilt?.destroy(); backGyro = backTilt = null; }
 function showFace(which) {
   $('rv-back').style.visibility = which === 'back' ? 'visible' : 'hidden';
   $('reveal-card').style.visibility = which === 'front' ? 'visible' : 'hidden';
@@ -80,6 +82,7 @@ function showFace(which) {
 export function stopReveal() {
   run++;
   stopGyro?.(); tilt?.destroy(); stopGyro = tilt = null;
+  stopBack();
   parts = [];
   if (onFlipTap) { $('rv-holder').removeEventListener('click', onFlipTap); onFlipTap = null; }
 }
@@ -154,6 +157,10 @@ export async function playReveal({ card, o, seen, origin, fleet = null, progress
   await play($('rv-holder'), [{ opacity: 0, transform: 'scale(.4) translateY(60px) rotate(-8deg)' }, { opacity: 1, transform: 'scale(1.05) rotate(2deg)' }, { opacity: 1, transform: 'scale(1) rotate(0)' }], { duration: 520, easing: 'cubic-bezier(.2,.9,.3,1.3)', fill: 'forwards' });
   if (!alive()) return;
   $('rv-back').classList.add('glow');
+  // Listen on the holder, which doesn't rotate: the back inherits the tilt values, and the finger never
+  // "leaves" the card just because its tilted edge moved out from under it.
+  backTilt = attachTilt($('rv-holder'));
+  if (!reduced()) backGyro = attachGyro($('rv-holder'), backTilt);
   $('rv-holder').classList.add('live');
   await new Promise((resolve) => {
     onFlipTap = () => { $('rv-holder').removeEventListener('click', onFlipTap); onFlipTap = null; primeReveal(); resolve(); };
@@ -162,6 +169,7 @@ export async function playReveal({ card, o, seen, origin, fleet = null, progress
   if (!alive()) return;
   $('rv-holder').classList.remove('live');
   $('rv-back').classList.remove('glow');
+  stopBack();
 
   // 3. Legendary holds its breath; then the flip (Epic spins on the way).
   if (fx.hold) await play($('rv-flipper'), [{ transform: 'rotate(0)' }, { transform: 'rotate(-1.5deg)' }, { transform: 'rotate(1.5deg)' }, { transform: 'rotate(0)' }], { duration: fx.hold, easing: 'ease-in-out' });

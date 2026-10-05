@@ -99,6 +99,8 @@ Live: https://sevaan.github.io/space-collector/ (GitHub Pages, deploys from `mai
   their titles replaced by SPACE COLLECTOR (same font, colour, stretch; lorem line removed), as 900 px WebP in
   assets/art/backs/. `js/card-backs.js` picks a random one each time (never twice in a row) for the reveal's
   sealed card and the collection spin; posters with a bottom title move TAP TO REVEAL to the top.
+  The sealed card tilts and shimmers (glare + rainbow/glitter holo, .rv-holo/.rv-glare) via attachTilt on
+  #rv-holder (not the rotating back itself, or the pointer 'leaves' as it tilts); stops when it flips.
   Full-size PNGs: Desktop/cardbacks/space-collector/.
 
 - Card face V2 (2026-10-05, from Sevaan's space-collector-template-v2.zip): `card--v2` layout in js/card.js +

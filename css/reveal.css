@@ -28,6 +28,24 @@
   font: 700 .95em Inter, system-ui, sans-serif; letter-spacing: .2em; color: var(--fx); }
 .rv-back[data-title="bottom"] .tap { bottom: auto; top: 1.8em; }   /* don't cover a title at the bottom */
 .rv-back.glow { animation: rvPulse 1.4s ease-in-out infinite; }
+/* The sealed card tilts, glares and shimmers like a card front while it waits for your tap. The spring
+   in js/card.js (attachTilt/attachGyro) drives --rx/--ry/--mx/--my/--bgx/--bgy/--hyp/--o. */
+.rv-back { transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); }
+.rv-holo, .rv-glare { position: absolute; inset: 0; border-radius: inherit; pointer-events: none; }
+.rv-holo {
+  background:
+    var(--glitter) var(--nbgx, 50%) var(--nbgy, 50%) / 13em 13em,
+    var(--glitter2) var(--bgx, 50%) var(--bgy, 50%) / 21em 21em,
+    repeating-linear-gradient(110deg, hsl(355, 92%, 66%) 0%, hsl(42, 95%, 62%) 1.4%, hsl(110, 80%, 58%) 2.8%, hsl(185, 88%, 58%) 4.2%, hsl(235, 88%, 68%) 5.6%, hsl(295, 82%, 68%) 7%, hsl(355, 92%, 66%) 8.4%) var(--bgx, 50%) var(--bgy, 50%) / 400% 400%;
+  background-blend-mode: screen, screen, normal;
+  mix-blend-mode: color-dodge; filter: brightness(.5) contrast(1.8) saturate(1.2);
+  opacity: calc(var(--o, 0) * (.2 + var(--hyp, 0) * .45));
+}
+.rv-glare { background: radial-gradient(farthest-corner circle at var(--mx, 50%) var(--my, 50%), hsla(0, 0%, 100%, .75) 6%, hsla(0, 0%, 100%, .45) 18%, hsla(0, 0%, 0%, .3) 90%);
+  mix-blend-mode: overlay; opacity: calc(var(--o, 0) * .75); }
+.rv-back .tap { z-index: 2; }
+.rv-back { --nbgx: calc(100% - var(--bgx, 50%)); --nbgy: calc(100% - var(--bgy, 50%)); }
+body.night .rv-holo { display: none; }
 @keyframes rvPulse { 50% { box-shadow: 0 0 2.2em .4em color-mix(in srgb, var(--fx) 55%, transparent); } }
 
 #rv-sweep { position: absolute; inset: 0; border-radius: 1.15em; overflow: hidden; pointer-events: none; }
