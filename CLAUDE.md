@@ -101,5 +101,12 @@ Live: https://sevaan.github.io/space-collector/ (GitHub Pages, deploys from `mai
   sealed card and the collection spin; posters with a bottom title move TAP TO REVEAL to the top.
   Full-size PNGs: Desktop/cardbacks/space-collector/.
 
+- Card face V2 (2026-10-05, from Sevaan's space-collector-template-v2.zip): `card--v2` layout in js/card.js +
+  css/cards.css. Rarity in the coloured header, title + type + NORAD, EMPTY art window (`[data-art-slot]`,
+  for artwork to come; art.js is no longer used by cards, only by the sky toast thumbnail), three stats
+  (launch stat shows "N years ago"), fact, footer with collected date. No set numbers, night counts or
+  natural-object distance line. Frame: gold for Legendary, silver otherwise (our override at the end of
+  cards.css, since old level colours won on specificity). Gallery tiles also have empty art.
+
 ## Deliberately out of scope for now
 Alerts, service worker, accounts, secret sets/feats.
