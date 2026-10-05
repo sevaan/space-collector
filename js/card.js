@@ -1,11 +1,11 @@
 // Archival field cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { cardArt } from './art.js?v=0.1.72';
-import { TIER_INFO } from './rarity.js?v=0.1.72';
-import { SET_BY_ID } from './sets.js?v=0.1.72';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.72';
-import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText } from './lore.js?v=0.1.72';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.72';
-import { nightsIn } from './observation.js?v=0.1.72';
+import { cardArt } from './art.js?v=0.1.73';
+import { TIER_INFO } from './rarity.js?v=0.1.73';
+import { SET_BY_ID } from './sets.js?v=0.1.73';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.73';
+import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText } from './lore.js?v=0.1.73';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.73';
+import { nightsIn } from './observation.js?v=0.1.73';
 
 // Levels count observing nights (local noon to noon): bronze 1, silver 3, gold 10. Before
 // 2026-10-01 levels counted sightings (5 silver, 25 gold); anything earned that way is kept.
@@ -60,7 +60,7 @@ export function renderCard(o, opts = {}) {
     <div class="card__heading"><h3 class="card__name">${String(o.id) === '25544' ? esc(title).replace('International Space Station', 'International<br>Space Station') : esc(title)}</h3>
     <div class="card__identity"><span>${esc(identity)}</span><span class="card__mono">${esc(identifier)}</span></div></div>
     <div class="card__art" data-art-slot aria-hidden="true">${cardArt(o, { accent: set.color, silhouette: !revealed })}<div class="card__foil"></div></div>
-    ${nat ? `<div class="card__stats">${o.stats.map(([label, value, unit]) => `<div><span class="card__label">${esc(label)}</span><b${statClass(value, unit)}>${esc(value)}${unit ? ` <small>${esc(unit)}</small>` : ''}</b></div>`).join('')}</div>` : `<div class="card__stats"><div><span class="card__label">MEAN ALTITUDE</span><b>${stats ? `${stats.alt.toLocaleString('en-US')} <small>km</small>` : '—'}</b></div><div><span class="card__label">ORBITS / DAY</span><b>${laps ? laps.toFixed(laps < 10 ? 1 : 0) : '—'}</b></div><div><span class="card__label">${esc(third.label)}</span><b>${esc(third.value)}</b>${/LAUNCH/.test(third.label) && ageText ? `<span class="card__stat-detail">${esc(ageText)}</span>` : ''}</div></div>`}
+    ${nat ? `<div class="card__stats">${o.stats.map(([label, value, unit], i) => `<div><span class="card__label">${esc(label)}</span><b${statClass(value, unit, i)}>${esc(value)}${unit ? ` <small>${esc(unit)}</small>` : ''}</b></div>`).join('')}</div>` : `<div class="card__stats"><div><span class="card__label">MEAN ALTITUDE</span><b>${stats ? `${stats.alt.toLocaleString('en-US')} <small>km</small>` : '—'}</b></div><div><span class="card__label">ORBITS / DAY</span><b>${laps ? laps.toFixed(laps < 10 ? 1 : 0) : '—'}</b></div><div><span class="card__label">${esc(third.label)}</span><b>${esc(third.value)}</b>${/LAUNCH/.test(third.label) && ageText ? `<span class="card__stat-detail">${esc(ageText)}</span>` : ''}</div></div>`}
     ${factBlock}
     <div class="card__footer"><span class="card__status${caught ? ' is-collected' : ''}"><span class="card__status-icon" aria-hidden="true">${caught ? '✓' : ''}</span><span>${caught ? `COLLECTED · ${esc(firstDate)}` : 'NOT YET COLLECTED'}</span></span><span class="card__brand">SPACE COLLECTOR</span></div>
     <div class="card__shine"></div><div class="card__glare"></div>
@@ -70,13 +70,14 @@ export function renderCard(o, opts = {}) {
   return el;
 }
 
-// Natural-object stats: a number and its unit stay on one line, stepping down a size when long;
-// words (a constellation name) can wrap.
-function statClass(value, unit) {
+// Natural-object stats: a number and its short unit stay on one line ("10.7 h"). Only long figures
+// step down a size: 10+ characters, or 8+ in the narrower second and third columns. Words (a
+// constellation name) can wrap.
+function statClass(value, unit, i = 0) {
   const v = String(value);
   if (!unit) return v.length > 9 ? ' class="small"' : '';
   const n = (v + ' ' + unit).length;
-  return n >= 10 ? ' class="fit longer"' : n >= 8 ? ' class="fit long"' : ' class="fit"';
+  return n >= 10 || (i > 0 && n >= 8) ? ' class="fit long"' : ' class="fit"';
 }
 
 // ---------- fleet cards ----------

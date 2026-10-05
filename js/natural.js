@@ -6,17 +6,17 @@
 const moon = {
   key: 'moon', id: 'moon', natural: 'moon', type: 'moon', name: 'Moon', tier: 'common', order: 1, code: "EARTH'S MOON",
   far: ['1.3', 'LIGHT-SECONDS AWAY'],
-  stats: [['MEAN DISTANCE', '384,400', 'km'], ['PHASE CYCLE', '29.5', 'days'], ['DIAMETER', '3,474', 'km']],
+  stats: [['MEAN DISTANCE', '384,400', 'km'], ['PHASE CYCLE', '29.5', 'd'], ['DIAMETER', '3,474', 'km']],
   fact: 'The Moon spins exactly once for every trip around Earth, so it always keeps the **same face** turned towards us.',
 };
 
 // Planet: [name, tier, order, light-minutes from the Sun, diameter km, year, day, fact]
 const PLANETS = [
-  ['Mercury', 'rare', 2, '3.2', '4,879', ['88', 'days'], ['59', 'days'], 'The smallest planet and the closest to the Sun. It races round in **88 days**, so it never strays far from the Sun in our sky: look low, just after sunset or before dawn.'],
-  ['Venus', 'common', 3, '6.0', '12,104', ['225', 'days'], ['243', 'days'], 'A day on Venus is **longer than its year**, and it spins the opposite way to most planets. It\'s the brightest thing in the night sky after the Moon.'],
-  ['Mars', 'uncommon', 4, '12.7', '6,779', ['687', 'days'], ['24.6', 'hours'], 'Its red colour is **rust**: iron minerals in the dust on its surface have oxidised.'],
-  ['Jupiter', 'common', 5, '43', '139,820', ['11.9', 'years'], ['9.9', 'hours'], 'The biggest planet: more than **1,300 Earths** would fit inside it. A pair of binoculars shows its four largest moons as tiny dots.'],
-  ['Saturn', 'uncommon', 6, '79', '116,460', ['29.4', 'years'], ['10.7', 'hours'], 'Its rings are countless chunks of **ice and rock**. You need a telescope to see them, but they\'re there around that steady golden dot.'],
+  ['Mercury', 'rare', 2, '3.2', '4,879', ['88', 'd'], ['59', 'd'], 'The smallest planet and the closest to the Sun. It races round in **88 days**, so it never strays far from the Sun in our sky: look low, just after sunset or before dawn.'],
+  ['Venus', 'common', 3, '6.0', '12,104', ['225', 'd'], ['243', 'd'], 'A day on Venus is **longer than its year**, and it spins the opposite way to most planets. It\'s the brightest thing in the night sky after the Moon.'],
+  ['Mars', 'uncommon', 4, '12.7', '6,779', ['687', 'd'], ['24.6', 'h'], 'Its red colour is **rust**: iron minerals in the dust on its surface have oxidised.'],
+  ['Jupiter', 'common', 5, '43', '139,820', ['11.9', 'yr'], ['9.9', 'h'], 'The biggest planet: more than **1,300 Earths** would fit inside it. A pair of binoculars shows its four largest moons as tiny dots.'],
+  ['Saturn', 'uncommon', 6, '79', '116,460', ['29.4', 'yr'], ['10.7', 'h'], 'Its rings are countless chunks of **ice and rock**. You need a telescope to see them, but they\'re there around that steady golden dot.'],
 ].map(([name, tier, order, lm, dia, year, day, fact]) => ({
   key: `planet:${name.toLowerCase()}`, id: `planet:${name.toLowerCase()}`, natural: 'planet', type: 'planet', name, tier, order,
   code: `${{ Mercury: '1ST', Venus: '2ND', Mars: '4TH', Jupiter: '5TH', Saturn: '6TH' }[name]} FROM THE SUN`,

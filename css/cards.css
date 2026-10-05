@@ -227,5 +227,4 @@
 /* Keep a stat's value and unit together ("10.7 hours"), shrinking long ones rather than wrapping
    (js/card.js statClass). Word values such as constellation names still wrap. */
 .card--v2 .card__stats b.fit { white-space: nowrap; }
-.card--v2 .card__stats b.long { font-size: 1.55em; }
-.card--v2 .card__stats b.longer { font-size: 1.3em; }
+.card--v2 .card__stats b.long { font-size: 1.5em; }
