@@ -1,20 +1,20 @@
-import { VERSION } from './version.js?v=0.1.78';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode } from './orbit.js?v=0.1.78';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.78';
-import { SkyView, shortName } from './sky.js?v=0.1.78';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.78';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.78';
-import { cardArt } from './art.js?v=0.1.78';
-import { renderCard, cardLevel } from './card.js?v=0.1.78';
-import { playReveal, playView, primeReveal, stopReveal } from './reveal.js?v=0.1.78';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.78';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.78';
-import { naturalTargets } from './natural.js?v=0.1.78';
-import { TIER_INFO } from './rarity.js?v=0.1.78';
-import { SETS } from './sets.js?v=0.1.78';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.78';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.78';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter } from './planes.js?v=0.1.78';
+import { VERSION } from './version.js?v=0.1.79';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode } from './orbit.js?v=0.1.79';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.79';
+import { SkyView, shortName } from './sky.js?v=0.1.79';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.79';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.79';
+import { cardArt } from './art.js?v=0.1.79';
+import { renderCard, cardLevel } from './card.js?v=0.1.79';
+import { playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.79';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.79';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.79';
+import { naturalTargets } from './natural.js?v=0.1.79';
+import { TIER_INFO } from './rarity.js?v=0.1.79';
+import { SETS } from './sets.js?v=0.1.79';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.79';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.79';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter } from './planes.js?v=0.1.79';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -848,6 +848,7 @@ $('location-form').addEventListener('submit', e => {
   state.model?.reset(); state.trails.clear(); cancelPassSearch(); renderLocation(); refreshAbove();
 });
 document.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', () => closePanel(b.dataset.close)));
+onRevealDismiss(() => closePanel('reveal'));
 document.addEventListener('keydown', e => {
   if (!activePanel) return;
   if (e.key === 'Escape') { closePanel(); return; }

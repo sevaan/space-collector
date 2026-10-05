@@ -4,7 +4,7 @@
 // facts only state what the catalogue says today (orbit, launch date and site) or simple date
 // comparisons. No extrapolating today's orbit back over decades (lifetime laps or distance).
 
-import { orbitStats, titleCase, siteName, ownerName } from './facts.js?v=0.1.78';
+import { orbitStats, titleCase, siteName, ownerName } from './facts.js?v=0.1.79';
 
 const FAMILY = [
   [/^IRIDIUM 33 DEB/, 'A piece of the **first-ever crash between two satellites**: Iridium 33 hit the dead Cosmos 2251 in 2009.'],
@@ -39,6 +39,8 @@ export async function loadLore(url = 'data/lore.json', seriesUrl = url.replace('
   return loreCache;
 }
 const seriesOf = (o) => seriesCache?.series?.[seriesCache?.members?.[o.id]] ?? null;
+// The researched programme a satellite belongs to (e.g. 'strela-1m'), once loadLore has run.
+export const seriesKeyOf = (o) => seriesCache?.members?.[o.id] ?? null;
 
 const shortDate = (iso) => new Date(`${iso}T12:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 

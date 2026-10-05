@@ -5,9 +5,9 @@
 //  Everything scales with rarity (Legendary dims the sky, shockwave, held breath, slow flip, fanfare).
 // Waits use timers, not animation.finished, so a paused tab can never freeze the sequence.
 
-import { TIER_INFO } from './rarity.js?v=0.1.78';
-import { levelFor, attachTilt, attachGyro, attachFlip } from './card.js?v=0.1.78';
-import { applyBack } from './card-backs.js?v=0.1.78';
+import { TIER_INFO } from './rarity.js?v=0.1.79';
+import { levelFor, attachTilt, attachGyro, attachFlip } from './card.js?v=0.1.79';
+import { applyBack } from './card-backs.js?v=0.1.79';
 
 const FX = {
   common:    { particles: 14,  flip: 520,  spin: 0,   dim: 0,   shock: false, notes: [880],                            hold: 0 },
@@ -81,6 +81,7 @@ function showFace(which) {
 }
 export function stopReveal() {
   run++;
+  fling = null; holderTo(0, 0, 0); $('rv-holder').style.opacity = '';
   stopGyro?.(); tilt?.destroy(); stopGyro = tilt = null;
   stopBack();
   parts = [];
@@ -257,4 +258,52 @@ async function finish({ fx, color, fresh, seen, level, levelUp, card, alive, fle
   attachFlip(card, { onBack: applyBack });
   $('reveal').classList.add('rv-done');
   setTimeout(() => { if (alive()) $('rv-stamp').animate([{ opacity: 1 }, { opacity: 0 }], { duration: 600, fill: 'forwards' }); }, 2200);
+}
+
+// Swipe the finished card away with your thumb (any direction) to go back to the sky, like swiping
+// between cards in the collection. A clear drag moves the card with your finger; a long enough drag
+// or a quick flick throws it off screen. Anything smaller is a touch that tilts the card.
+let onDismiss = null, fling = null;
+export function onRevealDismiss(fn) { onDismiss = fn; }
+function holderTo(x, y, ms) {
+  const h = $('rv-holder');
+  h.style.transition = ms ? `transform ${ms}ms cubic-bezier(.2,.8,.3,1), opacity ${ms}ms` : 'none';
+  h.style.transform = x || y ? `translate(${x}px, ${y}px) rotate(${x / 30}deg)` : '';
+}
+{
+  const h = $('rv-holder');
+  h.addEventListener('pointerdown', (e) => {
+    if (!$('reveal').classList.contains('rv-done') || (e.pointerType === 'mouse' && e.button !== 0)) return;
+    fling = { id: e.pointerId, x: e.clientX, y: e.clientY, t: performance.now(), dx: 0, dy: 0, active: false };
+  });
+  h.addEventListener('pointermove', (e) => {
+    if (!fling || e.pointerId !== fling.id) return;
+    const dx = e.clientX - fling.x, dy = e.clientY - fling.y;
+    if (!fling.active && Math.hypot(dx, dy) > 16) {
+      fling.active = true;
+      try { h.setPointerCapture(e.pointerId); } catch {}
+      // The entrance animation holds the holder in place; hand it over to inline styles.
+      h.getAnimations().forEach((a) => a.cancel()); h.style.opacity = '1';
+      const card = $('reveal-card').firstElementChild;
+      if (card) card.dataset.swiping = '1';
+      tilt?.reset();
+    }
+    if (fling.active) { fling.dx = dx; fling.dy = dy; holderTo(dx, dy, 0); }
+  });
+  const end = (e) => {
+    if (!fling || e.pointerId !== fling.id) return;
+    const { active, dx, dy, t } = fling;
+    fling = null;
+    const card = $('reveal-card').firstElementChild;
+    if (card) delete card.dataset.swiping;
+    if (!active) return;
+    const dist = Math.hypot(dx, dy), fast = dist / Math.max(1, performance.now() - t) > 0.5; // px per ms
+    if (dist > Math.min(innerWidth, innerHeight) * 0.25 || (fast && dist > 40)) {
+      const k = Math.max(innerWidth, innerHeight) * 1.2 / dist;
+      holderTo(dx * k, dy * k, 220); h.style.opacity = '0';
+      setTimeout(() => { holderTo(0, 0, 0); onDismiss?.(); }, 220);
+    } else holderTo(0, 0, 200);
+  };
+  h.addEventListener('pointerup', end);
+  h.addEventListener('pointercancel', end);
 }

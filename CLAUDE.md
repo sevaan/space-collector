@@ -121,3 +121,12 @@ Live: https://sevaan.github.io/space-collector/ (GitHub Pages, deploys from `mai
 
 ## Deliberately out of scope for now
 Alerts, service worker, accounts, secret sets/feats.
+
+- Card illustrations (2026-10-05): one image per kind of object, not per card. js/art-keys.js maps every card
+  to an art file (`artFileFor`; catch-all kinds have numbered variations picked by NORAD id). Images live in
+  assets/art/cards/<file>.webp (+ sm/ for gallery tiles) and are listed in js/art-files.js; both are written by
+  `python3 scripts/import-art.py <folder of PNGs>`. Cards show the image once revealed (`artImage` in
+  js/card.js); without one, or before collecting, the drawn art from js/art.js is used. Art is generated with
+  Nano Banana 2 (gemini-3.1-flash-image) on Vertex AI, project space-collector-510722 (post-paid, gcloud login
+  sevaan@gmail.com), poster style + a card back + curated references (~/Documents/Space Collector art references).
+- Reveal: once the card has landed, swipe it away in any direction to go back to the sky (`onRevealDismiss`).
