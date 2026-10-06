@@ -15,9 +15,9 @@
   <script>try { if (localStorage.getItem("night") === "1") document.documentElement.dataset.theme = "night"; } catch {}</script>
   <link rel="preload" href="fonts/RussoOne-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="fonts/BarlowCondensed-Medium.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="css/cards.css?v=0.1.170">
-  <link rel="stylesheet" href="css/app.css?v=0.1.170">
-  <link rel="stylesheet" href="css/reveal.css?v=0.1.170">
+  <link rel="stylesheet" href="css/cards.css?v=0.1.172">
+  <link rel="stylesheet" href="css/app.css?v=0.1.172">
+  <link rel="stylesheet" href="css/reveal.css?v=0.1.172">
 </head>
 <body>
   <canvas id="sky" role="img" aria-label="Sky map aligned with your viewing direction"></canvas>
@@ -58,6 +58,12 @@
       <button id="d-switch" hidden aria-label="Next object in the circle"></button></div>
     </div>
 
+    <div id="skybar" role="group" aria-label="How dark is your sky">
+      <span class="sb-end" aria-hidden="true">BRIGHT</span>
+      <input type="range" id="sky-range" min="17" max="21.9" step="0.05" aria-label="Sky darkness: slide until the screen matches what you can see">
+      <span class="sb-end" aria-hidden="true">DARK</span>
+      <span id="sky-read"><b id="sky-name"></b> · <span id="sky-mag"></span></span>
+    </div>
     <nav id="nav">
       <button class="nav-item active" id="nav-explore" aria-current="page"><span class="ico" data-ico="planet"></span>Explore</button>
       <a class="nav-item" id="nav-collection" href="cards.html"><span class="ico" data-ico="bag"></span>Collection</a>
@@ -117,13 +123,7 @@
     <label class="row"><input type="checkbox" id="chk-stars" checked> Stars, planets &amp; Moon</label>
     <label class="row"><input type="checkbox" id="chk-lines"> Constellation lines and names</label>
     <label class="row"><input type="checkbox" id="chk-landscape"> Landscape: hills and a tree line along the horizon</label>
-    <label class="row wrap">Your sky
-      <select id="sel-sky">
-        <option value="city">City: bright sky, only a few stars</option>
-        <option value="suburbs">Suburbs or town: main constellations, no Milky Way</option>
-        <option value="rural">Countryside: lots of stars, faint Milky Way</option>
-        <option value="dark">Dark site: the Milky Way casts shadows</option>
-      </select></label>
+    <p class="hint">Your sky: use the slider above Explore and Collection. Slide until the stars and satellites on screen match what you can see.</p>
     <p class="hint" id="sky-limit-info">Only objects bright enough to see from your sky are shown.</p>
     <label class="row"><input type="checkbox" id="chk-bino"> Binocular mode: also show objects you'd only see with binoculars (about 3 magnitudes fainter)</label>
 
@@ -160,7 +160,7 @@
     <pre id="debug-info"></pre></details>
   </section>
 
-  <script type="module" src="js/main.js?v=0.1.170"></script>
+  <script type="module" src="js/main.js?v=0.1.172"></script>
 <div id="rotate" role="status"><b>Turn your phone upright</b><span>Space Collector is made for portrait.</span></div>
 </body>
 </html>

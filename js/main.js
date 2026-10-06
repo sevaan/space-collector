@@ -1,28 +1,28 @@
-import { VERSION } from './version.js?v=0.1.170';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.170';
-import { skyLimit, SKIES, DEFAULT_SKY } from './sky-limit.js?v=0.1.170';
-import { conArt } from './con-art.js?v=0.1.170';
-import { CON_FIGURES } from './con-figures.js?v=0.1.170';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.170';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.170';
-import { progress as progressOf } from './progress.js?v=0.1.170';
-import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.170';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.170';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.170';
-import { SkyView, shortName } from './sky.js?v=0.1.170';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.170';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.170';
-import { cardArt } from './art.js?v=0.1.170';
-import { renderCard, cardLevel, artImage } from './card.js?v=0.1.170';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.170';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.170';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.170';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.170';
-import { TIER_INFO } from './rarity.js?v=0.1.170';
-import { SETS } from './sets.js?v=0.1.170';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.170';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.170';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.170';
+import { VERSION } from './version.js?v=0.1.172';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.172';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.172';
+import { conArt } from './con-art.js?v=0.1.172';
+import { CON_FIGURES } from './con-figures.js?v=0.1.172';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.172';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.172';
+import { progress as progressOf } from './progress.js?v=0.1.172';
+import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.172';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.172';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.172';
+import { SkyView, shortName } from './sky.js?v=0.1.172';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.172';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.172';
+import { cardArt } from './art.js?v=0.1.172';
+import { renderCard, cardLevel, artImage } from './card.js?v=0.1.172';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.172';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.172';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.172';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.172';
+import { TIER_INFO } from './rarity.js?v=0.1.172';
+import { SETS } from './sets.js?v=0.1.172';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.172';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.172';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.172';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -58,7 +58,8 @@ const state = {
   items: [],       // latest interpolated positions: [{ obj, look }]
   binoculars: readPref('binoculars', false),
   snap: readPref('snap', true),    // the targeting circle jumps onto a locked-on object
-  lightSky: SKIES[readText('sky', DEFAULT_SKY)] ? readText('sky', DEFAULT_SKY) : DEFAULT_SKY, // light pollution where you are
+  lightSky: SKIES[readText('sky', DEFAULT_SKY)] ? readText('sky', DEFAULT_SKY) : DEFAULT_SKY, // light pollution where you are (old setting)
+  skySb: null, // the sky slider: your sky's own darkness in mag/arcsec² (set below from storage or the old setting)
   trails: new Map(),
   sticky: new Map(), // candidate id -> last time it was in the reticle
   candidates: [],
@@ -282,7 +283,8 @@ function refreshAbove() {
 function updateSkyLimit(f) {
   const moon = state.bodies?.find((b) => b.kind === 'moon');
   const moonEl = moon ? Math.asin(Math.max(-1, Math.min(1, moon.enu[2]))) * 180 / Math.PI : -90;
-  state.limit = skyLimit({ sky: state.lightSky, sunEl: f?.sunEl ?? -90, moonEl, moonIllum: moon?.illum ?? 0 });
+  state.limit = skyLimit({ sb: state.skySb, sunEl: f?.sunEl ?? -90, moonEl, moonIllum: moon?.illum ?? 0 });
+  renderSkySlider();
   setSkyLimit(state.limit);
   const info = $('sky-limit-info');
   if (info) {
@@ -446,6 +448,7 @@ function tick(ts) {
   sky.draw(basis, items, {
     showDim: state.showDim,
     sky: state.showStars ? state.skyEnu : null,
+    starLimit: state.limit?.stars, // background stars follow the sky slider too
     bodies: state.showStars ? state.bodies : null,
     milky: state.showStars ? state.milkyEnu : null,
     lines: state.showLines,
@@ -595,7 +598,7 @@ function measureSkySpace() {
   const rect = box.getBoundingClientRect();
   uiSafeTop = $('radar').getBoundingClientRect().bottom + 12;
   if (!$('banner').hidden) uiSafeTop = $('banner').getBoundingClientRect().bottom + 12;
-  const navInset = window.innerHeight - $('nav').getBoundingClientRect().top + 20;
+  const navInset = window.innerHeight - Math.min($('nav').getBoundingClientRect().top, $('skybar').getBoundingClientRect().top || Infinity) + 20; // the sky slider sits above the switcher
   uiSafeBottom = box.hidden ? navInset : Math.max(navInset, window.innerHeight - rect.top + 34);
   // The reticle stays put when the info card or a banner comes and goes (2026-10-06, Sevaan: it jumped).
   uiCenterY = window.innerHeight / 2; // the middle of the phone (2026-10-06, Sevaan), not of the gap between radar and nav
@@ -936,7 +939,7 @@ const fmtTime = (ms) => new Date(ms).toLocaleTimeString([], { hour: 'numeric', m
 function requestTonight(force = false) {
   if (!state.catalog || !state.observer || tonightBusy) return;
   const T = state.tonight;
-  if (!force && T && now().getTime() - T.startMs < 20 * 60000 && T.sky === state.lightSky && T.lat === state.observer.lat && T.lon === state.observer.lon && T.bino === state.binoculars) return;
+  if (!force && T && now().getTime() - T.startMs < 20 * 60000 && T.sb === state.skySb && T.lat === state.observer.lat && T.lon === state.observer.lon && T.bino === state.binoculars) return;
   tonightBusy = true;
   const requestId = ++tonightReq, startMs = now().getTime();
   try {
@@ -945,14 +948,14 @@ function requestTonight(force = false) {
       if (data.requestId !== tonightReq) return;
       tonightBusy = false;
       if (data.error) return;
-      state.tonight = { ...data, sky: state.lightSky, lat: state.observer.lat, lon: state.observer.lon, bino: state.binoculars };
+      state.tonight = { ...data, sb: state.skySb, lat: state.observer.lat, lon: state.observer.lon, bino: state.binoculars };
       if (!$('vtab-tonight').hidden) renderTonight();
       lastChip = 0;
     };
     tonightWorker.onerror = () => { tonightBusy = false; };
-    const base = skyLimit({ sky: state.lightSky }), faintest = (state.binoculars ? base.binoculars : base.satellites) + 0.5;
+    const base = skyLimit({ sb: state.skySb }), faintest = (state.binoculars ? base.binoculars : base.satellites) + 0.5;
     const objects = state.catalog.objects.filter((o) => o.stdMag + 5 * Math.log10(Math.max(o.perigee ?? 400, 200) / 1000) <= faintest);
-    tonightWorker.postMessage({ requestId, objects, observer: state.observer, startMs, sky: state.lightSky, binoculars: state.binoculars });
+    tonightWorker.postMessage({ requestId, objects, observer: state.observer, startMs, sb: state.skySb, binoculars: state.binoculars });
   } catch { tonightBusy = false; }
 }
 function showVTab(tab) {
@@ -1251,8 +1254,31 @@ $('chk-landscape').addEventListener('change', (e) => { state.landscape = e.targe
 $('chk-lines').checked = state.showLines;
 $('chk-lines').addEventListener('change', (e) => { state.showLines = e.target.checked; writePref('lines', state.showLines); });
 $('chk-any').addEventListener('change', (e) => { state.captureAny = e.target.checked; });
-$('sel-sky').value = state.lightSky;
-$('sel-sky').addEventListener('change', (e) => { state.lightSky = e.target.value; writeText('sky', state.lightSky); updateSkyLimit(state.frame); state.model?.reset?.(); refreshAbove(); });
+// ---------- the sky slider (2026-10-06): an "exposure" control above the switcher ----------
+// Drag until the stars and satellites on screen match what you can actually see; it's saved for next time.
+// It sets your sky's own darkness; twilight and the Moon still dim things on top of it automatically.
+{ const saved = Number(readText('skySb', '')); state.skySb = saved >= SB_MIN && saved <= SB_MAX ? saved : sbOfSky(state.lightSky); }
+function renderSkySlider() {
+  const r = $('sky-range'); if (!r || !state.limit) return;
+  if (document.activeElement !== r) r.value = String(state.skySb);
+  const pct = (state.skySb - SB_MIN) / (SB_MAX - SB_MIN) * 100;
+  r.style.setProperty('--p', `${pct.toFixed(1)}%`);
+  $('sky-name').textContent = skyNameFor(state.skySb);
+  $('sky-mag').textContent = `stars to ${state.limit.stars.toFixed(1)}`;
+}
+let skyDragAt = 0;
+$('sky-range').addEventListener('input', (e) => {
+  state.skySb = Number(e.target.value);
+  updateSkyLimit(state.frame);
+  const t = performance.now(); if (t - skyDragAt > 120) { skyDragAt = t; refreshAbove(); } // satellites follow the slider as you drag
+  $('skybar').classList.add('dragging');
+});
+$('sky-range').addEventListener('change', () => {
+  writeText('skySb', state.skySb.toFixed(2));
+  $('skybar').classList.remove('dragging');
+  state.model?.reset?.(); refreshAbove(); requestTonight(true);
+});
+for (const ev of ['pointerdown', 'touchstart']) $('skybar').addEventListener(ev, (e) => e.stopPropagation(), { passive: true }); // never drags the sky
 $('chk-snap').checked = state.snap; sky.snap = state.snap;
 $('chk-snap').addEventListener('change', (e) => { state.snap = e.target.checked; writePref('snap', state.snap); sky.snap = state.snap; });
 $('chk-bino').checked = state.binoculars;
@@ -1289,7 +1315,7 @@ function renderDebug() {
     `catalogue      ${cat?.objects.length ?? 0} objects, data ${ageH} h old`,
     `above horizon  ${state.model?.above.size ?? 0} (${state.items.filter((i) => i.look.visible).length} visible)`,
     `binoculars     ${state.binoculars ? 'on' : 'off'}`,
-    `sky            ${state.lightSky}: stars ${state.limit?.stars.toFixed(1)}, satellites ${state.limit?.satellites.toFixed(1)} (bino ${state.limit?.binoculars.toFixed(1)}), ${state.limit?.sb.toFixed(1)} mag/arcsec²`,
+    `sky            ${skyNameFor(state.skySb)} (${state.skySb.toFixed(2)} mag/arcsec²): stars ${state.limit?.stars.toFixed(1)}, satellites ${state.limit?.satellites.toFixed(1)} (bino ${state.limit?.binoculars.toFixed(1)}), ${state.limit?.sb.toFixed(1)} mag/arcsec²`,
   ].join('\n');
 }
 

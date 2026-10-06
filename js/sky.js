@@ -1,8 +1,9 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
+import { extinction } from './sky-limit.js?v=0.1.172';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.170';
-import { TIER_INFO } from './rarity.js?v=0.1.170';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.172';
+import { TIER_INFO } from './rarity.js?v=0.1.172';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -527,7 +528,7 @@ export class SkyView {
   }
 
   // Stars, constellation lines and labels. sky: { stars, lines, constellations } with ENU vectors.
-  drawStars(sky, { lines, time = 0 }) {
+  drawStars(sky, { lines, time = 0, starLimit = null }) {
     const ctx = this.ctx, t = this.theme;
     if (lines) {
       ctx.strokeStyle = t.constLine;
@@ -544,10 +545,14 @@ export class SkyView {
     for (let i = 0; i < sky.stars.length; i++) {
       const s = sky.stars[i];
       if (s.enu[2] < 0) continue;
+      // The sky slider: stars fainter than tonight's limit (after the extra air near the horizon) aren't drawn;
+      // the last half magnitude fades, so dragging the slider brings stars up gently.
+      let fade = 1;
+      if (starLimit != null) { const m = s.mag + extinction(Math.asin(Math.min(1, s.enu[2])) * 180 / Math.PI); if (m > starLimit) continue; fade = Math.min(1, (starLimit - m) / 0.5 + 0.15); }
       const p = this.project(s.enu);
       if (!this.onScreen(p, 12)) continue;
       const r = Math.max(0.38, Math.min(2.4, 1.9 - 0.27 * s.mag));
-      let a = Math.max(0.14, Math.min(1, 0.98 - 0.125 * s.mag)), tw = 1;
+      let a = Math.max(0.14, Math.min(1, 0.98 - 0.125 * s.mag)) * fade, tw = 1;
       if (time) {
         // 0 in the middle of the screen, rising to 1 at any edge (the outer ~40% of the way out).
         const edge = Math.max(Math.abs(p.x - hw) / hw, Math.abs(p.y - hh) / hh);
@@ -652,7 +657,7 @@ export class SkyView {
 
   // safeTop/safeBottom are HUD insets in CSS pixels; centerY is an optional pixel
   // override. Projection and the reticle always share the same cx/cy.
-  draw(basis, items, { showDim, sky, bodies, milky, lines = true, targetId = null, time = 0, safeTop = 150, safeBottom = 230, centerY, newFind = false, rising = null, landscape = false, lockedOn = null, planes = null, planeHit = null, planeTrail = null, naturalTarget = null } = {}) {
+  draw(basis, items, { showDim, sky, bodies, milky, lines = true, targetId = null, time = 0, safeTop = 150, safeBottom = 230, centerY, starLimit = null, newFind = false, rising = null, landscape = false, lockedOn = null, planes = null, planeHit = null, planeTrail = null, naturalTarget = null } = {}) {
     this.basis = basis;
     this.safeTop = Math.max(12, Math.min(safeTop, this.h * 0.45));
     this.safeBottom = Math.max(12, Math.min(safeBottom, this.h - this.safeTop - 100));
@@ -664,7 +669,7 @@ export class SkyView {
     const ctx = this.ctx, t = this.theme;
     this.drawBackground();
     this.drawMilkyWay(milky);
-    if (sky) this.drawStars(sky, { lines, time: this.reducedMotion ? 0 : time });
+    if (sky) this.drawStars(sky, { lines, time: this.reducedMotion ? 0 : time, starLimit });
     if (bodies) this.drawBodies(bodies);
     this.drawGround();
     if (landscape) this.drawLandscape();

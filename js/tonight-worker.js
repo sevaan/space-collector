@@ -2,17 +2,17 @@
 // many satellites are visible over the night. Runs off the main thread; ~4,000 objects × 1-minute steps
 // takes a few seconds. Visibility uses the same rules as the live sky: sunlit, dark sky, and brighter than
 // the limit for your sky at that moment (light pollution, twilight, Moon; js/sky-limit.js).
-import { frame, look, setSkyLimit, setBinocularMode, DARK_SUN_ELEVATION } from './orbit.js?v=0.1.170';
-import { skyLimit } from './sky-limit.js?v=0.1.170';
-import { solarSystem, eqToEnu } from './celestial.js?v=0.1.170';
+import { frame, look, setSkyLimit, setBinocularMode, DARK_SUN_ELEVATION } from './orbit.js?v=0.1.172';
+import { skyLimit } from './sky-limit.js?v=0.1.172';
+import { solarSystem, eqToEnu } from './celestial.js?v=0.1.172';
 
 const STEP = 60000;          // 1 minute
 const GAP = 3;               // a pass ends after this many minutes out of sight
 self.onmessage = ({ data }) => {
-  const { requestId, objects, observer, startMs, sky, binoculars, hours = 14 } = data;
+  const { requestId, objects, observer, startMs, sky, sb, binoculars, hours = 14 } = data;
   try {
     setBinocularMode(binoculars);
-    const base = skyLimit({ sky });
+    const base = skyLimit({ sky, sb });
     const faintest = (binoculars ? base.binoculars : base.satellites) + 0.5;
     // Only objects that can ever get bright enough: their best case is overhead at perigee.
     const pool = objects.filter((o) => o.stdMag + 5 * Math.log10(Math.max(o.perigee ?? 400, 200) / 1000) <= faintest);
@@ -31,7 +31,7 @@ self.onmessage = ({ data }) => {
         const moon = solarSystem(d, observer).find((b) => b.kind === 'moon');
         if (moon) { const u = eqToEnu(d, observer)(moon.v); moonEl = Math.asin(Math.max(-1, Math.min(1, u[2]))) * 180 / Math.PI; moonIllum = moon.illum; }
       }
-      setSkyLimit(skyLimit({ sky, sunEl: f.sunEl, moonEl, moonIllum }));
+      setSkyLimit(skyLimit({ sky, sb, sunEl: f.sunEl, moonEl, moonIllum }));
       let count = 0;
       for (const o of pool) {
         const l = look(o, f);

@@ -1,6 +1,6 @@
 /* Shared with the retro card stock: cream ink, orange accents and a steel frame.
    Legacy --gold / --cyan names remain for the radar and reveal consumers. */
-:root { --bg:#080f1b; --text:#fff2b3; --muted:#bdbea9; --gold:#fa8127; --cyan:#8fb3cf; --glass:#0c1725f2; --glass-strong:#0c1725; --edge:#627a8b; --edge-soft:#344654; --rule:#bcb585; --ink-on-gold:#080f1b; --display:'SC Display',Impact,sans-serif; --label:'SC Label','Arial Narrow',sans-serif; --safe-top:env(safe-area-inset-top,0px); --safe-bottom:env(safe-area-inset-bottom,0px); --nav-h:70px; color-scheme:dark; }
+:root { --bg:#080f1b; --text:#fff2b3; --muted:#bdbea9; --gold:#fa8127; --cyan:#8fb3cf; --glass:#0c1725f2; --glass-strong:#0c1725; --edge:#627a8b; --edge-soft:#344654; --rule:#bcb585; --ink-on-gold:#080f1b; --display:'SC Display',Impact,sans-serif; --label:'SC Label','Arial Narrow',sans-serif; --safe-top:env(safe-area-inset-top,0px); --safe-bottom:env(safe-area-inset-bottom,0px); --nav-h:112px; color-scheme:dark; }
 html[data-theme=night],body.night { --bg:#0c0303; --text:#d67674; --muted:#b76a69; --gold:#bb6060; --cyan:#cd6a6a; --glass:#1a0909f5; --glass-strong:#120606; --edge:#58272b; --edge-soft:#361719; --ink-on-gold:#180706; --rule:#58272b; }
 * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
 html,body { margin:0; height:100%; background:var(--bg); color:var(--text); font:16px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; overflow:hidden; overscroll-behavior:none; }
@@ -239,3 +239,20 @@ body:has(#event-banner:not([hidden])) #toasts { top:calc(var(--safe-top) + 150px
   #rotate b { font:400 24px/1.1 'SC Display', Impact, sans-serif; letter-spacing:-.03em; text-transform:uppercase; }
   #rotate span { font:500 14px/1.3 'SC Label', 'Arial Narrow', sans-serif; letter-spacing:.14em; text-transform:uppercase; color:#bdbea9; }
 }
+
+/* The sky slider (2026-10-06): a slim retro "exposure" control just above the switcher, Explore only. */
+#skybar { position:fixed; left:50%; transform:translateX(-50%); bottom:calc(76px + var(--safe-bottom)); width:min(300px, calc(100vw - 48px)); z-index:3; display:grid; grid-template-columns:auto 1fr auto; align-items:center; column-gap:9px; row-gap:2px; pointer-events:auto; }
+#skybar .sb-end { font:500 9px/1 var(--label); letter-spacing:.16em; color:var(--muted); opacity:.75; }
+#sky-read { grid-column:1 / -1; text-align:center; font:500 11px/1.2 var(--label); letter-spacing:.12em; text-transform:uppercase; color:var(--muted); opacity:.7; transition:opacity .25s; }
+#sky-range:focus, #sky-range:focus-visible { outline:none; }
+#sky-range:focus-visible::-webkit-slider-thumb { box-shadow:0 0 0 4px color-mix(in srgb, var(--gold) 35%, transparent); }
+#sky-read b { color:var(--text); font-weight:500; }
+#skybar.dragging #sky-read { opacity:1; }
+#sky-range { -webkit-appearance:none; appearance:none; width:100%; height:28px; margin:0; background:transparent; touch-action:none; cursor:pointer; }
+#sky-range::-webkit-slider-runnable-track { height:3px; border-radius:2px; background:linear-gradient(90deg, var(--gold) 0 var(--p,50%), color-mix(in srgb, var(--edge) 55%, transparent) var(--p,50%)); }
+#sky-range::-moz-range-track { height:3px; border-radius:2px; background:color-mix(in srgb, var(--edge) 55%, transparent); }
+#sky-range::-moz-range-progress { height:3px; border-radius:2px; background:var(--gold); }
+#sky-range::-webkit-slider-thumb { -webkit-appearance:none; width:18px; height:18px; margin-top:-7.5px; border-radius:50%; background:var(--bg); border:2px solid var(--gold); box-shadow:0 0 0 4px color-mix(in srgb, var(--bg) 60%, transparent); }
+#sky-range::-moz-range-thumb { width:14px; height:14px; border-radius:50%; background:var(--bg); border:2px solid var(--gold); }
+body.night #sky-range::-webkit-slider-thumb, body.night #sky-range::-moz-range-thumb { border-color:var(--gold); }
+#hud[hidden] ~ #skybar, #hud[hidden] #skybar { display:none; }
