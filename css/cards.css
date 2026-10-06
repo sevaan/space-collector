@@ -282,8 +282,10 @@
   background:
     var(--glitter) var(--bgx, 50%) var(--bgy, 50%) / 12em 12em,
     repeating-linear-gradient(110deg, hsl(0, 90%, 70%) 0%, hsl(50, 92%, 68%) 7%, hsl(120, 80%, 64%) 14%, hsl(190, 90%, 68%) 21%, hsl(255, 85%, 74%) 28%, hsl(320, 85%, 72%) 35%, hsl(0, 90%, 70%) 42%) var(--bgx, 50%) var(--bgy, 50%) / 320% 320%;
-  background-blend-mode: screen, normal; mix-blend-mode: color-dodge; filter: brightness(.55) contrast(1.4) saturate(1.1);
-  opacity: calc(.26 + var(--o, 0) * .1); }
+  /* The back is nearly all dark navy, where colour-dodge barely shows; a soft-light wash of the same prism reads
+     like the front's shimmer instead (2026-10-06, Sevaan: the shiny back looked plain). */
+  background-blend-mode: screen, normal; mix-blend-mode: soft-light; filter: saturate(1.2);
+  opacity: calc(.65 + var(--o, 0) * .25); }
 .back-glare { background: radial-gradient(farthest-corner circle at var(--mx, 50%) var(--my, 50%), hsla(0, 0%, 100%, .75) 6%, hsla(0, 0%, 100%, .45) 18%, hsla(0, 0%, 0%, .3) 90%);
   mix-blend-mode: overlay; opacity: calc(var(--o, 0) * .75); }
 :where(html[data-theme="night"], body.night) .back-holo { display: none; }
