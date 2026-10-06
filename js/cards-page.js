@@ -1,19 +1,19 @@
-import { renderCard, renderCardTile, renderPassport, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.154';
-import { cardArt } from './art.js?v=0.1.154';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.154';
-import { applyBack } from './card-backs.js?v=0.1.154';
-import { SETS, assignSets } from './sets.js?v=0.1.154';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.154';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.154';
-import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.154';
-import { progress } from './progress.js?v=0.1.154';
-import { SOLAR_SYSTEM } from './natural.js?v=0.1.154';
-import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.154';
-import { drawShareCard, shareCard } from './share-card.js?v=0.1.154';
-import { conArt } from './con-art.js?v=0.1.154';
-import { CON_BY_ID } from './constellations.js?v=0.1.154';
-import { allSightings, deleteSighting } from './store.js?v=0.1.154';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.154';
+import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.157';
+import { cardArt } from './art.js?v=0.1.157';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.157';
+import { applyBack } from './card-backs.js?v=0.1.157';
+import { SETS, assignSets } from './sets.js?v=0.1.157';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.157';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.157';
+import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.157';
+import { progress } from './progress.js?v=0.1.157';
+import { SOLAR_SYSTEM } from './natural.js?v=0.1.157';
+import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.157';
+import { drawShareCard, shareCard } from './share-card.js?v=0.1.157';
+import { conArt } from './con-art.js?v=0.1.157';
+import { CON_BY_ID } from './constellations.js?v=0.1.157';
+import { allSightings, deleteSighting } from './store.js?v=0.1.157';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.157';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -275,17 +275,24 @@ function showCard() {
   $('v-preview').hidden = sightings.length > 0;
   $('v-preview').textContent = state.preview ? 'Back to uncollected card' : 'Preview artwork & story';
   $('v-history').replaceChildren();
-  if (sightings.length && c.launches) $('v-history').append(renderPassport(c, sightings));
+  // (The cream passport block is gone, 2026-10-06: each sighting row names its launch instead.)
   if (sightings.length) {
     const heading = document.createElement('h2');
     heading.textContent = c.launches ? `Every sighting · ${sightings.length}` : sightings.length === 1 ? 'When you saw it' : `When you saw it · ${sightings.length} times`;
     $('v-history').append(heading);
     const points = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+    // Newest stamp = the launch whose first sighting is most recent.
+    const firstSeen = new Map(); for (const s of sightings) if (s.stampKey) firstSeen.set(s.stampKey, Math.min(firstSeen.get(s.stampKey) ?? Infinity, s.time));
+    const latestKey = [...firstSeen.entries()].sort((a, b) => b[1] - a[1])[0]?.[0] ?? null;
     for (const s of [...sightings].sort((a, b) => b.time - a.time)) {
       const row = document.createElement('p');
       const when = `${dateLabel(s.time)} · ${new Date(s.time).toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' })}`;
       const where = s.el != null ? `${Math.round(s.el)}° up in the ${points[Math.round(((s.az % 360) + 360) % 360 / 45) % 8]}` : '';
-      row.innerHTML = `<span>${esc(when)}</span><span>${esc(where)}</span><button type="button" class="history-delete" aria-label="Delete this sighting">×</button>`;
+      // Fleet cards: which launch this sighting was (its stamp), with the launch date.
+      const launch = c.launches && s.stampKey ? c.launches.find((l) => l.key === s.stampKey) : null;
+      const launchLine = c.launches ? (launch ? `Launch ${esc(s.stampKey.split(':')[1] ?? s.stampKey)} · ${launch.n ?? ''} satellites launched ${esc(new Date(`${launch.launch}T12:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }))}${s.stampKey === latestKey ? ' · newest stamp' : ''}` : 'Launch unknown') : '';
+      row.className = launchLine ? 'with-launch' : '';
+      row.innerHTML = `<span class="h-main"><span>${esc(when)}</span><span>${esc(where)}</span></span>${launchLine ? `<span class="h-launch">${launchLine.replace(/\s+satellites/, ' satellites')}</span>` : ''}<button type="button" class="history-delete" aria-label="Delete this sighting">×</button>`;
       row.querySelector('button').addEventListener('click', async () => {
         if (!confirm('Delete this sighting? If it was your only one, the card leaves your collection.')) return;
         try { await deleteSighting(s.key); } catch { notice('That sighting could not be deleted. Try again.'); return; }

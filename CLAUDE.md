@@ -146,6 +146,8 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   location is not built yet (needs a dataset whose licence fits).
 - Card back (2026-10-05): ONE back now, Sevaan's Space Collector seal (assets/art/backs/back-collector.webp, rebuilt 2026-10-05 from Desktop/cardbacks/space-collector/back-collector-original.png: cropped just outside its cream frame line, blue band corners painted navy #01121c, even 18 px navy margin; shown with background-size: contain so the frame line is never cropped). js/card-backs.js still supports a list; the six posters (back-navy-1..6) are no longer used.
 
+- Fleet cards (2026-10-06): the cream passport block is gone from the viewer; each sighting row names its launch (`.h-launch`: 'Launch 2026-166 · 24 satellites launched 21 Jul 2026 · newest stamp'). The card's dot grid has a 'Newest stamp: the launch of <date>' line (`.fl-latest`) and the level text reads 'N more for Silver/Gold'. renderPassport in js/card.js is unused.
+- IRS art (2026-10-06): 'irs' key covers IRS-1/P, Resourcesat, Oceansat, Cartosat-1 — two three-panel wings, stacked camera module, black radiator (refs in scratchpad refs/img/irs). Check generated art against reference photos BEFORE shipping it.
 - Explorer RETRO (2026-10-05): UI reuses the card fonts (Russo One + Barlow Condensed), cream ink,
   orange actions and steel/cream fine rules. Inset two-part Explore/Collection navigation; radar and
   reticle echo the card-back orbital dial. `#hud` has explicit viewport bounds, with pointer events

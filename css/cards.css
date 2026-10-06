@@ -358,3 +358,7 @@
 /* Red night mode: no shine (2026-10-06): the holo, foil, glare and twinkles stay off so the card is a quiet red sheet. */
 :where(html[data-theme="night"], body.night) :is(.card__shine, .card__foil, .card__glare, .art-stars, .back-glare) { display: none !important; }
 :where(html[data-theme="night"], body.night) .card .con-tw { animation: none; }
+
+/* Fleet cards: which launch the ringed (newest) dot is. */
+.card--retro .fl-latest { display: flex; align-items: center; gap: .5em; margin-top: .55em; font: 500 max(9px, .66em)/1.2 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .1em; text-transform: uppercase; color: var(--ink); }
+.card--retro .fl-latest i { width: .7em; height: .7em; border-radius: 50%; background: #fa8127; box-shadow: 0 0 0 .18em var(--paper), 0 0 0 .3em #fa8127; flex: none; margin-left: .3em; }
