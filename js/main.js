@@ -1,23 +1,25 @@
-import { VERSION } from './version.js?v=0.1.107';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.107';
-import { skyLimit, SKIES, DEFAULT_SKY } from './sky-limit.js?v=0.1.107';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.107';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.107';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.107';
-import { SkyView, shortName } from './sky.js?v=0.1.107';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.107';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.107';
-import { cardArt } from './art.js?v=0.1.107';
-import { renderCard, cardLevel, artImage } from './card.js?v=0.1.107';
-import { playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.107';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.107';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.107';
-import { naturalTargets } from './natural.js?v=0.1.107';
-import { TIER_INFO } from './rarity.js?v=0.1.107';
-import { SETS } from './sets.js?v=0.1.107';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.107';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.107';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.107';
+import { VERSION } from './version.js?v=0.1.108';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.108';
+import { skyLimit, SKIES, DEFAULT_SKY } from './sky-limit.js?v=0.1.108';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.108';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.108';
+import { progress as progressOf } from './progress.js?v=0.1.108';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.108';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.108';
+import { SkyView, shortName } from './sky.js?v=0.1.108';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.108';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.108';
+import { cardArt } from './art.js?v=0.1.108';
+import { renderCard, cardLevel, artImage } from './card.js?v=0.1.108';
+import { playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.108';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.108';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.108';
+import { naturalTargets } from './natural.js?v=0.1.108';
+import { TIER_INFO } from './rarity.js?v=0.1.108';
+import { SETS } from './sets.js?v=0.1.108';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.108';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.108';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.108';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -699,6 +701,7 @@ function autoLog(target, d, t) {
     const name = label(o);
     toast(saved.shiny ? `✦ Shiny! ${name}: ${SHINY[saved.shiny].line}` : after !== before && !o.launches ? `${name}: ${after[0].toUpperCase() + after.slice(1)} card unlocked!` : `Seen again: ${name}. Logged.`, saved.shiny ? 4500 : 2600);
     lastPanel = 0;
+    announceProgress(progressGain(saved), 2800);
   });
 }
 function collectedThisPass(o, d) {
@@ -757,7 +760,8 @@ function showCaptureCard(obj) {
   // A constellation star: the stamp shows how far along its constellation is (gold when complete).
   const conCard = model.con && CON_BY_ID.get(model.con);
   const con = conCard && sightings.length === 1 ? { name: conCard.name, ...conProgress(conCard, ownedCardKeys()) } : null;
-  playReveal({ card, o: model, seen: sightings.length, fleet, progress, collected, con, shiny: sightings[0]?.shiny ? SHINY[sightings[0].shiny] : null, origin: { x: sky.ring?.x ?? sky.cx, y: sky.ring?.y ?? sky.cy } });
+  const gain = progressGain(sightings[0]); announceProgress(gain);
+  playReveal({ card, o: model, seen: sightings.length, fleet, progress, collected, con, xp: gain.xp, shiny: sightings[0]?.shiny ? SHINY[sightings[0].shiny] : null, origin: { x: sky.ring?.x ?? sky.cx, y: sky.ring?.y ?? sky.cy } });
 }
 // Open an owned card in place, spinning out of the toast. counted: this view also logged a sighting.
 function showViewCard(obj, from, counted) {
@@ -788,6 +792,22 @@ async function capture(obj) {
 // Save a real sighting of obj at sky time d. Returns the saved record, or null (and says why).
 // Constellations (js/constellations.js): owning every star turns its card gold; the capture stamp says so.
 function ownedCardKeys() { return new Set(state.sightings.filter((s) => !s.sim).map((s) => s.cardKey)); }
+// What a sighting earned (js/progress.js): XP, missions completed, new achievements, rank-ups. Compares the
+// log with and without the newest sighting; toasts the news a moment after the card lands.
+function progressNow(list) {
+  const info = (k) => { const c = state.cardModels.get(k); return c ? { tier: c.tier, type: c.type, owner: c.owner ?? (c.family ? state.catalog.families?.[c.family]?.owner : undefined), launch: c.launch, natural: c.natural, con: c.con } : null; };
+  return progressOf(list, info, { constellations: CONSTELLATIONS.map((c) => ({ id: c.con, stars: c.stars, zodiac: c.zodiac })), now: now().getTime() });
+}
+function progressGain(saved) {
+  const after = progressNow(state.sightings), before = progressNow(state.sightings.filter((s) => s !== saved));
+  const missions = after.missions.filter((m, i) => m.done && !before.missions[i]?.done);
+  const achievements = after.achievements.filter((a, i) => a.done && !before.achievements[i].done);
+  return { xp: after.xp - before.xp, missions, achievements, rankUp: after.rank.index > before.rank.index ? after.rank.name : null };
+}
+function announceProgress(g, delay = 3800) {
+  const news = [...g.missions.map((m) => `Mission complete: ${m.text} · +50 XP`), ...g.achievements.map((a) => `Achievement: ${a.name} · ${a.text}`), ...(g.rankUp ? [`Rank up! You're now a ${g.rankUp}.`] : [])];
+  news.forEach((n, i) => setTimeout(() => toast(n, 3200), delay + i * 3400));
+}
 async function recordSighting(obj, d, l = null) {
   l ??= obj.natural ? state.naturals?.find((n) => n.obj.id === obj.id)?.look : look(obj, frame(d, state.observer));
   if (!l) return null;

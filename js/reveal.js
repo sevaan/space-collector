@@ -5,9 +5,9 @@
 //  Everything scales with rarity (Legendary dims the sky, shockwave, held breath, slow flip, fanfare).
 // Waits use timers, not animation.finished, so a paused tab can never freeze the sequence.
 
-import { TIER_INFO } from './rarity.js?v=0.1.107';
-import { levelFor, attachTilt, attachGyro, attachFlip } from './card.js?v=0.1.107';
-import { applyBack } from './card-backs.js?v=0.1.107';
+import { TIER_INFO } from './rarity.js?v=0.1.108';
+import { levelFor, attachTilt, attachGyro, attachFlip } from './card.js?v=0.1.108';
+import { applyBack } from './card-backs.js?v=0.1.108';
 
 const FX = {
   common:    { particles: 14,  flip: 520,  spin: 0,   dim: 0,   shock: false, notes: [880],                            hold: 0 },
@@ -104,7 +104,7 @@ function sizeCard(cardEl) {
 // collected: how many different cards you own now, counting this one. A new card only gets a stamp when
 // that number is a milestone (MILESTONES); repeat sightings keep their SEEN / NEW STAMP / level stamps.
 export const MILESTONES = [1, 10, 25, 50, 75, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000];
-export async function playReveal({ card, o, seen, origin, fleet = null, progress = null, collected = 0, con = null, shiny = null }) {
+export async function playReveal({ card, o, seen, origin, fleet = null, progress = null, collected = 0, con = null, shiny = null, xp = 0 }) {
   stopReveal();
   const my = run;
   const fresh = seen <= 1;
@@ -118,7 +118,7 @@ export async function playReveal({ card, o, seen, origin, fleet = null, progress
   const root = $('reveal');
   root.style.setProperty('--fx', color);
   root.classList.remove('rv-done');
-  $('reveal-eyebrow').textContent = fresh ? 'FIRST DISCOVERY' : levelUp ? `${LEVEL_NAME[level]} CARD UNLOCKED` : newStamp ? 'NEW LAUNCH STAMP' : 'SIGHTING RECORDED';
+  $('reveal-eyebrow').textContent = (fresh ? 'FIRST DISCOVERY' : levelUp ? `${LEVEL_NAME[level]} CARD UNLOCKED` : newStamp ? 'NEW LAUNCH STAMP' : 'SIGHTING RECORDED') + (xp > 0 ? `  ·  +${xp} XP` : '');
   $('reveal-card').replaceChildren(card);
   for (const id of ['rv-holder', 'rv-flipper', 'rv-stamp', 'rv-dot', 'rv-dim', 'rv-flash', 'rv-shock']) $(id).getAnimations().forEach((a) => a.cancel());
   $('rv-holder').style.opacity = 0; $('rv-holder').classList.remove('live');

@@ -122,3 +122,26 @@ body.albums-view .collection-tools { display: none; }
 .album-head { margin: 4px 0 12px; padding: 12px 14px; border: 1px solid #344654; border-left: 4px solid var(--set); border-radius: 10px; background: #0b1424; color: #fff2b3; display: grid; gap: 6px; }
 .album-head .album__count { display: inline; margin-left: 10px; }
 .album-head .album__name { display: inline; }
+
+/* Logbook (2026-10-05, js/progress.js): rank + XP, weekly streak, tonight's missions, achievements. */
+.logbook { margin: 6px 0 22px; padding: 16px 16px 12px; border: 2px solid #adbcc8; border-radius: 14px; box-shadow: inset 0 0 0 1px #657786; background: #080f1b; color: #fff2b3; }
+.lb-rank { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; }
+.lb-label, .lb-head { display: block; font: 500 12px/1.2 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .16em; color: #bdbea9; }
+.lb-name { display: block; font: 400 22px/1.1 'SC Display', Impact, sans-serif; text-transform: uppercase; margin-top: 4px; }
+.lb-xp { font: 500 14px/1 'SC Label', sans-serif; letter-spacing: .1em; color: #bdbea9; } .lb-xp b { font: 400 20px/1 'SC Display', Impact, sans-serif; color: #fa8127; }
+.lb-bar { position: relative; height: 7px; margin: 10px 0 6px; border-radius: 4px; background: #1c2a3a; overflow: hidden; }
+.lb-bar i { position: absolute; inset: 0 auto 0 0; background: linear-gradient(90deg, #fa8127, #ffcf5a); border-radius: 4px; }
+.lb-sub { font: 500 13px/1.3 'SC Label', sans-serif; letter-spacing: .06em; color: #bdbea9; }
+.lb-head { margin: 16px 0 6px; color: #fa8127; display: flex; justify-content: space-between; cursor: default; }
+.lb-head span { color: #bdbea9; }
+.lb-mission { display: flex; align-items: center; gap: 10px; padding: 7px 0; border-bottom: 1px solid #1d2a3c; font: 500 15px/1.25 'SC Label', sans-serif; letter-spacing: .04em; }
+.lb-mission i { width: 10px; height: 10px; flex: none; transform: rotate(45deg); border: 1.5px solid #bcb585; }
+.lb-mission.done { color: #bdbea9; text-decoration: line-through; text-decoration-color: #fa8127; } .lb-mission.done i { background: #fa8127; border-color: #fa8127; }
+.lb-ach summary { list-style: none; cursor: pointer; } .lb-ach summary::-webkit-details-marker { display: none; }
+.lb-ach summary::after { content: '›'; color: #bdbea9; margin-left: 8px; } .lb-ach[open] summary::after { content: '⌄'; }
+.lb-badges { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 10px; padding: 6px 0 4px; }
+.lb-badge { display: grid; justify-items: center; text-align: center; gap: 4px; opacity: .38; }
+.lb-badge span { width: 46px; height: 46px; display: grid; place-items: center; border-radius: 50%; border: 2px solid #657786; font: 400 14px/1 'SC Display', Impact, sans-serif; color: #bdbea9; }
+.lb-badge b { font: 500 12px/1.1 'SC Label', sans-serif; letter-spacing: .08em; text-transform: uppercase; }
+.lb-badge small { font-size: 10px; line-height: 1.25; color: #8f9aa8; }
+.lb-badge.done { opacity: 1; } .lb-badge.done span { border-color: #e2b53c; color: #0b1120; background: radial-gradient(circle at 35% 30%, #fff1c2, #e2b53c 60%, #9a7420); box-shadow: 0 0 12px rgba(232, 195, 90, .35); }

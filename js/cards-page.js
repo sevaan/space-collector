@@ -1,16 +1,17 @@
-import { renderCard, renderCardTile, renderPassport, attachTilt, attachGyro, attachFlip, artImage } from './card.js?v=0.1.107';
-import { cardArt } from './art.js?v=0.1.107';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.107';
-import { applyBack } from './card-backs.js?v=0.1.107';
-import { SETS, assignSets } from './sets.js?v=0.1.107';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.107';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.107';
-import { loadConstellations } from './constellations.js?v=0.1.107';
-import { allSightings, deleteSighting } from './store.js?v=0.1.107';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.107';
+import { renderCard, renderCardTile, renderPassport, attachTilt, attachGyro, attachFlip, artImage } from './card.js?v=0.1.108';
+import { cardArt } from './art.js?v=0.1.108';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.108';
+import { applyBack } from './card-backs.js?v=0.1.108';
+import { SETS, assignSets } from './sets.js?v=0.1.108';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.108';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.108';
+import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.108';
+import { progress } from './progress.js?v=0.1.108';
+import { allSightings, deleteSighting } from './store.js?v=0.1.108';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.108';
 
 const $ = (id) => document.getElementById(id);
-const state = { cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
+const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const hasSightings = (c) => state.sightingsByKey.has(c.key);
 const dateLabel = (time) => new Date(time).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
@@ -52,6 +53,7 @@ async function boot() {
     // Launch-keyed sightings from before fleet cards read as fleet card + stamp.
     const s = normalizeSighting(raw.cardKey ? raw : { ...raw, cardKey: keyOfId.get(String(raw.objectId)) ?? String(raw.objectId) });
     const key = s.cardKey;
+    state.raw.push(s);
     if (!state.sightingsByKey.has(key)) state.sightingsByKey.set(key, []);
     state.sightingsByKey.get(key).push(s);
     if (!state.seenMembers.has(key)) state.seenMembers.set(key, new Set());
@@ -144,7 +146,25 @@ function renderAlbumHead() {
     <span class="album__next">${st.level === 3 ? 'Gold album. Every card here is a bonus.' : `${(st.next - st.have.length).toLocaleString()} more for a ${LEVELS[st.level]} album (${st.next.toLocaleString()} cards).`}</span>`;
 }
 
+// ---------- logbook: rank, streak, tonight's missions, achievements (js/progress.js) ----------
+function renderLogbook() {
+  const info = (k) => { const c = state.byKey.get(k); return c ? { tier: c.tier, type: c.type, owner: c.owner, launch: c.launch, natural: c.natural, con: c.con } : null; };
+  const p = progress(state.raw, info, { constellations: CONSTELLATIONS.map((c) => ({ id: c.con, stars: c.stars, zodiac: c.zodiac })) });
+  const el = $('logbook'); el.hidden = false;
+  const span = p.rank.next ? p.rank.next - p.rank.at : 1, into = p.rank.next ? Math.min(1, (p.xp - p.rank.at) / span) : 1;
+  const done = p.achievements.filter((a) => a.done).length;
+  el.innerHTML = `<div class="lb-rank"><div><span class="lb-label">OBSERVER RANK</span><span class="lb-name">${esc(p.rank.name)}</span></div>
+      <div class="lb-xp"><b>${p.xp.toLocaleString()}</b> XP</div></div>
+    <div class="lb-bar"><i style="width:${(into * 100).toFixed(1)}%"></i></div>
+    <div class="lb-sub">${p.rank.next ? `${(p.rank.next - p.xp).toLocaleString()} XP to ${esc(p.rank.nextName)}` : 'Top rank reached'} · ${p.streak.current ? `${p.streak.current}-week streak${p.streak.thisWeek ? '' : ' (observe this week to keep it)'}` : 'Observe this week to start a streak'}</div>
+    <div class="lb-head">TONIGHT'S MISSIONS <span>+50 XP each</span></div>
+    ${p.missions.map((m) => `<div class="lb-mission${m.done ? ' done' : ''}"><i></i>${esc(m.text)}</div>`).join('')}
+    <details class="lb-ach"><summary class="lb-head">ACHIEVEMENTS <span>${done} / ${p.achievements.length}</span></summary>
+      <div class="lb-badges">${p.achievements.map((a) => `<div class="lb-badge${a.done ? ' done' : ''}" title="${esc(a.text)}"><span>${esc(a.icon)}</span><b>${esc(a.name)}</b><small>${esc(a.text)}</small></div>`).join('')}</div></details>`;
+}
+
 function render() {
+  renderLogbook();
   renderAlbumHead();
   document.body.classList.toggle('albums-view', state.view === 'albums');
   if (state.view === 'albums') { const caught = state.cards.filter(hasSightings).length; $('owned-count').textContent = caught.toLocaleString(); renderAlbums(); return; }
@@ -245,6 +265,7 @@ function showCard() {
       row.querySelector('button').addEventListener('click', async () => {
         if (!confirm('Delete this sighting? If it was your only one, the card leaves your collection.')) return;
         try { await deleteSighting(s.key); } catch { notice('That sighting could not be deleted. Try again.'); return; }
+        state.raw = state.raw.filter((x) => x.key !== s.key);
         const left = (state.sightingsByKey.get(c.key) ?? []).filter((x) => x.key !== s.key);
         if (left.length) state.sightingsByKey.set(c.key, left); else { state.sightingsByKey.delete(c.key); state.seenMembers.delete(c.key); }
         linkConstellations();

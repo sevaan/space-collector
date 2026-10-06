@@ -11,8 +11,8 @@
   <link rel="apple-touch-icon" href="icons/icon-180.png">
   <link rel="icon" href="icons/icon-192.png">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600;650;700;750;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/cards.css?v=0.1.107">
-  <link rel="stylesheet" href="css/collection.css?v=0.1.107">
+  <link rel="stylesheet" href="css/cards.css?v=0.1.108">
+  <link rel="stylesheet" href="css/collection.css?v=0.1.108">
 </head>
 <body>
   <header class="collection-header">
@@ -21,6 +21,7 @@
   </header>
   <main id="collection-main">
     <div class="collection-intro"><p class="eyebrow">YOUR ORBITAL FIELD GUIDE</p><h1>A little closer<br>to the cosmos.</h1><p id="count">Opening your collection…</p></div>
+    <section class="logbook" id="logbook" aria-label="Your logbook" hidden></section>
     <div class="collection-tabs" aria-label="Collection view"><button type="button" id="tab-owned" aria-pressed="true">My collection <span id="owned-count">0</span></button><button type="button" id="tab-albums" aria-pressed="false">Albums</button><button type="button" id="tab-discover" aria-pressed="false">Discover</button></div>
     <div class="collection-tools"><label class="search"><span aria-hidden="true">⌕</span><input type="search" id="search" placeholder="Find a spacecraft, launch or story…" aria-label="Search cards" autocomplete="off"></label><div class="filter-row"><label class="filter"><span>Collection</span><select id="set-filter" aria-label="Filter by collection"><option value="all">All collections</option></select></label><label class="filter"><span>Rarity</span><select id="rarity-filter" aria-label="Filter by rarity"><option value="all">All rarities</option></select></label></div></div>
     <div class="album-head" id="album-head" hidden></div>
@@ -35,6 +36,6 @@
     <div class="viewer-header"><span id="v-position"></span><button class="close" id="v-close" type="button" autofocus>Done <span aria-hidden="true">×</span></button></div>
     <div class="viewer-scroll"><div id="slot"></div><p id="v-status" class="viewer-status" aria-live="polite"></p><button id="v-preview" class="preview-button" type="button" hidden>Preview artwork &amp; story</button><div id="v-history" class="viewer-history"></div></div>
   </dialog>
-  <script type="module" src="js/cards-page.js?v=0.1.107"></script>
+  <script type="module" src="js/cards-page.js?v=0.1.108"></script>
 </body>
 </html>
