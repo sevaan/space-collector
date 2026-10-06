@@ -138,3 +138,4 @@ Alerts, service worker, accounts, secret sets/feats.
   adds atmospheric extinction by elevation to `mag`. Starlink stdMag is per object: 5.0 if launched < 60 days ago or
   perigee < 420 km (bright trains), else 6.8 (darkened/visored, Mallama et al.). An automatic light-pollution lookup by
   location is not built yet (needs a dataset whose licence fits).
+- Card back (2026-10-05): ONE back now, Sevaan's Space Collector seal (assets/art/backs/back-collector.webp, trimmed of its light-blue outer band so the rarity-coloured frame shows; original kept in the session scratchpad). js/card-backs.js still supports a list; the six posters (back-navy-1..6) are no longer used.
