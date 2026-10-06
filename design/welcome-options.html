@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Welcome Options</title>
+<style>
+  @font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf'); font-weight: 500; }
+  @font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf'); }
+  :root { --ink: #fff2b3; --muted: #bdbea9; --orange: #fa8127; --edge: #627a8b; --navy: #080e1a; --glass: #0c1725f2; }
+  body { margin: 0; background: #04070d; color: #e8eef6; font: 15px/1.45 -apple-system, system-ui, sans-serif; padding: 24px 16px 60px; }
+  h1.t { font-size: 20px; margin: 0 0 6px; } .intro { color: #9fb0c6; margin: 0 0 24px; max-width: 900px; }
+  .board { display: flex; flex-wrap: wrap; gap: 30px 24px; justify-content: center; }
+  .opt { width: 390px; } .opt h2 { font-size: 16px; margin: 12px 0 4px; } .opt p { color: #9fb0c6; font-size: 13.5px; margin: 0; }
+  .phone { position: relative; width: 390px; height: 844px; border-radius: 44px; overflow: hidden; border: 1px solid #1d2838; background: var(--navy); color: var(--ink); }
+  .lab { font: 500 13px/1.2 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .18em; text-transform: uppercase; }
+  .disp { font-family: 'SC Display', Impact, sans-serif; font-weight: 400; letter-spacing: -.03em; text-transform: uppercase; }
+  /* The shared header, fixed (doesn't scroll), same as Explore and Collection. */
+  .hdr { position: absolute; z-index: 5; left: 0; right: 0; top: 0; padding: 66px 20px 0; height: 132px; box-sizing: border-box; display: flex; justify-content: space-between; align-items: flex-start; background: linear-gradient(var(--navy) 80%, #080e1a00); }
+  .hdr::after { content: ''; position: absolute; left: 20px; right: 20px; bottom: 6px; height: 3px; border-block: 1px solid var(--edge); opacity: .65; }
+  .wm { font: 400 16px/1.15 'SC Display', Impact, sans-serif; letter-spacing: -.03em; color: var(--ink); }
+  .wm span { display: block; color: var(--muted); font: 500 11px/1.2 'SC Label', sans-serif; letter-spacing: .18em; margin-top: 6px; }
+  .btns { display: flex; gap: 8px; } .ib { width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--edge); background: var(--glass); display: grid; place-items: center; color: var(--ink); font-size: 20px; }
+  .stars { position: absolute; inset: 0; }
+  .stars i { position: absolute; border-radius: 50%; background: var(--ink); }
+  .cta { display: flex; align-items: center; justify-content: center; height: 56px; border-radius: 10px; background: var(--orange); color: #0b1120; font: 500 17px/1 'SC Label', sans-serif; letter-spacing: .2em; text-transform: uppercase; }
+  .note { color: var(--muted); font-size: 12.5px; line-height: 1.45; margin: 10px 0 0; text-align: center; }
+  .link { display: block; text-align: center; color: var(--orange); font: 500 15px/1 'SC Label', sans-serif; letter-spacing: .14em; text-transform: uppercase; margin-top: 18px; }
+  .eyebrow { color: var(--orange); }
+  .home { position: absolute; bottom: 8px; left: 50%; width: 134px; height: 5px; margin-left: -67px; border-radius: 3px; background: #ffffffaa; }
+
+  /* ---------- A: a hand of cards ---------- */
+  .A .hand { position: absolute; left: 0; right: 0; top: 150px; height: 330px; }
+  .A .c { position: absolute; left: 50%; top: 20px; width: 190px; height: 266px; margin-left: -95px; border-radius: 14px; border: 4px solid #adbcc8; background: var(--navy); box-shadow: 0 18px 40px #000a; overflow: hidden; transform-origin: 50% 120%; }
+  .A .c .h { padding: 9px 10px 4px; font-size: 9px; color: var(--ink); display: flex; justify-content: space-between; border-bottom: 1px solid #bcb58588; }
+  .A .c .n { padding: 6px 10px; font-size: 19px; line-height: 1; }
+  .A .c img { width: 100%; height: 150px; object-fit: cover; display: block; }
+  .A .c .f { padding: 7px 10px; font-size: 8px; color: var(--muted); border-top: 1px solid #bcb58588; margin-top: 8px; }
+  .A .c1 { transform: rotate(-14deg) translateX(-30px); filter: brightness(.7); }
+  .A .c2 { transform: rotate(13deg) translateX(30px); filter: brightness(.7); border-color: #e2b53c; }
+  .A .c3 { transform: translateY(-8px); border-color: #e2b53c; }
+  .A .copy { position: absolute; left: 24px; right: 24px; top: 490px; text-align: center; }
+  .A h1 { margin: 10px 0 10px; font-size: 32px; line-height: 1.02; }
+  .A .copy p { color: var(--muted); margin: 0; font-size: 15px; }
+  .A .bottom { position: absolute; left: 24px; right: 24px; bottom: 44px; }
+
+  /* ---------- B: the sky dial ---------- */
+  .B .dial { position: absolute; left: 50%; top: 172px; width: 280px; height: 280px; margin-left: -140px; }
+  .B .dial svg { width: 100%; height: 100%; overflow: visible; }
+  .B .tag { position: absolute; left: 50%; top: 140px; transform: translateX(-50%); white-space: nowrap; font-size: 15px; color: var(--ink); }
+  .B .tag2 { position: absolute; left: 50%; top: 466px; transform: translateX(-50%); white-space: nowrap; color: var(--orange); font-size: 12px; }
+  .B .copy { position: absolute; left: 24px; right: 24px; top: 500px; }
+  .B h1 { margin: 8px 0 10px; font-size: 30px; line-height: 1.02; }
+  .B .copy p { color: var(--muted); margin: 0; font-size: 15px; }
+  .B .bottom { position: absolute; left: 24px; right: 24px; bottom: 44px; }
+
+  /* ---------- C: the seal ---------- */
+  .C .seal { position: absolute; left: 50%; top: 150px; width: 204px; height: 308px; margin-left: -102px; border-radius: 16px; border: 4px solid #adbcc8; background: #01121c url(../assets/art/backs/back-collector.webp) center / contain no-repeat; box-shadow: 0 0 60px #fa812733, 0 20px 40px #000c; transform: perspective(900px) rotateY(-14deg) rotateX(6deg); }
+  .C .seal::after { content: ''; position: absolute; inset: 0; border-radius: 12px; background: linear-gradient(115deg, transparent 30%, #ffffff22 45%, transparent 60%); }
+  .C .copy { position: absolute; left: 24px; right: 24px; top: 482px; text-align: center; }
+  .C h1 { margin: 0 0 14px; font-size: 26px; line-height: 1.05; }
+  .C .steps { display: flex; justify-content: space-between; gap: 6px; }
+  .C .steps div { flex: 1; text-align: center; } .C .steps b { display: block; width: 34px; height: 34px; margin: 0 auto 6px; border: 1px solid var(--edge); border-radius: 50%; line-height: 34px; color: var(--orange); font: 400 15px/34px 'SC Display', sans-serif; }
+  .C .steps span { font-size: 12px; color: var(--ink); }
+  .C .bottom { position: absolute; left: 24px; right: 24px; bottom: 44px; }
+</style></head><body>
+<h1 class="t">Welcome screen: three directions</h1>
+<p class="intro">All three use the same header as Explore and Collection (wordmark, ☾ and settings, double rule), fixed so it never scrolls, on a starfield. The empty box is gone. The Observe button sits low, where your thumb is, in the same spot each time. "Loading the sky…" becomes the button's own state, not the whole label.</p>
+<div class="board" id="b"></div>
+<script>
+let seed = 3; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+const stars = () => `<div class="stars">${Array.from({ length: 90 }, () => { const s = rnd() < .12 ? 2.2 : .8 + rnd() * 1.1; return `<i style="left:${rnd() * 100}%;top:${rnd() * 100}%;width:${s}px;height:${s}px;opacity:${.25 + rnd() * .55}"></i>`; }).join('')}</div>`;
+const hdr = `<div class="hdr"><div class="wm">SPACE COLLECTOR<span>FIELD NOTES FROM ORBIT</span></div><div class="btns"><div class="ib">☾</div><div class="ib"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg></div></div></div>`;
+const bottom = (cta = 'Observe the sky') => `<div class="bottom"><div class="cta">${cta}</div><p class="note">Uses your location and motion sensors so the sky lines up with where you point.</p><a class="link">Browse the collection</a></div>`;
+const card = (cls, set, tier, name, img, foot) => `<div class="c ${cls}"><div class="h lab"><span>${set}</span><span>◆ ${tier}</span></div><div class="n disp">${name}</div><img src="../assets/art/cards/${img}.webp"><div class="f lab">${foot}</div></div>`;
+const A = `${stars()}${hdr}<div class="hand">${card('c1', 'Planets', 'Rare', 'Saturn', 'planet-saturn', 'Collected · 12 Sep')}${card('c2', 'Bright stars', 'Common', 'Betelgeuse', 'star-betelgeuse', 'Collected · 30 Sep')}${card('c3', 'Stations', 'Legendary', 'International Space Station', 'iss', 'Collected · 05 Oct')}</div>
+  <div class="copy"><span class="lab eyebrow">Real objects. Remarkable stories.</span><h1 class="disp">Look up.<br>Collect the sky.</h1><p>Point your phone at a moving light, find out what it is, and keep its card.</p></div>${bottom()}`;
+const B = `${stars()}${hdr}<div class="tag lab">International Space Station</div><div class="dial"><svg viewBox="-150 -150 300 300">
+  <circle r="146" fill="none" stroke="#627a8b" stroke-opacity=".5"/>${Array.from({ length: 72 }, (_, i) => { const a = i * 5 * Math.PI / 180, r1 = i % 6 ? 140 : 132; return `<line x1="${Math.cos(a) * r1}" y1="${Math.sin(a) * r1}" x2="${Math.cos(a) * 146}" y2="${Math.sin(a) * 146}" stroke="#627a8b" stroke-opacity=".7"/>`; }).join('')}
+  <circle r="104" fill="none" stroke="#fa8127" stroke-width="2.5"/><circle r="28" fill="none" stroke="#fa8127" stroke-width="1.5"/>
+  <line x1="0" y1="-160" x2="0" y2="-148" stroke="#fa8127" stroke-width="2"/><line x1="0" y1="148" x2="0" y2="160" stroke="#fa8127" stroke-width="2"/><line x1="-160" y1="0" x2="-148" y2="0" stroke="#fa8127" stroke-width="2"/><line x1="148" y1="0" x2="160" y2="0" stroke="#fa8127" stroke-width="2"/>
+  <path d="M-150 70 Q -40 10 0 0" fill="none" stroke="#fff2b3" stroke-opacity=".5" stroke-dasharray="3 6"/><path d="M0 0 Q 50 -22 150 -40" fill="none" stroke="#fa8127" stroke-opacity=".7" stroke-dasharray="6 6"/>
+  <circle r="4.5" fill="#fff2b3"/><circle r="11" fill="#fff2b3" opacity=".18"/></svg></div><div class="tag2 lab">Tap to collect</div>
+  <div class="copy"><span class="lab eyebrow">That moving light has a story</span><h1 class="disp">Point. Identify.<br>Collect.</h1><p>Line up a satellite, planet or star in the circle and tap to add its card to your collection.</p></div>${bottom()}`;
+const C = `${stars()}${hdr}<div class="seal"></div>
+  <div class="copy"><h1 class="disp">Look up. Find something<br>extraordinary.</h1><div class="steps lab"><div><b>1</b><span>Point at a light</span></div><div><b>2</b><span>See what it is</span></div><div><b>3</b><span>Keep its card</span></div></div></div>${bottom()}`;
+const opts = [
+  ['A', 'A. A hand of cards', 'Three real cards fanned out (Saturn, Betelgeuse, the ISS) so you see the reward before you start. Shorter headline, one line of copy.'],
+  ['B', 'B. The sky dial', 'The Explore reticle itself, with the ISS crossing it and its dashed path, and TAP TO COLLECT under it. Shows exactly what you are about to do. Copy is left-aligned like a field guide.'],
+  ['C', 'C. The seal', 'The Space Collector card back, tilted, with a faint glow: the most poster-like. Keeps your current headline and adds three numbered steps.'],
+];
+document.getElementById('b').innerHTML = opts.map(([c, t, d]) => `<div class="opt"><div class="phone ${c}">${({ A, B, C })[c]}<div class="home"></div></div><h2>${t}</h2><p>${d}</p></div>`).join('');
+</script></body></html>
