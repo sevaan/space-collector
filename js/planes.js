@@ -44,6 +44,18 @@ function extrapolate(p, s) {
   return { lat, lon, hKm: Math.max(0, p.hKm + (p.climb * FT / 60) * s) };
 }
 
+// Where a plane was and will be, for drawing its path: straight along its current track and climb rate
+// from `from` to `to` seconds around now. [{ t, enu, el }] (t in seconds, enu a unit vector).
+export function planePath(p, obs, nowMs = Date.now(), from = -60, to = 120, step = 4) {
+  const base = (nowMs - p.at) / 1000, out = [];
+  for (let t = from; t <= to; t += step) {
+    const q = extrapolate(p, base + t);
+    const pos = skyPosition(obs, q.lat, q.lon, q.hKm);
+    out.push({ t, enu: pos.enu, el: pos.el });
+  }
+  return out;
+}
+
 function parse(json) {
   const at = json.now < 1e12 ? json.now * 1000 : json.now;
   const out = [];

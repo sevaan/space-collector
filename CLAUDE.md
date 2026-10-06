@@ -94,6 +94,9 @@ Live: https://sevaan.github.io/space-collector/ (GitHub Pages, deploys from `mai
   Val Town HTTP val (URL in `RELAY`; Deno Deploy signups were closed). The relay only answers
   sevaan.github.io and localhost. Routes from adsbdb.com (CORS-open). If the relay changes, paste
   relay/handler.ts into a new val and update `RELAY`.
+  The plane in the circle shows its path like a satellite (`planePath` in js/planes.js: straight along track
+  and climb, last 60 s faint, next 120 s red dashes; `drawPlaneTrail` in js/sky.js). Plane icon is a swept-wing
+  silhouette rotated to its on-screen direction of travel.
 
 - Card backs (2026-10-05): six retro posters from Desktop/cardbacks (EPS, Illustrator, font Jockey One) with
   their titles replaced by SPACE COLLECTOR (same font, colour, stretch; lorem line removed), as 900 px WebP in

@@ -1,8 +1,8 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
 // Two themes: 'glass' (navy sky, gold satellites, cyan reticle) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.85';
-import { TIER_INFO } from './rarity.js?v=0.1.85';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.86';
+import { TIER_INFO } from './rarity.js?v=0.1.86';
 
 const RAD = Math.PI / 180;
 const FONT = '-apple-system, "SF Pro Text", system-ui, sans-serif';
@@ -488,12 +488,18 @@ export class SkyView {
       ctx.fill();
       ctx.beginPath(); ctx.moveTo(0.6 * u, -0.2 * u); ctx.lineTo(0.98 * u, -0.34 * u); ctx.lineTo(0.98 * u, 0.34 * u); ctx.lineTo(0.6 * u, 0.2 * u); ctx.closePath(); ctx.fill(); // nozzle
     } else if (kind === 'plane') {
-      // Points along +x (the caller rotates it to the direction of travel).
-      rect(-0.9, -0.1, 1.8, 0.2);                     // fuselage
-      ctx.beginPath(); ctx.moveTo(0.25 * u, 0); ctx.lineTo(-0.2 * u, -0.95 * u); ctx.lineTo(-0.42 * u, -0.95 * u); ctx.lineTo(-0.2 * u, 0);
-      ctx.lineTo(-0.42 * u, 0.95 * u); ctx.lineTo(-0.2 * u, 0.95 * u); ctx.closePath(); ctx.fill(); // wings
-      ctx.beginPath(); ctx.moveTo(-0.62 * u, 0); ctx.lineTo(-0.85 * u, -0.4 * u); ctx.lineTo(-0.98 * u, -0.4 * u); ctx.lineTo(-0.9 * u, 0);
-      ctx.lineTo(-0.98 * u, 0.4 * u); ctx.lineTo(-0.85 * u, 0.4 * u); ctx.closePath(); ctx.fill(); // tail
+      // Airliner seen from above, nose along +x (the caller rotates it to the direction of travel): a
+      // long fuselage with a pointed nose, swept-back wings and a small swept tail, so the heading reads.
+      ctx.beginPath();
+      ctx.moveTo(1.0 * u, 0);                                                    // nose
+      ctx.quadraticCurveTo(0.86 * u, -0.12 * u, 0.6 * u, -0.12 * u);
+      ctx.lineTo(0.12 * u, -0.12 * u); ctx.lineTo(-0.38 * u, -0.98 * u); ctx.lineTo(-0.56 * u, -0.98 * u); ctx.lineTo(-0.24 * u, -0.12 * u); // left wing
+      ctx.lineTo(-0.72 * u, -0.1 * u); ctx.lineTo(-0.9 * u, -0.42 * u); ctx.lineTo(-1.0 * u, -0.42 * u); ctx.lineTo(-0.92 * u, -0.06 * u); // left tail
+      ctx.lineTo(-0.98 * u, 0);
+      ctx.lineTo(-0.92 * u, 0.06 * u); ctx.lineTo(-1.0 * u, 0.42 * u); ctx.lineTo(-0.9 * u, 0.42 * u); ctx.lineTo(-0.72 * u, 0.1 * u);      // right tail
+      ctx.lineTo(-0.24 * u, 0.12 * u); ctx.lineTo(-0.56 * u, 0.98 * u); ctx.lineTo(-0.38 * u, 0.98 * u); ctx.lineTo(0.12 * u, 0.12 * u);   // right wing
+      ctx.lineTo(0.6 * u, 0.12 * u); ctx.quadraticCurveTo(0.86 * u, 0.12 * u, 1.0 * u, 0);
+      ctx.closePath(); ctx.fill();
     } else if (kind === 'station') {
       ctx.rotate(-0.2);
       rect(-1.0, -0.06, 2.0, 0.12);                   // truss
@@ -629,7 +635,7 @@ export class SkyView {
 
   // safeTop/safeBottom are HUD insets in CSS pixels; centerY is an optional pixel
   // override. Projection and the reticle always share the same cx/cy.
-  draw(basis, items, { showDim, sky, bodies, milky, lines = true, targetId = null, time = 0, safeTop = 150, safeBottom = 230, centerY, newFind = false, rising = null, landscape = false, lockedOn = null, planes = null, planeHit = null, naturalTarget = null } = {}) {
+  draw(basis, items, { showDim, sky, bodies, milky, lines = true, targetId = null, time = 0, safeTop = 150, safeBottom = 230, centerY, newFind = false, rising = null, landscape = false, lockedOn = null, planes = null, planeHit = null, planeTrail = null, naturalTarget = null } = {}) {
     this.basis = basis;
     this.safeTop = Math.max(12, Math.min(safeTop, this.h * 0.45));
     this.safeBottom = Math.max(12, Math.min(safeBottom, this.h - this.safeTop - 100));
@@ -695,6 +701,7 @@ export class SkyView {
         ctx.beginPath(); ctx.arc(p.x, p.y, 15, 0, Math.PI * 2); ctx.stroke(); ctx.restore();
       }
     }
+    if (planeTrail) this.drawPlaneTrail(planeTrail);
     const planeAt = this.drawPlanes(planes, planeHit);
     this.drawOffscreen(offscreen, targetId);
     // The app decides what counts as locked on, so the ring, labels and tap area always agree.
@@ -702,6 +709,19 @@ export class SkyView {
     if (planeAt && !locked) this.drawReticle(true, 0, false, planeAt);
     else this.drawReticle(locked, this.reducedMotion ? 0 : time, newFind && locked);
     this.drawLabels();
+  }
+
+  // The lined-up plane's path, like a satellite's: faint solid for the last minute, red dashes for the
+  // next two minutes (a straight line along its current track; it may turn).
+  drawPlaneTrail(trail) {
+    const ctx = this.ctx, t = this.theme;
+    ctx.save();
+    ctx.lineWidth = 1.2; ctx.lineCap = 'round';
+    ctx.strokeStyle = t.planeDim; ctx.globalAlpha = 0.28;
+    this.path(trail.filter((p) => p.t <= 0 && p.el > 0).map((p) => p.enu), 0);
+    ctx.setLineDash([3, 8]); ctx.strokeStyle = t.plane; ctx.globalAlpha = 0.75;
+    this.path(trail.filter((p) => p.t >= 0 && p.el > 0).map((p) => p.enu), 0);
+    ctx.restore();
   }
 
   // Aircraft from js/planes.js: small red plane shapes pointing the way they're flying. Returns the
@@ -722,7 +742,7 @@ export class SkyView {
       ctx.translate(p.x, p.y);
       if (q) ctx.rotate(Math.atan2(q.y - p.y, q.x - p.x));
       ctx.globalAlpha = hit ? 1 : 0.55;
-      this.drawIcon('plane', 0, 0, hit ? 17 : 12, hit ? t.plane : t.planeDim);
+      this.drawIcon('plane', 0, 0, hit ? 20 : 14, hit ? t.plane : t.planeDim);
       ctx.restore();
       if (hit) hitAt = { x: p.x, y: p.y };
     }

@@ -1,21 +1,21 @@
-import { VERSION } from './version.js?v=0.1.85';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.85';
-import { skyLimit, SKIES, DEFAULT_SKY } from './sky-limit.js?v=0.1.85';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.85';
-import { SkyView, shortName } from './sky.js?v=0.1.85';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.85';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.85';
-import { cardArt } from './art.js?v=0.1.85';
-import { renderCard, cardLevel } from './card.js?v=0.1.85';
-import { playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.85';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.85';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.85';
-import { naturalTargets } from './natural.js?v=0.1.85';
-import { TIER_INFO } from './rarity.js?v=0.1.85';
-import { SETS } from './sets.js?v=0.1.85';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.85';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.85';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter } from './planes.js?v=0.1.85';
+import { VERSION } from './version.js?v=0.1.86';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.86';
+import { skyLimit, SKIES, DEFAULT_SKY } from './sky-limit.js?v=0.1.86';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.86';
+import { SkyView, shortName } from './sky.js?v=0.1.86';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.86';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.86';
+import { cardArt } from './art.js?v=0.1.86';
+import { renderCard, cardLevel } from './card.js?v=0.1.86';
+import { playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.86';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.86';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.86';
+import { naturalTargets } from './natural.js?v=0.1.86';
+import { TIER_INFO } from './rarity.js?v=0.1.86';
+import { SETS } from './sets.js?v=0.1.86';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.86';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.86';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.86';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -400,6 +400,7 @@ function tick(ts) {
     naturalTarget: target?.obj.natural ? target.look.enu : null,
     planes: state.planeItems,
     planeHit: plane?.plane.hex ?? null,
+    planeTrail: plane ? planePath(plane.plane, state.observer) : null, // where the lined-up plane has been and is going
     newFind: !!state.newFind,
     landscape: !!state.landscape,
     rising: state.rising?.list(d).map((e) => ({ az: e.az, name: label(e.obj), mins: Math.max(1, Math.round((e.at - d.getTime()) / 60000)) })),
