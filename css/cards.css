@@ -90,8 +90,10 @@
 .card__shine, .card__glare, .card__foil { position: absolute; inset: 0; pointer-events: none; }
 .card__glare {
   z-index: 7;
-  background: radial-gradient(farthest-corner circle at var(--mx) var(--my), hsla(0, 0%, 100%, .8) 6%, hsla(0, 0%, 100%, .5) 16%, hsla(0, 0%, 0%, .3) 90%);
-  mix-blend-mode: overlay; opacity: calc(var(--o, 0) * .27); /* the 'spotlight': halved 2026-10-05 */
+  /* The 'spotlight' (2026-10-05, Sevaan: too strong twice): a small soft highlight under the finger only,
+     no dark falloff (that greyed the whole card), and faint. */
+  background: radial-gradient(circle at var(--mx) var(--my), hsla(0, 0%, 100%, .6) 0, hsla(0, 0%, 100%, .18) 18%, transparent 42%);
+  mix-blend-mode: overlay; opacity: calc(var(--o, 0) * .3);
 }
 
 /* Front holo toned down about a third (2026-10-05, Sevaan); card backs keep their own strength.

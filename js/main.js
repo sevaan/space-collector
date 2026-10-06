@@ -1,21 +1,21 @@
-import { VERSION } from './version.js?v=0.1.93';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.93';
-import { skyLimit, SKIES, DEFAULT_SKY } from './sky-limit.js?v=0.1.93';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.93';
-import { SkyView, shortName } from './sky.js?v=0.1.93';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.93';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.93';
-import { cardArt } from './art.js?v=0.1.93';
-import { renderCard, cardLevel, artImage } from './card.js?v=0.1.93';
-import { playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.93';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.93';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.93';
-import { naturalTargets } from './natural.js?v=0.1.93';
-import { TIER_INFO } from './rarity.js?v=0.1.93';
-import { SETS } from './sets.js?v=0.1.93';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.93';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.93';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.93';
+import { VERSION } from './version.js?v=0.1.94';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.94';
+import { skyLimit, SKIES, DEFAULT_SKY } from './sky-limit.js?v=0.1.94';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.94';
+import { SkyView, shortName } from './sky.js?v=0.1.94';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.94';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.94';
+import { cardArt } from './art.js?v=0.1.94';
+import { renderCard, cardLevel, artImage } from './card.js?v=0.1.94';
+import { playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.94';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.94';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.94';
+import { naturalTargets } from './natural.js?v=0.1.94';
+import { TIER_INFO } from './rarity.js?v=0.1.94';
+import { SETS } from './sets.js?v=0.1.94';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.94';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.94';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.94';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -283,7 +283,8 @@ function updateStatus(f) {
   if (state.locationStatus === 'ready' && Date.now() - state.observer.fixedAt >= 15 * 60 * 1000) { state.locationStatus = 'stale'; renderLocation(); }
   const visible = state.items.filter(a => a.look.visible).length;
   $('visible-count').textContent = visible;
-  $('new-count').textContent = state.items.filter(a => a.look.visible && isNewFind(a.obj)).length;
+  const fresh = state.items.filter(a => a.look.visible && isNewFind(a.obj)).length;
+  $('new-count').textContent = fresh; $('radar-new').hidden = !fresh;
   if (!bannerKey.startsWith('New build')) {
     if (state.timeOffsetMs) showBanner(`Showing the sky at ${now().toLocaleString([], { weekday: 'short', hour: 'numeric', minute: '2-digit' })}. Tap to go back to now.`, backToNow);
     else if (state.needsMotionTap) showBanner('Tap anywhere to line the sky up with your phone.');
