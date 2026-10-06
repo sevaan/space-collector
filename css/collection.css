@@ -190,4 +190,4 @@ body.albums-view .collection-tools { display: none; }
 .viewer-history p.with-launch .h-main { grid-column: 1; display: flex; justify-content: space-between; gap: 10px; }
 .viewer-history p.with-launch .h-main span:first-child { color: var(--text); }
 .viewer-history p.with-launch .h-launch { grid-column: 1; font: 500 11px/1.3 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .08em; text-transform: uppercase; color: #fa8127; }
-.viewer-history p.with-launch .history-delete { grid-column: 2; grid-row: 1 / span 2; }
+.viewer-history p.with-launch .history-delete { grid-column: 2; grid-row: 1; align-self: center; } /* beside the time line */
