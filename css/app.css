@@ -241,9 +241,9 @@ body:has(#event-banner:not([hidden])) #toasts { top:calc(var(--safe-top) + 150px
 }
 
 /* The sky slider (2026-10-06): a slim retro "exposure" control just above the switcher, Explore only. */
-#skybar { position:fixed; left:50%; transform:translateX(-50%); bottom:calc(76px + var(--safe-bottom)); width:min(300px, calc(100vw - 48px)); z-index:3; display:grid; grid-template-columns:auto 1fr auto; align-items:center; column-gap:9px; row-gap:2px; pointer-events:auto; }
+#skybar { position:fixed; left:50%; transform:translateX(-50%); bottom:calc(80px + var(--safe-bottom)); /* centred between the switcher (top at 66px) and the info card (bottom at 122px) */ width:min(300px, calc(100vw - 48px)); z-index:3; display:grid; grid-template-columns:auto 1fr auto; align-items:center; column-gap:9px; row-gap:2px; pointer-events:auto; }
 #skybar .sb-end { font:500 9px/1 var(--label); letter-spacing:.16em; color:var(--muted); opacity:.75; }
-#sky-read { grid-column:1 / -1; text-align:center; font:500 11px/1.2 var(--label); letter-spacing:.12em; text-transform:uppercase; color:var(--muted); opacity:.7; transition:opacity .25s; }
+#sky-read { display:none; grid-column:1 / -1; text-align:center; font:500 11px/1.2 var(--label); letter-spacing:.12em; text-transform:uppercase; color:var(--muted); opacity:.7; transition:opacity .25s; }
 #sky-range:focus, #sky-range:focus-visible { outline:none; }
 #sky-range:focus-visible::-webkit-slider-thumb { box-shadow:0 0 0 4px color-mix(in srgb, var(--gold) 35%, transparent); }
 #sky-read b { color:var(--text); font-weight:500; }
