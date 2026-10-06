@@ -5,9 +5,10 @@
 //  Everything scales with rarity (Legendary dims the sky, shockwave, held breath, slow flip, fanfare).
 // Waits use timers, not animation.finished, so a paused tab can never freeze the sequence.
 
-import { TIER_INFO } from './rarity.js?v=0.1.129';
-import { levelFor, attachTilt, attachGyro, attachFlip, throwOff } from './card.js?v=0.1.129';
-import { applyBack } from './card-backs.js?v=0.1.129';
+import { TIER_INFO } from './rarity.js?v=0.1.131';
+import { levelFor, attachTilt, attachGyro, attachFlip, throwOff } from './card.js?v=0.1.131';
+import { applyBack } from './card-backs.js?v=0.1.131';
+import { addStarfield } from './starfield.js?v=0.1.131';
 
 const FX = {
   common:    { particles: 14,  flip: 520,  spin: 0,   dim: 0,   shock: false, notes: [880],                            hold: 0 },
@@ -21,6 +22,7 @@ const LEVEL_COLOR = { bronze: '#c98a4b', silver: '#dfe6ee', gold: '#f2c94c' };
 
 const $ = (id) => document.getElementById(id);
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+addStarfield($('reveal'), 80); // twinkling stars behind the reveal (css/reveal.css)
 function play(el, frames, opts) { el.animate(frames, opts); return sleep((opts.duration ?? 0) * (opts.iterations ?? 1)); }
 const reduced = () => window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 
@@ -121,7 +123,7 @@ export async function playReveal({ card, o, seen, origin, fleet = null, progress
   const root = $('reveal');
   root.style.setProperty('--fx', color);
   root.classList.remove('rv-done');
-  $('reveal-eyebrow').textContent = (fresh ? 'FIRST DISCOVERY' : levelUp ? `${LEVEL_NAME[level]} CARD UNLOCKED` : newStamp ? 'NEW LAUNCH STAMP' : 'SIGHTING RECORDED') + (xp > 0 ? `  ·  +${xp} XP` : '');
+  $('reveal-eyebrow').textContent = (fresh ? 'NEW CARD' : levelUp ? `${LEVEL_NAME[level]} CARD UNLOCKED` : newStamp ? 'NEW LAUNCH STAMP' : 'SIGHTING RECORDED') + (xp > 0 ? `  ·  +${xp} XP` : '');
   $('reveal-card').replaceChildren(card);
   for (const id of ['rv-holder', 'rv-flipper', 'rv-dot', 'rv-dim', 'rv-flash', 'rv-shock']) $(id).getAnimations().forEach((a) => a.cancel());
   $('rv-holder').style.opacity = 0; $('rv-holder').classList.remove('live');

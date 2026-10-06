@@ -347,3 +347,10 @@
 :where(html[data-theme='night'],body.night) .card-tile.card-tile--retro.shiny { background: linear-gradient(#130606, #130606) padding-box, linear-gradient(135deg, #b45b53, #7a2e2a) border-box; box-shadow: none; }
 :where(html[data-theme='night'],body.night) .card-tile.card-tile--retro.shiny::after { display: none; }
 /* Tile tilt under a finger lives in js/starfield.js (attachTileTilt on the grid; inline transform). */
+
+/* Constellation charts (js/con-art.js): background specks twinkle, the figure's stars shimmer gently. Full cards only. */
+.card .con-tw { animation: con-tw var(--t) ease-in-out var(--d) infinite; }
+.card .con-tw--star { animation-name: con-tw-star; }
+@keyframes con-tw { 0%, 100% { opacity: var(--o); } 50% { opacity: .03; } }
+@keyframes con-tw-star { 0%, 100% { opacity: 1; } 50% { opacity: .55; } }
+@media (prefers-reduced-motion: reduce) { .card .con-tw { animation: none; } }

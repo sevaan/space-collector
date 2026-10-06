@@ -15,9 +15,9 @@
   <script>try { if (localStorage.getItem("night") === "1") document.documentElement.dataset.theme = "night"; } catch {}</script>
   <link rel="preload" href="fonts/RussoOne-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="fonts/BarlowCondensed-Medium.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="css/cards.css?v=0.1.129">
-  <link rel="stylesheet" href="css/app.css?v=0.1.129">
-  <link rel="stylesheet" href="css/reveal.css?v=0.1.129">
+  <link rel="stylesheet" href="css/cards.css?v=0.1.131">
+  <link rel="stylesheet" href="css/app.css?v=0.1.131">
+  <link rel="stylesheet" href="css/reveal.css?v=0.1.131">
 </head>
 <body>
   <canvas id="sky" role="img" aria-label="Sky map aligned with your viewing direction"></canvas>
@@ -83,7 +83,7 @@
 
   <section id="reveal" class="overlay" role="dialog" aria-modal="true" aria-labelledby="reveal-eyebrow" hidden>
     <div id="rv-dim"></div><div id="rv-shock"></div><div id="rv-dot"></div><div id="rv-flash"></div><canvas id="rv-fx"></canvas>
-    <div id="rv-top"><span class="eyebrow" id="reveal-eyebrow">FIRST DISCOVERY</span><span class="rv-buttons"><a id="reveal-view" class="pill" href="cards.html">View in collection</a><button class="pill" data-close="reveal">Done</button></span></div>
+    <div id="rv-top"><span class="eyebrow" id="reveal-eyebrow">NEW CARD</span><span class="rv-buttons"><a id="reveal-view" class="pill" href="cards.html">View in collection</a><button class="pill rv-x" data-close="reveal" aria-label="Close">✕</button></span></div>
     <div id="rv-holder" aria-label="Tap to reveal your card"><div id="rv-flipper">
       <div class="rv-side rv-back" id="rv-back"><div class="back-holo"></div><div class="back-glare"></div></div>
       <div class="rv-side rv-front" id="reveal-card"></div>
@@ -160,6 +160,6 @@
     <pre id="debug-info"></pre></details>
   </section>
 
-  <script type="module" src="js/main.js?v=0.1.129"></script>
+  <script type="module" src="js/main.js?v=0.1.131"></script>
 </body>
 </html>
