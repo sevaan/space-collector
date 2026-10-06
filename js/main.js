@@ -1,26 +1,28 @@
-import { VERSION } from './version.js?v=0.1.167';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.167';
-import { skyLimit, SKIES, DEFAULT_SKY } from './sky-limit.js?v=0.1.167';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.167';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.167';
-import { progress as progressOf } from './progress.js?v=0.1.167';
-import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.167';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.167';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.167';
-import { SkyView, shortName } from './sky.js?v=0.1.167';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.167';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.167';
-import { cardArt } from './art.js?v=0.1.167';
-import { renderCard, cardLevel, artImage } from './card.js?v=0.1.167';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.167';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.167';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.167';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.167';
-import { TIER_INFO } from './rarity.js?v=0.1.167';
-import { SETS } from './sets.js?v=0.1.167';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.167';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.167';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.167';
+import { VERSION } from './version.js?v=0.1.169';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.169';
+import { skyLimit, SKIES, DEFAULT_SKY } from './sky-limit.js?v=0.1.169';
+import { conArt } from './con-art.js?v=0.1.169';
+import { CON_FIGURES } from './con-figures.js?v=0.1.169';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.169';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.169';
+import { progress as progressOf } from './progress.js?v=0.1.169';
+import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.169';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.169';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.169';
+import { SkyView, shortName } from './sky.js?v=0.1.169';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.169';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.169';
+import { cardArt } from './art.js?v=0.1.169';
+import { renderCard, cardLevel, artImage } from './card.js?v=0.1.169';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.169';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.169';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.169';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.169';
+import { TIER_INFO } from './rarity.js?v=0.1.169';
+import { SETS } from './sets.js?v=0.1.169';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.169';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.169';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.169';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -212,6 +214,9 @@ function escapeHtml(s) {
 }
 
 function previewArt(obj, size, fallback) {
+  // Same picture as the card (js/card.js): constellation stars get their chart with the star ringed.
+  if (obj.natural === 'constellation' && !obj.system) return conArt(obj.data, null, CON_FIGURES.has(obj.con) ? { figure: `assets/art/con/${obj.con}.webp` } : {});
+  if (obj.con && !obj.skyName && CON_BY_ID.get(obj.con)) return conArt(CON_BY_ID.get(obj.con).data, obj.hip, {});
   const src = artImage(obj, size);
   return src ? `<img src="${escapeHtml(src)}" alt="" decoding="async">` : cardArt(obj, fallback);
 }
@@ -688,7 +693,7 @@ function renderTarget(target, d) {
   $('t-switch').hidden = !sw; $('t-switch').textContent = sw;
   bar.classList.toggle('busy', state.captureBusy);
   const meta = $('t-meta');
-  if (eligible || collected) { meta.className = ''; meta.textContent = `${tier.label} · in your collection · ${brightnessWord(l.mag)}`; }
+  if (eligible || collected) { meta.className = ''; meta.textContent = `${tier.label} · ${brightnessWord(l.mag)}`; }
   else { meta.className = 'turn'; meta.textContent = turnHint(l); }
 }
 
