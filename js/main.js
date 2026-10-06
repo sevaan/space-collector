@@ -1,21 +1,21 @@
-import { VERSION } from './version.js?v=0.1.87';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.87';
-import { skyLimit, SKIES, DEFAULT_SKY } from './sky-limit.js?v=0.1.87';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.87';
-import { SkyView, shortName } from './sky.js?v=0.1.87';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.87';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.87';
-import { cardArt } from './art.js?v=0.1.87';
-import { renderCard, cardLevel } from './card.js?v=0.1.87';
-import { playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.87';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.87';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.87';
-import { naturalTargets } from './natural.js?v=0.1.87';
-import { TIER_INFO } from './rarity.js?v=0.1.87';
-import { SETS } from './sets.js?v=0.1.87';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.87';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.87';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.87';
+import { VERSION } from './version.js?v=0.1.88';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.88';
+import { skyLimit, SKIES, DEFAULT_SKY } from './sky-limit.js?v=0.1.88';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.88';
+import { SkyView, shortName } from './sky.js?v=0.1.88';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.88';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.88';
+import { cardArt } from './art.js?v=0.1.88';
+import { renderCard, cardLevel } from './card.js?v=0.1.88';
+import { playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.88';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.88';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.88';
+import { naturalTargets } from './natural.js?v=0.1.88';
+import { TIER_INFO } from './rarity.js?v=0.1.88';
+import { SETS } from './sets.js?v=0.1.88';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.88';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.88';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.88';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -387,6 +387,7 @@ function tick(ts) {
   // Locked on = the target is inside the circle right now and can be collected. The ring shrinks onto
   // it, and the gold circle / Collect button use the same answer.
   state.lockedOn = !!target && target.angCos > Math.cos(sky.reticleDeg * RAD) && (target.look.visible || state.captureAny);
+  autoLog(target, d, t);
   const plane = findPlane(basis, t);
 
   sky.draw(basis, items, {
@@ -656,6 +657,27 @@ $('t-switch').addEventListener('click', () => {
 // Collected during this pass (the last 20 minutes of sky time)? Then the button offers View instead.
 // A later pass can be collected again, which is what levels a card up.
 // The Moon, planets and stars: once per observing night instead.
+// Seeing something you already own counts on its own: hold it in the circle for a moment while it's
+// visible and the sighting is logged (once per pass; once a night for the Moon, planets and stars), so
+// "When you saw it" fills in and levels grow without tapping. A level-up gets a toast.
+const AUTO_LOG_MS = 1200;
+let autoHold = null;
+function autoLog(target, d, t) {
+  const o = target?.obj;
+  if (!o || !state.lockedOn || !(target.look.visible || state.captureAny) || state.captureBusy || isNewFind(o) || !ownsCard(o)) { autoHold = null; return; }
+  if (autoHold?.id !== o.id) { autoHold = { id: o.id, since: t, done: false }; return; }
+  if (autoHold.done || t - autoHold.since < AUTO_LOG_MS) return;
+  autoHold.done = true;
+  if (collectedThisPass(o, d)) return;
+  const key = cardKeyFor(o), before = cardLevel(state.sightings.filter((s) => !s.sim && s.cardKey === key));
+  recordSighting(o, d).then((saved) => {
+    if (!saved) return;
+    const after = cardLevel(state.sightings.filter((s) => !s.sim && s.cardKey === key));
+    const name = label(o);
+    toast(after !== before && !o.launches ? `${name}: ${after[0].toUpperCase() + after.slice(1)} card unlocked!` : `Seen again: ${name}. Logged.`, 2600);
+    lastPanel = 0;
+  });
+}
 function collectedThisPass(o, d) {
   if (o.natural) return collectedTonight(state.sightings, cardKeyFor(o), d.getTime(), state.observer.lon);
   return collectedDuringPass(state.sightings, o.id, d.getTime(), false);

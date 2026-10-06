@@ -1,10 +1,10 @@
-import { renderCard, renderCardTile, renderPassport, attachTilt, attachGyro, attachFlip } from './card.js?v=0.1.87';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.87';
-import { applyBack } from './card-backs.js?v=0.1.87';
-import { SETS, assignSets } from './sets.js?v=0.1.87';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.87';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.87';
-import { allSightings, deleteSighting } from './store.js?v=0.1.87';
+import { renderCard, renderCardTile, renderPassport, attachTilt, attachGyro, attachFlip } from './card.js?v=0.1.88';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.88';
+import { applyBack } from './card-backs.js?v=0.1.88';
+import { SETS, assignSets } from './sets.js?v=0.1.88';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.88';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.88';
+import { allSightings, deleteSighting } from './store.js?v=0.1.88';
 
 const $ = (id) => document.getElementById(id);
 const state = { cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -173,7 +173,8 @@ function showCard() {
   if (!reducedMotion.matches && motionPermission !== 'denied') stopGyro = attachGyro(el, tilt);
   $('v-position').textContent = `${state.index + 1} / ${state.list.length.toLocaleString()}`;
   const firstTime = sightings.length ? Math.min(...sightings.map((s) => s.time)) : 0;
-  $('v-status').textContent = sightings.length ? `Collected ${dateLabel(firstTime)}${c.archived ? ' · saved from an earlier catalogue' : ''}` : state.preview ? 'Artwork preview · this card has not been added to your collection.' : 'Not yet collected · record a live sighting to earn this card.';
+  // The card itself shows when you collected it, so no date here (2026-10-05).
+  $('v-status').textContent = sightings.length ? (c.archived ? 'Saved from an earlier catalogue' : '') : state.preview ? 'Artwork preview · this card has not been added to your collection.' : 'Not yet collected · record a live sighting to earn this card.';
   $('v-preview').hidden = sightings.length > 0;
   $('v-preview').textContent = state.preview ? 'Back to uncollected card' : 'Preview artwork & story';
   $('v-history').replaceChildren();
@@ -264,6 +265,33 @@ async function closeViewer() {
   const v = $('viewer'); // drop the held fade-outs (backdrop included) so the next open starts clean
   document.getAnimations().forEach((an) => { const t = an.effect?.target; if (t && (t === v || v.contains(t))) an.cancel(); });
 }
+// Flick the card up and away to close the viewer (like flicking away a fresh capture in the sky).
+async function flickClose(dx) {
+  const card = $('slot').firstElementChild;
+  stopEffects();
+  fadeViewer(false);
+  if (card && !reducedMotion.matches) {
+    card.animate([{ transform: 'translate(0, 0)', opacity: 1 }, { transform: `translate(${dx * 3}px, ${-innerHeight * 1.1}px)`, opacity: 0 }], { duration: 280, easing: 'cubic-bezier(.3,.6,.4,1)', fill: 'forwards' });
+    await new Promise((r) => setTimeout(r, 280));
+  }
+  $('viewer').close();
+  const v = $('viewer');
+  document.getAnimations().forEach((an) => { const t = an.effect?.target; if (t && (t === v || v.contains(t))) an.cancel(); });
+}
+let flick = null;
+$('slot').addEventListener('pointerdown', (e) => { flick = { id: e.pointerId, pts: [{ x: e.clientX, y: e.clientY, t: performance.now() }] }; });
+$('slot').addEventListener('pointermove', (e) => {
+  if (!flick || e.pointerId !== flick.id) return;
+  flick.pts.push({ x: e.clientX, y: e.clientY, t: performance.now() }); if (flick.pts.length > 12) flick.pts.shift();
+});
+$('slot').addEventListener('pointerup', (e) => {
+  if (!flick || e.pointerId !== flick.id) return;
+  const pts = flick.pts; flick = null;
+  const last = pts[pts.length - 1], now = performance.now(), from = pts.find((p) => now - p.t < 140) ?? pts[0];
+  const dx = last.x - from.x, dy = last.y - from.y, dt = Math.max(16, now - from.t);
+  if (dy < -45 && last.y - pts[0].y < -60 && Math.abs(dx) < -dy * 0.9 && -dy / dt > 0.6) flickClose(dx);
+});
+$('slot').addEventListener('pointercancel', () => { flick = null; });
 function step(d) {
   state.index = (state.index + d + state.list.length) % state.list.length;
   state.preview = false;

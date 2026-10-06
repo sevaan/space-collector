@@ -142,3 +142,10 @@ Alerts, service worker, accounts, secret sets/feats.
   perigee < 420 km (bright trains), else 6.8 (darkened/visored, Mallama et al.). An automatic light-pollution lookup by
   location is not built yet (needs a dataset whose licence fits).
 - Card back (2026-10-05): ONE back now, Sevaan's Space Collector seal (assets/art/backs/back-collector.webp, trimmed of its light-blue outer band so the rarity-coloured frame shows; original kept in the session scratchpad). js/card-backs.js still supports a list; the six posters (back-navy-1..6) are no longer used.
+- Card art stars twinkle (2026-10-05): scripts/import-art.py finds small bright stars in each picture's sky and
+  writes them to js/art-files.js `ART_STARS` ({r: width/height, s: [[x,y] fractions]}); `artStars` in js/card.js
+  adds sparkles on them in a layer that mimics object-fit: cover (container query units). Full cards only.
+- Repeat sightings log themselves (2026-10-05): an owned object held in the circle for 1.2 s while visible is logged
+  once per pass (natural objects once a night) by `autoLog` in js/main.js, with a toast (level-ups called out).
+  Tapping the mini card no longer needs to be what logs it.
+- Collection viewer: no "Collected <date>" line under the card (the card shows it); flick the card up to close.
