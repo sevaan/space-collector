@@ -1,26 +1,26 @@
-import { VERSION } from './version.js?v=0.1.139';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.139';
-import { skyLimit, SKIES, DEFAULT_SKY } from './sky-limit.js?v=0.1.139';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.139';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.139';
-import { progress as progressOf } from './progress.js?v=0.1.139';
-import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.139';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.139';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.139';
-import { SkyView, shortName } from './sky.js?v=0.1.139';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.139';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.139';
-import { cardArt } from './art.js?v=0.1.139';
-import { renderCard, cardLevel, artImage } from './card.js?v=0.1.139';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.139';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.139';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.139';
-import { naturalTargets } from './natural.js?v=0.1.139';
-import { TIER_INFO } from './rarity.js?v=0.1.139';
-import { SETS } from './sets.js?v=0.1.139';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.139';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.139';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.139';
+import { VERSION } from './version.js?v=0.1.143';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.143';
+import { skyLimit, SKIES, DEFAULT_SKY } from './sky-limit.js?v=0.1.143';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.143';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.143';
+import { progress as progressOf } from './progress.js?v=0.1.143';
+import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.143';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.143';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.143';
+import { SkyView, shortName } from './sky.js?v=0.1.143';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.143';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.143';
+import { cardArt } from './art.js?v=0.1.143';
+import { renderCard, cardLevel, artImage } from './card.js?v=0.1.143';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.143';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.143';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.143';
+import { naturalTargets } from './natural.js?v=0.1.143';
+import { TIER_INFO } from './rarity.js?v=0.1.143';
+import { SETS } from './sets.js?v=0.1.143';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.143';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.143';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.143';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -116,7 +116,7 @@ function applyTheme() {
   radarColors = null;
   document.body.classList.toggle('night', state.night);
   document.documentElement.dataset.theme = state.night ? 'night' : 'glass';
-  $('night-toggle').setAttribute('aria-pressed', String(state.night));
+  $('night-toggle').setAttribute('aria-pressed', String(state.night)); $('start-night')?.setAttribute('aria-pressed', String(state.night));
   $('night-toggle').setAttribute('aria-label', state.night ? 'Turn off red night mode' : 'Turn on red night mode');
   sky.setTheme(state.night ? 'night' : 'glass');
   document.querySelector('meta[name=theme-color]').content = state.night ? '#000000' : '#080f1b';
@@ -1295,6 +1295,19 @@ function saveExploreState() {
 }
 document.addEventListener('click', e => { if (e.target.closest('a[href^="cards.html"]')) saveExploreState(); });
 window.addEventListener('pagehide',saveExploreState);
+// Welcome: three real cards fanned out (Saturn, Betelgeuse, the ISS in front), drawn by the card renderer itself.
+function renderStartHand() {
+  const hand = $('start-hand'); if (!hand) return;
+  hand.replaceChildren(...['planet:saturn', 'star:betelgeuse', '25544'].map((k) => state.cardModels.get(k)).filter(Boolean).map((c) => renderCard(c, { preview: true })));
+  fitStartHand();
+}
+function fitStartHand() {
+  const hand = $('start-hand'), front = hand?.lastElementChild; if (!front) return;
+  hand.style.setProperty('--hs', Math.min(.75, (hand.clientHeight * .8) / front.offsetHeight).toFixed(3));
+}
+window.addEventListener('resize', fitStartHand);
+$('start-night').addEventListener('click', () => $('night-toggle').click());
+$('start-more').addEventListener('click', () => $('nav-more').click());
 async function boot() {
   try {
     state.catalog=await loadCatalog('data/catalog.json');
@@ -1312,7 +1325,7 @@ async function boot() {
   try { state.sky=await loadSky('data/sky.json'); } catch {}
   await loadLore(); await loadSightings();
   state.locationStatus=loadSavedLocation()?'saved':'example'; renderLocation();
-  const iss=state.byId.get(25544); if (iss) $('start-art').innerHTML=previewArt(iss, 'full', {w:380,h:200});
+  renderStartHand();
   $('btn-start').textContent='Observe the sky'; $('btn-start').disabled=false;
   const params=new URLSearchParams(location.search);
   if(params.has('resume')) {

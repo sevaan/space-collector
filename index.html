@@ -15,9 +15,9 @@
   <script>try { if (localStorage.getItem("night") === "1") document.documentElement.dataset.theme = "night"; } catch {}</script>
   <link rel="preload" href="fonts/RussoOne-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="fonts/BarlowCondensed-Medium.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="css/cards.css?v=0.1.139">
-  <link rel="stylesheet" href="css/app.css?v=0.1.139">
-  <link rel="stylesheet" href="css/reveal.css?v=0.1.139">
+  <link rel="stylesheet" href="css/cards.css?v=0.1.143">
+  <link rel="stylesheet" href="css/app.css?v=0.1.143">
+  <link rel="stylesheet" href="css/reveal.css?v=0.1.143">
 </head>
 <body>
   <canvas id="sky" role="img" aria-label="Sky map aligned with your viewing direction"></canvas>
@@ -69,12 +69,12 @@
   <div id="version"></div>
 
   <section id="start" class="overlay">
+    <header class="start-header"><span class="wordmark">SPACE COLLECTOR<span>FIELD NOTES FROM ORBIT</span></span><span class="header-buttons"><button id="start-night" class="icon-button" type="button" aria-label="Turn on red night mode" aria-pressed="false">☾</button><button id="start-more" class="icon-button" type="button" aria-label="Settings"><span class="ico" data-ico="sliders"></span></button></span></header>
     <div class="start-inner">
-      <div class="wordmark">SPACE COLLECTOR<span>FIELD NOTES FROM ORBIT</span></div>
-      <div id="start-art" aria-hidden="true"></div>
+      <div id="start-hand" aria-hidden="true"></div>
       <span class="eyebrow">REAL OBJECTS. REMARKABLE STORIES.</span>
-      <h1>Look up.<br>Find something<br>extraordinary.</h1>
-      <p>That moving light has a story. Point your phone, discover what’s in orbit, and collect a little piece of space history.</p>
+      <h1>Look up.<br>Collect the sky.</h1>
+      <p>Point your phone at a moving light, find out what it is, and keep its card.</p>
       <button id="btn-start" class="big" disabled>Loading the sky…</button>
       <p class="hint small" id="start-note">Uses your location and motion sensors so the sky lines up with where you point.</p>
       <a class="text-button" href="cards.html">Browse the collection</a>
@@ -160,6 +160,6 @@
     <pre id="debug-info"></pre></details>
   </section>
 
-  <script type="module" src="js/main.js?v=0.1.139"></script>
+  <script type="module" src="js/main.js?v=0.1.143"></script>
 </body>
 </html>
