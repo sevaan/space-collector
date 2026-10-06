@@ -1,18 +1,18 @@
-import { renderCard, renderCardTile, renderPassport, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.138';
-import { cardArt } from './art.js?v=0.1.138';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.138';
-import { applyBack } from './card-backs.js?v=0.1.138';
-import { SETS, assignSets } from './sets.js?v=0.1.138';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.138';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.138';
-import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.138';
-import { progress } from './progress.js?v=0.1.138';
-import { eventBadges, nextEvent } from './events.js?v=0.1.138';
-import { drawShareCard, shareCard } from './share-card.js?v=0.1.138';
-import { conArt } from './con-art.js?v=0.1.138';
-import { CON_BY_ID } from './constellations.js?v=0.1.138';
-import { allSightings, deleteSighting } from './store.js?v=0.1.138';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.138';
+import { renderCard, renderCardTile, renderPassport, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.139';
+import { cardArt } from './art.js?v=0.1.139';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.139';
+import { applyBack } from './card-backs.js?v=0.1.139';
+import { SETS, assignSets } from './sets.js?v=0.1.139';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.139';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.139';
+import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.139';
+import { progress } from './progress.js?v=0.1.139';
+import { eventBadges, nextEvent } from './events.js?v=0.1.139';
+import { drawShareCard, shareCard } from './share-card.js?v=0.1.139';
+import { conArt } from './con-art.js?v=0.1.139';
+import { CON_BY_ID } from './constellations.js?v=0.1.139';
+import { allSightings, deleteSighting } from './store.js?v=0.1.139';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.139';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -161,7 +161,7 @@ function renderLogbook() {
       <div class="lb-xp"><b>${p.xp.toLocaleString()}</b> XP</div></div>
     <div class="lb-bar"><i style="width:${(into * 100).toFixed(1)}%"></i></div>
     <div class="lb-sub">${p.rank.next ? `${(p.rank.next - p.xp).toLocaleString()} XP to ${esc(p.rank.nextName)}` : 'Top rank reached'} · ${p.streak.current ? `${p.streak.current}-week streak${p.streak.thisWeek ? '' : ' (observe this week to keep it)'}` : 'Observe this week to start a streak'}</div>
-    <div class="lb-head">TONIGHT'S MISSIONS <span>+50 XP each</span></div>
+    <div class="lb-head">TONIGHT'S MISSIONS <span>+50 XP each · new at noon</span></div>
     ${p.missions.map((m) => `<div class="lb-mission${m.done ? ' done' : ''}"><i></i>${esc(m.text)}</div>`).join('')}
     ${(() => { const ev = eventBadges(state.raw), nx = nextEvent(); return `<div class="lb-head">EVENTS <span>${ev.length} badge${ev.length === 1 ? '' : 's'}</span></div><div class="lb-events">${ev.map((e) => `<span class="lb-event">☄ ${esc(e.name)}</span>`).join('')}${nx ? `<span class="lb-event next">Next: ${esc(nx.name)} · ${new Date(nx.start + 30 * 3600e3).toLocaleDateString([], { month: 'short', day: 'numeric' })}</span>` : ''}</div>`; })()}
     <details class="lb-ach"><summary class="lb-head">ACHIEVEMENTS <span>${done} / ${p.achievements.length}</span></summary>
