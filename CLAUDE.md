@@ -47,7 +47,7 @@ Live: https://sevaan.github.io/space-collector/ (GitHub Pages, deploys from `mai
   tree line, dashed orbital paths and an indexed double-ring reticle) and `night` (all red). UI chrome in `index.html` + `css/app.css` (body.night).
 - Target UI (chosen 2026-09-29): never-collected object lined up → no card, the reticle turns orange,
   name above, "TAP TO COLLECT" below, tap the circle or the orange collect button (`#discover`). Already collected → a toast at the
-  bottom (`#target`) saying what it is, with View: the card spins out of the toast in place
+  bottom (`#target`) saying what it is, with View: the card rises out of the toast with the same full vertical-axis turn as the collection (back shows mid-turn; 2026-10-06)
   (`playView` in js/reveal.js). If it's in the circle and not logged this pass (natural objects: tonight),
   View also records a sighting (SEEN n× stamp, levels). No Collect button for owned objects (2026-10-02).
   The whole mini card is the button (no View button); × closes it (unpins a selection, or hides it until

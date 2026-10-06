@@ -5,9 +5,9 @@
 //  Everything scales with rarity (Legendary dims the sky, shockwave, held breath, slow flip, fanfare).
 // Waits use timers, not animation.finished, so a paused tab can never freeze the sequence.
 
-import { TIER_INFO } from './rarity.js?v=0.1.127';
-import { levelFor, attachTilt, attachGyro, attachFlip, throwOff } from './card.js?v=0.1.127';
-import { applyBack } from './card-backs.js?v=0.1.127';
+import { TIER_INFO } from './rarity.js?v=0.1.129';
+import { levelFor, attachTilt, attachGyro, attachFlip, throwOff } from './card.js?v=0.1.129';
+import { applyBack } from './card-backs.js?v=0.1.129';
 
 const FX = {
   common:    { particles: 14,  flip: 520,  spin: 0,   dim: 0,   shock: false, notes: [880],                            hold: 0 },
@@ -215,17 +215,26 @@ export async function playView({ card, o, from, sighting = null }) {
   $('rv-flipper').style.transform = 'rotateY(180deg)';
   showFace('front');
   sizeCard(card);
-  // Start shrunk onto the thumbnail, spinning, and unwind into the middle of the screen.
+  // Rise out of the thumbnail with a full turn about the vertical axis, the back showing while it faces
+  // away: the same "closer look" as tapping a tile in the collection (js/cards-page.js spin).
   const h = $('rv-holder').getBoundingClientRect();
   const dx = from ? from.left + from.width / 2 - (h.left + h.width / 2) : 0;
-  const dy = from ? from.top + from.height / 2 - (h.top + h.height / 2) : innerHeight / 3;
-  const s = from ? Math.max(0.06, from.height / h.height) : 0.2;
+  const dy = from ? from.top + from.height / 2 - (h.top + h.height / 2) : innerHeight * .35;
+  const s = from ? Math.max(0.15, from.width / h.width) : 0.3;
+  const opts = { duration: reduced() ? 1 : 760, easing: 'cubic-bezier(.25,.8,.25,1)' };
+  const backEl = card.querySelector('.card__back');
+  if (backEl && !reduced()) {
+    applyBack(backEl);
+    // Offsets are in eased progress, so the back shows exactly while rotateY is 90°–270°.
+    backEl.animate([{ opacity: 0 }, { opacity: 0, offset: .25 }, { opacity: 1, offset: .25 }, { opacity: 1, offset: .75 }, { opacity: 0, offset: .75 }, { opacity: 0 }], opts);
+    backEl.querySelector('.back-holo')?.animate([{ opacity: .55, backgroundPosition: '20% 20%, 80% 80%, 15% 25%' }, { opacity: .55, backgroundPosition: '80% 80%, 20% 20%, 85% 75%' }], opts);
+    backEl.querySelector('.back-glare')?.animate([{ opacity: .5 }, { opacity: .5 }], opts);
+  }
   whoosh();
   await play($('rv-holder'), [
-    { opacity: 0.3, transform: `translate(${dx}px, ${dy}px) scale(${s}) rotate(-320deg)` },
-    { opacity: 1, transform: 'translate(0, 0) scale(1.04) rotate(6deg)', offset: 0.78 },
-    { opacity: 1, transform: 'translate(0, 0) scale(1) rotate(0deg)' },
-  ], { duration: reduced() ? 1 : 640, easing: 'cubic-bezier(.2,.8,.25,1)', fill: 'forwards' });
+    { opacity: 1, transform: `perspective(1600px) translate(${dx}px, ${dy}px) scale(${s}) rotateY(0deg)` },
+    { opacity: 1, transform: 'perspective(1600px) translate(0, 0) scale(1) rotateY(360deg)' },
+  ], { ...opts, fill: 'forwards' });
   if (!alive()) return;
   if (sighting) return finish({ fx, color, fresh: false, seen: sighting.seen, level: sighting.level, levelUp: sighting.levelUp, card, alive, nights: sighting.nights });
   $('rv-sweep').classList.remove('go'); void $('rv-sweep').offsetWidth; $('rv-sweep').classList.add('go');
