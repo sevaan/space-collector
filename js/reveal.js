@@ -5,9 +5,9 @@
 //  Everything scales with rarity (Legendary dims the sky, shockwave, held breath, slow flip, fanfare).
 // Waits use timers, not animation.finished, so a paused tab can never freeze the sequence.
 
-import { TIER_INFO } from './rarity.js?v=0.1.100';
-import { levelFor, attachTilt, attachGyro, attachFlip } from './card.js?v=0.1.100';
-import { applyBack } from './card-backs.js?v=0.1.100';
+import { TIER_INFO } from './rarity.js?v=0.1.101';
+import { levelFor, attachTilt, attachGyro, attachFlip } from './card.js?v=0.1.101';
+import { applyBack } from './card-backs.js?v=0.1.101';
 
 const FX = {
   common:    { particles: 14,  flip: 520,  spin: 0,   dim: 0,   shock: false, notes: [880],                            hold: 0 },
@@ -248,7 +248,7 @@ async function finish({ fx, color, fresh, seen, level, levelUp, card, alive, fle
   const stampLine = fleet ? `LAUNCH ${fleet.cospar} · ${fleet.stamps} OF ${fleet.total}` : '';
   const conDone = !!con && con.level === 'gold';
   const milestone = fresh && (!!con || MILESTONES.includes(collected));
-  $('rv-stamp').innerHTML = fresh && con ? (conDone ? `${con.name.toUpperCase()} COMPLETE<small>GOLD CONSTELLATION CARD</small>` : `${con.name.toUpperCase()}<small>${con.have} OF ${con.total} STARS</small>`)
+  $('rv-stamp').innerHTML = fresh && con ? (conDone ? `${con.name.toUpperCase()} COMPLETE<small>ALL ${con.total} STARS</small>` : `${con.name.toUpperCase()}<small>${con.have} OF ${con.total} STARS</small>`)
     : fresh ? (collected === 1 ? `FIRST ITEM<small>COLLECTED</small>` : `${collected.toLocaleString('en-US')} ITEMS<small>COLLECTED</small>`)
     : newStamp ? `NEW STAMP<small>${levelUp ? `${LEVEL_NAME[level]} CARD UNLOCKED` : stampLine}</small>`
     : levelUp ? `SEEN ${seen}×<small>${LEVEL_NAME[level]} CARD UNLOCKED</small>` : `SEEN ${seen}×<small>${nights > 1 ? `${nights} NIGHTS · ` : ''}${date}</small>`;
