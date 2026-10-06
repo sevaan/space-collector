@@ -5,9 +5,9 @@
 //  Everything scales with rarity (Legendary dims the sky, shockwave, held breath, slow flip, fanfare).
 // Waits use timers, not animation.finished, so a paused tab can never freeze the sequence.
 
-import { TIER_INFO } from './rarity.js?v=0.1.83';
-import { levelFor, attachTilt, attachGyro, attachFlip } from './card.js?v=0.1.83';
-import { applyBack } from './card-backs.js?v=0.1.83';
+import { TIER_INFO } from './rarity.js?v=0.1.84';
+import { levelFor, attachTilt, attachGyro, attachFlip } from './card.js?v=0.1.84';
+import { applyBack } from './card-backs.js?v=0.1.84';
 
 const FX = {
   common:    { particles: 14,  flip: 520,  spin: 0,   dim: 0,   shock: false, notes: [880],                            hold: 0 },
@@ -81,7 +81,7 @@ function showFace(which) {
 }
 export function stopReveal() {
   run++;
-  fling = null; holderTo(0, 0, 0); $('rv-holder').style.opacity = '';
+  flick = null; holderTo(0, 0, 0); $('rv-holder').style.opacity = '';
   stopGyro?.(); tilt?.destroy(); stopGyro = tilt = null;
   stopBack();
   parts = [];
@@ -269,50 +269,40 @@ async function finish({ fx, color, fresh, seen, level, levelUp, card, alive, fle
   setTimeout(() => { if (alive()) $('rv-stamp').animate([{ opacity: 1 }, { opacity: 0 }], { duration: 600, fill: 'forwards' }); }, 2200);
 }
 
-// Swipe the finished card away with your thumb (any direction) to go back to the sky, like swiping
-// between cards in the collection. A clear drag moves the card with your finger; a long enough drag
-// or a quick flick throws it off screen. Anything smaller is a touch that tilts the card.
-let onDismiss = null, fling = null;
+// Flick the finished card up and away to go back to the sky. Dragging still just tilts the card (the card
+// never follows your finger); only a quick, mostly upward flick throws it off the top of the screen.
+let onDismiss = null, flick = null;
 export function onRevealDismiss(fn) { onDismiss = fn; }
 function holderTo(x, y, ms) {
   const h = $('rv-holder');
-  h.style.transition = ms ? `transform ${ms}ms cubic-bezier(.2,.8,.3,1), opacity ${ms}ms` : 'none';
-  h.style.transform = x || y ? `translate(${x}px, ${y}px) rotate(${x / 30}deg)` : '';
+  h.style.transition = ms ? `transform ${ms}ms cubic-bezier(.3,.6,.4,1), opacity ${ms}ms` : 'none';
+  h.style.transform = x || y ? `translate(${x}px, ${y}px)` : '';
 }
 {
   const h = $('rv-holder');
   h.addEventListener('pointerdown', (e) => {
     if (!$('reveal').classList.contains('rv-done') || (e.pointerType === 'mouse' && e.button !== 0)) return;
-    fling = { id: e.pointerId, x: e.clientX, y: e.clientY, t: performance.now(), dx: 0, dy: 0, active: false };
+    flick = { id: e.pointerId, pts: [{ x: e.clientX, y: e.clientY, t: performance.now() }] };
   });
   h.addEventListener('pointermove', (e) => {
-    if (!fling || e.pointerId !== fling.id) return;
-    const dx = e.clientX - fling.x, dy = e.clientY - fling.y;
-    if (!fling.active && Math.hypot(dx, dy) > 16) {
-      fling.active = true;
-      try { h.setPointerCapture(e.pointerId); } catch {}
-      // The entrance animation holds the holder in place; hand it over to inline styles.
-      h.getAnimations().forEach((a) => a.cancel()); h.style.opacity = '1';
-      const card = $('reveal-card').firstElementChild;
-      if (card) card.dataset.swiping = '1';
-      tilt?.reset();
-    }
-    if (fling.active) { fling.dx = dx; fling.dy = dy; holderTo(dx, dy, 0); }
+    if (!flick || e.pointerId !== flick.id) return;
+    flick.pts.push({ x: e.clientX, y: e.clientY, t: performance.now() });
+    if (flick.pts.length > 12) flick.pts.shift();
   });
   const end = (e) => {
-    if (!fling || e.pointerId !== fling.id) return;
-    const { active, dx, dy, t } = fling;
-    fling = null;
-    const card = $('reveal-card').firstElementChild;
-    if (card) delete card.dataset.swiping;
-    if (!active) return;
-    const dist = Math.hypot(dx, dy), fast = dist / Math.max(1, performance.now() - t) > 0.5; // px per ms
-    if (dist > Math.min(innerWidth, innerHeight) * 0.25 || (fast && dist > 40)) {
-      const k = Math.max(innerWidth, innerHeight) * 1.2 / dist;
-      holderTo(dx * k, dy * k, 220); h.style.opacity = '0';
-      setTimeout(() => { holderTo(0, 0, 0); onDismiss?.(); }, 220);
-    } else holderTo(0, 0, 200);
+    if (!flick || e.pointerId !== flick.id) return;
+    const pts = flick.pts; flick = null;
+    const last = pts[pts.length - 1], now = performance.now();
+    const from = pts.find((p) => now - p.t < 140) ?? pts[0];   // the last ~0.15 s of the gesture
+    const dx = last.x - from.x, dy = last.y - from.y, dt = Math.max(16, now - from.t);
+    const total = last.y - pts[0].y;
+    if (!(dy < -45 && total < -60 && Math.abs(dx) < -dy * 0.9 && -dy / dt > 0.6)) return;
+    // Fly off the top, keeping a little of the sideways throw.
+    h.getAnimations().forEach((a) => a.cancel()); h.style.opacity = '1';
+    tilt?.reset();
+    requestAnimationFrame(() => { holderTo(dx * 3, -innerHeight * 1.1, 260); h.style.opacity = '0'; });
+    setTimeout(() => { holderTo(0, 0, 0); onDismiss?.(); }, 270);
   };
   h.addEventListener('pointerup', end);
-  h.addEventListener('pointercancel', end);
+  h.addEventListener('pointercancel', () => { flick = null; });
 }
