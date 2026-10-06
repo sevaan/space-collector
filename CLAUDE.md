@@ -144,7 +144,7 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   adds atmospheric extinction by elevation to `mag`. Starlink stdMag is per object: 5.0 if launched < 60 days ago or
   perigee < 420 km (bright trains), else 6.8 (darkened/visored, Mallama et al.). An automatic light-pollution lookup by
   location is not built yet (needs a dataset whose licence fits).
-- Card back (2026-10-05): ONE back now, Sevaan's Space Collector seal (assets/art/backs/back-collector.webp, trimmed of its light-blue outer band so the rarity-coloured frame shows; original kept in the session scratchpad). js/card-backs.js still supports a list; the six posters (back-navy-1..6) are no longer used.
+- Card back (2026-10-05): ONE back now, Sevaan's Space Collector seal (assets/art/backs/back-collector.webp, rebuilt 2026-10-05 from Desktop/cardbacks/space-collector/back-collector-original.png: cropped just outside its cream frame line, blue band corners painted navy #01121c, even 18 px navy margin; shown with background-size: contain so the frame line is never cropped). js/card-backs.js still supports a list; the six posters (back-navy-1..6) are no longer used.
 
 - Explorer RETRO (2026-10-05): UI reuses the card fonts (Russo One + Barlow Condensed), cream ink,
   orange actions and steel/cream fine rules. Inset two-part Explore/Collection navigation; radar and

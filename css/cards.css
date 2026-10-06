@@ -151,7 +151,7 @@
    pre-mirrored so it reads correctly while the card faces away. */
 .card__back { position: absolute; inset: 0; z-index: 9; border-radius: 1.15em; opacity: 0; pointer-events: none; transform: scaleX(-1);
   border: .25em solid var(--tier);
-  background: #080e1a center / cover no-repeat; }   /* a random poster back, set by js/card-backs.js */
+  background: #01121c center / contain no-repeat; }   /* the back image, set by js/card-backs.js; contain so its frame line is never cropped (edges are the same navy) */
 
 /* Thumbnail typography is deliberately independent of the full card's scale. */
 .card-tile { display: flex; flex-direction: column; width: 100%; padding: 0; text-align: left; font: inherit; color: #193639; background: #eeecdf; border: 1px solid #d1d4c5; border-radius: 12px; overflow: hidden; cursor: pointer; transition: transform .2s, box-shadow .2s; }
