@@ -16,7 +16,7 @@ export function addStarfield(host, count = 70) {
 // Collection tiles lean a little towards your finger while you touch them, and settle back when you let
 // go. Transform only: no glare, no foil.
 export function attachTileTilt(root) {
-  const MAX = 6; // degrees
+  const MAX = 11; // degrees — raised from 6 on 2026-10-05: a finger on a tile should visibly tip it
   const set = (tile, rx, ry) => { tile.style.transform = rx || ry ? `perspective(700px) rotateX(${rx}deg) rotateY(${ry}deg)` : ''; };
   const move = (e) => {
     const tile = e.target.closest?.('.card-tile'); if (!tile) return;

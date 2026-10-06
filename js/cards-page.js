@@ -1,18 +1,18 @@
-import { renderCard, renderCardTile, renderPassport, attachTilt, attachGyro, attachFlip, artImage } from './card.js?v=0.1.119';
-import { cardArt } from './art.js?v=0.1.119';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.119';
-import { applyBack } from './card-backs.js?v=0.1.119';
-import { SETS, assignSets } from './sets.js?v=0.1.119';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.119';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.119';
-import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.119';
-import { progress } from './progress.js?v=0.1.119';
-import { eventBadges, nextEvent } from './events.js?v=0.1.119';
-import { drawShareCard, shareCard } from './share-card.js?v=0.1.119';
-import { conArt } from './con-art.js?v=0.1.119';
-import { CON_BY_ID } from './constellations.js?v=0.1.119';
-import { allSightings, deleteSighting } from './store.js?v=0.1.119';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.119';
+import { renderCard, renderCardTile, renderPassport, attachTilt, attachGyro, attachFlip, artImage } from './card.js?v=0.1.120';
+import { cardArt } from './art.js?v=0.1.120';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.120';
+import { applyBack } from './card-backs.js?v=0.1.120';
+import { SETS, assignSets } from './sets.js?v=0.1.120';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.120';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.120';
+import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.120';
+import { progress } from './progress.js?v=0.1.120';
+import { eventBadges, nextEvent } from './events.js?v=0.1.120';
+import { drawShareCard, shareCard } from './share-card.js?v=0.1.120';
+import { conArt } from './con-art.js?v=0.1.120';
+import { CON_BY_ID } from './constellations.js?v=0.1.120';
+import { allSightings, deleteSighting } from './store.js?v=0.1.120';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.120';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -103,7 +103,6 @@ const observer = new IntersectionObserver((entries) => {
     if (!c) continue;
     const tile = renderCardTile(c, { sightings: state.sightingsByKey.get(c.key) ?? [], ownedKeys: c.natural === 'constellation' ? ownedKeys() : undefined });
     tile.addEventListener('click', () => openViewer(state.list.findIndex((card) => card.key === c.key), tile.getBoundingClientRect()));
-    attachTileTilt(tile);
     target.replaceChildren(tile);
   }
 }, { rootMargin: '500px 0px' });
@@ -230,22 +229,6 @@ $('set-filter').addEventListener('change', (e) => { state.set = e.target.value; 
 $('rarity-filter').addEventListener('change', (e) => { state.rarity = e.target.value; if (state.ready) render(); });
 
 
-// Tile tilt (2026-10-05): up to ±9° toward the finger, springing back on release. Unlike the viewer's attachTilt it
-// never blocks scrolling: a page scroll fires pointercancel, which just resets the tile.
-const TILE_TILT = 9;
-function attachTileTilt(tile) {
-  const set = (e) => {
-    if (reducedMotion.matches) return;
-    const b = tile.getBoundingClientRect(), x = (e.clientX - b.left) / b.width - .5, y = (e.clientY - b.top) / b.height - .5;
-    tile.classList.add('tilting');
-    tile.style.setProperty('--rx', `${(-y * 2 * TILE_TILT).toFixed(2)}deg`);
-    tile.style.setProperty('--ry', `${(x * 2 * TILE_TILT).toFixed(2)}deg`);
-  };
-  const reset = () => { tile.classList.remove('tilting'); tile.style.setProperty('--rx', '0deg'); tile.style.setProperty('--ry', '0deg'); };
-  tile.addEventListener('pointerdown', set);
-  tile.addEventListener('pointermove', (e) => { if (e.buttons || e.pointerType !== 'mouse') set(e); });
-  for (const name of ['pointerup', 'pointercancel', 'pointerleave']) tile.addEventListener(name, reset);
-}
 let tilt = null, stopGyro = null, lastFocus = null;
 function stopEffects() { stopGyro?.(); stopGyro = null; tilt?.destroy(); tilt = null; }
 

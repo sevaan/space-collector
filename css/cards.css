@@ -345,7 +345,4 @@
   background: linear-gradient(115deg, transparent 18%, #ff8fd8 30%, #ffe08a 42%, #8ff0ff 54%, #b58cff 66%, transparent 80%); }
 :where(html[data-theme='night'],body.night) .card-tile.card-tile--retro.shiny { background: linear-gradient(#130606, #130606) padding-box, linear-gradient(135deg, #b45b53, #7a2e2a) border-box; box-shadow: none; }
 :where(html[data-theme='night'],body.night) .card-tile.card-tile--retro.shiny::after { display: none; }
-/* A finger (or mouse) on a tile tilts it a little — the big card's --rx/--ry vars at a tenth of the strength. */
-.card-tile--retro { --rx: 0deg; --ry: 0deg; transform: perspective(700px) rotateX(var(--rx)) rotateY(var(--ry)); transition: transform .35s cubic-bezier(.2,.8,.3,1), box-shadow .35s; will-change: transform; }
-.card-tile--retro.tilting { transition: transform .08s linear; }
-.card-tile--retro:hover { transform: perspective(700px) rotateX(var(--rx)) rotateY(var(--ry)) translateY(-3px); }
+/* Tile tilt under a finger lives in js/starfield.js (attachTileTilt on the grid; inline transform). */
