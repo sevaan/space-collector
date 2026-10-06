@@ -1,13 +1,13 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { cardArt } from './art.js?v=0.1.95';
-import { TIER_INFO } from './rarity.js?v=0.1.95';
-import { SET_BY_ID } from './sets.js?v=0.1.95';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.95';
-import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.95';
-import { artFileFor } from './art-keys.js?v=0.1.95';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.95';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.95';
-import { nightsIn } from './observation.js?v=0.1.95';
+import { cardArt } from './art.js?v=0.1.96';
+import { TIER_INFO } from './rarity.js?v=0.1.96';
+import { SET_BY_ID } from './sets.js?v=0.1.96';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.96';
+import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.96';
+import { artFileFor } from './art-keys.js?v=0.1.96';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.96';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.96';
+import { nightsIn } from './observation.js?v=0.1.96';
 
 // Levels count observing nights (local noon to noon): bronze 1, silver 3, gold 10. Before
 // 2026-10-01 levels counted sightings (5 silver, 25 gold); anything earned that way is kept.
@@ -70,6 +70,9 @@ export function renderCard(o, opts = {}) {
   const ageText = age == null ? '' : age === 0 ? 'Less than a year ago' : `${age} ${age === 1 ? 'year' : 'years'} ago`;
   const factBlock = fleet ? dotMap(o, stamps, latestStamp(sightings), `${stamps.size} / ${o.launches.length} stamped · ${nextLevel(o.family, level)}`)
     : `<div class="card__fact"><p>${revealed ? richText(factFor(o)) : `Observe this ${esc((TYPE_LABEL[o.type] ?? 'object').toLowerCase())} in the live sky to add its story to your collection.`}</p></div>`;
+  // Long facts take room from the art, not the card: each line past three shrinks the art window (about
+  // 52 characters a line), so every card stays the same height.
+  if (!fleet && revealed) { const len = factFor(o).replace(/\*\*/g, '').length; const extra = Math.max(0, Math.ceil(len / 52) - 3); if (extra) el.style.setProperty('--fact-extra', extra); }
   el.innerHTML = `
   <div class="card__rotator"><div class="card__face">
     <div class="card__setbar"><span>${orbitIcon}<span>${esc(set.name.toUpperCase())}</span></span><span class="card__tier"><i aria-hidden="true">${tier.gem}</i>${esc(tier.label.toUpperCase())}</span></div>

@@ -72,7 +72,9 @@ Live: https://sevaan.github.io/space-collector/ (GitHub Pages, deploys from `mai
   tests/facts.test.mjs checks every card in the real catalogue.
   `data/series.json` = researched programme facts (mostly Kosmos: Strela, Parus, US-A, Tselina…) with the
   NORAD ids in each, from Gunter's Space Page series pages (source URL per series). Order of facts:
-  lore.json (hand, with `source`) → series.json → lore.js FAMILY → computed.
+  lore.json (hand, with `source`) → series.json → lore.js FAMILY → purpose (lore.js PURPOSE by name family, then
+  data/purpose.json from the UCS Satellite Database, built by `python3 scripts/import-ucs.py <UCS txt>`) → computed.
+  Long facts shrink the art window by one fact line per line past three (`--fact-extra`), keeping cards one height.
 - `design/` – style boards used to pick the card look. Not part of the app.
 
 - Capture reveal (`js/reveal.js` + `css/reveal.css`, from `design/reveal-demo.html`): first sighting =
