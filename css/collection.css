@@ -36,7 +36,8 @@ h1 { margin: 13px 0 13px; font-size: clamp(34px, 7vw, 49px); line-height: 1.06; 
 .search > span { font-size: 25px; }
 .search input { min-width: 0; width: 100%; min-height: 46px; border: none; background: transparent; color: var(--text); font-size: 13px; }
 .search input::placeholder { color: var(--muted); opacity: 1; }
-.filter-row { display: flex; gap: 12px; }
+.filter-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.filter.sort { grid-column: 1 / -1; }
 .filter { display: block; flex: 1; min-width: 0; }
 .filter > span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
 .filter select { width: 100%; height: 48px; padding: 0 26px 0 11px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); color: var(--text); font-size: 12px; }
@@ -119,7 +120,7 @@ body.albums-view .collection-tools { display: none; }
   border-radius: 12px; overflow: hidden; box-shadow: inset 0 0 0 1px #657786; padding: 0; cursor: pointer; }
 .album__art { display: block; height: 104px; border-bottom: 3px solid var(--set); overflow: hidden; }
 .album__art img, .album__art svg { display: block; width: 100%; height: 100%; object-fit: cover; }
-.album.empty .album__art { opacity: .55; }
+.album.empty .album__art { opacity: .55; } .album.empty .album__art img { filter: grayscale(.7) brightness(.55); }
 .album__body { display: flex; flex-direction: column; gap: 6px; padding: 10px 12px 12px; }
 .album__name { display: block; font: 400 15px/1.15 'SC Display', Impact, sans-serif; text-transform: uppercase; }
 .album__count { display: block; font: 500 13px/1.2 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .1em; color: #bdbea9; }
@@ -173,3 +174,13 @@ body.albums-view .collection-tools { display: none; }
 .empty h2 { font: 400 22px/1.1 'SC Display', Impact, sans-serif; letter-spacing: -.03em; text-transform: uppercase; color: #fff2b3; }
 .empty a, .empty button { font: 500 14px/1 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .14em; text-transform: uppercase; }
 #viewer .preview-button, #v-share { font: 500 14px/1 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .14em; text-transform: uppercase; }
+
+/* Phones in landscape (2026-10-06, Sevaan: portrait only): a full-screen ask to turn back. Desktop windows (fine pointer) are left alone. */
+#rotate { display:none; }
+@media (orientation: landscape) and (max-height: 600px) and (pointer: coarse) {
+  #rotate { position:fixed; inset:0; z-index:200; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; text-align:center; padding:24px; background:#080e1a; color:#fff2b3; }
+  #rotate b { font:400 24px/1.1 'SC Display', Impact, sans-serif; letter-spacing:-.03em; text-transform:uppercase; }
+  #rotate span { font:500 14px/1.3 'SC Label', 'Arial Narrow', sans-serif; letter-spacing:.14em; text-transform:uppercase; color:#bdbea9; }
+}
+
+.lb-remind { margin-left: 8px; padding: 3px 10px; border: 1px solid #fa8127; border-radius: 99px; background: none; color: #fa8127; font: 500 11px/1 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .12em; text-transform: uppercase; vertical-align: middle; }

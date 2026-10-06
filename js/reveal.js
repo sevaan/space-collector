@@ -5,10 +5,10 @@
 //  Everything scales with rarity (Legendary dims the sky, shockwave, held breath, slow flip, fanfare).
 // Waits use timers, not animation.finished, so a paused tab can never freeze the sequence.
 
-import { TIER_INFO } from './rarity.js?v=0.1.150';
-import { levelFor, attachTilt, attachGyro, attachFlip, throwOff } from './card.js?v=0.1.150';
-import { applyBack } from './card-backs.js?v=0.1.150';
-import { addStarfield } from './starfield.js?v=0.1.150';
+import { TIER_INFO } from './rarity.js?v=0.1.152';
+import { levelFor, attachTilt, attachGyro, attachFlip, throwOff } from './card.js?v=0.1.152';
+import { applyBack } from './card-backs.js?v=0.1.152';
+import { addStarfield } from './starfield.js?v=0.1.152';
 
 const FX = {
   common:    { particles: 14,  flip: 520,  spin: 0,   dim: 0,   shock: false, notes: [880],                            hold: 0 },
@@ -199,7 +199,7 @@ export async function playReveal({ card, o, seen, origin, fleet = null, progress
 // Already in your collection: the card spins out of the toast's thumbnail and settles, ready to tilt.
 // from: the thumbnail's screen rect. sighting: { seen, nights, level, levelUp } when tapping View also
 // counted as seeing it again tonight (then a stamp lands), or null when you're only looking.
-export async function playView({ card, o, from, sighting = null }) {
+export async function playView({ card, o, from, sighting = null, eyebrow = null }) {
   stopReveal();
   const my = run, alive = () => my === run;
   const tierKey = FX[o.tier] ? o.tier : 'common';
@@ -207,7 +207,7 @@ export async function playView({ card, o, from, sighting = null }) {
   const root = $('reveal');
   root.style.setProperty('--fx', color);
   root.classList.remove('rv-done');
-  $('reveal-eyebrow').textContent = !sighting ? 'IN YOUR COLLECTION' : sighting.levelUp ? `${LEVEL_NAME[sighting.level]} CARD UNLOCKED` : 'SEEN AGAIN';
+  $('reveal-eyebrow').textContent = eyebrow ?? (!sighting ? 'IN YOUR COLLECTION' : sighting.levelUp ? `${LEVEL_NAME[sighting.level]} CARD UNLOCKED` : 'SEEN AGAIN');
   $('reveal-card').replaceChildren(card);
   for (const id of ['rv-holder', 'rv-flipper', 'rv-dot', 'rv-dim', 'rv-flash', 'rv-shock']) $(id).getAnimations().forEach((a) => a.cancel());
   $('rv-holder').classList.remove('live');

@@ -1,26 +1,26 @@
-import { VERSION } from './version.js?v=0.1.150';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.150';
-import { skyLimit, SKIES, DEFAULT_SKY } from './sky-limit.js?v=0.1.150';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.150';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.150';
-import { progress as progressOf } from './progress.js?v=0.1.150';
-import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.150';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.150';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.150';
-import { SkyView, shortName } from './sky.js?v=0.1.150';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.150';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.150';
-import { cardArt } from './art.js?v=0.1.150';
-import { renderCard, cardLevel, artImage } from './card.js?v=0.1.150';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.150';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.150';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.150';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.150';
-import { TIER_INFO } from './rarity.js?v=0.1.150';
-import { SETS } from './sets.js?v=0.1.150';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.150';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.150';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.150';
+import { VERSION } from './version.js?v=0.1.152';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.152';
+import { skyLimit, SKIES, DEFAULT_SKY } from './sky-limit.js?v=0.1.152';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.152';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.152';
+import { progress as progressOf } from './progress.js?v=0.1.152';
+import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.152';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.152';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.152';
+import { SkyView, shortName } from './sky.js?v=0.1.152';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.152';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.152';
+import { cardArt } from './art.js?v=0.1.152';
+import { renderCard, cardLevel, artImage } from './card.js?v=0.1.152';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.152';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.152';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.152';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.152';
+import { TIER_INFO } from './rarity.js?v=0.1.152';
+import { SETS } from './sets.js?v=0.1.152';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.152';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.152';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.152';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -354,6 +354,23 @@ function currentBasis() {
 
 let lastAbove = 0;
 let lastPanel = 0, lastLocked = false;
+// First night out: until you've collected anything, a line under the circle says what to do. It goes once
+// something is lined up, after 40 s, or for good once you own a card.
+let hintSince = 0, hintOff = false;
+function firstNightHint(target, plane, t) {
+  const g = $('guidance');
+  if (hintOff || target || plane || state.preview) { if (g.classList.contains('first')) { g.hidden = true; g.classList.remove('first'); } return; }
+  if (state.sightings.some((s) => !s.sim)) { hintOff = true; return; }
+  hintSince ||= t;
+  if (t - hintSince > 40000) { hintOff = true; g.hidden = true; g.classList.remove('first'); return; }
+  if (!g.classList.contains('first')) { g.classList.add('first'); g.textContent = 'Sweep the sky slowly. Bright, steadily moving lights are satellites: line one up in the circle.'; }
+  g.hidden = false; // renderTarget hides #guidance whenever nothing is lined up; keep the hint up
+}
+// A soft tick when the circle locks onto a target (sound stands in for haptics on the web).
+function snapTick() {
+  if (!audio) return;
+  try { const t = audio.currentTime, o = audio.createOscillator(), g = audio.createGain(); o.type = 'sine'; o.frequency.value = 1760; g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.05, t + 0.004); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.045); o.connect(g).connect(audio.destination); o.start(t); o.stop(t + 0.06); } catch {}
+}
 let uiSafeTop = 202, uiSafeBottom = 320, uiCenterY; // uiCenterY: the reticle's fixed height (radar and nav only)
 function tick(ts) {
   requestAnimationFrame(tick);
@@ -446,7 +463,9 @@ function tick(ts) {
   if (t - lastChip > 1000) { lastChip = t; requestTonight(); updateNextPassChip(); updateEventBanner(); }
   placeDiscover();
   if (t - lastPanel > 250 || target?.obj.id !== shownTargetId || state.lockedOn !== lastLocked) {
+    if (state.lockedOn && !lastLocked) snapTick(); // the circle just caught something
     lastLocked = state.lockedOn; renderTarget(target, d); measureSkySpace(); lastPanel = t; }
+  firstNightHint(target, plane, t);
   renderPlane(plane, t);
 }
 
@@ -574,7 +593,7 @@ function measureSkySpace() {
   const navInset = window.innerHeight - $('nav').getBoundingClientRect().top + 20;
   uiSafeBottom = box.hidden ? navInset : Math.max(navInset, window.innerHeight - rect.top + 34);
   // The reticle stays put when the info card or a banner comes and goes (2026-10-06, Sevaan: it jumped).
-  uiCenterY = ($('radar').getBoundingClientRect().bottom + 12 + window.innerHeight - navInset) / 2;
+  uiCenterY = window.innerHeight / 2; // the middle of the phone (2026-10-06, Sevaan), not of the gap between radar and nav
 }
 function placeCallout(target) {
   const el = $('callout'), p = sky.targetPos;
@@ -801,6 +820,15 @@ function showViewCard(obj, from, counted) {
   }
   playView({ card, o: model, from, sighting });
 }
+// A Tonight row's card: the real card if you own it, otherwise a preview (art and story shown).
+function showTonightCard(obj, from, eyebrow) {
+  const model = cardModel(obj), key = cardKeyFor(obj);
+  const sightings = state.sightings.filter(s => !s.sim && s.cardKey === key);
+  const card = renderCard(model, sightings.length ? { sightings, seenMembers: new Set(sightings.map(s => s.objectId)).size } : { preview: true });
+  $('reveal-view').href = `cards.html#${encodeURIComponent(key)}`;
+  closePanel('visible'); openPanel('reveal');
+  playView({ card, o: model, from, eyebrow });
+}
 async function capture(obj) {
   if (state.captureBusy) return;
   const d = now(), f = frame(d, state.observer);
@@ -979,6 +1007,9 @@ function renderTonight() {
       <div class="meta">${tier.label} · up to mag ${p.mag} (${brightnessWord(p.mag)}) · rises in the ${compassPoint(p.riseAz)}, highest ${p.peakEl}° in the ${compassPoint(p.peakAz)} at ${fmtTime(p.peakAt)}</div>
       ${p.start > t0 + 10 * 60000 ? '<button class="remind" type="button">Remind me</button>' : ''}</span>`;
     row.querySelector('.remind')?.addEventListener('click', () => remindPass(p));
+    // Tap the row to see the card you'd be waiting up for (owned cards open as they are; others as a preview).
+    row.classList.add('tappable');
+    row.addEventListener('click', (e) => { if (e.target.closest('.remind')) return; const from = row.querySelector('.name').getBoundingClientRect(); showTonightCard(p.obj, from, `TONIGHT · ${fmtTime(p.start)}`); });
     list.appendChild(row);
   }
   if (!passes.length) list.insertAdjacentHTML('beforeend', '<p class="hint">No standout passes left tonight.</p>');

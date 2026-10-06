@@ -1,19 +1,19 @@
-import { renderCard, renderCardTile, renderPassport, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.150';
-import { cardArt } from './art.js?v=0.1.150';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.150';
-import { applyBack } from './card-backs.js?v=0.1.150';
-import { SETS, assignSets } from './sets.js?v=0.1.150';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.150';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.150';
-import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.150';
-import { progress } from './progress.js?v=0.1.150';
-import { SOLAR_SYSTEM } from './natural.js?v=0.1.150';
-import { eventBadges, nextEvent } from './events.js?v=0.1.150';
-import { drawShareCard, shareCard } from './share-card.js?v=0.1.150';
-import { conArt } from './con-art.js?v=0.1.150';
-import { CON_BY_ID } from './constellations.js?v=0.1.150';
-import { allSightings, deleteSighting } from './store.js?v=0.1.150';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.150';
+import { renderCard, renderCardTile, renderPassport, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.152';
+import { cardArt } from './art.js?v=0.1.152';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.152';
+import { applyBack } from './card-backs.js?v=0.1.152';
+import { SETS, assignSets } from './sets.js?v=0.1.152';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.152';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.152';
+import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.152';
+import { progress } from './progress.js?v=0.1.152';
+import { SOLAR_SYSTEM } from './natural.js?v=0.1.152';
+import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.152';
+import { drawShareCard, shareCard } from './share-card.js?v=0.1.152';
+import { conArt } from './con-art.js?v=0.1.152';
+import { CON_BY_ID } from './constellations.js?v=0.1.152';
+import { allSightings, deleteSighting } from './store.js?v=0.1.152';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.152';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -129,7 +129,7 @@ function renderAlbums() {
     const st = albumStats(set.id); if (!st.cards.length) continue;
     const latest = st.have.slice().sort((a, b) => (state.sightingsByKey.get(b.key)?.[0]?.time ?? 0) - (state.sightingsByKey.get(a.key)?.[0]?.time ?? 0))[0];
     const show = latest ?? st.cards.find((c) => c.tier === 'legendary') ?? st.cards[0];
-    const img = latest && artImage(show, 'small');
+    const img = artImage(show, 'small'); // the set's best card, dimmed (CSS .album.empty) until you own one
     const b = document.createElement('button'); b.type = 'button';
     b.className = `album${st.level === 3 ? ' gold' : ''}${latest ? '' : ' empty'}`; b.style.setProperty('--set', set.color);
     b.innerHTML = `<span class="album__art">${img ? `<img src="${img}" alt="" loading="lazy">` : cardArt(show, { accent: set.color, silhouette: !latest })}</span>
@@ -152,16 +152,26 @@ function renderAlbumHead() {
 }
 
 // ---------- logbook: rank, streak, tonight's missions, achievements (js/progress.js) ----------
+// .ics for next Saturday 8 pm (local), so the week's streak isn't lost. Same calendar route as pass reminders.
+function remindStreak() {
+  const d = new Date(); d.setHours(20, 0, 0, 0);
+  let ahead = (6 - d.getDay() + 7) % 7; if (ahead === 0 && d.getTime() < Date.now()) ahead = 7; // this Saturday, unless 8 pm has passed
+  d.setDate(d.getDate() + ahead);
+  const start = d.getTime(), url = URL.createObjectURL(new Blob([passIcs({ title: 'Look up tonight (Space Collector)', start, end: start + 3600e3, description: 'Log one sighting this week to keep your observing streak. Open https://sevaan.github.io/space-collector/' })], { type: 'text/calendar' }));
+  const a = document.createElement('a'); a.href = url; a.download = 'space-collector-streak.ics'; a.click(); setTimeout(() => URL.revokeObjectURL(url), 5000);
+  notice('Reminder for Saturday evening: add it to your calendar.');
+}
 function renderLogbook() {
   const info = (k) => { const c = state.byKey.get(k); return c ? { tier: c.tier, type: c.type, owner: c.owner, launch: c.launch, natural: c.natural, con: c.con } : null; };
   const p = progress(state.raw, info, { constellations: [...CONSTELLATIONS, SOLAR_SYSTEM].map((c) => ({ id: c.con, stars: c.stars, zodiac: c.zodiac, system: !!c.system })) });
   const el = $('logbook'); el.hidden = false;
   const span = p.rank.next ? p.rank.next - p.rank.at : 1, into = p.rank.next ? Math.min(1, (p.xp - p.rank.at) / span) : 1;
   const done = p.achievements.filter((a) => a.done).length;
+  el.onclick = (e) => { if (e.target.closest('#streak-remind')) remindStreak(); };
   el.innerHTML = `<div class="lb-rank"><div><span class="lb-label">OBSERVER RANK</span><span class="lb-name">${esc(p.rank.name)}</span></div>
       <div class="lb-xp"><b>${p.xp.toLocaleString()}</b> XP</div></div>
     <div class="lb-bar"><i style="width:${(into * 100).toFixed(1)}%"></i></div>
-    <div class="lb-sub">${p.rank.next ? `${(p.rank.next - p.xp).toLocaleString()} XP to ${esc(p.rank.nextName)}` : 'Top rank reached'} · ${p.streak.current ? `${p.streak.current}-week streak${p.streak.thisWeek ? '' : ' (observe this week to keep it)'}` : 'Observe this week to start a streak'}</div>
+    <div class="lb-sub">${p.rank.next ? `${(p.rank.next - p.xp).toLocaleString()} XP to ${esc(p.rank.nextName)}` : 'Top rank reached'} · ${p.streak.current ? `${p.streak.current}-week streak${p.streak.thisWeek ? '' : ' (observe this week to keep it) <button type="button" class="lb-remind" id="streak-remind">Remind me Saturday</button>'}` : 'Observe this week to start a streak'}</div>
     <div class="lb-head">TONIGHT'S MISSIONS <span>+50 XP each · new at noon</span></div>
     ${p.missions.map((m) => `<div class="lb-mission${m.done ? ' done' : ''}"><i></i>${esc(m.text)}</div>`).join('')}
     ${(() => { const ev = eventBadges(state.raw), nx = nextEvent(); return `<div class="lb-head">EVENTS <span>${ev.length} badge${ev.length === 1 ? '' : 's'}</span></div><div class="lb-events">${ev.map((e) => `<span class="lb-event">☄ ${esc(e.name)}</span>`).join('')}${nx ? `<span class="lb-event next">Next: ${esc(nx.name)} · ${new Date(nx.start + 30 * 3600e3).toLocaleDateString([], { month: 'short', day: 'numeric' })}</span>` : ''}</div>`; })()}
@@ -178,7 +188,12 @@ function render() {
   $('owned-count').textContent = caught.toLocaleString();
   $('count').textContent = caught ? `${caught.toLocaleString()} ${caught === 1 ? 'story' : 'stories'} collected. Every one, a moment under the sky.` : 'Real objects. Remarkable stories. Yours to discover.';
   state.list = state.cards.filter(matches).sort((a, b) => {
-    if (state.view === 'owned') return (state.sightingsByKey.get(b.key)?.[0]?.time ?? 0) - (state.sightingsByKey.get(a.key)?.[0]?.time ?? 0);
+    // Sort menu (2026-10-06): default = newest first for your collection, featured order for the field guide.
+    const newest = (c) => state.sightingsByKey.get(c.key)?.[0]?.time ?? 0;
+    if (state.sort === 'newest') return newest(b) - newest(a) || titleFor(a).localeCompare(titleFor(b));
+    if (state.sort === 'rarest') return TIERS.indexOf(b.tier) - TIERS.indexOf(a.tier) || titleFor(a).localeCompare(titleFor(b));
+    if (state.sort === 'az') return titleFor(a).localeCompare(titleFor(b));
+    if (state.view === 'owned') return newest(b) - newest(a);
     // Lead discovery with the familiar ISS and distinctive rarities, then catalogue order.
     if (String(a.id) === '25544') return -1;
     if (String(b.id) === '25544') return 1;
@@ -186,7 +201,7 @@ function render() {
   });
   const total = state.list.length;
   $('results').textContent = `${total.toLocaleString()} ${total === 1 ? 'card' : 'cards'}${state.view === 'owned' ? ' in your collection' : ' in the field guide'}`;
-  $('reset-filters').hidden = !state.query && state.set === 'all' && state.rarity === 'all';
+  $('reset-filters').hidden = !state.query && state.set === 'all' && state.rarity === 'all' && (state.sort ?? 'auto') === 'auto';
   observer.disconnect();
   $('grid').replaceChildren();
   if (!total) {
@@ -216,7 +231,7 @@ function setView(view) {
   if (state.ready) render();
 }
 function resetFilters() {
-  state.query = ''; state.set = 'all'; state.rarity = 'all';
+  state.query = ''; state.set = 'all'; state.rarity = 'all'; state.sort = 'auto'; $('sort-by').value = 'auto';
   $('search').value = ''; $('set-filter').value = 'all'; $('rarity-filter').value = 'all';
   if (state.ready) render();
 }
@@ -228,6 +243,7 @@ let searchTimer;
 $('search').addEventListener('input', (e) => { clearTimeout(searchTimer); state.query = e.target.value.trim().toLowerCase(); searchTimer = setTimeout(() => { if (state.ready) render(); }, 120); });
 $('set-filter').addEventListener('change', (e) => { state.set = e.target.value; if (state.ready) render(); });
 $('rarity-filter').addEventListener('change', (e) => { state.rarity = e.target.value; if (state.ready) render(); });
+$('sort-by').addEventListener('change', (e) => { state.sort = e.target.value; if (state.ready) render(); });
 
 
 let tilt = null, stopGyro = null, lastFocus = null;

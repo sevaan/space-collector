@@ -354,3 +354,7 @@
 @keyframes con-tw { 0%, 100% { opacity: var(--o); } 50% { opacity: .03; } }
 @keyframes con-tw-star { 0%, 100% { opacity: 1; } 50% { opacity: .55; } }
 @media (prefers-reduced-motion: reduce) { .card .con-tw { animation: none; } }
+
+/* Red night mode: no shine (2026-10-06): the holo, foil, glare and twinkles stay off so the card is a quiet red sheet. */
+:where(html[data-theme="night"], body.night) :is(.card__shine, .card__foil, .card__glare, .art-stars, .back-glare) { display: none !important; }
+:where(html[data-theme="night"], body.night) .card .con-tw { animation: none; }

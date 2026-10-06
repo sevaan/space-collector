@@ -34,6 +34,7 @@ a { color:var(--cyan); }
 #callout { position:fixed; left:0;top:0;max-width:180px;z-index:2;pointer-events:none;padding:4px 7px;background:var(--bg);border-radius:6px; }
 #co-name { font:500 14px/1.2 var(--label);letter-spacing:.025em; }
 #co-tier,.co-row { display:none; }
+#guidance.first { font-size:15px;color:var(--muted);max-width:330px;margin:auto; }
 #guidance { position:fixed;left:20px;right:20px;bottom:calc(var(--safe-bottom) + var(--nav-h) + 290px);text-align:center;color:var(--text);font:500 16px/1.35 var(--label);letter-spacing:.025em;pointer-events:none;text-shadow:0 2px 5px var(--bg); }
 #target { position:fixed;left:12px;right:12px;bottom:calc(var(--safe-bottom) + var(--nav-h) + 10px);max-width:520px;margin:0 auto;display:flex;align-items:center;gap:12px;padding:10px 8px 10px 12px;background:var(--glass);border:2px solid var(--edge);border-radius:12px;box-shadow:inset 0 0 0 2px var(--bg),inset 0 0 0 3px var(--rule),0 8px 24px #0004; }
 #target #t-thumb { flex:none;width:46px;height:56px;padding:0; }
@@ -108,7 +109,7 @@ body.night #plane { --plane:#ff3b2b; }
 .nav-item .ico { display:none; }
 
 #banner { position:fixed;left:16px;right:16px;top:calc(var(--safe-top) + 198px);z-index:3;text-align:left;color:var(--muted);background:var(--glass);border:1px solid var(--edge);border-left:3px solid var(--gold);border-radius:4px;padding:10px 12px;font-size:12px; }
-#version { position:fixed;right:9px;bottom:calc(var(--nav-h) + var(--safe-bottom) + 1px);font-size:9px;color:var(--muted);opacity:.5;pointer-events:none; }
+#version { display:none; position:fixed;right:9px;bottom:calc(var(--nav-h) + var(--safe-bottom) + 1px);font-size:9px;color:var(--muted);opacity:.5;pointer-events:none; }
 .overlay { position:fixed;inset:0;z-index:20;background:var(--bg);overflow-y:auto;overscroll-behavior:contain;touch-action:pan-y pinch-zoom; }
 /* Welcome (2026-10-06, design/welcome-options.html A "a hand of cards"): the same header as Explore and Collection,
    fixed at the top; three real cards fanned out; the button low, where your thumb is. */
@@ -220,6 +221,7 @@ body.night #t-art { border-color:var(--rule); }
 #nextpass:not([hidden]) { display:flex; gap:.35em; align-items:baseline; white-space:nowrap; box-sizing:border-box; width:max-content; max-width:calc(100vw - 24px); overflow:hidden; }
 #nextpass span { flex:none; }
 #nextpass b { flex:0 1 auto; min-width:0; overflow:hidden; text-overflow:ellipsis; }
+.t-row.tappable { cursor:pointer; }
 .t-row .remind { margin-top:6px; padding:5px 12px; border:1px solid var(--gold); border-radius:99px; color:var(--gold); font:500 12px/1 var(--label); letter-spacing:.12em; text-transform:uppercase; }
 #event-banner { position:fixed; right:12px; top:calc(var(--safe-top) + 100px); z-index:3; max-width:calc(100vw - 150px); text-align:left;
   padding:7px 12px; border-radius:12px; background:color-mix(in srgb,var(--bg) 80%,transparent); border:1px solid color-mix(in srgb,var(--gold) 55%,transparent);
@@ -229,3 +231,11 @@ body:has(#event-banner:not([hidden])) #toasts { top:calc(var(--safe-top) + 150px
 
 /* Every close button is a round ✕ (2026-10-06, Sevaan: no 'Done'). Same look in css/collection.css. */
 .pill.x-close { width:44px; min-width:44px; padding:0; border-radius:50%; font-size:20px; line-height:1; }
+
+/* Phones in landscape (2026-10-06, Sevaan: portrait only): a full-screen ask to turn back. Desktop windows (fine pointer) are left alone. */
+#rotate { display:none; }
+@media (orientation: landscape) and (max-height: 600px) and (pointer: coarse) {
+  #rotate { position:fixed; inset:0; z-index:200; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; text-align:center; padding:24px; background:#080e1a; color:#fff2b3; }
+  #rotate b { font:400 24px/1.1 'SC Display', Impact, sans-serif; letter-spacing:-.03em; text-transform:uppercase; }
+  #rotate span { font:500 14px/1.3 'SC Label', 'Arial Narrow', sans-serif; letter-spacing:.14em; text-transform:uppercase; color:#bdbea9; }
+}
