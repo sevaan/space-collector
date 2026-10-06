@@ -1,13 +1,13 @@
 // The capture moment. Chosen from design/reveal-demo.html (2026-09-29):
 //  First sighting: the ring snaps shut, the object rushes at you, a flash and thump, a sealed card
-//  lands glowing in its rarity colour, you tap it, it flips, light sweeps it, a stamp lands.
-//  Seen before: the card flies straight in face-up and the stamp shows the count (and any level up).
+//  lands glowing in its rarity colour, you tap it, it flips, light sweeps it, a ticket toast says what you earned.
+//  Seen before: the card flies straight in face-up and the ticket shows the count (and any level up).
 //  Everything scales with rarity (Legendary dims the sky, shockwave, held breath, slow flip, fanfare).
 // Waits use timers, not animation.finished, so a paused tab can never freeze the sequence.
 
-import { TIER_INFO } from './rarity.js?v=0.1.116';
-import { levelFor, attachTilt, attachGyro, attachFlip } from './card.js?v=0.1.116';
-import { applyBack } from './card-backs.js?v=0.1.116';
+import { TIER_INFO } from './rarity.js?v=0.1.117';
+import { levelFor, attachTilt, attachGyro, attachFlip } from './card.js?v=0.1.117';
+import { applyBack } from './card-backs.js?v=0.1.117';
 
 const FX = {
   common:    { particles: 14,  flip: 520,  spin: 0,   dim: 0,   shock: false, notes: [880],                            hold: 0 },
@@ -104,6 +104,9 @@ function sizeCard(cardEl) {
 // collected: how many different cards you own now, counting this one. A new card only gets a stamp when
 // that number is a milestone (MILESTONES); repeat sightings keep their SEEN / NEW STAMP / level stamps.
 export const MILESTONES = [1, 10, 25, 50, 75, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000];
+// What the stamp used to say now goes out as a ticket toast (2026-10-05): main.js registers the renderer.
+let announce = null;
+export function onRevealNews(fn) { announce = fn; }
 export async function playReveal({ card, o, seen, origin, fleet = null, progress = null, collected = 0, con = null, shiny = null, xp = 0 }) {
   stopReveal();
   const my = run;
@@ -120,10 +123,9 @@ export async function playReveal({ card, o, seen, origin, fleet = null, progress
   root.classList.remove('rv-done');
   $('reveal-eyebrow').textContent = (fresh ? 'FIRST DISCOVERY' : levelUp ? `${LEVEL_NAME[level]} CARD UNLOCKED` : newStamp ? 'NEW LAUNCH STAMP' : 'SIGHTING RECORDED') + (xp > 0 ? `  ·  +${xp} XP` : '');
   $('reveal-card').replaceChildren(card);
-  for (const id of ['rv-holder', 'rv-flipper', 'rv-stamp', 'rv-dot', 'rv-dim', 'rv-flash', 'rv-shock']) $(id).getAnimations().forEach((a) => a.cancel());
+  for (const id of ['rv-holder', 'rv-flipper', 'rv-dot', 'rv-dim', 'rv-flash', 'rv-shock']) $(id).getAnimations().forEach((a) => a.cancel());
   $('rv-holder').style.opacity = 0; $('rv-holder').classList.remove('live');
   $('rv-flipper').style.transform = '';
-  $('rv-stamp').style.opacity = 0;
   $('rv-back').classList.remove('glow');
   $('rv-dim').style.opacity = 0;
   // Safari doesn't reliably hide the reverse face of a 3D card, so show one face at a time ourselves.
@@ -205,9 +207,8 @@ export async function playView({ card, o, from, sighting = null }) {
   root.classList.remove('rv-done');
   $('reveal-eyebrow').textContent = !sighting ? 'IN YOUR COLLECTION' : sighting.levelUp ? `${LEVEL_NAME[sighting.level]} CARD UNLOCKED` : 'SEEN AGAIN';
   $('reveal-card').replaceChildren(card);
-  for (const id of ['rv-holder', 'rv-flipper', 'rv-stamp', 'rv-dot', 'rv-dim', 'rv-flash', 'rv-shock']) $(id).getAnimations().forEach((a) => a.cancel());
+  for (const id of ['rv-holder', 'rv-flipper', 'rv-dot', 'rv-dim', 'rv-flash', 'rv-shock']) $(id).getAnimations().forEach((a) => a.cancel());
   $('rv-holder').classList.remove('live');
-  $('rv-stamp').style.opacity = 0;
   $('rv-back').classList.remove('glow');
   $('rv-dim').style.opacity = 0;
   $('rv-dot').style.opacity = 0;
@@ -249,33 +250,20 @@ async function finish({ fx, color, fresh, seen, level, levelUp, card, alive, fle
   const stampLine = fleet ? `LAUNCH ${fleet.cospar} · ${fleet.stamps} OF ${fleet.total}` : '';
   const conDone = !!con && con.level === 'gold';
   const milestone = (fresh && (!!con || MILESTONES.includes(collected))) || !!shiny;
-  $('rv-stamp').innerHTML = shiny && !conDone ? `SHINY!<small>${shiny.label.toUpperCase()}</small>`
-    : fresh && con ? (conDone ? `${con.name.toUpperCase()} COMPLETE<small>ALL ${con.total} STARS</small>` : `${con.name.toUpperCase()}<small>${con.have} OF ${con.total} STARS</small>`)
-    : fresh ? (collected === 1 ? `FIRST ITEM<small>COLLECTED</small>` : `${collected.toLocaleString('en-US')} ITEMS<small>COLLECTED</small>`)
-    : newStamp ? `NEW STAMP<small>${levelUp ? `${LEVEL_NAME[level]} CARD UNLOCKED` : stampLine}</small>`
-    : levelUp ? `SEEN ${seen}×<small>${LEVEL_NAME[level]} CARD UNLOCKED</small>` : `SEEN ${seen}×<small>${nights > 1 ? `${nights} NIGHTS · ` : ''}${date}</small>`;
-  if (!fresh || milestone) {
-    // Centre the stamp on the card itself (the holder can be taller than the card).
-    const hr = $('rv-holder').getBoundingClientRect(), cr = card.getBoundingClientRect();
-    if (cr.height) $('rv-stamp').style.top = `${cr.top - hr.top + cr.height / 2}px`;
-    $('rv-stamp').classList.toggle('long', ($('rv-stamp').firstChild?.textContent ?? '').length > 12); // e.g. SAGITTARIUS COMPLETE
-    $('rv-stamp').style.setProperty('--stamp', conDone ? LEVEL_COLOR.gold : shiny ? '#ff8fd8' : levelUp ? LEVEL_COLOR[level] : newStamp ? STAMP_INK : color);
-    await play($('rv-stamp'), [
-      { opacity: 0, transform: 'translate(-50%,-50%) rotate(-9deg) scale(2.6)' },
-      { opacity: 1, transform: 'translate(-50%,-50%) rotate(-9deg) scale(.95)', offset: .7 },
-      { opacity: 1, transform: 'translate(-50%,-50%) rotate(-9deg) scale(1)' },
-    ], { duration: 360, easing: 'cubic-bezier(.5,0,.8,.4)', fill: 'forwards' });
-    if (!alive()) return;
-    thump();
-  }
+  // The stamp that used to land on the card is now a ticket toast with the same words.
+  const news = shiny && !conDone ? { kind: 'event', eyebrow: 'SHINY!', line: shiny.label }
+    : fresh && con ? (conDone ? { kind: 'event', eyebrow: `${con.name.toUpperCase()} COMPLETE`, line: `All ${con.total} stars` } : { kind: 'xp', eyebrow: con.name.toUpperCase(), line: `${con.have} of ${con.total} stars` })
+    : fresh ? (milestone ? { kind: 'event', eyebrow: 'MILESTONE', line: collected === 1 ? 'First item collected' : `${collected.toLocaleString('en-US')} items collected` } : null)
+    : newStamp ? { kind: 'xp', eyebrow: 'NEW STAMP', line: levelUp ? `${LEVEL_NAME[level]} card unlocked` : stampLine }
+    : levelUp ? { kind: 'event', eyebrow: `SEEN ${seen}×`, line: `${LEVEL_NAME[level]} card unlocked` }
+    : { kind: 'xp', eyebrow: `SEEN ${seen}×`, line: `${nights > 1 ? `${nights} nights · ` : ''}${date}` };
+  if (news) { announce?.({ ...news, ms: 3200, delay: 900 }); thump(); }
   if (!reduced()) $('reveal').animate([{ transform: 'translate(0,0)' }, { transform: 'translate(-3px,2px)' }, { transform: 'translate(3px,-2px)' }, { transform: 'translate(0,0)' }], { duration: 180 });
   if (levelUp) card.querySelector('.card__face')?.animate([{ boxShadow: '0 0 0 transparent' }, { boxShadow: `0 0 34px ${LEVEL_COLOR[level]}` }, { boxShadow: '0 0 0 transparent' }], { duration: 1300 });
   tilt = attachTilt(card);
   stopGyro = attachGyro(card, tilt);
   attachFlip(card, { onBack: applyBack });
   $('reveal').classList.add('rv-done');
-  // Fade the stamp away later, but only if one was shown (a fade from 1 would flash a hidden stamp).
-  if (!fresh || milestone) setTimeout(() => { if (alive()) $('rv-stamp').animate([{ opacity: 1 }, { opacity: 0 }], { duration: 600, fill: 'forwards' }); }, 2200);
 }
 
 // Flick the finished card up and away to go back to the sky. Dragging still just tilts the card (the card

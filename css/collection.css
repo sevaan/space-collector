@@ -9,13 +9,17 @@ button { cursor: pointer; }
 button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
 [hidden] { display: none !important; }
 /* Same header as Explore (#sky-header in app.css): wordmark, double rule, round buttons — static here, not fixed. */
-.collection-header { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: auto; max-width: 1056px; min-height: 80px; padding: calc(var(--safe-top) + 10px) 20px 14px; --h-text: #fff2b3; --h-muted: #bdbea9; --h-edge: #627a8b; --h-glass: #0c1725f2; }
+/* Fixed 80px like Explore's bar: the height never depends on text metrics, so the rule does not move when the custom fonts swap in. */
+.collection-header { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: var(--safe-top) auto 0; max-width: 1056px; height: 80px; padding: 0 20px; --h-text: #fff2b3; --h-muted: #bdbea9; --h-edge: #627a8b; --h-glass: #0c1725f2; }
 :root[data-theme="night"] .collection-header { --h-text: #d67674; --h-muted: #b76a69; --h-edge: #58272b; --h-glass: #1a0909f5; }
 .collection-header::after { content: ""; position: absolute; left: 20px; right: 20px; bottom: 0; height: 3px; border-block: 1px solid var(--h-edge); opacity: .65; }
 .wordmark { color: var(--h-text); text-decoration: none; font: 400 clamp(13px, 3.9vw, 16px)/1.15 'SC Display', Impact, sans-serif; letter-spacing: -.03em; }
 .wordmark span { display: block; color: var(--h-muted); font: 500 11px/1.2 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .18em; margin-top: 6px; }
 .header-buttons { display: flex; gap: 8px; flex: none; }
-.icon-button { width: 44px; height: 44px; border: 1px solid var(--h-edge); border-radius: 50%; display: grid; place-items: center; color: var(--h-text); background: var(--h-glass); font-size: 24px; }
+.icon-button { width: 44px; height: 44px; border: 1px solid var(--h-edge); border-radius: 50%; display: grid; place-items: center; color: var(--h-text); background: var(--h-glass); font-size: 24px; text-decoration: none; box-sizing: border-box; }
+.icon-button .ico { width: 22px; height: 22px; }
+.ico { display: inline-block; width: 22px; height: 22px; background: currentColor; flex: none; -webkit-mask: var(--m) center / contain no-repeat; mask: var(--m) center / contain no-repeat; }
+[data-ico="sliders"] { --m: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round'%3E%3Cpath d='M4 7h10M18 7h2M4 17h4M12 17h8'/%3E%3Ccircle cx='16' cy='7' r='2'/%3E%3Ccircle cx='10' cy='17' r='2'/%3E%3C/svg%3E"); }
 .icon-button[aria-pressed="true"] { border-color: #fa8127; color: #fa8127; }
 @media (max-width: 360px) { .collection-header { padding-inline: 16px; } .wordmark span { letter-spacing: .1em; } }
 main { max-width: 1024px; margin: auto; padding: 0 24px calc(var(--safe-bottom) + 105px); }

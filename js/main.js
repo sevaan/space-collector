@@ -1,26 +1,26 @@
-import { VERSION } from './version.js?v=0.1.116';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.116';
-import { skyLimit, SKIES, DEFAULT_SKY } from './sky-limit.js?v=0.1.116';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.116';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.116';
-import { progress as progressOf } from './progress.js?v=0.1.116';
-import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.116';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.116';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.116';
-import { SkyView, shortName } from './sky.js?v=0.1.116';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.116';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.116';
-import { cardArt } from './art.js?v=0.1.116';
-import { renderCard, cardLevel, artImage } from './card.js?v=0.1.116';
-import { playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.116';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.116';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.116';
-import { naturalTargets } from './natural.js?v=0.1.116';
-import { TIER_INFO } from './rarity.js?v=0.1.116';
-import { SETS } from './sets.js?v=0.1.116';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.116';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.116';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.116';
+import { VERSION } from './version.js?v=0.1.117';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.117';
+import { skyLimit, SKIES, DEFAULT_SKY } from './sky-limit.js?v=0.1.117';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.117';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.117';
+import { progress as progressOf } from './progress.js?v=0.1.117';
+import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.117';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.117';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.117';
+import { SkyView, shortName } from './sky.js?v=0.1.117';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.117';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.117';
+import { cardArt } from './art.js?v=0.1.117';
+import { renderCard, cardLevel, artImage } from './card.js?v=0.1.117';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.117';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.117';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.117';
+import { naturalTargets } from './natural.js?v=0.1.117';
+import { TIER_INFO } from './rarity.js?v=0.1.117';
+import { SETS } from './sets.js?v=0.1.117';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.117';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.117';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.117';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -177,17 +177,35 @@ function showBanner(text, action = null) {
 }
 $('banner').addEventListener('click', () => bannerAction?.());
 
-let toastTimer;
-let toastHref = null;
-function toast(html, ms = 2200, href = null) {
-  $('toast').innerHTML = html;
-  $('toast').hidden = false;
-  toastHref = href;
-  $('toast').classList.toggle('linked', !!href);
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => { $('toast').hidden = true; }, ms);
+// ---------- toasts: one-line tickets (2026-10-05, design canvas "Toast C") ----------
+// Kinds colour the left edge: mission (orange), xp (steel blue), event / achievement / rank (gold), info.
+// They queue rather than stack: one at a time, oldest first, each ~3 s, slid in under the header.
+// `toast(html, ms, href)` keeps the old callers working as plain info tickets.
+onRevealNews((n) => ticket(n));
+const toastQueue = [];
+let toastBusy = false;
+function toast(html, ms = 2200, href = null) { ticket({ kind: 'info', line: html, html: true, ms, href }); }
+function ticket({ kind = 'info', eyebrow = '', line = '', xp = 0, ms = 3000, href = null, html = false, delay = 0 }) {
+  toastQueue.push({ kind, eyebrow, line, xp, ms, href, html, at: Date.now() + delay });
+  pumpToasts();
 }
-$('toast').addEventListener('click', () => { if (toastHref) location.href = toastHref; });
+function pumpToasts() {
+  if (toastBusy || !toastQueue.length) return;
+  const t = toastQueue[0], wait = t.at - Date.now();
+  if (wait > 0) { toastBusy = true; setTimeout(() => { toastBusy = false; pumpToasts(); }, wait); return; }
+  toastQueue.shift();
+  toastBusy = true;
+  const el = document.createElement('div');
+  el.className = `ticket ticket--${t.kind}${t.href ? ' linked' : ''}`;
+  el.innerHTML = `<i class="ticket__mark" aria-hidden="true"></i><span class="ticket__body">${t.eyebrow ? `<span class="ticket__eyebrow">${escapeHtml(t.eyebrow)}</span>` : ''}<span class="ticket__line">${t.html ? t.line : escapeHtml(t.line)}</span></span>${t.xp ? `<span class="ticket__xp">+${t.xp}<small>XP</small></span>` : t.href ? '<span class="ticket__go">OPEN ›</span>' : ''}`;
+  if (t.href) el.addEventListener('click', () => { location.href = t.href; });
+  $('toasts').append(el);
+  requestAnimationFrame(() => el.classList.add('in'));
+  setTimeout(() => {
+    el.classList.remove('in');
+    setTimeout(() => { el.remove(); toastBusy = false; pumpToasts(); }, 280);
+  }, t.ms);
+}
 
 function escapeHtml(s) {
   return String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -807,8 +825,11 @@ function progressGain(saved) {
   return { xp: after.xp - before.xp, missions, achievements, rankUp: after.rank.index > before.rank.index ? after.rank.name : null, event: firstOfEvent ? ev.name : null };
 }
 function announceProgress(g, delay = 3800) {
-  const news = [...(g.event ? [`☄ Event badge: ${g.event}!`] : []), ...g.missions.map((m) => `Mission complete: ${m.text} · +50 XP`), ...g.achievements.map((a) => `Achievement: ${a.name} · ${a.text}`), ...(g.rankUp ? [`Rank up! You're now a ${g.rankUp}.`] : [])];
-  news.forEach((n, i) => setTimeout(() => toast(n, 3200), delay + i * 3400));
+  // Tickets queue themselves; the delay lets the card land first.
+  if (g.event) ticket({ kind: 'event', eyebrow: 'EVENT BADGE', line: g.event, ms: 3600, delay });
+  g.missions.forEach((m) => ticket({ kind: 'mission', eyebrow: 'MISSION COMPLETE', line: m.text, xp: 50, ms: 3200, delay }));
+  g.achievements.forEach((a) => ticket({ kind: 'achievement', eyebrow: 'ACHIEVEMENT', line: `${a.name} · ${a.text}`, ms: 3800, delay }));
+  if (g.rankUp) ticket({ kind: 'rank', eyebrow: 'RANK UP', line: `You're now a ${g.rankUp}`, ms: 4200, delay, href: 'cards.html' });
 }
 async function recordSighting(obj, d, l = null) {
   l ??= obj.natural ? state.naturals?.find((n) => n.obj.id === obj.id)?.look : look(obj, frame(d, state.observer));
@@ -1298,6 +1319,7 @@ async function boot() {
         state.timeOffsetMs=saved.timeOffsetMs??0; state.drag=saved.drag; state.preview=!!saved.preview; state.followPreview=!!saved.followPreview; state.pinnedId=saved.pinnedId;
         if(!state.preview && !state.drag.on) { startSensors().catch(()=>{}); requestLocation(); }
         renderLocation(); enterSky();
+        if(params.has('more')) openDebug();   // the Collection page's settings button lands here
       }
     } catch {}
   } else if (readPref('started', false) || loadSavedLocation()) quickStart(); // anyone who has used the app before
