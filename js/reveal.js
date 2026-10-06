@@ -5,10 +5,10 @@
 //  Everything scales with rarity (Legendary dims the sky, shockwave, held breath, slow flip, fanfare).
 // Waits use timers, not animation.finished, so a paused tab can never freeze the sequence.
 
-import { TIER_INFO } from './rarity.js?v=0.1.164';
-import { levelFor, attachTilt, attachGyro, attachFlip, throwOff } from './card.js?v=0.1.164';
-import { applyBack } from './card-backs.js?v=0.1.164';
-import { addStarfield } from './starfield.js?v=0.1.164';
+import { TIER_INFO } from './rarity.js?v=0.1.167';
+import { levelFor, attachTilt, attachGyro, attachFlip, throwOff } from './card.js?v=0.1.167';
+import { applyBack } from './card-backs.js?v=0.1.167';
+import { addStarfield } from './starfield.js?v=0.1.167';
 
 const FX = {
   common:    { particles: 14,  flip: 520,  spin: 0,   dim: 0,   shock: false, notes: [880],                            hold: 0 },
@@ -131,6 +131,7 @@ export async function playReveal({ card, o, seen, origin, fleet = null, progress
   $('rv-back').classList.remove('glow');
   $('rv-dim').style.opacity = 0;
   // Safari doesn't reliably hide the reverse face of a 3D card, so show one face at a time ourselves.
+  { const rb = $('rv-back'); rb.className = rb.className.replace(/\btier-\w+|\bshiny\b|\bgold-foil\b/g, '').replace(/\s+/g, ' ').trim(); rb.classList.add(`tier-${tierKey}`); if (shiny) rb.classList.add('shiny'); if (card.classList.contains('gold-foil')) rb.classList.add('gold-foil'); }
   if (fresh) applyBack($('rv-back'));
   showFace(fresh ? 'back' : 'front');
   sizeCard(card);
