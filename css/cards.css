@@ -294,3 +294,11 @@
 /* "Seen N times" after the collected date, set off by a rule like the brand's. */
 .card--retro .card__seen-count { border-left: 1px solid var(--rule); padding-left: .65em; white-space: nowrap; flex: none; }
 .card--retro .card__status > span:nth-child(2) { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+
+/* Constellation cards (js/constellations.js): a row of star pips for progress; gold frame when complete. */
+.card--retro .con-progress { display: flex; flex-wrap: wrap; align-items: center; gap: .3em; margin-top: .5em; font: 500 .8em/1 var(--label); letter-spacing: .12em; color: var(--grey); }
+.card--retro .con-progress i { width: .6em; height: .6em; transform: rotate(45deg); border: .08em solid var(--rule); }
+.card--retro .con-progress i.on { background: var(--accent); border-color: var(--accent); }
+.card--retro .con-progress span { margin-left: .4em; }
+.card.card--retro.con-complete .card__face { border-color: #e2b53c; }
+.card.card--retro.con-complete .card__rotator { box-shadow: 0 0 0 .25em #e8c35a, 0 1em 3em #0008; }

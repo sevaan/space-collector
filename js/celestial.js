@@ -2,7 +2,7 @@
 // Planet and Moon positions use Paul Schlyter's low-precision method ("How to compute planetary
 // positions"), good to a few arcminutes — far better than a phone compass.
 
-import { gstime } from './lib/satellite.js?v=0.1.97';
+import { gstime } from './lib/satellite.js?v=0.1.99';
 
 const RAD = Math.PI / 180;
 const sin = (d) => Math.sin(d * RAD), cos = (d) => Math.cos(d * RAD);
@@ -18,6 +18,12 @@ function precess(raDeg, decDeg, years) {
   const m = 0.012806, n = 0.005567; // degrees per year
   const tanDec = Math.tan(Math.min(89.9, Math.abs(decDeg)) * RAD) * Math.sign(decDeg);
   return [raDeg + (m + n * sin(raDeg) * tanDec) * years, decDeg + n * cos(raDeg) * years];
+}
+
+// Unit vector (J2000 RA/Dec in degrees, precessed to today) for a star that isn't in data/sky.json.
+export function starVector(ra, dec) {
+  const years = (Date.now() / 86400000 + 2440587.5 - 2451545) / 365.25;
+  return eq(...precess(ra, dec, years));
 }
 
 export async function loadSky(url) {

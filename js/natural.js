@@ -1,3 +1,4 @@
+import { extinction } from './sky-limit.js?v=0.1.99';
 // The Moon, the naked-eye planets and the brightest named stars, as collectible cards.
 // Positions come from js/celestial.js (state.bodies, state.skyEnu); this file holds the card facts and
 // the "can you see it right now" rules. No DOM. Every fact must be true; approximate values say so.
@@ -77,7 +78,9 @@ const azOf = (enu) => ((Math.atan2(enu[0], enu[1]) * 180 / Math.PI) + 360) % 360
 //   Planets: a little above the horizon with the Sun below it (Venus and Jupiter show in twilight).
 //   Stars: above the horizon haze, and the sky properly dark.
 // bodies: state.bodies (with .enu). stars: state.skyEnu.stars. Returns [{ obj, look }].
-export function naturalTargets(bodies, stars) {
+// extra: constellation stars that aren't in data/sky.json's named list, as [{ obj, enu }]. Fainter stars
+// only count when they're bright enough for tonight's sky (starLimit, js/sky-limit.js).
+export function naturalTargets(bodies, stars, extra = [], starLimit = 6.5) {
   const out = [];
   const sun = bodies?.find((b) => b.kind === 'sun');
   const sunEl = sun ? elOf(sun.enu) : -90;
@@ -93,6 +96,10 @@ export function naturalTargets(bodies, stars) {
     if (!obj) continue;
     const el = elOf(s.enu);
     out.push({ obj, look: { az: azOf(s.enu), el, mag: s.mag, visible: el > 3 && sunEl < -6, enu: s.enu } });
+  }
+  for (const { obj, enu } of extra) {
+    const el = elOf(enu), mag = obj.mag + extinction(el);
+    out.push({ obj, look: { az: azOf(enu), el, mag, visible: el > 3 && sunEl < -6 && mag <= starLimit, enu } });
   }
   return out;
 }

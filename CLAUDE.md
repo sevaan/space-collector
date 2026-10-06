@@ -164,3 +164,11 @@ Alerts, service worker, accounts, secret sets/feats.
 - Switcher (2026-10-05, design/switcher-options.html C): small dark pill, text only, centred at the bottom of both pages (#nav in css/app.css, .bottom-nav in css/collection.css); active tab glows faintly orange. --nav-h is 70px.
 - Sky HUD (2026-10-05, design/count-options.html C): new-object count is an orange badge on the radar's rim (#radar-new, hidden at 0), "N up" sits under the dial (#radar-up). "2 of 2" (#d-switch) is small and centred under Tap to collect. Card glare is a faint finger highlight only (no dark falloff).
 - Capture reveal: the sealed card flips by itself after 1 s (tap flips sooner); no TAP TO REVEAL pill. Collection viewer has a twinkling starfield behind it and grid tiles tilt slightly under the finger (js/starfield.js: `addStarfield`, `attachTileTilt`; transform only).
+- Constellations (2026-10-05): 12 zodiac + Orion, Big Dipper, Little Dipper, Cassiopeia, Cygnus, Southern Cross.
+  data/constellations.json (scripts/build-constellations.mjs, d3-celestial): stick-figure stars with mag <= 5 (203).
+  js/constellations.js registers every star as its own natural card (`star:hip<HIP>`; existing bright-star cards like
+  Regulus are reused) plus a `con:<id>` card per constellation; `loadConstellations()` must run before buildCards (both
+  pages). Stars are targets via `naturalTargets(..., state.conEnu, state.limit.stars)` (only when bright enough for your
+  sky, after extinction). Constellation cards are earned through their stars (cards-page `linkConstellations`,
+  renderCard `opts.ownedKeys`): bronze 1 star, silver half, gold (gold frame, `.con-complete`) when all. Art for these
+  is drawn from real positions (js/con-art.js `conArt`), the card's star ringed in orange. Toasts on progress/completion.

@@ -1,11 +1,12 @@
-import { renderCard, renderCardTile, renderPassport, attachTilt, attachGyro, attachFlip } from './card.js?v=0.1.97';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.97';
-import { applyBack } from './card-backs.js?v=0.1.97';
-import { SETS, assignSets } from './sets.js?v=0.1.97';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.97';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.97';
-import { allSightings, deleteSighting } from './store.js?v=0.1.97';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.97';
+import { renderCard, renderCardTile, renderPassport, attachTilt, attachGyro, attachFlip } from './card.js?v=0.1.99';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.99';
+import { applyBack } from './card-backs.js?v=0.1.99';
+import { SETS, assignSets } from './sets.js?v=0.1.99';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.99';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.99';
+import { loadConstellations } from './constellations.js?v=0.1.99';
+import { allSightings, deleteSighting } from './store.js?v=0.1.99';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.99';
 
 const $ = (id) => document.getElementById(id);
 const state = { cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -38,6 +39,7 @@ async function boot() {
     fetch('data/catalog.json', { cache: 'no-cache' }).then((r) => { if (!r.ok) throw new Error('catalogue'); return r.json(); }),
     allSightings(),
     loadLore(),
+    loadConstellations(),
   ]);
   const cat = catalogueResult.status === 'fulfilled' ? catalogueResult.value : { objects: [] };
   state.cards = buildCards(cat);
@@ -61,6 +63,7 @@ async function boot() {
       state.cards.push(card); state.byKey.set(key, card);
     }
   }
+  linkConstellations();
   if (catalogueResult.status === 'rejected') notice('The catalogue could not load. Your saved field records are still shown. Refresh to try again.');
   if (sightingResult.status === 'rejected') notice('Your saved sightings could not be opened. You can explore the field guide; refresh to retry your collection.');
   state.ready = true;
@@ -167,7 +170,7 @@ function showCard() {
   stopEffects();
   const c = state.list[state.index]; if (!c) return;
   const sightings = state.sightingsByKey.get(c.key) ?? [];
-  const el = renderCard(c, { sightings, seenMembers: state.seenMembers.get(c.key)?.size ?? 0, preview: state.preview });
+  const el = renderCard(c, { sightings, seenMembers: state.seenMembers.get(c.key)?.size ?? 0, preview: state.preview, ownedKeys: ownedKeys() });
   $('slot').replaceChildren(el);
   tilt = attachTilt(el);
   attachFlip(el, { onBack: applyBack });
@@ -195,6 +198,7 @@ function showCard() {
         try { await deleteSighting(s.key); } catch { notice('That sighting could not be deleted. Try again.'); return; }
         const left = (state.sightingsByKey.get(c.key) ?? []).filter((x) => x.key !== s.key);
         if (left.length) state.sightingsByKey.set(c.key, left); else { state.sightingsByKey.delete(c.key); state.seenMembers.delete(c.key); }
+        linkConstellations();
         showCard(); render();
       });
       $('v-history').append(row);
@@ -293,6 +297,16 @@ $('slot').addEventListener('pointerup', (e) => {
   if (dy < -45 && last.y - pts[0].y < -60 && Math.abs(dx) < -dy * 0.9 && -dy / dt > 0.6) flickClose(dx);
 });
 $('slot').addEventListener('pointercancel', () => { flick = null; });
+// A constellation card is owned through its stars: it carries their sightings (for dates and counts)
+// and the set of star cards you own (for progress and the gold frame).
+function linkConstellations() {
+  for (const c of state.cards) {
+    if (c.natural !== 'constellation') continue;
+    const s = c.stars.flatMap((k) => state.sightingsByKey.get(k) ?? []);
+    if (s.length) state.sightingsByKey.set(c.key, s.sort((a, b) => b.time - a.time)); else state.sightingsByKey.delete(c.key);
+  }
+}
+const ownedKeys = () => new Set([...state.sightingsByKey.keys()]);
 function step(d) {
   state.index = (state.index + d + state.list.length) % state.list.length;
   state.preview = false;

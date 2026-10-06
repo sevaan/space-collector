@@ -1,21 +1,22 @@
-import { VERSION } from './version.js?v=0.1.97';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.97';
-import { skyLimit, SKIES, DEFAULT_SKY } from './sky-limit.js?v=0.1.97';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.97';
-import { SkyView, shortName } from './sky.js?v=0.1.97';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.97';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.97';
-import { cardArt } from './art.js?v=0.1.97';
-import { renderCard, cardLevel, artImage } from './card.js?v=0.1.97';
-import { playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.97';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.97';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.97';
-import { naturalTargets } from './natural.js?v=0.1.97';
-import { TIER_INFO } from './rarity.js?v=0.1.97';
-import { SETS } from './sets.js?v=0.1.97';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.97';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.97';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.97';
+import { VERSION } from './version.js?v=0.1.99';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.99';
+import { skyLimit, SKIES, DEFAULT_SKY } from './sky-limit.js?v=0.1.99';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.99';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.99';
+import { SkyView, shortName } from './sky.js?v=0.1.99';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.99';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.99';
+import { cardArt } from './art.js?v=0.1.99';
+import { renderCard, cardLevel, artImage } from './card.js?v=0.1.99';
+import { playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.99';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.99';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.99';
+import { naturalTargets } from './natural.js?v=0.1.99';
+import { TIER_INFO } from './rarity.js?v=0.1.99';
+import { SETS } from './sets.js?v=0.1.99';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.99';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.99';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.99';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -272,6 +273,7 @@ function refreshCelestial(d) {
     rift: m.rift.map((p) => ({ enu: toEnu(p.v), w: p.w })),
   };
   if (!state.sky) return;
+  state.conEnu = CON_STARS.filter((o) => !o.skyName).map((o) => ({ obj: o, enu: toEnu(o.v) })); // constellation stars
   state.skyEnu = {
     stars: state.sky.stars.map((s) => ({ ...s, enu: toEnu(s.v) })),
     lines: state.sky.lines.map((seg) => seg.map(toEnu)),
@@ -361,7 +363,7 @@ function tick(ts) {
   // The Moon, planets and bright stars (js/natural.js). The sky view draws them itself; here they only
   // join the candidates for the circle, behind any satellite (satellites don't wait around).
   const naturals = [];
-  for (const n of naturalTargets(state.bodies, state.skyEnu?.stars)) {
+  for (const n of naturalTargets(state.bodies, state.skyEnu?.stars, state.conEnu, state.limit?.stars)) {
     if (!n.look.visible) continue;
     const angCos = dot(n.look.enu, basis.back);
     if (angCos > reticleCos) state.sticky.set(n.obj.id, t);
@@ -779,6 +781,14 @@ async function capture(obj) {
 }
 
 // Save a real sighting of obj at sky time d. Returns the saved record, or null (and says why).
+// Constellations (js/constellations.js): owning every star turns its card gold. Say so when it happens.
+function ownedCardKeys() { return new Set(state.sightings.filter((s) => !s.sim).map((s) => s.cardKey)); }
+function celebrateConstellation(obj, before) {
+  const con = CON_BY_ID.get(obj.con); if (!con) return;
+  const was = conProgress(con, before), now = conProgress(con, ownedCardKeys());
+  if (now.level === 'gold' && was.level !== 'gold') setTimeout(() => toast(`${con.name} complete! Your ${con.name} constellation card is now gold.`, 5000), 2500);
+  else if (now.have > was.have) setTimeout(() => toast(`${con.name}: ${now.have} of ${now.total} stars.`, 3000), 2500);
+}
 async function recordSighting(obj, d, l = null) {
   l ??= obj.natural ? state.naturals?.find((n) => n.obj.id === obj.id)?.look : look(obj, frame(d, state.observer));
   if (!l) return null;
@@ -788,7 +798,9 @@ async function recordSighting(obj, d, l = null) {
   try {
     const key = await addSighting(sighting);
     const saved = { ...sighting, key };
+    const before = obj.con ? ownedCardKeys() : null;
     state.sightings.unshift(saved);
+    if (before) celebrateConstellation(obj, before);
     return saved;
   } catch {
     toast('Your sighting could not be saved. Check that browser storage is available, then try again.', 5000);
@@ -1091,6 +1103,7 @@ async function boot() {
   try {
     state.catalog=await loadCatalog('data/catalog.json');
     state.byId=new Map(state.catalog.objects.map(o=>[o.id,o]));
+    await loadConstellations();
     state.cardModels=new Map(buildCards(state.catalog).map(c=>[c.key,c]));
     state.model=new SkyModel(state.catalog.objects); setBinocularMode(state.binoculars);
     state.rising=new RisingSoon(state.catalog.objects);
