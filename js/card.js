@@ -1,17 +1,17 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { cardArt } from './art.js?v=0.1.113';
-import { TIER_INFO } from './rarity.js?v=0.1.113';
-import { SET_BY_ID } from './sets.js?v=0.1.113';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.113';
-import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.113';
-import { artFileFor } from './art-keys.js?v=0.1.113';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.113';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.113';
-import { nightsIn } from './observation.js?v=0.1.113';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.113';
-import { SHINY } from './shiny.js?v=0.1.113';
-import { conArt } from './con-art.js?v=0.1.113';
-import { CON_FIGURES } from './con-figures.js?v=0.1.113';
+import { cardArt } from './art.js?v=0.1.114';
+import { TIER_INFO } from './rarity.js?v=0.1.114';
+import { SET_BY_ID } from './sets.js?v=0.1.114';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.114';
+import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.114';
+import { artFileFor } from './art-keys.js?v=0.1.114';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.114';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.114';
+import { nightsIn } from './observation.js?v=0.1.114';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.114';
+import { SHINY } from './shiny.js?v=0.1.114';
+import { conArt } from './con-art.js?v=0.1.114';
+import { CON_FIGURES } from './con-figures.js?v=0.1.114';
 const conFig = (id) => (CON_FIGURES.has(id) ? { figure: `assets/art/con/${id}.webp` } : {});
 
 // Levels count observing nights (local noon to noon): bronze 1, silver 3, gold 10. Before
@@ -51,7 +51,7 @@ export function renderCard(o, opts = {}) {
   const sightings = (opts.sightings ?? []).filter((s) => !s.sim);
   // A constellation card is earned by its stars: opts.ownedKeys = card keys you own; opts.sightings = theirs.
   const conCard = o.natural === 'constellation', prog = conCard ? conProgress(o, opts.ownedKeys ?? new Set()) : null;
-  const caught = conCard ? prog.have > 0 : sightings.length > 0;
+  const caught = conCard ? prog.level === 'gold' : sightings.length > 0; // a constellation joins your collection only when complete
   const shinyOf = sightings.find((x) => x.shiny && SHINY[x.shiny])?.shiny; // a shiny sighting makes the card shiny (js/shiny.js)
   const revealed = caught || opts.preview;
   const extinct = opts.forceExtinct || !!o.decay;
@@ -166,19 +166,19 @@ export function renderCardTile(o, opts = {}) {
   const sightings = (opts.sightings ?? []).filter((s) => !s.sim);
   // A constellation card is earned by its stars: opts.ownedKeys = card keys you own; opts.sightings = theirs.
   const conCard = o.natural === 'constellation', prog = conCard ? conProgress(o, opts.ownedKeys ?? new Set()) : null;
-  const caught = conCard ? prog.have > 0 : sightings.length > 0;
+  const caught = conCard ? prog.level === 'gold' : sightings.length > 0; // a constellation joins your collection only when complete
   const shinyOf = sightings.find((x) => x.shiny && SHINY[x.shiny])?.shiny; // a shiny sighting makes the card shiny (js/shiny.js)
   const tier = TIER_INFO[o.tier] ?? TIER_INFO.common;
   const set = SET_BY_ID[o.set] ?? { name: 'Field archive', color: '#d74730' };
   const title = titleFor(o);
   const tile = document.createElement('button');
   tile.type = 'button';
-  const conDone = (o.natural === 'constellation' && new Set(sightings.map((x) => x.cardKey)).size >= o.stars.length) || (!!o.launches && fleetLevel(o.family, stampsIn(sightings).size) === 'gold');
+  const conDone = (conCard && caught) || (!!o.launches && fleetLevel(o.family, stampsIn(sightings).size) === 'gold');
   const shinyTile = sightings.some((x) => x.shiny && SHINY[x.shiny]);
   tile.className = `card-tile card-tile--retro${caught ? ' is-owned' : ''}${conDone ? ' gold-foil' : ''}${shinyTile ? ' shiny' : ''}`;
   tile.style.setProperty('--set', set.color);
   tile.setAttribute('aria-label', `${title}, ${tier.label}, ${caught ? `collected, ${sightings.length} sightings` : 'not collected'}. View card`);
-  tile.innerHTML = `<span class="card-tile__set">${esc(set.name)}</span><span class="card-tile__art">${o.natural === 'constellation' ? conArt(o.data, null, conFig(o.con)) : o.con && !o.skyName && caught ? conArt(CON_BY_ID.get(o.con).data, o.hip, conFig(o.con)) : caught && artImage(o, 'small') ? `<img class="card-art-image" src="${artImage(o, 'small')}" alt="" loading="lazy" decoding="async">` : cardArt(o, { accent: set.color, silhouette: !caught })}</span><span class="card-tile__body"><span class="card-tile__tier">${tier.gem} ${tier.label}</span><span class="card-tile__name">${esc(title)}</span><span class="card-tile__status">${caught ? (o.natural === 'constellation' ? `✓ ${new Set(sightings.map((x) => x.cardKey)).size} of ${o.stars.length} stars` : o.launches ? `✓ ${stampsIn(sightings).size} of ${o.launches.length} launches` : `✓ Collected ${new Date(Math.min(...sightings.map((s) => s.time))).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`) : 'Not yet collected'}<span aria-hidden="true">↗</span></span></span>`;
+  tile.innerHTML = `<span class="card-tile__set">${esc(set.name)}</span><span class="card-tile__art">${o.natural === 'constellation' ? conArt(o.data, null, conFig(o.con)) : o.con && !o.skyName && caught ? conArt(CON_BY_ID.get(o.con).data, o.hip, conFig(o.con)) : caught && artImage(o, 'small') ? `<img class="card-art-image" src="${artImage(o, 'small')}" alt="" loading="lazy" decoding="async">` : cardArt(o, { accent: set.color, silhouette: !caught })}</span><span class="card-tile__body"><span class="card-tile__tier">${tier.gem} ${tier.label}</span><span class="card-tile__name">${esc(title)}</span><span class="card-tile__status">${caught ? (o.natural === 'constellation' ? `✓ ${new Set(sightings.map((x) => x.cardKey)).size} of ${o.stars.length} stars` : o.launches ? `✓ ${stampsIn(sightings).size} of ${o.launches.length} launches` : `✓ Collected ${new Date(Math.min(...sightings.map((s) => s.time))).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`) : conCard && prog.have ? `${prog.have} of ${prog.total} stars found` : 'Not yet collected'}<span aria-hidden="true">↗</span></span></span>`;
   return tile;
 }
 

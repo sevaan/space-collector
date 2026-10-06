@@ -170,7 +170,8 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   Regulus are reused) plus a `con:<id>` card per constellation; `loadConstellations()` must run before buildCards (both
   pages). Stars are targets via `naturalTargets(..., state.conEnu, state.limit.stars)` (only when bright enough for your
   sky, after extinction). Constellation cards are earned through their stars (cards-page `linkConstellations`,
-  renderCard `opts.ownedKeys`): bronze 1 star, silver half, gold (gold frame, `.con-complete`) when all. Art for these
+  renderCard `opts.ownedKeys`): the card joins your collection ONLY when every star is collected, arriving gold (2026-10-05,
+  Sevaan); before that it stays in the field guide showing stars found (tile "N of M stars found", progress dots on the card). Art for these
   is drawn from real positions (js/con-art.js `conArt`), the card's star ringed in orange. Toasts on progress/completion.
 - Tonight planner (2026-10-05): js/tonight-worker.js scans every bright-enough object minute by minute from now to dawn (same visibility rules incl. sky limit, twilight, Moon) → passes + a visible-count curve (~1.5 s). The visible panel has Now | Tonight tabs (`showVTab`, `renderTonight`: summary windows, chart, passes worth seeing — new, bright, high or rare — and `alsoUpTonight` planets/constellations with stars you still need). `#nextpass` chip under the radar when nothing is lit. Forecast refreshes every 20 min or when place/sky/binoculars change.
 - Albums (2026-10-05): collection page tab Albums (js/cards-page.js `renderAlbums`): one cover per set with progress to Bronze/Silver/Gold goals (`albumGoals`: sets <= 30 cards complete them; bigger sets 10/50/100 or 10/50/200); gold cover at gold. Opening an album = Discover filtered to the set with an `#album-head` progress header.

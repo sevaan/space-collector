@@ -1,18 +1,18 @@
-import { renderCard, renderCardTile, renderPassport, attachTilt, attachGyro, attachFlip, artImage } from './card.js?v=0.1.113';
-import { cardArt } from './art.js?v=0.1.113';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.113';
-import { applyBack } from './card-backs.js?v=0.1.113';
-import { SETS, assignSets } from './sets.js?v=0.1.113';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.113';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.113';
-import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.113';
-import { progress } from './progress.js?v=0.1.113';
-import { eventBadges, nextEvent } from './events.js?v=0.1.113';
-import { drawShareCard, shareCard } from './share-card.js?v=0.1.113';
-import { conArt } from './con-art.js?v=0.1.113';
-import { CON_BY_ID } from './constellations.js?v=0.1.113';
-import { allSightings, deleteSighting } from './store.js?v=0.1.113';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.113';
+import { renderCard, renderCardTile, renderPassport, attachTilt, attachGyro, attachFlip, artImage } from './card.js?v=0.1.114';
+import { cardArt } from './art.js?v=0.1.114';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.114';
+import { applyBack } from './card-backs.js?v=0.1.114';
+import { SETS, assignSets } from './sets.js?v=0.1.114';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.114';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.114';
+import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.114';
+import { progress } from './progress.js?v=0.1.114';
+import { eventBadges, nextEvent } from './events.js?v=0.1.114';
+import { drawShareCard, shareCard } from './share-card.js?v=0.1.114';
+import { conArt } from './con-art.js?v=0.1.114';
+import { CON_BY_ID } from './constellations.js?v=0.1.114';
+import { allSightings, deleteSighting } from './store.js?v=0.1.114';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.114';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -101,7 +101,7 @@ const observer = new IntersectionObserver((entries) => {
     observer.unobserve(target);
     const c = state.byKey.get(target.dataset.key);
     if (!c) continue;
-    const tile = renderCardTile(c, { sightings: state.sightingsByKey.get(c.key) ?? [] });
+    const tile = renderCardTile(c, { sightings: state.sightingsByKey.get(c.key) ?? [], ownedKeys: c.natural === 'constellation' ? ownedKeys() : undefined });
     tile.addEventListener('click', () => openViewer(state.list.findIndex((card) => card.key === c.key), tile.getBoundingClientRect()));
     target.replaceChildren(tile);
   }
@@ -373,13 +373,16 @@ $('slot').addEventListener('pointerup', (e) => {
   if (dy < -45 && last.y - pts[0].y < -60 && Math.abs(dx) < -dy * 0.9 && -dy / dt > 0.6) flickClose(dx);
 });
 $('slot').addEventListener('pointercancel', () => { flick = null; });
-// A constellation card is owned through its stars: it carries their sightings (for dates and counts)
-// and the set of star cards you own (for progress and the gold frame).
+// A constellation card is owned through its stars, and only once you have ALL of them (it then arrives
+// gold, 2026-10-05): it carries their sightings (for dates and counts). Before that it stays in the field
+// guide, showing which stars you've found (from the star cards you own).
 function linkConstellations() {
   for (const c of state.cards) {
     if (c.natural !== 'constellation') continue;
+    state.sightingsByKey.delete(c.key);
+    if (!c.stars.every((k) => state.sightingsByKey.has(k))) continue;
     const s = c.stars.flatMap((k) => state.sightingsByKey.get(k) ?? []);
-    if (s.length) state.sightingsByKey.set(c.key, s.sort((a, b) => b.time - a.time)); else state.sightingsByKey.delete(c.key);
+    state.sightingsByKey.set(c.key, s.sort((a, b) => b.time - a.time));
   }
 }
 const ownedKeys = () => new Set([...state.sightingsByKey.keys()]);
