@@ -1,20 +1,21 @@
-import { VERSION } from './version.js?v=0.1.81';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode } from './orbit.js?v=0.1.81';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.81';
-import { SkyView, shortName } from './sky.js?v=0.1.81';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.81';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.81';
-import { cardArt } from './art.js?v=0.1.81';
-import { renderCard, cardLevel } from './card.js?v=0.1.81';
-import { playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.81';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.81';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.81';
-import { naturalTargets } from './natural.js?v=0.1.81';
-import { TIER_INFO } from './rarity.js?v=0.1.81';
-import { SETS } from './sets.js?v=0.1.81';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.81';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.81';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter } from './planes.js?v=0.1.81';
+import { VERSION } from './version.js?v=0.1.82';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.82';
+import { skyLimit, SKIES, DEFAULT_SKY } from './sky-limit.js?v=0.1.82';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.82';
+import { SkyView, shortName } from './sky.js?v=0.1.82';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.82';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.82';
+import { cardArt } from './art.js?v=0.1.82';
+import { renderCard, cardLevel } from './card.js?v=0.1.82';
+import { playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.82';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.82';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.82';
+import { naturalTargets } from './natural.js?v=0.1.82';
+import { TIER_INFO } from './rarity.js?v=0.1.82';
+import { SETS } from './sets.js?v=0.1.82';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.82';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.82';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter } from './planes.js?v=0.1.82';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -49,6 +50,7 @@ const state = {
   model: null,     // SkyModel: tracks what's above the horizon
   items: [],       // latest interpolated positions: [{ obj, look }]
   binoculars: readPref('binoculars', false),
+  lightSky: SKIES[readText('sky', DEFAULT_SKY)] ? readText('sky', DEFAULT_SKY) : DEFAULT_SKY, // light pollution where you are
   trails: new Map(),
   sticky: new Map(), // candidate id -> last time it was in the reticle
   candidates: [],
@@ -71,6 +73,8 @@ function now() { return new Date(Date.now() + state.timeOffsetMs); }
 
 function readPref(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : v === '1'; } catch { return d; } }
 function writePref(k, v) { try { localStorage.setItem(k, v ? '1' : '0'); } catch {} }
+function readText(k, d) { try { return localStorage.getItem(k) ?? d; } catch { return d; } }
+function writeText(k, v) { try { localStorage.setItem(k, v); } catch {} }
 
 function loadSavedLocation() {
   try { return JSON.parse(localStorage.getItem('observer')); } catch { return null; }
@@ -236,9 +240,22 @@ function refreshAbove() {
   }
   for (const id of state.trails.keys()) if (!keep.has(id)) state.trails.delete(id);
   refreshCelestial(d);
+  updateSkyLimit(f);
   updateStatus(f);
 }
 
+// What you can see right now: your sky's light pollution plus twilight and the Moon (js/sky-limit.js).
+function updateSkyLimit(f) {
+  const moon = state.bodies?.find((b) => b.kind === 'moon');
+  const moonEl = moon ? Math.asin(Math.max(-1, Math.min(1, moon.enu[2]))) * 180 / Math.PI : -90;
+  state.limit = skyLimit({ sky: state.lightSky, sunEl: f?.sunEl ?? -90, moonEl, moonIllum: moon?.illum ?? 0 });
+  setSkyLimit(state.limit);
+  const info = $('sky-limit-info');
+  if (info) {
+    const L = state.limit, why = [moonEl > 0 && moon.illum > 0.25 ? 'the Moon is up' : '', (f?.sunEl ?? -90) > -18 ? 'twilight' : ''].filter(Boolean).join(' and ');
+    info.textContent = `Right now: stars to about magnitude ${L.stars.toFixed(1)}, moving satellites to ${L.satellites.toFixed(1)}${state.binoculars ? ` (${L.binoculars.toFixed(1)} with binoculars)` : ''}${why ? `, dimmed by ${why}` : ''}.`;
+  }
+}
 function refreshCelestial(d) {
   const toEnu = eqToEnu(d, state.observer);
   state.bodies = solarSystem(d, state.observer).map((b) => ({ ...b, enu: toEnu(b.v) }));
@@ -899,7 +916,7 @@ function previewPass(objectId = null, jump = true) {
       $('next-pass-info').textContent='';
       toast(`<span class="big-line">Jumped ahead</span>${escapeHtml(label(obj))}<br><small>${new Date(pass.dateMs).toLocaleString()} · ${escapeHtml(state.observer.label)}</small>`,4000);
     };
-    passWorker.postMessage({requestId,objects:state.catalog.objects.filter(o=>o.stdMag<=4.5 || o.id===objectId),objectId,dateMs:start.getTime(),observer:state.observer,binoculars:state.binoculars});
+    passWorker.postMessage({requestId,objects:state.catalog.objects.filter(o=>o.stdMag<=4.5 || o.id===objectId),objectId,dateMs:start.getTime(),observer:state.observer,binoculars:state.binoculars,limit:state.limit});
   } catch { cancelPassSearch(); toast('Pass preview is unavailable in this browser. Try the visible-object list.'); }
 }
 $('btn-next-pass').addEventListener('click', () => previewPass());
@@ -947,12 +964,15 @@ $('chk-landscape').addEventListener('change', (e) => { state.landscape = e.targe
 $('chk-lines').checked = state.showLines;
 $('chk-lines').addEventListener('change', (e) => { state.showLines = e.target.checked; writePref('lines', state.showLines); });
 $('chk-any').addEventListener('change', (e) => { state.captureAny = e.target.checked; });
+$('sel-sky').value = state.lightSky;
+$('sel-sky').addEventListener('change', (e) => { state.lightSky = e.target.value; writeText('sky', state.lightSky); updateSkyLimit(state.frame); state.model?.reset?.(); refreshAbove(); });
 $('chk-bino').checked = state.binoculars;
 $('chk-bino').addEventListener('change', (e) => {
   cancelPassSearch();
   state.binoculars = e.target.checked;
   writePref('binoculars', state.binoculars);
   setBinocularMode(state.binoculars);
+  updateSkyLimit(state.frame);
   state.model?.reset();
   state.trails.clear();
 });
@@ -979,7 +999,8 @@ function renderDebug() {
     `sun elevation  ${f ? f.sunEl.toFixed(1) : '?'}°`,
     `catalogue      ${cat?.objects.length ?? 0} objects, data ${ageH} h old`,
     `above horizon  ${state.model?.above.size ?? 0} (${state.items.filter((i) => i.look.visible).length} visible)`,
-    `binoculars     ${state.binoculars ? 'on (to mag 8)' : 'off (naked eye, to mag 5)'}`,
+    `binoculars     ${state.binoculars ? 'on' : 'off'}`,
+    `sky            ${state.lightSky}: stars ${state.limit?.stars.toFixed(1)}, satellites ${state.limit?.satellites.toFixed(1)} (bino ${state.limit?.binoculars.toFixed(1)}), ${state.limit?.sb.toFixed(1)} mag/arcsec²`,
   ].join('\n');
 }
 

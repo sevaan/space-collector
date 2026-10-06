@@ -131,3 +131,10 @@ Alerts, service worker, accounts, secret sets/feats.
   sevaan@gmail.com), poster style + a card back + curated references (~/Documents/Space Collector art references).
 - Reveal: once the card has landed, swipe it away in any direction to go back to the sky (`onRevealDismiss`).
 - Capture stamps (2026-10-05): a NEW card only gets a stamp at collection milestones (`MILESTONES` in js/reveal.js: 1 = "FIRST ITEM COLLECTED", then 10, 25, 50, 75, 100, 200 … 1000 "N ITEMS COLLECTED"); repeat sightings keep SEEN n× / NEW STAMP / level-up stamps. Front holo was toned down about a third (backs unchanged).
+- What you can see (2026-10-05): js/sky-limit.js turns your sky (Settings → "Your sky": city / suburbs (default) /
+  countryside / dark site, saved as localStorage `sky`; state field `lightSky`, NOT `state.sky`, which is the star
+  catalogue) plus twilight and the Moon into a limiting magnitude (sky brightness → NELM; satellites 0.5 mag harder,
+  binoculars +3). `updateSkyLimit` in main.js recomputes it each tick and calls `setSkyLimit` (js/orbit.js); `look()`
+  adds atmospheric extinction by elevation to `mag`. Starlink stdMag is per object: 5.0 if launched < 60 days ago or
+  perigee < 420 km (bright trains), else 6.8 (darkened/visored, Mallama et al.). An automatic light-pollution lookup by
+  location is not built yet (needs a dataset whose licence fits).

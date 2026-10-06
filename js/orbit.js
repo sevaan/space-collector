@@ -1,7 +1,8 @@
 // Orbit math: where every object is in the observer's sky, and whether it can be seen.
 // Pure functions, no DOM, so this module carries over unchanged to a native wrapper.
 
-import * as sat from './lib/satellite.js?v=0.1.81';
+import * as sat from './lib/satellite.js?v=0.1.82';
+import { extinction, starlinkStdMag } from './sky-limit.js?v=0.1.82';
 
 const RAD = Math.PI / 180;
 const EARTH_RADIUS_KM = 6371;
@@ -9,11 +10,14 @@ const AU_KM = 149597870.7;
 
 // Sun must be this far below the horizon before satellites stand out (nautical twilight).
 export const DARK_SUN_ELEVATION = -6;
-// Faintest magnitude we count as visible: naked eye from a darkish backyard, or with binoculars.
+// Faintest satellite magnitude we count as visible, straight overhead. It follows your sky (light
+// pollution, Moon, twilight: js/sky-limit.js) via setSkyLimit; objects lower down are dimmed by extinction.
 export const NAKED_EYE_MAG = 5.0;
 export const BINOCULAR_MAG = 8.0;
-let faintest = NAKED_EYE_MAG;
-export function setBinocularMode(on) { faintest = on ? BINOCULAR_MAG : NAKED_EYE_MAG; }
+let nakedLimit = 4.3, binoLimit = 7.3, binoculars = false;
+export function setBinocularMode(on) { binoculars = !!on; }
+export function setSkyLimit(limit) { if (limit) { nakedLimit = limit.satellites; binoLimit = limit.binoculars; } }
+export const currentLimit = () => (binoculars ? binoLimit : nakedLimit);
 
 export async function loadCatalog(url) {
   const res = await fetch(url, { cache: 'no-cache' });
@@ -25,7 +29,7 @@ export async function loadCatalog(url) {
     if (!satrec || satrec.error) continue;
     // Constellation members share their family's facts to keep the file small.
     const fam = o.family ? families[o.family] : null;
-    if (fam) Object.assign(o, { kind: 'PAY', type: 'satellite', tier: 'common', stdMag: fam.stdMag, owner: fam.owner, year: o.launch ? Number(o.launch.slice(0, 4)) : null });
+    if (fam) Object.assign(o, { kind: 'PAY', type: 'satellite', tier: 'common', stdMag: o.family === 'STARLINK' ? starlinkStdMag(o) : fam.stdMag, owner: fam.owner, year: o.launch ? Number(o.launch.slice(0, 4)) : null });
     o.card ??= String(o.id);
     o.satrec = satrec;
     delete o.el; delete o.l1; delete o.l2;
@@ -106,8 +110,9 @@ export function look(obj, f) {
   if (el < 0) return { az, el, rangeKm: la.rangeSat, sunlit: false, visible: false, mag: null };
   const sunlit = isSunlit(r, f.sunDir);
   const dark = f.sunEl < DARK_SUN_ELEVATION;
-  const mag = sunlit ? apparentMag(obj.stdMag, la.rangeSat, r, f) : null;
-  const bright = mag !== null && mag <= faintest;
+  // mag includes the dimming from the air near the horizon, so it's what you'd see.
+  const mag = sunlit ? apparentMag(obj.stdMag, la.rangeSat, r, f) + extinction(el) : null;
+  const bright = mag !== null && mag <= currentLimit();
   return { az, el, rangeKm: la.rangeSat, sunlit, dark, bright, visible: sunlit && dark && bright, mag };
 }
 
