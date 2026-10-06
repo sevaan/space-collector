@@ -1,17 +1,17 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { cardArt } from './art.js?v=0.1.123';
-import { TIER_INFO } from './rarity.js?v=0.1.123';
-import { SET_BY_ID } from './sets.js?v=0.1.123';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.123';
-import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.123';
-import { artFileFor } from './art-keys.js?v=0.1.123';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.123';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.123';
-import { nightsIn } from './observation.js?v=0.1.123';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.123';
-import { SHINY } from './shiny.js?v=0.1.123';
-import { conArt } from './con-art.js?v=0.1.123';
-import { CON_FIGURES } from './con-figures.js?v=0.1.123';
+import { cardArt } from './art.js?v=0.1.124';
+import { TIER_INFO } from './rarity.js?v=0.1.124';
+import { SET_BY_ID } from './sets.js?v=0.1.124';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.124';
+import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.124';
+import { artFileFor } from './art-keys.js?v=0.1.124';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.124';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.124';
+import { nightsIn } from './observation.js?v=0.1.124';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.124';
+import { SHINY } from './shiny.js?v=0.1.124';
+import { conArt } from './con-art.js?v=0.1.124';
+import { CON_FIGURES } from './con-figures.js?v=0.1.124';
 // The animal/symbol figure belongs to the completed (gold) constellation card only (2026-10-05): a single
 // star's card draws just the star pattern with its star marked, so the figure is a reward for finishing the set.
 const conFig = (id) => (CON_FIGURES.has(id) ? { figure: `assets/art/con/${id}.webp` } : {});
@@ -249,15 +249,40 @@ export function attachTilt(el) {
 // Phone tilt moves the card and its foil. The resting angle is whatever the phone was at when the
 // card opened, and it slowly follows you so the card settles back if you just change how you hold it.
 // A finger on the card takes over until it lifts.
+// Phone tilt is measured RELATIVE to however you're holding the phone when the card appears (flat, upright,
+// pointed at the sky, upside down): the card starts level and moves only as you turn the phone from there.
+// Raw beta/gamma angles jump near upright and upside down (gimbal lock), which threw the card to full tilt,
+// so we work with the whole orientation as a quaternion and take the small turn about the phone's own
+// x (top tips toward/away) and y (sides tip) axes. The resting pose drifts slowly toward how you hold it now.
+const D2R = Math.PI / 180;
+const qMul = (a, b) => [
+  a[0] * b[0] - a[1] * b[1] - a[2] * b[2] - a[3] * b[3],
+  a[0] * b[1] + a[1] * b[0] + a[2] * b[3] - a[3] * b[2],
+  a[0] * b[2] - a[1] * b[3] + a[2] * b[0] + a[3] * b[1],
+  a[0] * b[3] + a[1] * b[2] - a[2] * b[1] + a[3] * b[0]];
+// DeviceOrientation is Z (alpha), then X' (beta), then Y'' (gamma).
+const qFromEuler = (al, be, ga) => {
+  const z = [Math.cos(al * D2R / 2), 0, 0, Math.sin(al * D2R / 2)];
+  const x = [Math.cos(be * D2R / 2), Math.sin(be * D2R / 2), 0, 0];
+  const y = [Math.cos(ga * D2R / 2), 0, Math.sin(ga * D2R / 2), 0];
+  return qMul(qMul(z, x), y);
+};
+const qNorm = (q) => { const n = Math.hypot(...q) || 1; return q.map((v) => v / n); };
 export function attachGyro(el, tilt) {
   let base = null, px = .5, py = .5;
   const onOri = (e) => {
     if (e.beta == null || e.gamma == null || reducedMotion() || tilt.touching) return;
-    base ??= { b: e.beta, g: e.gamma };
-    base.b += (e.beta - base.b) * 0.01;
-    base.g += (e.gamma - base.g) * 0.01;
-    const tx = .5 + Math.max(-1, Math.min(1, (e.gamma - base.g) / 20)) * .5;
-    const ty = .5 + Math.max(-1, Math.min(1, (e.beta - base.b) / 20)) * .5;
+    let q = qFromEuler(e.alpha ?? 0, e.beta, e.gamma);
+    if (!base) base = q;
+    if (q[0] * base[0] + q[1] * base[1] + q[2] * base[2] + q[3] * base[3] < 0) q = q.map((v) => -v); // same hemisphere
+    base = qNorm(base.map((v, i) => v + (q[i] - v) * 0.01));
+    // Turn from the resting pose, in the phone's own frame: conj(base) * q.
+    let r = qMul([base[0], -base[1], -base[2], -base[3]], q);
+    if (r[0] < 0) r = r.map((v) => -v);
+    const ax = 2 * Math.asin(Math.max(-1, Math.min(1, r[1]))) / D2R; // about the phone's x axis (like beta)
+    const ay = 2 * Math.asin(Math.max(-1, Math.min(1, r[2]))) / D2R; // about the phone's y axis (like gamma)
+    const tx = .5 + Math.max(-1, Math.min(1, ay / 20)) * .5;
+    const ty = .5 + Math.max(-1, Math.min(1, ax / 20)) * .5;
     px += (tx - px) * 0.5; py += (ty - py) * 0.5; // take the edge off sensor jitter; the spring does the rest
     tilt.set(px, py);
   };

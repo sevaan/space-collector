@@ -26,7 +26,7 @@ Live: https://sevaan.github.io/space-collector/ (GitHub Pages, deploys from `mai
   tools → "Jump to next visible pass" + drag mode to test during the day.
 - No practice mode (Sevaan removed it 2026-09-29): every capture counts. Legacy `sim: true` records stay
   hidden. Time travel lives only in More → Testing tools. "Find a visible pass" reports when/where, no jump.
-- Card viewer: the card owns touch (touch-action: none) and phone tilt is always on (iOS permission is
+- Card viewer: the card owns touch (touch-action: none) and phone tilt is always on, measured relative to how you hold the phone when the card appears (quaternion, gimbal-free, `attachGyro`; 2026-10-05) (iOS permission is
   asked from the tap that opens a card). A finger on the card overrides tilt.
 - Card feel (2026-10-02, after poke-holo.simey.me, written from scratch since that repo is GPL): tilt/glare/
   foil run on a spring in `attachTilt` (js/card.js) feeding --rx/--ry/--mx/--my/--bgx/--bgy/--hyp/--o;
