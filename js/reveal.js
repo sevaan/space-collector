@@ -5,9 +5,9 @@
 //  Everything scales with rarity (Legendary dims the sky, shockwave, held breath, slow flip, fanfare).
 // Waits use timers, not animation.finished, so a paused tab can never freeze the sequence.
 
-import { TIER_INFO } from './rarity.js?v=0.1.80';
-import { levelFor, attachTilt, attachGyro, attachFlip } from './card.js?v=0.1.80';
-import { applyBack } from './card-backs.js?v=0.1.80';
+import { TIER_INFO } from './rarity.js?v=0.1.81';
+import { levelFor, attachTilt, attachGyro, attachFlip } from './card.js?v=0.1.81';
+import { applyBack } from './card-backs.js?v=0.1.81';
 
 const FX = {
   common:    { particles: 14,  flip: 520,  spin: 0,   dim: 0,   shock: false, notes: [880],                            hold: 0 },
@@ -248,6 +248,9 @@ async function finish({ fx, color, fresh, seen, level, levelUp, card, alive, fle
     : newStamp ? `NEW STAMP<small>${levelUp ? `${LEVEL_NAME[level]} CARD UNLOCKED` : stampLine}</small>`
     : levelUp ? `SEEN ${seen}×<small>${LEVEL_NAME[level]} CARD UNLOCKED</small>` : `SEEN ${seen}×<small>${nights > 1 ? `${nights} NIGHTS · ` : ''}${date}</small>`;
   if (!fresh || milestone) {
+    // Centre the stamp on the card itself (the holder can be taller than the card).
+    const hr = $('rv-holder').getBoundingClientRect(), cr = card.getBoundingClientRect();
+    if (cr.height) $('rv-stamp').style.top = `${cr.top - hr.top + cr.height / 2}px`;
     $('rv-stamp').style.setProperty('--stamp', levelUp ? LEVEL_COLOR[level] : newStamp ? STAMP_INK : color);
     await play($('rv-stamp'), [
       { opacity: 0, transform: 'translate(-50%,-50%) rotate(-9deg) scale(2.6)' },
