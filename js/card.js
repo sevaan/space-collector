@@ -1,17 +1,17 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { cardArt } from './art.js?v=0.1.118';
-import { TIER_INFO } from './rarity.js?v=0.1.118';
-import { SET_BY_ID } from './sets.js?v=0.1.118';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.118';
-import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.118';
-import { artFileFor } from './art-keys.js?v=0.1.118';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.118';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.118';
-import { nightsIn } from './observation.js?v=0.1.118';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.118';
-import { SHINY } from './shiny.js?v=0.1.118';
-import { conArt } from './con-art.js?v=0.1.118';
-import { CON_FIGURES } from './con-figures.js?v=0.1.118';
+import { cardArt } from './art.js?v=0.1.119';
+import { TIER_INFO } from './rarity.js?v=0.1.119';
+import { SET_BY_ID } from './sets.js?v=0.1.119';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.119';
+import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.119';
+import { artFileFor } from './art-keys.js?v=0.1.119';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.119';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.119';
+import { nightsIn } from './observation.js?v=0.1.119';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.119';
+import { SHINY } from './shiny.js?v=0.1.119';
+import { conArt } from './con-art.js?v=0.1.119';
+import { CON_FIGURES } from './con-figures.js?v=0.1.119';
 // The animal/symbol figure belongs to the completed (gold) constellation card only (2026-10-05): a single
 // star's card draws just the star pattern with its star marked, so the figure is a reward for finishing the set.
 const conFig = (id) => (CON_FIGURES.has(id) ? { figure: `assets/art/con/${id}.webp` } : {});
@@ -180,7 +180,7 @@ export function renderCardTile(o, opts = {}) {
   tile.className = `card-tile card-tile--retro${caught ? ' is-owned' : ''}${conDone ? ' gold-foil' : ''}${shinyTile ? ' shiny' : ''}`;
   tile.style.setProperty('--set', set.color);
   tile.setAttribute('aria-label', `${title}, ${tier.label}, ${caught ? `collected, ${sightings.length} sightings` : 'not collected'}. View card`);
-  tile.innerHTML = `<span class="card-tile__set">${esc(set.name)}</span><span class="card-tile__art">${o.natural === 'constellation' ? conArt(o.data, null, caught ? conFig(o.con) : {}) : o.con && !o.skyName && caught ? conArt(CON_BY_ID.get(o.con).data, o.hip, {}) : caught && artImage(o, 'small') ? `<img class="card-art-image" src="${artImage(o, 'small')}" alt="" loading="lazy" decoding="async">` : cardArt(o, { accent: set.color, silhouette: !caught })}</span><span class="card-tile__body"><span class="card-tile__tier">${tier.gem} ${tier.label}</span><span class="card-tile__name">${esc(title)}</span><span class="card-tile__status">${caught ? (o.natural === 'constellation' ? `✓ ${new Set(sightings.map((x) => x.cardKey)).size} of ${o.stars.length} stars` : o.launches ? `✓ ${stampsIn(sightings).size} of ${o.launches.length} launches` : `✓ Collected ${new Date(Math.min(...sightings.map((s) => s.time))).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`) : conCard && prog.have ? `${prog.have} of ${prog.total} stars found` : 'Not yet collected'}<span aria-hidden="true">↗</span></span></span>`;
+  tile.innerHTML = `<span class="card-tile__set">${esc(set.name)}</span><span class="card-tile__art">${o.natural === 'constellation' ? conArt(o.data, null, caught ? conFig(o.con) : {}) : o.con && !o.skyName && caught ? conArt(CON_BY_ID.get(o.con).data, o.hip, {}) : caught && artImage(o, 'small') ? `<img class="card-art-image" src="${artImage(o, 'small')}" alt="" loading="lazy" decoding="async">` : cardArt(o, { accent: set.color, silhouette: !caught })}</span><span class="card-tile__body"><span class="card-tile__tier">${tier.gem} ${tier.label}</span><span class="card-tile__name">${esc(title)}</span><span class="card-tile__status">${caught ? (o.natural === 'constellation' ? `✓ ${new Set(sightings.map((x) => x.cardKey)).size} of ${o.stars.length} stars` : o.launches ? `✓ ${stampsIn(sightings).size} of ${o.launches.length} launches` : `✓ Collected ${new Date(Math.min(...sightings.map((s) => s.time))).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`) : conCard && prog.have ? `${prog.have} of ${prog.total} stars found` : 'Not yet collected'}</span></span>`;
   return tile;
 }
 
