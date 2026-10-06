@@ -1,7 +1,7 @@
 // Player progress from the sighting log: XP and observer rank, tonight's three missions, a weekly streak and
 // achievements. Everything is derived from the saved sightings (nothing extra is stored), so it can't drift.
 // info(cardKey) -> { tier, type, owner, launch, natural, con } | null. No DOM.
-import { nightKey } from './observation.js?v=0.1.152';
+import { nightKey } from './observation.js?v=0.1.153';
 
 export const RANKS = [
   [0, 'Stargazer'], [200, 'Spotter'], [600, 'Tracker'], [1500, 'Navigator'], [4000, 'Flight Controller'], [10000, 'Mission Control'],
