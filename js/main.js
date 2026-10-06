@@ -1,26 +1,26 @@
-import { VERSION } from './version.js?v=0.1.135';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.135';
-import { skyLimit, SKIES, DEFAULT_SKY } from './sky-limit.js?v=0.1.135';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.135';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.135';
-import { progress as progressOf } from './progress.js?v=0.1.135';
-import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.135';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.135';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.135';
-import { SkyView, shortName } from './sky.js?v=0.1.135';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.135';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.135';
-import { cardArt } from './art.js?v=0.1.135';
-import { renderCard, cardLevel, artImage } from './card.js?v=0.1.135';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.135';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.135';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.135';
-import { naturalTargets } from './natural.js?v=0.1.135';
-import { TIER_INFO } from './rarity.js?v=0.1.135';
-import { SETS } from './sets.js?v=0.1.135';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.135';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.135';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.135';
+import { VERSION } from './version.js?v=0.1.137';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.137';
+import { skyLimit, SKIES, DEFAULT_SKY } from './sky-limit.js?v=0.1.137';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.137';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.137';
+import { progress as progressOf } from './progress.js?v=0.1.137';
+import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.137';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.137';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.137';
+import { SkyView, shortName } from './sky.js?v=0.1.137';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.137';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.137';
+import { cardArt } from './art.js?v=0.1.137';
+import { renderCard, cardLevel, artImage } from './card.js?v=0.1.137';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.137';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.137';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.137';
+import { naturalTargets } from './natural.js?v=0.1.137';
+import { TIER_INFO } from './rarity.js?v=0.1.137';
+import { SETS } from './sets.js?v=0.1.137';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.137';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.137';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.137';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -354,7 +354,7 @@ function currentBasis() {
 
 let lastAbove = 0;
 let lastPanel = 0, lastLocked = false;
-let uiSafeTop = 202, uiSafeBottom = 320;
+let uiSafeTop = 202, uiSafeBottom = 320, uiCenterY; // uiCenterY: the reticle's fixed height (radar and nav only)
 function tick(ts) {
   requestAnimationFrame(tick);
   if (!state.catalog || !state.started || document.hidden || activePanel) return;
@@ -439,6 +439,7 @@ function tick(ts) {
     time: t,
     safeTop: uiSafeTop,
     safeBottom: uiSafeBottom,
+    centerY: uiCenterY,
   });
 
   updateCompass(basis);
@@ -572,6 +573,8 @@ function measureSkySpace() {
   if (!$('banner').hidden) uiSafeTop = $('banner').getBoundingClientRect().bottom + 12;
   const navInset = window.innerHeight - $('nav').getBoundingClientRect().top + 20;
   uiSafeBottom = box.hidden ? navInset : Math.max(navInset, window.innerHeight - rect.top + 34);
+  // The reticle stays put when the info card or a banner comes and goes (2026-10-06, Sevaan: it jumped).
+  uiCenterY = ($('radar').getBoundingClientRect().bottom + 12 + window.innerHeight - navInset) / 2;
 }
 function placeCallout(target) {
   const el = $('callout'), p = sky.targetPos;
@@ -1021,8 +1024,9 @@ function updateNextPassChip() {
   const next = tonightPasses(T, t0).find((p) => p.start > t0);
   const win = tonightWindows(T).find((w) => w.s > t0);
   const dark = T.curve.length && t0 >= T.curve[0][0];
-  chip.innerHTML = next ? `${dark ? 'Nothing lit right now · next: ' : 'Satellites from ' + fmtTime(win?.s ?? next.start) + ' · first: '}<b>${escapeHtml(label(next.obj))}</b> at ${fmtTime(next.start)} ›`
-    : win ? `Nothing lit right now · satellites again at <b>${fmtTime(win.s)}</b> ›` : 'No more satellites tonight · see what else is up ›';
+  // One short line: 'Next: <name> · 12:31 AM ›' (the name shortens with … if it has to).
+  chip.innerHTML = next ? `<span>${dark ? 'Next' : 'From ' + fmtTime(win?.s ?? next.start)}:</span> <b>${escapeHtml(label(next.obj))}</b> <span>· ${fmtTime(next.start)} ›</span>`
+    : win ? `<span>Satellites again at</span> <b>${fmtTime(win.s)}</b> <span>›</span>` : '<span>No more satellites tonight ›</span>';
   chip.hidden = false;
 }
 $('nextpass').addEventListener('click', () => { showVTab('tonight'); openPanel('visible'); });

@@ -1,8 +1,8 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.135';
-import { TIER_INFO } from './rarity.js?v=0.1.135';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.137';
+import { TIER_INFO } from './rarity.js?v=0.1.137';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
