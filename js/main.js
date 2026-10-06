@@ -1,26 +1,26 @@
-import { VERSION } from './version.js?v=0.1.137';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.137';
-import { skyLimit, SKIES, DEFAULT_SKY } from './sky-limit.js?v=0.1.137';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.137';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.137';
-import { progress as progressOf } from './progress.js?v=0.1.137';
-import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.137';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.137';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.137';
-import { SkyView, shortName } from './sky.js?v=0.1.137';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.137';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.137';
-import { cardArt } from './art.js?v=0.1.137';
-import { renderCard, cardLevel, artImage } from './card.js?v=0.1.137';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.137';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.137';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.137';
-import { naturalTargets } from './natural.js?v=0.1.137';
-import { TIER_INFO } from './rarity.js?v=0.1.137';
-import { SETS } from './sets.js?v=0.1.137';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.137';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.137';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.137';
+import { VERSION } from './version.js?v=0.1.138';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.138';
+import { skyLimit, SKIES, DEFAULT_SKY } from './sky-limit.js?v=0.1.138';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.138';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.138';
+import { progress as progressOf } from './progress.js?v=0.1.138';
+import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.138';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.138';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.138';
+import { SkyView, shortName } from './sky.js?v=0.1.138';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.138';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.138';
+import { cardArt } from './art.js?v=0.1.138';
+import { renderCard, cardLevel, artImage } from './card.js?v=0.1.138';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.138';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.138';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.138';
+import { naturalTargets } from './natural.js?v=0.1.138';
+import { TIER_INFO } from './rarity.js?v=0.1.138';
+import { SETS } from './sets.js?v=0.1.138';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.138';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.138';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.138';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -203,7 +203,7 @@ function pumpToasts() {
   requestAnimationFrame(() => el.classList.add('in'));
   setTimeout(() => {
     el.classList.remove('in');
-    setTimeout(() => { el.remove(); toastBusy = false; pumpToasts(); }, 280);
+    setTimeout(() => { el.remove(); toastBusy = false; pumpToasts(); }, 320);
   }, t.ms);
 }
 

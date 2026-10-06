@@ -1,17 +1,17 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { cardArt } from './art.js?v=0.1.137';
-import { TIER_INFO } from './rarity.js?v=0.1.137';
-import { SET_BY_ID } from './sets.js?v=0.1.137';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.137';
-import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.137';
-import { artFileFor } from './art-keys.js?v=0.1.137';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.137';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.137';
-import { nightsIn } from './observation.js?v=0.1.137';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.137';
-import { SHINY } from './shiny.js?v=0.1.137';
-import { conArt } from './con-art.js?v=0.1.137';
-import { CON_FIGURES } from './con-figures.js?v=0.1.137';
+import { cardArt } from './art.js?v=0.1.138';
+import { TIER_INFO } from './rarity.js?v=0.1.138';
+import { SET_BY_ID } from './sets.js?v=0.1.138';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.138';
+import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.138';
+import { artFileFor } from './art-keys.js?v=0.1.138';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.138';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.138';
+import { nightsIn } from './observation.js?v=0.1.138';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.138';
+import { SHINY } from './shiny.js?v=0.1.138';
+import { conArt } from './con-art.js?v=0.1.138';
+import { CON_FIGURES } from './con-figures.js?v=0.1.138';
 // The animal/symbol figure belongs to the completed (gold) constellation card only (2026-10-05): a single
 // star's card draws just the star pattern with its star marked, so the figure is a reward for finishing the set.
 const conFig = (id) => (CON_FIGURES.has(id) ? { figure: `assets/art/con/${id}.webp` } : {});
@@ -295,7 +295,7 @@ export function attachGyro(el, tilt) {
 export function throwOff(el, dx, dy, dt) {
   const r = el.getBoundingClientRect(), dist = r.bottom + 40;               // until its bottom edge clears the top
   const v = Math.max(1.2, -dy / dt);                                        // px per ms, at least brisk
-  const ms = Math.round(Math.min(420, Math.max(200, dist * 1.6 / v)));      // easing starts at ~1.6× its average speed
+  const ms = Math.round(Math.min(300, Math.max(160, dist * 1.25 / v)));     // quick (2026-10-06: was 200–420 ms)
   const x = Math.max(-140, Math.min(140, dx * (ms / dt) * .5)), turn = Math.max(-14, Math.min(14, x / 10));
   el.animate([{ transform: 'translate(0, 0) rotate(0)' }, { transform: `translate(${x}px, ${-dist}px) rotate(${turn}deg)` }],
     { duration: ms, easing: 'cubic-bezier(.25,.4,.55,1)', fill: 'forwards' });
