@@ -1,26 +1,26 @@
-import { VERSION } from './version.js?v=0.1.143';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.143';
-import { skyLimit, SKIES, DEFAULT_SKY } from './sky-limit.js?v=0.1.143';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.143';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.143';
-import { progress as progressOf } from './progress.js?v=0.1.143';
-import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.143';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.143';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.143';
-import { SkyView, shortName } from './sky.js?v=0.1.143';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.143';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.143';
-import { cardArt } from './art.js?v=0.1.143';
-import { renderCard, cardLevel, artImage } from './card.js?v=0.1.143';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.143';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.143';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.143';
-import { naturalTargets } from './natural.js?v=0.1.143';
-import { TIER_INFO } from './rarity.js?v=0.1.143';
-import { SETS } from './sets.js?v=0.1.143';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.143';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.143';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.143';
+import { VERSION } from './version.js?v=0.1.146';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.146';
+import { skyLimit, SKIES, DEFAULT_SKY } from './sky-limit.js?v=0.1.146';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.146';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.146';
+import { progress as progressOf } from './progress.js?v=0.1.146';
+import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.146';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.146';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.146';
+import { SkyView, shortName } from './sky.js?v=0.1.146';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.146';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.146';
+import { cardArt } from './art.js?v=0.1.146';
+import { renderCard, cardLevel, artImage } from './card.js?v=0.1.146';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.146';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.146';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.146';
+import { naturalTargets } from './natural.js?v=0.1.146';
+import { TIER_INFO } from './rarity.js?v=0.1.146';
+import { SETS } from './sets.js?v=0.1.146';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.146';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.146';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.146';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -948,7 +948,7 @@ function renderTonight() {
   if (!T) { $('tonight-summary').textContent = 'Working out tonight\'s sky…'; $('tonight-chart').innerHTML = ''; $('tonight-list').innerHTML = ''; requestTonight(); return; }
   const wins = tonightWindows(T).filter((w) => w.e >= t0);
   const peak = T.curve.filter(([t]) => t >= t0).reduce((a, c) => (c[1] > a[1] ? c : a), [0, 0]);
-  const ev = activeEvent(t0) ?? nextEvent(t0), evLine = ev ? (t0 >= ev.start ? `<br>☄ <b>${ev.name}</b> meteor shower tonight (${ev.rate}).` : `<br>☄ Next event: <b>${ev.name}</b> meteor shower, ${new Date(ev.start + 30 * 3600e3).toLocaleDateString([], { month: 'short', day: 'numeric' })}.`) : '';
+  const ev = activeEvent(t0) ?? nextEvent(t0), evLine = ev ? (t0 >= ev.start ? `<br><b>${ev.name}</b> meteor shower tonight (${ev.rate}).` : `<br>Next event: <b>${ev.name}</b> meteor shower, ${new Date(ev.start + 30 * 3600e3).toLocaleDateString([], { month: 'short', day: 'numeric' })}.`) : '';
   $('tonight-summary').innerHTML = (wins.length
     ? `Satellites are visible ${wins.slice(0, 3).map((w) => `<b>${fmtTime(Math.max(w.s, t0))}–${fmtTime(w.e)}</b>`).join(' and ')}. Busiest around <b>${fmtTime(peak[0])}</b>, up to ${peak[1]} at once.`
     : `No satellites bright enough for your sky until dawn. Try <b>Countryside</b> in settings if you're somewhere darker, or binocular mode.`) + evLine;
@@ -1035,7 +1035,7 @@ function updateEventBanner() {
   const e = activeEvent(now().getTime()), el = $('event-banner');
   if (!e) { if (!el.hidden) el.hidden = true; return; }
   const got = state.sightings.some((s) => !s.sim && s.time >= e.start && s.time <= e.end);
-  const html = `☄ <b>${escapeHtml(e.name)}</b> meteor shower · ${got ? 'badge earned ✓' : 'catch anything to earn the badge'}`;
+  const html = `<b>${escapeHtml(e.name)}</b> meteor shower · ${got ? 'badge earned ✓' : 'catch anything to earn the badge'}`;
   if (el.innerHTML !== html) el.innerHTML = html;
   el.hidden = false;
 }
@@ -1163,7 +1163,7 @@ function previewPass(objectId = null, jump = true) {
       }
       state.preview=true; state.followPreview=true; state.timeOffsetMs=pass.dateMs-Date.now(); state.drag.on=true; state.drag.az=pass.look.az; state.drag.el=pass.look.el; state.pinnedId=obj.id; state.targetId=obj.id;
       afterTimeJump(); closePanel();
-      $('next-pass-info').textContent='';
+      $('next-pass-info').textContent=`Showing ${label(obj)}'s pass at ${new Date(pass.dateMs).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}. Tap Now to come back.`;
       toast(`<span class="big-line">Jumped ahead</span>${escapeHtml(label(obj))}<br><small>${new Date(pass.dateMs).toLocaleString()} · ${escapeHtml(state.observer.label)}</small>`,4000);
     };
     passWorker.postMessage({requestId,objects:state.catalog.objects.filter(o=>o.stdMag<=4.5 || o.id===objectId),objectId,dateMs:start.getTime(),observer:state.observer,binoculars:state.binoculars,limit:state.limit});

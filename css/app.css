@@ -116,16 +116,16 @@ body.night #plane { --plane:#ff3b2b; }
 .start-header { position:relative; flex:none; margin-top:var(--safe-top); height:80px; display:flex; align-items:center; justify-content:space-between; gap:12px; padding:0 20px; }
 .start-header::after { content:"";position:absolute;left:20px;right:20px;bottom:0;height:3px;border-block:1px solid var(--edge);opacity:.65; }
 .start-inner { flex:1; min-height:0; overflow-y:auto; width:100%; max-width:420px; margin:0 auto; box-sizing:border-box; padding:8px 24px calc(var(--safe-bottom) + 22px); display:flex; flex-direction:column; text-align:center; }
-#start-hand { position:relative; flex:none; height:clamp(230px, 42vh, 330px); margin:6px -24px 6px; }
+#start-hand { position:relative; flex:none; height:clamp(200px, 36vh, 330px); margin:2px -24px 2px; }
 /* Cards render at their real size and are scaled to fit (--hs, set by renderStartHand in main.js). */
 #start-hand .card { position:absolute; left:50%; top:50%; margin:0; transform-origin:50% 50%; box-shadow:0 18px 40px rgba(0,0,0,.6); border-radius:1.15em; pointer-events:none; }
 #start-hand .card:nth-child(1) { transform:translate(-50%,-50%) scale(var(--hs,.6)) translate(-34%, 6%) rotate(-13deg); filter:brightness(.7); }
 #start-hand .card:nth-child(2) { transform:translate(-50%,-50%) scale(var(--hs,.6)) translate(34%, 6%) rotate(12deg); filter:brightness(.7); }
 #start-hand .card:nth-child(3) { transform:translate(-50%,-50%) scale(var(--hs,.6)); }
 #start .eyebrow { margin-top:auto; }
-#start h1 { font:400 clamp(28px,8vw,36px)/1.04 var(--display);letter-spacing:-.045em;text-transform:uppercase;margin:10px 0 10px; }
-#start p { color:var(--muted);font-size:15px;line-height:1.5;margin:0 0 20px; }
-#start #start-note { font-size:12px;margin:10px 0 4px; }
+#start h1 { font:400 clamp(26px,7.6vw,34px)/1.04 var(--display);letter-spacing:-.045em;text-transform:uppercase;margin:8px 0 8px; }
+#start p { color:var(--muted);font-size:15px;line-height:1.45;margin:0 0 16px; }
+#start #start-note { font-size:12px;margin:8px 0 2px; }
 #start .text-button { width:100%; color:var(--gold); font:500 15px/1 var(--label); letter-spacing:.14em; text-transform:uppercase; }
 .panel { padding:calc(var(--safe-top) + 22px) max(20px,calc((100vw - 580px)/2)) calc(var(--safe-bottom) + 32px); }
 .panel-head { display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:20px;padding-bottom:18px;border-bottom:3px double var(--edge); }
@@ -222,6 +222,7 @@ body.night #t-art { border-color:var(--rule); }
   padding:7px 12px; border-radius:12px; background:color-mix(in srgb,var(--bg) 80%,transparent); border:1px solid color-mix(in srgb,var(--gold) 55%,transparent);
   color:var(--text); font:500 12.5px/1.3 var(--label); letter-spacing:.06em; -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px); }
 #event-banner b { color:var(--gold); font-weight:500; }
+body:has(#event-banner:not([hidden])) #toasts { top:calc(var(--safe-top) + 150px); } /* don't land on the banner */
 
 /* Every close button is a round ✕ (2026-10-06, Sevaan: no 'Done'). Same look in css/collection.css. */
 .pill.x-close { width:44px; min-width:44px; padding:0; border-radius:50%; font-size:20px; line-height:1; }

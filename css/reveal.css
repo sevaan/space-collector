@@ -7,7 +7,9 @@
 #rv-dot { position: absolute; width: 14px; height: 14px; border-radius: 50%; background: #ffe2a0; box-shadow: 0 0 16px 5px #ffd98a; transform: translate(-50%, -50%); pointer-events: none; }
 
 #rv-top { position: absolute; top: calc(var(--safe-top) + 14px); left: 16px; right: 16px; display: flex; justify-content: space-between; align-items: center; z-index: 4; }
-#rv-top .eyebrow { color: var(--fx); }
+#rv-top .eyebrow { color: var(--fx); min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } /* one line even on narrow phones */
+.rv-buttons { flex: none; }
+@media (max-width: 380px) { #rv-top .eyebrow { font-size: 11px; letter-spacing: .12em; } }
 .rv-buttons { display: flex; gap: 8px; }
 #reveal-view { opacity: 0; pointer-events: none; transition: opacity .4s .5s; }
 #reveal.rv-done #reveal-view { opacity: 1; pointer-events: auto; }
