@@ -1,18 +1,19 @@
-import { renderCard, renderCardTile, renderPassport, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.146';
-import { cardArt } from './art.js?v=0.1.146';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.146';
-import { applyBack } from './card-backs.js?v=0.1.146';
-import { SETS, assignSets } from './sets.js?v=0.1.146';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.146';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.146';
-import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.146';
-import { progress } from './progress.js?v=0.1.146';
-import { eventBadges, nextEvent } from './events.js?v=0.1.146';
-import { drawShareCard, shareCard } from './share-card.js?v=0.1.146';
-import { conArt } from './con-art.js?v=0.1.146';
-import { CON_BY_ID } from './constellations.js?v=0.1.146';
-import { allSightings, deleteSighting } from './store.js?v=0.1.146';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.146';
+import { renderCard, renderCardTile, renderPassport, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.150';
+import { cardArt } from './art.js?v=0.1.150';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.150';
+import { applyBack } from './card-backs.js?v=0.1.150';
+import { SETS, assignSets } from './sets.js?v=0.1.150';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.150';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.150';
+import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.150';
+import { progress } from './progress.js?v=0.1.150';
+import { SOLAR_SYSTEM } from './natural.js?v=0.1.150';
+import { eventBadges, nextEvent } from './events.js?v=0.1.150';
+import { drawShareCard, shareCard } from './share-card.js?v=0.1.150';
+import { conArt } from './con-art.js?v=0.1.150';
+import { CON_BY_ID } from './constellations.js?v=0.1.150';
+import { allSightings, deleteSighting } from './store.js?v=0.1.150';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.150';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -153,7 +154,7 @@ function renderAlbumHead() {
 // ---------- logbook: rank, streak, tonight's missions, achievements (js/progress.js) ----------
 function renderLogbook() {
   const info = (k) => { const c = state.byKey.get(k); return c ? { tier: c.tier, type: c.type, owner: c.owner, launch: c.launch, natural: c.natural, con: c.con } : null; };
-  const p = progress(state.raw, info, { constellations: CONSTELLATIONS.map((c) => ({ id: c.con, stars: c.stars, zodiac: c.zodiac })) });
+  const p = progress(state.raw, info, { constellations: [...CONSTELLATIONS, SOLAR_SYSTEM].map((c) => ({ id: c.con, stars: c.stars, zodiac: c.zodiac, system: !!c.system })) });
   const el = $('logbook'); el.hidden = false;
   const span = p.rank.next ? p.rank.next - p.rank.at : 1, into = p.rank.next ? Math.min(1, (p.xp - p.rank.at) / span) : 1;
   const done = p.achievements.filter((a) => a.done).length;

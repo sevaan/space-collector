@@ -6,7 +6,7 @@ const isDead = (o) => o.kind === 'PAY' && (o.ops === '-' || o.ops === 'D' || ((!
 
 // Order matters: the first matching set is the card's primary set.
 export const SETS = [
-  { id: 'wanderers', name: 'The Wanderers', color: '#c08a2e', test: (o) => o.type === 'moon' || o.type === 'planet' },
+  { id: 'wanderers', name: 'The Wanderers', color: '#c08a2e', test: (o) => o.type === 'moon' || o.type === 'planet' || !!o.system },
   { id: 'constellations', name: 'Constellations', color: '#c9a227', test: (o) => o.type === 'constellation' || (o.type === 'star' && !!o.con && !o.skyName) },
   { id: 'bright-stars', name: 'Bright Stars', color: '#3f58a8', test: (o) => o.type === 'star' },
   { id: 'stations', name: 'Stations', color: '#e8412c', test: (o) => o.type === 'station' || /^(DRAGON|CREW DRAGON|SOYUZ|PROGRESS|SHENZHOU|TIANZHOU|CYGNUS)/.test(o.name) },

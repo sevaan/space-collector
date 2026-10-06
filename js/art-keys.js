@@ -19,6 +19,9 @@ export const ART = {
   'planet-mars': ['Moon & planets', 1, 'Mars', 'Rust-red planet with dark markings and a white polar cap.', 'https://science.nasa.gov/mars/'],
   'planet-jupiter': ['Moon & planets', 1, 'Jupiter', 'Banded gas giant with the Great Red Spot.', 'https://science.nasa.gov/jupiter/'],
   'planet-saturn': ['Moon & planets', 1, 'Saturn', 'Golden gas giant with its wide ring system, tilted.', 'https://science.nasa.gov/saturn/'],
+  'planet-uranus': ['Moon & planets', 1, 'Uranus', 'Smooth pale cyan-green sphere tipped on its side with one thin faint ring.', 'https://science.nasa.gov/uranus/'],
+  'planet-neptune': ['Moon & planets', 1, 'Neptune', 'Deep blue sphere with a dark storm oval and thin white cloud streaks.', 'https://science.nasa.gov/neptune/'],
+  'solar-system': ['Moon & planets', 1, 'The Solar System', 'Poster diagram: the Sun at the left edge and the eight planets in a line, roughly to scale.', 'https://science.nasa.gov/solar-system/'],
   // ---- Satellite fleets (wide format) ----
   'fleet-starlink': ['Fleets', 1, 'Starlink', 'A "train" of flat Starlink satellites in a line, each a flat body with one long solar wing, as seen soon after launch.', 'https://en.wikipedia.org/wiki/Starlink'],
   'fleet-oneweb': ['Fleets', 1, 'OneWeb', 'A line of OneWeb satellites: small boxy bodies with two solar panels each.', 'https://en.wikipedia.org/wiki/OneWeb_satellite_constellation'],
@@ -116,7 +119,7 @@ const SERIES = { 'strela-1': 'strela-1m', 'strela-1m': 'strela-1m', 'strela-2m':
 
 // card: a card from buildCards. seriesOf: NORAD id -> series key (data/series.json members), optional.
 export function artKeyFor(card, seriesOf = {}) {
-  if (card.natural) return card.type === 'moon' ? 'moon' : card.type === 'planet' ? `planet-${card.name.toLowerCase()}` : `star-${card.key.split(':')[1]}`;
+  if (card.natural) return card.system ? 'solar-system' : card.type === 'moon' ? 'moon' : card.type === 'planet' ? `planet-${card.name.toLowerCase()}` : `star-${card.key.split(':')[1]}`;
   if (card.launches) return `fleet-${card.family.toLowerCase()}`;
   if (NAMED[card.id]) return NAMED[card.id];
   const n = String(card.name ?? '').toUpperCase();

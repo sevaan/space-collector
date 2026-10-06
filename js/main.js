@@ -1,26 +1,26 @@
-import { VERSION } from './version.js?v=0.1.146';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.146';
-import { skyLimit, SKIES, DEFAULT_SKY } from './sky-limit.js?v=0.1.146';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.146';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.146';
-import { progress as progressOf } from './progress.js?v=0.1.146';
-import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.146';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.146';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.146';
-import { SkyView, shortName } from './sky.js?v=0.1.146';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.146';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.146';
-import { cardArt } from './art.js?v=0.1.146';
-import { renderCard, cardLevel, artImage } from './card.js?v=0.1.146';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.146';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.146';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.146';
-import { naturalTargets } from './natural.js?v=0.1.146';
-import { TIER_INFO } from './rarity.js?v=0.1.146';
-import { SETS } from './sets.js?v=0.1.146';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.146';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.146';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.146';
+import { VERSION } from './version.js?v=0.1.150';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.150';
+import { skyLimit, SKIES, DEFAULT_SKY } from './sky-limit.js?v=0.1.150';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.150';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.150';
+import { progress as progressOf } from './progress.js?v=0.1.150';
+import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.150';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.150';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.150';
+import { SkyView, shortName } from './sky.js?v=0.1.150';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.150';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.150';
+import { cardArt } from './art.js?v=0.1.150';
+import { renderCard, cardLevel, artImage } from './card.js?v=0.1.150';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.150';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.150';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.150';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.150';
+import { TIER_INFO } from './rarity.js?v=0.1.150';
+import { SETS } from './sets.js?v=0.1.150';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.150';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.150';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.150';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -780,7 +780,8 @@ function showCaptureCard(obj) {
   const progress = { level: cardLevel(sightings), before: cardLevel(sightings.slice(1)), nights: nightsIn(sightings) };
   const collected = new Set(state.sightings.filter(s => !s.sim).map(s => s.cardKey)).size; // milestone stamps
   // A constellation star: the stamp shows how far along its constellation is (gold when complete).
-  const conCard = model.con && CON_BY_ID.get(model.con);
+  // A star's constellation, or the Solar System for the Moon and planets: progress toward the gold card.
+  const conCard = (model.con && CON_BY_ID.get(model.con)) || (['moon', 'planet'].includes(model.type) ? SOLAR_SYSTEM : null);
   const con = conCard && sightings.length === 1 ? { name: conCard.name, ...conProgress(conCard, ownedCardKeys()) } : null;
   const gain = progressGain(sightings[0]); announceProgress(gain);
   playReveal({ card, o: model, seen: sightings.length, fleet, progress, collected, con, xp: gain.xp, shiny: sightings[0]?.shiny ? SHINY[sightings[0].shiny] : null, origin: { x: sky.ring?.x ?? sky.cx, y: sky.ring?.y ?? sky.cy } });
@@ -818,7 +819,7 @@ function ownedCardKeys() { return new Set(state.sightings.filter((s) => !s.sim).
 // log with and without the newest sighting; toasts the news a moment after the card lands.
 function progressNow(list) {
   const info = (k) => { const c = state.cardModels.get(k); return c ? { tier: c.tier, type: c.type, owner: c.owner ?? (c.family ? state.catalog.families?.[c.family]?.owner : undefined), launch: c.launch, natural: c.natural, con: c.con } : null; };
-  return progressOf(list, info, { constellations: CONSTELLATIONS.map((c) => ({ id: c.con, stars: c.stars, zodiac: c.zodiac })), now: now().getTime() });
+  return progressOf(list, info, { constellations: [...CONSTELLATIONS, SOLAR_SYSTEM].map((c) => ({ id: c.con, stars: c.stars, zodiac: c.zodiac, system: !!c.system })), now: now().getTime() });
 }
 function progressGain(saved) {
   const after = progressNow(state.sightings), before = progressNow(state.sightings.filter((s) => s !== saved));
@@ -999,7 +1000,7 @@ function alsoUpTonight(t0, until) {
     const d = new Date(t), toEnu = eqToEnu(d, state.observer), bodies = solarSystem(d, state.observer);
     const el = (v) => Math.asin(Math.max(-1, Math.min(1, toEnu(v)[2]))) * 180 / Math.PI;
     const sun = bodies.find((b) => b.kind === 'sun'); if (sun && el(sun.v) > -6) continue;
-    for (const b of bodies) if (b.kind === 'planet' && el(b.v) > 10 && !planets.has(b.name)) planets.set(b.name, t);
+    for (const b of bodies) if (b.kind === 'planet' && el(b.v) > 10 && (b.mag <= 3 || b.mag <= (state.limit?.stars ?? 6)) && !planets.has(b.name)) planets.set(b.name, t);
     for (const o of CON_STARS) {
       if (!isNewFind(o) || el(o.v) < 20 || o.mag > (state.limit?.stars ?? 4.8)) continue;
       const c = cons.get(o.con) ?? cons.set(o.con, { best: 0, at: t, now: new Map() }).get(o.con);

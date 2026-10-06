@@ -36,13 +36,15 @@ test('levels: nights 1/3/10, and sightings-based levels earned before Oct 2026 a
   assert.equal(cardLevel(newRules), 'bronze'); // one night under the new rules
 });
 
-test('Moon, five planets and 21 stars become cards in their own sets', () => {
+test('Moon, seven planets, the Solar System and 21 stars become cards in their own sets', () => {
   const cards = buildCards({ objects: [], families: {} }).filter((c) => c.natural);
-  assert.equal(cards.length, 27);
-  assert.deepEqual(cards.filter((c) => c.set === 'wanderers').map((c) => c.name), ['Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn']);
+  assert.equal(cards.length, 30);
+  assert.deepEqual(cards.filter((c) => c.set === 'wanderers').map((c) => c.name), ['Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune', 'The Solar System']);
+  const sys = cards.find((c) => c.key === 'system:solar');
+  assert.equal(sys.stars.length, 8); assert.ok(sys.stars.includes('planet:neptune') && sys.stars.includes('moon'));
   assert.equal(cards.filter((c) => c.set === 'bright-stars').length, 21);
   assert.equal(cards.find((c) => c.key === 'star:sirius').setNumber, 1);
-  for (const c of NATURAL) assert.ok(c.fact && c.stats.length === 3 && c.far.length === 2, c.key);
+  for (const c of NATURAL) assert.ok(c.fact && c.stats.length === 3 && (c.system || c.far.length === 2), c.key);
 });
 
 test('visibility rules: Moon in daylight, planets after sunset, stars only when dark', () => {

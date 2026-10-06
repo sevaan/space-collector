@@ -2,7 +2,7 @@
 // Planet and Moon positions use Paul Schlyter's low-precision method ("How to compute planetary
 // positions"), good to a few arcminutes — far better than a phone compass.
 
-import { gstime } from './lib/satellite.js?v=0.1.146';
+import { gstime } from './lib/satellite.js?v=0.1.150';
 
 const RAD = Math.PI / 180;
 const sin = (d) => Math.sin(d * RAD), cos = (d) => Math.cos(d * RAD);
@@ -57,6 +57,8 @@ const PLANETS = {
   Mars:    { N: [49.5574, 2.11081e-5], i: [1.8497, -1.78e-8], w: [286.5016, 2.92961e-5], a: 1.523688, e: [0.093405, 2.516e-9], M: [18.6021, 0.5240207766] },
   Jupiter: { N: [100.4542, 2.76854e-5], i: [1.303, -1.557e-7], w: [273.8777, 1.64505e-5], a: 5.20256, e: [0.048498, 4.469e-9], M: [19.895, 0.0830853001] },
   Saturn:  { N: [113.6634, 2.3898e-5], i: [2.4886, -1.081e-7], w: [339.3939, 2.97661e-5], a: 9.55475, e: [0.055546, -9.499e-9], M: [316.967, 0.0334442282] },
+  Uranus:  { N: [74.0005, 1.3978e-5], i: [0.7733, 1.9e-8], w: [96.6612, 3.0565e-5], a: 19.18171, e: [0.047318, 7.45e-9], M: [142.5905, 0.011725806] },
+  Neptune: { N: [131.7806, 3.0173e-5], i: [1.77, -2.55e-7], w: [272.8461, -6.027e-6], a: 30.05826, e: [0.008606, 2.15e-9], M: [260.2471, 0.005995147] },
 };
 
 // Visual magnitude: base + 5 log10(r·R) + phase terms (FV = phase angle, degrees)
@@ -66,6 +68,8 @@ const MAG = {
   Mars: (fv) => -1.51 + 0.016 * fv,
   Jupiter: (fv) => -9.25 + 0.014 * fv,
   Saturn: (fv) => -9.0 + 0.044 * fv,
+  Uranus: (fv) => -7.15 + 0.001 * fv,
+  Neptune: (fv) => -6.9 + 0.001 * fv,
 };
 
 const lin = ([a, b], d) => a + b * d;

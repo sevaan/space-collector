@@ -1,4 +1,4 @@
-import { extinction } from './sky-limit.js?v=0.1.146';
+import { extinction } from './sky-limit.js?v=0.1.150';
 // The Moon, the naked-eye planets and the brightest named stars, as collectible cards.
 // Positions come from js/celestial.js (state.bodies, state.skyEnu); this file holds the card facts and
 // the "can you see it right now" rules. No DOM. Every fact must be true; approximate values say so.
@@ -18,9 +18,11 @@ const PLANETS = [
   ['Mars', 'uncommon', 4, '12.7', '6,779', ['687', 'd'], ['24.6', 'h'], 'Its red colour is **rust**: iron minerals in the dust on its surface have oxidised.'],
   ['Jupiter', 'common', 5, '43', '139,820', ['11.9', 'yr'], ['9.9', 'h'], 'The biggest planet: more than **1,300 Earths** would fit inside it. A pair of binoculars shows its four largest moons as tiny dots.'],
   ['Saturn', 'uncommon', 6, '79', '116,460', ['29.4', 'yr'], ['10.7', 'h'], 'Its rings are countless chunks of **ice and rock**. You need a telescope to see them, but they\'re there around that steady golden dot.'],
+  ['Uranus', 'epic', 7, '160', '50,724', ['84', 'yr'], ['17.2', 'h'], 'It spins almost **on its side**, so it rolls around the Sun like a ball. At its brightest it\'s just visible to the naked eye from a truly dark site: a faint, steady, pale-green point.'],
+  ['Neptune', 'legendary', 8, '250', '49,244', ['165', 'yr'], ['16.1', 'h'], 'The farthest planet, found in 1846 by **maths** before anyone saw it: Uranus was being tugged off course. Too faint for the naked eye, but binoculars show it as a dim blue-grey point.'],
 ].map(([name, tier, order, lm, dia, year, day, fact]) => ({
   key: `planet:${name.toLowerCase()}`, id: `planet:${name.toLowerCase()}`, natural: 'planet', type: 'planet', name, tier, order,
-  code: `${{ Mercury: '1ST', Venus: '2ND', Mars: '4TH', Jupiter: '5TH', Saturn: '6TH' }[name]} FROM THE SUN`,
+  code: `${{ Mercury: '1ST', Venus: '2ND', Mars: '4TH', Jupiter: '5TH', Saturn: '6TH', Uranus: '7TH', Neptune: '8TH' }[name]} FROM THE SUN`,
   far: [lm, 'LIGHT-MINUTES FROM THE SUN'],
   stats: [['DIAMETER', dia, 'km'], ['ONE YEAR', ...year], ['ONE SPIN', ...day]],
   fact,
@@ -64,7 +66,15 @@ const STARS = [
   fact,
 }));
 
-export const NATURAL = [moon, ...PLANETS, ...STARS];
+// The Solar System: a constellation-style card (progress through its members, gold when all are collected,
+// see conProgress in js/constellations.js) whose "stars" are the Moon and the seven other planets.
+export const SOLAR_SYSTEM = {
+  key: 'system:solar', id: 'system:solar', card: 'system:solar', natural: 'constellation', type: 'constellation', system: true, name: 'The Solar System', tier: 'legendary', order: 0,
+  code: 'HOME SYSTEM', con: 'solar', stars: ['moon', ...PLANETS.map((p) => p.key)], zodiac: false,
+  stats: [['WORLDS', '8', ''], ['PLANETS', '7', 'of 8'], ['AGE', '4.6', 'billion yr']],
+  fact: 'Everything you can see with your own eyes in the Solar System, bar the Sun. Collect the Moon and all **seven** planets to turn this card **gold**.',
+};
+export const NATURAL = [moon, ...PLANETS, ...STARS, SOLAR_SYSTEM];
 for (const o of NATURAL) o.card = o.key;
 export const NATURAL_BY_KEY = new Map(NATURAL.map((o) => [o.key, o]));
 const STAR_BY_SKY_NAME = new Map(STARS.map((o) => [o.skyName, o]));
@@ -88,7 +98,9 @@ export function naturalTargets(bodies, stars, extra = [], starLimit = 6.5) {
     const obj = b.kind === 'moon' ? moon : b.kind === 'planet' ? PLANET_BY_NAME.get(b.name) : null;
     if (!obj) continue;
     const el = elOf(b.enu);
-    const visible = b.kind === 'moon' ? el > 0 && b.illum >= 0.03 : el > 2 && sunEl < -3;
+    // Faint planets (Uranus, Neptune) also have to beat tonight's limit, after extinction, like the faint stars.
+    const faint = b.kind === 'planet' && b.mag > 3;
+    const visible = b.kind === 'moon' ? el > 0 && b.illum >= 0.03 : faint ? el > 5 && sunEl < -12 && b.mag + extinction(el) <= starLimit : el > 2 && sunEl < -3;
     out.push({ obj, look: { az: azOf(b.enu), el, mag: b.mag, visible, enu: b.enu, phaseName: b.phaseName, illum: b.illum } });
   }
   for (const s of stars ?? []) {

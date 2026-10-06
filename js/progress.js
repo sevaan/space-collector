@@ -1,7 +1,7 @@
 // Player progress from the sighting log: XP and observer rank, tonight's three missions, a weekly streak and
 // achievements. Everything is derived from the saved sightings (nothing extra is stored), so it can't drift.
 // info(cardKey) -> { tier, type, owner, launch, natural, con } | null. No DOM.
-import { nightKey } from './observation.js?v=0.1.146';
+import { nightKey } from './observation.js?v=0.1.150';
 
 export const RANKS = [
   [0, 'Stargazer'], [200, 'Spotter'], [600, 'Tracker'], [1500, 'Navigator'], [4000, 'Flight Controller'], [10000, 'Mission Control'],
@@ -29,10 +29,13 @@ export const MISSIONS = [
   { id: 'junk', text: 'Spot a piece of space debris', done: (n) => n.some((s) => s.info?.type === 'debris') },
   { id: 'five', text: 'Log 5 sightings', done: (n) => n.length >= 5 },
 ];
+// Seeded by the night (a day index from nightKey): integer mixing with Math.imul, so the picks spread evenly
+// from one night to the next. (The old float LCG overflowed 2^53 and kept dealing the same few missions.)
 export function missionsFor(night) {
-  let h = 0; for (const c of String(night)) h = (h * 31 + c.charCodeAt(0)) >>> 0;
+  let h = 0; for (const c of String(night)) h = Math.imul(h ^ c.charCodeAt(0), 2654435761) >>> 0;
+  const next = () => { h = (h + 0x6d2b79f5) >>> 0; let t = Math.imul(h ^ (h >>> 15), 1 | h); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0); };
   const pick = [], pool = MISSIONS.slice();
-  while (pick.length < 3) { h = (h * 1103515245 + 12345) >>> 0; pick.push(pool.splice(h % pool.length, 1)[0]); }
+  while (pick.length < 3) pick.push(pool.splice(next() % pool.length, 1)[0]);
   return pick;
 }
 
@@ -92,7 +95,7 @@ export const ACHIEVEMENTS = [
   { id: 'moon', name: 'Moonstruck', text: 'Collect the Moon', icon: '☾', done: (a) => a.naturals.has('moon') },
   { id: 'mars', name: 'Red Planet', text: 'Collect Mars', icon: '♂', done: (a) => a.naturals.has('planet:mars') },
   { id: 'saturn', name: 'Ringed', text: 'Collect Saturn', icon: '♄', done: (a) => a.naturals.has('planet:saturn') },
-  { id: 'wanderers', name: 'Wanderer', text: 'Collect the Moon and all five planets', icon: '6', done: (a) => a.wanderers >= 6 },
+  { id: 'wanderers', name: 'Wanderer', text: 'Collect the Moon and the five bright planets', icon: '6', done: (a) => a.wanderers >= 6 },
   { id: 'stars10', name: 'Astronomer', text: 'Collect 10 constellation stars', icon: '✶10', done: (a) => a.stars >= 10 },
   { id: 'constellation', name: 'Star Map', text: 'Complete a constellation', icon: '✶', done: (a) => a.cons >= 1 },
   { id: 'cons5', name: 'Cartographer', text: 'Complete 5 constellations', icon: '✶5', done: (a) => a.cons >= 5 },
@@ -186,7 +189,7 @@ export function progress(sightings, info, { constellations = [], now = Date.now(
   }
   for (const n of nights.values()) { if (n.some((s) => soviet(s.info)) && n.some((s) => american(s.info))) a.race = true; a.maxNight = Math.max(a.maxNight, n.length); }
   a.wanderers = ['moon', 'planet:mercury', 'planet:venus', 'planet:mars', 'planet:jupiter', 'planet:saturn'].filter((k) => seenCard.has(k)).length;
-  for (const c of constellations) if (c.stars.every((k) => seenCard.has(k))) { a.cons++; xp += CON_XP; if (c.zodiac) a.zodiac++; }
+  for (const c of constellations) if (c.stars.every((k) => seenCard.has(k))) { if (!c.system) a.cons++; xp += CON_XP; if (c.zodiac) a.zodiac++; }
   for (const [fam, set] of fleetStamps) a.fleet[fam] = set.size;
   for (const n of nightsOnCard.values()) { a.maxNightsOnCard = Math.max(a.maxNightsOnCard, n); if (n >= 25) a.goldCards++; }
   if (list.length) a.spanDays = (list[list.length - 1].time - list[0].time) / 86400e3;
