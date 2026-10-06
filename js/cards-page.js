@@ -1,10 +1,11 @@
-import { renderCard, renderCardTile, renderPassport, attachTilt, attachGyro, attachFlip } from './card.js?v=0.1.96';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.96';
-import { applyBack } from './card-backs.js?v=0.1.96';
-import { SETS, assignSets } from './sets.js?v=0.1.96';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.96';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.96';
-import { allSightings, deleteSighting } from './store.js?v=0.1.96';
+import { renderCard, renderCardTile, renderPassport, attachTilt, attachGyro, attachFlip } from './card.js?v=0.1.97';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.97';
+import { applyBack } from './card-backs.js?v=0.1.97';
+import { SETS, assignSets } from './sets.js?v=0.1.97';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.97';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.97';
+import { allSightings, deleteSighting } from './store.js?v=0.1.97';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.97';
 
 const $ = (id) => document.getElementById(id);
 const state = { cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -345,6 +346,8 @@ function endSwipe(e) {
 slot.addEventListener('pointerup', endSwipe);
 slot.addEventListener('pointercancel', endSwipe);
 $('v-close').addEventListener('click', closeViewer);
+addStarfield($('viewer'));
+attachTileTilt($('grid'));
 $('viewer').addEventListener('close', () => { stopEffects(); document.body.style.overflow = ''; lastFocus?.focus(); });
 $('slot').addEventListener('pointerdown', askMotion);
 $('v-preview').addEventListener('click', () => { state.preview = !state.preview; showCard(); });
