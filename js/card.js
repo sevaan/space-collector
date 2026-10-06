@@ -1,17 +1,17 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { cardArt } from './art.js?v=0.1.124';
-import { TIER_INFO } from './rarity.js?v=0.1.124';
-import { SET_BY_ID } from './sets.js?v=0.1.124';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.124';
-import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.124';
-import { artFileFor } from './art-keys.js?v=0.1.124';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.124';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.124';
-import { nightsIn } from './observation.js?v=0.1.124';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.124';
-import { SHINY } from './shiny.js?v=0.1.124';
-import { conArt } from './con-art.js?v=0.1.124';
-import { CON_FIGURES } from './con-figures.js?v=0.1.124';
+import { cardArt } from './art.js?v=0.1.125';
+import { TIER_INFO } from './rarity.js?v=0.1.125';
+import { SET_BY_ID } from './sets.js?v=0.1.125';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.125';
+import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.125';
+import { artFileFor } from './art-keys.js?v=0.1.125';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.125';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.125';
+import { nightsIn } from './observation.js?v=0.1.125';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.125';
+import { SHINY } from './shiny.js?v=0.1.125';
+import { conArt } from './con-art.js?v=0.1.125';
+import { CON_FIGURES } from './con-figures.js?v=0.1.125';
 // The animal/symbol figure belongs to the completed (gold) constellation card only (2026-10-05): a single
 // star's card draws just the star pattern with its star marked, so the figure is a reward for finishing the set.
 const conFig = (id) => (CON_FIGURES.has(id) ? { figure: `assets/art/con/${id}.webp` } : {});
@@ -301,8 +301,13 @@ export function attachFlip(el, { onBack } = {}) {
     busy = true; flipped = !flipped;
     if (flipped) onBack?.(back);
     const ms = reducedMotion() ? 1 : 560, from = flipped ? 0 : 180, to = flipped ? 180 : 360;
-    el.animate([{ transform: `perspective(1600px) rotateY(${from}deg)` }, { transform: `perspective(1600px) rotateY(${to}deg)` }],
-      { duration: ms, easing: 'cubic-bezier(.4,0,.2,1)', fill: 'forwards' });
+    // Ease in to edge-on, out from it, so edge-on lands exactly at ms / 2 when the faces swap (an overall
+    // ease-out passed 90° early, flashing the mirrored front and then a flat back).
+    el.animate([
+      { transform: `perspective(1600px) rotateY(${from}deg)`, easing: 'cubic-bezier(.5,0,1,1)' },
+      { transform: `perspective(1600px) rotateY(${from + 90}deg)`, easing: 'cubic-bezier(0,0,.4,1)', offset: .5 },
+      { transform: `perspective(1600px) rotateY(${to}deg)` }],
+      { duration: ms, easing: 'linear', fill: 'forwards' });
     setTimeout(() => { back.style.opacity = flipped ? '1' : ''; }, ms / 2); // edge-on: swap faces
     setTimeout(() => { busy = false; }, ms);
   };

@@ -5,9 +5,9 @@
 //  Everything scales with rarity (Legendary dims the sky, shockwave, held breath, slow flip, fanfare).
 // Waits use timers, not animation.finished, so a paused tab can never freeze the sequence.
 
-import { TIER_INFO } from './rarity.js?v=0.1.124';
-import { levelFor, attachTilt, attachGyro, attachFlip } from './card.js?v=0.1.124';
-import { applyBack } from './card-backs.js?v=0.1.124';
+import { TIER_INFO } from './rarity.js?v=0.1.125';
+import { levelFor, attachTilt, attachGyro, attachFlip } from './card.js?v=0.1.125';
+import { applyBack } from './card-backs.js?v=0.1.125';
 
 const FX = {
   common:    { particles: 14,  flip: 520,  spin: 0,   dim: 0,   shock: false, notes: [880],                            hold: 0 },
@@ -184,10 +184,10 @@ export async function playReveal({ card, o, seen, origin, fleet = null, progress
   if (fx.hold) await play($('rv-flipper'), [{ transform: 'rotate(0)' }, { transform: 'rotate(-1.5deg)' }, { transform: 'rotate(1.5deg)' }, { transform: 'rotate(0)' }], { duration: fx.hold, easing: 'ease-in-out' });
   const flipMs = reduced() ? 1 : fx.flip;
   const flipped = play($('rv-flipper'), [
-    { transform: 'rotateY(0) scale(1)' },
-    { transform: `rotateY(${90 + fx.spin / 2}deg) scale(1.12)`, offset: .5 },
+    { transform: 'rotateY(0) scale(1)', easing: 'cubic-bezier(.5,0,1,1)' },
+    { transform: `rotateY(${90 + fx.spin / 2}deg) scale(1.12)`, offset: .5, easing: 'cubic-bezier(0,0,.4,1)' },
     { transform: `rotateY(${180 + fx.spin}deg) scale(1)` },
-  ], { duration: flipMs, easing: 'cubic-bezier(.4,0,.2,1)', fill: 'forwards' });
+  ], { duration: flipMs, easing: 'linear', fill: 'forwards' }); // per-keyframe easing: edge-on exactly at flipMs / 2
   setTimeout(() => { if (alive()) showFace('front'); }, flipMs / 2); // edge-on: swap faces
   await flipped;
   if (!alive()) return;
