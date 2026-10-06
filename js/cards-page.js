@@ -1,12 +1,12 @@
-import { renderCard, renderCardTile, renderPassport, attachTilt, attachGyro, attachFlip } from './card.js?v=0.1.99';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.99';
-import { applyBack } from './card-backs.js?v=0.1.99';
-import { SETS, assignSets } from './sets.js?v=0.1.99';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.99';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.99';
-import { loadConstellations } from './constellations.js?v=0.1.99';
-import { allSightings, deleteSighting } from './store.js?v=0.1.99';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.99';
+import { renderCard, renderCardTile, renderPassport, attachTilt, attachGyro, attachFlip } from './card.js?v=0.1.100';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.100';
+import { applyBack } from './card-backs.js?v=0.1.100';
+import { SETS, assignSets } from './sets.js?v=0.1.100';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.100';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.100';
+import { loadConstellations } from './constellations.js?v=0.1.100';
+import { allSightings, deleteSighting } from './store.js?v=0.1.100';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.100';
 
 const $ = (id) => document.getElementById(id);
 const state = { cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };

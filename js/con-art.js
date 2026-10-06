@@ -1,10 +1,11 @@
 // Constellation charts drawn from the real star positions (data/constellations.json) in the cards' poster
 // style: navy sky, cream stars sized by brightness, thin cream lines, and the card's own star glowing
-// orange. Used for the constellation-star cards and the constellation cards. Returns an SVG string.
+// orange. figure: an illustration of the constellation's figure (assets/art/con, same framing) shown
+// behind the stars. Used for the constellation-star cards and the constellation cards. Returns an SVG string.
 const RAD = Math.PI / 180;
 const vec = (ra, dec) => [Math.cos(dec * RAD) * Math.cos(ra * RAD), Math.cos(dec * RAD) * Math.sin(ra * RAD), Math.sin(dec * RAD)];
 
-export function conArt(con, highlightHip = null, { w = 320, h = 200 } = {}) {
+export function conArt(con, highlightHip = null, { w = 360, h = 240, figure = null, bare = false } = {}) {
   const stars = con.stars;
   // Centre of the figure (average direction), then a gnomonic projection with east on the left, as the sky looks.
   const c = stars.reduce((a, s) => { const v = vec(s.ra, s.dec); return [a[0] + v[0], a[1] + v[1], a[2] + v[2]]; }, [0, 0, 0]);
@@ -35,5 +36,5 @@ export function conArt(con, highlightHip = null, { w = 320, h = 200 } = {}) {
   return `<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <defs><radialGradient id="cg"><stop offset="0" stop-color="#fa8127" stop-opacity=".7"/><stop offset="1" stop-color="#fa8127" stop-opacity="0"/></radialGradient>
     <radialGradient id="cs" cx="50%" cy="40%" r="75%"><stop offset="0" stop-color="#14213a"/><stop offset="1" stop-color="#080e1a"/></radialGradient></defs>
-    <rect width="${w}" height="${h}" fill="url(#cs)"/>${bg}<g fill="none" stroke="#fff2b3" stroke-opacity=".45" stroke-width=".9" stroke-linejoin="round">${lines}</g>${dots}${glow}</svg>`;
+    <rect width="${w}" height="${h}" fill="url(#cs)"/>${figure ? `<image href="${figure}" width="${w}" height="${h}" preserveAspectRatio="xMidYMid slice"/>` : ''}${bg}<g fill="none" stroke="#fff2b3" stroke-opacity=".45" stroke-width=".9" stroke-linejoin="round">${lines}</g>${dots}${glow}</svg>`;
 }

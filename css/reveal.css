@@ -43,3 +43,4 @@
 #rv-stamp small { display: block; font: 500 .62em 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .3em; margin-top: .2em; opacity: .85; }
 
 body.night #reveal { background: #000; }
+#rv-stamp.long { font-size: calc(var(--cf) * 1.05); }
