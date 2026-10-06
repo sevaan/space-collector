@@ -1,21 +1,21 @@
-import { VERSION } from './version.js?v=0.1.89';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.89';
-import { skyLimit, SKIES, DEFAULT_SKY } from './sky-limit.js?v=0.1.89';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.89';
-import { SkyView, shortName } from './sky.js?v=0.1.89';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.89';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.89';
-import { cardArt } from './art.js?v=0.1.89';
-import { renderCard, cardLevel, artImage } from './card.js?v=0.1.89';
-import { playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.89';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.89';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.89';
-import { naturalTargets } from './natural.js?v=0.1.89';
-import { TIER_INFO } from './rarity.js?v=0.1.89';
-import { SETS } from './sets.js?v=0.1.89';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.89';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.89';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.89';
+import { VERSION } from './version.js?v=0.1.90';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.90';
+import { skyLimit, SKIES, DEFAULT_SKY } from './sky-limit.js?v=0.1.90';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.90';
+import { SkyView, shortName } from './sky.js?v=0.1.90';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.90';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.90';
+import { cardArt } from './art.js?v=0.1.90';
+import { renderCard, cardLevel, artImage } from './card.js?v=0.1.90';
+import { playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.90';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.90';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.90';
+import { naturalTargets } from './natural.js?v=0.1.90';
+import { TIER_INFO } from './rarity.js?v=0.1.90';
+import { SETS } from './sets.js?v=0.1.90';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.90';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.90';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.90';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -50,6 +50,7 @@ const state = {
   model: null,     // SkyModel: tracks what's above the horizon
   items: [],       // latest interpolated positions: [{ obj, look }]
   binoculars: readPref('binoculars', false),
+  snap: readPref('snap', true),    // the targeting circle jumps onto a locked-on object
   lightSky: SKIES[readText('sky', DEFAULT_SKY)] ? readText('sky', DEFAULT_SKY) : DEFAULT_SKY, // light pollution where you are
   trails: new Map(),
   sticky: new Map(), // candidate id -> last time it was in the reticle
@@ -1006,6 +1007,8 @@ $('chk-lines').addEventListener('change', (e) => { state.showLines = e.target.ch
 $('chk-any').addEventListener('change', (e) => { state.captureAny = e.target.checked; });
 $('sel-sky').value = state.lightSky;
 $('sel-sky').addEventListener('change', (e) => { state.lightSky = e.target.value; writeText('sky', state.lightSky); updateSkyLimit(state.frame); state.model?.reset?.(); refreshAbove(); });
+$('chk-snap').checked = state.snap; sky.snap = state.snap;
+$('chk-snap').addEventListener('change', (e) => { state.snap = e.target.checked; writePref('snap', state.snap); sky.snap = state.snap; });
 $('chk-bino').checked = state.binoculars;
 $('chk-bino').addEventListener('change', (e) => {
   cancelPassSearch();

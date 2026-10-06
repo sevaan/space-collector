@@ -158,3 +158,4 @@ Alerts, service worker, accounts, secret sets/feats.
   once per pass (natural objects once a night) by `autoLog` in js/main.js, with a toast (level-ups called out).
   Tapping the mini card no longer needs to be what logs it.
 - Collection viewer: no "Collected <date>" line under the card (the card shows it); flick the card up to close.
+- Card footer shows "SEEN N TIME(S)" after the collected date (`card__seen-count`; NOT `.card__seen`, an old boxed style). Settings → Pointing → "Snap the circle onto what you're aiming at" (pref `snap`, default on; `sky.snap` in `updateRing`).

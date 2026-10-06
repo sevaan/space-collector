@@ -289,3 +289,6 @@
   animation: art-twinkle var(--t, 3s) ease-in-out var(--d, 0s) infinite; }
 @keyframes art-twinkle { 0%, 100% { opacity: 0; transform: scale(.5) rotate(0deg); } 45% { opacity: .95; transform: scale(1.15) rotate(20deg); } 60% { opacity: .5; transform: scale(.85) rotate(30deg); } }
 @media (prefers-reduced-motion: reduce) { .art-stars { display: none; } }
+/* "Seen N times" after the collected date, set off by a rule like the brand's. */
+.card--retro .card__seen-count { border-left: 1px solid var(--rule); padding-left: .65em; white-space: nowrap; flex: none; }
+.card--retro .card__status > span:nth-child(2) { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }

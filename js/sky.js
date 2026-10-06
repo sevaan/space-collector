@@ -1,8 +1,8 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.89';
-import { TIER_INFO } from './rarity.js?v=0.1.89';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.90';
+import { TIER_INFO } from './rarity.js?v=0.1.90';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -795,8 +795,10 @@ export class SkyView {
 
   // The ring you aim with. When it locks on, it shrinks a little and glides onto the object, then
   // eases back when the lock is released. this.ring is what's drawn (the tap area follows it).
+  // snap (Settings, default on): the circle jumps onto a locked-on target. Off, it stays put in the
+  // middle and only changes colour.
   updateRing(locked, at = this.targetPos) {
-    const want = locked && at
+    const want = locked && at && this.snap !== false
       ? { x: at.x, y: at.y, r: this.reticlePx * 0.8 }
       : { x: this.cx, y: this.cy, r: this.reticlePx };
     const now = performance.now(), dt = Math.min(0.1, (now - (this._ringT ?? now)) / 1000);

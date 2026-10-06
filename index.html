@@ -13,9 +13,9 @@
   <link rel="apple-touch-icon" href="icons/icon-180.png">
   <link rel="icon" href="icons/icon-192.png">
   <script>try { if (localStorage.getItem("night") === "1") document.documentElement.dataset.theme = "night"; } catch {}</script>
-  <link rel="stylesheet" href="css/cards.css?v=0.1.89">
-  <link rel="stylesheet" href="css/app.css?v=0.1.89">
-  <link rel="stylesheet" href="css/reveal.css?v=0.1.89">
+  <link rel="stylesheet" href="css/cards.css?v=0.1.90">
+  <link rel="stylesheet" href="css/app.css?v=0.1.90">
+  <link rel="stylesheet" href="css/reveal.css?v=0.1.90">
 </head>
 <body>
   <canvas id="sky" role="img" aria-label="Sky map aligned with your viewing direction"></canvas>
@@ -121,6 +121,7 @@
     <label class="row"><input type="checkbox" id="chk-bino"> Binocular mode: also show objects you'd only see with binoculars (about 3 magnitudes fainter)</label>
 
     <h3>Pointing</h3>
+    <label class="row"><input type="checkbox" id="chk-snap" checked> Snap the circle onto what you're aiming at</label>
     <label class="row"><input type="checkbox" id="chk-drag"> Drag to look around (instead of motion sensors)</label>
     <div class="row wrap">
       <span>Compass nudge</span>
@@ -152,6 +153,6 @@
     <pre id="debug-info"></pre></details>
   </section>
 
-  <script type="module" src="js/main.js?v=0.1.89"></script>
+  <script type="module" src="js/main.js?v=0.1.90"></script>
 </body>
 </html>
