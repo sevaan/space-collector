@@ -13,9 +13,9 @@
   <link rel="apple-touch-icon" href="icons/icon-180.png">
   <link rel="icon" href="icons/icon-192.png">
   <script>try { if (localStorage.getItem("night") === "1") document.documentElement.dataset.theme = "night"; } catch {}</script>
-  <link rel="stylesheet" href="css/cards.css?v=0.1.103">
-  <link rel="stylesheet" href="css/app.css?v=0.1.103">
-  <link rel="stylesheet" href="css/reveal.css?v=0.1.103">
+  <link rel="stylesheet" href="css/cards.css?v=0.1.104">
+  <link rel="stylesheet" href="css/app.css?v=0.1.104">
+  <link rel="stylesheet" href="css/reveal.css?v=0.1.104">
 </head>
 <body>
   <canvas id="sky" role="img" aria-label="Sky map aligned with your viewing direction"></canvas>
@@ -26,6 +26,7 @@
       <canvas id="radar-canvas" width="96" height="96"></canvas>
       <span id="radar-new" aria-label="new to collect"><b id="new-count">0</b></span><span id="radar-up"><b id="visible-count">0</b> up</span>
     </button>
+    <button id="nextpass" hidden></button>
     <div id="guidance" aria-live="polite" hidden></div>
 
     <div id="callout" hidden>
@@ -89,12 +90,16 @@
 
   <section id="visible" class="overlay panel" role="dialog" aria-modal="true" aria-label="Visible now" hidden>
     <div class="panel-head">
-      <h2>Visible now</h2>
+      <h2 id="visible-title">Visible now</h2>
       <button class="pill" data-close="visible">Done</button>
     </div>
-    <p class="hint" id="visible-hint"></p>
-    <p class="hint small" id="next-pass-info"></p>
-    <div id="visible-list"></div>
+    <div class="vtabs" role="tablist"><button role="tab" data-vtab="now" class="on">Now</button><button role="tab" data-vtab="tonight">Tonight</button></div>
+    <div id="vtab-now">
+      <p class="hint" id="visible-hint"></p>
+      <p class="hint small" id="next-pass-info"></p>
+      <div id="visible-list"></div>
+    </div>
+    <div id="vtab-tonight" hidden><p class="hint" id="tonight-summary">Working out tonight's sky…</p><div id="tonight-chart"></div><div id="tonight-list"></div></div>
   </section>
 
   <section id="debug" class="overlay panel" role="dialog" aria-modal="true" aria-label="Observing settings" hidden>
@@ -153,6 +158,6 @@
     <pre id="debug-info"></pre></details>
   </section>
 
-  <script type="module" src="js/main.js?v=0.1.103"></script>
+  <script type="module" src="js/main.js?v=0.1.104"></script>
 </body>
 </html>

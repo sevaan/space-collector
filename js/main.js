@@ -1,22 +1,22 @@
-import { VERSION } from './version.js?v=0.1.103';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.103';
-import { skyLimit, SKIES, DEFAULT_SKY } from './sky-limit.js?v=0.1.103';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.103';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.103';
-import { SkyView, shortName } from './sky.js?v=0.1.103';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.103';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.103';
-import { cardArt } from './art.js?v=0.1.103';
-import { renderCard, cardLevel, artImage } from './card.js?v=0.1.103';
-import { playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.103';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.103';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.103';
-import { naturalTargets } from './natural.js?v=0.1.103';
-import { TIER_INFO } from './rarity.js?v=0.1.103';
-import { SETS } from './sets.js?v=0.1.103';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.103';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.103';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.103';
+import { VERSION } from './version.js?v=0.1.104';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.104';
+import { skyLimit, SKIES, DEFAULT_SKY } from './sky-limit.js?v=0.1.104';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.104';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.104';
+import { SkyView, shortName } from './sky.js?v=0.1.104';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.104';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.104';
+import { cardArt } from './art.js?v=0.1.104';
+import { renderCard, cardLevel, artImage } from './card.js?v=0.1.104';
+import { playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.104';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.104';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.104';
+import { naturalTargets } from './natural.js?v=0.1.104';
+import { TIER_INFO } from './rarity.js?v=0.1.104';
+import { SETS } from './sets.js?v=0.1.104';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.104';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.104';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.104';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -420,6 +420,7 @@ function tick(ts) {
   });
 
   updateCompass(basis);
+  if (t - lastChip > 1000) { lastChip = t; requestTonight(); updateNextPassChip(); }
   placeDiscover();
   if (t - lastPanel > 250 || target?.obj.id !== shownTargetId || state.lockedOn !== lastLocked) {
     lastLocked = state.lockedOn; renderTarget(target, d); measureSkySpace(); lastPanel = t; }
@@ -838,7 +839,133 @@ function renderVisible() {
     list.appendChild(row);
   }
 }
-$('radar').addEventListener('click', () => { renderVisible(); openPanel('visible'); });
+$('radar').addEventListener('click', () => { showVTab('now'); renderVisible(); openPanel('visible'); });
+
+// ---------- tonight planner ----------
+// js/tonight-worker.js forecasts every visible pass from now to dawn (same visibility rules as the live sky).
+// The visible panel's Tonight tab shows when satellites are up, a chart, the passes worth looking for, and
+// what else is up (planets, constellations with stars you still need). When nothing is lit, a chip under
+// the radar says when the next good pass is.
+let tonightWorker = null, tonightReq = 0, tonightBusy = false, lastChip = 0;
+const fmtTime = (ms) => new Date(ms).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+function requestTonight(force = false) {
+  if (!state.catalog || !state.observer || tonightBusy) return;
+  const T = state.tonight;
+  if (!force && T && now().getTime() - T.startMs < 20 * 60000 && T.sky === state.lightSky && T.lat === state.observer.lat && T.lon === state.observer.lon && T.bino === state.binoculars) return;
+  tonightBusy = true;
+  const requestId = ++tonightReq, startMs = now().getTime();
+  try {
+    tonightWorker ??= new Worker(new URL(`./tonight-worker.js?v=${VERSION}`, import.meta.url), { type: 'module' });
+    tonightWorker.onmessage = ({ data }) => {
+      if (data.requestId !== tonightReq) return;
+      tonightBusy = false;
+      if (data.error) return;
+      state.tonight = { ...data, sky: state.lightSky, lat: state.observer.lat, lon: state.observer.lon, bino: state.binoculars };
+      if (!$('vtab-tonight').hidden) renderTonight();
+      lastChip = 0;
+    };
+    tonightWorker.onerror = () => { tonightBusy = false; };
+    const base = skyLimit({ sky: state.lightSky }), faintest = (state.binoculars ? base.binoculars : base.satellites) + 0.5;
+    const objects = state.catalog.objects.filter((o) => o.stdMag + 5 * Math.log10(Math.max(o.perigee ?? 400, 200) / 1000) <= faintest);
+    tonightWorker.postMessage({ requestId, objects, observer: state.observer, startMs, sky: state.lightSky, binoculars: state.binoculars });
+  } catch { tonightBusy = false; }
+}
+function showVTab(tab) {
+  document.querySelectorAll('[data-vtab]').forEach((b) => b.classList.toggle('on', b.dataset.vtab === tab));
+  $('vtab-now').hidden = tab !== 'now'; $('vtab-tonight').hidden = tab !== 'tonight';
+  $('visible-title').textContent = tab === 'now' ? 'Visible now' : 'Tonight';
+  if (tab === 'tonight') renderTonight();
+}
+document.querySelectorAll('[data-vtab]').forEach((b) => b.addEventListener('click', () => showVTab(b.dataset.vtab)));
+// When satellites are visible, as merged windows: [{ s, e, max }].
+function tonightWindows(T) {
+  const wins = []; let cur = null;
+  for (const [t, n] of T.curve) {
+    if (n > 0) { if (cur && t - cur.e <= 20 * 60000) { cur.e = t; cur.max = Math.max(cur.max, n); } else { if (cur) wins.push(cur); cur = { s: t, e: t, max: n }; } }
+  }
+  if (cur) wins.push(cur);
+  return wins.filter((w) => w.e - w.s >= 5 * 60000 || w.max > 1);
+}
+function tonightPasses(T, t0) {
+  return T.passes.filter((p) => p.end >= t0 - 60000).map((p) => ({ ...p, obj: state.byId.get(p.id) })).filter((p) => p.obj)
+    .map((p) => ({ ...p, fresh: isNewFind(p.obj) }))
+    .filter((p) => p.fresh || p.mag <= 2.5 || p.peakEl >= 60 || ['rare', 'epic', 'legendary'].includes(p.obj.tier))
+    .sort((a, b) => a.start - b.start);
+}
+function renderTonight() {
+  const T = state.tonight, t0 = now().getTime();
+  if (!T) { $('tonight-summary').textContent = 'Working out tonight\'s sky…'; $('tonight-chart').innerHTML = ''; $('tonight-list').innerHTML = ''; requestTonight(); return; }
+  const wins = tonightWindows(T).filter((w) => w.e >= t0);
+  const peak = T.curve.filter(([t]) => t >= t0).reduce((a, c) => (c[1] > a[1] ? c : a), [0, 0]);
+  $('tonight-summary').innerHTML = wins.length
+    ? `Satellites are visible ${wins.slice(0, 3).map((w) => `<b>${fmtTime(Math.max(w.s, t0))}–${fmtTime(w.e)}</b>`).join(' and ')}. Busiest around <b>${fmtTime(peak[0])}</b>, up to ${peak[1]} at once.`
+    : `No satellites bright enough for your sky until dawn. Try <b>Countryside</b> in settings if you're somewhere darker, or binocular mode.`;
+  // Chart: satellites visible across the night, in 10-minute bins, with a "now" line.
+  const pts = T.curve; let svg = '';
+  if (pts.length) {
+    const W = 340, H = 64, a = pts[0][0], b = pts[pts.length - 1][0], span = Math.max(1, b - a), bins = [];
+    for (const [t, n] of pts) { const i = Math.floor((t - a) / 600000); bins[i] = Math.max(bins[i] ?? 0, n); }
+    const maxN = Math.max(1, ...bins.filter(Boolean)), bw = W / bins.length;
+    svg += bins.map((n, i) => (n ? `<rect x="${(i * bw + 0.5).toFixed(1)}" y="${(H - (n / maxN) * H).toFixed(1)}" width="${Math.max(1, bw - 1).toFixed(1)}" height="${((n / maxN) * H).toFixed(1)}" rx="1" fill="#fa8127" opacity=".8"/>` : '')).join('');
+    const xNow = ((t0 - a) / span) * W;
+    if (xNow >= 0 && xNow <= W) svg += `<line x1="${xNow}" x2="${xNow}" y1="0" y2="${H}" stroke="#fff2b3" stroke-width="1.2"/><text x="${Math.min(W - 18, xNow + 4)}" y="10" fill="#fff2b3" font-size="9" font-family="SC Label, Arial Narrow">NOW</text>`;
+    svg = `<svg viewBox="0 0 ${W} ${H + 16}" role="img" aria-label="Satellites visible through the night"><line x1="0" x2="${W}" y1="${H}" y2="${H}" stroke="#344654"/>${svg}
+      <text x="0" y="${H + 13}" fill="#bdbea9" font-size="10" font-family="SC Label, Arial Narrow">${fmtTime(a)}</text><text x="${W}" y="${H + 13}" text-anchor="end" fill="#bdbea9" font-size="10" font-family="SC Label, Arial Narrow">${fmtTime(b)}</text></svg>`;
+  }
+  $('tonight-chart').innerHTML = svg;
+  // Passes worth looking for, then the Moon, planets and constellations that are up.
+  const list = $('tonight-list'); list.innerHTML = '';
+  const passes = tonightPasses(T, t0).slice(0, 40);
+  let lastHead = '';
+  for (const p of passes) {
+    const h = new Date(p.start).getHours(), head = p.start <= t0 ? 'Up right now' : h >= 12 ? 'This evening' : h < 5 ? 'Late night' : 'Before dawn';
+    if (head !== lastHead) { list.insertAdjacentHTML('beforeend', `<div class="t-head">${head}</div>`); lastHead = head; }
+    const tier = TIER_INFO[p.obj.tier] ?? TIER_INFO.common;
+    const row = document.createElement('div'); row.className = 't-row'; row.style.setProperty('--tier', tier.color);
+    row.innerHTML = `<span class="time">${fmtTime(p.start)}</span><span><div class="name"><span class="dot"></span>${escapeHtml(label(p.obj))}${p.fresh ? '<span class="new">NEW</span>' : ''}</div>
+      <div class="meta">${tier.label} · up to mag ${p.mag} (${brightnessWord(p.mag)}) · rises in the ${compassPoint(p.riseAz)}, highest ${p.peakEl}° in the ${compassPoint(p.peakAz)} at ${fmtTime(p.peakAt)}</div></span>`;
+    list.appendChild(row);
+  }
+  if (!passes.length) list.insertAdjacentHTML('beforeend', '<p class="hint">No standout passes left tonight.</p>');
+  list.insertAdjacentHTML('beforeend', `<div class="t-head">Also up tonight</div>` + alsoUpTonight(t0, T.dawn ?? t0 + 10 * 3600000));
+}
+// Planets and constellations (with stars you still need) above the horizon in a dark sky before dawn.
+function alsoUpTonight(t0, until) {
+  const planets = new Map(), cons = new Map();
+  for (let t = t0; t <= until; t += 30 * 60000) {
+    const d = new Date(t), toEnu = eqToEnu(d, state.observer), bodies = solarSystem(d, state.observer);
+    const el = (v) => Math.asin(Math.max(-1, Math.min(1, toEnu(v)[2]))) * 180 / Math.PI;
+    const sun = bodies.find((b) => b.kind === 'sun'); if (sun && el(sun.v) > -6) continue;
+    for (const b of bodies) if (b.kind === 'planet' && el(b.v) > 10 && !planets.has(b.name)) planets.set(b.name, t);
+    for (const o of CON_STARS) {
+      if (!isNewFind(o) || el(o.v) < 20 || o.mag > (state.limit?.stars ?? 4.8)) continue;
+      const c = cons.get(o.con) ?? cons.set(o.con, { best: 0, at: t, now: new Map() }).get(o.con);
+      c.now.set(t, (c.now.get(t) ?? 0) + 1);
+      if (c.now.get(t) > c.best) { c.best = c.now.get(t); c.at = t; }
+    }
+  }
+  const rows = [];
+  for (const [name, t] of planets) rows.push(`<div class="t-row"><span class="time">${t <= t0 ? 'Now' : fmtTime(t)}</span><span><div class="name">${name}</div><div class="meta">Planet · above the trees from ${t <= t0 ? 'now' : fmtTime(t)}</div></span></div>`);
+  [...cons.entries()].sort((a, b) => b[1].best - a[1].best).slice(0, 5).forEach(([id, c]) => {
+    const con = CON_BY_ID.get(id);
+    rows.push(`<div class="t-row"><span class="time">${c.at <= t0 ? 'Now' : fmtTime(c.at)}</span><span><div class="name">${escapeHtml(con.name)}<span class="new">${c.best} NEW STAR${c.best > 1 ? 'S' : ''}</span></div><div class="meta">Constellation · best placed around ${fmtTime(c.at)}</div></span></div>`);
+  });
+  return rows.join('') || '<p class="hint">Nothing else new is well placed tonight.</p>';
+}
+// The chip under the radar when no satellite is lit right now.
+function updateNextPassChip() {
+  const chip = $('nextpass');
+  const lit = state.items?.some((i) => i.look.visible);
+  const T = state.tonight, t0 = now().getTime();
+  if (lit || !T || state.timeOffsetMs) { if (!chip.hidden) chip.hidden = true; return; }
+  const next = tonightPasses(T, t0).find((p) => p.start > t0);
+  const win = tonightWindows(T).find((w) => w.s > t0);
+  const dark = T.curve.length && t0 >= T.curve[0][0];
+  chip.innerHTML = next ? `${dark ? 'Nothing lit right now · next: ' : 'Satellites from ' + fmtTime(win?.s ?? next.start) + ' · first: '}<b>${escapeHtml(label(next.obj))}</b> at ${fmtTime(next.start)} ›`
+    : win ? `Nothing lit right now · satellites again at <b>${fmtTime(win.s)}</b> ›` : 'No more satellites tonight · see what else is up ›';
+  chip.hidden = false;
+}
+$('nextpass').addEventListener('click', () => { showVTab('tonight'); openPanel('visible'); });
 
 // ---------- drag to look ----------
 

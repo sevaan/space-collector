@@ -36,5 +36,5 @@ export function conArt(con, highlightHip = null, { w = 360, h = 240, figure = nu
   return `<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <defs><radialGradient id="cg"><stop offset="0" stop-color="#fa8127" stop-opacity=".7"/><stop offset="1" stop-color="#fa8127" stop-opacity="0"/></radialGradient>
     <radialGradient id="cs" cx="50%" cy="40%" r="75%"><stop offset="0" stop-color="#14213a"/><stop offset="1" stop-color="#080e1a"/></radialGradient></defs>
-    <rect width="${w}" height="${h}" fill="url(#cs)"/>${figure ? `<image href="${figure}" width="${w}" height="${h}" preserveAspectRatio="xMidYMid slice"/>` : ''}${bg}<g fill="none" stroke="#fff2b3" stroke-opacity=".45" stroke-width=".9" stroke-linejoin="round">${lines}</g>${dots}${glow}</svg>`;
+    <rect width="${w}" height="${h}" fill="url(#cs)"/>${figure ? `<image href="${figure}" width="${w}" height="${h}" preserveAspectRatio="xMidYMid slice" opacity=".62"/>` : ''}${bg}<g fill="none" stroke="#fff2b3" stroke-opacity=".45" stroke-width=".9" stroke-linejoin="round">${lines}</g>${dots}${glow}</svg>`;
 }

@@ -172,3 +172,4 @@ Alerts, service worker, accounts, secret sets/feats.
   sky, after extinction). Constellation cards are earned through their stars (cards-page `linkConstellations`,
   renderCard `opts.ownedKeys`): bronze 1 star, silver half, gold (gold frame, `.con-complete`) when all. Art for these
   is drawn from real positions (js/con-art.js `conArt`), the card's star ringed in orange. Toasts on progress/completion.
+- Tonight planner (2026-10-05): js/tonight-worker.js scans every bright-enough object minute by minute from now to dawn (same visibility rules incl. sky limit, twilight, Moon) → passes + a visible-count curve (~1.5 s). The visible panel has Now | Tonight tabs (`showVTab`, `renderTonight`: summary windows, chart, passes worth seeing — new, bright, high or rare — and `alsoUpTonight` planets/constellations with stars you still need). `#nextpass` chip under the radar when nothing is lit. Forecast refreshes every 20 min or when place/sky/binoculars change.
