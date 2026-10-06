@@ -1,29 +1,29 @@
-import { VERSION } from './version.js?v=0.1.179';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.179';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.179';
-import { conArt } from './con-art.js?v=0.1.179';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.179';
-import { CON_FIGURES } from './con-figures.js?v=0.1.179';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.179';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.179';
-import { progress as progressOf } from './progress.js?v=0.1.179';
-import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.179';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.179';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.179';
-import { SkyView, shortName } from './sky.js?v=0.1.179';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.179';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.179';
-import { cardArt } from './art.js?v=0.1.179';
-import { renderCard, cardLevel, artImage } from './card.js?v=0.1.179';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.179';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.179';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.179';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.179';
-import { TIER_INFO } from './rarity.js?v=0.1.179';
-import { SETS } from './sets.js?v=0.1.179';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.179';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.179';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.179';
+import { VERSION } from './version.js?v=0.1.180';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.180';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.180';
+import { conArt } from './con-art.js?v=0.1.180';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.180';
+import { CON_FIGURES } from './con-figures.js?v=0.1.180';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.180';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.180';
+import { progress as progressOf } from './progress.js?v=0.1.180';
+import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.180';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.180';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.180';
+import { SkyView, shortName } from './sky.js?v=0.1.180';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.180';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.180';
+import { cardArt } from './art.js?v=0.1.180';
+import { renderCard, cardLevel, artImage } from './card.js?v=0.1.180';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.180';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.180';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.180';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.180';
+import { TIER_INFO } from './rarity.js?v=0.1.180';
+import { SETS } from './sets.js?v=0.1.180';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.180';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.180';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.180';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -349,7 +349,7 @@ const dot = (a, b) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
 const norm = (v) => { const l = Math.hypot(v[0], v[1], v[2]) || 1; return [v[0] / l, v[1] / l, v[2] / l]; };
 
 function currentBasis() {
-  if (state.preview && state.followPreview && state.pinnedId) {
+  if (state.preview && state.followPreview && state.pinnedId && state.drag.on) { // follow only steers the drag view, never live sensors
     const selected = state.items.find(it => it.obj.id === state.pinnedId);
     if (selected) { state.drag.az = selected.look.az; state.drag.el = selected.look.el; }
   }
@@ -1216,6 +1216,9 @@ document.querySelectorAll('[data-time]').forEach((b) => b.addEventListener('clic
   cancelPassSearch();
   const v = b.dataset.time;
   state.timeOffsetMs = v === 'now' ? 0 : state.timeOffsetMs + Number(v) * 1000;
+  // A manual nudge is you steering the clock, not a pass preview: stop following the pinned object, or the
+  // view keeps tracking it across the sky with the phone still (2026-10-06).
+  state.followPreview = false; state.preview = false;
   afterTimeJump();
 }));
 
