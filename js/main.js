@@ -1,22 +1,23 @@
-import { VERSION } from './version.js?v=0.1.106';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.106';
-import { skyLimit, SKIES, DEFAULT_SKY } from './sky-limit.js?v=0.1.106';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.106';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.106';
-import { SkyView, shortName } from './sky.js?v=0.1.106';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.106';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.106';
-import { cardArt } from './art.js?v=0.1.106';
-import { renderCard, cardLevel, artImage } from './card.js?v=0.1.106';
-import { playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.106';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.106';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.106';
-import { naturalTargets } from './natural.js?v=0.1.106';
-import { TIER_INFO } from './rarity.js?v=0.1.106';
-import { SETS } from './sets.js?v=0.1.106';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.106';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.106';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.106';
+import { VERSION } from './version.js?v=0.1.107';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.107';
+import { skyLimit, SKIES, DEFAULT_SKY } from './sky-limit.js?v=0.1.107';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.107';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.107';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.107';
+import { SkyView, shortName } from './sky.js?v=0.1.107';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.107';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.107';
+import { cardArt } from './art.js?v=0.1.107';
+import { renderCard, cardLevel, artImage } from './card.js?v=0.1.107';
+import { playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.107';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.107';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.107';
+import { naturalTargets } from './natural.js?v=0.1.107';
+import { TIER_INFO } from './rarity.js?v=0.1.107';
+import { SETS } from './sets.js?v=0.1.107';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.107';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.107';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.107';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -696,7 +697,7 @@ function autoLog(target, d, t) {
     if (!saved) return;
     const after = cardLevel(state.sightings.filter((s) => !s.sim && s.cardKey === key));
     const name = label(o);
-    toast(after !== before && !o.launches ? `${name}: ${after[0].toUpperCase() + after.slice(1)} card unlocked!` : `Seen again: ${name}. Logged.`, 2600);
+    toast(saved.shiny ? `✦ Shiny! ${name}: ${SHINY[saved.shiny].line}` : after !== before && !o.launches ? `${name}: ${after[0].toUpperCase() + after.slice(1)} card unlocked!` : `Seen again: ${name}. Logged.`, saved.shiny ? 4500 : 2600);
     lastPanel = 0;
   });
 }
@@ -756,7 +757,7 @@ function showCaptureCard(obj) {
   // A constellation star: the stamp shows how far along its constellation is (gold when complete).
   const conCard = model.con && CON_BY_ID.get(model.con);
   const con = conCard && sightings.length === 1 ? { name: conCard.name, ...conProgress(conCard, ownedCardKeys()) } : null;
-  playReveal({ card, o: model, seen: sightings.length, fleet, progress, collected, con, origin: { x: sky.ring?.x ?? sky.cx, y: sky.ring?.y ?? sky.cy } });
+  playReveal({ card, o: model, seen: sightings.length, fleet, progress, collected, con, shiny: sightings[0]?.shiny ? SHINY[sightings[0].shiny] : null, origin: { x: sky.ring?.x ?? sky.cx, y: sky.ring?.y ?? sky.cy } });
 }
 // Open an owned card in place, spinning out of the toast. counted: this view also logged a sighting.
 function showViewCard(obj, from, counted) {
@@ -791,7 +792,11 @@ async function recordSighting(obj, d, l = null) {
   l ??= obj.natural ? state.naturals?.find((n) => n.obj.id === obj.id)?.look : look(obj, frame(d, state.observer));
   if (!l) return null;
   const m = obj.natural ? null : motion(obj, d, state.observer), key = cardKeyFor(obj);
-  const sighting = { objectId: obj.id, cardKey: key, ...(stampKeyFor(obj) ? { stampKey: stampKeyFor(obj) } : {}), name: obj.name, type: obj.type, year: obj.year, time: d.getTime(), loggedAt: Date.now(), lat: state.observer.lat, lon: state.observer.lon, az: l.az, el: l.el, mag: l.mag, rangeKm: l.rangeKm, heading: m?.heading, ...(l.phaseName ? { phase: l.phaseName } : {}), sim: false, appVersion: VERSION, cardSnapshot: cardSnapshot(obj) };
+  // Shiny (js/shiny.js): something special happening in the sky right now.
+  const moonB = state.bodies?.find((b) => b.kind === 'moon');
+  const later = obj.natural ? null : look(obj, frame(new Date(d.getTime() + 45000), state.observer));
+  const shiny = shinyFor(obj, { ...l, enu: l.enu ?? enuFromAzEl(l.az, l.el) }, later, moonB ? { enu: moonB.enu, illum: moonB.illum } : null, d.getTime());
+  const sighting = { ...(shiny ? { shiny } : {}), objectId: obj.id, cardKey: key, ...(stampKeyFor(obj) ? { stampKey: stampKeyFor(obj) } : {}), name: obj.name, type: obj.type, year: obj.year, time: d.getTime(), loggedAt: Date.now(), lat: state.observer.lat, lon: state.observer.lon, az: l.az, el: l.el, mag: l.mag, rangeKm: l.rangeKm, heading: m?.heading, ...(l.phaseName ? { phase: l.phaseName } : {}), sim: false, appVersion: VERSION, cardSnapshot: cardSnapshot(obj) };
   state.captureBusy = true;
   try {
     const key = await addSighting(sighting);

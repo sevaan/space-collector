@@ -5,9 +5,9 @@
 //  Everything scales with rarity (Legendary dims the sky, shockwave, held breath, slow flip, fanfare).
 // Waits use timers, not animation.finished, so a paused tab can never freeze the sequence.
 
-import { TIER_INFO } from './rarity.js?v=0.1.106';
-import { levelFor, attachTilt, attachGyro, attachFlip } from './card.js?v=0.1.106';
-import { applyBack } from './card-backs.js?v=0.1.106';
+import { TIER_INFO } from './rarity.js?v=0.1.107';
+import { levelFor, attachTilt, attachGyro, attachFlip } from './card.js?v=0.1.107';
+import { applyBack } from './card-backs.js?v=0.1.107';
 
 const FX = {
   common:    { particles: 14,  flip: 520,  spin: 0,   dim: 0,   shock: false, notes: [880],                            hold: 0 },
@@ -104,7 +104,7 @@ function sizeCard(cardEl) {
 // collected: how many different cards you own now, counting this one. A new card only gets a stamp when
 // that number is a milestone (MILESTONES); repeat sightings keep their SEEN / NEW STAMP / level stamps.
 export const MILESTONES = [1, 10, 25, 50, 75, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000];
-export async function playReveal({ card, o, seen, origin, fleet = null, progress = null, collected = 0, con = null }) {
+export async function playReveal({ card, o, seen, origin, fleet = null, progress = null, collected = 0, con = null, shiny = null }) {
   stopReveal();
   const my = run;
   const fresh = seen <= 1;
@@ -154,7 +154,7 @@ export async function playReveal({ card, o, seen, origin, fleet = null, progress
     $('rv-flipper').style.transform = 'rotateY(180deg)';
     await play($('rv-holder'), [{ opacity: 0, transform: 'scale(.5) translateY(40px)' }, { opacity: 1, transform: 'scale(1.04)' }, { opacity: 1, transform: 'scale(1)' }], { duration: 480, easing: 'cubic-bezier(.2,.9,.3,1.2)', fill: 'forwards' });
     if (!alive()) return;
-    return finish({ fx, color, fresh, seen, level, levelUp, card, alive, fleet, newStamp, nights, collected, con });
+    return finish({ fx, color, fresh, seen, level, levelUp, card, alive, fleet, newStamp, nights, collected, con, shiny });
   }
 
   // 2. A sealed card lands, glowing in its rarity colour, and waits for your tap.
@@ -189,7 +189,7 @@ export async function playReveal({ card, o, seen, origin, fleet = null, progress
   setTimeout(() => { if (alive()) showFace('front'); }, flipMs / 2); // edge-on: swap faces
   await flipped;
   if (!alive()) return;
-  return finish({ fx, color, fresh, seen, level, levelUp, card, alive, fleet, newStamp, nights, collected, con });
+  return finish({ fx, color, fresh, seen, level, levelUp, card, alive, fleet, newStamp, nights, collected, con, shiny });
 }
 
 // Already in your collection: the card spins out of the toast's thumbnail and settles, ready to tilt.
@@ -236,10 +236,11 @@ export async function playView({ card, o, from, sighting = null }) {
 
 // 4. Light sweeps the card, sparks fly, the stamp lands, and the card is yours to tilt.
 const STAMP_INK = '#8fb8ff';
-async function finish({ fx, color, fresh, seen, level, levelUp, card, alive, fleet = null, newStamp = false, nights = 0, collected = 0, con = null }) {
+async function finish({ fx, color, fresh, seen, level, levelUp, card, alive, fleet = null, newStamp = false, nights = 0, collected = 0, con = null, shiny = null }) {
   const r = $('rv-holder').getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height / 2;
   fanfare(levelUp ? [...fx.notes, 1568, 2093] : fx.notes);
-  burst(cx, cy, fx.particles + (levelUp ? 60 : 0), color);
+  burst(cx, cy, fx.particles + (levelUp ? 60 : 0) + (shiny ? 90 : 0), shiny ? '#ff8fd8' : color);
+  if (shiny) setTimeout(() => { burst(cx, cy - 40, 70, '#8ff0ff'); burst(cx, cy + 40, 70, '#fff2b3'); }, 220);
   if (fx.particles > 60 || levelUp) setTimeout(() => burst(cx, cy - 60, fx.particles / 2 + 20, levelUp ? LEVEL_COLOR[level] : '#ffffff'), 180);
   $('rv-sweep').classList.remove('go'); void $('rv-sweep').offsetWidth; $('rv-sweep').classList.add('go');
   await sleep(500);
@@ -247,8 +248,9 @@ async function finish({ fx, color, fresh, seen, level, levelUp, card, alive, fle
   const date = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }).toUpperCase();
   const stampLine = fleet ? `LAUNCH ${fleet.cospar} · ${fleet.stamps} OF ${fleet.total}` : '';
   const conDone = !!con && con.level === 'gold';
-  const milestone = fresh && (!!con || MILESTONES.includes(collected));
-  $('rv-stamp').innerHTML = fresh && con ? (conDone ? `${con.name.toUpperCase()} COMPLETE<small>ALL ${con.total} STARS</small>` : `${con.name.toUpperCase()}<small>${con.have} OF ${con.total} STARS</small>`)
+  const milestone = (fresh && (!!con || MILESTONES.includes(collected))) || !!shiny;
+  $('rv-stamp').innerHTML = shiny && !conDone ? `SHINY!<small>${shiny.label.toUpperCase()}</small>`
+    : fresh && con ? (conDone ? `${con.name.toUpperCase()} COMPLETE<small>ALL ${con.total} STARS</small>` : `${con.name.toUpperCase()}<small>${con.have} OF ${con.total} STARS</small>`)
     : fresh ? (collected === 1 ? `FIRST ITEM<small>COLLECTED</small>` : `${collected.toLocaleString('en-US')} ITEMS<small>COLLECTED</small>`)
     : newStamp ? `NEW STAMP<small>${levelUp ? `${LEVEL_NAME[level]} CARD UNLOCKED` : stampLine}</small>`
     : levelUp ? `SEEN ${seen}×<small>${LEVEL_NAME[level]} CARD UNLOCKED</small>` : `SEEN ${seen}×<small>${nights > 1 ? `${nights} NIGHTS · ` : ''}${date}</small>`;
@@ -257,7 +259,7 @@ async function finish({ fx, color, fresh, seen, level, levelUp, card, alive, fle
     const hr = $('rv-holder').getBoundingClientRect(), cr = card.getBoundingClientRect();
     if (cr.height) $('rv-stamp').style.top = `${cr.top - hr.top + cr.height / 2}px`;
     $('rv-stamp').classList.toggle('long', ($('rv-stamp').firstChild?.textContent ?? '').length > 12); // e.g. SAGITTARIUS COMPLETE
-    $('rv-stamp').style.setProperty('--stamp', conDone ? LEVEL_COLOR.gold : levelUp ? LEVEL_COLOR[level] : newStamp ? STAMP_INK : color);
+    $('rv-stamp').style.setProperty('--stamp', conDone ? LEVEL_COLOR.gold : shiny ? '#ff8fd8' : levelUp ? LEVEL_COLOR[level] : newStamp ? STAMP_INK : color);
     await play($('rv-stamp'), [
       { opacity: 0, transform: 'translate(-50%,-50%) rotate(-9deg) scale(2.6)' },
       { opacity: 1, transform: 'translate(-50%,-50%) rotate(-9deg) scale(.95)', offset: .7 },
