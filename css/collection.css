@@ -185,9 +185,9 @@ body.albums-view .collection-tools { display: none; }
 
 .lb-remind { margin-left: 8px; padding: 3px 10px; border: 1px solid #fa8127; border-radius: 99px; background: none; color: #fa8127; font: 500 11px/1 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .12em; text-transform: uppercase; vertical-align: middle; }
 
-/* Sighting rows on fleet cards carry their launch on a second line. */
-.viewer-history p.with-launch { flex-wrap: wrap; row-gap: 3px; }
-.viewer-history p.with-launch .h-main { flex: 1 1 calc(100% - 40px); display: flex; justify-content: space-between; gap: 10px; }
+/* Sighting rows on fleet cards carry their launch on a second line; the × stays at the right across both lines. */
+.viewer-history p.with-launch { display: grid; grid-template-columns: 1fr auto; column-gap: 10px; row-gap: 3px; align-items: center; }
+.viewer-history p.with-launch .h-main { grid-column: 1; display: flex; justify-content: space-between; gap: 10px; }
 .viewer-history p.with-launch .h-main span:first-child { color: var(--text); }
-.viewer-history p.with-launch .h-launch { flex: 1 1 calc(100% - 40px); font: 500 11px/1.3 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .08em; text-transform: uppercase; color: #fa8127; }
-.viewer-history p.with-launch .history-delete { align-self: flex-start; }
+.viewer-history p.with-launch .h-launch { grid-column: 1; font: 500 11px/1.3 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .08em; text-transform: uppercase; color: #fa8127; }
+.viewer-history p.with-launch .history-delete { grid-column: 2; grid-row: 1 / span 2; }
