@@ -1,18 +1,18 @@
-import { renderCard, renderCardTile, renderPassport, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.131';
-import { cardArt } from './art.js?v=0.1.131';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.131';
-import { applyBack } from './card-backs.js?v=0.1.131';
-import { SETS, assignSets } from './sets.js?v=0.1.131';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.131';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.131';
-import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.131';
-import { progress } from './progress.js?v=0.1.131';
-import { eventBadges, nextEvent } from './events.js?v=0.1.131';
-import { drawShareCard, shareCard } from './share-card.js?v=0.1.131';
-import { conArt } from './con-art.js?v=0.1.131';
-import { CON_BY_ID } from './constellations.js?v=0.1.131';
-import { allSightings, deleteSighting } from './store.js?v=0.1.131';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.131';
+import { renderCard, renderCardTile, renderPassport, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.135';
+import { cardArt } from './art.js?v=0.1.135';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.135';
+import { applyBack } from './card-backs.js?v=0.1.135';
+import { SETS, assignSets } from './sets.js?v=0.1.135';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.135';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.135';
+import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.135';
+import { progress } from './progress.js?v=0.1.135';
+import { eventBadges, nextEvent } from './events.js?v=0.1.135';
+import { drawShareCard, shareCard } from './share-card.js?v=0.1.135';
+import { conArt } from './con-art.js?v=0.1.135';
+import { CON_BY_ID } from './constellations.js?v=0.1.135';
+import { allSightings, deleteSighting } from './store.js?v=0.1.135';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.135';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -292,7 +292,7 @@ function openViewer(i, from = null) {
   showCard();
   $('viewer').showModal();
   document.body.style.overflow = 'hidden';
-  $('v-close').focus();
+  $('v-close').focus({ focusVisible: false }); // keep it focusable for screen readers without a ring on open
   $('viewer').querySelector('.viewer-scroll').scrollTop = 0;
   fadeViewer(true);
   spin($('slot').firstElementChild, from, true);

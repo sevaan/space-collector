@@ -207,3 +207,6 @@ body.night #t-art { border-color:var(--rule); }
   padding:7px 12px; border-radius:12px; background:color-mix(in srgb,var(--bg) 80%,transparent); border:1px solid color-mix(in srgb,var(--gold) 55%,transparent);
   color:var(--text); font:500 12.5px/1.3 var(--label); letter-spacing:.06em; -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px); }
 #event-banner b { color:var(--gold); font-weight:500; }
+
+/* Every close button is a round ✕ (2026-10-06, Sevaan: no 'Done'). Same look in css/collection.css. */
+.pill.x-close { width:44px; min-width:44px; padding:0; border-radius:50%; font-size:20px; line-height:1; }

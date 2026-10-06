@@ -52,5 +52,3 @@ body.night #reveal { background: #000; }
 @keyframes rv-twinkle { 0%, 100% { opacity: var(--o); transform: scale(1); } 50% { opacity: .08; transform: scale(.6); } }
 @media (prefers-reduced-motion: reduce) { #reveal > .starfield i { animation: none; } }
 body.night #reveal > .starfield i { background: #b45b53; }
-/* Close is a round ×, not a Done pill. */
-#rv-top .rv-x { width: 44px; padding: 0; border-radius: 50%; font-size: 20px; line-height: 1; }

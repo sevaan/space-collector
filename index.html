@@ -15,9 +15,9 @@
   <script>try { if (localStorage.getItem("night") === "1") document.documentElement.dataset.theme = "night"; } catch {}</script>
   <link rel="preload" href="fonts/RussoOne-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="fonts/BarlowCondensed-Medium.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="css/cards.css?v=0.1.131">
-  <link rel="stylesheet" href="css/app.css?v=0.1.131">
-  <link rel="stylesheet" href="css/reveal.css?v=0.1.131">
+  <link rel="stylesheet" href="css/cards.css?v=0.1.135">
+  <link rel="stylesheet" href="css/app.css?v=0.1.135">
+  <link rel="stylesheet" href="css/reveal.css?v=0.1.135">
 </head>
 <body>
   <canvas id="sky" role="img" aria-label="Sky map aligned with your viewing direction"></canvas>
@@ -83,7 +83,7 @@
 
   <section id="reveal" class="overlay" role="dialog" aria-modal="true" aria-labelledby="reveal-eyebrow" hidden>
     <div id="rv-dim"></div><div id="rv-shock"></div><div id="rv-dot"></div><div id="rv-flash"></div><canvas id="rv-fx"></canvas>
-    <div id="rv-top"><span class="eyebrow" id="reveal-eyebrow">NEW CARD</span><span class="rv-buttons"><a id="reveal-view" class="pill" href="cards.html">View in collection</a><button class="pill rv-x" data-close="reveal" aria-label="Close">✕</button></span></div>
+    <div id="rv-top"><span class="eyebrow" id="reveal-eyebrow">NEW CARD</span><span class="rv-buttons"><a id="reveal-view" class="pill" href="cards.html">View in collection</a><button class="pill x-close" data-close="reveal" aria-label="Close">✕</button></span></div>
     <div id="rv-holder" aria-label="Tap to reveal your card"><div id="rv-flipper">
       <div class="rv-side rv-back" id="rv-back"><div class="back-holo"></div><div class="back-glare"></div></div>
       <div class="rv-side rv-front" id="reveal-card"></div>
@@ -93,7 +93,7 @@
   <section id="visible" class="overlay panel" role="dialog" aria-modal="true" aria-label="Visible now" hidden>
     <div class="panel-head">
       <h2 id="visible-title">Visible now</h2>
-      <button class="pill" data-close="visible">Done</button>
+      <button class="pill x-close" data-close="visible" aria-label="Close">✕</button>
     </div>
     <div class="vtabs" role="tablist"><button role="tab" data-vtab="now" class="on">Now</button><button role="tab" data-vtab="tonight">Tonight</button></div>
     <div id="vtab-now">
@@ -107,7 +107,7 @@
   <section id="debug" class="overlay panel" role="dialog" aria-modal="true" aria-label="Observing settings" hidden>
     <div class="panel-head">
       <h2>Observing settings</h2>
-      <button class="pill" data-close="debug">Done</button>
+      <button class="pill x-close" data-close="debug" aria-label="Close">✕</button>
     </div>
 
     <h3>Your location</h3><p id="location-note" class="hint"></p><button class="pill" id="retry-location">Use my current location</button><button class="pill" id="retry-motion">Enable motion</button>
@@ -160,6 +160,6 @@
     <pre id="debug-info"></pre></details>
   </section>
 
-  <script type="module" src="js/main.js?v=0.1.131"></script>
+  <script type="module" src="js/main.js?v=0.1.135"></script>
 </body>
 </html>
