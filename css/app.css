@@ -43,7 +43,7 @@ a { color:var(--cyan); }
 #t-body { flex:1;min-width:0; }
 .t-line { display:flex;align-items:baseline;gap:8px; }
 #t-name { font:400 15px/1.25 var(--display);text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
-#t-switch { flex:none;min-height:0;padding:4px 0;font:500 13px var(--label);color:var(--cyan);background:none;border:0; } /* no 44px row: the meta line sits right under the name */
+#t-switch { flex:none;min-height:0;padding:8px 0;margin:-8px 0;font:500 13px/1.25 var(--label);color:var(--cyan);background:none;border:0; } /* adds no height to the name row (padding is pulled back by the margin), so the meta line sits in the same place with or without it */
 #t-meta { font:500 13px/1.4 var(--label);letter-spacing:.02em;margin-top:1px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
 #t-meta.turn { color:var(--cyan); }
 /* Ticket toasts (2026-10-05): one line tall, colour-coded left edge, queued one at a time under the header. */
