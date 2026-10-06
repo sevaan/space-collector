@@ -3,8 +3,8 @@
 // Every star in a stick figure (magnitude <= 5) is its own card; the constellation card turns gold when
 // you own all of them. Bright stars that already have cards (Regulus, Spica…) count as members.
 // No DOM.
-import { NATURAL, NATURAL_BY_KEY } from './natural.js?v=0.1.102';
-import { starVector } from './celestial.js?v=0.1.102';
+import { NATURAL, NATURAL_BY_KEY } from './natural.js?v=0.1.103';
+import { starVector } from './celestial.js?v=0.1.103';
 
 const GEN = { Ari: 'Arietis', Tau: 'Tauri', Gem: 'Geminorum', Cnc: 'Cancri', Leo: 'Leonis', Vir: 'Virginis', Lib: 'Librae', Sco: 'Scorpii', Sgr: 'Sagittarii',
   Cap: 'Capricorni', Aqr: 'Aquarii', Psc: 'Piscium', Ori: 'Orionis', BigDipper: 'Ursae Majoris', UMi: 'Ursae Minoris', Cas: 'Cassiopeiae', Cyg: 'Cygni', Cru: 'Crucis' };
@@ -17,6 +17,11 @@ const FACT = {
   Cyg: 'The **Swan**, also called the **Northern Cross**, flying along the Milky Way.',
   Cru: 'The **smallest** of the 88 constellations, shown on the flags of Australia, New Zealand and Brazil.',
 };
+// Greek letters spelled out for card names: in the capitals of the title font, "ι" reads as "I".
+const GREEK = { α: 'Alpha', β: 'Beta', γ: 'Gamma', δ: 'Delta', ε: 'Epsilon', ζ: 'Zeta', η: 'Eta', θ: 'Theta', ι: 'Iota', κ: 'Kappa', λ: 'Lambda', μ: 'Mu',
+  ν: 'Nu', ξ: 'Xi', ο: 'Omicron', π: 'Pi', ρ: 'Rho', σ: 'Sigma', τ: 'Tau', υ: 'Upsilon', φ: 'Phi', χ: 'Chi', ψ: 'Psi', ω: 'Omega' };
+const SUP = { 1: '¹', 2: '²', 3: '³', 4: '⁴', 5: '⁵', 6: '⁶', 7: '⁷', 8: '⁸', 9: '⁹' };
+const spell = (bayer) => bayer.replace(/^([α-ω])(\d?)$/, (m, g, n) => `${GREEK[g] ?? g}${n ? SUP[n] : ''}`);
 const ordinal = (n) => n === 1 ? '' : `${n}${n % 10 === 2 && n !== 12 ? 'nd' : n % 10 === 3 && n !== 13 ? 'rd' : 'th'} `;
 // Rarity follows how hard a star is to see.
 const tierFor = (mag) => (mag <= 2.5 ? 'common' : mag <= 3.5 ? 'uncommon' : mag <= 4.3 ? 'rare' : 'epic');
@@ -40,7 +45,7 @@ function register(data) {
       const existing = s.name && byName.get(s.name.toLowerCase());
       let card = existing;
       if (!card) {
-        const sci = s.bayer ? `${s.bayer} ${gen}` : s.flam ? `${s.flam} ${gen}` : `HIP ${s.hip}`;
+        const sci = s.bayer ? `${spell(s.bayer)} ${gen}` : s.flam ? `${s.flam} ${gen}` : `HIP ${s.hip}`;
         const name = s.name && !used.has(s.name) ? s.name : sci;
         used.add(name);
         const key = `star:hip${s.hip}`;

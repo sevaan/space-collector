@@ -1,16 +1,16 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { cardArt } from './art.js?v=0.1.102';
-import { TIER_INFO } from './rarity.js?v=0.1.102';
-import { SET_BY_ID } from './sets.js?v=0.1.102';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.102';
-import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.102';
-import { artFileFor } from './art-keys.js?v=0.1.102';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.102';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.102';
-import { nightsIn } from './observation.js?v=0.1.102';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.102';
-import { conArt } from './con-art.js?v=0.1.102';
-import { CON_FIGURES } from './con-figures.js?v=0.1.102';
+import { cardArt } from './art.js?v=0.1.103';
+import { TIER_INFO } from './rarity.js?v=0.1.103';
+import { SET_BY_ID } from './sets.js?v=0.1.103';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.103';
+import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.103';
+import { artFileFor } from './art-keys.js?v=0.1.103';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.103';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.103';
+import { nightsIn } from './observation.js?v=0.1.103';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.103';
+import { conArt } from './con-art.js?v=0.1.103';
+import { CON_FIGURES } from './con-figures.js?v=0.1.103';
 const conFig = (id) => (CON_FIGURES.has(id) ? { figure: `assets/art/con/${id}.webp` } : {});
 
 // Levels count observing nights (local noon to noon): bronze 1, silver 3, gold 10. Before
@@ -101,7 +101,8 @@ export function renderCard(o, opts = {}) {
 // constellation name) can wrap.
 function statClass(value, unit, i = 0) {
   const v = String(value);
-  if (!unit) return v.length > 9 ? ' class="small"' : '';
+  // Words never break mid-word ("Aquariu/s"): long single words shrink to fit on one line instead.
+  if (!unit) return v.length > 9 ? (/\s/.test(v) ? ' class="small"' : ' class="fit small"') : v.length > 6 ? ' class="fit long"' : '';
   const n = (v + ' ' + unit).length;
   return n >= 10 || (i > 0 && n >= 8) ? ' class="fit long"' : ' class="fit"';
 }
