@@ -1,32 +1,32 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-// Two themes: 'glass' (navy sky, gold satellites, cyan reticle) and 'night' (all red, keeps dark adaptation).
+// Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.88';
-import { TIER_INFO } from './rarity.js?v=0.1.88';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.89';
+import { TIER_INFO } from './rarity.js?v=0.1.89';
 
 const RAD = Math.PI / 180;
-const FONT = '-apple-system, "SF Pro Text", system-ui, sans-serif';
+const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
 
 const THEMES = {
   glass: {
-    bgTop: '#10243b', bgBottom: '#040b16',
-    milky: [111, 146, 190],
-    grid: 'rgba(137, 186, 203, 0.045)',
-    horizon: 'rgba(119, 174, 187, 0.30)',
-    ground: '#050e17', groundEdge: 'rgba(117, 163, 171, 0.10)',
-    hills: '#0e2031', haze: 'rgb(120, 150, 185)',
-    groundInk: 'rgba(143, 211, 232, 0.16)', groundText: 'rgba(190, 225, 235, 0.42)', groundNorth: 'rgba(230, 198, 138, 0.75)', ghost: 'rgba(255, 214, 140, 0.95)', ghostText: 'rgba(160, 222, 240, 0.95)', ghostPill: 'rgba(5, 12, 24, 0.85)',
-    label: 'rgba(225, 235, 255, 0.92)', labelDim: 'rgba(200, 215, 255, 0.65)',
-    compass: 'rgba(200, 220, 255, 0.75)',
-    sat: '#d6bb83', satGlow: [213, 177, 107], satHot: '#f6e5b8',
-    dim: 'rgba(170, 190, 230, 0.35)',
-    bead: [223, 196, 143], trailPast: 'rgba(223, 196, 143, 0.17)',
-    reticle: '#86b9bc', reticleSoft: 'rgba(134, 185, 188, 0.08)', tick: '#dfc48f', plane: '#ff5a4e', planeDim: '#ff8a80',
-    constLine: 'rgba(129, 170, 199, 0.19)', constLabel: 'rgba(185, 211, 223, 0.58)', constCase: (s) => s,
-    starRGB: [215, 231, 245], star: (a) => `rgba(215, 231, 245, ${a})`, starLabel: 'rgba(177, 201, 216, 0.54)',
-    body: 'rgba(240, 244, 255, 0.95)', planet: '#ffffff',
-    moonLit: '#f4f1e8', moonDark: 'rgba(28, 38, 70, 0.95)', moonEdge: 'rgba(200, 220, 255, 0.35)',
-    sun: 'rgba(255, 210, 120, 0.95)',
+    bgTop: '#0c1d29', bgBottom: '#080f1b',
+    milky: [111, 139, 154], milkyOpacity: 0.48, riftRgb: [8, 15, 27],
+    grid: 'rgba(173, 188, 200, 0.065)',
+    horizon: 'rgba(255, 242, 179, 0.38)',
+    ground: '#070e16', groundEdge: 'rgba(173, 188, 200, 0.10)',
+    hills: '#101e29', haze: 'rgb(143, 179, 207)',
+    groundInk: 'rgba(143, 179, 207, 0.20)', groundText: 'rgba(255, 242, 179, 0.53)', groundNorth: '#fa8127', ghost: '#fa8127', ghostText: 'rgba(255, 242, 179, 0.85)', ghostPill: 'rgba(8, 15, 27, 0.94)',
+    label: '#fff2b3', labelDim: 'rgba(173, 188, 200, 0.83)',
+    compass: 'rgba(255, 242, 179, 0.78)',
+    sat: '#fff2b3', satGlow: [250, 129, 39], satHot: '#fff2b3',
+    dim: 'rgba(173, 188, 200, 0.35)',
+    bead: [250, 129, 39], trailPast: 'rgba(255, 242, 179, 0.26)',
+    reticle: 'rgba(255, 242, 179, 0.66)', reticleSoft: 'rgba(173, 188, 200, 0.35)', tick: '#fa8127', plane: '#f16b4c', planeDim: '#be776a',
+    constLine: 'rgba(143, 179, 207, 0.28)', constLabel: 'rgba(173, 188, 200, 0.73)', constCase: (s) => s.toUpperCase(),
+    starRGB: [255, 242, 179], star: (a) => `rgba(255, 242, 179, ${a})`, starLabel: 'rgba(173, 188, 200, 0.78)',
+    body: '#fff2b3', planet: '#fff2b3',
+    moonLit: '#fff2b3', moonDark: '#18232f', moonEdge: 'rgba(173, 188, 200, 0.5)',
+    sun: '#fa8127',
   },
   night: {
     bgTop: '#000', bgBottom: '#000',
@@ -185,7 +185,7 @@ export class SkyView {
       p.y >= this.safeTop + pad && p.y <= this.h - this.safeBottom - pad;
   }
 
-  queueLabel(text, p, { color = this.theme.labelDim, size = 11, weight = 400, gap = 9, priority = 0, align = 'auto' } = {}) {
+  queueLabel(text, p, { color = this.theme.labelDim, size = 12, weight = 600, gap = 9, priority = 0, align = 'auto' } = {}) {
     if (!text || !this.inSky(p)) return;
     // Keep the area around a new find clear so its name and "tap to collect" are easy to read.
     const z = this.clearZone;
@@ -195,8 +195,13 @@ export class SkyView {
 
   drawLabels() {
     const ctx = this.ctx;
-    const r = this.reticlePx;
-    const occupied = [{ x: this.cx - r - 5, y: this.cy - r - 5, w: 2 * r + 10, h: 2 * r + 10 }];
+    const ring = this.ring ?? { x: this.cx, y: this.cy, r: this.reticlePx };
+    const r = ring.r + 16;
+    const occupied = [{ x: ring.x - r, y: ring.y - r, w: 2 * r, h: 2 * r }];
+    if (this.clearZone) {
+      const z = this.clearZone;
+      occupied.push({ x:z.left, y:z.top, w:z.right - z.left, h:z.bottom - z.top });
+    }
     const overlaps = (a, b) => a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
     for (const label of this.labelQueue.sort((a, b) => b.priority - a.priority)) {
       const { p, color, size, weight, gap, align } = label;
@@ -232,7 +237,7 @@ export class SkyView {
     ctx.fillStyle = g;
     ctx.fillRect(0, 0, this.w, this.h);
     // Soft atmospheric light, not decorative stars. All star positions come from the catalog.
-    this.glow(this.cx, this.cy, Math.max(this.w, this.h) * 0.72, t.milky, 0.09);
+    this.glow(this.cx, this.cy, Math.max(this.w, this.h) * 0.72, t.milky, 0.045);
   }
 
   // Each glow follows a supplied point on the true galactic equator.
@@ -243,6 +248,7 @@ export class SkyView {
     const pxPerDeg = this.f * RAD;
     const fade = (enu) => Math.max(0, Math.min(1, (enu[2] + 0.02) / 0.2)); // melt into the horizon
     ctx.save();
+    ctx.globalAlpha *= this.theme.milkyOpacity ?? 1;
     ctx.lineCap = 'butt'; ctx.lineJoin = 'round';
     // 1. The glow, airbrushed: soft spots every degree along the band, overlapping so heavily that
     //    they blend into one smooth band (sparse spots are what made it look like a string of dots).
@@ -417,7 +423,8 @@ export class SkyView {
       const top = g.y + 12, h = 36;
       const x = Math.max(8 + w / 2, Math.min(this.w - 8 - w / 2, g.x));
       ctx.fillStyle = t.ghostPill ?? 'rgba(5, 12, 24, 0.82)';
-      ctx.beginPath(); if (ctx.roundRect) ctx.roundRect(x - w / 2, top, w, h, 9); else ctx.rect(x - w / 2, top, w, h); ctx.fill();
+      ctx.beginPath(); if (ctx.roundRect) ctx.roundRect(x - w / 2, top, w, h, 4); else ctx.rect(x - w / 2, top, w, h); ctx.fill();
+      ctx.strokeStyle = t.groundInk; ctx.lineWidth = 1; ctx.stroke();
       ctx.font = `600 12px ${FONT}`; ctx.fillStyle = t.ghost;
       ctx.fillText(name, x, top + 12);
       ctx.font = `500 11px ${FONT}`; ctx.fillStyle = t.ghostText;
@@ -446,7 +453,7 @@ export class SkyView {
     ctx.textAlign = 'center';
     for (let az = 0; az < 360; az += 45) {
       const p = this.project(enuFromAzEl(az, 7));
-      this.queueLabel(compassPoint(az), p, { color: t.compass, size: 11, weight: 600, priority: 5, align: 'center' });
+      this.queueLabel(compassPoint(az), p, { color: t.compass, size: 13, weight: 600, priority: 5, align: 'center' });
     }
   }
 
@@ -528,7 +535,7 @@ export class SkyView {
       for (const seg of sky.lines) this.path(seg, 0.01);
       for (const c of sky.constellations) {
         if (c.rank > 2 || c.enu[2] < 0.05) continue;
-        this.queueLabel(t.constCase(c.name), this.project(c.enu), { color: t.constLabel, size: 11, weight: 400, priority: 2, align: 'center' });
+        this.queueLabel(t.constCase(c.name), this.project(c.enu), { color: t.constLabel, size: 12, weight: 500, priority: 2, align: 'center' });
       }
     }
     // Stars towards the edges of the screen twinkle, ever so slightly; the middle, where you're aiming,
@@ -552,9 +559,19 @@ export class SkyView {
           a *= tw;
         }
       }
-      if (s.mag < 2.2) this.glow(p.x, p.y, r * (s.mag < 0.6 ? 7 : 4.5), t.starRGB, (s.mag < 0.6 ? 0.62 : 0.26) * (0.4 + 0.6 * tw));
+      if (s.mag < 2.2) this.glow(p.x, p.y, r * (s.mag < 0.6 ? 5 : 3.5), t.starRGB, (s.mag < 0.6 ? 0.34 : 0.14) * (0.4 + 0.6 * tw));
       ctx.fillStyle = t.star(a);
       ctx.beginPath(); ctx.arc(p.x, p.y, r, 0, Math.PI * 2); ctx.fill();
+      // The brightest real stars carry the four-point mark used on the card back.
+      if (s.mag < 0.6) {
+        const tip = r * 3.2, shoulder = r * 0.7;
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y - tip); ctx.lineTo(p.x + shoulder, p.y - shoulder);
+        ctx.lineTo(p.x + tip, p.y); ctx.lineTo(p.x + shoulder, p.y + shoulder);
+        ctx.lineTo(p.x, p.y + tip); ctx.lineTo(p.x - shoulder, p.y + shoulder);
+        ctx.lineTo(p.x - tip, p.y); ctx.lineTo(p.x - shoulder, p.y - shoulder);
+        ctx.closePath(); ctx.fill();
+      }
       if (s.name && s.mag < 1.2) this.queueLabel(s.name, p, { color: t.starLabel, gap: r + 6, priority: 0 });
     }
   }
@@ -569,20 +586,20 @@ export class SkyView {
       if (!this.onScreen(p, 30)) continue;
       if (b.kind === 'moon') {
         const radius = 12;
-        this.glow(p.x, p.y, 42, t.starRGB, 0.38);
+        this.glow(p.x, p.y, 34, t.starRGB, 0.2);
         this.drawMoon(p, radius, sun ? this.brightLimbAngle(b.enu, sun.enu, p) : 0, b.phaseAngle);
-        this.queueLabel('Moon', p, { color: t.body, size: 12, weight: 500, gap: radius + 10, priority: 8 });
+        this.queueLabel('Moon', p, { color: t.body, size: 14, weight: 500, gap: radius + 10, priority: 8 });
       } else if (b.kind === 'sun') {
         this.glow(p.x, p.y, 70, t.satGlow, 0.55);
         ctx.fillStyle = t.sun;
         ctx.beginPath(); ctx.arc(p.x, p.y, 12, 0, Math.PI * 2); ctx.fill();
-        this.queueLabel('Sun', p, { color: t.body, size: 12, gap: 22, priority: 8 });
+        this.queueLabel('Sun', p, { color: t.body, size: 14, gap: 22, priority: 8 });
       } else {
         const radius = Math.max(2.5, Math.min(4.8, 3.0 - 0.4 * b.mag));
-        this.glow(p.x, p.y, radius * 6, t.starRGB, 0.75);
+        this.glow(p.x, p.y, radius * 4.5, t.starRGB, 0.36);
         ctx.fillStyle = t.planet;
         ctx.beginPath(); ctx.arc(p.x, p.y, radius, 0, Math.PI * 2); ctx.fill();
-        this.queueLabel(b.name, p, { color: t.body, size: 12, weight: 500, gap: radius + 10, priority: 8 });
+        this.queueLabel(b.name, p, { color: t.body, size: 14, weight: 500, gap: radius + 10, priority: 8 });
       }
     }
   }
@@ -626,8 +643,8 @@ export class SkyView {
     ctx.strokeStyle = t.trailPast;
     this.path(trail.filter((p) => p.t <= 0).map((p) => enuFromAzEl(p.az, p.el)), 0);
     const future = trail.filter((p) => p.t >= 0 && p.el > 0);
-    ctx.setLineDash([2, 9]);
-    ctx.lineCap = 'round';
+    ctx.setLineDash([4, 7]);
+    ctx.lineCap = 'butt';
     ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${hot ? 0.60 : 0.26})`;
     this.path(future.map((p) => enuFromAzEl(p.az, p.el)), 0);
     ctx.restore();
@@ -643,7 +660,7 @@ export class SkyView {
     this.labelQueue = [];
     const r = this.reticlePx;
     const rc = this.ring ?? { x: this.cx, y: this.cy };
-    this.clearZone = newFind || planeHit ? { left: rc.x - 170, right: rc.x + 170, top: rc.y - r - 90, bottom: rc.y + r + 60 } : null;
+    this.clearZone = newFind || planeHit ? { left: this.cx - Math.min(190, this.w / 2 - 12), right: this.cx + Math.min(190, this.w / 2 - 12), top: rc.y - r - 100, bottom: rc.y + r + 75 } : null;
     const ctx = this.ctx, t = this.theme;
     this.drawBackground();
     this.drawMilkyWay(milky);
@@ -679,8 +696,8 @@ export class SkyView {
       const radius = size / 2;
       ctx.save();
       if (targetId && !isTarget) ctx.globalAlpha = look.visible ? 0.60 : 0.35;
-      if (look.visible || isTarget) this.glow(p.x, p.y, radius * (isTarget ? 3.6 : 1.8), t.satGlow, isTarget ? 0.86 : 0.32);
-      // Locked on: the object takes its rarity colour (matching its label); Common stays gold.
+      if (look.visible || isTarget) this.glow(p.x, p.y, radius * (isTarget ? 2.5 : 1.6), t.satGlow, isTarget ? 0.36 : 0.13);
+      // Locked on: the object takes its rarity colour (matching its label); Common stays cream.
       const tierColor = isTarget && this.theme !== THEMES.night && it.obj.tier && it.obj.tier !== 'common' ? TIER_INFO[it.obj.tier]?.color : null;
       this.drawIcon(this.iconKind(it.obj), p.x, p.y, size, look.visible || isTarget ? (tierColor ?? (isTarget ? t.satHot : t.sat)) : t.dim);
       if (isTarget) {
@@ -689,7 +706,7 @@ export class SkyView {
         ctx.beginPath(); ctx.arc(p.x, p.y, radius + 7, 0, Math.PI * 2); ctx.stroke();
       }
       ctx.restore();
-      if (look.visible && labelIds.has(it.obj.id)) this.queueLabel(it.label ?? shortName(it.obj.name), p, { color: it.candidate ? t.label : t.labelDim, size: 11, weight: it.candidate ? 500 : 400, gap: radius + 8, priority: it.candidate ? 7 : 4 });
+      if (look.visible && labelIds.has(it.obj.id)) this.queueLabel(it.label ?? shortName(it.obj.name), p, { color: it.candidate ? t.label : t.labelDim, size: 13, weight: 500, gap: radius + 8, priority: it.candidate ? 7 : 4 });
     }
 
     // Moon, planet or star as the target: the sky already draws it, so just mark it and let the ring lock on.
@@ -772,7 +789,7 @@ export class SkyView {
       ctx.lineCap = 'round'; ctx.lineJoin = 'round';
       ctx.beginPath(); ctx.moveTo(-4, -5); ctx.lineTo(2, 0); ctx.lineTo(-4, 5); ctx.stroke();
       ctx.restore();
-      this.queueLabel(it.label ?? shortName(it.obj.name), { x: x - dx * 14, y: y - dy * 14 }, { color: isTarget ? t.label : t.labelDim, size: 11, weight: isTarget ? 500 : 400, gap: 10, priority: isTarget ? 10 : 3 });
+      this.queueLabel(it.label ?? shortName(it.obj.name), { x: x - dx * 14, y: y - dy * 14 }, { color: isTarget ? t.label : t.labelDim, size: 13, weight: 500, gap: 10, priority: isTarget ? 10 : 3 });
     }
   }
 
@@ -794,39 +811,44 @@ export class SkyView {
     const ctx = this.ctx, t = this.theme;
     const { r: radius, x: cx, y: cy } = this.updateRing(locked, plane ?? this.targetPos);
     ctx.save();
-    if (plane) {
-      // Lined up a plane, not a satellite: the ring turns solid red.
-      ctx.strokeStyle = t.plane; ctx.globalAlpha = 0.16; ctx.lineWidth = 12;
-      ctx.beginPath(); ctx.arc(cx, cy, radius, 0, Math.PI * 2); ctx.stroke();
-      ctx.globalAlpha = 0.95; ctx.lineWidth = 2.5;
-      ctx.beginPath(); ctx.arc(cx, cy, radius, 0, Math.PI * 2); ctx.stroke();
-      ctx.restore();
-      return;
+    const activeInk = plane ? t.plane : t.tick;
+    // The inner rule keeps the existing aiming radius. An outer rule and fine
+    // indexed marks echo the orbital dial on the cards without obscuring the sky.
+    ctx.strokeStyle = locked ? activeInk : t.reticle;
+    ctx.lineWidth = locked ? 1.5 : 1;
+    ctx.beginPath(); ctx.arc(cx, cy, radius, 0, Math.PI * 2); ctx.stroke();
+    ctx.strokeStyle = locked ? activeInk : t.reticleSoft;
+    ctx.lineWidth = 0.75;
+    ctx.globalAlpha = locked ? 0.55 : 1;
+    ctx.beginPath(); ctx.arc(cx, cy, radius + 5, 0, Math.PI * 2); ctx.stroke();
+    ctx.lineCap = 'butt';
+    for (let angle = 0; angle < 360; angle += 15) {
+      const cardinal = angle % 90 === 0;
+      const a = angle * RAD, inner = radius + 5, outer = radius + (cardinal ? 13 : 9);
+      ctx.strokeStyle = cardinal ? activeInk : t.reticle;
+      ctx.globalAlpha = cardinal ? 0.9 : 0.42;
+      ctx.lineWidth = cardinal ? 1.5 : 0.75;
+      ctx.beginPath();
+      ctx.moveTo(cx + Math.cos(a) * inner, cy + Math.sin(a) * inner);
+      ctx.lineTo(cx + Math.cos(a) * outer, cy + Math.sin(a) * outer);
+      ctx.stroke();
     }
     if (newFind) {
-      // Never-seen object lined up: the whole ring glows gold and gently breathes. Tap it to collect.
-      const pulse = 0.75 + 0.25 * Math.sin(time / 400);
-      ctx.strokeStyle = t.tick; ctx.globalAlpha = 0.18 * pulse; ctx.lineWidth = 14;
-      ctx.beginPath(); ctx.arc(cx, cy, radius, 0, Math.PI * 2); ctx.stroke();
-      ctx.globalAlpha = 0.95; ctx.lineWidth = 2.5;
-      ctx.beginPath(); ctx.arc(cx, cy, radius, 0, Math.PI * 2); ctx.stroke();
-      ctx.restore();
-      return;
+      // A restrained ink pulse makes a new collectible distinct from an owned target.
+      ctx.globalAlpha = time ? 0.6 + 0.25 * Math.sin(time / 650) : 0.85;
+      ctx.fillStyle = activeInk;
+      for (const angle of [45, 135, 225, 315]) {
+        const a = angle * RAD, d = radius + 11;
+        ctx.beginPath(); ctx.arc(cx + Math.cos(a) * d, cy + Math.sin(a) * d, 2, 0, Math.PI * 2); ctx.fill();
+      }
     }
-    ctx.strokeStyle = t.reticleSoft;
-    ctx.lineWidth = 5;
-    ctx.beginPath(); ctx.arc(cx, cy, radius, 0, Math.PI * 2); ctx.stroke();
-    ctx.strokeStyle = locked ? t.tick : t.reticle;
-    ctx.lineWidth = locked ? 1.5 : 1;
-    ctx.lineCap = 'round';
-    for (const angle of [0, 90, 180, 270]) {
-      ctx.beginPath(); ctx.arc(cx, cy, radius, (angle + 12) * RAD, (angle + 78) * RAD); ctx.stroke();
+    if (!locked) {
+      ctx.strokeStyle = t.reticle; ctx.globalAlpha = 0.65; ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(cx - 3, cy); ctx.lineTo(cx + 3, cy);
+      ctx.moveTo(cx, cy - 3); ctx.lineTo(cx, cy + 3);
+      ctx.stroke();
     }
-    ctx.globalAlpha = 0.65;
-    ctx.beginPath();
-    ctx.moveTo(cx - 3, cy); ctx.lineTo(cx + 3, cy);
-    ctx.moveTo(cx, cy - 3); ctx.lineTo(cx, cy + 3);
-    ctx.stroke();
     ctx.restore();
   }
 

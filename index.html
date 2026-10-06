@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#050a18">
+  <meta name="theme-color" content="#080f1b">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -13,9 +13,9 @@
   <link rel="apple-touch-icon" href="icons/icon-180.png">
   <link rel="icon" href="icons/icon-192.png">
   <script>try { if (localStorage.getItem("night") === "1") document.documentElement.dataset.theme = "night"; } catch {}</script>
-  <link rel="stylesheet" href="css/cards.css?v=0.1.88">
-  <link rel="stylesheet" href="css/app.css?v=0.1.88">
-  <link rel="stylesheet" href="css/reveal.css?v=0.1.88">
+  <link rel="stylesheet" href="css/cards.css?v=0.1.89">
+  <link rel="stylesheet" href="css/app.css?v=0.1.89">
+  <link rel="stylesheet" href="css/reveal.css?v=0.1.89">
 </head>
 <body>
   <canvas id="sky" role="img" aria-label="Sky map aligned with your viewing direction"></canvas>
@@ -23,7 +23,7 @@
   <div id="hud" hidden>
     <header id="sky-header"><a class="wordmark" href="./">SPACE COLLECTOR<span>FIELD NOTES FROM ORBIT</span></a><span class="header-buttons"><button id="night-toggle" class="icon-button" aria-label="Turn on red night mode" aria-pressed="false">☾</button><button id="nav-more" class="icon-button" aria-label="Settings"><span class="ico" data-ico="sliders"></span></button></span></header>
     <button id="radar" aria-label="What's up now: open the list">
-      <canvas id="radar-canvas" width="84" height="84"></canvas>
+      <canvas id="radar-canvas" width="96" height="96"></canvas>
       <span id="radar-tab"><b id="visible-count">0</b> up · <span class="new"><b id="new-count">0</b> new</span></span>
     </button>
     <div id="guidance" aria-live="polite" hidden></div>
@@ -51,12 +51,12 @@
     <div id="discover" hidden>
       <div class="d-label"><span id="d-tier"></span><span id="d-name"></span></div>
       <button id="d-hit" aria-label="Collect this object"></button>
-      <div id="d-cta">TAP TO COLLECT</div>
-      <button id="d-switch" hidden aria-label="Next object in the circle"></button>
+      <div class="d-actions"><button id="d-cta" type="button">TAP TO COLLECT</button>
+      <button id="d-switch" hidden aria-label="Next object in the circle"></button></div>
     </div>
 
     <nav id="nav">
-      <button class="nav-item active" id="nav-explore"><span class="ico" data-ico="planet"></span>Explore</button>
+      <button class="nav-item active" id="nav-explore" aria-current="page"><span class="ico" data-ico="planet"></span>Explore</button>
       <a class="nav-item" id="nav-collection" href="cards.html"><span class="ico" data-ico="bag"></span>Collection</a>
     </nav>
   </div>
@@ -152,6 +152,6 @@
     <pre id="debug-info"></pre></details>
   </section>
 
-  <script type="module" src="js/main.js?v=0.1.88"></script>
+  <script type="module" src="js/main.js?v=0.1.89"></script>
 </body>
 </html>

@@ -1,21 +1,21 @@
-import { VERSION } from './version.js?v=0.1.88';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.88';
-import { skyLimit, SKIES, DEFAULT_SKY } from './sky-limit.js?v=0.1.88';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.88';
-import { SkyView, shortName } from './sky.js?v=0.1.88';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.88';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.88';
-import { cardArt } from './art.js?v=0.1.88';
-import { renderCard, cardLevel } from './card.js?v=0.1.88';
-import { playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.88';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.88';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.88';
-import { naturalTargets } from './natural.js?v=0.1.88';
-import { TIER_INFO } from './rarity.js?v=0.1.88';
-import { SETS } from './sets.js?v=0.1.88';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.88';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.88';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.88';
+import { VERSION } from './version.js?v=0.1.89';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.89';
+import { skyLimit, SKIES, DEFAULT_SKY } from './sky-limit.js?v=0.1.89';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.89';
+import { SkyView, shortName } from './sky.js?v=0.1.89';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.89';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.89';
+import { cardArt } from './art.js?v=0.1.89';
+import { renderCard, cardLevel, artImage } from './card.js?v=0.1.89';
+import { playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.89';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.89';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.89';
+import { naturalTargets } from './natural.js?v=0.1.89';
+import { TIER_INFO } from './rarity.js?v=0.1.89';
+import { SETS } from './sets.js?v=0.1.89';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.89';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.89';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.89';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -113,7 +113,7 @@ function applyTheme() {
   $('night-toggle').setAttribute('aria-pressed', String(state.night));
   $('night-toggle').setAttribute('aria-label', state.night ? 'Turn off red night mode' : 'Turn on red night mode');
   sky.setTheme(state.night ? 'night' : 'glass');
-  document.querySelector('meta[name=theme-color]').content = state.night ? '#000000' : '#050a18';
+  document.querySelector('meta[name=theme-color]').content = state.night ? '#000000' : '#080f1b';
 }
 applyTheme();
 
@@ -185,6 +185,11 @@ $('toast').addEventListener('click', () => { if (toastHref) location.href = toas
 
 function escapeHtml(s) {
   return String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
+function previewArt(obj, size, fallback) {
+  const src = artImage(obj, size);
+  return src ? `<img src="${escapeHtml(src)}" alt="" decoding="async">` : cardArt(obj, fallback);
 }
 
 // ---------- object descriptions ----------
@@ -458,14 +463,14 @@ function renderPlane(hit, t) {
 // Radar (top-left), the "heat radar" chosen 2026-10-02 (design/radar-compact-options.html, option 1):
 // a heading-up map of the whole sky (centre = overhead, edge = horizon) where every visible object is a
 // soft glow, so busy patches simply look brighter instead of turning into a blob of dots. Only Epic and
-// Legendary objects get their own dot in their rarity colour, and the target gets a cyan ring. The
+// Legendary objects get their own dot in their rarity colour, and the target gets a steel-blue ring (all red in night mode). The
 // notch at the top is the way you're facing; the count sits in a chip to the right.
 var radarColors = null; // var: applyTheme() runs before this line and resets it
 var glowSprite = null;  // one soft blob, drawn once and stamped for every object
-const RADAR = 84, RADAR_R = 30;
+const RADAR = 96, RADAR_R = 35;
 function readRadarColors() {
   const cs = getComputedStyle(document.body), v = (n) => cs.getPropertyValue(n).trim();
-  radarColors = { glass: v('--glass') || 'rgba(14,26,48,.82)', edge: v('--edge') || 'rgba(140,180,220,.3)', gold: v('--gold') || '#e6c68a', cyan: v('--cyan') || '#8fd3e8', muted: v('--muted') || '#9fb3dc', text: v('--text') || '#eef3ff' };
+  radarColors = { glass: v('--glass') || '#0c1725', edge: v('--edge') || '#627a8b', gold: v('--gold') || '#fa8127', cyan: v('--cyan') || '#8fb3cf', muted: v('--muted') || '#bdbea9', text: v('--text') || '#fff2b3' };
   glowSprite = null;
 }
 function makeGlow(color, dpr) {
@@ -491,6 +496,16 @@ function updateCompass(basis) {
   const at = (az, el) => { const r = R * (1 - Math.max(0, el) / 90), a = (az - heading) * RAD; return [c + r * Math.sin(a), c - r * Math.cos(a)]; };
   ctx.fillStyle = C.glass; ctx.strokeStyle = C.edge; ctx.lineWidth = 1;
   ctx.beginPath(); ctx.arc(c, c, R, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+  // Engraved instrument ticks echo the orbital seal on the cards.
+  ctx.strokeStyle = C.muted; ctx.globalAlpha = 0.5; ctx.lineWidth = 0.7;
+  ctx.beginPath(); ctx.arc(c, c, R - 3, 0, Math.PI * 2); ctx.stroke();
+  ctx.beginPath();
+  for (let i = 0; i < 24; i++) {
+    const a = i * Math.PI / 12, inner = R - (i % 6 === 0 ? 7 : 5);
+    ctx.moveTo(c + Math.sin(a) * inner, c - Math.cos(a) * inner);
+    ctx.lineTo(c + Math.sin(a) * (R - 2), c - Math.cos(a) * (R - 2));
+  }
+  ctx.stroke(); ctx.globalAlpha = 1;
   // Everything visible as a faint glow; overlapping glows build up where the sky is busy.
   ctx.save();
   ctx.beginPath(); ctx.arc(c, c, R, 0, Math.PI * 2); ctx.clip();
@@ -506,12 +521,12 @@ function updateCompass(basis) {
   }
   ctx.restore();
   for (const [x, y, tier] of special) {
-    ctx.fillStyle = TIER_INFO[tier].color; ctx.strokeStyle = '#0a1430'; ctx.lineWidth = 0.8;
+    ctx.fillStyle = state.night ? C.gold : TIER_INFO[tier].color; ctx.strokeStyle = C.glass; ctx.lineWidth = 0.8;
     ctx.beginPath(); ctx.arc(x, y, 2.4, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
   }
   if (target) { ctx.strokeStyle = C.cyan; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.arc(target[0], target[1], 4.5, 0, Math.PI * 2); ctx.stroke(); }
   // Letters around the edge (heading-up, so they turn as you turn) and the facing notch.
-  ctx.font = '700 9px -apple-system, system-ui, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.font = '500 11px "SC Label", "Arial Narrow", sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
   for (const [az, L] of [[0, 'N'], [90, 'E'], [180, 'S'], [270, 'W']]) {
     const a = (az - heading) * RAD, r = R + 7.5;
     ctx.fillStyle = az === 0 ? C.gold : C.muted;
@@ -528,7 +543,8 @@ function measureSkySpace() {
   const rect = box.getBoundingClientRect();
   uiSafeTop = $('radar').getBoundingClientRect().bottom + 12;
   if (!$('banner').hidden) uiSafeTop = $('banner').getBoundingClientRect().bottom + 12;
-  uiSafeBottom = box.hidden ? 100 : Math.max(100, window.innerHeight - rect.top + 34);
+  const navInset = window.innerHeight - $('nav').getBoundingClientRect().top + 20;
+  uiSafeBottom = box.hidden ? navInset : Math.max(navInset, window.innerHeight - rect.top + 34);
 }
 function placeCallout(target) {
   const el = $('callout'), p = sky.targetPos;
@@ -543,8 +559,8 @@ function placeCallout(target) {
 
 let shownTargetId = null, barTargetId = null;
 // Two looks for the thing you're pointing at:
-//  - never collected: no card at all. The circle glows gold, the name sits above it, tap the circle.
-//  - already in your collection: a slim one-line bar with Collect (repeat sightings level cards up).
+//  - never collected: no card at all. An orange dial frames the find; tap the circle or collect button.
+//  - already in your collection: a slim card preview; viewing it can record a repeat sighting.
 // Off target, both just say which way to turn.
 let ownedKeys = null, ownedFrom = null;
 let ownedStamps = null;
@@ -596,7 +612,7 @@ function renderTarget(target, d) {
       disc.hidden = false; guide.hidden = true;
       const newStamp = ownsCard(o); // fleet card already owned: this launch is a new stamp
       $('d-tier').textContent = newStamp ? 'New stamp' : tier.label;
-      $('d-tier').style.color = newStamp ? '#8fb8ff' : tier.color;
+      $('d-tier').style.setProperty('--find-tier', newStamp ? 'var(--cyan)' : tier.color);
       $('d-name').textContent = label(o);
       $('d-switch').hidden = !sw; $('d-switch').textContent = sw;
     } else {
@@ -617,7 +633,7 @@ function renderTarget(target, d) {
   if (o.id !== barTargetId) {
     barTargetId = o.id;
     bar.style.setProperty('--tier', tier.color);
-    $('t-art').innerHTML = cardArt(o, { accent: setColor(o), w: 80, h: 80 });
+    $('t-art').innerHTML = previewArt(o, 'small', { accent: setColor(o), w: 80, h: 80 });
     $('t-name').textContent = label(o);
   }
   $('t-switch').hidden = !sw; $('t-switch').textContent = sw;
@@ -644,6 +660,7 @@ $('d-hit').addEventListener('click', () => {
   const target = state.activeTarget;
   if (target && !state.captureBusy) capture(target.obj);
 });
+$('d-cta').addEventListener('click', () => $('d-hit').click());
 $('d-switch').addEventListener('click', () => $('t-switch').click());
 
 $('t-switch').addEventListener('click', () => {
@@ -894,7 +911,7 @@ document.addEventListener('keydown', e => {
   if (!activePanel) return;
   if (e.key === 'Escape') { closePanel(); return; }
   if (e.key !== 'Tab') return;
-  const focusables = [...$(activePanel).querySelectorAll('button,a[href],input,summary')].filter(n => !n.disabled && n.getClientRects().length);
+  const focusables = [...$(activePanel).querySelectorAll('button,a[href],input,select,summary')].filter(n => !n.disabled && n.getClientRects().length);
   const first=focusables[0], last=focusables.at(-1);
   if (e.shiftKey && document.activeElement===first) { e.preventDefault(); last?.focus(); }
   else if (!e.shiftKey && document.activeElement===last) { e.preventDefault(); first?.focus(); }
@@ -1082,7 +1099,7 @@ async function boot() {
   try { state.sky=await loadSky('data/sky.json'); } catch {}
   await loadLore(); await loadSightings();
   state.locationStatus=loadSavedLocation()?'saved':'example'; renderLocation();
-  const iss=state.byId.get(25544); if (iss) $('start-art').innerHTML=cardArt(iss,{w:380,h:200});
+  const iss=state.byId.get(25544); if (iss) $('start-art').innerHTML=previewArt(iss, 'full', {w:380,h:200});
   $('btn-start').textContent='Observe the sky'; $('btn-start').disabled=false;
   const params=new URLSearchParams(location.search);
   if(params.has('resume')) {

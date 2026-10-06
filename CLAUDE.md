@@ -43,10 +43,10 @@ Live: https://sevaan.github.io/space-collector/ (GitHub Pages, deploys from `mai
 - `js/celestial.js` – stars/constellations (from `data/sky.json`, built by `scripts/build-sky.mjs`
   from d3-celestial), plus Sun, Moon (with phase) and planets via Schlyter's low-precision formulas.
 - `js/sky.js` – canvas renderer, gnomonic projection centred on the reticle. Two themes: `glass`
-  (default, navy/gold/cyan, based on Sevaan's mockup: Milky Way glow, tree line, beaded paths,
-  sparkle reticle) and `night` (all red). UI chrome in `index.html` + `css/app.css` (body.night).
-- Target UI (chosen 2026-09-29): never-collected object lined up → no card, the reticle glows gold,
-  name above, "TAP TO COLLECT" below, tap the circle (`#discover`). Already collected → a toast at the
+  (default, retro ink/cream/orange with steel-blue chart lines, quieter Milky Way,
+  tree line, dashed orbital paths and an indexed double-ring reticle) and `night` (all red). UI chrome in `index.html` + `css/app.css` (body.night).
+- Target UI (chosen 2026-09-29): never-collected object lined up → no card, the reticle turns orange,
+  name above, "TAP TO COLLECT" below, tap the circle or the orange collect button (`#discover`). Already collected → a toast at the
   bottom (`#target`) saying what it is, with View: the card spins out of the toast in place
   (`playView` in js/reveal.js). If it's in the circle and not logged this pass (natural objects: tonight),
   View also records a sighting (SEEN n× stamp, levels). No Collect button for owned objects (2026-10-02).
@@ -55,8 +55,8 @@ Live: https://sevaan.github.io/space-collector/ (GitHub Pages, deploys from `mai
 - Selecting: tap an object in the sky (`tapSky`, hit test from `sky.hits` + natural targets) or a row in
   Visible now (radar) to pin it; guidance shows which way to turn. Tap empty sky to let go. Off target both just show a turn hint. No "line up" button.
 - Top-left radar (`#radar`, drawn in `updateCompass`): the "heat radar" (2026-10-02, design/radar-compact-
-  options.html #1): 84 px heading-up all-sky map where each visible object is a soft glow (one sprite
-  stamped per object), only Epic/Legendary get dots, cyan ring on the target; "N up · N new" chip to the
+  options.html #1): 96 px heading-up all-sky map where each visible object is a soft glow (one sprite
+  stamped per object), only Epic/Legendary get dots, steel-blue ring on the target; "N up · N new" chip to the
   right. Tap opens the visible list. Planes are no longer drawn on it.
 - `js/main.js` – app state, render loop, candidates/capture, settings panel. No journal (removed
   2026-09-29): the collection is the record. Cards show when you collected them; the card viewer
@@ -142,6 +142,15 @@ Alerts, service worker, accounts, secret sets/feats.
   perigee < 420 km (bright trains), else 6.8 (darkened/visored, Mallama et al.). An automatic light-pollution lookup by
   location is not built yet (needs a dataset whose licence fits).
 - Card back (2026-10-05): ONE back now, Sevaan's Space Collector seal (assets/art/backs/back-collector.webp, trimmed of its light-blue outer band so the rarity-coloured frame shows; original kept in the session scratchpad). js/card-backs.js still supports a list; the six posters (back-navy-1..6) are no longer used.
+
+- Explorer RETRO (2026-10-05): UI reuses the card fonts (Russo One + Barlow Condensed), cream ink,
+  orange actions and steel/cream fine rules. Inset two-part Explore/Collection navigation; radar and
+  reticle echo the card-back orbital dial. `#hud` has explicit viewport bounds, with pointer events
+  only on interactive controls so the sky remains draggable. Discovery labels center in the viewport;
+  `d-actions` groups Collect and candidate switching side by side for small phones. Sky label collision
+  reserves this area. Nav insets are measured from the rendered nav. Night mode keeps radar rarity dots
+  and discovery labels red. Welcome and owned-object previews use the new card art with SVG fallback.
+  Card faces, tilt, foil, flip/reveal sequencing and the six-degree capture rule are unchanged.
 - Card art stars twinkle (2026-10-05): scripts/import-art.py finds small bright stars in each picture's sky and
   writes them to js/art-files.js `ART_STARS` ({r: width/height, s: [[x,y] fractions]}); `artStars` in js/card.js
   adds sparkles on them in a layer that mimics object-fit: cover (container query units). Full cards only.

@@ -1,13 +1,13 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { cardArt } from './art.js?v=0.1.88';
-import { TIER_INFO } from './rarity.js?v=0.1.88';
-import { SET_BY_ID } from './sets.js?v=0.1.88';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.88';
-import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.88';
-import { artFileFor } from './art-keys.js?v=0.1.88';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.88';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.88';
-import { nightsIn } from './observation.js?v=0.1.88';
+import { cardArt } from './art.js?v=0.1.89';
+import { TIER_INFO } from './rarity.js?v=0.1.89';
+import { SET_BY_ID } from './sets.js?v=0.1.89';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.89';
+import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.89';
+import { artFileFor } from './art-keys.js?v=0.1.89';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.89';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.89';
+import { nightsIn } from './observation.js?v=0.1.89';
 
 // Levels count observing nights (local noon to noon): bronze 1, silver 3, gold 10. Before
 // 2026-10-01 levels counted sightings (5 silver, 25 gold); anything earned that way is kept.
@@ -78,7 +78,7 @@ export function renderCard(o, opts = {}) {
     <div class="card__art" data-art-slot aria-hidden="true">${revealed && artImage(o) ? `<img class="card-art-image" src="${artImage(o)}" alt="" decoding="async">${artStars(o)}` : cardArt(o, { accent: set.color, silhouette: !revealed })}<div class="card__foil"></div></div>
     ${nat ? `<div class="card__stats">${o.stats.map(([label, value, unit], i) => `<div><span class="card__label">${esc(label)}</span><b${statClass(value, unit, i)}>${esc(value)}${unit ? ` <small>${esc(unit)}</small>` : ''}</b></div>`).join('')}</div>` : `<div class="card__stats"><div><span class="card__label">MEAN ALTITUDE</span><b>${stats ? `${stats.alt.toLocaleString('en-US')} <small>km</small>` : '—'}</b></div><div><span class="card__label">ORBITS / DAY</span><b>${laps ? laps.toFixed(laps < 10 ? 1 : 0) : '—'}</b></div><div><span class="card__label">${esc(third.label)}</span><b>${esc(third.value)}</b>${/LAUNCH/.test(third.label) && ageText ? `<span class="card__stat-detail">${esc(ageText)}</span>` : ''}</div></div>`}
     ${factBlock}
-    <div class="card__footer"><span class="card__status${caught ? ' is-collected' : ''}"><span class="card__status-icon" aria-hidden="true">${caught ? '✓' : ''}</span><span>${caught ? `COLLECTED · ${esc(firstDate)}` : 'NOT YET COLLECTED'}</span></span><span class="card__brand">SPACE COLLECTOR</span></div>
+    <div class="card__footer"><span class="card__status${caught ? ' is-collected' : ''}"><span class="card__status-icon" aria-hidden="true">${caught ? '✓' : ''}</span><span>${caught ? `COLLECTED · ${esc(firstDate)}` : 'NOT YET COLLECTED'}</span>${caught ? `<span class="card__seen-count">SEEN ${sightings.length} TIME${sightings.length === 1 ? '' : 'S'}</span>` : ''}</span><span class="card__brand">SPACE COLLECTOR</span></div>
     <div class="card__shine"></div><div class="card__glare"></div>
     <div class="card__back" aria-hidden="true"><div class="back-holo"></div><div class="back-glare"></div></div>
     ${extinct ? `<div class="card__stamp">REENTERED${o.decay ? `<small>${esc(formatDate(o.decay)).toUpperCase()}</small>` : ''}</div>` : ''}
