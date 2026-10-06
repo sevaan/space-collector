@@ -256,3 +256,9 @@ body:has(#event-banner:not([hidden])) #toasts { top:calc(var(--safe-top) + 150px
 #sky-range::-moz-range-thumb { width:14px; height:14px; border-radius:50%; background:var(--bg); border:2px solid var(--gold); }
 body.night #sky-range::-webkit-slider-thumb, body.night #sky-range::-moz-range-thumb { border-color:var(--gold); }
 #hud[hidden] ~ #skybar, #hud[hidden] #skybar { display:none; }
+
+/* Daytime Explore (2026-10-06): the sky is pale, so the HUD text that sits on it goes dark. */
+body.day #guidance { color:#143046; text-shadow:0 1px 2px #ffffff80; }
+body.day #skybar .sb-end { color:#143046; opacity:.8; }
+body.day #sky-range::-webkit-slider-runnable-track { background:linear-gradient(90deg, var(--gold) 0 var(--p,50%), #14304666 var(--p,50%)); }
+body.day #radar-up, body.day #d-tier, body.day #d-name { color:#143046; text-shadow:none; }

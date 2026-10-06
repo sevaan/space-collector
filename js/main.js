@@ -1,28 +1,29 @@
-import { VERSION } from './version.js?v=0.1.175';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.175';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.175';
-import { conArt } from './con-art.js?v=0.1.175';
-import { CON_FIGURES } from './con-figures.js?v=0.1.175';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.175';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.175';
-import { progress as progressOf } from './progress.js?v=0.1.175';
-import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.175';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.175';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.175';
-import { SkyView, shortName } from './sky.js?v=0.1.175';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.175';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.175';
-import { cardArt } from './art.js?v=0.1.175';
-import { renderCard, cardLevel, artImage } from './card.js?v=0.1.175';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.175';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.175';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.175';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.175';
-import { TIER_INFO } from './rarity.js?v=0.1.175';
-import { SETS } from './sets.js?v=0.1.175';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.175';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.175';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.175';
+import { VERSION } from './version.js?v=0.1.179';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.179';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.179';
+import { conArt } from './con-art.js?v=0.1.179';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.179';
+import { CON_FIGURES } from './con-figures.js?v=0.1.179';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.179';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.179';
+import { progress as progressOf } from './progress.js?v=0.1.179';
+import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.179';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.179';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.179';
+import { SkyView, shortName } from './sky.js?v=0.1.179';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.179';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.179';
+import { cardArt } from './art.js?v=0.1.179';
+import { renderCard, cardLevel, artImage } from './card.js?v=0.1.179';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.179';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.179';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.179';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.179';
+import { TIER_INFO } from './rarity.js?v=0.1.179';
+import { SETS } from './sets.js?v=0.1.179';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.179';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.179';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.179';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -449,6 +450,10 @@ function tick(ts) {
     showDim: state.showDim,
     sky: state.showStars ? state.skyEnu : null,
     starLimit: state.limit?.stars, // background stars follow the sky slider too
+    sunEl: state.frame?.sunEl ?? -90, // day/twilight tone (js/sky.js dayF)
+    ...(document.body.classList.toggle('day', (state.frame?.sunEl ?? -90) > -2) ? {} : {}),
+    weather: state.weather?.now ?? null,
+    ghosts: dayGhosts(),
     bodies: state.showStars ? state.bodies : null,
     milky: state.showStars ? state.milkyEnu : null,
     lines: state.showLines,
@@ -468,7 +473,7 @@ function tick(ts) {
   });
 
   updateCompass(basis);
-  if (t - lastChip > 1000) { lastChip = t; requestTonight(); updateNextPassChip(); updateEventBanner(); }
+  if (t - lastChip > 1000) { lastChip = t; requestTonight(); requestWeather(); updateNextPassChip(); updateEventBanner(); }
   placeDiscover();
   if (t - lastPanel > 250 || target?.obj.id !== shownTargetId || state.lockedOn !== lastLocked) {
     if (state.lockedOn && !lastLocked) snapTick(); // the circle just caught something
@@ -986,9 +991,10 @@ function renderTonight() {
   const wins = tonightWindows(T).filter((w) => w.e >= t0);
   const peak = T.curve.filter(([t]) => t >= t0).reduce((a, c) => (c[1] > a[1] ? c : a), [0, 0]);
   const ev = activeEvent(t0) ?? nextEvent(t0), evLine = ev ? (t0 >= ev.start ? `<br><b>${ev.name}</b> meteor shower tonight (${ev.rate}).` : `<br>Next event: <b>${ev.name}</b> meteor shower, ${new Date(ev.start + 30 * 3600e3).toLocaleDateString([], { month: 'short', day: 'numeric' })}.`) : '';
+  const wxT = tonightWeather(), wxLine = wxT ? `<br>Sky: <b>${escapeHtml(wxT.line)}</b>${!wxT.ok && wxT.nextClear ? `. Next clear night: <b>${new Date(wxT.nextClear).toLocaleDateString([], { weekday: 'long' })}</b>.` : '.'}` : '';
   $('tonight-summary').innerHTML = (wins.length
     ? `Satellites are visible ${wins.slice(0, 3).map((w) => `<b>${fmtTime(Math.max(w.s, t0))}–${fmtTime(w.e)}</b>`).join(' and ')}. Busiest around <b>${fmtTime(peak[0])}</b>, up to ${peak[1]} at once.`
-    : `No satellites bright enough for your sky until dawn. Try <b>Countryside</b> in settings if you're somewhere darker, or binocular mode.`) + evLine;
+    : `No satellites bright enough for your sky until dawn. Slide the sky darker if you can see more stars than the screen, or try binocular mode.`) + wxLine + evLine;
   // Chart: satellites visible across the night, in 10-minute bins, with a "now" line.
   const pts = T.curve; let svg = '';
   if (pts.length) {
@@ -1056,14 +1062,53 @@ function alsoUpTonight(t0, until) {
   return rows.join('') || '<p class="hint">Nothing else new is well placed tonight.</p>';
 }
 // The chip under the radar when no satellite is lit right now.
+// ---------- daytime (2026-10-06): the sky as it is, plus tonight ----------
+// Weather (js/weather.js) for the sky's clouds and the Tonight line; refreshed every half hour and when you move.
+let weatherAt = 0, weatherKey = '';
+function requestWeather() {
+  const o = state.observer; if (!o) return;
+  const key = `${o.lat.toFixed(2)},${o.lon.toFixed(2)}`;
+  if (key === weatherKey && Date.now() - weatherAt < 30 * 60e3) return;
+  weatherKey = key; weatherAt = Date.now();
+  fetchWeather(o.lat, o.lon).then((w) => { state.weather = w; updateNextPassChip(); }).catch(() => {});
+}
+// Tonight's sky in words, from the forecast and tonight's dusk/dawn: { ok, line, nextClear } or null.
+function tonightWeather() {
+  const T = state.tonight; if (!state.weather || !T) return null;
+  return tonightSky(state.weather, T.dusk ?? T.startMs, T.dawn ?? (T.startMs + 12 * 3600e3), fmtTime);
+}
+const isDay = () => (state.frame?.sunEl ?? -90) > -6;
+// Ghost markers by day: tonight's best passes (and the ISS) wherever they are right now, so you can watch them
+// cross the sky you'll see them in later. A handful, each tied to a Tonight row.
+function dayGhosts() {
+  if (!isDay() || !state.tonight) return null;
+  const t0 = now().getTime(), passes = tonightPasses(state.tonight, t0).slice(0, 4);
+  const want = new Map(passes.map((p) => [p.obj.id, p])); if (!want.has(25544)) want.set(25544, null);
+  const out = [];
+  for (const a of state.items ?? []) {
+    if (!want.has(a.obj.id) || a.look.el < 3 || a.look.visible) continue;
+    const az = a.look.az * RAD, el = a.look.el * RAD, p = want.get(a.obj.id);
+    out.push({ enu: [Math.sin(az) * Math.cos(el), Math.cos(az) * Math.cos(el), Math.sin(el)], name: label(a.obj), note: p ? `you'll see it ${fmtTime(p.start)}` : `${Math.round(a.look.rangeKm ?? 0)} km away · up there now` });
+  }
+  return out;
+}
 function updateNextPassChip() {
   const chip = $('nextpass');
   const lit = state.items?.some((i) => i.look.visible);
   const T = state.tonight, t0 = now().getTime();
-  if (lit || !T || state.timeOffsetMs) { if (!chip.hidden) chip.hidden = true; return; }
+  if (lit || !T || (state.timeOffsetMs && !isDay())) { if (!chip.hidden) chip.hidden = true; return; }
   const next = tonightPasses(T, t0).find((p) => p.start > t0);
   const win = tonightWindows(T).find((w) => w.s > t0);
   const dark = T.curve.length && t0 >= T.curve[0][0];
+  // By day: one honest line about tonight (dark when, best pass, the sky), tap for the whole plan.
+  if (isDay()) {
+    const wx = tonightWeather(), best = tonightPasses(T, t0).find((p) => p.fresh) ?? next;
+    const dusk = T.dusk ? fmtTime(T.dusk) : null;
+    chip.innerHTML = wx && !wx.ok
+      ? `<span>Not tonight:</span> <b>${escapeHtml(wx.line)}</b> <span>${wx.nextClear ? `· next clear ${new Date(wx.nextClear).toLocaleDateString([], { weekday: 'short' })}` : ''} ›</span>`
+      : `<span>Tonight${dusk ? ` from ${dusk}` : ''}:</span> <b>${best ? escapeHtml(label(best.obj)) : 'see the plan'}</b> <span>${wx ? '· ' + escapeHtml(wx.line) : ''} ›</span>`;
+    chip.hidden = false; return;
+  }
   // One short line: 'Next: <name> · 12:31 AM ›' (the name shortens with … if it has to).
   chip.innerHTML = next ? `<span>${dark ? 'Next' : 'From ' + fmtTime(win?.s ?? next.start)}:</span> <b>${escapeHtml(label(next.obj))}</b> <span>· ${fmtTime(next.start)} ›</span>`
     : win ? `<span>Satellites again at</span> <b>${fmtTime(win.s)}</b> <span>›</span>` : '<span>No more satellites tonight ›</span>';

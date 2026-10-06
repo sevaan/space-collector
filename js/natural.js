@@ -1,9 +1,16 @@
-import { extinction } from './sky-limit.js?v=0.1.175';
+import { extinction } from './sky-limit.js?v=0.1.179';
 // The Moon, the naked-eye planets and the brightest named stars, as collectible cards.
 // Positions come from js/celestial.js (state.bodies, state.skyEnu); this file holds the card facts and
 // the "can you see it right now" rules. No DOM. Every fact must be true; approximate values say so.
 // Sources: NASA planetary fact sheets / science.nasa.gov, JPL physical parameters, standard star data.
 
+// The Sun: catchable by day (the Sun card is the daytime loop). You aim the phone, not your eyes.
+const sunCard = {
+  key: 'sun', id: 'sun', natural: 'sun', type: 'sun', name: 'The Sun', tier: 'epic', order: 0, code: 'OUR STAR',
+  far: ['8.3', 'LIGHT-MINUTES AWAY'],
+  stats: [['DIAMETER', '1,392,700', 'km'], ['ONE SPIN', '~25', 'd'], ['AGE', '4.6', 'billion yr']],
+  fact: 'A middle-aged star that would fit **1.3 million Earths**. Never look straight at it: point the phone, catch it, and keep your eyes on the screen.',
+};
 const moon = {
   key: 'moon', id: 'moon', natural: 'moon', type: 'moon', name: 'Moon', tier: 'common', order: 1, code: "EARTH'S MOON",
   far: ['1.3', 'LIGHT-SECONDS AWAY'],
@@ -70,11 +77,11 @@ const STARS = [
 // see conProgress in js/constellations.js) whose "stars" are the Moon and the seven other planets.
 export const SOLAR_SYSTEM = {
   key: 'system:solar', id: 'system:solar', card: 'system:solar', natural: 'constellation', type: 'constellation', system: true, name: 'The Solar System', tier: 'legendary', order: 0,
-  code: 'HOME SYSTEM', con: 'solar', stars: ['moon', ...PLANETS.map((p) => p.key)], zodiac: false,
-  stats: [['WORLDS', '8', ''], ['PLANETS', '7', 'of 8'], ['AGE', '4.6', 'billion yr']],
-  fact: 'Everything you can see with your own eyes in the Solar System, bar the Sun. Collect the Moon and all **seven** planets to turn this card **gold**.',
+  code: 'HOME SYSTEM', con: 'solar', stars: ['sun', 'moon', ...PLANETS.map((p) => p.key)], zodiac: false,
+  stats: [['WORLDS', '9', ''], ['PLANETS', '7', 'of 8'], ['AGE', '4.6', 'billion yr']],
+  fact: 'Everything in the Solar System you can see with your own eyes. Collect the Sun, the Moon and all **seven** planets to turn this card **gold**.',
 };
-export const NATURAL = [moon, ...PLANETS, ...STARS, SOLAR_SYSTEM];
+export const NATURAL = [sunCard, moon, ...PLANETS, ...STARS, SOLAR_SYSTEM];
 for (const o of NATURAL) o.card = o.key;
 export const NATURAL_BY_KEY = new Map(NATURAL.map((o) => [o.key, o]));
 const STAR_BY_SKY_NAME = new Map(STARS.map((o) => [o.skyName, o]));
@@ -95,12 +102,12 @@ export function naturalTargets(bodies, stars, extra = [], starLimit = 6.5) {
   const sun = bodies?.find((b) => b.kind === 'sun');
   const sunEl = sun ? elOf(sun.enu) : -90;
   for (const b of bodies ?? []) {
-    const obj = b.kind === 'moon' ? moon : b.kind === 'planet' ? PLANET_BY_NAME.get(b.name) : null;
+    const obj = b.kind === 'moon' ? moon : b.kind === 'sun' ? sunCard : b.kind === 'planet' ? PLANET_BY_NAME.get(b.name) : null;
     if (!obj) continue;
     const el = elOf(b.enu);
     // Faint planets (Uranus, Neptune) also have to beat tonight's limit, after extinction, like the faint stars.
     const faint = b.kind === 'planet' && b.mag > 3;
-    const visible = b.kind === 'moon' ? el > 0 && b.illum >= 0.03 : faint ? el > 5 && sunEl < -12 && b.mag + extinction(el) <= starLimit : el > 2 && sunEl < -3;
+    const visible = b.kind === 'sun' ? el > 2 : b.kind === 'moon' ? el > 0 && b.illum >= 0.03 : faint ? el > 5 && sunEl < -12 && b.mag + extinction(el) <= starLimit : el > 2 && sunEl < -3;
     out.push({ obj, look: { az: azOf(b.enu), el, mag: b.mag, visible, enu: b.enu, phaseName: b.phaseName, illum: b.illum } });
   }
   for (const s of stars ?? []) {

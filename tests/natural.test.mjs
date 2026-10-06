@@ -38,10 +38,10 @@ test('levels: nights 1/3/10, and sightings-based levels earned before Oct 2026 a
 
 test('Moon, seven planets, the Solar System and 21 stars become cards in their own sets', () => {
   const cards = buildCards({ objects: [], families: {} }).filter((c) => c.natural);
-  assert.equal(cards.length, 30);
-  assert.deepEqual(cards.filter((c) => c.set === 'wanderers').map((c) => c.name), ['Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune', 'The Solar System']);
+  assert.equal(cards.length, 31);
+  assert.deepEqual(cards.filter((c) => c.set === 'wanderers').map((c) => c.name), ['The Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune', 'The Solar System']);
   const sys = cards.find((c) => c.key === 'system:solar');
-  assert.equal(sys.stars.length, 8); assert.ok(sys.stars.includes('planet:neptune') && sys.stars.includes('moon'));
+  assert.equal(sys.stars.length, 9); assert.ok(sys.stars.includes('planet:neptune') && sys.stars.includes('moon') && sys.stars.includes('sun'));
   assert.equal(cards.filter((c) => c.set === 'bright-stars').length, 21);
   assert.equal(cards.find((c) => c.key === 'star:sirius').setNumber, 1);
   for (const c of NATURAL) assert.ok(c.fact && c.stats.length === 3 && (c.system || c.far.length === 2), c.key);
@@ -53,7 +53,7 @@ test('visibility rules: Moon in daylight, planets after sunset, stars only when 
     [{ kind: 'sun', enu: up(sunEl) }, { kind: 'moon', enu: up(40), illum: 0.6 }, { kind: 'planet', name: 'Venus', enu: up(10), mag: -4 }],
     [{ name: 'Sirius', enu: up(30), mag: -1.4 }],
   ).map((n) => [n.obj.key, n.look.visible]);
-  assert.deepEqual(at(20), [['moon', true], ['planet:venus', false], ['star:sirius', false]]);
-  assert.deepEqual(at(-4), [['moon', true], ['planet:venus', true], ['star:sirius', false]]);
-  assert.deepEqual(at(-12), [['moon', true], ['planet:venus', true], ['star:sirius', true]]);
+  assert.deepEqual(at(20), [['sun', true], ['moon', true], ['planet:venus', false], ['star:sirius', false]]); // the Sun is a daytime catch
+  assert.deepEqual(at(-4), [['sun', false], ['moon', true], ['planet:venus', true], ['star:sirius', false]]);
+  assert.deepEqual(at(-12), [['sun', false], ['moon', true], ['planet:venus', true], ['star:sirius', true]]);
 });

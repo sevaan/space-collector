@@ -1,17 +1,17 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { cardArt } from './art.js?v=0.1.175';
-import { TIER_INFO } from './rarity.js?v=0.1.175';
-import { SET_BY_ID } from './sets.js?v=0.1.175';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.175';
-import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.175';
-import { artFileFor } from './art-keys.js?v=0.1.175';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.175';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.175';
-import { nightsIn } from './observation.js?v=0.1.175';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.175';
-import { SHINY } from './shiny.js?v=0.1.175';
-import { conArt } from './con-art.js?v=0.1.175';
-import { CON_FIGURES } from './con-figures.js?v=0.1.175';
+import { cardArt } from './art.js?v=0.1.179';
+import { TIER_INFO } from './rarity.js?v=0.1.179';
+import { SET_BY_ID } from './sets.js?v=0.1.179';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.179';
+import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.179';
+import { artFileFor } from './art-keys.js?v=0.1.179';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.179';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.179';
+import { nightsIn } from './observation.js?v=0.1.179';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.179';
+import { SHINY } from './shiny.js?v=0.1.179';
+import { conArt } from './con-art.js?v=0.1.179';
+import { CON_FIGURES } from './con-figures.js?v=0.1.179';
 // The animal/symbol figure belongs to the completed (gold) constellation card only (2026-10-05): a single
 // star's card draws just the star pattern with its star marked, so the figure is a reward for finishing the set.
 const conFig = (id) => (CON_FIGURES.has(id) ? { figure: `assets/art/con/${id}.webp` } : {});
@@ -76,13 +76,13 @@ export function renderCard(o, opts = {}) {
   const firstDate = first != null ? new Date(first).toLocaleDateString('en-GB', { month: 'short', day: '2-digit', year: 'numeric' }).toUpperCase() : '';
   const nat = !!o.natural;
   const identifier = nat ? o.code : o.members ? `${o.members.length.toLocaleString('en-US')} SATELLITES` : `NORAD ${o.id}`;
-  const identity = nat ? (conCard ? (o.system ? 'Planetary system' : o.zodiac ? 'Zodiac constellation' : 'Constellation') : o.type === 'star' ? `Star in ${o.constellation}` : o.type === 'moon' ? 'Natural satellite' : 'Planet') : fleet ? 'Satellite fleet' : TYPE_LABEL[o.type] ?? 'Orbital object';
+  const identity = nat ? (conCard ? (o.system ? 'Planetary system' : o.zodiac ? 'Zodiac constellation' : 'Constellation') : o.type === 'star' ? `Star in ${o.constellation}` : o.type === 'sun' ? 'Star' : o.type === 'moon' ? 'Natural satellite' : 'Planet') : fleet ? 'Satellite fleet' : TYPE_LABEL[o.type] ?? 'Orbital object';
   const ageText = age == null ? '' : age === 0 ? 'Less than a year ago' : `${age} ${age === 1 ? 'year' : 'years'} ago`;
   // Fleet cards: the ringed dot is your newest stamp; say which launch that was (the dots alone don't).
   const lk = fleet ? latestStamp(sightings) : null, ll = lk ? o.launches.find((l) => l.key === lk) : null;
   const latestLine = ll ? `Launched ${launchDay(ll.launch).replace(/ (\d{4})$/, ', $1')}` : ''; // sits right of the grid's heading
   const factBlock = fleet ? dotMap(o, stamps, lk, `${stamps.size} / ${o.launches.length} stamped · ${nextLevel(o.family, level, stamps.size)}`, latestLine)
-    : conCard ? `<div class="card__fact"><p>${richText(prog.level === 'gold' ? factFor(o).replace(/Collect all \d+ of its stars to turn this card \*\*gold\*\*\./, `You've found **all ${prog.total}** of its stars.`).replace(/Collect the Moon and all \*\*seven\*\* planets to turn this card \*\*gold\*\*\./, `You've seen **all eight** of them with your own eyes.`) : factFor(o))}</p><p class="con-progress">${o.stars.map((k) => `<i class="${(opts.ownedKeys ?? new Set()).has(k) ? 'on' : ''}"></i>`).join('')}<span>${prog.have} / ${prog.total} ${o.system ? 'WORLDS' : 'STARS'}${prog.level === 'gold' ? ' · COMPLETE' : ''}</span></p></div>`
+    : conCard ? `<div class="card__fact"><p>${richText(prog.level === 'gold' ? factFor(o).replace(/Collect all \d+ of its stars to turn this card \*\*gold\*\*\./, `You've found **all ${prog.total}** of its stars.`).replace(/Collect the Sun, the Moon and all \*\*seven\*\* planets to turn this card \*\*gold\*\*\./, `You've seen **all nine** of them with your own eyes.`) : factFor(o))}</p><p class="con-progress">${o.stars.map((k) => `<i class="${(opts.ownedKeys ?? new Set()).has(k) ? 'on' : ''}"></i>`).join('')}<span>${prog.have} / ${prog.total} ${o.system ? 'WORLDS' : 'STARS'}${prog.level === 'gold' ? ' · COMPLETE' : ''}</span></p></div>`
     : `<div class="card__fact"><p>${revealed ? richText(factFor(o)) : `Observe this ${esc((TYPE_LABEL[o.type] ?? 'object').toLowerCase())} in the live sky to add its story to your collection.`}</p></div>`;
   // Long facts take room from the art, not the card: each line past three shrinks the art window (about
   // 52 characters a line), so every card stays the same height.

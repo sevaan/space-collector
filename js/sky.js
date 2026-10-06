@@ -1,9 +1,9 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.175';
+import { extinction } from './sky-limit.js?v=0.1.179';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.175';
-import { TIER_INFO } from './rarity.js?v=0.1.175';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.179';
+import { TIER_INFO } from './rarity.js?v=0.1.179';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -231,14 +231,69 @@ export class SkyView {
   }
 
   drawBackground() {
-    const ctx = this.ctx, t = this.theme;
+    const ctx = this.ctx, t = this.theme, f = this.dayF ?? 0;
     const g = ctx.createLinearGradient(0, 0, 0, this.h);
-    g.addColorStop(0, t.bgBottom);
-    g.addColorStop(1, t.bgTop);
+    if (f <= 0) { g.addColorStop(0, t.bgBottom); g.addColorStop(1, t.bgTop); }
+    else {
+      // The real sky by day and at dusk (2026-10-06): navy → dusk orange along the horizon → pale blue.
+      const mix = (a, b, k) => a.map((v, i) => Math.round(v + (b[i] - v) * k));
+      const rgb = (c) => `rgb(${c.join(',')})`;
+      const nightTop = [12, 29, 41], nightBot = [8, 15, 27], duskTop = [27, 42, 90], duskBot = [240, 163, 90], dayTop = [63, 127, 191], dayBot = [185, 214, 234];
+      const k = f < 0.5 ? f * 2 : (f - 0.5) * 2;
+      const top = f < 0.5 ? mix(nightTop, duskTop, k) : mix(duskTop, dayTop, k), bot = f < 0.5 ? mix(nightBot, duskBot, k) : mix(duskBot, dayBot, k);
+      g.addColorStop(0, rgb(top)); g.addColorStop(1, rgb(bot));
+    }
     ctx.fillStyle = g;
     ctx.fillRect(0, 0, this.w, this.h);
     // Soft atmospheric light, not decorative stars. All star positions come from the catalog.
-    this.glow(this.cx, this.cy, Math.max(this.w, this.h) * 0.72, t.milky, 0.045);
+    if (f < 0.2) this.glow(this.cx, this.cy, Math.max(this.w, this.h) * 0.72, t.milky, 0.045 * (1 - f * 5));
+  }
+
+  // Dashed "ghost" markers: things up there right now that can't be seen until dark (daytime Explore).
+  // ghosts: [{ enu, name, note }]
+  drawGhosts(ghosts) {
+    const ctx = this.ctx, t = this.theme;
+    ctx.save(); ctx.setLineDash([3, 4]); ctx.lineWidth = 1.2; ctx.strokeStyle = 'rgba(255,255,255,.8)';
+    for (const g of ghosts) {
+      if (g.enu[2] < 0) continue;
+      const p = this.project(g.enu);
+      if (!this.onScreen(p, 20)) continue;
+      ctx.beginPath(); ctx.arc(p.x, p.y, 7, 0, Math.PI * 2); ctx.stroke();
+      this.queueLabel(g.name, p, { color: 'rgba(255,255,255,.92)', size: 12, weight: 600, gap: 12, priority: 7 });
+      if (g.note) this.queueLabel(g.note, { x: p.x, y: p.y + 14 }, { color: 'rgba(255,255,255,.75)', size: 10, weight: 500, gap: 12, priority: 6 });
+    }
+    ctx.restore();
+  }
+
+  // Local weather over the sky (js/weather.js): drifting cloud by cover, a fog wash, light rain or snow.
+  // Screen-space and deliberately quiet: it should tell you why the sky looks empty, not perform.
+  drawWeather(wx, time) {
+    const ctx = this.ctx, f = this.dayF ?? 0, cover = Math.max(0, Math.min(1, (wx.cloud ?? 0) / 100));
+    const sec = time / 1000;
+    if (cover > 0.08) {
+      const n = Math.round(4 + cover * 10), rgb = f > 0.5 ? [245, 248, 250] : f > 0 ? [120, 110, 120] : [40, 50, 66];
+      for (let i = 0; i < n; i++) {
+        const a = (i * 0.618034) % 1, b = ((i * 0.381966) + 0.17) % 1;
+        const w = this.w * (0.35 + a * 0.4), h = w * 0.28, x = ((a * this.w * 1.6 + sec * (6 + b * 6)) % (this.w + w)) - w / 2, y = this.h * (0.12 + b * 0.55);
+        this.blob(x, y, w, h, rgb, 0.16 + cover * 0.5 * (f > 0 ? 1 : 0.7));
+      }
+    }
+    if (wx.kind === 'fog') { const g = ctx.createLinearGradient(0, this.h * 0.3, 0, this.h); g.addColorStop(0, 'rgba(225,230,233,0)'); g.addColorStop(1, f > 0 ? 'rgba(225,230,233,.75)' : 'rgba(120,128,140,.55)'); ctx.fillStyle = g; ctx.fillRect(0, 0, this.w, this.h); }
+    if (wx.kind === 'rain' || wx.kind === 'storm') {
+      ctx.save(); ctx.strokeStyle = f > 0 ? 'rgba(220,232,242,.45)' : 'rgba(170,190,210,.35)'; ctx.lineWidth = 1;
+      for (let i = 0; i < 40; i++) { const a = (i * 0.618034) % 1, x = ((a * this.w * 1.3) - ((sec * 420 + i * 97) % (this.h + 60)) * 0.25) % (this.w + 40), y = ((sec * 420 + i * 97) % (this.h + 60)) - 40; ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x - 5, y + 18); ctx.stroke(); }
+      ctx.restore();
+    }
+    if (wx.kind === 'snow') {
+      ctx.save(); ctx.fillStyle = 'rgba(255,255,255,.85)';
+      for (let i = 0; i < 36; i++) { const a = (i * 0.618034) % 1, r = 1.5 + (i % 3), y = ((sec * 40 + i * 53) % (this.h + 20)) - 10, x = (a * this.w + Math.sin(sec * 0.8 + i) * 18 + this.w) % this.w; ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill(); }
+      ctx.restore();
+    }
+  }
+  blob(x, y, w, h, [r, g, b], a) {
+    const ctx = this.ctx; ctx.save(); ctx.translate(x, y); ctx.scale(1, h / w);
+    const gr = ctx.createRadialGradient(0, 0, 0, 0, 0, w / 2); gr.addColorStop(0, `rgba(${r},${g},${b},${a})`); gr.addColorStop(1, `rgba(${r},${g},${b},0)`);
+    ctx.fillStyle = gr; ctx.beginPath(); ctx.arc(0, 0, w / 2, 0, Math.PI * 2); ctx.fill(); ctx.restore();
   }
 
   // Each glow follows a supplied point on the true galactic equator.
@@ -552,7 +607,7 @@ export class SkyView {
       const p = this.project(s.enu);
       if (!this.onScreen(p, 12)) continue;
       const r = Math.max(0.38, Math.min(2.4, 1.9 - 0.27 * s.mag));
-      let a = Math.max(0.14, Math.min(1, 0.98 - 0.125 * s.mag)) * fade, tw = 1;
+      let a = Math.max(0.14, Math.min(1, 0.98 - 0.125 * s.mag)) * fade * (1 - (this.dayF ?? 0) / 0.6), tw = 1;
       if (time) {
         // 0 in the middle of the screen, rising to 1 at any edge (the outer ~40% of the way out).
         const edge = Math.max(Math.abs(p.x - hw) / hw, Math.abs(p.y - hh) / hh);
@@ -595,10 +650,13 @@ export class SkyView {
         this.drawMoon(p, radius, sun ? this.brightLimbAngle(b.enu, sun.enu, p) : 0, b.phaseAngle);
         this.queueLabel('Moon', p, { color: t.body, size: 14, weight: 500, gap: radius + 10, priority: 8 });
       } else if (b.kind === 'sun') {
-        this.glow(p.x, p.y, 70, t.satGlow, 0.55);
-        ctx.fillStyle = t.sun;
-        ctx.beginPath(); ctx.arc(p.x, p.y, 12, 0, Math.PI * 2); ctx.fill();
-        this.queueLabel('Sun', p, { color: t.body, size: 14, gap: 22, priority: 8 });
+        const f = this.dayF ?? 0;
+        this.glow(p.x, p.y, 70 + f * 90, f > 0 ? [255, 246, 207] : t.satGlow, 0.55);
+        ctx.fillStyle = f > 0.3 ? '#fffbea' : t.sun;
+        ctx.beginPath(); ctx.arc(p.x, p.y, 12 + f * 6, 0, Math.PI * 2); ctx.fill();
+        // A dashed guard ring by day: aim the phone, never your eyes.
+        if (f > 0) { ctx.save(); ctx.setLineDash([4, 5]); ctx.lineWidth = 1.5; ctx.strokeStyle = 'rgba(250,129,39,.85)'; ctx.beginPath(); ctx.arc(p.x, p.y, 44, 0, Math.PI * 2); ctx.stroke(); ctx.restore(); }
+        this.queueLabel('Sun', p, { color: f > 0.3 ? '#143046' : t.body, size: 14, gap: 22 + f * 24, priority: 8 });
       } else {
         const radius = Math.max(2.5, Math.min(4.8, 3.0 - 0.4 * b.mag));
         this.glow(p.x, p.y, radius * 4.5, t.starRGB, 0.36);
@@ -657,7 +715,7 @@ export class SkyView {
 
   // safeTop/safeBottom are HUD insets in CSS pixels; centerY is an optional pixel
   // override. Projection and the reticle always share the same cx/cy.
-  draw(basis, items, { showDim, sky, bodies, milky, lines = true, targetId = null, time = 0, safeTop = 150, safeBottom = 230, centerY, starLimit = null, newFind = false, rising = null, landscape = false, lockedOn = null, planes = null, planeHit = null, planeTrail = null, naturalTarget = null } = {}) {
+  draw(basis, items, { showDim, sky, bodies, milky, lines = true, targetId = null, time = 0, safeTop = 150, safeBottom = 230, centerY, starLimit = null, sunEl = -90, ghosts = null, weather = null, newFind = false, rising = null, landscape = false, lockedOn = null, planes = null, planeHit = null, planeTrail = null, naturalTarget = null } = {}) {
     this.basis = basis;
     this.safeTop = Math.max(12, Math.min(safeTop, this.h * 0.45));
     this.safeBottom = Math.max(12, Math.min(safeBottom, this.h - this.safeTop - 100));
@@ -667,10 +725,14 @@ export class SkyView {
     const rc = this.ring ?? { x: this.cx, y: this.cy };
     this.clearZone = newFind || planeHit ? { left: this.cx - Math.min(190, this.w / 2 - 12), right: this.cx + Math.min(190, this.w / 2 - 12), top: rc.y - r - 100, bottom: rc.y + r + 75 } : null;
     const ctx = this.ctx, t = this.theme;
+    // Day factor: 0 at night, 1 in full daylight (civil twilight in between). Drives the sky tone and what shows.
+    this.dayF = this.theme === THEMES.night ? 0 : Math.max(0, Math.min(1, (sunEl + 8) / 12));
     this.drawBackground();
-    this.drawMilkyWay(milky);
-    if (sky) this.drawStars(sky, { lines, time: this.reducedMotion ? 0 : time, starLimit });
+    if ((this.dayF ?? 0) < 0.2) this.drawMilkyWay(milky);
+    if (sky && (this.dayF ?? 0) < 0.6) this.drawStars(sky, { lines: lines && this.dayF < 0.2, time: this.reducedMotion ? 0 : time, starLimit });
+    if (weather) this.drawWeather(weather, this.reducedMotion ? 0 : time);
     if (bodies) this.drawBodies(bodies);
+    if (ghosts?.length) this.drawGhosts(ghosts);
     this.drawGround();
     if (landscape) this.drawLandscape();
     this.drawGroundCompass();
