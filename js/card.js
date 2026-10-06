@@ -1,17 +1,17 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { cardArt } from './art.js?v=0.1.159';
-import { TIER_INFO } from './rarity.js?v=0.1.159';
-import { SET_BY_ID } from './sets.js?v=0.1.159';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.159';
-import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.159';
-import { artFileFor } from './art-keys.js?v=0.1.159';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.159';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.159';
-import { nightsIn } from './observation.js?v=0.1.159';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.159';
-import { SHINY } from './shiny.js?v=0.1.159';
-import { conArt } from './con-art.js?v=0.1.159';
-import { CON_FIGURES } from './con-figures.js?v=0.1.159';
+import { cardArt } from './art.js?v=0.1.160';
+import { TIER_INFO } from './rarity.js?v=0.1.160';
+import { SET_BY_ID } from './sets.js?v=0.1.160';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.160';
+import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.160';
+import { artFileFor } from './art-keys.js?v=0.1.160';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.160';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.160';
+import { nightsIn } from './observation.js?v=0.1.160';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.160';
+import { SHINY } from './shiny.js?v=0.1.160';
+import { conArt } from './con-art.js?v=0.1.160';
+import { CON_FIGURES } from './con-figures.js?v=0.1.160';
 // The animal/symbol figure belongs to the completed (gold) constellation card only (2026-10-05): a single
 // star's card draws just the star pattern with its star marked, so the figure is a reward for finishing the set.
 const conFig = (id) => (CON_FIGURES.has(id) ? { figure: `assets/art/con/${id}.webp` } : {});
@@ -80,7 +80,7 @@ export function renderCard(o, opts = {}) {
   const ageText = age == null ? '' : age === 0 ? 'Less than a year ago' : `${age} ${age === 1 ? 'year' : 'years'} ago`;
   // Fleet cards: the ringed dot is your newest stamp; say which launch that was (the dots alone don't).
   const lk = fleet ? latestStamp(sightings) : null, ll = lk ? o.launches.find((l) => l.key === lk) : null;
-  const latestLine = ll ? `Newest stamp: the launch of ${launchDay(ll.launch)}` : '';
+  const latestLine = ll ? `Launched ${launchDay(ll.launch).replace(/ (\d{4})$/, ', $1')}` : ''; // sits right of the grid's heading
   const factBlock = fleet ? dotMap(o, stamps, lk, `${stamps.size} / ${o.launches.length} stamped · ${nextLevel(o.family, level, stamps.size)}`, latestLine)
     : conCard ? `<div class="card__fact"><p>${richText(prog.level === 'gold' ? factFor(o).replace(/Collect all \d+ of its stars to turn this card \*\*gold\*\*\./, `You've found **all ${prog.total}** of its stars.`).replace(/Collect the Moon and all \*\*seven\*\* planets to turn this card \*\*gold\*\*\./, `You've seen **all eight** of them with your own eyes.`) : factFor(o))}</p><p class="con-progress">${o.stars.map((k) => `<i class="${(opts.ownedKeys ?? new Set()).has(k) ? 'on' : ''}"></i>`).join('')}<span>${prog.have} / ${prog.total} ${o.system ? 'WORLDS' : 'STARS'}${prog.level === 'gold' ? ' · COMPLETE' : ''}</span></p></div>`
     : `<div class="card__fact"><p>${revealed ? richText(factFor(o)) : `Observe this ${esc((TYPE_LABEL[o.type] ?? 'object').toLowerCase())} in the live sky to add its story to your collection.`}</p></div>`;
@@ -140,7 +140,7 @@ function dotMap(o, stamps, latest, summary = '', latestLine = '') {
   const n = o.launches.length, cols = n > 200 ? 36 : n > 60 ? 18 : Math.min(14, Math.max(10, n)), gap = n > 200 ? '.15em' : '.45em';
   const dots = o.launches.map((l) => `<i class="${stamps.has(l.key) ? 'on' : ''}${l.key === latest ? ' latest' : ''}"></i>`).join('');
   const y0 = o.launches[0]?.launch?.slice(0, 4) ?? '', y1 = o.launches.at(-1)?.launch?.slice(0, 4) ?? '';
-  return `<div class="fl-dots"><span class="card__note-label">EVERY ${esc(String(o.familyName).toUpperCase())} LAUNCH</span><div class="fl-grid" style="--cols:${cols};--gap:${gap}">${dots}</div>${latestLine ? `<div class="fl-latest"><i></i>${esc(latestLine)}</div>` : ''}<div class="fl-years"><span>${esc(y0)}</span>${summary ? `<span class="fl-sum">${esc(summary)}</span>` : ''}<span>${esc(y1)}</span></div></div>`;
+  return `<div class="fl-dots"><div class="fl-head"><span class="card__note-label">EVERY ${esc(String(o.familyName).toUpperCase())} LAUNCH</span>${latestLine ? `<span class="fl-latest"><i></i>${esc(latestLine)}</span>` : ''}</div><div class="fl-grid" style="--cols:${cols};--gap:${gap}">${dots}</div><div class="fl-years"><span>${esc(y0)}</span>${summary ? `<span class="fl-sum">${esc(summary)}</span>` : ''}<span>${esc(y1)}</span></div></div>`;
 }
 
 const shortDay = (t) => new Date(t).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }).toUpperCase();
