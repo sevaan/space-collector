@@ -1,12 +1,13 @@
-import { renderCard, renderCardTile, renderPassport, attachTilt, attachGyro, attachFlip } from './card.js?v=0.1.105';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.105';
-import { applyBack } from './card-backs.js?v=0.1.105';
-import { SETS, assignSets } from './sets.js?v=0.1.105';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.105';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.105';
-import { loadConstellations } from './constellations.js?v=0.1.105';
-import { allSightings, deleteSighting } from './store.js?v=0.1.105';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.105';
+import { renderCard, renderCardTile, renderPassport, attachTilt, attachGyro, attachFlip, artImage } from './card.js?v=0.1.106';
+import { cardArt } from './art.js?v=0.1.106';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.106';
+import { applyBack } from './card-backs.js?v=0.1.106';
+import { SETS, assignSets } from './sets.js?v=0.1.106';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.106';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.106';
+import { loadConstellations } from './constellations.js?v=0.1.106';
+import { allSightings, deleteSighting } from './store.js?v=0.1.106';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.106';
 
 const $ = (id) => document.getElementById(id);
 const state = { cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -100,7 +101,53 @@ const observer = new IntersectionObserver((entries) => {
   }
 }, { rootMargin: '500px 0px' });
 
+// ---------- albums ----------
+// One album per set. Goals scale with the set's size, so every album has a reachable gold:
+// small sets (<= 30 cards) are completed; bigger ones aim for 100 or 200 cards.
+export function albumGoals(n) { return n <= 30 ? [1, Math.ceil(n / 2), n] : n <= 300 ? [10, 50, 100] : [10, 50, 200]; }
+const LEVELS = ['Bronze', 'Silver', 'Gold'];
+function albumStats(setId) {
+  const cards = state.cards.filter((c) => c.set === setId && !c.archived), have = cards.filter(hasSightings);
+  const goals = albumGoals(cards.length), level = goals.filter((g) => have.length >= g).length; // 0..3
+  return { cards, have, goals, level, next: goals[level] ?? null };
+}
+function albumBar({ have, goals, cards }) {
+  const top = goals[2], pct = (n) => Math.min(100, (n / top) * 100);
+  return `<div class="album-bar"><i style="width:${pct(have.length)}%"></i>${goals.map((g, i) => `<b class="g${i}${have.length >= g ? ' hit' : ''}" style="left:${pct(g)}%" title="${LEVELS[i]} at ${g}"></b>`).join('')}</div>`;
+}
+function renderAlbums() {
+  $('grid').replaceChildren();
+  const frag = document.createDocumentFragment();
+  for (const set of SETS) {
+    const st = albumStats(set.id); if (!st.cards.length) continue;
+    const latest = st.have.slice().sort((a, b) => (state.sightingsByKey.get(b.key)?.[0]?.time ?? 0) - (state.sightingsByKey.get(a.key)?.[0]?.time ?? 0))[0];
+    const show = latest ?? st.cards.find((c) => c.tier === 'legendary') ?? st.cards[0];
+    const img = latest && artImage(show, 'small');
+    const b = document.createElement('button'); b.type = 'button';
+    b.className = `album${st.level === 3 ? ' gold' : ''}${latest ? '' : ' empty'}`; b.style.setProperty('--set', set.color);
+    b.innerHTML = `<span class="album__art">${img ? `<img src="${img}" alt="" loading="lazy">` : cardArt(show, { accent: set.color, silhouette: !latest })}</span>
+      <span class="album__body"><span class="album__name">${esc(set.name)}</span>
+      <span class="album__count"><b>${st.have.length.toLocaleString()}</b> / ${st.cards.length.toLocaleString()}${st.level ? ` · ${LEVELS[st.level - 1].toUpperCase()}` : ''}</span>
+      ${albumBar(st)}<span class="album__next">${st.level === 3 ? 'Gold album' : `${(st.next - st.have.length).toLocaleString()} more for ${LEVELS[st.level]}`}</span></span>`;
+    b.addEventListener('click', () => { state.set = set.id; $('set-filter').value = set.id; setView('discover'); window.scrollTo({ top: $('grid').offsetTop - 160, behavior: 'smooth' }); });
+    frag.append(b);
+  }
+  $('grid').append(frag);
+  $('results').textContent = 'Fill each album to turn it gold.';
+}
+function renderAlbumHead() {
+  const head = $('album-head');
+  if (state.set === 'all' || state.view === 'albums') { head.hidden = true; return; }
+  const set = SETS.find((s) => s.id === state.set), st = albumStats(state.set);
+  head.hidden = false; head.style.setProperty('--set', set.color); head.classList.toggle('gold', st.level === 3);
+  head.innerHTML = `<div><span class="album__name">${esc(set.name)}</span><span class="album__count"><b>${st.have.length.toLocaleString()}</b> / ${st.cards.length.toLocaleString()} collected${st.level ? ` · ${LEVELS[st.level - 1]} album` : ''}</span></div>${albumBar(st)}
+    <span class="album__next">${st.level === 3 ? 'Gold album. Every card here is a bonus.' : `${(st.next - st.have.length).toLocaleString()} more for a ${LEVELS[st.level]} album (${st.next.toLocaleString()} cards).`}</span>`;
+}
+
 function render() {
+  renderAlbumHead();
+  document.body.classList.toggle('albums-view', state.view === 'albums');
+  if (state.view === 'albums') { const caught = state.cards.filter(hasSightings).length; $('owned-count').textContent = caught.toLocaleString(); renderAlbums(); return; }
   const caught = state.cards.filter(hasSightings).length;
   $('owned-count').textContent = caught.toLocaleString();
   $('count').textContent = caught ? `${caught.toLocaleString()} ${caught === 1 ? 'story' : 'stories'} collected. Every one, a moment under the sky.` : 'Real objects. Remarkable stories. Yours to discover.';
@@ -139,6 +186,7 @@ function setView(view) {
   state.view = view;
   $('tab-owned').setAttribute('aria-pressed', String(view === 'owned'));
   $('tab-discover').setAttribute('aria-pressed', String(view === 'discover'));
+  $('tab-albums').setAttribute('aria-pressed', String(view === 'albums'));
   if (state.ready) render();
 }
 function resetFilters() {
@@ -148,6 +196,7 @@ function resetFilters() {
 }
 $('tab-owned').addEventListener('click', () => setView('owned'));
 $('tab-discover').addEventListener('click', () => setView('discover'));
+$('tab-albums').addEventListener('click', () => { resetFilters(); setView('albums'); });
 $('reset-filters').addEventListener('click', resetFilters);
 let searchTimer;
 $('search').addEventListener('input', (e) => { clearTimeout(searchTimer); state.query = e.target.value.trim().toLowerCase(); searchTimer = setTimeout(() => { if (state.ready) render(); }, 120); });
