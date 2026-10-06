@@ -1,13 +1,13 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { cardArt } from './art.js?v=0.1.84';
-import { TIER_INFO } from './rarity.js?v=0.1.84';
-import { SET_BY_ID } from './sets.js?v=0.1.84';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.84';
-import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.84';
-import { artFileFor } from './art-keys.js?v=0.1.84';
-import { ART_FILES } from './art-files.js?v=0.1.84';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.84';
-import { nightsIn } from './observation.js?v=0.1.84';
+import { cardArt } from './art.js?v=0.1.85';
+import { TIER_INFO } from './rarity.js?v=0.1.85';
+import { SET_BY_ID } from './sets.js?v=0.1.85';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.85';
+import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.85';
+import { artFileFor } from './art-keys.js?v=0.1.85';
+import { ART_FILES } from './art-files.js?v=0.1.85';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.85';
+import { nightsIn } from './observation.js?v=0.1.85';
 
 // Levels count observing nights (local noon to noon): bronze 1, silver 3, gold 10. Before
 // 2026-10-01 levels counted sightings (5 silver, 25 gold); anything earned that way is kept.
