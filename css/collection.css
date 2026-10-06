@@ -1,4 +1,4 @@
-:root { color-scheme: dark; --bg: #080f18; --panel: #111d29; --text: #e8ece9; --muted: #97aaa9; --line: #283842; --accent: #99d0cc; --safe-top: env(safe-area-inset-top, 0px); --safe-bottom: env(safe-area-inset-bottom, 0px); }
+:root { color-scheme: dark; --bg: #080f18; --panel: #111d29; --text: #f3ecd4; --muted: #bdbea9; --line: #2a3a48; --accent: #fa8127; /* card palette (2026-10-05): orange accent, cream ink; the old mint #99d0cc is gone */ --safe-top: env(safe-area-inset-top, 0px); --safe-bottom: env(safe-area-inset-bottom, 0px); }
 :root[data-theme="night"] { --bg: #090303; --panel: #160707; --text: #b85e56; --muted: #a04d48; --line: #411917; --accent: #b45b53; }
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.45 Inter, system-ui, sans-serif; }

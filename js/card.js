@@ -1,17 +1,17 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { cardArt } from './art.js?v=0.1.125';
-import { TIER_INFO } from './rarity.js?v=0.1.125';
-import { SET_BY_ID } from './sets.js?v=0.1.125';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.125';
-import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.125';
-import { artFileFor } from './art-keys.js?v=0.1.125';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.125';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.125';
-import { nightsIn } from './observation.js?v=0.1.125';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.125';
-import { SHINY } from './shiny.js?v=0.1.125';
-import { conArt } from './con-art.js?v=0.1.125';
-import { CON_FIGURES } from './con-figures.js?v=0.1.125';
+import { cardArt } from './art.js?v=0.1.127';
+import { TIER_INFO } from './rarity.js?v=0.1.127';
+import { SET_BY_ID } from './sets.js?v=0.1.127';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.127';
+import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.127';
+import { artFileFor } from './art-keys.js?v=0.1.127';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.127';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.127';
+import { nightsIn } from './observation.js?v=0.1.127';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.127';
+import { SHINY } from './shiny.js?v=0.1.127';
+import { conArt } from './con-art.js?v=0.1.127';
+import { CON_FIGURES } from './con-figures.js?v=0.1.127';
 // The animal/symbol figure belongs to the completed (gold) constellation card only (2026-10-05): a single
 // star's card draws just the star pattern with its star marked, so the figure is a reward for finishing the set.
 const conFig = (id) => (CON_FIGURES.has(id) ? { figure: `assets/art/con/${id}.webp` } : {});
@@ -290,6 +290,17 @@ export function attachGyro(el, tilt) {
   return () => { window.removeEventListener('deviceorientation', onOri); tilt.reset(); };
 }
 
+// Throw an element off the top of the screen, starting at the finger's speed (dx, dy px over dt ms) and
+// keeping it fully visible until it's gone. Returns the duration in ms. Used by the reveal and the collection viewer.
+export function throwOff(el, dx, dy, dt) {
+  const r = el.getBoundingClientRect(), dist = r.bottom + 40;               // until its bottom edge clears the top
+  const v = Math.max(1.2, -dy / dt);                                        // px per ms, at least brisk
+  const ms = Math.round(Math.min(420, Math.max(200, dist * 1.6 / v)));      // easing starts at ~1.6× its average speed
+  const x = Math.max(-140, Math.min(140, dx * (ms / dt) * .5)), turn = Math.max(-14, Math.min(14, x / 10));
+  el.animate([{ transform: 'translate(0, 0) rotate(0)' }, { transform: `translate(${x}px, ${-dist}px) rotate(${turn}deg)` }],
+    { duration: ms, easing: 'cubic-bezier(.25,.4,.55,1)', fill: 'forwards' });
+  return ms;
+}
 // Double-tap (or double-click) a card to flip it over and see its back; do it again to flip it back.
 // onBack(backEl) dresses the back (a random poster, js/card-backs.js) each time it turns to the back.
 // The back is pre-mirrored in CSS, so it reads correctly while the card faces away.

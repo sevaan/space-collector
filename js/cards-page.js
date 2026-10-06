@@ -1,18 +1,18 @@
-import { renderCard, renderCardTile, renderPassport, attachTilt, attachGyro, attachFlip, artImage } from './card.js?v=0.1.125';
-import { cardArt } from './art.js?v=0.1.125';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.125';
-import { applyBack } from './card-backs.js?v=0.1.125';
-import { SETS, assignSets } from './sets.js?v=0.1.125';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.125';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.125';
-import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.125';
-import { progress } from './progress.js?v=0.1.125';
-import { eventBadges, nextEvent } from './events.js?v=0.1.125';
-import { drawShareCard, shareCard } from './share-card.js?v=0.1.125';
-import { conArt } from './con-art.js?v=0.1.125';
-import { CON_BY_ID } from './constellations.js?v=0.1.125';
-import { allSightings, deleteSighting } from './store.js?v=0.1.125';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.125';
+import { renderCard, renderCardTile, renderPassport, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.127';
+import { cardArt } from './art.js?v=0.1.127';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.127';
+import { applyBack } from './card-backs.js?v=0.1.127';
+import { SETS, assignSets } from './sets.js?v=0.1.127';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.127';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.127';
+import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.127';
+import { progress } from './progress.js?v=0.1.127';
+import { eventBadges, nextEvent } from './events.js?v=0.1.127';
+import { drawShareCard, shareCard } from './share-card.js?v=0.1.127';
+import { conArt } from './con-art.js?v=0.1.127';
+import { CON_BY_ID } from './constellations.js?v=0.1.127';
+import { allSightings, deleteSighting } from './store.js?v=0.1.127';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.127';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -348,13 +348,13 @@ async function closeViewer() {
   document.getAnimations().forEach((an) => { const t = an.effect?.target; if (t && (t === v || v.contains(t))) an.cancel(); });
 }
 // Flick the card up and away to close the viewer (like flicking away a fresh capture in the sky).
-async function flickClose(dx) {
+async function flickClose(dx, dy, dt) {
   const card = $('slot').firstElementChild;
   stopEffects();
   fadeViewer(false);
   if (card && !reducedMotion.matches) {
-    card.animate([{ transform: 'translate(0, 0)', opacity: 1 }, { transform: `translate(${dx * 3}px, ${-innerHeight * 1.1}px)`, opacity: 0 }], { duration: 280, easing: 'cubic-bezier(.3,.6,.4,1)', fill: 'forwards' });
-    await new Promise((r) => setTimeout(r, 280));
+    const ms = throwOff(card, dx, dy, dt); // flies off the top at the flick's speed, fully visible 
+    await new Promise((r) => setTimeout(r, ms));
   }
   $('viewer').close();
   const v = $('viewer');
@@ -371,7 +371,7 @@ $('slot').addEventListener('pointerup', (e) => {
   const pts = flick.pts; flick = null;
   const last = pts[pts.length - 1], now = performance.now(), from = pts.find((p) => now - p.t < 140) ?? pts[0];
   const dx = last.x - from.x, dy = last.y - from.y, dt = Math.max(16, now - from.t);
-  if (dy < -45 && last.y - pts[0].y < -60 && Math.abs(dx) < -dy * 0.9 && -dy / dt > 0.6) flickClose(dx);
+  if (dy < -45 && last.y - pts[0].y < -60 && Math.abs(dx) < -dy * 0.9 && -dy / dt > 0.6) flickClose(dx, dy, dt);
 });
 $('slot').addEventListener('pointercancel', () => { flick = null; });
 // A constellation card is owned through its stars, and only once you have ALL of them (it then arrives
