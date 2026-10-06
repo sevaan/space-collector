@@ -159,3 +159,4 @@ Alerts, service worker, accounts, secret sets/feats.
   Tapping the mini card no longer needs to be what logs it.
 - Collection viewer: no "Collected <date>" line under the card (the card shows it); flick the card up to close.
 - Card footer shows "SEEN N TIME(S)" after the collected date (`card__seen-count`; NOT `.card__seen`, an old boxed style). Settings → Pointing → "Snap the circle onto what you're aiming at" (pref `snap`, default on; `sky.snap` in `updateRing`).
+- Switcher (2026-10-05, design/switcher-options.html C): small dark pill, text only, centred at the bottom of both pages (#nav in css/app.css, .bottom-nav in css/collection.css); active tab glows faintly orange. --nav-h is 70px.

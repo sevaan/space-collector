@@ -1,6 +1,6 @@
 /* Shared with the retro card stock: cream ink, orange accents and a steel frame.
    Legacy --gold / --cyan names remain for the radar and reveal consumers. */
-:root { --bg:#080f1b; --text:#fff2b3; --muted:#bdbea9; --gold:#fa8127; --cyan:#8fb3cf; --glass:#0c1725f2; --glass-strong:#0c1725; --edge:#627a8b; --edge-soft:#344654; --rule:#bcb585; --ink-on-gold:#080f1b; --display:'SC Display',Impact,sans-serif; --label:'SC Label','Arial Narrow',sans-serif; --safe-top:env(safe-area-inset-top,0px); --safe-bottom:env(safe-area-inset-bottom,0px); --nav-h:84px; color-scheme:dark; }
+:root { --bg:#080f1b; --text:#fff2b3; --muted:#bdbea9; --gold:#fa8127; --cyan:#8fb3cf; --glass:#0c1725f2; --glass-strong:#0c1725; --edge:#627a8b; --edge-soft:#344654; --rule:#bcb585; --ink-on-gold:#080f1b; --display:'SC Display',Impact,sans-serif; --label:'SC Label','Arial Narrow',sans-serif; --safe-top:env(safe-area-inset-top,0px); --safe-bottom:env(safe-area-inset-bottom,0px); --nav-h:70px; color-scheme:dark; }
 html[data-theme=night],body.night { --bg:#0c0303; --text:#d67674; --muted:#b76a69; --gold:#bb6060; --cyan:#cd6a6a; --glass:#1a0909f5; --glass-strong:#120606; --edge:#58272b; --edge-soft:#361719; --ink-on-gold:#180706; --rule:#58272b; }
 * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
 html,body { margin:0; height:100%; background:var(--bg); color:var(--text); font:16px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; overflow:hidden; overscroll-behavior:none; }
@@ -76,12 +76,12 @@ body.night #plane { --plane:#ff3b2b; }
 #d-switch { flex:none;pointer-events:auto;min-width:64px;min-height:44px;font:500 15px var(--label);color:var(--cyan);background:none;border:0; }
 .chip { font-size:12px;color:var(--muted);display:inline-flex;align-items:center;gap:5px; }
 .chip .ico { width:13px;height:13px; }
-#nav { position:fixed;left:18px;right:18px;bottom:calc(16px + var(--safe-bottom));height:64px;max-width:520px;margin:0 auto;display:grid;grid-template-columns:repeat(2,1fr);background:var(--text);border:1px solid var(--text);border-radius:12px;overflow:hidden;box-shadow:0 4px 0 var(--bg),0 5px 0 var(--edge),0 14px 35px #0005; }
-.nav-item { position:relative;display:flex;justify-content:center;align-items:center;gap:9px;min-height:48px;color:var(--ink-on-gold);text-decoration:none;font:500 16px/1.2 var(--label);letter-spacing:.1em;text-transform:uppercase; }
-.nav-item.active { color:var(--ink-on-gold);background:var(--gold); }
-.nav-item + .nav-item { border-left:1px solid var(--bg); }
-.nav-item:focus-visible { outline:2px solid var(--bg);outline-offset:-5px; }
-.nav-item .ico { width:21px;height:21px; }
+/* Switcher: a small dark pill floating mid-screen, text only; the active tab glows faintly orange (2026-10-05, design/switcher-options.html C). */
+#nav { position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + var(--safe-bottom));width:260px;height:46px;display:grid;grid-template-columns:repeat(2,1fr);gap:4px;padding:4px;background:color-mix(in srgb,var(--bg) 78%,transparent);border:1px solid var(--edge-soft);border-radius:99px;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);z-index:20; }
+.nav-item { display:flex;justify-content:center;align-items:center;border-radius:99px;color:color-mix(in srgb,var(--text) 55%,transparent);text-decoration:none;font:500 14px/1 var(--label);letter-spacing:.14em;text-transform:uppercase; }
+.nav-item.active { color:var(--gold);background:color-mix(in srgb,var(--gold) 14%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--gold) 45%,transparent); }
+.nav-item:focus-visible { outline:2px solid var(--gold);outline-offset:2px; }
+.nav-item .ico { display:none; }
 
 #banner { position:fixed;left:16px;right:16px;top:calc(var(--safe-top) + 198px);z-index:3;text-align:left;color:var(--muted);background:var(--glass);border:1px solid var(--edge);border-left:3px solid var(--gold);border-radius:4px;padding:10px 12px;font-size:12px; }
 #toast { position:fixed;left:20px;right:20px;top:calc(var(--safe-top) + 210px);max-width:460px;margin:auto;padding:16px;border:1px solid var(--edge);border-radius:12px;color:var(--text);background:var(--glass-strong);z-index:30;text-align:center;font-size:14px; }
@@ -125,7 +125,7 @@ details { border-bottom:1px solid var(--edge-soft); }
 html[data-theme=night] #start,body.night #start,body.night #reveal { background:var(--bg); }
 body.night #start-art,body.night #t-art { filter:grayscale(1) sepia(1) saturate(3) hue-rotate(310deg) brightness(.6); }
 body.night .vis-row .dot { background:var(--cyan); }
-@media(max-width:360px) { #sky-header { padding-inline:16px;gap:8px; } .wordmark span { letter-spacing:.1em; } .header-buttons { gap:6px; } #target { gap:8px;padding-left:10px; } #t-name { font-size:13px; } #t-meta { font-size:12px; } #start-art { height:160px; } #nav { left:12px;right:12px; } .nav-item { font-size:15px;gap:7px; } }
+@media(max-width:360px) { #sky-header { padding-inline:16px;gap:8px; } .wordmark span { letter-spacing:.1em; } .header-buttons { gap:6px; } #target { gap:8px;padding-left:10px; } #t-name { font-size:13px; } #t-meta { font-size:12px; } #start-art { height:160px; }  }
 @media(max-height:680px) { #start-art { height:120px;margin-bottom:14px; } #start h1 { font-size:30px; } #target { max-height:42dvh; } #d-name { font-size:18px; } #d-tier { font-size:11px;margin-bottom:4px; } }
 @media(orientation:landscape) and (max-height:600px) { #target { left:auto;right:16px;width:42%;max-height:calc(100dvh - 125px);bottom:95px; } #start { padding:20px; } #start-art { display:none; } #guidance { left:16px;right:50%; } }
 @media(prefers-reduced-motion:reduce) { *,*::before,*::after { animation-duration:.01ms!important;transition-duration:.01ms!important; } }
