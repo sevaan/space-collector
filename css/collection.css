@@ -8,10 +8,16 @@ button, a { -webkit-user-select: none; user-select: none; }
 button { cursor: pointer; }
 button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
 [hidden] { display: none !important; }
-.collection-header { display: flex; align-items: center; justify-content: space-between; margin: auto; max-width: 1056px; padding: calc(var(--safe-top) + 13px) 24px 13px; }
-.brand { display: flex; align-items: center; gap: 9px; text-decoration: none; color: var(--text); font-size: 10px; font-weight: 650; letter-spacing: .2em; }
-.brand svg { width: 29px; height: 26px; stroke: var(--accent); stroke-width: 1.2; }
-.icon-button { width: 44px; height: 44px; border: 1px solid var(--line); border-radius: 50%; color: var(--accent); background: transparent; font-size: 22px; }
+/* Same header as Explore (#sky-header in app.css): wordmark, double rule, round buttons — static here, not fixed. */
+.collection-header { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: auto; max-width: 1056px; min-height: 80px; padding: calc(var(--safe-top) + 10px) 20px 14px; --h-text: #fff2b3; --h-muted: #bdbea9; --h-edge: #627a8b; --h-glass: #0c1725f2; }
+:root[data-theme="night"] .collection-header { --h-text: #d67674; --h-muted: #b76a69; --h-edge: #58272b; --h-glass: #1a0909f5; }
+.collection-header::after { content: ""; position: absolute; left: 20px; right: 20px; bottom: 0; height: 3px; border-block: 1px solid var(--h-edge); opacity: .65; }
+.wordmark { color: var(--h-text); text-decoration: none; font: 400 clamp(13px, 3.9vw, 16px)/1.15 'SC Display', Impact, sans-serif; letter-spacing: -.03em; }
+.wordmark span { display: block; color: var(--h-muted); font: 500 11px/1.2 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .18em; margin-top: 6px; }
+.header-buttons { display: flex; gap: 8px; flex: none; }
+.icon-button { width: 44px; height: 44px; border: 1px solid var(--h-edge); border-radius: 50%; display: grid; place-items: center; color: var(--h-text); background: var(--h-glass); font-size: 24px; }
+.icon-button[aria-pressed="true"] { border-color: #fa8127; color: #fa8127; }
+@media (max-width: 360px) { .collection-header { padding-inline: 16px; } .wordmark span { letter-spacing: .1em; } }
 main { max-width: 1024px; margin: auto; padding: 0 24px calc(var(--safe-bottom) + 105px); }
 .collection-intro { padding-top: 29px; }
 .eyebrow { margin: 0; font: 500 9px 'IBM Plex Mono', monospace; letter-spacing: .18em; color: var(--accent); }
