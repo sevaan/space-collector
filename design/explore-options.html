@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Explore Restyle Options</title>
+<style>
+  @font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf') format('truetype'); }
+  @font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf') format('truetype'); font-weight: 500; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #04070d; color: #e8eef6; font: 15px/1.45 -apple-system, system-ui, sans-serif; padding: 24px 16px 60px; }
+  h1 { font-size: 22px; margin: 0 0 6px; }
+  .intro { color: #9fb0c6; margin: 0 0 26px; max-width: 900px; }
+  .board { display: flex; flex-wrap: wrap; gap: 34px 26px; justify-content: center; }
+  .opt { width: 390px; max-width: 100%; }
+  .opt h2 { font-size: 17px; margin: 14px 0 4px; } .opt p { color: #9fb0c6; font-size: 13.5px; margin: 0; }
+  .phone { position: relative; width: 390px; height: 844px; max-width: 100%; border-radius: 44px; overflow: hidden; border: 1px solid #1d2838; box-shadow: 0 20px 60px #000a; isolation: isolate; }
+  .phone > * { position: absolute; }
+  .sky { inset: 0; width: 100%; height: 100%; }
+  .grain { inset: 0; pointer-events: none; mix-blend-mode: overlay; opacity: .55;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+  .label { font-family: 'SC Label', 'Arial Narrow', sans-serif; font-weight: 500; text-transform: uppercase; letter-spacing: .14em; }
+  .display { font-family: 'SC Display', Impact, sans-serif; text-transform: uppercase; letter-spacing: .01em; }
+
+  /* ---------- current-ish (for reference in captions only) ---------- */
+
+  /* ---------- A: Light touch ---------- */
+  .A { --ink: #fff2b3; --acc: #fa8127; --steel: #8fb3cf; background: #080e1a; }
+  .A .head { left: 28px; top: 54px; } .A .head b { display: block; font-size: 19px; color: var(--ink); letter-spacing: .18em; }
+  .A .head span { font-size: 13px; color: #b9b38d; letter-spacing: .2em; }
+  .A .btns { right: 24px; top: 50px; display: flex; gap: 12px; }
+  .A .btn { width: 52px; height: 52px; border-radius: 50%; border: 1px solid #3a4a5e; background: #0d1626cc; display: grid; place-items: center; color: var(--ink); }
+  .A .chip { left: 140px; top: 156px; padding: 8px 16px; border-radius: 99px; border: 1px solid #3a4a5e; background: #0d1626cc; font-size: 18px; color: var(--ink); }
+  .A .chip em { font-style: normal; color: var(--acc); }
+  .A .tier { left: 0; right: 0; top: 330px; text-align: center; color: #b57bff; font-size: 15px; letter-spacing: .3em; }
+  .A .name { left: 0; right: 0; top: 352px; text-align: center; color: var(--ink); font-size: 27px; }
+  .A .cta { left: 0; right: 0; top: 538px; text-align: center; color: var(--acc); font-size: 19px; letter-spacing: .3em; }
+  .A .nav { left: 0; right: 0; bottom: 0; height: 100px; background: #070c16; border-top: 1px solid #1d2a3c; display: flex; justify-content: space-around; padding-top: 18px; }
+  .A .nav div { text-align: center; color: #9aa7b8; font-size: 14px; } .A .nav div.on { color: var(--acc); }
+
+  /* ---------- B: Card chrome ---------- */
+  .B { --ink: #fff2b3; --acc: #fa8127; --edge: #adbcc8; --rule: #bcb585; background: #080e1a; }
+  .B .frame { inset: 10px; border: 3px solid var(--edge); border-radius: 38px; box-shadow: inset 0 0 0 1px #657786, inset 0 0 0 2.5px #d4e0e7; pointer-events: none; z-index: 5; }
+  .B .bar { left: 26px; right: 26px; top: 56px; display: flex; align-items: center; gap: 10px; color: var(--ink); font-size: 14px; }
+  .B .bar i { flex: 1; height: 1px; background: var(--rule); } .B .bar s { text-decoration: none; color: var(--acc); }
+  .B .title { left: 26px; top: 82px; color: var(--ink); font-size: 25px; line-height: 1; }
+  .B .rule2 { left: 26px; right: 26px; top: 120px; height: 1px; background: var(--rule); }
+  .B .stats { left: 150px; right: 26px; top: 168px; display: grid; grid-template-columns: 1fr 1fr; border: 1.5px solid var(--rule); background: #080e1ae6; }
+  .B .stats div { padding: 6px 10px 5px; } .B .stats div + div { border-left: 1px solid var(--rule); }
+  .B .stats small { display: block; font-size: 11px; color: #d8d0a2; } .B .stats b { font-family: 'SC Display'; font-weight: 400; font-size: 24px; color: var(--ink); }
+  .B .stats div + div b { color: var(--acc); }
+  .B .tier { left: 0; right: 0; top: 326px; text-align: center; color: #b57bff; font-size: 14px; }
+  .B .name { left: 40px; right: 40px; top: 348px; text-align: center; color: var(--ink); font-size: 28px; line-height: 1.05; }
+  .B .cta { left: 112px; right: 112px; top: 530px; text-align: center; color: #080e1a; background: var(--acc); font-size: 17px; padding: 6px 0 5px; letter-spacing: .22em; }
+  .B .nav { left: 10px; right: 10px; bottom: 10px; height: 92px; border-top: 1.5px solid var(--rule); display: flex; padding: 14px 18px 0; z-index: 4; background: #080e1a; border-radius: 0 0 36px 36px; }
+  .B .nav div { flex: 1; text-align: center; font-size: 15px; color: #c9c19a; } .B .nav div + div { border-left: 1px solid var(--rule); }
+  .B .nav div.on { color: var(--acc); }
+  .B .nav svg { display: block; margin: 0 auto 4px; }
+
+  /* ---------- C: Full poster ---------- */
+  .C { --ink: #fff2b3; --acc: #fa8127; --steel: #6f93b5; background: #0a1120; }
+  .C .head { left: 0; right: 0; top: 48px; text-align: center; }
+  .C .head b { display: block; font-size: 34px; color: var(--ink); line-height: 1; text-shadow: 3px 3px 0 #c4561a; }
+  .C .head span { font-size: 13px; color: var(--steel); letter-spacing: .4em; }
+  .C .dial { left: 24px; top: 128px; }
+  .C .count { left: 166px; top: 150px; color: var(--ink); }
+  .C .count b { font-family: 'SC Display'; font-weight: 400; font-size: 34px; line-height: .9; display: block; }
+  .C .count b em { font-style: normal; color: var(--acc); }
+  .C .count span { font-size: 12px; color: #c9c19a; display: block; max-width: 120px; line-height: 1.25; margin-top: 4px; }
+  .C .btns { right: 22px; top: 140px; display: flex; flex-direction: column; gap: 10px; }
+  .C .btn { width: 46px; height: 46px; border: 1.5px solid var(--ink); border-radius: 50%; display: grid; place-items: center; color: var(--ink); background: #0a1120; }
+  .C .ribbon { left: 50%; top: 340px; transform: translateX(-50%) rotate(-2deg); background: var(--ink); color: #0a1120; padding: 8px 22px 6px; font-size: 25px; white-space: nowrap;
+    clip-path: polygon(0 0, 100% 0, 96% 50%, 100% 100%, 0 100%, 4% 50%); }
+  .C .tier { left: 0; right: 0; top: 312px; text-align: center; color: #c79bff; font-size: 15px; letter-spacing: .4em; }
+  .C .cta { left: 0; right: 0; top: 548px; text-align: center; color: var(--acc); font-size: 20px; letter-spacing: .35em; }
+  .C .nav { left: 18px; right: 18px; bottom: 28px; height: 64px; background: var(--ink); color: #0a1120; display: flex; border-radius: 14px; overflow: hidden; }
+  .C .nav div { flex: 1; display: grid; place-items: center; font-size: 17px; letter-spacing: .2em; }
+  .C .nav div.on { background: var(--acc); color: #0a1120; }
+
+  /* ---------- D: combined (A's minimal header + chip, B's orange collect box, C's tab bar) ---------- */
+  .D { --ink: #fff2b3; --acc: #fa8127; --steel: #8fb3cf; background: #080e1a; }
+  .D .head { left: 28px; top: 54px; } .D .head b { display: block; font-size: 19px; color: var(--ink); letter-spacing: .18em; }
+  .D .head span { font-size: 13px; color: #b9b38d; letter-spacing: .2em; }
+  .D .btns { right: 24px; top: 50px; display: flex; gap: 12px; }
+  .D .btn { width: 52px; height: 52px; border-radius: 50%; border: 1px solid #3a4a5e; background: #0d1626cc; display: grid; place-items: center; }
+  .D .chip { left: 140px; top: 156px; padding: 8px 16px; border-radius: 99px; border: 1px solid #3a4a5e; background: #0d1626cc; font-size: 18px; color: var(--ink); }
+  .D .chip em { font-style: normal; color: var(--acc); }
+  .D .tier { left: 0; right: 0; top: 330px; text-align: center; color: #b57bff; font-size: 15px; letter-spacing: .3em; }
+  .D .name { left: 0; right: 0; top: 352px; text-align: center; color: var(--ink); font-size: 27px; }
+  .D .cta { left: 112px; right: 112px; top: 538px; text-align: center; color: #080e1a; background: var(--acc); font-size: 17px; padding: 6px 0 5px; letter-spacing: .22em; }
+  .D .nav { left: 18px; right: 18px; bottom: 28px; height: 64px; background: var(--ink); color: #080e1a; display: flex; border-radius: 14px; overflow: hidden; }
+  .D .nav div { flex: 1; display: grid; place-items: center; font-size: 17px; letter-spacing: .2em; }
+  .D .nav div.on { background: var(--acc); }
+</style>
+</head>
+<body>
+<h1>Explore screen: three retro directions</h1>
+<p class="intro">The same moment in each (looking south, 83 objects up, an Epic SL-3 rocket stage lined up), restyled to match the cards and the new art. A is the smallest change, C the biggest. Night mode stays all-red in every option.</p>
+<h1 style="font-size:18px">Combined</h1><div class="board" id="combo" style="margin-bottom:40px"></div><h1 style="font-size:18px">The three directions</h1><div class="board" id="board"></div>
+
+<script>
+// ---------- seeded sky ----------
+function sky(opt) {
+  let seed = 11; const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+  const W = 390, H = 844;
+  let s = `<svg class="sky" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg"><defs>
+    <linearGradient id="bg${opt.id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${opt.top}"/><stop offset="1" stop-color="${opt.bottom}"/></linearGradient>
+    <linearGradient id="mw${opt.id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${opt.mw}" stop-opacity="0"/><stop offset=".5" stop-color="${opt.mw}" stop-opacity="${opt.mwA}"/><stop offset="1" stop-color="${opt.mw}" stop-opacity="0"/></linearGradient>
+    <filter id="bl${opt.id}"><feGaussianBlur stdDeviation="26"/></filter></defs>
+    <rect width="${W}" height="${H}" fill="url(#bg${opt.id})"/>
+    <path d="M200 -40 C 300 250, 330 520, 470 900 L 560 900 C 420 520, 380 250, 300 -40Z" fill="url(#mw${opt.id})" filter="url(#bl${opt.id})"/>`;
+  if (opt.rays) { // poster sunburst behind the target
+    for (let i = 0; i < 24; i++) { const a = i * 15 * Math.PI / 180, b = a + 6 * Math.PI / 180, r = 520, cx = 195, cy = 445;
+      s += `<path d="M${cx} ${cy} L${cx + r * Math.cos(a)} ${cy + r * Math.sin(a)} L${cx + r * Math.cos(b)} ${cy + r * Math.sin(b)}Z" fill="${opt.rays}" opacity=".055"/>`; }
+  }
+  for (let i = 0; i < 260; i++) { const x = rnd() * W, y = rnd() * (H - 100), r = rnd() < .9 ? .5 + rnd() * .7 : 1.2 + rnd();
+    s += r > 1.6 && opt.sparkle ? `<path d="M${x} ${y - r * 2.4} Q${x} ${y} ${x + r * 2.4} ${y} Q${x} ${y} ${x} ${y + r * 2.4} Q${x} ${y} ${x - r * 2.4} ${y} Q${x} ${y} ${x} ${y - r * 2.4}Z" fill="${opt.star}"/>`
+      : `<circle cx="${x}" cy="${y}" r="${r}" fill="${opt.star}" opacity="${.35 + rnd() * .6}"/>`; }
+  if (opt.horizon) s += `<path d="M0 760 Q 195 700 390 760" fill="none" stroke="${opt.horizon}" stroke-width="1.2" opacity=".5"/>`;
+  // a satellite's path through the target, with beads
+  s += `<path d="M232 120 L 172 790" stroke="${opt.trail}" stroke-width="1.2" ${opt.dash ? 'stroke-dasharray="3 7"' : ''} opacity=".8"/>`;
+  // other moving lights
+  for (const [x, y] of [[358, 300], [70, 420], [50, 600], [120, 250], [330, 690]]) s += `<rect x="${x}" y="${y}" width="10" height="3" rx="1.5" fill="${opt.sat}" transform="rotate(-25 ${x} ${y})"/>`;
+  s += `<path d="M64 700 l8 0 M68 696 l0 10" stroke="#ff5a4e" stroke-width="2.4"/>`;
+  return s + opt.reticle + '</svg>';
+}
+const reticleA = `<g transform="translate(195 445)"><circle r="70" fill="none" stroke="#fff2b3" stroke-opacity=".12" stroke-width="16"/><circle r="62" fill="none" stroke="#fff2b3" stroke-width="4"/><circle r="22" fill="none" stroke="#fff2b3" stroke-width="2"/><rect x="-7" y="-2" width="14" height="4" rx="2" fill="#b57bff" transform="rotate(-35)"/></g>`;
+const reticleB = `<g transform="translate(195 445)"><circle r="64" fill="none" stroke="#adbcc8" stroke-width="3"/><circle r="58" fill="none" stroke="#fff2b3" stroke-width="1.2"/>
+  ${[0, 90, 180, 270].map((a) => `<path d="M0 -72 L0 -54" stroke="#fa8127" stroke-width="3" transform="rotate(${a})"/>`).join('')}
+  ${Array.from({ length: 36 }, (_, i) => `<path d="M0 -64 L0 -${i % 3 ? 61 : 59}" stroke="#adbcc8" stroke-width="1" transform="rotate(${i * 10})"/>`).join('')}
+  <circle r="20" fill="none" stroke="#fff2b3" stroke-width="1.5"/><rect x="-7" y="-2" width="14" height="4" rx="2" fill="#b57bff" transform="rotate(-35)"/></g>`;
+const reticleC = `<g transform="translate(195 445)"><circle r="78" fill="#fa8127" opacity=".1"/><circle r="66" fill="none" stroke="#fff2b3" stroke-width="6"/><circle r="56" fill="none" stroke="#fa8127" stroke-width="2.5" stroke-dasharray="6 6"/>
+  ${[0, 90, 180, 270].map((a) => `<path d="M0 -92 L0 -70" stroke="#fff2b3" stroke-width="3" transform="rotate(${a})"/>`).join('')}
+  <circle r="18" fill="#0a1120" stroke="#fff2b3" stroke-width="2"/><rect x="-7" y="-2" width="14" height="4" rx="2" fill="#c79bff" transform="rotate(-35)"/></g>`;
+
+// ---------- radar ----------
+function radar(o) {
+  let seed = 5; const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+  const R = o.R, c = R + 16;
+  let s = `<svg width="${c * 2}" height="${c * 2}" viewBox="0 0 ${c * 2} ${c * 2}"><circle cx="${c}" cy="${c}" r="${R}" fill="${o.fill}" stroke="${o.ring}" stroke-width="${o.rw}"/>`;
+  if (o.ticks) for (let i = 0; i < 24; i++) s += `<path d="M${c} ${c - R} L${c} ${c - R + (i % 6 ? 4 : 8)}" stroke="${o.ring}" transform="rotate(${i * 15} ${c} ${c})"/>`;
+  for (let i = 0; i < 40; i++) { const a = rnd() * 6.28, r = Math.sqrt(rnd()) * R * .85; s += `<circle cx="${c + r * Math.sin(a)}" cy="${c - r * Math.cos(a)}" r="${3 + rnd() * 4}" fill="${o.glow}" opacity=".22"/>`; }
+  s += `<circle cx="${c - 6}" cy="${c - 20}" r="6" fill="none" stroke="${o.target}" stroke-width="2"/>`;
+  s += [['S', 0], ['W', 90], ['N', 180], ['E', 270]].map(([L, a]) => { const t = a * Math.PI / 180, r = R + 10; return `<text x="${c + r * Math.sin(t)}" y="${c - r * Math.cos(t) + 4}" text-anchor="middle" font-family="SC Label, Arial Narrow" font-size="13" fill="${L === 'S' ? o.north : o.letters}">${L}</text>`; }).join('');
+  return s + '</svg>';
+}
+const ico = {
+  moon: (c) => `<svg width="22" height="22" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="${c}"/></svg>`,
+  sliders: (c) => `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>`,
+  planet: (c) => `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="1.8"><circle cx="12" cy="12" r="6"/><ellipse cx="12" cy="12" rx="11" ry="3.6" transform="rotate(-20 12 12)"/></svg>`,
+  bag: (c) => `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="1.8" stroke-linejoin="round"><rect x="4" y="7" width="16" height="14" rx="3"/><path d="M9 7V5a3 3 0 0 1 6 0v2M4 12h16"/></svg>`,
+};
+
+const A = `<div class="phone A">${sky({ id: 'a', top: '#0b1424', bottom: '#080e1a', mw: '#6f93b5', mwA: .35, star: '#fff2b3', trail: '#fa8127', dash: true, sat: '#d9b98a', horizon: '#6f93b5', reticle: reticleA })}
+  <div class="head label"><b>Space Collector</b><span>Field notes from orbit</span></div>
+  <div class="btns"><div class="btn">${ico.moon('#fff2b3')}</div><div class="btn">${ico.sliders('#fff2b3')}</div></div>
+  <div style="left:12px;top:118px">${radar({ R: 46, fill: '#0d1626cc', ring: '#3a4a5e', rw: 1, glow: '#fa8127', target: '#8fb3cf', letters: '#c9c19a', north: '#fa8127' })}</div>
+  <div class="chip label"><b class="display" style="font-size:20px">83</b> up · <em><b class="display" style="font-size:20px">83</b> new</em></div>
+  <div class="tier label">Epic</div><div class="name display">SL-3 Rocket Stage</div><div class="cta label">Tap to collect</div>
+  <div class="nav label"><div class="on">${ico.planet('#fa8127')}<br>Explore</div><div>${ico.bag('#9aa7b8')}<br>Collection</div></div></div>`;
+
+const B = `<div class="phone B">${sky({ id: 'b', top: '#0a1222', bottom: '#080e1a', mw: '#6f93b5', mwA: .3, star: '#fff2b3', trail: '#fa8127', dash: true, sat: '#d9b98a', horizon: '#adbcc8', reticle: reticleB })}
+  <div class="frame"></div>
+  <div class="bar label"><span>Field notes from orbit</span><i></i><s>★</s><span>Tonight</span></div>
+  <div class="title display">Space Collector</div>
+  <div class="rule2"></div>
+  <div style="right:22px;top:76px;display:flex;gap:8px"><div style="width:40px;height:40px;border:1.5px solid #bcb585;display:grid;place-items:center">${ico.moon('#fff2b3')}</div><div style="width:40px;height:40px;border:1.5px solid #bcb585;display:grid;place-items:center">${ico.sliders('#fff2b3')}</div></div>
+  <div style="left:14px;top:140px">${radar({ R: 50, fill: '#080e1ae6', ring: '#adbcc8', rw: 2, ticks: true, glow: '#fa8127', target: '#fff2b3', letters: '#d8d0a2', north: '#fa8127' })}</div>
+  <div class="stats label"><div><small>Up now</small><b>83</b></div><div><small>New</small><b>83</b></div></div>
+  <div class="tier label">★ Epic</div><div class="name display">SL-3 Rocket Stage</div><div class="cta label">Tap to collect</div>
+  <div class="nav label"><div class="on">${ico.planet('#fa8127')}Explore</div><div>${ico.bag('#c9c19a')}Collection</div></div></div>`;
+
+const C = `<div class="phone C">${sky({ id: 'c', top: '#14213a', bottom: '#0a1120', mw: '#fa8127', mwA: .16, star: '#fff2b3', sparkle: true, rays: '#fff2b3', trail: '#fff2b3', dash: true, sat: '#fa8127', reticle: reticleC })}
+  <div class="grain"></div>
+  <div class="head"><b class="display">Space Collector</b><span class="label">Field notes from orbit</span></div>
+  <div class="dial">${radar({ R: 50, fill: '#0a1120', ring: '#fff2b3', rw: 2.5, ticks: true, glow: '#fa8127', target: '#fff2b3', letters: '#fff2b3', north: '#fa8127' })}</div>
+  <div class="count label"><b><em>83</em> new</b><span>of 83 in the sky tonight</span></div>
+  <div class="btns"><div class="btn">${ico.moon('#fff2b3')}</div><div class="btn">${ico.sliders('#fff2b3')}</div></div>
+  <div class="tier label">✦ Epic ✦</div><div class="ribbon display">SL-3 Rocket Stage</div><div class="cta label">Tap to collect</div>
+  <div class="nav label"><div class="on">Explore</div><div>Collection</div></div></div>`;
+
+const D = `<div class="phone D">${sky({ id: 'd', top: '#0b1424', bottom: '#080e1a', mw: '#6f93b5', mwA: .35, star: '#fff2b3', trail: '#fa8127', dash: true, sat: '#d9b98a', horizon: '#6f93b5', reticle: reticleA })}
+  <div class="head label"><b>Space Collector</b><span>Field notes from orbit</span></div>
+  <div class="btns"><div class="btn">${ico.moon('#fff2b3')}</div><div class="btn">${ico.sliders('#fff2b3')}</div></div>
+  <div style="left:12px;top:118px">${radar({ R: 46, fill: '#0d1626cc', ring: '#3a4a5e', rw: 1, glow: '#fa8127', target: '#8fb3cf', letters: '#c9c19a', north: '#fa8127' })}</div>
+  <div class="chip label"><b class="display" style="font-size:20px">83</b> up · <em><b class="display" style="font-size:20px">83</b> new</em></div>
+  <div class="tier label">Epic</div><div class="name display">SL-3 Rocket Stage</div><div class="cta label">Tap to collect</div>
+  <div class="nav label"><div class="on">Explore</div><div>Collection</div></div></div>`;
+
+const opts = [
+  ['A. Light touch', 'Same layout and glass buttons; swaps in the card fonts (Russo One names, Barlow Condensed labels), cream text, burnt-orange accents and steel blue instead of cyan. Lowest risk; about an hour of work.', A],
+  ['B. Card chrome', 'The screen becomes a card: silver double frame around the edge, a card-style header with rules and a star, the counts as a framed stat box like the card stats, square framed buttons, a dial-style reticle with tick marks, and the nav bar as the card footer.', B],
+  ['C. Full poster', 'Goes all the way to the posters: big Russo One masthead with an offset shadow, screen-print grain over the sky, warm Milky Way, four-point sparkle stars, a faint sunburst behind the target, the name on a cream ribbon banner, and a solid cream tab bar.', C],
+];
+document.getElementById('combo').innerHTML = `<div class="opt">${D}<h2>A + B + C combined</h2><p>A's minimal small header, round buttons and "83 up · 83 new" chip; B's solid orange Tap to collect box; C's two-tone Explore / Collection switcher as the footer.</p></div>`;
+document.getElementById('board').innerHTML = opts.map(([t, d, html]) => `<div class="opt">${html}<h2>${t}</h2><p>${d}</p></div>`).join('');
+</script>
+</body>
+</html>

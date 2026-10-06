@@ -104,15 +104,16 @@
   mix-blend-mode: color-dodge; opacity: calc(var(--o, 0) * .28);
 }
 
-/* Rare and up: rainbow beams with glitter in the picture window. */
+/* Rare and up: rainbow beams with glitter in the picture window. Halved again 2026-10-05 (Sevaan: the
+   rainbow stripes were too strong; phone tilt keeps --o near 1, so this shows all the time). */
 .card.tier-rare .card__foil, .card.tier-epic .card__foil, .card.tier-legendary .card__foil {
   background:
     var(--glitter) var(--nbgx) var(--nbgy) / 16em 16em,
     repeating-linear-gradient(90deg, hsl(355, 92%, 66%) 0%, hsl(42, 95%, 62%) 1.2%, hsl(110, 80%, 58%) 2.4%, hsl(185, 88%, 58%) 3.6%, hsl(235, 88%, 68%) 4.8%, hsl(295, 82%, 68%) 6%, hsl(355, 92%, 66%) 7.2%) var(--bgx) 50% / 400% 100%,
     repeating-linear-gradient(90deg, hsla(0, 0%, 0%, .75) 0%, hsla(0, 0%, 100%, .2) 1.8%, hsla(0, 0%, 0%, .75) 3.6%) var(--nbgx) 50% / 300% 100%;
   background-blend-mode: screen, hard-light, normal;
-  mix-blend-mode: color-dodge; filter: brightness(.55) contrast(1.7) saturate(1.2);
-  opacity: calc(var(--o, 0) * (.12 + var(--hyp, 0) * .3));
+  mix-blend-mode: color-dodge; filter: brightness(.5) contrast(1.5) saturate(.9);
+  opacity: calc(var(--o, 0) * (.05 + var(--hyp, 0) * .14));
 }
 .card.uncaught .card__foil { display: none; }
 
