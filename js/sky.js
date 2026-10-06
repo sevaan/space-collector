@@ -1,8 +1,8 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.94';
-import { TIER_INFO } from './rarity.js?v=0.1.94';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.95';
+import { TIER_INFO } from './rarity.js?v=0.1.95';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -759,7 +759,7 @@ export class SkyView {
       ctx.translate(p.x, p.y);
       if (q) ctx.rotate(Math.atan2(q.y - p.y, q.x - p.x));
       ctx.globalAlpha = hit ? 1 : 0.55;
-      this.drawIcon('plane', 0, 0, hit ? 20 : 14, hit ? t.plane : t.planeDim);
+      this.drawIcon('plane', 0, 0, hit ? 13 : 10, hit ? t.plane : t.planeDim); // same scale as satellites (9–12, ×1.3 when targeted)
       ctx.restore();
       if (hit) hitAt = { x: p.x, y: p.y };
     }
