@@ -1,17 +1,17 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { cardArt } from './art.js?v=0.1.114';
-import { TIER_INFO } from './rarity.js?v=0.1.114';
-import { SET_BY_ID } from './sets.js?v=0.1.114';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.114';
-import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.114';
-import { artFileFor } from './art-keys.js?v=0.1.114';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.114';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.114';
-import { nightsIn } from './observation.js?v=0.1.114';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.114';
-import { SHINY } from './shiny.js?v=0.1.114';
-import { conArt } from './con-art.js?v=0.1.114';
-import { CON_FIGURES } from './con-figures.js?v=0.1.114';
+import { cardArt } from './art.js?v=0.1.115';
+import { TIER_INFO } from './rarity.js?v=0.1.115';
+import { SET_BY_ID } from './sets.js?v=0.1.115';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.115';
+import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.115';
+import { artFileFor } from './art-keys.js?v=0.1.115';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.115';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.115';
+import { nightsIn } from './observation.js?v=0.1.115';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.115';
+import { SHINY } from './shiny.js?v=0.1.115';
+import { conArt } from './con-art.js?v=0.1.115';
+import { CON_FIGURES } from './con-figures.js?v=0.1.115';
 const conFig = (id) => (CON_FIGURES.has(id) ? { figure: `assets/art/con/${id}.webp` } : {});
 
 // Levels count observing nights (local noon to noon): bronze 1, silver 3, gold 10. Before
