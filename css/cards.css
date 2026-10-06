@@ -327,14 +327,15 @@
   background: linear-gradient(160deg, #1b1608, #0b0c0f 55%, #1c1507); }
 .card.gold-foil .card__art img.card-art-image { filter: sepia(.55) saturate(1.35) hue-rotate(-6deg) brightness(1.06); }
 
-/* Shiny cards (js/shiny.js): a rainbow prism holo over the whole card that always shimmers a little and
-   blazes when tilted, plus a ribbon on the picture saying why it's shiny. */
+/* Shiny cards (js/shiny.js): a rainbow prism holo over the whole card that shimmers gently (a little more when handled),
+   plus a ribbon on the picture saying why it's shiny. */
 .card.shiny .card__shine { z-index: 6; mix-blend-mode: color-dodge;
   background:
     var(--glitter) var(--bgx, 50%) var(--bgy, 50%) / 12em 12em,
     repeating-linear-gradient(110deg, hsl(0, 90%, 70%) 0%, hsl(50, 92%, 68%) 7%, hsl(120, 80%, 64%) 14%, hsl(190, 90%, 68%) 21%, hsl(255, 85%, 74%) 28%, hsl(320, 85%, 72%) 35%, hsl(0, 90%, 70%) 42%) var(--bgx, 50%) var(--bgy, 50%) / 320% 320%;
-  background-blend-mode: screen, normal; filter: brightness(.55) contrast(1.4) saturate(1.2);
-  opacity: calc(.32 + var(--o, 0) * .45); }
+  background-blend-mode: screen, normal; filter: brightness(.55) contrast(1.4) saturate(1.1);
+  /* Kept near the calmer look (2026-10-05, Sevaan): phone tilt holds --o at 1, which made it blaze all the time. */
+  opacity: calc(.26 + var(--o, 0) * .1); }
 .shiny-tag { position: absolute; left: .9em; top: .8em; z-index: 4; padding: .35em .7em .3em; border-radius: 99px; font: 500 .72em/1 var(--label, 'SC Label'); letter-spacing: .14em;
   color: #0b1120; background: linear-gradient(90deg, #ff8fd8, #ffe08a, #8ff0ff, #b58cff); box-shadow: 0 0 12px rgba(255, 143, 216, .5); }
 /* Shiny tile (2026-10-05): the rainbow border says it, no label. A gradient border via two backgrounds keeps the
