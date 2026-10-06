@@ -19,6 +19,7 @@ export const ART = {
   'planet-mars': ['Moon & planets', 1, 'Mars', 'Rust-red planet with dark markings and a white polar cap.', 'https://science.nasa.gov/mars/'],
   'planet-jupiter': ['Moon & planets', 1, 'Jupiter', 'Banded gas giant with the Great Red Spot.', 'https://science.nasa.gov/jupiter/'],
   'planet-saturn': ['Moon & planets', 1, 'Saturn', 'Golden gas giant with its wide ring system, tilted.', 'https://science.nasa.gov/saturn/'],
+  'irs': ['Satellites', 1, 'IRS (Indian Remote Sensing)', 'ISRO IRS bus: a boxy body wrapped in gold foil, cameras underneath pointing at Earth, ONE long solar wing of three dark-blue panels out to one side.', 'https://space.skyrocket.de/doc_sdat/irs-1c.htm'],
   'planet-uranus': ['Moon & planets', 1, 'Uranus', 'Smooth pale cyan-green sphere tipped on its side with one thin faint ring.', 'https://science.nasa.gov/uranus/'],
   'planet-neptune': ['Moon & planets', 1, 'Neptune', 'Deep blue sphere with a dark storm oval and thin white cloud streaks.', 'https://science.nasa.gov/neptune/'],
   'solar-system': ['Moon & planets', 1, 'The Solar System', 'Poster diagram: the Sun at the left edge and the eight planets in a line, roughly to scale.', 'https://science.nasa.gov/solar-system/'],
@@ -136,7 +137,7 @@ export function artKeyFor(card, seriesOf = {}) {
     return 'rocket-stage';
   }
   if (SERIES[seriesOf[card.id]]) return SERIES[seriesOf[card.id]];
-  const rules = [[/^MOLNIYA/, 'molniya'], [/^METEOR/, 'meteor'], [/^GONETS/, 'strela-3'], [/^(NADEZHDA|TSIKADA)/, 'parus'], [/^GLOBALSTAR/, 'globalstar'],
+  const rules = [[/^(IRS-|RESOURCESAT|OCEANSAT)/, 'irs'], [/^MOLNIYA/, 'molniya'], [/^METEOR/, 'meteor'], [/^GONETS/, 'strela-3'], [/^(NADEZHDA|TSIKADA)/, 'parus'], [/^GLOBALSTAR/, 'globalstar'],
     [/^ORBCOMM/, 'orbcomm'], [/^IRIDIUM/, 'iridium'], [/^(NOAA|TIROS|ESSA|NIMBUS|DMSP|ITOS)/, 'us-weather'],
     [/^(YAOGAN|JILIN|GAOFEN|SHIJIAN|SJ-|SHIYAN|CHUANGXIN|FENGYUN)/, 'chinese-eo'], [/^(OPS|USA)\b/, 'us-military'], [/^(FLOCK|SKYSAT|LEMUR|DOVE|CUBESAT|.*OSCAR|UOSAT|RADIO|APRIZESAT|UNISAT|SAUDISAT|BANDWAGON)/, 'smallsat']];
   for (const [re, key] of rules) if (re.test(n)) return key;
