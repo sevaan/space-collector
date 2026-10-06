@@ -1,25 +1,26 @@
-import { VERSION } from './version.js?v=0.1.109';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.109';
-import { skyLimit, SKIES, DEFAULT_SKY } from './sky-limit.js?v=0.1.109';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.109';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.109';
-import { progress as progressOf } from './progress.js?v=0.1.109';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.109';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.109';
-import { SkyView, shortName } from './sky.js?v=0.1.109';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.109';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.109';
-import { cardArt } from './art.js?v=0.1.109';
-import { renderCard, cardLevel, artImage } from './card.js?v=0.1.109';
-import { playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.109';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.109';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.109';
-import { naturalTargets } from './natural.js?v=0.1.109';
-import { TIER_INFO } from './rarity.js?v=0.1.109';
-import { SETS } from './sets.js?v=0.1.109';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.109';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.109';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.109';
+import { VERSION } from './version.js?v=0.1.111';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.111';
+import { skyLimit, SKIES, DEFAULT_SKY } from './sky-limit.js?v=0.1.111';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.111';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.111';
+import { progress as progressOf } from './progress.js?v=0.1.111';
+import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.111';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.111';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.111';
+import { SkyView, shortName } from './sky.js?v=0.1.111';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.111';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.111';
+import { cardArt } from './art.js?v=0.1.111';
+import { renderCard, cardLevel, artImage } from './card.js?v=0.1.111';
+import { playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.111';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.111';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.111';
+import { naturalTargets } from './natural.js?v=0.1.111';
+import { TIER_INFO } from './rarity.js?v=0.1.111';
+import { SETS } from './sets.js?v=0.1.111';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.111';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.111';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.111';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -423,7 +424,7 @@ function tick(ts) {
   });
 
   updateCompass(basis);
-  if (t - lastChip > 1000) { lastChip = t; requestTonight(); updateNextPassChip(); }
+  if (t - lastChip > 1000) { lastChip = t; requestTonight(); updateNextPassChip(); updateEventBanner(); }
   placeDiscover();
   if (t - lastPanel > 250 || target?.obj.id !== shownTargetId || state.lockedOn !== lastLocked) {
     lastLocked = state.lockedOn; renderTarget(target, d); measureSkySpace(); lastPanel = t; }
@@ -802,10 +803,11 @@ function progressGain(saved) {
   const after = progressNow(state.sightings), before = progressNow(state.sightings.filter((s) => s !== saved));
   const missions = after.missions.filter((m, i) => m.done && !before.missions[i]?.done);
   const achievements = after.achievements.filter((a, i) => a.done && !before.achievements[i].done);
-  return { xp: after.xp - before.xp, missions, achievements, rankUp: after.rank.index > before.rank.index ? after.rank.name : null };
+  const ev = activeEvent(saved.time), firstOfEvent = ev && !state.sightings.some((s) => s !== saved && !s.sim && s.time >= ev.start && s.time <= ev.end);
+  return { xp: after.xp - before.xp, missions, achievements, rankUp: after.rank.index > before.rank.index ? after.rank.name : null, event: firstOfEvent ? ev.name : null };
 }
 function announceProgress(g, delay = 3800) {
-  const news = [...g.missions.map((m) => `Mission complete: ${m.text} · +50 XP`), ...g.achievements.map((a) => `Achievement: ${a.name} · ${a.text}`), ...(g.rankUp ? [`Rank up! You're now a ${g.rankUp}.`] : [])];
+  const news = [...(g.event ? [`☄ Event badge: ${g.event}!`] : []), ...g.missions.map((m) => `Mission complete: ${m.text} · +50 XP`), ...g.achievements.map((a) => `Achievement: ${a.name} · ${a.text}`), ...(g.rankUp ? [`Rank up! You're now a ${g.rankUp}.`] : [])];
   news.forEach((n, i) => setTimeout(() => toast(n, 3200), delay + i * 3400));
 }
 async function recordSighting(obj, d, l = null) {
@@ -922,9 +924,10 @@ function renderTonight() {
   if (!T) { $('tonight-summary').textContent = 'Working out tonight\'s sky…'; $('tonight-chart').innerHTML = ''; $('tonight-list').innerHTML = ''; requestTonight(); return; }
   const wins = tonightWindows(T).filter((w) => w.e >= t0);
   const peak = T.curve.filter(([t]) => t >= t0).reduce((a, c) => (c[1] > a[1] ? c : a), [0, 0]);
-  $('tonight-summary').innerHTML = wins.length
+  const ev = activeEvent(t0) ?? nextEvent(t0), evLine = ev ? (t0 >= ev.start ? `<br>☄ <b>${ev.name}</b> meteor shower tonight (${ev.rate}).` : `<br>☄ Next event: <b>${ev.name}</b> meteor shower, ${new Date(ev.start + 30 * 3600e3).toLocaleDateString([], { month: 'short', day: 'numeric' })}.`) : '';
+  $('tonight-summary').innerHTML = (wins.length
     ? `Satellites are visible ${wins.slice(0, 3).map((w) => `<b>${fmtTime(Math.max(w.s, t0))}–${fmtTime(w.e)}</b>`).join(' and ')}. Busiest around <b>${fmtTime(peak[0])}</b>, up to ${peak[1]} at once.`
-    : `No satellites bright enough for your sky until dawn. Try <b>Countryside</b> in settings if you're somewhere darker, or binocular mode.`;
+    : `No satellites bright enough for your sky until dawn. Try <b>Countryside</b> in settings if you're somewhere darker, or binocular mode.`) + evLine;
   // Chart: satellites visible across the night, in 10-minute bins, with a "now" line.
   const pts = T.curve; let svg = '';
   if (pts.length) {
@@ -948,11 +951,22 @@ function renderTonight() {
     const tier = TIER_INFO[p.obj.tier] ?? TIER_INFO.common;
     const row = document.createElement('div'); row.className = 't-row'; row.style.setProperty('--tier', tier.color);
     row.innerHTML = `<span class="time">${fmtTime(p.start)}</span><span><div class="name"><span class="dot"></span>${escapeHtml(label(p.obj))}${p.fresh ? '<span class="new">NEW</span>' : ''}</div>
-      <div class="meta">${tier.label} · up to mag ${p.mag} (${brightnessWord(p.mag)}) · rises in the ${compassPoint(p.riseAz)}, highest ${p.peakEl}° in the ${compassPoint(p.peakAz)} at ${fmtTime(p.peakAt)}</div></span>`;
+      <div class="meta">${tier.label} · up to mag ${p.mag} (${brightnessWord(p.mag)}) · rises in the ${compassPoint(p.riseAz)}, highest ${p.peakEl}° in the ${compassPoint(p.peakAz)} at ${fmtTime(p.peakAt)}</div>
+      ${p.start > t0 + 10 * 60000 ? '<button class="remind" type="button">Remind me</button>' : ''}</span>`;
+    row.querySelector('.remind')?.addEventListener('click', () => remindPass(p));
     list.appendChild(row);
   }
   if (!passes.length) list.insertAdjacentHTML('beforeend', '<p class="hint">No standout passes left tonight.</p>');
   list.insertAdjacentHTML('beforeend', `<div class="t-head">Also up tonight</div>` + alsoUpTonight(t0, T.dawn ?? t0 + 10 * 3600000));
+}
+// "Remind me": a calendar event with an alarm 10 minutes before the pass (iOS offers Add to Calendar).
+function remindPass(p) {
+  const name = label(p.obj), title = `${name} passes over (Space Collector)`;
+  const description = `Look ${compassPoint(p.riseAz)} at ${fmtTime(p.start)}. Highest ${p.peakEl}° up in the ${compassPoint(p.peakAz)} at ${fmtTime(p.peakAt)}, up to magnitude ${p.mag}. Open https://sevaan.github.io/space-collector/ to collect it.`;
+  const url = URL.createObjectURL(new Blob([passIcs({ title, start: p.start, end: p.end, description })], { type: 'text/calendar' }));
+  const a = document.createElement('a'); a.href = url; a.download = `${name.replace(/[^\w-]+/g, '-')}.ics`; a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 5000);
+  toast(`Reminder for ${name} at ${fmtTime(p.start)}: add it to your calendar.`, 3500);
 }
 // Planets and constellations (with stars you still need) above the horizon in a dark sky before dawn.
 function alsoUpTonight(t0, until) {
@@ -991,6 +1005,16 @@ function updateNextPassChip() {
   chip.hidden = false;
 }
 $('nextpass').addEventListener('click', () => { showVTab('tonight'); openPanel('visible'); });
+// Meteor shower events (js/events.js): a banner while one is on; catching anything earns its badge.
+function updateEventBanner() {
+  const e = activeEvent(now().getTime()), el = $('event-banner');
+  if (!e) { if (!el.hidden) el.hidden = true; return; }
+  const got = state.sightings.some((s) => !s.sim && s.time >= e.start && s.time <= e.end);
+  const html = `☄ <b>${escapeHtml(e.name)}</b> meteor shower · ${got ? 'badge earned ✓' : 'catch anything to earn the badge'}`;
+  if (el.innerHTML !== html) el.innerHTML = html;
+  el.hidden = false;
+}
+$('event-banner').addEventListener('click', () => { const e = activeEvent(now().getTime()); if (e) toast(`${e.name}: ${e.rate}. Look up and away from bright lights; catch any object tonight to earn the badge.`, 5500); });
 
 // ---------- drag to look ----------
 

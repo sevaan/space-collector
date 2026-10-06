@@ -146,3 +146,6 @@ body.albums-view .collection-tools { display: none; }
 .lb-badge small { font-size: 10px; line-height: 1.25; color: #8f9aa8; }
 .lb-badge.done { opacity: 1; } .lb-badge.done span { border-color: #e2b53c; color: #0b1120; background: radial-gradient(circle at 35% 30%, #fff1c2, #e2b53c 60%, #9a7420); box-shadow: 0 0 12px rgba(232, 195, 90, .35); }
 .share-button { border-color: #fa8127 !important; color: #fa8127 !important; margin-bottom: 8px; }
+.lb-events { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 0 2px; }
+.lb-event { padding: 6px 12px; border-radius: 99px; border: 1px solid #e2b53c; color: #f4d27a; font: 500 13px/1 'SC Label', sans-serif; letter-spacing: .08em; }
+.lb-event.next { border-color: #344654; color: #bdbea9; }

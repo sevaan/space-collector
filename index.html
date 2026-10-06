@@ -13,9 +13,9 @@
   <link rel="apple-touch-icon" href="icons/icon-180.png">
   <link rel="icon" href="icons/icon-192.png">
   <script>try { if (localStorage.getItem("night") === "1") document.documentElement.dataset.theme = "night"; } catch {}</script>
-  <link rel="stylesheet" href="css/cards.css?v=0.1.109">
-  <link rel="stylesheet" href="css/app.css?v=0.1.109">
-  <link rel="stylesheet" href="css/reveal.css?v=0.1.109">
+  <link rel="stylesheet" href="css/cards.css?v=0.1.111">
+  <link rel="stylesheet" href="css/app.css?v=0.1.111">
+  <link rel="stylesheet" href="css/reveal.css?v=0.1.111">
 </head>
 <body>
   <canvas id="sky" role="img" aria-label="Sky map aligned with your viewing direction"></canvas>
@@ -27,6 +27,7 @@
       <span id="radar-new" aria-label="new to collect"><b id="new-count">0</b></span><span id="radar-up"><b id="visible-count">0</b> up</span>
     </button>
     <button id="nextpass" hidden></button>
+    <button id="event-banner" hidden></button>
     <div id="guidance" aria-live="polite" hidden></div>
 
     <div id="callout" hidden>
@@ -158,6 +159,6 @@
     <pre id="debug-info"></pre></details>
   </section>
 
-  <script type="module" src="js/main.js?v=0.1.109"></script>
+  <script type="module" src="js/main.js?v=0.1.111"></script>
 </body>
 </html>
