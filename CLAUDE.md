@@ -125,7 +125,7 @@ Live: https://sevaan.github.io/space-collector/ (GitHub Pages, deploys from `mai
   Fleet cards: `card--fleet` (short art window, 36-col dot grid, "N / M stamped" between the years).
 
 ## Deliberately out of scope for now
-Alerts, service worker, accounts, secret sets/feats.
+Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05.)
 
 - Card illustrations (2026-10-05): one image per kind of object, not per card. js/art-keys.js maps every card
   to an art file (`artFileFor`; catch-all kinds have numbered variations picked by NORAD id). Images live in
@@ -176,3 +176,4 @@ Alerts, service worker, accounts, secret sets/feats.
 - Albums (2026-10-05): collection page tab Albums (js/cards-page.js `renderAlbums`): one cover per set with progress to Bronze/Silver/Gold goals (`albumGoals`: sets <= 30 cards complete them; bigger sets 10/50/100 or 10/50/200); gold cover at gold. Opening an album = Discover filtered to the set with an `#album-head` progress header.
 - Shinies (2026-10-05, js/shiny.js `shinyFor`, tests/shiny.test.mjs): decided at the sighting and saved on it (`shiny` key): eclipse (sunlit now, in shadow 45 s later), moon (within 1°, naturals 5°), overhead (el >= 80), fresh (launched < 30 days), fullmoon (Moon >= 98% lit). A card with any shiny sighting renders `.shiny` (rainbow prism holo + `.shiny-tag` ribbon); the reveal stamps SHINY! with an extra burst; autoLog toasts it.
 - Progress (2026-10-05, js/progress.js, tests/progress.test.mjs): everything derived from the sighting log. XP (first catch by tier 10/20/40/80/150, repeat night 5, shiny 100, mission 50, constellation complete 200) → RANKS (Stargazer … Mission Control). `missionsFor(nightKey)`: 3 per night from MISSIONS, same for everyone. Weekly streak (Monday weeks). 15 ACHIEVEMENTS. Collection page `#logbook` (renderLogbook); captures show +XP in the reveal header and toast missions/achievements/rank-ups (`progressGain`/`announceProgress` in main.js).
+- Share (2026-10-05, js/share-card.js): collection viewer 'Share this card' draws a 1080×1350 card image on a canvas (art, name, rarity, stats, fact, collected/seen, rank; gold/shiny treatments), read from the card on screen; navigator.share with a file, else download.

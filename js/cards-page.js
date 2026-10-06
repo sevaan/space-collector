@@ -1,14 +1,17 @@
-import { renderCard, renderCardTile, renderPassport, attachTilt, attachGyro, attachFlip, artImage } from './card.js?v=0.1.108';
-import { cardArt } from './art.js?v=0.1.108';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.108';
-import { applyBack } from './card-backs.js?v=0.1.108';
-import { SETS, assignSets } from './sets.js?v=0.1.108';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.108';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.108';
-import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.108';
-import { progress } from './progress.js?v=0.1.108';
-import { allSightings, deleteSighting } from './store.js?v=0.1.108';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.108';
+import { renderCard, renderCardTile, renderPassport, attachTilt, attachGyro, attachFlip, artImage } from './card.js?v=0.1.109';
+import { cardArt } from './art.js?v=0.1.109';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.109';
+import { applyBack } from './card-backs.js?v=0.1.109';
+import { SETS, assignSets } from './sets.js?v=0.1.109';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.109';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.109';
+import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.109';
+import { progress } from './progress.js?v=0.1.109';
+import { drawShareCard, shareCard } from './share-card.js?v=0.1.109';
+import { conArt } from './con-art.js?v=0.1.109';
+import { CON_BY_ID } from './constellations.js?v=0.1.109';
+import { allSightings, deleteSighting } from './store.js?v=0.1.109';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.109';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -240,6 +243,7 @@ function showCard() {
   const c = state.list[state.index]; if (!c) return;
   const sightings = state.sightingsByKey.get(c.key) ?? [];
   const el = renderCard(c, { sightings, seenMembers: state.seenMembers.get(c.key)?.size ?? 0, preview: state.preview, ownedKeys: ownedKeys() });
+  $('v-share').hidden = !sightings.length;
   $('slot').replaceChildren(el);
   tilt = attachTilt(el);
   attachFlip(el, { onBack: applyBack });
@@ -435,6 +439,28 @@ attachTileTilt($('grid'));
 $('viewer').addEventListener('close', () => { stopEffects(); document.body.style.overflow = ''; lastFocus?.focus(); });
 $('slot').addEventListener('pointerdown', askMotion);
 $('v-preview').addEventListener('click', () => { state.preview = !state.preview; showCard(); });
+// Share the card on screen as an image (js/share-card.js), reading what it shows so the image matches.
+$('v-share').addEventListener('click', async () => {
+  const c = state.list[state.index], el = $('slot').firstElementChild; if (!c || !el) return;
+  const btn = $('v-share'); btn.disabled = true; btn.textContent = 'Making the image…';
+  try {
+    const txt = (sel) => el.querySelector(sel)?.textContent.trim() ?? '';
+    const img = el.querySelector('.card__art img.card-art-image'), svg = el.querySelector('.card__art svg');
+    const art = img ? { src: img.src } : c.natural === 'constellation' ? { svg: conArt(c.data) } : c.con && !c.skyName ? { svg: conArt(CON_BY_ID.get(c.con).data, c.hip) } : { svg: svg ? new XMLSerializer().serializeToString(svg) : '' };
+    const stats = [...el.querySelectorAll('.card__stats > div')].map((d) => [d.querySelector('.card__label')?.textContent ?? '', d.querySelector('b')?.childNodes[0]?.textContent.trim() ?? '', d.querySelector('b small')?.textContent ?? '']);
+    const tier = getComputedStyle(el).getPropertyValue('--tier').trim() || '#fa8127';
+    const info = (k) => { const x = state.byKey.get(k); return x ? { tier: x.tier, type: x.type, owner: x.owner, launch: x.launch, natural: x.natural, con: x.con } : null; };
+    const rank = progress(state.raw, info).rank.name;
+    const canvas = await drawShareCard(c, art, {
+      title: titleFor(c), setName: txt('.card__setbar > span:first-child'), tierLabel: txt('.card__tier').replace(/^\W+/, ''), tierColor: tier, stats,
+      fact: txt('.card__fact p'), collected: txt('.card__status > span:nth-child(2)'), seen: txt('.card__seen-count'), rank,
+      gold: el.classList.contains('gold-foil'), shiny: el.querySelector('.shiny-tag')?.textContent.split('·')[1]?.trim() ?? null,
+    });
+    const how = await shareCard(canvas, `${titleFor(c).replace(/[^\w-]+/g, '-').toLowerCase()}.png`, `${titleFor(c)} · Space Collector`);
+    btn.textContent = how === 'downloaded' ? 'Saved the image' : 'Share this card';
+  } catch { btn.textContent = 'Couldn\'t make the image'; }
+  btn.disabled = false; setTimeout(() => { btn.textContent = 'Share this card'; }, 2500);
+});
 $('viewer').addEventListener('keydown', (e) => {
   if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') { e.preventDefault(); step(e.key === 'ArrowLeft' ? -1 : 1); }
 });
