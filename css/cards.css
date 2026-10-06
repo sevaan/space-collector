@@ -269,3 +269,9 @@
 /* Retro palette for the fleet's newest-stamp ring and the tile's collected line (older rules otherwise win). */
 .card--retro .fl-grid i.latest { background: var(--accent); box-shadow: 0 0 0 .12em var(--paper), 0 0 0 .32em var(--accent); }
 .card-tile--retro.is-owned .card-tile__status { color: #fff2b3; }
+
+/* The double frame's inner lines sit ABOVE the full-width art band, so the picture runs behind the
+   border instead of over it (2026-10-05). Same lines as the face's inset shadow, drawn on top. */
+.card--retro .card__face::after { content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: 5;
+  box-shadow: inset 0 0 0 .09em #657786, inset 0 0 0 .17em #d4e0e7; }
+:where(html[data-theme='night'], body.night) .card--retro .card__face::after { box-shadow: inset 0 0 0 .1em #52221f; }
