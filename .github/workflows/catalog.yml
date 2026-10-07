@@ -29,5 +29,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data/catalog.json
           git commit -m "Daily catalogue refresh"
-          git push
+          # GitHub occasionally rejects a push with a 500; rebase onto anything new and retry a few times.
+          for i in 1 2 3 4; do git pull --rebase -q && git push && break; echo "push failed, retrying in $((i*15))s"; sleep $((i*15)); done
+          git diff --quiet origin/main HEAD -- data/catalog.json || { echo "could not push"; exit 1; }
           gh api -X POST "repos/${{ github.repository }}/pages/builds" || true
