@@ -18,9 +18,26 @@
   .sky .ib { width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--edge); display: inline-grid; place-items: center; margin-left: 8px; }
   .sky .ret { position: absolute; left: 50%; top: 32%; width: 132px; height: 132px; margin: -66px 0 0 -66px; border-radius: 50%; border: 1.5px solid #fff2b3aa; transition: border-color .4s, transform .6s; }
   .sky .ret::before { content: ''; position: absolute; inset: -6px; border-radius: 50%; border: 1px solid #627a8b88; }
-  .sky.motion .ret { animation: sway 4s ease-in-out infinite alternate; }
-  @keyframes sway { from { transform: translate(-14px, 6px); } to { transform: translate(16px, -8px); } }
+  /* The world behind the cards: oversized so it can pan with the phone. Before location it's a vague starfield;
+     location brings in the horizon, compass and chart lines ("lining up"); motion makes it follow the phone. */
+  .world { position: absolute; inset: -30%; transform: translate(var(--wx, 0px), var(--wy, 0px)) rotate(var(--wr, 0deg)); transition: transform .9s cubic-bezier(.2,.9,.3,1); }
+  .sky.motion .world { transition: transform .12s linear; }
+  .world .stars { position: absolute; inset: 0; filter: blur(1.2px); opacity: .55; transition: filter 1.2s, opacity 1.2s; }
+  .sky.located .world .stars { filter: none; opacity: 1; }
+  .chart { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .chart .lines { opacity: 0; stroke-dasharray: 400; stroke-dashoffset: 400; transition: opacity .6s .4s, stroke-dashoffset 1.6s .5s ease-out; }
+  .chart .horizon, .chart .horizon-line { opacity: 0; transform: translateY(120px); transition: opacity .9s, transform 1.1s cubic-bezier(.2,.9,.3,1); }
+  .chart .dirs { opacity: 0; transition: opacity .6s 1s; }
+  .sky.located .chart .lines { opacity: .55; stroke-dashoffset: 0; }
+  .sky.located .chart .horizon, .sky.located .chart .horizon-line { opacity: 1; transform: none; }
+  .sky.located .chart .dirs { opacity: .85; }
   .sky.located .ret { border-color: var(--orange); }
+  .sky.motion .ret { box-shadow: 0 0 0 1px #fa812755, 0 0 30px #fa812733; }
+  .flash { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(circle at 50% 32%, #fa812733, transparent 55%); opacity: 0; }
+  .flash.go { animation: flash 1.1s ease-out; }
+  @keyframes flash { 20% { opacity: 1; } 100% { opacity: 0; } }
+  .lockline { position: absolute; left: 0; right: 0; top: calc(32% + 84px); text-align: center; color: var(--orange); font: 500 12px/1 'SC Label', sans-serif; letter-spacing: .2em; text-transform: uppercase; opacity: 0; transition: opacity .4s; }
+  .lockline.on { opacity: 1; }
 
   /* progress: a row of small card pips instead of a hairline */
   .pips { position: fixed; z-index: 5; left: 0; right: 0; top: calc(var(--safe-top) + 92px); display: flex; justify-content: center; gap: 6px; }
@@ -57,9 +74,12 @@
   .tc.gold { border-color: #e2b53c; box-shadow: inset 0 0 0 5px var(--navy), inset 0 0 0 6px #f7d77a66, 0 -14px 50px #000b; }
   .note { position: fixed; z-index: 6; left: 0; right: 0; top: calc(var(--safe-top) + 160px); text-align: center; color: #9fb0c6; font-size: 12px; pointer-events: none; }
 </style></head><body>
-<div class="sky" id="sky"><div class="stars" id="stars"></div>
+<div class="sky" id="sky"><div class="world" id="world"><div class="stars" id="stars"></div>
+    <svg class="chart" id="chart" viewBox="0 0 800 900" preserveAspectRatio="xMidYMid slice"><g class="lines" fill="none" stroke="#8fb3cf" stroke-width="1"><polyline points="200,250 240,228 290,240 320,214 360,222"/><polyline points="470,300 505,282 545,294 575,270"/><g fill="#fff2b3" stroke="none"><circle cx="200" cy="250" r="2.2"/><circle cx="240" cy="228" r="2.6"/><circle cx="290" cy="240" r="2"/><circle cx="320" cy="214" r="2.8"/><circle cx="360" cy="222" r="2"/><circle cx="470" cy="300" r="2.2"/><circle cx="505" cy="282" r="2.6"/><circle cx="545" cy="294" r="2"/><circle cx="575" cy="270" r="2.4"/></g></g>
+      <path class="horizon" d="M-100 420 Q400 360 900 420 L900 900 L-100 900 Z" fill="#0a1424"/><path class="horizon-line" d="M-100 420 Q400 360 900 420" fill="none" stroke="#627a8b" stroke-width="1.5"/>
+      <g class="dirs" fill="#fff2b3" font-family="SC Label, Arial Narrow" font-size="22" letter-spacing="3" text-anchor="middle"><text x="200" y="392">W</text><text x="400" y="372" fill="#fa8127">N</text><text x="600" y="392">E</text></g></svg></div>
   <div class="hdr"><div class="wm">SPACE COLLECTOR<span>FIELD NOTES FROM ORBIT</span></div><div><span class="ib">☾</span><span class="ib">≡</span></div></div>
-  <div class="ret"></div></div>
+  <div class="ret"></div><div class="flash" id="flash"></div><div class="lockline" id="lockline"></div></div>
 <div class="pips" id="pips"></div>
 <button class="skip">Skip setup</button>
 <div class="deck" id="deck"></div>
@@ -73,12 +93,32 @@ const art = {
   sky: `<svg viewBox="0 0 300 120"><defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#fa8127"/><stop offset="1" stop-color="#fff2b3"/></linearGradient></defs><rect x="40" y="58" width="220" height="4" rx="2" fill="#627a8b55"/><rect x="40" y="58" width="132" height="4" rx="2" fill="url(#g)"/><circle cx="172" cy="60" r="11" fill="#080e1a" stroke="#fa8127" stroke-width="2.5"/><g fill="#fff2b3"><circle cx="70" cy="28" r="1.2" opacity=".4"/><circle cx="110" cy="22" r="1.6" opacity=".6"/><circle cx="160" cy="30" r="2" opacity=".8"/><circle cx="210" cy="20" r="2.4"/><circle cx="246" cy="34" r="2.8"/></g><text x="40" y="92" fill="#bdbea9" font-family="SC Label" font-size="11" letter-spacing="2">BRIGHT</text><text x="260" y="92" fill="#bdbea9" font-family="SC Label" font-size="11" letter-spacing="2" text-anchor="end">DARK</text></svg>`,
 };
 const steps = [
-  { perm: true, tier: 'Step 1 of 3', title: 'Line up your sky', sub: ['Navigation', 'Location'], art: art.loc, text: 'Your location sets which stars and satellites are overhead. It stays on this phone.', yes: 'Allow', no: 'Not now', on: () => document.getElementById('sky').classList.add('located') },
-  { perm: true, tier: 'Step 2 of 3', title: "Point, don't scroll", sub: ['Gyroscope', 'Motion'], art: art.motion, text: "With motion on, the circle follows the phone. Whatever sits in the circle is what you're looking at.", yes: 'Allow motion', no: 'Use a finger', on: () => document.getElementById('sky').classList.add('motion') },
+  { perm: true, tier: 'Step 1 of 3', title: 'Line up your sky', sub: ['Navigation', 'Location'], art: art.loc, text: 'Your location sets which stars and satellites are overhead. It stays on this phone.', yes: 'Allow', no: 'Not now', on: () => lockIn('located', 'Sky lined up to your spot') },
+  { perm: true, tier: 'Step 2 of 3', title: "Point, don't scroll", sub: ['Gyroscope', 'Motion'], art: art.motion, text: "With motion on, the circle follows the phone. Whatever sits in the circle is what you're looking at.", yes: 'Allow motion', no: 'Use a finger', on: () => { askMotion(); lockIn('motion', 'Following your phone'); } },
   { tier: 'Step 3 of 3', title: 'Match your sky', sub: ['Calibration', 'Tonight'], art: art.sky, text: 'Look up. Drag the slider until the screen shows about as many stars as you can see.', yes: 'Got it', no: 'Later' },
   { tier: 'Assignment 01', title: 'Catch Vega', sub: ['Bright star', '58° up in the W'], art: `<svg viewBox="0 0 300 120"><circle cx="150" cy="60" r="34" fill="none" stroke="#fa8127" stroke-width="2"/><circle cx="150" cy="60" r="5" fill="#fff2b3"/><circle cx="150" cy="60" r="16" fill="#fff2b3" opacity=".18"/></svg>`, text: "It's up right now. Turn right until it's in the circle, then tap it to collect your first card.", yes: 'Go', no: null, gold: true },
 ];
-const deck = document.getElementById('deck'), pips = document.getElementById('pips');
+const deck = document.getElementById('deck'), pips = document.getElementById('pips'), sky = document.getElementById('sky'), world = document.getElementById('world');
+function lockIn(cls, line) {
+  document.querySelector('.note').style.opacity = 0;
+  sky.classList.add(cls);
+  const f = document.getElementById('flash'); f.classList.remove('go'); void f.offsetWidth; f.classList.add('go');
+  const l = document.getElementById('lockline'); l.textContent = line; l.classList.add('on'); setTimeout(() => l.classList.remove('on'), 2200);
+  if (cls === 'located') { try { navigator.geolocation?.getCurrentPosition(() => {}, () => {}); } catch {} }
+}
+// Motion: the real permission (from this tap), then the world pans and rolls with the phone, smoothed.
+let wx = 0, wy = 0, wr = 0, ref = null;
+function askMotion() {
+  const go = () => window.addEventListener('deviceorientation', (e) => {
+    if (e.gamma == null) return; ref ??= { g: e.gamma, b: e.beta };
+    const tx = Math.max(-35, Math.min(35, e.gamma - ref.g)), ty = Math.max(-35, Math.min(35, (e.beta ?? 0) - ref.b));
+    wx += (-tx * 7 - wx) * 0.15; wy += (ty * 7 - wy) * 0.15; wr += (-tx * 0.15 - wr) * 0.15;
+    world.style.setProperty('--wx', `${wx.toFixed(1)}px`); world.style.setProperty('--wy', `${wy.toFixed(1)}px`); world.style.setProperty('--wr', `${wr.toFixed(2)}deg`);
+  });
+  try { if (DeviceOrientationEvent?.requestPermission) DeviceOrientationEvent.requestPermission().then((r) => r === 'granted' && go()).catch(() => {}); else go(); } catch { go(); }
+  // No sensor (desktop): a gentle demo drift so you can see it
+  setTimeout(() => { if (ref) return; let t = 0; setInterval(() => { t += .02; world.style.setProperty('--wx', `${(Math.sin(t) * 40).toFixed(1)}px`); world.style.setProperty('--wy', `${(Math.cos(t * .7) * 18).toFixed(1)}px`); }, 50); }, 1500);
+}
 pips.innerHTML = steps.map(() => '<i></i>').join('');
 let idx = 0, first = true;
 function cardEl(s) {
@@ -108,7 +148,7 @@ function advance(dir, el, s, accepted) {
   setTimeout(() => { idx++; if (idx >= steps.length) { pips.style.opacity = 0; document.querySelector('.skip').style.opacity = 0; document.querySelector('.note').textContent = 'End of the mock: in the app you\'d now aim at Vega and collect it.'; deck.innerHTML = ''; return; } render(); }, 260);
 }
 function wire(el, s) {
-  el.querySelector('.yes').onclick = () => advance(1, el, s, true);
+  el.querySelector('.yes').onclick = () => { s.on?.(); advance(1, el, s, false); };
   el.querySelector('.no')?.addEventListener('click', () => advance(-1, el, s, false));
   // drag sideways to throw it off; up/down just tilts
   let start = null;
@@ -132,6 +172,5 @@ function wire(el, s) {
 // phone tilt drives the sheen (needs a tap on iOS to allow motion; this is a mock, so it just tries)
 let tx = 0, base = null;
 window.addEventListener('deviceorientation', (e) => { const el = deck.lastElementChild; if (!el || e.gamma == null || el.classList.contains('dragging') || el.classList.contains('gone')) return; base ??= e.gamma; tx += ((Math.max(-1, Math.min(1, (e.gamma - base) / 25))) - tx) * 0.12; el.style.setProperty('--bgx', `${(50 + tx * 25).toFixed(1)}%`); el.style.setProperty('--mx', `${(50 + tx * 40).toFixed(1)}%`); el.style.setProperty('--o', '.6'); });
-document.addEventListener('click', () => { try { DeviceOrientationEvent.requestPermission?.(); } catch {} }, { once: true });
 render();
 </script></body></html>
