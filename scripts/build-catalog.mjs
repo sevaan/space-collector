@@ -46,8 +46,21 @@ async function cached(name, url, delayMs = 0) {
     try { if (Date.now() - statSync(file).mtimeMs < CACHE_MS) return readFileSync(file, 'utf8'); } catch {}
   }
   if (delayMs) await sleep(delayMs);
-  const res = await fetch(url, { headers: { 'User-Agent': 'space-collector (github.com/sevaan/space-collector)' } });
-  if (!res.ok) throw new Error(`${url}: HTTP ${res.status}`);
+  // CelesTrak sometimes answers a single request with a 5xx (or the network blips); retry with backoff
+  // instead of failing the whole daily build (2026-10-07: one HTTP 500 for 1980 failed the run).
+  let res, lastErr;
+  for (let attempt = 0; attempt < 5; attempt++) {
+    if (attempt) await sleep(5000 * 2 ** (attempt - 1)); // 5, 10, 20, 40 s
+    try {
+      res = await fetch(url, { headers: { 'User-Agent': 'space-collector (github.com/sevaan/space-collector)' } });
+      if (res.ok) break;
+      lastErr = new Error(`${url}: HTTP ${res.status}`);
+      if (res.status < 500 && res.status !== 429) throw lastErr; // a real 4xx won't fix itself
+    } catch (e) { lastErr = e; if (String(e.message).includes('HTTP 4') && !String(e.message).includes('429')) throw e; }
+    console.warn(`  retrying (${attempt + 1}/4): ${lastErr.message}`);
+    res = null;
+  }
+  if (!res?.ok) throw lastErr;
   const text = await res.text();
   writeFileSync(file, text);
   return text;
