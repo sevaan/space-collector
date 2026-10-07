@@ -269,12 +269,12 @@ body:has(#event-banner:not([hidden])) #toasts { top:calc(var(--safe-top) + 150px
 #sky-range:focus-visible::-webkit-slider-thumb { box-shadow:0 0 0 4px color-mix(in srgb, var(--gold) 35%, transparent); }
 #sky-read b { color:var(--text); font-weight:500; }
 #skybar.dragging #sky-read { opacity:1; }
-#sky-range { -webkit-appearance:none; appearance:none; width:100%; height:28px; margin:0; background:transparent; touch-action:none; cursor:pointer; }
+#sky-range { -webkit-appearance:none; appearance:none; width:100%; height:44px; margin:0; background:transparent; touch-action:none; cursor:pointer; } /* a full 44px touch band (2026-10-06: hard to grab) */
 #sky-range::-webkit-slider-runnable-track { height:3px; border-radius:2px; background:linear-gradient(90deg, var(--gold) 0 var(--p,50%), color-mix(in srgb, var(--edge) 55%, transparent) var(--p,50%)); }
 #sky-range::-moz-range-track { height:3px; border-radius:2px; background:color-mix(in srgb, var(--edge) 55%, transparent); }
 #sky-range::-moz-range-progress { height:3px; border-radius:2px; background:var(--gold); }
-#sky-range::-webkit-slider-thumb { -webkit-appearance:none; width:18px; height:18px; margin-top:-7.5px; border-radius:50%; background:var(--bg); border:2px solid var(--gold); box-shadow:0 0 0 4px color-mix(in srgb, var(--bg) 60%, transparent); }
-#sky-range::-moz-range-thumb { width:14px; height:14px; border-radius:50%; background:var(--bg); border:2px solid var(--gold); }
+#sky-range::-webkit-slider-thumb { -webkit-appearance:none; width:26px; height:26px; margin-top:-11.5px; border-radius:50%; background:var(--bg); border:2.5px solid var(--gold); box-shadow:0 0 0 5px color-mix(in srgb, var(--bg) 60%, transparent), 0 2px 8px #0008; }
+#sky-range::-moz-range-thumb { width:22px; height:22px; border-radius:50%; background:var(--bg); border:2px solid var(--gold); }
 body.night #sky-range::-webkit-slider-thumb, body.night #sky-range::-moz-range-thumb { border-color:var(--gold); }
 #hud[hidden] ~ #skybar, #hud[hidden] #skybar { display:none; }
 
