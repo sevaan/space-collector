@@ -1,29 +1,29 @@
-import { VERSION } from './version.js?v=0.1.194';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.194';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.194';
-import { conArt } from './con-art.js?v=0.1.194';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.194';
-import { CON_FIGURES } from './con-figures.js?v=0.1.194';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.194';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.194';
-import { progress as progressOf } from './progress.js?v=0.1.194';
-import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.194';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.194';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.194';
-import { SkyView, shortName } from './sky.js?v=0.1.194';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.194';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.194';
-import { cardArt } from './art.js?v=0.1.194';
-import { renderCard, cardLevel, artImage } from './card.js?v=0.1.194';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.194';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.194';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.194';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.194';
-import { TIER_INFO } from './rarity.js?v=0.1.194';
-import { SETS } from './sets.js?v=0.1.194';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.194';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.194';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.194';
+import { VERSION } from './version.js?v=0.1.196';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.196';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.196';
+import { conArt } from './con-art.js?v=0.1.196';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.196';
+import { CON_FIGURES } from './con-figures.js?v=0.1.196';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.196';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.196';
+import { progress as progressOf } from './progress.js?v=0.1.196';
+import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.196';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.196';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.196';
+import { SkyView, shortName } from './sky.js?v=0.1.196';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.196';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.196';
+import { cardArt } from './art.js?v=0.1.196';
+import { renderCard, cardLevel, artImage } from './card.js?v=0.1.196';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.196';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.196';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.196';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.196';
+import { TIER_INFO } from './rarity.js?v=0.1.196';
+import { SETS } from './sets.js?v=0.1.196';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.196';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.196';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.196';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -665,6 +665,9 @@ function turnHint(l) {
   const move = Math.abs(turn) > 8 ? (turn > 0 ? 'Turn right →' : '← Turn left') : l.el > currentEl ? '↑ Raise your phone' : '↓ Lower your phone';
   return gr ? `${move} · appears ${Math.round(l.el)}° up in the ${compassPoint(l.az)} at ${fmtTime(gr.start)}` : `${move} · ${Math.round(l.el)}° up in the ${compassPoint(l.az)}`;
 }
+const ICON_TARGET = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="7.5"/><circle cx="12" cy="12" r="2.4" fill="currentColor" stroke="none"/><path d="M12 1.8v3.4M12 18.8v3.4M1.8 12h3.4M18.8 12h3.4"/></svg>';
+const ICON_BELL = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path class="fillme" d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.6 2H4.4z"/><path d="M10 20.6a2.2 2.2 0 0 0 4 0" stroke-linecap="round"/></svg>';
+const reminded = new Set(); // reminders set this session, so the bell stays filled
 // Tonight → "Show me": pin the object and steer to it (or to where it will rise).
 function showMePass(p) {
   cancelPassSearch();
@@ -1043,10 +1046,14 @@ function renderTonight() {
     if (head !== lastHead) { list.insertAdjacentHTML('beforeend', `<div class="t-head">${head}</div>`); lastHead = head; }
     const tier = TIER_INFO[p.obj.tier] ?? TIER_INFO.common;
     const row = document.createElement('div'); row.className = 't-row'; row.style.setProperty('--tier', tier.color);
-    row.innerHTML = `<span class="time">${fmtTime(p.start)}</span><span><div class="name"><span class="dot"></span>${escapeHtml(label(p.obj))}${p.fresh ? '<span class="new">NEW</span>' : ''}</div>
-      <div class="meta">${tier.label} · up to mag ${p.mag} (${brightnessWord(p.mag)}) · rises in the ${compassPoint(p.riseAz)}, highest ${p.peakEl}° in the ${compassPoint(p.peakAz)} at ${fmtTime(p.peakAt)}</div>
-      <span class="t-acts"><button class="showme" type="button">Show me</button>${p.start > t0 + 10 * 60000 ? '<button class="remind" type="button">Remind me</button>' : ''}</span></span>`;
-    row.querySelector('.remind')?.addEventListener('click', () => remindPass(p));
+    // Icon actions (2026-10-06): a target (go to it in Explore) and a bell (calendar reminder; filled once set).
+    const mins = Math.round((p.start - t0) / 60000), soon = p.start <= t0 ? 'up now' : mins < 60 ? `in ${mins} min` : '';
+    const belled = reminded.has(`${p.obj.id}@${p.start}`);
+    row.innerHTML = `<span class="time">${fmtTime(p.start)}${soon ? `<small>${soon}</small>` : ''}</span>
+      <span class="t-main"><span class="name"><span class="dot"></span>${escapeHtml(label(p.obj))}${p.fresh ? '<span class="new">NEW</span>' : ''}</span>
+      <span class="meta">${tier.label} · ${brightnessWord(p.mag)} · ${compassPoint(p.riseAz)} → ${p.peakEl}° ${compassPoint(p.peakAz)}</span></span>
+      <span class="t-acts"><button class="ic showme" type="button" aria-label="Show me in the sky">${ICON_TARGET}</button>${p.start > t0 + 10 * 60000 ? `<button class="ic remind${belled ? ' on' : ''}" type="button" aria-label="${belled ? 'Reminder set' : 'Remind me'}">${ICON_BELL}</button>` : '<span class="ic ic-none" aria-hidden="true"></span>'}</span>`; // keep the columns lined up when it's too soon to remind
+    row.querySelector('.remind')?.addEventListener('click', (e) => { remindPass(p); reminded.add(`${p.obj.id}@${p.start}`); e.currentTarget.classList.add('on'); e.currentTarget.setAttribute('aria-label', 'Reminder set'); });
     row.querySelector('.showme').addEventListener('click', () => showMePass(p));
     // Tap the row to see the card you'd be waiting up for (owned cards open as they are; others as a preview).
     row.classList.add('tappable');
