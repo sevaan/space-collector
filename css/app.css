@@ -449,3 +449,8 @@ body:has(#target:not([hidden])) #toasts { bottom:calc(var(--safe-bottom) + 182px
 #toasts { bottom:calc(var(--safe-bottom) + 144px); }
 body:has(#target:not([hidden])) #toasts { bottom:calc(var(--safe-bottom) + 204px); }
 #t-switch { display:none !important; }
+
+/* The standing message is a toast (ticket) in the bottom stack; it doesn't time out. */
+#banner.ticket { position:static; width:auto; max-width:none; margin:0; text-align:left; }
+.ticket--standing { border-left-color:var(--gold); }
+.ticket--standing .ticket__go { color:var(--gold); font-size:20px; }

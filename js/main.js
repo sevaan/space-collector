@@ -1,30 +1,30 @@
-import { VERSION } from './version.js?v=0.1.231';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.231';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.231';
-import { conArt } from './con-art.js?v=0.1.231';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.231';
-import { CON_FIGURES } from './con-figures.js?v=0.1.231';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.231';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.231';
-import { progress as progressOf } from './progress.js?v=0.1.231';
-import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.231';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.231';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.231';
-import { SkyView, shortName } from './sky.js?v=0.1.231';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.231';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.231';
-import { cardArt } from './art.js?v=0.1.231';
-import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.231';
-import { applyBack } from './card-backs.js?v=0.1.231';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.231';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.231';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.231';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.231';
-import { TIER_INFO } from './rarity.js?v=0.1.231';
-import { SETS } from './sets.js?v=0.1.231';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.231';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.231';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.231';
+import { VERSION } from './version.js?v=0.1.232';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.232';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.232';
+import { conArt } from './con-art.js?v=0.1.232';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.232';
+import { CON_FIGURES } from './con-figures.js?v=0.1.232';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.232';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.232';
+import { progress as progressOf } from './progress.js?v=0.1.232';
+import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.232';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.232';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.232';
+import { SkyView, shortName } from './sky.js?v=0.1.232';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.232';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.232';
+import { cardArt } from './art.js?v=0.1.232';
+import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.232';
+import { applyBack } from './card-backs.js?v=0.1.232';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.232';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.232';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.232';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.232';
+import { TIER_INFO } from './rarity.js?v=0.1.232';
+import { SETS } from './sets.js?v=0.1.232';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.232';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.232';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.232';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -183,12 +183,18 @@ async function checkForUpdate() {
 
 let bannerAction = null;
 let bannerKey = '';
+// The standing message (new build, time travel, tap to line up, check heading) is a toast now (2026-10-07):
+// it lives at the bottom of the toast stack and stays until its state clears; tap it to act.
 function showBanner(text, action = null) {
   if (bannerKey === text) return;
   bannerKey = text;
-  $('banner').textContent = text;
-  $('banner').hidden = !text;
+  const el = $('banner');
+  if (el.parentElement !== $('toasts')) $('toasts').prepend(el); // first child = bottom of the stack
+  el.className = `ticket ticket--info ticket--standing${action ? ' linked' : ''}`;
+  el.innerHTML = text ? `<span class="ticket__body"><span class="ticket__line">${escapeHtml(text)}</span></span>${action ? '<span class="ticket__go">›</span>' : ''}` : '';
   bannerAction = action;
+  if (!text) { el.classList.remove('in'); setTimeout(() => { if (!bannerKey) el.hidden = true; }, 320); return; }
+  el.hidden = false; requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('in')));
 }
 $('banner').addEventListener('click', () => bannerAction?.());
 
@@ -331,7 +337,7 @@ function updateStatus(f) {
   if (!bannerKey.startsWith('New build')) {
     if (state.timeOffsetMs) showBanner(`Showing the sky at ${now().toLocaleString([], { weekday: 'short', hour: 'numeric', minute: '2-digit' })}. Tap to go back to now.`, backToNow);
     else if (state.needsMotionTap) showBanner('Tap anywhere to line the sky up with your phone.');
-    else if (pointing.source === 'ios' && (pointing.compassAccuracy < 0 || pointing.compassAccuracy > 25) && !state.drag.on) showBanner('Compass needs aligning. Move your phone in a figure eight, then aim at a known star.', openDebug);
+    // (compass trouble is the figure-8 toast in checkCompass, not a standing message)
     else if (pointing.source === 'relative') showBanner('Check your heading against a known landmark. Adjust the compass in settings.', openDebug);
     else showBanner('');
   }
@@ -633,7 +639,6 @@ function measureSkySpace() {
   const box = $('target');
   const rect = box.getBoundingClientRect();
   uiSafeTop = $('radar').getBoundingClientRect().bottom + 12;
-  if (!$('banner').hidden) uiSafeTop = $('banner').getBoundingClientRect().bottom + 12;
   const navInset = window.innerHeight - Math.min($('nav').getBoundingClientRect().top, $('skybar').getBoundingClientRect().top || Infinity) + 20; // the sky slider sits above the switcher
   uiSafeBottom = box.hidden ? navInset : Math.max(navInset, window.innerHeight - rect.top + 34);
   // The reticle stays put when the info card or a banner comes and goes (2026-10-06, Sevaan: it jumped).
