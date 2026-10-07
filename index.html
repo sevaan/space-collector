@@ -15,9 +15,9 @@
   <script>try { if (localStorage.getItem("night") === "1") document.documentElement.dataset.theme = "night"; } catch {}</script>
   <link rel="preload" href="fonts/RussoOne-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="fonts/BarlowCondensed-Medium.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="css/cards.css?v=0.1.211">
-  <link rel="stylesheet" href="css/app.css?v=0.1.211">
-  <link rel="stylesheet" href="css/reveal.css?v=0.1.211">
+  <link rel="stylesheet" href="css/cards.css?v=0.1.213">
+  <link rel="stylesheet" href="css/app.css?v=0.1.213">
+  <link rel="stylesheet" href="css/reveal.css?v=0.1.213">
 </head>
 <body>
   <canvas id="sky" role="img" aria-label="Sky map aligned with your viewing direction"></canvas>
@@ -90,7 +90,7 @@
          flick it up (or tap Begin) to start the tour. -->
     <div class="wc-stage">
       <div class="wc-holder" id="wc-holder" role="button" tabindex="0" aria-label="Tap to reveal your mission card"></div>
-      <div class="wc-hint" id="wc-hint"><span class="wc-pill">Tap to reveal</span></div>
+      <div class="wc-hint" id="wc-hint" hidden></div>
       <div class="wc-after" id="wc-after" hidden>
         <span class="wc-swipe" aria-hidden="true">↑</span>
         <button id="btn-start" class="text-button" type="button" disabled><span>Loading the sky…</span></button>
@@ -199,7 +199,7 @@
     <pre id="debug-info"></pre></details>
   </section>
 
-  <script type="module" src="js/main.js?v=0.1.211"></script>
+  <script type="module" src="js/main.js?v=0.1.213"></script>
 <div id="rotate" role="status"><b>Turn your phone upright</b><span>Space Collector is made for portrait.</span></div>
 </body>
 </html>

@@ -1,30 +1,30 @@
-import { VERSION } from './version.js?v=0.1.211';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.211';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.211';
-import { conArt } from './con-art.js?v=0.1.211';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.211';
-import { CON_FIGURES } from './con-figures.js?v=0.1.211';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.211';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.211';
-import { progress as progressOf } from './progress.js?v=0.1.211';
-import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.211';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.211';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.211';
-import { SkyView, shortName } from './sky.js?v=0.1.211';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.211';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.211';
-import { cardArt } from './art.js?v=0.1.211';
-import { renderCard, cardLevel, artImage, attachTilt, throwOff } from './card.js?v=0.1.211';
-import { applyBack } from './card-backs.js?v=0.1.211';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.211';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.211';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.211';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.211';
-import { TIER_INFO } from './rarity.js?v=0.1.211';
-import { SETS } from './sets.js?v=0.1.211';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.211';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.211';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.211';
+import { VERSION } from './version.js?v=0.1.213';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.213';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.213';
+import { conArt } from './con-art.js?v=0.1.213';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.213';
+import { CON_FIGURES } from './con-figures.js?v=0.1.213';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.213';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.213';
+import { progress as progressOf } from './progress.js?v=0.1.213';
+import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.213';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.213';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.213';
+import { SkyView, shortName } from './sky.js?v=0.1.213';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.213';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.213';
+import { cardArt } from './art.js?v=0.1.213';
+import { renderCard, cardLevel, artImage, attachTilt, throwOff } from './card.js?v=0.1.213';
+import { applyBack } from './card-backs.js?v=0.1.213';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.213';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.213';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.213';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.213';
+import { TIER_INFO } from './rarity.js?v=0.1.213';
+import { SETS } from './sets.js?v=0.1.213';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.213';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.213';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.213';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -1448,7 +1448,7 @@ $('btn-replay-setup')?.addEventListener('click', () => {
   state.locationStatus = 'example'; renderLocation();
   state.pinnedId = null; state.targetId = null; state.guidePass = null;
   wcCard = null; wcFlipped = false; wcReplay = true;
-  $('wc-hint').hidden = false; $('wc-hint').classList.remove('gone'); $('wc-after').hidden = true; $('btn-start').disabled = false;
+  $('wc-after').hidden = true; $('start').classList.remove('wc-open'); $('btn-start').disabled = false;
   renderStartHand();
   $('hud').hidden = true; $('start').hidden = false;
 });
@@ -1658,6 +1658,7 @@ function renderStartHand() {
   const st = card.querySelector('.card__status'); if (st) st.innerHTML = '<span class="card__status-icon" aria-hidden="true">↑</span><span>SWIPE UP TO BEGIN</span>';
   // Start face-down: the card is turned half way, so its (pre-mirrored) back faces you.
   const back = card.querySelector('.card__back'); applyBack(back); back.style.opacity = '1';
+  back.insertAdjacentHTML('beforeend', '<div class="tap">Tap to reveal</div>'); // on the card itself, like the old sealed reveal
   card.style.transform = 'perspective(1600px) rotateY(180deg)';
   holder.replaceChildren(card); wcCard = card;
   attachTilt(card);
@@ -1678,7 +1679,7 @@ async function welcomeFlip() {
   await new Promise((r) => setTimeout(r, ms));
   wcCard.getAnimations().forEach((a) => a.cancel()); wcCard.style.transform = '';
   chirp([660, 990, 1320], 0.08);
-  $('wc-hint').hidden = true; $('wc-after').hidden = false;
+  $('wc-hint').hidden = true; $('wc-after').hidden = false; $('start').classList.add('wc-open');
 }
 function welcomeGo(dx = 0, dy = -2, dt = 16) {
   if (!wcFlipped || $('btn-start').disabled) return;
