@@ -15,9 +15,9 @@
   <script>try { if (localStorage.getItem("night") === "1") document.documentElement.dataset.theme = "night"; } catch {}</script>
   <link rel="preload" href="fonts/RussoOne-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="fonts/BarlowCondensed-Medium.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="css/cards.css?v=0.1.209">
-  <link rel="stylesheet" href="css/app.css?v=0.1.209">
-  <link rel="stylesheet" href="css/reveal.css?v=0.1.209">
+  <link rel="stylesheet" href="css/cards.css?v=0.1.211">
+  <link rel="stylesheet" href="css/app.css?v=0.1.211">
+  <link rel="stylesheet" href="css/reveal.css?v=0.1.211">
 </head>
 <body>
   <canvas id="sky" role="img" aria-label="Sky map aligned with your viewing direction"></canvas>
@@ -102,15 +102,12 @@
 
   <!-- Guided setup (2026-10-06, design/welcome-flows.html D): bottom sheets over the live sky, then your first catch. -->
   <section id="onboard" hidden>
-    <div class="hair" aria-hidden="true"><i id="ob-hair"></i></div>
+    <!-- Tour as cards (2026-10-06, design/tour-cards.html): each step is the top of a card laid over the live sky,
+         with the next ones stacked underneath; a choice throws it off and the sky reacts. -->
+    <div class="ob-pips" id="ob-pips" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
     <button class="pill ob-exit" id="ob-skip" type="button">Skip setup</button>
-    <div class="sheet" id="ob-sheet">
-      <div class="grab" aria-hidden="true"></div>
-      <div class="ico" id="ob-ico" aria-hidden="true">⌖</div>
-      <h3 id="ob-title">Line up your sky</h3>
-      <p id="ob-text">Your location sets which stars and satellites are overhead. It stays on this phone.</p>
-      <div class="row2"><button class="d-cta ghost" id="ob-no" type="button">Not now</button><button class="d-cta o" id="ob-yes" type="button">Allow</button></div>
-    </div>
+    <div class="ob-lock" id="ob-lock" aria-live="polite"></div>
+    <div class="ob-deck" id="ob-deck"></div>
     <div class="ob-done" id="ob-done" hidden>
       <div class="spacer"></div>
       <span class="eyebrow">You're set</span>
@@ -202,7 +199,7 @@
     <pre id="debug-info"></pre></details>
   </section>
 
-  <script type="module" src="js/main.js?v=0.1.209"></script>
+  <script type="module" src="js/main.js?v=0.1.211"></script>
 <div id="rotate" role="status"><b>Turn your phone upright</b><span>Space Collector is made for portrait.</span></div>
 </body>
 </html>
