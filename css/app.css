@@ -428,7 +428,7 @@ body:has(#target:not([hidden])) #toasts { bottom:calc(var(--safe-bottom) + 182px
 
 /* Toasts and the mini card are exactly as wide as the Explore/Collection switcher (#nav, 260px), centred over it
    (2026-10-07, Sevaan). Long names shorten with … rather than widening the card. */
-:root { --nav-w: min(300px, calc(100vw - 48px)); } /* the sky slider's width (#skybar) */
+:root { --nav-w: calc(28 * max(7px, min(14px, calc((100vw - 58px) / 28), calc((100dvh - 120px) / 39.2)))); } /* = the full card's width (capture reveal sizeCard), 2026-10-07 */
 #toasts { left:50% !important; right:auto !important; width:var(--nav-w); max-width:var(--nav-w); margin:0; transform:translateX(-50%); }
 #target { left:50% !important; right:auto !important; width:var(--nav-w); max-width:var(--nav-w); margin:0; transform:translateX(-50%); padding:7px 4px 7px 12px; gap:10px; }
 #target:active { transform:translateX(-50%) scale(.97); }
@@ -454,3 +454,6 @@ body:has(#target:not([hidden])) #toasts { bottom:calc(var(--safe-bottom) + 204px
 #banner.ticket { position:static; width:auto; max-width:none; margin:0; text-align:left; }
 .ticket--standing { border-left-color:var(--gold); }
 .ticket--standing .ticket__go { color:var(--gold); font-size:20px; }
+
+/* The slider joins the card width too. */
+#skybar { width:var(--nav-w); }
