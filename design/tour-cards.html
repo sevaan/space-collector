@@ -73,31 +73,33 @@ const art = {
   sky: `<svg viewBox="0 0 300 120"><defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#fa8127"/><stop offset="1" stop-color="#fff2b3"/></linearGradient></defs><rect x="40" y="58" width="220" height="4" rx="2" fill="#627a8b55"/><rect x="40" y="58" width="132" height="4" rx="2" fill="url(#g)"/><circle cx="172" cy="60" r="11" fill="#080e1a" stroke="#fa8127" stroke-width="2.5"/><g fill="#fff2b3"><circle cx="70" cy="28" r="1.2" opacity=".4"/><circle cx="110" cy="22" r="1.6" opacity=".6"/><circle cx="160" cy="30" r="2" opacity=".8"/><circle cx="210" cy="20" r="2.4"/><circle cx="246" cy="34" r="2.8"/></g><text x="40" y="92" fill="#bdbea9" font-family="SC Label" font-size="11" letter-spacing="2">BRIGHT</text><text x="260" y="92" fill="#bdbea9" font-family="SC Label" font-size="11" letter-spacing="2" text-anchor="end">DARK</text></svg>`,
 };
 const steps = [
-  { tier: 'Step 1 of 3', title: 'Line up your sky', sub: ['Navigation', 'Location'], art: art.loc, text: 'Your location sets which stars and satellites are overhead. It stays on this phone.', yes: 'Allow', no: 'Not now', on: () => document.getElementById('sky').classList.add('located') },
-  { tier: 'Step 2 of 3', title: "Point, don't scroll", sub: ['Gyroscope', 'Motion'], art: art.motion, text: "With motion on, the circle follows the phone. Whatever sits in the circle is what you're looking at.", yes: 'Allow motion', no: 'Use a finger', on: () => document.getElementById('sky').classList.add('motion') },
+  { perm: true, tier: 'Step 1 of 3', title: 'Line up your sky', sub: ['Navigation', 'Location'], art: art.loc, text: 'Your location sets which stars and satellites are overhead. It stays on this phone.', yes: 'Allow', no: 'Not now', on: () => document.getElementById('sky').classList.add('located') },
+  { perm: true, tier: 'Step 2 of 3', title: "Point, don't scroll", sub: ['Gyroscope', 'Motion'], art: art.motion, text: "With motion on, the circle follows the phone. Whatever sits in the circle is what you're looking at.", yes: 'Allow motion', no: 'Use a finger', on: () => document.getElementById('sky').classList.add('motion') },
   { tier: 'Step 3 of 3', title: 'Match your sky', sub: ['Calibration', 'Tonight'], art: art.sky, text: 'Look up. Drag the slider until the screen shows about as many stars as you can see.', yes: 'Got it', no: 'Later' },
   { tier: 'Assignment 01', title: 'Catch Vega', sub: ['Bright star', '58° up in the W'], art: `<svg viewBox="0 0 300 120"><circle cx="150" cy="60" r="34" fill="none" stroke="#fa8127" stroke-width="2"/><circle cx="150" cy="60" r="5" fill="#fff2b3"/><circle cx="150" cy="60" r="16" fill="#fff2b3" opacity=".18"/></svg>`, text: "It's up right now. Turn right until it's in the circle, then tap it to collect your first card.", yes: 'Go', no: null, gold: true },
 ];
 const deck = document.getElementById('deck'), pips = document.getElementById('pips');
 pips.innerHTML = steps.map(() => '<i></i>').join('');
-let idx = 0;
+let idx = 0, first = true;
 function cardEl(s) {
   const el = document.createElement('div'); el.className = `tc enter${s.gold ? ' gold' : ''}`;
   el.innerHTML = `<div class="in"><div class="bar lab"><span>Space Collector</span><span class="tier">◆ ${s.tier}</span></div>
     <h3>${s.title}</h3><div class="sub lab"><span>${s.sub[0]}</span><span>${s.sub[1]}</span></div>
     <div class="art">${s.art}</div><p>${s.text}</p>
     <div class="acts">${s.no ? `<button class="no">${s.no}</button>` : ''}<button class="yes">${s.yes}</button></div>
-    <div class="swipe lab">← swipe to continue →</div></div><div class="shine"></div><div class="glare"></div>`;
+    ${s.perm ? '' : '<div class="swipe lab">← swipe to continue →</div>'}</div><div class="shine"></div><div class="glare"></div>`;
   return el;
 }
 function render() {
   [...pips.children].forEach((p, i) => p.className = i < idx ? 'done' : i === idx ? 'on' : '');
   deck.querySelectorAll('.tc').forEach((c) => c.remove());
-  const cards = steps.slice(idx, idx + 3).map(cardEl);
-  cards.reverse().forEach((c) => deck.append(c));
-  const [top, mid, low] = [...deck.children].reverse();
+  const cards = steps.slice(idx, idx + 3).map((s) => { const c = cardEl(s); c.classList.remove('enter'); return c; });
+  cards.slice().reverse().forEach((c) => deck.append(c));
+  const [top, mid, low] = cards;
   mid?.classList.add('under'); low?.classList.add('under2');
-  requestAnimationFrame(() => requestAnimationFrame(() => { [top, mid, low].forEach((c) => c?.classList.remove('enter')); }));
+  // Only the first card rises in from below; later ones are already waiting underneath.
+  if (first && top) top.animate([{ transform: 'translateY(105%)' }, { transform: 'translateY(0)' }], { duration: 650, easing: 'cubic-bezier(.2,.9,.3,1)' });
+  first = false;
   if (top) wire(top, steps[idx]);
 }
 function advance(dir, el, s, accepted) {
@@ -110,7 +112,7 @@ function wire(el, s) {
   el.querySelector('.no')?.addEventListener('click', () => advance(-1, el, s, false));
   // drag sideways to throw it off; up/down just tilts
   let start = null;
-  el.addEventListener('pointerdown', (e) => { if (e.target.closest('button')) return; start = { x: e.clientX, y: e.clientY, t: performance.now() }; el.classList.add('dragging'); el.setPointerCapture(e.pointerId); });
+  el.addEventListener('pointerdown', (e) => { if (e.target.closest('button') || s.perm) return; start = { x: e.clientX, y: e.clientY, t: performance.now() }; el.classList.add('dragging'); el.setPointerCapture(e.pointerId); });
   el.addEventListener('pointermove', (e) => {
     const r = el.getBoundingClientRect(), mx = (e.clientX - r.left) / r.width, my = (e.clientY - r.top) / (r.height * .66);
     el.style.setProperty('--mx', `${(mx * 100).toFixed(1)}%`); el.style.setProperty('--my', `${(my * 100).toFixed(1)}%`); el.style.setProperty('--bgx', `${(30 + mx * 40).toFixed(1)}%`); el.style.setProperty('--o', '1');
@@ -128,7 +130,8 @@ function wire(el, s) {
   el.addEventListener('pointerup', end); el.addEventListener('pointercancel', end);
 }
 // phone tilt drives the sheen (needs a tap on iOS to allow motion; this is a mock, so it just tries)
-window.addEventListener('deviceorientation', (e) => { const el = deck.lastElementChild; if (!el || e.gamma == null) return; const x = Math.max(-1, Math.min(1, e.gamma / 25)); el.style.setProperty('--bgx', `${50 + x * 25}%`); el.style.setProperty('--mx', `${50 + x * 40}%`); el.style.setProperty('--o', '.7'); el.style.setProperty('--rx', `${Math.max(-6, Math.min(6, ((e.beta ?? 45) - 45) / 6))}deg`); });
+let tx = 0, base = null;
+window.addEventListener('deviceorientation', (e) => { const el = deck.lastElementChild; if (!el || e.gamma == null || el.classList.contains('dragging') || el.classList.contains('gone')) return; base ??= e.gamma; tx += ((Math.max(-1, Math.min(1, (e.gamma - base) / 25))) - tx) * 0.12; el.style.setProperty('--bgx', `${(50 + tx * 25).toFixed(1)}%`); el.style.setProperty('--mx', `${(50 + tx * 40).toFixed(1)}%`); el.style.setProperty('--o', '.6'); });
 document.addEventListener('click', () => { try { DeviceOrientationEvent.requestPermission?.(); } catch {} }, { once: true });
 render();
 </script></body></html>
