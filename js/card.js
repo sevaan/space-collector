@@ -1,17 +1,17 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { cardArt } from './art.js?v=0.1.227';
-import { TIER_INFO } from './rarity.js?v=0.1.227';
-import { SET_BY_ID } from './sets.js?v=0.1.227';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.227';
-import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.227';
-import { artFileFor } from './art-keys.js?v=0.1.227';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.227';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.227';
-import { nightsIn } from './observation.js?v=0.1.227';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.227';
-import { SHINY } from './shiny.js?v=0.1.227';
-import { conArt } from './con-art.js?v=0.1.227';
-import { CON_FIGURES } from './con-figures.js?v=0.1.227';
+import { cardArt } from './art.js?v=0.1.228';
+import { TIER_INFO } from './rarity.js?v=0.1.228';
+import { SET_BY_ID } from './sets.js?v=0.1.228';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.228';
+import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.228';
+import { artFileFor } from './art-keys.js?v=0.1.228';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.228';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.228';
+import { nightsIn } from './observation.js?v=0.1.228';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.228';
+import { SHINY } from './shiny.js?v=0.1.228';
+import { conArt } from './con-art.js?v=0.1.228';
+import { CON_FIGURES } from './con-figures.js?v=0.1.228';
 // The animal/symbol figure belongs to the completed (gold) constellation card only (2026-10-05): a single
 // star's card draws just the star pattern with its star marked, so the figure is a reward for finishing the set.
 const conFig = (id) => (CON_FIGURES.has(id) ? { figure: `assets/art/con/${id}.webp` } : {});
