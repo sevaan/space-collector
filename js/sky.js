@@ -1,9 +1,9 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.189';
+import { extinction } from './sky-limit.js?v=0.1.190';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.189';
-import { TIER_INFO } from './rarity.js?v=0.1.189';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.190';
+import { TIER_INFO } from './rarity.js?v=0.1.190';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -658,10 +658,17 @@ export class SkyView {
         if (f > 0) { ctx.save(); ctx.setLineDash([4, 5]); ctx.lineWidth = 1.5; ctx.strokeStyle = 'rgba(250,129,39,.85)'; ctx.beginPath(); ctx.arc(p.x, p.y, 44, 0, Math.PI * 2); ctx.stroke(); ctx.restore(); }
         this.queueLabel('Sun', p, { color: f > 0.3 ? '#143046' : t.body, size: 14, gap: 22 + f * 24, priority: 8 });
       } else {
-        const radius = Math.max(2.5, Math.min(4.8, 3.0 - 0.4 * b.mag));
-        this.glow(p.x, p.y, radius * 4.5, t.starRGB, 0.36);
-        ctx.fillStyle = t.planet;
-        ctx.beginPath(); ctx.arc(p.x, p.y, radius, 0, Math.PI * 2); ctx.fill();
+        // Planets on the same brightness scale as the stars (2026-10-06, Sevaan: Saturn looked far brighter than
+        // it is). Apparent magnitude after the air near the horizon; anything fainter than tonight's limit (the sky
+        // slider, twilight, the Moon) isn't drawn, so Neptune no longer shows to the naked eye.
+        const elDeg = Math.asin(Math.min(1, Math.max(-1, b.enu[2]))) * 180 / Math.PI, m = b.mag + extinction(elDeg);
+        if (this.starLimit != null && m > this.starLimit) continue;
+        const dayK = 1 - Math.min(1, (this.dayF ?? 0) / 0.6) * (m > -3 ? 1 : 0.4); // only Venus-bright survives daylight
+        if (dayK <= 0.02) continue;
+        const radius = Math.max(0.9, Math.min(3.4, 2.3 - 0.3 * m)), a = Math.max(0.3, Math.min(1, 1 - 0.1 * m)) * dayK;
+        if (m < 0.5) this.glow(p.x, p.y, radius * (m < -2 ? 5 : 3.2), t.starRGB, (m < -2 ? 0.34 : 0.16) * dayK);
+        ctx.save(); ctx.globalAlpha *= a; ctx.fillStyle = t.planet;
+        ctx.beginPath(); ctx.arc(p.x, p.y, radius, 0, Math.PI * 2); ctx.fill(); ctx.restore();
         this.queueLabel(b.name, p, { color: t.body, size: 14, weight: 500, gap: radius + 10, priority: 8 });
       }
     }
@@ -727,6 +734,7 @@ export class SkyView {
     const ctx = this.ctx, t = this.theme;
     // Day factor: 0 at night, 1 in full daylight (civil twilight in between). Drives the sky tone and what shows.
     this.dayF = this.theme === THEMES.night ? 0 : Math.max(0, Math.min(1, (sunEl + 8) / 12));
+    this.starLimit = starLimit;
     this.drawBackground();
     if ((this.dayF ?? 0) < 0.2) this.drawMilkyWay(milky);
     if (sky && (this.dayF ?? 0) < 0.6) this.drawStars(sky, { lines: lines && this.dayF < 0.2, time: this.reducedMotion ? 0 : time, starLimit });
