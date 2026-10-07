@@ -15,9 +15,9 @@
   <script>try { if (localStorage.getItem("night") === "1") document.documentElement.dataset.theme = "night"; } catch {}</script>
   <link rel="preload" href="fonts/RussoOne-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="fonts/BarlowCondensed-Medium.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="css/cards.css?v=0.1.205">
-  <link rel="stylesheet" href="css/app.css?v=0.1.205">
-  <link rel="stylesheet" href="css/reveal.css?v=0.1.205">
+  <link rel="stylesheet" href="css/cards.css?v=0.1.206">
+  <link rel="stylesheet" href="css/app.css?v=0.1.206">
+  <link rel="stylesheet" href="css/reveal.css?v=0.1.206">
 </head>
 <body>
   <canvas id="sky" role="img" aria-label="Sky map aligned with your viewing direction"></canvas>
@@ -164,6 +164,12 @@
 
     <h3>Pointing</h3>
     <label class="row"><input type="checkbox" id="chk-snap" checked> Snap the circle onto what you're aiming at</label>
+    <p class="hint">Highlight in the circle: these get the small inner circle and a Tap to collect button. Anything unticked just brightens and turns the circle orange; tap the circle to collect it.</p>
+    <label class="row"><input type="checkbox" data-hl="satellite"> Satellites and stations</label>
+    <label class="row"><input type="checkbox" data-hl="rocket"> Rocket stages and debris</label>
+    <label class="row"><input type="checkbox" data-hl="planet"> The Moon and planets</label>
+    <label class="row"><input type="checkbox" data-hl="sun"> The Sun</label>
+    <label class="row"><input type="checkbox" data-hl="star"> Stars</label>
     <label class="row"><input type="checkbox" id="chk-drag"> Drag to look around (instead of motion sensors)</label>
     <div class="row wrap">
       <span>Compass nudge</span>
@@ -196,7 +202,7 @@
     <pre id="debug-info"></pre></details>
   </section>
 
-  <script type="module" src="js/main.js?v=0.1.205"></script>
+  <script type="module" src="js/main.js?v=0.1.206"></script>
 <div id="rotate" role="status"><b>Turn your phone upright</b><span>Space Collector is made for portrait.</span></div>
 </body>
 </html>

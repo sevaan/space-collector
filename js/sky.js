@@ -1,9 +1,9 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.205';
+import { extinction } from './sky-limit.js?v=0.1.206';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.205';
-import { TIER_INFO } from './rarity.js?v=0.1.205';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.206';
+import { TIER_INFO } from './rarity.js?v=0.1.206';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -722,7 +722,7 @@ export class SkyView {
 
   // safeTop/safeBottom are HUD insets in CSS pixels; centerY is an optional pixel
   // override. Projection and the reticle always share the same cx/cy.
-  draw(basis, items, { showDim, sky, bodies, milky, lines = true, targetId = null, time = 0, safeTop = 150, safeBottom = 230, centerY, starLimit = null, naturalTargetName = null, sunEl = -90, ghosts = null, weather = null, newFind = false, rising = null, landscape = false, lockedOn = null, planes = null, planeHit = null, planeTrail = null, naturalTarget = null } = {}) {
+  draw(basis, items, { showDim, sky, bodies, milky, lines = true, targetId = null, time = 0, safeTop = 150, safeBottom = 230, centerY, starLimit = null, naturalTargetName = null, quietTarget = false, sunEl = -90, ghosts = null, weather = null, newFind = false, rising = null, landscape = false, lockedOn = null, planes = null, planeHit = null, planeTrail = null, naturalTarget = null } = {}) {
     this.basis = basis;
     this.safeTop = Math.max(12, Math.min(safeTop, this.h * 0.45));
     this.safeBottom = Math.max(12, Math.min(safeBottom, this.h - this.safeTop - 100));
@@ -789,8 +789,14 @@ export class SkyView {
       const p = this.project(naturalTarget);
       if (p && this.onScreen(p, 10)) {
         this.targetPos = { x: p.x, y: p.y };
-        ctx.save(); ctx.strokeStyle = t.tick; ctx.lineWidth = 1; ctx.globalAlpha = 0.8;
-        ctx.beginPath(); ctx.arc(p.x, p.y, 15, 0, Math.PI * 2); ctx.stroke(); ctx.restore();
+        if (quietTarget) {
+          // Not highlighted (stars, by default): the object itself brightens and grows a little, nothing drawn round it.
+          this.glow(p.x, p.y, 22, t.starRGB, 0.42);
+          ctx.save(); ctx.fillStyle = t.planet; ctx.beginPath(); ctx.arc(p.x, p.y, 3.2, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+        } else {
+          ctx.save(); ctx.strokeStyle = t.tick; ctx.lineWidth = 1; ctx.globalAlpha = 0.8;
+          ctx.beginPath(); ctx.arc(p.x, p.y, 15, 0, Math.PI * 2); ctx.stroke(); ctx.restore();
+        }
       }
       // Off screen: the same pulsing edge arrow a satellite gets (2026-10-06: consistent guidance, e.g. in the tour).
       if (!p || !this.inSky(p, 10)) offscreen.push({ it: { label: naturalTargetName ?? '', obj: { name: naturalTargetName ?? '' }, look: { mag: -9 } }, c: this.cam(naturalTarget), isTarget: true });
@@ -801,7 +807,7 @@ export class SkyView {
     // The app decides what counts as locked on, so the ring, labels and tap area always agree.
     const locked = lockedOn ?? (!!focus && focus.obj.id === targetId && !!focus.candidate);
     if (planeAt && !locked) this.drawReticle(true, 0, false, planeAt);
-    else this.drawReticle(locked, this.reducedMotion ? 0 : time, newFind && locked);
+    else this.drawReticle(locked, this.reducedMotion ? 0 : time, newFind && locked && !quietTarget, null, quietTarget);
     this.drawLabels();
   }
 
@@ -895,9 +901,9 @@ export class SkyView {
     return this.ring;
   }
 
-  drawReticle(locked, time = 0, newFind = false, plane = null) {
+  drawReticle(locked, time = 0, newFind = false, plane = null, quiet = false) {
     const ctx = this.ctx, t = this.theme;
-    const { r: radius, x: cx, y: cy } = this.updateRing(locked, plane ?? this.targetPos);
+    const { r: radius, x: cx, y: cy } = this.updateRing(locked && !quiet, plane ?? this.targetPos); // quiet: no snap, the circle just turns orange
     ctx.save();
     const activeInk = plane ? t.plane : t.tick;
     // The inner rule keeps the existing aiming radius. An outer rule and fine
