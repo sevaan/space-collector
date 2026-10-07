@@ -64,10 +64,18 @@
   .src { font-size: 13px; color: var(--muted); }
   .src a { color: var(--muted); }
   footer { margin-top: 40px; font-size: 13px; color: var(--muted); }
+  /* feature matrix */
+  .fm-group { margin: 22px 0 6px; font: 600 13px var(--label); letter-spacing: .16em; text-transform: uppercase; color: var(--orange); }
+  table.fm { min-width: 600px; }
+  table.fm td:first-child { width: 26%; font-weight: 600; }
+  table.fm td:nth-child(2), table.fm td:nth-child(3) { width: 37%; }
+  .yes { color: var(--good); font-weight: 600; } .no { color: var(--muted); }
+  .chip { display: inline-block; padding: 1px 8px; border-radius: 99px; border: 1px solid color-mix(in srgb, var(--orange) 55%, var(--rule)); color: var(--orange); font: 600 11px/1.6 var(--label); letter-spacing: .12em; text-transform: uppercase; }
+  .chip.f { border-color: color-mix(in srgb, var(--good) 45%, var(--rule)); color: var(--good); }
 </style>
 
 <div class="wrap">
-  <span class="eyebrow">Space Collector · Paid plan · Draft 1 · 7 Oct 2026</span>
+  <span class="eyebrow">Space Collector · Paid plan · Draft 2 · 7 Oct 2026</span>
   <h1>Space Collector Plus</h1>
   <p class="lede">The sky stays free. Plus is for people who want to know <b>what's coming and when</b>, and want more depth once they're hooked. Nobody ever pays to catch, to complete a set, or to keep their collection safe.</p>
 
@@ -104,6 +112,64 @@
       </ul>
     </div>
   </div>
+
+  <h2>Every feature, free and Plus</h2>
+  <p>The detailed list. <span class="chip f">Free</span> means everyone, forever, with no account. Where Plus adds nothing, it says so: those features are the same for everyone on purpose.</p>
+<p class="fm-group">Catching and collecting</p>
+  <div class="tbl"><table class="fm"><thead><tr><th>Feature</th><th>Free</th><th>Plus</th></tr></thead><tbody>
+      <tr><td>Catching</td><td>Unlimited. Satellites, stations, rocket stages, debris, the Sun, Moon, planets and stars</td><td><span class="no">Same as free</span></td></tr>
+      <tr><td>Cards</td><td>All ~4,700 satellite cards, plus the Moon, Sun, 7 planets, 21 bright stars and every constellation star</td><td><span class="no">Same as free</span></td></tr>
+      <tr><td>Rarities and shinies</td><td>Every rarity and every shiny type (shadow entry, Moon crossing, overhead, fresh launch, full Moon), same odds for everyone</td><td><span class="no">Same as free</span> (odds never change with money)</td></tr>
+      <tr><td>Gold cards</td><td>Constellation and Solar System gold cards when complete; fleet levels up to Gold</td><td><span class="no">Same as free</span></td></tr>
+      <tr><td>Repeat sightings and levels</td><td>Logged automatically; Bronze, Silver, Gold by nights seen</td><td><span class="no">Same as free</span></td></tr>
+      <tr><td>Card art</td><td>Every illustration, twinkling stars, tilt and holo on the front and back</td><td>Extra finishes: foil, holographic and "midnight" variants of any card you own; you choose which to show</td></tr>
+      <tr><td>Card backs</td><td>The Space Collector seal</td><td>A rotating set of premium backs, plus a seasonal back each event</td></tr>
+    </tbody></table></div>
+<p class="fm-group">Alerts and reminders</p>
+  <div class="tbl"><table class="fm"><thead><tr><th>Feature</th><th>Free</th><th>Plus</th></tr></thead><tbody>
+      <tr><td>ISS alerts</td><td>Unlimited, every visible pass. On by default after your first catch</td><td><span class="no">Same as free</span></td></tr>
+      <tr><td>Moon and planet alerts</td><td>"Come outside" when the Moon or a bright planet is well placed tonight</td><td><span class="no">Same as free</span></td></tr>
+      <tr><td>Other flyover alerts</td><td>1 a week, for any object. The app suggests the best one (a fresh Starlink train, a shiny chance)</td><td>Unlimited, for any satellite, fleet or object</td></tr>
+      <tr><td>Wanted list</td><td><span class="no">One object at a time</span></td><td>Up to 50 objects you want; alert whenever any of them makes a good pass</td></tr>
+      <tr><td>Starlink and fresh-launch alerts</td><td><span class="no">Uses your weekly alert</span></td><td>"New Starlink train tonight" and "fresh rocket stage" alerts, only while the train is still tight</td></tr>
+      <tr><td>Shiny Radar</td><td><span class="no">Shows in the Tonight list, no alert</span></td><td>Alerts for shadow entries, Moon crossings, overhead passes and Epic/Legendary objects near you</td></tr>
+      <tr><td>Clear-sky gating</td><td>Yes: every alert, free or paid, only fires if your forecast is clear</td><td><span class="no">Same as free</span></td></tr>
+      <tr><td>Alert timing</td><td>10 minutes before</td><td>Choose 5–60 minutes before, and quiet hours</td></tr>
+      <tr><td>Calendar reminders</td><td>Unlimited (the bell on any Tonight pass)</td><td><span class="no">Same as free</span></td></tr>
+      <tr><td>Streak protection</td><td>1 free streak freeze a month (cloudy weeks aren't your fault)</td><td>3 streak freezes a month</td></tr>
+    </tbody></table></div>
+<p class="fm-group">Planning</p>
+  <div class="tbl"><table class="fm"><thead><tr><th>Feature</th><th>Free</th><th>Plus</th></tr></thead><tbody>
+      <tr><td>Tonight planner</td><td>Every visible pass from now to dawn, the busiest window, the best passes flagged, Show me steering</td><td><span class="no">Same as free</span></td></tr>
+      <tr><td>Weather</td><td>Tonight's cloud forecast and next clear night</td><td>Hour-by-hour cloud, seeing and transparency for 7 nights</td></tr>
+      <tr><td>Multi-night planner</td><td><span class="no">Tonight only</span></td><td>7 nights ahead, with the best night picked for what you still need</td></tr>
+      <tr><td>Transit predictions</td><td><span class="no">Shiny chances shown, not timed</span></td><td>ISS and Tiangong Sun and Moon transits: exact second, centre line, how far to drive</td></tr>
+      <tr><td>Travel mode</td><td><span class="no">Your current location</span></td><td>Plan any place and date: a camping trip, a dark-sky site</td></tr>
+      <tr><td>Events</td><td>Meteor showers with event cards and badges, free for everyone</td><td>Event card foils and an event back</td></tr>
+    </tbody></table></div>
+<p class="fm-group">Sky tools</p>
+  <div class="tbl"><table class="fm"><thead><tr><th>Feature</th><th>Free</th><th>Plus</th></tr></thead><tbody>
+      <tr><td>Pointing, Show me, edge arrows</td><td>Yes</td><td><span class="no">Same as free</span></td></tr>
+      <tr><td>Sky slider and binocular mode</td><td>Yes. The binocular catalogue stays free (same public data)</td><td><span class="no">Same as free</span></td></tr>
+      <tr><td>Plane identification</td><td>Yes</td><td><span class="no">Same as free</span></td></tr>
+      <tr><td>Daytime sky, weather, see-through Earth</td><td>Yes</td><td><span class="no">Same as free</span></td></tr>
+      <tr><td>Night mode</td><td>Yes</td><td><span class="no">Same as free</span></td></tr>
+      <tr><td>Widgets and Watch</td><td><span class="no">Not included</span></td><td>Home-screen widget ("next good pass") and an Apple Watch "look up now" tap (native apps only)</td></tr>
+    </tbody></table></div>
+<p class="fm-group">Progress</p>
+  <div class="tbl"><table class="fm"><thead><tr><th>Feature</th><th>Free</th><th>Plus</th></tr></thead><tbody>
+      <tr><td>XP, ranks, missions, streaks, achievements</td><td>All of them</td><td><span class="no">Same as free</span></td></tr>
+      <tr><td>Albums</td><td>All albums, Bronze to Gold covers</td><td>Album display themes</td></tr>
+      <tr><td>Stats and logbook</td><td>Your rank, streak, recent sightings</td><td>Full history, stats (by year, type, agency, rarity), and export as CSV</td></tr>
+    </tbody></table></div>
+<p class="fm-group">Your collection and devices</p>
+  <div class="tbl"><table class="fm"><thead><tr><th>Feature</th><th>Free</th><th>Plus</th></tr></thead><tbody>
+      <tr><td>Backup</td><td>Yes. Export and import now; free account sync when accounts arrive</td><td><span class="no">Same as free</span></td></tr>
+      <tr><td>Multiple devices</td><td><span class="no">One device</span></td><td>Sync your collection across phones and tablets</td></tr>
+      <tr><td>Family</td><td>Each person can use the app free on their own phone</td><td>Family Sharing: one plan covers up to 6 people, each with their own collection; no upsells in children's views</td></tr>
+      <tr><td>Sharing cards</td><td>Share any card as an image</td><td>Holographic and animated share cards</td></tr>
+      <tr><td>Ads</td><td>None, ever</td><td><span class="no">Same as free</span></td></tr>
+    </tbody></table></div>
 
   <div class="never">
     <h3>Never behind the paywall</h3>
