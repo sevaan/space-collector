@@ -401,3 +401,12 @@ body:has(#reveal:not([hidden])) #toasts, body:has(.overlay.panel:not([hidden])) 
 #t-meta { color:var(--text); font-size:14px; }
 #t-meta.turn { color:var(--cyan); }
 body.night #target { border-left-color:var(--gold); }
+
+/* The sky slider uses the same muted orange as the Explore pill's border (gold at 45% over the dark), so the two
+   read as one control family (2026-10-06, Sevaan). */
+:root { --gold-soft: color-mix(in srgb, var(--gold) 45%, var(--bg)); }
+#sky-range::-webkit-slider-runnable-track { background:linear-gradient(90deg, var(--gold-soft) 0 var(--p,50%), color-mix(in srgb, var(--edge) 55%, transparent) var(--p,50%)); }
+#sky-range::-moz-range-progress { background:var(--gold-soft); }
+#sky-range::-webkit-slider-thumb { border-color:var(--gold-soft); }
+#sky-range::-moz-range-thumb { border-color:var(--gold-soft); }
+body.day #sky-range::-webkit-slider-runnable-track { background:linear-gradient(90deg, var(--gold-soft) 0 var(--p,50%), #14304666 var(--p,50%)); }
