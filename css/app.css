@@ -249,8 +249,8 @@ body.night #t-art { border-color:var(--rule); }
 .vtabs button.on { color:var(--gold); background:color-mix(in srgb,var(--gold) 14%,transparent); box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--gold) 45%,transparent); }
 #tonight-chart svg { display:block; width:100%; height:auto; margin:6px 0 10px; }
 .t-head { margin:18px 0 2px; font:500 13px/1 var(--label); letter-spacing:.16em; text-transform:uppercase; color:var(--gold); }
-.t-row { display:grid; grid-template-columns:60px 1fr auto; gap:10px; align-items:center; padding:12px 0; border-bottom:1px solid var(--edge-soft); }
-.t-row .time { white-space:nowrap; font:400 15px/1.2 var(--display); color:var(--text); }
+.t-row { display:grid; grid-template-columns:60px 1fr auto; gap:10px; align-items:start; padding:12px 0; border-bottom:1px solid var(--edge-soft); }
+.t-row .time { white-space:nowrap; font:400 15px/1.2 var(--display); color:var(--text); padding-top:1px; } /* top-aligned with the name (2026-10-06) */
 .t-row .time small { display:block; margin-top:3px; font:500 11px/1 var(--label); letter-spacing:.1em; text-transform:uppercase; color:var(--gold); }
 .t-row .t-main { min-width:0; display:flex; flex-direction:column; gap:3px; }
 .t-row .name { font:400 14px/1.2 var(--display); text-transform:uppercase; color:var(--text); display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden; } /* long names wrap rather than lose their ends */
@@ -269,7 +269,7 @@ body.night #t-art { border-color:var(--rule); }
 body:has(#event-banner:not([hidden])) #nextpass { top:calc(var(--safe-top) + 152px); } /* below a meteor-shower banner */
 body.day #nextpass { background:color-mix(in srgb,var(--bg) 70%,transparent); }
 .t-row.tappable { cursor:pointer; }
-.t-row .t-acts { display:flex; gap:6px; }
+.t-row .t-acts { display:flex; gap:6px; align-self:center; }
 .t-row .ic { width:36px; height:36px; padding:0; display:grid; place-items:center; border-radius:50%; border:1px solid var(--edge-soft); background:transparent; color:var(--text); cursor:pointer; }
 .t-row .ic.showme { border-color:var(--gold); color:var(--gold); }
 .t-row .ic.remind.on { border-color:var(--gold); background:var(--gold); color:#0b1120; }
@@ -378,10 +378,10 @@ body.day #radar-up, body.day #d-tier, body.day #d-name { color:#143046; text-sha
 .ob-range::-moz-range-thumb { width:24px; height:24px; border-radius:50%; background:var(--bg); border:2.5px solid var(--gold); }
 .ob-ends { display:flex; justify-content:space-between; color:var(--muted); font:500 11px/1 var(--label); letter-spacing:.18em; text-transform:uppercase; }
 
-/* Toasts in Explore (2026-10-06, Sevaan): at the bottom, just above the sky slider (above the mini card when it's
-   up), rising in from below. Over the capture reveal they stay at the top, clear of the card. */
-body:not(:has(#reveal:not([hidden]))) #toasts { top:auto; bottom:calc(var(--safe-bottom) + 134px); flex-direction:column-reverse; }
-body:not(:has(#reveal:not([hidden]))):has(#target:not([hidden])) #toasts { bottom:calc(var(--safe-bottom) + 226px); }
-body:not(:has(#reveal:not([hidden]))) .ticket { transform:translateY(calc(100% + var(--safe-bottom) + 160px)) scale(.96); }
-body:not(:has(#reveal:not([hidden]))) .ticket.in { transform:none; }
-body:has(#reveal:not([hidden])):has(#event-banner:not([hidden])) #toasts { top:calc(var(--safe-top) + 150px); }
+/* Toasts (2026-10-06, Sevaan): always at the bottom, rising in from below. In Explore they sit just above the sky
+   slider (above the mini card when it's up); over a panel (Tonight, Settings) or the card reveal, at the very bottom. */
+#toasts { top:auto !important; bottom:calc(var(--safe-bottom) + 134px); flex-direction:column-reverse; }
+body:has(#target:not([hidden])) #toasts { bottom:calc(var(--safe-bottom) + 226px); }
+body:has(#reveal:not([hidden])) #toasts, body:has(.overlay.panel:not([hidden])) #toasts { bottom:calc(var(--safe-bottom) + 14px); }
+.ticket { transform:translateY(calc(100% + var(--safe-bottom) + 160px)) scale(.96); cursor:pointer; }
+.ticket.in { transform:none; }

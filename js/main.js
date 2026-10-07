@@ -1,30 +1,30 @@
-import { VERSION } from './version.js?v=0.1.217';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.217';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.217';
-import { conArt } from './con-art.js?v=0.1.217';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.217';
-import { CON_FIGURES } from './con-figures.js?v=0.1.217';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.217';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.217';
-import { progress as progressOf } from './progress.js?v=0.1.217';
-import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.217';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.217';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.217';
-import { SkyView, shortName } from './sky.js?v=0.1.217';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.217';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.217';
-import { cardArt } from './art.js?v=0.1.217';
-import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.217';
-import { applyBack } from './card-backs.js?v=0.1.217';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.217';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.217';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.217';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.217';
-import { TIER_INFO } from './rarity.js?v=0.1.217';
-import { SETS } from './sets.js?v=0.1.217';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.217';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.217';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.217';
+import { VERSION } from './version.js?v=0.1.218';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.218';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.218';
+import { conArt } from './con-art.js?v=0.1.218';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.218';
+import { CON_FIGURES } from './con-figures.js?v=0.1.218';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.218';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.218';
+import { progress as progressOf } from './progress.js?v=0.1.218';
+import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.218';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.218';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.218';
+import { SkyView, shortName } from './sky.js?v=0.1.218';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.218';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.218';
+import { cardArt } from './art.js?v=0.1.218';
+import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.218';
+import { applyBack } from './card-backs.js?v=0.1.218';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.218';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.218';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.218';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.218';
+import { TIER_INFO } from './rarity.js?v=0.1.218';
+import { SETS } from './sets.js?v=0.1.218';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.218';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.218';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.218';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -213,13 +213,13 @@ function pumpToasts() {
   const el = document.createElement('div');
   el.className = `ticket ticket--${t.kind}${t.href ? ' linked' : ''}`;
   el.innerHTML = `<i class="ticket__mark" aria-hidden="true"></i><span class="ticket__body">${t.eyebrow ? `<span class="ticket__eyebrow">${escapeHtml(t.eyebrow)}</span>` : ''}<span class="ticket__line">${t.html ? t.line : escapeHtml(t.line)}</span></span>${t.xp ? `<span class="ticket__xp">+${t.xp}<small>XP</small></span>` : t.href ? '<span class="ticket__go">OPEN ›</span>' : ''}`;
-  if (t.href) el.addEventListener('click', () => { location.href = t.href; });
+  // Up long enough to read (2026-10-06: at least 5 s, about 1.6× the old times); a tap sends it away sooner.
+  let gone = false;
+  const dismiss = () => { if (gone) return; gone = true; clearTimeout(timer); el.classList.remove('in'); setTimeout(() => { el.remove(); toastBusy = false; pumpToasts(); }, 320); };
+  el.addEventListener('click', () => { if (t.href) location.href = t.href; else dismiss(); });
   $('toasts').append(el);
   requestAnimationFrame(() => el.classList.add('in'));
-  setTimeout(() => {
-    el.classList.remove('in');
-    setTimeout(() => { el.remove(); toastBusy = false; pumpToasts(); }, 320);
-  }, t.ms);
+  const timer = setTimeout(dismiss, Math.max(5000, t.ms * 1.6));
 }
 
 function escapeHtml(s) {
@@ -1092,7 +1092,13 @@ function renderTonight() {
       <span class="t-main"><span class="name"><span class="dot"></span>${escapeHtml(label(p.obj))}${p.fresh ? '<span class="new">NEW</span>' : ''}</span>
       <span class="meta">${tier.label} · ${brightnessWord(p.mag)} · ${compassPoint(p.riseAz)} → ${p.peakEl}° ${compassPoint(p.peakAz)}</span></span>
       <span class="t-acts"><button class="ic showme" type="button" aria-label="Show me in the sky">${ICON_TARGET}</button>${p.start > t0 + 10 * 60000 ? `<button class="ic remind${belled ? ' on' : ''}" type="button" aria-label="${belled ? 'Reminder set' : 'Remind me'}">${ICON_BELL}</button>` : '<span class="ic ic-none" aria-hidden="true"></span>'}</span>`; // keep the columns lined up when it's too soon to remind
-    row.querySelector('.remind')?.addEventListener('click', (e) => { remindPass(p); reminded.add(`${p.obj.id}@${p.start}`); e.currentTarget.classList.add('on'); e.currentTarget.setAttribute('aria-label', 'Reminder set'); });
+    row.querySelector('.remind')?.addEventListener('click', (e) => {
+      const b = e.currentTarget, key = `${p.obj.id}@${p.start}`;
+      if (reminded.has(key)) { // tap a lit bell to turn it off (the app can't reach into your calendar, so say so)
+        reminded.delete(key); b.classList.remove('on'); b.setAttribute('aria-label', 'Remind me');
+        toast(`Reminder off for ${escapeHtml(label(p.obj))}. If you added it to your calendar, delete it there too.`, 3500);
+      } else { remindPass(p); reminded.add(key); b.classList.add('on'); b.setAttribute('aria-label', 'Reminder set'); }
+    });
     row.querySelector('.showme').addEventListener('click', () => showMePass(p));
     // Tap the row to see the card you'd be waiting up for (owned cards open as they are; others as a preview).
     row.classList.add('tappable');
