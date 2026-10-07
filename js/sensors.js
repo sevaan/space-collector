@@ -8,6 +8,8 @@ export const pointing = {
   basis: null,           // { right, up, back } unit vectors in ENU, before heading offset
   headingOffset: 0,      // degrees added to raw azimuth to get true azimuth
   compassAccuracy: null, // iOS: ± degrees, -1 = uncalibrated
+  compassJumpAt: 0,      // when the compass last swung far enough that we had to accept a big correction
+  compassDoubt: 0,       // 0..1: how much the compass currently disagrees with where we think north is
   lastEvent: 0,
 };
 
@@ -64,9 +66,11 @@ function updateHeadingOffset(heading, basis) {
   }
   if (goodSamples > 20 && diff > 35) {
     // A sudden big disagreement: usually interference or a flip. Only accept it if it persists.
+    pointing.compassDoubt = Math.min(1, rejectStreak / 90);
     if (++rejectStreak < 90) return; // ~1.5 s of consistent readings at 60 Hz
+    pointing.compassJumpAt = performance.now(); // it persisted: north really moved, so the compass was off
   }
-  rejectStreak = 0;
+  rejectStreak = 0; pointing.compassDoubt = 0;
   goodSamples++;
   pointing.headingOffset = blendAngle(pointing.headingOffset, measured, goodSamples < 30 ? 0.2 : 0.04);
 }

@@ -1,29 +1,29 @@
-import { VERSION } from './version.js?v=0.1.190';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.190';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.190';
-import { conArt } from './con-art.js?v=0.1.190';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.190';
-import { CON_FIGURES } from './con-figures.js?v=0.1.190';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.190';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.190';
-import { progress as progressOf } from './progress.js?v=0.1.190';
-import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.190';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.190';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.190';
-import { SkyView, shortName } from './sky.js?v=0.1.190';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.190';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.190';
-import { cardArt } from './art.js?v=0.1.190';
-import { renderCard, cardLevel, artImage } from './card.js?v=0.1.190';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.190';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.190';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.190';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.190';
-import { TIER_INFO } from './rarity.js?v=0.1.190';
-import { SETS } from './sets.js?v=0.1.190';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.190';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.190';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.190';
+import { VERSION } from './version.js?v=0.1.191';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.191';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.191';
+import { conArt } from './con-art.js?v=0.1.191';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.191';
+import { CON_FIGURES } from './con-figures.js?v=0.1.191';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.191';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.191';
+import { progress as progressOf } from './progress.js?v=0.1.191';
+import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.191';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.191';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.191';
+import { SkyView, shortName } from './sky.js?v=0.1.191';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.191';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.191';
+import { cardArt } from './art.js?v=0.1.191';
+import { renderCard, cardLevel, artImage } from './card.js?v=0.1.191';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.191';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.191';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.191';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.191';
+import { TIER_INFO } from './rarity.js?v=0.1.191';
+import { SETS } from './sets.js?v=0.1.191';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.191';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.191';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.191';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -473,7 +473,7 @@ function tick(ts) {
   });
 
   updateCompass(basis);
-  if (t - lastChip > 1000) { lastChip = t; requestTonight(); requestWeather(); updateNextPassChip(); updateEventBanner(); }
+  if (t - lastChip > 1000) { lastChip = t; requestTonight(); requestWeather(); updateNextPassChip(); updateEventBanner(); checkCompass(t); }
   placeDiscover();
   if (t - lastPanel > 250 || target?.obj.id !== shownTargetId || state.lockedOn !== lastLocked) {
     if (state.lockedOn && !lastLocked) snapTick(); // the circle just caught something
@@ -1091,6 +1091,18 @@ function dayGhosts() {
     out.push({ enu: [Math.sin(az) * Math.cos(el), Math.cos(az) * Math.cos(el), Math.sin(el)], name: label(a.obj), note: p ? `you'll see it ${fmtTime(p.start)}` : `${Math.round(a.look.rangeKm ?? 0)} km away · up there now` });
   }
   return out;
+}
+// Compass trouble (2026-10-06, Sevaan: the sky spun until the compass sorted itself out). iOS reports how unsure its
+// compass is (webkitCompassAccuracy, ± degrees; -1 = not calibrated), and js/sensors.js notices when north has to
+// jump. Either way, ask for a figure-8 — at most once every few minutes, and only while using motion.
+let compassAskAt = -Infinity;
+function checkCompass(t) {
+  if (state.drag.on || !hasLiveSensors() || pointing.source !== 'ios') return;
+  const acc = pointing.compassAccuracy, jumped = t - pointing.compassJumpAt < 2000;
+  const bad = acc === -1 || acc > 35 || jumped || pointing.compassDoubt > 0.6;
+  if (!bad || t - compassAskAt < 4 * 60e3) return;
+  compassAskAt = t;
+  toast('<span class="big-line">Compass needs a nudge</span>Wave the phone in a slow figure-8 for a few seconds, away from metal, magnets and cars.', 6000);
 }
 // The chip in the upper right (2026-10-06, Sevaan: out of the way of the sky labels): label / name / detail ›.
 const npChip = (k, n, m) => `<span class="np-k">${escapeHtml(k)}</span><b class="np-n">${escapeHtml(n)}</b><span class="np-m">${escapeHtml(m)} ›</span>`;
