@@ -1,0 +1,217 @@
+<title>Space Collector Plus</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Russo+One&family=Barlow+Condensed:wght@500;600&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+  /* Layout: a single reading column like a mission briefing, with the free/Plus split as the one big structure. */
+  :root {
+    --bg: #080e1a; --panel: #0e1828; --ink: #f3ecd4; --muted: #b6b6a2; --rule: #2a3a4c;
+    --orange: #fa8127; --gold: #e2b53c; --cyan: #8fb3cf; --good: #7ee2a5; --bad: #ff9f8a;
+    --display: 'Russo One', Impact, sans-serif;
+    --label: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+    --body: 'Barlow', system-ui, -apple-system, sans-serif;
+    color-scheme: dark;
+  }
+  body { background: var(--bg); color: var(--ink); font: 400 17px/1.6 var(--body); }
+  .wrap { max-width: 760px; margin: 0 auto; padding-inline: 18px; padding-block: 28px 64px; }
+  h1, h2, h3 { font-family: var(--display); font-weight: 400; text-transform: uppercase; letter-spacing: -.02em; text-wrap: balance; }
+  h1 { font-size: clamp(34px, 8vw, 52px); line-height: 1; margin: 6px 0 14px; }
+  h2 { font-size: 22px; margin: 44px 0 12px; padding-top: 18px; border-top: 3px double var(--rule); }
+  h3 { font-size: 16px; margin: 22px 0 6px; color: var(--ink); }
+  .eyebrow, .tag { font: 600 12px/1.2 var(--label); letter-spacing: .18em; text-transform: uppercase; color: var(--orange); }
+  p { margin: 0 0 12px; max-width: 65ch; }
+  .lede { font-size: 19px; color: var(--ink); }
+  .muted { color: var(--muted); }
+  ul { margin: 0 0 12px; padding-left: 20px; } li { margin: 4px 0; max-width: 62ch; }
+  b { font-weight: 600; }
+  a { color: var(--cyan); }
+  .decision { border-left: 4px solid var(--orange); background: var(--panel); padding: 14px 16px; border-radius: 8px; margin: 18px 0; }
+  .decision p { margin: 0; }
+  /* Free vs Plus */
+  .split { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 14px 0; }
+  @media (max-width: 620px) { .split { grid-template-columns: 1fr; } }
+  .col { background: var(--panel); border: 1px solid var(--rule); border-radius: 12px; padding: 14px 16px; min-width: 0; }
+  .col.plus { border-color: color-mix(in srgb, var(--orange) 55%, var(--rule)); }
+  .col h3 { margin-top: 0; display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+  .col h3 small { font: 600 13px var(--label); letter-spacing: .1em; color: var(--muted); text-transform: none; }
+  .col ul { padding-left: 18px; font-size: 16px; }
+  .never { background: color-mix(in srgb, var(--bad) 8%, var(--panel)); border: 1px solid color-mix(in srgb, var(--bad) 35%, var(--rule)); border-radius: 12px; padding: 14px 16px; }
+  .never h3 { margin-top: 0; color: var(--bad); }
+  /* tables */
+  .tbl { overflow-x: auto; margin: 12px 0; border: 1px solid var(--rule); border-radius: 10px; }
+  table { border-collapse: collapse; width: 100%; font-size: 15px; min-width: 560px; }
+  th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  th { font: 600 12px var(--label); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); background: var(--panel); }
+  tr:last-child td { border-bottom: 0; }
+  td.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+  /* price tiles */
+  .prices { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 14px 0; }
+  @media (max-width: 520px) { .prices { grid-template-columns: 1fr; } }
+  .price { background: var(--panel); border: 1px solid var(--rule); border-radius: 12px; padding: 12px 14px; }
+  .price.lead { border-color: var(--orange); }
+  .price b { display: block; font: 400 28px/1.1 var(--display); color: var(--ink); }
+  .price span { font: 600 12px var(--label); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+  .price p { font-size: 14px; margin: 6px 0 0; color: var(--muted); }
+  /* quotes */
+  .quotes { display: grid; gap: 10px; margin: 12px 0; }
+  blockquote { margin: 0; padding: 10px 14px; border-left: 3px solid var(--cyan); background: var(--panel); border-radius: 0 8px 8px 0; font-style: italic; }
+  blockquote cite { display: block; margin-top: 4px; font: 600 12px var(--label); font-style: normal; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+  /* steps */
+  ol.steps { list-style: none; padding: 0; counter-reset: s; display: grid; gap: 10px; }
+  ol.steps li { counter-increment: s; background: var(--panel); border: 1px solid var(--rule); border-radius: 10px; padding: 12px 14px 12px 52px; position: relative; max-width: none; }
+  ol.steps li::before { content: counter(s); position: absolute; left: 14px; top: 11px; width: 26px; height: 26px; border-radius: 50%; border: 1.5px solid var(--orange); color: var(--orange); font: 400 14px/24px var(--display); text-align: center; }
+  ol.steps b { color: var(--ink); }
+  .pass { color: var(--good); } .fail { color: var(--bad); }
+  .src { font-size: 13px; color: var(--muted); }
+  .src a { color: var(--muted); }
+  footer { margin-top: 40px; font-size: 13px; color: var(--muted); }
+</style>
+
+<div class="wrap">
+  <span class="eyebrow">Space Collector · Paid plan · Draft 1 · 7 Oct 2026</span>
+  <h1>Space Collector Plus</h1>
+  <p class="lede">The sky stays free. Plus is for people who want to know <b>what's coming and when</b>, and want more depth once they're hooked. Nobody ever pays to catch, to complete a set, or to keep their collection safe.</p>
+
+  <div class="decision"><p><b>The rule that decides every call below:</b> charge for <b>anticipation and depth</b> (alerts, planning, radar, cosmetics); never charge for <b>completion or safety</b> (cards, odds, backup). In a collecting game, the sky decides rarity, not the wallet.</p></div>
+
+  <h2>Free and Plus</h2>
+  <div class="split">
+    <div class="col">
+      <h3>Free <small>everyone, forever</small></h3>
+      <ul>
+        <li>Unlimited catching and every card, set, shiny and gold card</li>
+        <li>All missions, streaks, achievements, ranks</li>
+        <li>Seasonal and meteor-shower event cards</li>
+        <li><b>ISS pass alerts</b>, unlimited</li>
+        <li><b>"Come outside" alerts</b> for the Moon and bright planets</li>
+        <li><b>1 flyover alert a week</b> for anything else, so you feel what Plus is like</li>
+        <li>Tonight planner: the next 24 hours, best passes flagged, Show me</li>
+        <li>Cloud forecast, sky slider, binocular mode, plane ID</li>
+        <li>Collection backup (export now; free sync when accounts arrive)</li>
+        <li>1 free streak freeze a month (cloudy weeks aren't your fault)</li>
+      </ul>
+    </div>
+    <div class="col plus">
+      <h3>Plus <small>$24.99 / year</small></h3>
+      <ul>
+        <li><b>Unlimited flyover alerts</b> for any satellite, fleet or rare object; a wanted list</li>
+        <li><b>New-train and fresh-launch alerts</b> ("Starlink train tonight, 9:42 PM, NW")</li>
+        <li><b>Shiny Radar</b>: alerts for shadow entries, Moon crossings and Epic/Legendary passes</li>
+        <li><b>7-night planner</b> with the best night picked, plus photographer-grade Sun/Moon transit predictions</li>
+        <li>Every alert is <b>clear-sky aware</b>: it only fires if your forecast is clear</li>
+        <li>Foil and holo finishes, premium card backs, holographic share cards, album themes</li>
+        <li>Stats, logbook and export</li>
+        <li>Sync across devices; <b>Family Sharing on</b> (each kid keeps their own collection)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="never">
+    <h3>Never behind the paywall</h3>
+    <ul>
+      <li>Catching anything, or any card that counts toward completing a set. Event cards are free; Plus gets a foil version of them.</li>
+      <li>Shiny odds, XP boosts or anything that makes catches easier ("every catch counts").</li>
+      <li>Backup of your collection. "Lost 200 cards, they want $4" is a one-star review in one sentence.</li>
+      <li>Upsell prompts in a child's view. Locked shinies shown to an 8-year-old read as a loot box.</li>
+      <li>Ads anywhere near the catch screen.</li>
+    </ul>
+  </div>
+
+  <h2>How people get a taste</h2>
+  <p>You wanted free users to experience the paid features and like them before they're asked to pay. The room agreed, with three adjustments:</p>
+  <ul>
+    <li><b>The ISS stays free.</b> It was the most-loved moment in the room ("I'll call my wife out to the porch"), and it's what spreads by word of mouth. The Moon and bright planets join it, for the same reason.</li>
+    <li><b>One free flyover alert a week</b>, and the app suggests a great one: a fresh Starlink train or a shiny chance. That way the free taste is the best version of Plus, not a dull pass. The weekly counter only appears once someone has used an alert.</li>
+    <li><b>The trial runs on clear nights, not days.</b> A 7-day trial in a cloudy week converts the forecast, not the product. The first time someone taps a Plus feature, they get Plus for their <b>next 3 clear nights</b>, unlocked by the app itself. After that, the store trial is <b>14 days, annual plan only</b>.</li>
+  </ul>
+
+  <h2>Price</h2>
+  <div class="prices">
+    <div class="price lead"><span>Annual · lead with this</span><b>$24.99</b><p>Under Sky Guide and Night Sky ($39.99). Annual plans keep 44% of subscribers a year; monthly keeps 17%.</p></div>
+    <div class="price"><span>Lifetime</span><b>$49.99</b><p>For subscription-haters. 3 of 8 in the room would only buy this way.</p></div>
+    <div class="price"><span>Monthly</span><b>$3.99</b><p>The decoy. Nobody in the room wanted it.</p></div>
+  </div>
+  <p class="muted">Also: a one-time <b>$4.99 cosmetic pack</b> (finishes and backs only) for teens who won't subscribe. Family Sharing is off by default in the App Store; turn it on.</p>
+
+  <h2>What would make people switch</h2>
+  <p>Ranked by how strongly they pulled in the room and the research:</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Feature</th><th>Who pays for it</th><th>Make-or-break</th></tr></thead>
+    <tbody>
+      <tr><td><b>Fleet and any-object alerts</b></td><td>Space fans (the core buyer)</td><td>Accuracy. One late or wrong alert costs a lot of trust; never alert for a train that has already spread out.</td></tr>
+      <tr><td><b>Family Sharing</b></td><td>Parents doing sky nights</td><td>Each kid keeps their own collection; no upsells in kids' views. Parents buy annual.</td></tr>
+      <tr><td><b>Shiny Radar</b></td><td>Collectors, space fans</td><td>Ties alerts to collecting, which competitors can't match (Birda's "missing species near you" is the same hook).</td></tr>
+      <tr><td><b>7-night planner and transits</b></td><td>Photographers, planners</td><td>Transits must be photographer-grade: centre line, exact second, how far to drive.</td></tr>
+      <tr><td><b>Cosmetics</b></td><td>Teens, collectors</td><td>Finishes only, never cards.</td></tr>
+    </tbody>
+  </table></div>
+  <p>Why alerts alone aren't enough: <b>ISS Detector already uses this exact model</b> (free ISS, paid other objects, $0.99–$11.99). What Space Collector can sell that it can't is the collecting angle: shiny chances, wanted lists, the radar.</p>
+
+  <h2>What the room said</h2>
+  <p>Eight realistic people: three likely payers, three casual users, a photographer and a subscription-hater. <b>Two would very likely pay, one conditionally, one only for lifetime, four not at all.</b> That's a realistic 2–5%.</p>
+  <div class="quotes">
+    <blockquote>"'New Starlink train tonight' is the notification I've wanted for years. Just don't send me a train that's already dispersed into a smear."<cite>Priya, 29 · space fan · would pay $24.99/yr or $49 lifetime</cite></blockquote>
+    <blockquote>"My kids fought over whose phone caught the ISS. If each of them gets their own collection on one plan, I'm in."<cite>Marcus, 41 · dad of two · would pay annual</cite></blockquote>
+    <blockquote>"Satellite predictions are public data. Charging me for the binocular catalogue is charging me for a filter."<cite>Dana, 52 · amateur astronomer · lifetime only</cite></blockquote>
+    <blockquote>"If the seasonal cards are only for paid people, that's pay-to-win. My album would just have holes in it forever."<cite>Maya, 15 · collector · would buy a cosmetic pack</cite></blockquote>
+    <blockquote>"The ISS alert is wonderful. That's free, you said? Then I have what I need."<cite>Gerald, 71 · walks the dog at 10 p.m. · won't pay</cite></blockquote>
+    <blockquote>"Backing up my collection costs money? That's hostage-taking."<cite>Tom, 45 · hates subscriptions · $6.99 lifetime, final offer</cite></blockquote>
+  </div>
+  <p class="src">These are simulated users written from the brief, not real interviews. They sharpen the questions; the experiments below give the answers.</p>
+
+  <h2>The market</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>App</th><th>Model</th><th>Price</th></tr></thead>
+    <tbody>
+      <tr><td>Sky Guide</td><td>Free app, subscription tiers</td><td class="num">$39.99/yr Plus · $59.99/yr Pro</td></tr>
+      <tr><td>Night Sky</td><td>Free app, subscription</td><td class="num">$5.99/mo · $39.99/yr</td></tr>
+      <tr><td>SkySafari 7</td><td>Paid upfront + premium</td><td class="num">$14.99–19.99 · $34.99</td></tr>
+      <tr><td>Stellarium Mobile</td><td>Free, one-time or subscription</td><td class="num">up to ~$18.99 lifetime</td></tr>
+      <tr><td>Star Walk 2</td><td>Ads or premium</td><td class="num">$5.99/yr · $2.99 ad removal</td></tr>
+      <tr><td>ISS Detector</td><td>Free ISS, paid add-ons</td><td class="num">$0.99–$11.99 each</td></tr>
+    </tbody>
+  </table></div>
+  <ul>
+    <li><b>Conversion to expect:</b> about <b>2–3% of downloads</b> (freemium median 2.18% by day 35). Duolingo's 9% is the ceiling for a heavily tuned streak app.</li>
+    <li><b>Trial to paid:</b> about 40–49% median in similar categories; longer trials convert better on annual plans.</li>
+    <li><b>Store cut:</b> 15% in Apple's Small Business Program and on all Google subscriptions. US web purchases can now link out of the app, but the fee on them is still in court.</li>
+  </ul>
+  <p class="src">Sources: <a href="https://support.fifthstarlabs.com/article/25-plus-and-pro">Sky Guide</a>, <a href="https://icandiapps.com/?p=3226">Night Sky</a>, <a href="https://www.space.com/sky-safari-7-pro-app-review">SkySafari</a>, <a href="https://apps.apple.com/us/app/iss-detector/id1198597805">ISS Detector</a>, <a href="https://www.revenuecat.com/state-of-subscription-apps-2025/">RevenueCat 2025</a>, <a href="https://birda.org/birda-plus/">Birda+</a>, <a href="https://developer.apple.com/app-store/review/guidelines/">Apple guidelines</a>. Some App Store prices are matched to plans by inference; Heavens-Above Pro and ISS Detector's per-tier prices weren't verified.</p>
+
+  <h2>Revised build order</h2>
+  <p>This changes what I suggested earlier (accounts, then native apps, then paid). All three panels pushed the same way: <b>test whether anyone pays before building the plumbing.</b> Otherwise, if the first cloudy month shows 1% conversion, you can't tell whether price, product or weather is to blame.</p>
+  <ol class="steps">
+    <li><b>Measure and fake-door test on the web, now.</b> Add privacy-friendly analytics. Put a "Plus" sheet behind Shiny Radar and the 7-night planner and record which locked feature people tap. Sell a real <b>"Founding Plus" for $14.99/yr</b> through a Stripe link, with alerts delivered to founders first. Add free collection export/import so nobody can lose their cards.</li>
+    <li><b>Native iPhone app with free alerts.</b> Capacitor around the existing app. Alerts are predicted <b>on the phone</b> and scheduled as local notifications, so there's no server bill and no stale location. Each alert is gated on sunlit, dark, bright enough and clear forecast; at most one per night; permission is asked after your first catch, not at launch.</li>
+    <li><b>Plus in the stores.</b> RevenueCat, annual first, the clear-night taste, the 14-day annual trial, Family Sharing on. Founding web buyers get a code to unlock it in the app.</li>
+    <li><b>Android.</b> Cheap once iOS works.</li>
+    <li><b>Accounts and sync</b>, when paying users ask for multiple devices. Shiny Radar and event pushes then move to a small server that works per ~50 km area, not per person.</li>
+  </ol>
+
+  <h2>Three tests before building most of it</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Test</th><th>Go</th><th>Stop and rethink</th></tr></thead>
+    <tbody>
+      <tr><td><b>Weather-adjusted retention.</b> Of people who had 3+ clear nights in weeks 3–4, how many caught something?</td><td class="pass">15% or more</td><td class="fail">Under 15%: fix the core loop first, no paywall</td></tr>
+      <tr><td><b>Fake door + real charge.</b> Taps on locked Plus features; Founding Plus purchases. Try $14.99 vs $24.99.</td><td class="pass">3%+ of weekly actives tap; 0.5%+ buy</td><td class="fail">Below that: the hook or the price is wrong</td></tr>
+      <tr><td><b>Alert holdout.</b> Half get ISS and bright-pass alerts (web push from the home screen, or email). Track alert → open → catch and 30-day retention.</td><td class="pass">20%+ of alerts lead to a catch</td><td class="fail">Under 20%, or 10%+ opt out a month: alerts aren't the product</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>Risks to watch</h2>
+  <ul>
+    <li><b>Seasons.</b> People subscribe in a clear spell and cancel in November. Lead with annual; the clear-night taste protects the trial.</li>
+    <li><b>Novelty.</b> After the 20th Starlink, satellites blur together. Rare objects, events and the radar are the retention engine. That's another reason not to lock the long tail.</li>
+    <li><b>Alert fatigue.</b> A pass behind cloud, or three pings in a night, and people switch alerts off for good. Clear-sky gating and one-a-night are part of the product, not polish.</li>
+    <li><b>Small funnel.</b> Casual stargazers are a niche, and summer nights are short up here. Plan on 1–3% of monthly players paying.</li>
+  </ul>
+
+  <h2>Decisions for you</h2>
+  <ul>
+    <li>Lifetime at <b>$49.99</b> (the room) or <b>$59.99</b> (the analysts)?</li>
+    <li>Run the web Founding Plus test, or wait for the iPhone app?</li>
+    <li>Binocular mode: I've kept it free (it's the same public data, and the astronomer called charging for it "charging for a filter"). Agree?</li>
+    <li>The name: "Space Collector Plus", or something with more character ("Mission Control", "Observatory")?</li>
+  </ul>
+
+  <footer>Drafted with three review panels: monetization analysts (with sources), eight simulated users, and a sceptical product lead. Simulated users aren't real research; treat their numbers as hypotheses for the tests above.</footer>
+</div>
