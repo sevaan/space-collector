@@ -385,3 +385,8 @@ body:has(#target:not([hidden])) #toasts { bottom:calc(var(--safe-bottom) + 226px
 body:has(#reveal:not([hidden])) #toasts, body:has(.overlay.panel:not([hidden])) #toasts { bottom:calc(var(--safe-bottom) + 14px); }
 .ticket { transform:translateY(calc(100% + var(--safe-bottom) + 160px)) scale(.96); cursor:pointer; }
 .ticket.in { transform:none; }
+
+/* The next-up chip eases in when the night's plan arrives (2026-10-06), instead of popping. */
+#nextpass:not([hidden]) { animation:npIn .6s cubic-bezier(.2,.8,.3,1); }
+@keyframes npIn { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:none; } }
+@media (prefers-reduced-motion: reduce) { #nextpass:not([hidden]) { animation:none; } }
