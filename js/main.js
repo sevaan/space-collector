@@ -1,29 +1,30 @@
-import { VERSION } from './version.js?v=0.1.197';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.197';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.197';
-import { conArt } from './con-art.js?v=0.1.197';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.197';
-import { CON_FIGURES } from './con-figures.js?v=0.1.197';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.197';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.197';
-import { progress as progressOf } from './progress.js?v=0.1.197';
-import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.197';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.197';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.197';
-import { SkyView, shortName } from './sky.js?v=0.1.197';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.197';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.197';
-import { cardArt } from './art.js?v=0.1.197';
-import { renderCard, cardLevel, artImage } from './card.js?v=0.1.197';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.197';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.197';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.197';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.197';
-import { TIER_INFO } from './rarity.js?v=0.1.197';
-import { SETS } from './sets.js?v=0.1.197';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.197';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.197';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.197';
+import { VERSION } from './version.js?v=0.1.199';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.199';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.199';
+import { conArt } from './con-art.js?v=0.1.199';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.199';
+import { CON_FIGURES } from './con-figures.js?v=0.1.199';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.199';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.199';
+import { progress as progressOf } from './progress.js?v=0.1.199';
+import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.199';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.199';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.199';
+import { SkyView, shortName } from './sky.js?v=0.1.199';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.199';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.199';
+import { cardArt } from './art.js?v=0.1.199';
+import { renderCard, cardLevel, artImage, attachTilt, throwOff } from './card.js?v=0.1.199';
+import { applyBack } from './card-backs.js?v=0.1.199';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.199';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.199';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.199';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.199';
+import { TIER_INFO } from './rarity.js?v=0.1.199';
+import { SETS } from './sets.js?v=0.1.199';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.199';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.199';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.199';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -1444,11 +1445,7 @@ function enterSky() {
 }
 $('btn-start').addEventListener('click', () => {
   if (!state.catalog) { location.reload(); return; }
-  $('btn-start').disabled=true;
-  keepAwake(); navigator.storage?.persist?.().catch(() => {});
-  writePref('started', true);
-  state.preview=false; enterSky();
-  runOnboarding();
+  welcomeGo();
 });
 
 // ---------- guided setup (2026-10-06, design/welcome-flows.html D) ----------
@@ -1539,11 +1536,74 @@ function saveExploreState() {
 }
 document.addEventListener('click', e => { if (e.target.closest('a[href^="cards.html"]')) saveExploreState(); });
 window.addEventListener('pagehide',saveExploreState);
-// Welcome (D "Studio"): one full-bleed card picture behind the headline: the Sun by day, the ISS by night.
+// ---------- Welcome card (2026-10-06) ----------
+// The opener is a sealed card (the real card back) that rattles every few seconds. Tap: it flips to a mission
+// card built with the real card renderer. Flick it up (or tap Begin): it flies off and the tour starts.
+let wcCard = null, wcFlipped = false, wcReady = false, wcWantFlip = false;
+function welcomeModel() {
+  const n = state.catalog?.objects?.length ?? 16000;
+  return {
+    key: 'welcome', id: 'welcome', natural: 'welcome', type: 'welcome', name: 'Collect the Cosmos', tier: 'legendary', code: 'MISSION 01',
+    stats: [['IN ORBIT', `${Math.floor(n / 1000)},000+`, ''], ['ALSO', 'Moon, planets', ''], ['YOUR RANK', 'Stargazer', '']],
+    fact: 'Thousands of satellites, rocket stages and stations cross your sky every night. **Point your phone at a light**, find out what it is, and **keep its card**.',
+  };
+}
 function renderStartHand() {
-  const day = (state.frame?.sunEl ?? -90) > -6, key = day ? 'sun' : '25544';
-  const c = state.cardModels.get(key); const src = c && artImage(c);
-  if (src) $('hero-art').src = src;
+  const holder = $('wc-holder'); if (!holder || wcCard) return;
+  const card = renderCard(welcomeModel(), { preview: true });
+  card.classList.add('wc-mission');
+  // Dress it as a briefing, not a catalogue entry.
+  const sb = card.querySelector('.card__setbar > span:first-child > span'); if (sb) sb.textContent = 'MISSION CONTROL';
+  const id = card.querySelector('.card__identity'); if (id) id.innerHTML = '<span>Your first mission</span><span class="card__mono">OBSERVER 001</span>';
+  const art = card.querySelector('.card__art'), sys = state.cardModels.get('system:solar'), src = sys && artImage(sys);
+  if (art && src) art.innerHTML = `<img class="card-art-image" src="${src}" alt="" decoding="async">`;
+  const st = card.querySelector('.card__status'); if (st) st.innerHTML = '<span class="card__status-icon" aria-hidden="true">↑</span><span>SWIPE UP TO BEGIN</span>';
+  // Start face-down: the card is turned half way, so its (pre-mirrored) back faces you.
+  const back = card.querySelector('.card__back'); applyBack(back); back.style.opacity = '1';
+  card.style.transform = 'perspective(1600px) rotateY(180deg)';
+  holder.replaceChildren(card); wcCard = card;
+  attachTilt(card);
+  holder.classList.add('rattle');
+}
+async function welcomeFlip() {
+  if (!wcCard || wcFlipped) return;
+  if (!wcReady) { wcWantFlip = true; return; }
+  wcFlipped = true;
+  const holder = $('wc-holder'), back = wcCard.querySelector('.card__back');
+  holder.classList.remove('rattle'); $('wc-hint').classList.add('gone'); unlockAudio();
+  const ms = matchMedia('(prefers-reduced-motion: reduce)').matches ? 1 : 900;
+  wcCard.animate([
+    { transform: 'perspective(1600px) rotateY(180deg) scale(1)', easing: 'cubic-bezier(.5,0,1,1)' },
+    { transform: 'perspective(1600px) rotateY(270deg) scale(1.08)', offset: .5, easing: 'cubic-bezier(0,0,.4,1)' },
+    { transform: 'perspective(1600px) rotateY(360deg) scale(1)' }], { duration: ms, fill: 'forwards' });
+  setTimeout(() => { back.style.opacity = ''; }, ms / 2); // edge-on: swap faces
+  await new Promise((r) => setTimeout(r, ms));
+  wcCard.getAnimations().forEach((a) => a.cancel()); wcCard.style.transform = '';
+  chirp([660, 990, 1320], 0.08);
+  $('wc-hint').hidden = true; $('wc-after').hidden = false;
+}
+function welcomeGo(dx = 0, dy = -2, dt = 16) {
+  if (!wcFlipped || $('btn-start').disabled) return;
+  $('btn-start').disabled = true;
+  const ms = throwOff(wcCard, dx, dy, dt);
+  setTimeout(() => {
+    keepAwake(); navigator.storage?.persist?.().catch(() => {});
+    writePref('started', true);
+    state.preview = false; enterSky(); runOnboarding();
+  }, ms);
+}
+{
+  const h = $('wc-holder'); let fl = null;
+  h.addEventListener('click', () => { if (!wcFlipped) welcomeFlip(); });
+  h.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); wcFlipped ? welcomeGo() : welcomeFlip(); } });
+  h.addEventListener('pointerdown', (e) => { if (wcFlipped) fl = { id: e.pointerId, pts: [{ x: e.clientX, y: e.clientY, t: performance.now() }] }; });
+  h.addEventListener('pointermove', (e) => { if (fl && e.pointerId === fl.id) { fl.pts.push({ x: e.clientX, y: e.clientY, t: performance.now() }); if (fl.pts.length > 12) fl.pts.shift(); } });
+  h.addEventListener('pointerup', (e) => {
+    if (!fl || e.pointerId !== fl.id) return; const pts = fl.pts; fl = null;
+    const last = pts[pts.length - 1], now2 = performance.now(), from = pts.find((p) => now2 - p.t < 140) ?? pts[0];
+    const dx = last.x - from.x, dy = last.y - from.y, dt = Math.max(16, now2 - from.t);
+    if (dy < -40 && last.y - pts[0].y < -50 && Math.abs(dx) < -dy * 0.9 && -dy / dt > 0.5) welcomeGo(dx, dy, dt);
+  });
 }
 async function boot() {
   try {
@@ -1555,7 +1615,7 @@ async function boot() {
     state.rising=new RisingSoon(state.catalog.objects);
     for (const o of state.catalog.objects) if (o.family) state.familyCounts.set(o.card,(state.familyCounts.get(o.card)??0)+1);
   } catch {
-    $('start-note').textContent='Satellite data could not load. Check your connection and reload to try again.'; $('start-note').classList.add('err');
+    $('start-note').hidden=false; $('wc-after').hidden=false; $('start-note').textContent='Satellite data could not load. Check your connection and reload to try again.'; $('start-note').classList.add('err');
     $('btn-start').firstElementChild.textContent='Reload satellite data'; $('btn-start').disabled=false;
     $('btn-start').onclick=()=>location.reload(); return;
   }
@@ -1563,7 +1623,7 @@ async function boot() {
   await loadLore(); await loadSightings();
   state.locationStatus=loadSavedLocation()?'saved':'example'; renderLocation();
   state.frame = frame(now(), state.observer); renderStartHand();
-  $('btn-start').firstElementChild.textContent='Get started'; $('btn-start').disabled=false;
+  $('btn-start').firstElementChild.textContent='Begin'; $('btn-start').disabled=false; wcReady = true; if (wcWantFlip) welcomeFlip();
   const params=new URLSearchParams(location.search);
   if(params.has('resume')) {
     try {
