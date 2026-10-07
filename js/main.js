@@ -1,29 +1,29 @@
-import { VERSION } from './version.js?v=0.1.196';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.196';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.196';
-import { conArt } from './con-art.js?v=0.1.196';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.196';
-import { CON_FIGURES } from './con-figures.js?v=0.1.196';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.196';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.196';
-import { progress as progressOf } from './progress.js?v=0.1.196';
-import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.196';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.196';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.196';
-import { SkyView, shortName } from './sky.js?v=0.1.196';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.196';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.196';
-import { cardArt } from './art.js?v=0.1.196';
-import { renderCard, cardLevel, artImage } from './card.js?v=0.1.196';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.196';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.196';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.196';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.196';
-import { TIER_INFO } from './rarity.js?v=0.1.196';
-import { SETS } from './sets.js?v=0.1.196';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.196';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.196';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.196';
+import { VERSION } from './version.js?v=0.1.197';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.197';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.197';
+import { conArt } from './con-art.js?v=0.1.197';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.197';
+import { CON_FIGURES } from './con-figures.js?v=0.1.197';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.197';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.197';
+import { progress as progressOf } from './progress.js?v=0.1.197';
+import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.197';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.197';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.197';
+import { SkyView, shortName } from './sky.js?v=0.1.197';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.197';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.197';
+import { cardArt } from './art.js?v=0.1.197';
+import { renderCard, cardLevel, artImage } from './card.js?v=0.1.197';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.197';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.197';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.197';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.197';
+import { TIER_INFO } from './rarity.js?v=0.1.197';
+import { SETS } from './sets.js?v=0.1.197';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.197';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.197';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.197';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -470,6 +470,7 @@ function tick(ts) {
     targetId: state.targetId,
     lockedOn: state.lockedOn,
     naturalTarget: target?.obj.natural ? target.look.enu : null,
+    naturalTargetName: target?.obj.natural ? label(target.obj) : null,
     planes: state.planeItems,
     planeHit: plane?.plane.hex ?? null,
     planeTrail: plane ? planePath(plane.plane, state.observer) : null, // where the lined-up plane has been and is going
@@ -668,6 +669,14 @@ function turnHint(l) {
 const ICON_TARGET = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="7.5"/><circle cx="12" cy="12" r="2.4" fill="currentColor" stroke="none"/><path d="M12 1.8v3.4M12 18.8v3.4M1.8 12h3.4M18.8 12h3.4"/></svg>';
 const ICON_BELL = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path class="fillme" d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.6 2H4.4z"/><path d="M10 20.6a2.2 2.2 0 0 0 4 0" stroke-linecap="round"/></svg>';
 const reminded = new Set(); // reminders set this session, so the bell stays filled
+// Steer to something that's up now (the tour's first catch, and Show me for passes already under way): pin it,
+// point the drag view at it if there are no sensors, and say where to look; the turn hint and edge arrow follow.
+function guideTo(obj, l, hint = '') {
+  cancelPassSearch();
+  state.pinnedId = obj.id; state.targetId = obj.id; state.sticky.clear(); state.guidePass = null;
+  if (state.drag.on || !hasLiveSensors()) { state.drag.on = true; state.drag.az = (l.az + 40) % 360; state.drag.el = Math.max(10, l.el - 10); } // close by, so the arrow has something to show
+  toast(`<span class="big-line">${escapeHtml(label(obj))}</span>${escapeHtml(hint || `Up now, ${Math.round(l.el)}° up in the ${compassPoint(l.az)}.`)} Follow the arrow.`, 5000);
+}
 // Tonight → "Show me": pin the object and steer to it (or to where it will rise).
 function showMePass(p) {
   cancelPassSearch();
@@ -1471,7 +1480,7 @@ async function runOnboarding(force = false) {
   // 3. the first catch: hide the chrome, pin the surest target, the normal aim + Tap to collect takes over
   $('ob-hair').style.setProperty('--w', '100%');
   const target = firstTarget();
-  if (target) { state.pinnedId = target.obj.id; state.targetId = target.obj.id; toast(`<span class="big-line">${escapeHtml(label(target.obj))} is up</span>${escapeHtml(target.hint)}`, 5000); }
+  if (target) guideTo(target.obj, target.look, target.hint); // same steering as Tonight → Show me
   ob.style.pointerEvents = 'none';
   // wait for the first card (or a skip), then close
   const had = state.sightings.filter((x) => !x.sim).length;
@@ -1484,12 +1493,12 @@ async function runOnboarding(force = false) {
 // What's certain to be up right now, with a one-line hint.
 function firstTarget() {
   const nat = state.naturals ?? [];
-  const sun = nat.find((n) => n.obj.key === 'sun' && n.look.visible); if (sun) return { obj: sun.obj, hint: 'Aim the phone, not your eyes.' };
-  const moon = nat.find((n) => n.obj.key === 'moon' && n.look.visible); if (moon) return { obj: moon.obj, hint: 'Bright and easy. Turn until it\'s in the circle.' };
+  const sun = nat.find((n) => n.obj.key === 'sun' && n.look.visible); if (sun) return { obj: sun.obj, look: sun.look, hint: `Up in the ${compassPoint(sun.look.az)}. Aim the phone, not your eyes.` };
+  const moon = nat.find((n) => n.obj.key === 'moon' && n.look.visible); if (moon) return { obj: moon.obj, look: moon.look, hint: `Bright and easy, ${Math.round(moon.look.el)}° up in the ${compassPoint(moon.look.az)}.` };
   const best = nat.filter((n) => n.look.visible && n.look.el > 15 && (n.obj.type === 'planet' || n.obj.type === 'star')).sort((a, b) => a.look.mag - b.look.mag)[0];
-  if (best) return { obj: best.obj, hint: `The bright steady one, ${Math.round(best.look.el)}° up in the ${compassPoint(best.look.az)}.` };
+  if (best) return { obj: best.obj, look: best.look, hint: `The bright steady one, ${Math.round(best.look.el)}° up in the ${compassPoint(best.look.az)}.` };
   const sat = (state.items ?? []).filter((a) => a.look.visible && a.look.el > 20).sort((a, b) => a.look.mag - b.look.mag)[0];
-  return sat ? { obj: sat.obj, hint: `Moving steadily, ${Math.round(sat.look.el)}° up in the ${compassPoint(sat.look.az)}.` } : null;
+  return sat ? { obj: sat.obj, look: sat.look, hint: `Moving steadily, ${Math.round(sat.look.el)}° up in the ${compassPoint(sat.look.az)}.` } : null;
 }
 function obFinish(caught) {
   const ob = $('onboard'); ob.style.pointerEvents = ''; onboarding = null; document.body.classList.remove('ob-sheet');

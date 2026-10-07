@@ -1,9 +1,9 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.196';
+import { extinction } from './sky-limit.js?v=0.1.197';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.196';
-import { TIER_INFO } from './rarity.js?v=0.1.196';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.197';
+import { TIER_INFO } from './rarity.js?v=0.1.197';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -722,7 +722,7 @@ export class SkyView {
 
   // safeTop/safeBottom are HUD insets in CSS pixels; centerY is an optional pixel
   // override. Projection and the reticle always share the same cx/cy.
-  draw(basis, items, { showDim, sky, bodies, milky, lines = true, targetId = null, time = 0, safeTop = 150, safeBottom = 230, centerY, starLimit = null, sunEl = -90, ghosts = null, weather = null, newFind = false, rising = null, landscape = false, lockedOn = null, planes = null, planeHit = null, planeTrail = null, naturalTarget = null } = {}) {
+  draw(basis, items, { showDim, sky, bodies, milky, lines = true, targetId = null, time = 0, safeTop = 150, safeBottom = 230, centerY, starLimit = null, naturalTargetName = null, sunEl = -90, ghosts = null, weather = null, newFind = false, rising = null, landscape = false, lockedOn = null, planes = null, planeHit = null, planeTrail = null, naturalTarget = null } = {}) {
     this.basis = basis;
     this.safeTop = Math.max(12, Math.min(safeTop, this.h * 0.45));
     this.safeBottom = Math.max(12, Math.min(safeBottom, this.h - this.safeTop - 100));
@@ -792,6 +792,8 @@ export class SkyView {
         ctx.save(); ctx.strokeStyle = t.tick; ctx.lineWidth = 1; ctx.globalAlpha = 0.8;
         ctx.beginPath(); ctx.arc(p.x, p.y, 15, 0, Math.PI * 2); ctx.stroke(); ctx.restore();
       }
+      // Off screen: the same pulsing edge arrow a satellite gets (2026-10-06: consistent guidance, e.g. in the tour).
+      if (!p || !this.inSky(p, 10)) offscreen.push({ it: { label: naturalTargetName ?? '', obj: { name: naturalTargetName ?? '' }, look: { mag: -9 } }, c: this.cam(naturalTarget), isTarget: true });
     }
     if (planeTrail) this.drawPlaneTrail(planeTrail);
     const planeAt = this.drawPlanes(planes, planeHit);
