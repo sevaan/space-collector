@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Welcome Flows</title>
+<style>
+  @font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf'); font-weight: 500; }
+  @font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf'); }
+  :root { --ink: #fff2b3; --muted: #bdbea9; --orange: #fa8127; --edge: #627a8b; --navy: #080e1a; --glass: #0c1725f2; --safe-top: env(safe-area-inset-top, 0px); --safe-bottom: env(safe-area-inset-bottom, 0px); }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: #04070d; color: var(--ink); font: 15px/1.45 -apple-system, system-ui, sans-serif; -webkit-font-smoothing: antialiased; overflow: hidden; }
+  .lab { font: 500 12px/1.2 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .18em; text-transform: uppercase; }
+  .disp { font-family: 'SC Display', Impact, sans-serif; font-weight: 400; letter-spacing: -.035em; text-transform: uppercase; }
+
+  /* ---- picker ---- */
+  #pick { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 24px; text-align: center; }
+  #pick h1 { font-size: 24px; margin: 0 0 4px; } #pick p { color: var(--muted); max-width: 360px; margin: 0 0 14px; }
+  #pick button { width: min(360px, 100%); padding: 16px 18px; border-radius: 12px; border: 1px solid var(--edge); background: var(--glass); color: var(--ink); text-align: left; cursor: pointer; }
+  #pick button b { display: block; font: 400 18px/1.1 'SC Display', sans-serif; letter-spacing: -.02em; text-transform: uppercase; margin-bottom: 4px; }
+  #pick button span { color: var(--muted); font-size: 13px; }
+
+  /* ---- stage ---- */
+  #stage { position: fixed; inset: 0; display: none; overflow: hidden; background: var(--navy); }
+  #stage.on { display: block; }
+  .stars { position: absolute; inset: 0; pointer-events: none; }
+  .stars i { position: absolute; border-radius: 50%; background: var(--ink); animation: tw var(--t) ease-in-out var(--d) infinite; }
+  @keyframes tw { 0%, 100% { opacity: var(--o); } 50% { opacity: .08; } }
+  .scene { position: absolute; inset: 0; display: flex; flex-direction: column; padding: calc(var(--safe-top) + 24px) 24px calc(var(--safe-bottom) + 28px); opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s cubic-bezier(.2,.8,.3,1); pointer-events: none; }
+  .scene.in { opacity: 1; transform: none; pointer-events: auto; }
+  .scene.out { opacity: 0; transform: translateY(-18px); pointer-events: none; }
+  .spacer { flex: 1; }
+  .eyebrow { color: var(--orange); margin-bottom: 10px; }
+  h2 { margin: 0 0 12px; font: 400 clamp(30px, 8.4vw, 40px)/1.02 'SC Display', Impact, sans-serif; letter-spacing: -.04em; text-transform: uppercase; }
+  .body { color: var(--muted); font-size: 16px; line-height: 1.5; margin: 0 0 22px; max-width: 360px; }
+  .cta { display: flex; align-items: center; justify-content: center; width: 100%; height: 58px; border: 0; border-radius: 10px; background: var(--orange); color: #0b1120; font: 500 17px/1 'SC Label', sans-serif; letter-spacing: .2em; text-transform: uppercase; cursor: pointer; }
+  .cta.ghost { background: transparent; border: 1px solid var(--edge); color: var(--ink); }
+  .skip { display: block; margin: 14px auto 0; background: none; border: 0; color: var(--muted); font: 500 13px/1 'SC Label', sans-serif; letter-spacing: .16em; text-transform: uppercase; cursor: pointer; }
+  .dots { display: flex; gap: 6px; justify-content: center; margin-bottom: 14px; } .dots i { width: 6px; height: 6px; border-radius: 50%; background: #ffffff33; } .dots i.on { background: var(--orange); }
+  .back { position: absolute; left: 16px; top: calc(var(--safe-top) + 14px); width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--edge); background: var(--glass); color: var(--ink); font-size: 20px; display: grid; place-items: center; cursor: pointer; z-index: 3; }
+  .exit { position: absolute; right: 16px; top: calc(var(--safe-top) + 14px); width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--edge); background: var(--glass); color: var(--ink); font-size: 18px; display: grid; place-items: center; cursor: pointer; z-index: 3; }
+  .wm { font: 400 15px/1.15 'SC Display', Impact, sans-serif; letter-spacing: -.03em; color: var(--ink); } .wm span { display: block; color: var(--muted); font: 500 10px/1.2 'SC Label', sans-serif; letter-spacing: .18em; margin-top: 5px; }
+
+  /* equipment list (used by B) */
+  .equip { display: flex; flex-direction: column; gap: 10px; margin: 6px 0 22px; }
+  .equip > div { display: grid; grid-template-columns: 34px 1fr auto; gap: 12px; align-items: center; padding: 12px 14px; border: 1px solid #ffffff1c; border-radius: 10px; background: #ffffff08; }
+  .equip > div > div { min-width: 0; }
+  .equip b { font: 500 14px/1.2 'SC Label', sans-serif; letter-spacing: .12em; text-transform: uppercase; }
+  .equip small { display: block; color: var(--muted); font-size: 12.5px; letter-spacing: 0; text-transform: none; margin-top: 2px; font-family: -apple-system, system-ui, sans-serif; }
+  .equip .st { font: 500 11px/1 'SC Label', sans-serif; letter-spacing: .14em; color: var(--muted); } .equip .st.ok { color: #7ee2a5; } .equip .st.pend { color: var(--orange); }
+  .equip .ic { width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--edge); display: grid; place-items: center; color: var(--ink); font-size: 16px; }
+
+  /* the sky mock (used by all for the catch step) */
+  .skym { position: absolute; inset: 0; z-index: -1; background: radial-gradient(ellipse at 50% 30%, #122646, #080e1a 70%); }
+  .skym.day { background: linear-gradient(#3f7fbf, #b9d6ea 80%, #e7eef0); }
+  .ret { position: absolute; left: 50%; top: 50%; width: 136px; height: 136px; margin: -68px 0 0 -68px; border-radius: 50%; border: 2px solid var(--orange); box-shadow: 0 0 0 1px #0004, 0 0 30px #fa812744; }
+  .ret::after { content: ''; position: absolute; left: 50%; top: 50%; width: 10px; height: 10px; margin: -5px 0 0 -5px; border-radius: 50%; background: var(--ink); box-shadow: 0 0 14px 4px #fff2b3aa; }
+  .ret.sun::after { width: 30px; height: 30px; margin: -15px 0 0 -15px; background: #fffbea; box-shadow: 0 0 40px 18px #fff6cf88; }
+  .tname { position: absolute; left: 0; right: 0; top: calc(50% - 118px); text-align: center; } .tname b { display: block; font: 400 24px/1 'SC Display', sans-serif; letter-spacing: -.02em; text-transform: uppercase; } .tname span { color: var(--orange); }
+  .tap { position: absolute; left: 50%; top: calc(50% + 92px); transform: translateX(-50%); padding: 14px 24px; border: 0; border-radius: 6px; background: var(--orange); color: #0b1120; font: 500 15px/1 'SC Label', sans-serif; letter-spacing: .18em; text-transform: uppercase; box-shadow: 0 8px 24px #0008; cursor: pointer; animation: pulse 1.6s ease-in-out infinite; }
+  @keyframes pulse { 0%, 100% { transform: translateX(-50%) scale(1); } 50% { transform: translateX(-50%) scale(1.04); } }
+  .arrow { position: absolute; left: 50%; top: calc(50% + 150px); transform: translateX(-50%); color: var(--ink); text-align: center; } .arrow b { font-size: 28px; display: block; }
+  .skym.day ~ .tname b, .skym.day ~ .arrow { color: #143046; } .skym.day ~ .tname span { color: #7a3a10; }
+
+  /* reveal card mock */
+  .cardm { position: absolute; left: 50%; top: 50%; width: 260px; height: 364px; margin: -182px 0 0 -130px; border-radius: 16px; border: 4px solid #adbcc8; background: var(--navy); box-shadow: 0 24px 60px #000c; overflow: hidden; transform: rotateY(90deg) scale(.9); transition: transform .6s cubic-bezier(.2,.8,.3,1); }
+  .cardm.in { transform: none; }
+  .cardm .h { padding: 10px 12px 6px; display: flex; justify-content: space-between; font-size: 9px; border-bottom: 1px solid #bcb58588; } .cardm .n { padding: 8px 12px; font-size: 22px; line-height: 1; } .cardm img { width: 100%; height: 190px; object-fit: cover; display: block; } .cardm .f { padding: 8px 12px; font-size: 9px; color: var(--muted); border-top: 1px solid #bcb58588; margin-top: 10px; }
+  .ticket { position: absolute; left: 14px; right: 14px; top: calc(var(--safe-top) + 66px); display: flex; align-items: center; gap: 12px; padding: 10px 12px 10px 14px; border: 1px solid var(--edge); border-left: 4px solid #e2b53c; border-radius: 10px; background: #0c1725; box-shadow: 0 8px 24px #0008; opacity: 0; transform: translateY(-120px); transition: transform .3s cubic-bezier(.5,0,.9,.5), opacity .3s; z-index: 5; }
+  .ticket.in { opacity: 1; transform: none; transition: transform .55s cubic-bezier(.18,1.25,.4,1), opacity .2s; }
+  .ticket i { width: 9px; height: 9px; transform: rotate(45deg); background: #e2b53c; flex: none; } .ticket span { font: 500 15px/1.25 'SC Label', sans-serif; letter-spacing: .04em; } .ticket small { display: block; color: #f4d27a; font-size: 10px; letter-spacing: .16em; text-transform: uppercase; margin-bottom: 2px; }
+  .xp { position: absolute; left: 0; right: 0; top: calc(var(--safe-top) + 22px); text-align: center; color: var(--orange); }
+
+  /* A: the sky arrives */
+  .horizon { position: absolute; left: -10%; right: -10%; bottom: 0; height: 44%; z-index: -1; background: radial-gradient(ellipse at 50% 100%, #1b2a45 0, #0a1424 60%, transparent 70%); transition: transform 1.2s cubic-bezier(.2,.8,.3,1); transform: translateY(100%); }
+  .horizon.in { transform: none; }
+  .stars.dim i { animation: none; opacity: 0; transition: opacity 1.4s; } .stars.dim.in i { opacity: var(--o); }
+  .bigname { position: absolute; left: 24px; right: 24px; bottom: 36%; }
+
+  /* C: the card chooses you */
+  .fan { position: absolute; left: 50%; top: 34%; width: 0; height: 0; }
+  .fan .c { position: absolute; left: -72px; top: -101px; width: 144px; height: 202px; border-radius: 14px; border: 3px solid #adbcc8; background: var(--navy); overflow: hidden; box-shadow: 0 18px 40px #000a; transform-origin: 50% 130%; transition: transform .8s cubic-bezier(.2,.8,.3,1), opacity .5s, filter .5s; }
+  .fan .c img { width: 100%; height: 100%; object-fit: cover; opacity: .9; }
+  .fan .c .lbl { position: absolute; left: 0; right: 0; bottom: 0; padding: 10px; background: linear-gradient(transparent, #080e1af0 60%); font: 400 14px/1.1 'SC Display', sans-serif; text-transform: uppercase; }
+  .fan .c.pick { transform: translateY(-20px) scale(1.12); z-index: 2; box-shadow: 0 0 0 3px var(--orange), 0 30px 60px #000c; }
+  .fan .c.away { opacity: 0; filter: blur(4px); }
+</style></head><body>
+<div id="pick">
+  <h1 class="disp">Welcome flows</h1>
+  <p>Three complete setup flows, each a different idea. Tap one and go through it like a new player (simulated permissions and catch). Works best on a phone.</p>
+  <button data-flow="A"><b>A · The sky arrives</b><span>No slideshow. One dark screen, one line. As you allow each thing, the real sky builds up around you: horizon, stars, then a target. The app is the onboarding.</span></button>
+  <button data-flow="B"><b>B · Mission Control</b><span>Sign on as a Stargazer. Each permission is a piece of equipment coming online, with a status board. Playful, themed, very clear about what's being asked and why.</span></button>
+  <button data-flow="C"><b>C · The card chooses you</b><span>Cards fan out, one slides forward: the thing that's up right now. "This one's up. Go get it." Setup happens on the way to catching that exact card.</span></button>
+</div>
+<div id="stage"></div>
+<script>
+const $ = (s, r = document) => r.querySelector(s);
+const stage = $('#stage');
+let seed = 3; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+const stars = (cls = '') => `<div class="stars ${cls}">${Array.from({ length: 110 }, () => { const s = rnd() < .12 ? 2.4 : .8 + rnd() * 1.3; return `<i style="left:${rnd() * 100}%;top:${rnd() * 100}%;width:${s}px;height:${s}px;--o:${(.3 + rnd() * .6).toFixed(2)};--t:${(3 + rnd() * 4).toFixed(1)}s;--d:${(rnd() * 6).toFixed(1)}s"></i>`; }).join('')}</div>`;
+const hour = new Date().getHours(), isDay = hour >= 7 && hour < 18;
+const target = isDay ? { name: 'The Sun', tier: 'Epic', art: 'sun', hint: 'Aim the phone, not your eyes', from: 'high in the south' } : (hour < 23 ? { name: 'The Moon', tier: 'Common', art: 'moon', hint: 'Bright and easy', from: 'low in the east' } : { name: 'Jupiter', tier: 'Common', art: 'planet-jupiter', hint: 'The bright steady one', from: 'high in the south' });
+const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+// A ticket toast, as in the app (drops in from the top, slides out).
+function toastIn(scene, eyebrow, line) {
+  const t = document.createElement('div'); t.className = 'ticket'; t.innerHTML = `<i></i><span><small>${eyebrow}</small>${line}</span>`;
+  scene.append(t); requestAnimationFrame(() => requestAnimationFrame(() => t.classList.add('in')));
+  setTimeout(() => { t.classList.remove('in'); setTimeout(() => t.remove(), 400); }, 3200);
+}
+
+let scenes = [], idx = 0, flow = null;
+function show(i) {
+  const prev = scenes[idx]; idx = i;
+  if (prev && prev !== scenes[i]) { prev.classList.remove('in'); prev.classList.add('out'); setTimeout(() => prev.classList.remove('out'), 500); }
+  requestAnimationFrame(() => requestAnimationFrame(() => scenes[i].classList.add('in')));
+  scenes[i].dispatchEvent(new Event('enter'));
+}
+const next = () => show(Math.min(idx + 1, scenes.length - 1));
+function scene(html, { back = true } = {}) {
+  const el = document.createElement('div'); el.className = 'scene'; el.innerHTML = html;
+  if (back && scenes.length) { const b = document.createElement('button'); b.className = 'back'; b.textContent = '‹'; b.onclick = () => show(idx - 1); el.append(b); }
+  const x = document.createElement('button'); x.className = 'exit'; x.textContent = '✕'; x.onclick = () => location.reload(); el.append(x);
+  stage.append(el); scenes.push(el); return el;
+}
+const dots = (n, k) => `<div class="dots">${Array.from({ length: n }, (_, i) => `<i class="${i === k ? 'on' : ''}"></i>`).join('')}</div>`;
+
+// shared: the catch + reveal, used by every flow
+function catchScenes(n, k) {
+  const aim = scene(`<div class="skym ${isDay ? 'day' : ''}"></div>${isDay ? '' : stars()}
+    <div class="tname"><span class="lab">◆ ${target.tier}</span><b>${target.name}</b></div><div class="ret ${isDay ? 'sun' : ''}"></div>
+    <button class="tap">Tap to collect</button><div class="arrow"><span class="lab">${target.hint}</span></div>`, { back: true });
+  aim.querySelector('.tap').onclick = next;
+  const rev = scene(`${stars()}<div class="xp lab">New card · +${target.tier === 'Epic' ? 80 : 10} XP</div>
+    <div class="cardm"><div class="h lab"><span>The Wanderers</span><span>◆ ${target.tier}</span></div><div class="n disp">${target.name}</div><img src="../assets/art/cards/${target.art}.webp" alt=""><div class="f lab">Collected · today</div></div>
+    <div class="spacer"></div><div class="spacer"></div><button class="cta">Keep going</button>`, { back: false });
+  rev.addEventListener('enter', async () => { await wait(350); rev.querySelector('.cardm').classList.add('in'); await wait(700); toastIn(rev, 'MILESTONE', 'First item collected'); });
+  rev.querySelector('.cta').onclick = next;
+}
+function tonightScene(n, k, cls = '') {
+  const s = scene(`${stars()}<div class="spacer"></div>${dots(n, k)}<div class="eyebrow lab">You're in</div><h2>Rank: Stargazer</h2>
+    <p class="body">Satellites pass all night, every night. Next good one: <b style="color:var(--ink)">Hubble, 8:12 PM, 61° up in the NE.</b> Tap the Tonight line any time for the plan.</p>
+    <button class="cta">Explore the sky</button><button class="cta ghost" style="margin-top:10px">Remind me at 8:00</button>`, { back: false });
+  s.querySelector('.cta').onclick = () => alert('→ Explore (the real app would hand off here).');
+}
+
+const flows = {
+  // ---------- A: the sky arrives ----------
+  A() {
+    const s1 = scene(`${stars('dim')}<div class="horizon"></div><div class="spacer"></div>
+      <div class="eyebrow lab">Space Collector</div><h2>It's all<br>up there.</h2>
+      <p class="body">Satellites, stations, planets, stars: thousands of things pass over you every night. Let's find your first one.</p>
+      <button class="cta">Begin</button>`, { back: false });
+    s1.addEventListener('enter', async () => { await wait(300); s1.querySelector('.horizon').classList.add('in'); });
+    s1.querySelector('.cta').onclick = next;
+    const s2 = scene(`${stars('dim')}<div class="horizon in"></div><div class="spacer"></div>
+      <div class="eyebrow lab">1 of 3 · Where you are</div><h2>Your sky starts<br>with your spot.</h2>
+      <p class="body">The app lines the sky up with where you're standing. Nothing is sent anywhere.</p>
+      <button class="cta">Use my location</button><button class="skip">Pick a spot instead</button>`);
+    s2.addEventListener('enter', async () => { await wait(200); s2.querySelector('.stars').classList.add('in'); });
+    s2.querySelector('.cta').onclick = next; s2.querySelector('.skip').onclick = next;
+    const s3 = scene(`${stars()}<div class="horizon in"></div><div class="spacer"></div>
+      <div class="eyebrow lab">2 of 3 · Hold it up</div><h2>The circle follows<br>the phone.</h2>
+      <p class="body">Allow motion, then sweep the phone across the sky. Whatever sits in the circle is what you're looking at.</p>
+      <button class="cta">Allow motion</button><button class="skip">Drag with a finger instead</button>`);
+    s3.querySelector('.cta').onclick = next; s3.querySelector('.skip').onclick = next;
+    const s4 = scene(`<div class="skym ${isDay ? 'day' : ''}"></div>${isDay ? '' : stars()}<div class="spacer"></div>
+      <div class="eyebrow lab">3 of 3 · Your first catch</div><h2>${target.name} is up,<br>${target.from}.</h2>
+      <p class="body">Turn until it's in the circle. ${target.hint}.</p><button class="cta">Show me</button>`);
+    s4.querySelector('.cta').onclick = next;
+    catchScenes(); tonightScene(1, 0);
+  },
+  // ---------- B: Mission Control ----------
+  B() {
+    const s1 = scene(`${stars()}<div class="spacer"></div><div class="wm">SPACE COLLECTOR<span>MISSION CONTROL</span></div><div class="spacer"></div>
+      <div class="eyebrow lab">Observer sign-on</div><h2>Welcome aboard,<br>Stargazer.</h2>
+      <p class="body">Every observer starts here. Three systems to bring online, then your first assignment.</p>
+      <button class="cta">Begin sign-on</button>`, { back: false });
+    s1.querySelector('.cta').onclick = next;
+    const board = (loc, mot, sky) => `<div class="equip">
+      <div><span class="ic">⌖</span><div><b>Navigation</b><small>Lines the sky up with where you stand.</small></div><span class="st ${loc}">${loc === 'ok' ? 'Online' : loc === 'pend' ? 'Standby' : '—'}</span></div>
+      <div><span class="ic">◎</span><div><b>Gyroscope</b><small>The circle follows the phone.</small></div><span class="st ${mot}">${mot === 'ok' ? 'Online' : mot === 'pend' ? 'Standby' : '—'}</span></div>
+      <div><span class="ic">✦</span><div><b>Sky calibration</b><small>Match the screen to what you can see.</small></div><span class="st ${sky}">${sky === 'ok' ? 'Online' : sky === 'pend' ? 'Standby' : '—'}</span></div></div>`;
+    const s2 = scene(`${stars()}<div class="spacer"></div><div class="eyebrow lab">Systems check</div><h2>Bring navigation<br>online.</h2>${board('pend', '', '')}
+      <button class="cta">Allow location</button><button class="skip">Enter coordinates</button>`);
+    s2.querySelector('.cta').onclick = next; s2.querySelector('.skip').onclick = next;
+    const s3 = scene(`${stars()}<div class="spacer"></div><div class="eyebrow lab">Systems check</div><h2>Bring the<br>gyroscope online.</h2>${board('ok', 'pend', '')}
+      <button class="cta">Allow motion</button><button class="skip">Drag mode instead</button>`);
+    s3.querySelector('.cta').onclick = next; s3.querySelector('.skip').onclick = next;
+    const s4 = scene(`${stars()}<div class="spacer"></div><div class="eyebrow lab">Systems check</div><h2>All systems<br>online.</h2>${board('ok', 'ok', isDay ? 'ok' : 'pend')}
+      <p class="body">${isDay ? 'Calibration happens at night: you\'ll drag a slider until the screen matches the stars you can see.' : 'Tonight, once you\'re out: drag the slider until the screen shows about as many stars as you can see.'}</p>
+      <button class="cta">First assignment</button>`);
+    s4.querySelector('.cta').onclick = next;
+    const s5 = scene(`<div class="skym ${isDay ? 'day' : ''}"></div>${isDay ? '' : stars()}<div class="spacer"></div>
+      <div class="eyebrow lab">Assignment 01</div><h2>Catch ${target.name}.</h2>
+      <p class="body">It's up right now, ${target.from}. ${target.hint}. Turn until it's in the circle, then tap.</p><button class="cta">Accept</button>`);
+    s5.querySelector('.cta').onclick = next;
+    catchScenes(); tonightScene(1, 0);
+  },
+  // ---------- C: the card chooses you ----------
+  C() {
+    const cards = [['Saturn', 'planet-saturn'], ['International Space Station', 'iss'], ['Betelgeuse', 'star-betelgeuse'], [target.name, target.art], ['Hubble Space Telescope', 'hubble']];
+    const s1 = scene(`${stars()}<div class="fan">${cards.map(([n, a], i) => `<div class="c" data-i="${i}" style="transform:rotate(${(i - 2) * 11}deg) translateX(${(i - 2) * 26}px)"><img src="../assets/art/cards/${a}.webp" alt=""><div class="lbl">${n}</div></div>`).join('')}</div>
+      <div class="spacer"></div><div class="spacer"></div><div class="eyebrow lab">Space Collector</div><h2 id="c-h">Every light up there<br>is a card.</h2>
+      <p class="body" id="c-p">Thousands of them. One is above you right now.</p><button class="cta" id="c-cta">Which one?</button>`, { back: false });
+    s1.querySelector('#c-cta').onclick = async () => {
+      const b = s1.querySelector('#c-cta'); b.disabled = true;
+      s1.querySelectorAll('.fan .c').forEach((c) => { if (c.dataset.i === '3') c.classList.add('pick'); else c.classList.add('away'); });
+      await wait(700);
+      s1.querySelector('#c-h').innerHTML = `${target.name}.<br>It's up now.`; s1.querySelector('#c-p').textContent = `${target.from[0].toUpperCase() + target.from.slice(1)}. ${target.hint}. Let's go and get it.`;
+      b.textContent = 'Go get it'; b.disabled = false; b.onclick = next;
+    };
+    const s2 = scene(`${stars()}<div class="spacer"></div><div class="eyebrow lab">On the way · 1 of 2</div><h2>Where are<br>you standing?</h2>
+      <p class="body">So ${target.name} shows up where it really is.</p><button class="cta">Use my location</button><button class="skip">Pick a spot instead</button>`);
+    s2.querySelector('.cta').onclick = next; s2.querySelector('.skip').onclick = next;
+    const s3 = scene(`${stars()}<div class="spacer"></div><div class="eyebrow lab">On the way · 2 of 2</div><h2>Hold the phone<br>up to the sky.</h2>
+      <p class="body">Allow motion and the circle follows wherever you point.</p><button class="cta">Allow motion</button><button class="skip">Drag with a finger instead</button>`);
+    s3.querySelector('.cta').onclick = next; s3.querySelector('.skip').onclick = next;
+    catchScenes(); tonightScene(1, 0);
+  },
+};
+document.querySelectorAll('#pick button').forEach((b) => b.onclick = () => { flow = b.dataset.flow; $('#pick').style.display = 'none'; stage.classList.add('on'); flows[flow](); show(0); });
+</script></body></html>
