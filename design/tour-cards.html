@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Tour Cards</title>
+<style>
+  @font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf'); font-weight: 500; }
+  @font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf'); }
+  :root { --ink: #fff2b3; --muted: #bdbea9; --orange: #fa8127; --edge: #627a8b; --navy: #080e1a; --safe-top: env(safe-area-inset-top, 0px); --safe-bottom: env(safe-area-inset-bottom, 0px); }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; overflow: hidden; background: var(--navy); color: var(--ink); font: 15px/1.45 -apple-system, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  .lab { font: 500 11px/1.2 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .18em; text-transform: uppercase; }
+
+  /* the live sky behind (static stand-in for the real Explore view) */
+  .sky { position: fixed; inset: 0; background: radial-gradient(ellipse at 50% 32%, #12233f, #080e1a 72%); }
+  .sky .stars i { position: absolute; border-radius: 50%; background: var(--ink); animation: tw var(--t) ease-in-out var(--d) infinite; }
+  @keyframes tw { 0%, 100% { opacity: var(--o); } 50% { opacity: .1; } }
+  .sky .hdr { position: absolute; left: 20px; right: 20px; top: calc(var(--safe-top) + 22px); display: flex; justify-content: space-between; opacity: .45; }
+  .sky .wm { font: 400 16px/1.15 'SC Display', sans-serif; letter-spacing: -.03em; } .sky .wm span { display: block; color: var(--muted); font: 500 10px/1.2 'SC Label', sans-serif; letter-spacing: .18em; margin-top: 5px; }
+  .sky .ib { width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--edge); display: inline-grid; place-items: center; margin-left: 8px; }
+  .sky .ret { position: absolute; left: 50%; top: 32%; width: 132px; height: 132px; margin: -66px 0 0 -66px; border-radius: 50%; border: 1.5px solid #fff2b3aa; transition: border-color .4s, transform .6s; }
+  .sky .ret::before { content: ''; position: absolute; inset: -6px; border-radius: 50%; border: 1px solid #627a8b88; }
+  .sky.motion .ret { animation: sway 4s ease-in-out infinite alternate; }
+  @keyframes sway { from { transform: translate(-14px, 6px); } to { transform: translate(16px, -8px); } }
+  .sky.located .ret { border-color: var(--orange); }
+
+  /* progress: a row of small card pips instead of a hairline */
+  .pips { position: fixed; z-index: 5; left: 0; right: 0; top: calc(var(--safe-top) + 92px); display: flex; justify-content: center; gap: 6px; }
+  .pips i { width: 14px; height: 20px; border-radius: 3px; border: 1px solid #ffffff3a; background: #ffffff10; transition: background .3s, border-color .3s, transform .3s; }
+  .pips i.on { background: var(--orange); border-color: var(--orange); transform: translateY(-2px); }
+  .pips i.done { background: #fa812755; border-color: #fa812788; }
+  .skip { position: fixed; z-index: 5; left: 50%; transform: translateX(-50%); top: calc(var(--safe-top) + 122px); padding: 7px 14px; border-radius: 99px; border: 1px solid #ffffff2a; background: #0c1725cc; color: var(--muted); font: 500 11px/1 'SC Label', sans-serif; letter-spacing: .16em; text-transform: uppercase; }
+
+  /* the deck: cards peek up from the bottom edge, top half on screen */
+  .deck { position: fixed; z-index: 4; left: 0; right: 0; bottom: 0; height: 58%; perspective: 1400px; pointer-events: none; }
+  .tc { position: absolute; left: 50%; top: 0; width: min(360px, calc(100vw - 28px)); height: 150%; margin-left: calc(min(360px, calc(100vw - 28px)) / -2); border-radius: 22px; background: var(--navy); border: 4px solid #adbcc8; box-shadow: inset 0 0 0 5px var(--navy), inset 0 0 0 6px #bcb58566, 0 -14px 50px #000b; overflow: hidden; pointer-events: auto; touch-action: none;
+    transform: translate(var(--x, 0px), var(--y, 0px)) rotate(var(--r, 0deg)) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transition: transform .5s cubic-bezier(.2,.9,.3,1), opacity .4s; will-change: transform; }
+  .tc.dragging { transition: none; }
+  .tc.under { --y: 26px; --r: -2.5deg; opacity: .9; filter: brightness(.6); z-index: 0; }
+  .tc.under2 { --y: 46px; --r: 3deg; opacity: .7; filter: brightness(.45); z-index: -1; }
+  .tc.enter { --y: 110%; }
+  .tc.gone { opacity: 0; }
+  .tc .in { position: relative; z-index: 2; height: 66.6%; display: flex; flex-direction: column; padding: 16px 20px 18px; }
+  .tc .bar { display: flex; justify-content: space-between; align-items: center; padding-bottom: 8px; border-bottom: 1px solid #bcb58588; }
+  .tc .bar .tier { color: var(--orange); }
+  .tc h3 { margin: 12px 0 4px; font: 400 clamp(24px, 7vw, 30px)/1 'SC Display', sans-serif; letter-spacing: -.035em; text-transform: uppercase; }
+  .tc .sub { display: flex; justify-content: space-between; color: var(--muted); padding-bottom: 10px; border-bottom: 1px solid #bcb58544; }
+  .tc .art { position: relative; flex: 1; min-height: 70px; margin: 12px 0; border-radius: 10px; overflow: hidden; border: 1px solid #214551; background: radial-gradient(circle at 50% 45%, #15294a, #080e1a 75%); display: grid; place-items: center; }
+  .tc .art svg { width: 100%; height: 100%; }
+  .tc p { margin: 0 0 14px; color: #e8e3c9; font-size: 14.5px; line-height: 1.45; }
+  .tc .acts { display: flex; gap: 10px; }
+  .tc .acts button { flex: 1; height: 50px; border: 0; border-radius: 12px; font: 500 13px/1 'SC Label', sans-serif; letter-spacing: .14em; text-transform: uppercase; white-space: nowrap; cursor: pointer; }
+  .tc .acts .yes { background: var(--orange); color: #0b1120; } .tc .acts .no { background: #ffffff10; color: var(--ink); }
+  .tc .swipe { text-align: center; color: var(--muted); margin-top: 10px; }
+  /* holo + glare driven by tilt */
+  .tc .shine { position: absolute; inset: 0; z-index: 3; pointer-events: none; mix-blend-mode: soft-light; background-repeat: no-repeat; background-size: 260% 100%; background-position: var(--bgx, 50%) 0;
+    background-image: linear-gradient(115deg, transparent 30%, rgba(143, 240, 255, .35) 42%, rgba(255, 143, 216, .3) 50%, rgba(255, 224, 138, .35) 58%, transparent 70%); opacity: calc(.35 + var(--o, 0) * .4); }
+  .tc .glare { position: absolute; inset: 0; z-index: 3; pointer-events: none; background: radial-gradient(circle at var(--mx, 50%) var(--my, 20%), rgba(255, 255, 255, .14) 0, transparent 40%); opacity: var(--o, 0); }
+  .tc.gold { border-color: #e2b53c; box-shadow: inset 0 0 0 5px var(--navy), inset 0 0 0 6px #f7d77a66, 0 -14px 50px #000b; }
+  .note { position: fixed; z-index: 6; left: 0; right: 0; top: calc(var(--safe-top) + 160px); text-align: center; color: #9fb0c6; font-size: 12px; pointer-events: none; }
+</style></head><body>
+<div class="sky" id="sky"><div class="stars" id="stars"></div>
+  <div class="hdr"><div class="wm">SPACE COLLECTOR<span>FIELD NOTES FROM ORBIT</span></div><div><span class="ib">☾</span><span class="ib">≡</span></div></div>
+  <div class="ret"></div></div>
+<div class="pips" id="pips"></div>
+<button class="skip">Skip setup</button>
+<div class="deck" id="deck"></div>
+<div class="note">Mockup · swipe sideways or use the buttons · tilt your phone</div>
+<script>
+let seed = 5; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+document.getElementById('stars').innerHTML = Array.from({ length: 120 }, () => { const s = rnd() < .1 ? 2.4 : .8 + rnd() * 1.2; return `<i style="left:${rnd() * 100}%;top:${rnd() * 70}%;width:${s}px;height:${s}px;--o:${(.3 + rnd() * .6).toFixed(2)};--t:${(3 + rnd() * 4).toFixed(1)}s;--d:${(rnd() * 5).toFixed(1)}s"></i>`; }).join('');
+const art = {
+  loc: `<svg viewBox="0 0 300 120"><g fill="none" stroke="#627a8b" stroke-width="1"><ellipse cx="150" cy="78" rx="120" ry="26"/><ellipse cx="150" cy="78" rx="70" ry="15" stroke-dasharray="3 4"/></g><path d="M150 30c-12 0-21 9-21 21 0 16 21 34 21 34s21-18 21-34c0-12-9-21-21-21z" fill="#fa8127"/><circle cx="150" cy="51" r="7" fill="#080e1a"/><g fill="#fff2b3"><circle cx="60" cy="24" r="1.5"/><circle cx="238" cy="18" r="2"/><circle cx="262" cy="46" r="1.2"/><circle cx="40" cy="58" r="1.2"/></g></svg>`,
+  motion: `<svg viewBox="0 0 300 120"><g transform="translate(150 62)"><rect x="-22" y="-40" width="44" height="80" rx="9" fill="#0c1725" stroke="#fff2b3" stroke-width="2"/><circle r="12" fill="none" stroke="#fa8127" stroke-width="2"/><circle r="2.4" fill="#fa8127"/></g><g fill="none" stroke="#fa8127" stroke-width="1.6" stroke-linecap="round"><path d="M92 40 Q70 62 92 84"/><path d="M78 30 Q48 62 78 94" opacity=".5"/><path d="M208 40 Q230 62 208 84"/><path d="M222 30 Q252 62 222 94" opacity=".5"/></g></svg>`,
+  sky: `<svg viewBox="0 0 300 120"><defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#fa8127"/><stop offset="1" stop-color="#fff2b3"/></linearGradient></defs><rect x="40" y="58" width="220" height="4" rx="2" fill="#627a8b55"/><rect x="40" y="58" width="132" height="4" rx="2" fill="url(#g)"/><circle cx="172" cy="60" r="11" fill="#080e1a" stroke="#fa8127" stroke-width="2.5"/><g fill="#fff2b3"><circle cx="70" cy="28" r="1.2" opacity=".4"/><circle cx="110" cy="22" r="1.6" opacity=".6"/><circle cx="160" cy="30" r="2" opacity=".8"/><circle cx="210" cy="20" r="2.4"/><circle cx="246" cy="34" r="2.8"/></g><text x="40" y="92" fill="#bdbea9" font-family="SC Label" font-size="11" letter-spacing="2">BRIGHT</text><text x="260" y="92" fill="#bdbea9" font-family="SC Label" font-size="11" letter-spacing="2" text-anchor="end">DARK</text></svg>`,
+};
+const steps = [
+  { tier: 'Step 1 of 3', title: 'Line up your sky', sub: ['Navigation', 'Location'], art: art.loc, text: 'Your location sets which stars and satellites are overhead. It stays on this phone.', yes: 'Allow', no: 'Not now', on: () => document.getElementById('sky').classList.add('located') },
+  { tier: 'Step 2 of 3', title: "Point, don't scroll", sub: ['Gyroscope', 'Motion'], art: art.motion, text: "With motion on, the circle follows the phone. Whatever sits in the circle is what you're looking at.", yes: 'Allow motion', no: 'Use a finger', on: () => document.getElementById('sky').classList.add('motion') },
+  { tier: 'Step 3 of 3', title: 'Match your sky', sub: ['Calibration', 'Tonight'], art: art.sky, text: 'Look up. Drag the slider until the screen shows about as many stars as you can see.', yes: 'Got it', no: 'Later' },
+  { tier: 'Assignment 01', title: 'Catch Vega', sub: ['Bright star', '58° up in the W'], art: `<svg viewBox="0 0 300 120"><circle cx="150" cy="60" r="34" fill="none" stroke="#fa8127" stroke-width="2"/><circle cx="150" cy="60" r="5" fill="#fff2b3"/><circle cx="150" cy="60" r="16" fill="#fff2b3" opacity=".18"/></svg>`, text: "It's up right now. Turn right until it's in the circle, then tap it to collect your first card.", yes: 'Go', no: null, gold: true },
+];
+const deck = document.getElementById('deck'), pips = document.getElementById('pips');
+pips.innerHTML = steps.map(() => '<i></i>').join('');
+let idx = 0;
+function cardEl(s) {
+  const el = document.createElement('div'); el.className = `tc enter${s.gold ? ' gold' : ''}`;
+  el.innerHTML = `<div class="in"><div class="bar lab"><span>Space Collector</span><span class="tier">◆ ${s.tier}</span></div>
+    <h3>${s.title}</h3><div class="sub lab"><span>${s.sub[0]}</span><span>${s.sub[1]}</span></div>
+    <div class="art">${s.art}</div><p>${s.text}</p>
+    <div class="acts">${s.no ? `<button class="no">${s.no}</button>` : ''}<button class="yes">${s.yes}</button></div>
+    <div class="swipe lab">← swipe to continue →</div></div><div class="shine"></div><div class="glare"></div>`;
+  return el;
+}
+function render() {
+  [...pips.children].forEach((p, i) => p.className = i < idx ? 'done' : i === idx ? 'on' : '');
+  deck.querySelectorAll('.tc').forEach((c) => c.remove());
+  const cards = steps.slice(idx, idx + 3).map(cardEl);
+  cards.reverse().forEach((c) => deck.append(c));
+  const [top, mid, low] = [...deck.children].reverse();
+  mid?.classList.add('under'); low?.classList.add('under2');
+  requestAnimationFrame(() => requestAnimationFrame(() => { [top, mid, low].forEach((c) => c?.classList.remove('enter')); }));
+  if (top) wire(top, steps[idx]);
+}
+function advance(dir, el, s, accepted) {
+  if (accepted) s.on?.();
+  el.style.setProperty('--x', `${dir * 130}vw`); el.style.setProperty('--r', `${dir * 22}deg`); el.classList.add('gone');
+  setTimeout(() => { idx++; if (idx >= steps.length) { pips.style.opacity = 0; document.querySelector('.skip').style.opacity = 0; document.querySelector('.note').textContent = 'End of the mock: in the app you\'d now aim at Vega and collect it.'; deck.innerHTML = ''; return; } render(); }, 260);
+}
+function wire(el, s) {
+  el.querySelector('.yes').onclick = () => advance(1, el, s, true);
+  el.querySelector('.no')?.addEventListener('click', () => advance(-1, el, s, false));
+  // drag sideways to throw it off; up/down just tilts
+  let start = null;
+  el.addEventListener('pointerdown', (e) => { if (e.target.closest('button')) return; start = { x: e.clientX, y: e.clientY, t: performance.now() }; el.classList.add('dragging'); el.setPointerCapture(e.pointerId); });
+  el.addEventListener('pointermove', (e) => {
+    const r = el.getBoundingClientRect(), mx = (e.clientX - r.left) / r.width, my = (e.clientY - r.top) / (r.height * .66);
+    el.style.setProperty('--mx', `${(mx * 100).toFixed(1)}%`); el.style.setProperty('--my', `${(my * 100).toFixed(1)}%`); el.style.setProperty('--bgx', `${(30 + mx * 40).toFixed(1)}%`); el.style.setProperty('--o', '1');
+    if (!start) return;
+    const dx = e.clientX - start.x;
+    el.style.setProperty('--x', `${dx}px`); el.style.setProperty('--r', `${dx / 18}deg`); el.style.setProperty('--ry', `${dx / 12}deg`);
+  });
+  const end = (e) => {
+    if (!start) return; el.classList.remove('dragging');
+    const dx = e.clientX - start.x, v = dx / Math.max(16, performance.now() - start.t); start = null;
+    el.style.setProperty('--o', '0'); el.style.setProperty('--ry', '0deg');
+    if (Math.abs(dx) > 90 || Math.abs(v) > 0.6) advance(Math.sign(dx), el, s, dx > 0);
+    else { el.style.setProperty('--x', '0px'); el.style.setProperty('--r', '0deg'); }
+  };
+  el.addEventListener('pointerup', end); el.addEventListener('pointercancel', end);
+}
+// phone tilt drives the sheen (needs a tap on iOS to allow motion; this is a mock, so it just tries)
+window.addEventListener('deviceorientation', (e) => { const el = deck.lastElementChild; if (!el || e.gamma == null) return; const x = Math.max(-1, Math.min(1, e.gamma / 25)); el.style.setProperty('--bgx', `${50 + x * 25}%`); el.style.setProperty('--mx', `${50 + x * 40}%`); el.style.setProperty('--o', '.7'); el.style.setProperty('--rx', `${Math.max(-6, Math.min(6, ((e.beta ?? 45) - 45) / 6))}deg`); });
+document.addEventListener('click', () => { try { DeviceOrientationEvent.requestPermission?.(); } catch {} }, { once: true });
+render();
+</script></body></html>
