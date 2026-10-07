@@ -1,29 +1,29 @@
-import { VERSION } from './version.js?v=0.1.192';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.192';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.192';
-import { conArt } from './con-art.js?v=0.1.192';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.192';
-import { CON_FIGURES } from './con-figures.js?v=0.1.192';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.192';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.192';
-import { progress as progressOf } from './progress.js?v=0.1.192';
-import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.192';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.192';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.192';
-import { SkyView, shortName } from './sky.js?v=0.1.192';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.192';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.192';
-import { cardArt } from './art.js?v=0.1.192';
-import { renderCard, cardLevel, artImage } from './card.js?v=0.1.192';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.192';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.192';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.192';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.192';
-import { TIER_INFO } from './rarity.js?v=0.1.192';
-import { SETS } from './sets.js?v=0.1.192';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.192';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.192';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.192';
+import { VERSION } from './version.js?v=0.1.194';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.194';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.194';
+import { conArt } from './con-art.js?v=0.1.194';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.194';
+import { CON_FIGURES } from './con-figures.js?v=0.1.194';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.194';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.194';
+import { progress as progressOf } from './progress.js?v=0.1.194';
+import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.194';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.194';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.194';
+import { SkyView, shortName } from './sky.js?v=0.1.194';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.194';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.194';
+import { cardArt } from './art.js?v=0.1.194';
+import { renderCard, cardLevel, artImage } from './card.js?v=0.1.194';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.194';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.194';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.194';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.194';
+import { TIER_INFO } from './rarity.js?v=0.1.194';
+import { SETS } from './sets.js?v=0.1.194';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.194';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.194';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.194';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -439,6 +439,16 @@ function tick(ts) {
     target = cands.find(c => c.obj.id === state.targetId);
   }
   target ??= null;
+  // "Show me" from Tonight (2026-10-06): until the pass begins, the target is the spot where it will appear,
+  // so the turn arrows and the edge pointer lead you there; once it's visible it's tracked as normal.
+  state.guideRise = null;
+  const gp = state.guidePass;
+  if (gp && (state.pinnedId !== gp.id || d.getTime() > gp.end + 120000)) state.guidePass = null;
+  else if (gp && target && target.obj.id === gp.id && d.getTime() < gp.start) {
+    const el = Math.max(4, gp.riseEl ?? 10), look = { ...target.look, az: gp.riseAz, el, visible: false };
+    target.look = look; target.angCos = dot(enuFromAzEl(gp.riseAz, el), basis.back); target.trail = null;
+    state.guideRise = { start: gp.start, aligned: target.angCos > Math.cos((sky.reticleDeg + 4) * RAD) };
+  }
   state.activeTarget = target;
   // Locked on = the target is inside the circle right now and can be collected. The ring shrinks onto
   // it, and the gold circle / Collect button use the same answer.
@@ -453,7 +463,7 @@ function tick(ts) {
     sunEl: state.frame?.sunEl ?? -90, // day/twilight tone (js/sky.js dayF)
     ...(document.body.classList.toggle('day', (state.frame?.sunEl ?? -90) > -2) ? {} : {}),
     weather: state.weather?.now ?? null,
-    ghosts: dayGhosts(),
+    ghosts: state.guideRise && state.activeTarget ? [{ enu: enuFromAzEl(state.activeTarget.look.az, state.activeTarget.look.el), name: 'Appears here', note: fmtTime(state.guideRise.start) }] : dayGhosts(),
     bodies: state.showStars ? state.bodies : null,
     milky: state.showStars ? state.milkyEnu : null,
     lines: state.showLines,
@@ -641,13 +651,29 @@ function isNewFind(o) {
   return !ownedKeys.has(cardKeyFor(o)) || (!!stamp && !ownedStamps.has(stamp));
 }
 function turnHint(l) {
+  const gr = state.guideRise;
+  if (gr) {
+    const mins = Math.max(0, Math.round((gr.start - now().getTime()) / 60000));
+    const when = `${fmtTime(gr.start)}${mins >= 1 ? ` (in ${mins} min)` : ''}`;
+    if (gr.aligned) return `You're facing the right way · it appears here at ${when}`;
+  }
   if (l.el < 0) return 'This pass has ended';
-  if (!l.visible && !state.captureAny) return 'Not visible right now';
+  if (!l.visible && !state.captureAny && !gr) return 'Not visible right now';
   const currentAz = state.basis ? (Math.atan2(state.basis.back[0], state.basis.back[1]) / RAD + 360) % 360 : state.drag.az;
   const currentEl = state.basis ? Math.asin(state.basis.back[2]) / RAD : state.drag.el;
   const turn = ((l.az - currentAz + 540) % 360) - 180;
   const move = Math.abs(turn) > 8 ? (turn > 0 ? 'Turn right →' : '← Turn left') : l.el > currentEl ? '↑ Raise your phone' : '↓ Lower your phone';
-  return `${move} · ${Math.round(l.el)}° up in the ${compassPoint(l.az)}`;
+  return gr ? `${move} · appears ${Math.round(l.el)}° up in the ${compassPoint(l.az)} at ${fmtTime(gr.start)}` : `${move} · ${Math.round(l.el)}° up in the ${compassPoint(l.az)}`;
+}
+// Tonight → "Show me": pin the object and steer to it (or to where it will rise).
+function showMePass(p) {
+  cancelPassSearch();
+  state.pinnedId = p.obj.id; state.targetId = p.obj.id; state.sticky.clear();
+  state.guidePass = { id: p.obj.id, start: p.start, end: p.end, riseAz: p.riseAz, riseEl: p.riseEl };
+  if (state.drag.on || !hasLiveSensors()) { state.drag.on = true; state.drag.az = p.riseAz; state.drag.el = Math.max(4, p.riseEl ?? 10); }
+  closePanel('visible');
+  const mins = Math.round((p.start - now().getTime()) / 60000);
+  toast(`<span class="big-line">${escapeHtml(label(p.obj))}</span>${mins > 0 ? `Appears in the ${compassPoint(p.riseAz)} at ${fmtTime(p.start)}. Follow the arrow to where it will come up.` : `Up now, highest ${p.peakEl}° in the ${compassPoint(p.peakAz)}. Follow the arrow.`}`, 5000);
 }
 function switchLabel(o) {
   const n = state.candidates.length, i = state.candidates.findIndex((c) => c.obj.id === o.id);
@@ -1019,11 +1045,12 @@ function renderTonight() {
     const row = document.createElement('div'); row.className = 't-row'; row.style.setProperty('--tier', tier.color);
     row.innerHTML = `<span class="time">${fmtTime(p.start)}</span><span><div class="name"><span class="dot"></span>${escapeHtml(label(p.obj))}${p.fresh ? '<span class="new">NEW</span>' : ''}</div>
       <div class="meta">${tier.label} · up to mag ${p.mag} (${brightnessWord(p.mag)}) · rises in the ${compassPoint(p.riseAz)}, highest ${p.peakEl}° in the ${compassPoint(p.peakAz)} at ${fmtTime(p.peakAt)}</div>
-      ${p.start > t0 + 10 * 60000 ? '<button class="remind" type="button">Remind me</button>' : ''}</span>`;
+      <span class="t-acts"><button class="showme" type="button">Show me</button>${p.start > t0 + 10 * 60000 ? '<button class="remind" type="button">Remind me</button>' : ''}</span></span>`;
     row.querySelector('.remind')?.addEventListener('click', () => remindPass(p));
+    row.querySelector('.showme').addEventListener('click', () => showMePass(p));
     // Tap the row to see the card you'd be waiting up for (owned cards open as they are; others as a preview).
     row.classList.add('tappable');
-    row.addEventListener('click', (e) => { if (e.target.closest('.remind')) return; const from = row.querySelector('.name').getBoundingClientRect(); showTonightCard(p.obj, from, `TONIGHT · ${fmtTime(p.start)}`); });
+    row.addEventListener('click', (e) => { if (e.target.closest('.remind, .showme')) return; const from = row.querySelector('.name').getBoundingClientRect(); showTonightCard(p.obj, from, `TONIGHT · ${fmtTime(p.start)}`); });
     list.appendChild(row);
   }
   if (!passes.length) list.insertAdjacentHTML('beforeend', '<p class="hint">No standout passes left tonight.</p>');

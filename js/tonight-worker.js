@@ -2,9 +2,9 @@
 // many satellites are visible over the night. Runs off the main thread; ~4,000 objects × 1-minute steps
 // takes a few seconds. Visibility uses the same rules as the live sky: sunlit, dark sky, and brighter than
 // the limit for your sky at that moment (light pollution, twilight, Moon; js/sky-limit.js).
-import { frame, look, setSkyLimit, setBinocularMode, DARK_SUN_ELEVATION } from './orbit.js?v=0.1.192';
-import { skyLimit } from './sky-limit.js?v=0.1.192';
-import { solarSystem, eqToEnu } from './celestial.js?v=0.1.192';
+import { frame, look, setSkyLimit, setBinocularMode, DARK_SUN_ELEVATION } from './orbit.js?v=0.1.194';
+import { skyLimit } from './sky-limit.js?v=0.1.194';
+import { solarSystem, eqToEnu } from './celestial.js?v=0.1.194';
 
 const STEP = 60000;          // 1 minute
 const GAP = 3;               // a pass ends after this many minutes out of sight
@@ -38,7 +38,7 @@ self.onmessage = ({ data }) => {
         const p = open.get(o.id);
         if (l && l.visible) {
           count++;
-          if (!p) open.set(o.id, { id: o.id, start: t, end: t, riseAz: l.az, peakEl: l.el, peakAz: l.az, peakAt: t, mag: l.mag, miss: 0 });
+          if (!p) open.set(o.id, { id: o.id, start: t, end: t, riseAz: l.az, riseEl: l.el, peakEl: l.el, peakAz: l.az, peakAt: t, mag: l.mag, miss: 0 });
           else { p.end = t; p.miss = 0; if (l.el > p.peakEl) { p.peakEl = l.el; p.peakAz = l.az; p.peakAt = t; } if (l.mag < p.mag) p.mag = l.mag; p.setAz = l.az; }
         } else if (p && ++p.miss > GAP) { open.delete(o.id); passes.push(p); }
       }

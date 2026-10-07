@@ -1,9 +1,9 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.192';
+import { extinction } from './sky-limit.js?v=0.1.194';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.192';
-import { TIER_INFO } from './rarity.js?v=0.1.192';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.194';
+import { TIER_INFO } from './rarity.js?v=0.1.194';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -849,6 +849,9 @@ export class SkyView {
     const visible = targetId ? ordered.filter((entry) => entry.isTarget).slice(0, 1) : ordered.slice(0, 2);
     for (const { it, c, isTarget } of visible) {
       let dx = c.x, dy = -c.y;
+      // Behind you, "up" or "down" on screen means tipping over your head, which nobody does: point sideways,
+      // the way to turn (matches the "Turn left/right" hint). Ahead, point straight at it.
+      if (isTarget && (c.z ?? 1) < 0.2) { dx = c.x < 0 ? -1 : 1; dy = 0; }
       if (Math.hypot(dx, dy) < 1e-5) { dx = 1; dy = 0; }
       const length = Math.hypot(dx, dy);
       dx /= length; dy /= length;
@@ -859,12 +862,18 @@ export class SkyView {
       const angle = Math.atan2(dy, dx);
       ctx.save();
       ctx.translate(x, y); ctx.rotate(angle);
-      ctx.strokeStyle = isTarget ? t.tick : t.labelDim;
-      ctx.lineWidth = isTarget ? 2 : 1.3;
-      ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-      ctx.beginPath(); ctx.moveTo(-4, -5); ctx.lineTo(2, 0); ctx.lineTo(-4, 5); ctx.stroke();
+      if (isTarget) {
+        // The one you're looking for (2026-10-06): a solid orange arrow in a ring, pulsing gently, so it reads at a glance.
+        const pulse = 1 + 0.08 * Math.sin(performance.now() / 260);
+        ctx.fillStyle = 'rgba(8,14,26,.82)'; ctx.beginPath(); ctx.arc(0, 0, 15 * pulse, 0, Math.PI * 2); ctx.fill();
+        ctx.strokeStyle = t.tick; ctx.lineWidth = 2; ctx.stroke();
+        ctx.fillStyle = t.tick; ctx.beginPath(); ctx.moveTo(8, 0); ctx.lineTo(-5, -7); ctx.lineTo(-2, 0); ctx.lineTo(-5, 7); ctx.closePath(); ctx.fill();
+      } else {
+        ctx.strokeStyle = t.labelDim; ctx.lineWidth = 1.3; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+        ctx.beginPath(); ctx.moveTo(-4, -5); ctx.lineTo(2, 0); ctx.lineTo(-4, 5); ctx.stroke();
+      }
       ctx.restore();
-      this.queueLabel(it.label ?? shortName(it.obj.name), { x: x - dx * 14, y: y - dy * 14 }, { color: isTarget ? t.label : t.labelDim, size: 13, weight: 500, gap: 10, priority: isTarget ? 10 : 3 });
+      this.queueLabel(it.label ?? shortName(it.obj.name), { x: x - dx * (isTarget ? 24 : 14), y: y - dy * (isTarget ? 24 : 14) }, { color: isTarget ? t.label : t.labelDim, size: 13, weight: 500, gap: 10, priority: isTarget ? 10 : 3 });
     }
   }
 
