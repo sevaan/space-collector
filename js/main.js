@@ -1,30 +1,30 @@
-import { VERSION } from './version.js?v=0.1.201';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.201';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.201';
-import { conArt } from './con-art.js?v=0.1.201';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.201';
-import { CON_FIGURES } from './con-figures.js?v=0.1.201';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.201';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.201';
-import { progress as progressOf } from './progress.js?v=0.1.201';
-import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.201';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.201';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.201';
-import { SkyView, shortName } from './sky.js?v=0.1.201';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.201';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.201';
-import { cardArt } from './art.js?v=0.1.201';
-import { renderCard, cardLevel, artImage, attachTilt, throwOff } from './card.js?v=0.1.201';
-import { applyBack } from './card-backs.js?v=0.1.201';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.201';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.201';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.201';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.201';
-import { TIER_INFO } from './rarity.js?v=0.1.201';
-import { SETS } from './sets.js?v=0.1.201';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.201';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.201';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.201';
+import { VERSION } from './version.js?v=0.1.204';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.204';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.204';
+import { conArt } from './con-art.js?v=0.1.204';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.204';
+import { CON_FIGURES } from './con-figures.js?v=0.1.204';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.204';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.204';
+import { progress as progressOf } from './progress.js?v=0.1.204';
+import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.204';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.204';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.204';
+import { SkyView, shortName } from './sky.js?v=0.1.204';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.204';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.204';
+import { cardArt } from './art.js?v=0.1.204';
+import { renderCard, cardLevel, artImage, attachTilt, throwOff } from './card.js?v=0.1.204';
+import { applyBack } from './card-backs.js?v=0.1.204';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.204';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.204';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.204';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.204';
+import { TIER_INFO } from './rarity.js?v=0.1.204';
+import { SETS } from './sets.js?v=0.1.204';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.204';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.204';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.204';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -705,7 +705,7 @@ function renderTarget(target, d) {
   const collected = collectedThisPass(o, d);
   const sw = switchLabel(o);
 
-  if (isNewFind(o) && !collected) {
+  if (o.id === state.tourCatchId || (isNewFind(o) && !collected)) { // the tour's catch always looks like a new find
     // New find
     bar.hidden = true;
     state.newFind = eligible;
@@ -782,7 +782,7 @@ const AUTO_LOG_MS = 1200;
 let autoHold = null;
 function autoLog(target, d, t) {
   const o = target?.obj;
-  if (!o || !state.lockedOn || !(target.look.visible || state.captureAny) || state.captureBusy || isNewFind(o) || !ownsCard(o)) { autoHold = null; return; }
+  if (!o || o.id === state.tourCatchId || !state.lockedOn || !(target.look.visible || state.captureAny) || state.captureBusy || isNewFind(o) || !ownsCard(o)) { autoHold = null; return; }
   if (autoHold?.id !== o.id) { autoHold = { id: o.id, since: t, done: false }; return; }
   if (autoHold.done || t - autoHold.since < AUTO_LOG_MS) return;
   autoHold.done = true;
@@ -857,6 +857,17 @@ function showCaptureCard(obj) {
   const gain = progressGain(sightings[0]); announceProgress(gain);
   playReveal({ card, o: model, seen: sightings.length, fleet, progress, collected, con, xp: gain.xp, shiny: sightings[0]?.shiny ? SHINY[sightings[0].shiny] : null, origin: { x: sky.ring?.x ?? sky.cx, y: sky.ring?.y ?? sky.cy } });
 }
+// The tour's catch when you already own it (replaying the tour): the same sealed-card reveal as a first catch,
+// with no sighting saved, so the tour feels the same every time.
+function tourReveal(obj) {
+  const model = cardModel(obj), key = cardKeyFor(obj);
+  const sightings = state.sightings.filter(s => !s.sim && s.cardKey === key);
+  const card = renderCard(model, { sightings, seenMembers: new Set(sightings.map(s => s.objectId)).size });
+  $('reveal-view').href = `cards.html#${encodeURIComponent(key)}`;
+  openPanel('reveal');
+  state.tourRevealed = true;
+  playReveal({ card, o: model, seen: 1, progress: { level: cardLevel(sightings), before: 'none', nights: 1 }, collected: 2, origin: { x: sky.ring?.x ?? sky.cx, y: sky.ring?.y ?? sky.cy } });
+}
 // Open an owned card in place, spinning out of the toast. counted: this view also logged a sighting.
 function showViewCard(obj, from, counted) {
   const model = cardModel(obj), key = cardKeyFor(obj);
@@ -888,6 +899,7 @@ async function capture(obj) {
   const basis = currentBasis();
   const aligned = l && dot(enuFromAzEl(l.az, l.el), basis.back) > Math.cos(sky.reticleDeg * RAD);
   if (!l || !canCapture({ visible: l.visible, aligned, practice: state.captureAny, allowAny: state.captureAny })) { toast('Line up the object while it is visible to capture it.'); return; }
+  if (obj.id === state.tourCatchId && !isNewFind(obj)) { tourReveal(obj); return; } // tour replay: the full reveal, nothing logged
   if (collectedThisPass(obj, d)) { showViewCard(obj, null, false); return; }
   if (await recordSighting(obj, d, l)) showCaptureCard(obj);
 }
@@ -1480,10 +1492,16 @@ async function runOnboarding(force = false) {
   ob.style.pointerEvents = 'none';
   // wait for the first card (or a skip), then close
   const had = state.sightings.filter((x) => !x.sim).length;
-  await new Promise((resolve) => { onboarding = { resolve }; const t = setInterval(() => { if (state.sightings.filter((x) => !x.sim).length > had) { clearInterval(t); resolve(true); } }, 500); $('ob-skip').onclick = () => { clearInterval(t); resolve(false); }; });
+  state.tourCatchId = target?.obj.id ?? null; state.tourRevealed = false;
+  await new Promise((resolve) => { onboarding = { resolve }; const t = setInterval(() => { if (state.tourRevealed || state.sightings.filter((x) => !x.sim).length > had) { clearInterval(t); resolve(true); } }, 500); $('ob-skip').onclick = () => { clearInterval(t); resolve(false); }; });
   if (skipped) return obFinish(false);
-  // let the reveal play; when it's dismissed, show the close
-  await new Promise((resolve) => { const t = setInterval(() => { if ($('reveal').hidden) { clearInterval(t); resolve(); } }, 300); });
+  // Let the full capture reveal play (2026-10-06: the close was covering it because the sighting is saved a
+  // moment before the reveal opens). Wait for it to open, keep the tour chrome out of its way, then show the
+  // close once it's flicked away or closed.
+  ob.hidden = true;
+  await new Promise((resolve) => { const t0 = Date.now(), t = setInterval(() => { if (!$('reveal').hidden || Date.now() - t0 > 4000) { clearInterval(t); resolve(); } }, 100); });
+  await new Promise((resolve) => { const t = setInterval(() => { if ($('reveal').hidden) { clearInterval(t); resolve(); } }, 200); });
+  ob.hidden = false;
   obFinish(true);
 }
 // What's certain to be up right now, with a one-line hint.
@@ -1497,7 +1515,7 @@ function firstTarget() {
   return sat ? { obj: sat.obj, look: sat.look, hint: `Moving steadily, ${Math.round(sat.look.el)}° up in the ${compassPoint(sat.look.az)}.` } : null;
 }
 function obFinish(caught) {
-  const ob = $('onboard'); ob.style.pointerEvents = ''; onboarding = null; document.body.classList.remove('ob-sheet');
+  const ob = $('onboard'); ob.style.pointerEvents = ''; onboarding = null; document.body.classList.remove('ob-sheet'); state.tourCatchId = null; state.tourRevealed = false;
   if (!caught) { ob.hidden = true; return; }
   const T = state.tonight, t0 = now().getTime(), wx = tonightWeather();
   const peak = T ? T.curve.filter(([t]) => t >= t0).reduce((a, c) => (c[1] > a[1] ? c : a), [0, 0]) : null;
@@ -1616,7 +1634,7 @@ async function boot() {
   } catch {
     $('start-note').hidden=false; $('wc-after').hidden=false; $('start-note').textContent='Satellite data could not load. Check your connection and reload to try again.'; $('start-note').classList.add('err');
     $('btn-start').firstElementChild.textContent='Reload satellite data'; $('btn-start').disabled=false;
-    $('btn-start').onclick=()=>location.reload(); return;
+    $('btn-start').onclick=()=>location.reload(); $('start').classList.remove('booting'); return;
   }
   try { state.sky=await loadSky('data/sky.json'); } catch {}
   await loadLore(); await loadSightings();
@@ -1636,6 +1654,7 @@ async function boot() {
       }
     } catch {}
   } else if (readPref('started', false) || loadSavedLocation()) quickStart(); // anyone who has used the app before
+  $('start').classList.remove('booting'); // first visit: the welcome card is ready; returning: the sky is already up
   checkForUpdate(); requestAnimationFrame(tick);
 }
 boot();

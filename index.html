@@ -15,9 +15,9 @@
   <script>try { if (localStorage.getItem("night") === "1") document.documentElement.dataset.theme = "night"; } catch {}</script>
   <link rel="preload" href="fonts/RussoOne-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="fonts/BarlowCondensed-Medium.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="css/cards.css?v=0.1.201">
-  <link rel="stylesheet" href="css/app.css?v=0.1.201">
-  <link rel="stylesheet" href="css/reveal.css?v=0.1.201">
+  <link rel="stylesheet" href="css/cards.css?v=0.1.204">
+  <link rel="stylesheet" href="css/app.css?v=0.1.204">
+  <link rel="stylesheet" href="css/reveal.css?v=0.1.204">
 </head>
 <body>
   <canvas id="sky" role="img" aria-label="Sky map aligned with your viewing direction"></canvas>
@@ -74,7 +74,18 @@
   <div id="toasts" aria-live="polite"></div>
   <div id="version"></div>
 
-  <section id="start" class="overlay">
+  <section id="start" class="overlay booting">
+    <!-- Loader (2026-10-06): shown until the app knows whether to open the sky or the welcome card. -->
+    <div class="wc-loader" role="status" aria-label="Loading the sky">
+      <svg viewBox="0 0 120 120" width="112" height="112" aria-hidden="true">
+        <circle cx="60" cy="60" r="44" fill="none" stroke="#627a8b" stroke-opacity=".55" stroke-width="1.2"/>
+        <circle cx="60" cy="60" r="30" fill="none" stroke="#627a8b" stroke-opacity=".35" stroke-width="1" stroke-dasharray="2 5"/>
+        <g class="ld-orbit"><circle cx="60" cy="16" r="4.2" fill="#fa8127"/><circle cx="60" cy="16" r="9" fill="#fa8127" opacity=".18"/></g>
+        <g class="ld-orbit2"><circle cx="60" cy="30" r="2.4" fill="#fff2b3"/></g>
+        <path d="M60 50 L62.4 57.6 L70 60 L62.4 62.4 L60 70 L57.6 62.4 L50 60 L57.6 57.6 Z" fill="#fff2b3"/>
+      </svg>
+      <span class="ld-word">SPACE COLLECTOR</span>
+    </div>
     <!-- Welcome (2026-10-06): a sealed card. It rattles every few seconds; tap and it flips to your mission card;
          flick it up (or tap Begin) to start the tour. -->
     <div class="wc-stage">
@@ -185,7 +196,7 @@
     <pre id="debug-info"></pre></details>
   </section>
 
-  <script type="module" src="js/main.js?v=0.1.201"></script>
+  <script type="module" src="js/main.js?v=0.1.204"></script>
 <div id="rotate" role="status"><b>Turn your phone upright</b><span>Space Collector is made for portrait.</span></div>
 </body>
 </html>
