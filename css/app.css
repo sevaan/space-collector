@@ -237,12 +237,12 @@ body.night #t-art { border-color:var(--rule); }
 .t-row .dot { display:inline-block; width:7px; height:7px; transform:rotate(45deg); background:var(--tier,var(--gold)); margin-right:7px; }
 /* Next pass / tonight chip (2026-10-06): upper right, level with the radar, so it never sits under the
    object names in the middle of the sky. Three short stacked lines, right-aligned. */
-#nextpass { position:fixed; right:12px; top:calc(var(--safe-top) + 92px); z-index:2; box-sizing:border-box; max-width:min(230px, calc(100vw - 160px)); padding:9px 12px 8px; border-radius:14px; text-align:right;
+#nextpass { position:fixed; right:12px; top:calc(var(--safe-top) + 92px); z-index:2; box-sizing:border-box; max-width:min(210px, calc(100vw - 160px)); padding:6px 10px 6px; border-radius:10px; text-align:right;
   background:color-mix(in srgb,var(--bg) 78%,transparent); border:1px solid var(--edge-soft); color:var(--text); -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px); }
-#nextpass:not([hidden]) { display:flex; flex-direction:column; align-items:flex-end; gap:3px; }
-#nextpass .np-k { font:500 10.5px/1.1 var(--label); letter-spacing:.16em; text-transform:uppercase; color:var(--muted); }
-#nextpass .np-n { max-width:100%; font:400 14px/1.15 var(--display); letter-spacing:-.01em; text-transform:uppercase; color:var(--gold); display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden; } /* long names wrap to two lines on small phones */
-#nextpass .np-m { font:500 12px/1.25 var(--label); letter-spacing:.06em; color:var(--text); max-width:100%; }
+#nextpass:not([hidden]) { display:flex; flex-direction:column; align-items:flex-end; gap:2px; }
+#nextpass .np-k { font:500 9.5px/1.1 var(--label); letter-spacing:.14em; text-transform:uppercase; color:var(--muted); }
+#nextpass .np-n { max-width:100%; font:400 12px/1.15 var(--display); letter-spacing:-.01em; text-transform:uppercase; color:var(--gold); display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden; } /* long names wrap to two lines on small phones */
+#nextpass .np-m { font:500 10.5px/1.2 var(--label); letter-spacing:.05em; color:var(--text); max-width:100%; }
 body:has(#event-banner:not([hidden])) #nextpass { top:calc(var(--safe-top) + 152px); } /* below a meteor-shower banner */
 body.day #nextpass { background:color-mix(in srgb,var(--bg) 70%,transparent); }
 .t-row.tappable { cursor:pointer; }
