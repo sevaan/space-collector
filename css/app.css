@@ -330,3 +330,8 @@ body.day #radar-up, body.day #d-tier, body.day #d-name { color:#143046; text-sha
 @keyframes ldPulse { 50% { opacity:.55; } }
 @keyframes ldIn { to { opacity:1; } }
 @media (prefers-reduced-motion: reduce) { .wc-loader .ld-orbit, .wc-loader .ld-orbit2, .wc-loader .ld-word { animation:none; } }
+
+/* Toasts with a small card-style illustration (e.g. the compass figure-8): picture left, words right. */
+.ticket--info .ticket__line:has(.tk-art) { display:flex; align-items:center; gap:12px; }
+.ticket--info .tk-art { flex:none; line-height:0; } .ticket--info .tk-text { min-width:0; }
+@media (prefers-reduced-motion: reduce) { .tk-art animateMotion, .tk-art animateTransform { display:none; } }
