@@ -1,9 +1,9 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.219';
+import { extinction } from './sky-limit.js?v=0.1.221';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.219';
-import { TIER_INFO } from './rarity.js?v=0.1.219';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.221';
+import { TIER_INFO } from './rarity.js?v=0.1.221';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -196,6 +196,8 @@ export class SkyView {
 
   drawLabels() {
     const ctx = this.ctx;
+    this.labelSide ??= new Map(); this.frameNo = (this.frameNo ?? 0) + 1;
+    if (this.frameNo % 300 === 0) for (const [k, v] of this.labelSide) if (this.frameNo - (v.seen ?? 0) > 300) this.labelSide.delete(k); // forget labels long off screen
     const ring = this.ring ?? { x: this.cx, y: this.cy, r: this.reticlePx };
     const r = ring.r + 16;
     const occupied = [{ x: ring.x - r, y: ring.y - r, w: 2 * r, h: 2 * r }];
@@ -215,16 +217,26 @@ export class SkyView {
         [p.x + gap, p.y - size / 2], [p.x - gap - width, p.y - size / 2],
         [p.x - width / 2, p.y + gap], [p.x - width / 2, p.y - gap - size],
       ];
-      for (const [x, y] of candidates) {
-        const box = { x: x - 4, y: y - 3, w: width + 8, h: size + 7 };
-        if (!this.inSky({ x: box.x, y: box.y }) || !this.inSky({ x: box.x + box.w, y: box.y + box.h })) continue;
-        if (occupied.some((other) => overlaps(box, other))) continue;
+      // Sticky sides (2026-10-06, Sevaan: labels hopped round their stars as the phone moved): a label keeps the side
+      // it last used. If that side is briefly blocked it hides for a moment instead of jumping; only after ~1/3 s
+      // blocked does it move to another side, and it stays there.
+      const fits = (i) => { const [x, y] = candidates[i]; const box = { x: x - 4, y: y - 3, w: width + 8, h: size + 7 };
+        return this.inSky({ x: box.x, y: box.y }) && this.inSky({ x: box.x + box.w, y: box.y + box.h }) && !occupied.some((o) => overlaps(box, o)) ? box : null; };
+      const mem = this.labelSide.get(label.text) ?? { i: 0, blocked: 0 };
+      let pick = -1, box = null;
+      if (mem.i < candidates.length && (box = fits(mem.i))) { pick = mem.i; mem.blocked = 0; }
+      else if (++mem.blocked > 20 || !this.labelSide.has(label.text)) {
+        for (let i = 0; i < candidates.length; i++) if (i !== mem.i && (box = fits(i))) { pick = i; break; }
+        if (pick >= 0) { mem.i = pick; mem.blocked = 0; }
+      }
+      mem.seen = this.frameNo; this.labelSide.set(label.text, mem);
+      if (pick >= 0) {
+        const [x, y] = candidates[pick];
         ctx.textAlign = 'left';
         ctx.textBaseline = 'top';
         ctx.fillStyle = color;
         ctx.fillText(text, x, y);
         occupied.push(box);
-        break;
       }
     }
     ctx.textBaseline = 'alphabetic';
