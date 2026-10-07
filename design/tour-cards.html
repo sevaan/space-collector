@@ -83,7 +83,7 @@
 <div class="pips" id="pips"></div>
 <button class="skip">Skip setup</button>
 <div class="deck" id="deck"></div>
-<div class="note">Mockup · swipe sideways or use the buttons · tilt your phone</div>
+<div class="note">Mockup · use the buttons · tilt your phone</div>
 <script>
 let seed = 5; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
 document.getElementById('stars').innerHTML = Array.from({ length: 120 }, () => { const s = rnd() < .1 ? 2.4 : .8 + rnd() * 1.2; return `<i style="left:${rnd() * 100}%;top:${rnd() * 70}%;width:${s}px;height:${s}px;--o:${(.3 + rnd() * .6).toFixed(2)};--t:${(3 + rnd() * 4).toFixed(1)}s;--d:${(rnd() * 5).toFixed(1)}s"></i>`; }).join('');
@@ -127,7 +127,7 @@ function cardEl(s) {
     <h3>${s.title}</h3><div class="sub lab"><span>${s.sub[0]}</span><span>${s.sub[1]}</span></div>
     <div class="art">${s.art}</div><p>${s.text}</p>
     <div class="acts">${s.no ? `<button class="no">${s.no}</button>` : ''}<button class="yes">${s.yes}</button></div>
-    ${s.perm ? '' : '<div class="swipe lab">← swipe to continue →</div>'}</div><div class="shine"></div><div class="glare"></div>`;
+    </div><div class="shine"></div><div class="glare"></div>`;
   return el;
 }
 function render() {
@@ -152,7 +152,8 @@ function wire(el, s) {
   el.querySelector('.no')?.addEventListener('click', () => advance(-1, el, s, false));
   // drag sideways to throw it off; up/down just tilts
   let start = null;
-  el.addEventListener('pointerdown', (e) => { if (e.target.closest('button') || s.perm) return; start = { x: e.clientX, y: e.clientY, t: performance.now() }; el.classList.add('dragging'); el.setPointerCapture(e.pointerId); });
+  // No swiping on any tour card (2026-10-06): the buttons move you on; a finger only moves the sheen.
+  el.addEventListener('pointerleave', () => el.style.setProperty('--o', '0'));
   el.addEventListener('pointermove', (e) => {
     const r = el.getBoundingClientRect(), mx = (e.clientX - r.left) / r.width, my = (e.clientY - r.top) / (r.height * .66);
     el.style.setProperty('--mx', `${(mx * 100).toFixed(1)}%`); el.style.setProperty('--my', `${(my * 100).toFixed(1)}%`); el.style.setProperty('--bgx', `${(30 + mx * 40).toFixed(1)}%`); el.style.setProperty('--o', '1');
