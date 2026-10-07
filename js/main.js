@@ -1,29 +1,29 @@
-import { VERSION } from './version.js?v=0.1.182';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.182';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.182';
-import { conArt } from './con-art.js?v=0.1.182';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.182';
-import { CON_FIGURES } from './con-figures.js?v=0.1.182';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.182';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.182';
-import { progress as progressOf } from './progress.js?v=0.1.182';
-import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.182';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.182';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.182';
-import { SkyView, shortName } from './sky.js?v=0.1.182';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.182';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.182';
-import { cardArt } from './art.js?v=0.1.182';
-import { renderCard, cardLevel, artImage } from './card.js?v=0.1.182';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.182';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.182';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.182';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.182';
-import { TIER_INFO } from './rarity.js?v=0.1.182';
-import { SETS } from './sets.js?v=0.1.182';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.182';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.182';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.182';
+import { VERSION } from './version.js?v=0.1.184';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.184';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.184';
+import { conArt } from './con-art.js?v=0.1.184';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.184';
+import { CON_FIGURES } from './con-figures.js?v=0.1.184';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.184';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.184';
+import { progress as progressOf } from './progress.js?v=0.1.184';
+import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.184';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.184';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.184';
+import { SkyView, shortName } from './sky.js?v=0.1.184';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.184';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.184';
+import { cardArt } from './art.js?v=0.1.184';
+import { renderCard, cardLevel, artImage } from './card.js?v=0.1.184';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.184';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.184';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.184';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.184';
+import { TIER_INFO } from './rarity.js?v=0.1.184';
+import { SETS } from './sets.js?v=0.1.184';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.184';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.184';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.184';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -120,7 +120,7 @@ function applyTheme() {
   radarColors = null;
   document.body.classList.toggle('night', state.night);
   document.documentElement.dataset.theme = state.night ? 'night' : 'glass';
-  $('night-toggle').setAttribute('aria-pressed', String(state.night)); $('start-night')?.setAttribute('aria-pressed', String(state.night));
+  $('night-toggle').setAttribute('aria-pressed', String(state.night));
   $('night-toggle').setAttribute('aria-label', state.night ? 'Turn off red night mode' : 'Turn on red night mode');
   sky.setTheme(state.night ? 'night' : 'glass');
   document.querySelector('meta[name=theme-color]').content = state.night ? '#000000' : '#080f1b';
@@ -1328,6 +1328,7 @@ $('sky-range').addEventListener('change', () => {
 });
 for (const ev of ['pointerdown', 'touchstart']) $('skybar').addEventListener(ev, (e) => e.stopPropagation(), { passive: true }); // never drags the sky
 $('chk-snap').checked = state.snap; sky.snap = state.snap;
+$('btn-replay-setup')?.addEventListener('click', () => { closePanel('debug'); state.sightings.length ? toast('Setup only runs before your first card. Everything it covers is here in Settings.', 4000) : runOnboarding(); });
 $('chk-snap').addEventListener('change', (e) => { state.snap = e.target.checked; writePref('snap', state.snap); sky.snap = state.snap; });
 $('chk-bino').checked = state.binoculars;
 $('chk-bino').addEventListener('change', (e) => {
@@ -1373,14 +1374,77 @@ function enterSky() {
   if (!state.storageReady) toast('Browser storage is unavailable. Captures may not save.',5000);
   refreshAbove();
 }
-$('btn-start').addEventListener('click', async () => {
+$('btn-start').addEventListener('click', () => {
   if (!state.catalog) { location.reload(); return; }
   $('btn-start').disabled=true;
-  await enableMotion();
-  requestLocation(); keepAwake(); navigator.storage?.persist?.().catch(() => {});
+  keepAwake(); navigator.storage?.persist?.().catch(() => {});
   writePref('started', true);
   state.preview=false; enterSky();
+  runOnboarding();
 });
+
+// ---------- guided setup (2026-10-06, design/welcome-flows.html D) ----------
+// Two bottom sheets over the live sky (location, motion), a hairline that fills, then the app steers you to
+// something certain to be up (the Sun by day, else the Moon, else the brightest planet or star) for a real
+// first catch, then a "Tonight looks good" close with the real numbers. Every step skippable; replay from
+// Settings. Only runs when you own no cards.
+let onboarding = null;
+function obSheet({ ico, title, text, yes, no, w }) {
+  $('ob-ico').textContent = ico; $('ob-title').textContent = title; $('ob-text').textContent = text;
+  $('ob-yes').textContent = yes; $('ob-no').textContent = no; $('ob-no').hidden = !no;
+  $('ob-hair').style.setProperty('--w', `${w}%`);
+  document.body.classList.add('ob-sheet');
+  const sheet = $('ob-sheet'); sheet.hidden = false; requestAnimationFrame(() => requestAnimationFrame(() => sheet.classList.add('in')));
+  return new Promise((resolve) => { onboarding = { resolve }; $('ob-yes').onclick = () => resolve(true); $('ob-no').onclick = () => resolve(false); });
+}
+function obHide() { const s = $('ob-sheet'); s.classList.remove('in'); document.body.classList.remove('ob-sheet'); return new Promise((r) => setTimeout(r, 450)); }
+async function runOnboarding() {
+  if (state.sightings.some((x) => !x.sim)) { await enableMotion(); requestLocation(); return; } // not a first run
+  const ob = $('onboard'); ob.hidden = false; $('ob-done').hidden = true; state.pinnedId = null; state.targetId = null;
+  let skipped = false; $('ob-skip').onclick = () => { skipped = true; onboarding?.resolve(false); };
+  // 1. location
+  if (await obSheet({ ico: '⌖', title: 'Line up your sky', text: 'Your location sets which stars and satellites are overhead. It stays on this phone.', yes: 'Allow', no: 'Not now', w: 33 })) await requestLocation();
+  await obHide(); if (skipped) return obFinish(false);
+  // 2. motion (iOS only grants it from a tap, which this is)
+  const want = await obSheet({ ico: '◎', title: "Point, don't scroll", text: 'With motion on, the circle follows the phone. Sweep the sky; whatever sits in the circle is what you\'re looking at.', yes: 'Allow motion', no: 'Use a finger', w: 66 });
+  if (want) await enableMotion(); else { state.drag.on = true; $('chk-drag').checked = true; }
+  await obHide(); if (skipped) return obFinish(false);
+  // 3. the first catch: hide the chrome, pin the surest target, the normal aim + Tap to collect takes over
+  $('ob-hair').style.setProperty('--w', '100%');
+  const target = firstTarget();
+  if (target) { state.pinnedId = target.obj.id; state.targetId = target.obj.id; toast(`<span class="big-line">${escapeHtml(label(target.obj))} is up</span>${escapeHtml(target.hint)}`, 5000); }
+  ob.style.pointerEvents = 'none';
+  // wait for the first card (or a skip), then close
+  await new Promise((resolve) => { onboarding = { resolve }; const t = setInterval(() => { if (state.sightings.some((x) => !x.sim)) { clearInterval(t); resolve(true); } }, 500); $('ob-skip').onclick = () => { clearInterval(t); resolve(false); }; });
+  if (skipped) return obFinish(false);
+  // let the reveal play; when it's dismissed, show the close
+  await new Promise((resolve) => { const t = setInterval(() => { if ($('reveal').hidden) { clearInterval(t); resolve(); } }, 300); });
+  obFinish(true);
+}
+// What's certain to be up right now, with a one-line hint.
+function firstTarget() {
+  const nat = state.naturals ?? [];
+  const sun = nat.find((n) => n.obj.key === 'sun' && n.look.visible); if (sun) return { obj: sun.obj, hint: 'Aim the phone, not your eyes.' };
+  const moon = nat.find((n) => n.obj.key === 'moon' && n.look.visible); if (moon) return { obj: moon.obj, hint: 'Bright and easy. Turn until it\'s in the circle.' };
+  const best = nat.filter((n) => n.look.visible && n.look.el > 15 && (n.obj.type === 'planet' || n.obj.type === 'star')).sort((a, b) => a.look.mag - b.look.mag)[0];
+  if (best) return { obj: best.obj, hint: `The bright steady one, ${Math.round(best.look.el)}° up in the ${compassPoint(best.look.az)}.` };
+  const sat = (state.items ?? []).filter((a) => a.look.visible && a.look.el > 20).sort((a, b) => a.look.mag - b.look.mag)[0];
+  return sat ? { obj: sat.obj, hint: `Moving steadily, ${Math.round(sat.look.el)}° up in the ${compassPoint(sat.look.az)}.` } : null;
+}
+function obFinish(caught) {
+  const ob = $('onboard'); ob.style.pointerEvents = ''; onboarding = null; document.body.classList.remove('ob-sheet');
+  if (!caught) { ob.hidden = true; return; }
+  const T = state.tonight, t0 = now().getTime(), wx = tonightWeather();
+  const peak = T ? T.curve.filter(([t]) => t >= t0).reduce((a, c) => (c[1] > a[1] ? c : a), [0, 0]) : null;
+  const best = T ? (tonightPasses(T, t0).find((p) => p.fresh && p.start > t0) ?? tonightPasses(T, t0).find((p) => p.start > t0)) : null;
+  const dark = T?.dusk && T.dusk > t0 ? fmtTime(T.dusk) : (T ? 'Now' : '—');
+  $('ob-done-title').innerHTML = wx && !wx.ok ? 'Not tonight,<br>but soon.' : 'Tonight<br>looks good.';
+  $('ob-stats').innerHTML = `<div><b>${escapeHtml(dark)}</b><span>Dark from</span></div><div><b>${peak ? peak[1] : '—'}</b><span>Satellites at peak</span></div><div><b>${wx ? escapeHtml(wx.line.split(' ')[0]) : '—'}</b><span>${wx ? escapeHtml(wx.line.split(' ').slice(1).join(' ')) : 'Sky'}</span></div>`;
+  $('ob-best').textContent = best ? `Best one: ${label(best.obj)} at ${fmtTime(best.start)}, ${best.peakEl}° up in the ${compassPoint(best.peakAz)}.${best.fresh ? " It isn't in your collection yet." : ''}` : 'Open the Tonight line any time for the plan.';
+  $('ob-remind').hidden = !best; $('ob-remind').onclick = () => { remindPass(best); };
+  $('ob-explore').onclick = () => { ob.hidden = true; $('ob-done').hidden = true; };
+  $('ob-sheet').hidden = true; $('ob-done').hidden = false;
+}
 
 // Returning users skip the start screen and go straight to the sky. iPhones only allow motion
 // access from a tap, so if it isn't available yet the first tap anywhere turns it on.
@@ -1406,19 +1470,12 @@ function saveExploreState() {
 }
 document.addEventListener('click', e => { if (e.target.closest('a[href^="cards.html"]')) saveExploreState(); });
 window.addEventListener('pagehide',saveExploreState);
-// Welcome: three real cards fanned out (Saturn, Betelgeuse, the ISS in front), drawn by the card renderer itself.
+// Welcome (D "Studio"): one full-bleed card picture behind the headline: the Sun by day, the ISS by night.
 function renderStartHand() {
-  const hand = $('start-hand'); if (!hand) return;
-  hand.replaceChildren(...['planet:saturn', 'star:betelgeuse', '25544'].map((k) => state.cardModels.get(k)).filter(Boolean).map((c) => renderCard(c, { preview: true })));
-  fitStartHand();
+  const day = (state.frame?.sunEl ?? -90) > -6, key = day ? 'sun' : '25544';
+  const c = state.cardModels.get(key); const src = c && artImage(c);
+  if (src) $('hero-art').src = src;
 }
-function fitStartHand() {
-  const hand = $('start-hand'), front = hand?.lastElementChild; if (!front) return;
-  hand.style.setProperty('--hs', Math.min(.75, (hand.clientHeight * .8) / front.offsetHeight).toFixed(3));
-}
-window.addEventListener('resize', fitStartHand);
-$('start-night').addEventListener('click', () => $('night-toggle').click());
-$('start-more').addEventListener('click', () => $('nav-more').click());
 async function boot() {
   try {
     state.catalog=await loadCatalog('data/catalog.json');
@@ -1429,15 +1486,15 @@ async function boot() {
     state.rising=new RisingSoon(state.catalog.objects);
     for (const o of state.catalog.objects) if (o.family) state.familyCounts.set(o.card,(state.familyCounts.get(o.card)??0)+1);
   } catch {
-    $('start-note').textContent='Satellite data could not load. Check your connection and reload to try again.';
-    $('btn-start').textContent='Reload satellite data'; $('btn-start').disabled=false;
+    $('start-note').textContent='Satellite data could not load. Check your connection and reload to try again.'; $('start-note').classList.add('err');
+    $('btn-start').firstElementChild.textContent='Reload satellite data'; $('btn-start').disabled=false;
     $('btn-start').onclick=()=>location.reload(); return;
   }
   try { state.sky=await loadSky('data/sky.json'); } catch {}
   await loadLore(); await loadSightings();
   state.locationStatus=loadSavedLocation()?'saved':'example'; renderLocation();
-  renderStartHand();
-  $('btn-start').textContent='Observe the sky'; $('btn-start').disabled=false;
+  state.frame = frame(now(), state.observer); renderStartHand();
+  $('btn-start').firstElementChild.textContent='Get started'; $('btn-start').disabled=false;
   const params=new URLSearchParams(location.search);
   if(params.has('resume')) {
     try {

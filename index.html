@@ -15,9 +15,9 @@
   <script>try { if (localStorage.getItem("night") === "1") document.documentElement.dataset.theme = "night"; } catch {}</script>
   <link rel="preload" href="fonts/RussoOne-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="fonts/BarlowCondensed-Medium.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="css/cards.css?v=0.1.182">
-  <link rel="stylesheet" href="css/app.css?v=0.1.182">
-  <link rel="stylesheet" href="css/reveal.css?v=0.1.182">
+  <link rel="stylesheet" href="css/cards.css?v=0.1.184">
+  <link rel="stylesheet" href="css/app.css?v=0.1.184">
+  <link rel="stylesheet" href="css/reveal.css?v=0.1.184">
 </head>
 <body>
   <canvas id="sky" role="img" aria-label="Sky map aligned with your viewing direction"></canvas>
@@ -75,15 +75,36 @@
   <div id="version"></div>
 
   <section id="start" class="overlay">
-    <header class="start-header"><span class="wordmark">SPACE COLLECTOR<span>FIELD NOTES FROM ORBIT</span></span><span class="header-buttons"><button id="start-night" class="icon-button" type="button" aria-label="Turn on red night mode" aria-pressed="false">☾</button><button id="start-more" class="icon-button" type="button" aria-label="Settings"><span class="ico" data-ico="sliders"></span></button></span></header>
+    <div class="hero" aria-hidden="true"><img id="hero-art" alt="" decoding="async"></div>
     <div class="start-inner">
-      <div id="start-hand" aria-hidden="true"></div>
-      <span class="eyebrow">REAL OBJECTS. REMARKABLE STORIES.</span>
-      <h1>Look up.<br>Collect the sky.</h1>
-      <p>Point your phone at a moving light, find out what it is, and keep its card.</p>
-      <button id="btn-start" class="big" disabled>Loading the sky…</button>
-      <p class="hint small" id="start-note">Uses your location and motion sensors so the sky lines up with where you point.</p>
+      <div class="spacer"></div>
+      <h1 class="d-title">Look up.<br>Collect<br>the sky.</h1>
+      <p class="d-sub">Satellites, stations, planets and stars, identified as you point at them. Every one is a card.</p>
+      <button id="btn-start" class="d-cta o" disabled><span>Loading the sky…</span><span aria-hidden="true">→</span></button>
+      <p class="d-under" id="start-note">Takes about a minute. Works best outside.</p>
       <a class="text-button" href="cards.html">Browse the collection</a>
+    </div>
+  </section>
+
+  <!-- Guided setup (2026-10-06, design/welcome-flows.html D): bottom sheets over the live sky, then your first catch. -->
+  <section id="onboard" hidden>
+    <div class="hair" aria-hidden="true"><i id="ob-hair"></i></div>
+    <button class="pill ob-exit" id="ob-skip" type="button">Skip setup</button>
+    <div class="sheet" id="ob-sheet">
+      <div class="grab" aria-hidden="true"></div>
+      <div class="ico" id="ob-ico" aria-hidden="true">⌖</div>
+      <h3 id="ob-title">Line up your sky</h3>
+      <p id="ob-text">Your location sets which stars and satellites are overhead. It stays on this phone.</p>
+      <div class="row2"><button class="d-cta ghost" id="ob-no" type="button">Not now</button><button class="d-cta o" id="ob-yes" type="button">Allow</button></div>
+    </div>
+    <div class="ob-done" id="ob-done" hidden>
+      <div class="spacer"></div>
+      <span class="eyebrow">You're set</span>
+      <h2 class="d-title small" id="ob-done-title">Tonight<br>looks good.</h2>
+      <div class="d-stats" id="ob-stats"></div>
+      <p class="d-sub" id="ob-best"></p>
+      <button class="d-cta o" id="ob-remind" type="button"><span>Remind me</span><span aria-hidden="true">→</span></button>
+      <button class="d-cta ghost" id="ob-explore" type="button"><span>Explore the sky</span><span aria-hidden="true">→</span></button>
     </div>
   </section>
 
@@ -150,6 +171,7 @@
     </div>
     <div class="row wrap">
       <button class="pill accent" id="btn-next-pass">Jump to next visible pass</button>
+      <button class="pill" id="btn-replay-setup">Show me around again</button>
     </div>
 
 
@@ -160,7 +182,7 @@
     <pre id="debug-info"></pre></details>
   </section>
 
-  <script type="module" src="js/main.js?v=0.1.182"></script>
+  <script type="module" src="js/main.js?v=0.1.184"></script>
 <div id="rotate" role="status"><b>Turn your phone upright</b><span>Space Collector is made for portrait.</span></div>
 </body>
 </html>
