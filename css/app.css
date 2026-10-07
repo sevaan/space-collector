@@ -245,6 +245,7 @@ body.night #t-art { border-color:var(--rule); }
 #nextpass .np-k, #nextpass .np-n, #nextpass .np-m { font:500 12px/1.2 var(--label); letter-spacing:.1em; text-transform:uppercase; }
 #nextpass .np-k, #nextpass .np-m { flex:none; color:var(--muted); }
 #nextpass .np-n { flex:0 1 auto; min-width:0; overflow:hidden; text-overflow:ellipsis; color:var(--gold); font-weight:700; letter-spacing:.06em; }
+@media (max-width:360px) { #nextpass .np-k { display:none; } #nextpass .np-k, #nextpass .np-n, #nextpass .np-m { letter-spacing:.06em; } } /* small phones: name and time matter most */
 body:has(#event-banner:not([hidden])) #nextpass { top:calc(var(--safe-top) + 152px); } /* below a meteor-shower banner */
 body.day #nextpass { background:color-mix(in srgb,var(--bg) 70%,transparent); }
 .t-row.tappable { cursor:pointer; }
