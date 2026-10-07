@@ -1,30 +1,30 @@
-import { VERSION } from './version.js?v=0.1.206';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.206';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.206';
-import { conArt } from './con-art.js?v=0.1.206';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.206';
-import { CON_FIGURES } from './con-figures.js?v=0.1.206';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.206';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.206';
-import { progress as progressOf } from './progress.js?v=0.1.206';
-import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.206';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.206';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.206';
-import { SkyView, shortName } from './sky.js?v=0.1.206';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.206';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.206';
-import { cardArt } from './art.js?v=0.1.206';
-import { renderCard, cardLevel, artImage, attachTilt, throwOff } from './card.js?v=0.1.206';
-import { applyBack } from './card-backs.js?v=0.1.206';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.206';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.206';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.206';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.206';
-import { TIER_INFO } from './rarity.js?v=0.1.206';
-import { SETS } from './sets.js?v=0.1.206';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.206';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.206';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.206';
+import { VERSION } from './version.js?v=0.1.207';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.207';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.207';
+import { conArt } from './con-art.js?v=0.1.207';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.207';
+import { CON_FIGURES } from './con-figures.js?v=0.1.207';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.207';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.207';
+import { progress as progressOf } from './progress.js?v=0.1.207';
+import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.207';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.207';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.207';
+import { SkyView, shortName } from './sky.js?v=0.1.207';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.207';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.207';
+import { cardArt } from './art.js?v=0.1.207';
+import { renderCard, cardLevel, artImage, attachTilt, throwOff } from './card.js?v=0.1.207';
+import { applyBack } from './card-backs.js?v=0.1.207';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.207';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.207';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.207';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.207';
+import { TIER_INFO } from './rarity.js?v=0.1.207';
+import { SETS } from './sets.js?v=0.1.207';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.207';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.207';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.207';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -1426,7 +1426,19 @@ for (const ev of ['pointerdown', 'touchstart']) $('skybar').addEventListener(ev,
 }
 $('chk-snap').checked = state.snap; sky.snap = state.snap;
 document.querySelectorAll('[data-hl]').forEach((c) => { c.checked = hlOn(c.dataset.hl); c.addEventListener('change', () => { writePref(`hl-${c.dataset.hl}`, c.checked); lastLocked = !state.lockedOn; }); });
-$('btn-replay-setup')?.addEventListener('click', () => { closePanel('debug'); runOnboarding(true); }); // Testing tools: run the tour any time
+// Testing tools: run the whole first-run experience again, from the sealed welcome card, with motion and
+// location switched back off so the permission steps are real steps again (the browser won't re-prompt once
+// granted, but the app goes back to drag view and the example location until you allow them).
+$('btn-replay-setup')?.addEventListener('click', () => {
+  closePanel('debug');
+  state.drag.on = true; $('chk-drag').checked = true; state.liveSince = null;
+  state.locationStatus = 'example'; renderLocation();
+  state.pinnedId = null; state.targetId = null; state.guidePass = null;
+  wcCard = null; wcFlipped = false; wcReplay = true;
+  $('wc-hint').hidden = false; $('wc-hint').classList.remove('gone'); $('wc-after').hidden = true; $('btn-start').disabled = false;
+  renderStartHand();
+  $('hud').hidden = true; $('start').hidden = false;
+});
 $('chk-snap').addEventListener('change', (e) => { state.snap = e.target.checked; writePref('snap', state.snap); sky.snap = state.snap; });
 $('chk-bino').checked = state.binoculars;
 $('chk-bino').addEventListener('change', (e) => {
@@ -1574,7 +1586,7 @@ window.addEventListener('pagehide',saveExploreState);
 // ---------- Welcome card (2026-10-06) ----------
 // The opener is a sealed card (the real card back) that rattles every few seconds. Tap: it flips to a mission
 // card built with the real card renderer. Flick it up (or tap Begin): it flies off and the tour starts.
-let wcCard = null, wcFlipped = false, wcReady = false, wcWantFlip = false;
+let wcCard = null, wcFlipped = false, wcReady = false, wcWantFlip = false, wcReplay = false;
 function welcomeModel() {
   const n = state.catalog?.objects?.length ?? 16000;
   return {
@@ -1624,7 +1636,7 @@ function welcomeGo(dx = 0, dy = -2, dt = 16) {
   setTimeout(() => {
     keepAwake(); navigator.storage?.persist?.().catch(() => {});
     writePref('started', true);
-    state.preview = false; enterSky(); runOnboarding();
+    state.preview = false; enterSky(); runOnboarding(wcReplay); wcReplay = false;
   }, ms);
 }
 {
