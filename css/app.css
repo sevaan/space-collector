@@ -411,3 +411,17 @@ body.night #target { border-left-color:var(--gold); }
 #sky-range::-webkit-slider-thumb { border-color:var(--gold-soft); }
 #sky-range::-moz-range-thumb { border-color:var(--gold-soft); }
 body.day #sky-range::-webkit-slider-runnable-track { background:linear-gradient(90deg, var(--gold-soft) 0 var(--p,50%), #14304666 var(--p,50%)); }
+
+/* Mini card, round two (2026-10-07, Sevaan: thinner, same styling as the toasts): the toast's exact box (52px min,
+   8/12/8/14 padding), a 36px round art tile, the meta as the toast's small caps eyebrow on top (rarity colour) and the
+   name as the toast's line. */
+#target { min-height:52px; padding:8px 6px 8px 14px; gap:12px; align-items:center; }
+#target #t-thumb, #target #t-art { width:36px; height:36px; }
+#t-body { display:flex; flex-direction:column-reverse; gap:1px; }
+#t-name { font:500 15px/1.15 var(--label); letter-spacing:.02em; text-transform:none; color:var(--text); }
+#t-meta { margin:0; font:500 10px/1.2 var(--label); letter-spacing:.18em; text-transform:uppercase; color:var(--tier, var(--muted)); }
+#t-meta.turn { color:var(--cyan); }
+#t-switch { font-size:12px; }
+#t-close { width:36px; height:36px; margin:0; font-size:17px; }
+/* the toast sits right on top of it (mini card: 122px from the bottom + 52px tall + 8px gap) */
+body:has(#target:not([hidden])) #toasts { bottom:calc(var(--safe-bottom) + 182px); }
