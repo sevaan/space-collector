@@ -281,7 +281,7 @@ body.day #nextpass { background:color-mix(in srgb,var(--bg) 70%,transparent); }
   padding:7px 12px; border-radius:12px; background:color-mix(in srgb,var(--bg) 80%,transparent); border:1px solid color-mix(in srgb,var(--gold) 55%,transparent);
   color:var(--text); font:500 12.5px/1.3 var(--label); letter-spacing:.06em; -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px); }
 #event-banner b { color:var(--gold); font-weight:500; }
-body:has(#event-banner:not([hidden])) #toasts { top:calc(var(--safe-top) + 150px); } /* don't land on the banner */
+
 
 /* Every close button is a round ✕ (2026-10-06, Sevaan: no 'Done'). Same look in css/collection.css. */
 .pill.x-close { width:44px; min-width:44px; padding:0; border-radius:50%; font-size:20px; line-height:1; }
@@ -377,3 +377,11 @@ body.day #radar-up, body.day #d-tier, body.day #d-name { color:#143046; text-sha
 .ob-range::-webkit-slider-thumb { -webkit-appearance:none; width:28px; height:28px; margin-top:-12px; border-radius:50%; background:var(--bg); border:2.5px solid var(--gold); box-shadow:0 2px 8px #0008; }
 .ob-range::-moz-range-thumb { width:24px; height:24px; border-radius:50%; background:var(--bg); border:2.5px solid var(--gold); }
 .ob-ends { display:flex; justify-content:space-between; color:var(--muted); font:500 11px/1 var(--label); letter-spacing:.18em; text-transform:uppercase; }
+
+/* Toasts in Explore (2026-10-06, Sevaan): at the bottom, just above the sky slider (above the mini card when it's
+   up), rising in from below. Over the capture reveal they stay at the top, clear of the card. */
+body:not(:has(#reveal:not([hidden]))) #toasts { top:auto; bottom:calc(var(--safe-bottom) + 134px); flex-direction:column-reverse; }
+body:not(:has(#reveal:not([hidden]))):has(#target:not([hidden])) #toasts { bottom:calc(var(--safe-bottom) + 226px); }
+body:not(:has(#reveal:not([hidden]))) .ticket { transform:translateY(calc(100% + var(--safe-bottom) + 160px)) scale(.96); }
+body:not(:has(#reveal:not([hidden]))) .ticket.in { transform:none; }
+body:has(#reveal:not([hidden])):has(#event-banner:not([hidden])) #toasts { top:calc(var(--safe-top) + 150px); }
