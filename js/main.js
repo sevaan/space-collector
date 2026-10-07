@@ -1,29 +1,29 @@
-import { VERSION } from './version.js?v=0.1.187';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.187';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.187';
-import { conArt } from './con-art.js?v=0.1.187';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.187';
-import { CON_FIGURES } from './con-figures.js?v=0.1.187';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.187';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.187';
-import { progress as progressOf } from './progress.js?v=0.1.187';
-import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.187';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.187';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.187';
-import { SkyView, shortName } from './sky.js?v=0.1.187';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.187';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.187';
-import { cardArt } from './art.js?v=0.1.187';
-import { renderCard, cardLevel, artImage } from './card.js?v=0.1.187';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.187';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.187';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.187';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.187';
-import { TIER_INFO } from './rarity.js?v=0.1.187';
-import { SETS } from './sets.js?v=0.1.187';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.187';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.187';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.187';
+import { VERSION } from './version.js?v=0.1.189';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.189';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.189';
+import { conArt } from './con-art.js?v=0.1.189';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.189';
+import { CON_FIGURES } from './con-figures.js?v=0.1.189';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.189';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.189';
+import { progress as progressOf } from './progress.js?v=0.1.189';
+import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.189';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.189';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.189';
+import { SkyView, shortName } from './sky.js?v=0.1.189';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.189';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.189';
+import { cardArt } from './art.js?v=0.1.189';
+import { renderCard, cardLevel, artImage } from './card.js?v=0.1.189';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.189';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.189';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.189';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.189';
+import { TIER_INFO } from './rarity.js?v=0.1.189';
+import { SETS } from './sets.js?v=0.1.189';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.189';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.189';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.189';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -1092,6 +1092,8 @@ function dayGhosts() {
   }
   return out;
 }
+// The chip in the upper right (2026-10-06, Sevaan: out of the way of the sky labels): label / name / detail ›.
+const npChip = (k, n, m) => `<span class="np-k">${escapeHtml(k)}</span><b class="np-n">${escapeHtml(n)}</b><span class="np-m">${escapeHtml(m)} ›</span>`;
 function updateNextPassChip() {
   const chip = $('nextpass');
   const lit = state.items?.some((i) => i.look.visible);
@@ -1105,13 +1107,12 @@ function updateNextPassChip() {
     const wx = tonightWeather(), best = tonightPasses(T, t0).find((p) => p.fresh) ?? next;
     const dusk = T.dusk ? fmtTime(T.dusk) : null;
     chip.innerHTML = wx && !wx.ok
-      ? `<span>Not tonight:</span> <b>${escapeHtml(wx.line)}</b> <span>${wx.nextClear ? `· next clear ${new Date(wx.nextClear).toLocaleDateString([], { weekday: 'short' })}` : ''} ›</span>`
-      : `<span>Tonight${dusk ? ` from ${dusk}` : ''}:</span> <b>${best ? escapeHtml(label(best.obj)) : 'see the plan'}</b> <span>${wx ? '· ' + escapeHtml(wx.line) : ''} ›</span>`;
+      ? npChip('Not tonight', wx.line, wx.nextClear ? `Next clear ${new Date(wx.nextClear).toLocaleDateString([], { weekday: 'long' })}` : 'See the plan')
+      : npChip(`Tonight${dusk ? ` from ${dusk}` : ''}`, best ? label(best.obj) : 'See the plan', best ? `${fmtTime(best.start)}${wx ? ` · ${wx.line}` : ''}` : (wx?.line ?? ''));
     chip.hidden = false; return;
   }
-  // One short line: 'Next: <name> · 12:31 AM ›' (the name shortens with … if it has to).
-  chip.innerHTML = next ? `<span>${dark ? 'Next' : 'From ' + fmtTime(win?.s ?? next.start)}:</span> <b>${escapeHtml(label(next.obj))}</b> <span>· ${fmtTime(next.start)} ›</span>`
-    : win ? `<span>Satellites again at</span> <b>${fmtTime(win.s)}</b> <span>›</span>` : '<span>No more satellites tonight ›</span>';
+  chip.innerHTML = next ? npChip(dark ? 'Next up' : `From ${fmtTime(win?.s ?? next.start)}`, label(next.obj), fmtTime(next.start))
+    : win ? npChip('Nothing lit right now', `Back at ${fmtTime(win.s)}`, 'See the plan') : npChip('No more satellites', 'Tonight', 'See what else is up');
   chip.hidden = false;
 }
 $('nextpass').addEventListener('click', () => { showVTab('tonight'); openPanel('visible'); });
