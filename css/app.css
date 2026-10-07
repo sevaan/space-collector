@@ -442,3 +442,10 @@ body:has(#target:not([hidden])) #toasts { bottom:calc(var(--safe-bottom) + 182px
 /* Toasts land with a little bounce: overshoot up, settle back. */
 .ticket.in { transition:transform .7s cubic-bezier(.2,1.6,.35,1), opacity .2s ease-out; }
 @media (prefers-reduced-motion: reduce) { .ticket.in { transition:opacity .2s; } }
+
+/* More air above the slider (2026-10-07, Sevaan): the mini card and toasts lift clear of it, and the mini card no
+   longer shows "1 of 2" (the circle picks what you're aiming at). */
+#target { bottom:calc(var(--safe-bottom) + 144px) !important; }
+#toasts { bottom:calc(var(--safe-bottom) + 144px); }
+body:has(#target:not([hidden])) #toasts { bottom:calc(var(--safe-bottom) + 204px); }
+#t-switch { display:none !important; }
