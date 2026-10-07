@@ -1,9 +1,9 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.224';
+import { extinction } from './sky-limit.js?v=0.1.226';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.224';
-import { TIER_INFO } from './rarity.js?v=0.1.224';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.226';
+import { TIER_INFO } from './rarity.js?v=0.1.226';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -277,6 +277,24 @@ export class SkyView {
     ctx.restore();
   }
 
+  // See-through Earth (2026-10-06): things below the horizon right now, drawn faintly where they really are, with
+  // when they rise. below: [{ enu, name, note, kind }]
+  drawBelow(below) {
+    const ctx = this.ctx, t = this.theme;
+    ctx.save();
+    for (const g of below) {
+      if (g.enu[2] >= 0) continue;
+      const p = this.project(g.enu);
+      if (!this.onScreen(p, 20)) continue;
+      const r = g.kind === 'sun' ? 13 : g.kind === 'moon' ? 10 : 6;
+      ctx.setLineDash([3, 4]); ctx.lineWidth = 1.2;
+      ctx.strokeStyle = g.kind === 'sun' ? 'rgba(250,129,39,.75)' : 'rgba(255,242,179,.5)';
+      ctx.beginPath(); ctx.arc(p.x, p.y, r, 0, Math.PI * 2); ctx.stroke();
+      ctx.setLineDash([]);
+      this.queueLabel(g.note ? `${g.name} · ${g.note}` : g.name, p, { color: g.kind === 'sun' ? 'rgba(250,129,39,.9)' : 'rgba(255,242,179,.78)', size: 12, weight: 600, gap: r + 6, priority: 6 }); // one line, so the time never drifts off its name
+    }
+    ctx.restore();
+  }
   // Local weather over the sky (js/weather.js): drifting cloud by cover, a fog wash, light rain or snow.
   // Screen-space and deliberately quiet: it should tell you why the sky looks empty, not perform.
   drawWeather(wx, time) {
@@ -378,11 +396,23 @@ export class SkyView {
       }
     }
     if (!ground.length) return;
-    ctx.fillStyle = this.theme.ground;
-    ctx.beginPath();
-    ground.forEach((p, i) => i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y));
-    ctx.closePath();
-    ctx.fill();
+    // The earth (2026-10-06): darker the further down you look, so the ground reads as ground, not more sky.
+    const down = Math.max(0, Math.min(1, -this.basis.back[2] * 1.4));
+    const night = this.theme === THEMES.night;
+    ctx.save();
+    ctx.beginPath(); ground.forEach((p, i) => i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y)); ctx.closePath();
+    ctx.fillStyle = this.theme.ground; ctx.fill();
+    ctx.clip();
+    if (!night) { ctx.fillStyle = `rgba(3, 6, 11, ${(0.25 + down * 0.45).toFixed(3)})`; ctx.fillRect(0, 0, this.w, this.h); }
+    // a soft glow just under the horizon, warmer where the Sun is hiding
+    const hz = []; for (let az = 0; az <= 360; az += 3) { const p = this.project(enuFromAzEl(az, -1.5)); if (p && this.onScreen(p, 60)) hz.push({ p, az }); }
+    const sunAz = this.sunAz;
+    for (const { p, az } of hz) {
+      const warm = sunAz == null ? 0 : Math.max(0, Math.cos((az - sunAz) * RAD)) ** 3 * Math.max(0, Math.min(1, (this.sunEl + 18) / 16));
+      const rgb = night ? [255, 70, 50] : [Math.round(98 + warm * 140), Math.round(122 + warm * 40), Math.round(139 - warm * 80)];
+      this.glow(p.x, p.y, 46, rgb, (night ? 0.05 : 0.07) + warm * 0.12);
+    }
+    ctx.restore();
   }
 
   drawLandscape() {
@@ -421,17 +451,22 @@ export class SkyView {
     ctx.save();
     ctx.strokeStyle = t.groundInk;
     ctx.lineWidth = 1;
-    for (const el of [-20, -45, -70]) {
+    // Topographic contours (2026-10-06): gently wavy rings like a survey map, instead of a sky grid on the ground.
+    ctx.globalAlpha = 0.85;
+    for (const [i, el] of [-8, -16, -26, -38, -52, -68].entries()) {
       const pts = [];
-      for (let az = 0; az <= 360; az += 3) pts.push(enuFromAzEl(az, el));
+      for (let az = 0; az <= 360; az += 3) pts.push(enuFromAzEl(az, el + Math.sin(az * RAD * 3 + i * 1.7) * 1.6 + Math.sin(az * RAD * 7 + i) * 0.7));
+      ctx.lineWidth = i % 2 ? 0.75 : 1;
       this.path(pts);
     }
-    for (let az = 0; az < 360; az += 30) {
+    ctx.globalAlpha = 0.6;
+    for (let az = 0; az < 360; az += 90) { // the four cardinal spokes only
       const pts = [];
       for (let el = -4; el >= -88; el -= 4) pts.push(enuFromAzEl(az, el));
-      ctx.lineWidth = az % 90 ? 1 : 1.6;
+      ctx.lineWidth = 1.2;
       this.path(pts);
     }
+    ctx.globalAlpha = 1;
     ctx.lineWidth = 1;
     for (let az = 0; az < 360; az += 10) {
       const long = az % 30 === 0;
@@ -734,7 +769,7 @@ export class SkyView {
 
   // safeTop/safeBottom are HUD insets in CSS pixels; centerY is an optional pixel
   // override. Projection and the reticle always share the same cx/cy.
-  draw(basis, items, { showDim, sky, bodies, milky, lines = true, targetId = null, time = 0, safeTop = 150, safeBottom = 230, centerY, starLimit = null, naturalTargetName = null, quietTarget = false, sunEl = -90, ghosts = null, weather = null, newFind = false, rising = null, landscape = false, lockedOn = null, planes = null, planeHit = null, planeTrail = null, naturalTarget = null } = {}) {
+  draw(basis, items, { showDim, sky, bodies, milky, lines = true, targetId = null, time = 0, safeTop = 150, safeBottom = 230, centerY, starLimit = null, naturalTargetName = null, quietTarget = false, below = null, sunEl = -90, ghosts = null, weather = null, newFind = false, rising = null, landscape = false, lockedOn = null, planes = null, planeHit = null, planeTrail = null, naturalTarget = null } = {}) {
     this.basis = basis;
     this.safeTop = Math.max(12, Math.min(safeTop, this.h * 0.45));
     this.safeBottom = Math.max(12, Math.min(safeBottom, this.h - this.safeTop - 100));
@@ -746,7 +781,8 @@ export class SkyView {
     const ctx = this.ctx, t = this.theme;
     // Day factor: 0 at night, 1 in full daylight (civil twilight in between). Drives the sky tone and what shows.
     this.dayF = this.theme === THEMES.night ? 0 : Math.max(0, Math.min(1, (sunEl + 8) / 12));
-    this.starLimit = starLimit;
+    this.starLimit = starLimit; this.sunEl = sunEl;
+    { const s = bodies?.find?.((b) => b.kind === 'sun'); this.sunAz = s ? (Math.atan2(s.enu[0], s.enu[1]) / RAD + 360) % 360 : null; }
     this.drawBackground();
     if ((this.dayF ?? 0) < 0.2) this.drawMilkyWay(milky);
     if (sky && (this.dayF ?? 0) < 0.6) this.drawStars(sky, { lines: lines && this.dayF < 0.2, time: this.reducedMotion ? 0 : time, starLimit });
@@ -756,6 +792,7 @@ export class SkyView {
     this.drawGround();
     if (landscape) this.drawLandscape();
     this.drawGroundCompass();
+    if (below?.length && this.basis.back[2] < 0.15) this.drawBelow(below);
     this.drawRising(rising);
     this.drawGrid();
 

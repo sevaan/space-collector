@@ -1,30 +1,30 @@
-import { VERSION } from './version.js?v=0.1.224';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.224';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.224';
-import { conArt } from './con-art.js?v=0.1.224';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.224';
-import { CON_FIGURES } from './con-figures.js?v=0.1.224';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.224';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.224';
-import { progress as progressOf } from './progress.js?v=0.1.224';
-import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.224';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.224';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.224';
-import { SkyView, shortName } from './sky.js?v=0.1.224';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.224';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.224';
-import { cardArt } from './art.js?v=0.1.224';
-import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.224';
-import { applyBack } from './card-backs.js?v=0.1.224';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.224';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.224';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.224';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.224';
-import { TIER_INFO } from './rarity.js?v=0.1.224';
-import { SETS } from './sets.js?v=0.1.224';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.224';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.224';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.224';
+import { VERSION } from './version.js?v=0.1.226';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.226';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.226';
+import { conArt } from './con-art.js?v=0.1.226';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.226';
+import { CON_FIGURES } from './con-figures.js?v=0.1.226';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.226';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.226';
+import { progress as progressOf } from './progress.js?v=0.1.226';
+import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.226';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.226';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.226';
+import { SkyView, shortName } from './sky.js?v=0.1.226';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.226';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.226';
+import { cardArt } from './art.js?v=0.1.226';
+import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.226';
+import { applyBack } from './card-backs.js?v=0.1.226';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.226';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.226';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.226';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.226';
+import { TIER_INFO } from './rarity.js?v=0.1.226';
+import { SETS } from './sets.js?v=0.1.226';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.226';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.226';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.226';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -378,6 +378,7 @@ let lastPanel = 0, lastLocked = false;
 let hintSince = 0, hintOff = false;
 function firstNightHint(target, plane, t) {
   const g = $('guidance');
+  if (groundShown) return; // the look-up nudge owns the line while you're looking down
   if (hintOff || target || plane || state.preview) { if (g.classList.contains('first')) { g.hidden = true; g.classList.remove('first'); } return; }
   if (state.sightings.some((s) => !s.sim)) { hintOff = true; return; }
   hintSince ||= t;
@@ -479,6 +480,7 @@ function tick(ts) {
     sunEl: state.frame?.sunEl ?? -90, // day/twilight tone (js/sky.js dayF)
     ...(document.body.classList.toggle('day', (state.frame?.sunEl ?? -90) > -2) ? {} : {}),
     weather: state.weather?.now ?? null,
+    below: belowGhosts(d), // see-through Earth: what's under the horizon and when it rises
     ghosts: state.guideRise && state.activeTarget ? [{ enu: enuFromAzEl(state.activeTarget.look.az, state.activeTarget.look.el), name: 'Appears here', note: fmtTime(state.guideRise.start) }] : dayGhosts(),
     bodies: state.showStars ? state.bodies : null,
     milky: state.showStars ? state.milkyEnu : null,
@@ -507,6 +509,7 @@ function tick(ts) {
     if (state.lockedOn && !lastLocked) snapTick(); // the circle just caught something
     lastLocked = state.lockedOn; renderTarget(target, d); measureSkySpace(); lastPanel = t; }
   firstNightHint(target, plane, t);
+  groundHint(t);
   renderPlane(plane, t);
 }
 
@@ -1195,6 +1198,55 @@ function checkCompass(t) {
   if (!bad || t - compassAskAt < 4 * 60e3) return;
   compassAskAt = t;
   toast(`<span class="tk-art">${FIG8_ART}</span><span class="tk-text"><span class="big-line">Compass needs a nudge</span>Wave the phone in a slow figure-8 for a few seconds, away from metal, magnets and cars.</span>`, 7000);
+}
+// ---------- below the horizon (2026-10-06) ----------
+// What's under your feet right now: the Sun, Moon and bright planets (with when they next rise) and tonight's next
+// few passes (with their start time). Rise times are found by stepping the clock in 10-minute hops; cached.
+let riseCache = { at: 0, map: new Map() };
+function riseTimes(d) {
+  if (d.getTime() - riseCache.at < 5 * 60e3 && riseCache.obs === state.observer) return riseCache.map;
+  const map = new Map(), toEnuAt = (t) => eqToEnu(new Date(t), state.observer), t0 = d.getTime();
+  const want = new Set(['Sun', 'Moon', 'Venus', 'Jupiter', 'Mars', 'Saturn', 'Mercury']);
+  for (let t = t0 + 600e3; t <= t0 + 30 * 3600e3 && map.size < want.size; t += 600e3) {
+    const toEnu = toEnuAt(t);
+    for (const b of solarSystem(new Date(t), state.observer)) {
+      if (!want.has(b.name) || map.has(b.name)) continue;
+      if (toEnu(b.v)[2] > 0) map.set(b.name, t);
+    }
+  }
+  riseCache = { at: t0, obs: state.observer, map }; return map;
+}
+let belowAt = 0, belowList = null;
+function belowGhosts(d) {
+  const back = state.basis?.back; if (!back || back[2] > 0.15 || !state.bodies) return null;
+  if (belowList && performance.now() - belowAt < 1000) return belowList;
+  belowAt = performance.now();
+  const out = [], rises = riseTimes(d), whenOf = (t) => (t ? `rises ${fmtTime(t)}` : '');
+  for (const b of state.bodies) {
+    if (b.enu[2] >= 0 || b.kind === 'star') continue;
+    if (b.kind === 'planet' && b.mag > 2) continue;
+    out.push({ enu: b.enu, kind: b.kind, name: b.kind === 'sun' ? 'The Sun' : b.kind === 'moon' ? 'The Moon' : b.name, note: whenOf(rises.get(b.kind === 'sun' ? 'Sun' : b.kind === 'moon' ? 'Moon' : b.name)) });
+  }
+  const T = state.tonight, t0 = d.getTime();
+  if (T && state.frame) for (const p of tonightPasses(T, t0).filter((x) => x.start > t0).slice(0, 4)) {
+    const o = state.byId.get(p.id); if (!o) continue;
+    const l = look(o, state.frame); if (!l || l.el >= 0) continue;
+    out.push({ enu: enuFromAzEl(l.az, l.el), kind: 'sat', name: label(o), note: `up ${fmtTime(p.start)}` });
+  }
+  return (belowList = out);
+}
+// A nudge back up after a few seconds of looking at the ground with nothing selected.
+let groundSince = null, groundShown = false;
+function groundHint(t) {
+  const g = $('guidance'), back = state.basis?.back;
+  const down = back && back[2] < -0.26 && !state.pinnedId && !state.activeTarget;
+  if (!down) { groundSince = null; if (groundShown) { g.hidden = true; g.classList.remove('ground'); groundShown = false; } return; }
+  groundSince ??= t;
+  if (groundShown) { g.hidden = false; return; } // renderTarget hides #guidance when nothing's targeted; keep it up
+  if (t - groundSince < 3000) return;
+  const T = state.tonight, t0 = now().getTime(), next = T ? tonightPasses(T, t0).find((p) => p.start > t0) : null;
+  g.textContent = next ? `Looking at the ground. Raise your phone: ${label(next.obj)} comes up in the ${compassPoint(next.riseAz)} at ${fmtTime(next.start)}.` : 'Looking at the ground. Raise your phone to the sky.';
+  g.classList.add('ground'); g.hidden = false; groundShown = true;
 }
 // The chip in the upper right (2026-10-06, Sevaan: out of the way of the sky labels): label / name / detail ›.
 // Compact (2026-10-06): a short detail rides on the label line ('NEXT UP · 9:44 PM ›' over the name); a long one gets its own line.
