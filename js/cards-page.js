@@ -1,20 +1,20 @@
-import { ticket } from './toast.js?v=0.1.250';
-import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.250';
-import { cardArt } from './art.js?v=0.1.250';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.250';
-import { applyBack } from './card-backs.js?v=0.1.250';
-import { SETS, assignSets } from './sets.js?v=0.1.250';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.250';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.250';
-import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.250';
-import { progress } from './progress.js?v=0.1.250';
-import { SOLAR_SYSTEM } from './natural.js?v=0.1.250';
-import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.250';
-import { drawShareCard, shareCard } from './share-card.js?v=0.1.250';
-import { conArt } from './con-art.js?v=0.1.250';
-import { CON_BY_ID } from './constellations.js?v=0.1.250';
-import { allSightings, deleteSighting } from './store.js?v=0.1.250';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.250';
+import { ticket } from './toast.js?v=0.1.251';
+import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.251';
+import { cardArt } from './art.js?v=0.1.251';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.251';
+import { applyBack } from './card-backs.js?v=0.1.251';
+import { SETS, assignSets } from './sets.js?v=0.1.251';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.251';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.251';
+import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.251';
+import { progress } from './progress.js?v=0.1.251';
+import { SOLAR_SYSTEM } from './natural.js?v=0.1.251';
+import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.251';
+import { drawShareCard, shareCard } from './share-card.js?v=0.1.251';
+import { conArt } from './con-art.js?v=0.1.251';
+import { CON_BY_ID } from './constellations.js?v=0.1.251';
+import { allSightings, deleteSighting } from './store.js?v=0.1.251';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.251';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -510,3 +510,23 @@ boot().catch(() => {
   $('count').textContent = 'Your next discovery is waiting.';
   $('grid').replaceChildren();
 });
+
+// Card size (2026-10-07, Sevaan): the SMALL ↔ BIG slider over the switcher sets how many cards fit in a row, from
+// one big card per row up to 4 on a phone (7 on a wide screen). Remembered on this device.
+{
+  const range = $('size-range'), grid = $('grid');
+  const maxCols = () => (innerWidth >= 700 ? 7 : 4);
+  const applySize = () => {
+    const max = maxCols(); range.max = String(max);
+    const big = Math.min(max, Math.max(1, Number(range.value) || 1)), cols = max + 1 - big;
+    range.style.setProperty('--p', `${((big - 1) / Math.max(1, max - 1)) * 100}%`);
+    grid.dataset.cols = cols; grid.style.setProperty('--cols', cols);
+    const w = (grid.clientWidth || innerWidth - 40) / cols;
+    grid.classList.toggle('single', cols === 1); grid.classList.toggle('dense', w < 140); grid.classList.toggle('tiny', w < 92);
+  };
+  let cols0 = 2; try { cols0 = Number(localStorage.getItem('gridCols')) || 2; } catch {}
+  range.max = String(maxCols()); range.value = String(maxCols() + 1 - Math.min(maxCols(), cols0));
+  range.addEventListener('input', () => { applySize(); try { localStorage.setItem('gridCols', grid.dataset.cols); } catch {} });
+  addEventListener('resize', applySize);
+  applySize();
+}

@@ -228,3 +228,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - **Undiscovered cards** show their real art hidden (js/card.js `lockedArt`: blur + dark + scan lines) instead of the generic outline; the outline remains only where no picture exists.
 - **"1 of 2"** under the circle now reads "One more in the circle · tap to switch ›".
 - Loader has its cream inner orbit back; the target circle's centre is fixed at innerHeight/2 from the first frame (no slide).
+- **Card size slider (Collection):** `#sizebar` (shared `.ui-slider` / `.ui-range` in css/ui.css, same look as Explore's sky slider) sits over the switcher: SMALL ↔ BIG = 4…1 columns on phones (7…1 on wide screens), saved as `localStorage.gridCols`. Grid gets `data-cols`/`--cols` plus `.dense` (<140px tiles: tighter type) / `.tiny` (<92px: name only) / `.single`. A fixed bottom fade sits behind the controls.
+- Constellation charts: cross glints on a few background specks only; the figure's stars just shimmer.

@@ -129,3 +129,18 @@ select, .filter select, .search input { border: 1px solid var(--ui-edge); border
   --ui-glass: rgba(26, 9, 9, .96); --ui-bar: rgba(20, 4, 4, .82);
 }
 .lb-head span { font: 500 12px/1.2 var(--ui-label); letter-spacing: .06em; text-transform: none; color: var(--ui-muted); }
+
+/* Slider: ends labelled in small caps, a gold-filled track, a ringed thumb with a 44px touch band. Explore's sky
+   slider (#skybar) and Collection's card size (#sizebar). Pages set the height above their own controls. */
+:where(.ui-slider) { position: fixed; z-index: 15; left: 50%; transform: translateX(-50%); width: var(--nav-w); bottom: calc(80px + env(safe-area-inset-bottom, 0px));
+  display: grid; grid-template-columns: auto 1fr auto; align-items: center; column-gap: 9px; }
+.ui-slider__end { font: 500 9px/1 var(--ui-label); letter-spacing: .16em; color: var(--ui-muted); opacity: .9; }
+.ui-range { -webkit-appearance: none; appearance: none; width: 100%; height: 44px; margin: 0; background: transparent; touch-action: none; cursor: pointer; }
+.ui-range:focus { outline: none; }
+.ui-range::-webkit-slider-runnable-track { height: 3px; border-radius: 2px; background: linear-gradient(90deg, color-mix(in srgb, var(--ui-gold) 45%, #080f1b) 0 var(--p, 50%), rgba(98, 122, 139, .55) var(--p, 50%)); }
+.ui-range::-moz-range-track { height: 3px; border-radius: 2px; background: rgba(98, 122, 139, .55); }
+.ui-range::-moz-range-progress { height: 3px; border-radius: 2px; background: color-mix(in srgb, var(--ui-gold) 45%, #080f1b); }
+.ui-range::-webkit-slider-thumb { -webkit-appearance: none; width: 26px; height: 26px; margin-top: -11.5px; border-radius: 50%; background: #080f1b; border: 2.5px solid color-mix(in srgb, var(--ui-gold) 45%, #080f1b);
+  box-shadow: 0 0 0 5px rgba(8, 15, 27, .6), 0 2px 8px #0008; }
+.ui-range::-moz-range-thumb { width: 22px; height: 22px; border-radius: 50%; background: #080f1b; border: 2px solid color-mix(in srgb, var(--ui-gold) 45%, #080f1b); }
+.ui-range:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 4px rgba(250, 129, 39, .35); }
