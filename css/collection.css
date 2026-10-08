@@ -283,3 +283,14 @@ main { padding-bottom: calc(var(--safe-bottom) + 210px) !important; } /* the las
 .pw-start { margin: 0 0 18px; } .pw-start > span { display: block; margin: 0 4px 10px; font: 500 12px/1.2 'SC Label', sans-serif; letter-spacing: .16em; text-transform: uppercase; color: var(--accent); }
 .pw-start .pw-grid .pw-item span { color: #fff2b3; }
 .pw-start .pw-item small { display: block; margin-top: 2px; font: 500 11px/1.25 'SC Label', sans-serif; letter-spacing: .04em; color: var(--muted); text-transform: none; }
+/* Red night mode for the logbook (2026-10-08: it stayed navy and gold). */
+:where(html[data-theme="night"], body.night) .logbook { background: #130606; border-color: #52221f; box-shadow: inset 0 0 0 1px #3a1716; color: #d67674; }
+:where(html[data-theme="night"], body.night) :is(.lb-label, .lb-head span, .lb-xp, .lb-sub, .lb-mission.done) { color: #a45650 !important; }
+:where(html[data-theme="night"], body.night) :is(.lb-head, .lb-xp b) { color: #ff6a55 !important; }
+:where(html[data-theme="night"], body.night) .lb-bar { background: #2a0e0c; }
+:where(html[data-theme="night"], body.night) .lb-bar i { background: linear-gradient(90deg, #a83a2c, #ff6a55); }
+:where(html[data-theme="night"], body.night) .lb-mission { border-color: #2e1010; }
+:where(html[data-theme="night"], body.night) .lb-mission i { border-color: #a45650; }
+:where(html[data-theme="night"], body.night) .lb-mission.done { text-decoration-color: #ff6a55; } :where(html[data-theme="night"], body.night) .lb-mission.done i { background: #ff6a55; border-color: #ff6a55; }
+:where(html[data-theme="night"], body.night) .ui-chip--earned { border-color: #a83a2c; } :where(html[data-theme="night"], body.night) .ui-chip--earned b { color: #ff6a55; }
+:where(html[data-theme="night"], body.night) .ui-chip { background: #1a0606; border-color: #3a1716; }
