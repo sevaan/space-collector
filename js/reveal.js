@@ -5,10 +5,10 @@
 //  Everything scales with rarity (Legendary dims the sky, shockwave, held breath, slow flip, fanfare).
 // Waits use timers, not animation.finished, so a paused tab can never freeze the sequence.
 
-import { TIER_INFO } from './rarity.js?v=0.1.284';
-import { levelFor, attachTilt, attachGyro, attachFlip, throwOff } from './card.js?v=0.1.284';
-import { applyBack } from './card-backs.js?v=0.1.284';
-import { addStarfield } from './starfield.js?v=0.1.284';
+import { TIER_INFO } from './rarity.js?v=0.1.285';
+import { levelFor, attachTilt, attachGyro, attachFlip, throwOff } from './card.js?v=0.1.285';
+import { applyBack } from './card-backs.js?v=0.1.285';
+import { addStarfield } from './starfield.js?v=0.1.285';
 
 const FX = {
   common:    { particles: 14,  flip: 520,  spin: 0,   dim: 0,   shock: false, notes: [880],                            hold: 0 },
@@ -31,10 +31,11 @@ const reduced = () => window.matchMedia?.('(prefers-reduced-motion: reduce)').ma
 let audio;
 // Call from inside the tap handler, before any await, so iOS lets the sound play.
 export function primeReveal() {
+  if (localStorage.getItem('sound') === '0') return; // Settings → Sounds and vibration
   try { audio ??= new (window.AudioContext || window.webkitAudioContext)(); audio.resume(); } catch {}
 }
 function tone(freq, at, dur, gain = .16, type = 'sine') {
-  if (!audio) return;
+  if (!audio || localStorage.getItem('sound') === '0') return;
   const o = audio.createOscillator(), g = audio.createGain();
   o.type = type; o.frequency.value = freq;
   g.gain.setValueAtTime(.0001, at); g.gain.exponentialRampToValueAtTime(gain, at + .015); g.gain.exponentialRampToValueAtTime(.0001, at + dur);

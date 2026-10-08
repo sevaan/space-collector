@@ -1,9 +1,9 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.284';
+import { extinction } from './sky-limit.js?v=0.1.285';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.284';
-import { TIER_INFO } from './rarity.js?v=0.1.284';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.285';
+import { TIER_INFO } from './rarity.js?v=0.1.285';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -594,7 +594,7 @@ export class SkyView {
   // "✦ UNIDENTIFIED / ???" shows above it (the Tap to collect button is #ufo-cta in the HUD). u: { enu, inCircle }.
   drawUfo(u) {
     const p = this.project(u.enu); if (!p || !this.onScreen(p, 30)) return;
-    const ctx = this.ctx, s = u.inCircle ? 1.25 : 1;
+    const ctx = this.ctx, s = u.inCircle ? 1.15 : 0.5; // rocket-stage size; it enlarges only in the circle (2026-10-08)
     ctx.save(); ctx.translate(p.x, p.y); ctx.scale(s, s);
     ctx.shadowColor = `rgba(125,255,138,${u.inCircle ? .8 : .45})`; ctx.shadowBlur = u.inCircle ? 12 : 7;
     ctx.fillStyle = 'rgba(207,232,255,.85)'; ctx.beginPath(); ctx.moveTo(-6, -1); ctx.quadraticCurveTo(-5, -7, 0, -7); ctx.quadraticCurveTo(5, -7, 6, -1); ctx.fill();

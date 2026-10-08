@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Settings Redesign</title>
+<style>
+  @font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf'); font-weight: 500; }
+  @font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf'); }
+  :root { --ink: #fff2b3; --muted: #bdbea9; --orange: #fa8127; --edge: #627a8b; --soft: #344654; }
+  body { margin: 0; background: #04070d; color: #e8eef6; font: 15px/1.45 -apple-system, system-ui, sans-serif; padding: 24px 16px 60px; }
+  h1.t { font-size: 20px; margin: 0 0 6px; } .intro { color: #9fb0c6; margin: 0 0 22px; max-width: 1000px; }
+  .row { display: flex; flex-wrap: wrap; gap: 18px; justify-content: center; align-items: flex-start; }
+  .cell { width: 390px; } .cell h2 { font-size: 16px; margin: 10px 0 4px; } .cell p { color: #9fb0c6; font-size: 13.5px; margin: 0; }
+  .phone { position: relative; width: 390px; height: 844px; border-radius: 30px; overflow: hidden; border: 1px solid #1d2838; background: #080e1a; }
+  .scroll { position: absolute; inset: 0; overflow: hidden; padding: 0 16px; }
+  .lab { font: 500 12px/1.2 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .16em; text-transform: uppercase; }
+  .top { display: flex; justify-content: space-between; align-items: center; padding: 22px 4px 8px; }
+  .top b { font: 400 22px 'SC Display', sans-serif; color: var(--ink); text-transform: uppercase; }
+  .x { color: var(--ink); font-size: 22px; }
+  .sec { margin: 18px 4px 8px; color: var(--orange); }
+  .group { border-radius: 14px; background: #0f1b2a; border: 1px solid #1c2b3c; overflow: hidden; }
+  .r { display: flex; align-items: center; gap: 12px; min-height: 50px; padding: 0 14px; border-top: 1px solid #1c2b3c; font: 500 16px/1.2 'SC Label', sans-serif; letter-spacing: .03em; color: var(--ink); }
+  .r:first-child { border-top: 0; }
+  .r .ic { width: 28px; height: 28px; border-radius: 8px; display: grid; place-items: center; flex: none; font-size: 15px; }
+  .r .grow { flex: 1; min-width: 0; } .r small { display: block; margin-top: 2px; font: 500 12.5px/1.2 'SC Label', sans-serif; color: var(--muted); letter-spacing: .04em; }
+  .r .val { color: var(--muted); font-size: 15px; } .r .chev { color: #627a8b; font-size: 18px; }
+  .tog { width: 46px; height: 28px; border-radius: 99px; background: #2a3a4c; position: relative; flex: none; } .tog::after { content: ''; position: absolute; top: 3px; left: 3px; width: 22px; height: 22px; border-radius: 50%; background: var(--ink); }
+  .tog.on { background: var(--orange); } .tog.on::after { left: 21px; background: #080f1b; }
+  .ok { color: #7dd88f; font-size: 14px; } .warn { color: var(--orange); font-size: 14px; }
+  .slider { padding: 12px 14px 14px; } .slider .bar { position: relative; height: 3px; border-radius: 2px; margin: 18px 0 8px; background: linear-gradient(90deg, #a35b2a 0 42%, #344654 42%); }
+  .slider .bar i { position: absolute; left: 42%; top: -11px; width: 22px; height: 22px; margin-left: -11px; border-radius: 50%; background: #080f1b; border: 2.5px solid #a35b2a; }
+  .slider .ends { display: flex; justify-content: space-between; color: var(--muted); }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 14px 14px; }
+  .chip { padding: 7px 12px; border-radius: 99px; border: 1px solid var(--soft); color: var(--muted); font: 500 13px 'SC Label', sans-serif; letter-spacing: .1em; text-transform: uppercase; }
+  .chip.on { border-color: #fa812788; background: #fa81271c; color: var(--orange); }
+  .foot { text-align: center; margin: 22px 0 30px; color: #627a8b; }
+  .sheet { position: absolute; left: 0; right: 0; bottom: 0; background: #0f1b2a; border-radius: 22px 22px 0 0; border-top: 1px solid #2a3a4c; padding: 10px 16px 30px; }
+  .grab { width: 40px; height: 5px; border-radius: 3px; background: #344654; margin: 0 auto 14px; }
+  .dim { position: absolute; inset: 0; background: rgba(4, 7, 13, .6); }
+  .search { display: flex; align-items: center; gap: 10px; height: 46px; padding: 0 14px; border-radius: 12px; background: #080e1a; border: 1px solid #2a3a4c; color: var(--muted); font: 500 16px 'SC Label', sans-serif; }
+  .btn { display: flex; justify-content: center; align-items: center; gap: 8px; height: 50px; border-radius: 12px; font: 500 15px 'SC Label', sans-serif; letter-spacing: .16em; text-transform: uppercase; }
+  .btn.o { background: var(--orange); color: #0b1120; }
+  .prev { display: grid; place-items: center; height: 120px; margin: 4px 14px 0; border-radius: 12px; background: radial-gradient(ellipse at 50% 40%, #13233a, #080e1a 75%); position: relative; }
+  .prev .ring { width: 70px; height: 70px; border-radius: 50%; border: 1.5px solid var(--orange); position: relative; } .prev .ring::after { content: ''; position: absolute; inset: 22px; border-radius: 50%; border: 1.5px solid var(--orange); }
+</style></head><body>
+<h1 class="t">Settings, redesigned</h1>
+<p class="intro">Grouped by what you're trying to do, rows in rounded sections like iOS Settings, toggles and status instead of paragraphs. Testing tools are gone from view (tap the version five times). Three screens: the page, the location sheet, and the circle highlights picker.</p>
+<div class="row" id="b"></div>
+<script>
+const row = (ic, bg, title, sub, right) => `<div class="r"><span class="ic" style="background:${bg}">${ic}</span><span class="grow">${title}${sub ? `<small>${sub}</small>` : ''}</span>${right}</div>`;
+const tog = (on) => `<span class="tog${on ? ' on' : ''}"></span>`;
+const chev = (v) => `${v ? `<span class="val">${v}</span>` : ''}<span class="chev">›</span>`;
+const page = `<div class="scroll"><div class="top"><b>Settings</b><span class="x">✕</span></div>
+  <div class="lab sec">Your sky</div><div class="group">
+    ${row('📍', '#1d4a2a', 'Peterborough', 'Using your location', chev(''))}
+    ${row('🧭', '#173d5c', 'Motion', 'The sky follows your phone', '<span class="ok">On ✓</span>')}
+    <div class="slider"><div style="display:flex;justify-content:space-between"><span class="lab" style="color:var(--ink);letter-spacing:.08em;font-size:15px;text-transform:none">How dark is your sky?</span><span class="lab" style="color:var(--muted)">Suburbs</span></div><div class="bar"><i></i></div><div class="ends lab"><span>Bright city</span><span>Dark site</span></div></div>
+    ${row('☾', '#4a1414', 'Red night mode', 'Saves your night vision', tog(false))}
+  </div>
+  <div class="lab sec">What shows</div><div class="group">
+    ${row('✦', '#22265a', 'Stars, planets &amp; Moon', '', tog(true))}
+    ${row('⌇', '#22265a', 'Constellation lines', '', tog(false))}
+    ${row('🌲', '#1d4a2a', 'Tree line on the horizon', '', tog(false))}
+    ${row('🔭', '#3a2259', 'Binocular mode', 'Show what binoculars reveal', tog(false))}
+  </div>
+  <div class="lab sec">Aiming</div><div class="group">
+    ${row('◎', '#5a2a1a', 'Circle highlights', '', chev('Satellites, planets, Sun'))}
+    ${row('⊙', '#5a2a1a', 'Snap onto targets', '', tog(true))}
+    ${row('✋', '#4a3a22', 'Drag to look', 'Instead of motion sensors', tog(false))}
+    ${row('N', '#173d5c', 'Compass nudge', '', chev('0°'))}
+  </div>
+  <div class="lab sec">Alerts &amp; sound</div><div class="group">
+    ${row('🔔', '#5a3814', 'Pass reminders', '10 minutes before', chev('3 set'))}
+    ${row('♪', '#14284a', 'Sounds and vibration', '', tog(true))}
+  </div>
+  <div class="lab sec">About</div><div class="group">
+    ${row('↻', '#14284a', 'Replay the tour', '', chev(''))}
+    ${row('▤', '#14284a', 'Your data', '42 sightings, on this phone only', chev(''))}
+  </div>
+  <div class="foot lab">Space Collector v0.1.283</div></div>`;
+const loc = `${page}<div class="dim"></div><div class="sheet"><div class="grab"></div><div class="lab" style="color:var(--orange);margin-bottom:12px">Where are you observing from?</div>
+  <div class="btn o">📍 Use my location</div>
+  <div class="search" style="margin-top:12px">⌕ Search a town or place…</div>
+  <div class="group" style="margin-top:12px">${row('★', '#1d4a2a', 'Peterborough, ON', 'Current · 44.31°, −78.32°', '<span class="ok">✓</span>')}${row('🏕', '#4a3a22', 'Algonquin Park', 'Saved · dark site', chev(''))}</div>
+  <div class="lab" style="color:var(--muted);margin-top:14px;text-align:center">Enter coordinates ›</div></div>`;
+const hl = `${page}<div class="dim"></div><div class="sheet"><div class="grab"></div><div class="lab" style="color:var(--orange);margin-bottom:6px">What the circle highlights</div>
+  <div class="lab" style="color:var(--muted);text-transform:none;letter-spacing:.03em;font-size:15px">Highlighted things get the inner ring and a Tap to collect button. The rest just brighten: tap the circle to collect them.</div>
+  <div class="prev"><div class="ring"></div><span class="lab" style="position:absolute;bottom:10px;color:var(--orange)">Tap to collect</span></div>
+  <div class="chips"><span class="chip on">Satellites</span><span class="chip on">Rocket stages</span><span class="chip on">Moon &amp; planets</span><span class="chip on">The Sun</span><span class="chip">Stars</span></div>
+  <div class="btn o" style="margin-top:6px">Done</div></div>`;
+const cells = [['1 · The page', 'Five short sections. Location is one row; motion shows its status; the sky slider lives here too; Alerts and Your data are new. Testing tools hidden.', page],
+  ['2 · Location sheet', 'Tap the location row: use your location, search a place, pick a saved one; coordinates are one tap further for the experts.', loc],
+  ['3 · Circle highlights', 'One row instead of five toggles and a paragraph. The sheet shows what a highlight looks like and lets you pick with chips.', hl]];
+document.getElementById('b').innerHTML = cells.map(([t, d, f]) => `<div class="cell"><div class="phone">${f}</div><h2>${t}</h2><p>${d}</p></div>`).join('');
+</script></body></html>

@@ -1,36 +1,36 @@
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.284';
-import * as Ufo from './ufo.js?v=0.1.284';
-import * as Fossil from './fossil.js?v=0.1.284';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.284';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.284';
-import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.284';
-import { VERSION } from './version.js?v=0.1.284';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.284';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.284';
-import { conArt } from './con-art.js?v=0.1.284';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.284';
-import { CON_FIGURES } from './con-figures.js?v=0.1.284';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.284';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.284';
-import { progress as progressOf } from './progress.js?v=0.1.284';
-import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.284';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.284';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.284';
-import { SkyView, shortName } from './sky.js?v=0.1.284';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.284';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.284';
-import { cardArt } from './art.js?v=0.1.284';
-import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.284';
-import { applyBack } from './card-backs.js?v=0.1.284';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.284';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.284';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.284';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.284';
-import { TIER_INFO } from './rarity.js?v=0.1.284';
-import { SETS } from './sets.js?v=0.1.284';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.284';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.284';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.284';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.285';
+import * as Ufo from './ufo.js?v=0.1.285';
+import * as Fossil from './fossil.js?v=0.1.285';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.285';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.285';
+import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.285';
+import { VERSION } from './version.js?v=0.1.285';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.285';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.285';
+import { conArt } from './con-art.js?v=0.1.285';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.285';
+import { CON_FIGURES } from './con-figures.js?v=0.1.285';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.285';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.285';
+import { progress as progressOf } from './progress.js?v=0.1.285';
+import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.285';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.285';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.285';
+import { SkyView, shortName } from './sky.js?v=0.1.285';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.285';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.285';
+import { cardArt } from './art.js?v=0.1.285';
+import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.285';
+import { applyBack } from './card-backs.js?v=0.1.285';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.285';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.285';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.285';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.285';
+import { TIER_INFO } from './rarity.js?v=0.1.285';
+import { SETS } from './sets.js?v=0.1.285';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.285';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.285';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.285';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -131,6 +131,7 @@ function renderLocation() {
   const label = labels[state.locationStatus] ?? 'Location needs checking';
   $('location-note').textContent = `${label}. Sky shown for ${state.observer.lat.toFixed(2)}°, ${state.observer.lon.toFixed(2)}°. ${['ready', 'manual'].includes(state.locationStatus) ? '' : 'Use your location or choose coordinates for real observing.'}`;
   $('latitude').value = state.observer.lat; $('longitude').value = state.observer.lon;
+  if (typeof renderSettings === 'function') try { renderSettings(); } catch {} // the settings row has its own short wording
 }
 
 function applyTheme() {
@@ -148,10 +149,11 @@ applyTheme();
 
 let audio;
 function unlockAudio() {
+  if (!soundOn()) return;
   try { audio ??= new (window.AudioContext || window.webkitAudioContext)(); audio.resume().catch(() => {}); } catch {}
 }
 function chirp(freqs = [660, 990], dur = 0.09) {
-  if (!audio) return;
+  if (!audio || !soundOn()) return;
   let t = audio.currentTime;
   for (const f of freqs) {
     const o = audio.createOscillator(), g = audio.createGain();
@@ -377,7 +379,7 @@ function firstNightHint(target, plane, t) {
 }
 // A soft tick when the circle locks onto a target (sound stands in for haptics on the web).
 function snapTick() {
-  if (!audio) return;
+  if (!audio || !soundOn()) return;
   try { const t = audio.currentTime, o = audio.createOscillator(), g = audio.createGain(); o.type = 'sine'; o.frequency.value = 1760; g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.05, t + 0.004); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.045); o.connect(g).connect(audio.destination); o.start(t); o.stop(t + 0.06); } catch {}
 }
 let uiSafeTop = 202, uiSafeBottom = 320, uiCenterY = window.innerHeight / 2; // set from the first frame, so the circle never starts high and slides down (2026-10-07)
@@ -1585,8 +1587,9 @@ function renderDebug() {
   const d = now();
   $('sim-time-label').textContent = `${d.toLocaleString()}${state.timeOffsetMs ? ' (simulated)' : ' (current time)'}`;
   const n = getNudge();
-  $('nudge-label').textContent = n ? `${n > 180 ? n - 360 : n}°` : '';
+  $('nudge-label').textContent = `${n > 180 ? n - 360 : n}°`;
   $('chk-drag').checked = state.drag.on;
+  renderSettings();
   const cat = state.catalog;
   const ageH = cat ? ((Date.now() - cat.generated) / 3.6e6).toFixed(1) : '?';
   const f = state.frame;
@@ -1984,7 +1987,7 @@ function earnPatch(a) {
   patchQueue.push(a); setTimeout(pumpPatch, 1200);
 }
 function thud() {
-  if (!audio) return;
+  if (!audio || !soundOn()) return;
   try { const t = audio.currentTime, o = audio.createOscillator(), g = audio.createGain(); o.type = 'sine'; o.frequency.setValueAtTime(140, t); o.frequency.exponentialRampToValueAtTime(60, t + 0.18); g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.12, t + 0.01); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.25); o.connect(g).connect(audio.destination); o.start(t); o.stop(t + 0.3); } catch {}
 }
 function pumpPatch() {
@@ -1998,7 +2001,7 @@ function pumpPatch() {
     <div class="pm-label"><small>${many ? `${batch.length} PATCHES EARNED` : a.secret ? 'SECRET PATCH' : 'PATCH EARNED'}</small><b>${many ? batch.map((x) => escapeHtml(x.name)).join(' · ') : escapeHtml(a.name)}</b>${many ? '' : `<span>${escapeHtml(a.text)}</span>`}</div>`;
   document.body.append(el);
   let done = false;
-  const landT = setTimeout(() => { el.classList.add('landed'); thud(); navigator.vibrate?.(20); }, 1550);
+  const landT = setTimeout(() => { el.classList.add('landed'); thud(); buzz(20); }, 1550);
   const finish = () => {
     if (done) return; done = true; clearTimeout(landT); clearTimeout(outT);
     el.classList.add('out');
@@ -2022,7 +2025,7 @@ function fossilState(t, basis, target) {
   if (!inCircle) fossilHoldFrom = 0; else fossilHoldFrom ||= t;
   const hold = fossilHoldFrom ? Math.min(1, (t - fossilHoldFrom) / 1200) : 0;
   if (hold >= 1 && !fossilDone) {
-    fossilDone = true; Fossil.markFound(); navigator.vibrate?.(30);
+    fossilDone = true; Fossil.markFound(); buzz(30);
     earnPatch({ ...Fossil.FOSSIL_PATCH, text: `You looked through the Earth and found a ${Fossil.fossil.name}. Most people only look up.` });
   }
   return { enu: fossilEnu, img: Fossil.image, inCircle, hold, done: fossilDone, name: Fossil.fossil.name };
@@ -2044,7 +2047,46 @@ function ufoState(t, basis, target, items) {
 }
 $('ufo-cta').addEventListener('click', () => {
   if (ufoCaught) return;
-  ufoCaught = true; Ufo.markCaught(); $('ufo-cta').hidden = true; navigator.vibrate?.([20, 40, 20]);
+  ufoCaught = true; Ufo.markCaught(); $('ufo-cta').hidden = true; buzz([20, 40, 20]);
   earnPatch(Ufo.UFO_PATCH);
 });
 $('btn-ufo')?.addEventListener('click', () => { ufoCaught = false; try { localStorage.removeItem('ufoFound'); } catch {} Ufo.summon(now().getTime()); closePanel('debug'); toast('A UFO is crossing your sky now (night, 3+ things up).', 3000); });
+
+// ---------- Settings (2026-10-08, design/settings.html) ----------
+function soundOn() { return readPref('sound', true); }
+function buzz(p) { if (soundOn()) navigator.vibrate?.(p); }
+const HL_NAMES = { satellite: 'Satellites', rocket: 'Rocket stages', planet: 'Planets', sun: 'Sun', star: 'Stars' };
+function renderSettings() {
+  const st = state.locationStatus, o = state.observer;
+  $('set-loc-name').textContent = o.label && !['ready', 'manual'].includes(st) ? o.label.replace(/^Example:\s*/, '') : st === 'ready' ? 'Your location' : st === 'manual' ? 'Chosen place' : 'Location';
+  $('location-note').textContent = { ready: `Using your location · ${o.lat.toFixed(2)}°, ${o.lon.toFixed(2)}°`, manual: `${o.lat.toFixed(2)}°, ${o.lon.toFixed(2)}°`, waiting: 'Finding you…', denied: 'Location is off · tap to set it', unavailable: 'Couldn\u2019t find you · tap to set it' }[st] ?? 'An example sky · tap to use yours';
+  const live = hasLiveSensors();
+  $('set-motion').innerHTML = live ? '<span class="set-ok">On ✓</span>' : ''; $('retry-motion').hidden = live;
+  const r = $('set-sky-range'); r.min = SB_MIN; r.max = SB_MAX; if (document.activeElement !== r) r.value = String(state.skySb);
+  r.style.setProperty('--p', `${((state.skySb - SB_MIN) / (SB_MAX - SB_MIN) * 100).toFixed(1)}%`);
+  $('set-sky-name').textContent = skyNameFor(state.skySb);
+  $('sky-limit-info').textContent = state.limit ? `Stars to magnitude ${state.limit.stars.toFixed(1)}, satellites to ${state.limit.satellites.toFixed(1)}` : '';
+  const on = [...document.querySelectorAll('[data-hl]')].filter((c) => c.checked).map((c) => HL_NAMES[c.dataset.hl]);
+  $('set-hl-val').textContent = on.length ? (on.length > 3 ? `${on.slice(0, 3).join(', ')} +${on.length - 3}` : on.join(', ')) : 'None';
+  $('chk-sound').checked = soundOn();
+  const n = state.sightings.filter((x) => !x.sim).length;
+  $('set-data-note').textContent = `${n} sighting${n === 1 ? '' : 's'}, on this phone only`;
+  $('set-version').textContent = `Space Collector v${VERSION}`;
+}
+$('set-sky-range').addEventListener('input', (e) => { const m = $('sky-range'); m.value = e.target.value; m.dispatchEvent(new Event('input', { bubbles: true })); renderSettings(); });
+$('set-sky-range').addEventListener('change', (e) => { const m = $('sky-range'); m.value = e.target.value; m.dispatchEvent(new Event('change', { bubbles: true })); });
+const openSheet = (id) => { $(id).hidden = false; requestAnimationFrame(() => $(id).classList.add('in')); };
+const closeSheet = (el) => { el.classList.remove('in'); setTimeout(() => { el.hidden = true; }, 260); renderSettings(); };
+$('set-loc-open').addEventListener('click', () => openSheet('set-loc-sheet'));
+$('set-hl-open').addEventListener('click', () => openSheet('set-hl-sheet'));
+document.querySelectorAll('.set-sheet').forEach((sh) => sh.addEventListener('click', (e) => { if (e.target === sh || e.target.closest('[data-sheet-close]')) closeSheet(sh); }));
+$('retry-location').addEventListener('click', () => closeSheet($('set-loc-sheet')));
+$('location-form').addEventListener('submit', () => setTimeout(() => closeSheet($('set-loc-sheet')), 50));
+document.querySelectorAll('[data-hl]').forEach((c) => c.addEventListener('change', renderSettings));
+$('chk-sound').addEventListener('change', (e) => writePref('sound', e.target.checked));
+$('set-data').addEventListener('click', () => {
+  const blob = new Blob([JSON.stringify({ app: 'Space Collector', version: VERSION, exported: new Date().toISOString(), sightings: state.sightings.filter((x) => !x.sim) }, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `space-collector-sightings-${new Date().toISOString().slice(0, 10)}.json`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+});
+// Testing tools: tap the version five times.
+{ let taps = 0, at = 0; $('set-version').addEventListener('click', () => { const t = Date.now(); taps = t - at < 800 ? taps + 1 : 1; at = t; if (taps >= 5) { $('test-tools').hidden = !$('test-tools').hidden; taps = 0; } }); }
