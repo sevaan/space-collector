@@ -1,9 +1,9 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.327';
+import { extinction } from './sky-limit.js?v=0.1.328';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.327';
-import { TIER_INFO } from './rarity.js?v=0.1.327';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.328';
+import { TIER_INFO } from './rarity.js?v=0.1.328';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -472,14 +472,18 @@ export class SkyView {
       // or the field at your feet comes through clearly.
       const poly = () => { ctx.beginPath(); ground.forEach((p, i) => i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y)); ctx.closePath(); };
       ctx.save(); ctx.globalCompositeOperation = 'destination-out'; poly(); ctx.fill(); ctx.restore();
+      // 90% from the horizon to halfway down (45°), then fading to clear at your feet (2026-10-08, Sevaan).
       const b = this.basis.back, az = (Math.atan2(b[0], b[1]) / RAD + 360) % 360;
-      const h0 = this.project(enuFromAzEl(az, 0)), h1 = this.project(enuFromAzEl(az, -45));
-      if (h0 && h1) {
-        const c = this.theme === THEMES.night ? [10, 1, 0] : [8, 15, 27]; // the header's near-black, day or night (2026-10-08, Sevaan)
-        const g = ctx.createLinearGradient(h0.x, h0.y, h1.x, h1.y);
-        g.addColorStop(0, `rgba(${c},.9)`); g.addColorStop(0.5, `rgba(${c},.45)`); g.addColorStop(1, `rgba(${c},0)`);
-        ctx.save(); poly(); ctx.fillStyle = g; ctx.fill(); ctx.restore();
-      }
+      const h0 = this.project(enuFromAzEl(az, 0)), hm = this.project(enuFromAzEl(az, -45));
+      let hf = this.project(enuFromAzEl(az, -88));
+      const c = this.theme === THEMES.night ? [10, 1, 0] : [8, 15, 27]; // the header's near-black, day or night
+      if (hm) {
+        if (!hf && h0) hf = { x: hm.x + (hm.x - h0.x), y: hm.y + (hm.y - h0.y) };
+        if (hf && Math.hypot(hf.x - hm.x, hf.y - hm.y) > 1) {
+          const g = ctx.createLinearGradient(hm.x, hm.y, hf.x, hf.y); g.addColorStop(0, `rgba(${c},.9)`); g.addColorStop(1, `rgba(${c},0)`);
+          ctx.save(); poly(); ctx.fillStyle = g; ctx.fill(); ctx.restore();
+        }
+      } else { ctx.save(); poly(); ctx.fillStyle = `rgba(${c},.9)`; ctx.fill(); ctx.restore(); } // halfway point off screen above: all 90%
       return;
     }
     // The earth (2026-10-06): darker the further down you look, so the ground reads as ground, not more sky.
