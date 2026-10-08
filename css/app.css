@@ -547,3 +547,12 @@ body:has(#ufo-cta:not([hidden])) #toasts, body:has(#ufo-cta:not([hidden])) #bann
 .od-note em { font-style: normal; color: var(--gold); }
 #od-eyebrow { text-transform: uppercase; letter-spacing: .18em; }
 body:has(#ob-done:not([hidden])) #ob-skip { display: none !important; }
+
+/* Day and dusk (body.bright-sky: Sun above −8°, not red mode; 2026-10-08, design/day-chrome.html B): the chips and the
+   switcher become little printed cards (the card stock and ink) instead of dark glass, which went muddy on a bright sky. */
+body.bright-sky #nextpass, body.bright-sky #event-banner { background: #f3ecd4 !important; border: 1px solid #c9bd8f !important; box-shadow: 0 3px 10px rgba(20, 48, 70, .2); -webkit-backdrop-filter: none; backdrop-filter: none; }
+body.bright-sky #nextpass .np-k, body.bright-sky #nextpass .np-m, body.bright-sky #event-banner .np-k, body.bright-sky #event-banner .np-m { color: #4d5a4f !important; }
+body.bright-sky #nextpass .np-n, body.bright-sky #event-banner .np-n { color: #b8520d !important; }
+body.bright-sky #nav.sc-switch { background: #f3ecd4; border-color: #c9bd8f; box-shadow: 0 6px 18px rgba(20, 48, 70, .22); -webkit-backdrop-filter: none; backdrop-filter: none; }
+body.bright-sky #nav.sc-switch::before { background: #193639; box-shadow: none; }
+body.bright-sky #nav .sc-switch__item { color: #4d5a4f; } body.bright-sky #nav .sc-switch__item[aria-current] { color: #f3ecd4; }

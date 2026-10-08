@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Day Chrome</title>
+<style>
+  @font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf'); font-weight: 500; }
+  @font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf'); }
+  body { margin: 0; background: #04070d; color: #e8eef6; font: 15px/1.45 -apple-system, system-ui, sans-serif; padding: 24px 16px 60px; }
+  h1.t { font-size: 20px; margin: 0 0 6px; } .intro { color: #9fb0c6; margin: 0 0 22px; max-width: 1000px; }
+  .row { display: flex; flex-wrap: wrap; gap: 18px; justify-content: center; }
+  .cell { width: 300px; } .cell h2 { font-size: 15px; margin: 10px 0 4px; } .cell p { color: #9fb0c6; font-size: 13px; margin: 0; }
+  .phone { position: relative; width: 300px; height: 600px; border-radius: 26px; overflow: hidden; border: 1px solid #1d2838; }
+  .day { background: linear-gradient(#4a87c6, #7fb0da 55%, #b6d4ea); } .dusk { background: linear-gradient(#24365a, #6a5a86 45%, #e0906a 80%, #f4b884); }
+  .cloud { position: absolute; border-radius: 50%; background: rgba(255,255,255,.55); filter: blur(14px); }
+  .ret { position: absolute; left: 50%; top: 290px; width: 96px; height: 96px; margin: -48px 0 0 -48px; border-radius: 50%; border: 1.5px solid rgba(255,250,235,.85); }
+  .ret::before { content: ''; position: absolute; inset: -5px; border-radius: 50%; border: 1px solid rgba(255,255,255,.35); }
+  .comp { position: absolute; left: 22px; top: 40px; width: 56px; height: 56px; border-radius: 50%; border: 1px solid rgba(20,48,70,.5); background: rgba(255,255,255,.16); }
+  .chips { position: absolute; right: 12px; top: 40px; display: grid; gap: 8px; justify-items: end; }
+  .chip { display: inline-flex; gap: 5px; align-items: baseline; padding: 6px 10px; border-radius: 99px; white-space: nowrap; font: 500 10.5px/1.2 'SC Label', sans-serif; letter-spacing: .1em; text-transform: uppercase; }
+  .chip b { font-weight: 700; letter-spacing: .05em; }
+  .sw { position: absolute; left: 22px; right: 22px; bottom: 22px; height: 40px; border-radius: 99px; display: grid; grid-template-columns: 1fr 1fr; padding: 3px; box-sizing: border-box; }
+  .sw span { display: grid; place-items: center; border-radius: 99px; font: 500 12px 'SC Label', sans-serif; letter-spacing: .14em; }
+  /* 0 · today */
+  .v0 .chip { background: #1a2a3ccc; border: 1px solid #344654; color: #bdbea9; } .v0 .chip b { color: #fa8127; }
+  .v0 .sw { background: #1a2a3ccc; border: 1px solid #344654; } .v0 .sw span:first-child { background: #fa812724; box-shadow: inset 0 0 0 1px #fa812770; color: #fa8127; } .v0 .sw span:last-child { color: #fff2b38c; }
+  /* A · frosted light glass */
+  .vA .chip { background: rgba(255,255,255,.55); border: 1px solid rgba(255,255,255,.7); color: #2c4a66; -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); box-shadow: 0 4px 14px rgba(20,48,70,.15); } .vA .chip b { color: #c85a10; }
+  .vA .sw { background: rgba(255,255,255,.55); border: 1px solid rgba(255,255,255,.75); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); box-shadow: 0 6px 18px rgba(20,48,70,.18); }
+  .vA .sw span:first-child { background: #fa8127; color: #fff; } .vA .sw span:last-child { color: #2c4a66; }
+  /* B · paper (the card stock) */
+  .vB .chip { background: #f3ecd4; border: 1px solid #c9bd8f; color: #4d5a4f; box-shadow: 0 3px 10px rgba(20,48,70,.2); } .vB .chip b { color: #b8520d; }
+  .vB .sw { background: #f3ecd4; border: 1px solid #c9bd8f; box-shadow: 0 6px 18px rgba(20,48,70,.22); }
+  .vB .sw span:first-child { background: #193639; color: #f3ecd4; } .vB .sw span:last-child { color: #4d5a4f; }
+  /* C · deep navy, solid (more contrast, less murky) */
+  .vC .chip { background: #0c1725; border: 1px solid #0c1725; color: #d7dccb; box-shadow: 0 4px 14px rgba(8,15,27,.3); } .vC .chip b { color: #fa8127; }
+  .vC .sw { background: #0c1725; box-shadow: 0 6px 18px rgba(8,15,27,.35); } .vC .sw span:first-child { background: #fa8127; color: #0c1725; } .vC .sw span:last-child { color: #d7dccb; }
+  /* dusk tint for A: warmer glass */
+  .dusk.vA .chip, .dusk.vA .sw { background: rgba(255,236,220,.38); border-color: rgba(255,240,225,.55); color: #fff6ea; } .dusk.vA .chip b { color: #ffb070; } .dusk.vA .sw span:last-child { color: #fff6ea; }
+</style></head><body>
+<h1 class="t">Chips and switcher for day and dusk</h1>
+<p class="intro">Night keeps today's dark glass. By day and at dusk the dark glass reads as murky grey on a bright sky. Three options, each shown in daylight and at dusk (top row day, bottom row dusk); the first column is how it looks now.</p>
+<div id="b"></div>
+<script>
+const scene = (cls, t) => `<div class="phone ${t} ${cls}">${t === 'day' ? '<div class="cloud" style="left:-40px;top:150px;width:240px;height:50px"></div><div class="cloud" style="left:120px;top:200px;width:260px;height:44px"></div>' : ''}
+  <div class="comp"></div><div class="chips"><span class="chip">☄ <b>Draconids</b> · badge tonight</span><span class="chip">Tonight: <b>SL-14 Rocket Stage</b> · 7:13 PM</span></div>
+  <div class="ret"></div><div class="sw"><span>EXPLORE</span><span>COLLECTION</span></div></div>`;
+const cols = [['v0', 'Now', 'Dark glass on everything: on a bright sky it goes muddy grey-blue.'],
+  ['vA', 'A · Frosted light glass', 'iOS-style: white frosted glass that picks up the sky colour, dark ink, a solid orange pill. At dusk the glass warms. Most native-feeling.'],
+  ['vB', 'B · Card paper', 'The cream card stock with dark ink: the chips and switcher look like little printed cards. Most on-brand; strong in daylight, bold at dusk.'],
+  ['vC', 'C · Solid navy', 'Same as night, but opaque with a soft shadow and a solid orange pill: crisp contrast, no murky see-through. The smallest change.']];
+document.getElementById('b').innerHTML = `<div class="row">${cols.map(([c, t, d]) => `<div class="cell">${scene(c, 'day')}<div style="height:12px"></div>${scene(c, 'dusk')}<h2>${t}</h2><p>${d}</p></div>`).join('')}</div>`;
+</script></body></html>
