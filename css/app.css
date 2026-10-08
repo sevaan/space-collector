@@ -464,3 +464,7 @@ body:has(#target:not([hidden])) #toasts { bottom:calc(var(--safe-bottom) + 204px
   border-radius:10px; padding:7px 4px 7px 12px; min-height:52px; font-size:inherit; box-shadow:0 8px 24px rgba(0,0,0,.5); gap:10px; }
 #banner .ticket__line { font:500 14px/1.25 var(--label); letter-spacing:.02em; color:var(--text); white-space:normal; }
 #banner .ticket__go { flex:none; width:36px; height:36px; display:grid; place-items:center; color:var(--gold); font-size:20px; }
+
+/* Over the capture reveal or a panel the toasts go to the very bottom, even if the mini card is up underneath
+   (the mini-card rule above was winning and parked them mid-screen over the card). */
+body:has(#reveal:not([hidden])) #toasts, body:has(.overlay.panel:not([hidden])) #toasts { bottom:calc(var(--safe-bottom) + 14px) !important; }

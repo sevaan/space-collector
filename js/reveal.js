@@ -5,10 +5,10 @@
 //  Everything scales with rarity (Legendary dims the sky, shockwave, held breath, slow flip, fanfare).
 // Waits use timers, not animation.finished, so a paused tab can never freeze the sequence.
 
-import { TIER_INFO } from './rarity.js?v=0.1.239';
-import { levelFor, attachTilt, attachGyro, attachFlip, throwOff } from './card.js?v=0.1.239';
-import { applyBack } from './card-backs.js?v=0.1.239';
-import { addStarfield } from './starfield.js?v=0.1.239';
+import { TIER_INFO } from './rarity.js?v=0.1.240';
+import { levelFor, attachTilt, attachGyro, attachFlip, throwOff } from './card.js?v=0.1.240';
+import { applyBack } from './card-backs.js?v=0.1.240';
+import { addStarfield } from './starfield.js?v=0.1.240';
 
 const FX = {
   common:    { particles: 14,  flip: 520,  spin: 0,   dim: 0,   shock: false, notes: [880],                            hold: 0 },
@@ -17,6 +17,7 @@ const FX = {
   epic:      { particles: 90,  flip: 800,  spin: 360, dim: .45, shock: true,  notes: [523, 784, 1047, 1568],           hold: 600 },
   legendary: { particles: 160, flip: 1100, spin: 0,   dim: .7,  shock: true,  notes: [392, 523, 659, 784, 1047, 1319], hold: 1100 },
 };
+const NIGHT_MILESTONES = [3, 5, 10, 25, 50, 100, 200, 365], STAMP_MILESTONES = [5, 10, 25, 50, 100, 200, 300, 400];
 const LEVEL_NAME = { bronze: 'BRONZE', silver: 'SILVER', gold: 'GOLD' };
 const LEVEL_COLOR = { bronze: '#c98a4b', silver: '#dfe6ee', gold: '#f2c94c' };
 
@@ -123,7 +124,7 @@ export async function playReveal({ card, o, seen, origin, fleet = null, progress
   const root = $('reveal');
   root.style.setProperty('--fx', color);
   root.classList.remove('rv-done');
-  $('reveal-eyebrow').textContent = (fresh ? 'NEW CARD' : levelUp ? `${LEVEL_NAME[level]} CARD UNLOCKED` : newStamp ? 'NEW LAUNCH STAMP' : 'SIGHTING RECORDED') + (xp > 0 ? `  ·  +${xp} XP` : '');
+  $('reveal-eyebrow').textContent = (fresh ? 'NEW CARD' : newStamp ? 'NEW LAUNCH STAMP' : NIGHT_MILESTONES.includes(nights) ? `SEEN ON ${nights} NIGHTS` : 'SIGHTING RECORDED') + (xp > 0 ? `  ·  +${xp} XP` : '');
   $('reveal-card').replaceChildren(card);
   for (const id of ['rv-holder', 'rv-flipper', 'rv-dot', 'rv-dim', 'rv-flash', 'rv-shock']) $(id).getAnimations().forEach((a) => a.cancel());
   $('rv-holder').style.opacity = 0; $('rv-holder').classList.remove('live');
@@ -208,7 +209,7 @@ export async function playView({ card, o, from, sighting = null, eyebrow = null 
   const root = $('reveal');
   root.style.setProperty('--fx', color);
   root.classList.remove('rv-done');
-  $('reveal-eyebrow').textContent = eyebrow ?? (!sighting ? 'IN YOUR COLLECTION' : sighting.levelUp ? `${LEVEL_NAME[sighting.level]} CARD UNLOCKED` : 'SEEN AGAIN');
+  $('reveal-eyebrow').textContent = eyebrow ?? (!sighting ? 'IN YOUR COLLECTION' : NIGHT_MILESTONES.includes(sighting.nights) ? `SEEN ON ${sighting.nights} NIGHTS` : 'SEEN AGAIN');
   $('reveal-card').replaceChildren(card);
   for (const id of ['rv-holder', 'rv-flipper', 'rv-dot', 'rv-dim', 'rv-flash', 'rv-shock']) $(id).getAnimations().forEach((a) => a.cancel());
   $('rv-holder').classList.remove('live');
@@ -266,9 +267,9 @@ async function finish({ fx, color, fresh, seen, level, levelUp, card, alive, fle
   const news = shiny && !conDone ? { kind: 'event', eyebrow: 'SHINY!', line: shiny.label }
     : fresh && con ? (conDone ? { kind: 'event', eyebrow: `${con.name.toUpperCase()} COMPLETE`, line: `All ${con.total} stars` } : { kind: 'xp', eyebrow: con.name.toUpperCase(), line: `${con.have} of ${con.total} stars` })
     : fresh ? (milestone ? { kind: 'event', eyebrow: 'MILESTONE', line: collected === 1 ? 'First item collected' : `${collected.toLocaleString('en-US')} items collected` } : null)
-    : newStamp ? { kind: 'xp', eyebrow: 'NEW STAMP', line: levelUp ? `${LEVEL_NAME[level]} card unlocked` : stampLine }
-    : levelUp ? { kind: 'event', eyebrow: `SEEN ${seen}×`, line: `${LEVEL_NAME[level]} card unlocked` }
-    : { kind: 'xp', eyebrow: `SEEN ${seen}×`, line: `${nights > 1 ? `${nights} nights · ` : ''}${date}` };
+    : newStamp ? (STAMP_MILESTONES.includes(fleet?.stamps) ? { kind: 'event', eyebrow: 'NEW STAMP', line: `${fleet.stamps} launches stamped` } : { kind: 'xp', eyebrow: 'NEW STAMP', line: stampLine })
+    : NIGHT_MILESTONES.includes(nights) ? { kind: 'event', eyebrow: 'MILESTONE', line: `Seen on ${nights} different nights` }
+    : null; // a plain repeat: no toast (2026-10-07)
   if (news) { announce?.({ ...news, ms: 3200, delay: 900 }); thump(); }
   if (!reduced()) $('reveal').animate([{ transform: 'translate(0,0)' }, { transform: 'translate(-3px,2px)' }, { transform: 'translate(3px,-2px)' }, { transform: 'translate(0,0)' }], { duration: 180 });
   if (levelUp) card.querySelector('.card__face')?.animate([{ boxShadow: '0 0 0 transparent' }, { boxShadow: `0 0 34px ${LEVEL_COLOR[level]}` }, { boxShadow: '0 0 0 transparent' }], { duration: 1300 });
