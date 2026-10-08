@@ -649,3 +649,35 @@ body:has(#secret-cta:not([hidden])) #toasts, body:has(#secret-cta:not([hidden]))
   background: rgba(8, 15, 27, .55); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
 /* "0 UP" under the compass reads by day too. */
 body.day #radar-up, body.day #radar-up b { color: #fff !important; text-shadow: 0 1px 4px rgba(8, 15, 27, .55); }
+
+/* ---------- Up in your sky (2026-10-08, design/now-tonight.html A) ---------- */
+.vis-map svg { display: block; width: 100%; max-width: 300px; margin: 4px auto 0; }
+.vis-map-note { margin: 6px 0 4px; text-align: center; font: 500 11px/1.2 var(--label); letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+.vis-row2 { display: flex; align-items: center; gap: 12px; width: 100%; padding: 10px 0; border: 0; border-bottom: 1px solid var(--edge-soft); background: none; text-align: left; color: var(--text); cursor: pointer; }
+.vr-ic { width: 34px; height: 34px; border-radius: 9px; background: #0f1b2a; display: grid; place-items: center; flex: none; }
+.vr-main { flex: 1; min-width: 0; } .vr-main b { display: block; font: 500 16px/1.2 var(--label); letter-spacing: .04em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.vr-main small { display: block; margin-top: 2px; font: 500 12.5px var(--label); letter-spacing: .04em; color: var(--muted); }
+.vr-main .new, .mini-card .new { color: var(--gold); font: 500 10px var(--label); letter-spacing: .14em; margin-left: 6px; }
+.vr-dir { flex: none; text-align: right; font: 500 13px/1.1 var(--label); letter-spacing: .06em; } .vr-dir em { display: block; font-style: normal; color: var(--muted); font-size: 11px; margin-top: 2px; }
+.vr-go { width: 34px; height: 34px; border-radius: 50%; border: 1.5px solid color-mix(in srgb, var(--gold) 60%, transparent); display: grid; place-items: center; color: var(--gold); flex: none; }
+.vr-go svg { width: 16px; height: 16px; }
+.mini-cards { display: flex; gap: 10px; overflow-x: auto; scrollbar-width: none; margin: 6px -20px 14px; padding: 0 20px 6px; scroll-snap-type: x mandatory; } .mini-cards::-webkit-scrollbar { display: none; }
+.mini-card { position: relative; flex: none; width: 132px; border-radius: 12px; border: 2px solid #adbcc8; background: #0a1220; overflow: hidden; padding: 0; text-align: left; color: var(--text); cursor: pointer; scroll-snap-align: start; }
+.mc-art { display: block; height: 80px; overflow: hidden; background: radial-gradient(ellipse at 50% 70%, #1d3350, #070d18 75%); }
+.mc-art img, .mc-art svg { width: 100%; height: 100%; object-fit: cover; display: block; }
+.mc-bd { display: block; padding: 8px; } .mc-bd small { font: 500 10px var(--label); letter-spacing: .14em; text-transform: uppercase; }
+.mc-bd b { display: block; margin-top: 3px; font: 400 13px/1.1 var(--display); text-transform: uppercase; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+.mc-bd > span { display: block; margin-top: 5px; font: 500 11px var(--label); color: var(--muted); letter-spacing: .04em; }
+.mini-card .ic.remind { position: absolute; top: 6px; right: 6px; width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--edge-soft); background: rgba(8,15,27,.8); color: var(--text); display: grid; place-items: center; }
+.mini-card .ic.remind.on { border-color: var(--gold); color: var(--gold); } .mini-card .ic.remind svg { width: 15px; height: 15px; }
+/* Tonight as one timeline. */
+#tonight-list.tl-mode { position: relative; }
+#tonight-list.tl-mode .t-row, #tonight-list.tl-mode .t-mark { position: relative; padding-left: 18px; border-bottom: 0; }
+#tonight-list.tl-mode .t-row::before, #tonight-list.tl-mode .t-mark::before { content: ''; position: absolute; left: 2px; top: 17px; width: 9px; height: 9px; border-radius: 50%; background: #344654; }
+#tonight-list.tl-mode .t-row::after, #tonight-list.tl-mode .t-mark::after { content: ''; position: absolute; left: 6px; top: 28px; bottom: -14px; width: 1px; background: #344654; }
+#tonight-list.tl-mode .t-row:has(.new)::before { background: var(--gold); box-shadow: 0 0 8px var(--gold); }
+.t-mark { display: grid; grid-template-columns: 60px 1fr; gap: 10px; align-items: center; padding: 12px 0 12px 18px; font: 500 14px/1.25 var(--label); letter-spacing: .03em; color: var(--muted); }
+.t-mark .time { font: 400 15px/1.2 var(--display); color: var(--muted); }
+#tonight-list.tl-mode .t-mark::before { background: none; border: 1px solid var(--muted); }
+#tonight-list.tl-mode .t-mark.cloud::after { background: repeating-linear-gradient(#627a8b 0 3px, transparent 3px 6px); }
+.vis-more { margin: 10px auto 4px !important; }

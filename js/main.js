@@ -1,37 +1,37 @@
-import * as Secrets from './secrets.js?v=0.1.313';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.313';
-import * as Ufo from './ufo.js?v=0.1.313';
-import * as Fossil from './fossil.js?v=0.1.313';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.313';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.313';
-import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.313';
-import { VERSION } from './version.js?v=0.1.313';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.313';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.313';
-import { conArt } from './con-art.js?v=0.1.313';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.313';
-import { CON_FIGURES } from './con-figures.js?v=0.1.313';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.313';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.313';
-import { progress as progressOf } from './progress.js?v=0.1.313';
-import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.313';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.313';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.313';
-import { SkyView, shortName } from './sky.js?v=0.1.313';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, roadster, starVector } from './celestial.js?v=0.1.313';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.313';
-import { cardArt } from './art.js?v=0.1.313';
-import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.313';
-import { applyBack } from './card-backs.js?v=0.1.313';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.313';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.313';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.313';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.313';
-import { TIER_INFO } from './rarity.js?v=0.1.313';
-import { SETS } from './sets.js?v=0.1.313';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.313';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.313';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.313';
+import * as Secrets from './secrets.js?v=0.1.314';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.314';
+import * as Ufo from './ufo.js?v=0.1.314';
+import * as Fossil from './fossil.js?v=0.1.314';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.314';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.314';
+import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.314';
+import { VERSION } from './version.js?v=0.1.314';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.314';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.314';
+import { conArt } from './con-art.js?v=0.1.314';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.314';
+import { CON_FIGURES } from './con-figures.js?v=0.1.314';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.314';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.314';
+import { progress as progressOf } from './progress.js?v=0.1.314';
+import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.314';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.314';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.314';
+import { SkyView, shortName } from './sky.js?v=0.1.314';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, roadster, starVector } from './celestial.js?v=0.1.314';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.314';
+import { cardArt } from './art.js?v=0.1.314';
+import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.314';
+import { applyBack } from './card-backs.js?v=0.1.314';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.314';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.314';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.314';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.314';
+import { TIER_INFO } from './rarity.js?v=0.1.314';
+import { SETS } from './sets.js?v=0.1.314';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.314';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.314';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.314';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -1005,30 +1005,57 @@ async function loadSightings() {
 
 // ---------- visible now ----------
 
+// Now tab (2026-10-08, design/now-tonight.html A): a map of your sky, the list split into New to you / Seen before,
+// and at the end a row of mini cards for what's new to collect. Tap a dot, row or card to aim at it.
+function aimAt(it) {
+  cancelPassSearch();
+  state.pinnedId = it.obj.id; state.targetId = it.obj.id;
+  if (state.drag.on || !hasLiveSensors()) { state.drag.on = true; state.drag.az = it.look.az; state.drag.el = it.look.el; }
+  closePanel('visible');
+}
+const visIcon = (o, c) => o.natural ? `<svg width="18" height="18" viewBox="-9 -9 18 18"><circle r="3" fill="${c}"/><circle r="7" fill="${c}" opacity=".18"/></svg>`
+  : o.type === 'rocket-body' || o.type === 'debris' ? '<svg width="12" height="20" viewBox="-6 -10 12 20"><rect x="-3" y="-8" width="6" height="14" rx="2" fill="#fff2b3"/><path d="M-3 6 L-5 10 L5 10 L3 6Z" fill="#fa8127"/></svg>'
+  : `<svg width="22" height="12" viewBox="-11 -6 22 12"><rect x="-3" y="-2" width="6" height="4" fill="${c}"/><rect x="-10" y="-1.5" width="6" height="3" fill="${c}" opacity=".8"/><rect x="4" y="-1.5" width="6" height="3" fill="${c}" opacity=".8"/></svg>`;
 function renderVisible() {
   const list = $('visible-list');
-  // Satellites plus the Moon, planets and bright stars that are up and collectable right now.
   const vis = [...state.items.filter((i) => i.look.visible), ...(state.naturals ?? [])].sort((a, b) => a.look.mag - b.look.mag);
-  $('visible-hint').textContent = vis.length
-    ? `Brightest first. ${state.drag.on || !hasLiveSensors() ? 'Tap one to look at it.' : 'Tap one to select it, then follow the directions. Tap empty sky to let go.'}`
-    : 'Nothing visible right now. Find out when the next bright pass is.';
-  list.innerHTML = '';
-  if (!vis.length) { const b=document.createElement('button'); b.className='big'; b.textContent='Find a visible pass'; b.addEventListener('click',()=>findPass()); list.appendChild(b); }
-  for (const it of vis.slice(0, 60)) {
-    const o = it.obj, tier = TIER_INFO[o.tier] ?? TIER_INFO.common;
-    const row = document.createElement('button');
-    row.className = 'vis-row';
-    row.style.setProperty('--tier', tier.color);
-    row.innerHTML = '<span class="dot"></span><span class="grow"><div class="name"></div><div class="meta"></div></span>';
-    row.querySelector('.name').textContent = label(o);
-    row.querySelector('.meta').textContent = `${isNewFind(o) ? 'New · ' : ''}${tier.label} · mag ${it.look.mag.toFixed(1)} (${brightnessWord(it.look.mag)}) · ${Math.round(it.look.el)}° up in the ${compassPoint(it.look.az)}`;
-    row.addEventListener('click', () => {
-      cancelPassSearch();
-      state.pinnedId = o.id; state.targetId = o.id;
-      if (state.drag.on || !hasLiveSensors()) { state.drag.on = true; state.drag.az = it.look.az; state.drag.el = it.look.el; }
-      closePanel('visible');
-    });
-    list.appendChild(row);
+  $('visible-sub').textContent = `${state.observer.label?.replace(/^Example:\s*/, '') ?? 'Your sky'} · ${fmtTime(now().getTime())}`;
+  document.querySelector('[data-vtab="now"]').textContent = vis.length ? `Now · ${vis.length}` : 'Now';
+  $('visible-hint').textContent = ''; list.innerHTML = '';
+  if (!vis.length) { list.innerHTML = '<p class="ts-note">Nothing bright enough is up right now.</p>'; const b = document.createElement('button'); b.className = 'big'; b.textContent = 'Find a visible pass'; b.addEventListener('click', () => findPass()); list.appendChild(b); return; }
+  // The map: north up, the horizon is the rim, overhead is the middle; a soft wedge shows which way you're facing.
+  const b0 = state.basis?.back ?? [0, 1, 0], heading = (Math.atan2(b0[0], b0[1]) / RAD + 360) % 360;
+  const pos = (l) => { const r = 104 * (1 - Math.max(0, l.el) / 90), a = l.az * RAD; return [Math.sin(a) * r, -Math.cos(a) * r]; };
+  const wedge = (() => { const a1 = (heading - 20) * RAD, a2 = (heading + 20) * RAD; return `<path d="M0 0 L${Math.sin(a1) * 104} ${-Math.cos(a1) * 104} A104 104 0 0 1 ${Math.sin(a2) * 104} ${-Math.cos(a2) * 104} Z" fill="#fa8127" opacity=".1"/>`; })();
+  const dots = vis.slice(0, 40).map((it, i) => { const [x, y] = pos(it.look), isStar = it.obj.natural === 'star', nw = isNewFind(it.obj) && !isStar, c = it.obj.natural ? '#f2d8a8' : '#fff2b3', lab = i < 7; // stars stay quiet: small, no ring
+    return `<g class="vd" data-i="${i}" style="cursor:pointer"><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="12" fill="transparent"/><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${nw ? 4 : isStar ? 1.8 : 2.8}" fill="${c}"/>${nw ? `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="8.5" fill="none" stroke="#fa8127" stroke-width="1.2"/>` : ''}${lab ? `<text x="${(x + 11).toFixed(1)}" y="${(y + 3.5).toFixed(1)}" font-family="SC Label, Arial Narrow" font-size="9.5" letter-spacing="1" fill="#fff2b3cc">${escapeHtml(label(it.obj).toUpperCase().slice(0, 16))}</text>` : ''}</g>`; }).join('');
+  const map = document.createElement('div'); map.className = 'vis-map';
+  map.innerHTML = `<svg viewBox="-118 -118 236 236"><circle r="108" fill="#0b1626" stroke="#344654"/><circle r="72" fill="none" stroke="#1c2b3c"/><circle r="36" fill="none" stroke="#1c2b3c"/><path d="M0 -108 V108 M-108 0 H108" stroke="#1c2b3c"/>${wedge}
+    <g font-family="SC Label, Arial Narrow" font-size="11" fill="#bdbea9" text-anchor="middle"><text y="-96" fill="#fa8127">N</text><text x="98" y="4">E</text><text y="104">S</text><text x="-98" y="4">W</text></g>${dots}<circle r="2.5" fill="#fa8127"/></svg>
+    <p class="vis-map-note">You're facing ${compassPoint(heading)} · tap a dot or a row to aim</p>`;
+  map.addEventListener('click', (e) => { const g = e.target.closest('.vd'); if (g) aimAt(vis[Number(g.dataset.i)]); });
+  list.appendChild(map);
+  const row = (it) => { const o = it.obj, tier = TIER_INFO[o.tier] ?? TIER_INFO.common, nw = isNewFind(o), r = document.createElement('button'); r.type = 'button'; r.className = 'vis-row2';
+    r.innerHTML = `<span class="vr-ic">${visIcon(o, o.natural ? '#f2d8a8' : tier.color)}</span><span class="vr-main"><b>${escapeHtml(label(o))}${nw ? '<span class="new">NEW</span>' : ''}</b><small>${tier.label} · ${brightnessWord(it.look.mag)}</small></span><span class="vr-dir">${compassPoint(it.look.az)}<em>${Math.round(it.look.el)}° up</em></span><span class="vr-go">${ICON_TARGET}</span>`;
+    r.addEventListener('click', () => aimAt(it)); return r; };
+  const fresh = vis.filter((it) => isNewFind(it.obj)), seen = vis.filter((it) => !isNewFind(it.obj));
+  const starLast = (a, b) => Number(a.obj.natural === 'star') - Number(b.obj.natural === 'star') || a.look.mag - b.look.mag;
+  fresh.sort(starLast); seen.sort(starLast);
+  const group = (title, items) => { if (!items.length) return; list.insertAdjacentHTML('beforeend', `<div class="t-head">${title} · ${items.length}</div>`);
+    items.slice(0, 8).forEach((it) => list.appendChild(row(it)));
+    if (items.length > 8) { const more = document.createElement('button'); more.type = 'button'; more.className = 'ui-link vis-more'; more.textContent = `Show all ${items.length} ›`;
+      more.addEventListener('click', () => { const frag = document.createDocumentFragment(); items.slice(8, 80).forEach((it) => frag.appendChild(row(it))); more.replaceWith(frag); }); list.appendChild(more); } };
+  group('New to you', fresh); group('Seen before', seen);
+  // At the end: what's new to collect, as little cards.
+  if (fresh.length) {
+    const collect = fresh.filter((it) => it.obj.natural !== 'star' || fresh.length < 6).slice(0, 10);
+    if (!collect.length) return;
+    list.insertAdjacentHTML('beforeend', `<div class="t-head">New to collect · ${collect.length}</div>`);
+    const strip = document.createElement('div'); strip.className = 'mini-cards';
+    collect.forEach((it) => { const o = it.obj, tier = TIER_INFO[o.tier] ?? TIER_INFO.common, c = document.createElement('button'); c.type = 'button'; c.className = 'mini-card';
+      c.innerHTML = `<span class="mc-art">${previewArt(o, 'small', { accent: tier.color })}</span><span class="mc-bd"><small style="color:${tier.color}">◆ ${tier.label}</small><b>${escapeHtml(label(o))}</b><span>${compassPoint(it.look.az)} · ${Math.round(it.look.el)}° up</span></span>`;
+      c.addEventListener('click', () => aimAt(it)); strip.appendChild(c); });
+    list.appendChild(strip);
   }
 }
 $('radar').addEventListener('click', () => { showVTab('now'); renderVisible(); openPanel('visible'); });
@@ -1065,7 +1092,7 @@ function requestTonight(force = false) {
 function showVTab(tab) {
   document.querySelectorAll('[data-vtab]').forEach((b) => b.classList.toggle('on', b.dataset.vtab === tab));
   $('vtab-now').hidden = tab !== 'now'; $('vtab-tonight').hidden = tab !== 'tonight';
-  $('visible-title').textContent = tab === 'now' ? 'Visible now' : 'Tonight';
+  $('visible-title').textContent = 'Up in your sky';
   if (tab === 'tonight') renderTonight();
 }
 document.querySelectorAll('[data-vtab]').forEach((b) => b.addEventListener('click', () => showVTab(b.dataset.vtab)));
@@ -1112,11 +1139,19 @@ function renderTonight() {
   $('tonight-chart').innerHTML = svg;
   // Passes worth looking for, then the Moon, planets and constellations that are up.
   const list = $('tonight-list'); list.innerHTML = '';
+  // One timeline (2026-10-08, design/now-tonight.html A): passes and the night's moments (cloud, clearing, meteors,
+  // busiest, dawn) in time order down a line.
+  list.classList.add('tl-mode');
   const passes = tonightPasses(T, t0).slice(0, 40);
-  let lastHead = '';
+  const marks = [];
+  if (wxT?.coverFrom > t0) marks.push([wxT.coverFrom, 'Cloud rolls in', 'cloud']);
+  if (wxT?.clearFrom > t0) marks.push([wxT.clearFrom, `Clears${ev && t0 >= ev.start ? ` · ${ev.name.replace(/\s*\d{4}$/, '')} best now` : ''}`, 'clear']);
+  if (peak[1] && peak[0] > t0) marks.push([peak[0], `Busiest: ${peak[1]} up at once`, 'peak']);
+  if (T.dawn) marks.push([T.dawn, 'Dawn: the sky closes', 'dawn']);
+  const markHtml = ([t, txt, k]) => `<div class="t-mark ${k}"><span class="time">${fmtTime(t)}</span><span>${escapeHtml(txt)}</span></div>`;
+  marks.sort((a, b) => a[0] - b[0]);
   for (const p of passes) {
-    const h = new Date(p.start).getHours(), head = p.start <= t0 ? 'Up right now' : h >= 12 ? 'This evening' : h < 5 ? 'Late night' : 'Before dawn';
-    if (head !== lastHead) { list.insertAdjacentHTML('beforeend', `<div class="t-head">${head}</div>`); lastHead = head; }
+    while (marks.length && marks[0][0] <= p.start) list.insertAdjacentHTML('beforeend', markHtml(marks.shift()));
     const tier = TIER_INFO[p.obj.tier] ?? TIER_INFO.common;
     const row = document.createElement('div'); row.className = 't-row'; row.style.setProperty('--tier', tier.color);
     // Icon actions (2026-10-06): a target (go to it in Explore) and a bell (calendar reminder; filled once set).
@@ -1139,8 +1174,21 @@ function renderTonight() {
     row.addEventListener('click', (e) => { if (e.target.closest('.remind, .showme')) return; const from = row.querySelector('.name').getBoundingClientRect(); showTonightCard(p.obj, from, `TONIGHT · ${fmtTime(p.start)}`); });
     list.appendChild(row);
   }
+  for (const mk of marks) list.insertAdjacentHTML('beforeend', markHtml(mk));
   if (!passes.length) list.insertAdjacentHTML('beforeend', '<p class="hint">No standout passes left tonight.</p>');
   list.insertAdjacentHTML('beforeend', `<div class="t-head">Also up tonight</div>` + alsoUpTonight(t0, T.dawn ?? t0 + 10 * 3600000));
+  // At the end: the few worth setting an alarm for (rarest new ones still to come), as little cards with a bell.
+  const rank = { legendary: 5, epic: 4, rare: 3, uncommon: 2, common: 1 };
+  const alarm = tonightPasses(T, t0).filter((p) => p.start > t0 + 15 * 60000 && p.fresh).sort((a, b) => (rank[b.obj.tier] ?? 0) - (rank[a.obj.tier] ?? 0) || a.start - b.start).slice(0, 6);
+  if (alarm.length) {
+    list.insertAdjacentHTML('beforeend', '<div class="t-head">Worth setting an alarm for</div>');
+    const strip = document.createElement('div'); strip.className = 'mini-cards';
+    for (const p of alarm) { const o = p.obj, tier = TIER_INFO[o.tier] ?? TIER_INFO.common, key = `${o.id}@${p.start}`, c = document.createElement('div'); c.className = 'mini-card';
+      c.innerHTML = `<span class="mc-art">${previewArt(o, 'small', { accent: tier.color })}</span><span class="mc-bd"><small style="color:${tier.color}">◆ ${tier.label}</small><b>${escapeHtml(label(o))}</b><span>${fmtTime(p.start)} · ${compassPoint(p.peakAz)}</span></span><button class="ic remind${reminded.has(key) ? ' on' : ''}" type="button" aria-label="Remind me">${ICON_BELL}</button>`;
+      c.querySelector('.remind').addEventListener('click', (e) => { const b = e.currentTarget; if (reminded.has(key)) { reminded.delete(key); b.classList.remove('on'); } else { remindPass(p); reminded.add(key); b.classList.add('on'); } });
+      strip.appendChild(c); }
+    list.appendChild(strip);
+  }
 }
 // "Remind me": a calendar event with an alarm 10 minutes before the pass (iOS offers Add to Calendar).
 function remindPass(p) {

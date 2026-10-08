@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Now and Tonight</title>
+<style>
+  @font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf'); font-weight: 500; }
+  @font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf'); }
+  :root { --ink: #fff2b3; --muted: #bdbea9; --orange: #fa8127; --edge: #627a8b; --soft: #1c2b3c; --rare: #4aa3ff; --unc: #5fd08f; --epic: #b48fff; --leg: #f4c34f; }
+  body { margin: 0; background: #04070d; color: #e8eef6; font: 15px/1.45 -apple-system, system-ui, sans-serif; padding: 24px 16px 60px; }
+  h1.t { font-size: 20px; margin: 0 0 6px; } .intro { color: #9fb0c6; margin: 0 0 22px; max-width: 1000px; }
+  section { margin: 0 auto 40px; max-width: 1240px; } section > h2 { font-size: 18px; margin: 0 0 4px; } section > p { color: #9fb0c6; margin: 0 0 14px; font-size: 14px; max-width: 900px; }
+  .row { display: flex; flex-wrap: wrap; gap: 18px; }
+  .phone { position: relative; width: 360px; height: 760px; border-radius: 30px; overflow: hidden; border: 1px solid #1d2838; background: #080e1a; padding: 22px 18px; box-sizing: border-box; }
+  .cap { color: #9fb0c6; font-size: 13px; margin-top: 8px; width: 360px; }
+  .lab { font: 500 11px/1.2 'SC Label', sans-serif; letter-spacing: .16em; text-transform: uppercase; }
+  .hd { display: flex; justify-content: space-between; align-items: flex-start; }
+  .hd b { display: block; font: 400 15px 'SC Display', sans-serif; color: var(--ink); text-transform: uppercase; } .hd small { display: block; margin-top: 5px; color: var(--muted); }
+  .x { color: var(--ink); font-size: 20px; }
+  .seg { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; padding: 3px; margin: 16px 0 14px; border-radius: 99px; border: 1px solid #344654; }
+  .seg span { display: grid; place-items: center; height: 32px; border-radius: 99px; font: 500 12px 'SC Label', sans-serif; letter-spacing: .14em; color: #fff2b38c; } .seg .on { background: #fa812724; box-shadow: inset 0 0 0 1px #fa812770; color: var(--orange); }
+  .sec { margin: 16px 0 8px; color: var(--orange); }
+  .item { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--soft); }
+  .item .ic { width: 34px; height: 34px; border-radius: 9px; background: #0f1b2a; display: grid; place-items: center; flex: none; }
+  .item .grow { flex: 1; min-width: 0; } .item b { display: block; font: 500 16px 'SC Label', sans-serif; letter-spacing: .04em; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .item small { display: block; margin-top: 2px; font: 500 12.5px 'SC Label', sans-serif; letter-spacing: .04em; color: var(--muted); }
+  .new { color: var(--orange); font: 500 10px 'SC Label', sans-serif; letter-spacing: .14em; margin-left: 6px; }
+  .go { width: 34px; height: 34px; border-radius: 50%; border: 1.5px solid #fa812799; display: grid; place-items: center; color: var(--orange); flex: none; font-size: 14px; }
+  .bell { width: 34px; height: 34px; border-radius: 50%; border: 1.5px solid #344654; display: grid; place-items: center; color: var(--muted); flex: none; font-size: 13px; margin-left: 6px; }
+  .dir { font: 500 12px 'SC Label', sans-serif; color: var(--ink); letter-spacing: .06em; flex: none; text-align: right; } .dir em { display: block; font-style: normal; color: var(--muted); font-size: 11px; }
+  .chips { display: flex; gap: 8px; flex-wrap: wrap; } .chip { padding: 8px 11px; border-radius: 10px; background: #0f1b2a; border: 1px solid var(--soft); } .chip small { display: block; color: var(--muted); font: 500 10px 'SC Label', sans-serif; letter-spacing: .16em; } .chip b { display: block; margin-top: 3px; font: 500 14px 'SC Label', sans-serif; color: var(--ink); }
+  .big { padding: 14px; border-radius: 16px; background: linear-gradient(135deg, #14233a, #0b1424); border: 1px solid #2a3a4c; margin-bottom: 10px; }
+  .big .t { display: flex; justify-content: space-between; align-items: baseline; } .big .t b { font: 400 22px 'SC Display', sans-serif; color: var(--ink); } .big .t span { font: 500 13px 'SC Label', sans-serif; color: var(--orange); letter-spacing: .1em; }
+  .big .n { margin-top: 6px; font: 500 17px 'SC Label', sans-serif; color: var(--ink); letter-spacing: .04em; } .big small { display: block; margin-top: 4px; color: var(--muted); font: 500 13px 'SC Label', sans-serif; }
+  .big .acts { display: flex; gap: 8px; margin-top: 12px; } .big .acts span { flex: 1; text-align: center; padding: 10px; border-radius: 10px; font: 500 13px 'SC Label', sans-serif; letter-spacing: .14em; text-transform: uppercase; }
+  .big .acts .o { background: var(--orange); color: #0b1120; } .big .acts .g { border: 1px solid #344654; color: var(--ink); }
+  .tl .it { position: relative; display: grid; grid-template-columns: 58px 1fr auto; gap: 10px; align-items: center; padding: 0 0 14px 18px; }
+  .tl .it::before { content: ''; position: absolute; left: 3px; top: 7px; width: 9px; height: 9px; border-radius: 50%; background: #344654; } .tl .it::after { content: ''; position: absolute; left: 7px; top: 19px; bottom: -2px; width: 1px; background: #344654; }
+  .tl .it.hot::before { background: var(--orange); box-shadow: 0 0 10px var(--orange); } .tl .it.mark::before { background: none; border: 1px solid var(--muted); }
+  .tl b { font: 400 15px 'SC Display', sans-serif; color: var(--ink); } .tl span { font: 500 14px/1.25 'SC Label', sans-serif; color: #fff2b3cc; letter-spacing: .03em; } .tl em { font-style: normal; color: var(--orange); }
+  .tl .it.mark b, .tl .it.mark span { color: var(--muted); }
+  .hr { display: flex; height: 54px; align-items: flex-end; gap: 2px; margin: 8px 0 4px; } .hr i { flex: 1; background: #fa812755; border-radius: 2px 2px 0 0; } .hr i.now { background: var(--orange); }
+  .hrl { display: flex; justify-content: space-between; color: var(--muted); }
+  .cards { display: flex; gap: 10px; overflow: hidden; margin: 6px -18px 0 0; }
+  .mc { flex: none; width: 128px; border-radius: 12px; border: 2px solid #adbcc8; background: #0a1220; overflow: hidden; }
+  .mc .art { height: 76px; background: radial-gradient(ellipse at 50% 70%, #1d3350, #070d18 75%); display: grid; place-items: center; }
+  .mc .bd { padding: 8px; } .mc .bd small { color: var(--orange); font: 500 10px 'SC Label', sans-serif; letter-spacing: .14em; } .mc .bd b { display: block; margin-top: 3px; font: 400 13px/1.1 'SC Display', sans-serif; color: var(--ink); text-transform: uppercase; } .mc .bd span { display: block; margin-top: 5px; font: 500 11px 'SC Label', sans-serif; color: var(--muted); }
+  .dome { position: relative; height: 230px; margin: 4px 0 6px; }
+</style></head><body>
+<h1 class="t">Visible now and Tonight: three directions</h1>
+<p class="intro">Same data in each: 6 things up right now (3 new to you), tonight's passes, dark from 7:11, busiest 5:45 AM with 18 up, cloud clearing by 3 AM, the Draconids. Each direction shows its Now tab and its Tonight tab.</p>
+<div id="b"></div>
+<script>
+const head = (on) => `<div class="hd"><div class="wordmark"><b>Up in your sky</b><small class="lab">Peterborough · 10:31 PM</small></div><span class="x">✕</span></div><div class="seg"><span class="${on === 'now' ? 'on' : ''}">NOW · 6</span><span class="${on === 'tonight' ? 'on' : ''}">TONIGHT</span></div>`;
+const sat = (c = '#fff2b3') => `<svg width="22" height="12" viewBox="-11 -6 22 12"><rect x="-3" y="-2" width="6" height="4" fill="${c}"/><rect x="-10" y="-1.5" width="6" height="3" fill="${c}" opacity=".8"/><rect x="4" y="-1.5" width="6" height="3" fill="${c}" opacity=".8"/></svg>`;
+const star = (c = '#fff2b3') => `<svg width="18" height="18" viewBox="-9 -9 18 18"><circle r="3" fill="${c}"/><circle r="7" fill="${c}" opacity=".15"/></svg>`;
+const rocket = '<svg width="12" height="20" viewBox="-6 -10 12 20"><rect x="-3" y="-8" width="6" height="14" rx="2" fill="#fff2b3"/><path d="M-3 6 L-5 10 L5 10 L3 6Z" fill="#fa8127"/></svg>';
+const NOW = [['ISS (Zarya)', 'Legendary · bright · moving', 'NE', '62°', sat('#f4c34f'), 1], ['Jupiter', 'Uncommon · steady', 'E', '31°', star('#f2d8a8'), 0], ['Cosmos 2392', 'Uncommon · easy to see', 'NW', '48°', sat(), 1], ['Vega', 'Common · bright star', 'W', '52°', star(), 0], ['SL-16 Rocket Stage', 'Rare · faint', 'S', '27°', rocket, 1], ['Deneb', 'Common · bright star', 'NW', '71°', star(), 0]];
+// A · Sky dome
+const domeSvg = `<svg viewBox="-115 -115 230 230" width="100%" height="230"><circle r="110" fill="#0b1626" stroke="#344654"/><circle r="73" fill="none" stroke="#1c2b3c"/><circle r="37" fill="none" stroke="#1c2b3c"/><path d="M0 -110 V110 M-110 0 H110" stroke="#1c2b3c"/>
+  <g font-family="SC Label" font-size="11" fill="#bdbea9" text-anchor="middle"><text y="-98" fill="#fa8127">N</text><text x="100" y="4">E</text><text y="106">S</text><text x="-100" y="4">W</text></g>
+  ${[[45, 62, '#f4c34f', 1, 'ISS'], [90, 31, '#f2d8a8', 0, 'Jupiter'], [315, 48, '#fff2b3', 1, 'Cosmos 2392'], [270, 52, '#fff2b3', 0, 'Vega'], [180, 27, '#fff2b3', 1, 'SL-16'], [320, 71, '#fff2b3', 0, 'Deneb']].map(([az, el, c, nw, n]) => { const r = 110 * (1 - el / 90), a = az * Math.PI / 180, x = Math.sin(a) * r, y = -Math.cos(a) * r; return `<circle cx="${x}" cy="${y}" r="${nw ? 4.5 : 3}" fill="${c}"/>${nw ? `<circle cx="${x}" cy="${y}" r="9" fill="none" stroke="#fa8127" stroke-width="1.2"/>` : ''}<text x="${x + 11}" y="${y + 4}" font-family="SC Label" font-size="10" fill="#fff2b3cc" letter-spacing="1">${n.toUpperCase()}</text>`; }).join('')}
+  <path d="M0 0 L-14 -60 L14 -60Z" fill="#fa8127" opacity=".12"/><circle r="3" fill="#fa8127"/></svg>`;
+const rows = (list) => list.map(([n, m, d, el, ic, nw]) => `<div class="item"><span class="ic">${ic}</span><span class="grow"><b>${n}${nw ? '<span class="new">NEW</span>' : ''}</b><small>${m}</small></span><span class="dir">${d}<em>${el} up</em></span><span class="go">◎</span></div>`).join('');
+const A_now = `${head('now')}<div class="dome">${domeSvg}</div><div class="lab" style="color:var(--muted);text-align:center;margin-bottom:6px">You're facing north · tap a dot or a row to aim</div><div class="sec lab">New to you · 3</div>${rows(NOW.filter((r) => r[5]))}<div class="sec lab">Seen before</div>${rows(NOW.filter((r) => !r[5]).slice(0, 2))}`;
+const A_tonight = `${head('tonight')}<div class="chips"><span class="chip"><small>DARK FROM</small><b>7:11 PM</b></span><span class="chip"><small>BUSIEST</small><b>5:45 AM · 18 up</b></span><span class="chip"><small>SKY</small><b>Clears 3 AM</b></span></div>
+  <div class="hr">${[2, 3, 2, 4, 3, 2, 1, 1, 0, 0, 0, 1, 2, 4, 6, 9, 14, 18, 15, 9].map((v, i) => `<i class="${i === 0 ? 'now' : ''}" style="height:${4 + v * 2.6}px"></i>`).join('')}</div><div class="hrl lab"><span>Now</span><span>Midnight</span><span>3 AM</span><span>Dawn</span></div>
+  <div class="tl" style="margin-top:16px">
+    <div class="it hot"><b>10:34</b><span><em>Cosmos 2392</em> · NW → SW · in 4 min</span><span class="go">◎</span></div>
+    <div class="it"><b>11:52</b><span>ISS · NE, 40° up · bright</span><span class="bell">🔔</span></div>
+    <div class="it mark"><b>12:30</b><span>Cloud rolls in</span><span></span></div>
+    <div class="it mark"><b>3:00</b><span>Clears · Draconids best now</span><span></span></div>
+    <div class="it hot"><b>3:06</b><span><em>Cosmos 1823</em> · N, 36° up · new</span><span class="bell">🔔</span></div>
+    <div class="it"><b>5:45</b><span>Busiest: 18 up at once</span><span class="bell">🔔</span></div>
+  </div>`;
+// B · Cards
+const mini = (n, t, c, d, ic) => `<div class="mc"><div class="art">${ic}</div><div class="bd"><small style="color:${c}">◆ ${t}</small><b>${n}</b><span>${d}</span></div></div>`;
+const B_now = `${head('now')}<div class="sec lab" style="margin-top:4px">New to collect · 3</div><div class="cards">${mini('ISS', 'Legendary', 'var(--leg)', 'NE · 62° up', sat('#f4c34f'))}${mini('Cosmos 2392', 'Uncommon', 'var(--unc)', 'NW · 48° up', sat())}${mini('SL-16 Rocket', 'Rare', 'var(--rare)', 'S · 27° up', rocket)}</div>
+  <div class="sec lab">Also up · 3</div>${rows(NOW.filter((r) => !r[5]))}
+  <div class="big" style="margin-top:16px"><div class="t"><b>Next bright pass</b><span>IN 4 MIN</span></div><div class="n">Cosmos 2392 · from the NW</div><small>Uncommon · easy to see · 72° up at its highest</small><div class="acts"><span class="o">Show me</span><span class="g">🔔 Remind me</span></div></div>`;
+const B_tonight = `${head('tonight')}<div class="big"><div class="t"><b>Tonight</b><span>CLEARS 3 AM</span></div><div class="n">Best window 3–6:45 AM · 18 up at the peak</div><small>☄ Draconids meteor shower · a few an hour</small></div>
+  <div class="sec lab">Worth setting an alarm for</div><div class="cards">${mini('Cosmos 1823', 'Rare', 'var(--rare)', '3:06 AM · N', sat())}${mini('SL-8 Rocket', 'Epic', 'var(--epic)', '3:24 AM · N', rocket)}${mini('ISS', 'Legendary', 'var(--leg)', '11:52 PM · NE', sat('#f4c34f'))}</div>
+  <div class="sec lab">Every pass tonight · 24</div>
+  <div class="item"><span class="ic" style="font:400 13px 'SC Display';color:var(--ink)">10:34</span><span class="grow"><b>Cosmos 2392<span class="new">NEW</span></b><small>Uncommon · NW → SW</small></span><span class="go">◎</span><span class="bell">🔔</span></div>
+  <div class="item"><span class="ic" style="font:400 13px 'SC Display';color:var(--ink)">11:52</span><span class="grow"><b>ISS (Zarya)</b><small>Legendary · NE → SE · bright</small></span><span class="go">◎</span><span class="bell">🔔</span></div>`;
+// C · One hero, then the rest
+const C_now = `${head('now')}<div class="big" style="padding:18px"><div class="lab" style="color:var(--orange)">Best right now</div><div class="t" style="margin-top:6px"><b>ISS (Zarya)</b><span>LEGENDARY</span></div><small>Bright and moving · 62° up in the NE · for 3 more minutes</small>
+  <svg viewBox="0 0 300 80" width="100%" height="80" style="margin-top:10px"><path d="M10 70 Q150 -20 290 60" fill="none" stroke="#fa8127" stroke-width="1.6" stroke-dasharray="4 6"/><g transform="translate(150 24)"><circle r="12" fill="none" stroke="#fa8127"/>${sat('#f4c34f').replace(/<svg[^>]*>|<[/]svg>/g, '')}</g><path d="M0 76 H300" stroke="#344654"/></svg>
+  <div class="acts"><span class="o">Aim at it</span></div></div>
+  <div class="sec lab">Also up · 5</div>${rows(NOW.slice(1))}`;
+const C_tonight = `${head('tonight')}<div class="big" style="padding:18px"><div class="lab" style="color:var(--orange)">Tonight's best</div><div class="t" style="margin-top:6px"><b>Cosmos 1823</b><span>3:06 AM</span></div><small>Rare · new to you · low in the north, 36° up · after the cloud clears</small><div class="acts"><span class="o">🔔 Remind me 2:56</span><span class="g">Show me</span></div></div>
+  <div class="chips" style="margin:4px 0 6px"><span class="chip"><small>VISIBLE</small><b>3:06–6:49 AM</b></span><span class="chip"><small>BUSIEST</small><b>5:45 · 18 up</b></span><span class="chip"><small>SKY</small><b>Clears 3 AM</b></span></div>
+  <div class="sec lab">Evening</div><div class="item"><span class="ic" style="font:400 13px 'SC Display';color:var(--ink)">10:34</span><span class="grow"><b>Cosmos 2392<span class="new">NEW</span></b><small>Uncommon · NW → SW · in 4 min</small></span><span class="go">◎</span></div>
+  <div class="sec lab">After 3 AM</div><div class="item"><span class="ic" style="font:400 13px 'SC Display';color:var(--ink)">3:24</span><span class="grow"><b>SL-8 Rocket Stage<span class="new">NEW</span></b><small>Epic · faint · N → 57° up</small></span><span class="bell">🔔</span></div><div class="item"><span class="ic" style="font:400 13px 'SC Display';color:var(--ink)">3:25</span><span class="grow"><b>Cosmos 2250<span class="new">NEW</span></b><small>Uncommon · E → 55° up</small></span><span class="bell">🔔</span></div>`;
+const S = [['A · Sky map and timeline', 'Now is a little dome of your sky (where everything is, which way you face), then the list split into New to you and Seen before. Tonight is the tour\'s timeline: passes, cloud and the meteor shower as moments down one line, with a small "how busy" chart above.', A_now, A_tonight],
+  ['B · Cards', 'Things to collect show as mini cards in a swipeable row, the rest as a quiet list. A "next bright pass" panel with Show me / Remind me. Tonight leads with a summary card and "worth setting an alarm for" cards, then every pass.', B_now, B_tonight],
+  ['C · One hero, then the rest', 'Each tab opens on the single best thing, big, with its path drawn and one clear button. Everything else is a short list underneath, grouped by when.', C_now, C_tonight]];
+document.getElementById('b').innerHTML = S.map(([t, d, n, tn]) => `<section><h2>${t}</h2><p>${d}</p><div class="row"><div><div class="phone">${n}</div><div class="cap">Now</div></div><div><div class="phone">${tn}</div><div class="cap">Tonight</div></div></div></section>`).join('');
+</script></body></html>
