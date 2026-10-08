@@ -1,9 +1,9 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.311';
+import { extinction } from './sky-limit.js?v=0.1.312';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.311';
-import { TIER_INFO } from './rarity.js?v=0.1.311';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.312';
+import { TIER_INFO } from './rarity.js?v=0.1.312';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -993,6 +993,8 @@ export class SkyView {
       const p = this.project(b.enu);
       if (!this.onScreen(p, 30)) continue;
       if (b.kind === 'moon') {
+        // In daylight a thin or new Moon is invisible: don't paint a black disc on a blue sky (2026-10-08 playtest).
+        if ((this.dayF ?? 0) > 0.3 && (b.illum ?? 1) < 0.25) continue;
         const radius = 12;
         this.glow(p.x, p.y, 34, t.starRGB, 0.2);
         this.drawMoon(p, radius, sun ? this.brightLimbAngle(b.enu, sun.enu, p) : 0, b.phaseAngle);
