@@ -461,3 +461,6 @@ html.quick #hud[hidden] > :not(#sky-header):not(#nav):not(#skybar) { display: no
 #collection-frame.open { opacity: 1; pointer-events: auto; }
 #collection-frame[hidden] { display: block !important; visibility: hidden; }
 #collection-frame.open[hidden] { visibility: visible; }
+/* The name never collapses to nothing: the time gives way first. */
+#nextpass .np-n { min-width: 4.5em; }
+#nextpass .np-m { flex: 0 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
