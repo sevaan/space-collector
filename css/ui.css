@@ -9,7 +9,7 @@
 }
 
 /* Switcher: Explore | Collection. As wide as a card; the current page is the gold pill. */
-.sc-switch { position: fixed; z-index: 20; left: 50%; right: auto; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%);
+.sc-switch { position: fixed; z-index: 20; left: 50%; right: auto; bottom: calc(20px + var(--safe-bottom, env(safe-area-inset-bottom, 0px))); transform: translateX(-50%);
   width: var(--nav-w); height: 46px; display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; margin: 0; box-sizing: border-box;
   background: var(--ui-bar); border: 1px solid var(--ui-edge-soft); border-top: 1px solid var(--ui-edge-soft); border-radius: 99px;
   -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
@@ -32,7 +32,7 @@
 /* Toasts ("tickets"): shared by Explore and Collection (js/toast.js). A stack at the bottom, as wide as a card.
    Pages set the stack's height above their own controls (#toasts bottom); the ticket itself lives here. */
 :where(#toasts) { position: fixed; z-index: 30; left: 50%; transform: translateX(-50%); width: var(--nav-w); max-width: var(--nav-w); margin: 0;
-  bottom: calc(env(safe-area-inset-bottom, 0px) + 84px); display: flex; flex-direction: column-reverse; gap: 8px; pointer-events: none; }
+  bottom: calc(var(--safe-bottom, env(safe-area-inset-bottom, 0px)) + 84px); display: flex; flex-direction: column-reverse; gap: 8px; pointer-events: none; }
 :root { --ticket-event:#e2b53c; --ticket-event-text:#f4d27a; }
 html[data-theme=night],body.night { --ticket-event:var(--gold, #fa8127); --ticket-event-text:var(--gold, #fa8127); }
 .ticket { pointer-events:auto; display:flex; align-items:center; gap:12px; min-height:52px; padding:8px 12px 8px 14px; border:1px solid var(--edge, #627a8b); border-left:4px solid var(--edge, #627a8b); border-radius:10px; background:var(--glass-strong, #0c1725); color:var(--text, #fff2b3); box-shadow:0 8px 24px rgba(0,0,0,.5);
@@ -132,7 +132,7 @@ select, .filter select, .search input { border: 1px solid var(--ui-edge); border
 
 /* Slider: ends labelled in small caps, a gold-filled track, a ringed thumb with a 44px touch band. Explore's sky
    slider (#skybar) and Collection's card size (#sizebar). Pages set the height above their own controls. */
-:where(.ui-slider) { position: fixed; z-index: 15; left: 50%; transform: translateX(-50%); width: var(--nav-w); bottom: calc(80px + env(safe-area-inset-bottom, 0px));
+:where(.ui-slider) { position: fixed; z-index: 15; left: 50%; transform: translateX(-50%); width: var(--nav-w); bottom: calc(80px + var(--safe-bottom, env(safe-area-inset-bottom, 0px)));
   display: grid; grid-template-columns: auto 1fr auto; align-items: center; column-gap: 9px; }
 .ui-slider__end { font: 500 9px/1 var(--ui-label); letter-spacing: .16em; color: var(--ui-muted); opacity: .9; }
 .ui-range { -webkit-appearance: none; appearance: none; width: 100%; height: 44px; margin: 0; background: transparent; touch-action: none; cursor: pointer; }

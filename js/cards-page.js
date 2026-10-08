@@ -1,20 +1,20 @@
-import { ticket } from './toast.js?v=0.1.256';
-import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.256';
-import { cardArt } from './art.js?v=0.1.256';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.256';
-import { applyBack } from './card-backs.js?v=0.1.256';
-import { SETS, assignSets } from './sets.js?v=0.1.256';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.256';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.256';
-import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.256';
-import { progress } from './progress.js?v=0.1.256';
-import { SOLAR_SYSTEM } from './natural.js?v=0.1.256';
-import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.256';
-import { drawShareCard, shareCard } from './share-card.js?v=0.1.256';
-import { conArt } from './con-art.js?v=0.1.256';
-import { CON_BY_ID } from './constellations.js?v=0.1.256';
-import { allSightings, deleteSighting } from './store.js?v=0.1.256';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.256';
+import { ticket } from './toast.js?v=0.1.257';
+import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.257';
+import { cardArt } from './art.js?v=0.1.257';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.257';
+import { applyBack } from './card-backs.js?v=0.1.257';
+import { SETS, assignSets } from './sets.js?v=0.1.257';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.257';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.257';
+import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.257';
+import { progress } from './progress.js?v=0.1.257';
+import { SOLAR_SYSTEM } from './natural.js?v=0.1.257';
+import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.257';
+import { drawShareCard, shareCard } from './share-card.js?v=0.1.257';
+import { conArt } from './con-art.js?v=0.1.257';
+import { CON_BY_ID } from './constellations.js?v=0.1.257';
+import { allSightings, deleteSighting } from './store.js?v=0.1.257';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.257';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -532,3 +532,28 @@ boot().catch(() => {
 }
 
 try { sessionStorage.setItem('scBooted', '1'); } catch {} // the app is open: going to Explore skips the loader
+
+// Inside the app shell (index.html #collection-frame, 2026-10-07): links back to Explore tell the shell instead of
+// navigating; the shell sends the safe-area insets (an iframe doesn't get them) and asks us to open a card.
+const EMBED = window.parent !== window && new URLSearchParams(location.search).has('embed');
+if (EMBED) {
+  document.documentElement.classList.add('embedded');
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest('a[href^="./"], a[href^="index.html"]'); if (!a) return;
+    e.preventDefault(); window.parent.postMessage({ sc: 'explore', more: /more=1/.test(a.getAttribute('href')) }, location.origin);
+  });
+  window.addEventListener('message', (e) => {
+    if (e.origin !== location.origin || !e.data?.sc) return;
+    if (e.data.sc === 'insets') { const r = document.documentElement.style; r.setProperty('--safe-top', `${e.data.top}px`); r.setProperty('--safe-bottom', `${e.data.bottom}px`); }
+    if ((e.data.sc === 'open' || e.data.sc === 'show') && e.data.key) openKey(e.data.key);
+  });
+}
+function openKey(key) {
+  const go = () => {
+    if (!state.byKey.has(key) && /^[A-Z]+:/.test(key)) key = key.split(':')[0];
+    if (!state.byKey.has(key)) return;
+    if (!state.sightingsByKey.has(key)) setView('discover');
+    openViewer(state.list.findIndex((c) => c.key === key));
+  };
+  if (state.ready) go(); else { const t = setInterval(() => { if (state.ready) { clearInterval(t); go(); } }, 100); }
+}

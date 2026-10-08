@@ -457,3 +457,9 @@ html.quick #ld-ret circle[stroke-dasharray] { display: none; }
 /* …and the header, sky slider and switcher are on screen from the first paint, before the app script runs. */
 html.quick #hud[hidden] { display: block !important; }
 html.quick #hud[hidden] > :not(#sky-header):not(#nav):not(#skybar) { display: none !important; }
+
+/* The Collection layer (js/main.js openCollection): the whole collection page, preloaded, over the sky. */
+#collection-frame { position: fixed; inset: 0; width: 100%; height: 100%; border: 0; z-index: 60; background: var(--bg); opacity: 0; pointer-events: none; transition: opacity .16s ease-out; }
+#collection-frame.open { opacity: 1; pointer-events: auto; }
+#collection-frame[hidden] { display: block !important; visibility: hidden; }
+#collection-frame.open[hidden] { visibility: visible; }

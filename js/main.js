@@ -1,31 +1,31 @@
-import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.256';
-import { VERSION } from './version.js?v=0.1.256';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.256';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.256';
-import { conArt } from './con-art.js?v=0.1.256';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.256';
-import { CON_FIGURES } from './con-figures.js?v=0.1.256';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.256';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.256';
-import { progress as progressOf } from './progress.js?v=0.1.256';
-import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.256';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.256';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.256';
-import { SkyView, shortName } from './sky.js?v=0.1.256';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.256';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.256';
-import { cardArt } from './art.js?v=0.1.256';
-import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.256';
-import { applyBack } from './card-backs.js?v=0.1.256';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.256';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.256';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.256';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.256';
-import { TIER_INFO } from './rarity.js?v=0.1.256';
-import { SETS } from './sets.js?v=0.1.256';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.256';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.256';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.256';
+import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.257';
+import { VERSION } from './version.js?v=0.1.257';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.257';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.257';
+import { conArt } from './con-art.js?v=0.1.257';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.257';
+import { CON_FIGURES } from './con-figures.js?v=0.1.257';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.257';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.257';
+import { progress as progressOf } from './progress.js?v=0.1.257';
+import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.257';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.257';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.257';
+import { SkyView, shortName } from './sky.js?v=0.1.257';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.257';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.257';
+import { cardArt } from './art.js?v=0.1.257';
+import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.257';
+import { applyBack } from './card-backs.js?v=0.1.257';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.257';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.257';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.257';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.257';
+import { TIER_INFO } from './rarity.js?v=0.1.257';
+import { SETS } from './sets.js?v=0.1.257';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.257';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.257';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.257';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -378,7 +378,7 @@ function snapTick() {
 let uiSafeTop = 202, uiSafeBottom = 320, uiCenterY = window.innerHeight / 2; // set from the first frame, so the circle never starts high and slides down (2026-10-07)
 function tick(ts) {
   requestAnimationFrame(tick);
-  if (!state.catalog || !state.started || document.hidden || activePanel) return;
+  if (!state.catalog || !state.started || document.hidden || activePanel || collectionOpen) return;
   const d = now();
   state.model.update(d, state.observer);
   state.items = state.model.items(d);
@@ -963,6 +963,7 @@ async function recordSighting(obj, d, l = null) {
   state.captureBusy = true;
   try {
     const key = await addSighting(sighting);
+    collectionStale(); // the preloaded collection catches up in the background
     const saved = { ...sighting, key };
     state.sightings.unshift(saved);
     return saved;
@@ -1585,6 +1586,7 @@ function renderDebug() {
 
 // ---------- start and return from the collection ----------
 function enterSky() {
+  setTimeout(loadCollection, 2500); // warm the Collection layer once the sky is running
   state.skyOpenedAt ??= performance.now();
   state.started=true; $('start').hidden=true; $('hud').hidden=false;
   if (!state.storageReady) toast('Browser storage is unavailable. Captures may not save.',5000);
@@ -1745,6 +1747,54 @@ function saveExploreState() {
   try { sessionStorage.setItem('space-collector.explore',JSON.stringify({ observer:state.observer, locationStatus:state.locationStatus, timeOffsetMs:state.timeOffsetMs, drag:state.drag, preview:state.preview, followPreview:state.followPreview, pinnedId:state.pinnedId })); } catch {}
 }
 document.addEventListener('click', e => { if (e.target.closest('a[href^="cards.html"]')) saveExploreState(); });
+
+// ---------- Collection as a layer (2026-10-07, Sevaan: one page, seamless) ----------
+// cards.html runs inside #collection-frame (?embed=1), loaded quietly once the sky is up. The switcher and every
+// "cards.html…" link show it instead of navigating; it posts {sc:'explore'} to come back. The sky pauses while it's
+// open. After a capture it reloads in the background so it's current next time; back/swipe-back closes it.
+let collectionOpen = false, collectionDirty = false;
+const colFrame = $('collection-frame');
+function loadCollection() { if (!colFrame.src) colFrame.src = 'cards.html?embed=1'; }
+function collectionStale() { if (!colFrame.src) return; if (collectionOpen) collectionDirty = true; else colFrame.src = 'cards.html?embed=1'; }
+function sendInsets() {
+  const probe = document.createElement('div'); probe.style.cssText = 'position:fixed;visibility:hidden;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)';
+  document.body.append(probe); const cs = getComputedStyle(probe), top = parseFloat(cs.paddingTop) || 0, bottom = parseFloat(cs.paddingBottom) || 0; probe.remove();
+  colFrame.contentWindow?.postMessage({ sc: 'insets', top, bottom }, location.origin);
+}
+colFrame.addEventListener('load', () => { sendInsets(); if (collectionOpen && pendingKey) { colFrame.contentWindow.postMessage({ sc: 'open', key: pendingKey }, location.origin); pendingKey = ''; } });
+let pendingKey = '';
+function openCollection(key = '') {
+  saveExploreState();
+  if (collectionDirty && !collectionOpen) { collectionDirty = false; colFrame.src = 'cards.html?embed=1'; }
+  loadCollection();
+  if (!collectionOpen) { collectionOpen = true; try { history.pushState({ sc: 'collection' }, ''); } catch {} }
+  colFrame.hidden = false; colFrame.classList.add('open');
+  const w = colFrame.contentWindow;
+  if (w && colFrame.contentDocument?.readyState === 'complete' && w.location.href !== 'about:blank') w.postMessage({ sc: 'show', key }, location.origin);
+  else pendingKey = key;
+}
+async function closeCollection(fromHistory = false) {
+  if (!collectionOpen) return;
+  collectionOpen = false; colFrame.classList.remove('open'); setTimeout(() => { if (!collectionOpen) colFrame.hidden = true; }, 180);
+  if (!fromHistory && history.state?.sc === 'collection') { try { history.back(); } catch {} }
+  await loadSightings(); // a sighting may have been deleted over there
+}
+window.addEventListener('popstate', () => { if (collectionOpen && history.state?.sc !== 'collection') closeCollection(true); });
+window.addEventListener('message', (e) => {
+  if (e.origin !== location.origin || !e.data?.sc) return;
+  if (e.data.sc === 'explore') { closeCollection(); if (e.data.more) openDebug(); }
+});
+window.addEventListener('resize', () => { if (colFrame.src) sendInsets(); });
+// Any link to the collection opens the layer instead of leaving the page.
+document.addEventListener('click', (e) => {
+  const a = e.target.closest('a[href^="cards.html"]'); if (!a || e.defaultPrevented || !state.started) return;
+  e.preventDefault(); if (!$('reveal').hidden) $('reveal').querySelector('[data-close="reveal"]')?.click();
+  let key = ''; try { key = decodeURIComponent((a.getAttribute('href').split('#')[1] ?? '')); } catch {}
+  openCollection(key);
+});
+window.scNavigate = (href) => { if (!String(href).startsWith('cards.html') || !state.started) return false; openCollection(decodeURIComponent(href.split('#')[1] ?? '')); return true; };
+// Night mode switched over there (same storage key) follows here.
+window.addEventListener('storage', (e) => { if (e.key === 'night' && (e.newValue === '1') !== state.night) { state.night = e.newValue === '1'; $('chk-night').checked = state.night; applyTheme(); } });
 window.addEventListener('pagehide',saveExploreState);
 // ---------- Welcome card (2026-10-06) ----------
 // The opener is a sealed card (the real card back) that rattles every few seconds. Tap: it flips to a mission

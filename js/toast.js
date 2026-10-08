@@ -33,7 +33,7 @@ function pump() {
   // Up long enough to read (2026-10-06: at least 5 s, about 1.6× the old times); a tap sends it away sooner.
   let gone = false;
   const dismiss = () => { if (gone) return; gone = true; clearTimeout(timer); if (t.id) live.delete(t.id); el.classList.remove('in'); setTimeout(() => { el.remove(); busy = false; pump(); }, 320); };
-  el.addEventListener('click', () => { if (t.href) location.href = t.href; else dismiss(); });
+  el.addEventListener('click', () => { if (t.href) { if (!window.scNavigate?.(t.href)) location.href = t.href; dismiss(); } else dismiss(); });
   stack().append(el);
   requestAnimationFrame(() => el.classList.add('in'));
   const timer = setTimeout(dismiss, Math.max(5000, t.ms * 1.6));
