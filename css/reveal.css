@@ -2,7 +2,7 @@
 #reveal { overflow: hidden; background: radial-gradient(ellipse at 50% 35%, #142650, #03060e 70%); touch-action: none; } /* solid: the sky and its banner must not show through (2026-10-06) */
 #rv-dim { position: absolute; inset: 0; background: #000; opacity: 0; pointer-events: none; }
 #rv-fx { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 3; }
-#rv-flash { position: absolute; inset: 0; background: radial-gradient(circle at 50% 45%, #fff, transparent 60%); opacity: 0; pointer-events: none; z-index: 2; }
+#rv-flash { position: absolute; inset: 0; background: radial-gradient(circle at var(--fx-x, 50%) var(--fx-y, 45%), #fff 0, rgba(255, 246, 214, .85) 6%, rgba(255, 226, 160, .25) 22%, transparent 42%); opacity: 0; pointer-events: none; z-index: 2; }
 #rv-shock { position: absolute; width: 40px; height: 40px; border-radius: 50%; border: 3px solid var(--fx); opacity: 0; transform: translate(-50%, -50%); pointer-events: none; }
 #rv-dot { position: absolute; width: 14px; height: 14px; border-radius: 50%; background: #ffe2a0; box-shadow: 0 0 16px 5px #ffd98a; transform: translate(-50%, -50%); pointer-events: none; }
 

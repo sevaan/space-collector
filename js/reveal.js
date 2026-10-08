@@ -5,10 +5,10 @@
 //  Everything scales with rarity (Legendary dims the sky, shockwave, held breath, slow flip, fanfare).
 // Waits use timers, not animation.finished, so a paused tab can never freeze the sequence.
 
-import { TIER_INFO } from './rarity.js?v=0.1.272';
-import { levelFor, attachTilt, attachGyro, attachFlip, throwOff } from './card.js?v=0.1.272';
-import { applyBack } from './card-backs.js?v=0.1.272';
-import { addStarfield } from './starfield.js?v=0.1.272';
+import { TIER_INFO } from './rarity.js?v=0.1.273';
+import { levelFor, attachTilt, attachGyro, attachFlip, throwOff } from './card.js?v=0.1.273';
+import { applyBack } from './card-backs.js?v=0.1.273';
+import { addStarfield } from './starfield.js?v=0.1.273';
 
 const FX = {
   common:    { particles: 14,  flip: 520,  spin: 0,   dim: 0,   shock: false, notes: [880],                            hold: 0 },
@@ -146,14 +146,16 @@ export async function playReveal({ card, o, seen, origin, fleet = null, progress
   if (fx.dim) $('rv-dim').animate([{ opacity: 0 }, { opacity: fx.dim }], { duration: 500, fill: 'forwards' });
   await play($('rv-dot'), [
     { transform: 'translate(-50%,-50%) scale(1)', opacity: 1 },
-    { transform: 'translate(-50%,-50%) scale(2.2)', opacity: 1, offset: .45 },
-    { transform: 'translate(-50%,-50%) scale(40)', opacity: 0 },
-  ], { duration: reduced() ? 1 : 620, easing: 'cubic-bezier(.5,0,.8,.3)', fill: 'forwards' });
+    { transform: 'translate(-50%,-50%) scale(2.6)', opacity: 1, offset: .75 },
+    { transform: 'translate(-50%,-50%) scale(5)', opacity: 0 }, // a quick pop into the flash, not a 40× blur (2026-10-08)
+  ], { duration: reduced() ? 1 : 560, easing: 'cubic-bezier(.5,0,.8,.3)', fill: 'forwards' });
   if (!alive()) return;
-  $('rv-flash').animate([{ opacity: 0 }, { opacity: .9 }, { opacity: 0 }], { duration: 420 });
+  $('rv-flash').style.setProperty('--fx-x', `${x}px`); $('rv-flash').style.setProperty('--fx-y', `${y}px`);
+  $('rv-flash').animate([{ opacity: 0 }, { opacity: 1, offset: .25 }, { opacity: 0 }], { duration: 300, easing: 'ease-out' }); // short and bright, from where you caught it
   thump();
   burst(x, y + 20, Math.round(fx.particles / 2), color);
-  if (fx.shock) $('rv-shock').animate([{ transform: 'translate(-50%,-50%) scale(1)', opacity: 1 }, { transform: 'translate(-50%,-50%) scale(22)', opacity: 0 }], { duration: 900, easing: 'ease-out' });
+  // A crisp ring that grows (size, not scale, so its line stays thin and sharp: 2026-10-08, the scaled one smeared into a muddy disc).
+  if (fx.shock) $('rv-shock').animate([{ width: '20px', height: '20px', opacity: 1, borderWidth: '3px' }, { width: '140vmax', height: '140vmax', opacity: 0, borderWidth: '1.5px' }], { duration: 760, easing: 'cubic-bezier(.15,.7,.3,1)' });
 
   if (!fresh) {
     // Seen before: straight to the card.
