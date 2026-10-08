@@ -1,23 +1,23 @@
-import { expandFacts } from './catalog-facts.js?v=0.1.336';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.336';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.336';
-import { ticket } from './toast.js?v=0.1.336';
-import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.336';
-import { cardArt } from './art.js?v=0.1.336';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.336';
-import { applyBack } from './card-backs.js?v=0.1.336';
-import { SETS, assignSets } from './sets.js?v=0.1.336';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.336';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.336';
-import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.336';
-import { RANKS, progress } from './progress.js?v=0.1.336';
-import { SOLAR_SYSTEM } from './natural.js?v=0.1.336';
-import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.336';
-import { drawShareCard, shareCard } from './share-card.js?v=0.1.336';
-import { conArt } from './con-art.js?v=0.1.336';
-import { CON_BY_ID } from './constellations.js?v=0.1.336';
-import { allSightings, deleteSighting } from './store.js?v=0.1.336';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.336';
+import { expandFacts } from './catalog-facts.js?v=0.1.337';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.337';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.337';
+import { ticket } from './toast.js?v=0.1.337';
+import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.337';
+import { cardArt } from './art.js?v=0.1.337';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.337';
+import { applyBack } from './card-backs.js?v=0.1.337';
+import { SETS, assignSets } from './sets.js?v=0.1.337';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.337';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.337';
+import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.337';
+import { RANKS, progress } from './progress.js?v=0.1.337';
+import { SOLAR_SYSTEM } from './natural.js?v=0.1.337';
+import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.337';
+import { drawShareCard, shareCard } from './share-card.js?v=0.1.337';
+import { conArt } from './con-art.js?v=0.1.337';
+import { CON_BY_ID } from './constellations.js?v=0.1.337';
+import { allSightings, deleteSighting } from './store.js?v=0.1.337';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.337';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -188,26 +188,24 @@ function renderLogbook() {
   const span = p.rank.next ? p.rank.next - p.rank.at : 1, into = p.rank.next ? Math.min(1, (p.xp - p.rank.at) / span) : 1;
   const done = p.achievements.filter((a) => a.done).length;
   el.onclick = (e) => { if (e.target.closest('#streak-remind')) remindStreak(); };
-  // Front (2026-10-08, design/rank-card.html D3): your rank ladder as the picture, then rank + progress, tonight's
-  // missions, events at the foot.
+  // Front (2026-10-08, design/rank-card.html C): your rank ladder as the picture (twinkling stars), the rank and
+  // XP, tonight's missions, and Events at the foot.
   const ri = p.rank.index, lo = Math.max(0, Math.min(ri - 2, RANKS.length - 4)), rungs = RANKS.slice(lo, lo + 4);
   const H = 160, pts = rungs.map((_, i) => [30 + i * 75, H / 2 + 34 - i * 18]);
   let seed = 11; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
-  const stars = Array.from({ length: 26 }, () => `<circle cx="${(rnd() * 300).toFixed(0)}" cy="${(rnd() * H).toFixed(0)}" r="${(0.5 + rnd() * 0.7).toFixed(1)}" fill="#fff2b3" opacity=".55"/>`).join('');
+  const stars = Array.from({ length: 30 }, (_, i) => `<circle class="lb-tw" style="--d:${(rnd() * 5).toFixed(2)}s;--t:${(2.5 + rnd() * 3).toFixed(2)}s" cx="${(rnd() * 300).toFixed(0)}" cy="${(rnd() * H).toFixed(0)}" r="${(0.5 + rnd() * 0.8).toFixed(1)}" fill="#fff2b3"/>`).join('');
   const cur = ri - lo, ladder = `<svg class="lb-ladder" viewBox="0 0 300 ${H}" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${stars}
     <path d="M${pts.map((q) => q.join(' ')).join(' L')}" fill="none" stroke="#344654" stroke-dasharray="3 5"/>
     ${pts[cur + 1] ? `<path d="M${pts[cur].join(' ')} L${pts[cur][0] + (pts[cur + 1][0] - pts[cur][0]) * into} ${pts[cur][1] + (pts[cur + 1][1] - pts[cur][1]) * into}" stroke="#fa8127" stroke-width="2"/>` : ''}
     ${rungs.map(([, n], i) => { const [x, y] = pts[i]; return `<circle cx="${x}" cy="${y}" r="${i === cur ? 6 : 4}" fill="${i <= cur ? '#fa8127' : '#0b1626'}" ${i > cur ? 'stroke="#fff2b3" stroke-dasharray="2 2"' : ''}/>${i === cur ? `<circle cx="${x}" cy="${y}" r="12" fill="none" stroke="#fa8127" opacity=".5"/>` : ''}<text x="${x}" y="${y + 20}" text-anchor="middle" font-family="SC Label, Arial Narrow" font-size="9.5" letter-spacing="1.5" fill="${i >= cur ? '#fff2b3' : '#bdbea9'}">${esc(n.toUpperCase())}</text>${i === cur + 1 ? `<text x="${x}" y="${y - 14}" text-anchor="middle" font-family="SC Label, Arial Narrow" font-size="9" letter-spacing="1.5" fill="#fa8127">NEXT</text>` : ''}`; }).join('')}</svg>`;
   const streak = p.streak.current ? `${p.streak.current}-week streak 🔥` : 'Observe this week to start a streak';
   const ev = eventBadges(state.raw), nx = nextEvent();
-  el.innerHTML = `<div class="lb-top"><span>Your night</span><span class="lb-streak">${streak}</span></div>
+  el.innerHTML = `<div class="lb-top"><span>Observer rank</span><span class="lb-streak">${streak}</span></div>
     <div class="lb-pic">${ladder}</div>
-    <div class="lb-prog"><div class="lb-rank"><span class="lb-name">${esc(p.rank.name)}</span><span class="lb-xp"><b>${p.xp.toLocaleString()}</b> XP</span></div>
-      <div class="lb-bar"><i style="width:${(into * 100).toFixed(1)}%"></i><em style="left:${(into * 100).toFixed(1)}%"></em></div>
-      <div class="lb-sub"><span>${esc(p.rank.name)} · ${p.rank.at.toLocaleString()}</span><span>${p.rank.next ? `<b>${(p.rank.next - p.xp).toLocaleString()} XP</b> to ${esc(p.rank.nextName)}` : 'Top rank reached'}</span></div></div>
-    <div class="lb-head">TONIGHT'S MISSIONS <span>+50 XP each</span></div>
+    <div class="lb-rankrow"><span class="lb-name">${esc(p.rank.name)}</span><span class="lb-xp"><b>${p.xp.toLocaleString()}</b>${p.rank.next ? ` / ${p.rank.next.toLocaleString()}` : ''} XP</span></div>
     ${p.missions.map((m) => `<div class="lb-mission${m.done ? ' done' : ''}"><i></i>${esc(m.text)}</div>`).join('')}
-    <div class="lb-events">${ev.map((e) => `<span class="ui-chip ui-chip--earned">☄ <b>${esc(e.name.replace(/\s*\d{4}$/, ''))}</b></span>`).join('')}${nx ? `<span class="ui-chip"><span class="ui-chip__k">Next:</span><b>${esc(nx.name.replace(/\s*\d{4}$/, ''))}</b><span class="ui-chip__k">· ${new Date(nx.start + 30 * 3600e3).toLocaleDateString([], { month: 'short', day: 'numeric' })}</span></span>` : ''}</div>`;
+    <div class="lb-foot"><div class="lb-head">EVENTS ${ev.length ? `<span>${ev.length} badge${ev.length === 1 ? '' : 's'}</span>` : ''}</div>
+    <div class="lb-events">${ev.map((e) => `<span class="ui-chip ui-chip--earned">☄ <b>${esc(e.name.replace(/\s*\d{4}$/, ''))}</b></span>`).join('')}${nx ? `<span class="ui-chip"><span class="ui-chip__k">Next:</span><b>${esc(nx.name.replace(/\s*\d{4}$/, ''))}</b><span class="ui-chip__k">· ${new Date(nx.start + 30 * 3600e3).toLocaleDateString([], { month: 'short', day: 'numeric' })}</span></span>` : ''}</div></div>`;
   state.achievements = p.achievements;
 }
 
