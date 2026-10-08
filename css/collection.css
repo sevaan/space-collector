@@ -60,7 +60,7 @@ h1 { margin: 13px 0 13px; font-size: clamp(34px, 7vw, 49px); line-height: 1.06; 
 #viewer::backdrop { background: #000e; }
 .viewer-header { display: flex; justify-content: space-between; align-items: center; flex: none; width: min(100%, 620px); align-self: center; padding: calc(var(--safe-top) + 14px) 16px 8px; } /* same spot as the reveal's top row (#rv-top) */
 #v-position { color: rgba(255, 242, 179, .6); } /* the shared .ui-eyebrow look, as the reveal's NEW CARD */
-#viewer button:not(.ui-btn):not(.x-close) { min-height: 44px; padding: 10px 16px; border: 1px solid var(--line); border-radius: 7px; background: var(--panel); color: var(--text); font-size: 12px; }
+#viewer button:not(.ui-btn):not(.x-close):not(.ui-link) { min-height: 44px; padding: 10px 16px; border: 1px solid var(--line); border-radius: 7px; background: var(--panel); color: var(--text); font-size: 12px; }
 #viewer .close { display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border-radius: 50%; border: 1px solid #627a8b; background: #0c1725f2; color: #fff2b3; font: 400 20px/1 system-ui, sans-serif; } /* the shared round ✕ (css/ui.css .x-close); #viewer button would otherwise restyle it */
 #viewer .close:focus-visible { outline: none; border-color: #fff2b3; } /* the dialog focuses it on open; a quiet cue, not an orange ring */
 :root[data-theme="night"] #viewer .close { border-color: #58272b; background: #1a0909f5; color: #d67674; }

@@ -148,3 +148,8 @@ select, .filter select, .search input { border: 1px solid var(--ui-edge); border
 /* Bare icons (2026-10-07, Sevaan): no circle around the header buttons or any ✕; the 44px tap area stays. */
 .icon-button, .x-close, .pill.x-close, #viewer .close { border: 0 !important; background: transparent !important; box-shadow: none !important; }
 .x-close { font-size: 24px !important; }
+
+/* Text link under a card ("View in collection ›", "Share this card ›"): plain gold capitals, no box. */
+.ui-link { display: block; width: max-content; margin: 0 auto; padding: 10px 4px; border: 0 !important; background: none !important; box-shadow: none !important; cursor: pointer;
+  font: 500 15px/1 var(--ui-label) !important; letter-spacing: .14em; text-transform: uppercase; color: var(--ui-gold) !important; text-decoration: none; min-height: 0 !important; }
+.ui-link:focus-visible { outline: none; text-decoration: underline; }

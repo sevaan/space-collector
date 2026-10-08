@@ -1,9 +1,9 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.253';
+import { extinction } from './sky-limit.js?v=0.1.254';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.253';
-import { TIER_INFO } from './rarity.js?v=0.1.253';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.254';
+import { TIER_INFO } from './rarity.js?v=0.1.254';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -287,24 +287,39 @@ export class SkyView {
   drawBelow(below) {
     const ctx = this.ctx, t = this.theme, k = 1 - (this.feetA ?? 0); // fades out as the ring at your feet fades in
     ctx.save(); ctx.globalAlpha = k;
-    // The way each one is travelling under the ground, up to where it rises: a dotted line with an arrow at the
-    // horizon end (2026-10-07, Sevaan: makes looking down through the Earth more interesting).
+    // In the circle (2026-10-07, Sevaan): you can identify something under the ground by lining it up. Its name and
+    // when it rises show above the circle in cream (it can't be collected, so the circle doesn't turn orange).
+    let hit = null;
+    if (this.belowFree && k > 0.5) {
+      const rc = this.ring ?? { x: this.cx, y: this.cy, r: this.reticlePx };
+      for (const g of below) { if (g.enu[2] >= 0) continue; const q = this.project(g.enu); if (!q) continue;
+        const d = Math.hypot(q.x - rc.x, q.y - rc.y); if (d < rc.r && (!hit || d < hit.d)) hit = { g, d }; }
+      if (hit) {
+        const g = hit.g, y0 = rc.y - rc.r - 26;
+        this.clearZone ??= { left: this.cx - Math.min(190, this.w / 2 - 12), right: this.cx + Math.min(190, this.w / 2 - 12), top: rc.y - rc.r - 100, bottom: rc.y + rc.r + 75 }; // keep sky labels off its name
+        ctx.save(); ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic'; ctx.shadowColor = 'rgba(0,0,0,.6)'; ctx.shadowBlur = 4;
+        ctx.font = `500 13px ${FONT}`; ctx.fillStyle = 'rgba(189,190,169,.95)';
+        if ('letterSpacing' in ctx) ctx.letterSpacing = '2.5px';
+        ctx.fillText('BELOW THE HORIZON', rc.x, y0 - 30);
+        if ('letterSpacing' in ctx) ctx.letterSpacing = '0px';
+        ctx.font = `400 26px ${DISPLAY_FONT}`; ctx.fillStyle = 'rgb(255,242,179)';
+        ctx.fillText(g.name.toUpperCase(), rc.x, y0);
+        ctx.font = `500 15px ${FONT}`; ctx.fillStyle = 'rgba(255,242,179,.75)';
+        if ('letterSpacing' in ctx) ctx.letterSpacing = '1px';
+        ctx.fillText([g.note ? g.note.replace(/^up /, 'comes up ') : '', g.where ? `in the ${g.where}` : ''].filter(Boolean).join(' · ').toUpperCase(), rc.x, rc.y + rc.r + 34);
+        ctx.restore();
+      }
+    }
+    // Where each one has been and where it's going under the ground, drawn exactly like a satellite's trail in the
+    // sky (drawTrail, 2026-10-07 consistency): a faint solid line behind it, the dotted orange prediction ahead up to
+    // where it rises. Faint until you line it up in the circle, then as bright as a selected trail.
     for (const g of below) {
       if (!g.path?.length || g.enu[2] >= 0) continue;
-      const col = g.kind === 'sun' ? '250,129,39' : g.kind === 'sat' ? '143,179,207' : '255,242,179';
-      ctx.save(); ctx.globalAlpha = 0.55 * k; ctx.strokeStyle = `rgba(${col},.7)`; ctx.lineWidth = 1.2; ctx.setLineDash([2, 5]); ctx.lineCap = 'round';
-      if (!this.reducedMotion) ctx.lineDashOffset = -(performance.now() / 90) % 7; // the dots march toward the rise point
-      let last = null, prev = null; ctx.beginPath();
-      for (const e of g.path) {
-        const q = e[2] < 0.03 ? this.project(e) : null;
-        if (q && last && Math.hypot(q.x - last.x, q.y - last.y) < this.w) ctx.lineTo(q.x, q.y); else if (q) ctx.moveTo(q.x, q.y);
-        if (q) { prev = last; last = q; } else last = null;
-      }
-      ctx.stroke(); ctx.setLineDash([]);
-      if (last && prev) { // arrowhead pointing the way it's going
-        const a = Math.atan2(last.y - prev.y, last.x - prev.x); ctx.fillStyle = `rgba(${col},.85)`; ctx.beginPath();
-        ctx.moveTo(last.x + Math.cos(a) * 6, last.y + Math.sin(a) * 6); ctx.lineTo(last.x + Math.cos(a + 2.5) * 6, last.y + Math.sin(a + 2.5) * 6); ctx.lineTo(last.x + Math.cos(a - 2.5) * 6, last.y + Math.sin(a - 2.5) * 6); ctx.fill();
-      }
+      const hot = hit?.g === g, [r, gg, b] = t.bead;
+      ctx.save(); ctx.globalAlpha = k * (hot ? 1 : 0.6); ctx.lineWidth = 1; ctx.lineCap = 'butt';
+      if (g.past?.length) { ctx.strokeStyle = t.trailPast; this.path([...g.past, g.enu]); }
+      ctx.setLineDash([4, 7]); ctx.strokeStyle = `rgba(${r}, ${gg}, ${b}, ${hot ? 0.6 : 0.26})`;
+      this.path(g.path.filter((e) => e[2] < 0.02));
       ctx.restore();
     }
     for (const g of below) {
@@ -322,7 +337,7 @@ export class SkyView {
       ctx.strokeStyle = g.kind === 'sun' ? 'rgba(250,129,39,.75)' : 'rgba(255,242,179,.5)';
       ctx.beginPath(); ctx.arc(p.x, p.y, r + 3, 0, Math.PI * 2); ctx.stroke();
       ctx.setLineDash([]);
-      if (k > 0.5) this.queueLabel(g.note ? `${g.name} · ${g.note}` : g.name, p, { color: g.kind === 'sun' ? 'rgba(250,129,39,.9)' : 'rgba(255,242,179,.78)', size: 12, weight: 600, gap: r + 6, priority: 6 }); // one line, so the time never drifts off its name
+      if (k > 0.5 && hit?.g !== g) this.queueLabel(g.note ? `${g.name} · ${g.note}` : g.name, p, { color: g.kind === 'sun' ? 'rgba(250,129,39,.9)' : 'rgba(255,242,179,.78)', size: 12, weight: 600, gap: r + 6, priority: 6 }); // one line, so the time never drifts off its name
     }
     ctx.restore();
   }
@@ -891,6 +906,7 @@ export class SkyView {
     if (landscape) this.drawLandscape();
     this.drawGroundCompass();
     // Looking down: the quiet ring takes over from the see-through ghosts (same things, by rise direction).
+    this.belowFree = !targetId && !planeHit; // the circle can name a below-horizon thing only when it isn't busy
     if (below?.length && this.basis.back[2] < 0.15 && this.feetA < 0.98) this.drawBelow(below);
     this.drawFeet(below);
     this.drawRising(rising);

@@ -235,3 +235,6 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - Labels near a screen edge slide in instead of disappearing (drawLabels clamped candidates).
 - No circles around icon buttons or ✕ anywhere (ui.css "Bare icons").
 - Achievements → mission patches design board: design/patches.html (A roundel, B shapes, C enamel, D gold/holo foil, wall, detail, earn moment, card-back rewards). Not built yet.
+- **Below-horizon in the circle:** lining up a below-horizon thing shows "BELOW THE HORIZON / NAME / RISES 9:47 AM · IN THE SE" around the circle (cream, no orange, not collectable; only when nothing collectable is targeted). Its path brightens.
+- **Below-horizon paths match the sky trail style** (drawTrail): faint solid line for where it came from (`past`: bodies 90/60/30 min back, satellites last 4 min via `satPast`), orange `[4,7]` dashes ahead to where it rises; faint until lined up.
+- **Text links under a card:** `.ui-link` (css/ui.css) for "View in collection ›" and "Share this card ›".
