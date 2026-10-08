@@ -1,9 +1,9 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.299';
+import { extinction } from './sky-limit.js?v=0.1.300';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.299';
-import { TIER_INFO } from './rarity.js?v=0.1.299';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.300';
+import { TIER_INFO } from './rarity.js?v=0.1.300';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -70,7 +70,16 @@ const LANDSCAPE = (() => {
     trees.push([az, 1.2 + r() ** 1.6 * 2.2, 0.7 + r() * 0.9, 4 + Math.floor(r() * 3), (r() - 0.5) * 0.08, r()]);
   }
   for (let az = 0.3; az < 360; az += 0.35 + r() * 0.6) { if (r() < 0.1) { az += 1 + r() * 4; continue; } far.push([az, 0.6 + r() * 1.1, 0.45 + r() * 0.5, 3 + Math.floor(r() * 2), 0, r()]); }
-  return { hills, trees, far };
+  // Two more ranges for depth (2026-10-08): a distant blue ridge behind, a nearer rolling green band in front.
+  const ridge = [], rolls = [];
+  const q1 = r() * 6, q2 = r() * 6, q3 = r() * 6;
+  for (let az = 0; az <= 360; az += 1.5) { const a = az * Math.PI / 180;
+    ridge.push([az, Math.max(0.6, 2.1 + 0.9 * Math.sin(a * 3 + q1) + 0.5 * Math.sin(a * 7 + q2) + 0.25 * Math.sin(a * 17 + q3))]);
+    rolls.push([az, Math.max(0.15, 0.55 + 0.35 * Math.sin(a * 4 + q2) + 0.18 * Math.sin(a * 9 + q1))]); }
+  // Meadow tufts along the nearest band: [az, el (below horizon), height, lean].
+  const tufts = [];
+  for (let az = 0; az < 360; az += 0.25 + r() * 0.35) tufts.push([az, -0.4 - r() * 3.5, 0.25 + r() * 0.5, (r() - 0.5) * 0.6]);
+  return { hills, trees, far, ridge, rolls, tufts };
 })();
 
 export class SkyView {
@@ -530,13 +539,14 @@ export class SkyView {
     // to the night silhouettes through twilight (dayF).
     const dF = this.theme === THEMES.night ? 0 : (this.dayF ?? 0);
     const mix = (night, day) => { const n = night.match(/\w\w/g).map((h) => parseInt(h, 16)), d = day.match(/\w\w/g).map((h) => parseInt(h, 16)); return `rgb(${n.map((v, i) => Math.round(v + (d[i] - v) * dF)).join(',')})`; };
-    // Far hills, a shade lighter than the ground.
-    ctx.fillStyle = dF > 0 ? mix('0a1826', '6f8f86') : (t.hills ?? '#0a1826');
-    const h = LANDSCAPE.hills;
-    for (let i = 0; i < h.length - 1; i += 3) {
-      const seg = h.slice(i, i + 4);
-      this.poly([...seg, [seg[seg.length - 1][0], -2], [seg[0][0], -2]]);
-    }
+    // Hills in three ranges (2026-10-08, higher fidelity): a far hazy ridge, the main hills, a near rolling band, each
+    // a little greener and darker than the one behind (aerial perspective), with a lighter sunlit crest by day.
+    const band = (pts, fill, crest) => {
+      for (let i = 0; i < pts.length - 1; i += 3) { const seg = pts.slice(i, i + 4); ctx.fillStyle = fill; this.poly([...seg, [seg[seg.length - 1][0], -2], [seg[0][0], -2]]); }
+      if (crest) { ctx.save(); ctx.strokeStyle = crest; ctx.lineWidth = 1.2; ctx.lineJoin = 'round'; this.path(pts.map(([az, el]) => enuFromAzEl(az, el - 0.05))); ctx.restore(); }
+    };
+    band(LANDSCAPE.ridge, dF > 0 ? mix('0c1a29', '8aa6b2') : (t.hills ?? '#0a1826'), dF > 0.4 ? `rgba(220,235,240,${(0.35 * dF).toFixed(2)})` : null);
+    band(LANDSCAPE.hills, dF > 0 ? mix('0a1826', '6f8f78') : (t.hills ?? '#0a1826'), dF > 0.4 ? `rgba(200,225,180,${(0.4 * dF).toFixed(2)})` : null);
     // Tree lines (2026-10-08, higher fidelity): a far row, hazier, then the near row. Each pine is a trunk and a stack of
     // drooping, ragged tiers that narrow to a spike, with a lighter lit side by day.
     const pine = ([az, ht, w, tiers, lean, sd], body, lit) => {
@@ -559,6 +569,19 @@ export class SkyView {
     for (const tr of LANDSCAPE.far) pine(tr, farC, null);
     const nearC = dF > 0 ? mix('070c13', '2a4430') : t.ground, litC = dF > 0.3 ? `rgba(120,160,110,${(0.25 * dF).toFixed(2)})` : null;
     for (const tr of LANDSCAPE.trees) pine(tr, nearC, litC);
+    // The near meadow: a rolling green band in front of the trees, with grass tufts along it by day.
+    band(LANDSCAPE.rolls, dF > 0 ? mix('070c13', '4f6e3e') : t.ground, dF > 0.4 ? `rgba(190,215,140,${(0.35 * dF).toFixed(2)})` : null);
+    if (dF > 0.3) {
+      ctx.save(); ctx.globalAlpha = Math.min(1, (dF - 0.3) * 2); ctx.lineCap = 'round';
+      for (const [az, el, ht, lean] of LANDSCAPE.tufts) {
+        const b = this.project(enuFromAzEl(az, el)); if (!b || b.x < -10 || b.x > this.w + 10 || b.y < -10 || b.y > this.h + 10) continue;
+        const tp = this.project(enuFromAzEl(az + lean, el + ht)); if (!tp) continue;
+        const hpx = b.y - tp.y; if (hpx < 1.5) continue;
+        ctx.strokeStyle = (az * 7) % 3 < 1 ? 'rgba(150,170,90,.85)' : 'rgba(80,110,55,.9)'; ctx.lineWidth = Math.max(0.6, hpx * 0.09);
+        for (let k = -1; k <= 1; k++) { ctx.beginPath(); ctx.moveTo(b.x + k * hpx * 0.12, b.y); ctx.quadraticCurveTo(b.x + k * hpx * 0.2, b.y - hpx * 0.6, tp.x + k * hpx * 0.3, tp.y + (k ? hpx * 0.15 : 0)); ctx.stroke(); }
+      }
+      ctx.restore();
+    }
     ctx.restore();
   }
 
