@@ -1,12 +1,13 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.245';
+import { extinction } from './sky-limit.js?v=0.1.246';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.245';
-import { TIER_INFO } from './rarity.js?v=0.1.245';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.246';
+import { TIER_INFO } from './rarity.js?v=0.1.246';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
+const DISPLAY_FONT = '"SC Display", "Russo One", sans-serif';
 
 const THEMES = {
   glass: {
@@ -280,8 +281,8 @@ export class SkyView {
   // See-through Earth (2026-10-06): things below the horizon right now, drawn faintly where they really are, with
   // when they rise. below: [{ enu, name, note, kind }]
   drawBelow(below) {
-    const ctx = this.ctx, t = this.theme;
-    ctx.save();
+    const ctx = this.ctx, t = this.theme, k = 1 - (this.feetA ?? 0); // fades out as the ring at your feet fades in
+    ctx.save(); ctx.globalAlpha = k;
     for (const g of below) {
       if (g.enu[2] >= 0) continue;
       const p = this.project(g.enu);
@@ -289,7 +290,7 @@ export class SkyView {
       const r = g.kind === 'sun' ? 13 : g.kind === 'moon' ? 10 : 6;
       // The thing itself, faint, inside its dashed ring (2026-10-07: empty rings read as missing): a soft disc for
       // the Sun, Moon and planets, the satellite icon for passes.
-      ctx.save(); ctx.globalAlpha = 0.6;
+      ctx.save(); ctx.globalAlpha = 0.6 * k;
       if (g.kind === 'sat') this.drawIcon('sat', p.x, p.y, 9, t.sat);
       else { const c = g.kind === 'sun' ? [255, 180, 107] : [255, 242, 179]; this.glow(p.x, p.y, r * 1.8, c, 0.3); ctx.fillStyle = `rgb(${c.join(',')})`; ctx.beginPath(); ctx.arc(p.x, p.y, g.kind === 'planet' ? 2.6 : r * 0.55, 0, Math.PI * 2); ctx.fill(); }
       ctx.restore();
@@ -297,7 +298,7 @@ export class SkyView {
       ctx.strokeStyle = g.kind === 'sun' ? 'rgba(250,129,39,.75)' : 'rgba(255,242,179,.5)';
       ctx.beginPath(); ctx.arc(p.x, p.y, r + 3, 0, Math.PI * 2); ctx.stroke();
       ctx.setLineDash([]);
-      this.queueLabel(g.note ? `${g.name} · ${g.note}` : g.name, p, { color: g.kind === 'sun' ? 'rgba(250,129,39,.9)' : 'rgba(255,242,179,.78)', size: 12, weight: 600, gap: r + 6, priority: 6 }); // one line, so the time never drifts off its name
+      if (k > 0.5) this.queueLabel(g.note ? `${g.name} · ${g.note}` : g.name, p, { color: g.kind === 'sun' ? 'rgba(250,129,39,.9)' : 'rgba(255,242,179,.78)', size: 12, weight: 600, gap: r + 6, priority: 6 }); // one line, so the time never drifts off its name
     }
     ctx.restore();
   }
@@ -450,49 +451,87 @@ export class SkyView {
     ctx.restore();
   }
 
-  // A compass painted on the ground at your feet: rings, spokes every 30°, ticks every 10°,
-  // bearings, and big N/E/S/W. Point the phone down to orient yourself.
+  // The ground's markings (2026-10-07, Sevaan picked "C · Quiet ring"): the old survey contours, spokes and bearings
+  // are gone. Near the horizon: small ticks every 10° and N/E/S/W. Looking down, those give way to the quiet ring
+  // at your feet (drawFeet).
   drawGroundCompass() {
-    const ctx = this.ctx, t = this.theme;
+    const ctx = this.ctx, t = this.theme, fade = 1 - (this.feetA ?? 0);
     ctx.save();
     ctx.strokeStyle = t.groundInk;
-    ctx.lineWidth = 1;
-    // Topographic contours (2026-10-06): gently wavy rings like a survey map, instead of a sky grid on the ground.
-    ctx.globalAlpha = 0.85;
-    for (const [i, el] of [-8, -16, -26, -38, -52, -68].entries()) {
-      const pts = [];
-      for (let az = 0; az <= 360; az += 3) pts.push(enuFromAzEl(az, el + Math.sin(az * RAD * 3 + i * 1.7) * 1.6 + Math.sin(az * RAD * 7 + i) * 0.7));
-      ctx.lineWidth = i % 2 ? 0.75 : 1;
-      this.path(pts);
-    }
-    ctx.globalAlpha = 0.6;
-    for (let az = 0; az < 360; az += 90) { // the four cardinal spokes only
-      const pts = [];
-      for (let el = -4; el >= -88; el -= 4) pts.push(enuFromAzEl(az, el));
-      ctx.lineWidth = 1.2;
-      this.path(pts);
-    }
-    ctx.globalAlpha = 1;
     ctx.lineWidth = 1;
     for (let az = 0; az < 360; az += 10) {
       const long = az % 30 === 0;
       this.path([enuFromAzEl(az, -7), enuFromAzEl(az, long ? -13 : -10)]);
     }
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.font = `500 11px ${FONT}`;
-    ctx.fillStyle = t.groundText;
-    for (let az = 0; az < 360; az += 30) {
-      if (az % 90 === 0) continue;
-      const p = this.project(enuFromAzEl(az, -16));
-      if (this.onScreen(p)) ctx.fillText(`${az}°`, p.x, p.y);
+    if (fade > 0.02) {
+      ctx.globalAlpha = fade;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.font = `800 24px ${FONT}`;
+      for (const [az, letter] of [[0, 'N'], [90, 'E'], [180, 'S'], [270, 'W']]) {
+        const p = this.project(enuFromAzEl(az, -24));
+        if (!this.onScreen(p)) continue;
+        ctx.fillStyle = az === 0 ? t.groundNorth : t.groundText;
+        ctx.fillText(letter, p.x, p.y);
+      }
     }
-    ctx.font = `800 24px ${FONT}`;
+    ctx.restore();
+  }
+
+  // The quiet ring at your feet (design/compass-feet.html, option C): a thin compass ring drawn flat on the
+  // screen around the point straight below you, turning as you turn. Everything below the horizon sits on the ring
+  // at the direction it will come up, with its time. Nothing in the middle. Fades in as you look down.
+  drawFeet(below) {
+    const a = this.feetA ?? 0; if (a < 0.02) return;
+    const ctx = this.ctx, t = this.theme;
+    // Centred on the circle, not on the true point below (that drifts half off screen as you tilt); only its
+    // turning comes from where you're facing.
+    const n = this.project([0, 0, -1]); if (!n) return;
+    const c = { x: this.cx, y: this.cy };
+    const dir = (az) => { const q = this.project(enuFromAzEl(az, -80)); if (!q) return null; const dx = q.x - n.x, dy = q.y - n.y, l = Math.hypot(dx, dy) || 1; return [dx / l, dy / l]; };
+    const R = Math.max(this.reticlePx + 40, Math.min(this.w * 0.29, 116)), ink = t === THEMES.night ? 'rgba(255,90,70,' : 'rgba(255,242,179,';
+    ctx.save(); ctx.globalAlpha = a;
+    ctx.strokeStyle = ink + '.4)'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.arc(c.x, c.y, R, 0, Math.PI * 2); ctx.stroke();
+    for (let az = 0; az < 360; az += 10) {
+      const u = dir(az); if (!u) continue; const L = az % 90 === 0 ? 9 : az % 30 === 0 ? 6 : 3;
+      ctx.strokeStyle = ink + (az % 30 === 0 ? '.45)' : '.25)');
+      ctx.beginPath(); ctx.moveTo(c.x + u[0] * R, c.y + u[1] * R); ctx.lineTo(c.x + u[0] * (R - L), c.y + u[1] * (R - L)); ctx.stroke();
+    }
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.font = `400 15px ${DISPLAY_FONT}`;
     for (const [az, letter] of [[0, 'N'], [90, 'E'], [180, 'S'], [270, 'W']]) {
-      const p = this.project(enuFromAzEl(az, -30));
-      if (!this.onScreen(p)) continue;
-      ctx.fillStyle = az === 0 ? t.groundNorth : t.groundText;
-      ctx.fillText(letter, p.x, p.y);
+      const u = dir(az); if (!u) continue;
+      ctx.fillStyle = az === 0 ? t.groundNorth : ink + '.75)';
+      ctx.fillText(letter, c.x + u[0] * (R - 22), c.y + u[1] * (R - 22));
+    }
+    ctx.fillStyle = ink + '.5)'; ctx.beginPath(); ctx.arc(c.x, c.y, 2, 0, Math.PI * 2); ctx.fill();
+    // Things below, on the ring where they'll come up.
+    const boxes = [];
+    for (const g of (below ?? []).filter((g) => g.riseAz != null)) {
+      const u = dir(g.riseAz); if (!u) continue;
+      const x = c.x + u[0] * R, y = c.y + u[1] * R;
+      const col = g.kind === 'sun' ? 'rgb(255,180,107)' : g.kind === 'sat' ? t.sat : 'rgb(255,242,179)';
+      if (g.kind === 'sat') this.drawIcon('sat', x, y, 9, t.sat);
+      else if (g.kind === 'moon') { ctx.fillStyle = col; ctx.beginPath(); ctx.arc(x, y, 5, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = '#0a1424'; ctx.beginPath(); ctx.arc(x + 2.2, y - 1.3, 4.4, 0, Math.PI * 2); ctx.fill(); }
+      else { const rgb = g.kind === 'sun' ? [255, 180, 107] : [255, 242, 179]; this.glow(x, y, g.kind === 'sun' ? 12 : 8, rgb, 0.35); ctx.fillStyle = col; ctx.beginPath(); ctx.arc(x, y, g.kind === 'sun' ? 4.5 : 2.6, 0, Math.PI * 2); ctx.fill(); }
+      // Label just outside the ring along the same direction; nudged outward until it clears the others.
+      const name = g.name.replace(/^The /, '').toUpperCase(), when = g.time ? ` ${g.time.replace(/\s?[AP]M$/i, '')}` : '';
+      ctx.font = `500 11px ${FONT}`;
+      const wN = ctx.measureText(name).width, wT = ctx.measureText(when).width, w = wN + wT, h = 13;
+      const align = u[0] > 0.35 ? 'left' : u[0] < -0.35 ? 'right' : 'center';
+      // Crowded (several things rising in the east): slide the label up or down a row until it's clear.
+      const out = 14, lx = c.x + u[0] * (R + out), ly0 = c.y + u[1] * (R + out);
+      let bx = align === 'left' ? lx : align === 'right' ? lx - w : lx - w / 2, by = ly0 - h / 2, ly = ly0;
+      for (const dy of [0, 15, -15, 30, -30, 45, -45, 60, -60]) {
+        ly = ly0 + dy; by = ly - h / 2;
+        if (!boxes.some((b) => bx < b[0] + b[2] + 4 && bx + w + 4 > b[0] && by < b[1] + b[3] + 2 && by + h + 2 > b[1])) break;
+      }
+      boxes.push([bx, by, w, h]);
+      ctx.strokeStyle = col; ctx.globalAlpha = a * 0.45;
+      ctx.beginPath(); ctx.moveTo(x + u[0] * 7, y + u[1] * 7); ctx.lineTo(align === 'left' ? bx - 4 : align === 'right' ? bx + w + 4 : bx + w / 2, align === 'center' ? (u[1] > 0 ? by - 2 : by + h + 2) : ly); ctx.stroke();
+      ctx.globalAlpha = a; ctx.textAlign = 'left';
+      ctx.fillStyle = col; ctx.fillText(name, bx, by + h / 2);
+      ctx.fillStyle = ink + '.6)'; ctx.fillText(when, bx + wN, by + h / 2);
     }
     ctx.restore();
   }
@@ -803,10 +842,13 @@ export class SkyView {
     if (weather) this.drawWeather(weather, this.reducedMotion ? 0 : time);
     if (bodies) this.drawBodies(bodies);
     if (ghosts?.length) this.drawGhosts(ghosts);
+    this.feetA = Math.max(0, Math.min(1, (-this.basis.back[2] - 0.9) / 0.07)); // fades in from ~64° down, full by ~76°
     this.drawGround();
     if (landscape) this.drawLandscape();
     this.drawGroundCompass();
-    if (below?.length && this.basis.back[2] < 0.15) this.drawBelow(below);
+    // Looking down: the quiet ring takes over from the see-through ghosts (same things, by rise direction).
+    if (below?.length && this.basis.back[2] < 0.15 && this.feetA < 0.98) this.drawBelow(below);
+    this.drawFeet(below);
     this.drawRising(rising);
     this.drawGrid();
 
@@ -831,7 +873,7 @@ export class SkyView {
       if (isTarget) this.targetPos = { x: p.x, y: p.y };
       if (look.visible) this.hits.push({ id: it.obj.id, x: p.x, y: p.y });
       // In the circle the icon grows to about twice its size (2026-10-07: 1.3× read as barely bigger), easing in.
-      if (isTarget) { const want = lockedOn ? 2.1 : 1.35; this.tgtScale = (this.tgtId === it.obj.id ? this.tgtScale : 1) + (want - (this.tgtId === it.obj.id ? this.tgtScale : 1)) * (this.reducedMotion ? 1 : 0.22); this.tgtId = it.obj.id; }
+      if (isTarget) { const want = lockedOn ? 2.1 : 1; /* bigger only while it is in the circle (2026-10-07) */ this.tgtScale = (this.tgtId === it.obj.id ? this.tgtScale : 1) + (want - (this.tgtId === it.obj.id ? this.tgtScale : 1)) * (this.reducedMotion ? 1 : 0.22); this.tgtId = it.obj.id; }
       const size = look.visible || isTarget ? this.iconSize(look.mag, it.obj) * (isTarget ? this.tgtScale : 1) : 7;
       const radius = size / 2;
       ctx.save();

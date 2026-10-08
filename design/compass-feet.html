@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Compass at Your Feet</title>
+<style>
+  @font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf'); font-weight: 500; }
+  @font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf'); }
+  :root { --ink: #fff2b3; --muted: #bdbea9; --orange: #fa8127; --edge: #627a8b; --navy: #080e1a; }
+  body { margin: 0; background: #04070d; color: #e8eef6; font: 15px/1.45 -apple-system, system-ui, sans-serif; padding: 24px 16px 60px; }
+  h1.t { font-size: 20px; margin: 0 0 6px; } .intro { color: #9fb0c6; margin: 0 0 22px; max-width: 980px; }
+  .row { display: flex; flex-wrap: wrap; gap: 18px; justify-content: center; }
+  .cell { width: 390px; max-width: 100%; } .cell h2 { font-size: 16px; margin: 10px 0 4px; } .cell p { color: #9fb0c6; font-size: 13.5px; margin: 0; }
+  .phone { position: relative; width: 390px; height: 700px; max-width: 100%; border-radius: 28px; overflow: hidden; border: 1px solid #1d2838; }
+  .lab { font: 500 12px/1.2 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .16em; text-transform: uppercase; }
+  .sky { position: absolute; inset: 0; background: linear-gradient(#0c1a2c, #13233a 60%); }
+  .stars i { position: absolute; width: 2px; height: 2px; border-radius: 50%; background: var(--ink); opacity: .6; }
+  .hdr { position: absolute; left: 18px; right: 18px; top: 18px; display: flex; justify-content: space-between; opacity: .9; }
+  .hdr b { font: 400 15px 'SC Display', sans-serif; color: var(--ink); }
+  .ret { position: absolute; left: 50%; width: 120px; height: 120px; margin-left: -60px; border-radius: 50%; border: 1.5px solid #fff2b3aa; }
+  .ret.dim { opacity: .3; }
+  .slider { position: absolute; left: 28px; right: 28px; bottom: 92px; height: 2px; background: #2a3a4c; }
+  .nav { position: absolute; left: 28px; right: 28px; bottom: 30px; height: 44px; border-radius: 99px; border: 1px solid #3a4a5e; display: flex; align-items: center; justify-content: space-around; color: #fff2b38c; font: 500 13px 'SC Label', sans-serif; letter-spacing: .14em; background: #080e1acc; }
+  .nav b { color: var(--orange); font-weight: 500; }
+  /* ground */
+  .ground { position: absolute; left: 0; right: 0; background: linear-gradient(#0b1420, #070c13 40%, #05080d); }
+  .ground::before { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 2px; background: linear-gradient(90deg, transparent, #bcb58577 20%, #fa812799 50%, #bcb58577 80%, transparent); }
+  .trees { position: absolute; left: 0; right: 0; height: 34px; opacity: .9;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 390 34'%3E%3Cpath d='M0 34 L0 22 L8 14 L13 21 L20 9 L28 22 L36 16 L43 24 L52 11 L60 23 L69 18 L79 25 L88 13 L97 24 L107 18 L116 25 L126 10 L135 23 L145 20 L155 26 L165 14 L174 24 L184 18 L194 25 L204 12 L214 23 L224 19 L234 26 L244 15 L254 23 L264 18 L274 25 L284 11 L294 22 L304 19 L314 25 L324 14 L334 23 L344 18 L354 25 L364 13 L374 22 L384 18 L390 22 L390 34Z' fill='%23070c13'/%3E%3C/svg%3E") bottom / 100% 100% no-repeat; }
+  .grain { position: absolute; inset: 0; opacity: .35; background-image: radial-gradient(#ffffff10 1px, transparent 1px); background-size: 6px 6px; }
+  /* lane chips */
+  .chip { position: absolute; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .chip .dot { width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid var(--orange); background: #080e1a; }
+  .chip .dot.sun { border-color: #ffb46b; background: #ffb46b44; } .chip .dot.moon { border-color: var(--ink); }
+  .chip span { padding: 4px 9px; border-radius: 99px; background: #080e1ae6; border: 1px solid #627a8b88; color: var(--ink); white-space: nowrap; font: 500 11px/1 'SC Label', sans-serif; letter-spacing: .12em; text-transform: uppercase; }
+  .chip span em { font-style: normal; color: var(--orange); }
+  /* compass at your feet */
+  .feet { position: absolute; left: 50%; top: 230px; width: 280px; height: 280px; margin-left: -140px; }
+  .feet svg { width: 100%; height: 100%; }
+  .tl { position: absolute; left: 22px; right: 22px; top: 118px; display: grid; gap: 6px; }
+  .tl div { display: grid; grid-template-columns: 54px 1fr auto; gap: 8px; align-items: center; padding: 7px 10px; border-radius: 10px; background: #0c1725e6; border: 1px solid #627a8b66; border-left: 3px solid var(--c, var(--orange)); }
+  .tl b { font: 400 13px 'SC Display', sans-serif; color: var(--ink); } .tl span { font: 500 12px 'SC Label', sans-serif; letter-spacing: .08em; color: var(--ink); } .tl i { font-style: normal; color: var(--orange); font: 500 15px 'SC Label', sans-serif; }
+  .hint { position: absolute; left: 0; right: 0; text-align: center; color: var(--muted); }
+  /* x-ray */
+  .xray { position: absolute; left: 0; right: 0; background: linear-gradient(#0a1424ee, #070c13f2); }
+  .globe { position: absolute; left: 50%; width: 900px; height: 900px; margin-left: -450px; border-radius: 50%; border: 1px dashed #8fb3cf55; }
+  .ghost { position: absolute; transform: translate(-50%, -50%); text-align: center; }
+  .ghost i { display: block; margin: 0 auto 6px; border-radius: 50%; }
+  .ghost span { color: #fff2b3bb; font: 500 11px 'SC Label', sans-serif; letter-spacing: .12em; text-transform: uppercase; white-space: nowrap; }
+  .trail { position: absolute; border-top: 1.5px dashed #fa812777; transform-origin: left center; }
+
+  .feet { top: 200px; width: 320px; height: 320px; margin-left: -160px; }
+  .read { position: absolute; left: 0; right: 0; text-align: center; }
+  .read b { display: block; font: 400 24px/1 'SC Display', sans-serif; color: var(--ink); text-transform: uppercase; margin-top: 6px; }
+  .read small { display: block; margin-top: 6px; color: var(--muted); }
+</style></head><body>
+<h1 class="t">Compass at your feet: four takes</h1>
+<p class="intro">What you see when the phone points straight down. No "raise your phone" text in any of them. All four turn with you, so north on the screen is always real north. Times are tonight's sample data: ISS 9:43 PM in the NE, Cosmos 2344 3:57 AM from the N, Jupiter rises 11:20 PM in the E, Moon 2:10 AM in the E, Sun 7:31 AM in the ESE.</p>
+<div class="row" id="b"></div>
+<script>
+const chrome = `<div class="hdr"><b>SPACE COLLECTOR</b><span class="lab" style="color:#bdbea9">☾ ≡</span></div><div class="slider"></div><div class="nav"><b>EXPLORE</b><span>COLLECTION</span></div>`;
+const ground = `<div class="ground" style="top:0;bottom:0"><div class="grain"></div></div>`;
+const P = (az, r) => { const a = az * Math.PI / 180; return [Math.sin(a) * r, -Math.cos(a) * r]; };
+const ticks = (R, n = 72, long = 18, col = '#bcb585', op = .5) => Array.from({ length: n }, (_, i) => { const a = i * 360 / n, [x1, y1] = P(a, i % long ? R - 6 : R - 14), [x2, y2] = P(a, R); return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${col}" stroke-opacity="${op}"/>`; }).join('');
+const cardinals = (R, size = 18) => [['N', 0, '#fa8127'], ['E', 90], ['S', 180], ['W', 270]].map(([t, a, c]) => { const [x, y] = P(a, R); return `<text x="${x}" y="${y + size * .36}" fill="${c || '#fff2b3'}" font-size="${size}">${t}</text>`; }).join('');
+const items = [
+  { n: 'ISS', az: 45, mins: 14, when: '9:43', c: '#fa8127', kind: 'sat' },
+  { n: 'Jupiter', az: 88, mins: 111, when: '11:20', c: '#fff2b3', kind: 'planet' },
+  { n: 'Moon', az: 100, mins: 281, when: '2:10', c: '#fff2b3', kind: 'moon' },
+  { n: 'Cosmos 2344', az: 352, mins: 388, when: '3:57', c: '#4aa3ff', kind: 'sat' },
+  { n: 'Sun', az: 112, mins: 602, when: '7:31', c: '#ffb46b', kind: 'sun' },
+];
+const glyph = (it, x, y, s = 1) => it.kind === 'sat' ? `<g transform="translate(${x} ${y}) rotate(-20) scale(${s})"><rect x="-3" y="-2" width="6" height="4" fill="${it.c}"/><rect x="-11" y="-1.5" width="6" height="3" fill="${it.c}" opacity=".8"/><rect x="5" y="-1.5" width="6" height="3" fill="${it.c}" opacity=".8"/></g>`
+  : it.kind === 'sun' ? `<circle cx="${x}" cy="${y}" r="${9 * s}" fill="#ffb46b33"/><circle cx="${x}" cy="${y}" r="${5 * s}" fill="#ffb46b"/>`
+  : it.kind === 'moon' ? `<circle cx="${x}" cy="${y}" r="${6 * s}" fill="#fff2b3"/><circle cx="${x + 2.5 * s}" cy="${y - 1.5 * s}" r="${5.2 * s}" fill="#0a1424"/>`
+  : `<circle cx="${x}" cy="${y}" r="${7 * s}" fill="#fff2b322"/><circle cx="${x}" cy="${y}" r="${3 * s}" fill="#fff2b3"/>`;
+
+// A · Radar: direction = where it rises, distance from the centre = how soon. Sooner = closer to your feet.
+const A = (() => {
+  const R = 140, rr = (m) => 26 + Math.sqrt(m / 720) * (R - 30);
+  const rings = [['1 h', 60], ['3 h', 180], ['6 h', 360]].map(([l, m]) => `<circle r="${rr(m)}" fill="none" stroke="#627a8b55" stroke-dasharray="2 4"/><text x="4" y="${-rr(m) - 3}" fill="#627a8b" font-family="SC Label" font-size="10" letter-spacing="1.5">${l}</text>`).join('');
+  const dots = items.map((it) => { const [x, y] = P(it.az, rr(it.mins)); const l = x > 30, up = it.kind === 'planet'; return `${glyph(it, x, y)}<text x="${up ? x : l ? x - 12 : x + 12}" y="${up ? y - 12 : y + 4}" text-anchor="${up ? 'middle' : l ? 'end' : 'start'}" fill="${it.c}" font-family="SC Label" font-size="11" letter-spacing="1.5">${it.n.toUpperCase()} ${it.when}</text>`; }).join('');
+  const svg = `<svg viewBox="-160 -160 320 320"><circle r="${R}" fill="#0a1424cc" stroke="#bcb58566"/>${ticks(R)}${rings}<g font-family="SC Display" text-anchor="middle">${cardinals(R + 12, 16)}</g>
+    <path d="M0 0 L${P(45, rr(14))[0]} ${P(45, rr(14))[1]}" stroke="#fa8127" stroke-width="1.5" stroke-dasharray="3 3"/>${dots}<circle r="4" fill="#fff2b3"/><circle r="9" fill="none" stroke="#fff2b388"/></svg>`;
+  return `${ground}<div class="feet">${svg}</div><div class="read lab" style="top:560px;color:var(--orange)">Next · ISS in 14 min, NE</div>${chrome}`;
+})();
+
+// B · Pass map: tonight's satellite passes drawn as arcs across a sky chart laid on the ground (horizon = rim,
+// overhead = centre), plus rise points for the Moon and planets on the rim. The next one glows.
+const B = (() => {
+  const R = 140, arc = (a1, a2, peak, c, w, dash = '') => { const [x1, y1] = P(a1, R), [x2, y2] = P(a2, R), mid = (a1 + a2) / 2 + (a2 - a1 > 180 ? 180 : 0), [cx, cy] = P(mid, R * (1 - peak / 90) * 0.6); return `<path d="M${x1} ${y1} Q${cx * 2 - (x1 + x2) / 2} ${cy * 2 - (y1 + y2) / 2} ${x2} ${y2}" fill="none" stroke="${c}" stroke-width="${w}" ${dash ? `stroke-dasharray="${dash}"` : ''} stroke-linecap="round"/>`; };
+  const rim = items.filter((i) => i.kind !== 'sat').map((it) => { const [x, y] = P(it.az, R); const [lx, ly] = P(it.az, R - 26); return `${glyph(it, x, y, .9)}<text x="${lx}" y="${ly + 4}" text-anchor="middle" fill="${it.c}" font-family="SC Label" font-size="10" letter-spacing="1.2">${it.when}</text>`; }).join('');
+  const svg = `<svg viewBox="-160 -160 320 320"><circle r="${R}" fill="#0a1424cc" stroke="#bcb58566"/><circle r="${R * 2 / 3}" fill="none" stroke="#627a8b44"/><circle r="${R / 3}" fill="none" stroke="#627a8b44"/>${ticks(R, 36, 9)}
+    <g font-family="SC Display" text-anchor="middle">${cardinals(R + 14, 15)}</g>
+    ${arc(260, 45, 61, '#fa812733', 10)}${arc(260, 45, 61, '#fa8127', 2.2)}${arc(352, 150, 40, '#4aa3ffaa', 1.5, '4 4')}${arc(200, 330, 25, '#bcb58577', 1.2, '2 4')}
+    ${glyph(items[0], ...P(260, R))}<text x="${P(260, R)[0] + 6}" y="${P(260, R)[1] - 12}" fill="#fa8127" font-family="SC Label" font-size="11" letter-spacing="1.5">ISS 9:43</text>
+    <text x="${P(352, R)[0] + 8}" y="${P(352, R)[1] + 20}" fill="#4aa3ff" font-family="SC Label" font-size="10" letter-spacing="1.2">COSMOS 3:57</text>
+    ${rim}<circle r="3" fill="#fff2b3"/></svg>`;
+  return `${ground}<div class="feet">${svg}</div><div class="read lab" style="top:556px">Tonight's passes, as they'll cross over you<b style="font-size:18px">ISS · 9:43 PM · from the W</b></div>${chrome}`;
+})();
+
+// C · Quiet ring: a thin compass ring drawn on the ground, nothing in the middle. Things below sit on the ring
+// at the direction they'll come up, each with its time. The calmest version; reads like markings on a field.
+const C = (() => {
+  const R = 96;
+  const marks = items.map((it, i) => { const [x, y] = P(it.az, R), out = R + 16 + (i % 2) * 12, [lx, ly] = P(it.az, out); const anchor = lx > 8 ? 'start' : lx < -8 ? 'end' : 'middle';
+    return `<line x1="${x}" y1="${y}" x2="${P(it.az, out - 8)[0]}" y2="${P(it.az, out - 8)[1]}" stroke="${it.c}" stroke-opacity=".5"/>${glyph(it, x, y, .9)}<text x="${lx}" y="${ly + 4}" text-anchor="${anchor}" fill="${it.c}" font-family="SC Label" font-size="11" letter-spacing="1.4">${it.n.toUpperCase()} <tspan fill="#bdbea9">${it.when}</tspan></text>`; }).join('');
+  const svg = `<svg viewBox="-160 -160 320 320" style="overflow:visible"><circle r="${R}" fill="none" stroke="#bcb58566"/>${ticks(R, 36, 9, '#bcb585', .35)}<g font-family="SC Display" text-anchor="middle" opacity=".85">${cardinals(R - 24, 14)}</g>${marks}<circle r="2.5" fill="#fff2b399"/></svg>`;
+  return `${ground}<div class="feet">${svg}</div>${chrome}`;
+})();
+
+// D · Card-back medallion: the compass is the card back's art (navy disc, cream line work, orange accents),
+// turning with you. One big pointer to the next thing and its name in the centre, like the back of a card waiting to be turned.
+const D = (() => {
+  const R = 140, [nx, ny] = P(45, 104);
+  const svg = `<svg viewBox="-160 -160 320 320"><circle r="${R}" fill="#0a1424" stroke="#bcb585aa" stroke-width="1.5"/><circle r="${R - 8}" fill="none" stroke="#bcb58555"/><circle r="${R - 22}" fill="none" stroke="#627a8b55" stroke-dasharray="1 4"/>${ticks(R - 8, 72, 18)}
+    <ellipse rx="${R - 22}" ry="38" fill="none" stroke="#627a8b55" transform="rotate(28)"/><ellipse rx="${R - 22}" ry="38" fill="none" stroke="#627a8b55" transform="rotate(-28)"/>
+    <g font-family="SC Display" text-anchor="middle">${cardinals(R - 34, 16)}</g>
+    ${items.slice(1).map((it) => { const [x, y] = P(it.az, R - 8); return `<circle cx="${x}" cy="${y}" r="3.5" fill="${it.c}" opacity=".7"/>`; }).join('')}
+    <path d="M${P(45 - 7, 70)} L${nx} ${ny} L${P(45 + 7, 70)} Z" fill="#fa8127"/><circle cx="${nx}" cy="${ny}" r="9" fill="none" stroke="#fa8127" stroke-width="1.5"/>
+    <circle r="54" fill="#080e1a" stroke="#bcb58588"/><text y="-12" text-anchor="middle" fill="#bdbea9" font-family="SC Label" font-size="10" letter-spacing="2.5">NEXT UP</text>
+    <text y="10" text-anchor="middle" fill="#fff2b3" font-family="SC Display" font-size="20">ISS</text><text y="28" text-anchor="middle" fill="#fa8127" font-family="SC Label" font-size="12" letter-spacing="1.5">14 MIN · NE</text></svg>`;
+  return `${ground}<div class="feet">${svg}</div><div class="read lab" style="top:556px;color:#bdbea9">Then Jupiter 11:20 · Moon 2:10 · Cosmos 3:57</div>${chrome}`;
+})();
+
+const cells = [
+  ['A · Radar', 'Direction is where it comes up; distance from your feet is how soon. The ISS sits right by you; the Sun is out near the rim. Rings mark 1, 3 and 6 hours. Easy to read at a glance: closest = next.', A],
+  ['B · Pass map', "A sky chart laid on the ground. Tonight's satellite passes are arcs across it (the rim is the horizon, the centre is straight overhead); the Moon, planets and Sun sit on the rim where they'll rise. Shows the whole night's shape, not just the next one.", B],
+  ['C · Quiet ring', 'The calmest. A thin compass ring painted on the ground and nothing else: each thing below sits on the ring at its rise direction, with its time. No panel, no centre readout.', C],
+  ['D · Card-back medallion', 'The compass is the card-back art, turning with you. One big orange pointer to the next thing, with its name and countdown in the centre; the rest are small dots on the rim and a line underneath.', D],
+];
+document.getElementById('b').innerHTML = cells.map(([t, d, f]) => `<div class="cell"><div class="phone">${f}</div><h2>${t}</h2><p>${d}</p></div>`).join('');
+</script></body></html>
