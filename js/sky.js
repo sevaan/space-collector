@@ -1,9 +1,9 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.292';
+import { extinction } from './sky-limit.js?v=0.1.293';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.292';
-import { TIER_INFO } from './rarity.js?v=0.1.292';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.293';
+import { TIER_INFO } from './rarity.js?v=0.1.293';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -575,11 +575,11 @@ export class SkyView {
     const w = Math.max(70, Math.min(this.w * 0.75, span)), h = w * f.img.naturalHeight / f.img.naturalWidth;
     const ctx = this.ctx, k = Math.min(1, (dayF - 0.5) * 4);
     ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(ang > Math.PI / 2 || ang < -Math.PI / 2 ? ang + Math.PI : ang);
-    if (f.inCircle) { ctx.shadowColor = 'rgba(255,229,192,.55)'; ctx.shadowBlur = 14; ctx.globalAlpha = 0.95 * k; }
+    if (f.inCircle && !f.done) { ctx.shadowColor = 'rgba(255,229,192,.55)'; ctx.shadowBlur = 14; ctx.globalAlpha = 0.95 * k; }
     else { ctx.globalCompositeOperation = 'soft-light'; ctx.globalAlpha = 0.9 * k; ctx.drawImage(f.img, -w / 2, -h / 2, w, h); ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 0.18 * k; }
     ctx.drawImage(f.img, -w / 2, -h / 2, w, h);
     ctx.restore();
-    if (f.inCircle) {
+    if (f.inCircle && !f.done) { // already found: no words around the circle (2026-10-08)
       const rc = this.ring ?? { x: this.cx, y: this.cy, r: this.reticlePx };
       ctx.save(); ctx.textAlign = 'center'; ctx.shadowColor = 'rgba(0,0,0,.6)'; ctx.shadowBlur = 4;
       if ('letterSpacing' in ctx) ctx.letterSpacing = '2.5px';
