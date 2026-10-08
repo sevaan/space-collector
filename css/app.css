@@ -447,3 +447,13 @@ body:has(#reveal:not([hidden])) #toasts, body:has(.overlay.panel:not([hidden])) 
 #d-cta { text-transform:uppercase; }
 
 /* Compass figure-8 (2026-10-07): an ordinary toast (eyebrow + one short line) with the illustration in the mark's slot. */
+
+/* Switching back to Explore in the same session (html.quick): no loader moment. The overlay is see-through, so the
+   header, slider and switcher are already in place, and only the static target circle shows until the sky draws. */
+html.quick #start.booting { background: transparent; pointer-events: none; }
+html.quick .wc-loader { opacity: 1; animation: none; }
+html.quick .wc-loader .ld-orbit, html.quick .wc-loader .ld-orbit2, html.quick .wc-loader .ld-word, html.quick #ld-ret path[fill] { display: none; }
+html.quick #ld-ret circle[stroke-dasharray] { display: none; }
+/* …and the header, sky slider and switcher are on screen from the first paint, before the app script runs. */
+html.quick #hud[hidden] { display: block !important; }
+html.quick #hud[hidden] > :not(#sky-header):not(#nav):not(#skybar) { display: none !important; }
