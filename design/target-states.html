@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Target States</title>
+<style>
+  @font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf'); font-weight: 500; }
+  @font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf'); }
+  :root { --ink: #fff2b3; --muted: #bdbea9; --orange: #fa8127; --edge: #627a8b; --navy: #080e1a; --plane: #ff8a6b; --uncommon: #5fd08f; --rare: #4aa3ff; --common: #c9ccd1; }
+  body { margin: 0; background: #04070d; color: #e8eef6; font: 15px/1.45 -apple-system, system-ui, sans-serif; padding: 24px 16px 60px; }
+  h1.t { font-size: 20px; margin: 0 0 6px; } .intro { color: #9fb0c6; margin: 0 0 22px; max-width: 980px; }
+  .opt { margin: 0 auto 40px; max-width: 1240px; }
+  .opt > h2 { font-size: 18px; margin: 0 0 4px; } .opt > p { color: #9fb0c6; margin: 0 0 14px; font-size: 14px; max-width: 900px; }
+  .row { display: flex; flex-wrap: wrap; gap: 18px; }
+  .cell { width: 390px; max-width: 100%; } .cell h3 { font: 500 13px 'SC Label', sans-serif; letter-spacing: .18em; text-transform: uppercase; color: #9fb0c6; margin: 8px 0 0; }
+  .phone { position: relative; width: 390px; height: 560px; max-width: 100%; border-radius: 28px; overflow: hidden; border: 1px solid #1d2838; background: radial-gradient(ellipse at 50% 40%, #13233a, #080e1a 75%); }
+  .lab { font: 500 12px/1.2 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .18em; text-transform: uppercase; }
+  .stars i { position: absolute; width: 2px; height: 2px; border-radius: 50%; background: var(--ink); opacity: .55; }
+  /* reticle */
+  .ret { position: absolute; left: 50%; top: 250px; width: 136px; height: 136px; margin: -68px 0 0 -68px; border-radius: 50%; border: 2px solid var(--c, var(--orange)); }
+  .ret::before { content: ''; position: absolute; inset: -7px; border-radius: 50%; border: 1px solid #627a8b77; }
+  .ret .tick { position: absolute; background: var(--c, var(--orange)); }
+  .ret .t1 { left: 50%; top: -16px; width: 2px; height: 10px; margin-left: -1px; } .ret .t2 { left: 50%; bottom: -16px; width: 2px; height: 10px; margin-left: -1px; }
+  .ret .t3 { top: 50%; left: -16px; height: 2px; width: 10px; margin-top: -1px; } .ret .t4 { top: 50%; right: -16px; height: 2px; width: 10px; margin-top: -1px; }
+  .obj { position: absolute; left: 50%; top: 250px; transform: translate(-50%, -50%); }
+  .star { width: 8px; height: 8px; border-radius: 50%; background: #fff6d6; box-shadow: 0 0 14px 6px #fff2b355; }
+  .sat { width: 16px; height: 6px; background: var(--ink); box-shadow: -10px 0 0 -1px var(--ink), 10px 0 0 -1px var(--ink); transform: translate(-50%,-50%) rotate(-20deg); }
+  .plane { width: 22px; height: 22px; } .plane svg { width: 22px; height: 22px; fill: var(--plane); }
+  .inner { position: absolute; left: 50%; top: 250px; width: 30px; height: 30px; margin: -15px 0 0 -15px; border-radius: 50%; border: 1.5px solid var(--c, var(--orange)); }
+  .glow4 i { position: absolute; width: 4px; height: 4px; border-radius: 50%; background: var(--orange); }
+  /* label above */
+  .above { position: absolute; left: 0; right: 0; bottom: calc(560px - 250px + 68px + 22px); text-align: center; } /* bottom edge sits 22px above the circle */
+  .above .tier { display: inline-flex; align-items: center; gap: 6px; } .above .tier i { width: 8px; height: 8px; transform: rotate(45deg); display: inline-block; }
+  .above b { display: block; margin-top: 4px; font: 400 26px/1 'SC Display', sans-serif; letter-spacing: -.02em; text-transform: uppercase; color: var(--ink); }
+  .above small { display: block; margin-top: 5px; color: var(--muted); }
+  /* actions below */
+  .below { position: absolute; left: 0; right: 0; top: calc(250px + 68px + 26px); display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .btn { padding: 12px 22px; border-radius: 6px; font: 500 14px/1 'SC Label', sans-serif; letter-spacing: .2em; text-transform: uppercase; }
+  .btn.solid { background: var(--orange); color: #0b1120; }
+  .btn.ghost { border: 1.5px solid var(--ink); color: var(--ink); background: #080e1acc; }
+  .btn.ghost-o { border: 1.5px solid var(--orange); color: var(--orange); background: #080e1acc; }
+  .btn.plane-g { border: 1.5px solid var(--plane); color: var(--plane); background: #080e1acc; }
+  .pill { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 99px; font: 500 13px/1 'SC Label', sans-serif; letter-spacing: .14em; text-transform: uppercase; }
+  .pill.new { background: var(--orange); color: #0b1120; }
+  .pill.own { border: 1px solid #fff2b388; color: var(--ink); background: #080e1acc; }
+  .pill.pl { border: 1px solid #ff8a6b88; color: var(--plane); background: #080e1acc; }
+  .sub { color: var(--muted); font: 500 12px/1.2 'SC Label', sans-serif; letter-spacing: .12em; text-transform: uppercase; }
+  .slider { position: absolute; left: 28px; right: 28px; bottom: 92px; height: 2px; background: #2a3a4c; } .slider::before { content: ''; position: absolute; left: 0; width: 20%; height: 2px; background: #8a4a1e; }
+  .nav { position: absolute; left: 28px; right: 28px; bottom: 30px; height: 44px; border-radius: 99px; border: 1px solid #3a4a5e; display: flex; align-items: center; justify-content: space-around; color: #fff2b38c; font: 500 13px 'SC Label', sans-serif; letter-spacing: .14em; }
+  .nav b { color: var(--orange); font-weight: 500; }
+</style></head><body>
+<h1 class="t">Over an object: new, collected, plane</h1>
+<p class="intro">One consistent pattern for everything that can sit in the circle. Above the circle: what it is (rarity, name). Below the circle: what you can do. The mini card at the bottom goes away; the bottom of the screen stays for toasts and the slider. Three ways to style it.</p>
+<div id="b"></div>
+<script>
+let seed = 9; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+const stars = () => `<div class="stars">${Array.from({ length: 40 }, () => `<i style="left:${rnd() * 100}%;top:${rnd() * 100}%"></i>`).join('')}</div>`;
+const ret = (c) => `<div class="ret" style="--c:${c}"><span class="tick t1"></span><span class="tick t2"></span><span class="tick t3"></span><span class="tick t4"></span></div>`;
+const chrome = `<div class="slider"></div><div class="nav"><b>EXPLORE</b><span>COLLECTION</span></div>`;
+const planeSvg = '<svg viewBox="-10 -10 20 20"><path transform="rotate(-30)" d="M10 0 L6 -1 L1 -1 L-3 -9 L-5 -9 L-2 -1 L-7 -1 L-9 -4 L-10 -4 L-9 0 L-10 4 L-9 4 L-7 1 L-2 1 L-5 9 L-3 9 L1 1 L6 1 Z"/></svg>';
+const tier = (name, color) => `<span class="tier lab" style="color:${color}"><i style="background:${color}"></i>${name}</span>`;
+// state builders per option
+const O = {
+  A: {
+    title: 'A · Same frame, different button',
+    note: 'The quietest. Rarity and name above in every state; one button below. New: solid orange Tap to collect. Collected: a cream outline View card. Plane: the circle and button go plane-red and the button shows the flight.',
+    new: () => `${ret('#fa8127')}<div class="obj sat"></div><div class="above">${tier('Rare', 'var(--rare)')}<b>Cosmos 1803</b></div><div class="below"><span class="btn solid">Tap to collect</span></div>`,
+    own: () => `${ret('#fff2b3')}<div class="obj star"></div><div class="above">${tier('Common', 'var(--common)')}<b>Deneb</b></div><div class="below"><span class="btn ghost">View card</span><span class="sub">Seen on 3 nights</span></div>`,
+    plane: () => `${ret('#ff8a6b')}<div class="obj plane">${planeSvg}</div><div class="above"><span class="lab" style="color:var(--plane)">Just a plane</span><b>Air Canada 427</b></div><div class="below"><span class="btn plane-g">Toronto → Calgary · A321</span></div>`,
+  },
+  B: {
+    title: 'B · One pill, three colours',
+    note: 'The most compact. Name above; a single pill below carries the status and the action. Orange = new (collect). Cream outline with a tick = in your collection (view). Red outline = a plane, with its flight. The pill is the button.',
+    new: () => `${ret('#fa8127')}<div class="obj sat"></div><div class="above">${tier('Rare', 'var(--rare)')}<b>Cosmos 1803</b></div><div class="below"><span class="pill new">✦ New · tap to collect</span></div>`,
+    own: () => `${ret('#fff2b3')}<div class="obj star"></div><div class="above">${tier('Common', 'var(--common)')}<b>Deneb</b></div><div class="below"><span class="pill own">✓ In your collection · view ›</span></div>`,
+    plane: () => `${ret('#ff8a6b')}<div class="obj plane">${planeSvg}</div><div class="above"><b>Air Canada 427</b></div><div class="below"><span class="pill pl">✈ Just a plane · YYZ → YYC</span></div>`,
+  },
+  C: {
+    title: 'C · A label block, the circle is the button',
+    note: 'The most informative. Everything sits above the circle as a small three-line label block (status line, name, detail); tapping the circle does the action, with one quiet hint underneath. No buttons at all.',
+    new: () => `${ret('#fa8127')}<div class="obj sat"></div><div class="above"><span class="lab" style="color:var(--orange)">✦ New find</span><b>Cosmos 1803</b><small class="lab" style="color:var(--rare)">◆ Rare · Soviet radar satellite</small></div><div class="below"><span class="sub" style="color:var(--orange)">Tap the circle to collect</span></div>`,
+    own: () => `${ret('#fff2b3')}<div class="obj star"></div><div class="above"><span class="lab" style="color:var(--ink)">✓ Collected · seen 3 nights</span><b>Deneb</b><small class="lab">◆ Common · star in Cygnus</small></div><div class="below"><span class="sub">Tap the circle to view the card</span></div>`,
+    plane: () => `${ret('#ff8a6b')}<div class="obj plane">${planeSvg}</div><div class="above"><span class="lab" style="color:var(--plane)">✈ Just a plane</span><b>Air Canada 427</b><small class="lab">Toronto → Calgary · A321 · 11,000 m</small></div><div class="below"><span class="sub">Not collectable</span></div>`,
+  },
+};
+document.getElementById('b').innerHTML = Object.values(O).map((o) => `<section class="opt"><h2>${o.title}</h2><p>${o.note}</p><div class="row">
+  ${[['new', 'Never collected'], ['own', 'Collected before'], ['plane', 'A plane']].map(([k, t]) => `<div class="cell"><div class="phone">${stars()}${o[k]()}${chrome}</div><h3>${t}</h3></div>`).join('')}
+</div></section>`).join('');
+</script></body></html>
