@@ -690,3 +690,9 @@ body.night.cam-on #cam { filter: grayscale(1) sepia(1) saturate(5) hue-rotate(31
 #cam-tip { position: fixed; left: 50%; transform: translateX(-50%); top: calc(var(--safe-top) + 190px); white-space: nowrap; z-index: 4; padding: 7px 14px; border-radius: 99px; background: rgba(8,15,27,.6); color: var(--text); font: 500 12px/1.2 var(--label); letter-spacing: .14em; text-transform: uppercase; pointer-events: none; }
 #guidance:empty { display: none !important; } /* no empty pill */
 #cam-toggle svg { width: 24px; height: 24px; } #cam-toggle.on { color: var(--gold); }
+/* Panels (Settings, Up in your sky) slide all the way up from the bottom of the screen and back down (2026-10-08). */
+@keyframes panel-up { from { transform: translateY(100%); } to { transform: none; } }
+@keyframes panel-down { from { transform: none; } to { transform: translateY(100%); } }
+.overlay.panel:not([hidden]) { animation: panel-up .42s cubic-bezier(.2, .9, .25, 1) !important; }
+.overlay.panel.leaving { animation: panel-down .3s cubic-bezier(.5, 0, .75, .4) forwards !important; }
+@media (prefers-reduced-motion: reduce) { .overlay.panel:not([hidden]), .overlay.panel.leaving { animation: ui-fade-in .15s !important; } }
