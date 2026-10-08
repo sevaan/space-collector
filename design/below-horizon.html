@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Below the Horizon</title>
+<style>
+  @font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf'); font-weight: 500; }
+  @font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf'); }
+  :root { --ink: #fff2b3; --muted: #bdbea9; --orange: #fa8127; --edge: #627a8b; --navy: #080e1a; }
+  body { margin: 0; background: #04070d; color: #e8eef6; font: 15px/1.45 -apple-system, system-ui, sans-serif; padding: 24px 16px 60px; }
+  h1.t { font-size: 20px; margin: 0 0 6px; } .intro { color: #9fb0c6; margin: 0 0 22px; max-width: 980px; }
+  .row { display: flex; flex-wrap: wrap; gap: 18px; justify-content: center; }
+  .cell { width: 390px; max-width: 100%; } .cell h2 { font-size: 16px; margin: 10px 0 4px; } .cell p { color: #9fb0c6; font-size: 13.5px; margin: 0; }
+  .phone { position: relative; width: 390px; height: 700px; max-width: 100%; border-radius: 28px; overflow: hidden; border: 1px solid #1d2838; }
+  .lab { font: 500 12px/1.2 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .16em; text-transform: uppercase; }
+  .sky { position: absolute; inset: 0; background: linear-gradient(#0c1a2c, #13233a 60%); }
+  .stars i { position: absolute; width: 2px; height: 2px; border-radius: 50%; background: var(--ink); opacity: .6; }
+  .hdr { position: absolute; left: 18px; right: 18px; top: 18px; display: flex; justify-content: space-between; opacity: .9; }
+  .hdr b { font: 400 15px 'SC Display', sans-serif; color: var(--ink); }
+  .ret { position: absolute; left: 50%; width: 120px; height: 120px; margin-left: -60px; border-radius: 50%; border: 1.5px solid #fff2b3aa; }
+  .ret.dim { opacity: .3; }
+  .slider { position: absolute; left: 28px; right: 28px; bottom: 92px; height: 2px; background: #2a3a4c; }
+  .nav { position: absolute; left: 28px; right: 28px; bottom: 30px; height: 44px; border-radius: 99px; border: 1px solid #3a4a5e; display: flex; align-items: center; justify-content: space-around; color: #fff2b38c; font: 500 13px 'SC Label', sans-serif; letter-spacing: .14em; background: #080e1acc; }
+  .nav b { color: var(--orange); font-weight: 500; }
+  /* ground */
+  .ground { position: absolute; left: 0; right: 0; background: linear-gradient(#0b1420, #070c13 40%, #05080d); }
+  .ground::before { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 2px; background: linear-gradient(90deg, transparent, #bcb58577 20%, #fa812799 50%, #bcb58577 80%, transparent); }
+  .trees { position: absolute; left: 0; right: 0; height: 34px; opacity: .9;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 390 34'%3E%3Cpath d='M0 34 L0 22 L8 14 L13 21 L20 9 L28 22 L36 16 L43 24 L52 11 L60 23 L69 18 L79 25 L88 13 L97 24 L107 18 L116 25 L126 10 L135 23 L145 20 L155 26 L165 14 L174 24 L184 18 L194 25 L204 12 L214 23 L224 19 L234 26 L244 15 L254 23 L264 18 L274 25 L284 11 L294 22 L304 19 L314 25 L324 14 L334 23 L344 18 L354 25 L364 13 L374 22 L384 18 L390 22 L390 34Z' fill='%23070c13'/%3E%3C/svg%3E") bottom / 100% 100% no-repeat; }
+  .grain { position: absolute; inset: 0; opacity: .35; background-image: radial-gradient(#ffffff10 1px, transparent 1px); background-size: 6px 6px; }
+  /* lane chips */
+  .chip { position: absolute; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .chip .dot { width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid var(--orange); background: #080e1a; }
+  .chip .dot.sun { border-color: #ffb46b; background: #ffb46b44; } .chip .dot.moon { border-color: var(--ink); }
+  .chip span { padding: 4px 9px; border-radius: 99px; background: #080e1ae6; border: 1px solid #627a8b88; color: var(--ink); white-space: nowrap; font: 500 11px/1 'SC Label', sans-serif; letter-spacing: .12em; text-transform: uppercase; }
+  .chip span em { font-style: normal; color: var(--orange); }
+  /* compass at your feet */
+  .feet { position: absolute; left: 50%; top: 230px; width: 280px; height: 280px; margin-left: -140px; }
+  .feet svg { width: 100%; height: 100%; }
+  .tl { position: absolute; left: 22px; right: 22px; top: 118px; display: grid; gap: 6px; }
+  .tl div { display: grid; grid-template-columns: 54px 1fr auto; gap: 8px; align-items: center; padding: 7px 10px; border-radius: 10px; background: #0c1725e6; border: 1px solid #627a8b66; border-left: 3px solid var(--c, var(--orange)); }
+  .tl b { font: 400 13px 'SC Display', sans-serif; color: var(--ink); } .tl span { font: 500 12px 'SC Label', sans-serif; letter-spacing: .08em; color: var(--ink); } .tl i { font-style: normal; color: var(--orange); font: 500 15px 'SC Label', sans-serif; }
+  .hint { position: absolute; left: 0; right: 0; text-align: center; color: var(--muted); }
+  /* x-ray */
+  .xray { position: absolute; left: 0; right: 0; background: linear-gradient(#0a1424ee, #070c13f2); }
+  .globe { position: absolute; left: 50%; width: 900px; height: 900px; margin-left: -450px; border-radius: 50%; border: 1px dashed #8fb3cf55; }
+  .ghost { position: absolute; transform: translate(-50%, -50%); text-align: center; }
+  .ghost i { display: block; margin: 0 auto 6px; border-radius: 50%; }
+  .ghost span { color: #fff2b3bb; font: 500 11px 'SC Label', sans-serif; letter-spacing: .12em; text-transform: uppercase; white-space: nowrap; }
+  .trail { position: absolute; border-top: 1.5px dashed #fa812777; transform-origin: left center; }
+</style></head><body>
+<h1 class="t">Below the horizon: the recommended set, by tilt</h1>
+<p class="intro">Each tilt angle has one job. Near the horizon (frames 1–2): solid ground with your tree line, and a departures lane of what's rising soon, each at the direction it will come up, with a countdown. Looking straight down (frame 3): the compass at your feet and a short "what's next" list with arrows. Frame 4 is the alternative X-ray take (see-through Earth) for comparison. The circle dims and sky labels hide whenever you point below the horizon.</p>
+<div class="row" id="b"></div>
+<script>
+let seed = 4; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+const stars = (h) => `<div class="stars">${Array.from({ length: 34 }, () => `<i style="left:${rnd() * 100}%;top:${rnd() * h}px"></i>`).join('')}</div>`;
+const chrome = `<div class="hdr"><b>SPACE COLLECTOR</b><span class="lab" style="color:#bdbea9">☾ ≡</span></div><div class="slider"></div><div class="nav"><b>EXPLORE</b><span>COLLECTION</span></div>`;
+const chip = (x, y, label, when, kind = '') => `<div class="chip" style="left:${x}px;top:${y}px"><i class="dot ${kind}"></i><span>${label} · <em>${when}</em></span></div>`;
+const f1 = `<div class="sky"></div>${stars(300)}
+  <div class="ret" style="top:180px"></div>
+  <div class="trees" style="top:298px"></div><div class="ground" style="top:330px;bottom:0"><div class="grain"></div></div>
+  ${chip(80, 338, 'ISS', '14 min')}${chip(230, 346, 'Moon', '2:10 AM', 'moon')}${chip(330, 338, 'SL-8', '9:52')}
+  <div class="hint lab" style="top:420px">Rising soon · look along the treeline</div>${chrome}`;
+const f2 = `<div class="sky"></div>${stars(120)}
+  <div class="trees" style="top:118px"></div><div class="ground" style="top:150px;bottom:0"><div class="grain"></div></div>
+  ${chip(110, 158, 'ISS', '14 min')}${chip(290, 166, 'Cosmos 2344', '3:57')}
+  <div class="ret dim" style="top:330px"></div>
+  <div class="hint lab" style="top:470px">Looking at the ground · raise your phone</div>${chrome}`;
+const compass = `<svg viewBox="-150 -150 300 300"><circle r="140" fill="#0a1424" stroke="#bcb58566"/><circle r="128" fill="none" stroke="#627a8b55" stroke-dasharray="2 5"/>
+  <circle r="96" fill="none" stroke="#627a8b66"/><ellipse rx="128" ry="40" fill="none" stroke="#627a8b55" transform="rotate(28)"/><ellipse rx="128" ry="40" fill="none" stroke="#627a8b55" transform="rotate(-28)"/>
+  ${Array.from({ length: 72 }, (_, i) => { const a = i * 5 * Math.PI / 180, r1 = i % 18 ? 134 : 124; return `<line x1="${Math.sin(a) * r1}" y1="${-Math.cos(a) * r1}" x2="${Math.sin(a) * 140}" y2="${-Math.cos(a) * 140}" stroke="#bcb585" stroke-opacity=".5"/>`; }).join('')}
+  <g font-family="SC Display" font-size="20" text-anchor="middle" fill="#fff2b3"><text y="-104" fill="#fa8127">N</text><text x="110" y="7">E</text><text y="118">S</text><text x="-110" y="7">W</text></g>
+  <g stroke="#fa8127" stroke-width="2.5" fill="none" stroke-linecap="round"><path d="M0 0 L58 -58"/><path d="M48 -58 L58 -58 L58 -48"/></g><circle r="5" fill="#fff2b3"/>
+  <g stroke="#fff2b3" stroke-width="1.5" fill="none" stroke-dasharray="3 4" opacity=".7"><path d="M0 0 L-70 -30"/></g>
+  <text x="66" y="-64" fill="#fa8127" font-family="SC Label" font-size="12" letter-spacing="2">ISS</text><text x="-108" y="-34" fill="#fff2b3" font-family="SC Label" font-size="12" letter-spacing="2">MOON</text></svg>`;
+const f3 = `<div class="ground" style="top:0;bottom:0"><div class="grain"></div></div>
+  <div class="tl"><div><b>9:43</b><span>ISS · rises NE, 61° up</span><i>↗</i></div><div style="--c:#fff2b3"><b>2:10</b><span>Moon · rises E</span><i>→</i></div><div style="--c:#4aa3ff"><b>3:57</b><span>Cosmos 2344 · N</span><i>↑</i></div></div>
+  <div class="feet">${compass}</div>
+  <div class="hint lab" style="top:530px">Next: ISS in 14 min · turn right</div>${chrome}`;
+const f4 = `<div class="sky"></div>${stars(250)}
+  <div class="ret" style="top:150px"></div>
+  <div class="xray" style="top:280px;bottom:0"></div><div class="globe" style="top:280px"></div>
+  <div style="position:absolute;left:0;right:0;top:280px;height:2px;background:linear-gradient(90deg,transparent,#fa812799,transparent)"></div>
+  <div class="ghost" style="left:96px;top:380px"><i style="width:14px;height:14px;background:radial-gradient(#fff2b3,#fff2b300);box-shadow:0 0 14px #fff2b366"></i><span>Moon · 2:10 AM</span></div>
+  <div class="ghost" style="left:280px;top:340px"><i style="width:8px;height:8px;background:#fa8127;box-shadow:0 0 10px #fa8127"></i><span>ISS · 14 min</span></div>
+  <div class="trail" style="left:280px;top:340px;width:70px;transform:rotate(-58deg)"></div>
+  <div class="ghost" style="left:200px;top:520px"><i style="width:22px;height:22px;background:radial-gradient(#ffb46b,#ffb46b00);box-shadow:0 0 24px #ffb46b66"></i><span>The Sun · 7:31 AM</span></div>${chrome}`;
+const cells = [
+  ['1 · Just under the horizon', 'The tree line, then solid ground with a faint grain (no grid, no contours). Along the top edge, a departures lane: each thing rising soon sits at the direction it will appear, with a countdown.', f1],
+  ['2 · Looking a bit lower', 'The lane stays pinned just under the horizon; the circle dims and sky labels hide. A quiet line under it nudges you back up.', f2],
+  ['3 · Straight down: at your feet', 'A big card-back compass that turns as you turn, with arrows to the next things. A short timeline above: next three, when and which way.', f3],
+  ['4 · Alternative: see-through Earth', 'For comparison. The ground goes faintly transparent with the curve of the globe; the few things below glow softly and slide toward their rise point.', f4],
+];
+document.getElementById('b').innerHTML = cells.map(([t, d, f]) => `<div class="cell"><div class="phone">${f}</div><h2>${t}</h2><p>${d}</p></div>`).join('');
+</script></body></html>
