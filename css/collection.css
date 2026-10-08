@@ -270,3 +270,11 @@ body.grid-off #sizebar { opacity: 0; pointer-events: none; }
 .empty__orbit { display: inline-block; animation: emptyDrift 6s ease-in-out infinite; }
 @keyframes emptyDrift { 0%, 100% { transform: translate(-14px, 4px) rotate(-8deg); } 50% { transform: translate(14px, -4px) rotate(8deg); } }
 #pv-body .pv-patch { will-change: transform; }
+/* Album goal just crossed: the bar sparks once. */
+.album.crossed .album-bar { position: relative; }
+.album.crossed .album-bar::after { content: ''; position: absolute; inset: -6px -2px; border-radius: 6px; background: radial-gradient(circle at var(--x, 90%) 50%, rgba(255,214,120,.9), transparent 40%); animation: albumSpark 1.2s ease-out .4s both; pointer-events: none; }
+@keyframes albumSpark { 0% { opacity: 0; transform: scaleX(.6); } 25% { opacity: 1; transform: scaleX(1); } 100% { opacity: 0; transform: scaleX(1.15); } }
+.album.crossed { animation: ui-pop var(--m-norm) var(--ease-spring) .3s; }
+/* A patch group with nothing earned yet. */
+.pw-empty { display: flex; align-items: center; gap: 12px; margin: 0 4px 16px; padding: 12px 14px; border-radius: 12px; border: 1px dashed #344654; color: var(--muted); font: 500 14px/1.3 'SC Label', sans-serif; letter-spacing: .03em; }
+.pw-empty .empty__orbit { font-size: 22px; color: var(--accent); }

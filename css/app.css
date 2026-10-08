@@ -633,3 +633,4 @@ body:has(#secret-cta:not([hidden])) #toasts, body:has(#secret-cta:not([hidden]))
 #ud-time.roll { animation: ui-roll var(--m-norm) var(--ease-spring); }
 #ud-bell.ring { animation: ui-wiggle .6s var(--ease-out); }
 #ud-bell.ring::first-letter { display: inline-block; }
+.fly-dot { position: fixed; left: -11px; top: -11px; width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--gold); box-shadow: 0 0 12px var(--gold); z-index: 90; pointer-events: none; }

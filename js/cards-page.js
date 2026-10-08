@@ -1,22 +1,22 @@
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.309';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.309';
-import { ticket } from './toast.js?v=0.1.309';
-import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.309';
-import { cardArt } from './art.js?v=0.1.309';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.309';
-import { applyBack } from './card-backs.js?v=0.1.309';
-import { SETS, assignSets } from './sets.js?v=0.1.309';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.309';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.309';
-import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.309';
-import { progress } from './progress.js?v=0.1.309';
-import { SOLAR_SYSTEM } from './natural.js?v=0.1.309';
-import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.309';
-import { drawShareCard, shareCard } from './share-card.js?v=0.1.309';
-import { conArt } from './con-art.js?v=0.1.309';
-import { CON_BY_ID } from './constellations.js?v=0.1.309';
-import { allSightings, deleteSighting } from './store.js?v=0.1.309';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.309';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.310';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.310';
+import { ticket } from './toast.js?v=0.1.310';
+import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.310';
+import { cardArt } from './art.js?v=0.1.310';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.310';
+import { applyBack } from './card-backs.js?v=0.1.310';
+import { SETS, assignSets } from './sets.js?v=0.1.310';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.310';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.310';
+import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.310';
+import { progress } from './progress.js?v=0.1.310';
+import { SOLAR_SYSTEM } from './natural.js?v=0.1.310';
+import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.310';
+import { drawShareCard, shareCard } from './share-card.js?v=0.1.310';
+import { conArt } from './con-art.js?v=0.1.310';
+import { CON_BY_ID } from './constellations.js?v=0.1.310';
+import { allSightings, deleteSighting } from './store.js?v=0.1.310';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.310';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -139,7 +139,9 @@ function renderAlbums() {
     const show = latest ?? st.cards.find((c) => c.tier === 'legendary') ?? st.cards[0];
     const img = artImage(show, 'small'); // the set's best card, dimmed (CSS .album.empty) until you own one
     const b = document.createElement('button'); b.type = 'button';
-    b.className = `album${st.level === 3 ? ' gold' : ''}${latest ? '' : ' empty'}`; b.style.setProperty('--set', set.color);
+    let lv = {}; try { lv = JSON.parse(localStorage.getItem('albumLevels')) || {}; } catch {}
+    const crossed = (lv[set.id] ?? st.level) < st.level; lv[set.id] = st.level; try { localStorage.setItem('albumLevels', JSON.stringify(lv)); } catch {}
+    b.className = `album${st.level === 3 ? ' gold' : ''}${latest ? '' : ' empty'}${crossed ? ' crossed' : ''}`; b.style.setProperty('--set', set.color);
     b.innerHTML = `<span class="album__art">${img ? `<img src="${img}" alt="" loading="lazy">` : cardArt(show, { accent: set.color, silhouette: !latest })}</span>
       <span class="album__body"><span class="album__name">${esc(set.name)}</span>
       <span class="album__count"><b>${st.have.length.toLocaleString()}</b> / ${st.cards.length.toLocaleString()}${st.level ? ` · ${LEVELS[st.level - 1].toUpperCase()}` : ''}</span>
@@ -255,7 +257,7 @@ $('tab-discover').addEventListener('click', () => setView('discover'));
 $('tab-albums').addEventListener('click', () => { resetFilters(); setView('albums'); });
 $('reset-filters').addEventListener('click', resetFilters);
 let searchTimer;
-$('search').addEventListener('input', (e) => { clearTimeout(searchTimer); state.query = e.target.value.trim().toLowerCase(); searchTimer = setTimeout(() => { if (state.ready) render(); }, 120); });
+$('search').addEventListener('input', (e) => { clearTimeout(searchTimer); state.query = e.target.value.trim().toLowerCase(); searchTimer = setTimeout(() => { if (state.ready) (window.flipGrid ?? ((f) => f()))(render); }, 120); });
 $('set-filter').addEventListener('change', (e) => { const v = e.target.value; if (state.ready) window.flipGrid(() => { state.set = v; render(); }); else state.set = v; });
 $('rarity-filter').addEventListener('change', (e) => { const v = e.target.value; if (state.ready) window.flipGrid(() => { state.rarity = v; render(); }); else state.rarity = v; });
 $('sort-by').addEventListener('change', (e) => { const v = e.target.value; if (state.ready) window.flipGrid(() => { state.sort = v; render(); }); else state.sort = v; });
@@ -639,6 +641,7 @@ function renderPatches() {
   const shown = all.filter((a) => state.patchGroup === 'all' || groupOf(a) === state.patchGroup)
     .sort((a, b) => Number(b.done) - Number(a.done) || GROUP_ORDER.indexOf(groupOf(a)) - GROUP_ORDER.indexOf(groupOf(b))); // earned first, then by group
   wall.innerHTML = `<div class="pw-chips">${['all', ...groups].map((g) => `<button type="button" class="ui-chip pw-chip${state.patchGroup === g ? ' on' : ''}" data-g="${g}"><b>${g === 'all' ? 'All' : esc(GROUPS[g].t)}</b><span class="ui-chip__k">${(g === 'all' ? all : all.filter((a) => groupOf(a) === g)).filter((a) => a.done).length}</span></button>`).join('')}</div>
+    ${state.patchGroup !== 'all' && !shown.some((a) => a.done) ? `<div class="pw-empty"><span class="empty__orbit" aria-hidden="true">✦</span><span>None yet in ${esc(GROUPS[state.patchGroup]?.t ?? 'this group')}. Each outline below says what earns it.</span></div>` : ''}
     <div class="pw-grid">${shown.map((a) => `<button type="button" class="pw-item${a.done ? '' : ' locked'}${a.done && !patchSeen().has(a.id) ? ' new' : ''}" data-id="${a.id}" aria-label="${esc(a.name)}${a.done ? ', earned' : ', not earned yet'}">${patchHtml(a, { locked: !a.done })}<span>${esc(a.name)}</span></button>`).join('')}</div>`;
   wall.onclick = (e) => {
     const chip = e.target.closest('.pw-chip'); if (chip) { state.patchGroup = chip.dataset.g; renderPatches(); return; }
@@ -725,4 +728,11 @@ addEventListener('resize', moveInk); setTimeout(moveInk, 300);
   window.flipGrid = flip;
 }
 // The owned count pops when it changes.
-{ let last = null; new MutationObserver(() => { const el = $('owned-count'); if (last != null && el.textContent !== last) { el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump'); } last = el.textContent; }).observe($('owned-count'), { childList: true, characterData: true, subtree: true }); }
+// …and ticks up through the numbers in between.
+{ let last = null, busy = false; new MutationObserver(() => { if (busy) return; const el = $('owned-count'), to = Number(el.textContent.replace(/\D/g, '')), from = Number(String(last ?? '').replace(/\D/g, ''));
+    if (last != null && el.textContent !== last && Number.isFinite(to) && Number.isFinite(from) && to > from && to - from < 200 && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      busy = true; const t0 = performance.now(), dur = Math.min(700, 120 + (to - from) * 60);
+      const step = () => { const k = Math.min(1, (performance.now() - t0) / dur); el.textContent = Math.round(from + (to - from) * (1 - (1 - k) ** 3)).toLocaleString(); if (k < 1) requestAnimationFrame(step); else { busy = false; el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump'); } };
+      requestAnimationFrame(step);
+    }
+    last = el.textContent; }).observe($('owned-count'), { childList: true, characterData: true, subtree: true }); }
