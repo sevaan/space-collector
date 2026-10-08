@@ -1,9 +1,9 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.331';
+import { extinction } from './sky-limit.js?v=0.1.332';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.331';
-import { TIER_INFO } from './rarity.js?v=0.1.331';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.332';
+import { TIER_INFO } from './rarity.js?v=0.1.332';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -1115,7 +1115,7 @@ export class SkyView {
     this.starLimit = starLimit; this.sunEl = sunEl;
     { const s = bodies?.find?.((b) => b.kind === 'sun'); this.sunAz = s ? (Math.atan2(s.enu[0], s.enu[1]) / RAD + 360) % 360 : null; }
     this.drawBackground();
-    if ((this.dayF ?? 0) < 0.2) this.drawMilkyWay(milky);
+    if ((this.dayF ?? 0) < 0.2 && !this.camera) this.drawMilkyWay(milky); // no Milky Way in camera view
     if (sky && (this.dayF ?? 0) < 0.6) this.drawStars(sky, { lines: lines && this.dayF < 0.2, time: this.reducedMotion ? 0 : time, starLimit });
     if (weather && !this.camera) this.drawWeather(weather, this.reducedMotion ? 0 : time); // the camera shows the real clouds
     if (bodies) this.drawBodies(bodies);
