@@ -624,3 +624,12 @@ body.ob-tour #until-dark { display: none; }
 #radar.dizzy { animation: dizzy 2s cubic-bezier(.3, 1.6, .5, 1); }
 @keyframes dizzy { 0% { transform: rotate(0); } 20% { transform: rotate(40deg); } 40% { transform: rotate(-30deg); } 60% { transform: rotate(18deg); } 80% { transform: rotate(-8deg); } 100% { transform: rotate(0); } }
 body:has(#secret-cta:not([hidden])) #toasts, body:has(#secret-cta:not([hidden])) #banner { visibility: hidden; } /* nothing covers Tap to wave / Tap now */
+/* Panels (Tonight, Visible now, Settings) slide up like a sheet and down on close; drag the header down to dismiss. */
+.overlay.panel:not([hidden]) { animation: ui-sheet-in var(--m-norm) var(--ease-spring); }
+.overlay.panel.leaving { animation: ui-sheet-out var(--m-norm) var(--ease-out) forwards; }
+.overlay.panel .panel-head { touch-action: none; }
+/* Lines under the circle arrive rather than pop. */
+#guidance:not([hidden]), #until-dark:not([hidden]), #discover:not([hidden]) .d-label, #discover:not([hidden]) .d-actions { animation: ui-rise var(--m-norm) var(--ease-out); }
+#ud-time.roll { animation: ui-roll var(--m-norm) var(--ease-spring); }
+#ud-bell.ring { animation: ui-wiggle .6s var(--ease-out); }
+#ud-bell.ring::first-letter { display: inline-block; }

@@ -1,22 +1,22 @@
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.308';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.308';
-import { ticket } from './toast.js?v=0.1.308';
-import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.308';
-import { cardArt } from './art.js?v=0.1.308';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.308';
-import { applyBack } from './card-backs.js?v=0.1.308';
-import { SETS, assignSets } from './sets.js?v=0.1.308';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.308';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.308';
-import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.308';
-import { progress } from './progress.js?v=0.1.308';
-import { SOLAR_SYSTEM } from './natural.js?v=0.1.308';
-import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.308';
-import { drawShareCard, shareCard } from './share-card.js?v=0.1.308';
-import { conArt } from './con-art.js?v=0.1.308';
-import { CON_BY_ID } from './constellations.js?v=0.1.308';
-import { allSightings, deleteSighting } from './store.js?v=0.1.308';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.308';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.309';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.309';
+import { ticket } from './toast.js?v=0.1.309';
+import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.309';
+import { cardArt } from './art.js?v=0.1.309';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.309';
+import { applyBack } from './card-backs.js?v=0.1.309';
+import { SETS, assignSets } from './sets.js?v=0.1.309';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.309';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.309';
+import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.309';
+import { progress } from './progress.js?v=0.1.309';
+import { SOLAR_SYSTEM } from './natural.js?v=0.1.309';
+import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.309';
+import { drawShareCard, shareCard } from './share-card.js?v=0.1.309';
+import { conArt } from './con-art.js?v=0.1.309';
+import { CON_BY_ID } from './constellations.js?v=0.1.309';
+import { allSightings, deleteSighting } from './store.js?v=0.1.309';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.309';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -101,6 +101,7 @@ function matches(c) {
   return true;
 }
 
+let cascadeLeft = 24; // the first screenful cascades in on open (2026-10-08 polish)
 const observer = new IntersectionObserver((entries) => {
   for (const { isIntersecting, target } of entries) {
     if (!isIntersecting) continue;
@@ -110,6 +111,8 @@ const observer = new IntersectionObserver((entries) => {
     const tile = renderCardTile(c, { sightings: state.sightingsByKey.get(c.key) ?? [], ownedKeys: c.natural === 'constellation' ? ownedKeys() : undefined });
     tile.addEventListener('click', () => openViewer(state.list.findIndex((card) => card.key === c.key), tile.getBoundingClientRect()));
     target.replaceChildren(tile);
+    if (cascadeLeft > 0) { cascadeLeft--; target.classList.add('cascade'); target.style.setProperty('--i', String(24 - cascadeLeft)); setTimeout(() => target.classList.remove('cascade'), 1200); }
+    for (const img of tile.querySelectorAll('img.card-art-image')) { if (img.complete && img.naturalWidth) img.classList.add('loaded'); else { img.addEventListener('load', () => img.classList.add('loaded'), { once: true }); img.addEventListener('error', () => img.classList.add('loaded'), { once: true }); } }
   }
 }, { rootMargin: '500px 0px' });
 
@@ -232,11 +235,14 @@ function render() {
   for (const slot of $('grid').children) observer.observe(slot);
 }
 function setView(view) {
+  const changed = state.view !== view;
   state.view = view;
+  if (changed) { for (const el of [$('grid'), $('patch-wall')]) { el.classList.remove('swap'); void el.offsetWidth; el.classList.add('swap'); } cascadeLeft = 16; }
   $('tab-owned').setAttribute('aria-pressed', String(view === 'owned'));
   $('tab-discover').setAttribute('aria-pressed', String(view === 'discover'));
   $('tab-albums').setAttribute('aria-pressed', String(view === 'albums'));
   $('tab-patches').setAttribute('aria-pressed', String(view === 'patches'));
+  moveInk();
   if (state.ready) render();
 }
 function resetFilters() {
@@ -250,9 +256,9 @@ $('tab-albums').addEventListener('click', () => { resetFilters(); setView('album
 $('reset-filters').addEventListener('click', resetFilters);
 let searchTimer;
 $('search').addEventListener('input', (e) => { clearTimeout(searchTimer); state.query = e.target.value.trim().toLowerCase(); searchTimer = setTimeout(() => { if (state.ready) render(); }, 120); });
-$('set-filter').addEventListener('change', (e) => { state.set = e.target.value; if (state.ready) render(); });
-$('rarity-filter').addEventListener('change', (e) => { state.rarity = e.target.value; if (state.ready) render(); });
-$('sort-by').addEventListener('change', (e) => { state.sort = e.target.value; if (state.ready) render(); });
+$('set-filter').addEventListener('change', (e) => { const v = e.target.value; if (state.ready) window.flipGrid(() => { state.set = v; render(); }); else state.set = v; });
+$('rarity-filter').addEventListener('change', (e) => { const v = e.target.value; if (state.ready) window.flipGrid(() => { state.rarity = v; render(); }); else state.rarity = v; });
+$('sort-by').addEventListener('change', (e) => { const v = e.target.value; if (state.ready) window.flipGrid(() => { state.sort = v; render(); }); else state.sort = v; });
 
 
 let tilt = null, stopGyro = null, lastFocus = null;
@@ -615,6 +621,7 @@ function earnedDates() {
   earnedCache = { n, dates }; return dates;
 }
 function renderPatches() {
+  if (localStorage.getItem('patchSeen') == null) try { localStorage.setItem('patchSeen', JSON.stringify((state.achievements ?? []).filter((a) => a.done).map((a) => a.id))); } catch {} // existing patches start as seen
   const wall = $('patch-wall'), dates = earnedDates();
   // The secret Fossil Hunter patch only joins the wall once found (js/fossil.js); no empty slot hints at it.
   let fossil = null; try { fossil = JSON.parse(localStorage.getItem('fossilFound')); } catch {}
@@ -632,14 +639,14 @@ function renderPatches() {
   const shown = all.filter((a) => state.patchGroup === 'all' || groupOf(a) === state.patchGroup)
     .sort((a, b) => Number(b.done) - Number(a.done) || GROUP_ORDER.indexOf(groupOf(a)) - GROUP_ORDER.indexOf(groupOf(b))); // earned first, then by group
   wall.innerHTML = `<div class="pw-chips">${['all', ...groups].map((g) => `<button type="button" class="ui-chip pw-chip${state.patchGroup === g ? ' on' : ''}" data-g="${g}"><b>${g === 'all' ? 'All' : esc(GROUPS[g].t)}</b><span class="ui-chip__k">${(g === 'all' ? all : all.filter((a) => groupOf(a) === g)).filter((a) => a.done).length}</span></button>`).join('')}</div>
-    <div class="pw-grid">${shown.map((a) => `<button type="button" class="pw-item${a.done ? '' : ' locked'}" data-id="${a.id}" aria-label="${esc(a.name)}${a.done ? ', earned' : ', not earned yet'}">${patchHtml(a, { locked: !a.done })}<span>${esc(a.name)}</span></button>`).join('')}</div>`;
+    <div class="pw-grid">${shown.map((a) => `<button type="button" class="pw-item${a.done ? '' : ' locked'}${a.done && !patchSeen().has(a.id) ? ' new' : ''}" data-id="${a.id}" aria-label="${esc(a.name)}${a.done ? ', earned' : ', not earned yet'}">${patchHtml(a, { locked: !a.done })}<span>${esc(a.name)}</span></button>`).join('')}</div>`;
   wall.onclick = (e) => {
     const chip = e.target.closest('.pw-chip'); if (chip) { state.patchGroup = chip.dataset.g; renderPatches(); return; }
-    const it = e.target.closest('.pw-item'); if (it) openPatch(it.dataset.id);
+    const it = e.target.closest('.pw-item'); if (it) { it.classList.remove('new'); markSeen(it.dataset.id); openPatch(it.dataset.id, it.querySelector('.patch')?.getBoundingClientRect()); }
   };
   void dates;
 }
-function openPatch(id) {
+function openPatch(id, from = null) {
   let fossil = null; try { fossil = JSON.parse(localStorage.getItem('fossilFound')); } catch {}
   let ufo = null; try { ufo = JSON.parse(localStorage.getItem('ufoFound')); } catch {}
   let sec = {}; try { sec = JSON.parse(localStorage.getItem('secrets')) || {}; } catch {}
@@ -652,6 +659,14 @@ function openPatch(id) {
     <h2>${esc(a.name)}</h2><p>${esc(a.text)}</p>
     <div class="pv-meta"><span class="ui-chip"><b>${esc(GROUPS[groupOf(a)].t)}</b></span>${f ? `<span class="ui-chip"><b>${f === 'gold' ? 'Gold foil' : 'Holo'}</b></span>` : ''}${a.done ? '' : '<span class="ui-chip"><span class="ui-chip__k">Not earned yet</span></span>'}</div>`;
   const d = $('patch-view'); d.showModal();
+  // Grow out of the patch you tapped (2026-10-08 polish), and shrink back into it on close.
+  patchFrom = from;
+  const pv = d.querySelector('.pv-patch');
+  if (from && pv && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const to = pv.getBoundingClientRect(), sc = from.width / to.width;
+    pv.animate([{ transform: `translate(${from.left + from.width / 2 - (to.left + to.width / 2)}px, ${from.top + from.height / 2 - (to.top + to.height / 2)}px) scale(${sc})` }, { transform: 'none' }], { duration: 420, easing: 'cubic-bezier(.3,1.25,.5,1)' });
+    for (const el of d.querySelectorAll('.pv-body > :not(.pv-patch)')) el.animate([{ opacity: 0, transform: 'translateY(8px)' }, { opacity: 1, transform: 'none' }], { duration: 300, delay: 160, easing: 'ease-out', fill: 'backwards' });
+  }
   const patch = d.querySelector('.patch'), host = d.querySelector('.pv-patch');
   // The patch leans toward your finger or the phone's tilt, and the foil sheen follows.
   const lean = (nx, ny) => { host.style.transform = `perspective(700px) rotateY(${(nx * 16).toFixed(1)}deg) rotateX(${(-ny * 16).toFixed(1)}deg)`; patch.classList.add('tilt'); patch.style.setProperty('--x', `${(50 + nx * 50).toFixed(0)}%`); };
@@ -661,8 +676,20 @@ function openPatch(id) {
   addEventListener('deviceorientation', ori);
   d.addEventListener('close', () => removeEventListener('deviceorientation', ori), { once: true });
 }
-$('pv-close').addEventListener('click', () => $('patch-view').close());
-$('patch-view').addEventListener('click', (e) => { if (e.target === $('patch-view')) $('patch-view').close(); });
+let patchFrom = null;
+function closePatch() {
+  const d = $('patch-view'), pv = d.querySelector('.pv-patch');
+  if (!patchFrom || !pv || matchMedia('(prefers-reduced-motion: reduce)').matches) { d.close(); return; }
+  const to = pv.getBoundingClientRect(), f = patchFrom, sc = f.width / to.width;
+  d.classList.add('leaving');
+  pv.animate([{ transform: 'none' }, { transform: `translate(${f.left + f.width / 2 - (to.left + to.width / 2)}px, ${f.top + f.height / 2 - (to.top + to.height / 2)}px) scale(${sc})` }], { duration: 300, easing: 'cubic-bezier(.4,0,.6,1)', fill: 'forwards' }).onfinish = () => { d.classList.remove('leaving'); d.close(); };
+}
+$('pv-close').addEventListener('click', closePatch);
+$('patch-view').addEventListener('click', (e) => { if (e.target === $('patch-view')) closePatch(); });
+$('patch-view').addEventListener('cancel', (e) => { e.preventDefault(); closePatch(); });
+// Earned patches you haven't opened yet wear a NEW tag (localStorage patchSeen).
+function patchSeen() { try { return new Set(JSON.parse(localStorage.getItem('patchSeen')) || []); } catch { return new Set(); } }
+function markSeen(id) { const s = patchSeen(); s.add(id); try { localStorage.setItem('patchSeen', JSON.stringify([...s])); } catch {} }
 addEventListener('hashchange', () => { let k = ''; try { k = decodeURIComponent(location.hash.slice(1)); } catch {} if (k) openKey(k); });
 
 // 7 · Show the card-size slider only while there's a grid of cards on screen (2026-10-08 playtest).
@@ -673,3 +700,29 @@ addEventListener('hashchange', () => { let k = ''; try { k = decodeURIComponent(
   new MutationObserver(update).observe($('grid'), { childList: true, attributes: true, attributeFilter: ['hidden'] });
   update();
 }
+
+// ---------- polish (2026-10-08) ----------
+// The tabs' orange underline slides to the current tab.
+function moveInk() {
+  const bar = document.querySelector('.collection-tabs'); if (!bar) return;
+  let ink = bar.querySelector('.tab-ink'); if (!ink) { ink = document.createElement('i'); ink.className = 'tab-ink'; bar.append(ink); }
+  const on = bar.querySelector('button[aria-pressed="true"]'); if (!on) return;
+  ink.style.width = `${on.offsetWidth}px`; ink.style.transform = `translateX(${on.offsetLeft}px)`;
+}
+addEventListener('resize', moveInk); setTimeout(moveInk, 300);
+// Filters, sort and search: cards that stay glide to their new place (FLIP), new ones rise in.
+{
+  const flip = (fn) => {
+    const grid = $('grid'), before = new Map([...grid.querySelectorAll('.tile-slot')].map((el) => [el.dataset.key, el.getBoundingClientRect()]));
+    fn();
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    for (const el of grid.querySelectorAll('.tile-slot')) {
+      const a = before.get(el.dataset.key), b = el.getBoundingClientRect(); if (b.bottom < 0 || b.top > innerHeight) continue;
+      if (a) { const dx = a.left - b.left, dy = a.top - b.top; if (Math.abs(dx) + Math.abs(dy) > 1) el.animate([{ transform: `translate(${dx}px,${dy}px)` }, { transform: 'none' }], { duration: 300, easing: 'cubic-bezier(.2,.8,.2,1)' }); }
+      else el.animate([{ opacity: 0, transform: 'translateY(10px) scale(.97)' }, { opacity: 1, transform: 'none' }], { duration: 280, easing: 'cubic-bezier(.2,.8,.2,1)' });
+    }
+  };
+  window.flipGrid = flip;
+}
+// The owned count pops when it changes.
+{ let last = null; new MutationObserver(() => { const el = $('owned-count'); if (last != null && el.textContent !== last) { el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump'); } last = el.textContent; }).observe($('owned-count'), { childList: true, characterData: true, subtree: true }); }

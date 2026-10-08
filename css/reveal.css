@@ -53,3 +53,6 @@ body.night #reveal { background: #000; }
 
 /* Place the shared card action just under the revealed card. */
 #reveal-view { position: absolute; left: 0; right: 0; z-index: 4; top: calc(50% + 22px + var(--ch, 39.2) * var(--cf) / 2 + 18px); }
+.rv-night { position: absolute; left: 50%; top: 18%; z-index: 5; padding: 8px 14px; border: 2px solid #8fb8ff; border-radius: 6px; color: #8fb8ff; background: rgba(8,15,27,.7);
+  font: 500 15px/1 'SC Label', sans-serif; letter-spacing: .16em; text-transform: uppercase; transform: translateX(-50%) rotate(-8deg); animation: rvNight 2.6s var(--ease-spring, ease-out) forwards; pointer-events: none; }
+@keyframes rvNight { 0% { opacity: 0; transform: translateX(-50%) rotate(-8deg) scale(1.8); } 12% { opacity: 1; transform: translateX(-50%) rotate(-8deg) scale(.95); } 20% { transform: translateX(-50%) rotate(-8deg) scale(1); } 80% { opacity: 1; } 100% { opacity: 0; } }

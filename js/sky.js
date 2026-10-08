@@ -1,9 +1,9 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.308';
+import { extinction } from './sky-limit.js?v=0.1.309';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.308';
-import { TIER_INFO } from './rarity.js?v=0.1.308';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.309';
+import { TIER_INFO } from './rarity.js?v=0.1.309';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -251,7 +251,11 @@ export class SkyView {
         ctx.textAlign = 'left';
         ctx.textBaseline = 'top';
         ctx.fillStyle = color;
-        ctx.fillText(text, x, y);
+        // Fade in over ~1/4 s when a label first appears (2026-10-08 polish), rather than popping.
+        if (!mem.shownAt || this.frameNo - (mem.lastDrawn ?? -99) > 2) mem.shownAt = this.frameNo;
+        mem.lastDrawn = this.frameNo;
+        const fa = this.reducedMotion ? 1 : Math.min(1, (this.frameNo - mem.shownAt) / 14);
+        ctx.save(); ctx.globalAlpha *= fa; ctx.fillText(text, x, y); ctx.restore();
         occupied.push(box);
       }
     }
@@ -1277,6 +1281,9 @@ export class SkyView {
         ctx.beginPath(); ctx.arc(cx + Math.cos(a) * d, cy + Math.sin(a) * d, 2, 0, Math.PI * 2); ctx.fill();
       }
     }
+    // Lock pulse (2026-10-08 polish): a ring expands and fades from the circle the moment it catches something.
+    const lp = this.lockPulseAt ? (performance.now() - this.lockPulseAt) / 450 : 2;
+    if (lp < 1 && !this.reducedMotion) { ctx.save(); ctx.globalAlpha = (1 - lp) * 0.8; ctx.strokeStyle = activeInk; ctx.lineWidth = 2 * (1 - lp) + 0.5; ctx.beginPath(); ctx.arc(cx, cy, radius + 6 + lp * 34, 0, Math.PI * 2); ctx.stroke(); ctx.restore(); }
     if (!locked) {
       ctx.strokeStyle = t.reticle; ctx.globalAlpha = 0.65; ctx.lineWidth = 1;
       ctx.beginPath();

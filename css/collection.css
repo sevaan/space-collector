@@ -252,3 +252,21 @@ body.patches-view .collection-tools, body.patches-view #sizebar, body.patches-vi
 /* 7 · The size slider only shows while the card grid is on screen and has cards. */
 body.grid-off #sizebar { opacity: 0; pointer-events: none; }
 #sizebar { transition: opacity .3s ease; }
+/* Polish pass (2026-10-08). Tabs: the orange underline slides between them; the content crossfades. */
+.collection-tabs { position: relative; } .collection-tabs button { border-bottom-color: transparent !important; }
+.collection-tabs .tab-ink { position: absolute; bottom: 0; height: 2px; background: var(--accent); border-radius: 2px; transition: transform var(--m-norm) var(--ease-spring), width var(--m-norm) var(--ease-spring); pointer-events: none; }
+#grid.swap, #patch-wall.swap { animation: ui-fade-in var(--m-norm) var(--ease-out); }
+/* The grid cascades in on first open. */
+.tile-slot.cascade > * { animation: ui-rise var(--m-norm) var(--ease-out) both; animation-delay: calc(var(--i, 0) * 22ms); }
+/* Patch wall: unseen earned patches shimmer softly with a NEW stitch tag until opened. */
+.pw-item.new .patch::before { content: ''; position: absolute; inset: -4px; border-radius: 50%; box-shadow: 0 0 0 2px rgba(250,129,39,.55), 0 0 18px rgba(250,129,39,.45); animation: ldPulseNew 2.2s ease-in-out infinite; pointer-events: none; }
+.pw-item.new::after { content: 'NEW'; position: absolute; margin-top: -6px; padding: 2px 6px; border-radius: 4px; background: var(--accent); color: #0b1120; font: 500 9px 'SC Label', sans-serif; letter-spacing: .14em; }
+.pw-item { position: relative; }
+@keyframes ldPulseNew { 50% { opacity: .35; } }
+/* Logbook bars fill rather than jump; counts pop when they change. */
+.lb-bar i, .album-bar i { transition: width var(--m-slow) var(--ease-out); }
+#owned-count.bump { display: inline-block; animation: ui-pop var(--m-norm) var(--ease-spring); }
+/* Empty states get a little satellite drifting past. */
+.empty__orbit { display: inline-block; animation: emptyDrift 6s ease-in-out infinite; }
+@keyframes emptyDrift { 0%, 100% { transform: translate(-14px, 4px) rotate(-8deg); } 50% { transform: translate(14px, -4px) rotate(8deg); } }
+#pv-body .pv-patch { will-change: transform; }

@@ -5,10 +5,10 @@
 //  Everything scales with rarity (Legendary dims the sky, shockwave, held breath, slow flip, fanfare).
 // Waits use timers, not animation.finished, so a paused tab can never freeze the sequence.
 
-import { TIER_INFO } from './rarity.js?v=0.1.308';
-import { levelFor, attachTilt, attachGyro, attachFlip, throwOff } from './card.js?v=0.1.308';
-import { applyBack } from './card-backs.js?v=0.1.308';
-import { addStarfield } from './starfield.js?v=0.1.308';
+import { TIER_INFO } from './rarity.js?v=0.1.309';
+import { levelFor, attachTilt, attachGyro, attachFlip, throwOff } from './card.js?v=0.1.309';
+import { applyBack } from './card-backs.js?v=0.1.309';
+import { addStarfield } from './starfield.js?v=0.1.309';
 
 const FX = {
   common:    { particles: 14,  flip: 520,  spin: 0,   dim: 0,   shock: false, notes: [880],                            hold: 0 },
@@ -274,6 +274,8 @@ async function finish({ fx, color, fresh, seen, level, levelUp, card, alive, fle
     : NIGHT_MILESTONES.includes(nights) ? { kind: 'event', eyebrow: 'MILESTONE', line: `Seen on ${nights} different nights` }
     : null; // a plain repeat: no toast (2026-10-07)
   if (news) { announce?.({ ...news, ms: 3200, delay: 900 }); thump(); }
+  // A second (third…) night on an old friend: a little "+1 NIGHT" stamp drops onto the card (2026-10-08 polish).
+  if (!fresh && nights > 1 && !reduced()) { const st = document.createElement('div'); st.className = 'rv-night'; st.textContent = `+1 night · ${nights} nights`; $('rv-holder').append(st); setTimeout(() => st.remove(), 2600); }
   if (!reduced()) $('reveal').animate([{ transform: 'translate(0,0)' }, { transform: 'translate(-3px,2px)' }, { transform: 'translate(3px,-2px)' }, { transform: 'translate(0,0)' }], { duration: 180 });
   if (levelUp) card.querySelector('.card__face')?.animate([{ boxShadow: '0 0 0 transparent' }, { boxShadow: `0 0 34px ${LEVEL_COLOR[level]}` }, { boxShadow: '0 0 0 transparent' }], { duration: 1300 });
   tilt = attachTilt(card);

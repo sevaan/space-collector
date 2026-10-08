@@ -241,3 +241,30 @@ body:has(#reveal:not([hidden])) #banner, body:has(.patch-moment) #banner, body:h
 
 .search input { border: 0 !important; background: transparent !important; outline: none; } /* the box is the .search label, not the input (2026-10-08) */
 .search input:focus-visible { outline: none; } .search:focus-within { border-color: var(--ui-gold); }
+
+/* ---------- Motion system (2026-10-08 polish pass) ----------
+   Three durations and two curves used everywhere, so the app moves with one rhythm. Reduce Motion → short fades. */
+:root { --m-fast: 150ms; --m-norm: 280ms; --m-slow: 520ms; --ease-out: cubic-bezier(.2, .8, .2, 1); --ease-spring: cubic-bezier(.3, 1.35, .5, 1); }
+@media (prefers-reduced-motion: reduce) { :root { --m-fast: 1ms; --m-norm: 120ms; --m-slow: 160ms; --ease-spring: ease-out; } }
+
+/* Press feedback: everything tappable dips a touch. */
+:where(button, a.pill, .ui-btn, .ui-link, .set-row, .ud-opt, .pw-item, .album, .lb-badge, .t-row, .chip, .ui-chip):active { transform: scale(.97); transition: transform var(--m-fast) var(--ease-out); }
+:where(.card-tile):active { transform: scale(.97) !important; }
+
+/* Sheets and panels slide up with a little spring; .leaving slides them away. */
+@keyframes ui-sheet-in { from { transform: translateY(28px); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes ui-sheet-out { to { transform: translateY(36px); opacity: 0; } }
+@keyframes ui-fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes ui-rise { from { opacity: 0; transform: translateY(10px) scale(.98); } to { opacity: 1; transform: none; } }
+@keyframes ui-pop { 0% { transform: scale(1); } 40% { transform: scale(1.18); } 100% { transform: scale(1); } }
+@keyframes ui-wiggle { 0%, 100% { transform: rotate(0); } 20% { transform: rotate(-16deg); } 40% { transform: rotate(13deg); } 60% { transform: rotate(-8deg); } 80% { transform: rotate(4deg); } }
+@keyframes ui-shimmer { from { background-position: -200% 0; } to { background-position: 200% 0; } }
+@keyframes ui-roll { from { opacity: 0; transform: translateY(-40%); } to { opacity: 1; transform: none; } }
+
+/* Dialogs (card viewer, patch detail) fade their backdrop in. */
+dialog[open] { animation: ui-fade-in var(--m-norm) var(--ease-out); }
+dialog.leaving { animation: ui-fade-in var(--m-norm) var(--ease-out) reverse forwards; }
+
+/* Image loading: a soft shimmer until the picture arrives, then it fades in. */
+.tile-slot:empty, .card-tile__art:has(img:not(.loaded)) { background: linear-gradient(100deg, #0f1b2a 30%, #18283a 50%, #0f1b2a 70%) 0 0 / 200% 100%; animation: ui-shimmer 1.4s linear infinite; }
+.card-tile .card-art-image { transition: opacity var(--m-norm) var(--ease-out); } .card-tile .card-art-image:not(.loaded) { opacity: 0; }
