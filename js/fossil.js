@@ -10,12 +10,14 @@ export const FOSSILS = [
 export const fossil = FOSSILS[Math.floor(Math.random() * FOSSILS.length)];
 
 // The buried spot: a random direction and depth chosen once and kept on this device.
-export const spot = (() => {
-  let s = null;
-  try { s = JSON.parse(localStorage.getItem('fossilSpot')); } catch {}
-  if (!s || typeof s.az !== 'number') { s = { az: Math.round(Math.random() * 360), el: -(35 + Math.round(Math.random() * 25)) }; try { localStorage.setItem('fossilSpot', JSON.stringify(s)); } catch {} }
-  return s;
-})();
+// Chosen the first time you're in daylight (2026-10-08, Sevaan): behind you, so it's a surprise when you turn round.
+export let spot = (() => { try { const s = JSON.parse(localStorage.getItem('fossilSpot')); return s && typeof s.az === 'number' ? s : null; } catch { return null; } })();
+export function placeBehind(heading) {
+  if (spot) return spot;
+  spot = { az: Math.round((heading + 180 + (Math.random() - 0.5) * 50 + 360) % 360), el: -(35 + Math.round(Math.random() * 20)) };
+  try { localStorage.setItem('fossilSpot', JSON.stringify(spot)); } catch {}
+  return spot;
+}
 
 export const image = new Image();
 image.decoding = 'async';

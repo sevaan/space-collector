@@ -1,37 +1,37 @@
-import * as Secrets from './secrets.js?v=0.1.306';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.306';
-import * as Ufo from './ufo.js?v=0.1.306';
-import * as Fossil from './fossil.js?v=0.1.306';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.306';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.306';
-import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.306';
-import { VERSION } from './version.js?v=0.1.306';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.306';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.306';
-import { conArt } from './con-art.js?v=0.1.306';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.306';
-import { CON_FIGURES } from './con-figures.js?v=0.1.306';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.306';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.306';
-import { progress as progressOf } from './progress.js?v=0.1.306';
-import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.306';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.306';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.306';
-import { SkyView, shortName } from './sky.js?v=0.1.306';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, roadster, starVector } from './celestial.js?v=0.1.306';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.306';
-import { cardArt } from './art.js?v=0.1.306';
-import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.306';
-import { applyBack } from './card-backs.js?v=0.1.306';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.306';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.306';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.306';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.306';
-import { TIER_INFO } from './rarity.js?v=0.1.306';
-import { SETS } from './sets.js?v=0.1.306';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.306';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.306';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.306';
+import * as Secrets from './secrets.js?v=0.1.307';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.307';
+import * as Ufo from './ufo.js?v=0.1.307';
+import * as Fossil from './fossil.js?v=0.1.307';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.307';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.307';
+import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.307';
+import { VERSION } from './version.js?v=0.1.307';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.307';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.307';
+import { conArt } from './con-art.js?v=0.1.307';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.307';
+import { CON_FIGURES } from './con-figures.js?v=0.1.307';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.307';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.307';
+import { progress as progressOf } from './progress.js?v=0.1.307';
+import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.307';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.307';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.307';
+import { SkyView, shortName } from './sky.js?v=0.1.307';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, roadster, starVector } from './celestial.js?v=0.1.307';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.307';
+import { cardArt } from './art.js?v=0.1.307';
+import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.307';
+import { applyBack } from './card-backs.js?v=0.1.307';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.307';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.307';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.307';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.307';
+import { TIER_INFO } from './rarity.js?v=0.1.307';
+import { SETS } from './sets.js?v=0.1.307';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.307';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.307';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.307';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -2047,8 +2047,12 @@ function pumpPatch() {
 // ---------- the buried fossil (js/fossil.js, 2026-10-08) ----------
 // In daylight, with nothing else in the circle: line the fossil up and hold it ~1.2 s to earn the secret patch.
 let fossilHoldFrom = 0, fossilDone = !!Fossil.found();
-const fossilEnu = enuFromAzEl(Fossil.spot.az, Fossil.spot.el);
+let fossilEnu = Fossil.spot ? enuFromAzEl(Fossil.spot.az, Fossil.spot.el) : null;
 function fossilState(t, basis, target) {
+  if (!fossilEnu) { // place it behind you the first time you're out in daylight, once the sky has settled
+    if (!document.body.classList.contains('day') || (!state.drag.on && (state.liveSince == null || t - state.liveSince < 1500))) return null;
+    const b = basis.back, s = Fossil.placeBehind((Math.atan2(b[0], b[1]) / RAD + 360) % 360); fossilEnu = enuFromAzEl(s.az, s.el);
+  }
   if (!document.body.classList.contains('day') || target || state.planeHit) { fossilHoldFrom = 0; return { enu: fossilEnu, img: Fossil.image, inCircle: false, done: fossilDone }; }
   const inCircle = dot(fossilEnu, basis.back) > Math.cos((sky.reticleDeg + 4) * RAD);
   if (!inCircle) fossilHoldFrom = 0; else fossilHoldFrom ||= t;
