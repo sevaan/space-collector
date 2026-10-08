@@ -1,20 +1,20 @@
-import { ticket } from './toast.js?v=0.1.258';
-import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.258';
-import { cardArt } from './art.js?v=0.1.258';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.258';
-import { applyBack } from './card-backs.js?v=0.1.258';
-import { SETS, assignSets } from './sets.js?v=0.1.258';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.258';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.258';
-import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.258';
-import { progress } from './progress.js?v=0.1.258';
-import { SOLAR_SYSTEM } from './natural.js?v=0.1.258';
-import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.258';
-import { drawShareCard, shareCard } from './share-card.js?v=0.1.258';
-import { conArt } from './con-art.js?v=0.1.258';
-import { CON_BY_ID } from './constellations.js?v=0.1.258';
-import { allSightings, deleteSighting } from './store.js?v=0.1.258';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.258';
+import { ticket } from './toast.js?v=0.1.259';
+import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.259';
+import { cardArt } from './art.js?v=0.1.259';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.259';
+import { applyBack } from './card-backs.js?v=0.1.259';
+import { SETS, assignSets } from './sets.js?v=0.1.259';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.259';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.259';
+import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.259';
+import { progress } from './progress.js?v=0.1.259';
+import { SOLAR_SYSTEM } from './natural.js?v=0.1.259';
+import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.259';
+import { drawShareCard, shareCard } from './share-card.js?v=0.1.259';
+import { conArt } from './con-art.js?v=0.1.259';
+import { CON_BY_ID } from './constellations.js?v=0.1.259';
+import { allSightings, deleteSighting } from './store.js?v=0.1.259';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.259';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -526,7 +526,26 @@ boot().catch(() => {
   };
   let cols0 = 2; try { cols0 = Number(localStorage.getItem('gridCols')) || 2; } catch {}
   range.max = String(maxCols()); range.value = String(maxCols() + 1 - Math.min(maxCols(), cols0));
-  range.addEventListener('input', () => { applySize(); try { localStorage.setItem('gridCols', grid.dataset.cols); } catch {} });
+  // Smooth resize (2026-10-07, Sevaan): when the column count changes, every card on screen glides and scales from
+  // where it was to where it lands (FLIP), and the card you were looking at stays put on screen.
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const resize = () => {
+    const before = grid.dataset.cols;
+    const onScreen = [...grid.children].filter((el) => { const r = el.getBoundingClientRect(); return r.bottom > -200 && r.top < innerHeight + 200; });
+    const first = new Map(onScreen.map((el) => [el, el.getBoundingClientRect()]));
+    const anchor = onScreen.find((el) => first.get(el).top >= 0) ?? onScreen[0], anchorTop = anchor ? first.get(anchor).top : 0;
+    applySize();
+    if (grid.dataset.cols === before || reduced || !anchor) return;
+    scrollBy(0, anchor.getBoundingClientRect().top - anchorTop); // keep your place
+    for (const el of onScreen) {
+      const a = first.get(el), b = el.getBoundingClientRect(); if (!b.width) continue;
+      const dx = a.left - b.left, dy = a.top - b.top, sx = a.width / b.width;
+      if (Math.abs(dx) < 1 && Math.abs(dy) < 1 && Math.abs(sx - 1) < 0.01) continue;
+      el.animate([{ transform: `translate(${dx}px, ${dy}px) scale(${sx})`, transformOrigin: '0 0' }, { transform: 'none', transformOrigin: '0 0' }],
+        { duration: 340, easing: 'cubic-bezier(.2,.8,.2,1)' });
+    }
+  };
+  range.addEventListener('input', () => { resize(); try { localStorage.setItem('gridCols', grid.dataset.cols); } catch {} });
   addEventListener('resize', applySize);
   applySize();
 }
