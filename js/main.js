@@ -1,37 +1,37 @@
-import * as Secrets from './secrets.js?v=0.1.318';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.318';
-import * as Ufo from './ufo.js?v=0.1.318';
-import * as Fossil from './fossil.js?v=0.1.318';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.318';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.318';
-import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.318';
-import { VERSION } from './version.js?v=0.1.318';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.318';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.318';
-import { conArt } from './con-art.js?v=0.1.318';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.318';
-import { CON_FIGURES } from './con-figures.js?v=0.1.318';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.318';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.318';
-import { progress as progressOf } from './progress.js?v=0.1.318';
-import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.318';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.318';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.318';
-import { SkyView, shortName } from './sky.js?v=0.1.318';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, roadster, starVector } from './celestial.js?v=0.1.318';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.318';
-import { cardArt } from './art.js?v=0.1.318';
-import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.318';
-import { applyBack } from './card-backs.js?v=0.1.318';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.318';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.318';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.318';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.318';
-import { TIER_INFO } from './rarity.js?v=0.1.318';
-import { SETS } from './sets.js?v=0.1.318';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.318';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.318';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.318';
+import * as Secrets from './secrets.js?v=0.1.319';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.319';
+import * as Ufo from './ufo.js?v=0.1.319';
+import * as Fossil from './fossil.js?v=0.1.319';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.319';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.319';
+import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.319';
+import { VERSION } from './version.js?v=0.1.319';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.319';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.319';
+import { conArt } from './con-art.js?v=0.1.319';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.319';
+import { CON_FIGURES } from './con-figures.js?v=0.1.319';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.319';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.319';
+import { progress as progressOf } from './progress.js?v=0.1.319';
+import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.319';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.319';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.319';
+import { SkyView, shortName } from './sky.js?v=0.1.319';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, roadster, starVector } from './celestial.js?v=0.1.319';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.319';
+import { cardArt } from './art.js?v=0.1.319';
+import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.319';
+import { applyBack } from './card-backs.js?v=0.1.319';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.319';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.319';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.319';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.319';
+import { TIER_INFO } from './rarity.js?v=0.1.319';
+import { SETS } from './sets.js?v=0.1.319';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.319';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.319';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.319';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -66,7 +66,7 @@ const state = {
   model: null,     // SkyModel: tracks what's above the horizon
   items: [],       // latest interpolated positions: [{ obj, look }]
   binoculars: readPref('binoculars', false),
-  snap: readPref('snap', true),    // the targeting circle jumps onto a locked-on object
+  snap: readPref('snap', false),    // the targeting circle jumps onto a locked-on object
   lightSky: SKIES[readText('sky', DEFAULT_SKY)] ? readText('sky', DEFAULT_SKY) : DEFAULT_SKY, // light pollution where you are (old setting)
   skySb: null, // the sky slider: your sky's own darkness in mag/arcsec² (set below from storage or the old setting)
   trails: new Map(),
