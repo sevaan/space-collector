@@ -1,31 +1,31 @@
-import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.252';
-import { VERSION } from './version.js?v=0.1.252';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.252';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.252';
-import { conArt } from './con-art.js?v=0.1.252';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.252';
-import { CON_FIGURES } from './con-figures.js?v=0.1.252';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.252';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.252';
-import { progress as progressOf } from './progress.js?v=0.1.252';
-import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.252';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.252';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.252';
-import { SkyView, shortName } from './sky.js?v=0.1.252';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.252';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.252';
-import { cardArt } from './art.js?v=0.1.252';
-import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.252';
-import { applyBack } from './card-backs.js?v=0.1.252';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.252';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.252';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.252';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.252';
-import { TIER_INFO } from './rarity.js?v=0.1.252';
-import { SETS } from './sets.js?v=0.1.252';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.252';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.252';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.252';
+import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.253';
+import { VERSION } from './version.js?v=0.1.253';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.253';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.253';
+import { conArt } from './con-art.js?v=0.1.253';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.253';
+import { CON_FIGURES } from './con-figures.js?v=0.1.253';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.253';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.253';
+import { progress as progressOf } from './progress.js?v=0.1.253';
+import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.253';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.253';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.253';
+import { SkyView, shortName } from './sky.js?v=0.1.253';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.253';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.253';
+import { cardArt } from './art.js?v=0.1.253';
+import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.253';
+import { applyBack } from './card-backs.js?v=0.1.253';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.253';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.253';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.253';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.253';
+import { TIER_INFO } from './rarity.js?v=0.1.253';
+import { SETS } from './sets.js?v=0.1.253';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.253';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.253';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.253';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -417,7 +417,8 @@ function tick(ts) {
   // Only what's in the circle can be selected (2026-10-07, Sevaan); a brief 0.4 s grace stops it flickering at the
   // edge. With several in the circle, guess which one you mean: the one nearest the centre, nudged toward the one
   // you were already on (you're tracking it), a satellite over a star, and something new over something collected.
-  const pickScore = (it) => Math.acos(Math.min(1, it.angCos)) / RAD - (it.obj.id === state.targetId ? 1.5 : 0) - (it.obj.natural ? 0 : 1) - (isNewFind(it.obj) ? 1 : 0);
+  // Small nudges (2026-10-07): a slight tilt toward another object should hand the pick over, so the stickiness is light.
+  const pickScore = (it) => Math.acos(Math.min(1, it.angCos)) / RAD - (it.obj.id === state.targetId ? 0.5 : 0) - (it.obj.natural ? 0 : 0.5) - (isNewFind(it.obj) ? 0.4 : 0);
   const cands = [...items, ...naturals]
     .filter((it) => (it.look.visible || state.captureAny) && t - (state.sticky.get(it.obj.id) ?? -1e9) < 400)
     .sort((a, b) => pickScore(a) - pickScore(b))
@@ -698,10 +699,8 @@ function showMePass(p) {
   toast(`<span class="big-line">${escapeHtml(label(p.obj))}</span>${mins > 0 ? `Appears in the ${compassPoint(p.riseAz)} at ${fmtTime(p.start)}. Follow the arrow to where it will come up.` : `Up now, highest ${p.peakEl}° in the ${compassPoint(p.peakAz)}. Follow the arrow.`}`, 5000);
 }
 function switchLabel(o) {
-  // Say what the number means (2026-10-07, Sevaan: "1 of 2 what?"): more than one thing is in the circle; tap to switch.
-  const inC = state.candidates.filter((c) => c.candidate), n = inC.length;
-  if (n < 2 || !inC.some((c) => c.obj.id === o.id)) return '';
-  return n === 2 ? 'One more in the circle · tap to switch ›' : `${n - 1} more in the circle · tap to switch ›`;
+  // No tap-to-switch (2026-10-07, Sevaan): a slight tilt moves the pick (pickScore), so there is nothing to say here.
+  return '';
 }
 function renderTarget(target, d) {
   const bar = $('target'), disc = $('discover'), guide = $('guidance');
