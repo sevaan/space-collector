@@ -19,12 +19,13 @@
   <link rel="preload" href="fonts/RussoOne-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="fonts/BarlowCondensed-Medium.ttf" as="font" type="font/ttf" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600;650;700;750;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/cards.css?v=0.1.314">
-  <link rel="stylesheet" href="css/app.css?v=0.1.314">
-  <link rel="stylesheet" href="css/reveal.css?v=0.1.314">
-  <link rel="stylesheet" href="css/ui.css?v=0.1.314">
+  <link rel="stylesheet" href="css/cards.css?v=0.1.315">
+  <link rel="stylesheet" href="css/app.css?v=0.1.315">
+  <link rel="stylesheet" href="css/reveal.css?v=0.1.315">
+  <link rel="stylesheet" href="css/ui.css?v=0.1.315">
 </head>
 <body>
+  <video id="cam" playsinline muted autoplay hidden></video>
   <canvas id="sky" role="img" aria-label="Sky map aligned with your viewing direction"></canvas>
 
   <div id="hud" hidden>
@@ -218,7 +219,7 @@
     <div class="set-group set-test">
       <div class="row" id="sim-time-label"></div>
       <div class="row wrap"><button class="pill" data-time="-3600">−1h</button><button class="pill" data-time="-600">−10m</button><button class="pill" data-time="600">+10m</button><button class="pill" data-time="3600">+1h</button><button class="pill" data-time="now">Now</button></div>
-      <div class="row wrap"><button class="pill accent" id="btn-next-pass">Jump to next visible pass</button><button class="pill" id="btn-ufo">Summon the UFO</button><button class="pill" id="btn-santa">Summon Santa</button><button class="pill" id="btn-meteor">Shooting star</button></div>
+      <div class="row wrap"><button class="pill accent" id="btn-next-pass">Jump to next visible pass</button><button class="pill" id="btn-ufo">Summon the UFO</button><button class="pill" id="btn-santa">Summon Santa</button><button class="pill" id="btn-meteor">Shooting star</button><button class="pill" id="btn-cam">Camera view (prototype)</button><button class="pill" id="btn-fov-">Camera fit −</button><button class="pill" id="btn-fov+">Camera fit +</button></div>
       <label class="set-row"><span class="set-main">Show objects that aren't visible</span><input type="checkbox" class="set-tog" id="chk-dim"></label>
       <label class="set-row"><span class="set-main">Allow capturing anything</span><input type="checkbox" class="set-tog" id="chk-any"></label>
       <pre id="debug-info"></pre>
@@ -248,7 +249,7 @@
     </div></div>
   </section>
 
-  <script type="module" src="js/main.js?v=0.1.314"></script>
+  <script type="module" src="js/main.js?v=0.1.315"></script>
 <div id="rotate" role="status"><b>Turn your phone upright</b><span>Space Collector is made for portrait.</span></div>
 </body>
 </html>

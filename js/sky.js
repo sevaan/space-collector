@@ -1,9 +1,9 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.314';
+import { extinction } from './sky-limit.js?v=0.1.315';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.314';
-import { TIER_INFO } from './rarity.js?v=0.1.314';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.315';
+import { TIER_INFO } from './rarity.js?v=0.1.315';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -264,6 +264,8 @@ export class SkyView {
 
   drawBackground() {
     const ctx = this.ctx, t = this.theme, f = this.dayF ?? 0;
+    // Camera prototype (2026-10-08): the real sky is behind the canvas, so leave it clear (a faint dark veil at night).
+    if (this.camera) { ctx.clearRect(0, 0, this.w, this.h); if (f < 0.5) { ctx.fillStyle = `rgba(4,7,13,${(0.35 * (1 - f * 2)).toFixed(2)})`; ctx.fillRect(0, 0, this.w, this.h); } this.tone = this.tone ?? { a: t.bgBottom, b: t.bgTop, f }; return; }
     const g = ctx.createLinearGradient(0, 0, 0, this.h);
     if (f <= 0) { g.addColorStop(0, t.bgBottom); g.addColorStop(1, t.bgTop); this.tone = { a: t.bgBottom, b: t.bgTop, f: 0 }; }
     else {
@@ -461,7 +463,7 @@ export class SkyView {
         ground.push({ x: a.x + (b.x - a.x) * u, y: a.y + (b.y - a.y) * u });
       }
     }
-    if (!ground.length) return;
+    if (!ground.length || this.camera) return; // camera: the real ground is in the picture
     // The earth (2026-10-06): darker the further down you look, so the ground reads as ground, not more sky.
     const down = Math.max(0, Math.min(1, -this.basis.back[2] * 1.4));
     const night = this.theme === THEMES.night;
@@ -1090,12 +1092,12 @@ export class SkyView {
     this.drawBackground();
     if ((this.dayF ?? 0) < 0.2) this.drawMilkyWay(milky);
     if (sky && (this.dayF ?? 0) < 0.6) this.drawStars(sky, { lines: lines && this.dayF < 0.2, time: this.reducedMotion ? 0 : time, starLimit });
-    if (weather) this.drawWeather(weather, this.reducedMotion ? 0 : time);
+    if (weather && !this.camera) this.drawWeather(weather, this.reducedMotion ? 0 : time); // the camera shows the real clouds
     if (bodies) this.drawBodies(bodies);
     if (ghosts?.length) this.drawGhosts(ghosts);
     this.feetA = Math.max(0, Math.min(1, (-this.basis.back[2] - 0.8) / 0.1)); // fades in from ~53° down, full by ~64° (it is on the ground now, so it can show sooner)
     this.drawGround();
-    if (landscape) this.drawLandscape();
+    if (landscape && !this.camera) this.drawLandscape();
     this.drawGroundCompass();
     if (fossil) this.drawFossil(fossil);
     // Looking down: the quiet ring takes over from the see-through ghosts (same things, by rise direction).
