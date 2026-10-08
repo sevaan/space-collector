@@ -505,3 +505,6 @@ body.day #radar-up, body.day #radar-up b { color: #143046; }
 body:has(.overlay.panel:not([hidden])) #banner { display: none; } /* the standing message waits while a panel is open */
 body:has(#discover:not([hidden])) #banner { display: none; } /* the standing message steps aside while something is in the circle */
 body.day #toasts { bottom: calc(var(--safe-bottom) + 84px) !important; } /* no sky slider by day: toasts sit just above the switcher */
+/* The event chip wears the next-up chip's look exactly (2026-10-08): same glass, same soft edge, no orange border. */
+#event-banner { border: 1px solid var(--edge-soft) !important; background: color-mix(in srgb, var(--bg) 78%, transparent) !important; }
+#event-banner .np-k { color: var(--muted); }
