@@ -160,7 +160,7 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   writes them to js/art-files.js `ART_STARS` ({r: width/height, s: [[x,y] fractions]}); `artStars` in js/card.js
   adds sparkles on them in a layer that mimics object-fit: cover (container query units). Full cards only.
 - Repeat sightings log themselves (2026-10-05): an owned object held in the circle for 1.2 s while visible is logged
-  once per pass (natural objects once a night) by `autoLog` in js/main.js, with a toast (level-ups called out).
+  once per pass (natural objects once a night) by `autoLog` in js/main.js, quietly: a toast only for a shiny or a level-up (no "Seen again" toast, 2026-10-07).
   Tapping the mini card no longer needs to be what logs it.
 - Collection viewer: no "Collected <date>" line under the card (the card shows it); flick the card up to close.
 - Card footer shows "SEEN N TIME(S)" after the collected date (`card__seen-count`; NOT `.card__seen`, an old boxed style). Settings → Pointing → "Snap the circle onto what you're aiming at" (pref `snap`, default on; `sky.snap` in `updateRing`).
