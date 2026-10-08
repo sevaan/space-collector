@@ -1,9 +1,9 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.278';
+import { extinction } from './sky-limit.js?v=0.1.279';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.278';
-import { TIER_INFO } from './rarity.js?v=0.1.278';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.279';
+import { TIER_INFO } from './rarity.js?v=0.1.279';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -558,6 +558,38 @@ export class SkyView {
     ctx.restore();
   }
 
+  // The buried fossil (js/fossil.js): drawn in the daytime soil, lying along the ground (its baseline follows the
+  // ground's horizontal at that spot). Faint and blended until it's in the circle; then full colour with a glow,
+  // a quiet line above and a hold ring that fills. f: { enu, img, inCircle, hold (0..1) }.
+  drawFossil(f) {
+    const dayF = this.theme === THEMES.night ? 0 : (this.dayF ?? 0);
+    if (!f?.img?.complete || !f.img.naturalWidth || dayF < 0.5) return;
+    const p = this.project(f.enu); if (!p || !this.onScreen(p, 160)) return;
+    const az = (Math.atan2(f.enu[0], f.enu[1]) / RAD + 360) % 360, el = Math.asin(f.enu[2]) / RAD;
+    const a = this.project(enuFromAzEl(az - 6, el)), b = this.project(enuFromAzEl(az + 6, el)); if (!a || !b) return;
+    const ang = Math.atan2(b.y - a.y, b.x - a.x), span = Math.hypot(b.x - a.x, b.y - a.y) * 1.9; // ~23° of ground
+    const w = Math.max(70, Math.min(this.w * 0.75, span)), h = w * f.img.naturalHeight / f.img.naturalWidth;
+    const ctx = this.ctx, k = Math.min(1, (dayF - 0.5) * 4);
+    ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(ang > Math.PI / 2 || ang < -Math.PI / 2 ? ang + Math.PI : ang);
+    if (f.inCircle) { ctx.shadowColor = 'rgba(255,229,192,.55)'; ctx.shadowBlur = 14; ctx.globalAlpha = 0.95 * k; }
+    else { ctx.globalCompositeOperation = 'soft-light'; ctx.globalAlpha = 0.9 * k; ctx.drawImage(f.img, -w / 2, -h / 2, w, h); ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 0.18 * k; }
+    ctx.drawImage(f.img, -w / 2, -h / 2, w, h);
+    ctx.restore();
+    if (f.inCircle) {
+      const rc = this.ring ?? { x: this.cx, y: this.cy, r: this.reticlePx };
+      ctx.save(); ctx.textAlign = 'center'; ctx.shadowColor = 'rgba(0,0,0,.6)'; ctx.shadowBlur = 4;
+      if ('letterSpacing' in ctx) ctx.letterSpacing = '2.5px';
+      ctx.font = `500 12px ${FONT}`; ctx.fillStyle = 'rgba(232,217,184,.9)'; ctx.fillText(`BELOW THE HORIZON · ${Math.round(-el)}° DOWN`, rc.x, rc.y - rc.r - 54);
+      if ('letterSpacing' in ctx) ctx.letterSpacing = '1px';
+      ctx.font = `400 22px ${DISPLAY_FONT}`; ctx.fillStyle = 'rgb(255,242,179)'; ctx.fillText(f.done ? f.name.toUpperCase() : "SOMETHING'S BURIED HERE…", rc.x, rc.y - rc.r - 26);
+      if ('letterSpacing' in ctx) ctx.letterSpacing = '2.5px';
+      ctx.font = `500 13px ${FONT}`; ctx.fillStyle = 'rgba(232,217,184,.9)'; ctx.fillText(f.done ? 'A FOSSIL, RIGHT UNDER YOUR FEET' : 'HOLD IT IN THE CIRCLE', rc.x, rc.y + rc.r + 34);
+      if (!f.done && f.hold > 0) { ctx.shadowBlur = 0; ctx.strokeStyle = 'rgba(255,229,192,.95)'; ctx.lineWidth = 3; ctx.lineCap = 'round';
+        ctx.beginPath(); ctx.arc(rc.x, rc.y, rc.r + 9, -Math.PI / 2, -Math.PI / 2 + f.hold * Math.PI * 2); ctx.stroke(); }
+      ctx.restore();
+    }
+  }
+
   // The quiet ring at your feet (design/compass-feet.html, option C): a thin compass ring drawn flat on the
   // screen around the point straight below you, turning as you turn. Everything below the horizon sits on the ring
   // at the direction it will come up, with its time. Nothing in the middle. Fades in as you look down.
@@ -902,7 +934,7 @@ export class SkyView {
 
   // safeTop/safeBottom are HUD insets in CSS pixels; centerY is an optional pixel
   // override. Projection and the reticle always share the same cx/cy.
-  draw(basis, items, { showDim, sky, bodies, milky, lines = true, targetId = null, time = 0, safeTop = 150, safeBottom = 230, centerY, starLimit = null, naturalTargetName = null, quietTarget = false, below = null, ownedTarget = false, sunEl = -90, ghosts = null, weather = null, newFind = false, rising = null, landscape = false, lockedOn = null, planes = null, planeHit = null, planeTrail = null, naturalTarget = null } = {}) {
+  draw(basis, items, { showDim, sky, bodies, milky, lines = true, targetId = null, time = 0, safeTop = 150, safeBottom = 230, centerY, starLimit = null, naturalTargetName = null, quietTarget = false, below = null, ownedTarget = false, sunEl = -90, ghosts = null, weather = null, newFind = false, rising = null, landscape = false, lockedOn = null, planes = null, planeHit = null, planeTrail = null, naturalTarget = null, fossil = null } = {}) {
     this.basis = basis;
     this.safeTop = Math.max(12, Math.min(safeTop, this.h * 0.45));
     this.safeBottom = Math.max(12, Math.min(safeBottom, this.h - this.safeTop - 100));
@@ -926,6 +958,7 @@ export class SkyView {
     this.drawGround();
     if (landscape) this.drawLandscape();
     this.drawGroundCompass();
+    if (fossil) this.drawFossil(fossil);
     // Looking down: the quiet ring takes over from the see-through ghosts (same things, by rise direction).
     this.belowFree = !targetId && !planeHit; // the circle can name a below-horizon thing only when it isn't busy
     if (below?.length && this.basis.back[2] < 0.15 && this.feetA < 0.98) this.drawBelow(below);

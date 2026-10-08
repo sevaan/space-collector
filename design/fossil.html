@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Buried Fossil</title>
+<style>
+  @font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf'); font-weight: 500; }
+  @font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf'); }
+  :root { --ink: #fff2b3; --muted: #bdbea9; --orange: #fa8127; }
+  body { margin: 0; background: #04070d; color: #e8eef6; font: 15px/1.45 -apple-system, system-ui, sans-serif; padding: 24px 16px 60px; }
+  h1.t { font-size: 20px; margin: 0 0 6px; } .intro { color: #9fb0c6; margin: 0 0 22px; max-width: 980px; }
+  .row { display: flex; flex-wrap: wrap; gap: 18px; justify-content: center; }
+  .cell { width: 390px; max-width: 100%; } .cell h2 { font-size: 16px; margin: 10px 0 4px; } .cell p { color: #9fb0c6; font-size: 13.5px; margin: 0; }
+  .phone { position: relative; width: 390px; height: 720px; max-width: 100%; border-radius: 30px; overflow: hidden; border: 1px solid #1d2838; background: #4e3d2e; }
+  .soil { position: absolute; inset: 0; }
+  .lab { font: 500 12px/1.2 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .16em; text-transform: uppercase; }
+  .hdr { position: absolute; left: 0; right: 0; top: 0; height: 96px; padding: 20px; box-sizing: border-box; display: flex; justify-content: space-between; background: linear-gradient(#0a0f18, #0a0f1800); }
+  .hdr b { font: 400 15px 'SC Display', sans-serif; color: var(--ink); }
+  .nav { position: absolute; left: 28px; right: 28px; bottom: 26px; height: 44px; border-radius: 99px; border: 1px solid #3a4a5e; display: flex; align-items: center; justify-content: space-around; color: #fff2b38c; font: 500 13px 'SC Label', sans-serif; letter-spacing: .14em; background: #080e1acc; }
+  .nav b { color: var(--orange); font-weight: 500; }
+  .ret { position: absolute; left: 50%; top: 330px; width: 124px; height: 124px; margin: -62px 0 0 -62px; border-radius: 50%; border: 1.5px solid #fff2b3cc; }
+  .ret::before { content: ''; position: absolute; inset: -6px; border-radius: 50%; border: 1px solid #fff2b355; }
+  .ret i { position: absolute; background: var(--orange); } .ret .a { left: 50%; top: -16px; width: 2px; height: 10px; } .ret .b { left: 50%; bottom: -16px; width: 2px; height: 10px; } .ret .c { top: 50%; left: -16px; height: 2px; width: 10px; } .ret .d { top: 50%; right: -16px; height: 2px; width: 10px; }
+  .fossil { position: absolute; }
+  .say { position: absolute; left: 0; right: 0; text-align: center; }
+  .say small { display: block; color: #e8d9b8; opacity: .8; } .say b { display: block; margin-top: 6px; font: 400 18px/1 'SC Display', sans-serif; color: var(--ink); text-transform: uppercase; text-shadow: 0 2px 6px #0008; }
+  .moment { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 45%, rgba(8, 15, 27, .86), rgba(4, 7, 13, .96)); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; text-align: center; }
+  .moment .p { width: 230px; filter: drop-shadow(0 18px 30px #000a); }
+  .moment small { display: block; font: 500 13px 'SC Label', sans-serif; letter-spacing: .22em; color: var(--orange); }
+  .moment b { display: block; margin-top: 8px; font: 400 28px/1 'SC Display', sans-serif; color: var(--ink); text-transform: uppercase; }
+  .moment span { display: block; margin-top: 8px; font: 500 15px/1.3 'SC Label', sans-serif; color: #fff2b3b3; max-width: 280px; }
+  .grid line, .grid path { stroke: #8fb3cf; stroke-opacity: .22; fill: none; }
+</style></head><body>
+<h1 class="t">Easter egg: a fossil under your feet</h1>
+<p class="intro">Daytime only, in the soil. One fixed spot per player (a seeded direction and depth), never mentioned anywhere. Faint at first; line it up and it clears, with a quiet line. Finding it earns a secret patch that only appears on the wall once you have it.</p>
+<div class="row" id="b"></div>
+<script type="module">
+import { patchHtml } from '../js/patches.js';
+// soil with grit, like the app's daytime ground
+let seed = 11; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+const soil = (dark = 0) => `<svg class="soil" viewBox="0 0 390 720" preserveAspectRatio="none"><rect width="390" height="720" fill="rgb(${78 - dark},${60 - dark},${44 - dark})"/>
+  ${Array.from({ length: 420 }, () => { const x = rnd() * 390, y = rnd() * 720, r = 0.5 + rnd() * 1.6, light = rnd() < 0.33; return `<ellipse cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" rx="${(r * 1.3).toFixed(2)}" ry="${r.toFixed(2)}" fill="${light ? 'rgba(170,145,110,.22)' : 'rgba(40,28,18,.3)'}"/>`; }).join('')}
+  <g class="grid"><path d="M-20 520 Q195 470 410 520"/><path d="M-20 250 Q195 215 410 250"/><line x1="70" y1="0" x2="120" y2="720"/><line x1="320" y1="0" x2="270" y2="720"/></g></svg>`;
+// The real skeletons (assets/art/fossils, from Sevaan's sheet): a random one each time you open the app.
+const DINOS = await (await fetch('../assets/art/fossils/index.json')).json();
+const pick = DINOS[Math.floor(Math.random() * DINOS.length)];
+// In the soil: low opacity, a little desaturated and blended into the ground so it reads as buried, not pasted on.
+const skeleton = (op = .35, glow = false, d = pick) => `<img src="../assets/art/fossils/${d.file}" alt="" style="width:100%;display:block;opacity:${op};mix-blend-mode:${glow ? 'normal' : 'screen'};filter:${glow ? 'drop-shadow(0 0 8px #ffe5c088)' : 'saturate(.5) sepia(.3)'}">`;
+const ret = '<div class="ret"><i class="a"></i><i class="b"></i><i class="c"></i><i class="d"></i></div>';
+const hdr = '<div class="hdr"><b>SPACE COLLECTOR</b><span class="lab" style="color:#bdbea9">☾ ≡</span></div>';
+const nav = '<div class="nav"><b>EXPLORE</b><span>COLLECTION</span></div>';
+// A dinosaur skull in the patch's line style (cream, orange eye), replacing the text icon.
+const SKULL = '<g transform="translate(-30 -18) scale(1.05)" fill="none" stroke="#fff2b3" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22 Q0 8 16 4 L42 2 Q56 4 58 16 L56 28 Q46 34 30 32 Z"/><path d="M8 28 Q16 42 38 38 L52 32"/><path d="M12 32 l2 5 M20 35 l1 5 M28 36 l1 5 M36 36 l1 5"/><circle cx="44" cy="13" r="5" fill="#fa8127" stroke="none"/><path d="M16 14 L30 16"/></g>';
+const fossilHunter = { id: 'fossil', name: 'Fossil Hunter', text: 'Find what is buried under your feet', icon: 'T' };
+const f1 = `${soil()}<div class="fossil" style="left:206px;top:470px;width:150px;transform:rotate(-8deg)">${skeleton(.3)}</div>${ret}${hdr}${nav}`;
+const f2 = `${soil(4)}<div class="fossil" style="left:118px;top:296px;width:170px;transform:rotate(-8deg)">${skeleton(.75, true)}</div>${ret}
+  <div class="say lab" style="top:205px"><small>Below the horizon · 50° down</small><b>Something's buried here…</b></div>
+  <div class="say lab" style="top:420px;color:#e8d9b8">Hold it in the circle</div>${hdr}${nav}`;
+const f3 = `${soil(4)}<div class="moment"><div class="p">${patchHtml(fossilHunter).replace(/<text y="[^"]*"[^>]*>T<\/text>/, SKULL).replace('COLLECTION', 'SECRET').replace(/fill="#14284a"/g, 'fill="#5a4024"')}</div><div><small>SECRET PATCH</small><b>Fossil Hunter</b><span>You looked through the Earth and found a ${pick.name}. Most people only look up.</span></div></div>${nav}`;
+const cells = [
+  ['1 · Looking down in daylight', 'Somewhere in the soil, faint and half-sunk among the grit: easy to miss, which is the point. Always at the same spot for you, so you can come back to it.', f1],
+  ['2 · Lined up', 'In the circle it clears and glows a little, with a quiet line above. No Tap to collect: you hold it there for a second, like steadying on a satellite.', f2],
+  ['0 · Ten of them', 'A different skeleton each time you open the app (this page picks one at random too: reload it). Same buried spot, so once you know where to look you can check who\'s there today.', `${soil(2)}<div style="position:absolute;inset:70px 18px 90px;display:grid;grid-template-columns:1fr 1fr;gap:14px 16px;align-content:center">${DINOS.map((d) => `<div style="text-align:center">${skeleton(.9, false, d)}<div class="lab" style="margin-top:4px;color:#e8d9b8;font-size:10px">${d.name}</div></div>`).join('')}</div>${hdr}`],
+  ['3 · The secret patch', 'Held for a second: the patch moment, "Secret patch · Fossil Hunter". It joins the wall only now; until then there\'s no empty slot hinting at it.', f3],
+];
+document.getElementById('b').innerHTML = cells.map(([t, d, f]) => `<div class="cell"><div class="phone">${f}</div><h2>${t}</h2><p>${d}</p></div>`).join('');
+</script></body></html>

@@ -7,9 +7,9 @@ export const GROUPS = {
   collect: { c: '#14284a', t: 'Collection' }, rarity: { c: '#3a2259', t: 'Rarity' }, rocket: { c: '#5a2a1a', t: 'Rockets' },
   nation: { c: '#173d5c', t: 'Nations' }, history: { c: '#4a3a22', t: 'History' }, fleet: { c: '#10433f', t: 'Fleets' },
   planet: { c: '#5a3814', t: 'Solar system' }, con: { c: '#22265a', t: 'Constellations' }, sky: { c: '#1d4a2a', t: 'Sky skills' },
-  time: { c: '#4f1c27', t: 'Time' },
+  time: { c: '#4f1c27', t: 'Time' }, secret: { c: '#4a3420', t: 'Secret' },
 };
-export const GROUP_ORDER = ['collect', 'rarity', 'rocket', 'nation', 'history', 'fleet', 'planet', 'con', 'sky', 'time'];
+export const GROUP_ORDER = ['secret', 'collect', 'rarity', 'rocket', 'nation', 'history', 'fleet', 'planet', 'con', 'sky', 'time'];
 
 const GROUP_OF = {
   collect: 'first ten twentyfive fifty hundred archivist curator catalogue sightings100 station stations satellites50 silver gold gold3 missions10',
@@ -24,7 +24,7 @@ const GROUP_OF = {
   time: 'twilight owl dawn marathon double hattrick months3 months12 streak4 streak12 anniversary',
 };
 const groupById = new Map(Object.entries(GROUP_OF).flatMap(([g, ids]) => ids.split(' ').map((id) => [id, g])));
-export const groupOf = (a) => groupById.get(a.id) ?? 'collect';
+export const groupOf = (a) => (a.secret ? 'secret' : groupById.get(a.id) ?? 'collect');
 
 // Picture icons where one reads better than the achievement's text icon.
 const GLYPH = {
@@ -71,7 +71,9 @@ let uid = 0;
 // The patch as an SVG string. locked: a faint stitch outline (not earned yet). date: replaces the group along the
 // bottom ("EARNED 07 OCT 2026"). stitch: adds the thread that draws the border on (the earning moment).
 export function patchSvg(a, { locked = false, date = '', stitch = false } = {}) {
-  const g = GROUPS[groupOf(a)], id = `pt${uid++}`, R = 60, ic = glyph(GLYPH[a.id], a.icon);
+  const g = GROUPS[groupOf(a)], id = `pt${uid++}`, R = 60, fossil = a.id === 'fossil';
+  // Fossil Hunter (design/fossil-patch.html A): the T. rex skeleton art, centred on its bones, no inner ring.
+  const ic = fossil ? '<image href="assets/art/fossils/patch.svg" x="-46" y="-17.5" width="92" height="43"/>' : glyph(GLYPH[a.id], a.icon);
   if (locked) {
     const ghost = ic.replace(/fill="(?!none)[^"]*"/g, 'fill="none"').replace(/<(polygon|rect|circle|path|ellipse|polyline|text)/g, '<$1 stroke="#627a8b" stroke-width="1.5"');
     // Faintly in its group's colour (2026-10-08 playtest: a new player's wall read as a dark void).
@@ -83,10 +85,10 @@ export function patchSvg(a, { locked = false, date = '', stitch = false } = {}) 
     <pattern id="${id}w" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="4" height="4" fill="${g.c}"/><rect width="2" height="4" fill="#ffffff08"/></pattern>
     ${stitch ? `<mask id="${id}m"><circle class="patch-thread" r="${R - 3}" fill="none" stroke="#fff" stroke-width="10" pathLength="100" transform="rotate(-90)"/></mask>` : ''}</defs>
     <circle r="${R + 1}" fill="#00000055" transform="translate(0 2)"/><circle r="${R}" fill="#e8dfb8"/><g stroke="#b9ad7e" stroke-width="1.6"${stitch ? ` mask="url(#${id}m)"` : ''}>${stitches}</g>
-    <circle r="${R - 7}" fill="url(#${id}w)"/><circle r="${R - 22}" fill="none" stroke="${INK}" stroke-opacity=".35" stroke-width="1"/>
+    <circle r="${R - 7}" fill="url(#${id}w)"/>${fossil ? '' : `<circle r="${R - 22}" fill="none" stroke="${INK}" stroke-opacity=".35" stroke-width="1"/>`}
     <text font-family="SC Label, Arial Narrow, sans-serif" font-size="${nameSize}" letter-spacing="2" fill="${INK}" text-anchor="middle"><textPath href="#${id}t" startOffset="50%">${esc(name)}</textPath></text>
     <text font-family="SC Label, Arial Narrow, sans-serif" font-size="8.5" letter-spacing="2" fill="${OR}" text-anchor="middle" dy="7"><textPath href="#${id}b" startOffset="50%">${esc(date || g.t.toUpperCase())}</textPath></text>
-    <g transform="scale(.82)">${ic}</g></svg>`;
+    ${fossil ? ic : `<g transform="scale(.82)">${ic}</g>`}</svg>`;
 }
 // The patch wrapped with its finish layer (gold / holo sheen), as used on the wall, the detail view and the moment.
 export function patchHtml(a, opts = {}) {

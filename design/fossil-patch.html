@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fossil Hunter Patch</title>
+<style>
+  @font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf'); font-weight: 500; }
+  @font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf'); }
+  body { margin: 0; background: radial-gradient(ellipse at 50% 30%, #13233a, #04070d 70%); color: #e8eef6; font: 15px/1.45 -apple-system, system-ui, sans-serif; padding: 24px 16px 60px; min-height: 100vh; box-sizing: border-box; }
+  h1 { font-size: 20px; margin: 0 0 6px; } .intro { color: #9fb0c6; margin: 0 0 26px; max-width: 900px; }
+  .row { display: flex; flex-wrap: wrap; gap: 30px; justify-content: center; }
+  figure { margin: 0; width: 250px; text-align: center; } svg { width: 250px; height: 250px; filter: drop-shadow(0 14px 22px #000a); }
+  figcaption b { display: block; margin-top: 12px; font: 400 17px 'SC Display', sans-serif; color: #fff2b3; text-transform: uppercase; }
+  figcaption span { display: block; margin-top: 4px; color: #9fb0c6; font-size: 13px; }
+</style></head><body>
+<h1>Fossil Hunter: patch options</h1>
+<p class="intro">All use the real skeleton art from your sheet, stitched onto the same embroidered roundel as the other patches. Earthy twill (the soil), cream thread.</p>
+<div class="row" id="r"></div>
+<script type="module">
+const R = 60, INK = '#fff2b3', OR = '#fa8127';
+// Centre on the bones actually drawn: measure the art's real bounding box in a hidden SVG (2026-10-08, A sat high/left).
+const measure = (inner, vb) => { const h = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); h.setAttribute('style', 'position:absolute;visibility:hidden'); h.innerHTML = `<g>${inner}</g>`; document.body.append(h); const b = h.firstChild.getBBox(); h.remove(); return [b.x, b.y, b.width, b.height]; };
+const load0 = async (i) => { const t = await (await fetch(`../assets/art/fossils/${i}.svg`)).text(); const vb = t.match(/viewBox="([^"]+)"/)[1].split(' ').map(Number); return { inner: t.replace(/^<svg[^>]*>/, '').replace(/<\/svg>$/, ''), vb }; };
+// Place a skeleton (its own viewBox) inside a box centred at cx,cy of width w, optional rotation.
+const place = ({ inner, vb }, w, cx = 0, cy = 0, rot = 0, extra = '') => { const s = w / vb[2], h = vb[3] * s; return `<g transform="translate(${cx} ${cy}) rotate(${rot}) translate(${-w / 2} ${-h / 2}) scale(${s}) translate(${-vb[0]} ${-vb[1]})" ${extra}>${inner}</g>`; };
+let n = 0;
+function roundel({ twill, top, bottom, center, rim = '#e8dfb8', rimStitch = '#b9ad7e', innerRing = true, dig = false }) {
+  const id = `f${n++}`;
+  const stitches = Array.from({ length: 90 }, (_, i) => { const t = i * 4 * Math.PI / 180; return `<line x1="${(Math.cos(t) * (R - 6)).toFixed(2)}" y1="${(Math.sin(t) * (R - 6)).toFixed(2)}" x2="${(Math.cos(t) * R).toFixed(2)}" y2="${(Math.sin(t) * R).toFixed(2)}"/>`; }).join('');
+  return `<svg viewBox="-64 -64 128 128"><defs><path id="${id}t" d="M-42 0 A42 42 0 0 1 42 0"/><path id="${id}b" d="M-44 0 A44 44 0 0 0 44 0"/>
+    <pattern id="${id}w" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="4" height="4" fill="${twill}"/><rect width="2" height="4" fill="#ffffff08"/></pattern>
+    <clipPath id="${id}c"><circle r="${R - 8}"/></clipPath></defs>
+    <circle r="${R + 1}" fill="#00000055" transform="translate(0 2)"/><circle r="${R}" fill="${rim}"/><g stroke="${rimStitch}" stroke-width="1.6">${stitches}</g>
+    <circle r="${R - 7}" fill="url(#${id}w)"/>
+    <g clip-path="url(#${id}c)">${dig ? `<path d="M-60 14 Q-30 6 0 12 Q30 18 60 10 L60 60 L-60 60Z" fill="#3a2a1c" opacity=".55"/><path d="M-60 14 Q-30 6 0 12 Q30 18 60 10" fill="none" stroke="${INK}" stroke-opacity=".3" stroke-dasharray="2 3"/>` : ''}${center}</g>
+    ${innerRing ? `<circle r="${R - 22}" fill="none" stroke="${INK}" stroke-opacity=".3" stroke-width="1"/>` : ''}
+    <text font-family="SC Label" font-size="10.5" letter-spacing="2" fill="${INK}" text-anchor="middle"><textPath href="#${id}t" startOffset="50%">${top}</textPath></text>
+    <text font-family="SC Label" font-size="8.5" letter-spacing="2" fill="${OR}" text-anchor="middle" dy="7"><textPath href="#${id}b" startOffset="50%">${bottom}</textPath></text></svg>`;
+}
+const load = async (i) => { const r = await load0(i); return { ...r, vb: measure(r.inner, r.vb) }; };
+const T = await load(0), Tri = await load(2), Rap = await load(4), Pter = await load(9);
+const opts = [
+  ['A · The T. rex', 'The classic. Your Tyrannosaurus walking across the patch, big and centred.', roundel({ twill: '#4a3420', top: 'FOSSIL HUNTER', bottom: 'SECRET', innerRing: false, center: place(T, 92, 0, 4) })],
+  ['B · The dig site', 'The skeleton half-buried below a dotted soil line, like an excavation: matches how you find it in the ground.', roundel({ twill: '#3a4d66', top: 'FOSSIL HUNTER', bottom: 'DIG SITE', innerRing: false, dig: true, center: place(T, 88, 0, 6) })],
+  ['C · Raptor on the run', 'More motion: the Velociraptor leaping, breaking out over the inner ring.', roundel({ twill: '#4f1c27', top: 'FOSSIL HUNTER', bottom: 'SECRET', center: place(Rap, 96, 2, 0, -6) })],
+  ['D · Triceratops', 'Friendlier and chunkier: reads well even at toast size.', roundel({ twill: '#1d4a2a', top: 'FOSSIL HUNTER', bottom: 'SECRET', innerRing: false, center: place(Tri, 92, 0, 0) })],
+  ['E · Earth and sky', 'The idea in one picture: a Pteranodon above the horizon line, the T. rex below it. You looked through the Earth.', roundel({ twill: '#14284a', top: 'FOSSIL HUNTER', bottom: 'BELOW THE HORIZON', innerRing: false, center: `<path d="M-60 6 L60 6 L60 60 L-60 60Z" fill="#4a3420"/><line x1="-60" y1="6" x2="60" y2="6" stroke="${OR}" stroke-width="1.2"/>` + place(Pter, 44, 14, -18) + place(T, 66, -2, 24) })],
+];
+document.getElementById('r').innerHTML = opts.map(([t, d, s]) => `<figure>${s}<figcaption><b>${t}</b><span>${d}</span></figcaption></figure>`).join('');
+</script></body></html>
