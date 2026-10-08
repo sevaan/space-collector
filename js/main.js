@@ -1,37 +1,37 @@
-import * as Secrets from './secrets.js?v=0.1.325';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.325';
-import * as Ufo from './ufo.js?v=0.1.325';
-import * as Fossil from './fossil.js?v=0.1.325';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.325';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.325';
-import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.325';
-import { VERSION } from './version.js?v=0.1.325';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.325';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.325';
-import { conArt } from './con-art.js?v=0.1.325';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.325';
-import { CON_FIGURES } from './con-figures.js?v=0.1.325';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.325';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.325';
-import { progress as progressOf } from './progress.js?v=0.1.325';
-import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.325';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.325';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge, lockHeading } from './sensors.js?v=0.1.325';
-import { SkyView, shortName } from './sky.js?v=0.1.325';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, roadster, starVector } from './celestial.js?v=0.1.325';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.325';
-import { cardArt } from './art.js?v=0.1.325';
-import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.325';
-import { applyBack } from './card-backs.js?v=0.1.325';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.325';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.325';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.325';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.325';
-import { TIER_INFO } from './rarity.js?v=0.1.325';
-import { SETS } from './sets.js?v=0.1.325';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.325';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.325';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.325';
+import * as Secrets from './secrets.js?v=0.1.326';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.326';
+import * as Ufo from './ufo.js?v=0.1.326';
+import * as Fossil from './fossil.js?v=0.1.326';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.326';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.326';
+import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.326';
+import { VERSION } from './version.js?v=0.1.326';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.326';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.326';
+import { conArt } from './con-art.js?v=0.1.326';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.326';
+import { CON_FIGURES } from './con-figures.js?v=0.1.326';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.326';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.326';
+import { progress as progressOf } from './progress.js?v=0.1.326';
+import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.326';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.326';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge, lockHeading } from './sensors.js?v=0.1.326';
+import { SkyView, shortName } from './sky.js?v=0.1.326';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, roadster, starVector } from './celestial.js?v=0.1.326';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.326';
+import { cardArt } from './art.js?v=0.1.326';
+import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.326';
+import { applyBack } from './card-backs.js?v=0.1.326';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.326';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.326';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.326';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.326';
+import { TIER_INFO } from './rarity.js?v=0.1.326';
+import { SETS } from './sets.js?v=0.1.326';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.326';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.326';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.326';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -2327,7 +2327,7 @@ async function camOn() {
   } catch { toast('Camera not available (or permission declined).', 3500); return; }
   const v = $('cam'); v.srcObject = camStream; v.hidden = false; await v.play().catch(() => {});
   document.body.classList.add('cam-on'); sky.camera = true; sky.fovV = Number(readText('camFov', '62')) || 62; sky.resize?.();
-  ticket({ kind: 'info', line: hasLiveSensors() ? 'Drawing off? Drag sideways to line it up.' : 'Camera on. Drag to look around.', ms: 3500 }); // a short toast at the bottom (2026-10-08)
+  ticket({ kind: 'info', line: hasLiveSensors() ? 'Sky misaligned? Drag sideways to line it up.' : 'Camera on. Drag to look around.', ms: 3500 }); // a short toast at the bottom (2026-10-08)
 }
 function camOff() {
   camStream?.getTracks().forEach((t) => t.stop()); camStream = null; $('cam').hidden = true; $('cam').srcObject = null;
