@@ -1,36 +1,36 @@
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.285';
-import * as Ufo from './ufo.js?v=0.1.285';
-import * as Fossil from './fossil.js?v=0.1.285';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.285';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.285';
-import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.285';
-import { VERSION } from './version.js?v=0.1.285';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.285';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.285';
-import { conArt } from './con-art.js?v=0.1.285';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.285';
-import { CON_FIGURES } from './con-figures.js?v=0.1.285';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.285';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.285';
-import { progress as progressOf } from './progress.js?v=0.1.285';
-import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.285';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.285';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.285';
-import { SkyView, shortName } from './sky.js?v=0.1.285';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.285';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.285';
-import { cardArt } from './art.js?v=0.1.285';
-import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.285';
-import { applyBack } from './card-backs.js?v=0.1.285';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.285';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.285';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.285';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.285';
-import { TIER_INFO } from './rarity.js?v=0.1.285';
-import { SETS } from './sets.js?v=0.1.285';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.285';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.285';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.285';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.286';
+import * as Ufo from './ufo.js?v=0.1.286';
+import * as Fossil from './fossil.js?v=0.1.286';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.286';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.286';
+import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.286';
+import { VERSION } from './version.js?v=0.1.286';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.286';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.286';
+import { conArt } from './con-art.js?v=0.1.286';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.286';
+import { CON_FIGURES } from './con-figures.js?v=0.1.286';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.286';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.286';
+import { progress as progressOf } from './progress.js?v=0.1.286';
+import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.286';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.286';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.286';
+import { SkyView, shortName } from './sky.js?v=0.1.286';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.286';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.286';
+import { cardArt } from './art.js?v=0.1.286';
+import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.286';
+import { applyBack } from './card-backs.js?v=0.1.286';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.286';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.286';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.286';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.286';
+import { TIER_INFO } from './rarity.js?v=0.1.286';
+import { SETS } from './sets.js?v=0.1.286';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.286';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.286';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.286';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -1659,7 +1659,7 @@ function obSkyArt() {
   const v = state.skySb.toFixed(2);
   return `<div class="ob-sky"><div class="ob-stars">${[1.5, 2.5, 3.5, 4.5, 5.5].map((m, i) => `<i data-m="${m}" style="--s:${5 - i * 0.7}px"></i>`).join('')}</div>
     <input type="range" class="ob-range" min="${SB_MIN}" max="${SB_MAX}" step="0.05" value="${v}" aria-label="How dark is your sky">
-    <div class="ob-ends"><span>Bright</span><span>Dark</span></div></div>`;
+    <div class="ob-ends"><span>In the city</span><span>Countryside</span></div></div>`;
 }
 function obWireSky(card) {
   const r = card.querySelector('.ob-range'); if (!r) return;
@@ -1684,8 +1684,8 @@ async function runOnboarding(force = false) {
   let motionAsk = null;
   const night = (state.frame?.sunEl ?? -90) < -6;
   const steps = [
-    { tier: 'Step 1 of 3', title: 'Line up your sky', sub: ['Navigation', 'Location'], art: OB_ART.loc, text: 'Your location sets which stars and satellites are overhead. It stays on this phone.', yes: 'Allow', no: 'Not now' },
-    { tier: 'Step 2 of 3', title: "Point, don't scroll", sub: ['Gyroscope', 'Motion'], art: OB_ART.motion, text: "With motion on, the circle follows the phone. Whatever sits in the circle is what you're looking at.", yes: 'Allow motion', no: 'Use a finger', onYes: () => { motionAsk = enableMotion(); } },
+    { tier: 'Step 1 of 3', title: 'Set location', sub: ['Navigation', ''], art: OB_ART.loc, text: 'Your location sets which stars and satellites are overhead. It stays on this phone.', yes: 'Allow', no: 'Not now' },
+    { tier: 'Step 2 of 3', title: "Point, don't scroll", sub: ['Gyroscope', ''], art: OB_ART.motion, text: "With motion on, the circle follows the phone. Whatever sits in the circle is what you're looking at.", yes: 'Allow motion', no: 'Use a finger', onYes: () => { motionAsk = enableMotion(); } },
     { tier: 'Step 3 of 3', title: 'Match your sky', sub: ['Calibration', night ? 'Tonight' : 'After dark'], art: obSkyArt(), live: true, text: night ? 'Look up, then drag until the sky above shows about as many stars as you can see. It stays above Explore to fine-tune.' : 'Tonight, drag this until the screen shows about as many stars as you can see. It lives above Explore.', yes: 'Got it' },
     { tier: 'Assignment 01', title: 'Your first catch', sub: ['Up right now', ''], art: OB_ART.catch, text: '', yes: 'Go', gold: true },
   ];

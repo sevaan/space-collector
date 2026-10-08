@@ -600,3 +600,7 @@ body.bright-sky .ticket .ticket__xp small { color: #2c4a66 !important; }
 .set-chip span { display: inline-block; padding: 8px 13px; border-radius: 99px; border: 1px solid #344654; color: var(--muted); font: 500 13px var(--label); letter-spacing: .1em; text-transform: uppercase; cursor: pointer; }
 .set-chip input:checked + span { border-color: #fa812788; background: #fa81271c; color: var(--gold); }
 body.night .set-group, body.night .set-sheet-card { background: #140606; border-color: #2e1010; } body.night .set-row { border-color: #2e1010; }
+/* Skip setup as a chip, like the next-up chip (2026-10-08). */
+#ob-skip.ob-exit { padding: 7px 12px !important; min-height: 0 !important; border-radius: 99px !important; border: 1px solid var(--edge-soft) !important; background: color-mix(in srgb, var(--bg) 78%, transparent) !important;
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); color: var(--text) !important; font: 500 12px/1.2 var(--label) !important; letter-spacing: .12em !important; }
+body.bright-sky #ob-skip.ob-exit { background: rgba(255, 255, 255, .55) !important; border-color: rgba(255, 255, 255, .7) !important; color: #2c4a66 !important; }
