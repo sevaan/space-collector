@@ -1,9 +1,9 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.293';
+import { extinction } from './sky-limit.js?v=0.1.294';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.293';
-import { TIER_INFO } from './rarity.js?v=0.1.293';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.294';
+import { TIER_INFO } from './rarity.js?v=0.1.294';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -63,12 +63,14 @@ const LANDSCAPE = (() => {
     const a = az * Math.PI / 180;
     hills.push([az, Math.max(0.3, 1.2 + 0.7 * Math.sin(a * 2 + p1) + 0.4 * Math.sin(a * 5 + p2) + 0.2 * Math.sin(a * 11 + p3))]);
   }
-  const trees = [];
+  // Each pine (2026-10-08, higher fidelity): [az, height, width, tiers, lean, seed]. A far row behind it, smaller and hazier.
+  const trees = [], far = [];
   for (let az = 0; az < 360; az += 0.5 + r() * 1.0) {
     if (r() < 0.06) { az += 2 + r() * 6; continue; } // clearings
-    trees.push([az, 1.2 + r() ** 1.6 * 2.2, 0.7 + r() * 0.9]);
+    trees.push([az, 1.2 + r() ** 1.6 * 2.2, 0.7 + r() * 0.9, 4 + Math.floor(r() * 3), (r() - 0.5) * 0.08, r()]);
   }
-  return { hills, trees };
+  for (let az = 0.3; az < 360; az += 0.35 + r() * 0.6) { if (r() < 0.1) { az += 1 + r() * 4; continue; } far.push([az, 0.6 + r() * 1.1, 0.45 + r() * 0.5, 3 + Math.floor(r() * 2), 0, r()]); }
+  return { hills, trees, far };
 })();
 
 export class SkyView {
@@ -511,12 +513,28 @@ export class SkyView {
       const seg = h.slice(i, i + 4);
       this.poly([...seg, [seg[seg.length - 1][0], -2], [seg[0][0], -2]]);
     }
-    // Tree line: two stacked triangles make a pine.
-    ctx.fillStyle = dF > 0 ? mix('070c13', '2f4a35') : t.ground;
-    for (const [az, ht, w] of LANDSCAPE.trees) {
-      this.poly([[az - w / 2, -0.3], [az + w / 2, -0.3], [az, ht * 0.7]]);
-      this.poly([[az - w * 0.35, ht * 0.35], [az + w * 0.35, ht * 0.35], [az, ht]]);
-    }
+    // Tree lines (2026-10-08, higher fidelity): a far row, hazier, then the near row. Each pine is a trunk and a stack of
+    // drooping, ragged tiers that narrow to a spike, with a lighter lit side by day.
+    const pine = ([az, ht, w, tiers, lean, sd], body, lit) => {
+      const base = -0.3, trunkH = ht * 0.12, top = ht, tw = w * 0.07;
+      this.poly([[az - tw, base], [az + tw, base], [az + tw, base + trunkH + 0.05], [az - tw, base + trunkH + 0.05]]);
+      const left = [], right = [];
+      for (let k = 0; k < tiers; k++) {
+        const f = k / tiers, y0 = base + trunkH + (top - trunkH - base) * f, y1 = base + trunkH + (top - trunkH - base) * ((k + 1) / tiers) * 0.98;
+        const half = (w / 2) * (1 - f * 0.78) * (0.9 + ((sd * 7 + k * 0.37) % 1) * 0.2), x = az + lean * (y0 - base);
+        // tier: droops at the tips, a notch back in towards the trunk, then up to the next tier
+        left.push([x - half, y0 - 0.06], [x - half * 0.92, y0 + 0.02], [x - half * 0.42, y1 - 0.02]);
+        right.push([x + half, y0 - 0.06], [x + half * 0.92, y0 + 0.02], [x + half * 0.42, y1 - 0.02]);
+      }
+      const tip = [az + lean * (top - base), top + 0.12];
+      const outline = [...left, tip, ...right.reverse()];
+      ctx.fillStyle = body; this.poly(outline);
+      if (lit) { ctx.fillStyle = lit; this.poly([...left, tip, [az + lean * (top - base) * 0.5, base + trunkH]]); }
+    };
+    const farC = dF > 0 ? mix('0b1622', '557265') : (t.hills ?? '#0a1826');
+    for (const tr of LANDSCAPE.far) pine(tr, farC, null);
+    const nearC = dF > 0 ? mix('070c13', '2a4430') : t.ground, litC = dF > 0.3 ? `rgba(120,160,110,${(0.25 * dF).toFixed(2)})` : null;
+    for (const tr of LANDSCAPE.trees) pine(tr, nearC, litC);
     ctx.restore();
   }
 
