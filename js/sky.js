@@ -1,9 +1,9 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.300';
+import { extinction } from './sky-limit.js?v=0.1.301';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.300';
-import { TIER_INFO } from './rarity.js?v=0.1.300';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.301';
+import { TIER_INFO } from './rarity.js?v=0.1.301';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -500,14 +500,7 @@ export class SkyView {
           ctx.beginPath(); ctx.ellipse(q.x, q.y, r * 0.9, r * flat * 0.8, rot, 0, Math.PI * 2); ctx.fill();
         }
       }
-      ctx.lineCap = 'round';
-      for (let i = 0; i < 160; i++) {
-        const az = ((i * 0.4142136) % 1) * 360, el = -Math.asin(0.07 + ((i * 0.2360680) % 1) * 0.75) / RAD, q = P(az, el); if (!onS(q, 20)) continue;
-        const near = Math.min(1, -el / 45), len = 2 + near * 9;
-        if (i % 9 === 0) { ctx.strokeStyle = `rgba(55,38,24,${0.4 + near * 0.3})`; ctx.lineWidth = 0.6 + near; ctx.beginPath(); ctx.moveTo(q.x - len, q.y); ctx.lineTo(q.x + len * 0.8, q.y - len * 0.25); ctx.stroke(); continue; } // twig
-        ctx.strokeStyle = `rgba(${120 + (i % 4) * 10},${118 + (i % 3) * 8},${62 + (i % 5) * 4},${0.35 + near * 0.35})`; ctx.lineWidth = 0.5 + near * 0.6;
-        for (let k = -2; k <= 2; k++) { ctx.beginPath(); ctx.moveTo(q.x + k * len * 0.12, q.y); ctx.quadraticCurveTo(q.x + k * len * 0.2, q.y - len * 0.6, q.x + k * len * 0.32, q.y - len * (0.8 + ((i + k) % 3) * 0.12)); ctx.stroke(); }
-      }
+      // (2026-10-08: the grass tufts and twigs on the soil were removed, Sevaan didn't like them.)
       ctx.globalAlpha = 1;
     }
     // a soft glow just under the horizon, warmer where the Sun is hiding
@@ -571,17 +564,7 @@ export class SkyView {
     for (const tr of LANDSCAPE.trees) pine(tr, nearC, litC);
     // The near meadow: a rolling green band in front of the trees, with grass tufts along it by day.
     band(LANDSCAPE.rolls, dF > 0 ? mix('070c13', '4f6e3e') : t.ground, dF > 0.4 ? `rgba(190,215,140,${(0.35 * dF).toFixed(2)})` : null);
-    if (dF > 0.3) {
-      ctx.save(); ctx.globalAlpha = Math.min(1, (dF - 0.3) * 2); ctx.lineCap = 'round';
-      for (const [az, el, ht, lean] of LANDSCAPE.tufts) {
-        const b = this.project(enuFromAzEl(az, el)); if (!b || b.x < -10 || b.x > this.w + 10 || b.y < -10 || b.y > this.h + 10) continue;
-        const tp = this.project(enuFromAzEl(az + lean, el + ht)); if (!tp) continue;
-        const hpx = b.y - tp.y; if (hpx < 1.5) continue;
-        ctx.strokeStyle = (az * 7) % 3 < 1 ? 'rgba(150,170,90,.85)' : 'rgba(80,110,55,.9)'; ctx.lineWidth = Math.max(0.6, hpx * 0.09);
-        for (let k = -1; k <= 1; k++) { ctx.beginPath(); ctx.moveTo(b.x + k * hpx * 0.12, b.y); ctx.quadraticCurveTo(b.x + k * hpx * 0.2, b.y - hpx * 0.6, tp.x + k * hpx * 0.3, tp.y + (k ? hpx * 0.15 : 0)); ctx.stroke(); }
-      }
-      ctx.restore();
-    }
+    // (no grass tufts on the meadow either, 2026-10-08)
     ctx.restore();
   }
 
