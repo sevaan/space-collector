@@ -1,9 +1,9 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.323';
+import { extinction } from './sky-limit.js?v=0.1.324';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.323';
-import { TIER_INFO } from './rarity.js?v=0.1.323';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.324';
+import { TIER_INFO } from './rarity.js?v=0.1.324';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -477,7 +477,7 @@ export class SkyView {
       if (h0 && h1) {
         const f = this.theme === THEMES.night ? 0 : (this.dayF ?? 0), c = f > 0.3 ? [80, 62, 44] : this.theme === THEMES.night ? [10, 1, 0] : [7, 14, 22];
         const g = ctx.createLinearGradient(h0.x, h0.y, h1.x, h1.y);
-        g.addColorStop(0, `rgba(${c},.85)`); g.addColorStop(0.5, `rgba(${c},.45)`); g.addColorStop(1, `rgba(${c},0)`);
+        g.addColorStop(0, `rgba(${c},.9)`); g.addColorStop(0.5, `rgba(${c},.45)`); g.addColorStop(1, `rgba(${c},0)`);
         ctx.save(); poly(); ctx.fillStyle = g; ctx.fill(); ctx.restore();
       }
       return;
@@ -1116,7 +1116,7 @@ export class SkyView {
     this.feetA = Math.max(0, Math.min(1, (-this.basis.back[2] - 0.8) / 0.1)); // fades in from ~53° down, full by ~64° (it is on the ground now, so it can show sooner)
     this.drawGround();
     if (landscape) { // trees, hills and meadow; in camera view see-through like the sky and ground (an overlay of our world on yours)
-      if (this.camera) { ctx.save(); ctx.globalAlpha = 0.8; this.drawLandscape(); ctx.restore(); } else this.drawLandscape();
+      if (this.camera) { ctx.save(); ctx.globalAlpha = 0.6; this.drawLandscape(); ctx.restore(); } else this.drawLandscape();
     }
     this.drawGroundCompass();
     if (fossil && !this.camera) this.drawFossil(fossil); // not in camera view

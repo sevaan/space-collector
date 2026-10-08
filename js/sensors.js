@@ -13,7 +13,8 @@ export const pointing = {
   lastEvent: 0,
 };
 
-let manualNudge = 0;
+let manualNudge = 0, headingLocked = false;
+export function lockHeading(on) { headingLocked = !!on; }
 export function nudgeHeading(deg) { manualNudge = (manualNudge + deg + 360) % 360; }
 export function getNudge() { return manualNudge; }
 
@@ -72,7 +73,11 @@ function updateHeadingOffset(heading, basis) {
   }
   rejectStreak = 0; pointing.compassDoubt = 0;
   goodSamples++;
-  pointing.headingOffset = blendAngle(pointing.headingOffset, measured, goodSamples < 30 ? 0.2 : 0.04);
+  // Hold steady (2026-10-08, Sevaan: the sky ticked round while the phone was still): iOS reports the compass in
+  // whole degrees and it jitters, so once settled, small disagreements are ignored. After you line the sky up by hand
+  // (headingLocked), only a big, persistent change (handled above) moves it.
+  if (goodSamples > 30 && (diff < 2.5 || headingLocked)) return;
+  pointing.headingOffset = blendAngle(pointing.headingOffset, measured, goodSamples < 30 ? 0.2 : 0.02);
 }
 
 function onOrientation(e, absolute) {
