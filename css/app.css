@@ -597,3 +597,7 @@ body.night .set-group, body.night .set-sheet-card { background: #140606; border-
 #sky-header { background: none; }
 #sky-header::before { content: ''; position: absolute; left: 0; right: 0; top: calc(-1 * var(--safe-top)); height: calc(var(--safe-top) + 125px); z-index: -1; pointer-events: none;
   background: linear-gradient(var(--bg) 0, var(--bg) calc(var(--safe-top) + 62px), color-mix(in srgb, var(--bg) 55%, transparent) calc(var(--safe-top) + 92px), transparent 100%); }
+/* Settings title set like the wordmark (2026-10-08): SETTINGS over "CUSTOMIZE YOUR EXPERIENCE". */
+.set-title h2 { margin: 0; font: 400 clamp(13px, 3.9vw, 16px)/1.15 var(--display) !important; letter-spacing: -.03em; color: var(--text); text-transform: uppercase; }
+.set-title span { display: block; color: var(--muted); font: 500 11px/1.2 var(--label); letter-spacing: .18em; margin-top: 6px; text-transform: uppercase; }
+#test-tools h3 { margin-top: 6px; }

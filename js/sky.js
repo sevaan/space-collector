@@ -1,9 +1,9 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.290';
+import { extinction } from './sky-limit.js?v=0.1.291';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.290';
-import { TIER_INFO } from './rarity.js?v=0.1.290';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.291';
+import { TIER_INFO } from './rarity.js?v=0.1.291';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -500,15 +500,19 @@ export class SkyView {
       this.path(pts);
     }
     ctx.globalAlpha = 1;
+    // Daytime colour (2026-10-08, Sevaan): by day the hills are hazy blue-green and the pines a deep green, blending back
+    // to the night silhouettes through twilight (dayF).
+    const dF = this.theme === THEMES.night ? 0 : (this.dayF ?? 0);
+    const mix = (night, day) => { const n = night.match(/\w\w/g).map((h) => parseInt(h, 16)), d = day.match(/\w\w/g).map((h) => parseInt(h, 16)); return `rgb(${n.map((v, i) => Math.round(v + (d[i] - v) * dF)).join(',')})`; };
     // Far hills, a shade lighter than the ground.
-    ctx.fillStyle = t.hills ?? '#0a1826';
+    ctx.fillStyle = dF > 0 ? mix('0a1826', '6f8f86') : (t.hills ?? '#0a1826');
     const h = LANDSCAPE.hills;
     for (let i = 0; i < h.length - 1; i += 3) {
       const seg = h.slice(i, i + 4);
       this.poly([...seg, [seg[seg.length - 1][0], -2], [seg[0][0], -2]]);
     }
     // Tree line: two stacked triangles make a pine.
-    ctx.fillStyle = t.ground;
+    ctx.fillStyle = dF > 0 ? mix('070c13', '2f4a35') : t.ground;
     for (const [az, ht, w] of LANDSCAPE.trees) {
       this.poly([[az - w / 2, -0.3], [az + w / 2, -0.3], [az, ht * 0.7]]);
       this.poly([[az - w * 0.35, ht * 0.35], [az + w * 0.35, ht * 0.35], [az, ht]]);
