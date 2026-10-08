@@ -1,9 +1,9 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.268';
+import { extinction } from './sky-limit.js?v=0.1.269';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.268';
-import { TIER_INFO } from './rarity.js?v=0.1.268';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.269';
+import { TIER_INFO } from './rarity.js?v=0.1.269';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -460,7 +460,10 @@ export class SkyView {
     const dayF = night ? 0 : (this.dayF ?? 0);
     if (dayF > 0.02) {
       ctx.globalAlpha = dayF;
-      ctx.fillStyle = `rgb(${Math.round(92 - down * 40)}, ${Math.round(72 - down * 32)}, ${Math.round(52 - down * 24)})`; ctx.fillRect(0, 0, this.w, this.h);
+      // Twilight (2026-10-08): as the Sun sets the soil cools from warm brown to a dusky violet-brown before night.
+      const tw = Math.max(0, Math.min(1, (6 - (this.sunEl ?? 90)) / 12)); // 0 with the Sun 6°+ up, 1 at −6°
+      const mix = (d, n) => Math.round(d + (n - d) * tw);
+      ctx.fillStyle = `rgb(${mix(92, 58) - Math.round(down * 34)}, ${mix(72, 42) - Math.round(down * 26)}, ${mix(52, 48) - Math.round(down * 20)})`; ctx.fillRect(0, 0, this.w, this.h);
       // grit: a seeded scatter of pebbles and darker clods across the ground, larger nearer your feet
       for (let i = 0; i < 700; i++) {
         const a = (i * 0.618034) % 1, b = ((i * 0.754877) % 1);
@@ -478,7 +481,8 @@ export class SkyView {
     for (const { p, az } of hz) {
       const warm = sunAz == null ? 0 : Math.max(0, Math.cos((az - sunAz) * RAD)) ** 3 * Math.max(0, Math.min(1, (this.sunEl + 18) / 16));
       const rgb = night ? [255, 70, 50] : [Math.round(98 + warm * 140), Math.round(122 + warm * 40), Math.round(139 - warm * 80)];
-      this.glow(p.x, p.y, 46, rgb, (night ? 0.05 : 0.07) + warm * 0.12);
+      const twi = night ? 0 : Math.max(0, 1 - Math.abs((this.sunEl ?? -90) + 2) / 8); // peaks around sunset/sunrise
+      this.glow(p.x, p.y, 46 + twi * 30, rgb, (night ? 0.05 : 0.07) + warm * (0.12 + twi * 0.3));
     }
     ctx.restore();
   }

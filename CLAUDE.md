@@ -246,3 +246,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - Size slider range is now **2–6 per row on phones, 2–8 wide** (2026-10-07); `.micro` (<66px tiles, six across) shows just the picture in its card frame.
 - **Sliding switcher pill:** `.sc-switch::before` is the one orange pill, positioned by `data-side` (left/right); js/switcher.js `setSwitch(nav, side, animate)`. Tapping slides the pill (260 ms, slight overshoot) and the view changes at `SLIDE_MS` (200 ms) as it lands; the hidden switcher is reset without animation.
 - **Daylight earth:** in the day the ground is warm soil (darker looking down) with fine grit fixed to the ground; fades with dayF, so at night it's the dark ground as before.
+- **Twilight ground:** the soil cools from warm brown to dusky violet-brown between Sun +6° and −6°, and the horizon rim glows warmer and wider on the Sun's side around sunset/sunrise (peaks near −2°).
