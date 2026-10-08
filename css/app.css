@@ -553,10 +553,10 @@ body:has(#ob-done:not([hidden])) #ob-skip { display: none !important; }
 body.bright-sky #nextpass, body.bright-sky #event-banner { background: rgba(255, 255, 255, .55) !important; border: 1px solid rgba(255, 255, 255, .7) !important; box-shadow: 0 4px 14px rgba(20, 48, 70, .15); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
 body.bright-sky #nextpass .np-k, body.bright-sky #nextpass .np-m, body.bright-sky #event-banner .np-k, body.bright-sky #event-banner .np-m { color: #2c4a66 !important; }
 body.bright-sky #nextpass .np-n, body.bright-sky #event-banner .np-n { color: #c85a10 !important; }
-body.bright-sky #nav.sc-switch { background: rgba(255, 255, 255, .55); border-color: rgba(255, 255, 255, .75); box-shadow: 0 6px 18px rgba(20, 48, 70, .18); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+body.bright-sky #nav.sc-switch { background: rgba(255, 255, 255, .74); border-color: rgba(255, 255, 255, .75); box-shadow: 0 6px 18px rgba(20, 48, 70, .18); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
 body.bright-sky #nav.sc-switch::before { background: #fa8127; box-shadow: none; }
 body.bright-sky #nav .sc-switch__item { color: #2c4a66; } body.bright-sky #nav .sc-switch__item[aria-current] { color: #fff; }
-body.bright-sky .ticket, body.bright-sky #banner.ticket { background: rgba(255, 255, 255, .62) !important; border-color: rgba(255, 255, 255, .75) !important; color: #1f3850 !important; box-shadow: 0 8px 22px rgba(20, 48, 70, .2); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
+body.bright-sky .ticket, body.bright-sky #banner.ticket { background: rgba(255, 255, 255, .78) !important; border-color: rgba(255, 255, 255, .75) !important; color: #1f3850 !important; box-shadow: 0 8px 22px rgba(20, 48, 70, .2); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
 body.bright-sky .ticket .ticket__line, body.bright-sky #banner .ticket__line { color: #1f3850 !important; }
 body.bright-sky .ticket .ticket__eyebrow, body.bright-sky .ticket .ticket__xp, body.bright-sky .ticket .ticket__go, body.bright-sky #banner .ticket__go, body.bright-sky .ticket--info .big-line { color: #c85a10 !important; }
 body.bright-sky .ticket .ticket__xp small { color: #2c4a66 !important; }
