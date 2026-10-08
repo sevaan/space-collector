@@ -457,3 +457,10 @@ body:has(#target:not([hidden])) #toasts { bottom:calc(var(--safe-bottom) + 204px
 
 /* The slider joins the card width too. */
 #skybar { width:var(--nav-w); }
+
+/* The standing toast (#banner) looks exactly like the mini card and the other toasts (2026-10-07): the old #banner
+   rule above set a 3px stripe, 4px corners and glass; reset all of it. The › sits where the mini card's × is. */
+#banner.ticket { left:auto; right:auto; top:auto; z-index:auto; color:var(--text); background:var(--glass-strong); border:1px solid var(--edge); border-left:4px solid var(--gold);
+  border-radius:10px; padding:7px 4px 7px 12px; min-height:52px; font-size:inherit; box-shadow:0 8px 24px rgba(0,0,0,.5); gap:10px; }
+#banner .ticket__line { font:500 14px/1.25 var(--label); letter-spacing:.02em; color:var(--text); white-space:normal; }
+#banner .ticket__go { flex:none; width:36px; height:36px; display:grid; place-items:center; color:var(--gold); font-size:20px; }
