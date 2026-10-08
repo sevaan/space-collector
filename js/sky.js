@@ -1,9 +1,9 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.243';
+import { extinction } from './sky-limit.js?v=0.1.244';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.243';
-import { TIER_INFO } from './rarity.js?v=0.1.243';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.244';
+import { TIER_INFO } from './rarity.js?v=0.1.244';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -287,9 +287,15 @@ export class SkyView {
       const p = this.project(g.enu);
       if (!this.onScreen(p, 20)) continue;
       const r = g.kind === 'sun' ? 13 : g.kind === 'moon' ? 10 : 6;
+      // The thing itself, faint, inside its dashed ring (2026-10-07: empty rings read as missing): a soft disc for
+      // the Sun, Moon and planets, the satellite icon for passes.
+      ctx.save(); ctx.globalAlpha = 0.6;
+      if (g.kind === 'sat') this.drawIcon('sat', p.x, p.y, 9, t.sat);
+      else { const c = g.kind === 'sun' ? [255, 180, 107] : [255, 242, 179]; this.glow(p.x, p.y, r * 1.8, c, 0.3); ctx.fillStyle = `rgb(${c.join(',')})`; ctx.beginPath(); ctx.arc(p.x, p.y, g.kind === 'planet' ? 2.6 : r * 0.55, 0, Math.PI * 2); ctx.fill(); }
+      ctx.restore();
       ctx.setLineDash([3, 4]); ctx.lineWidth = 1.2;
       ctx.strokeStyle = g.kind === 'sun' ? 'rgba(250,129,39,.75)' : 'rgba(255,242,179,.5)';
-      ctx.beginPath(); ctx.arc(p.x, p.y, r, 0, Math.PI * 2); ctx.stroke();
+      ctx.beginPath(); ctx.arc(p.x, p.y, r + 3, 0, Math.PI * 2); ctx.stroke();
       ctx.setLineDash([]);
       this.queueLabel(g.note ? `${g.name} · ${g.note}` : g.name, p, { color: g.kind === 'sun' ? 'rgba(250,129,39,.9)' : 'rgba(255,242,179,.78)', size: 12, weight: 600, gap: r + 6, priority: 6 }); // one line, so the time never drifts off its name
     }
