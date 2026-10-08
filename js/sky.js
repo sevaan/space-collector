@@ -1,9 +1,9 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.235';
+import { extinction } from './sky-limit.js?v=0.1.236';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.235';
-import { TIER_INFO } from './rarity.js?v=0.1.235';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.236';
+import { TIER_INFO } from './rarity.js?v=0.1.236';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -610,6 +610,14 @@ export class SkyView {
       ctx.lineTo(-0.24 * u, 0.12 * u); ctx.lineTo(-0.56 * u, 0.98 * u); ctx.lineTo(-0.38 * u, 0.98 * u); ctx.lineTo(0.12 * u, 0.12 * u);   // right wing
       ctx.lineTo(0.6 * u, 0.12 * u); ctx.quadraticCurveTo(0.86 * u, 0.12 * u, 1.0 * u, 0);
       ctx.closePath(); ctx.fill();
+    } else if (kind === 'heli') {
+      // Helicopter from above, nose along +x: a round cabin, a thin tail boom with a small tail rotor, and a
+      // two-blade main rotor across it (2026-10-07).
+      ctx.beginPath(); ctx.ellipse(0.28 * u, 0, 0.42 * u, 0.3 * u, 0, 0, Math.PI * 2); ctx.fill();      // cabin
+      rect(-0.95, -0.07, 1.1, 0.14);                                                                   // tail boom
+      rect(-1.0, -0.3, 0.12, 0.6);                                                                     // tail rotor
+      ctx.lineWidth = 0.16 * u; ctx.lineCap = 'round';
+      ctx.beginPath(); ctx.moveTo(-0.55 * u, -0.78 * u); ctx.lineTo(1.1 * u, 0.78 * u); ctx.moveTo(-0.55 * u, 0.78 * u); ctx.lineTo(1.1 * u, -0.78 * u); ctx.stroke(); // main rotor
     } else if (kind === 'station') {
       ctx.rotate(-0.2);
       rect(-1.0, -0.06, 2.0, 0.12);                   // truss
@@ -891,7 +899,7 @@ export class SkyView {
       ctx.translate(p.x, p.y);
       if (q) ctx.rotate(Math.atan2(q.y - p.y, q.x - p.x));
       ctx.globalAlpha = hit ? 1 : 0.55;
-      this.drawIcon('plane', 0, 0, hit ? 13 : 10, hit ? t.plane : t.planeDim); // same scale as satellites (9–12, ×1.3 when targeted)
+      this.drawIcon(a.plane.heli ? 'heli' : 'plane', 0, 0, hit ? 13 : 10, hit ? t.plane : t.planeDim); // same scale as satellites (9–12, ×1.3 when targeted)
       ctx.restore();
       if (hit) hitAt = { x: p.x, y: p.y };
     }
