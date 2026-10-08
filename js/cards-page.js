@@ -1,20 +1,20 @@
-import { ticket } from './toast.js?v=0.1.260';
-import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.260';
-import { cardArt } from './art.js?v=0.1.260';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.260';
-import { applyBack } from './card-backs.js?v=0.1.260';
-import { SETS, assignSets } from './sets.js?v=0.1.260';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.260';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.260';
-import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.260';
-import { progress } from './progress.js?v=0.1.260';
-import { SOLAR_SYSTEM } from './natural.js?v=0.1.260';
-import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.260';
-import { drawShareCard, shareCard } from './share-card.js?v=0.1.260';
-import { conArt } from './con-art.js?v=0.1.260';
-import { CON_BY_ID } from './constellations.js?v=0.1.260';
-import { allSightings, deleteSighting } from './store.js?v=0.1.260';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.260';
+import { ticket } from './toast.js?v=0.1.261';
+import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.261';
+import { cardArt } from './art.js?v=0.1.261';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.261';
+import { applyBack } from './card-backs.js?v=0.1.261';
+import { SETS, assignSets } from './sets.js?v=0.1.261';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.261';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.261';
+import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.261';
+import { progress } from './progress.js?v=0.1.261';
+import { SOLAR_SYSTEM } from './natural.js?v=0.1.261';
+import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.261';
+import { drawShareCard, shareCard } from './share-card.js?v=0.1.261';
+import { conArt } from './con-art.js?v=0.1.261';
+import { CON_BY_ID } from './constellations.js?v=0.1.261';
+import { allSightings, deleteSighting } from './store.js?v=0.1.261';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.261';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -516,17 +516,18 @@ boot().catch(() => {
 // one big card per row up to 4 on a phone (7 on a wide screen). Remembered on this device.
 {
   const range = $('size-range'), grid = $('grid');
-  const maxCols = () => (innerWidth >= 700 ? 7 : 4);
+  // 2 to 6 per row on a phone (2026-10-07, Sevaan: two minimum, up to six); 2 to 8 on a wide screen.
+  const MIN = 2, maxCols = () => (innerWidth >= 700 ? 8 : 6), steps = () => maxCols() - MIN + 1;
   const applySize = () => {
-    const max = maxCols(); range.max = String(max);
-    const big = Math.min(max, Math.max(1, Number(range.value) || 1)), cols = max + 1 - big;
-    range.style.setProperty('--p', `${((big - 1) / Math.max(1, max - 1)) * 100}%`);
+    const max = maxCols(), n = steps(); range.max = String(n);
+    const big = Math.min(n, Math.max(1, Number(range.value) || 1)), cols = max + 1 - big;
+    range.style.setProperty('--p', `${((big - 1) / Math.max(1, n - 1)) * 100}%`);
     grid.dataset.cols = cols; grid.style.setProperty('--cols', cols);
     const w = (grid.clientWidth || innerWidth - 40) / cols;
-    grid.classList.toggle('single', cols === 1); grid.classList.toggle('dense', w < 140); grid.classList.toggle('tiny', w < 92);
+    grid.classList.toggle('single', cols === 1); grid.classList.toggle('dense', w < 140); grid.classList.toggle('tiny', w < 92); grid.classList.toggle('micro', w < 66);
   };
   let cols0 = 2; try { cols0 = Number(localStorage.getItem('gridCols')) || 2; } catch {}
-  range.max = String(maxCols()); range.value = String(maxCols() + 1 - Math.min(maxCols(), cols0));
+  range.max = String(steps()); range.value = String(maxCols() + 1 - Math.min(maxCols(), Math.max(MIN, cols0)));
   // Smooth resize (2026-10-07, Sevaan): when the column count changes, every card on screen glides and scales from
   // where it was to where it lands (FLIP), and the card you were looking at stays put on screen.
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;

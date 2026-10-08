@@ -216,3 +216,8 @@ body:has(#viewer[open])::after { display: none; }
 .grid .card-tile__name { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; margin-bottom: 6px; }
 .grid.single .card-tile__name { -webkit-line-clamp: 3; }
 .grid .card-tile__status { margin-top: 0; }
+/* Six across on a phone: just the picture in its card frame, no words. */
+.grid.micro { gap: 7px 6px !important; }
+.grid.micro .card-tile__body { display: none; }
+.grid.micro .card-tile__art { margin: 4px; }
+.grid.tiny .card-tile__name { overflow-wrap: normal; word-break: normal; font-size: 9.5px; } /* whole words, then … */
