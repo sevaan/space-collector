@@ -1,31 +1,31 @@
-import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.251';
-import { VERSION } from './version.js?v=0.1.251';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.251';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.251';
-import { conArt } from './con-art.js?v=0.1.251';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.251';
-import { CON_FIGURES } from './con-figures.js?v=0.1.251';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.251';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.251';
-import { progress as progressOf } from './progress.js?v=0.1.251';
-import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.251';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.251';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.251';
-import { SkyView, shortName } from './sky.js?v=0.1.251';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.251';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.251';
-import { cardArt } from './art.js?v=0.1.251';
-import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.251';
-import { applyBack } from './card-backs.js?v=0.1.251';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.251';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.251';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.251';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.251';
-import { TIER_INFO } from './rarity.js?v=0.1.251';
-import { SETS } from './sets.js?v=0.1.251';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.251';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.251';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.251';
+import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.252';
+import { VERSION } from './version.js?v=0.1.252';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.252';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.252';
+import { conArt } from './con-art.js?v=0.1.252';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.252';
+import { CON_FIGURES } from './con-figures.js?v=0.1.252';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.252';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.252';
+import { progress as progressOf } from './progress.js?v=0.1.252';
+import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.252';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.252';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.252';
+import { SkyView, shortName } from './sky.js?v=0.1.252';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.252';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.252';
+import { cardArt } from './art.js?v=0.1.252';
+import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.252';
+import { applyBack } from './card-backs.js?v=0.1.252';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.252';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.252';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.252';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.252';
+import { TIER_INFO } from './rarity.js?v=0.1.252';
+import { SETS } from './sets.js?v=0.1.252';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.252';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.252';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.252';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -1214,17 +1214,29 @@ let riseCache = { at: 0, map: new Map() };
 function riseTimes(d) {
   if (d.getTime() - riseCache.at < 5 * 60e3 && riseCache.obs === state.observer) return riseCache.map;
   const map = new Map(), toEnuAt = (t) => eqToEnu(new Date(t), state.observer), t0 = d.getTime();
-  const want = new Set(['Sun', 'Moon', 'Venus', 'Jupiter', 'Mars', 'Saturn', 'Mercury']);
+  const want = new Set(['Sun', 'Moon', 'Venus', 'Jupiter', 'Mars', 'Saturn', 'Mercury']), paths = {};
   for (let t = t0 + 600e3; t <= t0 + 30 * 3600e3 && map.size < want.size; t += 600e3) {
     const toEnu = toEnuAt(t);
     for (const b of solarSystem(new Date(t), state.observer)) {
       if (!want.has(b.name) || map.has(b.name)) continue;
-      const e = toEnu(b.v); if (e[2] > 0) map.set(b.name, { t, az: (Math.atan2(e[0], e[1]) * 180 / Math.PI + 360) % 360 });
+      const e = toEnu(b.v), pth = (paths[b.name] ??= []);
+      pth.push(e);
+      if (e[2] > 0) map.set(b.name, { t, az: (Math.atan2(e[0], e[1]) * 180 / Math.PI + 360) % 360, path: pth });
     }
   }
   riseCache = { at: t0, obs: state.observer, map }; return map;
 }
 let belowAt = 0, belowList = null;
+// A satellite's track under the ground for the last ~12 minutes before it comes up (20 s steps), cached briefly.
+const satPaths = new Map();
+function satPath(o, t0, start) {
+  const key = `${o.id}:${start}`, hit = satPaths.get(key);
+  if (hit && t0 - hit.at < 5000) return hit.path;
+  const path = [];
+  for (let t = Math.max(t0, start - 12 * 60e3); t <= start + 20e3; t += 20e3) { const l = look(o, frame(new Date(t), state.observer)); if (l) path.push(enuFromAzEl(l.az, l.el)); }
+  if (satPaths.size > 40) satPaths.clear();
+  satPaths.set(key, { at: t0, path }); return path;
+}
 function belowGhosts(d) {
   const back = state.basis?.back; if (!back || back[2] > 0.15 || !state.bodies) return null;
   if (belowList && performance.now() - belowAt < 1000) return belowList;
@@ -1234,13 +1246,14 @@ function belowGhosts(d) {
     if (b.enu[2] >= 0 || b.kind === 'star') continue;
     if (b.kind === 'planet' && b.mag > 2) continue;
     const r = rises.get(b.kind === 'sun' ? 'Sun' : b.kind === 'moon' ? 'Moon' : b.name);
-    out.push({ enu: b.enu, kind: b.kind, name: b.kind === 'sun' ? 'The Sun' : b.kind === 'moon' ? 'The Moon' : b.name, note: whenOf(r), riseAz: r?.az, time: r ? fmtTime(r.t) : '' });
+    // path (2026-10-07, Sevaan): where it travels under the ground until it rises, as a dotted line.
+    out.push({ enu: b.enu, kind: b.kind, name: b.kind === 'sun' ? 'The Sun' : b.kind === 'moon' ? 'The Moon' : b.name, note: whenOf(r), riseAz: r?.az, time: r ? fmtTime(r.t) : '', path: r ? [b.enu, ...r.path] : null });
   }
   const T = state.tonight, t0 = d.getTime();
   if (T && state.frame) for (const p of tonightPasses(T, t0).filter((x) => x.start > t0).slice(0, 4)) {
     const o = state.byId.get(p.id); if (!o) continue;
     const l = look(o, state.frame); if (!l || l.el >= 0) continue;
-    out.push({ enu: enuFromAzEl(l.az, l.el), kind: 'sat', name: label(o), note: `up ${fmtTime(p.start)}`, riseAz: p.riseAz, time: fmtTime(p.start) });
+    out.push({ enu: enuFromAzEl(l.az, l.el), kind: 'sat', name: label(o), note: `up ${fmtTime(p.start)}`, riseAz: p.riseAz, time: fmtTime(p.start), path: satPath(o, t0, p.start) });
   }
   return (belowList = out);
 }

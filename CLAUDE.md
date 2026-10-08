@@ -230,3 +230,8 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - Loader has its cream inner orbit back; the target circle's centre is fixed at innerHeight/2 from the first frame (no slide).
 - **Card size slider (Collection):** `#sizebar` (shared `.ui-slider` / `.ui-range` in css/ui.css, same look as Explore's sky slider) sits over the switcher: SMALL ↔ BIG = 4…1 columns on phones (7…1 on wide screens), saved as `localStorage.gridCols`. Grid gets `data-cols`/`--cols` plus `.dense` (<140px tiles: tighter type) / `.tiny` (<92px: name only) / `.single`. A fixed bottom fade sits behind the controls.
 - Constellation charts: cross glints on a few background specks only; the figure's stars just shimmer.
+- **Quiet ring is on the ground now** (2026-10-07, Sevaan): drawn at el −77° in world space like the grid (cardinals at −81.5°), so it stays put as you move; markers sit on it at their rise azimuth; fades in from ~53° down.
+- **Travel paths below the horizon:** each below-horizon thing gets a marching dotted line from where it is now to where it rises, with an arrowhead (`path` on belowGhosts entries: bodies from `riseTimes` 10-min samples, satellites from `satPath`, the last ~12 min before rise).
+- Labels near a screen edge slide in instead of disappearing (drawLabels clamped candidates).
+- No circles around icon buttons or ✕ anywhere (ui.css "Bare icons").
+- Achievements → mission patches design board: design/patches.html (A roundel, B shapes, C enamel, D gold/holo foil, wall, detail, earn moment, card-back rewards). Not built yet.

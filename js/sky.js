@@ -1,9 +1,9 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.251';
+import { extinction } from './sky-limit.js?v=0.1.252';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.251';
-import { TIER_INFO } from './rarity.js?v=0.1.251';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.252';
+import { TIER_INFO } from './rarity.js?v=0.1.252';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -218,6 +218,10 @@ export class SkyView {
         [p.x + gap, p.y - size / 2], [p.x - gap - width, p.y - size / 2],
         [p.x - width / 2, p.y + gap], [p.x - width / 2, p.y - gap - size],
       ];
+      // Near a screen edge the centred spots spill off; slide them in rather than dropping the label (2026-10-07:
+      // planets beside the circle near the edge lost their names).
+      const lo = 20, hi = this.w - 20 - width;
+      for (const c of candidates.slice(2)) candidates.push([Math.max(lo, Math.min(hi, c[0])), c[1]]);
       // Sticky sides (2026-10-06, Sevaan: labels hopped round their stars as the phone moved): a label keeps the side
       // it last used. If that side is briefly blocked it hides for a moment instead of jumping; only after ~1/3 s
       // blocked does it move to another side, and it stays there.
@@ -283,6 +287,26 @@ export class SkyView {
   drawBelow(below) {
     const ctx = this.ctx, t = this.theme, k = 1 - (this.feetA ?? 0); // fades out as the ring at your feet fades in
     ctx.save(); ctx.globalAlpha = k;
+    // The way each one is travelling under the ground, up to where it rises: a dotted line with an arrow at the
+    // horizon end (2026-10-07, Sevaan: makes looking down through the Earth more interesting).
+    for (const g of below) {
+      if (!g.path?.length || g.enu[2] >= 0) continue;
+      const col = g.kind === 'sun' ? '250,129,39' : g.kind === 'sat' ? '143,179,207' : '255,242,179';
+      ctx.save(); ctx.globalAlpha = 0.55 * k; ctx.strokeStyle = `rgba(${col},.7)`; ctx.lineWidth = 1.2; ctx.setLineDash([2, 5]); ctx.lineCap = 'round';
+      if (!this.reducedMotion) ctx.lineDashOffset = -(performance.now() / 90) % 7; // the dots march toward the rise point
+      let last = null, prev = null; ctx.beginPath();
+      for (const e of g.path) {
+        const q = e[2] < 0.03 ? this.project(e) : null;
+        if (q && last && Math.hypot(q.x - last.x, q.y - last.y) < this.w) ctx.lineTo(q.x, q.y); else if (q) ctx.moveTo(q.x, q.y);
+        if (q) { prev = last; last = q; } else last = null;
+      }
+      ctx.stroke(); ctx.setLineDash([]);
+      if (last && prev) { // arrowhead pointing the way it's going
+        const a = Math.atan2(last.y - prev.y, last.x - prev.x); ctx.fillStyle = `rgba(${col},.85)`; ctx.beginPath();
+        ctx.moveTo(last.x + Math.cos(a) * 6, last.y + Math.sin(a) * 6); ctx.lineTo(last.x + Math.cos(a + 2.5) * 6, last.y + Math.sin(a + 2.5) * 6); ctx.lineTo(last.x + Math.cos(a - 2.5) * 6, last.y + Math.sin(a - 2.5) * 6); ctx.fill();
+      }
+      ctx.restore();
+    }
     for (const g of below) {
       if (g.enu[2] >= 0) continue;
       const p = this.project(g.enu);
@@ -504,32 +528,32 @@ export class SkyView {
   drawFeet(below) {
     const a = this.feetA ?? 0; if (a < 0.02) return;
     const ctx = this.ctx, t = this.theme;
-    // Centred on the circle, not on the true point below (that drifts half off screen as you tilt); only its
-    // turning comes from where you're facing.
-    const n = this.project([0, 0, -1]); if (!n) return;
-    const c = { x: this.cx, y: this.cy };
-    const dir = (az) => { const q = this.project(enuFromAzEl(az, -80)); if (!q) return null; const dx = q.x - n.x, dy = q.y - n.y, l = Math.hypot(dx, dy) || 1; return [dx / l, dy / l]; };
-    const R = Math.max(this.reticlePx + 40, Math.min(this.w * 0.29, 116)), ink = t === THEMES.night ? 'rgba(255,90,70,' : 'rgba(255,242,179,';
+    // Painted on the ground (2026-10-07, Sevaan: stick to the grid, don't float): the ring is the circle 13° out
+    // from the point straight below you, projected like the grid lines, so it stays put as you move.
+    const EL = -77, n = this.project([0, 0, -1]); if (!n) return;
+    const at = (az, el = EL) => this.project(enuFromAzEl(az, el));
+    const dir = (az) => { const q = at(az); if (!q) return null; const dx = q.x - n.x, dy = q.y - n.y, l = Math.hypot(dx, dy) || 1; return [dx / l, dy / l]; };
+    const ink = t === THEMES.night ? 'rgba(255,90,70,' : 'rgba(255,242,179,';
     ctx.save(); ctx.globalAlpha = a;
     ctx.strokeStyle = ink + '.4)'; ctx.lineWidth = 1;
-    ctx.beginPath(); ctx.arc(c.x, c.y, R, 0, Math.PI * 2); ctx.stroke();
+    const ringPts = []; for (let az = 0; az <= 360; az += 4) ringPts.push(enuFromAzEl(az, EL)); this.path(ringPts);
     for (let az = 0; az < 360; az += 10) {
-      const u = dir(az); if (!u) continue; const L = az % 90 === 0 ? 9 : az % 30 === 0 ? 6 : 3;
+      const p0 = at(az), p1 = at(az, EL + (az % 90 === 0 ? 2.2 : az % 30 === 0 ? 1.5 : 0.8)); if (!p0 || !p1) continue;
       ctx.strokeStyle = ink + (az % 30 === 0 ? '.45)' : '.25)');
-      ctx.beginPath(); ctx.moveTo(c.x + u[0] * R, c.y + u[1] * R); ctx.lineTo(c.x + u[0] * (R - L), c.y + u[1] * (R - L)); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(p0.x, p0.y); ctx.lineTo(p1.x, p1.y); ctx.stroke();
     }
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.font = `400 15px ${DISPLAY_FONT}`;
     for (const [az, letter] of [[0, 'N'], [90, 'E'], [180, 'S'], [270, 'W']]) {
-      const u = dir(az); if (!u) continue;
+      const q = at(az, EL - 4.5); if (!q) continue;
       ctx.fillStyle = az === 0 ? t.groundNorth : ink + '.75)';
-      ctx.fillText(letter, c.x + u[0] * (R - 22), c.y + u[1] * (R - 22));
+      ctx.fillText(letter, q.x, q.y);
     }
-    ctx.fillStyle = ink + '.5)'; ctx.beginPath(); ctx.arc(c.x, c.y, 2, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = ink + '.5)'; ctx.beginPath(); ctx.arc(n.x, n.y, 2, 0, Math.PI * 2); ctx.fill();
     // Things below, on the ring where they'll come up.
     const boxes = [];
     for (const g of (below ?? []).filter((g) => g.riseAz != null)) {
-      const u = dir(g.riseAz); if (!u) continue;
-      const x = c.x + u[0] * R, y = c.y + u[1] * R;
+      const u = dir(g.riseAz), m = at(g.riseAz); if (!u || !m) continue;
+      const x = m.x, y = m.y;
       const col = g.kind === 'sun' ? 'rgb(255,180,107)' : g.kind === 'sat' ? t.sat : 'rgb(255,242,179)';
       if (g.kind === 'sat') this.drawIcon('sat', x, y, 9, t.sat);
       else if (g.kind === 'moon') { ctx.fillStyle = col; ctx.beginPath(); ctx.arc(x, y, 5, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = '#0a1424'; ctx.beginPath(); ctx.arc(x + 2.2, y - 1.3, 4.4, 0, Math.PI * 2); ctx.fill(); }
@@ -540,7 +564,7 @@ export class SkyView {
       const wN = ctx.measureText(name).width, wT = ctx.measureText(when).width, w = wN + wT, h = 13;
       const align = u[0] > 0.35 ? 'left' : u[0] < -0.35 ? 'right' : 'center';
       // Crowded (several things rising in the east): slide the label up or down a row until it's clear.
-      const out = 14, lx = c.x + u[0] * (R + out), ly0 = c.y + u[1] * (R + out);
+      const out = 14, lx = x + u[0] * out, ly0 = y + u[1] * out;
       let bx = align === 'left' ? lx : align === 'right' ? lx - w : lx - w / 2, by = ly0 - h / 2, ly = ly0;
       for (const dy of [0, 15, -15, 30, -30, 45, -45, 60, -60]) {
         ly = ly0 + dy; by = ly - h / 2;
@@ -862,7 +886,7 @@ export class SkyView {
     if (weather) this.drawWeather(weather, this.reducedMotion ? 0 : time);
     if (bodies) this.drawBodies(bodies);
     if (ghosts?.length) this.drawGhosts(ghosts);
-    this.feetA = Math.max(0, Math.min(1, (-this.basis.back[2] - 0.9) / 0.07)); // fades in from ~64° down, full by ~76°
+    this.feetA = Math.max(0, Math.min(1, (-this.basis.back[2] - 0.8) / 0.1)); // fades in from ~53° down, full by ~64° (it is on the ground now, so it can show sooner)
     this.drawGround();
     if (landscape) this.drawLandscape();
     this.drawGroundCompass();

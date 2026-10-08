@@ -144,3 +144,7 @@ select, .filter select, .search input { border: 1px solid var(--ui-edge); border
   box-shadow: 0 0 0 5px rgba(8, 15, 27, .6), 0 2px 8px #0008; }
 .ui-range::-moz-range-thumb { width: 22px; height: 22px; border-radius: 50%; background: #080f1b; border: 2px solid color-mix(in srgb, var(--ui-gold) 45%, #080f1b); }
 .ui-range:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 4px rgba(250, 129, 39, .35); }
+
+/* Bare icons (2026-10-07, Sevaan): no circle around the header buttons or any ✕; the 44px tap area stays. */
+.icon-button, .x-close, .pill.x-close, #viewer .close { border: 0 !important; background: transparent !important; box-shadow: none !important; }
+.x-close { font-size: 24px !important; }
