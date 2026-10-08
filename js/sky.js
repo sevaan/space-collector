@@ -1,9 +1,9 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.324';
+import { extinction } from './sky-limit.js?v=0.1.325';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.324';
-import { TIER_INFO } from './rarity.js?v=0.1.324';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.325';
+import { TIER_INFO } from './rarity.js?v=0.1.325';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -163,7 +163,7 @@ export class SkyView {
     ctx.beginPath();
     pts.forEach((p, i) => (i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y)));
     ctx.closePath();
-    ctx.fill();
+    if (this.outlineOnly) { ctx.strokeStyle = ctx.fillStyle; ctx.lineWidth = 1.1; ctx.lineJoin = 'round'; ctx.stroke(); } else ctx.fill(); // camera view: outlines
     return true;
   }
 
@@ -475,7 +475,7 @@ export class SkyView {
       const b = this.basis.back, az = (Math.atan2(b[0], b[1]) / RAD + 360) % 360;
       const h0 = this.project(enuFromAzEl(az, 0)), h1 = this.project(enuFromAzEl(az, -45));
       if (h0 && h1) {
-        const f = this.theme === THEMES.night ? 0 : (this.dayF ?? 0), c = f > 0.3 ? [80, 62, 44] : this.theme === THEMES.night ? [10, 1, 0] : [7, 14, 22];
+        const c = this.theme === THEMES.night ? [10, 1, 0] : [8, 15, 27]; // the header's near-black, day or night (2026-10-08, Sevaan)
         const g = ctx.createLinearGradient(h0.x, h0.y, h1.x, h1.y);
         g.addColorStop(0, `rgba(${c},.9)`); g.addColorStop(0.5, `rgba(${c},.45)`); g.addColorStop(1, `rgba(${c},0)`);
         ctx.save(); poly(); ctx.fillStyle = g; ctx.fill(); ctx.restore();
@@ -573,6 +573,7 @@ export class SkyView {
     // Hills in three ranges (2026-10-08, higher fidelity): a far hazy ridge, the main hills, a near rolling band, each
     // a little greener and darker than the one behind (aerial perspective), with a lighter sunlit crest by day.
     const band = (pts, fill, crest) => {
+      if (this.camera) { ctx.save(); ctx.strokeStyle = 'rgba(255,242,179,.7)'; ctx.lineWidth = 1.2; ctx.lineJoin = 'round'; this.path(pts.map(([az, el]) => enuFromAzEl(az, el))); ctx.restore(); return; } // camera view: just the ridge line
       for (let i = 0; i < pts.length - 1; i += 3) { const seg = pts.slice(i, i + 4); ctx.fillStyle = fill; this.poly([...seg, [seg[seg.length - 1][0], -2], [seg[0][0], -2]]); }
       if (crest) { ctx.save(); ctx.strokeStyle = crest; ctx.lineWidth = 1.2; ctx.lineJoin = 'round'; this.path(pts.map(([az, el]) => enuFromAzEl(az, el - 0.05))); ctx.restore(); }
     };
@@ -582,7 +583,7 @@ export class SkyView {
     // drooping, ragged tiers that narrow to a spike, with a lighter lit side by day.
     const pine = ([az, ht, w, tiers, lean, sd], body, lit) => {
       const base = -0.3, trunkH = ht * 0.12, top = ht, tw = w * 0.07;
-      this.poly([[az - tw, base], [az + tw, base], [az + tw, base + trunkH + 0.05], [az - tw, base + trunkH + 0.05]]);
+      if (!this.camera) this.poly([[az - tw, base], [az + tw, base], [az + tw, base + trunkH + 0.05], [az - tw, base + trunkH + 0.05]]);
       const left = [], right = [];
       for (let k = 0; k < tiers; k++) {
         const f = k / tiers, y0 = base + trunkH + (top - trunkH - base) * f, y1 = base + trunkH + (top - trunkH - base) * ((k + 1) / tiers) * 0.98;
@@ -593,11 +594,11 @@ export class SkyView {
       }
       const tip = [az + lean * (top - base), top + 0.12];
       const outline = [...left, tip, ...right.reverse()];
-      ctx.fillStyle = body; this.poly(outline);
-      if (lit) { ctx.fillStyle = lit; this.poly([...left, tip, [az + lean * (top - base) * 0.5, base + trunkH]]); }
+      ctx.fillStyle = this.camera ? 'rgba(255,242,179,.85)' : body; this.outlineOnly = !!this.camera; this.poly(outline); this.outlineOnly = false;
+      if (lit && !this.camera) { ctx.fillStyle = lit; this.poly([...left, tip, [az + lean * (top - base) * 0.5, base + trunkH]]); }
     };
     const farC = dF > 0 ? mix('0b1622', '557265') : (t.hills ?? '#0a1826');
-    for (const tr of LANDSCAPE.far) pine(tr, farC, null);
+    if (!this.camera) for (const tr of LANDSCAPE.far) pine(tr, farC, null); // camera view: just the near row, so the outlines stay clean
     const nearC = dF > 0 ? mix('070c13', '2a4430') : t.ground, litC = dF > 0.3 ? `rgba(120,160,110,${(0.25 * dF).toFixed(2)})` : null;
     for (const tr of LANDSCAPE.trees) pine(tr, nearC, litC);
     // The near meadow: a rolling green band in front of the trees, with grass tufts along it by day.

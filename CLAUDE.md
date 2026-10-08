@@ -289,3 +289,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - Dino bones drawn at 75% of their first size and not shown in camera view; in camera view the landscape (hills, trees, meadow) is see-through (60%) like the sky and ground.
 - Jump to next visible pass only moves the clock (no pin/follow/drag). Camera view overlay stronger: sky 78%, ground 85%→45%→0, landscape 80%.
 - Compass steadiness (sensors.js): once settled, compass disagreements under 2.5° are ignored and blending is slower (0.02); after a hand correction (camera line-up drag or ±5° nudge) the heading is locked (`lockHeading`) so only a big, persistent change moves it. Reset clears the lock.
+- Camera view: ground tint is the header's near-black (#080f1b; red-black in red mode), and the landscape is cream outlines only (ridge lines + near-row pine outlines, no fills, trunks or far row).
