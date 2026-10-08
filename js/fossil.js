@@ -19,9 +19,10 @@ export function placeBehind(heading) {
   return spot;
 }
 
+// Loaded only when it's first needed (daylight), not on every open (2026-10-08 performance).
 export const image = new Image();
 image.decoding = 'async';
-image.src = `assets/art/fossils/${fossil.file}`;
+export function loadImage() { if (!image.src) image.src = `assets/art/fossils/${fossil.file}`; return image; }
 
 export function found() { try { return JSON.parse(localStorage.getItem('fossilFound')); } catch { return null; } }
 export function markFound() { const f = { at: Date.now(), name: fossil.name }; try { localStorage.setItem('fossilFound', JSON.stringify(f)); } catch {} return f; }

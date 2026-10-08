@@ -1,22 +1,23 @@
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.310';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.310';
-import { ticket } from './toast.js?v=0.1.310';
-import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.310';
-import { cardArt } from './art.js?v=0.1.310';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.310';
-import { applyBack } from './card-backs.js?v=0.1.310';
-import { SETS, assignSets } from './sets.js?v=0.1.310';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.310';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.310';
-import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.310';
-import { progress } from './progress.js?v=0.1.310';
-import { SOLAR_SYSTEM } from './natural.js?v=0.1.310';
-import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.310';
-import { drawShareCard, shareCard } from './share-card.js?v=0.1.310';
-import { conArt } from './con-art.js?v=0.1.310';
-import { CON_BY_ID } from './constellations.js?v=0.1.310';
-import { allSightings, deleteSighting } from './store.js?v=0.1.310';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.310';
+import { expandFacts } from './catalog-facts.js?v=0.1.311';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.311';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.311';
+import { ticket } from './toast.js?v=0.1.311';
+import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.311';
+import { cardArt } from './art.js?v=0.1.311';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.311';
+import { applyBack } from './card-backs.js?v=0.1.311';
+import { SETS, assignSets } from './sets.js?v=0.1.311';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.311';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.311';
+import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.311';
+import { progress } from './progress.js?v=0.1.311';
+import { SOLAR_SYSTEM } from './natural.js?v=0.1.311';
+import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.311';
+import { drawShareCard, shareCard } from './share-card.js?v=0.1.311';
+import { conArt } from './con-art.js?v=0.1.311';
+import { CON_BY_ID } from './constellations.js?v=0.1.311';
+import { allSightings, deleteSighting } from './store.js?v=0.1.311';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.311';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -46,7 +47,8 @@ for (const tier of TIERS.slice().reverse()) $('rarity-filter').add(new Option(TI
 
 async function boot() {
   const [catalogueResult, sightingResult] = await Promise.allSettled([
-    fetch('data/catalog.json', { cache: 'no-cache' }).then((r) => { if (!r.ok) throw new Error('catalogue'); return r.json(); }),
+    // Inside the app, borrow the catalogue Explore already loaded instead of downloading and parsing it again.
+    (() => { try { const sh = window.parent !== window && window.parent.__catalogShare; if (sh) return Promise.resolve(sh); } catch {} return fetch('data/catalog.json', { cache: 'no-cache' }).then((r) => { if (!r.ok) throw new Error('catalogue'); return r.json(); }).then((d) => { for (const o of d.objects) expandFacts(o); return d; }); })(),
     allSightings(),
     loadLore(),
     loadConstellations(),
@@ -736,3 +738,6 @@ addEventListener('resize', moveInk); setTimeout(moveInk, 300);
       requestAnimationFrame(step);
     }
     last = el.textContent; }).observe($('owned-count'), { childList: true, characterData: true, subtree: true }); }
+
+// Offline caching (sw.js, 2026-10-08). Inside the app's Collection layer the parent page has already registered it.
+if ('serviceWorker' in navigator && window.parent === window) addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));

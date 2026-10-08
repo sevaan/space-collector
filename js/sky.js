@@ -1,9 +1,9 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.310';
+import { extinction } from './sky-limit.js?v=0.1.311';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.310';
-import { TIER_INFO } from './rarity.js?v=0.1.310';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.311';
+import { TIER_INFO } from './rarity.js?v=0.1.311';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -479,31 +479,45 @@ export class SkyView {
       const tw = Math.max(0, Math.min(1, (6 - (this.sunEl ?? 90)) / 12)); // 0 with the Sun 6°+ up, 1 at −6°
       const mix = (d, n) => Math.round(d + (n - d) * tw);
       ctx.fillStyle = `rgb(${mix(92, 58) - Math.round(down * 34)}, ${mix(72, 42) - Math.round(down * 26)}, ${mix(52, 48) - Math.round(down * 20)})`; ctx.fillRect(0, 0, this.w, this.h);
+      // The soil texture is drawn once into an offscreen layer and reused until you've turned enough to move it by
+      // about a pixel (2026-10-08 performance): 1,100 pebbles and 70 gradients a frame were the heaviest part of the sky.
+      const bb = this.basis, key = [bb.back, bb.up].flat().map((v) => Math.round(v * 2000)).join(',') + `|${this.w}x${this.h}|${Math.round(dayF * 20)}`;
+      const dpr = this.canvas.width / this.w;
+      if (!this.soil || this.soil.key !== key) {
+        const layer = this.soil?.canvas ?? (typeof OffscreenCanvas !== 'undefined' ? new OffscreenCanvas(1, 1) : document.createElement('canvas'));
+        if (layer.width !== this.canvas.width || layer.height !== this.canvas.height) { layer.width = this.canvas.width; layer.height = this.canvas.height; }
+        const lctx = layer.getContext('2d'); lctx.setTransform(1, 0, 0, 1, 0, 0); lctx.clearRect(0, 0, layer.width, layer.height); lctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        const main = this.ctx; this.ctx = lctx;
+        (() => { const ctx = lctx;
       // Higher-fidelity soil (2026-10-08): all of it fixed to the ground (projected), sized by distance so it shrinks
-      // toward the horizon. 1) broad soft patches of lighter and darker earth; 2) pebbles with a lit top and a shadow;
-      // 3) tufts of dry grass and a few twigs on the nearer ground.
-      const P = (az, el) => this.project(enuFromAzEl(az, el));
-      const onS = (q, m) => q && q.x > -m && q.x < this.w + m && q.y > -m && q.y < this.h + m;
-      const scale = (el) => this.f * Math.tan(1 * RAD) / Math.max(0.15, Math.sin(-el * RAD) + 0.05) * Math.sin(-el * RAD); // px per degree on the ground, foreshortened
-      for (let i = 0; i < 70; i++) {
-        const az = ((i * 0.618034) % 1) * 360, el = -Math.asin(0.05 + ((i * 0.381966) % 1) * 0.95) / RAD, q = P(az, el), r = 3.5 * this.f * Math.tan(RAD * (4 + (i % 5))) * Math.min(1, -el / 50 + 0.25);
-        if (!onS(q, r)) continue;
-        const light = i % 3 === 0, g = ctx.createRadialGradient(q.x, q.y, 0, q.x, q.y, r);
-        g.addColorStop(0, light ? 'rgba(160,128,92,.22)' : 'rgba(30,20,12,.22)'); g.addColorStop(1, 'rgba(0,0,0,0)');
-        ctx.fillStyle = g; ctx.save(); ctx.translate(q.x, q.y); ctx.scale(1, 0.35 + Math.min(0.6, -el / 120)); ctx.translate(-q.x, -q.y); ctx.beginPath(); ctx.arc(q.x, q.y, r, 0, Math.PI * 2); ctx.fill(); ctx.restore();
-      }
-      for (let i = 0; i < 1100; i++) {
-        const a = (i * 0.618034) % 1, b = ((i * 0.754877) % 1), el = -Math.asin(0.03 + b * 0.97) / RAD, az = a * 360, q = P(az, el); /* equal-area spread: no pile-up at your feet */ if (!onS(q, 10)) continue;
-        const near = Math.min(1, -el / 55), r = 0.35 + near * near * 2.6 * (0.35 + ((i * 7) % 10) / 12), flat = 0.45 + near * 0.35, rot = (i % 7) * 0.45;
-        if (i % 4 === 0) { // a pebble: shadow, body, lit top
-          ctx.fillStyle = `rgba(25,16,10,${0.25 + near * 0.2})`; ctx.beginPath(); ctx.ellipse(q.x + r * 0.35, q.y + r * 0.45, r * 1.25, r * flat, rot, 0, Math.PI * 2); ctx.fill();
-          ctx.fillStyle = `rgba(${150 + (i % 3) * 15},${128 + (i % 3) * 10},${100 + (i % 5) * 6},${0.35 + near * 0.3})`; ctx.beginPath(); ctx.ellipse(q.x, q.y, r * 1.2, r * flat, rot, 0, Math.PI * 2); ctx.fill();
-          if (r > 1.3) { ctx.fillStyle = `rgba(232,216,184,${0.2 + near * 0.25})`; ctx.beginPath(); ctx.ellipse(q.x - r * 0.3, q.y - r * 0.25, r * 0.5, r * flat * 0.4, rot, 0, Math.PI * 2); ctx.fill(); }
-        } else { // grit and clods
-          ctx.fillStyle = i % 3 ? `rgba(40,28,18,${0.16 + near * 0.16})` : `rgba(172,148,112,${0.12 + near * 0.12})`;
-          ctx.beginPath(); ctx.ellipse(q.x, q.y, r * 0.9, r * flat * 0.8, rot, 0, Math.PI * 2); ctx.fill();
+        // toward the horizon. 1) broad soft patches of lighter and darker earth; 2) pebbles with a lit top and a shadow;
+        // 3) tufts of dry grass and a few twigs on the nearer ground.
+        const P = (az, el) => this.project(enuFromAzEl(az, el));
+        const onS = (q, m) => q && q.x > -m && q.x < this.w + m && q.y > -m && q.y < this.h + m;
+        const scale = (el) => this.f * Math.tan(1 * RAD) / Math.max(0.15, Math.sin(-el * RAD) + 0.05) * Math.sin(-el * RAD); // px per degree on the ground, foreshortened
+        for (let i = 0; i < 70; i++) {
+          const az = ((i * 0.618034) % 1) * 360, el = -Math.asin(0.05 + ((i * 0.381966) % 1) * 0.95) / RAD, q = P(az, el), r = 3.5 * this.f * Math.tan(RAD * (4 + (i % 5))) * Math.min(1, -el / 50 + 0.25);
+          if (!onS(q, r)) continue;
+          const light = i % 3 === 0, g = ctx.createRadialGradient(q.x, q.y, 0, q.x, q.y, r);
+          g.addColorStop(0, light ? 'rgba(160,128,92,.22)' : 'rgba(30,20,12,.22)'); g.addColorStop(1, 'rgba(0,0,0,0)');
+          ctx.fillStyle = g; ctx.save(); ctx.translate(q.x, q.y); ctx.scale(1, 0.35 + Math.min(0.6, -el / 120)); ctx.translate(-q.x, -q.y); ctx.beginPath(); ctx.arc(q.x, q.y, r, 0, Math.PI * 2); ctx.fill(); ctx.restore();
         }
+        for (let i = 0; i < 1100; i++) {
+          const a = (i * 0.618034) % 1, b = ((i * 0.754877) % 1), el = -Math.asin(0.03 + b * 0.97) / RAD, az = a * 360, q = P(az, el); /* equal-area spread: no pile-up at your feet */ if (!onS(q, 10)) continue;
+          const near = Math.min(1, -el / 55), r = 0.35 + near * near * 2.6 * (0.35 + ((i * 7) % 10) / 12), flat = 0.45 + near * 0.35, rot = (i % 7) * 0.45;
+          if (i % 4 === 0) { // a pebble: shadow, body, lit top
+            ctx.fillStyle = `rgba(25,16,10,${0.25 + near * 0.2})`; ctx.beginPath(); ctx.ellipse(q.x + r * 0.35, q.y + r * 0.45, r * 1.25, r * flat, rot, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = `rgba(${150 + (i % 3) * 15},${128 + (i % 3) * 10},${100 + (i % 5) * 6},${0.35 + near * 0.3})`; ctx.beginPath(); ctx.ellipse(q.x, q.y, r * 1.2, r * flat, rot, 0, Math.PI * 2); ctx.fill();
+            if (r > 1.3) { ctx.fillStyle = `rgba(232,216,184,${0.2 + near * 0.25})`; ctx.beginPath(); ctx.ellipse(q.x - r * 0.3, q.y - r * 0.25, r * 0.5, r * flat * 0.4, rot, 0, Math.PI * 2); ctx.fill(); }
+          } else { // grit and clods
+            ctx.fillStyle = i % 3 ? `rgba(40,28,18,${0.16 + near * 0.16})` : `rgba(172,148,112,${0.12 + near * 0.12})`;
+            ctx.beginPath(); ctx.ellipse(q.x, q.y, r * 0.9, r * flat * 0.8, rot, 0, Math.PI * 2); ctx.fill();
+          }
+        }
+          })();
+        this.ctx = main; this.soil = { key, canvas: layer };
       }
+      ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = dayF; ctx.drawImage(this.soil.canvas, 0, 0); ctx.restore(); ctx.globalAlpha = dayF;
       // (2026-10-08: the grass tufts and twigs on the soil were removed, Sevaan didn't like them.)
       ctx.globalAlpha = 1;
     }

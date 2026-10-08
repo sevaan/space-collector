@@ -1,8 +1,9 @@
 // Orbit math: where every object is in the observer's sky, and whether it can be seen.
 // Pure functions, no DOM, so this module carries over unchanged to a native wrapper.
 
-import * as sat from './lib/satellite.js?v=0.1.310';
-import { extinction, starlinkStdMag } from './sky-limit.js?v=0.1.310';
+import { expandFacts } from './catalog-facts.js?v=0.1.311';
+import * as sat from './lib/satellite.js?v=0.1.311';
+import { extinction, starlinkStdMag } from './sky-limit.js?v=0.1.311';
 
 const RAD = Math.PI / 180;
 const EARTH_RADIUS_KM = 6371;
@@ -25,6 +26,7 @@ export async function loadCatalog(url) {
   const objects = [];
   const families = data.families ?? {};
   for (const o of data.objects) {
+    expandFacts(o);
     const satrec = satrecFor(o);
     if (!satrec || satrec.error) continue;
     // Constellation members share their family's facts to keep the file small.
@@ -35,6 +37,8 @@ export async function loadCatalog(url) {
     delete o.el; delete o.l1; delete o.l2;
     objects.push(o);
   }
+  // Shared with the Collection layer so it doesn't download and parse the catalogue again (2026-10-08 performance).
+  globalThis.__catalogShare = { generated: data.generated, source: data.source, families, objects };
   return { generated: new Date(data.generated), families, objects };
 }
 

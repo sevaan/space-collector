@@ -183,6 +183,11 @@ const FAMILY_SHARED = ['kind', 'type', 'owner', 'site', 'ops', 'rcs', 'tier', 's
 for (const o of objects) {
   for (const k of Object.keys(o)) if (o[k] == null) delete o[k];
   if (o.family) for (const k of FAMILY_SHARED) delete o[k];
+  // Derived on load from the elements, launch date and family (js/catalog-facts.js), so not stored (2026-10-08).
+  delete o.period; delete o.incl; delete o.apogee; delete o.perigee; delete o.year;
+  if (o.card === (o.family && o.cospar ? `${o.family}:${o.cospar.slice(0, 8)}` : String(o.id))) delete o.card;
+  // Elements: epoch to the second, the rest to sensible precision.
+  o.el = o.el.map((v, i) => (i === 0 ? String(v).slice(0, 19) : typeof v === 'number' ? +v.toPrecision(i === 1 ? 11 : 8) : v));
 }
 
 const families = Object.fromEntries(FAMILIES.map((f) => [f.id, { name: f.name, stdMag: f.stdMag, owner: f.owner, maker: f.maker }]));
