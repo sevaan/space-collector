@@ -285,3 +285,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - Camera view (revised 2026-10-08): the real sky colour for the time of day is painted see-through (62%) over the picture, the tree line, hills and meadow are drawn as usual, and below the horizon nothing is drawn (the sky tint is cut away with destination-out) so the camera shows the floor or field. Stars follow normal day/night visibility.
 - Compass figure-8 toast waits until motion has been live 20 s (no flash on refresh). Settings → Aiming → Compass nudge has a Reset (back to 0°). Camera view's instructions are a short bottom toast ("Drawing off? Drag sideways to line it up.").
 - Snap onto targets is off by default.
+- Camera view ground: a see-through ground-colour layer below the horizon (70% at the horizon → 30% → 0 by ~45° down), so looking down shows your room or the field clearly.

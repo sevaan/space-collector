@@ -1,9 +1,9 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.319';
+import { extinction } from './sky-limit.js?v=0.1.320';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.319';
-import { TIER_INFO } from './rarity.js?v=0.1.319';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.320';
+import { TIER_INFO } from './rarity.js?v=0.1.320';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -466,8 +466,22 @@ export class SkyView {
       }
     }
     if (!ground.length) return;
-    if (this.camera) { // camera: no drawn ground; cut the sky tint away below the horizon so the real floor or field shows
-      ctx.save(); ctx.globalCompositeOperation = 'destination-out'; ctx.beginPath(); ground.forEach((p, i) => i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y)); ctx.closePath(); ctx.fill(); ctx.restore(); return; }
+    if (this.camera) {
+      // Camera: cut the sky tint away below the horizon, then lay the ground colour back on as a see-through layer that
+      // fades out as you look down (2026-10-08, Sevaan): strong at the horizon, gone by about 45° down, so your room
+      // or the field at your feet comes through clearly.
+      const poly = () => { ctx.beginPath(); ground.forEach((p, i) => i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y)); ctx.closePath(); };
+      ctx.save(); ctx.globalCompositeOperation = 'destination-out'; poly(); ctx.fill(); ctx.restore();
+      const b = this.basis.back, az = (Math.atan2(b[0], b[1]) / RAD + 360) % 360;
+      const h0 = this.project(enuFromAzEl(az, 0)), h1 = this.project(enuFromAzEl(az, -45));
+      if (h0 && h1) {
+        const f = this.theme === THEMES.night ? 0 : (this.dayF ?? 0), c = f > 0.3 ? [80, 62, 44] : this.theme === THEMES.night ? [10, 1, 0] : [7, 14, 22];
+        const g = ctx.createLinearGradient(h0.x, h0.y, h1.x, h1.y);
+        g.addColorStop(0, `rgba(${c},.7)`); g.addColorStop(0.5, `rgba(${c},.3)`); g.addColorStop(1, `rgba(${c},0)`);
+        ctx.save(); poly(); ctx.fillStyle = g; ctx.fill(); ctx.restore();
+      }
+      return;
+    }
     // The earth (2026-10-06): darker the further down you look, so the ground reads as ground, not more sky.
     const down = Math.max(0, Math.min(1, -this.basis.back[2] * 1.4));
     const night = this.theme === THEMES.night;
