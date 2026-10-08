@@ -1,23 +1,23 @@
-import { expandFacts } from './catalog-facts.js?v=0.1.312';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.312';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.312';
-import { ticket } from './toast.js?v=0.1.312';
-import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.312';
-import { cardArt } from './art.js?v=0.1.312';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.312';
-import { applyBack } from './card-backs.js?v=0.1.312';
-import { SETS, assignSets } from './sets.js?v=0.1.312';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.312';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.312';
-import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.312';
-import { progress } from './progress.js?v=0.1.312';
-import { SOLAR_SYSTEM } from './natural.js?v=0.1.312';
-import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.312';
-import { drawShareCard, shareCard } from './share-card.js?v=0.1.312';
-import { conArt } from './con-art.js?v=0.1.312';
-import { CON_BY_ID } from './constellations.js?v=0.1.312';
-import { allSightings, deleteSighting } from './store.js?v=0.1.312';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.312';
+import { expandFacts } from './catalog-facts.js?v=0.1.313';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.313';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.313';
+import { ticket } from './toast.js?v=0.1.313';
+import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.313';
+import { cardArt } from './art.js?v=0.1.313';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.313';
+import { applyBack } from './card-backs.js?v=0.1.313';
+import { SETS, assignSets } from './sets.js?v=0.1.313';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.313';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.313';
+import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.313';
+import { progress } from './progress.js?v=0.1.313';
+import { SOLAR_SYSTEM } from './natural.js?v=0.1.313';
+import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.313';
+import { drawShareCard, shareCard } from './share-card.js?v=0.1.313';
+import { conArt } from './con-art.js?v=0.1.313';
+import { CON_BY_ID } from './constellations.js?v=0.1.313';
+import { allSightings, deleteSighting } from './store.js?v=0.1.313';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.313';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -644,6 +644,8 @@ function renderPatches() {
     .sort((a, b) => Number(b.done) - Number(a.done) || GROUP_ORDER.indexOf(groupOf(a)) - GROUP_ORDER.indexOf(groupOf(b))); // earned first, then by group
   wall.innerHTML = `<div class="pw-chips">${['all', ...groups].map((g) => `<button type="button" class="ui-chip pw-chip${state.patchGroup === g ? ' on' : ''}" data-g="${g}"><b>${g === 'all' ? 'All' : esc(GROUPS[g].t)}</b><span class="ui-chip__k">${(g === 'all' ? all : all.filter((a) => groupOf(a) === g)).filter((a) => a.done).length}</span></button>`).join('')}</div>
     ${state.patchGroup !== 'all' && !shown.some((a) => a.done) ? `<div class="pw-empty"><span class="empty__orbit" aria-hidden="true">✦</span><span>None yet in ${esc(GROUPS[state.patchGroup]?.t ?? 'this group')}. Each outline below says what earns it.</span></div>` : ''}
+    ${state.patchGroup === 'all' && all.filter((a) => a.done).length < 3 ? (() => { const easy = ['first', 'moon', 'twilight', 'station', 'stars10'].map((id) => all.find((a) => a.id === id && !a.done)).filter(Boolean).slice(0, 3);
+      return easy.length ? `<div class="pw-start"><span>Start here</span><div class="pw-grid">${easy.map((a) => `<button type="button" class="pw-item" data-id="${a.id}">${patchHtml(a, { locked: true })}<span>${esc(a.name)}<small>${esc(a.text)}</small></span></button>`).join('')}</div></div><span class="lab" style="display:block;margin:0 4px 10px;color:#bdbea9;font:500 12px/1.2 'SC Label',sans-serif;letter-spacing:.16em;text-transform:uppercase">All patches</span>` : ''; })() : ''}
     <div class="pw-grid">${shown.map((a) => `<button type="button" class="pw-item${a.done ? '' : ' locked'}${a.done && !patchSeen().has(a.id) ? ' new' : ''}" data-id="${a.id}" aria-label="${esc(a.name)}${a.done ? ', earned' : ', not earned yet'}">${patchHtml(a, { locked: !a.done })}<span>${esc(a.name)}</span></button>`).join('')}</div>`;
   wall.onclick = (e) => {
     const chip = e.target.closest('.pw-chip'); if (chip) { state.patchGroup = chip.dataset.g; renderPatches(); return; }

@@ -634,3 +634,18 @@ body:has(#secret-cta:not([hidden])) #toasts, body:has(#secret-cta:not([hidden]))
 #ud-bell.ring { animation: ui-wiggle .6s var(--ease-out); }
 #ud-bell.ring::first-letter { display: inline-block; }
 .fly-dot { position: fixed; left: -11px; top: -11px; width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--gold); box-shadow: 0 0 12px var(--gold); z-index: 90; pointer-events: none; }
+
+/* ---------- playtest fixes (2026-10-08 #2) ---------- */
+/* Tonight: stat chips instead of a paragraph. */
+#tonight-summary { margin: 4px 0 10px; }
+.ts-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.ts-chip { display: inline-flex; flex-direction: column; gap: 3px; padding: 8px 12px; border-radius: 10px; background: #0f1b2a; border: 1px solid #1c2b3c; }
+.ts-chip small { font: 500 10px/1 var(--label); letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+.ts-chip b { font: 500 15px/1.15 var(--label); letter-spacing: .03em; color: var(--text); }
+.ts-note { display: block; margin-top: 10px; font: 500 14px/1.3 var(--label); letter-spacing: .03em; color: color-mix(in srgb, var(--text) 75%, transparent); }
+.ts-note b { color: var(--gold); font-weight: 500; }
+/* The steering line gets a soft dark backing so it reads over trees and bright sky. */
+#guidance:not(.first) { left: 50% !important; right: auto !important; transform: translateX(-50%); width: max-content; max-width: calc(100vw - 32px); padding: 7px 14px; border-radius: 99px;
+  background: rgba(8, 15, 27, .55); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+/* "0 UP" under the compass reads by day too. */
+body.day #radar-up, body.day #radar-up b { color: #fff !important; text-shadow: 0 1px 4px rgba(8, 15, 27, .55); }

@@ -1,9 +1,9 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.312';
+import { extinction } from './sky-limit.js?v=0.1.313';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.312';
-import { TIER_INFO } from './rarity.js?v=0.1.312';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.313';
+import { TIER_INFO } from './rarity.js?v=0.1.313';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -620,7 +620,7 @@ export class SkyView {
       ctx.font = `800 24px ${FONT}`;
       for (const [az, letter] of [[0, 'N'], [90, 'E'], [180, 'S'], [270, 'W']]) {
         const p = this.project(enuFromAzEl(az, -24));
-        if (!this.onScreen(p)) continue;
+        if (!this.onScreen(p) || p.y > this.h - 110) continue; // not under the switcher at the bottom edge
         ctx.fillStyle = az === 0 ? t.groundNorth : t.groundText;
         ctx.fillText(letter, p.x, p.y);
       }
@@ -770,6 +770,7 @@ export class SkyView {
       // Crowded (several things rising in the east): slide the label up or down a row until it's clear.
       const out = 14, lx = x + u[0] * out, ly0 = y + u[1] * out;
       let bx = align === 'left' ? lx : align === 'right' ? lx - w : lx - w / 2, by = ly0 - h / 2, ly = ly0;
+      bx = Math.max(10, Math.min(this.w - 10 - w, bx)); // never off the screen edge
       for (const dy of [0, 15, -15, 30, -30, 45, -45, 60, -60]) {
         ly = ly0 + dy; by = ly - h / 2;
         if (!boxes.some((b) => bx < b[0] + b[2] + 4 && bx + w + 4 > b[0] && by < b[1] + b[3] + 2 && by + h + 2 > b[1])) break;
