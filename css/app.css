@@ -480,3 +480,11 @@ body:has(#reveal:not([hidden])) #toasts, body:has(.overlay.panel:not([hidden])) 
 #plane .p-meta { font:500 12px/1.2 var(--label); letter-spacing:.12em; text-transform:uppercase; color:var(--muted); text-shadow:0 1px 4px var(--bg); }
 #plane .p-label { top:calc(var(--cy) - var(--r) - 18px); }
 #d-cta { text-transform:uppercase; }
+
+/* Compass figure-8 (2026-10-07): an ordinary toast (eyebrow + one short line) with the illustration in the mark's slot. */
+.ticket--compass { border-left-color:var(--gold); } .ticket--compass .ticket__mark { display:none; }
+.ticket--compass .ticket__eyebrow { color:var(--gold); grid-column:2; grid-row:1; }
+.ticket--compass .ticket__body { display:grid; grid-template-columns:auto 1fr; column-gap:10px; align-items:center; }
+.ticket--compass .ticket__line { display:contents; }
+.ticket--compass .tk-art { grid-column:1; grid-row:1 / 3; line-height:0; }
+.ticket--compass .tk-text { grid-column:2; grid-row:2; white-space:normal; font:500 14px/1.25 var(--label); }

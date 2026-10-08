@@ -1,30 +1,30 @@
-import { VERSION } from './version.js?v=0.1.244';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.244';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.244';
-import { conArt } from './con-art.js?v=0.1.244';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.244';
-import { CON_FIGURES } from './con-figures.js?v=0.1.244';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.244';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.244';
-import { progress as progressOf } from './progress.js?v=0.1.244';
-import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.244';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.244';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.244';
-import { SkyView, shortName } from './sky.js?v=0.1.244';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.244';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.244';
-import { cardArt } from './art.js?v=0.1.244';
-import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.244';
-import { applyBack } from './card-backs.js?v=0.1.244';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.244';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.244';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.244';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.244';
-import { TIER_INFO } from './rarity.js?v=0.1.244';
-import { SETS } from './sets.js?v=0.1.244';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.244';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.244';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.244';
+import { VERSION } from './version.js?v=0.1.245';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.245';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.245';
+import { conArt } from './con-art.js?v=0.1.245';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.245';
+import { CON_FIGURES } from './con-figures.js?v=0.1.245';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.245';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.245';
+import { progress as progressOf } from './progress.js?v=0.1.245';
+import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.245';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.245';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.245';
+import { SkyView, shortName } from './sky.js?v=0.1.245';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.245';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.245';
+import { cardArt } from './art.js?v=0.1.245';
+import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.245';
+import { applyBack } from './card-backs.js?v=0.1.245';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.245';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.245';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.245';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.245';
+import { TIER_INFO } from './rarity.js?v=0.1.245';
+import { SETS } from './sets.js?v=0.1.245';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.245';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.245';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.245';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -1196,7 +1196,7 @@ function dayGhosts() {
 let compassAskAt = -Infinity;
 // A little card-style illustration for the toast: a phone tracing a dashed figure-8 around a compass rose,
 // the needle swinging and settling on N. Navy disc, cream line work, burnt-orange accents (the card palette).
-const FIG8_ART = `<svg viewBox="0 0 72 72" width="64" height="64" aria-hidden="true">
+const FIG8_ART = `<svg viewBox="0 0 72 72" width="40" height="40" aria-hidden="true">
   <circle cx="36" cy="36" r="34" fill="#0a1424" stroke="#bcb585" stroke-opacity=".55"/>
   <circle cx="36" cy="36" r="30" fill="none" stroke="#627a8b" stroke-opacity=".5" stroke-dasharray="1 3"/>
   <path id="f8" d="M36 36 C46 24 60 26 60 36 C60 46 46 48 36 36 C26 24 12 26 12 36 C12 46 26 48 36 36 Z" fill="none" stroke="#fa8127" stroke-width="1.6" stroke-dasharray="3 3" stroke-linecap="round"/>
@@ -1213,7 +1213,8 @@ function checkCompass(t) {
   const bad = acc === -1 || acc > 35 || jumped || pointing.compassDoubt > 0.6;
   if (!bad || t - compassAskAt < 4 * 60e3) return;
   compassAskAt = t;
-  toast(`<span class="tk-art">${FIG8_ART}</span><span class="tk-text"><span class="big-line">Compass needs a nudge</span>Wave the phone in a slow figure-8 for a few seconds, away from metal, magnets and cars.</span>`, 7000);
+  ticket({ kind: 'compass', eyebrow: 'COMPASS NEEDS A NUDGE', html: true, ms: 7000,
+    line: `<span class="tk-art">${FIG8_ART}</span><span class="tk-text">Wave the phone in a slow figure-8, away from metal and cars.</span>` });
 }
 // ---------- below the horizon (2026-10-06) ----------
 // What's under your feet right now: the Sun, Moon and bright planets (with when they next rise) and tonight's next
