@@ -1,19 +1,19 @@
-import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.233';
-import { cardArt } from './art.js?v=0.1.233';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.233';
-import { applyBack } from './card-backs.js?v=0.1.233';
-import { SETS, assignSets } from './sets.js?v=0.1.233';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.233';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.233';
-import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.233';
-import { progress } from './progress.js?v=0.1.233';
-import { SOLAR_SYSTEM } from './natural.js?v=0.1.233';
-import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.233';
-import { drawShareCard, shareCard } from './share-card.js?v=0.1.233';
-import { conArt } from './con-art.js?v=0.1.233';
-import { CON_BY_ID } from './constellations.js?v=0.1.233';
-import { allSightings, deleteSighting } from './store.js?v=0.1.233';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.233';
+import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.234';
+import { cardArt } from './art.js?v=0.1.234';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.234';
+import { applyBack } from './card-backs.js?v=0.1.234';
+import { SETS, assignSets } from './sets.js?v=0.1.234';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.234';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.234';
+import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.234';
+import { progress } from './progress.js?v=0.1.234';
+import { SOLAR_SYSTEM } from './natural.js?v=0.1.234';
+import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.234';
+import { drawShareCard, shareCard } from './share-card.js?v=0.1.234';
+import { conArt } from './con-art.js?v=0.1.234';
+import { CON_BY_ID } from './constellations.js?v=0.1.234';
+import { allSightings, deleteSighting } from './store.js?v=0.1.234';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.234';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -462,6 +462,17 @@ slot.addEventListener('pointerup', endSwipe);
 slot.addEventListener('pointercancel', endSwipe);
 $('v-close').addEventListener('click', closeViewer);
 addStarfield($('viewer'));
+// Same sky as Explore (2026-10-07): the page background takes the colours Explore last painted (night navy, dusk,
+// day), dimmed under a scrim in brighter skies so cream text stays readable. Fresh for 3 hours, else the default.
+(function applySkyTone() {
+  if (document.documentElement.dataset.theme === 'night' || document.body.classList.contains('night')) return;
+  let tone = null; try { tone = JSON.parse(localStorage.getItem('skyTone')); } catch {}
+  if (!tone?.a || Date.now() - (tone.at ?? 0) > 3 * 3600e3) return;
+  const scrim = Math.min(0.72, (tone.f ?? 0) * 0.9);
+  const bg = `linear-gradient(rgba(6,10,18,${scrim.toFixed(2)}), rgba(6,10,18,${scrim.toFixed(2)})), linear-gradient(${tone.a}, ${tone.b})`;
+  document.documentElement.style.setProperty('--page-sky', bg);
+  document.body.classList.add('sky-tone');
+})();
 attachTileTilt($('grid'));
 $('viewer').addEventListener('close', () => { stopEffects(); document.body.style.overflow = ''; lastFocus?.focus(); });
 $('slot').addEventListener('pointerdown', askMotion);

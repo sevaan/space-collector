@@ -1,9 +1,9 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.233';
+import { extinction } from './sky-limit.js?v=0.1.234';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.233';
-import { TIER_INFO } from './rarity.js?v=0.1.233';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.234';
+import { TIER_INFO } from './rarity.js?v=0.1.234';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -245,7 +245,7 @@ export class SkyView {
   drawBackground() {
     const ctx = this.ctx, t = this.theme, f = this.dayF ?? 0;
     const g = ctx.createLinearGradient(0, 0, 0, this.h);
-    if (f <= 0) { g.addColorStop(0, t.bgBottom); g.addColorStop(1, t.bgTop); }
+    if (f <= 0) { g.addColorStop(0, t.bgBottom); g.addColorStop(1, t.bgTop); this.tone = { a: t.bgBottom, b: t.bgTop, f: 0 }; }
     else {
       // The real sky by day and at dusk (2026-10-06): navy → dusk orange along the horizon → pale blue.
       const mix = (a, b, k) => a.map((v, i) => Math.round(v + (b[i] - v) * k));
@@ -253,7 +253,7 @@ export class SkyView {
       const nightTop = [12, 29, 41], nightBot = [8, 15, 27], duskTop = [27, 42, 90], duskBot = [240, 163, 90], dayTop = [63, 127, 191], dayBot = [185, 214, 234];
       const k = f < 0.5 ? f * 2 : (f - 0.5) * 2;
       const top = f < 0.5 ? mix(nightTop, duskTop, k) : mix(duskTop, dayTop, k), bot = f < 0.5 ? mix(nightBot, duskBot, k) : mix(duskBot, dayBot, k);
-      g.addColorStop(0, rgb(top)); g.addColorStop(1, rgb(bot));
+      g.addColorStop(0, rgb(top)); g.addColorStop(1, rgb(bot)); this.tone = { a: rgb(top), b: rgb(bot), f };
     }
     ctx.fillStyle = g;
     ctx.fillRect(0, 0, this.w, this.h);

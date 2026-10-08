@@ -192,3 +192,7 @@ body.albums-view .collection-tools { display: none; }
 .viewer-history p.with-launch .h-main span:first-child { color: var(--text); }
 .viewer-history p.with-launch .h-launch { grid-column: 1; font: 500 11px/1.3 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .08em; text-transform: uppercase; color: #fa8127; }
 .viewer-history p.with-launch .history-delete { grid-column: 2; grid-row: 1; align-self: center; } /* beside the time line */
+
+/* The page wears Explore's current sky (js/cards-page.js applySkyTone), fixed behind everything. */
+body.sky-tone { background: var(--page-sky) fixed; background-color: var(--bg); min-height: 100vh; }
+body.sky-tone #viewer { background: var(--page-sky) fixed; }
