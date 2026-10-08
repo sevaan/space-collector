@@ -592,3 +592,8 @@ body.night .set-group, body.night .set-sheet-card { background: #140606; border-
 /* Skip setup as a chip, like the next-up chip (2026-10-08). */
 #ob-skip.ob-exit { padding: 7px 12px !important; min-height: 0 !important; border-radius: 99px !important; border: 1px solid var(--edge-soft) !important; background: color-mix(in srgb, var(--bg) 78%, transparent) !important;
   -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); color: var(--text) !important; font: 500 12px/1.2 var(--label) !important; letter-spacing: .12em !important; }
+/* The dark band at the top fades out a little lower (2026-10-08): solid behind the wordmark, easing into the sky
+   below the header line rather than above it. */
+#sky-header { background: none; }
+#sky-header::before { content: ''; position: absolute; left: 0; right: 0; top: calc(-1 * var(--safe-top)); height: calc(var(--safe-top) + 125px); z-index: -1; pointer-events: none;
+  background: linear-gradient(var(--bg) 0, var(--bg) calc(var(--safe-top) + 62px), color-mix(in srgb, var(--bg) 55%, transparent) calc(var(--safe-top) + 92px), transparent 100%); }
