@@ -132,7 +132,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
 .viewer-status { font: 500 14px/1.35 var(--ui-label); letter-spacing: .04em; color: rgba(255, 242, 179, .7); }
 
 /* Fields: dropdowns and search boxes share one look (heights stay with each page's layout). */
-select, .filter select, .search input { border: 1px solid var(--ui-edge); border-radius: 6px; background: var(--ui-glass); color: var(--ui-ink);
+select, .filter select, .search { border: 1px solid var(--ui-edge); border-radius: 6px; background: var(--ui-glass); color: var(--ui-ink);
   font: 500 14px/1.2 var(--ui-label); letter-spacing: .03em; }
 
 /* One focus ring for keyboard users, everywhere. */
@@ -238,3 +238,6 @@ body:has(#reveal:not([hidden])) #banner, body:has(.patch-moment) #banner, body:h
 .wx-rain i { position: absolute; top: -30px; width: 1.2px; height: var(--h, 16px); border-radius: 1px; background: linear-gradient(transparent, rgba(170, 200, 225, .75)); transform: rotate(12deg); animation: wx-fall var(--t, .7s) linear var(--dl, 0s) infinite; }
 @keyframes wx-fall { to { transform: translate(-80px, 400px) rotate(12deg); } }
 @media (prefers-reduced-motion: reduce) { .wx-layer, .wx-rain i { animation: none; } }
+
+.search input { border: 0 !important; background: transparent !important; outline: none; } /* the box is the .search label, not the input (2026-10-08) */
+.search input:focus-visible { outline: none; } .search:focus-within { border-color: var(--ui-gold); }
