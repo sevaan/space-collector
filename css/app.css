@@ -685,6 +685,6 @@ body.day #radar-up, body.day #radar-up b { color: #fff !important; text-shadow: 
 #cam { position: fixed; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; background: #000; }
 #cam[hidden] { display: none; }
 body.cam-on #sky { background: transparent; }
-body.cam-on:not(.day) #cam { filter: brightness(.55) contrast(1.15); }
+body.cam-on #cam { filter: brightness(.8) saturate(.85); }
 body.night.cam-on #cam { filter: grayscale(1) sepia(1) saturate(5) hue-rotate(318deg) brightness(.35); }
 #cam-tip { position: fixed; left: 50%; transform: translateX(-50%); top: calc(var(--safe-top) + 190px); white-space: nowrap; z-index: 4; padding: 7px 14px; border-radius: 99px; background: rgba(8,15,27,.6); color: var(--text); font: 500 12px/1.2 var(--label); letter-spacing: .14em; text-transform: uppercase; pointer-events: none; }

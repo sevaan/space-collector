@@ -1,9 +1,9 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.315';
+import { extinction } from './sky-limit.js?v=0.1.316';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.315';
-import { TIER_INFO } from './rarity.js?v=0.1.315';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.316';
+import { TIER_INFO } from './rarity.js?v=0.1.316';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -265,7 +265,9 @@ export class SkyView {
   drawBackground() {
     const ctx = this.ctx, t = this.theme, f = this.dayF ?? 0;
     // Camera prototype (2026-10-08): the real sky is behind the canvas, so leave it clear (a faint dark veil at night).
-    if (this.camera) { ctx.clearRect(0, 0, this.w, this.h); if (f < 0.5) { ctx.fillStyle = `rgba(4,7,13,${(0.35 * (1 - f * 2)).toFixed(2)})`; ctx.fillRect(0, 0, this.w, this.h); } this.tone = this.tone ?? { a: t.bgBottom, b: t.bgTop, f }; return; }
+    if (this.camera) { // a see-through night sky over the picture, so stars read over a bright ceiling or a daytime sky
+      ctx.clearRect(0, 0, this.w, this.h); const g = ctx.createLinearGradient(0, 0, 0, this.h); g.addColorStop(0, 'rgba(6,12,24,.62)'); g.addColorStop(1, 'rgba(10,22,40,.48)');
+      ctx.fillStyle = g; ctx.fillRect(0, 0, this.w, this.h); this.tone = this.tone ?? { a: t.bgBottom, b: t.bgTop, f }; return; }
     const g = ctx.createLinearGradient(0, 0, 0, this.h);
     if (f <= 0) { g.addColorStop(0, t.bgBottom); g.addColorStop(1, t.bgTop); this.tone = { a: t.bgBottom, b: t.bgTop, f: 0 }; }
     else {
@@ -463,7 +465,9 @@ export class SkyView {
         ground.push({ x: a.x + (b.x - a.x) * u, y: a.y + (b.y - a.y) * u });
       }
     }
-    if (!ground.length || this.camera) return; // camera: the real ground is in the picture
+    if (!ground.length) return;
+    if (this.camera) { // camera: a light tint marks the ground; the real floor or field shows through
+      ctx.save(); ctx.beginPath(); ground.forEach((p, i) => i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y)); ctx.closePath(); ctx.fillStyle = 'rgba(30,20,12,.35)'; ctx.fill(); ctx.restore(); return; }
     // The earth (2026-10-06): darker the further down you look, so the ground reads as ground, not more sky.
     const down = Math.max(0, Math.min(1, -this.basis.back[2] * 1.4));
     const night = this.theme === THEMES.night;
@@ -1086,7 +1090,8 @@ export class SkyView {
     this.clearZone = newFind || planeHit ? { left: this.cx - Math.min(190, this.w / 2 - 12), right: this.cx + Math.min(190, this.w / 2 - 12), top: rc.y - r - 100, bottom: rc.y + r + 75 } : null;
     const ctx = this.ctx, t = this.theme;
     // Day factor: 0 at night, 1 in full daylight (civil twilight in between). Drives the sky tone and what shows.
-    this.dayF = this.theme === THEMES.night ? 0 : Math.max(0, Math.min(1, (sunEl + 8) / 12));
+    // Camera view (2026-10-08, Sevaan): always the night sky over the picture, even by day, so you can see through your ceiling.
+    this.dayF = this.theme === THEMES.night || this.camera ? 0 : Math.max(0, Math.min(1, (sunEl + 8) / 12));
     this.starLimit = starLimit; this.sunEl = sunEl;
     { const s = bodies?.find?.((b) => b.kind === 'sun'); this.sunAz = s ? (Math.atan2(s.enu[0], s.enu[1]) / RAD + 360) % 360 : null; }
     this.drawBackground();

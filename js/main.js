@@ -1,37 +1,37 @@
-import * as Secrets from './secrets.js?v=0.1.315';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.315';
-import * as Ufo from './ufo.js?v=0.1.315';
-import * as Fossil from './fossil.js?v=0.1.315';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.315';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.315';
-import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.315';
-import { VERSION } from './version.js?v=0.1.315';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.315';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.315';
-import { conArt } from './con-art.js?v=0.1.315';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.315';
-import { CON_FIGURES } from './con-figures.js?v=0.1.315';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.315';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.315';
-import { progress as progressOf } from './progress.js?v=0.1.315';
-import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.315';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.315';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.315';
-import { SkyView, shortName } from './sky.js?v=0.1.315';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, roadster, starVector } from './celestial.js?v=0.1.315';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.315';
-import { cardArt } from './art.js?v=0.1.315';
-import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.315';
-import { applyBack } from './card-backs.js?v=0.1.315';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.315';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.315';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.315';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.315';
-import { TIER_INFO } from './rarity.js?v=0.1.315';
-import { SETS } from './sets.js?v=0.1.315';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.315';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.315';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.315';
+import * as Secrets from './secrets.js?v=0.1.316';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.316';
+import * as Ufo from './ufo.js?v=0.1.316';
+import * as Fossil from './fossil.js?v=0.1.316';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.316';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.316';
+import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.316';
+import { VERSION } from './version.js?v=0.1.316';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.316';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.316';
+import { conArt } from './con-art.js?v=0.1.316';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.316';
+import { CON_FIGURES } from './con-figures.js?v=0.1.316';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.316';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.316';
+import { progress as progressOf } from './progress.js?v=0.1.316';
+import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.316';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.316';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.316';
+import { SkyView, shortName } from './sky.js?v=0.1.316';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, roadster, starVector } from './celestial.js?v=0.1.316';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.316';
+import { cardArt } from './art.js?v=0.1.316';
+import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.316';
+import { applyBack } from './card-backs.js?v=0.1.316';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.316';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.316';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.316';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.316';
+import { TIER_INFO } from './rarity.js?v=0.1.316';
+import { SETS } from './sets.js?v=0.1.316';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.316';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.316';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.316';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -480,7 +480,7 @@ function tick(ts) {
   sky.draw(basis, items, {
     showDim: state.showDim,
     sky: state.showStars ? state.skyEnu : null,
-    starLimit: state.limit?.stars, // background stars follow the sky slider too
+    starLimit: sky.camera ? Math.max(5, state.limit?.stars ?? 5) : state.limit?.stars, // background stars follow the sky slider too (camera view: always the night's stars)
     sunEl: state.frame?.sunEl ?? -90, // day/twilight tone (js/sky.js dayF)
     ...(document.body.classList.toggle('day', (state.frame?.sunEl ?? -90) > -2) ? {} : {}),
     ...(document.body.classList.toggle('bright-sky', (state.frame?.sunEl ?? -90) > -2 && !state.night) ? {} : {}), // daytime only (dusk is dark like night): chips, switcher and toasts in card paper (2026-10-08)
