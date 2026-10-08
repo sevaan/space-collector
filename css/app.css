@@ -503,3 +503,4 @@ body.day #radar-up, body.day #radar-up b { color: #143046; }
 .panel .hint b { color: var(--text); font-weight: 500; }
 .panel details > summary { font: 500 14px/1.2 var(--label); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); padding: 12px 0; cursor: pointer; }
 body:has(.overlay.panel:not([hidden])) #banner { display: none; } /* the standing message waits while a panel is open */
+body:has(#discover:not([hidden])) #banner { display: none; } /* the standing message steps aside while something is in the circle */

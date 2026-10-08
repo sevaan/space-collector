@@ -220,3 +220,11 @@ select, .filter select, .search input { border: 1px solid var(--ui-edge); border
 @keyframes pm-up { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 @keyframes pm-thump { 0% { transform: scale(1); } 35% { transform: scale(.94); } 100% { transform: scale(1); } }
 @media (prefers-reduced-motion: reduce) { .patch-moment, .patch-moment .pm-patch, .patch-moment .pm-label { animation: none !important; opacity: 1; } .patch-moment .patch-thread { stroke-dashoffset: 0; animation: none; } }
+
+/* Several patches at once: side by side, a little smaller, names on one line under them. */
+.patch-moment .pm-row { display: flex; justify-content: center; gap: 14px; }
+.patch-moment.many .pm-patch { width: min(28vw, 130px); }
+.patch-moment.many .pm-label b { font-size: 20px; line-height: 1.2; max-width: 320px; }
+/* Nothing else talks during the reveal or a patch moment. */
+body:has(#reveal:not([hidden])) #banner, body:has(.patch-moment) #banner, body:has(.patch-moment) #toasts { visibility: hidden; }
+.patch-moment { background: radial-gradient(ellipse at 50% 45%, rgba(8, 15, 27, .86), rgba(4, 7, 13, .96)) !important; }
