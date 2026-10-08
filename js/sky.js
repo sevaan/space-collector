@@ -1,9 +1,9 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.329';
+import { extinction } from './sky-limit.js?v=0.1.330';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.329';
-import { TIER_INFO } from './rarity.js?v=0.1.329';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.330';
+import { TIER_INFO } from './rarity.js?v=0.1.330';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -472,18 +472,20 @@ export class SkyView {
       // or the field at your feet comes through clearly.
       const poly = () => { ctx.beginPath(); ground.forEach((p, i) => i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y)); ctx.closePath(); };
       ctx.save(); ctx.globalCompositeOperation = 'destination-out'; poly(); ctx.fill(); ctx.restore();
-      // 90% from the horizon to halfway down (45°), then fading to clear at your feet (2026-10-08, Sevaan).
+      // 95% from the horizon to halfway down (45°), easing to 50% at the edge of the compass ring at your feet
+      // (−77°), then fading to clear at the very bottom, inside the ring (2026-10-08, Sevaan). Drawn as a radial
+      // gradient around the point straight below you, so it follows the ring.
       const b = this.basis.back, az = (Math.atan2(b[0], b[1]) / RAD + 360) % 360;
-      const h0 = this.project(enuFromAzEl(az, 0)), hm = this.project(enuFromAzEl(az, -45));
-      let hf = this.project(enuFromAzEl(az, -88));
       const c = this.theme === THEMES.night ? [10, 1, 0] : [8, 15, 27]; // the header's near-black, day or night
-      if (hm) {
-        if (!hf && h0) hf = { x: hm.x + (hm.x - h0.x), y: hm.y + (hm.y - h0.y) };
-        if (hf && Math.hypot(hf.x - hm.x, hf.y - hm.y) > 1) {
-          const g = ctx.createLinearGradient(hm.x, hm.y, hf.x, hf.y); g.addColorStop(0, `rgba(${c},.95)`); g.addColorStop(1, `rgba(${c},0)`);
-          ctx.save(); poly(); ctx.fillStyle = g; ctx.fill(); ctx.restore();
-        }
-      } else { ctx.save(); poly(); ctx.fillStyle = `rgba(${c},.95)`; ctx.fill(); ctx.restore(); } // halfway point off screen above: all 95%
+      const n = this.project([0, 0, -1]), hm = this.project(enuFromAzEl(az, -45)), hr = this.project(enuFromAzEl(az, -77));
+      ctx.save(); poly();
+      if (n && hm && hr) {
+        const R = Math.hypot(hm.x - n.x, hm.y - n.y), rr = Math.min(0.98, Math.hypot(hr.x - n.x, hr.y - n.y) / Math.max(1, R));
+        const g = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, Math.max(1, R));
+        g.addColorStop(0, `rgba(${c},0)`); g.addColorStop(rr, `rgba(${c},.5)`); g.addColorStop(1, `rgba(${c},.95)`);
+        ctx.fillStyle = g;
+      } else ctx.fillStyle = `rgba(${c},.95)`; // looking near the horizon: the ground in view is all above 45° down
+      ctx.fill(); ctx.restore();
       return;
     }
     // The earth (2026-10-06): darker the further down you look, so the ground reads as ground, not more sky.
