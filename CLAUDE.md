@@ -290,3 +290,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - Jump to next visible pass only moves the clock (no pin/follow/drag). Camera view overlay stronger: sky 78%, ground 85%→45%→0, landscape 80%.
 - Compass steadiness (sensors.js): once settled, compass disagreements under 2.5° are ignored and blending is slower (0.02); after a hand correction (camera line-up drag or ±5° nudge) the heading is locked (`lockHeading`) so only a big, persistent change moves it. Reset clears the lock.
 - Camera view: ground tint is the header's near-black (#080f1b; red-black in red mode), and the landscape is cream outlines only (ridge lines + near-row pine outlines, no fills, trunks or far row).
+- Camera toggle in the Explore header (#cam-toggle, left of the moon; gold when on). Camera view: sky 95%, ground 95% to halfway down then fading out, hills as outlines, no trees.

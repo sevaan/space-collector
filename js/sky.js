@@ -1,9 +1,9 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.328';
+import { extinction } from './sky-limit.js?v=0.1.329';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.328';
-import { TIER_INFO } from './rarity.js?v=0.1.328';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.329';
+import { TIER_INFO } from './rarity.js?v=0.1.329';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -267,7 +267,7 @@ export class SkyView {
     // Camera prototype (2026-10-08): the real sky is behind the canvas, so leave it clear (a faint dark veil at night).
     // Camera view (2026-10-08, Sevaan): the real sky colour for the time of day is painted see-through over the picture
     // (blue by day, dusk, night); below the horizon the camera shows through untouched (drawGround cuts the sky away).
-    if (this.camera) { ctx.clearRect(0, 0, this.w, this.h); ctx.save(); ctx.globalAlpha = 0.78; this.camera = false; this.drawBackground(); this.camera = true; ctx.restore(); return; }
+    if (this.camera) { ctx.clearRect(0, 0, this.w, this.h); ctx.save(); ctx.globalAlpha = 0.95; this.camera = false; this.drawBackground(); this.camera = true; ctx.restore(); return; }
     const g = ctx.createLinearGradient(0, 0, 0, this.h);
     if (f <= 0) { g.addColorStop(0, t.bgBottom); g.addColorStop(1, t.bgTop); this.tone = { a: t.bgBottom, b: t.bgTop, f: 0 }; }
     else {
@@ -480,10 +480,10 @@ export class SkyView {
       if (hm) {
         if (!hf && h0) hf = { x: hm.x + (hm.x - h0.x), y: hm.y + (hm.y - h0.y) };
         if (hf && Math.hypot(hf.x - hm.x, hf.y - hm.y) > 1) {
-          const g = ctx.createLinearGradient(hm.x, hm.y, hf.x, hf.y); g.addColorStop(0, `rgba(${c},.9)`); g.addColorStop(1, `rgba(${c},0)`);
+          const g = ctx.createLinearGradient(hm.x, hm.y, hf.x, hf.y); g.addColorStop(0, `rgba(${c},.95)`); g.addColorStop(1, `rgba(${c},0)`);
           ctx.save(); poly(); ctx.fillStyle = g; ctx.fill(); ctx.restore();
         }
-      } else { ctx.save(); poly(); ctx.fillStyle = `rgba(${c},.9)`; ctx.fill(); ctx.restore(); } // halfway point off screen above: all 90%
+      } else { ctx.save(); poly(); ctx.fillStyle = `rgba(${c},.95)`; ctx.fill(); ctx.restore(); } // halfway point off screen above: all 95%
       return;
     }
     // The earth (2026-10-06): darker the further down you look, so the ground reads as ground, not more sky.
@@ -604,7 +604,7 @@ export class SkyView {
     const farC = dF > 0 ? mix('0b1622', '557265') : (t.hills ?? '#0a1826');
     if (!this.camera) for (const tr of LANDSCAPE.far) pine(tr, farC, null); // camera view: just the near row, so the outlines stay clean
     const nearC = dF > 0 ? mix('070c13', '2a4430') : t.ground, litC = dF > 0.3 ? `rgba(120,160,110,${(0.25 * dF).toFixed(2)})` : null;
-    for (const tr of LANDSCAPE.trees) pine(tr, nearC, litC);
+    if (!this.camera) for (const tr of LANDSCAPE.trees) pine(tr, nearC, litC); // camera view: hills only, no trees
     // The near meadow: a rolling green band in front of the trees, with grass tufts along it by day.
     band(LANDSCAPE.rolls, dF > 0 ? mix('070c13', '4f6e3e') : t.ground, dF > 0.4 ? `rgba(190,215,140,${(0.35 * dF).toFixed(2)})` : null);
     // (no grass tufts on the meadow either, 2026-10-08)
