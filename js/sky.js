@@ -1,9 +1,9 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.297';
+import { extinction } from './sky-limit.js?v=0.1.298';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.297';
-import { TIER_INFO } from './rarity.js?v=0.1.297';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.298';
+import { TIER_INFO } from './rarity.js?v=0.1.298';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -473,14 +473,14 @@ export class SkyView {
       const onS = (q, m) => q && q.x > -m && q.x < this.w + m && q.y > -m && q.y < this.h + m;
       const scale = (el) => this.f * Math.tan(1 * RAD) / Math.max(0.15, Math.sin(-el * RAD) + 0.05) * Math.sin(-el * RAD); // px per degree on the ground, foreshortened
       for (let i = 0; i < 70; i++) {
-        const az = ((i * 0.618034) % 1) * 360, el = -3 - Math.pow((i * 0.381966) % 1, 0.8) * 80, q = P(az, el), r = 3.5 * this.f * Math.tan(RAD * (4 + (i % 5))) * Math.min(1, -el / 50 + 0.25);
+        const az = ((i * 0.618034) % 1) * 360, el = -Math.asin(0.05 + ((i * 0.381966) % 1) * 0.95) / RAD, q = P(az, el), r = 3.5 * this.f * Math.tan(RAD * (4 + (i % 5))) * Math.min(1, -el / 50 + 0.25);
         if (!onS(q, r)) continue;
         const light = i % 3 === 0, g = ctx.createRadialGradient(q.x, q.y, 0, q.x, q.y, r);
         g.addColorStop(0, light ? 'rgba(160,128,92,.22)' : 'rgba(30,20,12,.22)'); g.addColorStop(1, 'rgba(0,0,0,0)');
         ctx.fillStyle = g; ctx.save(); ctx.translate(q.x, q.y); ctx.scale(1, 0.35 + Math.min(0.6, -el / 120)); ctx.translate(-q.x, -q.y); ctx.beginPath(); ctx.arc(q.x, q.y, r, 0, Math.PI * 2); ctx.fill(); ctx.restore();
       }
       for (let i = 0; i < 1100; i++) {
-        const a = (i * 0.618034) % 1, b = ((i * 0.754877) % 1), el = -1.5 - Math.pow(b, 0.7) * 87, az = a * 360, q = P(az, el); if (!onS(q, 10)) continue;
+        const a = (i * 0.618034) % 1, b = ((i * 0.754877) % 1), el = -Math.asin(0.03 + b * 0.97) / RAD, az = a * 360, q = P(az, el); /* equal-area spread: no pile-up at your feet */ if (!onS(q, 10)) continue;
         const near = Math.min(1, -el / 55), r = 0.35 + near * near * 2.6 * (0.35 + ((i * 7) % 10) / 12), flat = 0.45 + near * 0.35, rot = (i % 7) * 0.45;
         if (i % 4 === 0) { // a pebble: shadow, body, lit top
           ctx.fillStyle = `rgba(25,16,10,${0.25 + near * 0.2})`; ctx.beginPath(); ctx.ellipse(q.x + r * 0.35, q.y + r * 0.45, r * 1.25, r * flat, rot, 0, Math.PI * 2); ctx.fill();
@@ -493,7 +493,7 @@ export class SkyView {
       }
       ctx.lineCap = 'round';
       for (let i = 0; i < 160; i++) {
-        const az = ((i * 0.4142136) % 1) * 360, el = -4 - Math.pow((i * 0.2360680) % 1, 0.9) * 55, q = P(az, el); if (!onS(q, 20)) continue;
+        const az = ((i * 0.4142136) % 1) * 360, el = -Math.asin(0.07 + ((i * 0.2360680) % 1) * 0.75) / RAD, q = P(az, el); if (!onS(q, 20)) continue;
         const near = Math.min(1, -el / 45), len = 2 + near * 9;
         if (i % 9 === 0) { ctx.strokeStyle = `rgba(55,38,24,${0.4 + near * 0.3})`; ctx.lineWidth = 0.6 + near; ctx.beginPath(); ctx.moveTo(q.x - len, q.y); ctx.lineTo(q.x + len * 0.8, q.y - len * 0.25); ctx.stroke(); continue; } // twig
         ctx.strokeStyle = `rgba(${120 + (i % 4) * 10},${118 + (i % 3) * 8},${62 + (i % 5) * 4},${0.35 + near * 0.35})`; ctx.lineWidth = 0.5 + near * 0.6;
