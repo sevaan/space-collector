@@ -309,3 +309,24 @@ main { padding-bottom: calc(var(--safe-bottom) + 210px) !important; } /* the las
 .lb-face { flex: 1; display: flex; flex-direction: column; padding: 20px 18px 16px; }
 .lb-face .lb-head { margin-top: 22px; }
 .lb-face .lb-head:has(+ .lb-events) { margin-top: auto; padding-top: 18px; } /* events sit at the foot of the card */
+
+/* Rank card front (2026-10-08, design/rank-card.html D3). */
+.lb-face { padding: 0 !important; }
+.lb-top { display: flex; justify-content: space-between; padding: 10px 14px 8px; border-bottom: 1px solid #bcb58588; font: 500 11px/1.2 'SC Label', sans-serif; letter-spacing: .18em; text-transform: uppercase; color: #fff2b3; }
+.lb-top .lb-streak { color: #fa8127; }
+.lb-pic { height: 160px; flex: none; border-bottom: 1px solid #bcb58588; background: radial-gradient(ellipse at 50% 110%, #1d3350, #070d18 70%); overflow: hidden; }
+.lb-ladder { width: 100%; height: 100%; display: block; }
+.lb-prog { padding: 12px 14px 10px; border-bottom: 1px solid #bcb58588; }
+.lb-prog .lb-rank { display: flex; justify-content: space-between; align-items: baseline; }
+.lb-prog .lb-name { margin: 0; font-size: 22px; }
+.lb-prog .lb-bar { position: relative; height: 9px; margin: 10px 0 6px; overflow: visible; }
+.lb-prog .lb-bar i { border-radius: 5px; }
+.lb-prog .lb-bar em { position: absolute; top: -3px; width: 2px; height: 15px; margin-left: -1px; background: #fff2b3; border-radius: 1px; }
+.lb-prog .lb-sub { display: flex; justify-content: space-between; font: 500 11px/1.2 'SC Label', sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #bdbea9; }
+.lb-prog .lb-sub b { color: #fa8127; font-weight: 500; } .lb-prog .lb-sub span:last-child { color: #fff2b3; }
+.lb-face > .lb-head { margin: 10px 14px 2px !important; padding-top: 0 !important; }
+.lb-face > .lb-mission { margin: 0 14px; }
+.lb-face > .lb-events { margin-top: auto; padding: 10px 14px 12px; }
+:where(html[data-theme="night"], body.night) .lb-pic { background: radial-gradient(ellipse at 50% 110%, #3a1010, #0a0202 70%); filter: hue-rotate(0); }
+:where(html[data-theme="night"], body.night) :is(.lb-top, .lb-prog .lb-sub span:last-child) { color: #d67674; }
+:where(html[data-theme="night"], body.night) .lb-ladder { filter: grayscale(1) sepia(1) saturate(5) hue-rotate(318deg) brightness(.8); }

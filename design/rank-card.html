@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rank Card</title>
+<style>
+  @font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf'); font-weight: 500; }
+  @font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf'); }
+  :root { --ink: #fff2b3; --muted: #bdbea9; --orange: #fa8127; --gold: #f4c34f; }
+  body { margin: 0; background: #04070d; color: #e8eef6; font: 15px/1.45 -apple-system, system-ui, sans-serif; padding: 24px 16px 60px; }
+  h1.t { font-size: 20px; margin: 0 0 6px; } .intro { color: #9fb0c6; margin: 0 0 22px; max-width: 1000px; }
+  .row { display: flex; flex-wrap: wrap; gap: 26px; justify-content: center; }
+  .cell { width: 300px; } .cell h2 { font-size: 16px; margin: 12px 0 4px; } .cell p { color: #9fb0c6; font-size: 13px; margin: 0; }
+  .card { position: relative; width: 300px; height: 420px; border-radius: 16px; border: 3px solid #adbcc8; box-shadow: inset 0 0 0 1px #657786, 0 14px 30px #0008; background: #080f1b; overflow: hidden; box-sizing: border-box; color: var(--ink); }
+  .lab { font: 500 10px/1.2 'SC Label', sans-serif; letter-spacing: .18em; text-transform: uppercase; }
+  .disp { font: 400 24px/1 'SC Display', sans-serif; text-transform: uppercase; }
+  .bar { display: flex; justify-content: space-between; padding: 9px 14px 7px; border-bottom: 1px solid #bcb58588; }
+  .row2 { display: flex; justify-content: space-between; align-items: baseline; }
+  .xpbar { height: 6px; border-radius: 4px; background: #1c2a3a; overflow: hidden; } .xpbar i { display: block; height: 100%; width: 35%; background: linear-gradient(90deg, var(--orange), #ffcf5a); }
+  .m { display: flex; gap: 9px; align-items: center; padding: 7px 0; border-bottom: 1px solid #1d2a3c; font: 500 14px/1.2 'SC Label', sans-serif; letter-spacing: .03em; }
+  .m i { width: 9px; height: 9px; transform: rotate(45deg); border: 1.5px solid #bcb585; flex: none; } .m.done { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--orange); } .m.done i { background: var(--orange); border-color: var(--orange); }
+  .chip { display: inline-flex; gap: 6px; align-items: baseline; padding: 6px 10px; border-radius: 99px; border: 1px solid #344654; font: 500 11px/1 'SC Label', sans-serif; letter-spacing: .1em; } .chip b { color: var(--orange); }
+  .chip.earn { border-color: #e2b53c; } .chip.earn b { color: #f4d27a; }
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid #bcb58588; border-bottom: 1px solid #bcb58588; }
+  .stats div { padding: 8px 10px; } .stats div + div { border-left: 1px solid #bcb58555; } .stats small { display: block; color: var(--muted); font: 500 9px 'SC Label', sans-serif; letter-spacing: .16em; } .stats b { display: block; margin-top: 3px; font: 400 17px 'SC Display', sans-serif; }
+  .ring { position: relative; width: 150px; height: 150px; }
+</style></head><body>
+<h1 class="t">The rank card: four layouts</h1>
+<p class="intro">Same contents in each: Spotter, 280 XP, 320 to Tracker, a 1-week streak, three missions (two done), the Draconids badge, next the Orionids. Each uses the card's own frame language (top bar, picture window, stat row) so it reads as one of the cards.</p>
+<div class="row" id="b"></div>
+<script>
+const missions = `<div class="m done"><i></i>Log 5 sightings</div><div class="m done"><i></i>Collect 3 new cards</div><div class="m"><i></i>Find something launched before 1980</div>`;
+const ringSvg = (pct, size = 150) => { const r = size / 2 - 10, c = 2 * Math.PI * r; return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}"><circle cx="${size / 2}" cy="${size / 2}" r="${r}" fill="none" stroke="#1c2a3a" stroke-width="8"/><circle cx="${size / 2}" cy="${size / 2}" r="${r}" fill="none" stroke="url(#gx)" stroke-width="8" stroke-linecap="round" stroke-dasharray="${c * pct} ${c}" transform="rotate(-90 ${size / 2} ${size / 2})"/><defs><linearGradient id="gx"><stop offset="0" stop-color="#fa8127"/><stop offset="1" stop-color="#ffcf5a"/></linearGradient></defs></svg>`; };
+const A = `<div class="card"><div class="bar lab"><span>Observer rank</span><span style="color:var(--orange)">◆ Level 2</span></div>
+  <div style="padding:14px 14px 0"><div class="disp" style="font-size:30px">Spotter</div><div class="lab" style="color:var(--muted);margin-top:6px">320 XP to Tracker</div></div>
+  <div style="position:relative;display:grid;place-items:center;height:150px;margin-top:6px">${ringSvg(.47)}<div style="position:absolute;text-align:center"><div class="disp" style="color:var(--orange);font-size:30px">280</div><div class="lab" style="color:var(--muted)">XP</div></div></div>
+  <div class="stats"><div><small>STREAK</small><b>1 wk</b></div><div><small>MISSIONS</small><b>2 / 3</b></div><div><small>BADGES</small><b>1</b></div></div>
+  <div style="padding:8px 14px"><div class="lab" style="color:var(--orange);margin-bottom:2px">Tonight</div><div class="m"><i></i>Find something launched before 1980</div></div></div>`;
+const B = `<div class="card"><div class="bar lab"><span>Space Collector</span><span style="color:var(--orange)">◆ Observer rank</span></div>
+  <div style="padding:14px"><div class="row2"><div class="disp" style="font-size:28px">Spotter</div><div><span class="disp" style="color:var(--orange);font-size:22px">280</span> <span class="lab" style="color:var(--muted)">XP</span></div></div>
+  <div class="xpbar" style="margin-top:12px"><i></i></div><div class="row2 lab" style="color:var(--muted);margin-top:6px"><span>Spotter</span><span>Tracker · 600</span></div></div>
+  <div style="padding:0 14px"><div class="row2"><span class="lab" style="color:var(--orange)">Tonight's missions</span><span class="lab" style="color:var(--muted)">2 / 3</span></div>${missions}</div>
+  <div style="position:absolute;left:0;right:0;bottom:0;padding:10px 14px 12px;border-top:1px solid #bcb58588;display:flex;gap:8px;flex-wrap:wrap"><span class="chip earn">☄ <b>Draconids</b></span><span class="chip">Next: <b>Orionids</b> · Oct 21</span></div></div>`;
+const C = `<div class="card"><div class="bar lab"><span>Observer rank</span><span style="color:var(--orange)">1-week streak 🔥</span></div>
+  <div style="height:150px;background:radial-gradient(ellipse at 50% 110%, #1d3350, #070d18 70%);border-bottom:1px solid #bcb58588;position:relative;overflow:hidden">
+    ${Array.from({ length: 30 }, (_, i) => `<i style="position:absolute;left:${(i * 37) % 100}%;top:${(i * 53) % 90}%;width:2px;height:2px;border-radius:50%;background:#fff2b3;opacity:.6"></i>`).join('')}
+    <svg viewBox="0 0 300 150" style="position:absolute;inset:0"><path d="M20 130 L95 100 L170 70 L245 40" fill="none" stroke="#344654" stroke-dasharray="3 5"/>${[[20, 130, 'Novice'], [95, 100, 'Stargazer'], [170, 70, 'Spotter'], [245, 40, 'Tracker']].map(([x, y, n], i) => `<circle cx="${x}" cy="${y}" r="${i === 2 ? 7 : 4}" fill="${i <= 2 ? '#fa8127' : '#344654'}"/>${i === 2 ? `<circle cx="${x}" cy="${y}" r="13" fill="none" stroke="#fa8127" opacity=".5"/>` : ''}<text x="${x}" y="${y + 22}" text-anchor="middle" font-family="SC Label" font-size="10" letter-spacing="1.5" fill="${i === 2 ? '#fff2b3' : '#bdbea9'}">${n.toUpperCase()}</text>`).join('')}</svg></div>
+  <div style="padding:10px 14px 0" class="row2"><div class="disp">Spotter</div><div><span class="disp" style="color:var(--orange);font-size:20px">280</span> <span class="lab" style="color:var(--muted)">/ 600 XP</span></div></div>
+  <div style="padding:2px 14px">${missions}</div>
+  <div style="position:absolute;left:0;right:0;bottom:0;padding:9px 14px;display:flex;gap:8px"><span class="chip earn">☄ <b>Draconids</b></span><span class="chip">Next <b>Oct 21</b></span></div></div>`;
+const D = `<div class="card" style="display:flex;flex-direction:column"><div class="bar lab"><span>Your night</span><span style="color:var(--orange)">Thu 8 Oct</span></div>
+  <div style="padding:14px 14px 4px"><div class="lab" style="color:var(--orange)">Tonight's missions · +50 XP each</div></div>
+  <div style="padding:0 14px">${missions.replace(/class="m/g, 'style="font-size:16px;padding:10px 0" class="m')}</div>
+  <div style="flex:1"></div>
+  <div style="margin:0 14px 10px;padding:10px 12px;border-radius:10px;background:#0f1b2a;border:1px solid #1c2b3c"><div class="row2"><span><span class="lab" style="color:var(--muted)">Rank</span> <span class="disp" style="font-size:16px;margin-left:4px">Spotter</span></span><span><span class="disp" style="color:var(--orange);font-size:16px">280</span> <span class="lab" style="color:var(--muted)">XP</span></span></div><div class="xpbar" style="margin-top:8px"><i></i></div><div class="lab" style="color:var(--muted);margin-top:6px">320 to Tracker · 1-week streak</div></div>
+  <div style="padding:0 14px 12px;display:flex;gap:8px"><span class="chip earn">☄ <b>Draconids</b></span><span class="chip">Next: <b>Orionids</b></span></div></div>`;
+const D2 = `<div class="card" style="display:flex;flex-direction:column"><div class="bar lab"><span>Your night</span><span style="color:var(--orange)">1-week streak 🔥</span></div>
+  <div style="padding:14px 14px 12px;border-bottom:1px solid #bcb58588">
+    <div class="row2"><span class="disp" style="font-size:22px">Spotter</span><span><span class="disp" style="color:var(--orange);font-size:20px">280</span> <span class="lab" style="color:var(--muted)">XP</span></span></div>
+    <div style="position:relative;margin-top:12px"><div class="xpbar" style="height:10px;border-radius:6px"><i style="width:47%"></i></div>
+      <span style="position:absolute;left:47%;top:-4px;width:2px;height:18px;background:#fff2b3;border-radius:1px"></span></div>
+    <div class="row2 lab" style="margin-top:7px"><span style="color:var(--muted)">Spotter · 200</span><span style="color:var(--ink)"><b style="color:var(--orange);font-weight:500">320 XP</b> to Tracker</span></div>
+    <div class="lab" style="color:var(--muted);margin-top:6px;letter-spacing:.06em;text-transform:none;font-size:12px">About 7 missions or 3 new rare cards</div></div>
+  <div style="padding:12px 14px 4px"><div class="row2"><span class="lab" style="color:var(--orange)">Tonight's missions</span><span class="lab" style="color:var(--muted)">+50 XP each</span></div></div>
+  <div style="padding:0 14px">${missions.replace(/class="m/g, 'style="font-size:15px;padding:9px 0" class="m')}</div>
+  <div style="flex:1"></div>
+  <div style="padding:0 14px 12px;display:flex;gap:8px"><span class="chip earn">☄ <b>Draconids</b></span><span class="chip">Next: <b>Orionids</b> · Oct 21</span></div></div>`;
+const ladder = (h) => `<div style="height:${h}px;background:radial-gradient(ellipse at 50% 110%, #1d3350, #070d18 70%);border-bottom:1px solid #bcb58588;position:relative;overflow:hidden">
+    ${Array.from({ length: 26 }, (_, i) => `<i style="position:absolute;left:${(i * 37) % 100}%;top:${(i * 53) % 90}%;width:2px;height:2px;border-radius:50%;background:#fff2b3;opacity:.55"></i>`).join('')}
+    <svg viewBox="0 0 300 ${h}" style="position:absolute;inset:0"><g transform="translate(0 ${-(h - 140) / 2})"><path d="M30 ${h - 30} L105 ${h - 48} L180 ${h - 66} L255 ${h - 84}" fill="none" stroke="#344654" stroke-dasharray="3 5"/>
+    <path d="M180 ${h - 66} L${180 + 75 * .47} ${h - 66 - 18 * .47}" stroke="#fa8127" stroke-width="2"/>
+    ${[[30, h - 30, 'Novice'], [105, h - 48, 'Stargazer'], [180, h - 66, 'Spotter'], [255, h - 84, 'Tracker']].map(([x, y, n], i) => `<circle cx="${x}" cy="${y}" r="${i === 2 ? 6 : 4}" fill="${i <= 2 ? '#fa8127' : '#0b1626'}" stroke="${i === 3 ? '#fff2b3' : 'none'}" stroke-dasharray="2 2"/>${i === 2 ? `<circle cx="${x}" cy="${y}" r="12" fill="none" stroke="#fa8127" opacity=".5"/>` : ''}<text x="${x}" y="${y + 20}" text-anchor="middle" font-family="SC Label" font-size="9.5" letter-spacing="1.5" fill="${i === 2 ? '#fff2b3' : i === 3 ? '#fff2b3cc' : '#bdbea9'}">${n.toUpperCase()}</text>`).join('')}
+    <text x="255" y="${h - 98}" text-anchor="middle" font-family="SC Label" font-size="9" letter-spacing="1.5" fill="#fa8127">NEXT</text></g></svg></div>`;
+const D3 = `<div class="card" style="display:flex;flex-direction:column"><div class="bar lab"><span>Your night</span><span style="color:var(--orange)">1-week streak 🔥</span></div>
+  ${ladder(160)}
+  <div style="padding:10px 14px 10px;border-bottom:1px solid #bcb58588">
+    <div class="row2"><span class="disp" style="font-size:20px">Spotter</span><span><span class="disp" style="color:var(--orange);font-size:18px">280</span> <span class="lab" style="color:var(--muted)">XP</span></span></div>
+    <div style="position:relative;margin-top:9px"><div class="xpbar" style="height:9px;border-radius:6px"><i style="width:47%"></i></div><span style="position:absolute;left:47%;top:-3px;width:2px;height:15px;background:#fff2b3;border-radius:1px"></span></div>
+    <div class="row2 lab" style="margin-top:6px"><span style="color:var(--muted)">Spotter · 200</span><span style="color:var(--ink)"><b style="color:var(--orange);font-weight:500">320 XP</b> to Tracker</span></div></div>
+  <div style="padding:9px 14px 0"><div class="row2"><span class="lab" style="color:var(--orange)">Tonight's missions</span><span class="lab" style="color:var(--muted)">+50 XP each</span></div></div>
+  <div style="padding:0 14px">${missions.replace(/class="m/g, 'style="font-size:14px;padding:7px 0" class="m')}</div>
+  <div style="flex:1"></div>
+  <div style="padding:0 14px 11px;display:flex;gap:8px"><span class="chip earn">☄ <b>Draconids</b></span><span class="chip">Next: <b>Orionids</b> · Oct 21</span></div></div>`;
+const cells = [
+  ['D3 · Ladder, progress and tonight', 'C\'s ladder as the picture (you lit and ringed, Tracker marked NEXT, an orange line partway there), then D2\'s rank with the progress bar and "320 XP to Tracker", tonight\'s missions, events at the foot.', D3],
+  ['D2 · Tonight first, with progress', 'D with the progress up top and bigger: rank and XP, a thick bar with a marker where you are, "320 XP to Tracker", and a hint at what gets you there. Then tonight\'s missions, events at the foot.', D2],['A · The rank, big', 'Built around your progress: a big ring filling toward the next rank with the XP in the middle, a stat row (streak, missions, badges) like a card\'s, and just the one mission still to do.', A],
+  ['B · Tidy and even', 'The current contents, given room: rank and XP on one line, a labelled bar (Spotter → Tracker · 600), missions with a 2 / 3 count, events as chips in a footer strip.', B],
+  ['C · The ladder as the picture', 'The card\'s picture window shows the rank ladder as a little constellation (Novice → Stargazer → Spotter → Tracker), you lit and ringed. Then the rank, missions and badges.', C],
+  ['D · Tonight first', 'A "your night" card: tonight\'s missions lead, big and tappable; the rank and streak are a compact panel at the bottom.', D]];
+document.getElementById('b').innerHTML = cells.map(([t, d, f]) => `<div class="cell">${f}<h2>${t}</h2><p>${d}</p></div>`).join('');
+</script></body></html>
