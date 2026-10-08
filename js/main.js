@@ -1,36 +1,36 @@
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.302';
-import * as Ufo from './ufo.js?v=0.1.302';
-import * as Fossil from './fossil.js?v=0.1.302';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.302';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.302';
-import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.302';
-import { VERSION } from './version.js?v=0.1.302';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.302';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.302';
-import { conArt } from './con-art.js?v=0.1.302';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.302';
-import { CON_FIGURES } from './con-figures.js?v=0.1.302';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.302';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.302';
-import { progress as progressOf } from './progress.js?v=0.1.302';
-import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.302';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.302';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.302';
-import { SkyView, shortName } from './sky.js?v=0.1.302';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.302';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.302';
-import { cardArt } from './art.js?v=0.1.302';
-import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.302';
-import { applyBack } from './card-backs.js?v=0.1.302';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.302';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.302';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.302';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.302';
-import { TIER_INFO } from './rarity.js?v=0.1.302';
-import { SETS } from './sets.js?v=0.1.302';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.302';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.302';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.302';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.303';
+import * as Ufo from './ufo.js?v=0.1.303';
+import * as Fossil from './fossil.js?v=0.1.303';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.303';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.303';
+import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.303';
+import { VERSION } from './version.js?v=0.1.303';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.303';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.303';
+import { conArt } from './con-art.js?v=0.1.303';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.303';
+import { CON_FIGURES } from './con-figures.js?v=0.1.303';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.303';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.303';
+import { progress as progressOf } from './progress.js?v=0.1.303';
+import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.303';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.303';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.303';
+import { SkyView, shortName } from './sky.js?v=0.1.303';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.303';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.303';
+import { cardArt } from './art.js?v=0.1.303';
+import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.303';
+import { applyBack } from './card-backs.js?v=0.1.303';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.303';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.303';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.303';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.303';
+import { TIER_INFO } from './rarity.js?v=0.1.303';
+import { SETS } from './sets.js?v=0.1.303';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.303';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.303';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.303';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -1626,7 +1626,24 @@ $('btn-start').addEventListener('click', () => {
 // card off sideways and the sky reacts: location lines it up, motion makes it follow the phone. Then the app
 // steers you to something certain to be up for a real first catch, and closes with "Tonight looks good".
 let onboarding = null;
+let obAimTarget = null;
+// Keep the tour card's arrow pointing at the target: angle on screen = target azimuth − your heading; it also says how far.
+function obAimTick() {
+  requestAnimationFrame(obAimTick);
+  const g = document.querySelector('#ob-deck .ob-aim'); if (!g || !obAimTarget || !state.basis) return;
+  const b = state.basis.back, heading = (Math.atan2(b[0], b[1]) / RAD + 360) % 360, myEl = Math.asin(Math.max(-1, Math.min(1, b[2]))) / RAD;
+  const tl = obAimTarget.look, dAz = ((tl.az - heading + 540) % 360) - 180, dEl = tl.el - myEl;
+  const ang = Math.atan2(dAz, dEl) * 180 / Math.PI, off = Math.hypot(dAz, dEl);
+  g.querySelector('.ob-arrow').setAttribute('transform', `rotate(${ang.toFixed(1)} 150 60)`);
+  g.querySelector('.ob-arrow').style.opacity = off < 6 ? 0 : 1;
+  const msg = off < 6 ? 'Right there' : `${Math.abs(dAz) > 8 ? `Turn ${dAz > 0 ? 'right' : 'left'} ${Math.round(Math.abs(dAz))}°` : ''}${Math.abs(dAz) > 8 && Math.abs(dEl) > 8 ? ' · ' : ''}${Math.abs(dEl) > 8 ? `${dEl > 0 ? 'up' : 'down'} ${Math.round(Math.abs(dEl))}°` : ''}`;
+  const t = g.querySelector('.ob-aim-txt'); if (t.textContent !== msg) t.textContent = msg;
+}
+requestAnimationFrame(obAimTick);
 const OB_ART = {
+  aim: (az, el) => `<svg class="ob-aim" viewBox="0 0 300 120" aria-hidden="true"><circle cx="150" cy="60" r="30" fill="none" stroke="#fff2b3" stroke-opacity=".6" stroke-width="1.5"/><circle cx="150" cy="60" r="36" fill="none" stroke="#627a8b" stroke-opacity=".5" stroke-dasharray="2 5"/>
+    <g class="ob-arrow" style="transition:opacity .3s"><path d="M150 14 L141 30 L147 30 L147 42 L153 42 L153 30 L159 30 Z" fill="#fa8127"/></g><circle cx="150" cy="60" r="3" fill="#fff2b3" opacity=".7"/>
+    <text class="ob-aim-txt" x="150" y="114" text-anchor="middle" fill="#fa8127" font-family="SC Label, Arial Narrow, sans-serif" font-size="12" letter-spacing="2"></text></svg>`,
   loc: '<svg viewBox="0 0 300 120" aria-hidden="true"><g fill="none" stroke="#627a8b" stroke-width="1"><ellipse cx="150" cy="78" rx="120" ry="26"/><ellipse cx="150" cy="78" rx="70" ry="15" stroke-dasharray="3 4"/></g><path d="M150 30c-12 0-21 9-21 21 0 16 21 34 21 34s21-18 21-34c0-12-9-21-21-21z" fill="#fa8127"/><circle cx="150" cy="51" r="7" fill="#080e1a"/><g fill="#fff2b3"><circle cx="60" cy="24" r="1.5"/><circle cx="238" cy="18" r="2"/><circle cx="262" cy="46" r="1.2"/><circle cx="40" cy="58" r="1.2"/></g></svg>',
   motion: '<svg viewBox="0 0 300 120" aria-hidden="true"><g transform="translate(150 62)"><rect x="-22" y="-40" width="44" height="80" rx="9" fill="#0c1725" stroke="#fff2b3" stroke-width="2"/><circle r="12" fill="none" stroke="#fa8127" stroke-width="2"/><circle r="2.4" fill="#fa8127"/></g><g fill="none" stroke="#fa8127" stroke-width="1.6" stroke-linecap="round"><path d="M92 40 Q70 62 92 84"/><path d="M78 30 Q48 62 78 94" opacity=".5"/><path d="M208 40 Q230 62 208 84"/><path d="M222 30 Q252 62 222 94" opacity=".5"/></g></svg>',
   sky: '<svg viewBox="0 0 300 120" aria-hidden="true"><rect x="40" y="58" width="220" height="4" rx="2" fill="#627a8b55"/><rect x="40" y="58" width="132" height="4" rx="2" fill="#fa8127"/><circle cx="172" cy="60" r="11" fill="#080e1a" stroke="#fa8127" stroke-width="2.5"/><g fill="#fff2b3"><circle cx="70" cy="28" r="1.2" opacity=".4"/><circle cx="110" cy="22" r="1.6" opacity=".6"/><circle cx="160" cy="30" r="2" opacity=".8"/><circle cx="210" cy="20" r="2.4"/><circle cx="246" cy="34" r="2.8"/></g><text x="40" y="92" fill="#bdbea9" font-family="SC Label, Arial Narrow" font-size="11" letter-spacing="2">BRIGHT</text><text x="260" y="92" fill="#bdbea9" font-family="SC Label, Arial Narrow" font-size="11" letter-spacing="2" text-anchor="end">DARK</text></svg>',
@@ -1692,6 +1709,8 @@ async function runOnboarding(force = false) {
   ];
   let tgt0 = null;
   const nameTarget = () => { tgt0 = firstTarget(); if (!tgt0) return; steps[3].title = `Catch ${label(tgt0.obj)}`; steps[3].sub = [tgt0.obj.type === 'star' ? 'Bright star' : tgt0.obj.type === 'sun' ? 'Our star' : tgt0.obj.type === 'moon' ? 'The Moon' : tgt0.obj.natural ? 'Planet' : 'Satellite', `${Math.round(tgt0.look.el)}° up in the ${compassPoint(tgt0.look.az)}`]; steps[3].text = `It's up right now. ${tgt0.hint} Follow the arrow, then tap the circle to collect your first card.`;
+    // The card's art becomes a live pointer (2026-10-08, Sevaan): the circle with an arrow that turns toward the target as you turn.
+    steps[3].art = OB_ART.aim(tgt0.look.az, tgt0.look.el); obAimTarget = tgt0;
  };
   steps[3].text = 'Sweep the sky. When something lines up in the circle, tap it to collect your first card.';
   // 1. location

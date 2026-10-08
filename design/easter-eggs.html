@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>More Easter Eggs</title>
+<style>
+  @font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf'); font-weight: 500; }
+  @font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf'); }
+  :root { --ink: #fff2b3; --muted: #bdbea9; --orange: #fa8127; }
+  body { margin: 0; background: #04070d; color: #e8eef6; font: 15px/1.45 -apple-system, system-ui, sans-serif; padding: 24px 16px 60px; }
+  h1.t { font-size: 20px; margin: 0 0 6px; } .intro { color: #9fb0c6; margin: 0 0 22px; max-width: 1000px; }
+  .row { display: flex; flex-wrap: wrap; gap: 18px; justify-content: center; }
+  .cell { width: 300px; } .cell h2 { font-size: 15px; margin: 10px 0 4px; } .cell p { color: #9fb0c6; font-size: 13px; margin: 0; }
+  .phone { position: relative; width: 300px; height: 560px; border-radius: 26px; overflow: hidden; border: 1px solid #1d2838; background: radial-gradient(ellipse at 50% 30%, #13233a, #070d18 75%); }
+  .stars i { position: absolute; width: 2px; height: 2px; border-radius: 50%; background: var(--ink); opacity: .55; }
+  .lab { font: 500 11px/1.2 'SC Label', sans-serif; letter-spacing: .16em; text-transform: uppercase; }
+  .ret { position: absolute; left: 50%; top: 250px; width: 96px; height: 96px; margin: -48px 0 0 -48px; border-radius: 50%; border: 1.5px solid var(--c, #fff2b3aa); }
+  .say { position: absolute; left: 0; right: 0; text-align: center; }
+  .say small { display: block; color: var(--c, var(--muted)); font: 500 11px 'SC Label', sans-serif; letter-spacing: .18em; text-transform: uppercase; }
+  .say b { display: block; margin-top: 5px; font: 400 20px/1.05 'SC Display', sans-serif; color: var(--ink); text-transform: uppercase; }
+  .say span { display: block; margin-top: 6px; font: 500 12px 'SC Label', sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #fff2b3bb; }
+  .patch { position: absolute; right: 12px; bottom: 12px; width: 74px; height: 74px; }
+  .ground { position: absolute; left: 0; right: 0; bottom: 0; background: #4e3d2e; }
+</style></head><body>
+<h1 class="t">Six more secrets</h1>
+<p class="intro">Each is never mentioned in the app; finding it earns a secret patch (bottom right of each frame) that appears on the wall only once you have it.</p>
+<div class="row" id="b"></div>
+<script>
+let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+const stars = (n = 40, h = 100) => `<div class="stars">${Array.from({ length: n }, () => `<i style="left:${rnd() * 100}%;top:${rnd() * h}%"></i>`).join('')}</div>`;
+const ret = (c = '') => `<div class="ret" style="${c ? `--c:${c}` : ''}"></div>`;
+const R = 60, stitch = Array.from({ length: 90 }, (_, i) => { const t = i * 4 * Math.PI / 180; return `<line x1="${(Math.cos(t) * 54).toFixed(1)}" y1="${(Math.sin(t) * 54).toFixed(1)}" x2="${(Math.cos(t) * 60).toFixed(1)}" y2="${(Math.sin(t) * 60).toFixed(1)}"/>`; }).join('');
+let pid = 0;
+const patch = (name, twill, art) => { const id = `p${pid++}`; return `<svg class="patch" viewBox="-64 -64 128 128"><defs><path id="${id}" d="M-42 0 A42 42 0 0 1 42 0"/></defs><circle r="60" fill="#e8dfb8"/><g stroke="#b9ad7e" stroke-width="1.6">${stitch}</g><circle r="53" fill="${twill}"/>${art}<text font-family="SC Label" font-size="10" letter-spacing="2" fill="#fff2b3" text-anchor="middle"><textPath href="#${id}" startOffset="50%">${name}</textPath></text></svg>`; };
+// small drawings
+const sleigh = (s = 1) => `<svg width="${110 * s}" height="${44 * s}" viewBox="0 0 110 44" style="overflow:visible;filter:drop-shadow(0 0 6px #ffd27a88)"><g fill="#fff2b3">${[0, 1, 2].map((k) => `<path transform="translate(${k * 22} ${12 - k * 3})" d="M0 8 Q4 2 12 4 L16 0 L15 6 Q18 10 12 12 L4 12 Z"/><path transform="translate(${k * 22} ${12 - k * 3})" d="M13 1 l2 -5 M15 1 l3 -4" stroke="#fff2b3" stroke-width="1"/>`).join('')}</g><path d="M60 28 Q62 18 78 18 L96 18 Q102 18 100 26 L98 32 L64 32 Z" fill="#d94f38"/><path d="M58 36 L104 36 Q108 36 106 32" fill="none" stroke="#fff2b3" stroke-width="2"/><circle cx="86" cy="14" r="5" fill="#fff2b3"/><path d="M84 9 L88 2 L91 9Z" fill="#d94f38"/><circle cx="12" cy="10" r="2" fill="#ff4a3a"/></svg>`;
+const car = `<svg width="54" height="24" viewBox="0 0 54 24" style="filter:drop-shadow(0 0 5px #ff5a5a88)"><path d="M2 16 Q4 8 16 7 L24 2 L36 2 L44 8 Q52 9 52 16 Z" fill="#d22b2b"/><circle cx="13" cy="17" r="4" fill="#111"/><circle cx="41" cy="17" r="4" fill="#111"/><circle cx="29" cy="6" r="3.4" fill="#f4f4f4"/><path d="M27 4 h4" stroke="#fa8127"/></svg>`;
+const pages = [
+  ['1 · Santa\'s sleigh', 'Christmas Eve night only: a sleigh crosses like a satellite pass, and Tonight lists "S-1 · North Pole" with its time. Line it up and tap. Patch: Nice List.',
+    `${stars()}<div style="position:absolute;left:58px;top:228px">${sleigh(1.1)}</div>${ret('#ff6a55')}<div class="say" style="top:150px;--c:#ff8a6b"><small>NORAD tracked · S-1</small><b>Santa's sleigh</b></div><div class="say" style="top:320px"><span style="color:#ff8a6b">Tap to wave</span></div>${patch('NICE LIST', '#6a1d1d', `<g transform="translate(-28 -8) scale(.52)">${sleigh().replace(/<svg[^>]*>|<[/]svg>/g, '')}</g>`)}`],
+  ['2 · Tesla Roadster', 'Point at where the real Roadster is (it orbits the Sun, far past the Moon) and a tiny red car with Starman glints. Patch: Don\'t Panic.',
+    `${stars()}<div style="position:absolute;left:123px;top:238px">${car}</div>${ret()}<div class="say" style="top:150px"><small>Interplanetary · 2018-017A</small><b>Starman</b></div><div class="say" style="top:320px"><span>Don't panic</span></div>${patch("DON'T PANIC", '#14284a', `<g transform="translate(-27 -12)">${car.replace(/<svg[^>]*>|<[/]svg>/g, '')}</g>`)}`],
+  ['3 · A shooting star', 'During a meteor shower, rarely, a streak flashes through the circle. Tap within half a second. Patch: Make a Wish.',
+    `${stars()}<svg style="position:absolute;left:0;top:0" width="300" height="560"><defs><linearGradient id="mt" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff2b3" stop-opacity="0"/><stop offset="1" stop-color="#fff"/></linearGradient></defs><path d="M60 150 L170 262" stroke="url(#mt)" stroke-width="3" stroke-linecap="round"/><circle cx="170" cy="262" r="3.5" fill="#fff"/></svg>${ret()}<div class="say" style="top:150px;--c:var(--orange)"><small>Draconids</small><b>Quick!</b></div><div class="say" style="top:320px"><span style="color:var(--orange)">Tap now</span></div>${patch('MAKE A WISH', '#22265a', '<path d="M-26 -22 L10 14" stroke="#fff2b3" stroke-width="3" stroke-linecap="round"/><circle cx="10" cy="14" r="4" fill="#fff"/>')}`],
+  ['4 · Voyager\'s record', 'Point at Voyager 1\'s real direction (in Ophiuchus, 24 billion km away) and a faint golden record glints. Patch: Pale Blue Dot.',
+    `${stars()}<div style="position:absolute;left:136px;top:236px;width:28px;height:28px;border-radius:50%;background:radial-gradient(circle,#2a1a08 18%,#e2b53c 22%,#a77a20 60%,#e2b53c 64%,#6a4a10 100%);box-shadow:0 0 12px #e2b53c99"></div>${ret('#e2b53c')}<div class="say" style="top:150px;--c:#e2b53c"><small>Voyager 1 · 24 billion km</small><b>The Golden Record</b></div><div class="say" style="top:320px"><span>Launched 1977 · still going</span></div>${patch('PALE BLUE DOT', '#0f1b2a', '<circle r="18" fill="#2a1a08" stroke="#e2b53c" stroke-width="7"/><circle r="4" fill="#e2b53c"/><circle cx="26" cy="-20" r="2.4" fill="#8fd0ff"/>')}`],
+  ['5 · Straight through', 'Look straight down and hold still for 5 seconds: the ground thins and shows the place on the other side of the Earth. Patch: Straight Through.',
+    `<div class="ground" style="top:0"></div><div style="position:absolute;left:50%;top:250px;width:210px;height:210px;margin:-105px 0 0 -105px;border-radius:50%;background:radial-gradient(circle at 45% 40%,#2c6a9a,#0d2a48 70%);box-shadow:0 0 0 6px #4e3d2e,0 0 40px #000 inset"><svg viewBox="-50 -50 100 100" width="210" height="210"><path d="M-20 -8 Q-8 -20 10 -14 Q24 -8 22 6 Q16 20 0 18 Q-10 26 -18 14 Q-28 6 -20 -8Z" fill="#c9a86a"/><circle cx="14" cy="-4" r="2.5" fill="#fa8127"/></svg></div>${ret()}<div class="say" style="top:390px"><small>Straight through the Earth · 12,742 km</small><b>Perth, Australia</b><span>Where it's 3:22 am</span></div>${patch('STRAIGHT THROUGH', '#173d5c', '<circle r="20" fill="#2c6a9a"/><path d="M-10 -4 Q-2 -12 8 -8 Q14 0 6 8 Q-4 12 -10 -4Z" fill="#c9a86a"/><path d="M0 -40 V40" stroke="#fa8127" stroke-width="2" stroke-dasharray="3 3"/>')}`],
+  ['7 · Dizzy', 'Turn round in three full circles (without stopping) while holding the phone: the compass gets dizzy and wobbles, stars swirl. Patch: Dizzy.',
+    `${stars()}<svg style="position:absolute;left:0;top:0" width="300" height="560">${[60, 90, 120].map((r, i) => `<circle cx="150" cy="250" r="${r}" fill="none" stroke="#fff2b3" stroke-opacity="${0.12 + i * 0.05}" stroke-dasharray="2 10" transform="rotate(${i * 25} 150 250)"/>`).join('')}</svg><div style="position:absolute;left:20px;top:24px;width:60px;height:60px;border-radius:50%;border:1px solid #627a8b;transform:rotate(28deg)"><span style="position:absolute;left:24px;top:2px;color:var(--orange);font:500 11px 'SC Label'">N</span></div>${ret()}<div class="say" style="top:150px;--c:var(--orange)"><small>3 turns</small><b>Woah. Dizzy?</b></div>${patch('DIZZY', '#3a2259', '<path d="M0 0 m-4 0 a4 4 0 1 1 8 0 a8 8 0 1 1 -16 0 a12 12 0 1 1 24 0 a16 16 0 1 1 -32 0" fill="none" stroke="#fff2b3" stroke-width="2.4"/>')}`],
+];
+document.getElementById('b').innerHTML = pages.map(([t, d, f]) => `<div class="cell"><div class="phone">${f}</div><h2>${t}</h2><p>${d}</p></div>`).join('');
+</script></body></html>

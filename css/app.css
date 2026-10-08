@@ -615,3 +615,6 @@ body.ob-tour #until-dark { display: none; }
 .ud-opt i { font-style: normal; font-size: 18px; width: 22px; text-align: center; } .ud-opt span { flex: 1; } .ud-opt em { font-style: normal; color: var(--gold); }
 .ud-opt b { display: block; font: 400 17px var(--display); } .ud-opt small { display: block; margin-top: 3px; font: 500 13px var(--label); color: var(--muted); letter-spacing: .04em; }
 #ud-sheet .d-cta { margin-top: 14px; } #ud-cancel { display: block; margin: 12px auto 0; }
+/* The steering line under the circle ("The Sun · ← Turn left · 30° up in the SW") speaks like the other lines there:
+   condensed caps, spaced, same colour and shadow as the countdown and "Seen on N nights" (2026-10-08). */
+#guidance:not(.first) { font: 500 15px/1.3 var(--label) !important; letter-spacing: .14em !important; text-transform: uppercase; color: #fff !important; text-shadow: 0 1px 6px rgba(8, 15, 27, .55) !important; }
