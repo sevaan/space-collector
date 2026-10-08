@@ -1,36 +1,37 @@
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.303';
-import * as Ufo from './ufo.js?v=0.1.303';
-import * as Fossil from './fossil.js?v=0.1.303';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.303';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.303';
-import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.303';
-import { VERSION } from './version.js?v=0.1.303';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.303';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.303';
-import { conArt } from './con-art.js?v=0.1.303';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.303';
-import { CON_FIGURES } from './con-figures.js?v=0.1.303';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.303';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.303';
-import { progress as progressOf } from './progress.js?v=0.1.303';
-import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.303';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.303';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.303';
-import { SkyView, shortName } from './sky.js?v=0.1.303';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.303';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.303';
-import { cardArt } from './art.js?v=0.1.303';
-import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.303';
-import { applyBack } from './card-backs.js?v=0.1.303';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.303';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.303';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.303';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.303';
-import { TIER_INFO } from './rarity.js?v=0.1.303';
-import { SETS } from './sets.js?v=0.1.303';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.303';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.303';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.303';
+import * as Secrets from './secrets.js?v=0.1.304';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.304';
+import * as Ufo from './ufo.js?v=0.1.304';
+import * as Fossil from './fossil.js?v=0.1.304';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.304';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.304';
+import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.304';
+import { VERSION } from './version.js?v=0.1.304';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.304';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.304';
+import { conArt } from './con-art.js?v=0.1.304';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.304';
+import { CON_FIGURES } from './con-figures.js?v=0.1.304';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.304';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.304';
+import { progress as progressOf } from './progress.js?v=0.1.304';
+import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.304';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.304';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.304';
+import { SkyView, shortName } from './sky.js?v=0.1.304';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, roadster, starVector } from './celestial.js?v=0.1.304';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.304';
+import { cardArt } from './art.js?v=0.1.304';
+import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.304';
+import { applyBack } from './card-backs.js?v=0.1.304';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.304';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.304';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.304';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.304';
+import { TIER_INFO } from './rarity.js?v=0.1.304';
+import { SETS } from './sets.js?v=0.1.304';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.304';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.304';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.304';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -488,6 +489,7 @@ function tick(ts) {
     quietTarget: isQuiet(target?.obj), // no inner circle or snap; the object brightens instead
     fossil: fossilState(t, basis, target),
     ufo: ufoState(t, basis, target, items),
+    secrets: secretsState(t, basis, target),
     _ud: untilDark(target),
     planes: state.planeItems,
     planeHit: plane?.plane.hex ?? null,
@@ -2160,3 +2162,44 @@ $('ud-set').addEventListener('click', () => {
 $('ud-cancel').addEventListener('click', () => { try { localStorage.removeItem('udRemind'); } catch {} closeSheet($('ud-sheet')); udRender(); toast('Reminder removed here. Delete the calendar event too if you added it.', 4000); });
 document.getElementById('ud-sheet').addEventListener('click', (e) => { if (e.target.id === 'ud-sheet') closeSheet(e.currentTarget); });
 udRender();
+
+// ---------- more secrets (js/secrets.js, 2026-10-08) ----------
+const secretFound = Secrets.found();
+let secretHold = {}, secretTap = null;
+function earnSecret(id) {
+  if (secretFound[id]) return; secretFound[id] = Date.now(); Secrets.markFound(id); buzz([20, 40, 20]);
+  earnPatch(Secrets.SECRET_PATCHES[id]);
+}
+function secretsState(t, basis, target) {
+  const out = [], nowMs = now().getTime(), night = (state.frame?.sunEl ?? 0) < -6, inC = (enu, slack = 1) => !target && dot(enu, basis.back) > Math.cos((sky.reticleDeg + slack) * RAD);
+  const toEnu = eqToEnu(now(), state.observer), b = basis.back, heading = (Math.atan2(b[0], b[1]) / RAD + 360) % 360, aimEl = Math.asin(Math.max(-1, Math.min(1, b[2]))) / RAD;
+  let tap = null;
+  // Santa (tap to wave)
+  const sf = Secrets.santa(nowMs);
+  if (sf && night) { const w = Secrets.santaWhere(sf, nowMs), enu = enuFromAzEl(w.az, w.el), c = inC(enu, 2); out.push({ kind: 'santa', enu, inCircle: c, done: !!secretFound.santa, title: "Santa's sleigh", sub: 'NORAD tracked · S-1', color: '#ff8a6b' }); if (c && !secretFound.santa) tap = { id: 'santa', label: 'Tap to wave' }; }
+  // Roadster and Voyager (hold ~1.2 s)
+  const hold = (id, enu, title, sub, color) => {
+    const c = inC(enu); if (!c) delete secretHold[id]; else secretHold[id] ??= t;
+    const h = secretHold[id] ? Math.min(1, (t - secretHold[id]) / 1200) : 0;
+    if (h >= 1 && !secretFound[id]) earnSecret(id);
+    out.push({ kind: id, enu, inCircle: c, hold: h, done: !!secretFound[id], title, sub, color });
+  };
+  if (night) {
+    const r = toEnu(roadster(now())); if (r[2] > 0.05) hold('roadster', r, 'Starman', 'Interplanetary · 2018-017A', '#ff6b6b');
+    const v = toEnu(starVector(Secrets.VOYAGER.ra, Secrets.VOYAGER.dec)); if (v[2] > 0.05) hold('voyager', v, 'The Golden Record', 'Voyager 1 · 24 billion km', '#e2b53c');
+  }
+  // Shooting star (tap within the streak)
+  const active = night && !!activeEvent(nowMs) && aimEl > 15 && !target;
+  const m = Secrets.meteorAt(t, active, heading, aimEl);
+  if (m) { out.push({ kind: 'meteor', streak: { ...m, k: Math.min(1, (t - m.start) / (m.end - m.start)) } }); if (!secretFound.meteor) tap = { id: 'meteor', label: 'Tap now' }; }
+  // Dizzy: three full turns while using the sky
+  if ((hasLiveSensors() || state.drag.on) && Secrets.dizzyStep(t, heading)) { $('radar').classList.remove('dizzy'); void $('radar').offsetWidth; $('radar').classList.add('dizzy'); if (!secretFound.dizzy) earnSecret('dizzy'); else toast('Woah. Dizzy?', 2000); }
+  // The tap button for Santa / the shooting star
+  const btn = $('secret-cta');
+  if (tap) { const rc = sky.ring ?? { x: sky.cx, y: sky.cy, r: sky.reticlePx }; btn.style.top = `${rc.y + rc.r + 24}px`; btn.textContent = tap.label; btn.dataset.id = tap.id; btn.hidden = false; }
+  else if (!btn.hidden && !(btn.dataset.id === 'meteor' && m)) btn.hidden = true;
+  return out;
+}
+$('secret-cta').addEventListener('click', (e) => { const id = e.currentTarget.dataset.id; e.currentTarget.hidden = true; if (id) earnSecret(id); });
+$('btn-santa')?.addEventListener('click', () => { Secrets.summonSanta(now().getTime()); closePanel('debug'); toast("Santa's sleigh is crossing now (night only).", 3000); });
+$('btn-meteor')?.addEventListener('click', () => { Secrets.summonMeteor(); closePanel('debug'); toast('A shooting star is coming (night, meteor shower, looking up).', 3000); });

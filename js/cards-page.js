@@ -1,22 +1,22 @@
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.303';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.303';
-import { ticket } from './toast.js?v=0.1.303';
-import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.303';
-import { cardArt } from './art.js?v=0.1.303';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.303';
-import { applyBack } from './card-backs.js?v=0.1.303';
-import { SETS, assignSets } from './sets.js?v=0.1.303';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.303';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.303';
-import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.303';
-import { progress } from './progress.js?v=0.1.303';
-import { SOLAR_SYSTEM } from './natural.js?v=0.1.303';
-import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.303';
-import { drawShareCard, shareCard } from './share-card.js?v=0.1.303';
-import { conArt } from './con-art.js?v=0.1.303';
-import { CON_BY_ID } from './constellations.js?v=0.1.303';
-import { allSightings, deleteSighting } from './store.js?v=0.1.303';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.303';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.304';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.304';
+import { ticket } from './toast.js?v=0.1.304';
+import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.304';
+import { cardArt } from './art.js?v=0.1.304';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.304';
+import { applyBack } from './card-backs.js?v=0.1.304';
+import { SETS, assignSets } from './sets.js?v=0.1.304';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.304';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.304';
+import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.304';
+import { progress } from './progress.js?v=0.1.304';
+import { SOLAR_SYSTEM } from './natural.js?v=0.1.304';
+import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.304';
+import { drawShareCard, shareCard } from './share-card.js?v=0.1.304';
+import { conArt } from './con-art.js?v=0.1.304';
+import { CON_BY_ID } from './constellations.js?v=0.1.304';
+import { allSightings, deleteSighting } from './store.js?v=0.1.304';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.304';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -180,9 +180,8 @@ function renderLogbook() {
     <div class="lb-head">TONIGHT'S MISSIONS <span>+50 XP each · new at noon</span></div>
     ${p.missions.map((m) => `<div class="lb-mission${m.done ? ' done' : ''}"><i></i>${esc(m.text)}</div>`).join('')}
     ${(() => { const ev = eventBadges(state.raw), nx = nextEvent(); return `<div class="lb-head">EVENTS <span>${ev.length} badge${ev.length === 1 ? '' : 's'}</span></div><div class="lb-events">${ev.map((e) => `<span class="ui-chip ui-chip--earned">☄ <b>${esc(e.name)}</b></span>`).join('')}${nx ? `<span class="ui-chip"><span class="ui-chip__k">Next:</span><b>${esc(nx.name)}</b><span class="ui-chip__k">· ${new Date(nx.start + 30 * 3600e3).toLocaleDateString([], { month: 'short', day: 'numeric' })}</span></span>` : ''}</div>`; })()}
-    <button type="button" class="lb-head lb-patches" id="lb-patches">MISSION PATCHES <span>${done} / ${p.achievements.length} ›</span></button>`;
+`; // (2026-10-08: the Mission Patches link is gone from here; the Patches tab has them)
   state.achievements = p.achievements;
-  $('lb-patches').onclick = () => { setView('patches'); window.scrollTo({ top: $('patch-wall').offsetTop - 140, behavior: 'smooth' }); };
 }
 
 function render() {
@@ -620,8 +619,12 @@ function renderPatches() {
   // The secret Fossil Hunter patch only joins the wall once found (js/fossil.js); no empty slot hints at it.
   let fossil = null; try { fossil = JSON.parse(localStorage.getItem('fossilFound')); } catch {}
   let ufo = null; try { ufo = JSON.parse(localStorage.getItem('ufoFound')); } catch {}
-  const all = [...(fossil ? [{ id: 'fossil', name: 'Fossil Hunter', text: 'Found dinosaur bones buried under your feet', icon: '', secret: true, done: true }] : []), ...(ufo ? [{ id: 'ufo', name: 'Close Encounter', text: "Something crossed your sky that isn't in any catalogue", icon: '', secret: true, done: true }] : []), ...(state.achievements ?? [])];
+  let sec = {}; try { sec = JSON.parse(localStorage.getItem('secrets')) || {}; } catch {}
+  const SEC = { santa: ['Nice List', 'You waved at Santa on Christmas Eve'], roadster: ["Don't Panic", 'Found Starman and his Roadster'], meteor: ['Make a Wish', 'Caught a shooting star'], voyager: ['Pale Blue Dot', 'Found Voyager 1, 24 billion km away'], dizzy: ['Dizzy', 'Three full turns'] };
+  const secs = Object.keys(SEC).filter((k) => sec[k]).map((k) => ({ id: k, name: SEC[k][0], text: SEC[k][1], icon: '', secret: true, done: true }));
+  const all = [...secs, ...(fossil ? [{ id: 'fossil', name: 'Fossil Hunter', text: 'Found dinosaur bones buried under your feet', icon: '', secret: true, done: true }] : []), ...(ufo ? [{ id: 'ufo', name: 'Close Encounter', text: "Something crossed your sky that isn't in any catalogue", icon: '', secret: true, done: true }] : []), ...(state.achievements ?? [])];
   if (ufo) dates.ufo ??= ufo.at;
+  for (const k of Object.keys(sec)) dates[k] ??= sec[k];
   if (fossil) dates.fossil ??= fossil.at;
   const done = all.filter((a) => a.done).length;
   $('results').textContent = `${done} of ${all.length} patches earned`;
@@ -639,8 +642,11 @@ function renderPatches() {
 function openPatch(id) {
   let fossil = null; try { fossil = JSON.parse(localStorage.getItem('fossilFound')); } catch {}
   let ufo = null; try { ufo = JSON.parse(localStorage.getItem('ufoFound')); } catch {}
-  const all = [...(fossil ? [{ id: 'fossil', name: 'Fossil Hunter', text: 'Found dinosaur bones buried under your feet', icon: '', secret: true, done: true }] : []), ...(ufo ? [{ id: 'ufo', name: 'Close Encounter', text: "Something crossed your sky that isn't in any catalogue", icon: '', secret: true, done: true }] : []), ...(state.achievements ?? [])], a = all.find((x) => x.id === id); if (!a) return;
-  const date = earnedDates()[id] ?? (id === 'fossil' ? fossil?.at : id === 'ufo' ? ufo?.at : null), f = finishOf(a);
+  let sec = {}; try { sec = JSON.parse(localStorage.getItem('secrets')) || {}; } catch {}
+  const SEC = { santa: ['Nice List', 'You waved at Santa on Christmas Eve'], roadster: ["Don't Panic", 'Found Starman and his Roadster'], meteor: ['Make a Wish', 'Caught a shooting star'], voyager: ['Pale Blue Dot', 'Found Voyager 1, 24 billion km away'], dizzy: ['Dizzy', 'Three full turns'] };
+  const secs = Object.keys(SEC).filter((k) => sec[k]).map((k) => ({ id: k, name: SEC[k][0], text: SEC[k][1], icon: '', secret: true, done: true }));
+  const all = [...secs, ...(fossil ? [{ id: 'fossil', name: 'Fossil Hunter', text: 'Found dinosaur bones buried under your feet', icon: '', secret: true, done: true }] : []), ...(ufo ? [{ id: 'ufo', name: 'Close Encounter', text: "Something crossed your sky that isn't in any catalogue", icon: '', secret: true, done: true }] : []), ...(state.achievements ?? [])], a = all.find((x) => x.id === id); if (!a) return;
+  const date = earnedDates()[id] ?? (id === 'fossil' ? fossil?.at : id === 'ufo' ? ufo?.at : sec[id] ?? null), f = finishOf(a);
   $('pv-position').textContent = `PATCH · ${all.filter((x) => x.done).length} / ${all.length}`;
   $('pv-body').innerHTML = `<div class="pv-patch">${patchHtml(a, { locked: !a.done, date: a.done && date ? fmtEarned(date) : '' })}</div>
     <h2>${esc(a.name)}</h2><p>${esc(a.text)}</p>

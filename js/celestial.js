@@ -2,7 +2,7 @@
 // Planet and Moon positions use Paul Schlyter's low-precision method ("How to compute planetary
 // positions"), good to a few arcminutes — far better than a phone compass.
 
-import { gstime } from './lib/satellite.js?v=0.1.303';
+import { gstime } from './lib/satellite.js?v=0.1.304';
 
 const RAD = Math.PI / 180;
 const sin = (d) => Math.sin(d * RAD), cos = (d) => Math.cos(d * RAD);
@@ -213,4 +213,15 @@ export function milkyWayModel() {
   const rift = [];
   for (let l = 14; l <= 78; l += 1) rift.push({ v: galToEq(l, 2 + (l - 14) * 0.025), w: 1.6 + 1.2 * Math.sin(((l - 14) / 64) * Math.PI) });
   return { spine, specks, rift };
+}
+
+// Tesla Roadster + Starman (2018-017A), heliocentric orbit from JPL's elements (perihelion 2018-11-09), good to a
+// degree or two: plenty for an easter egg. Returns a geocentric equatorial unit vector.
+export function roadster(date) {
+  const d = date.getTime() / 86400000 + 2440587.5 - 2451543.5;
+  const ecl = 23.4393 - 3.563e-7 * d;
+  const ws = 282.9404 + 4.70935e-5 * d, es = 0.016709 - 1.151e-9 * d, Ms = rev(356.047 + 0.9856002585 * d);
+  const sunP = orbitPos(0, 0, ws, 1, es, Ms);
+  const h = orbitPos(317.09, 1.078, 177.4, 1.3247, 0.256, rev(0.6464 * (d - 6888)));
+  return unit(eclToEq({ x: h.x + sunP.x, y: h.y + sunP.y, z: h.z }, ecl));
 }

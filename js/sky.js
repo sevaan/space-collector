@@ -1,9 +1,9 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.303';
+import { extinction } from './sky-limit.js?v=0.1.304';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.303';
-import { TIER_INFO } from './rarity.js?v=0.1.303';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.304';
+import { TIER_INFO } from './rarity.js?v=0.1.304';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -665,6 +665,49 @@ export class SkyView {
     }
   }
 
+  // Secrets in the sky (js/secrets.js): small icons the size of the other objects, enlarging a little in the circle,
+  // with a two-line label above the circle and, for the hold-to-find ones, a filling ring. list: [{ kind, enu, inCircle,
+  // hold, done, title, sub, color, streak }].
+  drawSecrets(list) {
+    const ctx = this.ctx, rc = this.ring ?? { x: this.cx, y: this.cy, r: this.reticlePx };
+    for (const s of list) {
+      if (s.kind === 'meteor') {
+        const a = this.project(enuFromAzEl(...s.streak.from)), b = this.project(enuFromAzEl(...s.streak.to)); if (!a || !b) continue;
+        const k = s.streak.k, hx = a.x + (b.x - a.x) * k, hy = a.y + (b.y - a.y) * k, tx = a.x + (b.x - a.x) * Math.max(0, k - 0.45), ty = a.y + (b.y - a.y) * Math.max(0, k - 0.45);
+        const g = ctx.createLinearGradient(tx, ty, hx, hy); g.addColorStop(0, 'rgba(255,242,179,0)'); g.addColorStop(1, `rgba(255,255,255,${(1 - Math.max(0, k - 0.85) * 6).toFixed(2)})`);
+        ctx.save(); ctx.strokeStyle = g; ctx.lineWidth = 2.4; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(tx, ty); ctx.lineTo(hx, hy); ctx.stroke(); ctx.restore();
+        continue;
+      }
+      const p = this.project(s.enu); if (!p || !this.onScreen(p, 30)) continue;
+      const sc = s.inCircle && !s.done ? 1.6 : 1;
+      ctx.save(); ctx.translate(p.x, p.y); ctx.scale(sc, sc);
+      if (s.kind === 'santa') {
+        ctx.shadowColor = 'rgba(255,210,122,.6)'; ctx.shadowBlur = 5; ctx.fillStyle = '#fff2b3';
+        for (let k = 0; k < 3; k++) { ctx.beginPath(); ctx.ellipse(-12 + k * 5, -1 - k * 0.6, 1.8, 1.1, 0, 0, Math.PI * 2); ctx.fill(); }
+        ctx.fillStyle = '#ff4a3a'; ctx.beginPath(); ctx.arc(-13.6, -1.2, 0.7, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#d94f38'; ctx.fillRect(1, -2.5, 8, 3.5); ctx.fillStyle = '#fff2b3'; ctx.fillRect(0, 1.3, 10, 0.8); ctx.beginPath(); ctx.arc(6, -3.6, 1.4, 0, Math.PI * 2); ctx.fill();
+      } else if (s.kind === 'roadster') {
+        ctx.shadowColor = 'rgba(255,90,90,.55)'; ctx.shadowBlur = 4; ctx.fillStyle = '#d22b2b';
+        ctx.beginPath(); ctx.moveTo(-6, 1.5); ctx.quadraticCurveTo(-5.5, -1, -2, -1.2); ctx.lineTo(0, -2.6); ctx.lineTo(3, -2.6); ctx.lineTo(5, -1); ctx.quadraticCurveTo(6.5, -0.8, 6.5, 1.5); ctx.closePath(); ctx.fill();
+        ctx.shadowBlur = 0; ctx.fillStyle = '#111'; ctx.beginPath(); ctx.arc(-3.4, 1.7, 1.1, 0, Math.PI * 2); ctx.arc(3.6, 1.7, 1.1, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = '#f4f4f4'; ctx.beginPath(); ctx.arc(1.4, -2, 0.9, 0, Math.PI * 2); ctx.fill();
+      } else if (s.kind === 'voyager') {
+        ctx.shadowColor = 'rgba(226,181,60,.7)'; ctx.shadowBlur = 5; ctx.fillStyle = '#e2b53c'; ctx.beginPath(); ctx.arc(0, 0, 2.6, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#2a1a08'; ctx.beginPath(); ctx.arc(0, 0, 0.8, 0, Math.PI * 2); ctx.fill();
+      }
+      ctx.restore();
+      if (s.inCircle && !s.done) {
+        ctx.save(); ctx.strokeStyle = s.color; ctx.lineWidth = 1.8; ctx.beginPath(); ctx.arc(rc.x, rc.y, rc.r, 0, Math.PI * 2); ctx.stroke();
+        ctx.textAlign = 'center'; ctx.shadowColor = 'rgba(0,0,0,.6)'; ctx.shadowBlur = 4;
+        if ('letterSpacing' in ctx) ctx.letterSpacing = '2.5px';
+        ctx.font = `500 12px ${FONT}`; ctx.fillStyle = s.color; ctx.fillText(s.sub.toUpperCase(), rc.x, rc.y - rc.r - 54);
+        if ('letterSpacing' in ctx) ctx.letterSpacing = '1px';
+        ctx.font = `400 24px ${DISPLAY_FONT}`; ctx.fillStyle = 'rgb(255,242,179)'; ctx.fillText(s.title.toUpperCase(), rc.x, rc.y - rc.r - 24);
+        if (s.hold > 0) { ctx.shadowBlur = 0; ctx.lineWidth = 3; ctx.lineCap = 'round'; ctx.beginPath(); ctx.arc(rc.x, rc.y, rc.r + 9, -Math.PI / 2, -Math.PI / 2 + s.hold * Math.PI * 2); ctx.stroke(); }
+        ctx.restore();
+      }
+    }
+  }
+
   // The quiet ring at your feet (design/compass-feet.html, option C): a thin compass ring drawn flat on the
   // screen around the point straight below you, turning as you turn. Everything below the horizon sits on the ring
   // at the direction it will come up, with its time. Nothing in the middle. Fades in as you look down.
@@ -1009,7 +1052,7 @@ export class SkyView {
 
   // safeTop/safeBottom are HUD insets in CSS pixels; centerY is an optional pixel
   // override. Projection and the reticle always share the same cx/cy.
-  draw(basis, items, { showDim, sky, bodies, milky, lines = true, targetId = null, time = 0, safeTop = 150, safeBottom = 230, centerY, starLimit = null, naturalTargetName = null, quietTarget = false, below = null, ownedTarget = false, sunEl = -90, ghosts = null, weather = null, newFind = false, rising = null, landscape = false, lockedOn = null, planes = null, planeHit = null, planeTrail = null, naturalTarget = null, fossil = null, ufo = null } = {}) {
+  draw(basis, items, { showDim, sky, bodies, milky, lines = true, targetId = null, time = 0, safeTop = 150, safeBottom = 230, centerY, starLimit = null, naturalTargetName = null, quietTarget = false, below = null, ownedTarget = false, sunEl = -90, ghosts = null, weather = null, newFind = false, rising = null, landscape = false, lockedOn = null, planes = null, planeHit = null, planeTrail = null, naturalTarget = null, fossil = null, ufo = null, secrets = null } = {}) {
     this.basis = basis;
     this.safeTop = Math.max(12, Math.min(safeTop, this.h * 0.45));
     this.safeBottom = Math.max(12, Math.min(safeBottom, this.h - this.safeTop - 100));
@@ -1105,6 +1148,7 @@ export class SkyView {
     if (planeAt && !locked) this.drawReticle(true, 0, false, planeAt);
     else { this.ownedInk = ownedTarget; this.drawReticle(locked, this.reducedMotion ? 0 : time, newFind && locked && !quietTarget, null, quietTarget); }
     if (ufo) this.drawUfo(ufo);
+    if (secrets?.length) this.drawSecrets(secrets);
     this.drawLabels();
   }
 
