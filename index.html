@@ -13,15 +13,16 @@
   <link rel="apple-touch-icon" href="icons/icon-180.png">
   <link rel="icon" href="icons/icon-192.png">
   <script>try { if (localStorage.getItem("night") === "1") document.documentElement.dataset.theme = "night"; } catch {}
-    // Already opened this session (e.g. back from Collection): no loader show, just the target circle in place (2026-10-07).
-    try { if (sessionStorage.getItem("scBooted")) document.documentElement.classList.add("quick"); } catch {}</script>
+    // Coming over from the standalone collection page (not a refresh): no loader show, just the target circle in place.
+    // A full refresh always gets the loader (2026-10-07, Sevaan); inside the app Collection is a layer, so no reload at all.
+    try { const nav = performance.getEntriesByType("navigation")[0]; if (sessionStorage.getItem("scBooted") && nav?.type !== "reload" && /cards\.html/.test(document.referrer)) document.documentElement.classList.add("quick"); } catch {}</script>
   <link rel="preload" href="fonts/RussoOne-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="fonts/BarlowCondensed-Medium.ttf" as="font" type="font/ttf" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600;650;700;750;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/cards.css?v=0.1.257">
-  <link rel="stylesheet" href="css/app.css?v=0.1.257">
-  <link rel="stylesheet" href="css/reveal.css?v=0.1.257">
-  <link rel="stylesheet" href="css/ui.css?v=0.1.257">
+  <link rel="stylesheet" href="css/cards.css?v=0.1.258">
+  <link rel="stylesheet" href="css/app.css?v=0.1.258">
+  <link rel="stylesheet" href="css/reveal.css?v=0.1.258">
+  <link rel="stylesheet" href="css/ui.css?v=0.1.258">
 </head>
 <body>
   <canvas id="sky" role="img" aria-label="Sky map aligned with your viewing direction"></canvas>
@@ -221,7 +222,7 @@
     <pre id="debug-info"></pre></details>
   </section>
 
-  <script type="module" src="js/main.js?v=0.1.257"></script>
+  <script type="module" src="js/main.js?v=0.1.258"></script>
 <div id="rotate" role="status"><b>Turn your phone upright</b><span>Space Collector is made for portrait.</span></div>
 </body>
 </html>
