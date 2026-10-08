@@ -54,3 +54,8 @@ body.night #reveal > .starfield i { background: #b45b53; }
 
 /* The panel focuses its first control on open; a quiet cue instead of the orange ring. */
 #rv-top .pill:focus-visible { outline: none; border-color: #fff2b3; }
+
+/* 'View in collection' (2026-10-07, Sevaan): plain centred text just under the card, no button outline. */
+#reveal-view { position: absolute; left: 0; right: 0; z-index: 4; text-align: center; top: calc(50% + 22px + var(--ch, 39.2) * var(--cf) / 2 + 18px);
+  font: 500 15px/1 var(--label); letter-spacing: .14em; text-transform: uppercase; color: var(--gold); text-decoration: none; padding: 10px 0; width: max-content; margin: 0 auto; }
+#reveal-view:focus-visible { outline: none; text-decoration: underline; }

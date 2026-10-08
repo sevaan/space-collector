@@ -1,9 +1,9 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.247';
+import { extinction } from './sky-limit.js?v=0.1.248';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.247';
-import { TIER_INFO } from './rarity.js?v=0.1.247';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.248';
+import { TIER_INFO } from './rarity.js?v=0.1.248';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -308,11 +308,16 @@ export class SkyView {
     const ctx = this.ctx, f = this.dayF ?? 0, cover = Math.max(0, Math.min(1, (wx.cloud ?? 0) / 100));
     const sec = time / 1000;
     if (cover > 0.08) {
-      const n = Math.round(4 + cover * 10), rgb = f > 0.5 ? [245, 248, 250] : f > 0 ? [120, 110, 120] : [40, 50, 66];
+      // Clouds live in the sky (2026-10-07, Sevaan: they were stuck to the glass): each has a fixed spot by azimuth
+      // and height, drifts slowly round, and is projected like a star, so it stays put as you move the phone.
+      const n = Math.round(10 + cover * 30), rgb = f > 0.5 ? [245, 248, 250] : f > 0 ? [120, 110, 120] : [40, 50, 66];
       for (let i = 0; i < n; i++) {
         const a = (i * 0.618034) % 1, b = ((i * 0.381966) + 0.17) % 1;
-        const w = this.w * (0.35 + a * 0.4), h = w * 0.28, x = ((a * this.w * 1.6 + sec * (6 + b * 6)) % (this.w + w)) - w / 2, y = this.h * (0.12 + b * 0.55);
-        this.blob(x, y, w, h, rgb, 0.16 + cover * 0.5 * (f > 0 ? 1 : 0.7));
+        const az = (a * 360 + sec * (0.25 + b * 0.25)) % 360, el = 6 + Math.pow(b, 1.3) * 62;
+        const p = this.project(enuFromAzEl(az, el)); if (!p) continue;
+        const wDeg = 16 + a * 22, w = this.f * Math.tan(wDeg * RAD) / Math.max(0.35, p.c.z), h = w * (0.24 + (1 - el / 70) * 0.1);
+        if (p.x < -w || p.x > this.w + w || p.y < -h * 2 || p.y > this.h + h * 2) continue;
+        this.blob(p.x, p.y, w, h, rgb, 0.16 + cover * 0.5 * (f > 0 ? 1 : 0.7));
       }
     }
     if (wx.kind === 'fog') { const g = ctx.createLinearGradient(0, this.h * 0.3, 0, this.h); g.addColorStop(0, 'rgba(225,230,233,0)'); g.addColorStop(1, f > 0 ? 'rgba(225,230,233,.75)' : 'rgba(120,128,140,.55)'); ctx.fillStyle = g; ctx.fillRect(0, 0, this.w, this.h); }

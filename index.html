@@ -15,9 +15,9 @@
   <script>try { if (localStorage.getItem("night") === "1") document.documentElement.dataset.theme = "night"; } catch {}</script>
   <link rel="preload" href="fonts/RussoOne-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="fonts/BarlowCondensed-Medium.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="css/cards.css?v=0.1.247">
-  <link rel="stylesheet" href="css/app.css?v=0.1.247">
-  <link rel="stylesheet" href="css/reveal.css?v=0.1.247">
+  <link rel="stylesheet" href="css/cards.css?v=0.1.248">
+  <link rel="stylesheet" href="css/app.css?v=0.1.248">
+  <link rel="stylesheet" href="css/reveal.css?v=0.1.248">
 </head>
 <body>
   <canvas id="sky" role="img" aria-label="Sky map aligned with your viewing direction"></canvas>
@@ -77,13 +77,24 @@
   <section id="start" class="overlay booting">
     <!-- Loader (2026-10-06): shown until the app knows whether to open the sky or the welcome card. -->
     <div class="wc-loader" role="status" aria-label="Loading the sky">
-      <svg viewBox="0 0 120 120" width="112" height="112" aria-hidden="true">
-        <circle cx="60" cy="60" r="44" fill="none" stroke="#627a8b" stroke-opacity=".55" stroke-width="1.2"/>
-        <circle cx="60" cy="60" r="30" fill="none" stroke="#627a8b" stroke-opacity=".35" stroke-width="1" stroke-dasharray="2 5"/>
-        <g class="ld-orbit"><circle cx="60" cy="16" r="4.2" fill="#fa8127"/><circle cx="60" cy="16" r="9" fill="#fa8127" opacity=".18"/></g>
-        <g class="ld-orbit2"><circle cx="60" cy="30" r="2.4" fill="#fff2b3"/></g>
-        <path d="M60 50 L62.4 57.6 L70 60 L62.4 62.4 L60 70 L57.6 62.4 L50 60 L57.6 57.6 Z" fill="#fff2b3"/>
-      </svg>
+      <!-- The loader is the sky's target circle (2026-10-07, Sevaan): same size, ticks and spot as js/sky.js drawReticle,
+           so the app opens with the circle already where it will be. Built here, before any module loads. -->
+      <svg id="ld-ret" aria-hidden="true"></svg>
+      <script>
+        (() => {
+          const h = window.innerHeight, w = window.innerWidth, r = (h / 2) * Math.tan(6 * Math.PI / 180) / Math.tan(35 * Math.PI / 180), S = Math.ceil(r + 20), D = Math.PI / 180;
+          let ticks = '';
+          for (let a = 0; a < 360; a += 15) { const c = a % 90 === 0, i = r + 5, o = r + (c ? 13 : 9), x = Math.cos(a * D), y = Math.sin(a * D);
+            ticks += `<line x1="${x * i}" y1="${y * i}" x2="${x * o}" y2="${y * o}" stroke="${c ? '#fa8127' : 'rgba(255,242,179,.66)'}" stroke-opacity="${c ? .9 : .42}" stroke-width="${c ? 1.5 : .75}"/>`; }
+          const el = document.getElementById('ld-ret');
+          el.setAttribute('viewBox', `${-S} ${-S} ${2 * S} ${2 * S}`); el.setAttribute('width', 2 * S); el.setAttribute('height', 2 * S);
+          el.style.cssText = `position:fixed;left:${w / 2 - S}px;top:${h / 2 - S}px`;
+          el.closest('.wc-loader').style.setProperty('--ld-below', `${h / 2 + r + 34}px`);
+          el.innerHTML = `<circle r="${r}" fill="none" stroke="rgba(255,242,179,.66)" stroke-width="1"/><circle r="${r + 5}" fill="none" stroke="rgba(173,188,200,.35)" stroke-width=".75"/>${ticks}`
+            + `<path d="M-3 0H3M0 -3V3" stroke="rgba(255,242,179,.66)" stroke-opacity=".65"/>`
+            + `<g class="ld-orbit"><circle cx="0" cy="${-r}" r="7" fill="#fa8127" opacity=".18"/><circle cx="0" cy="${-r}" r="3.2" fill="#fa8127"/></g>`;
+        })();
+      </script>
       <span class="ld-word">SPACE COLLECTOR</span>
     </div>
     <!-- Welcome (2026-10-06): a sealed card. It rattles every few seconds; tap and it flips to your mission card;
@@ -121,11 +132,12 @@
 
   <section id="reveal" class="overlay" role="dialog" aria-modal="true" aria-labelledby="reveal-eyebrow" hidden>
     <div id="rv-dim"></div><div id="rv-shock"></div><div id="rv-dot"></div><div id="rv-flash"></div><canvas id="rv-fx"></canvas>
-    <div id="rv-top"><span class="eyebrow" id="reveal-eyebrow">NEW CARD</span><span class="rv-buttons"><a id="reveal-view" class="pill" href="cards.html">View in collection</a><button class="pill x-close" data-close="reveal" aria-label="Close">✕</button></span></div>
+    <div id="rv-top"><span class="eyebrow" id="reveal-eyebrow">NEW CARD</span><span class="rv-buttons"><button class="pill x-close" data-close="reveal" aria-label="Close">✕</button></span></div>
     <div id="rv-holder" aria-label="Tap to reveal your card"><div id="rv-flipper">
       <div class="rv-side rv-back" id="rv-back"><div class="back-holo"></div><div class="back-glare"></div></div>
       <div class="rv-side rv-front" id="reveal-card"></div>
     </div><div id="rv-sweep"></div></div>
+    <a id="reveal-view" href="cards.html">View in collection ›</a>
   </section>
 
   <section id="visible" class="overlay panel" role="dialog" aria-modal="true" aria-label="Visible now" hidden>
@@ -199,7 +211,7 @@
     <pre id="debug-info"></pre></details>
   </section>
 
-  <script type="module" src="js/main.js?v=0.1.247"></script>
+  <script type="module" src="js/main.js?v=0.1.248"></script>
 <div id="rotate" role="status"><b>Turn your phone upright</b><span>Space Collector is made for portrait.</span></div>
 </body>
 </html>

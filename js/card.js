@@ -1,17 +1,17 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { cardArt } from './art.js?v=0.1.247';
-import { TIER_INFO } from './rarity.js?v=0.1.247';
-import { SET_BY_ID } from './sets.js?v=0.1.247';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.247';
-import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.247';
-import { artFileFor } from './art-keys.js?v=0.1.247';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.247';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.247';
-import { nightsIn } from './observation.js?v=0.1.247';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.247';
-import { SHINY } from './shiny.js?v=0.1.247';
-import { conArt } from './con-art.js?v=0.1.247';
-import { CON_FIGURES } from './con-figures.js?v=0.1.247';
+import { cardArt } from './art.js?v=0.1.248';
+import { TIER_INFO } from './rarity.js?v=0.1.248';
+import { SET_BY_ID } from './sets.js?v=0.1.248';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.248';
+import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.248';
+import { artFileFor } from './art-keys.js?v=0.1.248';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.248';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.248';
+import { nightsIn } from './observation.js?v=0.1.248';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.248';
+import { SHINY } from './shiny.js?v=0.1.248';
+import { conArt } from './con-art.js?v=0.1.248';
+import { CON_FIGURES } from './con-figures.js?v=0.1.248';
 // The animal/symbol figure belongs to the completed (gold) constellation card only (2026-10-05): a single
 // star's card draws just the star pattern with its star marked, so the figure is a reward for finishing the set.
 const conFig = (id) => (CON_FIGURES.has(id) ? { figure: `assets/art/con/${id}.webp` } : {});
@@ -38,8 +38,18 @@ export function artImage(o, size = 'full') {
 }
 // A few of the picture's own stars twinkle (positions found by scripts/import-art.py). The layer has the
 // picture's shape and is scaled like object-fit: cover, so each sparkle lands on its star.
+// Hand-placed glints for pictures whose sky the import script found no stars in (the big close-ups fill
+// the frame with glare). Kept here so a re-run of scripts/import-art.py doesn't wipe them.
+const STAR_CORNERS = [[0.08, 0.12], [0.12, 0.78], [0.91, 0.14], [0.89, 0.72], [0.05, 0.45], [0.95, 0.46]];
+const ART_STARS_EXTRA = {
+  dnepr: { r: 1.519, s: [[0.15, 0.13], [0.08, 0.45], [0.78, 0.62], [0.93, 0.42], [0.52, 0.78]] },
+  'planet-jupiter': { r: 1.4907, s: [[0.07, 0.15], [0.1, 0.6], [0.9, 0.12], [0.92, 0.55], [0.86, 0.35]] },
+  'star-achernar': { r: 1.4907, s: STAR_CORNERS }, 'star-altair': { r: 1.4907, s: STAR_CORNERS },
+  'star-antares': { r: 1.4907, s: STAR_CORNERS }, 'star-vega': { r: 1.4907, s: STAR_CORNERS },
+  'star-deneb': { r: 1.4907, s: [[0.08, 0.12], [0.1, 0.85], [0.92, 0.12], [0.9, 0.85], [0.2, 0.62]] },
+};
 function artStars(o) {
-  const st = ART_STARS[artFileFor(o, { [o.id]: seriesKeyOf(o) })];
+  const file = artFileFor(o, { [o.id]: seriesKeyOf(o) }), st = ART_STARS[file]?.s?.length ? ART_STARS[file] : ART_STARS_EXTRA[file];
   if (!st?.s.length) return '';
   const seed = (Number(o.id) || 7) % 97;
   return `<div class="art-stars" style="--ar:${st.r}">${st.s.map(([x, y], i) => `<i style="left:${(x * 100).toFixed(2)}%;top:${(y * 100).toFixed(2)}%;--d:${(((i * 37 + seed) % 50) / 10).toFixed(1)}s;--t:${(2.6 + ((i * 13 + seed) % 20) / 10).toFixed(1)}s"></i>`).join('')}</div>`;
