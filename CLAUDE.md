@@ -253,3 +253,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - Reveal flash: the gold dot swells to 2.6× and pops (5×, fading) instead of scaling 40× into a blurry disc; the white flash is short (300 ms) and centred where you caught it; the shock ring grows by size so its line stays sharp. No toast after a patch moment.
 - Bright planets count earlier in twilight (natural.js `brightLimit`: Venus from about sunset, Jupiter ~1.5° down, Mars 3° down). By day toasts sit just above the switcher (no slider). Meteor-shower tap toast shortened.
 - Event chip styled exactly like the next-up chip (no orange border); tapping it shows the explanation and marks that shower read (`localStorage.eventRead` = e.g. draconids-2026), so the chip goes away until the next shower.
+- Satellite paths below the horizon now run from the satellite's current position to its rise point (`satPath`, adaptive step); passes more than 25 min away get no path, just the marker.
