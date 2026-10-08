@@ -392,3 +392,12 @@
 .card--retro .fl-head { display: flex; justify-content: space-between; align-items: baseline; gap: .8em; }
 .card--retro .fl-latest { display: inline-flex; align-items: center; gap: .8em; font: 500 max(9px, .66em)/1.2 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .1em; text-transform: uppercase; color: var(--ink); white-space: nowrap; }
 .card--retro .fl-latest i { width: .6em; height: .6em; border-radius: 50%; background: #fa8127; box-shadow: 0 0 0 .16em var(--paper), 0 0 0 .28em #fa8127; flex: none; margin-left: .3em; }
+
+/* Undiscovered cards show their real art, hidden (js/card.js lockedArt): blurred, dark and desaturated, with a
+   fine scan grid over it, like a picture you can't quite make out yet. */
+.art-locked { position: absolute; inset: 0; overflow: hidden; display: block; background: #060b14; }
+.art-locked::after { content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: repeating-linear-gradient(0deg, rgba(8, 14, 26, .55) 0 2px, transparent 2px 4px), radial-gradient(ellipse at 50% 50%, transparent 30%, rgba(4, 7, 13, .7) 100%); }
+.card-tile__art:has(.art-locked) { position: relative; }
+.card-art-image--locked { width: 100%; height: 100%; object-fit: cover; filter: blur(8px) brightness(.62) saturate(.6); transform: scale(1.15); }
+.card-tile .card-art-image--locked { filter: blur(4px) brightness(.62) saturate(.6); }

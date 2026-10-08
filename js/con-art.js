@@ -5,7 +5,8 @@
 const RAD = Math.PI / 180;
 const vec = (ra, dec) => [Math.cos(dec * RAD) * Math.cos(ra * RAD), Math.cos(dec * RAD) * Math.sin(ra * RAD), Math.sin(dec * RAD)];
 
-export function conArt(con, highlightHip = null, { w = 360, h = 240, figure = null, bare = false } = {}) {
+export function conArt(con, highlightHip = null, { w = 360, h = 240, figure = null, bare = false, lit = null } = {}) {
+  // lit (2026-10-07): a Set of HIP numbers you've found; those shine, the rest are faint dots still to collect.
   const stars = con.stars;
   // Centre of the figure (average direction), then a gnomonic projection with east on the left, as the sky looks.
   const c = stars.reduce((a, s) => { const v = vec(s.ra, s.dec); return [a[0] + v[0], a[1] + v[1], a[2] + v[2]]; }, [0, 0, 0]);
@@ -37,6 +38,7 @@ export function conArt(con, highlightHip = null, { w = 360, h = 240, figure = nu
   let dots = '', glow = '';
   stars.forEach((s, i) => {
     const [x, y] = at(pts[i]), r = Math.max(1.1, 4.6 - s.mag * 0.75);
+    if (lit && s.hip !== highlightHip && !lit.has(s.hip)) { dots += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(r * 0.7).toFixed(2)}" fill="none" stroke="#fff2b3" stroke-opacity=".45" stroke-width=".9"/>`; return; }
     if (s.hip === highlightHip) {
       glow = `<circle cx="${x}" cy="${y}" r="${r * 5}" fill="url(#cg)"/><circle cx="${x}" cy="${y}" r="${r + 5}" fill="none" stroke="#fa8127" stroke-width="1.2"/>`
         + `<circle cx="${x}" cy="${y}" r="${r + 0.6}" fill="#ffd9a6"/>`;

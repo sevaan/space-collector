@@ -1,19 +1,20 @@
-import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.249';
-import { cardArt } from './art.js?v=0.1.249';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.249';
-import { applyBack } from './card-backs.js?v=0.1.249';
-import { SETS, assignSets } from './sets.js?v=0.1.249';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.249';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.249';
-import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.249';
-import { progress } from './progress.js?v=0.1.249';
-import { SOLAR_SYSTEM } from './natural.js?v=0.1.249';
-import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.249';
-import { drawShareCard, shareCard } from './share-card.js?v=0.1.249';
-import { conArt } from './con-art.js?v=0.1.249';
-import { CON_BY_ID } from './constellations.js?v=0.1.249';
-import { allSightings, deleteSighting } from './store.js?v=0.1.249';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.249';
+import { ticket } from './toast.js?v=0.1.250';
+import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.250';
+import { cardArt } from './art.js?v=0.1.250';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.250';
+import { applyBack } from './card-backs.js?v=0.1.250';
+import { SETS, assignSets } from './sets.js?v=0.1.250';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.250';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.250';
+import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.250';
+import { progress } from './progress.js?v=0.1.250';
+import { SOLAR_SYSTEM } from './natural.js?v=0.1.250';
+import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.250';
+import { drawShareCard, shareCard } from './share-card.js?v=0.1.250';
+import { conArt } from './con-art.js?v=0.1.250';
+import { CON_BY_ID } from './constellations.js?v=0.1.250';
+import { allSightings, deleteSighting } from './store.js?v=0.1.250';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.250';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -159,7 +160,7 @@ function remindStreak() {
   d.setDate(d.getDate() + ahead);
   const start = d.getTime(), url = URL.createObjectURL(new Blob([passIcs({ title: 'Look up tonight (Space Collector)', start, end: start + 3600e3, description: 'Log one sighting this week to keep your observing streak. Open https://sevaan.github.io/space-collector/' })], { type: 'text/calendar' }));
   const a = document.createElement('a'); a.href = url; a.download = 'space-collector-streak.ics'; a.click(); setTimeout(() => URL.revokeObjectURL(url), 5000);
-  notice('Reminder for Saturday evening: add it to your calendar.');
+  ticket({ kind: 'mission', eyebrow: 'STREAK', line: 'Reminder for Saturday evening: add it to your calendar.', ms: 4000 }); // a toast, as on Explore
 }
 function renderLogbook() {
   const info = (k) => { const c = state.byKey.get(k); return c ? { tier: c.tier, type: c.type, owner: c.owner, launch: c.launch, natural: c.natural, con: c.con } : null; };
@@ -174,7 +175,7 @@ function renderLogbook() {
     <div class="lb-sub">${p.rank.next ? `${(p.rank.next - p.xp).toLocaleString()} XP to ${esc(p.rank.nextName)}` : 'Top rank reached'} · ${p.streak.current ? `${p.streak.current}-week streak${p.streak.thisWeek ? '' : ' (observe this week to keep it) <button type="button" class="lb-remind" id="streak-remind">Remind me Saturday</button>'}` : 'Observe this week to start a streak'}</div>
     <div class="lb-head">TONIGHT'S MISSIONS <span>+50 XP each · new at noon</span></div>
     ${p.missions.map((m) => `<div class="lb-mission${m.done ? ' done' : ''}"><i></i>${esc(m.text)}</div>`).join('')}
-    ${(() => { const ev = eventBadges(state.raw), nx = nextEvent(); return `<div class="lb-head">EVENTS <span>${ev.length} badge${ev.length === 1 ? '' : 's'}</span></div><div class="lb-events">${ev.map((e) => `<span class="lb-event">☄ ${esc(e.name)}</span>`).join('')}${nx ? `<span class="lb-event next">Next: ${esc(nx.name)} · ${new Date(nx.start + 30 * 3600e3).toLocaleDateString([], { month: 'short', day: 'numeric' })}</span>` : ''}</div>`; })()}
+    ${(() => { const ev = eventBadges(state.raw), nx = nextEvent(); return `<div class="lb-head">EVENTS <span>${ev.length} badge${ev.length === 1 ? '' : 's'}</span></div><div class="lb-events">${ev.map((e) => `<span class="ui-chip ui-chip--earned">☄ <b>${esc(e.name)}</b></span>`).join('')}${nx ? `<span class="ui-chip"><span class="ui-chip__k">Next:</span><b>${esc(nx.name)}</b><span class="ui-chip__k">· ${new Date(nx.start + 30 * 3600e3).toLocaleDateString([], { month: 'short', day: 'numeric' })}</span></span>` : ''}</div>`; })()}
     <details class="lb-ach"><summary class="lb-head">ACHIEVEMENTS <span>${done} / ${p.achievements.length}</span></summary>
       <div class="lb-badges">${p.achievements.map((a) => `<div class="lb-badge${a.done ? ' done' : ''}" title="${esc(a.text)}"><span>${esc(a.icon)}</span><b>${esc(a.name)}</b><small>${esc(a.text)}</small></div>`).join('')}</div></details>`;
 }
@@ -292,7 +293,7 @@ function showCard() {
       row.innerHTML = `<span class="h-main"><span>${esc(when)}</span><span>${esc(where)}</span></span>${launchLine ? `<span class="h-launch">${launchLine.replace(/\s+satellites/, ' satellites')}</span>` : ''}<button type="button" class="history-delete" aria-label="Delete this sighting">×</button>`;
       row.querySelector('button').addEventListener('click', async () => {
         if (!confirm('Delete this sighting? If it was your only one, the card leaves your collection.')) return;
-        try { await deleteSighting(s.key); } catch { notice('That sighting could not be deleted. Try again.'); return; }
+        try { await deleteSighting(s.key); } catch { ticket({ kind: 'info', line: 'That sighting could not be deleted. Try again.' }); return; }
         state.raw = state.raw.filter((x) => x.key !== s.key);
         const left = (state.sightingsByKey.get(c.key) ?? []).filter((x) => x.key !== s.key);
         if (left.length) state.sightingsByKey.set(c.key, left); else { state.sightingsByKey.delete(c.key); state.seenMembers.delete(c.key); }

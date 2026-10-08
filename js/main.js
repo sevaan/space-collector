@@ -1,30 +1,31 @@
-import { VERSION } from './version.js?v=0.1.249';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.249';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.249';
-import { conArt } from './con-art.js?v=0.1.249';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.249';
-import { CON_FIGURES } from './con-figures.js?v=0.1.249';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.249';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.249';
-import { progress as progressOf } from './progress.js?v=0.1.249';
-import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.249';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.249';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.249';
-import { SkyView, shortName } from './sky.js?v=0.1.249';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.249';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.249';
-import { cardArt } from './art.js?v=0.1.249';
-import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.249';
-import { applyBack } from './card-backs.js?v=0.1.249';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.249';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.249';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.249';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.249';
-import { TIER_INFO } from './rarity.js?v=0.1.249';
-import { SETS } from './sets.js?v=0.1.249';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.249';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.249';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.249';
+import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.250';
+import { VERSION } from './version.js?v=0.1.250';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.250';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.250';
+import { conArt } from './con-art.js?v=0.1.250';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.250';
+import { CON_FIGURES } from './con-figures.js?v=0.1.250';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.250';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.250';
+import { progress as progressOf } from './progress.js?v=0.1.250';
+import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.250';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.250';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.250';
+import { SkyView, shortName } from './sky.js?v=0.1.250';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.250';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.250';
+import { cardArt } from './art.js?v=0.1.250';
+import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.250';
+import { applyBack } from './card-backs.js?v=0.1.250';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.250';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.250';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.250';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.250';
+import { TIER_INFO } from './rarity.js?v=0.1.250';
+import { SETS } from './sets.js?v=0.1.250';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.250';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.250';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.250';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -203,37 +204,7 @@ $('banner').addEventListener('click', () => bannerAction?.());
 // They queue rather than stack: one at a time, oldest first, each ~3 s, slid in under the header.
 // `toast(html, ms, href)` keeps the old callers working as plain info tickets.
 onRevealNews((n) => ticket(n));
-const toastQueue = [];
-let toastBusy = false;
-function toast(html, ms = 2200, href = null) { ticket({ kind: 'info', line: html, html: true, ms, href }); }
-function ticket({ kind = 'info', eyebrow = '', line = '', xp = 0, ms = 3000, href = null, html = false, delay = 0, id = null }) {
-  toastQueue.push({ kind, eyebrow, line, xp, ms, href, html, id, at: Date.now() + delay });
-  pumpToasts();
-}
-function pumpToasts() {
-  if (toastBusy || !toastQueue.length) return;
-  const t = toastQueue[0], wait = t.at - Date.now();
-  if (wait > 0) { toastBusy = true; setTimeout(() => { toastBusy = false; pumpToasts(); }, wait); return; }
-  toastQueue.shift();
-  toastBusy = true;
-  const el = document.createElement('div');
-  el.className = `ticket ticket--${t.kind}${t.href ? ' linked' : ''}`;
-  el.innerHTML = `<i class="ticket__mark" aria-hidden="true"></i><span class="ticket__body">${t.eyebrow ? `<span class="ticket__eyebrow">${escapeHtml(t.eyebrow)}</span>` : ''}<span class="ticket__line">${t.html ? t.line : escapeHtml(t.line)}</span></span>${t.xp ? `<span class="ticket__xp">+${t.xp}<small>XP</small></span>` : t.href ? '<span class="ticket__go">OPEN ›</span>' : ''}`;
-  // Up long enough to read (2026-10-06: at least 5 s, about 1.6× the old times); a tap sends it away sooner.
-  let gone = false;
-  const dismiss = () => { if (gone) return; gone = true; clearTimeout(timer); if (t.id) toastLive.delete(t.id); el.classList.remove('in'); setTimeout(() => { el.remove(); toastBusy = false; pumpToasts(); }, 320); };
-  el.addEventListener('click', () => { if (t.href) location.href = t.href; else dismiss(); });
-  $('toasts').append(el);
-  requestAnimationFrame(() => el.classList.add('in'));
-  const timer = setTimeout(dismiss, Math.max(5000, t.ms * 1.6));
-  if (t.id) toastLive.set(t.id, dismiss);
-}
-// Withdraw a toast by id, whether it's showing or still waiting its turn.
-const toastLive = new Map();
-function dropToast(id) {
-  for (let i = toastQueue.length - 1; i >= 0; i--) if (toastQueue[i].id === id) toastQueue.splice(i, 1);
-  toastLive.get(id)?.();
-}
+// toast / ticket / dropToast live in js/toast.js (shared with the collection page).
 
 function escapeHtml(s) {
   return String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -404,7 +375,7 @@ function snapTick() {
   if (!audio) return;
   try { const t = audio.currentTime, o = audio.createOscillator(), g = audio.createGain(); o.type = 'sine'; o.frequency.value = 1760; g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.05, t + 0.004); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.045); o.connect(g).connect(audio.destination); o.start(t); o.stop(t + 0.06); } catch {}
 }
-let uiSafeTop = 202, uiSafeBottom = 320, uiCenterY; // uiCenterY: the reticle's fixed height (radar and nav only)
+let uiSafeTop = 202, uiSafeBottom = 320, uiCenterY = window.innerHeight / 2; // set from the first frame, so the circle never starts high and slides down (2026-10-07)
 function tick(ts) {
   requestAnimationFrame(tick);
   if (!state.catalog || !state.started || document.hidden || activePanel) return;
@@ -727,8 +698,10 @@ function showMePass(p) {
   toast(`<span class="big-line">${escapeHtml(label(p.obj))}</span>${mins > 0 ? `Appears in the ${compassPoint(p.riseAz)} at ${fmtTime(p.start)}. Follow the arrow to where it will come up.` : `Up now, highest ${p.peakEl}° in the ${compassPoint(p.peakAz)}. Follow the arrow.`}`, 5000);
 }
 function switchLabel(o) {
-  const n = state.candidates.length, i = state.candidates.findIndex((c) => c.obj.id === o.id);
-  return n > 1 && i >= 0 ? `${i + 1} of ${n} ›` : '';
+  // Say what the number means (2026-10-07, Sevaan: "1 of 2 what?"): more than one thing is in the circle; tap to switch.
+  const inC = state.candidates.filter((c) => c.candidate), n = inC.length;
+  if (n < 2 || !inC.some((c) => c.obj.id === o.id)) return '';
+  return n === 2 ? 'One more in the circle · tap to switch ›' : `${n - 1} more in the circle · tap to switch ›`;
 }
 function renderTarget(target, d) {
   const bar = $('target'), disc = $('discover'), guide = $('guidance');
@@ -900,7 +873,12 @@ function showCaptureCard(obj) {
   // A constellation star: the stamp shows how far along its constellation is (gold when complete).
   // A star's constellation, or the Solar System for the Moon and planets: progress toward the gold card.
   const conCard = (model.con && CON_BY_ID.get(model.con)) || (['moon', 'planet'].includes(model.type) ? SOLAR_SYSTEM : null);
-  const con = conCard && sightings.length === 1 ? { name: conCard.name, ...conProgress(conCard, ownedCardKeys()) } : null;
+  const owned = ownedCardKeys();
+  const con = conCard && sightings.length === 1 ? { name: conCard.name, ...conProgress(conCard, owned) } : null;
+  // The toast shows the constellation filling in (2026-10-07, Sevaan): the gold card's art, found stars lit,
+  // the one you just caught ringed.
+  if (con && conCard.data) con.art = conArt(conCard.data, model.hip ?? null, { w: 150, h: 100, ...(CON_FIGURES.has(conCard.con) ? { figure: `assets/art/con/${conCard.con}.webp` } : {}),
+    lit: new Set(conCard.stars.filter((k) => owned.has(k)).map((k) => Number(k.replace('star:hip', '')))) });
   const gain = progressGain(sightings[0]); announceProgress(gain);
   playReveal({ card, o: model, seen: sightings.length, fleet, progress, collected, con, xp: gain.xp, shiny: sightings[0]?.shiny ? SHINY[sightings[0].shiny] : null, origin: { x: sky.ring?.x ?? sky.cx, y: sky.ring?.y ?? sky.cy } });
 }
@@ -1223,7 +1201,7 @@ function checkCompass(t) {
   const acc = pointing.compassAccuracy, jumped = t - pointing.compassJumpAt < 2000;
   const bad = acc === -1 || acc > 35 || jumped || pointing.compassDoubt > 0.6;
   // 2026-10-07 (Sevaan: sometimes you wave for ages): the moment the compass reads well, the nudge goes.
-  if (!bad) { if (toastLive.has('compass') || toastQueue.some((q) => q.id === 'compass')) dropToast('compass'); return; }
+  if (!bad) { if (toastPending('compass')) dropToast('compass'); return; }
   if (t - compassAskAt < 4 * 60e3) return;
   compassAskAt = t;
   ticket({ kind: 'compass', id: 'compass', eyebrow: 'COMPASS NEEDS A NUDGE', html: true, ms: 7000,

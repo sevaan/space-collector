@@ -46,11 +46,7 @@ body.night #reveal { background: #000; }
 
 /* Twinkling stars behind the reveal (js/starfield.js addStarfield), as in the collection viewer. */
 #reveal > .starfield { position: absolute; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
-#reveal > .starfield i { position: absolute; width: var(--s); height: var(--s); border-radius: 50%; background: #fff2b3; opacity: var(--o);
-  animation: rv-twinkle var(--t) ease-in-out var(--d) infinite; }
-@keyframes rv-twinkle { 0%, 100% { opacity: var(--o); transform: scale(1); } 50% { opacity: .08; transform: scale(.6); } }
-@media (prefers-reduced-motion: reduce) { #reveal > .starfield i { animation: none; } }
-body.night #reveal > .starfield i { background: #b45b53; }
+/* The stars themselves are the shared .starfield (css/ui.css). */
 
 /* The panel focuses its first control on open; a quiet cue instead of the orange ring. */
 #rv-top .pill:focus-visible { outline: none; border-color: #fff2b3; }

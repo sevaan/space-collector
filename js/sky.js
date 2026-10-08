@@ -1,9 +1,9 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.249';
+import { extinction } from './sky-limit.js?v=0.1.250';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.249';
-import { TIER_INFO } from './rarity.js?v=0.1.249';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.250';
+import { TIER_INFO } from './rarity.js?v=0.1.250';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -100,7 +100,7 @@ export class SkyView {
     this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     this.f = (this.h / 2) / Math.tan((this.fovV / 2) * RAD);
     this.cx = this.w / 2;
-    this.cy = (this.safeTop + this.h - this.safeBottom) / 2;
+    this.cy = this.h / 2; // the middle of the phone, same spot as the loader's circle (index.html #ld-ret)
   }
 
   // Angular radius (degrees) that the reticle circle covers.
@@ -846,7 +846,7 @@ export class SkyView {
     this.basis = basis;
     this.safeTop = Math.max(12, Math.min(safeTop, this.h * 0.45));
     this.safeBottom = Math.max(12, Math.min(safeBottom, this.h - this.safeTop - 100));
-    this.cy = Number.isFinite(centerY) ? Math.max(this.safeTop + 20, Math.min(centerY, this.h - this.safeBottom - 20)) : (this.safeTop + this.h - this.safeBottom) / 2;
+    this.cy = Number.isFinite(centerY) ? centerY : this.h / 2; // fixed: no clamping to the measured UI, which shifted it on the first frames
     this.labelQueue = [];
     const r = this.reticlePx;
     const rc = this.ring ?? { x: this.cx, y: this.cy };
