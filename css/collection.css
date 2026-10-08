@@ -204,3 +204,15 @@ body:has(#viewer[open]) #sizebar { display: none; }
 body::after { content: ''; position: fixed; left: 0; right: 0; bottom: 0; height: calc(185px + var(--safe-bottom)); z-index: 9; pointer-events: none;
   background: linear-gradient(to bottom, transparent, color-mix(in srgb, var(--bg) 96%, transparent) 45%); }
 body:has(#viewer[open])::after { display: none; }
+/* Card-shaped tiles (2026-10-07, Sevaan: cards, not boxes): every slot has a card's proportions (28 × 39.2, i.e. 5:7)
+   at every size and the tile fills it, so a row lines up as a hand of cards. Art keeps its 3:2 window; names clamp. */
+.grid .tile-slot { aspect-ratio: 5 / 7; min-height: 0; min-width: 0; display: block; align-self: start; width: 100%; } /* start, not stretch: a stretched height would widen it through the ratio */
+.grid .tile-slot > .card-tile, .grid > .card-tile { width: 100%; height: 100%; min-height: 0; overflow: hidden; }
+.grid > .card-tile { aspect-ratio: 5 / 7; height: auto; align-self: start; min-width: 0; }
+.grid .tile-slot > .card-tile, .grid > .card-tile { display: flex; flex-direction: column; }
+.grid[data-cols] .card-tile__art, .grid .card-tile__art { flex: 1 1 0; min-height: 24px; height: auto !important; aspect-ratio: auto !important; } /* the art window takes what the words leave */
+.grid .card-tile__set, .grid .card-tile__body { flex: none; }
+.grid .card-tile__body { overflow: hidden; }
+.grid .card-tile__name { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; margin-bottom: 6px; }
+.grid.single .card-tile__name { -webkit-line-clamp: 3; }
+.grid .card-tile__status { margin-top: 0; }

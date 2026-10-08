@@ -1,9 +1,9 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.254';
+import { extinction } from './sky-limit.js?v=0.1.255';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.254';
-import { TIER_INFO } from './rarity.js?v=0.1.254';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.255';
+import { TIER_INFO } from './rarity.js?v=0.1.255';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';

@@ -238,3 +238,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - **Below-horizon in the circle:** lining up a below-horizon thing shows "BELOW THE HORIZON / NAME / RISES 9:47 AM · IN THE SE" around the circle (cream, no orange, not collectable; only when nothing collectable is targeted). Its path brightens.
 - **Below-horizon paths match the sky trail style** (drawTrail): faint solid line for where it came from (`past`: bodies 90/60/30 min back, satellites last 4 min via `satPast`), orange `[4,7]` dashes ahead to where it rises; faint until lined up.
 - **Text links under a card:** `.ui-link` (css/ui.css) for "View in collection ›" and "Share this card ›".
+- **Card-shaped tiles:** every grid slot is 5:7 (a card's 28 × 39.2) at every slider size (`align-self: start` so the ratio sets height from width); the art window flexes to fill what the words leave, names clamp to 2 lines (3 at one-per-row).
