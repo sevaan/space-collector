@@ -304,3 +304,8 @@ main { padding-bottom: calc(var(--safe-bottom) + 210px) !important; } /* the las
   background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), hsla(0,0%,100%,.6) 0, hsla(0,0%,100%,.18) 18%, transparent 42%); }
 .lb-back { border-radius: 12px; border: 0; background-size: cover; }
 :where(html[data-theme="night"], body.night) .lb-rot { background: #130606; border-color: #52221f; box-shadow: inset 0 0 0 1px #3a1716; }
+/* As tall as a standard card (28 × 39.2, the card width from --nav-w), 2026-10-08. Contents spread to fill it. */
+.lb-rot { min-height: calc(var(--nav-w) * 1.4); display: flex; flex-direction: column; }
+.lb-face { flex: 1; display: flex; flex-direction: column; padding: 20px 18px 16px; }
+.lb-face .lb-head { margin-top: 22px; }
+.lb-face .lb-head:has(+ .lb-events) { margin-top: auto; padding-top: 18px; } /* events sit at the foot of the card */

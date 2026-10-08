@@ -292,3 +292,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - Camera view: ground tint is the header's near-black (#080f1b; red-black in red mode), and the landscape is cream outlines only (ridge lines + near-row pine outlines, no fills, trunks or far row).
 - Camera toggle in the Explore header (#cam-toggle, left of the moon; gold when on). Camera view: sky 95%; ground is a radial gradient around the point below you: 95% out to 45° down, 50% at the compass ring at your feet (−77°), 0 at the very bottom; hills as outlines, no trees.
 - Logbook (rank, missions, events) is a card: `.lb-card` > `.lb-rot` (tilt via attachTilt with {scroll:true} so the page still scrolls, plus attachGyro), `.lb-glare`, and a double-tap flip to a card back (attachFlip + applyBack). Contents render into `.lb-face`.
+- Logbook card is as tall as a standard card (min-height = --nav-w × 1.4); events sit at its foot.
