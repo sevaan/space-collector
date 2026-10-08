@@ -245,3 +245,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - **No white flash:** cards.html paints dark from its first frame (inline background + `color-scheme: dark`), and the shell only fades the Collection layer in once the page posts `{sc:'ready'}` after its first render (or its load event).
 - Size slider range is now **2–6 per row on phones, 2–8 wide** (2026-10-07); `.micro` (<66px tiles, six across) shows just the picture in its card frame.
 - **Sliding switcher pill:** `.sc-switch::before` is the one orange pill, positioned by `data-side` (left/right); js/switcher.js `setSwitch(nav, side, animate)`. Tapping slides the pill (260 ms, slight overshoot) and the view changes at `SLIDE_MS` (200 ms) as it lands; the hidden switcher is reset without animation.
+- **Daylight earth:** in the day the ground is warm soil (darker looking down) with fine grit fixed to the ground; fades with dayF, so at night it's the dark ground as before.

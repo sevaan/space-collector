@@ -1,9 +1,9 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.267';
+import { extinction } from './sky-limit.js?v=0.1.268';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.267';
-import { TIER_INFO } from './rarity.js?v=0.1.267';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.268';
+import { TIER_INFO } from './rarity.js?v=0.1.268';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -455,6 +455,23 @@ export class SkyView {
     ctx.fillStyle = this.theme.ground; ctx.fill();
     ctx.clip();
     if (!night) { ctx.fillStyle = `rgba(3, 6, 11, ${(0.25 + down * 0.45).toFixed(3)})`; ctx.fillRect(0, 0, this.w, this.h); }
+    // Daylight earth (2026-10-08, Sevaan: in the day it should look like dirt, not black): warm soil that deepens as
+    // you look down, with grit fixed to the ground (projected, so it stays put as you move). Fades with dayF.
+    const dayF = night ? 0 : (this.dayF ?? 0);
+    if (dayF > 0.02) {
+      ctx.globalAlpha = dayF;
+      ctx.fillStyle = `rgb(${Math.round(92 - down * 40)}, ${Math.round(72 - down * 32)}, ${Math.round(52 - down * 24)})`; ctx.fillRect(0, 0, this.w, this.h);
+      // grit: a seeded scatter of pebbles and darker clods across the ground, larger nearer your feet
+      for (let i = 0; i < 700; i++) {
+        const a = (i * 0.618034) % 1, b = ((i * 0.754877) % 1);
+        const el = -2 - Math.pow(b, 0.7) * 86, az = a * 360;
+        const q = this.project(enuFromAzEl(az, el)); if (!q || q.x < -10 || q.x > this.w + 10 || q.y < -10 || q.y > this.h + 10) continue;
+        const near = Math.min(1, (-el) / 60), r = 0.4 + near * 1.3 * (0.4 + ((i * 7) % 10) / 12);
+        ctx.fillStyle = i % 3 ? `rgba(40, 28, 18, ${0.18 + near * 0.14})` : `rgba(170, 145, 110, ${0.14 + near * 0.12})`;
+        ctx.beginPath(); ctx.ellipse(q.x, q.y, r * 1.3, r, (i % 7) * 0.5, 0, Math.PI * 2); ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+    }
     // a soft glow just under the horizon, warmer where the Sun is hiding
     const hz = []; for (let az = 0; az <= 360; az += 3) { const p = this.project(enuFromAzEl(az, -1.5)); if (p && this.onScreen(p, 60)) hz.push({ p, az }); }
     const sunAz = this.sunAz;
