@@ -1,21 +1,21 @@
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.262';
-import { ticket } from './toast.js?v=0.1.262';
-import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.262';
-import { cardArt } from './art.js?v=0.1.262';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.262';
-import { applyBack } from './card-backs.js?v=0.1.262';
-import { SETS, assignSets } from './sets.js?v=0.1.262';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.262';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.262';
-import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.262';
-import { progress } from './progress.js?v=0.1.262';
-import { SOLAR_SYSTEM } from './natural.js?v=0.1.262';
-import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.262';
-import { drawShareCard, shareCard } from './share-card.js?v=0.1.262';
-import { conArt } from './con-art.js?v=0.1.262';
-import { CON_BY_ID } from './constellations.js?v=0.1.262';
-import { allSightings, deleteSighting } from './store.js?v=0.1.262';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.262';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.263';
+import { ticket } from './toast.js?v=0.1.263';
+import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.263';
+import { cardArt } from './art.js?v=0.1.263';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.263';
+import { applyBack } from './card-backs.js?v=0.1.263';
+import { SETS, assignSets } from './sets.js?v=0.1.263';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.263';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.263';
+import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.263';
+import { progress } from './progress.js?v=0.1.263';
+import { SOLAR_SYSTEM } from './natural.js?v=0.1.263';
+import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.263';
+import { drawShareCard, shareCard } from './share-card.js?v=0.1.263';
+import { conArt } from './con-art.js?v=0.1.263';
+import { CON_BY_ID } from './constellations.js?v=0.1.263';
+import { allSightings, deleteSighting } from './store.js?v=0.1.263';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.263';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -499,9 +499,9 @@ $('v-share').addEventListener('click', async () => {
       gold: el.classList.contains('gold-foil'), shiny: el.querySelector('.shiny-tag')?.textContent.split('·')[1]?.trim() ?? null,
     });
     const how = await shareCard(canvas, `${titleFor(c).replace(/[^\w-]+/g, '-').toLowerCase()}.png`, `${titleFor(c)} · Space Collector`);
-    btn.textContent = how === 'downloaded' ? 'Saved the image' : 'Share this card ›';
+    btn.textContent = how === 'downloaded' ? 'Saved the image' : 'Share this card';
   } catch { btn.textContent = 'Couldn\'t make the image'; }
-  btn.disabled = false; setTimeout(() => { btn.textContent = 'Share this card ›'; }, 2500);
+  btn.disabled = false; setTimeout(() => { btn.textContent = 'Share this card'; }, 2500);
 });
 $('viewer').addEventListener('keydown', (e) => {
   if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') { e.preventDefault(); step(e.key === 'ArrowLeft' ? -1 : 1); }

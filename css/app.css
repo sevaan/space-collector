@@ -311,7 +311,6 @@ body.day #radar-up, body.day #d-tier, body.day #d-name { color:#143046; text-sha
 .wc-swipe { color:var(--gold); font-size:22px; line-height:1; animation:wcUp 1.6s ease-in-out infinite; }
 @keyframes wcUp { 0%, 100% { transform:translateY(4px); opacity:.5; } 50% { transform:translateY(-6px); opacity:1; } }
 #btn-start.text-button { min-height:40px; color:var(--text); font:500 14px/1 var(--label); letter-spacing:.2em; text-transform:uppercase; background:none; border:0; }
-.wc-browse { position:absolute; left:0; right:0; bottom:calc(var(--safe-bottom) + 18px); z-index:1; text-align:center; color:var(--muted) !important; font:500 12px/1 var(--label) !important; letter-spacing:.16em; text-transform:uppercase; }
 /* the mission card's own touches */
 .wc-holder .card.wc-mission .card__art img { object-position:center 40%; }
 
@@ -319,7 +318,7 @@ body.day #radar-up, body.day #d-tier, body.day #d-name { color:#143046; text-sha
    beat so a fast load never flashes it. */
 .wc-loader { position:absolute; inset:0; z-index:2; display:none; flex-direction:column; align-items:center; justify-content:center; gap:18px; opacity:0; animation:ldIn .4s ease .15s forwards; }
 #start.booting .wc-loader { display:flex; }
-#start.booting .wc-stage, #start.booting .wc-browse { visibility:hidden; }
+#start.booting .wc-stage { visibility:hidden; }
 .wc-loader .ld-orbit { transform-origin:0 0; animation:ldSpin 2.4s linear infinite; }
 .wc-loader .ld-orbit2 { transform-origin:0 0; animation:ldSpin 4.2s linear infinite reverse; }
 .wc-loader .ld-word { position:fixed; left:0; right:0; top:var(--ld-below, 60%); text-align:center; }
@@ -337,9 +336,8 @@ body.day #radar-up, body.day #d-tier, body.day #d-name { color:#143046; text-sha
   font:500 1.05em/1 var(--label); letter-spacing:.2em; text-transform:uppercase; animation:wcGlow 2.4s ease-in-out infinite; } /* the back is already pre-mirrored, so no flip here */
 .wc-holder .card__back[data-title="bottom"] .tap { bottom:auto; top:1.8em; }
 .wc-stage { gap:14px; padding-top:calc(var(--safe-top) + 12px); }
-/* After the flip, Begin takes the place of the Browse link at the bottom, so the card never moves. */
+/* After the flip, Begin appears at the bottom, so the card never moves. */
 .wc-after { position:absolute; left:0; right:0; bottom:calc(var(--safe-bottom) + 14px); }
-#start.wc-open .wc-browse { display:none; }
 
 /* Tour step 3: a working sky slider on the card (mirrors #sky-range; the sky behind reacts as you drag). */
 .ob-sky { width:100%; height:100%; display:flex; flex-direction:column; justify-content:center; gap:10px; padding:10px 22px; box-sizing:border-box; }

@@ -2,7 +2,7 @@
    thing). Loaded by index.html and cards.html after their page styles, so a component looks the same everywhere.
    Page CSS may place a component (top/bottom/z-index); it should not restyle it. */
 :root {
-  --ui-ink: #fff2b3; --ui-muted: rgba(255, 242, 179, .55); --ui-gold: #fa8127; --ui-edge: #627a8b; --ui-edge-soft: #344654;
+  --ui-link-ink: #bdbea9; --ui-ink: #fff2b3; --ui-muted: rgba(255, 242, 179, .55); --ui-gold: #fa8127; --ui-edge: #627a8b; --ui-edge-soft: #344654;
   --ui-glass: rgba(12, 23, 37, .95); --ui-bar: rgba(8, 15, 27, .78);
   --ui-label: 'SC Label', 'Arial Narrow', sans-serif; --ui-display: 'SC Display', Impact, sans-serif;
   --nav-w: calc(28 * max(7px, min(14px, calc((100vw - 58px) / 28), calc((100dvh - 120px) / 39.2)))); /* = a full card's width */
@@ -125,7 +125,7 @@ select, .filter select, .search input { border: 1px solid var(--ui-edge); border
 
 /* Red night mode, once for every shared component: the components read these tokens, so they all turn red together. */
 :where(html[data-theme='night'], body.night) {
-  --ui-ink: #d67674; --ui-muted: rgba(214, 118, 116, .6); --ui-gold: #ff6a55; --ui-edge: #58272b; --ui-edge-soft: #3a1716;
+  --ui-link-ink: #b76a69; --ui-ink: #d67674; --ui-muted: rgba(214, 118, 116, .6); --ui-gold: #ff6a55; --ui-edge: #58272b; --ui-edge-soft: #3a1716;
   --ui-glass: rgba(26, 9, 9, .96); --ui-bar: rgba(20, 4, 4, .82);
 }
 .lb-head span { font: 500 12px/1.2 var(--ui-label); letter-spacing: .06em; text-transform: none; color: var(--ui-muted); }
@@ -149,9 +149,10 @@ select, .filter select, .search input { border: 1px solid var(--ui-edge); border
 .icon-button, .x-close, .pill.x-close, #viewer .close { border: 0 !important; background: transparent !important; box-shadow: none !important; }
 .x-close { font-size: 24px !important; }
 
-/* Text link under a card ("View in collection ›", "Share this card ›"): plain gold capitals, no box. */
-.ui-link { display: block; width: max-content; margin: 0 auto; padding: 10px 4px; border: 0 !important; background: none !important; box-shadow: none !important; cursor: pointer;
-  font: 500 15px/1 var(--ui-label) !important; letter-spacing: .14em; text-transform: uppercase; color: var(--ui-gold) !important; text-decoration: none; min-height: 0 !important; }
+/* Text actions under cards: the welcome screen's muted, spaced capitals, with a 44px tap area. */
+.ui-link { display: flex; align-items: center; justify-content: center; width: max-content; max-width: calc(100% - 32px); margin: 0 auto; padding: 10px 4px; box-sizing: border-box;
+  border: 0 !important; background: none !important; box-shadow: none !important; cursor: pointer; text-align: center;
+  font: 500 12px/1 var(--ui-label) !important; letter-spacing: .14em; text-transform: uppercase; color: var(--ui-link-ink) !important; text-decoration: none; min-height: 44px !important; }
 .ui-link:focus-visible { outline: none; text-decoration: underline; }
 
 /* The switcher's pill slides (2026-10-07, Sevaan): one orange pill under the buttons, moved by data-side, rather than
