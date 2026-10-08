@@ -1,4 +1,4 @@
-import { extinction } from './sky-limit.js?v=0.1.273';
+import { extinction } from './sky-limit.js?v=0.1.274';
 // The Moon, the naked-eye planets and the brightest named stars, as collectible cards.
 // Positions come from js/celestial.js (state.bodies, state.skyEnu); this file holds the card facts and
 // the "can you see it right now" rules. No DOM. Every fact must be true; approximate values say so.
@@ -97,6 +97,10 @@ const azOf = (enu) => ((Math.atan2(enu[0], enu[1]) * 180 / Math.PI) + 360) % 360
 // bodies: state.bodies (with .enu). stars: state.skyEnu.stars. Returns [{ obj, look }].
 // extra: constellation stars that aren't in data/sky.json's named list, as [{ obj, enu }]. Fainter stars
 // only count when they're bright enough for tonight's sky (starLimit, js/sky-limit.js).
+// How light the sky can still be for a bright planet to count (2026-10-08, Sevaan saw Venus at dusk with no card):
+// the brighter it is, the earlier it shows. Mars (~+1) needs the Sun 3° down; Jupiter (−2) about 1.5° down; Venus
+// (−4) is collectable from just before sunset.
+const brightLimit = (mag) => -3 + Math.max(0, Math.min(5, (-1 - mag) * 1.6));
 export function naturalTargets(bodies, stars, extra = [], starLimit = 6.5) {
   const out = [];
   const sun = bodies?.find((b) => b.kind === 'sun');
@@ -107,7 +111,7 @@ export function naturalTargets(bodies, stars, extra = [], starLimit = 6.5) {
     const el = elOf(b.enu);
     // Faint planets (Uranus, Neptune) also have to beat tonight's limit, after extinction, like the faint stars.
     const faint = b.kind === 'planet' && b.mag > 3;
-    const visible = b.kind === 'sun' ? el > 2 : b.kind === 'moon' ? el > 0 && b.illum >= 0.03 : faint ? el > 5 && sunEl < -12 && b.mag + extinction(el) <= starLimit : el > 2 && sunEl < -3;
+    const visible = b.kind === 'sun' ? el > 2 : b.kind === 'moon' ? el > 0 && b.illum >= 0.03 : faint ? el > 5 && sunEl < -12 && b.mag + extinction(el) <= starLimit : el > 2 && sunEl < brightLimit(b.mag);
     out.push({ obj, look: { az: azOf(b.enu), el, mag: b.mag, visible, enu: b.enu, phaseName: b.phaseName, illum: b.illum } });
   }
   for (const s of stars ?? []) {
