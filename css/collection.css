@@ -244,3 +244,11 @@ body.patches-view .collection-tools, body.patches-view #sizebar, body.patches-vi
 .pv-body p { margin: 0; max-width: 300px; font: 500 16px/1.35 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .03em; color: rgba(255, 242, 179, .75); }
 .pv-meta { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 18px; }
 #pv-close:focus-visible { outline: none; }
+
+/* 2 · Four tabs fit on one line (2026-10-08 playtest): "Mine" instead of "My collection", tighter spacing. */
+.collection-tabs { display: flex; justify-content: space-between; gap: 6px; }
+.collection-tabs button { font: 500 15px/1 'SC Label', 'Arial Narrow', sans-serif !important; letter-spacing: .1em !important; }
+@media (max-width: 360px) { .collection-tabs button { font-size: 13.5px !important; letter-spacing: .06em !important; } }
+/* 7 · The size slider only shows while the card grid is on screen and has cards. */
+body.grid-off #sizebar { opacity: 0; pointer-events: none; }
+#sizebar { transition: opacity .3s ease; }

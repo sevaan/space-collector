@@ -74,7 +74,8 @@ export function patchSvg(a, { locked = false, date = '', stitch = false } = {}) 
   const g = GROUPS[groupOf(a)], id = `pt${uid++}`, R = 60, ic = glyph(GLYPH[a.id], a.icon);
   if (locked) {
     const ghost = ic.replace(/fill="(?!none)[^"]*"/g, 'fill="none"').replace(/<(polygon|rect|circle|path|ellipse|polyline|text)/g, '<$1 stroke="#627a8b" stroke-width="1.5"');
-    return `<svg class="patch-svg" viewBox="-64 -64 128 128" aria-hidden="true"><circle r="${R - 3}" fill="#0a1424" stroke="#627a8b" stroke-width="1.2" stroke-dasharray="3 3"/><g opacity=".4" transform="scale(.82)">${ghost}</g></svg>`;
+    // Faintly in its group's colour (2026-10-08 playtest: a new player's wall read as a dark void).
+    return `<svg class="patch-svg" viewBox="-64 -64 128 128" aria-hidden="true"><circle r="${R - 3}" fill="${g.c}" fill-opacity=".45" stroke="#bcb585" stroke-opacity=".45" stroke-width="1.2" stroke-dasharray="3 3"/><g opacity=".55" transform="scale(.82)">${ghost.replace(/#627a8b/g, '#bcb585')}</g></svg>`;
   }
   const stitches = Array.from({ length: 90 }, (_, i) => { const t = i * 4 * Math.PI / 180; return `<line x1="${(Math.cos(t) * (R - 6)).toFixed(2)}" y1="${(Math.sin(t) * (R - 6)).toFixed(2)}" x2="${(Math.cos(t) * R).toFixed(2)}" y2="${(Math.sin(t) * R).toFixed(2)}"/>`; }).join('');
   const name = a.name.toUpperCase(), nameSize = name.length > 16 ? 8.5 : name.length > 12 ? 9.5 : 11;

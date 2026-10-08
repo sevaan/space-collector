@@ -1,9 +1,9 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.270';
+import { extinction } from './sky-limit.js?v=0.1.271';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.270';
-import { TIER_INFO } from './rarity.js?v=0.1.270';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.271';
+import { TIER_INFO } from './rarity.js?v=0.1.271';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -607,7 +607,7 @@ export class SkyView {
         if (!boxes.some((b) => bx < b[0] + b[2] + 4 && bx + w + 4 > b[0] && by < b[1] + b[3] + 2 && by + h + 2 > b[1])) break;
       }
       boxes.push([bx, by, w, h]);
-      ctx.strokeStyle = col; ctx.globalAlpha = a * 0.45;
+      ctx.strokeStyle = col; ctx.globalAlpha = a * (ly !== ly0 ? 0.75 : 0.45); // a nudged label gets a clearer leader back to its dot
       ctx.beginPath(); ctx.moveTo(x + u[0] * 7, y + u[1] * 7); ctx.lineTo(align === 'left' ? bx - 4 : align === 'right' ? bx + w + 4 : bx + w / 2, align === 'center' ? (u[1] > 0 ? by - 2 : by + h + 2) : ly); ctx.stroke();
       ctx.globalAlpha = a; ctx.textAlign = 'left';
       ctx.fillStyle = col; ctx.fillText(name, bx, by + h / 2);

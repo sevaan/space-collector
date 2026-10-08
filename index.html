@@ -19,10 +19,10 @@
   <link rel="preload" href="fonts/RussoOne-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="fonts/BarlowCondensed-Medium.ttf" as="font" type="font/ttf" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600;650;700;750;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/cards.css?v=0.1.270">
-  <link rel="stylesheet" href="css/app.css?v=0.1.270">
-  <link rel="stylesheet" href="css/reveal.css?v=0.1.270">
-  <link rel="stylesheet" href="css/ui.css?v=0.1.270">
+  <link rel="stylesheet" href="css/cards.css?v=0.1.271">
+  <link rel="stylesheet" href="css/app.css?v=0.1.271">
+  <link rel="stylesheet" href="css/reveal.css?v=0.1.271">
+  <link rel="stylesheet" href="css/ui.css?v=0.1.271">
 </head>
 <body>
   <canvas id="sky" role="img" aria-label="Sky map aligned with your viewing direction"></canvas>
@@ -173,23 +173,23 @@
     <h3>Your location</h3><p id="location-note" class="hint"></p><button class="pill" id="retry-location">Use my current location</button><button class="pill" id="retry-motion">Enable motion</button>
     <details><summary>Set observing coordinates</summary><p class="hint small">Use a known observing place. South and west use negative values.</p><form id="location-form"><div class="row wrap"><label>Latitude<input id="latitude" type="number" min="-90" max="90" step="any" required inputmode="decimal"></label><label>Longitude<input id="longitude" type="number" min="-180" max="180" step="any" required inputmode="decimal"></label></div><button class="pill" type="submit">Use this location</button></form></details>
     <h3>Display</h3>
-    <label class="row"><input type="checkbox" id="chk-night"> Red night mode (keeps your eyes adjusted to the dark)</label>
+    <label class="row"><input type="checkbox" id="chk-night"> Red night mode · saves your night vision</label>
     <label class="row"><input type="checkbox" id="chk-stars" checked> Stars, planets &amp; Moon</label>
-    <label class="row"><input type="checkbox" id="chk-lines"> Constellation lines and names</label>
-    <label class="row"><input type="checkbox" id="chk-landscape"> Landscape: hills and a tree line along the horizon</label>
-    <p class="hint">Your sky: use the slider above Explore and Collection. Slide until the stars and satellites on screen match what you can see.</p>
+    <label class="row"><input type="checkbox" id="chk-lines"> Constellation lines</label>
+    <label class="row"><input type="checkbox" id="chk-landscape"> Tree line on the horizon</label>
+    <p class="hint">How dark your sky is lives on the slider above Explore: slide until the screen matches what you see.</p>
     <p class="hint" id="sky-limit-info">Only objects bright enough to see from your sky are shown.</p>
-    <label class="row"><input type="checkbox" id="chk-bino"> Binocular mode: also show objects you'd only see with binoculars (about 3 magnitudes fainter)</label>
+    <label class="row"><input type="checkbox" id="chk-bino"> Binocular mode · show what binoculars reveal</label>
 
     <h3>Pointing</h3>
-    <label class="row"><input type="checkbox" id="chk-snap" checked> Snap the circle onto what you're aiming at</label>
-    <p class="hint">Highlight in the circle: these get the small inner circle and a Tap to collect button. Anything unticked just brightens and turns the circle orange; tap the circle to collect it.</p>
+    <label class="row"><input type="checkbox" id="chk-snap" checked> Snap the circle onto targets</label>
+    <p class="hint">Highlight in the circle: ticked kinds get the inner ring and Tap to collect. The rest just brighten; tap the circle to collect them.</p>
     <label class="row"><input type="checkbox" data-hl="satellite"> Satellites and stations</label>
     <label class="row"><input type="checkbox" data-hl="rocket"> Rocket stages and debris</label>
     <label class="row"><input type="checkbox" data-hl="planet"> The Moon and planets</label>
     <label class="row"><input type="checkbox" data-hl="sun"> The Sun</label>
     <label class="row"><input type="checkbox" data-hl="star"> Stars</label>
-    <label class="row"><input type="checkbox" id="chk-drag"> Drag to look around (instead of motion sensors)</label>
+    <label class="row"><input type="checkbox" id="chk-drag"> Drag to look (no motion sensors)</label>
     <div class="row wrap">
       <span>Compass nudge</span>
       <button class="pill" data-nudge="-5">−5°</button>
@@ -221,7 +221,7 @@
     <pre id="debug-info"></pre></details>
   </section>
 
-  <script type="module" src="js/main.js?v=0.1.270"></script>
+  <script type="module" src="js/main.js?v=0.1.271"></script>
 <div id="rotate" role="status"><b>Turn your phone upright</b><span>Space Collector is made for portrait.</span></div>
 </body>
 </html>

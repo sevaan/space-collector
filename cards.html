@@ -15,16 +15,16 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600;650;700;750;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="preload" href="fonts/RussoOne-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="fonts/BarlowCondensed-Medium.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="css/cards.css?v=0.1.270">
-  <link rel="stylesheet" href="css/collection.css?v=0.1.270">
-  <link rel="stylesheet" href="css/ui.css?v=0.1.270">
+  <link rel="stylesheet" href="css/cards.css?v=0.1.271">
+  <link rel="stylesheet" href="css/collection.css?v=0.1.271">
+  <link rel="stylesheet" href="css/ui.css?v=0.1.271">
 </head>
 <body>
   <header class="collection-header sky-header"><a class="wordmark" href="./?resume=1">SPACE COLLECTOR<span>FIELD NOTES FROM ORBIT</span></a><span class="header-buttons"><button class="icon-button" id="night-toggle" type="button" aria-label="Turn on red night mode" aria-pressed="false">☾</button><a class="icon-button" href="./?resume=1&amp;more=1" aria-label="Settings"><span class="ico" data-ico="sliders"></span></a></span></header>
   <main id="collection-main">
     <div class="collection-intro"><p class="eyebrow">YOUR ORBITAL FIELD GUIDE</p><h1>A little closer<br>to the cosmos.</h1><p id="count">Opening your collection…</p></div>
     <section class="logbook" id="logbook" aria-label="Your logbook" hidden></section>
-    <div class="collection-tabs" aria-label="Collection view"><button type="button" id="tab-owned" aria-pressed="true">My collection <span id="owned-count">0</span></button><button type="button" id="tab-albums" aria-pressed="false">Albums</button><button type="button" id="tab-discover" aria-pressed="false">Discover</button><button type="button" id="tab-patches" aria-pressed="false">Patches</button></div>
+    <div class="collection-tabs" aria-label="Collection view"><button type="button" id="tab-owned" aria-pressed="true">Mine <span id="owned-count">0</span></button><button type="button" id="tab-albums" aria-pressed="false">Albums</button><button type="button" id="tab-discover" aria-pressed="false">Discover</button><button type="button" id="tab-patches" aria-pressed="false">Patches</button></div>
     <div class="collection-tools"><label class="search"><span aria-hidden="true">⌕</span><input type="search" id="search" placeholder="Find a spacecraft, launch or story…" aria-label="Search cards" autocomplete="off"></label><div class="filter-row"><label class="filter"><span>Collection</span><select id="set-filter" aria-label="Filter by collection"><option value="all">Collection</option></select></label><label class="filter"><span>Rarity</span><select id="rarity-filter" aria-label="Filter by rarity"><option value="all">Rarity</option></select></label><label class="filter sort"><span>Sort</span><select id="sort-by" aria-label="Sort cards"><option value="auto">Sort</option><option value="newest">Newest first</option><option value="rarest">Rarest first</option><option value="az">A to Z</option></select></label></div></div>
     <div class="album-head" id="album-head" hidden></div>
     <div class="result-row"><span id="results" aria-live="polite"></span><button type="button" id="reset-filters" hidden>Clear filters</button></div>
@@ -41,7 +41,7 @@
     <div class="viewer-header"><span id="v-position" class="ui-eyebrow"></span><button class="close x-close" id="v-close" type="button" aria-label="Close">✕</button></div>
     <div class="viewer-scroll"><div id="slot"></div><p id="v-status" class="viewer-status" aria-live="polite"></p><button id="v-share" class="ui-link" type="button" hidden>Share this card</button><button id="v-preview" class="ui-btn" type="button" hidden>Preview artwork &amp; story</button><div id="v-history" class="viewer-history"></div></div>
   </dialog>
-  <script type="module" src="js/cards-page.js?v=0.1.270"></script>
+  <script type="module" src="js/cards-page.js?v=0.1.271"></script>
 <div id="rotate" role="status"><b>Turn your phone upright</b><span>Space Collector is made for portrait.</span></div>
 </body>
 </html>

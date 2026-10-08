@@ -1,22 +1,22 @@
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.270';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.270';
-import { ticket } from './toast.js?v=0.1.270';
-import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.270';
-import { cardArt } from './art.js?v=0.1.270';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.270';
-import { applyBack } from './card-backs.js?v=0.1.270';
-import { SETS, assignSets } from './sets.js?v=0.1.270';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.270';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.270';
-import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.270';
-import { progress } from './progress.js?v=0.1.270';
-import { SOLAR_SYSTEM } from './natural.js?v=0.1.270';
-import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.270';
-import { drawShareCard, shareCard } from './share-card.js?v=0.1.270';
-import { conArt } from './con-art.js?v=0.1.270';
-import { CON_BY_ID } from './constellations.js?v=0.1.270';
-import { allSightings, deleteSighting } from './store.js?v=0.1.270';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.270';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.271';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.271';
+import { ticket } from './toast.js?v=0.1.271';
+import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.271';
+import { cardArt } from './art.js?v=0.1.271';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.271';
+import { applyBack } from './card-backs.js?v=0.1.271';
+import { SETS, assignSets } from './sets.js?v=0.1.271';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.271';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.271';
+import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.271';
+import { progress } from './progress.js?v=0.1.271';
+import { SOLAR_SYSTEM } from './natural.js?v=0.1.271';
+import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.271';
+import { drawShareCard, shareCard } from './share-card.js?v=0.1.271';
+import { conArt } from './con-art.js?v=0.1.271';
+import { CON_BY_ID } from './constellations.js?v=0.1.271';
+import { allSightings, deleteSighting } from './store.js?v=0.1.271';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.271';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -621,7 +621,7 @@ function renderPatches() {
   $('results').textContent = `${done} of ${all.length} patches earned`;
   const groups = GROUP_ORDER.filter((g) => all.some((a) => groupOf(a) === g));
   const shown = all.filter((a) => state.patchGroup === 'all' || groupOf(a) === state.patchGroup)
-    .sort((a, b) => GROUP_ORDER.indexOf(groupOf(a)) - GROUP_ORDER.indexOf(groupOf(b)) || Number(b.done) - Number(a.done));
+    .sort((a, b) => Number(b.done) - Number(a.done) || GROUP_ORDER.indexOf(groupOf(a)) - GROUP_ORDER.indexOf(groupOf(b))); // earned first, then by group
   wall.innerHTML = `<div class="pw-chips">${['all', ...groups].map((g) => `<button type="button" class="ui-chip pw-chip${state.patchGroup === g ? ' on' : ''}" data-g="${g}"><b>${g === 'all' ? 'All' : esc(GROUPS[g].t)}</b><span class="ui-chip__k">${(g === 'all' ? all : all.filter((a) => groupOf(a) === g)).filter((a) => a.done).length}</span></button>`).join('')}</div>
     <div class="pw-grid">${shown.map((a) => `<button type="button" class="pw-item${a.done ? '' : ' locked'}" data-id="${a.id}" aria-label="${esc(a.name)}${a.done ? ', earned' : ', not earned yet'}">${patchHtml(a, { locked: !a.done })}<span>${esc(a.name)}</span></button>`).join('')}</div>`;
   wall.onclick = (e) => {
@@ -650,3 +650,12 @@ function openPatch(id) {
 $('pv-close').addEventListener('click', () => $('patch-view').close());
 $('patch-view').addEventListener('click', (e) => { if (e.target === $('patch-view')) $('patch-view').close(); });
 addEventListener('hashchange', () => { let k = ''; try { k = decodeURIComponent(location.hash.slice(1)); } catch {} if (k) openKey(k); });
+
+// 7 · Show the card-size slider only while there's a grid of cards on screen (2026-10-08 playtest).
+{
+  let onScreen = false;
+  const update = () => { const has = !!$('grid').querySelector('.tile-slot') && !$('grid').hidden; document.body.classList.toggle('grid-off', !(has && onScreen)); };
+  new IntersectionObserver((es) => { onScreen = es.some((e) => e.isIntersecting); update(); }, { rootMargin: '0px 0px -35% 0px' }).observe($('grid'));
+  new MutationObserver(update).observe($('grid'), { childList: true, attributes: true, attributeFilter: ['hidden'] });
+  update();
+}
