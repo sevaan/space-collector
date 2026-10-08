@@ -1,31 +1,32 @@
-import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.261';
-import { VERSION } from './version.js?v=0.1.261';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.261';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.261';
-import { conArt } from './con-art.js?v=0.1.261';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.261';
-import { CON_FIGURES } from './con-figures.js?v=0.1.261';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.261';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.261';
-import { progress as progressOf } from './progress.js?v=0.1.261';
-import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.261';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.261';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.261';
-import { SkyView, shortName } from './sky.js?v=0.1.261';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.261';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.261';
-import { cardArt } from './art.js?v=0.1.261';
-import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.261';
-import { applyBack } from './card-backs.js?v=0.1.261';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.261';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.261';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.261';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.261';
-import { TIER_INFO } from './rarity.js?v=0.1.261';
-import { SETS } from './sets.js?v=0.1.261';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.261';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.261';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.261';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.262';
+import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.262';
+import { VERSION } from './version.js?v=0.1.262';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.262';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.262';
+import { conArt } from './con-art.js?v=0.1.262';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.262';
+import { CON_FIGURES } from './con-figures.js?v=0.1.262';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.262';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.262';
+import { progress as progressOf } from './progress.js?v=0.1.262';
+import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.262';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.262';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.262';
+import { SkyView, shortName } from './sky.js?v=0.1.262';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.262';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.262';
+import { cardArt } from './art.js?v=0.1.262';
+import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.262';
+import { applyBack } from './card-backs.js?v=0.1.262';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.262';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.262';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.262';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.262';
+import { TIER_INFO } from './rarity.js?v=0.1.262';
+import { SETS } from './sets.js?v=0.1.262';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.262';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.262';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.262';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -1777,7 +1778,7 @@ function openCollection(key = '') {
 }
 async function closeCollection(fromHistory = false) {
   if (!collectionOpen) return;
-  collectionOpen = false; colFrame.classList.remove('open'); setTimeout(() => { if (!collectionOpen) colFrame.hidden = true; }, 180);
+  collectionOpen = false; setSwitch($('nav'), 'left', false); colFrame.classList.remove('open'); setTimeout(() => { if (!collectionOpen) colFrame.hidden = true; }, 180);
   if (!fromHistory && history.state?.sc === 'collection') { try { history.back(); } catch {} }
   await loadSightings(); // a sighting may have been deleted over there
 }
@@ -1793,7 +1794,8 @@ document.addEventListener('click', (e) => {
   const a = e.target.closest('a[href^="cards.html"]'); if (!a || e.defaultPrevented || !state.started) return;
   e.preventDefault(); if (!$('reveal').hidden) $('reveal').querySelector('[data-close="reveal"]')?.click();
   let key = ''; try { key = decodeURIComponent((a.getAttribute('href').split('#')[1] ?? '')); } catch {}
-  openCollection(key);
+  if (a.closest('#nav')) { setSwitch($('nav'), 'right'); setTimeout(() => openCollection(key), SLIDE_MS); } // the pill slides over first
+  else openCollection(key);
 });
 window.scNavigate = (href) => { if (!String(href).startsWith('cards.html') || !state.started) return false; openCollection(decodeURIComponent(href.split('#')[1] ?? '')); return true; };
 // Night mode switched over there (same storage key) follows here.
