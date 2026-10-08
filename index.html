@@ -15,9 +15,10 @@
   <script>try { if (localStorage.getItem("night") === "1") document.documentElement.dataset.theme = "night"; } catch {}</script>
   <link rel="preload" href="fonts/RussoOne-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="fonts/BarlowCondensed-Medium.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="css/cards.css?v=0.1.248">
-  <link rel="stylesheet" href="css/app.css?v=0.1.248">
-  <link rel="stylesheet" href="css/reveal.css?v=0.1.248">
+  <link rel="stylesheet" href="css/cards.css?v=0.1.249">
+  <link rel="stylesheet" href="css/app.css?v=0.1.249">
+  <link rel="stylesheet" href="css/reveal.css?v=0.1.249">
+  <link rel="stylesheet" href="css/ui.css?v=0.1.249">
 </head>
 <body>
   <canvas id="sky" role="img" aria-label="Sky map aligned with your viewing direction"></canvas>
@@ -64,9 +65,9 @@
       <span class="sb-end" aria-hidden="true">DARK</span>
       <span id="sky-read"><b id="sky-name"></b> · <span id="sky-mag"></span></span>
     </div>
-    <nav id="nav">
-      <button class="nav-item active" id="nav-explore" aria-current="page"><span class="ico" data-ico="planet"></span>Explore</button>
-      <a class="nav-item" id="nav-collection" href="cards.html"><span class="ico" data-ico="bag"></span>Collection</a>
+    <nav id="nav" class="sc-switch" aria-label="Main navigation">
+      <button class="nav-item sc-switch__item active" id="nav-explore" aria-current="page"><span class="ico" data-ico="planet"></span>Explore</button>
+      <a class="nav-item sc-switch__item" id="nav-collection" href="cards.html"><span class="ico" data-ico="bag"></span>Collection</a>
     </nav>
   </div>
 
@@ -211,7 +212,7 @@
     <pre id="debug-info"></pre></details>
   </section>
 
-  <script type="module" src="js/main.js?v=0.1.248"></script>
+  <script type="module" src="js/main.js?v=0.1.249"></script>
 <div id="rotate" role="status"><b>Turn your phone upright</b><span>Space Collector is made for portrait.</span></div>
 </body>
 </html>

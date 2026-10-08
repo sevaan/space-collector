@@ -1,0 +1,30 @@
+/* Shared components (2026-10-07, Sevaan: the Explore/Collection switcher is one thing, so it should look like one
+   thing). Loaded by index.html and cards.html after their page styles, so a component looks the same everywhere.
+   Page CSS may place a component (top/bottom/z-index); it should not restyle it. */
+:root {
+  --ui-ink: #fff2b3; --ui-muted: rgba(255, 242, 179, .55); --ui-gold: #fa8127; --ui-edge: #627a8b; --ui-edge-soft: #344654;
+  --ui-glass: rgba(12, 23, 37, .95); --ui-bar: rgba(8, 15, 27, .78);
+  --ui-label: 'SC Label', 'Arial Narrow', sans-serif; --ui-display: 'SC Display', Impact, sans-serif;
+  --nav-w: calc(28 * max(7px, min(14px, calc((100vw - 58px) / 28), calc((100dvh - 120px) / 39.2)))); /* = a full card's width */
+}
+
+/* Switcher: Explore | Collection. As wide as a card; the current page is the gold pill. */
+.sc-switch { position: fixed; z-index: 20; left: 50%; right: auto; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%);
+  width: var(--nav-w); height: 46px; display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; margin: 0; box-sizing: border-box;
+  background: var(--ui-bar); border: 1px solid var(--ui-edge-soft); border-top: 1px solid var(--ui-edge-soft); border-radius: 99px;
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+.sc-switch__item { display: flex; flex-direction: row; justify-content: center; align-items: center; width: auto; min-height: 0; gap: 0; border: 0; border-radius: 99px;
+  background: transparent; color: var(--ui-muted); text-decoration: none; font: 500 14px/1 var(--ui-label); letter-spacing: .14em; text-transform: uppercase; cursor: pointer; }
+.sc-switch__item > span, .sc-switch__item .ico { display: none; }
+.sc-switch__item[aria-current] { color: var(--ui-gold); background: rgba(250, 129, 39, .14); box-shadow: inset 0 0 0 1px rgba(250, 129, 39, .45); }
+.sc-switch__item:focus-visible { outline: 2px solid var(--ui-gold); outline-offset: 2px; }
+
+/* Round ✕: every close in the app. */
+.x-close { display: grid; place-items: center; width: 44px; min-width: 44px; height: 44px; padding: 0; border-radius: 50%;
+  border: 1px solid var(--ui-edge); background: var(--ui-glass); color: var(--ui-ink); font: 400 20px/1 system-ui, sans-serif; cursor: pointer; }
+
+/* Round header buttons (night mode, settings). */
+.icon-button { display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border-radius: 50%; border: 1px solid var(--ui-edge); background: var(--ui-glass); color: var(--ui-ink); }
+
+/* Red night mode keeps the same shapes, in red. */
+:where(html[data-theme='night'], body.night) .sc-switch__item[aria-current] { color: #ff6a55; background: rgba(255, 70, 50, .12); box-shadow: inset 0 0 0 1px rgba(255, 70, 50, .45); }
