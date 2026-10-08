@@ -55,6 +55,17 @@ export function tonightSky(wx, dusk, dawn, fmt) {
     const hs = wx.hours.filter((h) => h.t >= s && h.t <= e);
     if (hs.length >= 4 && hs.filter(clearHour).length >= hs.length * 0.6) nextClear = s;
   }
-  return { ok, line, nextClear };
+  // For the tour's last page (2026-10-08): which of the four cases, when it clears / clouds over, the worst weather,
+  // and a summary of the next few nights.
+  const kase = !ok ? 'bad' : clear.every(Boolean) ? 'clear' : !clear[0] ? 'clearing' : 'closing';
+  const clearFrom = kase === 'clearing' ? night[clear.indexOf(true)].t : null, coverFrom = kase === 'closing' ? night[clear.indexOf(false)].t : null;
+  const nights = [];
+  for (let n = 0; n <= 3; n++) {
+    const s = dusk + n * 86400e3, e = dawn + n * 86400e3, hs = wx.hours.filter((h) => h.t >= s && h.t <= e);
+    if (hs.length < 3) continue;
+    const share = hs.filter(clearHour).length / hs.length, w = hs.reduce((a, h) => (rank(h.kind) > rank(a) ? h.kind : a), 'clear');
+    nights.push({ t: s, kind: share >= 0.8 ? 'clear' : share >= 0.5 ? 'mostly' : rank(w) >= 3 ? w : 'cloudy' });
+  }
+  return { ok, line, nextClear, kase, clearFrom, coverFrom, worst, nights };
 }
 const rank = (k) => ({ clear: 0, cloudy: 1, fog: 2, snow: 3, rain: 4, storm: 5 }[k] ?? 0);

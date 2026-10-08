@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tonight Weather</title>
+<style>
+  @font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf'); font-weight: 500; }
+  @font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf'); }
+  :root { --ink: #fff2b3; --muted: #bdbea9; --orange: #fa8127; --edge: #627a8b; --sky: #8fb3cf; }
+  body { margin: 0; background: #04070d; color: #e8eef6; font: 15px/1.45 -apple-system, system-ui, sans-serif; padding: 24px 16px 60px; }
+  h1.t { font-size: 20px; margin: 0 0 6px; } .intro { color: #9fb0c6; margin: 0 0 22px; max-width: 1000px; }
+  .row { display: flex; flex-wrap: wrap; gap: 18px; justify-content: center; }
+  .cell { width: 390px; } .cell h2 { font-size: 16px; margin: 10px 0 4px; } .cell p { color: #9fb0c6; font-size: 13.5px; margin: 0; }
+  .phone { position: relative; width: 390px; height: 780px; border-radius: 30px; overflow: hidden; border: 1px solid #1d2838; background: #080e1a; }
+  .lab { font: 500 12px/1.2 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .16em; text-transform: uppercase; }
+  .disp { font: 400 34px/1 'SC Display', sans-serif; text-transform: uppercase; color: var(--ink); letter-spacing: -.02em; }
+  .stars i { position: absolute; width: 2px; height: 2px; border-radius: 50%; background: var(--ink); opacity: .55; }
+  .x { position: absolute; top: 22px; right: 22px; color: var(--ink); font-size: 22px; }
+  .head { position: absolute; left: 26px; right: 26px; top: 80px; }
+  .tl { position: absolute; left: 26px; right: 22px; top: 270px; }
+  .tl .it { position: relative; display: grid; grid-template-columns: 70px 1fr; gap: 12px; padding: 0 0 18px 20px; }
+  .tl .it::before { content: ''; position: absolute; left: 4px; top: 6px; width: 9px; height: 9px; border-radius: 50%; background: #344654; }
+  .tl .it::after { content: ''; position: absolute; left: 8px; top: 18px; bottom: -2px; width: 1px; background: #344654; }
+  .tl .it:last-child::after { display: none; }
+  .tl .it.hot::before { background: var(--orange); box-shadow: 0 0 10px var(--orange); }
+  .tl .it.cloud::before { background: #627a8b; } .tl .it.cloud b, .tl .it.cloud span { opacity: .55; }
+  .tl .it.cloud::after { background: repeating-linear-gradient(#627a8b 0 3px, transparent 3px 6px); }
+  .tl b { font: 400 17px 'SC Display', sans-serif; color: var(--ink); } .tl span { font: 500 15px/1.3 'SC Label', sans-serif; color: #fff2b3cc; letter-spacing: .03em; }
+  .tl em { font-style: normal; color: var(--orange); } .tl .it.hot span { color: var(--ink); }
+  .btns { position: absolute; left: 22px; right: 22px; bottom: 30px; display: grid; gap: 10px; }
+  .btn { display: flex; justify-content: space-between; align-items: center; height: 54px; padding: 0 20px; border-radius: 12px; font: 500 15px/1 'SC Label', sans-serif; letter-spacing: .18em; text-transform: uppercase; }
+  .btn.o { background: var(--orange); color: #0b1120; } .btn.g { border: 1.5px solid #fff2b355; color: var(--ink); } .btn.b { background: #8fb3cf; color: #0b1120; }
+  /* Clouds: soft puffy shapes (overlapping blurred circles) in two layers drifting at different speeds, lit faintly from below. */
+  .clouds { position: absolute; left: -45%; right: -45%; top: -10px; height: 340px; pointer-events: none; }
+  .clouds .layer { position: absolute; inset: 0; animation: drift var(--d, 60s) ease-in-out infinite alternate; will-change: transform; }
+  .clouds .c { position: absolute; filter: blur(var(--b, 6px)); opacity: var(--o, .8); }
+  .clouds .c i { position: absolute; border-radius: 50%; background: radial-gradient(circle at 50% 35%, var(--top, #4b5d74), var(--bot, #2a3546) 70%); }
+  @keyframes drift { from { transform: translateX(-14%); } to { transform: translateX(14%); } }
+  /* Rain: thin streaks falling at an angle, on a loop, with a fade at the bottom of the band. */
+  .rain { position: absolute; left: 0; right: 0; top: 0; height: 360px; overflow: hidden; pointer-events: none; -webkit-mask: linear-gradient(#000 60%, transparent); mask: linear-gradient(#000 60%, transparent); }
+  .rain i { position: absolute; top: -30px; width: 1.2px; height: var(--h, 16px); border-radius: 1px; background: linear-gradient(transparent, rgba(170, 200, 225, .75)); transform: rotate(12deg); animation: fall var(--t, .7s) linear var(--dl, 0s) infinite; }
+  @keyframes fall { to { transform: translate(-80px, 400px) rotate(12deg); } }
+  .splash { position: absolute; width: 8px; height: 2px; border-radius: 50%; border: 1px solid rgba(170, 200, 225, .5); animation: splash .9s ease-out var(--dl) infinite; opacity: 0; }
+  @keyframes splash { 0% { opacity: .8; transform: scale(.2); } 100% { opacity: 0; transform: scale(1.6); } }
+  @media (prefers-reduced-motion: reduce) { .rain i, .splash, .clouds .layer { animation: none; } }
+  .week { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 4px; }
+  .week div { text-align: center; padding: 10px 4px; border-radius: 10px; border: 1px solid #344654; }
+  .week div.ok { border-color: #fa812788; background: #fa812714; }
+  .week b { display: block; font: 400 15px 'SC Display', sans-serif; color: var(--ink); } .week small { display: block; margin-top: 4px; font: 500 11px 'SC Label', sans-serif; letter-spacing: .1em; color: var(--muted); }
+  .week i { display: block; font-style: normal; font-size: 18px; margin: 4px 0; }
+</style></head><body>
+<h1 class="t">The tour's last page, by weather</h1>
+<p class="intro">Design B (the timeline), in each of the four cases the forecast already gives us. The timeline grows cloud where the sky is covered; the headline and the main button change with it. Clear nights send you outside; bad nights send you to the next good one.</p>
+<div class="row" id="b"></div>
+<script>
+let seed = 3; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+const stars = (h, n = 40) => `<div class="stars">${Array.from({ length: n }, () => `<i style="left:${rnd() * 100}%;top:${rnd() * h}px"></i>`).join('')}</div>`;
+// Clouds as real cloud texture, not shapes (2026-10-08, Sevaan: the balls showed): fractal noise turned into soft
+// alpha, thresholded by how cloudy it is, coloured slate with a faintly lit top, faded out downward. Two layers of
+// different scale drift past each other.
+let cid = 0;
+const cloudLayer = (amount, dark, scale, seedN, op) => { const id = `cl${cid++}`, cover = amount; // 0..1
+  const slope = 2.4, intercept = -1.3 + cover * 0.95; // more cover = more of the noise becomes cloud
+  const [r, g, b] = dark ? [0.17, 0.2, 0.25] : [0.25, 0.3, 0.38];
+  return `<svg viewBox="0 0 600 320" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;opacity:${op}">
+    <defs><filter id="${id}" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="${0.006 * scale} ${0.014 * scale}" numOctaves="5" seed="${seedN}"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 ${r}  0 0 0 0 ${g}  0 0 0 0 ${b}  1 0 0 0 0"/>
+      <feComponentTransfer><feFuncA type="linear" slope="${slope}" intercept="${intercept}"/></feComponentTransfer>
+      <feGaussianBlur stdDeviation="1.2"/></filter>
+      <linearGradient id="${id}m" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff"/><stop offset=".55" stop-color="#fff" stop-opacity=".9"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+      <mask id="${id}k"><rect width="600" height="320" fill="url(#${id}m)"/></mask>
+      <linearGradient id="${id}lit" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8fa6bf" stop-opacity=".18"/><stop offset="1" stop-color="#000" stop-opacity=".25"/></linearGradient></defs>
+    <g mask="url(#${id}k)"><rect width="600" height="320" filter="url(#${id})"/><rect width="600" height="320" fill="url(#${id}lit)" style="mix-blend-mode:soft-light"/></g></svg>`; };
+const clouds = (amount, dark = false) => `<div class="clouds"><div class="layer" style="--d:34s">${cloudLayer(amount, dark, 1, 4, .75)}</div><div class="layer" style="--d:22s;animation-direction:alternate-reverse">${cloudLayer(amount * .8, dark, 1.8, 11, .6)}</div></div>`;
+const rain = () => `<div class="rain">${Array.from({ length: 90 }, () => `<i style="left:${(rnd() * 120).toFixed(1)}%;--t:${(.55 + rnd() * .35).toFixed(2)}s;--dl:${(-rnd()).toFixed(2)}s;--h:${(12 + rnd() * 10).toFixed(0)}px"></i>`).join('')}</div>`;
+const x = '<div class="x">✕</div>';
+const tl = (items) => `<div class="tl">${items.map(([t, s, c]) => `<div class="it ${c || ''}"><b>${t}</b><span>${s}</span></div>`).join('')}</div>`;
+const cells = [
+  ['1 · Clear', 'As today: the plan for the night, best pass lit up.', `${x}${stars(230)}<div class="head"><span class="lab" style="color:var(--orange)">You're set</span><div class="disp" style="margin-top:10px">Tonight<br>looks good.</div><div class="lab" style="color:var(--muted);margin-top:10px">Clear all night · 17 satellites at the peak</div></div>
+    ${tl([['7:11', 'Dark enough to start'], ['7:14', '<em>SL-14 Rocket Stage</em> · high in the E, 53° up · new to you', 'hot'], ['7:40', 'Busiest: 17 satellites up at once'], ['6:52', 'Dawn: the sky closes']])}
+    <div class="btns"><div class="btn o">Remind me at 7:04 <span>🔔</span></div><div class="btn g">Explore the sky <span>→</span></div></div>`],
+  ['2 · Clearing later', 'Cloud at dusk, clearing by 10. The early part of the timeline is greyed under cloud; the first good pass after it clears is the one to aim for.', `${x}${stars(230, 20)}${clouds(.75)}<div class="head"><span class="lab" style="color:var(--orange)">Worth the wait</span><div class="disp" style="margin-top:10px">Clear<br>by 10 PM.</div><div class="lab" style="color:var(--muted);margin-top:10px">Cloudy at dusk · clearing from 10:00</div></div>
+    ${tl([['7:11', 'Dark, but cloudy', 'cloud'], ['8:30', 'Still covered', 'cloud'], ['10:00', 'Clouds part'], ['10:22', '<em>Cosmos 2392</em> · NW to SE, 61° up · new to you', 'hot'], ['11:05', 'Busiest: 14 up at once']])}
+    <div class="btns"><div class="btn o">Remind me at 10:12 <span>🔔</span></div><div class="btn g">Explore the sky <span>→</span></div></div>`],
+  ['3 · Clear, then clouding over', 'Good now, closing in at 9. Urgency instead of a plan: catch it before the cloud.', `${x}${stars(230)}<div style="position:absolute;inset:0;-webkit-mask:linear-gradient(90deg,transparent 35%,#000 85%);mask:linear-gradient(90deg,transparent 35%,#000 85%)">${clouds(.55)}</div><div class="head"><span class="lab" style="color:var(--orange)">Go early</span><div class="disp" style="margin-top:10px">Clear until<br>9 PM.</div><div class="lab" style="color:var(--muted);margin-top:10px">A short window · 6 good passes before 9</div></div>
+    ${tl([['7:11', 'Dark enough to start'], ['7:14', '<em>SL-14 Rocket Stage</em> · high in the E, 53° up · new to you', 'hot'], ['8:40', 'Last good pass before the cloud'], ['9:00', 'Clouding over', 'cloud']])}
+    <div class="btns"><div class="btn o">Remind me at 7:04 <span>🔔</span></div><div class="btn g">Explore the sky <span>→</span></div></div>`],
+  ['4 · Cloudy or raining all night', 'No timeline to promise. It says so plainly, shows the next few nights, and the main button reminds you on the first clear one. The sky is still there to explore (and what\'s above the clouds still shows).', `${x}${clouds(1, true)}${rain()}<div class="head"><span class="lab" style="color:var(--sky)">Rain all night</span><div class="disp" style="margin-top:10px">Not tonight,<br>but soon.</div><div class="lab" style="color:var(--muted);margin-top:10px">Next clear night: Saturday</div></div>
+    <div style="position:absolute;left:22px;right:22px;top:290px"><span class="lab" style="color:var(--muted)">The next few nights</span>
+      <div class="week" style="margin-top:12px"><div><b>Thu</b><i>🌧</i><small>Rain</small></div><div><b>Fri</b><i>☁️</i><small>Cloud</small></div><div class="ok"><b>Sat</b><i>✦</i><small>Clear</small></div><div class="ok"><b>Sun</b><i>✦</i><small>Mostly clear</small></div></div>
+      <div class="lab" style="margin-top:22px;color:#fff2b3cc;letter-spacing:.04em;font-size:15px;text-transform:none">Saturday: <span style="color:var(--orange)">ISS</span> at 8:41 PM, bright and high in the S. Worth a reminder.</div></div>
+    <div class="btns"><div class="btn o">Remind me Saturday <span>🔔</span></div><div class="btn g">Explore the sky anyway <span>→</span></div></div>`],
+];
+document.getElementById('b').innerHTML = cells.map(([t, d, f]) => `<div class="cell"><div class="phone">${f}</div><h2>${t}</h2><p>${d}</p></div>`).join('');
+</script></body></html>

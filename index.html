@@ -19,10 +19,10 @@
   <link rel="preload" href="fonts/RussoOne-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="fonts/BarlowCondensed-Medium.ttf" as="font" type="font/ttf" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600;650;700;750;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/cards.css?v=0.1.280">
-  <link rel="stylesheet" href="css/app.css?v=0.1.280">
-  <link rel="stylesheet" href="css/reveal.css?v=0.1.280">
-  <link rel="stylesheet" href="css/ui.css?v=0.1.280">
+  <link rel="stylesheet" href="css/cards.css?v=0.1.281">
+  <link rel="stylesheet" href="css/app.css?v=0.1.281">
+  <link rel="stylesheet" href="css/reveal.css?v=0.1.281">
+  <link rel="stylesheet" href="css/ui.css?v=0.1.281">
 </head>
 <body>
   <canvas id="sky" role="img" aria-label="Sky map aligned with your viewing direction"></canvas>
@@ -127,11 +127,13 @@
     <div class="ob-lock" id="ob-lock" aria-live="polite"></div>
     <div class="ob-deck" id="ob-deck"></div>
     <div class="ob-done" id="ob-done" hidden>
-      <div class="spacer"></div>
-      <span class="eyebrow">You're set</span>
+      <!-- The tour's last page (2026-10-08, design/tonight-weather.html B): tonight as a timeline, by weather. -->
+      <div class="od-sky" id="od-sky" aria-hidden="true"></div>
+      <div class="od-head"><span class="eyebrow" id="od-eyebrow">You're set</span>
       <h2 class="d-title small" id="ob-done-title">Tonight<br>looks good.</h2>
-      <div class="d-stats" id="ob-stats"></div>
-      <p class="d-sub" id="ob-best"></p>
+      <span class="od-sub" id="od-sub"></span></div>
+      <div class="od-body" id="od-body"></div>
+      <div class="spacer"></div>
       <button class="d-cta o" id="ob-remind" type="button"><span>Remind me</span><span aria-hidden="true">→</span></button>
       <button class="d-cta ghost" id="ob-explore" type="button"><span>Explore the sky</span><span aria-hidden="true">→</span></button>
     </div>
@@ -223,7 +225,7 @@
     <pre id="debug-info"></pre></details>
   </section>
 
-  <script type="module" src="js/main.js?v=0.1.280"></script>
+  <script type="module" src="js/main.js?v=0.1.281"></script>
 <div id="rotate" role="status"><b>Turn your phone upright</b><span>Space Collector is made for portrait.</span></div>
 </body>
 </html>

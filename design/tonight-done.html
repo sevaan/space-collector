@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tonight Looks Good</title>
+<style>
+  @font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf'); font-weight: 500; }
+  @font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf'); }
+  :root { --ink: #fff2b3; --muted: #bdbea9; --orange: #fa8127; --edge: #627a8b; }
+  body { margin: 0; background: #04070d; color: #e8eef6; font: 15px/1.45 -apple-system, system-ui, sans-serif; padding: 24px 16px 60px; }
+  h1.t { font-size: 20px; margin: 0 0 6px; } .intro { color: #9fb0c6; margin: 0 0 22px; max-width: 980px; }
+  .row { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
+  .cell { width: 390px; } .cell h2 { font-size: 16px; margin: 10px 0 4px; } .cell p { color: #9fb0c6; font-size: 13.5px; margin: 0; }
+  .phone { position: relative; width: 390px; height: 780px; border-radius: 30px; overflow: hidden; border: 1px solid #1d2838; background: #080e1a; }
+  .lab { font: 500 12px/1.2 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .16em; text-transform: uppercase; }
+  .disp { font: 400 30px/1 'SC Display', sans-serif; text-transform: uppercase; color: var(--ink); letter-spacing: -.02em; }
+  .stars i { position: absolute; width: 2px; height: 2px; border-radius: 50%; background: var(--ink); opacity: .55; }
+  .btn { display: flex; justify-content: space-between; align-items: center; height: 54px; padding: 0 20px; border-radius: 12px; font: 500 15px/1 'SC Label', sans-serif; letter-spacing: .18em; text-transform: uppercase; }
+  .btn.o { background: var(--orange); color: #0b1120; } .btn.g { border: 1.5px solid #fff2b355; color: var(--ink); }
+  .x { position: absolute; top: 22px; right: 22px; color: var(--ink); font-size: 22px; }
+  /* A · the card */
+  .card { position: absolute; left: 22px; right: 22px; top: 60px; border-radius: 16px; border: 3px solid #adbcc8; box-shadow: inset 0 0 0 1px #657786; background: #0a1220; overflow: hidden; }
+  .card .top { display: flex; justify-content: space-between; padding: 10px 14px 8px; border-bottom: 1px solid #bcb58588; color: var(--ink); }
+  .card .art { position: relative; height: 210px; background: radial-gradient(ellipse at 50% 120%, #1d3350, #070d18 70%); border-bottom: 1px solid #bcb58588; }
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); border-bottom: 1px solid #bcb58588; }
+  .stats div { padding: 10px 12px; } .stats div + div { border-left: 1px solid #bcb58555; }
+  .stats small { display: block; color: var(--muted); font: 500 10px 'SC Label', sans-serif; letter-spacing: .16em; } .stats b { display: block; margin-top: 3px; font: 400 21px 'SC Display', sans-serif; color: var(--ink); }
+  .fact { padding: 12px 14px; color: #fff2b3dd; font: 15px/1.4 Georgia, serif; border-left: 3px solid var(--orange); margin: 12px 14px; }
+  /* B · timeline */
+  .tl { position: absolute; left: 26px; right: 22px; top: 248px; }
+  .tl .it { position: relative; display: grid; grid-template-columns: 76px 1fr; gap: 12px; padding: 0 0 18px 20px; }
+  .tl .it::before { content: ''; position: absolute; left: 4px; top: 6px; width: 9px; height: 9px; border-radius: 50%; background: #344654; }
+  .tl .it::after { content: ''; position: absolute; left: 8px; top: 18px; bottom: -2px; width: 1px; background: #344654; }
+  .tl .it:last-child::after { display: none; }
+  .tl .it.hot::before { background: var(--orange); box-shadow: 0 0 10px var(--orange); }
+  .tl b { font: 400 17px 'SC Display', sans-serif; color: var(--ink); } .tl span { font: 500 15px/1.3 'SC Label', sans-serif; color: #fff2b3cc; letter-spacing: .03em; }
+  .tl .it.hot span { color: var(--ink); } .tl em { font-style: normal; color: var(--orange); }
+  /* C · ticket */
+  .sky { position: absolute; inset: 0; background: linear-gradient(#0b1726, #13233a 60%, #1c2f48); }
+  .ground { position: absolute; left: 0; right: 0; top: 470px; bottom: 0; background: linear-gradient(#0b1420, #05080d); border-top: 1px solid #fa812777; }
+  .ticket { position: absolute; left: 16px; right: 16px; bottom: 20px; border-radius: 18px; background: #0c1725f5; border: 1px solid var(--edge); overflow: hidden; }
+  .ticket .tear { position: relative; border-top: 1.5px dashed #627a8b88; margin: 0 14px; }
+  .ticket .tear::before, .ticket .tear::after { content: ''; position: absolute; top: -10px; width: 20px; height: 20px; border-radius: 50%; background: #13233a; }
+  .ticket .tear::before { left: -25px; } .ticket .tear::after { right: -25px; }
+</style></head><body>
+<h1 class="t">"Tonight looks good": three takes</h1>
+<p class="intro">The last step of the tour. Same facts in each: dark from 7:11 PM, 17 satellites at the peak, clear until 8 PM, best pass SL-14 Rocket Stage at 7:14 PM, 53° up in the east, not in your collection yet. Remind me / Explore the sky.</p>
+<div class="row" id="b"></div>
+<script>
+let seed = 3; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+const stars = (h, n = 40) => `<div class="stars">${Array.from({ length: n }, () => `<i style="left:${rnd() * 100}%;top:${rnd() * h}px"></i>`).join('')}</div>`;
+// the pass drawn as an arc over a horizon (card art style)
+const passArt = (w, h) => `<svg viewBox="0 0 ${w} ${h}" width="100%" height="100%" style="position:absolute;inset:0">
+  ${Array.from({ length: 30 }, () => `<circle cx="${(rnd() * w).toFixed(0)}" cy="${(rnd() * h * .8).toFixed(0)}" r="${(0.4 + rnd()).toFixed(1)}" fill="#fff2b3" opacity=".6"/>`).join('')}
+  <path d="M0 ${h - 26} Q${w / 2} ${h - 40} ${w} ${h - 26} L${w} ${h} L0 ${h}Z" fill="#05080d"/><path d="M0 ${h - 26} Q${w / 2} ${h - 40} ${w} ${h - 26}" fill="none" stroke="#fa8127" stroke-opacity=".6"/>
+  <path d="M30 ${h - 30} Q${w * .55} ${h * .05} ${w - 40} ${h - 36}" fill="none" stroke="#fa8127" stroke-width="1.6" stroke-dasharray="4 6"/>
+  <g transform="translate(${w * .56} ${h * .3})"><circle r="16" fill="none" stroke="#fa8127" stroke-width="1.4"/><rect x="-5" y="-11" width="10" height="20" rx="3" fill="#fff2b3"/><path d="M-5 9 L-8 15 L8 15 L5 9Z" fill="#fa8127"/></g>
+  <text x="${w * .56 + 22}" y="${h * .3 - 4}" fill="#fff2b3" font-family="SC Label" font-size="12" letter-spacing="1.5">SL-14 ROCKET STAGE</text>
+  <text x="${w * .56 + 22}" y="${h * .3 + 11}" fill="#fa8127" font-family="SC Label" font-size="12" letter-spacing="1.5">7:14 PM · 53° UP · E</text>
+  <text x="14" y="${h - 8}" fill="#bdbea9" font-family="SC Label" font-size="11" letter-spacing="2">W</text><text x="${w - 22}" y="${h - 8}" fill="#bdbea9" font-family="SC Label" font-size="11" letter-spacing="2">E</text></svg>`;
+const buttons = (bottom) => `<div style="position:absolute;left:22px;right:22px;bottom:${bottom}px;display:grid;gap:10px"><div class="btn o">Remind me at 7:04 <span>🔔</span></div><div class="btn g">Explore the sky <span>→</span></div></div>`;
+const A = `<div class="x">✕</div><div class="card"><div class="top lab"><span>Mission control</span><span style="color:var(--orange)">◆ Tonight</span></div>
+  <div style="padding:14px 14px 10px"><div class="disp">Tonight looks good</div><div class="lab" style="color:var(--muted);margin-top:8px">Thu 8 Oct · Peterborough</div></div>
+  <div class="art">${passArt(340, 210)}</div>
+  <div class="stats"><div><small>DARK FROM</small><b>7:11</b></div><div><small>AT THE PEAK</small><b>17 up</b></div><div><small>SKY</small><b>Clear</b></div></div>
+  <div class="fact">Your best catch: <b>SL-14 Rocket Stage</b>, high in the east at 7:14. It isn't in your collection yet.</div></div>${buttons(30)}`;
+const B = `<div class="x">✕</div>${stars(200)}<div style="position:absolute;left:26px;top:80px"><span class="lab" style="color:var(--orange)">You're set</span><div class="disp" style="font-size:34px;margin-top:10px">Tonight<br>looks good.</div><div class="lab" style="color:var(--muted);margin-top:10px">Clear until 8 PM · 17 satellites at the peak</div></div>
+  <div class="tl">
+    <div class="it"><b>7:11</b><span>Dark enough to start</span></div>
+    <div class="it hot"><b>7:14</b><span><em>SL-14 Rocket Stage</em> · high in the E, 53° up · new to you</span></div>
+    <div class="it"><b>7:40</b><span>Busiest: 17 satellites up at once</span></div>
+    <div class="it"><b>8:00</b><span>Cloud rolls in</span></div>
+  </div>${buttons(30)}`;
+const C = `<div class="sky"></div>${stars(470, 60)}<div class="ground"></div>
+  <svg viewBox="0 0 390 470" style="position:absolute;left:0;top:0;width:390px;height:470px"><path d="M20 470 Q210 40 380 440" fill="none" stroke="#fa8127" stroke-width="1.8" stroke-dasharray="5 7"/>
+  <g transform="translate(232 150)"><circle r="22" fill="none" stroke="#fa8127" stroke-width="1.5"/><rect x="-6" y="-13" width="12" height="24" rx="3" fill="#fff2b3"/><path d="M-6 11 L-9 17 L9 17 L6 11Z" fill="#fa8127"/></g></svg>
+  <div class="lab" style="position:absolute;left:24px;top:24px;color:var(--ink)">SPACE COLLECTOR</div><div class="x">✕</div>
+  <div class="lab" style="position:absolute;left:0;right:0;top:486px;text-align:center;color:var(--muted)">E · 53° up</div>
+  <div class="ticket"><div style="padding:16px 18px 12px"><span class="lab" style="color:var(--orange)">Tonight looks good · your first catch</span><div class="disp" style="font-size:26px;margin-top:8px">SL-14 Rocket Stage</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);margin-top:12px"><div><span class="lab" style="color:var(--muted);font-size:10px">Up at</span><div class="disp" style="font-size:20px;margin-top:3px">7:14</div></div><div><span class="lab" style="color:var(--muted);font-size:10px">Look</span><div class="disp" style="font-size:20px;margin-top:3px">East</div></div><div><span class="lab" style="color:var(--muted);font-size:10px">Sky</span><div class="disp" style="font-size:20px;margin-top:3px">Clear</div></div></div></div>
+    <div class="tear"></div><div style="padding:14px 18px 16px;display:grid;gap:10px"><div class="btn o">Remind me at 7:04 <span>🔔</span></div><div class="btn g">Explore the sky <span>→</span></div></div></div>`;
+// D · B's timeline inside A's card: the timeline is the card art (a vertical line of moments under a starry band).
+const D = `<div class="x">✕</div><div class="card" style="top:110px"><div class="top lab"><span>Mission control</span><span style="color:var(--orange)">◆ Tonight</span></div>
+  <div style="padding:14px 14px 10px"><div class="disp">Tonight looks good</div><div class="lab" style="color:var(--muted);margin-top:8px">Thu 8 Oct · Clear until 8 PM</div></div>
+  <div class="art" style="height:auto;padding:22px 14px 8px;background:radial-gradient(ellipse at 30% 0%, #1d3350, #070d18 75%)">${stars(240, 26)}
+    <div class="tl" style="position:relative;left:auto;right:auto;top:auto">
+      <div class="it"><b>7:11</b><span>Dark enough to start</span></div>
+      <div class="it hot"><b>7:14</b><span><em>SL-14 Rocket Stage</em><br>high in the E, 53° up · new to you</span></div>
+      <div class="it"><b>7:40</b><span>Busiest: 17 up at once</span></div>
+      <div class="it"><b>8:00</b><span>Cloud rolls in</span></div>
+    </div></div>
+  <div class="stats"><div><small>SKY</small><b>Clear</b></div><div><small>NEW TO YOU</small><b>12</b></div><div><small>YOUR RANK</small><b style="font-size:17px;margin-top:6px">Stargazer</b></div></div>
+  <div style="display:flex;justify-content:space-between;padding:9px 14px" class="lab"><span style="color:var(--muted);font-size:10px">Your first night</span><span style="color:var(--ink);font-size:10px;font-family:'SC Display'">SPACE COLLECTOR</span></div></div>${buttons(30)}`;
+const cells = [
+  ['D · The timeline, as a card', "B's timeline inside A's card: the card frame, title and stat row, with tonight's four moments as the card art. The best pass glows orange. Ends the tour on a card, but reads like a plan.", D],
+  ['A · A mission card', 'The tour ends the way it began: on a card. The best pass drawn as the card art (its arc over your horizon), three stats, the "why" in the card\'s serif voice. Feels like the first card you\'re given.', A],
+  ['B · Tonight\'s timeline', 'Reads like a plan: four moments down a line, the best pass lit up in orange. Calm, scannable, and it tells you what to do and when.', B],
+  ['C · Boarding pass', 'The sky itself with the pass drawn across it, and a ticket at the bottom for your first catch: time, direction, sky, tear line, buttons. Most "go outside and do it".', C],
+];
+document.getElementById('b').innerHTML = cells.map(([t, d, f]) => `<div class="cell"><div class="phone">${f}</div><h2>${t}</h2><p>${d}</p></div>`).join('');
+</script></body></html>

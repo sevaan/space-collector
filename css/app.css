@@ -517,3 +517,33 @@ body:has(#event-banner:not([hidden])) #nextpass { top: calc(var(--safe-top) + 14
   font: 500 16px/1.2 var(--label); letter-spacing: .18em; text-transform: uppercase; cursor: pointer; box-shadow: 0 0 18px rgba(125,255,138,.35); }
 #ufo-cta small { position: absolute; left: 50%; top: calc(100% + 8px); transform: translateX(-50%); white-space: nowrap; font: 500 12px/1 var(--label); letter-spacing: .16em; color: #9cff9c; }
 body:has(#ufo-cta:not([hidden])) #toasts, body:has(#ufo-cta:not([hidden])) #banner { visibility: hidden; } /* nothing covers the UFO's button */
+
+/* Tour's last page as a timeline (2026-10-08, design/tonight-weather.html B). */
+#ob-done { position: fixed; inset: 0; overflow: hidden; background: var(--bg); display: flex; flex-direction: column; padding: calc(var(--safe-top) + 70px) 24px calc(var(--safe-bottom) + 24px); box-sizing: border-box; z-index: 5; }
+#ob-done[hidden] { display: none; }
+.od-sky { position: absolute; inset: 0; pointer-events: none; }
+.od-sky .od-stars i { position: absolute; width: 2px; height: 2px; border-radius: 50%; background: var(--text); opacity: .55; }
+.od-head, .od-body, #ob-done .d-cta { position: relative; z-index: 1; }
+#od-eyebrow { color: var(--gold); } #ob-done.wx-bad #od-eyebrow { color: var(--cyan); }
+#ob-done .d-title { margin: 10px 0 0; }
+.od-sub { display: block; margin-top: 12px; font: 500 12px/1.3 var(--label); letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+.od-body { margin-top: 34px; }
+.od-tl .it { position: relative; display: grid; grid-template-columns: 70px 1fr; gap: 12px; padding: 0 0 18px 20px; }
+.od-tl .it::before { content: ''; position: absolute; left: 4px; top: 6px; width: 9px; height: 9px; border-radius: 50%; background: #344654; }
+.od-tl .it::after { content: ''; position: absolute; left: 8px; top: 18px; bottom: -2px; width: 1px; background: #344654; }
+.od-tl .it:last-child::after { display: none; }
+.od-tl .it.hot::before { background: var(--gold); box-shadow: 0 0 10px var(--gold); }
+.od-tl .it.cloud::before { background: #627a8b; } .od-tl .it.cloud b, .od-tl .it.cloud span { opacity: .55; }
+.od-tl .it.cloud::after { background: repeating-linear-gradient(#627a8b 0 3px, transparent 3px 6px); }
+.od-tl b { font: 400 17px var(--display); color: var(--text); white-space: nowrap; }
+.od-tl span { font: 500 15px/1.3 var(--label); color: color-mix(in srgb, var(--text) 80%, transparent); letter-spacing: .03em; }
+.od-tl em { font-style: normal; color: var(--gold); } .od-tl .it.hot span { color: var(--text); }
+.od-week { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 12px; }
+.od-week div { text-align: center; padding: 10px 4px; border-radius: 10px; border: 1px solid var(--edge-soft); }
+.od-week div.ok { border-color: color-mix(in srgb, var(--gold) 55%, transparent); background: color-mix(in srgb, var(--gold) 8%, transparent); }
+.od-week b { display: block; font: 400 15px var(--display); color: var(--text); } .od-week i { display: block; font-style: normal; font-size: 18px; margin: 4px 0; }
+.od-week small { display: block; font: 500 11px var(--label); letter-spacing: .1em; color: var(--muted); }
+.od-note { margin-top: 22px; font: 500 15px/1.35 var(--label); letter-spacing: .03em; color: color-mix(in srgb, var(--text) 80%, transparent); }
+.od-note em { font-style: normal; color: var(--gold); }
+#od-eyebrow { text-transform: uppercase; letter-spacing: .18em; }
+body:has(#ob-done:not([hidden])) #ob-skip { display: none !important; }

@@ -228,3 +228,13 @@ select, .filter select, .search input { border: 1px solid var(--ui-edge); border
 /* Nothing else talks during the reveal or a patch moment. */
 body:has(#reveal:not([hidden])) #banner, body:has(.patch-moment) #banner, body:has(.patch-moment) #toasts { visibility: hidden; }
 .patch-moment { background: radial-gradient(ellipse at 50% 45%, rgba(8, 15, 27, .86), rgba(4, 7, 13, .96)) !important; }
+
+/* Weather backdrops (js/weather-art.js): drifting noise clouds and falling rain, behind a page's headline. */
+.wx-clouds { position: absolute; left: -45%; right: -45%; top: -10px; height: 360px; pointer-events: none; -webkit-mask: linear-gradient(#000 45%, transparent 92%); mask: linear-gradient(#000 45%, transparent 92%); }
+.wx-layer { position: absolute; inset: 0; animation: wx-drift var(--d, 30s) ease-in-out infinite alternate; will-change: transform; }
+@keyframes wx-drift { from { transform: translateX(-14%); } to { transform: translateX(14%); } }
+.wx-side { position: absolute; inset: 0; -webkit-mask: linear-gradient(90deg, transparent 35%, #000 85%); mask: linear-gradient(90deg, transparent 35%, #000 85%); pointer-events: none; }
+.wx-rain { position: absolute; left: 0; right: 0; top: 0; height: 360px; overflow: hidden; pointer-events: none; -webkit-mask: linear-gradient(#000 60%, transparent); mask: linear-gradient(#000 60%, transparent); }
+.wx-rain i { position: absolute; top: -30px; width: 1.2px; height: var(--h, 16px); border-radius: 1px; background: linear-gradient(transparent, rgba(170, 200, 225, .75)); transform: rotate(12deg); animation: wx-fall var(--t, .7s) linear var(--dl, 0s) infinite; }
+@keyframes wx-fall { to { transform: translate(-80px, 400px) rotate(12deg); } }
+@media (prefers-reduced-motion: reduce) { .wx-layer, .wx-rain i { animation: none; } }
