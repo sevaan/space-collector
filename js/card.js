@@ -1,17 +1,17 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { cardArt } from './art.js?v=0.1.333';
-import { TIER_INFO } from './rarity.js?v=0.1.333';
-import { SET_BY_ID } from './sets.js?v=0.1.333';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.333';
-import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.333';
-import { artFileFor } from './art-keys.js?v=0.1.333';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.333';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.333';
-import { nightsIn } from './observation.js?v=0.1.333';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.333';
-import { SHINY } from './shiny.js?v=0.1.333';
-import { conArt } from './con-art.js?v=0.1.333';
-import { CON_FIGURES } from './con-figures.js?v=0.1.333';
+import { cardArt } from './art.js?v=0.1.334';
+import { TIER_INFO } from './rarity.js?v=0.1.334';
+import { SET_BY_ID } from './sets.js?v=0.1.334';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.334';
+import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.334';
+import { artFileFor } from './art-keys.js?v=0.1.334';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.334';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.334';
+import { nightsIn } from './observation.js?v=0.1.334';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.334';
+import { SHINY } from './shiny.js?v=0.1.334';
+import { conArt } from './con-art.js?v=0.1.334';
+import { CON_FIGURES } from './con-figures.js?v=0.1.334';
 // The animal/symbol figure belongs to the completed (gold) constellation card only (2026-10-05): a single
 // star's card draws just the star pattern with its star marked, so the figure is a reward for finishing the set.
 const conFig = (id) => (CON_FIGURES.has(id) ? { figure: `assets/art/con/${id}.webp` } : {});
@@ -210,7 +210,7 @@ export function renderCardTile(o, opts = {}) {
 const FOLLOW = { k: 0.085, d: 0.27 };   // while handled: quick and tight
 const SETTLE = { k: 0.03, d: 0.13 };    // let go: slower, with a little wobble
 const MAX_RX = 15, MAX_RY = 19;         // degrees
-export function attachTilt(el) {
+export function attachTilt(el, { scroll = false } = {}) { // scroll: let a finger still scroll the page (the logbook card)
   const cur = { x: .5, y: .5, o: 0 }, vel = { x: 0, y: 0, o: 0 }, want = { x: .5, y: .5, o: 0 };
   let spring = SETTLE, raf = 0;
   const state = { touching: false };
@@ -259,7 +259,7 @@ export function attachTilt(el) {
   for (const [name, handler] of Object.entries(events)) el.addEventListener(name, handler);
   // iOS can still start a page scroll from a touch; stop it so a finger on the card only tilts it.
   const noScroll = (e) => e.preventDefault();
-  el.addEventListener('touchmove', noScroll, { passive: false });
+  if (!scroll) el.addEventListener('touchmove', noScroll, { passive: false });
   write();
   return {
     set, reset, get touching() { return state.touching; },

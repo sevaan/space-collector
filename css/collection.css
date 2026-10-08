@@ -294,3 +294,13 @@ main { padding-bottom: calc(var(--safe-bottom) + 210px) !important; } /* the las
 :where(html[data-theme="night"], body.night) .lb-mission.done { text-decoration-color: #ff6a55; } :where(html[data-theme="night"], body.night) .lb-mission.done i { background: #ff6a55; border-color: #ff6a55; }
 :where(html[data-theme="night"], body.night) .ui-chip--earned { border-color: #a83a2c; } :where(html[data-theme="night"], body.night) .ui-chip--earned b { color: #ff6a55; }
 :where(html[data-theme="night"], body.night) .ui-chip { background: #1a0606; border-color: #3a1716; }
+
+/* The logbook as a card (2026-10-08): tilt, glare and a flip to a card back. */
+.logbook.lb-card { padding: 0; perspective: 1400px; background: none; border: 0; box-shadow: none; }
+.lb-rot { position: relative; border-radius: 14px; border: 2px solid #adbcc8; box-shadow: inset 0 0 0 1px #657786, 0 10px 26px #0007; background: #080f1b; overflow: hidden;
+  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) scale(calc(1 + var(--o, 0) * .015)); transform-style: preserve-3d; transition: box-shadow .2s; }
+.lb-face { padding: 16px 16px 12px; }
+.lb-glare { position: absolute; inset: 0; pointer-events: none; border-radius: inherit; mix-blend-mode: overlay; opacity: calc(var(--o, 0) * .35);
+  background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), hsla(0,0%,100%,.6) 0, hsla(0,0%,100%,.18) 18%, transparent 42%); }
+.lb-back { border-radius: 12px; border: 0; background-size: cover; }
+:where(html[data-theme="night"], body.night) .lb-rot { background: #130606; border-color: #52221f; box-shadow: inset 0 0 0 1px #3a1716; }

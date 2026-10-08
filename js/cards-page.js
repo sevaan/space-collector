@@ -1,23 +1,23 @@
-import { expandFacts } from './catalog-facts.js?v=0.1.333';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.333';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.333';
-import { ticket } from './toast.js?v=0.1.333';
-import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.333';
-import { cardArt } from './art.js?v=0.1.333';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.333';
-import { applyBack } from './card-backs.js?v=0.1.333';
-import { SETS, assignSets } from './sets.js?v=0.1.333';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.333';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.333';
-import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.333';
-import { progress } from './progress.js?v=0.1.333';
-import { SOLAR_SYSTEM } from './natural.js?v=0.1.333';
-import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.333';
-import { drawShareCard, shareCard } from './share-card.js?v=0.1.333';
-import { conArt } from './con-art.js?v=0.1.333';
-import { CON_BY_ID } from './constellations.js?v=0.1.333';
-import { allSightings, deleteSighting } from './store.js?v=0.1.333';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.333';
+import { expandFacts } from './catalog-facts.js?v=0.1.334';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.334';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.334';
+import { ticket } from './toast.js?v=0.1.334';
+import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.334';
+import { cardArt } from './art.js?v=0.1.334';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.334';
+import { applyBack } from './card-backs.js?v=0.1.334';
+import { SETS, assignSets } from './sets.js?v=0.1.334';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.334';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.334';
+import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.334';
+import { progress } from './progress.js?v=0.1.334';
+import { SOLAR_SYSTEM } from './natural.js?v=0.1.334';
+import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.334';
+import { drawShareCard, shareCard } from './share-card.js?v=0.1.334';
+import { conArt } from './con-art.js?v=0.1.334';
+import { CON_BY_ID } from './constellations.js?v=0.1.334';
+import { allSightings, deleteSighting } from './store.js?v=0.1.334';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.334';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -176,7 +176,15 @@ function remindStreak() {
 function renderLogbook() {
   const info = (k) => { const c = state.byKey.get(k); return c ? { tier: c.tier, type: c.type, owner: c.owner, launch: c.launch, natural: c.natural, con: c.con } : null; };
   const p = progress(state.raw, info, { constellations: [...CONSTELLATIONS, SOLAR_SYSTEM].map((c) => ({ id: c.con, stars: c.stars, zodiac: c.zodiac, system: !!c.system })) });
-  const el = $('logbook'); el.hidden = false;
+  const card = $('logbook'); card.hidden = false;
+  // The logbook is a card (2026-10-08, Sevaan): it tilts with your finger and the phone, has a glare, and a double
+  // tap flips it to a card back. Built once; the contents are re-rendered inside .lb-face.
+  if (!card.querySelector('.lb-face')) {
+    card.classList.add('lb-card');
+    card.innerHTML = '<div class="lb-rot"><div class="lb-face"></div><div class="lb-glare"></div><div class="card__back lb-back"></div></div>';
+    const tilt = attachTilt(card, { scroll: true }); attachGyro(card, tilt); attachFlip(card, { onBack: applyBack });
+  }
+  const el = card.querySelector('.lb-face');
   const span = p.rank.next ? p.rank.next - p.rank.at : 1, into = p.rank.next ? Math.min(1, (p.xp - p.rank.at) / span) : 1;
   const done = p.achievements.filter((a) => a.done).length;
   el.onclick = (e) => { if (e.target.closest('#streak-remind')) remindStreak(); };
