@@ -1,30 +1,30 @@
-import { VERSION } from './version.js?v=0.1.240';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.240';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.240';
-import { conArt } from './con-art.js?v=0.1.240';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.240';
-import { CON_FIGURES } from './con-figures.js?v=0.1.240';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.240';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.240';
-import { progress as progressOf } from './progress.js?v=0.1.240';
-import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.240';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.240';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.240';
-import { SkyView, shortName } from './sky.js?v=0.1.240';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.240';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.240';
-import { cardArt } from './art.js?v=0.1.240';
-import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.240';
-import { applyBack } from './card-backs.js?v=0.1.240';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.240';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.240';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.240';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.240';
-import { TIER_INFO } from './rarity.js?v=0.1.240';
-import { SETS } from './sets.js?v=0.1.240';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.240';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.240';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.240';
+import { VERSION } from './version.js?v=0.1.242';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.242';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.242';
+import { conArt } from './con-art.js?v=0.1.242';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.242';
+import { CON_FIGURES } from './con-figures.js?v=0.1.242';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.242';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.242';
+import { progress as progressOf } from './progress.js?v=0.1.242';
+import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.242';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.242';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.242';
+import { SkyView, shortName } from './sky.js?v=0.1.242';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.242';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.242';
+import { cardArt } from './art.js?v=0.1.242';
+import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.242';
+import { applyBack } from './card-backs.js?v=0.1.242';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.242';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.242';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.242';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.242';
+import { TIER_INFO } from './rarity.js?v=0.1.242';
+import { SETS } from './sets.js?v=0.1.242';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.242';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.242';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.242';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -500,6 +500,7 @@ function tick(ts) {
     planeHit: plane?.plane.hex ?? null,
     planeTrail: plane ? planePath(plane.plane, state.observer) : null, // where the lined-up plane has been and is going
     newFind: !!state.newFind,
+    ownedTarget: !!state.activeTarget && !state.newFind && !isNewFind(state.activeTarget.obj) && state.activeTarget.obj.id !== state.tourCatchId,
     landscape: !!state.landscape,
     rising: state.rising?.list(d).map((e) => ({ az: e.az, name: label(e.obj), mins: Math.max(1, Math.round((e.at - d.getTime()) / 60000)) })),
     time: t,
@@ -555,8 +556,9 @@ function renderPlane(hit, t) {
   $('p-name').textContent = route?.airline && number ? `${route.airline} ${number}` : p.callsign || p.reg || 'Unknown flight';
   const km = p.hKm >= 3 ? `${p.hKm.toFixed(p.hKm < 10 ? 1 : 0)} km up` : `${Math.round(p.hKm * 1000 / 10) * 10} m up`;
   const bits = [aircraftName(p), km, `${Math.round(hit.rangeKm)} km away`].filter(Boolean);
-  const where = route?.from && route?.to ? `<b>${escapeHtml(route.from)} → ${escapeHtml(route.to)}</b><br>` : '';
-  $('p-info').innerHTML = where + escapeHtml(bits.join(' · '));
+  $('p-route').textContent = route?.from && route?.to ? `${route.from} → ${route.to}` : aircraftName(p) || 'Flight details';
+  $('p-route').hidden = false;
+  $('p-info').textContent = (route?.from && route?.to ? bits : bits.slice(1)).join(' · ');
 }
 
 // Radar (top-left), the "heat radar" chosen 2026-10-02 (design/radar-compact-options.html, option 1):
@@ -742,7 +744,8 @@ function renderTarget(target, d) {
       $('d-tier').style.setProperty('--find-tier', newStamp ? 'var(--cyan)' : tier.color);
       $('d-name').textContent = label(o);
       $('d-switch').hidden = !sw; $('d-switch').textContent = sw;
-      $('d-cta').hidden = isQuiet(o); disc.classList.toggle('quiet', isQuiet(o));
+      $('d-cta').hidden = isQuiet(o); disc.classList.toggle('quiet', isQuiet(o)); disc.classList.remove('owned');
+      $('d-cta').textContent = 'Tap to collect'; $('d-sub').hidden = true;
     } else {
       disc.hidden = true; guide.hidden = false;
       guide.textContent = `${label(o)} · ${turnHint(l)}`;
@@ -751,24 +754,20 @@ function renderTarget(target, d) {
     return;
   }
 
-  // Seen before
+  // Seen before (2026-10-07, design/target-states.html A): the same layout as a new find, a cream circle and a
+  // View card button instead of Tap to collect. No mini card.
   state.newFind = false;
-  disc.hidden = true; guide.hidden = true;
-  // Closed with ×: stays hidden until you point at something else.
-  if (state.dismissedId === o.id) { bar.hidden = true; barTargetId = null; return; }
-  state.dismissedId = null;
-  bar.hidden = false;
-  if (o.id !== barTargetId) {
-    barTargetId = o.id;
-    bar.style.setProperty('--tier', tier.color);
-    $('t-art').innerHTML = previewArt(o, 'small', { accent: setColor(o), w: 80, h: 80 });
-    $('t-name').textContent = label(o);
-  }
-  $('t-switch').hidden = !sw; $('t-switch').textContent = sw;
-  bar.classList.toggle('busy', state.captureBusy);
-  const meta = $('t-meta');
-  if (eligible || collected) { meta.className = ''; meta.textContent = `${tier.label} · ${brightnessWord(l.mag)}`; }
-  else { meta.className = 'turn'; meta.textContent = turnHint(l); }
+  bar.hidden = true; barTargetId = null;
+  if (eligible || collected) {
+    disc.hidden = false; guide.hidden = true; disc.classList.add('owned'); disc.classList.remove('quiet');
+    $('d-tier').textContent = tier.label; $('d-tier').style.setProperty('--find-tier', tier.color);
+    $('d-name').textContent = label(o);
+    $('d-cta').hidden = false; $('d-cta').textContent = 'View card';
+    const n = nightsIn(state.sightings.filter((s) => !s.sim && s.cardKey === cardKeyFor(o)));
+    $('d-sub').hidden = !n; $('d-sub').textContent = `Seen on ${n} night${n === 1 ? '' : 's'}`;
+    $('d-switch').hidden = true;
+  } else { disc.hidden = true; guide.hidden = false; guide.textContent = `${label(o)} · ${turnHint(l)}`; }
+  return;
 }
 
 // Keep the tap-the-circle overlay on top of the reticle wherever the sky view puts it.
@@ -786,8 +785,16 @@ $('d-hit').addEventListener('click', () => {
   unlockAudio();
   primeReveal();
   const target = state.activeTarget;
-  if (target && !state.captureBusy) capture(target.obj);
+  if (!target || state.captureBusy) return;
+  if ($('discover').classList.contains('owned')) return viewOwned(target, $('d-cta').getBoundingClientRect());
+  capture(target.obj);
 });
+async function viewOwned(target, from) {
+  const o = target.obj, d = now();
+  let counted = false;
+  if (state.lockedOn && (target.look.visible || state.captureAny) && !collectedThisPass(o, d)) counted = !!(await recordSighting(o, d));
+  showViewCard(o, from, counted);
+}
 $('d-cta').addEventListener('click', () => $('d-hit').click());
 $('d-switch').addEventListener('click', () => $('t-switch').click());
 

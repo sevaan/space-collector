@@ -1,9 +1,9 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.240';
+import { extinction } from './sky-limit.js?v=0.1.242';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.240';
-import { TIER_INFO } from './rarity.js?v=0.1.240';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.242';
+import { TIER_INFO } from './rarity.js?v=0.1.242';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -777,7 +777,7 @@ export class SkyView {
 
   // safeTop/safeBottom are HUD insets in CSS pixels; centerY is an optional pixel
   // override. Projection and the reticle always share the same cx/cy.
-  draw(basis, items, { showDim, sky, bodies, milky, lines = true, targetId = null, time = 0, safeTop = 150, safeBottom = 230, centerY, starLimit = null, naturalTargetName = null, quietTarget = false, below = null, sunEl = -90, ghosts = null, weather = null, newFind = false, rising = null, landscape = false, lockedOn = null, planes = null, planeHit = null, planeTrail = null, naturalTarget = null } = {}) {
+  draw(basis, items, { showDim, sky, bodies, milky, lines = true, targetId = null, time = 0, safeTop = 150, safeBottom = 230, centerY, starLimit = null, naturalTargetName = null, quietTarget = false, below = null, ownedTarget = false, sunEl = -90, ghosts = null, weather = null, newFind = false, rising = null, landscape = false, lockedOn = null, planes = null, planeHit = null, planeTrail = null, naturalTarget = null } = {}) {
     this.basis = basis;
     this.safeTop = Math.max(12, Math.min(safeTop, this.h * 0.45));
     this.safeBottom = Math.max(12, Math.min(safeBottom, this.h - this.safeTop - 100));
@@ -864,7 +864,7 @@ export class SkyView {
     // The app decides what counts as locked on, so the ring, labels and tap area always agree.
     const locked = lockedOn ?? (!!focus && focus.obj.id === targetId && !!focus.candidate);
     if (planeAt && !locked) this.drawReticle(true, 0, false, planeAt);
-    else this.drawReticle(locked, this.reducedMotion ? 0 : time, newFind && locked && !quietTarget, null, quietTarget);
+    else { this.ownedInk = ownedTarget; this.drawReticle(locked, this.reducedMotion ? 0 : time, newFind && locked && !quietTarget, null, quietTarget); }
     this.drawLabels();
   }
 
@@ -962,7 +962,7 @@ export class SkyView {
     const ctx = this.ctx, t = this.theme;
     const { r: radius, x: cx, y: cy } = this.updateRing(locked && !quiet, plane ?? this.targetPos); // quiet: no snap, the circle just turns orange
     ctx.save();
-    const activeInk = plane ? t.plane : t.tick;
+    const activeInk = plane ? t.plane : this.ownedInk ? (t.label ?? '#fff2b3') : t.tick; // orange = new, cream = collected, red = plane
     // The inner rule keeps the existing aiming radius. An outer rule and fine
     // indexed marks echo the orbital dial on the cards without obscuring the sky.
     ctx.strokeStyle = locked ? activeInk : t.reticle;
