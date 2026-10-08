@@ -1,32 +1,33 @@
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.269';
-import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.269';
-import { VERSION } from './version.js?v=0.1.269';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.269';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.269';
-import { conArt } from './con-art.js?v=0.1.269';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.269';
-import { CON_FIGURES } from './con-figures.js?v=0.1.269';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.269';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.269';
-import { progress as progressOf } from './progress.js?v=0.1.269';
-import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.269';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.269';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.269';
-import { SkyView, shortName } from './sky.js?v=0.1.269';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.269';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.269';
-import { cardArt } from './art.js?v=0.1.269';
-import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.269';
-import { applyBack } from './card-backs.js?v=0.1.269';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.269';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.269';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.269';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.269';
-import { TIER_INFO } from './rarity.js?v=0.1.269';
-import { SETS } from './sets.js?v=0.1.269';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.269';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.269';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.269';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.270';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.270';
+import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.270';
+import { VERSION } from './version.js?v=0.1.270';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.270';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.270';
+import { conArt } from './con-art.js?v=0.1.270';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.270';
+import { CON_FIGURES } from './con-figures.js?v=0.1.270';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.270';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.270';
+import { progress as progressOf } from './progress.js?v=0.1.270';
+import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.270';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.270';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.270';
+import { SkyView, shortName } from './sky.js?v=0.1.270';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.270';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.270';
+import { cardArt } from './art.js?v=0.1.270';
+import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.270';
+import { applyBack } from './card-backs.js?v=0.1.270';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.270';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.270';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.270';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.270';
+import { TIER_INFO } from './rarity.js?v=0.1.270';
+import { SETS } from './sets.js?v=0.1.270';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.270';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.270';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.270';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -949,7 +950,7 @@ function announceProgress(g, delay = 3800) {
   // Tickets queue themselves; the delay lets the card land first.
   if (g.event) ticket({ kind: 'event', eyebrow: 'EVENT BADGE', line: g.event, ms: 3600, delay });
   g.missions.forEach((m) => ticket({ kind: 'mission', eyebrow: 'MISSION COMPLETE', line: m.text, xp: 50, ms: 3200, delay }));
-  g.achievements.forEach((a) => ticket({ kind: 'achievement', eyebrow: 'ACHIEVEMENT', line: `${a.name} · ${a.text}`, ms: 3800, delay, celebrate: a.id === 'first' }));
+  g.achievements.forEach((a) => earnPatch(a)); // mission patches (2026-10-08): a stitched-on moment, then a toast
   if (g.rankUp) ticket({ kind: 'rank', eyebrow: 'RANK UP', line: `You're now a ${g.rankUp}`, ms: 4200, delay, href: 'cards.html' });
 }
 async function recordSighting(obj, d, l = null) {
@@ -1912,3 +1913,39 @@ async function boot() {
   checkForUpdate(); requestAnimationFrame(tick);
 }
 boot();
+
+// ---------- mission patches: the earning moment (2026-10-08, design/patches.html) ----------
+// Waits for the card reveal to close, then: the patch drops in, its border stitches on, a soft thump, the name; then
+// it shrinks away and becomes a toast with the patch as its picture. One at a time; a tap skips ahead.
+const patchQueue = [];
+let patchBusy = false;
+function earnPatch(a) {
+  try { const d = JSON.parse(localStorage.getItem('patchDates') || '{}'); d[a.id] ??= Date.now(); localStorage.setItem('patchDates', JSON.stringify(d)); } catch {}
+  patchQueue.push(a); setTimeout(pumpPatch, 1200);
+}
+function thud() {
+  if (!audio) return;
+  try { const t = audio.currentTime, o = audio.createOscillator(), g = audio.createGain(); o.type = 'sine'; o.frequency.setValueAtTime(140, t); o.frequency.exponentialRampToValueAtTime(60, t + 0.18); g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.12, t + 0.01); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.25); o.connect(g).connect(audio.destination); o.start(t); o.stop(t + 0.3); } catch {}
+}
+function pumpPatch() {
+  if (patchBusy || !patchQueue.length) return;
+  if (!$('reveal').hidden || collectionOpen || activePanel) { setTimeout(pumpPatch, 700); return; }
+  patchBusy = true;
+  const a = patchQueue.shift(), el = document.createElement('div');
+  el.className = 'patch-moment'; el.setAttribute('role', 'status');
+  el.innerHTML = `<div class="pm-patch">${patchHtml(a, { stitch: true })}</div><div class="pm-label"><small>PATCH EARNED</small><b>${escapeHtml(a.name)}</b><span>${escapeHtml(a.text)}</span></div>`;
+  document.body.append(el);
+  let done = false;
+  const landT = setTimeout(() => { el.classList.add('landed'); thud(); navigator.vibrate?.(20); }, 1550);
+  const finish = () => {
+    if (done) return; done = true; clearTimeout(landT); clearTimeout(outT);
+    el.classList.add('out');
+    setTimeout(() => {
+      el.remove();
+      ticket({ kind: 'patch', eyebrow: 'PATCH EARNED', line: a.name, art: patchSvg(a), ms: 3600, href: 'cards.html#patches' });
+      patchBusy = false; setTimeout(pumpPatch, 500);
+    }, 380);
+  };
+  const outT = setTimeout(finish, 3400);
+  el.addEventListener('click', finish);
+}

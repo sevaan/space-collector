@@ -180,3 +180,43 @@ select, .filter select, .search input { border: 1px solid var(--ui-edge); border
 .sc-switch__item[aria-current] { background: transparent !important; box-shadow: none !important; }
 :where(html[data-theme='night'], body.night) .sc-switch::before { background: rgba(255, 70, 50, .12); box-shadow: inset 0 0 0 1px rgba(255, 70, 50, .45); }
 @media (prefers-reduced-motion: reduce) { .sc-switch::before { transition: none; } }
+
+/* ---------- Mission patches (js/patches.js) ---------- */
+.patch { position: relative; display: block; width: 100%; aspect-ratio: 1; border-radius: 50%; --x: 40%; }
+.patch .patch-svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.patch--gold .patch-svg { filter: sepia(.55) saturate(1.5) hue-rotate(-8deg) brightness(1.08); }
+.patch--gold::after, .patch--holo::after, .patch--holo::before { content: ''; position: absolute; inset: 3%; border-radius: 50%; pointer-events: none; }
+.patch--gold::after { mix-blend-mode: overlay; opacity: .8; background: linear-gradient(115deg, transparent 42%, rgba(255,250,225,.75) 50%, transparent 58%) 0 0 / 300% 100%; animation: patch-sheen 5s ease-in-out infinite; }
+.patch--holo::after { mix-blend-mode: overlay; opacity: .55; background: linear-gradient(115deg, #ff8fd8 0%, #8ff0ff 20%, #fff2b3 40%, #8fffb0 60%, #b48fff 80%, #ff8fd8 100%) 0 50% / 300% 300%; animation: patch-sheen 7s ease-in-out infinite; }
+.patch--holo::before { z-index: 1; mix-blend-mode: overlay; background: linear-gradient(115deg, transparent 44%, rgba(255,255,255,.55) 50%, transparent 56%) 0 0 / 300% 100%; animation: patch-sheen 5s ease-in-out infinite; }
+@keyframes patch-sheen { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+/* tilt-driven (detail view): the sheen follows --x instead of drifting */
+.patch.tilt::after, .patch.tilt::before { animation: none; background-position: var(--x) 50%; }
+@media (prefers-reduced-motion: reduce) { .patch::after, .patch::before { animation: none !important; } }
+:where(html[data-theme='night'], body.night) .patch { filter: grayscale(1) brightness(.6) sepia(1) saturate(4) hue-rotate(318deg); }
+:where(html[data-theme='night'], body.night) .patch::after, :where(html[data-theme='night'], body.night) .patch::before { display: none; }
+
+/* Patch toast: the patch as its picture, round. */
+.ticket--patch { border-left-color: var(--ui-gold); padding-left: 8px; }
+.ticket--patch .ticket__eyebrow { color: var(--ui-gold); }
+.ticket--patch .ticket__art { width: 46px; height: 46px; border: 0; border-radius: 50%; overflow: visible; }
+
+/* The earning moment (js/main.js earnPatch): the patch drops in big, its border stitches itself on, it lands with a
+   thump, then it shrinks away and a toast takes over. Tap to skip. */
+.patch-moment { position: fixed; inset: 0; z-index: 70; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px;
+  background: radial-gradient(ellipse at 50% 45%, rgba(8, 15, 27, .55), rgba(4, 7, 13, .9)); cursor: pointer; animation: pm-fade .3s ease-out; }
+.patch-moment .pm-patch { width: min(62vw, 250px); animation: pm-drop .7s cubic-bezier(.2, 1.4, .4, 1) both; filter: drop-shadow(0 20px 30px #000a); }
+.patch-moment .patch-thread { stroke-dasharray: 100; stroke-dashoffset: 100; animation: pm-stitch 1s .55s ease-in-out forwards; }
+.patch-moment .pm-label { text-align: center; opacity: 0; animation: pm-up .45s 1.3s ease-out forwards; }
+.patch-moment .pm-label small { display: block; font: 500 13px/1 var(--ui-label); letter-spacing: .22em; color: var(--ui-gold); }
+.patch-moment .pm-label b { display: block; margin-top: 8px; font: 400 28px/1 var(--ui-display); text-transform: uppercase; color: var(--ui-ink); }
+.patch-moment .pm-label span { display: block; margin-top: 8px; font: 500 15px/1.3 var(--ui-label); letter-spacing: .04em; color: rgba(255, 242, 179, .7); max-width: 280px; }
+.patch-moment.landed .pm-patch { animation: pm-thump .32s ease-out; }
+.patch-moment.out { animation: pm-fade .35s ease-in reverse forwards; }
+.patch-moment.out .pm-patch { transition: transform .4s cubic-bezier(.5, 0, .8, .4); transform: translateY(42vh) scale(.18); }
+@keyframes pm-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes pm-drop { from { transform: translateY(-60vh) scale(1.5) rotate(-14deg); opacity: 0; } 60% { opacity: 1; } to { transform: none; } }
+@keyframes pm-stitch { to { stroke-dashoffset: 0; } }
+@keyframes pm-up { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+@keyframes pm-thump { 0% { transform: scale(1); } 35% { transform: scale(.94); } 100% { transform: scale(1); } }
+@media (prefers-reduced-motion: reduce) { .patch-moment, .patch-moment .pm-patch, .patch-moment .pm-label { animation: none !important; opacity: 1; } .patch-moment .patch-thread { stroke-dashoffset: 0; animation: none; } }

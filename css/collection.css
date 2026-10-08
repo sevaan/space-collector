@@ -221,3 +221,26 @@ body:has(#viewer[open])::after { display: none; }
 .grid.micro .card-tile__body { display: none; }
 .grid.micro .card-tile__art { margin: 4px; }
 .grid.tiny .card-tile__name { overflow-wrap: normal; word-break: normal; font-size: 9.5px; } /* whole words, then … */
+
+/* ---------- Mission patches: the wall (js/cards-page.js renderPatches) and the detail (#patch-view) ---------- */
+body.patches-view .collection-tools, body.patches-view #sizebar, body.patches-view .album-head { display: none !important; }
+.collection-tabs { overflow-x: auto; scrollbar-width: none; } .collection-tabs::-webkit-scrollbar { display: none; }
+.lb-patches { width: 100%; background: none; border: 0; padding: 0; cursor: pointer; text-align: left; margin-top: 16px; }
+.pw-chips { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding: 2px 0 14px; margin: 0 -4px; } .pw-chips::-webkit-scrollbar { display: none; }
+.pw-chip { flex: none; cursor: pointer; } .pw-chip.on { border-color: rgba(250, 129, 39, .6); background: rgba(250, 129, 39, .14); }
+.pw-chip:not(.on) b { color: rgba(255, 242, 179, .8); }
+.pw-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px 12px; }
+@media (min-width: 700px) { .pw-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); } }
+.pw-item { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 0; border: 0; background: none; cursor: pointer; color: inherit; min-width: 0; }
+.pw-item span { font: 500 11px/1.15 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .1em; text-transform: uppercase; color: #bdbea9; text-align: center; }
+.pw-item.locked span { color: #627a8b; }
+.pw-item:active .patch { transform: scale(.95); }
+#patch-view { position: fixed; inset: 0; width: 100%; height: 100%; max-width: none; max-height: none; margin: 0; border: 0; padding: 0; background: var(--page-sky, var(--bg)); background-color: var(--bg); color: var(--text); }
+#patch-view[open] { display: flex; flex-direction: column; }
+#patch-view::backdrop { background: #000e; }
+.pv-body { flex: 1; display: flex; flex-direction: column; align-items: center; text-align: center; padding: 30px 24px calc(var(--safe-bottom) + 40px); overflow-y: auto; }
+.pv-patch { width: min(64vw, 260px); margin-top: 4vh; transition: transform .25s ease-out; filter: drop-shadow(0 18px 30px #0009); }
+.pv-body h2 { margin: 26px 0 8px; font: 400 28px/1.05 'SC Display', Impact, sans-serif; letter-spacing: -.02em; text-transform: uppercase; color: #fff2b3; }
+.pv-body p { margin: 0; max-width: 300px; font: 500 16px/1.35 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .03em; color: rgba(255, 242, 179, .75); }
+.pv-meta { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 18px; }
+#pv-close:focus-visible { outline: none; }

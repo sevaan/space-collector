@@ -1,21 +1,22 @@
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.269';
-import { ticket } from './toast.js?v=0.1.269';
-import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.269';
-import { cardArt } from './art.js?v=0.1.269';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.269';
-import { applyBack } from './card-backs.js?v=0.1.269';
-import { SETS, assignSets } from './sets.js?v=0.1.269';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.269';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.269';
-import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.269';
-import { progress } from './progress.js?v=0.1.269';
-import { SOLAR_SYSTEM } from './natural.js?v=0.1.269';
-import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.269';
-import { drawShareCard, shareCard } from './share-card.js?v=0.1.269';
-import { conArt } from './con-art.js?v=0.1.269';
-import { CON_BY_ID } from './constellations.js?v=0.1.269';
-import { allSightings, deleteSighting } from './store.js?v=0.1.269';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.269';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.270';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.270';
+import { ticket } from './toast.js?v=0.1.270';
+import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.270';
+import { cardArt } from './art.js?v=0.1.270';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.270';
+import { applyBack } from './card-backs.js?v=0.1.270';
+import { SETS, assignSets } from './sets.js?v=0.1.270';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.270';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.270';
+import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.270';
+import { progress } from './progress.js?v=0.1.270';
+import { SOLAR_SYSTEM } from './natural.js?v=0.1.270';
+import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.270';
+import { drawShareCard, shareCard } from './share-card.js?v=0.1.270';
+import { conArt } from './con-art.js?v=0.1.270';
+import { CON_BY_ID } from './constellations.js?v=0.1.270';
+import { allSightings, deleteSighting } from './store.js?v=0.1.270';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.270';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -81,6 +82,7 @@ async function boot() {
   if (window.parent !== window) window.parent.postMessage({ sc: 'ready' }, location.origin); // the shell can fade us in now
   let key = '';
   try { key = decodeURIComponent(location.hash.slice(1)); } catch {}
+  if (key === 'patches') { setView('patches'); return; }
   if (!state.byKey.has(key) && /^[A-Z]+:/.test(key)) key = key.split(':')[0]; // old launch-card link
   if (key && state.byKey.has(key)) {
     if (!state.sightingsByKey.has(key)) setView('discover');
@@ -178,13 +180,17 @@ function renderLogbook() {
     <div class="lb-head">TONIGHT'S MISSIONS <span>+50 XP each · new at noon</span></div>
     ${p.missions.map((m) => `<div class="lb-mission${m.done ? ' done' : ''}"><i></i>${esc(m.text)}</div>`).join('')}
     ${(() => { const ev = eventBadges(state.raw), nx = nextEvent(); return `<div class="lb-head">EVENTS <span>${ev.length} badge${ev.length === 1 ? '' : 's'}</span></div><div class="lb-events">${ev.map((e) => `<span class="ui-chip ui-chip--earned">☄ <b>${esc(e.name)}</b></span>`).join('')}${nx ? `<span class="ui-chip"><span class="ui-chip__k">Next:</span><b>${esc(nx.name)}</b><span class="ui-chip__k">· ${new Date(nx.start + 30 * 3600e3).toLocaleDateString([], { month: 'short', day: 'numeric' })}</span></span>` : ''}</div>`; })()}
-    <details class="lb-ach"><summary class="lb-head">ACHIEVEMENTS <span>${done} / ${p.achievements.length}</span></summary>
-      <div class="lb-badges">${p.achievements.map((a) => `<div class="lb-badge${a.done ? ' done' : ''}" title="${esc(a.text)}"><span>${esc(a.icon)}</span><b>${esc(a.name)}</b><small>${esc(a.text)}</small></div>`).join('')}</div></details>`;
+    <button type="button" class="lb-head lb-patches" id="lb-patches">MISSION PATCHES <span>${done} / ${p.achievements.length} ›</span></button>`;
+  state.achievements = p.achievements;
+  $('lb-patches').onclick = () => { setView('patches'); window.scrollTo({ top: $('patch-wall').offsetTop - 140, behavior: 'smooth' }); };
 }
 
 function render() {
   renderLogbook();
   renderAlbumHead();
+  document.body.classList.toggle('patches-view', state.view === 'patches');
+  $('patch-wall').hidden = state.view !== 'patches'; $('grid').hidden = state.view === 'patches';
+  if (state.view === 'patches') { renderPatches(); return; }
   document.body.classList.toggle('albums-view', state.view === 'albums');
   if (state.view === 'albums') { const caught = state.cards.filter(hasSightings).length; $('owned-count').textContent = caught.toLocaleString(); renderAlbums(); return; }
   const caught = state.cards.filter(hasSightings).length;
@@ -231,6 +237,7 @@ function setView(view) {
   $('tab-owned').setAttribute('aria-pressed', String(view === 'owned'));
   $('tab-discover').setAttribute('aria-pressed', String(view === 'discover'));
   $('tab-albums').setAttribute('aria-pressed', String(view === 'albums'));
+  $('tab-patches').setAttribute('aria-pressed', String(view === 'patches'));
   if (state.ready) render();
 }
 function resetFilters() {
@@ -576,6 +583,7 @@ if (EMBED) {
 }
 function openKey(key) {
   const go = () => {
+    if (key === 'patches') { setView('patches'); return; }
     if (!state.byKey.has(key) && /^[A-Z]+:/.test(key)) key = key.split(':')[0];
     if (!state.byKey.has(key)) return;
     if (!state.sightingsByKey.has(key)) setView('discover');
@@ -583,3 +591,62 @@ function openKey(key) {
   };
   if (state.ready) go(); else { const t = setInterval(() => { if (state.ready) { clearInterval(t); go(); } }, 100); }
 }
+
+// ---------- mission patches: the wall and the detail view (2026-10-08, design/patches.html) ----------
+// Every achievement is a patch; earned ones in full colour (gold foil / holo on the special ones), the rest a faint
+// stitched outline with the name so you can see what's out there. Group chips filter. Tap a patch for its detail.
+state.patchGroup = 'all';
+$('tab-patches').addEventListener('click', () => setView('patches'));
+let earnedCache = null;
+function earnedDates() {
+  // When each patch was earned: replay your sightings in order and note when each one first turns on. Explore also
+  // records the moment it happens (localStorage patchDates), which wins when present.
+  const n = state.raw.length;
+  if (earnedCache?.n === n) return earnedCache.dates;
+  let stored = {}; try { stored = JSON.parse(localStorage.getItem('patchDates') || '{}'); } catch {}
+  const info = (k) => { const c = state.byKey.get(k); return c ? { tier: c.tier, type: c.type, owner: c.owner, launch: c.launch, natural: c.natural, con: c.con } : null; };
+  const cons = [...CONSTELLATIONS, SOLAR_SYSTEM].map((c) => ({ id: c.con, stars: c.stars, zodiac: c.zodiac, system: !!c.system }));
+  const list = state.raw.filter((x) => !x.sim).slice().sort((a, b) => a.time - b.time), dates = {};
+  const want = new Set((state.achievements ?? []).filter((a) => a.done && !stored[a.id]).map((a) => a.id));
+  for (let i = 0; i < list.length && want.size; i++) {
+    const p = progress(list.slice(0, i + 1), info, { constellations: cons, now: list[i].time });
+    for (const a of p.achievements) if (a.done && want.has(a.id)) { dates[a.id] = list[i].time; want.delete(a.id); }
+  }
+  Object.assign(dates, stored);
+  earnedCache = { n, dates }; return dates;
+}
+function renderPatches() {
+  const wall = $('patch-wall'), all = state.achievements ?? [], dates = earnedDates();
+  const done = all.filter((a) => a.done).length;
+  $('results').textContent = `${done} of ${all.length} patches earned`;
+  const groups = GROUP_ORDER.filter((g) => all.some((a) => groupOf(a) === g));
+  const shown = all.filter((a) => state.patchGroup === 'all' || groupOf(a) === state.patchGroup)
+    .sort((a, b) => GROUP_ORDER.indexOf(groupOf(a)) - GROUP_ORDER.indexOf(groupOf(b)) || Number(b.done) - Number(a.done));
+  wall.innerHTML = `<div class="pw-chips">${['all', ...groups].map((g) => `<button type="button" class="ui-chip pw-chip${state.patchGroup === g ? ' on' : ''}" data-g="${g}"><b>${g === 'all' ? 'All' : esc(GROUPS[g].t)}</b><span class="ui-chip__k">${(g === 'all' ? all : all.filter((a) => groupOf(a) === g)).filter((a) => a.done).length}</span></button>`).join('')}</div>
+    <div class="pw-grid">${shown.map((a) => `<button type="button" class="pw-item${a.done ? '' : ' locked'}" data-id="${a.id}" aria-label="${esc(a.name)}${a.done ? ', earned' : ', not earned yet'}">${patchHtml(a, { locked: !a.done })}<span>${esc(a.name)}</span></button>`).join('')}</div>`;
+  wall.onclick = (e) => {
+    const chip = e.target.closest('.pw-chip'); if (chip) { state.patchGroup = chip.dataset.g; renderPatches(); return; }
+    const it = e.target.closest('.pw-item'); if (it) openPatch(it.dataset.id);
+  };
+  void dates;
+}
+function openPatch(id) {
+  const all = state.achievements ?? [], a = all.find((x) => x.id === id); if (!a) return;
+  const date = earnedDates()[id], f = finishOf(a);
+  $('pv-position').textContent = `PATCH · ${all.filter((x) => x.done).length} / ${all.length}`;
+  $('pv-body').innerHTML = `<div class="pv-patch">${patchHtml(a, { locked: !a.done, date: a.done && date ? fmtEarned(date) : '' })}</div>
+    <h2>${esc(a.name)}</h2><p>${esc(a.text)}</p>
+    <div class="pv-meta"><span class="ui-chip"><b>${esc(GROUPS[groupOf(a)].t)}</b></span>${f ? `<span class="ui-chip"><b>${f === 'gold' ? 'Gold foil' : 'Holo'}</b></span>` : ''}${a.done ? '' : '<span class="ui-chip"><span class="ui-chip__k">Not earned yet</span></span>'}</div>`;
+  const d = $('patch-view'); d.showModal();
+  const patch = d.querySelector('.patch'), host = d.querySelector('.pv-patch');
+  // The patch leans toward your finger or the phone's tilt, and the foil sheen follows.
+  const lean = (nx, ny) => { host.style.transform = `perspective(700px) rotateY(${(nx * 16).toFixed(1)}deg) rotateX(${(-ny * 16).toFixed(1)}deg)`; patch.classList.add('tilt'); patch.style.setProperty('--x', `${(50 + nx * 50).toFixed(0)}%`); };
+  host.onpointermove = (e) => { const r = host.getBoundingClientRect(); lean((e.clientX - r.left) / r.width - 0.5, (e.clientY - r.top) / r.height - 0.5); };
+  host.onpointerleave = () => { host.style.transform = ''; };
+  const ori = (e) => { if (e.gamma == null) return; lean(Math.max(-0.5, Math.min(0.5, e.gamma / 50)), Math.max(-0.5, Math.min(0.5, ((e.beta ?? 45) - 45) / 50))); };
+  addEventListener('deviceorientation', ori);
+  d.addEventListener('close', () => removeEventListener('deviceorientation', ori), { once: true });
+}
+$('pv-close').addEventListener('click', () => $('patch-view').close());
+$('patch-view').addEventListener('click', (e) => { if (e.target === $('patch-view')) $('patch-view').close(); });
+addEventListener('hashchange', () => { let k = ''; try { k = decodeURIComponent(location.hash.slice(1)); } catch {} if (k) openKey(k); });
