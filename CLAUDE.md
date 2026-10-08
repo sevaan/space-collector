@@ -267,3 +267,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - Settings title set like the wordmark ("SETTINGS / CUSTOMIZE YOUR EXPERIENCE"); **Testing tools now sit at the top of Settings, always visible** (the 5-tap version trick is gone).
 - Landscape by day: hills hazy blue-green (#6f8f86), pines deep green (#2f4a35), blending to the night silhouettes with dayF.
 - Pines rebuilt (2026-10-08): trunk + 4–6 drooping ragged tiers narrowing to a spike, slight lean, lit side by day; a smaller hazier far row behind (LANDSCAPE.far).
+- Countdown to dark: by day with nothing in the circle, "4 H 2 MIN UNTIL DARK / DARK AT 7:11 PM" under the circle (#until-dark, js/main.js untilDark).

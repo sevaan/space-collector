@@ -1,36 +1,36 @@
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.294';
-import * as Ufo from './ufo.js?v=0.1.294';
-import * as Fossil from './fossil.js?v=0.1.294';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.294';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.294';
-import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.294';
-import { VERSION } from './version.js?v=0.1.294';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.294';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.294';
-import { conArt } from './con-art.js?v=0.1.294';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.294';
-import { CON_FIGURES } from './con-figures.js?v=0.1.294';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.294';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.294';
-import { progress as progressOf } from './progress.js?v=0.1.294';
-import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.294';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.294';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.294';
-import { SkyView, shortName } from './sky.js?v=0.1.294';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.294';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.294';
-import { cardArt } from './art.js?v=0.1.294';
-import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.294';
-import { applyBack } from './card-backs.js?v=0.1.294';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.294';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.294';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.294';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.294';
-import { TIER_INFO } from './rarity.js?v=0.1.294';
-import { SETS } from './sets.js?v=0.1.294';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.294';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.294';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.294';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.295';
+import * as Ufo from './ufo.js?v=0.1.295';
+import * as Fossil from './fossil.js?v=0.1.295';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.295';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.295';
+import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.295';
+import { VERSION } from './version.js?v=0.1.295';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.295';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.295';
+import { conArt } from './con-art.js?v=0.1.295';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.295';
+import { CON_FIGURES } from './con-figures.js?v=0.1.295';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.295';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.295';
+import { progress as progressOf } from './progress.js?v=0.1.295';
+import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.295';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.295';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.295';
+import { SkyView, shortName } from './sky.js?v=0.1.295';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.295';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.295';
+import { cardArt } from './art.js?v=0.1.295';
+import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.295';
+import { applyBack } from './card-backs.js?v=0.1.295';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.295';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.295';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.295';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.295';
+import { TIER_INFO } from './rarity.js?v=0.1.295';
+import { SETS } from './sets.js?v=0.1.295';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.295';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.295';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.295';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -488,6 +488,7 @@ function tick(ts) {
     quietTarget: isQuiet(target?.obj), // no inner circle or snap; the object brightens instead
     fossil: fossilState(t, basis, target),
     ufo: ufoState(t, basis, target, items),
+    _ud: untilDark(target),
     planes: state.planeItems,
     planeHit: plane?.plane.hex ?? null,
     planeTrail: plane ? planePath(plane.plane, state.observer) : null, // where the lined-up plane has been and is going
@@ -2090,3 +2091,17 @@ $('set-data').addEventListener('click', () => {
 });
 // Testing tools: tap the version five times.
 // (2026-10-08: testing tools now sit at the top of Settings, always shown.)
+
+// ---------- countdown to dark (2026-10-08) ----------
+// By day, with nothing in the circle: "3 h 57 min until dark" under the circle, and when it gets dark.
+let udLast = '';
+function untilDark(target) {
+  const el = $('until-dark'), T = state.tonight, now0 = now().getTime();
+  const show = document.body.classList.contains('day') && !target && !state.planeHit && T?.dusk && T.dusk > now0 && $('discover').hidden;
+  if (!show) { if (!el.hidden) el.hidden = true; return; }
+  const mins = Math.max(1, Math.round((T.dusk - now0) / 60000)), h = Math.floor(mins / 60), m = mins % 60;
+  const txt = `${h ? `${h} h ` : ''}${m ? `${m} min` : ''} until dark`.replace('  ', ' ').trim();
+  if (txt !== udLast) { udLast = txt; $('ud-time').textContent = txt; $('ud-at').textContent = `Dark at ${fmtTime(T.dusk)}`; }
+  const rc = sky.ring ?? { y: sky.cy, r: sky.reticlePx }; el.style.top = `${rc.y + rc.r + 26}px`;
+  el.hidden = false;
+}
