@@ -23,10 +23,14 @@ export function eventsAround(time = Date.now()) {
 }
 export const activeEvent = (time = Date.now()) => eventsAround(time).find((e) => time >= e.start && time <= e.end) ?? null;
 export const nextEvent = (time = Date.now()) => eventsAround(time).find((e) => e.start > time) ?? null;
+// A meteor-shower badge is for a night sighting (2026-10-08, Sevaan earned the Draconids badge with the Sun at noon):
+// not the Sun, and between 6 pm and 7 am local time.
+export const countsForEvent = (s) => !s.sim && s.cardKey !== 'sun' && s.objectId !== 'sun' && ((h) => h >= 18 || h < 7)(new Date(s.time).getHours());
+export const eventOf = (s) => (countsForEvent(s) ? activeEvent(s.time) : null);
 // Event badges earned by sightings: [{ id, name }].
 export function eventBadges(sightings) {
   const got = new Map();
-  for (const s of sightings) { if (s.sim) continue; const e = activeEvent(s.time); if (e) got.set(e.id, e.name); }
+  for (const s of sightings) { const e = eventOf(s); if (e) got.set(e.id, e.name); }
   return [...got].map(([id, name]) => ({ id, name }));
 }
 

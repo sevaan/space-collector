@@ -255,3 +255,6 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - Event chip styled exactly like the next-up chip (no orange border); tapping it shows the explanation and marks that shower read (`localStorage.eventRead` = e.g. draconids-2026), so the chip goes away until the next shower.
 - Satellite paths below the horizon now run from the satellite's current position to its rise point (`satPath`, adaptive step); passes more than 25 min away get no path, just the marker.
 - Drag-to-look goes down to −89° (was −10°), so the ground, ring and paths can be reached with a mouse/finger.
+- **Meteor-shower badges count night sightings only** (js/events.js `countsForEvent`/`eventOf`: not the Sun, 6 pm–7 am local); used by the badge list, the "first of event" toast and the chip's earned check.
+- **Desktop / no motion sensors:** the first drag turns drag mode on, so the "sensors settling" gate no longer blocks every target on a computer.
+- Right-hand chips start level with the top of the compass circle (top +101px; next-up +141px under the event chip).

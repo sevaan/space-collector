@@ -508,3 +508,7 @@ body.day #toasts { bottom: calc(var(--safe-bottom) + 84px) !important; } /* no s
 /* The event chip wears the next-up chip's look exactly (2026-10-08): same glass, same soft edge, no orange border. */
 #event-banner { border: 1px solid var(--edge-soft) !important; background: color-mix(in srgb, var(--bg) 78%, transparent) !important; }
 #event-banner .np-k { color: var(--muted); }
+/* The right-hand chips start level with the top of the compass circle (2026-10-08): radar top + (48 − 35) px. */
+#event-banner { top: calc(var(--safe-top) + 101px) !important; }
+#nextpass { top: calc(var(--safe-top) + 101px) !important; }
+body:has(#event-banner:not([hidden])) #nextpass { top: calc(var(--safe-top) + 141px) !important; }

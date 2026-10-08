@@ -1,33 +1,33 @@
-import { patchHtml, patchSvg } from './patches.js?v=0.1.277';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.277';
-import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.277';
-import { VERSION } from './version.js?v=0.1.277';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.277';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.277';
-import { conArt } from './con-art.js?v=0.1.277';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.277';
-import { CON_FIGURES } from './con-figures.js?v=0.1.277';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.277';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.277';
-import { progress as progressOf } from './progress.js?v=0.1.277';
-import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.277';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.277';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.277';
-import { SkyView, shortName } from './sky.js?v=0.1.277';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.277';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.277';
-import { cardArt } from './art.js?v=0.1.277';
-import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.277';
-import { applyBack } from './card-backs.js?v=0.1.277';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.277';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.277';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.277';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.277';
-import { TIER_INFO } from './rarity.js?v=0.1.277';
-import { SETS } from './sets.js?v=0.1.277';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.277';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.277';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.277';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.278';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.278';
+import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.278';
+import { VERSION } from './version.js?v=0.1.278';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.278';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.278';
+import { conArt } from './con-art.js?v=0.1.278';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.278';
+import { CON_FIGURES } from './con-figures.js?v=0.1.278';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.278';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.278';
+import { progress as progressOf } from './progress.js?v=0.1.278';
+import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.278';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.278';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.278';
+import { SkyView, shortName } from './sky.js?v=0.1.278';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.278';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.278';
+import { cardArt } from './art.js?v=0.1.278';
+import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.278';
+import { applyBack } from './card-backs.js?v=0.1.278';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.278';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.278';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.278';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.278';
+import { TIER_INFO } from './rarity.js?v=0.1.278';
+import { SETS } from './sets.js?v=0.1.278';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.278';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.278';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.278';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -945,7 +945,7 @@ function progressGain(saved) {
   const after = progressNow(state.sightings), before = progressNow(state.sightings.filter((s) => s !== saved));
   const missions = after.missions.filter((m, i) => m.done && !before.missions[i]?.done);
   const achievements = after.achievements.filter((a, i) => a.done && !before.achievements[i].done);
-  const ev = activeEvent(saved.time), firstOfEvent = ev && !state.sightings.some((s) => s !== saved && !s.sim && s.time >= ev.start && s.time <= ev.end);
+  const ev = eventOf(saved), firstOfEvent = ev && !state.sightings.some((s) => s !== saved && eventOf(s)?.id === ev.id);
   return { xp: after.xp - before.xp, missions, achievements, rankUp: after.rank.index > before.rank.index ? after.rank.name : null, event: firstOfEvent ? ev.name : null };
 }
 function announceProgress(g, delay = 3800) {
@@ -1322,7 +1322,7 @@ $('nextpass').addEventListener('click', () => { showVTab('tonight'); openPanel('
 function updateEventBanner() {
   const e = activeEvent(now().getTime()), el = $('event-banner');
   if (!e) { if (!el.hidden) el.hidden = true; return; }
-  const got = state.sightings.some((s) => !s.sim && s.time >= e.start && s.time <= e.end);
+  const got = state.sightings.some((s) => eventOf(s)?.id === e.id);
   if (got) { if (!el.hidden) el.hidden = true; return; } // badge earned: the banner has done its job (2026-10-07)
   let read = false; try { read = localStorage.getItem('eventRead') === e.id; } catch {}
   if (read) { if (!el.hidden) el.hidden = true; return; } // tapped and read (2026-10-08): it goes away
@@ -1339,6 +1339,7 @@ let dragStart = null, tapStart = null;
 $('sky').addEventListener('pointerdown', (e) => {
   tapStart = { x: e.clientX, y: e.clientY, t: performance.now() };
   if (!state.drag.on && hasLiveSensors()) return;
+  if (!hasLiveSensors()) state.drag.on = true; // no motion sensors (a computer): dragging is how you look, so targets work (2026-10-08)
   state.followPreview = false;
   dragStart = { x: e.clientX, y: e.clientY, az: state.drag.az, el: state.drag.el };
   $('sky').setPointerCapture(e.pointerId);
