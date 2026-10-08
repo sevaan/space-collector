@@ -1,9 +1,9 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.291';
+import { extinction } from './sky-limit.js?v=0.1.292';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.291';
-import { TIER_INFO } from './rarity.js?v=0.1.291';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.292';
+import { TIER_INFO } from './rarity.js?v=0.1.292';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -585,7 +585,7 @@ export class SkyView {
       if ('letterSpacing' in ctx) ctx.letterSpacing = '2.5px';
       ctx.font = `500 12px ${FONT}`; ctx.fillStyle = 'rgba(232,217,184,.9)'; ctx.fillText(`BELOW THE HORIZON · ${Math.round(-el)}° DOWN`, rc.x, rc.y - rc.r - 54);
       if ('letterSpacing' in ctx) ctx.letterSpacing = '1px';
-      ctx.font = `400 22px ${DISPLAY_FONT}`; ctx.fillStyle = 'rgb(255,242,179)'; ctx.fillText(f.done ? f.name.toUpperCase() : "SOMETHING'S BURIED HERE…", rc.x, rc.y - rc.r - 26);
+      ctx.font = `400 22px ${DISPLAY_FONT}`; ctx.fillStyle = 'rgb(255,242,179)'; ctx.fillText(f.done ? 'DINO BONES' : "SOMETHING'S BURIED HERE…", rc.x, rc.y - rc.r - 26);
       if ('letterSpacing' in ctx) ctx.letterSpacing = '2.5px';
       ctx.font = `500 13px ${FONT}`; ctx.fillStyle = 'rgba(232,217,184,.9)'; ctx.fillText(f.done ? 'A FOSSIL, RIGHT UNDER YOUR FEET' : 'HOLD IT IN THE CIRCLE', rc.x, rc.y + rc.r + 34);
       if (!f.done && f.hold > 0) { ctx.shadowBlur = 0; ctx.strokeStyle = 'rgba(255,229,192,.95)'; ctx.lineWidth = 3; ctx.lineCap = 'round';
