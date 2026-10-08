@@ -254,3 +254,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - Bright planets count earlier in twilight (natural.js `brightLimit`: Venus from about sunset, Jupiter ~1.5° down, Mars 3° down). By day toasts sit just above the switcher (no slider). Meteor-shower tap toast shortened.
 - Event chip styled exactly like the next-up chip (no orange border); tapping it shows the explanation and marks that shower read (`localStorage.eventRead` = e.g. draconids-2026), so the chip goes away until the next shower.
 - Satellite paths below the horizon now run from the satellite's current position to its rise point (`satPath`, adaptive step); passes more than 25 min away get no path, just the marker.
+- Drag-to-look goes down to −89° (was −10°), so the ground, ring and paths can be reached with a mouse/finger.
