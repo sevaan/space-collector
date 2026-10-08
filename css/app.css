@@ -556,3 +556,10 @@ body.bright-sky #nextpass .np-n, body.bright-sky #event-banner .np-n { color: #b
 body.bright-sky #nav.sc-switch { background: #f3ecd4; border-color: #c9bd8f; box-shadow: 0 6px 18px rgba(20, 48, 70, .22); -webkit-backdrop-filter: none; backdrop-filter: none; }
 body.bright-sky #nav.sc-switch::before { background: #193639; box-shadow: none; }
 body.bright-sky #nav .sc-switch__item { color: #4d5a4f; } body.bright-sky #nav .sc-switch__item[aria-current] { color: #f3ecd4; }
+/* Toasts in card paper too by day (2026-10-08). */
+body.bright-sky .ticket, body.bright-sky #banner.ticket { background: #f3ecd4 !important; border-color: #c9bd8f !important; color: #2b3a33 !important; box-shadow: 0 8px 22px rgba(20, 48, 70, .25); }
+body.bright-sky .ticket .ticket__line, body.bright-sky #banner .ticket__line { color: #2b3a33 !important; }
+body.bright-sky .ticket .ticket__eyebrow { color: #b8520d !important; }
+body.bright-sky .ticket .ticket__xp, body.bright-sky .ticket .ticket__go, body.bright-sky #banner .ticket__go { color: #b8520d !important; }
+body.bright-sky .ticket .ticket__xp small { color: #4d5a4f !important; }
+body.bright-sky .ticket--info .big-line { color: #b8520d !important; }
