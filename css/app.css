@@ -606,3 +606,12 @@ body.night .set-group, body.night .set-sheet-card { background: #140606; border-
 #until-dark b { display: block; font: 500 17px/1.2 var(--label); letter-spacing: .16em; text-transform: uppercase; color: #fff; }
 #until-dark span { display: block; margin-top: 4px; font: 500 12px/1.2 var(--label); letter-spacing: .18em; text-transform: uppercase; color: rgba(255, 255, 255, .8); }
 body.ob-tour #until-dark { display: none; }
+/* Reminder from the countdown (design/until-dark.html). */
+#until-dark { pointer-events: none; } #ud-bell { pointer-events: auto; display: inline-flex; align-items: center; gap: 8px; margin-top: 14px; padding: 9px 16px; border-radius: 99px; cursor: pointer;
+  background: color-mix(in srgb, var(--bg) 85%, transparent); border: 1px solid var(--edge-soft); color: var(--text); font: 500 13px/1 var(--label); letter-spacing: .14em; text-transform: uppercase; text-shadow: none; }
+#ud-bell.on { border-color: color-mix(in srgb, var(--gold) 55%, transparent); color: var(--gold); }
+.ud-opt { display: flex; align-items: center; gap: 12px; width: 100%; margin-top: 8px; padding: 13px 14px; border-radius: 12px; border: 1px solid #1c2b3c; background: #0b1522; text-align: left; color: var(--text); cursor: pointer; }
+.ud-opt.sel { border-color: color-mix(in srgb, var(--gold) 55%, transparent); background: color-mix(in srgb, var(--gold) 7%, transparent); }
+.ud-opt i { font-style: normal; font-size: 18px; width: 22px; text-align: center; } .ud-opt span { flex: 1; } .ud-opt em { font-style: normal; color: var(--gold); }
+.ud-opt b { display: block; font: 400 17px var(--display); } .ud-opt small { display: block; margin-top: 3px; font: 500 13px var(--label); color: var(--muted); letter-spacing: .04em; }
+#ud-sheet .d-cta { margin-top: 14px; } #ud-cancel { display: block; margin: 12px auto 0; }

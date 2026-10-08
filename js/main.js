@@ -1,36 +1,36 @@
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.298';
-import * as Ufo from './ufo.js?v=0.1.298';
-import * as Fossil from './fossil.js?v=0.1.298';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.298';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.298';
-import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.298';
-import { VERSION } from './version.js?v=0.1.298';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.298';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.298';
-import { conArt } from './con-art.js?v=0.1.298';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.298';
-import { CON_FIGURES } from './con-figures.js?v=0.1.298';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.298';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.298';
-import { progress as progressOf } from './progress.js?v=0.1.298';
-import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.298';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.298';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.298';
-import { SkyView, shortName } from './sky.js?v=0.1.298';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.298';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.298';
-import { cardArt } from './art.js?v=0.1.298';
-import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.298';
-import { applyBack } from './card-backs.js?v=0.1.298';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.298';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.298';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.298';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.298';
-import { TIER_INFO } from './rarity.js?v=0.1.298';
-import { SETS } from './sets.js?v=0.1.298';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.298';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.298';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.298';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.299';
+import * as Ufo from './ufo.js?v=0.1.299';
+import * as Fossil from './fossil.js?v=0.1.299';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.299';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.299';
+import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.299';
+import { VERSION } from './version.js?v=0.1.299';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.299';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.299';
+import { conArt } from './con-art.js?v=0.1.299';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.299';
+import { CON_FIGURES } from './con-figures.js?v=0.1.299';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.299';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.299';
+import { progress as progressOf } from './progress.js?v=0.1.299';
+import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.299';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.299';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.299';
+import { SkyView, shortName } from './sky.js?v=0.1.299';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.299';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.299';
+import { cardArt } from './art.js?v=0.1.299';
+import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.299';
+import { applyBack } from './card-backs.js?v=0.1.299';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.299';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.299';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.299';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.299';
+import { TIER_INFO } from './rarity.js?v=0.1.299';
+import { SETS } from './sets.js?v=0.1.299';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.299';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.299';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.299';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -2105,3 +2105,39 @@ function untilDark(target) {
   const rc = sky.ring ?? { y: sky.cy, r: sky.reticlePx }; el.style.top = `${rc.y + rc.r + 26}px`;
   el.hidden = false;
 }
+
+// Countdown → reminder (2026-10-08, design/until-dark.html). Reminders are calendar alerts for now (iOS/Android
+// notifications come with the native apps). Remembered for tonight in localStorage 'udRemind' = { t, label }.
+function udReminder() { try { const r = JSON.parse(localStorage.getItem('udRemind')); return r && r.t > Date.now() - 3600e3 ? r : null; } catch { return null; } }
+let udPick = 0, udChoices = [];
+function udOptions() {
+  const T = state.tonight, t0 = now().getTime(), out = [];
+  const best = T ? (tonightPasses(T, t0).find((p) => p.fresh && p.start > T.dusk) ?? tonightPasses(T, t0).find((p) => p.start > T.dusk)) : null;
+  if (best) out.push({ t: best.start - 10 * 60e3, icon: '✦', label: `Before tonight's best pass · ${label(best.obj)}`, msg: `${label(best.obj)} passes at ${fmtTime(best.start)}, ${best.peakEl}° up in the ${compassPoint(best.peakAz)}. Open Space Collector to line it up.` });
+  if (T?.dusk) out.push({ t: T.dusk, icon: '☾', label: 'When it gets dark', msg: "It's dark enough to start. Open Space Collector and look up." });
+  const pk = T ? T.curve.filter(([t]) => t >= T.dusk).reduce((a, c) => (c[1] > a[1] ? c : a), [0, 0]) : [0, 0];
+  if (pk[1]) out.push({ t: pk[0], icon: '★', label: `The busiest moment · ${pk[1]} up at once`, msg: `${pk[1]} satellites are up right now. Open Space Collector.` });
+  return out.sort((a, b) => a.t - b.t);
+}
+function udRender() {
+  const r = udReminder(), b = $('ud-bell');
+  b.classList.toggle('on', !!r); b.textContent = r ? `🔔 ${fmtTime(r.t)} · set` : '🔔 Remind me';
+}
+$('ud-bell').addEventListener('click', () => {
+  udChoices = udOptions(); if (!udChoices.length) return;
+  const r = udReminder(); udPick = Math.max(0, r ? udChoices.findIndex((c) => Math.abs(c.t - r.t) < 60e3) : 0);
+  const draw = () => { $('ud-opts').innerHTML = udChoices.map((c, i) => `<button type="button" class="ud-opt${i === udPick ? ' sel' : ''}" data-i="${i}"><i>${c.icon}</i><span><b>${escapeHtml(fmtTime(c.t))}</b><small>${escapeHtml(c.label)}</small></span>${i === udPick ? '<em>✓</em>' : ''}</button>`).join(''); };
+  draw(); $('ud-opts').onclick = (e) => { const o = e.target.closest('.ud-opt'); if (o) { udPick = Number(o.dataset.i); draw(); } };
+  $('ud-cancel').hidden = !r; openSheet('ud-sheet');
+});
+$('ud-set').addEventListener('click', () => {
+  const c = udChoices[udPick]; if (!c) return;
+  const url = URL.createObjectURL(new Blob([passIcs({ title: 'Look up: Space Collector', start: c.t, end: c.t + 30 * 60e3, description: `${c.msg} https://sevaan.github.io/space-collector/` }).replace('TRIGGER:-PT10M', 'TRIGGER:PT0M')], { type: 'text/calendar' }));
+  const a = document.createElement('a'); a.href = url; a.download = 'space-collector-tonight.ics'; a.click(); setTimeout(() => URL.revokeObjectURL(url), 5000);
+  try { localStorage.setItem('udRemind', JSON.stringify({ t: c.t, label: c.label })); } catch {}
+  closeSheet($('ud-sheet')); udRender();
+  ticket({ kind: 'mission', eyebrow: 'REMINDER SET', line: `We'll nudge you at ${fmtTime(c.t)}${c.icon === '✦' ? `, before the ${c.label.split(' · ')[1]}` : ''}.`, ms: 4000 });
+});
+$('ud-cancel').addEventListener('click', () => { try { localStorage.removeItem('udRemind'); } catch {} closeSheet($('ud-sheet')); udRender(); toast('Reminder removed here. Delete the calendar event too if you added it.', 4000); });
+document.getElementById('ud-sheet').addEventListener('click', (e) => { if (e.target.id === 'ud-sheet') closeSheet(e.currentTarget); });
+udRender();

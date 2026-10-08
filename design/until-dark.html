@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Until Dark Reminder</title>
+<style>
+  @font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf'); font-weight: 500; }
+  @font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf'); }
+  :root { --ink: #fff2b3; --muted: #bdbea9; --orange: #fa8127; }
+  body { margin: 0; background: #04070d; color: #e8eef6; font: 15px/1.45 -apple-system, system-ui, sans-serif; padding: 24px 16px 60px; }
+  h1.t { font-size: 20px; margin: 0 0 6px; } .intro { color: #9fb0c6; margin: 0 0 22px; max-width: 1000px; }
+  .row { display: flex; flex-wrap: wrap; gap: 18px; justify-content: center; }
+  .cell { width: 340px; } .cell h2 { font-size: 15px; margin: 10px 0 4px; } .cell p { color: #9fb0c6; font-size: 13px; margin: 0; }
+  .phone { position: relative; width: 340px; height: 700px; border-radius: 28px; overflow: hidden; border: 1px solid #1d2838; background: linear-gradient(#4a87c6, #7fb0da 55%, #b6d4ea); }
+  .lab { font: 500 12px/1.2 'SC Label', sans-serif; letter-spacing: .16em; text-transform: uppercase; }
+  .ret { position: absolute; left: 50%; top: 300px; width: 104px; height: 104px; margin: -52px 0 0 -52px; border-radius: 50%; border: 1.5px solid rgba(255,250,235,.85); }
+  .ret::before { content: ''; position: absolute; inset: -6px; border-radius: 50%; border: 1px solid rgba(255,255,255,.3); }
+  .ud { position: absolute; left: 0; right: 0; top: 380px; text-align: center; text-shadow: 0 1px 6px rgba(8,15,27,.4); }
+  .ud b { display: block; font: 500 17px 'SC Label', sans-serif; letter-spacing: .16em; color: #fff; } .ud small { display: block; margin-top: 4px; font: 500 12px 'SC Label', sans-serif; letter-spacing: .18em; color: rgba(255,255,255,.85); }
+  .pillb { display: inline-flex; align-items: center; gap: 8px; margin-top: 14px; padding: 9px 16px; border-radius: 99px; background: #0c1725e6; border: 1px solid #344654; color: var(--ink); font: 500 13px 'SC Label', sans-serif; letter-spacing: .14em; text-transform: uppercase; text-shadow: none; }
+  .pillb.on { border-color: #fa812788; color: var(--orange); }
+  .sw { position: absolute; left: 22px; right: 22px; bottom: 22px; height: 42px; border-radius: 99px; background: #1a2a3cdd; border: 1px solid #344654; display: grid; grid-template-columns: 1fr 1fr; padding: 3px; box-sizing: border-box; }
+  .sw span { display: grid; place-items: center; border-radius: 99px; font: 500 12px 'SC Label', sans-serif; letter-spacing: .14em; color: #fff2b38c; } .sw span:first-child { background: #fa812724; box-shadow: inset 0 0 0 1px #fa812770; color: var(--orange); }
+  .dim { position: absolute; inset: 0; background: rgba(4,7,13,.55); }
+  .sheet { position: absolute; left: 0; right: 0; bottom: 0; background: #0f1b2a; border-radius: 22px 22px 0 0; border-top: 1px solid #2a3a4c; padding: 10px 16px 26px; }
+  .grab { width: 40px; height: 5px; border-radius: 3px; background: #344654; margin: 0 auto 14px; }
+  .opt { display: flex; align-items: center; gap: 12px; padding: 13px 14px; border-radius: 12px; border: 1px solid #1c2b3c; background: #0b1522; margin-top: 8px; }
+  .opt b { display: block; font: 400 17px 'SC Display', sans-serif; color: var(--ink); } .opt span { display: block; font: 500 13px 'SC Label', sans-serif; color: var(--muted); letter-spacing: .04em; }
+  .opt .grow { flex: 1; } .opt i { font-style: normal; font-size: 18px; } .opt.sel { border-color: #fa812788; background: #fa812712; }
+  .toast { position: absolute; left: 22px; right: 22px; bottom: 80px; padding: 10px 12px; border-radius: 10px; background: #0c1725; border: 1px solid #627a8b; border-left: 4px solid var(--orange); }
+  .toast small { display: block; color: var(--orange); font: 500 10px 'SC Label', sans-serif; letter-spacing: .18em; } .toast span { color: var(--ink); font: 500 14px 'SC Label', sans-serif; }
+  .notif { position: absolute; left: 10px; right: 10px; top: 12px; padding: 12px 14px; border-radius: 18px; background: rgba(240,240,245,.92); color: #111; display: flex; gap: 10px; }
+  .notif .app { width: 34px; height: 34px; border-radius: 8px; background: #080f1b; display: grid; place-items: center; color: var(--orange); font-size: 16px; flex: none; }
+  .notif b { display: block; font: 600 13px -apple-system, sans-serif; } .notif span { font: 13px/1.3 -apple-system, sans-serif; color: #333; }
+  .lock { background: linear-gradient(#0d1b33, #22325a 55%, #c27a5c); }
+  .clock { position: absolute; left: 0; right: 0; top: 130px; text-align: center; color: #fff; font: 200 72px -apple-system, sans-serif; }
+</style></head><body>
+<h1 class="t">"Until dark" → a reminder to come back</h1>
+<p class="intro">The countdown under the circle gets a small bell pill. Tap it: a sheet with sensible times (at dark, at tonight's best pass, a little before) and one tap sets it. The countdown then shows it's set. The reminder lands as a calendar alert (works on iPhone today); a real push notification needs the installed app later.</p>
+<div class="row" id="b"></div>
+<script>
+const ret = '<div class="ret"></div>', sw = '<div class="sw"><span>EXPLORE</span><span>COLLECTION</span></div>';
+const ud = (pill) => `<div class="ud"><b>4 H 2 MIN UNTIL DARK</b><small>AROUND 7:11 PM</small>${pill}</div>`;
+const cells = [
+  ['1 · The countdown, with a bell', 'One small pill under the line: "🔔 Remind me". Nothing else changes.', `${ret}${ud('<span class="pillb">🔔 Remind me</span>')}${sw}`],
+  ['2 · Pick when', 'A short sheet, three choices worked out for tonight. The best one is pre-selected. One tap and it\'s set.', `${ret}${ud('<span class="pillb">🔔 Remind me</span>')}${sw}<div class="dim"></div><div class="sheet"><div class="grab"></div>
+    <div class="lab" style="color:var(--orange);margin-bottom:6px">Remind me tonight</div>
+    <div class="opt sel"><i>✦</i><span class="grow"><b>7:04 PM</b><span>Before tonight's best pass · SL-14 Rocket Stage</span></span><span style="color:var(--orange)">✓</span></div>
+    <div class="opt"><i>☾</i><span class="grow"><b>7:11 PM</b><span>When it gets dark</span></span></div>
+    <div class="opt"><i>★</i><span class="grow"><b>8:20 PM</b><span>The busiest moment · 18 up at once</span></span></div>
+    <div style="margin-top:14px;height:50px;border-radius:12px;background:var(--orange);display:grid;place-items:center;color:#0b1120;font:500 15px 'SC Label',sans-serif;letter-spacing:.16em">SET REMINDER</div></div>`],
+  ['3 · Set', 'A toast confirms; the pill turns orange and shows the time. Tap it again to change or cancel.', `${ret}${ud('<span class="pillb on">🔔 7:04 PM · set</span>')}<div class="toast"><small>REMINDER SET</small><span>We'll nudge you at 7:04 PM, before the SL-14 Rocket Stage.</span></div>${sw}`],
+  ['4 · At 7:04', 'The alert: the pass, when, and where to look. Tapping it opens the app aimed at it (Show me).', `<div class="phone lock" style="position:absolute;inset:0;border:0;border-radius:0"><div class="clock">7:04</div>
+    <div class="notif" style="top:250px"><span class="app">✦</span><span><b>Space Collector · now</b><span>It's getting dark. SL-14 Rocket Stage passes at 7:13, high in the east. Open to line it up.</span></span></div></div>`],
+];
+document.getElementById('b').innerHTML = cells.map(([t, d, f]) => `<div class="cell"><div class="phone">${f}</div><h2>${t}</h2><p>${d}</p></div>`).join('');
+</script></body></html>
