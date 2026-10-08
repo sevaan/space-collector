@@ -1,9 +1,9 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.246';
+import { extinction } from './sky-limit.js?v=0.1.247';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.246';
-import { TIER_INFO } from './rarity.js?v=0.1.246';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.247';
+import { TIER_INFO } from './rarity.js?v=0.1.247';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -451,14 +451,29 @@ export class SkyView {
     ctx.restore();
   }
 
-  // The ground's markings (2026-10-07, Sevaan picked "C · Quiet ring"): the old survey contours, spokes and bearings
-  // are gone. Near the horizon: small ticks every 10° and N/E/S/W. Looking down, those give way to the quiet ring
+  // The ground's markings (2026-10-07, Sevaan picked "C · Quiet ring"): the survey contours and bearing labels are
+  // gone, the straight grid is back. Near the horizon: small ticks every 10° and N/E/S/W. Looking down, those give way to the quiet ring
   // at your feet (drawFeet).
   drawGroundCompass() {
     const ctx = this.ctx, t = this.theme, fade = 1 - (this.feetA ?? 0);
     ctx.save();
     ctx.strokeStyle = t.groundInk;
     ctx.lineWidth = 1;
+    // The straight grid is back (2026-10-07, Sevaan: it fills the void): rings at 20°, 45° and 70° down and spokes
+    // every 30°, heavier on N/E/S/W. It softens as the quiet ring at your feet comes in, so the two don't fight.
+    ctx.globalAlpha = 1 - 0.55 * (this.feetA ?? 0);
+    for (const el of [-20, -45, -70]) {
+      const pts = [];
+      for (let az = 0; az <= 360; az += 3) pts.push(enuFromAzEl(az, el));
+      this.path(pts);
+    }
+    for (let az = 0; az < 360; az += 30) {
+      const pts = [];
+      for (let el = -4; el >= -88; el -= 4) pts.push(enuFromAzEl(az, el));
+      ctx.lineWidth = az % 90 ? 1 : 1.6;
+      this.path(pts);
+    }
+    ctx.globalAlpha = 1; ctx.lineWidth = 1;
     for (let az = 0; az < 360; az += 10) {
       const long = az % 30 === 0;
       this.path([enuFromAzEl(az, -7), enuFromAzEl(az, long ? -13 : -10)]);
