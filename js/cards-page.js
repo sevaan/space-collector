@@ -1,20 +1,20 @@
-import { ticket } from './toast.js?v=0.1.259';
-import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.259';
-import { cardArt } from './art.js?v=0.1.259';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.259';
-import { applyBack } from './card-backs.js?v=0.1.259';
-import { SETS, assignSets } from './sets.js?v=0.1.259';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.259';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.259';
-import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.259';
-import { progress } from './progress.js?v=0.1.259';
-import { SOLAR_SYSTEM } from './natural.js?v=0.1.259';
-import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.259';
-import { drawShareCard, shareCard } from './share-card.js?v=0.1.259';
-import { conArt } from './con-art.js?v=0.1.259';
-import { CON_BY_ID } from './constellations.js?v=0.1.259';
-import { allSightings, deleteSighting } from './store.js?v=0.1.259';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.259';
+import { ticket } from './toast.js?v=0.1.260';
+import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.260';
+import { cardArt } from './art.js?v=0.1.260';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.260';
+import { applyBack } from './card-backs.js?v=0.1.260';
+import { SETS, assignSets } from './sets.js?v=0.1.260';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.260';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.260';
+import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.260';
+import { progress } from './progress.js?v=0.1.260';
+import { SOLAR_SYSTEM } from './natural.js?v=0.1.260';
+import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.260';
+import { drawShareCard, shareCard } from './share-card.js?v=0.1.260';
+import { conArt } from './con-art.js?v=0.1.260';
+import { CON_BY_ID } from './constellations.js?v=0.1.260';
+import { allSightings, deleteSighting } from './store.js?v=0.1.260';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.260';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -77,6 +77,7 @@ async function boot() {
   if (sightingResult.status === 'rejected') notice('Your saved sightings could not be opened. You can explore the field guide; refresh to retry your collection.');
   state.ready = true;
   render();
+  if (window.parent !== window) window.parent.postMessage({ sc: 'ready' }, location.origin); // the shell can fade us in now
   let key = '';
   try { key = decodeURIComponent(location.hash.slice(1)); } catch {}
   if (!state.byKey.has(key) && /^[A-Z]+:/.test(key)) key = key.split(':')[0]; // old launch-card link

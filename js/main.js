@@ -1,31 +1,31 @@
-import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.259';
-import { VERSION } from './version.js?v=0.1.259';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.259';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.259';
-import { conArt } from './con-art.js?v=0.1.259';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.259';
-import { CON_FIGURES } from './con-figures.js?v=0.1.259';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.259';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.259';
-import { progress as progressOf } from './progress.js?v=0.1.259';
-import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.259';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.259';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.259';
-import { SkyView, shortName } from './sky.js?v=0.1.259';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.259';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.259';
-import { cardArt } from './art.js?v=0.1.259';
-import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.259';
-import { applyBack } from './card-backs.js?v=0.1.259';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.259';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.259';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.259';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.259';
-import { TIER_INFO } from './rarity.js?v=0.1.259';
-import { SETS } from './sets.js?v=0.1.259';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.259';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.259';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.259';
+import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.260';
+import { VERSION } from './version.js?v=0.1.260';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.260';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.260';
+import { conArt } from './con-art.js?v=0.1.260';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.260';
+import { CON_FIGURES } from './con-figures.js?v=0.1.260';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.260';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.260';
+import { progress as progressOf } from './progress.js?v=0.1.260';
+import { activeEvent, nextEvent, passIcs } from './events.js?v=0.1.260';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.260';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge } from './sensors.js?v=0.1.260';
+import { SkyView, shortName } from './sky.js?v=0.1.260';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel } from './celestial.js?v=0.1.260';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.260';
+import { cardArt } from './art.js?v=0.1.260';
+import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.260';
+import { applyBack } from './card-backs.js?v=0.1.260';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.260';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.260';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.260';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.260';
+import { TIER_INFO } from './rarity.js?v=0.1.260';
+import { SETS } from './sets.js?v=0.1.260';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.260';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.260';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.260';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -1754,21 +1754,23 @@ document.addEventListener('click', e => { if (e.target.closest('a[href^="cards.h
 // open. After a capture it reloads in the background so it's current next time; back/swipe-back closes it.
 let collectionOpen = false, collectionDirty = false;
 const colFrame = $('collection-frame');
-function loadCollection() { if (!colFrame.src) colFrame.src = 'cards.html?embed=1'; }
-function collectionStale() { if (!colFrame.src) return; if (collectionOpen) collectionDirty = true; else colFrame.src = 'cards.html?embed=1'; }
+let colLoaded = false;
+function loadCollection() { if (!colFrame.src) { colLoaded = false; colFrame.src = 'cards.html?embed=1'; } }
+function collectionStale() { if (!colFrame.src) return; if (collectionOpen) collectionDirty = true; else { colLoaded = false; colFrame.src = 'cards.html?embed=1'; } }
 function sendInsets() {
   const probe = document.createElement('div'); probe.style.cssText = 'position:fixed;visibility:hidden;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)';
   document.body.append(probe); const cs = getComputedStyle(probe), top = parseFloat(cs.paddingTop) || 0, bottom = parseFloat(cs.paddingBottom) || 0; probe.remove();
   colFrame.contentWindow?.postMessage({ sc: 'insets', top, bottom }, location.origin);
 }
-colFrame.addEventListener('load', () => { sendInsets(); if (collectionOpen && pendingKey) { colFrame.contentWindow.postMessage({ sc: 'open', key: pendingKey }, location.origin); pendingKey = ''; } });
+colFrame.addEventListener('load', () => { colLoaded = true; if (collectionOpen) colFrame.classList.add('open'); sendInsets(); if (collectionOpen && pendingKey) { colFrame.contentWindow.postMessage({ sc: 'open', key: pendingKey }, location.origin); pendingKey = ''; } });
 let pendingKey = '';
 function openCollection(key = '') {
   saveExploreState();
-  if (collectionDirty && !collectionOpen) { collectionDirty = false; colFrame.src = 'cards.html?embed=1'; }
+  if (collectionDirty && !collectionOpen) { collectionDirty = false; colLoaded = false; colFrame.src = 'cards.html?embed=1'; }
   loadCollection();
   if (!collectionOpen) { collectionOpen = true; try { history.pushState({ sc: 'collection' }, ''); } catch {} }
-  colFrame.hidden = false; colFrame.classList.add('open');
+  // Fade in only once it has painted (2026-10-07: a not-yet-loaded frame flashed white); load does it otherwise.
+  colFrame.hidden = false; if (colLoaded) colFrame.classList.add('open');
   const w = colFrame.contentWindow;
   if (w && colFrame.contentDocument?.readyState === 'complete' && w.location.href !== 'about:blank') w.postMessage({ sc: 'show', key }, location.origin);
   else pendingKey = key;
@@ -1782,6 +1784,7 @@ async function closeCollection(fromHistory = false) {
 window.addEventListener('popstate', () => { if (collectionOpen && history.state?.sc !== 'collection') closeCollection(true); });
 window.addEventListener('message', (e) => {
   if (e.origin !== location.origin || !e.data?.sc) return;
+  if (e.data.sc === 'ready') { colLoaded = true; if (collectionOpen) colFrame.classList.add('open'); }
   if (e.data.sc === 'explore') { closeCollection(); if (e.data.more) openDebug(); }
 });
 window.addEventListener('resize', () => { if (colFrame.src) sendInsets(); });
