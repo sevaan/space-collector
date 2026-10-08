@@ -67,13 +67,18 @@ function glyph(k, text) {
   }[k] ?? '';
 }
 
+// Close Encounter (design/ufo.html): the saucer over a green beam, a few stars.
+const UFO_ART = (id) => `<defs><linearGradient id="${id}beam" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7dff8a" stop-opacity=".55"/><stop offset="1" stop-color="#7dff8a" stop-opacity="0"/></linearGradient></defs>
+  ${[[-30, -22], [26, -26], [-18, -34], [34, -6], [-36, 0], [12, -38]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="1" fill="${INK}" opacity=".7"/>`).join('')}
+  <path d="M-9 -4 L-24 30 L24 30 L9 -4Z" fill="url(#${id}beam)"/>
+  <g transform="translate(0 -8) scale(1.7)"><path d="M-6 -1 Q-5 -7 0 -7 Q5 -7 6 -1Z" fill="#cfe8ff" fill-opacity=".85"/><ellipse rx="14" ry="4.2" fill="${INK}"/><ellipse rx="14" ry="4.2" fill="none" stroke="#c9b67a" stroke-width=".8"/><circle cx="-8" cy=".5" r="1.3" fill="#7dff8a"/><circle cx="0" cy="1.6" r="1.3" fill="#7dff8a"/><circle cx="8" cy=".5" r="1.3" fill="#7dff8a"/></g>`;
 let uid = 0;
 // The patch as an SVG string. locked: a faint stitch outline (not earned yet). date: replaces the group along the
 // bottom ("EARNED 07 OCT 2026"). stitch: adds the thread that draws the border on (the earning moment).
 export function patchSvg(a, { locked = false, date = '', stitch = false } = {}) {
-  const g = GROUPS[groupOf(a)], id = `pt${uid++}`, R = 60, fossil = a.id === 'fossil';
+  const g0 = GROUPS[groupOf(a)], g = a.id === 'ufo' ? { ...g0, c: '#123a2a' } : g0, id = `pt${uid++}`, R = 60, fossil = a.id === 'fossil' || a.id === 'ufo';
   // Fossil Hunter (design/fossil-patch.html A): the T. rex skeleton art, centred on its bones, no inner ring.
-  const ic = fossil ? '<image href="assets/art/fossils/patch.svg" x="-46" y="-17.5" width="92" height="43"/>' : glyph(GLYPH[a.id], a.icon);
+  const ic = a.id === 'ufo' ? UFO_ART(id) : fossil ? '<image href="assets/art/fossils/patch.svg" x="-46" y="-17.5" width="92" height="43"/>' : glyph(GLYPH[a.id], a.icon);
   if (locked) {
     const ghost = ic.replace(/fill="(?!none)[^"]*"/g, 'fill="none"').replace(/<(polygon|rect|circle|path|ellipse|polyline|text)/g, '<$1 stroke="#627a8b" stroke-width="1.5"');
     // Faintly in its group's colour (2026-10-08 playtest: a new player's wall read as a dark void).

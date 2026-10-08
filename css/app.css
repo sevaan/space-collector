@@ -512,3 +512,8 @@ body.day #toasts { bottom: calc(var(--safe-bottom) + 84px) !important; } /* no s
 #event-banner { top: calc(var(--safe-top) + 101px) !important; }
 #nextpass { top: calc(var(--safe-top) + 101px) !important; }
 body:has(#event-banner:not([hidden])) #nextpass { top: calc(var(--safe-top) + 141px) !important; }
+/* The UFO's Tap to collect (js/main.js ufoState): green, under the circle, where the normal button sits. */
+#ufo-cta { position: fixed; left: 50%; transform: translateX(-50%); z-index: 6; min-height: 44px; padding: 11px 22px; border: 0; border-radius: 4px; background: #7dff8a; color: #06140a;
+  font: 500 16px/1.2 var(--label); letter-spacing: .18em; text-transform: uppercase; cursor: pointer; box-shadow: 0 0 18px rgba(125,255,138,.35); }
+#ufo-cta small { position: absolute; left: 50%; top: calc(100% + 8px); transform: translateX(-50%); white-space: nowrap; font: 500 12px/1 var(--label); letter-spacing: .16em; color: #9cff9c; }
+body:has(#ufo-cta:not([hidden])) #toasts, body:has(#ufo-cta:not([hidden])) #banner { visibility: hidden; } /* nothing covers the UFO's button */

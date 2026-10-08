@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>UFO Secret</title>
+<style>
+  @font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf'); font-weight: 500; }
+  @font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf'); }
+  :root { --ink: #fff2b3; --orange: #fa8127; }
+  body { margin: 0; background: #04070d; color: #e8eef6; font: 15px/1.45 -apple-system, system-ui, sans-serif; padding: 24px 16px 60px; }
+  h1.t { font-size: 20px; margin: 0 0 6px; } .intro { color: #9fb0c6; margin: 0 0 22px; max-width: 1000px; }
+  .row { display: flex; flex-wrap: wrap; gap: 18px; justify-content: center; }
+  .cell { width: 390px; max-width: 100%; } .cell h2 { font-size: 16px; margin: 10px 0 4px; } .cell p { color: #9fb0c6; font-size: 13.5px; margin: 0; }
+  .phone { position: relative; width: 390px; height: 720px; border-radius: 30px; overflow: hidden; border: 1px solid #1d2838; background: linear-gradient(#0a1424, #13233a 70%); }
+  .stars i { position: absolute; width: 2px; height: 2px; border-radius: 50%; background: var(--ink); opacity: .55; }
+  .lab { font: 500 12px/1.2 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .16em; text-transform: uppercase; }
+  .hdr { position: absolute; left: 0; right: 0; top: 0; padding: 20px; display: flex; justify-content: space-between; }
+  .hdr b { font: 400 15px 'SC Display', sans-serif; color: var(--ink); }
+  .nav { position: absolute; left: 28px; right: 28px; bottom: 26px; height: 44px; border-radius: 99px; border: 1px solid #3a4a5e; display: flex; align-items: center; justify-content: space-around; color: #fff2b38c; font: 500 13px 'SC Label', sans-serif; letter-spacing: .14em; background: #080e1acc; }
+  .nav b { color: var(--orange); font-weight: 500; }
+  .ret { position: absolute; left: 50%; top: 340px; width: 124px; height: 124px; margin: -62px 0 0 -62px; border-radius: 50%; border: 1.5px solid var(--c, #fff2b3aa); }
+  .ret::before { content: ''; position: absolute; inset: -6px; border-radius: 50%; border: 1px solid #627a8b77; }
+  .ret i { position: absolute; background: var(--c, var(--orange)); } .ret .a { left: 50%; top: -16px; width: 2px; height: 10px; } .ret .b { left: 50%; bottom: -16px; width: 2px; height: 10px; } .ret .c { top: 50%; left: -16px; height: 2px; width: 10px; } .ret .d { top: 50%; right: -16px; height: 2px; width: 10px; }
+  .obj { position: absolute; transform: translate(-50%, -50%); }
+  .obj span { position: absolute; left: 16px; top: -6px; white-space: nowrap; font: 500 11px 'SC Label', sans-serif; letter-spacing: .06em; color: #fff2b3cc; }
+  .trail { position: absolute; border-top: 1.5px dashed #9cff9c66; transform-origin: 0 0; }
+  .say { position: absolute; left: 0; right: 0; text-align: center; }
+  .say small { display: block; color: #9cff9c; } .say b { display: block; margin-top: 6px; font: 400 24px/1 'SC Display', sans-serif; color: var(--ink); text-transform: uppercase; }
+  .cta { display: inline-block; margin-top: 16px; padding: 12px 22px; border-radius: 4px; background: #7dff8a; color: #06140a; font: 500 15px/1 'SC Label', sans-serif; letter-spacing: .18em; }
+  .moment { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 45%, rgba(8, 15, 27, .86), rgba(4, 7, 13, .96)); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; text-align: center; }
+  .moment svg.p { width: 230px; height: 230px; filter: drop-shadow(0 18px 30px #000a); }
+  .moment small { display: block; font: 500 13px 'SC Label', sans-serif; letter-spacing: .22em; color: var(--orange); }
+  .moment b { display: block; margin-top: 8px; font: 400 28px/1 'SC Display', sans-serif; color: var(--ink); text-transform: uppercase; }
+  .moment span { display: block; margin-top: 8px; font: 500 15px/1.3 'SC Label', sans-serif; color: #fff2b3b3; max-width: 280px; }
+</style></head><body>
+<h1 class="t">Easter egg: a UFO crossing the sky</h1>
+<p class="intro">Rare: at most once every couple of hours, only when at least 3 other things are up (so it hides in a busy sky). It looks like any other object at first: same size as a rocket stage, but a saucer icon with a faint green glow. It crosses in about a minute, then it's gone for good. Line it up and tap: a secret patch.</p>
+<div class="row" id="b"></div>
+<script>
+let seed = 5; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+const stars = () => `<div class="stars">${Array.from({ length: 45 }, () => `<i style="left:${rnd() * 100}%;top:${rnd() * 100}%"></i>`).join('')}</div>`;
+const hdr = '<div class="hdr"><b>SPACE COLLECTOR</b><span class="lab" style="color:#bdbea9">☾ ≡</span></div>';
+const nav = '<div class="nav"><b>EXPLORE</b><span>COLLECTION</span></div>';
+const ret = (c) => `<div class="ret" style="${c ? `--c:${c}` : ''}"><i class="a"></i><i class="b"></i><i class="c"></i><i class="d"></i></div>`;
+// UFO icon in the app's satellite-icon style: flat saucer, dome, three lights.
+const ufo = (s = 1, glow = .35) => `<svg width="${30 * s}" height="${18 * s}" viewBox="-15 -9 30 18" style="overflow:visible;filter:drop-shadow(0 0 ${6 * s}px rgba(125,255,138,${glow}))">
+  <path d="M-6 -1 Q-5 -7 0 -7 Q5 -7 6 -1Z" fill="#cfe8ff" fill-opacity=".85"/><ellipse rx="14" ry="4.2" fill="#fff2b3"/><ellipse rx="14" ry="4.2" fill="none" stroke="#c9b67a" stroke-width=".8"/>
+  <circle cx="-8" cy=".5" r="1.3" fill="#7dff8a"/><circle cx="0" cy="1.6" r="1.3" fill="#7dff8a"/><circle cx="8" cy=".5" r="1.3" fill="#7dff8a"/></svg>`;
+const sat = '<svg width="20" height="10" viewBox="-10 -5 20 10"><rect x="-3" y="-2" width="6" height="4" fill="#fff2b3"/><rect x="-10" y="-1.5" width="6" height="3" fill="#fff2b3" opacity=".8"/><rect x="4" y="-1.5" width="6" height="3" fill="#fff2b3" opacity=".8"/></svg>';
+const rocket = '<svg width="10" height="20" viewBox="-5 -10 10 20"><rect x="-3" y="-8" width="6" height="14" rx="2" fill="#fff2b3"/><path d="M-3 6 L-5 10 L5 10 L3 6Z" fill="#fa8127"/></svg>';
+const o = (x, y, icon, name) => `<div class="obj" style="left:${x}px;top:${y}px">${icon}${name ? `<span>${name}</span>` : ''}</div>`;
+const others = o(80, 200, sat, 'Cosmos 2082') + o(300, 160, rocket, 'SL-16 Rocket Stage') + o(320, 560, sat, 'Starlink-4412') + o(60, 520, sat, '');
+const trail = (x, y, len, ang) => `<div class="trail" style="left:${x}px;top:${y}px;width:${len}px;transform:rotate(${ang}deg)"></div>`;
+// patch: the same roundel as the others, deep night-green twill, the saucer with a beam
+const R = 60, stitches = Array.from({ length: 90 }, (_, i) => { const t = i * 4 * Math.PI / 180; return `<line x1="${(Math.cos(t) * (R - 6)).toFixed(2)}" y1="${(Math.sin(t) * (R - 6)).toFixed(2)}" x2="${(Math.cos(t) * R).toFixed(2)}" y2="${(Math.sin(t) * R).toFixed(2)}"/>`; }).join('');
+const patch = `<svg class="p" viewBox="-64 -64 128 128"><defs><path id="pt" d="M-42 0 A42 42 0 0 1 42 0"/><path id="pb" d="M-44 0 A44 44 0 0 0 44 0"/>
+  <pattern id="pw" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="4" height="4" fill="#123a2a"/><rect width="2" height="4" fill="#ffffff08"/></pattern>
+  <linearGradient id="beam" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7dff8a" stop-opacity=".55"/><stop offset="1" stop-color="#7dff8a" stop-opacity="0"/></linearGradient></defs>
+  <circle r="61" fill="#00000055" transform="translate(0 2)"/><circle r="60" fill="#e8dfb8"/><g stroke="#b9ad7e" stroke-width="1.6">${stitches}</g><circle r="53" fill="url(#pw)"/>
+  ${Array.from({ length: 14 }, () => `<circle cx="${(rnd() * 80 - 40).toFixed(1)}" cy="${(rnd() * 50 - 34).toFixed(1)}" r="${(0.5 + rnd()).toFixed(1)}" fill="#fff2b3" opacity=".7"/>`).join('')}
+  <path d="M-9 0 L-24 32 L24 32 L9 0Z" fill="url(#beam)"/><g transform="translate(0 -4) scale(1.7)">${ufo(1, 0).replace(/<svg[^>]*>|<\/svg>/g, '')}</g>
+  <text font-family="SC Label" font-size="10.5" letter-spacing="2" fill="#fff2b3" text-anchor="middle"><textPath href="#pt" startOffset="50%">CLOSE ENCOUNTER</textPath></text>
+  <text font-family="SC Label" font-size="8.5" letter-spacing="2" fill="#fa8127" text-anchor="middle" dy="7"><textPath href="#pb" startOffset="50%">SECRET</textPath></text></svg>`;
+const f1 = `${stars()}${others}${trail(-10, 420, 200, -22)}${o(150, 360, ufo(), '')}${ret()}${hdr}${nav}`;
+const f2 = `${stars()}${others}${trail(70, 395, 120, -22)}${o(195, 340, ufo(1.25, .7), '')}${ret('#7dff8a')}
+  <div class="say lab" style="top:226px"><small>✦ Unidentified</small><b>???</b></div>
+  <div class="say" style="top:420px"><span class="cta">TAP TO COLLECT</span><div class="lab" style="margin-top:8px;color:#9cff9c">Quick, it won't stay</div></div>${hdr}${nav}`;
+const f3 = `${stars()}${others}${ret()}<div class="say lab" style="top:250px;color:#9cff9c99">…</div>${hdr}${nav}`;
+const f4 = `${stars()}<div class="moment">${patch}<div><small>SECRET PATCH</small><b>Close Encounter</b><span>Something crossed your sky that isn't in any catalogue. You were looking.</span></div></div>${nav}`;
+const cells = [
+  ['1 · Hiding in a busy sky', 'Only when 3+ other things are up. It looks almost like the rest: rocket-stage size, no label, just a saucer icon with a faint green glow, moving a little faster than a satellite (crosses in about a minute).', f1],
+  ['2 · Lined up', 'The circle turns green (nothing else does that). "Unidentified · ???" and a green Tap to collect. No name, no card.', f2],
+  ['3 · Missed it', 'Once it reaches the edge it\'s gone: no trail, no listing in Tonight, nothing. Next chance is a couple of hours away, and only if the sky is busy.', f3],
+  ['4 · Caught', 'The patch moment: "Secret patch · Close Encounter". Night-green twill, the saucer with its beam. Joins the wall only once you have it, next to Fossil Hunter.', f4],
+];
+document.getElementById('b').innerHTML = cells.map(([t, d, f]) => `<div class="cell"><div class="phone">${f}</div><h2>${t}</h2><p>${d}</p></div>`).join('');
+</script></body></html>

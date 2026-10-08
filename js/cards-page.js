@@ -1,22 +1,22 @@
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.279';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.279';
-import { ticket } from './toast.js?v=0.1.279';
-import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.279';
-import { cardArt } from './art.js?v=0.1.279';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.279';
-import { applyBack } from './card-backs.js?v=0.1.279';
-import { SETS, assignSets } from './sets.js?v=0.1.279';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.279';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.279';
-import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.279';
-import { progress } from './progress.js?v=0.1.279';
-import { SOLAR_SYSTEM } from './natural.js?v=0.1.279';
-import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.279';
-import { drawShareCard, shareCard } from './share-card.js?v=0.1.279';
-import { conArt } from './con-art.js?v=0.1.279';
-import { CON_BY_ID } from './constellations.js?v=0.1.279';
-import { allSightings, deleteSighting } from './store.js?v=0.1.279';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.279';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.280';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.280';
+import { ticket } from './toast.js?v=0.1.280';
+import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.280';
+import { cardArt } from './art.js?v=0.1.280';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.280';
+import { applyBack } from './card-backs.js?v=0.1.280';
+import { SETS, assignSets } from './sets.js?v=0.1.280';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.280';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.280';
+import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.280';
+import { progress } from './progress.js?v=0.1.280';
+import { SOLAR_SYSTEM } from './natural.js?v=0.1.280';
+import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.280';
+import { drawShareCard, shareCard } from './share-card.js?v=0.1.280';
+import { conArt } from './con-art.js?v=0.1.280';
+import { CON_BY_ID } from './constellations.js?v=0.1.280';
+import { allSightings, deleteSighting } from './store.js?v=0.1.280';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.280';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -619,7 +619,9 @@ function renderPatches() {
   const wall = $('patch-wall'), dates = earnedDates();
   // The secret Fossil Hunter patch only joins the wall once found (js/fossil.js); no empty slot hints at it.
   let fossil = null; try { fossil = JSON.parse(localStorage.getItem('fossilFound')); } catch {}
-  const all = [...(fossil ? [{ id: 'fossil', name: 'Fossil Hunter', text: `Found a ${fossil.name} buried under your feet`, icon: '', secret: true, done: true }] : []), ...(state.achievements ?? [])];
+  let ufo = null; try { ufo = JSON.parse(localStorage.getItem('ufoFound')); } catch {}
+  const all = [...(fossil ? [{ id: 'fossil', name: 'Fossil Hunter', text: `Found a ${fossil.name} buried under your feet`, icon: '', secret: true, done: true }] : []), ...(ufo ? [{ id: 'ufo', name: 'Close Encounter', text: "Something crossed your sky that isn't in any catalogue", icon: '', secret: true, done: true }] : []), ...(state.achievements ?? [])];
+  if (ufo) dates.ufo ??= ufo.at;
   if (fossil) dates.fossil ??= fossil.at;
   const done = all.filter((a) => a.done).length;
   $('results').textContent = `${done} of ${all.length} patches earned`;
@@ -636,8 +638,9 @@ function renderPatches() {
 }
 function openPatch(id) {
   let fossil = null; try { fossil = JSON.parse(localStorage.getItem('fossilFound')); } catch {}
-  const all = [...(fossil ? [{ id: 'fossil', name: 'Fossil Hunter', text: `Found a ${fossil.name} buried under your feet`, icon: '', secret: true, done: true }] : []), ...(state.achievements ?? [])], a = all.find((x) => x.id === id); if (!a) return;
-  const date = earnedDates()[id] ?? (id === 'fossil' ? fossil?.at : null), f = finishOf(a);
+  let ufo = null; try { ufo = JSON.parse(localStorage.getItem('ufoFound')); } catch {}
+  const all = [...(fossil ? [{ id: 'fossil', name: 'Fossil Hunter', text: `Found a ${fossil.name} buried under your feet`, icon: '', secret: true, done: true }] : []), ...(ufo ? [{ id: 'ufo', name: 'Close Encounter', text: "Something crossed your sky that isn't in any catalogue", icon: '', secret: true, done: true }] : []), ...(state.achievements ?? [])], a = all.find((x) => x.id === id); if (!a) return;
+  const date = earnedDates()[id] ?? (id === 'fossil' ? fossil?.at : id === 'ufo' ? ufo?.at : null), f = finishOf(a);
   $('pv-position').textContent = `PATCH · ${all.filter((x) => x.done).length} / ${all.length}`;
   $('pv-body').innerHTML = `<div class="pv-patch">${patchHtml(a, { locked: !a.done, date: a.done && date ? fmtEarned(date) : '' })}</div>
     <h2>${esc(a.name)}</h2><p>${esc(a.text)}</p>

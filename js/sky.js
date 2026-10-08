@@ -1,9 +1,9 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.279';
+import { extinction } from './sky-limit.js?v=0.1.280';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.279';
-import { TIER_INFO } from './rarity.js?v=0.1.279';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.280';
+import { TIER_INFO } from './rarity.js?v=0.1.280';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -590,6 +590,29 @@ export class SkyView {
     }
   }
 
+  // The UFO (js/ufo.js): a little saucer with a faint green glow, no label. In the circle the ring turns green and
+  // "✦ UNIDENTIFIED / ???" shows above it (the Tap to collect button is #ufo-cta in the HUD). u: { enu, inCircle }.
+  drawUfo(u) {
+    const p = this.project(u.enu); if (!p || !this.onScreen(p, 30)) return;
+    const ctx = this.ctx, s = u.inCircle ? 1.25 : 1;
+    ctx.save(); ctx.translate(p.x, p.y); ctx.scale(s, s);
+    ctx.shadowColor = `rgba(125,255,138,${u.inCircle ? .8 : .45})`; ctx.shadowBlur = u.inCircle ? 12 : 7;
+    ctx.fillStyle = 'rgba(207,232,255,.85)'; ctx.beginPath(); ctx.moveTo(-6, -1); ctx.quadraticCurveTo(-5, -7, 0, -7); ctx.quadraticCurveTo(5, -7, 6, -1); ctx.fill();
+    ctx.fillStyle = '#fff2b3'; ctx.beginPath(); ctx.ellipse(0, 0, 14, 4.2, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.shadowBlur = 0; ctx.fillStyle = '#7dff8a'; for (const [x, y] of [[-8, .5], [0, 1.6], [8, .5]]) { ctx.beginPath(); ctx.arc(x, y, 1.3, 0, Math.PI * 2); ctx.fill(); }
+    ctx.restore();
+    if (u.inCircle) {
+      const rc = this.ring ?? { x: this.cx, y: this.cy, r: this.reticlePx };
+      ctx.save(); ctx.strokeStyle = '#7dff8a'; ctx.lineWidth = 1.8; ctx.beginPath(); ctx.arc(rc.x, rc.y, rc.r, 0, Math.PI * 2); ctx.stroke();
+      ctx.textAlign = 'center'; ctx.shadowColor = 'rgba(0,0,0,.6)'; ctx.shadowBlur = 4;
+      if ('letterSpacing' in ctx) ctx.letterSpacing = '2.5px';
+      ctx.font = `500 12px ${FONT}`; ctx.fillStyle = '#9cff9c'; ctx.fillText('✦ UNIDENTIFIED', rc.x, rc.y - rc.r - 54);
+      if ('letterSpacing' in ctx) ctx.letterSpacing = '1px';
+      ctx.font = `400 26px ${DISPLAY_FONT}`; ctx.fillStyle = 'rgb(255,242,179)'; ctx.fillText('???', rc.x, rc.y - rc.r - 24);
+      ctx.restore();
+    }
+  }
+
   // The quiet ring at your feet (design/compass-feet.html, option C): a thin compass ring drawn flat on the
   // screen around the point straight below you, turning as you turn. Everything below the horizon sits on the ring
   // at the direction it will come up, with its time. Nothing in the middle. Fades in as you look down.
@@ -934,7 +957,7 @@ export class SkyView {
 
   // safeTop/safeBottom are HUD insets in CSS pixels; centerY is an optional pixel
   // override. Projection and the reticle always share the same cx/cy.
-  draw(basis, items, { showDim, sky, bodies, milky, lines = true, targetId = null, time = 0, safeTop = 150, safeBottom = 230, centerY, starLimit = null, naturalTargetName = null, quietTarget = false, below = null, ownedTarget = false, sunEl = -90, ghosts = null, weather = null, newFind = false, rising = null, landscape = false, lockedOn = null, planes = null, planeHit = null, planeTrail = null, naturalTarget = null, fossil = null } = {}) {
+  draw(basis, items, { showDim, sky, bodies, milky, lines = true, targetId = null, time = 0, safeTop = 150, safeBottom = 230, centerY, starLimit = null, naturalTargetName = null, quietTarget = false, below = null, ownedTarget = false, sunEl = -90, ghosts = null, weather = null, newFind = false, rising = null, landscape = false, lockedOn = null, planes = null, planeHit = null, planeTrail = null, naturalTarget = null, fossil = null, ufo = null } = {}) {
     this.basis = basis;
     this.safeTop = Math.max(12, Math.min(safeTop, this.h * 0.45));
     this.safeBottom = Math.max(12, Math.min(safeBottom, this.h - this.safeTop - 100));
@@ -1029,6 +1052,7 @@ export class SkyView {
     const locked = lockedOn ?? (!!focus && focus.obj.id === targetId && !!focus.candidate);
     if (planeAt && !locked) this.drawReticle(true, 0, false, planeAt);
     else { this.ownedInk = ownedTarget; this.drawReticle(locked, this.reducedMotion ? 0 : time, newFind && locked && !quietTarget, null, quietTarget); }
+    if (ufo) this.drawUfo(ufo);
     this.drawLabels();
   }
 
