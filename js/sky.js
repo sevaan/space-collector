@@ -1,9 +1,9 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.320';
+import { extinction } from './sky-limit.js?v=0.1.321';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.320';
-import { TIER_INFO } from './rarity.js?v=0.1.320';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.321';
+import { TIER_INFO } from './rarity.js?v=0.1.321';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -555,17 +555,17 @@ export class SkyView {
 
   drawLandscape() {
     const ctx = this.ctx, t = this.theme;
-    ctx.save();
+    ctx.save(); const base = ctx.globalAlpha; // camera view draws the whole landscape see-through
     // Haze glowing just above the horizon (a touch of distant light pollution).
     for (const [w, alpha] of [[5, 0.05], [2.5, 0.06]]) {
       ctx.strokeStyle = t.haze ?? 'rgba(120, 150, 180, 1)';
-      ctx.globalAlpha = alpha;
+      ctx.globalAlpha = alpha * base;
       ctx.lineWidth = w * this.f * RAD;
       const pts = [];
       for (let az = 0; az <= 360; az += 3) pts.push(enuFromAzEl(az, w * 0.3));
       this.path(pts);
     }
-    ctx.globalAlpha = 1;
+    ctx.globalAlpha = base;
     // Daytime colour (2026-10-08, Sevaan): by day the hills are hazy blue-green and the pines a deep green, blending back
     // to the night silhouettes through twilight (dayF).
     const dF = this.theme === THEMES.night ? 0 : (this.dayF ?? 0);
@@ -658,7 +658,7 @@ export class SkyView {
     const az = (Math.atan2(f.enu[0], f.enu[1]) / RAD + 360) % 360, el = Math.asin(f.enu[2]) / RAD;
     const a = this.project(enuFromAzEl(az - 6, el)), b = this.project(enuFromAzEl(az + 6, el)); if (!a || !b) return;
     const ang = Math.atan2(b.y - a.y, b.x - a.x), span = Math.hypot(b.x - a.x, b.y - a.y) * 1.9; // ~23° of ground
-    const w = Math.max(70, Math.min(this.w * 0.75, span)), h = w * f.img.naturalHeight / f.img.naturalWidth;
+    const w = Math.max(52, Math.min(this.w * 0.56, span * 0.75)), /* 75% of the first size (2026-10-08) */ h = w * f.img.naturalHeight / f.img.naturalWidth;
     const ctx = this.ctx, k = Math.min(1, (dayF - 0.5) * 4);
     ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(ang > Math.PI / 2 || ang < -Math.PI / 2 ? ang + Math.PI : ang);
     if (f.inCircle && !f.done) { ctx.shadowColor = 'rgba(255,229,192,.55)'; ctx.shadowBlur = 14; ctx.globalAlpha = 0.95 * k; }
@@ -1115,9 +1115,11 @@ export class SkyView {
     if (ghosts?.length) this.drawGhosts(ghosts);
     this.feetA = Math.max(0, Math.min(1, (-this.basis.back[2] - 0.8) / 0.1)); // fades in from ~53° down, full by ~64° (it is on the ground now, so it can show sooner)
     this.drawGround();
-    if (landscape) this.drawLandscape(); // trees, hills and meadow stay, over the camera too
+    if (landscape) { // trees, hills and meadow; in camera view see-through like the sky and ground (an overlay of our world on yours)
+      if (this.camera) { ctx.save(); ctx.globalAlpha = 0.6; this.drawLandscape(); ctx.restore(); } else this.drawLandscape();
+    }
     this.drawGroundCompass();
-    if (fossil) this.drawFossil(fossil);
+    if (fossil && !this.camera) this.drawFossil(fossil); // not in camera view
     // Looking down: the quiet ring takes over from the see-through ghosts (same things, by rise direction).
     this.belowFree = !targetId && !planeHit; // the circle can name a below-horizon thing only when it isn't busy
     if (below?.length && this.basis.back[2] < 0.15 && this.feetA < 0.98) this.drawBelow(below);

@@ -286,3 +286,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - Compass figure-8 toast waits until motion has been live 20 s (no flash on refresh). Settings → Aiming → Compass nudge has a Reset (back to 0°). Camera view's instructions are a short bottom toast ("Drawing off? Drag sideways to line it up.").
 - Snap onto targets is off by default.
 - Camera view ground: a see-through ground-colour layer below the horizon (70% at the horizon → 30% → 0 by ~45° down), so looking down shows your room or the field clearly.
+- Dino bones drawn at 75% of their first size and not shown in camera view; in camera view the landscape (hills, trees, meadow) is see-through (60%) like the sky and ground.
