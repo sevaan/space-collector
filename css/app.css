@@ -464,3 +464,7 @@ html.quick #hud[hidden] > :not(#sky-header):not(#nav):not(#skybar) { display: no
 /* The name never collapses to nothing: the time gives way first. */
 #nextpass .np-n { min-width: 4.5em; }
 #nextpass .np-m { flex: 0 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+/* The sky slider only matters once it's getting dark (2026-10-08, Sevaan): gone in daylight, fades back in at dusk
+   (body.day is set while the Sun is above −2°). */
+#skybar { transition: opacity .8s ease; }
+body.day #skybar { opacity: 0; pointer-events: none; }
