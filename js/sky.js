@@ -1,9 +1,9 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.242';
+import { extinction } from './sky-limit.js?v=0.1.243';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.242';
-import { TIER_INFO } from './rarity.js?v=0.1.242';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.243';
+import { TIER_INFO } from './rarity.js?v=0.1.243';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -824,7 +824,9 @@ export class SkyView {
       }
       if (isTarget) this.targetPos = { x: p.x, y: p.y };
       if (look.visible) this.hits.push({ id: it.obj.id, x: p.x, y: p.y });
-      const size = look.visible || isTarget ? this.iconSize(look.mag, it.obj) * (isTarget ? 1.3 : 1) : 7;
+      // In the circle the icon grows to about twice its size (2026-10-07: 1.3× read as barely bigger), easing in.
+      if (isTarget) { const want = lockedOn ? 2.1 : 1.35; this.tgtScale = (this.tgtId === it.obj.id ? this.tgtScale : 1) + (want - (this.tgtId === it.obj.id ? this.tgtScale : 1)) * (this.reducedMotion ? 1 : 0.22); this.tgtId = it.obj.id; }
+      const size = look.visible || isTarget ? this.iconSize(look.mag, it.obj) * (isTarget ? this.tgtScale : 1) : 7;
       const radius = size / 2;
       ctx.save();
       if (targetId && !isTarget) ctx.globalAlpha = look.visible ? 0.60 : 0.35;
@@ -899,7 +901,7 @@ export class SkyView {
       ctx.translate(p.x, p.y);
       if (q) ctx.rotate(Math.atan2(q.y - p.y, q.x - p.x));
       ctx.globalAlpha = hit ? 1 : 0.55;
-      this.drawIcon(a.plane.heli ? 'heli' : 'plane', 0, 0, hit ? 13 : 10, hit ? t.plane : t.planeDim); // same scale as satellites (9–12, ×1.3 when targeted)
+      this.drawIcon(a.plane.heli ? 'heli' : 'plane', 0, 0, hit ? 20 : 10, hit ? t.plane : t.planeDim); // same scale as satellites (9–12, ×1.3 when targeted)
       ctx.restore();
       if (hit) hitAt = { x: p.x, y: p.y };
     }
