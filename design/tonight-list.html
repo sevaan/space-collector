@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tonight List</title>
+<style>
+  @font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf'); font-weight: 500; }
+  @font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf'); }
+  :root { --ink: #fff2b3; --muted: #bdbea9; --orange: #fa8127; --edge: #344654; --c-common: #aeb6bf; --c-uncommon: #5fc48a; --c-rare: #4d9be6; --c-epic: #a77bf0; --c-legendary: #f2c14e; }
+  body { margin: 0; background: #04070d; color: #e8eef6; font: 15px/1.45 -apple-system, system-ui, sans-serif; padding: 24px 16px 60px; }
+  h1.t { font-size: 20px; margin: 0 0 6px; } .intro { color: #9fb0c6; margin: 0 0 22px; max-width: 1080px; }
+  .row { display: flex; flex-wrap: wrap; gap: 22px; justify-content: center; }
+  .cell { width: 390px; max-width: 100%; } .cell h2 { font-size: 16px; margin: 12px 0 4px; } .cell p { color: #9fb0c6; font-size: 13.5px; margin: 0; }
+  .phone { position: relative; width: 390px; max-width: 100%; height: 720px; border-radius: 30px; overflow: hidden; border: 1px solid #1d2838; background: #080f1b; display: flex; flex-direction: column; }
+  .scroll { overflow-y: auto; flex: 1; padding: 0 16px 20px; scrollbar-width: none; }
+  .lab { font: 500 12px/1.2 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .16em; text-transform: uppercase; }
+  .ph-head { padding: 22px 16px 10px; }
+  .ph-head .disp { font: 400 20px/1 'SC Display', sans-serif; color: var(--ink); text-transform: uppercase; }
+  button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+  svg { display: block; }
+  .ic { width: 40px; height: 40px; flex: none; border-radius: 50%; display: grid; place-items: center; border: 1.5px solid var(--edge); color: var(--ink); }
+  .ic svg { width: 20px; height: 20px; }
+  .ic.go { border-color: var(--orange); color: var(--orange); }
+  .ic.on { background: var(--orange); border-color: var(--orange); color: #080f1b; }
+  .gem { display: inline-block; width: 8px; height: 8px; transform: rotate(45deg); background: var(--c); flex: none; }
+  .new { color: var(--orange); font: 500 11px/1 'SC Label', sans-serif; letter-spacing: .14em; margin-left: 6px; }
+  .name { font: 400 16px/1.15 'SC Display', sans-serif; color: var(--ink); text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .meta { font: 500 14px/1.25 'SC Label', sans-serif; letter-spacing: .03em; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .empty { padding: 30px 10px; text-align: center; color: var(--muted); font: 500 14px 'SC Label', sans-serif; letter-spacing: .04em; }
+
+  /* Filters */
+  .chips { display: flex; gap: 6px; overflow-x: auto; padding: 2px 16px 12px; scrollbar-width: none; flex: none; }
+  .chip { flex: none; display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; border-radius: 99px; border: 1px solid var(--edge); color: var(--muted); }
+  .chip b { font-weight: 500; color: var(--ink); opacity: .6; }
+  .chip.on { border-color: var(--c, var(--orange)); color: var(--ink); background: color-mix(in srgb, var(--c, var(--orange)) 18%, transparent); }
+  .chip.on b { opacity: 1; }
+
+  /* A · Compact timeline */
+  .a-row { display: grid; grid-template-columns: 62px 1fr 40px; gap: 10px; align-items: center; padding: 11px 0; border-bottom: 1px solid #142033; }
+  .a-time b { display: block; font: 400 15px/1 'SC Display', sans-serif; color: var(--ink); }
+  .a-time small { display: block; margin-top: 4px; color: var(--orange); }
+  .a-time small.later { color: var(--muted); }
+  .a-main { min-width: 0; }
+  .a-main .top { display: flex; align-items: center; gap: 7px; min-width: 0; }
+  .a-main .meta { margin-top: 3px; }
+  .soon-head { display: flex; justify-content: space-between; align-items: baseline; padding: 14px 0 2px; color: var(--muted); }
+  .soon-head span:last-child { letter-spacing: .06em; text-transform: none; font-size: 12px; }
+
+  /* B · Tier bars, now vs later */
+  .b-sec { padding: 16px 0 6px; display: flex; justify-content: space-between; align-items: baseline; }
+  .b-row { position: relative; display: flex; gap: 12px; align-items: center; padding: 10px 10px 10px 14px; margin-bottom: 8px; border-radius: 10px; background: #0c1725; border: 1px solid #172536; overflow: hidden; }
+  .b-row::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--c); }
+  .b-when { width: 54px; flex: none; text-align: center; }
+  .b-when b { display: block; font: 400 18px/1 'SC Display', sans-serif; color: var(--ink); }
+  .b-when small { display: block; margin-top: 3px; color: var(--muted); }
+  .b-when.now b { color: var(--orange); }
+  .b-main { flex: 1; min-width: 0; }
+  .b-tier { color: var(--c); font: 500 11px/1 'SC Label', sans-serif; letter-spacing: .16em; text-transform: uppercase; }
+  .b-main .name { margin-top: 3px; }
+  .b-main .meta { margin-top: 3px; font-size: 13px; }
+
+  /* C · Direction dial + expand */
+  .c-row { border-bottom: 1px solid #142033; }
+  .c-head { width: 100%; display: grid; grid-template-columns: 46px 1fr auto; gap: 12px; align-items: center; padding: 10px 0; text-align: left; }
+  .c-dial { width: 46px; height: 46px; }
+  .c-main { min-width: 0; }
+  .c-main .top { display: flex; align-items: center; gap: 7px; }
+  .c-right { text-align: right; }
+  .c-right b { display: block; font: 400 15px/1 'SC Display', sans-serif; color: var(--ink); }
+  .c-right small { display: block; margin-top: 4px; color: var(--orange); }
+  .c-right small.later { color: var(--muted); }
+  .c-acts { display: none; gap: 8px; padding: 0 0 12px 58px; }
+  .c-row.open .c-acts { display: flex; }
+  .pillbtn { display: inline-flex; align-items: center; gap: 6px; height: 38px; padding: 0 12px; white-space: nowrap; border-radius: 99px; border: 1px solid var(--edge); color: var(--ink); }
+  .pillbtn svg { width: 17px; height: 17px; }
+  .pillbtn.go { border-color: var(--orange); color: var(--orange); }
+  .pillbtn.on { background: var(--orange); color: #080f1b; border-color: var(--orange); }
+  .pillbtn[disabled] { opacity: .45; }
+  .sel { display: flex; gap: 8px; padding: 0 16px 12px; align-items: center; flex: none; }
+  .sel select { appearance: none; -webkit-appearance: none; height: 34px; padding: 0 30px 0 12px; border-radius: 99px; border: 1px solid var(--edge); background: #0c1725 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23bdbea9' fill='none' stroke-width='1.5'/%3E%3C/svg%3E") no-repeat right 12px center; color: var(--ink); font: 500 13px 'SC Label', sans-serif; letter-spacing: .1em; text-transform: uppercase; }
+  .toggle { display: inline-flex; align-items: center; gap: 8px; height: 34px; padding: 0 12px; border-radius: 99px; border: 1px solid var(--edge); color: var(--muted); }
+  .toggle.on { border-color: var(--orange); color: var(--ink); }
+</style></head><body>
+<h1 class="t">Tonight list: three directions, with a rarity filter</h1>
+<p class="intro"><b>Why some rows had no bell:</b> the reminder goes off 10 minutes before a pass, so a pass less than 10 minutes away can't have one (the alarm would already be in the past). Today the bell just vanishes, which looks like a bug. Each option below says it instead. Same passes in all three (your screenshot's list plus a few later ones). The filters work: tap them.</p>
+<div class="row" id="b"></div>
+<script>
+const TIERS = ['common', 'uncommon', 'rare', 'epic', 'legendary'];
+const C = (t) => `var(--c-${t})`;
+const now = new Date(); now.setHours(20, 46, 0, 0);
+const at = (h, m) => { const d = new Date(now); d.setHours(h, m, 0, 0); return d; };
+const P = [
+  ['SL-16 Rocket Stage', 'uncommon', at(20, 47), 'W', 57, 'W', 'easy to see', 1],
+  ['SL-8 Rocket Stage', 'epic', at(20, 48), 'SE', 71, 'E', 'easy to see', 1],
+  ['SL-8 Rocket Stage', 'rare', at(20, 51), 'NE', 65, 'NE', 'easy to see', 1],
+  ['Terra', 'uncommon', at(20, 51), 'NE', 37, 'NE', 'easy to see', 1],
+  ['Cosmos 1818', 'rare', at(20, 52), 'S', 76, 'E', 'easy to see', 1],
+  ['Cosmos 2506', 'common', at(20, 53), 'S', 70, 'W', 'bright', 1],
+  ['CZ-4C Debris', 'uncommon', at(20, 54), 'NE', 58, 'NE', 'easy to see', 1],
+  ['Delta 1 Rocket Stage', 'epic', at(20, 57), 'S', 80, 'SW', 'easy to see', 1],
+  ['SL-8 Rocket Stage', 'rare', at(20, 57), 'NE', 74, 'NE', 'easy to see', 1],
+  ['SL-8 Rocket Stage', 'rare', at(20, 58), 'N', 62, 'E', 'easy to see', 0],
+  ['ISS', 'legendary', at(21, 22), 'WSW', 68, 'S', 'very bright', 0],
+  ['Hubble', 'rare', at(21, 40), 'SW', 34, 'S', 'easy to see', 1],
+  ['Lacrosse 5', 'epic', at(22, 5), 'W', 48, 'NW', 'faint', 1],
+  ['Atlas Centaur R/B', 'uncommon', at(22, 31), 'N', 81, 'E', 'easy to see', 0],
+].map(([name, tier, t, from, el, to, how, fresh], i) => ({ i, name, tier, t, from, el, to, how, fresh }));
+const AZ = { N: 0, NNE: 22, NE: 45, ENE: 67, E: 90, ESE: 112, SE: 135, SSE: 157, S: 180, SSW: 202, SW: 225, WSW: 247, W: 270, WNW: 292, NW: 315, NNW: 337 };
+const fmt = (d) => d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }).replace(/\s?[AP]M/, '');
+const ampm = (d) => d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+const mins = (p) => Math.round((p.t - now) / 60000);
+const until = (p) => { const m = mins(p); return m < 60 ? `in ${m} min` : `in ${Math.floor(m / 60)} h ${m % 60 ? `${m % 60} min` : ''}`.trim(); };
+const canRemind = (p) => mins(p) > 10;
+const label = (t) => t[0].toUpperCase() + t.slice(1);
+const TARGET = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="6.5"/><circle cx="12" cy="12" r="1.6" fill="currentColor"/><path d="M12 2.5v4M12 17.5v4M2.5 12h4M17.5 12h4"/></svg>';
+const BELL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 1.5h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg>';
+const CARD = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="6" y="3" width="12" height="18" rx="2"/><path d="M9 8h6M9 12h6"/></svg>';
+const rings = new Set([7]); // one already set, to show the lit bell
+
+// A · Compact timeline: one line per pass, one action that changes with time; rarity chips with counts.
+function A(root, st = { tier: 'all' }) {
+  const list = P.filter((p) => st.tier === 'all' || p.tier === st.tier);
+  const chips = ['all', ...TIERS].map((t) => { const n = t === 'all' ? P.length : P.filter((p) => p.tier === t).length; return n ? `<button class="chip lab${st.tier === t ? ' on' : ''}" data-t="${t}" style="${t === 'all' ? '' : `--c:${C(t)}`}">${t === 'all' ? '' : '<i class="gem" style="--c:' + C(t) + '"></i>'}${t === 'all' ? 'All' : label(t)} <b>${n}</b></button>` : ''; }).join('');
+  let html = '', soon = list.filter((p) => !canRemind(p)), later = list.filter(canRemind);
+  const row = (p) => `<div class="a-row"><div class="a-time"><b>${fmt(p.t)}</b><small class="lab${canRemind(p) ? ' later' : ''}">${until(p)}</small></div>
+    <div class="a-main"><div class="top"><i class="gem" style="--c:${C(p.tier)}"></i><span class="name">${p.name}</span>${p.fresh ? '<span class="new">NEW</span>' : ''}</div><div class="meta">${p.from} → ${p.el}° ${p.to} · ${p.how}</div></div>
+    ${canRemind(p) ? `<button class="ic${rings.has(p.i) ? ' on' : ''}" data-r="${p.i}" aria-label="Remind me">${BELL}</button>` : `<button class="ic go" aria-label="Show me">${TARGET}</button>`}</div>`;
+  if (soon.length) html += `<div class="soon-head lab"><span>Starting soon</span><span>Too soon for a reminder: aim now</span></div>` + soon.map(row).join('');
+  if (later.length) html += `<div class="soon-head lab"><span>Later tonight</span><span>Tap the bell for a 10-min alert</span></div>` + later.map(row).join('');
+  root.innerHTML = `<div class="ph-head"><div class="disp">Tonight</div></div><div class="chips">${chips}</div><div class="scroll">${html || '<div class="empty">Nothing of that rarity tonight.</div>'}</div>`;
+  root.querySelectorAll('[data-t]').forEach((b) => b.onclick = () => A(root, { tier: b.dataset.t }));
+  root.querySelectorAll('[data-r]').forEach((b) => b.onclick = () => { const i = +b.dataset.r; rings.has(i) ? rings.delete(i) : rings.add(i); A(root, st); });
+}
+
+// B · Tier-bar cards, split into Up next / Later; filter = tap the tier swatches (multi-select, "rare and up" in one tap).
+function B(root, st = { min: 0, newOnly: false }) {
+  const list = P.filter((p) => TIERS.indexOf(p.tier) >= st.min && (!st.newOnly || p.fresh));
+  const chips = TIERS.map((t, i) => `<button class="chip lab${i >= st.min ? ' on' : ''}" data-m="${i}" style="--c:${C(t)}"><i class="gem" style="--c:${C(t)}"></i>${label(t)}${i === st.min && i ? '+' : ''}</button>`).join('') + `<button class="chip lab${st.newOnly ? ' on' : ''}" data-n>New only</button>`;
+  const row = (p) => `<div class="b-row" style="--c:${C(p.tier)}"><div class="b-when${canRemind(p) ? '' : ' now'}"><b>${fmt(p.t)}</b><small class="lab">${canRemind(p) ? until(p).replace('in ', '') : `${mins(p)} min`}</small></div>
+    <div class="b-main"><div class="b-tier">${label(p.tier)}${p.fresh ? ' · <span style="color:var(--orange)">New</span>' : ''}</div><div class="name">${p.name}</div><div class="meta">Rises ${p.from} · up to ${p.el}° in the ${p.to} · ${p.how}</div></div>
+    ${canRemind(p) ? `<button class="ic${rings.has(p.i) ? ' on' : ''}" data-r="${p.i}" aria-label="Remind me">${BELL}</button>` : `<button class="ic go" aria-label="Show me">${TARGET}</button>`}</div>`;
+  const soon = list.filter((p) => !canRemind(p)), later = list.filter(canRemind);
+  const html = (soon.length ? `<div class="b-sec lab"><span style="color:var(--orange)">Up next · ${soon.length}</span><span style="color:var(--muted)">Aim now</span></div>${soon.map(row).join('')}` : '')
+    + (later.length ? `<div class="b-sec lab"><span style="color:var(--ink)">Later tonight · ${later.length}</span><span style="color:var(--muted)">Set an alert</span></div>${later.map(row).join('')}` : '');
+  root.innerHTML = `<div class="ph-head"><div class="disp">Tonight</div></div><div class="chips">${chips}</div><div class="scroll">${html || '<div class="empty">Nothing that rare tonight. Try a lower rarity.</div>'}</div>`;
+  root.querySelectorAll('[data-m]').forEach((b) => b.onclick = () => B(root, { ...st, min: +b.dataset.m === st.min ? 0 : +b.dataset.m }));
+  root.querySelector('[data-n]').onclick = () => B(root, { ...st, newOnly: !st.newOnly });
+  root.querySelectorAll('[data-r]').forEach((b) => b.onclick = () => { const i = +b.dataset.r; rings.has(i) ? rings.delete(i) : rings.add(i); B(root, st); });
+}
+
+// C · A little dial per row (rise → highest point), tap a row to open its actions; filter = a select + New toggle.
+function dial(p) {
+  const pt = (az, el) => { const r = 19 * (1 - el / 90), a = az * Math.PI / 180; return [23 + Math.sin(a) * r, 23 - Math.cos(a) * r]; };
+  const [x0, y0] = pt(AZ[p.from] ?? 0, 0), [x1, y1] = pt(AZ[p.to] ?? 0, p.el), mx = (x0 + x1) / 2 + (23 - (x0 + x1) / 2) * .35, my = (y0 + y1) / 2 + (23 - (y0 + y1) / 2) * .35;
+  return `<svg class="c-dial" viewBox="0 0 46 46"><circle cx="23" cy="23" r="21" fill="#0c1725" stroke="#344654"/><circle cx="23" cy="23" r="10" fill="none" stroke="#1c2b3c"/><text x="23" y="8" text-anchor="middle" font-size="6" fill="#fa8127" font-family="SC Label">N</text>
+    <path d="M${x0.toFixed(1)} ${y0.toFixed(1)} Q${mx.toFixed(1)} ${my.toFixed(1)} ${x1.toFixed(1)} ${y1.toFixed(1)}" fill="none" stroke="${getComputedStyle(document.documentElement).getPropertyValue('--c-' + p.tier)}" stroke-width="1.8" stroke-dasharray="2.5 2"/><circle cx="${x1.toFixed(1)}" cy="${y1.toFixed(1)}" r="2.6" fill="#fff2b3"/></svg>`;
+}
+function Cc(root, st = { min: 0, newOnly: false, open: 1 }) {
+  const list = P.filter((p) => TIERS.indexOf(p.tier) >= st.min && (!st.newOnly || p.fresh));
+  const html = list.map((p) => `<div class="c-row${st.open === p.i ? ' open' : ''}"><button class="c-head" data-o="${p.i}">${dial(p)}
+      <span class="c-main"><span class="top"><i class="gem" style="--c:${C(p.tier)}"></i><span class="name">${p.name}</span>${p.fresh ? '<span class="new">NEW</span>' : ''}</span><span class="meta" style="display:block;margin-top:3px">${label(p.tier)} · ${p.el}° up · ${p.how}</span></span>
+      <span class="c-right"><b>${fmt(p.t)}</b><small class="lab${canRemind(p) ? ' later' : ''}">${until(p)}</small></span></button>
+    <div class="c-acts"><button class="pillbtn go lab">${TARGET}Show me</button>${canRemind(p) ? `<button class="pillbtn lab${rings.has(p.i) ? ' on' : ''}" data-r="${p.i}">${BELL}${rings.has(p.i) ? 'Alert set' : 'Remind me'}</button>` : `<button class="pillbtn lab" disabled>${BELL}Too soon</button>`}<button class="pillbtn lab">${CARD}Card</button></div></div>`).join('');
+  root.innerHTML = `<div class="ph-head"><div class="disp">Tonight</div></div><div class="sel"><select aria-label="Rarity">${['All rarities', 'Uncommon and up', 'Rare and up', 'Epic and up', 'Legendary'].map((t, i) => `<option value="${i}"${i === st.min ? ' selected' : ''}>${t}</option>`).join('')}</select><button class="toggle lab${st.newOnly ? ' on' : ''}" data-n>New only</button><span class="lab" style="margin-left:auto;color:var(--muted)">${list.length}</span></div><div class="scroll">${html || '<div class="empty">Nothing that rare tonight.</div>'}</div>`;
+  root.querySelector('select').onchange = (e) => Cc(root, { ...st, min: +e.target.value });
+  root.querySelector('[data-n]').onclick = () => Cc(root, { ...st, newOnly: !st.newOnly });
+  root.querySelectorAll('[data-o]').forEach((b) => b.onclick = () => Cc(root, { ...st, open: st.open === +b.dataset.o ? -1 : +b.dataset.o }));
+  root.querySelectorAll('[data-r]').forEach((b) => b.onclick = (e) => { e.stopPropagation(); const i = +b.dataset.r; rings.has(i) ? rings.delete(i) : rings.add(i); Cc(root, st); });
+}
+
+const cells = [
+  ['A · Compact timeline', 'One line of info per pass, so twice as many fit. Name never wraps (it trims). One button that changes with time: a target while it\'s too soon to remind, a bell after. Split into "Starting soon" and "Later tonight" with a line saying why. Rarity chips with counts; tap one to show only that rarity.', A],
+  ['B · Up next / Later cards', 'Each pass is a small card with a rarity colour bar, so rare ones stand out while scrolling. The tier filter is a ladder: tap Rare and it shows Rare and up (tap again for all), plus New only. Up next aims now; Later sets an alert.', B],
+  ['C · Direction dial', 'A tiny sky dial per row draws where it comes up and how high it gets, instead of "W → 57° W". Tap a row to open its actions: Show me, Remind me (or "Too soon", disabled, so the reason is visible), and the card. Filter is a select ("Rare and up") plus New only, with a count.', Cc],
+];
+const box = document.getElementById('b');
+for (const [t, d, f] of cells) { const c = document.createElement('div'); c.className = 'cell'; c.innerHTML = `<div class="phone"></div><h2>${t}</h2><p>${d}</p>`; box.append(c); f(c.querySelector('.phone')); }
+</script></body></html>
