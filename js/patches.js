@@ -93,16 +93,41 @@ export function patchSvg(a, { locked = false, date = '', stitch = false } = {}) 
     // Faintly in its group's colour (2026-10-08 playtest: a new player's wall read as a dark void).
     return `<svg class="patch-svg" viewBox="-64 -64 128 128" aria-hidden="true"><circle r="${R - 3}" fill="${g.c}" fill-opacity=".45" stroke="#bcb585" stroke-opacity=".45" stroke-width="1.2" stroke-dasharray="3 3"/><g opacity=".55" transform="scale(.82)">${ghost.replace(/#627a8b/g, '#bcb585')}</g></svg>`;
   }
-  const stitches = Array.from({ length: 90 }, (_, i) => { const t = i * 4 * Math.PI / 180; return `<line x1="${(Math.cos(t) * (R - 6)).toFixed(2)}" y1="${(Math.sin(t) * (R - 6)).toFixed(2)}" x2="${(Math.cos(t) * R).toFixed(2)}" y2="${(Math.sin(t) * R).toFixed(2)}"/>`; }).join('');
+  // Higher fidelity (2026-10-08, Sevaan): a real embroidered patch.
+  //  · merrowed edge: a dense satin wrap of short slanted threads in two shades, with a soft shadow under the rim
+  //  · twill: woven diagonal threads plus a fine fabric noise, shaded darker toward the edge
+  //  · embroidery (icon and lettering): thread texture, a raised feel (light from the top left, a shadow below)
+  //  · a running-stitch ring inside the border
+  const n = 160, rim = R - 1, rIn = R - 8;
+  const merrow = Array.from({ length: n }, (_, i) => { const t = (i / n) * Math.PI * 2, t2 = t + 0.075; const c = i % 2 ? '#d9cc98' : '#efe4bb';
+    return `<line x1="${(Math.cos(t) * rIn).toFixed(2)}" y1="${(Math.sin(t) * rIn).toFixed(2)}" x2="${(Math.cos(t2) * rim).toFixed(2)}" y2="${(Math.sin(t2) * rim).toFixed(2)}" stroke="${c}"/>`; }).join('');
   const name = a.name.toUpperCase(), nameSize = name.length > 16 ? 8.5 : name.length > 12 ? 9.5 : 11;
+  const lift = `filter="url(#${id}e)"`;
   return `<svg class="patch-svg" viewBox="-64 -64 128 128" aria-hidden="true"><defs><path id="${id}t" d="M-42 0 A42 42 0 0 1 42 0"/><path id="${id}b" d="M-44 0 A44 44 0 0 0 44 0"/>
-    <pattern id="${id}w" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="4" height="4" fill="${g.c}"/><rect width="2" height="4" fill="#ffffff08"/></pattern>
-    ${stitch ? `<mask id="${id}m"><circle class="patch-thread" r="${R - 3}" fill="none" stroke="#fff" stroke-width="10" pathLength="100" transform="rotate(-90)"/></mask>` : ''}</defs>
-    <circle r="${R + 1}" fill="#00000055" transform="translate(0 2)"/><circle r="${R}" fill="#e8dfb8"/><g stroke="#b9ad7e" stroke-width="1.6"${stitch ? ` mask="url(#${id}m)"` : ''}>${stitches}</g>
-    <circle r="${R - 7}" fill="url(#${id}w)"/>${fossil ? '' : `<circle r="${R - 22}" fill="none" stroke="${INK}" stroke-opacity=".35" stroke-width="1"/>`}
-    <text font-family="SC Label, Arial Narrow, sans-serif" font-size="${nameSize}" letter-spacing="2" fill="${INK}" text-anchor="middle"><textPath href="#${id}t" startOffset="50%">${esc(name)}</textPath></text>
+    <pattern id="${id}w" width="3" height="3" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="3" height="3" fill="${g.c}"/><rect width="1.4" height="3" fill="#ffffff10"/><rect x="1.4" width=".4" height="3" fill="#00000022"/></pattern>
+    <radialGradient id="${id}s" r="1"><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".38"/></radialGradient>
+    <radialGradient id="${id}h" cx=".35" cy=".25" r=".9"><stop offset="0" stop-color="#fff" stop-opacity=".16"/><stop offset=".6" stop-color="#fff" stop-opacity="0"/></radialGradient>
+    <filter id="${id}n" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="1.6 .35" numOctaves="2" seed="${uid}"/><feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .22 0"/><feComposite in2="SourceGraphic" operator="in"/></filter>
+    <filter id="${id}e" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="2.2 .5" numOctaves="1" seed="${uid + 3}" result="thr"/>
+      <feColorMatrix in="thr" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .35 -.05" result="thrA"/>
+      <feComposite in="thrA" in2="SourceGraphic" operator="in" result="thrIn"/>
+      <feComposite in="SourceGraphic" in2="thrIn" operator="arithmetic" k1="0" k2="1" k3="-.6" k4="0" result="textured"/>
+      <feGaussianBlur in="SourceAlpha" stdDeviation=".7" result="b"/><feOffset in="b" dx=".5" dy="1" result="o"/>
+      <feFlood flood-color="#000" flood-opacity=".55"/><feComposite in2="o" operator="in" result="sh"/>
+      <feMerge><feMergeNode in="sh"/><feMergeNode in="textured"/></feMerge></filter>
+    ${stitch ? `<mask id="${id}m"><circle class="patch-thread" r="${R - 3}" fill="none" stroke="#fff" stroke-width="12" pathLength="100" transform="rotate(-90)"/></mask>` : ''}</defs>
+    <circle r="${R + 1.5}" fill="#00000066" transform="translate(.5 2.5)"/>
+    <circle r="${R}" fill="#c9bb86"/><g stroke-width="1.15" stroke-linecap="round"${stitch ? ` mask="url(#${id}m)"` : ''}>${merrow}</g>
+    <circle r="${rim}" fill="none" stroke="#7d7148" stroke-width=".6" opacity=".6"/>
+    <circle r="${rIn - .2}" fill="url(#${id}w)"/><circle r="${rIn - .2}" fill="#000" filter="url(#${id}n)"/><circle r="${rIn - .2}" fill="url(#${id}s)"/>
+    <circle r="${rIn - .3}" fill="none" stroke="#00000055" stroke-width="1.2"/>
+    <circle r="${rIn - 1.6}" fill="none" stroke="${INK}" stroke-opacity=".45" stroke-width=".7" stroke-dasharray="1.8 1.4"/>
+    ${fossil ? '' : `<circle r="${R - 22}" fill="none" stroke="${INK}" stroke-opacity=".3" stroke-width=".9" stroke-dasharray="1.6 1.6"/>`}
+    <g ${lift}><text font-family="SC Label, Arial Narrow, sans-serif" font-size="${nameSize}" letter-spacing="2" fill="${INK}" text-anchor="middle"><textPath href="#${id}t" startOffset="50%">${esc(name)}</textPath></text>
     <text font-family="SC Label, Arial Narrow, sans-serif" font-size="8.5" letter-spacing="2" fill="${OR}" text-anchor="middle" dy="7"><textPath href="#${id}b" startOffset="50%">${esc(date || g.t.toUpperCase())}</textPath></text>
-    ${fossil ? ic : `<g transform="scale(.82)">${ic}</g>`}</svg>`;
+    ${fossil ? ic : `<g transform="scale(.82)">${ic}</g>`}</g>
+    <circle r="${R}" fill="url(#${id}h)" pointer-events="none"/></svg>`;
 }
 // The patch wrapped with its finish layer (gold / holo sheen), as used on the wall, the detail view and the moment.
 export function patchHtml(a, opts = {}) {
