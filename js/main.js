@@ -1,38 +1,38 @@
-import * as Secrets from './secrets.js?v=0.1.354';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.354';
-import * as Ufo from './ufo.js?v=0.1.354';
-import * as Fossil from './fossil.js?v=0.1.354';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.354';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.354';
-import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.354';
-import { VERSION } from './version.js?v=0.1.354';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.354';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.354';
-import { conArt } from './con-art.js?v=0.1.354';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.354';
-import { CON_FIGURES } from './con-figures.js?v=0.1.354';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.354';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.354';
-import { progress as progressOf } from './progress.js?v=0.1.354';
-import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.354';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.354';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.354';
-import { SkyView, shortName } from './sky.js?v=0.1.354';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.354';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.354';
-import { cardArt } from './art.js?v=0.1.354';
-import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.354';
-import { applyBack } from './card-backs.js?v=0.1.354';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.354';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.354';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.354';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.354';
-import { TIER_INFO } from './rarity.js?v=0.1.354';
-import { SETS } from './sets.js?v=0.1.354';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.354';
-import { shareCardEl } from './share-card.js?v=0.1.354';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.354';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.354';
+import * as Secrets from './secrets.js?v=0.1.355';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.355';
+import * as Ufo from './ufo.js?v=0.1.355';
+import * as Fossil from './fossil.js?v=0.1.355';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.355';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.355';
+import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.355';
+import { VERSION } from './version.js?v=0.1.355';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.355';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.355';
+import { conArt } from './con-art.js?v=0.1.355';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.355';
+import { CON_FIGURES } from './con-figures.js?v=0.1.355';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.355';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.355';
+import { progress as progressOf } from './progress.js?v=0.1.355';
+import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.355';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.355';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.355';
+import { SkyView, shortName } from './sky.js?v=0.1.355';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.355';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.355';
+import { cardArt } from './art.js?v=0.1.355';
+import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.355';
+import { applyBack } from './card-backs.js?v=0.1.355';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.355';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.355';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.355';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.355';
+import { TIER_INFO } from './rarity.js?v=0.1.355';
+import { SETS } from './sets.js?v=0.1.355';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.355';
+import { shareCardEl } from './share-card.js?v=0.1.355';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.355';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.355';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -2486,6 +2486,6 @@ $('nudge-reset')?.addEventListener('click', () => { const n = getNudge(); if (n)
 new MutationObserver(() => { const g = $('guidance'); if (!g.hidden && !g.textContent.trim()) g.hidden = true; }).observe($('guidance'), { attributes: true, attributeFilter: ['hidden'], childList: true, characterData: true, subtree: true });
 
 // Camera view toggle in the header, left of the night-mode moon (2026-10-08).
-function syncCamToggle() { const on = !!camStream; $('cam-toggle').setAttribute('aria-pressed', String(on)); $('cam-toggle').setAttribute('aria-label', on ? 'Turn off camera view' : 'Turn on camera view'); $('cam-toggle').classList.toggle('on', on); }
-$('cam-toggle').addEventListener('click', async () => { if (camStream) camOff(); else await camOn(); syncCamToggle(); });
+// The header eye toggle was removed (2026-10-08, Sevaan); camera view stays in Settings → Testing tools.
+function syncCamToggle() {}
 document.addEventListener('visibilitychange', () => setTimeout(syncCamToggle, 50));
