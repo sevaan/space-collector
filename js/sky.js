@@ -1,9 +1,10 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.352';
+import { extinction } from './sky-limit.js?v=0.1.353';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.353';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.352';
-import { TIER_INFO } from './rarity.js?v=0.1.352';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.353';
+import { TIER_INFO } from './rarity.js?v=0.1.353';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -12,7 +13,7 @@ const DISPLAY_FONT = '"SC Display", "Russo One", sans-serif';
 const THEMES = {
   glass: {
     bgTop: '#0c1d29', bgBottom: '#080f1b',
-    milky: [111, 139, 154], milkyOpacity: 0.62, riftRgb: [8, 15, 27],
+    milky: [111, 139, 154], milkyOpacity: 0.62, milkyPhoto: 0.75, riftRgb: [8, 15, 27],
     grid: 'rgba(173, 188, 200, 0.065)',
     horizon: 'rgba(255, 242, 179, 0.38)',
     ground: '#070e16', groundEdge: 'rgba(173, 188, 200, 0.10)',
@@ -416,6 +417,21 @@ export class SkyView {
   // milky: { spine: [{enu, width°, bright}], specks: [{enu, a, s}], rift: [{enu, w°}] }
   drawMilkyWay(milky) {
     if (!milky?.spine) return;
+    // The real thing (2026-10-08): ESO's all-sky photograph, mapped onto your view by js/milkyway-gl.js. The
+    // drawn-by-hand version below stays as the fallback where WebGL isn't available or the photo hasn't loaded.
+    if (milky.gal) {
+      if (this.mwGL === undefined) { try { this.mwGL = createMilkyGL('assets/sky/milkyway.webp?v=2'); } catch { this.mwGL = null; } }
+      if (this.mwGL?.ready) {
+        // How much of it you can see: none under city lights (stars to about magnitude 3.5), all of it at a dark site.
+        const vis = this.starLimit == null ? 1 : Math.max(0, Math.min(1, (this.starLimit - 3.6) / 2.4));
+        if (!vis) return;
+        const night = this.theme === THEMES.night;
+        const out = this.mwGL.render({ basis: this.basis, gal: milky.gal, w: this.w, h: this.h, f: this.f, cx: this.cx, cy: this.cy, scale: 1,
+          alpha: (this.theme.milkyPhoto ?? 1) * vis * (1 - Math.min(1, (this.dayF ?? 0) / 0.2)), mono: night ? 1 : 0, tint: night ? [0.75, 0.1, 0.07] : [1, 1, 1] });
+        const ctx = this.ctx; ctx.save(); ctx.globalCompositeOperation = 'screen'; ctx.drawImage(out, 0, 0, this.w, this.h); ctx.restore();
+        return;
+      }
+    }
     const ctx = this.ctx, [r, g, b] = this.theme.milky;
     const pxPerDeg = this.f * RAD;
     const fade = (enu) => Math.max(0, Math.min(1, (enu[2] + 0.02) / 0.2)); // melt into the horizon

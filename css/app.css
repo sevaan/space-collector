@@ -746,3 +746,6 @@ body.night.cam-on #cam { filter: grayscale(1) sepia(1) saturate(5) hue-rotate(31
 .b-face .ic.showme svg { width: 18px; height: 18px; }
 #tonight-list .t-mark { padding-left: 4px; }
 body.night .b-face { background: #140606; border-color: #2e1010; } body.night .b-row { background: #140606; }
+
+.set-credit { margin: 14px 4px 0; text-align: center; font: 500 11px/1.4 var(--label); letter-spacing: .06em; color: var(--muted); opacity: .7; }
+.set-credit a { color: inherit; }

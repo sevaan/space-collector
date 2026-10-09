@@ -2,7 +2,7 @@
 // Planet and Moon positions use Paul Schlyter's low-precision method ("How to compute planetary
 // positions"), good to a few arcminutes — far better than a phone compass.
 
-import { gstime } from './lib/satellite.js?v=0.1.352';
+import { gstime } from './lib/satellite.js?v=0.1.353';
 
 const RAD = Math.PI / 180;
 const sin = (d) => Math.sin(d * RAD), cos = (d) => Math.cos(d * RAD);
@@ -237,6 +237,8 @@ export function milkyWayModel() {
   const rift = dust.map(([l, b, r, d]) => ({ v: galToEq(l, b), w: r, a: d }));
   return { spine, specks, rift, clouds };
 }
+// Galactic x (centre), y (l = 90°) and z (north pole) axes as equatorial vectors, for js/milkyway-gl.js.
+export const galAxes = () => [galToEq(0, 0), galToEq(90, 0), galToEq(0, 90)];
 // Equatorial unit vector back to galactic l, b (degrees), for clustering grain around the clouds.
 function eqToGal(v) {
   const ra0 = GAL.ra * RAD, de0 = GAL.dec * RAD;
