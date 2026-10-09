@@ -1,17 +1,17 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { cardArt } from './art.js?v=0.1.346';
-import { TIER_INFO } from './rarity.js?v=0.1.346';
-import { SET_BY_ID } from './sets.js?v=0.1.346';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.346';
-import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.346';
-import { artFileFor } from './art-keys.js?v=0.1.346';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.346';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.346';
-import { nightsIn } from './observation.js?v=0.1.346';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.346';
-import { SHINY } from './shiny.js?v=0.1.346';
-import { conArt } from './con-art.js?v=0.1.346';
-import { CON_FIGURES } from './con-figures.js?v=0.1.346';
+import { cardArt } from './art.js?v=0.1.347';
+import { TIER_INFO } from './rarity.js?v=0.1.347';
+import { SET_BY_ID } from './sets.js?v=0.1.347';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.347';
+import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.347';
+import { artFileFor } from './art-keys.js?v=0.1.347';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.347';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.347';
+import { nightsIn } from './observation.js?v=0.1.347';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.347';
+import { SHINY } from './shiny.js?v=0.1.347';
+import { conArt } from './con-art.js?v=0.1.347';
+import { CON_FIGURES } from './con-figures.js?v=0.1.347';
 // The animal/symbol figure belongs to the completed (gold) constellation card only (2026-10-05): a single
 // star's card draws just the star pattern with its star marked, so the figure is a reward for finishing the set.
 const conFig = (id) => (CON_FIGURES.has(id) ? { figure: `assets/art/con/${id}.webp` } : {});
@@ -70,7 +70,7 @@ export function renderCard(o, opts = {}) {
   // A constellation card is earned by its stars: opts.ownedKeys = card keys you own; opts.sightings = theirs.
   const conCard = o.natural === 'constellation', prog = conCard ? conProgress(o, opts.ownedKeys ?? new Set()) : null;
   const caught = conCard ? prog.level === 'gold' : sightings.length > 0; // a constellation joins your collection only when complete
-  const shinyOf = sightings.find((x) => x.shiny && SHINY[x.shiny])?.shiny; // a shiny sighting makes the card shiny (js/shiny.js)
+  const shinyOf = o.launches ? null : sightings.find((x) => x.shiny && SHINY[x.shiny])?.shiny; // a shiny sighting makes the card shiny (js/shiny.js); fleet cards never are
   const revealed = caught || opts.preview;
   const extinct = opts.forceExtinct || !!o.decay;
   const fleet = !!o.launches, stamps = fleet ? stampsIn(sightings) : null;
@@ -190,14 +190,14 @@ export function renderCardTile(o, opts = {}) {
   // A constellation card is earned by its stars: opts.ownedKeys = card keys you own; opts.sightings = theirs.
   const conCard = o.natural === 'constellation', prog = conCard ? conProgress(o, opts.ownedKeys ?? new Set()) : null;
   const caught = conCard ? prog.level === 'gold' : sightings.length > 0; // a constellation joins your collection only when complete
-  const shinyOf = sightings.find((x) => x.shiny && SHINY[x.shiny])?.shiny; // a shiny sighting makes the card shiny (js/shiny.js)
+  const shinyOf = o.launches ? null : sightings.find((x) => x.shiny && SHINY[x.shiny])?.shiny; // a shiny sighting makes the card shiny (js/shiny.js)
   const tier = TIER_INFO[o.tier] ?? TIER_INFO.common;
   const set = SET_BY_ID[o.set] ?? { name: 'Field archive', color: '#d74730' };
   const title = titleFor(o);
   const tile = document.createElement('button');
   tile.type = 'button';
   const conDone = (conCard && caught) || (!!o.launches && fleetLevel(o.family, stampsIn(sightings).size) === 'gold');
-  const shinyTile = sightings.some((x) => x.shiny && SHINY[x.shiny]);
+  const shinyTile = !o.launches && sightings.some((x) => x.shiny && SHINY[x.shiny]);
   tile.className = `card-tile card-tile--retro${caught ? ' is-owned' : ''}${conDone ? ' gold-foil' : ''}${shinyTile ? ' shiny' : ''}`;
   tile.style.setProperty('--set', set.color);
   tile.setAttribute('aria-label', `${title}, ${tier.label}, ${caught ? `collected, ${sightings.length} sightings` : 'not collected'}. View card`);

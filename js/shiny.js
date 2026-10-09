@@ -18,6 +18,7 @@ export function shinyFor(obj, look, later, moon, at) {
   const enu = look.enu;
   if (moon && enu && angle(enu, moon.enu) < (obj.natural ? 5 : 1)) return 'moon';
   if (obj.natural) return null;
+  if (obj.family) return null; // mega-constellation members: one Starlink in shadow doesn't make the whole fleet card shiny (2026-10-08, Sevaan)
   if (look.sunlit && later && !later.sunlit) return 'eclipse';
   if (look.el >= 80) return 'overhead';
   if (obj.launch && at - Date.parse(`${obj.launch}T00:00:00Z`) < 30 * 86400e3) return 'fresh';
