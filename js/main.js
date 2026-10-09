@@ -1,38 +1,38 @@
-import * as Secrets from './secrets.js?v=0.1.360';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.360';
-import * as Ufo from './ufo.js?v=0.1.360';
-import * as Fossil from './fossil.js?v=0.1.360';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.360';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.360';
-import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.360';
-import { VERSION } from './version.js?v=0.1.360';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.360';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.360';
-import { conArt } from './con-art.js?v=0.1.360';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.360';
-import { CON_FIGURES } from './con-figures.js?v=0.1.360';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.360';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.360';
-import { progress as progressOf } from './progress.js?v=0.1.360';
-import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.360';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.360';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.360';
-import { SkyView, shortName } from './sky.js?v=0.1.360';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.360';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.360';
-import { cardArt } from './art.js?v=0.1.360';
-import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.360';
-import { applyBack } from './card-backs.js?v=0.1.360';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.360';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.360';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.360';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.360';
-import { TIER_INFO } from './rarity.js?v=0.1.360';
-import { SETS } from './sets.js?v=0.1.360';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.360';
-import { shareCardEl } from './share-card.js?v=0.1.360';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.360';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.360';
+import * as Secrets from './secrets.js?v=0.1.361';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.361';
+import * as Ufo from './ufo.js?v=0.1.361';
+import * as Fossil from './fossil.js?v=0.1.361';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.361';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.361';
+import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.361';
+import { VERSION } from './version.js?v=0.1.361';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.361';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.361';
+import { conArt } from './con-art.js?v=0.1.361';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.361';
+import { CON_FIGURES } from './con-figures.js?v=0.1.361';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.361';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.361';
+import { progress as progressOf } from './progress.js?v=0.1.361';
+import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.361';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.361';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.361';
+import { SkyView, shortName } from './sky.js?v=0.1.361';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.361';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.361';
+import { cardArt } from './art.js?v=0.1.361';
+import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.361';
+import { applyBack } from './card-backs.js?v=0.1.361';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.361';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.361';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.361';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.361';
+import { TIER_INFO } from './rarity.js?v=0.1.361';
+import { SETS } from './sets.js?v=0.1.361';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.361';
+import { shareCardEl } from './share-card.js?v=0.1.361';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.361';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.361';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -1909,34 +1909,16 @@ function obCard(steps, k) {
   cards.slice().reverse().forEach((c) => deck.append(c));
   cards[1]?.classList.add('under'); cards[2]?.classList.add('under2');
   const top = cards[0];
-  if (k === 0) top.animate([{ transform: 'translateY(105%)' }, { transform: 'translateY(0)' }], { duration: 650, easing: 'cubic-bezier(.2,.9,.3,1)' });
+  if (k === 0) top.animate([{ transform: 'translateY(100vh)' }, { transform: 'translateY(-50%)' }], { duration: 650, easing: 'cubic-bezier(.2,.9,.3,1)' });
+  if (steps[k].gold && !matchMedia('(prefers-reduced-motion: reduce)').matches) setTimeout(() => top.classList.add('shimmer'), 350); // the catch card arrives with a shine (2026-10-09, Sevaan)
   top.addEventListener('pointermove', (e) => { const r = top.getBoundingClientRect(); top.style.setProperty('--bgx', `${(30 + (e.clientX - r.left) / r.width * 40).toFixed(1)}%`); top.style.setProperty('--o', '1'); });
   top.addEventListener('pointerleave', () => top.style.setProperty('--o', '0'));
-  if (steps[k].live) obWireSky(top);
   return new Promise((resolve) => {
     onboarding = { resolve };
     const go = (yes) => { top.style.setProperty('--x', `${yes ? 130 : -130}vw`); top.style.setProperty('--r', `${yes ? 22 : -22}deg`); top.classList.add('gone'); setTimeout(() => resolve(yes), 300); };
     top.querySelector('.yes').addEventListener('click', () => { steps[k].onYes?.(); go(true); }); // onYes runs inside the tap (iOS permissions)
     top.querySelector('.no')?.addEventListener('click', () => go(false));
   });
-}
-// Step 3's art: a real slider (same range as the sky slider above Explore) with five stars that light up as the
-// sky gets darker; dragging it drives the live sky behind the card.
-function obSkyArt() {
-  const v = state.skySb.toFixed(2);
-  return `<div class="ob-sky"><div class="ob-stars">${[1.5, 2.5, 3.5, 4.5, 5.5].map((m, i) => `<i data-m="${m}" style="--s:${5 - i * 0.7}px"></i>`).join('')}</div>
-    <input type="range" class="ob-range" min="${SB_MIN}" max="${SB_MAX}" step="0.05" value="${v}" aria-label="How dark is your sky">
-    <div class="ob-ends"><span>Bright city</span><span>Dark site</span></div></div>`;
-}
-function obWireSky(card) {
-  const r = card.querySelector('.ob-range'); if (!r) return;
-  const main = $('sky-range');
-  const paint = () => { const p = (r.value - SB_MIN) / (SB_MAX - SB_MIN) * 100; r.style.setProperty('--p', `${p.toFixed(1)}%`);
-    const lim = state.limit?.stars ?? 4; card.querySelectorAll('.ob-stars i').forEach((s) => s.classList.toggle('on', Number(s.dataset.m) <= lim)); };
-  r.addEventListener('input', () => { main.value = r.value; main.dispatchEvent(new Event('input', { bubbles: true })); paint(); });
-  r.addEventListener('change', () => { main.value = r.value; main.dispatchEvent(new Event('change', { bubbles: true })); });
-  for (const ev of ['pointerdown', 'touchstart']) r.addEventListener(ev, (e) => e.stopPropagation(), { passive: true });
-  paint();
 }
 function obReact(line) {
   let b = document.querySelector('.ob-bloom'); if (!b) { b = document.createElement('div'); b.className = 'ob-bloom'; document.body.append(b); }
@@ -1951,27 +1933,25 @@ async function runOnboarding(force = false) {
   let motionAsk = null;
   const night = (state.frame?.sunEl ?? -90) < -6;
   const steps = [
-    { tier: 'Step 1 of 3', title: 'Set location', sub: ['Navigation', ''], art: OB_ART.loc, text: 'Your location sets which stars and satellites are overhead. It stays on this phone.', yes: 'Allow', no: 'Not now' },
-    { tier: 'Step 2 of 3', title: "Point, don't scroll", sub: ['Gyroscope', ''], art: OB_ART.motion, text: "With motion on, the circle follows the phone. Whatever sits in the circle is what you're looking at.", yes: 'Allow motion', no: 'Use a finger', onYes: () => { motionAsk = enableMotion(); } },
-    { tier: 'Step 3 of 3', title: 'Match your sky', sub: ['Calibration', night ? 'Tonight' : 'After dark'], art: obSkyArt(), live: true, text: night ? 'Look up, then drag until the sky above shows about as many stars as you can see. It stays above Explore to fine-tune.' : 'Tonight, drag this until the screen shows about as many stars as you can see. It lives above Explore.', yes: 'Got it' },
+    { tier: 'Step 1 of 2', title: 'Set location', sub: ['Navigation', ''], art: OB_ART.loc, text: 'Your location sets which stars and satellites are overhead. It stays on this phone.', yes: 'Allow', no: 'Not now' },
+    { tier: 'Step 2 of 2', title: "Point, don't scroll", sub: ['Gyroscope', ''], art: OB_ART.motion, text: "With motion on, the circle follows the phone. Whatever sits in the circle is what you're looking at.", yes: 'Allow motion', no: 'Use a finger', onYes: () => { motionAsk = enableMotion(); } },
     { tier: 'Assignment 01', title: 'Your first catch', sub: ['Up right now', ''], art: OB_ART.catch, text: '', yes: 'Go', gold: true },
   ];
   let tgt0 = null;
-  const nameTarget = () => { tgt0 = firstTarget(); if (!tgt0) return; steps[3].title = `Catch ${label(tgt0.obj)}`; steps[3].sub = [tgt0.obj.type === 'star' ? 'Bright star' : tgt0.obj.type === 'sun' ? 'Our star' : tgt0.obj.type === 'moon' ? 'The Moon' : tgt0.obj.natural ? 'Planet' : 'Satellite', `${Math.round(tgt0.look.el)}° up in the ${compassPoint(tgt0.look.az)}`]; steps[3].text = `It's up right now. ${tgt0.hint} Follow the arrow, then tap the circle to collect your first card.`;
+  const nameTarget = () => { tgt0 = firstTarget(); if (!tgt0) return; steps[2].title = `Catch ${label(tgt0.obj)}`; steps[2].sub = [tgt0.obj.type === 'star' ? 'Bright star' : tgt0.obj.type === 'sun' ? 'Our star' : tgt0.obj.type === 'moon' ? 'The Moon' : tgt0.obj.natural ? 'Planet' : 'Satellite', `${Math.round(tgt0.look.el)}° up in the ${compassPoint(tgt0.look.az)}`]; steps[2].text = `It's up right now. ${tgt0.hint} Follow the arrow, then tap the circle to collect your first card.`;
     // The card's art becomes a live pointer (2026-10-08, Sevaan): the circle with an arrow that turns toward the target as you turn.
-    steps[3].art = OB_ART.aim(tgt0.look.az, tgt0.look.el); obAimTarget = tgt0;
+    steps[2].art = OB_ART.aim(tgt0.look.az, tgt0.look.el); obAimTarget = tgt0;
  };
-  steps[3].text = 'Sweep the sky. When something lines up in the circle, tap it to collect your first card.';
+  steps[2].text = 'Sweep the sky. When something lines up in the circle, tap it to collect your first card.';
   // 1. location
   if (await obCard(steps, 0)) { const ok = requestLocation(); obReact('Sky lined up to your spot'); await ok; }
   if (skipped) return obFinish(false);
   // 2. motion (asked inside the tap above)
   if (await obCard(steps, 1)) { await motionAsk; obReact('Following your phone'); } else { state.drag.on = true; $('chk-drag').checked = true; }
   if (skipped) return obFinish(false);
-  // 3. calibration, 4. the assignment
+  // 3. the assignment (the sky-darkness step is gone, 2026-10-09: the sky starts at its darkest)
+  nameTarget(); // now that location and motion are in, name what's up
   await obCard(steps, 2); if (skipped) return obFinish(false);
-  nameTarget(); // now that location and the sky are in, name what's up
-  await obCard(steps, 3); if (skipped) return obFinish(false);
   $('ob-deck').replaceChildren(); $('ob-pips').hidden = true; $('ob-skip').hidden = true; document.body.classList.remove('ob-tour'); // the cards are done: hunting the target is just the app
   // the first catch: pin the surest target; the normal aim + reveal takes over
   const target = firstTarget() ?? tgt0;
@@ -2056,8 +2036,10 @@ function obFinish(caught) {
   items.sort((a, b) => a[0] - b[0]);
   $('od-body').innerHTML = `<div class="od-tl">${items.map(([t, s, c]) => `<div class="it ${c ?? ''}"><b>${escapeHtml(fmtTime(t).replace(/\s?[AP]\.?M\.?$/i, ''))}</b><span>${s}</span></div>`).join('')}</div>`;
   const best2 = chosen;
-  $('ob-remind').hidden = !best2; if (best2) $('ob-remind').firstElementChild.textContent = `Remind me at ${fmtTime(best2.start - 10 * 60e3).replace(/\s?[AP]\.?M\.?$/i, '')}`;
-  $('ob-remind').onclick = () => { if (best2) remindPass(best2); };
+  // Only offer a reminder that's still ahead (2026-10-09 tour test: "Remind me at 7:36" showed at 7:46 for a pass up now).
+  const remindable = best2 && best2.start - 10 * 60e3 > now().getTime() + 60e3;
+  $('ob-remind').hidden = !remindable; if (remindable) $('ob-remind').firstElementChild.textContent = `Remind me at ${fmtTime(best2.start - 10 * 60e3).replace(/\s?[AP]\.?M\.?$/i, '')}`;
+  $('ob-remind').onclick = () => { if (remindable) remindPass(best2); };
   $('ob-explore').firstElementChild.textContent = 'Explore the sky';
   $('ob-explore').onclick = () => { ob.hidden = true; $('ob-done').hidden = true; };
   $('ob-done').hidden = false;
