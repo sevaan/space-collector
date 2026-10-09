@@ -1,9 +1,9 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.351';
+import { extinction } from './sky-limit.js?v=0.1.352';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.351';
-import { TIER_INFO } from './rarity.js?v=0.1.351';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.352';
+import { TIER_INFO } from './rarity.js?v=0.1.352';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -12,7 +12,7 @@ const DISPLAY_FONT = '"SC Display", "Russo One", sans-serif';
 const THEMES = {
   glass: {
     bgTop: '#0c1d29', bgBottom: '#080f1b',
-    milky: [111, 139, 154], milkyOpacity: 0.48, riftRgb: [8, 15, 27],
+    milky: [111, 139, 154], milkyOpacity: 0.62, riftRgb: [8, 15, 27],
     grid: 'rgba(173, 188, 200, 0.065)',
     horizon: 'rgba(255, 242, 179, 0.38)',
     ground: '#070e16', groundEdge: 'rgba(173, 188, 200, 0.10)',
@@ -185,6 +185,19 @@ export class SkyView {
     return sprite;
   }
 
+  // A broad, even falloff (gaussian) for the Milky Way's haze: the star-glow sprite above is bright only at its very
+  // centre, which drew the band as a thin beam (2026-10-08).
+  softSprite(rgb) {
+    const key = `soft:${rgb.join(',')}`;
+    if (this.sprites.has(key)) return this.sprites.get(key);
+    const sprite = document.createElement('canvas'); sprite.width = sprite.height = 128;
+    const ctx = sprite.getContext('2d'), g = ctx.createRadialGradient(64, 64, 0, 64, 64, 64);
+    for (let i = 0; i <= 10; i++) { const t = i / 10; g.addColorStop(t, `rgba(${rgb.join(',')}, ${(Math.exp(-3.2 * t * t) - Math.exp(-3.2)) / (1 - Math.exp(-3.2))})`); }
+    ctx.fillStyle = g; ctx.fillRect(0, 0, 128, 128);
+    this.sprites.set(key, sprite);
+    return sprite;
+  }
+  soft(x, y, radius, rgb, alpha) { const ctx = this.ctx; ctx.save(); ctx.globalAlpha *= alpha; ctx.drawImage(this.softSprite(rgb), x - radius, y - radius, radius * 2, radius * 2); ctx.restore(); }
   glow(x, y, radius, rgb, alpha = 1) {
     const ctx = this.ctx;
     ctx.save();
@@ -412,7 +425,7 @@ export class SkyView {
     // 1. The glow, airbrushed: soft spots every degree along the band, overlapping so heavily that
     //    they blend into one smooth band (sparse spots are what made it look like a string of dots).
     const spine = milky.spine;
-    for (const [widthK, strength] of [[1.25, 0.3], [0.55, 0.26]]) {
+    for (const [widthK, strength] of [[1.25, 0.16], [0.6, 0.12]]) { // soft gaussian haze; the clouds and dust give the shape (2026-10-08)
       for (const pt of spine) {
         const p = this.project(pt.enu);
         if (!p) continue;
@@ -422,31 +435,45 @@ export class SkyView {
         if (!this.onScreen(p, radius)) continue;
         // Divide by how many neighbours overlap this spot so the total stays even.
         const overlap = Math.max(1, (2 * pt.width * widthK) / 1);
-        this.glow(p.x, p.y, radius, this.theme.milky, Math.min(0.3, strength * pt.bright * f / overlap * 3));
+        this.soft(p.x, p.y, radius, this.theme.milky, Math.min(0.3, strength * pt.bright * f / overlap * 3));
       }
     }
-    // 2. The Great Rift: a dark lane of dust through Cygnus and Aquila, airbrushed the same way.
+    // 2. Star clouds (2026-10-08 fidelity): soft lighter patches of many sizes, so the band is mottled, not a smear.
+    for (const c of milky.clouds ?? []) {
+      const p = this.project(c.enu);
+      if (!p) continue;
+      const f = fade(c.enu); if (!f) continue;
+      const radius = c.r * pxPerDeg / Math.max(0.25, p.c.z);
+      if (!this.onScreen(p, radius)) continue;
+      this.soft(p.x, p.y, radius, this.theme.milky, 0.3 * c.a * f);
+    }
+    // 3. Dust: the Great Rift's two lanes, the Pipe and Ophiuchus clouds, the Coalsack and small dark knots.
     const dark = this.theme.riftRgb ?? [4, 10, 22];
     for (const pt of milky.rift) {
       const p = this.project(pt.enu);
       if (!p) continue;
       const radius = pt.w * pxPerDeg / Math.max(0.25, p.c.z);
       if (!this.onScreen(p, radius)) continue;
-      this.glow(p.x, p.y, radius, dark, 0.16 * fade(pt.enu));
+      this.soft(p.x, p.y, radius, dark, (pt.a ?? 0.5) * 0.7 * fade(pt.enu));
     }
-    // 3. Star-cloud grain: thousands of faint specks, batched by brightness for speed.
-    const buckets = [[], [], []];
+    // 4. Star-cloud grain: 9,000 specks, sub-pixel to small, cool blue-white with warmer ones toward the centre,
+    //    batched by brightness and tint for speed.
+    const B = 4, buckets = Array.from({ length: B * 2 }, () => []);
+    const minX = -2, minY = -2, maxX = this.w + 2, maxY = this.h + 2;
     for (const sp of milky.specks) {
-      if (sp.enu[2] < 0) continue;
+      if (sp.enu[2] < -0.02) continue;
       const p = this.project(sp.enu);
-      if (!p || p.x < 0 || p.y < 0 || p.x > this.w || p.y > this.h) continue;
-      buckets[Math.min(2, Math.floor(sp.a * fade(sp.enu) * 3))].push(p.x, p.y, sp.s);
+      if (!p || p.x < minX || p.y < minY || p.x > maxX || p.y > maxY) continue;
+      const k = Math.min(B - 1, Math.floor(sp.a * fade(sp.enu) * B));
+      buckets[k + (sp.w ? B : 0)].push(p.x, p.y, sp.s);
     }
-    buckets.forEach((list, k) => {
+    const tint = [[Math.min(255, r + 95), Math.min(255, g + 90), Math.min(255, b + 85)], [255, 232, 196]];
+    buckets.forEach((list, i) => {
       if (!list.length) return;
-      ctx.fillStyle = `rgba(${Math.min(255, r + 80)}, ${Math.min(255, g + 80)}, ${Math.min(255, b + 70)}, ${[0.1, 0.17, 0.26][k]})`;
+      const k = i % B, [tr, tg, tb] = tint[i < B ? 0 : 1];
+      ctx.fillStyle = `rgba(${tr}, ${tg}, ${tb}, ${[0.12, 0.22, 0.34, 0.5][k]})`;
       ctx.beginPath();
-      for (let i = 0; i < list.length; i += 3) ctx.rect(list[i], list[i + 1], list[i + 2], list[i + 2]);
+      for (let j = 0; j < list.length; j += 3) { const sz = list[j + 2]; ctx.rect(list[j] - sz / 2, list[j + 1] - sz / 2, sz, sz); }
       ctx.fill();
     });
     ctx.restore();

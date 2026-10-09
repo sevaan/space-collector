@@ -2,7 +2,7 @@
 // Planet and Moon positions use Paul Schlyter's low-precision method ("How to compute planetary
 // positions"), good to a few arcminutes — far better than a phone compass.
 
-import { gstime } from './lib/satellite.js?v=0.1.351';
+import { gstime } from './lib/satellite.js?v=0.1.352';
 
 const RAD = Math.PI / 180;
 const sin = (d) => Math.sin(d * RAD), cos = (d) => Math.cos(d * RAD);
@@ -194,25 +194,57 @@ function bandAt(l) {
 }
 const inRift = (l, b) => l > 14 && l < 78 && b > 0.2 + (l - 14) * 0.02 && b < 3.8 + (l - 14) * 0.03;
 
+// Higher fidelity (2026-10-08, Sevaan: it looked low-res): a finer spine, mottled star clouds, dust lanes beyond
+// the Great Rift (the Pipe and Ophiuchus dust, the Coalsack, small dark knots), and 9,000 grains of two tints.
 export function milkyWayModel() {
   const spine = [];
-  for (let l = 0; l <= 360; l += 1) spine.push({ v: galToEq(l, 0), l, ...bandAt(l) });
-  // Star-cloud grain: deterministic random points, denser where the band is brighter.
+  for (let l = 0; l < 360; l += 1) spine.push({ v: galToEq(l, 0), l, ...bandAt(l) });
   let seed = 20260929;
   const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
   const gauss = () => { let u = 0; for (let i = 0; i < 4; i++) u += rnd(); return (u - 2) / 0.58; };
-  const specks = [];
-  while (specks.length < 4000) {
-    const l = rnd() * 360, band = bandAt(l);
-    if (rnd() > band.bright / 1.2) continue;
-    const patch = PATCHES.find(([pl, spread]) => lDist(l, pl) < spread);
-    const b = gauss() * band.width * 0.45 + (patch ? patch[3] : 0);
-    if (inRift(l, b) && rnd() < 0.85) continue;
-    specks.push({ v: galToEq(l, b), a: Math.min(1, band.bright * (0.35 + rnd() * 0.65)), s: rnd() < 0.12 ? 1.6 : 1 });
+  const pickL = () => { for (;;) { const l = rnd() * 360; if (rnd() < bandAt(l).bright / 1.2) return l; } };
+  // Dust: [l, b, radius °, darkness]. The Great Rift is two lanes from Cygnus to Aquila; the Pipe and the dark
+  // clouds of Ophiuchus sit above the centre; the Coalsack beside the Southern Cross; then small knots.
+  const dust = [];
+  for (let l = 14; l <= 80; l += 0.75) {
+    const k = Math.sin(((l - 14) / 66) * Math.PI);
+    dust.push([l, 2 + (l - 14) * 0.025, 1.3 + 1.3 * k, 0.55]);
+    if (l < 52) dust.push([l, 0.4 + (l - 14) * 0.03 + Math.sin(l * 0.4) * 0.4, 0.7 + 0.6 * k, 0.4]);
   }
-  const rift = [];
-  for (let l = 14; l <= 78; l += 1) rift.push({ v: galToEq(l, 2 + (l - 14) * 0.025), w: 1.6 + 1.2 * Math.sin(((l - 14) / 64) * Math.PI) });
-  return { spine, specks, rift };
+  for (let l = -8; l <= 12; l += 0.75) dust.push([(l + 360) % 360, 4.5 + Math.sin(l * 0.6) * 1.2 + (l > 2 ? (l - 2) * 0.3 : 0), 1 + rnd() * 0.8, 0.45]);
+  for (let i = 0; i < 6; i++) dust.push([300.5 + gauss() * 1.2, -1 + gauss() * 0.8, 1.6 + rnd(), 0.5]);
+  for (let i = 0; i < 140; i++) { const l = pickL(), w = bandAt(l).width; dust.push([l, gauss() * w * 0.35, 0.4 + rnd() * 1.4, 0.18 + rnd() * 0.3]); }
+  const inDust = (l, b) => dust.some(([dl, db, r]) => lDist(l, dl) < r && Math.abs(b - db) < r && (lDist(l, dl) ** 2 + (b - db) ** 2) < r * r);
+  // Star clouds: soft lighter patches of many sizes that break the band into the clumps you see by eye.
+  const clouds = [];
+  for (let i = 0; i < 300; i++) {
+    const l = pickL(), band = bandAt(l), patch = PATCHES.find(([pl, sp]) => lDist(l, pl) < sp);
+    const b = gauss() * band.width * 0.4 + (patch ? patch[3] : 0);
+    if (inDust(l, b)) continue;
+    clouds.push({ v: galToEq(l, b), r: (0.8 + rnd() * rnd() * 5) * (0.6 + band.width / 18), a: band.bright * (0.25 + rnd() * 0.75) });
+  }
+  // Grain: two thirds clustered around the star clouds, a third spread through the band; dust lanes stay nearly empty.
+  const specks = [];
+  while (specks.length < 9000) {
+    let l, b;
+    if (clouds.length && rnd() < 0.62) { const c = clouds[Math.floor(rnd() * clouds.length)]; const [cl, cb] = c.lb ?? (c.lb = eqToGal(c.v)); l = (cl + gauss() * c.r * 0.6 + 360) % 360; b = cb + gauss() * c.r * 0.6; }
+    else { l = pickL(); const band = bandAt(l), patch = PATCHES.find(([pl, sp]) => lDist(l, pl) < sp); b = gauss() * band.width * 0.45 + (patch ? patch[3] : 0); }
+    if (inDust(l, b) && rnd() < 0.9) continue;
+    const band = bandAt(l), big = rnd();
+    specks.push({ v: galToEq(l, b), a: Math.min(1, band.bright * (0.3 + rnd() * 0.7)), s: big < 0.04 ? 1.5 : big < 0.25 ? 1 : 0.65, w: lDist(l, 0) < 40 ? 1 : 0 });
+  }
+  for (const c of clouds) delete c.lb;
+  const rift = dust.map(([l, b, r, d]) => ({ v: galToEq(l, b), w: r, a: d }));
+  return { spine, specks, rift, clouds };
+}
+// Equatorial unit vector back to galactic l, b (degrees), for clustering grain around the clouds.
+function eqToGal(v) {
+  const ra0 = GAL.ra * RAD, de0 = GAL.dec * RAD;
+  const ra = Math.atan2(v[1], v[0]), de = Math.asin(Math.max(-1, Math.min(1, v[2])));
+  const sb = Math.sin(de0) * Math.sin(de) + Math.cos(de0) * Math.cos(de) * Math.cos(ra - ra0);
+  const b = Math.asin(Math.max(-1, Math.min(1, sb)));
+  const y = Math.cos(de) * Math.sin(ra - ra0), x = Math.cos(de0) * Math.sin(de) - Math.sin(de0) * Math.cos(de) * Math.cos(ra - ra0);
+  return [((GAL.lNcp - Math.atan2(y, x) / RAD) + 720) % 360, b / RAD];
 }
 
 // Tesla Roadster + Starman (2018-017A), heliocentric orbit from JPL's elements (perihelion 2018-11-09), good to a
