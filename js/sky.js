@@ -1,9 +1,9 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.337';
+import { extinction } from './sky-limit.js?v=0.1.338';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.337';
-import { TIER_INFO } from './rarity.js?v=0.1.337';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.338';
+import { TIER_INFO } from './rarity.js?v=0.1.338';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -337,7 +337,7 @@ export class SkyView {
       const hot = hit?.g === g, [r, gg, b] = t.bead;
       ctx.save(); ctx.globalAlpha = k; ctx.lineWidth = hot ? 1.6 : 1.3; ctx.lineCap = 'round'; // more visible (2026-10-08, Sevaan)
       if (g.past?.length) { ctx.strokeStyle = t.trailPast; this.path([...g.past, g.enu]); }
-      ctx.setLineDash([4, 7]); ctx.strokeStyle = `rgba(${r}, ${gg}, ${b}, ${hot ? 0.95 : 0.6})`;
+      ctx.setLineDash([4, 7]); ctx.strokeStyle = `rgba(${r}, ${gg}, ${b}, ${hot ? 0.95 : 0.5})`; /* 50% unless lined up (2026-10-08) */
       this.path(g.path.filter((e) => e[2] < 0.02));
       ctx.restore();
     }
