@@ -1,9 +1,9 @@
 // Orbit math: where every object is in the observer's sky, and whether it can be seen.
 // Pure functions, no DOM, so this module carries over unchanged to a native wrapper.
 
-import { expandFacts } from './catalog-facts.js?v=0.1.347';
-import * as sat from './lib/satellite.js?v=0.1.347';
-import { extinction, starlinkStdMag } from './sky-limit.js?v=0.1.347';
+import { expandFacts } from './catalog-facts.js?v=0.1.348';
+import * as sat from './lib/satellite.js?v=0.1.348';
+import { extinction, starlinkStdMag } from './sky-limit.js?v=0.1.348';
 
 const RAD = Math.PI / 180;
 const EARTH_RADIUS_KM = 6371;
@@ -31,7 +31,7 @@ export async function loadCatalog(url) {
     if (!satrec || satrec.error) continue;
     // Constellation members share their family's facts to keep the file small.
     const fam = o.family ? families[o.family] : null;
-    if (fam) Object.assign(o, { kind: 'PAY', type: 'satellite', tier: 'common', stdMag: o.family === 'STARLINK' ? starlinkStdMag(o) : fam.stdMag, owner: fam.owner, year: o.launch ? Number(o.launch.slice(0, 4)) : null });
+    if (fam) Object.assign(o, { kind: 'PAY', type: 'satellite', tier: fam.tier ?? 'common', stdMag: o.family === 'STARLINK' ? starlinkStdMag(o) : o.stdMag ?? fam.stdMag, owner: fam.owner, year: o.launch ? Number(o.launch.slice(0, 4)) : null });
     o.card ??= String(o.id);
     o.satrec = satrec;
     delete o.el; delete o.l1; delete o.l2;

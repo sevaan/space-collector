@@ -122,7 +122,7 @@ const SERIES = { 'strela-1': 'strela-1m', 'strela-1m': 'strela-1m', 'strela-2m':
 // card: a card from buildCards. seriesOf: NORAD id -> series key (data/series.json members), optional.
 export function artKeyFor(card, seriesOf = {}) {
   if (card.natural) return card.system ? 'solar-system' : card.type === 'sun' ? 'sun' : card.type === 'moon' ? 'moon' : card.type === 'planet' ? `planet-${card.name.toLowerCase()}` : `star-${card.key.split(':')[1]}`;
-  if (card.launches) return `fleet-${card.family.toLowerCase()}`;
+  if (card.launches) return { GLOBALSTAR: 'globalstar', ORBCOMM: 'orbcomm', IRIDIUM: 'iridium' }[card.family] ?? `fleet-${card.family.toLowerCase()}`; // the newer fleets use their satellite's picture
   if (NAMED[card.id]) return NAMED[card.id];
   const n = String(card.name ?? '').toUpperCase();
   if (card.type === 'debris') return /^BREEZE/.test(n) ? 'briz-tank' : /^(ARIANE|CZ-|SL-|DELTA|THOR|TITAN|FREGAT|ATLAS|PSLV|GSLV|H-|TAURUS|PEGASUS|SCOUT|AGENA|CENTAUR|FALCON)/.test(n) ? 'debris-rocket' : 'debris-satellite';

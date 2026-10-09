@@ -10,12 +10,12 @@ export const SETS = [
   { id: 'constellations', name: 'Constellations', color: '#c9a227', test: (o) => o.type === 'constellation' || (o.type === 'star' && !!o.con && !o.skyName) },
   { id: 'bright-stars', name: 'Bright Stars', color: '#3f58a8', test: (o) => o.type === 'star' },
   { id: 'stations', name: 'Stations', color: '#e8412c', test: (o) => o.type === 'station' || /^(DRAGON|CREW DRAGON|SOYUZ|PROGRESS|SHENZHOU|TIANZHOU|CYGNUS)/.test(o.name) },
+  { id: 'mega', name: 'Fleets', color: '#7c8591', test: (o) => !!o.launches || !!o.family || /^(STARLINK|ONEWEB|QIANFAN|GUOWANG|KUIPER|IRIDIUM|GLOBALSTAR|ORBCOMM|SPACEMOBILE|BLUEBIRD)/.test(o.name) }, // above the age/dead sets: a fleet card is a Fleet even if its first launch was in the 1990s
   { id: 'space-race', name: 'Space Race Relics', color: '#e8a33d', test: (o) => year(o) && year(o) <= 1975 },
   { id: 'red-stars', name: 'Red Stars', color: '#8c2334', test: (o) => o.type === 'rocket-body' && o.owner === 'CIS' },
   { id: 'rocket-stages', name: 'Rocket Stages', color: '#2f3237', test: (o) => o.type === 'rocket-body' },
   { id: 'dead-sats', name: 'Dead Satellites Society', color: '#6b5b95', test: isDead },
   { id: 'junk', name: 'Space Junk', color: '#a0673a', test: (o) => o.type === 'debris' },
-  { id: 'mega', name: 'Mega-constellations', color: '#7c8591', test: (o) => !!o.family || /^(STARLINK|ONEWEB|QIANFAN|GUOWANG|KUIPER|IRIDIUM|GLOBALSTAR|ORBCOMM|SPACEMOBILE|BLUEBIRD)/.test(o.name) },
   { id: 'nations', name: 'Launch Nations', color: '#1f6fd1', test: () => true },
 ];
 

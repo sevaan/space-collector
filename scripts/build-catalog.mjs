@@ -33,6 +33,11 @@ const FAMILIES = [
   { id: 'ONEWEB', re: /^ONEWEB/, name: 'OneWeb', stdMag: 7.2, owner: 'UK', maker: 'Eutelsat OneWeb' },
   { id: 'QIANFAN', re: /^(QIANFAN|G60)/, name: 'Qianfan', stdMag: 5.8, owner: 'PRC', maker: 'Shanghai Spacecom' },
   { id: 'KUIPER', re: /^KUIPER/, name: 'Amazon Leo', stdMag: 5.8, owner: 'US', maker: 'Amazon' },
+  // Smaller phone and data networks (2026-10-08, Sevaan): fleet cards too, Uncommon, and each satellite keeps its own
+  // brightness (stdMag null = from its radar size, as for any other object) since the generations differ a lot.
+  { id: 'GLOBALSTAR', re: /^GLOBALSTAR/, name: 'Globalstar', stdMag: null, owner: 'GLOB', maker: 'Globalstar', tier: 'uncommon' },
+  { id: 'ORBCOMM', re: /^ORBCOMM/, name: 'Orbcomm', stdMag: null, owner: 'ORB', maker: 'Orbcomm', tier: 'uncommon' },
+  { id: 'IRIDIUM', re: /^IRIDIUM/, name: 'Iridium', stdMag: null, owner: 'US', maker: 'Iridium', tier: 'uncommon' },
 ];
 
 const STATION_IDS = new Set([25544, 48274]);
@@ -112,7 +117,7 @@ function typeOf(kind, name, id) {
 // Rough standard magnitude from radar cross-section (m²), or a type default.
 function stdMagFor(o, family) {
   if (STD_MAG[o.id] != null) return STD_MAG[o.id];
-  if (family) return family.stdMag;
+  if (family?.stdMag != null) return family.stdMag;
   if (o.rcs > 0) return Math.max(1.5, Math.min(11, 5.2 - 2.5 * Math.log10(o.rcs)));
   // No radar size published (true of most objects launched since ~2015).
   if (o.type === 'rocket-body') return 4.5; // rocket stages are big
@@ -182,7 +187,7 @@ objects.sort((a, b) => a.id - b.id);
 const FAMILY_SHARED = ['kind', 'type', 'owner', 'site', 'ops', 'rcs', 'tier', 'stdMag', 'year'];
 for (const o of objects) {
   for (const k of Object.keys(o)) if (o[k] == null) delete o[k];
-  if (o.family) for (const k of FAMILY_SHARED) delete o[k];
+  if (o.family) for (const k of FAMILY_SHARED) if (!(k === 'stdMag' && FAMILIES.find((f) => f.id === o.family).stdMag == null)) delete o[k]; // per-object brightness kept
   // Derived on load from the elements, launch date and family (js/catalog-facts.js), so not stored (2026-10-08).
   delete o.period; delete o.incl; delete o.apogee; delete o.perigee; delete o.year;
   if (o.card === (o.family && o.cospar ? `${o.family}:${o.cospar.slice(0, 8)}` : String(o.id))) delete o.card;
@@ -190,7 +195,7 @@ for (const o of objects) {
   o.el = o.el.map((v, i) => (i === 0 ? String(v).slice(0, 19) : typeof v === 'number' ? +v.toPrecision(i === 1 ? 11 : 8) : v));
 }
 
-const families = Object.fromEntries(FAMILIES.map((f) => [f.id, { name: f.name, stdMag: f.stdMag, owner: f.owner, maker: f.maker }]));
+const families = Object.fromEntries(FAMILIES.map((f) => [f.id, { name: f.name, stdMag: f.stdMag, owner: f.owner, maker: f.maker, ...(f.tier ? { tier: f.tier } : {}) }]));
 const catalog = { generated: new Date().toISOString(), source: 'CelesTrak', count: objects.length, families, objects };
 const json = JSON.stringify(catalog);
 writeFileSync(new URL('../data/catalog.json', import.meta.url), json);
