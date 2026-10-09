@@ -1,37 +1,38 @@
-import * as Secrets from './secrets.js?v=0.1.343';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.343';
-import * as Ufo from './ufo.js?v=0.1.343';
-import * as Fossil from './fossil.js?v=0.1.343';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.343';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.343';
-import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.343';
-import { VERSION } from './version.js?v=0.1.343';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.343';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.343';
-import { conArt } from './con-art.js?v=0.1.343';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.343';
-import { CON_FIGURES } from './con-figures.js?v=0.1.343';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.343';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.343';
-import { progress as progressOf } from './progress.js?v=0.1.343';
-import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.343';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.343';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge, lockHeading } from './sensors.js?v=0.1.343';
-import { SkyView, shortName } from './sky.js?v=0.1.343';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, roadster, starVector } from './celestial.js?v=0.1.343';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.343';
-import { cardArt } from './art.js?v=0.1.343';
-import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.343';
-import { applyBack } from './card-backs.js?v=0.1.343';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.343';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.343';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.343';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.343';
-import { TIER_INFO } from './rarity.js?v=0.1.343';
-import { SETS } from './sets.js?v=0.1.343';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.343';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.343';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.343';
+import * as Secrets from './secrets.js?v=0.1.344';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.344';
+import * as Ufo from './ufo.js?v=0.1.344';
+import * as Fossil from './fossil.js?v=0.1.344';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.344';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.344';
+import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.344';
+import { VERSION } from './version.js?v=0.1.344';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.344';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.344';
+import { conArt } from './con-art.js?v=0.1.344';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.344';
+import { CON_FIGURES } from './con-figures.js?v=0.1.344';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.344';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.344';
+import { progress as progressOf } from './progress.js?v=0.1.344';
+import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.344';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.344';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge, lockHeading } from './sensors.js?v=0.1.344';
+import { SkyView, shortName } from './sky.js?v=0.1.344';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, roadster, starVector } from './celestial.js?v=0.1.344';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.344';
+import { cardArt } from './art.js?v=0.1.344';
+import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.344';
+import { applyBack } from './card-backs.js?v=0.1.344';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.344';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.344';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.344';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.344';
+import { TIER_INFO } from './rarity.js?v=0.1.344';
+import { SETS } from './sets.js?v=0.1.344';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.344';
+import { shareCardEl } from './share-card.js?v=0.1.344';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.344';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.344';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -904,7 +905,8 @@ function showCaptureCard(obj) {
   if (con && conCard.data) con.art = conArt(conCard.data, model.hip ?? null, { w: 150, h: 100, ...(CON_FIGURES.has(conCard.con) ? { figure: `assets/art/con/${conCard.con}.webp` } : {}),
     lit: new Set(conCard.stars.filter((k) => owned.has(k)).map((k) => Number(k.replace('star:hip', '')))) });
   const gain = progressGain(sightings[0]); announceProgress(gain);
-  playReveal({ card, o: model, seen: sightings.length, fleet, progress, collected, con, xp: gain.xp, shiny: sightings[0]?.shiny ? SHINY[sightings[0].shiny] : null, origin: { x: sky.ring?.x ?? sky.cx, y: sky.ring?.y ?? sky.cy } });
+  $('rv-share').hidden = false; revealShare = { card, o: model };
+  playReveal({ card, o: model, seen: sightings.length, fleet, progress, collected, con, xp: gain.xp, rank: gain.rank, shiny: sightings[0]?.shiny ? SHINY[sightings[0].shiny] : null, origin: { x: sky.ring?.x ?? sky.cx, y: sky.ring?.y ?? sky.cy } });
 }
 // The tour's catch when you already own it (replaying the tour): the same sealed-card reveal as a first catch,
 // with no sighting saved, so the tour feels the same every time.
@@ -915,6 +917,7 @@ function tourReveal(obj) {
   $('reveal-view').href = `cards.html#${encodeURIComponent(key)}`;
   openPanel('reveal');
   state.tourRevealed = true;
+  $('rv-share').hidden = false; revealShare = { card, o: model };
   playReveal({ card, o: model, seen: 1, progress: { level: cardLevel(sightings), before: 'none', nights: 1 }, collected: 2, origin: { x: sky.ring?.x ?? sky.cx, y: sky.ring?.y ?? sky.cy } });
 }
 // Open an owned card in place, spinning out of the toast. counted: this view also logged a sighting.
@@ -930,6 +933,7 @@ function showViewCard(obj, from, counted) {
     const before = model.launches ? level : cardLevel(sightings.slice(1));
     sighting = { seen: sightings.length, nights: nightsIn(sightings) > nightsIn(sightings.slice(1)) ? nightsIn(sightings) : 0, level, levelUp: level !== before };
   }
+  $('rv-share').hidden = !sightings.length; revealShare = { card, o: model };
   playView({ card, o: model, from, sighting });
 }
 // A Tonight row's card: the real card if you own it, otherwise a preview (art and story shown).
@@ -939,8 +943,18 @@ function showTonightCard(obj, from, eyebrow) {
   const card = renderCard(model, sightings.length ? { sightings, seenMembers: new Set(sightings.map(s => s.objectId)).size } : { preview: true });
   $('reveal-view').href = `cards.html#${encodeURIComponent(key)}`;
   closePanel('visible'); openPanel('reveal');
+  $('rv-share').hidden = !sightings.length; revealShare = { card, o: model };
   playView({ card, o: model, from, eyebrow });
 }
+// Share from the reveal (2026-10-08, design D): the same image as the collection viewer's Share.
+let revealShare = null;
+$('rv-share').addEventListener('click', async () => {
+  const r = revealShare, btn = $('rv-share'); if (!r) return;
+  btn.disabled = true;
+  try { const how = await shareCardEl(r.card, r.o, { title: titleFor(r.o), rank: progressNow(state.sightings).rank.name }); if (how === 'downloaded') toast('Saved the card image.'); }
+  catch { toast('Couldn\'t make the image. Try again.'); }
+  btn.disabled = false;
+});
 async function capture(obj) {
   if (state.captureBusy) return;
   const d = now(), f = frame(d, state.observer);
@@ -967,7 +981,7 @@ function progressGain(saved) {
   const missions = after.missions.filter((m, i) => m.done && !before.missions[i]?.done);
   const achievements = after.achievements.filter((a, i) => a.done && !before.achievements[i].done);
   const ev = eventOf(saved), firstOfEvent = ev && !state.sightings.some((s) => s !== saved && eventOf(s)?.id === ev.id);
-  return { xp: after.xp - before.xp, missions, achievements, rankUp: after.rank.index > before.rank.index ? after.rank.name : null, event: firstOfEvent ? ev.name : null };
+  return { xp: after.xp - before.xp, rank: { from: before.xp, to: after.xp, name: after.rank.name, at: after.rank.at, next: after.rank.next }, missions, achievements, rankUp: after.rank.index > before.rank.index ? after.rank.name : null, event: firstOfEvent ? ev.name : null };
 }
 function announceProgress(g, delay = 3800) {
   // Tickets queue themselves; the delay lets the card land first.

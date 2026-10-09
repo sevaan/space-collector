@@ -14,7 +14,7 @@
 #reveal-view { opacity: 0; pointer-events: none; transition: opacity .4s .5s; }
 #reveal.rv-done #reveal-view { opacity: 1; pointer-events: auto; }
 
-#rv-holder { position: absolute; left: 50%; top: calc(50% + 22px); width: calc(28 * var(--cf)); height: calc(var(--ch, 39.2) * var(--cf)); transform-origin: center; margin-left: calc(-14 * var(--cf)); margin-top: calc(var(--ch, 39.2) * var(--cf) / -2); perspective: 1400px; opacity: 0; }
+#rv-holder { position: absolute; left: 50%; top: calc(50% + var(--rv-y, 22px)); width: calc(28 * var(--cf)); height: calc(var(--ch, 39.2) * var(--cf)); transform-origin: center; margin-left: calc(-14 * var(--cf)); margin-top: calc(var(--ch, 39.2) * var(--cf) / -2); perspective: 1400px; opacity: 0; }
 #rv-holder.live { cursor: pointer; }
 #rv-flipper { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; }
 .rv-side { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
@@ -52,7 +52,33 @@ body.night #reveal { background: #000; }
 #rv-top .pill:focus-visible { outline: none; border-color: #fff2b3; }
 
 /* Place the shared card action just under the revealed card. */
-#reveal-view { position: absolute; left: 0; right: 0; z-index: 4; top: calc(50% + 22px + var(--ch, 39.2) * var(--cf) / 2 + 18px); }
+#reveal-view { position: absolute; left: 0; right: 0; z-index: 4; top: calc(50% + var(--rv-y, 22px) + var(--ch, 39.2) * var(--cf) / 2 + 18px); }
 .rv-night { position: absolute; left: 50%; top: 18%; z-index: 5; padding: 8px 14px; border: 2px solid #8fb8ff; border-radius: 6px; color: #8fb8ff; background: rgba(8,15,27,.7);
   font: 500 15px/1 'SC Label', sans-serif; letter-spacing: .16em; text-transform: uppercase; transform: translateX(-50%) rotate(-8deg); animation: rvNight 2.6s var(--ease-spring, ease-out) forwards; pointer-events: none; }
 @keyframes rvNight { 0% { opacity: 0; transform: translateX(-50%) rotate(-8deg) scale(1.8); } 12% { opacity: 1; transform: translateX(-50%) rotate(-8deg) scale(.95); } 20% { transform: translateX(-50%) rotate(-8deg) scale(1); } 80% { opacity: 1; } 100% { opacity: 0; } }
+
+/* New card, design D (2026-10-08, design/reveal-options.html): the +XP rolls in beside NEW CARD, a share icon
+   (no circle) sits by the close, a soft glow in the tier colour under the card, and a thin rank bar fills under it. */
+.rv-xp { white-space: pre; }
+.rv-roll { display: inline-block; overflow: hidden; height: 1.3em; vertical-align: bottom; margin-left: .4em; }
+.rv-roll > span { display: inline-block; transform: translateY(-110%); }
+#reveal.rv-done .rv-roll > span { animation: rvRoll .9s .15s cubic-bezier(.3,1.4,.5,1) both; }
+@keyframes rvRoll { 0% { transform: translateY(-330%); } 100% { transform: translateY(0); } }
+.rv-share { display: grid; place-items: center; width: 44px; height: 44px; padding: 0; color: var(--text, #fff2b3); opacity: 0; pointer-events: none; transition: opacity .4s .5s; }
+.rv-share svg { width: 24px; height: 24px; }
+.rv-share:disabled { opacity: .4 !important; }
+#reveal.rv-done .rv-share { opacity: 1; pointer-events: auto; }
+#rv-glow { position: absolute; left: 50%; width: calc(34 * var(--cf)); height: calc(4 * var(--cf)); margin-left: calc(-17 * var(--cf)); border-radius: 50%;
+  top: calc(50% + var(--rv-y, 22px) + var(--ch, 39.2) * var(--cf) / 2 - 2 * var(--cf)); background: radial-gradient(ellipse, color-mix(in srgb, var(--fx) 50%, transparent), transparent 70%);
+  filter: blur(6px); opacity: 0; transition: opacity .8s .2s; pointer-events: none; }
+#reveal.rv-done #rv-glow { opacity: 1; }
+#rv-rank { position: absolute; z-index: 4; left: 50%; width: calc(28 * var(--cf) - 16px); transform: translateX(-50%); top: calc(50% + var(--rv-y, 22px) + var(--ch, 39.2) * var(--cf) / 2 + 14px);
+  opacity: 0; transition: opacity .4s .3s; pointer-events: none; }
+#reveal.rv-done #rv-rank { opacity: 1; }
+.rv-rank-row { display: flex; justify-content: space-between; margin-bottom: 5px; font: 500 12px/1.2 var(--label); letter-spacing: .18em; text-transform: uppercase; color: var(--muted, #bdbea9); font-variant-numeric: tabular-nums; }
+.rv-bar { position: relative; height: 4px; border-radius: 3px; background: #1c2a3a; overflow: hidden; }
+.rv-bar i { position: absolute; inset: 0 auto 0 0; width: 0; border-radius: 3px; background: linear-gradient(90deg, var(--gold, #fa8127), #ffcf5a); }
+/* With the rank bar the card rides up a little so the bar and the link still fit without scrolling. */
+#reveal.has-rank { --rv-y: -12px; }
+#reveal.has-rank #reveal-view { top: calc(50% + var(--rv-y, 22px) + var(--ch, 39.2) * var(--cf) / 2 + 40px); }
+@media (prefers-reduced-motion: reduce) { #reveal.rv-done .rv-roll > span { animation: none; transform: none; } }

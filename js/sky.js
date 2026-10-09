@@ -1,9 +1,9 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.343';
+import { extinction } from './sky-limit.js?v=0.1.344';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.343';
-import { TIER_INFO } from './rarity.js?v=0.1.343';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.344';
+import { TIER_INFO } from './rarity.js?v=0.1.344';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -262,15 +262,15 @@ export class SkyView {
     ctx.textBaseline = 'alphabetic';
   }
 
-  // Camera view's tint strength: full by day, half at night so the real sky comes through (2026-10-08, Sevaan),
-  // easing across twilight with dayF.
+  // Camera view's ground tint: full by day, half at night (2026-10-08, Sevaan), easing across twilight with dayF.
+  // The sky tint itself goes to nothing at night (drawBackground), so the real night sky shows untouched.
   camDim() { return 0.5 + 0.5 * Math.max(0, Math.min(1, this.dayF ?? 0)); }
   drawBackground() {
     const ctx = this.ctx, t = this.theme, f = this.dayF ?? 0;
     // Camera prototype (2026-10-08): the real sky is behind the canvas, so leave it clear (a faint dark veil at night).
     // Camera view (2026-10-08, Sevaan): the real sky colour for the time of day is painted see-through over the picture
     // (blue by day, dusk, night); below the horizon the camera shows through untouched (drawGround cuts the sky away).
-    if (this.camera) { ctx.clearRect(0, 0, this.w, this.h); ctx.save(); ctx.globalAlpha = 0.95 * this.camDim(); this.camera = false; this.drawBackground(); this.camera = true; ctx.restore(); return; }
+    if (this.camera) { ctx.clearRect(0, 0, this.w, this.h); ctx.save(); ctx.globalAlpha = 0.95 * Math.max(0, Math.min(1, this.dayF ?? 0)); this.camera = false; this.drawBackground(); this.camera = true; ctx.restore(); return; }
     const g = ctx.createLinearGradient(0, 0, 0, this.h);
     if (f <= 0) { g.addColorStop(0, t.bgBottom); g.addColorStop(1, t.bgTop); this.tone = { a: t.bgBottom, b: t.bgTop, f: 0 }; }
     else {

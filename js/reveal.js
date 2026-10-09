@@ -5,10 +5,10 @@
 //  Everything scales with rarity (Legendary dims the sky, shockwave, held breath, slow flip, fanfare).
 // Waits use timers, not animation.finished, so a paused tab can never freeze the sequence.
 
-import { TIER_INFO } from './rarity.js?v=0.1.343';
-import { levelFor, attachTilt, attachGyro, attachFlip, throwOff } from './card.js?v=0.1.343';
-import { applyBack } from './card-backs.js?v=0.1.343';
-import { addStarfield } from './starfield.js?v=0.1.343';
+import { TIER_INFO } from './rarity.js?v=0.1.344';
+import { levelFor, attachTilt, attachGyro, attachFlip, throwOff } from './card.js?v=0.1.344';
+import { applyBack } from './card-backs.js?v=0.1.344';
+import { addStarfield } from './starfield.js?v=0.1.344';
 
 const FX = {
   common:    { particles: 14,  flip: 520,  spin: 0,   dim: 0,   shock: false, notes: [880],                            hold: 0 },
@@ -111,7 +111,7 @@ export const MILESTONES = [1, 10, 25, 50, 75, 100, 200, 300, 400, 500, 600, 700,
 // What the stamp used to say now goes out as a ticket toast (2026-10-05): main.js registers the renderer.
 let announce = null;
 export function onRevealNews(fn) { announce = fn; }
-export async function playReveal({ card, o, seen, origin, fleet = null, progress = null, collected = 0, con = null, shiny = null, xp = 0 }) {
+export async function playReveal({ card, o, seen, origin, fleet = null, progress = null, collected = 0, con = null, shiny = null, xp = 0, rank = null }) {
   stopReveal();
   const my = run;
   const fresh = seen <= 1;
@@ -125,7 +125,9 @@ export async function playReveal({ card, o, seen, origin, fleet = null, progress
   const root = $('reveal');
   root.style.setProperty('--fx', color);
   root.classList.remove('rv-done');
-  $('reveal-eyebrow').textContent = (fresh ? 'NEW CARD' : newStamp ? 'NEW LAUNCH STAMP' : NIGHT_MILESTONES.includes(nights) ? `SEEN ON ${nights} NIGHTS` : 'SIGHTING RECORDED') + (xp > 0 ? `  ·  +${xp} XP` : '');
+  $('reveal-eyebrow').textContent = fresh ? 'NEW CARD' : newStamp ? 'NEW LAUNCH STAMP' : NIGHT_MILESTONES.includes(nights) ? `SEEN ON ${nights} NIGHTS` : 'SIGHTING RECORDED';
+  if (xp > 0) $('reveal-eyebrow').insertAdjacentHTML('beforeend', `<span class="rv-xp"> ·<span class="rv-roll"><span>+${xp} XP</span></span></span>`); // rolls in when the card lands
+  setRank(xp > 0 ? rank : null);
   $('reveal-card').replaceChildren(card);
   for (const id of ['rv-holder', 'rv-flipper', 'rv-dot', 'rv-dim', 'rv-flash', 'rv-shock']) $(id).getAnimations().forEach((a) => a.cancel());
   $('rv-holder').style.opacity = 0; $('rv-holder').classList.remove('live');
@@ -212,6 +214,7 @@ export async function playView({ card, o, from, sighting = null, eyebrow = null 
   const root = $('reveal');
   root.style.setProperty('--fx', color);
   root.classList.remove('rv-done');
+  setRank(null);
   $('reveal-eyebrow').textContent = eyebrow ?? (!sighting ? 'IN YOUR COLLECTION' : NIGHT_MILESTONES.includes(sighting.nights) ? `SEEN ON ${sighting.nights} NIGHTS` : 'SEEN AGAIN');
   $('reveal-card').replaceChildren(card);
   for (const id of ['rv-holder', 'rv-flipper', 'rv-dot', 'rv-dim', 'rv-flash', 'rv-shock']) $(id).getAnimations().forEach((a) => a.cancel());
@@ -282,6 +285,27 @@ async function finish({ fx, color, fresh, seen, level, levelUp, card, alive, fle
   stopGyro = attachGyro(card, tilt);
   attachFlip(card, { onBack: applyBack });
   $('reveal').classList.add('rv-done');
+  fillRank(alive);
+}
+
+// The rank bar under a new card (design D): XP counts up from before to after while the bar fills.
+// rank: { from, to, name, at, next } (next null at the top rank).
+let rankInfo = null;
+function setRank(r) {
+  rankInfo = r; $('reveal').classList.toggle('has-rank', !!r); $('rv-rank').hidden = !r;
+  if (!r) return;
+  const pct = (v) => (r.next ? Math.max(0, Math.min(1, (v - r.at) / (r.next - r.at))) : 1) * 100;
+  $('rv-rank-name').textContent = r.name; $('rv-rank-next').textContent = r.next ?? r.to;
+  $('rv-rank-xp').textContent = Math.max(r.at, r.from);
+  $('rv-rank-fill').style.transition = 'none'; $('rv-rank-fill').style.width = `${pct(Math.max(r.at, r.from))}%`;
+  r.pct = pct;
+}
+function fillRank(alive) {
+  const r = rankInfo; if (!r) return;
+  const from = Math.max(r.at, r.from), ms = reduced() ? 1 : 900, t0 = performance.now() + (reduced() ? 0 : 450);
+  setTimeout(() => { if (!alive()) return; const f = $('rv-rank-fill'); f.style.transition = `width ${ms}ms cubic-bezier(.3,.8,.3,1)`; f.style.width = `${r.pct(r.to)}%`; }, reduced() ? 0 : 450);
+  const step = (t) => { if (!alive()) return; const k = Math.max(0, Math.min(1, (t - t0) / ms)), e = 1 - (1 - k) ** 3; $('rv-rank-xp').textContent = Math.round(from + (r.to - from) * e); if (k < 1) requestAnimationFrame(step); };
+  requestAnimationFrame(step);
 }
 
 // Flick the finished card up and away to go back to the sky. Dragging still just tilts the card (the card
