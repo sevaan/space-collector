@@ -103,7 +103,7 @@ export function patchSvg(a, { locked = false, date = '', stitch = false } = {}) 
     return `<line x1="${(Math.cos(t) * rIn).toFixed(2)}" y1="${(Math.sin(t) * rIn).toFixed(2)}" x2="${(Math.cos(t2) * rim).toFixed(2)}" y2="${(Math.sin(t2) * rim).toFixed(2)}" stroke="${c}"/>`; }).join('');
   const name = a.name.toUpperCase(), nameSize = name.length > 16 ? 8.5 : name.length > 12 ? 9.5 : 11;
   const lift = `filter="url(#${id}e)"`;
-  return `<svg class="patch-svg" viewBox="-64 -64 128 128" aria-hidden="true"><defs><path id="${id}t" d="M-42 0 A42 42 0 0 1 42 0"/><path id="${id}b" d="M-44 0 A44 44 0 0 0 44 0"/>
+  return `<svg class="patch-svg" viewBox="-64 -64 128 128" aria-hidden="true"><defs><path id="${id}t" d="M-42 0 A42 42 0 0 1 42 0"/><path id="${id}b" d="M-41 0 A41 41 0 0 0 41 0"/>
     <pattern id="${id}w" width="3" height="3" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="3" height="3" fill="${g.c}"/><rect width="1.4" height="3" fill="#ffffff10"/><rect x="1.4" width=".4" height="3" fill="#00000022"/></pattern>
     <radialGradient id="${id}s" r="1"><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".38"/></radialGradient>
     <radialGradient id="${id}h" cx=".35" cy=".25" r=".9"><stop offset="0" stop-color="#fff" stop-opacity=".16"/><stop offset=".6" stop-color="#fff" stop-opacity="0"/></radialGradient>
