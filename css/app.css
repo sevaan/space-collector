@@ -711,3 +711,38 @@ body.night.cam-on #cam { filter: grayscale(1) sepia(1) saturate(5) hue-rotate(31
 .overlay.panel:not([hidden]) { animation: panel-up .42s cubic-bezier(.2, .9, .25, 1) !important; }
 .overlay.panel.leaving { animation: panel-down .3s cubic-bezier(.5, 0, .75, .4) forwards !important; }
 @media (prefers-reduced-motion: reduce) { .overlay.panel:not([hidden]), .overlay.panel.leaving { animation: ui-fade-in .15s !important; } }
+
+/* Tonight pass list, design B (2026-10-08, design/tonight-list.html): rarity filter chips, Up next / Later sections,
+   small cards with a rarity bar; swipe a card right-to-left to reveal its alarm (.b-alarm sits underneath). */
+.tl-chips { display: flex; gap: 6px; overflow-x: auto; margin: 4px -16px 2px; padding: 2px 16px 6px; scrollbar-width: none; }
+.tl-chips::-webkit-scrollbar { display: none; }
+.tl-chip { flex: none; display: inline-flex; align-items: center; gap: 7px; height: 32px; padding: 0 12px; border-radius: 99px; border: 1px solid var(--edge-soft); background: none; color: var(--muted);
+  font: 500 12px/1 var(--label); letter-spacing: .14em; text-transform: uppercase; cursor: pointer; }
+.tl-chip i { width: 7px; height: 7px; transform: rotate(45deg); background: var(--c); }
+.tl-chip.on { border-color: var(--c, var(--gold)); color: var(--text); background: color-mix(in srgb, var(--c, var(--gold)) 16%, transparent); }
+.tl-chip:disabled { opacity: .35; cursor: default; }
+.b-sec { display: flex; justify-content: space-between; align-items: baseline; margin: 16px 0 8px; font: 500 12px/1 var(--label); letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+.b-sec span:first-child { color: var(--text); } .b-sec.next span:first-child { color: var(--gold); }
+.b-row { position: relative; margin-bottom: 8px; border-radius: 10px; overflow: hidden; background: #0f1b2b; touch-action: pan-y; }
+.b-alarm { position: absolute; top: 0; right: 0; bottom: 0; width: 88px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; border: 0; border-radius: 0 10px 10px 0;
+  background: var(--gold); color: #080f1b; font: 500 12px/1 var(--label); letter-spacing: .12em; text-transform: uppercase; cursor: pointer; }
+.b-alarm svg { width: 22px; height: 22px; }
+.b-alarm.on { background: #2b3a4c; color: var(--text); } .b-alarm.on .fillme { fill: currentColor; }
+.b-alarm:disabled { background: #1c2a3a; color: var(--muted); cursor: default; }
+.b-face { position: relative; display: flex; align-items: center; gap: 12px; padding: 10px 10px 10px 14px; background: #0c1725; border: 1px solid #172536; border-radius: 10px;
+  transition: transform .28s cubic-bezier(.3,.8,.3,1); cursor: pointer; user-select: none; -webkit-user-select: none; }
+.b-face::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; border-radius: 10px 0 0 10px; background: var(--c); }
+.b-when { width: 54px; flex: none; text-align: center; }
+.b-when b { display: block; font: 400 16px/1 var(--display); color: var(--text); white-space: nowrap; }
+.b-when small { display: block; margin-top: 4px; font: 500 11px/1 var(--label); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+.b-row.soon .b-when b { color: var(--gold); }
+.b-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.b-tier { font: 500 11px/1 var(--label); letter-spacing: .16em; text-transform: uppercase; color: var(--c); }
+.b-tier em { font-style: normal; color: var(--gold); }
+.b-tier .b-set { display: inline-flex; align-items: center; gap: 3px; color: var(--text); } .b-tier .b-set svg { width: 11px; height: 11px; } .b-tier .b-set .fillme { fill: currentColor; }
+.b-main .name { font: 400 15px/1.15 var(--display); text-transform: uppercase; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.b-main .meta { font: 500 12.5px/1.25 var(--label); letter-spacing: .03em; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.b-face .ic.showme { flex: none; width: 38px; height: 38px; padding: 0; display: grid; place-items: center; border-radius: 50%; border: 1px solid var(--gold); background: none; color: var(--gold); cursor: pointer; }
+.b-face .ic.showme svg { width: 18px; height: 18px; }
+#tonight-list .t-mark { padding-left: 4px; }
+body.night .b-face { background: #140606; border-color: #2e1010; } body.night .b-row { background: #140606; }

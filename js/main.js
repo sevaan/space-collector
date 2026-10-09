@@ -1,38 +1,38 @@
-import * as Secrets from './secrets.js?v=0.1.349';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.349';
-import * as Ufo from './ufo.js?v=0.1.349';
-import * as Fossil from './fossil.js?v=0.1.349';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.349';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.349';
-import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.349';
-import { VERSION } from './version.js?v=0.1.349';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.349';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.349';
-import { conArt } from './con-art.js?v=0.1.349';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.349';
-import { CON_FIGURES } from './con-figures.js?v=0.1.349';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.349';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.349';
-import { progress as progressOf } from './progress.js?v=0.1.349';
-import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.349';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.349';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.349';
-import { SkyView, shortName } from './sky.js?v=0.1.349';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, roadster, starVector } from './celestial.js?v=0.1.349';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.349';
-import { cardArt } from './art.js?v=0.1.349';
-import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.349';
-import { applyBack } from './card-backs.js?v=0.1.349';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.349';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.349';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.349';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.349';
-import { TIER_INFO } from './rarity.js?v=0.1.349';
-import { SETS } from './sets.js?v=0.1.349';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.349';
-import { shareCardEl } from './share-card.js?v=0.1.349';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.349';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.349';
+import * as Secrets from './secrets.js?v=0.1.350';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.350';
+import * as Ufo from './ufo.js?v=0.1.350';
+import * as Fossil from './fossil.js?v=0.1.350';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.350';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.350';
+import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.350';
+import { VERSION } from './version.js?v=0.1.350';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.350';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.350';
+import { conArt } from './con-art.js?v=0.1.350';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.350';
+import { CON_FIGURES } from './con-figures.js?v=0.1.350';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.350';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.350';
+import { progress as progressOf } from './progress.js?v=0.1.350';
+import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.350';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.350';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.350';
+import { SkyView, shortName } from './sky.js?v=0.1.350';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, roadster, starVector } from './celestial.js?v=0.1.350';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.350';
+import { cardArt } from './art.js?v=0.1.350';
+import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.350';
+import { applyBack } from './card-backs.js?v=0.1.350';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.350';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.350';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.350';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.350';
+import { TIER_INFO } from './rarity.js?v=0.1.350';
+import { SETS } from './sets.js?v=0.1.350';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.350';
+import { shareCardEl } from './share-card.js?v=0.1.350';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.350';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.350';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -1189,6 +1189,28 @@ function tonightPasses(T, t0) {
     .filter((p) => p.fresh || p.mag <= 2.5 || p.peakEl >= 60 || ['rare', 'epic', 'legendary'].includes(p.obj.tier))
     .sort((a, b) => a.start - b.start);
 }
+// Tonight filter (rarity and up, new only), kept while the app is open.
+const tlFilter = { min: 0, newOnly: false };
+// Swipe a pass row right-to-left to reveal its alarm button (2026-10-08). Vertical drags scroll the list as usual.
+const SWIPE_W = 88;
+function swipeClose(el) { el.classList.remove('open'); el.querySelector('.b-face').style.transform = ''; }
+function swipeRow(el) {
+  const face = el.querySelector('.b-face'); let x0 = 0, y0 = 0, dx = 0, mode = null, base = 0;
+  face.addEventListener('pointerdown', (e) => { if (e.pointerType === 'mouse' && e.button) return; x0 = e.clientX; y0 = e.clientY; dx = 0; mode = null; base = el.classList.contains('open') ? -SWIPE_W : 0; });
+  face.addEventListener('pointermove', (e) => {
+    if (mode === 'scroll' || (e.buttons === 0 && e.pointerType === 'mouse')) return;
+    const mx = e.clientX - x0, my = e.clientY - y0;
+    if (!mode) { if (Math.abs(mx) < 8 && Math.abs(my) < 8) return; mode = Math.abs(mx) > Math.abs(my) ? 'swipe' : 'scroll'; if (mode === 'swipe') { face.setPointerCapture?.(e.pointerId); face.style.transition = 'none'; document.querySelectorAll('.b-row.open').forEach((r) => r !== el && swipeClose(r)); } }
+    if (mode !== 'swipe') return;
+    dx = Math.max(-SWIPE_W - 24, Math.min(0, base + mx)); face.style.transform = `translateX(${dx}px)`;
+  });
+  const end = () => {
+    if (mode !== 'swipe') return; face.style.transition = '';
+    const open = dx < -SWIPE_W / 2; el.classList.toggle('open', open); face.style.transform = open ? `translateX(${-SWIPE_W}px)` : '';
+    el.dataset.swiped = '1'; setTimeout(() => delete el.dataset.swiped, 50); mode = null;
+  };
+  face.addEventListener('pointerup', end); face.addEventListener('pointercancel', end);
+}
 function renderTonight() {
   const T = state.tonight, t0 = now().getTime();
   if (!T) { $('tonight-summary').textContent = 'Working out tonight\'s sky…'; $('tonight-chart').innerHTML = ''; $('tonight-list').innerHTML = ''; requestTonight(); return; }
@@ -1217,10 +1239,22 @@ function renderTonight() {
   $('tonight-chart').innerHTML = svg;
   // Passes worth looking for, then the Moon, planets and constellations that are up.
   const list = $('tonight-list'); list.innerHTML = '';
-  // One timeline (2026-10-08, design/now-tonight.html A): passes and the night's moments (cloud, clearing, meteors,
-  // busiest, dawn) in time order down a line.
-  list.classList.add('tl-mode');
-  const passes = tonightPasses(T, t0).slice(0, 40);
+  // Pass list, design B (2026-10-08, design/tonight-list.html): small cards with a rarity bar, split into Up next
+  // (within 10 min: aim now) and Later tonight. Swipe a row right-to-left to reveal its alarm (Sevaan's idea); passes
+  // under 10 minutes away say "Too soon" there, since the alert fires 10 minutes before. Filter: tap a rarity to show
+  // it and rarer (tap again for all), plus New only. The night's moments (cloud, busiest, dawn) sit between rows.
+  list.classList.remove('tl-mode');
+  const allPasses = tonightPasses(T, t0).slice(0, 60);
+  const TIERS = ['common', 'uncommon', 'rare', 'epic', 'legendary'], tierIdx = (p) => Math.max(0, TIERS.indexOf(p.obj.tier));
+  const passes = allPasses.filter((p) => tierIdx(p) >= tlFilter.min && (!tlFilter.newOnly || p.fresh)).slice(0, 40);
+  const chips = document.createElement('div'); chips.className = 'tl-chips';
+  chips.innerHTML = TIERS.map((k, i) => { const t = TIER_INFO[k]; const n = allPasses.filter((p) => tierIdx(p) === i).length;
+    return `<button type="button" class="tl-chip${i >= tlFilter.min ? ' on' : ''}" data-min="${i}" style="--c:${t.color}"${n ? '' : ' disabled'}><i></i>${t.label}${i === tlFilter.min && i ? '+' : ''}</button>`; }).join('')
+    + `<button type="button" class="tl-chip new${tlFilter.newOnly ? ' on' : ''}" data-new>New only</button>`;
+  chips.addEventListener('click', (e) => { const c = e.target.closest('.tl-chip'); if (!c || c.disabled) return;
+    if (c.hasAttribute('data-new')) tlFilter.newOnly = !tlFilter.newOnly; else { const m = Number(c.dataset.min); tlFilter.min = m === tlFilter.min ? 0 : m; }
+    renderTonight(); });
+  list.appendChild(chips);
   const marks = [];
   if (wxT?.coverFrom > t0) marks.push([wxT.coverFrom, 'Cloud rolls in', 'cloud']);
   if (wxT?.clearFrom > t0) marks.push([wxT.clearFrom, `Clears${ev && t0 >= ev.start ? ` · ${ev.name.replace(/\s*\d{4}$/, '')} best now` : ''}`, 'clear']);
@@ -1228,32 +1262,46 @@ function renderTonight() {
   if (T.dawn) marks.push([T.dawn, 'Dawn: the sky closes', 'dawn']);
   const markHtml = ([t, txt, k]) => `<div class="t-mark ${k}"><span class="time">${fmtTime(t)}</span><span>${escapeHtml(txt)}</span></div>`;
   marks.sort((a, b) => a[0] - b[0]);
-  for (const p of passes) {
-    while (marks.length && marks[0][0] <= p.start) list.insertAdjacentHTML('beforeend', markHtml(marks.shift()));
-    const tier = TIER_INFO[p.obj.tier] ?? TIER_INFO.common;
-    const row = document.createElement('div'); row.className = 't-row'; row.style.setProperty('--tier', tier.color);
-    // Icon actions (2026-10-06): a target (go to it in Explore) and a bell (calendar reminder; filled once set).
-    const mins = Math.round((p.start - t0) / 60000), soon = p.start <= t0 ? 'up now' : mins < 60 ? `in ${mins} min` : '';
-    const belled = reminded.has(`${p.obj.id}@${p.start}`);
-    row.innerHTML = `<span class="time">${fmtTime(p.start)}${soon ? `<small>${soon}</small>` : ''}</span>
-      <span class="t-main"><span class="name"><span class="dot"></span>${escapeHtml(label(p.obj))}${p.fresh ? '<span class="new">NEW</span>' : ''}</span>
-      <span class="meta">${tier.label} · ${brightnessWord(p.mag)} · ${compassPoint(p.riseAz)} → ${p.peakEl}° ${compassPoint(p.peakAz)}</span></span>
-      <span class="t-acts"><button class="ic showme" type="button" aria-label="Show me in the sky">${ICON_TARGET}</button>${p.start > t0 + 10 * 60000 ? `<button class="ic remind${belled ? ' on' : ''}" type="button" aria-label="${belled ? 'Reminder set' : 'Remind me'}">${ICON_BELL}</button>` : '<span class="ic ic-none" aria-hidden="true"></span>'}</span>`; // keep the columns lined up when it's too soon to remind
-    row.querySelector('.remind')?.addEventListener('click', (e) => {
-      const b = e.currentTarget, key = `${p.obj.id}@${p.start}`;
-      if (reminded.has(key)) { // tap a lit bell to turn it off (the app can't reach into your calendar, so say so)
-        reminded.delete(key); b.classList.remove('on'); b.setAttribute('aria-label', 'Remind me');
-        toast(`Reminder off for ${escapeHtml(label(p.obj))}. If you added it to your calendar, delete it there too.`, 3500);
-      } else { remindPass(p); reminded.add(key); b.classList.add('on'); b.setAttribute('aria-label', 'Reminder set'); }
+  const SOON = 10 * 60000, soonList = passes.filter((p) => p.start <= t0 + SOON), laterList = passes.filter((p) => p.start > t0 + SOON);
+  const row = (p) => {
+    const tier = TIER_INFO[p.obj.tier] ?? TIER_INFO.common, key = `${p.obj.id}@${p.start}`, mins = Math.round((p.start - t0) / 60000);
+    const canRemind = p.start > t0 + SOON, belled = reminded.has(key);
+    const when = p.start <= t0 ? 'up now' : mins < 60 ? `in ${mins} min` : `in ${Math.floor(mins / 60)} h${mins % 60 ? ` ${mins % 60} min` : ''}`;
+    const el = document.createElement('div'); el.className = `b-row${canRemind ? '' : ' soon'}`; el.style.setProperty('--c', tier.color);
+    el.innerHTML = `<button type="button" class="b-alarm${belled ? ' on' : ''}"${canRemind ? '' : ' disabled'} aria-label="${canRemind ? (belled ? 'Reminder set: tap to turn off' : 'Remind me 10 minutes before') : 'Too soon for a reminder'}">${ICON_BELL}<span>${canRemind ? (belled ? 'Set' : 'Remind') : 'Too soon'}</span></button>
+      <div class="b-face"><span class="b-when"><b>${fmtTime(p.start).replace(/\s?[AP]M$/i, '')}</b><small>${when}</small></span>
+      <span class="b-main"><span class="b-tier">${tier.label}${p.fresh ? ' · <em>New</em>' : ''}${belled ? ` · <em class="b-set">${ICON_BELL}${fmtTime(p.start - SOON)}</em>` : ''}</span><span class="name">${escapeHtml(label(p.obj))}</span>
+      <span class="meta">Rises ${compassPoint(p.riseAz)} · up to ${p.peakEl}° in the ${compassPoint(p.peakAz)} · ${brightnessWord(p.mag)}</span></span>
+      <button class="ic showme" type="button" aria-label="Show me in the sky">${ICON_TARGET}</button></div>`;
+    el.querySelector('.showme').addEventListener('click', (e) => { e.stopPropagation(); flyToCircle(e.currentTarget); showMePass(p); });
+    el.querySelector('.b-alarm').addEventListener('click', (e) => {
+      e.stopPropagation(); if (!canRemind) return;
+      if (reminded.has(key)) { reminded.delete(key); toast(`Reminder off for ${escapeHtml(label(p.obj))}. If you added it to your calendar, delete it there too.`, 3500); }
+      else { remindPass(p); reminded.add(key); }
+      renderTonight();
     });
-    row.querySelector('.showme').addEventListener('click', (e) => { flyToCircle(e.currentTarget); showMePass(p); });
-    // Tap the row to see the card you'd be waiting up for (owned cards open as they are; others as a preview).
-    row.classList.add('tappable');
-    row.addEventListener('click', (e) => { if (e.target.closest('.remind, .showme')) return; const from = row.querySelector('.name').getBoundingClientRect(); showTonightCard(p.obj, from, `TONIGHT · ${fmtTime(p.start)}`); });
-    list.appendChild(row);
-  }
+    el.querySelector('.b-face').addEventListener('click', (e) => {
+      if (el.dataset.swiped || e.target.closest('.showme')) return; // a swipe isn't a tap
+      if (el.classList.contains('open')) { swipeClose(el); return; }
+      const from = el.querySelector('.name').getBoundingClientRect(); showTonightCard(p.obj, from, `TONIGHT · ${fmtTime(p.start)}`);
+    });
+    swipeRow(el);
+    return el;
+  };
+  const section = (title, sub, items, cls) => {
+    if (!items.length) return;
+    list.insertAdjacentHTML('beforeend', `<div class="b-sec ${cls}"><span>${title} · ${items.length}</span><span>${sub}</span></div>`);
+    for (const p of items) {
+      while (cls === 'later' && marks.length && marks[0][0] <= p.start) list.insertAdjacentHTML('beforeend', markHtml(marks.shift()));
+      list.appendChild(row(p));
+    }
+  };
+  section('Up next', 'Aim now', soonList, 'next');
+  section('Later tonight', 'Swipe left for an alert', laterList, 'later');
   for (const mk of marks) list.insertAdjacentHTML('beforeend', markHtml(mk));
-  if (!passes.length) list.insertAdjacentHTML('beforeend', '<p class="hint">No standout passes left tonight.</p>');
+  if (!passes.length) list.insertAdjacentHTML('beforeend', `<p class="hint">${allPasses.length ? 'Nothing that rare left tonight. Tap a lower rarity.' : 'No standout passes left tonight.'}</p>`);
+  // Show once how the alarm hides behind a row: the first Later row slides open a little and back.
+  try { if (!localStorage.getItem('tlSwipeHint')) { const first = list.querySelector('.b-row:not(.soon) .b-face'); if (first && !matchMedia('(prefers-reduced-motion: reduce)').matches) { localStorage.setItem('tlSwipeHint', '1'); setTimeout(() => first.animate([{ transform: 'translateX(0)' }, { transform: 'translateX(-64px)', offset: .35 }, { transform: 'translateX(-64px)', offset: .65 }, { transform: 'translateX(0)' }], { duration: 1400, easing: 'cubic-bezier(.3,.7,.3,1)' }), 600); } } } catch {}
   list.insertAdjacentHTML('beforeend', `<div class="t-head">Also up tonight</div>` + alsoUpTonight(t0, T.dawn ?? t0 + 10 * 3600000));
   // At the end: the few worth setting an alarm for (rarest new ones still to come), as little cards with a bell.
   const rank = { legendary: 5, epic: 4, rare: 3, uncommon: 2, common: 1 };
