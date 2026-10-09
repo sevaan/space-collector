@@ -1,17 +1,17 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { cardArt } from './art.js?v=0.1.340';
-import { TIER_INFO } from './rarity.js?v=0.1.340';
-import { SET_BY_ID } from './sets.js?v=0.1.340';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.340';
-import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.340';
-import { artFileFor } from './art-keys.js?v=0.1.340';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.340';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.340';
-import { nightsIn } from './observation.js?v=0.1.340';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.340';
-import { SHINY } from './shiny.js?v=0.1.340';
-import { conArt } from './con-art.js?v=0.1.340';
-import { CON_FIGURES } from './con-figures.js?v=0.1.340';
+import { cardArt } from './art.js?v=0.1.341';
+import { TIER_INFO } from './rarity.js?v=0.1.341';
+import { SET_BY_ID } from './sets.js?v=0.1.341';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.341';
+import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.341';
+import { artFileFor } from './art-keys.js?v=0.1.341';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.341';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.341';
+import { nightsIn } from './observation.js?v=0.1.341';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.341';
+import { SHINY } from './shiny.js?v=0.1.341';
+import { conArt } from './con-art.js?v=0.1.341';
+import { CON_FIGURES } from './con-figures.js?v=0.1.341';
 // The animal/symbol figure belongs to the completed (gold) constellation card only (2026-10-05): a single
 // star's card draws just the star pattern with its star marked, so the figure is a reward for finishing the set.
 const conFig = (id) => (CON_FIGURES.has(id) ? { figure: `assets/art/con/${id}.webp` } : {});
@@ -296,7 +296,12 @@ export function attachGyro(el, tilt) {
     let q = qFromEuler(e.alpha ?? 0, e.beta, e.gamma);
     if (!base) base = q;
     if (q[0] * base[0] + q[1] * base[1] + q[2] * base[2] + q[3] * base[3] < 0) q = q.map((v) => -v); // same hemisphere
-    base = qNorm(base.map((v, i) => v + (q[i] - v) * 0.01));
+    // The resting pose drifts toward how you hold the phone now: slowly for small tilts, so they read as
+    // tilt, but fast for big moves (lowering the phone after catching something overhead), so the card
+    // settles flat again instead of staying cranked over with the holo at full blast.
+    const dev = 2 * Math.acos(Math.min(1, Math.abs(q[0] * base[0] + q[1] * base[1] + q[2] * base[2] + q[3] * base[3]))) / D2R;
+    const k = dev > 12 ? Math.min(0.2, 0.01 + (dev - 12) * 0.006) : 0.01;
+    base = qNorm(base.map((v, i) => v + (q[i] - v) * k));
     // Turn from the resting pose, in the phone's own frame: conj(base) * q.
     let r = qMul([base[0], -base[1], -base[2], -base[3]], q);
     if (r[0] < 0) r = r.map((v) => -v);
