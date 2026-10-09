@@ -1,38 +1,38 @@
-import * as Secrets from './secrets.js?v=0.1.357';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.357';
-import * as Ufo from './ufo.js?v=0.1.357';
-import * as Fossil from './fossil.js?v=0.1.357';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.357';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.357';
-import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.357';
-import { VERSION } from './version.js?v=0.1.357';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.357';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.357';
-import { conArt } from './con-art.js?v=0.1.357';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.357';
-import { CON_FIGURES } from './con-figures.js?v=0.1.357';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.357';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.357';
-import { progress as progressOf } from './progress.js?v=0.1.357';
-import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.357';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.357';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.357';
-import { SkyView, shortName } from './sky.js?v=0.1.357';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.357';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.357';
-import { cardArt } from './art.js?v=0.1.357';
-import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.357';
-import { applyBack } from './card-backs.js?v=0.1.357';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.357';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.357';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.357';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.357';
-import { TIER_INFO } from './rarity.js?v=0.1.357';
-import { SETS } from './sets.js?v=0.1.357';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.357';
-import { shareCardEl } from './share-card.js?v=0.1.357';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.357';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.357';
+import * as Secrets from './secrets.js?v=0.1.358';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.358';
+import * as Ufo from './ufo.js?v=0.1.358';
+import * as Fossil from './fossil.js?v=0.1.358';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.358';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.358';
+import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.358';
+import { VERSION } from './version.js?v=0.1.358';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.358';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.358';
+import { conArt } from './con-art.js?v=0.1.358';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.358';
+import { CON_FIGURES } from './con-figures.js?v=0.1.358';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.358';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.358';
+import { progress as progressOf } from './progress.js?v=0.1.358';
+import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.358';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.358';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.358';
+import { SkyView, shortName } from './sky.js?v=0.1.358';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.358';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.358';
+import { cardArt } from './art.js?v=0.1.358';
+import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.358';
+import { applyBack } from './card-backs.js?v=0.1.358';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.358';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.358';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.358';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.358';
+import { TIER_INFO } from './rarity.js?v=0.1.358';
+import { SETS } from './sets.js?v=0.1.358';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.358';
+import { shareCardEl } from './share-card.js?v=0.1.358';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.358';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.358';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -1140,15 +1140,15 @@ function renderVisible() {
     items.slice(0, 8).forEach((it) => list.appendChild(row(it)));
     if (items.length > 8) { const more = document.createElement('button'); more.type = 'button'; more.className = 'ui-link vis-more'; more.textContent = `Show all ${items.length} ›`;
       more.addEventListener('click', () => { const frag = document.createDocumentFragment(); items.slice(8).forEach((it) => frag.appendChild(row(it))); more.replaceWith(frag); }); list.appendChild(more); } };
-  group('New to you', fresh); group('Seen before', seen);
-  // At the end: what's new to collect, as little cards.
-  if (fresh.length) {
-    const collect = fresh.filter((it) => it.obj.natural !== 'star' || fresh.length < 6).slice(0, 10);
-    if (!collect.length) return;
-    list.insertAdjacentHTML('beforeend', `<div class="t-head">New to collect · ${collect.length}</div>`);
+  group('New to you', fresh);
+  // Seen before (2026-10-09, Sevaan): the cards you've already collected, as a row of little cards (the "New to
+  // collect" strip is gone; new things are the list above). Tap one to aim at it.
+  if (seen.length) {
+    list.insertAdjacentHTML('beforeend', `<div class="t-head">Seen before · ${seen.length}</div>`);
     const strip = document.createElement('div'); strip.className = 'mini-cards';
-    collect.forEach((it) => { const o = it.obj, tier = TIER_INFO[o.tier] ?? TIER_INFO.common, c = document.createElement('button'); c.type = 'button'; c.className = 'mini-card';
+    seen.forEach((it) => { const o = it.obj, tier = TIER_INFO[o.tier] ?? TIER_INFO.common, c = document.createElement('button'); c.type = 'button'; c.className = 'mini-card';
       c.innerHTML = `<span class="mc-art">${previewArt(o, 'small', { accent: tier.color })}</span><span class="mc-bd"><small style="color:${tier.color}">◆ ${tier.label}</small><b>${escapeHtml(label(o))}</b><span>${compassPoint(it.look.az)} · ${Math.round(it.look.el)}° up</span></span>`;
+      c.setAttribute('aria-label', `${label(o)}, ${compassPoint(it.look.az)}, ${Math.round(it.look.el)} degrees up: aim at it`);
       c.addEventListener('click', () => aimAt(it)); strip.appendChild(c); });
     list.appendChild(strip);
   }
