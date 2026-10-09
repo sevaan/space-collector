@@ -340,3 +340,14 @@ main { padding-bottom: calc(var(--safe-bottom) + 210px) !important; } /* the las
 .lb-tw { opacity: .55; animation: lbTw var(--t, 3s) ease-in-out var(--d, 0s) infinite; }
 @keyframes lbTw { 0%, 100% { opacity: .6; } 50% { opacity: .08; } }
 @media (prefers-reduced-motion: reduce) { .lb-tw { animation: none; } }
+
+/* Red night mode, the rest of the page (QA 2026-10-08): headings, albums, the patch wall and patch view, the viewer's
+   position and fleet launch lines kept cream / orange / navy at night. */
+:where(html[data-theme="night"], body.night) :is(.collection-intro h1, .empty h2, .pv-body h2, .album__count b, .pw-start .pw-grid .pw-item span) { color: #d67674; }
+:where(html[data-theme="night"], body.night) :is(.album__count, .pw-item span, .pw-start > span, .pv-body p, .h-launch, #v-position) { color: #a45650 !important; }
+:where(html[data-theme="night"], body.night) :is(.album, .album-head) { background: #130606; border-color: #52221f; color: #d67674; }
+:where(html[data-theme="night"], body.night) .album__next { color: #ff6a55; }
+:where(html[data-theme="night"], body.night) .album-bar { background: #2a0e0c; }
+:where(html[data-theme="night"], body.night) .album-bar i { background: linear-gradient(90deg, #a83a2c, #ff6a55); }
+:where(html[data-theme="night"], body.night) .album-bar b { background: #3a1716; }
+:where(html[data-theme="night"], body.night) :is(.album__art, .pw-item svg, .pv-art) { filter: grayscale(1) sepia(1) saturate(5) hue-rotate(318deg) brightness(.6); }

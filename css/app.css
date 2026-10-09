@@ -748,3 +748,13 @@ body.night .b-face { background: #140606; border-color: #2e1010; } body.night .b
 
 .set-credit { margin: 14px 4px 0; text-align: center; font: 500 11px/1.4 var(--label); letter-spacing: .06em; color: var(--muted); opacity: .7; }
 .set-credit a { color: inherit; }
+
+/* Red night mode for the newer panels (QA 2026-10-08): the sky maps, Tonight chart, mini cards, list icons, rarity bars,
+   countdown and Settings icons kept their cream, orange and rarity colours at night. */
+body.night :is(.vis-map svg, .vis-empty svg, #tonight-chart svg, .mini-card .mc-art, .vr-ic, .set-ic, .ud-opt i) { filter: grayscale(1) brightness(.55) sepia(1) saturate(5) hue-rotate(318deg); }
+body.night :is(.b-row, .tl-chip, .vis-row2, .mini-card) { --c: var(--gold) !important; --tier: var(--gold) !important; } /* beats the inline rarity colour */
+body.night .mini-card { border-color: var(--edge); background: #140606; }
+body.night .mini-card small { color: var(--gold) !important; }
+body.night :is(.vr-ic, .ts-chip) { background: #140606; }
+body.night #until-dark, body.night #until-dark * { color: var(--text) !important; }
+body.night #ufo-cta { background: var(--gold) !important; color: #120606 !important; }

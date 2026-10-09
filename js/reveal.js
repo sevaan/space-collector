@@ -5,10 +5,10 @@
 //  Everything scales with rarity (Legendary dims the sky, shockwave, held breath, slow flip, fanfare).
 // Waits use timers, not animation.finished, so a paused tab can never freeze the sequence.
 
-import { TIER_INFO } from './rarity.js?v=0.1.355';
-import { levelFor, attachTilt, attachGyro, attachFlip, throwOff } from './card.js?v=0.1.355';
-import { applyBack } from './card-backs.js?v=0.1.355';
-import { addStarfield } from './starfield.js?v=0.1.355';
+import { TIER_INFO } from './rarity.js?v=0.1.356';
+import { levelFor, attachTilt, attachGyro, attachFlip, throwOff } from './card.js?v=0.1.356';
+import { applyBack } from './card-backs.js?v=0.1.356';
+import { addStarfield } from './starfield.js?v=0.1.356';
 
 const FX = {
   common:    { particles: 14,  flip: 520,  spin: 0,   dim: 0,   shock: false, notes: [880],                            hold: 0 },
@@ -30,12 +30,13 @@ const reduced = () => window.matchMedia?.('(prefers-reduced-motion: reduce)').ma
 // ---------- sound (iPhones can't vibrate from the web, so sound carries the "thump") ----------
 let audio;
 // Call from inside the tap handler, before any await, so iOS lets the sound play.
+const soundOff = () => { try { return localStorage.getItem('sound') === '0'; } catch { return false; } }; // storage can be blocked (QA 2026-10-08)
 export function primeReveal() {
-  if (localStorage.getItem('sound') === '0') return; // Settings → Sounds and vibration
+  if (soundOff()) return; // Settings → Sounds and vibration
   try { audio ??= new (window.AudioContext || window.webkitAudioContext)(); audio.resume(); } catch {}
 }
 function tone(freq, at, dur, gain = .16, type = 'sine') {
-  if (!audio || localStorage.getItem('sound') === '0') return;
+  if (!audio || soundOff()) return;
   const o = audio.createOscillator(), g = audio.createGain();
   o.type = type; o.frequency.value = freq;
   g.gain.setValueAtTime(.0001, at); g.gain.exponentialRampToValueAtTime(gain, at + .015); g.gain.exponentialRampToValueAtTime(.0001, at + dur);
@@ -158,18 +159,18 @@ export async function playReveal({ card, o, seen, origin, fleet = null, progress
   thump();
   burst(x, y + 20, Math.round(fx.particles / 2), color);
   // A crisp ring that grows (size, not scale, so its line stays thin and sharp: 2026-10-08, the scaled one smeared into a muddy disc).
-  if (fx.shock) $('rv-shock').animate([{ width: '20px', height: '20px', opacity: 1, borderWidth: '3px' }, { width: '140vmax', height: '140vmax', opacity: 0, borderWidth: '1.5px' }], { duration: 760, easing: 'cubic-bezier(.15,.7,.3,1)' });
+  if (fx.shock && !reduced()) $('rv-shock').animate([{ width: '20px', height: '20px', opacity: 1, borderWidth: '3px' }, { width: '140vmax', height: '140vmax', opacity: 0, borderWidth: '1.5px' }], { duration: 760, easing: 'cubic-bezier(.15,.7,.3,1)' });
 
   if (!fresh) {
     // Seen before: straight to the card.
     $('rv-flipper').style.transform = 'rotateY(180deg)';
-    await play($('rv-holder'), [{ opacity: 0, transform: 'scale(.5) translateY(40px)' }, { opacity: 1, transform: 'scale(1.04)' }, { opacity: 1, transform: 'scale(1)' }], { duration: 480, easing: 'cubic-bezier(.2,.9,.3,1.2)', fill: 'forwards' });
+    await play($('rv-holder'), [{ opacity: 0, transform: 'scale(.5) translateY(40px)' }, { opacity: 1, transform: 'scale(1.04)' }, { opacity: 1, transform: 'scale(1)' }], { duration: reduced() ? 1 : 480, easing: 'cubic-bezier(.2,.9,.3,1.2)', fill: 'forwards' });
     if (!alive()) return;
     return finish({ fx, color, fresh, seen, level, levelUp, card, alive, fleet, newStamp, nights, collected, con, shiny });
   }
 
   // 2. A sealed card lands, glowing in its rarity colour, and waits for your tap.
-  await play($('rv-holder'), [{ opacity: 0, transform: 'scale(.4) translateY(60px) rotate(-8deg)' }, { opacity: 1, transform: 'scale(1.05) rotate(2deg)' }, { opacity: 1, transform: 'scale(1) rotate(0)' }], { duration: 520, easing: 'cubic-bezier(.2,.9,.3,1.3)', fill: 'forwards' });
+  await play($('rv-holder'), [{ opacity: 0, transform: 'scale(.4) translateY(60px) rotate(-8deg)' }, { opacity: 1, transform: 'scale(1.05) rotate(2deg)' }, { opacity: 1, transform: 'scale(1) rotate(0)' }], { duration: reduced() ? 1 : 520, easing: 'cubic-bezier(.2,.9,.3,1.3)', fill: 'forwards' });
   if (!alive()) return;
   $('rv-back').classList.add('glow');
   // Listen on the holder, which doesn't rotate: the back inherits the tilt values, and the finger never
@@ -190,7 +191,7 @@ export async function playReveal({ card, o, seen, origin, fleet = null, progress
   stopBack();
 
   // 3. Legendary holds its breath; then the flip (Epic spins on the way).
-  if (fx.hold) await play($('rv-flipper'), [{ transform: 'rotate(0)' }, { transform: 'rotate(-1.5deg)' }, { transform: 'rotate(1.5deg)' }, { transform: 'rotate(0)' }], { duration: fx.hold, easing: 'ease-in-out' });
+  if (fx.hold && !reduced()) await play($('rv-flipper'), [{ transform: 'rotate(0)' }, { transform: 'rotate(-1.5deg)' }, { transform: 'rotate(1.5deg)' }, { transform: 'rotate(0)' }], { duration: fx.hold, easing: 'ease-in-out' });
   const flipMs = reduced() ? 1 : fx.flip;
   const flipped = play($('rv-flipper'), [
     { transform: 'rotateY(0) scale(1)', easing: 'cubic-bezier(.5,0,1,1)' },

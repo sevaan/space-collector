@@ -1,7 +1,7 @@
 // Player progress from the sighting log: XP and observer rank, tonight's three missions, a weekly streak and
 // achievements. Everything is derived from the saved sightings (nothing extra is stored), so it can't drift.
 // info(cardKey) -> { tier, type, owner, launch, natural, con } | null. No DOM.
-import { nightKey } from './observation.js?v=0.1.355';
+import { nightKey } from './observation.js?v=0.1.356';
 
 export const RANKS = [
   [0, 'Stargazer'], [200, 'Spotter'], [600, 'Tracker'], [1500, 'Navigator'], [4000, 'Flight Controller'], [10000, 'Mission Control'],
@@ -152,7 +152,7 @@ export function progress(sightings, info, { constellations = [], now = Date.now(
     oldest: null, pre1991: 0, decades: new Set(), brandNew: false, race: false, wanderers: 0, naturals: new Set(), stars: 0, cons: 0, zodiac: 0,
     owners: new Set(), ownerCount: {}, fleet: {}, maxEl: -90, minSatEl: null, quadrants: new Set(), faintest: null, brightestSat: null,
     closest: null, farthest: null, maxNight: 0, months: new Set(), spanDays: 0, maxNightsOnCard: 0, goldCards: 0, spreadKm: 0, missionsDone: 0, fullHouse: false };
-  const firsts = [], nightsOnCard = new Map(), fleetStamps = new Map(), places = [];
+  const firsts = [], nightsOnCard = new Map(), fleetStamps = new Map(), places = [], placeSeen = new Set();
   for (const s of list) {
     const i = info(s.cardKey), night = nightKey(s.time, s.lon ?? 0), first = !seenCard.has(s.cardKey), nk = `${s.cardKey}|${night}`;
     if (first) {
@@ -183,7 +183,7 @@ export function progress(sightings, info, { constellations = [], now = Date.now(
     if (typeof s.az === 'number') a.quadrants.add(Math.floor((((s.az % 360) + 360) % 360) / 90));
     if (typeof s.mag === 'number') { if (a.faintest == null || s.mag > a.faintest) a.faintest = s.mag; if (!i?.natural && (a.brightestSat == null || s.mag < a.brightestSat)) a.brightestSat = s.mag; }
     if (typeof s.rangeKm === 'number' && !i?.natural) { if (a.closest == null || s.rangeKm < a.closest) a.closest = s.rangeKm; if (a.farthest == null || s.rangeKm > a.farthest) a.farthest = s.rangeKm; }
-    if (typeof s.lat === 'number' && typeof s.lon === 'number') places.push([s.lat, s.lon]);
+    if (typeof s.lat === 'number' && typeof s.lon === 'number') { const pk = `${s.lat.toFixed(1)},${s.lon.toFixed(1)}`; if (!placeSeen.has(pk)) { placeSeen.add(pk); places.push([s.lat, s.lon]); } } // one per ~10 km spot, so the farthest-pair check stays small (QA 2026-10-08)
     if (!nights.has(night)) nights.set(night, []);
     nights.get(night).push({ ...s, info: i, first });
   }

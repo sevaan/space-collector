@@ -1,21 +1,21 @@
-import { expandFacts } from './catalog-facts.js?v=0.1.355';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.355';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.355';
-import { ticket } from './toast.js?v=0.1.355';
-import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.355';
-import { cardArt } from './art.js?v=0.1.355';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.355';
-import { applyBack } from './card-backs.js?v=0.1.355';
-import { SETS, assignSets } from './sets.js?v=0.1.355';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.355';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.355';
-import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.355';
-import { RANKS, progress } from './progress.js?v=0.1.355';
-import { SOLAR_SYSTEM } from './natural.js?v=0.1.355';
-import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.355';
-import { shareCardEl } from './share-card.js?v=0.1.355';
-import { allSightings, deleteSighting } from './store.js?v=0.1.355';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.355';
+import { expandFacts } from './catalog-facts.js?v=0.1.356';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.356';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.356';
+import { ticket } from './toast.js?v=0.1.356';
+import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.356';
+import { cardArt } from './art.js?v=0.1.356';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.356';
+import { applyBack } from './card-backs.js?v=0.1.356';
+import { SETS, assignSets } from './sets.js?v=0.1.356';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.356';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.356';
+import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.356';
+import { RANKS, progress } from './progress.js?v=0.1.356';
+import { SOLAR_SYSTEM } from './natural.js?v=0.1.356';
+import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.356';
+import { shareCardEl } from './share-card.js?v=0.1.356';
+import { allSightings, deleteSighting } from './store.js?v=0.1.356';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.356';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -25,9 +25,11 @@ const dateLabel = (time) => new Date(time).toLocaleDateString(undefined, { month
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
 function notice(message) { $('notice').hidden = !message; $('notice').textContent = message; }
+let hasSkyTone = false; // Explore's sky colours behind the page (applySkyTone); off in red night mode (QA 2026-10-08: they stayed on)
 function setNight(on) {
   document.documentElement.dataset.theme = on ? 'night' : 'default';
   document.body.classList.toggle('night', on);
+  document.body.classList.toggle('sky-tone', !on && hasSkyTone);
   $('night-toggle').setAttribute('aria-pressed', String(on));
   $('night-toggle').setAttribute('aria-label', on ? 'Turn off red night mode' : 'Turn on red night mode');
   document.querySelector('meta[name=theme-color]').content = on ? '#090303' : '#080f18';
@@ -54,7 +56,7 @@ async function boot() {
   const cat = catalogueResult.status === 'fulfilled' ? catalogueResult.value : { objects: [] };
   state.cards = buildCards(cat);
   state.byKey = new Map(state.cards.map((c) => [c.key, c]));
-  const keyOfId = new Map(cat.objects.map((o) => [String(o.id), cardKeyFor(o)]));
+  const keyOfId = new Map(cat.objects.map((o) => [String(o.id), cardKeyFor(o)])); state.keyOfId = keyOfId;
   const sightings = sightingResult.status === 'fulfilled' ? sightingResult.value : [];
   for (const raw of sightings) {
     if (raw.sim) continue;
@@ -84,10 +86,9 @@ async function boot() {
   try { key = decodeURIComponent(location.hash.slice(1)); } catch {}
   if (key === 'patches') { setView('patches'); return; }
   if (!state.byKey.has(key) && /^[A-Z]+:/.test(key)) key = key.split(':')[0]; // old launch-card link
-  if (key && state.byKey.has(key)) {
-    if (!state.sightingsByKey.has(key)) setView('discover');
-    openViewer(state.list.findIndex((c) => c.key === key));
-  } else if (key) notice('That card is not in this catalogue or your saved collection. Search the field guide to find another target.');
+  if (key && !state.byKey.has(key)) key = state.keyOfId.get(key) ?? key; // a satellite that's now part of a fleet
+  if (key && state.byKey.has(key)) openKey(key);
+  else if (key) notice('That card is not in this catalogue or your saved collection. Search the field guide to find another target.');
 }
 
 function matches(c) {
@@ -329,10 +330,19 @@ function showCard() {
         if (!confirm('Delete this sighting? If it was your only one, the card leaves your collection.')) return;
         try { await deleteSighting(s.key); } catch { ticket({ kind: 'info', line: 'That sighting could not be deleted. Try again.' }); return; }
         state.raw = state.raw.filter((x) => x.key !== s.key);
-        const left = (state.sightingsByKey.get(c.key) ?? []).filter((x) => x.key !== s.key);
-        if (left.length) state.sightingsByKey.set(c.key, left); else { state.sightingsByKey.delete(c.key); state.seenMembers.delete(c.key); }
+        // Remove it from its own card's list (a constellation shows its stars' sightings, so that's the star's card),
+        // then re-render the grid before the viewer so the position and Next stay in step (QA 2026-10-08).
+        for (const k of new Set([s.cardKey ?? c.key, c.key])) {
+          const left = (state.sightingsByKey.get(k) ?? []).filter((x) => x.key !== s.key);
+          if (left.length) state.sightingsByKey.set(k, left); else { state.sightingsByKey.delete(k); state.seenMembers.delete(k); }
+        }
         linkConstellations();
-        showCard(); render();
+        render();
+        const i = state.list.findIndex((x) => x.key === c.key);
+        if (i >= 0) state.index = i;
+        else if (!state.list.length) { closeViewer(); return; }
+        else state.index = Math.min(state.index, state.list.length - 1);
+        showCard();
       });
       $('v-history').append(row);
     }
@@ -444,6 +454,7 @@ function linkConstellations() {
 }
 const ownedKeys = () => new Set([...state.sightingsByKey.keys()]);
 function step(d) {
+  if (!state.list.length) return;
   state.index = (state.index + d + state.list.length) % state.list.length;
   state.preview = false;
   showCard();
@@ -500,14 +511,14 @@ addStarfield($('viewer'));
 // Same sky as Explore (2026-10-07): the page background takes the colours Explore last painted (night navy, dusk,
 // day), dimmed under a scrim in brighter skies so cream text stays readable. Fresh for 3 hours, else the default.
 (function applySkyTone() {
-  if (document.documentElement.dataset.theme === 'night' || document.body.classList.contains('night')) return;
   let tone = null; try { tone = JSON.parse(localStorage.getItem('skyTone')); } catch {}
   if (!tone?.a || Date.now() - (tone.at ?? 0) > 3 * 3600e3) return;
   const scrim = Math.min(0.72, (tone.f ?? 0) * 0.9);
   const glow = (tone.f ?? 0) < 0.2 ? 'radial-gradient(ellipse 90% 70% at 50% 45%, rgba(143,179,207,.07), transparent 70%), ' : ''; // Explore's soft atmospheric glow at night
   const bg = `${glow}linear-gradient(rgba(6,10,18,${scrim.toFixed(2)}), rgba(6,10,18,${scrim.toFixed(2)})), linear-gradient(${tone.a}, ${tone.b})`;
   document.documentElement.style.setProperty('--page-sky', bg);
-  document.body.classList.add('sky-tone');
+  hasSkyTone = true;
+  document.body.classList.toggle('sky-tone', document.documentElement.dataset.theme !== 'night' && !document.body.classList.contains('night'));
 })();
 attachTileTilt($('grid'));
 $('viewer').addEventListener('close', () => { stopEffects(); document.body.style.overflow = ''; lastFocus?.focus(); });
@@ -519,7 +530,7 @@ $('v-share').addEventListener('click', async () => {
   const btn = $('v-share'); btn.disabled = true; btn.textContent = 'Making the image…';
   try {
     const info = (k) => { const x = state.byKey.get(k); return x ? { tier: x.tier, type: x.type, owner: x.owner, launch: x.launch, natural: x.natural, con: x.con } : null; };
-    const how = await shareCardEl(el, c, { title: titleFor(c), rank: progress(state.raw, info).rank.name });
+    const how = await shareCardEl(el, c, { title: titleFor(c), rank: progress(state.raw, info, { constellations: [...CONSTELLATIONS, SOLAR_SYSTEM].map((x) => ({ id: x.con, stars: x.stars, zodiac: x.zodiac, system: !!x.system })) }).rank.name, fact: factFor(c) }); // same rank as the logbook (QA 2026-10-08)
     btn.textContent = how === 'downloaded' ? 'Saved the image' : 'Share this card';
   } catch { btn.textContent = 'Couldn\'t make the image'; }
   btn.disabled = false; setTimeout(() => { btn.textContent = 'Share this card'; }, 2500);
@@ -582,6 +593,9 @@ const EMBED = window.parent !== window && new URLSearchParams(location.search).h
 if (EMBED) {
   document.documentElement.classList.add('embedded');
   document.addEventListener('click', (e) => {
+    // The Collection pill itself: already here, so stay (QA 2026-10-08: it loaded cards.html without ?embed inside
+    // the frame, and the next Explore tap then ran a second copy of the whole app in there).
+    if (e.target.closest('a[href^="cards.html"]')) { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
     const a = e.target.closest('a[href^="./"], a[href^="index.html"]'); if (!a) return;
     e.preventDefault();
     const more = /more=1/.test(a.getAttribute('href')), nav = a.closest('.sc-switch');
@@ -599,9 +613,16 @@ function openKey(key) {
   const go = () => {
     if (key === 'patches') { setView('patches'); return; }
     if (!state.byKey.has(key) && /^[A-Z]+:/.test(key)) key = key.split(':')[0];
+    if (!state.byKey.has(key)) key = state.keyOfId?.get(String(key)) ?? key; // a satellite that's now part of a fleet (QA 2026-10-08)
     if (!state.byKey.has(key)) return;
-    if (!state.sightingsByKey.has(key)) setView('discover');
-    openViewer(state.list.findIndex((c) => c.key === key));
+    // Open it in a list that contains it: the right tab, and filters cleared if they hide it (QA 2026-10-08: a
+    // leftover rarity filter, or the Albums / Patches tab, made "View in collection" open nothing).
+    const want = state.sightingsByKey.has(key) ? 'owned' : 'discover';
+    if (!['owned', 'discover'].includes(state.view) || (want === 'discover' && state.view !== 'discover')) setView(want);
+    let i = state.list.findIndex((c) => c.key === key);
+    if (i < 0) { resetFilters(); i = state.list.findIndex((c) => c.key === key); }
+    if (i < 0 && state.view !== 'discover') { setView('discover'); i = state.list.findIndex((c) => c.key === key); }
+    openViewer(i);
   };
   if (state.ready) go(); else { const t = setInterval(() => { if (state.ready) { clearInterval(t); go(); } }, 100); }
 }
@@ -630,7 +651,8 @@ function earnedDates() {
   earnedCache = { n, dates }; return dates;
 }
 function renderPatches() {
-  if (localStorage.getItem('patchSeen') == null) try { localStorage.setItem('patchSeen', JSON.stringify((state.achievements ?? []).filter((a) => a.done).map((a) => a.id))); } catch {} // existing patches start as seen
+  let seenUnset = false; try { seenUnset = localStorage.getItem('patchSeen') == null; } catch {} // storage can be blocked (QA 2026-10-08)
+  if (seenUnset) try { localStorage.setItem('patchSeen', JSON.stringify((state.achievements ?? []).filter((a) => a.done).map((a) => a.id))); } catch {} // existing patches start as seen
   const wall = $('patch-wall'), dates = earnedDates();
   // The secret Fossil Hunter patch only joins the wall once found (js/fossil.js); no empty slot hints at it.
   let fossil = null; try { fossil = JSON.parse(localStorage.getItem('fossilFound')); } catch {}

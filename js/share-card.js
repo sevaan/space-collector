@@ -2,11 +2,12 @@
 // name, rarity, stats, fact, when you saw it, your observer rank), then handed to the share sheet
 // (navigator.share with a file) or downloaded. Drawing it ourselves avoids DOM-screenshot libraries,
 // which mangle Safari's fonts and blend modes.
-import { conArt } from './con-art.js?v=0.1.355';
-import { CON_BY_ID } from './constellations.js?v=0.1.355';
+import { conArt } from './con-art.js?v=0.1.356';
+import { CON_BY_ID } from './constellations.js?v=0.1.356';
+import { TIER_INFO } from './rarity.js?v=0.1.356';
 const W = 1080, H = 1350, INK = '#fff2b3', MUTED = '#bdbea9', ORANGE = '#fa8127', NAVY = '#080f1b';
 const loadImg = (src) => new Promise((ok, bad) => { const i = new Image(); i.onload = () => ok(i); i.onerror = bad; i.src = src; });
-const svgImg = (svg) => loadImg(URL.createObjectURL(new Blob([svg], { type: 'image/svg+xml' })));
+const svgImg = async (svg) => { const u = URL.createObjectURL(new Blob([svg], { type: 'image/svg+xml' })); try { return await loadImg(u); } finally { URL.revokeObjectURL(u); } };
 const plain = (t) => String(t ?? '').replace(/\*\*/g, '');
 
 function wrap(ctx, text, x, y, maxW, lh, maxLines = 4) {
@@ -108,15 +109,15 @@ export async function shareCard(canvas, filename, title) {
 
 // Share the card element on screen (collection viewer, capture reveal): read what it shows so the image matches.
 // c: catalogue card. Returns 'shared' | 'cancelled' | 'downloaded'.
-export async function shareCardEl(el, c, { title, rank = '' }) {
+export async function shareCardEl(el, c, { title, rank = '', fact = '' }) {
   const txt = (sel) => el.querySelector(sel)?.textContent.trim() ?? '';
   const img = el.querySelector('.card__art img.card-art-image'), svg = el.querySelector('.card__art svg');
   const art = img ? { src: img.src } : c.natural === 'constellation' ? { svg: conArt(c.data) } : c.con && !c.skyName && CON_BY_ID.get(c.con) ? { svg: conArt(CON_BY_ID.get(c.con).data, c.hip) } : { svg: svg ? new XMLSerializer().serializeToString(svg) : '' };
   const stats = [...el.querySelectorAll('.card__stats > div')].map((d) => [d.querySelector('.card__label')?.textContent ?? '', d.querySelector('b')?.childNodes[0]?.textContent.trim() ?? '', d.querySelector('b small')?.textContent ?? '']);
-  const tier = getComputedStyle(el).getPropertyValue('--tier').trim() || '#fa8127';
+  const tier = TIER_INFO[c.tier]?.color ?? '#fa8127'; // not the card's CSS colour, which red night mode overrides (QA 2026-10-08)
   const canvas = await drawShareCard(c, art, {
     title, setName: txt('.card__setbar > span:first-child'), tierLabel: txt('.card__tier').replace(/^\W+/, ''), tierColor: tier, stats,
-    fact: txt('.card__fact p'), collected: txt('.card__status > span:nth-child(2)'), seen: txt('.card__seen-count'), rank,
+    fact: txt('.card__fact p') || fact, // fleet cards have no fact line on the card collected: txt('.card__status > span:nth-child(2)'), seen: txt('.card__seen-count'), rank,
     gold: el.classList.contains('gold-foil'), shiny: el.querySelector('.shiny-tag')?.textContent.split('·')[1]?.trim() ?? null,
   });
   return shareCard(canvas, `${title.replace(/[^\w-]+/g, '-').toLowerCase()}.png`, `${title} · Space Collector`);

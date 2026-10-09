@@ -1,6 +1,6 @@
 // Phone orientation -> where the back of the phone is pointing in the sky.
 // Produces a camera basis in local East-North-Up: right, up (screen edges) and back (view direction).
-import { declination } from './declination.js?v=0.1.355';
+import { declination } from './declination.js?v=0.1.356';
 
 const RAD = Math.PI / 180;
 
@@ -96,6 +96,10 @@ function updateHeadingOffset(heading, basis) {
     pointing.compassDoubt = Math.min(1, rejectStreak / 90);
     if (++rejectStreak < 90) return; // ~1.5 s of consistent readings at 60 Hz
     pointing.compassJumpAt = performance.now(); // it persisted: north really moved, so the compass was off
+    // Take the new heading at once (QA 2026-10-08: it used to blend 2 % and then wait another 1.5 s, so a real change
+    // took minutes to land).
+    pointing.headingOffset = measured; rejectStreak = 0; pointing.compassDoubt = 0; goodSamples++;
+    return;
   }
   rejectStreak = 0; pointing.compassDoubt = 0;
   goodSamples++;

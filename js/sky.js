@@ -1,10 +1,10 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.355';
+import { extinction } from './sky-limit.js?v=0.1.356';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.355';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.356';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.355';
-import { TIER_INFO } from './rarity.js?v=0.1.355';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.356';
+import { TIER_INFO } from './rarity.js?v=0.1.356';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -329,6 +329,8 @@ export class SkyView {
   // See-through Earth (2026-10-06): things below the horizon right now, drawn faintly where they really are, with
   // when they rise. below: [{ enu, name, note, kind }]
   drawBelow(below) {
+    // Red in night mode like the rest of the sky (QA 2026-10-08: these stayed cream and orange).
+    const night = this.theme === THEMES.night, INKA = night ? [255, 110, 90] : [255, 242, 179], INK = INKA.join(','), ORG = night ? '255,106,85' : '250,129,39', SUN = night ? [255, 106, 85] : [255, 180, 107];
     const ctx = this.ctx, t = this.theme, k = 1 - (this.feetA ?? 0); // fades out as the ring at your feet fades in
     ctx.save(); ctx.globalAlpha = k;
     // In the circle (2026-10-07, Sevaan): you can identify something under the ground by lining it up. Its name and
@@ -346,11 +348,11 @@ export class SkyView {
         if ('letterSpacing' in ctx) ctx.letterSpacing = '2.5px';
         ctx.fillText('BELOW THE HORIZON', rc.x, y0 - 30);
         if ('letterSpacing' in ctx) ctx.letterSpacing = '0px';
-        ctx.font = `400 26px ${DISPLAY_FONT}`; ctx.fillStyle = 'rgb(255,242,179)';
-        ctx.fillText(g.name.toUpperCase(), rc.x, y0);
-        ctx.font = `500 15px ${FONT}`; ctx.fillStyle = 'rgba(255,242,179,.75)';
+        ctx.font = `400 26px ${DISPLAY_FONT}`; ctx.fillStyle = `rgb(${INK})`;
+        ctx.fillText(g.name.toUpperCase(), rc.x, y0, this.w - 32); // squeezed rather than clipped on narrow phones (QA 2026-10-08)
+        ctx.font = `500 15px ${FONT}`; ctx.fillStyle = `rgba(${INK},.75)`;
         if ('letterSpacing' in ctx) ctx.letterSpacing = '1px';
-        ctx.fillText([g.note ? g.note.replace(/^up /, 'comes up ') : '', g.where ? `in the ${g.where}` : ''].filter(Boolean).join(' · ').toUpperCase(), rc.x, rc.y + rc.r + 34);
+        ctx.fillText([g.note ? g.note.replace(/^up /, 'comes up ') : '', g.where ? `in the ${g.where}` : ''].filter(Boolean).join(' · ').toUpperCase(), rc.x, rc.y + rc.r + 34, this.w - 32);
         ctx.restore();
       }
     }
@@ -375,13 +377,13 @@ export class SkyView {
       // the Sun, Moon and planets, the satellite icon for passes.
       ctx.save(); ctx.globalAlpha = 0.6 * k;
       if (g.kind === 'sat') this.drawIcon('sat', p.x, p.y, 9, t.sat);
-      else { const c = g.kind === 'sun' ? [255, 180, 107] : [255, 242, 179]; this.glow(p.x, p.y, r * 1.8, c, 0.3); ctx.fillStyle = `rgb(${c.join(',')})`; ctx.beginPath(); ctx.arc(p.x, p.y, g.kind === 'planet' ? 2.6 : r * 0.55, 0, Math.PI * 2); ctx.fill(); }
+      else { const c = g.kind === 'sun' ? SUN : INKA; this.glow(p.x, p.y, r * 1.8, c, 0.3); ctx.fillStyle = `rgb(${c.join(',')})`; ctx.beginPath(); ctx.arc(p.x, p.y, g.kind === 'planet' ? 2.6 : r * 0.55, 0, Math.PI * 2); ctx.fill(); }
       ctx.restore();
       ctx.setLineDash([3, 4]); ctx.lineWidth = 1.2;
-      ctx.strokeStyle = g.kind === 'sun' ? 'rgba(250,129,39,.75)' : 'rgba(255,242,179,.5)';
+      ctx.strokeStyle = g.kind === 'sun' ? `rgba(${ORG},.75)` : `rgba(${INK},.5)`;
       ctx.beginPath(); ctx.arc(p.x, p.y, r + 3, 0, Math.PI * 2); ctx.stroke();
       ctx.setLineDash([]);
-      if (k > 0.5 && hit?.g !== g) this.queueLabel(g.note ? `${g.name} · ${g.note}` : g.name, p, { color: g.kind === 'sun' ? 'rgba(250,129,39,.9)' : 'rgba(255,242,179,.78)', size: 12, weight: 600, gap: r + 6, priority: 6 }); // one line, so the time never drifts off its name
+      if (k > 0.5 && hit?.g !== g) this.queueLabel(g.note ? `${g.name} · ${g.note}` : g.name, p, { color: g.kind === 'sun' ? `rgba(${ORG},.9)` : `rgba(${INK},.78)`, size: 12, weight: 600, gap: r + 6, priority: 6 }); // one line, so the time never drifts off its name
     }
     ctx.restore();
   }
@@ -428,6 +430,7 @@ export class SkyView {
     // The real thing (2026-10-08): ESO's all-sky photograph, mapped onto your view by js/milkyway-gl.js. The
     // drawn-by-hand version below stays as the fallback where WebGL isn't available or the photo hasn't loaded.
     if (milky.gal) {
+      if (this.mwGL?.lost) this.mwGL = undefined; // rebuilt after the phone dropped its WebGL context
       if (this.mwGL === undefined) { try { this.mwGL = createMilkyGL('assets/sky/milkyway.webp?v=2'); } catch { this.mwGL = null; } }
       if (this.mwGL?.ready) {
         // How much of it you can see: none under city lights (stars to about magnitude 3.5), all of it at a dark site.
@@ -732,7 +735,7 @@ export class SkyView {
       if ('letterSpacing' in ctx) ctx.letterSpacing = '2.5px';
       ctx.font = `500 12px ${FONT}`; ctx.fillStyle = 'rgba(232,217,184,.9)'; ctx.fillText(`BELOW THE HORIZON · ${Math.round(-el)}° DOWN`, rc.x, rc.y - rc.r - 54);
       if ('letterSpacing' in ctx) ctx.letterSpacing = '1px';
-      ctx.font = `400 22px ${DISPLAY_FONT}`; ctx.fillStyle = 'rgb(255,242,179)'; ctx.fillText(f.done ? 'DINO BONES' : "SOMETHING'S BURIED HERE…", rc.x, rc.y - rc.r - 26);
+      ctx.font = `400 22px ${DISPLAY_FONT}`; ctx.fillStyle = 'rgb(255,242,179)'; ctx.fillText(f.done ? 'DINO BONES' : "SOMETHING'S BURIED HERE…", rc.x, rc.y - rc.r - 26, this.w - 32);
       if ('letterSpacing' in ctx) ctx.letterSpacing = '2.5px';
       ctx.font = `500 13px ${FONT}`; ctx.fillStyle = 'rgba(232,217,184,.9)'; ctx.fillText(f.done ? 'A FOSSIL, RIGHT UNDER YOUR FEET' : 'HOLD IT IN THE CIRCLE', rc.x, rc.y + rc.r + 34);
       if (!f.done && f.hold > 0) { ctx.shadowBlur = 0; ctx.strokeStyle = 'rgba(255,229,192,.95)'; ctx.lineWidth = 3; ctx.lineCap = 'round';
@@ -750,11 +753,11 @@ export class SkyView {
     ctx.shadowColor = `rgba(125,255,138,${u.inCircle ? .8 : .45})`; ctx.shadowBlur = u.inCircle ? 12 : 7;
     ctx.fillStyle = 'rgba(207,232,255,.85)'; ctx.beginPath(); ctx.moveTo(-6, -1); ctx.quadraticCurveTo(-5, -7, 0, -7); ctx.quadraticCurveTo(5, -7, 6, -1); ctx.fill();
     ctx.fillStyle = '#fff2b3'; ctx.beginPath(); ctx.ellipse(0, 0, 14, 4.2, 0, 0, Math.PI * 2); ctx.fill();
-    ctx.shadowBlur = 0; ctx.fillStyle = '#7dff8a'; for (const [x, y] of [[-8, .5], [0, 1.6], [8, .5]]) { ctx.beginPath(); ctx.arc(x, y, 1.3, 0, Math.PI * 2); ctx.fill(); }
+    ctx.shadowBlur = 0; ctx.fillStyle = this.theme === THEMES.night ? '#ff6a55' : '#7dff8a'; for (const [x, y] of [[-8, .5], [0, 1.6], [8, .5]]) { ctx.beginPath(); ctx.arc(x, y, 1.3, 0, Math.PI * 2); ctx.fill(); }
     ctx.restore();
     if (u.inCircle) {
       const rc = this.ring ?? { x: this.cx, y: this.cy, r: this.reticlePx };
-      ctx.save(); ctx.strokeStyle = '#7dff8a'; ctx.lineWidth = 1.8; ctx.beginPath(); ctx.arc(rc.x, rc.y, rc.r, 0, Math.PI * 2); ctx.stroke();
+      ctx.save(); ctx.strokeStyle = this.theme === THEMES.night ? '#ff6a55' : '#7dff8a'; ctx.lineWidth = 1.8; ctx.beginPath(); ctx.arc(rc.x, rc.y, rc.r, 0, Math.PI * 2); ctx.stroke();
       ctx.textAlign = 'center'; ctx.shadowColor = 'rgba(0,0,0,.6)'; ctx.shadowBlur = 4;
       if ('letterSpacing' in ctx) ctx.letterSpacing = '2.5px';
       ctx.font = `500 12px ${FONT}`; ctx.fillStyle = '#9cff9c'; ctx.fillText('✦ UNIDENTIFIED', rc.x, rc.y - rc.r - 54);
@@ -844,7 +847,7 @@ export class SkyView {
       else if (g.kind === 'moon') { ctx.fillStyle = col; ctx.beginPath(); ctx.arc(x, y, 5, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = '#0a1424'; ctx.beginPath(); ctx.arc(x + 2.2, y - 1.3, 4.4, 0, Math.PI * 2); ctx.fill(); }
       else { const rgb = g.kind === 'sun' ? [255, 180, 107] : [255, 242, 179]; this.glow(x, y, g.kind === 'sun' ? 12 : 8, rgb, 0.35); ctx.fillStyle = col; ctx.beginPath(); ctx.arc(x, y, g.kind === 'sun' ? 4.5 : 2.6, 0, Math.PI * 2); ctx.fill(); }
       // Label just outside the ring along the same direction; nudged outward until it clears the others.
-      const name = g.name.replace(/^The /, '').toUpperCase(), when = g.time ? ` ${g.time.replace(/\s?[AP]M$/i, '')}` : '';
+      const name = g.name.replace(/^The /, '').toUpperCase(), when = g.time ? ` ${g.time.replace(/\s?[AP]\.?M\.?$/i, '')}` : '';
       ctx.font = `500 11px ${FONT}`;
       const wN = ctx.measureText(name).width, wT = ctx.measureText(when).width, w = wN + wT, h = 13;
       // Steady labels (2026-10-08, Sevaan: text jumping around): each label remembers its alignment and row. The

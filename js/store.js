@@ -11,7 +11,7 @@ function db() {
       const s = req.result.createObjectStore(STORE, { keyPath: 'key', autoIncrement: true });
       s.createIndex('objectId', 'objectId');
     };
-    req.onsuccess = () => resolve(req.result);
+    req.onsuccess = () => { req.result.onversionchange = () => req.result.close(); resolve(req.result); }; // lets Reset everything delete it at once (QA 2026-10-08)
     req.onerror = () => reject(req.error);
   });
   return dbPromise;

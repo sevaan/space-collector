@@ -43,6 +43,10 @@ export function createMilkyGL(src) {
   const u = Object.fromEntries(['tex', 'R', 'U', 'B', 'G0', 'G1', 'G2', 'size', 'scale', 'f', 'cx', 'cy', 'alpha', 'mono', 'tint'].map((n) => [n, gl.getUniformLocation(prog, n)]));
   let ready = false;
   const img = new Image();
+  // iOS drops WebGL contexts when the app is in the background: mark this renderer lost so js/sky.js builds a fresh
+  // one (QA 2026-10-08: the Milky Way could vanish for good after a trip to the background).
+  let lost = false;
+  canvas.addEventListener?.('webglcontextlost', () => { lost = true; ready = false; });
   img.onload = () => {
     const t = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, t);
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, img);
@@ -56,7 +60,8 @@ export function createMilkyGL(src) {
   };
   img.src = src;
   return {
-    get ready() { return ready; },
+    get ready() { return ready && !gl.isContextLost(); },
+    get lost() { return lost || gl.isContextLost(); },
     // view: { basis, gal: [G0, G1, G2], w, h, f, cx, cy, scale, alpha, tint: [r, g, b] 0–1, mono 0–1 }. Returns the canvas.
     render(v) {
       const W = Math.max(1, Math.round(v.w * v.scale)), H = Math.max(1, Math.round(v.h * v.scale));
