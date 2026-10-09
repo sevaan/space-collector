@@ -674,8 +674,6 @@ body.day #radar-up, body.day #radar-up b { color: #fff !important; text-shadow: 
 .vr-main small { display: block; margin-top: 2px; font: 500 12.5px var(--label); letter-spacing: .04em; color: var(--muted); }
 .vr-main .new, .mini-card .new { color: var(--gold); font: 500 10px var(--label); letter-spacing: .14em; margin-left: 6px; }
 .vr-dir { flex: none; text-align: right; font: 500 13px/1.1 var(--label); letter-spacing: .06em; } .vr-dir em { display: block; font-style: normal; color: var(--muted); font-size: 11px; margin-top: 2px; }
-.vr-go { width: 34px; height: 34px; border-radius: 50%; border: 1.5px solid color-mix(in srgb, var(--gold) 60%, transparent); display: grid; place-items: center; color: var(--gold); flex: none; }
-.vr-go svg { width: 16px; height: 16px; }
 .mini-cards { display: flex; gap: 10px; overflow-x: auto; scrollbar-width: none; margin: 6px -20px 14px; padding: 0 20px 6px; scroll-snap-type: x mandatory; } .mini-cards::-webkit-scrollbar { display: none; }
 .mini-card { position: relative; flex: none; width: 132px; border-radius: 12px; border: 2px solid #adbcc8; background: #0a1220; overflow: hidden; padding: 0; text-align: left; color: var(--text); cursor: pointer; scroll-snap-align: start; }
 .mc-art { display: block; height: 80px; overflow: hidden; background: radial-gradient(ellipse at 50% 70%, #1d3350, #070d18 75%); }
@@ -758,3 +756,4 @@ body.night .mini-card small { color: var(--gold) !important; }
 body.night :is(.vr-ic, .ts-chip) { background: #140606; }
 body.night #until-dark, body.night #until-dark * { color: var(--text) !important; }
 body.night #ufo-cta { background: var(--gold) !important; color: #120606 !important; }
+.vis-row2:active { background: color-mix(in srgb, var(--text) 6%, transparent); } /* the whole row aims now (no target icon) */
