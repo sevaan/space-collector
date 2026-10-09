@@ -656,6 +656,16 @@ body:has(#secret-cta:not([hidden])) #toasts, body:has(#secret-cta:not([hidden]))
 body.day #radar-up, body.day #radar-up b { color: #fff !important; text-shadow: 0 1px 4px rgba(8, 15, 27, .55); }
 
 /* ---------- Up in your sky (2026-10-08, design/now-tonight.html A) ---------- */
+/* Now tab, nothing up (2026-10-08): an empty map with a glyph (sun, cloud or moon), a title, why, then next up. */
+.vis-empty { text-align: center; padding: 4px 8px 6px; }
+.vis-empty svg { display: block; width: 62%; max-width: 220px; margin: 6px auto 14px; opacity: .9; }
+.vis-empty .ve-glyph { animation: ve-breathe 4s ease-in-out infinite; transform-origin: 0 0; }
+@keyframes ve-breathe { 50% { transform: scale(1.08); opacity: .8; } }
+@media (prefers-reduced-motion: reduce) { .vis-empty .ve-glyph { animation: none; } }
+.vis-empty h3 { margin: 0; font: 400 20px/1.15 var(--display); color: var(--text); text-transform: uppercase; letter-spacing: .02em; }
+.vis-empty p { margin: 8px auto 0; max-width: 300px; font: 500 15px/1.35 var(--label); letter-spacing: .02em; color: color-mix(in srgb, var(--text) 72%, transparent); }
+.vis-empty p b { color: var(--gold); font-weight: 500; }
+.vis-empty-acts { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-top: 18px; }
 .vis-map svg { display: block; width: 100%; max-width: 300px; margin: 4px auto 0; }
 .vis-map-note { margin: 6px 0 4px; text-align: center; font: 500 11px/1.2 var(--label); letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
 .vis-row2 { display: flex; align-items: center; gap: 12px; width: 100%; padding: 10px 0; border: 0; border-bottom: 1px solid var(--edge-soft); background: none; text-align: left; color: var(--text); cursor: pointer; }

@@ -1,37 +1,37 @@
-import * as Secrets from './secrets.js?v=0.1.342';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.342';
-import * as Ufo from './ufo.js?v=0.1.342';
-import * as Fossil from './fossil.js?v=0.1.342';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.342';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.342';
-import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.342';
-import { VERSION } from './version.js?v=0.1.342';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.342';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.342';
-import { conArt } from './con-art.js?v=0.1.342';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.342';
-import { CON_FIGURES } from './con-figures.js?v=0.1.342';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.342';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.342';
-import { progress as progressOf } from './progress.js?v=0.1.342';
-import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.342';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.342';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge, lockHeading } from './sensors.js?v=0.1.342';
-import { SkyView, shortName } from './sky.js?v=0.1.342';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, roadster, starVector } from './celestial.js?v=0.1.342';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.342';
-import { cardArt } from './art.js?v=0.1.342';
-import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.342';
-import { applyBack } from './card-backs.js?v=0.1.342';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.342';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.342';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.342';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.342';
-import { TIER_INFO } from './rarity.js?v=0.1.342';
-import { SETS } from './sets.js?v=0.1.342';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.342';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.342';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.342';
+import * as Secrets from './secrets.js?v=0.1.343';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.343';
+import * as Ufo from './ufo.js?v=0.1.343';
+import * as Fossil from './fossil.js?v=0.1.343';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.343';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.343';
+import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.343';
+import { VERSION } from './version.js?v=0.1.343';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.343';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.343';
+import { conArt } from './con-art.js?v=0.1.343';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.343';
+import { CON_FIGURES } from './con-figures.js?v=0.1.343';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.343';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.343';
+import { progress as progressOf } from './progress.js?v=0.1.343';
+import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.343';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.343';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge, lockHeading } from './sensors.js?v=0.1.343';
+import { SkyView, shortName } from './sky.js?v=0.1.343';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, roadster, starVector } from './celestial.js?v=0.1.343';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.343';
+import { cardArt } from './art.js?v=0.1.343';
+import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.343';
+import { applyBack } from './card-backs.js?v=0.1.343';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.343';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.343';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.343';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.343';
+import { TIER_INFO } from './rarity.js?v=0.1.343';
+import { SETS } from './sets.js?v=0.1.343';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.343';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.343';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.343';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -1018,24 +1018,84 @@ function aimAt(it) {
 const visIcon = (o, c) => o.natural ? `<svg width="18" height="18" viewBox="-9 -9 18 18"><circle r="3" fill="${c}"/><circle r="7" fill="${c}" opacity=".18"/></svg>`
   : o.type === 'rocket-body' || o.type === 'debris' ? '<svg width="12" height="20" viewBox="-6 -10 12 20"><rect x="-3" y="-8" width="6" height="14" rx="2" fill="#fff2b3"/><path d="M-3 6 L-5 10 L5 10 L3 6Z" fill="#fa8127"/></svg>'
   : `<svg width="22" height="12" viewBox="-11 -6 22 12"><rect x="-3" y="-2" width="6" height="4" fill="${c}"/><rect x="-10" y="-1.5" width="6" height="3" fill="${c}" opacity=".8"/><rect x="4" y="-1.5" width="6" height="3" fill="${c}" opacity=".8"/></svg>`;
+// Nothing up (2026-10-08): an empty sky map with why (daylight, cloud, a quiet gap), the next pass worth looking
+// for as a tappable row, and ways on: jump the clock to the next pass, or see tonight's plan.
+function renderVisibleEmpty(list) {
+  const t0 = now().getTime(), T = state.tonight, day = isDay(), wxT = tonightWeather();
+  if (!T) requestTonight();
+  const next = T ? tonightPasses(T, t0).find((p) => p.start > t0) : null;
+  const cloudy = wxT && !wxT.ok;
+  const glyph = day ? '<circle r="13" fill="#fa8127" opacity=".9"/><circle r="22" fill="#fa8127" opacity=".12"/>'
+    : cloudy ? '<path d="M-20 8 a9 9 0 0 1 3-17 a13 13 0 0 1 24-3 a10 10 0 0 1 13 20 Z" fill="#344654" stroke="#627a8b"/>'
+    : '<path d="M4 -14 a14 14 0 1 0 10 22 a11 11 0 1 1 -10 -22 Z" fill="#fff2b3" opacity=".85"/>';
+  const title = day ? 'The Sun has the sky' : cloudy ? 'Clouded over' : 'A quiet patch of sky';
+  const why = day ? (T?.dusk > t0 ? `Satellites start to shine after dark, around <b>${fmtTime(T.dusk)}</b>.` : 'Satellites shine once the sky gets dark.')
+    : cloudy ? `Sky: <b>${escapeHtml(wxT.line)}</b>. Passes still go over; you just won't see them through cloud.`
+    : 'Nothing bright enough is up right now. Passes come in waves, so the next one is usually close.';
+  const box = document.createElement('div'); box.className = 'vis-empty';
+  box.innerHTML = `<svg viewBox="-118 -118 236 236" aria-hidden="true"><circle r="108" fill="#0b1626" stroke="#344654"/><circle r="72" fill="none" stroke="#1c2b3c"/><circle r="36" fill="none" stroke="#1c2b3c"/><path d="M0 -108 V108 M-108 0 H108" stroke="#1c2b3c"/>
+    <g class="vm-rot"><g font-family="SC Label, Arial Narrow" font-size="11" fill="#bdbea9" text-anchor="middle"><text class="vm-up" data-x="0" data-y="-100" y="-96" fill="#fa8127">N</text><text class="vm-up" data-x="98" data-y="0" x="98" y="4">E</text><text class="vm-up" data-x="0" data-y="100" y="104">S</text><text class="vm-up" data-x="-98" data-y="0" x="-98" y="4">W</text></g></g><g class="ve-glyph">${glyph}</g></svg>
+    <h3>${title}</h3><p>${why}</p>`;
+  list.appendChild(box);
+  const b0 = state.basis?.back ?? [0, 1, 0]; spinVisMap(box, (Math.atan2(b0[0], b0[1]) / RAD + 360) % 360);
+  if (next) {
+    const tier = TIER_INFO[next.obj.tier] ?? TIER_INFO.common, mins = Math.round((next.start - t0) / 60000);
+    const when = mins < 60 ? `in ${mins} min` : `in ${Math.floor(mins / 60)} h ${mins % 60 ? `${mins % 60} min` : ''}`.trim();
+    list.insertAdjacentHTML('beforeend', '<div class="t-head">Next up</div>');
+    const r = document.createElement('button'); r.type = 'button'; r.className = 'vis-row2'; r.style.setProperty('--tier', tier.color);
+    r.innerHTML = `<span class="vr-ic">${visIcon(next.obj, tier.color)}</span><span class="vr-main"><b>${escapeHtml(label(next.obj))}${next.fresh ? '<span class="new">NEW</span>' : ''}</b><small>${fmtTime(next.start)} · ${when} · ${brightnessWord(next.mag)}</small></span><span class="vr-dir">${compassPoint(next.riseAz)}<em>to ${next.peakEl}° up</em></span><span class="vr-go">${ICON_TARGET}</span>`;
+    r.addEventListener('click', () => showMePass(next)); list.appendChild(r);
+  }
+  const acts = document.createElement('div'); acts.className = 'vis-empty-acts';
+  const b = document.createElement('button'); b.className = 'big'; b.textContent = 'Jump to the next pass'; b.addEventListener('click', () => findPass());
+  const l = document.createElement('button'); l.type = 'button'; l.className = 'ui-link'; l.textContent = 'See tonight’s plan ›'; l.addEventListener('click', () => showVTab('tonight'));
+  acts.append(b, l); list.appendChild(acts);
+}
+let visMapRaf = 0;
+function spinVisMap(map, start) {
+  cancelAnimationFrame(visMapRaf);
+  const g = map.querySelector('.vm-rot'), ups = [...map.querySelectorAll('.vm-up')], face = map.querySelector('.vm-face');
+  let cur = start, shown = '';
+  g.setAttribute('transform', `rotate(${(-cur).toFixed(1)})`);
+  const tick = () => {
+    if (!map.isConnected || $('visible').hidden) return;
+    // The sky loop pauses while a panel is open, so read the phone directly (smoothed below).
+    const b0 = (!state.drag.on && hasLiveSensors() ? trueBasis() : basisFromAzEl(state.drag.az, state.drag.el))?.back ?? [0, 1, 0];
+    if (Math.hypot(b0[0], b0[1]) > 0.15) { // straight up there's no "facing": hold still
+      const h = (Math.atan2(b0[0], b0[1]) / RAD + 360) % 360, d = ((h - cur + 540) % 360) - 180;
+      if (Math.abs(d) > 0.2) {
+        cur = (cur + d * 0.18 + 360) % 360;
+        g.setAttribute('transform', `rotate(${(-cur).toFixed(1)})`);
+        for (const t of ups) t.setAttribute('transform', `rotate(${cur.toFixed(1)} ${t.dataset.x} ${t.dataset.y})`);
+        const cp = compassPoint(cur); if (face && cp !== shown) { shown = cp; face.textContent = cp; }
+      }
+    }
+    visMapRaf = requestAnimationFrame(tick);
+  };
+  for (const t of ups) t.setAttribute('transform', `rotate(${cur.toFixed(1)} ${t.dataset.x} ${t.dataset.y})`);
+  visMapRaf = requestAnimationFrame(tick);
+}
 function renderVisible() {
   const list = $('visible-list');
   const vis = [...state.items.filter((i) => i.look.visible), ...(state.naturals ?? [])].sort((a, b) => a.look.mag - b.look.mag);
   $('visible-sub').textContent = `${state.observer.label?.replace(/^Example:\s*/, '') ?? 'Your sky'} · ${fmtTime(now().getTime())}`;
   document.querySelector('[data-vtab="now"]').textContent = vis.length ? `Now · ${vis.length}` : 'Now';
   $('visible-hint').textContent = ''; list.innerHTML = '';
-  if (!vis.length) { list.innerHTML = '<p class="ts-note">Nothing bright enough is up right now.</p>'; const b = document.createElement('button'); b.className = 'big'; b.textContent = 'Find a visible pass'; b.addEventListener('click', () => findPass()); list.appendChild(b); return; }
-  // The map: north up, the horizon is the rim, overhead is the middle; a soft wedge shows which way you're facing.
+  if (!vis.length) { renderVisibleEmpty(list); return; }
+  // The map turns with you (2026-10-08): whichever way you face is at the top, under a fixed soft wedge; the ring,
+  // N/E/S/W and the dots rotate (labels stay upright). spinVisMap keeps it turning while the panel is open.
   const b0 = state.basis?.back ?? [0, 1, 0], heading = (Math.atan2(b0[0], b0[1]) / RAD + 360) % 360;
   const pos = (l) => { const r = 104 * (1 - Math.max(0, l.el) / 90), a = l.az * RAD; return [Math.sin(a) * r, -Math.cos(a) * r]; };
-  const wedge = (() => { const a1 = (heading - 20) * RAD, a2 = (heading + 20) * RAD; return `<path d="M0 0 L${Math.sin(a1) * 104} ${-Math.cos(a1) * 104} A104 104 0 0 1 ${Math.sin(a2) * 104} ${-Math.cos(a2) * 104} Z" fill="#fa8127" opacity=".1"/>`; })();
+  const wedge = (() => { const a1 = -20 * RAD, a2 = 20 * RAD; return `<path d="M0 0 L${Math.sin(a1) * 104} ${-Math.cos(a1) * 104} A104 104 0 0 1 ${Math.sin(a2) * 104} ${-Math.cos(a2) * 104} Z" fill="#fa8127" opacity=".1"/>`; })();
+  const up = (x, y) => `class="vm-up" data-x="${x.toFixed(1)}" data-y="${y.toFixed(1)}"`;
   const dots = vis.slice(0, 40).map((it, i) => { const [x, y] = pos(it.look), isStar = it.obj.natural === 'star', nw = isNewFind(it.obj) && !isStar, c = it.obj.natural ? '#f2d8a8' : '#fff2b3', lab = i < 7; // stars stay quiet: small, no ring
-    return `<g class="vd" data-i="${i}" style="cursor:pointer"><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="12" fill="transparent"/><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${nw ? 4 : isStar ? 1.8 : 2.8}" fill="${c}"/>${nw ? `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="8.5" fill="none" stroke="#fa8127" stroke-width="1.2"/>` : ''}${lab ? `<text x="${(x + 11).toFixed(1)}" y="${(y + 3.5).toFixed(1)}" font-family="SC Label, Arial Narrow" font-size="9.5" letter-spacing="1" fill="#fff2b3cc">${escapeHtml(label(it.obj).toUpperCase().slice(0, 16))}</text>` : ''}</g>`; }).join('');
+    return `<g class="vd" data-i="${i}" style="cursor:pointer"><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="12" fill="transparent"/><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${nw ? 4 : isStar ? 1.8 : 2.8}" fill="${c}"/>${nw ? `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="8.5" fill="none" stroke="#fa8127" stroke-width="1.2"/>` : ''}${lab ? `<text ${up(x, y)} x="${(x + 11).toFixed(1)}" y="${(y + 3.5).toFixed(1)}" font-family="SC Label, Arial Narrow" font-size="9.5" letter-spacing="1" fill="#fff2b3cc">${escapeHtml(label(it.obj).toUpperCase().slice(0, 16))}</text>` : ''}</g>`; }).join('');
   const map = document.createElement('div'); map.className = 'vis-map';
-  map.innerHTML = `<svg viewBox="-118 -118 236 236"><circle r="108" fill="#0b1626" stroke="#344654"/><circle r="72" fill="none" stroke="#1c2b3c"/><circle r="36" fill="none" stroke="#1c2b3c"/><path d="M0 -108 V108 M-108 0 H108" stroke="#1c2b3c"/>${wedge}
-    <g font-family="SC Label, Arial Narrow" font-size="11" fill="#bdbea9" text-anchor="middle"><text y="-96" fill="#fa8127">N</text><text x="98" y="4">E</text><text y="104">S</text><text x="-98" y="4">W</text></g>${dots}<circle r="2.5" fill="#fa8127"/></svg>
-    <p class="vis-map-note">You're facing ${compassPoint(heading)} · tap a dot or a row to aim</p>`;
+  map.innerHTML = `<svg viewBox="-118 -118 236 236"><circle r="108" fill="#0b1626" stroke="#344654"/>${wedge}<g class="vm-rot" transform="rotate(${-heading.toFixed(1)})"><circle r="72" fill="none" stroke="#1c2b3c"/><circle r="36" fill="none" stroke="#1c2b3c"/><path d="M0 -108 V108 M-108 0 H108" stroke="#1c2b3c"/>
+    <g font-family="SC Label, Arial Narrow" font-size="11" fill="#bdbea9" text-anchor="middle"><text ${up(0, -100)} y="-96" fill="#fa8127">N</text><text ${up(98, 0)} x="98" y="4">E</text><text ${up(0, 100)} y="104">S</text><text ${up(-98, 0)} x="-98" y="4">W</text></g>${dots}</g><circle r="2.5" fill="#fa8127"/></svg>
+    <p class="vis-map-note">You're facing <span class="vm-face">${compassPoint(heading)}</span> · tap a dot or a row to aim</p>`;
   map.addEventListener('click', (e) => { const g = e.target.closest('.vd'); if (g) aimAt(vis[Number(g.dataset.i)]); });
+  spinVisMap(map, heading);
   list.appendChild(map);
   const row = (it) => { const o = it.obj, tier = TIER_INFO[o.tier] ?? TIER_INFO.common, nw = isNewFind(o), r = document.createElement('button'); r.type = 'button'; r.className = 'vis-row2';
     r.innerHTML = `<span class="vr-ic">${visIcon(o, o.natural ? '#f2d8a8' : tier.color)}</span><span class="vr-main"><b>${escapeHtml(label(o))}${nw ? '<span class="new">NEW</span>' : ''}</b><small>${tier.label} · ${brightnessWord(it.look.mag)}</small></span><span class="vr-dir">${compassPoint(it.look.az)}<em>${Math.round(it.look.el)}° up</em></span><span class="vr-go">${ICON_TARGET}</span>`;
