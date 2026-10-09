@@ -757,3 +757,4 @@ body.night :is(.vr-ic, .ts-chip) { background: #140606; }
 body.night #until-dark, body.night #until-dark * { color: var(--text) !important; }
 body.night #ufo-cta { background: var(--gold) !important; color: #120606 !important; }
 .vis-row2:active { background: color-mix(in srgb, var(--text) 6%, transparent); } /* the whole row aims now (no target icon) */
+#skybar { display: none !important; } /* hidden on Explore (2026-10-09, Sevaan); the darkness is in Settings */

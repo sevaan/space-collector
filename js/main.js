@@ -1,38 +1,38 @@
-import * as Secrets from './secrets.js?v=0.1.359';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.359';
-import * as Ufo from './ufo.js?v=0.1.359';
-import * as Fossil from './fossil.js?v=0.1.359';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.359';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.359';
-import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.359';
-import { VERSION } from './version.js?v=0.1.359';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.359';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.359';
-import { conArt } from './con-art.js?v=0.1.359';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.359';
-import { CON_FIGURES } from './con-figures.js?v=0.1.359';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.359';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.359';
-import { progress as progressOf } from './progress.js?v=0.1.359';
-import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.359';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.359';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.359';
-import { SkyView, shortName } from './sky.js?v=0.1.359';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.359';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.359';
-import { cardArt } from './art.js?v=0.1.359';
-import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.359';
-import { applyBack } from './card-backs.js?v=0.1.359';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.359';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.359';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.359';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.359';
-import { TIER_INFO } from './rarity.js?v=0.1.359';
-import { SETS } from './sets.js?v=0.1.359';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.359';
-import { shareCardEl } from './share-card.js?v=0.1.359';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.359';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.359';
+import * as Secrets from './secrets.js?v=0.1.360';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.360';
+import * as Ufo from './ufo.js?v=0.1.360';
+import * as Fossil from './fossil.js?v=0.1.360';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.360';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.360';
+import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.360';
+import { VERSION } from './version.js?v=0.1.360';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.360';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.360';
+import { conArt } from './con-art.js?v=0.1.360';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.360';
+import { CON_FIGURES } from './con-figures.js?v=0.1.360';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.360';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.360';
+import { progress as progressOf } from './progress.js?v=0.1.360';
+import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.360';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.360';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.360';
+import { SkyView, shortName } from './sky.js?v=0.1.360';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.360';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.360';
+import { cardArt } from './art.js?v=0.1.360';
+import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.360';
+import { applyBack } from './card-backs.js?v=0.1.360';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.360';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.360';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.360';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.360';
+import { TIER_INFO } from './rarity.js?v=0.1.360';
+import { SETS } from './sets.js?v=0.1.360';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.360';
+import { shareCardEl } from './share-card.js?v=0.1.360';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.360';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.360';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -1766,7 +1766,11 @@ $('chk-any').addEventListener('change', (e) => { state.captureAny = e.target.che
 // ---------- the sky slider (2026-10-06): an "exposure" control above the switcher ----------
 // Drag until the stars and satellites on screen match what you can actually see; it's saved for next time.
 // It sets your sky's own darkness; twilight and the Moon still dim things on top of it automatically.
-{ const saved = Number(readText('skySb', '')); state.skySb = saved >= SB_MIN && saved <= SB_MAX ? saved : sbOfSky(state.lightSky); }
+// The sky slider is off the Explore screen and the sky starts at its darkest (2026-10-09, Sevaan). Everyone is moved
+// to the darkest once ('skyMax1'); Settings → How dark is your sky? still changes it.
+{ const saved = Number(readText('skySb', '')); let fresh = false; try { fresh = !localStorage.getItem('skyMax1'); localStorage.setItem('skyMax1', '1'); } catch {}
+  state.skySb = !fresh && saved >= SB_MIN && saved <= SB_MAX ? saved : SB_MAX;
+  if (fresh) try { localStorage.setItem('skySb', String(SB_MAX)); } catch {} }
 function renderSkySlider() {
   const r = $('sky-range'); if (!r || !state.limit) return;
   if (document.activeElement !== r) r.value = String(state.skySb);

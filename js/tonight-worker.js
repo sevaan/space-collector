@@ -2,9 +2,9 @@
 // many satellites are visible over the night. Runs off the main thread; ~4,000 objects × 1-minute steps
 // takes a few seconds. Visibility uses the same rules as the live sky: sunlit, dark sky, and brighter than
 // the limit for your sky at that moment (light pollution, twilight, Moon; js/sky-limit.js).
-import { frame, look, setSkyLimit, setBinocularMode, DARK_SUN_ELEVATION } from './orbit.js?v=0.1.359';
-import { skyLimit } from './sky-limit.js?v=0.1.359';
-import { solarSystem, eqToEnu } from './celestial.js?v=0.1.359';
+import { frame, look, setSkyLimit, setBinocularMode, DARK_SUN_ELEVATION } from './orbit.js?v=0.1.360';
+import { skyLimit } from './sky-limit.js?v=0.1.360';
+import { solarSystem, eqToEnu } from './celestial.js?v=0.1.360';
 
 const STEP = 60000;          // 1 minute
 const GAP = 3;               // a pass ends after this many minutes out of sight
