@@ -13,9 +13,17 @@ export const pointing = {
   lastEvent: 0,
 };
 
-let manualNudge = 0, headingLocked = false;
+// The compass nudge is remembered on this phone (2026-10-08, Sevaan: −20° lined everything up). Most of a steady
+// error like that is the phone's compass plus magnetic declination (iOS reports magnetic north), which don't change
+// from night to night, so it shouldn't need redoing every visit.
+const readNudge = () => { try { const n = Number(localStorage.getItem('compassNudge')); return Number.isFinite(n) ? n : 0; } catch { return 0; } };
+let manualNudge = readNudge(), headingLocked = false, nudgeSave = 0;
 export function lockHeading(on) { headingLocked = !!on; }
-export function nudgeHeading(deg) { manualNudge = (manualNudge + deg + 360) % 360; }
+export function nudgeHeading(deg) {
+  manualNudge = (manualNudge + deg + 360) % 360;
+  clearTimeout(nudgeSave); // drags nudge in small steps; save once they settle
+  nudgeSave = setTimeout(() => { try { localStorage.setItem('compassNudge', String(Math.round(manualNudge * 10) / 10)); } catch {} }, 400);
+}
 export function getNudge() { return manualNudge; }
 
 // W3C DeviceOrientation: R = Rz(alpha) · Rx(beta) · Ry(gamma), device frame -> earth frame.
