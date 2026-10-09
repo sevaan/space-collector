@@ -1,21 +1,21 @@
-import { expandFacts } from './catalog-facts.js?v=0.1.356';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.356';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.356';
-import { ticket } from './toast.js?v=0.1.356';
-import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.356';
-import { cardArt } from './art.js?v=0.1.356';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.356';
-import { applyBack } from './card-backs.js?v=0.1.356';
-import { SETS, assignSets } from './sets.js?v=0.1.356';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.356';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.356';
-import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.356';
-import { RANKS, progress } from './progress.js?v=0.1.356';
-import { SOLAR_SYSTEM } from './natural.js?v=0.1.356';
-import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.356';
-import { shareCardEl } from './share-card.js?v=0.1.356';
-import { allSightings, deleteSighting } from './store.js?v=0.1.356';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.356';
+import { expandFacts } from './catalog-facts.js?v=0.1.357';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.357';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.357';
+import { ticket } from './toast.js?v=0.1.357';
+import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.357';
+import { cardArt } from './art.js?v=0.1.357';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.357';
+import { applyBack } from './card-backs.js?v=0.1.357';
+import { SETS, assignSets } from './sets.js?v=0.1.357';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.357';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.357';
+import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.357';
+import { RANKS, progress } from './progress.js?v=0.1.357';
+import { SOLAR_SYSTEM } from './natural.js?v=0.1.357';
+import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.357';
+import { shareCardEl } from './share-card.js?v=0.1.357';
+import { allSightings, deleteSighting } from './store.js?v=0.1.357';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.357';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -170,7 +170,7 @@ function remindStreak() {
   d.setDate(d.getDate() + ahead);
   const start = d.getTime(), url = URL.createObjectURL(new Blob([passIcs({ title: 'Look up tonight (Space Collector)', start, end: start + 3600e3, description: 'Log one sighting this week to keep your observing streak. Open https://sevaan.github.io/space-collector/' })], { type: 'text/calendar' }));
   const a = document.createElement('a'); a.href = url; a.download = 'space-collector-streak.ics'; a.click(); setTimeout(() => URL.revokeObjectURL(url), 5000);
-  ticket({ kind: 'mission', eyebrow: 'STREAK', line: 'Reminder for Saturday evening: add it to your calendar.', ms: 4000 }); // a toast, as on Explore
+  ticket({ kind: 'mission', eyebrow: 'STREAK', line: 'Saturday 8 pm reminder: add it to your calendar.', ms: 4000 }); // a toast, as on Explore
 }
 function renderLogbook() {
   const info = (k) => { const c = state.byKey.get(k); return c ? { tier: c.tier, type: c.type, owner: c.owner, launch: c.launch, natural: c.natural, con: c.con } : null; };
@@ -199,7 +199,10 @@ function renderLogbook() {
     ${rungs.map(([, n], i) => { const [x, y] = pts[i]; return `<circle cx="${x}" cy="${y}" r="${i === cur ? 6 : 4}" fill="${i <= cur ? '#fa8127' : '#0b1626'}" ${i > cur ? 'stroke="#fff2b3" stroke-dasharray="2 2"' : ''}/>${i === cur ? `<circle cx="${x}" cy="${y}" r="12" fill="none" stroke="#fa8127" opacity=".5"/>` : ''}<text x="${x}" y="${y + 20}" text-anchor="middle" font-family="SC Label, Arial Narrow" font-size="9.5" letter-spacing="1.5" fill="${i >= cur ? '#fff2b3' : '#bdbea9'}">${esc(n.toUpperCase())}</text>${i === cur + 1 ? `<text x="${x}" y="${y - 14}" text-anchor="middle" font-family="SC Label, Arial Narrow" font-size="9" letter-spacing="1.5" fill="#fa8127">NEXT</text>` : ''}`; }).join('')}</svg>`;
   const streak = p.streak.current ? `${p.streak.current}-week streak 🔥` : 'Observe this week to start a streak';
   const ev = eventBadges(state.raw), nx = nextEvent();
-  el.innerHTML = `<div class="lb-top"><span>Observer rank</span><span class="lb-streak">${streak}</span></div>
+  // At risk (a streak going, nothing logged yet this week): a Remind me for Saturday evening (QA 2026-10-09: the button
+  // was lost in the card redesign, so remindStreak was unreachable).
+  const atRisk = p.streak.current && !p.streak.thisWeek;
+  el.innerHTML = `<div class="lb-top"><span>Observer rank</span><span class="lb-streak">${streak}${atRisk ? '<button type="button" class="lb-remind" id="streak-remind">Remind me Sat</button>' : ''}</span></div>
     <div class="lb-pic">${ladder}</div>
     <div class="lb-rankrow"><span class="lb-name">${esc(p.rank.name)}</span><span class="lb-xp"><b>${p.xp.toLocaleString()}</b>${p.rank.next ? ` / ${p.rank.next.toLocaleString()}` : ''} XP</span></div>
     ${p.missions.map((m) => `<div class="lb-mission${m.done ? ' done' : ''}"><i></i>${esc(m.text)}</div>`).join('')}

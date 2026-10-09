@@ -351,3 +351,4 @@ main { padding-bottom: calc(var(--safe-bottom) + 210px) !important; } /* the las
 :where(html[data-theme="night"], body.night) .album-bar i { background: linear-gradient(90deg, #a83a2c, #ff6a55); }
 :where(html[data-theme="night"], body.night) .album-bar b { background: #3a1716; }
 :where(html[data-theme="night"], body.night) :is(.album__art, .pw-item svg, .pv-art) { filter: grayscale(1) sepia(1) saturate(5) hue-rotate(318deg) brightness(.6); }
+:where(html[data-theme="night"], body.night) .lb-remind { border-color: #a83a2c; color: #ff6a55; }

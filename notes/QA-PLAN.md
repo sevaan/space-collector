@@ -91,6 +91,6 @@ reduced motion ignored in parts of the reveal; long names overflowing canvas hea
 share image rank / fleet fact / night colour / leaked URL; constellation "collected" date; two unguarded lookups.
 
 **Left / to check on a phone:**
-- The logbook's "Remind me Saturday" streak reminder has code but no button (feature gap, not wired).
-- Reminders and Export use a download link; in a home-screen (installed) iPhone app this may save to Files instead of offering Add to Calendar.
+- ~~The logbook's "Remind me Saturday" streak reminder has code but no button~~ — fixed 2026-10-09: "Remind me Sat" shows on the rank card when a streak is going and nothing is logged yet this week; tested (downloads the .ics).
+- Reminders and Export use a download link; in a home-screen (installed) iPhone app this may save to Files instead of offering Add to Calendar. Not changed: Sevaan uses the app in Safari (not installed), where it works, and the alternative can't be verified without an installed copy.
 - Real-device checks: compass, gyro tilt, camera view, WebGL context loss, the new service-worker update path.
