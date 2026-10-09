@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>New Card Screen</title>
+<style>
+  @font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf'); font-weight: 500; }
+  @font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf'); }
+  :root { --ink: #fff2b3; --muted: #bdbea9; --orange: #fa8127; --tier: #fa8127; --green: #8fd6a8; --edge: #627a8b; }
+  body { margin: 0; background: #04070d; color: #e8eef6; font: 15px/1.45 -apple-system, system-ui, sans-serif; padding: 24px 16px 60px; }
+  h1.t { font-size: 20px; margin: 0 0 6px; } .intro { color: #9fb0c6; margin: 0 0 22px; max-width: 1000px; }
+  .row { display: flex; flex-wrap: wrap; gap: 22px; justify-content: center; }
+  .cell { width: 340px; max-width: 100%; } .cell h2 { font-size: 16px; margin: 12px 0 4px; } .cell p { color: #9fb0c6; font-size: 13.5px; margin: 0; }
+  .phone { position: relative; width: 340px; height: 736px; max-width: 100%; border-radius: 30px; overflow: hidden; border: 1px solid #1d2838;
+    background: radial-gradient(120% 70% at 50% 30%, #13213a, #070c16 70%); }
+  .stars { position: absolute; inset: 0; background:
+    radial-gradient(1px 1px at 12% 22%, #fffa, transparent), radial-gradient(1px 1px at 78% 12%, #fff9, transparent), radial-gradient(1.4px 1.4px at 38% 84%, #fff8, transparent),
+    radial-gradient(1px 1px at 88% 44%, #fffb, transparent), radial-gradient(1px 1px at 8% 70%, #fff7, transparent), radial-gradient(1.2px 1.2px at 58% 93%, #fff9, transparent),
+    radial-gradient(1px 1px at 66% 6%, #fff8, transparent), radial-gradient(1px 1px at 24% 9%, #fff6, transparent); }
+  .lab { font: 500 12px/1.2 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .18em; text-transform: uppercase; }
+  .disp { font: 400 20px/1 'SC Display', sans-serif; text-transform: uppercase; color: var(--ink); }
+  .card { position: absolute; display: block; border-radius: 14px; box-shadow: 0 18px 40px #000a; }
+  .top { position: absolute; left: 18px; right: 14px; top: 40px; display: flex; align-items: center; justify-content: space-between; }
+  .icons { display: flex; gap: 6px; }
+  .ic { width: 40px; height: 40px; display: grid; place-items: center; color: var(--ink); border-radius: 50%; }
+  .ic svg { width: 22px; height: 22px; }
+  .ic.ring { border: 1px solid #344654; background: #0c1725cc; }
+  .link { position: absolute; left: 0; right: 0; text-align: center; color: var(--ink); opacity: .85; }
+  .pill { display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; border-radius: 99px; border: 1px solid #344654; background: #0c1725cc; }
+
+  /* XP: pops, counts up, sparks fly to the bar, the bar fills. One loop every 4.5 s (a page-level class restarts it). */
+  .xp { display: inline-flex; align-items: baseline; gap: 4px; color: var(--green); }
+  .xp b { font: 400 22px/1 'SC Display', sans-serif; color: var(--green); }
+  .go .xp-pop { animation: xpPop .7s cubic-bezier(.2,1.6,.4,1) both; }
+  @keyframes xpPop { 0% { transform: scale(.4); opacity: 0; } 60% { opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
+  .bar { height: 6px; border-radius: 4px; background: #1c2a3a; overflow: hidden; position: relative; }
+  .bar i { position: absolute; inset: 0 auto 0 0; width: var(--from); background: linear-gradient(90deg, var(--orange), #ffcf5a); border-radius: 4px; }
+  .go .bar i { animation: fill 1.1s .9s cubic-bezier(.3,.8,.3,1) both; }
+  .bar i::after { content: ''; position: absolute; right: 0; top: -3px; bottom: -3px; width: 14px; border-radius: 50%; background: #fff2b3; filter: blur(5px); opacity: 0; }
+  .go .bar i::after { animation: glint 1.1s .9s both; }
+  @keyframes fill { from { width: var(--from); } to { width: var(--to); } }
+  @keyframes glint { 0%, 100% { opacity: 0; } 40% { opacity: 1; } }
+  .spark { position: absolute; width: 6px; height: 6px; margin: -3px; border-radius: 50%; background: #ffe08a; box-shadow: 0 0 8px #ffcf5a; opacity: 0; pointer-events: none; }
+  .go .spark { animation: fly .8s var(--d) cubic-bezier(.5,0,.7,1) both; }
+  @keyframes fly { 0% { opacity: 0; transform: translate(0, 0) scale(.6); } 15% { opacity: 1; } 100% { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(1.1); } }
+  .count { font-variant-numeric: tabular-nums; }
+
+  /* A · Spotlight */
+  .rays { position: absolute; left: 50%; top: 330px; width: 900px; height: 900px; margin: -450px 0 0 -450px; border-radius: 50%;
+    background: repeating-conic-gradient(from 0deg, color-mix(in srgb, var(--tier) 22%, transparent) 0 6deg, transparent 6deg 18deg);
+    -webkit-mask: radial-gradient(circle, #000 0, #0008 18%, transparent 42%); mask: radial-gradient(circle, #000 0, #0008 18%, transparent 42%); animation: spin 40s linear infinite; }
+  .glow { position: absolute; left: 50%; top: 330px; width: 360px; height: 360px; margin: -180px 0 0 -180px; border-radius: 50%; background: radial-gradient(circle, color-mix(in srgb, var(--tier) 30%, transparent), transparent 65%); }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .dust { position: absolute; width: 3px; height: 3px; border-radius: 50%; background: var(--tier); opacity: 0; animation: rise var(--t) var(--d) linear infinite; }
+  @keyframes rise { 0% { opacity: 0; transform: translateY(0); } 20% { opacity: .8; } 100% { opacity: 0; transform: translateY(-120px); } }
+  .rank { position: absolute; left: 34px; right: 34px; }
+  .rank .r1 { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 7px; }
+
+  /* B · Field log */
+  .slip { position: absolute; left: 16px; right: 16px; border-radius: 14px; border: 1px solid #344654; background: #0c1725f0; padding: 14px 16px; box-sizing: border-box; }
+  .slip .hd { display: flex; justify-content: space-between; align-items: center; }
+  .slip dl { display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; margin: 12px 0 0; font: 500 15px/1.2 'SC Label', sans-serif; letter-spacing: .03em; }
+  .slip dt { color: var(--muted); font-size: 11px; letter-spacing: .16em; text-transform: uppercase; padding-top: 3px; }
+  .slip dd { margin: 0; color: var(--ink); }
+  .slip dd b { color: var(--orange); font-weight: 500; }
+  .first { position: absolute; transform: rotate(-9deg); border: 2px solid var(--orange); color: var(--orange); border-radius: 6px; padding: 4px 8px; font: 500 12px/1 'SC Label', sans-serif; letter-spacing: .16em; background: #070c16cc; }
+  .go .first { animation: stamp .45s .5s cubic-bezier(.2,1.5,.4,1) both; }
+  @keyframes stamp { from { transform: rotate(-9deg) scale(2.2); opacity: 0; } to { transform: rotate(-9deg) scale(1); opacity: 1; } }
+  .setdots { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 8px; }
+  .setdots i { width: 9px; height: 9px; border-radius: 2px; background: #1c2a3a; }
+  .setdots i.on { background: #bcb585; } .setdots i.new { background: var(--orange); box-shadow: 0 0 8px var(--orange); }
+  .go .setdots i.new { animation: pop .5s 1.2s cubic-bezier(.2,1.8,.4,1) both; }
+  @keyframes pop { from { transform: scale(0); } to { transform: scale(1); } }
+  .btns { position: absolute; left: 16px; right: 16px; display: flex; gap: 10px; }
+  .btn { flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; height: 48px; border-radius: 10px; border: 1px solid #627a8b; color: var(--ink); background: #0c1725; }
+  .btn.pri { background: var(--orange); border-color: var(--orange); color: #080f1b; }
+  .btn svg { width: 18px; height: 18px; }
+
+  /* C · Trophy */
+  .pedestal { position: absolute; left: 50%; width: 300px; height: 60px; margin-left: -150px; border-radius: 50%;
+    background: radial-gradient(ellipse, color-mix(in srgb, var(--tier) 55%, transparent), transparent 70%); filter: blur(4px); animation: breathe 3s ease-in-out infinite; }
+  @keyframes breathe { 50% { opacity: .6; transform: scaleX(.92); } }
+  .sweep { position: absolute; overflow: hidden; border-radius: 14px; pointer-events: none; }
+  .sweep::after { content: ''; position: absolute; top: -20%; bottom: -20%; width: 40%; left: -60%; transform: skewX(-18deg);
+    background: linear-gradient(90deg, transparent, #ffffff30, transparent); animation: sweep 4.5s 1s ease-in-out infinite; }
+  @keyframes sweep { 0% { left: -60%; } 30%, 100% { left: 130%; } }
+  .xpcounter { display: inline-flex; align-items: baseline; gap: 5px; padding: 6px 12px; border-radius: 99px; border: 1px solid #344654; background: #0c1725cc; }
+  .xpcounter b { font: 400 17px/1 'SC Display', sans-serif; color: var(--ink); }
+  .go .xpcounter { animation: bump .35s 1.6s cubic-bezier(.2,1.8,.4,1) both; }
+  @keyframes bump { 50% { transform: scale(1.18); border-color: #ffcf5a; } }
+  .fab { position: absolute; width: 54px; height: 54px; border-radius: 50%; background: var(--orange); color: #080f1b; display: grid; place-items: center; box-shadow: 0 8px 20px #0009; }
+  .fab svg { width: 24px; height: 24px; }
+  .chips { position: absolute; left: 16px; right: 16px; display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+
+  /* D · Today, tuned */
+  .eyeline { display: flex; align-items: baseline; gap: 10px; }
+  .roll { display: inline-block; height: 22px; overflow: hidden; vertical-align: bottom; }
+  .roll span { display: block; }
+  .go .roll span { animation: roll 1s .3s cubic-bezier(.3,1.4,.5,1) both; }
+  @keyframes roll { from { transform: translateY(-88px); } to { transform: translateY(0); } }
+  .underglow { position: absolute; left: 50%; width: 280px; height: 40px; margin-left: -140px; border-radius: 50%; background: radial-gradient(ellipse, color-mix(in srgb, var(--tier) 45%, transparent), transparent 70%); filter: blur(6px); }
+  @media (prefers-reduced-motion: reduce) { .rays, .dust, .pedestal, .sweep::after { animation: none !important; } }
+</style></head><body>
+<h1 class="t">The new-card screen: four directions</h1>
+<p class="intro">Same card (SPOT 5, Uncommon, +20 XP) in each. All four add a <b>share</b> button and animate the points: the +20 pops in, counts up, and sparks fly into your rank bar or XP total, which fills. Everything loops here every few seconds so you can watch it; in the app it plays once. A is the most theatrical, D is the smallest change from today.</p>
+<div class="row" id="b"></div>
+<script>
+const SHARE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7.5 7.5 12 3l4.5 4.5"/><path d="M8 10H6a1.5 1.5 0 0 0-1.5 1.5v8A1.5 1.5 0 0 0 6 21h12a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 18 10h-2"/></svg>';
+const X = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 5l14 14M19 5 5 19"/></svg>';
+const img = (x, y, w) => `<img class="card" src="reveal-card-spot5.jpg" alt="" style="left:${x}px;top:${y}px;width:${w}px">`;
+const sparks = (x, y, tx, ty, n = 7) => Array.from({ length: n }, (_, i) => `<i class="spark" style="left:${x + (i - n / 2) * 4}px;top:${y + (i % 2) * 6}px;--tx:${tx - (i - n / 2) * 4}px;--ty:${ty}px;--d:${(0.75 + i * 0.05).toFixed(2)}s"></i>`).join('');
+const dust = Array.from({ length: 14 }, (_, i) => `<i class="dust" style="left:${30 + (i * 37) % 280}px;top:${220 + (i * 53) % 260}px;--t:${3 + (i % 4)}s;--d:${(i * 0.37).toFixed(2)}s"></i>`).join('');
+const cw = 250, ch = Math.round(cw * 1533 / 1021);
+
+const A = `<div class="stars"></div><div class="rays"></div><div class="glow"></div>${dust}
+  <div class="top"><span class="lab" style="color:var(--tier)">◆ New card · Uncommon</span><span class="icons"><span class="ic">${SHARE}</span><span class="ic">${X}</span></span></div>
+  ${img((340 - cw) / 2, 330 - ch / 2, cw)}
+  <div style="position:absolute;left:0;right:0;top:${330 + ch / 2 + 22}px;text-align:center"><span class="xp xp-pop"><b>+<span class="count" data-to="20">0</span></b><span class="lab" style="color:var(--green)">XP</span></span></div>
+  ${sparks(170, 330 + ch / 2 + 36, 0, 56)}
+  <div class="rank" style="top:${330 + ch / 2 + 74}px"><div class="r1"><span class="lab" style="color:var(--ink)">Spotter</span><span class="lab" style="color:var(--muted)"><span class="count" data-from="470" data-to="490" data-delay="900">470</span> / 600 XP</span></div><div class="bar" style="--from:78%;--to:82%"><i></i></div></div>
+  <div class="link lab" style="top:${330 + ch / 2 + 128}px">View in collection</div>`;
+
+const bw = 190, bh = Math.round(bw * 1533 / 1021);
+const B = `<div class="stars"></div>
+  <div class="top"><span class="lab" style="color:var(--green)">New card · <span class="xp xp-pop" style="display:inline"><span class="count" data-to="20" data-prefix="+">+0</span> XP</span></span><span class="icons"><span class="ic">${X}</span></span></div>
+  <img class="card" src="reveal-card-spot5.jpg" alt="" style="left:${(340 - bw) / 2}px;top:96px;width:${bw}px;transform:rotate(-3deg)">
+  <span class="first" style="left:${(340 + bw) / 2 - 64}px;top:${96 + bh - 30}px">First catch</span>
+  <div class="slip" style="top:${96 + bh + 22}px">
+    <div class="hd"><span class="lab" style="color:var(--orange)">Your sighting</span><span class="lab" style="color:var(--muted)">#1</span></div>
+    <dl><dt>When</dt><dd>Thu 8 Oct · <b>8:14 PM</b></dd><dt>Where</dt><dd>34° up in the <b>NE</b> · Peterborough</dd><dt>Moving</dt><dd>7.4 km/s, 710 km up</dd></dl>
+    <div class="lab" style="margin-top:14px;display:flex;justify-content:space-between"><span style="color:var(--ink)">Dead Satellites Society</span><span style="color:var(--muted)">4 / 23</span></div>
+    <div class="setdots">${Array.from({ length: 23 }, (_, i) => `<i class="${i < 3 ? 'on' : i === 3 ? 'new' : ''}"></i>`).join('')}</div>
+  </div>
+  <div class="btns" style="bottom:36px"><span class="btn lab">${SHARE}Share</span><span class="btn pri lab">View in collection</span></div>`;
+
+const cw2 = 262, ch2 = Math.round(cw2 * 1533 / 1021), cy = 112;
+const C = `<div class="stars"></div>
+  <div class="top"><span class="xpcounter"><b class="count" data-from="470" data-to="490" data-delay="1600">470</b><span class="lab" style="color:var(--muted)">XP</span></span><span class="icons"><span class="ic">${X}</span></span></div>
+  <div class="pedestal" style="top:${cy + ch2 - 26}px"></div>
+  ${img((340 - cw2) / 2, cy, cw2)}<div class="sweep" style="left:${(340 - cw2) / 2}px;top:${cy}px;width:${cw2}px;height:${ch2}px"></div>
+  <div style="position:absolute;right:${(340 - cw2) / 2 - 6}px;top:${cy - 14}px" class="pill xp-pop"><span class="xp"><b style="font-size:16px">+<span class="count" data-to="20">0</span></b><span class="lab" style="color:var(--green)">XP</span></span></div>
+  ${sparks(250, cy - 6, -180, -46, 6)}
+  <div class="chips" style="top:${cy + ch2 + 34}px"><span class="pill lab" style="color:var(--tier)">◆ Uncommon</span><span class="pill lab" style="color:var(--ink)">Set 4 / 23</span><span class="pill lab" style="color:var(--ink)">First catch</span></div>
+  <div class="link lab" style="top:${cy + ch2 + 92}px;text-align:left;left:28px">View in collection ›</div>
+  <span class="fab" style="right:22px;top:${cy + ch2 + 78}px">${SHARE}</span>`;
+
+const dy = 150;
+const D = `<div class="stars"></div>
+  <div class="top"><span class="eyeline lab"><span style="color:var(--green)">New card</span><span class="xp xp-pop" style="color:var(--green)">· <span class="roll"><span>+20 XP</span></span></span></span><span class="icons"><span class="ic ring">${SHARE}</span><span class="ic">${X}</span></span></div>
+  <div class="underglow" style="top:${dy + ch2 - 14}px"></div>
+  ${img((340 - cw2) / 2, dy, cw2)}<div class="sweep" style="left:${(340 - cw2) / 2}px;top:${dy}px;width:${cw2}px;height:${ch2}px"></div>
+  <div class="rank" style="top:${dy + ch2 + 34}px"><div class="r1"><span class="lab" style="color:var(--muted)">Spotter</span><span class="lab" style="color:var(--muted)"><span class="count" data-from="470" data-to="490" data-delay="900">470</span> / 600</span></div><div class="bar" style="--from:78%;--to:82%"><i></i></div></div>
+  <div class="link lab" style="top:${dy + ch2 + 84}px">View in collection</div>`;
+
+const cells = [
+  ['A · Spotlight', 'Slow rays and drifting motes in the tier colour behind the card, so rarer cards feel bigger (gold rays for Legendary). +20 pops under the card, sparks fly down into your rank bar, the bar fills and the total ticks 470 → 490. Share sits beside the close.', A],
+  ['B · Field log', 'Smaller card, and the moment gets its story: when and where you caught it, how fast it was moving, a FIRST CATCH stamp, and its set filling in (the new square lights up). Share and View in collection as two clear buttons at the bottom.', B],
+  ['C · Trophy', 'Big card on a glowing pedestal with a light sweep. +20 sits on the card corner and sparks fly up into your XP total in the header, which bumps. Chips for tier, set progress and first catch, and a round share button.', C],
+  ['D · Today, tuned', 'The smallest step: same layout, a tier glow under the card and a light sweep, "+20 XP" rolls in like a slot counter, a thin rank bar fills under the card, and a share icon sits next to the close.', D],
+];
+document.getElementById('b').innerHTML = cells.map(([t, d, f]) => `<div class="cell"><div class="phone">${f}</div><h2>${t}</h2><p>${d}</p></div>`).join('');
+
+// Loop the moment: restart the animations and count-ups every 4.5 s.
+function play() {
+  document.body.classList.remove('go'); void document.body.offsetWidth; document.body.classList.add('go');
+  for (const el of document.querySelectorAll('.count')) {
+    const from = Number(el.dataset.from ?? 0), to = Number(el.dataset.to), delay = Number(el.dataset.delay ?? 200), pre = el.dataset.prefix ?? '';
+    el.textContent = pre + from; const t0 = performance.now() + delay;
+    const step = (t) => { const k = Math.max(0, Math.min(1, (t - t0) / 800)), e = 1 - (1 - k) ** 3; el.textContent = pre + Math.round(from + (to - from) * e); if (k < 1) requestAnimationFrame(step); };
+    requestAnimationFrame(step);
+  }
+}
+play(); setInterval(play, 4500);
+</script></body></html>
