@@ -88,6 +88,14 @@
    The glitter is SVG noise thresholded into sparse specks, so there are no image files. */
 .card, .rv-back { --glitter: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.95' numOctaves='1' seed='4'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 11 -7.6'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E"); --glitter2: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.7' numOctaves='2' seed='11'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 12 -8.4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E"); --nbgx: calc(100% - var(--bgx)); --nbgy: calc(100% - var(--bgy)); }
 .card__shine, .card__glare, .card__foil { position: absolute; inset: 0; pointer-events: none; }
+/* Holofoil (2026-10-08, Sevaan: the rainbow was messy, it should shimmer like a real holo card): one clean
+   diagonal spectrum band with a white streak through its middle, mostly clear elsewhere. It sweeps about half a
+   card width as you tilt (--bgx 37–63 % on a 300 % layer). Rare uses it in the picture window, Epic over the whole
+   card, and the backs match. */
+.card, .rv-back {
+  --holo-band: linear-gradient(115deg, transparent 41.5%, hsla(350, 100%, 66%, .55) 43.5%, hsla(30, 100%, 60%, .6) 45%, hsla(55, 100%, 62%, .6) 46.5%, hsla(120, 85%, 58%, .55) 48%, hsla(180, 95%, 60%, .6) 49.5%, hsla(215, 95%, 66%, .6) 51%, hsla(265, 90%, 70%, .55) 52.5%, hsla(310, 90%, 70%, .4) 54%, transparent 56%);
+  --holo-streak: linear-gradient(115deg, transparent 47.6%, rgba(255, 255, 255, .55) 49.3%, rgba(255, 255, 255, .8) 49.8%, rgba(255, 255, 255, .55) 50.3%, transparent 52%);
+}
 .card__glare {
   z-index: 7;
   /* The 'spotlight' (2026-10-05, Sevaan: too strong twice): a small soft highlight under the finger only,
@@ -107,14 +115,16 @@
 /* Rare and up: rainbow beams with glitter in the picture window. Halved again 2026-10-05 (Sevaan: the
    rainbow stripes were too strong; phone tilt keeps --o near 1, so this shows all the time). */
 .card.tier-rare .card__foil, .card.tier-epic .card__foil, .card.tier-legendary .card__foil {
-  background:
-    var(--glitter) var(--nbgx) var(--nbgy) / 16em 16em,
-    repeating-linear-gradient(90deg, hsl(355, 92%, 66%) 0%, hsl(42, 95%, 62%) 1.2%, hsl(110, 80%, 58%) 2.4%, hsl(185, 88%, 58%) 3.6%, hsl(235, 88%, 68%) 4.8%, hsl(295, 82%, 68%) 6%, hsl(355, 92%, 66%) 7.2%) var(--bgx) 50% / 400% 100%,
-    repeating-linear-gradient(90deg, hsla(0, 0%, 0%, .75) 0%, hsla(0, 0%, 100%, .2) 1.8%, hsla(0, 0%, 0%, .75) 3.6%) var(--nbgx) 50% / 300% 100%;
-  background-blend-mode: screen, hard-light, normal;
-  mix-blend-mode: color-dodge; filter: brightness(.5) contrast(1.5) saturate(.9);
-  opacity: calc(var(--o, 0) * (.05 + var(--hyp, 0) * .14));
+  background: var(--holo-streak) var(--bgx) var(--bgy) / 300% 300%, var(--holo-band) var(--bgx) var(--bgy) / 300% 300%;
+  mix-blend-mode: screen; filter: none;
+  opacity: calc(var(--o, 0) * (.35 + var(--hyp, 0) * .3));
 }
+.card.tier-epic .card__foil { /* Epic: the band crosses the whole card (shine); here, a little glitter caught only inside the band */
+  background: var(--glitter) var(--nbgx) var(--nbgy) / 14em 14em;
+  -webkit-mask: linear-gradient(115deg, transparent 41%, #000 46%, #000 54%, transparent 59%) var(--bgx) var(--bgy) / 300% 300%;
+  mask: linear-gradient(115deg, transparent 41%, #000 46%, #000 54%, transparent 59%) var(--bgx) var(--bgy) / 300% 300%;
+  opacity: calc(var(--o, 0) * .5); }
+.card.tier-legendary .card__foil { background: var(--holo-streak) var(--bgx) var(--bgy) / 300% 300%; } /* gold: just the white streak in the picture */
 .card.uncaught .card__foil { display: none; }
 
 /* Epic: a cosmos foil over the whole card. Two glitter fields drift in opposite directions over a
@@ -122,12 +132,10 @@
 .card.tier-epic .card__shine {
   z-index: 6;
   background:
-    var(--glitter) var(--bgx) var(--bgy) / 13em 13em,
-    var(--glitter2) var(--nbgx) var(--nbgy) / 21em 21em,
-    repeating-linear-gradient(125deg, hsl(272, 85%, 70%) 0%, hsl(200, 88%, 66%) 7%, hsl(322, 85%, 72%) 14%, hsl(272, 85%, 70%) 21%) var(--bgx) var(--bgy) / 300% 300%;
-  background-blend-mode: screen, screen, normal;
-  mix-blend-mode: color-dodge; filter: brightness(.38) contrast(2.6) saturate(1.4);
-  opacity: calc(var(--o, 0) * (.22 + var(--hyp, 0) * .27));
+    var(--holo-streak) var(--bgx) var(--bgy) / 300% 300%,
+    var(--holo-band) var(--bgx) var(--bgy) / 300% 300%;
+  mix-blend-mode: screen; filter: none;
+  opacity: calc(var(--o, 0) * (.4 + var(--hyp, 0) * .3));
 }
 
 /* Legendary: gold. Two gold glitter fields slide past each other with a bright glint sweeping
@@ -142,7 +150,7 @@
   background-blend-mode: normal, screen, screen, normal;
   mix-blend-mode: soft-light; opacity: calc(var(--o, 0) * .6);
 }
-.card.tier-legendary .card__foil { opacity: calc(var(--o, 0) * (.2 + var(--hyp, 0) * .3)); }
+.card.tier-legendary .card__foil { opacity: calc(var(--o, 0) * (.25 + var(--hyp, 0) * .3)); }
 .card.tier-legendary .card__rotator { box-shadow: 0 0 0 .25em #e8c35a, 0 calc(1em + var(--o, 0) * 1em) calc(3em + var(--o, 0) * 2em) rgba(0, 0, 0, .5); }
 .card.tier-legendary.uncaught .card__shine { display: none; }
 .card.extinct .card__shine, .card.extinct .card__foil { display: none; }
@@ -260,21 +268,13 @@
 :is(.card, .rv-back).tier-uncommon .back-holo { display: block;                /* pastel sheen */
   background: linear-gradient(115deg, transparent 22%, hsla(185, 90%, 78%, .55) 38%, hsla(300, 85%, 82%, .55) 47%, hsla(55, 95%, 78%, .55) 56%, transparent 72%) var(--bgx, 50%) var(--bgy, 50%) / 300% 300%;
   mix-blend-mode: color-dodge; opacity: calc(var(--o, 0) * .28); }
-:is(.card, .rv-back):is(.tier-rare, .tier-legendary) .back-holo { display: block; /* rainbow beams + glitter */
-  background:
-    var(--glitter) var(--nbgx) var(--nbgy) / 13em 13em,
-    repeating-linear-gradient(110deg, hsl(355, 92%, 66%) 0%, hsl(42, 95%, 62%) 1.4%, hsl(110, 80%, 58%) 2.8%, hsl(185, 88%, 58%) 4.2%, hsl(235, 88%, 68%) 5.6%, hsl(295, 82%, 68%) 7%, hsl(355, 92%, 66%) 8.4%) var(--bgx, 50%) var(--bgy, 50%) / 400% 400%;
-  background-blend-mode: screen, normal;
-  mix-blend-mode: color-dodge; filter: brightness(.5) contrast(1.5) saturate(.9);
-  opacity: calc(var(--o, 0) * (.05 + var(--hyp, 0) * .14)); }
-:is(.card, .rv-back).tier-epic .back-holo { display: block;                    /* cosmos foil */
-  background:
-    var(--glitter) var(--bgx, 50%) var(--bgy, 50%) / 13em 13em,
-    var(--glitter2) var(--nbgx) var(--nbgy) / 21em 21em,
-    repeating-linear-gradient(125deg, hsl(272, 85%, 70%) 0%, hsl(200, 88%, 66%) 7%, hsl(322, 85%, 72%) 14%, hsl(272, 85%, 70%) 21%) var(--bgx, 50%) var(--bgy, 50%) / 300% 300%;
-  background-blend-mode: screen, screen, normal;
-  mix-blend-mode: color-dodge; filter: brightness(.38) contrast(2.6) saturate(1.4);
-  opacity: calc(var(--o, 0) * (.22 + var(--hyp, 0) * .27)); }
+:is(.card, .rv-back):is(.tier-rare, .tier-epic) .back-holo { display: block; /* the same holofoil band as the front */
+  background: var(--holo-streak) var(--bgx, 50%) var(--bgy, 50%) / 300% 300%, var(--holo-band) var(--bgx, 50%) var(--bgy, 50%) / 300% 300%;
+  mix-blend-mode: screen; filter: none;
+  opacity: calc(var(--o, 0) * (.4 + var(--hyp, 0) * .3)); }
+:is(.card, .rv-back).tier-legendary .back-holo { display: block;               /* gold glint */
+  background: linear-gradient(115deg, transparent 40%, rgba(255, 226, 150, .7) 47%, rgba(255, 255, 255, .85) 50%, rgba(255, 226, 150, .7) 53%, transparent 60%) var(--bgx, 50%) var(--bgy, 50%) / 300% 300%;
+  mix-blend-mode: screen; opacity: calc(var(--o, 0) * .45); }
 :is(.card, .rv-back).gold-foil .back-holo { display: block;                    /* gold foil */
   background: var(--glitter) var(--nbgx) var(--nbgy) / 12em 12em, repeating-linear-gradient(125deg, #7d6a3a 0%, #efe0a8 6%, #a88c45 12%, #fff6d8 18%, #7d6a3a 24%) var(--bgx, 50%) var(--bgy, 50%) / 340% 340%;
   background-blend-mode: screen, normal; mix-blend-mode: overlay; filter: none; opacity: calc(.35 + var(--o, 0) * .3); }

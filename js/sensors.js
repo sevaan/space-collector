@@ -1,5 +1,6 @@
 // Phone orientation -> where the back of the phone is pointing in the sky.
 // Produces a camera basis in local East-North-Up: right, up (screen edges) and back (view direction).
+import { declination } from './declination.js?v=0.1.346';
 
 const RAD = Math.PI / 180;
 
@@ -19,6 +20,23 @@ export const pointing = {
 const readNudge = () => { try { const n = Number(localStorage.getItem('compassNudge')); return Number.isFinite(n) ? n : 0; } catch { return 0; } };
 let manualNudge = readNudge(), headingLocked = false, nudgeSave = 0;
 export function lockHeading(on) { headingLocked = !!on; }
+// True north (2026-10-08): iOS's compass is magnetic, so add the local declination (js/declination.js, WMM2025).
+// The first time it's applied, a saved nudge is moved by the same amount so the sky doesn't jump for someone who
+// had already lined it up by hand (Sevaan's −20° becomes about −9°).
+let decl = 0, declAt = '';
+export function setCompassPlace(lat, lon) {
+  if (lat == null || lon == null) return;
+  const k = `${lat.toFixed(1)},${lon.toFixed(1)}`; if (k === declAt) return;
+  declAt = k;
+  try { decl = declination(lat, lon); } catch { decl = 0; }
+  try {
+    if (!localStorage.getItem('declApplied')) {
+      if (manualNudge) { manualNudge = (manualNudge - decl + 360) % 360; localStorage.setItem('compassNudge', String(Math.round(manualNudge * 10) / 10)); }
+      localStorage.setItem('declApplied', '1');
+    }
+  } catch {}
+}
+export function getDeclination() { return decl; }
 export function nudgeHeading(deg) {
   manualNudge = (manualNudge + deg + 360) % 360;
   clearTimeout(nudgeSave); // drags nudge in small steps; save once they settle
@@ -143,7 +161,7 @@ export function rotateAz(v, deg) {
 export function trueBasis() {
   const b = pointing.basis;
   if (!b) return null;
-  const off = pointing.headingOffset + manualNudge;
+  const off = pointing.headingOffset + (pointing.source === 'ios' ? decl : 0) + manualNudge;
   return { right: rotateAz(b.right, off), up: rotateAz(b.up, off), back: rotateAz(b.back, off) };
 }
 

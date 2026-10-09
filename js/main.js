@@ -1,38 +1,38 @@
-import * as Secrets from './secrets.js?v=0.1.345';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.345';
-import * as Ufo from './ufo.js?v=0.1.345';
-import * as Fossil from './fossil.js?v=0.1.345';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.345';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.345';
-import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.345';
-import { VERSION } from './version.js?v=0.1.345';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.345';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.345';
-import { conArt } from './con-art.js?v=0.1.345';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.345';
-import { CON_FIGURES } from './con-figures.js?v=0.1.345';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.345';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.345';
-import { progress as progressOf } from './progress.js?v=0.1.345';
-import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.345';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.345';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge, lockHeading } from './sensors.js?v=0.1.345';
-import { SkyView, shortName } from './sky.js?v=0.1.345';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, roadster, starVector } from './celestial.js?v=0.1.345';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.345';
-import { cardArt } from './art.js?v=0.1.345';
-import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.345';
-import { applyBack } from './card-backs.js?v=0.1.345';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.345';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.345';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.345';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.345';
-import { TIER_INFO } from './rarity.js?v=0.1.345';
-import { SETS } from './sets.js?v=0.1.345';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.345';
-import { shareCardEl } from './share-card.js?v=0.1.345';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.345';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.345';
+import * as Secrets from './secrets.js?v=0.1.346';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.346';
+import * as Ufo from './ufo.js?v=0.1.346';
+import * as Fossil from './fossil.js?v=0.1.346';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.346';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.346';
+import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.346';
+import { VERSION } from './version.js?v=0.1.346';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.346';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.346';
+import { conArt } from './con-art.js?v=0.1.346';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.346';
+import { CON_FIGURES } from './con-figures.js?v=0.1.346';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.346';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.346';
+import { progress as progressOf } from './progress.js?v=0.1.346';
+import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.346';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.346';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.346';
+import { SkyView, shortName } from './sky.js?v=0.1.346';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, roadster, starVector } from './celestial.js?v=0.1.346';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.346';
+import { cardArt } from './art.js?v=0.1.346';
+import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.346';
+import { applyBack } from './card-backs.js?v=0.1.346';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.346';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.346';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.346';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.346';
+import { TIER_INFO } from './rarity.js?v=0.1.346';
+import { SETS } from './sets.js?v=0.1.346';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.346';
+import { shareCardEl } from './share-card.js?v=0.1.346';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.346';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.346';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -260,6 +260,7 @@ const MAX_TRAILS = 4;
 
 // Once a second: trails, Sun/Moon/stars, status line.
 function refreshAbove() {
+  setCompassPlace(state.observer?.lat, state.observer?.lon); // true north for the iOS compass; cached, recomputes only when you move
   if (!state.catalog) return;
   const d = now();
   const f = frame(d, state.observer);
@@ -1749,6 +1750,7 @@ function renderDebug() {
     `compass acc.   ${pointing.compassAccuracy ?? 'n/a'}`,
     `heading offset ${pointing.headingOffset.toFixed(1)}°`,
     `sun elevation  ${f ? f.sunEl.toFixed(1) : '?'}°`,
+    `declination  ${getDeclination().toFixed(1)}° (applied to iOS compass)`,
     `catalogue      ${cat?.objects.length ?? 0} objects, data ${ageH} h old`,
     `above horizon  ${state.model?.above.size ?? 0} (${state.items.filter((i) => i.look.visible).length} visible)`,
     `binoculars     ${state.binoculars ? 'on' : 'off'}`,
