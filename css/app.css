@@ -774,3 +774,9 @@ body.night #ufo-cta { background: var(--gold) !important; color: #120606 !import
 @keyframes tc-shimmer { 0% { background-position: 100% 0; opacity: 1; } 100% { background-position: 0% 0; opacity: 1; } }
 .tc.gold.shimmer { animation: tc-glow 1.6s ease-in-out 2; }
 @keyframes tc-glow { 50% { box-shadow: inset 0 0 0 5px var(--bg), inset 0 0 0 6px #f7d77acc, 0 0 40px #e2b53c66, 0 -14px 50px #000b; } }
+
+/* Welcome card truly centred (2026-10-09, Sevaan): the hint, Begin and the note under it no longer count toward the
+   centring; they hang just below the card. --cf (the card's size unit) moves up to the stage so they can use it. */
+.wc-stage { --cf: max(7px, min(14px, calc((100vw - 58px) / 28), calc((100dvh - 120px) / 39.2))); padding: calc(var(--safe-top) + 16px) 16px calc(var(--safe-bottom) + 16px); }
+.wc-stage > .wc-hint, .wc-stage > .wc-after, .wc-stage > #start-note { position: absolute; left: 16px; right: 16px; top: calc(50% + (var(--safe-top) - var(--safe-bottom)) / 2 + 39.2 * var(--cf) / 2 + 22px); text-align: center; }
+.wc-stage > #start-note { margin-top: 64px; }
