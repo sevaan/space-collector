@@ -1,10 +1,10 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.353';
+import { extinction } from './sky-limit.js?v=0.1.354';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.353';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.354';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.353';
-import { TIER_INFO } from './rarity.js?v=0.1.353';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.354';
+import { TIER_INFO } from './rarity.js?v=0.1.354';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -261,7 +261,10 @@ export class SkyView {
       }
       mem.seen = this.frameNo; this.labelSide.set(label.text, mem);
       if (pick >= 0) {
-        const [x, y] = candidates[pick];
+        let [x, y] = candidates[pick];
+        // When a label does change sides, it slides round to the new side rather than snapping (2026-10-08).
+        const ox = x - p.x, oy = y - p.y, recent = this.frameNo - (mem.lastDrawn ?? -99) <= 2;
+        if (recent && mem.ox != null && !this.reducedMotion) { mem.ox += (ox - mem.ox) * 0.25; mem.oy += (oy - mem.oy) * 0.25; x = p.x + mem.ox; y = p.y + mem.oy; } else { mem.ox = ox; mem.oy = oy; }
         ctx.textAlign = 'left';
         ctx.textBaseline = 'top';
         ctx.fillStyle = color;
@@ -271,6 +274,11 @@ export class SkyView {
         const fa = this.reducedMotion ? 1 : Math.min(1, (this.frameNo - mem.shownAt) / 14);
         ctx.save(); ctx.globalAlpha *= fa; ctx.fillText(text, x, y); ctx.restore();
         occupied.push(box);
+      } else if (!this.reducedMotion && mem.lastDrawn && mem.i < candidates.length && this.frameNo - mem.lastDrawn < 10) {
+        // Briefly blocked: fade out where it was over ~1/6 s instead of vanishing (2026-10-08, Sevaan: text jumping).
+        const [x, y] = candidates[mem.i], fo = 1 - (this.frameNo - mem.lastDrawn) / 10;
+        ctx.textAlign = 'left'; ctx.textBaseline = 'top'; ctx.fillStyle = color;
+        ctx.save(); ctx.globalAlpha *= fo * Math.min(1, (mem.lastDrawn - (mem.shownAt ?? 0)) / 14); ctx.fillText(text, x, y); ctx.restore();
       }
     }
     ctx.textBaseline = 'alphabetic';
@@ -839,16 +847,27 @@ export class SkyView {
       const name = g.name.replace(/^The /, '').toUpperCase(), when = g.time ? ` ${g.time.replace(/\s?[AP]M$/i, '')}` : '';
       ctx.font = `500 11px ${FONT}`;
       const wN = ctx.measureText(name).width, wT = ctx.measureText(when).width, w = wN + wT, h = 13;
-      const align = u[0] > 0.35 ? 'left' : u[0] < -0.35 ? 'right' : 'center';
+      // Steady labels (2026-10-08, Sevaan: text jumping around): each label remembers its alignment and row. The
+      // alignment only changes well past the switch point, a label keeps its row while that row is free, and when it
+      // does move it slides there over a few frames instead of snapping (measured: jumps of 15–75 px before).
+      const mem = (this.feetMem ??= new Map()), lm = mem.get(name) ?? {};
+      let align = u[0] > 0.35 ? 'left' : u[0] < -0.35 ? 'right' : 'center';
+      if (lm.align === 'left' && u[0] > 0.2) align = 'left'; else if (lm.align === 'right' && u[0] < -0.2) align = 'right';
+      else if (lm.align === 'center' && Math.abs(u[0]) < 0.5) align = 'center';
       // Crowded (several things rising in the east): slide the label up or down a row until it's clear.
       const out = 14, lx = x + u[0] * out, ly0 = y + u[1] * out;
-      let bx = align === 'left' ? lx : align === 'right' ? lx - w : lx - w / 2, by = ly0 - h / 2, ly = ly0;
+      let bx = align === 'left' ? lx : align === 'right' ? lx - w : lx - w / 2, by = ly0 - h / 2, ly = ly0, row = 0;
       bx = Math.max(10, Math.min(this.w - 10 - w, bx)); // never off the screen edge
-      for (const dy of [0, 15, -15, 30, -30, 45, -45, 60, -60]) {
-        ly = ly0 + dy; by = ly - h / 2;
+      for (const dy of [...new Set([lm.row ?? 0, 0, 15, -15, 30, -30, 45, -45, 60, -60])]) {
+        ly = ly0 + dy; by = ly - h / 2; row = dy;
         if (!boxes.some((b) => bx < b[0] + b[2] + 4 && bx + w + 4 > b[0] && by < b[1] + b[3] + 2 && by + h + 2 > b[1])) break;
       }
       boxes.push([bx, by, w, h]);
+      // Glide from where it was drawn last time, relative to its dot (so it still tracks the dot exactly as you turn).
+      const ox = bx - x, oy = by - y;
+      if (lm.ox != null && Math.hypot(ox - lm.ox, oy - lm.oy) < 140) { lm.ox += (ox - lm.ox) * 0.2; lm.oy += (oy - lm.oy) * 0.2; } else { lm.ox = ox; lm.oy = oy; }
+      Object.assign(lm, { align, row }); mem.set(name, lm);
+      bx = Math.max(10, Math.min(this.w - 10 - w, x + lm.ox)); by = y + lm.oy; ly = by + h / 2;
       ctx.strokeStyle = col; ctx.globalAlpha = a * (ly !== ly0 ? 0.75 : 0.45); // a nudged label gets a clearer leader back to its dot
       ctx.beginPath(); ctx.moveTo(x + u[0] * 7, y + u[1] * 7); ctx.lineTo(align === 'left' ? bx - 4 : align === 'right' ? bx + w + 4 : bx + w / 2, align === 'center' ? (u[1] > 0 ? by - 2 : by + h + 2) : ly); ctx.stroke();
       ctx.globalAlpha = a; ctx.textAlign = 'left';
@@ -1290,8 +1309,12 @@ export class SkyView {
     const ctx = this.ctx, t = this.theme;
     const margin = 27, top = this.safeTop + 20, bottom = this.h - this.safeBottom - 22;
     // A selected target stays findable even outside the camera view or when faint.
-    const ordered = list.sort((a, b) => Number(b.isTarget) - Number(a.isTarget) || (a.it.look.mag ?? 9) - (b.it.look.mag ?? 9));
+    // The two edge pointers keep pointing at the same two things until something clearly brighter comes along
+    // (2026-10-08: near-equal satellites swapped back and forth, so the names at the edge flickered).
+    const prev = this.offPrev ?? new Set(), rank = (e) => (e.it.look.mag ?? 9) - (prev.has(e.it.obj?.id) ? 1 : 0);
+    const ordered = list.sort((a, b) => Number(b.isTarget) - Number(a.isTarget) || rank(a) - rank(b));
     const visible = targetId ? ordered.filter((entry) => entry.isTarget).slice(0, 1) : ordered.slice(0, 2);
+    this.offPrev = new Set(visible.map((e) => e.it.obj?.id));
     for (const { it, c, isTarget } of visible) {
       let dx = c.x, dy = -c.y;
       // Behind you, "up" or "down" on screen means tipping over your head, which nobody does: point sideways,
