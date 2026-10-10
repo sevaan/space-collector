@@ -369,3 +369,7 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - Daytime toasts sit at 80px (no slider in the day).
 - 2026-10-10 · #20: tier XP flattened to 10/15/25/40/60 (was 10/20/40/80/150). `xpCarry()` in js/progress.js runs once per device (localStorage `xpCarry`). It compares old-numbers rank to new XP and stores the gap, so nobody drops a rank. progress() takes `carry` (main progressNow and every cards-page call pass it). Casual pace is now about: Spotter night 1, Tracker 3, Navigator 7, Flight Controller ~19, Mission Control ~48.
 - 2026-10-10 · #22b: Tonight's sky challenge. `CHALLENGES` / `challengeFor(night)` in js/progress.js: a bonus fourth goal you can do with cards you already own (see 3 owned again, two satellites in 10 min, level a card up, a bright named star, a planet again). +50 XP, not counted toward mission patches, never on a first night. Shown on the rank card (`.lb-challenge`); main toasts "SKY CHALLENGE COMPLETE".
+- 2026-10-10 · #9/#10: main.js `shareTonight` saves tonight's catchable new passes to localStorage `tonightPlan` ({at, passes:[{key,id,start,end,peakEl,dir}]}) and nudges the Collection frame (`sc:tonight`). Collection:
+  - Discover's default order leads with those (soonest first).
+  - The Collection filter has "Up tonight from here".
+  - Mine under 9 cards (including empty) appends "Up tonight" slots (`appendUpNext`, dashed tiles with "Up 7:11 PM · SE"). Tapping one posts `sc:remind` and Explore runs `remindPass` (the .ics reminder).

@@ -385,3 +385,6 @@ body.albums-view .album__count { flex: none; font-size: 14px; }
 /* Tonight's sky challenge, the bonus fourth goal (playtest 2026-10-09). */
 .lb-challenge i { border-color: #fa8127; border-radius: 50%; transform: none; }
 .lb-challenge small { margin-left: auto; flex: none; font: 500 10px/1 'SC Label', sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #fa8127; text-decoration: none; }
+/* "Up tonight" slots in a small collection (playtest 2026-10-09): uncollected tiles with when and where. */
+.up-next__tile { opacity: .82; border-style: dashed !important; position: relative; }
+.up-next__when { position: absolute; left: 6px; right: 6px; top: 34%; z-index: 3; padding: 4px 6px 3px; border-radius: 99px; background: #080f1bdd; border: 1px solid #fa812788; color: #fa8127; font: 500 10px/1 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .1em; text-transform: uppercase; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }

@@ -1,39 +1,39 @@
-import * as Secrets from './secrets.js?v=0.1.423';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.423';
-import * as Ufo from './ufo.js?v=0.1.423';
-import * as Fossil from './fossil.js?v=0.1.423';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.423';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.423';
-import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.423';
-import { VERSION } from './version.js?v=0.1.423';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.423';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.423';
-import { conArt } from './con-art.js?v=0.1.423';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.423';
-import { CON_FIGURES } from './con-figures.js?v=0.1.423';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.423';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.423';
-import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.423';
-import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.423';
-import { conList } from './constellations.js?v=0.1.423';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.423';
-import { SkyView, shortName } from './sky.js?v=0.1.423';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.423';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.423';
-import { cardArt } from './art.js?v=0.1.423';
-import { renderCard, cardLevel, artImage, lockedArt, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.423';
-import { applyBack } from './card-backs.js?v=0.1.423';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.423';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.423';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.423';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.423';
-import { TIER_INFO } from './rarity.js?v=0.1.423';
-import { SETS } from './sets.js?v=0.1.423';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.423';
-import { shareCardEl } from './share-card.js?v=0.1.423';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.423';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.423';
-import { addStarfield } from './starfield.js?v=0.1.423';
+import * as Secrets from './secrets.js?v=0.1.425';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.425';
+import * as Ufo from './ufo.js?v=0.1.425';
+import * as Fossil from './fossil.js?v=0.1.425';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.425';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.425';
+import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.425';
+import { VERSION } from './version.js?v=0.1.425';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.425';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.425';
+import { conArt } from './con-art.js?v=0.1.425';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.425';
+import { CON_FIGURES } from './con-figures.js?v=0.1.425';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.425';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.425';
+import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.425';
+import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.425';
+import { conList } from './constellations.js?v=0.1.425';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.425';
+import { SkyView, shortName } from './sky.js?v=0.1.425';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.425';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.425';
+import { cardArt } from './art.js?v=0.1.425';
+import { renderCard, cardLevel, artImage, lockedArt, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.425';
+import { applyBack } from './card-backs.js?v=0.1.425';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.425';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.425';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.425';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.425';
+import { TIER_INFO } from './rarity.js?v=0.1.425';
+import { SETS } from './sets.js?v=0.1.425';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.425';
+import { shareCardEl } from './share-card.js?v=0.1.425';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.425';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.425';
+import { addStarfield } from './starfield.js?v=0.1.425';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -1238,7 +1238,7 @@ function requestTonight(force = false) {
       tonightBusy = false;
       if (data.error) return;
       state.tonight = { ...data, ...asked };
-      dealMissions(state.tonight);
+      dealMissions(state.tonight); shareTonight(state.tonight);
       if (!$('vtab-tonight').hidden) renderTonight();
       lastChip = 0;
       const stale = asked.sb !== state.skySb || asked.lat !== state.observer.lat || asked.lon !== state.observer.lon || asked.bino !== state.binoculars;
@@ -1253,6 +1253,14 @@ function requestTonight(force = false) {
 // Tonight's missions come only from ones you could do from here (playtest 2026-10-09): from tonight's passes, work
 // out which missions have something to catch, deal three from those, and keep that deal for the night (localStorage
 // missionDeals) so scoring and every screen agree. Dealt once per night; the first night keeps the starter set.
+// Share tonight's catchable passes with Collection (playtest 2026-10-09, #9/#10): Discover leads with them and a small
+// collection shows "Up tonight" slots. localStorage tonightPlan, plus a nudge to the frame if it's loaded.
+function shareTonight(T) {
+  const passes = tonightPasses(T, now().getTime()).filter((p) => p.fresh).slice(0, 80)
+    .map((p) => ({ key: cardKeyFor(p.obj), id: p.obj.id, start: p.start, end: p.end, peakEl: p.peakEl, dir: compassPoint(p.peakAz) }));
+  try { localStorage.setItem('tonightPlan', JSON.stringify({ at: Date.now(), passes })); } catch {}
+  if (colLoaded) colFrame.contentWindow?.postMessage({ sc: 'tonight' }, location.origin);
+}
 function dealMissions(T) {
   if (!T?.passes) return;
   const night = String(nightKey(now().getTime(), state.observer.lon ?? 0)), deals = readDeals();
@@ -2274,6 +2282,7 @@ window.addEventListener('message', (e) => {
   if (e.origin !== location.origin || !e.data?.sc) return;
   if (e.data.sc === 'ready') { colLoaded = true; if (collectionOpen) colFrame.classList.add('open'); }
   if (e.data.sc === 'explore') { closeCollection(); if (e.data.more) openDebug(); }
+  if (e.data.sc === 'remind') { const p = state.tonight?.passes?.filter((x) => x.id === e.data.id && x.end > now().getTime()).sort((a, b) => a.start - b.start)[0], obj = p && state.byId.get(p.id); if (obj) remindPass({ ...p, obj }); } // an "Up tonight" slot in Collection
 });
 window.addEventListener('resize', () => { if (colFrame.src) sendInsets(); });
 // Any link to the collection opens the layer instead of leaving the page.

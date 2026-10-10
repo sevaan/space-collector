@@ -1,21 +1,21 @@
-import { expandFacts } from './catalog-facts.js?v=0.1.423';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.423';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.423';
-import { ticket } from './toast.js?v=0.1.423';
-import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.423';
-import { cardArt } from './art.js?v=0.1.423';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.423';
-import { applyBack } from './card-backs.js?v=0.1.423';
-import { SETS, assignSets } from './sets.js?v=0.1.423';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.423';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.423';
-import { loadConstellations, conList } from './constellations.js?v=0.1.423';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.423';
-import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.423';
-import { shareCardEl } from './share-card.js?v=0.1.423';
-import { allSightings, deleteSighting } from './store.js?v=0.1.423';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.423';
-import { SECRET_PATCHES } from './secrets.js?v=0.1.423';
+import { expandFacts } from './catalog-facts.js?v=0.1.425';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.425';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.425';
+import { ticket } from './toast.js?v=0.1.425';
+import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.425';
+import { cardArt } from './art.js?v=0.1.425';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.425';
+import { applyBack } from './card-backs.js?v=0.1.425';
+import { SETS, assignSets } from './sets.js?v=0.1.425';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.425';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.425';
+import { loadConstellations, conList } from './constellations.js?v=0.1.425';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.425';
+import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.425';
+import { shareCardEl } from './share-card.js?v=0.1.425';
+import { allSightings, deleteSighting } from './store.js?v=0.1.425';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.425';
+import { SECRET_PATCHES } from './secrets.js?v=0.1.425';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -42,7 +42,18 @@ $('night-toggle').addEventListener('click', () => {
 });
 window.addEventListener('storage', (e) => { if (e.key === 'night') setNight(e.newValue === '1'); });
 
+$('set-filter').add(new Option('Up tonight from here', 'tonight'));
 for (const set of SETS) $('set-filter').add(new Option(set.name, set.id));
+// Tonight's catchable passes from where you are (playtest 2026-10-09, #9/#10): Explore works them out and shares
+// them (localStorage tonightPlan, and a sc:tonight message while this page is embedded). { at, passes: [{ key, id,
+// start, end, peakEl, dir }] }, soonest first.
+function readPlan() {
+  let p = null; try { p = JSON.parse(localStorage.getItem('tonightPlan')); } catch {}
+  if (!p || Date.now() - p.at > 18 * 3600e3) return [];
+  return (p.passes ?? []).filter((x) => x.end > Date.now());
+}
+state.plan = readPlan();
+const planStart = () => new Map(state.plan.map((x) => [x.key, x.start]).reverse()); // first (soonest) pass per card
 for (const tier of TIERS.slice().reverse()) $('rarity-filter').add(new Option(TIER_INFO[tier].label, tier));
 
 async function boot() {
@@ -93,7 +104,7 @@ async function boot() {
 
 function matches(c) {
   if (state.view === 'owned' && !hasSightings(c)) return false;
-  if (state.set !== 'all' && c.set !== state.set) return false;
+  if (state.set === 'tonight') { if (!state.planKeys?.has(c.key)) return false; } else if (state.set !== 'all' && c.set !== state.set) return false;
   if (state.rarity !== 'all' && c.tier !== state.rarity) return false;
   if (state.query) {
     const haystack = `${titleFor(c)} ${c.name} ${c.id} ${c.cospar ?? ''} ${factFor(c)} ${SETS.find((s) => s.id === c.set)?.name ?? ''}`.toLowerCase();
@@ -231,6 +242,7 @@ function render() {
   const caught = state.cards.filter(hasSightings).length;
   $('owned-count').textContent = caught.toLocaleString();
   $('count').textContent = caught ? `${caught.toLocaleString()} ${caught === 1 ? 'story' : 'stories'} collected. Every one, a moment under the sky.` : 'Real objects. Remarkable stories. Yours to discover.';
+  const ps = planStart(); state.planKeys = new Set(ps.keys());
   state.list = state.cards.filter(matches).sort((a, b) => {
     // Sort menu (2026-10-06): default = newest first for your collection, featured order for the field guide.
     const newest = (c) => state.sightingsByKey.get(c.key)?.[0]?.time ?? 0;
@@ -238,7 +250,9 @@ function render() {
     if (state.sort === 'rarest') return TIERS.indexOf(b.tier) - TIERS.indexOf(a.tier) || titleFor(a).localeCompare(titleFor(b));
     if (state.sort === 'az') return titleFor(a).localeCompare(titleFor(b));
     if (state.view === 'owned') return newest(b) - newest(a);
-    // Lead discovery with the familiar ISS and distinctive rarities, then catalogue order.
+    // Lead discovery with what you could catch tonight from here, soonest first (playtest 2026-10-09: it opened on a
+    // wall of blurred Legendaries), then the familiar ISS and distinctive rarities, then catalogue order.
+    if (ps.has(a.key) || ps.has(b.key)) return (ps.get(a.key) ?? Infinity) - (ps.get(b.key) ?? Infinity);
     if (String(a.id) === '25544') return -1;
     if (String(b.id) === '25544') return 1;
     return TIERS.indexOf(b.tier) - TIERS.indexOf(a.tier) || (a.set ?? '').localeCompare(b.set ?? '') || (a.setNumber ?? 0) - (b.setNumber ?? 0);
@@ -258,7 +272,7 @@ function render() {
       empty.innerHTML = '<span class="empty__orbit" aria-hidden="true">⌕</span><h2>No cards found.</h2><p>Try a different name, collection or rarity.</p><button type="button">Clear filters</button>';
       empty.querySelector('button').addEventListener('click', resetFilters);
     }
-    $('grid').append(empty); return;
+    $('grid').append(empty); appendUpNext(0); return;
   }
   const frag = document.createDocumentFragment();
   for (const c of state.list) {
@@ -266,7 +280,32 @@ function render() {
     frag.append(slot);
   }
   $('grid').append(frag);
-  for (const slot of $('grid').children) observer.observe(slot);
+  appendUpNext(total);
+  for (const slot of $('grid').children) if (!slot.classList.contains('up-next')) observer.observe(slot);
+}
+function appendUpNext(total) {
+  const frag = document.createDocumentFragment();
+  // A small collection (under 9 cards) fills the rest of its first rows with "Up tonight" slots: the next things you
+  // could catch, with times. Tap one for a reminder (playtest 2026-10-09, #10).
+  if (!(state.view === 'owned' && total < 9 && !state.query && state.set === 'all' && state.rarity === 'all')) return;
+  {
+    const seen = new Set();
+    for (const x of state.plan) {
+      if (seen.size >= 9 - total) break;
+      const c = state.byKey.get(x.key); if (!c || seen.has(x.key) || hasSightings(c)) continue; seen.add(x.key);
+      const slot = document.createElement('div'); slot.className = 'tile-slot up-next';
+      const tile = renderCardTile(c, { sightings: [] }); tile.classList.add('up-next__tile');
+      const when = new Date(x.start).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+      tile.insertAdjacentHTML('afterbegin', `<span class="up-next__when">Up ${esc(when)} · ${esc(x.dir)}</span>`);
+      tile.setAttribute('aria-label', `${titleFor(c)}, up tonight at ${when} in the ${x.dir}. Set a reminder`);
+      tile.addEventListener('click', () => {
+        if (EMBED) window.parent.postMessage({ sc: 'remind', id: x.id }, location.origin);
+        else openViewer(state.list.findIndex((k) => k.key === c.key));
+      });
+      slot.append(tile); frag.append(slot);
+    }
+    $('grid').append(frag);
+  }
 }
 function setView(view) {
   const changed = state.view !== view;
@@ -594,6 +633,7 @@ if (EMBED) {
     if (e.data.sc === 'insets') { const r = document.documentElement.style; r.setProperty('--safe-top', `${e.data.top}px`); r.setProperty('--safe-bottom', `${e.data.bottom}px`); }
     if (e.data.sc === 'open' || e.data.sc === 'show') setSwitch(document.querySelector('.sc-switch'), 'right', false); // shown again: pill on Collection
     if ((e.data.sc === 'open' || e.data.sc === 'show') && e.data.key) openKey(e.data.key);
+    if (e.data.sc === 'tonight') { state.plan = readPlan(); if (state.ready && ['owned', 'discover'].includes(state.view)) render(); }
   });
 }
 function openKey(key) {
