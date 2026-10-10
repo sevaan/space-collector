@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Loader Options</title>
+<style>
+  @font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf'); font-weight: 500; }
+  @font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf'); }
+  :root { --ink: #fff2b3; --muted: #bdbea9; --orange: #fa8127; --navy: #080f1b; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #04070d; color: #e8eef6; font: 15px/1.45 -apple-system, system-ui, sans-serif; padding: 24px 16px 60px; }
+  h1.t { font-size: 20px; margin: 0 0 6px; } .intro { color: #9fb0c6; margin: 0 0 22px; max-width: 1200px; }
+  .row { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
+  .cell { width: 260px; } .cell h2 { font-size: 15px; margin: 10px 0 4px; } .cell p { color: #9fb0c6; font-size: 13px; margin: 0; }
+  .phone { position: relative; width: 260px; height: 520px; border-radius: 26px; overflow: hidden; border: 1px solid #1d2838; background: radial-gradient(ellipse at 50% 45%, #0c1d29, var(--navy) 70%); }
+  .phone canvas, .phone svg.full { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .word { position: absolute; left: 0; right: 0; top: 340px; text-align: center; font: 400 13px/1 'SC Display', sans-serif; letter-spacing: .08em; color: var(--ink); }
+  .sub { position: absolute; left: 0; right: 0; top: 362px; text-align: center; font: 500 10px/1 'SC Label', sans-serif; letter-spacing: .24em; text-transform: uppercase; color: var(--muted); }
+  .pulse { animation: pulse 1.8s ease-in-out infinite; } @keyframes pulse { 50% { opacity: .45; } }
+  .tag { position: absolute; top: 12px; left: 12px; padding: 3px 8px; border-radius: 99px; background: #fa812733; color: var(--orange); font: 500 10px 'SC Label', sans-serif; letter-spacing: .16em; }
+  /* current loader (index.html): target circle, orange dot orbiting, cream dot inside, wordmark */
+  .spin { transform-origin: 0 0; animation: spin 2.4s linear infinite; } .spin2 { transform-origin: 0 0; animation: spin 4.2s linear infinite reverse; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  /* D · deck */
+  .deck { position: absolute; left: 50%; top: 210px; width: 0; height: 0; }
+  .dk { position: absolute; width: 92px; height: 129px; margin: -64px 0 0 -46px; border-radius: 8px; background: #01121c url(../assets/art/backs/back-collector.webp) center / contain no-repeat; border: 2px solid #adbcc8; box-shadow: 0 10px 24px #000a; animation: deal 4s cubic-bezier(.4,0,.2,1) infinite; animation-delay: var(--d); }
+  @keyframes deal { 0%, 8% { transform: rotate(0) translate(0, 0); } 28%, 44% { transform: rotate(var(--r)) translate(var(--x), 0); } 62% { transform: rotate(0) translate(0, 0); } 70% { transform: rotate(0) translate(0, 0) rotateY(0); } 82%, 100% { transform: rotate(0) translate(0, 0); } }
+  .dk.top { animation: flip 4s ease-in-out infinite; z-index: 5; }
+  @keyframes flip { 0%, 64% { transform: rotateY(0); background-image: url(../assets/art/backs/back-collector.webp); } 72% { transform: rotateY(90deg); background-image: url(../assets/art/backs/back-collector.webp); }
+    73%, 92% { transform: rotateY(0); background-image: none; background-color: #080f1b; } 100% { transform: rotateY(0); } }
+  .dk.top .face { position: absolute; inset: 0; display: grid; place-items: center; opacity: 0; animation: face 4s infinite; }
+  @keyframes face { 0%, 72% { opacity: 0; } 74%, 92% { opacity: 1; } 100% { opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { * { animation-duration: .01s !important; } }
+</style></head><body>
+<h1 class="t">Loading screen: the current one and four new ones</h1>
+<p class="intro">All run live here, sized to a phone. Each lands on the same target circle (so the hand-off into the sky still looks seamless) and keeps the SPACE COLLECTOR wordmark under it. The app shows the loader for about 1.5 seconds, so each one is designed to read in that time and then loop gracefully if loading takes longer.</p>
+<div class="row" id="b"></div>
+<script>
+const W = 260, H = 520, CX = 130, CY = 210, R = 46;
+const ret = (extra = '') => `<svg class="full" viewBox="0 0 ${W} ${H}"><g transform="translate(${CX} ${CY})">
+  <circle r="${R}" fill="none" stroke="rgba(255,242,179,.66)"/><circle r="${R + 5}" fill="none" stroke="rgba(173,188,200,.35)" stroke-width=".75"/>
+  ${Array.from({ length: 24 }, (_, i) => { const a = i * 15 * Math.PI / 180, c = i % 6 === 0, o = R + (c ? 13 : 9); return `<line x1="${Math.cos(a) * (R + 5)}" y1="${Math.sin(a) * (R + 5)}" x2="${Math.cos(a) * o}" y2="${Math.sin(a) * o}" stroke="${c ? '#fa8127' : 'rgba(255,242,179,.4)'}" stroke-width="${c ? 1.5 : .75}"/>`; }).join('')}
+  ${extra}</g></svg>`;
+const star = '<path d="M0 -8 L1.9 -1.9 L8 0 L1.9 1.9 L0 8 L-1.9 1.9 L-8 0 L-1.9 -1.9 Z" fill="#fff2b3"/>';
+const words = (sub = 'Loading the sky') => `<div class="word">SPACE COLLECTOR</div><div class="sub pulse">${sub}</div>`;
+
+const cells = [
+  ['Current', 'Today\'s loader: the target circle with an orange dot orbiting its rim and a cream dot inside, a four-point star in the middle, and the wordmark pulsing below.', (el) => {
+    el.innerHTML = '<span class="tag">CURRENT</span>' + ret(`<circle r="${R * .66}" fill="none" stroke="#627a8b" stroke-opacity=".35" stroke-dasharray="2 5"/><g class="spin"><circle cy="${-R}" r="7" fill="#fa8127" opacity=".18"/><circle cy="${-R}" r="3.2" fill="#fa8127"/></g><g class="spin2"><circle cy="${-R * .66}" r="2.4" fill="#fff2b3"/></g>${star}`) + '<div class="word pulse">SPACE COLLECTOR</div>';
+  }],
+  ['A · Warp in', 'Stars stream past from the centre as if you\'re flying out into space, faster and faster, then they slow, the streaks shorten to points, and the target circle draws itself around the middle as you "arrive". Loops by jumping again.', (el) => {
+    const c = document.createElement('canvas'); c.width = W * 2; c.height = H * 2; el.append(c); el.insertAdjacentHTML('beforeend', words('Jumping to your sky'));
+    const ctx = c.getContext('2d'); ctx.scale(2, 2);
+    const S = Array.from({ length: 220 }, () => ({ a: Math.random() * Math.PI * 2, d: Math.random() * 1, s: .3 + Math.random() * .9 }));
+    const draw = (t) => {
+      const T = (t / 3600) % 1, speed = T < .55 ? .2 + T * 2.6 : Math.max(0, 1.63 - (T - .55) * 3.6); // accelerate, then brake
+      ctx.clearRect(0, 0, W, H);
+      for (const s of S) {
+        s.d += speed * s.s * .012; if (s.d > 1.2) { s.d = .02; s.a = Math.random() * Math.PI * 2; }
+        const r0 = s.d * s.d * 300, r1 = Math.max(0, (s.d - speed * .06 * s.s) ** 2 * 300);
+        const x0 = CX + Math.cos(s.a) * r1, y0 = CY + Math.sin(s.a) * r1, x1 = CX + Math.cos(s.a) * r0, y1 = CY + Math.sin(s.a) * r0;
+        ctx.strokeStyle = `rgba(255,242,179,${Math.min(1, s.d * 1.4)})`; ctx.lineWidth = .6 + s.d * 1.4; ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x1 + .01, y1); ctx.stroke();
+      }
+      const k = Math.max(0, Math.min(1, (T - .7) / .2)); // the circle draws as you arrive
+      if (k > 0) { ctx.strokeStyle = 'rgba(255,242,179,.7)'; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.arc(CX, CY, R, -Math.PI / 2, -Math.PI / 2 + k * Math.PI * 2); ctx.stroke();
+        ctx.strokeStyle = '#fa8127'; ctx.lineWidth = 1.6; for (let i = 0; i < 4; i++) { if (k < (i + 1) / 4) break; const a = i * Math.PI / 2; ctx.beginPath(); ctx.moveTo(CX + Math.cos(a) * (R + 5), CY + Math.sin(a) * (R + 5)); ctx.lineTo(CX + Math.cos(a) * (R + 13), CY + Math.sin(a) * (R + 13)); ctx.stroke(); } }
+      requestAnimationFrame(draw);
+    }; requestAnimationFrame(draw);
+  }],
+  ['B · Satellite swarm', 'A glowing curve of the Earth at the bottom, and a dozen satellites tracing tilted orbits around the circle, each leaving a fading trail. One by one they line up and blink orange as they cross the centre: "finding what\'s up".', (el) => {
+    const c = document.createElement('canvas'); c.width = W * 2; c.height = H * 2; el.append(c); el.insertAdjacentHTML('beforeend', words('Finding what\'s up'));
+    const ctx = c.getContext('2d'); ctx.scale(2, 2);
+    const sats = Array.from({ length: 12 }, (_, i) => ({ rx: 70 + i * 7, ry: 18 + (i % 4) * 9, tilt: -0.9 + i * 0.16, sp: .35 + (i % 5) * .08, ph: i * 1.3 }));
+    const draw = (t) => {
+      ctx.clearRect(0, 0, W, H);
+      const g = ctx.createRadialGradient(CX, 760, 300, CX, 760, 420); g.addColorStop(0, '#0f2a44'); g.addColorStop(.9, '#16406a'); g.addColorStop(.97, 'rgba(143,179,207,.55)'); g.addColorStop(1, 'rgba(143,179,207,0)');
+      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(CX, 760, 420, 0, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = 'rgba(255,242,179,.55)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.arc(CX, CY, R, 0, Math.PI * 2); ctx.stroke();
+      for (const s of sats) {
+        const a = t / 1000 * s.sp + s.ph, pt = (aa) => { const x = Math.cos(aa) * s.rx, y = Math.sin(aa) * s.ry; return [CX + x * Math.cos(s.tilt) - y * Math.sin(s.tilt), CY + x * Math.sin(s.tilt) + y * Math.cos(s.tilt)]; };
+        ctx.lineWidth = 1; for (let k = 0; k < 18; k++) { const [x, y] = pt(a - k * .05), [x2, y2] = pt(a - (k + 1) * .05); ctx.strokeStyle = `rgba(250,129,39,${(.5 * (1 - k / 18)).toFixed(2)})`; ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x2, y2); ctx.stroke(); }
+        const [x, y] = pt(a), inC = Math.hypot(x - CX, y - CY) < R; ctx.fillStyle = inC ? '#fa8127' : '#fff2b3'; ctx.beginPath(); ctx.arc(x, y, inC ? 2.6 : 1.6, 0, Math.PI * 2); ctx.fill();
+        if (inC) { ctx.strokeStyle = 'rgba(250,129,39,.7)'; ctx.beginPath(); ctx.arc(x, y, 6, 0, Math.PI * 2); ctx.stroke(); }
+      }
+      requestAnimationFrame(draw);
+    }; requestAnimationFrame(draw);
+  }],
+  ['C · Constellation', 'Stars twinkle on one at a time around the middle; a fine line joins them star to star, and as the last joins, the line closes into the target circle, the ticks pop on and the wordmark fades in under it. Like drawing your first constellation.', (el) => {
+    const N = 10, pts = Array.from({ length: N }, (_, i) => { const a = -Math.PI / 2 + i / N * Math.PI * 2; return [CX + Math.cos(a) * R, CY + Math.sin(a) * R]; });
+    const scatter = pts.map(([x, y], i) => [x + Math.sin(i * 7.3) * 26, y + Math.cos(i * 4.1) * 22]);
+    const c = document.createElement('canvas'); c.width = W * 2; c.height = H * 2; el.append(c); el.insertAdjacentHTML('beforeend', words('Connecting the stars'));
+    const ctx = c.getContext('2d'); ctx.scale(2, 2);
+    const bg = Array.from({ length: 90 }, () => [Math.random() * W, Math.random() * H, Math.random()]);
+    const draw = (t) => {
+      const T = (t / 4200) % 1; ctx.clearRect(0, 0, W, H);
+      for (const [x, y, p] of bg) { ctx.fillStyle = `rgba(255,242,179,${(.15 + .35 * (.5 + .5 * Math.sin(t / 700 + p * 9))).toFixed(2)})`; ctx.fillRect(x, y, 1, 1); }
+      const shown = Math.min(N, Math.floor(T / .055)), pull = Math.max(0, Math.min(1, (T - .6) / .2)), e = 1 - (1 - pull) ** 3, fade = T > .94 ? 1 - (T - .94) / .06 : 1;
+      const P = pts.map(([x, y], i) => [scatter[i][0] + (x - scatter[i][0]) * e, scatter[i][1] + (y - scatter[i][1]) * e]);
+      ctx.globalAlpha = fade;
+      if (shown > 1) { ctx.strokeStyle = 'rgba(255,242,179,.55)'; ctx.lineWidth = 1; ctx.beginPath(); P.slice(0, shown).forEach(([x, y], i) => i ? ctx.lineTo(x, y) : ctx.moveTo(x, y)); if (shown === N && pull > .9) ctx.closePath(); ctx.stroke(); }
+      if (pull > .95) { ctx.strokeStyle = 'rgba(255,242,179,.7)'; ctx.beginPath(); ctx.arc(CX, CY, R, 0, Math.PI * 2); ctx.stroke(); ctx.strokeStyle = '#fa8127'; ctx.lineWidth = 1.6; for (let i = 0; i < 4; i++) { const a = i * Math.PI / 2; ctx.beginPath(); ctx.moveTo(CX + Math.cos(a) * (R + 5), CY + Math.sin(a) * (R + 5)); ctx.lineTo(CX + Math.cos(a) * (R + 13), CY + Math.sin(a) * (R + 13)); ctx.stroke(); } }
+      P.slice(0, shown).forEach(([x, y], i) => { const g = ctx.createRadialGradient(x, y, 0, x, y, 6); g.addColorStop(0, '#fffbe6'); g.addColorStop(1, 'rgba(255,242,179,0)'); ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, 6, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = i === shown - 1 && pull < .01 ? '#fa8127' : '#fff2b3'; ctx.beginPath(); ctx.arc(x, y, 1.8, 0, Math.PI * 2); ctx.fill(); });
+      ctx.globalAlpha = 1; requestAnimationFrame(draw);
+    }; requestAnimationFrame(draw);
+  }],
+  ['D · The deck', 'A stack of Space Collector card backs fans out, sweeps back into a pile, and the top card flips over to reveal the target circle on its face, then turns back and deals again. Ties the loader to the collecting.', (el) => {
+    el.innerHTML = `<div class="deck">${[-24, -12, 12, 24].map((r, i) => `<div class="dk" style="--r:${r}deg;--x:${r * 2.6}px;--d:${i * .04}s"></div>`).join('')}<div class="dk top"><div class="face"><svg viewBox="-60 -60 120 120" width="80" height="80"><circle r="30" fill="none" stroke="rgba(255,242,179,.7)"/>${[0, 1, 2, 3].map((i) => { const a = i * Math.PI / 2; return `<line x1="${Math.cos(a) * 35}" y1="${Math.sin(a) * 35}" x2="${Math.cos(a) * 43}" y2="${Math.sin(a) * 43}" stroke="#fa8127" stroke-width="2"/>`; }).join('')}${star}</svg></div></div></div>` + words('Shuffling the deck');
+  }],
+];
+const box = document.getElementById('b');
+for (const [t, d, f] of cells) { const c = document.createElement('div'); c.className = 'cell'; c.innerHTML = `<div class="phone"></div><h2>${t}</h2><p>${d}</p>`; box.append(c); f(c.querySelector('.phone')); }
+</script></body></html>
