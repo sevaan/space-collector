@@ -35,3 +35,12 @@ export function assignSets(objects) {
   }
   return members;
 }
+
+// Albums (one per set): bronze / silver / gold goals scale with the set's size, so every album has a reachable gold.
+export function albumGoals(n) { return n <= 30 ? [1, Math.ceil(n / 2), n] : n <= 300 ? [10, 50, 100] : [10, 50, 200]; }
+// For progress(): each album's cards and its gold goal (a filled album earns its own patch, 2026-10-10 #17).
+export function albumList(cards) {
+  return SETS.map((s) => { const keys = cards.filter((c) => c.set === s.id).map((c) => String(c.key ?? c.id)); return { id: s.id, name: s.name, keys, goal: albumGoals(keys.length)[2] }; }).filter((a) => a.keys.length);
+}
+// Albums you've filled to gold (cards-page writes localStorage goldAlbums): their cards wear an album card back.
+export function goldAlbums() { try { return new Set(JSON.parse(localStorage.getItem('goldAlbums')) || []); } catch { return new Set(); } }

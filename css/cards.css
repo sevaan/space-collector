@@ -404,3 +404,8 @@
 .card-art-image--locked { width: 100%; height: 100%; object-fit: cover; filter: blur(8px) brightness(.62) saturate(.6); transform: scale(1.15); }
 .card-tile .card-art-image--locked { filter: blur(4px) brightness(.62) saturate(.6); }
 .fl-about { margin-top: 1.1em; }
+/* A card from an album you've filled to gold wears that album's back (2026-10-10, playtest #17): the seal framed in
+   the album's colour, a soft gold wash, and the album's name across the bottom. */
+.card__back.back--album { box-shadow: inset 0 0 0 .55em var(--album), inset 0 0 0 .7em #f2c94c; }
+.card__back.back--album::before { content: ''; position: absolute; inset: 0; border-radius: inherit; background: radial-gradient(ellipse at 50% 40%, transparent 45%, color-mix(in srgb, var(--album) 45%, transparent)); pointer-events: none; }
+.card__back.back--album::after { content: attr(data-album); position: absolute; left: 10%; right: 10%; bottom: 6.5%; padding: .45em .6em .38em; border-radius: 99px; background: #080f1bdd; border: 1px solid #f2c94c; color: #f2c94c; font: 500 1em/1 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .18em; text-transform: uppercase; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }

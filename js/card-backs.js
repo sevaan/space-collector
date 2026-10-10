@@ -1,3 +1,4 @@
+import { SETS, goldAlbums } from './sets.js?v=0.1.428';
 // Card backs. Since 2026-10-05 there is one: Sevaan's "Space Collector" seal (orbits, compass rings and
 // four satellites), with its light-blue outer band trimmed so the card's own frame colour shows instead.
 // The list still supports several (the six retro posters, back-navy-1..6.webp, were used before): a
@@ -26,10 +27,15 @@ export function nextBack() {
 }
 
 // Put a random back on an element (its background), marking where the poster's title sits.
-export function applyBack(el) {
+// o (optional): the card. A card from an album you've filled to gold wears that album's back: the seal framed in the
+// album's colour with its name across the bottom (2026-10-10, playtest #17).
+export function applyBack(el, o = null) {
   if (!el) return null;
   const b = nextBack();
   el.style.backgroundImage = `url('${b.url}')`;
   el.dataset.title = b.title;
+  const set = o?.set && goldAlbums().has(o.set) ? SETS.find((s) => s.id === o.set) : null;
+  el.classList.toggle('back--album', !!set);
+  if (set) { el.dataset.album = `${set.name} · gold album`; el.style.setProperty('--album', set.color); } else { delete el.dataset.album; }
   return b;
 }

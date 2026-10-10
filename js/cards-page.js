@@ -1,21 +1,21 @@
-import { expandFacts } from './catalog-facts.js?v=0.1.427';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.427';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.427';
-import { ticket } from './toast.js?v=0.1.427';
-import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.427';
-import { cardArt } from './art.js?v=0.1.427';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.427';
-import { applyBack } from './card-backs.js?v=0.1.427';
-import { SETS, assignSets } from './sets.js?v=0.1.427';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.427';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.427';
-import { loadConstellations, conList } from './constellations.js?v=0.1.427';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.427';
-import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.427';
-import { shareCardEl } from './share-card.js?v=0.1.427';
-import { allSightings, deleteSighting } from './store.js?v=0.1.427';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.427';
-import { SECRET_PATCHES } from './secrets.js?v=0.1.427';
+import { expandFacts } from './catalog-facts.js?v=0.1.428';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.428';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.428';
+import { ticket } from './toast.js?v=0.1.428';
+import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.428';
+import { cardArt } from './art.js?v=0.1.428';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.428';
+import { applyBack } from './card-backs.js?v=0.1.428';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.428';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.428';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.428';
+import { loadConstellations, conList } from './constellations.js?v=0.1.428';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.428';
+import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.428';
+import { shareCardEl } from './share-card.js?v=0.1.428';
+import { allSightings, deleteSighting } from './store.js?v=0.1.428';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.428';
+import { SECRET_PATCHES } from './secrets.js?v=0.1.428';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -140,7 +140,6 @@ const observer = new IntersectionObserver((entries) => {
 // ---------- albums ----------
 // One album per set. Goals scale with the set's size, so every album has a reachable gold:
 // small sets (<= 30 cards) are completed; bigger ones aim for 100 or 200 cards.
-export function albumGoals(n) { return n <= 30 ? [1, Math.ceil(n / 2), n] : n <= 300 ? [10, 50, 100] : [10, 50, 200]; }
 const LEVELS = ['Bronze', 'Silver', 'Gold'];
 function albumStats(setId) {
   const cards = state.cards.filter((c) => c.set === setId && !c.archived), have = cards.filter(hasSightings);
@@ -193,7 +192,9 @@ function remindStreak() {
 }
 function renderLogbook() {
   const info = (k) => { const c = state.byKey.get(k); return c ? { tier: c.tier, type: c.type, owner: c.owner, launch: c.launch, natural: c.natural, con: c.con } : null; };
-  const p = progress(state.raw, info, { constellations: conList(), deals: readDeals(), carry: xpCarry(state.raw, info, { constellations: conList(), deals: readDeals() }) });
+  const p = progress(state.raw, info, { constellations: conList(), deals: readDeals(), albums: state.albums, carry: xpCarry(state.raw, info, { constellations: conList(), deals: readDeals() }) });
+  state.albums ??= albumList(state.cards);
+  try { localStorage.setItem('goldAlbums', JSON.stringify(SETS.filter((s) => albumStats(s.id).level === 3).map((s) => s.id))); } catch {}
   const card = $('logbook'); card.hidden = false;
   // The logbook is a card (2026-10-08, Sevaan): it tilts with your finger and the phone, has a glare, and a double
   // tap flips it to a card back. Built once; the contents are re-rendered inside .lb-face.
@@ -354,7 +355,7 @@ function showCard() {
   $('v-share').hidden = !sightings.length;
   $('slot').replaceChildren(el);
   tilt = attachTilt(el);
-  attachFlip(el, { onBack: applyBack });
+  attachFlip(el, { onBack: (b) => applyBack(b, c) });
   if (!reducedMotion.matches && motionPermission !== 'denied') stopGyro = attachGyro(el, tilt);
   $('v-position').textContent = `${state.index + 1} / ${state.list.length.toLocaleString()}`;
   const firstTime = sightings.length ? Math.min(...sightings.map((s) => s.time)) : 0;
@@ -441,7 +442,7 @@ function spin(card, rect, opening) {
   // Offsets are in eased progress (effect-level easing), so the back shows exactly while rotateY is 90°–270°.
   const back = [{ opacity: 0 }, { opacity: 0, offset: .25 }, { opacity: 1, offset: .25 }, { opacity: 1, offset: .75 }, { opacity: 0, offset: .75 }, { opacity: 0 }];
   const backEl = card.querySelector('.card__back');
-  if (opening) applyBack(backEl);
+  if (opening) applyBack(backEl, state.list[state.index]);
   backEl?.animate(back, opts);
   // The holo sweeps across the back as it turns, finger or not.
   backEl?.querySelector('.back-holo')?.animate([
@@ -582,7 +583,7 @@ $('v-share').addEventListener('click', async () => {
   const btn = $('v-share'); btn.disabled = true; btn.textContent = 'Making the image…';
   try {
     const info = (k) => { const x = state.byKey.get(k); return x ? { tier: x.tier, type: x.type, owner: x.owner, launch: x.launch, natural: x.natural, con: x.con } : null; };
-    const how = await shareCardEl(el, c, { title: titleFor(c), rank: progress(state.raw, info, { constellations: conList(), deals: readDeals(), carry: xpCarry(state.raw, info, { constellations: conList(), deals: readDeals() }) }).rank.name, fact: factFor(c) }); // same rank as the logbook (QA 2026-10-08)
+    const how = await shareCardEl(el, c, { title: titleFor(c), rank: progress(state.raw, info, { constellations: conList(), deals: readDeals(), albums: state.albums, carry: xpCarry(state.raw, info, { constellations: conList(), deals: readDeals() }) }).rank.name, fact: factFor(c) }); // same rank as the logbook (QA 2026-10-08)
     btn.textContent = how === 'downloaded' ? 'Saved the image' : 'Share this card';
   } catch { btn.textContent = 'Couldn\'t make the image'; }
   btn.disabled = false; setTimeout(() => { btn.textContent = 'Share this card'; }, 2500);
@@ -671,7 +672,7 @@ function earnedDates() {
   const list = state.raw.filter((x) => !x.sim).slice().sort((a, b) => a.time - b.time), dates = {};
   const want = new Set((state.achievements ?? []).filter((a) => a.done && !stored[a.id]).map((a) => a.id));
   for (let i = 0; i < list.length && want.size; i++) {
-    const p = progress(list.slice(0, i + 1), info, { constellations: cons, now: list[i].time, deals: readDeals(), carry: xpCarry(state.raw, info, { constellations: cons, deals: readDeals() }) });
+    const p = progress(list.slice(0, i + 1), info, { constellations: cons, albums: state.albums, now: list[i].time, deals: readDeals(), carry: xpCarry(state.raw, info, { constellations: cons, deals: readDeals() }) });
     for (const a of p.achievements) if (a.done && want.has(a.id)) { dates[a.id] = list[i].time; want.delete(a.id); }
   }
   Object.assign(dates, stored);

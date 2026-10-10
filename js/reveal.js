@@ -5,10 +5,10 @@
 //  Everything scales with rarity (Legendary dims the sky, shockwave, held breath, slow flip, fanfare).
 // Waits use timers, not animation.finished, so a paused tab can never freeze the sequence.
 
-import { TIER_INFO } from './rarity.js?v=0.1.427';
-import { levelFor, attachTilt, attachGyro, attachFlip, throwOff } from './card.js?v=0.1.427';
-import { applyBack } from './card-backs.js?v=0.1.427';
-import { addStarfield } from './starfield.js?v=0.1.427';
+import { TIER_INFO } from './rarity.js?v=0.1.428';
+import { levelFor, attachTilt, attachGyro, attachFlip, throwOff } from './card.js?v=0.1.428';
+import { applyBack } from './card-backs.js?v=0.1.428';
+import { addStarfield } from './starfield.js?v=0.1.428';
 
 const FX = {
   common:    { particles: 14,  flip: 520,  spin: 0,   dim: 0,   shock: false, notes: [880],                            hold: 0 },
@@ -137,7 +137,7 @@ export async function playReveal({ card, o, seen, origin, fleet = null, progress
   $('rv-dim').style.opacity = 0;
   // Safari doesn't reliably hide the reverse face of a 3D card, so show one face at a time ourselves.
   { const rb = $('rv-back'); rb.className = rb.className.replace(/\btier-\w+|\bshiny\b|\bgold-foil\b/g, '').replace(/\s+/g, ' ').trim(); rb.classList.add(`tier-${tierKey}`); if (shiny) rb.classList.add('shiny'); if (card.classList.contains('gold-foil')) rb.classList.add('gold-foil'); }
-  if (fresh) applyBack($('rv-back'));
+  if (fresh) applyBack($('rv-back'), o);
   showFace(fresh ? 'back' : 'front');
   sizeCard(card);
   const x = origin?.x ?? innerWidth / 2, y = origin?.y ?? innerHeight * .4;
@@ -235,7 +235,7 @@ export async function playView({ card, o, from, sighting = null, eyebrow = null 
   const opts = { duration: reduced() ? 1 : 760, easing: 'cubic-bezier(.25,.8,.25,1)' };
   const backEl = card.querySelector('.card__back');
   if (backEl && !reduced()) {
-    applyBack(backEl);
+    applyBack(backEl, o);
     // Offsets are in eased progress, so the back shows exactly while rotateY is 90°–270°.
     backEl.animate([{ opacity: 0 }, { opacity: 0, offset: .25 }, { opacity: 1, offset: .25 }, { opacity: 1, offset: .75 }, { opacity: 0, offset: .75 }, { opacity: 0 }], opts);
     backEl.querySelector('.back-holo')?.animate([{ opacity: .55, backgroundPosition: '20% 20%, 80% 80%, 15% 25%' }, { opacity: .55, backgroundPosition: '80% 80%, 20% 20%, 85% 75%' }], opts);

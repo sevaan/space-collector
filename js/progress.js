@@ -1,7 +1,7 @@
 // Player progress from the sighting log: XP and observer rank, tonight's three missions, a weekly streak and
 // achievements. Everything is derived from the saved sightings (nothing extra is stored), so it can't drift.
 // info(cardKey) -> { tier, type, owner, launch, natural, con } | null. No DOM.
-import { nightKey } from './observation.js?v=0.1.427';
+import { nightKey } from './observation.js?v=0.1.428';
 
 export const RANKS = [
   [0, 'Stargazer'], [200, 'Spotter'], [600, 'Tracker'], [1500, 'Navigator'], [4000, 'Flight Controller'], [10000, 'Mission Control'],
@@ -209,7 +209,7 @@ export function streaks(sightings, now = Date.now()) {
 }
 
 // constellations: [{ id, stars: [cardKey], zodiac }] for completion counts.
-export function progress(sightings, info, { constellations = [], now = Date.now(), deals = null, carry = 0, tierXp = TIER_XP } = {}) {
+export function progress(sightings, info, { constellations = [], albums = [], now = Date.now(), deals = null, carry = 0, tierXp = TIER_XP } = {}) {
   const list = real(sightings);
   const seenCard = new Set(), seenNight = new Set(), nights = new Map();
   let xp = 0;
@@ -283,5 +283,7 @@ export function progress(sightings, info, { constellations = [], now = Date.now(
   for (const c of constellations) achievements.push({ id: `con-${c.id}`, con: c.id, name: c.system ? 'Solar System' : c.name, sub: c.system ? 'Home system' : c.nick.replace(/^part of /, ''), icon: '',
     text: c.system ? 'See the Sun, the Moon and all seven planets' : `Collect all ${c.stars.length} stars of ${c.name}`, done: c.stars.every((k) => seenCard.has(k)), prog: [c.stars.filter((k) => seenCard.has(k)).length, c.stars.length] });
   const ch = challengeFor(tonightKey), challenge = list.length && tonightKey !== firstNight ? { id: ch.id, text: ch.text, done: ch.done(tonight, now) } : null; // not on a first night: the starter set is enough
+  // A filled album earns its own gold-foil patch (2026-10-10, playtest #17).
+  for (const al of albums) { const have = al.keys.filter((k) => seenCard.has(k)).length; achievements.push({ id: `album-${al.id}`, album: al.id, name: al.name, sub: 'Gold album', icon: '', text: `Fill the ${al.name.replace(/^The /, "")} album to gold: ${al.goal.toLocaleString("en-US")} cards`, done: have >= al.goal, prog: [Math.min(have, al.goal), al.goal] }); }
   return { xp, rank, missions, challenge, streak: st, achievements, cards: a.cards };
 }

@@ -3,15 +3,15 @@
 // group (or the date earned) along the bottom, one icon in the middle. Milestones get gold foil, the rarest holo
 // (css/ui.css .patch--gold / .patch--holo). Shared by Explore (the earning moment, its toast) and Collection (the wall).
 
-import { CON_BY_ID } from './constellations.js?v=0.1.427';
+import { CON_BY_ID } from './constellations.js?v=0.1.428';
 
 export const GROUPS = {
   collect: { c: '#14284a', t: 'Collection' }, rarity: { c: '#3a2259', t: 'Rarity' }, rocket: { c: '#5a2a1a', t: 'Rockets' },
   nation: { c: '#173d5c', t: 'Nations' }, history: { c: '#4a3a22', t: 'History' }, fleet: { c: '#10433f', t: 'Fleets' },
-  planet: { c: '#5a3814', t: 'Solar system' }, con: { c: '#22265a', t: 'Constellations' }, sky: { c: '#1d4a2a', t: 'Sky skills' },
+  planet: { c: '#5a3814', t: 'Solar system' }, album: { c: '#4a3a12', t: 'Albums' }, con: { c: '#22265a', t: 'Constellations' }, sky: { c: '#1d4a2a', t: 'Sky skills' },
   time: { c: '#4f1c27', t: 'Time' }, secret: { c: '#4a3420', t: 'Secret' },
 };
-export const GROUP_ORDER = ['secret', 'collect', 'rarity', 'rocket', 'nation', 'history', 'fleet', 'planet', 'con', 'sky', 'time'];
+export const GROUP_ORDER = ['secret', 'album', 'collect', 'rarity', 'rocket', 'nation', 'history', 'fleet', 'planet', 'con', 'sky', 'time'];
 
 const GROUP_OF = {
   collect: 'first ten twentyfive fifty hundred archivist curator catalogue sightings100 station stations satellites50 silver gold gold3 missions10',
@@ -26,7 +26,7 @@ const GROUP_OF = {
   time: 'twilight owl dawn marathon double hattrick months3 months12 streak4 streak12 anniversary',
 };
 const groupById = new Map(Object.entries(GROUP_OF).flatMap(([g, ids]) => ids.split(' ').map((id) => [id, g])));
-export const groupOf = (a) => (a.secret ? 'secret' : a.con === 'solar' ? 'planet' : a.con ? 'con' : groupById.get(a.id) ?? 'collect');
+export const groupOf = (a) => (a.secret ? 'secret' : a.album ? 'album' : a.con === 'solar' ? 'planet' : a.con ? 'con' : groupById.get(a.id) ?? 'collect');
 
 // Picture icons where one reads better than the achievement's text icon.
 const GLYPH = {
@@ -44,7 +44,7 @@ const GLYPH = {
 // Finishes: gold foil for milestones, holo for the rarest few.
 const GOLD = new Set('con-solar hundred archivist curator gold gold3 starlink50 wanderers streak12 anniversary months12 cons5 legends5'.split(' '));
 const HOLO = new Set('legends25 shiny5 cons25 catalogue diplomat zodiac'.split(' '));
-export const finishOf = (a) => (HOLO.has(a.id) ? 'holo' : GOLD.has(a.id) ? 'gold' : '');
+export const finishOf = (a) => (HOLO.has(a.id) ? 'holo' : GOLD.has(a.id) || a.album ? 'gold' : '');
 
 const INK = '#fff2b3', OR = '#fa8127';
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -117,6 +117,8 @@ function conGlyph(data) {
     return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}" fill="${s.mag === top ? OR : INK}"/>`; }).join('');
   return `<g fill="none" stroke="${INK}" stroke-opacity=".75" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${lines}</g>${dots}`;
 }
+// An album patch: an open album with three cards in its sleeves.
+const ALBUM_GLYPH = `<path d="M-28 -18 Q-14 -24 0 -18 Q14 -24 28 -18 V20 Q14 14 0 20 Q-14 14 -28 20Z" fill="none" stroke="${INK}" stroke-width="2.6" stroke-linejoin="round"/><path d="M0 -18 V20" stroke="${INK}" stroke-width="2"/>` + [[-21, -11], [-11, -11], [6, -11], [16, -11]].map(([x, y], i) => `<rect x="${x}" y="${y}" width="7" height="10" rx="1" fill="${i === 2 ? OR : INK}"/>`).join('') + [[-21, 3], [-11, 3], [6, 3], [16, 3]].map(([x, y]) => `<rect x="${x}" y="${y}" width="7" height="10" rx="1" fill="${INK}" opacity=".55"/>`).join('');
 // The Solar System patch: the Sun in the middle, three orbits, a planet on each.
 const SOLAR_GLYPH = `<circle r="8" fill="${OR}"/><g fill="none" stroke="${INK}" stroke-opacity=".6" stroke-width="1.3"><circle r="16"/><circle r="24"/><circle r="32"/></g><circle cx="11.3" cy="-11.3" r="2.6" fill="${INK}"/><circle cx="-22" cy="9.5" r="3.4" fill="#c8502e"/><circle cx="18" cy="26.5" r="4.4" fill="${INK}"/><ellipse cx="18" cy="26.5" rx="8" ry="2" fill="none" stroke="${INK}" stroke-width="1.2" transform="rotate(-18 18 26.5)"/>`;
 
@@ -167,7 +169,7 @@ export function patchSvg(a, opts = {}) {
   const con = a.con && a.con !== 'solar' ? CON_BY_ID.get(a.con) : null;
   const g0 = GROUPS[groupOf(a)], g = con ? { ...g0, c: CON_TWILL[[...CON_BY_ID.keys()].indexOf(a.con) % CON_TWILL.length] } : a.id === 'ufo' ? { ...g0, c: '#123a2a' } : SECRET_TWILL[a.id] ? { ...g0, c: SECRET_TWILL[a.id] } : g0, id = `pt${uid++}`, R = 60, fossil = a.id === 'fossil' || a.id === 'ufo' || !!SECRET_ART[a.id];
   // Fossil Hunter (design/fossil-patch.html A): the T. rex skeleton art, centred on its bones, no inner ring.
-  const ic = SECRET_ART[a.id] ? SECRET_ART[a.id](id) : a.id === 'ufo' ? UFO_ART(id) : fossil ? '<image href="assets/art/fossils/patch.svg" x="-46" y="-17.5" width="92" height="43"/>' : con ? conGlyph(con.data) : a.con === 'solar' ? SOLAR_GLYPH : glyph(GLYPH[a.id], a.icon);
+  const ic = SECRET_ART[a.id] ? SECRET_ART[a.id](id) : a.id === 'ufo' ? UFO_ART(id) : fossil ? '<image href="assets/art/fossils/patch.svg" x="-46" y="-17.5" width="92" height="43"/>' : con ? conGlyph(con.data) : a.con === 'solar' ? SOLAR_GLYPH : a.album ? ALBUM_GLYPH : glyph(GLYPH[a.id], a.icon);
   if (locked) {
     const ghost = ic.replace(/fill="(?!none)[^"]*"/g, 'fill="none"').replace(/<(polygon|rect|circle|path|ellipse|polyline|text)/g, '<$1 stroke="#627a8b" stroke-width="1.5"');
     // Not earned yet (playtest 2026-10-09, Sevaan: the empty ones should look better): the patch before it's
