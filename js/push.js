@@ -1,8 +1,8 @@
 // Pass alerts (2026-10-10, playtest #14): real push notifications a few minutes before a bright or new pass. The
 // phone works out the passes; relay/push.ts (a Val Town val) holds the next few alert times and pushes them when due.
 // On iPhone, web push only works once Space Collector is added to the Home Screen (iOS 16.4+).
-// PUSH: the push val's URL. Empty until it's deployed; the Settings row stays hidden until then.
-export const PUSH = '';
+// PUSH: the push val (val.town/x/sevaan/space-collector-push, deployed 2026-10-10). The Settings row hides if it's empty.
+export const PUSH = 'https://sevaan--54192ae4c4ad11f18b0f1607ee4eb77e.web.val.run';
 
 export const pushConfigured = () => !!PUSH;
 export const pushSupported = () => 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window;

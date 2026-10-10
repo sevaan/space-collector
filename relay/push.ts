@@ -4,9 +4,9 @@
 // next ~36 hours of alert texts.
 //
 // Deploy on Val Town (same account as the plane relay):
-//   1. New val → HTTP. Paste this whole file. Copy its URL (…web.val.run) into PUSH in js/push.js.
-//   2. New val → Interval (cron), every minute if your plan allows (otherwise 5). Paste just:
-//        import { cron } from "<the HTTP val's module URL, from its menu: Copy → Module URL>";
+//   1. A val (sevaan/space-collector-push, public); this file is its main.ts with an HTTP trigger. Its URL is PUSH in js/push.js.
+//   2. In the same val, a second file cron.ts with a Cron trigger (every 15 min, the free plan's minimum):
+//        import { cron } from "./main.ts";
 //        export default cron;
 //   The first request makes and stores the VAPID keys (std/blob "sc-vapid"); nothing to configure.
 //
@@ -18,7 +18,10 @@ import { blob } from "https://esm.town/v/std/blob";
 
 const ALLOWED = [/^https:\/\/sevaan\.github\.io$/, /^http:\/\/localhost(:\d+)?$/, /^http:\/\/127\.0\.0\.1(:\d+)?$/];
 const SUBJECT = "https://sevaan.github.io/space-collector/";
-const EARLY = 6 * 60_000; // send up to 6 min early, so a 5-minute cron still lands before the pass
+// How often the cron runs (Val Town free plan: every 15 min, the minimum). Alerts go out up to one interval early,
+// never late; the text says the pass time, so early is fine. If the cron ever runs more often, lower CRON_MINUTES.
+const CRON_MINUTES = 15;
+const EARLY = (CRON_MINUTES - 1) * 60_000;
 type Alert = { at: number; title: string; body: string; tag?: string };
 type Entry = { sub: { endpoint: string; keys: { p256dh: string; auth: string } }; alerts: Alert[]; seen: number };
 
@@ -56,7 +59,7 @@ export default async function handler(req: Request): Promise<Response> {
   return json({ error: "not found" }, 404);
 }
 
-// Run every minute (or five) by the Interval val: push whatever is due, drop dead subscriptions and stale phones.
+// Run by cron.ts on its Cron trigger: push whatever is due, drop dead subscriptions and stale phones.
 export async function cron() {
   const k = await vapid();
   webpush.setVapidDetails(SUBJECT, k.publicKey, k.privateKey);

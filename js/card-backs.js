@@ -1,4 +1,4 @@
-import { SETS, goldAlbums } from './sets.js?v=0.1.434';
+import { SETS, goldAlbums } from './sets.js?v=0.1.435';
 // Card backs. Since 2026-10-05 there is one: Sevaan's "Space Collector" seal (orbits, compass rings and
 // four satellites), with its light-blue outer band trimmed so the card's own frame colour shows instead.
 // The list still supports several (the six retro posters, back-navy-1..6.webp, were used before): a
