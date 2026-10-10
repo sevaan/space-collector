@@ -182,8 +182,6 @@ body.sky-tone #viewer { background: var(--page-sky) fixed; }
 
 /* Card size slider (2026-10-07, Sevaan): SMALL ↔ BIG sets the columns (js/cards-page.js applySize). The art keeps
    its shape at every size; small tiles drop the lines that wouldn't fit. */
-#sizebar { bottom: calc(80px + var(--safe-bottom)); }
-body:has(#viewer[open]) #sizebar { display: none; }
 .grid[data-cols] { grid-template-columns: repeat(var(--cols), minmax(0, 1fr)) !important; }
 .grid[data-cols] .card-tile__art { height: auto !important; aspect-ratio: 3 / 2; }
 .grid.dense { gap: 10px 8px !important; }
@@ -223,7 +221,7 @@ body:has(#viewer[open])::after { display: none; }
 .grid.tiny .card-tile__name { overflow-wrap: normal; word-break: normal; font-size: 9.5px; } /* whole words, then … */
 
 /* ---------- Mission patches: the wall (js/cards-page.js renderPatches) and the detail (#patch-view) ---------- */
-body.patches-view .collection-tools, body.patches-view #sizebar, body.patches-view .album-head { display: none !important; }
+body.patches-view .collection-tools, body.patches-view .album-head { display: none !important; }
 .collection-tabs { overflow-x: auto; scrollbar-width: none; } .collection-tabs::-webkit-scrollbar { display: none; }
 .lb-patches { width: 100%; background: none; border: 0; padding: 0; cursor: pointer; text-align: left; margin-top: 16px; }
 .pw-chips { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding: 2px 0 14px; margin: 0 -4px; } .pw-chips::-webkit-scrollbar { display: none; }
@@ -250,8 +248,6 @@ body.patches-view .collection-tools, body.patches-view #sizebar, body.patches-vi
 .collection-tabs button { font: 500 15px/1 'SC Label', 'Arial Narrow', sans-serif !important; letter-spacing: .1em !important; }
 @media (max-width: 360px) { .collection-tabs button { font-size: 13.5px !important; letter-spacing: .06em !important; } }
 /* 7 · The size slider only shows while the card grid is on screen and has cards. */
-body.grid-off #sizebar { opacity: 0; pointer-events: none; }
-#sizebar { transition: opacity .3s ease; }
 /* Polish pass (2026-10-08). Tabs: the orange underline slides between them; the content crossfades. */
 .collection-tabs { position: relative; } .collection-tabs button { border-bottom-color: transparent !important; }
 .collection-tabs .tab-ink { position: absolute; bottom: 0; height: 2px; background: var(--accent); border-radius: 2px; transition: transform var(--m-norm) var(--ease-spring), width var(--m-norm) var(--ease-spring); pointer-events: none; }
@@ -352,3 +348,16 @@ main { padding-bottom: calc(var(--safe-bottom) + 210px) !important; } /* the las
 :where(html[data-theme="night"], body.night) .album-bar b { background: #3a1716; }
 :where(html[data-theme="night"], body.night) :is(.album__art, .pw-item svg, .pv-art) { filter: grayscale(1) sepia(1) saturate(5) hue-rotate(318deg) brightness(.6); }
 :where(html[data-theme="night"], body.night) .lb-remind { border-color: #a83a2c; color: #ff6a55; }
+/* Albums as a list (2026-10-09, Sevaan: at three a row the album names were cut off). One full-width row per
+   album: the cover on the left, then the name and count, the bar, and the level and what's next. */
+body.albums-view #grid { grid-template-columns: 1fr !important; gap: 10px; }
+body.albums-view .album { flex-direction: row; min-height: 92px; aspect-ratio: auto; }
+body.albums-view .album__art { width: 92px; height: auto; flex: none; border-bottom: 0; border-right: 3px solid var(--set); }
+body.albums-view .album__body { flex: 1; min-width: 0; justify-content: center; gap: 7px; padding: 12px 14px; }
+.album__top { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+body.albums-view .album__name { font-size: 16px; line-height: 1.1; min-width: 0; }
+body.albums-view .album__count { flex: none; font-size: 14px; }
+.album__foot { display: flex; align-items: center; gap: 8px; }
+.album__level { font: 500 10px/1 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .14em; text-transform: uppercase; padding: 4px 7px 3px; border-radius: 99px; border: 1px solid currentColor; }
+.album__level.l1 { color: #c98a4b; } .album__level.l2 { color: #dfe6ee; } .album__level.l3 { color: #f2c94c; }
+.grid .card-tile__name { overflow-wrap: normal; word-break: normal; hyphens: none; } /* whole words; js fitTileName shrinks a long one */

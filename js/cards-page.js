@@ -1,21 +1,21 @@
-import { expandFacts } from './catalog-facts.js?v=0.1.403';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.403';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.403';
-import { ticket } from './toast.js?v=0.1.403';
-import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.403';
-import { cardArt } from './art.js?v=0.1.403';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.403';
-import { applyBack } from './card-backs.js?v=0.1.403';
-import { SETS, assignSets } from './sets.js?v=0.1.403';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.403';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.403';
-import { loadConstellations, conList } from './constellations.js?v=0.1.403';
-import { RANKS, progress } from './progress.js?v=0.1.403';
-import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.403';
-import { shareCardEl } from './share-card.js?v=0.1.403';
-import { allSightings, deleteSighting } from './store.js?v=0.1.403';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.403';
-import { SECRET_PATCHES } from './secrets.js?v=0.1.403';
+import { expandFacts } from './catalog-facts.js?v=0.1.405';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.405';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.405';
+import { ticket } from './toast.js?v=0.1.405';
+import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.405';
+import { cardArt } from './art.js?v=0.1.405';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.405';
+import { applyBack } from './card-backs.js?v=0.1.405';
+import { SETS, assignSets } from './sets.js?v=0.1.405';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.405';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.405';
+import { loadConstellations, conList } from './constellations.js?v=0.1.405';
+import { RANKS, progress } from './progress.js?v=0.1.405';
+import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.405';
+import { shareCardEl } from './share-card.js?v=0.1.405';
+import { allSightings, deleteSighting } from './store.js?v=0.1.405';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.405';
+import { SECRET_PATCHES } from './secrets.js?v=0.1.405';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -102,6 +102,12 @@ function matches(c) {
   return true;
 }
 
+// Three a row (2026-10-09): names wrap at whole words; a word too long for the tile ("INTERNATIONAL") shrinks the
+// name until it fits instead of breaking mid-word.
+function fitTileName(tile) {
+  const el = tile.querySelector('.card-tile__name'); if (!el || !/\S{9,}/.test(el.textContent)) return;
+  requestAnimationFrame(() => { let fs = parseFloat(getComputedStyle(el).fontSize); while (el.scrollWidth > el.clientWidth + 1 && fs > 8.5) el.style.fontSize = `${(fs -= 0.5)}px`; });
+}
 let cascadeLeft = 24; // the first screenful cascades in on open (2026-10-08 polish)
 const observer = new IntersectionObserver((entries) => {
   for (const { isIntersecting, target } of entries) {
@@ -112,6 +118,7 @@ const observer = new IntersectionObserver((entries) => {
     const tile = renderCardTile(c, { sightings: state.sightingsByKey.get(c.key) ?? [], ownedKeys: c.natural === 'constellation' ? ownedKeys() : undefined });
     tile.addEventListener('click', () => openViewer(state.list.findIndex((card) => card.key === c.key), tile.getBoundingClientRect()));
     target.replaceChildren(tile);
+    fitTileName(tile);
     if (cascadeLeft > 0) { cascadeLeft--; target.classList.add('cascade'); target.style.setProperty('--i', String(24 - cascadeLeft)); setTimeout(() => target.classList.remove('cascade'), 1200); }
     for (const img of tile.querySelectorAll('img.card-art-image')) { if (img.complete && img.naturalWidth) img.classList.add('loaded'); else { img.addEventListener('load', () => img.classList.add('loaded'), { once: true }); img.addEventListener('error', () => img.classList.add('loaded'), { once: true }); } }
   }
@@ -144,9 +151,8 @@ function renderAlbums() {
     const crossed = (lv[set.id] ?? st.level) < st.level; lv[set.id] = st.level; try { localStorage.setItem('albumLevels', JSON.stringify(lv)); } catch {}
     b.className = `album${st.level === 3 ? ' gold' : ''}${latest ? '' : ' empty'}${crossed ? ' crossed' : ''}`; b.style.setProperty('--set', set.color);
     b.innerHTML = `<span class="album__art">${img ? `<img src="${img}" alt="" loading="lazy">` : cardArt(show, { accent: set.color, silhouette: !latest })}</span>
-      <span class="album__body"><span class="album__name">${esc(set.name)}</span>
-      <span class="album__count"><b>${st.have.length.toLocaleString()}</b> / ${st.cards.length.toLocaleString()}${st.level ? ` · ${LEVELS[st.level - 1].toUpperCase()}` : ''}</span>
-      ${albumBar(st)}<span class="album__next">${st.level === 3 ? 'Gold album' : `${(st.next - st.have.length).toLocaleString()} more for ${LEVELS[st.level]}`}</span></span>`;
+      <span class="album__body"><span class="album__top"><span class="album__name">${esc(set.name)}</span><span class="album__count"><b>${st.have.length.toLocaleString()}</b> / ${st.cards.length.toLocaleString()}</span></span>
+      ${albumBar(st)}<span class="album__foot">${st.level ? `<span class="album__level l${st.level}">${LEVELS[st.level - 1]}</span>` : ''}<span class="album__next">${st.level === 3 ? 'Gold album' : `${(st.next - st.have.length).toLocaleString()} more for ${LEVELS[st.level]}`}</span></span></span>`;
     b.addEventListener('click', () => { state.set = set.id; $('set-filter').value = set.id; setView('discover'); window.scrollTo({ top: $('grid').offsetTop - 160, behavior: 'smooth' }); });
     frag.append(b);
   }
@@ -548,42 +554,16 @@ boot().catch(() => {
   $('grid').replaceChildren();
 });
 
-// Card size (2026-10-07, Sevaan): the SMALL ↔ BIG slider over the switcher sets how many cards fit in a row, from
-// one big card per row up to 4 on a phone (7 on a wide screen). Remembered on this device.
+// Three cards per row (2026-10-09, Sevaan: the size slider is gone; three is what looks best on a phone), five on
+// a wide screen.
 {
-  const range = $('size-range'), grid = $('grid');
-  // 2 to 6 per row on a phone (2026-10-07, Sevaan: two minimum, up to six); 2 to 8 on a wide screen.
-  const MIN = 2, maxCols = () => (innerWidth >= 700 ? 8 : 6), steps = () => maxCols() - MIN + 1;
+  const grid = $('grid');
   const applySize = () => {
-    const max = maxCols(), n = steps(); range.max = String(n);
-    const big = Math.min(n, Math.max(1, Number(range.value) || 1)), cols = max + 1 - big;
-    range.style.setProperty('--p', `${((big - 1) / Math.max(1, n - 1)) * 100}%`);
+    const cols = innerWidth >= 700 ? 5 : 3;
     grid.dataset.cols = cols; grid.style.setProperty('--cols', cols);
     const w = (grid.clientWidth || innerWidth - 40) / cols;
-    grid.classList.toggle('single', cols === 1); grid.classList.toggle('dense', w < 140); grid.classList.toggle('tiny', w < 92); grid.classList.toggle('micro', w < 66);
+    grid.classList.toggle('single', false); grid.classList.toggle('dense', w < 140); grid.classList.toggle('tiny', w < 92); grid.classList.toggle('micro', w < 66);
   };
-  let cols0 = 2; try { cols0 = Number(localStorage.getItem('gridCols')) || 2; } catch {}
-  range.max = String(steps()); range.value = String(maxCols() + 1 - Math.min(maxCols(), Math.max(MIN, cols0)));
-  // Smooth resize (2026-10-07, Sevaan): when the column count changes, every card on screen glides and scales from
-  // where it was to where it lands (FLIP), and the card you were looking at stays put on screen.
-  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const resize = () => {
-    const before = grid.dataset.cols;
-    const onScreen = [...grid.children].filter((el) => { const r = el.getBoundingClientRect(); return r.bottom > -200 && r.top < innerHeight + 200; });
-    const first = new Map(onScreen.map((el) => [el, el.getBoundingClientRect()]));
-    const anchor = onScreen.find((el) => first.get(el).top >= 0) ?? onScreen[0], anchorTop = anchor ? first.get(anchor).top : 0;
-    applySize();
-    if (grid.dataset.cols === before || reduced || !anchor) return;
-    scrollBy(0, anchor.getBoundingClientRect().top - anchorTop); // keep your place
-    for (const el of onScreen) {
-      const a = first.get(el), b = el.getBoundingClientRect(); if (!b.width) continue;
-      const dx = a.left - b.left, dy = a.top - b.top, sx = a.width / b.width;
-      if (Math.abs(dx) < 1 && Math.abs(dy) < 1 && Math.abs(sx - 1) < 0.01) continue;
-      el.animate([{ transform: `translate(${dx}px, ${dy}px) scale(${sx})`, transformOrigin: '0 0' }, { transform: 'none', transformOrigin: '0 0' }],
-        { duration: 340, easing: 'cubic-bezier(.2,.8,.2,1)' });
-    }
-  };
-  range.addEventListener('input', () => { resize(); try { localStorage.setItem('gridCols', grid.dataset.cols); } catch {} });
   addEventListener('resize', applySize);
   applySize();
 }

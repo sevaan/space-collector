@@ -258,7 +258,9 @@
 /* Fleet cards are kept close to the others' height: shorter art window, denser dot grid, stamped count
    under the dots. */
 .card--retro .fl-dots { margin: .9em 1.1em .9em; }
-.card--retro.card--fleet .card__art { height: 8.5em; }
+.card--retro.card--fleet .card__art { height: 10.2em; }
+/* Fleet names all fit on one line, so the heading drops its two-line reserve and the art takes the space (2026-10-09). */
+.card--retro.card--fleet .card__heading { min-height: 0; }
 /* ---------- Card backs: tilt + holo (sealed card in the reveal, collection spin, double-tap flip) ----------
    Glare follows the finger; a rainbow-and-glitter holo slides as the card turns. Tilt values come from
    attachTilt on an ancestor (the .card, or #rv-holder for the sealed card). */
