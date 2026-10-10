@@ -1,40 +1,40 @@
-import * as Secrets from './secrets.js?v=0.1.442';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.442';
-import * as Ufo from './ufo.js?v=0.1.442';
-import * as Fossil from './fossil.js?v=0.1.442';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.442';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.442';
-import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.442';
-import { VERSION } from './version.js?v=0.1.442';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.442';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.442';
-import { conArt } from './con-art.js?v=0.1.442';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.442';
-import { CON_FIGURES } from './con-figures.js?v=0.1.442';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.442';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.442';
-import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.442';
-import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.442';
-import { conList } from './constellations.js?v=0.1.442';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.442';
-import { SkyView, shortName } from './sky.js?v=0.1.442';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.442';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.442';
-import { cardArt } from './art.js?v=0.1.442';
-import { renderCard, cardLevel, artImage, lockedArt, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.442';
-import { applyBack } from './card-backs.js?v=0.1.442';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.442';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.442';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.442';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.442';
-import { TIER_INFO } from './rarity.js?v=0.1.442';
-import { SETS, albumList } from './sets.js?v=0.1.442';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.442';
-import { pushConfigured, pushOn, enablePush, disablePush, schedulePush } from './pass-alerts.js?v=0.1.442';
-import { shareCardEl } from './share-card.js?v=0.1.442';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.442';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.442';
-import { addStarfield } from './starfield.js?v=0.1.442';
+import * as Secrets from './secrets.js?v=0.1.443';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.443';
+import * as Ufo from './ufo.js?v=0.1.443';
+import * as Fossil from './fossil.js?v=0.1.443';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.443';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.443';
+import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.443';
+import { VERSION } from './version.js?v=0.1.443';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.443';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.443';
+import { conArt } from './con-art.js?v=0.1.443';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.443';
+import { CON_FIGURES } from './con-figures.js?v=0.1.443';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.443';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.443';
+import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.443';
+import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.443';
+import { conList } from './constellations.js?v=0.1.443';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.443';
+import { SkyView, shortName } from './sky.js?v=0.1.443';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.443';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.443';
+import { cardArt } from './art.js?v=0.1.443';
+import { renderCard, cardLevel, artImage, lockedArt, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.443';
+import { applyBack } from './card-backs.js?v=0.1.443';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.443';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.443';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.443';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.443';
+import { TIER_INFO } from './rarity.js?v=0.1.443';
+import { SETS, albumList } from './sets.js?v=0.1.443';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.443';
+import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.443';
+import { shareCardEl } from './share-card.js?v=0.1.443';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.443';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.443';
+import { addStarfield } from './starfield.js?v=0.1.443';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -1683,12 +1683,13 @@ $('nextpass').addEventListener('click', () => { showVTab('tonight'); openPanel('
 
 // Settings → Pass alerts (#14). Hidden until the push val is deployed (js/pass-alerts.js PUSH).
 $('row-push').hidden = !pushConfigured(); $('chk-push').checked = pushOn();
+if (pushConfigured()) setTimeout(() => prefetchKey()?.catch(() => {}), 4000); // so turning alerts on doesn't wait on the network
 $('chk-push').addEventListener('change', async (e) => {
   if (!e.target.checked) { await disablePush(); toast('Pass alerts off.', 2000); return; }
   const r = await enablePush();
   if (r === 'on') { toast('Pass alerts on. You\'ll get a heads-up before bright passes.', 3500); lastChip = 0; if (state.tonight) shareTonight(state.tonight); return; }
   e.target.checked = false;
-  toast(r === 'install' ? 'On iPhone, add Space Collector to your Home Screen first (Share → Add to Home Screen), then turn alerts on there.' : r === 'denied' ? 'Notifications are blocked. Allow them for Space Collector in Settings.' : r === 'error' ? 'Couldn\'t set up alerts just now. Try again in a minute.' : 'Alerts aren\'t available in this browser.', 5000);
+  toast(r === 'install' ? 'On iPhone, add Space Collector to your Home Screen first (Share → Add to Home Screen), then turn alerts on there.' : r === 'denied' ? 'Notifications are blocked. Allow them for Space Collector in Settings.' : String(r).startsWith('error') ? `Couldn't set up alerts (${String(r).slice(7, 140)}).` : 'Alerts aren\'t available in this browser.', 5000);
 });
 // Meteor shower events (js/events.js): a banner while one is on; catching anything earns its badge.
 function updateEventBanner() {

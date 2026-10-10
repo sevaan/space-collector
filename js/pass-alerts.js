@@ -13,25 +13,37 @@ export const isIOS = () => /iP(hone|ad|od)/.test(navigator.userAgent) || (naviga
 export const pushOn = () => { try { return localStorage.getItem('pushOn') === '1'; } catch { return false; } };
 
 const b64 = (s) => { const p = '='.repeat((4 - (s.length % 4)) % 4), raw = atob((s + p).replace(/-/g, '+').replace(/_/g, '/')); return Uint8Array.from(raw, (c) => c.charCodeAt(0)); };
+// The server's public key, fetched ahead of time and kept (2026-10-10: on iPhone, fetching it between the tap and the
+// subscribe could make the subscribe fail, so the tap goes straight from permission to subscribe).
+let keyP = null;
+export function prefetchKey() {
+  try { const k = localStorage.getItem('vapidKey'); if (k) return (keyP = Promise.resolve(k)); } catch {}
+  if (!PUSH) return null;
+  return (keyP ??= fetch(`${PUSH}/vapid`).then((r) => r.json()).then(({ publicKey }) => { try { localStorage.setItem('vapidKey', publicKey); } catch {} return publicKey; }).catch((e) => { keyP = null; throw e; }));
+}
 async function subscription(create) {
   const reg = await navigator.serviceWorker.ready;
   let sub = await reg.pushManager.getSubscription();
-  if (!sub && create) {
-    const { publicKey } = await (await fetch(`${PUSH}/vapid`)).json();
-    sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: b64(publicKey) });
-  }
+  if (!sub && create) sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: b64(await prefetchKey()) });
   return sub;
 }
-// Turn alerts on: ask permission (must run from a tap), subscribe. Returns 'on' | 'denied' | 'install' | 'unsupported' | 'error'.
+// Turn alerts on: ask permission (must run from a tap), subscribe. Returns 'on' | 'denied' | 'install' | 'unsupported',
+// or 'error: <why>' so the toast can say what went wrong.
 export async function enablePush() {
   if (!pushConfigured() || !pushSupported()) return isIOS() && !isStandalone() ? 'install' : 'unsupported';
   if (isIOS() && !isStandalone()) return 'install';
+  let step = 'key';
   try {
+    await prefetchKey();
+    step = 'permission';
     if ((await Notification.requestPermission()) !== 'granted') return 'denied';
+    step = 'service worker';
+    if (!navigator.serviceWorker.controller) await navigator.serviceWorker.register('sw.js');
+    step = 'subscribe';
     await subscription(true);
     try { localStorage.setItem('pushOn', '1'); } catch {}
     return 'on';
-  } catch { return 'error'; }
+  } catch (e) { return `error: ${step}: ${e?.name ?? ''} ${e?.message ?? e}`.trim(); }
 }
 export async function disablePush() {
   try { localStorage.removeItem('pushOn'); } catch {}
