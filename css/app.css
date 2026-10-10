@@ -780,3 +780,28 @@ body.night #ufo-cta { background: var(--gold) !important; color: #120606 !import
 .wc-stage { --cf: max(7px, min(14px, calc((100vw - 58px) / 28), calc((100dvh - 120px) / 39.2))); padding: calc(var(--safe-top) + 16px) 16px calc(var(--safe-bottom) + 16px); }
 .wc-stage > .wc-hint, .wc-stage > .wc-after, .wc-stage > #start-note { position: absolute; left: 16px; right: 16px; top: calc(50% + (var(--safe-top) - var(--safe-bottom)) / 2 + 39.2 * var(--cf) / 2 + 22px); text-align: center; }
 .wc-stage > #start-note { margin-top: 64px; }
+
+/* The tour's waking sky (2026-10-09): asleep behind the first card, it wakes after Allow location (unblur, brighten,
+   swing into place in js: state.viewSpin), and Allow motion gets a "You're in control" moment. */
+#sky { transition: filter 1.8s cubic-bezier(.3,.6,.3,1); }
+#sky.asleep { filter: blur(6px) brightness(.4) saturate(.5); }
+#sky.waking { filter: none; }
+.ob-control { position: fixed; left: 0; right: 0; top: 50%; z-index: 26; display: flex; flex-direction: column; align-items: center; gap: 6px; pointer-events: none; opacity: 0;
+  text-align: center; text-shadow: 0 2px 10px #000c; }
+.ob-control b { font: 400 22px/1 var(--display); text-transform: uppercase; color: var(--text); letter-spacing: .01em; }
+.ob-control span { font: 500 12px/1.2 var(--label); letter-spacing: .2em; text-transform: uppercase; color: var(--gold); }
+.ob-control i { width: 26px; height: 42px; margin-top: 8px; border: 2px solid var(--text); border-radius: 6px; opacity: .85; }
+.ob-control .oc-finger { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--text); background: color-mix(in srgb, var(--text) 25%, transparent); }
+.ob-control.go { animation: oc-show 2.6s cubic-bezier(.3,.6,.3,1) forwards; }
+.ob-control.go .oc-phone { animation: oc-rock 1.2s ease-in-out 2; }
+.ob-control.go .oc-finger { animation: oc-drag 1.2s ease-in-out 2; }
+@keyframes oc-show { 0% { opacity: 0; transform: translateY(calc(-50% + 12px)); } 15%, 75% { opacity: 1; transform: translateY(-50%); } 100% { opacity: 0; transform: translateY(calc(-50% - 8px)); } }
+@keyframes oc-rock { 25% { transform: rotate(-16deg); } 75% { transform: rotate(16deg); } }
+@keyframes oc-drag { 25% { transform: translateX(-26px); } 75% { transform: translateX(26px); } }
+@media (prefers-reduced-motion: reduce) { #sky { transition: none; } .ob-control.go, .ob-control.go i { animation-duration: .01s; } .ob-control.go { animation: oc-fade 2.4s forwards; } @keyframes oc-fade { 10%, 80% { opacity: 1; transform: translateY(-50%); } 100% { opacity: 0; } } }
+.ob-deck { transition: opacity .35s ease, transform .45s cubic-bezier(.3,.6,.3,1); } .ob-deck.resting { opacity: 0; transform: translateY(40px); pointer-events: none; }
+.ob-control { top: 30%; } /* above the circle, not on it */
+/* Welcome card's call to action (2026-10-09, Sevaan): the arrow sits just above the words, not up against the card,
+   and the words say what to do: "Swipe up to begin" (still a button you can tap). */
+.wc-stage > .wc-after { top: calc(50% + (var(--safe-top) - var(--safe-bottom)) / 2 + 39.2 * var(--cf) / 2 + 30px); gap: 2px; }
+.wc-after #btn-start.text-button { margin-top: 0; min-height: 0; padding: 2px 16px 14px; line-height: 1; } /* tap area kept below the words */

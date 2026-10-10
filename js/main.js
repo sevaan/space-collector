@@ -1,38 +1,38 @@
-import * as Secrets from './secrets.js?v=0.1.362';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.362';
-import * as Ufo from './ufo.js?v=0.1.362';
-import * as Fossil from './fossil.js?v=0.1.362';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.362';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.362';
-import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.362';
-import { VERSION } from './version.js?v=0.1.362';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.362';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.362';
-import { conArt } from './con-art.js?v=0.1.362';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.362';
-import { CON_FIGURES } from './con-figures.js?v=0.1.362';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.362';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.362';
-import { progress as progressOf } from './progress.js?v=0.1.362';
-import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.362';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.362';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.362';
-import { SkyView, shortName } from './sky.js?v=0.1.362';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.362';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.362';
-import { cardArt } from './art.js?v=0.1.362';
-import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.362';
-import { applyBack } from './card-backs.js?v=0.1.362';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.362';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.362';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.362';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.362';
-import { TIER_INFO } from './rarity.js?v=0.1.362';
-import { SETS } from './sets.js?v=0.1.362';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.362';
-import { shareCardEl } from './share-card.js?v=0.1.362';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.362';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.362';
+import * as Secrets from './secrets.js?v=0.1.363';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.363';
+import * as Ufo from './ufo.js?v=0.1.363';
+import * as Fossil from './fossil.js?v=0.1.363';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.363';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.363';
+import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.363';
+import { VERSION } from './version.js?v=0.1.363';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.363';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.363';
+import { conArt } from './con-art.js?v=0.1.363';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.363';
+import { CON_FIGURES } from './con-figures.js?v=0.1.363';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.363';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.363';
+import { progress as progressOf } from './progress.js?v=0.1.363';
+import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.363';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.363';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.363';
+import { SkyView, shortName } from './sky.js?v=0.1.363';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.363';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.363';
+import { cardArt } from './art.js?v=0.1.363';
+import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.363';
+import { applyBack } from './card-backs.js?v=0.1.363';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.363';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.363';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.363';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.363';
+import { TIER_INFO } from './rarity.js?v=0.1.363';
+import { SETS } from './sets.js?v=0.1.363';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.363';
+import { shareCardEl } from './share-card.js?v=0.1.363';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.363';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.363';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -362,7 +362,18 @@ function smoothBasis(b) {
 const dot = (a, b) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
 const norm = (v) => { const l = Math.hypot(v[0], v[1], v[2]) || 1; return [v[0] / l, v[1] / l, v[2] / l]; };
 
-function currentBasis() {
+// The tour's sky moments (2026-10-09, Sevaan: "the sky wakes up step by step"): a temporary turn of the whole view,
+// eased to nothing, e.g. the sky swinging round into your real sky after Allow location, or a sway that shows the
+// finger mode. state.viewSpin = { t0, ms, az, sway }.
+function spinView(b) {
+  const v = state.viewSpin; if (!v) return b;
+  const k = Math.min(1, (performance.now() - v.t0) / v.ms);
+  if (k >= 1) { state.viewSpin = null; return b; }
+  const e = 1 - (1 - k) ** 3, deg = v.sway ? v.az * Math.sin(k * Math.PI * 2) * (1 - k) : v.az * (1 - e);
+  return { right: rotateAz(b.right, deg), up: rotateAz(b.up, deg), back: rotateAz(b.back, deg) };
+}
+function currentBasis() { return spinView(rawBasis()); }
+function rawBasis() {
   if (state.preview && state.followPreview && state.pinnedId && state.drag.on) { // follow only steers the drag view, never live sensors
     const selected = state.items.find(it => it.obj.id === state.pinnedId);
     if (selected) { state.drag.az = selected.look.az; state.drag.el = selected.look.el; }
@@ -1900,7 +1911,7 @@ const OB_ART = {
 };
 // steps: [{ tier, title, sub: [left, right], art, text, yes, no, gold }]; shows steps[k] with the rest stacked under it.
 function obCard(steps, k) {
-  const deck = $('ob-deck'); deck.replaceChildren();
+  const deck = $('ob-deck'); deck.replaceChildren(); deck.classList.remove('resting');
   [...$('ob-pips').children].forEach((p, i) => { p.className = i < k ? 'done' : i === k ? 'on' : ''; });
   const make = (s) => { const el = document.createElement('div'); el.className = `tc${s.gold ? ' gold' : ''}`;
     el.innerHTML = `<div class="in"><div class="bar"><span>Space Collector</span><span class="tier">◆ ${escapeHtml(s.tier)}</span></div><h3>${escapeHtml(s.title)}</h3><div class="sub"><span>${escapeHtml(s.sub[0])}</span><span>${escapeHtml(s.sub[1])}</span></div><div class="art">${s.art}</div><p>${escapeHtml(s.text)}</p><div class="acts">${s.no ? `<button class="no" type="button">${escapeHtml(s.no)}</button>` : ''}<button class="yes" type="button">${escapeHtml(s.yes)}</button></div></div><div class="shine"></div>`;
@@ -1919,6 +1930,23 @@ function obCard(steps, k) {
     top.querySelector('.yes').addEventListener('click', () => { steps[k].onYes?.(); go(true); }); // onYes runs inside the tap (iOS permissions)
     top.querySelector('.no')?.addEventListener('click', () => go(false));
   });
+}
+// Wake the sky after the location step: unblur, brighten, and swing round into place (a bigger swing when it's
+// really your sky). Then the lock line says what happened.
+function obWake(real) {
+  const sk = $('sky'); sk.classList.remove('asleep'); sk.classList.add('waking'); setTimeout(() => sk.classList.remove('waking'), 2200);
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) state.viewSpin = { t0: performance.now(), ms: real ? 2200 : 1400, az: real ? 140 : 50 };
+  setTimeout(() => obReact(real ? 'Sky lined up to your spot' : 'An example sky for now'), real ? 1500 : 900);
+}
+// After the motion step: a pulse from the circle and "You're in control", or with a finger a gentle sway of the
+// sky and "Drag to look around".
+function obControl(motion) {
+  sky.lockPulseAt = performance.now(); buzz?.(20);
+  if (!motion && !matchMedia('(prefers-reduced-motion: reduce)').matches) state.viewSpin = { t0: performance.now(), ms: 1800, az: 14, sway: true };
+  let el = document.querySelector('.ob-control'); if (!el) { el = document.createElement('div'); el.className = 'ob-control'; document.body.append(el); }
+  el.innerHTML = motion ? '<b>You\'re in control</b><span>Move your phone · the sky follows</span><i class="oc-phone" aria-hidden="true"></i>'
+    : '<b>Your finger steers</b><span>Drag to look around</span><i class="oc-finger" aria-hidden="true"></i>';
+  el.classList.remove('go'); void el.offsetWidth; el.classList.add('go');
 }
 function obReact(line) {
   let b = document.querySelector('.ob-bloom'); if (!b) { b = document.createElement('div'); b.className = 'ob-bloom'; document.body.append(b); }
@@ -1943,11 +1971,17 @@ async function runOnboarding(force = false) {
     steps[2].art = OB_ART.aim(tgt0.look.az, tgt0.look.el); obAimTarget = tgt0;
  };
   steps[2].text = 'Sweep the sky. When something lines up in the circle, tap it to collect your first card.';
-  // 1. location
-  if (await obCard(steps, 0)) { const ok = requestLocation(); obReact('Sky lined up to your spot'); await ok; }
+  // The sky starts asleep behind the cards: blurred, dim and turned away. Each permission wakes part of it.
+  $('sky').classList.add('asleep');
+  // 1. location: the sky wakes and swings round into your real sky
+  // The deck steps aside while a sky moment plays, so the moment is on an open sky; obCard brings it back.
+  const pause = (ms) => { $('ob-deck').classList.add('resting'); return new Promise((r) => setTimeout(r, matchMedia('(prefers-reduced-motion: reduce)').matches ? Math.min(ms, 900) : ms)); };
+  if (await obCard(steps, 0)) { const ok = requestLocation(); await ok; obWake(true); await pause(2300); } // let the swing play on an open sky
+  else { obWake(false); await pause(1400); }
   if (skipped) return obFinish(false);
-  // 2. motion (asked inside the tap above)
-  if (await obCard(steps, 1)) { await motionAsk; obReact('Following your phone'); } else { state.drag.on = true; $('chk-drag').checked = true; }
+  // 2. motion (asked inside the tap above): "you're in control"; with a finger, the sky sways to show it moves
+  if (await obCard(steps, 1)) { await motionAsk; obControl(true); } else { state.drag.on = true; $('chk-drag').checked = true; obControl(false); }
+  await pause(2500); // the "in control" moment, then the assignment
   if (skipped) return obFinish(false);
   // 3. the assignment (the sky-darkness step is gone, 2026-10-09: the sky starts at its darkest)
   nameTarget(); // now that location and motion are in, name what's up
@@ -1985,6 +2019,7 @@ function firstTarget() {
   return sat ? { obj: sat.obj, look: sat.look, hint: `Moving steadily, ${Math.round(sat.look.el)}° up in the ${compassPoint(sat.look.az)}.` } : null;
 }
 function obFinish(caught) {
+  $('sky').classList.remove('asleep'); // never leave the sky asleep (a skip mid-tour)
   const ob = $('onboard'); ob.style.pointerEvents = ''; onboarding = null; document.body.classList.remove('ob-tour'); state.tourCatchId = null; state.tourRevealed = false; $('ob-deck').replaceChildren(); $('ob-pips').hidden = false;
   if (!caught) { ob.hidden = true; return; }
   const T = state.tonight, t0 = now().getTime(), wx = tonightWeather();
@@ -2211,7 +2246,7 @@ async function boot() {
   await loadLore(); await loadSightings();
   { const sv = loadSavedLocation(); state.locationStatus = sv?.manual ? 'manual' : sv ? 'saved' : 'example'; } renderLocation();
   state.frame = frame(now(), state.observer); renderStartHand();
-  $('btn-start').firstElementChild.textContent='Begin'; $('btn-start').disabled=false; wcReady = true; if (wcWantFlip) welcomeFlip();
+  $('btn-start').firstElementChild.textContent='Swipe up to begin'; $('btn-start').disabled=false; wcReady = true; if (wcWantFlip) welcomeFlip();
   const params=new URLSearchParams(location.search);
   if(params.has('resume')) {
     try {
