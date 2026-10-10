@@ -843,3 +843,7 @@ body:has(.patch-coins) #d-sub { opacity: 0; transition: opacity .2s; }
 /* Daytime has no sky slider, so toasts (and patch coins) sit just above the switcher (2026-10-10, Sevaan). */
 body.day #toasts { bottom: calc(var(--safe-bottom) + 80px) !important; }
 body.day .patch-coins { bottom: calc(var(--safe-bottom, 0px) + 114px); }
+/* What's this? (playtest 2026-10-09): a small pill under the Next chip that names what's in the middle of the view. */
+#whatsthis { position: fixed; right: 12px; top: calc(var(--safe-top) + 132px); z-index: 2; display: flex; align-items: center; gap: 6px; padding: 6px 11px 6px 6px; border-radius: 99px; border: 1px solid color-mix(in srgb, var(--text) 18%, transparent); background: color-mix(in srgb, #080f1b 62%, transparent); color: var(--text); font: 500 11px/1 var(--label); letter-spacing: .14em; text-transform: uppercase; cursor: pointer; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+#whatsthis b { display: grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; background: var(--orange, #fa8127); color: #080f1b; font: 400 12px/1 var(--display, sans-serif); letter-spacing: 0; }
+#hud[hidden] ~ #whatsthis, body.ob-tour #whatsthis { display: none; }

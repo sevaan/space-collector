@@ -373,3 +373,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - Discover's default order leads with those (soonest first).
   - The Collection filter has "Up tonight from here".
   - Mine under 9 cards (including empty) appends "Up tonight" slots (`appendUpNext`, dashed tiles with "Up 7:11 PM · SE"). Tapping one posts `sc:remind` and Explore runs `remindPass` (the .ics reminder).
+- 2026-10-10 · #16: "What's this?" pill (#whatsthis, under the Next chip). `whatsThis()` names the nearest thing within 6° of the view centre: a visible satellite, Moon/planet/bright star, a named sky.json star or a plane, with "in your collection" / "line it up to collect it". Otherwise it names the constellation you're facing and the nearest named star's direction. Daylight and ground have their own lines. It shows as a toast.
