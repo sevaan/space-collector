@@ -43,7 +43,6 @@ export default async function handler(req: Request): Promise<Response> {
   if (req.method === "GET" && path === "/vapid") return json({ publicKey: (await vapid()).publicKey });
   if (req.method !== "POST") return json({ error: "not found" }, 404);
   let body: any; try { body = await req.json(); } catch { return json({ error: "bad json" }, 400); }
-  if (path === "/diag") { console.log("DIAG " + JSON.stringify(body).slice(0, 4000)); return json({ ok: true }); } // TEMP: boot reports from a stuck phone
   const subs = await load();
   if (path === "/unsubscribe") { delete subs[String(body?.endpoint)]; await save(subs); return json({ ok: true }); }
   if (path === "/schedule") {

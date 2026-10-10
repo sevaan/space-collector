@@ -19,10 +19,10 @@
   <link rel="preload" href="fonts/RussoOne-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="fonts/BarlowCondensed-Medium.ttf" as="font" type="font/ttf" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600;650;700;750;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/cards.css?v=0.1.441">
-  <link rel="stylesheet" href="css/app.css?v=0.1.441">
-  <link rel="stylesheet" href="css/reveal.css?v=0.1.441">
-  <link rel="stylesheet" href="css/ui.css?v=0.1.441">
+  <link rel="stylesheet" href="css/cards.css?v=0.1.442">
+  <link rel="stylesheet" href="css/app.css?v=0.1.442">
+  <link rel="stylesheet" href="css/reveal.css?v=0.1.442">
+  <link rel="stylesheet" href="css/ui.css?v=0.1.442">
 </head>
 <body>
   <video id="cam" playsinline muted autoplay hidden></video>
@@ -121,19 +121,6 @@
         })();
       </script>
       <span class="ld-word">SPACE COLLECTOR</span><span class="ld-sub">Loading the sky</span>
-      <script>
-        // TEMP diagnostics (2026-10-10, a phone stuck on the loader): if the app hasn't started 10 s in, send the errors
-        // and the last boot step (window.__boot) to the push val's log. No location or sightings. Remove once found.
-        (function () {
-          var errs = [];
-          addEventListener('error', function (e) { errs.push(String(e.message || (e.target && (e.target.src || e.target.href)) || 'error') + (e.filename ? ' @' + e.filename.split('/').pop() + ':' + e.lineno : '') + (e.error && e.error.stack ? ' | ' + String(e.error.stack).slice(0, 400) : '')); }, true);
-          addEventListener('unhandledrejection', function (e) { var r = e.reason; errs.push('rejection: ' + (r && (r.stack || r.message) || r)); });
-          setTimeout(function () {
-            var s = document.getElementById('start'); if (!s || !s.classList.contains('booting')) return;
-            try { navigator.sendBeacon('https://sevaan--54192ae4c4ad11f18b0f1607ee4eb77e.web.val.run/diag', JSON.stringify({ ua: navigator.userAgent, boot: window.__boot || 'none', errs: errs.slice(0, 12), url: location.href, sw: !!(navigator.serviceWorker && navigator.serviceWorker.controller) })); } catch (x) {}
-          }, 10000);
-        })();
-      </script>
     </div>
     <!-- Welcome (2026-10-06): a sealed card. It rattles every few seconds; tap and it flips to your mission card;
          flick it up (or tap Begin) to start the tour. -->
@@ -278,7 +265,7 @@
     </div></div>
   </section>
 
-  <script type="module" src="js/main.js?v=0.1.441"></script>
+  <script type="module" src="js/main.js?v=0.1.442"></script>
 <div id="rotate" role="status"><b>Turn your phone upright</b><span>Space Collector is made for portrait.</span></div>
 </body>
 </html>
