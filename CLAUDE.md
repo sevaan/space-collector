@@ -328,3 +328,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - Toasts sit just above the switcher day and night (2026-10-09; the sky slider they used to clear is gone); over a panel or the reveal they still drop to the very bottom.
 - Tour: the first card and the ones stacked under it are dealt in together (the whole #ob-deck slides up), not the top card rising over the others (2026-10-09).
 - Patch moments (2026-10-09, Sevaan): every patch earned together shows in ONE moment (up to 9; four as 2 × 2, more in rows of three; --pw sizes them), and the moment stays 4.6 s (was 3.6 s).
+- Radar tip after the tour (2026-10-09): 3 s after you tap Explore the sky on the tour's last page, a bubble beside the radar says "Tap to see what's up tonight" with a pulse ring on the dial, for ~6 s; tapping it opens Tonight; once per device ('radarTip'); waits for any panel, reveal or patch moment to clear ( in main.js).
