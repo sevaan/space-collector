@@ -818,3 +818,6 @@ body.night #discover:not(.owned) #d-cta:active, body.night #discover:not(.owned)
 #collection-frame.open { transform: none; }
 #collection-frame.closing { transition: transform .32s cubic-bezier(.5, 0, .75, .4); }
 @media (prefers-reduced-motion: reduce) { #collection-frame { transform: none; opacity: 0; transition: opacity .16s; } #collection-frame.open { opacity: 1; } }
+/* The switcher at the foot of the Up in the sky panel (2026-10-09), above the panel's scrolling list. */
+#visible .vis-switch { position: fixed; z-index: 3; }
+#visible { padding-bottom: calc(var(--safe-bottom) + 90px); }
