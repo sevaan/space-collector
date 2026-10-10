@@ -1,21 +1,21 @@
-import { expandFacts } from './catalog-facts.js?v=0.1.413';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.413';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.413';
-import { ticket } from './toast.js?v=0.1.413';
-import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.413';
-import { cardArt } from './art.js?v=0.1.413';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.413';
-import { applyBack } from './card-backs.js?v=0.1.413';
-import { SETS, assignSets } from './sets.js?v=0.1.413';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.413';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.413';
-import { loadConstellations, conList } from './constellations.js?v=0.1.413';
-import { RANKS, progress } from './progress.js?v=0.1.413';
-import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.413';
-import { shareCardEl } from './share-card.js?v=0.1.413';
-import { allSightings, deleteSighting } from './store.js?v=0.1.413';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.413';
-import { SECRET_PATCHES } from './secrets.js?v=0.1.413';
+import { expandFacts } from './catalog-facts.js?v=0.1.414';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.414';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.414';
+import { ticket } from './toast.js?v=0.1.414';
+import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.414';
+import { cardArt } from './art.js?v=0.1.414';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.414';
+import { applyBack } from './card-backs.js?v=0.1.414';
+import { SETS, assignSets } from './sets.js?v=0.1.414';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.414';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.414';
+import { loadConstellations, conList } from './constellations.js?v=0.1.414';
+import { RANKS, progress } from './progress.js?v=0.1.414';
+import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.414';
+import { shareCardEl } from './share-card.js?v=0.1.414';
+import { allSightings, deleteSighting } from './store.js?v=0.1.414';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.414';
+import { SECRET_PATCHES } from './secrets.js?v=0.1.414';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -115,7 +115,9 @@ const observer = new IntersectionObserver((entries) => {
     observer.unobserve(target);
     const c = state.byKey.get(target.dataset.key);
     if (!c) continue;
-    const tile = renderCardTile(c, { sightings: state.sightingsByKey.get(c.key) ?? [], ownedKeys: c.natural === 'constellation' ? ownedKeys() : undefined });
+    // Two cards with the same name side by side ("Delta 1 Rocket Stage" ×2) say which is which (playtest 2026-10-09).
+    const dup = (state.titleCount?.get(titleFor(c)) ?? 0) > 1, yr = c.launch ? String(c.launch).slice(0, 4) : '';
+    const tile = renderCardTile(c, { sightings: state.sightingsByKey.get(c.key) ?? [], ownedKeys: c.natural === 'constellation' ? ownedKeys() : undefined, sub: dup ? [yr && `Launched ${yr}`, c.id && /^\d+$/.test(String(c.id)) ? `#${c.id}` : ''].filter(Boolean).join(' · ') : '' });
     tile.addEventListener('click', () => openViewer(state.list.findIndex((card) => card.key === c.key), tile.getBoundingClientRect()));
     target.replaceChildren(tile);
     fitTileName(tile);
@@ -240,6 +242,7 @@ function render() {
     if (String(b.id) === '25544') return 1;
     return TIERS.indexOf(b.tier) - TIERS.indexOf(a.tier) || (a.set ?? '').localeCompare(b.set ?? '') || (a.setNumber ?? 0) - (b.setNumber ?? 0);
   });
+  state.titleCount = new Map(); for (const c of state.list) state.titleCount.set(titleFor(c), (state.titleCount.get(titleFor(c)) ?? 0) + 1);
   const total = state.list.length;
   $('results').textContent = `${total.toLocaleString()} ${total === 1 ? 'card' : 'cards'}${state.view === 'owned' ? ' in your collection' : ' in the field guide'}`;
   $('reset-filters').hidden = !state.query && state.set === 'all' && state.rarity === 'all' && (state.sort ?? 'auto') === 'auto';
