@@ -3,7 +3,7 @@
 // group (or the date earned) along the bottom, one icon in the middle. Milestones get gold foil, the rarest holo
 // (css/ui.css .patch--gold / .patch--holo). Shared by Explore (the earning moment, its toast) and Collection (the wall).
 
-import { CON_BY_ID } from './constellations.js?v=0.1.410';
+import { CON_BY_ID } from './constellations.js?v=0.1.411';
 
 export const GROUPS = {
   collect: { c: '#14284a', t: 'Collection' }, rarity: { c: '#3a2259', t: 'Rarity' }, rocket: { c: '#5a2a1a', t: 'Rockets' },
