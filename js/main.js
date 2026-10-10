@@ -1,39 +1,39 @@
-import * as Secrets from './secrets.js?v=0.1.390';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.390';
-import * as Ufo from './ufo.js?v=0.1.390';
-import * as Fossil from './fossil.js?v=0.1.390';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.390';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.390';
-import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.390';
-import { VERSION } from './version.js?v=0.1.390';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.390';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.390';
-import { conArt } from './con-art.js?v=0.1.390';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.390';
-import { CON_FIGURES } from './con-figures.js?v=0.1.390';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.390';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.390';
-import { progress as progressOf } from './progress.js?v=0.1.390';
-import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.390';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.390';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.390';
-import { SkyView, shortName } from './sky.js?v=0.1.390';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.390';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.390';
-import { cardArt } from './art.js?v=0.1.390';
-import { renderCard, cardLevel, artImage, lockedArt, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.390';
-import { applyBack } from './card-backs.js?v=0.1.390';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.390';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.390';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.390';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.390';
-import { TIER_INFO } from './rarity.js?v=0.1.390';
-import { SETS } from './sets.js?v=0.1.390';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.390';
-import { shareCardEl } from './share-card.js?v=0.1.390';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.390';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.390';
-import { addStarfield } from './starfield.js?v=0.1.390';
+import * as Secrets from './secrets.js?v=0.1.391';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.391';
+import * as Ufo from './ufo.js?v=0.1.391';
+import * as Fossil from './fossil.js?v=0.1.391';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.391';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.391';
+import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.391';
+import { VERSION } from './version.js?v=0.1.391';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.391';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.391';
+import { conArt } from './con-art.js?v=0.1.391';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.391';
+import { CON_FIGURES } from './con-figures.js?v=0.1.391';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.391';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.391';
+import { progress as progressOf } from './progress.js?v=0.1.391';
+import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.391';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.391';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.391';
+import { SkyView, shortName } from './sky.js?v=0.1.391';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.391';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.391';
+import { cardArt } from './art.js?v=0.1.391';
+import { renderCard, cardLevel, artImage, lockedArt, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.391';
+import { applyBack } from './card-backs.js?v=0.1.391';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.391';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.391';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.391';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.391';
+import { TIER_INFO } from './rarity.js?v=0.1.391';
+import { SETS } from './sets.js?v=0.1.391';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.391';
+import { shareCardEl } from './share-card.js?v=0.1.391';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.391';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.391';
+import { addStarfield } from './starfield.js?v=0.1.391';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -2215,7 +2215,7 @@ function openCollection(key = '') {
 }
 async function closeCollection(fromHistory = false) {
   if (!collectionOpen) return;
-  collectionOpen = false; setSwitch($('nav'), 'left', false); colFrame.classList.remove('open'); setTimeout(() => { if (!collectionOpen) colFrame.hidden = true; }, 180);
+  collectionOpen = false; setSwitch($('nav'), 'left', false); colFrame.classList.add('closing'); colFrame.classList.remove('open'); setTimeout(() => { colFrame.classList.remove('closing'); if (!collectionOpen) colFrame.hidden = true; }, 340); // slides back down
   if (!fromHistory && history.state?.sc === 'collection') { try { history.back(); } catch {} }
   await loadSightings(); // a sighting may have been deleted over there
 }
