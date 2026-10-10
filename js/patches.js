@@ -134,15 +134,28 @@ const SECRET_ART = {
 let uid = 0;
 // The patch as an SVG string. locked: a faint stitch outline (not earned yet). date: replaces the group along the
 // bottom ("EARNED 07 OCT 2026"). stitch: adds the thread that draws the border on (the earning moment).
-export function patchSvg(a, { locked = false, date = '', stitch = false } = {}) {
+export function patchSvg(a, opts = {}) {
+  const { locked = false, date = '', stitch = false } = opts;
   const con = a.con && a.con !== 'solar' ? CON_BY_ID.get(a.con) : null;
   const g0 = GROUPS[groupOf(a)], g = con ? { ...g0, c: CON_TWILL[[...CON_BY_ID.keys()].indexOf(a.con) % CON_TWILL.length] } : a.id === 'ufo' ? { ...g0, c: '#123a2a' } : SECRET_TWILL[a.id] ? { ...g0, c: SECRET_TWILL[a.id] } : g0, id = `pt${uid++}`, R = 60, fossil = a.id === 'fossil' || a.id === 'ufo' || !!SECRET_ART[a.id];
   // Fossil Hunter (design/fossil-patch.html A): the T. rex skeleton art, centred on its bones, no inner ring.
   const ic = SECRET_ART[a.id] ? SECRET_ART[a.id](id) : a.id === 'ufo' ? UFO_ART(id) : fossil ? '<image href="assets/art/fossils/patch.svg" x="-46" y="-17.5" width="92" height="43"/>' : con ? conGlyph(con.data) : a.con === 'solar' ? SOLAR_GLYPH : glyph(GLYPH[a.id], a.icon);
   if (locked) {
     const ghost = ic.replace(/fill="(?!none)[^"]*"/g, 'fill="none"').replace(/<(polygon|rect|circle|path|ellipse|polyline|text)/g, '<$1 stroke="#627a8b" stroke-width="1.5"');
-    // Faintly in its group's colour (2026-10-08 playtest: a new player's wall read as a dark void).
-    return `<svg class="patch-svg" viewBox="-64 -64 128 128" aria-hidden="true"><circle r="${R - 3}" fill="${g.c}" fill-opacity=".45" stroke="#bcb585" stroke-opacity=".45" stroke-width="1.2" stroke-dasharray="3 3"/><g opacity=".55" transform="scale(.82)">${ghost.replace(/#627a8b/g, '#bcb585')}</g></svg>`;
+    // Not earned yet (playtest 2026-10-09, Sevaan: the empty ones should look better): the patch before it's
+    // stitched. Its twill, faint; the name already marked out round the top; the icon as an outline; and for
+    // the ones that count something, the border stitched part-way round with "3 / 10" along the bottom.
+    const C = 2 * Math.PI * (R - 3), pr = opts.prog && opts.prog[1] > 1 ? Math.max(0, Math.min(1, opts.prog[0] / opts.prog[1])) : 0;
+    const name = a.name.toUpperCase(), nameSize = name.length > 16 ? 8.5 : name.length > 12 ? 9.5 : 11;
+    return `<svg class="patch-svg" viewBox="-64 -64 128 128" aria-hidden="true"><defs><path id="${id}t" d="M-42 0 A42 42 0 0 1 42 0"/><path id="${id}b" d="M-41 0 A41 41 0 0 0 41 0"/>
+      <pattern id="${id}w" width="3" height="3" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="3" height="3" fill="${g.c}"/><rect width="1.4" height="3" fill="#ffffff0c"/></pattern></defs>
+      <circle r="${R - 3}" fill="url(#${id}w)" fill-opacity=".55"/><circle r="${R - 3}" fill="#080f1b" fill-opacity=".35"/>
+      <circle r="${R - 3}" fill="none" stroke="#bcb585" stroke-opacity=".5" stroke-width="1.2" stroke-dasharray="3 3"/>
+      ${pr > 0 ? `<circle r="${R - 3}" fill="none" stroke="#efe4bb" stroke-width="3.2" stroke-linecap="round" stroke-dasharray="${(pr * C).toFixed(1)} ${C.toFixed(1)}" transform="rotate(-90)"/>` : ''}
+      <circle r="${R - 22}" fill="none" stroke="#bcb585" stroke-opacity=".25" stroke-width=".9" stroke-dasharray="1.6 1.6"/>
+      <text font-family="SC Label, Arial Narrow, sans-serif" font-size="${nameSize}" letter-spacing="2" fill="#bcb585" fill-opacity=".7" text-anchor="middle"><textPath href="#${id}t" startOffset="50%">${esc(name)}</textPath></text>
+      ${pr > 0 ? `<text font-family="SC Label, Arial Narrow, sans-serif" font-size="9" letter-spacing="2" fill="${OR}" text-anchor="middle" dy="7"><textPath href="#${id}b" startOffset="50%">${opts.prog[0]} / ${opts.prog[1]}</textPath></text>` : ''}
+      <g opacity=".6" transform="scale(.82)">${ghost.replace(/#627a8b/g, '#bcb585')}</g></svg>`;
   }
   // Higher fidelity (2026-10-08, Sevaan): a real embroidered patch.
   //  · merrowed edge: a dense satin wrap of short slanted threads in two shades, with a soft shadow under the rim

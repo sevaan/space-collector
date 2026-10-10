@@ -132,6 +132,22 @@ export const ACHIEVEMENTS = [
   { id: 'missions50', name: 'Veteran', text: 'Complete 50 missions', icon: 'M50', done: (a) => a.missionsDone >= 50 },
 ];
 
+// How far along a locked patch is, [have, goal], for the ones that count something (playtest 2026-10-09: a locked
+// patch shows its progress stitched part-way round the border, and the detail view says "3 of 10").
+const PROG = {
+  first: (a) => [a.cards, 1], ten: (a) => [a.cards, 10], twentyfive: (a) => [a.cards, 25], fifty: (a) => [a.cards, 50], hundred: (a) => [a.cards, 100],
+  archivist: (a) => [a.cards, 250], curator: (a) => [a.cards, 500], catalogue: (a) => [a.cards, 1000], sightings100: (a) => [a.sightings, 100],
+  spectrum: (a) => [a.tiers.size, 5], legends5: (a) => [a.tierCount.legendary ?? 0, 5], legends25: (a) => [a.tierCount.legendary ?? 0, 25], shiny5: (a) => [a.shinies, 5],
+  stages25: (a) => [a.typeCount['rocket-body'] ?? 0, 25], stations: (a) => [a.typeCount.station ?? 0, 2], satellites50: (a) => [a.typeCount.satellite ?? 0, 50],
+  nations: (a) => [a.owners.size, 8], diplomat: (a) => [a.owners.size, 15], redstar: (a) => [a.ownerCount.CIS ?? 0, 10], stripes: (a) => [a.ownerCount.US ?? 0, 10],
+  longmarch: (a) => [a.ownerCount.PRC ?? 0, 10], coldwar: (a) => [a.pre1991, 10], decades: (a) => [a.decades.size, 6],
+  starlink10: (a) => [a.fleet.STARLINK ?? 0, 10], starlink50: (a) => [a.fleet.STARLINK ?? 0, 50], fleets: (a) => [['STARLINK', 'ONEWEB', 'KUIPER', 'QIANFAN'].filter((f) => a.fleet[f]).length, 4],
+  wanderers: (a) => [a.wanderers, 6], stars10: (a) => [a.stars, 10], cons5: (a) => [a.cons, 5], zodiac: (a) => [a.zodiac, 12], cons25: (a) => [a.cons, 25],
+  compass: (a) => [a.quadrants.size, 4], marathon: (a) => [a.maxNight, 10], months3: (a) => [a.months.size, 3], months12: (a) => [a.months.size, 12],
+  streak4: (a) => [a.bestStreak, 4], streak12: (a) => [a.bestStreak, 12], silver: (a) => [a.maxNightsOnCard, 5], gold: (a) => [a.maxNightsOnCard, 25], gold3: (a) => [a.goldCards, 3],
+  missions10: (a) => [a.missionsDone, 10], missions50: (a) => [a.missionsDone, 50],
+};
+
 // Weeks (Monday-based, local) with at least one sighting -> current and best streak of consecutive weeks.
 function weekIndex(time) { const d = new Date(time); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() - ((d.getDay() + 6) % 7)); return Math.round(d.getTime() / (7 * 86400e3)); }
 export function streaks(sightings, now = Date.now()) {
@@ -208,10 +224,10 @@ export function progress(sightings, info, { constellations = [], now = Date.now(
   const missions = missionsFor(tonightKey).map((m) => ({ id: m.id, text: m.text, done: m.done(tonight, now) }));
   let ri = 0; for (let k = 0; k < RANKS.length; k++) if (xp >= RANKS[k][0]) ri = k;
   const rank = { name: RANKS[ri][1], index: ri, at: RANKS[ri][0], next: RANKS[ri + 1]?.[0] ?? null, nextName: RANKS[ri + 1]?.[1] ?? null };
-  const achievements = ACHIEVEMENTS.map((x) => ({ id: x.id, name: x.name, text: x.text, icon: x.icon, done: x.done(a) }));
+  const achievements = ACHIEVEMENTS.map((x) => ({ id: x.id, name: x.name, text: x.text, icon: x.icon, done: x.done(a), prog: PROG[x.id]?.(a) }));
   // Every constellation is its own mission patch (2026-10-09, Sevaan: they replace the gold constellation cards),
   // and so is the Solar System. The patch art is the stick figure (js/patches.js).
   for (const c of constellations) achievements.push({ id: `con-${c.id}`, con: c.id, name: c.system ? 'Solar System' : c.name, sub: c.system ? 'Home system' : c.nick.replace(/^part of /, ''), icon: '',
-    text: c.system ? 'See the Sun, the Moon and all seven planets' : `Collect all ${c.stars.length} stars of ${c.name}`, done: c.stars.every((k) => seenCard.has(k)) });
+    text: c.system ? 'See the Sun, the Moon and all seven planets' : `Collect all ${c.stars.length} stars of ${c.name}`, done: c.stars.every((k) => seenCard.has(k)), prog: [c.stars.filter((k) => seenCard.has(k)).length, c.stars.length] });
   return { xp, rank, missions, streak: st, achievements, cards: a.cards };
 }
