@@ -73,6 +73,17 @@
   @keyframes bloom { 0%, 38% { opacity: 0; transform: scale(.1); } 46% { opacity: 1; transform: scale(1.08); } 50% { transform: scale(1); } 62% { opacity: 1; transform: translate(0, 0) scale(1); } 74%, 100% { opacity: 0; transform: translate(var(--fx), var(--fy)) scale(.15); } }
   .con-title { position: absolute; left: 0; right: 0; top: 150px; text-align: center; color: var(--orange); text-shadow: 0 1px 6px #000; opacity: 0; }
   .go .con-title { animation: label 7s ease both; }
+
+  /* A2 · Coins on the left: round the whole time (a flat spin + pop, no edge-on flip), tags to the right */
+  .coinsL { position: absolute; left: 14px; bottom: 132px; display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
+  .coinsL .coin { justify-content: flex-start; }
+  .coinsL .coin .tag { margin: 0 0 0 8px; transform: translateX(-14px); }
+  .go .coinsL .coin .disc { animation: coinL 7s cubic-bezier(.2,1.4,.4,1) both; animation-delay: var(--d); }
+  .go .coinsL .coin .tag { animation: tagL 7s ease both; animation-delay: var(--d); }
+  @keyframes coinL { 0% { opacity: 0; transform: translateY(50px) scale(.2) rotate(-200deg); } 6% { opacity: 1; transform: translateY(-8px) scale(1.12) rotate(10deg); } 9% { transform: translateY(0) scale(1) rotate(0); }
+    60% { opacity: 1; transform: translate(0, 0) scale(1); } 70%, 100% { opacity: 0; transform: translate(240px, 330px) scale(.25) rotate(160deg); } }
+  @keyframes tagL { 0%, 7% { opacity: 0; transform: translateX(-14px); } 11%, 55% { opacity: 1; transform: translateX(0); } 60%, 100% { opacity: 0; transform: translateX(-10px); } }
+  .coin .disc .patch, .coin .disc svg { aspect-ratio: 1; }
   @media (prefers-reduced-motion: reduce) { .go * { animation-duration: .01s !important; } }
 </style></head><body>
 <h1 class="t">Earning patches over the sky: three ideas</h1>
@@ -86,6 +97,8 @@ const P = ['first', 'twilight', 'ten'].map(pick);
 
 const A = `<div class="coins">${P.map((a, i) => `<div class="coin" style="--d:${i * 0.35}s"><span class="tag"><small>Patch earned</small><b>${a.name}</b></span><span class="disc">${patchHtml(a)}</span></div>`).join('')}</div><span class="badge">+3</span>`;
 
+const A2 = `<div class="coinsL">${P.map((a, i) => `<div class="coin" style="--d:${i * 0.35}s"><span class="disc">${patchHtml(a)}</span><span class="tag"><small>Patch earned</small><b>${a.name}</b></span></div>`).join('')}</div><span class="badge">+3</span>`;
+
 const B = `<div class="stitch"><svg class="thread" viewBox="0 0 200 200"><circle cx="100" cy="100" r="96"/></svg><div class="main">${patchHtml(P[0])}</div>
   ${P.slice(1).map((a, i) => `<span class="moon" style="--a:${i * 180 + 30}deg;--d:${i * 0.2}s">${patchHtml(a)}</span>`).join('')}</div>
   <div class="stitch-label lab"><small>3 patches earned</small><b>${P[0].name}</b><span>+ ${P[1].name} · ${P[2].name}</span></div><span class="badge">+3</span>`;
@@ -96,6 +109,7 @@ const C = `<div class="con"><div class="con-title lab">A new constellation: 3 pa
   ${P.map((a, i) => `<div class="cstar" style="left:${pos[i][0]}px;top:${pos[i][1]}px;--d:${i * 0.3}s;--fx:${250 - pos[i][0]}px;--fy:${600 - pos[i][1]}px"><span class="pt"></span><div class="p">${patchHtml(a)}</div><div class="n lab">${a.name}</div></div>`).join('')}</div><span class="badge">+3</span>`;
 
 const cells = [
+  ['A2 · Coins on the left (round)', 'Same idea as A, on the left of the screen: each patch pops up with a flat spin and a little bounce (no coin flip, so it stays perfectly round), its tag slides out to the right, then they roll down into the Collection tab, which bumps +3.', A2],
   ['A · Coins (your idea)', 'Patches pop up in the bottom right like coins (a spin and a bounce), each with a small "Patch earned · name" tag sliding out beside it. A couple of seconds later they roll down into the Collection tab, which bumps with +3. The sky stays fully usable the whole time.', A],
   ['B · Stitched into the sky', 'A thread embroiders a circle onto the sky above the circle and the main patch appears in it with a glint; the other patches orbit it like little moons. One label underneath. Then it all shrinks into Collection. The most "moment" of the three while still not covering the sky.', B],
   ['C · Patch constellation', 'Each patch first appears as a new bright star in your sky; a dashed line joins them into a little constellation ("A new constellation: 3 patches"); the stars bloom into the patches with their names, then fly into Collection. Ties patches to the thing you were just doing: looking up.', C],
