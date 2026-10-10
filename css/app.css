@@ -300,7 +300,7 @@ body.day #radar-up, body.day #d-tier, body.day #d-name { color:#143046; text-sha
 .wc-stage { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:22px; padding:calc(var(--safe-top) + 20px) 16px calc(var(--safe-bottom) + 64px); z-index:1; }
 .wc-holder { position:relative; flex:none; --cf:max(7px, min(14px, calc((100vw - 58px) / 28), calc((100dvh - 120px) / 39.2))); width:calc(28 * var(--cf)); height:auto; /* same size as every card in the app (the capture reveal's sizeCard) */ perspective:1400px; cursor:pointer; -webkit-tap-highlight-color:transparent; touch-action:none; }
 .wc-holder .card { font-size:var(--cf); margin:0; }
-.wc-holder.rattle { animation:wcRattle 5s ease-in-out 2s infinite; } /* first shake 2 s after the card appears (2026-10-09, Sevaan: was ~5.4 s), then every 5 s */
+.wc-holder.rattle { animation:wcRattle 5s ease-in-out 1s infinite; } /* first shake 1 s after the card appears (2026-10-09, Sevaan), then every 5 s */
 @keyframes wcRattle { 0% { transform:rotate(0); } 2% { transform:rotate(-3deg) translateY(-2px); } 4% { transform:rotate(3deg); } 6% { transform:rotate(-2.4deg); } 8% { transform:rotate(1.8deg); } 10% { transform:rotate(-1deg); } 12%, 100% { transform:rotate(0); } } /* the shake opens the cycle */
 @media (prefers-reduced-motion: reduce) { .wc-holder.rattle { animation:none; } }
 .wc-hint { min-height:34px; transition:opacity .3s; } .wc-hint.gone { opacity:0; pointer-events:none; }
