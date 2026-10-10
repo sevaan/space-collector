@@ -830,3 +830,9 @@ body.night #discover:not(.owned) #d-cta:active, body.night #discover:not(.owned)
 .wc-loader .ld-sub { position: fixed; left: 0; right: 0; top: calc(var(--ld-below, 60%) + 24px); text-align: center; font: 500 11px/1 var(--label); letter-spacing: .26em; text-transform: uppercase; color: var(--muted); animation: ldPulse 1.8s ease-in-out infinite; }
 html.quick .wc-loader .ld-sub { display: none; }
 @media (prefers-reduced-motion: reduce) { .wc-loader .ld-sub { animation: none; } }
+/* View card (cards you own), styled like the switcher's inactive tab (2026-10-09, Sevaan): a dark glass pill with a
+   soft edge and muted cream text, brightening when pressed. */
+#discover.owned #d-cta { min-height: 44px; padding: 10px 26px; border: 1px solid var(--edge-soft); border-radius: 99px; color: color-mix(in srgb, var(--text) 82%, transparent);
+  background: rgba(8, 15, 27, .72); box-shadow: none; font: 500 15px/1.2 var(--label); letter-spacing: .18em; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  transition: background .18s ease, color .18s ease, border-color .18s ease, transform .12s ease; }
+#discover.owned #d-cta:active, #discover.owned #d-cta.tapped { background: rgba(255, 242, 179, .14); border-color: color-mix(in srgb, var(--text) 60%, transparent); color: var(--text); transform: scale(.97); }

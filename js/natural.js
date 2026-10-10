@@ -1,4 +1,4 @@
-import { extinction } from './sky-limit.js?v=0.1.398';
+import { extinction } from './sky-limit.js?v=0.1.399';
 // The Moon, the naked-eye planets and the brightest named stars, as collectible cards.
 // Positions come from js/celestial.js (state.bodies, state.skyEnu); this file holds the card facts and
 // the "can you see it right now" rules. No DOM. Every fact must be true; approximate values say so.
@@ -18,12 +18,14 @@ const moon = {
   fact: 'The Moon spins exactly once for every trip around Earth, so it always keeps the **same face** turned towards us.',
 };
 
+// Rarity (2026-10-09, Sevaan): the Moon and every star you can see from a city are Common; the bright planets are
+// Uncommon; Mercury (low in twilight, a few weeks a year) Rare; Uranus Epic and Neptune Legendary (dark skies / binoculars).
 // Planet: [name, tier, order, light-minutes from the Sun, diameter km, year, day, fact]
 const PLANETS = [
   ['Mercury', 'rare', 2, '3.2', '4,879', ['88', 'd'], ['59', 'd'], 'The smallest planet and the closest to the Sun. It races round in **88 days**, so it never strays far from the Sun in our sky: look low, just after sunset or before dawn.'],
-  ['Venus', 'common', 3, '6.0', '12,104', ['225', 'd'], ['243', 'd'], 'A day on Venus is **longer than its year**, and it spins the opposite way to most planets. It\'s the brightest thing in the night sky after the Moon.'],
+  ['Venus', 'uncommon', 3, '6.0', '12,104', ['225', 'd'], ['243', 'd'], 'A day on Venus is **longer than its year**, and it spins the opposite way to most planets. It\'s the brightest thing in the night sky after the Moon.'],
   ['Mars', 'uncommon', 4, '12.7', '6,779', ['687', 'd'], ['24.6', 'h'], 'Its red colour is **rust**: iron minerals in the dust on its surface have oxidised.'],
-  ['Jupiter', 'common', 5, '43', '139,820', ['11.9', 'yr'], ['9.9', 'h'], 'The biggest planet: more than **1,300 Earths** would fit inside it. A pair of binoculars shows its four largest moons as tiny dots.'],
+  ['Jupiter', 'uncommon', 5, '43', '139,820', ['11.9', 'yr'], ['9.9', 'h'], 'The biggest planet: more than **1,300 Earths** would fit inside it. A pair of binoculars shows its four largest moons as tiny dots.'],
   ['Saturn', 'uncommon', 6, '79', '116,460', ['29.4', 'yr'], ['10.7', 'h'], 'Its rings are countless chunks of **ice and rock**. You need a telescope to see them, but they\'re there around that steady golden dot.'],
   ['Uranus', 'epic', 7, '160', '50,724', ['84', 'yr'], ['17.2', 'h'], 'It spins almost **on its side**, so it rolls around the Sun like a ball. At its brightest it\'s just visible to the naked eye from a truly dark site: a faint, steady, pale-green point.'],
   ['Neptune', 'legendary', 8, '250', '49,244', ['165', 'yr'], ['16.1', 'h'], 'The farthest planet, found in 1846 by **maths** before anyone saw it: Uranus was being tugged off course. Too faint for the naked eye, but binoculars show it as a dim blue-grey point.'],
@@ -64,7 +66,7 @@ const STARS = [
   ['Fomalhaut', 'Fomalhaut', 'α PsA', 'Piscis Austrinus', '25', 'common', 1.17, 'A lonely bright star in the autumn sky, wrapped in a huge **ring of dust**.'],
   ['Deneb', 'Deneb', 'α Cyg', 'Cygnus', '~2,000', 'common', 1.25, 'One of the most **distant stars** you can see with your eyes, yet still one of the brightest. Estimates of its distance vary a lot.'],
   ['Regulus', 'Regulus', 'α Leo', 'Leo', '79', 'common', 1.36, 'The heart of Leo. It sits almost exactly on the **Moon\'s path**, so the Moon often passes in front of it.'],
-  ['Polaris', 'Polaris', 'α UMi', 'Ursa Minor', '~430', 'uncommon', 1.97, 'The **North Star**. It sits almost exactly above Earth\'s North Pole, so it barely moves while every other star circles around it.'],
+  ['Polaris', 'Polaris', 'α UMi', 'Ursa Minor', '~430', 'common', 1.97, 'The **North Star**. It sits almost exactly above Earth\'s North Pole, so it barely moves while every other star circles around it.'],
 ].map(([name, skyName, desig, con, ly, tier, mag, fact], i) => ({
   key: `star:${name.toLowerCase().replace(/\s+/g, '-')}`, id: `star:${name.toLowerCase().replace(/\s+/g, '-')}`, natural: 'star', type: 'star',
   name, skyName, tier, order: 10 + i, code: desig, constellation: con,

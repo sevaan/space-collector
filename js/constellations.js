@@ -3,8 +3,8 @@
 // Every star in a stick figure (magnitude <= 5) is its own card; the constellation card turns gold when
 // you own all of them. Bright stars that already have cards (Regulus, Spica…) count as members.
 // No DOM.
-import { NATURAL, NATURAL_BY_KEY } from './natural.js?v=0.1.398';
-import { starVector } from './celestial.js?v=0.1.398';
+import { NATURAL, NATURAL_BY_KEY } from './natural.js?v=0.1.399';
+import { starVector } from './celestial.js?v=0.1.399';
 
 const GEN = { Ari: 'Arietis', Tau: 'Tauri', Gem: 'Geminorum', Cnc: 'Cancri', Leo: 'Leonis', Vir: 'Virginis', Lib: 'Librae', Sco: 'Scorpii', Sgr: 'Sagittarii',
   Cap: 'Capricorni', Aqr: 'Aquarii', Psc: 'Piscium', Ori: 'Orionis', BigDipper: 'Ursae Majoris', UMi: 'Ursae Minoris', Cas: 'Cassiopeiae', Cyg: 'Cygni', Cru: 'Crucis' };
@@ -24,7 +24,7 @@ const SUP = { 1: '¹', 2: '²', 3: '³', 4: '⁴', 5: '⁵', 6: '⁶', 7: '⁷',
 const spell = (bayer) => bayer.replace(/^([α-ω])(\d?)$/, (m, g, n) => `${GREEK[g] ?? g}${n ? SUP[n] : ''}`);
 const ordinal = (n) => n === 1 ? '' : `${n}${n % 10 === 2 && n !== 12 ? 'nd' : n % 10 === 3 && n !== 13 ? 'rd' : 'th'} `;
 // Rarity follows how hard a star is to see.
-const tierFor = (mag) => (mag <= 2.5 ? 'common' : mag <= 3.5 ? 'uncommon' : mag <= 4.3 ? 'rare' : 'epic');
+const tierFor = (mag) => (mag <= 3 ? 'common' : 'uncommon'); // seen from a city: Common; needs darker skies: Uncommon. No star is Rare or above (2026-10-09, Sevaan)
 const colourOf = (bv) => bv == null ? '—' : bv < 0 ? 'Blue-white' : bv < 0.3 ? 'White' : bv < 0.6 ? 'Yellow-white' : bv < 1.0 ? 'Yellow' : bv < 1.4 ? 'Orange' : 'Red';
 
 export const CONSTELLATIONS = [];
