@@ -866,3 +866,9 @@ body.day .patch-coins { bottom: calc(var(--safe-bottom, 0px) + 114px); }
 .rc-actions { display: flex; flex-direction: column; gap: 10px; width: min(100%, 340px); }
 .rc-actions button { height: 48px; border-radius: 12px; border: 0; font: 500 14px/1 var(--label); letter-spacing: .16em; text-transform: uppercase; cursor: pointer; }
 .rc-share { background: var(--orange, #fa8127); color: #080f1b; } .rc-go { background: #ffffff12; color: #fff2b3; }
+/* Account sheet (2026-10-10): stacked full-width buttons with a little air between them. */
+#set-acct-sheet .d-cta { width: 100%; margin-top: 10px; }
+#set-acct-sheet .acct-btn { margin-top: 10px; }
+#set-acct-sheet input[type="email"], #set-acct-sheet input[type="url"] { display: block; width: 100%; margin-top: 6px; }
+#set-acct-sheet button:disabled { opacity: .5; }
+#set-acct-sheet input[type="email"], #set-acct-sheet input[type="url"] { height: 46px; padding: 0 14px; border-radius: 12px; border: 1px solid #344654; background: #ffffff0d; color: var(--text); font: 500 16px var(--label); letter-spacing: .02em; }

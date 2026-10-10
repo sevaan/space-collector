@@ -1,40 +1,41 @@
-import * as Secrets from './secrets.js?v=0.1.445';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.445';
-import * as Ufo from './ufo.js?v=0.1.445';
-import * as Fossil from './fossil.js?v=0.1.445';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.445';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.445';
-import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.445';
-import { VERSION } from './version.js?v=0.1.445';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.445';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.445';
-import { conArt } from './con-art.js?v=0.1.445';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.445';
-import { CON_FIGURES } from './con-figures.js?v=0.1.445';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.445';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.445';
-import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.445';
-import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.445';
-import { conList } from './constellations.js?v=0.1.445';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.445';
-import { SkyView, shortName } from './sky.js?v=0.1.445';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.445';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.445';
-import { cardArt } from './art.js?v=0.1.445';
-import { renderCard, cardLevel, artImage, lockedArt, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.445';
-import { applyBack } from './card-backs.js?v=0.1.445';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.445';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.445';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.445';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.445';
-import { TIER_INFO } from './rarity.js?v=0.1.445';
-import { SETS, albumList } from './sets.js?v=0.1.445';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.445';
-import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.445';
-import { shareCardEl } from './share-card.js?v=0.1.445';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.445';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.445';
-import { addStarfield } from './starfield.js?v=0.1.445';
+import * as Secrets from './secrets.js?v=0.1.447';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.447';
+import * as Ufo from './ufo.js?v=0.1.447';
+import * as Fossil from './fossil.js?v=0.1.447';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.447';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.447';
+import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.447';
+import { VERSION } from './version.js?v=0.1.447';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.447';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.447';
+import { conArt } from './con-art.js?v=0.1.447';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.447';
+import { CON_FIGURES } from './con-figures.js?v=0.1.447';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.447';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.447';
+import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.447';
+import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.447';
+import { conList } from './constellations.js?v=0.1.447';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.447';
+import { SkyView, shortName } from './sky.js?v=0.1.447';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.447';
+import { initAccount, onAccount, account, signInGoogle, sendEmailLink, completeEmailLink, signOut, syncNow, pushSighting } from './account.js?v=0.1.447';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.447';
+import { cardArt } from './art.js?v=0.1.447';
+import { renderCard, cardLevel, artImage, lockedArt, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.447';
+import { applyBack } from './card-backs.js?v=0.1.447';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.447';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.447';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.447';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.447';
+import { TIER_INFO } from './rarity.js?v=0.1.447';
+import { SETS, albumList } from './sets.js?v=0.1.447';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.447';
+import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.447';
+import { shareCardEl } from './share-card.js?v=0.1.447';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.447';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.447';
+import { addStarfield } from './starfield.js?v=0.1.447';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -1106,6 +1107,7 @@ async function recordSighting(obj, d, l = null) {
     collectionStale(); // the preloaded collection catches up in the background
     const saved = { ...sighting, key };
     state.sightings.unshift(saved);
+    pushSighting(saved); // backed up straight away when signed in (js/account.js)
     return saved;
   } catch {
     toast('Your sighting could not be saved. Check that browser storage is available, then try again.', 5000);
@@ -2473,6 +2475,7 @@ async function boot() {
   }
   try { state.sky=await loadSky('data/sky.json'); } catch {}
   await loadLore(); await loadSightings();
+  initAccount(); renderAccount(); // signed-in phones sync in the background; nothing waits on it
   { const sv = loadSavedLocation(); state.locationStatus = sv?.manual ? 'manual' : sv ? 'saved' : 'example'; } renderLocation();
   state.frame = frame(now(), state.observer); renderStartHand(); 
   $('btn-start').firstElementChild.textContent='Swipe away'; $('btn-start').disabled=false; wcReady = true; if (wcWantFlip) welcomeFlip();
@@ -2619,6 +2622,44 @@ const sheetTimers = new Map();
 const openSheet = (id) => { clearTimeout(sheetTimers.get(id)); $(id).hidden = false; requestAnimationFrame(() => $(id).classList.add('in')); };
 const closeSheet = (el) => { el.classList.remove('in'); clearTimeout(sheetTimers.get(el.id)); sheetTimers.set(el.id, setTimeout(() => { if (!el.classList.contains('in')) el.hidden = true; }, 260)); renderSettings(); };
 $('set-loc-open').addEventListener('click', () => openSheet('set-loc-sheet'));
+// ---------- account (2026-10-10, js/account.js) ----------
+const standaloneIOS = () => (navigator.standalone === true || matchMedia('(display-mode: standalone)').matches) && /iP(hone|ad|od)/.test(navigator.userAgent);
+function renderAccount(extra = {}) {
+  const a = account(), ago = (t) => { if (!t) return 'not yet'; const m = Math.round((Date.now() - t) / 60000); return m < 1 ? 'just now' : m < 60 ? `${m} min ago` : m < 1440 ? `${Math.round(m / 60)} h ago` : new Date(t).toLocaleDateString(); };
+  const n = state.sightings.filter((s) => !s.sim).length;
+  $('set-acct-name').textContent = a ? (a.name || a.email || 'Signed in') : 'Back up your collection';
+  $('set-acct-note').textContent = a ? `Backed up · synced ${ago(a.syncedAt)}` : 'Sign in to keep your cards safe and on every device';
+  $('acct-out').hidden = !!a; $('acct-in').hidden = !a;
+  if (a) { $('acct-who').textContent = a.name || a.email || 'Signed in'; $('acct-status').textContent = `${a.email ?? ''}${a.email ? ' · ' : ''}${n.toLocaleString()} sighting${n === 1 ? '' : 's'} · synced ${ago(a.syncedAt)}`; }
+  $('acct-paste-form').hidden = !standaloneIOS() || !localStorage.getItem('emailForSignIn');
+  if (extra.msg != null) $('acct-msg').textContent = extra.msg;
+}
+onAccount(async (a) => {
+  if (a.changed) { await loadSightings(); collectionStale(); refreshOwned(); } // another device added or deleted sightings
+  renderAccount();
+});
+$('set-acct-open').addEventListener('click', () => { renderAccount({ msg: '' }); openSheet('set-acct-sheet'); });
+const acctBusy = (on) => document.querySelectorAll('#set-acct-sheet button').forEach((b) => { b.disabled = on; });
+$('acct-google').addEventListener('click', async () => {
+  acctBusy(true); renderAccount({ msg: '' });
+  try { await signInGoogle(); renderAccount({ msg: '' }); toast('Signed in. Your collection is backing up.', 3000); }
+  catch (e) { renderAccount({ msg: /popup-closed|cancelled/.test(e?.code ?? '') ? '' : standaloneIOS() ? 'Google sign-in needs Safari here. Try the email link instead.' : `Couldn't sign in (${e?.code ?? e?.message ?? 'error'}).` }); }
+  acctBusy(false);
+});
+$('acct-email-form').addEventListener('submit', async (e) => {
+  e.preventDefault(); acctBusy(true);
+  try { await sendEmailLink($('acct-email').value.trim()); renderAccount({ msg: `Check ${$('acct-email').value.trim()} for a sign-in link.${standaloneIOS() ? ' If it opens in Safari, copy the address and paste it below.' : ''}` }); }
+  catch (er) { renderAccount({ msg: `Couldn't send the link (${er?.code ?? er?.message ?? 'error'}).` }); }
+  acctBusy(false);
+});
+$('acct-paste-form').addEventListener('submit', async (e) => {
+  e.preventDefault(); acctBusy(true);
+  try { await completeEmailLink($('acct-paste').value.trim()); renderAccount({ msg: '' }); toast('Signed in. Your collection is backing up.', 3000); }
+  catch (er) { renderAccount({ msg: er?.message === 'need-email' ? 'Enter your email above first, then paste the link.' : `That link didn't work (${er?.code ?? er?.message}).` }); }
+  acctBusy(false);
+});
+$('acct-sync').addEventListener('click', async () => { acctBusy(true); try { const r = await syncNow(); renderAccount(); toast(r && (r.added || r.removed || r.uploaded) ? `Synced: ${r.uploaded} up, ${r.added} down${r.removed ? `, ${r.removed} removed` : ''}.` : 'Everything is already backed up.', 2600); } catch { toast('Couldn\'t sync right now. It will try again next time.', 3000); } acctBusy(false); });
+$('acct-signout').addEventListener('click', async () => { acctBusy(true); try { await signOut(); } catch {} renderAccount({ msg: '' }); acctBusy(false); toast('Signed out. Your collection stays on this phone.', 2600); });
 $('set-hl-open').addEventListener('click', () => openSheet('set-hl-sheet'));
 document.querySelectorAll('.set-sheet').forEach((sh) => sh.addEventListener('click', (e) => { if (e.target === sh || e.target.closest('[data-sheet-close]')) closeSheet(sh); }));
 $('retry-location').addEventListener('click', () => closeSheet($('set-loc-sheet')));

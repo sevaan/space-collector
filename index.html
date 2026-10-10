@@ -19,10 +19,10 @@
   <link rel="preload" href="fonts/RussoOne-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="fonts/BarlowCondensed-Medium.ttf" as="font" type="font/ttf" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600;650;700;750;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/cards.css?v=0.1.445">
-  <link rel="stylesheet" href="css/app.css?v=0.1.445">
-  <link rel="stylesheet" href="css/reveal.css?v=0.1.445">
-  <link rel="stylesheet" href="css/ui.css?v=0.1.445">
+  <link rel="stylesheet" href="css/cards.css?v=0.1.447">
+  <link rel="stylesheet" href="css/app.css?v=0.1.447">
+  <link rel="stylesheet" href="css/reveal.css?v=0.1.447">
+  <link rel="stylesheet" href="css/ui.css?v=0.1.447">
 </head>
 <body>
   <video id="cam" playsinline muted autoplay hidden></video>
@@ -190,6 +190,11 @@
     <!-- Settings (2026-10-08, design/settings.html): grouped rows like iOS Settings. Element ids are the old ones. -->
     <div class="panel-head"><div class="wordmark set-title"><h2>Settings</h2><span>Customize your experience</span></div><button class="pill x-close" data-close="debug" aria-label="Close">✕</button></div>
 
+    <h3>Account</h3>
+    <div class="set-group">
+      <button class="set-row" type="button" id="set-acct-open"><span class="set-ic" style="background:#3a2259">☁</span><span class="set-main"><span id="set-acct-name">Back up your collection</span><small id="set-acct-note">Sign in to keep your cards safe and on every device</small></span><span class="set-chev">›</span></button>
+    </div>
+
     <h3>Your sky</h3>
     <div class="set-group">
       <button class="set-row" type="button" id="set-loc-open"><span class="set-ic" style="background:#1d4a2a">📍</span><span class="set-main"><span id="set-loc-name">Location</span><small id="location-note"></small></span><span class="set-chev">›</span></button>
@@ -249,6 +254,24 @@
       <form id="location-form" class="set-coords"><span class="set-sl-top"><span>Or enter coordinates</span></span><div class="row wrap"><label>Latitude<input id="latitude" type="number" min="-90" max="90" step="any" required inputmode="decimal"></label><label>Longitude<input id="longitude" type="number" min="-180" max="180" step="any" required inputmode="decimal"></label></div><button class="pill" type="submit">Use these</button></form>
       <small class="set-sl-note">South and west are negative. Your location stays on this phone.</small>
     </div></div>
+    <!-- Account sheet (2026-10-10, js/account.js) -->
+    <div class="set-sheet" id="set-acct-sheet" hidden><div class="set-sheet-card"><div class="set-grab"></div>
+      <div id="acct-out">
+        <h3>Back up your collection</h3>
+        <p class="hint">Your sightings live on this phone. Sign in and they're saved to your account, and the same on every device you sign in on.</p>
+        <button class="d-cta o" id="acct-google" type="button"><span>Continue with Google</span><span>→</span></button>
+        <form id="acct-email-form" class="set-coords"><label>Or get a sign-in link by email<input id="acct-email" type="email" required autocomplete="email" placeholder="you@example.com"></label><button class="d-cta ghost acct-btn" type="submit"><span>Email me a link</span><span>→</span></button></form>
+        <form id="acct-paste-form" class="set-coords" hidden><label>Opened the link in Safari instead? Copy it and paste it here<input id="acct-paste" type="url" placeholder="https://sevaan.github.io/space-collector/?…"></label><button class="d-cta ghost acct-btn" type="submit"><span>Sign in with the link</span><span>→</span></button></form>
+        <small class="set-sl-note" id="acct-msg" aria-live="polite"></small>
+      </div>
+      <div id="acct-in" hidden>
+        <h3 id="acct-who"></h3>
+        <p class="hint" id="acct-status"></p>
+        <button class="d-cta ghost" id="acct-sync" type="button"><span>Sync now</span><span>↻</span></button>
+        <button class="d-cta ghost acct-btn" id="acct-signout" type="button"><span>Sign out</span><span></span></button>
+        <small class="set-sl-note">Signing out keeps everything on this phone.</small>
+      </div>
+    </div></div>
     <!-- Circle highlights sheet -->
     <div class="set-sheet" id="set-hl-sheet" hidden><div class="set-sheet-card"><div class="set-grab"></div>
       <h3>What the circle highlights</h3>
@@ -265,7 +288,7 @@
     </div></div>
   </section>
 
-  <script type="module" src="js/main.js?v=0.1.445"></script>
+  <script type="module" src="js/main.js?v=0.1.447"></script>
 <div id="rotate" role="status"><b>Turn your phone upright</b><span>Space Collector is made for portrait.</span></div>
 </body>
 </html>

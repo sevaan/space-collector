@@ -392,3 +392,15 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - 2026-10-10 · Confirmed: the rename fixed Sevaan's phone. Temporary diagnostics removed (index.html inline beacon, window.__boot markers, the val's /diag route, here and on Val Town).
 - 2026-10-10 · Pass alerts setup failed on the phone because I broke the val while removing /diag: the editor had reformatted the line, and a partial delete left a syntax error, so /vapid returned 500 from 9:54 to 10:00. Restored by pasting relay/push.ts whole. Lesson: when editing the val, replace the whole file from relay/push.ts, never patch lines. The client now prefetches and validates the VAPID key (localStorage `vapidKey`), and failures toast the step and reason.
 - 2026-10-10 · Removed the Sun's dashed orange guard ring by day (Sevaan).
+- 2026-10-10 · Accounts and cloud backup.
+  - Firebase project `space-collector-91cc7` on Sevaan's PERSONAL Google account (sevaan@gmail.com). Never mix with roundtrip.ai.
+    - Web app registered; config is in js/account.js (public by design).
+    - Auth: Google + email link (Email/Password is on only because the link needs it; the app never asks for a password). Authorised domains: localhost, sevaan.github.io.
+    - Firestore (Standard, nam5, Spark free plan). Rules allow only `users/{uid}/**` for request.auth.uid == uid; unauthenticated reads verified denied.
+  - js/account.js loads the Firebase SDK from gstatic (12.4.0) only when signed in or completing a link.
+    - Sync merges IndexedDB ↔ `users/{uid}/sightings/{cloudId}`. cloudId = time + FNV hash of time|card|object. Local records get `synced`/`cloudId` (store.js `putSighting`).
+    - Deletions propagate via `synced`, plus an offline tombstone list (localStorage `acctDeleted`). `sim` sightings never sync.
+    - A few localStorage progress keys (secrets, fossilFound, ufoFound, missionDeals, xpCarry2, patchSeen) are merged into `users/{uid}.state`.
+  - UI: Settings → Account row + #set-acct-sheet (Continue with Google, email link, and for iOS Home Screen apps a paste-the-link fallback, since the emailed link opens in Safari).
+  - main: `pushSighting` after every save, `initAccount` at boot (not awaited); cards-page `removeSighting` after a delete.
+  - Sign in with Apple waits for the Apple Developer account.

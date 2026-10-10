@@ -1,21 +1,22 @@
-import { expandFacts } from './catalog-facts.js?v=0.1.445';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.445';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.445';
-import { ticket } from './toast.js?v=0.1.445';
-import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.445';
-import { cardArt } from './art.js?v=0.1.445';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.445';
-import { applyBack } from './card-backs.js?v=0.1.445';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.445';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.445';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.445';
-import { loadConstellations, conList } from './constellations.js?v=0.1.445';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.445';
-import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.445';
-import { shareCardEl } from './share-card.js?v=0.1.445';
-import { allSightings, deleteSighting } from './store.js?v=0.1.445';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.445';
-import { SECRET_PATCHES } from './secrets.js?v=0.1.445';
+import { expandFacts } from './catalog-facts.js?v=0.1.447';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.447';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.447';
+import { ticket } from './toast.js?v=0.1.447';
+import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.447';
+import { cardArt } from './art.js?v=0.1.447';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.447';
+import { applyBack } from './card-backs.js?v=0.1.447';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.447';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.447';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.447';
+import { loadConstellations, conList } from './constellations.js?v=0.1.447';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.447';
+import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.447';
+import { shareCardEl } from './share-card.js?v=0.1.447';
+import { removeSighting } from './account.js?v=0.1.447';
+import { allSightings, deleteSighting } from './store.js?v=0.1.447';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.447';
+import { SECRET_PATCHES } from './secrets.js?v=0.1.447';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -382,6 +383,7 @@ function showCard() {
       row.querySelector('button').addEventListener('click', async () => {
         if (!confirm('Delete this sighting? If it was your only one, the card leaves your collection.')) return;
         try { await deleteSighting(s.key); } catch { ticket({ kind: 'info', line: 'That sighting could not be deleted. Try again.' }); return; }
+        removeSighting(s); // and from the backup, when signed in
         state.raw = state.raw.filter((x) => x.key !== s.key);
         // Remove it from its own card's list (a constellation shows its stars' sightings, so that's the star's card),
         // then re-render the grid before the viewer so the position and Next stay in step (QA 2026-10-08).
