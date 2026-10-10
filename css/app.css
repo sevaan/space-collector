@@ -509,8 +509,7 @@ body.day #radar-up, body.day #radar-up b { color: #143046; }
 .panel details > summary { font: 500 14px/1.2 var(--label); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); padding: 12px 0; cursor: pointer; }
 body:has(.overlay.panel:not([hidden])) #banner { display: none; } /* the standing message waits while a panel is open */
 body:has(#discover:not([hidden])) #banner { display: none; } /* the standing message steps aside while something is in the circle */
-body.day #toasts { bottom: calc(var(--safe-bottom) + 84px) !important; } /* no sky slider by day: toasts sit just above the switcher */
-/* The event chip wears the next-up chip's look exactly (2026-10-08): same glass, same soft edge, no orange border. */
+body.day /* The event chip wears the next-up chip's look exactly (2026-10-08): same glass, same soft edge, no orange border. */
 #event-banner { border: 1px solid var(--edge-soft) !important; background: color-mix(in srgb, var(--bg) 78%, transparent) !important; }
 #event-banner .np-k { color: var(--muted); }
 /* The right-hand chips start level with the top of the compass circle (2026-10-08): radar top + (48 − 35) px. */
@@ -757,7 +756,6 @@ body.night :is(.vr-ic, .ts-chip) { background: #140606; }
 body.night #until-dark, body.night #until-dark * { color: var(--text) !important; }
 body.night #ufo-cta { background: var(--gold) !important; color: #120606 !important; }
 .vis-row2:active { background: color-mix(in srgb, var(--text) 6%, transparent); } /* the whole row aims now (no target icon) */
-#skybar { display: none !important; } /* hidden on Explore (2026-10-09, Sevaan); the darkness is in Settings */
 
 /* Tour cards sit at the bottom of the screen, top two-thirds showing (back to the original deck, 2026-10-09). */
 /* The catch card arrives with a shine sweeping across it, twice. */
@@ -786,7 +784,6 @@ body.night #ufo-cta { background: var(--gold) !important; color: #120606 !import
 .wc-stage > .wc-after { top: calc(50% + (var(--safe-top) - var(--safe-bottom)) / 2 + 39.2 * var(--cf) / 2 + 30px); gap: 2px; }
 .wc-after #btn-start.text-button { margin-top: 0; min-height: 0; padding: 2px 16px 14px; line-height: 1; } /* tap area kept below the words */
 #start > .starfield { position: absolute; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; } /* twinkling stars behind the welcome card */
-#toasts { bottom: calc(var(--safe-bottom) + 84px) !important; } /* the sky slider is gone (2026-10-09, Sevaan): toasts sit just above the switcher day and night; over a panel or the reveal they still go to the very bottom */
 
 /* Radar tip after the tour (2026-10-09): a dark-glass bubble beside the radar with a little pointer, and a soft
    pulse ring on the radar dial while it's up. */
