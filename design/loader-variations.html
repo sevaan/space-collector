@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Loader Variations</title>
+<style>
+  @font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf'); font-weight: 500; }
+  @font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf'); }
+  :root { --ink: #fff2b3; --muted: #bdbea9; --orange: #fa8127; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #04070d; color: #e8eef6; font: 15px/1.45 -apple-system, system-ui, sans-serif; padding: 24px 16px 60px; }
+  h1.t { font-size: 20px; margin: 0 0 6px; } .intro { color: #9fb0c6; margin: 0 0 22px; max-width: 1200px; }
+  .row { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
+  .cell { width: 250px; } .cell h2 { font-size: 15px; margin: 10px 0 4px; } .cell p { color: #9fb0c6; font-size: 13px; margin: 0; }
+  .phone { position: relative; width: 250px; height: 500px; border-radius: 26px; overflow: hidden; border: 1px solid #1d2838; background: radial-gradient(ellipse at 50% 42%, #0c1d29, #080f1b 70%); }
+  .phone svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .word { position: absolute; left: 0; right: 0; top: 318px; text-align: center; font: 400 13px/1 'SC Display', sans-serif; letter-spacing: .08em; color: var(--ink); }
+  .sub { position: absolute; left: 0; right: 0; top: 340px; text-align: center; font: 500 10px/1 'SC Label', sans-serif; letter-spacing: .24em; text-transform: uppercase; color: var(--muted); }
+  .pulse { animation: pulse 1.8s ease-in-out infinite; } @keyframes pulse { 50% { opacity: .45; } }
+  .tag { position: absolute; top: 12px; left: 12px; padding: 3px 8px; border-radius: 99px; background: #fa812733; color: var(--orange); font: 500 10px 'SC Label', sans-serif; letter-spacing: .16em; }
+</style></head><body>
+<h1 class="t">Loading screen: polish variations on the current one</h1>
+<p class="intro">Each keeps today's target circle, ticks and wordmark exactly where the sky's circle will be (so it still hands off seamlessly), and adds a small satellite like the ones drawn in the sky. All run live. The current one is first for comparison.</p>
+<div class="row" id="b"></div>
+<script>
+const W = 250, H = 500, CX = 125, CY = 200, R = 46, NS = 'http://www.w3.org/2000/svg', D = Math.PI / 180;
+// The sky's satellite icon (js/sky.js): a small body with a solar panel either side.
+const satIcon = (c = '#fff2b3') => `<g><rect x="-3" y="-2.2" width="6" height="4.4" rx=".6" fill="${c}"/><rect x="-10.5" y="-1.6" width="6.4" height="3.2" fill="${c}" opacity=".85"/><rect x="4.1" y="-1.6" width="6.4" height="3.2" fill="${c}" opacity=".85"/><path d="M-4 0H-3M3 0H4" stroke="${c}" stroke-width=".8"/></g>`;
+const ticks = (lit = () => false) => Array.from({ length: 24 }, (_, i) => { const a = (i * 15 - 90) * D, c = i % 6 === 0, o = R + (c ? 13 : 9), on = lit(i); return `<line x1="${Math.cos(a) * (R + 5)}" y1="${Math.sin(a) * (R + 5)}" x2="${Math.cos(a) * o}" y2="${Math.sin(a) * o}" stroke="${on || c ? '#fa8127' : 'rgba(255,242,179,.4)'}" stroke-opacity="${on ? 1 : c ? .9 : 1}" stroke-width="${c ? 1.5 : on ? 1.4 : .75}"/>`; }).join('');
+const base = (ring = 'rgba(255,242,179,.66)') => `<circle r="${R}" fill="none" stroke="${ring}"/><circle r="${R + 5}" fill="none" stroke="rgba(173,188,200,.35)" stroke-width=".75"/>`;
+const star = (s = 1, o = 1) => `<path transform="scale(${s})" opacity="${o}" d="M0 -8 L1.9 -1.9 L8 0 L1.9 1.9 L0 8 L-1.9 1.9 L-8 0 L-1.9 -1.9 Z" fill="#fff2b3"/>`;
+const words = (sub) => `<div class="word">SPACE COLLECTOR</div>${sub ? `<div class="sub pulse">${sub}</div>` : ''}`;
+function loop(el, frame) { const svg = document.createElementNS(NS, 'svg'); svg.setAttribute('viewBox', `0 0 ${W} ${H}`); el.prepend(svg); const go = (t) => { svg.innerHTML = `<g transform="translate(${CX} ${CY})">${frame(t)}</g>`; requestAnimationFrame(go); }; requestAnimationFrame(go); }
+
+const cells = [
+  ['Current', 'Today: orange dot on the rim, cream dot inside, both orbiting; star in the middle; wordmark pulses.', (el) => {
+    el.insertAdjacentHTML('beforeend', '<span class="tag">CURRENT</span>' + words('').replace('class="word"', 'class="word pulse"'));
+    loop(el, (t) => { const a = t / 2400 * 360, b = -t / 4200 * 360; return base() + ticks() + `<circle r="${R * .66}" fill="none" stroke="#627a8b" stroke-opacity=".35" stroke-dasharray="2 5"/><g transform="rotate(${a})"><circle cy="${-R}" r="7" fill="#fa8127" opacity=".18"/><circle cy="${-R}" r="3.2" fill="#fa8127"/></g><g transform="rotate(${b})"><circle cy="${-R * .66}" r="2.4" fill="#fff2b3"/></g>` + star(); });
+  }],
+  ['1 · Satellite orbit', 'The orange dot becomes a satellite (the same icon as in the sky), turned to face along its orbit, with a fading dotted trail behind it. The centre star twinkles gently. The simplest upgrade.', (el) => {
+    el.insertAdjacentHTML('beforeend', words('Loading the sky'));
+    loop(el, (t) => { const a = t / 3000 * 360, tw = .75 + .25 * Math.sin(t / 380);
+      const trail = Array.from({ length: 14 }, (_, i) => { const b = (a - 6 - i * 5) * D; return `<circle cx="${Math.sin(b) * R}" cy="${-Math.cos(b) * R}" r="${1.4 - i * .07}" fill="#fa8127" opacity="${(.7 - i * .05).toFixed(2)}"/>`; }).join('');
+      return base() + ticks() + trail + `<g transform="rotate(${a}) translate(0 ${-R})">${satIcon('#fff2b3')}<circle r="9" fill="#fa8127" opacity=".12"/></g>` + star(tw, .85 + .15 * tw); });
+  }],
+  ['2 · Lock-on', 'A satellite drifts across the sky toward the circle; as it enters, the ring turns orange, a small inner circle snaps onto it and a pulse ring rings out (the app\'s real lock-on), then it drifts away and the next one comes. Teaches the game while it loads.', (el) => {
+    el.insertAdjacentHTML('beforeend', words('Finding your first satellite'));
+    loop(el, (t) => { const T = (t / 2600) % 1, x = -110 + T * 220, y = 30 - T * 60, d = Math.hypot(x, y), inside = d < R - 6, k = Math.max(0, 1 - d / 30);
+      const ring = inside ? '#fa8127' : 'rgba(255,242,179,.66)', ang = Math.atan2(-60, 220) / D;
+      const pulse = inside ? `<circle r="${R + 8 + (1 - k) * 18}" fill="none" stroke="#fa8127" stroke-opacity="${(k * .6).toFixed(2)}" stroke-width="1.5"/>` : '';
+      return base(ring) + ticks() + pulse + `<path d="M-110 30 L110 -30" stroke="#fff2b3" stroke-opacity=".18" stroke-dasharray="2 5"/>` + (inside ? `<circle cx="${x}" cy="${y}" r="13" fill="none" stroke="#fa8127" stroke-width="1.4"/>` : '') + `<g transform="translate(${x} ${y}) rotate(${ang})">${satIcon(inside ? '#ffd9a6' : '#fff2b3')}</g>` + (inside ? '' : star(.8, .7)); });
+  }],
+  ['3 · Progress ticks', 'The 24 tick marks around the ring light up orange one after another as the sky loads, like a dial filling, while the satellite circles just outside them. When it\'s full, the whole ring glows once. Feels like real progress.', (el) => {
+    el.insertAdjacentHTML('beforeend', words('Loading the sky'));
+    loop(el, (t) => { const T = (t / 2800) % 1, lit = Math.floor(T * 26), a = t / 2200 * 360, full = lit >= 24, glow = full ? `<circle r="${R}" fill="none" stroke="#fa8127" stroke-width="2" opacity="${(1 - (T * 26 - 24) / 2).toFixed(2)}"/>` : '';
+      return base() + ticks((i) => i < lit) + glow + `<g transform="rotate(${a}) translate(0 ${-(R + 22)})">${satIcon('#fff2b3')}</g>` + star(); });
+  }],
+  ['4 · Radar sweep', 'A soft sweep turns inside the circle like a radar, and faint blips (satellites) light up as it passes and fade; the satellite icon rides the rim. Says "scanning your sky".', (el) => {
+    el.insertAdjacentHTML('beforeend', words('Scanning your sky'));
+    const blips = Array.from({ length: 7 }, (_, i) => ({ a: i * 51 + 20, r: 12 + (i * 13) % 30 }));
+    loop(el, (t) => { const a = (t / 2400 * 360) % 360;
+      const sweep = `<path d="M0 0 L${Math.sin(a * D) * R} ${-Math.cos(a * D) * R} A${R} ${R} 0 0 0 ${Math.sin((a - 50) * D) * R} ${-Math.cos((a - 50) * D) * R} Z" fill="url(#sw)"/>`;
+      const bl = blips.map((p) => { const since = ((a - p.a) % 360 + 360) % 360, o = since < 200 ? 1 - since / 200 : 0; return `<circle cx="${Math.sin(p.a * D) * p.r}" cy="${-Math.cos(p.a * D) * p.r}" r="1.8" fill="#fa8127" opacity="${o.toFixed(2)}"/>`; }).join('');
+      return `<defs><linearGradient id="sw" gradientUnits="userSpaceOnUse" x1="${Math.sin(a * D) * R}" y1="${-Math.cos(a * D) * R}" x2="${Math.sin((a - 50) * D) * R}" y2="${-Math.cos((a - 50) * D) * R}"><stop offset="0" stop-color="#fa8127" stop-opacity=".35"/><stop offset="1" stop-color="#fa8127" stop-opacity="0"/></linearGradient></defs>` + base() + ticks() + `<circle r="${R * .5}" fill="none" stroke="#627a8b" stroke-opacity=".3"/>` + sweep + bl + `<g transform="rotate(${-t / 4000 * 360}) translate(0 ${-R})">${satIcon('#fff2b3')}</g>`; });
+  }],
+  ['5 · Two orbits', 'Two satellites on tilted elliptical orbits weave through the circle like an atom (one passes in front, one behind), each with a short trail, while the outer tick ring turns slowly. The busiest and most "space" of the five.', (el) => {
+    el.insertAdjacentHTML('beforeend', words('Loading the sky'));
+    loop(el, (t) => {
+      const orb = (tilt, rx, ry, sp, ph, col) => { const a = t / 1000 * sp + ph, p = (b) => { const x = Math.cos(b) * rx, y = Math.sin(b) * ry; return [x * Math.cos(tilt) - y * Math.sin(tilt), x * Math.sin(tilt) + y * Math.cos(tilt)]; };
+        const path = `<ellipse rx="${rx}" ry="${ry}" transform="rotate(${tilt / D})" fill="none" stroke="#fff2b3" stroke-opacity=".12" stroke-dasharray="2 4"/>`;
+        const trail = Array.from({ length: 10 }, (_, i) => { const [x, y] = p(a - i * .07); return `<circle cx="${x}" cy="${y}" r="${1.3 - i * .1}" fill="${col}" opacity="${(.6 - i * .055).toFixed(2)}"/>`; }).join('');
+        const [x, y] = p(a), [x2, y2] = p(a + .05), ang = Math.atan2(y2 - y, x2 - x) / D;
+        return path + trail + `<g transform="translate(${x} ${y}) rotate(${ang})">${satIcon('#fff2b3')}</g>`; };
+      return `<g transform="rotate(${t / 9000 * 360})">${base()}${ticks()}</g>` + orb(-.5, 72, 24, 1.3, 0, '#fa8127') + orb(.6, 66, 20, -1.0, 2, '#8fb3cf') + star(); });
+  }],
+];
+const box = document.getElementById('b');
+for (const [t, d, f] of cells) { const c = document.createElement('div'); c.className = 'cell'; c.innerHTML = `<div class="phone"></div><h2>${t}</h2><p>${d}</p>`; box.append(c); f(c.querySelector('.phone')); }
+</script></body></html>

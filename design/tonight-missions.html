@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tonight Missions</title>
+<style>
+  @font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf'); font-weight: 500; }
+  @font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf'); }
+  :root { --ink: #fff2b3; --muted: #bdbea9; --orange: #fa8127; --edge: #344654; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #04070d; color: #e8eef6; font: 15px/1.45 -apple-system, system-ui, sans-serif; padding: 24px 16px 60px; }
+  h1.t { font-size: 20px; margin: 0 0 6px; } .intro { color: #9fb0c6; margin: 0 0 22px; max-width: 1100px; }
+  .row { display: flex; flex-wrap: wrap; gap: 22px; justify-content: center; }
+  .cell { width: 360px; } .cell h2 { font-size: 16px; margin: 12px 0 4px; } .cell p { color: #9fb0c6; font-size: 13.5px; margin: 0; }
+  .phone { position: relative; width: 360px; height: 720px; border-radius: 30px; overflow: hidden; border: 1px solid #1d2838; background: radial-gradient(ellipse at 50% 0%, #0c1d29, #080f1b 70%); padding: 30px 24px 22px; display: flex; flex-direction: column; }
+  .lab { font: 500 11px/1.2 'SC Label', sans-serif; letter-spacing: .2em; text-transform: uppercase; }
+  .eye { color: var(--orange); } h3 { margin: 8px 0 10px; font: 400 34px/1 'SC Display', sans-serif; text-transform: uppercase; color: var(--ink); letter-spacing: -.02em; }
+  .subl { color: var(--muted); margin-bottom: 18px; }
+  .tl .it { display: grid; grid-template-columns: 58px 1fr; gap: 12px; position: relative; padding: 0 0 14px 18px; }
+  .tl .it::before { content: ''; position: absolute; left: 3px; top: 6px; width: 7px; height: 7px; border-radius: 50%; background: #344654; }
+  .tl .it::after { content: ''; position: absolute; left: 6px; top: 16px; bottom: 0; width: 1px; background: #344654; }
+  .tl .it:last-child::after { display: none; }
+  .tl b { font: 400 17px/1 'SC Display', sans-serif; color: var(--ink); }
+  .tl span { font: 500 15px/1.25 'SC Label', sans-serif; color: #e8e3c9; letter-spacing: .02em; }
+  .tl .hot::before { background: var(--orange); box-shadow: 0 0 8px var(--orange); } .tl .hot span em { color: var(--orange); font-style: normal; }
+  .spacer { flex: 1; }
+  .btn { display: flex; justify-content: space-between; align-items: center; height: 50px; padding: 0 18px; border-radius: 12px; margin-top: 10px; font: 500 14px 'SC Label', sans-serif; letter-spacing: .16em; text-transform: uppercase; }
+  .btn.o { background: var(--orange); color: #080f1b; } .btn.g { background: #ffffff10; color: var(--ink); }
+  .msec { margin-top: 6px; padding-top: 14px; border-top: 1px solid #bcb58544; }
+  .mhead { display: flex; justify-content: space-between; margin-bottom: 6px; }
+  .m { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid #1d2a3c; font: 500 15px/1.2 'SC Label', sans-serif; color: var(--ink); letter-spacing: .02em; }
+  .m i { width: 9px; height: 9px; transform: rotate(45deg); border: 1.5px solid #bcb585; flex: none; }
+  .m small { margin-left: auto; color: var(--orange); font: 500 11px 'SC Label', sans-serif; letter-spacing: .14em; }
+  .m.done { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--orange); } .m.done i { background: var(--orange); border-color: var(--orange); }
+  .tl .mis::before { background: none; border: 1.5px solid #bcb585; border-radius: 0; transform: rotate(45deg); width: 7px; height: 7px; }
+  .tl .mis span small { display: block; color: var(--orange); font: 500 10px 'SC Label', sans-serif; letter-spacing: .18em; margin-bottom: 2px; }
+  .mini { margin-top: 4px; border-radius: 14px; border: 2px solid #adbcc8; box-shadow: inset 0 0 0 1px #657786; background: #080f1b; padding: 10px 14px 12px; }
+  .mini .top { display: flex; justify-content: space-between; padding-bottom: 6px; border-bottom: 1px solid #bcb58566; }
+  .mini .rk { display: flex; justify-content: space-between; align-items: baseline; margin: 8px 0 6px; }
+  .mini .rk b { font: 400 20px 'SC Display', sans-serif; color: var(--ink); text-transform: uppercase; } .mini .rk span { font: 500 12px 'SC Label', sans-serif; color: var(--muted); letter-spacing: .08em; } .mini .rk span em { font-style: normal; color: var(--orange); font-family: 'SC Display'; font-size: 16px; }
+  .bar { height: 5px; border-radius: 3px; background: #1c2a3a; margin-bottom: 6px; } .bar i { display: block; height: 100%; width: 75%; border-radius: 3px; background: linear-gradient(90deg, var(--orange), #ffcf5a); }
+</style></head><body>
+<h1 class="t">Tonight's missions on the tour's last page: three ways</h1>
+<p class="intro">The page you see after your first catch ("You're set · Tonight looks good"). Same night in each, with your first catch already ticking off one mission. These are the same three nightly missions as on the rank card in Collection. The aim: give a new player three things to go and do tonight.</p>
+<div class="row" id="b"></div>
+<script>
+const head = `<span class="lab eye">You're set</span><h3>Tonight<br>looks good.</h3><span class="lab subl">Clear all night · 66 satellites at the peak</span>`;
+const tl = (extra = '') => `<div class="tl"><div class="it"><b>7:48</b><span>It's dark: go now</span></div><div class="it hot"><b>8:12</b><span><em>Skysat-C1</em> · high in the E, 51° up · new to you</span></div>${extra}<div class="it"><b>5:37</b><span>Busiest: 66 satellites up at once</span></div><div class="it"><b>6:54</b><span>Dawn: the sky closes</span></div></div>`;
+const btns = '<div class="spacer"></div><div class="btn o">Remind me at 8:02<span>→</span></div><div class="btn g">Explore the sky<span>→</span></div>';
+const M = [['Log 5 sightings', '1 / 5', false], ['Catch a rocket stage', '', false], ['Spot something launched before 1980', '', false]];
+const firstDone = [['Collect your first card', '', true], ...M.slice(1)];
+const A = head + tl() + `<div class="msec"><div class="mhead lab"><span class="eye">Tonight's missions</span><span style="color:var(--muted)">1 / 3 · +50 XP each</span></div>${firstDone.map(([t, n, d]) => `<div class="m${d ? ' done' : ''}"><i></i>${t}${n ? `<small>${n}</small>` : ''}</div>`).join('')}</div>` + btns;
+const B = head + `<div class="tl"><div class="it"><b>7:48</b><span>It's dark: go now</span></div><div class="it hot"><b>8:12</b><span><em>Skysat-C1</em> · high in the E · new to you</span></div>
+  <div class="it mis"><b>8:31</b><span><small>Mission · rocket stage</small>CZ-4C rocket stage passes in the SW</span></div>
+  <div class="it mis"><b>9:05</b><span><small>Mission · before 1980</small>Cosmos 1072 (1979) crosses overhead</span></div>
+  <div class="it"><b>5:37</b><span>Busiest: 66 satellites up at once</span></div><div class="it"><b>6:54</b><span>Dawn: the sky closes</span></div></div>
+  <div class="m done" style="margin-top:4px"><i></i>Collect your first card<small style="color:var(--muted)">done</small></div>` + btns;
+const C = head + tl() + `<div class="mini"><div class="top lab"><span>Observer rank</span><span class="eye">Tonight's missions</span></div>
+  <div class="rk"><b>Stargazer</b><span><em>150</em> / 200 XP</span></div><div class="bar"><i></i></div>
+  ${firstDone.map(([t, n, d]) => `<div class="m${d ? ' done' : ''}" style="padding:6px 0"><i></i>${t}${n ? `<small>${n}</small>` : ''}</div>`).join('')}</div>` + btns;
+const cells = [
+  ['A · Missions list', 'A "Tonight\'s missions" section under the timeline, styled exactly like the rank card\'s missions (diamonds, the done one crossed out in orange), with "1 / 3 · +50 XP each". The simplest addition.', A],
+  ['B · Woven into the timeline', 'Each mission becomes a moment on tonight\'s timeline, paired with the pass that can complete it: "8:31 · Mission · rocket stage: CZ-4C passes in the SW". Tells you not just what to do, but when and where.', B],
+  ['C · Mini rank card', 'A small card in the rank card\'s style under the timeline: your rank, XP bar and tonight\'s three missions. Introduces ranks and XP at the same moment.', C],
+];
+document.getElementById('b').innerHTML = cells.map(([t, d, f]) => `<div class="cell"><div class="phone">${f}</div><h2>${t}</h2><p>${d}</p></div>`).join('');
+</script></body></html>
