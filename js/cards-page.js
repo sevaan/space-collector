@@ -1,22 +1,22 @@
-import { expandFacts } from './catalog-facts.js?v=0.1.391';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.391';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.391';
-import { ticket } from './toast.js?v=0.1.391';
-import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.391';
-import { cardArt } from './art.js?v=0.1.391';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.391';
-import { applyBack } from './card-backs.js?v=0.1.391';
-import { SETS, assignSets } from './sets.js?v=0.1.391';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.391';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.391';
-import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.391';
-import { RANKS, progress } from './progress.js?v=0.1.391';
-import { SOLAR_SYSTEM } from './natural.js?v=0.1.391';
-import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.391';
-import { shareCardEl } from './share-card.js?v=0.1.391';
-import { allSightings, deleteSighting } from './store.js?v=0.1.391';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.391';
-import { SECRET_PATCHES } from './secrets.js?v=0.1.391';
+import { expandFacts } from './catalog-facts.js?v=0.1.392';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.392';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.392';
+import { ticket } from './toast.js?v=0.1.392';
+import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.392';
+import { cardArt } from './art.js?v=0.1.392';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.392';
+import { applyBack } from './card-backs.js?v=0.1.392';
+import { SETS, assignSets } from './sets.js?v=0.1.392';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.392';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.392';
+import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.392';
+import { RANKS, progress } from './progress.js?v=0.1.392';
+import { SOLAR_SYSTEM } from './natural.js?v=0.1.392';
+import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.392';
+import { shareCardEl } from './share-card.js?v=0.1.392';
+import { allSightings, deleteSighting } from './store.js?v=0.1.392';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.392';
+import { SECRET_PATCHES } from './secrets.js?v=0.1.392';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -602,9 +602,9 @@ if (EMBED) {
     if (e.target.closest('a[href^="cards.html"]')) { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
     const a = e.target.closest('a[href^="./"], a[href^="index.html"]'); if (!a) return;
     e.preventDefault();
-    const more = /more=1/.test(a.getAttribute('href')), nav = a.closest('.sc-switch');
-    if (nav) setSwitch(nav, 'left'); // slide the pill to Explore, then hand back
-    setTimeout(() => window.parent.postMessage({ sc: 'explore', more }, location.origin), nav ? SLIDE_MS : 0);
+    const more = /more=1/.test(a.getAttribute('href')), sky = /sky=1/.test(a.getAttribute('href')), nav = a.closest('.sc-switch');
+    if (nav) setSwitch(nav, sky ? 'left' : 'mid'); // slide the pill over, then hand back
+    setTimeout(() => window.parent.postMessage({ sc: 'explore', more, sky }, location.origin), nav ? SLIDE_MS : 0);
   });
   window.addEventListener('message', (e) => {
     if (e.origin !== location.origin || !e.data?.sc) return;

@@ -15,9 +15,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600;650;700;750;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="preload" href="fonts/RussoOne-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="fonts/BarlowCondensed-Medium.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="css/cards.css?v=0.1.391">
-  <link rel="stylesheet" href="css/collection.css?v=0.1.391">
-  <link rel="stylesheet" href="css/ui.css?v=0.1.391">
+  <link rel="stylesheet" href="css/cards.css?v=0.1.392">
+  <link rel="stylesheet" href="css/collection.css?v=0.1.392">
+  <link rel="stylesheet" href="css/ui.css?v=0.1.392">
 </head>
 <body>
   <header class="collection-header sky-header"><a class="wordmark" href="./?resume=1">SPACE COLLECTOR<span>FIELD NOTES FROM ORBIT</span></a><span class="header-buttons"><button class="icon-button" id="night-toggle" type="button" aria-label="Turn on red night mode" aria-pressed="false">☾</button><a class="icon-button" href="./?resume=1&amp;more=1" aria-label="Settings"><span class="ico" data-ico="sliders"></span></a></span></header>
@@ -34,14 +34,14 @@
     <p class="storage-note">Your sightings live on this device.</p>
   </main>
   <div id="sizebar" class="ui-slider" role="group" aria-label="Card size"><span class="ui-slider__end" aria-hidden="true">SMALL</span><input type="range" id="size-range" class="ui-range" min="1" max="4" step="1" value="3" aria-label="Card size: slide right for bigger cards"><span class="ui-slider__end" aria-hidden="true">BIG</span></div>
-  <nav class="bottom-nav sc-switch" data-side="right" aria-label="Main navigation"><a class="sc-switch__item" href="./?resume=1"><span aria-hidden="true">✧</span>Explore</a><a class="sc-switch__item" href="cards.html" aria-current="page"><span aria-hidden="true">▱</span>Collection</a></nav>
+  <nav class="bottom-nav sc-switch three" data-side="right" style="--n:3;--i:2" aria-label="Main navigation"><a class="sc-switch__item" href="./?resume=1&amp;sky=1">Up in the sky</a><a class="sc-switch__item" href="./?resume=1"><span aria-hidden="true">✧</span>Explore</a><a class="sc-switch__item" href="cards.html" aria-current="page"><span aria-hidden="true">▱</span>Collection</a></nav>
 
   <dialog id="patch-view" aria-label="Mission patch"><div class="viewer-header"><span id="pv-position" class="ui-eyebrow"></span><button class="close x-close" id="pv-close" type="button" aria-label="Close">✕</button></div><div class="pv-body" id="pv-body"></div></dialog>
   <dialog id="viewer" aria-label="Collectible card viewer">
     <div class="viewer-header"><span id="v-position" class="ui-eyebrow"></span><button class="close x-close" id="v-close" type="button" aria-label="Close">✕</button></div>
     <div class="viewer-scroll"><div id="slot"></div><p id="v-status" class="viewer-status" aria-live="polite"></p><button id="v-share" class="ui-link" type="button" hidden>Share this card</button><button id="v-preview" class="ui-btn" type="button" hidden>Preview artwork &amp; story</button><div id="v-history" class="viewer-history"></div></div>
   </dialog>
-  <script type="module" src="js/cards-page.js?v=0.1.391"></script>
+  <script type="module" src="js/cards-page.js?v=0.1.392"></script>
 <div id="rotate" role="status"><b>Turn your phone upright</b><span>Space Collector is made for portrait.</span></div>
 </body>
 </html>
