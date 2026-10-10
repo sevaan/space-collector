@@ -840,3 +840,6 @@ html.quick .wc-loader .ld-sub { display: none; }
    "Seen on N nights" line under the circle hides while patch coins are out. */
 body:has(#reveal:not([hidden])) #toasts { opacity: 0; transition: opacity .2s; }
 body:has(.patch-coins) #d-sub { opacity: 0; transition: opacity .2s; }
+/* Daytime has no sky slider, so toasts (and patch coins) sit just above the switcher (2026-10-10, Sevaan). */
+body.day #toasts { bottom: calc(var(--safe-bottom) + 80px) !important; }
+body.day .patch-coins { bottom: calc(var(--safe-bottom, 0px) + 114px); }

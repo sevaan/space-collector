@@ -1,7 +1,7 @@
 // Player progress from the sighting log: XP and observer rank, tonight's three missions, a weekly streak and
 // achievements. Everything is derived from the saved sightings (nothing extra is stored), so it can't drift.
 // info(cardKey) -> { tier, type, owner, launch, natural, con } | null. No DOM.
-import { nightKey } from './observation.js?v=0.1.419';
+import { nightKey } from './observation.js?v=0.1.420';
 
 export const RANKS = [
   [0, 'Stargazer'], [200, 'Spotter'], [600, 'Tracker'], [1500, 'Navigator'], [4000, 'Flight Controller'], [10000, 'Mission Control'],
@@ -29,15 +29,37 @@ export const MISSIONS = [
   { id: 'junk', text: 'Spot a piece of space debris', done: (n) => n.some((s) => s.info?.type === 'debris') },
   { id: 'five', text: 'Log 5 sightings', done: (n) => n.length >= 5 },
 ];
+// A player's first night gets a fixed starter set a beginner can finish (playtest 2026-10-09: the random three were
+// debris, pre-1980 and a rocket stage, and the first catch left them 0 / 3).
+export const STARTER = [
+  { id: 'firstcard', text: 'Collect your first card', done: (n) => n.some((s) => s.first) },
+  { id: 'satellite', text: 'Catch a satellite', done: (n) => n.some((s) => s.info && !s.info.natural) },
+  MISSIONS.find((m) => m.id === 'planet'),
+];
+const MISSION_BY_ID = new Map([...MISSIONS, ...STARTER].map((m) => [m.id, m]));
 // Seeded by the night (a day index from nightKey): integer mixing with Math.imul, so the picks spread evenly
 // from one night to the next. (The old float LCG overflowed 2^53 and kept dealing the same few missions.)
-export function missionsFor(night) {
+// possible (optional): a Set of mission ids that can be done tonight from here (main.js asks the tonight worker
+// which have a qualifying pass, playtest 2026-10-09); the draw skips the rest while enough remain.
+export function missionsFor(night, possible = null) {
   let h = 0; for (const c of String(night)) h = Math.imul(h ^ c.charCodeAt(0), 2654435761) >>> 0;
   const next = () => { h = (h + 0x6d2b79f5) >>> 0; let t = Math.imul(h ^ (h >>> 15), 1 | h); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0); };
-  const pick = [], pool = MISSIONS.slice();
+  const ok = possible ? MISSIONS.filter((m) => possible.has(m.id)) : [];
+  const pick = [], pool = (ok.length >= 3 ? ok : MISSIONS).slice();
   while (pick.length < 3) pick.push(pool.splice(next() % pool.length, 1)[0]);
   return pick;
 }
+// The missions a night actually had: the starter set on a first night, else a stored deal (main.js saves tonight's
+// once, from the sky), else the plain draw. Everywhere that shows or scores missions goes through this.
+function missionsOf(night, { first = false, deals = null } = {}) {
+  if (first) return STARTER;
+  const ids = deals?.[night];
+  if (ids?.length === 3 && ids.every((id) => MISSION_BY_ID.has(id))) return ids.map((id) => MISSION_BY_ID.get(id));
+  return missionsFor(night);
+}
+
+// Stored deals (see main.js dealMissions): { [nightKey]: [missionId × 3] }.
+export function readDeals() { try { return JSON.parse(localStorage.getItem('missionDeals')) || {}; } catch { return {}; } }
 
 // ---------- achievements ----------
 // Grouped so a collector always has a next one in reach. `icon` is the short text in the badge circle
@@ -97,10 +119,10 @@ export const ACHIEVEMENTS = [
   { id: 'saturn', name: 'Ringed', text: 'Collect Saturn', icon: '♄', done: (a) => a.naturals.has('planet:saturn') },
   { id: 'wanderers', name: 'Wanderer', text: 'Collect the Moon and the five bright planets', icon: '6', done: (a) => a.wanderers >= 6 },
   { id: 'stars10', name: 'Astronomer', text: 'Collect 10 constellation stars', icon: '✶10', done: (a) => a.stars >= 10 },
-  { id: 'constellation', name: 'Star Map', text: 'Complete a constellation', icon: '✶', done: (a) => a.cons >= 1 },
+  // Star Map ('Complete a constellation') retired 2026-10-10: it always landed with that constellation's own patch.
   { id: 'cons5', name: 'Cartographer', text: 'Complete 5 constellations', icon: '✶5', done: (a) => a.cons >= 5 },
   { id: 'zodiac', name: 'Zodiac', text: 'Complete all 12 zodiac constellations', icon: 'XII', done: (a) => a.zodiac >= 12 },
-  { id: 'cons25', name: 'Atlas', text: 'Complete 25 constellations', icon: '✶25', done: (a) => a.cons >= 25 },
+  { id: 'cons25', name: 'Atlas', text: 'Complete all 18 constellations', icon: '✶18', done: (a) => a.cons >= 18 }, // was 25, but there are only 18 (playtest 2026-10-09); id kept so earned dates stay
   // Where you looked
   { id: 'zenith', name: 'Straight Up', text: 'Catch something more than 85° up', icon: '90°', done: (a) => a.maxEl >= 85 },
   { id: 'horizon', name: 'Horizon Hunter', text: 'Catch a satellite under 12° up', icon: '12°', done: (a) => a.minSatEl != null && a.minSatEl <= 12 },
@@ -142,7 +164,7 @@ const PROG = {
   nations: (a) => [a.owners.size, 8], diplomat: (a) => [a.owners.size, 15], redstar: (a) => [a.ownerCount.CIS ?? 0, 10], stripes: (a) => [a.ownerCount.US ?? 0, 10],
   longmarch: (a) => [a.ownerCount.PRC ?? 0, 10], coldwar: (a) => [a.pre1991, 10], decades: (a) => [a.decades.size, 6],
   starlink10: (a) => [a.fleet.STARLINK ?? 0, 10], starlink50: (a) => [a.fleet.STARLINK ?? 0, 50], fleets: (a) => [['STARLINK', 'ONEWEB', 'KUIPER', 'QIANFAN'].filter((f) => a.fleet[f]).length, 4],
-  wanderers: (a) => [a.wanderers, 6], stars10: (a) => [a.stars, 10], cons5: (a) => [a.cons, 5], zodiac: (a) => [a.zodiac, 12], cons25: (a) => [a.cons, 25],
+  wanderers: (a) => [a.wanderers, 6], stars10: (a) => [a.stars, 10], cons5: (a) => [a.cons, 5], zodiac: (a) => [a.zodiac, 12], cons25: (a) => [a.cons, 18],
   compass: (a) => [a.quadrants.size, 4], marathon: (a) => [a.maxNight, 10], months3: (a) => [a.months.size, 3], months12: (a) => [a.months.size, 12],
   streak4: (a) => [a.bestStreak, 4], streak12: (a) => [a.bestStreak, 12], silver: (a) => [a.maxNightsOnCard, 5], gold: (a) => [a.maxNightsOnCard, 25], gold3: (a) => [a.goldCards, 3],
   missions10: (a) => [a.missionsDone, 10], missions50: (a) => [a.missionsDone, 50],
@@ -160,7 +182,7 @@ export function streaks(sightings, now = Date.now()) {
 }
 
 // constellations: [{ id, stars: [cardKey], zodiac }] for completion counts.
-export function progress(sightings, info, { constellations = [], now = Date.now() } = {}) {
+export function progress(sightings, info, { constellations = [], now = Date.now(), deals = null } = {}) {
   const list = real(sightings);
   const seenCard = new Set(), seenNight = new Set(), nights = new Map();
   let xp = 0;
@@ -215,13 +237,14 @@ export function progress(sightings, info, { constellations = [], now = Date.now(
     a.spreadKm = Math.max(a.spreadKm, Math.hypot(dLat, dLon));
   }
   // Missions: every completed mission on any night counts once for XP; tonight's three are shown.
+  const firstNight = nights.keys().next().value;
   for (const [night, n] of nights) {
-    const done = missionsFor(night).filter((m) => m.done(n, n[0].time)).length;
+    const done = missionsOf(night, { first: night === firstNight, deals }).filter((m) => m.done(n, n[0].time)).length;
     xp += done * MISSION_XP; a.missionsDone += done; if (done === 3) a.fullHouse = true;
   }
   const st = streaks(list, now); a.bestStreak = st.best;
   const tonightKey = nightKey(now, list[list.length - 1]?.lon ?? 0), tonight = nights.get(tonightKey) ?? [];
-  const missions = missionsFor(tonightKey).map((m) => ({ id: m.id, text: m.text, done: m.done(tonight, now) }));
+  const missions = missionsOf(tonightKey, { first: !nights.size || tonightKey === firstNight, deals }).map((m) => ({ id: m.id, text: m.text, done: m.done(tonight, now) }));
   let ri = 0; for (let k = 0; k < RANKS.length; k++) if (xp >= RANKS[k][0]) ri = k;
   const rank = { name: RANKS[ri][1], index: ri, at: RANKS[ri][0], next: RANKS[ri + 1]?.[0] ?? null, nextName: RANKS[ri + 1]?.[1] ?? null };
   const achievements = ACHIEVEMENTS.map((x) => ({ id: x.id, name: x.name, text: x.text, icon: x.icon, done: x.done(a), prog: PROG[x.id]?.(a) }));

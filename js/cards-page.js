@@ -1,21 +1,21 @@
-import { expandFacts } from './catalog-facts.js?v=0.1.419';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.419';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.419';
-import { ticket } from './toast.js?v=0.1.419';
-import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.419';
-import { cardArt } from './art.js?v=0.1.419';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.419';
-import { applyBack } from './card-backs.js?v=0.1.419';
-import { SETS, assignSets } from './sets.js?v=0.1.419';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.419';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.419';
-import { loadConstellations, conList } from './constellations.js?v=0.1.419';
-import { RANKS, progress } from './progress.js?v=0.1.419';
-import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.419';
-import { shareCardEl } from './share-card.js?v=0.1.419';
-import { allSightings, deleteSighting } from './store.js?v=0.1.419';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.419';
-import { SECRET_PATCHES } from './secrets.js?v=0.1.419';
+import { expandFacts } from './catalog-facts.js?v=0.1.420';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.420';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.420';
+import { ticket } from './toast.js?v=0.1.420';
+import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.420';
+import { cardArt } from './art.js?v=0.1.420';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.420';
+import { applyBack } from './card-backs.js?v=0.1.420';
+import { SETS, assignSets } from './sets.js?v=0.1.420';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.420';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.420';
+import { loadConstellations, conList } from './constellations.js?v=0.1.420';
+import { RANKS, progress, readDeals } from './progress.js?v=0.1.420';
+import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.420';
+import { shareCardEl } from './share-card.js?v=0.1.420';
+import { allSightings, deleteSighting } from './store.js?v=0.1.420';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.420';
+import { SECRET_PATCHES } from './secrets.js?v=0.1.420';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -182,7 +182,7 @@ function remindStreak() {
 }
 function renderLogbook() {
   const info = (k) => { const c = state.byKey.get(k); return c ? { tier: c.tier, type: c.type, owner: c.owner, launch: c.launch, natural: c.natural, con: c.con } : null; };
-  const p = progress(state.raw, info, { constellations: conList() });
+  const p = progress(state.raw, info, { constellations: conList(), deals: readDeals() });
   const card = $('logbook'); card.hidden = false;
   // The logbook is a card (2026-10-08, Sevaan): it tilts with your finger and the phone, has a glare, and a double
   // tap flips it to a card back. Built once; the contents are re-rendered inside .lb-face.
@@ -205,7 +205,7 @@ function renderLogbook() {
     <path d="M${pts.map((q) => q.join(' ')).join(' L')}" fill="none" stroke="#344654" stroke-dasharray="3 5"/>
     ${pts[cur + 1] ? `<path d="M${pts[cur].join(' ')} L${pts[cur][0] + (pts[cur + 1][0] - pts[cur][0]) * into} ${pts[cur][1] + (pts[cur + 1][1] - pts[cur][1]) * into}" stroke="#fa8127" stroke-width="2"/>` : ''}
     ${rungs.map(([, n], i) => { const [x, y] = pts[i]; return `<circle cx="${x}" cy="${y}" r="${i === cur ? 6 : 4}" fill="${i <= cur ? '#fa8127' : '#0b1626'}" ${i > cur ? 'stroke="#fff2b3" stroke-dasharray="2 2"' : ''}/>${i === cur ? `<circle cx="${x}" cy="${y}" r="12" fill="none" stroke="#fa8127" opacity=".5"/>` : ''}<text x="${x}" y="${y + 20}" text-anchor="middle" font-family="SC Label, Arial Narrow" font-size="9.5" letter-spacing="1.5" fill="${i >= cur ? '#fff2b3' : '#bdbea9'}">${esc(n.toUpperCase())}</text>${i === cur + 1 ? `<text x="${x}" y="${y - 14}" text-anchor="middle" font-family="SC Label, Arial Narrow" font-size="9" letter-spacing="1.5" fill="#fa8127">NEXT</text>` : ''}`; }).join('')}</svg>`;
-  const streak = p.streak.current ? `${p.streak.current}-week streak 🔥` : 'Observe this week to start a streak';
+  const streak = p.streak.current >= 2 ? `${p.streak.current}-week streak 🔥` : p.streak.current ? 'Week 1 · come back next week' : 'Observe this week to start a streak'; // the flame is earned at week 2 (playtest 2026-10-09)
   const ev = eventBadges(state.raw), nx = nextEvent();
   // At risk (a streak going, nothing logged yet this week): a Remind me for Saturday evening (QA 2026-10-09: the button
   // was lost in the card redesign, so remindStreak was unreachable).
@@ -542,7 +542,7 @@ $('v-share').addEventListener('click', async () => {
   const btn = $('v-share'); btn.disabled = true; btn.textContent = 'Making the image…';
   try {
     const info = (k) => { const x = state.byKey.get(k); return x ? { tier: x.tier, type: x.type, owner: x.owner, launch: x.launch, natural: x.natural, con: x.con } : null; };
-    const how = await shareCardEl(el, c, { title: titleFor(c), rank: progress(state.raw, info, { constellations: conList() }).rank.name, fact: factFor(c) }); // same rank as the logbook (QA 2026-10-08)
+    const how = await shareCardEl(el, c, { title: titleFor(c), rank: progress(state.raw, info, { constellations: conList(), deals: readDeals() }).rank.name, fact: factFor(c) }); // same rank as the logbook (QA 2026-10-08)
     btn.textContent = how === 'downloaded' ? 'Saved the image' : 'Share this card';
   } catch { btn.textContent = 'Couldn\'t make the image'; }
   btn.disabled = false; setTimeout(() => { btn.textContent = 'Share this card'; }, 2500);
@@ -630,7 +630,7 @@ function earnedDates() {
   const list = state.raw.filter((x) => !x.sim).slice().sort((a, b) => a.time - b.time), dates = {};
   const want = new Set((state.achievements ?? []).filter((a) => a.done && !stored[a.id]).map((a) => a.id));
   for (let i = 0; i < list.length && want.size; i++) {
-    const p = progress(list.slice(0, i + 1), info, { constellations: cons, now: list[i].time });
+    const p = progress(list.slice(0, i + 1), info, { constellations: cons, now: list[i].time, deals: readDeals() });
     for (const a of p.achievements) if (a.done && want.has(a.id)) { dates[a.id] = list[i].time; want.delete(a.id); }
   }
   Object.assign(dates, stored);
@@ -680,7 +680,7 @@ function openPatch(id, from = null) {
     <div class="pv-patch">${patchHtml(a, { locked: !a.done, prog: a.prog })}</div>
     <h2>${esc(a.name)}</h2><p>${esc(a.text)}</p>
     ${!a.done && a.prog && a.prog[1] > 1 ? `<div class="pv-prog"><div class="pv-prog__bar"><i style="width:${Math.min(100, (a.prog[0] / a.prog[1]) * 100).toFixed(1)}%"></i></div><span><b>${a.prog[0].toLocaleString()}</b> of ${a.prog[1].toLocaleString()}</span></div>` : ''}
-    <div class="pv-meta">${f ? `<span class="ui-chip"><b>${f === 'gold' ? 'Gold foil' : 'Holo'}</b></span>` : ''}${a.secret ? '<span class="ui-chip"><b>Secret</b></span>' : ''}</div>
+    <div class="pv-meta">${f ? `<span class="ui-chip"><b>${f === 'gold' ? 'Gold foil' : 'Holo'}</b></span>` : ''}${a.secret ? '<span class="ui-chip"><b>Secret</b></span>' : ''}${['catalogue', 'curator', 'months12', 'anniversary', 'streak12'].includes(a.id) && !a.done ? '<span class="ui-chip"><b>Legendary goal</b><span class="ui-chip__k">years, not weeks</span></span>' : ''}</div>
     <div class="pv-foot"><span>${a.done ? (date ? fmtEarned(date) : 'EARNED') : 'NOT YET EARNED'}</span><b>SPACE COLLECTOR</b></div></div>
     <span class="pv-hint" aria-hidden="true">Swipe up to put it away</span>`;
   const d = $('patch-view'); d.showModal();

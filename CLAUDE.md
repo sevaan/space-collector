@@ -358,3 +358,12 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - 2026-10-09 · Jank fixes from the playtest (Chromium at 2× CPU throttle, frame probes). Welcome card flip: the AudioContext (~130 ms to construct) is now made suspended 2.5 s after load, and a tap only resumes it. Tour start: js/milkyway-gl.js decodes the 4096×2048 photo with fetch → createImageBitmap (Image.decode fallback) before texImage2D, then does a throwaway 1×1 draw + readPixels so the first real frame doesn't pay for first GPU use. `sky.warmMilky()` builds the renderer 1.8 s into the welcome card. Result: welcome flip 142 ms → no frame over 50 ms; tour start 225 ms → one ~115 ms first sky tick (the tour deal is a composited CSS animation, so it isn't affected).
 - 2026-10-10 · Playtest review at design/playtest-2026-10-09.html (live on Pages). Proposals 1–7 are built on branch `playtest-proposals`, one commit each (P1…P7, plus small b/c follow-ups), ready to cherry-pick onto main as Sevaan approves them. Items 8–23 are recommendations, not built yet.
 - 2026-10-10 · Sevaan approved every playtest item except photo capture (#18). Merged playtest-proposals (items 1–7): tour target always shows Tap to collect; locked patches drawn unstitched with a progress arc + "n / goal" (`PROG` in js/progress.js, `prog` on each achievement; the detail card has a bar); patch coins go before toasts, no milestone toast at 1/10/25/50/100… cards, radar tip waits, toasts hide during a reveal; radar shows "N passing" (hidden at 0); welcome footer "Swipe away to begin"; same-name tiles get "year · #id"; ~24 picture glyphs replace text-code patch icons.
+- 2026-10-10 · Playtest batch 2.
+  - #8: a first night gets `STARTER` missions (first card, a satellite, a planet/Moon).
+  - #23: `dealMissions` in main.js deals each night's three only from missions with a qualifying pass in the tonight worker's results. It's stored once per night in localStorage `missionDeals`; progress() takes `deals` (main + cards-page pass `readDeals()`). Precedence in `missionsOf`: starter → stored deal → plain draw.
+  - #12: Tonight's "Visible" chip is now "Dark · until <dawn>".
+  - #13: streak says "Week 1 · come back next week"; the flame starts at week 2.
+  - #21: Atlas = all 18 constellations (id cons25 kept); Star Map retired; Zodiac is holo; long-haul patches get a "Legendary goal · years, not weeks" chip.
+  - #22a: the owned-target line reads "Seen on 2 nights · 1 more for Silver".
+  - #11: guideTo no longer toasts.
+  - Daytime toasts sit at 80px (no slider in the day).

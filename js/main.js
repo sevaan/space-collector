@@ -1,39 +1,39 @@
-import * as Secrets from './secrets.js?v=0.1.419';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.419';
-import * as Ufo from './ufo.js?v=0.1.419';
-import * as Fossil from './fossil.js?v=0.1.419';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.419';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.419';
-import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.419';
-import { VERSION } from './version.js?v=0.1.419';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.419';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.419';
-import { conArt } from './con-art.js?v=0.1.419';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.419';
-import { CON_FIGURES } from './con-figures.js?v=0.1.419';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.419';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.419';
-import { progress as progressOf } from './progress.js?v=0.1.419';
-import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.419';
-import { conList } from './constellations.js?v=0.1.419';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.419';
-import { SkyView, shortName } from './sky.js?v=0.1.419';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.419';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.419';
-import { cardArt } from './art.js?v=0.1.419';
-import { renderCard, cardLevel, artImage, lockedArt, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.419';
-import { applyBack } from './card-backs.js?v=0.1.419';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.419';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.419';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.419';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.419';
-import { TIER_INFO } from './rarity.js?v=0.1.419';
-import { SETS } from './sets.js?v=0.1.419';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.419';
-import { shareCardEl } from './share-card.js?v=0.1.419';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.419';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.419';
-import { addStarfield } from './starfield.js?v=0.1.419';
+import * as Secrets from './secrets.js?v=0.1.420';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.420';
+import * as Ufo from './ufo.js?v=0.1.420';
+import * as Fossil from './fossil.js?v=0.1.420';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.420';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.420';
+import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.420';
+import { VERSION } from './version.js?v=0.1.420';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.420';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.420';
+import { conArt } from './con-art.js?v=0.1.420';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.420';
+import { CON_FIGURES } from './con-figures.js?v=0.1.420';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.420';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.420';
+import { progress as progressOf, missionsFor, readDeals } from './progress.js?v=0.1.420';
+import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.420';
+import { conList } from './constellations.js?v=0.1.420';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.420';
+import { SkyView, shortName } from './sky.js?v=0.1.420';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.420';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.420';
+import { cardArt } from './art.js?v=0.1.420';
+import { renderCard, cardLevel, artImage, lockedArt, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.420';
+import { applyBack } from './card-backs.js?v=0.1.420';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.420';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.420';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.420';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.420';
+import { TIER_INFO } from './rarity.js?v=0.1.420';
+import { SETS } from './sets.js?v=0.1.420';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.420';
+import { shareCardEl } from './share-card.js?v=0.1.420';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.420';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.420';
+import { addStarfield } from './starfield.js?v=0.1.420';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -773,7 +773,7 @@ function guideTo(obj, l, hint = '') {
   cancelPassSearch();
   state.pinnedId = obj.id; state.targetId = obj.id; state.sticky.clear(); state.guidePass = null;
   if (state.drag.on || !hasLiveSensors()) { state.drag.on = true; state.drag.az = (l.az + 40) % 360; state.drag.el = Math.max(10, l.el - 10); } // close by, so the arrow has something to show
-  ticket({ kind: 'mission', eyebrow: label(obj).toUpperCase(), line: `${hint || `Up now, ${Math.round(l.el)}° up in the ${compassPoint(l.az)}.`} Follow the arrow.`, ms: 5000 }); // the same look as every other toast (2026-10-08)
+  void hint; // no toast (playtest 2026-10-09): it repeated the guide pill (name · turn · height) and stayed up after you'd lined it up
 }
 // Tonight → "Show me": pin the object and steer to it (or to where it will rise).
 function showMePass(p) {
@@ -835,7 +835,10 @@ function renderTarget(target, d) {
     $('d-name').textContent = label(o);
     $('d-cta').hidden = false; $('d-cta').textContent = 'View card';
     const n = nightsIn(state.sightings.filter((s) => !s.sim && s.cardKey === cardKeyFor(o)));
-    $('d-sub').hidden = !n; $('d-sub').textContent = `Seen on ${n} night${n === 1 ? '' : 's'}`;
+    // How far to the card's next level (silver at 3 nights, gold at 10, js/card.js levelFor), so a quiet night still
+    // has something to do (playtest 2026-10-09).
+    const nxt = n < 3 ? [3, 'Silver'] : n < 10 ? [10, 'Gold'] : null;
+    $('d-sub').hidden = !n; $('d-sub').textContent = nxt ? `Seen on ${n} night${n === 1 ? '' : 's'} · ${nxt[0] - n} more for ${nxt[1]}` : `Gold · seen on ${n} nights`;
     $('d-switch').hidden = true;
   } else { disc.hidden = true; guide.hidden = false; setGuide(guide, label(o), turnHint(l)); }
   return;
@@ -1046,7 +1049,7 @@ function ownedCardKeys() { return new Set(state.sightings.filter((s) => !s.sim).
 // log with and without the newest sighting; toasts the news a moment after the card lands.
 function progressNow(list) {
   const info = (k) => { const c = state.cardModels.get(k); return c ? { tier: c.tier, type: c.type, owner: c.owner ?? (c.family ? state.catalog.families?.[c.family]?.owner : undefined), launch: c.launch, natural: c.natural, con: c.con } : null; };
-  return progressOf(list, info, { constellations: conList(), now: now().getTime() });
+  return progressOf(list, info, { constellations: conList(), now: now().getTime(), deals: readDeals() });
 }
 function progressGain(saved) {
   const after = progressNow(state.sightings), before = progressNow(state.sightings.filter((s) => s !== saved));
@@ -1233,6 +1236,7 @@ function requestTonight(force = false) {
       tonightBusy = false;
       if (data.error) return;
       state.tonight = { ...data, ...asked };
+      dealMissions(state.tonight);
       if (!$('vtab-tonight').hidden) renderTonight();
       lastChip = 0;
       const stale = asked.sb !== state.skySb || asked.lat !== state.observer.lat || asked.lon !== state.observer.lon || asked.bino !== state.binoculars;
@@ -1243,6 +1247,28 @@ function requestTonight(force = false) {
     const objects = state.catalog.objects.filter((o) => o.stdMag + 5 * Math.log10(Math.max(o.perigee ?? 400, 200) / 1000) <= faintest);
     tonightWorker.postMessage({ requestId, objects, observer: state.observer, startMs, sb: state.skySb, binoculars: state.binoculars });
   } catch { tonightBusy = false; }
+}
+// Tonight's missions come only from ones you could do from here (playtest 2026-10-09): from tonight's passes, work
+// out which missions have something to catch, deal three from those, and keep that deal for the night (localStorage
+// missionDeals) so scoring and every screen agree. Dealt once per night; the first night keeps the starter set.
+function dealMissions(T) {
+  if (!T?.passes) return;
+  const night = String(nightKey(now().getTime(), state.observer.lon ?? 0)), deals = readDeals();
+  if (deals[night]) return;
+  const objs = T.passes.map((p) => state.byId.get(p.id)).filter(Boolean), yr = now().getFullYear();
+  const has = (f) => objs.some(f), year = (o) => Number(String(o.launch ?? '').slice(0, 4)) || null;
+  const can = new Set(['three', 'star', 'five', 'planet']);
+  if (has((o) => o.type === 'rocket-body')) can.add('stage');
+  if (has((o) => year(o) && year(o) < 1980)) can.add('old');
+  if (has((o) => year(o) && year(o) >= yr - 5)) can.add('recent');
+  if (has((o) => o.owner === 'CIS')) can.add('soviet');
+  if (has((o) => o.owner === 'CIS') && has((o) => o.owner === 'US')) can.add('race');
+  if (has((o) => ['epic', 'legendary'].includes(o.tier))) can.add('epic');
+  if (has((o) => o.type === 'debris')) can.add('junk');
+  if (T.passes.some((p) => p.peakEl >= 60)) can.add('high');
+  deals[night] = missionsFor(night, can).map((m) => m.id);
+  const keep = Object.keys(deals).sort((a, b) => Number(b) - Number(a)).slice(0, 90);
+  try { localStorage.setItem('missionDeals', JSON.stringify(Object.fromEntries(keep.map((k) => [k, deals[k]])))); } catch {}
 }
 function showVTab(tab) {
   document.querySelectorAll('[data-vtab]').forEach((b) => { b.classList.toggle('on', b.dataset.vtab === tab); b.setAttribute('aria-selected', String(b.dataset.vtab === tab)); });
@@ -1300,7 +1326,7 @@ function renderTonight() {
   void wxLine; void evLine;
   const tchip = (k, v) => `<span class="ts-chip"><small>${k}</small><b>${v}</b></span>`;
   $('tonight-summary').innerHTML = wins.length
-    ? `<span class="ts-row">${tchip('Visible', `${fmtTime(Math.max(wins[0].s, t0))}–${fmtTime(wins[wins.length - 1].e)}`)}${tchip('Busiest', `${fmtTime(peak[0])} · ${peak[1]} up`)}${wxT ? tchip('Sky', escapeHtml(wxT.line)) : ''}</span>${ev && t0 >= ev.start ? `<span class="ts-note">☄ <b>${escapeHtml(ev.name.replace(/\s*\d{4}$/, ''))}</b> meteor shower tonight · ${escapeHtml(ev.rate)}</span>` : ''}${wxT && !wxT.ok && wxT.nextClear ? `<span class="ts-note">Next clear night: <b>${new Date(wxT.nextClear).toLocaleDateString([], { weekday: 'long' })}</b></span>` : ''}`
+    ? `<span class="ts-row">${tchip('Dark', T.dawn ? `until ${fmtTime(T.dawn)}` : `until ${fmtTime(wins[wins.length - 1].e)}`)}${tchip('Busiest', `${fmtTime(peak[0])} · ${peak[1]} up`)}${wxT ? tchip('Sky', escapeHtml(wxT.line)) : ''}</span>${ev && t0 >= ev.start ? `<span class="ts-note">☄ <b>${escapeHtml(ev.name.replace(/\s*\d{4}$/, ''))}</b> meteor shower tonight · ${escapeHtml(ev.rate)}</span>` : ''}${wxT && !wxT.ok && wxT.nextClear ? `<span class="ts-note">Next clear night: <b>${new Date(wxT.nextClear).toLocaleDateString([], { weekday: 'long' })}</b></span>` : ''}`
     : `<span class="ts-note">Nothing bright enough for your sky until dawn. Slide the sky darker if you can see more stars, or try binocular mode.</span>`;
   // Chart: satellites visible across the night, in 10-minute bins, with a "now" line.
   const pts = T.curve; let svg = '';
