@@ -381,3 +381,4 @@ body.albums-view .album__count { flex: none; font-size: 14px; }
 .pv-prog b { color: #fa8127; font-weight: 500; }
 .pv-prog__bar { flex: 1; height: 6px; border-radius: 3px; background: #1c2a3a; overflow: hidden; }
 .pv-prog__bar i { display: block; height: 100%; border-radius: 3px; background: linear-gradient(90deg, #fa8127, #ffcf5a); }
+.card-tile__sub { display: block; margin: -3px 0 6px; font: 500 10px/1.2 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .08em; text-transform: uppercase; color: #bdbea9; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
