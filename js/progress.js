@@ -1,7 +1,7 @@
 // Player progress from the sighting log: XP and observer rank, tonight's three missions, a weekly streak and
 // achievements. Everything is derived from the saved sightings (nothing extra is stored), so it can't drift.
 // info(cardKey) -> { tier, type, owner, launch, natural, con } | null. No DOM.
-import { nightKey } from './observation.js?v=0.1.421';
+import { nightKey } from './observation.js?v=0.1.423';
 
 export const RANKS = [
   [0, 'Stargazer'], [200, 'Spotter'], [600, 'Tracker'], [1500, 'Navigator'], [4000, 'Flight Controller'], [10000, 'Mission Control'],
@@ -32,6 +32,17 @@ export const MISSIONS = [
   { id: 'junk', text: 'Spot a piece of space debris', done: (n) => n.some((s) => s.info?.type === 'debris') },
   { id: 'five', text: 'Log 5 sightings', done: (n) => n.length >= 5 },
 ];
+// Tonight's sky challenge (playtest 2026-10-09, #22): a fourth, bonus goal for nights when nothing new is overhead.
+// All of them can be done with cards you already own. +50 XP; doesn't count toward the mission patches.
+export const CHALLENGES = [
+  { id: 'revisit3', text: 'See 3 cards you own again', done: (n) => n.filter((s) => !s.first).length >= 3 },
+  { id: 'pair10', text: 'Catch two satellites in 10 minutes', done: (n) => { const t = n.filter((s) => !s.info?.natural).map((s) => s.time); return t.some((x, i) => i && x - t[i - 1] <= 600000); } },
+  { id: 'levelup', text: 'Level up a card (3rd or 10th night)', done: (n) => n.some((s) => s.lv) },
+  { id: 'brightstar', text: 'Find a bright named star', done: (n) => n.some((s) => /^star:(?!hip)/.test(s.cardKey)) },
+  { id: 'wanderer', text: 'See a planet again', done: (n) => n.some((s) => !s.first && s.info?.type === 'planet') },
+];
+export function challengeFor(night) { let h = 7; for (const c of String(night)) h = Math.imul(h ^ c.charCodeAt(0), 2246822519) >>> 0; return CHALLENGES[h % CHALLENGES.length]; }
+
 // A player's first night gets a fixed starter set a beginner can finish (playtest 2026-10-09: the random three were
 // debris, pre-1980 and a rocket stage, and the first catch left them 0 / 3).
 export const STARTER = [
@@ -225,7 +236,8 @@ export function progress(sightings, info, { constellations = [], now = Date.now(
       }
     }
     else if (!seenNight.has(nk)) xp += REPEAT_XP;
-    if (!seenNight.has(nk)) { nightsOnCard.set(s.cardKey, (nightsOnCard.get(s.cardKey) ?? 0) + 1); }
+    let lv = false;
+    if (!seenNight.has(nk)) { const c = (nightsOnCard.get(s.cardKey) ?? 0) + 1; nightsOnCard.set(s.cardKey, c); lv = c === 3 || c === 10; }
     seenNight.add(nk);
     if (s.stampKey) { const fam = String(s.stampKey).split(':')[0]; if (!fleetStamps.has(fam)) fleetStamps.set(fam, new Set()); fleetStamps.get(fam).add(s.stampKey); }
     if (s.shiny) { xp += SHINY_XP; a.shinies++; }
@@ -239,7 +251,7 @@ export function progress(sightings, info, { constellations = [], now = Date.now(
     if (typeof s.rangeKm === 'number' && !i?.natural) { if (a.closest == null || s.rangeKm < a.closest) a.closest = s.rangeKm; if (a.farthest == null || s.rangeKm > a.farthest) a.farthest = s.rangeKm; }
     if (typeof s.lat === 'number' && typeof s.lon === 'number') { const pk = `${s.lat.toFixed(1)},${s.lon.toFixed(1)}`; if (!placeSeen.has(pk)) { placeSeen.add(pk); places.push([s.lat, s.lon]); } } // one per ~10 km spot, so the farthest-pair check stays small (QA 2026-10-08)
     if (!nights.has(night)) nights.set(night, []);
-    nights.get(night).push({ ...s, info: i, first });
+    nights.get(night).push({ ...s, info: i, first, lv });
   }
   for (const n of nights.values()) { if (n.some((s) => soviet(s.info)) && n.some((s) => american(s.info))) a.race = true; a.maxNight = Math.max(a.maxNight, n.length); }
   a.wanderers = ['moon', 'planet:mercury', 'planet:venus', 'planet:mars', 'planet:jupiter', 'planet:saturn'].filter((k) => seenCard.has(k)).length;
@@ -257,6 +269,7 @@ export function progress(sightings, info, { constellations = [], now = Date.now(
   for (const [night, n] of nights) {
     const done = missionsOf(night, { first: night === firstNight, deals }).filter((m) => m.done(n, n[0].time)).length;
     xp += done * MISSION_XP; a.missionsDone += done; if (done === 3) a.fullHouse = true;
+    if (night !== firstNight && challengeFor(night).done(n, n[0].time)) xp += MISSION_XP;
   }
   const st = streaks(list, now); a.bestStreak = st.best;
   const tonightKey = nightKey(now, list[list.length - 1]?.lon ?? 0), tonight = nights.get(tonightKey) ?? [];
@@ -269,5 +282,6 @@ export function progress(sightings, info, { constellations = [], now = Date.now(
   // and so is the Solar System. The patch art is the stick figure (js/patches.js).
   for (const c of constellations) achievements.push({ id: `con-${c.id}`, con: c.id, name: c.system ? 'Solar System' : c.name, sub: c.system ? 'Home system' : c.nick.replace(/^part of /, ''), icon: '',
     text: c.system ? 'See the Sun, the Moon and all seven planets' : `Collect all ${c.stars.length} stars of ${c.name}`, done: c.stars.every((k) => seenCard.has(k)), prog: [c.stars.filter((k) => seenCard.has(k)).length, c.stars.length] });
-  return { xp, rank, missions, streak: st, achievements, cards: a.cards };
+  const ch = challengeFor(tonightKey), challenge = list.length && tonightKey !== firstNight ? { id: ch.id, text: ch.text, done: ch.done(tonight, now) } : null; // not on a first night: the starter set is enough
+  return { xp, rank, missions, challenge, streak: st, achievements, cards: a.cards };
 }

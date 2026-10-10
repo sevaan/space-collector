@@ -1,21 +1,21 @@
-import { expandFacts } from './catalog-facts.js?v=0.1.421';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.421';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.421';
-import { ticket } from './toast.js?v=0.1.421';
-import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.421';
-import { cardArt } from './art.js?v=0.1.421';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.421';
-import { applyBack } from './card-backs.js?v=0.1.421';
-import { SETS, assignSets } from './sets.js?v=0.1.421';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.421';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.421';
-import { loadConstellations, conList } from './constellations.js?v=0.1.421';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.421';
-import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.421';
-import { shareCardEl } from './share-card.js?v=0.1.421';
-import { allSightings, deleteSighting } from './store.js?v=0.1.421';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.421';
-import { SECRET_PATCHES } from './secrets.js?v=0.1.421';
+import { expandFacts } from './catalog-facts.js?v=0.1.423';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.423';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.423';
+import { ticket } from './toast.js?v=0.1.423';
+import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.423';
+import { cardArt } from './art.js?v=0.1.423';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.423';
+import { applyBack } from './card-backs.js?v=0.1.423';
+import { SETS, assignSets } from './sets.js?v=0.1.423';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.423';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.423';
+import { loadConstellations, conList } from './constellations.js?v=0.1.423';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.423';
+import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.423';
+import { shareCardEl } from './share-card.js?v=0.1.423';
+import { allSightings, deleteSighting } from './store.js?v=0.1.423';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.423';
+import { SECRET_PATCHES } from './secrets.js?v=0.1.423';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -214,6 +214,7 @@ function renderLogbook() {
     <div class="lb-pic">${ladder}</div>
     <div class="lb-rankrow"><span class="lb-name">${esc(p.rank.name)}</span><span class="lb-xp"><b>${p.xp.toLocaleString()}</b>${p.rank.next ? ` / ${p.rank.next.toLocaleString()}` : ''} XP</span></div>
     ${p.missions.map((m) => `<div class="lb-mission${m.done ? ' done' : ''}"><i></i>${esc(m.text)}</div>`).join('')}
+    ${p.challenge ? `<div class="lb-mission lb-challenge${p.challenge.done ? ' done' : ''}"><i></i>${esc(p.challenge.text)}<small>Sky challenge · +50</small></div>` : ''}
     <div class="lb-foot"><div class="lb-head">EVENTS ${ev.length ? `<span>${ev.length} badge${ev.length === 1 ? '' : 's'}</span>` : ''}</div>
     <div class="lb-events">${ev.map((e) => `<span class="ui-chip ui-chip--earned">☄ <b>${esc(e.name.replace(/\s*\d{4}$/, ''))}</b></span>`).join('')}${nx ? `<span class="ui-chip"><span class="ui-chip__k">Next:</span><b>${esc(nx.name.replace(/\s*\d{4}$/, ''))}</b><span class="ui-chip__k">· ${new Date(nx.start + 30 * 3600e3).toLocaleDateString([], { month: 'short', day: 'numeric' })}</span></span>` : ''}</div></div>`;
   state.achievements = p.achievements;
