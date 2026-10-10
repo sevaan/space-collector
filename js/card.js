@@ -1,17 +1,17 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { cardArt } from './art.js?v=0.1.388';
-import { TIER_INFO } from './rarity.js?v=0.1.388';
-import { SET_BY_ID } from './sets.js?v=0.1.388';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.388';
-import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.388';
-import { artFileFor } from './art-keys.js?v=0.1.388';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.388';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.388';
-import { nightsIn } from './observation.js?v=0.1.388';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.388';
-import { SHINY } from './shiny.js?v=0.1.388';
-import { conArt } from './con-art.js?v=0.1.388';
-import { CON_FIGURES } from './con-figures.js?v=0.1.388';
+import { cardArt } from './art.js?v=0.1.389';
+import { TIER_INFO } from './rarity.js?v=0.1.389';
+import { SET_BY_ID } from './sets.js?v=0.1.389';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.389';
+import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.389';
+import { artFileFor } from './art-keys.js?v=0.1.389';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.389';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.389';
+import { nightsIn } from './observation.js?v=0.1.389';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.389';
+import { SHINY } from './shiny.js?v=0.1.389';
+import { conArt } from './con-art.js?v=0.1.389';
+import { CON_FIGURES } from './con-figures.js?v=0.1.389';
 // The animal/symbol figure belongs to the completed (gold) constellation card only (2026-10-05): a single
 // star's card draws just the star pattern with its star marked, so the figure is a reward for finishing the set.
 const conFig = (id) => (CON_FIGURES.has(id) ? { figure: `assets/art/con/${id}.webp` } : {});
@@ -56,7 +56,7 @@ function artStars(o) {
 }
 // Not found yet (2026-10-07, Sevaan: no more generic placeholders): the real picture, but hidden behind heavy blur
 // and darkness, so you can sense the shape and colour without seeing it. css/cards.css .card-art-image--locked.
-function lockedArt(o, shown, accent, size = 'full') {
+export function lockedArt(o, shown, accent, size = 'full') {
   const src = !shown && artImage(o, size);
   return src ? `<span class="art-locked"><img class="card-art-image card-art-image--locked" src="${src}" alt="" loading="lazy" decoding="async"></span>` : cardArt(o, { accent, silhouette: !shown });
 }

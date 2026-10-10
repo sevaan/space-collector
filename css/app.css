@@ -812,3 +812,4 @@ body.secret-on #discover, body.secret-on #guidance { display: none !important; }
 #discover:not(.owned) #d-cta:active, #discover:not(.owned) #d-cta.tapped { background: var(--gold); color: #080f1b; box-shadow: 0 0 0 1px var(--gold), 0 0 22px rgba(250, 129, 39, .6); transform: scale(.97); }
 body.night #discover:not(.owned) #d-cta { color: #ff6a55; background: rgba(255, 70, 50, .12); box-shadow: inset 0 0 0 1px rgba(255, 70, 50, .45); }
 body.night #discover:not(.owned) #d-cta:active, body.night #discover:not(.owned) #d-cta.tapped { background: #ff6a55; color: #120606; }
+.mini-card .mc-art:has(.art-locked) { position: relative; } .mini-card .card-art-image--locked { filter: blur(4px) brightness(.62) saturate(.6); } /* uncollected art in Tonight's mini cards, like the collection (2026-10-09) */
