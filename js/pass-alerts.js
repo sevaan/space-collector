@@ -17,9 +17,12 @@ const b64 = (s) => { const p = '='.repeat((4 - (s.length % 4)) % 4), raw = atob(
 // subscribe could make the subscribe fail, so the tap goes straight from permission to subscribe).
 let keyP = null;
 export function prefetchKey() {
-  try { const k = localStorage.getItem('vapidKey'); if (k) return (keyP = Promise.resolve(k)); } catch {}
+  const ok = (k) => typeof k === 'string' && /^[A-Za-z0-9_-]{80,}$/.test(k); // a P-256 public key, base64url
+  try { const k = localStorage.getItem('vapidKey'); if (ok(k)) return (keyP = Promise.resolve(k)); } catch {}
   if (!PUSH) return null;
-  return (keyP ??= fetch(`${PUSH}/vapid`).then((r) => r.json()).then(({ publicKey }) => { try { localStorage.setItem('vapidKey', publicKey); } catch {} return publicKey; }).catch((e) => { keyP = null; throw e; }));
+  return (keyP ??= fetch(`${PUSH}/vapid`).then((r) => { if (!r.ok) throw new Error(`server ${r.status}`); return r.json(); })
+    .then(({ publicKey }) => { if (!ok(publicKey)) throw new Error('no key'); try { localStorage.setItem('vapidKey', publicKey); } catch {} return publicKey; })
+    .catch((e) => { keyP = null; throw e; }));
 }
 async function subscription(create) {
   const reg = await navigator.serviceWorker.ready;
