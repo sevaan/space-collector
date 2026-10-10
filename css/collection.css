@@ -376,3 +376,8 @@ body.albums-view .album__count { flex: none; font-size: 14px; }
 #patch-view.flicked .pv-hint { opacity: 0; transition: opacity .15s; }
 #patch-view > .starfield { position: absolute; z-index: -1; }
 :where(html[data-theme="night"], body.night) .pv-card { background: #130606; border-color: #52221f; box-shadow: none; }
+/* Progress toward a locked patch, in its detail card (playtest 2026-10-09). */
+.pv-prog { display: flex; align-items: center; gap: 10px; width: calc(100% - 56px); margin-top: 16px; font: 500 12px/1 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .12em; text-transform: uppercase; color: rgba(255, 242, 179, .6); }
+.pv-prog b { color: #fa8127; font-weight: 500; }
+.pv-prog__bar { flex: 1; height: 6px; border-radius: 3px; background: #1c2a3a; overflow: hidden; }
+.pv-prog__bar i { display: block; height: 100%; border-radius: 3px; background: linear-gradient(90deg, #fa8127, #ffcf5a); }
