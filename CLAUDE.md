@@ -326,3 +326,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - Welcome card's first shake comes 1 s after it appears (2026-10-09, Sevaan; was ~5 s, then 2 s): the shake opens each 5 s cycle and the rattle clock restarts when #start stops booting.
 - Welcome page has twinkling stars behind the card (2026-10-09): addStarfield(#start, 90), the same field as the reveal.
 - Toasts sit just above the switcher day and night (2026-10-09; the sky slider they used to clear is gone); over a panel or the reveal they still drop to the very bottom.
+- Tour: the first card and the ones stacked under it are dealt in together (the whole #ob-deck slides up), not the top card rising over the others (2026-10-09).
