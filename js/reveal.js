@@ -269,7 +269,9 @@ async function finish({ fx, color, fresh, seen, level, levelUp, card, alive, fle
   const date = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }).toUpperCase();
   const stampLine = fleet ? `LAUNCH ${fleet.cospar} · ${fleet.stamps} OF ${fleet.total}` : '';
   const conDone = !!con && con.level === 'gold';
-  const milestone = (fresh && (!!con || MILESTONES.includes(collected))) || !!shiny;
+  // 1, 10, 25, 50, 100… cards each earn a patch, and the patch coin says so; no second "milestone" toast for them (playtest 2026-10-09).
+  const PATCHED = [1, 10, 25, 50, 100, 250, 500, 1000];
+  const milestone = (fresh && (!!con || (MILESTONES.includes(collected) && !PATCHED.includes(collected)))) || !!shiny;
   // The stamp that used to land on the card is now a ticket toast with the same words.
   const news = shiny && !conDone ? { kind: 'event', eyebrow: `SHINY · ${shiny.label.toUpperCase()}`, line: shiny.line, ms: 5000 } // say why it's shiny (2026-10-08)
     : fresh && con ? (conDone ? { kind: 'event', eyebrow: `${con.name.toUpperCase()} COMPLETE`, line: `All ${con.total} stars · patch earned`, art: con.art } : { kind: 'xp', eyebrow: con.name.toUpperCase(), line: `${con.have} of ${con.total} stars`, art: con.art })
