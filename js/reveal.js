@@ -5,10 +5,10 @@
 //  Everything scales with rarity (Legendary dims the sky, shockwave, held breath, slow flip, fanfare).
 // Waits use timers, not animation.finished, so a paused tab can never freeze the sequence.
 
-import { TIER_INFO } from './rarity.js?v=0.1.401';
-import { levelFor, attachTilt, attachGyro, attachFlip, throwOff } from './card.js?v=0.1.401';
-import { applyBack } from './card-backs.js?v=0.1.401';
-import { addStarfield } from './starfield.js?v=0.1.401';
+import { TIER_INFO } from './rarity.js?v=0.1.403';
+import { levelFor, attachTilt, attachGyro, attachFlip, throwOff } from './card.js?v=0.1.403';
+import { applyBack } from './card-backs.js?v=0.1.403';
+import { addStarfield } from './starfield.js?v=0.1.403';
 
 const FX = {
   common:    { particles: 14,  flip: 520,  spin: 0,   dim: 0,   shock: false, notes: [880],                            hold: 0 },
@@ -272,7 +272,7 @@ async function finish({ fx, color, fresh, seen, level, levelUp, card, alive, fle
   const milestone = (fresh && (!!con || MILESTONES.includes(collected))) || !!shiny;
   // The stamp that used to land on the card is now a ticket toast with the same words.
   const news = shiny && !conDone ? { kind: 'event', eyebrow: `SHINY · ${shiny.label.toUpperCase()}`, line: shiny.line, ms: 5000 } // say why it's shiny (2026-10-08)
-    : fresh && con ? (conDone ? { kind: 'event', eyebrow: `${con.name.toUpperCase()} COMPLETE`, line: `All ${con.total} stars`, art: con.art } : { kind: 'xp', eyebrow: con.name.toUpperCase(), line: `${con.have} of ${con.total} stars`, art: con.art })
+    : fresh && con ? (conDone ? { kind: 'event', eyebrow: `${con.name.toUpperCase()} COMPLETE`, line: `All ${con.total} stars · patch earned`, art: con.art } : { kind: 'xp', eyebrow: con.name.toUpperCase(), line: `${con.have} of ${con.total} stars`, art: con.art })
     : fresh ? (milestone ? { kind: 'event', eyebrow: 'MILESTONE', line: collected === 1 ? 'First item collected' : `${collected.toLocaleString('en-US')} items collected` } : null)
     : newStamp ? (STAMP_MILESTONES.includes(fleet?.stamps) ? { kind: 'event', eyebrow: 'NEW STAMP', line: `${fleet.stamps} launches stamped` } : { kind: 'xp', eyebrow: 'NEW STAMP', line: stampLine })
     : NIGHT_MILESTONES.includes(nights) ? { kind: 'event', eyebrow: 'MILESTONE', line: `Seen on ${nights} different nights` }

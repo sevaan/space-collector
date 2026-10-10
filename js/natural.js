@@ -1,4 +1,4 @@
-import { extinction } from './sky-limit.js?v=0.1.401';
+import { extinction } from './sky-limit.js?v=0.1.403';
 // The Moon, the naked-eye planets and the brightest named stars, as collectible cards.
 // Positions come from js/celestial.js (state.bodies, state.skyEnu); this file holds the card facts and
 // the "can you see it right now" rules. No DOM. Every fact must be true; approximate values say so.
@@ -83,7 +83,7 @@ export const SOLAR_SYSTEM = {
   stats: [['WORLDS', '9', ''], ['PLANETS', '7', 'of 8'], ['AGE', '4.6', 'billion yr']],
   fact: 'Everything in the Solar System you can see with your own eyes. Collect the Sun, the Moon and all **seven** planets to turn this card **gold**.',
 };
-export const NATURAL = [sunCard, moon, ...PLANETS, ...STARS, SOLAR_SYSTEM];
+export const NATURAL = [sunCard, moon, ...PLANETS, ...STARS]; // SOLAR_SYSTEM is a mission patch now, not a card (2026-10-09)
 for (const o of NATURAL) o.card = o.key;
 export const NATURAL_BY_KEY = new Map(NATURAL.map((o) => [o.key, o]));
 const STAR_BY_SKY_NAME = new Map(STARS.map((o) => [o.skyName, o]));

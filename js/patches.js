@@ -3,6 +3,8 @@
 // group (or the date earned) along the bottom, one icon in the middle. Milestones get gold foil, the rarest holo
 // (css/ui.css .patch--gold / .patch--holo). Shared by Explore (the earning moment, its toast) and Collection (the wall).
 
+import { CON_BY_ID } from './constellations.js?v=0.1.403';
+
 export const GROUPS = {
   collect: { c: '#14284a', t: 'Collection' }, rarity: { c: '#3a2259', t: 'Rarity' }, rocket: { c: '#5a2a1a', t: 'Rockets' },
   nation: { c: '#173d5c', t: 'Nations' }, history: { c: '#4a3a22', t: 'History' }, fleet: { c: '#10433f', t: 'Fleets' },
@@ -24,7 +26,7 @@ const GROUP_OF = {
   time: 'twilight owl dawn marathon double hattrick months3 months12 streak4 streak12 anniversary',
 };
 const groupById = new Map(Object.entries(GROUP_OF).flatMap(([g, ids]) => ids.split(' ').map((id) => [id, g])));
-export const groupOf = (a) => (a.secret ? 'secret' : groupById.get(a.id) ?? 'collect');
+export const groupOf = (a) => (a.secret ? 'secret' : a.con === 'solar' ? 'planet' : a.con ? 'con' : groupById.get(a.id) ?? 'collect');
 
 // Picture icons where one reads better than the achievement's text icon.
 const GLYPH = {
@@ -35,7 +37,7 @@ const GLYPH = {
   compass: 'compass', faint: 'eye', owl: 'owl',
 };
 // Finishes: gold foil for milestones, holo for the rarest few.
-const GOLD = new Set('hundred archivist curator gold gold3 zodiac starlink50 wanderers streak12 anniversary months12 cons5 legends5'.split(' '));
+const GOLD = new Set('con-solar hundred archivist curator gold gold3 zodiac starlink50 wanderers streak12 anniversary months12 cons5 legends5'.split(' '));
 const HOLO = new Set('legends25 shiny5 cons25 catalogue diplomat'.split(' '));
 export const finishOf = (a) => (HOLO.has(a.id) ? 'holo' : GOLD.has(a.id) ? 'gold' : '');
 
@@ -66,6 +68,29 @@ function glyph(k, text) {
     eye: `<path d="M-26 0 Q0 -22 26 0 Q0 22 -26 0Z" fill="none" stroke="${INK}" stroke-width="3"/><circle r="8" fill="${OR}"/><circle r="3" fill="#080e1a"/>`,
   }[k] ?? '';
 }
+
+// Constellation patches (2026-10-09): the stick figure from the real star positions (the same projection as the
+// cards' charts, js/con-art.js), fitted inside the inner ring; stars sized by brightness, the brightest in orange.
+// Each one on its own shade of night-blue twill, so the row of them doesn't read as one patch repeated.
+const RAD = Math.PI / 180, vec = (ra, dec) => [Math.cos(dec * RAD) * Math.cos(ra * RAD), Math.cos(dec * RAD) * Math.sin(ra * RAD), Math.sin(dec * RAD)];
+const CON_TWILL = ['#22265a', '#1a2f52', '#2d2257', '#16324a', '#2a2350', '#1c2a5e'];
+function conGlyph(data) {
+  const stars = data.stars, c = stars.reduce((a, s) => { const v = vec(s.ra, s.dec); return [a[0] + v[0], a[1] + v[1], a[2] + v[2]]; }, [0, 0, 0]);
+  const L = Math.hypot(...c), z = c.map((x) => x / L), e = [-z[1], z[0], 0], eL = Math.hypot(...e) || 1, east = e.map((x) => x / eL);
+  const north = [z[1] * east[2] - z[2] * east[1], z[2] * east[0] - z[0] * east[2], z[0] * east[1] - z[1] * east[0]];
+  const proj = (ra, dec) => { const v = vec(ra, dec), d = v[0] * z[0] + v[1] * z[1] + v[2] * z[2]; return [-(v[0] * east[0] + v[1] * east[1] + v[2] * east[2]) / d, -(v[0] * north[0] + v[1] * north[1] + v[2] * north[2]) / d]; };
+  const pts = stars.map((s) => proj(s.ra, s.dec)), xs = pts.map((p) => p[0]), ys = pts.map((p) => p[1]);
+  const cx = (Math.min(...xs) + Math.max(...xs)) / 2, cy = (Math.min(...ys) + Math.max(...ys)) / 2;
+  const k = 37 / Math.max(1e-6, ...pts.map(([x, y]) => Math.hypot(x - cx, y - cy))); // farthest star 37 from the centre
+  const at = (ra, dec) => { const [x, y] = proj(ra, dec); return [(x - cx) * k, (y - cy) * k]; };
+  const lines = data.lines.map((pl) => `<polyline points="${pl.map(([ra, dec]) => at(ra, dec).map((n) => n.toFixed(1)).join(',')).join(' ')}"/>`).join('');
+  const top = Math.min(...stars.map((s) => s.mag));
+  const dots = stars.map((s) => { const [x, y] = at(s.ra, s.dec), r = s.mag <= 1 ? 3.6 : s.mag <= 2 ? 3 : s.mag <= 3 ? 2.4 : s.mag <= 4 ? 1.9 : 1.5;
+    return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}" fill="${s.mag === top ? OR : INK}"/>`; }).join('');
+  return `<g fill="none" stroke="${INK}" stroke-opacity=".75" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${lines}</g>${dots}`;
+}
+// The Solar System patch: the Sun in the middle, three orbits, a planet on each.
+const SOLAR_GLYPH = `<circle r="8" fill="${OR}"/><g fill="none" stroke="${INK}" stroke-opacity=".6" stroke-width="1.3"><circle r="16"/><circle r="24"/><circle r="32"/></g><circle cx="11.3" cy="-11.3" r="2.6" fill="${INK}"/><circle cx="-22" cy="9.5" r="3.4" fill="#c8502e"/><circle cx="18" cy="26.5" r="4.4" fill="${INK}"/><ellipse cx="18" cy="26.5" rx="8" ry="2" fill="none" stroke="${INK}" stroke-width="1.2" transform="rotate(-18 18 26.5)"/>`;
 
 // Close Encounter (design/ufo.html): the saucer over a green beam, a few stars.
 const UFO_ART = (id) => `<defs><linearGradient id="${id}beam" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7dff8a" stop-opacity=".55"/><stop offset="1" stop-color="#7dff8a" stop-opacity="0"/></linearGradient></defs>
@@ -110,9 +135,10 @@ let uid = 0;
 // The patch as an SVG string. locked: a faint stitch outline (not earned yet). date: replaces the group along the
 // bottom ("EARNED 07 OCT 2026"). stitch: adds the thread that draws the border on (the earning moment).
 export function patchSvg(a, { locked = false, date = '', stitch = false } = {}) {
-  const g0 = GROUPS[groupOf(a)], g = a.id === 'ufo' ? { ...g0, c: '#123a2a' } : SECRET_TWILL[a.id] ? { ...g0, c: SECRET_TWILL[a.id] } : g0, id = `pt${uid++}`, R = 60, fossil = a.id === 'fossil' || a.id === 'ufo' || !!SECRET_ART[a.id];
+  const con = a.con && a.con !== 'solar' ? CON_BY_ID.get(a.con) : null;
+  const g0 = GROUPS[groupOf(a)], g = con ? { ...g0, c: CON_TWILL[[...CON_BY_ID.keys()].indexOf(a.con) % CON_TWILL.length] } : a.id === 'ufo' ? { ...g0, c: '#123a2a' } : SECRET_TWILL[a.id] ? { ...g0, c: SECRET_TWILL[a.id] } : g0, id = `pt${uid++}`, R = 60, fossil = a.id === 'fossil' || a.id === 'ufo' || !!SECRET_ART[a.id];
   // Fossil Hunter (design/fossil-patch.html A): the T. rex skeleton art, centred on its bones, no inner ring.
-  const ic = SECRET_ART[a.id] ? SECRET_ART[a.id](id) : a.id === 'ufo' ? UFO_ART(id) : fossil ? '<image href="assets/art/fossils/patch.svg" x="-46" y="-17.5" width="92" height="43"/>' : glyph(GLYPH[a.id], a.icon);
+  const ic = SECRET_ART[a.id] ? SECRET_ART[a.id](id) : a.id === 'ufo' ? UFO_ART(id) : fossil ? '<image href="assets/art/fossils/patch.svg" x="-46" y="-17.5" width="92" height="43"/>' : con ? conGlyph(con.data) : a.con === 'solar' ? SOLAR_GLYPH : glyph(GLYPH[a.id], a.icon);
   if (locked) {
     const ghost = ic.replace(/fill="(?!none)[^"]*"/g, 'fill="none"').replace(/<(polygon|rect|circle|path|ellipse|polyline|text)/g, '<$1 stroke="#627a8b" stroke-width="1.5"');
     // Faintly in its group's colour (2026-10-08 playtest: a new player's wall read as a dark void).
@@ -150,7 +176,7 @@ export function patchSvg(a, { locked = false, date = '', stitch = false } = {}) 
     <circle r="${rIn - 1.6}" fill="none" stroke="${INK}" stroke-opacity=".45" stroke-width=".7" stroke-dasharray="1.8 1.4"/>
     ${fossil ? '' : `<circle r="${R - 22}" fill="none" stroke="${INK}" stroke-opacity=".3" stroke-width=".9" stroke-dasharray="1.6 1.6"/>`}
     <g ${lift}><text font-family="SC Label, Arial Narrow, sans-serif" font-size="${nameSize}" letter-spacing="2" fill="${INK}" text-anchor="middle"><textPath href="#${id}t" startOffset="50%">${esc(name)}</textPath></text>
-    <text font-family="SC Label, Arial Narrow, sans-serif" font-size="8.5" letter-spacing="2" fill="${OR}" text-anchor="middle" dy="7"><textPath href="#${id}b" startOffset="50%">${esc(date || g.t.toUpperCase())}</textPath></text>
+    <text font-family="SC Label, Arial Narrow, sans-serif" font-size="8.5" letter-spacing="2" fill="${OR}" text-anchor="middle" dy="7"><textPath href="#${id}b" startOffset="50%">${esc(date || (a.sub ?? g.t).toUpperCase())}</textPath></text>
     ${fossil ? ic : `<g transform="scale(.82)">${ic}</g>`}</g>
     <circle r="${R}" fill="url(#${id}h)" pointer-events="none"/></svg>`;
 }

@@ -1,22 +1,21 @@
-import { expandFacts } from './catalog-facts.js?v=0.1.401';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.401';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.401';
-import { ticket } from './toast.js?v=0.1.401';
-import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.401';
-import { cardArt } from './art.js?v=0.1.401';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.401';
-import { applyBack } from './card-backs.js?v=0.1.401';
-import { SETS, assignSets } from './sets.js?v=0.1.401';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.401';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.401';
-import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.401';
-import { RANKS, progress } from './progress.js?v=0.1.401';
-import { SOLAR_SYSTEM } from './natural.js?v=0.1.401';
-import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.401';
-import { shareCardEl } from './share-card.js?v=0.1.401';
-import { allSightings, deleteSighting } from './store.js?v=0.1.401';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.401';
-import { SECRET_PATCHES } from './secrets.js?v=0.1.401';
+import { expandFacts } from './catalog-facts.js?v=0.1.403';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.403';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.403';
+import { ticket } from './toast.js?v=0.1.403';
+import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.403';
+import { cardArt } from './art.js?v=0.1.403';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.403';
+import { applyBack } from './card-backs.js?v=0.1.403';
+import { SETS, assignSets } from './sets.js?v=0.1.403';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.403';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.403';
+import { loadConstellations, conList } from './constellations.js?v=0.1.403';
+import { RANKS, progress } from './progress.js?v=0.1.403';
+import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.403';
+import { shareCardEl } from './share-card.js?v=0.1.403';
+import { allSightings, deleteSighting } from './store.js?v=0.1.403';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.403';
+import { SECRET_PATCHES } from './secrets.js?v=0.1.403';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -175,7 +174,7 @@ function remindStreak() {
 }
 function renderLogbook() {
   const info = (k) => { const c = state.byKey.get(k); return c ? { tier: c.tier, type: c.type, owner: c.owner, launch: c.launch, natural: c.natural, con: c.con } : null; };
-  const p = progress(state.raw, info, { constellations: [...CONSTELLATIONS, SOLAR_SYSTEM].map((c) => ({ id: c.con, stars: c.stars, zodiac: c.zodiac, system: !!c.system })) });
+  const p = progress(state.raw, info, { constellations: conList() });
   const card = $('logbook'); card.hidden = false;
   // The logbook is a card (2026-10-08, Sevaan): it tilts with your finger and the phone, has a glare, and a double
   // tap flips it to a card back. Built once; the contents are re-rendered inside .lb-face.
@@ -534,7 +533,7 @@ $('v-share').addEventListener('click', async () => {
   const btn = $('v-share'); btn.disabled = true; btn.textContent = 'Making the image…';
   try {
     const info = (k) => { const x = state.byKey.get(k); return x ? { tier: x.tier, type: x.type, owner: x.owner, launch: x.launch, natural: x.natural, con: x.con } : null; };
-    const how = await shareCardEl(el, c, { title: titleFor(c), rank: progress(state.raw, info, { constellations: [...CONSTELLATIONS, SOLAR_SYSTEM].map((x) => ({ id: x.con, stars: x.stars, zodiac: x.zodiac, system: !!x.system })) }).rank.name, fact: factFor(c) }); // same rank as the logbook (QA 2026-10-08)
+    const how = await shareCardEl(el, c, { title: titleFor(c), rank: progress(state.raw, info, { constellations: conList() }).rank.name, fact: factFor(c) }); // same rank as the logbook (QA 2026-10-08)
     btn.textContent = how === 'downloaded' ? 'Saved the image' : 'Share this card';
   } catch { btn.textContent = 'Couldn\'t make the image'; }
   btn.disabled = false; setTimeout(() => { btn.textContent = 'Share this card'; }, 2500);
@@ -644,7 +643,7 @@ function earnedDates() {
   if (earnedCache?.n === n) return earnedCache.dates;
   let stored = {}; try { stored = JSON.parse(localStorage.getItem('patchDates') || '{}'); } catch {}
   const info = (k) => { const c = state.byKey.get(k); return c ? { tier: c.tier, type: c.type, owner: c.owner, launch: c.launch, natural: c.natural, con: c.con } : null; };
-  const cons = [...CONSTELLATIONS, SOLAR_SYSTEM].map((c) => ({ id: c.con, stars: c.stars, zodiac: c.zodiac, system: !!c.system }));
+  const cons = conList();
   const list = state.raw.filter((x) => !x.sim).slice().sort((a, b) => a.time - b.time), dates = {};
   const want = new Set((state.achievements ?? []).filter((a) => a.done && !stored[a.id]).map((a) => a.id));
   for (let i = 0; i < list.length && want.size; i++) {

@@ -1,7 +1,7 @@
 // Player progress from the sighting log: XP and observer rank, tonight's three missions, a weekly streak and
 // achievements. Everything is derived from the saved sightings (nothing extra is stored), so it can't drift.
 // info(cardKey) -> { tier, type, owner, launch, natural, con } | null. No DOM.
-import { nightKey } from './observation.js?v=0.1.401';
+import { nightKey } from './observation.js?v=0.1.403';
 
 export const RANKS = [
   [0, 'Stargazer'], [200, 'Spotter'], [600, 'Tracker'], [1500, 'Navigator'], [4000, 'Flight Controller'], [10000, 'Mission Control'],
@@ -163,7 +163,7 @@ export function progress(sightings, info, { constellations = [], now = Date.now(
       if (i?.type && !i.natural) a.typeCount[i.type] = (a.typeCount[i.type] ?? 0) + 1;
       if (i?.owner && !i.natural) a.ownerCount[i.owner] = (a.ownerCount[i.owner] ?? 0) + 1;
       if (i?.natural) a.naturals.add(s.cardKey);
-      if (i?.con && i.natural !== 'constellation') a.stars++;
+      if (i?.con) a.stars++;
       if (!i?.natural && i?.launch) {
         const y = year(i.launch);
         if (y) { if (y < 1991) a.pre1991++; a.decades.add(Math.floor(y / 10)); }
@@ -209,5 +209,9 @@ export function progress(sightings, info, { constellations = [], now = Date.now(
   let ri = 0; for (let k = 0; k < RANKS.length; k++) if (xp >= RANKS[k][0]) ri = k;
   const rank = { name: RANKS[ri][1], index: ri, at: RANKS[ri][0], next: RANKS[ri + 1]?.[0] ?? null, nextName: RANKS[ri + 1]?.[1] ?? null };
   const achievements = ACHIEVEMENTS.map((x) => ({ id: x.id, name: x.name, text: x.text, icon: x.icon, done: x.done(a) }));
+  // Every constellation is its own mission patch (2026-10-09, Sevaan: they replace the gold constellation cards),
+  // and so is the Solar System. The patch art is the stick figure (js/patches.js).
+  for (const c of constellations) achievements.push({ id: `con-${c.id}`, con: c.id, name: c.system ? 'Solar System' : c.name, sub: c.system ? 'Home system' : c.nick.replace(/^part of /, ''), icon: '',
+    text: c.system ? 'See the Sun, the Moon and all seven planets' : `Collect all ${c.stars.length} stars of ${c.name}`, done: c.stars.every((k) => seenCard.has(k)) });
   return { xp, rank, missions, streak: st, achievements, cards: a.cards };
 }

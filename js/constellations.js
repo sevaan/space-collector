@@ -3,8 +3,8 @@
 // Every star in a stick figure (magnitude <= 5) is its own card; the constellation card turns gold when
 // you own all of them. Bright stars that already have cards (Regulus, Spica…) count as members.
 // No DOM.
-import { NATURAL, NATURAL_BY_KEY } from './natural.js?v=0.1.401';
-import { starVector } from './celestial.js?v=0.1.401';
+import { NATURAL, NATURAL_BY_KEY, SOLAR_SYSTEM } from './natural.js?v=0.1.403';
+import { starVector } from './celestial.js?v=0.1.403';
 
 const GEN = { Ari: 'Arietis', Tau: 'Tauri', Gem: 'Geminorum', Cnc: 'Cancri', Leo: 'Leonis', Vir: 'Virginis', Lib: 'Librae', Sco: 'Scorpii', Sgr: 'Sagittarii',
   Cap: 'Capricorni', Aqr: 'Aquarii', Psc: 'Piscium', Ori: 'Orionis', BigDipper: 'Ursae Majoris', UMi: 'Ursae Minoris', Cas: 'Cassiopeiae', Cyg: 'Cygni', Cru: 'Crucis' };
@@ -69,10 +69,14 @@ function register(data) {
       stats: [['STARS', String(keys.length), ''], ['BRIGHTEST', brightest?.name ?? '—', ''], [c.zodiac ? 'ZODIAC' : 'KNOWN AS', c.zodiac ? 'Yes' : c.nick.replace(/^the /, ''), '']],
       fact: FACT[c.id] ?? `One of the 12 **zodiac** constellations: the Sun passes in front of ${c.name} every year. Collect all ${keys.length} of its stars to turn this card **gold**.`,
     };
-    NATURAL.push(con); NATURAL_BY_KEY.set(key, con);
+    // Not a card any more (2026-10-09, Sevaan): completing a constellation earns its mission patch (js/progress.js).
     CONSTELLATIONS.push(con); CON_BY_ID.set(c.id, con);
   }
 }
+
+// What progress() needs: each constellation (and the Solar System) with its member card keys, for completion
+// counts and the per-constellation mission patches.
+export const conList = () => [...CONSTELLATIONS, SOLAR_SYSTEM].map((c) => ({ id: c.con, name: c.name, nick: c.data?.nick ?? '', stars: c.stars, zodiac: c.zodiac, system: !!c.system }));
 
 // Constellation progress from a set of collected card keys: { have, total, level }.
 export function conProgress(con, ownedKeys) {

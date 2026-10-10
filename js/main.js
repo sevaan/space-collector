@@ -1,39 +1,39 @@
-import * as Secrets from './secrets.js?v=0.1.401';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.401';
-import * as Ufo from './ufo.js?v=0.1.401';
-import * as Fossil from './fossil.js?v=0.1.401';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.401';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.401';
-import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.401';
-import { VERSION } from './version.js?v=0.1.401';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.401';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.401';
-import { conArt } from './con-art.js?v=0.1.401';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.401';
-import { CON_FIGURES } from './con-figures.js?v=0.1.401';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.401';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.401';
-import { progress as progressOf } from './progress.js?v=0.1.401';
-import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.401';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.401';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.401';
-import { SkyView, shortName } from './sky.js?v=0.1.401';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.401';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.401';
-import { cardArt } from './art.js?v=0.1.401';
-import { renderCard, cardLevel, artImage, lockedArt, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.401';
-import { applyBack } from './card-backs.js?v=0.1.401';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.401';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.401';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.401';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.401';
-import { TIER_INFO } from './rarity.js?v=0.1.401';
-import { SETS } from './sets.js?v=0.1.401';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.401';
-import { shareCardEl } from './share-card.js?v=0.1.401';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.401';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.401';
-import { addStarfield } from './starfield.js?v=0.1.401';
+import * as Secrets from './secrets.js?v=0.1.403';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.403';
+import * as Ufo from './ufo.js?v=0.1.403';
+import * as Fossil from './fossil.js?v=0.1.403';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.403';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.403';
+import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.403';
+import { VERSION } from './version.js?v=0.1.403';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.403';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.403';
+import { conArt } from './con-art.js?v=0.1.403';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.403';
+import { CON_FIGURES } from './con-figures.js?v=0.1.403';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.403';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.403';
+import { progress as progressOf } from './progress.js?v=0.1.403';
+import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.403';
+import { conList } from './constellations.js?v=0.1.403';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.403';
+import { SkyView, shortName } from './sky.js?v=0.1.403';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.403';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.403';
+import { cardArt } from './art.js?v=0.1.403';
+import { renderCard, cardLevel, artImage, lockedArt, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.403';
+import { applyBack } from './card-backs.js?v=0.1.403';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.403';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.403';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.403';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.403';
+import { TIER_INFO } from './rarity.js?v=0.1.403';
+import { SETS } from './sets.js?v=0.1.403';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.403';
+import { shareCardEl } from './share-card.js?v=0.1.403';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.403';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.403';
+import { addStarfield } from './starfield.js?v=0.1.403';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -963,11 +963,11 @@ function showCaptureCard(obj) {
   const progress = { level: cardLevel(sightings), before: cardLevel(sightings.slice(1)), nights: nightsIn(sightings) > nightsIn(sightings.slice(1)) ? nightsIn(sightings) : 0 }; // 0 unless this sighting started a new night
   const collected = new Set(state.sightings.filter(s => !s.sim).map(s => s.cardKey)).size; // milestone stamps
   // A constellation star: the stamp shows how far along its constellation is (gold when complete).
-  // A star's constellation, or the Solar System for the Moon and planets: progress toward the gold card.
+  // A star's constellation, or the Solar System for the Moon and planets: progress toward its mission patch.
   const conCard = (model.con && CON_BY_ID.get(model.con)) || (['moon', 'planet'].includes(model.type) ? SOLAR_SYSTEM : null);
   const owned = ownedCardKeys();
   const con = conCard && sightings.length === 1 ? { name: conCard.name, ...conProgress(conCard, owned) } : null;
-  // The toast shows the constellation filling in (2026-10-07, Sevaan): the gold card's art, found stars lit,
+  // The toast shows the constellation filling in (2026-10-07, Sevaan): the constellation chart, found stars lit,
   // the one you just caught ringed.
   if (con && conCard.data) con.art = conArt(conCard.data, model.hip ?? null, { w: 150, h: 100, ...(CON_FIGURES.has(conCard.con) ? { figure: `assets/art/con/${conCard.con}.webp` } : {}),
     lit: new Set(conCard.stars.filter((k) => owned.has(k)).map((k) => Number(k.replace('star:hip', '')))) });
@@ -1042,7 +1042,7 @@ function ownedCardKeys() { return new Set(state.sightings.filter((s) => !s.sim).
 // log with and without the newest sighting; toasts the news a moment after the card lands.
 function progressNow(list) {
   const info = (k) => { const c = state.cardModels.get(k); return c ? { tier: c.tier, type: c.type, owner: c.owner ?? (c.family ? state.catalog.families?.[c.family]?.owner : undefined), launch: c.launch, natural: c.natural, con: c.con } : null; };
-  return progressOf(list, info, { constellations: [...CONSTELLATIONS, SOLAR_SYSTEM].map((c) => ({ id: c.con, stars: c.stars, zodiac: c.zodiac, system: !!c.system })), now: now().getTime() });
+  return progressOf(list, info, { constellations: conList(), now: now().getTime() });
 }
 function progressGain(saved) {
   const after = progressNow(state.sightings), before = progressNow(state.sightings.filter((s) => s !== saved));
@@ -2278,7 +2278,7 @@ function renderStartHand() {
   // Dress it as a briefing, not a catalogue entry.
   const sb = card.querySelector('.card__setbar > span:first-child > span'); if (sb) sb.textContent = 'MISSION CONTROL';
   const id = card.querySelector('.card__identity'); if (id) id.innerHTML = '<span>Your first mission</span><span class="card__mono">OBSERVER 001</span>';
-  const art = card.querySelector('.card__art'), sys = state.cardModels.get('system:solar'), src = sys && artImage(sys);
+  const art = card.querySelector('.card__art'), sys = SOLAR_SYSTEM, src = artImage(sys);
   if (art && src) art.innerHTML = `<img class="card-art-image" src="${src}" alt="" decoding="async">`;
   const st = card.querySelector('.card__status'); if (st) st.innerHTML = '<span class="card__status-icon" aria-hidden="true">↑</span><span>SWIPE UP TO BEGIN</span>';
   // Start face-down: the card is turned half way, so its (pre-mirrored) back faces you.
