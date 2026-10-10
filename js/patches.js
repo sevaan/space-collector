@@ -3,7 +3,7 @@
 // group (or the date earned) along the bottom, one icon in the middle. Milestones get gold foil, the rarest holo
 // (css/ui.css .patch--gold / .patch--holo). Shared by Explore (the earning moment, its toast) and Collection (the wall).
 
-import { CON_BY_ID } from './constellations.js?v=0.1.414';
+import { CON_BY_ID } from './constellations.js?v=0.1.415';
 
 export const GROUPS = {
   collect: { c: '#14284a', t: 'Collection' }, rarity: { c: '#3a2259', t: 'Rarity' }, rocket: { c: '#5a2a1a', t: 'Rockets' },
@@ -35,6 +35,11 @@ const GLYPH = {
   oldtimer: 'sputnik', starlink: 'train', starlink10: 'train', starlink50: 'train', fleets: 'anchor', moon: 'moon', mars: 'mars',
   saturn: 'saturn', wanderers: 'saturn', stars10: 'con', constellation: 'con', cons5: 'con', cons25: 'con', zenith: 'zenith',
   compass: 'compass', faint: 'eye', owl: 'owl',
+  // Picture icons for the patches that used to show a text code (playtest 2026-10-09: "M10", "3/3", "≤90"…)
+  missions10: 'clipboard', missions50: 'clipboard', fullhouse: 'three', streak4: 'calendar', streak12: 'calendar', months3: 'calendar', months12: 'calendar',
+  silver: 'cardAg', gold: 'cardAu', gold3: 'cardAu3', marathon: 'tally', double: 'cards2', hattrick: 'cards3', twilight: 'sunset', dawn: 'sunrise',
+  horizon: 'horizon', coldwar: 'rocketOld', decades: 'hourglass', brandnew: 'launch', anniversary: 'candle', close: 'close', far: 'far', roadtrip: 'road',
+  brilliant: 'flare', spectrum: 'gems', europe: 'ring12', satellites50: 'sat',
 };
 // Finishes: gold foil for milestones, holo for the rarest few.
 const GOLD = new Set('con-solar hundred archivist curator gold gold3 zodiac starlink50 wanderers streak12 anniversary months12 cons5 legends5'.split(' '));
@@ -65,6 +70,29 @@ function glyph(k, text) {
     zenith: `<path d="M0 22 V-20 M-9 -11 L0 -20 L9 -11" stroke="${INK}" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M-24 22 H24" stroke="${OR}" stroke-width="3"/>`,
     compass: `<polygon points="0,-26 6,0 0,26 -6,0" fill="${INK}"/><polygon points="0,-26 6,0 -6,0" fill="${OR}"/><polygon points="-26,0 0,-5 26,0 0,5" fill="${INK}" opacity=".7"/>`,
     owl: `<circle cx="-9" r="8" fill="none" stroke="${INK}" stroke-width="3"/><circle cx="9" r="8" fill="none" stroke="${INK}" stroke-width="3"/><circle cx="-9" r="3" fill="${OR}"/><circle cx="9" r="3" fill="${OR}"/><path d="M-3 9 L0 14 L3 9Z" fill="${INK}"/>`,
+    clipboard: `<rect x="-17" y="-22" width="34" height="44" rx="4" fill="none" stroke="${INK}" stroke-width="3"/><rect x="-8" y="-26" width="16" height="8" rx="2" fill="${INK}"/><path d="M-9 -4 L-3 2 L9 -10" stroke="${OR}" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M-9 10 H9 M-9 16 H4" stroke="${INK}" stroke-width="2.4" stroke-linecap="round"/>`,
+    three: [-18, 0, 18].map((x) => `<polygon points="${x},-10 ${x + 8},0 ${x},10 ${x - 8},0" fill="${OR}" stroke="${INK}" stroke-width="1.6"/>`).join('') + `<path d="M-22 18 H22" stroke="${INK}" stroke-width="2.4" stroke-linecap="round"/>`,
+    calendar: `<rect x="-20" y="-16" width="40" height="36" rx="4" fill="none" stroke="${INK}" stroke-width="3"/><path d="M-20 -6 H20" stroke="${INK}" stroke-width="3"/><path d="M-11 -22 V-12 M11 -22 V-12" stroke="${INK}" stroke-width="3" stroke-linecap="round"/><path d="M0 14 C-8 10 -6 2 0 -2 C0 4 6 4 6 9 C6 13 3 15 0 14Z" fill="${OR}"/>`,
+    cardAg: `<rect x="-14" y="-21" width="28" height="40" rx="4" fill="#dfe6ee" stroke="${INK}" stroke-width="2"/><path d="M-14 -4 L14 -14 M-14 8 L14 -2" stroke="#ffffff" stroke-width="3" opacity=".7"/><circle cy="10" r="4" fill="#9aa7b4"/>`,
+    cardAu: `<rect x="-14" y="-21" width="28" height="40" rx="4" fill="#f2c94c" stroke="${INK}" stroke-width="2"/><path d="M-14 -4 L14 -14 M-14 8 L14 -2" stroke="#fff6cf" stroke-width="3" opacity=".7"/><circle cy="10" r="4" fill="#c4932a"/>`,
+    cardAu3: [-12, 0, 12].map((x, i) => `<rect x="${x - 10}" y="${-18 + Math.abs(i - 1) * 4}" width="20" height="30" rx="3" fill="#f2c94c" stroke="${INK}" stroke-width="1.8" transform="rotate(${(i - 1) * 12} ${x} 0)"/>`).join(''),
+    tally: `<path d="M-14 -16 A14 14 0 1 0 -2 8 A11 11 0 1 1 -14 -16Z" fill="${INK}" transform="translate(-4 -2)"/>` + [0, 1, 2, 3].map((k) => `<path d="M${4 + k * 5} 4 V22" stroke="${OR}" stroke-width="2.6" stroke-linecap="round"/>`).join('') + `<path d="M1 18 L23 8" stroke="${OR}" stroke-width="2.6" stroke-linecap="round"/>`,
+    cards2: `<rect x="-20" y="-16" width="22" height="32" rx="3" fill="none" stroke="${INK}" stroke-width="2.6" transform="rotate(-10)"/><rect x="-2" y="-16" width="22" height="32" rx="3" fill="${OR}" stroke="${INK}" stroke-width="2.6" transform="rotate(8)"/>`,
+    cards3: [-1, 0, 1].map((k) => `<rect x="${k * 13 - 10}" y="-16" width="20" height="30" rx="3" fill="${k === 1 ? OR : 'none'}" stroke="${INK}" stroke-width="2.4" transform="rotate(${k * 10} ${k * 13} 0)"/>`).join(''),
+    sunset: `<path d="M-26 8 H26" stroke="${INK}" stroke-width="3" stroke-linecap="round"/><path d="M-14 8 A14 14 0 0 1 14 8Z" fill="${OR}"/><path d="M-8 16 H8 M-14 22 H14" stroke="${INK}" stroke-width="2.4" stroke-linecap="round" opacity=".7"/><circle cx="16" cy="-16" r="2" fill="${INK}"/>`,
+    sunrise: `<path d="M-26 10 H26" stroke="${INK}" stroke-width="3" stroke-linecap="round"/><path d="M-12 10 A12 12 0 0 1 12 10Z" fill="${OR}"/>` + [-60, -30, 0, 30, 60].map((d) => `<path d="M0 -6 V-14" stroke="${OR}" stroke-width="2.6" stroke-linecap="round" transform="translate(0 10) rotate(${d}) translate(0 -10)"/>`).join(''),
+    horizon: `<path d="M-28 14 Q0 6 28 14" stroke="${INK}" stroke-width="3" fill="none"/><path d="M-22 6 Q0 -30 22 6" stroke="${INK}" stroke-width="1.6" stroke-dasharray="3 3" fill="none" opacity=".6"/><circle cx="-18" cy="2" r="4.5" fill="${OR}"/>`,
+    rocketOld: `<path d="M0 -26 C7 -16 7 4 5 14 H-5 C-7 4 -7 -16 0 -26Z" fill="${INK}"/><path d="M-5 6 L-13 18 L-5 14Z M5 6 L13 18 L5 14Z" fill="${OR}"/><polygon points="${star(2.4, 6)}" transform="translate(0 -6)" fill="#d33"/><path d="M-3 18 L0 26 L3 18Z" fill="${OR}"/>`,
+    hourglass: `<path d="M-14 -22 H14 M-14 22 H14" stroke="${INK}" stroke-width="3" stroke-linecap="round"/><path d="M-11 -20 C-11 -6 11 -6 11 -20 M-11 20 C-11 6 11 6 11 20 M-11 -20 C-11 -4 -2 -2 -2 0 C-2 2 -11 4 -11 20 M11 -20 C11 -4 2 -2 2 0 C2 2 11 4 11 20" stroke="${INK}" stroke-width="2.4" fill="none"/><path d="M-7 18 C-5 12 5 12 7 18Z" fill="${OR}"/>`,
+    launch: `<path d="M0 -24 C6 -16 6 0 4 8 H-4 C-6 0 -6 -16 0 -24Z" fill="${INK}"/><path d="M-4 2 L-10 12 L-4 9Z M4 2 L10 12 L4 9Z" fill="${INK}"/><path d="M-4 10 C-6 18 -2 22 0 26 C2 22 6 18 4 10Z" fill="${OR}"/><path d="M-24 24 H24" stroke="${INK}" stroke-width="2.4" stroke-linecap="round" opacity=".6"/>`,
+    candle: `<rect x="-6" y="-6" width="12" height="28" rx="2" fill="${INK}"/><path d="M0 -10 C-6 -16 -2 -22 0 -26 C2 -22 6 -16 0 -10Z" fill="${OR}"/><path d="M-22 22 H22" stroke="${INK}" stroke-width="2.4" stroke-linecap="round"/><text y="-12" x="16" font-family="SC Display, Impact, sans-serif" font-size="12" fill="${INK}">1</text>`,
+    close: `<circle cx="-6" cy="6" r="14" fill="none" stroke="${INK}" stroke-width="3"/><circle cx="14" cy="-14" r="5" fill="${OR}"/><path d="M4 -4 L10 -10" stroke="${INK}" stroke-width="2" stroke-dasharray="2 2"/>`,
+    far: `<circle cx="-16" cy="12" r="9" fill="none" stroke="${INK}" stroke-width="3"/><path d="M-8 6 L16 -12" stroke="${INK}" stroke-width="2" stroke-dasharray="3 3"/><circle cx="20" cy="-15" r="3.5" fill="${OR}"/>`,
+    road: `<path d="M-6 26 L-2 -20 M6 26 L2 -20" stroke="${INK}" stroke-width="2.6"/><path d="M0 22 V16 M0 10 V5 M0 -1 V-5" stroke="${OR}" stroke-width="2" stroke-linecap="round"/><path d="M-20 -8 C-20 -18 -8 -18 -8 -8 C-8 -2 -14 4 -14 4 C-14 4 -20 -2 -20 -8Z M8 -14 C8 -24 20 -24 20 -14 C20 -8 14 -2 14 -2 C14 -2 8 -8 8 -14Z" fill="${OR}"/>`,
+    flare: `<polygon points="${star(3, 26, 4)}" fill="${INK}"/><circle r="7" fill="#fff"/><circle r="12" fill="${OR}" opacity=".35"/>`,
+    gems: ['#9aa7b4', '#4fbf7a', '#4a7bd8', '#a463e0', '#f2c94c'].map((c, i) => `<polygon points="0,-7 6,0 0,7 -6,0" fill="${c}" transform="translate(${(i - 2) * 11} ${Math.abs(i - 2) * 3 - 3})"/>`).join(''),
+    ring12: Array.from({ length: 12 }, (_, i) => { const t = i / 12 * Math.PI * 2; return `<polygon points="${star(1.6, 4)}" transform="translate(${(Math.cos(t) * 20).toFixed(1)} ${(Math.sin(t) * 20).toFixed(1)})" fill="#f2c94c"/>`; }).join(''),
+    sat: `<rect x="-6" y="-6" width="12" height="12" fill="${INK}"/><rect x="-26" y="-5" width="16" height="10" fill="${OR}"/><rect x="10" y="-5" width="16" height="10" fill="${OR}"/><path d="M0 6 V14 M-5 18 Q0 12 5 18" stroke="${INK}" stroke-width="2" fill="none"/>`,
     eye: `<path d="M-26 0 Q0 -22 26 0 Q0 22 -26 0Z" fill="none" stroke="${INK}" stroke-width="3"/><circle r="8" fill="${OR}"/><circle r="3" fill="#080e1a"/>`,
   }[k] ?? '';
 }
