@@ -339,3 +339,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - Patch coins sit just above any toast or standing message (2026-10-09).
 - Patch coins line up with the toasts' left edge (2026-10-09). The tour lets go of its target when it finishes (obFinish clears pinnedId), so the first catch isn't left selected.
 - Tap to collect (#d-cta for new finds) is a light pill like the highlighted Explore pill (orange tint, thin orange edge, orange text); pressing it flashes solid bright orange with a glow (.tapped, held ~280 ms) (2026-10-09, Sevaan).
+- Found secrets leave the sky for good (2026-10-09, Sevaan): drawSecrets skips any with done (Santa, Roadster, the probes, Wow!); the UFO already never returns; the fossil still shows ("DINO BONES", a different skeleton each visit).
