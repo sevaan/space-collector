@@ -1,7 +1,7 @@
 // Player progress from the sighting log: XP and observer rank, tonight's three missions, a weekly streak and
 // achievements. Everything is derived from the saved sightings (nothing extra is stored), so it can't drift.
 // info(cardKey) -> { tier, type, owner, launch, natural, con } | null. No DOM.
-import { nightKey } from './observation.js?v=0.1.431';
+import { nightKey } from './observation.js?v=0.1.433';
 
 export const RANKS = [
   [0, 'Stargazer'], [200, 'Spotter'], [600, 'Tracker'], [1500, 'Navigator'], [4000, 'Flight Controller'], [10000, 'Mission Control'],
@@ -217,11 +217,12 @@ export function progress(sightings, info, { constellations = [], albums = [], no
     oldest: null, pre1991: 0, decades: new Set(), brandNew: false, race: false, wanderers: 0, naturals: new Set(), stars: 0, cons: 0, zodiac: 0,
     owners: new Set(), ownerCount: {}, fleet: {}, maxEl: -90, minSatEl: null, quadrants: new Set(), faintest: null, brightestSat: null,
     closest: null, farthest: null, maxNight: 0, months: new Set(), spanDays: 0, maxNightsOnCard: 0, goldCards: 0, spreadKm: 0, missionsDone: 0, fullHouse: false };
+  // (Legacy XP reads tier0, each object's tier before the 2026-10-10 difficulty re-tier.)
   const firsts = [], nightsOnCard = new Map(), fleetStamps = new Map(), places = [], placeSeen = new Set();
   for (const s of list) {
     const i = info(s.cardKey), night = nightKey(s.time, s.lon ?? 0), first = !seenCard.has(s.cardKey), nk = `${s.cardKey}|${night}`;
     if (first) {
-      seenCard.add(s.cardKey); xp += tierXp[(tierXp === LEGACY_TIER_XP && i?.tier0) || i?.tier] ?? 10; // the old numbers use the old tiers (tier0, before the 2026-10-10 re-tier) a.cards++; firsts.push(s.time);
+      seenCard.add(s.cardKey); xp += tierXp[(tierXp === LEGACY_TIER_XP && i?.tier0) || i?.tier] ?? 10; a.cards++; firsts.push(s.time);
       if (s.time - (firsts[firsts.length - 2] ?? -Infinity) <= 60000) a.double = true;
       if (firsts.length >= 3 && s.time - firsts[firsts.length - 3] <= 300000) a.triple = true;
       if (i?.tier) a.tierCount[i.tier] = (a.tierCount[i.tier] ?? 0) + 1;

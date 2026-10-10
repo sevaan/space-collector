@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { nightKey, nightsIn, collectedTonight } from '../js/observation.js';
-import { NATURAL, naturalTargets } from '../js/natural.js';
+import { NATURAL, naturalTargets, SOLAR_SYSTEM } from '../js/natural.js';
 import { buildCards } from '../js/card-model.js';
 import { levelFor, cardLevel } from '../js/card.js';
 
@@ -36,12 +36,12 @@ test('levels: nights 1/3/10, and sightings-based levels earned before Oct 2026 a
   assert.equal(cardLevel(newRules), 'bronze'); // one night under the new rules
 });
 
-test('Moon, seven planets, the Solar System and 21 stars become cards in their own sets', () => {
+test('Moon, seven planets and 21 stars become cards in their own sets (the Solar System is a patch now)', () => {
   const cards = buildCards({ objects: [], families: {} }).filter((c) => c.natural);
-  assert.equal(cards.length, 31);
-  assert.deepEqual(cards.filter((c) => c.set === 'wanderers').map((c) => c.name), ['The Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune', 'The Solar System']);
-  const sys = cards.find((c) => c.key === 'system:solar');
-  assert.equal(sys.stars.length, 9); assert.ok(sys.stars.includes('planet:neptune') && sys.stars.includes('moon') && sys.stars.includes('sun'));
+  assert.equal(cards.length, 30);
+  assert.deepEqual(cards.filter((c) => c.set === 'wanderers').map((c) => c.name), ['The Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune']);
+  assert.ok(!cards.some((c) => c.key === 'system:solar'));
+  assert.equal(SOLAR_SYSTEM.stars.length, 9); assert.ok(SOLAR_SYSTEM.stars.includes('planet:neptune') && SOLAR_SYSTEM.stars.includes('moon') && SOLAR_SYSTEM.stars.includes('sun'));
   assert.equal(cards.filter((c) => c.set === 'bright-stars').length, 21);
   assert.equal(cards.find((c) => c.key === 'star:sirius').setNumber, 1);
   for (const c of NATURAL) assert.ok(c.fact && c.stats.length === 3 && (c.system || c.far.length === 2), c.key);

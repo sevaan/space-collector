@@ -50,3 +50,13 @@ self.addEventListener('fetch', (e) => {
     return net;
   }));
 });
+
+// Pass alerts (2026-10-10, playtest #14; server: relay/push.ts). The payload is { title, body, tag, at }.
+self.addEventListener('push', (e) => {
+  let a = {}; try { a = e.data?.json() ?? {}; } catch { a = { title: 'Space Collector', body: e.data?.text() ?? '' }; }
+  e.waitUntil(self.registration.showNotification(a.title || 'Space Collector', { body: a.body || '', tag: a.tag || undefined, icon: 'icons/icon-192.png', badge: 'icons/icon-192.png', data: { at: a.at } }));
+});
+self.addEventListener('notificationclick', (e) => {
+  e.notification.close();
+  e.waitUntil(self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((cs) => { const c = cs.find((x) => new URL(x.url).pathname.endsWith('/') || x.url.includes('index.html')); return c ? c.focus() : self.clients.openWindow('./'); }));
+});
