@@ -401,3 +401,4 @@
 .card-tile__art:has(.art-locked) { position: relative; }
 .card-art-image--locked { width: 100%; height: 100%; object-fit: cover; filter: blur(8px) brightness(.62) saturate(.6); transform: scale(1.15); }
 .card-tile .card-art-image--locked { filter: blur(4px) brightness(.62) saturate(.6); }
+.fl-about { margin-top: 1.1em; }

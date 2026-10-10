@@ -4,7 +4,7 @@
 // facts only state what the catalogue says today (orbit, launch date and site) or simple date
 // comparisons. No extrapolating today's orbit back over decades (lifetime laps or distance).
 
-import { orbitStats, titleCase, siteName, ownerName } from './facts.js?v=0.1.399';
+import { orbitStats, titleCase, siteName, ownerName } from './facts.js?v=0.1.401';
 
 const FAMILY = [
   [/^IRIDIUM 33 DEB/, 'A piece of the **first-ever crash between two satellites**: Iridium 33 hit the dead Cosmos 2251 in 2009.'],
@@ -101,6 +101,17 @@ function familyFact(o, now) {
   if (days < 30) return `${lead} Fresh from launch, they still fly in a line like a **string of pearls**.`;
   return `${lead} They've since spread out into a web around the planet. Catch as many as you can.`;
 }
+
+// What each fleet is for, shown under the launch dots on a fleet card (2026-10-09).
+export const FLEET_ABOUT = {
+  STARLINK: "SpaceX's **internet in the sky**, the largest fleet ever flown. Thousands of satellites beam broadband down to dishes on the ground.",
+  ONEWEB: 'A **broadband network** flying higher than Starlink, at about 1,200 km, built to reach ships, planes and the far north.',
+  QIANFAN: '"**Thousand Sails**": China\'s answer to Starlink. Shanghai Spacecom plans more than 14,000 satellites for internet worldwide.',
+  KUIPER: "**Amazon's internet fleet**, first called Project Kuiper. More than 3,000 satellites are planned to bring broadband to places cables can't reach.",
+  GLOBALSTAR: 'A **satellite phone network**. These are the satellites that carry an iPhone\'s **Emergency SOS** when there\'s no cell signal.',
+  ORBCOMM: 'Small satellites that **pass messages for machines**: trucks, ships and shipping containers checking in from anywhere on Earth.',
+  IRIDIUM: '**66 satellites cover the whole planet**, poles included, so a satellite phone works anywhere. Named after element 77, the size first planned.',
+};
 
 function fleetFact(o) {
   const n = o.members.length.toLocaleString('en-US'), first = o.launches[0]?.launch?.slice(0, 4);

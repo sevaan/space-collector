@@ -1,17 +1,17 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { cardArt } from './art.js?v=0.1.399';
-import { TIER_INFO } from './rarity.js?v=0.1.399';
-import { SET_BY_ID } from './sets.js?v=0.1.399';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.399';
-import { titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.399';
-import { artFileFor } from './art-keys.js?v=0.1.399';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.399';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.399';
-import { nightsIn } from './observation.js?v=0.1.399';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.399';
-import { SHINY } from './shiny.js?v=0.1.399';
-import { conArt } from './con-art.js?v=0.1.399';
-import { CON_FIGURES } from './con-figures.js?v=0.1.399';
+import { cardArt } from './art.js?v=0.1.401';
+import { TIER_INFO } from './rarity.js?v=0.1.401';
+import { SET_BY_ID } from './sets.js?v=0.1.401';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.401';
+import { FLEET_ABOUT, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.401';
+import { artFileFor } from './art-keys.js?v=0.1.401';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.401';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.401';
+import { nightsIn } from './observation.js?v=0.1.401';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.401';
+import { SHINY } from './shiny.js?v=0.1.401';
+import { conArt } from './con-art.js?v=0.1.401';
+import { CON_FIGURES } from './con-figures.js?v=0.1.401';
 // The animal/symbol figure belongs to the completed (gold) constellation card only (2026-10-05): a single
 // star's card draws just the star pattern with its star marked, so the figure is a reward for finishing the set.
 const conFig = (id) => (CON_FIGURES.has(id) ? { figure: `assets/art/con/${id}.webp` } : {});
@@ -100,11 +100,18 @@ export function renderCard(o, opts = {}) {
   // Fleet cards: the ringed dot is your newest stamp; say which launch that was (the dots alone don't).
   const lk = fleet ? latestStamp(sightings) : null, ll = lk ? o.launches.find((l) => l.key === lk) : null;
   const latestLine = ll ? `Launched ${launchDay(ll.launch).replace(/ (\d{4})$/, ', $1')}` : ''; // sits right of the grid's heading
-  const factBlock = fleet ? dotMap(o, stamps, lk, `${stamps.size} / ${o.launches.length} stamped · ${nextLevel(o.family, level, stamps.size)}`, latestLine)
+  const factBlock = fleet ? dotMap(o, stamps, lk, `${stamps.size} / ${o.launches.length} stamped · ${nextLevel(o.family, level, stamps.size)}`, latestLine) + (FLEET_ABOUT[o.family] ? `<div class="card__fact fl-about"><p>${richText(FLEET_ABOUT[o.family])}</p></div>` : '')
     : conCard ? `<div class="card__fact"><p>${richText(prog.level === 'gold' ? factFor(o).replace(/Collect all \d+ of its stars to turn this card \*\*gold\*\*\./, `You've found **all ${prog.total}** of its stars.`).replace(/Collect the Sun, the Moon and all \*\*seven\*\* planets to turn this card \*\*gold\*\*\./, `You've seen **all nine** of them with your own eyes.`) : factFor(o))}</p><p class="con-progress">${o.stars.map((k) => `<i class="${(opts.ownedKeys ?? new Set()).has(k) ? 'on' : ''}"></i>`).join('')}<span>${prog.have} / ${prog.total} ${o.system ? 'WORLDS' : 'STARS'}${prog.level === 'gold' ? ' · COMPLETE' : ''}</span></p></div>`
     : `<div class="card__fact"><p>${revealed ? richText(factFor(o)) : `Observe this ${esc((TYPE_LABEL[o.type] ?? 'object').toLowerCase())} in the live sky to add its story to your collection.`}</p></div>`;
   // Long facts take room from the art, not the card: each line past three shrinks the art window (about
   // 52 characters a line), so every card stays the same height.
+  // Fleet cards with a big launch grid plus the fleet's fact can run past the card's 42em: once it's on the page,
+  // take the overflow out of the art window so every card stays the same height (2026-10-09).
+  if (fleet) requestAnimationFrame(() => {
+    const art = el.querySelector('.card__art'), face = el.querySelector('.card__face'); if (!art || !face || !el.isConnected) return;
+    const fs = parseFloat(getComputedStyle(el).fontSize), over = face.offsetHeight / fs - 42;
+    if (over > 0.05) art.style.height = `${Math.max(4, art.offsetHeight / fs - over).toFixed(2)}em`;
+  });
   if (!fleet && revealed) { const len = factFor(o).replace(/\*\*/g, '').length; const extra = Math.max(0, Math.ceil(len / 52) - 3); if (extra) el.style.setProperty('--fact-extra', extra); }
   el.innerHTML = `
   <div class="card__rotator"><div class="card__face">
