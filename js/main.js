@@ -1,39 +1,39 @@
-import * as Secrets from './secrets.js?v=0.1.366';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.366';
-import * as Ufo from './ufo.js?v=0.1.366';
-import * as Fossil from './fossil.js?v=0.1.366';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.366';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.366';
-import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.366';
-import { VERSION } from './version.js?v=0.1.366';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.366';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.366';
-import { conArt } from './con-art.js?v=0.1.366';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.366';
-import { CON_FIGURES } from './con-figures.js?v=0.1.366';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.366';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.366';
-import { progress as progressOf } from './progress.js?v=0.1.366';
-import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.366';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.366';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.366';
-import { SkyView, shortName } from './sky.js?v=0.1.366';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.366';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.366';
-import { cardArt } from './art.js?v=0.1.366';
-import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.366';
-import { applyBack } from './card-backs.js?v=0.1.366';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.366';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.366';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.366';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.366';
-import { TIER_INFO } from './rarity.js?v=0.1.366';
-import { SETS } from './sets.js?v=0.1.366';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.366';
-import { shareCardEl } from './share-card.js?v=0.1.366';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.366';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.366';
-import { addStarfield } from './starfield.js?v=0.1.366';
+import * as Secrets from './secrets.js?v=0.1.367';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.367';
+import * as Ufo from './ufo.js?v=0.1.367';
+import * as Fossil from './fossil.js?v=0.1.367';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.367';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.367';
+import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.367';
+import { VERSION } from './version.js?v=0.1.367';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.367';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.367';
+import { conArt } from './con-art.js?v=0.1.367';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.367';
+import { CON_FIGURES } from './con-figures.js?v=0.1.367';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.367';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.367';
+import { progress as progressOf } from './progress.js?v=0.1.367';
+import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.367';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.367';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.367';
+import { SkyView, shortName } from './sky.js?v=0.1.367';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.367';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.367';
+import { cardArt } from './art.js?v=0.1.367';
+import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.367';
+import { applyBack } from './card-backs.js?v=0.1.367';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.367';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.367';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.367';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.367';
+import { TIER_INFO } from './rarity.js?v=0.1.367';
+import { SETS } from './sets.js?v=0.1.367';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.367';
+import { shareCardEl } from './share-card.js?v=0.1.367';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.367';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.367';
+import { addStarfield } from './starfield.js?v=0.1.367';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -2190,7 +2190,7 @@ let wcCard = null, wcFlipped = false, wcReady = false, wcWantFlip = false, wcRep
 // Welcome card = design/welcome-options.html B (2026-10-09, Sevaan): a how-to-play card that sends you outside.
 function welcomeModel() {
   return {
-    key: 'welcome', id: 'welcome', natural: 'welcome', type: 'welcome', name: 'Your sky is the game', tier: 'legendary', code: 'MISSION 01',
+    key: 'welcome', id: 'welcome', natural: 'welcome', type: 'welcome', name: 'Look up & collect the cosmos', tier: 'legendary', code: 'MISSION 01',
     stats: [['STEP 1', 'Go outside', ''], ['STEP 2', 'Look up', ''], ['STEP 3', 'Collect', '']],
     fact: 'No telescope, no tickets. **Every light that moves is a card**: satellites, rocket stages, the Space Station. The darker your spot, the more you can catch.',
   };
