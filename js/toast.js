@@ -45,7 +45,7 @@ function pump() {
   const t = queue[0], wait = t.at - Date.now();
   if (wait > 0) { busy = true; setTimeout(() => { busy = false; pump(); }, wait); return; }
   // Never over a card reveal or a patch moment (2026-10-08 playtest: toasts covered the new card); they wait their turn.
-  if (document.querySelector('#reveal:not([hidden]), .patch-moment')) { busy = true; setTimeout(() => { busy = false; pump(); }, 500); return; }
+  if (document.querySelector('#reveal:not([hidden]), .patch-moment, #ob-done:not([hidden])')) { busy = true; setTimeout(() => { busy = false; pump(); }, 500); return; }
   queue.shift();
   busy = true;
   const el = document.createElement('div');

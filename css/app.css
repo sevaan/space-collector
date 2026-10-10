@@ -821,3 +821,10 @@ body.night #discover:not(.owned) #d-cta:active, body.night #discover:not(.owned)
 /* The switcher at the foot of the Up in the sky panel (2026-10-09), above the panel's scrolling list. */
 #visible .vis-switch { position: fixed; z-index: 3; }
 #visible { padding-bottom: calc(var(--safe-bottom) + 90px); }
+/* Tour's last page: tonight's missions under the timeline (2026-10-09, design/tonight-missions.html A). */
+.od-missions { margin-top: 6px; padding-top: 14px; border-top: 1px solid #bcb58544; }
+.od-mhead { display: flex; justify-content: space-between; margin-bottom: 6px; font: 500 11px/1.2 var(--label); letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+.od-mhead span:first-child { color: var(--gold); }
+.od-m { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid #1d2a3c; font: 500 15px/1.2 var(--label); letter-spacing: .02em; color: var(--text); }
+.od-m i { width: 9px; height: 9px; transform: rotate(45deg); border: 1.5px solid #bcb585; flex: none; }
+.od-m.done { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--gold); } .od-m.done i { background: var(--gold); border-color: var(--gold); }
