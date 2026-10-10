@@ -787,10 +787,11 @@ body.night #ufo-cta { background: var(--gold) !important; color: #120606 !import
 
 /* Radar tip after the tour (2026-10-09): a dark-glass bubble beside the radar with a little pointer, and a soft
    pulse ring on the radar dial while it's up. */
-.radar-tip { position: fixed; z-index: 4; display: flex; align-items: center; max-width: 168px; padding: 9px 12px; border: 1px solid var(--edge);
+.radar-tip { position: fixed; z-index: 4; display: flex; flex-direction: column; align-items: flex-start; gap: 3px; max-width: none; padding: 9px 12px; border: 1px solid var(--edge);
   border-radius: 10px; background: var(--glass-strong); color: var(--text); text-align: left; box-shadow: 0 8px 24px #0009; opacity: 0; transform: translateX(-8px); transition: opacity .35s ease, transform .45s var(--ease-spring, cubic-bezier(.2,1.4,.4,1)); cursor: pointer; }
 .radar-tip.in { opacity: 1; transform: translateX(0); }
-.radar-tip b { font: 500 14px/1.2 var(--label); letter-spacing: .02em; }
+.radar-tip b { font: 500 14px/1.2 var(--label); letter-spacing: .02em; white-space: nowrap; }
+.radar-tip small { font: 500 10px/1 var(--label); letter-spacing: .18em; text-transform: uppercase; color: var(--gold); white-space: nowrap; }
 .radar-tip::before { content: ''; position: absolute; left: -7px; top: 50%; width: 10px; height: 10px; margin-top: -5px; background: var(--glass-strong); border-left: 1px solid var(--edge); border-bottom: 1px solid var(--edge); transform: rotate(45deg); }
 #radar.tip-pulse canvas { animation: radar-pulse 1.6s ease-out infinite; border-radius: 50%; }
 @keyframes radar-pulse { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--gold) 55%, transparent); } 100% { box-shadow: 0 0 0 14px transparent; } }

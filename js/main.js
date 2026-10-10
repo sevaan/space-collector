@@ -1,39 +1,39 @@
-import * as Secrets from './secrets.js?v=0.1.385';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.385';
-import * as Ufo from './ufo.js?v=0.1.385';
-import * as Fossil from './fossil.js?v=0.1.385';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.385';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.385';
-import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.385';
-import { VERSION } from './version.js?v=0.1.385';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.385';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.385';
-import { conArt } from './con-art.js?v=0.1.385';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.385';
-import { CON_FIGURES } from './con-figures.js?v=0.1.385';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.385';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.385';
-import { progress as progressOf } from './progress.js?v=0.1.385';
-import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.385';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.385';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.385';
-import { SkyView, shortName } from './sky.js?v=0.1.385';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.385';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.385';
-import { cardArt } from './art.js?v=0.1.385';
-import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.385';
-import { applyBack } from './card-backs.js?v=0.1.385';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.385';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.385';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.385';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.385';
-import { TIER_INFO } from './rarity.js?v=0.1.385';
-import { SETS } from './sets.js?v=0.1.385';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.385';
-import { shareCardEl } from './share-card.js?v=0.1.385';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.385';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.385';
-import { addStarfield } from './starfield.js?v=0.1.385';
+import * as Secrets from './secrets.js?v=0.1.386';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.386';
+import * as Ufo from './ufo.js?v=0.1.386';
+import * as Fossil from './fossil.js?v=0.1.386';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.386';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.386';
+import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.386';
+import { VERSION } from './version.js?v=0.1.386';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.386';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.386';
+import { conArt } from './con-art.js?v=0.1.386';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.386';
+import { CON_FIGURES } from './con-figures.js?v=0.1.386';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.386';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.386';
+import { progress as progressOf } from './progress.js?v=0.1.386';
+import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.386';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.386';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.386';
+import { SkyView, shortName } from './sky.js?v=0.1.386';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.386';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.386';
+import { cardArt } from './art.js?v=0.1.386';
+import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.386';
+import { applyBack } from './card-backs.js?v=0.1.386';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.386';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.386';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.386';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.386';
+import { TIER_INFO } from './rarity.js?v=0.1.386';
+import { SETS } from './sets.js?v=0.1.386';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.386';
+import { shareCardEl } from './share-card.js?v=0.1.386';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.386';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.386';
+import { addStarfield } from './starfield.js?v=0.1.386';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -2086,15 +2086,15 @@ function radarTip(delay = 3000) {
     try { localStorage.setItem('radarTip', '1'); } catch {}
     const r = $('radar').getBoundingClientRect(), tip = document.createElement('button');
     tip.type = 'button'; tip.className = 'radar-tip';
-    tip.innerHTML = '<b>Tap to see what\'s up tonight</b>';
+    tip.innerHTML = '<small>Tap the radar</small><b>See what\'s up tonight</b>'; // two balanced lines, no orphan (2026-10-09)
     tip.style.left = `${Math.round(r.right + 10)}px`; tip.style.top = `${Math.round(r.top + r.height * 0.36)}px`;
     document.body.append(tip); $('radar').classList.add('tip-pulse');
     requestAnimationFrame(() => tip.classList.add('in'));
     let gone = false;
     const hide = () => { if (gone) return; gone = true; tip.classList.remove('in'); $('radar').classList.remove('tip-pulse'); setTimeout(() => tip.remove(), 400); };
-    tip.addEventListener('click', () => { hide(); showVTab('tonight'); openPanel('visible'); });
-    $('radar').addEventListener('click', hide, { once: true });
-    setTimeout(hide, 6000);
+    tip.addEventListener('click', () => { hide(); showVTab('now'); openPanel('visible'); }); // same as tapping the radar: the Now / Tonight panel
+    $('radar').addEventListener('click', hide, { once: true }); // the radar itself opens the Now / Tonight panel
+    setTimeout(hide, 5000);
   }, delay);
 }
 function obFinish(caught) {
