@@ -814,7 +814,8 @@ function renderTarget(target, d) {
       $('d-tier').style.setProperty('--find-tier', newStamp ? 'var(--cyan)' : tier.color);
       $('d-name').textContent = label(o);
       $('d-switch').hidden = !sw; $('d-switch').textContent = sw;
-      $('d-cta').hidden = isQuiet(o); disc.classList.toggle('quiet', isQuiet(o)); disc.classList.remove('owned'); $('d-hit').setAttribute('aria-label', 'Collect this object');
+      const quiet = isQuiet(o) && o.id !== state.tourCatchId; // the tour's first catch is often a (quiet) star: always say what to do (playtest 2026-10-09)
+      $('d-cta').hidden = quiet; disc.classList.toggle('quiet', quiet); disc.classList.remove('owned'); $('d-hit').setAttribute('aria-label', 'Collect this object');
       $('d-cta').textContent = 'Tap to collect'; $('d-sub').hidden = true;
     } else {
       disc.hidden = true; guide.hidden = false;
