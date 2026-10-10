@@ -1,39 +1,39 @@
-import * as Secrets from './secrets.js?v=0.1.371';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.371';
-import * as Ufo from './ufo.js?v=0.1.371';
-import * as Fossil from './fossil.js?v=0.1.371';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.371';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.371';
-import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.371';
-import { VERSION } from './version.js?v=0.1.371';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.371';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.371';
-import { conArt } from './con-art.js?v=0.1.371';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.371';
-import { CON_FIGURES } from './con-figures.js?v=0.1.371';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.371';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.371';
-import { progress as progressOf } from './progress.js?v=0.1.371';
-import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.371';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.371';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.371';
-import { SkyView, shortName } from './sky.js?v=0.1.371';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.371';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.371';
-import { cardArt } from './art.js?v=0.1.371';
-import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.371';
-import { applyBack } from './card-backs.js?v=0.1.371';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.371';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.371';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.371';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.371';
-import { TIER_INFO } from './rarity.js?v=0.1.371';
-import { SETS } from './sets.js?v=0.1.371';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.371';
-import { shareCardEl } from './share-card.js?v=0.1.371';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.371';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.371';
-import { addStarfield } from './starfield.js?v=0.1.371';
+import * as Secrets from './secrets.js?v=0.1.372';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.372';
+import * as Ufo from './ufo.js?v=0.1.372';
+import * as Fossil from './fossil.js?v=0.1.372';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.372';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.372';
+import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.372';
+import { VERSION } from './version.js?v=0.1.372';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.372';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.372';
+import { conArt } from './con-art.js?v=0.1.372';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.372';
+import { CON_FIGURES } from './con-figures.js?v=0.1.372';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.372';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.372';
+import { progress as progressOf } from './progress.js?v=0.1.372';
+import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.372';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.372';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.372';
+import { SkyView, shortName } from './sky.js?v=0.1.372';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.372';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.372';
+import { cardArt } from './art.js?v=0.1.372';
+import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.372';
+import { applyBack } from './card-backs.js?v=0.1.372';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.372';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.372';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.372';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.372';
+import { TIER_INFO } from './rarity.js?v=0.1.372';
+import { SETS } from './sets.js?v=0.1.372';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.372';
+import { shareCardEl } from './share-card.js?v=0.1.372';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.372';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.372';
+import { addStarfield } from './starfield.js?v=0.1.372';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -2184,24 +2184,15 @@ window.addEventListener('pagehide',saveExploreState);
 // The opener is a sealed card (the real card back) that rattles every few seconds. Tap: it flips to a mission
 // card built with the real card renderer. Flick it up (or tap Begin): it flies off and the tour starts.
 let wcCard = null, wcFlipped = false, wcReady = false, wcWantFlip = false, wcReplay = false;
-// Welcome card = design/welcome-options.html B (2026-10-09, Sevaan): a how-to-play card that sends you outside.
+// Welcome card: the original "Collect the Cosmos" mission card (Solar System art, In orbit / Also / Your rank) with
+// the newer description (2026-10-09, Sevaan: back to the original card, keeping this text).
 function welcomeModel() {
+  const n = state.catalog?.objects?.length ?? 16000;
   return {
-    key: 'welcome', id: 'welcome', natural: 'welcome', type: 'welcome', name: 'Look up & collect the cosmos', tier: 'legendary', code: 'MISSION 01',
-    stats: [['STEP 1', 'Go outside', ''], ['STEP 2', 'Look up', ''], ['STEP 3', 'Collect', '']],
+    key: 'welcome', id: 'welcome', natural: 'welcome', type: 'welcome', name: 'Collect the Cosmos', tier: 'legendary', code: 'MISSION 01',
+    stats: [['IN ORBIT', `${Math.floor(n / 1000)},000+`, ''], ['ALSO', 'Moon, planets', ''], ['YOUR RANK', 'Stargazer', '']],
     fact: 'No telescope, no tickets. **Every light that moves is a card**: satellites, rocket stages, the Space Station. The darker your spot, the more you can catch.',
   };
-}
-// Its picture: three numbered panels, out the door → look up → the phone's circle on a light.
-function welcomeArt() {
-  const INK = '#fff2b3', OR = '#fa8127', MU = '#8fa3b8';
-  let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
-  const stars = Array.from({ length: 16 }, () => `<circle cx="${(12 + rnd() * 76).toFixed(1)}" cy="${(36 + rnd() * 50).toFixed(1)}" r="${(0.5 + rnd() * 0.9).toFixed(2)}" fill="${INK}" opacity="${(0.4 + rnd() * 0.55).toFixed(2)}"/>`).join('');
-  const panel = (x, inner, n, word) => `<g transform="translate(${x} 0)"><rect x="4" y="10" width="92" height="160" rx="8" fill="#0b1424" stroke="#2a3a52"/>${inner}<circle cx="18" cy="24" r="8" fill="${OR}"/><text x="18" y="27.5" text-anchor="middle" font-family="SC Display, sans-serif" font-size="10" fill="#080f1b">${n}</text><text x="50" y="158" text-anchor="middle" font-family="SC Label, sans-serif" font-size="11" letter-spacing="1.5" fill="${INK}">${word}</text></g>`;
-  const door = `<rect x="34" y="42" width="34" height="62" rx="2" fill="#16294a" stroke="${INK}" stroke-width="1.4"/><path d="M34 42 L56 50 L56 112 L34 104 Z" fill="#0b1424" stroke="${INK}" stroke-width="1.2"/><circle cx="52" cy="80" r="1.6" fill="${OR}"/><path d="M24 118 L80 118" stroke="${MU}" stroke-width="1"/><path d="M70 58 l10 -6 M70 70 l12 0 M70 82 l10 6" stroke="${OR}" stroke-width="1.4" stroke-linecap="round"/>`;
-  const up = `${stars}<path d="M28 120 Q50 96 72 120" fill="none" stroke="${INK}" stroke-width="1.4"/><circle cx="40" cy="112" r="2" fill="${INK}"/><circle cx="60" cy="112" r="2" fill="${INK}"/><path d="M50 92 L50 62 M44 68 L50 60 L56 68" stroke="${OR}" stroke-width="1.6" fill="none" stroke-linecap="round"/>`;
-  const phone = `<rect x="30" y="38" width="40" height="76" rx="6" fill="#060c1a" stroke="${INK}" stroke-width="1.4"/><circle cx="50" cy="72" r="11" fill="none" stroke="${INK}" stroke-width="1.2"/><circle cx="50" cy="72" r="2.2" fill="${INK}"/><path d="M34 98 Q44 86 50 72" fill="none" stroke="${INK}" stroke-opacity=".5" stroke-dasharray="1.5 3"/><rect x="38" y="100" width="24" height="7" rx="3.5" fill="${OR}"/>`;
-  return `<svg viewBox="0 0 300 180" preserveAspectRatio="xMidYMid meet" style="width:100%;height:100%;display:block"><rect width="300" height="180" fill="#080f1b"/>${panel(0, door, 1, 'GO OUTSIDE')}${panel(100, up, 2, 'LOOK UP')}${panel(200, phone, 3, 'COLLECT')}</svg>`;
 }
 // Twinkling stars behind the welcome card (2026-10-09, Sevaan), the same field as behind the reveal.
 addStarfield($('start'), 90);
@@ -2210,9 +2201,10 @@ function renderStartHand() {
   const card = renderCard(welcomeModel(), { preview: true });
   card.classList.add('wc-mission');
   // Dress it as a briefing, not a catalogue entry.
-  const sb = card.querySelector('.card__setbar > span:first-child > span'); if (sb) sb.textContent = 'HOW TO PLAY';
-  const id = card.querySelector('.card__identity'); if (id) id.innerHTML = '<span>Three steps</span><span class="card__mono">OBSERVER 001</span>';
-  const art = card.querySelector('.card__art'); if (art) art.innerHTML = welcomeArt();
+  const sb = card.querySelector('.card__setbar > span:first-child > span'); if (sb) sb.textContent = 'MISSION CONTROL';
+  const id = card.querySelector('.card__identity'); if (id) id.innerHTML = '<span>Your first mission</span><span class="card__mono">OBSERVER 001</span>';
+  const art = card.querySelector('.card__art'), sys = state.cardModels.get('system:solar'), src = sys && artImage(sys);
+  if (art && src) art.innerHTML = `<img class="card-art-image" src="${src}" alt="" decoding="async">`;
   const st = card.querySelector('.card__status'); if (st) st.innerHTML = '<span class="card__status-icon" aria-hidden="true">↑</span><span>SWIPE UP TO BEGIN</span>';
   // Start face-down: the card is turned half way, so its (pre-mirrored) back faces you.
   const back = card.querySelector('.card__back'); applyBack(back); back.style.opacity = '1';
