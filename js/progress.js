@@ -1,7 +1,7 @@
 // Player progress from the sighting log: XP and observer rank, tonight's three missions, a weekly streak and
 // achievements. Everything is derived from the saved sightings (nothing extra is stored), so it can't drift.
 // info(cardKey) -> { tier, type, owner, launch, natural, con } | null. No DOM.
-import { nightKey } from './observation.js?v=0.1.433';
+import { nightKey } from './observation.js?v=0.1.434';
 
 export const RANKS = [
   [0, 'Stargazer'], [200, 'Spotter'], [600, 'Tracker'], [1500, 'Navigator'], [4000, 'Flight Controller'], [10000, 'Mission Control'],
@@ -108,7 +108,7 @@ export const ACHIEVEMENTS = [
   { id: 'epic', name: 'Epic', text: 'Collect an Epic card', icon: '✪', done: T_HAS('epic') },
   { id: 'spectrum', name: 'Full Spectrum', text: 'Collect every rarity, Common to Legendary', icon: '5', done: (a) => ['common', 'uncommon', 'rare', 'epic', 'legendary'].every((t) => a.tiers.has(t)) },
   { id: 'legends5', name: 'Hall of Legends', text: 'Collect 5 Legendary cards', icon: '★5', done: (a) => (a.tierCount.legendary ?? 0) >= 5 },
-  { id: 'legends25', name: 'Pantheon', text: 'Collect 25 Legendary cards', icon: '★25', done: (a) => (a.tierCount.legendary ?? 0) >= 25 },
+  { id: 'legends25', name: 'Pantheon', text: 'Collect 15 Legendary cards', icon: '★15', done: (a) => (a.tierCount.legendary ?? 0) >= 15 }, // was 25; only 123 Legendaries since the 2026-10-10 re-tier (id kept)
   { id: 'shiny', name: 'Shiny Hunter', text: 'Catch a shiny', icon: '✧', done: (a) => a.shinies >= 1 },
   { id: 'shiny5', name: 'Shiny Collector', text: 'Catch 5 shinies', icon: '✧5', done: (a) => a.shinies >= 5 },
   // What it is
@@ -186,7 +186,7 @@ export const ACHIEVEMENTS = [
 const PROG = {
   first: (a) => [a.cards, 1], ten: (a) => [a.cards, 10], twentyfive: (a) => [a.cards, 25], fifty: (a) => [a.cards, 50], hundred: (a) => [a.cards, 100],
   archivist: (a) => [a.cards, 250], curator: (a) => [a.cards, 500], catalogue: (a) => [a.cards, 1000], sightings100: (a) => [a.sightings, 100],
-  spectrum: (a) => [a.tiers.size, 5], legends5: (a) => [a.tierCount.legendary ?? 0, 5], legends25: (a) => [a.tierCount.legendary ?? 0, 25], shiny5: (a) => [a.shinies, 5],
+  spectrum: (a) => [a.tiers.size, 5], legends5: (a) => [a.tierCount.legendary ?? 0, 5], legends25: (a) => [a.tierCount.legendary ?? 0, 15], shiny5: (a) => [a.shinies, 5],
   stages25: (a) => [a.typeCount['rocket-body'] ?? 0, 25], stations: (a) => [a.typeCount.station ?? 0, 2], satellites50: (a) => [a.typeCount.satellite ?? 0, 50],
   nations: (a) => [a.owners.size, 8], diplomat: (a) => [a.owners.size, 15], redstar: (a) => [a.ownerCount.CIS ?? 0, 10], stripes: (a) => [a.ownerCount.US ?? 0, 10],
   longmarch: (a) => [a.ownerCount.PRC ?? 0, 10], coldwar: (a) => [a.pre1991, 10], decades: (a) => [a.decades.size, 6],

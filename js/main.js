@@ -1,40 +1,40 @@
-import * as Secrets from './secrets.js?v=0.1.433';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.433';
-import * as Ufo from './ufo.js?v=0.1.433';
-import * as Fossil from './fossil.js?v=0.1.433';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.433';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.433';
-import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.433';
-import { VERSION } from './version.js?v=0.1.433';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.433';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.433';
-import { conArt } from './con-art.js?v=0.1.433';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.433';
-import { CON_FIGURES } from './con-figures.js?v=0.1.433';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.433';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.433';
-import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.433';
-import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.433';
-import { conList } from './constellations.js?v=0.1.433';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.433';
-import { SkyView, shortName } from './sky.js?v=0.1.433';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.433';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.433';
-import { cardArt } from './art.js?v=0.1.433';
-import { renderCard, cardLevel, artImage, lockedArt, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.433';
-import { applyBack } from './card-backs.js?v=0.1.433';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.433';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.433';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.433';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.433';
-import { TIER_INFO } from './rarity.js?v=0.1.433';
-import { SETS, albumList } from './sets.js?v=0.1.433';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.433';
-import { pushConfigured, pushOn, enablePush, disablePush, schedulePush } from './push.js?v=0.1.433';
-import { shareCardEl } from './share-card.js?v=0.1.433';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.433';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.433';
-import { addStarfield } from './starfield.js?v=0.1.433';
+import * as Secrets from './secrets.js?v=0.1.434';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.434';
+import * as Ufo from './ufo.js?v=0.1.434';
+import * as Fossil from './fossil.js?v=0.1.434';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.434';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.434';
+import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.434';
+import { VERSION } from './version.js?v=0.1.434';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.434';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.434';
+import { conArt } from './con-art.js?v=0.1.434';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.434';
+import { CON_FIGURES } from './con-figures.js?v=0.1.434';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.434';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.434';
+import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.434';
+import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.434';
+import { conList } from './constellations.js?v=0.1.434';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.434';
+import { SkyView, shortName } from './sky.js?v=0.1.434';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.434';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.434';
+import { cardArt } from './art.js?v=0.1.434';
+import { renderCard, cardLevel, artImage, lockedArt, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.434';
+import { applyBack } from './card-backs.js?v=0.1.434';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.434';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.434';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.434';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.434';
+import { TIER_INFO } from './rarity.js?v=0.1.434';
+import { SETS, albumList } from './sets.js?v=0.1.434';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.434';
+import { pushConfigured, pushOn, enablePush, disablePush, schedulePush } from './push.js?v=0.1.434';
+import { shareCardEl } from './share-card.js?v=0.1.434';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.434';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.434';
+import { addStarfield } from './starfield.js?v=0.1.434';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -587,6 +587,7 @@ function tick(ts) {
     lastLocked = state.lockedOn; renderTarget(target, d); measureSkySpace(); lastPanel = t; }
   // (2026-10-07: the first-night "Sweep the sky slowly…" hint is retired, like the ground nudge)
   renderPlane(plane, t);
+  if (!plane) renderIdent(target, t);
 }
 
 // ---------- planes ----------
@@ -608,11 +609,32 @@ function findPlane(basis, t) {
   return best;
 }
 
+// The circle names what's in it even when it isn't a card (2026-10-10, Sevaan: "I shouldn't have to tap to learn
+// what something is. Just put the target on it."). Planes have their own label (renderPlane); this does the same
+// for named stars that aren't cards (sky.json names: Alphard, Mirfak…), using the plane label's look.
+let identShown = null;
+function renderIdent(target, t) {
+  const el = $('plane'), back = state.basis?.back;
+  const lim = Math.cos((sky.reticleDeg ?? 6) * RAD);
+  let best = null;
+  if (!target && back && !state.lockedOn && (state.frame?.sunEl ?? -90) < -6) for (const s of state.skyEnu?.stars ?? []) {
+    if (!s.name || s.enu[2] < 0) continue;
+    const c = dot(s.enu, back); if (c > lim && (!best || c > best.c)) best = { s, c };
+  }
+  if (!best) { if (identShown) { el.hidden = true; identShown = null; } return; }
+  const ring = sky.ring ?? { x: sky.cx, y: sky.cy, r: sky.reticlePx };
+  el.style.setProperty('--cx', `${ring.x}px`); el.style.setProperty('--cy', `${ring.y}px`); el.style.setProperty('--r', `${ring.r}px`);
+  if (identShown === best.s.name) return;
+  identShown = best.s.name; el.hidden = false; $('guidance').hidden = true;
+  $('p-kind').textContent = 'A star'; $('p-name').textContent = best.s.name;
+  $('p-route').hidden = true;
+  $('p-info').textContent = `Magnitude ${best.s.mag.toFixed(1).replace('-', '−')} · not a card`;
+}
 let planeShown = null, planeText = 0;
 function renderPlane(hit, t) {
   const el = $('plane');
-  if (!hit) { if (!el.hidden) el.hidden = true; planeShown = null; return; }
-  $('guidance').hidden = true;
+  if (!hit) { if (planeShown) { el.hidden = true; planeShown = null; } return; } // (the same label also names stars: renderIdent)
+  identShown = null; $('guidance').hidden = true;
   const ring = sky.ring ?? { x: sky.cx, y: sky.cy, r: sky.reticlePx };
   el.style.setProperty('--cx', `${ring.x}px`); el.style.setProperty('--cy', `${ring.y}px`); el.style.setProperty('--r', `${ring.r}px`);
   if (planeShown === hit.plane.hex && t - planeText < 500) return;
@@ -1658,31 +1680,7 @@ function updateNextPassChip() {
   chip.hidden = false;
 }
 $('nextpass').addEventListener('click', () => { showVTab('tonight'); openPanel('visible'); });
-// What's this? (playtest 2026-10-09, #16): names whatever is nearest the middle of the view, collectable or not:
-// a satellite, a planet, a named star, a plane. Failing that, says which constellation you're facing and where the
-// nearest named star is. Useful every night, not just when something new passes.
-function whatsThis() {
-  const back = state.basis?.back; if (!back) return;
-  const ang = (enu) => Math.acos(Math.max(-1, Math.min(1, dot(enu, back)))) / RAD;
-  const up = (enu) => enu[2] > -0.02;
-  const pts = [];
-  for (const it of state.items ?? []) if (it.look?.visible) { const e = enuFromAzEl(it.look.az, it.look.el); pts.push({ e, name: label(it.obj), what: `${TYPE_LABEL[it.obj.type] ?? 'Satellite'}${it.obj.launch ? `, launched ${String(it.obj.launch).slice(0, 4)}` : ''}`, mag: it.look.mag, obj: it.obj }); }
-  for (const n of state.naturals ?? []) if (n.look && n.look.el > -1) pts.push({ e: enuFromAzEl(n.look.az, n.look.el), name: label(n.obj), what: n.obj.type === 'star' ? `Star${n.obj.constellation ? ` in ${n.obj.constellation}` : ''}` : n.obj.type === 'moon' ? 'Our Moon' : n.obj.type === 'sun' ? 'Our star' : 'Planet', mag: n.look.mag, obj: n.obj });
-  for (const s of state.skyEnu?.stars ?? []) if (s.name && up(s.enu)) pts.push({ e: s.enu, name: s.name, what: 'Star', mag: s.mag });
-  for (const a of state.planeItems ?? []) pts.push({ e: a.enu, name: a.plane?.callsign?.trim() || 'A plane', what: 'Aircraft, not in space', plane: true });
-  const near = pts.filter((p) => up(p.e)).map((p) => ({ ...p, d: ang(p.e) })).sort((a, b) => a.d - b.d);
-  const hit = near.find((p) => p.d <= 6);
-  if (hit) {
-    const owned = hit.obj && ownsCard(hit.obj), canCatch = hit.obj && !owned;
-    ticket({ kind: 'event', eyebrow: "WHAT'S THIS?", line: `${hit.name} · ${hit.what}${typeof hit.mag === 'number' && !hit.plane ? ` · mag ${hit.mag.toFixed(1).replace('-', '−')}` : ''}${owned ? ' · in your collection' : canCatch ? ' · line it up to collect it' : ''}`, ms: 4500 });
-    return;
-  }
-  const con = (state.skyEnu?.constellations ?? []).filter((c) => up(c.enu)).map((c) => ({ ...c, d: ang(c.enu) })).sort((a, b) => a.d - b.d)[0];
-  const star = near.find((p) => !p.plane);
-  const where = star ? (() => { const r = dot(star.e, state.basis.right), u = dot(star.e, state.basis.up); return `${Math.round(star.d)}° ${Math.abs(u) > Math.abs(r) ? (u > 0 ? 'up' : 'down') : (r > 0 ? 'to the right' : 'to the left')}`; })() : '';
-  ticket({ kind: 'event', eyebrow: "WHAT'S THIS?", line: back[2] < -0.05 ? 'That\'s the ground. Tilt up to the sky.' : (state.frame?.sunEl ?? -90) > -6 ? 'Nothing there you can see in daylight. By day it\'s the Sun, the Moon and sometimes Venus.' : `Nothing bright right there.${con && con.d < 30 ? ` You're facing ${con.name}.` : ''}${star ? ` Nearest named light: ${star.name}, ${where}.` : ''}`, ms: 4500 });
-}
-$('whatsthis').addEventListener('click', whatsThis);
+
 // Settings → Pass alerts (#14). Hidden until the push val is deployed (js/push.js PUSH).
 $('row-push').hidden = !pushConfigured(); $('chk-push').checked = pushOn();
 $('chk-push').addEventListener('change', async (e) => {
