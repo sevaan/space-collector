@@ -1,39 +1,39 @@
-import * as Secrets from './secrets.js?v=0.1.383';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.383';
-import * as Ufo from './ufo.js?v=0.1.383';
-import * as Fossil from './fossil.js?v=0.1.383';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.383';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.383';
-import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.383';
-import { VERSION } from './version.js?v=0.1.383';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.383';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.383';
-import { conArt } from './con-art.js?v=0.1.383';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.383';
-import { CON_FIGURES } from './con-figures.js?v=0.1.383';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.383';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.383';
-import { progress as progressOf } from './progress.js?v=0.1.383';
-import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.383';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.383';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.383';
-import { SkyView, shortName } from './sky.js?v=0.1.383';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.383';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.383';
-import { cardArt } from './art.js?v=0.1.383';
-import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.383';
-import { applyBack } from './card-backs.js?v=0.1.383';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.383';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.383';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.383';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.383';
-import { TIER_INFO } from './rarity.js?v=0.1.383';
-import { SETS } from './sets.js?v=0.1.383';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.383';
-import { shareCardEl } from './share-card.js?v=0.1.383';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.383';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.383';
-import { addStarfield } from './starfield.js?v=0.1.383';
+import * as Secrets from './secrets.js?v=0.1.384';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.384';
+import * as Ufo from './ufo.js?v=0.1.384';
+import * as Fossil from './fossil.js?v=0.1.384';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.384';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.384';
+import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.384';
+import { VERSION } from './version.js?v=0.1.384';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.384';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.384';
+import { conArt } from './con-art.js?v=0.1.384';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.384';
+import { CON_FIGURES } from './con-figures.js?v=0.1.384';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.384';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.384';
+import { progress as progressOf } from './progress.js?v=0.1.384';
+import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.384';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.384';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.384';
+import { SkyView, shortName } from './sky.js?v=0.1.384';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.384';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.384';
+import { cardArt } from './art.js?v=0.1.384';
+import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.384';
+import { applyBack } from './card-backs.js?v=0.1.384';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.384';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.384';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.384';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.384';
+import { TIER_INFO } from './rarity.js?v=0.1.384';
+import { SETS } from './sets.js?v=0.1.384';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.384';
+import { shareCardEl } from './share-card.js?v=0.1.384';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.384';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.384';
+import { addStarfield } from './starfield.js?v=0.1.384';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -2097,6 +2097,8 @@ function radarTip(delay = 3000) {
 }
 function obFinish(caught) {
   $('sky').classList.remove('asleep'); // never leave the sky asleep (a skip mid-tour)
+  // Let go of the tour's target (2026-10-09, Sevaan: Vega stayed selected with View card while pointing elsewhere).
+  state.pinnedId = null; state.targetId = null; state.guidePass = null; state.sticky.clear();
   const ob = $('onboard'); ob.style.pointerEvents = ''; onboarding = null; document.body.classList.remove('ob-tour'); state.tourCatchId = null; state.tourRevealed = false; $('ob-deck').replaceChildren(); $('ob-pips').hidden = false;
   if (!caught) { ob.hidden = true; return; }
   const T = state.tonight, t0 = now().getTime(), wx = tonightWeather();

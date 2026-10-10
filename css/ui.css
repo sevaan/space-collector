@@ -295,3 +295,4 @@ dialog.leaving { animation: ui-fade-in var(--m-norm) var(--ease-out) reverse for
 @keyframes pc-badge { 0% { opacity: 0; transform: scale(.4); } 12% { opacity: 1; transform: scale(1.25); } 20%, 80% { opacity: 1; transform: scale(1); } 100% { opacity: 0; } }
 :where(html[data-theme='night'], body.night) .pc-disc { filter: grayscale(1) brightness(.55) sepia(1) saturate(5) hue-rotate(318deg) drop-shadow(0 6px 12px #000a); }
 @media (prefers-reduced-motion: reduce) { .pc-coin.in .pc-disc { animation: none; opacity: 1; transform: none; } .pc-coin.out .pc-disc { animation: pc-fade .3s forwards; } @keyframes pc-fade { to { opacity: 0; } } }
+.patch-coins { left: calc((100vw - var(--nav-w)) / 2); } /* same left edge as the toasts (2026-10-09) */
