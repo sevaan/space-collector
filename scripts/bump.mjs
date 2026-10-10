@@ -30,4 +30,7 @@ for (const f of readdirSync(root)) {
   if (out !== s) writeFileSync(p, out);
 }
 
+// sw.js: a cache per version, so each deploy's service worker starts clean (2026-10-10).
+{ const p = new URL('sw.js', root), s = readFileSync(p, 'utf8'); writeFileSync(p, s.replace(/const CACHE = '[^']+';/, `const CACHE = 'sc-${next}';`)); }
+
 console.log(`v${next}`);

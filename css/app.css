@@ -866,3 +866,5 @@ body.day .patch-coins { bottom: calc(var(--safe-bottom, 0px) + 114px); }
 .rc-actions { display: flex; flex-direction: column; gap: 10px; width: min(100%, 340px); }
 .rc-actions button { height: 48px; border-radius: 12px; border: 0; font: 500 14px/1 var(--label); letter-spacing: .16em; text-transform: uppercase; cursor: pointer; }
 .rc-share { background: var(--orange, #fa8127); color: #080f1b; } .rc-go { background: #ffffff12; color: #fff2b3; }
+/* The loader's reset button (watchdog, 2026-10-10). */
+#ld-reset { position: fixed; left: 50%; bottom: calc(var(--safe-bottom, 0px) + 56px); transform: translateX(-50%); z-index: 5; white-space: nowrap; padding: 11px 16px 10px; border-radius: 99px; border: 1px solid color-mix(in srgb, var(--text) 30%, transparent); background: #ffffff10; color: var(--text); font: 500 12px/1 var(--label); letter-spacing: .14em; text-transform: uppercase; cursor: pointer; }

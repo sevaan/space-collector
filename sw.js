@@ -7,7 +7,10 @@
 //    cached old page, so it took two taps)
 //  · data (catalogue, sky, lore): use the cache straight away, fetch a fresh copy for next time
 //  · version.json and other sites (weather, planes): straight to the network
-const CACHE = 'sc-v2';
+// One cache per version (2026-10-10: a phone stuck on the loader). A shared cache could hand a slow-network fallback
+// page old files mixed with new ones that don't fit together. Now each deploy's worker (scripts/bump.mjs stamps the
+// version below) starts its own cache and deletes the others, so a page only ever meets files from its own version.
+const CACHE = 'sc-0.1.438';
 self.addEventListener('install', (e) => { self.skipWaiting(); e.waitUntil(caches.open(CACHE).then((c) => c.addAll(['./', 'index.html', 'cards.html', 'data/catalog.json', 'data/sky.json']).catch(() => {}))); });
 self.addEventListener('activate', (e) => { e.waitUntil(caches.keys().then((ks) => Promise.all(ks.filter((k) => k !== CACHE).map((k) => caches.delete(k)))).then(() => self.clients.claim())); });
 self.addEventListener('fetch', (e) => {
@@ -17,7 +20,7 @@ self.addEventListener('fetch', (e) => {
     e.respondWith(caches.open(CACHE).then(async (c) => {
       const key = new Request(url.origin + url.pathname);
       try {
-        const r = await Promise.race([fetch(req, { cache: 'no-cache' }), new Promise((_, no) => setTimeout(() => no(new Error('slow')), 3000))]);
+        const r = await Promise.race([fetch(req, { cache: 'no-cache' }), new Promise((_, no) => setTimeout(() => no(new Error('slow')), 5000))]);
         if (r.ok) c.put(key, r.clone());
         return r;
       } catch { return (await c.match(key)) || fetch(req); }
@@ -36,8 +39,7 @@ self.addEventListener('fetch', (e) => {
   }
   if (versioned) {
     e.respondWith(caches.open(CACHE).then(async (c) => (await c.match(req)) || fetch(req).then((r) => {
-      if (r.ok) { c.put(req, r.clone()); // and drop older versions of the same file
-        if (url.searchParams.has('v')) c.keys().then((ks) => ks.forEach((k) => { const u = new URL(k.url); if (u.pathname === url.pathname && u.search !== url.search) c.delete(k); })); }
+      if (r.ok) c.put(req, r.clone()); // older versions go with their whole cache when the next worker activates
       return r; })));
     return;
   }
