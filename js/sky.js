@@ -1,10 +1,10 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.382';
+import { extinction } from './sky-limit.js?v=0.1.383';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.382';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.383';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.382';
-import { TIER_INFO } from './rarity.js?v=0.1.382';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.383';
+import { TIER_INFO } from './rarity.js?v=0.1.383';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -781,6 +781,10 @@ export class SkyView {
         continue;
       }
       const p = this.project(s.enu); if (!p || !this.onScreen(p, 30)) continue;
+      // Deep-space spots (Voyagers, Pioneers, New Horizons, the Wow! signal) are invisible until they're in your
+      // circle, so you stumble on them (2026-10-09, Sevaan). Found ones show quietly there too, never elsewhere.
+      const hidden = ['voyager', 'voyager2', 'pioneer10', 'pioneer11', 'newhorizons', 'wow'].includes(s.kind);
+      if (hidden && !s.inCircle) continue;
       const sc = s.inCircle && !s.done ? 1.6 : 1;
       ctx.save(); ctx.translate(p.x, p.y); ctx.scale(sc, sc);
       if (s.kind === 'santa') {
@@ -792,9 +796,18 @@ export class SkyView {
         ctx.shadowColor = 'rgba(255,90,90,.55)'; ctx.shadowBlur = 4; ctx.fillStyle = '#d22b2b';
         ctx.beginPath(); ctx.moveTo(-6, 1.5); ctx.quadraticCurveTo(-5.5, -1, -2, -1.2); ctx.lineTo(0, -2.6); ctx.lineTo(3, -2.6); ctx.lineTo(5, -1); ctx.quadraticCurveTo(6.5, -0.8, 6.5, 1.5); ctx.closePath(); ctx.fill();
         ctx.shadowBlur = 0; ctx.fillStyle = '#111'; ctx.beginPath(); ctx.arc(-3.4, 1.7, 1.1, 0, Math.PI * 2); ctx.arc(3.6, 1.7, 1.1, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = '#f4f4f4'; ctx.beginPath(); ctx.arc(1.4, -2, 0.9, 0, Math.PI * 2); ctx.fill();
-      } else if (s.kind === 'voyager') {
+      } else if (s.kind === 'voyager' || s.kind === 'voyager2') {
         ctx.shadowColor = 'rgba(226,181,60,.7)'; ctx.shadowBlur = 5; ctx.fillStyle = '#e2b53c'; ctx.beginPath(); ctx.arc(0, 0, 2.6, 0, Math.PI * 2); ctx.fill();
         ctx.fillStyle = '#2a1a08'; ctx.beginPath(); ctx.arc(0, 0, 0.8, 0, Math.PI * 2); ctx.fill();
+      } else if (s.kind === 'pioneer10' || s.kind === 'pioneer11') { // a dish with its boom
+        ctx.shadowColor = 'rgba(226,181,60,.6)'; ctx.shadowBlur = 4; ctx.strokeStyle = '#fff2b3'; ctx.lineWidth = 0.9;
+        ctx.beginPath(); ctx.ellipse(0, 0, 3, 1.2, -0.5, 0, Math.PI * 2); ctx.stroke(); ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(4.5, 2.6); ctx.stroke();
+      } else if (s.kind === 'newhorizons') { // a little triangle body with its dish
+        ctx.shadowColor = 'rgba(143,208,255,.6)'; ctx.shadowBlur = 4; ctx.fillStyle = '#c9d8e6'; ctx.beginPath(); ctx.moveTo(-2.5, 2); ctx.lineTo(2.5, 2); ctx.lineTo(0, -2.2); ctx.closePath(); ctx.fill();
+        ctx.strokeStyle = '#fff2b3'; ctx.lineWidth = 0.8; ctx.beginPath(); ctx.arc(0, -0.4, 3, Math.PI * 1.1, Math.PI * 1.9); ctx.stroke();
+      } else if (s.kind === 'wow') { // a faint radio pulse
+        ctx.strokeStyle = '#ff6b6b'; ctx.lineWidth = 0.9; ctx.globalAlpha = 0.85;
+        for (const r of [1.4, 3, 4.6]) { ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI * 2); ctx.stroke(); ctx.globalAlpha *= 0.6; }
       }
       ctx.restore();
       if (s.inCircle && !s.done) {

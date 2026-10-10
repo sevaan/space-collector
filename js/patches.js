@@ -72,7 +72,7 @@ const UFO_ART = (id) => `<defs><linearGradient id="${id}beam" x1="0" y1="0" x2="
   ${[[-30, -22], [26, -26], [-18, -34], [34, -6], [-36, 0], [12, -38]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="1" fill="${INK}" opacity=".7"/>`).join('')}
   <path d="M-9 -4 L-24 30 L24 30 L9 -4Z" fill="url(#${id}beam)"/>
   <g transform="translate(0 -8) scale(1.7)"><path d="M-6 -1 Q-5 -7 0 -7 Q5 -7 6 -1Z" fill="#cfe8ff" fill-opacity=".85"/><ellipse rx="14" ry="4.2" fill="${INK}"/><ellipse rx="14" ry="4.2" fill="none" stroke="#c9b67a" stroke-width=".8"/><circle cx="-8" cy=".5" r="1.3" fill="#7dff8a"/><circle cx="0" cy="1.6" r="1.3" fill="#7dff8a"/><circle cx="8" cy=".5" r="1.3" fill="#7dff8a"/></g>`;
-const SECRET_TWILL = { santa: '#6a1d1d', roadster: '#14284a', meteor: '#22265a', voyager: '#0f1b2a', dizzy: '#3a2259' };
+const SECRET_TWILL = { santa: '#6a1d1d', roadster: '#14284a', meteor: '#22265a', voyager: '#0f1b2a', dizzy: '#3a2259', voyager2: '#0f1b2a', pioneer10: '#2a1d0c', pioneer11: '#1f1a2e', newhorizons: '#101c2c', wow: '#2a0f12' };
 const SLEIGH = '<g fill="#fff2b3">' + [0, 1, 2].map((k) => `<g transform="translate(${k * 13 - 30} ${4 - k * 2})"><path d="M0 5 Q3 1 8 2 L10 0 L9.5 4 Q11 6 8 7 L3 7 Z"/><path d="M8.5 1 l1.5 -3.5 M10 1 l2 -3" stroke="#fff2b3" stroke-width=".8"/></g>`).join('') + '</g><path d="M10 6 Q11 0 20 0 L30 0 Q34 0 33 5 L32 8 L12 8 Z" fill="#d94f38"/><path d="M8 11 L34 11 Q37 11 36 8" fill="none" stroke="#fff2b3" stroke-width="1.6"/><circle cx="24" cy="-3" r="3" fill="#fff2b3"/><circle cx="-28" cy="5" r="1.4" fill="#ff4a3a"/>';
 const SECRET_ART = {
   santa: () => `<g transform="translate(-2 -6) scale(1.25)">${SLEIGH}</g>`,
@@ -80,6 +80,31 @@ const SECRET_ART = {
   meteor: () => '<path d="M-26 -22 L10 14" stroke="#fff2b3" stroke-width="3" stroke-linecap="round"/><circle cx="10" cy="14" r="4" fill="#fff"/>',
   voyager: () => '<circle r="18" fill="#2a1a08" stroke="#e2b53c" stroke-width="7"/><circle r="4" fill="#e2b53c"/><circle cx="26" cy="-20" r="2.4" fill="#8fd0ff"/>',
   dizzy: () => '<path d="M0 0 m-4 0 a4 4 0 1 1 8 0 a8 8 0 1 1 -16 0 a12 12 0 1 1 24 0 a16 16 0 1 1 -32 0" fill="none" stroke="#fff2b3" stroke-width="2.4"/>',
+  // Deep-space secrets (2026-10-09): drawn at the same fidelity as the other secret patches.
+  // Voyager 2 · Grand Tour: the golden record (grooves, label, centre hole), its dotted path past the four giants.
+  voyager2: () => '<path d="M-38 22 Q-10 -2 14 -6 Q30 -9 38 -26" fill="none" stroke="#fff2b3" stroke-opacity=".55" stroke-width="1.2" stroke-dasharray="1.5 3"/>'
+    + [[-26, 12, 3.2, '#d9a066'], [-8, 2, 2.6, '#e8cf9a'], [10, -5, 2.2, '#9fd4dc'], [26, -14, 2.2, '#5c86d6']].map(([x, y, r, c]) => `<circle cx="${x}" cy="${y}" r="${r}" fill="${c}"/>`).join('')
+    + '<g transform="translate(0 8)"><circle r="17" fill="#2a1a08" stroke="#e2b53c" stroke-width="6"/>' + [11, 8.5, 6].map((r) => `<circle r="${r}" fill="none" stroke="#e2b53c" stroke-opacity=".35" stroke-width=".6"/>`).join('') + '<circle r="3.6" fill="#e2b53c"/><circle r="1" fill="#2a1a08"/></g>',
+  // The Plaque · Pioneer 10: the gold plaque with its line drawing of two people beside the probe's outline.
+  pioneer10: () => '<rect x="-30" y="-20" width="60" height="38" rx="3" fill="#c9a24a" stroke="#f4d27a" stroke-width="1.6"/>'
+    + '<g fill="none" stroke="#3a2a10" stroke-width="1.2" stroke-linecap="round"><circle cx="-6" cy="-10" r="2.4"/><path d="M-6 -7.5 V3 M-6 -4 L-10 1 M-6 -4 L-2 1 M-6 3 L-8.5 12 M-6 3 L-3.5 12"/><circle cx="4" cy="-9" r="2.2"/><path d="M4 -6.8 V3 M4 -4 L1 1 M4 -4 L7 1 M4 3 L2 12 M4 3 L6 12"/>'
+    + '<path d="M14 -12 L24 -12 M19 -12 V8 M14 8 L24 8"/><path d="M-26 14 L26 14" stroke-dasharray="1.5 2.5"/><circle cx="-24" cy="-14" r="1.6"/><path d="M-24 -14 L-14 -16 M-24 -14 L-18 -6"/></g>',
+  // Ringside · Pioneer 11: Saturn, its ring passing behind and in front, and the little probe on its way past.
+  pioneer11: () => '<ellipse rx="34" ry="9" fill="none" stroke="#c9b67a" stroke-width="3" transform="rotate(-18)"/><circle r="17" fill="#d9a066"/>'
+    + '<path d="M-16 -4 Q0 -8 16 -4 M-15 4 Q0 0 15 4" stroke="#b07a40" stroke-width="2" fill="none"/>'
+    + '<path d="M-33 6 A34 9 0 0 0 33 -6" fill="none" stroke="#efe0a8" stroke-width="3" transform="rotate(-18)"/>'
+    + '<g transform="translate(26 -26)"><ellipse rx="5" ry="2" fill="none" stroke="#fff2b3" stroke-width="1.4" transform="rotate(-30)"/><path d="M0 0 L6 4" stroke="#fff2b3" stroke-width="1.2"/></g>',
+  // Heart of Pluto · New Horizons: Pluto with its pale heart (Tombaugh Regio), Charon behind, the probe's dish passing.
+  newhorizons: () => '<circle cx="24" cy="-20" r="7" fill="#9a9a96"/><circle r="22" fill="#c08a5c"/>'
+    + '<path d="M2 -2 C2 -10 12 -12 14 -4 C16 -12 26 -8 22 2 C19 9 10 13 8 16 C6 12 0 6 2 -2Z" fill="#f4e6cc"/>'
+    + '<path d="M-20 -6 Q-12 -12 -4 -10 M-18 8 Q-10 4 -4 10" stroke="#8a5a36" stroke-width="2.4" fill="none" stroke-linecap="round"/>'
+    + '<g transform="translate(-26 -24) rotate(-20)"><path d="M-4 3 L4 3 L0 -3 Z" fill="#c9d8e6"/><path d="M-5 -1 A5 5 0 0 1 5 -1" fill="none" stroke="#fff2b3" stroke-width="1.2"/></g>',
+  // Wow! · the 1977 signal: the printout's "6EQUJ5" with Jerry Ehman's red circle and "Wow!" in the margin.
+  wow: () => '<rect x="-30" y="-22" width="60" height="44" rx="2" fill="#efe6cf"/>'
+    + [-14, -6, 2, 10].map((y) => `<path d="M-26 ${y} H26" stroke="#c9bf9f" stroke-width=".6"/>`).join('')
+    + '<text x="-2" y="2" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="600" fill="#2a2a2a" letter-spacing="1">6EQUJ5</text>'
+    + '<ellipse cx="-2" cy="-2" rx="22" ry="9" fill="none" stroke="#d22b2b" stroke-width="1.6" transform="rotate(-4)"/>'
+    + '<text x="16" y="17" text-anchor="middle" font-family="Georgia, serif" font-style="italic" font-size="10" fill="#d22b2b">Wow!</text>',
 };
 let uid = 0;
 // The patch as an SVG string. locked: a faint stitch outline (not earned yet). date: replaces the group along the

@@ -6,6 +6,13 @@ export const SECRET_PATCHES = {
   meteor: { id: 'meteor', name: 'Make a Wish', text: 'You caught a shooting star.' },
   voyager: { id: 'voyager', name: 'Pale Blue Dot', text: 'You found Voyager 1 and its golden record, 24 billion km away.' },
   dizzy: { id: 'dizzy', name: 'Dizzy', text: 'Three full turns. The compass needs a sit-down.' },
+  // Deep-space probes and a famous signal (2026-10-09, Sevaan): fixed spots among the stars, invisible until one is in
+  // your circle, so you stumble on them. Directions from JPL Horizons, Oct 2026 (they drift less than 0.1° a year).
+  voyager2: { id: 'voyager2', name: 'Grand Tour', text: 'You found Voyager 2, the only probe to visit Uranus and Neptune. It carries a golden record too.' },
+  pioneer10: { id: 'pioneer10', name: 'The Plaque', text: 'You found Pioneer 10 and its plaque: a drawing of us, and a map to the Sun.' },
+  pioneer11: { id: 'pioneer11', name: 'Ringside', text: 'You found Pioneer 11, the first visitor to Saturn. It went quiet in 1995 and keeps coasting outward.' },
+  newhorizons: { id: 'newhorizons', name: 'Heart of Pluto', text: 'You found New Horizons, which flew past Pluto in 2015 and kept going.' },
+  wow: { id: 'wow', name: 'Wow!', text: 'You aimed where the 1977 Wow! signal came from. It has never been heard again.' },
 };
 for (const p of Object.values(SECRET_PATCHES)) { p.secret = true; p.icon = ''; }
 export function found() { try { return JSON.parse(localStorage.getItem('secrets')) || {}; } catch { return {}; } }
@@ -39,6 +46,14 @@ export function summonMeteor() { nextMeteor = 1; meteor = null; }
 
 // Voyager 1: RA 17h13m, Dec +12° (it barely moves).
 export const VOYAGER = { ra: 258.2, dec: 12.1 };
+// The other deep-space spots: [id, ra°, dec°, title, sub line, colour].
+export const DEEP = [
+  ['voyager2', 302.41, -59.72, 'Voyager 2', 'Grand Tour · 144 AU out', '#e2b53c'],
+  ['pioneer10', 79.53, 26.09, 'Pioneer 10', 'The plaque · 142 AU out', '#e2b53c'],
+  ['pioneer11', 283.97, -8.91, 'Pioneer 11', 'First to Saturn · drifting outward', '#e2b53c'],
+  ['newhorizons', 288.84, -20.29, 'New Horizons', 'Past Pluto · 66 AU out', '#8fd0ff'],
+  ['wow', 291.8, -27.0, 'Wow!', 'Big Ear radio telescope · 15 Aug 1977', '#ff6b6b'],
+];
 
 // Dizzy: three full turns (1,080°) within 30 seconds.
 const turns = [];

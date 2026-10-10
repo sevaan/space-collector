@@ -801,3 +801,4 @@ body.day #skybar.resting { opacity: 0; }
 #guidance:not(.first) { font: 500 13px/1.2 var(--label) !important; letter-spacing: .12em !important; padding: 6px 14px 7px; border-radius: 14px; }
 #guidance:not(.first) small { display: block; font-size: 10px; letter-spacing: .2em; color: var(--gold); margin-bottom: 2px; }
 #guidance:not(.first) span { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+body.secret-on #discover, body.secret-on #guidance { display: none !important; } /* a secret in the circle owns it (2026-10-09) */

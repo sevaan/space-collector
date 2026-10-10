@@ -1,21 +1,22 @@
-import { expandFacts } from './catalog-facts.js?v=0.1.382';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.382';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.382';
-import { ticket } from './toast.js?v=0.1.382';
-import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.382';
-import { cardArt } from './art.js?v=0.1.382';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.382';
-import { applyBack } from './card-backs.js?v=0.1.382';
-import { SETS, assignSets } from './sets.js?v=0.1.382';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.382';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.382';
-import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.382';
-import { RANKS, progress } from './progress.js?v=0.1.382';
-import { SOLAR_SYSTEM } from './natural.js?v=0.1.382';
-import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.382';
-import { shareCardEl } from './share-card.js?v=0.1.382';
-import { allSightings, deleteSighting } from './store.js?v=0.1.382';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.382';
+import { expandFacts } from './catalog-facts.js?v=0.1.383';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.383';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.383';
+import { ticket } from './toast.js?v=0.1.383';
+import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.383';
+import { cardArt } from './art.js?v=0.1.383';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.383';
+import { applyBack } from './card-backs.js?v=0.1.383';
+import { SETS, assignSets } from './sets.js?v=0.1.383';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.383';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.383';
+import { loadConstellations, CONSTELLATIONS } from './constellations.js?v=0.1.383';
+import { RANKS, progress } from './progress.js?v=0.1.383';
+import { SOLAR_SYSTEM } from './natural.js?v=0.1.383';
+import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.383';
+import { shareCardEl } from './share-card.js?v=0.1.383';
+import { allSightings, deleteSighting } from './store.js?v=0.1.383';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.383';
+import { SECRET_PATCHES } from './secrets.js?v=0.1.383';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -661,7 +662,7 @@ function renderPatches() {
   let fossil = null; try { fossil = JSON.parse(localStorage.getItem('fossilFound')); } catch {}
   let ufo = null; try { ufo = JSON.parse(localStorage.getItem('ufoFound')); } catch {}
   let sec = {}; try { sec = JSON.parse(localStorage.getItem('secrets')) || {}; } catch {}
-  const SEC = { santa: ['Nice List', 'You waved at Santa on Christmas Eve'], roadster: ["Don't Panic", 'Found Starman and his Roadster'], meteor: ['Make a Wish', 'Caught a shooting star'], voyager: ['Pale Blue Dot', 'Found Voyager 1, 24 billion km away'], dizzy: ['Dizzy', 'Three full turns'] };
+  const SEC = Object.fromEntries(Object.values(SECRET_PATCHES).map((x) => [x.id, [x.name, x.text.replace(/\.$/, '')]])); // every secret, from js/secrets.js
   const secs = Object.keys(SEC).filter((k) => sec[k]).map((k) => ({ id: k, name: SEC[k][0], text: SEC[k][1], icon: '', secret: true, done: true }));
   const all = [...secs, ...(fossil ? [{ id: 'fossil', name: 'Fossil Hunter', text: 'Found dinosaur bones buried under your feet', icon: '', secret: true, done: true }] : []), ...(ufo ? [{ id: 'ufo', name: 'Close Encounter', text: "Something crossed your sky that isn't in any catalogue", icon: '', secret: true, done: true }] : []), ...(state.achievements ?? [])];
   if (ufo) dates.ufo ??= ufo.at;
@@ -687,7 +688,7 @@ function openPatch(id, from = null) {
   let fossil = null; try { fossil = JSON.parse(localStorage.getItem('fossilFound')); } catch {}
   let ufo = null; try { ufo = JSON.parse(localStorage.getItem('ufoFound')); } catch {}
   let sec = {}; try { sec = JSON.parse(localStorage.getItem('secrets')) || {}; } catch {}
-  const SEC = { santa: ['Nice List', 'You waved at Santa on Christmas Eve'], roadster: ["Don't Panic", 'Found Starman and his Roadster'], meteor: ['Make a Wish', 'Caught a shooting star'], voyager: ['Pale Blue Dot', 'Found Voyager 1, 24 billion km away'], dizzy: ['Dizzy', 'Three full turns'] };
+  const SEC = Object.fromEntries(Object.values(SECRET_PATCHES).map((x) => [x.id, [x.name, x.text.replace(/\.$/, '')]])); // every secret, from js/secrets.js
   const secs = Object.keys(SEC).filter((k) => sec[k]).map((k) => ({ id: k, name: SEC[k][0], text: SEC[k][1], icon: '', secret: true, done: true }));
   const all = [...secs, ...(fossil ? [{ id: 'fossil', name: 'Fossil Hunter', text: 'Found dinosaur bones buried under your feet', icon: '', secret: true, done: true }] : []), ...(ufo ? [{ id: 'ufo', name: 'Close Encounter', text: "Something crossed your sky that isn't in any catalogue", icon: '', secret: true, done: true }] : []), ...(state.achievements ?? [])], a = all.find((x) => x.id === id); if (!a) return;
   const date = earnedDates()[id] ?? (id === 'fossil' ? fossil?.at : id === 'ufo' ? ufo?.at : sec[id] ?? null), f = finishOf(a);
