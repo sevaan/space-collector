@@ -404,3 +404,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - UI: Settings → Account row + #set-acct-sheet (Continue with Google, email link, and for iOS Home Screen apps a paste-the-link fallback, since the emailed link opens in Safari).
   - main: `pushSighting` after every save, `initAccount` at boot (not awaited); cards-page `removeSighting` after a delete.
   - Sign in with Apple waits for the Apple Developer account.
+- 2026-10-10 · The Firebase web key (GitHub secret-scanning alert, expected: it's public by design) is now restricted in Google Cloud to HTTP referrers sevaan.github.io/*, space-collector-91cc7.firebaseapp.com/* (Firebase's auth handler) and localhost:8765/*, plus Firebase's default 25 APIs. Verified: an allowed referrer works, other sites get 'Requests from referer … are blocked'. Native apps will need their own iOS/Android-restricted keys. Close the GitHub alert as 'Won't fix'.
