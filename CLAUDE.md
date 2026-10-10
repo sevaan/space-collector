@@ -367,3 +367,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - #22a: the owned-target line reads "Seen on 2 nights · 1 more for Silver".
   - #11: guideTo no longer toasts.
   - Daytime toasts sit at 80px (no slider in the day).
+- 2026-10-10 · #20: tier XP flattened to 10/15/25/40/60 (was 10/20/40/80/150). `xpCarry()` in js/progress.js runs once per device (localStorage `xpCarry`). It compares old-numbers rank to new XP and stores the gap, so nobody drops a rank. progress() takes `carry` (main progressNow and every cards-page call pass it). Casual pace is now about: Spotter night 1, Tracker 3, Navigator 7, Flight Controller ~19, Mission Control ~48.

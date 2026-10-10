@@ -1,12 +1,15 @@
 // Player progress from the sighting log: XP and observer rank, tonight's three missions, a weekly streak and
 // achievements. Everything is derived from the saved sightings (nothing extra is stored), so it can't drift.
 // info(cardKey) -> { tier, type, owner, launch, natural, con } | null. No DOM.
-import { nightKey } from './observation.js?v=0.1.420';
+import { nightKey } from './observation.js?v=0.1.421';
 
 export const RANKS = [
   [0, 'Stargazer'], [200, 'Spotter'], [600, 'Tracker'], [1500, 'Navigator'], [4000, 'Flight Controller'], [10000, 'Mission Control'],
 ];
-const TIER_XP = { common: 10, uncommon: 20, rare: 40, epic: 80, legendary: 150 };
+// Flatter since 2026-10-10 (playtest: 10 → 150 was 15×, so rank mostly counted old rocket stages and Mission Control
+// arrived in ~4 months). Players who were already further along keep their rank through a one-time carry (xpCarry).
+const TIER_XP = { common: 10, uncommon: 15, rare: 25, epic: 40, legendary: 60 };
+const LEGACY_TIER_XP = { common: 10, uncommon: 20, rare: 40, epic: 80, legendary: 150 };
 const REPEAT_XP = 5, SHINY_XP = 100, MISSION_XP = 50, CON_XP = 200;
 const real = (sightings) => sightings.filter((s) => !s.sim).slice().sort((a, b) => a.time - b.time);
 const year = (iso) => (iso ? Number(String(iso).slice(0, 4)) : null);
@@ -60,6 +63,19 @@ function missionsOf(night, { first = false, deals = null } = {}) {
 
 // Stored deals (see main.js dealMissions): { [nightKey]: [missionId × 3] }.
 export function readDeals() { try { return JSON.parse(localStorage.getItem('missionDeals')) || {}; } catch { return {}; } }
+
+// The one-time carry that keeps an existing player's rank through the flatter XP (see TIER_XP): the XP needed to
+// reach the rank the old numbers gave them. Worked out once, the first time the new numbers run, and kept.
+export function xpCarry(sightings, info, opts = {}) {
+  try { const v = localStorage.getItem('xpCarry'); if (v != null) return Number(v) || 0; } catch {}
+  let carry = 0;
+  if (real(sightings).length) {
+    const old = progress(sightings, info, { ...opts, tierXp: LEGACY_TIER_XP }), cur = progress(sightings, info, { ...opts, carry: 0 });
+    carry = Math.max(0, old.rank.at - cur.xp);
+  }
+  try { localStorage.setItem('xpCarry', String(carry)); } catch {}
+  return carry;
+}
 
 // ---------- achievements ----------
 // Grouped so a collector always has a next one in reach. `icon` is the short text in the badge circle
@@ -182,7 +198,7 @@ export function streaks(sightings, now = Date.now()) {
 }
 
 // constellations: [{ id, stars: [cardKey], zodiac }] for completion counts.
-export function progress(sightings, info, { constellations = [], now = Date.now(), deals = null } = {}) {
+export function progress(sightings, info, { constellations = [], now = Date.now(), deals = null, carry = 0, tierXp = TIER_XP } = {}) {
   const list = real(sightings);
   const seenCard = new Set(), seenNight = new Set(), nights = new Map();
   let xp = 0;
@@ -194,7 +210,7 @@ export function progress(sightings, info, { constellations = [], now = Date.now(
   for (const s of list) {
     const i = info(s.cardKey), night = nightKey(s.time, s.lon ?? 0), first = !seenCard.has(s.cardKey), nk = `${s.cardKey}|${night}`;
     if (first) {
-      seenCard.add(s.cardKey); xp += TIER_XP[i?.tier] ?? 10; a.cards++; firsts.push(s.time);
+      seenCard.add(s.cardKey); xp += tierXp[i?.tier] ?? 10; a.cards++; firsts.push(s.time);
       if (s.time - (firsts[firsts.length - 2] ?? -Infinity) <= 60000) a.double = true;
       if (firsts.length >= 3 && s.time - firsts[firsts.length - 3] <= 300000) a.triple = true;
       if (i?.tier) a.tierCount[i.tier] = (a.tierCount[i.tier] ?? 0) + 1;
@@ -245,6 +261,7 @@ export function progress(sightings, info, { constellations = [], now = Date.now(
   const st = streaks(list, now); a.bestStreak = st.best;
   const tonightKey = nightKey(now, list[list.length - 1]?.lon ?? 0), tonight = nights.get(tonightKey) ?? [];
   const missions = missionsOf(tonightKey, { first: !nights.size || tonightKey === firstNight, deals }).map((m) => ({ id: m.id, text: m.text, done: m.done(tonight, now) }));
+  xp += carry;
   let ri = 0; for (let k = 0; k < RANKS.length; k++) if (xp >= RANKS[k][0]) ri = k;
   const rank = { name: RANKS[ri][1], index: ri, at: RANKS[ri][0], next: RANKS[ri + 1]?.[0] ?? null, nextName: RANKS[ri + 1]?.[1] ?? null };
   const achievements = ACHIEVEMENTS.map((x) => ({ id: x.id, name: x.name, text: x.text, icon: x.icon, done: x.done(a), prog: PROG[x.id]?.(a) }));
