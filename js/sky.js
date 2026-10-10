@@ -1,10 +1,10 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.408';
+import { extinction } from './sky-limit.js?v=0.1.410';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.408';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.410';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.408';
-import { TIER_INFO } from './rarity.js?v=0.1.408';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.410';
+import { TIER_INFO } from './rarity.js?v=0.1.410';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -425,13 +425,16 @@ export class SkyView {
 
   // Each glow follows a supplied point on the true galactic equator.
   // milky: { spine: [{enu, width°, bright}], specks: [{enu, a, s}], rift: [{enu, w°}] }
+  // Build the Milky Way renderer (fetch, decode, GPU upload) ahead of time, e.g. while the welcome card is up, so the
+  // sky's first frames don't pay for it (playtest 2026-10-09).
+  warmMilky() { if (this.mwGL === undefined) { try { this.mwGL = createMilkyGL('assets/sky/milkyway.webp?v=2'); } catch { this.mwGL = null; } } }
   drawMilkyWay(milky) {
     if (!milky?.spine) return;
     // The real thing (2026-10-08): ESO's all-sky photograph, mapped onto your view by js/milkyway-gl.js. The
     // drawn-by-hand version below stays as the fallback where WebGL isn't available or the photo hasn't loaded.
     if (milky.gal) {
       if (this.mwGL?.lost) this.mwGL = undefined; // rebuilt after the phone dropped its WebGL context
-      if (this.mwGL === undefined) { try { this.mwGL = createMilkyGL('assets/sky/milkyway.webp?v=2'); } catch { this.mwGL = null; } }
+      this.warmMilky();
       if (this.mwGL?.ready) {
         // How much of it you can see: none under city lights (stars to about magnitude 3.5), all of it at a dark site.
         const vis = this.starLimit == null ? 1 : Math.max(0, Math.min(1, (this.starLimit - 3.6) / 2.4));

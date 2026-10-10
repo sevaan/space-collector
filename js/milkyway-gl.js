@@ -47,18 +47,30 @@ export function createMilkyGL(src) {
   // one (QA 2026-10-08: the Milky Way could vanish for good after a trip to the background).
   let lost = false;
   canvas.addEventListener?.('webglcontextlost', () => { lost = true; ready = false; });
-  img.onload = () => {
+  const upload = (pic) => {
+    if (gl.isContextLost()) return;
     const t = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, t);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, img);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, pic);
     gl.generateMipmap(gl.TEXTURE_2D); // 4096 × 2048: powers of two, so it can repeat across l = ±180° and use mipmaps
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
     gl.uniform1i(u.tex, 0);
+    // One throwaway 1 × 1 draw and read-back now, so the first real frame doesn't pay for the GPU's first use of the
+    // texture (a ~50 ms hitch on the sky's first frame, playtest 2026-10-09).
+    try { if (canvas.width < 1) canvas.width = canvas.height = 1; gl.viewport(0, 0, 1, 1); gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4); gl.readPixels(0, 0, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array(4)); } catch {}
     ready = true;
+    pic.close?.();
   };
-  img.src = src;
+  // Decode the 4096 × 2048 photo off the main thread first (playtest 2026-10-09: decoding it inside the upload was a
+  // ~250 ms hitch as the tour started). ImageBitmap where there is one, else Image.decode(), else plain onload.
+  if (typeof createImageBitmap === 'function') {
+    fetch(src).then((r) => r.blob()).then((b) => createImageBitmap(b)).then(upload).catch(() => { img.onload = () => upload(img); img.src = src; });
+  } else {
+    img.src = src;
+    (img.decode ? img.decode() : new Promise((r) => { img.onload = r; })).then(() => upload(img)).catch(() => { img.onload = () => upload(img); });
+  }
   return {
     get ready() { return ready && !gl.isContextLost(); },
     get lost() { return lost || gl.isContextLost(); },

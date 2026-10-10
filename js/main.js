@@ -1,39 +1,39 @@
-import * as Secrets from './secrets.js?v=0.1.408';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.408';
-import * as Ufo from './ufo.js?v=0.1.408';
-import * as Fossil from './fossil.js?v=0.1.408';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.408';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.408';
-import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.408';
-import { VERSION } from './version.js?v=0.1.408';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.408';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.408';
-import { conArt } from './con-art.js?v=0.1.408';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.408';
-import { CON_FIGURES } from './con-figures.js?v=0.1.408';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.408';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.408';
-import { progress as progressOf } from './progress.js?v=0.1.408';
-import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.408';
-import { conList } from './constellations.js?v=0.1.408';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.408';
-import { SkyView, shortName } from './sky.js?v=0.1.408';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.408';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.408';
-import { cardArt } from './art.js?v=0.1.408';
-import { renderCard, cardLevel, artImage, lockedArt, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.408';
-import { applyBack } from './card-backs.js?v=0.1.408';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.408';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.408';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.408';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.408';
-import { TIER_INFO } from './rarity.js?v=0.1.408';
-import { SETS } from './sets.js?v=0.1.408';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.408';
-import { shareCardEl } from './share-card.js?v=0.1.408';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.408';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.408';
-import { addStarfield } from './starfield.js?v=0.1.408';
+import * as Secrets from './secrets.js?v=0.1.410';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.410';
+import * as Ufo from './ufo.js?v=0.1.410';
+import * as Fossil from './fossil.js?v=0.1.410';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.410';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.410';
+import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.410';
+import { VERSION } from './version.js?v=0.1.410';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.410';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.410';
+import { conArt } from './con-art.js?v=0.1.410';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.410';
+import { CON_FIGURES } from './con-figures.js?v=0.1.410';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.410';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.410';
+import { progress as progressOf } from './progress.js?v=0.1.410';
+import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.410';
+import { conList } from './constellations.js?v=0.1.410';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.410';
+import { SkyView, shortName } from './sky.js?v=0.1.410';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.410';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.410';
+import { cardArt } from './art.js?v=0.1.410';
+import { renderCard, cardLevel, artImage, lockedArt, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.410';
+import { applyBack } from './card-backs.js?v=0.1.410';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.410';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.410';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.410';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.410';
+import { TIER_INFO } from './rarity.js?v=0.1.410';
+import { SETS } from './sets.js?v=0.1.410';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.410';
+import { shareCardEl } from './share-card.js?v=0.1.410';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.410';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.410';
+import { addStarfield } from './starfield.js?v=0.1.410';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -159,6 +159,9 @@ function unlockAudio() {
   if (!soundOn()) return;
   try { audio ??= new (window.AudioContext || window.webkitAudioContext)(); audio.resume().catch(() => {}); } catch {}
 }
+// Making the AudioContext costs ~130 ms on a phone, which landed on the welcome card's flip (playtest 2026-10-09).
+// Make it (suspended) once the page is idle; a tap then only has to resume it.
+setTimeout(() => { if (!soundOn()) return; try { audio ??= new (window.AudioContext || window.webkitAudioContext)(); } catch {} }, 2500);
 function chirp(freqs = [660, 990], dur = 0.09) {
   if (!audio || !soundOn()) return;
   let t = audio.currentTime;
@@ -2273,6 +2276,7 @@ function welcomeModel() {
 addStarfield($('start'), 90);
 function renderStartHand() {
   const holder = $('wc-holder'); if (!holder || wcCard) return;
+  setTimeout(() => sky.warmMilky(), 1800); // the Milky Way photo loads while you read the card, not as the sky starts (playtest 2026-10-09)
   const card = renderCard(welcomeModel(), { preview: true });
   card.classList.add('wc-mission');
   // Dress it as a briefing, not a catalogue entry.
