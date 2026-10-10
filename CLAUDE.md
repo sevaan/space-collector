@@ -325,3 +325,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - Welcome card is design/welcome-options.html B (2026-10-09): "HOW TO PLAY · Look up & collect the cosmos" (title changed 2026-10-09), three numbered panels (Go outside / Look up / Collect, `welcomeArt()`), the steps in the stat row, "No telescope, no tickets. Every light that moves is a card…".
 - Welcome card's first shake comes 2 s after it appears (2026-10-09, Sevaan; was ~5 s): the shake opens each 5 s cycle and the rattle clock restarts when #start stops booting.
 - Welcome page has twinkling stars behind the card (2026-10-09): addStarfield(#start, 90), the same field as the reveal.
+- Toasts sit just above the switcher day and night (2026-10-09; the sky slider they used to clear is gone); over a panel or the reveal they still drop to the very bottom.

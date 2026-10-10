@@ -786,3 +786,4 @@ body.night #ufo-cta { background: var(--gold) !important; color: #120606 !import
 .wc-stage > .wc-after { top: calc(50% + (var(--safe-top) - var(--safe-bottom)) / 2 + 39.2 * var(--cf) / 2 + 30px); gap: 2px; }
 .wc-after #btn-start.text-button { margin-top: 0; min-height: 0; padding: 2px 16px 14px; line-height: 1; } /* tap area kept below the words */
 #start > .starfield { position: absolute; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; } /* twinkling stars behind the welcome card */
+#toasts { bottom: calc(var(--safe-bottom) + 84px) !important; } /* the sky slider is gone (2026-10-09, Sevaan): toasts sit just above the switcher day and night; over a panel or the reveal they still go to the very bottom */
