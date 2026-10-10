@@ -847,3 +847,26 @@ body.day .patch-coins { bottom: calc(var(--safe-bottom, 0px) + 114px); }
 #whatsthis { position: fixed; right: 12px; top: calc(var(--safe-top) + 132px); z-index: 2; display: flex; align-items: center; gap: 6px; padding: 6px 11px 6px 6px; border-radius: 99px; border: 1px solid color-mix(in srgb, var(--text) 18%, transparent); background: color-mix(in srgb, #080f1b 62%, transparent); color: var(--text); font: 500 11px/1 var(--label); letter-spacing: .14em; text-transform: uppercase; cursor: pointer; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
 #whatsthis b { display: grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; background: var(--orange, #fa8127); color: #080f1b; font: 400 12px/1 var(--display, sans-serif); letter-spacing: 0; }
 #hud[hidden] ~ #whatsthis, body.ob-tour #whatsthis { display: none; }
+/* Weekly recap (playtest 2026-10-09, #15): last week on a card, over the sky. */
+#recap { position: fixed; inset: 0; z-index: 60; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: calc(var(--safe-top) + 20px) 20px calc(var(--safe-bottom) + 24px); background: radial-gradient(ellipse at 50% 20%, #0c1d29f2, #080f1bf7 70%); opacity: 0; transition: opacity .3s ease; }
+#recap.in { opacity: 1; }
+#recap .rc-card { width: min(100%, 340px); border-radius: 16px; border: 2px solid #adbcc8; box-shadow: inset 0 0 0 1px #657786, 0 24px 50px #000a; background: radial-gradient(ellipse at 50% 25%, #13233a, #080f1b 70%); color: #fff2b3; transform: translateY(18px) scale(.97); transition: transform .45s cubic-bezier(.2, 1.2, .4, 1); }
+#recap.in .rc-card { transform: none; }
+.rc-bar, .rc-foot { display: flex; justify-content: space-between; gap: 10px; padding: 13px 16px 11px; font: 500 11px/1.25 var(--label); letter-spacing: .18em; text-transform: uppercase; }
+.rc-bar { border-bottom: 1px solid #bcb58566; } .rc-bar span:last-child { color: var(--orange, #fa8127); }
+.rc-big { display: flex; align-items: baseline; justify-content: center; gap: 10px; padding: 22px 16px 6px; }
+.rc-big b { font: 400 64px/1 var(--display); color: #fff2b3; } .rc-big span { font: 500 18px/1 var(--label); letter-spacing: .12em; text-transform: uppercase; color: #bdbea9; }
+.rc-stats { display: grid; grid-template-columns: repeat(3, 1fr); margin: 10px 16px 0; border-top: 1px solid #bcb58544; border-bottom: 1px solid #bcb58544; }
+.rc-stats div { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 10px 4px; }
+.rc-stats div + div { border-left: 1px solid #bcb58544; }
+.rc-stats b { font: 400 22px/1 var(--display); color: #fff2b3; } .rc-stats span { font: 500 10px/1 var(--label); letter-spacing: .16em; text-transform: uppercase; color: #bdbea9; }
+.rc-best { display: flex; align-items: center; gap: 14px; margin: 14px 16px 4px; }
+.rc-art { width: 92px; height: 62px; flex: none; border-radius: 8px; overflow: hidden; border: 1px solid #344654; background: #102e37; }
+.rc-art img, .rc-art svg { display: block; width: 100%; height: 100%; object-fit: cover; }
+.rc-best small { display: block; font: 500 10px/1 var(--label); letter-spacing: .18em; text-transform: uppercase; color: #bdbea9; }
+.rc-best b { display: block; margin: 5px 0 4px; font: 400 18px/1.05 var(--display); text-transform: uppercase; }
+.rc-best em { font: 500 11px/1 var(--label); letter-spacing: .14em; text-transform: uppercase; font-style: normal; }
+.rc-foot { margin-top: 12px; border-top: 1px solid #bcb58566; flex-direction: column; gap: 6px; color: #bdbea9; } .rc-foot b { color: #fff2b3; font-weight: 500; }
+.rc-actions { display: flex; flex-direction: column; gap: 10px; width: min(100%, 340px); }
+.rc-actions button { height: 48px; border-radius: 12px; border: 0; font: 500 14px/1 var(--label); letter-spacing: .16em; text-transform: uppercase; cursor: pointer; }
+.rc-share { background: var(--orange, #fa8127); color: #080f1b; } .rc-go { background: #ffffff12; color: #fff2b3; }
