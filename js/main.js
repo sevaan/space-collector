@@ -1,38 +1,38 @@
-import * as Secrets from './secrets.js?v=0.1.363';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.363';
-import * as Ufo from './ufo.js?v=0.1.363';
-import * as Fossil from './fossil.js?v=0.1.363';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.363';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.363';
-import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.363';
-import { VERSION } from './version.js?v=0.1.363';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.363';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.363';
-import { conArt } from './con-art.js?v=0.1.363';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.363';
-import { CON_FIGURES } from './con-figures.js?v=0.1.363';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.363';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.363';
-import { progress as progressOf } from './progress.js?v=0.1.363';
-import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.363';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.363';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.363';
-import { SkyView, shortName } from './sky.js?v=0.1.363';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.363';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.363';
-import { cardArt } from './art.js?v=0.1.363';
-import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.363';
-import { applyBack } from './card-backs.js?v=0.1.363';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.363';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.363';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.363';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.363';
-import { TIER_INFO } from './rarity.js?v=0.1.363';
-import { SETS } from './sets.js?v=0.1.363';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.363';
-import { shareCardEl } from './share-card.js?v=0.1.363';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.363';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.363';
+import * as Secrets from './secrets.js?v=0.1.364';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.364';
+import * as Ufo from './ufo.js?v=0.1.364';
+import * as Fossil from './fossil.js?v=0.1.364';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.364';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.364';
+import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.364';
+import { VERSION } from './version.js?v=0.1.364';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.364';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.364';
+import { conArt } from './con-art.js?v=0.1.364';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.364';
+import { CON_FIGURES } from './con-figures.js?v=0.1.364';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.364';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.364';
+import { progress as progressOf } from './progress.js?v=0.1.364';
+import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.364';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.364';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.364';
+import { SkyView, shortName } from './sky.js?v=0.1.364';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.364';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.364';
+import { cardArt } from './art.js?v=0.1.364';
+import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.364';
+import { applyBack } from './card-backs.js?v=0.1.364';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.364';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.364';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.364';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.364';
+import { TIER_INFO } from './rarity.js?v=0.1.364';
+import { SETS } from './sets.js?v=0.1.364';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.364';
+import { shareCardEl } from './share-card.js?v=0.1.364';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.364';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.364';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -372,7 +372,36 @@ function spinView(b) {
   const e = 1 - (1 - k) ** 3, deg = v.sway ? v.az * Math.sin(k * Math.PI * 2) * (1 - k) : v.az * (1 - e);
   return { right: rotateAz(b.right, deg), up: rotateAz(b.up, deg), back: rotateAz(b.back, deg) };
 }
-function currentBasis() { return spinView(rawBasis()); }
+// When the phone takes over from the finger (motion just switched on, or drag mode turned off), the view sweeps
+// from where it was to where the phone points over ~1.2 s instead of jumping (2026-10-09, Sevaan: turning motion on
+// in the tour snapped straight to the floor).
+let lastBasis = null, lastLive = false, blendFrom = null, blendT0 = 0;
+const BLEND_MS = 1600;
+function blendBasis(target) {
+  const live = !state.drag.on && hasLiveSensors();
+  if (live && !lastLive && lastBasis && !matchMedia('(prefers-reduced-motion: reduce)').matches) { blendFrom = lastBasis; blendT0 = performance.now(); }
+  lastLive = live;
+  let b = target;
+  if (blendFrom) {
+    const k = Math.min(1, (performance.now() - blendT0) / BLEND_MS), e = (1 - Math.cos(Math.PI * k)) / 2; // ease in-out
+    if (k >= 1) blendFrom = null;
+    else {
+      // slerp: an even turn along the arc (a straight-line mix bunched the motion into the middle frames)
+      const mix = (a, c) => { const d = Math.max(-1, Math.min(1, a[0] * c[0] + a[1] * c[1] + a[2] * c[2])), th = Math.acos(d);
+        if (th < 1e-4) return c; const sa = Math.sin((1 - e) * th) / Math.sin(th), sc = Math.sin(e * th) / Math.sin(th);
+        const v = a.map((x, i) => x * sa + c[i] * sc), n = Math.hypot(...v) || 1; return v.map((x) => x / n); };
+      const back = mix(blendFrom.back, target.back), up0 = mix(blendFrom.up, target.up);
+      // keep the frame square: re-orthogonalise up against back, then right from both
+      const d = up0[0] * back[0] + up0[1] * back[1] + up0[2] * back[2];
+      let up = up0.map((x, i) => x - d * back[i]); const nu = Math.hypot(...up) || 1; up = up.map((x) => x / nu);
+      const right = [back[1] * up[2] - back[2] * up[1], back[2] * up[0] - back[0] * up[2], back[0] * up[1] - back[1] * up[0]]; // back × up (checked: az 0, el 0 → east)
+      b = { right, up, back };
+    }
+  }
+  lastBasis = b;
+  return b;
+}
+function currentBasis() { return spinView(blendBasis(rawBasis())); }
 function rawBasis() {
   if (state.preview && state.followPreview && state.pinnedId && state.drag.on) { // follow only steers the drag view, never live sensors
     const selected = state.items.find(it => it.obj.id === state.pinnedId);
@@ -1911,7 +1940,7 @@ const OB_ART = {
 };
 // steps: [{ tier, title, sub: [left, right], art, text, yes, no, gold }]; shows steps[k] with the rest stacked under it.
 function obCard(steps, k) {
-  const deck = $('ob-deck'); deck.replaceChildren(); deck.classList.remove('resting');
+  const deck = $('ob-deck'); deck.replaceChildren();
   [...$('ob-pips').children].forEach((p, i) => { p.className = i < k ? 'done' : i === k ? 'on' : ''; });
   const make = (s) => { const el = document.createElement('div'); el.className = `tc${s.gold ? ' gold' : ''}`;
     el.innerHTML = `<div class="in"><div class="bar"><span>Space Collector</span><span class="tier">◆ ${escapeHtml(s.tier)}</span></div><h3>${escapeHtml(s.title)}</h3><div class="sub"><span>${escapeHtml(s.sub[0])}</span><span>${escapeHtml(s.sub[1])}</span></div><div class="art">${s.art}</div><p>${escapeHtml(s.text)}</p><div class="acts">${s.no ? `<button class="no" type="button">${escapeHtml(s.no)}</button>` : ''}<button class="yes" type="button">${escapeHtml(s.yes)}</button></div></div><div class="shine"></div>`;
@@ -1920,7 +1949,7 @@ function obCard(steps, k) {
   cards.slice().reverse().forEach((c) => deck.append(c));
   cards[1]?.classList.add('under'); cards[2]?.classList.add('under2');
   const top = cards[0];
-  if (k === 0) top.animate([{ transform: 'translateY(100vh)' }, { transform: 'translateY(-50%)' }], { duration: 650, easing: 'cubic-bezier(.2,.9,.3,1)' });
+  if (k === 0) top.animate([{ transform: 'translateY(105%)' }, { transform: 'translateY(0)' }], { duration: 650, easing: 'cubic-bezier(.2,.9,.3,1)' });
   if (steps[k].gold && !matchMedia('(prefers-reduced-motion: reduce)').matches) setTimeout(() => top.classList.add('shimmer'), 350); // the catch card arrives with a shine (2026-10-09, Sevaan)
   top.addEventListener('pointermove', (e) => { const r = top.getBoundingClientRect(); top.style.setProperty('--bgx', `${(30 + (e.clientX - r.left) / r.width * 40).toFixed(1)}%`); top.style.setProperty('--o', '1'); });
   top.addEventListener('pointerleave', () => top.style.setProperty('--o', '0'));
@@ -1974,14 +2003,11 @@ async function runOnboarding(force = false) {
   // The sky starts asleep behind the cards: blurred, dim and turned away. Each permission wakes part of it.
   $('sky').classList.add('asleep');
   // 1. location: the sky wakes and swings round into your real sky
-  // The deck steps aside while a sky moment plays, so the moment is on an open sky; obCard brings it back.
-  const pause = (ms) => { $('ob-deck').classList.add('resting'); return new Promise((r) => setTimeout(r, matchMedia('(prefers-reduced-motion: reduce)').matches ? Math.min(ms, 900) : ms)); };
-  if (await obCard(steps, 0)) { const ok = requestLocation(); await ok; obWake(true); await pause(2300); } // let the swing play on an open sky
-  else { obWake(false); await pause(1400); }
+  if (await obCard(steps, 0)) { const ok = requestLocation(); await ok; obWake(true); } // the sky swings into place behind the next card
+  else obWake(false);
   if (skipped) return obFinish(false);
   // 2. motion (asked inside the tap above): "you're in control"; with a finger, the sky sways to show it moves
   if (await obCard(steps, 1)) { await motionAsk; obControl(true); } else { state.drag.on = true; $('chk-drag').checked = true; obControl(false); }
-  await pause(2500); // the "in control" moment, then the assignment
   if (skipped) return obFinish(false);
   // 3. the assignment (the sky-darkness step is gone, 2026-10-09: the sky starts at its darkest)
   nameTarget(); // now that location and motion are in, name what's up
@@ -2160,23 +2186,33 @@ window.addEventListener('pagehide',saveExploreState);
 // The opener is a sealed card (the real card back) that rattles every few seconds. Tap: it flips to a mission
 // card built with the real card renderer. Flick it up (or tap Begin): it flies off and the tour starts.
 let wcCard = null, wcFlipped = false, wcReady = false, wcWantFlip = false, wcReplay = false;
+// Welcome card = design/welcome-options.html B (2026-10-09, Sevaan): a how-to-play card that sends you outside.
 function welcomeModel() {
-  const n = state.catalog?.objects?.length ?? 16000;
   return {
-    key: 'welcome', id: 'welcome', natural: 'welcome', type: 'welcome', name: 'Collect the Cosmos', tier: 'legendary', code: 'MISSION 01',
-    stats: [['IN ORBIT', `${Math.floor(n / 1000)},000+`, ''], ['ALSO', 'Moon, planets', ''], ['YOUR RANK', 'Stargazer', '']],
-    fact: 'Thousands of satellites, rocket stages and stations cross your sky every night. **Point your phone at a light**, find out what it is, and **keep its card**.',
+    key: 'welcome', id: 'welcome', natural: 'welcome', type: 'welcome', name: 'Your sky is the game', tier: 'legendary', code: 'MISSION 01',
+    stats: [['STEP 1', 'Go outside', ''], ['STEP 2', 'Look up', ''], ['STEP 3', 'Collect', '']],
+    fact: 'No telescope, no tickets. **Every light that moves is a card**: satellites, rocket stages, the Space Station. The darker your spot, the more you can catch.',
   };
+}
+// Its picture: three numbered panels, out the door → look up → the phone's circle on a light.
+function welcomeArt() {
+  const INK = '#fff2b3', OR = '#fa8127', MU = '#8fa3b8';
+  let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  const stars = Array.from({ length: 16 }, () => `<circle cx="${(12 + rnd() * 76).toFixed(1)}" cy="${(36 + rnd() * 50).toFixed(1)}" r="${(0.5 + rnd() * 0.9).toFixed(2)}" fill="${INK}" opacity="${(0.4 + rnd() * 0.55).toFixed(2)}"/>`).join('');
+  const panel = (x, inner, n, word) => `<g transform="translate(${x} 0)"><rect x="4" y="10" width="92" height="160" rx="8" fill="#0b1424" stroke="#2a3a52"/>${inner}<circle cx="18" cy="24" r="8" fill="${OR}"/><text x="18" y="27.5" text-anchor="middle" font-family="SC Display, sans-serif" font-size="10" fill="#080f1b">${n}</text><text x="50" y="158" text-anchor="middle" font-family="SC Label, sans-serif" font-size="11" letter-spacing="1.5" fill="${INK}">${word}</text></g>`;
+  const door = `<rect x="34" y="42" width="34" height="62" rx="2" fill="#16294a" stroke="${INK}" stroke-width="1.4"/><path d="M34 42 L56 50 L56 112 L34 104 Z" fill="#0b1424" stroke="${INK}" stroke-width="1.2"/><circle cx="52" cy="80" r="1.6" fill="${OR}"/><path d="M24 118 L80 118" stroke="${MU}" stroke-width="1"/><path d="M70 58 l10 -6 M70 70 l12 0 M70 82 l10 6" stroke="${OR}" stroke-width="1.4" stroke-linecap="round"/>`;
+  const up = `${stars}<path d="M28 120 Q50 96 72 120" fill="none" stroke="${INK}" stroke-width="1.4"/><circle cx="40" cy="112" r="2" fill="${INK}"/><circle cx="60" cy="112" r="2" fill="${INK}"/><path d="M50 92 L50 62 M44 68 L50 60 L56 68" stroke="${OR}" stroke-width="1.6" fill="none" stroke-linecap="round"/>`;
+  const phone = `<rect x="30" y="38" width="40" height="76" rx="6" fill="#060c1a" stroke="${INK}" stroke-width="1.4"/><circle cx="50" cy="72" r="11" fill="none" stroke="${INK}" stroke-width="1.2"/><circle cx="50" cy="72" r="2.2" fill="${INK}"/><path d="M34 98 Q44 86 50 72" fill="none" stroke="${INK}" stroke-opacity=".5" stroke-dasharray="1.5 3"/><rect x="38" y="100" width="24" height="7" rx="3.5" fill="${OR}"/>`;
+  return `<svg viewBox="0 0 300 180" preserveAspectRatio="xMidYMid meet" style="width:100%;height:100%;display:block"><rect width="300" height="180" fill="#080f1b"/>${panel(0, door, 1, 'GO OUTSIDE')}${panel(100, up, 2, 'LOOK UP')}${panel(200, phone, 3, 'COLLECT')}</svg>`;
 }
 function renderStartHand() {
   const holder = $('wc-holder'); if (!holder || wcCard) return;
   const card = renderCard(welcomeModel(), { preview: true });
   card.classList.add('wc-mission');
   // Dress it as a briefing, not a catalogue entry.
-  const sb = card.querySelector('.card__setbar > span:first-child > span'); if (sb) sb.textContent = 'MISSION CONTROL';
-  const id = card.querySelector('.card__identity'); if (id) id.innerHTML = '<span>Your first mission</span><span class="card__mono">OBSERVER 001</span>';
-  const art = card.querySelector('.card__art'), sys = state.cardModels.get('system:solar'), src = sys && artImage(sys);
-  if (art && src) art.innerHTML = `<img class="card-art-image" src="${src}" alt="" decoding="async">`;
+  const sb = card.querySelector('.card__setbar > span:first-child > span'); if (sb) sb.textContent = 'HOW TO PLAY';
+  const id = card.querySelector('.card__identity'); if (id) id.innerHTML = '<span>Three steps</span><span class="card__mono">OBSERVER 001</span>';
+  const art = card.querySelector('.card__art'); if (art) art.innerHTML = welcomeArt();
   const st = card.querySelector('.card__status'); if (st) st.innerHTML = '<span class="card__status-icon" aria-hidden="true">↑</span><span>SWIPE UP TO BEGIN</span>';
   // Start face-down: the card is turned half way, so its (pre-mirrored) back faces you.
   const back = card.querySelector('.card__back'); applyBack(back); back.style.opacity = '1';

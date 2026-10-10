@@ -759,14 +759,7 @@ body.night #ufo-cta { background: var(--gold) !important; color: #120606 !import
 .vis-row2:active { background: color-mix(in srgb, var(--text) 6%, transparent); } /* the whole row aims now (no target icon) */
 #skybar { display: none !important; } /* hidden on Explore (2026-10-09, Sevaan); the darkness is in Settings */
 
-/* Tour cards centred on the screen (2026-10-09, Sevaan): whole cards, not peeking up from the bottom edge. The deck
-   fills the screen below the progress pips; each card sits on the middle, content-height, and the stacked ones under
-   it fan out below. */
-.ob-deck { top: calc(var(--safe-top) + 120px); bottom: calc(var(--safe-bottom) + 16px); height: auto; }
-.tc { top: 50%; height: auto; max-height: 100%; overflow: hidden;
-  transform: translate(var(--x, 0px), calc(-50% + var(--y, 0px))) rotate(var(--r, 0deg)); }
-.tc .in { height: auto; }
-.tc .art { flex: none; height: clamp(120px, 24vh, 190px); }
+/* Tour cards sit at the bottom of the screen, top two-thirds showing (back to the original deck, 2026-10-09). */
 /* The catch card arrives with a shine sweeping across it, twice. */
 .tc.shimmer .shine { mix-blend-mode: screen; background-size: 300% 100%;
   background-image: linear-gradient(115deg, transparent 38%, rgba(247,215,122,.18) 44%, rgba(255,250,230,.55) 50%, rgba(247,215,122,.18) 56%, transparent 62%);
@@ -799,9 +792,9 @@ body.night #ufo-cta { background: var(--gold) !important; color: #120606 !import
 @keyframes oc-rock { 25% { transform: rotate(-16deg); } 75% { transform: rotate(16deg); } }
 @keyframes oc-drag { 25% { transform: translateX(-26px); } 75% { transform: translateX(26px); } }
 @media (prefers-reduced-motion: reduce) { #sky { transition: none; } .ob-control.go, .ob-control.go i { animation-duration: .01s; } .ob-control.go { animation: oc-fade 2.4s forwards; } @keyframes oc-fade { 10%, 80% { opacity: 1; transform: translateY(-50%); } 100% { opacity: 0; } } }
-.ob-deck { transition: opacity .35s ease, transform .45s cubic-bezier(.3,.6,.3,1); } .ob-deck.resting { opacity: 0; transform: translateY(40px); pointer-events: none; }
-.ob-control { top: 30%; } /* above the circle, not on it */
+.ob-control { top: 35%; } /* between the compass and the tour card */
 /* Welcome card's call to action (2026-10-09, Sevaan): the arrow sits just above the words, not up against the card,
    and the words say what to do: "Swipe up to begin" (still a button you can tap). */
 .wc-stage > .wc-after { top: calc(50% + (var(--safe-top) - var(--safe-bottom)) / 2 + 39.2 * var(--cf) / 2 + 30px); gap: 2px; }
 .wc-after #btn-start.text-button { margin-top: 0; min-height: 0; padding: 2px 16px 14px; line-height: 1; } /* tap area kept below the words */
+.ob-lock { top: calc(var(--safe-top) + 30%); } /* above the tour card at the bottom */
