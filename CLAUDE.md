@@ -324,3 +324,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - Motion takes over smoothly (2026-10-09, Sevaan): when the phone's sensors take over from the finger (motion just allowed, or drag mode off), `blendBasis` in main.js slerps the view from where it was to where the phone points over 1.6 s (ease in-out) instead of snapping (tested: 35° up → 85° down evenly).
 - Welcome card is design/welcome-options.html B (2026-10-09): "HOW TO PLAY · Your sky is the game", three numbered panels (Go outside / Look up / Collect, `welcomeArt()`), the steps in the stat row, "No telescope, no tickets. Every light that moves is a card…".
 - Welcome card's first shake comes 2 s after it appears (2026-10-09, Sevaan; was ~5 s): the shake opens each 5 s cycle and the rattle clock restarts when #start stops booting.
+- Welcome page has twinkling stars behind the card (2026-10-09): addStarfield(#start, 90), the same field as the reveal.
