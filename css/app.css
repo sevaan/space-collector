@@ -828,3 +828,8 @@ body.night #discover:not(.owned) #d-cta:active, body.night #discover:not(.owned)
 .od-m { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid #1d2a3c; font: 500 15px/1.2 var(--label); letter-spacing: .02em; color: var(--text); }
 .od-m i { width: 9px; height: 9px; transform: rotate(45deg); border: 1.5px solid #bcb585; flex: none; }
 .od-m.done { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--gold); } .od-m.done i { background: var(--gold); border-color: var(--gold); }
+/* Loader = lock-on (2026-10-09): the wordmark stays still, "Loading the sky" pulses under it. */
+.wc-loader .ld-word { animation: none; }
+.wc-loader .ld-sub { position: fixed; left: 0; right: 0; top: calc(var(--ld-below, 60%) + 24px); text-align: center; font: 500 11px/1 var(--label); letter-spacing: .26em; text-transform: uppercase; color: var(--muted); animation: ldPulse 1.8s ease-in-out infinite; }
+html.quick .wc-loader .ld-sub { display: none; }
+@media (prefers-reduced-motion: reduce) { .wc-loader .ld-sub { animation: none; } }

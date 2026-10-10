@@ -19,10 +19,10 @@
   <link rel="preload" href="fonts/RussoOne-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="fonts/BarlowCondensed-Medium.ttf" as="font" type="font/ttf" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600;650;700;750;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/cards.css?v=0.1.394">
-  <link rel="stylesheet" href="css/app.css?v=0.1.394">
-  <link rel="stylesheet" href="css/reveal.css?v=0.1.394">
-  <link rel="stylesheet" href="css/ui.css?v=0.1.394">
+  <link rel="stylesheet" href="css/cards.css?v=0.1.395">
+  <link rel="stylesheet" href="css/app.css?v=0.1.395">
+  <link rel="stylesheet" href="css/reveal.css?v=0.1.395">
+  <link rel="stylesheet" href="css/ui.css?v=0.1.395">
 </head>
 <body>
   <video id="cam" playsinline muted autoplay hidden></video>
@@ -102,14 +102,26 @@
           el.setAttribute('viewBox', `${-S} ${-S} ${2 * S} ${2 * S}`); el.setAttribute('width', 2 * S); el.setAttribute('height', 2 * S);
           el.style.cssText = `position:fixed;left:${w / 2 - S}px;top:${h / 2 - S}px`;
           el.closest('.wc-loader').style.setProperty('--ld-below', `${h / 2 + r + 34}px`);
-          el.innerHTML = `<circle r="${r}" fill="none" stroke="rgba(255,242,179,.66)" stroke-width="1"/><circle r="${r + 5}" fill="none" stroke="rgba(173,188,200,.35)" stroke-width=".75"/>${ticks}`
-            + `<circle r="${r * 0.66}" fill="none" stroke="#627a8b" stroke-opacity=".35" stroke-dasharray="2 5"/>`
-            + `<g class="ld-orbit"><circle cx="0" cy="${-r}" r="7" fill="#fa8127" opacity=".18"/><circle cx="0" cy="${-r}" r="3.2" fill="#fa8127"/></g>`
-            + `<g class="ld-orbit2"><circle cx="0" cy="${-r * 0.66}" r="2.4" fill="#fff2b3"/></g>`
-            + `<path d="M0 -8 L1.9 -1.9 L8 0 L1.9 1.9 L0 8 L-1.9 1.9 L-8 0 L-1.9 -1.9 Z" fill="#fff2b3"/>`;
+          el.innerHTML = `<circle id="ld-ring" r="${r}" fill="none" stroke="rgba(255,242,179,.66)" stroke-width="1"/><circle r="${r + 5}" fill="none" stroke="rgba(173,188,200,.35)" stroke-width=".75"/>${ticks}<g id="ld-anim"></g>`;
+          // Lock-on (2026-10-09, design/loader-variations.html 2): a satellite drifts across toward the circle; as it
+          // enters, the ring turns orange, a small circle snaps onto it and a pulse rings out; then the next one comes.
+          if (document.documentElement.classList.contains('quick')) return; // a quick switch back: just the static circle
+          const k = r / 46, anim = document.getElementById('ld-anim'), ring = document.getElementById('ld-ring'), x0 = -110 * k, y0 = 30 * k, ang = Math.atan2(-60, 220) * 180 / Math.PI;
+          const sat = (c) => `<rect x="-3" y="-2.2" width="6" height="4.4" rx=".6" fill="${c}"/><rect x="-10.5" y="-1.6" width="6.4" height="3.2" fill="${c}" opacity=".85"/><rect x="4.1" y="-1.6" width="6.4" height="3.2" fill="${c}" opacity=".85"/><path d="M-4 0H-3M3 0H4" stroke="${c}" stroke-width=".8"/>`;
+          const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+          const tick = (t) => {
+            if (!document.getElementById('start')?.classList.contains('booting')) return; // the loader is gone: stop
+            const T = still ? .5 : (t / 2600) % 1, x = x0 + T * -2 * x0, y = y0 + T * -2 * y0, d = Math.hypot(x, y), inside = d < r - 6, near = Math.max(0, 1 - d / (30 * k));
+            ring.setAttribute('stroke', inside ? '#fa8127' : 'rgba(255,242,179,.66)');
+            anim.innerHTML = `<path d="M${x0} ${y0} L${-x0} ${-y0}" stroke="#fff2b3" stroke-opacity=".18" stroke-dasharray="2 5"/>`
+              + (inside ? `<circle r="${r + 8 + (1 - near) * 18 * k}" fill="none" stroke="#fa8127" stroke-opacity="${(near * .6).toFixed(2)}" stroke-width="1.5"/><circle cx="${x}" cy="${y}" r="${13 * Math.min(1.3, k)}" fill="none" stroke="#fa8127" stroke-width="1.4"/>` : `<path transform="scale(.8)" opacity=".7" d="M0 -8 L1.9 -1.9 L8 0 L1.9 1.9 L0 8 L-1.9 1.9 L-8 0 L-1.9 -1.9 Z" fill="#fff2b3"/>`)
+              + `<g transform="translate(${x} ${y}) rotate(${ang}) scale(${Math.min(1.4, k)})">${sat(inside ? '#ffd9a6' : '#fff2b3')}</g>`;
+            if (!still) requestAnimationFrame(tick);
+          };
+          requestAnimationFrame(tick);
         })();
       </script>
-      <span class="ld-word">SPACE COLLECTOR</span>
+      <span class="ld-word">SPACE COLLECTOR</span><span class="ld-sub">Loading the sky</span>
     </div>
     <!-- Welcome (2026-10-06): a sealed card. It rattles every few seconds; tap and it flips to your mission card;
          flick it up (or tap Begin) to start the tour. -->
@@ -254,7 +266,7 @@
     </div></div>
   </section>
 
-  <script type="module" src="js/main.js?v=0.1.394"></script>
+  <script type="module" src="js/main.js?v=0.1.395"></script>
 <div id="rotate" role="status"><b>Turn your phone upright</b><span>Space Collector is made for portrait.</span></div>
 </body>
 </html>
