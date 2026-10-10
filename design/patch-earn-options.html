@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Patch Earn Moments</title>
+<link rel="stylesheet" href="../css/ui.css">
+<style>
+  @font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf'); font-weight: 500; }
+  @font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf'); }
+  :root { --ink: #fff2b3; --muted: #bdbea9; --orange: #fa8127; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #04070d; color: #e8eef6; font: 15px/1.45 -apple-system, system-ui, sans-serif; padding: 24px 16px 60px; }
+  h1.t { font-size: 20px; margin: 0 0 6px; } .intro { color: #9fb0c6; margin: 0 0 22px; max-width: 1100px; }
+  .row { display: flex; flex-wrap: wrap; gap: 24px; justify-content: center; }
+  .cell { width: 360px; } .cell h2 { font-size: 16px; margin: 12px 0 4px; } .cell p { color: #9fb0c6; font-size: 13.5px; margin: 0; }
+  .phone { position: relative; width: 360px; height: 646px; border-radius: 30px; overflow: hidden; border: 1px solid #1d2838; background: #0b1626 url(patch-earn-sky.jpg) center / cover; }
+  .lab { font: 500 11px/1.2 'SC Label', sans-serif; letter-spacing: .18em; text-transform: uppercase; }
+  .patch { display: block; width: 100%; } .patch svg { display: block; width: 100%; height: auto; }
+  /* the Collection tab in the switcher, where patches end up */
+  .coll { position: absolute; left: 50%; right: 34px; bottom: 26px; height: 46px; border-radius: 99px; }
+  .badge { position: absolute; right: 52px; bottom: 50px; min-width: 22px; height: 22px; padding: 0 6px; border-radius: 11px; background: var(--orange); color: #080f1b; font: 400 12px/22px 'SC Display', sans-serif; text-align: center; opacity: 0; transform: scale(.4); }
+  .go .badge { animation: badge 7s both; }
+  @keyframes badge { 0%, 72% { opacity: 0; transform: scale(.4); } 76% { opacity: 1; transform: scale(1.25); } 80%, 94% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(1); } }
+
+  /* A · Coins: pop up bottom right, each with a label sliding out to the left, then roll into Collection */
+  .coins { position: absolute; right: 14px; bottom: 132px; display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .coin { position: relative; display: flex; align-items: center; justify-content: flex-end; }
+  .coin .disc { width: 58px; flex: none; filter: drop-shadow(0 6px 12px #000a); transform-origin: 50% 50%; opacity: 0; }
+  .coin .tag { margin-right: 8px; padding: 6px 10px; border-radius: 8px; background: #0c1725ee; border: 1px solid #344654; white-space: nowrap; opacity: 0; transform: translateX(14px); }
+  .coin .tag small { display: block; color: var(--orange); font: 500 10px/1 'SC Label', sans-serif; letter-spacing: .18em; }
+  .coin .tag b { display: block; margin-top: 3px; color: var(--ink); font: 400 13px/1 'SC Display', sans-serif; text-transform: uppercase; }
+  .go .coin .disc { animation: coin 7s cubic-bezier(.2,1.4,.4,1) both; animation-delay: var(--d); }
+  .go .coin .tag { animation: tag 7s ease both; animation-delay: var(--d); }
+  @keyframes coin { 0% { opacity: 0; transform: translateY(60px) scale(.3) rotateY(0); } 6% { opacity: 1; transform: translateY(-10px) scale(1.1) rotateY(540deg); } 9% { transform: translateY(0) scale(1) rotateY(720deg); }
+    60% { opacity: 1; transform: translate(0, 0) scale(1); } 70%, 100% { opacity: 0; transform: translate(-70px, 330px) scale(.25) rotateY(720deg); } }
+  @keyframes tag { 0%, 7% { opacity: 0; transform: translateX(14px); } 11%, 55% { opacity: 1; transform: translateX(0); } 60%, 100% { opacity: 0; transform: translateX(10px); } }
+
+  /* B · Stitched into the sky: the patch is embroidered onto the sky above the circle, the extras orbit it like
+     moons, then it all shrinks into Collection */
+  .stitch { position: absolute; left: 50%; top: 170px; width: 190px; margin-left: -95px; }
+  .stitch .main { position: relative; opacity: 0; }
+  .stitch .main::after { content: ''; position: absolute; inset: 6%; border-radius: 50%; background: linear-gradient(115deg, transparent 40%, #fff6 50%, transparent 60%) 140% 0 / 300% 100% no-repeat; mix-blend-mode: screen; opacity: 0; }
+  .stitch .thread { position: absolute; inset: -4%; width: 108%; height: 108%; }
+  .stitch .thread circle { fill: none; stroke: var(--ink); stroke-width: 1.6; stroke-dasharray: 3 4; stroke-dashoffset: 0; }
+  .go .stitch .thread circle { animation: thread 7s linear both; }
+  @keyframes thread { 0% { stroke-dasharray: 0 700; opacity: 1; } 18% { stroke-dasharray: 700 0; opacity: 1; } 22%, 100% { opacity: 0; } }
+  .go .stitch .main { animation: sew 7s ease both; } .go .stitch .main::after { animation: glint 7s ease both; }
+  @keyframes sew { 0%, 12% { opacity: 0; transform: scale(.94); filter: blur(4px); } 22% { opacity: 1; transform: scale(1); filter: none; } 62% { opacity: 1; transform: translate(0, 0) scale(1); } 74%, 100% { opacity: 0; transform: translate(70px, 370px) scale(.12); } }
+  @keyframes glint { 0%, 24% { opacity: 0; background-position: 140% 0; } 26% { opacity: 1; } 38% { opacity: 1; background-position: -40% 0; } 40%, 100% { opacity: 0; } }
+  .moon { position: absolute; left: 50%; top: 50%; width: 46px; margin: -23px; opacity: 0; filter: drop-shadow(0 4px 8px #000a); }
+  .go .moon { animation: orbit 7s linear both; animation-delay: var(--d); }
+  @keyframes orbit { 0%, 24% { opacity: 0; transform: rotate(var(--a)) translateX(122px) rotate(calc(-1 * var(--a))) scale(.4); } 30% { opacity: 1; transform: rotate(calc(var(--a) + 20deg)) translateX(122px) rotate(calc(-1 * var(--a) - 20deg)) scale(1); }
+    62% { opacity: 1; transform: rotate(calc(var(--a) + 110deg)) translateX(122px) rotate(calc(-1 * var(--a) - 110deg)) scale(1); } 74%, 100% { opacity: 0; transform: translate(70px, 370px) scale(.1); } }
+  .stitch-label { position: absolute; left: 0; right: 0; top: 400px; text-align: center; opacity: 0; }
+  .stitch-label small { color: var(--orange); } .stitch-label b { display: block; margin-top: 6px; font: 400 20px/1.1 'SC Display', sans-serif; color: var(--ink); text-transform: uppercase; text-shadow: 0 2px 10px #000; }
+  .stitch-label span { display: block; margin-top: 6px; font: 500 13px 'SC Label', sans-serif; letter-spacing: .06em; color: #fff2b3bb; }
+  .go .stitch-label { animation: label 7s ease both; }
+  @keyframes label { 0%, 22% { opacity: 0; transform: translateY(8px); } 28%, 60% { opacity: 1; transform: none; } 68%, 100% { opacity: 0; } }
+
+  /* C · Patch constellation: each patch appears as a new star in your sky, a line joins them into a little
+     constellation, the stars bloom into patches with names, then they fly into Collection */
+  .con { position: absolute; inset: 0; }
+  .con svg.lines { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .con svg.lines path { fill: none; stroke: var(--ink); stroke-opacity: .7; stroke-width: 1.2; stroke-dasharray: 3 5; }
+  .go .con svg.lines path { animation: link 7s ease both; }
+  @keyframes link { 0%, 20% { stroke-dashoffset: 300; opacity: 0; } 22% { opacity: 1; } 40% { stroke-dashoffset: 0; } 62% { opacity: 1; } 70%, 100% { opacity: 0; } }
+  .cstar { position: absolute; width: 70px; margin: -35px 0 0 -35px; text-align: center; }
+  .cstar .pt { position: absolute; left: 50%; top: 35px; width: 8px; height: 8px; margin: -4px; border-radius: 50%; background: #fff; box-shadow: 0 0 12px 4px #fff8, 0 0 30px 10px var(--orange); opacity: 0; }
+  .cstar .p { width: 70px; opacity: 0; filter: drop-shadow(0 6px 12px #000a); }
+  .cstar .n { margin-top: 4px; color: var(--ink); text-shadow: 0 1px 6px #000; white-space: nowrap; opacity: 0; }
+  .go .cstar .pt { animation: twinkleIn 7s ease both; animation-delay: var(--d); }
+  .go .cstar .p { animation: bloom 7s cubic-bezier(.2,1.3,.4,1) both; }
+  .go .cstar .n { animation: label 7s ease both; }
+  @keyframes twinkleIn { 0% { opacity: 0; transform: scale(.2); } 4% { opacity: 1; transform: scale(1.6); } 8% { transform: scale(1); } 34% { opacity: 1; } 40%, 100% { opacity: 0; } }
+  @keyframes bloom { 0%, 38% { opacity: 0; transform: scale(.1); } 46% { opacity: 1; transform: scale(1.08); } 50% { transform: scale(1); } 62% { opacity: 1; transform: translate(0, 0) scale(1); } 74%, 100% { opacity: 0; transform: translate(var(--fx), var(--fy)) scale(.15); } }
+  .con-title { position: absolute; left: 0; right: 0; top: 150px; text-align: center; color: var(--orange); text-shadow: 0 1px 6px #000; opacity: 0; }
+  .go .con-title { animation: label 7s ease both; }
+  @media (prefers-reduced-motion: reduce) { .go * { animation-duration: .01s !important; } }
+</style></head><body>
+<h1 class="t">Earning patches over the sky: three ideas</h1>
+<p class="intro">Instead of the full-screen patch moment that stops you, the patches arrive <b>over the sky you're looking at</b>, then file themselves into Collection (a small count bumps on the Collection tab). Each example shows three patches earned on one catch. They loop every 7 seconds here; in the app they'd play once, after the card reveal closes.</p>
+<div class="row" id="b"></div>
+<script type="module">
+import { patchHtml } from '../js/patches.js';
+import { ACHIEVEMENTS } from '../js/progress.js';
+const pick = (id) => ACHIEVEMENTS.find((a) => a.id === id);
+const P = ['first', 'twilight', 'ten'].map(pick);
+
+const A = `<div class="coins">${P.map((a, i) => `<div class="coin" style="--d:${i * 0.35}s"><span class="tag"><small>Patch earned</small><b>${a.name}</b></span><span class="disc">${patchHtml(a)}</span></div>`).join('')}</div><span class="badge">+3</span>`;
+
+const B = `<div class="stitch"><svg class="thread" viewBox="0 0 200 200"><circle cx="100" cy="100" r="96"/></svg><div class="main">${patchHtml(P[0])}</div>
+  ${P.slice(1).map((a, i) => `<span class="moon" style="--a:${i * 180 + 30}deg;--d:${i * 0.2}s">${patchHtml(a)}</span>`).join('')}</div>
+  <div class="stitch-label lab"><small>3 patches earned</small><b>${P[0].name}</b><span>+ ${P[1].name} · ${P[2].name}</span></div><span class="badge">+3</span>`;
+
+const pos = [[86, 230], [250, 196], [190, 340]];
+const C = `<div class="con"><div class="con-title lab">A new constellation: 3 patches</div>
+  <svg class="lines" viewBox="0 0 360 646"><path d="M${pos[0].join(' ')} L${pos[1].join(' ')} L${pos[2].join(' ')} Z"/></svg>
+  ${P.map((a, i) => `<div class="cstar" style="left:${pos[i][0]}px;top:${pos[i][1]}px;--d:${i * 0.3}s;--fx:${250 - pos[i][0]}px;--fy:${600 - pos[i][1]}px"><span class="pt"></span><div class="p">${patchHtml(a)}</div><div class="n lab">${a.name}</div></div>`).join('')}</div><span class="badge">+3</span>`;
+
+const cells = [
+  ['A · Coins (your idea)', 'Patches pop up in the bottom right like coins (a spin and a bounce), each with a small "Patch earned · name" tag sliding out beside it. A couple of seconds later they roll down into the Collection tab, which bumps with +3. The sky stays fully usable the whole time.', A],
+  ['B · Stitched into the sky', 'A thread embroiders a circle onto the sky above the circle and the main patch appears in it with a glint; the other patches orbit it like little moons. One label underneath. Then it all shrinks into Collection. The most "moment" of the three while still not covering the sky.', B],
+  ['C · Patch constellation', 'Each patch first appears as a new bright star in your sky; a dashed line joins them into a little constellation ("A new constellation: 3 patches"); the stars bloom into the patches with their names, then fly into Collection. Ties patches to the thing you were just doing: looking up.', C],
+];
+const box = document.getElementById('b');
+box.innerHTML = cells.map(([t, d, f]) => `<div class="cell"><div class="phone">${f}</div><h2>${t}</h2><p>${d}</p></div>`).join('');
+const play = () => { document.body.classList.remove('go'); void document.body.offsetWidth; document.body.classList.add('go'); };
+play(); setInterval(play, 7000);
+</script></body></html>

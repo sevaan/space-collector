@@ -1,39 +1,39 @@
-import * as Secrets from './secrets.js?v=0.1.379';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.379';
-import * as Ufo from './ufo.js?v=0.1.379';
-import * as Fossil from './fossil.js?v=0.1.379';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.379';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.379';
-import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.379';
-import { VERSION } from './version.js?v=0.1.379';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.379';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.379';
-import { conArt } from './con-art.js?v=0.1.379';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.379';
-import { CON_FIGURES } from './con-figures.js?v=0.1.379';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.379';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.379';
-import { progress as progressOf } from './progress.js?v=0.1.379';
-import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.379';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.379';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.379';
-import { SkyView, shortName } from './sky.js?v=0.1.379';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.379';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.379';
-import { cardArt } from './art.js?v=0.1.379';
-import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.379';
-import { applyBack } from './card-backs.js?v=0.1.379';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.379';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.379';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.379';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.379';
-import { TIER_INFO } from './rarity.js?v=0.1.379';
-import { SETS } from './sets.js?v=0.1.379';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.379';
-import { shareCardEl } from './share-card.js?v=0.1.379';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.379';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.379';
-import { addStarfield } from './starfield.js?v=0.1.379';
+import * as Secrets from './secrets.js?v=0.1.380';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.380';
+import * as Ufo from './ufo.js?v=0.1.380';
+import * as Fossil from './fossil.js?v=0.1.380';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.380';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.380';
+import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.380';
+import { VERSION } from './version.js?v=0.1.380';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.380';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.380';
+import { conArt } from './con-art.js?v=0.1.380';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.380';
+import { CON_FIGURES } from './con-figures.js?v=0.1.380';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.380';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.380';
+import { progress as progressOf } from './progress.js?v=0.1.380';
+import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.380';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.380';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.380';
+import { SkyView, shortName } from './sky.js?v=0.1.380';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.380';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.380';
+import { cardArt } from './art.js?v=0.1.380';
+import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.380';
+import { applyBack } from './card-backs.js?v=0.1.380';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.380';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.380';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.380';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.380';
+import { TIER_INFO } from './rarity.js?v=0.1.380';
+import { SETS } from './sets.js?v=0.1.380';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.380';
+import { shareCardEl } from './share-card.js?v=0.1.380';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.380';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.380';
+import { addStarfield } from './starfield.js?v=0.1.380';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -1573,7 +1573,7 @@ function groundHint(t) {
 const npChip = (k, n, m) => `<span class="np-k">${escapeHtml(k)}:</span><b class="np-n">${escapeHtml(n)}</b>${m ? `<span class="np-m">· ${escapeHtml(m)}</span>` : ''}`;
 function updateNextPassChip() {
   // The radar fades in together with the next-up chip, once tonight's plan is in (fallback: 4 s after the sky opens).
-  if (!document.body.classList.contains('hud-ready') && (state.tonight || performance.now() - (state.skyOpenedAt ?? 0) > 4000)) document.body.classList.add('hud-ready');
+  if (!document.body.classList.contains('hud-ready') && (state.tonight || performance.now() - (state.skyOpenedAt ?? 0) > 4000)) { document.body.classList.add('hud-ready'); skybarRest(4000); } // the slider fades back a few seconds after Explore shows
   const chip = $('nextpass');
   const lit = state.items?.some((i) => i.look.visible);
   const T = state.tonight, t0 = now().getTime();
@@ -1833,6 +1833,13 @@ $('sky-range').addEventListener('change', () => {
   state.model?.reset?.(); refreshAbove(); requestTonight(true);
 });
 for (const ev of ['pointerdown', 'touchstart']) $('skybar').addEventListener(ev, (e) => e.stopPropagation(), { passive: true }); // never drags the sky
+// The slider steps back when you're not using it (2026-10-09, Sevaan): full strength when Explore first shows, then
+// it eases to 65% after a few seconds; touching it brings it back to full, and letting go fades it again.
+let skybarRestT = 0;
+function skybarRest(delay = 2500) { clearTimeout(skybarRestT); skybarRestT = setTimeout(() => $('skybar').classList.add('resting'), delay); }
+function skybarWake() { clearTimeout(skybarRestT); $('skybar').classList.remove('resting'); }
+for (const ev of ['pointerdown', 'touchstart', 'focusin']) $('skybar').addEventListener(ev, skybarWake, { passive: true });
+for (const ev of ['pointerup', 'pointercancel', 'touchend', 'focusout']) $('skybar').addEventListener(ev, () => skybarRest(1500), { passive: true });
 // Grab anywhere on the bar: the knob jumps to the finger and follows it (the native control only grabs on the knob).
 {
   const bar = $('skybar'), r = $('sky-range'); let grab = null;
@@ -1941,15 +1948,33 @@ const OB_ART = {
 };
 // steps: [{ tier, title, sub: [left, right], art, text, yes, no, gold }]; shows steps[k] with the rest stacked under it.
 function obCard(steps, k) {
-  const deck = $('ob-deck'); deck.replaceChildren();
+  const deck = $('ob-deck');
   [...$('ob-pips').children].forEach((p, i) => { p.className = i < k ? 'done' : i === k ? 'on' : ''; });
-  const make = (s) => { const el = document.createElement('div'); el.className = `tc${s.gold ? ' gold' : ''}`;
+  const make = (s) => { const el = document.createElement('div'); el.className = `tc${s.gold ? ' gold' : ''}`; el.dataset.step = steps.indexOf(s);
     el.innerHTML = `<div class="in"><div class="bar"><span>Space Collector</span><span class="tier">◆ ${escapeHtml(s.tier)}</span></div><h3>${escapeHtml(s.title)}</h3><div class="sub"><span>${escapeHtml(s.sub[0])}</span><span>${escapeHtml(s.sub[1])}</span></div><div class="art">${s.art}</div><p>${escapeHtml(s.text)}</p><div class="acts">${s.no ? `<button class="no" type="button">${escapeHtml(s.no)}</button>` : ''}<button class="yes" type="button">${escapeHtml(s.yes)}</button></div></div><div class="shine"></div>`;
     return el; };
-  const cards = steps.slice(k, k + 3).map(make);
-  cards.slice().reverse().forEach((c) => deck.append(c));
-  cards[1]?.classList.add('under'); cards[2]?.classList.add('under2');
+  // Smooth hand-off (2026-10-09, Sevaan: the next card snapped into place): cards already in the deck are kept and
+  // promoted (under → top, under2 → under) so their transition carries them up and straight; only the newcomer is
+  // built, and it fades in at the back.
+  const keep = new Map([...deck.querySelectorAll('.tc:not(.gone)')].map((el) => [Number(el.dataset.step), el]));
+  deck.querySelectorAll('.tc.gone').forEach((el) => setTimeout(() => el.remove(), 450));
+  const cards = steps.slice(k, k + 3).map((st, i) => {
+    const old = keep.get(k + i); keep.delete(k + i);
+    if (old) return old;
+    const el = make(st);
+    if (k > 0) { el.style.opacity = '0'; requestAnimationFrame(() => requestAnimationFrame(() => { el.style.opacity = ''; })); }
+    return el;
+  });
+  for (const el of keep.values()) el.remove();
+  // Only add the new cards; kept ones stay where they are in the DOM (re-inserting a node restarts it, which
+  // skipped its transition). Newcomers go at the back (first in the deck).
+  cards.forEach((c) => { if (!c.isConnected) deck.prepend(c); });
+  cards.forEach((c, i) => { c.classList.toggle('under', i === 1); c.classList.toggle('under2', i === 2); });
+  // The card now on top may have been built earlier, before its step's words were final (the Assignment is named
+  // just before it shows): refresh its inside in place, so it moves smoothly but reads right.
   const top = cards[0];
+  { const fresh = make(steps[k]); top.innerHTML = fresh.innerHTML; top.className = fresh.className; top.dataset.step = String(k); }
+  cards.forEach((c, i) => { c.classList.toggle('under', i === 1); c.classList.toggle('under2', i === 2); });
   // The first time, the whole stack is dealt in together (2026-10-09, Sevaan: the top card rose over the ones already
   // sitting there), so slide the deck, not just the top card.
   if (k === 0) deck.animate([{ transform: 'translateY(105%)' }, { transform: 'translateY(0)' }], { duration: 650, easing: 'cubic-bezier(.2,.9,.3,1)' });
@@ -1958,7 +1983,7 @@ function obCard(steps, k) {
   top.addEventListener('pointerleave', () => top.style.setProperty('--o', '0'));
   return new Promise((resolve) => {
     onboarding = { resolve };
-    const go = (yes) => { top.style.setProperty('--x', `${yes ? 130 : -130}vw`); top.style.setProperty('--r', `${yes ? 22 : -22}deg`); top.classList.add('gone'); setTimeout(() => resolve(yes), 300); };
+    const go = (yes) => { top.style.setProperty('--x', `${yes ? 130 : -130}vw`); top.style.setProperty('--r', `${yes ? 22 : -22}deg`); top.classList.add('gone'); setTimeout(() => resolve(yes), 120); }; // the next card rises while this one is still leaving
     top.querySelector('.yes').addEventListener('click', () => { steps[k].onYes?.(); go(true); }); // onYes runs inside the tap (iOS permissions)
     top.querySelector('.no')?.addEventListener('click', () => go(false));
   });

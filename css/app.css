@@ -120,7 +120,7 @@ body.night #plane { --plane:#ff3b2b; }
 /* the deck: cards laid from the bottom edge, top two-thirds on screen */
 .ob-deck { position:absolute; left:0; right:0; bottom:0; height:min(58%, 470px); perspective:1400px; }
 .tc { position:absolute; left:50%; top:0; width:min(360px, calc(100vw - 28px)); height:150%; margin-left:calc(min(360px, calc(100vw - 28px)) / -2); border-radius:22px; background:var(--bg); border:4px solid #adbcc8; box-shadow:inset 0 0 0 5px var(--bg), inset 0 0 0 6px #bcb58566, 0 -14px 50px #000b; overflow:hidden; pointer-events:auto; touch-action:none;
-  transform:translate(var(--x, 0px), var(--y, 0px)) rotate(var(--r, 0deg)); transition:transform .5s cubic-bezier(.2,.9,.3,1), opacity .4s; }
+  transform:translate(var(--x, 0px), var(--y, 0px)) rotate(var(--r, 0deg)); transition:transform .5s cubic-bezier(.2,.9,.3,1), opacity .4s, filter .5s ease; }
 .tc.under { --y:26px; --r:-2.5deg; filter:brightness(.6); } .tc.under2 { --y:46px; --r:3deg; filter:brightness(.45); }
 .tc.gone { opacity:0; transition:transform .45s cubic-bezier(.5,0,.8,.4), opacity .45s; }
 .tc .in { position:relative; z-index:2; height:66.6%; display:flex; flex-direction:column; padding:16px 20px 18px; }
@@ -295,7 +295,7 @@ body.day #sky-range::-webkit-slider-runnable-track { background:linear-gradient(
 body.day #radar-up, body.day #d-tier, body.day #d-name { color:#143046; text-shadow:none; }
 
 /* ---------- Welcome card (2026-10-06): a sealed card that rattles, flips to a mission card, and is flicked away ---------- */
-#start { background:radial-gradient(ellipse at 50% 38%, #142650, #080e1a 70%); }
+#start { background:radial-gradient(ellipse at 50% 38%, #0c1d29, #080f1b 70%); } /* the night sky's own blues (2026-10-09, Sevaan: #142650 was too blue) */
 #start .hero { display:none; }
 .wc-stage { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:22px; padding:calc(var(--safe-top) + 20px) 16px calc(var(--safe-bottom) + 64px); z-index:1; }
 .wc-holder { position:relative; flex:none; --cf:max(7px, min(14px, calc((100vw - 58px) / 28), calc((100dvh - 120px) / 39.2))); width:calc(28 * var(--cf)); height:auto; /* same size as every card in the app (the capture reveal's sizeCard) */ perspective:1400px; cursor:pointer; -webkit-tap-highlight-color:transparent; touch-action:none; }
@@ -795,3 +795,5 @@ body.night #ufo-cta { background: var(--gold) !important; color: #120606 !import
 #radar.tip-pulse canvas { animation: radar-pulse 1.6s ease-out infinite; border-radius: 50%; }
 @keyframes radar-pulse { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--gold) 55%, transparent); } 100% { box-shadow: 0 0 0 14px transparent; } }
 @media (prefers-reduced-motion: reduce) { .radar-tip { transition: opacity .2s; transform: none; } #radar.tip-pulse canvas { animation: none; box-shadow: 0 0 0 2px var(--gold); } }
+#skybar.resting { opacity: .65; } #skybar { transition: opacity .8s ease; } /* steps back when not in use; full while touched */
+body.day #skybar.resting { opacity: 0; }
