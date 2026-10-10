@@ -797,3 +797,7 @@ body.night #ufo-cta { background: var(--gold) !important; color: #120606 !import
 @media (prefers-reduced-motion: reduce) { .radar-tip { transition: opacity .2s; transform: none; } #radar.tip-pulse canvas { animation: none; box-shadow: 0 0 0 2px var(--gold); } }
 #skybar.resting { opacity: .65; } #skybar { transition: opacity .8s ease; } /* steps back when not in use; full while touched */
 body.day #skybar.resting { opacity: 0; }
+/* Steering pill: two short lines, smaller (2026-10-09, Sevaan: the one-line version wrapped badly). */
+#guidance:not(.first) { font: 500 13px/1.2 var(--label) !important; letter-spacing: .12em !important; padding: 6px 14px 7px; border-radius: 14px; }
+#guidance:not(.first) small { display: block; font-size: 10px; letter-spacing: .2em; color: var(--gold); margin-bottom: 2px; }
+#guidance:not(.first) span { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }

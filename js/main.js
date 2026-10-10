@@ -1,39 +1,39 @@
-import * as Secrets from './secrets.js?v=0.1.380';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.380';
-import * as Ufo from './ufo.js?v=0.1.380';
-import * as Fossil from './fossil.js?v=0.1.380';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.380';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.380';
-import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.380';
-import { VERSION } from './version.js?v=0.1.380';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.380';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.380';
-import { conArt } from './con-art.js?v=0.1.380';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.380';
-import { CON_FIGURES } from './con-figures.js?v=0.1.380';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.380';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.380';
-import { progress as progressOf } from './progress.js?v=0.1.380';
-import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.380';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.380';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.380';
-import { SkyView, shortName } from './sky.js?v=0.1.380';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.380';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.380';
-import { cardArt } from './art.js?v=0.1.380';
-import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.380';
-import { applyBack } from './card-backs.js?v=0.1.380';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.380';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.380';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.380';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.380';
-import { TIER_INFO } from './rarity.js?v=0.1.380';
-import { SETS } from './sets.js?v=0.1.380';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.380';
-import { shareCardEl } from './share-card.js?v=0.1.380';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.380';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.380';
-import { addStarfield } from './starfield.js?v=0.1.380';
+import * as Secrets from './secrets.js?v=0.1.381';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.381';
+import * as Ufo from './ufo.js?v=0.1.381';
+import * as Fossil from './fossil.js?v=0.1.381';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.381';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.381';
+import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.381';
+import { VERSION } from './version.js?v=0.1.381';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.381';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.381';
+import { conArt } from './con-art.js?v=0.1.381';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.381';
+import { CON_FIGURES } from './con-figures.js?v=0.1.381';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.381';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.381';
+import { progress as progressOf } from './progress.js?v=0.1.381';
+import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.381';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.381';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.381';
+import { SkyView, shortName } from './sky.js?v=0.1.381';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.381';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.381';
+import { cardArt } from './art.js?v=0.1.381';
+import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.381';
+import { applyBack } from './card-backs.js?v=0.1.381';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.381';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.381';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.381';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.381';
+import { TIER_INFO } from './rarity.js?v=0.1.381';
+import { SETS } from './sets.js?v=0.1.381';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.381';
+import { shareCardEl } from './share-card.js?v=0.1.381';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.381';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.381';
+import { addStarfield } from './starfield.js?v=0.1.381';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -432,6 +432,8 @@ function firstNightHint(target, plane, t) {
 }
 // Write only when it changes: #guidance is a live region, and rewriting it four times a second floods screen readers (QA 2026-10-08).
 function setText(el, txt) { if (el.textContent !== txt) el.textContent = txt; }
+// The steering pill under the circle (2026-10-09, Sevaan: one long line wrapped badly): the name small on top, the move on one line.
+function setGuide(el, name, hint) { const key = `${name}|${hint}`; if (el.dataset.k === key) return; el.dataset.k = key; el.innerHTML = `<small>${escapeHtml(name)}</small><span>${escapeHtml(hint)}</span>`; }
 // A soft tick when the circle locks onto a target (sound stands in for haptics on the web).
 function snapTick() {
   buzz(12); sky.lockPulseAt = performance.now(); // felt (Android) and seen: a ring pulses out from the circle
@@ -755,7 +757,7 @@ function turnHint(l) {
   const currentEl = state.basis ? Math.asin(state.basis.back[2]) / RAD : state.drag.el;
   const turn = ((l.az - currentAz + 540) % 360) - 180;
   const move = Math.abs(turn) > 8 ? (turn > 0 ? 'Turn right →' : '← Turn left') : l.el > currentEl ? '↑ Raise your phone' : '↓ Lower your phone';
-  return gr ? `${move} · appears ${Math.round(l.el)}° up in the ${compassPoint(l.az)} at ${fmtTime(gr.start)}` : `${move} · ${Math.round(l.el)}° up in the ${compassPoint(l.az)}`;
+  return gr ? `${move} · ${Math.round(l.el)}° up ${compassPoint(l.az)} at ${fmtTime(gr.start)}` : `${move} · ${Math.round(l.el)}° up ${compassPoint(l.az)}`; // short, so it fits one line (2026-10-09)
 }
 const ICON_TARGET = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="7.5"/><circle cx="12" cy="12" r="2.4" fill="currentColor" stroke="none"/><path d="M12 1.8v3.4M12 18.8v3.4M1.8 12h3.4M18.8 12h3.4"/></svg>';
 const ICON_BELL = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path class="fillme" d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.6 2H4.4z"/><path d="M10 20.6a2.2 2.2 0 0 0 4 0" stroke-linecap="round"/></svg>';
@@ -810,7 +812,7 @@ function renderTarget(target, d) {
       $('d-cta').textContent = 'Tap to collect'; $('d-sub').hidden = true;
     } else {
       disc.hidden = true; guide.hidden = false;
-      setText(guide, `${label(o)} · ${turnHint(l)}`);
+      setGuide(guide, label(o), turnHint(l));
     }
     barTargetId = null;
     return;
@@ -828,7 +830,7 @@ function renderTarget(target, d) {
     const n = nightsIn(state.sightings.filter((s) => !s.sim && s.cardKey === cardKeyFor(o)));
     $('d-sub').hidden = !n; $('d-sub').textContent = `Seen on ${n} night${n === 1 ? '' : 's'}`;
     $('d-switch').hidden = true;
-  } else { disc.hidden = true; guide.hidden = false; setText(guide, `${label(o)} · ${turnHint(l)}`); }
+  } else { disc.hidden = true; guide.hidden = false; setGuide(guide, label(o), turnHint(l)); }
   return;
 }
 
