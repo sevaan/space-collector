@@ -802,3 +802,12 @@ body.day #skybar.resting { opacity: 0; }
 #guidance:not(.first) small { display: block; font-size: 10px; letter-spacing: .2em; color: var(--gold); margin-bottom: 2px; }
 #guidance:not(.first) span { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 body.secret-on #discover, body.secret-on #guidance { display: none !important; } /* a secret in the circle owns it (2026-10-09) */
+
+/* Tap to collect, lighter (2026-10-09, Sevaan): styled like the highlighted Explore pill in the switcher (a soft
+   orange tint, thin orange edge, orange text, pill shape); pressing it flashes solid bright orange. */
+#discover:not(.owned) #d-cta { min-height: 44px; padding: 10px 26px; border: 0; border-radius: 99px; color: var(--gold); background: rgba(250, 129, 39, .14);
+  box-shadow: inset 0 0 0 1px rgba(250, 129, 39, .45); font: 500 15px/1.2 var(--label); letter-spacing: .18em; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  transition: background .18s ease, color .18s ease, box-shadow .18s ease, transform .12s ease; }
+#discover:not(.owned) #d-cta:active, #discover:not(.owned) #d-cta.tapped { background: var(--gold); color: #080f1b; box-shadow: 0 0 0 1px var(--gold), 0 0 22px rgba(250, 129, 39, .6); transform: scale(.97); }
+body.night #discover:not(.owned) #d-cta { color: #ff6a55; background: rgba(255, 70, 50, .12); box-shadow: inset 0 0 0 1px rgba(255, 70, 50, .45); }
+body.night #discover:not(.owned) #d-cta:active, body.night #discover:not(.owned) #d-cta.tapped { background: #ff6a55; color: #120606; }

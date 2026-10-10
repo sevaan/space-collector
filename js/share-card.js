@@ -2,9 +2,9 @@
 // name, rarity, stats, fact, when you saw it, your observer rank), then handed to the share sheet
 // (navigator.share with a file) or downloaded. Drawing it ourselves avoids DOM-screenshot libraries,
 // which mangle Safari's fonts and blend modes.
-import { conArt } from './con-art.js?v=0.1.384';
-import { CON_BY_ID } from './constellations.js?v=0.1.384';
-import { TIER_INFO } from './rarity.js?v=0.1.384';
+import { conArt } from './con-art.js?v=0.1.385';
+import { CON_BY_ID } from './constellations.js?v=0.1.385';
+import { TIER_INFO } from './rarity.js?v=0.1.385';
 const W = 1080, H = 1350, INK = '#fff2b3', MUTED = '#bdbea9', ORANGE = '#fa8127', NAVY = '#080f1b';
 const loadImg = (src) => new Promise((ok, bad) => { const i = new Image(); i.onload = () => ok(i); i.onerror = bad; i.src = src; });
 const svgImg = async (svg) => { const u = URL.createObjectURL(new Blob([svg], { type: 'image/svg+xml' })); try { return await loadImg(u); } finally { URL.revokeObjectURL(u); } };
