@@ -1,21 +1,21 @@
-import { expandFacts } from './catalog-facts.js?v=0.1.417';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.417';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.417';
-import { ticket } from './toast.js?v=0.1.417';
-import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.417';
-import { cardArt } from './art.js?v=0.1.417';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.417';
-import { applyBack } from './card-backs.js?v=0.1.417';
-import { SETS, assignSets } from './sets.js?v=0.1.417';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.417';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.417';
-import { loadConstellations, conList } from './constellations.js?v=0.1.417';
-import { RANKS, progress } from './progress.js?v=0.1.417';
-import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.417';
-import { shareCardEl } from './share-card.js?v=0.1.417';
-import { allSightings, deleteSighting } from './store.js?v=0.1.417';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.417';
-import { SECRET_PATCHES } from './secrets.js?v=0.1.417';
+import { expandFacts } from './catalog-facts.js?v=0.1.418';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.418';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.418';
+import { ticket } from './toast.js?v=0.1.418';
+import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.418';
+import { cardArt } from './art.js?v=0.1.418';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.418';
+import { applyBack } from './card-backs.js?v=0.1.418';
+import { SETS, assignSets } from './sets.js?v=0.1.418';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.418';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.418';
+import { loadConstellations, conList } from './constellations.js?v=0.1.418';
+import { RANKS, progress } from './progress.js?v=0.1.418';
+import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.418';
+import { shareCardEl } from './share-card.js?v=0.1.418';
+import { allSightings, deleteSighting } from './store.js?v=0.1.418';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.418';
+import { SECRET_PATCHES } from './secrets.js?v=0.1.418';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -117,7 +117,7 @@ const observer = new IntersectionObserver((entries) => {
     if (!c) continue;
     // Two cards with the same name side by side ("Delta 1 Rocket Stage" ×2) say which is which (playtest 2026-10-09).
     const dup = (state.titleCount?.get(titleFor(c)) ?? 0) > 1, yr = c.launch ? String(c.launch).slice(0, 4) : '';
-    const tile = renderCardTile(c, { sightings: state.sightingsByKey.get(c.key) ?? [], ownedKeys: c.natural === 'constellation' ? ownedKeys() : undefined, sub: dup ? [yr && `Launched ${yr}`, c.id && /^\d+$/.test(String(c.id)) ? `#${c.id}` : ''].filter(Boolean).join(' · ') : '' });
+    const tile = renderCardTile(c, { sightings: state.sightingsByKey.get(c.key) ?? [], ownedKeys: c.natural === 'constellation' ? ownedKeys() : undefined, sub: dup ? [yr, c.id && /^\d+$/.test(String(c.id)) ? `#${c.id}` : ''].filter(Boolean).join(' · ') : '' });
     tile.addEventListener('click', () => openViewer(state.list.findIndex((card) => card.key === c.key), tile.getBoundingClientRect()));
     target.replaceChildren(tile);
     fitTileName(tile);
