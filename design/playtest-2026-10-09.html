@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Playtest Review</title>
+<style>
+  @font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf'); font-weight: 500; }
+  @font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf'); }
+  :root { --ink: #fff2b3; --muted: #bdbea9; --orange: #fa8127; --line: #1d2a3c; --bg: #04070d; --card: #0b1424; --text: #e8eef6; --sub: #9fb0c6; --yes: #4fbf7a; --no: #d9534f; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.5 -apple-system, system-ui, sans-serif; padding: 28px 16px 120px; }
+  main { max-width: 980px; margin: 0 auto; }
+  .eyebrow { font: 500 12px/1.2 'SC Label', sans-serif; letter-spacing: .2em; text-transform: uppercase; color: var(--orange); }
+  h1 { font: 400 34px/1.05 'SC Display', sans-serif; text-transform: uppercase; color: var(--ink); margin: 8px 0 10px; letter-spacing: -.01em; }
+  h2 { font: 400 22px/1.15 'SC Display', sans-serif; text-transform: uppercase; color: var(--ink); margin: 54px 0 6px; }
+  h3 { font-size: 17px; margin: 0 0 4px; color: var(--ink); }
+  p { margin: 0 0 10px; } .sub { color: var(--sub); } .small { font-size: 13.5px; }
+  .lead { color: var(--sub); max-width: 760px; }
+  .item { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 18px; margin: 18px 0; }
+  .item header { display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; flex-wrap: wrap; }
+  .num { font: 400 14px 'SC Display', sans-serif; color: var(--orange); margin-right: 6px; }
+  .tag { display: inline-block; font: 500 11px/1 'SC Label', sans-serif; letter-spacing: .14em; text-transform: uppercase; padding: 4px 8px 3px; border-radius: 99px; border: 1px solid #344654; color: var(--muted); margin-left: 6px; vertical-align: 2px; }
+  .tag.bug { border-color: #6b2b2b; color: #ff8d7a; } .tag.done { border-color: #2a5a3a; color: var(--yes); }
+  .ba { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px; }
+  .ba figure { margin: 0; } .ba img { display: block; width: 100%; border-radius: 12px; border: 1px solid var(--line); }
+  .ba figcaption { font: 500 12px/1.2 'SC Label', sans-serif; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); margin: 0 0 6px; }
+  .ba figure:last-child figcaption { color: var(--yes); }
+  .vote { display: flex; gap: 6px; flex: none; }
+  .vote button { font: 500 13px/1 'SC Label', sans-serif; letter-spacing: .14em; text-transform: uppercase; padding: 10px 16px 9px; border-radius: 99px; border: 1px solid #344654; background: transparent; color: var(--muted); cursor: pointer; }
+  .vote button.on[data-v="yes"] { background: var(--yes); border-color: var(--yes); color: #04130a; }
+  .vote button.on[data-v="no"] { background: var(--no); border-color: var(--no); color: #fff; }
+  ul.tight { margin: 6px 0 0; padding-left: 20px; } ul.tight li { margin: 4px 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; margin: 10px 0; }
+  th, td { text-align: left; padding: 7px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font: 500 12px 'SC Label', sans-serif; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+  .verdict { border-left: 3px solid var(--orange); padding: 2px 0 2px 14px; margin: 12px 0; }
+  .bar { position: fixed; left: 0; right: 0; bottom: 0; background: #070c16f2; border-top: 1px solid var(--line); padding: 12px 16px calc(12px + env(safe-area-inset-bottom)); display: flex; justify-content: center; gap: 12px; align-items: center; backdrop-filter: blur(8px); }
+  .bar span { color: var(--sub); font-size: 14px; }
+  .bar button { font: 500 14px/1 'SC Label', sans-serif; letter-spacing: .16em; text-transform: uppercase; padding: 12px 18px 11px; border-radius: 12px; border: 0; background: var(--orange); color: #080f1b; cursor: pointer; }
+  code { font-size: 13px; color: var(--ink); }
+  @media (max-width: 640px) { .ba { grid-template-columns: 1fr 1fr; gap: 8px; } h1 { font-size: 28px; } .item { padding: 14px; } }
+</style></head><body><main>
+<span class="eyebrow">Playtest · 9 Oct 2026 · v0.1.410</span>
+<h1>Space Collector<br>playtest review</h1>
+<p class="lead">I played it start to finish twice on an iPhone 15-sized screen. The first run was as a brand-new player: welcome card, tour, first catch, Explore, Up in the Sky, Settings, Collection, patches. The second was as a player three weeks in, with 43 cards. I also measured frame times with the CPU slowed to roughly phone speed. Tap <b>Yes</b> or <b>No</b> on each item, then <b>Copy my answers</b> at the bottom and paste them to me.</p>
+
+<h2>Already fixed: jank</h2>
+<p class="sub">You asked me to just fix the smoothness problems. These are live as v0.1.410.</p>
+<div class="item"><h3>Welcome card flip <span class="tag done">fixed</span></h3>
+<p class="small sub">Tapping the card to flip it froze the page for about 140 ms: the sound system was being created right on the tap. It's now set up quietly 2.5 s after the page loads, so the tap only has to switch it on. <b>Worst frame: 142 ms → 10 ms.</b></p></div>
+<div class="item"><h3>Starting the tour <span class="tag done">fixed</span></h3>
+<p class="small sub">The Milky Way photo (4096 × 2048) was decoded and sent to the graphics chip in the same moment the tour cards dealt in. It's now decoded in the background and loaded while you're reading the welcome card. It also gets one throwaway draw, so the sky's first real frame doesn't pay for it. <b>Worst frame: 225 ms → about 115 ms.</b> That remainder is the sky's very first frame working out every satellite's position. The deal animation runs on the graphics chip, so you won't see it.</p></div>
+<p class="small sub">Everything else measured smooth at phone speed: the reveal, the Up in the Sky sheet, Collection sliding up, the card viewer, patch coins and the card flip. None had frames over 34 ms. One small one is left: tapping <b>Allow</b> on tour step 1 drops a few frames (66 ms) while your location loads in the background. It's barely visible, so I've left it.</p>
+
+<h2>Design and polish: yes or no?</h2>
+<p class="sub">Each of these is built and screenshotted on a separate branch, one commit per item, so whatever you say yes to goes straight in.</p>
+
+<div class="item" data-id="1"><header><h3><span class="num">1</span>Your first catch has no "Tap to collect" <span class="tag bug">bug</span></h3><div class="vote"></div></header>
+<p class="small sub">The tour's first catch is usually a bright star (Vega here). Stars are "quiet" by default, which hides the button. So the very first time a player lines something up, the circle turns orange and nothing tells them what to do, and the hint still says "Follow the arrow". After: the tour's catch always shows <b>Tap to collect</b>.</p>
+<div class="ba"><figure><figcaption>Before</figcaption><img src="playtest/firstcatch-before.jpg" alt=""></figure><figure><figcaption>After</figcaption><img src="playtest/firstcatch-after.jpg" alt=""></figure></div></div>
+
+<div class="item" data-id="2"><header><h3><span class="num">2</span>Locked patches look like patches, with your progress</h3><div class="vote"></div></header>
+<p class="small sub">Locked patches were dim dashed circles with codes like "AG", "M10" and "3/3" that don't mean anything until you tap. After: each one looks like the patch before it's stitched. The name is marked out round the top and the icon is drawn as an outline. For anything that counts, the border is <b>stitched part-way round</b> with "1 / 10" underneath, so the wall shows what's close. The detail card adds a progress bar.</p>
+<div class="ba"><figure><figcaption>Before</figcaption><img src="playtest/locked-before.jpg" alt=""></figure><figure><figcaption>After</figcaption><img src="playtest/locked-after.jpg" alt=""></figure></div>
+<div class="ba"><figure><figcaption>Before</figcaption><img src="playtest/lockeddetail-before.jpg" alt=""></figure><figure><figcaption>After</figcaption><img src="playtest/lockeddetail-after.jpg" alt=""></figure></div></div>
+
+<div class="item" data-id="3"><header><h3><span class="num">3</span>One thing at a time after a catch</h3><div class="vote"></div></header>
+<p class="small sub">Straight after your first catch, four things landed at once: the patch coin (on top of the <b>View card</b> button), a "Milestone · First item collected" toast that repeats the First Light patch, the "Tap the radar" tip, and, during the reveal, the tour's hint toast still sitting under the card. After:</p>
+<ul class="tight small sub">
+  <li>The coins go first and toasts wait.</li>
+  <li>No milestone toast at 1, 10, 25, 50 or 100 cards, because those already earn a patch.</li>
+  <li>The radar tip waits until the coins and toasts are done.</li>
+  <li>Toasts step aside while a card is being revealed.</li>
+</ul>
+<div class="ba"><figure><figcaption>Before</figcaption><img src="playtest/coins-before.jpg" alt=""></figure><figure><figcaption>After</figcaption><img src="playtest/coins-after.jpg" alt=""></figure></div>
+<div class="ba"><figure><figcaption>Before · reveal</figcaption><img src="playtest/reveal-before.jpg" alt=""></figure><figure><figcaption>After · reveal</figcaption><img src="playtest/reveal-after.jpg" alt=""></figure></div></div>
+
+<div class="item" data-id="4"><header><h3><span class="num">4</span>"0 UP" under the compass</h3><div class="vote"></div></header>
+<p class="small sub">Under the compass it said "0 UP" while I was looking 35° up, so it reads like an angle. It's actually the number of satellites lit right now, and it disagrees with the "Now · 91" in Up in the Sky. After: it says <b>"2 passing"</b> when satellites are lit and disappears at zero. The Next pass chip already covers the quiet moments.</p>
+<div class="ba"><figure><figcaption>Before</figcaption><img src="playtest/radar-before.jpg" alt=""></figure><figure><figcaption>After</figcaption><img src="playtest/radar-after.jpg" alt=""></figure></div></div>
+
+<div class="item" data-id="5"><header><h3><span class="num">5</span>Welcome card says two different things</h3><div class="vote"></div></header>
+<p class="small sub">Under the card it says "Swipe away", but the card's own footer still says "Swipe up to begin". After: the footer says <b>Swipe away to begin</b>.</p>
+<div class="ba"><figure><figcaption>Before</figcaption><img src="playtest/welcome-before.jpg" alt=""></figure><figure><figcaption>After</figcaption><img src="playtest/welcome-after.jpg" alt=""></figure></div></div>
+
+<div class="item" data-id="6"><header><h3><span class="num">6</span>Same-name cards side by side</h3><div class="vote"></div></header>
+<p class="small sub">Rocket stages often share a name, so you get two identical "Delta 1 Rocket Stage" tiles next to each other. After: when a name appears more than once in the list, each tile gets a small line with the launch year and catalogue number, e.g. <b>1969 · #3767</b>.</p>
+<div class="ba"><figure><figcaption>Before</figcaption><img src="playtest/dupes-before.jpg" alt=""></figure><figure><figcaption>After</figcaption><img src="playtest/dupes-after.jpg" alt=""></figure></div></div>
+
+<div class="item" data-id="7"><header><h3><span class="num">7</span>Picture icons instead of text codes on patches</h3><div class="vote"></div></header>
+<p class="small sub">About two dozen patches had a text code where the picture goes: "M10", "3/3", "≤90", "4W", "Ag", "Au", "×2", "21". After: each has a stitched icon in the same style as the rest. A clipboard with a tick for missions, three diamonds for Full House, a calendar with a flame for streaks, silver and gold cards, a sunset for Early Bird, a sunrise for Dawn Patrol, an old rocket for Cold War, an hourglass for Time Traveller, and so on. Number patches (10, 25, 50…) keep their numbers, which read fine.</p>
+<div class="ba"><figure><figcaption>Before</figcaption><img src="playtest/icons1-before.jpg" alt=""></figure><figure><figcaption>After</figcaption><img src="playtest/icons1-after.jpg" alt=""></figure></div>
+<div class="ba"><figure><figcaption>Before</figcaption><img src="playtest/icons2-before.jpg" alt=""></figure><figure><figcaption>After</figcaption><img src="playtest/icons2-after.jpg" alt=""></figure></div></div>
+
+<h2>Playability: rough edges</h2>
+<p class="sub">Things that got in the way of playing, each with what I'd do. These aren't built yet; tell me which to do.</p>
+
+<div class="item" data-id="8"><header><h3><span class="num">8</span>First-night missions a beginner can actually finish</h3><div class="vote"></div></header>
+<p class="small sub">My first night's three missions were "Spot a piece of space debris", "Find something launched before 1980" and "Catch a rocket stage". All three need a faint, specific object and an experienced eye, and the finish page showed <b>0 / 3</b> right after my first catch. Missions are picked at random per night, so a new player's first impression of missions can be impossible. <b>Recommend:</b> a player's first night always gets a fixed starter set: "Collect your first card" (already ticked by the tour), "Catch a satellite" and "Collect a planet or the Moon". After that, the normal rotation.</p></div>
+
+<div class="item" data-id="9"><header><h3><span class="num">9</span>Discover opens on a wall of blurred legendaries</h3><div class="vote"></div></header>
+<p class="small sub">Discover sorts by rarity, so the first screens are all uncollected Legendary cards (Space Station, Hubble, Vanguard…), every one blurred. It reads as "locked content", not "things you could go and get". <b>Recommend:</b> lead with <b>what's up from where you are this week</b> (the tonight worker already knows), then the rest. Add a "Catchable from here" filter too.</p></div>
+
+<div class="item" data-id="10"><header><h3><span class="num">10</span>A one-card collection looks empty</h3><div class="vote"></div></header>
+<p class="small sub">After the tour, Mine is one tile in a three-wide grid and a lot of blank screen. <b>Recommend:</b> until you have about 9 cards, fill the rest of the grid with face-down "Up tonight" slots for your next likely catches, with times ("Delta 2 Rocket Stage · 11:36 pm"). Tapping one sets the reminder. It turns the empty space into the next thing to do.</p></div>
+
+<div class="item" data-id="11"><header><h3><span class="num">11</span>The hint says the same thing twice while you hunt</h3><div class="vote"></div></header>
+<p class="small sub">While steering to the tour target there's the guide pill ("Vega · Turn left · 39° up W") and, just below it, a toast saying "The bright steady one, 39° up in the W. Follow the arrow." The toast also stays up after you've lined it up. <b>Recommend:</b> drop the toast once the guide pill is showing, and when you're lined up, switch the pill text to "Tap the circle".</p></div>
+
+<div class="item" data-id="12"><header><h3><span class="num">12</span>Tonight's "Visible" stat is confusing</h3><div class="vote"></div></header>
+<p class="small sub">At 11:16 pm, Up in the Sky → Tonight said <b>VISIBLE 3:02 AM–6:53 AM</b> while also listing passes at 11:36 pm, 2:11 am and 3:02 am. The stat is the span the chart counts as having lit satellites up, and fainter passes in the list fall outside it. So it reads like "nothing's visible until 3 am" right above a list that says otherwise. <b>Recommend:</b> rename it "Best window", or show "Dark until 6:53 AM" there and keep the busiest time in its own box.</p></div>
+
+<div class="item" data-id="13"><header><h3><span class="num">13</span>"1-week streak 🔥" on day one</h3><div class="vote"></div></header>
+<p class="small sub">The rank card shows a 1-week streak with a flame after your very first sighting. A flame you didn't work for doesn't mean much. <b>Recommend:</b> show "Week 1" (no flame) until week 2, then "2-week streak 🔥".</p></div>
+<h2>Game mechanics: is it fun?</h2>
+<p class="sub">Numbers from the catalogue (4,098 single-object cards plus 7 fleets, 18 constellations and the bright stars and planets) and the XP rules in js/progress.js.</p>
+
+<div class="verdict"><p><b>Short version:</b> the core loop is genuinely good. Steering the circle onto a real light, the lock-on and the sealed-card reveal is a moment no other app gives you, and the art makes cards feel worth having. The problems are the economy around it:</p>
+<ul class="tight">
+  <li>Rarity measures age, not how hard something is to see.</li>
+  <li>Legendary XP makes ranks fly by.</li>
+  <li>A couple of patches can't be earned at all.</li>
+  <li>There's little to do on a night with nothing new overhead.</li>
+</ul></div>
+
+<h3 style="margin-top:22px">Rarity: what it measures today</h3>
+<table><tr><th>Tier</th><th>Cards</th><th>Share</th><th>Rule</th><th>Typical brightness</th></tr>
+<tr><td>Common</td><td>978</td><td>24%</td><td>launched 2010+</td><td>mag 4.5</td></tr>
+<tr><td>Uncommon</td><td>1,191</td><td>29%</td><td>1992–2009</td><td>mag 3.4</td></tr>
+<tr><td>Rare</td><td>1,033</td><td>25%</td><td>1980–1991</td><td>mag 3.6</td></tr>
+<tr><td>Epic</td><td>622</td><td>15%</td><td>1970s, station visitors</td><td>mag 3.7</td></tr>
+<tr><td>Legendary</td><td>274</td><td>7%</td><td>pre-1970, ISS, Tiangong, Hubble</td><td>mag 4.7</td></tr></table>
+<p class="small sub">Two problems. First, about one card in fourteen is Legendary, and they pass just as often as anything else, so a keen player sees one most clear nights. Legendary stops feeling legendary. Second, the most famous Legendaries are the <b>easiest</b> things in the sky: the ISS is the brightest satellite there is and passes most weeks. Meanwhile a faint binocular-only 2015 cubesat is Common. Rarity should mean "hard to get".</p>
+
+<h3 style="margin-top:22px">XP pace</h3>
+<p class="small sub">An average new card is worth about 41 XP (10/20/40/80/150 by tier, weighted by the mix above). A typical session is about 6 new cards, one mission and a few repeats, so roughly <b>300 XP</b>.</p>
+<table><tr><th>Rank</th><th>XP</th><th>Today (casual, 2 nights a week)</th><th>With the change below</th></tr>
+<tr><td>Spotter</td><td>200</td><td>first night</td><td>first night</td></tr>
+<tr><td>Tracker</td><td>600</td><td>night 2</td><td>night 3</td></tr>
+<tr><td>Navigator</td><td>1,500</td><td>night 5 (week 3)</td><td>night 7 (week 4)</td></tr>
+<tr><td>Flight Controller</td><td>4,000</td><td>night 13 (week 7)</td><td>night 19 (week 10)</td></tr>
+<tr><td>Mission Control</td><td>10,000</td><td>night 32 (month 4)</td><td>night 48 (month 6)</td></tr></table>
+<p class="small sub">My three-week test collection of 43 older cards was already <b>Flight Controller</b>. The top rank arrives about when the new cards from one backyard start running out, which leaves nothing to chase.</p>
+
+<div class="item" data-id="19"><header><h3><span class="num">19</span>Make rarity mean "hard to catch"</h3><div class="vote"></div></header>
+<p class="small sub">Score each object on what makes it hard:</p>
+<ul class="tight small sub">
+  <li>Brightness: binocular-only is harder.</li>
+  <li>How often it passes your latitude.</li>
+  <li>Whether it's sunlit at night.</li>
+  <li>A smaller bonus for age, so Space Race objects still lean rare.</li>
+</ul>
+<p class="small sub">Then cut the tiers at 40/30/18/9/3%. The ISS, Tiangong and Hubble keep a special "Icon" badge and gold frame, but sit at Rare rather than Legendary. It's a catalogue rebuild (scripts/build-catalog.mjs): no code changes in the app, but it changes existing players' card tiers.</p></div>
+
+<div class="item" data-id="20"><header><h3><span class="num">20</span>Flatten tier XP: 10 / 15 / 25 / 40 / 60</h3><div class="vote"></div></header>
+<p class="small sub">The jump from 10 XP for a Common to 150 for a Legendary is 15×, so ranks are mostly a count of how many old rocket stages passed over. Flattening the tiers (a mission stays 50, a constellation stays 200) gives the pace in the right-hand column of the table: Mission Control in about six months of casual play instead of four. Existing players would see their XP drop, so I'd keep anyone's current rank as a floor.</p></div>
+
+<div class="item" data-id="21"><header><h3><span class="num">21</span>Fix the patches that can't be earned</h3><div class="vote"></div></header>
+<p class="small sub">Some patches can't be earned, or overlap:</p>
+<ul class="tight small sub">
+  <li><b>Atlas</b> asks for 25 constellations, but there are only 18, so it's impossible. Make it "Complete all 18".</li>
+  <li><b>Star Map</b> (complete a constellation) now always lands together with that constellation's own patch, so you get two coins for one event. Fold it into the first constellation patch, or retire it.</li>
+  <li><b>The Catalogue</b> (1,000 cards) is unlikely from one place in under a couple of years. Fine as a legend goal, but I'd show it as "Legendary goal" so nobody feels they're failing.</li>
+  <li><b>Zodiac</b> (all 12, including Sagittarius's 24 stars down to magnitude 5) needs a dark site and a full year of seasons. It should be Holo, not just Gold.</li>
+</ul></div>
+
+<div class="item" data-id="22"><header><h3><span class="num">22</span>Something to do on a quiet night</h3><div class="vote"></div></header>
+<p class="small sub">Once you own everything bright overhead, a night without a new pass gives XP only for repeats (5 XP). Card levels (silver at 5 nights, gold at 25) reward coming back, but they're invisible until you open a card. <b>Recommend:</b></p>
+<ul class="tight small sub">
+  <li>Show "Seen on 4 of 5 nights · 1 more for Silver" on the target circle when you aim at something you own.</li>
+  <li>Add a nightly "Tonight's sky challenge": find a specific star by a hint, or catch two passes within ten minutes.</li>
+</ul>
+<p class="small sub">Both use mechanics that already exist.</p></div>
+
+<div class="item" data-id="23"><header><h3><span class="num">23</span>Missions that match the sky</h3><div class="vote"></div></header>
+<p class="small sub">Missions are dealt by date, the same three for everyone, whatever's overhead. "Catch a rocket stage" on a night with no bright stage passes, or "Spot something Soviet" from Australia, can't be done. <b>Recommend:</b> when dealing a night's missions, skip any the tonight worker says have no qualifying pass. Then a mission is always a real thing you could go and do, and the Tonight list can mark the pass that completes it.</p></div>
+
+<h3 style="margin-top:22px">Is it fun?</h3>
+<p class="small sub">Yes, in the first week especially: every night has a dozen new things, the tour lands you a card in under a minute, and the reveal plus the patch coins feel great. The risk is weeks 3 to 8. Ranks have flown past, Legendaries are routine, and the new cards in reach thin out. Items 19, 20 and 22 are aimed squarely at that stretch, and item 14 (pass alerts) is what gets people outside in the first place. If I could only do two, I'd do 19 and 14.</p>
+
+<h2>Bigger ideas</h2>
+<p class="sub">Features I think would make it better, roughly in order of how much difference I'd expect.</p>
+
+<div class="item" data-id="14"><header><h3><span class="num">14</span>Pass alerts that actually reach you</h3><div class="vote"></div></header>
+<p class="small sub">The game lives or dies on "go outside at 9:41 pm". The alarm is a calendar download right now. Home-screen web apps on iOS can get real push notifications (iOS 16.4+). A "Bright pass in 10 minutes · 62° up in the SW" push is the single biggest retention lever I can see.</p></div>
+
+<div class="item" data-id="15"><header><h3><span class="num">15</span>Weekly recap card</h3><div class="vote"></div></header>
+<p class="small sub">Every Monday, a shareable card: what you caught this week, your rarest find, your streak, and the next week's highlight (a meteor shower, a bright ISS run). It gives a reason to come back on a cloudy week and something to post.</p></div>
+
+<div class="item" data-id="16"><header><h3><span class="num">16</span>Point at a light, get its name</h3><div class="vote"></div></header>
+<p class="small sub">The most common real-world question is "what's that bright one?" A one-tap "What's this?" mode that names whatever is nearest the circle, even things you've already collected or can't collect (a plane, Sirius, Jupiter), makes the app useful every night, not just when there's a pass.</p></div>
+
+<div class="item" data-id="17"><header><h3><span class="num">17</span>Album rewards</h3><div class="vote"></div></header>
+<p class="small sub">Albums go Bronze, Silver, Gold, but gold only changes the album's border. Make an album's gold its own patch (with gold foil), and give each album a set-specific card back as a reward. It gives the long tail a goal.</p></div>
+
+<div class="item" data-id="18"><header><h3><span class="num">18</span>Photo capture</h3><div class="vote"></div></header>
+<p class="small sub">You already have the camera view in Testing tools. When you catch something with the camera on, save a photo of the real sky with the card's name, a trail line and the time stamped on it, and attach it to the card's back. Collectors love proof.</p></div>
+
+</main>
+<div class="bar"><span id="tally">0 answered</span><button type="button" id="copy">Copy my answers</button></div>
+<script>
+const KEY = 'playtest-2026-10-09';
+let votes = {}; try { votes = JSON.parse(localStorage.getItem(KEY)) || {}; } catch {}
+const items = [...document.querySelectorAll('.item[data-id]')];
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(votes)); } catch {} ; document.getElementById('tally').textContent = `${Object.keys(votes).length} of ${items.length} answered`; };
+for (const it of items) {
+  const v = it.querySelector('.vote'); v.innerHTML = '<button type="button" data-v="yes">Yes</button><button type="button" data-v="no">No</button>';
+  const paint = () => v.querySelectorAll('button').forEach((b) => b.classList.toggle('on', votes[it.dataset.id] === b.dataset.v));
+  v.addEventListener('click', (e) => { const b = e.target.closest('button'); if (!b) return; votes[it.dataset.id] = votes[it.dataset.id] === b.dataset.v ? undefined : b.dataset.v; if (!votes[it.dataset.id]) delete votes[it.dataset.id]; paint(); save(); });
+  paint();
+}
+save();
+document.getElementById('copy').addEventListener('click', async () => {
+  const lines = items.map((it) => `${it.dataset.id}. ${it.querySelector('h3').textContent.replace(/^\d+|bug|fixed|idea|mechanics/g, '').trim()}: ${votes[it.dataset.id] ? votes[it.dataset.id].toUpperCase() : '—'}`);
+  const text = `Playtest answers\n${lines.join('\n')}`;
+  try { await navigator.clipboard.writeText(text); document.getElementById('copy').textContent = 'Copied'; } catch { prompt('Copy this:', text); }
+  setTimeout(() => (document.getElementById('copy').textContent = 'Copy my answers'), 1600);
+});
+</script>
+</body></html>
