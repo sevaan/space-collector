@@ -141,16 +141,18 @@
 /* Legendary: gold. Two gold glitter fields slide past each other with a bright glint sweeping
    across, a stronger art foil, and a gold edge. */
 .card.tier-legendary .card__shine {
+  /* Legendary (2026-10-09, Sevaan: the full gold wash looked flat and khaki): the navy card stays navy; a narrow
+     band of warm gold light sweeps across as you tilt, with fine gold glitter caught only inside the band. */
   z-index: 6;
   background:
-    linear-gradient(115deg, transparent 36%, rgba(255, 226, 150, .85) 46%, rgba(255, 255, 255, .95) 50%, rgba(255, 226, 150, .85) 54%, transparent 64%) var(--bgx) var(--bgy) / 300% 300%,
-    var(--glitter) var(--bgx) var(--bgy) / 12em 12em,
-    var(--glitter2) var(--nbgx) var(--nbgy) / 19em 19em,
-    linear-gradient(135deg, #8a6417, #f7d77a 35%, #b8862a 60%, #fbe7a6 85%);
-  background-blend-mode: normal, screen, screen, normal;
-  mix-blend-mode: soft-light; opacity: calc(var(--o, 0) * .6);
+    linear-gradient(115deg, transparent 44%, rgba(255, 214, 120, .55) 48%, rgba(255, 246, 214, .8) 50%, rgba(255, 214, 120, .55) 52%, transparent 56%) var(--bgx) var(--bgy) / 300% 300%,
+    var(--glitter) var(--bgx) var(--bgy) / 12em 12em;
+  background-blend-mode: normal, normal;
+  -webkit-mask: linear-gradient(115deg, transparent 40%, #000 47%, #000 53%, transparent 60%) var(--bgx) var(--bgy) / 300% 300%;
+  mask: linear-gradient(115deg, transparent 40%, #000 47%, #000 53%, transparent 60%) var(--bgx) var(--bgy) / 300% 300%;
+  mix-blend-mode: screen; opacity: calc(var(--o, 0) * (.45 + var(--hyp, 0) * .3));
 }
-.card.tier-legendary .card__foil { opacity: calc(var(--o, 0) * (.25 + var(--hyp, 0) * .3)); }
+.card.tier-legendary .card__foil { display: none; } /* the shine band above is the whole effect */
 .card.tier-legendary .card__rotator { box-shadow: 0 0 0 .25em #e8c35a, 0 calc(1em + var(--o, 0) * 1em) calc(3em + var(--o, 0) * 2em) rgba(0, 0, 0, .5); }
 .card.tier-legendary.uncaught .card__shine { display: none; }
 .card.extinct .card__shine, .card.extinct .card__foil { display: none; }
