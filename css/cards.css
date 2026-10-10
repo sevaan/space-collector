@@ -267,29 +267,27 @@
 /* The back's holo matches the FRONT's rarity treatment (2026-10-06, Sevaan: it has to read as the same card).
    Scoped by the tier class on the .card (collection spin, double-tap flip) or on #rv-back (sealed card). */
 .back-holo { display: none; }                                                  /* common: no shine, like its front */
-:is(.card, .rv-back).tier-uncommon .back-holo { display: block;                /* pastel sheen */
-  background: linear-gradient(115deg, transparent 22%, hsla(185, 90%, 78%, .55) 38%, hsla(300, 85%, 82%, .55) 47%, hsla(55, 95%, 78%, .55) 56%, transparent 72%) var(--bgx, 50%) var(--bgy, 50%) / 300% 300%;
-  mix-blend-mode: color-dodge; opacity: calc(var(--o, 0) * .28); }
-:is(.card, .rv-back):is(.tier-rare, .tier-epic) .back-holo { display: block; /* the same holofoil band as the front */
+:is(.card, .rv-back).tier-uncommon .back-holo { display: block;                /* pastel sheen: a narrow band */
+  /* Card backs use plain translucent colour, no blend modes (2026-10-09, Sevaan: the effect vanished at the flip;
+     Safari drops mix-blend-mode on an element while it turns in 3D). Narrower and subtler than before, so the
+     poster reads through. */
+  background: linear-gradient(115deg, transparent 40%, hsla(185, 90%, 80%, .22) 46%, hsla(300, 85%, 84%, .26) 50%, hsla(55, 95%, 80%, .22) 54%, transparent 60%) var(--bgx, 50%) var(--bgy, 50%) / 300% 300%;
+  mix-blend-mode: normal; opacity: calc(.35 + var(--o, 0) * .5); }
+:is(.card, .rv-back):is(.tier-rare, .tier-epic) .back-holo { display: block; /* the same holofoil band as the front, lighter */
   background: var(--holo-streak) var(--bgx, 50%) var(--bgy, 50%) / 300% 300%, var(--holo-band) var(--bgx, 50%) var(--bgy, 50%) / 300% 300%;
-  mix-blend-mode: screen; filter: none;
-  opacity: calc(var(--o, 0) * (.4 + var(--hyp, 0) * .3)); }
+  mix-blend-mode: normal; filter: none;
+  opacity: calc(.18 + var(--o, 0) * (.18 + var(--hyp, 0) * .14)); }
 :is(.card, .rv-back).tier-legendary .back-holo { display: block;               /* gold glint */
-  background: linear-gradient(115deg, transparent 40%, rgba(255, 226, 150, .7) 47%, rgba(255, 255, 255, .85) 50%, rgba(255, 226, 150, .7) 53%, transparent 60%) var(--bgx, 50%) var(--bgy, 50%) / 300% 300%;
-  mix-blend-mode: screen; opacity: calc(var(--o, 0) * .45); }
-:is(.card, .rv-back).gold-foil .back-holo { display: block;                    /* gold foil */
-  background: var(--glitter) var(--nbgx) var(--nbgy) / 12em 12em, repeating-linear-gradient(125deg, #7d6a3a 0%, #efe0a8 6%, #a88c45 12%, #fff6d8 18%, #7d6a3a 24%) var(--bgx, 50%) var(--bgy, 50%) / 340% 340%;
-  background-blend-mode: screen, normal; mix-blend-mode: overlay; filter: none; opacity: calc(.35 + var(--o, 0) * .3); }
-:is(.card, .rv-back).shiny .back-holo { display: block;                        /* prism, like a shiny front */
-  background:
-    var(--glitter) var(--bgx, 50%) var(--bgy, 50%) / 12em 12em,
-    repeating-linear-gradient(110deg, hsl(0, 90%, 70%) 0%, hsl(50, 92%, 68%) 7%, hsl(120, 80%, 64%) 14%, hsl(190, 90%, 68%) 21%, hsl(255, 85%, 74%) 28%, hsl(320, 85%, 72%) 35%, hsl(0, 90%, 70%) 42%) var(--bgx, 50%) var(--bgy, 50%) / 320% 320%;
-  /* The back is nearly all dark navy, where colour-dodge barely shows; a soft-light wash of the same prism reads
-     like the front's shimmer instead (2026-10-06, Sevaan: the shiny back looked plain). */
-  background-blend-mode: screen, normal; mix-blend-mode: soft-light; filter: saturate(1.2);
-  opacity: calc(.65 + var(--o, 0) * .25); }
-.back-glare { background: radial-gradient(farthest-corner circle at var(--mx, 50%) var(--my, 50%), hsla(0, 0%, 100%, .75) 6%, hsla(0, 0%, 100%, .45) 18%, hsla(0, 0%, 0%, .3) 90%);
-  mix-blend-mode: overlay; opacity: calc(var(--o, 0) * .75); }
+  background: linear-gradient(115deg, transparent 44%, rgba(255, 214, 120, .32) 48%, rgba(255, 246, 214, .5) 50%, rgba(255, 214, 120, .32) 52%, transparent 56%) var(--bgx, 50%) var(--bgy, 50%) / 300% 300%;
+  mix-blend-mode: normal; opacity: calc(.4 + var(--o, 0) * .5); }
+:is(.card, .rv-back).gold-foil .back-holo { display: block;                    /* gold foil: a warm gold band and glitter */
+  background: var(--glitter) var(--nbgx) var(--nbgy) / 12em 12em, linear-gradient(125deg, transparent 38%, rgba(239, 224, 168, .3) 46%, rgba(255, 246, 216, .45) 50%, rgba(239, 224, 168, .3) 54%, transparent 62%) var(--bgx, 50%) var(--bgy, 50%) / 300% 300%;
+  mix-blend-mode: normal; filter: none; opacity: calc(.45 + var(--o, 0) * .4); }
+:is(.card, .rv-back).shiny .back-holo { display: block;                        /* prism, like a shiny front, gentler */
+  background: repeating-linear-gradient(110deg, hsla(0, 90%, 72%, .16) 0%, hsla(50, 92%, 70%, .16) 7%, hsla(120, 80%, 66%, .16) 14%, hsla(190, 90%, 70%, .16) 21%, hsla(255, 85%, 76%, .16) 28%, hsla(320, 85%, 74%, .16) 35%, hsla(0, 90%, 72%, .16) 42%) var(--bgx, 50%) var(--bgy, 50%) / 320% 320%;
+  mix-blend-mode: normal; filter: none; opacity: calc(.7 + var(--o, 0) * .3); }
+.back-glare { background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), hsla(0, 0%, 100%, .16) 0, hsla(0, 0%, 100%, .05) 22%, transparent 45%);
+  mix-blend-mode: normal; opacity: var(--o, 0); } /* a soft highlight, no blend mode (so it survives the flip in Safari) */
 :where(html[data-theme="night"], body.night) .back-holo { display: none; }
 
 .card--retro .fl-years { align-items: baseline; gap: .8em; color: var(--grey); }
