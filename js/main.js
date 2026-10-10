@@ -1,39 +1,39 @@
-import * as Secrets from './secrets.js?v=0.1.376';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.376';
-import * as Ufo from './ufo.js?v=0.1.376';
-import * as Fossil from './fossil.js?v=0.1.376';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.376';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.376';
-import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.376';
-import { VERSION } from './version.js?v=0.1.376';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.376';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.376';
-import { conArt } from './con-art.js?v=0.1.376';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.376';
-import { CON_FIGURES } from './con-figures.js?v=0.1.376';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.376';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.376';
-import { progress as progressOf } from './progress.js?v=0.1.376';
-import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.376';
-import { CONSTELLATIONS } from './constellations.js?v=0.1.376';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.376';
-import { SkyView, shortName } from './sky.js?v=0.1.376';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.376';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.376';
-import { cardArt } from './art.js?v=0.1.376';
-import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.376';
-import { applyBack } from './card-backs.js?v=0.1.376';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.376';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.376';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.376';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.376';
-import { TIER_INFO } from './rarity.js?v=0.1.376';
-import { SETS } from './sets.js?v=0.1.376';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.376';
-import { shareCardEl } from './share-card.js?v=0.1.376';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.376';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.376';
-import { addStarfield } from './starfield.js?v=0.1.376';
+import * as Secrets from './secrets.js?v=0.1.377';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.377';
+import * as Ufo from './ufo.js?v=0.1.377';
+import * as Fossil from './fossil.js?v=0.1.377';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.377';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.377';
+import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.377';
+import { VERSION } from './version.js?v=0.1.377';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.377';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.377';
+import { conArt } from './con-art.js?v=0.1.377';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.377';
+import { CON_FIGURES } from './con-figures.js?v=0.1.377';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.377';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.377';
+import { progress as progressOf } from './progress.js?v=0.1.377';
+import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.377';
+import { CONSTELLATIONS } from './constellations.js?v=0.1.377';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.377';
+import { SkyView, shortName } from './sky.js?v=0.1.377';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.377';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.377';
+import { cardArt } from './art.js?v=0.1.377';
+import { renderCard, cardLevel, artImage, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.377';
+import { applyBack } from './card-backs.js?v=0.1.377';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.377';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.377';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn } from './observation.js?v=0.1.377';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.377';
+import { TIER_INFO } from './rarity.js?v=0.1.377';
+import { SETS } from './sets.js?v=0.1.377';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.377';
+import { shareCardEl } from './share-card.js?v=0.1.377';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.377';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.377';
+import { addStarfield } from './starfield.js?v=0.1.377';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -2317,10 +2317,12 @@ function pumpPatch() {
   if (!$('reveal').hidden || collectionOpen || activePanel) { setTimeout(pumpPatch, 700); return; }
   patchBusy = true;
   // Earned together = shown together (2026-10-08 playtest: a first catch played three moments back to back).
-  const batch = patchQueue.splice(0, 3), a = batch[0], many = batch.length > 1, el = document.createElement('div');
+  // All of them in one moment (2026-10-09, Sevaan: four patches showed as three, then a second screen for the fourth).
+  const batch = patchQueue.splice(0, 9), a = batch[0], many = batch.length > 1, el = document.createElement('div');
+  const perRow = batch.length === 4 ? 2 : Math.min(3, batch.length), size = batch.length <= 3 ? 130 : batch.length === 4 ? 136 : 100;
   el.className = `patch-moment${many ? ' many' : ''}`; el.setAttribute('role', 'status');
-  el.innerHTML = `<div class="pm-row">${batch.map((x, i) => `<div class="pm-patch" style="animation-delay:${i * 0.12}s">${patchHtml(x, { stitch: true })}</div>`).join('')}</div>
-    <div class="pm-label"><small>${many ? `${batch.length} PATCHES EARNED` : a.secret ? 'SECRET PATCH' : 'PATCH EARNED'}</small><b>${many ? batch.map((x) => escapeHtml(x.name)).join(' · ') : escapeHtml(a.name)}</b>${many ? '' : `<span>${escapeHtml(a.text)}</span>`}</div>`;
+  el.innerHTML = `<div class="pm-row" style="--pw:min(${batch.length === 4 ? 34 : batch.length > 3 ? 26 : 28}vw, ${size}px);max-width:calc(${perRow} * var(--pw) + ${perRow - 1} * 14px)">${batch.map((x, i) => `<div class="pm-patch" style="animation-delay:${i * 0.12}s">${patchHtml(x, { stitch: true })}</div>`).join('')}</div>
+    <div class="pm-label"><small>${many ? `${batch.length} PATCHES EARNED` : a.secret ? 'SECRET PATCH' : 'PATCH EARNED'}</small><b>${many ? batch.map((x) => escapeHtml(x.name)).join('\u00a0· ') : escapeHtml(a.name)}</b>${many ? '' : `<span>${escapeHtml(a.text)}</span>`}</div>`;
   document.body.append(el);
   let done = false;
   const landT = setTimeout(() => { el.classList.add('landed'); thud(); buzz(20); }, 1550);
@@ -2333,7 +2335,7 @@ function pumpPatch() {
       patchBusy = false; setTimeout(pumpPatch, 500);
     }, 380);
   };
-  const outT = setTimeout(finish, 3600);
+  const outT = setTimeout(finish, 4600); // a second longer on screen (2026-10-09, Sevaan)
   el.addEventListener('click', finish);
 }
 

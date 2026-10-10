@@ -271,3 +271,6 @@ dialog.leaving { animation: ui-fade-in var(--m-norm) var(--ease-out) reverse for
 /* Long toasts wrap to two lines instead of cutting off mid-sentence (2026-10-09 tour test: the tour's hint ended in "Follow the …"). */
 .ticket__line { white-space: normal; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
 .ticket--compass .ticket__line { display: contents; }
+/* Many patches in one moment (2026-10-09): they wrap (2 × 2 for four, rows of three for more), sized by --pw. */
+.patch-moment .pm-row { flex-wrap: wrap; margin: 0 auto; row-gap: 12px; }
+.patch-moment.many .pm-patch { width: var(--pw, min(28vw, 130px)); }
