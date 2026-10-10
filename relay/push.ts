@@ -4,7 +4,7 @@
 // next ~36 hours of alert texts.
 //
 // Deploy on Val Town (same account as the plane relay):
-//   1. A val (sevaan/space-collector-push, public); this file is its main.ts with an HTTP trigger. Its URL is PUSH in js/push.js.
+//   1. A val (sevaan/space-collector-push, public); this file is its main.ts with an HTTP trigger. Its URL is PUSH in js/pass-alerts.js.
 //   2. In the same val, a second file cron.ts with a Cron trigger (every 15 min, the free plan's minimum):
 //        import { cron } from "./main.ts";
 //        export default cron;

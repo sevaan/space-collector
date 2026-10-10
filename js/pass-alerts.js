@@ -1,4 +1,6 @@
-// Pass alerts (2026-10-10, playtest #14): real push notifications a few minutes before a bright or new pass. The
+// Pass alerts (2026-10-10, playtest #14). Not named push.js: content blockers block scripts called push.js, and on
+// Sevaan's iPhone that stopped the whole app loading (main.js's imports failed).
+// real push notifications a few minutes before a bright or new pass. The
 // phone works out the passes; relay/push.ts (a Val Town val) holds the next few alert times and pushes them when due.
 // On iPhone, web push only works once Space Collector is added to the Home Screen (iOS 16.4+).
 // PUSH: the push val (val.town/x/sevaan/space-collector-push, deployed 2026-10-10). The Settings row hides if it's empty.

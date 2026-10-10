@@ -10,7 +10,7 @@
 // One cache per version (2026-10-10: a phone stuck on the loader). A shared cache could hand a slow-network fallback
 // page old files mixed with new ones that don't fit together. Now each deploy's worker (scripts/bump.mjs stamps the
 // version below) starts its own cache and deletes the others, so a page only ever meets files from its own version.
-const CACHE = 'sc-0.1.440';
+const CACHE = 'sc-0.1.441';
 self.addEventListener('install', (e) => { self.skipWaiting(); e.waitUntil(caches.open(CACHE).then((c) => c.addAll(['./', 'index.html', 'cards.html', 'data/catalog.json', 'data/sky.json']).catch(() => {}))); });
 self.addEventListener('activate', (e) => { e.waitUntil(caches.keys().then((ks) => Promise.all(ks.filter((k) => k !== CACHE).map((k) => caches.delete(k)))).then(() => self.clients.claim())); });
 self.addEventListener('fetch', (e) => {
