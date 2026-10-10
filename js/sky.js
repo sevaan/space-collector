@@ -1,10 +1,10 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.444';
+import { extinction } from './sky-limit.js?v=0.1.445';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.444';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.445';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.444';
-import { TIER_INFO } from './rarity.js?v=0.1.444';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.445';
+import { TIER_INFO } from './rarity.js?v=0.1.445';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -1117,8 +1117,7 @@ export class SkyView {
         this.glow(p.x, p.y, 70 + f * 90, f > 0 ? [255, 246, 207] : t.satGlow, 0.55);
         ctx.fillStyle = f > 0.3 ? '#fffbea' : t.sun;
         ctx.beginPath(); ctx.arc(p.x, p.y, 12 + f * 6, 0, Math.PI * 2); ctx.fill();
-        // A dashed guard ring by day: aim the phone, never your eyes.
-        if (f > 0) { ctx.save(); ctx.setLineDash([4, 5]); ctx.lineWidth = 1.5; ctx.strokeStyle = 'rgba(250,129,39,.85)'; ctx.beginPath(); ctx.arc(p.x, p.y, 44, 0, Math.PI * 2); ctx.stroke(); ctx.restore(); }
+        // (The dashed orange guard ring by day was removed 2026-10-10, Sevaan: "I don't want that.")
         this.queueLabel('Sun', p, { color: f > 0.3 ? '#143046' : t.body, size: 14, gap: 22 + f * 24, priority: 8 });
       } else {
         // Planets on the same brightness scale as the stars (2026-10-06, Sevaan: Saturn looked far brighter than
