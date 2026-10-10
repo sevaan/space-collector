@@ -1,21 +1,21 @@
-import { expandFacts } from './catalog-facts.js?v=0.1.430';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.430';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.430';
-import { ticket } from './toast.js?v=0.1.430';
-import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.430';
-import { cardArt } from './art.js?v=0.1.430';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.430';
-import { applyBack } from './card-backs.js?v=0.1.430';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.430';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.430';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.430';
-import { loadConstellations, conList } from './constellations.js?v=0.1.430';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.430';
-import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.430';
-import { shareCardEl } from './share-card.js?v=0.1.430';
-import { allSightings, deleteSighting } from './store.js?v=0.1.430';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.430';
-import { SECRET_PATCHES } from './secrets.js?v=0.1.430';
+import { expandFacts } from './catalog-facts.js?v=0.1.431';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.431';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.431';
+import { ticket } from './toast.js?v=0.1.431';
+import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.431';
+import { cardArt } from './art.js?v=0.1.431';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.431';
+import { applyBack } from './card-backs.js?v=0.1.431';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.431';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.431';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.431';
+import { loadConstellations, conList } from './constellations.js?v=0.1.431';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.431';
+import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.431';
+import { shareCardEl } from './share-card.js?v=0.1.431';
+import { allSightings, deleteSighting } from './store.js?v=0.1.431';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.431';
+import { SECRET_PATCHES } from './secrets.js?v=0.1.431';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -191,7 +191,7 @@ function remindStreak() {
   ticket({ kind: 'mission', eyebrow: 'STREAK', line: 'Saturday 8 pm reminder: add it to your calendar.', ms: 4000 }); // a toast, as on Explore
 }
 function renderLogbook() {
-  const info = (k) => { const c = state.byKey.get(k); return c ? { tier: c.tier, type: c.type, owner: c.owner, launch: c.launch, natural: c.natural, con: c.con } : null; };
+  const info = (k) => { const c = state.byKey.get(k); return c ? { tier: c.tier, tier0: c.tier0, type: c.type, owner: c.owner, launch: c.launch, natural: c.natural, con: c.con } : null; };
   const p = progress(state.raw, info, { constellations: conList(), deals: readDeals(), albums: state.albums, carry: xpCarry(state.raw, info, { constellations: conList(), deals: readDeals() }) });
   state.albums ??= albumList(state.cards);
   try { localStorage.setItem('goldAlbums', JSON.stringify(SETS.filter((s) => albumStats(s.id).level === 3).map((s) => s.id))); } catch {}
@@ -582,7 +582,7 @@ $('v-share').addEventListener('click', async () => {
   const c = state.list[state.index], el = $('slot').firstElementChild; if (!c || !el) return;
   const btn = $('v-share'); btn.disabled = true; btn.textContent = 'Making the image…';
   try {
-    const info = (k) => { const x = state.byKey.get(k); return x ? { tier: x.tier, type: x.type, owner: x.owner, launch: x.launch, natural: x.natural, con: x.con } : null; };
+    const info = (k) => { const x = state.byKey.get(k); return x ? { tier: x.tier, tier0: x.tier0, type: x.type, owner: x.owner, launch: x.launch, natural: x.natural, con: x.con } : null; };
     const how = await shareCardEl(el, c, { title: titleFor(c), rank: progress(state.raw, info, { constellations: conList(), deals: readDeals(), albums: state.albums, carry: xpCarry(state.raw, info, { constellations: conList(), deals: readDeals() }) }).rank.name, fact: factFor(c) }); // same rank as the logbook (QA 2026-10-08)
     btn.textContent = how === 'downloaded' ? 'Saved the image' : 'Share this card';
   } catch { btn.textContent = 'Couldn\'t make the image'; }
@@ -667,7 +667,7 @@ function earnedDates() {
   const n = state.raw.length;
   if (earnedCache?.n === n) return earnedCache.dates;
   let stored = {}; try { stored = JSON.parse(localStorage.getItem('patchDates') || '{}'); } catch {}
-  const info = (k) => { const c = state.byKey.get(k); return c ? { tier: c.tier, type: c.type, owner: c.owner, launch: c.launch, natural: c.natural, con: c.con } : null; };
+  const info = (k) => { const c = state.byKey.get(k); return c ? { tier: c.tier, tier0: c.tier0, type: c.type, owner: c.owner, launch: c.launch, natural: c.natural, con: c.con } : null; };
   const cons = conList();
   const list = state.raw.filter((x) => !x.sim).slice().sort((a, b) => a.time - b.time), dates = {};
   const want = new Set((state.achievements ?? []).filter((a) => a.done && !stored[a.id]).map((a) => a.id));

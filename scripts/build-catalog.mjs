@@ -8,7 +8,7 @@
 // cached in scripts/.cache for 12 hours and requests are spaced out.
 
 import { writeFileSync, readFileSync, mkdirSync, statSync } from 'node:fs';
-import { tierFor } from '../js/rarity.js';
+import { tierFor, retier } from '../js/rarity.js';
 
 const GP = 'https://celestrak.org/NORAD/elements/gp.php';
 const SATCAT_URL = 'https://celestrak.org/pub/satcat.csv';
@@ -182,6 +182,7 @@ for (const t of tles.values()) {
   objects.push(o);
 }
 objects.sort((a, b) => a.id - b.id);
+retier(objects); // rarity by difficulty, cut by share of the catalogue (2026-10-10; tierFor above is only the seed)
 
 // Drop fields that are null, or shared by the whole family, to keep the file small.
 const FAMILY_SHARED = ['kind', 'type', 'owner', 'site', 'ops', 'rcs', 'tier', 'stdMag', 'year'];

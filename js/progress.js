@@ -1,7 +1,7 @@
 // Player progress from the sighting log: XP and observer rank, tonight's three missions, a weekly streak and
 // achievements. Everything is derived from the saved sightings (nothing extra is stored), so it can't drift.
 // info(cardKey) -> { tier, type, owner, launch, natural, con } | null. No DOM.
-import { nightKey } from './observation.js?v=0.1.430';
+import { nightKey } from './observation.js?v=0.1.431';
 
 export const RANKS = [
   [0, 'Stargazer'], [200, 'Spotter'], [600, 'Tracker'], [1500, 'Navigator'], [4000, 'Flight Controller'], [10000, 'Mission Control'],
@@ -78,13 +78,13 @@ export function readDeals() { try { return JSON.parse(localStorage.getItem('miss
 // The one-time carry that keeps an existing player's rank through the flatter XP (see TIER_XP): the XP needed to
 // reach the rank the old numbers gave them. Worked out once, the first time the new numbers run, and kept.
 export function xpCarry(sightings, info, opts = {}) {
-  try { const v = localStorage.getItem('xpCarry'); if (v != null) return Number(v) || 0; } catch {}
+  try { const v = localStorage.getItem('xpCarry2'); if (v != null) return Number(v) || 0; } catch {} // v2: after the difficulty re-tier (2026-10-10)
   let carry = 0;
   if (real(sightings).length) {
     const old = progress(sightings, info, { ...opts, tierXp: LEGACY_TIER_XP }), cur = progress(sightings, info, { ...opts, carry: 0 });
     carry = Math.max(0, old.rank.at - cur.xp);
   }
-  try { localStorage.setItem('xpCarry', String(carry)); } catch {}
+  try { localStorage.setItem('xpCarry2', String(carry)); } catch {}
   return carry;
 }
 
@@ -221,7 +221,7 @@ export function progress(sightings, info, { constellations = [], albums = [], no
   for (const s of list) {
     const i = info(s.cardKey), night = nightKey(s.time, s.lon ?? 0), first = !seenCard.has(s.cardKey), nk = `${s.cardKey}|${night}`;
     if (first) {
-      seenCard.add(s.cardKey); xp += tierXp[i?.tier] ?? 10; a.cards++; firsts.push(s.time);
+      seenCard.add(s.cardKey); xp += tierXp[(tierXp === LEGACY_TIER_XP && i?.tier0) || i?.tier] ?? 10; // the old numbers use the old tiers (tier0, before the 2026-10-10 re-tier) a.cards++; firsts.push(s.time);
       if (s.time - (firsts[firsts.length - 2] ?? -Infinity) <= 60000) a.double = true;
       if (firsts.length >= 3 && s.time - firsts[firsts.length - 3] <= 300000) a.triple = true;
       if (i?.tier) a.tierCount[i.tier] = (a.tierCount[i.tier] ?? 0) + 1;
