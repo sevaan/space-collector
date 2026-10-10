@@ -233,12 +233,12 @@ body.patches-view .collection-tools, body.patches-view .album-head { display: no
 .pw-item span { font: 500 11px/1.15 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .1em; text-transform: uppercase; color: #bdbea9; text-align: center; }
 .pw-item.locked span { color: #627a8b; }
 .pw-item:active .patch { transform: scale(.95); }
-#patch-view { position: fixed; inset: 0; width: 100%; height: 100%; max-width: none; max-height: none; margin: 0; border: 0; padding: 0; background: var(--page-sky, var(--bg)); background-color: var(--bg); color: var(--text); }
+#patch-view { overflow: hidden; isolation: isolate; position: fixed; inset: 0; width: 100%; height: 100%; max-width: none; max-height: none; margin: 0; border: 0; padding: 0; background: var(--page-sky, var(--bg)); background-color: var(--bg); color: var(--text); }
 #patch-view[open] { display: flex; flex-direction: column; }
 #patch-view::backdrop { background: #000e; }
-.pv-body { flex: 1; display: flex; flex-direction: column; align-items: center; text-align: center; padding: 30px 24px calc(var(--safe-bottom) + 40px); overflow-y: auto; }
-.pv-patch { width: min(64vw, 260px); margin-top: 4vh; transition: transform .25s ease-out; filter: drop-shadow(0 18px 30px #0009); }
-.pv-body h2 { margin: 26px 0 8px; font: 400 28px/1.05 'SC Display', Impact, sans-serif; letter-spacing: -.02em; text-transform: uppercase; color: #fff2b3; }
+.pv-body { flex: 1; min-height: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; text-align: center; padding: 8px 20px calc(var(--safe-bottom) + 28px); overflow: hidden; overscroll-behavior: none; touch-action: none; } /* nothing to scroll (2026-10-09) */
+.pv-patch { width: min(62%, 230px); margin: 10px auto 0; transition: transform .25s ease-out; filter: drop-shadow(0 18px 30px #0009); }
+.pv-body h2 { margin: 18px 0 8px; font: 400 28px/1.05 'SC Display', Impact, sans-serif; letter-spacing: -.02em; text-transform: uppercase; color: #fff2b3; }
 .pv-body p { margin: 0; max-width: 300px; font: 500 16px/1.35 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .03em; color: rgba(255, 242, 179, .75); }
 .pv-meta { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 18px; }
 #pv-close:focus-visible { outline: none; }
@@ -361,3 +361,18 @@ body.albums-view .album__count { flex: none; font-size: 14px; }
 .album__level { font: 500 10px/1 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .14em; text-transform: uppercase; padding: 4px 7px 3px; border-radius: 99px; border: 1px solid currentColor; }
 .album__level.l1 { color: #c98a4b; } .album__level.l2 { color: #dfe6ee; } .album__level.l3 { color: #f2c94c; }
 .grid .card-tile__name { overflow-wrap: normal; word-break: normal; hyphens: none; } /* whole words; js fitTileName shrinks a long one */
+/* The patch on a card (2026-10-09, Sevaan): the same frame as the collection's cards, flicked up to put away. */
+.pv-card { width: min(100%, 330px, calc((100dvh - 190px) * 5 / 7)); aspect-ratio: 5 / 7; justify-content: space-between; border-radius: 16px; border: 2px solid #adbcc8; box-shadow: inset 0 0 0 1px #657786, 0 24px 50px #000a; background: radial-gradient(ellipse at 50% 30%, #13233a, #080f1b 70%); padding: 0 0 0; display: flex; flex-direction: column; align-items: center; touch-action: none; user-select: none; -webkit-user-select: none; }
+.pv-bar, .pv-foot { align-self: stretch; display: flex; justify-content: space-between; align-items: center; gap: 10px; font: 500 11px/1 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .18em; text-transform: uppercase; color: #fff2b3; }
+.pv-bar { margin-bottom: auto; padding: 13px 16px 11px; border-bottom: 1px solid #bcb58566; }
+.pv-bar span:last-child { color: #fa8127; }
+.pv-card p { padding: 0 20px; }
+.pv-card .pv-meta { margin-top: 12px; min-height: 0; }
+.pv-card .pv-meta:empty { display: none; }
+.pv-foot { margin-top: auto; padding: 11px 16px 12px; border-top: 1px solid #bcb58566; color: rgba(255, 242, 179, .8); }
+.pv-foot b { font: 400 11px/1 'SC Display', Impact, sans-serif; letter-spacing: 0; color: #fff2b3; }
+.pv-card.locked .pv-foot span { color: rgba(255, 242, 179, .5); }
+.pv-hint { font: 500 11px/1 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .2em; text-transform: uppercase; color: rgba(255, 242, 179, .45); }
+#patch-view.flicked .pv-hint { opacity: 0; transition: opacity .15s; }
+#patch-view > .starfield { position: absolute; z-index: -1; }
+:where(html[data-theme="night"], body.night) .pv-card { background: #130606; border-color: #52221f; box-shadow: none; }

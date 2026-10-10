@@ -1,21 +1,21 @@
-import { expandFacts } from './catalog-facts.js?v=0.1.405';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.405';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.405';
-import { ticket } from './toast.js?v=0.1.405';
-import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.405';
-import { cardArt } from './art.js?v=0.1.405';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.405';
-import { applyBack } from './card-backs.js?v=0.1.405';
-import { SETS, assignSets } from './sets.js?v=0.1.405';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.405';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.405';
-import { loadConstellations, conList } from './constellations.js?v=0.1.405';
-import { RANKS, progress } from './progress.js?v=0.1.405';
-import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.405';
-import { shareCardEl } from './share-card.js?v=0.1.405';
-import { allSightings, deleteSighting } from './store.js?v=0.1.405';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.405';
-import { SECRET_PATCHES } from './secrets.js?v=0.1.405';
+import { expandFacts } from './catalog-facts.js?v=0.1.408';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.408';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.408';
+import { ticket } from './toast.js?v=0.1.408';
+import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.408';
+import { cardArt } from './art.js?v=0.1.408';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.408';
+import { applyBack } from './card-backs.js?v=0.1.408';
+import { SETS, assignSets } from './sets.js?v=0.1.408';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.408';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.408';
+import { loadConstellations, conList } from './constellations.js?v=0.1.408';
+import { RANKS, progress } from './progress.js?v=0.1.408';
+import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.408';
+import { shareCardEl } from './share-card.js?v=0.1.408';
+import { allSightings, deleteSighting } from './store.js?v=0.1.408';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.408';
+import { SECRET_PATCHES } from './secrets.js?v=0.1.408';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -672,9 +672,13 @@ function openPatch(id, from = null) {
   const all = [...secs, ...(fossil ? [{ id: 'fossil', name: 'Fossil Hunter', text: 'Found dinosaur bones buried under your feet', icon: '', secret: true, done: true }] : []), ...(ufo ? [{ id: 'ufo', name: 'Close Encounter', text: "Something crossed your sky that isn't in any catalogue", icon: '', secret: true, done: true }] : []), ...(state.achievements ?? [])], a = all.find((x) => x.id === id); if (!a) return;
   const date = earnedDates()[id] ?? (id === 'fossil' ? fossil?.at : id === 'ufo' ? ufo?.at : sec[id] ?? null), f = finishOf(a);
   $('pv-position').textContent = `PATCH · ${all.filter((x) => x.done).length} / ${all.length}`;
-  $('pv-body').innerHTML = `<div class="pv-patch">${patchHtml(a, { locked: !a.done, date: a.done && date ? fmtEarned(date) : '' })}</div>
+  // On a card (2026-10-09, Sevaan): the patch sits on a card like the collection's, which you flick up and away.
+  $('pv-body').innerHTML = `<div class="pv-card${a.done ? '' : ' locked'}"><div class="pv-bar"><span>Mission patch</span><span>${esc(GROUPS[groupOf(a)].t)}</span></div>
+    <div class="pv-patch">${patchHtml(a, { locked: !a.done })}</div>
     <h2>${esc(a.name)}</h2><p>${esc(a.text)}</p>
-    <div class="pv-meta"><span class="ui-chip"><b>${esc(GROUPS[groupOf(a)].t)}</b></span>${f ? `<span class="ui-chip"><b>${f === 'gold' ? 'Gold foil' : 'Holo'}</b></span>` : ''}${a.done ? '' : '<span class="ui-chip"><span class="ui-chip__k">Not earned yet</span></span>'}</div>`;
+    <div class="pv-meta">${f ? `<span class="ui-chip"><b>${f === 'gold' ? 'Gold foil' : 'Holo'}</b></span>` : ''}${a.secret ? '<span class="ui-chip"><b>Secret</b></span>' : ''}</div>
+    <div class="pv-foot"><span>${a.done ? (date ? fmtEarned(date) : 'EARNED') : 'NOT YET EARNED'}</span><b>SPACE COLLECTOR</b></div></div>
+    <span class="pv-hint" aria-hidden="true">Swipe up to put it away</span>`;
   const d = $('patch-view'); d.showModal();
   // Grow out of the patch you tapped (2026-10-08 polish), and shrink back into it on close.
   patchFrom = from;
@@ -682,7 +686,7 @@ function openPatch(id, from = null) {
   if (from && pv && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
     const to = pv.getBoundingClientRect(), sc = from.width / to.width;
     pv.animate([{ transform: `translate(${from.left + from.width / 2 - (to.left + to.width / 2)}px, ${from.top + from.height / 2 - (to.top + to.height / 2)}px) scale(${sc})` }, { transform: 'none' }], { duration: 420, easing: 'cubic-bezier(.3,1.25,.5,1)' });
-    for (const el of d.querySelectorAll('.pv-body > :not(.pv-patch)')) el.animate([{ opacity: 0, transform: 'translateY(8px)' }, { opacity: 1, transform: 'none' }], { duration: 300, delay: 160, easing: 'ease-out', fill: 'backwards' });
+    for (const el of d.querySelectorAll('.pv-card > :not(.pv-patch), .pv-hint')) el.animate([{ opacity: 0, transform: 'translateY(8px)' }, { opacity: 1, transform: 'none' }], { duration: 300, delay: 160, easing: 'ease-out', fill: 'backwards' });
   }
   const patch = d.querySelector('.patch'), host = d.querySelector('.pv-patch');
   // The patch leans toward your finger or the phone's tilt, and the foil sheen follows.
@@ -702,6 +706,25 @@ function closePatch() {
   pv.animate([{ transform: 'none' }, { transform: `translate(${f.left + f.width / 2 - (to.left + to.width / 2)}px, ${f.top + f.height / 2 - (to.top + to.height / 2)}px) scale(${sc})` }], { duration: 300, easing: 'cubic-bezier(.4,0,.6,1)', fill: 'forwards' }).onfinish = () => { d.classList.remove('leaving'); d.close(); };
 }
 $('pv-close').addEventListener('click', closePatch);
+// Flick the card up and away, as in the card viewer.
+{
+  let fl = null;
+  const body = $('pv-body');
+  body.addEventListener('pointerdown', (e) => { if (e.target.closest('.pv-card')) fl = { id: e.pointerId, pts: [{ x: e.clientX, y: e.clientY, t: performance.now() }] }; });
+  body.addEventListener('pointermove', (e) => { if (fl && e.pointerId === fl.id) { fl.pts.push({ x: e.clientX, y: e.clientY, t: performance.now() }); if (fl.pts.length > 12) fl.pts.shift(); } });
+  body.addEventListener('pointerup', async (e) => {
+    if (!fl || e.pointerId !== fl.id) return;
+    const pts = fl.pts; fl = null;
+    const last = pts[pts.length - 1], now = performance.now(), from = pts.find((p) => now - p.t < 140) ?? pts[0];
+    const dx = last.x - from.x, dy = last.y - from.y, dt = Math.max(16, now - from.t);
+    if (!(dy < -45 && last.y - pts[0].y < -60 && Math.abs(dx) < -dy * 0.9 && -dy / dt > 0.6)) return;
+    const d = $('patch-view'), card = d.querySelector('.pv-card');
+    if (card && !reducedMotion.matches) { d.classList.add('flicked'); await new Promise((r) => setTimeout(r, throwOff(card, dx, dy, dt))); }
+    d.close(); d.classList.remove('flicked');
+  });
+  body.addEventListener('pointercancel', () => { fl = null; });
+}
+addStarfield($('patch-view'));
 $('patch-view').addEventListener('click', (e) => { if (e.target === $('patch-view')) closePatch(); });
 $('patch-view').addEventListener('cancel', (e) => { e.preventDefault(); closePatch(); });
 // Earned patches you haven't opened yet wear a NEW tag (localStorage patchSeen).
