@@ -1,41 +1,42 @@
-import * as Secrets from './secrets.js?v=0.1.448';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.448';
-import * as Ufo from './ufo.js?v=0.1.448';
-import * as Fossil from './fossil.js?v=0.1.448';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.448';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.448';
-import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.448';
-import { VERSION } from './version.js?v=0.1.448';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.448';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.448';
-import { conArt } from './con-art.js?v=0.1.448';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.448';
-import { CON_FIGURES } from './con-figures.js?v=0.1.448';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.448';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.448';
-import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.448';
-import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.448';
-import { conList } from './constellations.js?v=0.1.448';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.448';
-import { SkyView, shortName } from './sky.js?v=0.1.448';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.448';
-import { initAccount, onAccount, account, signInGoogle, sendEmailLink, completeEmailLink, signOut, syncNow, pushSighting } from './account.js?v=0.1.448';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.448';
-import { cardArt } from './art.js?v=0.1.448';
-import { renderCard, cardLevel, artImage, lockedArt, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.448';
-import { applyBack } from './card-backs.js?v=0.1.448';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.448';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.448';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.448';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.448';
-import { TIER_INFO } from './rarity.js?v=0.1.448';
-import { SETS, albumList } from './sets.js?v=0.1.448';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.448';
-import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.448';
-import { shareCardEl } from './share-card.js?v=0.1.448';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.448';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.448';
-import { addStarfield } from './starfield.js?v=0.1.448';
+import * as Secrets from './secrets.js?v=0.1.449';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.449';
+import * as Ufo from './ufo.js?v=0.1.449';
+import * as Fossil from './fossil.js?v=0.1.449';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.449';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.449';
+import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.449';
+import { VERSION } from './version.js?v=0.1.449';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.449';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.449';
+import { conArt } from './con-art.js?v=0.1.449';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.449';
+import { CON_FIGURES } from './con-figures.js?v=0.1.449';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.449';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.449';
+import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.449';
+import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.449';
+import { conList } from './constellations.js?v=0.1.449';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.449';
+import { SkyView, shortName } from './sky.js?v=0.1.449';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.449';
+import { initAccount, onAccount, account, signInGoogle, sendEmailLink, completeEmailLink, signOut, syncNow, pushSighting } from './account.js?v=0.1.449';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.449';
+import { cardArt } from './art.js?v=0.1.449';
+import { renderCard, cardLevel, artImage, lockedArt, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.449';
+import { applyBack } from './card-backs.js?v=0.1.449';
+import { musicOn, startMusic, setMusic, duckMusic } from './music.js?v=0.1.449';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.449';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.449';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.449';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.449';
+import { TIER_INFO } from './rarity.js?v=0.1.449';
+import { SETS, albumList } from './sets.js?v=0.1.449';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.449';
+import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.449';
+import { shareCardEl } from './share-card.js?v=0.1.449';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.449';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.449';
+import { addStarfield } from './starfield.js?v=0.1.449';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -1004,7 +1005,7 @@ function showCaptureCard(obj) {
     lit: new Set(conCard.stars.filter((k) => owned.has(k)).map((k) => Number(k.replace('star:hip', '')))) });
   const gain = progressGain(sightings[0]); announceProgress(gain);
   $('rv-share').hidden = false; revealShare = { card, o: model };
-  playReveal({ card, o: model, seen: sightings.length, fleet, progress, collected, con, xp: gain.xp, rank: gain.rank, shiny: sightings[0]?.shiny && !model.launches ? SHINY[sightings[0].shiny] : null, origin: { x: sky.ring?.x ?? sky.cx, y: sky.ring?.y ?? sky.cy } });
+  duckMusic(true); playReveal({ card, o: model, seen: sightings.length, fleet, progress, collected, con, xp: gain.xp, rank: gain.rank, shiny: sightings[0]?.shiny && !model.launches ? SHINY[sightings[0].shiny] : null, origin: { x: sky.ring?.x ?? sky.cx, y: sky.ring?.y ?? sky.cy } });
 }
 // The tour's catch when you already own it (replaying the tour): the same sealed-card reveal as a first catch,
 // with no sighting saved, so the tour feels the same every time.
@@ -1016,7 +1017,7 @@ function tourReveal(obj) {
   openPanel('reveal');
   state.tourRevealed = true;
   $('rv-share').hidden = false; revealShare = { card, o: model };
-  playReveal({ card, o: model, seen: 1, progress: { level: cardLevel(sightings), before: 'none', nights: 1 }, collected: 2, origin: { x: sky.ring?.x ?? sky.cx, y: sky.ring?.y ?? sky.cy } });
+  duckMusic(true); playReveal({ card, o: model, seen: 1, progress: { level: cardLevel(sightings), before: 'none', nights: 1 }, collected: 2, origin: { x: sky.ring?.x ?? sky.cx, y: sky.ring?.y ?? sky.cy } });
 }
 // Open an owned card in place, spinning out of the toast. counted: this view also logged a sighting.
 function showViewCard(obj, from, counted) {
@@ -1822,7 +1823,7 @@ $('location-form').addEventListener('submit', e => {
   state.model?.reset(); state.rising?.reset(); state.trails.clear(); cancelPassSearch(); renderLocation(); refreshAbove();
 });
 document.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', () => closePanel(b.dataset.close)));
-onRevealDismiss(() => closePanel('reveal'));
+onRevealDismiss(() => { closePanel('reveal'); duckMusic(false); });
 document.addEventListener('keydown', e => {
   if (!activePanel) return;
   if (e.key === 'Escape') { const sh = document.querySelector('.set-sheet.in'); if (sh) { closeSheet(sh); return; } closePanel(); return; } // an open Settings sheet first (QA 2026-10-08)
@@ -2692,6 +2693,10 @@ $('retry-location').addEventListener('click', () => closeSheet($('set-loc-sheet'
 $('location-form').addEventListener('submit', () => setTimeout(() => closeSheet($('set-loc-sheet')), 50));
 document.querySelectorAll('[data-hl]').forEach((c) => c.addEventListener('change', renderSettings));
 $('chk-sound').addEventListener('change', (e) => writePref('sound', e.target.checked));
+$('chk-music').checked = musicOn();
+$('chk-music').addEventListener('change', (e) => setMusic(e.target.checked));
+// The music starts with the first tap anywhere (browsers need one before any sound).
+document.addEventListener('pointerdown', () => startMusic(), { once: true, capture: true });
 $('set-data').addEventListener('click', () => {
   const blob = new Blob([JSON.stringify({ app: 'Space Collector', version: VERSION, exported: new Date().toISOString(), sightings: state.sightings.filter((x) => !x.sim) }, null, 2)], { type: 'application/json' });
   const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `space-collector-sightings-${new Date().toISOString().slice(0, 10)}.json`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 5000);

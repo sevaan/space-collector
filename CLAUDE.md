@@ -408,3 +408,7 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - 2026-10-10 · Pass alert wording (Sevaan: "who cares about the degrees"). `alertText(p)` in main.js.
   - Title says what it is: "A 1981 Soviet rocket stage at 9:51 PM", "A 1979 American weather satellite…", "A piece of 2000s space junk…", "A new Globalstar launch to stamp…", "The Space Station…". Year + owner adjective (Soviet before 1992, Russian after) + a short purpose word from a name-prefix table (`PURPOSE_WORD`).
   - Body: "<Name> rises in the <direction word> and <climbs halfway up / climbs high / passes almost straight overhead / arcs high into the west / skims low across the south>." Then "New to your collection." / "A Rare card you don't have yet." / "A launch you haven't stamped yet." No degrees, no compass abbreviations.
+- 2026-10-10 · Background music: "Permafrost" by Scott Buckley (CC BY 4.0; credit in Settings → About's credit line, as the licence requires). assets/audio/permafrost.m4a: AAC 96k, loudness-normalised to -20 LUFS, 7:29, 5.5 MB; the track fades out at its end, so the loop breathes. js/music.js:
+  - Web Audio gain at 0.3, because iOS ignores media-element volume. `navigator.audioSession.type = 'ambient'`, so the silent switch mutes it and the player's own music keeps playing.
+  - Starts on the first pointerdown with a 4 s fade-in. Ducks to 35% during card reveals (main: `duckMusic(true)` before playReveal, back on dismiss). Pauses when hidden.
+  - Settings → Music switch (localStorage `music`, default on).
