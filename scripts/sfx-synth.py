@@ -147,6 +147,19 @@ D['shiny'].append(('Soft shimmer', place(np.zeros(int(SR * 1.2)), sum(place(np.z
 # Sideways swipe between cards in the collection (2026-10-11): a soft paper slide with a low felt touch, quieter than flip.
 D['page'] = [('Paper slide', place(place(np.zeros(int(SR * 0.3)), swish(0.16, 900, 2600, amp=0.35, peak=0.3), 0), 0.25 * felt(G['B4'], 0.15, 0.03), 0.02), dict(wet=0.08, soften=2600, peak_db=-22))]
 
+# The sealed welcome card shaking (2026-10-11): five soft card-stock taps in time with the CSS wobble (every 0.1 s,
+# each quieter), a low felt knock under the first, and a faint glass glint, as if something is inside.
+def _rattle(glint=True):
+    out = np.zeros(int(SR * 1.1))
+    for k in range(5):
+        a = 0.55 * (0.78 ** k)
+        t0 = 0.1 * k + rng.uniform(0, 0.008)
+        place(out, paper(0.028, a), t0); place(out, 0.35 * a * felt(G['D4'] if k % 2 else G['G4'], 0.06, 0.012), t0)
+    place(out, 0.18 * felt(G['G3'], 0.18, 0.05), 0.0)
+    if glint: place(out, 0.09 * bell(G['D7'], 0.7, 0.3), 0.06)
+    return out
+D['rattle'] = [('Card rattle + glint', _rattle(True), dict(wet=0.1, soften=3600, peak_db=-20)), ('Card rattle', _rattle(False), dict(wet=0.08, soften=3200, peak_db=-20))]
+
 if __name__ == '__main__':
     import sys
     out = sys.argv[1]; man = {}
