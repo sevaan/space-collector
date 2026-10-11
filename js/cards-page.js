@@ -1,23 +1,23 @@
-import { sfx } from './sfx.js?v=0.1.483';
-import { expandFacts } from './catalog-facts.js?v=0.1.483';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.483';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.483';
-import { ticket } from './toast.js?v=0.1.483';
-import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.483';
-import { cardArt } from './art.js?v=0.1.483';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.483';
-import { applyBack } from './card-backs.js?v=0.1.483';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.483';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.483';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.483';
-import { loadConstellations, conList } from './constellations.js?v=0.1.483';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.483';
-import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.483';
-import { shareCardEl } from './share-card.js?v=0.1.483';
-import { removeSighting } from './account.js?v=0.1.483';
-import { allSightings, deleteSighting } from './store.js?v=0.1.483';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.483';
-import { SECRET_PATCHES } from './secrets.js?v=0.1.483';
+import { sfx } from './sfx.js?v=0.1.484';
+import { expandFacts } from './catalog-facts.js?v=0.1.484';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.484';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.484';
+import { ticket } from './toast.js?v=0.1.484';
+import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.484';
+import { cardArt } from './art.js?v=0.1.484';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.484';
+import { applyBack } from './card-backs.js?v=0.1.484';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.484';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.484';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.484';
+import { loadConstellations, conList } from './constellations.js?v=0.1.484';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.484';
+import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.484';
+import { shareCardEl } from './share-card.js?v=0.1.484';
+import { removeSighting } from './account.js?v=0.1.484';
+import { allSightings, deleteSighting } from './store.js?v=0.1.484';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.484';
+import { SECRET_PATCHES } from './secrets.js?v=0.1.484';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -738,7 +738,7 @@ function openPatch(id, from = null) {
     <div class="pv-patch">${patchHtml(a, { locked: !a.done, prog: a.prog })}</div>
     <h2>${esc(a.name)}</h2><p>${esc(a.text)}</p>
     ${!a.done && a.prog && a.prog[1] > 1 ? `<div class="pv-prog"><div class="pv-prog__bar"><i style="width:${Math.min(100, (a.prog[0] / a.prog[1]) * 100).toFixed(1)}%"></i></div><span><b>${a.prog[0].toLocaleString()}</b> of ${a.prog[1].toLocaleString()}</span></div>` : ''}
-    <div class="pv-meta">${f ? `<span class="ui-chip"><b>${f === 'gold' ? 'Gold foil' : 'Holo'}</b></span>` : ''}${a.secret ? '<span class="ui-chip"><b>Secret</b></span>' : ''}${['catalogue', 'curator', 'months12', 'anniversary', 'streak12'].includes(a.id) && !a.done ? '<span class="ui-chip"><b>Legendary goal</b><span class="ui-chip__k">years, not weeks</span></span>' : ''}</div>
+    <div class="pv-meta">${f ? `<span class="ui-chip"><b>${f === 'gold' ? 'Gold foil' : 'Holo'}</b></span>` : ''}${a.secret ? '<span class="ui-chip"><b>Secret</b></span>' : ''}${['catalogue', 'curator', 'months12', 'anniversary', 'streak12', 'cons44'].includes(a.id) && !a.done ? '<span class="ui-chip"><b>Legendary goal</b><span class="ui-chip__k">years, not weeks</span></span>' : ''}</div>
     <div class="pv-foot"><span>${a.done ? (date ? fmtEarned(date) : 'EARNED') : 'NOT YET EARNED'}</span><b>SPACE COLLECTOR</b></div></div>
     <span class="pv-hint" aria-hidden="true">Swipe up to put it away</span>`;
   const d = $('patch-view'); d.showModal();

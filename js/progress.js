@@ -1,7 +1,7 @@
 // Player progress from the sighting log: XP and observer rank, tonight's three missions, a weekly streak and
 // achievements. Everything is derived from the saved sightings (nothing extra is stored), so it can't drift.
 // info(cardKey) -> { tier, type, owner, launch, natural, con } | null. No DOM.
-import { nightKey } from './observation.js?v=0.1.483';
+import { nightKey } from './observation.js?v=0.1.484';
 
 export const RANKS = [
   [0, 'Stargazer'], [200, 'Spotter'], [600, 'Tracker'], [1500, 'Navigator'], [4000, 'Flight Controller'], [10000, 'Mission Control'],
@@ -149,7 +149,8 @@ export const ACHIEVEMENTS = [
   // Star Map ('Complete a constellation') retired 2026-10-10: it always landed with that constellation's own patch.
   { id: 'cons5', name: 'Cartographer', text: 'Complete 5 constellations', icon: '✶5', done: (a) => a.cons >= 5 },
   { id: 'zodiac', name: 'Zodiac', text: 'Complete all 12 zodiac constellations', icon: 'XII', done: (a) => a.zodiac >= 12 },
-  { id: 'cons25', name: 'Atlas', text: 'Complete all 18 constellations', icon: '✶18', done: (a) => a.cons >= 18 }, // was 25, but there are only 18 (playtest 2026-10-09); id kept so earned dates stay
+  { id: 'cons25', name: 'Atlas', text: 'Complete 18 constellations', icon: '✶18', done: (a) => a.cons >= 18 }, // any 18 of the 88 (2026-10-11); it was all 18 when there were only 18 (playtest 2026-10-09), and 25 before that; id kept so earned dates stay
+  { id: 'cons44', name: 'Half the Sky', text: 'Complete 44 constellations, half of all 88', icon: '✶44', done: (a) => a.cons >= 44 }, // 2026-10-11, with all 88 added; a years-long goal
   // Where you looked
   { id: 'zenith', name: 'Straight Up', text: 'Catch something more than 85° up', icon: '90°', done: (a) => a.maxEl >= 85 },
   { id: 'horizon', name: 'Horizon Hunter', text: 'Catch a satellite under 12° up', icon: '12°', done: (a) => a.minSatEl != null && a.minSatEl <= 12 },
@@ -191,7 +192,7 @@ const PROG = {
   nations: (a) => [a.owners.size, 8], diplomat: (a) => [a.owners.size, 15], redstar: (a) => [a.ownerCount.CIS ?? 0, 10], stripes: (a) => [a.ownerCount.US ?? 0, 10],
   longmarch: (a) => [a.ownerCount.PRC ?? 0, 10], coldwar: (a) => [a.pre1991, 10], decades: (a) => [a.decades.size, 6],
   starlink10: (a) => [a.fleet.STARLINK ?? 0, 10], starlink50: (a) => [a.fleet.STARLINK ?? 0, 50], fleets: (a) => [['STARLINK', 'ONEWEB', 'KUIPER', 'QIANFAN'].filter((f) => a.fleet[f]).length, 4],
-  wanderers: (a) => [a.wanderers, 6], stars10: (a) => [a.stars, 10], cons5: (a) => [a.cons, 5], zodiac: (a) => [a.zodiac, 12], cons25: (a) => [a.cons, 18],
+  wanderers: (a) => [a.wanderers, 6], stars10: (a) => [a.stars, 10], cons5: (a) => [a.cons, 5], zodiac: (a) => [a.zodiac, 12], cons25: (a) => [a.cons, 18], cons44: (a) => [a.cons, 44],
   compass: (a) => [a.quadrants.size, 4], marathon: (a) => [a.maxNight, 10], months3: (a) => [a.months.size, 3], months12: (a) => [a.months.size, 12],
   streak4: (a) => [a.bestStreak, 4], streak12: (a) => [a.bestStreak, 12], silver: (a) => [a.maxNightsOnCard, 5], gold: (a) => [a.maxNightsOnCard, 25], gold3: (a) => [a.goldCards, 3],
   missions10: (a) => [a.missionsDone, 10], missions50: (a) => [a.missionsDone, 50],
