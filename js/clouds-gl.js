@@ -15,10 +15,11 @@ float noise(vec2 p) {
   vec2 i = floor(p), u = fract(p); u = u * u * (3.0 - 2.0 * u);
   return mix(mix(hash(i), hash(i + vec2(1, 0)), u.x), mix(hash(i + vec2(0, 1)), hash(i + vec2(1, 1)), u.x), u.y);
 }
-// fractal noise; octaves finer than a pixel fade out (lod), so the far deck near the horizon doesn't shimmer
+// fractal noise; octaves finer than a pixel fade out (lod), so the far deck near the horizon doesn't shimmer.
+// A dropped octave becomes its average (0.5), so brightness holds as detail goes.
 float fbm(vec2 p, float lod) {
   float t = 0.0, a = 0.5, fr = 1.0; mat2 m = mat2(1.6, 1.2, -1.2, 1.6);
-  for (int o = 0; o < 6; o++) { t += a * noise(p) * clamp(1.6 - fr * lod, 0.0, 1.0); p = m * p; a *= 0.5; fr *= 2.0; }
+  for (int o = 0; o < 6; o++) { t += a * mix(0.5, noise(p), clamp(1.6 - fr * lod, 0.0, 1.0)); p = m * p; a *= 0.5; fr *= 2.0; }
   return t;
 }
 float deck(vec2 q, float lod) {
@@ -32,10 +33,19 @@ void main() {
   if (d.z < 0.015) { gl_FragColor = vec4(0.0); return; }
   float dist = 1.0 / d.z;                       // distance to the deck, in deck heights
   vec2 q = d.xy * dist * 0.8 + wind;
-  float lod = dist * 0.9 / (f * 0.6);           // how much deck one pixel covers
+  // How much deck one pixel covers. Toward the horizon it grows with the square of the distance (the deck is seen
+  // edge-on), so fine octaves must drop out there or they flicker as the phone moves (2026-10-11, Sevaan).
+  float lod = 0.8 * dist / (f * scale) * (1.0 + dist * 0.35) * 2.0;
   float n = deck(q, lod);
+  if (dist > 2.5) {
+    // the deck is edge-on here, so a pixel spans a long strip of it front to back: average a second sample half a
+    // pixel lower to smooth thin streaks that would otherwise blink as the phone moves
+    vec3 d2 = normalize(R * X - U * (Y + 0.5 / (f * scale)) + B);
+    if (d2.z > 0.01) n = 0.5 * (n + deck(d2.xy / d2.z * 0.8 + wind, lod));
+  }
   float th = mix(0.78, 0.30, cover);            // more cover, lower threshold
-  float a = smoothstep(th, th + 0.14, n);
+  float soft = clamp(lod * 2.0, 0.0, 0.25);
+  float a = smoothstep(th - soft * 0.5, th + 0.14 + soft, n);
   if (a < 0.003) { gl_FragColor = vec4(0.0); return; }
   // light: compare with the deck a step toward the Sun; thinner toward the Sun = lit edge
   vec2 sd = normalize(sun.xy + 1e-4) * 0.09;
@@ -45,9 +55,9 @@ void main() {
   vec3 c = mix(lit, shade, clamp((1.0 - light) * 0.9 + thick * 0.55, 0.0, 1.0));
   float sunGlow = pow(max(0.0, dot(d, sun)), 8.0);            // silver lining near the Sun
   c += lit * sunGlow * (1.0 - thick) * 0.5;
-  float far = smoothstep(0.04, 0.35, d.z);                    // melt into the horizon haze
+  float far = smoothstep(0.05, 0.4, d.z);                    // melt into the horizon haze
   c = mix(haze, c, 0.35 + 0.65 * far);
-  a *= alpha * smoothstep(0.015, 0.09, d.z);
+  a *= alpha * smoothstep(0.02, 0.14, d.z);
   gl_FragColor = vec4(c * a, a);
 }`;
 
