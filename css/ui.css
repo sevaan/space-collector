@@ -10,7 +10,7 @@
 
 /* Switcher: Explore | Collection. As wide as a card; the current page is the gold pill. */
 .sc-switch { position: fixed; z-index: 20; left: 50%; right: auto; bottom: calc(20px + var(--safe-bottom, env(safe-area-inset-bottom, 0px))); transform: translateX(-50%);
-  width: var(--nav-w); height: 46px; display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; margin: 0; box-sizing: border-box;
+  width: var(--nav-w); height: 54px; display: grid; /* taller for an easier tap (2026-10-11, Sevaan; was 46px) */ grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; margin: 0; box-sizing: border-box;
   background: var(--ui-bar); border: 1px solid var(--ui-edge-soft); border-top: 1px solid var(--ui-edge-soft); border-radius: 99px;
   -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
 .sc-switch__item { display: flex; flex-direction: row; justify-content: center; align-items: center; width: auto; min-height: 0; gap: 0; border: 0; border-radius: 99px;
