@@ -1,5 +1,5 @@
 // Keep the existing orbital search off the rendering thread.
-import { nextVisiblePass, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.463';
+import { nextVisiblePass, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.464';
 let objects = [];
 self.onmessage = ({ data }) => {
   if (data.objects) objects = data.objects;

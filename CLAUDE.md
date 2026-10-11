@@ -446,3 +446,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 2026-10-11 · Below-the-horizon circle info: for a far-side satellite it shows collection status in the kicker, a plain description (describe(o) in main.js, factored out of alertText) and "N km away · over you at TIME" (belowInfo: 1-min scan of the next 12 h for el>10, cached a minute for the one in the circle; sky.belowHitId tells main which one). "Over you" means above the horizon, not necessarily visible.
 
 2026-10-11 · Below-horizon circle adds a place line: "Over the North Pacific · 850 km up · 26,800 km/h" (overEarth in orbit.js: sub-point, height, speed; placeName in js/geo.js: hand-drawn coarse continent/island outlines, then Arctic/Southern Oceans, Mediterranean, Gulf of Mexico, Caribbean, N/S Atlantic, Indian, N/S Pacific by rule; tests/geo.test.mjs).
+
+2026-10-11 · Below-horizon circle trimmed (Sevaan): height, speed and distance removed. Now: kicker with collection status, name, description, and one line "Over the North Pacific · in your sky at 4:14 PM" (or "not in your sky for 12+ hours"). overEarth still supplies the place. Options board: design/below-info.html.
