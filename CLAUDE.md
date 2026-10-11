@@ -424,3 +424,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
     - Toasts via toast.js `onTicketShown`: rank → rankup, mission/sky challenge COMPLETE → mission, other COMPLETE → complete, else toast.
     - secret / fossil / ufo on finding; step = tour cards and the Collection switch; toggle = Settings checkboxes.
   - The old oscillator tones (chirp/thump/whoosh/fanfare/thud) are gone.
+
+2026-10-11 · Daytime planets: by day only Venus can show, and only when it is 30°+ from the Sun (sky.js sunSep), at 60trength; other planets fade with daylight. Sevaan asked why Venus showed by day (it was 20° from the Sun, near inferior conjunction).

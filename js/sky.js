@@ -1,10 +1,10 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.452';
+import { extinction } from './sky-limit.js?v=0.1.453';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.452';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.453';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.452';
-import { TIER_INFO } from './rarity.js?v=0.1.452';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.453';
+import { TIER_INFO } from './rarity.js?v=0.1.453';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -1125,7 +1125,10 @@ export class SkyView {
         // slider, twilight, the Moon) isn't drawn, so Neptune no longer shows to the naked eye.
         const elDeg = Math.asin(Math.min(1, Math.max(-1, b.enu[2]))) * 180 / Math.PI, m = b.mag + extinction(elDeg);
         if (this.starLimit != null && m > this.starLimit) continue;
-        const dayK = 1 - Math.min(1, (this.dayF ?? 0) / 0.6) * (m > -3 ? 1 : 0.4); // only Venus-bright survives daylight
+        // By day only Venus can show, and only when it's well clear of the Sun (30°+), when people really can spot it;
+        // closer in it's lost in the glare and looking for it means looking near the Sun (2026-10-11, Sevaan asked).
+        const sunSep = sun ? Math.acos(Math.max(-1, Math.min(1, sun.enu[0] * b.enu[0] + sun.enu[1] * b.enu[1] + sun.enu[2] * b.enu[2]))) * 180 / Math.PI : 180;
+        const dayK = 1 - Math.min(1, (this.dayF ?? 0) / 0.6) * (m <= -3 && sunSep >= 30 ? 0.6 : 1);
         if (dayK <= 0.02) continue;
         const radius = Math.max(0.9, Math.min(3.4, 2.3 - 0.3 * m)), a = Math.max(0.3, Math.min(1, 1 - 0.1 * m)) * dayK;
         if (m < 0.5) this.glow(p.x, p.y, radius * (m < -2 ? 5 : 3.2), t.starRGB, (m < -2 ? 0.34 : 0.16) * dayK);
