@@ -1,9 +1,9 @@
 // Orbit math: where every object is in the observer's sky, and whether it can be seen.
 // Pure functions, no DOM, so this module carries over unchanged to a native wrapper.
 
-import { expandFacts } from './catalog-facts.js?v=0.1.457';
-import * as sat from './lib/satellite.js?v=0.1.457';
-import { extinction, starlinkStdMag } from './sky-limit.js?v=0.1.457';
+import { expandFacts } from './catalog-facts.js?v=0.1.458';
+import * as sat from './lib/satellite.js?v=0.1.458';
+import { extinction, starlinkStdMag } from './sky-limit.js?v=0.1.458';
 
 const RAD = Math.PI / 180;
 const EARTH_RADIUS_KM = 6371;
@@ -118,6 +118,55 @@ export function look(obj, f) {
   const mag = sunlit ? apparentMag(obj.stdMag, la.rangeSat, r, f) + extinction(el) : null;
   const bright = mag !== null && mag <= currentLimit();
   return { az, el, rangeKm: la.rangeSat, sunlit, dark, bright, visible: sunlit && dark && bright, mag };
+}
+
+// Below the horizon, as if the Earth were glass and you stood at a dark site (2026-10-11, Sevaan): lit by the Sun
+// and bright enough for a dark sky (limit) as it would be on a pass over you, not at its true distance (far-side
+// satellites are 10,000+ km off, and judged there almost none would show). Null when it's above the horizon.
+export function lookBelow(obj, f, limit) {
+  const pv = sat.propagate(obj.satrec, f.date);
+  if (!pv || !pv.position) return null;
+  const r = pv.position;
+  const la = sat.ecfToLookAngles(f.gd, sat.eciToEcf(r, f.gmst));
+  const el = la.elevation / RAD;
+  if (el >= 0) return null;
+  const az = (la.azimuth / RAD + 360) % 360;
+  const mag = isSunlit(r, f.sunDir) ? obj.stdMag : null;
+  return { az, el, mag, show: mag !== null && mag <= limit };
+}
+// Everything under the horizon that would shine at a dark site. Sweeps the catalogue a slice per frame (so a full pass
+// takes ~40 frames) and moves each one along between its last two samples. Only runs while you look down.
+export class BelowModel {
+  constructor(objects, frames = 40) { this.objects = objects; this.frames = frames; this.cursor = 0; this.map = new Map(); this.lastT = null; }
+  update(date, f, limit) {
+    const t = date.getTime();
+    if (this.lastT !== null && Math.abs(t - this.lastT) > 5000) this.map.clear();
+    this.lastT = t;
+    const n = this.objects.length, slice = Math.ceil(n / this.frames);
+    for (let i = 0; i < slice; i++) {
+      const o = this.objects[this.cursor]; this.cursor = (this.cursor + 1) % n;
+      if (o.stdMag == null || o.stdMag > limit) continue; // can't reach the limit from thousands of km away
+      const l = lookBelow(o, f, limit), prev = this.map.get(o.id);
+      if (!l) { this.map.delete(o.id); continue; }
+      this.map.set(o.id, { obj: o, t0: prev?.t1 ?? null, s0: prev?.s1 ?? null, t1: t, s1: l });
+    }
+  }
+  // [{ obj, enu, mag }]
+  items(date) {
+    const t = date.getTime(), out = [];
+    for (const e of this.map.values()) {
+      if (!e.s1.show) continue;
+      let v = enuFromAzEl(e.s1.az, e.s1.el);
+      if (e.s0 && e.t1 - e.t0 > 0 && e.t1 - e.t0 < 4000) {
+        const a = enuFromAzEl(e.s0.az, e.s0.el), u = Math.min(2, (t - e.t1) / (e.t1 - e.t0));
+        v = [v[0] + (v[0] - a[0]) * u, v[1] + (v[1] - a[1]) * u, v[2] + (v[2] - a[2]) * u];
+        const l = Math.hypot(v[0], v[1], v[2]) || 1; v = [v[0] / l, v[1] / l, v[2] / l];
+      }
+      if (v[2] >= 0) continue;
+      out.push({ obj: e.obj, enu: v, mag: e.s1.mag });
+    }
+    return out;
+  }
 }
 
 // Sky path over a window, sampled every stepSec. Entries keep their time offset.

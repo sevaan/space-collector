@@ -1,17 +1,17 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.457';
+import { extinction } from './sky-limit.js?v=0.1.458';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.457';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.458';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.457';
-import { createCloudGL } from './clouds-gl.js?v=0.1.457';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.458';
+import { createCloudGL } from './clouds-gl.js?v=0.1.458';
 // Cloud colours by light: sunlit tops, shadowed bellies, and the horizon haze they melt into (0–1 RGB).
 const CLOUD_LIGHT = {
   day: { lit: [1, 1, 1], shade: [0.62, 0.68, 0.77], haze: [0.82, 0.87, 0.93] },
   dusk: { lit: [1, 0.8, 0.68], shade: [0.36, 0.33, 0.42], haze: [0.62, 0.5, 0.52] },
   night: { lit: [0.22, 0.25, 0.31], shade: [0.1, 0.12, 0.16], haze: [0.14, 0.15, 0.2] },
 };
-import { TIER_INFO } from './rarity.js?v=0.1.457';
+import { TIER_INFO } from './rarity.js?v=0.1.458';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -376,7 +376,7 @@ export class SkyView {
       ctx.restore();
     }
     for (const g of below) {
-      if (g.enu[2] >= 0) continue;
+      if (g.enu[2] >= 0 || g.kind === 'dot') continue; // dots (far-side satellites) are drawn by drawBelowSky
       const p = this.project(g.enu);
       if (!this.onScreen(p, 20)) continue;
       const r = g.kind === 'sun' ? 13 : g.kind === 'moon' ? 10 : 6;
@@ -391,6 +391,31 @@ export class SkyView {
       ctx.beginPath(); ctx.arc(p.x, p.y, r + 3, 0, Math.PI * 2); ctx.stroke();
       ctx.setLineDash([]);
       if (k > 0.5 && hit?.g !== g) this.queueLabel(g.note ? `${g.name} · ${g.note}` : g.name, p, { color: g.kind === 'sun' ? `rgba(${ORG},.9)` : `rgba(${INK},.78)`, size: 12, weight: 600, gap: r + 6, priority: 6 }); // one line, so the time never drifts off its name
+    }
+    ctx.restore();
+  }
+  // Under the horizon, a dark-site sky (2026-10-11, Sevaan): stars to the dark-sky limit and every satellite the Sun
+  // lights on the far side of the Earth, faint so the ground still reads as ground. Day or night.
+  drawBelowSky(sky, sats, starLimit) {
+    const ctx = this.ctx, t = this.theme, k = 1 - (this.feetA ?? 0);
+    if (k <= 0) return;
+    ctx.save();
+    if (sky?.stars) for (const s of sky.stars) {
+      if (s.enu[2] >= 0 || s.mag > starLimit) continue;
+      const p = this.project(s.enu); if (!this.onScreen(p, 8)) continue;
+      const r = Math.max(0.38, Math.min(2.2, 1.8 - 0.27 * s.mag)), a = Math.max(0.12, Math.min(0.75, 0.75 - 0.1 * s.mag)) * Math.min(1, (starLimit - s.mag) / 0.5 + 0.15) * k;
+      ctx.fillStyle = t.star(a); ctx.beginPath(); ctx.arc(p.x, p.y, r, 0, Math.PI * 2); ctx.fill();
+    }
+    if (sats?.length) {
+      // Satellites in the satellite-glow colour (orange; red at night) so they read apart from the cream stars;
+      // brighter ones slightly bigger and stronger.
+      ctx.fillStyle = `rgb(${t.satGlow.join(',')})`;
+      for (const s of sats) {
+        const p = this.project(s.enu); if (!this.onScreen(p, 8)) continue;
+        const m = s.mag ?? 5;
+        ctx.globalAlpha = Math.max(0.28, Math.min(0.75, 0.9 - 0.11 * m)) * k;
+        ctx.beginPath(); ctx.arc(p.x, p.y, m < 2 ? 2 : m < 4 ? 1.5 : 1.1, 0, Math.PI * 2); ctx.fill();
+      }
     }
     ctx.restore();
   }
@@ -1206,7 +1231,7 @@ export class SkyView {
 
   // safeTop/safeBottom are HUD insets in CSS pixels; centerY is an optional pixel
   // override. Projection and the reticle always share the same cx/cy.
-  draw(basis, items, { showDim, sky, bodies, milky, lines = true, targetId = null, time = 0, safeTop = 150, safeBottom = 230, centerY, starLimit = null, naturalTargetName = null, quietTarget = false, below = null, ownedTarget = false, sunEl = -90, ghosts = null, weather = null, newFind = false, rising = null, landscape = false, lockedOn = null, planes = null, planeHit = null, planeTrail = null, naturalTarget = null, fossil = null, ufo = null, secrets = null } = {}) {
+  draw(basis, items, { showDim, sky, bodies, milky, lines = true, targetId = null, time = 0, safeTop = 150, safeBottom = 230, centerY, starLimit = null, naturalTargetName = null, quietTarget = false, below = null, belowSats = null, belowStarLimit = 6.5, ownedTarget = false, sunEl = -90, ghosts = null, weather = null, newFind = false, rising = null, landscape = false, lockedOn = null, planes = null, planeHit = null, planeTrail = null, naturalTarget = null, fossil = null, ufo = null, secrets = null } = {}) {
     this.basis = basis;
     this.safeTop = Math.max(12, Math.min(safeTop, this.h * 0.45));
     this.safeBottom = Math.max(12, Math.min(safeBottom, this.h - this.safeTop - 100));
@@ -1235,7 +1260,8 @@ export class SkyView {
     if (fossil && !this.camera) this.drawFossil(fossil); // not in camera view
     // Looking down: the quiet ring takes over from the see-through ghosts (same things, by rise direction).
     this.belowFree = !targetId && !planeHit; // the circle can name a below-horizon thing only when it isn't busy
-    if (below?.length && this.basis.back[2] < 0.15 && this.feetA < 0.98) this.drawBelow(below);
+    if (this.basis.back[2] < 0.15 && this.feetA < 0.98) this.drawBelowSky(sky, belowSats, belowStarLimit);
+    if ((below?.length || belowSats?.length) && this.basis.back[2] < 0.15 && this.feetA < 0.98) this.drawBelow([...(below ?? []), ...(belowSats ?? []).map((s) => ({ enu: s.enu, kind: 'dot', name: s.name, note: '', where: '' }))]);
     this.drawFeet(below);
     this.drawRising(rising);
     this.drawGrid();
