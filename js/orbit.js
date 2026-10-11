@@ -1,9 +1,9 @@
 // Orbit math: where every object is in the observer's sky, and whether it can be seen.
 // Pure functions, no DOM, so this module carries over unchanged to a native wrapper.
 
-import { expandFacts } from './catalog-facts.js?v=0.1.462';
-import * as sat from './lib/satellite.js?v=0.1.462';
-import { extinction, starlinkStdMag } from './sky-limit.js?v=0.1.462';
+import { expandFacts } from './catalog-facts.js?v=0.1.463';
+import * as sat from './lib/satellite.js?v=0.1.463';
+import { extinction, starlinkStdMag } from './sky-limit.js?v=0.1.463';
 
 const RAD = Math.PI / 180;
 const EARTH_RADIUS_KM = 6371;
@@ -118,6 +118,14 @@ export function look(obj, f) {
   const mag = sunlit ? apparentMag(obj.stdMag, la.rangeSat, r, f) + extinction(el) : null;
   const bright = mag !== null && mag <= currentLimit();
   return { az, el, rangeKm: la.rangeSat, sunlit, dark, bright, visible: sunlit && dark && bright, mag };
+}
+
+// The point on Earth it's over, its height and its speed: { lat, lon (degrees), altKm, kmh } or null.
+export function overEarth(obj, date) {
+  const pv = sat.propagate(obj.satrec, date);
+  if (!pv?.position || !pv.velocity) return null;
+  const g = sat.eciToGeodetic(pv.position, sat.gstime(date)), v = pv.velocity;
+  return { lat: g.latitude / RAD, lon: g.longitude / RAD, altKm: g.height, kmh: Math.hypot(v.x, v.y, v.z) * 3600 };
 }
 
 // Below the horizon, as if the Earth were glass and you stood at a dark site (2026-10-11, Sevaan): lit by the Sun
