@@ -1,7 +1,7 @@
 // Player progress from the sighting log: XP and observer rank, tonight's three missions, a weekly streak and
 // achievements. Everything is derived from the saved sightings (nothing extra is stored), so it can't drift.
 // info(cardKey) -> { tier, type, owner, launch, natural, con } | null. No DOM.
-import { nightKey } from './observation.js?v=0.1.485';
+import { nightKey } from './observation.js?v=0.1.487';
 
 export const RANKS = [
   [0, 'Stargazer'], [200, 'Spotter'], [600, 'Tracker'], [1500, 'Navigator'], [4000, 'Flight Controller'], [10000, 'Mission Control'],
@@ -146,6 +146,8 @@ export const ACHIEVEMENTS = [
   { id: 'saturn', name: 'Ringed', text: 'Collect Saturn', icon: '♄', done: (a) => a.naturals.has('planet:saturn') },
   { id: 'wanderers', name: 'Wanderer', text: 'Collect the Moon and the five bright planets', icon: '6', done: (a) => a.wanderers >= 6 },
   { id: 'stars10', name: 'Astronomer', text: 'Collect 10 constellation stars', icon: '✶10', done: (a) => a.stars >= 10 },
+  { id: 'deep3', name: 'Deep Sky', text: 'Collect 3 star clusters, nebulae or galaxies', icon: '◌3', done: (a) => (a.deep ?? 0) >= 3 }, // 2026-10-11
+  { id: 'deep10', name: 'Island Universes', text: 'Collect 10 star clusters, nebulae or galaxies', icon: '◌10', done: (a) => (a.deep ?? 0) >= 10 },
   // Star Map ('Complete a constellation') retired 2026-10-10: it always landed with that constellation's own patch.
   { id: 'cons5', name: 'Cartographer', text: 'Complete 5 constellations', icon: '✶5', done: (a) => a.cons >= 5 },
   { id: 'zodiac', name: 'Zodiac', text: 'Complete all 12 zodiac constellations', icon: 'XII', done: (a) => a.zodiac >= 12 },
@@ -192,7 +194,7 @@ const PROG = {
   nations: (a) => [a.owners.size, 8], diplomat: (a) => [a.owners.size, 15], redstar: (a) => [a.ownerCount.CIS ?? 0, 10], stripes: (a) => [a.ownerCount.US ?? 0, 10],
   longmarch: (a) => [a.ownerCount.PRC ?? 0, 10], coldwar: (a) => [a.pre1991, 10], decades: (a) => [a.decades.size, 6],
   starlink10: (a) => [a.fleet.STARLINK ?? 0, 10], starlink50: (a) => [a.fleet.STARLINK ?? 0, 50], fleets: (a) => [['STARLINK', 'ONEWEB', 'KUIPER', 'QIANFAN'].filter((f) => a.fleet[f]).length, 4],
-  wanderers: (a) => [a.wanderers, 6], stars10: (a) => [a.stars, 10], cons5: (a) => [a.cons, 5], zodiac: (a) => [a.zodiac, 12], cons25: (a) => [a.cons, 18], cons44: (a) => [a.cons, 44],
+  wanderers: (a) => [a.wanderers, 6], stars10: (a) => [a.stars, 10], deep3: (a) => [a.deep ?? 0, 3], deep10: (a) => [a.deep ?? 0, 10], cons5: (a) => [a.cons, 5], zodiac: (a) => [a.zodiac, 12], cons25: (a) => [a.cons, 18], cons44: (a) => [a.cons, 44],
   compass: (a) => [a.quadrants.size, 4], marathon: (a) => [a.maxNight, 10], months3: (a) => [a.months.size, 3], months12: (a) => [a.months.size, 12],
   streak4: (a) => [a.bestStreak, 4], streak12: (a) => [a.bestStreak, 12], silver: (a) => [a.maxNightsOnCard, 5], gold: (a) => [a.maxNightsOnCard, 25], gold3: (a) => [a.goldCards, 3],
   missions10: (a) => [a.missionsDone, 10], missions50: (a) => [a.missionsDone, 50],
@@ -231,6 +233,7 @@ export function progress(sightings, info, { constellations = [], albums = [], no
       if (i?.owner && !i.natural) a.ownerCount[i.owner] = (a.ownerCount[i.owner] ?? 0) + 1;
       if (i?.natural) a.naturals.add(s.cardKey);
       if (i?.con) a.stars++;
+      if (i?.natural === 'deepsky') a.deep = (a.deep ?? 0) + 1; // clusters, nebulae, galaxies (2026-10-11)
       if (!i?.natural && i?.launch) {
         const y = year(i.launch);
         if (y) { if (y < 1991) a.pre1991++; a.decades.add(Math.floor(y / 10)); }

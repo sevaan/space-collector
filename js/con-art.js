@@ -5,7 +5,8 @@
 const RAD = Math.PI / 180;
 const vec = (ra, dec) => [Math.cos(dec * RAD) * Math.cos(ra * RAD), Math.cos(dec * RAD) * Math.sin(ra * RAD), Math.sin(dec * RAD)];
 
-export function conArt(con, highlightHip = null, { w = 360, h = 240, figure = null, bare = false, lit = null } = {}) {
+export function conArt(con, highlightHip = null, { w = 360, h = 240, figure = null, bare = false, lit = null, mark = null } = {}) {
+  // mark (2026-10-11): a deep-sky object { ra, dec, kind } drawn as a soft glow, ringed in orange, among its constellation.
   // lit (2026-10-07): a Set of HIP numbers you've found; those shine, the rest are faint dots still to collect.
   const stars = con.stars;
   // Centre of the figure (average direction), then a gnomonic projection with east on the left, as the sky looks.
@@ -14,7 +15,7 @@ export function conArt(con, highlightHip = null, { w = 360, h = 240, figure = nu
   const e = [-z[1], z[0], 0], eL = Math.hypot(...e) || 1, east = e.map((x) => x / eL);
   const north = [z[1] * east[2] - z[2] * east[1], z[2] * east[0] - z[0] * east[2], z[0] * east[1] - z[1] * east[0]];
   const proj = (ra, dec) => { const v = vec(ra, dec), d = v[0] * z[0] + v[1] * z[1] + v[2] * z[2]; return [-(v[0] * east[0] + v[1] * east[1] + v[2] * east[2]) / d, (v[0] * north[0] + v[1] * north[1] + v[2] * north[2]) / d]; };
-  const pts = stars.map((s) => proj(s.ra, s.dec));
+  const pts = [...stars, ...(mark ? [mark] : [])].map((s) => proj(s.ra, s.dec)); // the mark is framed too
   const xs = pts.map((p) => p[0]), ys = pts.map((p) => p[1]);
   const pad = 26, minX = Math.min(...xs), maxX = Math.max(...xs), minY = Math.min(...ys), maxY = Math.max(...ys);
   const k = Math.min((w - 2 * pad) / Math.max(1e-6, maxX - minX), (h - 2 * pad) / Math.max(1e-6, maxY - minY));
@@ -44,8 +45,15 @@ export function conArt(con, highlightHip = null, { w = 360, h = 240, figure = nu
         + `<circle cx="${x}" cy="${y}" r="${r + 0.6}" fill="#ffd9a6"/>`;
     } else { dots += `<circle class="con-tw con-tw--star" style="--o:1;--d:${(i * 0.73 % 4).toFixed(2)}s;--t:${(3.5 + (i * 1.37 % 2.5)).toFixed(2)}s" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r.toFixed(2)}" fill="#fff2b3"/>`; }
   });
+  if (mark) {
+    const [mx, my] = at(pts[pts.length - 1]), gal = /Galaxy/.test(mark.kind), neb = /Nebula/.test(mark.kind);
+    let fuzz = gal ? `<ellipse cx="${mx.toFixed(1)}" cy="${my.toFixed(1)}" rx="16" ry="6" transform="rotate(-30 ${mx.toFixed(1)} ${my.toFixed(1)})" fill="url(#cdeep)"/>`
+      : neb ? `<circle cx="${mx.toFixed(1)}" cy="${my.toFixed(1)}" r="13" fill="url(#cneb)"/>` : `<circle cx="${mx.toFixed(1)}" cy="${my.toFixed(1)}" r="11" fill="url(#cdeep)"/>`;
+    if (!gal && !neb) for (let i = 0; i < 14; i++) { const a = rnd() * 6.283, d = rnd() * 9; fuzz += `<circle cx="${(mx + Math.cos(a) * d).toFixed(1)}" cy="${(my + Math.sin(a) * d).toFixed(1)}" r="${(0.5 + rnd() * 0.8).toFixed(2)}" fill="#fff6d8"/>`; }
+    glow += `${fuzz}<circle cx="${mx.toFixed(1)}" cy="${my.toFixed(1)}" r="20" fill="none" stroke="#fa8127" stroke-width="1.2"/>`;
+  }
   return `<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <defs><radialGradient id="cg"><stop offset="0" stop-color="#fa8127" stop-opacity=".7"/><stop offset="1" stop-color="#fa8127" stop-opacity="0"/></radialGradient>
-    <radialGradient id="csk"><stop offset="0" stop-color="#fffbe6"/><stop offset=".45" stop-color="#fff2b3" stop-opacity=".55"/><stop offset="1" stop-color="#fff2b3" stop-opacity="0"/></radialGradient><radialGradient id="cs" cx="50%" cy="40%" r="75%"><stop offset="0" stop-color="#14213a"/><stop offset="1" stop-color="#080e1a"/></radialGradient></defs>
+    <radialGradient id="cdeep"><stop offset="0" stop-color="#fff2d0" stop-opacity=".95"/><stop offset=".35" stop-color="#e8dcc0" stop-opacity=".45"/><stop offset="1" stop-color="#e8dcc0" stop-opacity="0"/></radialGradient><radialGradient id="cneb"><stop offset="0" stop-color="#ffd6e0" stop-opacity=".85"/><stop offset=".5" stop-color="#d07a9a" stop-opacity=".35"/><stop offset="1" stop-color="#7a4a9a" stop-opacity="0"/></radialGradient><radialGradient id="csk"><stop offset="0" stop-color="#fffbe6"/><stop offset=".45" stop-color="#fff2b3" stop-opacity=".55"/><stop offset="1" stop-color="#fff2b3" stop-opacity="0"/></radialGradient><radialGradient id="cs" cx="50%" cy="40%" r="75%"><stop offset="0" stop-color="#14213a"/><stop offset="1" stop-color="#080e1a"/></radialGradient></defs>
     <rect width="${w}" height="${h}" fill="url(#cs)"/>${figure ? `<image href="${figure}" width="${w}" height="${h}" preserveAspectRatio="xMidYMid slice" opacity=".62"/>` : ''}${bg}<g fill="none" stroke="#fff2b3" stroke-opacity=".45" stroke-width=".9" stroke-linejoin="round">${lines}</g>${dots}${glow}${spark}</svg>`;
 }

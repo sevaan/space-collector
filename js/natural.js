@@ -1,4 +1,4 @@
-import { extinction } from './sky-limit.js?v=0.1.485';
+import { extinction } from './sky-limit.js?v=0.1.487';
 // The Moon, the naked-eye planets and the brightest named stars, as collectible cards.
 // Positions come from js/celestial.js (state.bodies, state.skyEnu); this file holds the card facts and
 // the "can you see it right now" rules. No DOM. Every fact must be true; approximate values say so.
@@ -75,6 +75,38 @@ const STARS = [
   fact,
 }));
 
+// Deep sky (2026-10-11, Sevaan): star clusters, nebulae and galaxies you can see with your eyes from a dark enough
+// sky. J2000 positions. `need` is how good the sky has to be: the faintest star you can see (js/sky-limit.js starLimit)
+// must reach it; extended glows need more than their total brightness suggests. Distances are rounded, ~ marks
+// estimates. Facts stay conservative and true. [key, name, kind, ra°, dec°, constellation id, mag, need, light-years,
+//  tier, fact]
+const DEEP = [
+  ['pleiades', 'The Pleiades', 'Open cluster', 56.85, 24.12, 'Tau', 1.6, 3.2, '444', 'uncommon', 'The **Seven Sisters**. Most people count six stars by eye, but the cluster holds over a thousand. In Japan it is **Subaru**, the car maker\'s name and logo.'],
+  ['hyades', 'The Hyades', 'Open cluster', 66.75, 15.87, 'Tau', 0.5, 3.5, '153', 'uncommon', 'The **nearest star cluster** to Earth. Its V of stars is the face of Taurus the Bull. Bright Aldebaran sits in front of it but isn\'t a member.'],
+  ['alpha-persei', 'The Alpha Persei Cluster', 'Open cluster', 51.6, 49.0, 'Per', 1.2, 4.0, '~570', 'uncommon', 'A loose spray of stars around **Mirfak**, the brightest star of Perseus. Binoculars turn it into a glittering river.'],
+  ['orion-nebula', 'The Orion Nebula', 'Nebula', 83.82, -5.39, 'Ori', 4.0, 4.0, '~1,344', 'rare', 'A cloud of gas where **new stars are being born**. It is the fuzzy middle "star" of the sword that hangs from Orion\'s belt.'],
+  ['beehive', 'The Beehive Cluster', 'Open cluster', 130.03, 19.67, 'Cnc', 3.7, 5.0, '~577', 'rare', 'About a thousand stars in Cancer. To the eye a faint misty patch; **Galileo** saw it as a swarm of stars through his telescope and wrote about it in 1610.'],
+  ['double-cluster', 'The Double Cluster', 'Open cluster', 35.13, 57.13, 'Per', 3.7, 5.0, '~7,500', 'rare', '**Two star clusters side by side** in Perseus, each with thousands of stars. A faint smudge to the eye, a stunning pair in binoculars.'],
+  ['ptolemy-cluster', 'Ptolemy\'s Cluster', 'Open cluster', 268.47, -34.79, 'Sco', 3.3, 4.5, '~980', 'rare', 'Recorded by **Ptolemy** nearly 2,000 years ago as a misty patch after the sting of Scorpius, one of the first deep-sky objects anyone wrote down.'],
+  ['coathanger', 'The Coathanger', 'Star pattern', 291.35, 20.18, 'Vul', 3.6, 5.0, '~200–1,100', 'rare', 'Looks just like an **upside-down coat hanger** in binoculars. It isn\'t a real cluster: its stars are at very different distances and only line up from here.'],
+  ['andromeda', 'The Andromeda Galaxy', 'Galaxy', 10.68, 41.27, 'And', 3.4, 5.0, '2.5 million', 'epic', 'A whole galaxy of about a **trillion stars**. The light you see left it **2.5 million years ago**, and it is slowly heading toward the Milky Way.'],
+  ['hercules-cluster', 'The Hercules Cluster', 'Globular cluster', 250.42, 36.46, 'Her', 5.8, 6.0, '~22,000', 'epic', 'Hundreds of thousands of stars packed into a ball. In **1974** the Arecibo radio telescope beamed a message toward it.'],
+  ['lagoon-nebula', 'The Lagoon Nebula', 'Nebula', 270.9, -24.38, 'Sgr', 6.0, 5.6, '~4,100', 'epic', 'A glowing cloud where stars are forming, in the thick of the Milky Way toward the **centre of our galaxy**. From a dark site it is a faint patch you can see without binoculars.'],
+  ['carina-nebula', 'The Carina Nebula', 'Nebula', 161.27, -59.87, 'Car', 1.0, 4.5, '~7,500', 'epic', 'One of the **biggest, brightest nebulae** in the sky. It holds **Eta Carinae**, a star that briefly became the second-brightest in the night sky in the 1840s.'],
+  ['omega-centauri', 'Omega Centauri', 'Globular cluster', 201.7, -47.48, 'Cen', 3.9, 4.5, '~17,000', 'epic', 'The Milky Way\'s **biggest globular cluster**, about 10 million stars. It may be the core of a small galaxy our own swallowed long ago.'],
+  ['lmc', 'The Large Magellanic Cloud', 'Galaxy', 80.89, -69.76, 'Dor', 0.9, 4.0, '~160,000', 'rare', 'A small galaxy **orbiting the Milky Way**. It\'s named after Ferdinand Magellan, whose crew described it on their voyage around the world.'],
+  ['smc', 'The Small Magellanic Cloud', 'Galaxy', 13.19, -72.83, 'Tuc', 2.7, 4.5, '~200,000', 'rare', 'The Large Cloud\'s smaller partner, another galaxy circling ours. You have to be **far enough south** to see either of them.'],
+  ['triangulum', 'The Triangulum Galaxy', 'Galaxy', 23.46, 30.66, 'Tri', 5.7, 6.3, '~2.7 million', 'legendary', 'A spiral galaxy right at the **limit of what eyes can see**. You need a truly dark sky, and it helps to look slightly to one side of it.'],
+];
+const CON_NAME = { Tau: 'Taurus', Per: 'Perseus', Ori: 'Orion', Cnc: 'Cancer', Sco: 'Scorpius', Vul: 'Vulpecula', And: 'Andromeda', Her: 'Hercules', Sgr: 'Sagittarius', Car: 'Carina', Cen: 'Centaurus', Dor: 'Dorado', Tuc: 'Tucana', Tri: 'Triangulum' };
+const longAgo = (ly) => /million/.test(ly) ? `${ly.replace('~', '')} yr ago` : lightLeft(ly.split('–')[0]);
+export const DEEP_SKY = DEEP.map(([id, name, kind, ra, dec, con, mag, need, ly, tier, fact], i) => ({
+  key: `deep:${id}`, id: `deep:${id}`, natural: 'deepsky', type: 'deepsky', kind, name, tier, order: 60 + i, ra, dec, conId: con, mag, need,
+  code: `IN ${CON_NAME[con] ?? con}`.toUpperCase(), constellation: CON_NAME[con] ?? con, far: [ly.replace('~', ''), 'LIGHT-YEARS AWAY'],
+  stats: [['BRIGHTNESS', mag.toFixed(1), 'mag'], ['TYPE', kind, ''], ['LIGHT LEFT IT', longAgo(ly), '']],
+  fact,
+}));
+
 // The Solar System: a constellation-style card (progress through its members, gold when all are collected,
 // see conProgress in js/constellations.js) whose "stars" are the Moon and the seven other planets.
 export const SOLAR_SYSTEM = {
@@ -83,7 +115,7 @@ export const SOLAR_SYSTEM = {
   stats: [['WORLDS', '9', ''], ['PLANETS', '7', 'of 8'], ['AGE', '4.6', 'billion yr']],
   fact: 'Everything in the Solar System you can see with your own eyes. Collect the Sun, the Moon and all **seven** planets to turn this card **gold**.',
 };
-export const NATURAL = [sunCard, moon, ...PLANETS, ...STARS]; // SOLAR_SYSTEM is a mission patch now, not a card (2026-10-09)
+export const NATURAL = [sunCard, moon, ...PLANETS, ...STARS, ...DEEP_SKY]; // SOLAR_SYSTEM is a mission patch now, not a card (2026-10-09)
 for (const o of NATURAL) o.card = o.key;
 export const NATURAL_BY_KEY = new Map(NATURAL.map((o) => [o.key, o]));
 const STAR_BY_SKY_NAME = new Map(STARS.map((o) => [o.skyName, o]));
@@ -122,7 +154,14 @@ export function naturalTargets(bodies, stars, extra = [], starLimit = 6.5) {
     const el = elOf(s.enu);
     out.push({ obj, look: { az: azOf(s.enu), el, mag: s.mag, visible: el > 3 && sunEl < -6, enu: s.enu } });
   }
+  // Deep sky (extra entries with obj.natural === 'deepsky'): high enough to clear the haze, properly dark, and a sky
+  // good enough for the faint glow (obj.need, plus some of the extra air low down).
+  for (const { obj, enu } of extra) if (obj.natural === 'deepsky') {
+    const el = elOf(enu);
+    out.push({ obj, look: { az: azOf(enu), el, mag: obj.mag, visible: el > 12 && sunEl < -12 && obj.need + extinction(el) * 0.6 <= starLimit, enu } });
+  }
   for (const { obj, enu } of extra) {
+    if (obj.natural === 'deepsky') continue;
     const el = elOf(enu), mag = obj.mag + extinction(el);
     out.push({ obj, look: { az: azOf(enu), el, mag, visible: el > 3 && sunEl < -6 && mag <= starLimit, enu } });
   }

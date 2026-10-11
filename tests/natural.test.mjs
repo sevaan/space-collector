@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { nightKey, nightsIn, collectedTonight } from '../js/observation.js';
-import { NATURAL, naturalTargets, SOLAR_SYSTEM } from '../js/natural.js';
+import { NATURAL, naturalTargets, SOLAR_SYSTEM, DEEP_SKY } from '../js/natural.js';
 import { buildCards } from '../js/card-model.js';
 import { levelFor, cardLevel } from '../js/card.js';
 
@@ -36,15 +36,24 @@ test('levels: nights 1/3/10, and sightings-based levels earned before Oct 2026 a
   assert.equal(cardLevel(newRules), 'bronze'); // one night under the new rules
 });
 
-test('Moon, seven planets and 21 stars become cards in their own sets (the Solar System is a patch now)', () => {
+test('Moon, seven planets, 21 stars and 16 deep-sky objects become cards in their own sets (the Solar System is a patch now)', () => {
   const cards = buildCards({ objects: [], families: {} }).filter((c) => c.natural);
-  assert.equal(cards.length, 30);
+  assert.equal(cards.length, 46); // 30 + 16 deep-sky (2026-10-11)
+  assert.equal(cards.filter((c) => c.set === 'deep-sky').length, 16);
   assert.deepEqual(cards.filter((c) => c.set === 'wanderers').map((c) => c.name), ['The Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune']);
   assert.ok(!cards.some((c) => c.key === 'system:solar'));
   assert.equal(SOLAR_SYSTEM.stars.length, 9); assert.ok(SOLAR_SYSTEM.stars.includes('planet:neptune') && SOLAR_SYSTEM.stars.includes('moon') && SOLAR_SYSTEM.stars.includes('sun'));
   assert.equal(cards.filter((c) => c.set === 'bright-stars').length, 21);
   assert.equal(cards.find((c) => c.key === 'star:sirius').setNumber, 1);
   for (const c of NATURAL) assert.ok(c.fact && c.stats.length === 3 && (c.system || c.far.length === 2), c.key);
+});
+
+test('deep-sky objects need a dark sky: the Pleiades from suburbs, Triangulum only from a dark site', () => {
+  const pleiades = DEEP_SKY.find((o) => o.key === 'deep:pleiades'), tri = DEEP_SKY.find((o) => o.key === 'deep:triangulum');
+  const up = [0, Math.cos(50 * Math.PI / 180), Math.sin(50 * Math.PI / 180)], sun = [{ kind: 'sun', enu: [0, -0.5, -0.86] }];
+  const vis = (o, limit) => naturalTargets(sun, [], [{ obj: o, enu: up }], limit).find((n) => n.obj === o).look.visible;
+  assert.equal(vis(pleiades, 4.0), true); assert.equal(vis(tri, 4.0), false); assert.equal(vis(tri, 6.5), true);
+  for (const o of DEEP_SKY) assert.ok(o.ra >= 0 && o.ra < 360 && Math.abs(o.dec) <= 90 && o.need > 0, o.key);
 });
 
 test('visibility rules: Moon in daylight, planets after sunset, stars only when dark', () => {

@@ -1,17 +1,17 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.485';
+import { extinction } from './sky-limit.js?v=0.1.487';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.485';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.487';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.485';
-import { createCloudGL } from './clouds-gl.js?v=0.1.485';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.487';
+import { createCloudGL } from './clouds-gl.js?v=0.1.487';
 // Cloud colours by light: sunlit tops, shadowed bellies, and the horizon haze they melt into (0–1 RGB).
 const CLOUD_LIGHT = {
   day: { lit: [1, 1, 1], shade: [0.62, 0.68, 0.77], haze: [0.82, 0.87, 0.93] },
   dusk: { lit: [1, 0.8, 0.68], shade: [0.36, 0.33, 0.42], haze: [0.62, 0.5, 0.52] },
   night: { lit: [0.22, 0.25, 0.31], shade: [0.1, 0.12, 0.16], haze: [0.14, 0.15, 0.2] },
 };
-import { TIER_INFO } from './rarity.js?v=0.1.485';
+import { TIER_INFO } from './rarity.js?v=0.1.487';
 
 const RAD = Math.PI / 180;
 const BELOW_ICON = 13; // every satellite under the horizon, passes and halo alike
@@ -379,6 +379,25 @@ export class SkyView {
         ctx.setLineDash([]);
       }
       if (k > 0.5 && hit?.g !== g) this.queueLabel(g.note ? `${g.name} · ${g.note}` : g.name, p, { color: g.kind === 'sun' ? `rgba(${ORG},.9)` : `rgba(${INK},.78)`, size: 12, weight: 600, gap: r + 6, priority: 6 }); // one line, so the time never drifts off its name
+    }
+    ctx.restore();
+  }
+  // Deep-sky objects (2026-10-11): faint glows where clusters, nebulae and galaxies are, only when they'd really be
+  // visible tonight. Galaxies are tilted ovals, nebulae a soft pink-grey haze, clusters a little knot of specks.
+  drawDeep(list) {
+    const ctx = this.ctx, night = this.theme === THEMES.night, rgb = night ? [255, 90, 70] : [235, 228, 210];
+    ctx.save();
+    for (const d of list) {
+      const p = this.project(d.enu); if (!this.onScreen(p, 30)) continue;
+      const r = Math.max(6, Math.min(26, this.f * 0.012)), gal = /Galaxy/.test(d.kind), neb = /Nebula/.test(d.kind);
+      ctx.save(); ctx.translate(p.x, p.y);
+      if (gal) { ctx.rotate(-0.5); ctx.scale(1.8, 0.7); }
+      const g = ctx.createRadialGradient(0, 0, 0, 0, 0, r);
+      const c = neb && !night ? [235, 200, 215] : rgb;
+      g.addColorStop(0, `rgba(${c},.34)`); g.addColorStop(0.45, `rgba(${c},.14)`); g.addColorStop(1, `rgba(${c},0)`);
+      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI * 2); ctx.fill();
+      ctx.restore();
+      if (!gal && !neb) { ctx.fillStyle = `rgba(${rgb},.55)`; let seed = d.id.length * 97; for (let i = 0; i < 9; i++) { seed = (seed * 16807) % 2147483647; const a = (seed % 628) / 100, rr = ((seed >> 5) % 100) / 100 * r * 0.7; ctx.beginPath(); ctx.arc(p.x + Math.cos(a) * rr, p.y + Math.sin(a) * rr, 0.7, 0, Math.PI * 2); ctx.fill(); } }
     }
     ctx.restore();
   }
@@ -1258,7 +1277,7 @@ export class SkyView {
 
   // safeTop/safeBottom are HUD insets in CSS pixels; centerY is an optional pixel
   // override. Projection and the reticle always share the same cx/cy.
-  draw(basis, items, { showDim, sky, bodies, milky, lines = true, targetId = null, time = 0, safeTop = 150, safeBottom = 230, centerY, starLimit = null, naturalTargetName = null, quietTarget = false, below = null, belowSats = null, daySats = null, belowStarLimit = 6.5, ownedTarget = false, sunEl = -90, ghosts = null, weather = null, newFind = false, rising = null, landscape = false, lockedOn = null, planes = null, planeHit = null, planeTrail = null, naturalTarget = null, fossil = null, ufo = null, secrets = null } = {}) {
+  draw(basis, items, { showDim, sky, bodies, milky, lines = true, targetId = null, time = 0, safeTop = 150, safeBottom = 230, centerY, starLimit = null, naturalTargetName = null, quietTarget = false, below = null, belowSats = null, daySats = null, deep = null, belowStarLimit = 6.5, ownedTarget = false, sunEl = -90, ghosts = null, weather = null, newFind = false, rising = null, landscape = false, lockedOn = null, planes = null, planeHit = null, planeTrail = null, naturalTarget = null, fossil = null, ufo = null, secrets = null } = {}) {
     this.basis = basis;
     this.safeTop = Math.max(12, Math.min(safeTop, this.h * 0.45));
     this.safeBottom = Math.max(12, Math.min(safeBottom, this.h - this.safeTop - 100));
@@ -1275,6 +1294,7 @@ export class SkyView {
     this.drawBackground();
     if ((this.dayF ?? 0) < 0.2 && !this.camera) this.drawMilkyWay(milky); // no Milky Way in camera view
     if (sky && (this.dayF ?? 0) < 0.6) this.drawStars(sky, { lines: lines && this.dayF < 0.2, time: this.reducedMotion ? 0 : time, starLimit });
+    if (deep?.length && (this.dayF ?? 0) < 0.2) this.drawDeep(deep);
     if (weather && !this.camera) this.drawWeather(weather, this.reducedMotion ? 0 : time); // the camera shows the real clouds
     if (bodies) this.drawBodies(bodies);
     if (ghosts?.length) this.drawGhosts(ghosts);

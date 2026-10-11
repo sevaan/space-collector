@@ -3,7 +3,7 @@
 // group (or the date earned) along the bottom, one icon in the middle. Milestones get gold foil, the rarest holo
 // (css/ui.css .patch--gold / .patch--holo). Shared by Explore (the earning moment, its toast) and Collection (the wall).
 
-import { CON_BY_ID } from './constellations.js?v=0.1.485';
+import { CON_BY_ID } from './constellations.js?v=0.1.487';
 
 export const GROUPS = {
   collect: { c: '#14284a', t: 'Collection' }, rarity: { c: '#3a2259', t: 'Rarity' }, rocket: { c: '#5a2a1a', t: 'Rockets' },
@@ -21,7 +21,7 @@ const GROUP_OF = {
   history: 'race oldtimer sputnik coldwar decades brandnew',
   fleet: 'starlink starlink10 starlink50 fleets',
   planet: 'moon mars saturn wanderers',
-  con: 'stars10 cons5 zodiac cons25 cons44',
+  con: 'stars10 deep3 deep10 cons5 zodiac cons25 cons44',
   sky: 'zenith horizon compass faint brilliant close far roadtrip',
   time: 'twilight owl dawn marathon double hattrick months3 months12 streak4 streak12 anniversary',
 };
@@ -33,7 +33,7 @@ const GLYPH = {
   first: 'star', legend: 'star5', shiny: 'spark', shiny5: 'spark', stage: 'stage', stages25: 'stage', junk: 'debris',
   station: 'station', stations: 'station', nations: 'globe', diplomat: 'globe', race: 'versus', sputnik: 'sputnik',
   oldtimer: 'sputnik', starlink: 'train', starlink10: 'train', starlink50: 'train', fleets: 'anchor', moon: 'moon', mars: 'mars',
-  saturn: 'saturn', wanderers: 'saturn', stars10: 'con', constellation: 'con', cons5: 'con', cons25: 'con', cons44: 'con', zenith: 'zenith',
+  saturn: 'saturn', wanderers: 'saturn', stars10: 'con', deep3: 'con', deep10: 'con', constellation: 'con', cons5: 'con', cons25: 'con', cons44: 'con', zenith: 'zenith',
   compass: 'compass', faint: 'eye', owl: 'owl',
   // Picture icons for the patches that used to show a text code (playtest 2026-10-09: "M10", "3/3", "≤90"…)
   missions10: 'clipboard', missions50: 'clipboard', fullhouse: 'three', streak4: 'calendar', streak12: 'calendar', months3: 'calendar', months12: 'calendar',
@@ -42,7 +42,7 @@ const GLYPH = {
   brilliant: 'flare', spectrum: 'gems', europe: 'ring12', satellites50: 'sat',
 };
 // Finishes: gold foil for milestones, holo for the rarest few.
-const GOLD = new Set('con-solar hundred archivist curator gold gold3 starlink50 wanderers streak12 anniversary months12 cons5 legends5'.split(' '));
+const GOLD = new Set('deep10 con-solar hundred archivist curator gold gold3 starlink50 wanderers streak12 anniversary months12 cons5 legends5'.split(' '));
 const HOLO = new Set('legends25 shiny5 cons25 cons44 catalogue diplomat zodiac'.split(' '));
 export const finishOf = (a) => (HOLO.has(a.id) ? 'holo' : GOLD.has(a.id) || a.album ? 'gold' : '');
 
