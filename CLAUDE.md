@@ -452,3 +452,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 2026-10-11 · Volume halved again (Sevaan): sfx.js LEVEL 0.25, music.js LEVEL 0.15; the Settings sliders still scale on top.
 
 2026-10-11 · Daytime satellites (Sevaan): while the Sun is above −6°, bright sunlit satellites overhead (stdMag ≤ BELOW_SAT_MAG, from state.items) show like the far-side ones: halo icons (dark navy on the pale sky) and, in the circle, "HIDDEN BY DAYLIGHT · NOT COLLECTED YET / name / description / Over X · see it tonight at TIME (or not visible tonight)" in dark ink with a white glow. Not collectable. main.js daySats, sky.js drawDaySats; the shared pieces are sky.js drawHalo and ghostHit (drawBelow uses ghostHit too). The until-dark countdown hides while one is named, and now shows seconds ("6 h 5 min 54 s until dark"; only a new minute rolls).
+
+2026-10-11 · Daytime bad-weather chip shortened to "RAIN TONIGHT · CLEAR THU" (no "Not tonight:" key, no "See the plan"; npChip skips an empty key) and made nearly solid by day (92%, lighter muted text). Sevaan: "Not tonight: Rain all n… · See the …" wasn’t readable.

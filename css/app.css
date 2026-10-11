@@ -244,7 +244,8 @@ body.night #t-art { border-color:var(--rule); }
 #nextpass .np-n { flex:0 1 auto; min-width:0; overflow:hidden; text-overflow:ellipsis; color:var(--gold); font-weight:700; letter-spacing:.06em; }
 @media (max-width:360px) { #nextpass .np-k { display:none; } #nextpass .np-k, #nextpass .np-n, #nextpass .np-m { letter-spacing:.06em; } } /* small phones: name and time matter most */
 body:has(#event-banner:not([hidden])) #nextpass { top:calc(var(--safe-top) + 152px); } /* below a meteor-shower banner */
-body.day #nextpass { background:color-mix(in srgb,var(--bg) 70%,transparent); }
+body.day #nextpass { background:color-mix(in srgb,var(--bg) 92%,transparent); } /* nearly solid by day: grey text on see-through glass was unreadable over clouds (2026-10-11) */
+body.day #nextpass .np-k, body.day #nextpass .np-m { color:rgba(238,243,255,.82); }
 .t-row.tappable { cursor:pointer; }
 .t-row .t-acts { display:flex; gap:6px; align-self:center; }
 .t-row .ic { width:36px; height:36px; padding:0; display:grid; place-items:center; border-radius:50%; border:1px solid var(--edge-soft); background:transparent; color:var(--text); cursor:pointer; }
