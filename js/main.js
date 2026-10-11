@@ -1,47 +1,47 @@
-import * as Secrets from './secrets.js?v=0.1.480';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.480';
-import * as Ufo from './ufo.js?v=0.1.480';
-import * as Fossil from './fossil.js?v=0.1.480';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.480';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.480';
-import { toast, ticket, dropToast, toastPending, onTicketShown } from './toast.js?v=0.1.480';
-import { VERSION } from './version.js?v=0.1.480';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, overEarth, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.480';
-import { placeName } from './geo.js?v=0.1.480';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.480';
-import { conArt } from './con-art.js?v=0.1.480';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.480';
-import { CON_FIGURES } from './con-figures.js?v=0.1.480';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.480';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.480';
-import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.480';
-import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.480';
-import { conList } from './constellations.js?v=0.1.480';
-import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.480';
-import { SkyView, shortName } from './sky.js?v=0.1.480';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.480';
-import { isPlus, setPlusForTesting, onPlus, PLUS_PERKS } from './plus.js?v=0.1.480';
-import { isNative, getPosition } from './native.js?v=0.1.480';
-import { initAccount, onAccount, account, signInGoogle, sendEmailLink, completeEmailLink, signOut, syncNow, pushSighting } from './account.js?v=0.1.480';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.480';
-import { cardArt } from './art.js?v=0.1.480';
-import { renderCard, cardLevel, artImage, lockedArt, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.480';
-import { applyBack } from './card-backs.js?v=0.1.480';
-import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.480';
-import { audioCtx } from './audio-ctx.js?v=0.1.480';
-import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume } from './music.js?v=0.1.480';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.480';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.480';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.480';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.480';
-import { TIER_INFO } from './rarity.js?v=0.1.480';
-import { SETS, albumList } from './sets.js?v=0.1.480';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.480';
-import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.480';
-import { shareCardEl } from './share-card.js?v=0.1.480';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.480';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.480';
-import { addStarfield } from './starfield.js?v=0.1.480';
+import * as Secrets from './secrets.js?v=0.1.482';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.482';
+import * as Ufo from './ufo.js?v=0.1.482';
+import * as Fossil from './fossil.js?v=0.1.482';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.482';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.482';
+import { toast, ticket, dropToast, toastPending, onTicketShown } from './toast.js?v=0.1.482';
+import { VERSION } from './version.js?v=0.1.482';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, overEarth, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.482';
+import { placeName } from './geo.js?v=0.1.482';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.482';
+import { conArt } from './con-art.js?v=0.1.482';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.482';
+import { CON_FIGURES } from './con-figures.js?v=0.1.482';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.482';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.482';
+import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.482';
+import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.482';
+import { conList } from './constellations.js?v=0.1.482';
+import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.482';
+import { SkyView, shortName } from './sky.js?v=0.1.482';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.482';
+import { isPlus, setPlusForTesting, onPlus, PLUS_PERKS } from './plus.js?v=0.1.482';
+import { isNative, getPosition } from './native.js?v=0.1.482';
+import { initAccount, onAccount, account, signInGoogle, sendEmailLink, completeEmailLink, signOut, syncNow, pushSighting } from './account.js?v=0.1.482';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.482';
+import { cardArt } from './art.js?v=0.1.482';
+import { renderCard, cardLevel, artImage, lockedArt, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.482';
+import { applyBack } from './card-backs.js?v=0.1.482';
+import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.482';
+import { audioCtx } from './audio-ctx.js?v=0.1.482';
+import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume } from './music.js?v=0.1.482';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.482';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.482';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.482';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.482';
+import { TIER_INFO } from './rarity.js?v=0.1.482';
+import { SETS, albumList } from './sets.js?v=0.1.482';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.482';
+import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.482';
+import { shareCardEl } from './share-card.js?v=0.1.482';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.482';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.482';
+import { addStarfield } from './starfield.js?v=0.1.482';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -762,6 +762,22 @@ function refreshOwned() {
 }
 function ownsCard(o) { refreshOwned(); return ownedKeys.has(cardKeyFor(o)); }
 // New to you: a card you don't have yet, or a fleet launch you haven't stamped.
+// Free plan: 5 new star cards a night (2026-10-11, design/plans.html). Stars come back every night, so "tomorrow" is
+// fair; satellites, debris, planets, the Moon and Sun, secrets are never limited. Your first night has no limit, and
+// seeing a star you already own never counts. Plus removes it.
+const STAR_NIGHT_LIMIT = 5;
+function newStarsTonight() {
+  const lon = state.observer.lon ?? 0, tonight = String(nightKey(now().getTime(), lon)), first = new Map();
+  for (const s of state.sightings) if (!s.sim) { const t = first.get(s.cardKey); if (t == null || s.time < t) first.set(s.cardKey, s.time); }
+  let stars = 0, before = false;
+  for (const [k, t] of first) { const tn = String(nightKey(t, lon)) === tonight; if (!tn) before = true; else if (String(k).startsWith('star:')) stars++; }
+  return { stars, firstNight: !before };
+}
+function starLimitHit(o) {
+  if (o?.natural !== 'star' || isPlus() || !isNewFind(o)) return false;
+  const { stars, firstNight } = newStarsTonight();
+  return !firstNight && stars >= STAR_NIGHT_LIMIT;
+}
 function isNewFind(o) {
   refreshOwned();
   const stamp = stampKeyFor(o);
@@ -834,7 +850,11 @@ function renderTarget(target, d) {
       $('d-switch').hidden = !sw; $('d-switch').textContent = sw;
       const quiet = isQuiet(o) && o.id !== state.tourCatchId; // the tour's first catch is often a (quiet) star: always say what to do (playtest 2026-10-09)
       $('d-cta').hidden = quiet; disc.classList.toggle('quiet', quiet); disc.classList.remove('owned'); $('d-hit').setAttribute('aria-label', 'Collect this object');
-      $('d-cta').textContent = 'Tap to collect'; $('d-sub').hidden = true;
+      $('d-cta').textContent = 'Tap to collect'; $('d-sub').hidden = true; disc.classList.remove('limit');
+      if (starLimitHit(o)) { // a quiet line, no pop-up: the star is named, and it'll be there tomorrow
+        disc.classList.add('limit'); disc.classList.remove('quiet'); $('d-cta').hidden = false; $('d-cta').textContent = 'Plus: no nightly limit ›';
+        $('d-sub').hidden = false; $('d-sub').textContent = `${STAR_NIGHT_LIMIT} new stars tonight · it'll be here tomorrow`;
+      }
     } else {
       disc.hidden = true; guide.hidden = false;
       setGuide(guide, label(o), turnHint(l));
@@ -881,6 +901,7 @@ $('d-hit').addEventListener('click', () => {
   const target = state.activeTarget;
   if (!target || state.captureBusy) return;
   if ($('discover').classList.contains('owned')) return viewOwned(target, $('d-cta').getBoundingClientRect());
+  if (starLimitHit(target.obj)) { capture(target.obj); return; } // over tonight's free star limit: no collect sound
   sfx('collect');
   capture(target.obj);
 });
@@ -893,7 +914,7 @@ async function viewOwned(target, from) {
   }
   showViewCard(o, from, counted);
 }
-$('d-cta').addEventListener('click', () => $('d-hit').click());
+$('d-cta').addEventListener('click', (e) => { if ($('discover').classList.contains('limit')) { e.stopPropagation(); openPlus('stars'); return; } $('d-hit').click(); });
 $('d-switch').addEventListener('click', () => $('t-switch').click());
 
 $('t-switch').addEventListener('click', () => {
@@ -1057,6 +1078,7 @@ async function capture(obj) {
   const aligned = l && dot(enuFromAzEl(l.az, l.el), basis.back) > Math.cos(sky.reticleDeg * RAD);
   if (!l || !canCapture({ visible: l.visible, aligned, practice: state.captureAny, allowAny: state.captureAny })) { toast('Line up the object while it is visible to capture it.'); return; }
   if (obj.id === state.tourCatchId && !isNewFind(obj)) { tourReveal(obj); return; } // tour replay: the full reveal, nothing logged
+  if (starLimitHit(obj)) { toast(`That's ${STAR_NIGHT_LIMIT} new stars tonight. ${label(obj)} will be here tomorrow.`, 3200); return; }
   if (collectedThisPass(obj, d)) { showViewCard(obj, null, false); return; }
   if (await recordSighting(obj, d, l)) showCaptureCard(obj);
 }
@@ -2077,7 +2099,7 @@ function renderPlus() {
   $('plus-buy').hidden = on;
 }
 function openPlus(why) {
-  const first = { alerts: 'Pass alerts', binoculars: 'Binocular mode' }[why];
+  const first = { alerts: 'Pass alerts', binoculars: 'Binocular mode', stars: 'Unlimited stars' }[why];
   const perks = first ? [...PLUS_PERKS.filter((p) => p.name === first), ...PLUS_PERKS.filter((p) => p.name !== first)] : PLUS_PERKS;
   $('plus-lead').textContent = isPlus() ? 'You have Plus. Thank you! Here\'s what it includes.'
     : first ? `${first} is part of Space Collector Plus. The whole sky stays free: every card, patch and mission.` : 'The whole sky stays free: every card, patch and mission. Plus adds tools for planning and a few nice extras.';
