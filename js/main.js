@@ -1,47 +1,47 @@
-import * as Secrets from './secrets.js?v=0.1.476';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.476';
-import * as Ufo from './ufo.js?v=0.1.476';
-import * as Fossil from './fossil.js?v=0.1.476';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.476';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.476';
-import { toast, ticket, dropToast, toastPending, onTicketShown } from './toast.js?v=0.1.476';
-import { VERSION } from './version.js?v=0.1.476';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, overEarth, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.476';
-import { placeName } from './geo.js?v=0.1.476';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.476';
-import { conArt } from './con-art.js?v=0.1.476';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.476';
-import { CON_FIGURES } from './con-figures.js?v=0.1.476';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.476';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.476';
-import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.476';
-import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.476';
-import { conList } from './constellations.js?v=0.1.476';
-import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.476';
-import { SkyView, shortName } from './sky.js?v=0.1.476';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.476';
-import { isPlus, setPlusForTesting, onPlus, PLUS_PERKS } from './plus.js?v=0.1.476';
-import { isNative, getPosition } from './native.js?v=0.1.476';
-import { initAccount, onAccount, account, signInGoogle, sendEmailLink, completeEmailLink, signOut, syncNow, pushSighting } from './account.js?v=0.1.476';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.476';
-import { cardArt } from './art.js?v=0.1.476';
-import { renderCard, cardLevel, artImage, lockedArt, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.476';
-import { applyBack } from './card-backs.js?v=0.1.476';
-import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.476';
-import { audioCtx } from './audio-ctx.js?v=0.1.476';
-import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume } from './music.js?v=0.1.476';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.476';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.476';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.476';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.476';
-import { TIER_INFO } from './rarity.js?v=0.1.476';
-import { SETS, albumList } from './sets.js?v=0.1.476';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.476';
-import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.476';
-import { shareCardEl } from './share-card.js?v=0.1.476';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.476';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.476';
-import { addStarfield } from './starfield.js?v=0.1.476';
+import * as Secrets from './secrets.js?v=0.1.479';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.479';
+import * as Ufo from './ufo.js?v=0.1.479';
+import * as Fossil from './fossil.js?v=0.1.479';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.479';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.479';
+import { toast, ticket, dropToast, toastPending, onTicketShown } from './toast.js?v=0.1.479';
+import { VERSION } from './version.js?v=0.1.479';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, overEarth, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.479';
+import { placeName } from './geo.js?v=0.1.479';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.479';
+import { conArt } from './con-art.js?v=0.1.479';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.479';
+import { CON_FIGURES } from './con-figures.js?v=0.1.479';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.479';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.479';
+import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.479';
+import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.479';
+import { conList } from './constellations.js?v=0.1.479';
+import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.479';
+import { SkyView, shortName } from './sky.js?v=0.1.479';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.479';
+import { isPlus, setPlusForTesting, onPlus, PLUS_PERKS } from './plus.js?v=0.1.479';
+import { isNative, getPosition } from './native.js?v=0.1.479';
+import { initAccount, onAccount, account, signInGoogle, sendEmailLink, completeEmailLink, signOut, syncNow, pushSighting } from './account.js?v=0.1.479';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.479';
+import { cardArt } from './art.js?v=0.1.479';
+import { renderCard, cardLevel, artImage, lockedArt, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.479';
+import { applyBack } from './card-backs.js?v=0.1.479';
+import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.479';
+import { audioCtx } from './audio-ctx.js?v=0.1.479';
+import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume } from './music.js?v=0.1.479';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.479';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.479';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.479';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.479';
+import { TIER_INFO } from './rarity.js?v=0.1.479';
+import { SETS, albumList } from './sets.js?v=0.1.479';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.479';
+import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.479';
+import { shareCardEl } from './share-card.js?v=0.1.479';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.479';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.479';
+import { addStarfield } from './starfield.js?v=0.1.479';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -330,7 +330,8 @@ function updateStatus(f) {
   const fresh = state.items.filter(a => a.look.visible && isNewFind(a.obj)).length;
   $('new-count').textContent = fresh; $('radar-new').hidden = !fresh;
   if (!bannerKey.startsWith('New build')) {
-    if (state.timeOffsetMs) showBanner(`Sky at ${now().toLocaleString([], { weekday: 'short', hour: 'numeric', minute: '2-digit' })} · back to now`, backToNow); // one short line (2026-10-08)
+    if (state.timeOffsetMs && $('peak-toggle').classList.contains('on')) showBanner(''); // the testing ⏱ button is the way back
+    else if (state.timeOffsetMs) showBanner(`Sky at ${now().toLocaleString([], { weekday: 'short', hour: 'numeric', minute: '2-digit' })} · back to now`, backToNow); // one short line (2026-10-08)
     else if (state.needsMotionTap) showBanner('Tap anywhere to line the sky up with your phone.');
     // (compass trouble is the figure-8 toast in checkCompass, not a standing message)
     else if (pointing.source === 'relative') showBanner('Check your heading against a known landmark. Adjust the compass in settings.', openDebug);
@@ -1869,7 +1870,7 @@ $('location-form').addEventListener('submit', e => {
   state.model?.reset(); state.rising?.reset(); state.trails.clear(); cancelPassSearch(); renderLocation(); refreshAbove();
 });
 document.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', () => closePanel(b.dataset.close)));
-onRevealDismiss(() => { closePanel('reveal'); duckMusic(false); });
+onRevealDismiss(() => { closePanel('reveal'); duckMusic(false); setTimeout(maybeAskSignIn, 700); }); // the sign-in ask waits for the reveal to close
 document.addEventListener('keydown', e => {
   if (!activePanel) return;
   if (e.key === 'Escape') { const sh = document.querySelector('.set-sheet.in'); if (sh) { closeSheet(sh); return; } closePanel(); return; } // an open Settings sheet first (QA 2026-10-08)
@@ -1889,6 +1890,23 @@ document.querySelectorAll('[data-time]').forEach((b) => b.addEventListener('clic
   state.followPreview = false; state.preview = false;
   afterTimeJump();
 }));
+
+// TEMPORARY testing button (2026-10-11, Sevaan): ⏱ in the header jumps to tonight's busiest moment (the peak of the
+// Tonight curve after dusk); tapping it again comes back to now. While it's on, the "Sky at … · back to now"
+// standing message is hidden (it got in the way). Remove before launch.
+function peakTime() {
+  const T = state.tonight; if (!T?.curve?.length) return null;
+  const from = Math.max(T.dusk ?? 0, Date.now());
+  const best = T.curve.filter(([t]) => t >= from).reduce((a, c) => (c[1] > a[1] ? c : a), [0, -1]);
+  return best[1] > 0 ? best[0] : null;
+}
+function renderPeakToggle() { const on = !!state.timeOffsetMs; $('peak-toggle').classList.toggle('on', on); $('peak-toggle').setAttribute('aria-pressed', String(on)); }
+$('peak-toggle').addEventListener('click', () => {
+  cancelPassSearch(); state.followPreview = false; state.preview = false;
+  if (state.timeOffsetMs) state.timeOffsetMs = 0;
+  else { const t = peakTime(); if (!t) { toast('Tonight\'s plan isn\'t ready yet.', 2000); return; } state.timeOffsetMs = t - Date.now(); toast(`Busiest moment: ${fmtTime(t)}`, 1800); }
+  afterTimeJump(); renderPeakToggle(); showBanner('');
+});
 
 let passWorker = null, passRequest = 0, passBusy = false, passTimer = null;
 function cancelPassSearch() { passRequest++; passWorker?.terminate(); passWorker=null; passBusy=false; clearTimeout(passTimer); $('btn-next-pass').disabled=false; }
@@ -1943,6 +1961,7 @@ async function enableMotion() {
 }
 
 function afterTimeJump() {
+  renderPeakToggle(); // keep the TEMP ⏱ button in step with any clock change
   state.model?.reset();
   state.rising?.reset();
   state.trails.clear();
@@ -2274,7 +2293,7 @@ function firstTarget() {
 function radarTip(delay = 3000) {
   try { if (localStorage.getItem('radarTip')) return; } catch {}
   setTimeout(() => {
-    if (activePanel || !$('reveal').hidden || document.querySelector('.patch-moment, .patch-coins, #toasts .ticket.in') || collectionOpen) { radarTip(1500); return; } // one thing at a time (playtest 2026-10-09)
+    if (activePanel || !$('reveal').hidden || !$('auth-sheet').hidden || document.querySelector('.patch-moment, .patch-coins, #toasts .ticket.in') || collectionOpen) { radarTip(1500); return; } // one thing at a time (playtest 2026-10-09)
     try { localStorage.setItem('radarTip', '1'); } catch {}
     const r = $('radar').getBoundingClientRect(), tip = document.createElement('button');
     tip.type = 'button'; tip.className = 'radar-tip';
@@ -2382,7 +2401,7 @@ function obFinish(caught) {
     $('ob-remind').hidden = !next; $('ob-remind').firstElementChild.textContent = next ? `Remind me ${day(next.t)}` : 'Remind me';
     $('ob-remind').onclick = () => { if (!next) return; const url = URL.createObjectURL(new Blob([passIcs({ title: 'Clear night for Space Collector', start: next.t, end: next.t + 3600e3, description: 'The forecast says clear: open Space Collector and look up. https://sevaan.github.io/space-collector/' })], { type: 'text/calendar' })); const a = document.createElement('a'); a.href = url; a.download = 'space-collector-clear-night.ics'; a.click(); setTimeout(() => URL.revokeObjectURL(url), 5000); toast('Added to your calendar.', 2500); };
     $('ob-explore').firstElementChild.textContent = 'Explore the sky anyway';
-    $('ob-explore').onclick = () => { ob.hidden = true; $('ob-done').hidden = true; radarTip(); };
+    $('ob-explore').onclick = () => { ob.hidden = true; $('ob-done').hidden = true; setTimeout(maybeAskSignIn, 600); radarTip(); };
     $('ob-done').hidden = false;
     return;
   } else {
@@ -2403,7 +2422,7 @@ function obFinish(caught) {
   $('ob-remind').hidden = !remindable; if (remindable) $('ob-remind').firstElementChild.textContent = `Remind me at ${fmtTime(best2.start - 10 * 60e3).replace(/\s?[AP]\.?M\.?$/i, '')}`;
   $('ob-remind').onclick = () => { if (remindable) remindPass(best2); };
   $('ob-explore').firstElementChild.textContent = 'Explore the sky';
-  $('ob-explore').onclick = () => { ob.hidden = true; $('ob-done').hidden = true; radarTip(); };
+  $('ob-explore').onclick = () => { ob.hidden = true; $('ob-done').hidden = true; setTimeout(maybeAskSignIn, 600); radarTip(); };
   $('ob-done').hidden = false;
 }
 
@@ -2452,7 +2471,7 @@ let colLoaded = false;
 function loadCollection() { if (!colFrame.src) { colLoaded = false; colFrame.src = 'cards.html?embed=1'; } }
 function collectionStale() { if (!colFrame.src) return; if (collectionOpen) collectionDirty = true; else { colLoaded = false; colFrame.src = 'cards.html?embed=1'; } }
 function sendInsets() {
-  const probe = document.createElement('div'); probe.style.cssText = 'position:fixed;visibility:hidden;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)';
+  const probe = document.createElement('div'); probe.style.cssText = 'position:fixed;visibility:hidden;padding-top:var(--safe-top);padding-bottom:var(--safe-bottom)'; // the same insets the page uses (lower when standalone)
   document.body.append(probe); const cs = getComputedStyle(probe), top = parseFloat(cs.paddingTop) || 0, bottom = parseFloat(cs.paddingBottom) || 0; probe.remove();
   colFrame.contentWindow?.postMessage({ sc: 'insets', top, bottom }, location.origin);
 }
@@ -2480,6 +2499,7 @@ window.addEventListener('message', (e) => {
   if (e.origin !== location.origin || !e.data?.sc) return;
   if (e.data.sc === 'ready') { colLoaded = true; if (collectionOpen) colFrame.classList.add('open'); }
   if (e.data.sc === 'explore') { closeCollection(); if (e.data.more) openDebug(); }
+  if (e.data.sc === 'signin') openAuth('collection'); // the Collection's "not backed up" line
   if (e.data.sc === 'remind') { const p = state.tonight?.passes?.filter((x) => x.id === e.data.id && x.end > now().getTime()).sort((a, b) => a.start - b.start)[0], obj = p && state.byId.get(p.id); if (obj) remindPass({ ...p, obj }); } // an "Up tonight" slot in Collection
 });
 window.addEventListener('resize', () => { if (colFrame.src) sendInsets(); });
@@ -2597,6 +2617,7 @@ async function boot() {
   { const sv = loadSavedLocation(); state.locationStatus = sv?.manual ? 'manual' : sv ? 'saved' : 'example'; } renderLocation();
   state.frame = frame(now(), state.observer); renderStartHand(); 
   $('btn-start').firstElementChild.textContent='Swipe away'; $('btn-start').disabled=false; wcReady = true; if (wcWantFlip) welcomeFlip();
+  $('wc-signin').hidden = !!account(); // "Already collecting? Sign in" under the welcome card
   const params=new URLSearchParams(location.search);
   if(params.has('resume')) {
     try {
@@ -2776,6 +2797,75 @@ $('acct-paste-form').addEventListener('submit', async (e) => {
 });
 $('acct-sync').addEventListener('click', async () => { acctBusy(true); try { const r = await syncNow(); renderAccount(); toast(r && (r.added || r.removed || r.uploaded) ? `Synced: ${r.uploaded} up, ${r.added} down${r.removed ? `, ${r.removed} removed` : ''}.` : 'Everything is already backed up.', 2600); } catch { toast('Couldn\'t sync right now. It will try again next time.', 3000); } acctBusy(false); });
 $('acct-signout').addEventListener('click', async () => { acctBusy(true); try { await signOut(); } catch {} renderAccount({ msg: '' }); acctBusy(false); toast('Signed out. Your collection stays on this phone.', 2600); });
+// ---------- sign-in moments (2026-10-11, design/auth-moments.html) ----------
+// One sheet (#auth-sheet), worded for what opened it: the welcome card's "Already collecting?" link (restore), the
+// first card's reveal closing (first), a first night of 3+ cards (night), the Collection's "not backed up" line.
+// Every one but Plus has "Not now". The Apple button waits for Sign in with Apple (paid developer account).
+const APPLE_SIGNIN = false;
+const realSightings = () => state.sightings.filter((s) => !s.sim);
+const cardCount = () => new Set(realSightings().map((s) => s.cardKey)).size;
+const AUTH_COPY = {
+  restore: () => ({ eyebrow: 'Welcome back', title: 'Pick up where you left off', body: 'Sign in with the account you used before. Your cards, patches and rank come back, and the tour is skipped.', later: 'Back' }),
+  first: () => ({ eyebrow: 'Your first card', title: 'Keep your cards safe', body: 'Right now your collection lives only on this phone. Sign in and it\'s backed up, and it follows you to any phone.', later: 'Not now' }),
+  night: () => ({ eyebrow: `${cardCount()} cards and counting`, title: 'Keep your cards safe', body: 'Your collection lives only on this phone. Sign in and it\'s backed up, and it follows you to any phone.', later: 'Not now' }),
+  collection: () => ({ eyebrow: `${cardCount()} card${cardCount() === 1 ? '' : 's'} · not backed up`, title: 'Keep your cards safe', body: 'Sign in and your collection is backed up, and it follows you to any phone.', later: 'Not now' }),
+};
+let authMode = null;
+function authMsg(t) { $('auth-msg').textContent = t || ''; }
+function openAuth(mode) {
+  if (account()) return;
+  authMode = mode; const c = AUTH_COPY[mode]();
+  $('auth-eyebrow').textContent = c.eyebrow; $('auth-title').textContent = c.title; $('auth-body').textContent = c.body; $('auth-later').textContent = c.later;
+  $('auth-apple').hidden = !APPLE_SIGNIN; $('auth-email-form').hidden = true; $('auth-email-open').hidden = false;
+  $('auth-paste-form').hidden = !standaloneIOS() || !localStorage.getItem('emailForSignIn');
+  authMsg(''); openSheet('auth-sheet');
+}
+const authBusy = (on) => document.querySelectorAll('#auth-sheet button').forEach((b) => { b.disabled = on; });
+async function authDone() {
+  closeSheet($('auth-sheet')); renderAccount();
+  if (authMode !== 'restore') { toast('Signed in. Your collection is backing up.', 3000); return; }
+  // Restore: pull the collection down, then skip the tour if there was anything to bring back.
+  try { await syncNow(); } catch {}
+  await loadSightings(); refreshOwned();
+  const n = cardCount();
+  if (!n) { toast('Signed in. There\'s nothing to restore yet, so let\'s start fresh.', 3500); return; }
+  writePref('started', true); collectionStale(); quickStart();
+  toast(`Welcome back. ${n.toLocaleString()} card${n === 1 ? '' : 's'} restored.`, 3500);
+}
+$('auth-google').addEventListener('click', async () => {
+  authBusy(true); authMsg('');
+  try { await signInGoogle(); await authDone(); }
+  catch (e) { authMsg(/popup-closed|cancelled/.test(e?.code ?? '') ? '' : standaloneIOS() && !isNative() ? 'Google sign-in needs Safari here. Try the email link instead.' : /No credentials available/i.test(e?.message ?? '') ? 'Add a Google account to this phone first (Settings → Accounts), or use the email link.' : `Couldn't sign in (${e?.code ?? e?.message ?? 'error'}).`); }
+  authBusy(false);
+});
+$('auth-email-open').addEventListener('click', () => { $('auth-email-open').hidden = true; $('auth-email-form').hidden = false; $('auth-email').focus(); });
+$('auth-email-form').addEventListener('submit', async (e) => {
+  e.preventDefault(); authBusy(true);
+  const email = $('auth-email').value.trim();
+  try { await sendEmailLink(email); authMsg(`Check ${email} for a sign-in link.${standaloneIOS() ? ' If it opens in Safari, copy the address and paste it below.' : ''}`); $('auth-paste-form').hidden = !standaloneIOS(); }
+  catch (er) { authMsg(`Couldn't send the link (${er?.code ?? er?.message ?? 'error'}).`); }
+  authBusy(false);
+});
+$('auth-paste-form').addEventListener('submit', async (e) => {
+  e.preventDefault(); authBusy(true);
+  try { await completeEmailLink($('auth-paste').value.trim()); await authDone(); }
+  catch (er) { authMsg(er?.message === 'need-email' ? 'Enter your email above first, then paste the link.' : `That link didn't work (${er?.code ?? er?.message}).`); }
+  authBusy(false);
+});
+$('auth-later').addEventListener('click', () => closeSheet($('auth-sheet')));
+$('wc-signin').addEventListener('click', (e) => { e.stopPropagation(); openAuth('restore'); });
+// The two asks: once after the first card, once more after a first night of 3+ cards, then never.
+function maybeAskSignIn() {
+  if (account() || !$('onboard').hidden || !$('reveal').hidden || activePanel || collectionOpen || !$('auth-sheet').hidden) return;
+  let asked = 0; try { asked = Number(localStorage.getItem('authAsked') ?? 0); } catch {}
+  const n = cardCount();
+  const tonight = String(nightKey(now().getTime(), state.observer.lon ?? 0));
+  const tonightCards = new Set(realSightings().filter((s) => String(nightKey(s.time, s.lon ?? 0)) === tonight).map((s) => s.cardKey)).size;
+  const mode = asked === 0 && n >= 1 ? 'first' : asked === 1 && tonightCards >= 3 ? 'night' : null;
+  if (!mode) return;
+  try { localStorage.setItem('authAsked', String(asked + 1)); } catch {}
+  openAuth(mode);
+}
 $('set-hl-open').addEventListener('click', () => openSheet('set-hl-sheet'));
 document.querySelectorAll('.set-sheet').forEach((sh) => sh.addEventListener('click', (e) => { if (e.target === sh || e.target.closest('[data-sheet-close]')) closeSheet(sh); }));
 $('retry-location').addEventListener('click', () => closeSheet($('set-loc-sheet')));

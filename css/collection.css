@@ -1,4 +1,5 @@
 :root { color-scheme: dark; --bg: #080f18; --panel: #111d29; --text: #f3ecd4; --muted: #bdbea9; --line: #2a3a48; --accent: #fa8127; /* card palette (2026-10-05): orange accent, cream ink; the old mint #99d0cc is gone */ --safe-top: env(safe-area-inset-top, 0px); --safe-bottom: env(safe-area-inset-bottom, 0px); }
+html.standalone { --safe-bottom: max(6px, calc(env(safe-area-inset-bottom, 0px) - 20px)); } /* no Safari bars: sit lower (2026-10-11) */
 :root[data-theme="night"] { --bg: #090303; --panel: #160707; --text: #b85e56; --muted: #a04d48; --line: #411917; --accent: #b45b53; }
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.45 Inter, system-ui, sans-serif; }
@@ -388,3 +389,9 @@ body.albums-view .album__count { flex: none; font-size: 14px; }
 /* "Up tonight" slots in a small collection (playtest 2026-10-09): uncollected tiles with when and where. */
 .up-next__tile { opacity: .82; border-style: dashed !important; position: relative; }
 .up-next__when { position: absolute; left: 6px; right: 6px; top: 34%; z-index: 3; padding: 4px 6px 3px; border-radius: 99px; background: #080f1bdd; border: 1px solid #fa812788; color: #fa8127; font: 500 10px/1 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .1em; text-transform: uppercase; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* "12 cards · not backed up · Sign in ›" (2026-10-11, design/auth-moments.html 3) */
+.backup-line { display:flex; align-items:center; gap:10px; width:100%; box-sizing:border-box; height:44px; margin:2px 0 16px; padding:0 14px; border-radius:12px; background:#0e1a29; border:1px solid rgba(250,129,39,.45); cursor:pointer;
+  font:500 15px/1 'SC Label', 'Barlow Condensed', sans-serif; letter-spacing:.1em; text-transform:uppercase; color:#fff2b3; }
+.backup-line[hidden] { display:none; }
+.backup-line svg { width:18px; height:18px; flex:none; color:#fa8127; }
+.backup-line b { margin-left:auto; font-weight:500; color:#fa8127; }

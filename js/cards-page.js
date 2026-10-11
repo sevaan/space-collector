@@ -1,23 +1,23 @@
-import { sfx } from './sfx.js?v=0.1.476';
-import { expandFacts } from './catalog-facts.js?v=0.1.476';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.476';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.476';
-import { ticket } from './toast.js?v=0.1.476';
-import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.476';
-import { cardArt } from './art.js?v=0.1.476';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.476';
-import { applyBack } from './card-backs.js?v=0.1.476';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.476';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.476';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.476';
-import { loadConstellations, conList } from './constellations.js?v=0.1.476';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.476';
-import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.476';
-import { shareCardEl } from './share-card.js?v=0.1.476';
-import { removeSighting } from './account.js?v=0.1.476';
-import { allSightings, deleteSighting } from './store.js?v=0.1.476';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.476';
-import { SECRET_PATCHES } from './secrets.js?v=0.1.476';
+import { sfx } from './sfx.js?v=0.1.479';
+import { expandFacts } from './catalog-facts.js?v=0.1.479';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.479';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.479';
+import { ticket } from './toast.js?v=0.1.479';
+import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.479';
+import { cardArt } from './art.js?v=0.1.479';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.479';
+import { applyBack } from './card-backs.js?v=0.1.479';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.479';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.479';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.479';
+import { loadConstellations, conList } from './constellations.js?v=0.1.479';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.479';
+import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.479';
+import { shareCardEl } from './share-card.js?v=0.1.479';
+import { removeSighting } from './account.js?v=0.1.479';
+import { allSightings, deleteSighting } from './store.js?v=0.1.479';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.479';
+import { SECRET_PATCHES } from './secrets.js?v=0.1.479';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -244,6 +244,7 @@ function render() {
   if (state.view === 'albums') { const caught = state.cards.filter(hasSightings).length; $('owned-count').textContent = caught.toLocaleString(); renderAlbums(); return; }
   const caught = state.cards.filter(hasSightings).length;
   $('owned-count').textContent = caught.toLocaleString();
+  renderBackupLine(caught);
   $('count').textContent = caught ? `${caught.toLocaleString()} ${caught === 1 ? 'story' : 'stories'} collected. Every one, a moment under the sky.` : 'Real objects. Remarkable stories. Yours to discover.';
   const ps = planStart(); state.planKeys = new Set(ps.keys());
   state.list = state.cards.filter(matches).sort((a, b) => {
@@ -619,6 +620,18 @@ try { sessionStorage.setItem('scBooted', '1'); } catch {} // the app is open: go
 
 // Inside the app shell (index.html #collection-frame, 2026-10-07): links back to Explore tell the shell instead of
 // navigating; the shell sends the safe-area insets (an iframe doesn't get them) and asks us to open a card.
+// "12 cards · not backed up · Sign in ›" under the heading until you sign in (2026-10-11, design/auth-moments.html 3).
+// Inside the app it asks Explore to open the sign-in sheet; on its own it goes to Settings.
+function renderBackupLine(caught) {
+  let signedIn = false; try { signedIn = !!JSON.parse(localStorage.getItem('acct')); } catch {}
+  const el = document.getElementById('backup-line'); if (!el) return;
+  el.hidden = signedIn || !caught;
+  if (!el.hidden) document.getElementById('backup-text').textContent = `${caught.toLocaleString()} card${caught === 1 ? '' : 's'} · not backed up`;
+}
+document.getElementById('backup-line')?.addEventListener('click', () => {
+  if (window.parent !== window) window.parent.postMessage({ sc: 'signin' }, location.origin); else location.href = 'index.html?resume=1&more=1';
+});
+window.addEventListener('storage', (e) => { if (e.key === 'acct') renderBackupLine(state.cards.filter(hasSightings).length); });
 const EMBED = window.parent !== window && new URLSearchParams(location.search).has('embed');
 if (EMBED) {
   document.documentElement.classList.add('embedded');
