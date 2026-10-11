@@ -1,42 +1,44 @@
-import * as Secrets from './secrets.js?v=0.1.449';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.449';
-import * as Ufo from './ufo.js?v=0.1.449';
-import * as Fossil from './fossil.js?v=0.1.449';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.449';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.449';
-import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.449';
-import { VERSION } from './version.js?v=0.1.449';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.449';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.449';
-import { conArt } from './con-art.js?v=0.1.449';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.449';
-import { CON_FIGURES } from './con-figures.js?v=0.1.449';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.449';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.449';
-import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.449';
-import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.449';
-import { conList } from './constellations.js?v=0.1.449';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.449';
-import { SkyView, shortName } from './sky.js?v=0.1.449';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.449';
-import { initAccount, onAccount, account, signInGoogle, sendEmailLink, completeEmailLink, signOut, syncNow, pushSighting } from './account.js?v=0.1.449';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.449';
-import { cardArt } from './art.js?v=0.1.449';
-import { renderCard, cardLevel, artImage, lockedArt, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.449';
-import { applyBack } from './card-backs.js?v=0.1.449';
-import { musicOn, startMusic, setMusic, duckMusic } from './music.js?v=0.1.449';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.449';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.449';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.449';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.449';
-import { TIER_INFO } from './rarity.js?v=0.1.449';
-import { SETS, albumList } from './sets.js?v=0.1.449';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.449';
-import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.449';
-import { shareCardEl } from './share-card.js?v=0.1.449';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.449';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.449';
-import { addStarfield } from './starfield.js?v=0.1.449';
+import * as Secrets from './secrets.js?v=0.1.452';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.452';
+import * as Ufo from './ufo.js?v=0.1.452';
+import * as Fossil from './fossil.js?v=0.1.452';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.452';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.452';
+import { toast, ticket, dropToast, toastPending, onTicketShown } from './toast.js?v=0.1.452';
+import { VERSION } from './version.js?v=0.1.452';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.452';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.452';
+import { conArt } from './con-art.js?v=0.1.452';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.452';
+import { CON_FIGURES } from './con-figures.js?v=0.1.452';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.452';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.452';
+import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.452';
+import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.452';
+import { conList } from './constellations.js?v=0.1.452';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.452';
+import { SkyView, shortName } from './sky.js?v=0.1.452';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.452';
+import { initAccount, onAccount, account, signInGoogle, sendEmailLink, completeEmailLink, signOut, syncNow, pushSighting } from './account.js?v=0.1.452';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.452';
+import { cardArt } from './art.js?v=0.1.452';
+import { renderCard, cardLevel, artImage, lockedArt, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.452';
+import { applyBack } from './card-backs.js?v=0.1.452';
+import { sfx, loadSfx } from './sfx.js?v=0.1.452';
+import { audioCtx } from './audio-ctx.js?v=0.1.452';
+import { musicOn, startMusic, setMusic, duckMusic } from './music.js?v=0.1.452';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.452';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.452';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.452';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.452';
+import { TIER_INFO } from './rarity.js?v=0.1.452';
+import { SETS, albumList } from './sets.js?v=0.1.452';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.452';
+import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.452';
+import { shareCardEl } from './share-card.js?v=0.1.452';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.452';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.452';
+import { addStarfield } from './starfield.js?v=0.1.452';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -157,28 +159,14 @@ applyTheme();
 
 // ---------- sound ----------
 
-let audio;
-function unlockAudio() {
-  if (!soundOn()) return;
-  try { audio ??= new (window.AudioContext || window.webkitAudioContext)(); audio.resume().catch(() => {}); } catch {}
-}
-// Making the AudioContext costs ~130 ms on a phone, which landed on the welcome card's flip (playtest 2026-10-09).
-// Make it (suspended) once the page is idle; a tap then only has to resume it.
-setTimeout(() => { if (!soundOn()) return; try { audio ??= new (window.AudioContext || window.webkitAudioContext)(); } catch {} }, 2500);
-function chirp(freqs = [660, 990], dur = 0.09) {
-  if (!audio || !soundOn()) return;
-  let t = audio.currentTime;
-  for (const f of freqs) {
-    const o = audio.createOscillator(), g = audio.createGain();
-    o.frequency.value = f; o.type = 'sine';
-    g.gain.setValueAtTime(0.0001, t);
-    g.gain.exponentialRampToValueAtTime(0.18, t + 0.01);
-    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-    o.connect(g).connect(audio.destination);
-    o.start(t); o.stop(t + dur + 0.02);
-    t += dur;
-  }
-}
+// Each toast's sound as it appears: missions and sky challenges, rank ups, constellation/album completions, or the
+// quiet toast tone for everything else.
+onTicketShown((t) => sfx(t.kind === 'rank' ? 'rankup' : t.kind === 'mission' && /COMPLETE/.test(t.eyebrow) ? 'mission' : /COMPLETE/.test(t.eyebrow ?? '') ? 'complete' : 'toast', { gain: t.kind === 'info' ? 0.7 : 1 }));
+// Sound: one shared context (js/audio-ctx.js) and the designed sound set (js/sfx.js, 2026-10-11).
+function unlockAudio() { if (soundOn()) { audioCtx(); loadSfx(); } }
+// Making the context costs ~130 ms on a phone (it landed on the welcome flip, playtest 2026-10-09): make it, suspended,
+// once the page is idle; a tap then only has to resume it.
+setTimeout(() => { if (soundOn()) audioCtx(); }, 2500);
 
 // ---------- wake lock ----------
 
@@ -443,8 +431,7 @@ function setGuide(el, name, hint) { const key = `${name}|${hint}`; if (el.datase
 // A soft tick when the circle locks onto a target (sound stands in for haptics on the web).
 function snapTick() {
   buzz(12); sky.lockPulseAt = performance.now(); // felt (Android) and seen: a ring pulses out from the circle
-  if (!audio || !soundOn()) return;
-  try { const t = audio.currentTime, o = audio.createOscillator(), g = audio.createGain(); o.type = 'sine'; o.frequency.value = 1760; g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.05, t + 0.004); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.045); o.connect(g).connect(audio.destination); o.start(t); o.stop(t + 0.06); } catch {}
+  sfx('lock', { gap: 260 }); // short, and never twice in a quarter second: waving the phone can lock on to several things (Sevaan)
 }
 let uiSafeTop = 202, uiSafeBottom = 320, uiCenterY = window.innerHeight / 2; // set from the first frame, so the circle never starts high and slides down (2026-10-07)
 let idleBasis = null, idleFlip = false;
@@ -888,6 +875,7 @@ $('d-hit').addEventListener('click', () => {
   const target = state.activeTarget;
   if (!target || state.captureBusy) return;
   if ($('discover').classList.contains('owned')) return viewOwned(target, $('d-cta').getBoundingClientRect());
+  sfx('collect');
   capture(target.obj);
 });
 async function viewOwned(target, from) {
@@ -2072,6 +2060,7 @@ const OB_ART = {
 // steps: [{ tier, title, sub: [left, right], art, text, yes, no, gold }]; shows steps[k] with the rest stacked under it.
 function obCard(steps, k) {
   const deck = $('ob-deck');
+  if (k > 0) sfx('step', { gain: 0.8 });
   [...$('ob-pips').children].forEach((p, i) => { p.className = i < k ? 'done' : i === k ? 'on' : ''; });
   const make = (s) => { const el = document.createElement('div'); el.className = `tc${s.gold ? ' gold' : ''}`; el.dataset.step = steps.indexOf(s);
     el.innerHTML = `<div class="in"><div class="bar"><span>Space Collector</span><span class="tier">◆ ${escapeHtml(s.tier)}</span></div><h3>${escapeHtml(s.title)}</h3><div class="sub"><span>${escapeHtml(s.sub[0])}</span><span>${escapeHtml(s.sub[1])}</span></div><div class="art">${s.art}</div><p>${escapeHtml(s.text)}</p><div class="acts">${s.no ? `<button class="no" type="button">${escapeHtml(s.no)}</button>` : ''}<button class="yes" type="button">${escapeHtml(s.yes)}</button></div></div><div class="shine"></div>`;
@@ -2449,7 +2438,7 @@ async function welcomeFlip() {
   if (!wcReady) { wcWantFlip = true; return; }
   wcFlipped = true;
   const holder = $('wc-holder'), back = wcCard.querySelector('.card__back');
-  holder.classList.remove('rattle'); $('wc-hint').classList.add('gone'); unlockAudio();
+  holder.classList.remove('rattle'); $('wc-hint').classList.add('gone'); unlockAudio(); sfx('welcome');
   const ms = matchMedia('(prefers-reduced-motion: reduce)').matches ? 1 : 900;
   wcCard.animate([
     { transform: 'perspective(1600px) rotateY(180deg) scale(1)', easing: 'cubic-bezier(.5,0,1,1)' },
@@ -2458,14 +2447,13 @@ async function welcomeFlip() {
   setTimeout(() => { back.style.opacity = ''; }, ms / 2); // edge-on: swap faces
   await new Promise((r) => setTimeout(r, ms));
   wcCard.getAnimations().forEach((a) => a.cancel()); wcCard.style.transform = '';
-  chirp([660, 990, 1320], 0.08);
   back.querySelector('.tap')?.remove(); // it's been revealed; from here a double tap flips it like any card
   attachFlip(wcCard, { onBack: applyBack });
   $('wc-hint').hidden = true; $('wc-after').hidden = false; $('start').classList.add('wc-open');
 }
 function welcomeGo(dx = 0, dy = -2, dt = 16) {
   if (!wcFlipped || $('btn-start').disabled) return;
-  $('btn-start').disabled = true;
+  $('btn-start').disabled = true; sfx('swipe');
   const ms = throwOff(wcCard, dx, dy, dt);
   setTimeout(() => {
     keepAwake(); navigator.storage?.persist?.().catch(() => {});
@@ -2538,10 +2526,6 @@ function earnPatch(a) {
   try { const d = JSON.parse(localStorage.getItem('patchDates') || '{}'); d[a.id] ??= Date.now(); localStorage.setItem('patchDates', JSON.stringify(d)); } catch {}
   patchQueue.push(a); setTimeout(pumpPatch, 1200);
 }
-function thud() {
-  if (!audio || !soundOn()) return;
-  try { const t = audio.currentTime, o = audio.createOscillator(), g = audio.createGain(); o.type = 'sine'; o.frequency.setValueAtTime(140, t); o.frequency.exponentialRampToValueAtTime(60, t + 0.18); g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.12, t + 0.01); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.25); o.connect(g).connect(audio.destination); o.start(t); o.stop(t + 0.3); } catch {}
-}
 function pumpPatch() {
   if (patchBusy || !patchQueue.length) return;
   if (!$('reveal').hidden || collectionOpen || activePanel || !$('ob-done').hidden) { setTimeout(pumpPatch, 700); return; } // not over the Tonight page either
@@ -2561,7 +2545,7 @@ function pumpPatch() {
   if (tb.length) el.style.bottom = `${Math.round(innerHeight - Math.min(...tb.map((r) => r.top)) + 12)}px`;
   document.body.append(el);
   const coins = [...el.querySelectorAll('.pc-coin')];
-  coins.forEach((c, i) => setTimeout(() => { c.classList.add('in'); if (i === 0) { thud(); buzz(20); } }, i * 320));
+  coins.forEach((c, i) => setTimeout(() => { c.classList.add('in'); if (i === 0) { sfx('patch'); buzz(20); } }, i * 320));
   let done = false;
   const finish = () => {
     if (done) return; done = true; clearTimeout(outT);
@@ -2569,6 +2553,7 @@ function pumpPatch() {
     coins.forEach((c, i) => { const d = c.querySelector('.pc-disc').getBoundingClientRect();
       c.style.setProperty('--tx', `${(nav.left + nav.width / 2 - (d.left + d.width / 2)).toFixed(0)}px`); c.style.setProperty('--ty', `${(nav.top + nav.height / 2 - (d.top + d.height / 2)).toFixed(0)}px`);
       setTimeout(() => c.classList.add('out'), i * 90); });
+    sfx('coinroll', { gain: 0.8 });
     setTimeout(() => {
       el.remove();
       const badge = document.createElement('span'); badge.className = 'pc-badge'; badge.textContent = `+${batch.length}`;
@@ -2595,7 +2580,7 @@ function fossilState(t, basis, target) {
   if (!inCircle) fossilHoldFrom = 0; else fossilHoldFrom ||= t;
   const hold = fossilHoldFrom ? Math.min(1, (t - fossilHoldFrom) / 1200) : 0;
   if (hold >= 1 && !fossilDone) {
-    fossilDone = true; Fossil.markFound(); buzz(30);
+    fossilDone = true; Fossil.markFound(); buzz(30); sfx('fossil');
     earnPatch({ ...Fossil.FOSSIL_PATCH, text: 'You looked through the Earth and found dinosaur bones. Most people only look up.' });
   }
   return { enu: fossilEnu, img: Fossil.loadImage(), inCircle, hold, done: fossilDone, name: Fossil.fossil.name };
@@ -2617,7 +2602,7 @@ function ufoState(t, basis, target, items) {
 }
 $('ufo-cta').addEventListener('click', () => {
   if (ufoCaught) return;
-  ufoCaught = true; Ufo.markCaught(); $('ufo-cta').hidden = true; buzz([20, 40, 20]);
+  ufoCaught = true; Ufo.markCaught(); $('ufo-cta').hidden = true; buzz([20, 40, 20]); sfx('ufo');
   earnPatch(Ufo.UFO_PATCH);
 });
 $('btn-ufo')?.addEventListener('click', () => { ufoCaught = false; try { localStorage.removeItem('ufoFound'); } catch {} Ufo.summon(now().getTime()); closePanel('debug'); toast('A UFO is crossing your sky now (night, 3+ things up).', 3000); });
@@ -2758,7 +2743,7 @@ udRender();
 const secretFound = Secrets.found();
 let secretHold = {}, secretTap = null;
 function earnSecret(id) {
-  if (secretFound[id]) return; secretFound[id] = Date.now(); Secrets.markFound(id); buzz([20, 40, 20]);
+  if (secretFound[id]) return; secretFound[id] = Date.now(); Secrets.markFound(id); buzz([20, 40, 20]); sfx('secret');
   earnPatch(Secrets.SECRET_PATCHES[id]);
 }
 function secretsState(t, basis, target) {
@@ -2817,8 +2802,8 @@ document.querySelectorAll('.overlay.panel .panel-head').forEach((h) => {
   h.addEventListener('pointerup', end); h.addEventListener('pointercancel', end);
 });
 // A tiny buzz (Android; iPhone web can't) on the switcher and toggles.
-document.addEventListener('change', (e) => { if (e.target.matches?.('input[type=checkbox]')) buzz(8); });
-$('nav-collection').addEventListener('click', () => buzz(8));
+document.addEventListener('change', (e) => { if (e.target.matches?.('input[type=checkbox]')) { buzz(8); sfx('toggle', { gain: 0.8 }); } });
+$('nav-collection').addEventListener('click', () => { buzz(8); sfx('step', { gain: 0.8 }); });
 
 // "Show me": an orange target flies from the row's icon to the circle as the panel slides away (2026-10-08 polish).
 function flyToCircle(fromEl) {

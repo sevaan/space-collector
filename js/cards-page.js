@@ -1,22 +1,23 @@
-import { expandFacts } from './catalog-facts.js?v=0.1.449';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.449';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.449';
-import { ticket } from './toast.js?v=0.1.449';
-import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.449';
-import { cardArt } from './art.js?v=0.1.449';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.449';
-import { applyBack } from './card-backs.js?v=0.1.449';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.449';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.449';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.449';
-import { loadConstellations, conList } from './constellations.js?v=0.1.449';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.449';
-import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.449';
-import { shareCardEl } from './share-card.js?v=0.1.449';
-import { removeSighting } from './account.js?v=0.1.449';
-import { allSightings, deleteSighting } from './store.js?v=0.1.449';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.449';
-import { SECRET_PATCHES } from './secrets.js?v=0.1.449';
+import { sfx } from './sfx.js?v=0.1.452';
+import { expandFacts } from './catalog-facts.js?v=0.1.452';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.452';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.452';
+import { ticket } from './toast.js?v=0.1.452';
+import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.452';
+import { cardArt } from './art.js?v=0.1.452';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.452';
+import { applyBack } from './card-backs.js?v=0.1.452';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.452';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.452';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.452';
+import { loadConstellations, conList } from './constellations.js?v=0.1.452';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.452';
+import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.452';
+import { shareCardEl } from './share-card.js?v=0.1.452';
+import { removeSighting } from './account.js?v=0.1.452';
+import { allSightings, deleteSighting } from './store.js?v=0.1.452';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.452';
+import { SECRET_PATCHES } from './secrets.js?v=0.1.452';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -470,7 +471,7 @@ async function closeViewer() {
 }
 // Flick the card up and away to close the viewer (like flicking away a fresh capture in the sky).
 async function flickClose(dx, dy, dt) {
-  const card = $('slot').firstElementChild;
+  const card = $('slot').firstElementChild; sfx('swipe');
   stopEffects();
   fadeViewer(false);
   if (card && !reducedMotion.matches) {

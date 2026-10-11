@@ -1,17 +1,18 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { cardArt } from './art.js?v=0.1.449';
-import { TIER_INFO } from './rarity.js?v=0.1.449';
-import { SET_BY_ID } from './sets.js?v=0.1.449';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.449';
-import { FLEET_ABOUT, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.449';
-import { artFileFor } from './art-keys.js?v=0.1.449';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.449';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.449';
-import { nightsIn } from './observation.js?v=0.1.449';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.449';
-import { SHINY } from './shiny.js?v=0.1.449';
-import { conArt } from './con-art.js?v=0.1.449';
-import { CON_FIGURES } from './con-figures.js?v=0.1.449';
+import { sfx } from './sfx.js?v=0.1.452';
+import { cardArt } from './art.js?v=0.1.452';
+import { TIER_INFO } from './rarity.js?v=0.1.452';
+import { SET_BY_ID } from './sets.js?v=0.1.452';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate } from './facts.js?v=0.1.452';
+import { FLEET_ABOUT, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.452';
+import { artFileFor } from './art-keys.js?v=0.1.452';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.452';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.452';
+import { nightsIn } from './observation.js?v=0.1.452';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.452';
+import { SHINY } from './shiny.js?v=0.1.452';
+import { conArt } from './con-art.js?v=0.1.452';
+import { CON_FIGURES } from './con-figures.js?v=0.1.452';
 // The animal/symbol figure belongs to the completed (gold) constellation card only (2026-10-05): a single
 // star's card draws just the star pattern with its star marked, so the figure is a reward for finishing the set.
 const conFig = (id) => (CON_FIGURES.has(id) ? { figure: `assets/art/con/${id}.webp` } : {});
@@ -345,7 +346,7 @@ export function attachFlip(el, { onBack } = {}) {
   const back = el.querySelector('.card__back');
   const flip = () => {
     if (busy || !back) return;
-    busy = true; flipped = !flipped;
+    busy = true; flipped = !flipped; sfx('flip', { gain: 0.8 });
     if (flipped) onBack?.(back);
     const ms = reducedMotion() ? 1 : 560, from = flipped ? 0 : 180, to = flipped ? 180 : 360;
     // Ease in to edge-on, out from it, so edge-on lands exactly at ms / 2 when the faces swap (an overall

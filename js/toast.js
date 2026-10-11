@@ -12,6 +12,9 @@ function stack() {
   return el;
 }
 export function toast(html, ms = 2200, href = null) { ticket({ kind: 'info', line: html, html: true, ms, href }); }
+// Called with each ticket as it appears (main.js plays its sound: mission, rank up, or the quiet toast).
+let onShown = null;
+export function onTicketShown(fn) { onShown = fn; }
 export function ticket({ kind = 'info', eyebrow = '', line = '', xp = 0, ms = 3000, href = null, html = false, delay = 0, id = null, art = '', celebrate = false }) {
   queue.push({ kind, eyebrow, line, xp, ms, href, html, id, art, celebrate, at: Date.now() + delay });
   pump();
@@ -58,7 +61,7 @@ function pump() {
   stack().append(el);
   requestAnimationFrame(() => {
     if (gone) return;
-    el.classList.add('in');
+    el.classList.add('in'); try { onShown?.(t); } catch {}
     if (t.celebrate) stopConfetti = confetti(el);
   });
   const timer = setTimeout(dismiss, Math.max(5000, t.ms * 1.6));

@@ -5,10 +5,12 @@
 //  Everything scales with rarity (Legendary dims the sky, shockwave, held breath, slow flip, fanfare).
 // Waits use timers, not animation.finished, so a paused tab can never freeze the sequence.
 
-import { TIER_INFO } from './rarity.js?v=0.1.449';
-import { levelFor, attachTilt, attachGyro, attachFlip, throwOff } from './card.js?v=0.1.449';
-import { applyBack } from './card-backs.js?v=0.1.449';
-import { addStarfield } from './starfield.js?v=0.1.449';
+import { sfx, loadSfx } from './sfx.js?v=0.1.452';
+import { audioCtx } from './audio-ctx.js?v=0.1.452';
+import { TIER_INFO } from './rarity.js?v=0.1.452';
+import { levelFor, attachTilt, attachGyro, attachFlip, throwOff } from './card.js?v=0.1.452';
+import { applyBack } from './card-backs.js?v=0.1.452';
+import { addStarfield } from './starfield.js?v=0.1.452';
 
 const FX = {
   common:    { particles: 14,  flip: 520,  spin: 0,   dim: 0,   shock: false, notes: [880],                            hold: 0 },
@@ -28,23 +30,10 @@ function play(el, frames, opts) { el.animate(frames, opts); return sleep((opts.d
 const reduced = () => window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 
 // ---------- sound (iPhones can't vibrate from the web, so sound carries the "thump") ----------
-let audio;
-// Call from inside the tap handler, before any await, so iOS lets the sound play.
-const soundOff = () => { try { return localStorage.getItem('sound') === '0'; } catch { return false; } }; // storage can be blocked (QA 2026-10-08)
-export function primeReveal() {
-  if (soundOff()) return; // Settings → Sounds and vibration
-  try { audio ??= new (window.AudioContext || window.webkitAudioContext)(); audio.resume(); } catch {}
-}
-function tone(freq, at, dur, gain = .16, type = 'sine') {
-  if (!audio || soundOff()) return;
-  const o = audio.createOscillator(), g = audio.createGain();
-  o.type = type; o.frequency.value = freq;
-  g.gain.setValueAtTime(.0001, at); g.gain.exponentialRampToValueAtTime(gain, at + .015); g.gain.exponentialRampToValueAtTime(.0001, at + dur);
-  o.connect(g).connect(audio.destination); o.start(at); o.stop(at + dur + .05);
-}
-function whoosh() { if (!audio) return; const t = audio.currentTime; for (let i = 0; i < 6; i++) tone(300 + i * 140, t + i * .03, .12, .05, 'triangle'); }
-function thump() { if (!audio) return; const t = audio.currentTime; tone(90, t, .25, .35); tone(180, t, .12, .12, 'triangle'); }
-function fanfare(notes) { if (!audio) return; const t = audio.currentTime; notes.forEach((f, i) => { tone(f, t + i * .09, .5, .13); tone(f * 2, t + i * .09, .3, .04); }); }
+// Call from inside the tap handler, before any await, so iOS lets the sound play. The sounds themselves are the
+// designed set (js/sfx.js, 2026-10-11); the old oscillator tones are gone.
+export function primeReveal() { audioCtx(); loadSfx(); }
+const STINGER = { common: 'r_common', uncommon: 'r_uncommon', rare: 'r_rare', epic: 'r_epic', legendary: 'r_legend' };
 
 // ---------- particles ----------
 let parts = [], loopOn = false;
@@ -145,8 +134,8 @@ export async function playReveal({ card, o, seen, origin, fleet = null, progress
   $('rv-shock').style.left = `${x}px`; $('rv-shock').style.top = `${y}px`;
   const alive = () => my === run;
 
-  // 1. Pulled from orbit: the object swells and rushes at you. Flash, thump, sparks.
-  whoosh();
+  // 1. Pulled from orbit: the object swells and rushes at you. Flash, sparks.
+  sfx('arrive');
   if (fx.dim) $('rv-dim').animate([{ opacity: 0 }, { opacity: fx.dim }], { duration: 500, fill: 'forwards' });
   await play($('rv-dot'), [
     { transform: 'translate(-50%,-50%) scale(1)', opacity: 1 },
@@ -156,7 +145,6 @@ export async function playReveal({ card, o, seen, origin, fleet = null, progress
   if (!alive()) return;
   $('rv-flash').style.setProperty('--fx-x', `${x}px`); $('rv-flash').style.setProperty('--fx-y', `${y}px`);
   $('rv-flash').animate([{ opacity: 0 }, { opacity: 1, offset: .25 }, { opacity: 0 }], { duration: 300, easing: 'ease-out' }); // short and bright, from where you caught it
-  thump();
   burst(x, y + 20, Math.round(fx.particles / 2), color);
   // A crisp ring that grows (size, not scale, so its line stays thin and sharp: 2026-10-08, the scaled one smeared into a muddy disc).
   if (fx.shock && !reduced()) $('rv-shock').animate([{ width: '20px', height: '20px', opacity: 1, borderWidth: '3px' }, { width: '140vmax', height: '140vmax', opacity: 0, borderWidth: '1.5px' }], { duration: 760, easing: 'cubic-bezier(.15,.7,.3,1)' });
@@ -193,6 +181,7 @@ export async function playReveal({ card, o, seen, origin, fleet = null, progress
   // 3. Legendary holds its breath; then the flip (Epic spins on the way).
   if (fx.hold && !reduced()) await play($('rv-flipper'), [{ transform: 'rotate(0)' }, { transform: 'rotate(-1.5deg)' }, { transform: 'rotate(1.5deg)' }, { transform: 'rotate(0)' }], { duration: fx.hold, easing: 'ease-in-out' });
   const flipMs = reduced() ? 1 : fx.flip;
+  sfx('flip');
   const flipped = play($('rv-flipper'), [
     { transform: 'rotateY(0) scale(1)', easing: 'cubic-bezier(.5,0,1,1)' },
     { transform: `rotateY(${90 + fx.spin / 2}deg) scale(1.12)`, offset: .5, easing: 'cubic-bezier(0,0,.4,1)' },
@@ -241,7 +230,7 @@ export async function playView({ card, o, from, sighting = null, eyebrow = null 
     backEl.querySelector('.back-holo')?.animate([{ opacity: .55, backgroundPosition: '20% 20%, 80% 80%, 15% 25%' }, { opacity: .55, backgroundPosition: '80% 80%, 20% 20%, 85% 75%' }], opts);
     backEl.querySelector('.back-glare')?.animate([{ opacity: .5 }, { opacity: .5 }], opts);
   }
-  whoosh();
+  sfx('arrive', { gain: 0.7 });
   await play($('rv-holder'), [
     { opacity: 1, transform: `perspective(1600px) translate(${dx}px, ${dy}px) scale(${s}) rotateY(0deg)` },
     { opacity: 1, transform: 'perspective(1600px) translate(0, 0) scale(1) rotateY(360deg)' },
@@ -259,7 +248,11 @@ export async function playView({ card, o, from, sighting = null, eyebrow = null 
 const STAMP_INK = '#8fb8ff';
 async function finish({ fx, color, fresh, seen, level, levelUp, card, alive, fleet = null, newStamp = false, nights = 0, collected = 0, con = null, shiny = null }) {
   const r = $('rv-holder').getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height / 2;
-  fanfare(levelUp ? [...fx.notes, 1568, 2093] : fx.notes);
+  // The payoff: the rarity stinger for a new card, a soft tap for one you have; layers for level-up, stamp and shiny.
+  const tk = Object.keys(STINGER).find((k) => FX[k] === fx) ?? 'common';
+  sfx(fresh ? STINGER[tk] : newStamp ? 'stamp' : 'seen');
+  if (levelUp) sfx('levelup', { delay: 0.35 });
+  if (shiny) sfx('shiny', { delay: 0.25 });
   burst(cx, cy, fx.particles + (levelUp ? 60 : 0) + (shiny ? 90 : 0), shiny ? '#ff8fd8' : color);
   if (shiny) setTimeout(() => { burst(cx, cy - 40, 70, '#8ff0ff'); burst(cx, cy + 40, 70, '#fff2b3'); }, 220);
   if (fx.particles > 60 || levelUp) setTimeout(() => burst(cx, cy - 60, fx.particles / 2 + 20, levelUp ? LEVEL_COLOR[level] : '#ffffff'), 180);
@@ -279,7 +272,7 @@ async function finish({ fx, color, fresh, seen, level, levelUp, card, alive, fle
     : newStamp ? (STAMP_MILESTONES.includes(fleet?.stamps) ? { kind: 'event', eyebrow: 'NEW STAMP', line: `${fleet.stamps} launches stamped` } : { kind: 'xp', eyebrow: 'NEW STAMP', line: stampLine })
     : NIGHT_MILESTONES.includes(nights) ? { kind: 'event', eyebrow: 'MILESTONE', line: `Seen on ${nights} different nights` }
     : null; // a plain repeat: no toast (2026-10-07)
-  if (news) { announce?.({ ms: 3200, ...news, delay: 900 }); thump(); }
+  if (news) announce?.({ ms: 3200, ...news, delay: 900 }); // its sound plays as it appears (main.js onTicketShown)
   // A second (third…) night on an old friend: a little "+1 NIGHT" stamp drops onto the card (2026-10-08 polish).
   if (!fresh && nights > 1 && !reduced()) { const st = document.createElement('div'); st.className = 'rv-night'; st.textContent = `+1 night · ${nights} nights`; $('rv-holder').append(st); setTimeout(() => st.remove(), 2600); }
   if (!reduced()) $('reveal').animate([{ transform: 'translate(0,0)' }, { transform: 'translate(-3px,2px)' }, { transform: 'translate(3px,-2px)' }, { transform: 'translate(0,0)' }], { duration: 180 });
@@ -307,7 +300,7 @@ function fillRank(alive) {
   const r = rankInfo; if (!r) return;
   const from = Math.max(r.at, r.from), ms = reduced() ? 1 : 900, t0 = performance.now() + (reduced() ? 0 : 450);
   setTimeout(() => { if (!alive()) return; const f = $('rv-rank-fill'); f.style.transition = `width ${ms}ms cubic-bezier(.3,.8,.3,1)`; f.style.width = `${r.pct(r.to)}%`; }, reduced() ? 0 : 450);
-  const step = (t) => { if (!alive()) return; const k = Math.max(0, Math.min(1, (t - t0) / ms)), e = 1 - (1 - k) ** 3; $('rv-rank-xp').textContent = Math.round(from + (r.to - from) * e); if (k < 1) requestAnimationFrame(step); };
+  const step = (t) => { if (!alive()) return; const k = Math.max(0, Math.min(1, (t - t0) / ms)), e = 1 - (1 - k) ** 3; { const v = Math.round(from + (r.to - from) * e); if ($('rv-rank-xp').textContent !== String(v)) { $('rv-rank-xp').textContent = v; sfx('xp', { gain: 0.6, gap: 75 }); } } if (k < 1) requestAnimationFrame(step); };
   requestAnimationFrame(step);
 }
 
@@ -343,6 +336,7 @@ function holderTo(x, y, ms) {
     // sideways throw and a little spin that way.
     h.getAnimations().forEach((a) => a.cancel()); h.style.opacity = '1';
     tilt?.reset();
+    sfx('swipe');
     const ms = throwOff(h, dx, dy, dt);
     setTimeout(() => { h.getAnimations().forEach((a) => a.cancel()); h.style.opacity = ''; onDismiss?.(); }, ms + 20);
   };

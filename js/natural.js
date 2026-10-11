@@ -1,4 +1,4 @@
-import { extinction } from './sky-limit.js?v=0.1.449';
+import { extinction } from './sky-limit.js?v=0.1.452';
 // The Moon, the naked-eye planets and the brightest named stars, as collectible cards.
 // Positions come from js/celestial.js (state.bodies, state.skyEnu); this file holds the card facts and
 // the "can you see it right now" rules. No DOM. Every fact must be true; approximate values say so.

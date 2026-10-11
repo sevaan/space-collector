@@ -412,3 +412,15 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - Web Audio gain at 0.3, because iOS ignores media-element volume. `navigator.audioSession.type = 'ambient'`, so the silent switch mutes it and the player's own music keeps playing.
   - Starts on the first pointerdown with a 4 s fade-in. Ducks to 35% during card reveals (main: `duckMusic(true)` before playReveal, back on dismiss). Pauses when hidden.
   - Settings → Music switch (localStorage `music`, default on).
+- 2026-10-11 · Sound effects shipped: Sevaan's picks from sound board v2 (artifact https://claude.ai/artifact/2x9kXoCwcASZCxK2521JpC). All are the designed set (scripts/sfx-synth.py, G major pentatonic to match "Permafrost") except toast = "Notification Sound 2" by deadrobotmusic (Freesound 750608, CC0), softened.
+  - Picks: D1 for most; D2 for collect, r_epic, r_legend, shiny, levelup, xp, mission, rankup, complete. lock = a new short glass tik (Sevaan: you lock on to several things in a row), plus a 260 ms repeat guard.
+  - Files: assets/audio/sfx/<event>.mp3 (27 files, 736 KB, 128k, silence trimmed).
+  - js/audio-ctx.js: one shared AudioContext with audioSession 'ambient'. js/sfx.js: decoded buffers, `sfx(name, {gain, gap, delay})`, loaded on first tap, off when Settings → Sounds is off. music.js uses the shared context.
+  - Where each plays:
+    - lock = snapTick; collect = d-hit tap; welcome = welcome flip; swipe = welcome swipe-away, reveal flick, viewer flick.
+    - arrive = reveal step 1 (and 0.7 on owned-card view); flip = sealed card flip and every double-tap flip (card.js attachFlip).
+    - Stinger by tier (r_common…r_legend) for a new card; seen for a repeat; stamp for a new fleet stamp; levelup and shiny layered on top.
+    - xp = rank-bar count-up ticks (gap 75 ms); patch = first coin; coinroll = coins roll out.
+    - Toasts via toast.js `onTicketShown`: rank → rankup, mission/sky challenge COMPLETE → mission, other COMPLETE → complete, else toast.
+    - secret / fossil / ufo on finding; step = tour cards and the Collection switch; toggle = Settings checkboxes.
+  - The old oscillator tones (chirp/thump/whoosh/fanfare/thud) are gone.
