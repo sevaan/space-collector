@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "798585939717",
+    "project_id": "space-collector-91cc7",
+    "storage_bucket": "space-collector-91cc7.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:798585939717:android:0fceb3fad8a1278f48796c",
+        "android_client_info": {
+          "package_name": "io.github.sevaan.spacecollector"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "798585939717-jqqoqu3biod9c709hnl7kv4sarm9rt7f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "io.github.sevaan.spacecollector",
+            "certificate_hash": "8cc2b2d2f8add5bc1404d05653cba33042fde768"
+          }
+        },
+        {
+          "client_id": "798585939717-ipvqu57g3r4aaq1h6gu99m6pjjhrvlom.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCocbFX-fjwTFiA0p-aB5d3TInvFZ6Kxfs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "798585939717-ipvqu57g3r4aaq1h6gu99m6pjjhrvlom.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "798585939717-ohq18pfuh2td3mmkk6e33do06m31i7ge.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "io.github.sevaan.spacecollector"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
