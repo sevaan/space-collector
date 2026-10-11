@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Free and Plus</title>
+<style>
+  @font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf') format('truetype'); }
+  @font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf') format('truetype'); font-weight: 500; }
+  :root { --bg: #080f1b; --panel: #0d1826; --edge: #1f3044; --ink: #fff2b3; --text: #e6ecf5; --muted: #9fb3c8; --org: #fa8127; --free: #7fc8a9; --plus: #f0b44c; --no: #e06c5a; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.5 -apple-system, system-ui, sans-serif; }
+  main { max-width: 860px; margin: 0 auto; padding: 28px 16px 80px; }
+  h1 { font: 400 28px 'SC Display'; color: var(--ink); margin: 0 0 4px; letter-spacing: .5px; }
+  .sub { font: 500 14px 'SC Label'; letter-spacing: 2.5px; color: var(--muted); text-transform: uppercase; margin: 0 0 22px; }
+  h2 { font: 500 20px 'SC Label'; letter-spacing: 2px; color: var(--ink); text-transform: uppercase; margin: 36px 0 10px; }
+  p { margin: 0 0 12px; }
+  .lead { font-size: 16px; color: var(--text); }
+  .muted { color: var(--muted); }
+  .box { background: var(--panel); border: 1px solid var(--edge); border-radius: 14px; padding: 14px 16px; margin: 0 0 12px; }
+  .decided b { color: var(--ink); }
+  .tag { display: inline-block; font: 500 12px 'SC Label'; letter-spacing: 1.5px; padding: 1px 8px; border-radius: 99px; border: 1px solid; white-space: nowrap; }
+  .tag.free { color: var(--free); border-color: color-mix(in srgb, var(--free) 55%, transparent); }
+  .tag.plus { color: var(--plus); border-color: color-mix(in srgb, var(--plus) 55%, transparent); }
+  .tag.both { color: var(--muted); border-color: var(--edge); }
+  .tag.no { color: var(--no); border-color: color-mix(in srgb, var(--no) 55%, transparent); }
+  table { width: 100%; border-collapse: collapse; }
+  th { text-align: left; font: 500 12px 'SC Label'; letter-spacing: 1.8px; color: var(--muted); text-transform: uppercase; padding: 6px 8px; border-bottom: 1px solid var(--edge); }
+  td { padding: 9px 8px; border-bottom: 1px solid #142234; vertical-align: top; }
+  td:first-child { color: var(--text); width: 34%; }
+  td:nth-child(2) { width: 120px; }
+  td:last-child { color: var(--muted); font-size: 14px; }
+  .group td { font: 500 13px 'SC Label'; letter-spacing: 2px; color: var(--ink); text-transform: uppercase; padding-top: 18px; border-bottom-color: var(--edge); }
+  .idea { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; }
+  .idea h3 { margin: 0; font-size: 16px; color: var(--text); grid-column: 2; }
+  .idea .tag { grid-row: 1 / span 2; align-self: start; margin-top: 2px; }
+  .idea p { grid-column: 2; margin: 0; color: var(--muted); font-size: 14px; }
+  .verdict { border-left: 3px solid var(--org); padding-left: 12px; }
+  ol li, ul li { margin-bottom: 6px; }
+  @media (max-width: 560px) { td:first-child { width: auto; } td:nth-child(2) { width: auto; } table, tbody, tr, td { display: block; } tr { border-bottom: 1px solid #142234; padding: 6px 0; } td { border: 0; padding: 2px 4px; } th { display: none; } }
+</style>
+</head>
+<body>
+<main>
+<h1>Free and Plus</h1>
+<p class="sub">Space Collector · plans to work through · 2026-10-11</p>
+
+<p class="lead">The rule I've used throughout: <b>the sky is never behind a paywall.</b> Anyone can point at anything, collect every card, earn every patch and play every mission. Plus pays for the things that cost us money to run, the things that help you plan, and the things that look nice.</p>
+
+<div class="box decided">
+  <p style="margin:0"><b>Decided so far:</b> one plan, <b>Space Collector Plus</b>, at about <b>$2.99 a month, $19.99 a year, or $39.99 for life</b>. Cloud backup and sync stay <b>free</b>. Pass alerts, planning ahead, binocular mode and cosmetics are <b>Plus</b>.</p>
+</div>
+
+<h2>Every feature today</h2>
+<p class="muted">Each feature has a suggestion. <span class="tag free">FREE</span> stays free, <span class="tag plus">PLUS</span> is paid, and <span class="tag both">BOTH</span> means free with a bigger Plus version.</p>
+
+<table>
+  <tr><th>Feature</th><th>Suggest</th><th>Why</th></tr>
+  <tr class="group"><td colspan="3">The sky</td></tr>
+  <tr><td>Point at the sky, see what's there</td><td><span class="tag free">FREE</span></td><td>The whole point of the app.</td></tr>
+  <tr><td>Collect satellites, rocket stages, debris</td><td><span class="tag free">FREE</span></td><td>Never limit the catch (see "daily limits" below).</td></tr>
+  <tr><td>Planets, Moon, Sun, bright stars</td><td><span class="tag free">FREE</span></td><td></td></tr>
+  <tr><td>Fleets (Starlink, OneWeb…) and stamps</td><td><span class="tag free">FREE</span></td><td></td></tr>
+  <tr><td>Sky slider (city ↔ dark site)</td><td><span class="tag free">FREE</span></td><td>Needed to match your real sky.</td></tr>
+  <tr><td>Binocular mode (fainter objects, magnitude 5–8)</td><td><span class="tag plus">PLUS</span></td><td>Decided. It adds hundreds of harder cards for dedicated players.</td></tr>
+  <tr><td>Below the horizon, and satellites hidden by daylight</td><td><span class="tag both">BOTH</span></td><td>Free shows the bright ones. Plus could show all of them, plus the path each one will take.</td></tr>
+  <tr><td>Planes and helicopters named</td><td><span class="tag free">FREE</span></td><td>Answers "is that a satellite?", which is a trust feature.</td></tr>
+  <tr><td>Milky Way, clouds and weather in the sky</td><td><span class="tag free">FREE</span></td><td></td></tr>
+  <tr><td>Red night mode</td><td><span class="tag free">FREE</span></td><td>Protects night vision, so it's a safety and comfort feature.</td></tr>
+  <tr><td>Camera view (prototype)</td><td><span class="tag plus">PLUS</span></td><td>Once it's finished, a good showcase perk.</td></tr>
+  <tr><td>Secrets and easter eggs</td><td><span class="tag free">FREE</span></td><td>Surprises should never be gated.</td></tr>
+
+  <tr class="group"><td colspan="3">Collecting and progress</td></tr>
+  <tr><td>Card reveal, collection, Discover field guide</td><td><span class="tag free">FREE</span></td><td></td></tr>
+  <tr><td>Albums and their Bronze/Silver/Gold covers</td><td><span class="tag free">FREE</span></td><td></td></tr>
+  <tr><td>Mission patches (75+), secret patches</td><td><span class="tag free">FREE</span></td><td></td></tr>
+  <tr><td>Nightly missions and sky challenge</td><td><span class="tag both">BOTH</span></td><td>3 missions free. Plus could add a 4th "Plus mission" or a mission reroll.</td></tr>
+  <tr><td>XP, ranks, weekly streak</td><td><span class="tag free">FREE</span></td><td>No XP boosts for money: that would make ranks feel bought.</td></tr>
+  <tr><td>Shinies</td><td><span class="tag free">FREE</span></td><td>A <b>shiny forecast</b> (when the next eclipse or Moon shiny is possible) could be Plus.</td></tr>
+  <tr><td>Meteor-shower events and badges</td><td><span class="tag free">FREE</span></td><td></td></tr>
+  <tr><td>Weekly recap</td><td><span class="tag both">BOTH</span></td><td>The recap is free. Plus adds a monthly or yearly "your sky in 2026" summary.</td></tr>
+
+  <tr class="group"><td colspan="3">Planning</td></tr>
+  <tr><td>Tonight: passes, chart, weather</td><td><span class="tag free">FREE</span></td><td></td></tr>
+  <tr><td>The next 7 nights (passes, forecast, best night to go out)</td><td><span class="tag plus">PLUS</span></td><td>Decided.</td></tr>
+  <tr><td>Now panel and sky map</td><td><span class="tag free">FREE</span></td><td></td></tr>
+  <tr><td>Calendar reminders (.ics) and the countdown reminder</td><td><span class="tag both">BOTH</span></td><td>Free could allow 1 reminder a night and Plus unlimited. Or keep it free, since pass alerts are the paid version.</td></tr>
+  <tr><td>Pass alerts (push notifications)</td><td><span class="tag plus">PLUS</span></td><td>Decided. They run on a server we pay for.</td></tr>
+  <tr><td>Saved places (home, cottage, dark-sky site)</td><td><span class="tag plus">PLUS</span></td><td>New feature. Plan a trip and see what's up there.</td></tr>
+
+  <tr class="group"><td colspan="3">Sharing and look</td></tr>
+  <tr><td>Share a card, share my week</td><td><span class="tag free">FREE</span></td><td>Free sharing brings in new players.</td></tr>
+  <tr><td>Share designs (frames, stickers, big-picture posters)</td><td><span class="tag plus">PLUS</span></td><td>Cosmetic.</td></tr>
+  <tr><td>Card backs, foil styles, patch-wall themes</td><td><span class="tag plus">PLUS</span></td><td>Decided (cosmetics).</td></tr>
+  <tr><td>Music and sound</td><td><span class="tag free">FREE</span></td><td>Plus could add extra music tracks for the night sky.</td></tr>
+
+  <tr class="group"><td colspan="3">Account</td></tr>
+  <tr><td>Sign in, cloud backup, sync between phones</td><td><span class="tag free">FREE</span></td><td>Decided.</td></tr>
+  <tr><td>Data export</td><td><span class="tag free">FREE</span></td><td>Your data is yours.</td></tr>
+</table>
+
+<h2>Daily limits, like "10 catches a day free, 20 on Plus"</h2>
+<div class="box verdict">
+  <p><b>I'd avoid limiting catches.</b> In most collecting games a limit just means "come back tomorrow". Here, the thing you'd be limited on is a real pass that happens once, right now, with you standing outside. Hitting "you've used your 10 catches" while the ISS crosses overhead is the worst moment the app could give someone. It would also leave the 11th catch with nowhere to go, since it can't be saved and caught later.</p>
+  <p style="margin:0">If you want a limit, put it on something that isn't tied to a moment in the sky:</p>
+</div>
+<div class="box"><div class="idea"><span class="tag both">LIMIT</span><h3>Reminders and alerts per night</h3><p>Free gets 1 reminder a night, Plus is unlimited. You still see everything; you just get fewer nudges.</p></div></div>
+<div class="box"><div class="idea"><span class="tag both">LIMIT</span><h3>How far ahead you can plan</h3><p>Free sees tonight, Plus sees the week. Already decided, and it's the natural limit.</p></div></div>
+<div class="box"><div class="idea"><span class="tag both">LIMIT</span><h3>Mission rerolls</h3><p>Swap a mission you can't do tonight (cloud, wrong part of the sky): free 1 a week, Plus 1 a night.</p></div></div>
+<div class="box"><div class="idea"><span class="tag no">AVOID</span><h3>Catch or card limits, energy, timers</h3><p>Anything that stops you collecting what's in front of you.</p></div></div>
+<div class="box"><div class="idea"><span class="tag no">AVOID</span><h3>Paid XP boosts, paid shinies, card packs or loot boxes</h3><p>They undercut the honesty of "you really saw this".</p></div></div>
+<div class="box"><div class="idea"><span class="tag no">AVOID</span><h3>Ads</h3><p>They'd break the quiet night-sky feel, and bright ad screens ruin night vision.</p></div></div>
+
+<h2>More Plus ideas (new features)</h2>
+<div class="box"><div class="idea"><span class="tag plus">PLUS</span><h3>Home-screen widget and lock-screen countdown</h3><p>"ISS in 12 min · NW". Native apps only. Very visible, and it gets people outside.</p></div></div>
+<div class="box"><div class="idea"><span class="tag plus">PLUS</span><h3>Apple Watch tap</h3><p>A tap on the wrist as a pass rises, so your phone can stay in your pocket. Native only.</p></div></div>
+<div class="box"><div class="idea"><span class="tag plus">PLUS</span><h3>Shiny forecast</h3><p>"An eclipse shiny is possible tonight at 9:42 on COSMOS 1408." This builds on the shiny rules we already have.</p></div></div>
+<div class="box"><div class="idea"><span class="tag plus">PLUS</span><h3>Observer stats</h3><p>A lifetime map of where you've observed, nights by month, rarest catches, and a "your sky in 2026" yearly poster.</p></div></div>
+<div class="box"><div class="idea"><span class="tag plus">PLUS</span><h3>Saved places and trip planner</h3><p>"Going to the cottage Saturday" shows that night's passes and weather there, and which uncollected cards you could get.</p></div></div>
+<div class="box"><div class="idea"><span class="tag plus">PLUS</span><h3>Extra music</h3><p>Two or three more night tracks (licensed or commissioned).</p></div></div>
+<div class="box"><div class="idea"><span class="tag both">PERK</span><h3>A "Founding Observer" patch</h3><p>For anyone who buys Plus in the first months: a thank-you that costs nothing to make. It's a patch, not a power.</p></div></div>
+<div class="box"><div class="idea"><span class="tag both">PERK</span><h3>Free trial</h3><p>7 days of Plus. Possibly also free Plus during big meteor-shower peaks, so everyone gets a taste.</p></div></div>
+<div class="box"><div class="idea"><span class="tag both">PERK</span><h3>Family sharing</h3><p>Apple and Google both support sharing a subscription. Good for parents stargazing with kids.</p></div></div>
+
+<h2>How it would work underneath</h2>
+<ol>
+  <li><b>RevenueCat</b> tracks who has Plus across the web, iPhone and Android, keyed to the Firebase account you already have. One switch in the app (<code>isPlus</code>) turns perks on.</li>
+  <li><b>On iPhone and Android</b> the purchase has to go through Apple's and Google's in-app purchases (they take 15% for small developers).</li>
+  <li><b>On the web</b>, RevenueCat's web checkout (Stripe) works. You could also leave the web version free-only and sell Plus only in the apps.</li>
+  <li><b>The pass-alert server</b> checks Plus before sending.</li>
+  <li><b>Accounts:</b> buying Plus needs sign-in, so it follows you to a new phone.</li>
+</ol>
+
+<h2>Still to decide</h2>
+<ol>
+  <li>Which of the <b>BOTH</b> rows above get a Plus version, and which of the new ideas you want.</li>
+  <li>Whether to use any limit at all (my pick: reminders per night, or none).</li>
+  <li>Whether the web version sells Plus, or only the apps do.</li>
+  <li>Trial length, and whether to have a Founding Observer patch.</li>
+</ol>
+</main>
+</body>
+</html>
