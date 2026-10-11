@@ -1,19 +1,20 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.460';
+import { extinction } from './sky-limit.js?v=0.1.461';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.460';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.461';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.460';
-import { createCloudGL } from './clouds-gl.js?v=0.1.460';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.461';
+import { createCloudGL } from './clouds-gl.js?v=0.1.461';
 // Cloud colours by light: sunlit tops, shadowed bellies, and the horizon haze they melt into (0–1 RGB).
 const CLOUD_LIGHT = {
   day: { lit: [1, 1, 1], shade: [0.62, 0.68, 0.77], haze: [0.82, 0.87, 0.93] },
   dusk: { lit: [1, 0.8, 0.68], shade: [0.36, 0.33, 0.42], haze: [0.62, 0.5, 0.52] },
   night: { lit: [0.22, 0.25, 0.31], shade: [0.1, 0.12, 0.16], haze: [0.14, 0.15, 0.2] },
 };
-import { TIER_INFO } from './rarity.js?v=0.1.460';
+import { TIER_INFO } from './rarity.js?v=0.1.461';
 
 const RAD = Math.PI / 180;
+const BELOW_ICON = 13; // every satellite under the horizon, passes and halo alike
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
 const DISPLAY_FONT = '"SC Display", "Russo One", sans-serif';
 
@@ -383,13 +384,15 @@ export class SkyView {
       // The thing itself, faint, inside its dashed ring (2026-10-07: empty rings read as missing): a soft disc for
       // the Sun, Moon and planets, the satellite icon for passes.
       ctx.save(); ctx.globalAlpha = 0.6 * k;
-      if (g.kind === 'sat') this.drawIcon('sat', p.x, p.y, 9, t.sat);
+      if (g.kind === 'sat') { ctx.globalAlpha = 0.8 * k; this.drawIcon(g.obj ? this.iconKind(g.obj) : 'sat', p.x, p.y, BELOW_ICON, t.sat); } // same size and style as the halo ones, no ring (2026-10-11)
       else { const c = g.kind === 'sun' ? SUN : INKA; this.glow(p.x, p.y, r * 1.8, c, 0.3); ctx.fillStyle = `rgb(${c.join(',')})`; ctx.beginPath(); ctx.arc(p.x, p.y, g.kind === 'planet' ? 2.6 : r * 0.55, 0, Math.PI * 2); ctx.fill(); }
       ctx.restore();
-      ctx.setLineDash([3, 4]); ctx.lineWidth = 1.2;
-      ctx.strokeStyle = g.kind === 'sun' ? `rgba(${ORG},.75)` : `rgba(${INK},.5)`;
-      ctx.beginPath(); ctx.arc(p.x, p.y, r + 3, 0, Math.PI * 2); ctx.stroke();
-      ctx.setLineDash([]);
+      if (g.kind !== 'sat') { // dashed rings stay on the Sun, Moon and planets only
+        ctx.setLineDash([3, 4]); ctx.lineWidth = 1.2;
+        ctx.strokeStyle = g.kind === 'sun' ? `rgba(${ORG},.75)` : `rgba(${INK},.5)`;
+        ctx.beginPath(); ctx.arc(p.x, p.y, r + 3, 0, Math.PI * 2); ctx.stroke();
+        ctx.setLineDash([]);
+      }
       if (k > 0.5 && hit?.g !== g) this.queueLabel(g.note ? `${g.name} · ${g.note}` : g.name, p, { color: g.kind === 'sun' ? `rgba(${ORG},.9)` : `rgba(${INK},.78)`, size: 12, weight: 600, gap: r + 6, priority: 6 }); // one line, so the time never drifts off its name
     }
     ctx.restore();
@@ -415,7 +418,7 @@ export class SkyView {
         const d = Math.hypot(p.x - rc.x, p.y - rc.y); if (d >= r2) continue;
         const h = d <= r1 ? 1 : 1 - (d - r1) / (r2 - r1);
         ctx.globalAlpha = 0.8 * h * h * (3 - 2 * h) * k;
-        this.drawIcon(this.iconKind(s.obj), p.x, p.y, (s.mag ?? 3) < 1.5 ? 16 : 13, t.sat);
+        this.drawIcon(this.iconKind(s.obj), p.x, p.y, BELOW_ICON, t.sat);
       }
     }
     ctx.restore();
@@ -1261,6 +1264,7 @@ export class SkyView {
     if (fossil && !this.camera) this.drawFossil(fossil); // not in camera view
     // Looking down: the quiet ring takes over from the see-through ghosts (same things, by rise direction).
     this.belowFree = !targetId && !planeHit; // the circle can name a below-horizon thing only when it isn't busy
+    if (below?.length && belowSats?.length) { const ids = new Set(below.filter((g) => g.obj).map((g) => g.obj.id)); belowSats = belowSats.filter((s) => !ids.has(s.obj.id)); } // a pass is drawn once
     if (this.basis.back[2] < 0.15 && this.feetA < 0.98) this.drawBelowSky(sky, belowSats, belowStarLimit);
     if ((below?.length || belowSats?.length) && this.basis.back[2] < 0.15 && this.feetA < 0.98) this.drawBelow([...(below ?? []), ...(belowSats ?? []).map((s) => ({ enu: s.enu, kind: 'dot', name: s.name, note: '', where: '' }))]);
     this.drawFeet(below);

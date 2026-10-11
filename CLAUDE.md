@@ -440,3 +440,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 2026-10-11 · Far-side satellites thinned: only stdMag < 3 (BELOW_SAT_MAG 2.9 in main.js), ~300 under the whole horizon instead of ~3,800. Sevaan: "definitely too many".
 
 2026-10-11 · Far-side satellites are now their icons (iconKind, 13–16px, t.sat) shown only in a halo round the circle: full within 1.4× ring radius, fading out by 3.2× (drawBelowSky), so looking down and sweeping reveals them.
+
+2026-10-11 · Below-horizon satellites made consistent: tonight’s upcoming passes and the halo satellites share one icon size (BELOW_ICON 13 in sky.js) and real icons (iconKind); dashed rings only on Sun, Moon and planets; a pass is never drawn twice (halo list skips pass ids). Sevaan asked why some had dotted circles and were smaller.
