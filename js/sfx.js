@@ -3,12 +3,15 @@
 // "Notification Sound 2" by deadrobotmusic (Freesound, CC0), softened. Files: assets/audio/sfx/<name>.mp3.
 // Decoded once into memory after the first tap, played through the shared context (js/audio-ctx.js) so they're instant.
 // Off with Settings → Sounds and vibration (localStorage sound = '0').
-import { audioCtx } from './audio-ctx.js?v=0.1.454';
+import { audioCtx } from './audio-ctx.js?v=0.1.455';
 export const SFX = ['lock', 'collect', 'arrive', 'flip', 'r_common', 'r_uncommon', 'r_rare', 'r_epic', 'r_legend', 'shiny', 'seen', 'stamp', 'levelup', 'xp',
-  'mission', 'rankup', 'patch', 'coinroll', 'complete', 'secret', 'fossil', 'ufo', 'welcome', 'swipe', 'step', 'toggle', 'toast'];
+  'mission', 'rankup', 'patch', 'coinroll', 'complete', 'secret', 'fossil', 'ufo', 'welcome', 'swipe', 'step', 'toggle', 'toast', 'page'];
 const BASE = new URL('../assets/audio/sfx/', import.meta.url).href;
 const bufs = new Map(), last = new Map();
 let loading = null;
+// Everything plays at half the files' level (2026-10-11, Sevaan: "all like 50%"), times the Settings volume (0–1).
+const LEVEL = 0.5;
+export const sfxVolume = () => { try { const v = parseFloat(localStorage.getItem('sfxVol')); return Number.isFinite(v) ? Math.max(0, Math.min(1, v)) : 1; } catch { return 1; } };
 const soundOff = () => { try { return localStorage.getItem('sound') === '0'; } catch { return false; } };
 export function loadSfx() {
   const ctx = audioCtx(); if (!ctx || loading) return loading;
@@ -21,7 +24,7 @@ export function sfx(name, { gain = 1, gap = 0, delay = 0 } = {}) {
   const ctx = audioCtx(); if (!ctx) return;
   const b = bufs.get(name); if (!b) { loadSfx(); return; }
   const now = performance.now(); if (gap && now - (last.get(name) ?? -1e9) < gap) return; last.set(name, now);
-  try { const src = ctx.createBufferSource(), g = ctx.createGain(); src.buffer = b; g.gain.value = gain; src.connect(g).connect(ctx.destination); src.start(ctx.currentTime + delay); } catch {}
+  try { const src = ctx.createBufferSource(), g = ctx.createGain(); src.buffer = b; g.gain.value = gain * LEVEL * sfxVolume(); src.connect(g).connect(ctx.destination); src.start(ctx.currentTime + delay); } catch {}
 }
 // Load on the first tap (the context can only start from one), so the first real sound is ready.
 if (typeof document !== 'undefined') document.addEventListener('pointerdown', () => loadSfx(), { once: true, capture: true });

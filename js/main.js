@@ -1,44 +1,44 @@
-import * as Secrets from './secrets.js?v=0.1.454';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.454';
-import * as Ufo from './ufo.js?v=0.1.454';
-import * as Fossil from './fossil.js?v=0.1.454';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.454';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.454';
-import { toast, ticket, dropToast, toastPending, onTicketShown } from './toast.js?v=0.1.454';
-import { VERSION } from './version.js?v=0.1.454';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.454';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.454';
-import { conArt } from './con-art.js?v=0.1.454';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.454';
-import { CON_FIGURES } from './con-figures.js?v=0.1.454';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.454';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.454';
-import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.454';
-import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.454';
-import { conList } from './constellations.js?v=0.1.454';
-import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.454';
-import { SkyView, shortName } from './sky.js?v=0.1.454';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.454';
-import { initAccount, onAccount, account, signInGoogle, sendEmailLink, completeEmailLink, signOut, syncNow, pushSighting } from './account.js?v=0.1.454';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.454';
-import { cardArt } from './art.js?v=0.1.454';
-import { renderCard, cardLevel, artImage, lockedArt, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.454';
-import { applyBack } from './card-backs.js?v=0.1.454';
-import { sfx, loadSfx } from './sfx.js?v=0.1.454';
-import { audioCtx } from './audio-ctx.js?v=0.1.454';
-import { musicOn, startMusic, setMusic, duckMusic } from './music.js?v=0.1.454';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.454';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.454';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.454';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.454';
-import { TIER_INFO } from './rarity.js?v=0.1.454';
-import { SETS, albumList } from './sets.js?v=0.1.454';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.454';
-import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.454';
-import { shareCardEl } from './share-card.js?v=0.1.454';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.454';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.454';
-import { addStarfield } from './starfield.js?v=0.1.454';
+import * as Secrets from './secrets.js?v=0.1.455';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.455';
+import * as Ufo from './ufo.js?v=0.1.455';
+import * as Fossil from './fossil.js?v=0.1.455';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.455';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.455';
+import { toast, ticket, dropToast, toastPending, onTicketShown } from './toast.js?v=0.1.455';
+import { VERSION } from './version.js?v=0.1.455';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.455';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.455';
+import { conArt } from './con-art.js?v=0.1.455';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.455';
+import { CON_FIGURES } from './con-figures.js?v=0.1.455';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.455';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.455';
+import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.455';
+import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.455';
+import { conList } from './constellations.js?v=0.1.455';
+import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.455';
+import { SkyView, shortName } from './sky.js?v=0.1.455';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.455';
+import { initAccount, onAccount, account, signInGoogle, sendEmailLink, completeEmailLink, signOut, syncNow, pushSighting } from './account.js?v=0.1.455';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.455';
+import { cardArt } from './art.js?v=0.1.455';
+import { renderCard, cardLevel, artImage, lockedArt, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.455';
+import { applyBack } from './card-backs.js?v=0.1.455';
+import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.455';
+import { audioCtx } from './audio-ctx.js?v=0.1.455';
+import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume } from './music.js?v=0.1.455';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.455';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.455';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.455';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.455';
+import { TIER_INFO } from './rarity.js?v=0.1.455';
+import { SETS, albumList } from './sets.js?v=0.1.455';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.455';
+import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.455';
+import { shareCardEl } from './share-card.js?v=0.1.455';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.455';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.455';
+import { addStarfield } from './starfield.js?v=0.1.455';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -2688,6 +2688,10 @@ $('location-form').addEventListener('submit', () => setTimeout(() => closeSheet(
 document.querySelectorAll('[data-hl]').forEach((c) => c.addEventListener('change', renderSettings));
 $('chk-sound').addEventListener('change', (e) => writePref('sound', e.target.checked));
 $('chk-music').checked = musicOn();
+$('rng-sfx').value = Math.round(sfxVolume() * 100);
+$('rng-music').value = Math.round(musicVolume() * 100);
+$('rng-sfx').addEventListener('change', (e) => { try { localStorage.setItem('sfxVol', String(e.target.value / 100)); } catch {} sfx('collect'); }); // play a sample at the new level
+$('rng-music').addEventListener('input', (e) => setMusicVolume(e.target.value / 100));
 $('chk-music').addEventListener('change', (e) => setMusic(e.target.checked));
 // The music starts with the first tap anywhere (browsers need one before any sound).
 document.addEventListener('pointerdown', () => startMusic(), { once: true, capture: true });
@@ -2812,7 +2816,7 @@ document.querySelectorAll('.overlay.panel .panel-head').forEach((h) => {
 });
 // A tiny buzz (Android; iPhone web can't) on the switcher and toggles.
 document.addEventListener('change', (e) => { if (e.target.matches?.('input[type=checkbox]')) { buzz(8); sfx('toggle', { gain: 0.8 }); } });
-$('nav-collection').addEventListener('click', () => { buzz(8); sfx('step', { gain: 0.8 }); });
+$('nav-collection').addEventListener('click', () => buzz(8)); // no sound here (2026-10-11, Sevaan)
 
 // "Show me": an orange target flies from the row's icon to the circle as the panel slides away (2026-10-08 polish).
 function flyToCircle(fromEl) {

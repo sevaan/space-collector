@@ -144,10 +144,15 @@ D['patch'].append(('Kalimba pop', place(kalimba(G['G6'], 0.8, 0.3), kalimba(G['D
 D['complete'].append(('Choir + bell', place(choir([G['G4'], G['B4'], G['D5'], G['G5']], 2.6, 0.5, 0.8), seq(['D6', 'G6', 'B6'], 0.12, bell, 1.8, dur=1.4, decay=0.6) * 0.5, 0.3), dict(wet=0.3, size=2.0, peak_db=-12)))
 D['shiny'].append(('Soft shimmer', place(np.zeros(int(SR * 1.2)), sum(place(np.zeros(int(SR * 1.2)), kalimba(G[nn], 0.8, 0.3, 0.4), 0.05 * k) for k, nn in enumerate(['G6', 'B6', 'D7', 'E7', 'D7', 'B6'])), 0), dict(wet=0.32, size=1.8, peak_db=-16)))
 
+# Sideways swipe between cards in the collection (2026-10-11): a soft paper slide with a low felt touch, quieter than flip.
+D['page'] = [('Paper slide', place(place(np.zeros(int(SR * 0.3)), swish(0.16, 900, 2600, amp=0.35, peak=0.3), 0), 0.25 * felt(G['B4'], 0.15, 0.03), 0.02), dict(wet=0.08, soften=2600, peak_db=-22))]
+
 if __name__ == '__main__':
     import sys
     out = sys.argv[1]; man = {}
+    only = sys.argv[2:]
     for ev, lst in D.items():
+        if only and ev not in only: continue
         man[ev] = []
         for i, (label, sig, kw) in enumerate(lst):
             st = finish(np.asarray(sig, dtype=np.float64), **kw)

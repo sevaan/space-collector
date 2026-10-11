@@ -1,23 +1,23 @@
-import { sfx } from './sfx.js?v=0.1.454';
-import { expandFacts } from './catalog-facts.js?v=0.1.454';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.454';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.454';
-import { ticket } from './toast.js?v=0.1.454';
-import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.454';
-import { cardArt } from './art.js?v=0.1.454';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.454';
-import { applyBack } from './card-backs.js?v=0.1.454';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.454';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.454';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.454';
-import { loadConstellations, conList } from './constellations.js?v=0.1.454';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.454';
-import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.454';
-import { shareCardEl } from './share-card.js?v=0.1.454';
-import { removeSighting } from './account.js?v=0.1.454';
-import { allSightings, deleteSighting } from './store.js?v=0.1.454';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.454';
-import { SECRET_PATCHES } from './secrets.js?v=0.1.454';
+import { sfx } from './sfx.js?v=0.1.455';
+import { expandFacts } from './catalog-facts.js?v=0.1.455';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.455';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.455';
+import { ticket } from './toast.js?v=0.1.455';
+import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.455';
+import { cardArt } from './art.js?v=0.1.455';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.455';
+import { applyBack } from './card-backs.js?v=0.1.455';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.455';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.455';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.455';
+import { loadConstellations, conList } from './constellations.js?v=0.1.455';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.455';
+import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.455';
+import { shareCardEl } from './share-card.js?v=0.1.455';
+import { removeSighting } from './account.js?v=0.1.455';
+import { allSightings, deleteSighting } from './store.js?v=0.1.455';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.455';
+import { SECRET_PATCHES } from './secrets.js?v=0.1.455';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -552,7 +552,7 @@ function endSwipe(e) {
   const fast = Math.abs(dx) / Math.max(1, performance.now() - t) > 0.5; // px per ms
   if (Math.abs(dx) > window.innerWidth * 0.22 || (fast && Math.abs(dx) > 40)) {
     const dir = dx < 0 ? 1 : -1;
-    slideTo(-dir * window.innerWidth, 180);
+    slideTo(-dir * window.innerWidth, 180); sfx('page', { gap: 120 });
     setTimeout(() => {
       step(dir);
       slideTo(dir * window.innerWidth * 0.6, 0); // new card comes in from the other side

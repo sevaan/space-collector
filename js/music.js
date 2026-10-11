@@ -3,10 +3,14 @@
 // play sound before one), loops, dips under card reveals, and pauses when the app is hidden.
 // iPhone Safari ignores an audio element's volume, so the level goes through Web Audio (a gain node). The page's
 // audio session is "ambient", so the ring/silent switch mutes it and it never stops the player's own music.
-import { audioCtx } from './audio-ctx.js?v=0.1.454';
+import { audioCtx } from './audio-ctx.js?v=0.1.455';
 const SRC = 'assets/audio/permafrost.m4a', LEVEL = 0.3;
 let ctx = null, el = null, gain = null, playing = false;
 
+export const musicVolume = () => { try { const v = parseFloat(localStorage.getItem('musicVol')); return Number.isFinite(v) ? Math.max(0, Math.min(1, v)) : 1; } catch { return 1; } };
+const level = () => LEVEL * musicVolume();
+// Settings slider: save and glide to the new level.
+export function setMusicVolume(v) { try { localStorage.setItem('musicVol', String(v)); } catch {} if (playing) fadeTo(level(), 0.15); }
 export const musicOn = () => { try { return localStorage.getItem('music') !== '0'; } catch { return true; } };
 
 function fadeTo(v, s) {
@@ -25,7 +29,7 @@ export function startMusic() {
     }
     ctx.resume().catch(() => {});
     playing = true;
-    el.play().then(() => fadeTo(LEVEL, 4)).catch(() => { playing = false; });
+    el.play().then(() => fadeTo(level(), 4)).catch(() => { playing = false; });
   } catch { playing = false; }
 }
 export function stopMusic(fade = 0.8) {
@@ -38,7 +42,7 @@ export function setMusic(on) {
   if (on) startMusic(); else stopMusic();
 }
 // Dip under a card reveal so its sounds land, then come back.
-export function duckMusic(down) { if (playing) fadeTo(down ? LEVEL * 0.35 : LEVEL, down ? 0.4 : 1.5); }
+export function duckMusic(down) { if (playing) fadeTo(down ? level() * 0.35 : level(), down ? 0.4 : 1.5); }
 
 let wasPlaying = false;
 document.addEventListener('visibilitychange', () => {

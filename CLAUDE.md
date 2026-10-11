@@ -428,3 +428,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 2026-10-11 · Daytime planets: by day only Venus can show, and only when it is 30°+ from the Sun (sky.js sunSep), at 60trength; other planets fade with daylight. Sevaan asked why Venus showed by day (it was 20° from the Sun, near inferior conjunction).
 
 2026-10-11 · Motion without the tap: quickStart now listens quietly (trySensorsQuietly in sensors.js) and skips the "Tap anywhere" banner if motion events arrive within ~1.2s. The tap fallback now asks on touchend/click (iOS ignores pointerdown as a gesture) and keeps retrying instead of dropping to drag mode after one failed try. Sevaan saw the tap toast despite having granted motion.
+
+2026-10-11 · Sound pass: every effect plays at half level (sfx.js LEVEL 0.5) times a Settings "Sound volume" slider (localStorage sfxVol); "Music volume" slider (musicVol) scales music.js LEVEL. Collection-switch sound removed. New `page` sound (soft paper slide, sfx-synth.py D[page]) on sideways swipes between cards in the collection viewer. Run one event with `python3 scripts/sfx-synth.py OUT page`.

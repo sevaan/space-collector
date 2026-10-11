@@ -872,3 +872,9 @@ body.day .patch-coins { bottom: calc(var(--safe-bottom, 0px) + 114px); }
 #set-acct-sheet input[type="email"], #set-acct-sheet input[type="url"] { display: block; width: 100%; margin-top: 6px; }
 #set-acct-sheet button:disabled { opacity: .5; }
 #set-acct-sheet input[type="email"], #set-acct-sheet input[type="url"] { height: 46px; padding: 0 14px; border-radius: 12px; border: 1px solid #344654; background: #ffffff0d; color: var(--text); font: 500 16px var(--label); letter-spacing: .02em; }
+/* Settings volume sliders (2026-10-11) */
+.set-range { -webkit-appearance: none; appearance: none; flex: 0 0 44%; height: 28px; margin: 0; background: none; cursor: pointer; }
+.set-range::-webkit-slider-runnable-track { height: 4px; border-radius: 99px; background: #2a3a4c; }
+.set-range::-moz-range-track { height: 4px; border-radius: 99px; background: #2a3a4c; }
+.set-range::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; margin-top: -9px; border-radius: 50%; background: var(--gold); border: 0; }
+.set-range::-moz-range-thumb { width: 22px; height: 22px; border-radius: 50%; background: var(--gold); border: 0; }
