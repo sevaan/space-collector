@@ -1,17 +1,17 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.465';
+import { extinction } from './sky-limit.js?v=0.1.467';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.465';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.467';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.465';
-import { createCloudGL } from './clouds-gl.js?v=0.1.465';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.467';
+import { createCloudGL } from './clouds-gl.js?v=0.1.467';
 // Cloud colours by light: sunlit tops, shadowed bellies, and the horizon haze they melt into (0–1 RGB).
 const CLOUD_LIGHT = {
   day: { lit: [1, 1, 1], shade: [0.62, 0.68, 0.77], haze: [0.82, 0.87, 0.93] },
   dusk: { lit: [1, 0.8, 0.68], shade: [0.36, 0.33, 0.42], haze: [0.62, 0.5, 0.52] },
   night: { lit: [0.22, 0.25, 0.31], shade: [0.1, 0.12, 0.16], haze: [0.14, 0.15, 0.2] },
 };
-import { TIER_INFO } from './rarity.js?v=0.1.465';
+import { TIER_INFO } from './rarity.js?v=0.1.467';
 
 const RAD = Math.PI / 180;
 const BELOW_ICON = 13; // every satellite under the horizon, passes and halo alike
@@ -346,27 +346,8 @@ export class SkyView {
     let hit = null;
     this.belowHitId = null;
     if (this.belowFree && k > 0.5) {
-      const rc = this.ring ?? { x: this.cx, y: this.cy, r: this.reticlePx };
-      for (const g of below) { if (g.enu[2] >= 0) continue; const q = this.project(g.enu); if (!q) continue;
-        const d = Math.hypot(q.x - rc.x, q.y - rc.y); if (d < rc.r && (!hit || d < hit.d)) hit = { g, d }; }
+      hit = this.ghostHit(below.filter((g) => g.enu[2] < 0), 'BELOW THE HORIZON', INK);
       this.belowHitId = hit?.g.id ?? null;
-      if (hit) {
-        const g = hit.g, y0 = rc.y - rc.r - 26;
-        this.clearZone ??= { left: this.cx - Math.min(190, this.w / 2 - 12), right: this.cx + Math.min(190, this.w / 2 - 12), top: rc.y - rc.r - 100, bottom: rc.y + rc.r + 75 }; // keep sky labels off its name
-        ctx.save(); ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic'; ctx.shadowColor = 'rgba(0,0,0,.6)'; ctx.shadowBlur = 4;
-        ctx.font = `500 13px ${FONT}`; ctx.fillStyle = 'rgba(189,190,169,.95)';
-        if ('letterSpacing' in ctx) ctx.letterSpacing = '2.5px';
-        ctx.fillText(g.owned === undefined ? 'BELOW THE HORIZON' : g.owned ? 'BELOW THE HORIZON · IN YOUR COLLECTION' : 'BELOW THE HORIZON · NOT COLLECTED YET', rc.x, y0 - 30, this.w - 32);
-        if ('letterSpacing' in ctx) ctx.letterSpacing = '0px';
-        ctx.font = `400 26px ${DISPLAY_FONT}`; ctx.fillStyle = `rgb(${INK})`;
-        ctx.fillText(g.name.toUpperCase(), rc.x, y0, this.w - 32); // squeezed rather than clipped on narrow phones (QA 2026-10-08)
-        ctx.font = `500 15px ${FONT}`; ctx.fillStyle = `rgba(${INK},.75)`;
-        if ('letterSpacing' in ctx) ctx.letterSpacing = '1px';
-        if (g.what) { ctx.font = `500 16px ${FONT}`; if ('letterSpacing' in ctx) ctx.letterSpacing = '0px'; ctx.fillStyle = `rgba(${INK},.92)`; ctx.fillText(g.what, rc.x, rc.y + rc.r + 34, this.w - 32); ctx.font = `500 13px ${FONT}`; if ('letterSpacing' in ctx) ctx.letterSpacing = '1px'; ctx.fillStyle = `rgba(${INK},.7)`; }
-        if (g.place) ctx.fillText(g.place.toUpperCase(), rc.x, rc.y + rc.r + 58, this.w - 32);
-        ctx.fillText([g.note ? g.note.replace(/^up /, 'comes up ') : '', g.where ? `in the ${g.where}` : ''].filter(Boolean).join(' · ').toUpperCase(), rc.x, rc.y + rc.r + (g.what ? (g.place ? 80 : 58) : 34), this.w - 32);
-        ctx.restore();
-      }
     }
     // Where each one has been and where it's going under the ground, drawn exactly like a satellite's trail in the
     // sky (drawTrail, 2026-10-07 consistency): a faint solid line behind it, the dotted orange prediction ahead up to
@@ -413,19 +394,57 @@ export class SkyView {
       const r = Math.max(0.38, Math.min(2.2, 1.8 - 0.27 * s.mag)), a = Math.max(0.12, Math.min(0.75, 0.75 - 0.1 * s.mag)) * Math.min(1, (starLimit - s.mag) / 0.5 + 0.15) * k;
       ctx.fillStyle = t.star(a); ctx.beginPath(); ctx.arc(p.x, p.y, r, 0, Math.PI * 2); ctx.fill();
     }
-    if (sats?.length) {
-      // Satellites as their icons, revealed in a halo round the circle (2026-10-11, Sevaan): full strength near it,
-      // fading out further away, so sweeping the phone across the ground uncovers what's down there.
-      const rc = this.ring ?? { x: this.cx, y: this.cy, r: this.reticlePx }, r1 = rc.r * 1.4, r2 = rc.r * 3.2;
-      for (const s of sats) {
-        const p = this.project(s.enu); if (!this.onScreen(p, 12)) continue;
-        const d = Math.hypot(p.x - rc.x, p.y - rc.y); if (d >= r2) continue;
-        const h = d <= r1 ? 1 : 1 - (d - r1) / (r2 - r1);
-        ctx.globalAlpha = 0.8 * h * h * (3 - 2 * h) * k;
-        this.drawIcon(this.iconKind(s.obj), p.x, p.y, BELOW_ICON, t.sat);
-      }
+    if (sats?.length) this.drawHalo(sats, k, t.sat);
+    ctx.restore();
+  }
+  // Satellites as their icons, revealed in a halo round the circle (2026-10-11, Sevaan): full strength near it,
+  // fading out further away, so sweeping the phone across the ground (or the daytime sky) uncovers what's there.
+  drawHalo(sats, k, color) {
+    const ctx = this.ctx, rc = this.ring ?? { x: this.cx, y: this.cy, r: this.reticlePx }, r1 = rc.r * 1.4, r2 = rc.r * 3.2;
+    ctx.save();
+    for (const s of sats) {
+      const p = this.project(s.enu); if (!this.onScreen(p, 12)) continue;
+      const d = Math.hypot(p.x - rc.x, p.y - rc.y); if (d >= r2) continue;
+      const h = d <= r1 ? 1 : 1 - (d - r1) / (r2 - r1);
+      ctx.globalAlpha = 0.8 * h * h * (3 - 2 * h) * k;
+      this.drawIcon(this.iconKind(s.obj), p.x, p.y, BELOW_ICON, color);
     }
     ctx.restore();
+  }
+  // In the circle: kicker, name, description and one line, for something you can see but not collect (below the
+  // horizon, or up by day). Returns the hit or null.
+  ghostHit(list, kicker, ink, { day = false } = {}) {
+    const rc = this.ring ?? { x: this.cx, y: this.cy, r: this.reticlePx };
+    let hit = null;
+    for (const g of list) { const q = this.project(g.enu); if (!q) continue;
+      const d = Math.hypot(q.x - rc.x, q.y - rc.y); if (d < rc.r && (!hit || d < hit.d)) hit = { g, d }; }
+    if (!hit) return null;
+    const ctx = this.ctx, g = hit.g, y0 = rc.y - rc.r - 26, INK = ink;
+    this.clearZone ??= { left: this.cx - Math.min(190, this.w / 2 - 12), right: this.cx + Math.min(190, this.w / 2 - 12), top: rc.y - rc.r - 100, bottom: rc.y + rc.r + 75 }; // keep sky labels off its name
+    ctx.save(); ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic'; ctx.shadowColor = day ? 'rgba(255,255,255,.75)' : 'rgba(0,0,0,.6)'; ctx.shadowBlur = day ? 6 : 4;
+    ctx.font = `500 13px ${FONT}`; ctx.fillStyle = day ? `rgba(${INK},.75)` : 'rgba(189,190,169,.95)';
+    if ('letterSpacing' in ctx) ctx.letterSpacing = '2.5px';
+    ctx.fillText(g.owned === undefined ? kicker : `${kicker} · ${g.owned ? 'IN YOUR COLLECTION' : 'NOT COLLECTED YET'}`, rc.x, y0 - 30, this.w - 32);
+    if ('letterSpacing' in ctx) ctx.letterSpacing = '0px';
+    ctx.font = `400 26px ${DISPLAY_FONT}`; ctx.fillStyle = `rgb(${INK})`;
+    ctx.fillText(g.name.toUpperCase(), rc.x, y0, this.w - 32); // squeezed rather than clipped on narrow phones (QA 2026-10-08)
+    ctx.font = `500 15px ${FONT}`; ctx.fillStyle = `rgba(${INK},.75)`;
+    if ('letterSpacing' in ctx) ctx.letterSpacing = '1px';
+    if (g.what) { ctx.font = `500 16px ${FONT}`; if ('letterSpacing' in ctx) ctx.letterSpacing = '0px'; ctx.fillStyle = `rgba(${INK},.92)`; ctx.fillText(g.what, rc.x, rc.y + rc.r + 34, this.w - 32); ctx.font = `500 13px ${FONT}`; if ('letterSpacing' in ctx) ctx.letterSpacing = '1px'; ctx.fillStyle = `rgba(${INK},.7)`; }
+    ctx.fillText([g.note ? g.note.replace(/^up /, 'comes up ') : '', g.where ? `in the ${g.where}` : ''].filter(Boolean).join(' · ').toUpperCase(), rc.x, rc.y + rc.r + (g.what ? 58 : 34), this.w - 32);
+    ctx.restore();
+    return hit;
+  }
+  // Up in the daytime sky (2026-10-11, Sevaan): the same halo and naming as below the horizon, for the bright
+  // satellites overhead that daylight hides. Not collectable.
+  drawDaySats(sats) {
+    // Dark ink on a pale sky (cream vanished against the clouds); red in night mode.
+    const night = this.theme === THEMES.night, INK = night ? '255,110,90' : '20,34,54';
+    this.drawHalo(sats, 1, night ? this.theme.sat : 'rgba(24,40,62,.9)');
+    this.dayHitId = null;
+    if (!this.belowFree) return;
+    const hit = this.ghostHit(sats, 'HIDDEN BY DAYLIGHT', INK, { day: !night });
+    this.dayHitId = hit?.g.id ?? null;
   }
   // Local weather over the sky (js/weather.js): drifting cloud by cover, a fog wash, light rain or snow.
   // Screen-space and deliberately quiet: it should tell you why the sky looks empty, not perform.
@@ -1239,7 +1258,7 @@ export class SkyView {
 
   // safeTop/safeBottom are HUD insets in CSS pixels; centerY is an optional pixel
   // override. Projection and the reticle always share the same cx/cy.
-  draw(basis, items, { showDim, sky, bodies, milky, lines = true, targetId = null, time = 0, safeTop = 150, safeBottom = 230, centerY, starLimit = null, naturalTargetName = null, quietTarget = false, below = null, belowSats = null, belowStarLimit = 6.5, ownedTarget = false, sunEl = -90, ghosts = null, weather = null, newFind = false, rising = null, landscape = false, lockedOn = null, planes = null, planeHit = null, planeTrail = null, naturalTarget = null, fossil = null, ufo = null, secrets = null } = {}) {
+  draw(basis, items, { showDim, sky, bodies, milky, lines = true, targetId = null, time = 0, safeTop = 150, safeBottom = 230, centerY, starLimit = null, naturalTargetName = null, quietTarget = false, below = null, belowSats = null, daySats = null, belowStarLimit = 6.5, ownedTarget = false, sunEl = -90, ghosts = null, weather = null, newFind = false, rising = null, landscape = false, lockedOn = null, planes = null, planeHit = null, planeTrail = null, naturalTarget = null, fossil = null, ufo = null, secrets = null } = {}) {
     this.basis = basis;
     this.safeTop = Math.max(12, Math.min(safeTop, this.h * 0.45));
     this.safeBottom = Math.max(12, Math.min(safeBottom, this.h - this.safeTop - 100));
@@ -1270,6 +1289,7 @@ export class SkyView {
     this.belowFree = !targetId && !planeHit; // the circle can name a below-horizon thing only when it isn't busy
     if (below?.length && belowSats?.length) { const ids = new Set(below.filter((g) => g.obj).map((g) => g.obj.id)); belowSats = belowSats.filter((s) => !ids.has(s.obj.id)); } // a pass is drawn once
     if (this.basis.back[2] < 0.15 && this.feetA < 0.98) this.drawBelowSky(sky, belowSats, belowStarLimit);
+    if (daySats?.length && this.basis.back[2] > -0.15) this.drawDaySats(daySats); else this.dayHitId = null;
     if ((below?.length || belowSats?.length) && this.basis.back[2] < 0.15 && this.feetA < 0.98) this.drawBelow([...(below ?? []), ...(belowSats ?? []).map((s) => ({ enu: s.enu, kind: 'dot', id: s.obj.id, name: s.name, what: s.what, place: s.place, note: s.note ?? '', where: '', owned: s.owned }))]);
     this.drawFeet(below);
     this.drawRising(rising);
