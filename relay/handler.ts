@@ -4,7 +4,8 @@
 // and hands the answer back with CORS headers. Only our own pages may use it.
 //   GET /?lat=44.31&lon=-78.32&dist=40   ->  adsb.lol /v2/point/{lat}/{lon}/{dist}
 
-const ALLOWED = [/^https:\/\/sevaan\.github\.io$/, /^http:\/\/localhost(:\d+)?$/, /^http:\/\/127\.0\.0\.1(:\d+)?$/];
+// The native apps (Capacitor) load from capacitor://localhost on iPhone and https://localhost on Android (2026-10-11).
+const ALLOWED = [/^https:\/\/sevaan\.github\.io$/, /^http:\/\/localhost(:\d+)?$/, /^http:\/\/127\.0\.0\.1(:\d+)?$/, /^capacitor:\/\/localhost$/, /^https:\/\/localhost$/];
 const cache = new Map<string, { at: number; body: string; status: number }>(); // 5 s, so nearby users share requests
 
 export default async function handler(request: Request): Promise<Response> {
