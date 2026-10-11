@@ -1,17 +1,17 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.459';
+import { extinction } from './sky-limit.js?v=0.1.460';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.459';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.460';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.459';
-import { createCloudGL } from './clouds-gl.js?v=0.1.459';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.460';
+import { createCloudGL } from './clouds-gl.js?v=0.1.460';
 // Cloud colours by light: sunlit tops, shadowed bellies, and the horizon haze they melt into (0–1 RGB).
 const CLOUD_LIGHT = {
   day: { lit: [1, 1, 1], shade: [0.62, 0.68, 0.77], haze: [0.82, 0.87, 0.93] },
   dusk: { lit: [1, 0.8, 0.68], shade: [0.36, 0.33, 0.42], haze: [0.62, 0.5, 0.52] },
   night: { lit: [0.22, 0.25, 0.31], shade: [0.1, 0.12, 0.16], haze: [0.14, 0.15, 0.2] },
 };
-import { TIER_INFO } from './rarity.js?v=0.1.459';
+import { TIER_INFO } from './rarity.js?v=0.1.460';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -407,14 +407,15 @@ export class SkyView {
       ctx.fillStyle = t.star(a); ctx.beginPath(); ctx.arc(p.x, p.y, r, 0, Math.PI * 2); ctx.fill();
     }
     if (sats?.length) {
-      // Satellites in the satellite-glow colour (orange; red at night) so they read apart from the cream stars;
-      // brighter ones slightly bigger and stronger.
-      ctx.fillStyle = `rgb(${t.satGlow.join(',')})`;
+      // Satellites as their icons, revealed in a halo round the circle (2026-10-11, Sevaan): full strength near it,
+      // fading out further away, so sweeping the phone across the ground uncovers what's down there.
+      const rc = this.ring ?? { x: this.cx, y: this.cy, r: this.reticlePx }, r1 = rc.r * 1.4, r2 = rc.r * 3.2;
       for (const s of sats) {
-        const p = this.project(s.enu); if (!this.onScreen(p, 8)) continue;
-        const m = s.mag ?? 5;
-        ctx.globalAlpha = Math.max(0.28, Math.min(0.75, 0.9 - 0.11 * m)) * k;
-        ctx.beginPath(); ctx.arc(p.x, p.y, m < 2 ? 2 : m < 4 ? 1.5 : 1.1, 0, Math.PI * 2); ctx.fill();
+        const p = this.project(s.enu); if (!this.onScreen(p, 12)) continue;
+        const d = Math.hypot(p.x - rc.x, p.y - rc.y); if (d >= r2) continue;
+        const h = d <= r1 ? 1 : 1 - (d - r1) / (r2 - r1);
+        ctx.globalAlpha = 0.8 * h * h * (3 - 2 * h) * k;
+        this.drawIcon(this.iconKind(s.obj), p.x, p.y, (s.mag ?? 3) < 1.5 ? 16 : 13, t.sat);
       }
     }
     ctx.restore();

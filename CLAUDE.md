@@ -438,3 +438,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 2026-10-11 · Below the horizon is always a dark-site sky: BelowModel/lookBelow in orbit.js sweep the catalogue (1/40 per frame, only while looking down) for sunlit satellites with stdMag ≤ the dark-site limit (skyLimit SB_MAX), judged as if overhead, not at true range (true range gave ~0 at night). sky.js drawBelowSky draws them as small satGlow-coloured dots plus stars to the dark-site star limit; the circle names them via drawBelow (kind dot). Planet mag>2 filter dropped. ~3,800 far-side sats at once; thin with a stdMag cap if it reads too busy.
 
 2026-10-11 · Far-side satellites thinned: only stdMag < 3 (BELOW_SAT_MAG 2.9 in main.js), ~300 under the whole horizon instead of ~3,800. Sevaan: "definitely too many".
+
+2026-10-11 · Far-side satellites are now their icons (iconKind, 13–16px, t.sat) shown only in a halo round the circle: full within 1.4× ring radius, fading out by 3.2× (drawBelowSky), so looking down and sweeping reveals them.
