@@ -1,0 +1,8 @@
+{
+  "appId": "io.github.sevaan.spacecollector",
+  "appName": "Space Collector",
+  "webDir": "www",
+  "backgroundColor": "#080f1b",
+  "ios": { "contentInset": "never", "backgroundColor": "#080f1b" },
+  "android": { "backgroundColor": "#080f1b" }
+}

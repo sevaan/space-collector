@@ -1,0 +1,19 @@
+{
+  "name": "space-collector-native",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Native iOS/Android shell for Space Collector (Capacitor). The web app at the repo root stays build-free.",
+  "scripts": {
+    "copy": "node copy-web.mjs",
+    "ios": "node copy-web.mjs && npx cap sync ios",
+    "android": "node copy-web.mjs && npx cap sync android"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.5.3",
+    "@capacitor/core": "^8.5.3",
+    "@capacitor/ios": "^8.5.3"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^8.5.3"
+  }
+}
