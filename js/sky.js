@@ -1,10 +1,17 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.455';
+import { extinction } from './sky-limit.js?v=0.1.456';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.455';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.456';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.455';
-import { TIER_INFO } from './rarity.js?v=0.1.455';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.456';
+import { createCloudGL } from './clouds-gl.js?v=0.1.456';
+// Cloud colours by light: sunlit tops, shadowed bellies, and the horizon haze they melt into (0–1 RGB).
+const CLOUD_LIGHT = {
+  day: { lit: [1, 1, 1], shade: [0.62, 0.68, 0.77], haze: [0.82, 0.87, 0.93] },
+  dusk: { lit: [1, 0.8, 0.68], shade: [0.36, 0.33, 0.42], haze: [0.62, 0.5, 0.52] },
+  night: { lit: [0.22, 0.25, 0.31], shade: [0.1, 0.12, 0.16], haze: [0.14, 0.15, 0.2] },
+};
+import { TIER_INFO } from './rarity.js?v=0.1.456';
 
 const RAD = Math.PI / 180;
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
@@ -395,14 +402,26 @@ export class SkyView {
     if (cover > 0.08) {
       // Clouds live in the sky (2026-10-07, Sevaan: they were stuck to the glass): each has a fixed spot by azimuth
       // and height, drifts slowly round, and is projected like a star, so it stays put as you move the phone.
-      const n = Math.round(10 + cover * 30), rgb = f > 0.5 ? [245, 248, 250] : f > 0 ? [120, 110, 120] : [40, 50, 66];
-      for (let i = 0; i < n; i++) {
-        const a = (i * 0.618034) % 1, b = ((i * 0.381966) + 0.17) % 1;
-        const az = (a * 360 + sec * (0.25 + b * 0.25)) % 360, el = 6 + Math.pow(b, 1.3) * 62;
-        const p = this.project(enuFromAzEl(az, el)); if (!p) continue;
-        const wDeg = 16 + a * 22, w = this.f * Math.tan(wDeg * RAD) / Math.max(0.35, p.c.z), h = w * (0.24 + (1 - el / 70) * 0.1);
-        if (p.x < -w || p.x > this.w + w || p.y < -h * 2 || p.y > this.h + h * 2) continue;
-        this.blob(p.x, p.y, w, h, rgb, 0.16 + cover * 0.5 * (f > 0 ? 1 : 0.7));
+      // The cloud deck (js/clouds-gl.js): real perspective, wind drift, lit from the Sun's side. Falls back to the
+      // old soft blobs where WebGL isn't available.
+      if (this.cloudGL?.lost) this.cloudGL = undefined;
+      if (this.cloudGL === undefined) { try { this.cloudGL = createCloudGL(); } catch { this.cloudGL = null; } }
+      if (this.cloudGL && this.basis) {
+        const L = f > 0.5 ? CLOUD_LIGHT.day : f > 0 ? CLOUD_LIGHT.dusk : CLOUD_LIGHT.night;
+        const sun = this.sunEnu ?? [0, -0.5, 0.5];
+        const out = this.cloudGL.render({ basis: this.basis, w: this.w, h: this.h, f: this.f, cx: this.cx, cy: this.cy, scale: 0.75, sun,
+          wind: [sec * 0.012, sec * 0.004], cover, alpha: f > 0 ? 0.95 : 0.7, ...L });
+        ctx.drawImage(out, 0, 0, this.w, this.h);
+      } else {
+        const n = Math.round(10 + cover * 30), rgb = f > 0.5 ? [245, 248, 250] : f > 0 ? [120, 110, 120] : [40, 50, 66];
+        for (let i = 0; i < n; i++) {
+          const a = (i * 0.618034) % 1, b = ((i * 0.381966) + 0.17) % 1;
+          const az = (a * 360 + sec * (0.25 + b * 0.25)) % 360, el = 6 + Math.pow(b, 1.3) * 62;
+          const p = this.project(enuFromAzEl(az, el)); if (!p) continue;
+          const w = this.f * Math.tan((16 + a * 22) * RAD) / Math.max(0.35, p.c.z), h = w * (0.24 + (1 - el / 70) * 0.1);
+          if (p.x < -w || p.x > this.w + w || p.y < -h * 2 || p.y > this.h + h * 2) continue;
+          this.blob(p.x, p.y, w, h, rgb, 0.16 + cover * 0.5 * (f > 0 ? 1 : 0.7));
+        }
       }
     }
     if (wx.kind === 'fog') { const g = ctx.createLinearGradient(0, this.h * 0.3, 0, this.h); g.addColorStop(0, 'rgba(225,230,233,0)'); g.addColorStop(1, f > 0 ? 'rgba(225,230,233,.75)' : 'rgba(120,128,140,.55)'); ctx.fillStyle = g; ctx.fillRect(0, 0, this.w, this.h); }
@@ -1200,7 +1219,7 @@ export class SkyView {
     // Day factor: 0 at night, 1 in full daylight (civil twilight in between). Drives the sky tone and what shows.
     this.dayF = this.theme === THEMES.night ? 0 : Math.max(0, Math.min(1, (sunEl + 8) / 12));
     this.starLimit = starLimit; this.sunEl = sunEl;
-    { const s = bodies?.find?.((b) => b.kind === 'sun'); this.sunAz = s ? (Math.atan2(s.enu[0], s.enu[1]) / RAD + 360) % 360 : null; }
+    { const s = bodies?.find?.((b) => b.kind === 'sun'); this.sunAz = s ? (Math.atan2(s.enu[0], s.enu[1]) / RAD + 360) % 360 : null; this.sunEnu = s?.enu ?? null; }
     this.drawBackground();
     if ((this.dayF ?? 0) < 0.2 && !this.camera) this.drawMilkyWay(milky); // no Milky Way in camera view
     if (sky && (this.dayF ?? 0) < 0.6) this.drawStars(sky, { lines: lines && this.dayF < 0.2, time: this.reducedMotion ? 0 : time, starLimit });
