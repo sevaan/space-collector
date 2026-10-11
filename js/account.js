@@ -8,7 +8,8 @@
 //   · here, uploaded before, gone from the cloud → deleted on another device, so deleted here
 //   · deleted here while offline → remembered (localStorage acctDeleted) and deleted from the cloud next sync
 // Firebase loads only when someone signs in or was signed in before, so a blocked or slow Google never stops the app.
-import { allSightings, addSighting, putSighting, deleteSighting } from './store.js?v=0.1.472';
+import { allSightings, addSighting, putSighting, deleteSighting } from './store.js?v=0.1.474';
+import { isNative, plugin } from './native.js?v=0.1.474';
 
 const FB = 'https://www.gstatic.com/firebasejs/12.4.0/';
 const CONFIG = {
@@ -33,7 +34,10 @@ async function load() {
   if (fb) return fb;
   loading ??= (async () => {
     const [A, Au, F] = await Promise.all([import(`${FB}firebase-app.js`), import(`${FB}firebase-auth.js`), import(`${FB}firebase-firestore.js`)]);
-    const app = A.initializeApp(CONFIG), auth = Au.getAuth(app), db = F.getFirestore(app);
+    // In the native app there's no popup or redirect sign-in (Google blocks it in app web views), so auth starts
+    // without the popup resolver, which otherwise tries to load an iframe from authDomain and stalls.
+    const app = A.initializeApp(CONFIG), db = F.getFirestore(app);
+    const auth = isNative() ? Au.initializeAuth(app, { persistence: Au.indexedDBLocalPersistence }) : Au.getAuth(app);
     fb = { auth, db, Au, F };
     Au.onAuthStateChanged(auth, (u) => {
       if (u) { ls.set('acct', JSON.stringify({ uid: u.uid, email: u.email, name: u.displayName, syncedAt: account()?.syncedAt ?? null })); emit(); syncNow(); }
@@ -53,11 +57,22 @@ export async function initAccount() {
 
 export async function signInGoogle() {
   const { auth, Au } = await load();
+  if (isNative()) {
+    // Google's own sign-in sheet on the phone (@capacitor-firebase/authentication, skipNativeAuth), then the same
+    // Firebase web session as the website, so backup and sync are unchanged (2026-10-11).
+    const r = await plugin('FirebaseAuthentication').signInWithGoogle();
+    const c = r?.credential; if (!c?.idToken) throw new Error('Google sign-in was cancelled.');
+    await Au.signInWithCredential(auth, Au.GoogleAuthProvider.credential(c.idToken, c.accessToken));
+    return;
+  }
   await Au.signInWithPopup(auth, new Au.GoogleAuthProvider());
 }
+// Where an emailed sign-in link should land: the website (the app's own address, capacitor://localhost, isn't a
+// web address; the app then takes the pasted link, like the Home Screen app).
+const LINK_HOME = 'https://sevaan.github.io/space-collector/';
 export async function sendEmailLink(email) {
   const { auth, Au } = await load();
-  await Au.sendSignInLinkToEmail(auth, email, { url: `${location.origin}${location.pathname}`, handleCodeInApp: true });
+  await Au.sendSignInLinkToEmail(auth, email, { url: isNative() ? LINK_HOME : `${location.origin}${location.pathname}`, handleCodeInApp: true });
   ls.set('emailForSignIn', email);
 }
 // The emailed link, opened here (or pasted in, for the Home Screen app, which the link can't open).
@@ -72,6 +87,7 @@ export async function completeEmailLink(url, email = ls.get('emailForSignIn')) {
 export async function signOut() {
   if (!fb) await load();
   await fb.Au.signOut(fb.auth);
+  if (isNative()) try { await plugin('FirebaseAuthentication').signOut(); } catch {} // forget the Google account choice too
   ls.set('acct', null); emit();
 }
 

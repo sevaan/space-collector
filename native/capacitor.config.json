@@ -3,6 +3,36 @@
   "appName": "Space Collector",
   "webDir": "www",
   "backgroundColor": "#080f1b",
-  "ios": { "contentInset": "never", "backgroundColor": "#080f1b" },
-  "android": { "backgroundColor": "#080f1b" }
+  "ios": {
+    "contentInset": "never",
+    "backgroundColor": "#080f1b"
+  },
+  "android": {
+    "backgroundColor": "#080f1b"
+  },
+  "plugins": {
+    "FirebaseAuthentication": {
+      "skipNativeAuth": true,
+      "providers": [
+        "google.com"
+      ]
+    }
+  },
+  "experimental": {
+    "ios": {
+      "spm": {
+        "swiftToolsVersion": "6.1",
+        "packageOptions": {
+          "@capacitor-firebase/authentication": {
+            "symlink": true
+          }
+        },
+        "packageTraits": {
+          "@capacitor-firebase/authentication": [
+            "Google"
+          ]
+        }
+      }
+    }
+  }
 }

@@ -1,47 +1,47 @@
-import * as Secrets from './secrets.js?v=0.1.472';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.472';
-import * as Ufo from './ufo.js?v=0.1.472';
-import * as Fossil from './fossil.js?v=0.1.472';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.472';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.472';
-import { toast, ticket, dropToast, toastPending, onTicketShown } from './toast.js?v=0.1.472';
-import { VERSION } from './version.js?v=0.1.472';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, overEarth, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.472';
-import { placeName } from './geo.js?v=0.1.472';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.472';
-import { conArt } from './con-art.js?v=0.1.472';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.472';
-import { CON_FIGURES } from './con-figures.js?v=0.1.472';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.472';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.472';
-import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.472';
-import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.472';
-import { conList } from './constellations.js?v=0.1.472';
-import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.472';
-import { SkyView, shortName } from './sky.js?v=0.1.472';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.472';
-import { isPlus, setPlusForTesting, onPlus, PLUS_PERKS } from './plus.js?v=0.1.472';
-import { isNative, getPosition } from './native.js?v=0.1.472';
-import { initAccount, onAccount, account, signInGoogle, sendEmailLink, completeEmailLink, signOut, syncNow, pushSighting } from './account.js?v=0.1.472';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.472';
-import { cardArt } from './art.js?v=0.1.472';
-import { renderCard, cardLevel, artImage, lockedArt, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.472';
-import { applyBack } from './card-backs.js?v=0.1.472';
-import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.472';
-import { audioCtx } from './audio-ctx.js?v=0.1.472';
-import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume } from './music.js?v=0.1.472';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.472';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.472';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.472';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.472';
-import { TIER_INFO } from './rarity.js?v=0.1.472';
-import { SETS, albumList } from './sets.js?v=0.1.472';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.472';
-import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.472';
-import { shareCardEl } from './share-card.js?v=0.1.472';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.472';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.472';
-import { addStarfield } from './starfield.js?v=0.1.472';
+import * as Secrets from './secrets.js?v=0.1.474';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.474';
+import * as Ufo from './ufo.js?v=0.1.474';
+import * as Fossil from './fossil.js?v=0.1.474';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.474';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.474';
+import { toast, ticket, dropToast, toastPending, onTicketShown } from './toast.js?v=0.1.474';
+import { VERSION } from './version.js?v=0.1.474';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, overEarth, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.474';
+import { placeName } from './geo.js?v=0.1.474';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.474';
+import { conArt } from './con-art.js?v=0.1.474';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.474';
+import { CON_FIGURES } from './con-figures.js?v=0.1.474';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.474';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.474';
+import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.474';
+import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.474';
+import { conList } from './constellations.js?v=0.1.474';
+import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.474';
+import { SkyView, shortName } from './sky.js?v=0.1.474';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.474';
+import { isPlus, setPlusForTesting, onPlus, PLUS_PERKS } from './plus.js?v=0.1.474';
+import { isNative, getPosition } from './native.js?v=0.1.474';
+import { initAccount, onAccount, account, signInGoogle, sendEmailLink, completeEmailLink, signOut, syncNow, pushSighting } from './account.js?v=0.1.474';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.474';
+import { cardArt } from './art.js?v=0.1.474';
+import { renderCard, cardLevel, artImage, lockedArt, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.474';
+import { applyBack } from './card-backs.js?v=0.1.474';
+import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.474';
+import { audioCtx } from './audio-ctx.js?v=0.1.474';
+import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume } from './music.js?v=0.1.474';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.474';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.474';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.474';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.474';
+import { TIER_INFO } from './rarity.js?v=0.1.474';
+import { SETS, albumList } from './sets.js?v=0.1.474';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.474';
+import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.474';
+import { shareCardEl } from './share-card.js?v=0.1.474';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.474';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.474';
+import { addStarfield } from './starfield.js?v=0.1.474';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -1756,7 +1756,7 @@ function updateNextPassChip() {
 $('nextpass').addEventListener('click', () => { showVTab('tonight'); openPanel('visible'); });
 
 // Settings → Pass alerts (#14). Hidden until the push val is deployed (js/pass-alerts.js PUSH).
-$('row-push').hidden = !pushConfigured(); $('chk-push').checked = pushOn();
+$('row-push').hidden = !pushConfigured() || isNative(); $('chk-push').checked = pushOn(); // web push doesn't reach the native app; native notifications come later
 if (pushConfigured()) setTimeout(() => prefetchKey()?.catch(() => {}), 4000); // so turning alerts on doesn't wait on the network
 $('chk-push').addEventListener('change', async (e) => {
   if (!e.target.checked) { await disablePush(); toast('Pass alerts off.', 2000); return; }
@@ -2731,7 +2731,8 @@ const openSheet = (id) => { clearTimeout(sheetTimers.get(id)); $(id).hidden = fa
 const closeSheet = (el) => { el.classList.remove('in'); clearTimeout(sheetTimers.get(el.id)); sheetTimers.set(el.id, setTimeout(() => { if (!el.classList.contains('in')) el.hidden = true; }, 260)); renderSettings(); };
 $('set-loc-open').addEventListener('click', () => openSheet('set-loc-sheet'));
 // ---------- account (2026-10-10, js/account.js) ----------
-const standaloneIOS = () => (navigator.standalone === true || matchMedia('(display-mode: standalone)').matches) && /iP(hone|ad|od)/.test(navigator.userAgent);
+// The emailed link can't open this copy of the app: the iPhone Home Screen web app, or the native app (2026-10-11).
+const standaloneIOS = () => isNative() || ((navigator.standalone === true || matchMedia('(display-mode: standalone)').matches) && /iP(hone|ad|od)/.test(navigator.userAgent));
 function renderAccount(extra = {}) {
   const a = account(), ago = (t) => { if (!t) return 'not yet'; const m = Math.round((Date.now() - t) / 60000); return m < 1 ? 'just now' : m < 60 ? `${m} min ago` : m < 1440 ? `${Math.round(m / 60)} h ago` : new Date(t).toLocaleDateString(); };
   const n = state.sightings.filter((s) => !s.sim).length;
@@ -2751,7 +2752,7 @@ const acctBusy = (on) => document.querySelectorAll('#set-acct-sheet button').for
 $('acct-google').addEventListener('click', async () => {
   acctBusy(true); renderAccount({ msg: '' });
   try { await signInGoogle(); renderAccount({ msg: '' }); toast('Signed in. Your collection is backing up.', 3000); }
-  catch (e) { renderAccount({ msg: /popup-closed|cancelled/.test(e?.code ?? '') ? '' : standaloneIOS() ? 'Google sign-in needs Safari here. Try the email link instead.' : `Couldn't sign in (${e?.code ?? e?.message ?? 'error'}).` }); }
+  catch (e) { renderAccount({ msg: /popup-closed|cancelled/.test(e?.code ?? '') ? '' : standaloneIOS() && !isNative() ? 'Google sign-in needs Safari here. Try the email link instead.' : `Couldn't sign in (${e?.code ?? e?.message ?? 'error'}).` }); }
   acctBusy(false);
 });
 $('acct-email-form').addEventListener('submit', async (e) => {
