@@ -1,13 +1,22 @@
-// Collectable constellations: the 12 zodiac signs plus Orion, the Big and Little Dippers, Cassiopeia,
-// Cygnus and the Southern Cross (data/constellations.json, built by scripts/build-constellations.mjs).
+// Collectable constellations: all 88 plus the Big Dipper (2026-10-11; first the 12 zodiac signs, Orion, the Dippers,
+// Cassiopeia, Cygnus and the Southern Cross), from data/constellations.json (scripts/build-constellations.mjs).
 // Every star in a stick figure (magnitude <= 5) is its own card; the constellation card turns gold when
 // you own all of them. Bright stars that already have cards (Regulus, Spica…) count as members.
 // No DOM.
-import { NATURAL, NATURAL_BY_KEY, SOLAR_SYSTEM } from './natural.js?v=0.1.484';
-import { starVector } from './celestial.js?v=0.1.484';
+import { NATURAL, NATURAL_BY_KEY, SOLAR_SYSTEM } from './natural.js?v=0.1.485';
+import { starVector } from './celestial.js?v=0.1.485';
 
 const GEN = { Ari: 'Arietis', Tau: 'Tauri', Gem: 'Geminorum', Cnc: 'Cancri', Leo: 'Leonis', Vir: 'Virginis', Lib: 'Librae', Sco: 'Scorpii', Sgr: 'Sagittarii',
-  Cap: 'Capricorni', Aqr: 'Aquarii', Psc: 'Piscium', Ori: 'Orionis', BigDipper: 'Ursae Majoris', UMi: 'Ursae Minoris', Cas: 'Cassiopeiae', Cyg: 'Cygni', Cru: 'Crucis' };
+  Cap: 'Capricorni', Aqr: 'Aquarii', Psc: 'Piscium', Ori: 'Orionis', BigDipper: 'Ursae Majoris', UMi: 'Ursae Minoris', Cas: 'Cassiopeiae', Cyg: 'Cygni', Cru: 'Crucis',
+  // the other 70 (2026-10-11)
+  And: 'Andromedae', Ant: 'Antliae', Aps: 'Apodis', Aql: 'Aquilae', Ara: 'Arae', Aur: 'Aurigae', Boo: 'Boötis', Cae: 'Caeli', Cam: 'Camelopardalis',
+  CVn: 'Canum Venaticorum', CMa: 'Canis Majoris', CMi: 'Canis Minoris', Car: 'Carinae', Cen: 'Centauri', Cep: 'Cephei', Cet: 'Ceti', Cha: 'Chamaeleontis',
+  Cir: 'Circini', Col: 'Columbae', Com: 'Comae Berenices', CrA: 'Coronae Australis', CrB: 'Coronae Borealis', Crv: 'Corvi', Crt: 'Crateris', Del: 'Delphini',
+  Dor: 'Doradus', Dra: 'Draconis', Equ: 'Equulei', Eri: 'Eridani', For: 'Fornacis', Gru: 'Gruis', Her: 'Herculis', Hor: 'Horologii', Hya: 'Hydrae', Hyi: 'Hydri',
+  Ind: 'Indi', Lac: 'Lacertae', LMi: 'Leonis Minoris', Lep: 'Leporis', Lup: 'Lupi', Lyn: 'Lyncis', Lyr: 'Lyrae', Men: 'Mensae', Mic: 'Microscopii',
+  Mon: 'Monocerotis', Mus: 'Muscae', Nor: 'Normae', Oct: 'Octantis', Oph: 'Ophiuchi', Pav: 'Pavonis', Peg: 'Pegasi', Per: 'Persei', Phe: 'Phoenicis',
+  Pic: 'Pictoris', PsA: 'Piscis Austrini', Pup: 'Puppis', Pyx: 'Pyxidis', Ret: 'Reticuli', Sge: 'Sagittae', Scl: 'Sculptoris', Sct: 'Scuti', Ser: 'Serpentis',
+  Sex: 'Sextantis', Tel: 'Telescopii', Tri: 'Trianguli', TrA: 'Trianguli Australis', Tuc: 'Tucanae', UMa: 'Ursae Majoris', Vel: 'Velorum', Vol: 'Volantis', Vul: 'Vulpeculae' };
 const ABBR = { BigDipper: 'UMa', Cru: 'Cru' };
 const FACT = {
   Ori: 'The **Hunter**, one of the easiest constellations to recognise: look for three stars in a row, his belt.',

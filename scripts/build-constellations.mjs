@@ -44,9 +44,10 @@ const near = (lon, lat) => {
   for (const f of stars.features) { const [x, y] = f.geometry.coordinates; const d = Math.hypot((x - lon) * Math.cos(lat * Math.PI / 180), y - lat); if (d < bd) { bd = d; best = f; } }
   return best;
 };
+// d3-celestial has a few broken Bayer letters ('undefined3'); those are dropped and the Flamsteed number used instead.
 const starInfo = (f) => {
   const n = names[f.id] ?? {};
-  return { hip: f.id, name: n.name || '', bayer: n.bayer || '', flam: n.flam || '', mag: +f.properties.mag.toFixed(2), bv: f.properties.bv ? +(+f.properties.bv).toFixed(2) : null,
+  return { hip: f.id, name: n.name || '', bayer: /^undefined/.test(n.bayer ?? '') ? '' : n.bayer || '', flam: n.flam || '', mag: +f.properties.mag.toFixed(2), bv: f.properties.bv ? +(+f.properties.bv).toFixed(2) : null,
     ra: +ra(f.geometry.coordinates[0]).toFixed(4), dec: +f.geometry.coordinates[1].toFixed(4) };
 };
 const out = [];
