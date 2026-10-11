@@ -1,41 +1,41 @@
-import * as Secrets from './secrets.js?v=0.1.447';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.447';
-import * as Ufo from './ufo.js?v=0.1.447';
-import * as Fossil from './fossil.js?v=0.1.447';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.447';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.447';
-import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.447';
-import { VERSION } from './version.js?v=0.1.447';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.447';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.447';
-import { conArt } from './con-art.js?v=0.1.447';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.447';
-import { CON_FIGURES } from './con-figures.js?v=0.1.447';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.447';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.447';
-import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.447';
-import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.447';
-import { conList } from './constellations.js?v=0.1.447';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.447';
-import { SkyView, shortName } from './sky.js?v=0.1.447';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.447';
-import { initAccount, onAccount, account, signInGoogle, sendEmailLink, completeEmailLink, signOut, syncNow, pushSighting } from './account.js?v=0.1.447';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.447';
-import { cardArt } from './art.js?v=0.1.447';
-import { renderCard, cardLevel, artImage, lockedArt, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.447';
-import { applyBack } from './card-backs.js?v=0.1.447';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.447';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.447';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.447';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.447';
-import { TIER_INFO } from './rarity.js?v=0.1.447';
-import { SETS, albumList } from './sets.js?v=0.1.447';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.447';
-import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.447';
-import { shareCardEl } from './share-card.js?v=0.1.447';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.447';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.447';
-import { addStarfield } from './starfield.js?v=0.1.447';
+import * as Secrets from './secrets.js?v=0.1.448';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.448';
+import * as Ufo from './ufo.js?v=0.1.448';
+import * as Fossil from './fossil.js?v=0.1.448';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.448';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.448';
+import { toast, ticket, dropToast, toastPending } from './toast.js?v=0.1.448';
+import { VERSION } from './version.js?v=0.1.448';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.448';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.448';
+import { conArt } from './con-art.js?v=0.1.448';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.448';
+import { CON_FIGURES } from './con-figures.js?v=0.1.448';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.448';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.448';
+import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.448';
+import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.448';
+import { conList } from './constellations.js?v=0.1.448';
+import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.448';
+import { SkyView, shortName } from './sky.js?v=0.1.448';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.448';
+import { initAccount, onAccount, account, signInGoogle, sendEmailLink, completeEmailLink, signOut, syncNow, pushSighting } from './account.js?v=0.1.448';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.448';
+import { cardArt } from './art.js?v=0.1.448';
+import { renderCard, cardLevel, artImage, lockedArt, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.448';
+import { applyBack } from './card-backs.js?v=0.1.448';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.448';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.448';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.448';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.448';
+import { TIER_INFO } from './rarity.js?v=0.1.448';
+import { SETS, albumList } from './sets.js?v=0.1.448';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.448';
+import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.448';
+import { shareCardEl } from './share-card.js?v=0.1.448';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.448';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.448';
+import { addStarfield } from './starfield.js?v=0.1.448';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -1294,9 +1294,35 @@ function shareTonight(T) {
       if (picks.some((q) => Math.abs(q.start - p.start) < 30 * 60000)) continue;
       picks.push(p); if (picks.length >= 6) break;
     }
-    schedulePush(picks.map((p) => ({ at: p.start - 5 * 60000, tag: `pass-${p.obj.id}`, title: `${label(p.obj)} at ${fmtTime(p.start)}`, // sent 5–20 min ahead (relay/push.ts EARLY)
-      body: `Look ${compassPoint(p.riseAz)} at ${fmtTime(p.start)}, up to ${p.peakEl}° in the ${compassPoint(p.peakAz)}${p.fresh ? ' · new to you' : ''}` })));
+    schedulePush(picks.map((p) => ({ at: p.start - 5 * 60000, tag: `pass-${p.obj.id}`, ...alertText(p) }))); // sent 5–20 min ahead (relay/push.ts EARLY)
   }
+}
+// Pass alert wording (2026-10-10, Sevaan: "who cares about the degrees"). Lead with what it is (how old, whose, what for),
+// then where to look in plain words. Title: "A 1979 American weather satellite at 8:13 PM". Body: "NOAA 6 rises in the
+// south and climbs almost straight overhead. New to your collection."
+const WORD = { N: 'north', NE: 'northeast', E: 'east', SE: 'southeast', S: 'south', SW: 'southwest', W: 'west', NW: 'northwest' };
+const dirWord = (az) => WORD[compassPoint(az)] ?? compassPoint(az);
+const PURPOSE_WORD = [[/^NOAA|^METEOR|^GOES|^METOP|^FENGYUN|^DMSP|^TIROS|^NIMBUS|^ELEKTRO|^HIMAWARI/, 'weather satellite'], [/^NAVSTAR|^GPS|^GLONASS|^BEIDOU|^GALILEO|^TRANSIT|^PARUS|^TSIKADA|^NNSS/, 'navigation satellite'],
+  [/^LANDSAT|^SPOT|^RESURS|^SENTINEL|^TERRA|^AQUA|^ENVISAT|^ERS-|^CBERS|^OKEAN|^KOMPSAT/, 'Earth-watching satellite'], [/^HST|HUBBLE|TELESCOPE|^SWIFT|^FERMI|^XMM|^CHANDRA/, 'space telescope'],
+  [/^IRIDIUM|^GLOBALSTAR|^ORBCOMM|^INTELSAT|^MOLNIYA|^STRELA|^GONETS|^TELSTAR|^RELAY|^ECHO/, 'communications satellite'], [/^YAOGAN|^USA \d|^NROL|^LACROSSE|^KH-/, 'spy satellite']];
+function adjOf(owner, year) {
+  if (owner === 'CIS') return year && year < 1992 ? 'Soviet' : 'Russian';
+  return { US: 'American', PRC: 'Chinese', JPN: 'Japanese', FR: 'French', ESA: 'European', CA: 'Canadian', IT: 'Italian', IND: 'Indian', UK: 'British', GER: 'German', SKOR: 'South Korean', ISRA: 'Israeli', BRAZ: 'Brazilian', ARGN: 'Argentinian' }[owner] ?? '';
+}
+function alertText(p) {
+  const o = p.obj, card = state.cardModels.get(cardKeyFor(o)) ?? o, year = Number(String(o.launch ?? card.launch ?? '').slice(0, 4)) || null;
+  const owner = o.owner ?? card.owner, adj = adjOf(owner, year), when = fmtTime(p.start);
+  let what;
+  if (o.type === 'station') what = /ISS|ZARYA/.test(o.name) ? 'The Space Station' : `China's Tiangong station`;
+  else if (o.family) what = `A new ${card.familyName ?? 'fleet'} launch to stamp`;
+  else if (o.type === 'debris') what = `A piece of ${year ? `${Math.floor(year / 10) * 10}s ` : ''}space junk`;
+  else if (o.type === 'rocket-body') what = `A ${[year, adj].filter(Boolean).join(' ')} rocket stage`;
+  else what = `A ${[year, adj].filter(Boolean).join(' ')} ${PURPOSE_WORD.find(([re]) => re.test(o.name))?.[1] ?? 'satellite'}`;
+  const peak = dirWord(p.peakAz), rise = dirWord(p.riseAz), h = p.peakEl >= 75 ? 3 : p.peakEl >= 50 ? 2 : p.peakEl >= 28 ? 1 : 0;
+  const climb = h === 3 ? 'passes almost straight overhead' : rise === peak ? ['stays low', 'climbs halfway up', 'climbs high'][h] : [`skims low across the ${peak}`, `arcs halfway up the ${peak} sky`, `arcs high into the ${peak}`][h];
+  const rare = ['rare', 'epic', 'legendary'].includes(card.tier);
+  const news = !p.fresh ? '' : o.family ? 'A launch you haven\'t stamped yet.' : rare ? `A ${card.tier === 'legendary' ? 'Legendary' : card.tier === 'epic' ? 'Epic' : 'Rare'} card you don't have yet.` : 'New to your collection.';
+  return { title: `${what} at ${when}`, body: `${label(o)} rises in the ${rise} and ${climb}.${news ? ` ${news}` : ''}` };
 }
 function dealMissions(T) {
   if (!T?.passes) return;
