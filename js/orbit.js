@@ -1,9 +1,9 @@
 // Orbit math: where every object is in the observer's sky, and whether it can be seen.
 // Pure functions, no DOM, so this module carries over unchanged to a native wrapper.
 
-import { expandFacts } from './catalog-facts.js?v=0.1.461';
-import * as sat from './lib/satellite.js?v=0.1.461';
-import { extinction, starlinkStdMag } from './sky-limit.js?v=0.1.461';
+import { expandFacts } from './catalog-facts.js?v=0.1.462';
+import * as sat from './lib/satellite.js?v=0.1.462';
+import { extinction, starlinkStdMag } from './sky-limit.js?v=0.1.462';
 
 const RAD = Math.PI / 180;
 const EARTH_RADIUS_KM = 6371;
@@ -132,7 +132,7 @@ export function lookBelow(obj, f, limit) {
   if (el >= 0) return null;
   const az = (la.azimuth / RAD + 360) % 360;
   const mag = isSunlit(r, f.sunDir) ? obj.stdMag : null;
-  return { az, el, mag, show: mag !== null && mag <= limit };
+  return { az, el, mag, rangeKm: la.rangeSat, show: mag !== null && mag <= limit };
 }
 // Everything under the horizon that would shine at a dark site. Sweeps the catalogue a slice per frame (so a full pass
 // takes ~40 frames) and moves each one along between its last two samples. Only runs while you look down.
@@ -163,7 +163,7 @@ export class BelowModel {
         const l = Math.hypot(v[0], v[1], v[2]) || 1; v = [v[0] / l, v[1] / l, v[2] / l];
       }
       if (v[2] >= 0) continue;
-      out.push({ obj: e.obj, enu: v, mag: e.s1.mag });
+      out.push({ obj: e.obj, enu: v, mag: e.s1.mag, rangeKm: e.s1.rangeKm });
     }
     return out;
   }

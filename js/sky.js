@@ -1,17 +1,17 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.461';
+import { extinction } from './sky-limit.js?v=0.1.462';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.461';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.462';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.461';
-import { createCloudGL } from './clouds-gl.js?v=0.1.461';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.462';
+import { createCloudGL } from './clouds-gl.js?v=0.1.462';
 // Cloud colours by light: sunlit tops, shadowed bellies, and the horizon haze they melt into (0–1 RGB).
 const CLOUD_LIGHT = {
   day: { lit: [1, 1, 1], shade: [0.62, 0.68, 0.77], haze: [0.82, 0.87, 0.93] },
   dusk: { lit: [1, 0.8, 0.68], shade: [0.36, 0.33, 0.42], haze: [0.62, 0.5, 0.52] },
   night: { lit: [0.22, 0.25, 0.31], shade: [0.1, 0.12, 0.16], haze: [0.14, 0.15, 0.2] },
 };
-import { TIER_INFO } from './rarity.js?v=0.1.461';
+import { TIER_INFO } from './rarity.js?v=0.1.462';
 
 const RAD = Math.PI / 180;
 const BELOW_ICON = 13; // every satellite under the horizon, passes and halo alike
@@ -344,23 +344,26 @@ export class SkyView {
     // In the circle (2026-10-07, Sevaan): you can identify something under the ground by lining it up. Its name and
     // when it rises show above the circle in cream (it can't be collected, so the circle doesn't turn orange).
     let hit = null;
+    this.belowHitId = null;
     if (this.belowFree && k > 0.5) {
       const rc = this.ring ?? { x: this.cx, y: this.cy, r: this.reticlePx };
       for (const g of below) { if (g.enu[2] >= 0) continue; const q = this.project(g.enu); if (!q) continue;
         const d = Math.hypot(q.x - rc.x, q.y - rc.y); if (d < rc.r && (!hit || d < hit.d)) hit = { g, d }; }
+      this.belowHitId = hit?.g.id ?? null;
       if (hit) {
         const g = hit.g, y0 = rc.y - rc.r - 26;
         this.clearZone ??= { left: this.cx - Math.min(190, this.w / 2 - 12), right: this.cx + Math.min(190, this.w / 2 - 12), top: rc.y - rc.r - 100, bottom: rc.y + rc.r + 75 }; // keep sky labels off its name
         ctx.save(); ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic'; ctx.shadowColor = 'rgba(0,0,0,.6)'; ctx.shadowBlur = 4;
         ctx.font = `500 13px ${FONT}`; ctx.fillStyle = 'rgba(189,190,169,.95)';
         if ('letterSpacing' in ctx) ctx.letterSpacing = '2.5px';
-        ctx.fillText('BELOW THE HORIZON', rc.x, y0 - 30);
+        ctx.fillText(g.owned === undefined ? 'BELOW THE HORIZON' : g.owned ? 'BELOW THE HORIZON · IN YOUR COLLECTION' : 'BELOW THE HORIZON · NOT COLLECTED YET', rc.x, y0 - 30, this.w - 32);
         if ('letterSpacing' in ctx) ctx.letterSpacing = '0px';
         ctx.font = `400 26px ${DISPLAY_FONT}`; ctx.fillStyle = `rgb(${INK})`;
         ctx.fillText(g.name.toUpperCase(), rc.x, y0, this.w - 32); // squeezed rather than clipped on narrow phones (QA 2026-10-08)
         ctx.font = `500 15px ${FONT}`; ctx.fillStyle = `rgba(${INK},.75)`;
         if ('letterSpacing' in ctx) ctx.letterSpacing = '1px';
-        ctx.fillText([g.note ? g.note.replace(/^up /, 'comes up ') : '', g.where ? `in the ${g.where}` : ''].filter(Boolean).join(' · ').toUpperCase(), rc.x, rc.y + rc.r + 34, this.w - 32);
+        if (g.what) { ctx.font = `500 16px ${FONT}`; if ('letterSpacing' in ctx) ctx.letterSpacing = '0px'; ctx.fillStyle = `rgba(${INK},.92)`; ctx.fillText(g.what, rc.x, rc.y + rc.r + 34, this.w - 32); ctx.font = `500 13px ${FONT}`; if ('letterSpacing' in ctx) ctx.letterSpacing = '1px'; ctx.fillStyle = `rgba(${INK},.7)`; }
+        ctx.fillText([g.note ? g.note.replace(/^up /, 'comes up ') : '', g.where ? `in the ${g.where}` : ''].filter(Boolean).join(' · ').toUpperCase(), rc.x, rc.y + rc.r + (g.what ? 58 : 34), this.w - 32);
         ctx.restore();
       }
     }
@@ -1266,7 +1269,7 @@ export class SkyView {
     this.belowFree = !targetId && !planeHit; // the circle can name a below-horizon thing only when it isn't busy
     if (below?.length && belowSats?.length) { const ids = new Set(below.filter((g) => g.obj).map((g) => g.obj.id)); belowSats = belowSats.filter((s) => !ids.has(s.obj.id)); } // a pass is drawn once
     if (this.basis.back[2] < 0.15 && this.feetA < 0.98) this.drawBelowSky(sky, belowSats, belowStarLimit);
-    if ((below?.length || belowSats?.length) && this.basis.back[2] < 0.15 && this.feetA < 0.98) this.drawBelow([...(below ?? []), ...(belowSats ?? []).map((s) => ({ enu: s.enu, kind: 'dot', name: s.name, note: '', where: '' }))]);
+    if ((below?.length || belowSats?.length) && this.basis.back[2] < 0.15 && this.feetA < 0.98) this.drawBelow([...(below ?? []), ...(belowSats ?? []).map((s) => ({ enu: s.enu, kind: 'dot', id: s.obj.id, name: s.name, what: s.what, note: s.note ?? '', where: '', owned: s.owned }))]);
     this.drawFeet(below);
     this.drawRising(rising);
     this.drawGrid();

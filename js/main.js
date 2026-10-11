@@ -1,44 +1,44 @@
-import * as Secrets from './secrets.js?v=0.1.461';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.461';
-import * as Ufo from './ufo.js?v=0.1.461';
-import * as Fossil from './fossil.js?v=0.1.461';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.461';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.461';
-import { toast, ticket, dropToast, toastPending, onTicketShown } from './toast.js?v=0.1.461';
-import { VERSION } from './version.js?v=0.1.461';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.461';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.461';
-import { conArt } from './con-art.js?v=0.1.461';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.461';
-import { CON_FIGURES } from './con-figures.js?v=0.1.461';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.461';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.461';
-import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.461';
-import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.461';
-import { conList } from './constellations.js?v=0.1.461';
-import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.461';
-import { SkyView, shortName } from './sky.js?v=0.1.461';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.461';
-import { initAccount, onAccount, account, signInGoogle, sendEmailLink, completeEmailLink, signOut, syncNow, pushSighting } from './account.js?v=0.1.461';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.461';
-import { cardArt } from './art.js?v=0.1.461';
-import { renderCard, cardLevel, artImage, lockedArt, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.461';
-import { applyBack } from './card-backs.js?v=0.1.461';
-import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.461';
-import { audioCtx } from './audio-ctx.js?v=0.1.461';
-import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume } from './music.js?v=0.1.461';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.461';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.461';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.461';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.461';
-import { TIER_INFO } from './rarity.js?v=0.1.461';
-import { SETS, albumList } from './sets.js?v=0.1.461';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.461';
-import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.461';
-import { shareCardEl } from './share-card.js?v=0.1.461';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.461';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.461';
-import { addStarfield } from './starfield.js?v=0.1.461';
+import * as Secrets from './secrets.js?v=0.1.462';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.462';
+import * as Ufo from './ufo.js?v=0.1.462';
+import * as Fossil from './fossil.js?v=0.1.462';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.462';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.462';
+import { toast, ticket, dropToast, toastPending, onTicketShown } from './toast.js?v=0.1.462';
+import { VERSION } from './version.js?v=0.1.462';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.462';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.462';
+import { conArt } from './con-art.js?v=0.1.462';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.462';
+import { CON_FIGURES } from './con-figures.js?v=0.1.462';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.462';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.462';
+import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.462';
+import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.462';
+import { conList } from './constellations.js?v=0.1.462';
+import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.462';
+import { SkyView, shortName } from './sky.js?v=0.1.462';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.462';
+import { initAccount, onAccount, account, signInGoogle, sendEmailLink, completeEmailLink, signOut, syncNow, pushSighting } from './account.js?v=0.1.462';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.462';
+import { cardArt } from './art.js?v=0.1.462';
+import { renderCard, cardLevel, artImage, lockedArt, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.462';
+import { applyBack } from './card-backs.js?v=0.1.462';
+import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.462';
+import { audioCtx } from './audio-ctx.js?v=0.1.462';
+import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume } from './music.js?v=0.1.462';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.462';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.462';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.462';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.462';
+import { TIER_INFO } from './rarity.js?v=0.1.462';
+import { SETS, albumList } from './sets.js?v=0.1.462';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.462';
+import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.462';
+import { shareCardEl } from './share-card.js?v=0.1.462';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.462';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.462';
+import { addStarfield } from './starfield.js?v=0.1.462';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -1300,15 +1300,19 @@ function adjOf(owner, year) {
   if (owner === 'CIS') return year && year < 1992 ? 'Soviet' : 'Russian';
   return { US: 'American', PRC: 'Chinese', JPN: 'Japanese', FR: 'French', ESA: 'European', CA: 'Canadian', IT: 'Italian', IND: 'Indian', UK: 'British', GER: 'German', SKOR: 'South Korean', ISRA: 'Israeli', BRAZ: 'Brazilian', ARGN: 'Argentinian' }[owner] ?? '';
 }
+// "A 1998 American rocket stage": what something is, in plain words (pass alerts, the below-the-horizon circle).
+function describe(o, { stamp = true } = {}) {
+  const card = state.cardModels.get(cardKeyFor(o)) ?? o, year = Number(String(o.launch ?? card.launch ?? '').slice(0, 4)) || null;
+  const adj = adjOf(o.owner ?? card.owner, year);
+  if (o.type === 'station') return /ISS|ZARYA/.test(o.name) ? 'The Space Station' : `China's Tiangong station`;
+  if (o.family) return stamp ? `A new ${card.familyName ?? 'fleet'} launch to stamp` : `One of the ${card.familyName ?? 'fleet'} fleet`;
+  if (o.type === 'debris') return `A piece of ${year ? `${Math.floor(year / 10) * 10}s ` : ''}space junk`;
+  if (o.type === 'rocket-body') return `A ${[year, adj].filter(Boolean).join(' ')} rocket stage`;
+  return `A ${[year, adj].filter(Boolean).join(' ')} ${PURPOSE_WORD.find(([re]) => re.test(o.name))?.[1] ?? 'satellite'}`;
+}
 function alertText(p) {
-  const o = p.obj, card = state.cardModels.get(cardKeyFor(o)) ?? o, year = Number(String(o.launch ?? card.launch ?? '').slice(0, 4)) || null;
-  const owner = o.owner ?? card.owner, adj = adjOf(owner, year), when = fmtTime(p.start);
-  let what;
-  if (o.type === 'station') what = /ISS|ZARYA/.test(o.name) ? 'The Space Station' : `China's Tiangong station`;
-  else if (o.family) what = `A new ${card.familyName ?? 'fleet'} launch to stamp`;
-  else if (o.type === 'debris') what = `A piece of ${year ? `${Math.floor(year / 10) * 10}s ` : ''}space junk`;
-  else if (o.type === 'rocket-body') what = `A ${[year, adj].filter(Boolean).join(' ')} rocket stage`;
-  else what = `A ${[year, adj].filter(Boolean).join(' ')} ${PURPOSE_WORD.find(([re]) => re.test(o.name))?.[1] ?? 'satellite'}`;
+  const o = p.obj, card = state.cardModels.get(cardKeyFor(o)) ?? o;
+  const when = fmtTime(p.start), what = describe(o);
   const peak = dirWord(p.peakAz), rise = dirWord(p.riseAz), h = p.peakEl >= 75 ? 3 : p.peakEl >= 50 ? 2 : p.peakEl >= 28 ? 1 : 0;
   const climb = h === 3 ? 'passes almost straight overhead' : rise === peak ? ['stays low', 'climbs halfway up', 'climbs high'][h] : [`skims low across the ${peak}`, `arcs halfway up the ${peak} sky`, `arcs high into the ${peak}`][h];
   const rare = ['rare', 'epic', 'legendary'].includes(card.tier);
@@ -1646,7 +1650,22 @@ function belowSats(d) {
   // Only the bright ones (2026-10-11, Sevaan: every sunlit one, ~3,800, was "definitely too many"). Standard
   // magnitude under 3 leaves a few hundred under the whole horizon, a few dozen on screen.
   belowModel.update(d, frame(d, state.observer), BELOW_SAT_MAG);
-  return belowModel.items(d).map((s) => ({ ...s, name: label(s.obj) }));
+  const hitId = sky.belowHitId;
+  return belowModel.items(d).map((s) => ({ ...s, name: label(s.obj), ...(s.obj.id === hitId ? belowInfo(s, d) : {}) }));
+}
+// More than a name for the one in the circle (2026-10-11, Sevaan): what it is, how far through the Earth, when it next
+// comes up over you, and whether you have it. The next rise is a 1-minute scan of the next 12 hours, cached a minute.
+let riseFor = { id: null, at: 0, t: null };
+function belowInfo(s, d) {
+  const o = s.obj, t0 = d.getTime();
+  if (riseFor.id !== o.id || Math.abs(t0 - riseFor.at) > 60e3) {
+    let t = null;
+    for (let k = 1; k <= 720; k++) { const l = look(o, frame(new Date(t0 + k * 60e3), state.observer)); if (l && l.el > 10) { t = t0 + k * 60e3; break; } }
+    riseFor = { id: o.id, at: t0, t };
+  }
+  const km = Math.round((s.rangeKm ?? 0) / 100) * 100;
+  const up = riseFor.t ? `over you at ${fmtTime(riseFor.t)}` : 'not over you in the next 12 hours';
+  return { what: describe(o, { stamp: false }), note: `${km.toLocaleString()} km away · ${up}`, owned: !isNewFind(o) };
 }
 function belowGhosts(d) {
   const back = state.basis?.back; if (!back || back[2] > 0.15 || !state.bodies) return null;
