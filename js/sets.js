@@ -8,6 +8,7 @@ const isDead = (o) => o.kind === 'PAY' && (o.ops === '-' || o.ops === 'D' || ((!
 export const SETS = [
   { id: 'wanderers', name: 'The Wanderers', color: '#c08a2e', test: (o) => o.type === 'sun' || o.type === 'moon' || o.type === 'planet' || !!o.system },
   { id: 'constellations', name: 'Constellations', color: '#c9a227', test: (o) => o.type === 'constellation' || (o.type === 'star' && !!o.con && !o.skyName) },
+  { id: 'comets', name: 'Comets', color: '#3a9a8a', test: (o) => o.type === 'comet' }, // limited-time cards (2026-10-11)
   { id: 'deep-sky', name: 'Deep Sky', color: '#6a4aa8', test: (o) => o.type === 'deepsky' }, // clusters, nebulae, galaxies (2026-10-11)
   { id: 'bright-stars', name: 'Bright Stars', color: '#3f58a8', test: (o) => o.type === 'star' },
   { id: 'stations', name: 'Stations', color: '#e8412c', test: (o) => o.type === 'station' || /^(DRAGON|CREW DRAGON|SOYUZ|PROGRESS|SHENZHOU|TIANZHOU|CYGNUS)/.test(o.name) },

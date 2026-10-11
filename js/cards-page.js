@@ -1,23 +1,24 @@
-import { sfx } from './sfx.js?v=0.1.487';
-import { expandFacts } from './catalog-facts.js?v=0.1.487';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.487';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.487';
-import { ticket } from './toast.js?v=0.1.487';
-import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.487';
-import { cardArt } from './art.js?v=0.1.487';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.487';
-import { applyBack } from './card-backs.js?v=0.1.487';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.487';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.487';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.487';
-import { loadConstellations, conList } from './constellations.js?v=0.1.487';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.487';
-import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.487';
-import { shareCardEl } from './share-card.js?v=0.1.487';
-import { removeSighting } from './account.js?v=0.1.487';
-import { allSightings, deleteSighting } from './store.js?v=0.1.487';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.487';
-import { SECRET_PATCHES } from './secrets.js?v=0.1.487';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.490';
+import { sfx } from './sfx.js?v=0.1.490';
+import { expandFacts } from './catalog-facts.js?v=0.1.490';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.490';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.490';
+import { ticket } from './toast.js?v=0.1.490';
+import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.490';
+import { cardArt } from './art.js?v=0.1.490';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.490';
+import { applyBack } from './card-backs.js?v=0.1.490';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.490';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.490';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.490';
+import { loadConstellations, conList } from './constellations.js?v=0.1.490';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.490';
+import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.490';
+import { shareCardEl } from './share-card.js?v=0.1.490';
+import { removeSighting } from './account.js?v=0.1.490';
+import { allSightings, deleteSighting } from './store.js?v=0.1.490';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.490';
+import { SECRET_PATCHES } from './secrets.js?v=0.1.490';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -65,6 +66,7 @@ async function boot() {
     allSightings(),
     loadLore(),
     loadConstellations(),
+    loadComets(),
   ]);
   const cat = catalogueResult.status === 'fulfilled' ? catalogueResult.value : { objects: [] };
   state.cards = buildCards(cat);

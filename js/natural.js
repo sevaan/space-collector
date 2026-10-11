@@ -1,4 +1,4 @@
-import { extinction } from './sky-limit.js?v=0.1.487';
+import { extinction } from './sky-limit.js?v=0.1.490';
 // The Moon, the naked-eye planets and the brightest named stars, as collectible cards.
 // Positions come from js/celestial.js (state.bodies, state.skyEnu); this file holds the card facts and
 // the "can you see it right now" rules. No DOM. Every fact must be true; approximate values say so.
@@ -156,12 +156,14 @@ export function naturalTargets(bodies, stars, extra = [], starLimit = 6.5) {
   }
   // Deep sky (extra entries with obj.natural === 'deepsky'): high enough to clear the haze, properly dark, and a sky
   // good enough for the faint glow (obj.need, plus some of the extra air low down).
-  for (const { obj, enu } of extra) if (obj.natural === 'deepsky') {
+  for (const { obj, enu } of extra) if (obj.natural === 'deepsky' || obj.natural === 'comet') {
     const el = elOf(enu);
-    out.push({ obj, look: { az: azOf(enu), el, mag: obj.mag, visible: el > 12 && sunEl < -12 && obj.need + extinction(el) * 0.6 <= starLimit, enu } });
+    // Comets are often best low in twilight, just after sunset: the brighter, the lighter the sky can be.
+    const comet = obj.natural === 'comet', dark = comet ? sunEl < brightLimit(obj.mag) - 3 : sunEl < -12;
+    out.push({ obj, look: { az: azOf(enu), el, mag: obj.mag, visible: el > (comet ? 4 : 12) && dark && obj.need + extinction(el) * (comet ? 0.3 : 0.6) <= starLimit, enu } });
   }
   for (const { obj, enu } of extra) {
-    if (obj.natural === 'deepsky') continue;
+    if (obj.natural === 'deepsky' || obj.natural === 'comet') continue;
     const el = elOf(enu), mag = obj.mag + extinction(el);
     out.push({ obj, look: { az: azOf(enu), el, mag, visible: el > 3 && sunEl < -6 && mag <= starLimit, enu } });
   }

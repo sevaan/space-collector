@@ -57,3 +57,25 @@ export function conArt(con, highlightHip = null, { w = 360, h = 240, figure = nu
     <radialGradient id="cdeep"><stop offset="0" stop-color="#fff2d0" stop-opacity=".95"/><stop offset=".35" stop-color="#e8dcc0" stop-opacity=".45"/><stop offset="1" stop-color="#e8dcc0" stop-opacity="0"/></radialGradient><radialGradient id="cneb"><stop offset="0" stop-color="#ffd6e0" stop-opacity=".85"/><stop offset=".5" stop-color="#d07a9a" stop-opacity=".35"/><stop offset="1" stop-color="#7a4a9a" stop-opacity="0"/></radialGradient><radialGradient id="csk"><stop offset="0" stop-color="#fffbe6"/><stop offset=".45" stop-color="#fff2b3" stop-opacity=".55"/><stop offset="1" stop-color="#fff2b3" stop-opacity="0"/></radialGradient><radialGradient id="cs" cx="50%" cy="40%" r="75%"><stop offset="0" stop-color="#14213a"/><stop offset="1" stop-color="#080e1a"/></radialGradient></defs>
     <rect width="${w}" height="${h}" fill="url(#cs)"/>${figure ? `<image href="${figure}" width="${w}" height="${h}" preserveAspectRatio="xMidYMid slice" opacity=".62"/>` : ''}${bg}<g fill="none" stroke="#fff2b3" stroke-opacity=".45" stroke-width=".9" stroke-linejoin="round">${lines}</g>${dots}${glow}${spark}</svg>`;
 }
+
+// A comet (2026-10-11): bright head, soft coma, a curved dust tail and a straight blue ion tail, over a starfield.
+// Same chart style as the constellations; seeded by the comet's key so each one looks a little different.
+export function cometArt(key = 'comet', { w = 360, h = 240 } = {}) {
+  let seed = [...key].reduce((a, c) => (a * 31 + c.charCodeAt(0)) % 2147483647, 7) || 7;
+  const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  let bg = '';
+  for (let i = 0; i < 80; i++) bg += `<circle cx="${(rnd() * w).toFixed(1)}" cy="${(rnd() * h).toFixed(1)}" r="${(0.3 + rnd() * 0.8).toFixed(2)}" fill="#fff2b3" opacity="${(0.15 + rnd() * 0.45).toFixed(2)}"/>`;
+  const hx = w * (0.26 + rnd() * 0.08), hy = h * (0.66 + rnd() * 0.08), tilt = -18 - rnd() * 14;
+  return `<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs><radialGradient id="kbg" cx="35%" cy="70%" r="80%"><stop offset="0" stop-color="#18294a"/><stop offset="1" stop-color="#080e1a"/></radialGradient>
+    <linearGradient id="kdust" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff2d0" stop-opacity=".9"/><stop offset=".5" stop-color="#f0d9a8" stop-opacity=".35"/><stop offset="1" stop-color="#f0d9a8" stop-opacity="0"/></linearGradient>
+    <linearGradient id="kion" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#bfe3ff" stop-opacity=".7"/><stop offset="1" stop-color="#7ab8ff" stop-opacity="0"/></linearGradient>
+    <radialGradient id="kcoma"><stop offset="0" stop-color="#ffffff"/><stop offset=".25" stop-color="#e8fff4" stop-opacity=".9"/><stop offset=".6" stop-color="#9fe0c8" stop-opacity=".35"/><stop offset="1" stop-color="#9fe0c8" stop-opacity="0"/></radialGradient>
+    <filter id="kblur"><feGaussianBlur stdDeviation="3"/></filter></defs>
+    <rect width="${w}" height="${h}" fill="url(#kbg)"/>${bg}
+    <g transform="translate(${hx.toFixed(1)} ${hy.toFixed(1)}) rotate(${tilt.toFixed(1)})">
+      <path d="M0 -6 C 70 -30, 170 -60, 290 -40 L 290 30 C 170 10, 70 4, 0 6 Z" fill="url(#kdust)" filter="url(#kblur)"/>
+      <path d="M0 -2 L 300 -18 L 300 -8 L 0 2 Z" fill="url(#kion)" filter="url(#kblur)"/>
+      <circle r="22" fill="url(#kcoma)"/><circle r="3.2" fill="#fff"/>
+    </g></svg>`;
+}
