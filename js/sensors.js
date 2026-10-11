@@ -1,6 +1,6 @@
 // Phone orientation -> where the back of the phone is pointing in the sky.
 // Produces a camera basis in local East-North-Up: right, up (screen edges) and back (view direction).
-import { declination } from './declination.js?v=0.1.453';
+import { declination } from './declination.js?v=0.1.454';
 
 const RAD = Math.PI / 180;
 
@@ -135,7 +135,13 @@ export function needsPermission() {
   return typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function';
 }
 
-let listening = false;
+let listening = false, attached = false;
+function attach() {
+  if (attached) return;
+  window.addEventListener('deviceorientationabsolute', (e) => onOrientation(e, true));
+  window.addEventListener('deviceorientation', (e) => onOrientation(e, e.absolute === true));
+  attached = true;
+}
 
 // Must be called from a user tap on iOS.
 export async function startSensors() {
@@ -145,10 +151,25 @@ export async function startSensors() {
     const result = await DeviceOrientationEvent.requestPermission();
     if (result !== 'granted') return false;
   }
-  window.addEventListener('deviceorientationabsolute', (e) => onOrientation(e, true));
-  window.addEventListener('deviceorientation', (e) => onOrientation(e, e.absolute === true));
+  attach();
   listening = true;
   return true;
+}
+
+// Without a tap: listen anyway and see whether motion arrives. When this iPhone already allowed motion for the
+// site, events often flow with no new request, so a returning player never has to tap (2026-10-11, Sevaan).
+export function trySensorsQuietly(ms = 1200) {
+  if (typeof DeviceOrientationEvent === 'undefined') return Promise.resolve(false);
+  attach();
+  return new Promise((done) => {
+    const t0 = performance.now();
+    const check = () => {
+      if (pointing.basis && pointing.lastEvent > t0 - 50) { listening = true; return done(true); }
+      if (performance.now() - t0 > ms) return done(false);
+      setTimeout(check, 100);
+    };
+    check();
+  });
 }
 
 export function hasLiveSensors() {

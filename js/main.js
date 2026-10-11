@@ -1,44 +1,44 @@
-import * as Secrets from './secrets.js?v=0.1.453';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.453';
-import * as Ufo from './ufo.js?v=0.1.453';
-import * as Fossil from './fossil.js?v=0.1.453';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.453';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.453';
-import { toast, ticket, dropToast, toastPending, onTicketShown } from './toast.js?v=0.1.453';
-import { VERSION } from './version.js?v=0.1.453';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.453';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.453';
-import { conArt } from './con-art.js?v=0.1.453';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.453';
-import { CON_FIGURES } from './con-figures.js?v=0.1.453';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.453';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.453';
-import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.453';
-import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.453';
-import { conList } from './constellations.js?v=0.1.453';
-import { startSensors, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.453';
-import { SkyView, shortName } from './sky.js?v=0.1.453';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.453';
-import { initAccount, onAccount, account, signInGoogle, sendEmailLink, completeEmailLink, signOut, syncNow, pushSighting } from './account.js?v=0.1.453';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.453';
-import { cardArt } from './art.js?v=0.1.453';
-import { renderCard, cardLevel, artImage, lockedArt, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.453';
-import { applyBack } from './card-backs.js?v=0.1.453';
-import { sfx, loadSfx } from './sfx.js?v=0.1.453';
-import { audioCtx } from './audio-ctx.js?v=0.1.453';
-import { musicOn, startMusic, setMusic, duckMusic } from './music.js?v=0.1.453';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.453';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.453';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.453';
-import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.453';
-import { TIER_INFO } from './rarity.js?v=0.1.453';
-import { SETS, albumList } from './sets.js?v=0.1.453';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.453';
-import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.453';
-import { shareCardEl } from './share-card.js?v=0.1.453';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.453';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.453';
-import { addStarfield } from './starfield.js?v=0.1.453';
+import * as Secrets from './secrets.js?v=0.1.454';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.454';
+import * as Ufo from './ufo.js?v=0.1.454';
+import * as Fossil from './fossil.js?v=0.1.454';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.454';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.454';
+import { toast, ticket, dropToast, toastPending, onTicketShown } from './toast.js?v=0.1.454';
+import { VERSION } from './version.js?v=0.1.454';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.454';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.454';
+import { conArt } from './con-art.js?v=0.1.454';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.454';
+import { CON_FIGURES } from './con-figures.js?v=0.1.454';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.454';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.454';
+import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.454';
+import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.454';
+import { conList } from './constellations.js?v=0.1.454';
+import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.454';
+import { SkyView, shortName } from './sky.js?v=0.1.454';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.454';
+import { initAccount, onAccount, account, signInGoogle, sendEmailLink, completeEmailLink, signOut, syncNow, pushSighting } from './account.js?v=0.1.454';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.454';
+import { cardArt } from './art.js?v=0.1.454';
+import { renderCard, cardLevel, artImage, lockedArt, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.454';
+import { applyBack } from './card-backs.js?v=0.1.454';
+import { sfx, loadSfx } from './sfx.js?v=0.1.454';
+import { audioCtx } from './audio-ctx.js?v=0.1.454';
+import { musicOn, startMusic, setMusic, duckMusic } from './music.js?v=0.1.454';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.454';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.454';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.454';
+import { naturalTargets, SOLAR_SYSTEM } from './natural.js?v=0.1.454';
+import { TIER_INFO } from './rarity.js?v=0.1.454';
+import { SETS, albumList } from './sets.js?v=0.1.454';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.454';
+import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.454';
+import { shareCardEl } from './share-card.js?v=0.1.454';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.454';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.454';
+import { addStarfield } from './starfield.js?v=0.1.454';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -2328,18 +2328,27 @@ async function quickStart() {
   setTimeout(() => dailyTonight(), 1500); // the day's first visit opens on the Tonight page (after the recap)
   let ok = false;
   try { ok = await startSensors(); } catch {}
+  if (!ok) ok = await trySensorsQuietly(); // already allowed? then motion just works, no tap
   state.drag.on = !ok;
   state.needsMotionTap = !ok;
 }
-document.addEventListener('pointerdown', async () => {
-  if (!state.needsMotionTap) return;
-  state.needsMotionTap = false;
+// iPhones only count a finished tap (touchend/click) as permission to ask, not a finger landing (pointerdown),
+// so ask on the release. Until it works, keep asking on the next touch instead of giving up after one try.
+let motionAsking = false;
+async function motionFromTap() {
+  if (!state.needsMotionTap || motionAsking) return;
+  motionAsking = true;
   let ok = false;
   try { ok = await startSensors(); } catch {}
-  state.drag.on = !ok;
-  $('chk-drag').checked = state.drag.on;
-  if (ok) showBanner('');
-}, true);
+  motionAsking = false;
+  if (!ok) return;
+  state.needsMotionTap = false;
+  state.drag.on = false;
+  $('chk-drag').checked = false;
+  showBanner('');
+}
+document.addEventListener('touchend', motionFromTap, true);
+document.addEventListener('click', motionFromTap, true);
 function saveExploreState() {
   if (!state.started) return;
   try { sessionStorage.setItem('space-collector.explore',JSON.stringify({ observer:state.observer, locationStatus:state.locationStatus, timeOffsetMs:state.timeOffsetMs, drag:state.drag, preview:state.preview, followPreview:state.followPreview, pinnedId:state.pinnedId })); } catch {}

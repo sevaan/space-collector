@@ -426,3 +426,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - The old oscillator tones (chirp/thump/whoosh/fanfare/thud) are gone.
 
 2026-10-11 · Daytime planets: by day only Venus can show, and only when it is 30°+ from the Sun (sky.js sunSep), at 60trength; other planets fade with daylight. Sevaan asked why Venus showed by day (it was 20° from the Sun, near inferior conjunction).
+
+2026-10-11 · Motion without the tap: quickStart now listens quietly (trySensorsQuietly in sensors.js) and skips the "Tap anywhere" banner if motion events arrive within ~1.2s. The tap fallback now asks on touchend/click (iOS ignores pointerdown as a gesture) and keeps retrying instead of dropping to drag mode after one failed try. Sevaan saw the tap toast despite having granted motion.
