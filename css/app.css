@@ -780,10 +780,9 @@ body.night #ufo-cta { background: var(--gold) !important; color: #120606 !import
 #sky { transition: filter 1.8s cubic-bezier(.3,.6,.3,1); }
 #sky.asleep { filter: blur(6px) brightness(.4) saturate(.5); }
 #sky.waking { filter: none; }
-  text-align: center; text-shadow: 0 2px 10px #000c; }
 /* Welcome card's call to action (2026-10-09, Sevaan): the arrow sits just above the words, not up against the card,
    and the words say what to do: "Swipe up to begin" (still a button you can tap). */
-.wc-stage > .wc-after { top: calc(50% + (var(--safe-top) - var(--safe-bottom)) / 2 + 39.2 * var(--cf) / 2 + 30px); gap: 2px; }
+.wc-stage > .wc-after { top: calc(50% + (var(--safe-top) - var(--safe-bottom)) / 2 - 39.2 * var(--cf) / 2 - 68px); gap: 2px; } /* above the card (2026-10-12, Sevaan) */
 .wc-after #btn-start.text-button { margin-top: 0; min-height: 0; padding: 2px 16px 14px; line-height: 1; } /* tap area kept below the words */
 #start > .starfield { position: absolute; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; } /* twinkling stars behind the welcome card */
 
@@ -908,7 +907,9 @@ body.day .patch-coins { bottom: calc(var(--safe-bottom, 0px) + 114px); }
 .wc-signin { position:absolute; left:0; right:0; bottom:calc(var(--safe-bottom) + 18px); margin:auto; width:max-content; display:flex; flex-direction:column; align-items:center; gap:6px; background:none; border:0; padding:8px 14px; cursor:pointer; font:500 15px/1 var(--label); letter-spacing:.14em; text-transform:uppercase; }
 .wc-signin small { font:inherit; color:rgba(255,242,179,.7); }
 .wc-signin span { color:#fa8127; font-size:16px; }
-.wc-signin[hidden], #start.wc-open .wc-signin { display:none; }
+.wc-signin[hidden], #start:not(.wc-open) .wc-signin { display:none; } /* only after the card flips (2026-10-12, Sevaan: the first screen is just the card) */
+#start.wc-open .wc-signin { animation: wcIn .5s ease-out; }
+@keyframes wcIn { from { opacity: 0; transform: translateY(8px); } }
 #peak-toggle.on { color:#fa8127; text-shadow:0 0 10px #fa812799; } /* TEMP testing button (2026-10-11) */
 /* Every text field at least 16px, or iOS zooms the whole app in and leaves it zoomed (QA 2026-10-11) */
 input[type=text], input[type=email], input[type=url], input[type=search], input[type=number], input:not([type]), textarea, select { font-size: max(16px, 1em) !important; }
@@ -1059,3 +1060,6 @@ body.night .sb-end { opacity: 1 !important; color: var(--text) !important; }
 .nt-ic .ico { width: 24px; height: 24px; color: var(--gold); }
 .nt-bell .ico, #ud-bell .ico, .remind .ico { width: 16px; height: 16px; vertical-align: -3px; margin-right: 4px; }
 .plus-perks i .ico { width: 22px; height: 22px; color: var(--gold); }
+/* No double-tap zoom on controls (2026-10-12, Sevaan: double-tapping a button zoomed the page). Pinch zoom still works. */
+button, a, label, input, select, summary, [role="button"], .d-cta, .ticket { touch-action: manipulation; }
+.d-cta.done { opacity: .85; }

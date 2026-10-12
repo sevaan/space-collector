@@ -310,3 +310,9 @@ dialog.leaving { animation: ui-fade-in var(--m-norm) var(--ease-out) reverse for
 /* Tickets already up step aside while a card reveal, the Tonight page or a patch is showing. */
 body:has(#reveal:not([hidden])) #toasts, body:has(#ob-done:not([hidden])) #toasts { visibility: hidden; }
 /* Over the radar for its 7 seconds: the one spot clear of the circle and the target name above it (2026-10-12) */
+/* Coins slide down out from under the radar (2026-10-12). */
+.patch-coins .pc-disc { transform: translateY(-46px) scale(.3); }
+.patch-coins .pc-coin.in .pc-disc { animation: pc-drop .55s cubic-bezier(.2,1.3,.4,1) forwards; }
+@keyframes pc-drop { 0% { opacity: 0; transform: translateY(-46px) scale(.3) rotate(-120deg); } 65% { opacity: 1; transform: translateY(6px) scale(1.08) rotate(8deg); } 100% { opacity: 1; transform: none; } }
+.patch-coins .pc-more { margin-left: 0; width: 58px; text-align: center; }
+@media (prefers-reduced-motion: reduce) { .patch-coins .pc-coin.in .pc-disc { animation: none; opacity: 1; transform: none; } }

@@ -676,3 +676,9 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   Both xcodebuild steps run outside the sandbox (keychain).
 
 2026-10-12 · TestFlight build 1.0 (2): added NSLocationAlwaysAndWhenInUseUsageDescription (ITMS-90683: the geolocation plugin references the Always API even though the app only asks for When-In-Use). The build number lives in CURRENT_PROJECT_VERSION; bump it for every upload.
+
+2026-10-12 · v0.1.525:
+- **Welcome:** the first screen is only the sealed card; "Already collecting? Sign in…" appears at the bottom only after the flip (#start.wc-open). The ↑ "Swipe away" sits ABOVE the card. Fixed an orphaned CSS line ("text-align: center; text-shadow…") after #sky.waking that had silently swallowed the .wc-after rule after it.
+- **Patch coins:** placed under the radar, each coin centred on the radar canvas's centre line (set inline in pumpPatch), and they slide down out from under it (pc-drop).
+- **Reminder buttons** on the Tonight page and the Not tonight page confirm themselves ("✓ Reminder set for 8:50", or an error) via `remindDone`, because toasts are hidden while that page is up. That's why Sevaan saw "nothing happens".
+- **Double-tap zoom** is off on controls: `touch-action: manipulation` on buttons, links, labels, inputs, .d-cta and .ticket. Pinch zoom still works.

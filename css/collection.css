@@ -429,3 +429,5 @@ body.has-cards .collection-intro { display: none; }
 .logbook:not(.compact) .lb-more::after { content: ''; }
 .logbook.compact .lb-rot { min-height: 0; }
 .lb-more { float: none; align-self: flex-end; margin: 8px 16px -4px auto; }
+/* No double-tap zoom on controls (2026-10-12, Sevaan: double-tapping a button zoomed the page). Pinch zoom still works. */
+button, a, label, input, select, summary, [role="button"], .d-cta, .ticket { touch-action: manipulation; }
