@@ -674,3 +674,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   4. `xcodebuild -exportArchive -archivePath … -exportOptionsPlist <ExportOptions: app-store-connect, destination upload, team D6XL5H68G8, automatic> -allowProvisioningUpdates`.
 
   Both xcodebuild steps run outside the sandbox (keychain).
+
+2026-10-12 · TestFlight build 1.0 (2): added NSLocationAlwaysAndWhenInUseUsageDescription (ITMS-90683: the geolocation plugin references the Always API even though the app only asks for When-In-Use). The build number lives in CURRENT_PROJECT_VERSION; bump it for every upload.
