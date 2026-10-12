@@ -1061,7 +1061,7 @@ body.night .sb-end { opacity: 1 !important; color: var(--text) !important; }
 .nt-bell .ico, #ud-bell .ico, .remind .ico { width: 16px; height: 16px; vertical-align: -3px; margin-right: 4px; }
 .plus-perks i .ico { width: 22px; height: 22px; color: var(--gold); }
 /* No double-tap zoom on controls (2026-10-12, Sevaan: double-tapping a button zoomed the page). Pinch zoom still works. */
-button, a, label, input, select, summary, [role="button"], .d-cta, .ticket { touch-action: manipulation; }
+:where(button, a, label, input, select, summary, [role="button"], .d-cta, .ticket) { touch-action: manipulation; } /* zero specificity: anything with its own touch rule (the welcome card, sliders, cards) keeps it */
 .d-cta.done { opacity: .85; }
 /* Welcome, after the flip (2026-10-12, Sevaan): "Swipe away" in the middle of the space above the card, the sign-in link in
    the middle of the space below it. Card centre = 50% + (safe-top − safe-bottom)/2, half height = 19.6 × --cf. */
