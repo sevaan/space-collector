@@ -1035,3 +1035,27 @@ body:has(.overlay:not([hidden])) .ticket--sticky, body:has(.set-sheet.in) .ticke
 html[data-theme=night], body.night { --ui-muted: rgba(255, 242, 179, .88); --ui-link-ink: #ffd9c9; --ui-edge: #8a3b37; }
 body.night .sb-end { opacity: 1 !important; color: var(--text) !important; }
 /* 2026-10-12, access room: no app text under 11–12px (it was 8.5–11.5px in places); see LESS/MORE, chips, labels. */
+/* The weekly recap as a card (2026-10-12): 5:7 like the cards, the retro double frame, art window, tilt and glare. */
+#recap .rc-tilt { width: min(86vw, 330px, calc((100svh - 230px) * 5 / 7)); transform: translateY(18px) scale(.97); transition: transform .45s cubic-bezier(.2, 1.2, .4, 1); perspective: 900px; }
+#recap.in .rc-tilt { transform: none; }
+#recap .rc-card { position: relative; width: 100%; aspect-ratio: 5 / 7; display: flex; flex-direction: column; overflow: hidden; border-radius: 20px; border: 5px solid #adbcc8; box-shadow: inset 0 0 0 1.5px #657786, inset 0 0 0 3px #d4e0e7, 0 24px 50px #000a; background: radial-gradient(ellipse at 50% 20%, #13233a, #080f1b 70%); transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transition: none; will-change: transform; }
+#recap .rc-big { padding: 14px 16px 4px; }
+#recap .rc-big b { font-size: 54px; }
+.rc-win { position: relative; flex: 1; min-height: 0; margin: 10px 0 0; border-block: 1px solid #bcb58566; background: #0b1524; overflow: hidden; }
+.rc-win img, .rc-win svg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.rc-win::after { content: ''; position: absolute; inset: 0; background: linear-gradient(transparent 45%, #080f1be6); pointer-events: none; }
+.rc-cap { position: absolute; left: 16px; right: 16px; bottom: 12px; z-index: 1; }
+.rc-cap small { display: block; font: 500 12px/1 var(--label); letter-spacing: .18em; text-transform: uppercase; color: #bdbea9; }
+.rc-cap b { display: block; margin: 5px 0 4px; font: 400 24px/1.02 var(--display); text-transform: uppercase; color: #fff2b3; }
+.rc-cap em { font: 500 13px/1 var(--label); letter-spacing: .14em; text-transform: uppercase; font-style: normal; }
+#recap .rc-stats { margin: 0 16px; border-top: 0; }
+#recap .rc-foot { margin-top: 0; padding: 10px 16px 12px; }
+.rc-glare { position: absolute; inset: 0; pointer-events: none; z-index: 5; mix-blend-mode: soft-light; opacity: calc(.25 + var(--o, 0) * .5); background: radial-gradient(circle at var(--mx, 50%) var(--my, 30%), #ffffffaa, transparent 55%); }
+@media (prefers-reduced-motion: reduce) { #recap .rc-card { transform: none; } }
+/* Line icons in place of emoji (2026-10-12): sizes per spot. */
+.set-ic .ico { width: 17px; height: 17px; }
+.od-week i .ico, .nt-week i .ico { width: 18px; height: 18px; }
+.nt-week .ok i .ico { color: var(--gold); }
+.nt-ic .ico { width: 24px; height: 24px; color: var(--gold); }
+.nt-bell .ico, #ud-bell .ico, .remind .ico { width: 16px; height: 16px; vertical-align: -3px; margin-right: 4px; }
+.plus-perks i .ico { width: 22px; height: 22px; color: var(--gold); }

@@ -656,3 +656,9 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - sign-in errors on screen no longer show codes;
   - the challenge reads "Turn a card silver or gold".
 - **Collection:** body.has-cards hides the intro banner. The rank card is compact (rank and XP) until "Missions ›" opens it; the choice is remembered in localStorage lbOpen.
+
+2026-10-12 · v0.1.523:
+- **Line icons:** css/icons.css (linked from index.html and cards.html) adds 30 line icons (cloud, rain, snow, storm, fog, cloud-part, pin, compass, north, moon, bell, stars, constellation, tree, binoculars, ring, snap, hand, owl, sound, vibrate, music, replay, list, reset, flame, cards, patch, calendar, chart). They're masks, so they take the text colour. They replace the emoji in Settings rows, the weather week (WX_ICON), bells, Plus perks (PLUS_PERKS icon = icon name) and the Not tonight tiles. The streak lost its 🔥. The header ☾ glyph stays.
+- **Weekly recap:** now a card. .rc-tilt and .rc-card at 5:7 with the retro double frame; the rarest find fills an art window with a caption; attachTilt and attachGyro with a soft-light glare.
+- **Radar tip:** "See what's up tonight" opens the Tonight tab.
+- **design/art-rocket-redo.html:** a prompt pack for 35 rocket-stage art files (spent, tumbling, no flame, varied angles). Sevaan generates the PNGs, then run scripts/import-art.py <folder>.

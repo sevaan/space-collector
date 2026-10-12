@@ -1,28 +1,28 @@
-import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.522';
-import { computeStats, statsHtml, posterCanvas } from './stats.js?v=0.1.522';
-import { isPlus } from './plus.js?v=0.1.522';
-import { nightKey } from './observation.js?v=0.1.522';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.522';
-import { sfx } from './sfx.js?v=0.1.522';
-import { expandFacts } from './catalog-facts.js?v=0.1.522';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.522';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.522';
-import { ticket } from './toast.js?v=0.1.522';
-import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.522';
-import { cardArt } from './art.js?v=0.1.522';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.522';
-import { applyBack } from './card-backs.js?v=0.1.522';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.522';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.522';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.522';
-import { loadConstellations, conList } from './constellations.js?v=0.1.522';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.522';
-import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.522';
-import { shareCardEl } from './share-card.js?v=0.1.522';
-import { removeSighting } from './account.js?v=0.1.522';
-import { allSightings, deleteSighting } from './store.js?v=0.1.522';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.522';
-import { SECRET_PATCHES } from './secrets.js?v=0.1.522';
+import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.523';
+import { computeStats, statsHtml, posterCanvas } from './stats.js?v=0.1.523';
+import { isPlus } from './plus.js?v=0.1.523';
+import { nightKey } from './observation.js?v=0.1.523';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.523';
+import { sfx } from './sfx.js?v=0.1.523';
+import { expandFacts } from './catalog-facts.js?v=0.1.523';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.523';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.523';
+import { ticket } from './toast.js?v=0.1.523';
+import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.523';
+import { cardArt } from './art.js?v=0.1.523';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.523';
+import { applyBack } from './card-backs.js?v=0.1.523';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.523';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.523';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.523';
+import { loadConstellations, conList } from './constellations.js?v=0.1.523';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.523';
+import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.523';
+import { shareCardEl } from './share-card.js?v=0.1.523';
+import { removeSighting } from './account.js?v=0.1.523';
+import { allSightings, deleteSighting } from './store.js?v=0.1.523';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.523';
+import { SECRET_PATCHES } from './secrets.js?v=0.1.523';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -251,7 +251,7 @@ function renderLogbook() {
     <path d="M${pts.map((q) => q.join(' ')).join(' L')}" fill="none" stroke="#344654" stroke-dasharray="3 5"/>
     ${pts[cur + 1] ? `<path d="M${pts[cur].join(' ')} L${pts[cur][0] + (pts[cur + 1][0] - pts[cur][0]) * into} ${pts[cur][1] + (pts[cur + 1][1] - pts[cur][1]) * into}" stroke="#fa8127" stroke-width="2"/>` : ''}
     ${rungs.map(([, n], i) => { const [x, y] = pts[i]; return `<circle cx="${x}" cy="${y}" r="${i === cur ? 6 : 4}" fill="${i <= cur ? '#fa8127' : '#0b1626'}" ${i > cur ? 'stroke="#fff2b3" stroke-dasharray="2 2"' : ''}/>${i === cur ? `<circle cx="${x}" cy="${y}" r="12" fill="none" stroke="#fa8127" opacity=".5"/>` : ''}<text x="${x}" y="${y + 20}" text-anchor="middle" font-family="SC Label, Arial Narrow" font-size="9.5" letter-spacing="1.5" fill="${i >= cur ? '#fff2b3' : '#bdbea9'}">${esc(n.toUpperCase())}</text>${i === cur + 1 ? `<text x="${x}" y="${y - 14}" text-anchor="middle" font-family="SC Label, Arial Narrow" font-size="9" letter-spacing="1.5" fill="#fa8127">NEXT</text>` : ''}`; }).join('')}</svg>`;
-  const streak = p.streak.current >= 2 ? `${p.streak.current}-week streak 🔥` : p.streak.current ? 'Week 1 · come back next week' : 'Observe this week to start a streak'; // the flame is earned at week 2 (playtest 2026-10-09)
+  const streak = p.streak.current >= 2 ? `${p.streak.current}-week streak` : p.streak.current ? 'Week 1 · come back next week' : 'Observe this week to start a streak'; // the flame is earned at week 2 (playtest 2026-10-09)
   const ev = eventBadges(state.raw), nx = nextEvent();
   // At risk (a streak going, nothing logged yet this week): a Remind me for Saturday evening (QA 2026-10-09: the button
   // was lost in the card redesign, so remindStreak was unreachable).
