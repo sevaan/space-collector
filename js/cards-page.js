@@ -1,24 +1,25 @@
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.490';
-import { sfx } from './sfx.js?v=0.1.490';
-import { expandFacts } from './catalog-facts.js?v=0.1.490';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.490';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.490';
-import { ticket } from './toast.js?v=0.1.490';
-import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.490';
-import { cardArt } from './art.js?v=0.1.490';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.490';
-import { applyBack } from './card-backs.js?v=0.1.490';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.490';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.490';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.490';
-import { loadConstellations, conList } from './constellations.js?v=0.1.490';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.490';
-import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.490';
-import { shareCardEl } from './share-card.js?v=0.1.490';
-import { removeSighting } from './account.js?v=0.1.490';
-import { allSightings, deleteSighting } from './store.js?v=0.1.490';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.490';
-import { SECRET_PATCHES } from './secrets.js?v=0.1.490';
+import { isNative, saveFile, notifyAt } from './native.js?v=0.1.496';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.496';
+import { sfx } from './sfx.js?v=0.1.496';
+import { expandFacts } from './catalog-facts.js?v=0.1.496';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.496';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.496';
+import { ticket } from './toast.js?v=0.1.496';
+import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.496';
+import { cardArt } from './art.js?v=0.1.496';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.496';
+import { applyBack } from './card-backs.js?v=0.1.496';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.496';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.496';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.496';
+import { loadConstellations, conList } from './constellations.js?v=0.1.496';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.496';
+import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.496';
+import { shareCardEl } from './share-card.js?v=0.1.496';
+import { removeSighting } from './account.js?v=0.1.496';
+import { allSightings, deleteSighting } from './store.js?v=0.1.496';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.496';
+import { SECRET_PATCHES } from './secrets.js?v=0.1.496';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -191,8 +192,10 @@ function remindStreak() {
   let ahead = (6 - d.getDay() + 7) % 7; if (ahead === 0 && d.getTime() < Date.now()) ahead = 7; // this Saturday, unless 8 pm has passed
   d.setDate(d.getDate() + ahead);
   const start = d.getTime(), url = URL.createObjectURL(new Blob([passIcs({ title: 'Look up tonight (Space Collector)', start, end: start + 3600e3, description: 'Log one sighting this week to keep your observing streak. Open https://sevaan.github.io/space-collector/' })], { type: 'text/calendar' }));
-  const a = document.createElement('a'); a.href = url; a.download = 'space-collector-streak.ics'; a.click(); setTimeout(() => URL.revokeObjectURL(url), 5000);
-  ticket({ kind: 'mission', eyebrow: 'STREAK', line: 'Saturday 8 pm reminder: add it to your calendar.', ms: 4000 }); // a toast, as on Explore
+  URL.revokeObjectURL(url);
+  // App: a notification (QA 2026-10-11, the .ics did nothing there). Web: a calendar file.
+  (isNative() ? notifyAt(start, 'Look up tonight', 'Log one sighting this week to keep your observing streak.') : saveFile(new Blob([passIcs({ title: 'Look up tonight (Space Collector)', start, end: start + 3600e3, description: 'Log one sighting this week to keep your observing streak. Open https://sevaan.github.io/space-collector/' })], { type: 'text/calendar' }), 'space-collector-streak.ics').then((ok) => (ok ? 'calendar' : 'failed')))
+    .then((r) => ticket({ kind: 'mission', eyebrow: 'STREAK', line: r === 'on' ? 'We\'ll remind you Saturday at 8 pm.' : r === 'calendar' ? 'Saturday 8 pm reminder: add it to your calendar.' : r === 'denied' ? 'Notifications are off for Space Collector.' : 'Couldn\'t set a reminder here.', ms: 4000 }));
 }
 function renderLogbook() {
   const info = (k) => { const c = state.byKey.get(k); return c ? { tier: c.tier, tier0: c.tier0, type: c.type, owner: c.owner, launch: c.launch, natural: c.natural, con: c.con } : null; };
@@ -383,7 +386,7 @@ function showCard() {
       const launch = c.launches && s.stampKey ? c.launches.find((l) => l.key === s.stampKey) : null;
       const launchLine = c.launches ? (launch ? `Launch ${esc(s.stampKey.split(':')[1] ?? s.stampKey)} · ${launch.n ?? ''} satellites launched ${esc(new Date(`${launch.launch}T12:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }))}` : 'Launch unknown') : '';
       row.className = launchLine ? 'with-launch' : '';
-      row.innerHTML = `<span class="h-main"><span>${esc(when)}</span><span>${esc(where)}</span></span>${launchLine ? `<span class="h-launch">${launchLine.replace(/\s+satellites/, ' satellites')}</span>` : ''}<button type="button" class="history-delete" aria-label="Delete this sighting">×</button>`;
+      row.innerHTML = `<span class="h-main"><span>${esc(when)}</span>${where ? `<span> · ${esc(where)}</span>` : ''}</span>${launchLine ? `<span class="h-launch">${launchLine.replace(/\s+satellites/, ' satellites')}</span>` : ''}<button type="button" class="history-delete" aria-label="Delete this sighting">×</button>`;
       row.querySelector('button').addEventListener('click', async () => {
         if (!confirm('Delete this sighting? If it was your only one, the card leaves your collection.')) return;
         try { await deleteSighting(s.key); } catch { ticket({ kind: 'info', line: 'That sighting could not be deleted. Try again.' }); return; }
@@ -652,6 +655,10 @@ if (EMBED) {
     if (e.data.sc === 'insets') { const r = document.documentElement.style; r.setProperty('--safe-top', `${e.data.top}px`); r.setProperty('--safe-bottom', `${e.data.bottom}px`); }
     if (e.data.sc === 'open' || e.data.sc === 'show') setSwitch(document.querySelector('.sc-switch'), 'right', false); // shown again: pill on Collection
     if ((e.data.sc === 'open' || e.data.sc === 'show') && e.data.key) openKey(e.data.key);
+    if (e.data.sc === 'back') { // Android Back from the app shell: close the top thing here, else go back to Explore
+      if ($('patch-view').open) closePatch(); else if ($('viewer').open) closeViewer();
+      else window.parent.postMessage({ sc: 'explore' }, location.origin);
+    }
     if (e.data.sc === 'tonight') { state.plan = readPlan(); if (state.ready && ['owned', 'discover'].includes(state.view)) render(); }
   });
 }
@@ -839,4 +846,4 @@ addEventListener('resize', moveInk); setTimeout(moveInk, 300);
     last = el.textContent; }).observe($('owned-count'), { childList: true, characterData: true, subtree: true }); }
 
 // Offline caching (sw.js, 2026-10-08). Inside the app's Collection layer the parent page has already registered it.
-if ('serviceWorker' in navigator && window.parent === window) addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+if ('serviceWorker' in navigator && window.parent === window && !isNative()) addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));

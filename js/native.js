@@ -15,11 +15,77 @@ export async function getPosition(opts) {
   const geo = plugin('Geolocation');
   if (geo) {
     try {
-      const perm = await geo.requestPermissions({ permissions: ['location'] });
-      if (perm?.location === 'denied') throw { code: 1 };
-      return await geo.getCurrentPosition(opts);
+      // Approximate is plenty for the sky (QA 2026-10-11: asking for precise made Android loop "change to precise?").
+      let perm = await geo.checkPermissions().catch(() => null);
+      if (perm?.location !== 'granted' && perm?.coarseLocation !== 'granted') perm = await geo.requestPermissions({ permissions: ['coarseLocation'] });
+      if (perm?.location !== 'granted' && perm?.coarseLocation !== 'granted') throw { code: 1 };
+      try { return await geo.getCurrentPosition(opts); }
+      catch { return await geo.getCurrentPosition({ ...opts, enableHighAccuracy: true, timeout: 20000 }); } // low accuracy can time out with GPS only
     } catch (e) { throw { code: e?.code === 1 || /denied/i.test(e?.message ?? '') ? 1 : 2 }; }
   }
   if (!navigator.geolocation) throw { code: 2 };
   return new Promise((ok, no) => navigator.geolocation.getCurrentPosition(ok, no, opts));
+}
+
+// ---- Native integrations (2026-10-11, QA pass). Each falls back to the web way when not in the app. ----
+// Listen to a plugin event (App backButton, appStateChange…). Returns a remover.
+export function onNative(pluginName, event, fn) {
+  const cap = globalThis.Capacitor;
+  if (!isNative() || typeof cap?.addListener !== 'function') return () => {};
+  const h = cap.addListener(pluginName, event, fn); return () => h?.remove?.();
+}
+const b64 = (blob) => new Promise((ok, no) => { const r = new FileReader(); r.onload = () => ok(String(r.result).split(',')[1]); r.onerror = no; r.readAsDataURL(blob); });
+// Write a file to the app's cache and hand it to the system share sheet (images, .ics, exports). Resolves true if a
+// share sheet opened. Web: the Web Share API with the file, else false (the caller downloads instead).
+export async function shareFile(blob, name, { title = '', text = '' } = {}) {
+  if (isNative()) {
+    try {
+      const fs = plugin('Filesystem'), sh = plugin('Share');
+      const { uri } = await fs.writeFile({ path: name, data: await b64(blob), directory: 'CACHE' });
+      await sh.share({ title, text, files: [uri], dialogTitle: title || 'Share' });
+      return true;
+    } catch (e) { return /cancel/i.test(e?.message ?? '') ? true : false; }
+  }
+  try {
+    const file = new File([blob], name, { type: blob.type });
+    if (navigator.canShare?.({ files: [file] })) { await navigator.share({ files: [file], title, text }); return true; }
+  } catch (e) { if (e?.name === 'AbortError') return true; }
+  return false;
+}
+// Save or share a generated file: native share sheet in the app (Save to Files / calendar / mail), download on the web.
+export async function saveFile(blob, name, opts = {}) {
+  if (await shareFile(blob, name, opts)) return true;
+  if (isNative()) return false;
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.append(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 4000); return true;
+}
+// Haptics: a soft tick, a firmer thud, a success buzz. Web: navigator.vibrate where it exists (not iOS).
+export function haptic(kind = 'light') {
+  if (isNative()) {
+    const h = plugin('Haptics');
+    if (kind === 'success' || kind === 'warning') h?.notification({ type: kind.toUpperCase() }).catch(() => {});
+    else if (kind === 'select') h?.selectionChanged?.().catch?.(() => {});
+    else h?.impact({ style: kind === 'heavy' ? 'HEAVY' : kind === 'medium' ? 'MEDIUM' : 'LIGHT' }).catch(() => {});
+    return;
+  }
+  navigator.vibrate?.({ light: 8, select: 6, medium: 16, heavy: 28, success: [12, 60, 18], warning: [20, 40, 20] }[kind] ?? 8);
+}
+// Local notifications (pass reminders): no server, works offline. Resolves 'on' | 'denied' | 'unsupported'.
+let notifId = 1000;
+export async function notifyAt(at, title, body, { id } = {}) {
+  if (!isNative()) return 'unsupported';
+  const ln = plugin('LocalNotifications');
+  try {
+    let p = await ln.checkPermissions(); if (p.display !== 'granted') p = await ln.requestPermissions();
+    if (p.display !== 'granted') return 'denied';
+    await ln.schedule({ notifications: [{ id: id ?? notifId++, title, body, schedule: { at: new Date(at), allowWhileIdle: true } }] });
+    return 'on';
+  } catch { return 'unsupported'; }
+}
+export async function cancelNotify(id) { if (isNative()) try { await plugin('LocalNotifications').cancel({ notifications: [{ id }] }); } catch {} }
+// The app's chrome is always dark: light status-bar icons on both platforms, from the first frame.
+export function nativeChrome() {
+  if (!isNative()) return;
+  const sb = plugin('StatusBar');
+  sb?.setStyle({ style: 'DARK' }).catch(() => {}); // DARK = light text, for dark backgrounds
 }

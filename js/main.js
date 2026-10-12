@@ -1,48 +1,48 @@
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.490';
-import * as Secrets from './secrets.js?v=0.1.490';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.490';
-import * as Ufo from './ufo.js?v=0.1.490';
-import * as Fossil from './fossil.js?v=0.1.490';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.490';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.490';
-import { toast, ticket, dropToast, toastPending, onTicketShown } from './toast.js?v=0.1.490';
-import { VERSION } from './version.js?v=0.1.490';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, overEarth, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.490';
-import { placeName } from './geo.js?v=0.1.490';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.490';
-import { conArt } from './con-art.js?v=0.1.490';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.490';
-import { CON_FIGURES } from './con-figures.js?v=0.1.490';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.490';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.490';
-import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.490';
-import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.490';
-import { conList } from './constellations.js?v=0.1.490';
-import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.490';
-import { SkyView, shortName } from './sky.js?v=0.1.490';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.490';
-import { isPlus, setPlusForTesting, onPlus, PLUS_PERKS } from './plus.js?v=0.1.490';
-import { isNative, getPosition } from './native.js?v=0.1.490';
-import { initAccount, onAccount, account, signInGoogle, sendEmailLink, completeEmailLink, signOut, syncNow, pushSighting } from './account.js?v=0.1.490';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.490';
-import { cardArt } from './art.js?v=0.1.490';
-import { renderCard, cardLevel, artImage, lockedArt, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.490';
-import { applyBack } from './card-backs.js?v=0.1.490';
-import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.490';
-import { audioCtx } from './audio-ctx.js?v=0.1.490';
-import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume } from './music.js?v=0.1.490';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.490';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.490';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.490';
-import { naturalTargets, SOLAR_SYSTEM, DEEP_SKY } from './natural.js?v=0.1.490';
-import { TIER_INFO } from './rarity.js?v=0.1.490';
-import { SETS, albumList } from './sets.js?v=0.1.490';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.490';
-import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.490';
-import { shareCardEl } from './share-card.js?v=0.1.490';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.490';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.490';
-import { addStarfield } from './starfield.js?v=0.1.490';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.496';
+import * as Secrets from './secrets.js?v=0.1.496';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.496';
+import * as Ufo from './ufo.js?v=0.1.496';
+import * as Fossil from './fossil.js?v=0.1.496';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.496';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.496';
+import { toast, ticket, dropToast, toastPending, onTicketShown } from './toast.js?v=0.1.496';
+import { VERSION } from './version.js?v=0.1.496';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, overEarth, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.496';
+import { placeName } from './geo.js?v=0.1.496';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.496';
+import { conArt } from './con-art.js?v=0.1.496';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.496';
+import { CON_FIGURES } from './con-figures.js?v=0.1.496';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.496';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.496';
+import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.496';
+import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.496';
+import { conList } from './constellations.js?v=0.1.496';
+import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.496';
+import { SkyView, shortName } from './sky.js?v=0.1.496';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.496';
+import { isPlus, setPlusForTesting, onPlus, PLUS_PERKS } from './plus.js?v=0.1.496';
+import { isNative, getPosition, saveFile, notifyAt, cancelNotify, haptic, onNative, nativeChrome, plugin } from './native.js?v=0.1.496';
+import { initAccount, onAccount, account, signInGoogle, sendEmailLink, completeEmailLink, signOut, syncNow, pushSighting } from './account.js?v=0.1.496';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.496';
+import { cardArt } from './art.js?v=0.1.496';
+import { renderCard, cardLevel, artImage, lockedArt, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.496';
+import { applyBack } from './card-backs.js?v=0.1.496';
+import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.496';
+import { audioCtx } from './audio-ctx.js?v=0.1.496';
+import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume } from './music.js?v=0.1.496';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.496';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.496';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.496';
+import { naturalTargets, SOLAR_SYSTEM, DEEP_SKY } from './natural.js?v=0.1.496';
+import { TIER_INFO } from './rarity.js?v=0.1.496';
+import { SETS, albumList } from './sets.js?v=0.1.496';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.496';
+import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.496';
+import { shareCardEl } from './share-card.js?v=0.1.496';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.496';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.496';
+import { addStarfield } from './starfield.js?v=0.1.496';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -887,7 +887,7 @@ $('d-hit').addEventListener('click', () => {
   const target = state.activeTarget;
   if (!target || state.captureBusy) return;
   if ($('discover').classList.contains('owned')) return viewOwned(target, $('d-cta').getBoundingClientRect());
-  sfx('collect');
+  sfx('collect'); buzz(16); // a firm tap on collect
   capture(target.obj);
 });
 async function viewOwned(target, from) {
@@ -983,6 +983,7 @@ function showCaptureCard(obj) {
   const card = renderCard(model, { sightings, seenMembers: new Set(sightings.map(s => s.objectId)).size });
   $('reveal-view').href = `cards.html#${encodeURIComponent(key)}`;
   openPanel('reveal');
+  if (['epic', 'legendary'].includes(model.tier) && sightings.length <= 1) setTimeout(() => buzz([20, 40, 20]), 900); // a celebration for a big first find
   // Fleet cards: a launch seen for the first time lands a stamp, and levels count stamps.
   let fleet = null;
   if (model.launches && stampKey) {
@@ -1456,10 +1457,10 @@ function renderTonight() {
       <span class="meta">Rises ${compassPoint(p.riseAz)} · up to ${p.peakEl}° in the ${compassPoint(p.peakAz)} · ${brightnessWord(p.mag)}</span></span>
       <button class="ic showme" type="button" aria-label="Show me in the sky">${ICON_TARGET}</button></div>`;
     el.querySelector('.showme').addEventListener('click', (e) => { e.stopPropagation(); flyToCircle(e.currentTarget); showMePass(p); });
-    el.querySelector('.b-alarm').addEventListener('click', (e) => {
+    el.querySelector('.b-alarm').addEventListener('click', async (e) => {
       e.stopPropagation(); if (!canRemind) return;
-      if (reminded.has(key)) { reminded.delete(key); toast(`Reminder off for ${escapeHtml(label(p.obj))}. If you added it to your calendar, delete it there too.`, 3500); }
-      else { remindPass(p); reminded.add(key); }
+      if (reminded.has(key)) { reminded.delete(key); cancelNotify(remindIds.get(key)); toast(isNative() ? `Reminder off for ${escapeHtml(label(p.obj))}.` : `Reminder off for ${escapeHtml(label(p.obj))}. If you added it to your calendar, delete it there too.`, 3500); }
+      else if (await remindPass(p, key)) reminded.add(key); // only lit once it really worked (QA 2026-10-11)
       renderTonight();
     });
     el.querySelector('.b-face').addEventListener('click', (e) => {
@@ -1506,19 +1507,29 @@ function renderTonight() {
     const strip = document.createElement('div'); strip.className = 'mini-cards';
     for (const p of alarm) { const o = p.obj, tier = TIER_INFO[o.tier] ?? TIER_INFO.common, key = `${o.id}@${p.start}`, c = document.createElement('div'); c.className = 'mini-card';
       c.innerHTML = `<span class="mc-art">${ownsCard(o) ? previewArt(o, 'small', { accent: tier.color }) : lockedArt(o, false, tier.color, 'small')}</span><span class="mc-bd"><small style="color:${tier.color}">◆ ${tier.label}</small><b>${escapeHtml(label(o))}</b><span>${fmtTime(p.start)} · ${compassPoint(p.peakAz)}</span></span><button class="ic remind${reminded.has(key) ? ' on' : ''}" type="button" aria-label="Remind me">${ICON_BELL}</button>`;
-      c.querySelector('.remind').addEventListener('click', (e) => { const b = e.currentTarget; if (reminded.has(key)) { reminded.delete(key); b.classList.remove('on'); } else { remindPass(p); reminded.add(key); b.classList.add('on'); } });
+      c.querySelector('.remind').addEventListener('click', async (e) => { const b = e.currentTarget; if (reminded.has(key)) { reminded.delete(key); cancelNotify(remindIds.get(key)); b.classList.remove('on'); } else if (await remindPass(p, key)) { reminded.add(key); b.classList.add('on'); } });
       strip.appendChild(c); }
     list.appendChild(strip);
   }
 }
-// "Remind me": a calendar event with an alarm 10 minutes before the pass (iOS offers Add to Calendar).
-function remindPass(p) {
+// One way to set a reminder (QA 2026-10-11: the .ics download did nothing in the apps, and said it had):
+// in the app, a local notification at `at`; on the web, a calendar file. Resolves 'on' | 'denied' | 'calendar' | 'failed'.
+const remindIds = new Map(); let nextRemindId = 2000; // pass key -> notification id, so a bell can be turned off
+async function setReminder({ at, title, body, ics, file, key }) {
+  if (isNative()) { const id = nextRemindId++; if (key) remindIds.set(key, id); return notifyAt(at, title, body, { id }); }
+  return (await saveFile(new Blob([ics], { type: 'text/calendar' }), file)) ? 'calendar' : 'failed';
+}
+function reminderToast(r, when) {
+  toast(r === 'on' ? `We'll remind you at ${fmtTime(when)}.` : r === 'calendar' ? `Reminder for ${fmtTime(when)}: add it to your calendar.` : r === 'denied' ? 'Notifications are off for Space Collector. Turn them on in your phone\'s Settings.' : 'Couldn\'t set a reminder here.', 3500);
+  return r === 'on' || r === 'calendar';
+}
+// "Remind me": 10 minutes before the pass. App: a notification. Web: a calendar event with an alarm.
+async function remindPass(p, key) {
   const name = label(p.obj), title = `${name} passes over (Space Collector)`;
   const description = `Look ${compassPoint(p.riseAz)} at ${fmtTime(p.start)}. Highest ${p.peakEl}° up in the ${compassPoint(p.peakAz)} at ${fmtTime(p.peakAt)}, up to magnitude ${p.mag}. Open https://sevaan.github.io/space-collector/ to collect it.`;
-  const url = URL.createObjectURL(new Blob([passIcs({ title, start: p.start, end: p.end, description })], { type: 'text/calendar' }));
-  const a = document.createElement('a'); a.href = url; a.download = `${name.replace(/[^\w-]+/g, '-')}.ics`; a.click();
-  setTimeout(() => URL.revokeObjectURL(url), 5000);
-  toast(`Reminder for ${name} at ${fmtTime(p.start)}: add it to your calendar.`, 3500);
+  const r = await setReminder({ at: p.start - 10 * 60e3, title: `${name} in 10 minutes`, body: `Look ${compassPoint(p.riseAz)} at ${fmtTime(p.start)}. It climbs ${p.peakEl}° up in the ${compassPoint(p.peakAz)}.`,
+    ics: passIcs({ title, start: p.start, end: p.end, description }), file: `${name.replace(/[^\w-]+/g, '-')}.ics`, key });
+  return reminderToast(r, isNative() ? p.start - 10 * 60e3 : p.start);
 }
 // Planets and constellations (with stars you still need) above the horizon in a dark sky before dawn.
 function alsoUpTonight(t0, until) {
@@ -2405,7 +2416,7 @@ function obFinish(caught) {
     sky += cloudsHtml(1, { dark: true }) + (['rain', 'storm'].includes(wx.worst) ? rainHtml() : '');
     $('od-sky').innerHTML = sky;
     $('ob-remind').hidden = !next; $('ob-remind').firstElementChild.textContent = next ? `Remind me ${day(next.t)}` : 'Remind me';
-    $('ob-remind').onclick = () => { if (!next) return; const url = URL.createObjectURL(new Blob([passIcs({ title: 'Clear night for Space Collector', start: next.t, end: next.t + 3600e3, description: 'The forecast says clear: open Space Collector and look up. https://sevaan.github.io/space-collector/' })], { type: 'text/calendar' })); const a = document.createElement('a'); a.href = url; a.download = 'space-collector-clear-night.ics'; a.click(); setTimeout(() => URL.revokeObjectURL(url), 5000); toast('Added to your calendar.', 2500); };
+    $('ob-remind').onclick = async () => { if (!next) return; const r = await setReminder({ at: next.t, title: 'A clear night for Space Collector', body: 'The forecast says clear. Open Space Collector and look up.', ics: passIcs({ title: 'Clear night for Space Collector', start: next.t, end: next.t + 3600e3, description: 'The forecast says clear: open Space Collector and look up. https://sevaan.github.io/space-collector/' }), file: 'space-collector-clear-night.ics' }); reminderToast(r, next.t); };
     $('ob-explore').firstElementChild.textContent = 'Explore the sky anyway';
     $('ob-explore').onclick = () => { ob.hidden = true; $('ob-done').hidden = true; setTimeout(maybeAskSignIn, 600); radarTip(); };
     $('ob-done').hidden = false;
@@ -2739,7 +2750,9 @@ $('btn-ufo')?.addEventListener('click', () => { ufoCaught = false; try { localSt
 
 // ---------- Settings (2026-10-08, design/settings.html) ----------
 function soundOn() { return readPref('sound', true); }
-function buzz(p) { if (soundOn()) navigator.vibrate?.(p); }
+// Haptics (QA 2026-10-11: navigator.vibrate does nothing on iPhone). Old call sites pass milliseconds or a pattern;
+// they map to a feel: a tick for small taps, a thud for bigger moments, a success pattern for celebrations.
+function buzz(p) { if (!soundOn()) return; haptic(Array.isArray(p) ? 'success' : p >= 25 ? 'heavy' : p >= 14 ? 'medium' : p <= 8 ? 'select' : 'light'); }
 const HL_NAMES = { satellite: 'Satellites', rocket: 'Rocket stages', planet: 'Planets', sun: 'Sun', star: 'Stars' };
 function renderSettings() {
   const st = state.locationStatus, o = state.observer;
@@ -2889,9 +2902,29 @@ document.addEventListener('pointerdown', () => startMusic(), { once: true, captu
 // The native apps may play sound without a tap, so the music starts as the app opens (2026-10-11, Sevaan), a beat
 // after boot so building the audio doesn't land on the first frames. Browsers still wait for the first tap.
 if (isNative()) setTimeout(() => { startMusic(); loadSfx(); }, 1200);
+// ---------- native app: Back button, status bar, lifecycle (2026-10-11, QA) ----------
+// Android Back closes the top layer, one at a time, and only leaves the app (to the background, not killed) from the
+// bare sky. The Collection runs in a frame, so it's asked to close its own viewer/patch first (sc:back).
+function handleBack() {
+  const sheet = [...document.querySelectorAll('.set-sheet')].find((s) => !s.hidden && s.classList.contains('in'));
+  if (sheet) { closeSheet(sheet); return; }
+  if (!$('recap').hidden) { $('recap').querySelector('.rc-go')?.click(); return; }
+  if (!$('reveal').hidden) { $('reveal').querySelector('[data-close="reveal"]')?.click(); return; }
+  if (activePanel) { closePanel(); return; }
+  if (collectionOpen) { colFrame.contentWindow?.postMessage({ sc: 'back' }, location.origin); return; }
+  if (state.timeOffsetMs) { backToNow(); return; }
+  if (!$('start').hidden && $('start').classList.contains('wc-open')) { return; }
+  plugin('App')?.minimizeApp().catch(() => {});
+}
+if (isNative()) {
+  nativeChrome();
+  onNative('App', 'backButton', handleBack);
+  // Pause the audio when the app goes to the background (QA: the AudioContext kept running and drained battery).
+  onNative('App', 'appStateChange', ({ isActive }) => { const c = audioCtx(); if (!c) return; if (isActive) c.resume().catch(() => {}); else c.suspend().catch(() => {}); });
+}
 $('set-data').addEventListener('click', () => {
   const blob = new Blob([JSON.stringify({ app: 'Space Collector', version: VERSION, exported: new Date().toISOString(), sightings: state.sightings.filter((x) => !x.sim) }, null, 2)], { type: 'application/json' });
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `space-collector-sightings-${new Date().toISOString().slice(0, 10)}.json`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+  saveFile(blob, `space-collector-sightings-${new Date().toISOString().slice(0, 10)}.json`, { title: 'Your Space Collector sightings' }).then((ok) => { if (!ok) toast('Couldn\'t export here.', 2500); });
 });
 // Testing tools: tap the version five times.
 // (2026-10-08: testing tools now sit at the top of Settings, always shown.)
@@ -2935,10 +2968,10 @@ $('ud-bell').addEventListener('click', () => {
   draw(); $('ud-opts').onclick = (e) => { const o = e.target.closest('.ud-opt'); if (o) { udPick = Number(o.dataset.i); draw(); } };
   $('ud-cancel').hidden = !r; openSheet('ud-sheet');
 });
-$('ud-set').addEventListener('click', () => {
+$('ud-set').addEventListener('click', async () => {
   const c = udChoices[udPick]; if (!c) return;
-  const url = URL.createObjectURL(new Blob([passIcs({ title: 'Look up: Space Collector', start: c.t, end: c.t + 30 * 60e3, description: `${c.msg} https://sevaan.github.io/space-collector/` }).replace('TRIGGER:-PT10M', 'TRIGGER:PT0M')], { type: 'text/calendar' }));
-  const a = document.createElement('a'); a.href = url; a.download = 'space-collector-tonight.ics'; a.click(); setTimeout(() => URL.revokeObjectURL(url), 5000);
+  const r = await setReminder({ at: c.t, title: 'Look up: Space Collector', body: c.msg, ics: passIcs({ title: 'Look up: Space Collector', start: c.t, end: c.t + 30 * 60e3, description: `${c.msg} https://sevaan.github.io/space-collector/` }).replace('TRIGGER:-PT10M', 'TRIGGER:PT0M'), file: 'space-collector-tonight.ics' });
+  if (r !== 'on' && r !== 'calendar') { reminderToast(r, c.t); return; }
   try { localStorage.setItem('udRemind', JSON.stringify({ t: c.t, label: c.label })); } catch {}
   closeSheet($('ud-sheet')); udRender(); const bl = $('ud-bell'); bl.classList.remove('ring'); void bl.offsetWidth; bl.classList.add('ring'); buzz(15);
   ticket({ kind: 'mission', eyebrow: 'REMINDER SET', line: `We'll nudge you at ${fmtTime(c.t)}${c.icon === '✦' ? `, before ${c.label.split(' · ')[1]}` : ''}.`, ms: 4000 });
@@ -3023,7 +3056,7 @@ function flyToCircle(fromEl) {
 }
 
 // Offline caching (sw.js, 2026-10-08). Inside the app's Collection layer the parent page has already registered it.
-if ('serviceWorker' in navigator && window.parent === window) addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+if ('serviceWorker' in navigator && window.parent === window && !isNative()) addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
 
 // ---------- camera view prototype (2026-10-08) ----------
 // The live rear camera behind the drawn sky. With motion sensors on, drag sideways to line the drawing up with the

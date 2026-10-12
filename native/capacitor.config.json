@@ -16,6 +16,13 @@
       "providers": [
         "google.com"
       ]
+    },
+    "StatusBar": {
+      "style": "DARK",
+      "overlaysWebView": true
+    },
+    "LocalNotifications": {
+      "iconColor": "#FA8127"
     }
   },
   "experimental": {
