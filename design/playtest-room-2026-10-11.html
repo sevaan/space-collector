@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Playtest Room Report</title>
+<style>
+  @font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf') format('truetype'); }
+  @font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf') format('truetype'); font-weight: 500; }
+  :root { --bg: #080f1b; --panel: #0e1a29; --ink: #fff2b3; --text: #e6ecf5; --muted: #9fb3c8; --org: #fa8127; --edge: #22344a; --red: #ff7a6b; --green: #7fd99a; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.55 -apple-system, system-ui, sans-serif; }
+  main { max-width: 860px; margin: 0 auto; padding: 36px 16px 80px; }
+  h1 { font: 400 30px/1.1 'SC Display'; color: var(--ink); margin: 0 0 8px; }
+  h2 { font: 400 21px/1.2 'SC Display'; color: var(--ink); margin: 44px 0 6px; }
+  h3 { font: 500 17px 'SC Label'; letter-spacing: .1em; text-transform: uppercase; color: var(--org); margin: 26px 0 8px; }
+  p.lead { color: var(--muted); margin: 0 0 18px; }
+  .who { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 8px; margin: 14px 0 0; }
+  .who div { background: var(--panel); border: 1px solid var(--edge); border-radius: 10px; padding: 9px 12px; font-size: 13px; color: var(--muted); }
+  .who b { color: var(--ink); font-weight: 600; display: block; font-size: 14px; }
+  ol.recs { list-style: none; counter-reset: r; padding: 0; margin: 0; }
+  ol.recs > li { counter-increment: r; position: relative; background: var(--panel); border: 1px solid var(--edge); border-radius: 12px; padding: 14px 16px 14px 54px; margin: 0 0 10px; }
+  ol.recs > li::before { content: counter(r); position: absolute; left: 14px; top: 13px; width: 28px; height: 28px; border-radius: 50%; background: #fa812722; color: var(--org); font: 400 15px/28px 'SC Display'; text-align: center; }
+  ol.recs b.t { color: var(--ink); font-size: 16px; }
+  .tags { display: inline-flex; flex-wrap: wrap; gap: 4px; margin-left: 6px; vertical-align: 2px; }
+  .tags i { font-style: normal; font: 500 11px 'SC Label'; letter-spacing: .08em; padding: 1px 6px; border-radius: 5px; background: #ffffff10; color: var(--muted); }
+  .tags i.n { background: #fa812730; color: var(--org); }
+  ol.recs p { margin: 6px 0 0; color: var(--text); }
+  ol.recs .fix { color: var(--green); }
+  ol.recs .fix::before { content: 'Fix: '; font-weight: 600; }
+  .decide { border-color: #fa812777 !important; }
+  .q { margin-top: 8px; padding: 8px 10px; border-radius: 8px; background: #fa812714; color: var(--ink); font-size: 14px; }
+  ul.bugs { columns: 2 280px; gap: 24px; padding-left: 18px; margin: 8px 0 0; }
+  ul.bugs li { break-inside: avoid; margin: 0 0 6px; font-size: 14px; }
+  ul.keep { padding-left: 18px; }
+  ul.keep li { margin: 0 0 4px; }
+  code { font: 12.5px ui-monospace, Menlo, monospace; color: var(--muted); }
+  .plan { display: grid; gap: 10px; }
+  .plan div { background: var(--panel); border-left: 4px solid var(--org); border-radius: 8px; padding: 10px 14px; }
+  .plan b { color: var(--ink); }
+  .legend { font-size: 13px; color: var(--muted); }
+  @media (max-width: 560px) { ol.recs > li { padding-left: 46px; } ol.recs > li::before { left: 10px; } }
+</style>
+</head>
+<body><main>
+<h1>The playtest room: what everyone agrees on</h1>
+<p class="lead">Nine rooms, about 50 players and specialists, one simulated week of evenings (Oct 11–17, Ontario), plus cloudy nights, daytime, a small phone, 200% zoom, colour-blind simulation, VoiceOver, denied location, offline and Tokyo time. 750+ cards collected across the rooms. Everything below was raised by at least two people; tags show which rooms agreed. Nothing in the app was changed by the rooms.</p>
+<div class="who">
+  <div><b>N · Newcomers</b>kid + parent, gacha teen, casual adult, grandparent, commuter, skeptic</div>
+  <div><b>C · Collectors</b>Pokémon TCG, Magic, completionist, Pokémon GO, sports cards, gacha whale</div>
+  <div><b>A · Astronomers</b>club observer, satellite tracker, aerospace engineer, planetarium educator, historian, astrophotographer</div>
+  <div><b>X · Accessibility</b>low vision, colour-blind, VoiceOver, tremor, motion-sensitive, non-native English</div>
+  <div><b>K · Craft</b>UI designer, card illustrator, typographer, audio designer, motion designer, brand designer</div>
+  <div><b>D · Game design</b>F2P designer, retention analyst, PM, App Store reviewer, QA lead, worried parent</div>
+  <div><b>I · Interaction</b>interaction + motion designers, haptics specialist, prototyper</div>
+  <div><b>W · UX writing</b>content designers, notification specialist, children's editor, localization lead</div>
+  <div><b>B · Business</b>monetization, subscription growth, game psychologist, gamification, indie founder, pricing, ethics, market analyst</div>
+</div>
+
+<h2>1 · Decisions only you can make</h2>
+<p class="lead">These shape a lot of the rest, so they come first.</p>
+<ol class="recs">
+  <li class="decide"><b class="t">Binocular mode quietly puts most of the rarity behind Plus</b><span class="tags"><i class="n">5 rooms</i><i>C</i><i>B</i><i>D</i><i>A</i><i>X</i></span>
+    <p>Bigger than it looked: objects only visible in binoculars are flagged <code>bino</code> and scored as harder, so <b>84 of 124 Legendaries, 339 of 369 Epics and 603 of 741 Rares</b> can only be collected with Plus. A week of free play gave the collectors 0 Legendaries and 1 Epic; the craft room never saw a Rare reveal at all. This breaks "every card is free". Neptune is also uncollectable (it needs binoculars), which makes the gold Solar System patch impossible.</p>
+    <p class="fix">Either make binocular mode free (Plus keeps alerts, week ahead, shiny forecast, stats, cosmetics), or re-tier rarity among naked-eye objects only and put binocular cards in their own album that doesn't count for completion or patches.</p>
+    <div class="q">Room recommendation: make binoculars free and re-tier so naked-eye players see Rares, Epics and Legendaries every week.</div></li>
+  <li class="decide"><b class="t">Clouds: honour system or a real rule?</b><span class="tags"><i class="n">3 rooms</i><i>N</i><i>D</i><i>A</i></span>
+    <p>The Not tonight page says "you can't catch these through cloud", then you catch 4 cards through fog. The skeptic quit right there.</p>
+    <p class="fix">Keep collecting allowed (a forecast is often wrong, and cloudy nights shouldn't be dead), but change the words: "Cloudy here. If you can see it, collect it." Never lead the first night with "Not tonight".</p>
+    <div class="q">Room recommendation: stay permissive, fix the copy.</div></li>
+  <li class="decide"><b class="t">Pricing</b><span class="tags"><i>B</i></span>
+    <p>Yearly $19.99 with a 7-day trial (keep). Lifetime $49.99, with a $34.99 "Founding Observer" price for 90 days. Monthly $3.99 or drop it. Family Sharing on (it can't be turned off later). Prices on the button, not in small print.</p>
+    <div class="q">Your call: monthly or not, and the lifetime price.</div></li>
+  <li class="decide"><b class="t">Notification wording</b><span class="tags"><i>W</i></span>
+    <p>Now: "Epic · A 1990 American space telescope at 9:02 PM" / "Hubble rises in the south and climbs high." The title gets cut on the lock screen before the time.</p>
+    <p class="fix">Title "9:02 PM: an Epic card flies over", body "Hubble, a 1990 American space telescope. Look south: it climbs high."</p></li>
+</ol>
+
+<h2>2 · Before the App Store</h2>
+<ol class="recs">
+  <li><b class="t">Store blockers</b><span class="tags"><i class="n">2 rooms</i><i>D</i><i>B</i></span>
+    <p>Sign in with Apple (required when Google is offered) · delete-account inside the app · the iOS privacy manifest Firebase needs · strip Testing tools, free "Plus (testing)", time travel and the ⏱ button from store builds (time travel lets anyone collect at noon) · remove "coming" perks from the Plus sheet · "Restore purchases" · Android asks for precise location and camera it doesn't use.</p></li>
+  <li><b class="t">The location promise isn't true</b><span class="tags"><i>D</i><i>B</i></span>
+    <p>The tour says your location "stays on this phone", but it goes to the weather service, the plane relay and (signed in) Firebase with each sighting.</p>
+    <p class="fix">Honest copy ("used to work out your sky; never shared or sold"), a privacy policy link in Settings, matching store privacy labels. With location denied the app silently uses Peterborough: show "Using an example location · Set yours".</p></li>
+</ol>
+
+<h2>3 · The top 20, ranked by how many rooms raised it</h2>
+<ol class="recs">
+  <li><b class="t">Everything lands at once after a catch</b><span class="tags"><i class="n">7 rooms</i><i>N</i><i>C</i><i>X</i><i>K</i><i>D</i><i>I</i><i>A</i></span>
+    <p>Reveal → Not tonight page → sign-in sheet → patch coins → mission toast → rank toast. Coins now sit on the circle (my move under the radar made it worse). Sticky RANK UP and TONIGHT tickets stay all night and cover Tap to collect on the small phone.</p>
+    <p class="fix">One celebration queue: XP, missions and patches count up on the reveal screen itself (under the rank bar); after closing, at most one toast. Coins top-left above the radar or batched into one "3 patches" coin. Sticky tickets go away after your next catch; one rank ticket replaces the last. Sign-in ask moves to the third card.</p></li>
+  <li><b class="t">The silly bugs everyone tripped on</b><span class="tags"><i class="n">7 rooms</i></span>
+    <p>"The Solar System · 2 of 9 <i>stars</i>" (all 7 rooms) · "2-week streak 🔥" on day 2 (calendar weeks) · the tour says "Turn right 89°" while the screen says "← Turn left" · Orionids Oct 20 vs Oct 21 · "Light left it ~-5474 AD" · silver/gold patch text says 5 and 25 nights, cards level at 3 and 10 · "Electron Kick Stage Rocket Stage", "Pslv", "Dmsp", "[Tank]" · "75 items collected" · weekly recap after a single night.</p>
+    <p class="fix">A one-sitting cleanup pass (see the bug list at the end).</p></li>
+  <li><b class="t">"Busiest" and reminders point at 5–6 AM</b><span class="tags"><i class="n">4 rooms</i><i>N</i><i>D</i><i>A</i><i>B</i></span>
+    <p>"Remind me at 3:06", "Busiest 6:08 AM", "Clear by 6:00 AM · Remind me at 5:51". The parent hated it; nobody's up.</p>
+    <p class="fix">Busiest, clearing and reminders count only dusk to about 11:30 PM by default ("Night owl" opt-in). Dawn ISS passes become their own clearly-labelled item ("The ISS: tomorrow 6:37 AM, very bright"), since evenings had none all week.</p></li>
+  <li><b class="t">Rarity is hard to read on the card</b><span class="tags"><i class="n">4 rooms</i><i>C</i><i>K</i><i>X</i><i>W</i></span>
+    <p>The gem is always orange on cards and tiles; Uncommon and Rare share ◆; to colour-blind players Rare and Epic are the same blue; in red night mode every tier is the same red.</p>
+    <p class="fix">Tier colour on the gem and label, and one shape per tier everywhere (● ▲ ◆ ✦ ★), including radar dots and Tonight rows. Move Epic toward magenta.</p></li>
+  <li><b class="t">After night 3 it's all Common stars</b><span class="tags"><i class="n">4 rooms</i><i>D</i><i>C</i><i>N</i><i>K</i></span>
+    <p>XP per night halves, missions are trivial ("collect 3 new"), "New to you · 267" is a wall of commons, and night 1 gives 27 patches and three ranks in 20 minutes.</p>
+    <p class="fix">A "best thing tonight" goal instead of a list; missions about re-sightings, card levels, completing a constellation, a named pass; constellation stars count toward the constellation with a bigger payoff at completion; stretch the rank curve (0 / 300 / 1,000 / 3,000 / 8,000 / 20,000 + prestige); spread night-1 patches out.</p></li>
+  <li><b class="t">Duplicates that feel like the same card</b><span class="tags"><i class="n">3 rooms</i><i>A</i><i>K</i><i>C</i></span>
+    <p>The ISS is 4 cards on one dot (Zarya, Zvezda, Destiny, Poisk), and China's station modules are Epic cards. 286 "SL-8 Rocket Stage" cards share one picture and one fact. Shared constellation stars (Dubhe) show twice and inflate the count.</p>
+    <p class="fix">Drop or stamp station modules; give rocket stages an identity ("carried Cosmos 1510 · 1983", "No. 14 of 286") and treat same-name stages like a fleet; dedupe shared stars.</p></li>
+  <li><b class="t">Card levels are invisible</b><span class="tags"><i class="n">2 rooms</i><i>C</i><i>W</i></span>
+    <p>Saturn seen on 7 nights looks exactly like a first sighting: a later "silver on every rarity" rule overrides the level styles.</p>
+    <p class="fix">Silver and gold frames plus a corner pip, a level badge on tiles, "SILVER · 7 NIGHTS" instead of "SEEN 7 TIMES". Print the collector number ("014 / 716"), already computed.</p></li>
+  <li><b class="t">Stars and deep sky have no collect button</b><span class="tags"><i class="n">2 rooms</i><i>K</i><i>X</i></span>
+    <p>Locking onto a new star shows the name but no "Tap to collect"; the tour taught the button, so by night 8 the craft room collected nothing.</p>
+    <p class="fix">Always show the button for something new; keep the quiet look for owned ones.</p></li>
+  <li><b class="t">Shinies: too common, look broken, too quiet</b><span class="tags"><i class="n">3 rooms</i><i>C</i><i>K</i><i>B</i></span>
+    <p>About 1 in 20 sightings. Tiles show hard rainbow bands; the full card gets a mint wash. The shiny sound is quieter than the Common one. "87 shiny chances tonight" makes them sound cheap.</p>
+    <p class="fix">Aim for roughly 1 in 150–300; a warm foil (cream/orange) instead of rainbow; the loudest sound in the game; show free players tonight's one best chance.</p></li>
+  <li><b class="t">The tap that should feel like the climax feels dead</b><span class="tags"><i class="n">2 rooms</i><i>I</i><i>K</i></span>
+    <p>Half a second of almost nothing after Tap to collect; confetti covers the card for 2 s; closing a card, the Not tonight page and welcome→tour cut instead of flowing; "NEW CARD ·" has a dangling dot.</p>
+    <p class="fix">Respond within one frame, faster lead-in, trim waits (flip 1 s → 0.7 s for Common), confetti from behind or the edges, short transitions everywhere.</p></li>
+  <li><b class="t">Red night mode is too dim to read</b><span class="tags"><i class="n">2 rooms</i><i>X</i><i>A</i></span>
+    <p>Almost no text reaches readable contrast; SEE LESS / SEE MORE is invisible. Twilight "Hidden by daylight" text is unreadable too.</p>
+    <p class="fix">Night mode is about colour, not dimness: full red for text (about #ff5040 before the filter), no faded labels. Screen brightness handles dimness.</p></li>
+  <li><b class="t">Words: one voice, no jargon</b><span class="tags"><i class="n">4 rooms</i><i>W</i><i>N</i><i>X</i><i>A</i></span>
+    <p>Four voices today (mission control, museum brochure, developer, astronomer). "56° up in the W", "magnitude", "NORAD", "capture/record/log/stamp", raw error codes, "Red Stars" read as stars.</p>
+    <p class="fix">The 7-rule voice guide and the 25 rewrites from the writing room: one verb (collect), directions in words ("high in the west"), errors say what to do, sentence case, plain album subtitles ("Red Stars: Soviet rockets"), a label on the slider ("How dark is your sky?").</p></li>
+  <li><b class="t">Things you can collect that nobody could see</b><span class="tags"><i class="n">1 room, all 6 agree</i><i>A</i></span>
+    <p>Stars 3° up in twilight, Mercury with the Sun barely down, the Moon at 1 PM when 3% lit; Settings claims stars at noon; a planet in the circle loses to any star (and "Just a plane" loses to stars too); comets are never drawn; M7 can't get high enough in Canada; the "against Earth's spin" fact is on every sun-synchronous satellite.</p>
+    <p class="fix">The astronomers' list of gate fixes (extinction for named stars and planets, Moon 30° from the Sun, daylight limit, plane beats natural targets, draw comets).</p></li>
+  <li><b class="t">Text too small, can't be enlarged</b><span class="tags"><i class="n">2 rooms</i><i>X</i><i>K</i></span>
+    <p>Card facts about 10 px, footers 8.5 px; pinch-zoom is blocked on cards; at 200% zoom Settings goes off-screen. 33 font sizes and 6 font families in use; Georgia doesn't exist on Android.</p>
+    <p class="fix">12 px minimum for app chrome, a "Larger text" setting, card story readable as plain text under the card, a 7-step type scale, a bundled serif.</p></li>
+  <li><b class="t">Sound mix: small sounds disappear, celebrations pile up</b><span class="tags"><i class="n">3 rooms</i><i>K</i><i>N</i><i>C</i></span>
+    <p>Files were balanced by peak, not loudness (−22 to −39 LUFS); after the 0.25 level many ticks are inaudible under the music, especially outdoors. A Saturn catch stacks 4 sounds over 5 s.</p>
+    <p class="fix">Loudness-normalise in the synth, one master level (about 0.5), duck music for coins and rank-ups, at most 2 sounds at once.</p></li>
+  <li><b class="t">Haptics are wired wrong</b><span class="tags"><i>I</i></span>
+    <p>Muting sound turns haptics off; the big success buzz fires before the flip; the light "select" taps are probably silent on iPhone.</p>
+    <p class="fix">Haptics get their own switch, fire on the payoff, and follow the room's haptic map (lock-on light, collect medium, flip rigid by tier…).</p></li>
+  <li><b class="t">Collection opens on a banner, not your cards</b><span class="tags"><i class="n">2 rooms</i><i>I</i><i>W</i></span>
+    <p>"A little closer to the cosmos" plus the rank card come first; the first card is at the bottom of the screen. Every card open does a full 0.76 s spin, every time.</p>
+    <p class="fix">Open on the grid (the banner only when empty); full spin only the first time, otherwise zoom from the tile.</p></li>
+  <li><b class="t">Gestures without buttons</b><span class="tags"><i class="n">2 rooms</i><i>X</i><i>I</i></span>
+    <p>Reminders are swipe-only, the card viewer is swipe-only, sheets snap back before closing, tabs are 28 px tall, Settings switches 28 px tall.</p>
+    <p class="fix">A visible bell on each Tonight row, ‹ › buttons in the viewer, 44 px targets, sheets close from where your finger left them, "Snap onto targets" on by default and a longer lock hold for shaky hands.</p></li>
+  <li><b class="t">Plus that sells itself</b><span class="tags"><i class="n">2 rooms</i><i>B</i><i>D</i></span>
+    <p>Week ahead says "685 passes, 456 new"; the Stats lock has no button; the paywall lists unbuilt perks.</p>
+    <p class="fix">Named highlights per night ("ISS 8:42 · Hubble · Epic: Tiangong"), a "See Plus" on the stats lock, a free yearly "Your sky" poster, offer Plus on cloudy nights and after high points (never during a pass, a reveal, or the first 3 nights), a tip jar, one theme pack.</p></li>
+  <li><b class="t">Emoji next to drawn icons</b><span class="tags"><i>K</i></span>
+    <p>☁️ 🌧 🔔 🔥 and the Settings row emoji clash with the hand-drawn line icons.</p>
+    <p class="fix">A small SVG icon set in the same line style.</p></li>
+</ol>
+
+<h2>4 · Healthy vs manipulative</h2>
+<ol class="recs">
+  <li><b class="t">Mostly healthy</b><span class="tags"><i>B</i><i>D</i></span>
+    <p>Weekly streak (forgives a missed night), shinies tied to real sky events and not for sale, alerts capped at 3 and never after 11 pm, no ads, no energy, no loot boxes, free backup.</p>
+    <p class="fix">Pause the streak in fully cloudy weeks; reword the streak reminder as an invite ("Clear tonight: Saturn and the ISS are up"); keep the app out of the Kids category; make the Sun Rare, not Epic, and show the eye-safety line before anyone aims at it.</p></li>
+</ol>
+
+<h2>5 · Keep, don't lose these</h2>
+<ul class="keep">
+  <li>The sealed welcome card and the reveal (dot, flash, sealed card, flip edge-on, tier glow, rank bar counting up).</li>
+  <li>First catch in about 20 seconds with a live arrow; the radar list's "tap a row to aim" (the best accessibility feature in the game).</li>
+  <li>The orbit maths, brightness model, Moon, honest sky slider, and the facts: checked against real data and correct.</li>
+  <li>The navy / cream / orange look, the double-frame card, Saturn and space-junk art, the patch roundels and stitch moment, secret patches.</li>
+  <li>The Not tonight page (cloud bars, next good night, above the cloud), the daytime "until dark" countdown, the weekly recap card.</li>
+  <li>Fleet passports, constellation "x of N stars" completion, provenance ("When you saw it").</li>
+  <li>Thorough reduced-motion support, live-region announcements, Escape/Back closing everything, the 72 px switcher.</li>
+  <li>Offline works fully after a first visit.</li>
+</ul>
+
+<h2>6 · Full bug list</h2>
+<ul class="bugs">
+  <li>"N of 9 stars" on the Solar System toast (<code>reveal.js:270</code>)</li>
+  <li>2-week streak after 2 days (calendar-week maths)</li>
+  <li>Tour turn direction from a stale heading</li>
+  <li>Orionids date: recap uses the window start (<code>weeklyRecap</code>)</li>
+  <li>"~-5474 AD" for negative light years (<code>natural.js:43</code>)</li>
+  <li>Patch text 5/25 nights vs card levels 3/10 (<code>progress.js:177</code>)</li>
+  <li>Card level styles overridden (<code>cards.css:251</code>)</li>
+  <li>Shared constellation stars duplicated in Mine and its count</li>
+  <li>ISS and Tiangong modules as separate cards (<code>build-catalog.mjs</code>)</li>
+  <li>Neptune uncollectable → gold Solar System patch impossible</li>
+  <li>Plane label loses to a star at the edge of the circle (<code>main.js:601</code>)</li>
+  <li>Comets never drawn in the sky; comet brightness gate too loose</li>
+  <li>M7 can't be collected above about 43°N</li>
+  <li>Daytime limiting magnitude clamps at Sun −6°</li>
+  <li>Moon collectable by day near new moon</li>
+  <li>Sun-synchronous satellites told "against Earth's spin"</li>
+  <li>Starlink "6 years ago" should be 7</li>
+  <li>"Electron Kick Stage Rocket Stage"; "Pslv", "Dmsp" casing; "[Tank]"</li>
+  <li>"Kuiper-00100" in the radar vs "Amazon Leo" on the card</li>
+  <li>"75 items collected" (cards)</li>
+  <li>Recap shows after a single night; rarest-find tie-break picks the Sun or a dim star</li>
+  <li>Recap overlay can sit above a reveal while catches continue underneath</li>
+  <li>Rank on the reveal lags one catch; rank-up ticket arrives late</li>
+  <li>Shiny toast arrives one catch late, under the wrong card</li>
+  <li>Reminder ids restart each launch, so a new reminder can overwrite an old one</li>
+  <li>Daytime catches noon–1 pm count toward the previous night (solar-noon night key)</li>
+  <li>Radar "3 passing" vs Now "292" (one counts stars)</li>
+  <li>"Clear filters" shows on Patches after filtering Mine</li>
+  <li>A radar row (Kuiper-00551) said visible but aiming picked another object</li>
+  <li>Welcome rattle sound can't play on the web before the first tap</li>
+  <li>Confetti layer above the card (<code>reveal.css:4</code>)</li>
+  <li>Toasts slide over the switcher on exit; duplicate toast transition rules</li>
+  <li>Sticky ticket covers Tap to collect on the small phone</li>
+  <li>At 200% zoom: Settings off-screen, Collection scrolls sideways</li>
+  <li>Dialogs not modal for VoiceOver; "Collect this object" doesn't say what</li>
+  <li>The plane relay returns 429 (rate-limited) on most sessions</li>
+</ul>
+
+<h2>7 · Suggested order</h2>
+<div class="plan">
+  <div><b>1. Your four decisions</b> (binoculars, clouds, pricing, notification wording).</div>
+  <div><b>2. Bug sweep</b>: the full list above, mostly small, one sitting.</div>
+  <div><b>3. The celebration queue</b>: one calm sequence after a catch, coins and toasts off the circle, sticky tickets that go away.</div>
+  <div><b>4. Cards that read</b>: tier colour + shape, visible levels, collector numbers, warm shiny foil, rarer shinies, duplicates fixed.</div>
+  <div><b>5. Evening-first planning</b>: busiest and reminders in the evening, dawn ISS as its own item, a "best thing tonight" goal, deeper missions, a longer rank curve.</div>
+  <div><b>6. Store readiness</b>: Apple sign-in, account deletion, privacy manifest and policy, test tools stripped, honest location copy, the Plus sheet rebuilt.</div>
+  <div><b>7. Feel and words</b>: the reveal timing, transitions, haptics, sound loudness, night mode contrast, text sizes, the voice guide and rewrites, SVG icons.</div>
+</div>
+<p class="legend" style="margin-top:30px">Source reports and screenshots: the scratchpad folder room/ (newcomers, collectors, astronomers, access, craft, design, ux-interaction, ux-writing, business). Compiled 2026-10-11.</p>
+</main></body></html>
