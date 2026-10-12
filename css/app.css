@@ -915,3 +915,11 @@ input[type=text], input[type=email], input[type=url], input[type=search], input[
 /* No long-press text selection or callouts on app chrome (QA 2026-10-11); fields stay selectable */
 body { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
 input, textarea, [contenteditable] { -webkit-user-select: text; user-select: text; }
+.sr-only { position:absolute !important; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0; } /* screen-reader only (2026-10-11) */
+/* Swipe-down sheets: the sheet owns vertical drags; its own lists still scroll (2026-10-11) */
+.set-sheet-card { touch-action: none; }
+.set-sheet-card .plus-perks, .set-sheet-card #ud-opts, .set-sheet-card .hl-chips { touch-action: pan-y; }
+.set-grab { padding: 8px 0; margin-top: -8px; background-clip: content-box; box-sizing: content-box; }
+/* Red night mode, guaranteed (2026-10-11, QA: clouds, card backs, chips and the loader leaked white, blue and orange):
+   one fixed layer multiplies everything on screen by pure red, so no blue or green light reaches the eye. */
+body.night::after { content: ''; position: fixed; inset: 0; z-index: 2147483646; pointer-events: none; background: #ff1a00; mix-blend-mode: multiply; }

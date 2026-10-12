@@ -497,3 +497,10 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - Android Back (handleBack): sheet → recap → reveal → panel → Collection (frame closes its viewer/patch on sc:back) → time travel → minimize. Verified on the emulator.
   - buzz() → native haptics (tick/thud/success); collect thud; celebration on a first Epic/Legendary.
   - Android: navy splash and window, transparent bars with light icons, fontScale in configChanges, icon background navy (icon art still the template). No service worker in the apps. Audio suspends in the background.
+
+2026-10-11 · QA fixes, batch 2:
+  - Accessibility: Settings switches/sliders named after their rows; decorative icons aria-hidden; Collection tab role=button; the circle is announced through a hidden live region (#sr-target, announceTarget in renderTarget): "Name, Rarity. Double-tap to collect."
+  - Sheets close with a swipe down (pointer drag on .set-sheet-card; inner lists keep pan-y).
+  - Red night mode guaranteed: body.night::after multiplies the whole screen by pure red (both pages). Measured: blue 0, green ≤ 12. 60 fps kept. Native select popups (system UI) are the only thing it cannot reach.
+  - Android text size: MainActivity caps the web view text zoom at 115% of normal (follows the setting up to that), live without reload.
+  Still open: real app icon + splash art, iOS Dynamic Type (no effect, layout safe), share/notifications untested on a real device.

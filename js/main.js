@@ -1,48 +1,48 @@
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.496';
-import * as Secrets from './secrets.js?v=0.1.496';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.496';
-import * as Ufo from './ufo.js?v=0.1.496';
-import * as Fossil from './fossil.js?v=0.1.496';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.496';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.496';
-import { toast, ticket, dropToast, toastPending, onTicketShown } from './toast.js?v=0.1.496';
-import { VERSION } from './version.js?v=0.1.496';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, overEarth, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.496';
-import { placeName } from './geo.js?v=0.1.496';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.496';
-import { conArt } from './con-art.js?v=0.1.496';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.496';
-import { CON_FIGURES } from './con-figures.js?v=0.1.496';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.496';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.496';
-import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.496';
-import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.496';
-import { conList } from './constellations.js?v=0.1.496';
-import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.496';
-import { SkyView, shortName } from './sky.js?v=0.1.496';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.496';
-import { isPlus, setPlusForTesting, onPlus, PLUS_PERKS } from './plus.js?v=0.1.496';
-import { isNative, getPosition, saveFile, notifyAt, cancelNotify, haptic, onNative, nativeChrome, plugin } from './native.js?v=0.1.496';
-import { initAccount, onAccount, account, signInGoogle, sendEmailLink, completeEmailLink, signOut, syncNow, pushSighting } from './account.js?v=0.1.496';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.496';
-import { cardArt } from './art.js?v=0.1.496';
-import { renderCard, cardLevel, artImage, lockedArt, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.496';
-import { applyBack } from './card-backs.js?v=0.1.496';
-import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.496';
-import { audioCtx } from './audio-ctx.js?v=0.1.496';
-import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume } from './music.js?v=0.1.496';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.496';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.496';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.496';
-import { naturalTargets, SOLAR_SYSTEM, DEEP_SKY } from './natural.js?v=0.1.496';
-import { TIER_INFO } from './rarity.js?v=0.1.496';
-import { SETS, albumList } from './sets.js?v=0.1.496';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.496';
-import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.496';
-import { shareCardEl } from './share-card.js?v=0.1.496';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.496';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.496';
-import { addStarfield } from './starfield.js?v=0.1.496';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.499';
+import * as Secrets from './secrets.js?v=0.1.499';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.499';
+import * as Ufo from './ufo.js?v=0.1.499';
+import * as Fossil from './fossil.js?v=0.1.499';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.499';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.499';
+import { toast, ticket, dropToast, toastPending, onTicketShown } from './toast.js?v=0.1.499';
+import { VERSION } from './version.js?v=0.1.499';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, overEarth, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.499';
+import { placeName } from './geo.js?v=0.1.499';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.499';
+import { conArt } from './con-art.js?v=0.1.499';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.499';
+import { CON_FIGURES } from './con-figures.js?v=0.1.499';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.499';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.499';
+import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.499';
+import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.499';
+import { conList } from './constellations.js?v=0.1.499';
+import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.499';
+import { SkyView, shortName } from './sky.js?v=0.1.499';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.499';
+import { isPlus, setPlusForTesting, onPlus, PLUS_PERKS } from './plus.js?v=0.1.499';
+import { isNative, getPosition, saveFile, notifyAt, cancelNotify, haptic, onNative, nativeChrome, plugin } from './native.js?v=0.1.499';
+import { initAccount, onAccount, account, signInGoogle, sendEmailLink, completeEmailLink, signOut, syncNow, pushSighting } from './account.js?v=0.1.499';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.499';
+import { cardArt } from './art.js?v=0.1.499';
+import { renderCard, cardLevel, artImage, lockedArt, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.499';
+import { applyBack } from './card-backs.js?v=0.1.499';
+import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.499';
+import { audioCtx } from './audio-ctx.js?v=0.1.499';
+import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume } from './music.js?v=0.1.499';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.499';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.499';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.499';
+import { naturalTargets, SOLAR_SYSTEM, DEEP_SKY } from './natural.js?v=0.1.499';
+import { TIER_INFO } from './rarity.js?v=0.1.499';
+import { SETS, albumList } from './sets.js?v=0.1.499';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.499';
+import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.499';
+import { shareCardEl } from './share-card.js?v=0.1.499';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.499';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.499';
+import { addStarfield } from './starfield.js?v=0.1.499';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -817,7 +817,7 @@ function renderTarget(target, d) {
   const bar = $('target'), disc = $('discover'), guide = $('guidance');
   $('callout').hidden = true;
   document.body.classList.toggle('secret-on', !!state.secretInCircle); // a secret owns the circle: hide the star's name at once
-  if (!target) { bar.hidden = disc.hidden = guide.hidden = true; state.newFind = false; state.dismissedId = null; shownTargetId = barTargetId = null; return; }
+  if (!target) { bar.hidden = disc.hidden = guide.hidden = true; state.newFind = false; state.dismissedId = null; shownTargetId = barTargetId = null; announceTarget(''); return; }
   shownTargetId = target.obj.id;
   if (state.dismissedId != null && target.obj.id !== state.dismissedId) state.dismissedId = null; // a closed mini card returns once you've moved on
   const o = target.obj, l = target.look;
@@ -826,6 +826,7 @@ function renderTarget(target, d) {
   const eligible = canCapture({ visible: l.visible, aligned, practice: state.captureAny, allowAny: state.captureAny });
   const collected = collectedThisPass(o, d);
   const sw = switchLabel(o);
+  announceTarget(`${label(o)}, ${tier.label}. ${isNewFind(o) && !collected ? (eligible ? 'Double-tap to collect.' : 'Line it up to collect it.') : 'In your collection.'}`);
 
   if (o.id === state.tourCatchId || (isNewFind(o) && !collected)) { // the tour's catch always looks like a new find
     // New find
@@ -2109,6 +2110,14 @@ onPlus((on) => {
   toast(on ? 'Plus is on (testing).' : 'Plus is off (testing).', 2000);
 });
 renderPlus();
+// Accessibility (2026-10-11, QA): every Settings switch and slider is named after its row, for VoiceOver/TalkBack.
+document.querySelectorAll('.set-row').forEach((row) => {
+  const name = row.querySelector('.set-main')?.childNodes[0]?.textContent?.trim(); if (!name) return;
+  row.querySelectorAll('input[type=checkbox], input[type=range]').forEach((i) => { if (!i.getAttribute('aria-label')) i.setAttribute('aria-label', name); });
+});
+// What's in the circle is drawn on the canvas, so screen readers hear it from a hidden live region instead.
+let srLast = '';
+function announceTarget(text) { if (text === srLast) return; srLast = text; $('sr-target').textContent = text; }
 document.querySelectorAll('[data-nudge]').forEach((b) => b.addEventListener('click', () => {
   nudgeHeading(Number(b.dataset.nudge)); lockHeading(true); // a hand correction holds
   renderDebug();
@@ -2887,6 +2896,16 @@ function maybeAskSignIn() {
 }
 $('set-hl-open').addEventListener('click', () => openSheet('set-hl-sheet'));
 document.querySelectorAll('.set-sheet').forEach((sh) => sh.addEventListener('click', (e) => { if (e.target === sh || e.target.closest('[data-sheet-close]')) closeSheet(sh); }));
+// Swipe a sheet down to close it (2026-10-11, QA: every sheet has a grab handle that did nothing). Starts only on the
+// handle or the sheet's empty space, never on a field or button, and only when the sheet isn't scrolled.
+document.querySelectorAll('.set-sheet-card').forEach((card) => {
+  let y0 = null, dy = 0, t0 = 0;
+  card.addEventListener('pointerdown', (e) => { if (e.target.closest('input, button, select, textarea, a, label') || card.scrollTop > 0) return; y0 = e.clientY; dy = 0; t0 = performance.now(); card.style.transition = 'none'; });
+  card.addEventListener('pointermove', (e) => { if (y0 == null) return; dy = Math.max(0, e.clientY - y0); card.style.transform = `translateY(${dy}px)`; });
+  const end = () => { if (y0 == null) return; y0 = null; card.style.transition = ''; const fast = dy / Math.max(1, performance.now() - t0) > 0.5;
+    card.style.transform = ''; if (dy > 110 || (fast && dy > 40)) closeSheet(card.closest('.set-sheet')); };
+  card.addEventListener('pointerup', end); card.addEventListener('pointercancel', end);
+});
 $('retry-location').addEventListener('click', () => closeSheet($('set-loc-sheet')));
 $('location-form').addEventListener('submit', () => setTimeout(() => closeSheet($('set-loc-sheet')), 50));
 document.querySelectorAll('[data-hl]').forEach((c) => c.addEventListener('change', renderSettings));
