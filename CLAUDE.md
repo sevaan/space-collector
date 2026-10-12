@@ -579,3 +579,9 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - Planes don't poll while the app is hidden.
 
 **Not done** (not reproduced or riskier): rank bar lagging a catch, shiny toast one catch late, the solar-noon night key, the radar "passing" vs Now count.
+
+2026-10-12 · v0.1.517 the calm catch (playtest room #1, "everything lands at once"):
+- **Chips on the reveal:** what a catch earned (missions +50, patches, event badge, new rank) shows as chips under the reveal header, one every 260 ms after the card lands (`playReveal({ earned })`, `showNews`). They stay on one row: the two biggest, then "+N more". `announceProgress(g, delay, { onReveal: true })` skips those tickets; the plain repeat-view flow still uses tickets.
+- **Patch coin:** one coin with "+ N more", sitting over the radar (top: safe-top + 92px), clear of the circle and the target name.
+- **Tickets:** a catch drops the waiting stickies (tonight, rank, sun-safety, guide). The rank ticket has id 'rank', so a new one replaces the old.
+- **Sign-in ask:** moved from the first card to the third ("N cards so far").

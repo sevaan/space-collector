@@ -5,12 +5,12 @@
 //  Everything scales with rarity (Legendary dims the sky, shockwave, held breath, slow flip, fanfare).
 // Waits use timers, not animation.finished, so a paused tab can never freeze the sequence.
 
-import { sfx, loadSfx } from './sfx.js?v=0.1.516';
-import { audioCtx } from './audio-ctx.js?v=0.1.516';
-import { TIER_INFO } from './rarity.js?v=0.1.516';
-import { levelFor, attachTilt, attachGyro, attachFlip, throwOff } from './card.js?v=0.1.516';
-import { applyBack } from './card-backs.js?v=0.1.516';
-import { addStarfield } from './starfield.js?v=0.1.516';
+import { sfx, loadSfx } from './sfx.js?v=0.1.517';
+import { audioCtx } from './audio-ctx.js?v=0.1.517';
+import { TIER_INFO } from './rarity.js?v=0.1.517';
+import { levelFor, attachTilt, attachGyro, attachFlip, throwOff } from './card.js?v=0.1.517';
+import { applyBack } from './card-backs.js?v=0.1.517';
+import { addStarfield } from './starfield.js?v=0.1.517';
 
 const FX = {
   common:    { particles: 14,  flip: 520,  spin: 0,   dim: 0,   shock: false, notes: [880],                            hold: 0 },
@@ -101,7 +101,7 @@ export const MILESTONES = [1, 10, 25, 50, 75, 100, 200, 300, 400, 500, 600, 700,
 // What the stamp used to say now goes out as a ticket toast (2026-10-05): main.js registers the renderer.
 let announce = null;
 export function onRevealNews(fn) { announce = fn; }
-export async function playReveal({ card, o, seen, origin, fleet = null, progress = null, collected = 0, con = null, shiny = null, xp = 0, rank = null }) {
+export async function playReveal({ card, o, seen, origin, fleet = null, progress = null, collected = 0, con = null, shiny = null, xp = 0, rank = null, earned = [] }) {
   stopReveal();
   const my = run;
   const fresh = seen <= 1;
@@ -118,6 +118,7 @@ export async function playReveal({ card, o, seen, origin, fleet = null, progress
   $('reveal-eyebrow').textContent = fresh ? 'NEW CARD' : newStamp ? 'NEW LAUNCH STAMP' : NIGHT_MILESTONES.includes(nights) ? `SEEN ON ${nights} NIGHTS` : 'SIGHTING RECORDED';
   if (xp > 0) $('reveal-eyebrow').insertAdjacentHTML('beforeend', `<span class="rv-xp"> ·<span class="rv-roll"><span>+${xp} XP</span></span></span>`); // rolls in when the card lands
   setRank(xp > 0 ? rank : null);
+  $('rv-news').replaceChildren(); earnedNow = earned;
   $('reveal-card').replaceChildren(card);
   for (const id of ['rv-holder', 'rv-flipper', 'rv-dot', 'rv-dim', 'rv-flash', 'rv-shock']) $(id).getAnimations().forEach((a) => a.cancel());
   $('rv-holder').style.opacity = 0; $('rv-holder').classList.remove('live');
@@ -282,8 +283,28 @@ async function finish({ fx, color, fresh, seen, level, levelUp, card, alive, fle
   attachFlip(card, { onBack: applyBack });
   $('reveal').classList.add('rv-done');
   fillRank(alive);
+  showNews(earnedNow, alive);
 }
 
+// What this catch earned, as chips under the header (2026-10-12, playtest room: missions, patches and rank-ups used to
+// arrive afterwards as a pile of toasts over the circle). news: [{ kind: 'mission'|'patch'|'rank'|'event', text, xp }].
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+let earnedNow = []; // playReveal's earned list, for the finish step
+const NEWS_ICON = { mission: '◆', patch: '◎', rank: '▲', event: '✦' };
+function showNews(news, alive) {
+  const box = $('rv-news'); if (!news?.length) return;
+  // One row: the two biggest pieces of news, then "+N" (a second row covered the card on small phones).
+  const ORDER = { rank: 0, event: 1, patch: 2, mission: 3 };
+  const sorted = news.slice().sort((a, b) => (ORDER[a.kind] ?? 9) - (ORDER[b.kind] ?? 9));
+  news = sorted.length > 3 ? [...sorted.slice(0, 2), { kind: 'more', text: `+${sorted.length - 2} more` }] : sorted;
+  news.forEach((n, i) => setTimeout(() => {
+    if (!alive()) return;
+    const c = document.createElement('span'); c.className = `rv-chip rv-chip--${n.kind}`;
+    c.innerHTML = `${n.kind === 'more' ? '' : `<i aria-hidden="true">${NEWS_ICON[n.kind] ?? '◆'}</i>`}${esc(n.text)}${n.xp ? `<b>+${n.xp}</b>` : ''}`;
+    box.append(c); requestAnimationFrame(() => c.classList.add('in'));
+    sfx('xp', { gain: 0.7 });
+  }, (reduced() ? 0 : 1300) + i * (reduced() ? 0 : 260)));
+}
 // The rank bar under a new card (design D): XP counts up from before to after while the bar fills.
 // rank: { from, to, name, at, next } (next null at the top rank).
 let rankInfo = null;

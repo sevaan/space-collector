@@ -279,7 +279,7 @@ dialog.leaving { animation: ui-fade-in var(--m-norm) var(--ease-out) reverse for
 
 /* Patch coins (2026-10-09, design/patch-earn-options.html A2): earned patches pop up on the left over the sky, then
    roll into the Collection tab. Round at every moment: only flat rotation and scale, never rotateY. */
-.patch-coins { position: fixed; left: 14px; top: calc(var(--safe-top, 0px) + 270px); bottom: auto; z-index: 40; display: flex; flex-direction: column; align-items: flex-start; gap: 12px; pointer-events: auto; cursor: pointer; }
+.patch-coins { position: fixed; left: 14px; top: calc(var(--safe-top, 0px) + 92px); bottom: auto; z-index: 40; display: flex; flex-direction: column; align-items: flex-start; gap: 12px; pointer-events: auto; cursor: pointer; }
 .pc-coin { display: flex; align-items: center; }
 .pc-disc { width: 58px; flex: none; aspect-ratio: 1; filter: drop-shadow(0 6px 12px #000a); opacity: 0; transform: translateY(46px) scale(.2) rotate(-200deg); }
 .pc-disc .patch, .pc-disc svg { display: block; width: 100%; height: 100%; }
@@ -309,3 +309,4 @@ dialog.leaving { animation: ui-fade-in var(--m-norm) var(--ease-out) reverse for
 .ticket__x:active { color: var(--ink, #fff2b3); }
 /* Tickets already up step aside while a card reveal, the Tonight page or a patch is showing. */
 body:has(#reveal:not([hidden])) #toasts, body:has(#ob-done:not([hidden])) #toasts { visibility: hidden; }
+/* Over the radar for its 7 seconds: the one spot clear of the circle and the target name above it (2026-10-12) */
