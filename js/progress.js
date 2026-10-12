@@ -1,11 +1,22 @@
 // Player progress from the sighting log: XP and observer rank, tonight's three missions, a weekly streak and
 // achievements. Everything is derived from the saved sightings (nothing extra is stored), so it can't drift.
 // info(cardKey) -> { tier, type, owner, launch, natural, con } | null. No DOM.
-import { nightKey } from './observation.js?v=0.1.518';
+import { nightKey } from './observation.js?v=0.1.519';
 
+// A longer climb (2026-10-12, playtest room: three ranks on night 1, Mission Control in about two weeks), with two
+// prestige ranks past Mission Control. Nobody drops a rank they had on the old curve (rankFloor below).
 export const RANKS = [
-  [0, 'Stargazer'], [200, 'Spotter'], [600, 'Tracker'], [1500, 'Navigator'], [4000, 'Flight Controller'], [10000, 'Mission Control'],
+  [0, 'Stargazer'], [300, 'Spotter'], [1000, 'Tracker'], [3000, 'Navigator'], [8000, 'Flight Controller'], [20000, 'Mission Control'],
+  [40000, 'Deep Space'], [75000, 'Voyager'],
 ];
+const LEGACY_RANKS = [[0, 'Stargazer'], [200, 'Spotter'], [600, 'Tracker'], [1500, 'Navigator'], [4000, 'Flight Controller'], [10000, 'Mission Control']];
+// The rank a player already held on the old curve, worked out once and kept (localStorage rankFloor2).
+function rankFloor(xp) {
+  try { const v = localStorage.getItem('rankFloor2'); if (v != null) return Number(v) || 0; } catch { return 0; }
+  let li = 0; for (let k = 0; k < LEGACY_RANKS.length; k++) if (xp >= LEGACY_RANKS[k][0]) li = k;
+  try { localStorage.setItem('rankFloor2', String(li)); } catch {}
+  return li;
+}
 // Flatter since 2026-10-10 (playtest: 10 → 150 was 15×, so rank mostly counted old rocket stages and Mission Control
 // arrived in ~4 months). Players who were already further along keep their rank through a one-time carry (xpCarry).
 const TIER_XP = { common: 10, uncommon: 15, rare: 25, epic: 40, legendary: 60 };
@@ -21,7 +32,6 @@ const american = (i) => i?.owner === 'US';
 export const MISSIONS = [
   { id: 'stage', text: 'Catch a rocket stage', done: (n) => n.some((s) => s.info?.type === 'rocket-body') },
   { id: 'old', text: 'Find something launched before 1980', done: (n) => n.some((s) => !s.info?.natural && year(s.info?.launch) < 1980) },
-  { id: 'three', text: 'Collect 3 new cards', done: (n) => n.filter((s) => s.first).length >= 3 },
   { id: 'star', text: 'Collect a constellation star', done: (n) => n.some((s) => s.info?.con) },
   { id: 'recent', text: 'Catch a satellite launched in the last 5 years', done: (n, t) => n.some((s) => !s.info?.natural && year(s.info?.launch) >= new Date(t).getFullYear() - 5) },
   { id: 'soviet', text: 'Spot something Soviet or Russian', done: (n) => n.some((s) => soviet(s.info)) },
@@ -30,6 +40,16 @@ export const MISSIONS = [
   { id: 'high', text: 'Catch something more than 60° up', done: (n) => n.some((s) => s.el >= 60) },
   { id: 'planet', text: 'Collect a planet or the Moon', done: (n) => n.some((s) => ['planet', 'moon'].includes(s.info?.type)) },
   { id: 'junk', text: 'Spot a piece of space debris', done: (n) => n.some((s) => s.info?.type === 'debris') },
+  // Deeper ones (2026-10-12, playtest room: "collect 3 new" and "log 5" were done almost every night).
+  { id: 'again', text: 'See a card you own on a new night', done: (n) => n.some((s) => !s.first) },
+  { id: 'conset', text: 'Find 3 stars in one constellation', done: (n) => { const c = {}; for (const s of n) if (s.info?.con && s.first) c[s.info.con] = (c[s.info.con] ?? 0) + 1; return Object.values(c).some((v) => v >= 3); } },
+  { id: 'deep', text: 'Find a star cluster or galaxy', done: (n) => n.some((s) => s.info?.type === 'deepsky') },
+  { id: 'rarenew', text: 'Collect a new Rare card or better', done: (n) => n.some((s) => s.first && ['rare', 'epic', 'legendary'].includes(s.info?.tier)) },
+  { id: 'levelup2', text: 'Turn a card silver or gold', done: (n) => n.some((s) => s.lv) },
+];
+// Retired from the draw but kept so past nights still score the same.
+const RETIRED = [
+  { id: 'three', text: 'Collect 3 new cards', done: (n) => n.filter((s) => s.first).length >= 3 },
   { id: 'five', text: 'Log 5 sightings', done: (n) => n.length >= 5 },
 ];
 // Tonight's sky challenge (playtest 2026-10-09, #22): a fourth, bonus goal for nights when nothing new is overhead.
@@ -50,7 +70,7 @@ export const STARTER = [
   { id: 'satellite', text: 'Catch a satellite', done: (n) => n.some((s) => s.info && !s.info.natural) },
   MISSIONS.find((m) => m.id === 'planet'),
 ];
-const MISSION_BY_ID = new Map([...MISSIONS, ...STARTER].map((m) => [m.id, m]));
+const MISSION_BY_ID = new Map([...MISSIONS, ...RETIRED, ...STARTER].map((m) => [m.id, m]));
 // Seeded by the night (a day index from nightKey): integer mixing with Math.imul, so the picks spread evenly
 // from one night to the next. (The old float LCG overflowed 2^53 and kept dealing the same few missions.)
 // possible (optional): a Set of mission ids that can be done tonight from here (main.js asks the tonight worker
@@ -285,6 +305,7 @@ export function progress(sightings, info, { constellations = [], albums = [], no
   const missions = missionsOf(tonightKey, { first: !nights.size || tonightKey === firstNight, deals }).map((m) => ({ id: m.id, text: m.text, done: m.done(tonight, now) }));
   xp += carry;
   let ri = 0; for (let k = 0; k < RANKS.length; k++) if (xp >= RANKS[k][0]) ri = k;
+  ri = Math.max(ri, rankFloor(xp));
   const rank = { name: RANKS[ri][1], index: ri, at: RANKS[ri][0], next: RANKS[ri + 1]?.[0] ?? null, nextName: RANKS[ri + 1]?.[1] ?? null };
   const achievements = ACHIEVEMENTS.map((x) => ({ id: x.id, name: x.name, text: x.text, icon: x.icon, done: x.done(a), prog: PROG[x.id]?.(a) }));
   // Every constellation is its own mission patch (2026-10-09, Sevaan: they replace the gold constellation cards),

@@ -1011,3 +1011,8 @@ body:has(.overlay:not([hidden])) .ticket--sticky, body:has(.set-sheet.in) .ticke
 #ob-done.nt .od-body { padding-bottom: 0; }
 #ob-done.nt .od-body::after { content: ''; flex: none; height: calc(var(--safe-bottom) + 130px); }
 .nt-gap { margin: 10px 0 0; font: 500 15px/1.35 var(--label); letter-spacing: .04em; color: color-mix(in srgb, var(--text) 78%, transparent); }
+/* Tonight's one goal (2026-10-12): the best new card this evening, tap to be steered to it. */
+.ts-goal { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; width: 100%; margin: 0 0 10px; padding: 10px 14px; border-radius: 14px; border: 1px solid color-mix(in srgb, var(--gold) 55%, transparent); background: color-mix(in srgb, var(--gold) 10%, transparent); color: var(--text); text-align: left; cursor: pointer; }
+.ts-goal small { font: 500 11px var(--label); letter-spacing: .18em; text-transform: uppercase; color: var(--gold); }
+.ts-goal b { font: 400 18px/1.15 var(--display); color: var(--text); }
+.ts-goal span { font: 500 13px var(--label); letter-spacing: .06em; color: var(--muted); text-transform: uppercase; }

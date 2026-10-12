@@ -596,3 +596,18 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - rarer: the shadow entry must fall within 12 s (was 45 s), and overhead needs 86° (was 80°), in both shinyFor and shinyChances;
   - the shiny stinger plays at gain 2;
   - free players see tonight's single best shiny chance, and Plus has the full list.
+
+2026-10-12 · v0.1.519 evening-first planning (playtest room #3/#5):
+- **`eveningEnd(T)`:** planning runs from dusk to 11:30 pm, or two hours after a late dusk, and never past dawn. It covers the busiest time (Tonight tab, ⏱, Tonight ticket, Tonight page), the best pass and the reminders list. A "clearing" that only comes after the evening is now the bad-weather page. Settings → **Night owl** (pref nightOwl) plans to dawn.
+- **Tonight tab:**
+  - leads with "Best tonight": the rarest new card this evening, then the brightest; tapping it calls `showMePass`;
+  - ends with "Early riser? <station> passes at 6:37 AM…" when a station passes after the evening.
+- **Missions:** "Collect 3 new cards" and "Log 5 sightings" are retired from the draw (kept in RETIRED so past nights score the same). New ones:
+  - again: see a card you own on a new night;
+  - conset: 3 stars in one constellation;
+  - deep: a cluster or galaxy;
+  - rarenew: a new Rare or better;
+  - levelup2: turn a card silver or gold.
+
+  dealMissions only deals them when they're doable.
+- **Ranks:** 0 / 300 / 1,000 / 3,000 / 8,000 / 20,000, plus prestige ranks Deep Space (40k) and Voyager (75k). `rankFloor` (localStorage rankFloor2) keeps any rank already held on the old curve.
