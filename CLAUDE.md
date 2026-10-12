@@ -662,3 +662,15 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - **Weekly recap:** now a card. .rc-tilt and .rc-card at 5:7 with the retro double frame; the rarest find fills an art window with a caption; attachTilt and attachGyro with a soft-light glare.
 - **Radar tip:** "See what's up tonight" opens the Tonight tab.
 - **design/art-rocket-redo.html:** a prompt pack for 35 rocket-stage art files (spent, tumbling, no flame, varied angles). Sevaan generates the PNGs, then run scripts/import-art.py <folder>.
+
+2026-10-12 · TestFlight:
+- **App record:** App Store Connect has the app "Space Collector" under Sevaan Franks: English (Canada), bundle io.github.sevaan.spacecollector, SKU space-collector-ios.
+- **Info.plist:** ITSAppUsesNonExemptEncryption = false (HTTPS only), so TestFlight skips the export-compliance question.
+- **First upload:** 1.0 (1).
+- **To ship a new build:**
+  1. `npm run ios` in native/.
+  2. Bump CURRENT_PROJECT_VERSION in the pbxproj (both configs).
+  3. `xcodebuild -project App.xcodeproj -scheme App -configuration Release -destination generic/platform=iOS -archivePath <tmp>/SpaceCollector.xcarchive -allowProvisioningUpdates archive`.
+  4. `xcodebuild -exportArchive -archivePath … -exportOptionsPlist <ExportOptions: app-store-connect, destination upload, team D6XL5H68G8, automatic> -allowProvisioningUpdates`.
+
+  Both xcodebuild steps run outside the sandbox (keychain).
