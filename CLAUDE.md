@@ -531,3 +531,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - **Reveal:** the card is centred; the rank bar and "View in collection" are anchored to the bottom of the screen.
 - **Plus sheet:** moved to body level, so it opens from the Week tab. Escape closes any sheet. The restore link is hidden for players who already have cards.
 - **Sounds:** new `plane` (soft double buzz on "Just a plane"); `coinroll` is now "Swoosh down + tap". Variants are in design/sound-picks/ (scripts/sfx-synth.py).
+
+2026-10-11 · v0.1.512: Collection's Discover tab hidden (Sevaan). The Discover view stays: Albums set taps, the empty state and unowned-card links open it, and the Albums tab stays lit there.
