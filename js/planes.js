@@ -79,7 +79,7 @@ export class PlaneTracker {
   // Call every frame; fetches at most every POLL_MS (backs off after errors).
   update(obs) {
     const url = relayUrl();
-    if (!url || this.busy) return;
+    if (!url || this.busy || (typeof document !== 'undefined' && document.hidden)) return; // no polling while the app is in the background
     const wait = POLL_MS * Math.min(6, 2 ** this.failures);
     if (Date.now() - this.lastFetch < wait) return;
     this.busy = true; this.lastFetch = Date.now();

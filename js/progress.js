@@ -1,7 +1,7 @@
 // Player progress from the sighting log: XP and observer rank, tonight's three missions, a weekly streak and
 // achievements. Everything is derived from the saved sightings (nothing extra is stored), so it can't drift.
 // info(cardKey) -> { tier, type, owner, launch, natural, con } | null. No DOM.
-import { nightKey } from './observation.js?v=0.1.515';
+import { nightKey } from './observation.js?v=0.1.516';
 
 export const RANKS = [
   [0, 'Stargazer'], [200, 'Spotter'], [600, 'Tracker'], [1500, 'Navigator'], [4000, 'Flight Controller'], [10000, 'Mission Control'],
@@ -174,8 +174,8 @@ export const ACHIEVEMENTS = [
   { id: 'streak12', name: 'Devoted', text: 'Observe 12 weeks in a row', icon: '12w', done: (a) => a.bestStreak >= 12 },
   { id: 'anniversary', name: 'Anniversary', text: 'Still observing a year after your first sighting', icon: '1y', done: (a) => a.spanDays >= 365 },
   // Coming back
-  { id: 'silver', name: 'Regular Visitor', text: 'See one object on 5 different nights — a silver card', icon: 'Ag', done: (a) => a.maxNightsOnCard >= 5 },
-  { id: 'gold', name: 'Old Friend', text: 'See one object on 25 different nights — a gold card', icon: 'Au', done: (a) => a.maxNightsOnCard >= 25 },
+  { id: 'silver', name: 'Regular Visitor', text: 'Turn a card silver: see it on 3 different nights', icon: 'Ag', done: (a) => a.maxNightsOnCard >= 3 },
+  { id: 'gold', name: 'Old Friend', text: 'Turn a card gold: see it on 10 different nights', icon: 'Au', done: (a) => a.maxNightsOnCard >= 10 },
   { id: 'gold3', name: 'Inner Circle', text: 'Three gold cards', icon: 'Au3', done: (a) => a.goldCards >= 3 },
   { id: 'roadtrip', name: 'Road Trip', text: 'Sightings from two places more than 100 km apart', icon: '100k', done: (a) => a.spreadKm >= 100 },
   // Missions
@@ -196,14 +196,18 @@ const PROG = {
   starlink10: (a) => [a.fleet.STARLINK ?? 0, 10], starlink50: (a) => [a.fleet.STARLINK ?? 0, 50], fleets: (a) => [['STARLINK', 'ONEWEB', 'KUIPER', 'QIANFAN'].filter((f) => a.fleet[f]).length, 4],
   wanderers: (a) => [a.wanderers, 6], stars10: (a) => [a.stars, 10], deep3: (a) => [a.deep ?? 0, 3], deep10: (a) => [a.deep ?? 0, 10], cons5: (a) => [a.cons, 5], zodiac: (a) => [a.zodiac, 12], cons25: (a) => [a.cons, 18], cons44: (a) => [a.cons, 44],
   compass: (a) => [a.quadrants.size, 4], marathon: (a) => [a.maxNight, 10], months3: (a) => [a.months.size, 3], months12: (a) => [a.months.size, 12],
-  streak4: (a) => [a.bestStreak, 4], streak12: (a) => [a.bestStreak, 12], silver: (a) => [a.maxNightsOnCard, 5], gold: (a) => [a.maxNightsOnCard, 25], gold3: (a) => [a.goldCards, 3],
+  streak4: (a) => [a.bestStreak, 4], streak12: (a) => [a.bestStreak, 12], silver: (a) => [a.maxNightsOnCard, 3], gold: (a) => [a.maxNightsOnCard, 10], gold3: (a) => [a.goldCards, 3],
   missions10: (a) => [a.missionsDone, 10], missions50: (a) => [a.missionsDone, 50],
 };
 
-// Weeks (Monday-based, local) with at least one sighting -> current and best streak of consecutive weeks.
-function weekIndex(time) { const d = new Date(time); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() - ((d.getDay() + 6) % 7)); return Math.round(d.getTime() / (7 * 86400e3)); }
+// Weeks with at least one sighting -> current and best streak of consecutive weeks. Weeks run in 7-day blocks from
+// your first night out, not Monday to Sunday (playtest room 2026-10-11: Sunday then Monday read "2-week streak 🔥" on
+// day 2, which felt unearned).
+const dayNum = (time) => { const d = new Date(time); d.setHours(12, 0, 0, 0); return Math.round(d.getTime() / 86400e3); };
 export function streaks(sightings, now = Date.now()) {
-  const weeks = [...new Set(real(sightings).map((s) => weekIndex(s.time)))].sort((a, b) => a - b);
+  const days = real(sightings).map((s) => dayNum(s.time)); if (!days.length) return { current: 0, best: 0, thisWeek: false };
+  const first = Math.min(...days), weekIndex = (t) => Math.floor((dayNum(t) - first) / 7);
+  const weeks = [...new Set(days.map((d) => Math.floor((d - first) / 7)))].sort((a, b) => a - b);
   let best = 0, run = 0, prev = null;
   for (const w of weeks) { run = prev != null && w === prev + 1 ? run + 1 : 1; best = Math.max(best, run); prev = w; }
   const cur = weekIndex(now), last = weeks[weeks.length - 1];
@@ -262,7 +266,7 @@ export function progress(sightings, info, { constellations = [], albums = [], no
   a.wanderers = ['moon', 'planet:mercury', 'planet:venus', 'planet:mars', 'planet:jupiter', 'planet:saturn'].filter((k) => seenCard.has(k)).length;
   for (const c of constellations) if (c.stars.every((k) => seenCard.has(k))) { if (!c.system) a.cons++; xp += CON_XP; if (c.zodiac) a.zodiac++; }
   for (const [fam, set] of fleetStamps) a.fleet[fam] = set.size;
-  for (const n of nightsOnCard.values()) { a.maxNightsOnCard = Math.max(a.maxNightsOnCard, n); if (n >= 25) a.goldCards++; }
+  for (const n of nightsOnCard.values()) { a.maxNightsOnCard = Math.max(a.maxNightsOnCard, n); if (n >= 10) a.goldCards++; } // gold = 10 nights, as card.js levelFor (2026-10-12)
   if (list.length) a.spanDays = (list[list.length - 1].time - list[0].time) / 86400e3;
   // Farthest pair of observing places, in km (equirectangular is plenty at this scale).
   for (let x = 0; x < places.length; x++) for (let y = x + 1; y < places.length; y++) {

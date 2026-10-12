@@ -17,7 +17,7 @@ export function eventsAround(time = Date.now()) {
   const y = new Date(time).getFullYear(), out = [];
   for (const yr of [y - 1, y, y + 1]) for (const s of SHOWERS) {
     const peak = new Date(yr, s.month - 1, s.day, 12);
-    out.push({ id: `${s.id}-${yr}`, name: `${s.name} ${yr}`, shower: s.name, rate: s.rate, start: peak.getTime() - 30 * 3600e3, end: peak.getTime() + 20 * 3600e3 });
+    out.push({ id: `${s.id}-${yr}`, name: `${s.name} ${yr}`, shower: s.name, rate: s.rate, peak: peak.getTime(), start: peak.getTime() - 30 * 3600e3, end: peak.getTime() + 20 * 3600e3 });
   }
   return out.sort((a, b) => a.start - b.start);
 }

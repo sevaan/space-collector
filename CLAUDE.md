@@ -548,3 +548,34 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
    - the above-the-cloud note and the Tonight tab line say gaps count.
 3. **Pricing:** on hold until the end.
 4. **Pass alerts are time first:** "9:02 PM: an Epic card flies over" / "Hubble, a 1990 American space telescope. Look south: it climbs high." Fleets: "9:02 PM: a new Starlink batch flies over" / "One more for your Starlink card. …"
+
+2026-10-12 · v0.1.516 bug sweep from the playtest-room report (design/playtest-room-2026-10-11.html).
+
+**Wording and progress fixes:**
+- Solar System toasts say "worlds"; the milestone says "Your first card!" and "N cards collected".
+- Streak weeks are 7-day blocks from your first night (Sunday then Monday is week 1, not "2-week streak").
+- Silver/gold patches now match card levels: 3 and 10 nights, and gold3 counts 10-night cards.
+- `lightLeft` gives "~5,473 BC" instead of "-5474 AD".
+- Names (`titleCase` / `titleFor`): acronyms stay in capitals (PSLV, DMSP, …), as do letters run together with digits (5D, F18). Square-bracket notes are dropped ("[Tank]"). "Kick Stage R/B" no longer becomes "… Stage Rocket Stage". Fleet members take the card's name ("Amazon Leo 00100").
+- Recap: skipped for a one-night week; shows the shower's peak date (events now carry `peak`); "rarest find" ties prefer deep sky and planets, then stars, and the Sun comes last.
+
+**Sky and catalogue fixes:**
+- **The Sun:** now Rare, and a sticky "THE SUN · Never look straight at it" ticket shows on the first aim each session.
+- **Tour arrow:** uses the target's live position (it contradicted the guidance pill).
+- **Station twins:** objects with identical elements to a station are dropped in build-catalog.mjs, and removed from data/catalog.json now. Seven gone: ISS Zvezda/Destiny/Poisk, CSS Wentian/Mengtian, Shenzhou-23, Tianzhou-10.
+- **Comets:** drawn in the sky with a tail pointing away from the Sun (sky.js `drawComet`). They now need mag + 1.2.
+- **Deep sky:** the Coathanger needs 6.0 (binoculars); bright clusters need 8° altitude, not 12° (M7).
+- **Visibility:** named stars use extinction. By day the Moon needs ≥15% lit and ≥30° from the Sun. Planets other than Venus need 6° in twilight.
+- **Planes:** a plane nearer the circle's centre beats a star, planet or deep-sky target. Satellites still win.
+- **Lore:** 95–100° orbits are called sun-synchronous (not "against Earth's spin"); fleet age counts from the first launch.
+- **Sky slider:** the readout is in plain words ("about 3,500 stars"), with daylight and twilight cases.
+
+**App behaviour fixes:**
+- Reminders persist (localStorage 'reminders', unique ids), so they no longer overwrite each other and bells stay lit.
+- A sticky "EXAMPLE LOCATION · Set yours" ticket appears when the sky is Peterborough's.
+- Collection: "Clear filters" is hidden on Patches; cards are deduped by key (Dubhe was counted twice).
+- The reveal card sits above the confetti.
+- Toasts enter over 380 ms with less bounce and leave with a 180 ms fade.
+- Planes don't poll while the app is hidden.
+
+**Not done** (not reproduced or riskier): rank bar lagging a catch, shiny toast one catch late, the solar-noon night key, the radar "passing" vs Now count.

@@ -1,8 +1,8 @@
 // Observer stats (Plus, 2026-10-11, design/plans.html): your history under the sky, from the sighting log.
 // computeStats(sightings, byKey, nightKey) -> numbers; statsHtml(st) -> the panel; posterCanvas(st, year) -> a
 // 1080 × 1350 "your sky in YEAR" image to share. No network; the map uses js/geo.js's coarse outlines.
-import { LAND } from './geo.js?v=0.1.515';
-import { TIER_INFO } from './rarity.js?v=0.1.515';
+import { LAND } from './geo.js?v=0.1.516';
+import { TIER_INFO } from './rarity.js?v=0.1.516';
 
 const RANK = { common: 0, uncommon: 1, rare: 2, epic: 3, legendary: 4 };
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];

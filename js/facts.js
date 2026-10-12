@@ -95,6 +95,10 @@ export function autoLore(o) {
     : `Launched by ${who} from ${where} in ${o.year}. Long silent, it keeps circling${age ? ` ${age} years on` : ''}.`;
 }
 
+// Acronyms stay capitals, and so do letters run together with digits ("DMSP 5D-3", "PSLV"; playtest room 2026-10-11:
+// "Dmsp 5d-3", "Pslv Rocket Stage").
+const ACRONYMS = /\b(Iss|Us|Usa|Noaa|Cz|Sl|Oao|Ers|Spot|Pslv|Gslv|Dmsp|Gps|Hst|Goes|Tdrs|Nrol|Nasa|Esa|Jaxa|Css|Atv|Htv|Ses|Gsat|Irs|Insat|Cosmo|Orbcomm|Sbirs|Wgs|Dsp|Ols|Ctv)\b/g;
 export function titleCase(s) {
-  return s.toLowerCase().replace(/\b([a-z])/g, (m) => m.toUpperCase()).replace(/\b(Iss|Us|Usa|Noaa|Cz|Sl|Oao|Ers|Spot)\b/g, (m) => m.toUpperCase());
+  return s.toLowerCase().replace(/\b([a-z])/g, (m) => m.toUpperCase()).replace(ACRONYMS, (m) => m.toUpperCase())
+    .replace(/\b(?=[a-z]*\d)(?=\d*[a-z])[a-z0-9]+\b/gi, (m) => m.toUpperCase()); // letters and digits run together: 5D, F18
 }

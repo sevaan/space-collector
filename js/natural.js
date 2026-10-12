@@ -1,4 +1,4 @@
-import { extinction } from './sky-limit.js?v=0.1.515';
+import { extinction } from './sky-limit.js?v=0.1.516';
 // The Moon, the naked-eye planets and the brightest named stars, as collectible cards.
 // Positions come from js/celestial.js (state.bodies, state.skyEnu); this file holds the card facts and
 // the "can you see it right now" rules. No DOM. Every fact must be true; approximate values say so.
@@ -6,7 +6,7 @@ import { extinction } from './sky-limit.js?v=0.1.515';
 
 // The Sun: catchable by day (the Sun card is the daytime loop). You aim the phone, not your eyes.
 const sunCard = {
-  key: 'sun', id: 'sun', natural: 'sun', type: 'sun', name: 'The Sun', tier: 'epic', order: 0, code: 'OUR STAR',
+  key: 'sun', id: 'sun', natural: 'sun', type: 'sun', name: 'The Sun', tier: 'rare', /* Rare, not Epic: one easy tap by day (playtest room 2026-10-12) */ order: 0, code: 'OUR STAR',
   far: ['8.3', 'LIGHT-MINUTES AWAY'],
   stats: [['DIAMETER', '1,392,700', 'km'], ['ONE SPIN', '~25', 'd'], ['AGE', '4.6', 'billion yr']],
   fact: 'A middle-aged star that would fit **1.3 million Earths**. Never look straight at it: point the phone, catch it, and keep your eyes on the screen.',
@@ -40,7 +40,8 @@ const PLANETS = [
 // The year the starlight reaching you tonight set off (approximate distances marked with ~).
 function lightLeft(ly) {
   const year = Math.round(new Date().getFullYear() - Number(ly.replace(/[~,]/g, '')));
-  return `${ly.startsWith('~') ? '~' : ''}${year < 1000 ? `${year} AD` : year}`;
+  // Before year 1 it's BC (playtest room 2026-10-11: "~-5474 AD" for the Double Cluster).
+  return `${ly.startsWith('~') ? '~' : ''}${year < 1 ? `${(1 - year).toLocaleString('en-US')} BC` : year < 1000 ? `${year} AD` : year}`;
 }
 
 // Star: [card name, name in data/sky.json, designation, constellation, distance (light-years), tier,
@@ -88,7 +89,7 @@ const DEEP = [
   ['beehive', 'The Beehive Cluster', 'Open cluster', 130.03, 19.67, 'Cnc', 3.7, 5.0, '~577', 'rare', 'About a thousand stars in Cancer. To the eye a faint misty patch; **Galileo** saw it as a swarm of stars through his telescope and wrote about it in 1610.'],
   ['double-cluster', 'The Double Cluster', 'Open cluster', 35.13, 57.13, 'Per', 3.7, 5.0, '~7,500', 'rare', '**Two star clusters side by side** in Perseus, each with thousands of stars. A faint smudge to the eye, a stunning pair in binoculars.'],
   ['ptolemy-cluster', 'Ptolemy\'s Cluster', 'Open cluster', 268.47, -34.79, 'Sco', 3.3, 4.5, '~980', 'rare', 'Recorded by **Ptolemy** nearly 2,000 years ago as a misty patch after the sting of Scorpius, one of the first deep-sky objects anyone wrote down.'],
-  ['coathanger', 'The Coathanger', 'Star pattern', 291.35, 20.18, 'Vul', 3.6, 5.0, '~200–1,100', 'rare', 'Looks just like an **upside-down coat hanger** in binoculars. It isn\'t a real cluster: its stars are at very different distances and only line up from here.'],
+  ['coathanger', 'The Coathanger', 'Star pattern', 291.35, 20.18, 'Vul', 3.6, 6.0, '~200–1,100', 'rare', 'Looks just like an **upside-down coat hanger** in binoculars. It isn\'t a real cluster: its stars are at very different distances and only line up from here.'],
   ['andromeda', 'The Andromeda Galaxy', 'Galaxy', 10.68, 41.27, 'And', 3.4, 5.0, '2.5 million', 'epic', 'A whole galaxy of about a **trillion stars**. The light you see left it **2.5 million years ago**, and it is slowly heading toward the Milky Way.'],
   ['hercules-cluster', 'The Hercules Cluster', 'Globular cluster', 250.42, 36.46, 'Her', 5.8, 6.0, '~22,000', 'epic', 'Hundreds of thousands of stars packed into a ball. In **1974** the Arecibo radio telescope beamed a message toward it.'],
   ['lagoon-nebula', 'The Lagoon Nebula', 'Nebula', 270.9, -24.38, 'Sgr', 6.0, 5.6, '~4,100', 'epic', 'A glowing cloud where stars are forming, in the thick of the Milky Way toward the **centre of our galaxy**. From a dark site it is a faint patch you can see without binoculars.'],
@@ -147,14 +148,18 @@ export function naturalTargets(bodies, stars, extra = [], starLimit = 6.5, binoL
     const el = elOf(b.enu);
     // Faint planets (Uranus, Neptune) also have to beat tonight's limit, after extinction, like the faint stars.
     const faint = b.kind === 'planet' && b.mag > 3;
-    const visible = b.kind === 'sun' ? el > 2 : b.kind === 'moon' ? el > 0 && b.illum >= 0.03 : faint ? el > 5 && sunEl < -12 && b.mag + extinction(el) <= Math.max(starLimit, binoLimit ?? -99) : el > 2 && sunEl < brightLimit(b.mag);
+    // By day the Moon needs to be well lit or well away from the Sun to be seen (astronomers 2026-10-11: a 3% Moon next
+    // to the Sun was collectable at 1 PM). Low planets in twilight need some height to clear the glow (Mercury at 3°).
+    const sunSep = sun ? Math.acos(Math.max(-1, Math.min(1, b.enu[0] * sun.enu[0] + b.enu[1] * sun.enu[1] + b.enu[2] * sun.enu[2]) / ((Math.hypot(...b.enu) * Math.hypot(...sun.enu)) || 1))) * 180 / Math.PI : 180;
+    const moonOk = sunEl < -6 ? b.illum >= 0.03 : b.illum >= 0.15 && sunSep >= 30;
+    const visible = b.kind === 'sun' ? el > 2 : b.kind === 'moon' ? el > 0 && moonOk : b.kind === 'planet' && !faint && sunEl > -12 && el < 6 && b.name !== 'Venus' ? false : faint ? el > 5 && sunEl < -12 && b.mag + extinction(el) <= Math.max(starLimit, binoLimit ?? -99) : el > 2 && sunEl < brightLimit(b.mag);
     out.push({ obj, look: { az: azOf(b.enu), el, mag: b.mag, visible, enu: b.enu, phaseName: b.phaseName, illum: b.illum } });
   }
   for (const s of stars ?? []) {
     const obj = s.name && STAR_BY_SKY_NAME.get(s.name);
     if (!obj) continue;
     const el = elOf(s.enu);
-    out.push({ obj, look: { az: azOf(s.enu), el, mag: s.mag, visible: el > 3 && sunEl < -6, enu: s.enu } });
+    out.push({ obj, look: { az: azOf(s.enu), el, mag: s.mag, visible: el > 3 && sunEl < -6 && s.mag + extinction(el) <= starLimit, enu: s.enu } }); // dimmed low down, like constellation stars (astronomers 2026-10-11)
   }
   // Deep sky (extra entries with obj.natural === 'deepsky'): high enough to clear the haze, properly dark, and a sky
   // good enough for the faint glow (obj.need, plus some of the extra air low down).
@@ -162,7 +167,8 @@ export function naturalTargets(bodies, stars, extra = [], starLimit = 6.5, binoL
     const el = elOf(enu);
     // Comets are often best low in twilight, just after sunset: the brighter, the lighter the sky can be.
     const comet = obj.natural === 'comet', dark = comet ? sunEl < brightLimit(obj.mag) - 3 : sunEl < -12;
-    out.push({ obj, look: { az: azOf(enu), el, mag: obj.mag, visible: el > (comet ? 4 : 12) && dark && obj.need + extinction(el) * (comet ? 0.3 : 0.6) <= starLimit, enu } });
+    // Bright clusters only need 8° (Ptolemy's Cluster never clears 11° from southern Canada; astronomers 2026-10-11).
+    out.push({ obj, look: { az: azOf(enu), el, mag: obj.mag, visible: el > (comet ? 4 : obj.need <= 4.5 ? 8 : 12) && dark && obj.need + extinction(el) * (comet ? 0.3 : 0.6) <= starLimit, enu } });
   }
   for (const { obj, enu } of extra) {
     if (obj.natural === 'deepsky' || obj.natural === 'comet') continue;

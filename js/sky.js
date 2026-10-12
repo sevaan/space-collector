@@ -1,17 +1,17 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.515';
+import { extinction } from './sky-limit.js?v=0.1.516';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.515';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.516';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.515';
-import { createCloudGL } from './clouds-gl.js?v=0.1.515';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.516';
+import { createCloudGL } from './clouds-gl.js?v=0.1.516';
 // Cloud colours by light: sunlit tops, shadowed bellies, and the horizon haze they melt into (0–1 RGB).
 const CLOUD_LIGHT = {
   day: { lit: [1, 1, 1], shade: [0.62, 0.68, 0.77], haze: [0.82, 0.87, 0.93] },
   dusk: { lit: [1, 0.8, 0.68], shade: [0.36, 0.33, 0.42], haze: [0.62, 0.5, 0.52] },
   night: { lit: [0.22, 0.25, 0.31], shade: [0.1, 0.12, 0.16], haze: [0.14, 0.15, 0.2] },
 };
-import { TIER_INFO } from './rarity.js?v=0.1.515';
+import { TIER_INFO } from './rarity.js?v=0.1.516';
 
 const RAD = Math.PI / 180;
 const BELOW_ICON = 13; // every satellite under the horizon, passes and halo alike
@@ -390,6 +390,7 @@ export class SkyView {
     for (const d of list) {
       const p = this.project(d.enu); if (!this.onScreen(p, 30)) continue;
       const r = Math.max(6, Math.min(26, this.f * 0.012)), gal = /Galaxy/.test(d.kind), neb = /Nebula/.test(d.kind);
+      if (d.kind === 'Comet') { this.drawComet(d, p, r, rgb); continue; }
       ctx.save(); ctx.translate(p.x, p.y);
       if (gal) { ctx.rotate(-0.5); ctx.scale(1.8, 0.7); }
       const g = ctx.createRadialGradient(0, 0, 0, 0, 0, r);
@@ -399,6 +400,23 @@ export class SkyView {
       ctx.restore();
       if (!gal && !neb) { ctx.fillStyle = `rgba(${rgb},.55)`; let seed = d.id.length * 97; for (let i = 0; i < 9; i++) { seed = (seed * 16807) % 2147483647; const a = (seed % 628) / 100, rr = ((seed >> 5) % 100) / 100 * r * 0.7; ctx.beginPath(); ctx.arc(p.x + Math.cos(a) * rr, p.y + Math.sin(a) * rr, 0.7, 0, Math.PI * 2); ctx.fill(); } }
     }
+    ctx.restore();
+  }
+  // A comet: a soft head and a tail pointing away from the Sun (the tangent on the sky away from the Sun's direction).
+  drawComet(d, p, r, rgb) {
+    const ctx = this.ctx, c = d.enu, s = d.sun;
+    let ang = -Math.PI / 4;
+    if (s) {
+      const dot = c[0] * s[0] + c[1] * s[1] + c[2] * s[2], t = [-(s[0] - dot * c[0]), -(s[1] - dot * c[1]), -(s[2] - dot * c[2])], n = Math.hypot(...t) || 1;
+      const q = this.project([c[0] + 0.06 * t[0] / n, c[1] + 0.06 * t[1] / n, c[2] + 0.06 * t[2] / n]);
+      if (q && Number.isFinite(q.x)) ang = Math.atan2(q.y - p.y, q.x - p.x);
+    }
+    const len = r * 3.2;
+    ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(ang);
+    const tail = ctx.createLinearGradient(0, 0, len, 0); tail.addColorStop(0, `rgba(${rgb},.32)`); tail.addColorStop(1, `rgba(${rgb},0)`);
+    ctx.fillStyle = tail; ctx.beginPath(); ctx.moveTo(0, -r * 0.35); ctx.quadraticCurveTo(len * 0.6, -r * 0.7, len, -r * 0.9); ctx.lineTo(len, r * 0.9); ctx.quadraticCurveTo(len * 0.6, r * 0.7, 0, r * 0.35); ctx.closePath(); ctx.fill();
+    const g = ctx.createRadialGradient(0, 0, 0, 0, 0, r * 0.55); g.addColorStop(0, `rgba(${rgb},.85)`); g.addColorStop(0.5, `rgba(${rgb},.3)`); g.addColorStop(1, `rgba(${rgb},0)`);
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0, 0, r * 0.55, 0, Math.PI * 2); ctx.fill();
     ctx.restore();
   }
   // Under the horizon, a dark-site sky (2026-10-11, Sevaan): stars to the dark-sky limit and every satellite the Sun

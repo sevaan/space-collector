@@ -88,3 +88,5 @@ body.night #reveal { background: #000; }
 #rv-rank { top: max(calc(50% + var(--rv-y, 22px) + var(--ch, 39.2) * var(--cf) / 2 + 14px), calc(100% - var(--safe-bottom, 0px) - 104px)); }
 #reveal-view { top: max(calc(50% + var(--rv-y, 22px) + var(--ch, 39.2) * var(--cf) / 2 + 18px), calc(100% - var(--safe-bottom, 0px) - 52px)); }
 #reveal.has-rank #reveal-view { top: max(calc(50% + var(--rv-y, 22px) + var(--ch, 39.2) * var(--cf) / 2 + 46px), calc(100% - var(--safe-bottom, 0px) - 52px)); }
+/* The card sits above the confetti, so the burst fans out from behind it instead of covering it (2026-10-12, UX room). */
+#reveal #rv-holder { z-index: 3; }

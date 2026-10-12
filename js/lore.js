@@ -4,7 +4,7 @@
 // facts only state what the catalogue says today (orbit, launch date and site) or simple date
 // comparisons. No extrapolating today's orbit back over decades (lifetime laps or distance).
 
-import { orbitStats, titleCase, siteName, ownerName } from './facts.js?v=0.1.515';
+import { orbitStats, titleCase, siteName, ownerName } from './facts.js?v=0.1.516';
 
 const FAMILY = [
   [/^IRIDIUM 33 DEB/, 'A piece of the **first-ever crash between two satellites**: Iridium 33 hit the dead Cosmos 2251 in 2009.'],
@@ -48,9 +48,13 @@ export function titleFor(o) {
   if (o.natural) return o.name;
   if (o.launches) return o.familyName;
   if (o.members) return `${o.familyName} train, ${o.launch ? shortDate(o.launch) : 'unknown date'}`;
+  // A fleet member is named like its card: "Amazon Leo 00100", not "Kuiper-00100" (collectors 2026-10-11).
+  if (o.family && o.familyName && !o.name.toUpperCase().startsWith(o.familyName.toUpperCase())) return `${o.familyName} ${o.name.replace(/^[A-Z]+[- ]?/i, '')}`.trim();
   const hand = loreCache?.[o.id]?.title;
   if (hand) return hand;
   return titleCase(o.name)
+    .replace(/\s*\[[^\]]*\]/g, '') // "Breeze-M Deb [Tank]": the catalogue's notes in square brackets aren't part of the name
+    .replace(/(Stage|Motor)\s+R\/B(\(\d\))?/i, '$1') // "Electron Kick Stage R/B" was "Electron Kick Stage Rocket Stage"
     .replace(/\bR\/B(\(\d\))?/i, 'Rocket Stage')
     .replace(/\bDeb\b/i, 'Debris')
     .replace(/\s+/g, ' ')
@@ -85,7 +89,9 @@ export function computedFacts(o) {
   else if (o.launch && o.launch < IPHONE) out.push('It was launched **before the first iPhone** went on sale.');
   // Today's orbit.
   if (ecc != null && ecc > 1500) out.push(`Its orbit is a long oval: it swoops from **${o.perigee.toLocaleString('en-US')} km** to **${o.apogee.toLocaleString('en-US')} km** above Earth.`);
-  if (o.incl > 90) out.push('It orbits **against Earth\'s spin**, heading west, which takes extra rocket power to reach.');
+  // 96–99° is a sun-synchronous orbit (most Earth-watching satellites), not a "westward" one (astronomers 2026-10-11).
+  if (o.incl >= 95 && o.incl <= 100) out.push('It flies a **sun-synchronous** orbit over the poles: it crosses each place at the same local time every day, so its photos always have the same light.');
+  else if (o.incl > 105) out.push('It orbits **against Earth\'s spin**, heading west, which takes extra rocket power to reach.');
   else if (o.incl >= 80) out.push('Its orbit runs **over the poles**, so over time it passes above almost every part of Earth.');
   if (st && ecc != null && ecc < 300) out.push(`It moves about **${st.speed.toFixed(1)} km every second**. That's Toronto to Montreal in about ${Math.round(504 / st.speed)} seconds.`);
   if (o.period) out.push(`It goes all the way around Earth in **${Math.round(o.period)} minutes**, about ${(1440 / o.period).toFixed(o.period > 144 ? 1 : 0)} times a day.`);
