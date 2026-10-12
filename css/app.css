@@ -274,7 +274,7 @@ body.day #nextpass .np-k, body.day #nextpass .np-m { color:rgba(238,243,255,.82)
 }
 
 /* The sky slider (2026-10-06): a slim retro "exposure" control just above the switcher, Explore only. */
-#skybar { position:fixed; left:50%; transform:translateX(-50%); bottom:calc(86px + var(--safe-bottom)); /* clear of the switcher (top at 74px since it grew to 54px, 2026-10-11) */ width:min(300px, calc(100vw - 48px)); z-index:3; display:grid; grid-template-columns:auto 1fr auto; align-items:center; column-gap:9px; row-gap:2px; pointer-events:auto; }
+#skybar { position:fixed; left:50%; transform:translateX(-50%); bottom:calc(94px + var(--safe-bottom)); /* clear of the switcher (top at 82px since it grew to 62px, 2026-10-11) */ width:min(300px, calc(100vw - 48px)); z-index:3; display:grid; grid-template-columns:auto 1fr auto; align-items:center; column-gap:9px; row-gap:2px; pointer-events:auto; }
 #skybar .sb-end { font:500 9px/1 var(--label); letter-spacing:.16em; color:var(--muted); opacity:.75; }
 #sky-read { display:none; grid-column:1 / -1; text-align:center; font:500 11px/1.2 var(--label); letter-spacing:.12em; text-transform:uppercase; color:var(--muted); opacity:.7; transition:opacity .25s; }
 #sky-range:focus, #sky-range:focus-visible { outline:none; }
@@ -412,9 +412,9 @@ body:has(#target:not([hidden])) #toasts { bottom:calc(var(--safe-bottom) + 182px
 
 /* More air above the slider (2026-10-07, Sevaan): the mini card and toasts lift clear of it, and the mini card no
    longer shows "1 of 2" (the circle picks what you're aiming at). */
-#target { bottom:calc(var(--safe-bottom) + 144px) !important; }
-#toasts { bottom:calc(var(--safe-bottom) + 144px); }
-body:has(#target:not([hidden])) #toasts { bottom:calc(var(--safe-bottom) + 204px); }
+#target { bottom:calc(var(--safe-bottom) + 156px) !important; }
+#toasts { bottom:calc(var(--safe-bottom) + 156px); } /* clear of the 62px switcher and the slider (2026-10-11) */
+body:has(#target:not([hidden])) #toasts { bottom:calc(var(--safe-bottom) + 216px); }
 #t-switch { display:none !important; }
 
 /* The standing message is a toast (ticket) in the bottom stack; it doesn't time out. */
@@ -843,7 +843,7 @@ html.quick .wc-loader .ld-sub { display: none; }
 body:has(#reveal:not([hidden])) #toasts { opacity: 0; transition: opacity .2s; }
 body:has(.patch-coins) #d-sub { opacity: 0; transition: opacity .2s; }
 /* Daytime has no sky slider, so toasts (and patch coins) sit just above the switcher (2026-10-10, Sevaan). */
-body.day #toasts { bottom: calc(var(--safe-bottom) + 88px) !important; } /* above the taller switcher */
+body.day #toasts { bottom: calc(var(--safe-bottom) + 96px) !important; } /* above the taller switcher */
 body.day .patch-coins { bottom: calc(var(--safe-bottom, 0px) + 114px); }
 /* Weekly recap (playtest 2026-10-09, #15): last week on a card, over the sky. */
 #recap { position: fixed; inset: 0; z-index: 60; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: calc(var(--safe-top) + 20px) 20px calc(var(--safe-bottom) + 24px); background: radial-gradient(ellipse at 50% 20%, #0c1d29f2, #080f1bf7 70%); opacity: 0; transition: opacity .3s ease; }

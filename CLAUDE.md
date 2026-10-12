@@ -504,3 +504,6 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - Red night mode guaranteed: body.night::after multiplies the whole screen by pure red (both pages). Measured: blue 0, green ≤ 12. 60 fps kept. Native select popups (system UI) are the only thing it cannot reach.
   - Android text size: MainActivity caps the web view text zoom at 115% of normal (follows the setting up to that), live without reload.
   Still open: real app icon + splash art, iOS Dynamic Type (no effect, layout safe), share/notifications untested on a real device.
+
+2026-10-11 · App icon = option A "Lock-on" (design/icon-options.html): iOS 1024 AppIcon, web icons 180/192/512, Android legacy + round mipmaps, adaptive foreground (art in the 66/108 safe zone) on navy, and a monochrome layer for themed icons; iOS splash = navy with the mark. Exports came from the board via Playwright (scratchpad pw/iconexport.mjs).
+2026-10-11 · Switcher 62px (Sevaan asked again; was 54); #skybar bottom 94px, day toasts 96px, night toasts/target 156px (216 with the target card). Gaps: slider 12px above the switcher, toasts 18px above the slider.
