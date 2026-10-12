@@ -316,3 +316,7 @@ body:has(#reveal:not([hidden])) #toasts, body:has(#ob-done:not([hidden])) #toast
 @keyframes pc-drop { 0% { opacity: 0; transform: translateY(-46px) scale(.3) rotate(-120deg); } 65% { opacity: 1; transform: translateY(6px) scale(1.08) rotate(8deg); } 100% { opacity: 1; transform: none; } }
 .patch-coins .pc-more { margin-left: 0; width: 58px; text-align: center; }
 @media (prefers-reduced-motion: reduce) { .patch-coins .pc-coin.in .pc-disc { animation: none; opacity: 1; transform: none; } }
+/* Rolling into the Collection wins over the drop-in (2026-10-12: pc-drop's selector outranked pc-roll, so the coins just sat
+   there and vanished). */
+.patch-coins .pc-coin.out .pc-disc { animation: pc-roll .6s cubic-bezier(.5,0,.75,.4) forwards; }
+@media (prefers-reduced-motion: reduce) { .patch-coins .pc-coin.out .pc-disc { animation: pc-fade .3s forwards; } }

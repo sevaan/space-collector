@@ -682,3 +682,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - **Patch coins:** placed under the radar, each coin centred on the radar canvas's centre line (set inline in pumpPatch), and they slide down out from under it (pc-drop).
 - **Reminder buttons** on the Tonight page and the Not tonight page confirm themselves ("✓ Reminder set for 8:50", or an error) via `remindDone`, because toasts are hidden while that page is up. That's why Sevaan saw "nothing happens".
 - **Double-tap zoom** is off on controls: `touch-action: manipulation` on buttons, links, labels, inputs, .d-cta and .ticket. Pinch zoom still works.
+
+2026-10-12 · v0.1.526: patch coins roll into the Collection tab again (the pc-drop rule outranked .pc-coin.out's pc-roll; there's now an equally specific .patch-coins .pc-coin.out rule after it).
