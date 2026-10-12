@@ -8,8 +8,8 @@
 //   · here, uploaded before, gone from the cloud → deleted on another device, so deleted here
 //   · deleted here while offline → remembered (localStorage acctDeleted) and deleted from the cloud next sync
 // Firebase loads only when someone signs in or was signed in before, so a blocked or slow Google never stops the app.
-import { allSightings, addSighting, putSighting, deleteSighting } from './store.js?v=0.1.519';
-import { isNative, plugin } from './native.js?v=0.1.519';
+import { allSightings, addSighting, putSighting, deleteSighting } from './store.js?v=0.1.520';
+import { isNative, plugin } from './native.js?v=0.1.520';
 
 const FB = 'https://www.gstatic.com/firebasejs/12.4.0/';
 const CONFIG = {
@@ -93,6 +93,23 @@ export async function signOut() {
   await fb.Au.signOut(fb.auth);
   if (isNative()) try { await plugin('FirebaseAuthentication').signOut(); } catch {} // forget the Google account choice too
   ls.set('acct', null); emit();
+}
+
+// Delete the account and everything backed up with it (2026-10-12: App Store rule 5.1.1(v)). The phone keeps its own
+// collection, marked not-yet-uploaded so a later sign-in can back it up again. Firebase wants a recent sign-in to delete
+// an account: if it's been a while, sign in again and retry (reauth = signInGoogle, or null for "ask the user").
+export async function deleteAccount(reauth = null) {
+  const a = account(); if (!a) return;
+  const { auth, db, F, Au } = await load();
+  const user = auth.currentUser; if (!user) throw new Error('not-signed-in');
+  const col = F.collection(db, 'users', a.uid, 'sightings');
+  for (;;) { const snap = await F.getDocs(F.query(col, F.limit(400))); if (snap.empty) break; const b = F.writeBatch(db); snap.docs.forEach((d) => b.delete(d.ref)); await b.commit(); }
+  await F.deleteDoc(F.doc(db, 'users', a.uid)).catch(() => {});
+  try { await Au.deleteUser(user); }
+  catch (e) { if (/requires-recent-login/.test(e?.code ?? '') && reauth) { await reauth(); await Au.deleteUser(auth.currentUser); } else throw e; }
+  if (isNative()) try { await plugin('FirebaseAuthentication').signOut(); } catch {}
+  for (const s of await allSightings()) if (s.synced || s.cloudId) await putSighting({ ...s, synced: false, cloudId: undefined });
+  ls.set('acct', null); ls.set('acctDeleted', null); emit();
 }
 
 // A stable id for a sighting, the same on every device.

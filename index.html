@@ -22,10 +22,10 @@
   <link rel="preload" href="fonts/RussoOne-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="fonts/BarlowCondensed-Medium.ttf" as="font" type="font/ttf" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600;650;700;750;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/cards.css?v=0.1.519">
-  <link rel="stylesheet" href="css/app.css?v=0.1.519">
-  <link rel="stylesheet" href="css/reveal.css?v=0.1.519">
-  <link rel="stylesheet" href="css/ui.css?v=0.1.519">
+  <link rel="stylesheet" href="css/cards.css?v=0.1.520">
+  <link rel="stylesheet" href="css/app.css?v=0.1.520">
+  <link rel="stylesheet" href="css/reveal.css?v=0.1.520">
+  <link rel="stylesheet" href="css/ui.css?v=0.1.520">
 </head>
 <body>
   <video id="cam" playsinline muted autoplay hidden></video>
@@ -261,6 +261,7 @@
       <button class="set-row" type="button" id="set-data"><span class="set-ic" aria-hidden="true" style="background:#14284a">▤</span><span class="set-main">Your data<small id="set-data-note">On this phone only</small></span><span class="set-val">Export</span><span class="set-chev">›</span></button>
       <button class="set-row" type="button" id="set-reset"><span class="set-ic" aria-hidden="true" style="background:#4a1414">⟲</span><span class="set-main">Reset everything<small>Start again as a new player</small></span><span class="set-chev">›</span></button>
     </div>
+    <p class="set-credit"><a href="privacy.html" target="_blank" rel="noopener">Privacy policy</a></p>
     <p class="set-credit">Milky Way: ESO/S. Brunier, <a href="https://www.eso.org/public/images/eso0932a/" target="_blank" rel="noopener">CC BY 4.0</a>, star-filtered. Satellite data: CelesTrak. Music: "Permafrost" by <a href="https://www.scottbuckley.com.au" target="_blank" rel="noopener">Scott Buckley</a>, released under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>.</p>
     <button class="set-version" type="button" id="set-version"></button>
     <div id="test-tools">
@@ -281,7 +282,7 @@
       <h3>Where are you observing from?</h3>
       <button class="d-cta o" id="retry-location" type="button"><span>📍 Use my location</span><span></span></button>
       <form id="location-form" class="set-coords"><span class="set-sl-top"><span>Or enter coordinates</span></span><div class="row wrap"><label>Latitude<input id="latitude" type="number" min="-90" max="90" step="any" required inputmode="decimal"></label><label>Longitude<input id="longitude" type="number" min="-180" max="180" step="any" required inputmode="decimal"></label></div><button class="pill" type="submit">Use these</button></form>
-      <small class="set-sl-note">South and west are negative. Your location stays on this phone.</small>
+      <small class="set-sl-note">South and west are negative. Used only to work out your sky, never sold or shared. <a href="privacy.html" target="_blank" rel="noopener">Privacy</a></small>
     </div></div>
     <!-- Account sheet (2026-10-10, js/account.js) -->
     <div class="set-sheet" id="set-acct-sheet" hidden><div class="set-sheet-card"><div class="set-grab"></div>
@@ -298,6 +299,8 @@
         <p class="hint" id="acct-status"></p>
         <button class="d-cta ghost" id="acct-sync" type="button"><span>Sync now</span><span>↻</span></button>
         <button class="d-cta ghost acct-btn" id="acct-signout" type="button"><span>Sign out</span><span></span></button>
+        <button class="acct-delete" id="acct-delete" type="button">Delete account</button>
+        <div class="acct-confirm" id="acct-confirm" hidden><p>This deletes your account and everything backed up with it. Your cards stay on this phone. It can't be undone.</p><button class="d-cta acct-danger" id="acct-delete-yes" type="button"><span>Delete my account</span><span></span></button><button class="auth-later" id="acct-delete-no" type="button">Keep it</button></div>
         <small class="set-sl-note">Signing out keeps everything on this phone.</small>
       </div>
     </div></div>
@@ -306,8 +309,11 @@
       <h3>Space Collector Plus</h3>
       <p class="hint" id="plus-lead">The whole sky stays free: every card, patch and mission. Plus adds tools for planning and a few nice extras.</p>
       <ul class="plus-perks" id="plus-perks"></ul>
-      <button class="d-cta o" id="plus-buy" type="button" disabled><span>Coming in the app</span><span></span></button>
-      <small class="set-sl-note">About $2.99 a month, $19.99 a year or $39.99 once. Cloud backup stays free.</small>
+      <div id="plus-buy"><button class="d-cta o plus-price" id="plus-year" type="button" disabled><span>Yearly</span><span>$19.99</span></button>
+      <button class="d-cta ghost plus-price" id="plus-once" type="button" disabled><span>Once, forever</span><span>$39.99</span></button>
+      <small class="set-sl-note" id="plus-soon">Buying opens in the App Store and Google Play versions. Prices aren't final.</small></div>
+      <p class="plus-why">Space Collector is made by one person. Plus pays for the servers behind pass alerts and plane spotting, and keeps the whole sky free for everyone. Thank you. · Sevaan</p>
+      <button class="auth-later" id="plus-restore" type="button">Restore purchases</button>
     </div></div>
     <!-- Circle highlights sheet -->
     <div class="set-sheet" id="set-hl-sheet" hidden><div class="set-sheet-card"><div class="set-grab"></div>
@@ -325,7 +331,7 @@
     </div></div>
   </section>
 
-  <script type="module" src="js/main.js?v=0.1.519"></script>
+  <script type="module" src="js/main.js?v=0.1.520"></script>
 <div id="rotate" role="status"><b>Turn your phone upright</b><span>Space Collector is made for portrait.</span></div>
 </body>
 </html>

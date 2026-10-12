@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Space Collector Privacy</title>
+<meta name="description" content="What Space Collector does with your location and your collection.">
+<style>
+  @font-face { font-family: 'SC Display'; src: url('fonts/RussoOne-Regular.ttf') format('truetype'); }
+  @font-face { font-family: 'SC Label'; src: url('fonts/BarlowCondensed-Medium.ttf') format('truetype'); font-weight: 500; }
+  :root { --bg: #080f1b; --text: #e6ecf5; --ink: #fff2b3; --muted: #9fb3c8; --org: #fa8127; --edge: #22344a; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.6 -apple-system, system-ui, sans-serif; }
+  main { max-width: 680px; margin: 0 auto; padding: 40px 16px 80px; }
+  .eyebrow { font: 500 14px 'SC Label', sans-serif; letter-spacing: .2em; text-transform: uppercase; color: var(--org); }
+  h1 { font: 400 32px/1.1 'SC Display', sans-serif; color: var(--ink); margin: 6px 0 8px; }
+  h2 { font: 400 20px/1.2 'SC Display', sans-serif; color: var(--ink); margin: 36px 0 8px; }
+  p, li { color: var(--text); }
+  .muted { color: var(--muted); }
+  ul { padding-left: 20px; }
+  li { margin: 0 0 6px; }
+  .box { border: 1px solid var(--edge); border-radius: 14px; padding: 14px 16px; background: #0e1a29; }
+  a { color: var(--ink); }
+</style>
+</head>
+<body><main>
+  <span class="eyebrow">Space Collector</span>
+  <h1>Privacy</h1>
+  <p class="muted">Last updated 12 October 2026</p>
+
+  <div class="box"><p style="margin:0">The short version: your location is used to work out your sky. Your collection stays on your phone unless you sign in to back it up. There are no ads, no tracking and no selling of data.</p></div>
+
+  <h2>Your location</h2>
+  <p>Space Collector needs to know roughly where you are to show what's in your sky. It asks for your approximate location only, and works it out on your phone. To do that it shares a rounded position (about 1 km) with:</p>
+  <ul>
+    <li><b>Open-Meteo</b>, for the weather forecast;</li>
+    <li><b>our plane relay</b>, which asks a public flight-tracking service (adsb.lol) for aircraft near you, so the app can say "Just a plane". It doesn't keep a record of where you were.</li>
+  </ul>
+  <p>You can choose a place by hand instead in Settings, and the app works without your location at all (it shows an example sky).</p>
+
+  <h2>Your collection</h2>
+  <p>Your cards, sightings, patches and progress are stored on your phone. Each sighting records the time, what you saw and where you were standing, because that's part of the card.</p>
+  <p>If you sign in (with Apple, Google or an emailed link), your collection is backed up to Google Firebase so it's safe and follows you to another phone. That stores your account's email and name, and your sightings. Only you can read them.</p>
+
+  <h2>Notifications</h2>
+  <p>If you turn on pass alerts or reminders, the app schedules them on your phone. On the website version, alerts go through a small push service that holds your notification address and the next few alert times, and nothing else.</p>
+
+  <h2>Purchases</h2>
+  <p>Space Collector Plus is sold through the App Store or Google Play. We don't see your payment details.</p>
+
+  <h2>What we don't do</h2>
+  <ul>
+    <li>No ads and no advertising trackers.</li>
+    <li>No analytics that follow you across apps or websites.</li>
+    <li>We never sell or share your data with anyone else.</li>
+  </ul>
+
+  <h2>Deleting your data</h2>
+  <p>Sign out to keep your collection only on this phone. To delete your account and everything backed up with it, use <b>Settings → Account → Delete account</b> in the app. It's removed from our servers straight away. Deleting the app removes everything stored on the phone.</p>
+
+  <h2>Children</h2>
+  <p>Space Collector is made for everyone, including families stargazing together. We don't knowingly collect personal information from children beyond what's described here, and signing in is always optional.</p>
+
+  <h2>Contact</h2>
+  <p>Questions about privacy? Open an issue at <a href="https://github.com/sevaan/space-collector/issues">github.com/sevaan/space-collector</a>.</p>
+</main></body>
+</html>

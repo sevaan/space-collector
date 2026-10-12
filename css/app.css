@@ -1016,3 +1016,12 @@ body:has(.overlay:not([hidden])) .ticket--sticky, body:has(.set-sheet.in) .ticke
 .ts-goal small { font: 500 11px var(--label); letter-spacing: .18em; text-transform: uppercase; color: var(--gold); }
 .ts-goal b { font: 400 18px/1.15 var(--display); color: var(--text); }
 .ts-goal span { font: 500 13px var(--label); letter-spacing: .06em; color: var(--muted); text-transform: uppercase; }
+/* Delete account (2026-10-12): quiet until asked, then a plain confirm. */
+.acct-delete { display: block; margin: 14px auto 0; background: none; border: 0; color: var(--muted); font: 500 14px var(--label); letter-spacing: .12em; text-transform: uppercase; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; padding: 8px; }
+.acct-confirm { margin-top: 12px; padding: 12px 14px; border-radius: 14px; border: 1px solid #ff7a6b66; background: #ff7a6b12; }
+.acct-confirm p { margin: 0 0 10px; color: var(--text); font: 400 14px/1.45 -apple-system, system-ui, sans-serif; }
+.acct-danger { background: #c94a3d !important; color: #fff !important; }
+/* Plus sheet (2026-10-12): the price on the buttons, a note from the maker, Restore purchases. */
+.plus-price { margin-top: 8px; }
+.plus-price span:last-child { font: 400 17px var(--display); letter-spacing: 0; }
+.plus-why { margin: 14px 0 0; font: 400 13.5px/1.45 -apple-system, system-ui, sans-serif; color: var(--muted); }

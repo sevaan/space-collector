@@ -611,3 +611,17 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 
   dealMissions only deals them when they're doable.
 - **Ranks:** 0 / 300 / 1,000 / 3,000 / 8,000 / 20,000, plus prestige ranks Deep Space (40k) and Voyager (75k). `rankFloor` (localStorage rankFloor2) keeps any rank already held on the old curve.
+
+2026-10-12 · v0.1.520 store readiness, the parts that needed nothing from Sevaan:
+- **Testing tools:** `devMode()`. The native app hides the testing tools (`#test-tools`: time travel, Plus (testing), summons) and the ⏱ button unless they're unlocked by tapping the version line 7 times (localStorage 'dev'). The website (the private test build) always has them.
+- **privacy.html:** the privacy policy, linked from Settings and the location sheet. It covers:
+  - approximate location, sent rounded to Open-Meteo (weather.js now sends 2 decimals) and to the plane relay;
+  - the collection on the phone, and in Firebase only when signed in;
+  - push, purchases via the stores, no ads/tracking/selling, deletion, children;
+  - contact through GitHub issues (Sevaan can swap in an email).
+- **Location wording:** the tour's location step says "It's only used to work out your sky, never sold or shared" (no more "It stays on this phone"), and its button says "Use my location".
+- **Delete account:** Settings → Account → Delete account, then a confirm. `deleteAccount()` in account.js deletes users/{uid}/sightings in batches of 400, then users/{uid}, then the Firebase user (re-signing in with Google if Firebase asks for a recent login). Sightings on the phone are kept and marked not uploaded. NOT tested with a real account yet.
+- **iOS:** App/PrivacyInfo.xcprivacy is in the target (ids 5C0FFEE…A003/A004). It declares coarse location, email, name, user ID and other user content, all linked to the user, used for app functionality, no tracking, plus UserDefaults CA92.1. The simulator build bundles it.
+- **Android:** the manifest has COARSE location only; FINE_LOCATION and CAMERA are gone. Verified on the emulator: the prompt asks for approximate location only, and the tour gets a position. Note: SCHEDULE_EXACT_ALARM comes in from local-notifications.
+- **Plus sheet:** shows live perks only; "Yearly $19.99" and "Once, forever $39.99" buttons (disabled until purchases; "Prices aren't final"); a note from Sevaan; Restore purchases.
+- **Native builds:** use `npm run ios` / `npm run android` (copy-web.mjs then cap sync). A bare `npx cap sync` ships stale www/.

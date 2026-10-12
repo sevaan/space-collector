@@ -39,10 +39,9 @@
     <!-- Permissions -->
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Approximate location only (2026-10-12, store readiness): the app never asks for precise location, and the camera
+         view is a testing-tools prototype, so neither FINE_LOCATION nor CAMERA is requested. -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.CAMERA" />
     <uses-feature android:name="android.hardware.location.gps" android:required="false" />
-    <uses-feature android:name="android.hardware.camera" android:required="false" />
 
 </manifest>
