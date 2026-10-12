@@ -22,10 +22,10 @@
   <link rel="preload" href="fonts/RussoOne-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="fonts/BarlowCondensed-Medium.ttf" as="font" type="font/ttf" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600;650;700;750;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/cards.css?v=0.1.520">
-  <link rel="stylesheet" href="css/app.css?v=0.1.520">
-  <link rel="stylesheet" href="css/reveal.css?v=0.1.520">
-  <link rel="stylesheet" href="css/ui.css?v=0.1.520">
+  <link rel="stylesheet" href="css/cards.css?v=0.1.521">
+  <link rel="stylesheet" href="css/app.css?v=0.1.521">
+  <link rel="stylesheet" href="css/reveal.css?v=0.1.521">
+  <link rel="stylesheet" href="css/ui.css?v=0.1.521">
 </head>
 <body>
   <video id="cam" playsinline muted autoplay hidden></video>
@@ -289,6 +289,7 @@
       <div id="acct-out">
         <h3>Back up your collection</h3>
         <p class="hint">Your sightings live on this phone. Sign in and they're saved to your account, and the same on every device you sign in on.</p>
+        <button class="d-cta acct-apple" id="acct-apple" type="button" hidden><span>Continue with Apple</span><span>→</span></button>
         <button class="d-cta o" id="acct-google" type="button"><span>Continue with Google</span><span>→</span></button>
         <form id="acct-email-form" class="set-coords"><label>Or get a sign-in link by email<input id="acct-email" type="email" required autocomplete="email" placeholder="you@example.com"></label><button class="d-cta ghost acct-btn" type="submit"><span>Email me a link</span><span>→</span></button></form>
         <form id="acct-paste-form" class="set-coords" hidden><label>Opened the link in Safari instead? Copy it and paste it here<input id="acct-paste" type="url" placeholder="https://sevaan.github.io/space-collector/?…"></label><button class="d-cta ghost acct-btn" type="submit"><span>Sign in with the link</span><span>→</span></button></form>
@@ -331,7 +332,7 @@
     </div></div>
   </section>
 
-  <script type="module" src="js/main.js?v=0.1.520"></script>
+  <script type="module" src="js/main.js?v=0.1.521"></script>
 <div id="rotate" role="status"><b>Turn your phone upright</b><span>Space Collector is made for portrait.</span></div>
 </body>
 </html>

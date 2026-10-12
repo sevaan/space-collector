@@ -8,8 +8,8 @@
 //   · here, uploaded before, gone from the cloud → deleted on another device, so deleted here
 //   · deleted here while offline → remembered (localStorage acctDeleted) and deleted from the cloud next sync
 // Firebase loads only when someone signs in or was signed in before, so a blocked or slow Google never stops the app.
-import { allSightings, addSighting, putSighting, deleteSighting } from './store.js?v=0.1.520';
-import { isNative, plugin } from './native.js?v=0.1.520';
+import { allSightings, addSighting, putSighting, deleteSighting } from './store.js?v=0.1.521';
+import { isNative, plugin } from './native.js?v=0.1.521';
 
 const FB = 'https://www.gstatic.com/firebasejs/12.4.0/';
 const CONFIG = {
@@ -50,7 +50,7 @@ async function load() {
 
 // Record the signed-in user straight away. A sign-in call can resolve before onAuthStateChanged runs, and a sync
 // started in that gap found no account and brought nothing back ("nothing to restore", 2026-10-11, Sevaan).
-function setAcct(u) { const a = account(); ls.set('acct', JSON.stringify({ uid: u.uid, email: u.email, name: u.displayName, syncedAt: a?.uid === u.uid ? a.syncedAt ?? null : null })); }
+function setAcct(u) { const a = account(), pid = u.providerData?.[0]?.providerId ?? ''; ls.set('acct', JSON.stringify({ uid: u.uid, email: u.email, name: u.displayName, provider: pid.startsWith('apple') ? 'apple' : pid.startsWith('google') ? 'google' : pid ? 'email' : a?.provider ?? null, syncedAt: a?.uid === u.uid ? a.syncedAt ?? null : null })); }
 
 // On startup: only touch Firebase if this phone was signed in, or it's opening an emailed sign-in link.
 export async function initAccount() {
@@ -70,6 +70,17 @@ export async function signInGoogle() {
     return;
   }
   setAcct((await Au.signInWithPopup(auth, new Au.GoogleAuthProvider())).user);
+}
+// Sign in with Apple (2026-10-12): the native iPhone app only. Apple's own sheet through the plugin (skipNativeAuth),
+// then the same Firebase web session as Google. Apple sends the name only the first time.
+export async function signInApple() {
+  const { auth, Au } = await load();
+  const r = await plugin('FirebaseAuthentication').signInWithApple({ skipNativeAuth: true });
+  const c = r?.credential; if (!c?.idToken) throw new Error('Apple sign-in was cancelled.');
+  const cred = new Au.OAuthProvider('apple.com').credential({ idToken: c.idToken, rawNonce: c.nonce });
+  const res = await Au.signInWithCredential(auth, cred);
+  if (!res.user.displayName && r?.user?.displayName) try { await Au.updateProfile(res.user, { displayName: r.user.displayName }); } catch {}
+  setAcct({ ...res.user, displayName: res.user.displayName ?? r?.user?.displayName ?? null });
 }
 // Where an emailed sign-in link should land: the website (the app's own address, capacitor://localhost, isn't a
 // web address; the app then takes the pasted link, like the Home Screen app).

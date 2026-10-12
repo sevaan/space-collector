@@ -625,3 +625,11 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - **Android:** the manifest has COARSE location only; FINE_LOCATION and CAMERA are gone. Verified on the emulator: the prompt asks for approximate location only, and the tour gets a position. Note: SCHEDULE_EXACT_ALARM comes in from local-notifications.
 - **Plus sheet:** shows live perks only; "Yearly $19.99" and "Once, forever $39.99" buttons (disabled until purchases; "Prices aren't final"); a note from Sevaan; Restore purchases.
 - **Native builds:** use `npm run ios` / `npm run android` (copy-web.mjs then cap sync). A bare `npx cap sync` ships stale www/.
+
+2026-10-12 · v0.1.521 Sign in with Apple, plus the paid developer account:
+- **The paid account:** it is the same team, "Sevaan Franks" D6XL5H68G8, so the project's DEVELOPMENT_TEAM is unchanged. The portal opens on Roundtrip Systems Inc. by default: switch the team menu to Sevaan Franks first, and never touch Roundtrip.
+- **App ID:** io.github.sevaan.spacecollector has Sign In with Apple (primary App ID). Firebase (space-collector-91cc7) has the Apple provider enabled; the native flow needs no Services ID.
+- **iOS project:** App/App.entitlements (com.apple.developer.applesignin = Default), set via CODE_SIGN_ENTITLEMENTS in both configs. The capacitor.config providers are google.com and apple.com.
+- **Code:** `signInApple()` in account.js uses the plugin's signInWithApple (skipNativeAuth), then `OAuthProvider('apple.com').credential({ idToken, rawNonce: nonce })`. `APPLE_SIGNIN` is true in the native iOS app. There are buttons in the sign-in sheet (`#auth-apple`) and in Settings (`#acct-apple`). acct now stores the provider, so Delete account re-signs-in with the right one.
+- **Device build:** blocked on 2026-10-12 with "No Accounts". Xcode had no Apple ID signed in, so it couldn't regenerate the profile with the new capability. Sevaan signs in at Xcode → Settings → Accounts.
+- **Privacy contact:** sevaan@gmail.com for now. Change it when Sevaan has a domain (also in memory).

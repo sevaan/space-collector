@@ -1025,3 +1025,4 @@ body:has(.overlay:not([hidden])) .ticket--sticky, body:has(.set-sheet.in) .ticke
 .plus-price { margin-top: 8px; }
 .plus-price span:last-child { font: 400 17px var(--display); letter-spacing: 0; }
 .plus-why { margin: 14px 0 0; font: 400 13.5px/1.45 -apple-system, system-ui, sans-serif; color: var(--muted); }
+.acct-apple { background: #fff !important; color: #000 !important; margin-bottom: 8px; } /* Sign in with Apple: Apple's white button */
