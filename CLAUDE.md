@@ -686,3 +686,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 2026-10-12 · v0.1.526: patch coins roll into the Collection tab again (the pc-drop rule outranked .pc-coin.out's pc-roll; there's now an equally specific .patch-coins .pc-coin.out rule after it).
 
 2026-10-12 · v0.1.527: generated file names are readable and start with the game's name: "Space Collector - Arcturus.png" (card share), "Space Collector - My sky in 2026.png" (poster), "Space Collector - ISS (Zarya) pass.ics", "Space Collector - Clear night.ics", "Space Collector - Look up tonight.ics", "Space Collector - Sightings 2026-10-12.json". Only characters that file systems reject are stripped.
+
+2026-10-12 · v0.1.528: reminders are native notifications only (Sevaan: no calendar reminders). `setReminder({ at, title, body, key })` uses notifyAt in the app and returns 'app-only' on the website ('Reminders work in the Space Collector app'). passIcs is no longer used anywhere: pass, clear-night, until-dark ('until-dark' key, cancellable) and streak reminders all go through it. Pass reminder body: 'Look west at 9:02 PM. High in the south at its highest.'

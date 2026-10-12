@@ -1,28 +1,28 @@
-import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.527';
-import { computeStats, statsHtml, posterCanvas } from './stats.js?v=0.1.527';
-import { isPlus } from './plus.js?v=0.1.527';
-import { nightKey } from './observation.js?v=0.1.527';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.527';
-import { sfx } from './sfx.js?v=0.1.527';
-import { expandFacts } from './catalog-facts.js?v=0.1.527';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.527';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.527';
-import { ticket } from './toast.js?v=0.1.527';
-import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.527';
-import { cardArt } from './art.js?v=0.1.527';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.527';
-import { applyBack } from './card-backs.js?v=0.1.527';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.527';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.527';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.527';
-import { loadConstellations, conList } from './constellations.js?v=0.1.527';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.527';
-import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.527';
-import { shareCardEl } from './share-card.js?v=0.1.527';
-import { removeSighting } from './account.js?v=0.1.527';
-import { allSightings, deleteSighting } from './store.js?v=0.1.527';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.527';
-import { SECRET_PATCHES } from './secrets.js?v=0.1.527';
+import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.528';
+import { computeStats, statsHtml, posterCanvas } from './stats.js?v=0.1.528';
+import { isPlus } from './plus.js?v=0.1.528';
+import { nightKey } from './observation.js?v=0.1.528';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.528';
+import { sfx } from './sfx.js?v=0.1.528';
+import { expandFacts } from './catalog-facts.js?v=0.1.528';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.528';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.528';
+import { ticket } from './toast.js?v=0.1.528';
+import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.528';
+import { cardArt } from './art.js?v=0.1.528';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.528';
+import { applyBack } from './card-backs.js?v=0.1.528';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.528';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.528';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.528';
+import { loadConstellations, conList } from './constellations.js?v=0.1.528';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.528';
+import { eventBadges, nextEvent } from './events.js?v=0.1.528';
+import { shareCardEl } from './share-card.js?v=0.1.528';
+import { removeSighting } from './account.js?v=0.1.528';
+import { allSightings, deleteSighting } from './store.js?v=0.1.528';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.528';
+import { SECRET_PATCHES } from './secrets.js?v=0.1.528';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -191,16 +191,13 @@ function renderAlbumHead() {
 }
 
 // ---------- logbook: rank, streak, tonight's missions, achievements (js/progress.js) ----------
-// .ics for next Saturday 8 pm (local), so the week's streak isn't lost. Same calendar route as pass reminders.
+// A notification next Saturday 8 pm (local), so the week's streak isn't lost. The app only: no calendar files (2026-10-12).
 function remindStreak() {
   const d = new Date(); d.setHours(20, 0, 0, 0);
   let ahead = (6 - d.getDay() + 7) % 7; if (ahead === 0 && d.getTime() < Date.now()) ahead = 7; // this Saturday, unless 8 pm has passed
   d.setDate(d.getDate() + ahead);
-  const start = d.getTime(), url = URL.createObjectURL(new Blob([passIcs({ title: 'Look up tonight (Space Collector)', start, end: start + 3600e3, description: 'Log one sighting this week to keep your observing streak. Open https://sevaan.github.io/space-collector/' })], { type: 'text/calendar' }));
-  URL.revokeObjectURL(url);
-  // App: a notification (QA 2026-10-11, the .ics did nothing there). Web: a calendar file.
-  (isNative() ? notifyAt(start, 'Look up tonight', 'Log one sighting this week to keep your observing streak.') : saveFile(new Blob([passIcs({ title: 'Look up tonight (Space Collector)', start, end: start + 3600e3, description: 'Log one sighting this week to keep your observing streak. Open https://sevaan.github.io/space-collector/' })], { type: 'text/calendar' }), 'Space Collector - Look up tonight.ics').then((ok) => (ok ? 'calendar' : 'failed')))
-    .then((r) => ticket({ kind: 'mission', eyebrow: 'STREAK', line: r === 'on' ? 'We\'ll remind you Saturday at 8 pm.' : r === 'calendar' ? 'Saturday 8 pm reminder: add it to your calendar.' : r === 'denied' ? 'Notifications are off for Space Collector.' : 'Couldn\'t set a reminder here.', ms: 4000 }));
+  (isNative() ? notifyAt(d.getTime(), 'Look up tonight', 'One sighting this week keeps your observing streak going.') : Promise.resolve('app-only'))
+    .then((r) => ticket({ kind: 'mission', eyebrow: 'STREAK', line: r === 'on' ? 'We\'ll remind you Saturday at 8 pm.' : r === 'app-only' ? 'Reminders work in the Space Collector app.' : r === 'denied' ? 'Notifications are off for Space Collector.' : 'Couldn\'t set a reminder here.', ms: 4000 }));
 }
 // Observer stats (Plus, 2026-10-11): a link under the rank card opens #stats-view.
 function openStats() {
