@@ -4,10 +4,12 @@
 export const TIERS = ['common', 'uncommon', 'rare', 'epic', 'legendary'];
 
 export const TIER_INFO = {
+  // One shape per tier, so rarity reads without colour (colour-blind players, red night mode; playtest room 2026-10-11).
+  // Epic moved from violet to magenta: violet and blue were the same colour to deuteranopes.
   common:    { label: 'Common',    gem: '●', color: '#9aa4b1' },
-  uncommon:  { label: 'Uncommon',  gem: '◆', color: '#5fd08a' },
+  uncommon:  { label: 'Uncommon',  gem: '▲', color: '#5fd08a' },
   rare:      { label: 'Rare',      gem: '◆', color: '#4aa8ff' },
-  epic:      { label: 'Epic',      gem: '✦', color: '#b57bff' },
+  epic:      { label: 'Epic',      gem: '✦', color: '#e46ad6' },
   legendary: { label: 'Legendary', gem: '★', color: '#ffc545' },
 };
 

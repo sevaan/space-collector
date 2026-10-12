@@ -413,3 +413,36 @@
    so they wear a gold frame and an ICON badge. */
 .card.is-icon .card__rotator, .card-tile.is-icon { box-shadow: 0 0 0 2px #f2c94c, 0 0 18px rgba(242, 201, 76, .35); }
 .card__icon-badge { margin-left: .6em; padding: .15em .45em .1em; border-radius: 99px; background: #f2c94c; color: #080f1b; font: 500 .85em/1 var(--label, 'SC Label'), sans-serif; letter-spacing: .14em; }
+/* Rarity reads at a glance (2026-10-12, playtest room): the tier's own colour and shape on the card's gem and on tiles,
+   instead of the orange accent on every tier. */
+.card--retro .card__tier i { color: var(--tier, var(--accent)); }
+.card-tile--retro .card-tile__tier { color: color-mix(in srgb, var(--tier, #fa8127) 80%, #fff2b3); }
+.card-tile--retro .card-tile__tier i { font-style: normal; color: var(--tier, #fa8127); }
+:where(html[data-theme='night'], body.night) .card-tile--retro .card-tile__tier, :where(html[data-theme='night'], body.night) .card-tile--retro .card-tile__tier i { color: #a45650; } /* red mode stays red; the shape carries the tier */
+/* Card levels you can see (2026-10-12, collectors): the retro frame is silver-grey on every card, so silver gets a bright
+   double ring and a soft sheen, gold a gold frame and glow; the footer names the level. */
+.card.card--retro.level-silver .card__face { border-color: #eef3f7; box-shadow: inset 0 0 0 .09em #8fa0ad, inset 0 0 0 .17em #ffffff, 0 0 1.1em #dfe8ef40; }
+.card.card--retro.level-gold .card__face { border-color: #e2b53c; box-shadow: inset 0 0 0 .09em #8a6a1c, inset 0 0 0 .17em #ffe7a0, 0 0 1.4em #e2b53c55; }
+.card--retro .card__seen-count .lvl { font-weight: 500; letter-spacing: .14em; }
+.card--retro .card__seen-count .lvl--silver { color: #e6edf3; }
+.card--retro .card__seen-count .lvl--gold { color: #e2b53c; }
+.card-tile.card-tile--retro.lvl-silver { border-color: #eef3f7; box-shadow: inset 0 0 0 1px #ffffff, 0 0 10px #dfe8ef33; }
+.card-tile.card-tile--retro.lvl-gold { border-color: #e2b53c; box-shadow: inset 0 0 0 1px #ffe7a0, 0 0 12px #e2b53c40; }
+.card-tile--retro .tile-lvl { position: absolute; top: 6px; right: 6px; z-index: 2; height: 18px; padding: 0 6px; border-radius: 9px; font: 500 10.5px/18px 'SC Label', sans-serif; letter-spacing: .12em; background: #080f1bd9; }
+.card-tile--retro .tile-lvl--silver { color: #e6edf3; border: 1px solid #e6edf3; }
+.card-tile--retro .tile-lvl--gold { color: #e2b53c; border: 1px solid #e2b53c; }
+.card-tile.card-tile--retro { position: relative; } /* for the level badge */
+/* The collector number in its album, above the brand: "014/716" (collectors 2026-10-11). */
+.card--retro .card__no { display: block; font: 500 .72em/1 var(--label); letter-spacing: .14em; color: var(--grey); margin-bottom: .25em; }
+/* Shiny, warmer (2026-10-12, craft room: rainbow bands on tiles, a mint wash over the art). A cream-gold-rose foil in
+   the card's own palette, soft-light so the art keeps its colours; tiles get only a foil border that drifts. */
+.card.shiny .card__shine { mix-blend-mode: soft-light; filter: none; opacity: calc(.55 + var(--o, 0) * .2);
+  background:
+    var(--glitter) var(--bgx, 50%) var(--bgy, 50%) / 12em 12em,
+    repeating-linear-gradient(110deg, #fff2b3 0%, #ffcf7a 8%, #fa8127 15%, #ffb3a1 22%, #fff2b3 30%, #ffe08a 38%, #fff2b3 46%) var(--bgx, 50%) var(--bgy, 50%) / 320% 320%;
+  background-blend-mode: screen, normal; }
+.shiny-tag { background: linear-gradient(90deg, #fff2b3, #ffcf7a, #fa8127, #ffb3a1); box-shadow: 0 0 12px rgba(250, 129, 39, .45); }
+.card-tile.card-tile--retro.shiny { background: linear-gradient(#080f1b, #080f1b) padding-box, linear-gradient(120deg, #fff2b3, #ffcf7a, #fa8127, #ffb3a1, #fff2b3) border-box; background-size: 100% 100%, 300% 300%; box-shadow: 0 0 14px rgba(250, 129, 39, .3); animation: shiny-edge 6s ease-in-out infinite alternate; }
+.card-tile.card-tile--retro.shiny::after { display: none; }
+@keyframes shiny-edge { from { background-position: 0 0, 0% 50%; } to { background-position: 0 0, 100% 50%; } }
+@media (prefers-reduced-motion: reduce) { .card-tile.card-tile--retro.shiny { animation: none; } }

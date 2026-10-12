@@ -585,3 +585,14 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - **Patch coin:** one coin with "+ N more", sitting over the radar (top: safe-top + 92px), clear of the circle and the target name.
 - **Tickets:** a catch drops the waiting stickies (tonight, rank, sun-safety, guide). The rank ticket has id 'rank', so a new one replaces the old.
 - **Sign-in ask:** moved from the first card to the third ("N cards so far").
+
+2026-10-12 · v0.1.518 cards that read (playtest room #4/#6/#7/#9):
+- **Rarity:** one shape per tier (● Common, ▲ Uncommon, ◆ Rare, ✦ Epic, ★ Legendary), and Epic is now magenta #e46ad6, since violet matched blue for deuteranopes. The card gem and tile tier use the tier colour (`--tier`); red night mode stays red and the shape carries the tier.
+- **Levels:** silver cards get a bright double ring, gold a gold frame and glow. The footer says "SILVER · 7 NIGHTS" (`seenLine`). Tiles get `lvl-silver`/`lvl-gold` and a corner badge. (The old "silver on every rarity" rule had hidden all of this.)
+- **Collector number:** "129/716" sits above the brand in the footer (from `setNumber`/`setSize`).
+- **Rocket stages and debris:** same-name ones get `runNo`/`runOf` in buildCards (oldest first). The identity row says "Carried Cosmos 80 · 1965" (debris: "Debris · year"), and the identifier says "NO. 14 OF 286" instead of NORAD. The art is unchanged: stages are still drawn with a flame (that needs new illustrations).
+- **Shiny:**
+  - a warm cream-gold-rose foil in soft-light; tiles get a drifting foil border and no colour-dodge overlay (no banding);
+  - rarer: the shadow entry must fall within 12 s (was 45 s), and overhead needs 86° (was 80°), in both shinyFor and shinyChances;
+  - the shiny stinger plays at gain 2;
+  - free players see tonight's single best shiny chance, and Plus has the full list.

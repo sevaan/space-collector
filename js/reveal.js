@@ -5,12 +5,12 @@
 //  Everything scales with rarity (Legendary dims the sky, shockwave, held breath, slow flip, fanfare).
 // Waits use timers, not animation.finished, so a paused tab can never freeze the sequence.
 
-import { sfx, loadSfx } from './sfx.js?v=0.1.517';
-import { audioCtx } from './audio-ctx.js?v=0.1.517';
-import { TIER_INFO } from './rarity.js?v=0.1.517';
-import { levelFor, attachTilt, attachGyro, attachFlip, throwOff } from './card.js?v=0.1.517';
-import { applyBack } from './card-backs.js?v=0.1.517';
-import { addStarfield } from './starfield.js?v=0.1.517';
+import { sfx, loadSfx } from './sfx.js?v=0.1.518';
+import { audioCtx } from './audio-ctx.js?v=0.1.518';
+import { TIER_INFO } from './rarity.js?v=0.1.518';
+import { levelFor, attachTilt, attachGyro, attachFlip, throwOff } from './card.js?v=0.1.518';
+import { applyBack } from './card-backs.js?v=0.1.518';
+import { addStarfield } from './starfield.js?v=0.1.518';
 
 const FX = {
   common:    { particles: 14,  flip: 520,  spin: 0,   dim: 0,   shock: false, notes: [880],                            hold: 0 },
@@ -253,7 +253,7 @@ async function finish({ fx, color, fresh, seen, level, levelUp, card, alive, fle
   const tk = Object.keys(STINGER).find((k) => FX[k] === fx) ?? 'common';
   sfx(fresh ? STINGER[tk] : newStamp ? 'stamp' : 'seen');
   if (levelUp) sfx('levelup', { delay: 0.35 });
-  if (shiny) sfx('shiny', { delay: 0.25 });
+  if (shiny) sfx('shiny', { delay: 0.25, gain: 2 }); // the loudest stinger: it was quieter than a Common (collectors 2026-10-11)
   burst(cx, cy, fx.particles + (levelUp ? 60 : 0) + (shiny ? 90 : 0), shiny ? '#ff8fd8' : color);
   if (shiny) setTimeout(() => { burst(cx, cy - 40, 70, '#8ff0ff'); burst(cx, cy + 40, 70, '#fff2b3'); }, 220);
   if (fx.particles > 60 || levelUp) setTimeout(() => burst(cx, cy - 60, fx.particles / 2 + 20, levelUp ? LEVEL_COLOR[level] : '#ffffff'), 180);

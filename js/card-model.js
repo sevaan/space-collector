@@ -1,8 +1,8 @@
 // Shared catalogue → card mapping. Fleets (Starlink, OneWeb, Qianfan, Kuiper, Globalstar, Orbcomm, Iridium) are one fleet
 // card each; every launch in the fleet is a stamp on that card. Other objects are one card each.
-import { assignSets } from './sets.js?v=0.1.517';
-import { tierFor } from './rarity.js?v=0.1.517';
-import { NATURAL } from './natural.js?v=0.1.517';
+import { assignSets } from './sets.js?v=0.1.518';
+import { tierFor } from './rarity.js?v=0.1.518';
+import { NATURAL } from './natural.js?v=0.1.518';
 
 // Fleet members carry their launch key in the catalogue (`card` = 'STARLINK:2024-012'). That's the
 // stamp; the card itself is the fleet ('STARLINK').
@@ -74,6 +74,11 @@ export function buildCards(cat) {
       launches,
     });
   }
+  // Same-name rocket stages and debris (286 "SL-8 R/B"s) get a number in their run, oldest first, so each card has its
+  // own identity: "No. 14 of 286" (craft and collectors rooms 2026-10-11).
+  { const runs = new Map();
+    for (const c of cards) if (!c.family && (c.type === 'rocket-body' || c.type === 'debris')) { const k = c.name.replace(/\s*\(.*\)\s*$/, ''); if (!runs.has(k)) runs.set(k, []); runs.get(k).push(c); }
+    for (const run of runs.values()) if (run.length > 1) { run.sort((a, b) => String(a.launch ?? '').localeCompare(String(b.launch ?? '')) || a.id - b.id); run.forEach((c, i) => { c.runNo = i + 1; c.runOf = run.length; }); } }
   // The Moon, planets and bright stars aren't in the orbital catalogue but are cards too.
   for (const n of NATURAL) cards.push({ ...n });
   assignSets(cards);
