@@ -1007,3 +1007,6 @@ body.col-open.col-modal #nav { visibility: hidden !important; }
 body:has(#reveal:not([hidden])) .pc-badge, body:has(#reveal:not([hidden])) .patch-coins { visibility: hidden; }
 body:has(.overlay:not([hidden])) .ticket--sticky, body:has(.set-sheet.in) .ticket--sticky { display: none; }
 #plus-perks { -webkit-mask: linear-gradient(#000 calc(100% - 28px), transparent); mask: linear-gradient(#000 calc(100% - 28px), transparent); padding-bottom: 18px; }
+/* WebKit drops a scrolling flex column's bottom padding (UX room 2026-10-11: the last tiles stayed under Explore); a spacer instead. */
+#ob-done.nt .od-body { padding-bottom: 0; }
+#ob-done.nt .od-body::after { content: ''; flex: none; height: calc(var(--safe-bottom) + 130px); }
