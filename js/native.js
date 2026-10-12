@@ -19,8 +19,10 @@ export async function getPosition(opts) {
       let perm = await geo.checkPermissions().catch(() => null);
       if (perm?.location !== 'granted' && perm?.coarseLocation !== 'granted') perm = await geo.requestPermissions({ permissions: ['coarseLocation'] });
       if (perm?.location !== 'granted' && perm?.coarseLocation !== 'granted') throw { code: 1 };
+      // Low accuracy can time out where only GPS has a fix; retry with GPS only if precise access is already granted
+      // (asking for it is what made Android show "change to precise?" again, QA 2026-10-11).
       try { return await geo.getCurrentPosition(opts); }
-      catch { return await geo.getCurrentPosition({ ...opts, enableHighAccuracy: true, timeout: 20000 }); } // low accuracy can time out with GPS only
+      catch (e) { if (perm?.location === 'granted') return await geo.getCurrentPosition({ ...opts, enableHighAccuracy: true, timeout: 20000 }); throw e; }
     } catch (e) { throw { code: e?.code === 1 || /denied/i.test(e?.message ?? '') ? 1 : 2 }; }
   }
   if (!navigator.geolocation) throw { code: 2 };
