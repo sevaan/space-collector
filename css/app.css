@@ -1010,3 +1010,4 @@ body:has(.overlay:not([hidden])) .ticket--sticky, body:has(.set-sheet.in) .ticke
 /* WebKit drops a scrolling flex column's bottom padding (UX room 2026-10-11: the last tiles stayed under Explore); a spacer instead. */
 #ob-done.nt .od-body { padding-bottom: 0; }
 #ob-done.nt .od-body::after { content: ''; flex: none; height: calc(var(--safe-bottom) + 130px); }
+.nt-gap { margin: 10px 0 0; font: 500 15px/1.35 var(--label); letter-spacing: .04em; color: color-mix(in srgb, var(--text) 78%, transparent); }

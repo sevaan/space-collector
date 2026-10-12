@@ -539,3 +539,12 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - **Wording:** no more "New to your collection"; Rare and up put the rarity first: "Epic · A 1990 American space telescope at 9:02 PM".
 - **Native:** the app now has the toggle too. It schedules local notifications (ids 7101–7103), replaced whenever tonight's plan is recalculated.
 - **"from Space Collector":** iOS adds this line to Home Screen web-app notifications; native notifications don't have it.
+
+2026-10-12 · v0.1.516, Sevaan's decisions on the playtest-room report (design/playtest-room-2026-10-11.html):
+1. **Binocular mode is free:** no Plus gate, no PLUS tag, removed from PLUS_PERKS. With binoculars on, faint planets use the star limit + 3 (`naturalTargets` binoLimit), so Neptune and the gold Solar System patch are possible.
+2. **Clouds stay honour-system, and the copy now agrees:**
+   - the bad-weather page title is "Foggy/Rainy/Cloudy tonight." (not "Not tonight.");
+   - a new line under it: "If you spot a gap, anything you can see still counts";
+   - the above-the-cloud note and the Tonight tab line say gaps count.
+3. **Pricing:** on hold until the end.
+4. **Pass alerts are time first:** "9:02 PM: an Epic card flies over" / "Hubble, a 1990 American space telescope. Look south: it climbs high." Fleets: "9:02 PM: a new Starlink batch flies over" / "One more for your Starlink card. …"
