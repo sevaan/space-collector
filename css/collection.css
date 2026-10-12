@@ -12,10 +12,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 /* Same header as Explore (#sky-header in app.css): wordmark, double rule, round buttons — static here, not fixed. */
 /* Fixed 80px like Explore's bar: the height never depends on text metrics, so the rule does not move when the custom fonts swap in. */
 .collection-header { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: var(--safe-top) auto 0; max-width: 1056px; height: 80px; padding: 0 20px; --h-text: #fff2b3; --h-muted: #bdbea9; --h-edge: #627a8b; --h-glass: #0c1725f2; }
-:root[data-theme="night"] .collection-header { --h-text: #d67674; --h-muted: #b76a69; --h-edge: #58272b; --h-glass: #1a0909f5; }
+:root[data-theme="night"] .collection-header { --h-text: #ff7f70; --h-muted: #e8705f; --h-edge: #58272b; --h-glass: #1a0909f5; }
 .collection-header::after { content: ""; position: absolute; left: 20px; right: 20px; bottom: 0; height: 3px; border-block: 1px solid var(--h-edge); opacity: .65; }
 .wordmark { color: var(--h-text); text-decoration: none; font: 400 clamp(13px, 3.9vw, 16px)/1.15 'SC Display', Impact, sans-serif; letter-spacing: -.03em; }
-.wordmark span { display: block; color: var(--h-muted); font: 500 11px/1.2 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .18em; margin-top: 6px; }
+.wordmark span { display: block; color: var(--h-muted); font: 500 12px/1.2 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .18em; margin-top: 6px; }
 .header-buttons { display: flex; gap: 8px; flex: none; }
 .icon-button { width: 44px; height: 44px; border: 1px solid var(--h-edge); border-radius: 50%; display: grid; place-items: center; color: var(--h-text); background: var(--h-glass); font-size: 24px; text-decoration: none; box-sizing: border-box; }
 .icon-button .ico { width: 22px; height: 22px; }
@@ -25,7 +25,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 @media (max-width: 360px) { .collection-header { padding-inline: 16px; } .wordmark span { letter-spacing: .1em; } }
 main { max-width: 1024px; margin: auto; padding: 0 24px calc(var(--safe-bottom) + 160px); } /* room for the size slider and switcher */
 .collection-intro { padding-top: 29px; }
-.eyebrow { margin: 0; font: 500 9px 'IBM Plex Mono', monospace; letter-spacing: .18em; color: var(--accent); }
+.eyebrow { margin: 0; font: 500 11px 'IBM Plex Mono', monospace; letter-spacing: .18em; color: var(--accent); }
 h1 { margin: 13px 0 13px; font-size: clamp(34px, 7vw, 49px); line-height: 1.06; font-weight: 500; letter-spacing: -.045em; }
 #count { color: var(--muted); font-size: 13px; margin-bottom: 26px; }
 .collection-tabs { display: flex; gap: 24px; border-bottom: 1px solid var(--line); }
@@ -33,7 +33,7 @@ h1 { margin: 13px 0 13px; font-size: clamp(34px, 7vw, 49px); line-height: 1.06; 
 @media (max-width: 360px) { .collection-tabs { gap: 14px; } .collection-tabs button { letter-spacing: .08em; font-size: 14px; } }
 .collection-tabs button { min-height: 48px; border: 0; border-bottom: 2px solid transparent; background: transparent; color: var(--muted); font-weight: 600; padding: 0; }
 .collection-tabs button[aria-pressed="true"] { color: var(--text); border-color: var(--accent); }
-#owned-count { display: inline-block; background: var(--panel); color: var(--accent); padding: 1px 7px; margin-left: 5px; border-radius: 20px; font-size: 11px; }
+#owned-count { display: inline-block; background: var(--panel); color: var(--accent); padding: 1px 7px; margin-left: 5px; border-radius: 20px; font-size: 12px; }
 .collection-tools { margin-top: 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .search { display: flex; gap: 8px; align-items: center; border: 1px solid var(--line); border-radius: 8px; padding: 0 12px; color: var(--muted); background: var(--panel); }
 .search > span { font-size: 25px; }
@@ -43,7 +43,7 @@ h1 { margin: 13px 0 13px; font-size: clamp(34px, 7vw, 49px); line-height: 1.06; 
 .filter { display: block; flex: 1; min-width: 0; }
 .filter > span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
 .filter select { width: 100%; height: 40px; padding: 0 22px 0 10px; text-overflow: ellipsis; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); color: var(--text); font-size: 12px; }
-.result-row { display: flex; justify-content: space-between; align-items: center; min-height: 36px; font: 400 10px 'IBM Plex Mono', monospace; color: var(--muted); }
+.result-row { display: flex; justify-content: space-between; align-items: center; min-height: 36px; font: 400 12px 'IBM Plex Mono', monospace; color: var(--muted); }
 #reset-filters { min-height: 44px; background: none; border: 0; padding: 0 2px; color: var(--accent); font-size: 12px; }
 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(175px, 1fr)); gap: 20px 16px; align-items: stretch; }
 .tile-slot { min-height: 240px; min-width: 0; border-radius: 12px; background: var(--panel); display: flex; }
@@ -55,7 +55,7 @@ h1 { margin: 13px 0 13px; font-size: clamp(34px, 7vw, 49px); line-height: 1.06; 
 .empty a, .empty button { display: inline-flex; min-height: 44px; align-items: center; padding: 0 17px; border-radius: 7px; background: var(--accent); border: 0; color: var(--bg); text-decoration: none; font-size: 13px; font-weight: 650; }
 .empty .secondary { display: block; background: none; color: var(--accent); margin: 9px auto 0; }
 .collection-notice { padding: 14px; border: 1px solid var(--line); color: var(--muted); font-size: 13px; border-radius: 8px; }
-.storage-note { margin: 27px 0 0; text-align: center; font-size: 11px; color: var(--muted); }
+.storage-note { margin: 27px 0 0; text-align: center; font-size: 12px; color: var(--muted); }
 #viewer { position: fixed; inset: 0; width: 100%; height: 100%; max-width: none; max-height: none; margin: 0; border: none; padding: 0; background: var(--bg); color: var(--text); overflow: hidden; }
 #viewer[open] { display: flex; flex-direction: column; }
 #viewer::backdrop { background: #000e; }
@@ -64,15 +64,15 @@ h1 { margin: 13px 0 13px; font-size: clamp(34px, 7vw, 49px); line-height: 1.06; 
 #viewer button:not(.ui-btn):not(.x-close):not(.ui-link) { min-height: 44px; padding: 10px 16px; border: 1px solid var(--line); border-radius: 7px; background: var(--panel); color: var(--text); font-size: 12px; }
 #viewer .close { display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border-radius: 50%; border: 1px solid #627a8b; background: #0c1725f2; color: #fff2b3; font: 400 20px/1 system-ui, sans-serif; } /* the shared round ✕ (css/ui.css .x-close); #viewer button would otherwise restyle it */
 #viewer .close:focus-visible { outline: none; border-color: #fff2b3; } /* the dialog focuses it on open; a quiet cue, not an orange ring */
-:root[data-theme="night"] #viewer .close { border-color: #58272b; background: #1a0909f5; color: #d67674; }
+:root[data-theme="night"] #viewer .close { border-color: #58272b; background: #1a0909f5; color: #ff7f70; }
 .viewer-scroll { width: 100%; min-height: 0; flex: 1; overflow-x: hidden; overflow-y: auto; padding-bottom: calc(var(--safe-bottom) + 22px) !important; overscroll-behavior: contain; padding: 18px 20px 22px; text-align: center; }
 #slot { display: flex; align-items: flex-start; justify-content: center; width: 100%; padding: 7px 0; }
 #slot .card { font-size: min(14px, calc((100vw - 58px) / 28)); }
 .viewer-status { max-width: 380px; margin: 20px auto 8px; color: var(--muted); font-size: 12px; }
-.viewer-hint { max-width: 380px; margin: 13px auto; color: var(--muted); font-size: 11px; }
+.viewer-hint { max-width: 380px; margin: 13px auto; color: var(--muted); font-size: 12px; }
 .viewer-history { margin: 20px auto 0; max-width: 390px; border-top: 1px solid var(--line); text-align: left; }
 .viewer-history:empty { display: none; }
-.viewer-history h2 { font-size: 11px; font-weight: 600; color: var(--accent); letter-spacing: .12em; text-transform: uppercase; margin: 20px 0 13px; }
+.viewer-history h2 { font-size: 12px; font-weight: 600; color: var(--accent); letter-spacing: .12em; text-transform: uppercase; margin: 20px 0 13px; }
 .viewer-history p { display: flex; gap: 10px; justify-content: space-between; align-items: center; font-size: 12px; color: var(--muted); margin: 10px 0; }
 .viewer-history p span:first-child { color: var(--text); }
 #viewer .history-delete { min-height: 32px; padding: 2px 10px; font-size: 16px; line-height: 1; background: transparent; border-color: transparent; color: var(--muted); }
@@ -85,14 +85,14 @@ h1 { margin: 13px 0 13px; font-size: clamp(34px, 7vw, 49px); line-height: 1.06; 
   .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 15px 12px; }
   .card-tile__art { height: 94px; }
   .card-tile__name { font-size: 14px; }
-  .card-tile__set { font-size: 10px; }
+  .card-tile__set { font-size: 12px; }
 }
 @media (max-width: 350px) {
   main { padding-left: 14px; padding-right: 14px; }
   .card-tile__art { height: 80px; margin: 8px 8px 0; }
   .card-tile__body { padding: 9px; }
   .card-tile__name { font-size: 13px; }
-  .card-tile__status { font-size: 10px; }
+  .card-tile__status { font-size: 12px; }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; } }
 
@@ -145,16 +145,16 @@ body.albums-view .collection-tools { display: none; }
 .lb-badge { display: grid; justify-items: center; text-align: center; gap: 4px; opacity: .38; }
 .lb-badge span { width: 46px; height: 46px; display: grid; place-items: center; border-radius: 50%; border: 2px solid #657786; font: 400 14px/1 'SC Display', Impact, sans-serif; color: #bdbea9; }
 .lb-badge b { font: 500 12px/1.1 'SC Label', sans-serif; letter-spacing: .08em; text-transform: uppercase; }
-.lb-badge small { font-size: 10px; line-height: 1.25; color: #8f9aa8; }
+.lb-badge small { font-size: 12px; line-height: 1.25; color: #8f9aa8; }
 .lb-badge.done { opacity: 1; } .lb-badge.done span { border-color: #e2b53c; color: #0b1120; background: radial-gradient(circle at 35% 30%, #fff1c2, #e2b53c 60%, #9a7420); box-shadow: 0 0 12px rgba(232, 195, 90, .35); }
 .lb-events { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 0 2px; }
 
 /* Typography pass (2026-10-06): the collection page's chrome uses the card fonts like Explore does (Russo One display,
    Barlow Condensed labels); body copy stays in the system font for reading. Overrides the Inter-era rules above. */
 .collection-intro h1 { font: 400 clamp(28px, 7.2vw, 40px)/1.04 'SC Display', Impact, sans-serif; letter-spacing: -.045em; text-transform: uppercase; color: #fff2b3; margin: 10px 0 12px; }
-.eyebrow { font: 500 11px/1.2 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .2em; }
+.eyebrow { font: 500 12px/1.2 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .2em; }
 .collection-tabs button { font: 500 15px/1 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .14em; text-transform: uppercase; }
-#owned-count { font: 500 11px/1.3 'SC Label', sans-serif; letter-spacing: .06em; }
+#owned-count { font: 500 12px/1.3 'SC Label', sans-serif; letter-spacing: .06em; }
 /* 16px: iOS zooms into any field smaller than that (QA 2026-10-11) */
 .search input, .search input::placeholder, .filter select { font: 500 16px/1.2 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .03em; }
 #results, #reset-filters, .storage-note, .album-head small { font: 500 12px/1.3 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .12em; text-transform: uppercase; }
@@ -169,13 +169,13 @@ body.albums-view .collection-tools { display: none; }
   #rotate span { font:500 14px/1.3 'SC Label', 'Arial Narrow', sans-serif; letter-spacing:.14em; text-transform:uppercase; color:#bdbea9; }
 }
 
-.lb-remind { margin-left: 8px; padding: 3px 10px; border: 1px solid #fa8127; border-radius: 99px; background: none; color: #fa8127; font: 500 11px/1 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .12em; text-transform: uppercase; vertical-align: middle; }
+.lb-remind { margin-left: 8px; padding: 3px 10px; border: 1px solid #fa8127; border-radius: 99px; background: none; color: #fa8127; font: 500 12px/1 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .12em; text-transform: uppercase; vertical-align: middle; }
 
 /* Sighting rows on fleet cards carry their launch on a second line; the × stays at the right across both lines. */
 .viewer-history p.with-launch { display: grid; grid-template-columns: 1fr auto; column-gap: 10px; row-gap: 3px; align-items: center; }
 .viewer-history p.with-launch .h-main { grid-column: 1; display: flex; justify-content: space-between; gap: 10px; }
 .viewer-history p.with-launch .h-main span:first-child { color: var(--text); }
-.viewer-history p.with-launch .h-launch { grid-column: 1; font: 500 11px/1.3 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .08em; text-transform: uppercase; color: #fa8127; }
+.viewer-history p.with-launch .h-launch { grid-column: 1; font: 500 12px/1.3 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .08em; text-transform: uppercase; color: #fa8127; }
 .viewer-history p.with-launch .history-delete { grid-column: 2; grid-row: 1; align-self: center; } /* beside the time line */
 
 /* The page wears Explore's current sky (js/cards-page.js applySkyTone), fixed behind everything. */
@@ -187,14 +187,14 @@ body.sky-tone #viewer { background: var(--page-sky) fixed; }
 .grid[data-cols] { grid-template-columns: repeat(var(--cols), minmax(0, 1fr)) !important; }
 .grid[data-cols] .card-tile__art { height: auto !important; aspect-ratio: 3 / 2; }
 .grid.dense { gap: 10px 8px !important; }
-.grid.dense .card-tile__set { font-size: 9px; padding: 5px 7px; min-height: 0; letter-spacing: .08em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.grid.dense .card-tile__set { font-size: 11px; padding: 5px 7px; min-height: 0; letter-spacing: .08em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .grid.dense .card-tile__art { margin: 6px 6px 0; }
 .grid.dense .card-tile__body { padding: 7px; }
 .grid.dense .card-tile__name { font-size: 12px; margin: 4px 0 6px; }
-.grid.dense .card-tile__tier { font-size: 10px; }
-.grid.dense .card-tile__status { font-size: 10px; padding-top: 5px; }
+.grid.dense .card-tile__tier { font-size: 12px; }
+.grid.dense .card-tile__status { font-size: 12px; padding-top: 5px; }
 .grid.tiny .card-tile__set, .grid.tiny .card-tile__status, .grid.tiny .card-tile__tier { display: none; }
-.grid.tiny .card-tile__name { font-size: 10px; margin: 0; letter-spacing: 0; }
+.grid.tiny .card-tile__name { font-size: 12px; margin: 0; letter-spacing: 0; }
 .grid.tiny .card-tile__body { padding: 5px 6px 7px; }
 .grid.single .card-tile__name { font-size: 24px; }
 .grid.single .card-tile__set, .grid.single .card-tile__tier, .grid.single .card-tile__status { font-size: 13px; }
@@ -220,7 +220,7 @@ body:has(#viewer[open])::after { display: none; }
 .grid.micro { gap: 7px 6px !important; }
 .grid.micro .card-tile__body { display: none; }
 .grid.micro .card-tile__art { margin: 4px; }
-.grid.tiny .card-tile__name { overflow-wrap: normal; word-break: normal; font-size: 9.5px; } /* whole words, then … */
+.grid.tiny .card-tile__name { overflow-wrap: normal; word-break: normal; font-size: 11px; } /* whole words, then … */
 
 /* ---------- Mission patches: the wall (js/cards-page.js renderPatches) and the detail (#patch-view) ---------- */
 body.patches-view .collection-tools, body.patches-view .album-head { display: none !important; }
@@ -232,7 +232,7 @@ body.patches-view .collection-tools, body.patches-view .album-head { display: no
 .pw-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px 12px; }
 @media (min-width: 700px) { .pw-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); } }
 .pw-item { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 0; border: 0; background: none; cursor: pointer; color: inherit; min-width: 0; }
-.pw-item span { font: 500 11px/1.15 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .1em; text-transform: uppercase; color: #bdbea9; text-align: center; }
+.pw-item span { font: 500 12px/1.15 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .1em; text-transform: uppercase; color: #bdbea9; text-align: center; }
 .pw-item.locked span { color: #627a8b; }
 .pw-item:active .patch { transform: scale(.95); }
 #patch-view { overflow: hidden; isolation: isolate; position: fixed; inset: 0; width: 100%; height: 100%; max-width: none; max-height: none; margin: 0; border: 0; padding: 0; background: var(--page-sky, var(--bg)); background-color: var(--bg); color: var(--text); }
@@ -258,7 +258,7 @@ body.patches-view .collection-tools, body.patches-view .album-head { display: no
 .tile-slot.cascade > * { animation: ui-rise var(--m-norm) var(--ease-out) both; animation-delay: calc(var(--i, 0) * 22ms); }
 /* Patch wall: unseen earned patches shimmer softly with a NEW stitch tag until opened. */
 .pw-item.new .patch::before { content: ''; position: absolute; inset: -4px; border-radius: 50%; box-shadow: 0 0 0 2px rgba(250,129,39,.55), 0 0 18px rgba(250,129,39,.45); animation: ldPulseNew 2.2s ease-in-out infinite; pointer-events: none; }
-.pw-item.new::after { content: 'NEW'; position: absolute; margin-top: -6px; padding: 2px 6px; border-radius: 4px; background: var(--accent); color: #0b1120; font: 500 9px 'SC Label', sans-serif; letter-spacing: .14em; }
+.pw-item.new::after { content: 'NEW'; position: absolute; margin-top: -6px; padding: 2px 6px; border-radius: 4px; background: var(--accent); color: #0b1120; font: 500 11px 'SC Label', sans-serif; letter-spacing: .14em; }
 .pw-item { position: relative; }
 @keyframes ldPulseNew { 50% { opacity: .35; } }
 /* Logbook bars fill rather than jump; counts pop when they change. */
@@ -280,15 +280,15 @@ main { padding-bottom: calc(var(--safe-bottom) + 210px) !important; } /* the las
 /* A new player's patch wall starts with three easy ones, larger. */
 .pw-start { margin: 0 0 18px; } .pw-start > span { display: block; margin: 0 4px 10px; font: 500 12px/1.2 'SC Label', sans-serif; letter-spacing: .16em; text-transform: uppercase; color: var(--accent); }
 .pw-start .pw-grid .pw-item span { color: #fff2b3; }
-.pw-start .pw-item small { display: block; margin-top: 2px; font: 500 11px/1.25 'SC Label', sans-serif; letter-spacing: .04em; color: var(--muted); text-transform: none; }
+.pw-start .pw-item small { display: block; margin-top: 2px; font: 500 12px/1.25 'SC Label', sans-serif; letter-spacing: .04em; color: var(--muted); text-transform: none; }
 /* Red night mode for the logbook (2026-10-08: it stayed navy and gold). */
-:where(html[data-theme="night"], body.night) .logbook { background: #130606; border-color: #52221f; box-shadow: inset 0 0 0 1px #3a1716; color: #d67674; }
-:where(html[data-theme="night"], body.night) :is(.lb-label, .lb-head span, .lb-xp, .lb-sub, .lb-mission.done) { color: #a45650 !important; }
+:where(html[data-theme="night"], body.night) .logbook { background: #130606; border-color: #52221f; box-shadow: inset 0 0 0 1px #3a1716; color: #ff7f70; }
+:where(html[data-theme="night"], body.night) :is(.lb-label, .lb-head span, .lb-xp, .lb-sub, .lb-mission.done) { color: #dd6455 !important; }
 :where(html[data-theme="night"], body.night) :is(.lb-head, .lb-xp b) { color: #ff6a55 !important; }
 :where(html[data-theme="night"], body.night) .lb-bar { background: #2a0e0c; }
 :where(html[data-theme="night"], body.night) .lb-bar i { background: linear-gradient(90deg, #a83a2c, #ff6a55); }
 :where(html[data-theme="night"], body.night) .lb-mission { border-color: #2e1010; }
-:where(html[data-theme="night"], body.night) .lb-mission i { border-color: #a45650; }
+:where(html[data-theme="night"], body.night) .lb-mission i { border-color: #dd6455; }
 :where(html[data-theme="night"], body.night) .lb-mission.done { text-decoration-color: #ff6a55; } :where(html[data-theme="night"], body.night) .lb-mission.done i { background: #ff6a55; border-color: #ff6a55; }
 :where(html[data-theme="night"], body.night) .ui-chip--earned { border-color: #a83a2c; } :where(html[data-theme="night"], body.night) .ui-chip--earned b { color: #ff6a55; }
 :where(html[data-theme="night"], body.night) .ui-chip { background: #1a0606; border-color: #3a1716; }
@@ -310,7 +310,7 @@ main { padding-bottom: calc(var(--safe-bottom) + 210px) !important; } /* the las
 
 /* Rank card front (2026-10-08, design/rank-card.html D3). */
 .lb-face { padding: 0 !important; }
-.lb-top { display: flex; justify-content: space-between; padding: 10px 14px 8px; border-bottom: 1px solid #bcb58588; font: 500 11px/1.2 'SC Label', sans-serif; letter-spacing: .18em; text-transform: uppercase; color: #fff2b3; }
+.lb-top { display: flex; justify-content: space-between; padding: 10px 14px 8px; border-bottom: 1px solid #bcb58588; font: 500 12px/1.2 'SC Label', sans-serif; letter-spacing: .18em; text-transform: uppercase; color: #fff2b3; }
 .lb-top .lb-streak { color: #fa8127; }
 .lb-pic { height: 160px; flex: none; border-bottom: 1px solid #bcb58588; background: radial-gradient(ellipse at 50% 110%, #1d3350, #070d18 70%); overflow: hidden; }
 .lb-ladder { width: 100%; height: 100%; display: block; }
@@ -320,13 +320,13 @@ main { padding-bottom: calc(var(--safe-bottom) + 210px) !important; } /* the las
 .lb-prog .lb-bar { position: relative; height: 9px; margin: 10px 0 6px; overflow: visible; }
 .lb-prog .lb-bar i { border-radius: 5px; }
 .lb-prog .lb-bar em { position: absolute; top: -3px; width: 2px; height: 15px; margin-left: -1px; background: #fff2b3; border-radius: 1px; }
-.lb-prog .lb-sub { display: flex; justify-content: space-between; font: 500 11px/1.2 'SC Label', sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #bdbea9; }
+.lb-prog .lb-sub { display: flex; justify-content: space-between; font: 500 12px/1.2 'SC Label', sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #bdbea9; }
 .lb-prog .lb-sub b { color: #fa8127; font-weight: 500; } .lb-prog .lb-sub span:last-child { color: #fff2b3; }
 .lb-face > .lb-head { margin: 10px 14px 2px !important; padding-top: 0 !important; }
 .lb-face > .lb-mission { margin: 0 14px; }
 .lb-face > .lb-events { margin-top: auto; padding: 10px 14px 12px; }
 :where(html[data-theme="night"], body.night) .lb-pic { background: radial-gradient(ellipse at 50% 110%, #3a1010, #0a0202 70%); filter: hue-rotate(0); }
-:where(html[data-theme="night"], body.night) :is(.lb-top, .lb-prog .lb-sub span:last-child) { color: #d67674; }
+:where(html[data-theme="night"], body.night) :is(.lb-top, .lb-prog .lb-sub span:last-child) { color: #ff7f70; }
 :where(html[data-theme="night"], body.night) .lb-ladder { filter: grayscale(1) sepia(1) saturate(5) hue-rotate(318deg) brightness(.8); }
 /* Rank card, version C (2026-10-08). */
 .lb-rankrow { display: flex; justify-content: space-between; align-items: baseline; padding: 14px 14px 6px; }
@@ -341,9 +341,9 @@ main { padding-bottom: calc(var(--safe-bottom) + 210px) !important; } /* the las
 
 /* Red night mode, the rest of the page (QA 2026-10-08): headings, albums, the patch wall and patch view, the viewer's
    position and fleet launch lines kept cream / orange / navy at night. */
-:where(html[data-theme="night"], body.night) :is(.collection-intro h1, .empty h2, .pv-body h2, .album__count b, .pw-start .pw-grid .pw-item span) { color: #d67674; }
-:where(html[data-theme="night"], body.night) :is(.album__count, .pw-item span, .pw-start > span, .pv-body p, .h-launch, #v-position) { color: #a45650 !important; }
-:where(html[data-theme="night"], body.night) :is(.album, .album-head) { background: #130606; border-color: #52221f; color: #d67674; }
+:where(html[data-theme="night"], body.night) :is(.collection-intro h1, .empty h2, .pv-body h2, .album__count b, .pw-start .pw-grid .pw-item span) { color: #ff7f70; }
+:where(html[data-theme="night"], body.night) :is(.album__count, .pw-item span, .pw-start > span, .pv-body p, .h-launch, #v-position) { color: #dd6455 !important; }
+:where(html[data-theme="night"], body.night) :is(.album, .album-head) { background: #130606; border-color: #52221f; color: #ff7f70; }
 :where(html[data-theme="night"], body.night) .album__next { color: #ff6a55; }
 :where(html[data-theme="night"], body.night) .album-bar { background: #2a0e0c; }
 :where(html[data-theme="night"], body.night) .album-bar i { background: linear-gradient(90deg, #a83a2c, #ff6a55); }
@@ -360,21 +360,21 @@ body.albums-view .album__body { flex: 1; min-width: 0; justify-content: center; 
 body.albums-view .album__name { font-size: 16px; line-height: 1.1; min-width: 0; }
 body.albums-view .album__count { flex: none; font-size: 14px; }
 .album__foot { display: flex; align-items: center; gap: 8px; }
-.album__level { font: 500 10px/1 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .14em; text-transform: uppercase; padding: 4px 7px 3px; border-radius: 99px; border: 1px solid currentColor; }
+.album__level { font: 500 12px/1 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .14em; text-transform: uppercase; padding: 4px 7px 3px; border-radius: 99px; border: 1px solid currentColor; }
 .album__level.l1 { color: #c98a4b; } .album__level.l2 { color: #dfe6ee; } .album__level.l3 { color: #f2c94c; }
 .grid .card-tile__name { overflow-wrap: normal; word-break: normal; hyphens: none; } /* whole words; js fitTileName shrinks a long one */
 /* The patch on a card (2026-10-09, Sevaan): the same frame as the collection's cards, flicked up to put away. */
 .pv-card { width: min(100%, 330px, calc((100dvh - 190px) * 5 / 7)); aspect-ratio: 5 / 7; justify-content: space-between; border-radius: 16px; border: 2px solid #adbcc8; box-shadow: inset 0 0 0 1px #657786, 0 24px 50px #000a; background: radial-gradient(ellipse at 50% 30%, #13233a, #080f1b 70%); padding: 0 0 0; display: flex; flex-direction: column; align-items: center; touch-action: none; user-select: none; -webkit-user-select: none; }
-.pv-bar, .pv-foot { align-self: stretch; display: flex; justify-content: space-between; align-items: center; gap: 10px; font: 500 11px/1 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .18em; text-transform: uppercase; color: #fff2b3; }
+.pv-bar, .pv-foot { align-self: stretch; display: flex; justify-content: space-between; align-items: center; gap: 10px; font: 500 12px/1 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .18em; text-transform: uppercase; color: #fff2b3; }
 .pv-bar { margin-bottom: auto; padding: 13px 16px 11px; border-bottom: 1px solid #bcb58566; }
 .pv-bar span:last-child { color: #fa8127; }
 .pv-card p { padding: 0 20px; }
 .pv-card .pv-meta { margin-top: 12px; min-height: 0; }
 .pv-card .pv-meta:empty { display: none; }
 .pv-foot { margin-top: auto; padding: 11px 16px 12px; border-top: 1px solid #bcb58566; color: rgba(255, 242, 179, .8); }
-.pv-foot b { font: 400 11px/1 'SC Display', Impact, sans-serif; letter-spacing: 0; color: #fff2b3; }
+.pv-foot b { font: 400 12px/1 'SC Display', Impact, sans-serif; letter-spacing: 0; color: #fff2b3; }
 .pv-card.locked .pv-foot span { color: rgba(255, 242, 179, .5); }
-.pv-hint { font: 500 11px/1 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .2em; text-transform: uppercase; color: rgba(255, 242, 179, .45); }
+.pv-hint { font: 500 12px/1 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .2em; text-transform: uppercase; color: rgba(255, 242, 179, .45); }
 #patch-view.flicked .pv-hint { opacity: 0; transition: opacity .15s; }
 #patch-view > .starfield { position: absolute; z-index: -1; }
 :where(html[data-theme="night"], body.night) .pv-card { background: #130606; border-color: #52221f; box-shadow: none; }
@@ -383,13 +383,13 @@ body.albums-view .album__count { flex: none; font-size: 14px; }
 .pv-prog b { color: #fa8127; font-weight: 500; }
 .pv-prog__bar { flex: 1; height: 6px; border-radius: 3px; background: #1c2a3a; overflow: hidden; }
 .pv-prog__bar i { display: block; height: 100%; border-radius: 3px; background: linear-gradient(90deg, #fa8127, #ffcf5a); }
-.card-tile__sub { display: block; margin: -3px 0 6px; font: 500 10px/1.2 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .08em; text-transform: uppercase; color: #bdbea9; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.card-tile__sub { display: block; margin: -3px 0 6px; font: 500 12px/1.2 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .08em; text-transform: uppercase; color: #bdbea9; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 /* Tonight's sky challenge, the bonus fourth goal (playtest 2026-10-09). */
 .lb-challenge i { border-color: #fa8127; border-radius: 50%; transform: none; }
-.lb-challenge small { margin-left: auto; flex: none; font: 500 10px/1 'SC Label', sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #fa8127; text-decoration: none; }
+.lb-challenge small { margin-left: auto; flex: none; font: 500 12px/1 'SC Label', sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #fa8127; text-decoration: none; }
 /* "Up tonight" slots in a small collection (playtest 2026-10-09): uncollected tiles with when and where. */
 .up-next__tile { opacity: .82; border-style: dashed !important; position: relative; }
-.up-next__when { position: absolute; left: 6px; right: 6px; top: 34%; z-index: 3; padding: 4px 6px 3px; border-radius: 99px; background: #080f1bdd; border: 1px solid #fa812788; color: #fa8127; font: 500 10px/1 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .1em; text-transform: uppercase; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.up-next__when { position: absolute; left: 6px; right: 6px; top: 34%; z-index: 3; padding: 4px 6px 3px; border-radius: 99px; background: #080f1bdd; border: 1px solid #fa812788; color: #fa8127; font: 500 12px/1 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .1em; text-transform: uppercase; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 /* "12 cards · not backed up · Sign in ›" (2026-10-11, design/auth-moments.html 3) */
 .backup-line { display:flex; align-items:center; gap:10px; width:100%; box-sizing:border-box; height:44px; margin:2px 0 16px; padding:0 14px; border-radius:12px; background:#0e1a29; border:1px solid rgba(250,129,39,.45); cursor:pointer;
   font:500 15px/1 'SC Label', 'Barlow Condensed', sans-serif; letter-spacing:.1em; text-transform:uppercase; color:#fff2b3; }
@@ -414,10 +414,18 @@ body.night::after { content: ''; position: fixed; inset: 0; z-index: 2147483646;
 .st-head { font:500 13px 'SC Label', sans-serif; letter-spacing:.18em; text-transform:uppercase; color:#fa8127; margin:18px 0 8px; }
 .st-bars { display:grid; grid-template-columns:repeat(12,1fr); gap:5px; height:110px; align-items:end; }
 .st-bar { display:flex; flex-direction:column; align-items:center; height:100%; justify-content:flex-end; gap:4px; }
-.st-bar span { width:100%; min-height:2px; border-radius:4px 4px 1px 1px; background:linear-gradient(#fa8127,#c9622a); } .st-bar small { font:500 11px 'SC Label', sans-serif; color:#bdbea9; }
+.st-bar span { width:100%; min-height:2px; border-radius:4px 4px 1px 1px; background:linear-gradient(#fa8127,#c9622a); } .st-bar small { font:500 12px 'SC Label', sans-serif; color:#bdbea9; }
 .st-map { width:100%; height:auto; display:block; }
 .st-rare { display:grid; gap:8px; } .st-rare div { display:grid; grid-template-columns:auto 1fr auto; gap:10px; align-items:baseline; font:500 15px 'SC Label', sans-serif; padding:8px 12px; border-radius:10px; background:#0e1a29; }
 .st-rare span { font-size:12px; letter-spacing:.08em; } .st-rare small { color:#bdbea9; }
 .st-poster { width:100%; margin-top:20px; }
 /* Inside the app, Explore's switcher sits on top of this page, so the page's own copy is hidden (2026-10-11) */
 html.embedded .bottom-nav { visibility: hidden; }
+/* Your cards first (2026-10-12, UX room): the intro banner only for an empty collection, and the rank card compact until
+   opened (rank and XP; missions, ladder and events on "Missions ›"). */
+body.has-cards .collection-intro { display: none; }
+.logbook.compact :is(.lb-pic, .lb-mission, .lb-foot, .lb-events, .lb-challenge) { display: none; }
+.lb-more { float: right; margin: 0 0 0 10px; padding: 6px 2px; background: none; border: 0; color: var(--accent, #fa8127); font: 500 13px/1 'SC Label', sans-serif; letter-spacing: .14em; text-transform: uppercase; cursor: pointer; position: relative; z-index: 3; }
+.logbook:not(.compact) .lb-more::after { content: ''; }
+.logbook.compact .lb-rot { min-height: 0; }
+.lb-more { float: none; align-self: flex-end; margin: 8px 16px -4px auto; }

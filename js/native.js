@@ -66,7 +66,8 @@ export function haptic(kind = 'light') {
   if (isNative()) {
     const h = plugin('Haptics');
     if (kind === 'success' || kind === 'warning') h?.notification({ type: kind.toUpperCase() }).catch(() => {});
-    else if (kind === 'select') h?.selectionChanged?.().catch?.(() => {});
+    // iOS only plays selectionChanged between selectionStart and selectionEnd (UX room 2026-10-12: every "select" was silent).
+    else if (kind === 'select') { h?.selectionStart?.().then?.(() => h.selectionChanged()).then?.(() => h.selectionEnd()).catch?.(() => {}); }
     else h?.impact({ style: kind === 'heavy' ? 'HEAVY' : kind === 'medium' ? 'MEDIUM' : 'LIGHT' }).catch(() => {});
     return;
   }

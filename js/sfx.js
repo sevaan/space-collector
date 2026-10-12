@@ -3,7 +3,7 @@
 // "Notification Sound 2" by deadrobotmusic (Freesound, CC0), softened. Files: assets/audio/sfx/<name>.mp3.
 // Decoded once into memory after the first tap, played through the shared context (js/audio-ctx.js) so they're instant.
 // Off with Settings → Sounds and vibration (localStorage sound = '0').
-import { audioCtx } from './audio-ctx.js?v=0.1.521';
+import { audioCtx } from './audio-ctx.js?v=0.1.522';
 export const SFX = ['lock', 'collect', 'arrive', 'flip', 'r_common', 'r_uncommon', 'r_rare', 'r_epic', 'r_legend', 'shiny', 'seen', 'stamp', 'levelup', 'xp',
   'mission', 'rankup', 'patch', 'coinroll', 'complete', 'secret', 'fossil', 'ufo', 'welcome', 'swipe', 'step', 'toggle', 'toast', 'page', 'rattle', 'plane'];
 const BASE = new URL('../assets/audio/sfx/', import.meta.url).href;
@@ -19,12 +19,20 @@ export function loadSfx() {
 }
 // name: one of SFX. gain: 0–1 on top of the file's own level. gap: skip if the same sound played less than gap ms ago.
 // delay: seconds from now (scheduled on the audio clock, so it stays in time with animations).
+// Loudness matched per file (2026-10-12, craft room: the files were balanced by peak, so measured loudness ran from −22
+// to −39 LUFS and the small sounds vanished under the music). Measured with ffmpeg ebur128; stingers sit at about −22,
+// ticks and swishes at −28, the shiny at −19 (the loudest). Lock, toast and toggle are too short to measure: unchanged.
+const NORM = { arrive: 1.5, coinroll: 1.4, collect: 1.01, complete: 1.14, flip: 2.09, fossil: 2.54, levelup: 1.26, mission: 1.11, page: 3.5, patch: 0.74, plane: 0.93, r_common: 1.46, r_epic: 1.14, r_legend: 1.15, r_rare: 1.07, r_uncommon: 1.27, rankup: 1.04, rattle: 3.5, secret: 1.38, seen: 1.58, shiny: 2.24, stamp: 1.01, step: 1.74, swipe: 1.55, ufo: 1.33, welcome: 1.3, xp: 3.5 };
+// At most two at once: a third small sound is skipped rather than piling on (a Saturn catch stacked four over 5 s).
+const STINGERS = new Set(['r_common', 'r_uncommon', 'r_rare', 'r_epic', 'r_legend', 'shiny', 'rankup', 'levelup', 'mission', 'complete', 'secret', 'welcome']);
+let playing = 0;
 export function sfx(name, { gain = 1, gap = 0, delay = 0 } = {}) {
   if (soundOff()) return;
   const ctx = audioCtx(); if (!ctx) return;
   const b = bufs.get(name); if (!b) { loadSfx(); return; }
   const now = performance.now(); if (gap && now - (last.get(name) ?? -1e9) < gap) return; last.set(name, now);
-  try { const src = ctx.createBufferSource(), g = ctx.createGain(); src.buffer = b; g.gain.value = gain * LEVEL * sfxVolume(); src.connect(g).connect(ctx.destination); src.start(ctx.currentTime + delay); } catch {}
+  if (playing >= 2 && !STINGERS.has(name)) return;
+  try { const src = ctx.createBufferSource(), g = ctx.createGain(); src.buffer = b; g.gain.value = gain * (NORM[name] ?? 1) * LEVEL * sfxVolume(); src.connect(g).connect(ctx.destination); playing++; src.onended = () => { playing = Math.max(0, playing - 1); }; src.start(ctx.currentTime + delay); } catch {}
 }
 // Load on the first tap (the context can only start from one), so the first real sound is ready.
 if (typeof document !== 'undefined') document.addEventListener('pointerdown', () => loadSfx(), { once: true, capture: true });

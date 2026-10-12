@@ -1,48 +1,48 @@
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.521';
-import * as Secrets from './secrets.js?v=0.1.521';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.521';
-import * as Ufo from './ufo.js?v=0.1.521';
-import * as Fossil from './fossil.js?v=0.1.521';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.521';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.521';
-import { toast, ticket, dropToast, toastPending, onTicketShown } from './toast.js?v=0.1.521';
-import { VERSION } from './version.js?v=0.1.521';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, overEarth, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.521';
-import { placeName } from './geo.js?v=0.1.521';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.521';
-import { conArt } from './con-art.js?v=0.1.521';
-import { fetchWeather, tonightSky } from './weather.js?v=0.1.521';
-import { CON_FIGURES } from './con-figures.js?v=0.1.521';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.521';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.521';
-import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.521';
-import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.521';
-import { conList } from './constellations.js?v=0.1.521';
-import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.521';
-import { SkyView, shortName } from './sky.js?v=0.1.521';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.521';
-import { isPlus, setPlusForTesting, onPlus, PLUS_PERKS } from './plus.js?v=0.1.521';
-import { isNative, getPosition, saveFile, notifyAt, cancelNotify, haptic, onNative, nativeChrome, plugin } from './native.js?v=0.1.521';
-import { initAccount, onAccount, account, signInGoogle, sendEmailLink, completeEmailLink, signOut, syncNow, pushSighting, deleteAccount, signInApple } from './account.js?v=0.1.521';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.521';
-import { cardArt } from './art.js?v=0.1.521';
-import { renderCard, cardLevel, artImage, lockedArt, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.521';
-import { applyBack } from './card-backs.js?v=0.1.521';
-import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.521';
-import { audioCtx } from './audio-ctx.js?v=0.1.521';
-import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume } from './music.js?v=0.1.521';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.521';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.521';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.521';
-import { naturalTargets, SOLAR_SYSTEM, DEEP_SKY } from './natural.js?v=0.1.521';
-import { TIER_INFO } from './rarity.js?v=0.1.521';
-import { SETS, albumList } from './sets.js?v=0.1.521';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.521';
-import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.521';
-import { shareCardEl } from './share-card.js?v=0.1.521';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.521';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.521';
-import { addStarfield } from './starfield.js?v=0.1.521';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.522';
+import * as Secrets from './secrets.js?v=0.1.522';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.522';
+import * as Ufo from './ufo.js?v=0.1.522';
+import * as Fossil from './fossil.js?v=0.1.522';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.522';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.522';
+import { toast, ticket, dropToast, toastPending, onTicketShown } from './toast.js?v=0.1.522';
+import { VERSION } from './version.js?v=0.1.522';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, overEarth, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.522';
+import { placeName } from './geo.js?v=0.1.522';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.522';
+import { conArt } from './con-art.js?v=0.1.522';
+import { fetchWeather, tonightSky } from './weather.js?v=0.1.522';
+import { CON_FIGURES } from './con-figures.js?v=0.1.522';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.522';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.522';
+import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.522';
+import { eventOf, activeEvent, nextEvent, passIcs } from './events.js?v=0.1.522';
+import { conList } from './constellations.js?v=0.1.522';
+import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.522';
+import { SkyView, shortName } from './sky.js?v=0.1.522';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.522';
+import { isPlus, setPlusForTesting, onPlus, PLUS_PERKS } from './plus.js?v=0.1.522';
+import { isNative, getPosition, saveFile, notifyAt, cancelNotify, haptic, onNative, nativeChrome, plugin } from './native.js?v=0.1.522';
+import { initAccount, onAccount, account, signInGoogle, sendEmailLink, completeEmailLink, signOut, syncNow, pushSighting, deleteAccount, signInApple } from './account.js?v=0.1.522';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.522';
+import { cardArt } from './art.js?v=0.1.522';
+import { renderCard, cardLevel, artImage, lockedArt, attachTilt, throwOff, attachFlip } from './card.js?v=0.1.522';
+import { applyBack } from './card-backs.js?v=0.1.522';
+import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.522';
+import { audioCtx } from './audio-ctx.js?v=0.1.522';
+import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume } from './music.js?v=0.1.522';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.522';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.522';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.522';
+import { naturalTargets, SOLAR_SYSTEM, DEEP_SKY } from './natural.js?v=0.1.522';
+import { TIER_INFO } from './rarity.js?v=0.1.522';
+import { SETS, albumList } from './sets.js?v=0.1.522';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.522';
+import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.522';
+import { shareCardEl } from './share-card.js?v=0.1.522';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.522';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.522';
+import { addStarfield } from './starfield.js?v=0.1.522';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -199,7 +199,7 @@ async function checkForUpdate() {
   try {
     const res = await fetch(`version.json?t=${Date.now()}`, { cache: 'no-store' });
     const { version } = await res.json();
-    if (version && version !== VERSION) showBanner(`New build v${version} is out (running v${VERSION}).`, () => location.reload(), { icon: GEAR, sub: 'Tap to update.' });
+    if (version && version !== VERSION) showBanner('A new version is ready.', () => location.reload(), { icon: GEAR, sub: 'Tap to update.' });
   } catch {}
 }
 
@@ -653,7 +653,7 @@ function renderIdent(target, t) {
   identShown = best.s.name; el.hidden = false; $('guidance').hidden = true;
   $('p-kind').textContent = 'A star'; $('p-name').textContent = best.s.name;
   $('p-route').hidden = true;
-  $('p-info').textContent = `Magnitude ${best.s.mag.toFixed(1).replace('-', '−')} · not a card`;
+  $('p-info').textContent = `A named star · ${best.s.mag < 1 ? 'one of the brightest' : best.s.mag < 2.5 ? 'bright' : 'faint'} · not a card`; // no "magnitude" (writing room 2026-10-12)
 }
 let planeShown = null, planeText = 0;
 function renderPlane(hit, t) {
@@ -873,7 +873,7 @@ function renderTarget(target, d) {
       $('d-switch').hidden = !sw; $('d-switch').textContent = sw;
       const quiet = isQuiet(o) && o.id !== state.tourCatchId; // the tour's first catch is often a (quiet) star: always say what to do (playtest 2026-10-09)
       $('d-cta').hidden = quiet; disc.classList.toggle('quiet', quiet); disc.classList.remove('owned'); $('d-hit').setAttribute('aria-label', 'Collect this object');
-      $('d-cta').textContent = 'Tap to collect'; $('d-sub').hidden = true;
+      $('d-cta').textContent = 'Collect'; $('d-sub').hidden = true;
     } else {
       disc.hidden = true; guide.hidden = false;
       setGuide(guide, label(o), turnHint(l));
@@ -1016,7 +1016,6 @@ function showCaptureCard(obj) {
   const card = renderCard(model, { sightings, seenMembers: new Set(sightings.map(s => s.objectId)).size });
   $('reveal-view').href = `cards.html#${encodeURIComponent(key)}`;
   openPanel('reveal');
-  if (['epic', 'legendary'].includes(model.tier) && sightings.length <= 1) setTimeout(() => buzz([20, 40, 20]), 900); // a celebration for a big first find
   // Fleet cards: a launch seen for the first time lands a stamp, and levels count stamps.
   let fleet = null;
   if (model.launches && stampKey) {
@@ -1100,7 +1099,7 @@ async function capture(obj) {
   const l = obj.natural ? state.naturals?.find((n) => n.obj.id === obj.id)?.look : look(obj, f);
   const basis = currentBasis();
   const aligned = l && dot(enuFromAzEl(l.az, l.el), basis.back) > Math.cos(sky.reticleDeg * RAD);
-  if (!l || !canCapture({ visible: l.visible, aligned, practice: state.captureAny, allowAny: state.captureAny })) { toast('Line up the object while it is visible to capture it.'); return; }
+  if (!l || !canCapture({ visible: l.visible, aligned, practice: state.captureAny, allowAny: state.captureAny })) { toast('Not quite. Put it inside the circle while it\'s up, then tap.'); return; }
   if (obj.id === state.tourCatchId && !isNewFind(obj)) { tourReveal(obj); return; } // tour replay: the full reveal, nothing logged
   if (collectedThisPass(obj, d)) { showViewCard(obj, null, false); return; }
   if (await recordSighting(obj, d, l)) showCaptureCard(obj);
@@ -1154,7 +1153,7 @@ async function recordSighting(obj, d, l = null) {
     pushSighting(saved); // backed up straight away when signed in (js/account.js)
     return saved;
   } catch {
-    toast('Your sighting could not be saved. Check that browser storage is available, then try again.', 5000, null, { sticky: true, id: 'save-fail' });
+    toast('Couldn\'t save that card. Close private browsing or free up some space, then try again.', 5000, null, { sticky: true, id: 'save-fail' });
     return null;
   } finally { state.captureBusy = false; }
 }
@@ -1275,7 +1274,7 @@ function renderVisible() {
     list.insertAdjacentHTML('beforeend', `<div class="t-head">Seen before · ${seen.length}</div>`);
     const strip = document.createElement('div'); strip.className = 'mini-cards';
     seen.forEach((it) => { const o = it.obj, tier = TIER_INFO[o.tier] ?? TIER_INFO.common, c = document.createElement('button'); c.type = 'button'; c.className = 'mini-card';
-      c.innerHTML = `<span class="mc-art">${previewArt(o, 'small', { accent: tier.color })}</span><span class="mc-bd"><small style="color:${tier.color}">◆ ${tier.label}</small><b>${escapeHtml(label(o))}</b><span>${compassPoint(it.look.az)} · ${Math.round(it.look.el)}° up</span></span>`;
+      c.innerHTML = `<span class="mc-art">${previewArt(o, 'small', { accent: tier.color })}</span><span class="mc-bd"><small style="color:${tier.color}">${tier.gem} ${tier.label}</small><b>${escapeHtml(label(o))}</b><span>${compassPoint(it.look.az)} · ${Math.round(it.look.el)}° up</span></span>`;
       c.setAttribute('aria-label', `${label(o)}, ${compassPoint(it.look.az)}, ${Math.round(it.look.el)} degrees up: aim at it`);
       c.addEventListener('click', () => aimAt(it)); strip.appendChild(c); });
     list.appendChild(strip);
@@ -1370,6 +1369,8 @@ async function scheduleAlerts(picks) {
 // south and climbs almost straight overhead. New to your collection."
 const WORD = { N: 'north', NE: 'northeast', E: 'east', SE: 'southeast', S: 'south', SW: 'southwest', W: 'west', NW: 'northwest' };
 const dirWord = (az) => WORD[compassPoint(az)] ?? compassPoint(az);
+// "High in the west": where to look in words, not degrees (writing room 2026-10-12).
+function whereWords(l) { return `${l.el >= 60 ? 'High' : l.el >= 30 ? 'Halfway up' : 'Low'} in the ${dirWord(l.az)}`; }
 const PURPOSE_WORD = [[/^NOAA|^METEOR|^GOES|^METOP|^FENGYUN|^DMSP|^TIROS|^NIMBUS|^ELEKTRO|^HIMAWARI/, 'weather satellite'], [/^NAVSTAR|^GPS|^GLONASS|^BEIDOU|^GALILEO|^TRANSIT|^PARUS|^TSIKADA|^NNSS/, 'navigation satellite'],
   [/^LANDSAT|^SPOT|^RESURS|^SENTINEL|^TERRA|^AQUA|^ENVISAT|^ERS-|^CBERS|^OKEAN|^KOMPSAT/, 'Earth-watching satellite'], [/^HST|HUBBLE|TELESCOPE|^SWIFT|^FERMI|^XMM|^CHANDRA/, 'space telescope'],
   [/^IRIDIUM|^GLOBALSTAR|^ORBCOMM|^INTELSAT|^MOLNIYA|^STRELA|^GONETS|^TELSTAR|^RELAY|^ECHO/, 'communications satellite'], [/^YAOGAN|^USA \d|^NROL|^LACROSSE|^KH-/, 'spy satellite']];
@@ -1521,7 +1522,7 @@ function renderWeek() {
       <span class="wk-sky ${s.clearShare == null ? 'na' : s.clearShare >= 0.5 ? 'ok' : 'bad'}">${escapeHtml(s.sky)}</span>
       <span class="wk-n"><b>${s.passes.length}</b><small>passes</small></span>
       <span class="wk-n"><b>${s.newCount}</b><small>new</small></span>
-      ${s.rarest ? `<span class="wk-rare" style="color:${(TIER_INFO[s.rarest.obj.tier] ?? TIER_INFO.common).color}">◆ ${escapeHtml((TIER_INFO[s.rarest.obj.tier] ?? TIER_INFO.common).label)}</span>` : '<span class="wk-rare"></span>'}
+      ${s.rarest ? `<span class="wk-rare" style="color:${(TIER_INFO[s.rarest.obj.tier] ?? TIER_INFO.common).color}">${(TIER_INFO[s.rarest.obj.tier] ?? TIER_INFO.common).gem} ${escapeHtml((TIER_INFO[s.rarest.obj.tier] ?? TIER_INFO.common).label)}</span>` : '<span class="wk-rare"></span>'}
     </button>${weekOpen === N.n ? `<div class="week-detail">${s.passes.slice(0, 6).map((p) => `<div><b>${fmtTime(p.start)}</b> ${escapeHtml(label(p.obj))}${p.fresh ? ' <em>new</em>' : ''}<small>${(TIER_INFO[p.obj.tier] ?? TIER_INFO.common).label} · ${p.peakEl}° up in the ${compassPoint(p.peakAz)}</small></div>`).join('') || '<div>No passes worth the trip.</div>'}</div>` : ''}`).join('')
     + (state.week?.busy ? `<p class="hint">Working out ${7 - nights.length} more night${7 - nights.length === 1 ? '' : 's'}…</p>` : '');
   el.querySelectorAll('.week-row').forEach((b) => b.onclick = () => { const n = Number(b.dataset.n); weekOpen = weekOpen === n ? null : n; renderWeek(); });
@@ -1610,7 +1611,7 @@ function renderTonight() {
   const passes = allPasses.filter((p) => tierIdx(p) >= tlFilter.min && (!tlFilter.newOnly || p.fresh)).slice(0, 40);
   const chips = document.createElement('div'); chips.className = 'tl-chips';
   chips.innerHTML = TIERS.map((k, i) => { const t = TIER_INFO[k]; const n = allPasses.filter((p) => tierIdx(p) === i).length;
-    return `<button type="button" class="tl-chip${i >= tlFilter.min ? ' on' : ''}" data-min="${i}" style="--c:${t.color}"${n ? '' : ' disabled'}><i></i>${t.label}${i === tlFilter.min && i ? '+' : ''}</button>`; }).join('')
+    return `<button type="button" class="tl-chip${i >= tlFilter.min ? ' on' : ''}" data-min="${i}" style="--c:${t.color}"${n ? '' : ' disabled'}><i aria-hidden="true">${t.gem}</i>${t.label}${i === tlFilter.min && i ? '+' : ''}</button>`; }).join('')
     + `<button type="button" class="tl-chip new${tlFilter.newOnly ? ' on' : ''}" data-new>New only</button>`;
   chips.addEventListener('click', (e) => { const c = e.target.closest('.tl-chip'); if (!c || c.disabled) return;
     if (c.hasAttribute('data-new')) tlFilter.newOnly = !tlFilter.newOnly; else { const m = Number(c.dataset.min); tlFilter.min = m === tlFilter.min ? 0 : m; }
@@ -1671,7 +1672,7 @@ function renderTonight() {
     }
   };
   section('Up next', 'Aim now', soonList, 'next');
-  section('Later tonight', 'Swipe left for an alert', laterList, 'later');
+  section('Later tonight', 'Swipe left to set a reminder', laterList, 'later');
   for (const mk of marks) list.insertAdjacentHTML('beforeend', markHtml(mk));
   if (!passes.length) list.insertAdjacentHTML('beforeend', `<p class="hint">${allPasses.length ? 'Nothing that rare left tonight. Tap a lower rarity.' : 'No standout passes left tonight.'}</p>`);
   // Show once how the alarm hides behind a row: the first Later row slides open a little and back.
@@ -1685,7 +1686,7 @@ function renderTonight() {
     list.insertAdjacentHTML('beforeend', '<div class="t-head">Worth setting an alarm for</div>');
     const strip = document.createElement('div'); strip.className = 'mini-cards';
     for (const p of alarm) { const o = p.obj, tier = TIER_INFO[o.tier] ?? TIER_INFO.common, key = `${o.id}@${p.start}`, c = document.createElement('div'); c.className = 'mini-card';
-      c.innerHTML = `<span class="mc-art">${ownsCard(o) ? previewArt(o, 'small', { accent: tier.color }) : lockedArt(o, false, tier.color, 'small')}</span><span class="mc-bd"><small style="color:${tier.color}">◆ ${tier.label}</small><b>${escapeHtml(label(o))}</b><span>${fmtTime(p.start)} · ${compassPoint(p.peakAz)}</span></span><button class="ic remind${reminded.has(key) ? ' on' : ''}" type="button" aria-label="Remind me">${ICON_BELL}</button>`;
+      c.innerHTML = `<span class="mc-art">${ownsCard(o) ? previewArt(o, 'small', { accent: tier.color }) : lockedArt(o, false, tier.color, 'small')}</span><span class="mc-bd"><small style="color:${tier.color}">${tier.gem} ${tier.label}</small><b>${escapeHtml(label(o))}</b><span>${fmtTime(p.start)} · ${compassPoint(p.peakAz)}</span></span><button class="ic remind${reminded.has(key) ? ' on' : ''}" type="button" aria-label="Remind me">${ICON_BELL}</button>`;
       c.querySelector('.remind').addEventListener('click', async (e) => { const b = e.currentTarget; if (reminded.has(key)) { reminded.delete(key); cancelNotify(remindIds.get(key)?.id); remindIds.delete(key); saveRems(); b.classList.remove('on'); } else if (await remindPass(p, key)) { reminded.add(key); b.classList.add('on'); } });
       strip.appendChild(c); }
     list.appendChild(strip);
@@ -1960,7 +1961,7 @@ $('chk-push').addEventListener('change', async (e) => {
   if (!e.target.checked) { if (isNative()) { try { localStorage.removeItem('pushOn'); } catch {} for (const id of ALERT_IDS) await cancelNotify(id); } else await disablePush(); toast('Pass alerts off.', 2000); return; }
   if (!isPlus()) { e.target.checked = false; openPlus('alerts'); return; } // a Plus perk (2026-10-11)
   const r = isNative() ? await (async () => { try { const ln = plugin('LocalNotifications'); let p = await ln.checkPermissions(); if (p.display !== 'granted') p = await ln.requestPermissions(); if (p.display !== 'granted') return 'denied'; localStorage.setItem('pushOn', '1'); return 'on'; } catch (er) { return `error: ${er?.message ?? er}`; } })() : await enablePush();
-  if (r === 'on') { toast('Pass alerts on. Up to 3 a night, only for cards you don\'t have, never after 11 pm.', 4000); lastChip = 0; if (state.tonight) shareTonight(state.tonight); return; }
+  if (r === 'on') { toast('Alerts on. We\'ll ping you for up to 3 new cards a night, never after 11 pm.', 4000); lastChip = 0; if (state.tonight) shareTonight(state.tonight); return; }
   e.target.checked = false;
   toast(r === 'install' ? 'On iPhone, add Space Collector to your Home Screen first (Share → Add to Home Screen), then turn alerts on there.' : r === 'denied' ? 'Notifications are blocked. Allow them for Space Collector in Settings.' : String(r).startsWith('error') ? `Couldn't set up alerts (${String(r).slice(7, 140)}).` : 'Alerts aren\'t available in this browser.', 5000);
 });
@@ -1977,7 +1978,7 @@ function updateEventBanner() {
   if (el.innerHTML !== html) el.innerHTML = html;
   el.hidden = false;
 }
-$('event-banner').addEventListener('click', () => { const e = activeEvent(now().getTime()); if (e) { try { localStorage.setItem('eventRead', e.id); } catch {} $('event-banner').hidden = true; } if (e) toast(`${e.name.replace(/\s*\d{4}$/, '')} · ${e.rate}. Catch anything tonight for the badge.`, 5500); });
+$('event-banner').addEventListener('click', () => { const e = activeEvent(now().getTime()); if (e) { try { localStorage.setItem('eventRead', e.id); } catch {} $('event-banner').hidden = true; } if (e) toast(`${e.name.replace(/\s*\d{4}$/, '')} · ${e.rate}. Collect any card tonight to earn its patch.`, 5500); });
 
 // ---------- drag to look ----------
 
@@ -2046,6 +2047,8 @@ function closePanel(id = activePanel) {
   const el = $(id); activePanel = null; $('hud').inert = false;
   // Slide away, then hide (2026-10-08 polish); the reveal has its own exit.
   if (id !== 'reveal' && el.classList.contains('panel') && !matchMedia('(prefers-reduced-motion: reduce)').matches) { el.classList.add('leaving'); clearTimeout(panelHideTimer); panelHideTimer = setTimeout(() => { if (activePanel === id) return; el.hidden = true; el.classList.remove('leaving'); el.style.transform = ''; }, 300); }
+  // The reveal fades and drops away instead of cutting to the sky (UX room 2026-10-12: closing with ✕ was an instant cut).
+  else if (id === 'reveal' && !matchMedia('(prefers-reduced-motion: reduce)').matches) { el.style.pointerEvents = 'none'; el.animate([{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'translateY(28px)' }], { duration: 240, easing: 'cubic-bezier(.4,0,.8,.6)' }).finished.then(() => { if (activePanel !== 'reveal') el.hidden = true; el.style.pointerEvents = ''; }, () => { el.hidden = true; el.style.pointerEvents = ''; }); }
   else el.hidden = true;
   if (panelReturn?.isConnected) panelReturn.focus({ preventScroll: true });
 }
@@ -2468,12 +2471,12 @@ async function runOnboarding(force = false) {
   let motionAsk = null;
   const night = (state.frame?.sunEl ?? -90) < -6;
   const steps = [
-    { tier: 'Step 1 of 2', title: 'Set location', sub: ['Navigation', ''], art: OB_ART.loc, text: 'Your location sets which stars and satellites are overhead. It\'s only used to work out your sky, never sold or shared.', yes: 'Use my location', no: 'Not now' },
-    { tier: 'Step 2 of 2', title: 'Move your phone', sub: ['Gyroscope', ''], art: OB_ART.motion, text: "With motion on, the circle follows the phone. Whatever sits in the circle is what you're looking at.", yes: 'Allow motion', no: 'Use a finger', onYes: () => { motionAsk = enableMotion(); } },
-    { tier: 'Assignment 01', title: 'Your first catch', sub: ['Up right now', ''], art: OB_ART.catch, text: '', yes: 'Go', gold: true },
+    { tier: 'Step 1 of 2', title: 'Where are you?', sub: ['', ''], art: OB_ART.loc, text: 'Your location sets which stars and satellites are overhead. It\'s only used to work out your sky, never sold or shared.', yes: 'Use my location', no: 'Not now' },
+    { tier: 'Step 2 of 2', title: 'Move your phone', sub: ['', ''], art: OB_ART.motion, text: "With motion on, the circle follows the phone. Whatever sits in the circle is what you're looking at.", yes: 'Allow motion', no: 'Use a finger', onYes: () => { motionAsk = enableMotion(); } },
+    { tier: 'Your first card', title: 'Your first catch', sub: ['Up right now', ''], art: OB_ART.catch, text: '', yes: 'Show me where', gold: true },
   ];
   let tgt0 = null;
-  const nameTarget = () => { tgt0 = firstTarget(); if (!tgt0) return; steps[2].title = `Catch ${label(tgt0.obj)}`; steps[2].sub = [tgt0.obj.type === 'star' ? 'Bright star' : tgt0.obj.type === 'sun' ? 'Our star' : tgt0.obj.type === 'moon' ? 'The Moon' : tgt0.obj.natural ? 'Planet' : 'Satellite', `${Math.round(tgt0.look.el)}° up in the ${compassPoint(tgt0.look.az)}`]; steps[2].text = `It's up right now. ${tgt0.hint} Follow the arrow, then tap the circle to collect your first card.`;
+  const nameTarget = () => { tgt0 = firstTarget(); if (!tgt0) return; steps[2].title = `Catch ${label(tgt0.obj)}`; steps[2].sub = [tgt0.obj.type === 'star' ? 'Bright star' : tgt0.obj.type === 'sun' ? 'Our star' : tgt0.obj.type === 'moon' ? 'The Moon' : tgt0.obj.natural ? 'Planet' : 'Satellite', whereWords(tgt0.look)]; steps[2].text = `It's up right now. ${tgt0.hint} Follow the arrow, then tap the circle to collect your first card.`;
     // The card's art becomes a live pointer (2026-10-08, Sevaan): the circle with an arrow that turns toward the target as you turn.
     steps[2].art = OB_ART.aim(tgt0.look.az, tgt0.look.el); obAimTarget = tgt0;
  };
@@ -2515,12 +2518,12 @@ async function runOnboarding(force = false) {
 // What's certain to be up right now, with a one-line hint.
 function firstTarget() {
   const nat = state.naturals ?? [];
-  const sun = nat.find((n) => n.obj.key === 'sun' && n.look.visible); if (sun) return { obj: sun.obj, look: sun.look, hint: `Up in the ${compassPoint(sun.look.az)}. Aim the phone, not your eyes.` };
-  const moon = nat.find((n) => n.obj.key === 'moon' && n.look.visible); if (moon) return { obj: moon.obj, look: moon.look, hint: `Bright and easy, ${Math.round(moon.look.el)}° up in the ${compassPoint(moon.look.az)}.` };
+  const sun = nat.find((n) => n.obj.key === 'sun' && n.look.visible); if (sun) return { obj: sun.obj, look: sun.look, hint: `${whereWords(sun.look)}. Aim the phone, not your eyes.` };
+  const moon = nat.find((n) => n.obj.key === 'moon' && n.look.visible); if (moon) return { obj: moon.obj, look: moon.look, hint: `Bright and easy, ${whereWords(moon.look).toLowerCase()}.` };
   const best = nat.filter((n) => n.look.visible && n.look.el > 15 && (n.obj.type === 'planet' || n.obj.type === 'star')).sort((a, b) => a.look.mag - b.look.mag)[0];
-  if (best) return { obj: best.obj, look: best.look, hint: `The bright steady one, ${Math.round(best.look.el)}° up in the ${compassPoint(best.look.az)}.` };
+  if (best) return { obj: best.obj, look: best.look, hint: `That bright, steady light, ${whereWords(best.look).toLowerCase()}.` };
   const sat = (state.items ?? []).filter((a) => a.look.visible && a.look.el > 20).sort((a, b) => a.look.mag - b.look.mag)[0];
-  return sat ? { obj: sat.obj, look: sat.look, hint: `Moving steadily, ${Math.round(sat.look.el)}° up in the ${compassPoint(sat.look.az)}.` } : null;
+  return sat ? { obj: sat.obj, look: sat.look, hint: `Moving steadily, ${whereWords(sat.look).toLowerCase()}.` } : null;
 }
 // After the tour, back on the sky: a one-time tip beside the radar, "Tap to see what's up tonight" (2026-10-09,
 // Sevaan). Waits 3 s (and for any patch moment or panel to clear), shows ~6 s with a soft pulse on the radar, then
@@ -2641,7 +2644,7 @@ function renderNotTonight(wx, T, t0) {
       <button type="button" class="nt-tile" id="nt-patch">${near ? `<span class="nt-ring" style="--f:${Math.round(near.f * 100)}%"></span><b>Patches</b><small>${escapeHtml(near.name)} ${Math.round(near.f * 100)}%</small>` : `<span class="nt-ic">🎖</span><b>Patches</b><small>See them all</small>`}</button>
       ${next ? `<button type="button" class="nt-tile" id="nt-preview"><span class="nt-ic">✦</span><b>${escapeHtml(next.n === 1 ? 'Tomorrow' : new Date(next.t).toLocaleDateString([], { weekday: 'long' }))}'s sky</b><small>Preview it</small></button>` : ''}
     </div></div>`;
-  const leave = () => { $('onboard').hidden = true; $('ob-done').hidden = true; };
+  const leave = () => hideDone();
   $('nt-col').onclick = () => { leave(); openCollection(); };
   $('nt-patch').onclick = () => { leave(); openCollection('patches'); };
   $('nt-all')?.addEventListener('click', () => { leave(); showVTab('tonight'); openPanel('visible'); });
@@ -2676,6 +2679,13 @@ function dailyTonight(tries = 0) {
   const line = !wx ? (peak[1] ? `Busiest at ${fmtTime(peak[0])}: ${peak[1]} up at once` : 'See tonight\'s plan')
     : wx.kase === 'bad' ? `${wx.line}. See the nights ahead` : `${wx.line}${peak[1] ? ` · busiest at ${fmtTime(peak[0])}` : ''}`;
   ticket({ kind: 'event', id: 'tonight', sticky: true, eyebrow: 'TONIGHT', line, go: 'SEE', action: () => { if (activePanel || collectionOpen) return; $('onboard').hidden = false; obFinish(true); } });
+}
+// The Tonight page slides down and away (UX room 2026-10-12: it cut straight to the sky); it slides up on the way in (CSS).
+function hideDone() {
+  const ob = $('onboard'), done = $('ob-done'), go = () => { ob.hidden = true; done.hidden = true; ob.style.opacity = ''; };
+  if (done.hidden || matchMedia('(prefers-reduced-motion: reduce)').matches) { go(); return; }
+  ob.style.pointerEvents = 'none';
+  done.animate([{ transform: 'none', opacity: 1 }, { transform: 'translateY(6%)', opacity: 0 }], { duration: 280, easing: 'cubic-bezier(.4,0,.8,.6)' }).finished.then(go, go).finally(() => { ob.style.pointerEvents = ''; });
 }
 function obFinish(caught) {
   setTimeout(warnExample, 1500); // the sky is someone else's until you share a location
@@ -2720,7 +2730,7 @@ function obFinish(caught) {
     renderNotTonight(wx, T, t0);
     $('ob-remind').hidden = true;
     $('ob-explore').firstElementChild.textContent = 'Explore the sky anyway';
-    $('ob-explore').onclick = () => { ob.hidden = true; $('ob-done').hidden = true; setTimeout(maybeAskSignIn, 600); radarTip(); };
+    $('ob-explore').onclick = () => { hideDone(); setTimeout(maybeAskSignIn, 600); radarTip(); };
     $('ob-done').hidden = false;
     return;
   } else {
@@ -2741,7 +2751,7 @@ function obFinish(caught) {
   $('ob-remind').hidden = !remindable; if (remindable) $('ob-remind').firstElementChild.textContent = `Remind me at ${fmtTime(best2.start - 10 * 60e3).replace(/\s?[AP]\.?M\.?$/i, '')}`;
   $('ob-remind').onclick = () => { if (remindable) remindPass(best2); };
   $('ob-explore').firstElementChild.textContent = 'Explore the sky';
-  $('ob-explore').onclick = () => { ob.hidden = true; $('ob-done').hidden = true; setTimeout(maybeAskSignIn, 600); radarTip(); };
+  $('ob-explore').onclick = () => { hideDone(); setTimeout(maybeAskSignIn, 600); radarTip(); };
   $('ob-done').hidden = false;
 }
 
@@ -3057,7 +3067,12 @@ $('btn-ufo')?.addEventListener('click', () => { ufoCaught = false; try { localSt
 function soundOn() { return readPref('sound', true); }
 // Haptics (QA 2026-10-11: navigator.vibrate does nothing on iPhone). Old call sites pass milliseconds or a pattern;
 // they map to a feel: a tick for small taps, a thud for bigger moments, a success pattern for celebrations.
-function buzz(p) { if (!soundOn()) return; haptic(Array.isArray(p) ? 'success' : p >= 25 ? 'heavy' : p >= 14 ? 'medium' : p <= 8 ? 'select' : 'light'); }
+// Vibration has its own switch (UX room 2026-10-12: muting sound took the haptics with it, when they matter most).
+$('chk-haptics').checked = readPref('haptics', true);
+$('chk-haptics').addEventListener('change', (e) => { writePref('haptics', e.target.checked); if (e.target.checked) buzz(14); });
+// The payoff haptic, timed with the card turning over (js/reveal.js 'sc:payoff'): stronger for rarer cards.
+addEventListener('sc:payoff', (e) => { const t = e.detail?.tier; if (!e.detail?.fresh && !e.detail?.levelUp) { buzz(8); return; } buzz(t === 'legendary' || t === 'epic' ? [20, 40, 20] : t === 'rare' ? 28 : 16); });
+function buzz(p) { if (!readPref('haptics', true)) return; haptic(Array.isArray(p) ? 'success' : p >= 25 ? 'heavy' : p >= 14 ? 'medium' : p <= 8 ? 'select' : 'light'); }
 const HL_NAMES = { satellite: 'Satellites', rocket: 'Rocket stages', planet: 'Planets', sun: 'Sun', star: 'Stars' };
 function renderSettings() {
   const st = state.locationStatus, o = state.observer;
@@ -3165,7 +3180,7 @@ function signInError(e) {
   if (/popup-blocked/.test(code)) return 'The Google window was blocked. Allow pop-ups for this site, or use the email link.';
   if (/account-exists-with-different-credential/.test(code)) return 'That email already signs in another way. Use the email link instead.';
   if (/too-many-requests/.test(code)) return 'Too many tries. Wait a minute and try again.';
-  return `Couldn't sign in. Try again, or use the email link. (${code || msg.slice(0, 60) || 'error'})`;
+  return 'Couldn\'t sign in. Try again, or use the email link.'; // the code goes to the console, not the screen (writing room)
 }
 // The sheet's end states: "restored", "nothing on this account", or "couldn't reach the backup". Shown in the sheet
 // itself, not a toast, so the answer stays in front of you until you choose what's next.
@@ -3336,7 +3351,7 @@ $('ud-bell').addEventListener('click', () => {
 });
 $('ud-set').addEventListener('click', async () => {
   const c = udChoices[udPick]; if (!c) return;
-  const r = await setReminder({ at: c.t, title: 'Look up: Space Collector', body: c.msg, ics: passIcs({ title: 'Look up: Space Collector', start: c.t, end: c.t + 30 * 60e3, description: `${c.msg} https://sevaan.github.io/space-collector/` }).replace('TRIGGER:-PT10M', 'TRIGGER:PT0M'), file: 'space-collector-tonight.ics' });
+  const r = await setReminder({ at: c.t, title: 'Look up! It\'s dark enough.', body: c.msg, ics: passIcs({ title: 'Look up: Space Collector', start: c.t, end: c.t + 30 * 60e3, description: `${c.msg} https://sevaan.github.io/space-collector/` }).replace('TRIGGER:-PT10M', 'TRIGGER:PT0M'), file: 'space-collector-tonight.ics' });
   if (r !== 'on' && r !== 'calendar') { reminderToast(r, c.t); return; }
   try { localStorage.setItem('udRemind', JSON.stringify({ t: c.t, label: c.label })); } catch {}
   closeSheet($('ud-sheet')); udRender(); const bl = $('ud-bell'); bl.classList.remove('ring'); void bl.offsetWidth; bl.classList.add('ring'); buzz(15);

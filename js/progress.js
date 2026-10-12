@@ -1,7 +1,7 @@
 // Player progress from the sighting log: XP and observer rank, tonight's three missions, a weekly streak and
 // achievements. Everything is derived from the saved sightings (nothing extra is stored), so it can't drift.
 // info(cardKey) -> { tier, type, owner, launch, natural, con } | null. No DOM.
-import { nightKey } from './observation.js?v=0.1.521';
+import { nightKey } from './observation.js?v=0.1.522';
 
 // A longer climb (2026-10-12, playtest room: three ranks on night 1, Mission Control in about two weeks), with two
 // prestige ranks past Mission Control. Nobody drops a rank they had on the old curve (rankFloor below).
@@ -57,7 +57,7 @@ const RETIRED = [
 export const CHALLENGES = [
   { id: 'revisit3', text: 'See 3 cards you own again', done: (n) => n.filter((s) => !s.first).length >= 3 },
   { id: 'pair10', text: 'Catch two satellites in 10 minutes', done: (n) => { const t = n.filter((s) => !s.info?.natural).map((s) => s.time); return t.some((x, i) => i && x - t[i - 1] <= 600000); } },
-  { id: 'levelup', text: 'Level up a card (3rd or 10th night)', done: (n) => n.some((s) => s.lv) },
+  { id: 'levelup', text: 'Turn a card silver or gold', done: (n) => n.some((s) => s.lv) },
   { id: 'brightstar', text: 'Find a bright named star', done: (n) => n.some((s) => /^star:(?!hip)/.test(s.cardKey)) },
   { id: 'wanderer', text: 'See a planet again', done: (n) => n.some((s) => !s.first && s.info?.type === 'planet') },
 ];

@@ -635,3 +635,24 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - **Privacy contact:** sevaan@gmail.com for now. Change it when Sevaan has a domain (also in memory).
 
 2026-10-12 · Signing fixed on the paid account. Xcode still treated D6XL5H68G8 as a free "Personal Team" (7-day profiles, and "Personal development teams… do not support Sign In with Apple"). The fix was to remove the Apple ID in Xcode → Settings → Accounts, quit, re-add it, and build once from the Xcode GUI. Profiles are now 1-year paid profiles that include applesignin, and command-line device builds (`xcodebuild … -allowProvisioningUpdates`, run outside the sandbox) work again. The old free profile is in scratchpad/old-profiles.
+
+2026-10-12 · v0.1.522 feel and words (the playtest room's last block):
+- **Reveal:** the tap answers at once (dot pops 1→1.7 then rushes, 400 ms, was 560 ms ease-in). The dim fades in 260 ms. The auto-flip waits 700 ms for Common/Uncommon (1 s for rarer). Finish waits 250 ms, the rank fill 200 ms, the news chips 900 ms. Closing with ✕ fades and drops it 28px over 240 ms. The Tonight page slides up into place and slides away (`hideDone`).
+- **Haptics:**
+  - Vibration has its own Settings switch (pref 'haptics'), separate from Sounds.
+  - The payoff haptic fires on reveal.js's 'sc:payoff' event: success for Epic/Legendary, heavy for Rare, medium otherwise.
+  - iOS "select" haptics now wrap selectionChanged in selectionStart/selectionEnd.
+- **Sound:** sfx.js `NORM` holds per-file loudness gains from an ebur128 measurement (stingers about −22 LUFS, ticks −28, shiny −19). At most two sounds play at once: a third non-stinger is skipped.
+- **Red night mode:** text at full red (#ff7f70; muted #e8705f; gold #f2654f), and the old dim reds were replaced across the CSS. --ui-muted is .88 at night, and SEE LESS/MORE is at full strength.
+- **Text size:** 78 font rules under 12px were raised (8–9.5 → 11px, 10–11.5 → 12px) in app/ui/collection CSS. Checked on both phone sizes. Backups are in scratchpad.
+- **Tier shapes:** the Tonight rarity filter chips and the mini cards use the tier's own shape.
+- **Wording:**
+  - the collect button says "Collect"; a repeat sighting is "SEEN AGAIN";
+  - tour: "Your first card" with a "Show me where" button, "Where are you?", no Navigation/Gyroscope subtitles, directions in words (`whereWords`: "High in the west"), and "Skip";
+  - "Swipe left to set a reminder"; "Alerts on. We'll ping you…";
+  - "Not quite. Put it inside the circle…"; "Couldn't save that card…";
+  - stars that aren't cards say "A named star · bright · not a card";
+  - "A new version is ready.", "Look up! It's dark enough.", "Collect any card tonight to earn its patch.", "Make it yours";
+  - sign-in errors on screen no longer show codes;
+  - the challenge reads "Turn a card silver or gold".
+- **Collection:** body.has-cards hides the intro banner. The rank card is compact (rank and XP) until "Missions ›" opens it; the choice is remembered in localStorage lbOpen.

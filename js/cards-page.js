@@ -1,28 +1,28 @@
-import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.521';
-import { computeStats, statsHtml, posterCanvas } from './stats.js?v=0.1.521';
-import { isPlus } from './plus.js?v=0.1.521';
-import { nightKey } from './observation.js?v=0.1.521';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.521';
-import { sfx } from './sfx.js?v=0.1.521';
-import { expandFacts } from './catalog-facts.js?v=0.1.521';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.521';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.521';
-import { ticket } from './toast.js?v=0.1.521';
-import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.521';
-import { cardArt } from './art.js?v=0.1.521';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.521';
-import { applyBack } from './card-backs.js?v=0.1.521';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.521';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.521';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.521';
-import { loadConstellations, conList } from './constellations.js?v=0.1.521';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.521';
-import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.521';
-import { shareCardEl } from './share-card.js?v=0.1.521';
-import { removeSighting } from './account.js?v=0.1.521';
-import { allSightings, deleteSighting } from './store.js?v=0.1.521';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.521';
-import { SECRET_PATCHES } from './secrets.js?v=0.1.521';
+import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.522';
+import { computeStats, statsHtml, posterCanvas } from './stats.js?v=0.1.522';
+import { isPlus } from './plus.js?v=0.1.522';
+import { nightKey } from './observation.js?v=0.1.522';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.522';
+import { sfx } from './sfx.js?v=0.1.522';
+import { expandFacts } from './catalog-facts.js?v=0.1.522';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.522';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.522';
+import { ticket } from './toast.js?v=0.1.522';
+import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.522';
+import { cardArt } from './art.js?v=0.1.522';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.522';
+import { applyBack } from './card-backs.js?v=0.1.522';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.522';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.522';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.522';
+import { loadConstellations, conList } from './constellations.js?v=0.1.522';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.522';
+import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.522';
+import { shareCardEl } from './share-card.js?v=0.1.522';
+import { removeSighting } from './account.js?v=0.1.522';
+import { allSightings, deleteSighting } from './store.js?v=0.1.522';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.522';
+import { SECRET_PATCHES } from './secrets.js?v=0.1.522';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -227,6 +227,9 @@ function renderLogbook() {
   state.albums ??= albumList(state.cards);
   try { localStorage.setItem('goldAlbums', JSON.stringify(SETS.filter((s) => albumStats(s.id).level === 3).map((s) => s.id))); } catch {}
   const card = $('logbook'); card.hidden = false; $('stats-open').hidden = false;
+  // Compact until opened (UX room 2026-10-12: the rank card pushed the first card to the bottom of the screen). Remembered.
+  let lbOpen = false; try { lbOpen = localStorage.getItem('lbOpen') === '1'; } catch {}
+  card.classList.toggle('compact', !lbOpen);
   // The logbook is a card (2026-10-08, Sevaan): it tilts with your finger and the phone, has a glare, and a double
   // tap flips it to a card back. Built once; the contents are re-rendered inside .lb-face.
   if (!card.querySelector('.lb-face')) {
@@ -255,6 +258,7 @@ function renderLogbook() {
   const atRisk = p.streak.current && !p.streak.thisWeek;
   el.innerHTML = `<div class="lb-top"><span>Observer rank</span><span class="lb-streak">${streak}${atRisk ? '<button type="button" class="lb-remind" id="streak-remind">Remind me Sat</button>' : ''}</span></div>
     <div class="lb-pic">${ladder}</div>
+    <button type="button" class="lb-more" id="lb-more" aria-expanded="${!$('logbook').classList.contains('compact')}">${$('logbook').classList.contains('compact') ? 'Missions ›' : 'Less'}</button>
     <div class="lb-rankrow"><span class="lb-name">${esc(p.rank.name)}</span><span class="lb-xp"><b>${p.xp.toLocaleString()}</b>${p.rank.next ? ` / ${p.rank.next.toLocaleString()}` : ''} XP</span></div>
     ${p.missions.map((m) => `<div class="lb-mission${m.done ? ' done' : ''}"><i></i>${esc(m.text)}</div>`).join('')}
     ${p.challenge ? `<div class="lb-mission lb-challenge${p.challenge.done ? ' done' : ''}"><i></i>${esc(p.challenge.text)}<small>Sky challenge · +50</small></div>` : ''}
@@ -273,6 +277,7 @@ function render() {
   if (state.view === 'albums') { const caught = state.cards.filter(hasSightings).length; $('owned-count').textContent = caught.toLocaleString(); renderAlbums(); return; }
   const caught = state.cards.filter(hasSightings).length;
   $('owned-count').textContent = caught.toLocaleString();
+  document.body.classList.toggle('has-cards', caught > 0); // the intro banner is for an empty collection only (UX room 2026-10-12)
   renderBackupLine(caught);
   $('count').textContent = caught ? `${caught.toLocaleString()} ${caught === 1 ? 'story' : 'stories'} collected. Every one, a moment under the sky.` : 'Real objects. Remarkable stories. Yours to discover.';
   const ps = planStart(); state.planKeys = new Set(ps.keys());
@@ -876,3 +881,11 @@ addEventListener('resize', moveInk); setTimeout(moveInk, 300);
 
 // Offline caching (sw.js, 2026-10-08). Inside the app's Collection layer the parent page has already registered it.
 if ('serviceWorker' in navigator && window.parent === window && !isNative()) addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+// The rank card opens to show missions, the ladder and events, and remembers it (2026-10-12).
+document.addEventListener('click', (e) => {
+  const b = e.target.closest('#lb-more'); if (!b) return;
+  e.stopPropagation();
+  const card = $('logbook'), open = card.classList.toggle('compact') === false;
+  b.setAttribute('aria-expanded', String(open)); b.textContent = open ? 'Less' : 'Missions ›';
+  try { localStorage.setItem('lbOpen', open ? '1' : '0'); } catch {}
+});

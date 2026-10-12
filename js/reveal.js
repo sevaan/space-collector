@@ -5,12 +5,12 @@
 //  Everything scales with rarity (Legendary dims the sky, shockwave, held breath, slow flip, fanfare).
 // Waits use timers, not animation.finished, so a paused tab can never freeze the sequence.
 
-import { sfx, loadSfx } from './sfx.js?v=0.1.521';
-import { audioCtx } from './audio-ctx.js?v=0.1.521';
-import { TIER_INFO } from './rarity.js?v=0.1.521';
-import { levelFor, attachTilt, attachGyro, attachFlip, throwOff } from './card.js?v=0.1.521';
-import { applyBack } from './card-backs.js?v=0.1.521';
-import { addStarfield } from './starfield.js?v=0.1.521';
+import { sfx, loadSfx } from './sfx.js?v=0.1.522';
+import { audioCtx } from './audio-ctx.js?v=0.1.522';
+import { TIER_INFO } from './rarity.js?v=0.1.522';
+import { levelFor, attachTilt, attachGyro, attachFlip, throwOff } from './card.js?v=0.1.522';
+import { applyBack } from './card-backs.js?v=0.1.522';
+import { addStarfield } from './starfield.js?v=0.1.522';
 
 const FX = {
   common:    { particles: 14,  flip: 520,  spin: 0,   dim: 0,   shock: false, notes: [880],                            hold: 0 },
@@ -115,7 +115,7 @@ export async function playReveal({ card, o, seen, origin, fleet = null, progress
   const root = $('reveal');
   root.style.setProperty('--fx', color);
   root.classList.remove('rv-done');
-  $('reveal-eyebrow').textContent = fresh ? 'NEW CARD' : newStamp ? 'NEW LAUNCH STAMP' : NIGHT_MILESTONES.includes(nights) ? `SEEN ON ${nights} NIGHTS` : 'SIGHTING RECORDED';
+  $('reveal-eyebrow').textContent = fresh ? 'NEW CARD' : newStamp ? 'NEW LAUNCH STAMP' : NIGHT_MILESTONES.includes(nights) ? `SEEN ON ${nights} NIGHTS` : 'SEEN AGAIN';
   if (xp > 0) $('reveal-eyebrow').insertAdjacentHTML('beforeend', `<span class="rv-xp"> ·<span class="rv-roll"><span>+${xp} XP</span></span></span>`); // rolls in when the card lands
   setRank(xp > 0 ? rank : null);
   $('rv-news').replaceChildren(); earnedNow = earned;
@@ -137,12 +137,13 @@ export async function playReveal({ card, o, seen, origin, fleet = null, progress
 
   // 1. Pulled from orbit: the object swells and rushes at you. Flash, sparks.
   sfx('arrive');
-  if (fx.dim) $('rv-dim').animate([{ opacity: 0 }, { opacity: fx.dim }], { duration: 500, fill: 'forwards' });
+  if (fx.dim) $('rv-dim').animate([{ opacity: 0 }, { opacity: fx.dim }], { duration: 260, fill: 'forwards' });
   await play($('rv-dot'), [
-    { transform: 'translate(-50%,-50%) scale(1)', opacity: 1 },
-    { transform: 'translate(-50%,-50%) scale(2.6)', opacity: 1, offset: .75 },
+    // It answers the tap at once (UX room 2026-10-12: 500 ms of nearly nothing): a pop out, then the rush into the flash.
+    { transform: 'translate(-50%,-50%) scale(1)', opacity: 1, easing: 'cubic-bezier(.2,.9,.3,1)' },
+    { transform: 'translate(-50%,-50%) scale(1.7)', opacity: 1, offset: .35, easing: 'cubic-bezier(.5,0,.8,.4)' },
     { transform: 'translate(-50%,-50%) scale(5)', opacity: 0 }, // a quick pop into the flash, not a 40× blur (2026-10-08)
-  ], { duration: reduced() ? 1 : 560, easing: 'cubic-bezier(.5,0,.8,.3)', fill: 'forwards' });
+  ], { duration: reduced() ? 1 : 400, fill: 'forwards' });
   if (!alive()) return;
   $('rv-flash').style.setProperty('--fx-x', `${x}px`); $('rv-flash').style.setProperty('--fx-y', `${y}px`);
   $('rv-flash').animate([{ opacity: 0 }, { opacity: 1, offset: .25 }, { opacity: 0 }], { duration: 300, easing: 'ease-out' }); // short and bright, from where you caught it
@@ -172,7 +173,7 @@ export async function playReveal({ card, o, seen, origin, fleet = null, progress
     let timer = 0;
     onFlipTap = () => { clearTimeout(timer); $('rv-holder').removeEventListener('click', onFlipTap); onFlipTap = null; primeReveal(); resolve(); };
     $('rv-holder').addEventListener('click', onFlipTap);
-    timer = setTimeout(() => onFlipTap?.(), reduced() ? 400 : 1000);
+    timer = setTimeout(() => onFlipTap?.(), reduced() ? 400 : ['common', 'uncommon'].includes(tierKey) ? 700 : 1000); // the rare ones keep their second of suspense
   });
   if (!alive()) return;
   $('rv-holder').classList.remove('live');
@@ -249,16 +250,18 @@ export async function playView({ card, o, from, sighting = null, eyebrow = null 
 const STAMP_INK = '#8fb8ff';
 async function finish({ fx, color, fresh, seen, level, levelUp, card, alive, fleet = null, newStamp = false, nights = 0, collected = 0, con = null, shiny = null }) {
   const r = $('rv-holder').getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+  // The haptic lands with the payoff, not when the sealed card arrives (UX room 2026-10-12): main.js listens.
+  dispatchEvent(new CustomEvent('sc:payoff', { detail: { tier: Object.keys(FX).find((k) => FX[k] === fx) ?? 'common', fresh, levelUp } }));
   // The payoff: the rarity stinger for a new card, a soft tap for one you have; layers for level-up, stamp and shiny.
   const tk = Object.keys(STINGER).find((k) => FX[k] === fx) ?? 'common';
   sfx(fresh ? STINGER[tk] : newStamp ? 'stamp' : 'seen');
   if (levelUp) sfx('levelup', { delay: 0.35 });
-  if (shiny) sfx('shiny', { delay: 0.25, gain: 2 }); // the loudest stinger: it was quieter than a Common (collectors 2026-10-11)
+  if (shiny) sfx('shiny', { delay: 0.25 }); // the loudest stinger (sfx.js NORM; it was quieter than a Common)
   burst(cx, cy, fx.particles + (levelUp ? 60 : 0) + (shiny ? 90 : 0), shiny ? '#ff8fd8' : color);
   if (shiny) setTimeout(() => { burst(cx, cy - 40, 70, '#8ff0ff'); burst(cx, cy + 40, 70, '#fff2b3'); }, 220);
   if (fx.particles > 60 || levelUp) setTimeout(() => burst(cx, cy - 60, fx.particles / 2 + 20, levelUp ? LEVEL_COLOR[level] : '#ffffff'), 180);
   $('rv-sweep').classList.remove('go'); void $('rv-sweep').offsetWidth; $('rv-sweep').classList.add('go');
-  await sleep(500);
+  await sleep(250);
   if (!alive()) return;
   const date = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }).toUpperCase();
   const stampLine = fleet ? `LAUNCH ${fleet.cospar} · ${fleet.stamps} OF ${fleet.total}` : '';
@@ -303,7 +306,7 @@ function showNews(news, alive) {
     c.innerHTML = `${n.kind === 'more' ? '' : `<i aria-hidden="true">${NEWS_ICON[n.kind] ?? '◆'}</i>`}${esc(n.text)}${n.xp ? `<b>+${n.xp}</b>` : ''}`;
     box.append(c); requestAnimationFrame(() => c.classList.add('in'));
     sfx('xp', { gain: 0.7 });
-  }, (reduced() ? 0 : 1300) + i * (reduced() ? 0 : 260)));
+  }, (reduced() ? 0 : 900) + i * (reduced() ? 0 : 260)));
 }
 // The rank bar under a new card (design D): XP counts up from before to after while the bar fills.
 // rank: { from, to, name, at, next } (next null at the top rank).
@@ -319,8 +322,8 @@ function setRank(r) {
 }
 function fillRank(alive) {
   const r = rankInfo; if (!r) return;
-  const from = Math.max(r.at, r.from), ms = reduced() ? 1 : 900, t0 = performance.now() + (reduced() ? 0 : 450);
-  setTimeout(() => { if (!alive()) return; const f = $('rv-rank-fill'); f.style.transition = `width ${ms}ms cubic-bezier(.3,.8,.3,1)`; f.style.width = `${r.pct(r.to)}%`; }, reduced() ? 0 : 450);
+  const from = Math.max(r.at, r.from), ms = reduced() ? 1 : 900, t0 = performance.now() + (reduced() ? 0 : 200);
+  setTimeout(() => { if (!alive()) return; const f = $('rv-rank-fill'); f.style.transition = `width ${ms}ms cubic-bezier(.3,.8,.3,1)`; f.style.width = `${r.pct(r.to)}%`; }, reduced() ? 0 : 200);
   const step = (t) => { if (!alive()) return; const k = Math.max(0, Math.min(1, (t - t0) / ms)), e = 1 - (1 - k) ** 3; { const v = Math.round(from + (r.to - from) * e); if ($('rv-rank-xp').textContent !== String(v)) { $('rv-rank-xp').textContent = v; sfx('xp', { gain: 0.6, gap: 75 }); } } if (k < 1) requestAnimationFrame(step); };
   requestAnimationFrame(step);
 }

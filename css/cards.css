@@ -78,7 +78,7 @@
 .ink-stamp.big { width: 78px; height: 78px; }
 .ink-stamp.blank { border: 1.5px dashed #b9bfb0; color: #9aa293; font-weight: 600; font-size: 10px; }
 .ink-stamp.blank::before { display: none; }
-:where(html[data-theme="night"], body.night) .card, :where(html[data-theme="night"], body.night) .passport { --ink-stamp: #be6660; }
+:where(html[data-theme="night"], body.night) .card, :where(html[data-theme="night"], body.night) .passport { --ink-stamp: #f27463; }
 :where(html[data-theme="night"], body.night) .fl-grid i { background: #3a1512; }
 :where(html[data-theme="night"], body.night) .passport__stamps, :where(html[data-theme="night"], body.night) .ink-stamp { background: #130606; }
 /* ---------- Shine, by rarity ----------
@@ -177,11 +177,11 @@
 .card-tile.is-owned .card-tile__status { color: #3f6b4a; }
 
 /* Night mode transforms the card stock as well as artwork; no ivory surface flashes. */
-:where(html[data-theme="night"], body.night) .card { --paper: #130606; --ink: #be6660; --grey: #a45650; --set: #4c1313 !important; --tier: #a74740 !important; }
+:where(html[data-theme="night"], body.night) .card { --paper: #130606; --ink: #f27463; --grey: #dd6455; --set: #4c1313 !important; --tier: #d4574a !important; }
 :where(html[data-theme="night"], body.night) .card__face { background: var(--paper); border-color: #4d1b18 !important; }
 :where(html[data-theme="night"], body.night) .card__setbar { background: #3d1010; color: #ba615b; }
 :where(html[data-theme="night"], body.night) .card__art, :where(html[data-theme="night"], body.night) .card-tile__art { filter: grayscale(1) brightness(.48) sepia(1) saturate(5) hue-rotate(318deg) !important; border-color: #55211f; }
-:where(html[data-theme="night"], body.night) .card__seen, :where(html[data-theme="night"], body.night) .card__tier i { color: #a45650 !important; }
+:where(html[data-theme="night"], body.night) .card__seen, :where(html[data-theme="night"], body.night) .card__tier i { color: #dd6455 !important; }
 :where(html[data-theme="night"], body.night) .card__stats, :where(html[data-theme="night"], body.night) .card__stats > div { border-color: #52221f; }
 :where(html[data-theme="night"], body.night) .card__rotator { box-shadow: 0 0 0 .16em #55211f, 0 1em 3em #0007 !important; }
 :where(html[data-theme="night"], body.night) .card__shine, :where(html[data-theme="night"], body.night) .card__foil { filter: grayscale(1) brightness(.25) sepia(1) saturate(5) hue-rotate(318deg); }
@@ -189,7 +189,7 @@
 :where(html[data-theme="night"], body.night) .card__stamp { background: #210908eb; color: #a5534b; }
 :where(html[data-theme="night"], body.night) .card-tile { background: #160807; color: #b35c56; border-color: #52221f; }
 :where(html[data-theme="night"], body.night) .card-tile__set { background: #3d1010; color: #b35c56; }
-:where(html[data-theme="night"], body.night) .card-tile__tier, :where(html[data-theme="night"], body.night) .card-tile__status { color: #a45650; border-color: #52221f; }
+:where(html[data-theme="night"], body.night) .card-tile__tier, :where(html[data-theme="night"], body.night) .card-tile__status { color: #dd6455; border-color: #52221f; }
 @media (prefers-reduced-motion: reduce) {
   .card__rotator, .card-tile { transform: none !important; transition: none !important; }
   .card__shine, .card__glare, .card__foil { background-position: 50% 50% !important; }
@@ -236,7 +236,7 @@
 .card--retro .fl-grid i.on {background:var(--accent);}
 .card--retro .card__stamp {background:#080f1bf2;color:var(--accent);border-color:var(--accent);}
 /* Preserve deep-red observing mode as an explicit app preference. */
-:where(html[data-theme='night'],body.night) .card.card--retro {--paper:#130606;--ink:#be6660;--grey:#a45650;--accent:#a5534b;--rule:#52221f;--edge:#4d1b18;}
+:where(html[data-theme='night'],body.night) .card.card--retro {--paper:#130606;--ink:#f27463;--grey:#dd6455;--accent:#a5534b;--rule:#52221f;--edge:#4d1b18;}
 :where(html[data-theme='night'],body.night) .card--retro .card__face {box-shadow:inset 0 0 0 .1em #52221f;}
 .card-tile.card-tile--retro {background:#080f1b;color:#fff2b3;border:2px solid #adbcc8;box-shadow:inset 0 0 0 1px #657786;}
 .card-tile--retro .card-tile__set {background:none;color:inherit;border-bottom:1px solid #bcb585;font:500 12px/1.2 'SC Label',sans-serif;letter-spacing:.12em;}
@@ -244,8 +244,8 @@
 .card-tile--retro .card-tile__tier {color:#fa8127;font:500 12px/1.2 'SC Label',sans-serif;}
 .card-tile--retro .card-tile__name {font:400 17px/1.1 'SC Display',Impact,sans-serif;text-transform:uppercase;}
 .card-tile--retro .card-tile__status {color:#fff2b3;border-color:#bcb585;font:500 12px/1.3 'SC Label',sans-serif;}
-:where(html[data-theme='night'],body.night) .card-tile.card-tile--retro {background:#130606;color:#be6660;border-color:#52221f;}
-:where(html[data-theme='night'],body.night) .card-tile--retro .card-tile__status,:where(html[data-theme='night'],body.night) .card-tile--retro .card-tile__tier {color:#a45650;border-color:#52221f;}
+:where(html[data-theme='night'],body.night) .card-tile.card-tile--retro {background:#130606;color:#f27463;border-color:#52221f;}
+:where(html[data-theme='night'],body.night) .card-tile--retro .card-tile__status,:where(html[data-theme='night'],body.night) .card-tile--retro .card-tile__tier {color:#dd6455;border-color:#52221f;}
 /* Retro frame: silver on every rarity, as the template intends. Without these, the older level colours
    (.level-bronze etc.) and the Legendary gold ring win on specificity. */
 .card.card--retro .card__face { border-color: var(--edge); }
@@ -418,7 +418,7 @@
 .card--retro .card__tier i { color: var(--tier, var(--accent)); }
 .card-tile--retro .card-tile__tier { color: color-mix(in srgb, var(--tier, #fa8127) 80%, #fff2b3); }
 .card-tile--retro .card-tile__tier i { font-style: normal; color: var(--tier, #fa8127); }
-:where(html[data-theme='night'], body.night) .card-tile--retro .card-tile__tier, :where(html[data-theme='night'], body.night) .card-tile--retro .card-tile__tier i { color: #a45650; } /* red mode stays red; the shape carries the tier */
+:where(html[data-theme='night'], body.night) .card-tile--retro .card-tile__tier, :where(html[data-theme='night'], body.night) .card-tile--retro .card-tile__tier i { color: #dd6455; } /* red mode stays red; the shape carries the tier */
 /* Card levels you can see (2026-10-12, collectors): the retro frame is silver-grey on every card, so silver gets a bright
    double ring and a soft sheen, gold a gold frame and glow; the footer names the level. */
 .card.card--retro.level-silver .card__face { border-color: #eef3f7; box-shadow: inset 0 0 0 .09em #8fa0ad, inset 0 0 0 .17em #ffffff, 0 0 1.1em #dfe8ef40; }
