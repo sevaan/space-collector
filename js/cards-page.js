@@ -1,28 +1,28 @@
-import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.526';
-import { computeStats, statsHtml, posterCanvas } from './stats.js?v=0.1.526';
-import { isPlus } from './plus.js?v=0.1.526';
-import { nightKey } from './observation.js?v=0.1.526';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.526';
-import { sfx } from './sfx.js?v=0.1.526';
-import { expandFacts } from './catalog-facts.js?v=0.1.526';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.526';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.526';
-import { ticket } from './toast.js?v=0.1.526';
-import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.526';
-import { cardArt } from './art.js?v=0.1.526';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.526';
-import { applyBack } from './card-backs.js?v=0.1.526';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.526';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.526';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.526';
-import { loadConstellations, conList } from './constellations.js?v=0.1.526';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.526';
-import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.526';
-import { shareCardEl } from './share-card.js?v=0.1.526';
-import { removeSighting } from './account.js?v=0.1.526';
-import { allSightings, deleteSighting } from './store.js?v=0.1.526';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.526';
-import { SECRET_PATCHES } from './secrets.js?v=0.1.526';
+import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.527';
+import { computeStats, statsHtml, posterCanvas } from './stats.js?v=0.1.527';
+import { isPlus } from './plus.js?v=0.1.527';
+import { nightKey } from './observation.js?v=0.1.527';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.527';
+import { sfx } from './sfx.js?v=0.1.527';
+import { expandFacts } from './catalog-facts.js?v=0.1.527';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.527';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.527';
+import { ticket } from './toast.js?v=0.1.527';
+import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.527';
+import { cardArt } from './art.js?v=0.1.527';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.527';
+import { applyBack } from './card-backs.js?v=0.1.527';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.527';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.527';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.527';
+import { loadConstellations, conList } from './constellations.js?v=0.1.527';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.527';
+import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.527';
+import { shareCardEl } from './share-card.js?v=0.1.527';
+import { removeSighting } from './account.js?v=0.1.527';
+import { allSightings, deleteSighting } from './store.js?v=0.1.527';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.527';
+import { SECRET_PATCHES } from './secrets.js?v=0.1.527';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -199,7 +199,7 @@ function remindStreak() {
   const start = d.getTime(), url = URL.createObjectURL(new Blob([passIcs({ title: 'Look up tonight (Space Collector)', start, end: start + 3600e3, description: 'Log one sighting this week to keep your observing streak. Open https://sevaan.github.io/space-collector/' })], { type: 'text/calendar' }));
   URL.revokeObjectURL(url);
   // App: a notification (QA 2026-10-11, the .ics did nothing there). Web: a calendar file.
-  (isNative() ? notifyAt(start, 'Look up tonight', 'Log one sighting this week to keep your observing streak.') : saveFile(new Blob([passIcs({ title: 'Look up tonight (Space Collector)', start, end: start + 3600e3, description: 'Log one sighting this week to keep your observing streak. Open https://sevaan.github.io/space-collector/' })], { type: 'text/calendar' }), 'space-collector-streak.ics').then((ok) => (ok ? 'calendar' : 'failed')))
+  (isNative() ? notifyAt(start, 'Look up tonight', 'Log one sighting this week to keep your observing streak.') : saveFile(new Blob([passIcs({ title: 'Look up tonight (Space Collector)', start, end: start + 3600e3, description: 'Log one sighting this week to keep your observing streak. Open https://sevaan.github.io/space-collector/' })], { type: 'text/calendar' }), 'Space Collector - Look up tonight.ics').then((ok) => (ok ? 'calendar' : 'failed')))
     .then((r) => ticket({ kind: 'mission', eyebrow: 'STREAK', line: r === 'on' ? 'We\'ll remind you Saturday at 8 pm.' : r === 'calendar' ? 'Saturday 8 pm reminder: add it to your calendar.' : r === 'denied' ? 'Notifications are off for Space Collector.' : 'Couldn\'t set a reminder here.', ms: 4000 }));
 }
 // Observer stats (Plus, 2026-10-11): a link under the rank card opens #stats-view.
@@ -214,7 +214,7 @@ function openStats() {
       const info = (k) => { const c = state.byKey.get(k); return c ? { tier: c.tier, tier0: c.tier0, type: c.type, owner: c.owner, launch: c.launch, natural: c.natural, con: c.con } : null; };
       const rank = progress(state.raw, info, { constellations: conList(), deals: readDeals() }).rank?.name ?? '';
       const blob = await new Promise((r) => posterCanvas(yr, rank).toBlob(r, 'image/png'));
-      if (!(await shareFile(blob, `space-collector-${year}.png`, { title: `My sky in ${year}` }))) saveFile(blob, `space-collector-${year}.png`);
+      if (!(await shareFile(blob, `Space Collector - My sky in ${year}.png`, { title: `My sky in ${year}` }))) saveFile(blob, `Space Collector - My sky in ${year}.png`);
     };
   }
   $('stats-view').showModal();

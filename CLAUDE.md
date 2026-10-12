@@ -684,3 +684,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - **Double-tap zoom** is off on controls: `touch-action: manipulation` on buttons, links, labels, inputs, .d-cta and .ticket. Pinch zoom still works.
 
 2026-10-12 · v0.1.526: patch coins roll into the Collection tab again (the pc-drop rule outranked .pc-coin.out's pc-roll; there's now an equally specific .patch-coins .pc-coin.out rule after it).
+
+2026-10-12 · v0.1.527: generated file names are readable and start with the game's name: "Space Collector - Arcturus.png" (card share), "Space Collector - My sky in 2026.png" (poster), "Space Collector - ISS (Zarya) pass.ics", "Space Collector - Clear night.ics", "Space Collector - Look up tonight.ics", "Space Collector - Sightings 2026-10-12.json". Only characters that file systems reject are stripped.
