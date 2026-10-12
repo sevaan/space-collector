@@ -533,3 +533,9 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - **Sounds:** new `plane` (soft double buzz on "Just a plane"); `coinroll` is now "Swoosh down + tap". Variants are in design/sound-picks/ (scripts/sfx-synth.py).
 
 2026-10-11 · v0.1.512: Collection's Discover tab hidden (Sevaan). The Discover view stays: Albums set taps, the empty state and unowned-card links open it, and the Albums tab stays lit there.
+
+2026-10-11 · v0.1.513 pass alerts (Sevaan):
+- **Rules:** `alertPicks()` alerts only for cards new to you, never 11 pm–7 am, at most 3 a night, rarest first (Legendary > Epic > Rare, then famous icons, brightness, height), 30 min apart. Common, Uncommon and fleet stamps are only alerted once fewer than 10 Rare-or-better cards you don't own are left in the catalog.
+- **Wording:** no more "New to your collection"; Rare and up put the rarity first: "Epic · A 1990 American space telescope at 9:02 PM".
+- **Native:** the app now has the toggle too. It schedules local notifications (ids 7101–7103), replaced whenever tonight's plan is recalculated.
+- **"from Space Collector":** iOS adds this line to Home Screen web-app notifications; native notifications don't have it.

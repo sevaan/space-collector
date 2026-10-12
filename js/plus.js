@@ -11,7 +11,7 @@ export function setPlusForTesting(on) {
 export function onPlus(f) { listeners.add(f); return () => listeners.delete(f); }
 // What Plus adds, in the order the sheet lists them. `live` = built today (the rest say "coming").
 export const PLUS_PERKS = [
-  { icon: '🔔', name: 'Pass alerts', text: 'A heads-up on your phone before a bright or new pass.', live: true },
+  { icon: '🔔', name: 'Pass alerts', text: 'A heads-up before a card you don\'t have flies over. Up to 3 a night, rarest first, never after 11 pm.', live: true },
   { icon: '🔭', name: 'Binocular mode', text: 'Hundreds of fainter satellites to find and collect.', live: true },
   { icon: '📅', name: 'The week ahead', text: 'The next 7 nights of passes and weather, and the best night to go out.', live: true },
   { icon: '⏱', name: 'Widget and lock-screen countdown', text: '"ISS in 12 min · NW" without opening the app.' },
