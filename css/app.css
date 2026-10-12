@@ -1063,3 +1063,8 @@ body.night .sb-end { opacity: 1 !important; color: var(--text) !important; }
 /* No double-tap zoom on controls (2026-10-12, Sevaan: double-tapping a button zoomed the page). Pinch zoom still works. */
 button, a, label, input, select, summary, [role="button"], .d-cta, .ticket { touch-action: manipulation; }
 .d-cta.done { opacity: .85; }
+/* Welcome, after the flip (2026-10-12, Sevaan): "Swipe away" in the middle of the space above the card, the sign-in link in
+   the middle of the space below it. Card centre = 50% + (safe-top − safe-bottom)/2, half height = 19.6 × --cf. */
+.wc-stage > .wc-after { top: calc((var(--safe-top) + 50% + (var(--safe-top) - var(--safe-bottom)) / 2 - 19.6 * var(--cf)) / 2); bottom: auto; translate: 0 -50%; }
+.wc-stage > .wc-after #btn-start.text-button { padding-bottom: 2px; }
+.wc-stage > .wc-signin { top: calc((50% + (var(--safe-top) - var(--safe-bottom)) / 2 + 19.6 * var(--cf) + 100% - var(--safe-bottom)) / 2); bottom: auto; translate: 0 -50%; }
