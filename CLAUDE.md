@@ -513,3 +513,21 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 2026-10-11 · Confirmed on Sevaan’s iPhone 14: native share sheet and pass-reminder notifications work.
 
 2026-10-11 · Switcher above the Collection: #nav moved out of #hud to a body-level sibling (a fixed #hud is its own stacking context, so no z-index could lift it); body.col-open keeps it at z 70 while the frame slides in, sits, and slides out; the frame hides its own copy (html.embedded .bottom-nav); Explore on the shared switcher closes the Collection. Week ahead (Plus): Week tab, tonight-worker run for 6 more nights at 2-min steps (requestWeek, nightSummary, renderWeek, best night), weather now 7 days. Shiny forecast (Plus): planner records eclipseAt/moonSep per pass; shinyChances in Tonight (free players get a teaser line). Observer stats (Plus): js/stats.js (totals, nights by month, map from geo.js LAND, rarest finds, longest run, best night, "Your sky in YEAR" poster via share sheet), link under the rank card, #stats-view. Saved places dropped from the plan (Sevaan).
+
+2026-10-11 · v0.1.509–511, one batch:
+- **Sign-in:** `setAcct()` in account.js records the user as soon as a sign-in call resolves. A sync that started before onAuthStateChanged ran used to find no account, which showed as "nothing to restore". Restore results now stay in the sheet via `authResult()`: restored / "No cards on this account yet" / "Couldn't reach your backup", with "Use a different account". `signInError()` gives plain-word errors.
+- **Sticky toasts:** `ticket({ sticky: true, action, go })` in toast.js stays up until tapped or closed with its ✕. At most two show; normal toasts keep queueing above them.
+  - Sticky: the Tonight ticket, rank up, a pass you picked to follow, the next bright pass, the compass nudge, and errors (save, storage, share image, sync, pass search).
+  - The radar tip stays up too, with a ✕, and never shows once the radar list has been opened.
+  - Patch coins stay 7 s, sit under the radar, and a tap sends them on.
+- **Not tonight:** the daily Tonight page no longer opens on its own; it's a sticky TONIGHT ticket. The bad-weather page is design/not-tonight-combined.html, built in `renderNotTonight()`:
+  - seven nights with cloud bars, from weather.js `nights` (now with cloud/clearFrom, plus temp and wind);
+  - the next good night planned by `planNight()`, a one-off tonight-worker run: bright/rare passes in its first 5 h of dark, new to you, busiest, and the reminder;
+  - the 3 best passes above the cloud this evening;
+  - Collection / closest patch / preview-that-sky tiles.
+
+  Missions carrying over to the next clear night is NOT built (it would be a scoring change).
+- **Switcher:** 72px. Slider, toasts and target moved up 10px. It now sits under overlays (z 19), so the reveal covers it, and it hides while a Collection dialog is open (sc:modal message).
+- **Reveal:** the card is centred; the rank bar and "View in collection" are anchored to the bottom of the screen.
+- **Plus sheet:** moved to body level, so it opens from the Week tab. Escape closes any sheet. The restore link is hidden for players who already have cards.
+- **Sounds:** new `plane` (soft double buzz on "Just a plane"); `coinroll` is now "Swoosh down + tap". Variants are in design/sound-picks/ (scripts/sfx-synth.py).

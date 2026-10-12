@@ -2,21 +2,26 @@
 // Kinds colour the left edge: mission (orange), xp (steel blue), event / achievement / rank (gold), info.
 // They queue rather than stack: one at a time, oldest first; a tap sends one away sooner. An `id` lets a toast
 // be withdrawn the moment it stops being true (dropToast).
+// Sticky tickets (2026-10-11, Sevaan: "that kind of toast shouldn't auto-disappear… a close x… they have to be
+// dismissed") stay until tapped or closed with their ✕. They don't hold up the queue: ordinary toasts keep coming above
+// them. At most two stay up; a third sends the oldest away. `action` runs on a tap (like `href`, without a page).
 const queue = [];
 const live = new Map();
 let busy = false;
+const stickies = new Set();
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 function stack() {
   let el = document.getElementById('toasts');
   if (!el) { el = document.createElement('div'); el.id = 'toasts'; el.setAttribute('aria-live', 'polite'); document.body.append(el); }
   return el;
 }
-export function toast(html, ms = 2200, href = null) { ticket({ kind: 'info', line: html, html: true, ms, href }); }
+export function toast(html, ms = 2200, href = null, opts = {}) { ticket({ kind: 'info', line: html, html: true, ms, href, ...opts }); }
 // Called with each ticket as it appears (main.js plays its sound: mission, rank up, or the quiet toast).
 let onShown = null;
 export function onTicketShown(fn) { onShown = fn; }
-export function ticket({ kind = 'info', eyebrow = '', line = '', xp = 0, ms = 3000, href = null, html = false, delay = 0, id = null, art = '', celebrate = false }) {
-  queue.push({ kind, eyebrow, line, xp, ms, href, html, id, art, celebrate, at: Date.now() + delay });
+export function ticket({ kind = 'info', eyebrow = '', line = '', xp = 0, ms = 3000, href = null, html = false, delay = 0, id = null, art = '', celebrate = false, sticky = false, action = null, go = null }) {
+  if (id && toastPending(id)) dropToast(id); // the same message again replaces the old one
+  queue.push({ kind, eyebrow, line, xp, ms, href, html, id, art, celebrate, sticky, action, go, at: Date.now() + delay });
   pump();
 }
 export function toastPending(id) { return live.has(id) || queue.some((q) => q.id === id); }
@@ -52,18 +57,26 @@ function pump() {
   queue.shift();
   busy = true;
   const el = document.createElement('div');
-  el.className = `ticket ticket--${t.kind}${t.href ? ' linked' : ''}${t.art ? ' ticket--art' : ''}`;
-  el.innerHTML = `${t.art ? `<span class="ticket__art" aria-hidden="true">${t.art}</span>` : '<i class="ticket__mark" aria-hidden="true"></i>'}<span class="ticket__body">${t.eyebrow ? `<span class="ticket__eyebrow">${esc(t.eyebrow)}</span>` : ''}<span class="ticket__line">${t.html ? t.line : esc(t.line)}</span></span>${t.xp ? `<span class="ticket__xp">+${t.xp}<small>XP</small></span>` : t.href ? '<span class="ticket__go">OPEN ›</span>' : ''}`;
+  el.className = `ticket ticket--${t.kind}${t.href || t.action ? ' linked' : ''}${t.art ? ' ticket--art' : ''}${t.sticky ? ' ticket--sticky' : ''}`;
+  el.innerHTML = `${t.art ? `<span class="ticket__art" aria-hidden="true">${t.art}</span>` : '<i class="ticket__mark" aria-hidden="true"></i>'}<span class="ticket__body">${t.eyebrow ? `<span class="ticket__eyebrow">${esc(t.eyebrow)}</span>` : ''}<span class="ticket__line">${t.html ? t.line : esc(t.line)}</span></span>${t.xp ? `<span class="ticket__xp">+${t.xp}<small>XP</small></span>` : t.href || t.action ? `<span class="ticket__go">${esc(t.go ?? 'OPEN')} ›</span>` : ''}${t.sticky ? '<button type="button" class="ticket__x" aria-label="Dismiss">✕</button>' : ''}`;
   // Up long enough to read (2026-10-06: at least 5 s, about 1.6× the old times); a tap sends it away sooner.
   let gone = false, stopConfetti = () => {};
-  const dismiss = () => { if (gone) return; gone = true; clearTimeout(timer); stopConfetti(); if (t.id) live.delete(t.id); el.classList.remove('in'); setTimeout(() => { el.remove(); busy = false; pump(); }, 320); };
-  el.addEventListener('click', () => { if (t.href) { if (!window.scNavigate?.(t.href)) location.href = t.href; dismiss(); } else dismiss(); });
+  const dismiss = () => { if (gone) return; gone = true; clearTimeout(timer); stopConfetti(); if (t.id) live.delete(t.id); stickies.delete(dismiss); el.classList.remove('in'); setTimeout(() => { el.remove(); if (!t.sticky) { busy = false; pump(); } }, 320); };
+  el.addEventListener('click', (e) => {
+    if (e.target.closest('.ticket__x')) { dismiss(); return; }
+    if (t.action) { dismiss(); try { t.action(); } catch {} return; }
+    if (t.href) { if (!window.scNavigate?.(t.href)) location.href = t.href; dismiss(); } else dismiss();
+  });
   stack().append(el);
   requestAnimationFrame(() => {
     if (gone) return;
     el.classList.add('in'); try { onShown?.(t); } catch {}
     if (t.celebrate) stopConfetti = confetti(el);
   });
-  const timer = setTimeout(dismiss, Math.max(5000, t.ms * 1.6));
+  const timer = t.sticky ? 0 : setTimeout(dismiss, Math.max(5000, t.ms * 1.6));
   if (t.id) live.set(t.id, dismiss);
+  if (t.sticky) {
+    stickies.add(dismiss); if (stickies.size > 2) [...stickies][0]();
+    setTimeout(() => { busy = false; pump(); }, 700); // the next toast can come in above it
+  }
 }

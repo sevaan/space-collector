@@ -274,7 +274,7 @@ body.day #nextpass .np-k, body.day #nextpass .np-m { color:rgba(238,243,255,.82)
 }
 
 /* The sky slider (2026-10-06): a slim retro "exposure" control just above the switcher, Explore only. */
-#skybar { position:fixed; left:50%; transform:translateX(-50%); bottom:calc(94px + var(--safe-bottom)); /* clear of the switcher (top at 82px since it grew to 62px, 2026-10-11) */ width:min(300px, calc(100vw - 48px)); z-index:3; display:grid; grid-template-columns:auto 1fr auto; align-items:center; column-gap:9px; row-gap:2px; pointer-events:auto; }
+#skybar { position:fixed; left:50%; transform:translateX(-50%); bottom:calc(104px + var(--safe-bottom)); /* clear of the switcher (top at 92px since it grew to 72px, 2026-10-11) */ width:min(300px, calc(100vw - 48px)); z-index:3; display:grid; grid-template-columns:auto 1fr auto; align-items:center; column-gap:9px; row-gap:2px; pointer-events:auto; }
 #skybar .sb-end { font:500 9px/1 var(--label); letter-spacing:.16em; color:var(--muted); opacity:.75; }
 #sky-read { display:none; grid-column:1 / -1; text-align:center; font:500 11px/1.2 var(--label); letter-spacing:.12em; text-transform:uppercase; color:var(--muted); opacity:.7; transition:opacity .25s; }
 #sky-range:focus, #sky-range:focus-visible { outline:none; }
@@ -412,9 +412,9 @@ body:has(#target:not([hidden])) #toasts { bottom:calc(var(--safe-bottom) + 182px
 
 /* More air above the slider (2026-10-07, Sevaan): the mini card and toasts lift clear of it, and the mini card no
    longer shows "1 of 2" (the circle picks what you're aiming at). */
-#target { bottom:calc(var(--safe-bottom) + 156px) !important; }
-#toasts { bottom:calc(var(--safe-bottom) + 156px); } /* clear of the 62px switcher and the slider (2026-10-11) */
-body:has(#target:not([hidden])) #toasts { bottom:calc(var(--safe-bottom) + 216px); }
+#target { bottom:calc(var(--safe-bottom) + 166px) !important; }
+#toasts { bottom:calc(var(--safe-bottom) + 166px); } /* clear of the 72px switcher and the slider (2026-10-11) */
+body:has(#target:not([hidden])) #toasts { bottom:calc(var(--safe-bottom) + 226px); }
 #t-switch { display:none !important; }
 
 /* The standing message is a toast (ticket) in the bottom stack; it doesn't time out. */
@@ -843,7 +843,7 @@ html.quick .wc-loader .ld-sub { display: none; }
 body:has(#reveal:not([hidden])) #toasts { opacity: 0; transition: opacity .2s; }
 body:has(.patch-coins) #d-sub { opacity: 0; transition: opacity .2s; }
 /* Daytime has no sky slider, so toasts (and patch coins) sit just above the switcher (2026-10-10, Sevaan). */
-body.day #toasts { bottom: calc(var(--safe-bottom) + 96px) !important; } /* above the taller switcher */
+body.day #toasts { bottom: calc(var(--safe-bottom) + 106px) !important; } /* above the taller switcher */
 body.day .patch-coins { bottom: calc(var(--safe-bottom, 0px) + 114px); }
 /* Weekly recap (playtest 2026-10-09, #15): last week on a card, over the sky. */
 #recap { position: fixed; inset: 0; z-index: 60; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: calc(var(--safe-top) + 20px) 20px calc(var(--safe-bottom) + 24px); background: radial-gradient(ellipse at 50% 20%, #0c1d29f2, #080f1bf7 70%); opacity: 0; transition: opacity .3s ease; }
@@ -945,4 +945,65 @@ body.col-open #nav { z-index: 70; visibility: visible !important; }
 /* #nav is now a body-level sibling after #hud: hidden with the HUD (welcome screen), shown in quick mode as before */
 #hud[hidden] ~ #nav { display: none !important; }
 html.quick #hud[hidden] ~ #nav { display: grid !important; }
-#nav { pointer-events: auto; }
+#nav { pointer-events: auto; z-index: 19; } /* under overlays (reveal, settings: z 20); raised over the Collection by body.col-open */
+/* The sign-in sheet's end state (2026-10-11): one main button, "Use a different account" under it. */
+.auth-next { width:100%; margin:6px 0 2px; }
+.auth-sheet .auth-msg:not(:empty) { display:block; margin:2px 0 10px; color:#ffb27a; font-size:14px; line-height:1.4; }
+/* The radar tip stays until used (2026-10-11): a ✕ in its top-right corner. */
+.radar-tip { padding-right: 34px; }
+.radar-tip .rt-x { position: absolute; top: 0; right: 0; width: 32px; height: 100%; display: flex; align-items: center; justify-content: center; color: var(--muted); font: 400 13px/1 -apple-system, system-ui, sans-serif; }
+/* ---------- Not tonight (2026-10-11, design/not-tonight-combined.html) ---------- */
+#ob-done.nt .od-head { display: none; }
+#ob-done.nt { padding-bottom: 0; }
+#ob-done.nt .od-body { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; margin: 0 -24px; padding: 0 24px 130px; display: flex; flex-direction: column; gap: 20px; -webkit-mask: linear-gradient(#000 calc(100% - 40px), transparent); mask: linear-gradient(#000 calc(100% - 40px), transparent); }
+#ob-done.nt .od-body > * { flex: none; }
+#ob-done.nt .spacer { display: none; }
+#ob-done.nt #ob-explore { position: absolute; left: 24px; right: 24px; bottom: calc(var(--safe-bottom) + 24px); z-index: 2; background: color-mix(in srgb, var(--bg) 70%, #ffffff14); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+.nt-head .d-title { margin: 6px 0 8px; }
+.nt-eyebrow { color: var(--cyan) !important; }
+.nt-head .od-sub em { font-style: normal; color: var(--gold); }
+.nt-week { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-top: -6px; }
+.nt-week div { display: flex; flex-direction: column; align-items: center; gap: 5px; padding: 8px 0 7px; border-radius: 10px; background: #ffffff08; }
+.nt-week b { font: 500 12px var(--label); letter-spacing: .1em; color: var(--muted); }
+.nt-week i { font-style: normal; font-size: 15px; height: 18px; line-height: 18px; }
+.nt-week s { display: block; width: 22px; height: 26px; border-radius: 4px; background: #ffffff10; position: relative; overflow: hidden; text-decoration: none; }
+.nt-week s u { position: absolute; left: 0; right: 0; bottom: 0; background: #7d8a9a; }
+.nt-week .ok { background: color-mix(in srgb, var(--gold) 12%, transparent); outline: 1px solid color-mix(in srgb, var(--gold) 50%, transparent); }
+.nt-week .ok b { color: var(--gold); } .nt-week .ok s u { background: var(--gold); }
+.nt-week .now { outline: 1px solid color-mix(in srgb, var(--cyan) 35%, transparent); }
+.nt-legend { display: flex; justify-content: space-between; margin-top: -12px; font: 500 11px var(--label); letter-spacing: .14em; color: var(--muted); text-transform: uppercase; }
+.nt-hero { border-radius: 20px; padding: 18px; background: radial-gradient(120% 90% at 85% 0%, #1d3557, #0b1524 70%); border: 1px solid color-mix(in srgb, var(--gold) 45%, transparent); }
+.nt-top { display: flex; justify-content: space-between; align-items: baseline; }
+.nt-k { font: 500 12px var(--label); letter-spacing: .2em; text-transform: uppercase; color: var(--gold); }
+.nt-in { font: 500 12px var(--label); letter-spacing: .14em; color: var(--muted); text-transform: uppercase; }
+.nt-day { font: 400 34px/1 var(--display); color: var(--text); margin: 8px 0 4px; text-transform: uppercase; }
+.nt-why { font: 500 15px var(--label); letter-spacing: .08em; color: color-mix(in srgb, var(--text) 75%, transparent); text-transform: uppercase; }
+.nt-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 14px; }
+.nt-stats div { background: #ffffff0c; border-radius: 10px; padding: 8px 4px; text-align: center; }
+.nt-stats b { display: block; font: 400 19px var(--display); color: var(--text); }
+.nt-stats small { font: 500 10.5px var(--label); letter-spacing: .12em; color: var(--muted); text-transform: uppercase; }
+.nt-bell { display: flex; width: 100%; align-items: center; justify-content: space-between; margin-top: 12px; padding: 14px; border: 0; border-radius: 12px; background: var(--gold); color: #111; font: 500 15px var(--label); letter-spacing: .18em; text-transform: uppercase; cursor: pointer; }
+.nt-secrow { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; font: 500 13px var(--label); letter-spacing: .18em; text-transform: uppercase; color: var(--muted); }
+.nt-secrow button { background: none; border: 0; padding: 4px 0 4px 12px; color: var(--cyan); font: inherit; font-size: 12px; cursor: pointer; }
+.nt-pass { display: grid; grid-template-columns: 50px 1fr auto; gap: 10px; align-items: center; padding: 10px 12px; margin-bottom: 8px; border-radius: 14px; background: #0b1524d9; border: 1px solid var(--edge-soft); }
+.nt-pass b { font: 400 15px var(--display); color: var(--text); }
+.nt-pass i { display: block; font-style: normal; font: 500 15px var(--label); letter-spacing: .06em; color: var(--text); text-transform: uppercase; }
+.nt-pass small { display: block; font: 500 12px var(--label); letter-spacing: .06em; color: var(--muted); text-transform: uppercase; }
+.nt-pass em { font-style: normal; font: 500 12px var(--label); letter-spacing: .12em; text-transform: uppercase; }
+.nt-note { margin: 2px 0 0; font: 500 13px/1.4 var(--label); letter-spacing: .1em; color: var(--muted); text-transform: uppercase; }
+.nt-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); gap: 8px; }
+.nt-tile { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; min-height: 104px; padding: 12px; border-radius: 16px; background: #0b1524d9; border: 1px solid var(--edge-soft); text-align: left; cursor: pointer; color: var(--text); }
+.nt-tile b { margin-top: auto; font: 400 14px/1.1 var(--display); color: var(--text); }
+.nt-tile small { font: 500 11px var(--label); letter-spacing: .08em; color: var(--muted); text-transform: uppercase; }
+.nt-ic { font-size: 22px; line-height: 1; }
+.nt-ring { width: 30px; height: 30px; border-radius: 50%; background: conic-gradient(var(--gold) 0 var(--f), #ffffff14 0); display: grid; place-items: center; }
+.nt-ring::after { content: ''; width: 22px; height: 22px; border-radius: 50%; background: #0b1524; }
+#ob-done.nt #ob-explore { width: auto; margin: 0; }
+.nt-eyebrow { text-transform: uppercase; }
+#ob-done.nt #ob-explore { background: var(--glass-strong); }
+#ob-done.nt::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: calc(var(--safe-bottom) + 120px); background: linear-gradient(transparent, var(--bg) 45%); pointer-events: none; z-index: 1; }
+/* Playtest fixes (2026-10-11) */
+body.col-open.col-modal #nav { visibility: hidden !important; }
+body:has(#reveal:not([hidden])) .pc-badge, body:has(#reveal:not([hidden])) .patch-coins { visibility: hidden; }
+body:has(.overlay:not([hidden])) .ticket--sticky, body:has(.set-sheet.in) .ticket--sticky { display: none; }
+#plus-perks { -webkit-mask: linear-gradient(#000 calc(100% - 28px), transparent); mask: linear-gradient(#000 calc(100% - 28px), transparent); padding-bottom: 18px; }

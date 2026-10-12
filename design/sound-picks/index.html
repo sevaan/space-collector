@@ -1,0 +1,13 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Sound Picks</title>
+<style>body{margin:0;background:#080f1b;color:#fff2b3;font:16px/1.4 -apple-system,system-ui,sans-serif;padding:24px 16px 60px}h1{font-size:22px;margin:0 0 4px}p{color:#9fb3c8;margin:0 0 20px}h2{font-size:15px;letter-spacing:.14em;text-transform:uppercase;color:#fa8127;margin:26px 0 10px}button{display:flex;justify-content:space-between;width:100%;max-width:440px;margin:0 0 10px;padding:16px 18px;border-radius:14px;border:1px solid #344654;background:#0e1a29;color:#fff2b3;font:inherit;cursor:pointer}button b{color:#9fb3c8;font-weight:400}button.now{border-color:#fa8127}</style></head><body>
+<h1>Two new sounds</h1><p>Tap to play. The orange one is what's in the app now; tell me a number to switch.</p>
+<h2>Just a plane</h2>
+<button class="now" data-f="plane/d1.mp3">1 · Soft double buzz <b>in the app</b></button>
+<button data-f="plane/d2.mp3">2 · Falling nuh-uh <b></b></button>
+<button data-f="plane/d3.mp3">3 · Muted buzz <b></b></button>
+<h2>Patches into the Collection</h2>
+<button class="now" data-f="coinroll/d1.mp3">1 · Swoosh down + tap <b>in the app</b></button>
+<button data-f="coinroll/d2.mp3">2 · Rising swoosh <b></b></button>
+<button data-f="coinroll/d3.mp3">3 · Double swoosh <b></b></button>
+<button data-f="coinroll/d4.mp3">4 · Rolling tinks <b>the old one</b></button>
+<script>let a;document.querySelectorAll('button').forEach(b=>b.onclick=()=>{a?.pause();a=new Audio(b.dataset.f);a.play();});</script></body></html>

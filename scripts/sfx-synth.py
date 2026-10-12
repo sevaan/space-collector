@@ -160,6 +160,29 @@ def _rattle(glint=True):
     return out
 D['rattle'] = [('Card rattle + glint', _rattle(True), dict(wet=0.1, soften=3600, peak_db=-20)), ('Card rattle', _rattle(False), dict(wet=0.08, soften=3200, peak_db=-20))]
 
+# Just a plane (2026-10-11, Sevaan: "a soft buzzer sound like error, not a space object"): a low, muffled buzz, out of
+# the bell family on purpose, so it reads as "no" without being harsh.
+def buzz(f, dur=0.14, amp=1.0, wobble=28):
+    tt = t(dur); n = len(tt); ph = 2 * np.pi * f * tt
+    saw = sum(np.sin(k * ph) / k for k in range(1, 12))            # band-limited saw
+    am = 0.75 + 0.25 * np.sin(2 * np.pi * wobble * tt)               # a gentle flutter, like a buzzer
+    e = np.minimum(1, tt / 0.012) * np.minimum(1, (dur - tt) / 0.03)
+    return amp * lp(saw * am, 900, 2) * np.clip(e, 0, 1)
+D['plane'] = [('Soft double buzz', place(place(np.zeros(int(SR * 0.45)), buzz(185, 0.12), 0), buzz(185, 0.16), 0.17), dict(wet=0.06, soften=1800, peak_db=-17)),
+              ('Falling nuh-uh', place(place(np.zeros(int(SR * 0.5)), buzz(G['D4'] / 1.5, 0.12, wobble=0), 0), buzz(G['B4'] / 2.4, 0.2, wobble=0), 0.15), dict(wet=0.08, soften=1600, peak_db=-17)),
+              ('Muted buzz', buzz(150, 0.28, wobble=34), dict(wet=0.05, soften=1500, peak_db=-18))]
+# Patches rolling into the Collection (2026-10-11, Sevaan: "more of a swoosh sound"): an airy whoosh, then a soft tap
+# as they land in the tab.
+def _swoosh(f0, f1, dur, land=True, peak=0.4):
+    out = np.zeros(int(SR * (dur + 0.4))); place(out, swish(dur, f0, f1, amp=0.7, peak=peak), 0)
+    if land: place(out, 0.22 * felt(G['G5'], 0.2, 0.05), dur * 0.85)
+    return out
+dbl = np.zeros(int(SR * 0.9)); place(dbl, swish(0.38, 600, 2400, amp=0.6, peak=0.35), 0); place(dbl, swish(0.38, 500, 2000, amp=0.45, peak=0.35), 0.12); place(dbl, 0.2 * felt(G['D6'], 0.2, 0.05), 0.42)
+D['coinroll'] = [('Swoosh down + tap', _swoosh(2600, 500, 0.42), dict(wet=0.12, soften=4200, peak_db=-17)),
+                 ('Rising swoosh', _swoosh(450, 2600, 0.42, land=False, peak=0.6), dict(wet=0.14, soften=4200, peak_db=-17)),
+                 ('Double swoosh', dbl, dict(wet=0.14, soften=4200, peak_db=-17)),
+                 ('Rolling tinks (old)', cr, dict(wet=0.12, peak_db=-18))]
+
 if __name__ == '__main__':
     import sys
     out = sys.argv[1]; man = {}

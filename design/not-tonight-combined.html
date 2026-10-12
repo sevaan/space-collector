@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Not Tonight Options</title>
+<style>
+  @font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf') format('truetype'); }
+  @font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf') format('truetype'); font-weight: 500; }
+  :root { --ink: #fff2b3; --ink2: rgba(255, 242, 179, .72); --muted: #9fb3c8; --org: #fa8127; --cyan: #8fb7d9; --bg: #080f1b; --edge: rgba(150, 175, 200, .22); --gold: #e9c46a; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #05080e; color: #e6ecf5; font: 15px/1.45 -apple-system, system-ui, sans-serif; padding: 28px 20px 60px; }
+  h1 { font: 400 24px 'SC Display'; color: var(--ink); margin: 0 0 6px; }
+  .intro { color: var(--muted); max-width: 900px; margin: 0 0 26px; }
+  .board { display: flex; flex-wrap: wrap; gap: 30px 24px; }
+  .opt { width: 393px; }
+  .opt h2 { font: 500 19px 'SC Label'; letter-spacing: 1.5px; color: var(--ink); margin: 14px 0 2px; text-transform: uppercase; }
+  .opt p { color: var(--muted); font-size: 13px; margin: 0; }
+  .phone { position: relative; width: 393px; height: 852px; border-radius: 34px; overflow: hidden; border: 1px solid #1d2838; background: var(--bg); font-family: 'SC Label'; font-weight: 500; display: flex; flex-direction: column; padding: 62px 24px 34px; }
+  .phone > * { position: relative; z-index: 1; }
+  .clouds { position: absolute !important; inset: 0 0 auto 0; height: 62%; z-index: 0 !important; background:
+      radial-gradient(60% 22% at 20% 18%, #5b6574cc, transparent 70%), radial-gradient(55% 20% at 80% 10%, #6a7484bb, transparent 70%),
+      radial-gradient(70% 25% at 55% 34%, #47505ecc, transparent 70%), radial-gradient(60% 18% at 15% 48%, #3a4350aa, transparent 70%),
+      radial-gradient(60% 18% at 85% 52%, #353e4baa, transparent 70%), linear-gradient(#3d4553, #1a2230 70%, var(--bg)); }
+  .rain { position: absolute !important; inset: 0; z-index: 0 !important; background: repeating-linear-gradient(105deg, transparent 0 22px, rgba(170, 195, 225, .10) 22px 23px, transparent 23px 47px); mask: linear-gradient(#000 0 55%, transparent 80%); }
+  .eyebrow { font-size: 15px; letter-spacing: 3px; text-transform: uppercase; color: var(--cyan); }
+  .title { font: 400 44px/1 'SC Display'; color: var(--ink); text-transform: uppercase; margin: 10px 0 12px; }
+  .title.s { font-size: 36px; }
+  .sub { font-size: 15px; letter-spacing: 2.4px; text-transform: uppercase; color: var(--ink2); }
+  .sec { font-size: 13px; letter-spacing: 2.6px; text-transform: uppercase; color: var(--muted); margin: 0 0 10px; }
+  .spacer { flex: 1; }
+  .cta { display: flex; justify-content: space-between; align-items: center; height: 60px; border-radius: 16px; padding: 0 24px; font-size: 18px; letter-spacing: 3.6px; text-transform: uppercase; margin-top: 10px; }
+  .cta.o { background: var(--org); color: #111; }
+  .cta.g { background: #ffffff12; color: var(--ink); }
+  .cta.line { border: 1px solid var(--edge); color: var(--ink); }
+  em { font-style: normal; color: var(--gold); }
+
+  /* A — the week as a forecast list */
+  .wk { border: 1px solid var(--edge); border-radius: 16px; overflow: hidden; background: #0b1524cc; }
+  .wk .r { display: grid; grid-template-columns: 54px 28px 1fr 64px; align-items: center; gap: 10px; padding: 11px 14px; border-top: 1px solid #ffffff0d; }
+  .wk .r:first-child { border-top: 0; }
+  .wk .d { font: 400 16px 'SC Display'; color: var(--ink); }
+  .wk .i { font-size: 18px; text-align: center; }
+  .wk .bar { height: 8px; border-radius: 5px; background: #ffffff10; overflow: hidden; }
+  .wk .bar b { display: block; height: 100%; border-radius: 5px; background: linear-gradient(90deg, #5d6b7c, #8695a7); }
+  .wk .w { font-size: 14px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); text-align: right; }
+  .wk .r.best { background: linear-gradient(90deg, #e9c46a1f, transparent); }
+  .wk .r.best .bar b { background: linear-gradient(90deg, #e9c46a, #fa8127); }
+  .wk .r.best .w { color: var(--gold); }
+  .wk .r.today { background: #ffffff06; }
+  .tag { display: inline-block; font-size: 11px; letter-spacing: 1.6px; padding: 2px 7px; border-radius: 6px; background: var(--gold); color: #111; margin-left: 6px; vertical-align: 2px; }
+
+  /* B — above the clouds */
+  .above { display: flex; flex-direction: column; gap: 9px; }
+  .pass { display: grid; grid-template-columns: 58px 1fr auto; gap: 12px; align-items: center; padding: 12px 14px; border-radius: 14px; background: #0b1524d9; border: 1px solid var(--edge); }
+  .pass .t { font: 400 17px 'SC Display'; color: var(--ink); }
+  .pass .n { font-size: 17px; letter-spacing: 1.4px; color: var(--ink); text-transform: uppercase; }
+  .pass .m { font-size: 13px; letter-spacing: 1.2px; color: var(--muted); text-transform: uppercase; }
+  .pass .rar { font-size: 12px; letter-spacing: 1.8px; text-transform: uppercase; }
+  .pass.hid { opacity: .55; }
+  .lock { font-size: 13px; letter-spacing: 1.6px; color: var(--muted); text-transform: uppercase; display: flex; gap: 8px; align-items: center; justify-content: center; margin-top: 4px; }
+  .callout { border-radius: 16px; padding: 16px; background: linear-gradient(135deg, #e9c46a22, #fa812711); border: 1px solid #e9c46a55; display: flex; gap: 14px; align-items: center; }
+  .callout .big { font: 400 30px/1 'SC Display'; color: var(--ink); }
+  .callout .c { font-size: 15px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--ink2); line-height: 1.3; }
+
+  /* C — the hero night */
+  .hero { border-radius: 22px; padding: 22px 20px; background: radial-gradient(120% 80% at 80% 0%, #1d3557, #0b1524 70%); border: 1px solid #e9c46a66; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(1.2px 1.2px at 20% 30%, #fff, transparent), radial-gradient(1px 1px at 70% 20%, #fff, transparent), radial-gradient(1.4px 1.4px at 85% 55%, #fff, transparent), radial-gradient(1px 1px at 40% 70%, #fffa, transparent), radial-gradient(1px 1px at 60% 45%, #fff9, transparent), radial-gradient(1.2px 1.2px at 12% 80%, #fff, transparent); }
+  .hero > * { position: relative; }
+  .hero .k { font-size: 13px; letter-spacing: 2.6px; text-transform: uppercase; color: var(--gold); }
+  .hero .day { font: 400 40px/1 'SC Display'; color: var(--ink); margin: 8px 0 6px; text-transform: uppercase; }
+  .hero .why { font-size: 16px; letter-spacing: 1.4px; color: var(--ink2); text-transform: uppercase; }
+  .hero .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 18px; }
+  .hero .stats div { background: #ffffff0c; border-radius: 12px; padding: 10px; text-align: center; }
+  .hero .stats b { display: block; font: 400 22px 'SC Display'; color: var(--ink); }
+  .hero .stats small { font-size: 11px; letter-spacing: 1.6px; color: var(--muted); text-transform: uppercase; }
+  .dots { display: flex; justify-content: space-between; margin-top: 18px; }
+  .dots div { text-align: center; width: 44px; }
+  .dots b { display: block; font-size: 13px; letter-spacing: 1.5px; color: var(--muted); text-transform: uppercase; margin-bottom: 6px; }
+  .dots i { display: block; width: 30px; height: 30px; margin: 0 auto; border-radius: 50%; font-style: normal; line-height: 30px; font-size: 15px; background: #ffffff0d; }
+  .dots .ok i { background: var(--gold); color: #111; }
+  .dots .ok b { color: var(--gold); }
+
+  /* D — tonight indoors */
+  .tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .tile { border-radius: 16px; padding: 14px; background: #0b1524d9; border: 1px solid var(--edge); min-height: 118px; display: flex; flex-direction: column; }
+  .tile .ic { font-size: 22px; }
+  .tile .h { font: 400 17px/1.1 'SC Display'; color: var(--ink); margin-top: auto; }
+  .tile .s { font-size: 13px; letter-spacing: 1.2px; color: var(--muted); text-transform: uppercase; margin-top: 4px; }
+  .tile.wide { grid-column: 1 / -1; min-height: 0; flex-direction: row; align-items: center; gap: 14px; }
+  .tile.wide .h { margin: 0; }
+  .strip { display: flex; gap: 6px; margin-top: 16px; }
+  .strip div { flex: 1; text-align: center; padding: 8px 0; border-radius: 10px; background: #ffffff08; }
+  .strip b { display: block; font-size: 12px; letter-spacing: 1.5px; color: var(--muted); }
+  .strip i { font-style: normal; font-size: 15px; }
+  .strip .ok { background: #e9c46a26; outline: 1px solid #e9c46a77; }
+  .strip .ok b { color: var(--gold); }
+
+  .phone.scroll { padding: 0; display: block; }
+  .phone.scroll .inner { position: absolute; inset: 0; padding: 62px 20px 170px; display: flex; flex-direction: column; gap: 18px; }
+  .phone.scroll .inner > * { flex: none; }
+  .dock { position: absolute !important; left: 0; right: 0; bottom: 0; z-index: 3 !important; padding: 30px 20px 30px; background: linear-gradient(transparent, var(--bg) 26%); }
+  .dock .cta { margin-top: 8px; }
+  .row2 { display: flex; gap: 8px; }
+  .row2 .cta { flex: 1; justify-content: center; gap: 10px; padding: 0 12px; font-size: 15px; letter-spacing: 2.6px; }
+  .hd .title { margin: 6px 0 8px; }
+  .wkc { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-top: 16px; }
+  .wkc div { display: flex; flex-direction: column; align-items: center; gap: 5px; padding: 8px 0 7px; border-radius: 10px; background: #ffffff08; }
+  .wkc b { font-size: 12px; letter-spacing: 1.4px; color: var(--muted); }
+  .wkc i { font-style: normal; font-size: 15px; height: 18px; }
+  .wkc s { display: block; width: 22px; height: 26px; border-radius: 4px; background: #ffffff10; position: relative; overflow: hidden; text-decoration: none; }
+  .wkc s u { position: absolute; left: 0; right: 0; bottom: 0; background: #7d8a9a; }
+  .wkc .ok { background: #e9c46a1f; outline: 1px solid #e9c46a80; }
+  .wkc .ok b { color: var(--gold); } .wkc .ok s u { background: var(--gold); }
+  .wkc .now { outline: 1px solid #8fb7d955; }
+  .legend { display: flex; justify-content: space-between; font-size: 11px; letter-spacing: 1.6px; color: var(--muted); text-transform: uppercase; margin-top: 8px; }
+  .hero2 { border-radius: 20px; padding: 18px; background: radial-gradient(120% 90% at 85% 0%, #1d3557, #0b1524 70%); border: 1px solid #e9c46a66; position: relative; overflow: hidden; }
+  .hero2::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(1.2px 1.2px at 20% 30%, #fff, transparent), radial-gradient(1px 1px at 70% 20%, #fff, transparent), radial-gradient(1.4px 1.4px at 85% 55%, #fff, transparent), radial-gradient(1px 1px at 40% 70%, #fffa, transparent), radial-gradient(1.2px 1.2px at 12% 80%, #fff, transparent); opacity: .7; }
+  .hero2 > * { position: relative; }
+  .hero2 .top { display: flex; justify-content: space-between; align-items: baseline; }
+  .hero2 .k { font-size: 12px; letter-spacing: 2.6px; text-transform: uppercase; color: var(--gold); }
+  .hero2 .in { font-size: 12px; letter-spacing: 1.8px; color: var(--muted); text-transform: uppercase; }
+  .hero2 .day { font: 400 34px/1 'SC Display'; color: var(--ink); margin: 8px 0 4px; text-transform: uppercase; }
+  .hero2 .why { font-size: 15px; letter-spacing: 1.3px; color: var(--ink2); text-transform: uppercase; }
+  .hero2 .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 14px; }
+  .hero2 .stats div { background: #ffffff0c; border-radius: 10px; padding: 8px; text-align: center; }
+  .hero2 .stats b { display: block; font: 400 19px 'SC Display'; color: var(--ink); }
+  .hero2 .stats small { font-size: 10.5px; letter-spacing: 1.5px; color: var(--muted); text-transform: uppercase; }
+  .hero2 .bell { display: flex; align-items: center; justify-content: space-between; margin-top: 12px; padding: 12px 14px; border-radius: 12px; background: var(--org); color: #111; font-size: 15px; letter-spacing: 2.6px; text-transform: uppercase; }
+  .secrow { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+  .secrow .sec { margin: 0; } .secrow a { font-size: 12px; letter-spacing: 1.8px; color: var(--cyan); text-transform: uppercase; text-decoration: none; }
+  .pass.mini { padding: 10px 12px; grid-template-columns: 50px 1fr auto; }
+  .pass.mini .t { font-size: 15px; } .pass.mini .n { font-size: 15px; } .pass.mini .m { font-size: 12px; }
+  .tiles3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .tiles3 .tile { min-height: 104px; padding: 12px; }
+  .tiles3 .h { font-size: 14px; } .tiles3 .s { font-size: 11px; letter-spacing: 1px; }
+  .ring { width: 30px; height: 30px; border-radius: 50%; background: conic-gradient(var(--org) 0 72%, #ffffff14 0); display: grid; place-items: center; }
+  .ring::after { content: ''; width: 22px; height: 22px; border-radius: 50%; background: #0b1524; }
+  .scrollhint { position: absolute !important; right: 6px; top: 140px; width: 3px; height: 120px; border-radius: 3px; background: #ffffff22; z-index: 4 !important; }
+  .toastdemo { position: absolute !important; left: 20px; right: 20px; bottom: 120px; z-index: 5 !important; display: flex; align-items: center; gap: 12px; min-height: 60px; padding: 8px 4px 8px 14px; border: 1px solid #e2b53c; border-left: 4px solid #e2b53c; border-radius: 10px; background: #0b1524; }
+  .toastdemo .dot { width: 12px; height: 12px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #fff1c2, #e2b53c 60%, #9a7420); flex: none; }
+  .toastdemo .b { flex: 1; } .toastdemo small { display: block; font-size: 10px; letter-spacing: 2px; color: #f4d27a; } .toastdemo span { font-size: 15px; color: var(--ink); }
+  .toastdemo .go { font-size: 12px; letter-spacing: 1.6px; color: #f4d27a; } .toastdemo .x { width: 40px; text-align: center; color: var(--muted); border-left: 1px solid #627a8b55; align-self: stretch; display: grid; place-items: center; }
+  .skyfake { position: absolute !important; inset: 0; z-index: 0 !important; background: radial-gradient(60% 30% at 30% 30%, #2a3442, transparent), radial-gradient(50% 30% at 75% 60%, #232c38, transparent), #0b121d; }
+  .sw { position: absolute !important; left: 20px; right: 20px; bottom: 30px; height: 72px; border-radius: 99px; border: 1px solid #2a3a48; background: #0b1524; display: grid; grid-template-columns: 1fr 1fr; padding: 5px; z-index: 5 !important; }
+  .sw span { display: grid; place-items: center; font-size: 17px; letter-spacing: 3px; color: var(--ink2); border-radius: 99px; }
+  .sw span:first-child { background: #fa812724; outline: 1px solid #fa812777; color: var(--org); }
+  .radar { position: absolute !important; left: 22px; top: 120px; width: 96px; height: 96px; border-radius: 50%; border: 1.5px solid #627a8b; z-index: 1 !important; }
+  .reticle { position: absolute !important; left: 50%; top: 46%; width: 150px; height: 150px; margin: -75px; border-radius: 50%; border: 1.5px solid #cdbd8a99; z-index: 1 !important; }
+
+</style></head><body>
+<h1>Not tonight: all four in one</h1>
+<p class="intro">One page that does the job of all four. Top to bottom: what tonight is like (title), the week (from A), the next good night with its numbers and the reminder (from C), what's passing above the cloud tonight (from B), and things to do now (from D). It scrolls; the Explore button stays pinned at the bottom. It never opens by itself any more: a toast that stays until you tap it or close it opens it (third phone).</p>
+<div class="board">
+
+  <div class="opt">
+    <div class="phone scroll">
+      <div class="clouds"></div><div class="rain"></div>
+      <div class="inner">
+        <div class="hd">
+          <div class="eyebrow">Fog all night · 4° · wind 12 km/h</div>
+          <div class="title s">Not tonight.</div>
+          <div class="sub">Clear again in <em>6 days</em></div>
+          <div class="wkc">
+            <div class="now"><b>TON</b><i>🌫</i><s><u style="height:100%"></u></s></div>
+            <div><b>MON</b><i>🌧</i><s><u style="height:92%"></u></s></div>
+            <div><b>TUE</b><i>🌧</i><s><u style="height:85%"></u></s></div>
+            <div><b>WED</b><i>☁️</i><s><u style="height:70%"></u></s></div>
+            <div><b>THU</b><i>☁️</i><s><u style="height:55%"></u></s></div>
+            <div class="ok"><b>SAT</b><i>✦</i><s><u style="height:14%"></u></s></div>
+            <div><b>SUN</b><i>✦</i><s><u style="height:30%"></u></s></div>
+          </div>
+          <div class="legend"><span>Bars: cloud cover after dark</span><span>Tap a night</span></div>
+        </div>
+        <div class="hero2">
+          <div class="top"><span class="k">Next good night</span><span class="in">in 6 days</span></div>
+          <div class="day">Saturday</div>
+          <div class="why">Clear from 7:20 pm · moon sets 9:40</div>
+          <div class="stats"><div><b>38</b><small>Passes</small></div><div><b>2</b><small>New to you</small></div><div><b>9:15</b><small>Busiest</small></div></div>
+          <div class="bell"><span>🔔 Remind me Saturday</span><span>→</span></div>
+        </div>
+        <div>
+          <div class="secrow"><span class="sec">Above the fog tonight</span><a>All 44 ›</a></div>
+          <div class="above">
+            <div class="pass mini"><span class="t">8:14</span><span><div class="n">ISS (Zarya)</div><div class="m">High in the north · 4 min</div></span><span class="rar" style="color:#c77dff">Epic</span></div>
+            <div class="pass mini"><span class="t">9:02</span><span><div class="n">Hubble</div><div class="m">Low in the south · new to you</div></span><span class="rar" style="color:#4cc9f0">Rare</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="scrollhint"></div>
+      <div class="dock"><div class="cta g"><span>Explore the sky anyway</span><span>→</span></div></div>
+    </div>
+    <h2>1 · Opens on</h2>
+    <p>The week sits right under the title, with a bar for how cloudy each night is, so the answer is clear at a glance. Then the next good night as one card: when it clears, the numbers, and the reminder inside it.</p>
+  </div>
+
+  <div class="opt">
+    <div class="phone scroll">
+      <div class="clouds" style="opacity:.35"></div>
+      <div class="inner" style="padding-top:40px">
+        <div>
+          <div class="secrow"><span class="sec">Above the fog tonight</span><a>All 44 ›</a></div>
+          <div class="above">
+            <div class="pass mini"><span class="t">8:14</span><span><div class="n">ISS (Zarya)</div><div class="m">High in the north · 4 min</div></span><span class="rar" style="color:#c77dff">Epic</span></div>
+            <div class="pass mini"><span class="t">9:02</span><span><div class="n">Hubble</div><div class="m">Low in the south · new to you</div></span><span class="rar" style="color:#4cc9f0">Rare</span></div>
+            <div class="pass mini hid"><span class="t">9:40</span><span><div class="n">Starlink train</div><div class="m">23 in a line · west</div></span><span class="rar" style="color:#80ed99">Uncommon</span></div>
+          </div>
+          <div class="lock" style="margin-top:8px">You can't catch these through cloud. They're back Saturday.</div>
+        </div>
+        <div>
+          <div class="sec">While you wait</div>
+          <div class="tiles3">
+            <div class="tile"><span class="ic">🃏</span><span class="h">Collection</span><span class="s">14 cards</span></div>
+            <div class="tile"><span class="ring"></span><span class="h">Patches</span><span class="s">Night Owl 72%</span></div>
+            <div class="tile"><span class="ic">✦</span><span class="h">Saturday's sky</span><span class="s">Preview it</span></div>
+          </div>
+        </div>
+        <div>
+          <div class="sec">Missions carry over</div>
+          <div class="pass mini" style="grid-template-columns:22px 1fr auto"><span style="color:var(--org)">◇</span><span><div class="n">Catch a satellite</div><div class="m">Still open · +50 XP</div></span><span class="rar" style="color:var(--muted)">0 / 3</span></div>
+        </div>
+      </div>
+      <div class="scrollhint" style="top:420px"></div>
+      <div class="dock"><div class="cta g"><span>Explore the sky anyway</span><span>→</span></div></div>
+    </div>
+    <h2>1 · Scrolled down</h2>
+    <p>What's overhead behind the cloud tonight, with "new to you" marked, then things to do now: the Collection, the patch you're closest to, a preview of Saturday's sky. Tonight's missions stay open until the next clear night.</p>
+  </div>
+
+  <div class="opt">
+    <div class="phone">
+      <div class="skyfake"></div><div class="radar"></div><div class="reticle"></div>
+      <div class="toastdemo"><i class="dot"></i><div class="b"><small>TONIGHT</small><span>Fog all night · clear Saturday</span></div><span class="go">SEE ›</span><span class="x">✕</span></div>
+      <div class="sw"><span>EXPLORE</span><span>COLLECTION</span></div>
+    </div>
+    <h2>2 · How you get there</h2>
+    <p>The page no longer opens on its own. The first time you open the app each day, this toast slides up and stays until you tap it (opens the page) or close it with ✕. It also waits until any card reveal has finished, so it never interrupts a catch. The radar's "Tonight" tab opens the same page any time.</p>
+  </div>
+
+</div>
+</body>
+</html>

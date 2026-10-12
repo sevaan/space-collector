@@ -1,11 +1,11 @@
-import { isNative, shareFile } from './native.js?v=0.1.508';
+import { isNative, shareFile } from './native.js?v=0.1.511';
 // Share a card as an image (1080 × 1350, Instagram portrait): drawn on a canvas in the card style (art,
 // name, rarity, stats, fact, when you saw it, your observer rank), then handed to the share sheet
 // (navigator.share with a file) or downloaded. Drawing it ourselves avoids DOM-screenshot libraries,
 // which mangle Safari's fonts and blend modes.
-import { conArt } from './con-art.js?v=0.1.508';
-import { CON_BY_ID } from './constellations.js?v=0.1.508';
-import { TIER_INFO } from './rarity.js?v=0.1.508';
+import { conArt } from './con-art.js?v=0.1.511';
+import { CON_BY_ID } from './constellations.js?v=0.1.511';
+import { TIER_INFO } from './rarity.js?v=0.1.511';
 const W = 1080, H = 1350, INK = '#fff2b3', MUTED = '#bdbea9', ORANGE = '#fa8127', NAVY = '#080f1b';
 const loadImg = (src) => new Promise((ok, bad) => { const i = new Image(); i.onload = () => ok(i); i.onerror = bad; i.src = src; });
 const svgImg = async (svg) => { const u = URL.createObjectURL(new Blob([svg], { type: 'image/svg+xml' })); try { return await loadImg(u); } finally { URL.revokeObjectURL(u); } };
@@ -117,7 +117,8 @@ export async function shareCardEl(el, c, { title, rank = '', fact = '' }) {
   const tier = TIER_INFO[c.tier]?.color ?? '#fa8127'; // not the card's CSS colour, which red night mode overrides (QA 2026-10-08)
   const canvas = await drawShareCard(c, art, {
     title, setName: txt('.card__setbar > span:first-child'), tierLabel: txt('.card__tier').replace(/^\W+/, ''), tierColor: tier, stats,
-    fact: txt('.card__fact p') || fact, // fleet cards have no fact line on the card collected: txt('.card__status > span:nth-child(2)'), seen: txt('.card__seen-count'), rank,
+    fact: txt('.card__fact p') || fact, // fleet cards have no fact line on the card
+    collected: txt('.card__status > span:nth-child(2)'), seen: txt('.card__seen-count'), rank, // (a comment had swallowed this line until 2026-10-11)
     gold: el.classList.contains('gold-foil'), shiny: el.querySelector('.shiny-tag')?.textContent.split('·')[1]?.trim() ?? null,
   });
   return shareCard(canvas, `${title.replace(/[^\w-]+/g, '-').toLowerCase()}.png`, `${title} · Space Collector`);

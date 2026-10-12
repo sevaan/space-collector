@@ -8,8 +8,8 @@
 //   · here, uploaded before, gone from the cloud → deleted on another device, so deleted here
 //   · deleted here while offline → remembered (localStorage acctDeleted) and deleted from the cloud next sync
 // Firebase loads only when someone signs in or was signed in before, so a blocked or slow Google never stops the app.
-import { allSightings, addSighting, putSighting, deleteSighting } from './store.js?v=0.1.508';
-import { isNative, plugin } from './native.js?v=0.1.508';
+import { allSightings, addSighting, putSighting, deleteSighting } from './store.js?v=0.1.511';
+import { isNative, plugin } from './native.js?v=0.1.511';
 
 const FB = 'https://www.gstatic.com/firebasejs/12.4.0/';
 const CONFIG = {
@@ -40,13 +40,17 @@ async function load() {
     const auth = isNative() ? Au.initializeAuth(app, { persistence: Au.indexedDBLocalPersistence }) : Au.getAuth(app);
     fb = { auth, db, Au, F };
     Au.onAuthStateChanged(auth, (u) => {
-      if (u) { ls.set('acct', JSON.stringify({ uid: u.uid, email: u.email, name: u.displayName, syncedAt: account()?.syncedAt ?? null })); emit(); syncNow(); }
+      if (u) { setAcct(u); emit(); syncNow(); }
       else if (account()) { ls.set('acct', null); emit(); }
     });
     return fb;
   })();
   try { return await loading; } catch (e) { loading = null; throw e; }
 }
+
+// Record the signed-in user straight away. A sign-in call can resolve before onAuthStateChanged runs, and a sync
+// started in that gap found no account and brought nothing back ("nothing to restore", 2026-10-11, Sevaan).
+function setAcct(u) { const a = account(); ls.set('acct', JSON.stringify({ uid: u.uid, email: u.email, name: u.displayName, syncedAt: a?.uid === u.uid ? a.syncedAt ?? null : null })); }
 
 // On startup: only touch Firebase if this phone was signed in, or it's opening an emailed sign-in link.
 export async function initAccount() {
@@ -62,10 +66,10 @@ export async function signInGoogle() {
     // Firebase web session as the website, so backup and sync are unchanged (2026-10-11).
     const r = await plugin('FirebaseAuthentication').signInWithGoogle();
     const c = r?.credential; if (!c?.idToken) throw new Error('Google sign-in was cancelled.');
-    await Au.signInWithCredential(auth, Au.GoogleAuthProvider.credential(c.idToken, c.accessToken));
+    setAcct((await Au.signInWithCredential(auth, Au.GoogleAuthProvider.credential(c.idToken, c.accessToken))).user);
     return;
   }
-  await Au.signInWithPopup(auth, new Au.GoogleAuthProvider());
+  setAcct((await Au.signInWithPopup(auth, new Au.GoogleAuthProvider())).user);
 }
 // Where an emailed sign-in link should land: the website (the app's own address, capacitor://localhost, isn't a
 // web address; the app then takes the pasted link, like the Home Screen app).
@@ -80,7 +84,7 @@ export async function completeEmailLink(url, email = ls.get('emailForSignIn')) {
   const { auth, Au } = await load();
   if (!Au.isSignInWithEmailLink(auth, url)) throw new Error('That isn\'t a Space Collector sign-in link.');
   if (!email) throw new Error('need-email');
-  await Au.signInWithEmailLink(auth, email, url);
+  setAcct((await Au.signInWithEmailLink(auth, email, url)).user);
   ls.set('emailForSignIn', null);
   if (location.search) history.replaceState(null, '', location.pathname); // drop the link's codes from the address bar
 }

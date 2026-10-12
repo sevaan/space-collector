@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Not Tonight Options</title>
+<style>
+  @font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf') format('truetype'); }
+  @font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf') format('truetype'); font-weight: 500; }
+  :root { --ink: #fff2b3; --ink2: rgba(255, 242, 179, .72); --muted: #9fb3c8; --org: #fa8127; --cyan: #8fb7d9; --bg: #080f1b; --edge: rgba(150, 175, 200, .22); --gold: #e9c46a; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #05080e; color: #e6ecf5; font: 15px/1.45 -apple-system, system-ui, sans-serif; padding: 28px 20px 60px; }
+  h1 { font: 400 24px 'SC Display'; color: var(--ink); margin: 0 0 6px; }
+  .intro { color: var(--muted); max-width: 900px; margin: 0 0 26px; }
+  .board { display: flex; flex-wrap: wrap; gap: 30px 24px; }
+  .opt { width: 393px; }
+  .opt h2 { font: 500 19px 'SC Label'; letter-spacing: 1.5px; color: var(--ink); margin: 14px 0 2px; text-transform: uppercase; }
+  .opt p { color: var(--muted); font-size: 13px; margin: 0; }
+  .phone { position: relative; width: 393px; height: 852px; border-radius: 34px; overflow: hidden; border: 1px solid #1d2838; background: var(--bg); font-family: 'SC Label'; font-weight: 500; display: flex; flex-direction: column; padding: 62px 24px 34px; }
+  .phone > * { position: relative; z-index: 1; }
+  .clouds { position: absolute !important; inset: 0 0 auto 0; height: 62%; z-index: 0 !important; background:
+      radial-gradient(60% 22% at 20% 18%, #5b6574cc, transparent 70%), radial-gradient(55% 20% at 80% 10%, #6a7484bb, transparent 70%),
+      radial-gradient(70% 25% at 55% 34%, #47505ecc, transparent 70%), radial-gradient(60% 18% at 15% 48%, #3a4350aa, transparent 70%),
+      radial-gradient(60% 18% at 85% 52%, #353e4baa, transparent 70%), linear-gradient(#3d4553, #1a2230 70%, var(--bg)); }
+  .rain { position: absolute !important; inset: 0; z-index: 0 !important; background: repeating-linear-gradient(105deg, transparent 0 22px, rgba(170, 195, 225, .10) 22px 23px, transparent 23px 47px); mask: linear-gradient(#000 0 55%, transparent 80%); }
+  .eyebrow { font-size: 15px; letter-spacing: 3px; text-transform: uppercase; color: var(--cyan); }
+  .title { font: 400 44px/1 'SC Display'; color: var(--ink); text-transform: uppercase; margin: 10px 0 12px; }
+  .title.s { font-size: 36px; }
+  .sub { font-size: 15px; letter-spacing: 2.4px; text-transform: uppercase; color: var(--ink2); }
+  .sec { font-size: 13px; letter-spacing: 2.6px; text-transform: uppercase; color: var(--muted); margin: 0 0 10px; }
+  .spacer { flex: 1; }
+  .cta { display: flex; justify-content: space-between; align-items: center; height: 60px; border-radius: 16px; padding: 0 24px; font-size: 18px; letter-spacing: 3.6px; text-transform: uppercase; margin-top: 10px; }
+  .cta.o { background: var(--org); color: #111; }
+  .cta.g { background: #ffffff12; color: var(--ink); }
+  .cta.line { border: 1px solid var(--edge); color: var(--ink); }
+  em { font-style: normal; color: var(--gold); }
+
+  /* A — the week as a forecast list */
+  .wk { border: 1px solid var(--edge); border-radius: 16px; overflow: hidden; background: #0b1524cc; }
+  .wk .r { display: grid; grid-template-columns: 54px 28px 1fr 64px; align-items: center; gap: 10px; padding: 11px 14px; border-top: 1px solid #ffffff0d; }
+  .wk .r:first-child { border-top: 0; }
+  .wk .d { font: 400 16px 'SC Display'; color: var(--ink); }
+  .wk .i { font-size: 18px; text-align: center; }
+  .wk .bar { height: 8px; border-radius: 5px; background: #ffffff10; overflow: hidden; }
+  .wk .bar b { display: block; height: 100%; border-radius: 5px; background: linear-gradient(90deg, #5d6b7c, #8695a7); }
+  .wk .w { font-size: 14px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); text-align: right; }
+  .wk .r.best { background: linear-gradient(90deg, #e9c46a1f, transparent); }
+  .wk .r.best .bar b { background: linear-gradient(90deg, #e9c46a, #fa8127); }
+  .wk .r.best .w { color: var(--gold); }
+  .wk .r.today { background: #ffffff06; }
+  .tag { display: inline-block; font-size: 11px; letter-spacing: 1.6px; padding: 2px 7px; border-radius: 6px; background: var(--gold); color: #111; margin-left: 6px; vertical-align: 2px; }
+
+  /* B — above the clouds */
+  .above { display: flex; flex-direction: column; gap: 9px; }
+  .pass { display: grid; grid-template-columns: 58px 1fr auto; gap: 12px; align-items: center; padding: 12px 14px; border-radius: 14px; background: #0b1524d9; border: 1px solid var(--edge); }
+  .pass .t { font: 400 17px 'SC Display'; color: var(--ink); }
+  .pass .n { font-size: 17px; letter-spacing: 1.4px; color: var(--ink); text-transform: uppercase; }
+  .pass .m { font-size: 13px; letter-spacing: 1.2px; color: var(--muted); text-transform: uppercase; }
+  .pass .rar { font-size: 12px; letter-spacing: 1.8px; text-transform: uppercase; }
+  .pass.hid { opacity: .55; }
+  .lock { font-size: 13px; letter-spacing: 1.6px; color: var(--muted); text-transform: uppercase; display: flex; gap: 8px; align-items: center; justify-content: center; margin-top: 4px; }
+  .callout { border-radius: 16px; padding: 16px; background: linear-gradient(135deg, #e9c46a22, #fa812711); border: 1px solid #e9c46a55; display: flex; gap: 14px; align-items: center; }
+  .callout .big { font: 400 30px/1 'SC Display'; color: var(--ink); }
+  .callout .c { font-size: 15px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--ink2); line-height: 1.3; }
+
+  /* C — the hero night */
+  .hero { border-radius: 22px; padding: 22px 20px; background: radial-gradient(120% 80% at 80% 0%, #1d3557, #0b1524 70%); border: 1px solid #e9c46a66; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(1.2px 1.2px at 20% 30%, #fff, transparent), radial-gradient(1px 1px at 70% 20%, #fff, transparent), radial-gradient(1.4px 1.4px at 85% 55%, #fff, transparent), radial-gradient(1px 1px at 40% 70%, #fffa, transparent), radial-gradient(1px 1px at 60% 45%, #fff9, transparent), radial-gradient(1.2px 1.2px at 12% 80%, #fff, transparent); }
+  .hero > * { position: relative; }
+  .hero .k { font-size: 13px; letter-spacing: 2.6px; text-transform: uppercase; color: var(--gold); }
+  .hero .day { font: 400 40px/1 'SC Display'; color: var(--ink); margin: 8px 0 6px; text-transform: uppercase; }
+  .hero .why { font-size: 16px; letter-spacing: 1.4px; color: var(--ink2); text-transform: uppercase; }
+  .hero .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 18px; }
+  .hero .stats div { background: #ffffff0c; border-radius: 12px; padding: 10px; text-align: center; }
+  .hero .stats b { display: block; font: 400 22px 'SC Display'; color: var(--ink); }
+  .hero .stats small { font-size: 11px; letter-spacing: 1.6px; color: var(--muted); text-transform: uppercase; }
+  .dots { display: flex; justify-content: space-between; margin-top: 18px; }
+  .dots div { text-align: center; width: 44px; }
+  .dots b { display: block; font-size: 13px; letter-spacing: 1.5px; color: var(--muted); text-transform: uppercase; margin-bottom: 6px; }
+  .dots i { display: block; width: 30px; height: 30px; margin: 0 auto; border-radius: 50%; font-style: normal; line-height: 30px; font-size: 15px; background: #ffffff0d; }
+  .dots .ok i { background: var(--gold); color: #111; }
+  .dots .ok b { color: var(--gold); }
+
+  /* D — tonight indoors */
+  .tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .tile { border-radius: 16px; padding: 14px; background: #0b1524d9; border: 1px solid var(--edge); min-height: 118px; display: flex; flex-direction: column; }
+  .tile .ic { font-size: 22px; }
+  .tile .h { font: 400 17px/1.1 'SC Display'; color: var(--ink); margin-top: auto; }
+  .tile .s { font-size: 13px; letter-spacing: 1.2px; color: var(--muted); text-transform: uppercase; margin-top: 4px; }
+  .tile.wide { grid-column: 1 / -1; min-height: 0; flex-direction: row; align-items: center; gap: 14px; }
+  .tile.wide .h { margin: 0; }
+  .strip { display: flex; gap: 6px; margin-top: 16px; }
+  .strip div { flex: 1; text-align: center; padding: 8px 0; border-radius: 10px; background: #ffffff08; }
+  .strip b { display: block; font-size: 12px; letter-spacing: 1.5px; color: var(--muted); }
+  .strip i { font-style: normal; font-size: 15px; }
+  .strip .ok { background: #e9c46a26; outline: 1px solid #e9c46a77; }
+  .strip .ok b { color: var(--gold); }
+</style>
+</head>
+<body>
+<h1>Not tonight: four directions</h1>
+<p class="intro">The page now: a big title, four small boxes, then a large empty gap before the button. These four options fill that space with something useful. Each one is drawn for the native app, which has no Safari bars, so everything sits down to the bottom of the screen. The example: fog tonight, a clear Saturday later in the week.</p>
+
+<div class="board">
+
+  <!-- A -->
+  <div class="opt">
+    <div class="phone">
+      <div class="clouds"></div><div class="rain"></div>
+      <div class="eyebrow">Fog all night</div>
+      <div class="title">Not tonight,<br>but soon.</div>
+      <div class="sub">Next clear night: <em>Saturday</em></div>
+      <div class="spacer"></div>
+      <div class="sec">The week ahead · cloud cover</div>
+      <div class="wk">
+        <div class="r today"><span class="d">Tonight</span><span class="i">🌫</span><span class="bar"><b style="width:100%"></b></span><span class="w">Fog</span></div>
+        <div class="r"><span class="d">Mon</span><span class="i">🌧</span><span class="bar"><b style="width:92%"></b></span><span class="w">Rain</span></div>
+        <div class="r"><span class="d">Tue</span><span class="i">🌧</span><span class="bar"><b style="width:85%"></b></span><span class="w">Rain</span></div>
+        <div class="r"><span class="d">Wed</span><span class="i">☁️</span><span class="bar"><b style="width:70%"></b></span><span class="w">Cloud</span></div>
+        <div class="r"><span class="d">Thu</span><span class="i">☁️</span><span class="bar"><b style="width:55%"></b></span><span class="w">Patchy</span></div>
+        <div class="r best"><span class="d">Sat</span><span class="i">✦</span><span class="bar"><b style="width:12%"></b></span><span class="w">Clear</span></div>
+        <div class="r"><span class="d">Sun</span><span class="i">✦</span><span class="bar"><b style="width:30%"></b></span><span class="w">Mostly</span></div>
+      </div>
+      <div class="cta o" style="margin-top:16px"><span>Remind me Saturday</span><span>→</span></div>
+      <div class="cta g"><span>Explore the sky anyway</span><span>→</span></div>
+    </div>
+    <h2>A · The week as a forecast</h2>
+    <p>All seven nights in a list, with a bar for how cloudy each one is. The clear night is gold, and the reminder button is right under it. This is the closest to what's there now, just bigger and lower on the screen.</p>
+  </div>
+
+  <!-- B -->
+  <div class="opt">
+    <div class="phone">
+      <div class="clouds"></div><div class="rain"></div>
+      <div class="eyebrow">Fog all night</div>
+      <div class="title s">They're still<br>up there.</div>
+      <div class="sub">Above the fog tonight</div>
+      <div class="spacer"></div>
+      <div class="above">
+        <div class="pass"><span class="t">8:14</span><span><div class="n">ISS (Zarya)</div><div class="m">High in the north · 4 min</div></span><span class="rar" style="color:#c77dff">Epic</span></div>
+        <div class="pass"><span class="t">9:02</span><span><div class="n">Hubble</div><div class="m">Low in the south · 3 min</div></span><span class="rar" style="color:#4cc9f0">Rare</span></div>
+        <div class="pass hid"><span class="t">9:40</span><span><div class="n">Starlink train</div><div class="m">23 in a line · west</div></span><span class="rar" style="color:#80ed99">Uncommon</span></div>
+        <div class="lock">+ 41 more passing behind the cloud</div>
+      </div>
+      <div class="callout" style="margin-top:16px"><span class="big">Sat</span><span class="c">The fog lifts Saturday.<br><em>ISS passes again at 7:48</em></span></div>
+      <div class="cta o" style="margin-top:14px"><span>Remind me Saturday</span><span>→</span></div>
+      <div class="cta g"><span>Explore the sky anyway</span><span>→</span></div>
+    </div>
+    <h2>B · Above the clouds</h2>
+    <p>Shows what's passing overhead tonight that you can't see: the ISS, Hubble, and a count of the rest. It turns a dead end into a reason to come back, and it uses data the app already works out every night.</p>
+  </div>
+
+  <!-- C -->
+  <div class="opt">
+    <div class="phone">
+      <div class="clouds"></div><div class="rain"></div>
+      <div class="eyebrow">Fog all night</div>
+      <div class="title s">Not tonight.</div>
+      <div class="spacer"></div>
+      <div class="hero">
+        <div class="k">Your next clear night</div>
+        <div class="day">Saturday</div>
+        <div class="why">Clear from 7:20 pm · moon sets early</div>
+        <div class="stats"><div><b>38</b><small>Passes</small></div><div><b>2</b><small>New to you</small></div><div><b>9:15</b><small>Busiest</small></div></div>
+        <div class="dots">
+          <div><b>Sun</b><i>🌫</i></div><div><b>Mon</b><i>🌧</i></div><div><b>Tue</b><i>🌧</i></div><div><b>Wed</b><i>☁️</i></div><div><b>Thu</b><i>☁️</i></div><div class="ok"><b>Sat</b><i>✦</i></div><div><b>Sun</b><i>✦</i></div>
+        </div>
+      </div>
+      <div class="cta o" style="margin-top:16px"><span>Remind me Saturday</span><span>→</span></div>
+      <div class="cta g"><span>Explore the sky anyway</span><span>→</span></div>
+    </div>
+    <h2>C · The next good night</h2>
+    <p>One big card about the night to look forward to: when it clears, how many passes, how many you don't have yet. The week shrinks to a row of dots under it. Tonight is played down, the good news is the focus.</p>
+  </div>
+
+  <!-- D -->
+  <div class="opt">
+    <div class="phone">
+      <div class="clouds"></div><div class="rain"></div>
+      <div class="eyebrow">Fog all night</div>
+      <div class="title s">A night in.</div>
+      <div class="sub">Clear again <em>Saturday</em></div>
+      <div class="strip">
+        <div><b>SUN</b><i>🌫</i></div><div><b>MON</b><i>🌧</i></div><div><b>TUE</b><i>🌧</i></div><div><b>WED</b><i>☁️</i></div><div><b>THU</b><i>☁️</i></div><div class="ok"><b>SAT</b><i>✦</i></div><div><b>SUN</b><i>✦</i></div>
+      </div>
+      <div class="spacer"></div>
+      <div class="sec">Things to do tonight</div>
+      <div class="tiles">
+        <div class="tile"><span class="ic">🃏</span><span class="h">Your collection</span><span class="s">14 cards · 3 sets started</span></div>
+        <div class="tile"><span class="ic">🎖</span><span class="h">Patches</span><span class="s">2 close to done</span></div>
+        <div class="tile"><span class="ic">✦</span><span class="h">Stars & planets</span><span class="s">Learn what's up Saturday</span></div>
+        <div class="tile"><span class="ic">🛰</span><span class="h">Explore anyway</span><span class="s">The sky, behind the fog</span></div>
+        <div class="tile wide"><span class="ic">🔔</span><span><span class="h">Remind me Saturday</span><div class="s">A ping when it gets dark</div></span></div>
+      </div>
+    </div>
+    <h2>D · A night in</h2>
+    <p>Accepts the cloud and gives you other things to do: your collection, patches near done, a look at Saturday's sky. The forecast is a slim row at the top. It's the most like a home screen, and the least about the weather.</p>
+  </div>
+
+</div>
+</body>
+</html>

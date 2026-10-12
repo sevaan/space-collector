@@ -10,7 +10,7 @@
 
 /* Switcher: Explore | Collection. As wide as a card; the current page is the gold pill. */
 .sc-switch { position: fixed; z-index: 20; left: 50%; right: auto; bottom: calc(20px + var(--safe-bottom, env(safe-area-inset-bottom, 0px))); transform: translateX(-50%);
-  width: var(--nav-w); height: 62px; display: grid; /* taller for an easier tap (2026-10-11, Sevaan asked twice: 46 → 54 → 62px) */ grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; margin: 0; box-sizing: border-box;
+  width: var(--nav-w); height: 72px; display: grid; /* taller for an easier tap (2026-10-11, Sevaan asked three times: 46 → 54 → 62 → 72px) */ grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; margin: 0; box-sizing: border-box;
   background: var(--ui-bar); border: 1px solid var(--ui-edge-soft); border-top: 1px solid var(--ui-edge-soft); border-radius: 99px;
   -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
 .sc-switch__item { display: flex; flex-direction: row; justify-content: center; align-items: center; width: auto; min-height: 0; gap: 0; border: 0; border-radius: 99px;
@@ -277,7 +277,7 @@ dialog.leaving { animation: ui-fade-in var(--m-norm) var(--ease-out) reverse for
 
 /* Patch coins (2026-10-09, design/patch-earn-options.html A2): earned patches pop up on the left over the sky, then
    roll into the Collection tab. Round at every moment: only flat rotation and scale, never rotateY. */
-.patch-coins { position: fixed; left: 14px; bottom: calc(var(--safe-bottom, 0px) + 168px); z-index: 40; display: flex; flex-direction: column; align-items: flex-start; gap: 12px; pointer-events: auto; cursor: pointer; }
+.patch-coins { position: fixed; left: 14px; top: calc(var(--safe-top, 0px) + 270px); bottom: auto; z-index: 40; display: flex; flex-direction: column; align-items: flex-start; gap: 12px; pointer-events: auto; cursor: pointer; }
 .pc-coin { display: flex; align-items: center; }
 .pc-disc { width: 58px; flex: none; aspect-ratio: 1; filter: drop-shadow(0 6px 12px #000a); opacity: 0; transform: translateY(46px) scale(.2) rotate(-200deg); }
 .pc-disc .patch, .pc-disc svg { display: block; width: 100%; height: 100%; }
@@ -301,3 +301,9 @@ dialog.leaving { animation: ui-fade-in var(--m-norm) var(--ease-out) reverse for
 .sc-switch { grid-template-columns: repeat(var(--n, 2), 1fr); }
 .sc-switch::before { width: calc((100% - 8px - (var(--n, 2) - 1) * 4px) / var(--n, 2)); transform: translateX(calc(var(--i, 0) * (100% + 4px))) !important; }
 .sc-switch.three .sc-switch__item { font-size: clamp(10px, 3.1vw, 12.5px); letter-spacing: .1em; white-space: nowrap; }
+/* Sticky tickets (2026-10-11): stay until tapped or closed; a ✕ on the right, a 44px target. */
+.ticket--sticky { padding-right: 4px; }
+.ticket__x { flex: none; width: 40px; height: 44px; margin: -8px 0; border: 0; background: none; color: var(--muted, #bdbea9); font: 400 16px/1 -apple-system, system-ui, sans-serif; cursor: pointer; border-left: 1px solid color-mix(in srgb, var(--edge, #627a8b) 45%, transparent); }
+.ticket__x:active { color: var(--ink, #fff2b3); }
+/* Tickets already up step aside while a card reveal, the Tonight page or a patch is showing. */
+body:has(#reveal:not([hidden])) #toasts, body:has(#ob-done:not([hidden])) #toasts { visibility: hidden; }

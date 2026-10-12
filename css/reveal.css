@@ -82,3 +82,9 @@ body.night #reveal { background: #000; }
 #reveal.has-rank { --rv-y: -12px; }
 #reveal.has-rank #reveal-view { top: calc(50% + var(--rv-y, 22px) + var(--ch, 39.2) * var(--cf) / 2 + 40px); }
 @media (prefers-reduced-motion: reduce) { #reveal.rv-done .rv-roll > span { animation: none; transform: none; } }
+/* Native-app layout (2026-10-11, Sevaan: the card sat high with empty space below). The card stays centred; the rank
+   bar and "View in collection" drop to the bottom of the screen, but never closer to the card than they were. */
+#reveal.has-rank { --rv-y: 0px; }
+#rv-rank { top: max(calc(50% + var(--rv-y, 22px) + var(--ch, 39.2) * var(--cf) / 2 + 14px), calc(100% - var(--safe-bottom, 0px) - 104px)); }
+#reveal-view { top: max(calc(50% + var(--rv-y, 22px) + var(--ch, 39.2) * var(--cf) / 2 + 18px), calc(100% - var(--safe-bottom, 0px) - 52px)); }
+#reveal.has-rank #reveal-view { top: max(calc(50% + var(--rv-y, 22px) + var(--ch, 39.2) * var(--cf) / 2 + 46px), calc(100% - var(--safe-bottom, 0px) - 52px)); }

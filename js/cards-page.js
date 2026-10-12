@@ -1,28 +1,28 @@
-import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.508';
-import { computeStats, statsHtml, posterCanvas } from './stats.js?v=0.1.508';
-import { isPlus } from './plus.js?v=0.1.508';
-import { nightKey } from './observation.js?v=0.1.508';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.508';
-import { sfx } from './sfx.js?v=0.1.508';
-import { expandFacts } from './catalog-facts.js?v=0.1.508';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.508';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.508';
-import { ticket } from './toast.js?v=0.1.508';
-import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.508';
-import { cardArt } from './art.js?v=0.1.508';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.508';
-import { applyBack } from './card-backs.js?v=0.1.508';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.508';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.508';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.508';
-import { loadConstellations, conList } from './constellations.js?v=0.1.508';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.508';
-import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.508';
-import { shareCardEl } from './share-card.js?v=0.1.508';
-import { removeSighting } from './account.js?v=0.1.508';
-import { allSightings, deleteSighting } from './store.js?v=0.1.508';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.508';
-import { SECRET_PATCHES } from './secrets.js?v=0.1.508';
+import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.511';
+import { computeStats, statsHtml, posterCanvas } from './stats.js?v=0.1.511';
+import { isPlus } from './plus.js?v=0.1.511';
+import { nightKey } from './observation.js?v=0.1.511';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.511';
+import { sfx } from './sfx.js?v=0.1.511';
+import { expandFacts } from './catalog-facts.js?v=0.1.511';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.511';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.511';
+import { ticket } from './toast.js?v=0.1.511';
+import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.511';
+import { cardArt } from './art.js?v=0.1.511';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.511';
+import { applyBack } from './card-backs.js?v=0.1.511';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.511';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.511';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.511';
+import { loadConstellations, conList } from './constellations.js?v=0.1.511';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.511';
+import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.511';
+import { shareCardEl } from './share-card.js?v=0.1.511';
+import { removeSighting } from './account.js?v=0.1.511';
+import { allSightings, deleteSighting } from './store.js?v=0.1.511';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.511';
+import { SECRET_PATCHES } from './secrets.js?v=0.1.511';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -662,6 +662,11 @@ window.addEventListener('storage', (e) => { if (e.key === 'acct') renderBackupLi
 const EMBED = window.parent !== window && new URLSearchParams(location.search).has('embed');
 if (EMBED) {
   document.documentElement.classList.add('embedded');
+  // Explore's switcher sits over this page; while a card, patch or the stats are open it steps aside so it doesn't
+  // cover their bottom rows (playtest 2026-10-11: the sighting list's delete × was under it).
+  { const dlgs = ['viewer', 'patch-view', 'stats-view'].map((id) => document.getElementById(id)).filter(Boolean); let was = null;
+    const tell = () => { const on = dlgs.some((d) => d.open); if (on !== was) { was = on; window.parent.postMessage({ sc: 'modal', on }, location.origin); } };
+    const mo = new MutationObserver(tell); dlgs.forEach((d) => mo.observe(d, { attributes: true, attributeFilter: ['open'] })); }
   document.addEventListener('click', (e) => {
     // The Collection pill itself: already here, so stay (QA 2026-10-08: it loaded cards.html without ?embed inside
     // the frame, and the next Explore tap then ran a second copy of the whole app in there).
