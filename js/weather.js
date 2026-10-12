@@ -22,7 +22,7 @@ const WORD = { clear: 'Clear', cloudy: 'Overcast', fog: 'Fog', rain: 'Rain', sno
 export async function fetchWeather(lat, lon) {
   const key = `${lat.toFixed(2)},${lon.toFixed(2)}`;
   if (cache && cache.key === key && Date.now() - cache.at < CACHE_MS) return cache.data;
-  const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat.toFixed(3)}&longitude=${lon.toFixed(3)}&current=cloud_cover,weather_code&hourly=cloud_cover,weather_code&forecast_days=4&timeformat=unixtime&timezone=auto`;
+  const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat.toFixed(3)}&longitude=${lon.toFixed(3)}&current=cloud_cover,weather_code&hourly=cloud_cover,weather_code&forecast_days=7&timeformat=unixtime&timezone=auto`;
   const res = await fetch(url);
   if (!res.ok) throw new Error(String(res.status));
   const j = await res.json();

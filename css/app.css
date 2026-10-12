@@ -923,3 +923,26 @@ input, textarea, [contenteditable] { -webkit-user-select: text; user-select: tex
 /* Red night mode, guaranteed (2026-10-11, QA: clouds, card backs, chips and the loader leaked white, blue and orange):
    one fixed layer multiplies everything on screen by pure red, so no blue or green light reaches the eye. */
 body.night::after { content: ''; position: fixed; inset: 0; z-index: 2147483646; pointer-events: none; background: #ff1a00; mix-blend-mode: multiply; }
+
+/* The week ahead (Plus, 2026-10-11) */
+.plus-dot { display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--gold); margin-left:6px; vertical-align:2px; }
+.week-lock { padding:18px 4px; } .week-lock b { font:400 22px var(--display); color:var(--text); } .week-lock p { color:var(--muted); margin:8px 0 16px; }
+.week-best b { color:var(--gold); }
+.week-row { display:grid; grid-template-columns:1.3fr 1.1fr .6fr .6fr .9fr; align-items:center; gap:8px; width:100%; text-align:left; padding:12px 12px; margin:0 0 8px; border:1px solid var(--edge-soft); border-radius:12px; background:var(--glass); color:var(--text); font:500 15px/1.2 var(--label); cursor:pointer; }
+.week-row.best { border-color:color-mix(in srgb,var(--gold) 70%,transparent); box-shadow:0 0 0 1px color-mix(in srgb,var(--gold) 30%,transparent); }
+.week-row small { display:block; color:var(--muted); font-size:12px; letter-spacing:.06em; }
+.wk-day b { font-size:16px; } .wk-n { text-align:center; } .wk-n b { font-size:18px; }
+.wk-sky { font-size:14px; } .wk-sky.ok { color:#8fd3a8; } .wk-sky.bad { color:#e08a7a; } .wk-sky.na { color:var(--muted); }
+.wk-rare { font-size:13px; letter-spacing:.06em; text-align:right; }
+.week-detail { margin:-4px 0 10px; padding:10px 14px; border-left:2px solid var(--gold); display:grid; gap:8px; font:500 15px/1.3 var(--label); color:var(--text); }
+.week-detail small { display:block; color:var(--muted); font-size:12px; } .week-detail em { font-style:normal; color:var(--gold); font-size:12px; letter-spacing:.1em; text-transform:uppercase; margin-left:4px; }
+/* Shiny forecast (Plus, 2026-10-11) */
+.shiny-tease { display:block; width:100%; text-align:left; margin:14px 0 4px; padding:12px 14px; border-radius:12px; border:1px dashed color-mix(in srgb,var(--gold) 60%,transparent); background:transparent; color:var(--text); font:500 15px/1.2 var(--label); letter-spacing:.06em; cursor:pointer; }
+.shiny-list { display:grid; gap:8px; } .shiny-row { display:grid; grid-template-columns:auto 1fr; column-gap:12px; padding:10px 12px; border-radius:12px; background:linear-gradient(100deg, rgba(255,120,200,.08), rgba(120,200,255,.08), rgba(255,230,120,.08)); border:1px solid var(--edge-soft); font:500 15px/1.3 var(--label); color:var(--text); }
+.shiny-row b { grid-row:span 2; color:var(--gold); } .shiny-row i { font-style:normal; font-weight:600; } .shiny-row small { color:var(--muted); font-size:12px; letter-spacing:.1em; text-transform:uppercase; }
+/* The one switcher stays above the Collection layer while it slides in, sits there, and slides out (2026-10-11) */
+body.col-open #nav { z-index: 70; visibility: visible !important; }
+/* #nav is now a body-level sibling after #hud: hidden with the HUD (welcome screen), shown in quick mode as before */
+#hud[hidden] ~ #nav { display: none !important; }
+html.quick #hud[hidden] ~ #nav { display: grid !important; }
+#nav { pointer-events: auto; }

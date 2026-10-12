@@ -13,12 +13,11 @@ export function onPlus(f) { listeners.add(f); return () => listeners.delete(f); 
 export const PLUS_PERKS = [
   { icon: '🔔', name: 'Pass alerts', text: 'A heads-up on your phone before a bright or new pass.', live: true },
   { icon: '🔭', name: 'Binocular mode', text: 'Hundreds of fainter satellites to find and collect.', live: true },
-  { icon: '📅', name: 'The week ahead', text: 'The next 7 nights of passes and weather, and the best night to go out.' },
-  { icon: '📍', name: 'Saved places', text: 'Plan a trip: what\'s up over the cottage or a dark-sky site.' },
+  { icon: '📅', name: 'The week ahead', text: 'The next 7 nights of passes and weather, and the best night to go out.', live: true },
   { icon: '⏱', name: 'Widget and lock-screen countdown', text: '"ISS in 12 min · NW" without opening the app.' },
   { icon: '⌚', name: 'Apple Watch tap', text: 'A tap on the wrist as a pass rises.' },
-  { icon: '✨', name: 'Shiny forecast', text: 'When the next eclipse or Moon shiny is possible.' },
-  { icon: '📈', name: 'Observer stats', text: 'Your nights, places and rarest finds, and a yearly poster.' },
+  { icon: '✨', name: 'Shiny forecast', text: 'When the next eclipse or Moon shiny is possible.', live: true },
+  { icon: '📈', name: 'Observer stats', text: 'Your nights, places and rarest finds, and a yearly poster.', live: true },
   { icon: '🎨', name: 'Card backs, foils and themes', text: 'New looks for your cards, patch wall and shares.' },
   { icon: '🎵', name: 'More music', text: 'Extra tracks for the night sky.' },
 ];

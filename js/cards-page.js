@@ -1,25 +1,28 @@
-import { isNative, saveFile, notifyAt } from './native.js?v=0.1.502';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.502';
-import { sfx } from './sfx.js?v=0.1.502';
-import { expandFacts } from './catalog-facts.js?v=0.1.502';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.502';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.502';
-import { ticket } from './toast.js?v=0.1.502';
-import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.502';
-import { cardArt } from './art.js?v=0.1.502';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.502';
-import { applyBack } from './card-backs.js?v=0.1.502';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.502';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.502';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.502';
-import { loadConstellations, conList } from './constellations.js?v=0.1.502';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.502';
-import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.502';
-import { shareCardEl } from './share-card.js?v=0.1.502';
-import { removeSighting } from './account.js?v=0.1.502';
-import { allSightings, deleteSighting } from './store.js?v=0.1.502';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.502';
-import { SECRET_PATCHES } from './secrets.js?v=0.1.502';
+import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.508';
+import { computeStats, statsHtml, posterCanvas } from './stats.js?v=0.1.508';
+import { isPlus } from './plus.js?v=0.1.508';
+import { nightKey } from './observation.js?v=0.1.508';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.508';
+import { sfx } from './sfx.js?v=0.1.508';
+import { expandFacts } from './catalog-facts.js?v=0.1.508';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.508';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.508';
+import { ticket } from './toast.js?v=0.1.508';
+import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.508';
+import { cardArt } from './art.js?v=0.1.508';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.508';
+import { applyBack } from './card-backs.js?v=0.1.508';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.508';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.508';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.508';
+import { loadConstellations, conList } from './constellations.js?v=0.1.508';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.508';
+import { eventBadges, nextEvent, passIcs } from './events.js?v=0.1.508';
+import { shareCardEl } from './share-card.js?v=0.1.508';
+import { removeSighting } from './account.js?v=0.1.508';
+import { allSightings, deleteSighting } from './store.js?v=0.1.508';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.508';
+import { SECRET_PATCHES } from './secrets.js?v=0.1.508';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -197,12 +200,31 @@ function remindStreak() {
   (isNative() ? notifyAt(start, 'Look up tonight', 'Log one sighting this week to keep your observing streak.') : saveFile(new Blob([passIcs({ title: 'Look up tonight (Space Collector)', start, end: start + 3600e3, description: 'Log one sighting this week to keep your observing streak. Open https://sevaan.github.io/space-collector/' })], { type: 'text/calendar' }), 'space-collector-streak.ics').then((ok) => (ok ? 'calendar' : 'failed')))
     .then((r) => ticket({ kind: 'mission', eyebrow: 'STREAK', line: r === 'on' ? 'We\'ll remind you Saturday at 8 pm.' : r === 'calendar' ? 'Saturday 8 pm reminder: add it to your calendar.' : r === 'denied' ? 'Notifications are off for Space Collector.' : 'Couldn\'t set a reminder here.', ms: 4000 }));
 }
+// Observer stats (Plus, 2026-10-11): a link under the rank card opens #stats-view.
+function openStats() {
+  const body = $('stats-body');
+  if (!isPlus()) {
+    body.innerHTML = `<div class="week-lock"><b>Observer stats</b><p>Your nights out by month, a map of everywhere you've looked up, your rarest finds and longest run, and a "Your sky in ${new Date().getFullYear()}" poster to share. Part of Space Collector Plus.</p></div>`;
+  } else {
+    const year = new Date().getFullYear(), all = computeStats(state.raw, state.byKey, nightKey), yr = computeStats(state.raw, state.byKey, nightKey, year);
+    body.innerHTML = statsHtml(all) + `<button class="ui-btn ui-btn--primary st-poster" id="st-poster" type="button">Share "Your sky in ${year}"</button>`;
+    $('st-poster').onclick = async () => {
+      const info = (k) => { const c = state.byKey.get(k); return c ? { tier: c.tier, tier0: c.tier0, type: c.type, owner: c.owner, launch: c.launch, natural: c.natural, con: c.con } : null; };
+      const rank = progress(state.raw, info, { constellations: conList(), deals: readDeals() }).rank?.name ?? '';
+      const blob = await new Promise((r) => posterCanvas(yr, rank).toBlob(r, 'image/png'));
+      if (!(await shareFile(blob, `space-collector-${year}.png`, { title: `My sky in ${year}` }))) saveFile(blob, `space-collector-${year}.png`);
+    };
+  }
+  $('stats-view').showModal();
+}
+$('stats-open')?.addEventListener('click', openStats);
+$('stats-close')?.addEventListener('click', () => $('stats-view').close());
 function renderLogbook() {
   const info = (k) => { const c = state.byKey.get(k); return c ? { tier: c.tier, tier0: c.tier0, type: c.type, owner: c.owner, launch: c.launch, natural: c.natural, con: c.con } : null; };
   const p = progress(state.raw, info, { constellations: conList(), deals: readDeals(), albums: state.albums, carry: xpCarry(state.raw, info, { constellations: conList(), deals: readDeals() }) });
   state.albums ??= albumList(state.cards);
   try { localStorage.setItem('goldAlbums', JSON.stringify(SETS.filter((s) => albumStats(s.id).level === 3).map((s) => s.id))); } catch {}
-  const card = $('logbook'); card.hidden = false;
+  const card = $('logbook'); card.hidden = false; $('stats-open').hidden = false;
   // The logbook is a card (2026-10-08, Sevaan): it tilts with your finger and the phone, has a glare, and a double
   // tap flips it to a card back. Built once; the contents are re-rendered inside .lb-face.
   if (!card.querySelector('.lb-face')) {
@@ -656,7 +678,7 @@ if (EMBED) {
     if (e.data.sc === 'open' || e.data.sc === 'show') setSwitch(document.querySelector('.sc-switch'), 'right', false); // shown again: pill on Collection
     if ((e.data.sc === 'open' || e.data.sc === 'show') && e.data.key) openKey(e.data.key);
     if (e.data.sc === 'back') { // Android Back from the app shell: close the top thing here, else go back to Explore
-      if ($('patch-view').open) closePatch(); else if ($('viewer').open) closeViewer();
+      if ($('stats-view').open) $('stats-view').close(); else if ($('patch-view').open) closePatch(); else if ($('viewer').open) closeViewer();
       else window.parent.postMessage({ sc: 'explore' }, location.origin);
     }
     if (e.data.sc === 'tonight') { state.plan = readPlan(); if (state.ready && ['owned', 'discover'].includes(state.view)) render(); }

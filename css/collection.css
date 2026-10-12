@@ -400,3 +400,24 @@ body { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none
 /* Red night mode, guaranteed (2026-10-11, QA: clouds, card backs, chips and the loader leaked white, blue and orange):
    one fixed layer multiplies everything on screen by pure red, so no blue or green light reaches the eye. */
 body.night::after { content: ''; position: fixed; inset: 0; z-index: 2147483646; pointer-events: none; background: #ff1a00; mix-blend-mode: multiply; }
+
+/* Observer stats (Plus, 2026-10-11) */
+.stats-link { display:block; margin:-6px auto 18px; }
+#stats-view { width:100%; max-width:560px; height:100%; max-height:none; margin:0 auto; padding:0; border:0; background:#080f1b; color:#f3ecd4; }
+#stats-view::backdrop { background:rgba(4,8,14,.7); }
+.stats-body { padding:8px 20px calc(var(--safe-bottom) + 30px); overflow-y:auto; height:calc(100% - 70px); box-sizing:border-box; }
+.week-lock b { font:400 22px 'SC Display', Impact, sans-serif; color:#fff2b3; } .week-lock p { color:#bdbea9; }
+.st-tiles { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin:6px 0 10px; }
+.st-tile { background:#0e1a29; border:1px solid #2a3a48; border-radius:12px; padding:12px 6px; text-align:center; }
+.st-tile b { display:block; font:400 26px 'SC Display', Impact, sans-serif; color:#fff2b3; } .st-tile small { font:500 12px 'SC Label', sans-serif; letter-spacing:.1em; text-transform:uppercase; color:#bdbea9; }
+.st-since { color:#bdbea9; font-size:14px; margin:4px 0 16px; }
+.st-head { font:500 13px 'SC Label', sans-serif; letter-spacing:.18em; text-transform:uppercase; color:#fa8127; margin:18px 0 8px; }
+.st-bars { display:grid; grid-template-columns:repeat(12,1fr); gap:5px; height:110px; align-items:end; }
+.st-bar { display:flex; flex-direction:column; align-items:center; height:100%; justify-content:flex-end; gap:4px; }
+.st-bar span { width:100%; min-height:2px; border-radius:4px 4px 1px 1px; background:linear-gradient(#fa8127,#c9622a); } .st-bar small { font:500 11px 'SC Label', sans-serif; color:#bdbea9; }
+.st-map { width:100%; height:auto; display:block; }
+.st-rare { display:grid; gap:8px; } .st-rare div { display:grid; grid-template-columns:auto 1fr auto; gap:10px; align-items:baseline; font:500 15px 'SC Label', sans-serif; padding:8px 12px; border-radius:10px; background:#0e1a29; }
+.st-rare span { font-size:12px; letter-spacing:.08em; } .st-rare small { color:#bdbea9; }
+.st-poster { width:100%; margin-top:20px; }
+/* Inside the app, Explore's switcher sits on top of this page, so the page's own copy is hidden (2026-10-11) */
+html.embedded .bottom-nav { visibility: hidden; }
