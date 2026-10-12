@@ -540,7 +540,7 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - **Native:** the app now has the toggle too. It schedules local notifications (ids 7101–7103), replaced whenever tonight's plan is recalculated.
 - **"from Space Collector":** iOS adds this line to Home Screen web-app notifications; native notifications don't have it.
 
-2026-10-12 · v0.1.516, Sevaan's decisions on the playtest-room report (design/playtest-room-2026-10-11.html):
+2026-10-12 · v0.1.515, Sevaan's decisions on the playtest-room report (design/playtest-room-2026-10-11.html):
 1. **Binocular mode is free:** no Plus gate, no PLUS tag, removed from PLUS_PERKS. With binoculars on, faint planets use the star limit + 3 (`naturalTargets` binoLimit), so Neptune and the gold Solar System patch are possible.
 2. **Clouds stay honour-system, and the copy now agrees:**
    - the bad-weather page title is "Foggy/Rainy/Cloudy tonight." (not "Not tonight.");
