@@ -840,3 +840,8 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 2026-10-13 · v0.1.616: the buried dinosaur bones are drawn 50% smaller (Sevaan), so 37.5% of their first size, with the minimum and maximum halved too.
 
 2026-10-13 · v0.1.617: the dinosaur bones grow 1.3× when they're in the circle, easing in and out (`sky.fossilGrow`).
+
+2026-10-13 · v0.1.619: shiny chances section (Sevaan).
+- **Layout:** more room under the heading.
+- **Target button:** each row has one (showMePass on the chance's pass; shinyChances now carries `p`).
+- **Explainer:** a "What's a shiny?" box above the first row, closed for good with its ✕ (localStorage `shinyExplained`).

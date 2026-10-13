@@ -1201,3 +1201,13 @@ body.is-plus .vt-plus { display: none; }
 .wk3-new i { font-style: normal; font-size: 13px; margin-left: 4px; }
 .wk-hero-top b { font: 400 30px/1 var(--display); color: var(--ink, #fff2b3); display: flex; align-items: baseline; gap: 10px; }
 .wk-hero-top b em { font: 500 15px/1 var(--label); letter-spacing: .14em; text-transform: uppercase; font-style: normal; color: var(--muted); }
+
+/* Shiny chances (2026-10-13): room under the heading, a target per row, a dismissible explainer. */
+.shiny-sec .t-head { margin-bottom: 12px; }
+.shiny-row { grid-template-columns: auto 1fr auto; align-items: center; }
+.shiny-row b { grid-row: span 2; } .shiny-row .showme { grid-column: 3; grid-row: 1 / span 2; align-self: center; }
+.shiny-row small { grid-column: 2; }
+.shiny-what { position: relative; margin: 0 0 10px; padding: 12px 40px 12px 14px; border-radius: 12px; border: 1px solid var(--edge-soft); background: #0e1a29; }
+.shiny-what b { display: block; font: 600 15px/1.2 var(--label); letter-spacing: .04em; color: var(--ink, #fff2b3); margin-bottom: 4px; }
+.shiny-what p { margin: 0; font: 500 14px/1.4 var(--label); letter-spacing: .02em; color: var(--muted); }
+.shiny-what .sw-x { position: absolute; top: 6px; right: 6px; }
