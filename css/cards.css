@@ -474,3 +474,5 @@
 .card-tile--mini .card__fact { flex: 0 1 auto; min-height: 0; overflow: hidden; }
 .card-tile--mini .card__face { display: flex; flex-direction: column; }
 .card-tile--mini .tile-over { display: none; }
+/* Uncollected mini cards: the hidden art much darker (2026-10-13, Sevaan: "Dim the art… More"). */
+.card-tile--mini:not(.is-owned) .card__art { filter: brightness(.38) saturate(.6); }

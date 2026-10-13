@@ -1,17 +1,17 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.609';
+import { extinction } from './sky-limit.js?v=0.1.612';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.609';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.612';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.609';
-import { createCloudGL } from './clouds-gl.js?v=0.1.609';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.612';
+import { createCloudGL } from './clouds-gl.js?v=0.1.612';
 // Cloud colours by light: sunlit tops, shadowed bellies, and the horizon haze they melt into (0–1 RGB).
 const CLOUD_LIGHT = {
   day: { lit: [1, 1, 1], shade: [0.62, 0.68, 0.77], haze: [0.82, 0.87, 0.93] },
   dusk: { lit: [1, 0.8, 0.68], shade: [0.36, 0.33, 0.42], haze: [0.62, 0.5, 0.52] },
   night: { lit: [0.22, 0.25, 0.31], shade: [0.1, 0.12, 0.16], haze: [0.14, 0.15, 0.2] },
 };
-import { TIER_INFO } from './rarity.js?v=0.1.609';
+import { TIER_INFO } from './rarity.js?v=0.1.612';
 
 const RAD = Math.PI / 180;
 const BELOW_ICON = 10.5, BELOW_ICON_HIT = 20; // every satellite under the horizon, passes and halo alike (80% of 13 since 2026-10-13); lined up in the circle it grows
@@ -324,6 +324,20 @@ export class SkyView {
     const ctx = this.ctx; this.ghostHits = [];
     ctx.save(); ctx.lineWidth = 1.2;
     for (const g of ghosts) {
+      if (g.path?.ahead) { // a soft trail in the pass's rarity colour: faint where it comes from, fading out where it goes
+        const pts = (list) => list.filter((e) => e[2] > 0).map((e) => this.project(e)).filter(Boolean);
+        const cap = (ps, max) => { const out = ps.slice(0, 1); let d = 0; for (let i = 1; i < ps.length; i++) { d += Math.hypot(ps[i].x - ps[i - 1].x, ps[i].y - ps[i - 1].y); if (d > max) break; out.push(ps[i]); } return out; }; // short on screen however fast it moves
+        const back = cap(pts(g.path.past).reverse(), 60).reverse(), fwd = cap(pts(g.path.ahead), 200), col = g.color ?? '#ffffff';
+        ctx.save(); ctx.setLineDash([]); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+        const line = (ps, w, a) => { if (ps.length < 2) return; ctx.globalAlpha = a; ctx.lineWidth = w; ctx.beginPath(); ps.forEach((q, i) => (i ? ctx.lineTo(q.x, q.y) : ctx.moveTo(q.x, q.y))); ctx.stroke(); };
+        ctx.strokeStyle = col; line(back, 1.2, 0.18);
+        if (fwd.length > 1) { // ahead: a gradient from the circle out to nothing, over a soft wider glow
+          const a0 = fwd[0], a1 = fwd[fwd.length - 1], gr = ctx.createLinearGradient(a0.x, a0.y, a1.x, a1.y);
+          gr.addColorStop(0, col); gr.addColorStop(1, 'rgba(255,255,255,0)');
+          ctx.strokeStyle = gr; line(fwd, 5, 0.12); line(fwd, 1.8, 0.55);
+        }
+        ctx.restore();
+      }
       if (g.enu[2] < 0) continue;
       const p = this.project(g.enu);
       if (!this.onScreen(p, 20)) continue;

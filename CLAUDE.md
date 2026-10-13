@@ -828,3 +828,7 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - **Tile shape:** tiles are the retro card's real 28 × 42, not 5:7, which cut the bottom off, and every mini card is held to exactly 42em so long facts can't push the bottom frame out.
 
 2026-10-13 · v0.1.609: mini-card tiles, round 3 (Sevaan: the overlay still covered the bottom frame on the phone). There's no overlay now. `miniFace` writes the collected line ("✓ Oct 17, 2026", "4 of 19 launches", "Not yet collected") into the card's own footer as `.mini-status`, set at 2.5em so it reads at tile size. The fact block shrinks and clips (flex 0 1 auto), so the footer and frame always fit in the 42em card.
+
+2026-10-13 · v0.1.612 (Sevaan):
+- **Daytime pass markers have trails again,** styled for the sky: a faint thin solid line in the rarity colour for the 30 s before it appears, then a line ahead that fades from the rarity colour to nothing, over a soft wider glow. They're capped on screen at 60 px behind and 200 px ahead, so a fast overhead pass doesn't streak across the whole view (`passPath` back in main.js; drawn in sky.js drawGhosts).
+- **Uncollected collection tiles:** the hidden art is dimmed much more (brightness .38, saturation .6).
