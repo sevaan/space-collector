@@ -2,9 +2,9 @@
 // many satellites are visible over the night. Runs off the main thread; ~4,000 objects × 1-minute steps
 // takes a few seconds. Visibility uses the same rules as the live sky: sunlit, dark sky, and brighter than
 // the limit for your sky at that moment (light pollution, twilight, Moon; js/sky-limit.js).
-import { frame, look, setSkyLimit, setBinocularMode, DARK_SUN_ELEVATION } from './orbit.js?v=0.1.596';
-import { skyLimit } from './sky-limit.js?v=0.1.596';
-import { solarSystem, eqToEnu } from './celestial.js?v=0.1.596';
+import { frame, look, setSkyLimit, setBinocularMode, DARK_SUN_ELEVATION } from './orbit.js?v=0.1.597';
+import { skyLimit } from './sky-limit.js?v=0.1.597';
+import { solarSystem, eqToEnu } from './celestial.js?v=0.1.597';
 
 const STEP0 = 60000;         // 1 minute (other nights in the week ahead use 2)
 const GAP = 3;               // a pass ends after this many minutes out of sight
@@ -45,6 +45,8 @@ self.onmessage = ({ data }) => {
         else if (p && p.miss === 1 && l && l.el >= 10 && !l.sunlit && !p.eclipseAt) { p.eclipseAt = t; p.eclipseAz = l.az; p.eclipseEl = Math.round(l.el); } // faded into Earth's shadow, still high up
       }
       curve.push([t, count]);
+      // Progress for the loading screen (2026-10-13): every ~20 sky-minutes, how far through the night and what's found.
+      if (data.progress && curve.length % Math.max(1, Math.round(20 * 60000 / STEP)) === 0) self.postMessage({ requestId, progress: { t, dusk, curve: curve.slice(), found: passes.length + open.size } });
     }
     for (const p of open.values()) passes.push(p);
     const out = passes.filter((p) => p.peakEl >= 10).map(({ miss, ...p }) => ({ ...p, mag: +p.mag.toFixed(1), peakEl: Math.round(p.peakEl) }));
