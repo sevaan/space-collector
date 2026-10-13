@@ -743,3 +743,9 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - **In the circle:** with nothing else targeted, a marker in the circle is named in full (sky.js drawGhosts → ghostHit with a per-item kicker): "TONIGHT · 7:54 PM / TIROS 3 / ◆ Rare · new to you / tap it to be shown where it rises". The until-dark countdown hides meanwhile (`sky.ghostHitId`).
 - **Tapping:** tapSky checks `sky.ghostHits` first and runs showMePass.
 - **showMePass:** no longer shows a sticky "Follow the arrow" toast, which covered the steering line under the circle that says the same thing.
+
+2026-10-13 · v0.1.559: daytime pass markers, as Sevaan asked:
+- **No tapping:** lining a marker up in the circle shows its info: TONIGHT · time / NAME / tier · new to you.
+- **Remind me pill:** under that info, a "Remind me at 7:44 PM" pill (#gh-remind, `ghRemind` called from untilDark each frame) sets the usual 10-minutes-before notification. Tapping it again turns it off. The reminder key `${id}@${start}` is shared with the Tonight rows, so the bells agree.
+- **Gone:** the "tap it to be shown where it rises" line and the tap → Show me.
+- **Steering line:** reads "Appears here at 7:52 PM · in 4 h 6 min". No "You're facing the right way", and long waits are in hours.

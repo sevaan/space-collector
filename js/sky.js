@@ -1,17 +1,17 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.557';
+import { extinction } from './sky-limit.js?v=0.1.559';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.557';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.559';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.557';
-import { createCloudGL } from './clouds-gl.js?v=0.1.557';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.559';
+import { createCloudGL } from './clouds-gl.js?v=0.1.559';
 // Cloud colours by light: sunlit tops, shadowed bellies, and the horizon haze they melt into (0–1 RGB).
 const CLOUD_LIGHT = {
   day: { lit: [1, 1, 1], shade: [0.62, 0.68, 0.77], haze: [0.82, 0.87, 0.93] },
   dusk: { lit: [1, 0.8, 0.68], shade: [0.36, 0.33, 0.42], haze: [0.62, 0.5, 0.52] },
   night: { lit: [0.22, 0.25, 0.31], shade: [0.1, 0.12, 0.16], haze: [0.14, 0.15, 0.2] },
 };
-import { TIER_INFO } from './rarity.js?v=0.1.557';
+import { TIER_INFO } from './rarity.js?v=0.1.559';
 
 const RAD = Math.PI / 180;
 const BELOW_ICON = 13; // every satellite under the horizon, passes and halo alike
@@ -480,7 +480,8 @@ export class SkyView {
     ctx.font = `500 15px ${FONT}`; ctx.fillStyle = `rgba(${INK},.75)`;
     if ('letterSpacing' in ctx) ctx.letterSpacing = '1px';
     if (g.what) { ctx.font = `500 16px ${FONT}`; if ('letterSpacing' in ctx) ctx.letterSpacing = '0px'; ctx.fillStyle = `rgba(${INK},.92)`; ctx.fillText(g.what, rc.x, rc.y + rc.r + 34, this.w - 32); ctx.font = `500 13px ${FONT}`; if ('letterSpacing' in ctx) ctx.letterSpacing = '1px'; ctx.fillStyle = `rgba(${INK},.7)`; }
-    ctx.fillText([g.note ? g.note.replace(/^up /, 'comes up ') : '', g.where ? `in the ${g.where}` : ''].filter(Boolean).join(' · ').toUpperCase(), rc.x, rc.y + rc.r + (g.what ? 58 : 34), this.w - 32);
+    const tail = [g.note ? g.note.replace(/^up /, 'comes up ') : '', g.where ? `in the ${g.where}` : ''].filter(Boolean).join(' · ');
+    if (tail) ctx.fillText(tail.toUpperCase(), rc.x, rc.y + rc.r + (g.what ? 58 : 34), this.w - 32);
     ctx.restore();
     return hit;
   }
