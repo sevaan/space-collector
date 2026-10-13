@@ -1117,3 +1117,6 @@ body.night .plus-price { background: #1c0909; border-color: #2e1010; }
 
 /* The radar tip steps aside while any sheet is open (2026-10-13). */
 body:has(.set-sheet:not([hidden])) .radar-tip { opacity: 0; pointer-events: none; }
+
+/* Bell level with the capitals of REMIND ME (2026-10-13): the condensed caps sit above the line box's middle. */
+#ud-bell .ico, #gh-remind .ico { position: relative; top: -2px; }

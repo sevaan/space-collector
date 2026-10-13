@@ -777,3 +777,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - **Tonight page:** Remind me and Explore the sky sit together. The free space goes above the pair (`#ob-remind` margin-top auto when shown, Explore 12px under it).
 - **Until-dark sheet:** "Set reminder" says why when it can't set one, on the button itself ("Reminders work in the app" / "Notifications are off in Settings"), because toasts sit behind sheets. In the TestFlight builds it did nothing because of the remindIds bug fixed in v0.1.570.
 - **Radar tip:** waits while any sheet, the Tonight page, the recap or the tour is up, and hides if a sheet opens over it.
+
+2026-10-13 · v0.1.580: daytime pass markers have no track lines at all (Sevaan); just the dotted circle where it appears, its faint icon, name and time. passPath was removed. The bell icon in the Remind me pills (#ud-bell, #gh-remind) is nudged 2px up so it sits level with the condensed capitals.

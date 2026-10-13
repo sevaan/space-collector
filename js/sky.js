@@ -1,17 +1,17 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.579';
+import { extinction } from './sky-limit.js?v=0.1.580';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.579';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.580';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.579';
-import { createCloudGL } from './clouds-gl.js?v=0.1.579';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.580';
+import { createCloudGL } from './clouds-gl.js?v=0.1.580';
 // Cloud colours by light: sunlit tops, shadowed bellies, and the horizon haze they melt into (0–1 RGB).
 const CLOUD_LIGHT = {
   day: { lit: [1, 1, 1], shade: [0.62, 0.68, 0.77], haze: [0.82, 0.87, 0.93] },
   dusk: { lit: [1, 0.8, 0.68], shade: [0.36, 0.33, 0.42], haze: [0.62, 0.5, 0.52] },
   night: { lit: [0.22, 0.25, 0.31], shade: [0.1, 0.12, 0.16], haze: [0.14, 0.15, 0.2] },
 };
-import { TIER_INFO } from './rarity.js?v=0.1.579';
+import { TIER_INFO } from './rarity.js?v=0.1.580';
 
 const RAD = Math.PI / 180;
 const BELOW_ICON = 13; // every satellite under the horizon, passes and halo alike
@@ -324,11 +324,6 @@ export class SkyView {
     const ctx = this.ctx; this.ghostHits = [];
     ctx.save(); ctx.lineWidth = 1.2;
     for (const g of ghosts) {
-      if (g.path?.ahead) { // tonight's track, like a trail in the sky: faint solid behind, dashes ahead (2026-10-13)
-        const above = (list) => list.filter((e) => e[2] > 0), [r, gg, b] = this.theme.bead;
-        ctx.setLineDash([]); ctx.lineWidth = 1.2; ctx.strokeStyle = 'rgba(20,34,54,.38)'; this.path(above(g.path.past), 0);
-        ctx.setLineDash([4, 7]); ctx.strokeStyle = `rgba(${r}, ${gg}, ${b}, .55)`; this.path(above(g.path.ahead), 0);
-      }
       if (g.enu[2] < 0) continue;
       const p = this.project(g.enu);
       if (!this.onScreen(p, 20)) continue;
