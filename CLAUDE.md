@@ -879,3 +879,7 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - **Night card:** "Best night this week" or "This night". Day and date, one sentence (weather, Moon, the rarest new card), new count and dark time, then the 4 rarest Uncommon+ new cards with target (showMePass) and bell (remindPass); tap opens the card. "Remind me <day> at dark".
 - **Only this week:** Rare+ new cards up on only one or two of the seven evenings (tap jumps to that night), plus a meteor shower starting within the week.
 - **Goal ring:** "N of 5 new cards this week" (first sightings since Monday, `weekStart`).
+
+2026-10-13 · v0.1.634 (Sevaan):
+- **Moon at the horizon:** a Moon (or Sun) within ~7° of the horizon is drawn again after the ground and landscape, clipped to above the horizon line, so it peeks over the trees. It used to be collectable but hidden behind them.
+- **Tonight's run:** the all-reminders button now says "Set reminders".

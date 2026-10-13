@@ -1,17 +1,17 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.631';
+import { extinction } from './sky-limit.js?v=0.1.634';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.631';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.634';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.631';
-import { createCloudGL } from './clouds-gl.js?v=0.1.631';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.634';
+import { createCloudGL } from './clouds-gl.js?v=0.1.634';
 // Cloud colours by light: sunlit tops, shadowed bellies, and the horizon haze they melt into (0–1 RGB).
 const CLOUD_LIGHT = {
   day: { lit: [1, 1, 1], shade: [0.62, 0.68, 0.77], haze: [0.82, 0.87, 0.93] },
   dusk: { lit: [1, 0.8, 0.68], shade: [0.36, 0.33, 0.42], haze: [0.62, 0.5, 0.52] },
   night: { lit: [0.22, 0.25, 0.31], shade: [0.1, 0.12, 0.16], haze: [0.14, 0.15, 0.2] },
 };
-import { TIER_INFO } from './rarity.js?v=0.1.631';
+import { TIER_INFO } from './rarity.js?v=0.1.634';
 
 const RAD = Math.PI / 180;
 const BELOW_ICON = 10.5, BELOW_ICON_HIT = 20; // every satellite under the horizon, passes and halo alike (80% of 13 since 2026-10-13); lined up in the circle it grows
@@ -1371,6 +1371,21 @@ export class SkyView {
     this.drawGround();
     if (landscape) { // trees, hills and meadow; in camera view see-through like the sky and ground (an overlay of our world on yours)
       if (this.camera) { ctx.save(); ctx.globalAlpha = 0.6; this.drawLandscape(); ctx.restore(); } else this.drawLandscape();
+    }
+    // The Moon (and Sun) low on the horizon (2026-10-13, Sevaan: the Moon was collectable but hidden behind the trees):
+    // drawn again over the landscape, clipped at the horizon line, so it peeks up above it.
+    if (bodies) for (const b of bodies) {
+      if ((b.kind !== 'moon' && b.kind !== 'sun') || b.enu[2] < -0.02 || b.enu[2] > 0.12) continue;
+      if (b.kind === 'moon' && (this.dayF ?? 0) > 0.3 && (b.illum ?? 1) < 0.25) continue;
+      const az = Math.atan2(b.enu[0], b.enu[1]) / RAD, pts = [];
+      for (let d = -12; d <= 12; d += 3) { const q = this.project(enuFromAzEl(az + d, 0)); if (q) pts.push(q); }
+      if (pts.length < 2) continue;
+      ctx.save(); ctx.beginPath(); ctx.moveTo(pts[0].x, pts[0].y); for (const q of pts) ctx.lineTo(q.x, q.y);
+      ctx.lineTo(pts[pts.length - 1].x, -this.h); ctx.lineTo(pts[0].x, -this.h); ctx.closePath(); ctx.clip();
+      const p = this.project(b.enu);
+      if (p && b.kind === 'moon') { const sun = bodies.find((x) => x.kind === 'sun'); this.glow(p.x, p.y, 34, this.theme.starRGB, 0.2); this.drawMoon(p, 12, sun ? this.brightLimbAngle(b.enu, sun.enu, p) : 0, b.phaseAngle); }
+      else if (p) { const f = this.dayF ?? 0; this.glow(p.x, p.y, 70 + f * 90, f > 0 ? [255, 246, 207] : this.theme.satGlow, 0.55); ctx.fillStyle = f > 0.3 ? '#fffbea' : this.theme.sun; ctx.beginPath(); ctx.arc(p.x, p.y, 12 + f * 6, 0, Math.PI * 2); ctx.fill(); }
+      ctx.restore();
     }
     this.drawGroundCompass();
     if (fossil && !this.camera) this.drawFossil(fossil); // not in camera view
