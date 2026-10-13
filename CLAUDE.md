@@ -832,3 +832,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 2026-10-13 · v0.1.612 (Sevaan):
 - **Daytime pass markers have trails again,** styled for the sky: a faint thin solid line in the rarity colour for the 30 s before it appears, then a line ahead that fades from the rarity colour to nothing, over a soft wider glow. They're capped on screen at 60 px behind and 200 px ahead, so a fast overhead pass doesn't streak across the whole view (`passPath` back in main.js; drawn in sky.js drawGhosts).
 - **Uncollected collection tiles:** the hidden art is dimmed much more (brightness .38, saturation .6).
+
+2026-10-13 · v0.1.613: the example location comes from the phone's time zone (Sevaan: it was always Peterborough). js/tz-places.js maps ~150 IANA zones to a well-known city in each (`placeFromTimeZone`), with no permission and no network, so a Vancouver phone gets "Showing the sky over Vancouver". Unknown zones still fall back to Peterborough. IP geolocation was rejected because it would send the IP to a third party (privacy policy).
