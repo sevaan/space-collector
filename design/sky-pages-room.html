@@ -1,0 +1,152 @@
+<title>Sky Pages Room</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Russo+One&family=Barlow+Condensed:wght@500;600&family=Barlow:wght@400;500;600&display=swap">
+<style>
+/* One long column: who was in the room, what they said per page, then ideas, then three directions with phone sketches. */
+:root{--sky:#080f1b;--panel:#0e1a29;--edge:#22344a;--ink:#fff2b3;--text:#e6ecf5;--muted:#9fb3c8;--org:#fa8127;--rare:#4aa8ff;--epic:#e46ad6;--unc:#5fd08a;
+--display:'Russo One',system-ui,sans-serif;--label:'Barlow Condensed','Arial Narrow',sans-serif;--body:'Barlow',system-ui,sans-serif;color-scheme:dark}
+body{background:var(--sky);color:var(--text);font:16px/1.55 var(--body);margin:0}
+main{max-width:880px;margin:0 auto;padding-inline:16px;padding-block:36px 80px}
+.eyebrow{font:600 13px/1 var(--label);letter-spacing:.22em;text-transform:uppercase;color:var(--org)}
+h1{font:400 clamp(30px,7vw,44px)/1.05 var(--display);color:var(--ink);margin:10px 0 12px;text-wrap:balance}
+h2{font:400 24px/1.15 var(--display);color:var(--ink);margin:48px 0 6px;text-wrap:balance}
+h3{font:600 18px/1.2 var(--label);letter-spacing:.04em;color:var(--ink);margin:0 0 4px}
+.lead{color:var(--muted);max-width:64ch;margin:0}
+.sub{color:var(--muted);margin:0 0 16px;max-width:64ch}
+.people{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,190px),1fr));gap:10px;margin-top:18px}
+.p{background:var(--panel);border:1px solid var(--edge);border-radius:12px;padding:12px 14px}
+.p b{display:block;font:600 16px/1.2 var(--label);color:var(--ink)} .p span{font:500 14px/1.35 var(--label);color:var(--muted)}
+.quotes{display:grid;gap:10px}
+.q{background:var(--panel);border:1px solid var(--edge);border-left:3px solid var(--org);border-radius:10px;padding:12px 14px}
+.q p{margin:0 0 6px} .q cite{font:500 13px/1 var(--label);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-style:normal}
+.agree{margin-top:12px;padding:12px 14px;border-radius:10px;background:#122236;border:1px solid var(--edge)}
+.agree b{color:var(--ink);font-family:var(--label);letter-spacing:.06em}
+.ideas{counter-reset:i;display:grid;gap:10px;padding:0;list-style:none}
+.ideas li{counter-increment:i;display:grid;grid-template-columns:2.2em minmax(0,1fr);gap:4px 10px;background:var(--panel);border:1px solid var(--edge);border-radius:12px;padding:12px 14px}
+.ideas li::before{content:counter(i);grid-row:span 2;font:400 22px/1 var(--display);color:var(--org)}
+.ideas li p{margin:0;color:var(--muted)} .tag{display:inline-block;margin-left:6px;padding:0 7px;border-radius:99px;border:1px solid var(--edge);font:600 11px/1.7 var(--label);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);vertical-align:2px}
+.tag.plus{color:var(--org);border-color:#fa812777}
+.dirs{display:grid;gap:18px}
+.dir{display:grid;grid-template-columns:minmax(0,1fr) 220px;gap:18px;align-items:start;background:var(--panel);border:1px solid var(--edge);border-radius:16px;padding:18px}
+@media(max-width:640px){.dir{grid-template-columns:minmax(0,1fr)}}
+.dir ul{margin:8px 0 0;padding-left:18px;color:var(--muted)} .dir li{margin-bottom:4px}
+.dir .k{font:600 13px/1 var(--label);letter-spacing:.2em;text-transform:uppercase;color:var(--org)}
+.phone{width:200px;max-width:100%;aspect-ratio:9/17;margin:0 auto;border-radius:24px;border:2px solid #2c3e55;background:#060c16;padding:14px 12px;box-sizing:border-box;display:flex;flex-direction:column;gap:8px;font-family:var(--label);overflow:hidden}
+.ph-k{font:600 9px/1 var(--label);letter-spacing:.2em;text-transform:uppercase;color:var(--org)}
+.ph-big{font:400 20px/1 var(--display);color:var(--ink)}
+.ph-s{font:500 11px/1.3 var(--label);color:var(--muted)}
+.stop{display:grid;grid-template-columns:34px 1fr;gap:6px;align-items:center;padding:6px 7px;border-radius:8px;background:#0e1a29;border-left:3px solid var(--c,#9aa4b1)}
+.stop b{font:600 11px/1 var(--label);color:var(--ink)} .stop i{font-style:normal;font:500 10px/1.2 var(--label);color:var(--muted)}
+.ring{width:92px;height:92px;margin:4px auto;border-radius:50%;border:2px solid #3a4e66;position:relative}
+.ring::after{content:'';position:absolute;inset:-2px;border-radius:50%;border:2px solid var(--org);clip-path:polygon(50% 50%,50% 0,100% 0,100% 70%)}
+.ring span{position:absolute;inset:0;display:grid;place-items:center;font:400 18px/1 var(--display);color:var(--ink)}
+.days{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.day{border-radius:6px;background:#0e1a29;padding:5px 2px;text-align:center;font:600 9px/1.1 var(--label);color:var(--muted)}
+.day.go{background:#14304a;color:var(--ink);outline:1px solid var(--org)}
+.day em{display:block;font-style:normal;font-size:13px;margin-top:2px}
+.chase{display:flex;gap:5px}
+.chase i{flex:1;aspect-ratio:2/3;border-radius:5px;background:linear-gradient(#1a2b40,#0e1a29);border:1px solid #2c3e55}
+.btn{margin-top:auto;padding:8px;border-radius:10px;background:var(--org);color:#080f1b;text-align:center;font:600 11px/1 var(--label);letter-spacing:.14em;text-transform:uppercase}
+.next{margin-top:28px;padding:16px;border-radius:14px;border:1px solid #fa812766;background:#1a1410}
+.next b{color:var(--ink)}
+</style>
+<main>
+<span class="eyebrow">Space Collector · user room · 13 Oct 2026</span>
+<h1>Now, Tonight and Week, through users' eyes</h1>
+<p class="lead">Seven people of different ages used the three "Up in your sky" tabs over a few evenings. Below is what they said, then ideas, then three directions to redesign around. Nothing is built yet.</p>
+
+<div class="people">
+  <div class="p"><b>Maya, 9</b><span>Uses it with her dad on the deck after supper</span></div>
+  <div class="p"><b>Leo, 14</b><span>Gamer, plays for the collection and ranks</span></div>
+  <div class="p"><b>Sam, 22</b><span>Student, up late, walks home at night</span></div>
+  <div class="p"><b>Priya, 29</b><span>Busy, checks once at dinner, wants one answer</span></div>
+  <div class="p"><b>Kofi, 34</b><span>Photographer, plans shoots around passes</span></div>
+  <div class="p"><b>Dan, 43</b><span>Parent, amateur astronomer, has binoculars</span></div>
+  <div class="p"><b>Ruth, 68</b><span>Retired birder, keeps lists, early riser</span></div>
+</div>
+
+<h2>Now</h2>
+<p class="sub">What they want: something to do right now, and where to point.</p>
+<div class="quotes">
+  <div class="q"><p>"The map is pretty but I don't know what the dots are. I just want to know which one to look at."</p><cite>Maya, 9</cite></div>
+  <div class="q"><p>"When nothing is up, it says a quiet patch of sky. OK, but how long do I wait? Give me a countdown and I'll stay outside."</p><cite>Sam, 22</cite></div>
+  <div class="q"><p>"Seen before is nice, it reminds me what I've got. But I want the new ones first, big."</p><cite>Leo, 14</cite></div>
+  <div class="q"><p>"I'd like it to say which way in words I understand. Over the garage, towards the lake. The compass letters are fine, but slow me down."</p><cite>Ruth, 68</cite></div>
+</div>
+<div class="agree"><b>Room agreed:</b> Now should open on one big "next thing" with a live countdown and a direction arrow. The list comes second.</div>
+
+<h2>Tonight</h2>
+<p class="sub">What they want: a plan for the evening they can actually follow, and a reason to come back out.</p>
+<div class="quotes">
+  <div class="q"><p>"It's a really long list of things a minute apart. I scrolled and gave up. Pick the five I should go out for."</p><cite>Priya, 29</cite></div>
+  <div class="q"><p>"I didn't know you could swipe a row for a reminder until someone told me."</p><cite>Dan, 43</cite></div>
+  <div class="q"><p>"Tell me what I'd win. If I go out at 8 and stay till 9, how many new cards, any Epic, does it finish a mission?"</p><cite>Leo, 14</cite></div>
+  <div class="q"><p>"The ISS at dawn is the thing I actually care about. Put it where I'll see it."</p><cite>Ruth, 68</cite></div>
+  <div class="q"><p>"I want to know the moments: when it gets dark, the busy bit, the shiny chance, when the cloud comes. Like a schedule."</p><cite>Kofi, 34</cite></div>
+</div>
+<div class="agree"><b>Room agreed:</b> Tonight should be a short itinerary of 3 to 6 stops with what each one gets you, one tap to be reminded of all of them, and the full list behind "Everything tonight".</div>
+
+<h2>Week</h2>
+<p class="sub">What they want: which night to go out, and why.</p>
+<div class="quotes">
+  <div class="q"><p>"426 new is meaningless. Tell me there's an Epic you can only get Thursday."</p><cite>Leo, 14</cite></div>
+  <div class="q"><p>"The weather words are great now. I'd like to see the week at a glance, like a calendar strip, then tap a day."</p><cite>Priya, 29</cite></div>
+  <div class="q"><p>"Let me pick cards I'm hunting for, and show me which nights they come."</p><cite>Dan, 43</cite></div>
+  <div class="q"><p>"The Moon matters to me: a full Moon washes out the faint ones. Show the phase."</p><cite>Kofi, 34</cite></div>
+</div>
+<div class="agree"><b>Room agreed:</b> Week should answer "which night?" first: a 7-day strip with weather and Moon, the best night picked, and the rare cards that only come on certain nights.</div>
+
+<h2>Ideas</h2>
+<p class="sub">Everything worth considering, roughly from most to least wanted. Tags mark what could be Plus.</p>
+<ol class="ideas">
+  <li><h3>Next thing, with a countdown</h3><p>Now opens on the next card worth getting: big name, rarity, "in 4:32", an arrow that points the way as you turn. Taps through to aim.</p></li>
+  <li><h3>Tonight's run</h3><p>An itinerary of 3 to 6 stops (dark, best catches, shiny chance, busiest moment, cloud arriving), each saying what it gets you: a new Epic, finishes "Catch something 60° up", +40 XP.</p></li>
+  <li><h3>Tonight's haul forecast</h3><p>A small summary: "Go out 8 to 9 and you could get about 6 new cards, including 1 Epic, and finish 2 missions." The reason to go outside.</p></li>
+  <li><h3>Remind me for my run<span class="tag plus">Plus for more than one</span></h3><p>One tap sets reminders for every stop. Free players pick their one stop.</p></li>
+  <li><h3>Chase list</h3><p>Star cards you want. Tonight and Week flag when they pass; a pass alert fires for them first. Gives the collection a goal.</p></li>
+  <li><h3>Week as a 7-day strip</h3><p>One row of days: weather icon, Moon phase, a dot when a rare card is only up that night. Tap a day for its run.</p></li>
+  <li><h3>"Only this week" moments</h3><p>Rare windows: an Epic that won't pass again for weeks, a shiny eclipse night, a meteor shower peak, a satellite about to re-enter. Urgency that's true.</p></li>
+  <li><h3>Plain-language directions</h3><p>"Low in the southeast, start above the trees" and "Rises behind you" instead of degrees. Optional landmark labels later.</p></li>
+  <li><h3>Commons collapsed</h3><p>Lists lead with Uncommon and rarer; "+212 Commons" opens the rest.</p></li>
+  <li><h3>Family plan</h3><p>Share tonight's run as a message: "Stargazing at 8:30? Epic satellite at 8:39."</p></li>
+  <li><h3>Weekly goal ring</h3><p>"3 of 5 new cards this week" on the Week tab, tied to the streak.</p></li>
+</ol>
+
+<h2>Three directions</h2>
+<p class="sub">Each one reshapes all three tabs around a single idea. They can be mixed.</p>
+<div class="dirs">
+  <div class="dir"><div><span class="k">A · The run</span><h3>An itinerary for the night</h3><ul>
+    <li>Now: the next stop of tonight's run, live countdown, arrow.</li>
+    <li>Tonight: 3 to 6 stops on a short timeline with the haul forecast at the top and "Remind me for my run".</li>
+    <li>Week: each day shows the size of its run (3 stops, 1 Epic).</li>
+    <li>Best for Priya, Leo and Kofi. Most "game-like" reason to go out.</li></ul></div>
+    <div class="phone"><span class="ph-k">Tonight's run</span><span class="ph-big">6 new · 1 Epic</span><span class="ph-s">8:00 to 9:30 · finishes 2 missions</span>
+      <div class="stop" style="--c:#9aa4b1"><b>7:02</b><i>Dark enough to start</i></div>
+      <div class="stop" style="--c:var(--rare)"><b>7:54</b><i>◆ Tiros 3 · high SE</i></div>
+      <div class="stop" style="--c:var(--epic)"><b>8:39</b><i>✦ Cosmos 796 · finishes "60° up"</i></div>
+      <div class="stop" style="--c:var(--org)"><b>8:50</b><i>Shiny chance · into shadow</i></div>
+      <div class="stop" style="--c:#9aa4b1"><b>9:30</b><i>Cloud rolls in</i></div>
+      <div class="btn">Remind me for my run</div></div></div>
+
+  <div class="dir"><div><span class="k">B · Live</span><h3>Countdown first</h3><ul>
+    <li>Now becomes a big countdown ring to the next card worth getting, with an arrow that turns with you.</li>
+    <li>Tonight is a vertical clock: what's next pinned at the top, the rest flowing under it.</li>
+    <li>Week stays a simple list of nights.</li>
+    <li>Best for Maya, Sam and Ruth. The most "check back later" pull: the countdown is the hook.</li></ul></div>
+    <div class="phone"><span class="ph-k">Next new card</span><div class="ring"><span>4:32</span></div><span class="ph-big" style="text-align:center">Cosmos 796</span><span class="ph-s" style="text-align:center;color:var(--epic)">✦ Epic · high in the southeast</span><span class="ph-s" style="text-align:center">Turn left a little, then look up</span><div class="btn">Show me</div></div></div>
+
+  <div class="dir"><div><span class="k">C · The hunt</span><h3>Calendar and chase list</h3><ul>
+    <li>Week is a 7-day strip (weather, Moon, rare-card dots) with the best night picked.</li>
+    <li>A chase list of cards you've starred, each with its next good night.</li>
+    <li>Tonight and Now flag chased cards first.</li>
+    <li>Best for Dan, Ruth and Leo. Gives week-long goals and a reason to open the app on Monday for Thursday.</li></ul></div>
+    <div class="phone"><span class="ph-k">This week</span>
+      <div class="days"><div class="day">MON<em>☁</em></div><div class="day">TUE<em>☁</em></div><div class="day go">WED<em>✦</em></div><div class="day">THU<em>☂</em></div><div class="day">FRI<em>☁</em></div><div class="day go">SAT<em>✦</em></div><div class="day">SUN<em>○</em></div></div>
+      <span class="ph-s">Best night: <b style="color:var(--ink)">Wednesday</b> · clear from 9 · ✦ 2 Epics</span>
+      <span class="ph-k" style="margin-top:6px">Your chase list</span>
+      <div class="chase"><i></i><i></i><i></i></div>
+      <span class="ph-s">Hubble: Wed 9:12 · Vanguard 1: Sat 8:40 · Cosmos 796: tonight</span>
+      <div class="btn">Plan Wednesday</div></div></div>
+</div>
+
+<div class="next"><b>My recommendation:</b> A and B together. The run for Tonight (with the haul forecast and one-tap reminders), the countdown ring for Now, and C's 7-day strip for Week. The chase list can come after, since it needs a way to star cards in the Collection. Tell me which parts you like and I'll mock them up properly before building.</div>
+</main>
