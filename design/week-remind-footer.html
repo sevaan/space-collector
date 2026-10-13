@@ -1,0 +1,41 @@
+<title>Week Remind Footer</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Russo+One&family=Barlow+Condensed:wght@500;600&display=swap">
+<style>
+/* Three footer treatments for the Week night card, side by side; the app's dark palette only. */
+:root{--sky:#080f1b;--panel:#0e1a29;--edge:#22344a;--ink:#fff2b3;--muted:#9fb3c8;--org:#fa8127;--rare:#4aa8ff;--display:'Russo One',sans-serif;--label:'Barlow Condensed','Arial Narrow',sans-serif;color-scheme:dark}
+body{margin:0;background:var(--sky);color:var(--ink);font:16px/1.4 var(--label)}
+main{max-width:1180px;margin:0 auto;padding-inline:16px;padding-block:28px 60px}
+h1{font:400 28px/1.1 var(--display);margin:6px 0 20px}
+.k{font:600 12px/1 var(--label);letter-spacing:.2em;text-transform:uppercase;color:var(--org)}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:22px}
+.opt h2{font:600 15px/1 var(--label);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
+.card{border-radius:20px;border:1px solid #fa812788;background:radial-gradient(ellipse at 90% 0%,#fa81272e,transparent 60%),var(--panel);overflow:hidden}
+.body{padding:16px;display:grid;gap:8px}
+.d{display:flex;align-items:baseline;gap:10px}.d b{font:400 28px/1 var(--display)}.d small{color:var(--muted);letter-spacing:.14em}
+.why{margin:0;font:500 15px/1.35 var(--label);color:#e6ecf5}
+.stop{display:grid;grid-template-columns:3.4em 1fr;gap:8px;padding:9px 10px;border-radius:12px;background:#0a1220;border-left:3px solid var(--rare)}
+.stop b{font:400 15px var(--display)} .stop span b{font:600 15px var(--label)} .stop small{display:block;color:var(--muted)} .stop em{font-style:normal;color:var(--rare);font-weight:600}
+.bell{width:16px;height:16px;vertical-align:-3px}
+/* A: gold rule, full-width text button */
+.fa{display:flex;align-items:center;justify-content:center;gap:10px;padding:15px;border-top:1px solid #f2c14e99;font:600 14px/1 var(--label);letter-spacing:.18em;text-transform:uppercase;color:#f2c14e}
+/* B: gold rule, left text + time on the right */
+.fb{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 16px;border-top:1px solid #f2c14e99;font:600 14px/1 var(--label);letter-spacing:.16em;text-transform:uppercase;color:#f2c14e}
+.fb span:last-child{color:var(--muted);letter-spacing:.1em}
+/* C: gold tinted band */
+.fc{display:flex;align-items:center;justify-content:center;gap:10px;padding:15px;border-top:1px solid #f2c14e;background:#f2c14e14;font:600 14px/1 var(--label);letter-spacing:.18em;text-transform:uppercase;color:#f2c14e}
+.note{color:var(--muted);font-size:14px;margin:10px 2px 0}
+</style>
+<main><span class="k">Week · night card footer</span><h1>Remind me at dark, as the card's footer</h1>
+<div class="row">
+<template id="body"><div class="body"><span class="k">Best night this week</span><div class="d"><b>Sunday</b><small>OCT 18</small></div><p class="why">Clear all evening · some Moon · <span style="color:var(--rare)">◆ Rare</span> Essa 1</p>
+<div class="stop"><b>8:15</b><span><b>Echo 2 Debris</b><small><em>◆ Rare</em> · halfway up in the east</small></span></div>
+<div class="stop"><b>8:24</b><span><b>Anna 1B</b><small><em>◆ Rare</em> · high in the south</small></span></div></div></template>
+<div class="opt"><h2>A · Rule + centred</h2><div class="card" data-b></div><div class="fa-wrap"></div><p class="note">A thin gold line across the card, the whole strip under it is the button.</p></div>
+<div class="opt"><h2>B · Rule + time on the right</h2><div class="card" data-b></div><p class="note">Same line; says when the reminder fires. Reads like a footer row.</p></div>
+<div class="opt"><h2>C · Tinted band</h2><div class="card" data-b></div><p class="note">The strip is faintly gold, so it reads as a button more clearly.</p></div>
+</div></main>
+<script>
+const BELL='<svg class="bell" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg>';
+const feet=[`<div class="fa">${BELL} Remind me Sunday at dark</div>`,`<div class="fb"><span>${BELL} Remind me Sunday at dark</span><span>6:54 PM</span></div>`,`<div class="fc">${BELL} Remind me Sunday at dark</div>`];
+document.querySelectorAll('[data-b]').forEach((c,i)=>{c.innerHTML=document.getElementById('body').innerHTML+feet[i];});
+</script>
