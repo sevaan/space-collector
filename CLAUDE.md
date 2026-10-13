@@ -798,3 +798,7 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 2026-10-13 · v0.1.591 (Sevaan):
 - **Constellation lines below the horizon:** always on, at 70% of the sky lines, with the big constellations' names (sky.js drawBelowSky). Lines above the horizon still follow the Settings switch.
 - **Below-horizon and daytime satellite icons:** 80% of their old size (BELOW_ICON 13 → 10.5). The one lined up in the circle grows to 20 px (BELOW_ICON_HIT, matched by belowHitId / dayHitId).
+
+2026-10-13 · v0.1.594:
+- **Constellation lines checked against the data:** 868 of 893 line corners sit on a catalogued star; the other 25 are faint southern stars below the star list's cut. Orion's belt and the Big Dipper are correct, and lines and stars share one transform (celestial.js loadSky). They looked like nothing below the horizon because, from Canada, that's mostly unfamiliar southern constellations with no names, so every constellation below the horizon is now named.
+- **FIX:** the lined-up below-horizon icon didn't grow. belowHitId is the object's id, but halo entries have the id only on `obj`; matching now uses `id ?? obj.id`.
