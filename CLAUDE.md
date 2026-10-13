@@ -851,3 +851,7 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - **Cache and prefetch:** results are cached per day/place/sky in localStorage `weekCache` (without the curve). Plus players start it in the background 6 s after tonight's plan is ready. Pending nights show shimmer rows.
 - **Trade-off:** the 3-minute step can miss the shortest passes, so week counts are a little lower than Tonight's. That's fine for picking a night.
 - **Rarity chart:** each row has a tiny bar chart of new cards by rarity, Common → Legendary in tier colours, square-root scaled; an empty rarity is a dash.
+
+2026-10-13 · v0.1.624 (Sevaan):
+- **No Commons in suggestions:** `bestUpcoming(T, t0, until)` picks the pass to suggest: new to you, Uncommon or rarer, rarest then soonest. Commons appear only once fewer than 10 Uncommon-or-better cards are left. It's used by the corner chip (day "TONIGHT: …" within the evening, night "NEXT: …") and the Now tab's empty-state "Next up".
+- **No more bright-pass toast:** the "Find the next pass" toast ("Shijian-16 / Tonight at 7:02 PM", a sticky toast instead of the corner chip) is gone. With no plan yet, the Now tab's button reads "See tonight's plan" and opens the Tonight tab.
