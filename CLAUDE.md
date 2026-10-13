@@ -758,3 +758,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 2026-10-13 · v0.1.562: every daytime pass marker shows the object's icon inside its dotted circle at 50% opacity (12 px, dark ink), not just the one lined up (Sevaan).
 
 2026-10-13 · v0.1.565: a daytime pass marker lined up in the circle grows like a real target: its dotted ring goes from 11 to 17 px and the icon from 12 to 22 px (uses last frame's `sky.ghostHitId`).
+
+2026-10-13 · v0.1.567: daytime pass tracks are dark ink (rgba(20,34,54,.42)), since the white tracks vanished over clouds and some passes looked like they had none. Chevrons every 7 track points point from rise to set, so you can see which way each one moves (Sevaan).

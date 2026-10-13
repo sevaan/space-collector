@@ -1,17 +1,17 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.565';
+import { extinction } from './sky-limit.js?v=0.1.567';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.565';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.567';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.565';
-import { createCloudGL } from './clouds-gl.js?v=0.1.565';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.567';
+import { createCloudGL } from './clouds-gl.js?v=0.1.567';
 // Cloud colours by light: sunlit tops, shadowed bellies, and the horizon haze they melt into (0–1 RGB).
 const CLOUD_LIGHT = {
   day: { lit: [1, 1, 1], shade: [0.62, 0.68, 0.77], haze: [0.82, 0.87, 0.93] },
   dusk: { lit: [1, 0.8, 0.68], shade: [0.36, 0.33, 0.42], haze: [0.62, 0.5, 0.52] },
   night: { lit: [0.22, 0.25, 0.31], shade: [0.1, 0.12, 0.16], haze: [0.14, 0.15, 0.2] },
 };
-import { TIER_INFO } from './rarity.js?v=0.1.565';
+import { TIER_INFO } from './rarity.js?v=0.1.567';
 
 const RAD = Math.PI / 180;
 const BELOW_ICON = 13; // every satellite under the horizon, passes and halo alike
@@ -325,9 +325,19 @@ export class SkyView {
     ctx.save(); ctx.lineWidth = 1.2;
     for (const g of ghosts) {
       if (g.path?.length) { // where it will cross the sky tonight
-        ctx.setLineDash([2, 6]); ctx.strokeStyle = 'rgba(255,255,255,.55)'; ctx.beginPath(); let on = false;
-        for (const e of g.path) { if (e[2] < 0) { on = false; continue; } const q = this.project(e); if (!q) { on = false; continue; } on ? ctx.lineTo(q.x, q.y) : ctx.moveTo(q.x, q.y); on = true; }
+        // Dark ink, not white: white vanished over clouds, so some passes looked like they had no path (2026-10-13).
+        const pts = g.path.map((e) => (e[2] < 0 ? null : this.project(e)));
+        ctx.setLineDash([2, 6]); ctx.strokeStyle = 'rgba(20,34,54,.42)'; ctx.lineWidth = 1.4; ctx.beginPath(); let on = false;
+        for (const q of pts) { if (!q) { on = false; continue; } on ? ctx.lineTo(q.x, q.y) : ctx.moveTo(q.x, q.y); on = true; }
         ctx.stroke();
+        // Which way it goes: small chevrons along the track, pointing from where it rises to where it sets.
+        ctx.setLineDash([]); ctx.strokeStyle = 'rgba(20,34,54,.6)'; ctx.lineWidth = 1.6; ctx.lineCap = 'round';
+        for (let i = 5; i < pts.length - 1; i += 7) {
+          const a0 = pts[i - 1], a1 = pts[i + 1], q = pts[i]; if (!a0 || !a1 || !q || !this.onScreen(q, 10)) continue;
+          const ang = Math.atan2(a1.y - a0.y, a1.x - a0.x), k = 6;
+          ctx.beginPath(); ctx.moveTo(q.x - k * Math.cos(ang - 0.6), q.y - k * Math.sin(ang - 0.6)); ctx.lineTo(q.x, q.y); ctx.lineTo(q.x - k * Math.cos(ang + 0.6), q.y - k * Math.sin(ang + 0.6)); ctx.stroke();
+        }
+        ctx.lineWidth = 1.2; ctx.lineCap = 'butt';
       }
       if (g.enu[2] < 0) continue;
       const p = this.project(g.enu);
