@@ -1178,3 +1178,26 @@ body.is-plus .vt-plus { display: none; }
 .tl-skel.short { width: 60%; height: 18px; margin-top: 18px; }
 @keyframes tl-shimmer { from { background-position: 100% 0; } to { background-position: -50% 0; } }
 @media (prefers-reduced-motion: reduce) { .tl-load-dial i, .tl-skel, .tl-scan { animation: none; } }
+
+/* Week, round 2 (2026-10-13): icon + phrase per evening, no bars. */
+.wk-hero-top { display: flex; align-items: center; gap: 12px; }
+.wk-hero-ic .ico, .wk3-ic .ico { width: 100%; height: 100%; }
+.wk-hero-ic { width: 34px; height: 34px; flex: none; color: var(--muted); }
+.wk-hero-ic.clear, .wk-hero-ic.mostly, .wk3-row.good .wk3-ic { color: var(--gold); }
+.wk3-row { display: grid; grid-template-columns: 28px minmax(0, 1fr) auto; align-items: center; gap: 12px; width: 100%; padding: 12px 14px; border-radius: 14px; border: 1px solid #22344a; background: #0e1a29; color: var(--text); text-align: left; cursor: pointer; font: inherit; }
+.wk3-row.best { border-color: color-mix(in srgb, var(--gold) 60%, transparent); }
+.wk3-row.poor { background: #0b1522; }
+.wk3-row.poor .wk3-sky, .wk3-row.poor .wk3-ic { color: var(--muted); opacity: .8; }
+.wk3-main { display: grid; gap: 3px; min-width: 0; }
+.wk3-day { display: flex; align-items: baseline; gap: 8px; }
+.wk3-day b { font: 600 16px/1.1 var(--label); letter-spacing: .03em; color: var(--ink, #fff2b3); }
+.wk3-day small { font: 500 12px/1.2 var(--label); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.wk3-ic { width: 26px; height: 26px; color: var(--muted); }
+.wk3-sky { font: 500 15px/1.25 var(--label); letter-spacing: .02em; color: var(--ink, #fff2b3); min-width: 0; }
+.wk3-row.good .wk3-sky { color: var(--gold); }
+.wk3-new { display: flex; align-items: baseline; gap: 4px; justify-content: flex-end; min-width: 4.2em; }
+.wk3-new b { font: 400 20px/1 var(--display); color: var(--ink, #fff2b3); }
+.wk3-new small { font: 500 12px/1 var(--label); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.wk3-new i { font-style: normal; font-size: 13px; margin-left: 4px; }
+.wk-hero-top b { font: 400 30px/1 var(--display); color: var(--ink, #fff2b3); display: flex; align-items: baseline; gap: 10px; }
+.wk-hero-top b em { font: 500 15px/1 var(--label); letter-spacing: .14em; text-transform: uppercase; font-style: normal; color: var(--muted); }

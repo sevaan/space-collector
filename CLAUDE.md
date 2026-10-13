@@ -811,3 +811,8 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 2026-10-13 · v0.1.597: Tonight loading state (Sevaan: "needs a better loading state").
 - **Worker progress:** the planner worker posts progress every ~20 sky-minutes (`progress: true` on the request): { t, dusk, curve so far, passes found }.
 - **Loading screen:** `renderTonightLoading` shows a small orbit dial, "Working out tonight's sky / Checked to 9:41 PM · 365 passes so far", the busyness chart growing as it scans (a blinking line where it's up to), and shimmering placeholder rows. With reduced motion, nothing animates.
+
+2026-10-13 · v0.1.601: Week tab, round 2 (Sevaan: "I don't like the coloured bars. It's not intuitive").
+- **Rows:** no bars. Each evening is a weather icon, the day and date, and one phrase made from the hourly forecast between dark and eveningEnd: "Clear all evening", "Clear until 9 PM", "Clear from 10 PM", "Mostly clear, some cloud", "Breaks in the cloud", "Cloudy/Rain/Fog all evening". Clear evenings are gold; poor ones step back. Then the new count and the rarest's gem. Tap a row for its new cards.
+- **Best-night card:** picks from the good evenings ("No clear evening yet · the best chance" if none).
+- **FIX:** nightSummary rated the sky over the whole night while showing the evening (Sunday read "Cloudy most of the evening" over an all-clear strip). It now uses the evening for both.
