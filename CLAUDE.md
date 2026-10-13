@@ -726,3 +726,9 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 2026-10-12 · v0.1.545: rocket art redo, part 1. 18 of the 35 pictures in design/art-rocket-redo.html were regenerated with Nano Banana Pro (spent stages, no flame, varied angles) and imported: agena, ariane-5, centaur, debris-rocket-1/2/3, delta-2, electron, falcon-9, fregat, indian-stage, kick-motor, rocket-stage(-1/-2), russian-stage, sl-12, titan-transtage. The other 17 prompts asked for "the whole rocket" (boosters, fairing), which is wrong for what's in orbit. They were rewritten to the actual orbiting stage (Vostok Blok E, Soyuz Blok I, Kosmos-3M second stage, Vanguard third stage, PSLV PS4…) and are regenerating. The script and prompts are in the session scratchpad rockgen/. Each request sends the old picture as a shape reference.
 
 2026-10-12 · v0.1.546: rocket art redo is done. All 35 pictures from design/art-rocket-redo.html are replaced. These 17 now show only the stage that's actually in orbit, not the whole rocket: Vostok Blok E, Soyuz Blok I, Molniya Blok L, Kosmos-3M second stage, Zenit second stage, Tsyklon-2/-3 upper stages, Start-1 upper stage, Delta and N-I second stages, PSLV PS4, Scout fourth stage, Mu kick stage, Vanguard third stage, Thor's upper stage, the Ariane 4 H10 and the bare Atlas core. Contact sheet: design/rocket-art.jpg.
+
+2026-10-12 · v0.1.547: round sound set shipped (Sevaan's picks from the board, rendered by scripts/sfx-round.py).
+- **Option b:** lock, collect, arrive, flip, stamp, page, r_epic, r_legend, rankup, patch, secret.
+- **Option a:** swipe, r_common, r_uncommon, r_rare, shiny, levelup, xp, mission, coinroll, complete, fossil, ufo, welcome, rattle, step, toggle, plane.
+- **Kept as before:** toast, seen.
+- **Levels:** NORM in js/sfx.js is re-measured so each new file plays at the old in-game loudness (ebur128), capped at 4×. Because of the cap, flip, xp and rattle land slightly quieter.
