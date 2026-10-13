@@ -1,17 +1,17 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.551';
+import { extinction } from './sky-limit.js?v=0.1.557';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.551';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.557';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.551';
-import { createCloudGL } from './clouds-gl.js?v=0.1.551';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.557';
+import { createCloudGL } from './clouds-gl.js?v=0.1.557';
 // Cloud colours by light: sunlit tops, shadowed bellies, and the horizon haze they melt into (0–1 RGB).
 const CLOUD_LIGHT = {
   day: { lit: [1, 1, 1], shade: [0.62, 0.68, 0.77], haze: [0.82, 0.87, 0.93] },
   dusk: { lit: [1, 0.8, 0.68], shade: [0.36, 0.33, 0.42], haze: [0.62, 0.5, 0.52] },
   night: { lit: [0.22, 0.25, 0.31], shade: [0.1, 0.12, 0.16], haze: [0.14, 0.15, 0.2] },
 };
-import { TIER_INFO } from './rarity.js?v=0.1.551';
+import { TIER_INFO } from './rarity.js?v=0.1.557';
 
 const RAD = Math.PI / 180;
 const BELOW_ICON = 13; // every satellite under the horizon, passes and halo alike
@@ -321,17 +321,29 @@ export class SkyView {
   // Dashed "ghost" markers: things up there right now that can't be seen until dark (daytime Explore).
   // ghosts: [{ enu, name, note }]
   drawGhosts(ghosts) {
-    const ctx = this.ctx, t = this.theme;
-    ctx.save(); ctx.setLineDash([3, 4]); ctx.lineWidth = 1.2; ctx.strokeStyle = 'rgba(255,255,255,.8)';
+    const ctx = this.ctx; this.ghostHits = [];
+    ctx.save(); ctx.lineWidth = 1.2;
     for (const g of ghosts) {
+      if (g.path?.length) { // where it will cross the sky tonight
+        ctx.setLineDash([2, 6]); ctx.strokeStyle = 'rgba(255,255,255,.55)'; ctx.beginPath(); let on = false;
+        for (const e of g.path) { if (e[2] < 0) { on = false; continue; } const q = this.project(e); if (!q) { on = false; continue; } on ? ctx.lineTo(q.x, q.y) : ctx.moveTo(q.x, q.y); on = true; }
+        ctx.stroke();
+      }
       if (g.enu[2] < 0) continue;
       const p = this.project(g.enu);
       if (!this.onScreen(p, 20)) continue;
-      ctx.beginPath(); ctx.arc(p.x, p.y, 7, 0, Math.PI * 2); ctx.stroke();
-      this.queueLabel(g.name, p, { color: 'rgba(255,255,255,.92)', size: 12, weight: 600, gap: 12, priority: 7 });
-      if (g.note) this.queueLabel(g.note, { x: p.x, y: p.y + 14 }, { color: 'rgba(255,255,255,.75)', size: 10, weight: 500, gap: 12, priority: 6 });
+      this.ghostHits.push({ x: p.x, y: p.y, pass: g.pass ?? null });
+      ctx.setLineDash([3, 4]); ctx.strokeStyle = g.color ?? 'rgba(255,255,255,.8)'; ctx.lineWidth = g.color ? 1.8 : 1.2;
+      ctx.beginPath(); ctx.arc(p.x, p.y, g.color ? 11 : 7, 0, Math.PI * 2); ctx.stroke(); ctx.lineWidth = 1.2;
+      if (g.time) this.queueLabel(`${g.name} · ${g.time}`, p, { color: 'rgba(255,255,255,.95)', size: 12, weight: 600, gap: 16, priority: 7 }); // tonight's pass markers: one line
+      else { this.queueLabel(g.name, p, { color: 'rgba(255,255,255,.95)', size: 12, weight: 600, gap: 16, priority: 7 });
+        if (g.note) this.queueLabel(g.note, { x: p.x, y: p.y + 14 }, { color: 'rgba(255,255,255,.8)', size: 10, weight: 500, gap: 16, priority: 6 }); }
     }
     ctx.restore();
+    // One in the circle: name it in full above and below the circle, like things below the horizon (2026-10-13).
+    const timed = ghosts.filter((g) => g.time && g.enu[2] > 0);
+    const hit = timed.length && !this.ghostBusy ? this.ghostHit(timed.map((g) => ({ ...g, kicker: `TONIGHT · ${g.time}` })), '', '20,34,54', { day: true, kickerOf: (g) => g.kicker }) : null;
+    this.ghostHitId = hit?.g.id ?? null;
   }
 
   // See-through Earth (2026-10-06): things below the horizon right now, drawn faintly where they really are, with
@@ -450,7 +462,7 @@ export class SkyView {
   }
   // In the circle: kicker, name, description and one line, for something you can see but not collect (below the
   // horizon, or up by day). Returns the hit or null.
-  ghostHit(list, kicker, ink, { day = false } = {}) {
+  ghostHit(list, kicker, ink, { day = false, kickerOf = null } = {}) {
     const rc = this.ring ?? { x: this.cx, y: this.cy, r: this.reticlePx };
     let hit = null;
     for (const g of list) { const q = this.project(g.enu); if (!q) continue;
@@ -461,7 +473,7 @@ export class SkyView {
     ctx.save(); ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic'; ctx.shadowColor = day ? 'rgba(255,255,255,.75)' : 'rgba(0,0,0,.6)'; ctx.shadowBlur = day ? 6 : 4;
     ctx.font = `500 13px ${FONT}`; ctx.fillStyle = day ? `rgba(${INK},.75)` : 'rgba(189,190,169,.95)';
     if ('letterSpacing' in ctx) ctx.letterSpacing = '2.5px';
-    ctx.fillText(g.owned === undefined ? kicker : `${kicker} · ${g.owned ? 'IN YOUR COLLECTION' : 'NOT COLLECTED YET'}`, rc.x, y0 - 30, this.w - 32);
+    ctx.fillText(kickerOf ? kickerOf(g) : g.owned === undefined ? kicker : `${kicker} · ${g.owned ? 'IN YOUR COLLECTION' : 'NOT COLLECTED YET'}`, rc.x, y0 - 30, this.w - 32);
     if ('letterSpacing' in ctx) ctx.letterSpacing = '0px';
     ctx.font = `400 26px ${DISPLAY_FONT}`; ctx.fillStyle = `rgb(${INK})`;
     ctx.fillText(g.name.toUpperCase(), rc.x, y0, this.w - 32); // squeezed rather than clipped on narrow phones (QA 2026-10-08)
@@ -1315,7 +1327,8 @@ export class SkyView {
     if (deep?.length && (this.dayF ?? 0) < 0.2) this.drawDeep(deep);
     if (weather && !this.camera) this.drawWeather(weather, this.reducedMotion ? 0 : time); // the camera shows the real clouds
     if (bodies) this.drawBodies(bodies);
-    if (ghosts?.length) this.drawGhosts(ghosts);
+    this.ghostBusy = !!targetId || !!planeHit; // the circle names a pass marker only when nothing real is in it
+    if (ghosts?.length) this.drawGhosts(ghosts); else { this.ghostHits = []; this.ghostHitId = null; }
     this.feetA = Math.max(0, Math.min(1, (-this.basis.back[2] - 0.8) / 0.1)); // fades in from ~53° down, full by ~64° (it is on the ground now, so it can show sooner)
     this.drawGround();
     if (landscape) { // trees, hills and meadow; in camera view see-through like the sky and ground (an overlay of our world on yours)

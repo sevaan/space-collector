@@ -736,3 +736,10 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 2026-10-12 · v0.1.548: stars (and any other "quiet" kind) now show the Collect button too (Sevaan). A quiet target only drops the inner ring and the snap. The Settings highlight sheet text was updated to match.
 
 2026-10-13 · v0.1.551: weekly recap card. The double frame lines are an overlay (`#recap .rc-card::before`, z 4) instead of inset shadows, so the art window sits behind them rather than covering them (Sevaan).
+
+2026-10-13 · v0.1.557: daytime pass markers (Sevaan: "circles in the sky showing where to see some cool satellites tonight and when").
+- **What shows:** `dayGhosts` replaced the old "where it is right now" ghosts. By day, up to 4 of this evening's passes (until eveningEnd, peak ≥ 15°): cards you don't have first, then rarest, then brightest.
+- **How they look:** each is a dashed circle in its tier colour at the highest point, labelled "NAME · 7:54 PM", with a dashed path from rise to set (az/el through rise → peak → set).
+- **In the circle:** with nothing else targeted, a marker in the circle is named in full (sky.js drawGhosts → ghostHit with a per-item kicker): "TONIGHT · 7:54 PM / TIROS 3 / ◆ Rare · new to you / tap it to be shown where it rises". The until-dark countdown hides meanwhile (`sky.ghostHitId`).
+- **Tapping:** tapSky checks `sky.ghostHits` first and runs showMePass.
+- **showMePass:** no longer shows a sticky "Follow the arrow" toast, which covered the steering line under the circle that says the same thing.
