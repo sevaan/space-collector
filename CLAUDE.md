@@ -860,3 +860,10 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - **Real mini cards everywhere** a small card appears. card.js `miniCard(o, { sightings, status, locked })` returns a `.mini-face`: the real card scaled by `--mini-s` (width / 280), with a short status in its footer and dimmed art when not collected. It's used by Collection tiles (cards-page miniFace), the Now tab's "Seen before" ("NE · 40° up") and Tonight's "Worth setting an alarm for" ("7:54 PM · E", bell over the art) via main.js `stripCard`. The strips are 132 px wide (`--mini-s: .4714`).
 - **Week day detail:** the rarity is in its tier colour.
 - **Compass:** shown from the first frame as a still, dimmed (50%) dial drawn once with a default basis. At hud-ready it goes to full opacity with a small "click in" turn and bounce (`radar-click`; none with reduced motion).
+
+2026-10-13 · v0.1.627: Tonight's run is built (design/sky-pages-combined.html, which Sevaan approved with a target and bell per stop).
+- **Haul (`renderRun` writes #tonight-summary):** new cards this evening (Commons left out until fewer than 10 Uncommon+ remain), the top rarity count in its colour, the best window and XP, a rarity mini chart, then dark time and weather.
+- **The run:** up to 4 rarest new cards, the best shiny chance, moments (dark, busiest, cloud, clearing) and a dawn station as "Early riser". Each stop has the ICON_TARGET (showMePass) and ICON_BELL (remindPass, toggles) buttons, and tapping the stop opens the card.
+- **"Remind me for my run":** sets each stop's reminder in turn and stops at the free limit (Plus sheet).
+- **Old list:** the full list, chart, shiny chances, Also up tonight and alarm cards sit behind "Everything tonight · N passes ›" (`tlAll`).
+- **Icons:** line icons (moon, cloud, stars, bell) instead of emoji in the run and in the until-dark reminder sheet.

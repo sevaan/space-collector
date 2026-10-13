@@ -74,6 +74,7 @@ h1{font:400 clamp(28px,6vw,42px)/1.05 var(--display);color:var(--ink);margin:10p
 .stop.moment::before{background:none;border:1.5px solid var(--dim);box-shadow:none;width:8px;height:8px;left:-18px;top:9px}
 .stop .h{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
 .stop .h b{font:400 16px/1 var(--display);color:var(--ink);font-variant-numeric:tabular-nums}
+.stop .acts2{position:absolute;right:10px;bottom:10px;display:flex;gap:6px}.stop .acts2 span{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;border:1px solid var(--edge);background:#0a1220;color:var(--ink);font-size:13px}
 .stop .h em{font-style:normal;font:600 11px/1 var(--label);letter-spacing:.14em;text-transform:uppercase;color:var(--c)}
 .stop .n{display:block;margin-top:5px;font:600 16px/1.15 var(--label);color:var(--ink)}
 .stop .w{display:block;font:500 13px/1.3 var(--label);color:var(--muted)}
@@ -130,7 +131,7 @@ h1{font:400 clamp(28px,6vw,42px)/1.05 var(--display);color:var(--ink);margin:10p
     <span class="tr">✦ Epic · new to you</span>
     <span class="nm">Cosmos 796</span>
     <span class="dir"><i>↑</i> Turn left a little · high in the southeast</span>
-    <div class="acts"><span class="pill o">Show me</span><span class="pill g">🔔 Remind</span></div>
+    <div class="acts"><span class="pill o">Show me</span><span class="pill g"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg> Remind</span></div>
   </div>
   <div class="after">
     <span class="k" style="margin-top:6px">After that</span>
@@ -160,26 +161,27 @@ h1{font:400 clamp(28px,6vw,42px)/1.05 var(--display);color:var(--ink);margin:10p
     <div class="big">6 new cards, <em>2 Epic</em></div>
     <p>Go out 7:50 to 9:30 · finishes 2 of 3 missions · about +240 XP</p>
     <div class="bars"><i style="--c:var(--com);height:30%"></i><i style="--c:var(--unc);height:55%"></i><i style="--c:var(--rare);height:70%"></i><i style="--c:var(--epic);height:45%"></i><i style="--c:#33465c;height:8%"></i><span>new by rarity</span></div>
-    <div class="wx">☾ Dark 7:02 · ☁ clear until 9:30, then cloud</div>
+    <div class="wx">Dark 7:02 · clear until 9:30, then cloud</div>
   </div>
   <div class="run">
     <span class="k" style="display:block;margin:4px 0 10px -20px">Tonight's run</span>
     <div class="stop moment"><div class="h"><b>7:02</b></div><span class="n">Dark enough to start</span></div>
-    <div class="stop" style="--c:var(--rare)"><div class="h"><b>7:54</b><em>◆ Rare</em></div><span class="n">Tiros 3</span><span class="w">Rises in the east · high in the southeast</span><div class="gets"><span>New card</span><span class="m">Mission: a satellite</span></div></div>
-    <div class="stop" style="--c:var(--epic)"><div class="h"><b>8:39</b><em>✦ Epic</em></div><span class="n">Cosmos 796</span><span class="w">High in the southeast · bright</span><div class="gets"><span>New card</span><span class="m">Mission: 60° up</span><span>+25 XP</span></div></div>
-    <div class="stop" style="--c:var(--org)"><div class="h"><b>8:50</b><em>Shiny chance</em></div><span class="n">SL-8 Rocket Stage</span><span class="w">Slips into Earth's shadow, 20° up in the east</span><div class="gets"><span class="s">Shiny card</span></div></div>
+    <div class="stop" style="--c:var(--rare)"><div class="h"><b>7:54</b><em>◆ Rare</em></div><span class="n">Tiros 3</span><span class="w">Rises in the east · high in the southeast</span><div class="gets"><span>New card</span><span class="m">Mission: a satellite</span></div><div class="acts2"><span><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="7.5"/><circle cx="12" cy="12" r="2.5"/><path d="M12 1.5v4M12 18.5v4M1.5 12h4M18.5 12h4"/></svg></span><span><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg></span></div></div>
+    <div class="stop" style="--c:var(--epic)"><div class="h"><b>8:39</b><em>✦ Epic</em></div><span class="n">Cosmos 796</span><span class="w">High in the southeast · bright</span><div class="gets"><span>New card</span><span class="m">Mission: 60° up</span><span>+25 XP</span></div><div class="acts2"><span><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="7.5"/><circle cx="12" cy="12" r="2.5"/><path d="M12 1.5v4M12 18.5v4M1.5 12h4M18.5 12h4"/></svg></span><span><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg></span></div></div>
+    <div class="stop" style="--c:var(--org)"><div class="h"><b>8:50</b><em>Shiny chance</em></div><span class="n">SL-8 Rocket Stage</span><span class="w">Slips into Earth's shadow, 20° up in the east</span><div class="gets"><span class="s">Shiny card</span></div><div class="acts2"><span><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="7.5"/><circle cx="12" cy="12" r="2.5"/><path d="M12 1.5v4M12 18.5v4M1.5 12h4M18.5 12h4"/></svg></span><span><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg></span></div></div>
     <div class="stop moment"><div class="h"><b>9:05</b></div><span class="n">Busiest: 65 objects up at once</span></div>
-    <div class="stop" style="--c:var(--epic)"><div class="h"><b>9:24</b><em>✦ Epic</em></div><span class="n">Cosmos 1084</span><span class="w">High in the west</span><div class="gets"><span>New card</span></div></div>
-    <div class="stop moment"><div class="h"><b>9:30</b></div><span class="n">☁ Cloud rolls in</span></div>
+    <div class="stop" style="--c:var(--epic)"><div class="h"><b>9:24</b><em>✦ Epic</em></div><span class="n">Cosmos 1084</span><span class="w">High in the west</span><div class="gets"><span>New card</span></div><div class="acts2"><span><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="7.5"/><circle cx="12" cy="12" r="2.5"/><path d="M12 1.5v4M12 18.5v4M1.5 12h4M18.5 12h4"/></svg></span><span><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg></span></div></div>
+    <div class="stop moment"><div class="h"><b>9:30</b></div><span class="n">Cloud rolls in</span></div>
     <div class="stop" style="--c:var(--rare)"><div class="h"><b>6:37 AM</b><em>Early riser</em></div><span class="n">International Space Station</span><span class="w">Very bright · climbs high in the south</span></div>
   </div>
   <span class="more">Everything tonight · 412 passes ›</span>
-  <div class="cta"><span class="pill o">🔔 Remind me for my run</span></div>
+  <div class="cta"><span class="pill o"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg> Remind me for my run</span></div>
 </div></div>
 <ul class="notes">
   <li><b>Tonight's haul:</b> the reason to go out. New cards (with a tiny rarity chart), missions it would finish, XP, and the weather window in one line.</li>
   <li><b>The run:</b> 3 to 6 stops chosen for you (the rarest new cards, shiny chances, stations), plus moments like dark, busiest and cloud. Each stop says what it gets you.</li>
-  <li><b>One button for reminders:</b> one each before the stops. Free players pick one stop; Plus gets the whole run. This replaces the hidden swipe.</li>
+  <li><b>Each stop has its own target and bell:</b> the target takes you to where to look in the sky, the bell sets a reminder for that one stop.</li>
+  <li><b>Plus one button for all of them:</b> one each before the stops. Free players pick one stop; Plus gets the whole run. This replaces the hidden swipe.</li>
   <li><b>Dawn ISS:</b> shown at the end as "Early riser", never lost.</li>
   <li><b>Full list:</b> stays one tap away ("Everything tonight"), with Commons collapsed.</li>
 </ul></div>
@@ -204,7 +206,7 @@ h1{font:400 clamp(28px,6vw,42px)/1.05 var(--display);color:var(--ink);margin:10p
     <div class="d">Sunday <small>OCT 18</small></div>
     <div class="why">Clear all evening, a thin Moon, and a <b style="color:var(--leg)">★ Legendary</b> you can only catch that night.</div>
     <div class="gets"><span>5 new cards</span><span class="m">Run of 4 stops</span><span>Dark 6:54</span></div>
-    <div style="display:flex;gap:8px;margin-top:12px"><span class="pill o" style="flex:1">See Sunday's run</span><span class="pill g">🔔</span></div>
+    <div style="display:flex;gap:8px;margin-top:12px"><span class="pill o" style="flex:1">See Sunday's run</span><span class="pill g"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg></span></div>
   </div>
   <div class="only">
     <span class="k">Only this week</span>
