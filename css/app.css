@@ -1316,3 +1316,7 @@ body.night .wk4-moon::after { background: #ff7f70; }
 .wk4-foot:active { background: #f2c14e14; }
 .wk4-pick:not(:has(.wk4-foot)) { padding-bottom: 16px; }
 .wk4-foot { padding: 20px 16px 22px; margin-top: 10px; }
+/* The footer bell rings once every 10 s until a reminder is set (2026-10-13, Sevaan). */
+.wk4-foot:not(.on) .ico { transform-origin: 50% 10%; animation: wf-ring 10s ease-in-out infinite; animation-delay: 1.5s; }
+@keyframes wf-ring { 0%, 6%, 100% { transform: rotate(0); } 1% { transform: rotate(16deg); } 2% { transform: rotate(-14deg); } 3% { transform: rotate(10deg); } 4% { transform: rotate(-6deg); } 5% { transform: rotate(3deg); } }
+@media (prefers-reduced-motion: reduce) { .wk4-foot .ico { animation: none !important; } }
