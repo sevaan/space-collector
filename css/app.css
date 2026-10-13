@@ -442,7 +442,7 @@ body:has(#reveal:not([hidden])) #toasts, body:has(.overlay.panel:not([hidden])) 
 /* Over an object, one pattern (2026-10-07, design/target-states.html A): rarity + name above the circle, one button
    below. New: solid orange Tap to collect. Collected: cream outline View card + "Seen on N nights". Plane: red
    circle, the route on a red outline button, details under it. */
-#discover.owned #d-tier::before { content:"◆"; color:var(--find-tier, var(--text)); }
+#discover.owned #d-tier::before { color:var(--find-tier, var(--text)); }
 #discover.owned #d-cta { background:color-mix(in srgb, var(--bg) 80%, transparent); color:var(--text); border:1.5px solid var(--text); box-shadow:none; }
 #d-sub { font:500 12px/1.2 var(--label); letter-spacing:.14em; text-transform:uppercase; color:var(--muted); text-shadow:0 1px 4px var(--bg); }
 #plane .p-info { display:flex; flex-direction:column; align-items:center; gap:7px; text-shadow:none; }
@@ -1091,3 +1091,6 @@ body:has(#onboard:not([hidden])) #reveal { z-index: 30; }
 .plus-why { margin: 14px 0 0; font: 400 13px/1.4 -apple-system, system-ui, sans-serif; color: var(--muted); text-align: center; }
 #plus-restore { margin-top: 6px; }
 body.night .plus-price { background: #1c0909; border-color: #2e1010; }
+
+/* The rarity's own shape beside the target's rarity (● ▲ ◆ ✦ ★; 2026-10-12: owned cards all showed ◆). */
+#d-tier[data-gem]::before { content: attr(data-gem); color: var(--find-tier, var(--gold)); }
