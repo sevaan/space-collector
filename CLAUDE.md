@@ -845,3 +845,9 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - **Layout:** more room under the heading.
 - **Target button:** each row has one (showMePass on the chance's pass; shinyChances now carries `p`).
 - **Explainer:** a "What's a shiny?" box above the first row, closed for good with its ✕ (localStorage `shinyExplained`).
+
+2026-10-13 · v0.1.622: the Week tab is fast (Sevaan: "loads really slow"). It went from about 30–60 s to about 1.5 s in WebKit.
+- **What changed:** each night is worked out for the evening only (15:00 + 10 h; Night owl 18 h) in 3-minute steps, three nights at once in up to three workers.
+- **Cache and prefetch:** results are cached per day/place/sky in localStorage `weekCache` (without the curve). Plus players start it in the background 6 s after tonight's plan is ready. Pending nights show shimmer rows.
+- **Trade-off:** the 3-minute step can miss the shortest passes, so week counts are a little lower than Tonight's. That's fine for picking a night.
+- **Rarity chart:** each row has a tiny bar chart of new cards by rarity, Common → Legendary in tier colours, square-root scaled; an empty rarity is a dash.
