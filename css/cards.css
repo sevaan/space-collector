@@ -465,3 +465,12 @@
 /* Long facts make some cards taller than 42em, which pushed their bottom frame out of the tile: hold every mini card to
    exactly 42em so the whole frame shows (the strip covers where the text runs out). */
 .card-tile--mini .tile-mini > .card, .card-tile--mini .card__rotator, .card-tile--mini .card__face { height: 42em; min-height: 0; max-height: 42em; overflow: hidden; box-sizing: border-box; }
+
+/* Mini cards, round 3 (2026-10-13): no overlay. The footer itself carries the collected line in big type, and the fact
+   gives way (shrinks and clips) so the footer and the bottom frame always fit inside the 42em card. */
+.card-tile--mini .card__footer { visibility: visible; flex: none; margin-top: auto; padding: .7em 1.4em .55em; justify-content: flex-start; }
+.card-tile--mini .mini-status { font: 600 2.5em/1 var(--label); letter-spacing: .02em; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.card-tile--mini:not(.is-owned) .mini-status { color: var(--grey); }
+.card-tile--mini .card__fact { flex: 0 1 auto; min-height: 0; overflow: hidden; }
+.card-tile--mini .card__face { display: flex; flex-direction: column; }
+.card-tile--mini .tile-over { display: none; }

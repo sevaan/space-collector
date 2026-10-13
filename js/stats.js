@@ -1,8 +1,8 @@
 // Observer stats (free for everyone, 2026-10-12; was Plus): your history under the sky, from the sighting log.
 // computeStats(sightings, byKey, nightKey) -> numbers; statsHtml(st) -> the panel. No network; the map uses js/geo.js's
 // coarse outlines. The yearly poster was dropped (2026-10-12, Sevaan).
-import { LAND } from './geo.js?v=0.1.608';
-import { TIER_INFO } from './rarity.js?v=0.1.608';
+import { LAND } from './geo.js?v=0.1.609';
+import { TIER_INFO } from './rarity.js?v=0.1.609';
 
 const RANK = { common: 0, uncommon: 1, rare: 2, epic: 3, legendary: 4 };
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];

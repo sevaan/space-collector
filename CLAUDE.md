@@ -826,3 +826,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - **Wording:** "Busiest: 65 objects up at once" everywhere (Sevaan).
 - **Mini-card tiles:** the collected strip now sits inside the card's frame (inset by the frame width, rounded bottom corners, the card's own footer hidden under it).
 - **Tile shape:** tiles are the retro card's real 28 × 42, not 5:7, which cut the bottom off, and every mini card is held to exactly 42em so long facts can't push the bottom frame out.
+
+2026-10-13 · v0.1.609: mini-card tiles, round 3 (Sevaan: the overlay still covered the bottom frame on the phone). There's no overlay now. `miniFace` writes the collected line ("✓ Oct 17, 2026", "4 of 19 launches", "Not yet collected") into the card's own footer as `.mini-status`, set at 2.5em so it reads at tile size. The fact block shrinks and clips (flex 0 1 auto), so the footer and frame always fit in the 42em card.
