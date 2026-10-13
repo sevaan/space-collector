@@ -766,3 +766,8 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - **Pass alerts:** the automatic ones are still Plus, 3 a night, quiet 11 pm – 7 am.
 - **Plus sheet:** new perk "Unlimited reminders". Prices: Yearly $19.99 across the top ("Best value · save 44%"), then Monthly $2.99 and Once, forever $39.99 side by side. Perk lines are one line each, and the sheet fits without scrolling at 393×660 and 375×667.
 - **BUG FIX:** `remindIds` and `newRemindId` were accidentally deleted in 020eca4 (v0.1.528). Every reminder in the native apps threw a ReferenceError from then until now (TestFlight builds 3 and 4 included); the website wasn't affected because it returns 'app-only' first. Both are restored. To catch this kind of thing, lint for undefined names: `npx -y eslint@8.57.0 --no-eslintrc --env browser,es2022,worker --parser-options=sourceType:module,ecmaVersion:latest --rule 'no-undef: error' js/*.js` (clean now).
+
+2026-10-13 · v0.1.574: daytime pass markers, round 4 (Sevaan).
+- **No arrows.** Tracks look like trails in the sky and below the horizon: a short faint solid line for where it's coming from (30 s before it appears, dark ink by day) and orange [4,7] dashes for where it's going (from when it appears until just after it fades, at least 90 s; `passPath` → { past, ahead }).
+- **The circle sits where it appears** (riseAz/riseEl), matching the time on its label, not at the highest point.
+- **Why some had no line before:** a "pass" covers only the minutes it's sunlit and visible, and for some (slipping into shadow) that's one moment, so the old rise→set path had no length.
