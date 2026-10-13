@@ -771,3 +771,9 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - **No arrows.** Tracks look like trails in the sky and below the horizon: a short faint solid line for where it's coming from (30 s before it appears, dark ink by day) and orange [4,7] dashes for where it's going (from when it appears until just after it fades, at least 90 s; `passPath` → { past, ahead }).
 - **The circle sits where it appears** (riseAz/riseEl), matching the time on its label, not at the highest point.
 - **Why some had no line before:** a "pass" covers only the minutes it's sunlit and visible, and for some (slipping into shadow) that's one moment, so the old rise→set path had no length.
+
+2026-10-13 · v0.1.579, small fixes (Sevaan):
+- **Reveal:** "+N XP" is green (#5fd08a; red in night mode) and on the same baseline as NEW CARD. The roll is clipped with clip-path instead of overflow:hidden, which moves an inline-block's baseline to its bottom edge.
+- **Tonight page:** Remind me and Explore the sky sit together. The free space goes above the pair (`#ob-remind` margin-top auto when shown, Explore 12px under it).
+- **Until-dark sheet:** "Set reminder" says why when it can't set one, on the button itself ("Reminders work in the app" / "Notifications are off in Settings"), because toasts sit behind sheets. In the TestFlight builds it did nothing because of the remindIds bug fixed in v0.1.570.
+- **Radar tip:** waits while any sheet, the Tonight page, the recap or the tour is up, and hides if a sheet opens over it.

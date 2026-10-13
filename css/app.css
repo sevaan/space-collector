@@ -1110,3 +1110,10 @@ body.night .plus-price { background: #1c0909; border-color: #2e1010; }
 #set-plus-sheet .plus-perks { gap: 9px; margin-bottom: 14px; }
 #set-plus-sheet .plus-price { padding: 9px 8px; }
 #set-plus-sheet .plus-why { margin-top: 10px; }
+/* Tonight page buttons sit together (2026-10-13, Sevaan: a big gap between Remind me and Explore the sky): the free
+   space goes above the pair, not between them. */
+#ob-done:not(.nt) #ob-remind:not([hidden]) { margin-top: auto; }
+#ob-done:not(.nt) #ob-remind:not([hidden]) + #ob-explore { margin-top: 12px; }
+
+/* The radar tip steps aside while any sheet is open (2026-10-13). */
+body:has(.set-sheet:not([hidden])) .radar-tip { opacity: 0; pointer-events: none; }

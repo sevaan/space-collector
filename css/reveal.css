@@ -105,3 +105,8 @@ body.night #reveal { background: #000; }
 #reveal:not(.has-rank) { --rv-bot: calc(var(--safe-bottom, 0px) + 56px); }
 #rv-rank { top: auto; bottom: calc(var(--safe-bottom, 0px) + 52px); }
 #reveal-view, #reveal.has-rank #reveal-view { top: auto; bottom: calc(var(--safe-bottom, 0px) + 6px); }
+/* +XP (2026-10-13, Sevaan): green, and on the same baseline as NEW CARD. overflow:hidden on an inline-block moves its
+   baseline to the bottom edge (it sat a pixel or two high), so the roll is clipped with clip-path instead. */
+.rv-roll { overflow: visible; height: auto; vertical-align: baseline; clip-path: inset(0 -4px); }
+.rv-roll > span { color: #5fd08a; }
+body.night .rv-roll > span { color: inherit; }
