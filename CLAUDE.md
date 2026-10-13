@@ -836,3 +836,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 2026-10-13 · v0.1.613: the example location comes from the phone's time zone (Sevaan: it was always Peterborough). js/tz-places.js maps ~150 IANA zones to a well-known city in each (`placeFromTimeZone`), with no permission and no network, so a Vancouver phone gets "Showing the sky over Vancouver". Unknown zones still fall back to Peterborough. IP geolocation was rejected because it would send the IP to a third party (privacy policy).
 
 2026-10-13 · v0.1.615: new debris icon (Sevaan): a torn-off scrap of panel with a jagged edge, panel cell lines cut through it, a bent strut, and a fleck when big enough. It replaces the plain pentagon "pebble" (sky.js drawIcon fallback branch).
+
+2026-10-13 · v0.1.616: the buried dinosaur bones are drawn 50% smaller (Sevaan), so 37.5% of their first size, with the minimum and maximum halved too.
