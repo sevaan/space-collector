@@ -1,20 +1,20 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.588';
+import { extinction } from './sky-limit.js?v=0.1.591';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.588';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.591';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.588';
-import { createCloudGL } from './clouds-gl.js?v=0.1.588';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.591';
+import { createCloudGL } from './clouds-gl.js?v=0.1.591';
 // Cloud colours by light: sunlit tops, shadowed bellies, and the horizon haze they melt into (0–1 RGB).
 const CLOUD_LIGHT = {
   day: { lit: [1, 1, 1], shade: [0.62, 0.68, 0.77], haze: [0.82, 0.87, 0.93] },
   dusk: { lit: [1, 0.8, 0.68], shade: [0.36, 0.33, 0.42], haze: [0.62, 0.5, 0.52] },
   night: { lit: [0.22, 0.25, 0.31], shade: [0.1, 0.12, 0.16], haze: [0.14, 0.15, 0.2] },
 };
-import { TIER_INFO } from './rarity.js?v=0.1.588';
+import { TIER_INFO } from './rarity.js?v=0.1.591';
 
 const RAD = Math.PI / 180;
-const BELOW_ICON = 13; // every satellite under the horizon, passes and halo alike
+const BELOW_ICON = 10.5, BELOW_ICON_HIT = 20; // every satellite under the horizon, passes and halo alike (80% of 13 since 2026-10-13); lined up in the circle it grows
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
 const DISPLAY_FONT = '"SC Display", "Russo One", sans-serif';
 
@@ -378,7 +378,7 @@ export class SkyView {
       // The thing itself, faint, inside its dashed ring (2026-10-07: empty rings read as missing): a soft disc for
       // the Sun, Moon and planets, the satellite icon for passes.
       ctx.save(); ctx.globalAlpha = 0.6 * k;
-      if (g.kind === 'sat') { ctx.globalAlpha = 0.8 * k; this.drawIcon(g.obj ? this.iconKind(g.obj) : 'sat', p.x, p.y, BELOW_ICON, t.sat); } // same size and style as the halo ones, no ring (2026-10-11)
+      if (g.kind === 'sat') { ctx.globalAlpha = 0.8 * k; this.drawIcon(g.obj ? this.iconKind(g.obj) : 'sat', p.x, p.y, g.id != null && g.id === this.belowHitId ? BELOW_ICON_HIT : BELOW_ICON, t.sat); } // same size and style as the halo ones, no ring (2026-10-11)
       else { const c = g.kind === 'sun' ? SUN : INKA; this.glow(p.x, p.y, r * 1.8, c, 0.3); ctx.fillStyle = `rgb(${c.join(',')})`; ctx.beginPath(); ctx.arc(p.x, p.y, g.kind === 'planet' ? 2.6 : r * 0.55, 0, Math.PI * 2); ctx.fill(); }
       ctx.restore();
       if (g.kind !== 'sat') { // dashed rings stay on the Sun, Moon and planets only
@@ -440,6 +440,16 @@ export class SkyView {
       const r = Math.max(0.38, Math.min(2.2, 1.8 - 0.27 * s.mag)), a = Math.max(0.12, Math.min(0.75, 0.75 - 0.1 * s.mag)) * Math.min(1, (starLimit - s.mag) / 0.5 + 0.15) * k;
       ctx.fillStyle = t.star(a); ctx.beginPath(); ctx.arc(p.x, p.y, r, 0, Math.PI * 2); ctx.fill();
     }
+    // Constellation lines under the ground too, always on (2026-10-13, Sevaan): the far side of the sky as a star chart.
+    if (sky?.lines) {
+      ctx.globalAlpha = 0.7 * k; ctx.strokeStyle = t.constLine; ctx.lineWidth = 0.75;
+      for (const seg of sky.lines) { let run = []; for (const e of seg) { if (e[2] < 0.01) run.push(e); else { if (run.length > 1) this.path(run); run = []; } } if (run.length > 1) this.path(run); }
+      for (const c of sky.constellations ?? []) {
+        if (c.rank > 2 || c.enu[2] > -0.05) continue;
+        this.queueLabel(t.constCase(c.name), this.project(c.enu), { color: t.constLabel, size: 12, weight: 500, priority: 2, align: 'center' });
+      }
+      ctx.globalAlpha = 1;
+    }
     if (sats?.length) this.drawHalo(sats, k, t.sat);
     ctx.restore();
   }
@@ -453,7 +463,7 @@ export class SkyView {
       const d = Math.hypot(p.x - rc.x, p.y - rc.y); if (d >= r2) continue;
       const h = d <= r1 ? 1 : 1 - (d - r1) / (r2 - r1);
       ctx.globalAlpha = 0.8 * h * h * (3 - 2 * h) * k;
-      this.drawIcon(this.iconKind(s.obj), p.x, p.y, BELOW_ICON, color);
+      this.drawIcon(this.iconKind(s.obj), p.x, p.y, s.id != null && (s.id === this.belowHitId || s.id === this.dayHitId) ? BELOW_ICON_HIT : BELOW_ICON, color);
     }
     ctx.restore();
   }

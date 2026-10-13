@@ -794,3 +794,7 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - The bell in the Remind me pills is nudged 1px up (2px read high on the phone; measured centred in WebKit).
 
 2026-10-13 · v0.1.588: the Week tab's orange dot (it meant "Plus", but nothing said so) is now a small PLUS tag for free players and hidden for Plus players (`body.is-plus`, set in renderPlus).
+
+2026-10-13 · v0.1.591 (Sevaan):
+- **Constellation lines below the horizon:** always on, at 70% of the sky lines, with the big constellations' names (sky.js drawBelowSky). Lines above the horizon still follow the Settings switch.
+- **Below-horizon and daytime satellite icons:** 80% of their old size (BELOW_ICON 13 → 10.5). The one lined up in the circle grows to 20 px (BELOW_ICON_HIT, matched by belowHitId / dayHitId).
