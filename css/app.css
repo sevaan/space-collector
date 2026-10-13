@@ -1315,3 +1315,4 @@ body.night .wk4-moon::after { background: #ff7f70; }
 .wk4-foot.on { color: var(--gold); }
 .wk4-foot:active { background: #f2c14e14; }
 .wk4-pick:not(:has(.wk4-foot)) { padding-bottom: 16px; }
+.wk4-foot { padding: 20px 16px 22px; margin-top: 10px; }
