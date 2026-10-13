@@ -446,3 +446,15 @@
 .card-tile.card-tile--retro.shiny::after { display: none; }
 @keyframes shiny-edge { from { background-position: 0 0, 0% 50%; } to { background-position: 0 0, 100% 50%; } }
 @media (prefers-reduced-motion: reduce) { .card-tile.card-tile--retro.shiny { animation: none; } }
+
+/* Collection tiles are the real card, shrunk (2026-10-13). The card is 28em wide, so 1em = the tile's width / 28;
+   container units do the maths. The status line covers the card's footer, where the type is too small to read. */
+.card-tile.card-tile--mini { position: relative; display: block; padding: 0; background: none; border: 0; border-radius: 6%/4.3%; overflow: hidden; container-type: inline-size; aspect-ratio: 28 / 39.2; height: auto; }
+.card-tile--mini .tile-mini { display: block; width: 100%; height: 100%; pointer-events: none; }
+.card-tile--mini .tile-mini > .card { font-size: 10px; width: 28em; min-height: 39.2em; transform-origin: 0 0; transform: scale(var(--mini-s, .4)); } /* drawn at full size and scaled, so fixed-size parts (fleet launches) shrink too; --mini-s = tile width / 280, set by cards-page */
+.card-tile--mini .tile-over { position: absolute; left: 0; right: 0; bottom: 0; z-index: 3; display: flex; align-items: center; gap: 6px; height: 10.5%; padding: 0 7%; background: #080f1b; border-top: 1px solid #bcb58566; text-align: left; overflow: hidden; } /* sits over the card's footer only */
+.card-tile--mini .tile-over b { font: 600 11px/1 var(--label, 'Barlow Condensed', sans-serif); letter-spacing: .03em; color: #fff2b3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.card-tile--mini:not(.is-owned) .tile-over b { color: #9fb3c8; }
+.card-tile--mini .tile-over small { display: none; }
+.card-tile--mini .tile-lvl { z-index: 4; top: auto; bottom: 13%; right: 6%; left: auto; }
+.card-tile--mini .card__shine, .card-tile--mini .card__glare, .card-tile--mini .card__back { display: none; }

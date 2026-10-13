@@ -1,27 +1,27 @@
-import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.601';
-import { computeStats, statsHtml } from './stats.js?v=0.1.601';
-import { nightKey } from './observation.js?v=0.1.601';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.601';
-import { sfx } from './sfx.js?v=0.1.601';
-import { expandFacts } from './catalog-facts.js?v=0.1.601';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.601';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.601';
-import { ticket } from './toast.js?v=0.1.601';
-import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.601';
-import { cardArt } from './art.js?v=0.1.601';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.601';
-import { applyBack } from './card-backs.js?v=0.1.601';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.601';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.601';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.601';
-import { loadConstellations, conList } from './constellations.js?v=0.1.601';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.601';
-import { eventBadges, nextEvent } from './events.js?v=0.1.601';
-import { shareCardEl } from './share-card.js?v=0.1.601';
-import { removeSighting } from './account.js?v=0.1.601';
-import { allSightings, deleteSighting } from './store.js?v=0.1.601';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.601';
-import { SECRET_PATCHES } from './secrets.js?v=0.1.601';
+import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.604';
+import { computeStats, statsHtml } from './stats.js?v=0.1.604';
+import { nightKey } from './observation.js?v=0.1.604';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.604';
+import { sfx } from './sfx.js?v=0.1.604';
+import { expandFacts } from './catalog-facts.js?v=0.1.604';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.604';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.604';
+import { ticket } from './toast.js?v=0.1.604';
+import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.604';
+import { cardArt } from './art.js?v=0.1.604';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.604';
+import { applyBack } from './card-backs.js?v=0.1.604';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.604';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.604';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.604';
+import { loadConstellations, conList } from './constellations.js?v=0.1.604';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.604';
+import { eventBadges, nextEvent } from './events.js?v=0.1.604';
+import { shareCardEl } from './share-card.js?v=0.1.604';
+import { removeSighting } from './account.js?v=0.1.604';
+import { allSightings, deleteSighting } from './store.js?v=0.1.604';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.604';
+import { SECRET_PATCHES } from './secrets.js?v=0.1.604';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -128,6 +128,23 @@ function fitTileName(tile) {
   const el = tile.querySelector('.card-tile__name'); if (!el || !/\S{9,}/.test(el.textContent)) return;
   requestAnimationFrame(() => { let fs = parseFloat(getComputedStyle(el).fontSize); while (el.scrollWidth > el.clientWidth + 1 && fs > 8.5) el.style.fontSize = `${(fs -= 0.5)}px`; });
 }
+// Collection tiles as small copies of the full card (2026-10-13, Sevaan: "look like the shrunken down version of the
+// bigger cards… the collected info overlaid over the bottom where the text is tiny"). The tile keeps its classes,
+// level badge and label; its face becomes renderCard(…, { mini }) sized by container units, and the status line
+// ("✓ Collected Oct 13, 2026" / "Not yet collected" / "3 of 7 stars") sits over the card's footer.
+// One scale for every tile: tile width / the card's natural 280 px, kept on the grid as --mini-s.
+const miniScale = () => { const t = document.querySelector('.card-tile--mini, #grid .card-slot'); const w = t?.offsetWidth; if (w) document.getElementById('grid')?.style.setProperty('--mini-s', (w / 280).toFixed(4)); };
+addEventListener('resize', () => requestAnimationFrame(miniScale));
+function miniFace(tile, c) {
+  const status = tile.querySelector('.card-tile__status')?.textContent ?? '', sub = tile.querySelector('.card-tile__sub')?.textContent ?? '';
+  const badge = tile.querySelector('.tile-lvl');
+  const card = renderCard(c, { sightings: state.sightingsByKey.get(c.key) ?? [], ownedKeys: c.natural === 'constellation' ? ownedKeys() : undefined, mini: true });
+  const face = document.createElement('span'); face.className = 'tile-mini'; face.appendChild(card);
+  const over = document.createElement('span'); over.className = 'tile-over'; over.innerHTML = `<b>${status.replace(/^✓\s*Collected\s*/, '✓ ').replace(/&/g, '&amp;').replace(/</g, '&lt;')}</b>${sub ? `<small>${sub.replace(/</g, '&lt;')}</small>` : ''}`;
+  tile.classList.add('card-tile--mini');
+  tile.replaceChildren(...(badge ? [badge] : []), face, over);
+  requestAnimationFrame(miniScale);
+}
 let cascadeLeft = 24; // the first screenful cascades in on open (2026-10-08 polish)
 const observer = new IntersectionObserver((entries) => {
   for (const { isIntersecting, target } of entries) {
@@ -138,6 +155,7 @@ const observer = new IntersectionObserver((entries) => {
     // Two cards with the same name side by side ("Delta 1 Rocket Stage" ×2) say which is which (playtest 2026-10-09).
     const dup = (state.titleCount?.get(titleFor(c)) ?? 0) > 1, yr = c.launch ? String(c.launch).slice(0, 4) : '';
     const tile = renderCardTile(c, { sightings: state.sightingsByKey.get(c.key) ?? [], ownedKeys: c.natural === 'constellation' ? ownedKeys() : undefined, sub: dup ? [yr, c.id && /^\d+$/.test(String(c.id)) ? `#${c.id}` : ''].filter(Boolean).join(' · ') : '' });
+    miniFace(tile, c); // the tile is the real card, shrunk, with the collected line over its footer (2026-10-13, Sevaan)
     tile.addEventListener('click', () => openViewer(state.list.findIndex((card) => card.key === c.key), tile.getBoundingClientRect()));
     target.replaceChildren(tile);
     fitTileName(tile);

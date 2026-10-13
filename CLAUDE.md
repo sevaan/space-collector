@@ -816,3 +816,8 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - **Rows:** no bars. Each evening is a weather icon, the day and date, and one phrase made from the hourly forecast between dark and eveningEnd: "Clear all evening", "Clear until 9 PM", "Clear from 10 PM", "Mostly clear, some cloud", "Breaks in the cloud", "Cloudy/Rain/Fog all evening". Clear evenings are gold; poor ones step back. Then the new count and the rarest's gem. Tap a row for its new cards.
 - **Best-night card:** picks from the good evenings ("No clear evening yet · the best chance" if none).
 - **FIX:** nightSummary rated the sky over the whole night while showing the evening (Sunday read "Cloudy most of the evening" over an all-clear strip). It now uses the evening for both.
+
+2026-10-13 · v0.1.604: Collection tiles are the real card, shrunk (Sevaan).
+- **How it's drawn:** cards-page `miniFace` replaces the tile's face with `renderCard(c, { mini: true })` (small art, no sparkles). The card is drawn at its natural 280 px and scaled by `--mini-s` (tile width / 280, set on #grid by `miniScale` on render and resize). Scaling the whole card, not the font, makes fixed-size parts like the fleet launch dots shrink too.
+- **What's kept:** the tile's classes (owned, shiny, gold, level), aria label, tilt and open-viewer click.
+- **Bottom strip:** a slim strip over the card's footer shows "✓ Oct 17, 2026" (or "4 of 19 launches", "Not yet collected"). The level badge sits just above it.
