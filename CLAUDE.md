@@ -779,3 +779,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - **Radar tip:** waits while any sheet, the Tonight page, the recap or the tour is up, and hides if a sheet opens over it.
 
 2026-10-13 · v0.1.580: daytime pass markers have no track lines at all (Sevaan); just the dotted circle where it appears, its faint icon, name and time. passPath was removed. The bell icon in the Remind me pills (#ud-bell, #gh-remind) is nudged 2px up so it sits level with the condensed capitals.
+
+2026-10-13 · v0.1.582: tapping the circle while a daytime pass marker is lined up opens its card preview (hidden art for cards you don't have), eyebrow "APPEARING TONIGHT AT 7:54 PM" (tapSky → showTonightCard). The Plus sheet no longer has the "Buying opens in…" note or the made-by-one-person line (Sevaan).
