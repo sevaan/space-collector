@@ -1,17 +1,17 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.562';
+import { extinction } from './sky-limit.js?v=0.1.565';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.562';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.565';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.562';
-import { createCloudGL } from './clouds-gl.js?v=0.1.562';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.565';
+import { createCloudGL } from './clouds-gl.js?v=0.1.565';
 // Cloud colours by light: sunlit tops, shadowed bellies, and the horizon haze they melt into (0–1 RGB).
 const CLOUD_LIGHT = {
   day: { lit: [1, 1, 1], shade: [0.62, 0.68, 0.77], haze: [0.82, 0.87, 0.93] },
   dusk: { lit: [1, 0.8, 0.68], shade: [0.36, 0.33, 0.42], haze: [0.62, 0.5, 0.52] },
   night: { lit: [0.22, 0.25, 0.31], shade: [0.1, 0.12, 0.16], haze: [0.14, 0.15, 0.2] },
 };
-import { TIER_INFO } from './rarity.js?v=0.1.562';
+import { TIER_INFO } from './rarity.js?v=0.1.565';
 
 const RAD = Math.PI / 180;
 const BELOW_ICON = 13; // every satellite under the horizon, passes and halo alike
@@ -334,8 +334,9 @@ export class SkyView {
       if (!this.onScreen(p, 20)) continue;
       this.ghostHits.push({ x: p.x, y: p.y, pass: g.pass ?? null });
       ctx.setLineDash([3, 4]); ctx.strokeStyle = g.color ?? 'rgba(255,255,255,.8)'; ctx.lineWidth = g.color ? 1.8 : 1.2;
-      ctx.beginPath(); ctx.arc(p.x, p.y, g.color ? 11 : 7, 0, Math.PI * 2); ctx.stroke(); ctx.lineWidth = 1.2;
-      if (g.obj) { ctx.save(); ctx.setLineDash([]); ctx.globalAlpha = 0.5; this.drawIcon(this.iconKind(g.obj), p.x, p.y, 12, 'rgba(20,34,54,1)'); ctx.restore(); } // what it is, see-through: it isn't there yet (2026-10-13)
+      const big = g.time && g.id === this.ghostHitId; // lined up: it grows, like a real target in the circle
+      ctx.beginPath(); ctx.arc(p.x, p.y, g.color ? (big ? 17 : 11) : 7, 0, Math.PI * 2); ctx.stroke(); ctx.lineWidth = 1.2;
+      if (g.obj) { ctx.save(); ctx.setLineDash([]); ctx.globalAlpha = 0.5; this.drawIcon(this.iconKind(g.obj), p.x, p.y, big ? 22 : 12, 'rgba(20,34,54,1)'); ctx.restore(); } // what it is, see-through: it isn't there yet (2026-10-13)
       if (g.time) this.queueLabel(`${g.name} · ${g.time}`, p, { color: 'rgba(255,255,255,.95)', size: 12, weight: 600, gap: 16, priority: 7 }); // tonight's pass markers: one line
       else { this.queueLabel(g.name, p, { color: 'rgba(255,255,255,.95)', size: 12, weight: 600, gap: 16, priority: 7 });
         if (g.note) this.queueLabel(g.note, { x: p.x, y: p.y + 14 }, { color: 'rgba(255,255,255,.8)', size: 10, weight: 500, gap: 16, priority: 6 }); }
