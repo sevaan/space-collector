@@ -8,8 +8,8 @@
 //   · here, uploaded before, gone from the cloud → deleted on another device, so deleted here
 //   · deleted here while offline → remembered (localStorage acctDeleted) and deleted from the cloud next sync
 // Firebase loads only when someone signs in or was signed in before, so a blocked or slow Google never stops the app.
-import { allSightings, addSighting, putSighting, deleteSighting } from './store.js?v=0.1.582';
-import { isNative, plugin } from './native.js?v=0.1.582';
+import { allSightings, addSighting, putSighting, deleteSighting } from './store.js?v=0.1.583';
+import { isNative, plugin } from './native.js?v=0.1.583';
 
 const FB = 'https://www.gstatic.com/firebasejs/12.4.0/';
 const CONFIG = {
@@ -53,10 +53,23 @@ async function load() {
 function setAcct(u) { const a = account(), pid = u.providerData?.[0]?.providerId ?? ''; ls.set('acct', JSON.stringify({ uid: u.uid, email: u.email, name: u.displayName, provider: pid.startsWith('apple') ? 'apple' : pid.startsWith('google') ? 'google' : pid ? 'email' : a?.provider ?? null, syncedAt: a?.uid === u.uid ? a.syncedAt ?? null : null })); }
 
 // On startup: only touch Firebase if this phone was signed in, or it's opening an emailed sign-in link.
+// Sync happens by itself (2026-10-13, Sevaan: "Not a manual process"): at start, when the app comes back to the
+// front, when the connection comes back, and shortly after a failed upload. At most every 2 minutes.
+let lastAuto = 0, autoTimer = null;
+export function autoSync(delay = 0) {
+  if (!account()) return;
+  clearTimeout(autoTimer);
+  autoTimer = setTimeout(() => { if (Date.now() - lastAuto < 120e3 || !account()) return; lastAuto = Date.now(); syncNow().catch(() => { lastAuto = 0; }); }, delay);
+}
+if (typeof document !== 'undefined') {
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) autoSync(1500); });
+  addEventListener('online', () => autoSync(1500));
+}
 export async function initAccount() {
   const link = /[?&](apiKey|oobCode)=/.test(location.search);
   if (!account() && !link) return;
   try { const { auth, Au } = await load(); if (link && Au.isSignInWithEmailLink(auth, location.href)) await completeEmailLink(location.href); } catch {}
+  autoSync(4000); // catch up anything this phone or another one did while the app was closed
 }
 
 export async function signInGoogle() {
@@ -134,7 +147,9 @@ const toCloud = (s) => { const { key, synced, cloudId: _c, ...rest } = s; return
 // After a new sighting is saved here: upload it straight away if signed in (a failure just waits for the next sync).
 export async function pushSighting(s) {
   const a = account(); if (!a || s.sim) return;
-  try { const { db, F } = await load(); const id = cloudId(s); await F.setDoc(F.doc(db, 'users', a.uid, 'sightings', id), toCloud(s)); if (s.key != null) await putSighting({ ...s, cloudId: id, synced: true }); } catch {}
+  try { const { db, F } = await load(); const id = cloudId(s); await F.setDoc(F.doc(db, 'users', a.uid, 'sightings', id), toCloud(s)); if (s.key != null) await putSighting({ ...s, cloudId: id, synced: true });
+    ls.set('acct', JSON.stringify({ ...account(), syncedAt: Date.now() })); emit(); } // backed up: say so (it read 'synced not yet')
+  catch { autoSync(30e3); } // no signal: a full sync catches it up shortly
 }
 // After a sighting is deleted here.
 export async function removeSighting(s) {

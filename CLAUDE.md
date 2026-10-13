@@ -781,3 +781,8 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 2026-10-13 · v0.1.580: daytime pass markers have no track lines at all (Sevaan); just the dotted circle where it appears, its faint icon, name and time. passPath was removed. The bell icon in the Remind me pills (#ud-bell, #gh-remind) is nudged 2px up so it sits level with the condensed capitals.
 
 2026-10-13 · v0.1.582: tapping the circle while a daytime pass marker is lined up opens its card preview (hidden art for cards you don't have), eyebrow "APPEARING TONIGHT AT 7:54 PM" (tapSky → showTonightCard). The Plus sheet no longer has the "Buying opens in…" note or the made-by-one-person line (Sevaan).
+
+2026-10-13 · v0.1.583: backup sync is automatic (Sevaan: "Not a manual process"). There is no Sync now button.
+- **When it runs:** account.js `autoSync` runs a full sync 4 s after start, when the app comes back to the front, when the connection returns, and 30 s after a failed upload. It runs at most every 2 minutes.
+- **On a catch:** `pushSighting` (on every catch) now stamps `syncedAt` and emits. The panel read "synced not yet" because only the full sync set it.
+- **Wording:** the status reads "N sightings · backed up 2 min ago" ("Backing up…" before the first).
