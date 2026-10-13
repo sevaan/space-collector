@@ -1320,3 +1320,9 @@ body.night .wk4-moon::after { background: #ff7f70; }
 .wk4-foot:not(.on) .ico { transform-origin: 50% 10%; animation: wf-ring 10s ease-in-out infinite; animation-delay: 1.5s; }
 @keyframes wf-ring { 0%, 6%, 100% { transform: rotate(0); } 1% { transform: rotate(16deg); } 2% { transform: rotate(-14deg); } 3% { transform: rotate(10deg); } 4% { transform: rotate(-6deg); } 5% { transform: rotate(3deg); } }
 @media (prefers-reduced-motion: reduce) { .wk4-foot .ico { animation: none !important; } }
+/* One rhythm for every section header in the sky panel (2026-10-13, Sevaan: each had different space under it): 24 px
+   above, 10 px below, and whatever follows adds no top margin of its own. */
+#visible .t-head, #vtab-tonight .t-head, #week-body .t-head { margin: 24px 0 10px !important; }
+#visible .t-head:first-child, #vtab-tonight .t-head:first-child, #week-body .t-head:first-child { margin-top: 4px !important; }
+:is(#visible, #vtab-tonight, #week-body) .t-head + * { margin-top: 0 !important; }
+:is(#visible) .t-head + .vis-row2 { padding-top: 2px; }
