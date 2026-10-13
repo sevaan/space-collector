@@ -98,3 +98,10 @@ body.night #reveal { background: #000; }
 .rv-chip b { font-weight: 500; color: var(--gold, #fa8127); margin-left: 2px; }
 .rv-chip--rank { border-color: color-mix(in srgb, var(--gold, #fa8127) 60%, transparent); }
 @media (prefers-reduced-motion: reduce) { .rv-chip { transition: opacity .2s; transform: none; } }
+/* Layout without dead space (2026-10-12, Sevaan: "empty space at the bottom… the card appears up too high"). Two zones:
+   header and chips at the top, rank bar and "View in collection" pinned near the bottom; the card is centred between them. */
+#reveal { --rv-top: calc(var(--safe-top, 0px) + 112px); --rv-bot: calc(var(--safe-bottom, 0px) + 92px); }
+#reveal, #reveal.has-rank { --rv-y: calc((var(--rv-top) - var(--rv-bot)) / 2); }
+#reveal:not(.has-rank) { --rv-bot: calc(var(--safe-bottom, 0px) + 56px); }
+#rv-rank { top: auto; bottom: calc(var(--safe-bottom, 0px) + 52px); }
+#reveal-view, #reveal.has-rank #reveal-view { top: auto; bottom: calc(var(--safe-bottom, 0px) + 6px); }

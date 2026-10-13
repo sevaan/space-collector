@@ -1068,3 +1068,12 @@ body.night .sb-end { opacity: 1 !important; color: var(--text) !important; }
 .wc-stage > .wc-after { top: calc((var(--safe-top) + 50% + (var(--safe-top) - var(--safe-bottom)) / 2 - 19.6 * var(--cf)) / 2); bottom: auto; translate: 0 -50%; }
 .wc-stage > .wc-after #btn-start.text-button { padding-bottom: 2px; }
 .wc-stage > .wc-signin { top: calc((50% + (var(--safe-top) - var(--safe-bottom)) / 2 + 19.6 * var(--cf) + 100% - var(--safe-bottom)) / 2); bottom: auto; translate: 0 -50%; }
+/* Tonight page: the pass name opens its card (2026-10-12); the preview shows over the page. */
+.od-pass { background: none; border: 0; padding: 0; font: inherit; color: inherit; cursor: pointer; text-decoration: underline; text-decoration-color: color-mix(in srgb, var(--gold) 45%, transparent); text-underline-offset: 3px; }
+.od-tier { font-weight: 500; }
+body:has(#onboard:not([hidden])) #reveal { z-index: 30; }
+.nt-pass[data-id] { cursor: pointer; }
+/* Tonight page: the words sit centred in the space above Explore the sky, not hanging from the top with a gap under them (2026-10-12). */
+#ob-done:not(.nt) .spacer { flex: 0 0 28px; }
+#ob-done:not(.nt) .od-head { margin-top: auto; }
+#ob-done:not(.nt) #ob-explore { margin-top: auto; }
