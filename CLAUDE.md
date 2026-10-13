@@ -709,3 +709,8 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - Fixes in the prompt: the model draws the LMC and M13 as spirals unless told "NOT a spiral". The quota is about 1 image a minute, so generation is sequential with 45 s backoff.
 - **The Sun is Common** (Sevaan: everyone sees it every day).
 - **Tests:** three stale tests were updated for earlier rule changes: shiny overhead at 86°, the new rank curve, and the daytime Moon needing 30° from the Sun.
+
+2026-10-12 · v0.1.539: **no pass alerts in bad weather** (Sevaan got a "look up" alert in fog).
+- **Client:** `alertPicks` drops passes whose forecast hour isn't clear (weather.js `skyClearAt`: current conditions within the hour, else the nearest forecast hour; unknown weather counts as clear). Alerts are rescheduled every time the forecast refreshes (requestWeather).
+- **Relay:** the web app also sends a place rounded to 1 decimal. relay/push.ts checks Open-Meteo's current weather there right before sending, and drops the due alerts on fog, rain, snow, storms or more than 40% cloud. Deployed to the val's main.ts 2026-10-12, replacing the whole file in the editor (CodeMirror view via `.cm-content` cmTile → view.dispatch) and checking the hash first. privacy.html mentions the rounded place.
+- **Native app:** local notifications can't check the weather at the moment they fire. They're rescheduled whenever the app refreshes the forecast while open.

@@ -54,8 +54,8 @@ export async function disablePush() {
 }
 // Send the next alerts ([{ at, title, body, tag }]); replaces whatever the server had for this phone.
 let lastSent = '';
-export async function schedulePush(alerts) {
+export async function schedulePush(alerts, place = null) {
   if (!pushConfigured() || !pushOn() || Notification.permission !== 'granted') return;
-  const key = JSON.stringify(alerts.map((a) => [a.at, a.tag])); if (key === lastSent) return;
-  try { const sub = await subscription(false); if (!sub) return; await fetch(`${PUSH}/schedule`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ sub: sub.toJSON(), alerts }) }); lastSent = key; } catch {}
+  const key = JSON.stringify([alerts.map((a) => [a.at, a.tag]), place]); if (key === lastSent) return;
+  try { const sub = await subscription(false); if (!sub) return; await fetch(`${PUSH}/schedule`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ sub: sub.toJSON(), alerts, place }) }); lastSent = key; } catch {}
 }

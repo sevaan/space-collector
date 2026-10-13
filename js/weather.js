@@ -34,6 +34,14 @@ export async function fetchWeather(lat, lon) {
 
 const CLEAR = 40; // % cloud at or under which a sky counts as usable
 const clearHour = (h) => h.cloud <= CLEAR && !['rain', 'snow', 'storm', 'fog'].includes(h.kind);
+// Can you see the sky at time t? The forecast hour nearest t (or right now, within the hour). Unknown -> true, so missing
+// weather never silences anything. Used to skip pass alerts in fog, rain or cloud (2026-10-12, Sevaan got one in fog).
+export function skyClearAt(wx, t) {
+  if (!wx) return true;
+  if (Math.abs(t - Date.now()) < 3600e3 && wx.now && Date.now() - (wx.at ?? 0) < 90 * 60e3) return clearHour(wx.now);
+  const h = (wx.hours ?? []).reduce((b, x) => (!b || Math.abs(x.t - t) < Math.abs(b.t - t) ? x : b), null);
+  return !h || Math.abs(h.t - t) > 2 * 3600e3 ? true : clearHour(h);
+}
 
 // What tonight looks like between dusk and dawn (ms). fmt(ms) -> 'h:mm PM'.
 // -> { ok: boolean, line: string, nextClear: ms | null }
