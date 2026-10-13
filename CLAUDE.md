@@ -716,3 +716,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - **Native app:** local notifications can't check the weather at the moment they fire. They're rescheduled whenever the app refreshes the forecast while open.
 
 2026-10-12 · v0.1.540: the lock-on sound plays only for something you can collect (a new find or the tour's catch; Sevaan: not for cards you already have). The ring pulse and buzz still happen. The rarity line above the circle now uses the tier's own shape (`#d-tier[data-gem]`); owned cards had always shown ◆.
+
+2026-10-12 · v0.1.542: fleet cards show more art (Sevaan). The "· N more for Silver" text is gone from the stamp line (just "4 / 19 stamped"), and the heading is "EVERY LAUNCH" (it wrapped as "EVERY GLOBALSTAR LAUNCH"). The after-mount trim gives the freed lines to the picture: on Globalstar at 393 px the art went from about 80 to 115 px tall.
