@@ -867,3 +867,9 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - **"Remind me for my run":** sets each stop's reminder in turn and stops at the free limit (Plus sheet).
 - **Old list:** the full list, chart, shiny chances, Also up tonight and alarm cards sit behind "Everything tonight · N passes ›" (`tlAll`).
 - **Icons:** line icons (moon, cloud, stars, bell) instead of emoji in the run and in the until-dark reminder sheet.
+
+2026-10-13 · v0.1.629: the Now countdown hero is built (design/sky-pages-combined.html).
+- **Hero (`nowHero`):** the first thing on the Now tab, and also in the empty state. If a new Uncommon+ card is up right now: "Up now · new to you", a full ring and "Aim at it". Otherwise the next one worth getting (`bestUpcoming`): a ring in its rarity colour that fills over the last hour, a live countdown ("4:32" / "3 h 53 m to go", updated every second), "Show me" and a bell.
+- **Direction:** an arrow and words ("Turn left a little · high in the east") follow the phone through their own rAF, since the sky loop pauses under panels.
+- **After that:** the next three worth it plus the evening's best shiny chance; tap → showMePass.
+- **Empty state:** the old "Next up" row and "Show me the next pass" button are gone; the button is "See tonight's run".
