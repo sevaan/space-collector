@@ -361,7 +361,9 @@ body:has(#reveal:not([hidden])) #toasts, body:has(.overlay.panel:not([hidden])) 
 
 /* The next-up chip eases in when the night's plan arrives (2026-10-06), instead of popping. */
 #nextpass:not([hidden]) { animation:npIn .6s cubic-bezier(.2,.8,.3,1); }
-#radar { opacity:0; transition:opacity .6s cubic-bezier(.2,.8,.3,1); } body.hud-ready #radar { opacity:1; } /* fades in with the next-up chip */
+#radar { opacity:.5; transition:opacity .4s ease; } body.hud-ready #radar { opacity:1; animation: radar-click .45s cubic-bezier(.3,1.6,.5,1); } /* there from the start as a still, dimmed empty dial; when the sky is ready it clicks in and starts turning (2026-10-13, Sevaan) */
+@keyframes radar-click { 0% { transform: scale(.94) rotate(-8deg); } 60% { transform: scale(1.03) rotate(2deg); } 100% { transform: none; } }
+@media (prefers-reduced-motion: reduce) { body.hud-ready #radar { animation: none; } }
 @keyframes npIn { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:none; } }
 @media (prefers-reduced-motion: reduce) { #nextpass:not([hidden]) { animation:none; } #radar { transition:none; } }
 
@@ -1215,3 +1217,9 @@ body.is-plus .vt-plus { display: none; }
 .wk3-bars { display: flex; align-items: flex-end; gap: 2px; height: 22px; width: 34px; }
 .wk3-bars i { flex: 1; height: max(2px, var(--h)); border-radius: 1px; background: var(--c); opacity: .9; }
 .wk3-row.poor .wk3-bars { opacity: .55; }
+
+/* Strip cards are real mini cards (2026-10-13). */
+.mini-cards { --mini-s: .4714; } /* 132 px wide */
+.mini-card { width: calc(280px * var(--mini-s)); border: 0; background: none; border-radius: calc(14px * var(--mini-s)); }
+.mini-card .ic.remind { top: 30%; right: 8px; }
+.week-detail small em { font-style: normal; font-weight: 600; }

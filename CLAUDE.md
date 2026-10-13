@@ -855,3 +855,8 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 2026-10-13 · v0.1.624 (Sevaan):
 - **No Commons in suggestions:** `bestUpcoming(T, t0, until)` picks the pass to suggest: new to you, Uncommon or rarer, rarest then soonest. Commons appear only once fewer than 10 Uncommon-or-better cards are left. It's used by the corner chip (day "TONIGHT: …" within the evening, night "NEXT: …") and the Now tab's empty-state "Next up".
 - **No more bright-pass toast:** the "Find the next pass" toast ("Shijian-16 / Tonight at 7:02 PM", a sticky toast instead of the corner chip) is gone. With no plan yet, the Now tab's button reads "See tonight's plan" and opens the Tonight tab.
+
+2026-10-13 · v0.1.626 (Sevaan):
+- **Real mini cards everywhere** a small card appears. card.js `miniCard(o, { sightings, status, locked })` returns a `.mini-face`: the real card scaled by `--mini-s` (width / 280), with a short status in its footer and dimmed art when not collected. It's used by Collection tiles (cards-page miniFace), the Now tab's "Seen before" ("NE · 40° up") and Tonight's "Worth setting an alarm for" ("7:54 PM · E", bell over the art) via main.js `stripCard`. The strips are 132 px wide (`--mini-s: .4714`).
+- **Week day detail:** the rarity is in its tier colour.
+- **Compass:** shown from the first frame as a still, dimmed (50%) dial drawn once with a default basis. At hud-ready it goes to full opacity with a small "click in" turn and bounce (`radar-click`; none with reduced motion).

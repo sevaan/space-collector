@@ -1,18 +1,18 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { sfx } from './sfx.js?v=0.1.624';
-import { cardArt } from './art.js?v=0.1.624';
-import { TIER_INFO } from './rarity.js?v=0.1.624';
-import { SET_BY_ID } from './sets.js?v=0.1.624';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.624';
-import { FLEET_ABOUT, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.624';
-import { artFileFor } from './art-keys.js?v=0.1.624';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.624';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.624';
-import { nightsIn } from './observation.js?v=0.1.624';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.624';
-import { SHINY } from './shiny.js?v=0.1.624';
-import { conArt, cometArt } from './con-art.js?v=0.1.624';
-import { CON_FIGURES } from './con-figures.js?v=0.1.624';
+import { sfx } from './sfx.js?v=0.1.626';
+import { cardArt } from './art.js?v=0.1.626';
+import { TIER_INFO } from './rarity.js?v=0.1.626';
+import { SET_BY_ID } from './sets.js?v=0.1.626';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.626';
+import { FLEET_ABOUT, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.626';
+import { artFileFor } from './art-keys.js?v=0.1.626';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.626';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.626';
+import { nightsIn } from './observation.js?v=0.1.626';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.626';
+import { SHINY } from './shiny.js?v=0.1.626';
+import { conArt, cometArt } from './con-art.js?v=0.1.626';
+import { CON_FIGURES } from './con-figures.js?v=0.1.626';
 // The animal/symbol figure belongs to the completed (gold) constellation card only (2026-10-05): a single
 // star's card draws just the star pattern with its star marked, so the figure is a reward for finishing the set.
 const conFig = (id) => (CON_FIGURES.has(id) ? { figure: `assets/art/con/${id}.webp` } : {});
@@ -380,4 +380,14 @@ export function attachFlip(el, { onBack } = {}) {
     get flipped() { return flipped; },
     destroy() { el.removeEventListener('pointerup', onUp); el.removeEventListener('dblclick', onDbl); },
   };
+}
+
+// The real card, small (2026-10-13): returns a .mini-face element holding renderCard(o, { mini }) with `status` written
+// into its footer. Size it with --mini-s (width / 280) on it or any ancestor.
+export function miniCard(o, { sightings = [], ownedKeys, status = '', locked = false } = {}) {
+  const card = renderCard(o, { sightings, ownedKeys, mini: true });
+  const foot = card.querySelector('.card__footer');
+  if (foot) foot.innerHTML = `<span class="mini-status">${esc(status)}</span>`;
+  const face = document.createElement('span'); face.className = `mini-face${locked ? ' locked' : ''}`; face.appendChild(card);
+  return face;
 }

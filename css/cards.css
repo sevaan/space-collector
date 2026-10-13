@@ -447,32 +447,21 @@
 @keyframes shiny-edge { from { background-position: 0 0, 0% 50%; } to { background-position: 0 0, 100% 50%; } }
 @media (prefers-reduced-motion: reduce) { .card-tile.card-tile--retro.shiny { animation: none; } }
 
-/* Collection tiles are the real card, shrunk (2026-10-13). The card is 28em wide, so 1em = the tile's width / 28;
-   container units do the maths. The status line covers the card's footer, where the type is too small to read. */
-.card-tile.card-tile--mini { position: relative; display: block; padding: 0; background: none; border: 0; border-radius: 6%/4.3%; overflow: hidden; container-type: inline-size; aspect-ratio: 28 / 42; height: auto; } /* the retro card is 42em tall, not 39.2: 39.2 cut its bottom off */
-.card-tile--mini .tile-mini { display: block; width: 100%; height: 100%; pointer-events: none; }
-.card-tile--mini .tile-mini > .card { font-size: 10px; width: 28em; min-height: 39.2em; transform-origin: 0 0; transform: scale(var(--mini-s, .4)); } /* drawn at full size and scaled, so fixed-size parts (fleet launches) shrink too; --mini-s = tile width / 280, set by cards-page */
-.card-tile--mini .tile-over { position: absolute; left: 0; right: 0; bottom: 0; z-index: 3; display: flex; align-items: center; gap: 6px; height: 10.5%; padding: 0 7%; background: #080f1b; border-top: 1px solid #bcb58566; text-align: left; overflow: hidden; } /* sits over the card's footer only */
-.card-tile--mini .tile-over b { font: 600 11px/1 var(--label, 'Barlow Condensed', sans-serif); letter-spacing: .03em; color: #fff2b3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
-.card-tile--mini:not(.is-owned) .tile-over b { color: #9fb3c8; }
-.card-tile--mini .tile-over small { display: none; }
+/* Mini cards (2026-10-13, Sevaan: "if there's a small card, it should look like what the card looks like… throughout
+   the app"). .mini-face holds the real card drawn at its natural 280 × 420 px and scaled by --mini-s (width / 280), so
+   every part shrinks together. The footer carries a short status line in big type; the fact gives way so the footer
+   and the frame always fit. Used by Collection tiles, the Now tab's "Seen before" and Tonight's alarm cards. */
+.mini-face { position: relative; display: block; width: calc(280px * var(--mini-s, .4)); height: calc(420px * var(--mini-s, .4)); border-radius: calc(14px * var(--mini-s, .4)); overflow: hidden; pointer-events: none; }
+.mini-face > .card { font-size: 10px; width: 28em; transform-origin: 0 0; transform: scale(var(--mini-s, .4)); }
+.mini-face > .card, .mini-face .card__rotator, .mini-face .card__face { height: 42em; min-height: 0; max-height: 42em; overflow: hidden; box-sizing: border-box; box-shadow: none; }
+.mini-face .card__face { display: flex; flex-direction: column; }
+.mini-face .card__fact { flex: 0 1 auto; min-height: 0; overflow: hidden; }
+.mini-face .card__footer { flex: none; margin-top: auto; padding: .7em 1.4em .55em; justify-content: flex-start; }
+.mini-face .mini-status { font: 600 2.5em/1 var(--label); letter-spacing: .02em; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.mini-face.locked .mini-status { color: var(--grey); }
+.mini-face.locked .card__art { filter: brightness(.38) saturate(.6); }
+.mini-face .card__shine, .mini-face .card__glare, .mini-face .card__back { display: none; }
+/* Collection tile: the tile is the card. */
+.card-tile.card-tile--mini { position: relative; display: block; padding: 0; background: none; border: 0; border-radius: 5%/3.4%; overflow: hidden; aspect-ratio: 28 / 42; height: auto; }
+.card-tile--mini .mini-face { width: 100%; height: 100%; }
 .card-tile--mini .tile-lvl { z-index: 4; top: auto; bottom: 13%; right: 6%; left: auto; }
-.card-tile--mini .card__shine, .card-tile--mini .card__glare, .card-tile--mini .card__back { display: none; }
-/* The collected line sits inside the card's frame, over its footer (2026-10-13, Sevaan: it covered the bottom edge). */
-.card-tile--mini .tile-over { left: calc(var(--mini-s, .4) * 6px); right: calc(var(--mini-s, .4) * 6px); bottom: calc(var(--mini-s, .4) * 6px); height: max(18px, calc(var(--mini-s, .4) * 34px)); border-radius: 0 0 calc(var(--mini-s, .4) * 10px) calc(var(--mini-s, .4) * 10px); padding: 0 calc(var(--mini-s, .4) * 13px); }
-.card-tile--mini .card__footer { visibility: hidden; } /* the strip replaces it; on taller cards its tiny text peeked below the strip */
-.card-tile--mini .tile-over { bottom: calc(var(--mini-s, .4) * 4px); border-top: 0; }
-/* Long facts make some cards taller than 42em, which pushed their bottom frame out of the tile: hold every mini card to
-   exactly 42em so the whole frame shows (the strip covers where the text runs out). */
-.card-tile--mini .tile-mini > .card, .card-tile--mini .card__rotator, .card-tile--mini .card__face { height: 42em; min-height: 0; max-height: 42em; overflow: hidden; box-sizing: border-box; }
-
-/* Mini cards, round 3 (2026-10-13): no overlay. The footer itself carries the collected line in big type, and the fact
-   gives way (shrinks and clips) so the footer and the bottom frame always fit inside the 42em card. */
-.card-tile--mini .card__footer { visibility: visible; flex: none; margin-top: auto; padding: .7em 1.4em .55em; justify-content: flex-start; }
-.card-tile--mini .mini-status { font: 600 2.5em/1 var(--label); letter-spacing: .02em; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
-.card-tile--mini:not(.is-owned) .mini-status { color: var(--grey); }
-.card-tile--mini .card__fact { flex: 0 1 auto; min-height: 0; overflow: hidden; }
-.card-tile--mini .card__face { display: flex; flex-direction: column; }
-.card-tile--mini .tile-over { display: none; }
-/* Uncollected mini cards: the hidden art much darker (2026-10-13, Sevaan: "Dim the art… More"). */
-.card-tile--mini:not(.is-owned) .card__art { filter: brightness(.38) saturate(.6); }

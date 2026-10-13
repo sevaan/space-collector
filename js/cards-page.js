@@ -1,27 +1,27 @@
-import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.624';
-import { computeStats, statsHtml } from './stats.js?v=0.1.624';
-import { nightKey } from './observation.js?v=0.1.624';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.624';
-import { sfx } from './sfx.js?v=0.1.624';
-import { expandFacts } from './catalog-facts.js?v=0.1.624';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.624';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.624';
-import { ticket } from './toast.js?v=0.1.624';
-import { renderCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.624';
-import { cardArt } from './art.js?v=0.1.624';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.624';
-import { applyBack } from './card-backs.js?v=0.1.624';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.624';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.624';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.624';
-import { loadConstellations, conList } from './constellations.js?v=0.1.624';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.624';
-import { eventBadges, nextEvent } from './events.js?v=0.1.624';
-import { shareCardEl } from './share-card.js?v=0.1.624';
-import { removeSighting } from './account.js?v=0.1.624';
-import { allSightings, deleteSighting } from './store.js?v=0.1.624';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.624';
-import { SECRET_PATCHES } from './secrets.js?v=0.1.624';
+import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.626';
+import { computeStats, statsHtml } from './stats.js?v=0.1.626';
+import { nightKey } from './observation.js?v=0.1.626';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.626';
+import { sfx } from './sfx.js?v=0.1.626';
+import { expandFacts } from './catalog-facts.js?v=0.1.626';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.626';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.626';
+import { ticket } from './toast.js?v=0.1.626';
+import { renderCard, miniCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.626';
+import { cardArt } from './art.js?v=0.1.626';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.626';
+import { applyBack } from './card-backs.js?v=0.1.626';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.626';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.626';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.626';
+import { loadConstellations, conList } from './constellations.js?v=0.1.626';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.626';
+import { eventBadges, nextEvent } from './events.js?v=0.1.626';
+import { shareCardEl } from './share-card.js?v=0.1.626';
+import { removeSighting } from './account.js?v=0.1.626';
+import { allSightings, deleteSighting } from './store.js?v=0.1.626';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.626';
+import { SECRET_PATCHES } from './secrets.js?v=0.1.626';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -136,14 +136,8 @@ function fitTileName(tile) {
 const miniScale = () => { const t = document.querySelector('.card-tile--mini, #grid .card-slot'); const w = t?.offsetWidth; if (w) document.getElementById('grid')?.style.setProperty('--mini-s', (w / 280).toFixed(4)); };
 addEventListener('resize', () => requestAnimationFrame(miniScale));
 function miniFace(tile, c) {
-  const status = tile.querySelector('.card-tile__status')?.textContent ?? '', sub = tile.querySelector('.card-tile__sub')?.textContent ?? '';
-  const badge = tile.querySelector('.tile-lvl');
-  const card = renderCard(c, { sightings: state.sightingsByKey.get(c.key) ?? [], ownedKeys: c.natural === 'constellation' ? ownedKeys() : undefined, mini: true });
-  const face = document.createElement('span'); face.className = 'tile-mini'; face.appendChild(card);
-  // The collected line goes INTO the card's own footer, set large (2026-10-13, Sevaan: an overlay kept covering the
-  // bottom of the frame). It's part of the card's layout, so the frame is never covered.
-  const foot = card.querySelector('.card__footer');
-  if (foot) foot.innerHTML = `<span class="mini-status">${status.replace(/^✓\s*Collected\s*/, '✓ ').replace(/&/g, '&amp;').replace(/</g, '&lt;')}</span>`;
+  const status = (tile.querySelector('.card-tile__status')?.textContent ?? '').replace(/^✓\s*Collected\s*/, '✓ '), badge = tile.querySelector('.tile-lvl');
+  const face = miniCard(c, { sightings: state.sightingsByKey.get(c.key) ?? [], ownedKeys: c.natural === 'constellation' ? ownedKeys() : undefined, status, locked: !tile.classList.contains('is-owned') });
   tile.classList.add('card-tile--mini');
   tile.replaceChildren(...(badge ? [badge] : []), face);
   requestAnimationFrame(miniScale);
