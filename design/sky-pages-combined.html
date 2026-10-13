@@ -1,0 +1,233 @@
+<title>Sky Pages Combined</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Russo+One&family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&display=swap">
+<style>
+/* Three phones side by side (stacked on narrow screens), each a real-size mock of a tab, with notes under it.
+   The app's own night palette and fonts; single dark theme by design. */
+:root{--sky:#080f1b;--sky2:#0c1d29;--panel:#0e1a29;--panel2:#13233a;--edge:#22344a;--ink:#fff2b3;--text:#e6ecf5;--muted:#9fb3c8;--dim:#627a8b;--org:#fa8127;
+--com:#9aa4b1;--unc:#5fd08a;--rare:#4aa8ff;--epic:#e46ad6;--leg:#f2c14e;
+--display:'Russo One',system-ui,sans-serif;--label:'Barlow Condensed','Arial Narrow',sans-serif;--body:'Barlow',system-ui,sans-serif;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:radial-gradient(ellipse at 50% -10%,#14263b,var(--sky) 60%) fixed,var(--sky);color:var(--text);font:16px/1.5 var(--body);margin:0}
+main{max-width:1240px;margin:0 auto;padding-inline:16px;padding-block:36px 80px}
+.eyebrow{font:600 13px/1 var(--label);letter-spacing:.22em;text-transform:uppercase;color:var(--org)}
+h1{font:400 clamp(28px,6vw,42px)/1.05 var(--display);color:var(--ink);margin:10px 0 10px;text-wrap:balance}
+.lead{color:var(--muted);max-width:70ch;margin:0 0 28px}
+.row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;align-items:start}
+@media(max-width:1060px){.row{grid-template-columns:minmax(0,1fr)}}
+.col{display:grid;gap:14px;justify-items:center}
+.col>h2{font:400 20px/1 var(--display);color:var(--ink);margin:0;justify-self:start}
+.notes{width:100%;max-width:375px;margin:0;padding-left:18px;color:var(--muted);font-size:14.5px}
+.notes li{margin-bottom:6px} .notes b{color:var(--text);font-weight:600}
+
+/* phone */
+.phone{width:375px;max-width:100%;height:780px;border-radius:44px;border:10px solid #1b2433;background:linear-gradient(var(--sky2),var(--sky) 40%);position:relative;overflow:hidden;box-shadow:0 30px 60px #0009}
+.scr{position:absolute;inset:0;overflow:auto;padding:18px 16px 30px;scrollbar-width:none} .scr::-webkit-scrollbar{display:none}
+.hdr{display:flex;justify-content:space-between;align-items:flex-start;padding-top:22px}
+.hdr b{font:400 18px/1 var(--display);color:var(--ink)} .hdr small{display:block;margin-top:6px;font:500 11px/1 var(--label);letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.hdr .x{font:400 22px/1 var(--body);color:var(--ink)}
+.rule{height:4px;border-top:1px solid #33465c;border-bottom:1px solid #33465c;margin:14px 0}
+.tabs{display:inline-flex;border:1px solid var(--edge);border-radius:99px;padding:4px;gap:2px}
+.tabs span{padding:7px 14px;border-radius:99px;font:600 12px/1 var(--label);letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.tabs span.on{background:#2a1d14;border:1px solid #fa812799;color:var(--org)}
+.k{font:600 11px/1 var(--label);letter-spacing:.2em;text-transform:uppercase;color:var(--org)}
+.mut{color:var(--muted)}
+
+/* NOW */
+.hero{margin-top:16px;padding:16px;border-radius:20px;background:radial-gradient(ellipse at 50% 0%,#e46ad622,transparent 65%),var(--panel);border:1px solid #e46ad655;display:grid;justify-items:center;text-align:center;gap:6px}
+.dial{position:relative;width:176px;height:176px;margin:8px 0 2px}
+.dial svg{position:absolute;inset:0}
+.dial .t{position:absolute;inset:0;display:grid;place-content:center;gap:2px}
+.dial .t b{font:400 38px/1 var(--display);color:var(--ink);font-variant-numeric:tabular-nums}
+.dial .t small{font:600 11px/1 var(--label);letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.hero .nm{font:400 22px/1.05 var(--display);color:var(--ink)}
+.hero .tr{font:600 13px/1 var(--label);letter-spacing:.14em;text-transform:uppercase;color:var(--epic)}
+.hero .dir{display:flex;align-items:center;gap:8px;font:500 15px/1.2 var(--label);color:var(--text)}
+.hero .dir i{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:#fa81271f;color:var(--org);font-style:normal;transform:rotate(-35deg)}
+.pill{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 18px;border-radius:99px;font:600 13px/1 var(--label);letter-spacing:.16em;text-transform:uppercase}
+.pill.o{background:#fa81272b;border:1px solid var(--org);color:var(--org)} .pill.g{background:#ffffff0d;border:1px solid var(--edge);color:var(--ink)}
+.hero .acts{display:flex;gap:8px;margin-top:4px}
+.after{margin-top:14px;display:grid;gap:8px}
+.mini{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;padding:10px 12px;border-radius:12px;background:var(--panel);border:1px solid var(--edge)}
+.mini .tm{font:400 15px/1 var(--display);color:var(--ink);font-variant-numeric:tabular-nums} .mini .tm small{display:block;font:500 10px/1 var(--label);letter-spacing:.1em;color:var(--muted);margin-top:4px}
+.mini b{display:block;font:600 15px/1.1 var(--label);color:var(--ink)} .mini span{font:500 12px/1.2 var(--label);color:var(--muted)}
+.gem{font-style:normal;font-weight:700}
+.strip{display:flex;gap:8px;margin-top:8px;overflow:hidden}
+.card{flex:none;width:96px;height:144px;border-radius:9px;border:2px solid #adbcc8;background:linear-gradient(#0a1424,#060c16);position:relative;padding:6px;display:flex;flex-direction:column;gap:3px}
+.card i{font:600 6px/1 var(--label);letter-spacing:.14em;color:var(--muted);font-style:normal} .card b{font:400 10px/1 var(--display);color:var(--ink)}
+.card .art{flex:1;border-radius:4px;background:radial-gradient(circle at 50% 55%,#c8a46e 0 16%,transparent 17%),linear-gradient(#0f2238,#08121f)}
+.card .f{font:600 8px/1 var(--label);color:var(--ink);border-top:1px solid #bcb58566;padding-top:3px}
+
+/* TONIGHT */
+.sum{margin-top:16px;padding:16px;border-radius:20px;background:linear-gradient(135deg,#1a2a44,#0e1a29 60%);border:1px solid var(--edge)}
+.sum .big{font:400 26px/1.05 var(--display);color:var(--ink);margin:6px 0 4px}
+.sum .big em{font-style:normal;color:var(--epic)}
+.sum p{margin:0;color:var(--muted);font:500 14px/1.35 var(--label)}
+.bars{display:flex;gap:4px;align-items:flex-end;height:30px;margin-top:10px}
+.bars i{width:16px;border-radius:2px;background:var(--c)}
+.bars span{margin-left:8px;font:500 12px/1.2 var(--label);color:var(--muted)}
+.wx{display:flex;align-items:center;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid #ffffff12;font:500 13px/1.2 var(--label);color:var(--text)}
+.run{position:relative;margin-top:14px;padding-left:20px}
+.run::before{content:'';position:absolute;left:6px;top:8px;bottom:8px;width:2px;background:linear-gradient(var(--org),#33465c)}
+.stop{position:relative;margin-bottom:10px;padding:11px 12px;border-radius:12px;background:var(--panel);border:1px solid var(--edge)}
+.stop::before{content:'';position:absolute;left:-19px;top:15px;width:10px;height:10px;border-radius:50%;background:var(--c,#33465c);box-shadow:0 0 10px var(--c,transparent)}
+.stop.moment{background:none;border:0;padding:4px 0 4px 0}
+.stop.moment::before{background:none;border:1.5px solid var(--dim);box-shadow:none;width:8px;height:8px;left:-18px;top:9px}
+.stop .h{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.stop .h b{font:400 16px/1 var(--display);color:var(--ink);font-variant-numeric:tabular-nums}
+.stop .h em{font-style:normal;font:600 11px/1 var(--label);letter-spacing:.14em;text-transform:uppercase;color:var(--c)}
+.stop .n{display:block;margin-top:5px;font:600 16px/1.15 var(--label);color:var(--ink)}
+.stop .w{display:block;font:500 13px/1.3 var(--label);color:var(--muted)}
+.gets{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
+.gets span{padding:3px 8px;border-radius:99px;font:600 11px/1.2 var(--label);letter-spacing:.06em;background:#ffffff0d;color:var(--text)}
+.gets span.m{background:#fa81271f;color:var(--org)} .gets span.s{background:linear-gradient(90deg,#ff78c822,#78c8ff22,#ffe67822);color:var(--ink)}
+.stop.moment .n{margin:0;font:500 14px/1.2 var(--label);color:var(--muted)} .stop.moment .h b{font-size:13px;color:var(--muted)}
+.cta{position:sticky;bottom:0;margin:6px -16px -30px;padding:14px 16px 24px;background:linear-gradient(transparent,var(--sky) 30%)}
+.cta .pill{width:100%}
+.more{display:block;text-align:center;margin:8px 0 14px;font:600 12px/1 var(--label);letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+
+/* WEEK */
+.days{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-top:16px}
+.day{border-radius:12px;background:var(--panel);border:1px solid var(--edge);padding:8px 2px 7px;display:grid;justify-items:center;gap:5px;font:600 10px/1 var(--label);letter-spacing:.1em;color:var(--muted)}
+.day.sel{border-color:var(--org);background:#1a1712}
+.day.best{background:linear-gradient(#2a1d14,var(--panel));}
+.day .ic{font-size:17px;line-height:1;color:var(--muted)} .day.good .ic{color:var(--org)}
+.moon{width:12px;height:12px;border-radius:50%;background:#2c3e55;position:relative;overflow:hidden}
+.moon::after{content:'';position:absolute;inset:0;border-radius:50%;background:#e6e2c8;clip-path:inset(0 0 0 var(--lit))}
+.dots{display:flex;gap:2px;height:6px} .dots i{width:6px;height:6px;border-radius:50%;background:var(--c)}
+.pick{margin-top:14px;padding:16px;border-radius:20px;background:radial-gradient(ellipse at 90% 0%,#fa812730,transparent 60%),var(--panel);border:1px solid #fa812777}
+.pick .d{font:400 30px/1 var(--display);color:var(--ink);display:flex;align-items:baseline;gap:10px} .pick .d small{font:600 13px/1 var(--label);letter-spacing:.14em;color:var(--muted)}
+.pick .why{margin:8px 0 10px;font:500 15px/1.35 var(--label);color:var(--text)}
+.only{margin-top:16px}
+.only .it{display:grid;grid-template-columns:4px 1fr auto;gap:10px;align-items:center;padding:10px 12px;border-radius:12px;background:var(--panel);border:1px solid var(--edge);margin-top:8px}
+.only .it i{align-self:stretch;border-radius:2px;background:var(--c)}
+.only .it b{font:600 15px/1.1 var(--label);color:var(--ink)} .only .it span{display:block;font:500 12px/1.3 var(--label);color:var(--muted)}
+.only .it em{font-style:normal;font:600 12px/1 var(--label);letter-spacing:.1em;text-transform:uppercase;color:var(--org);text-align:right}
+.goal{margin-top:16px;display:flex;align-items:center;gap:12px;padding:12px;border-radius:12px;border:1px dashed #33465c}
+.goal svg{flex:none} .goal b{font:600 15px/1.1 var(--label);color:var(--ink)} .goal span{display:block;font:500 12px/1.3 var(--label);color:var(--muted)}
+.foot{margin-top:40px;padding:18px;border-radius:16px;border:1px solid var(--edge);background:var(--panel);max-width:860px}
+.foot h3{margin:0 0 6px;font:400 18px/1.2 var(--display);color:var(--ink)} .foot ul{margin:6px 0 0;padding-left:18px;color:var(--muted)}
+@media(prefers-reduced-motion:no-preference){.sweep{animation:sw 4s linear infinite;transform-origin:88px 88px}@keyframes sw{to{transform:rotate(360deg)}}}
+</style>
+<main>
+<span class="eyebrow">Space Collector · design · Now, Tonight, Week</span>
+<h1>The combined redesign</h1>
+<p class="lead">A countdown for Now, an itinerary called "Tonight's run" for Tonight, and a 7-day strip for Week, from the user room. The data is a real Tuesday evening over Peterborough. Each phone scrolls.</p>
+
+<div class="row">
+<!-- NOW -->
+<div class="col"><h2>Now</h2>
+<div class="phone"><div class="scr">
+  <div class="hdr"><div><b>UP IN YOUR SKY</b><small>Peterborough · 8:34 PM</small></div><span class="x">✕</span></div>
+  <div class="rule"></div>
+  <span class="tabs"><span class="on">Now</span><span>Tonight</span><span>Week</span></span>
+  <div class="hero">
+    <span class="k">Next new card</span>
+    <div class="dial">
+      <svg viewBox="0 0 176 176" aria-hidden="true"><circle cx="88" cy="88" r="80" fill="none" stroke="#22344a" stroke-width="6"/><circle cx="88" cy="88" r="80" fill="none" stroke="#e46ad6" stroke-width="6" stroke-linecap="round" stroke-dasharray="503" stroke-dashoffset="410" transform="rotate(-90 88 88)"/>
+        <g class="sweep"><circle cx="88" cy="8" r="4" fill="#fff2b3"/></g></svg>
+      <div class="t"><b>4:32</b><small>min</small></div>
+    </div>
+    <span class="tr">✦ Epic · new to you</span>
+    <span class="nm">Cosmos 796</span>
+    <span class="dir"><i>↑</i> Turn left a little · high in the southeast</span>
+    <div class="acts"><span class="pill o">Show me</span><span class="pill g">🔔 Remind</span></div>
+  </div>
+  <div class="after">
+    <span class="k" style="margin-top:6px">After that</span>
+    <div class="mini"><span class="tm">8:45<small>11 min</small></span><span><b>Essa 4 (Tos-B)</b><span><i class="gem" style="color:var(--epic)">✦ Epic</i> · high in the southeast</span></span><span class="mut">›</span></div>
+    <div class="mini"><span class="tm">8:50<small>shiny</small></span><span><b>SL-8 Rocket Stage</b><span>slips into Earth's shadow · <i class="gem" style="color:var(--org)">shiny chance</i></span></span><span class="mut">›</span></div>
+    <div class="mini"><span class="tm">9:24<small>50 min</small></span><span><b>Cosmos 1084</b><span><i class="gem" style="color:var(--epic)">✦ Epic</i> · high in the west</span></span><span class="mut">›</span></div>
+  </div>
+  <span class="k" style="display:block;margin-top:16px">Up right now · 3 you have</span>
+  <div class="strip"><div class="card"><i>BRIGHT STARS · COMMON</i><b>VEGA</b><div class="art"></div><span class="f">W · 58° up</span></div><div class="card"><i>THE WANDERERS · UNCOMMON</i><b>SATURN</b><div class="art"></div><span class="f">SE · 31° up</span></div><div class="card"><i>BRIGHT STARS · COMMON</i><b>ALTAIR</b><div class="art"></div><span class="f">SW · 44° up</span></div></div>
+</div></div>
+<ul class="notes">
+  <li><b>One hero:</b> the next card worth getting (Uncommon or rarer, new to you), with a countdown ring in its rarity colour that fills as it gets close.</li>
+  <li><b>A direction you can follow:</b> an arrow that turns with your phone, and words like "turn left a little · high in the southeast".</li>
+  <li><b>"After that":</b> the next three worth it, and shiny chances count as stops.</li>
+  <li><b>Cards you have that are up:</b> real mini cards at the bottom, tap to aim. The full list moves behind them.</li>
+  <li>When the countdown reaches zero, the hero flips to "Up now · aim" and the circle in the sky takes over.</li>
+</ul></div>
+
+<!-- TONIGHT -->
+<div class="col"><h2>Tonight</h2>
+<div class="phone"><div class="scr">
+  <div class="hdr"><div><b>UP IN YOUR SKY</b><small>Peterborough · 6:10 PM</small></div><span class="x">✕</span></div>
+  <div class="rule"></div>
+  <span class="tabs"><span>Now</span><span class="on">Tonight</span><span>Week</span></span>
+  <div class="sum">
+    <span class="k">Tonight's haul</span>
+    <div class="big">6 new cards, <em>2 Epic</em></div>
+    <p>Go out 7:50 to 9:30 · finishes 2 of 3 missions · about +240 XP</p>
+    <div class="bars"><i style="--c:var(--com);height:30%"></i><i style="--c:var(--unc);height:55%"></i><i style="--c:var(--rare);height:70%"></i><i style="--c:var(--epic);height:45%"></i><i style="--c:#33465c;height:8%"></i><span>new by rarity</span></div>
+    <div class="wx">☾ Dark 7:02 · ☁ clear until 9:30, then cloud</div>
+  </div>
+  <div class="run">
+    <span class="k" style="display:block;margin:4px 0 10px -20px">Tonight's run</span>
+    <div class="stop moment"><div class="h"><b>7:02</b></div><span class="n">Dark enough to start</span></div>
+    <div class="stop" style="--c:var(--rare)"><div class="h"><b>7:54</b><em>◆ Rare</em></div><span class="n">Tiros 3</span><span class="w">Rises in the east · high in the southeast</span><div class="gets"><span>New card</span><span class="m">Mission: a satellite</span></div></div>
+    <div class="stop" style="--c:var(--epic)"><div class="h"><b>8:39</b><em>✦ Epic</em></div><span class="n">Cosmos 796</span><span class="w">High in the southeast · bright</span><div class="gets"><span>New card</span><span class="m">Mission: 60° up</span><span>+25 XP</span></div></div>
+    <div class="stop" style="--c:var(--org)"><div class="h"><b>8:50</b><em>Shiny chance</em></div><span class="n">SL-8 Rocket Stage</span><span class="w">Slips into Earth's shadow, 20° up in the east</span><div class="gets"><span class="s">Shiny card</span></div></div>
+    <div class="stop moment"><div class="h"><b>9:05</b></div><span class="n">Busiest: 65 objects up at once</span></div>
+    <div class="stop" style="--c:var(--epic)"><div class="h"><b>9:24</b><em>✦ Epic</em></div><span class="n">Cosmos 1084</span><span class="w">High in the west</span><div class="gets"><span>New card</span></div></div>
+    <div class="stop moment"><div class="h"><b>9:30</b></div><span class="n">☁ Cloud rolls in</span></div>
+    <div class="stop" style="--c:var(--rare)"><div class="h"><b>6:37 AM</b><em>Early riser</em></div><span class="n">International Space Station</span><span class="w">Very bright · climbs high in the south</span></div>
+  </div>
+  <span class="more">Everything tonight · 412 passes ›</span>
+  <div class="cta"><span class="pill o">🔔 Remind me for my run</span></div>
+</div></div>
+<ul class="notes">
+  <li><b>Tonight's haul:</b> the reason to go out. New cards (with a tiny rarity chart), missions it would finish, XP, and the weather window in one line.</li>
+  <li><b>The run:</b> 3 to 6 stops chosen for you (the rarest new cards, shiny chances, stations), plus moments like dark, busiest and cloud. Each stop says what it gets you.</li>
+  <li><b>One button for reminders:</b> one each before the stops. Free players pick one stop; Plus gets the whole run. This replaces the hidden swipe.</li>
+  <li><b>Dawn ISS:</b> shown at the end as "Early riser", never lost.</li>
+  <li><b>Full list:</b> stays one tap away ("Everything tonight"), with Commons collapsed.</li>
+</ul></div>
+
+<!-- WEEK -->
+<div class="col"><h2>Week</h2>
+<div class="phone"><div class="scr">
+  <div class="hdr"><div><b>UP IN YOUR SKY</b><small>Peterborough · this week</small></div><span class="x">✕</span></div>
+  <div class="rule"></div>
+  <span class="tabs"><span>Now</span><span>Tonight</span><span class="on">Week</span></span>
+  <div class="days">
+    <div class="day sel">TUE<span class="ic">☁</span><span class="moon" style="--lit:70%"></span><span class="dots"><i style="--c:var(--epic)"></i></span></div>
+    <div class="day">WED<span class="ic">☁</span><span class="moon" style="--lit:62%"></span><span class="dots"></span></div>
+    <div class="day">THU<span class="ic">☂</span><span class="moon" style="--lit:54%"></span><span class="dots"><i style="--c:var(--rare)"></i></span></div>
+    <div class="day">FRI<span class="ic">☁</span><span class="moon" style="--lit:46%"></span><span class="dots"></span></div>
+    <div class="day good">SAT<span class="ic">✧</span><span class="moon" style="--lit:38%"></span><span class="dots"><i style="--c:var(--epic)"></i><i style="--c:var(--rare)"></i></span></div>
+    <div class="day good best">SUN<span class="ic">✧</span><span class="moon" style="--lit:30%"></span><span class="dots"><i style="--c:var(--leg)"></i><i style="--c:var(--epic)"></i></span></div>
+    <div class="day">MON<span class="ic">☁</span><span class="moon" style="--lit:22%"></span><span class="dots"></span></div>
+  </div>
+  <div class="pick">
+    <span class="k">Best night this week</span>
+    <div class="d">Sunday <small>OCT 18</small></div>
+    <div class="why">Clear all evening, a thin Moon, and a <b style="color:var(--leg)">★ Legendary</b> you can only catch that night.</div>
+    <div class="gets"><span>5 new cards</span><span class="m">Run of 4 stops</span><span>Dark 6:54</span></div>
+    <div style="display:flex;gap:8px;margin-top:12px"><span class="pill o" style="flex:1">See Sunday's run</span><span class="pill g">🔔</span></div>
+  </div>
+  <div class="only">
+    <span class="k">Only this week</span>
+    <div class="it" style="--c:var(--leg)"><i></i><span><b>Vanguard 1</b><span>★ Legendary · Sunday 8:40 · not again until November</span></span><em>Sun</em></div>
+    <div class="it" style="--c:var(--epic)"><i></i><span><b>Cosmos 1084</b><span>✦ Epic · tonight and Saturday only</span></span><em>Tue · Sat</em></div>
+    <div class="it" style="--c:var(--org)"><i></i><span><b>Shiny eclipse night</b><span>Three satellites slip into shadow high up</span></span><em>Sat</em></div>
+    <div class="it" style="--c:var(--rare)"><i></i><span><b>Orionids peak</b><span>Meteor shower · badge for any catch</span></span><em>Wed</em></div>
+  </div>
+  <div class="goal"><svg width="44" height="44" viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="18" fill="none" stroke="#22344a" stroke-width="5"/><circle cx="22" cy="22" r="18" fill="none" stroke="#fa8127" stroke-width="5" stroke-linecap="round" stroke-dasharray="113" stroke-dashoffset="45" transform="rotate(-90 22 22)"/></svg><span><b>3 of 5 new cards this week</b><span>Keeps your 4-week streak going</span></span></div>
+</div></div>
+<ul class="notes">
+  <li><b>A 7-day strip:</b> weather icon, Moon phase, and a coloured dot for each rare card that's only up that night. Tap a day to select it.</li>
+  <li><b>Best night card:</b> one sentence that says why (clear, thin Moon, a Legendary), what you'd get, and "See Sunday's run", which is the same itinerary as Tonight, for that night.</li>
+  <li><b>Only this week:</b> true, time-limited reasons to come back: rare cards with few passes, shiny eclipse nights, meteor shower peaks, satellites about to re-enter.</li>
+  <li><b>Weekly goal ring:</b> ties the week to the streak.</li>
+  <li>No more "426 new". Counts of Commons were noise.</li>
+</ul></div>
+</div>
+
+<div class="foot"><h3>What it would take to build</h3><ul>
+  <li><b>Now:</b> small. It reuses the "best upcoming" picker from today and the steering we already have. The countdown ring and the turning arrow are new.</li>
+  <li><b>Tonight's run and haul:</b> medium. It picks stops from the plan we already compute, and checks which missions each stop would finish. "Remind me for my run" sets several reminders (one for free players).</li>
+  <li><b>Week strip, "Only this week" and the goal ring:</b> medium. We already have every night's passes. "Only this week" compares how often each rare card passes; the Moon phase is already in the planner.</li>
+  <li>Everything else on the current tabs stays reachable: the full Tonight list, Also up tonight, the sky map and shiny chances.</li>
+</ul></div>
+</main>
