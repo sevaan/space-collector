@@ -1157,3 +1157,7 @@ body:has(.set-sheet:not([hidden])) .radar-tip { opacity: 0; pointer-events: none
 .wk-key { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; font-size: 12px; margin-top: 12px; }
 .wk-key i { display: inline-block; flex: none; width: 14px; height: 8px; }
 body.night .wk-strip i.clear, body.night .wk-key i.clear { background: #7a2318; }
+
+/* Week tab: a PLUS tag for free players instead of an unexplained dot (2026-10-13, Sevaan asked what the dot meant); nothing for Plus players. */
+.vt-plus { font-size: 10px; padding: 1px 5px 0; margin-left: 6px; vertical-align: 1px; }
+body.is-plus .vt-plus { display: none; }

@@ -792,3 +792,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - **Uncollected cards show their fact** (card.js), not the "Observe this… to add its story" teaser. The art stays hidden.
 - The daytime marker kicker and preview eyebrow read "APPEARING HERE TONIGHT AT …".
 - The bell in the Remind me pills is nudged 1px up (2px read high on the phone; measured centred in WebKit).
+
+2026-10-13 · v0.1.588: the Week tab's orange dot (it meant "Plus", but nothing said so) is now a small PLUS tag for free players and hidden for Plus players (`body.is-plus`, set in renderPlus).
