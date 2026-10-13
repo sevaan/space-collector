@@ -1,17 +1,17 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.634';
+import { extinction } from './sky-limit.js?v=0.1.635';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.634';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.635';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.634';
-import { createCloudGL } from './clouds-gl.js?v=0.1.634';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.635';
+import { createCloudGL } from './clouds-gl.js?v=0.1.635';
 // Cloud colours by light: sunlit tops, shadowed bellies, and the horizon haze they melt into (0–1 RGB).
 const CLOUD_LIGHT = {
   day: { lit: [1, 1, 1], shade: [0.62, 0.68, 0.77], haze: [0.82, 0.87, 0.93] },
   dusk: { lit: [1, 0.8, 0.68], shade: [0.36, 0.33, 0.42], haze: [0.62, 0.5, 0.52] },
   night: { lit: [0.22, 0.25, 0.31], shade: [0.1, 0.12, 0.16], haze: [0.14, 0.15, 0.2] },
 };
-import { TIER_INFO } from './rarity.js?v=0.1.634';
+import { TIER_INFO } from './rarity.js?v=0.1.635';
 
 const RAD = Math.PI / 180;
 const BELOW_ICON = 10.5, BELOW_ICON_HIT = 20; // every satellite under the horizon, passes and halo alike (80% of 13 since 2026-10-13); lined up in the circle it grows
@@ -1032,7 +1032,8 @@ export class SkyView {
       Object.assign(lm, { align, row }); mem.set(name, lm);
       bx = Math.max(10, Math.min(this.w - 10 - w, x + lm.ox)); by = y + lm.oy; ly = by + h / 2;
       ctx.strokeStyle = col; ctx.globalAlpha = a * (ly !== ly0 ? 0.75 : 0.45); // a nudged label gets a clearer leader back to its dot
-      ctx.beginPath(); ctx.moveTo(x + u[0] * 7, y + u[1] * 7); ctx.lineTo(align === 'left' ? bx - 4 : align === 'right' ? bx + w + 4 : bx + w / 2, align === 'center' ? (u[1] > 0 ? by - 2 : by + h + 2) : ly); ctx.stroke();
+      const sx = x + u[0] * 7; // the leader meets the label on the side facing its dot, never across the text (2026-10-13, Sevaan)
+      ctx.beginPath(); ctx.moveTo(sx, y + u[1] * 7); ctx.lineTo(align === 'center' ? bx + w / 2 : sx > bx + w / 2 ? bx + w + 4 : bx - 4, align === 'center' ? (u[1] > 0 ? by - 2 : by + h + 2) : ly); ctx.stroke();
       ctx.globalAlpha = a; ctx.textAlign = 'left';
       ctx.fillStyle = col; ctx.fillText(name, bx, by + h / 2);
       ctx.fillStyle = ink + '.6)'; ctx.fillText(when, bx + wN, by + h / 2);
