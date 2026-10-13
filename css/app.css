@@ -1094,3 +1094,6 @@ body.night .plus-price { background: #1c0909; border-color: #2e1010; }
 
 /* The rarity's own shape beside the target's rarity (● ▲ ◆ ✦ ★; 2026-10-12: owned cards all showed ◆). */
 #d-tier[data-gem]::before { content: attr(data-gem); color: var(--find-tier, var(--gold)); }
+/* Recap card: the double frame lines are drawn ON TOP, so the art window sits behind them instead of covering them (2026-10-13, Sevaan). */
+#recap .rc-card { box-shadow: 0 24px 50px #000a; }
+#recap .rc-card::before { content: ''; position: absolute; inset: 0; border-radius: 15px; box-shadow: inset 0 0 0 1.5px #657786, inset 0 0 0 3px #d4e0e7; pointer-events: none; z-index: 4; }

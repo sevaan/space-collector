@@ -734,3 +734,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - **Levels:** NORM in js/sfx.js is re-measured so each new file plays at the old in-game loudness (ebur128), capped at 4×. Because of the cap, flip, xp and rattle land slightly quieter.
 
 2026-10-12 · v0.1.548: stars (and any other "quiet" kind) now show the Collect button too (Sevaan). A quiet target only drops the inner ring and the snap. The Settings highlight sheet text was updated to match.
+
+2026-10-13 · v0.1.551: weekly recap card. The double frame lines are an overlay (`#recap .rc-card::before`, z 4) instead of inset shadows, so the art window sits behind them rather than covering them (Sevaan).
