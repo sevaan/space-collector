@@ -1119,4 +1119,41 @@ body.night .plus-price { background: #1c0909; border-color: #2e1010; }
 body:has(.set-sheet:not([hidden])) .radar-tip { opacity: 0; pointer-events: none; }
 
 /* Bell level with the capitals of REMIND ME (2026-10-13): the condensed caps sit above the line box's middle. */
-#ud-bell .ico, #gh-remind .ico { position: relative; top: -2px; }
+#ud-bell .ico, #gh-remind .ico { position: relative; top: -1px; } /* -2px read high on the phone (2026-10-13) */
+
+/* Week tab redesign (2026-10-13): best-night card, then a row per night with an hourly evening cloud strip. */
+.wk-hero { display: grid; gap: 8px; padding: 16px; margin: 4px 0 14px; border-radius: 16px; border: 1px solid color-mix(in srgb, var(--gold) 45%, transparent); background: radial-gradient(ellipse at 85% 0%, color-mix(in srgb, var(--gold) 16%, transparent), transparent 60%), #0e1a29; }
+.wk-hero.bad { border-color: #2a3a4c; background: #0e1a29; }
+.wk-hero > small { font: 600 12px/1 var(--label); letter-spacing: .2em; text-transform: uppercase; color: var(--gold); }
+.wk-hero > b { font: 400 30px/1 var(--display); color: var(--ink, #fff2b3); display: flex; align-items: baseline; gap: 10px; }
+.wk-hero > b em { font: 500 15px/1 var(--label); letter-spacing: .14em; text-transform: uppercase; font-style: normal; color: var(--muted); }
+.wk-hero-sky { display: flex; align-items: center; gap: 8px; color: var(--text); font: 500 15px/1.3 var(--label); letter-spacing: .04em; }
+.wk-hero-sky .ico { width: 18px; height: 18px; }
+.wk-hero-stats { display: flex; flex-wrap: wrap; gap: 6px 16px; font: 500 14px/1.3 var(--label); letter-spacing: .04em; color: var(--muted); }
+.wk-hero-stats b { color: var(--ink, #fff2b3); font: 400 17px/1 var(--display); margin-right: 3px; }
+.wk-hero-remind { justify-self: start; display: inline-flex; align-items: center; gap: 8px; margin-top: 4px; }
+.wk-hero-remind .ico { width: 16px; height: 16px; position: relative; top: -1px; }
+.wk-list { display: grid; gap: 8px; }
+.wk2-row { display: grid; grid-template-columns: minmax(0, 6.2em) minmax(0, 1fr) auto; align-items: center; gap: 12px; width: 100%; padding: 11px 14px; border-radius: 14px; border: 1px solid #22344a; background: #0e1a29; color: var(--text); text-align: left; cursor: pointer; font: inherit; }
+.wk2-row.best { border-color: color-mix(in srgb, var(--gold) 60%, transparent); }
+.wk2-day b { display: block; font: 600 16px/1.1 var(--label); letter-spacing: .03em; color: var(--ink, #fff2b3); }
+.wk2-day small { font: 500 12px/1.2 var(--label); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.wk2-sky { display: grid; gap: 6px; min-width: 0; }
+.wk2-wx { display: flex; align-items: center; gap: 6px; font: 500 13px/1 var(--label); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.wk2-wx .ico { width: 15px; height: 15px; }
+.wk2-wx.clear, .wk2-wx.mostly { color: #9fd8b4; }
+.wk-strip { display: flex; gap: 2px; height: 8px; }
+.wk-strip i, .wk-key i { flex: 1; border-radius: 2px; background: #2b3b4e; }
+.wk-strip i.clear, .wk-key i.clear { background: #3f7fbf; }
+.wk-strip i.part, .wk-key i.part { background: #5d7184; }
+.wk-strip i.cloud, .wk-key i.cloud { background: #3a4654; }
+.wk-strip i.fog { background: #4a5260; }
+.wk-strip i.wet, .wk-key i.wet { background: #7d6bd1; }
+.wk-strip.none { height: auto; font: 500 12px/1 var(--label); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); opacity: .7; }
+.wk2-new { display: flex; align-items: baseline; gap: 4px; justify-content: flex-end; min-width: 4.2em; }
+.wk2-new b { font: 400 20px/1 var(--display); color: var(--ink, #fff2b3); }
+.wk2-new small { font: 500 12px/1 var(--label); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.wk2-new i { font-style: normal; font-size: 13px; margin-left: 4px; }
+.wk-key { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; font-size: 12px; margin-top: 12px; }
+.wk-key i { display: inline-block; flex: none; width: 14px; height: 8px; }
+body.night .wk-strip i.clear, body.night .wk-key i.clear { background: #7a2318; }

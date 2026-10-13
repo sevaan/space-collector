@@ -786,3 +786,9 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - **When it runs:** account.js `autoSync` runs a full sync 4 s after start, when the app comes back to the front, when the connection returns, and 30 s after a failed upload. It runs at most every 2 minutes.
 - **On a catch:** `pushSighting` (on every catch) now stamps `syncedAt` and emits. The panel read "synced not yet" because only the full sync set it.
 - **Wording:** the status reads "N sightings · backed up 2 min ago" ("Backing up…" before the first).
+
+2026-10-13 · v0.1.587 (Sevaan):
+- **Week tab redesign:** a best-night card (day and date, sky in words with the weather icon, dark time, new cards, passes, the rarest new pass, and "Remind me <day> at dark", which counts as that night's reminder). Then a row per night: day and date, weather word and icon, an hourly cloud strip from dark (clear blue, some cloud, cloudy, rain/snow violet; key under the list), new count and the rarest's gem. Tap a row for its passes. `nightSummary` now counts the evening only (eveningEnd; Night owl to dawn), since whole nights gave "451 new cards" and 4:54 AM picks.
+- **Uncollected cards show their fact** (card.js), not the "Observe this… to add its story" teaser. The art stays hidden.
+- The daytime marker kicker and preview eyebrow read "APPEARING HERE TONIGHT AT …".
+- The bell in the Remind me pills is nudged 1px up (2px read high on the phone; measured centred in WebKit).

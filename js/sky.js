@@ -1,17 +1,17 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.583';
+import { extinction } from './sky-limit.js?v=0.1.587';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.583';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.587';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.583';
-import { createCloudGL } from './clouds-gl.js?v=0.1.583';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.587';
+import { createCloudGL } from './clouds-gl.js?v=0.1.587';
 // Cloud colours by light: sunlit tops, shadowed bellies, and the horizon haze they melt into (0–1 RGB).
 const CLOUD_LIGHT = {
   day: { lit: [1, 1, 1], shade: [0.62, 0.68, 0.77], haze: [0.82, 0.87, 0.93] },
   dusk: { lit: [1, 0.8, 0.68], shade: [0.36, 0.33, 0.42], haze: [0.62, 0.5, 0.52] },
   night: { lit: [0.22, 0.25, 0.31], shade: [0.1, 0.12, 0.16], haze: [0.14, 0.15, 0.2] },
 };
-import { TIER_INFO } from './rarity.js?v=0.1.583';
+import { TIER_INFO } from './rarity.js?v=0.1.587';
 
 const RAD = Math.PI / 180;
 const BELOW_ICON = 13; // every satellite under the horizon, passes and halo alike
@@ -339,7 +339,7 @@ export class SkyView {
     ctx.restore();
     // One in the circle: name it in full above and below the circle, like things below the horizon (2026-10-13).
     const timed = ghosts.filter((g) => g.time && g.enu[2] > 0);
-    const hit = timed.length && !this.ghostBusy ? this.ghostHit(timed.map((g) => ({ ...g, kicker: `APPEARING TONIGHT AT ${g.time}` })), '', '20,34,54', { day: true, kickerOf: (g) => g.kicker }) : null;
+    const hit = timed.length && !this.ghostBusy ? this.ghostHit(timed.map((g) => ({ ...g, kicker: `APPEARING HERE TONIGHT AT ${g.time}` })), '', '20,34,54', { day: true, kickerOf: (g) => g.kicker }) : null;
     this.ghostHitId = hit?.g.id ?? null;
   }
 

@@ -1,18 +1,18 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { sfx } from './sfx.js?v=0.1.583';
-import { cardArt } from './art.js?v=0.1.583';
-import { TIER_INFO } from './rarity.js?v=0.1.583';
-import { SET_BY_ID } from './sets.js?v=0.1.583';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.583';
-import { FLEET_ABOUT, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.583';
-import { artFileFor } from './art-keys.js?v=0.1.583';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.583';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.583';
-import { nightsIn } from './observation.js?v=0.1.583';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.583';
-import { SHINY } from './shiny.js?v=0.1.583';
-import { conArt, cometArt } from './con-art.js?v=0.1.583';
-import { CON_FIGURES } from './con-figures.js?v=0.1.583';
+import { sfx } from './sfx.js?v=0.1.587';
+import { cardArt } from './art.js?v=0.1.587';
+import { TIER_INFO } from './rarity.js?v=0.1.587';
+import { SET_BY_ID } from './sets.js?v=0.1.587';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.587';
+import { FLEET_ABOUT, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.587';
+import { artFileFor } from './art-keys.js?v=0.1.587';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.587';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.587';
+import { nightsIn } from './observation.js?v=0.1.587';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.587';
+import { SHINY } from './shiny.js?v=0.1.587';
+import { conArt, cometArt } from './con-art.js?v=0.1.587';
+import { CON_FIGURES } from './con-figures.js?v=0.1.587';
 // The animal/symbol figure belongs to the completed (gold) constellation card only (2026-10-05): a single
 // star's card draws just the star pattern with its star marked, so the figure is a reward for finishing the set.
 const conFig = (id) => (CON_FIGURES.has(id) ? { figure: `assets/art/con/${id}.webp` } : {});
@@ -109,7 +109,7 @@ export function renderCard(o, opts = {}) {
   const latestLine = ll ? `Launched ${launchDay(ll.launch).replace(/ (\d{4})$/, ', $1')}` : ''; // sits right of the grid's heading
   const factBlock = fleet ? dotMap(o, stamps, lk, `${stamps.size} / ${o.launches.length} stamped` /* no "N more for Silver" (2026-10-12, Sevaan: it wrapped and took room from the art) */, latestLine) + (FLEET_ABOUT[o.family] ? `<div class="card__fact fl-about"><p>${richText(FLEET_ABOUT[o.family])}</p></div>` : '')
     : conCard ? `<div class="card__fact"><p>${richText(prog.level === 'gold' ? factFor(o).replace(/Collect all \d+ of its stars to turn this card \*\*gold\*\*\./, `You've found **all ${prog.total}** of its stars.`).replace(/Collect the Sun, the Moon and all \*\*seven\*\* planets to turn this card \*\*gold\*\*\./, `You've seen **all nine** of them with your own eyes.`) : factFor(o))}</p><p class="con-progress">${o.stars.map((k) => `<i class="${(opts.ownedKeys ?? new Set()).has(k) ? 'on' : ''}"></i>`).join('')}<span>${prog.have} / ${prog.total} ${o.system ? 'WORLDS' : 'STARS'}${prog.level === 'gold' ? ' · COMPLETE' : ''}</span></p></div>`
-    : `<div class="card__fact"><p>${revealed ? richText(factFor(o)) : `Observe this ${esc((TYPE_LABEL[o.type] ?? 'object').toLowerCase())} in the live sky to add its story to your collection.`}</p></div>`;
+    : `<div class="card__fact"><p>${richText(factFor(o))}</p></div>`; // the fact shows on cards you don't have too: it's what makes you want one (2026-10-13, Sevaan)
   // Long facts take room from the art, not the card: each line past three shrinks the art window (about
   // 52 characters a line), so every card stays the same height.
   // Fleet cards with a big launch grid plus the fleet's fact can run past the card's 42em: once it's on the page,
