@@ -718,3 +718,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 2026-10-12 · v0.1.540: the lock-on sound plays only for something you can collect (a new find or the tour's catch; Sevaan: not for cards you already have). The ring pulse and buzz still happen. The rarity line above the circle now uses the tier's own shape (`#d-tier[data-gem]`); owned cards had always shown ◆.
 
 2026-10-12 · v0.1.542: fleet cards show more art (Sevaan). The "· N more for Silver" text is gone from the stamp line (just "4 / 19 stamped"), and the heading is "EVERY LAUNCH" (it wrapped as "EVERY GLOBALSTAR LAUNCH"). The after-mount trim gives the freed lines to the picture: on Globalstar at 393 px the art went from about 80 to 115 px tall.
+
+2026-10-12 · v0.1.543: Delta facts are about the rocket the piece came from (Sevaan: "kept flying for more than 60 years" read badly on a 1999 stage). Delta II: 155 flights 1989–2018, GPS, Spirit and Opportunity. Delta 1: built from the Thor missile; a Thor-Delta launched Telstar in 1962. Other Deltas: the family flew 1960 to the last Delta IV Heavy in 2024.

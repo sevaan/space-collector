@@ -4,7 +4,7 @@
 // facts only state what the catalogue says today (orbit, launch date and site) or simple date
 // comparisons. No extrapolating today's orbit back over decades (lifetime laps or distance).
 
-import { orbitStats, titleCase, siteName, ownerName } from './facts.js?v=0.1.542';
+import { orbitStats, titleCase, siteName, ownerName } from './facts.js?v=0.1.543';
 
 const FAMILY = [
   [/^IRIDIUM 33 DEB/, 'A piece of the **first-ever crash between two satellites**: Iridium 33 hit the dead Cosmos 2251 in 2009.'],
@@ -19,7 +19,10 @@ const FAMILY = [
   [/CENTAUR/, 'Centaur was the **first rocket stage to burn liquid hydrogen**, the same fuel as the Space Shuttle.'],
   [/AGENA/, 'Agena stages also served as **docking targets** for Gemini astronauts in 1966.'],
   [/^ARIANE/, 'Europe\'s Ariane rockets launch from **French Guiana**, close to the equator, where Earth\'s spin gives them a boost.'],
-  [/^DELTA/, 'Delta rockets grew out of the Thor missile and kept flying for **more than 60 years**.'],
+  // Delta facts are about the rocket this piece came from, not the whole family's history (2026-10-12, Sevaan).
+  [/^DELTA 2\b/, 'From a Delta II, a rocket that flew **155 times** between 1989 and 2018. It launched GPS satellites and the Mars rovers **Spirit and Opportunity**.'],
+  [/^DELTA 1\b/, 'From an early Delta, a rocket built from the **Thor missile**. A Thor-Delta launched **Telstar**, the first satellite to relay live TV, in 1962.'],
+  [/^DELTA/, 'From the Delta family of rockets, which launched from 1960 until the last **Delta IV Heavy** in 2024.'],
   [/^H-2A/, 'Japan\'s H-IIA launched from **Tanegashima**, an island launch site in southern Japan.'],
   // Satellite families: only for the satellites themselves, not their debris or rocket stages.
   [/^(COSMOS|KOSMOS)/, '"Kosmos" is the name the Soviet Union, and then Russia, gave **thousands of satellites**, many of them military, without saying what each one was for.', ['PAY']],
