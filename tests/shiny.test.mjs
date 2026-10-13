@@ -11,7 +11,7 @@ test('ordinary passes are not shiny', () => {
 });
 test('slipping into Earth\'s shadow, straight overhead, fresh launches', () => {
   assert.equal(shinyFor(sat, up(40), { ...up(41), sunlit: false }, null, at), 'eclipse');
-  assert.equal(shinyFor(sat, up(84), up(83), null, at), 'overhead');
+  assert.equal(shinyFor(sat, up(88), up(87), null, at), 'overhead'); // 86°+ since 2026-10-12
   assert.equal(shinyFor({ ...sat, launch: '2026-09-20' }, up(40), up(41), null, at), 'fresh');
 });
 test('beside the Moon: within 1° for satellites, 5° for planets and stars', () => {

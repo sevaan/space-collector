@@ -58,8 +58,9 @@ test('deep-sky objects need a dark sky: the Pleiades from suburbs, Triangulum on
 
 test('visibility rules: Moon in daylight, planets after sunset, stars only when dark', () => {
   const up = (el) => [0, Math.cos(el * Math.PI / 180), Math.sin(el * Math.PI / 180)];
+  // the Moon sits opposite the Sun: by day it needs 30°+ from it (2026-10-12)
   const at = (sunEl) => naturalTargets(
-    [{ kind: 'sun', enu: up(sunEl) }, { kind: 'moon', enu: up(40), illum: 0.6 }, { kind: 'planet', name: 'Venus', enu: up(10), mag: -4 }],
+    [{ kind: 'sun', enu: up(sunEl) }, { kind: 'moon', enu: [0, -Math.cos(40 * Math.PI / 180), Math.sin(40 * Math.PI / 180)], illum: 0.6 }, { kind: 'planet', name: 'Venus', enu: up(10), mag: -4 }],
     [{ name: 'Sirius', enu: up(30), mag: -1.4 }],
   ).map((n) => [n.obj.key, n.look.visible]);
   assert.deepEqual(at(20), [['sun', true], ['moon', true], ['planet:venus', false], ['star:sirius', false]]); // the Sun is a daytime catch

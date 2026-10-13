@@ -703,3 +703,9 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 2026-10-12 · v0.1.537:
 - **Observer stats are free** (Sevaan): no Plus check in cards-page `openStats`, removed from PLUS_PERKS. The "Your sky in YEAR" poster is gone (`posterCanvas` deleted from js/stats.js, no share button). Rarest finds use the tier's own shape.
 - **Plus sheet fits one screen** (Sevaan: its top slid off the screen): shorter lead and perk lines, the two prices side by side as tiles (`.plus-price`), one short note, a shorter thank-you. The card is capped at the screen height minus the safe top and scrolls inside only if it must (checked: fits at 393×660 and 375×667; scrolls at 375×548).
+
+2026-10-12 · v0.1.538:
+- **Deep-sky art:** 12 of the 16 deep-sky cards have painted art, made with Nano Banana Pro (Vertex model `gemini-3-pro-image`, project space-collector-510722). Style references were planet-saturn, star-deneb and solar-system. The 12 are Andromeda, Triangulum, LMC, SMC, Orion, Lagoon, Carina, Omega Centauri, Hercules, Pleiades, Double Cluster and Beehive. Files are deep-<id> (art-keys.js), and card.js uses the picture when one exists, otherwise the constellation chart with the object ringed. Hyades, Alpha Persei, Ptolemy's Cluster and the Coathanger keep the chart, since their pattern in the sky is the point. Contact sheet: design/deep-sky-art.jpg.
+  - Fixes in the prompt: the model draws the LMC and M13 as spirals unless told "NOT a spiral". The quota is about 1 image a minute, so generation is sequential with 45 s backoff.
+- **The Sun is Common** (Sevaan: everyone sees it every day).
+- **Tests:** three stale tests were updated for earlier rule changes: shiny overhead at 86°, the new rank curve, and the daytime Moon needing 30° from the Sun.

@@ -43,5 +43,5 @@ test('a first night gets the starter missions; a stored deal is used after that'
 });
 test('XP carry keeps an earlier rank', () => {
   const p = progress([s('a', 0)], info, { now: T + 3600e3, carry: 600 });
-  assert.ok(p.xp >= 600); assert.equal(p.rank.name, 'Tracker');
+  assert.ok(p.xp >= 600); assert.equal(p.rank.name, 'Spotter'); // ranks 0 / 300 / 1,000… since 2026-10-12
 });
