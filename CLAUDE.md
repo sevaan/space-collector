@@ -838,3 +838,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 2026-10-13 · v0.1.615: new debris icon (Sevaan): a torn-off scrap of panel with a jagged edge, panel cell lines cut through it, a bent strut, and a fleck when big enough. It replaces the plain pentagon "pebble" (sky.js drawIcon fallback branch).
 
 2026-10-13 · v0.1.616: the buried dinosaur bones are drawn 50% smaller (Sevaan), so 37.5% of their first size, with the minimum and maximum halved too.
+
+2026-10-13 · v0.1.617: the dinosaur bones grow 1.3× when they're in the circle, easing in and out (`sky.fossilGrow`).
