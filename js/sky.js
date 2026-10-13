@@ -1,17 +1,17 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.594';
+import { extinction } from './sky-limit.js?v=0.1.596';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.594';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.596';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.594';
-import { createCloudGL } from './clouds-gl.js?v=0.1.594';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.596';
+import { createCloudGL } from './clouds-gl.js?v=0.1.596';
 // Cloud colours by light: sunlit tops, shadowed bellies, and the horizon haze they melt into (0–1 RGB).
 const CLOUD_LIGHT = {
   day: { lit: [1, 1, 1], shade: [0.62, 0.68, 0.77], haze: [0.82, 0.87, 0.93] },
   dusk: { lit: [1, 0.8, 0.68], shade: [0.36, 0.33, 0.42], haze: [0.62, 0.5, 0.52] },
   night: { lit: [0.22, 0.25, 0.31], shade: [0.1, 0.12, 0.16], haze: [0.14, 0.15, 0.2] },
 };
-import { TIER_INFO } from './rarity.js?v=0.1.594';
+import { TIER_INFO } from './rarity.js?v=0.1.596';
 
 const RAD = Math.PI / 180;
 const BELOW_ICON = 10.5, BELOW_ICON_HIT = 20; // every satellite under the horizon, passes and halo alike (80% of 13 since 2026-10-13); lined up in the circle it grows
@@ -1151,7 +1151,14 @@ export class SkyView {
       rect(-0.95, -0.07, 1.1, 0.14);                                                                   // tail boom
       rect(-1.0, -0.3, 0.12, 0.6);                                                                     // tail rotor
       ctx.lineWidth = 0.16 * u; ctx.lineCap = 'round';
-      ctx.beginPath(); ctx.moveTo(-0.55 * u, -0.78 * u); ctx.lineTo(1.1 * u, 0.78 * u); ctx.moveTo(-0.55 * u, 0.78 * u); ctx.lineTo(1.1 * u, -0.78 * u); ctx.stroke(); // main rotor
+      // Main rotor turns (2026-10-13, Sevaan): four blades about the hub over the cabin, ~1.5 turns a second, with a
+      // faint disc so it reads as spinning rather than flickering.
+      const spin = (performance.now() / 1000) * Math.PI * 3, R = 1.12 * u;
+      ctx.save(); ctx.translate(0.28 * u, 0);
+      ctx.globalAlpha *= 0.18; ctx.beginPath(); ctx.arc(0, 0, R, 0, Math.PI * 2); ctx.fill(); ctx.globalAlpha /= 0.18;
+      ctx.rotate(spin); ctx.beginPath();
+      for (let b = 0; b < 2; b++) { const c = Math.cos(b * Math.PI / 2) * R, d = Math.sin(b * Math.PI / 2) * R; ctx.moveTo(-c, -d); ctx.lineTo(c, d); }
+      ctx.stroke(); ctx.restore(); // main rotor
     } else if (kind === 'station') {
       ctx.rotate(-0.2);
       rect(-1.0, -0.06, 2.0, 0.12);                   // truss

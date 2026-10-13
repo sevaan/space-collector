@@ -802,3 +802,8 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 2026-10-13 · v0.1.594:
 - **Constellation lines checked against the data:** 868 of 893 line corners sit on a catalogued star; the other 25 are faint southern stars below the star list's cut. Orion's belt and the Big Dipper are correct, and lines and stars share one transform (celestial.js loadSky). They looked like nothing below the horizon because, from Canada, that's mostly unfamiliar southern constellations with no names, so every constellation below the horizon is now named.
 - **FIX:** the lined-up below-horizon icon didn't grow. belowHitId is the object's id, but halo entries have the id only on `obj`; matching now uses `id ?? obj.id`.
+
+2026-10-13 · v0.1.596 (Sevaan):
+- **Tonight list rethink.** It uses every pass to dawn; the old first-60 cut stopped in the first hour, so the dawn ISS was missing. Up next stays. Later is split into This evening (until eveningEnd), Late night (until 2.5 h before dawn) and Before dawn. Each part shows its best passes in time order: 8, 4 and 4, ranked new > rarity > stations/icons > brightness > height, and stations always make it. "Show all N" lists the rest. Night moments sit inside their part.
+- **"Worth setting an alarm for" cards:** tapping one opens its card. A mouse can drag the strip (`dragScroll`; a drag isn't a tap). The strip lines up with the list (no −20px bleed), with snap per card.
+- **Helicopter:** the main rotor spins (four blades over the cabin with a faint rotor disc, ~1.5 turns a second).
