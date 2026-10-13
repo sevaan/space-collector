@@ -732,3 +732,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - **Option a:** swipe, r_common, r_uncommon, r_rare, shiny, levelup, xp, mission, coinroll, complete, fossil, ufo, welcome, rattle, step, toggle, plane.
 - **Kept as before:** toast, seen.
 - **Levels:** NORM in js/sfx.js is re-measured so each new file plays at the old in-game loudness (ebur128), capped at 4×. Because of the cap, flip, xp and rattle land slightly quieter.
+
+2026-10-12 · v0.1.548: stars (and any other "quiet" kind) now show the Collect button too (Sevaan). A quiet target only drops the inner ring and the snap. The Settings highlight sheet text was updated to match.
