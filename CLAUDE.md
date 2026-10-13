@@ -754,3 +754,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - **Paths:** each path is the real propagated track (`passPath`, ~40 steps from rise to set, cached per pass). Straight az/el lines through rise → peak → set had made sharp V shapes.
 - **In the circle:** when a marker sits in the circle, the object's icon shows faintly in it (50%, since it isn't there yet). The kicker reads "APPEARING TONIGHT AT 7:54 PM".
 - **One per card:** at most one marker per card, so several Iridium passes count as the one fleet card.
+
+2026-10-13 · v0.1.562: every daytime pass marker shows the object's icon inside its dotted circle at 50% opacity (12 px, dark ink), not just the one lined up (Sevaan).
