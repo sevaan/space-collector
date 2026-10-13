@@ -749,3 +749,8 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - **Remind me pill:** under that info, a "Remind me at 7:44 PM" pill (#gh-remind, `ghRemind` called from untilDark each frame) sets the usual 10-minutes-before notification. Tapping it again turns it off. The reminder key `${id}@${start}` is shared with the Tonight rows, so the bells agree.
 - **Gone:** the "tap it to be shown where it rises" line and the tap → Show me.
 - **Steering line:** reads "Appears here at 7:52 PM · in 4 h 6 min". No "You're facing the right way", and long waits are in hours.
+
+2026-10-13 · v0.1.561: daytime pass markers, round 3 (Sevaan).
+- **Paths:** each path is the real propagated track (`passPath`, ~40 steps from rise to set, cached per pass). Straight az/el lines through rise → peak → set had made sharp V shapes.
+- **In the circle:** when a marker sits in the circle, the object's icon shows faintly in it (50%, since it isn't there yet). The kicker reads "APPEARING TONIGHT AT 7:54 PM".
+- **One per card:** at most one marker per card, so several Iridium passes count as the one fleet card.
