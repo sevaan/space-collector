@@ -449,7 +449,7 @@
 
 /* Collection tiles are the real card, shrunk (2026-10-13). The card is 28em wide, so 1em = the tile's width / 28;
    container units do the maths. The status line covers the card's footer, where the type is too small to read. */
-.card-tile.card-tile--mini { position: relative; display: block; padding: 0; background: none; border: 0; border-radius: 6%/4.3%; overflow: hidden; container-type: inline-size; aspect-ratio: 28 / 39.2; height: auto; }
+.card-tile.card-tile--mini { position: relative; display: block; padding: 0; background: none; border: 0; border-radius: 6%/4.3%; overflow: hidden; container-type: inline-size; aspect-ratio: 28 / 42; height: auto; } /* the retro card is 42em tall, not 39.2: 39.2 cut its bottom off */
 .card-tile--mini .tile-mini { display: block; width: 100%; height: 100%; pointer-events: none; }
 .card-tile--mini .tile-mini > .card { font-size: 10px; width: 28em; min-height: 39.2em; transform-origin: 0 0; transform: scale(var(--mini-s, .4)); } /* drawn at full size and scaled, so fixed-size parts (fleet launches) shrink too; --mini-s = tile width / 280, set by cards-page */
 .card-tile--mini .tile-over { position: absolute; left: 0; right: 0; bottom: 0; z-index: 3; display: flex; align-items: center; gap: 6px; height: 10.5%; padding: 0 7%; background: #080f1b; border-top: 1px solid #bcb58566; text-align: left; overflow: hidden; } /* sits over the card's footer only */
@@ -458,3 +458,10 @@
 .card-tile--mini .tile-over small { display: none; }
 .card-tile--mini .tile-lvl { z-index: 4; top: auto; bottom: 13%; right: 6%; left: auto; }
 .card-tile--mini .card__shine, .card-tile--mini .card__glare, .card-tile--mini .card__back { display: none; }
+/* The collected line sits inside the card's frame, over its footer (2026-10-13, Sevaan: it covered the bottom edge). */
+.card-tile--mini .tile-over { left: calc(var(--mini-s, .4) * 6px); right: calc(var(--mini-s, .4) * 6px); bottom: calc(var(--mini-s, .4) * 6px); height: max(18px, calc(var(--mini-s, .4) * 34px)); border-radius: 0 0 calc(var(--mini-s, .4) * 10px) calc(var(--mini-s, .4) * 10px); padding: 0 calc(var(--mini-s, .4) * 13px); }
+.card-tile--mini .card__footer { visibility: hidden; } /* the strip replaces it; on taller cards its tiny text peeked below the strip */
+.card-tile--mini .tile-over { bottom: calc(var(--mini-s, .4) * 4px); border-top: 0; }
+/* Long facts make some cards taller than 42em, which pushed their bottom frame out of the tile: hold every mini card to
+   exactly 42em so the whole frame shows (the strip covers where the text runs out). */
+.card-tile--mini .tile-mini > .card, .card-tile--mini .card__rotator, .card-tile--mini .card__face { height: 42em; min-height: 0; max-height: 42em; overflow: hidden; box-sizing: border-box; }

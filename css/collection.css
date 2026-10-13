@@ -430,3 +430,6 @@ body.has-cards .collection-intro { display: none; }
 .lb-more { float: none; align-self: flex-end; margin: 8px 16px -4px auto; }
 /* No double-tap zoom on controls (2026-10-12, Sevaan: double-tapping a button zoomed the page). Pinch zoom still works. */
 :where(button, a, label, input, select, summary, [role="button"], .d-cta, .ticket) { touch-action: manipulation; } /* zero specificity: anything with its own touch rule (the welcome card, sliders, cards) keeps it */
+/* Mini-card tiles are the retro card's real shape, 28 × 42 (2026-10-13). */
+.grid .tile-slot:has(.card-tile--mini) { aspect-ratio: 28 / 42; }
+.grid .tile-slot { aspect-ratio: 28 / 42; }

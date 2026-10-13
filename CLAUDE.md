@@ -821,3 +821,8 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - **How it's drawn:** cards-page `miniFace` replaces the tile's face with `renderCard(c, { mini: true })` (small art, no sparkles). The card is drawn at its natural 280 px and scaled by `--mini-s` (tile width / 280, set on #grid by `miniScale` on render and resize). Scaling the whole card, not the font, makes fixed-size parts like the fleet launch dots shrink too.
 - **What's kept:** the tile's classes (owned, shiny, gold, level), aria label, tilt and open-viewer click.
 - **Bottom strip:** a slim strip over the card's footer shows "✓ Oct 17, 2026" (or "4 of 19 launches", "Not yet collected"). The level badge sits just above it.
+
+2026-10-13 · v0.1.608:
+- **Wording:** "Busiest: 65 objects up at once" everywhere (Sevaan).
+- **Mini-card tiles:** the collected strip now sits inside the card's frame (inset by the frame width, rounded bottom corners, the card's own footer hidden under it).
+- **Tile shape:** tiles are the retro card's real 28 × 42, not 5:7, which cut the bottom off, and every mini card is held to exactly 42em so long facts can't push the bottom frame out.
