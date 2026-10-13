@@ -11,11 +11,12 @@ export function setPlusForTesting(on) {
 export function onPlus(f) { listeners.add(f); return () => listeners.delete(f); }
 // What Plus adds, in the order the sheet lists them. `live` = built today (the rest say "coming").
 export const PLUS_PERKS = [
-  { icon: 'bell', name: 'Pass alerts', text: 'A heads-up before a new card flies over. Up to 3 a night.', live: true },
-  { icon: 'calendar', name: 'The week ahead', text: 'Seven nights of passes and weather, and the best one.', live: true },
+  { icon: 'bell', name: 'Unlimited reminders', text: 'As many as you like. Free includes one a night.', live: true },
+  { icon: 'ring', name: 'Pass alerts', text: 'Automatic heads-ups, up to 3 a night.', live: true },
+  { icon: 'calendar', name: 'The week ahead', text: 'Seven nights of passes and weather.', live: true },
   { icon: '⏱', name: 'Widget and lock-screen countdown', text: '"ISS in 12 min · NW" without opening the app.' },
   { icon: '⌚', name: 'Apple Watch tap', text: 'A tap on the wrist as a pass rises.' },
-  { icon: 'stars', name: 'Shiny forecast', text: 'When the next eclipse or Moon shiny can happen.', live: true },
+  { icon: 'stars', name: 'Shiny forecast', text: 'When the next shiny can happen.', live: true },
   { icon: '🎨', name: 'Card backs, foils and themes', text: 'New looks for your cards, patch wall and shares.' },
   { icon: '🎵', name: 'More music', text: 'Extra tracks for the night sky.' },
 ];

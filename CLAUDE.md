@@ -760,3 +760,9 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 2026-10-13 · v0.1.565: a daytime pass marker lined up in the circle grows like a real target: its dotted ring goes from 11 to 17 px and the icon from 12 to 22 px (uses last frame's `sky.ghostHitId`).
 
 2026-10-13 · v0.1.567: daytime pass tracks are dark ink (rgba(20,34,54,.42)), since the white tracks vanished over clouds and some passes looked like they had none. Chevrons every 7 track points point from rise to set, so you can see which way each one moves (Sevaan).
+
+2026-10-13 · v0.1.570: reminder limits and the monthly price (Sevaan approved).
+- **Reminders:** free players get ONE reminder a night (`FREE_REMINDERS_A_NIGHT` in main.js, `reminderLimitHit` in setReminder). Any kind counts (pass, dark, clear night); re-setting the same key doesn't. A second one opens the Plus sheet ("Free includes one reminder a night…") and returns 'limit', so callers stay quiet. Plus: unlimited.
+- **Pass alerts:** the automatic ones are still Plus, 3 a night, quiet 11 pm – 7 am.
+- **Plus sheet:** new perk "Unlimited reminders". Prices: Yearly $19.99 across the top ("Best value · save 44%"), then Monthly $2.99 and Once, forever $39.99 side by side. Perk lines are one line each, and the sheet fits without scrolling at 393×660 and 375×667.
+- **BUG FIX:** `remindIds` and `newRemindId` were accidentally deleted in 020eca4 (v0.1.528). Every reminder in the native apps threw a ReferenceError from then until now (TestFlight builds 3 and 4 included); the website wasn't affected because it returns 'app-only' first. Both are restored. To catch this kind of thing, lint for undefined names: `npx -y eslint@8.57.0 --no-eslintrc --env browser,es2022,worker --parser-options=sourceType:module,ecmaVersion:latest --rule 'no-undef: error' js/*.js` (clean now).

@@ -1103,3 +1103,10 @@ body.night .plus-price { background: #1c0909; border-color: #2e1010; }
 #gh-remind[hidden] { display: none; }
 #gh-remind.on { border-color: color-mix(in srgb, var(--gold) 55%, transparent); color: var(--gold); }
 #gh-remind .ico { width: 16px; height: 16px; }
+
+/* Three prices (2026-10-13): Yearly across the top as the best value, Monthly and Once, forever side by side under it. */
+#plus-buy .plus-price.best { grid-column: 1 / -1; }
+.plus-price i { font: 600 11px/1 var(--label); letter-spacing: .14em; text-transform: uppercase; font-style: normal; color: var(--gold); }
+#set-plus-sheet .plus-perks { gap: 9px; margin-bottom: 14px; }
+#set-plus-sheet .plus-price { padding: 9px 8px; }
+#set-plus-sheet .plus-why { margin-top: 10px; }
