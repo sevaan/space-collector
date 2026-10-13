@@ -1,8 +1,8 @@
-// Observer stats (Plus, 2026-10-11, design/plans.html): your history under the sky, from the sighting log.
-// computeStats(sightings, byKey, nightKey) -> numbers; statsHtml(st) -> the panel; posterCanvas(st, year) -> a
-// 1080 × 1350 "your sky in YEAR" image to share. No network; the map uses js/geo.js's coarse outlines.
-import { LAND } from './geo.js?v=0.1.534';
-import { TIER_INFO } from './rarity.js?v=0.1.534';
+// Observer stats (free for everyone, 2026-10-12; was Plus): your history under the sky, from the sighting log.
+// computeStats(sightings, byKey, nightKey) -> numbers; statsHtml(st) -> the panel. No network; the map uses js/geo.js's
+// coarse outlines. The yearly poster was dropped (2026-10-12, Sevaan).
+import { LAND } from './geo.js?v=0.1.537';
+import { TIER_INFO } from './rarity.js?v=0.1.537';
 
 const RANK = { common: 0, uncommon: 1, rare: 2, epic: 3, legendary: 4 };
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -43,23 +43,8 @@ export function statsHtml(st) {
     <div class="st-bars">${st.months.map((n, i) => `<div class="st-bar"><span style="height:${(n / max) * 100}%"></span><small>${MONTHS[i][0]}</small></div>`).join('')}</div>
     <div class="st-head">Where you've looked up</div>${mapSvg(st.places)}
     <div class="st-head">Rarest finds</div>
-    <div class="st-rare">${st.rarest.map(({ s, c }) => { const t = TIER_INFO[c.tier] ?? TIER_INFO.common; return `<div><span style="color:${t.color}">◆ ${esc(t.label)}</span><b>${esc(c.title ?? c.name)}</b><small>${new Date(s.time).toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' })}</small></div>`; }).join('') || '<div>Your first catch will show here.</div>'}</div>
+    <div class="st-rare">${st.rarest.map(({ s, c }) => { const t = TIER_INFO[c.tier] ?? TIER_INFO.common; return `<div><span style="color:${t.color}">${t.gem} ${esc(t.label)}</span><b>${esc(c.title ?? c.name)}</b><small>${new Date(s.time).toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' })}</small></div>`; }).join('') || '<div>Your first catch will show here.</div>'}</div>
     ${st.busiest ? `<p class="st-since">Best night: ${new Date(st.busiest.t).toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric' })}, ${st.busiest.cards.size} cards.</p>` : ''}`;
 }
 
 // "Your sky in YEAR": a portrait image in the card style for the share sheet.
-export function posterCanvas(st, rankName = '') {
-  const W = 1080, H = 1350, c = document.createElement('canvas'); c.width = W; c.height = H; const g = c.getContext('2d');
-  const grd = g.createRadialGradient(W * .3, H * .2, 50, W * .5, H * .5, H); grd.addColorStop(0, '#14284a'); grd.addColorStop(1, '#080f1b'); g.fillStyle = grd; g.fillRect(0, 0, W, H);
-  let seed = 7; const r = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
-  for (let i = 0; i < 260; i++) { g.globalAlpha = .2 + r() * .6; g.fillStyle = '#fff2b3'; g.beginPath(); g.arc(r() * W, r() * H, .6 + r() * 2.2, 0, 7); g.fill(); } g.globalAlpha = 1;
-  g.strokeStyle = '#c9a24a'; g.lineWidth = 6; g.strokeRect(40, 40, W - 80, H - 80);
-  g.fillStyle = '#fa8127'; g.font = '500 34px "SC Label", "Arial Narrow", sans-serif'; g.textAlign = 'center';
-  g.fillText(`SPACE COLLECTOR · ${st.year ?? new Date().getFullYear()}`, W / 2, 130);
-  g.fillStyle = '#fff2b3'; g.font = '400 96px "SC Display", Impact, sans-serif'; g.fillText('YOUR SKY', W / 2, 250); g.fillText(`IN ${st.year ?? new Date().getFullYear()}`, W / 2, 350);
-  const big = [[st.cards, 'CARDS'], [st.nights, 'NIGHTS OUT'], [st.sightings, 'SIGHTINGS'], [st.places.length, 'PLACES']];
-  big.forEach(([n, l], i) => { const x = 270 + (i % 2) * 540, y = 520 + Math.floor(i / 2) * 230; g.fillStyle = '#fff2b3'; g.font = '400 120px "SC Display", Impact, sans-serif'; g.fillText(Number(n).toLocaleString(), x, y); g.fillStyle = '#9fb3c8'; g.font = '500 36px "SC Label", "Arial Narrow", sans-serif'; g.fillText(l, x, y + 56); });
-  const top = st.rarest[0]; if (top) { const t = TIER_INFO[top.c.tier] ?? TIER_INFO.common; g.fillStyle = t.color; g.font = '500 36px "SC Label", "Arial Narrow", sans-serif'; g.fillText(`RAREST FIND · ${t.label.toUpperCase()}`, W / 2, 1060); g.fillStyle = '#fff2b3'; g.font = '400 64px "SC Display", Impact, sans-serif'; g.fillText(String(top.c.title ?? top.c.name).toUpperCase().slice(0, 26), W / 2, 1140); }
-  if (rankName) { g.fillStyle = '#9fb3c8'; g.font = '500 34px "SC Label", "Arial Narrow", sans-serif'; g.fillText(`OBSERVER RANK · ${rankName.toUpperCase()}`, W / 2, 1250); }
-  return c;
-}

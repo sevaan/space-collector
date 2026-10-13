@@ -1007,7 +1007,6 @@ html.quick #hud[hidden] ~ #nav { display: grid !important; }
 body.col-open.col-modal #nav { visibility: hidden !important; }
 body:has(#reveal:not([hidden])) .pc-badge, body:has(#reveal:not([hidden])) .patch-coins { visibility: hidden; }
 body:has(.overlay:not([hidden])) .ticket--sticky, body:has(.set-sheet.in) .ticket--sticky { display: none; }
-#plus-perks { -webkit-mask: linear-gradient(#000 calc(100% - 28px), transparent); mask: linear-gradient(#000 calc(100% - 28px), transparent); padding-bottom: 18px; }
 /* WebKit drops a scrolling flex column's bottom padding (UX room 2026-10-11: the last tiles stayed under Explore); a spacer instead. */
 #ob-done.nt .od-body { padding-bottom: 0; }
 #ob-done.nt .od-body::after { content: ''; flex: none; height: calc(var(--safe-bottom) + 130px); }
@@ -1023,9 +1022,6 @@ body:has(.overlay:not([hidden])) .ticket--sticky, body:has(.set-sheet.in) .ticke
 .acct-confirm p { margin: 0 0 10px; color: var(--text); font: 400 14px/1.45 -apple-system, system-ui, sans-serif; }
 .acct-danger { background: #c94a3d !important; color: #fff !important; }
 /* Plus sheet (2026-10-12): the price on the buttons, a note from the maker, Restore purchases. */
-.plus-price { margin-top: 8px; }
-.plus-price span:last-child { font: 400 17px var(--display); letter-spacing: 0; }
-.plus-why { margin: 14px 0 0; font: 400 13.5px/1.45 -apple-system, system-ui, sans-serif; color: var(--muted); }
 .acct-apple { background: #fff !important; color: #000 !important; margin-bottom: 8px; } /* Sign in with Apple: Apple's white button */
 /* The Tonight page slides up into place (2026-10-12). */
 #onboard .ob-done:not([hidden]) { animation: od-in .38s cubic-bezier(.2,.9,.25,1); }
@@ -1077,3 +1073,21 @@ body:has(#onboard:not([hidden])) #reveal { z-index: 30; }
 #ob-done:not(.nt) .spacer { flex: 0 0 28px; }
 #ob-done:not(.nt) .od-head { margin-top: auto; }
 #ob-done:not(.nt) #ob-explore { margin-top: auto; }
+
+/* Plus sheet fits one screen (2026-10-12, Sevaan: the top slid off the screen). Short copy, three perks, the two prices side
+   by side; the card never grows past the screen (it scrolls inside if a huge text size forces it). */
+#set-plus-sheet .set-sheet-card { max-height: calc(100dvh - var(--safe-top, 0px) - 16px); overflow-y: auto; overscroll-behavior: contain; touch-action: pan-y; }
+#set-plus-sheet h3 { margin-bottom: 4px; }
+#plus-lead { margin: 0 0 14px; }
+#set-plus-sheet .plus-perks { max-height: none; overflow: visible; gap: 12px; margin: 0 0 18px; }
+#set-plus-sheet .plus-perks li small { font-size: 13px; }
+#plus-buy { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+#plus-buy[hidden] { display: none; }
+.plus-price { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 12px 8px; border-radius: 16px; border: 1px solid #2a3a4c; background: #16243a; color: var(--text); font: 500 13px/1 var(--label); letter-spacing: .14em; text-transform: uppercase; }
+.plus-price b { font: 400 20px/1 var(--display); letter-spacing: 0; color: var(--ink, #fff2b3); }
+.plus-price.o { border-color: color-mix(in srgb, var(--gold) 70%, transparent); background: color-mix(in srgb, var(--gold) 16%, #16243a); }
+.plus-price:disabled { opacity: .75; }
+.plus-soon { display: block; margin: 8px 0 0; text-align: center; color: var(--muted); font: 500 12px/1.35 var(--label); letter-spacing: .04em; }
+.plus-why { margin: 14px 0 0; font: 400 13px/1.4 -apple-system, system-ui, sans-serif; color: var(--muted); text-align: center; }
+#plus-restore { margin-top: 6px; }
+body.night .plus-price { background: #1c0909; border-color: #2e1010; }

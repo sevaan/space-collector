@@ -699,3 +699,7 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - **Tonight page picks:** the best pass is the rarest card new to you (Common/Uncommon only if that's all there is), with its rarity gem and label. Tapping the name opens a card preview (`showTonightCard`, the reveal sits above #onboard). The Not tonight page's "above the cloud" rows do the same.
 
 2026-10-12 · v0.1.534: daytime satellites are OFF by default (Sevaan didn't like seeing them). Settings → What shows → "Satellites by day" (pref `daySats`, `state.daySats`) turns the halo icons and the "Hidden by daylight" circle info back on; `daySats()` in main.js returns null when it's off.
+
+2026-10-12 · v0.1.537:
+- **Observer stats are free** (Sevaan): no Plus check in cards-page `openStats`, removed from PLUS_PERKS. The "Your sky in YEAR" poster is gone (`posterCanvas` deleted from js/stats.js, no share button). Rarest finds use the tier's own shape.
+- **Plus sheet fits one screen** (Sevaan: its top slid off the screen): shorter lead and perk lines, the two prices side by side as tiles (`.plus-price`), one short note, a shorter thank-you. The card is capped at the screen height minus the safe top and scrolls inside only if it must (checked: fits at 393×660 and 375×667; scrolls at 375×548).

@@ -418,7 +418,6 @@ body.night::after { content: ''; position: fixed; inset: 0; z-index: 2147483646;
 .st-map { width:100%; height:auto; display:block; }
 .st-rare { display:grid; gap:8px; } .st-rare div { display:grid; grid-template-columns:auto 1fr auto; gap:10px; align-items:baseline; font:500 15px 'SC Label', sans-serif; padding:8px 12px; border-radius:10px; background:#0e1a29; }
 .st-rare span { font-size:12px; letter-spacing:.08em; } .st-rare small { color:#bdbea9; }
-.st-poster { width:100%; margin-top:20px; }
 /* Inside the app, Explore's switcher sits on top of this page, so the page's own copy is hidden (2026-10-11) */
 html.embedded .bottom-nav { visibility: hidden; }
 /* Your cards first (2026-10-12, UX room): the intro banner only for an empty collection, and the rank card compact until
