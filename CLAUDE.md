@@ -873,3 +873,9 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - **Direction:** an arrow and words ("Turn left a little · high in the east") follow the phone through their own rAF, since the sky loop pauses under panels.
 - **After that:** the next three worth it plus the evening's best shiny chance; tap → showMePass.
 - **Empty state:** the old "Next up" row and "Show me the next pass" button are gone; the button is "See tonight's run".
+
+2026-10-13 · v0.1.631: the Week design is built (design/sky-pages-combined.html), and the Now sky map sits in a card like the hero.
+- **7-day strip:** each day shows a weather icon (gold when good), the Moon's lit fraction from the planner (`moonIllum`) and up to three dots in the rarity colours of that night's Rare+ new cards. Tap a day to select it (`weekSel`; the best night until you pick).
+- **Night card:** "Best night this week" or "This night". Day and date, one sentence (weather, Moon, the rarest new card), new count and dark time, then the 4 rarest Uncommon+ new cards with target (showMePass) and bell (remindPass); tap opens the card. "Remind me <day> at dark".
+- **Only this week:** Rare+ new cards up on only one or two of the seven evenings (tap jumps to that night), plus a meteor shower starting within the week.
+- **Goal ring:** "N of 5 new cards this week" (first sightings since Monday, `weekStart`).

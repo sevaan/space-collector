@@ -1276,3 +1276,33 @@ body.is-plus .vt-plus { display: none; }
 .na-go { color: var(--muted); } .na-go svg { width: 18px; height: 18px; }
 @media (prefers-reduced-motion: reduce) { .nh-arc, .nh-arrow { transition: none; } }
 .nh-t b.long { font-size: 26px; }
+
+/* Now: the sky map sits in a card like the hero (2026-10-13). */
+.vis-map { padding: 12px 12px 6px; margin-bottom: 14px; border-radius: 20px; border: 1px solid #22344a; background: radial-gradient(ellipse at 50% 0%, #4aa8ff12, transparent 65%), #0e1a29; }
+
+/* Week, round 3 (2026-10-13, design/sky-pages-combined.html). */
+.wk4-days { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 5px; margin: 4px 0 12px; }
+.wk4-day { display: grid; justify-items: center; gap: 5px; padding: 8px 2px 7px; border-radius: 12px; border: 1px solid #22344a; background: #0e1a29; color: var(--muted); font: 600 10px/1 var(--label); letter-spacing: .1em; cursor: pointer; }
+.wk4-day.ghost { opacity: .35; cursor: default; }
+.wk4-day.sel { border-color: var(--gold); background: #1a1712; color: var(--ink, #fff2b3); }
+.wk4-day.best { background: linear-gradient(#2a1d14, #0e1a29); }
+.wk4-ic { width: 18px; height: 18px; color: var(--muted); } .wk4-ic .ico { width: 100%; height: 100%; } .wk4-day.good .wk4-ic { color: var(--gold); }
+.wk4-moon { width: 12px; height: 12px; border-radius: 50%; background: #2c3e55; position: relative; overflow: hidden; }
+.wk4-moon::after { content: ''; position: absolute; inset: 0; border-radius: 50%; background: #e6e2c8; clip-path: inset(0 0 0 var(--lit)); }
+.wk4-dots { display: flex; gap: 2px; height: 6px; } .wk4-dots i { width: 6px; height: 6px; border-radius: 50%; }
+.wk4-pick { display: grid; gap: 8px; padding: 16px; border-radius: 20px; border: 1px solid color-mix(in srgb, var(--gold) 55%, transparent); background: radial-gradient(ellipse at 90% 0%, color-mix(in srgb, var(--gold) 18%, transparent), transparent 60%), #0e1a29; }
+.wk4-pick.plain { border-color: #22344a; background: #0e1a29; }
+.wk4-pick > .k { font: 600 12px/1 var(--label); letter-spacing: .2em; text-transform: uppercase; color: var(--gold); }
+.wk4-d { display: flex; align-items: center; gap: 12px; } .wk4-d b { font: 400 28px/1 var(--display); color: var(--ink, #fff2b3); } .wk4-d small { font: 600 13px/1 var(--label); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.wk4-big-ic { width: 32px; height: 32px; color: var(--muted); } .wk4-big-ic .ico { width: 100%; height: 100%; } .wk4-big-ic.clear, .wk4-big-ic.mostly { color: var(--gold); }
+.wk4-why { margin: 0; font: 500 15px/1.35 var(--label); color: var(--text); }
+.wk4-stops { display: grid; gap: 6px; margin-top: 4px; }
+.wk4-stop { position: relative; display: grid; grid-template-columns: 3.6em minmax(0, 1fr); gap: 8px; align-items: center; padding: 9px 90px 9px 10px; border-radius: 12px; background: #0a1220; border-left: 3px solid var(--c); cursor: pointer; }
+.ws-t { font: 400 15px/1 var(--display); color: var(--ink, #fff2b3); } .ws-m b { display: block; font: 600 15px/1.15 var(--label); color: var(--ink, #fff2b3); } .ws-m small { font: 500 12.5px/1.3 var(--label); color: var(--muted); } .ws-m em { font-style: normal; font-weight: 600; color: var(--c); }
+.wk4-only { display: grid; grid-template-columns: 4px minmax(0, 1fr) auto; gap: 10px; align-items: center; width: 100%; margin-bottom: 8px; padding: 10px 12px; border-radius: 12px; background: #0e1a29; border: 1px solid #22344a; color: var(--text); text-align: left; font: inherit; cursor: pointer; }
+.wk4-only > i { align-self: stretch; border-radius: 2px; background: var(--c); }
+.wk4-only b { display: block; font: 600 15px/1.15 var(--label); color: var(--ink, #fff2b3); } .wk4-only small { font: 500 12.5px/1.3 var(--label); color: var(--muted); }
+.wk4-only em { font-style: normal; font: 600 12px/1 var(--label); letter-spacing: .1em; color: var(--gold); text-align: right; }
+.wk4-goal { display: flex; align-items: center; gap: 12px; margin-top: 16px; padding: 12px; border-radius: 12px; border: 1px dashed #33465c; }
+.wk4-goal b { display: block; font: 600 15px/1.15 var(--label); color: var(--ink, #fff2b3); } .wk4-goal small { font: 500 12.5px/1.3 var(--label); color: var(--muted); }
+body.night .wk4-moon::after { background: #ff7f70; }
