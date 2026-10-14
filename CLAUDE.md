@@ -887,3 +887,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 2026-10-13 · v0.1.641: section headers in the sky panel (Now, Tonight, Week) all have 24px above and 10px below, and nothing under them adds its own top margin. The Now lists show one row per card (Alioth was listed twice).
 
 2026-10-13 · v0.1.646: the Now tab puts the compass map first (Sevaan). The next-card hero below it is compact: an 80px ring with the countdown ("3h 53m to go" / "Up now"), then "Next · ◆ Rare", the name and the direction words with the turning arrow, and round icon-only target and bell buttons on the right.
+
+2026-10-13 · v0.1.647: one deep-space secret a session (Sevaan: New Horizons and the Wow! signal, with Pioneer 11 nearby, are close together in Sagittarius, so you got them all at once). Once one of Voyager 1 and 2, Pioneer 10 and 11, New Horizons and Wow! is found, the rest aren't drawn or collectable until the app is next opened (`deepThisSession`).
