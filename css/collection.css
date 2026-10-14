@@ -436,3 +436,19 @@ body.has-cards .collection-intro { display: none; }
 
 /* A drawn magnifier (2026-10-13, Sevaan: the ⌕ glyph looked poor): lens, handle, a dotted orbit inside it. */
 .empty__search { display: inline-grid; place-items: center; color: var(--ui-gold, #fa8127); }
+
+/* Rank card, redesigned (2026-10-13, Sevaan: "I thought we had a nice card that showed where you were and how far to
+   the next level"): no tilt or glare; the ladder picture shows even when compact (shorter), with a progress bar and
+   "615 XP to Tracker" under the rank. */
+.logbook .lb-glare, .logbook .lb-back { display: none; }
+.logbook .lb-rot { transform: none !important; }
+.logbook.compact .lb-pic { display: block; height: 96px; }
+.lb-bar { height: 6px; margin: 2px 16px 6px; border-radius: 99px; background: #22344a; overflow: hidden; }
+.lb-bar i { display: block; height: 100%; border-radius: 99px; background: linear-gradient(90deg, #c4621c, #fa8127); }
+.lb-to { display: flex; justify-content: space-between; gap: 10px; margin: 0 16px 12px; font: 500 13px/1.2 var(--label, 'Barlow Condensed', sans-serif); letter-spacing: .06em; color: #9fb3c8; }
+.lb-to b { color: #fff2b3; font-weight: 600; }
+.logbook .lb-more { position: absolute; right: 16px; margin: 0; z-index: 2; }
+.logbook .lb-rankrow { padding-right: 16px; }
+.logbook.compact .lb-more { top: calc(96px + 52px); }
+.logbook:not(.compact) .lb-more { top: calc(160px + 52px); }
+.logbook .lb-rankrow { margin-top: 30px; }

@@ -1,27 +1,27 @@
-import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.653';
-import { computeStats, statsHtml } from './stats.js?v=0.1.653';
-import { nightKey } from './observation.js?v=0.1.653';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.653';
-import { sfx } from './sfx.js?v=0.1.653';
-import { expandFacts } from './catalog-facts.js?v=0.1.653';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.653';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.653';
-import { ticket } from './toast.js?v=0.1.653';
-import { renderCard, miniCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.653';
-import { cardArt } from './art.js?v=0.1.653';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.653';
-import { applyBack } from './card-backs.js?v=0.1.653';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.653';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.653';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.653';
-import { loadConstellations, conList } from './constellations.js?v=0.1.653';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.653';
-import { eventBadges, nextEvent } from './events.js?v=0.1.653';
-import { shareCardEl } from './share-card.js?v=0.1.653';
-import { removeSighting } from './account.js?v=0.1.653';
-import { allSightings, deleteSighting } from './store.js?v=0.1.653';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.653';
-import { SECRET_PATCHES } from './secrets.js?v=0.1.653';
+import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.655';
+import { computeStats, statsHtml } from './stats.js?v=0.1.655';
+import { nightKey } from './observation.js?v=0.1.655';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.655';
+import { sfx } from './sfx.js?v=0.1.655';
+import { expandFacts } from './catalog-facts.js?v=0.1.655';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.655';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.655';
+import { ticket } from './toast.js?v=0.1.655';
+import { renderCard, miniCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.655';
+import { cardArt } from './art.js?v=0.1.655';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.655';
+import { applyBack } from './card-backs.js?v=0.1.655';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.655';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.655';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.655';
+import { loadConstellations, conList } from './constellations.js?v=0.1.655';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.655';
+import { eventBadges, nextEvent } from './events.js?v=0.1.655';
+import { shareCardEl } from './share-card.js?v=0.1.655';
+import { removeSighting } from './account.js?v=0.1.655';
+import { allSightings, deleteSighting } from './store.js?v=0.1.655';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.655';
+import { SECRET_PATCHES } from './secrets.js?v=0.1.655';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -234,10 +234,10 @@ function renderLogbook() {
   if (!card.querySelector('.lb-face')) {
     card.classList.add('lb-card');
     card.innerHTML = '<div class="lb-rot"><div class="lb-face"></div><div class="lb-glare"></div><div class="card__back lb-back"></div></div>';
-    const tilt = attachTilt(card, { scroll: true }); attachGyro(card, tilt); attachFlip(card, { onBack: applyBack });
+    // No tilt, glare or flip any more (2026-10-13, Sevaan): it's a plain panel you read.
   }
   const el = card.querySelector('.lb-face');
-  const span = p.rank.next ? p.rank.next - p.rank.at : 1, into = p.rank.next ? Math.min(1, (p.xp - p.rank.at) / span) : 1;
+  const span = p.rank.next ? p.rank.next - p.rank.at : 1, into = p.rank.next ? Math.max(0, Math.min(1, (p.xp - p.rank.at) / span)) : 1; // a rank kept from the old curve can sit above your XP: never below 0
   const done = p.achievements.filter((a) => a.done).length;
   el.onclick = (e) => { if (e.target.closest('#streak-remind')) remindStreak(); };
   // Front (2026-10-08, design/rank-card.html C): your rank ladder as the picture (twinkling stars), the rank and
@@ -259,6 +259,7 @@ function renderLogbook() {
     <div class="lb-pic">${ladder}</div>
     <button type="button" class="lb-more" id="lb-more" aria-expanded="${!$('logbook').classList.contains('compact')}">${$('logbook').classList.contains('compact') ? 'Missions ›' : 'Less'}</button>
     <div class="lb-rankrow"><span class="lb-name">${esc(p.rank.name)}</span><span class="lb-xp"><b>${p.xp.toLocaleString()}</b>${p.rank.next ? ` / ${p.rank.next.toLocaleString()}` : ''} XP</span></div>
+    ${p.rank.next ? `<div class="lb-bar"><i style="width:${(into * 100).toFixed(1)}%"></i></div><div class="lb-to"><span>${(p.rank.next - p.xp).toLocaleString()} XP to <b>${esc(RANKS[ri + 1]?.[1] ?? 'the next rank')}</b></span><span>${Math.round(into * 100)}%</span></div>` : '<div class="lb-to"><span>Top rank. Every catch still counts.</span></div>'}
     ${p.missions.map((m) => `<div class="lb-mission${m.done ? ' done' : ''}"><i></i>${esc(m.text)}</div>`).join('')}
     ${p.challenge ? `<div class="lb-mission lb-challenge${p.challenge.done ? ' done' : ''}"><i></i>${esc(p.challenge.text)}<small>Sky challenge · +50</small></div>` : ''}
     <div class="lb-foot"><div class="lb-head">EVENTS ${ev.length ? `<span>${ev.length} badge${ev.length === 1 ? '' : 's'}</span>` : ''}</div>

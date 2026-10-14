@@ -889,3 +889,8 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 2026-10-13 · v0.1.646: the Now tab puts the compass map first (Sevaan). The next-card hero below it is compact: an 80px ring with the countdown ("3h 53m to go" / "Up now"), then "Next · ◆ Rare", the name and the direction words with the turning arrow, and round icon-only target and bell buttons on the right.
 
 2026-10-13 · v0.1.647: one deep-space secret a session (Sevaan: New Horizons and the Wow! signal, with Pioneer 11 nearby, are close together in Sagittarius, so you got them all at once). Once one of Voyager 1 and 2, Pioneer 10 and 11, New Horizons and Wow! is found, the rest aren't drawn or collectable until the app is next opened (`deepThisSession`).
+
+2026-10-13 · v0.1.655: rank card redesign (Sevaan).
+- **No tilt, glare or flip.**
+- **Layout:** the ladder picture (your rank, the next rank dashed, "NEXT") shows even when compact (96px tall). Under the rank and XP: a progress bar and "14,385 XP to Mission Control · N%".
+- **Fix:** progress clamps at 0, since a rank kept from the old curve can sit above your XP; it showed "-20%".
