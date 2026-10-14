@@ -894,3 +894,10 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - **No tilt, glare or flip.**
 - **Layout:** the ladder picture (your rank, the next rank dashed, "NEXT") shows even when compact (96px tall). Under the rank and XP: a progress bar and "14,385 XP to Mission Control · N%".
 - **Fix:** progress clamps at 0, since a rank kept from the old curve can sit above your XP; it showed "-20%".
+
+2026-10-13 · v0.1.659: the Find tab (Sevaan: search an object like the ISS, preview its card, set a reminder for its next pass however far ahead). The Collection's old hidden Discover tab is now "Find" (view 'find').
+- **The list:** a search-first list. It filters as you type (every word must match name, id, COSPAR, type or set) and shows up to 30 results.
+- **Each row:** small art (hidden art if you don't have the card), name, rarity, "in your collection", and the next visible pass ("Thu, Oct 15 6:36 AM · halfway up in the southeast", or "Not visible from here in the next 10 days").
+- **Buttons:** a target (closes the Collection and runs showMePass) and a bell (remindPass; only for passes more than 10 minutes away). Tapping a row opens the card viewer.
+- **Before you type:** "Rare ones you can see this week" lists the rarest new Uncommon+ cards with a pass in Tonight's and the Week's plans, soonest first.
+- **How passes are found:** Explore works them out (js/find-worker.js, 1-minute steps, daylight skipped, 10 days) via postMessage: find-passes, find-suggest, find-remind and find-show from the frame; find-passes, find-suggest and find-reminded replies.

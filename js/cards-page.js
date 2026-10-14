@@ -1,27 +1,27 @@
-import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.655';
-import { computeStats, statsHtml } from './stats.js?v=0.1.655';
-import { nightKey } from './observation.js?v=0.1.655';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.655';
-import { sfx } from './sfx.js?v=0.1.655';
-import { expandFacts } from './catalog-facts.js?v=0.1.655';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.655';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.655';
-import { ticket } from './toast.js?v=0.1.655';
-import { renderCard, miniCard, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.655';
-import { cardArt } from './art.js?v=0.1.655';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.655';
-import { applyBack } from './card-backs.js?v=0.1.655';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.655';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.655';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.655';
-import { loadConstellations, conList } from './constellations.js?v=0.1.655';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.655';
-import { eventBadges, nextEvent } from './events.js?v=0.1.655';
-import { shareCardEl } from './share-card.js?v=0.1.655';
-import { removeSighting } from './account.js?v=0.1.655';
-import { allSightings, deleteSighting } from './store.js?v=0.1.655';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.655';
-import { SECRET_PATCHES } from './secrets.js?v=0.1.655';
+import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.659';
+import { computeStats, statsHtml } from './stats.js?v=0.1.659';
+import { nightKey } from './observation.js?v=0.1.659';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.659';
+import { sfx } from './sfx.js?v=0.1.659';
+import { expandFacts } from './catalog-facts.js?v=0.1.659';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.659';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.659';
+import { ticket } from './toast.js?v=0.1.659';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.659';
+import { cardArt } from './art.js?v=0.1.659';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.659';
+import { applyBack } from './card-backs.js?v=0.1.659';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.659';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.659';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.659';
+import { loadConstellations, conList } from './constellations.js?v=0.1.659';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.659';
+import { eventBadges, nextEvent } from './events.js?v=0.1.659';
+import { shareCardEl } from './share-card.js?v=0.1.659';
+import { removeSighting } from './account.js?v=0.1.659';
+import { allSightings, deleteSighting } from './store.js?v=0.1.659';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.659';
+import { SECRET_PATCHES } from './secrets.js?v=0.1.659';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -113,6 +113,7 @@ async function boot() {
 
 function matches(c) {
   if (state.view === 'owned' && !hasSightings(c)) return false;
+  if (state.view === 'find') { if (!state.query) return true; const h = `${titleFor(c)} ${c.name} ${c.id} ${c.cospar ?? ''} ${c.type ?? ''} ${SETS.find((s) => s.id === c.set)?.name ?? ''}`.toLowerCase(); return state.query.split(/\s+/).every((w) => h.includes(w)); }
   if (state.set === 'tonight') { if (!state.planKeys?.has(c.key)) return false; } else if (state.set !== 'all' && c.set !== state.set) return false;
   if (state.rarity !== 'all' && c.tier !== state.rarity) return false;
   if (state.query) {
@@ -267,8 +268,73 @@ function renderLogbook() {
   state.achievements = p.achievements;
 }
 
+// Find (2026-10-13, Sevaan: "someone may want to search up an object like the ISS to preview the card and then set an
+// alert for when it flies over, however long in the future"): a search-first list. Each row: art, name, rarity, whether
+// you have it, and its next visible pass from here (worked out by Explore, js/find-worker.js, up to 10 days), with a
+// target (be shown where) and a bell (remind me). Before you type: the famous ones you don't have yet.
+const findPasses = new Map(); let findReq = 0, findReminded = new Set(), findSuggest = null;
+function findPassLine(c) {
+  if (c.natural) return c.natural === 'star' ? 'A star · out on clear nights' : c.type === 'sun' ? 'By day' : 'Look for it on a clear night';
+  if (c.launches) return 'A fleet · passes most nights';
+  if (!EMBED) return 'Open in the app for passes';
+  const p = findPasses.get(c.id);
+  if (p === undefined) return '<span class="fd-wait">Finding its next pass…</span>';
+  if (!p) return 'Not visible from here in the next 10 days';
+  const d = new Date(p.start), today = d.toDateString() === new Date().toDateString(), tmr = d.toDateString() === new Date(Date.now() + 86400e3).toDateString();
+  const day = today ? 'Tonight' : tmr ? 'Tomorrow' : d.toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' });
+  const where = `${p.peakEl >= 60 ? 'high' : p.peakEl >= 30 ? 'halfway up' : 'low'} in the ${({ N: 'north', NE: 'northeast', E: 'east', SE: 'southeast', S: 'south', SW: 'southwest', W: 'west', NW: 'northwest' })[['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'][Math.round(p.peakAz / 45) % 8]]}`;
+  return `<b>${day} ${d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}</b> · ${where}`;
+}
+const TGT = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="7.5"/><circle cx="12" cy="12" r="2.5" fill="currentColor"/><path d="M12 1.5v4M12 18.5v4M1.5 12h4M18.5 12h4"/></svg>';
+const BEL = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg>';
+function renderFind() {
+  const grid = $('grid'); grid.replaceChildren(); grid.classList.add('find-mode');
+  const q = state.query;
+  let list;
+  if (q) list = state.cards.filter((c) => !c.archived && matches(c)).sort((a, b) => (titleFor(a).toLowerCase().startsWith(q) ? 0 : 1) - (titleFor(b).toLowerCase().startsWith(q) ? 0 : 1) || TIERS.indexOf(b.tier) - TIERS.indexOf(a.tier)).slice(0, 30);
+  else list = (findSuggest ?? []).map((p) => state.cards.find((c) => c.id === p.id) ?? state.byKey.get(state.keyOfId?.get(p.id))).filter(Boolean); // from Explore's plans: tonight and this week
+  if (!q && !findSuggest && EMBED) { window.parent.postMessage({ sc: 'find-suggest' }, location.origin); grid.insertAdjacentHTML('beforeend', '<p class="find-none">Finding what you can see this week…</p>'); return; }
+  state.list = list;
+  $('results').textContent = q ? `${list.length}${list.length === 30 ? '+' : ''} found` : 'Search any satellite, rocket or planet';
+  const head = document.createElement('div'); head.className = 'find-head'; head.textContent = q ? '' : 'Rare ones you can see this week'; if (!q) grid.append(head);
+  if (!list.length) { grid.insertAdjacentHTML('beforeend', q ? '<p class="find-none">Nothing by that name. Try "ISS", "Hubble" or "Starlink".</p>' : '<p class="find-none">Nothing rare passes this week. Search any satellite to see when it\'s next up.</p>'); return; }
+  const need = [];
+  for (const c of list) {
+    const t = TIER_INFO[c.tier] ?? TIER_INFO.common, owned = hasSightings(c), row = document.createElement('div'); row.className = 'find-row'; row.style.setProperty('--c', t.color);
+    const art = owned && artImage(c, 'small') ? `<img src="${artImage(c, 'small')}" alt="" loading="lazy">` : lockedArt(c, owned, t.color, 'small');
+    row.innerHTML = `<span class="fd-art">${art}</span><span class="fd-main"><b>${esc(titleFor(c))}</b><small><em>${t.gem} ${t.label}</em>${owned ? ' · <i>in your collection</i>' : ''}</small><span class="fd-pass" data-id="${esc(String(c.id))}">${findPassLine(c)}</span></span><span class="fd-acts"></span>`;
+    row.addEventListener('click', (e) => { if (e.target.closest('.fd-acts')) return; openViewer(list.indexOf(c), row.getBoundingClientRect()); });
+    grid.append(row); if (!c.natural && !c.launches && !findPasses.has(c.id)) need.push(c.id); else findActs(row, c);
+  }
+  findTrim();
+  if (need.length && EMBED) { const req = ++findReq; window.parent.postMessage({ sc: 'find-passes', ids: need, req }, location.origin); }
+}
+// Suggestions (no search): keep only those with a pass in the next 10 days, soonest first, at most 8.
+function findTrim() {
+  if (state.view !== 'find' || state.query) return;
+  const rows = [...document.querySelectorAll('.find-row')], pass = (r) => { const id = r.querySelector('.fd-pass')?.dataset.id; const k = isNaN(id) ? id : Number(id); return findPasses.get(k); };
+  rows.sort((a, b) => (pass(a)?.start ?? (pass(a) === null ? Infinity : 9e15)) - (pass(b)?.start ?? (pass(b) === null ? Infinity : 9e15))).forEach((r) => r.parentNode.append(r));
+  let shown = 0; for (const r of rows) { const p = pass(r); r.hidden = p === null || (p !== undefined && shown >= 8) || (p === undefined && shown >= 8); if (!r.hidden) shown++; }
+}
+function findActs(row, c) {
+  const p = findPasses.get(c.id), acts = row.querySelector('.fd-acts'); if (!acts || !p) return;
+  const key = `${p.id}@${p.start}`, far = p.start > Date.now() + 10 * 60000;
+  acts.innerHTML = `<button type="button" class="ic" data-a="show" aria-label="Show me where to look">${TGT}</button>${far ? `<button type="button" class="ic${findReminded.has(key) ? ' on' : ''}" data-a="bell" aria-label="Remind me">${BEL}</button>` : ''}`;
+  acts.querySelector('[data-a="show"]').onclick = () => window.parent.postMessage({ sc: 'find-show', pass: p }, location.origin);
+  const b = acts.querySelector('[data-a="bell"]'); if (b) b.onclick = () => window.parent.postMessage({ sc: 'find-remind', pass: p }, location.origin);
+}
+window.addEventListener('message', (e) => {
+  if (e.origin !== location.origin) return;
+  if (e.data?.sc === 'find-suggest') { findSuggest = e.data.items; findReminded = new Set(e.data.reminded); for (const p of findSuggest) findPasses.set(p.id, p); if (state.view === 'find' && !state.query) renderFind(); }
+  if (e.data?.sc === 'find-passes') { if (e.data.reminded) findReminded = new Set(e.data.reminded);
+    for (const [id, p] of Object.entries(e.data.passes)) findPasses.set(isNaN(id) ? id : Number(id), p);
+    if (state.view === 'find') for (const el of document.querySelectorAll('.fd-pass[data-id]')) { const id = isNaN(el.dataset.id) ? el.dataset.id : Number(el.dataset.id), c = state.cards.find((k) => k.id === id); if (c) { el.innerHTML = findPassLine(c); findActs(el.closest('.find-row'), c); } } findTrim(); }
+  if (e.data?.sc === 'find-reminded') { findReminded = new Set(e.data.set); if (state.view === 'find') for (const el of document.querySelectorAll('.fd-pass[data-id]')) { const id = isNaN(el.dataset.id) ? el.dataset.id : Number(el.dataset.id), c = state.cards.find((k) => k.id === id); if (c) findActs(el.closest('.find-row'), c); } }
+});
 function render() {
   renderLogbook();
+  $('grid').classList.toggle('find-mode', state.view === 'find');
+  if (state.view === 'find') { $('patch-wall').hidden = true; $('grid').hidden = false; document.body.classList.remove('patches-view', 'albums-view'); renderFind(); return; }
   renderAlbumHead();
   document.body.classList.toggle('patches-view', state.view === 'patches');
   $('patch-wall').hidden = state.view !== 'patches'; $('grid').hidden = state.view === 'patches';
@@ -350,7 +416,7 @@ function setView(view) {
   state.view = view;
   if (changed) { for (const el of [$('grid'), $('patch-wall')]) { el.classList.remove('swap'); void el.offsetWidth; el.classList.add('swap'); } cascadeLeft = 16; }
   $('tab-owned').setAttribute('aria-pressed', String(view === 'owned'));
-  $('tab-discover').setAttribute('aria-pressed', String(view === 'discover'));
+  $('tab-discover').setAttribute('aria-pressed', String(view === 'find'));
   $('tab-albums').setAttribute('aria-pressed', String(view === 'albums' || view === 'discover')); // Discover has no tab now (2026-10-11, Sevaan): it opens from Albums, so Albums stays lit
   $('tab-patches').setAttribute('aria-pressed', String(view === 'patches'));
   moveInk();
@@ -362,7 +428,7 @@ function resetFilters() {
   if (state.ready) render();
 }
 $('tab-owned').addEventListener('click', () => setView('owned'));
-$('tab-discover').addEventListener('click', () => setView('discover'));
+$('tab-discover').addEventListener('click', () => setView('find'));
 $('tab-albums').addEventListener('click', () => { resetFilters(); setView('albums'); });
 $('reset-filters').addEventListener('click', resetFilters);
 let searchTimer;
