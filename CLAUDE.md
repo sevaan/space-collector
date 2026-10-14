@@ -932,3 +932,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - **Albums:** a long name pushes the count onto its own line. **Album patches** show their subject (ALBUM_ICON in js/patches.js).
 - **Shiny eclipse line** in words ("low in the east"), no degrees. **Find search** ranks exact names, stations and icons first, debris last.
 - The sky panel's place/time line is filled when it opens straight on Tonight or Week.
+
+2026-10-14 · v0.1.676: an owned card in the circle shows only View card; the "Seen on N nights · N more for Silver" line under it is gone (Sevaan: it said "nights" for the Sun by day, and the card footer/frame already show the level). Levels themselves are unchanged.
