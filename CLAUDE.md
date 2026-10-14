@@ -934,3 +934,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - The sky panel's place/time line is filled when it opens straight on Tonight or Week.
 
 2026-10-14 · v0.1.676: an owned card in the circle shows only View card; the "Seen on N nights · N more for Silver" line under it is gone (Sevaan: it said "nights" for the Sun by day, and the card footer/frame already show the level). Levels themselves are unchanged.
+
+2026-10-14 · v0.1.677: welcome card steps (Sevaan): Go outside / Look up / Collect are one size (class `fit long wc-step`; Go outside used to shrink as a 10+ letter stat) and are empty when the card turns over, then rise in one after another (250 ms after the flip lands, 420 ms apart; css/cards.css .wc-step).
