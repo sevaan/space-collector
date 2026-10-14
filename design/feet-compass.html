@@ -1,0 +1,84 @@
+<meta charset="utf-8">
+<title>Looking Down Compass</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Russo+One&family=Barlow+Condensed:wght@500;600&display=swap">
+<style>
+/* Three phone-shaped canvases side by side, each a live sketch of the ground compass from the same sample sky. Dark only. */
+:root{--sky:#05090f;--panel:#0e1a29;--edge:#22344a;--ink:#fff2b3;--muted:#9fb3c8;--org:#fa8127;--display:'Russo One',sans-serif;--label:'Barlow Condensed','Arial Narrow',sans-serif;color-scheme:dark}
+body{margin:0;background:#080f1b;color:var(--ink);font:16px/1.45 var(--label)}
+main{max-width:1240px;margin:0 auto;padding-inline:16px;padding-block:28px 60px}
+.k{font:600 12px/1 var(--label);letter-spacing:.22em;text-transform:uppercase;color:var(--org)}
+h1{font:400 clamp(26px,6vw,38px)/1.1 var(--display);margin:8px 0 8px}
+.lead{color:var(--muted);max-width:68ch;margin:0 0 24px;font-size:17px}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,330px),1fr));gap:24px}
+.opt h2{font:400 20px/1.1 var(--display);margin:0 0 4px}.opt p{color:var(--muted);margin:0 0 12px}
+canvas{display:block;width:100%;max-width:340px;aspect-ratio:340/560;border-radius:30px;border:6px solid #1b2433;background:var(--sky);margin:0 auto}
+ul{color:var(--muted);padding-left:18px;margin:12px 0 0;font-size:15.5px} li{margin-bottom:4px} b{color:var(--ink)}
+.pick{margin-top:30px;padding:16px;border-radius:14px;border:1px solid #fa812766;background:#1a1410;max-width:820px}
+</style>
+<main><span class="k">Explore · looking down</span><h1>Three ground compasses</h1>
+<p class="lead">The same sky in all three: you're facing south-east, with Saturn, Vega, Capella, Uranus, three new satellites and a Globalstar up. The goal: glance down, see what's worth turning to and which way, then raise the phone. The sketches turn slowly, as if you were turning.</p>
+<div class="row">
+<div class="opt"><h2>A · Clock face</h2><p>Each thing is a spoke on the ring. Its length is how high it is, so taller spokes mean look higher.</p><canvas id="a" width="680" height="1120"></canvas>
+<ul><li><b>Facing wedge</b> at the top, so "ahead" is always up the screen.</li><li>Things within 15° of each other <b>share one spoke</b> ("3 new satellites"), so labels never stack.</li><li>New cards get an <b>orange spoke</b>; stars are thin cream ones.</li></ul></div>
+<div class="opt"><h2>B · Heading tape</h2><p>A strip across the screen like a plane's heading tape. Things sit on it by direction, with their height stacked above.</p><canvas id="b" width="680" height="1120"></canvas>
+<ul><li>Reads left to right, and neighbours <b>merge into one marker</b>, so labels never tangle.</li><li>The centre mark is where you face; <b>"turn left 40°"</b> is just how far a thing is from it.</li><li>Off the edges, arrows show how many things are behind you.</li></ul></div>
+<div class="opt"><h2>C · Sky map at your feet</h2><p>A small all-sky map on the ground: the edge is the horizon, the centre is straight up, things sit where they really are.</p><canvas id="c" width="680" height="1120"></canvas>
+<ul><li>Same picture as a printed <b>star chart</b>: height is distance from the edge.</li><li>Icons, not text, for most things; <b>only the best 3 are named</b> and a tight bunch gets one label.</li><li>The wedge shows where you're facing, and turns with you.</li></ul></div>
+</div>
+<div class="pick"><b>My pick: B, the heading tape.</b> It's the easiest to read at a glance and can't get tangled however many things are up, which is the problem in your screenshot. A is the prettiest; C matches the old map, but it's busier.</div>
+</main>
+<script>
+const ITEMS=[['Saturn',245,36,'planet'],['Vega',300,50,'star'],['Capella',20,22,'star'],['Uranus',95,15,'planet'],['Cosmos 1312',200,60,'new'],['Cosmos 2392',190,58,'new'],['Intercosmos 24',182,62,'new'],['Globalstar M081',305,40,'sat']];
+const ORG='#fa8127',INK='#fff2b3',MUT='#9fb3c8',DIM='#2c3e55';
+const F=(c,px,w=500)=>c.font=`${w} ${px}px Barlow Condensed, Arial Narrow, sans-serif`;
+function base(c){c.fillStyle='#05090f';c.fillRect(0,0,680,1120);const g=c.createRadialGradient(340,560,40,340,560,520);g.addColorStop(0,'#0c1622');g.addColorStop(1,'#05090f');c.fillStyle=g;c.fillRect(0,0,680,1120);}
+function icon(c,x,y,k,col){c.fillStyle=col;c.strokeStyle=col;if(k==='star'){c.beginPath();c.arc(x,y,4,0,7);c.fill();}else if(k==='planet'){c.beginPath();c.arc(x,y,7,0,7);c.fill();}else{c.fillRect(x-4,y-3,8,6);c.fillRect(x-14,y-2,8,4);c.fillRect(x+6,y-2,8,4);}}
+const rel=(az,h)=>((az-h+540)%360)-180;
+const RANK={new:0,planet:1,sat:2,star:3};
+function groups(){const it=ITEMS.slice().sort((a,b)=>a[1]-b[1]);const out=[];for(const i of it){const g=out[out.length-1];if(g&&i[1]-g.az1<=15){g.m.push(i);g.az1=i[1];}else out.push({m:[i],az1:i[1]});}
+ return out.map(g=>{const m=g.m.sort((a,b)=>RANK[a[3]]-RANK[b[3]]||b[2]-a[2]),top=m[0],az=m.reduce((s,x)=>s+x[1],0)/m.length,allNew=m.every(x=>x[3]==='new');
+  return {name:m.length>1?(allNew?m.length+' NEW SATELLITES':top[0].toUpperCase()+' +'+(m.length-1)):top[0].toUpperCase(),az,el:Math.max(...m.map(x=>x[2])),k:top[3],n:m.length,sub:m.length>1&&allNew?'all about '+Math.round(top[2])+'° up':null};});}
+function label(c,x,y,align,a,b,col){F(c,21,600);const w=Math.max(c.measureText(a).width,(F(c,17),c.measureText(b).width));if(align==='left'&&x+w>660)x=660-w;if(align==='right'&&x-w<20)x=20+w;if(align==='center'){x=Math.min(660-w/2,Math.max(20+w/2,x));}
+ c.textAlign=align;F(c,21,600);c.fillStyle=col;c.fillText(a,x,y);F(c,17);c.fillStyle=MUT;c.fillText(b,x,y+20);}
+const colOf=k=>k==='new'?ORG:k==='star'?'#fff2b3cc':INK;
+function A(c,h){base(c);const cx=340,cy=560,R=190;
+ c.fillStyle='#fa812718';c.beginPath();c.moveTo(cx,cy);c.arc(cx,cy,R+150,-Math.PI/2-0.33,-Math.PI/2+0.33);c.fill();
+ c.strokeStyle='#fff2b355';c.lineWidth=2;c.beginPath();c.arc(cx,cy,R,0,7);c.stroke();
+ for(let a=0;a<360;a+=15){const t=(rel(a,h)-90)*Math.PI/180,l=a%90?8:16;c.strokeStyle='#fff2b344';c.beginPath();c.moveTo(cx+Math.cos(t)*R,cy+Math.sin(t)*R);c.lineTo(cx+Math.cos(t)*(R-l),cy+Math.sin(t)*(R-l));c.stroke();}
+ F(c,30,600);c.textAlign='center';c.textBaseline='middle';[['N',0],['E',90],['S',180],['W',270]].forEach(([n,a])=>{const t=(rel(a,h)-90)*Math.PI/180;c.fillStyle=n==='N'?ORG:MUT;c.fillText(n,cx+Math.cos(t)*(R-38),cy+Math.sin(t)*(R-38));});
+ groups().forEach((g,i)=>{const t=(rel(g.az,h)-90)*Math.PI/180,len=30+g.el*1.6,col=colOf(g.k);
+  c.strokeStyle=col;c.lineWidth=g.k==='new'?4:2;c.beginPath();c.moveTo(cx+Math.cos(t)*R,cy+Math.sin(t)*R);c.lineTo(cx+Math.cos(t)*(R+len),cy+Math.sin(t)*(R+len));c.stroke();
+  const tx=cx+Math.cos(t)*(R+len+14),ty=cy+Math.sin(t)*(R+len+14);icon(c,tx,ty,g.k,col);
+  if(g.n>1){c.fillStyle=col;c.beginPath();c.arc(tx+12,ty-12,11,0,7);c.fill();F(c,16,600);c.fillStyle='#05090f';c.textAlign='center';c.fillText(g.n,tx+12,ty-11);}
+  const al=Math.cos(t)>0.25?'left':Math.cos(t)<-0.25?'right':'center',off=al==='center'?(Math.sin(t)<0?-30:30):0;
+  label(c,tx+Math.cos(t)*24,ty+Math.sin(t)*20+off-6,al,g.name,g.sub||g.el+'° up',g.k==='new'?ORG:INK);
+ });
+ c.fillStyle=ORG;c.beginPath();c.moveTo(cx,cy-R-6);c.lineTo(cx-9,cy-R-22);c.lineTo(cx+9,cy-R-22);c.fill();
+ F(c,20,600);c.fillStyle=MUT;c.textAlign='center';c.fillText('FACING '+['N','NE','E','SE','S','SW','W','NW'][Math.round(h/45)%8],cx,cy+R+190);}
+function B(c,h){base(c);const y0=600,W=600,x0=40,span=200;
+ c.fillStyle='#0e1a29';c.fillRect(x0,y0-6,W,80);c.strokeStyle='#22344a';c.strokeRect(x0,y0-6,W,80);
+ for(let d=-100;d<=100;d+=5){const x=340+d/span*W*1.0;if(x<x0||x>x0+W)continue;const az=(h+d+360)%360,big=Math.round(az)%45===0;c.strokeStyle=big?'#fff2b3aa':'#fff2b344';c.lineWidth=big?2:1;c.beginPath();c.moveTo(x,y0);c.lineTo(x,y0+(big?24:12));c.stroke();if(big){F(c,24,600);c.textAlign='center';c.fillStyle=Math.round(az)%360===0?ORG:MUT;c.fillText(['N','NE','E','SE','S','SW','W','NW'][Math.round(az/45)%8],x,y0+50);}}
+ c.fillStyle=ORG;c.beginPath();c.moveTo(340,y0-4);c.lineTo(330,y0-22);c.lineTo(350,y0-22);c.fill();
+ c.strokeStyle='#fa812799';c.setLineDash([4,6]);c.beginPath();c.moveTo(340,y0-24);c.lineTo(340,170);c.stroke();c.setLineDash([]);
+ let left=0,right=0;const placed=[];
+ groups().forEach(g=>{const d=rel(g.az,h);if(Math.abs(d)>100){d<0?left+=g.n:right+=g.n;return;}const x=340+d/span*W,y=y0-30-g.el*6.2,col=colOf(g.k);
+  c.strokeStyle='#fff2b322';c.beginPath();c.moveTo(x,y0-6);c.lineTo(x,y+12);c.stroke();icon(c,x,y,g.k,col);
+  if(g.n>1){c.fillStyle=col;c.beginPath();c.arc(x+16,y-12,11,0,7);c.fill();F(c,16,600);c.fillStyle='#05090f';c.textAlign='center';c.fillText(g.n,x+16,y-11);}
+  let ly=y-34;while(placed.some(p=>Math.abs(p.x-x)<170&&Math.abs(p.y-ly)<44))ly-=44;placed.push({x,y:ly});
+  label(c,x,ly,'center',g.name,(g.sub||g.el+'°')+' · '+(Math.abs(d)<8?'ahead':Math.abs(Math.round(d))+'° '+(d<0?'left':'right')),g.k==='new'?ORG:INK);});
+ F(c,22,600);c.fillStyle=MUT;c.textAlign='left';if(left)c.fillText(`‹ ${left} behind`,x0,y0+110);c.textAlign='right';if(right)c.fillText(`${right} behind ›`,x0+W,y0+110);
+ c.textAlign='center';F(c,18);c.fillText('HEIGHT ↑',340,150);}
+function C(c,h){base(c);const cx=340,cy=560,R=230;
+ c.fillStyle='#0b1626';c.beginPath();c.arc(cx,cy,R,0,7);c.fill();c.strokeStyle='#344654';c.lineWidth=2;c.beginPath();c.arc(cx,cy,R,0,7);c.stroke();[R*2/3,R/3].forEach((r)=>{c.strokeStyle='#1c2b3c';c.beginPath();c.arc(cx,cy,r,0,7);c.stroke();});
+ c.fillStyle='#fa812722';c.beginPath();c.moveTo(cx,cy);c.arc(cx,cy,R,-Math.PI/2-0.35,-Math.PI/2+0.35);c.fill();
+ F(c,26,600);c.textAlign='center';c.textBaseline='middle';[['N',0],['E',90],['S',180],['W',270]].forEach(([n,a])=>{const t=(rel(a,h)-90)*Math.PI/180;c.fillStyle=n==='N'?ORG:MUT;c.fillText(n,cx+Math.cos(t)*(R+24),cy+Math.sin(t)*(R+24));});
+ ITEMS.forEach(([n,az,el,k])=>{const t=(rel(az,h)-90)*Math.PI/180,r=R*(1-el/90),x=cx+Math.cos(t)*r,y=cy+Math.sin(t)*r,col=colOf(k);
+  if(k==='new'){c.strokeStyle=ORG;c.lineWidth=2;c.beginPath();c.arc(x,y,13,0,7);c.stroke();}icon(c,x,y,k,col);});
+ groups().filter(g=>g.k!=='star').sort((a,b)=>RANK[a.k]-RANK[b.k]).slice(0,3).forEach(g=>{const t=(rel(g.az,h)-90)*Math.PI/180,r=R*(1-g.el/90),x=cx+Math.cos(t)*r,y=cy+Math.sin(t)*r,al=Math.cos(t)>=0?'left':'right';
+  label(c,x+(al==='left'?24:-24),y-4,al,g.name,g.sub||g.el+'° up',g.k==='new'?ORG:INK);});
+ c.fillStyle=ORG;c.beginPath();c.arc(cx,cy,5,0,7);c.fill();F(c,20,600);c.fillStyle=MUT;c.textAlign='center';c.fillText('THE EDGE IS THE HORIZON · CENTRE IS STRAIGHT UP',cx,cy+R+80);}
+const cs={a:[A,document.getElementById('a').getContext('2d')],b:[B,document.getElementById('b').getContext('2d')],c:[C,document.getElementById('c').getContext('2d')]};
+let h=135,still=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function frame(){for(const [fn,c] of Object.values(cs))fn(c,h);if(!still){h=135+Math.sin(performance.now()/3000)*25;requestAnimationFrame(frame);}}
+document.fonts.ready.then(frame);
+</script>

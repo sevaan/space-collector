@@ -1328,3 +1328,13 @@ body.night .wk4-moon::after { background: #ff7f70; }
 :is(#visible) .t-head + .vis-row2 { padding-top: 2px; }
 .wk4-foot { background: #f2c14e14; } .wk4-foot:active { background: #f2c14e26; } .wk4-foot.on { background: #f2c14e0a; }
 
+
+/* Next-card hero: one shimmer in its rarity colour when you arrive on Now (2026-10-13, Sevaan). */
+.now-hero { position: relative; overflow: hidden; }
+.now-hero.shine::after { content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; mix-blend-mode: screen;
+  background: linear-gradient(110deg, transparent 40%, color-mix(in srgb, var(--c) 16%, transparent) 45%, color-mix(in srgb, color-mix(in srgb, #fff 35%, var(--c)) 50%, transparent) 50%, color-mix(in srgb, var(--c) 16%, transparent) 55%, transparent 60%) no-repeat;
+  background-size: 300% 100%; background-position: 100% 0; opacity: 0; animation: nh-shine 1.3s cubic-bezier(.35,.1,.35,1) .35s 1 both; }
+.now-hero.shine { animation: nh-glow 1.6s ease-out .35s 1 both; }
+@keyframes nh-shine { 0% { background-position: 100% 0; opacity: 0; } 10% { opacity: 1; } 88% { opacity: 1; } 100% { background-position: 0% 0; opacity: 0; } }
+@keyframes nh-glow { 0%, 100% { box-shadow: 0 0 0 0 transparent; } 35% { box-shadow: 0 0 28px -4px color-mix(in srgb, var(--c) 55%, transparent); border-color: var(--c); } }
+@media (prefers-reduced-motion: reduce) { .now-hero.shine::after, .now-hero.shine { animation: none; } }
