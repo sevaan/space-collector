@@ -885,3 +885,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - **Tonight's run:** the all-reminders button now says "Set reminders".
 
 2026-10-13 · v0.1.641: section headers in the sky panel (Now, Tonight, Week) all have 24px above and 10px below, and nothing under them adds its own top margin. The Now lists show one row per card (Alioth was listed twice).
+
+2026-10-13 · v0.1.646: the Now tab puts the compass map first (Sevaan). The next-card hero below it is compact: an 80px ring with the countdown ("3h 53m to go" / "Up now"), then "Next · ◆ Rare", the name and the direction words with the turning arrow, and round icon-only target and bell buttons on the right.

@@ -1,49 +1,49 @@
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.644';
-import * as Secrets from './secrets.js?v=0.1.644';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.644';
-import * as Ufo from './ufo.js?v=0.1.644';
-import * as Fossil from './fossil.js?v=0.1.644';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.644';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.644';
-import { toast, ticket, dropToast, toastPending, onTicketShown } from './toast.js?v=0.1.644';
-import { VERSION } from './version.js?v=0.1.644';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, overEarth, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.644';
-import { placeName } from './geo.js?v=0.1.644';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.644';
-import { conArt } from './con-art.js?v=0.1.644';
-import { fetchWeather, tonightSky, skyClearAt } from './weather.js?v=0.1.644';
-import { CON_FIGURES } from './con-figures.js?v=0.1.644';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.644';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.644';
-import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.644';
-import { eventOf, activeEvent, nextEvent } from './events.js?v=0.1.644';
-import { conList } from './constellations.js?v=0.1.644';
-import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.644';
-import { SkyView, shortName } from './sky.js?v=0.1.644';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.644';
-import { isPlus, setPlusForTesting, onPlus, PLUS_PERKS } from './plus.js?v=0.1.644';
-import { isNative, getPosition, saveFile, notifyAt, cancelNotify, haptic, onNative, nativeChrome, plugin } from './native.js?v=0.1.644';
-import { initAccount, onAccount, account, signInGoogle, sendEmailLink, completeEmailLink, signOut, syncNow, pushSighting, deleteAccount, signInApple } from './account.js?v=0.1.644';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.644';
-import { cardArt } from './art.js?v=0.1.644';
-import { renderCard, miniCard, cardLevel, artImage, lockedArt, attachTilt, attachGyro, throwOff, attachFlip } from './card.js?v=0.1.644';
-import { applyBack } from './card-backs.js?v=0.1.644';
-import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.644';
-import { audioCtx } from './audio-ctx.js?v=0.1.644';
-import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume } from './music.js?v=0.1.644';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.644';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.644';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.644';
-import { naturalTargets, SOLAR_SYSTEM, DEEP_SKY } from './natural.js?v=0.1.644';
-import { placeFromTimeZone } from './tz-places.js?v=0.1.644';
-import { TIER_INFO } from './rarity.js?v=0.1.644';
-import { SETS, albumList } from './sets.js?v=0.1.644';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.644';
-import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.644';
-import { shareCardEl } from './share-card.js?v=0.1.644';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.644';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.644';
-import { addStarfield } from './starfield.js?v=0.1.644';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.646';
+import * as Secrets from './secrets.js?v=0.1.646';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.646';
+import * as Ufo from './ufo.js?v=0.1.646';
+import * as Fossil from './fossil.js?v=0.1.646';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.646';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.646';
+import { toast, ticket, dropToast, toastPending, onTicketShown } from './toast.js?v=0.1.646';
+import { VERSION } from './version.js?v=0.1.646';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, overEarth, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.646';
+import { placeName } from './geo.js?v=0.1.646';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.646';
+import { conArt } from './con-art.js?v=0.1.646';
+import { fetchWeather, tonightSky, skyClearAt } from './weather.js?v=0.1.646';
+import { CON_FIGURES } from './con-figures.js?v=0.1.646';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.646';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.646';
+import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.646';
+import { eventOf, activeEvent, nextEvent } from './events.js?v=0.1.646';
+import { conList } from './constellations.js?v=0.1.646';
+import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.646';
+import { SkyView, shortName } from './sky.js?v=0.1.646';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.646';
+import { isPlus, setPlusForTesting, onPlus, PLUS_PERKS } from './plus.js?v=0.1.646';
+import { isNative, getPosition, saveFile, notifyAt, cancelNotify, haptic, onNative, nativeChrome, plugin } from './native.js?v=0.1.646';
+import { initAccount, onAccount, account, signInGoogle, sendEmailLink, completeEmailLink, signOut, syncNow, pushSighting, deleteAccount, signInApple } from './account.js?v=0.1.646';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.646';
+import { cardArt } from './art.js?v=0.1.646';
+import { renderCard, miniCard, cardLevel, artImage, lockedArt, attachTilt, attachGyro, throwOff, attachFlip } from './card.js?v=0.1.646';
+import { applyBack } from './card-backs.js?v=0.1.646';
+import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.646';
+import { audioCtx } from './audio-ctx.js?v=0.1.646';
+import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume } from './music.js?v=0.1.646';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.646';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.646';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.646';
+import { naturalTargets, SOLAR_SYSTEM, DEEP_SKY } from './natural.js?v=0.1.646';
+import { placeFromTimeZone } from './tz-places.js?v=0.1.646';
+import { TIER_INFO } from './rarity.js?v=0.1.646';
+import { SETS, albumList } from './sets.js?v=0.1.646';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.646';
+import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.646';
+import { shareCardEl } from './share-card.js?v=0.1.646';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.646';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.646';
+import { addStarfield } from './starfield.js?v=0.1.646';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -1204,14 +1204,14 @@ function nowHero(list, vis) {
   const o = upNow ? upNow.obj : next.obj, tier = tierOf(o), tgt = upNow ? upNow.look : { az: next.riseAz, el: next.riseEl };
   const key = next ? `${o.id}@${next.start}` : '';
   const hero = document.createElement('div'); hero.className = 'now-hero'; hero.style.setProperty('--c', tier.color);
-  const R = 70, C = 2 * Math.PI * R;
-  hero.innerHTML = `<span class="nh-k">${upNow ? 'Up now · new to you' : 'Next new card'}</span>
-    <div class="nh-dial"><svg viewBox="0 0 160 160" aria-hidden="true"><circle cx="80" cy="80" r="${R}" fill="none" stroke="#22344a" stroke-width="6"/><circle class="nh-arc" cx="80" cy="80" r="${R}" fill="none" stroke="var(--c)" stroke-width="6" stroke-linecap="round" stroke-dasharray="${C.toFixed(1)}" stroke-dashoffset="${upNow ? 0 : C.toFixed(1)}" transform="rotate(-90 80 80)"/></svg>
+  const R = 34, C = 2 * Math.PI * R;
+  hero.innerHTML = `<span class="nh-k">${upNow ? 'Up now' : 'Next'} · <em style="color:var(--c);font-style:normal">${tier.gem} ${tier.label}</em></span>
+    <div class="nh-dial"><svg viewBox="0 0 80 80" aria-hidden="true"><circle cx="40" cy="40" r="${R}" fill="none" stroke="#22344a" stroke-width="4"/><circle class="nh-arc" cx="40" cy="40" r="${R}" fill="none" stroke="var(--c)" stroke-width="4" stroke-linecap="round" stroke-dasharray="${C.toFixed(1)}" stroke-dashoffset="${upNow ? 0 : C.toFixed(1)}" transform="rotate(-90 40 40)"/></svg>
       <div class="nh-t">${upNow ? '<b>Up</b><small>now</small>' : '<b class="nh-cd">--:--</b><small class="nh-u">min</small>'}</div></div>
     <span class="nh-tier">${tier.gem} ${tier.label}${upNow ? '' : ' · new to you'}</span>
     <span class="nh-name">${escapeHtml(label(o))}</span>
     <span class="nh-dir"><i class="nh-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16"><path d="M12 3 L19 19 L12 15 L5 19 Z" fill="currentColor"/></svg></i><span class="nh-turn"></span></span>
-    <div class="nh-acts"><button type="button" class="pill-o nh-go"><span class="ico-svg">${ICON_TARGET}</span> ${upNow ? 'Aim at it' : 'Show me'}</button>${next ? `<button type="button" class="pill-g nh-bell${reminded.has(key) ? ' on' : ''}" aria-label="Remind me"${next.start > t0 + 10 * 60000 ? '' : ' disabled'}><span class="ico-svg">${ICON_BELL}</span></button>` : ''}</div>`;
+    <div class="nh-acts"><button type="button" class="pill-o nh-go" aria-label="${upNow ? 'Aim at it' : 'Show me where'}"><span class="ico-svg">${ICON_TARGET}</span></button>${next ? `<button type="button" class="pill-g nh-bell${reminded.has(key) ? ' on' : ''}" aria-label="Remind me"${next.start > t0 + 10 * 60000 ? '' : ' disabled'}><span class="ico-svg">${ICON_BELL}</span></button>` : ''}</div>`;
   hero.querySelector('.nh-go').addEventListener('click', (e) => { flyToCircle(e.currentTarget); upNow ? aimAt(upNow) : showMePass(next); });
   const bell = hero.querySelector('.nh-bell');
   bell?.addEventListener('click', async () => { if (reminded.has(key)) { reminded.delete(key); cancelNotify(remindIds.get(key)?.id); remindIds.delete(key); saveRems(); bell.classList.remove('on'); } else if (await remindPass(next, key)) { reminded.add(key); bell.classList.add('on'); } });
@@ -1224,7 +1224,7 @@ function nowHero(list, vis) {
       const left = Math.max(0, Math.round((next.start - now().getTime()) / 1000));
       if (left <= 0) { clearInterval(heroTimer); renderVisible(); return; }
       const h = Math.floor(left / 3600), m = Math.floor(left / 60) % 60, sec = left % 60;
-      cd.textContent = h ? `${h} h ${m} m` : `${m}:${String(sec).padStart(2, '0')}`; u.textContent = h ? 'to go' : 'min'; cd.classList.toggle('long', !!h);
+      cd.textContent = h ? `${h}h ${m}m` : `${m}:${String(sec).padStart(2, '0')}`; u.textContent = h ? 'to go' : 'min'; cd.classList.toggle('long', !!h);
       arc.setAttribute('stroke-dashoffset', (C * Math.min(1, left / 3600)).toFixed(1)); // fills over the last hour
     };
     tick(); heroTimer = setInterval(tick, 1000);
@@ -1264,7 +1264,6 @@ function renderVisibleEmpty(list) {
   const t0 = now().getTime(), T = state.tonight, day = isDay(), wxT = tonightWeather();
   if (!T) requestTonight();
   const next = T ? bestUpcoming(T, t0) : null; // worth suggesting: no Commons until the rest run low
-  nowHero(list, []); // the countdown hero leads, even when nothing is up (2026-10-13)
   const cloudy = wxT && !wxT.ok;
   const glyph = day ? '<circle r="13" fill="#fa8127" opacity=".9"/><circle r="22" fill="#fa8127" opacity=".12"/>'
     : cloudy ? '<path d="M-20 8 a9 9 0 0 1 3-17 a13 13 0 0 1 24-3 a10 10 0 0 1 13 20 Z" fill="#344654" stroke="#627a8b"/>'
@@ -1279,6 +1278,7 @@ function renderVisibleEmpty(list) {
     <h3>${title}</h3><p>${why}</p>`;
   list.appendChild(box);
   const b0 = state.basis?.back ?? [0, 1, 0]; spinVisMap(box, (Math.atan2(b0[0], b0[1]) / RAD + 360) % 360);
+  nowHero(list, []);
   if (false && next) { // replaced by the countdown hero above
     const tier = TIER_INFO[next.obj.tier] ?? TIER_INFO.common, mins = Math.round((next.start - t0) / 60000);
     const when = mins < 60 ? `in ${mins} min` : `in ${Math.floor(mins / 60)} h ${mins % 60 ? `${mins % 60} min` : ''}`.trim();
@@ -1323,7 +1323,6 @@ function renderVisible() {
   document.querySelector('[data-vtab="now"]').textContent = vis.length ? `Now · ${vis.length}` : 'Now';
   $('visible-hint').textContent = ''; list.innerHTML = '';
   if (!vis.length) { renderVisibleEmpty(list); return; }
-  nowHero(list, vis);
   // The map turns with you (2026-10-08): whichever way you face is at the top, under a fixed soft wedge; the ring,
   // N/E/S/W and the dots rotate (labels stay upright). spinVisMap keeps it turning while the panel is open.
   const b0 = state.basis?.back ?? [0, 1, 0], heading = (Math.atan2(b0[0], b0[1]) / RAD + 360) % 360;
@@ -1339,6 +1338,7 @@ function renderVisible() {
   map.addEventListener('click', (e) => { const g = e.target.closest('.vd'); if (g) aimAt(vis[Number(g.dataset.i)]); });
   spinVisMap(map, heading);
   list.appendChild(map);
+  nowHero(list, vis); // under the map, compact (2026-10-13, Sevaan: the compass goes on top)
   const row = (it) => { const o = it.obj, tier = TIER_INFO[o.tier] ?? TIER_INFO.common, nw = isNewFind(o), r = document.createElement('button'); r.type = 'button'; r.className = 'vis-row2';
     r.innerHTML = `<span class="vr-ic">${visIcon(o, o.natural ? '#f2d8a8' : tier.color)}</span><span class="vr-main"><b>${escapeHtml(label(o))}${nw ? '<span class="new">NEW</span>' : ''}</b><small>${tier.label} · ${brightnessWord(it.look.mag)}</small></span><span class="vr-dir">${compassPoint(it.look.az)}<em>${Math.round(it.look.el)}° up</em></span>`;
     r.addEventListener('click', () => aimAt(it)); return r; };
