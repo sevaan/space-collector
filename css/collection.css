@@ -482,3 +482,16 @@ body.has-cards .collection-intro { display: none; }
 .v-next[hidden] { display: none; }
 .v-next .fd-pass { text-align: left; }
 .empty:not(.album) { min-height: 0; padding: 26px 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; } .empty p { margin-bottom: 16px; } /* no empty band under the button (2026-10-13) */
+
+/* Search and filters on one line (2026-10-13, Sevaan): the menus slide open under it from a Filters button. */
+.collection-tools { grid-template-columns: minmax(0, 1fr) !important; gap: 0; }
+.search-line { display: flex; gap: 8px; align-items: stretch; }
+.search-line .search { flex: 1; min-width: 0; }
+.search .search-ic { display: grid; place-items: center; font-size: 0; color: var(--muted); }
+.filters-btn { display: inline-flex; align-items: center; gap: 6px; padding: 0 14px; border-radius: 8px; border: 1px solid var(--line); background: var(--panel); color: var(--text); font: 500 15px/1 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .1em; text-transform: uppercase; cursor: pointer; }
+.filters-btn i { width: 7px; height: 7px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(45deg) translateY(-2px); transition: transform .25s ease; }
+.filters-btn[aria-expanded="true"] { border-color: #fa8127aa; color: #fa8127; } .filters-btn[aria-expanded="true"] i { transform: rotate(-135deg) translate(-2px, -1px); }
+.filters-btn.active::after { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #fa8127; }
+.filter-row { overflow: hidden; max-height: 0; opacity: 0; margin-top: 0; transition: max-height .3s ease, opacity .25s ease, margin-top .3s ease; }
+.filter-row.open { max-height: 80px; opacity: 1; margin-top: 8px; }
+@media (prefers-reduced-motion: reduce) { .filter-row, .filters-btn i { transition: none; } }

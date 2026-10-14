@@ -1,27 +1,27 @@
-import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.664';
-import { computeStats, statsHtml } from './stats.js?v=0.1.664';
-import { nightKey } from './observation.js?v=0.1.664';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.664';
-import { sfx } from './sfx.js?v=0.1.664';
-import { expandFacts } from './catalog-facts.js?v=0.1.664';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.664';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.664';
-import { ticket } from './toast.js?v=0.1.664';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.664';
-import { cardArt } from './art.js?v=0.1.664';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.664';
-import { applyBack } from './card-backs.js?v=0.1.664';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.664';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.664';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.664';
-import { loadConstellations, conList } from './constellations.js?v=0.1.664';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.664';
-import { eventBadges, nextEvent } from './events.js?v=0.1.664';
-import { shareCardEl } from './share-card.js?v=0.1.664';
-import { removeSighting } from './account.js?v=0.1.664';
-import { allSightings, deleteSighting } from './store.js?v=0.1.664';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.664';
-import { SECRET_PATCHES } from './secrets.js?v=0.1.664';
+import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.666';
+import { computeStats, statsHtml } from './stats.js?v=0.1.666';
+import { nightKey } from './observation.js?v=0.1.666';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.666';
+import { sfx } from './sfx.js?v=0.1.666';
+import { expandFacts } from './catalog-facts.js?v=0.1.666';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.666';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.666';
+import { ticket } from './toast.js?v=0.1.666';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.666';
+import { cardArt } from './art.js?v=0.1.666';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.666';
+import { applyBack } from './card-backs.js?v=0.1.666';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.666';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.666';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.666';
+import { loadConstellations, conList } from './constellations.js?v=0.1.666';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.666';
+import { eventBadges, nextEvent } from './events.js?v=0.1.666';
+import { shareCardEl } from './share-card.js?v=0.1.666';
+import { removeSighting } from './account.js?v=0.1.666';
+import { allSightings, deleteSighting } from './store.js?v=0.1.666';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.666';
+import { SECRET_PATCHES } from './secrets.js?v=0.1.666';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -363,6 +363,7 @@ function render() {
   state.titleCount = new Map(); for (const c of state.list) state.titleCount.set(titleFor(c), (state.titleCount.get(titleFor(c)) ?? 0) + 1);
   const total = state.list.length;
   $('results').textContent = `${total.toLocaleString()} ${total === 1 ? 'card' : 'cards'}${state.view === 'owned' ? ' in your collection' : ' in the field guide'}`;
+  markFilters();
   $('reset-filters').hidden = state.view === 'patches' || !state.query && state.set === 'all' && state.rarity === 'all' && (state.sort ?? 'auto') === 'auto';
   observer.disconnect();
   $('grid').replaceChildren();
@@ -426,6 +427,8 @@ function resetFilters() {
   $('search').value = ''; $('set-filter').value = 'all'; $('rarity-filter').value = 'all';
   if (state.ready) render();
 }
+$('filters-btn').addEventListener('click', () => { const b = $('filters-btn'), open = b.getAttribute('aria-expanded') !== 'true'; b.setAttribute('aria-expanded', String(open)); $('filter-row').classList.toggle('open', open); });
+function markFilters() { return $('filters-btn').classList.toggle('active', state.set !== 'all' || state.rarity !== 'all' || (state.sort ?? 'auto') !== 'auto'); } // a dot when a filter is on
 $('tab-owned').addEventListener('click', () => setView('owned'));
 $('tab-discover').addEventListener('click', () => setView('find'));
 $('tab-albums').addEventListener('click', () => { resetFilters(); setView('albums'); });

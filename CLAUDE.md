@@ -909,3 +909,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 2026-10-13 · v0.1.664 (Sevaan):
 - **Card viewer:** "Preview artwork" (stories are always shown now). A pill shows the card's next pass from here with target and bell (`#v-next`, same find-passes messaging as Find).
 - **Collection empty state:** the box fits its content (no 270px min-height, which left an empty band under "Clear filters").
+
+2026-10-13 · v0.1.666: Collection search and filters on one line (Sevaan). There's a drawn magnifier (the ⌕ glyph rendered badly) and "Search cards…". The "Filters ⌄" button slides the Collection / Rarity / Sort menus open below (max-height and opacity transition) and closed again; it shows an orange dot while a filter is active (`markFilters`).
