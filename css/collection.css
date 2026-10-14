@@ -472,3 +472,9 @@ body.has-cards .collection-intro { display: none; }
 /* Find rows: the hidden art stays inside its 52px square (2026-10-13: it spread over the whole screen). */
 .fd-art { position: relative; flex: none; contain: strict; }
 .fd-art > * { position: absolute !important; inset: 0 !important; width: 100% !important; height: 100% !important; }
+/* No gap above the rank (2026-10-13, Sevaan): "Missions ›" sits in the picture's corner, the rank follows the picture. */
+.logbook .lb-rankrow { margin-top: 0; padding-top: 12px; }
+.logbook .lb-more { top: auto !important; bottom: auto; }
+.logbook .lb-pic { position: relative; }
+.logbook.compact .lb-pic, .logbook .lb-pic { height: 180px; }
+.logbook .lb-pic .lb-more { position: absolute; right: 14px; bottom: 10px; top: auto !important; }

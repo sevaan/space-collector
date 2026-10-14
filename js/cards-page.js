@@ -1,27 +1,27 @@
-import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.661';
-import { computeStats, statsHtml } from './stats.js?v=0.1.661';
-import { nightKey } from './observation.js?v=0.1.661';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.661';
-import { sfx } from './sfx.js?v=0.1.661';
-import { expandFacts } from './catalog-facts.js?v=0.1.661';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.661';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.661';
-import { ticket } from './toast.js?v=0.1.661';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.661';
-import { cardArt } from './art.js?v=0.1.661';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.661';
-import { applyBack } from './card-backs.js?v=0.1.661';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.661';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.661';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.661';
-import { loadConstellations, conList } from './constellations.js?v=0.1.661';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.661';
-import { eventBadges, nextEvent } from './events.js?v=0.1.661';
-import { shareCardEl } from './share-card.js?v=0.1.661';
-import { removeSighting } from './account.js?v=0.1.661';
-import { allSightings, deleteSighting } from './store.js?v=0.1.661';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.661';
-import { SECRET_PATCHES } from './secrets.js?v=0.1.661';
+import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.662';
+import { computeStats, statsHtml } from './stats.js?v=0.1.662';
+import { nightKey } from './observation.js?v=0.1.662';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.662';
+import { sfx } from './sfx.js?v=0.1.662';
+import { expandFacts } from './catalog-facts.js?v=0.1.662';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.662';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.662';
+import { ticket } from './toast.js?v=0.1.662';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.662';
+import { cardArt } from './art.js?v=0.1.662';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.662';
+import { applyBack } from './card-backs.js?v=0.1.662';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.662';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.662';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.662';
+import { loadConstellations, conList } from './constellations.js?v=0.1.662';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.662';
+import { eventBadges, nextEvent } from './events.js?v=0.1.662';
+import { shareCardEl } from './share-card.js?v=0.1.662';
+import { removeSighting } from './account.js?v=0.1.662';
+import { allSightings, deleteSighting } from './store.js?v=0.1.662';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.662';
+import { SECRET_PATCHES } from './secrets.js?v=0.1.662';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -257,8 +257,7 @@ function renderLogbook() {
   // was lost in the card redesign, so remindStreak was unreachable).
   const atRisk = p.streak.current && !p.streak.thisWeek;
   el.innerHTML = `<div class="lb-top"><span>Observer rank</span><span class="lb-streak">${streak}${atRisk ? '<button type="button" class="lb-remind" id="streak-remind">Remind me Sat</button>' : ''}</span></div>
-    <div class="lb-pic">${ladder}</div>
-    <button type="button" class="lb-more" id="lb-more" aria-expanded="${!$('logbook').classList.contains('compact')}">${$('logbook').classList.contains('compact') ? 'Missions ›' : 'Less'}</button>
+    <div class="lb-pic">${ladder}<button type="button" class="lb-more" id="lb-more" aria-expanded="${!$('logbook').classList.contains('compact')}">${$('logbook').classList.contains('compact') ? 'Missions ›' : 'Less'}</button></div>
     <div class="lb-rankrow"><span class="lb-name">${esc(p.rank.name)}</span><span class="lb-xp"><b>${p.xp.toLocaleString()}</b>${p.rank.next ? ` / ${p.rank.next.toLocaleString()}` : ''} XP</span></div>
     ${p.rank.next ? `<div class="lb-bar"><i style="width:${(into * 100).toFixed(1)}%"></i></div><div class="lb-to"><span>${(p.rank.next - p.xp).toLocaleString()} XP to <b>${esc(RANKS[ri + 1]?.[1] ?? 'the next rank')}</b></span><span>${Math.round(into * 100)}%</span></div>` : '<div class="lb-to"><span>Top rank. Every catch still counts.</span></div>'}
     ${p.missions.map((m) => `<div class="lb-mission${m.done ? ' done' : ''}"><i></i>${esc(m.text)}</div>`).join('')}
