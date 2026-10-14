@@ -1,17 +1,17 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.668';
+import { extinction } from './sky-limit.js?v=0.1.670';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.668';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.670';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.668';
-import { createCloudGL } from './clouds-gl.js?v=0.1.668';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.670';
+import { createCloudGL } from './clouds-gl.js?v=0.1.670';
 // Cloud colours by light: sunlit tops, shadowed bellies, and the horizon haze they melt into (0–1 RGB).
 const CLOUD_LIGHT = {
   day: { lit: [1, 1, 1], shade: [0.62, 0.68, 0.77], haze: [0.82, 0.87, 0.93] },
   dusk: { lit: [1, 0.8, 0.68], shade: [0.36, 0.33, 0.42], haze: [0.62, 0.5, 0.52] },
   night: { lit: [0.22, 0.25, 0.31], shade: [0.1, 0.12, 0.16], haze: [0.14, 0.15, 0.2] },
 };
-import { TIER_INFO } from './rarity.js?v=0.1.668';
+import { TIER_INFO } from './rarity.js?v=0.1.670';
 
 const RAD = Math.PI / 180;
 const BELOW_ICON = 10.5, BELOW_ICON_HIT = 20; // every satellite under the horizon, passes and halo alike (80% of 13 since 2026-10-13); lined up in the circle it grows
@@ -1346,7 +1346,7 @@ export class SkyView {
 
   // safeTop/safeBottom are HUD insets in CSS pixels; centerY is an optional pixel
   // override. Projection and the reticle always share the same cx/cy.
-  draw(basis, items, { showDim, sky, bodies, milky, lines = true, targetId = null, time = 0, safeTop = 150, safeBottom = 230, centerY, starLimit = null, naturalTargetName = null, quietTarget = false, below = null, belowSats = null, daySats = null, deep = null, belowStarLimit = 6.5, ownedTarget = false, sunEl = -90, ghosts = null, weather = null, newFind = false, rising = null, landscape = false, lockedOn = null, planes = null, planeHit = null, planeTrail = null, naturalTarget = null, fossil = null, ufo = null, secrets = null } = {}) {
+  draw(basis, items, { showDim, sky, bodies, milky, lines = true, targetId = null, time = 0, safeTop = 150, safeBottom = 230, centerY, starLimit = null, naturalTargetName = null, quietTarget = false, below = null, belowSats = null, daySats = null, deep = null, belowStarLimit = 6.5, ownedTarget = false, sunEl = -90, ghosts = null, weather = null, newFind = false, rising = null, landscape = false, lockedOn = null, planes = null, planeHit = null, planeTrail = null, naturalTarget = null, feet = null, fossil = null, ufo = null, secrets = null } = {}) {
     this.basis = basis;
     this.safeTop = Math.max(12, Math.min(safeTop, this.h * 0.45));
     this.safeBottom = Math.max(12, Math.min(safeBottom, this.h - this.safeTop - 100));
@@ -1396,7 +1396,7 @@ export class SkyView {
     if (this.basis.back[2] < 0.15 && this.feetA < 0.98) this.drawBelowSky(sky, belowSats, belowStarLimit);
     if (daySats?.length && this.basis.back[2] > -0.15) this.drawDaySats(daySats); else this.dayHitId = null;
     if ((below?.length || belowSats?.length) && this.basis.back[2] < 0.15 && this.feetA < 0.98) this.drawBelow([...(below ?? []), ...(belowSats ?? []).map((s) => ({ enu: s.enu, kind: 'dot', id: s.obj.id, name: s.name, what: s.what, place: s.place, note: s.note ?? '', where: '', owned: s.owned }))]);
-    this.drawFeet(below);
+    this.drawFeet(feet ?? below); // the ring at your feet shows what's UP and which way to face (2026-10-13, Sevaan)
     this.drawRising(rising);
     this.drawGrid();
 
