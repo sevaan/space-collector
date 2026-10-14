@@ -469,3 +469,6 @@ body.has-cards .collection-intro { display: none; }
 .fd-acts .ic.on { border-color: #fa8127; color: #fa8127; }
 .fd-art > * { width: 100%; height: 100%; }
 .logbook.compact .lb-pic { height: 160px; } /* the full ladder picture, compact or not (2026-10-13, Sevaan: see the ranks better) */
+/* Find rows: the hidden art stays inside its 52px square (2026-10-13: it spread over the whole screen). */
+.fd-art { position: relative; flex: none; contain: strict; }
+.fd-art > * { position: absolute !important; inset: 0 !important; width: 100% !important; height: 100% !important; }
