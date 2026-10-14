@@ -1,27 +1,27 @@
-import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.674';
-import { computeStats, statsHtml } from './stats.js?v=0.1.674';
-import { nightKey } from './observation.js?v=0.1.674';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.674';
-import { sfx } from './sfx.js?v=0.1.674';
-import { expandFacts } from './catalog-facts.js?v=0.1.674';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.674';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.674';
-import { ticket } from './toast.js?v=0.1.674';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.674';
-import { cardArt } from './art.js?v=0.1.674';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.674';
-import { applyBack } from './card-backs.js?v=0.1.674';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.674';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.674';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.674';
-import { loadConstellations, conList } from './constellations.js?v=0.1.674';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.674';
-import { eventBadges, nextEvent } from './events.js?v=0.1.674';
-import { shareCardEl } from './share-card.js?v=0.1.674';
-import { removeSighting } from './account.js?v=0.1.674';
-import { allSightings, deleteSighting } from './store.js?v=0.1.674';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.674';
-import { SECRET_PATCHES } from './secrets.js?v=0.1.674';
+import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.675';
+import { computeStats, statsHtml } from './stats.js?v=0.1.675';
+import { nightKey } from './observation.js?v=0.1.675';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.675';
+import { sfx } from './sfx.js?v=0.1.675';
+import { expandFacts } from './catalog-facts.js?v=0.1.675';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.675';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.675';
+import { ticket } from './toast.js?v=0.1.675';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.675';
+import { cardArt } from './art.js?v=0.1.675';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.675';
+import { applyBack } from './card-backs.js?v=0.1.675';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.675';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.675';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.675';
+import { loadConstellations, conList } from './constellations.js?v=0.1.675';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.675';
+import { eventBadges, nextEvent } from './events.js?v=0.1.675';
+import { shareCardEl } from './share-card.js?v=0.1.675';
+import { removeSighting } from './account.js?v=0.1.675';
+import { allSightings, deleteSighting } from './store.js?v=0.1.675';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.675';
+import { SECRET_PATCHES } from './secrets.js?v=0.1.675';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -282,7 +282,7 @@ function findPassLine(c) {
   const d = new Date(p.start), today = d.toDateString() === new Date().toDateString(), tmr = d.toDateString() === new Date(Date.now() + 86400e3).toDateString();
   const day = today ? 'Tonight' : tmr ? 'Tomorrow' : d.toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' });
   const where = `${p.peakEl >= 60 ? 'high' : p.peakEl >= 30 ? 'halfway up' : 'low'} in the ${({ N: 'north', NE: 'northeast', E: 'east', SE: 'southeast', S: 'south', SW: 'southwest', W: 'west', NW: 'northwest' })[['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'][Math.round(p.peakAz / 45) % 8]]}`;
-  return `<b>${day} ${d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}</b> · ${where}`;
+  return `<b>${day} ${d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}</b> · ${p.cloud ? '<span class="fd-cloud">cloud forecast</span>' : where}`;
 }
 const TGT = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="7.5"/><circle cx="12" cy="12" r="2.5" fill="currentColor"/><path d="M12 1.5v4M12 18.5v4M1.5 12h4M18.5 12h4"/></svg>';
 const BEL = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg>';
@@ -290,7 +290,10 @@ function renderFind() {
   const grid = $('grid'); grid.replaceChildren(); grid.classList.add('find-mode');
   const q = state.query;
   let list;
-  if (q) list = state.cards.filter((c) => !c.archived && matches(c)).sort((a, b) => (titleFor(a).toLowerCase().startsWith(q) ? 0 : 1) - (titleFor(b).toLowerCase().startsWith(q) ? 0 : 1) || TIERS.indexOf(b.tier) - TIERS.indexOf(a.tier)).slice(0, 30);
+  // Famous things first (2026-10-13 playtest: "ISS" opened with a debris piece): an exact name, then stations and icons,
+  // then names that start with it, debris last, rarer first.
+  const rankQ = (c) => { const t = titleFor(c).toLowerCase(); return (t === q ? 0 : 6) + (c.icon || c.type === 'station' ? 0 : 3) + (t.startsWith(q) ? 0 : 1) + (c.type === 'debris' ? 2 : 0); };
+  if (q) list = state.cards.filter((c) => !c.archived && matches(c)).sort((a, b) => rankQ(a) - rankQ(b) || TIERS.indexOf(b.tier) - TIERS.indexOf(a.tier)).slice(0, 30);
   else list = (findSuggest ?? []).map((p) => state.cards.find((c) => c.id === p.id) ?? state.byKey.get(state.keyOfId?.get(p.id))).filter(Boolean); // from Explore's plans: tonight and this week
   if (!q && !findSuggest && EMBED) { window.parent.postMessage({ sc: 'find-suggest' }, location.origin); grid.insertAdjacentHTML('beforeend', '<p class="find-none">Finding what you can see this week…</p>'); return; }
   state.list = list;

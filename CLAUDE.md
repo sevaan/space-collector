@@ -921,3 +921,14 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 2026-10-13 · v0.1.673: the Now next-card hero shimmers once in its rarity colour each time you arrive on Now (a band sweeps across and the border glows; `heroShine`, set by showVTab('now'); off with reduced motion). Ground-compass options board: design/feet-compass.html (A clock face, B heading tape, C sky map; not built).
 
 2026-10-13 · v0.1.674: the ground compass is design/feet-compass.html "A + C" (Sevaan). sky.js drawFeet(items) paints a sky map on the ground inside the ring at −77°: each thing at its real az and height (ring = horizon, centre = straight up, 30°/60° rings faint), new cards ringed orange, stars as plain dots. Everything but stars gets a spoke out past the ring at its direction with NAME / "N° up"; neighbours within 15° share one spoke with a count ("3 NEW SATELLITES"). Crowded labels take a longer spoke (4 lengths, remembered in feetMem); labels that would hit the screen edge stack above/below the tip. An orange wedge shows where the top of the phone points. main.js feetItems gives {name, az, el, kind, icon, isNew}: Moon, planets, Sun, 4 new satellites, 14 brightest stars. Sky labels are skipped once the compass is fully in (feetA > 0.98).
+
+2026-10-13 · v0.1.675, playtest fixes (Sevaan: "work through it all"):
+- **One sticky toast at a time** (js/toast.js): a sticky waits while another is up; plain toasts still pass. The Sun warning is a normal ~6 s toast ("Never look straight at it. Keep your eyes on the screen."). Example location reads "Sky over Toronto".
+- **Overcast nights:** `cloudAt(t)` (main.js, weather.js skyClearAt). Tonight's haul leads with the weather when the night is bad ("Overcast all night · Next clear night: Saturday · N new cards pass over tonight behind the cloud; if you spot a gap, they still count"), and the run is "Tonight's run · if it clears". The Now hero says "Next new card · cloud forecast"; Find rows say "cloud forecast" (passes carry `cloud` from main).
+- **Run variety:** one stop per name first, repeats only to fill (three "SL-8 Rocket Stage" stops read like a bug).
+- **Now tab** counts new cards up ("Now · 15 new"), not every star.
+- **Collection:** the rank card is hidden until the first catch, so tabs sit under the header.
+- **Stars over the circle** name their constellation ("Uncommon · in Capricornus", `inCon`).
+- **Albums:** a long name pushes the count onto its own line. **Album patches** show their subject (ALBUM_ICON in js/patches.js).
+- **Shiny eclipse line** in words ("low in the east"), no degrees. **Find search** ranks exact names, stations and icons first, debris last.
+- The sky panel's place/time line is filled when it opens straight on Tonight or Week.

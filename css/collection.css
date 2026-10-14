@@ -496,3 +496,10 @@ body.has-cards .collection-intro { display: none; }
 .filter-row.open { max-height: 80px; opacity: 1; margin-top: 8px; }
 @media (prefers-reduced-motion: reduce) { .filter-row, .filters-btn i { transition: none; } }
 .filters-btn { font-size: 13px; letter-spacing: .12em; padding: 0 12px; }
+
+.fd-cloud { color: #8fa3b5; font-style: italic; } /* a pass forecast to be behind cloud (2026-10-13) */
+/* A new player's Collection starts with the tabs and cards, not a 0 XP rank card (2026-10-13 playtest). */
+body:not(.has-cards) #logbook { display: none; }
+/* A long one-word album name ("CONSTELLATIONS") ran into its count: the count drops under it instead (2026-10-13 playtest). */
+.album__top { flex-wrap: wrap; row-gap: 2px; }
+body.albums-view .album__name { overflow-wrap: normal; }
