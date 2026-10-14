@@ -905,3 +905,7 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 2026-10-13 · v0.1.660 (Sevaan):
 - **Observer stats moved:** now in Settings → Account, under your name (#set-stats-open). It opens the Collection with key '#stats', which runs openStats. The link under the rank card is hidden.
 - **Rank card:** the ladder picture is full height (160px) even when compact.
+
+2026-10-13 · v0.1.664 (Sevaan):
+- **Card viewer:** "Preview artwork" (stories are always shown now). A pill shows the card's next pass from here with target and bell (`#v-next`, same find-passes messaging as Find).
+- **Collection empty state:** the box fits its content (no 270px min-height, which left an empty band under "Clear filters").

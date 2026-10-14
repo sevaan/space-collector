@@ -1,27 +1,27 @@
-import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.662';
-import { computeStats, statsHtml } from './stats.js?v=0.1.662';
-import { nightKey } from './observation.js?v=0.1.662';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.662';
-import { sfx } from './sfx.js?v=0.1.662';
-import { expandFacts } from './catalog-facts.js?v=0.1.662';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.662';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.662';
-import { ticket } from './toast.js?v=0.1.662';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.662';
-import { cardArt } from './art.js?v=0.1.662';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.662';
-import { applyBack } from './card-backs.js?v=0.1.662';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.662';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.662';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.662';
-import { loadConstellations, conList } from './constellations.js?v=0.1.662';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.662';
-import { eventBadges, nextEvent } from './events.js?v=0.1.662';
-import { shareCardEl } from './share-card.js?v=0.1.662';
-import { removeSighting } from './account.js?v=0.1.662';
-import { allSightings, deleteSighting } from './store.js?v=0.1.662';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.662';
-import { SECRET_PATCHES } from './secrets.js?v=0.1.662';
+import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.664';
+import { computeStats, statsHtml } from './stats.js?v=0.1.664';
+import { nightKey } from './observation.js?v=0.1.664';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.664';
+import { sfx } from './sfx.js?v=0.1.664';
+import { expandFacts } from './catalog-facts.js?v=0.1.664';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.664';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.664';
+import { ticket } from './toast.js?v=0.1.664';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.664';
+import { cardArt } from './art.js?v=0.1.664';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.664';
+import { applyBack } from './card-backs.js?v=0.1.664';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.664';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.664';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.664';
+import { loadConstellations, conList } from './constellations.js?v=0.1.664';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.664';
+import { eventBadges, nextEvent } from './events.js?v=0.1.664';
+import { shareCardEl } from './share-card.js?v=0.1.664';
+import { removeSighting } from './account.js?v=0.1.664';
+import { allSightings, deleteSighting } from './store.js?v=0.1.664';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.664';
+import { SECRET_PATCHES } from './secrets.js?v=0.1.664';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -327,8 +327,8 @@ window.addEventListener('message', (e) => {
   if (e.data?.sc === 'find-suggest') { findSuggest = e.data.items; findReminded = new Set(e.data.reminded); for (const p of findSuggest) findPasses.set(p.id, p); if (state.view === 'find' && !state.query) renderFind(); }
   if (e.data?.sc === 'find-passes') { if (e.data.reminded) findReminded = new Set(e.data.reminded);
     for (const [id, p] of Object.entries(e.data.passes)) findPasses.set(isNaN(id) ? id : Number(id), p);
-    if (state.view === 'find') for (const el of document.querySelectorAll('.fd-pass[data-id]')) { const id = isNaN(el.dataset.id) ? el.dataset.id : Number(el.dataset.id), c = state.cards.find((k) => k.id === id); if (c) { el.innerHTML = findPassLine(c); findActs(el.closest('.find-row'), c); } } findTrim(); }
-  if (e.data?.sc === 'find-reminded') { findReminded = new Set(e.data.set); if (state.view === 'find') for (const el of document.querySelectorAll('.fd-pass[data-id]')) { const id = isNaN(el.dataset.id) ? el.dataset.id : Number(el.dataset.id), c = state.cards.find((k) => k.id === id); if (c) findActs(el.closest('.find-row'), c); } }
+    for (const el of document.querySelectorAll('.fd-pass[data-id]')) { const id = isNaN(el.dataset.id) ? el.dataset.id : Number(el.dataset.id), c = state.cards.find((k) => k.id === id); if (c) { el.innerHTML = findPassLine(c); findActs(el.closest('.find-row, .v-next'), c); } } findTrim(); }
+  if (e.data?.sc === 'find-reminded') { findReminded = new Set(e.data.set); for (const el of document.querySelectorAll('.fd-pass[data-id]')) { const id = isNaN(el.dataset.id) ? el.dataset.id : Number(el.dataset.id), c = state.cards.find((k) => k.id === id); if (c) findActs(el.closest('.find-row, .v-next'), c); } }
 });
 function render() {
   renderLogbook();
@@ -464,7 +464,11 @@ function showCard() {
   // The card itself shows when you collected it, so no date here (2026-10-05).
   $('v-status').textContent = sightings.length ? (c.archived ? 'Saved from an earlier catalogue' : '') : state.preview ? 'Artwork preview · this card has not been added to your collection.' : 'Not yet collected · record a live sighting to earn this card.';
   $('v-preview').hidden = sightings.length > 0;
-  $('v-preview').textContent = state.preview ? 'Back to uncollected card' : 'Preview artwork & story';
+  $('v-preview').textContent = state.preview ? 'Back to uncollected card' : 'Preview artwork';
+  // Its next pass with a target and a bell, like Find (2026-10-13, Sevaan).
+  const vn = $('v-next'); vn.hidden = !EMBED || !!c.natural || !!c.launches;
+  if (!vn.hidden) { vn.innerHTML = `<span class="fd-pass" data-id="${esc(String(c.id))}">${findPassLine(c)}</span><span class="fd-acts"></span>`; findActs(vn, c);
+    if (!findPasses.has(c.id)) window.parent.postMessage({ sc: 'find-passes', ids: [c.id], req: ++findReq }, location.origin); }
   $('v-history').replaceChildren();
   // (The cream passport block is gone, 2026-10-06: each sighting row names its launch instead.)
   if (sightings.length) {

@@ -478,3 +478,7 @@ body.has-cards .collection-intro { display: none; }
 .logbook .lb-pic { position: relative; }
 .logbook.compact .lb-pic, .logbook .lb-pic { height: 180px; }
 .logbook .lb-pic .lb-more { position: absolute; right: 14px; bottom: 10px; top: auto !important; }
+.v-next { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 4px auto 12px; padding: 8px 10px 8px 14px; max-width: 360px; border-radius: 99px; background: #0e1a29; border: 1px solid #22344a; }
+.v-next[hidden] { display: none; }
+.v-next .fd-pass { text-align: left; }
+.empty:not(.album) { min-height: 0; padding: 26px 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; } .empty p { margin-bottom: 16px; } /* no empty band under the button (2026-10-13) */
