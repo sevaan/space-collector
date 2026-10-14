@@ -1343,3 +1343,4 @@ body.night .wk4-moon::after { background: #ff7f70; }
 .now-hero .nh-k::after { content: attr(data-tier); }
 .now-hero .nh-acts { flex-direction: row; } .now-hero .pill-o, .now-hero .pill-g { width: 42px; height: 42px; min-width: 0; padding: 0; border-radius: 50%; }
 .now-hero .ico-svg svg { width: 19px; height: 19px; } .now-hero .nh-dir { align-items: flex-start; } .now-hero .nh-k { white-space: nowrap; }
+.now-hero .nh-t { justify-items: center; text-align: center; }
