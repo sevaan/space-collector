@@ -1328,19 +1328,3 @@ body.night .wk4-moon::after { background: #ff7f70; }
 :is(#visible) .t-head + .vis-row2 { padding-top: 2px; }
 .wk4-foot { background: #f2c14e14; } .wk4-foot:active { background: #f2c14e26; } .wk4-foot.on { background: #f2c14e0a; }
 
-/* Now hero, compact (2026-10-13, Sevaan: map first, the card shouldn't be as big as the compass): a small ring on the
-   left, the label, name and direction beside it, the buttons on the right. */
-.now-hero { grid-template-columns: 80px minmax(0, 1fr) auto; grid-template-areas: "dial k acts" "dial name acts" "dial dir acts"; justify-items: start; text-align: left; align-items: center; column-gap: 12px; row-gap: 2px; padding: 12px 12px; }
-.now-hero .nh-k { grid-area: k; font-size: 11px; } .now-hero .nh-tier { display: none; }
-.now-hero .nh-dial { grid-area: dial; width: 80px; height: 80px; margin: 0; }
-.now-hero .nh-t b { font-size: 17px; } .now-hero .nh-t b.long { font-size: 14px; } .now-hero .nh-t small { font-size: 9px; letter-spacing: .14em; }
-.now-hero .nh-name { grid-area: name; font-size: 17px; line-height: 1.1; }
-.now-hero .nh-dir { grid-area: dir; font-size: 13px; color: var(--muted); }
-.now-hero .nh-arrow { width: 22px; height: 22px; } .now-hero .nh-arrow svg { width: 12px; height: 12px; }
-.now-hero .nh-acts { grid-area: acts; flex-direction: column; margin: 0; gap: 6px; }
-.now-hero .pill-o, .now-hero .pill-g { padding: 9px 12px; letter-spacing: .12em; font-size: 12px; justify-content: center; }
-.now-hero .nh-go { min-width: 92px; }
-.now-hero .nh-k::after { content: attr(data-tier); }
-.now-hero .nh-acts { flex-direction: row; } .now-hero .pill-o, .now-hero .pill-g { width: 42px; height: 42px; min-width: 0; padding: 0; border-radius: 50%; }
-.now-hero .ico-svg svg { width: 19px; height: 19px; } .now-hero .nh-dir { align-items: flex-start; } .now-hero .nh-k { white-space: nowrap; }
-.now-hero .nh-t { justify-items: center; text-align: center; }
