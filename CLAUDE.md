@@ -911,3 +911,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - **Collection empty state:** the box fits its content (no 270px min-height, which left an empty band under "Clear filters").
 
 2026-10-13 · v0.1.666: Collection search and filters on one line (Sevaan). There's a drawn magnifier (the ⌕ glyph rendered badly) and "Search cards…". The "Filters ⌄" button slides the Collection / Rarity / Sort menus open below (max-height and opacity transition) and closed again; it shows an orange dot while a filter is active (`markFilters`).
+
+2026-10-13 · v0.1.668: the Now tab's sky map draws everything except stars as its sky icon (satellite, rocket stage, debris, station, fleet; `mapIcon` renders sky.drawIcon once per kind into a data-URL image, kept upright like the labels), in cream, with the orange ring on new ones. Objects are placed before stars so the 70-item cap never drops them. Stars stay small dots.
