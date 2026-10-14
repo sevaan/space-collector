@@ -495,3 +495,4 @@ body.has-cards .collection-intro { display: none; }
 .filter-row { overflow: hidden; max-height: 0; opacity: 0; margin-top: 0; transition: max-height .3s ease, opacity .25s ease, margin-top .3s ease; }
 .filter-row.open { max-height: 80px; opacity: 1; margin-top: 8px; }
 @media (prefers-reduced-motion: reduce) { .filter-row, .filters-btn i { transition: none; } }
+.filters-btn { font-size: 13px; letter-spacing: .12em; padding: 0 12px; }
