@@ -1,17 +1,17 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.673';
+import { extinction } from './sky-limit.js?v=0.1.674';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.673';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.674';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.673';
-import { createCloudGL } from './clouds-gl.js?v=0.1.673';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.674';
+import { createCloudGL } from './clouds-gl.js?v=0.1.674';
 // Cloud colours by light: sunlit tops, shadowed bellies, and the horizon haze they melt into (0–1 RGB).
 const CLOUD_LIGHT = {
   day: { lit: [1, 1, 1], shade: [0.62, 0.68, 0.77], haze: [0.82, 0.87, 0.93] },
   dusk: { lit: [1, 0.8, 0.68], shade: [0.36, 0.33, 0.42], haze: [0.62, 0.5, 0.52] },
   night: { lit: [0.22, 0.25, 0.31], shade: [0.1, 0.12, 0.16], haze: [0.14, 0.15, 0.2] },
 };
-import { TIER_INFO } from './rarity.js?v=0.1.673';
+import { TIER_INFO } from './rarity.js?v=0.1.674';
 
 const RAD = Math.PI / 180;
 const BELOW_ICON = 10.5, BELOW_ICON_HIT = 20; // every satellite under the horizon, passes and halo alike (80% of 13 since 2026-10-13); lined up in the circle it grows
@@ -230,6 +230,7 @@ export class SkyView {
 
   drawLabels() {
     const ctx = this.ctx;
+    if ((this.feetA ?? 0) > 0.98) { this.labelQueue.length = 0; return; } // looking down: the compass at your feet does the naming
     this.labelSide ??= new Map(); this.frameNo = (this.frameNo ?? 0) + 1;
     if (this.frameNo % 300 === 0) for (const [k, v] of this.labelSide) if (this.frameNo - (v.seen ?? 0) > 300) this.labelSide.delete(k); // forget labels long off screen
     const ring = this.ring ?? { x: this.cx, y: this.cy, r: this.reticlePx };
@@ -970,73 +971,108 @@ export class SkyView {
     }
   }
 
-  // The quiet ring at your feet (design/compass-feet.html, option C): a thin compass ring drawn flat on the
-  // screen around the point straight below you, turning as you turn. Everything below the horizon sits on the ring
-  // at the direction it will come up, with its time. Nothing in the middle. Fades in as you look down.
-  drawFeet(below) {
+  // The compass at your feet (2026-10-13, design/feet-compass.html "A + C"): a sky map painted on the ground inside a
+  // compass ring around the point straight below you. Inside, each thing sits where it really is (the ring = the
+  // horizon, the middle = straight up); outside, a short spoke at its compass direction carries its name and height,
+  // so labels never sit on the map. Things within 15° of each other share one spoke with a count. Stars are dots only.
+  // A wedge shows the way the top of the phone points. Fades in as you look down.
+  drawFeet(items) {
     const a = this.feetA ?? 0; if (a < 0.02) return;
-    const ctx = this.ctx, t = this.theme;
-    // Painted on the ground (2026-10-07, Sevaan: stick to the grid, don't float): the ring is the circle 13° out
-    // from the point straight below you, projected like the grid lines, so it stays put as you move.
-    const EL = -77, n = this.project([0, 0, -1]); if (!n) return;
+    const ctx = this.ctx, t = this.theme, night = t === THEMES.night;
+    const EL = -77, R = 13, n = this.project([0, 0, -1]); if (!n) return;
     const at = (az, el = EL) => this.project(enuFromAzEl(az, el));
+    const sky = (az, h) => at(az, EL - R * Math.max(0, Math.min(90, h)) / 90); // a height above the horizon → a point on the map
     const dir = (az) => { const q = at(az); if (!q) return null; const dx = q.x - n.x, dy = q.y - n.y, l = Math.hypot(dx, dy) || 1; return [dx / l, dy / l]; };
-    const ink = t === THEMES.night ? 'rgba(255,90,70,' : 'rgba(255,242,179,';
+    const ink = night ? 'rgba(255,90,70,' : 'rgba(255,242,179,', orange = night ? 'rgb(255,110,90)' : '#fa8127';
     ctx.save(); ctx.globalAlpha = a;
-    ctx.strokeStyle = ink + '.4)'; ctx.lineWidth = 1;
-    const ringPts = []; for (let az = 0; az <= 360; az += 4) ringPts.push(enuFromAzEl(az, EL)); this.path(ringPts);
-    for (let az = 0; az < 360; az += 10) {
-      const p0 = at(az), p1 = at(az, EL + (az % 90 === 0 ? 2.2 : az % 30 === 0 ? 1.5 : 0.8)); if (!p0 || !p1) continue;
-      ctx.strokeStyle = ink + (az % 30 === 0 ? '.45)' : '.25)');
+    const ringPts = []; for (let az = 0; az <= 360; az += 4) ringPts.push(enuFromAzEl(az, EL));
+    const ring = ringPts.map((v) => this.project(v)).filter(Boolean);
+    // The map's face and its height rings (30° and 60° up).
+    if (ring.length > 60) {
+      ctx.beginPath(); ring.forEach((q, i) => (i ? ctx.lineTo(q.x, q.y) : ctx.moveTo(q.x, q.y))); ctx.closePath();
+      ctx.fillStyle = night ? 'rgba(20,2,0,.55)' : 'rgba(8,16,30,.55)'; ctx.fill();
+    }
+    ctx.strokeStyle = ink + '.12)'; ctx.lineWidth = 1;
+    for (const h of [30, 60]) { const pts = []; for (let az = 0; az <= 360; az += 6) pts.push(enuFromAzEl(az, EL - R * h / 90)); this.path(pts); }
+    // Facing wedge: the way the top of the phone points.
+    const up = this.basis?.up;
+    if (up && Math.hypot(up[0], up[1]) > 0.2) {
+      const hd = (Math.atan2(up[0], up[1]) * 180 / Math.PI + 360) % 360, pts = [n];
+      for (let d = -20; d <= 20; d += 4) { const q = at(hd + d); if (q) pts.push(q); }
+      ctx.beginPath(); pts.forEach((q, i) => (i ? ctx.lineTo(q.x, q.y) : ctx.moveTo(q.x, q.y))); ctx.closePath();
+      ctx.fillStyle = night ? 'rgba(255,90,70,.10)' : 'rgba(250,129,39,.13)'; ctx.fill();
+      const tip = at(hd, EL + 1.2), u = dir(hd);
+      if (tip && u) { ctx.fillStyle = orange; ctx.beginPath(); ctx.moveTo(tip.x - u[0] * 2, tip.y - u[1] * 2); ctx.lineTo(tip.x + u[0] * 9 - u[1] * 6, tip.y + u[1] * 9 + u[0] * 6); ctx.lineTo(tip.x + u[0] * 9 + u[1] * 6, tip.y + u[1] * 9 - u[0] * 6); ctx.fill(); }
+    }
+    // The ring (the horizon) with ticks and N/E/S/W just inside it.
+    ctx.strokeStyle = ink + '.45)'; ctx.lineWidth = 1.3; this.path(ringPts); ctx.lineWidth = 1;
+    for (let az = 0; az < 360; az += 15) {
+      const p0 = at(az), p1 = at(az, EL + (az % 90 === 0 ? 1.6 : 0.8)); if (!p0 || !p1) continue;
+      ctx.strokeStyle = ink + (az % 45 === 0 ? '.45)' : '.25)');
       ctx.beginPath(); ctx.moveTo(p0.x, p0.y); ctx.lineTo(p1.x, p1.y); ctx.stroke();
     }
-    ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.font = `400 15px ${DISPLAY_FONT}`;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.font = `400 14px ${DISPLAY_FONT}`;
     for (const [az, letter] of [[0, 'N'], [90, 'E'], [180, 'S'], [270, 'W']]) {
-      const q = at(az, EL - 4.5); if (!q) continue;
-      ctx.fillStyle = az === 0 ? t.groundNorth : ink + '.75)';
-      ctx.fillText(letter, q.x, q.y);
+      const q = at(az, EL - 1.4); if (!q) continue;
+      ctx.fillStyle = az === 0 ? t.groundNorth : ink + '.55)'; ctx.fillText(letter, q.x, q.y);
     }
-    ctx.fillStyle = ink + '.5)'; ctx.beginPath(); ctx.arc(n.x, n.y, 2, 0, Math.PI * 2); ctx.fill();
-    // Things below, on the ring where they'll come up.
-    const boxes = [];
-    for (const g of (below ?? []).filter((g) => g.riseAz != null)) {
-      const u = dir(g.riseAz), m = at(g.riseAz); if (!u || !m) continue;
-      const x = m.x, y = m.y;
-      const col = g.kind === 'sun' ? 'rgb(255,180,107)' : g.kind === 'sat' ? t.sat : 'rgb(255,242,179)';
-      if (g.kind === 'sat') this.drawIcon('sat', x, y, 9, t.sat);
-      else if (g.kind === 'moon') { ctx.fillStyle = col; ctx.beginPath(); ctx.arc(x, y, 5, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = '#0a1424'; ctx.beginPath(); ctx.arc(x + 2.2, y - 1.3, 4.4, 0, Math.PI * 2); ctx.fill(); }
-      else { const rgb = g.kind === 'sun' ? [255, 180, 107] : [255, 242, 179]; this.glow(x, y, g.kind === 'sun' ? 12 : 8, rgb, 0.35); ctx.fillStyle = col; ctx.beginPath(); ctx.arc(x, y, g.kind === 'sun' ? 4.5 : 2.6, 0, Math.PI * 2); ctx.fill(); }
-      // Label just outside the ring along the same direction; nudged outward until it clears the others.
-      const name = g.name.replace(/^The /, '').toUpperCase(), when = g.time ? ` ${g.time.replace(/\s?[AP]\.?M\.?$/i, '')}` : '';
-      ctx.font = `500 11px ${FONT}`;
-      const wN = ctx.measureText(name).width, wT = ctx.measureText(when).width, w = wN + wT, h = 13;
-      // Steady labels (2026-10-08, Sevaan: text jumping around): each label remembers its alignment and row. The
-      // alignment only changes well past the switch point, a label keeps its row while that row is free, and when it
-      // does move it slides there over a few frames instead of snapping (measured: jumps of 15–75 px before).
-      const mem = (this.feetMem ??= new Map()), lm = mem.get(name) ?? {};
+    ctx.fillStyle = orange; ctx.beginPath(); ctx.arc(n.x, n.y, 2.5, 0, Math.PI * 2); ctx.fill();
+    const list = (items ?? []).filter((g) => g.az != null && g.el != null);
+    const colOf = (g) => (g.isNew ? orange : g.kind === 'sun' ? 'rgb(255,180,107)' : night ? 'rgb(255,110,90)' : 'rgb(255,242,179)');
+    // Dots on the map.
+    for (const g of list) {
+      const q = sky(g.az, g.el); if (!q) continue; const col = colOf(g);
+      if (g.kind === 'sat') { this.drawIcon(g.icon ?? 'sat', q.x, q.y, 10, col); if (g.isNew) { ctx.strokeStyle = orange; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(q.x, q.y, 9, 0, Math.PI * 2); ctx.stroke(); } }
+      else if (g.kind === 'moon') { ctx.fillStyle = col; ctx.beginPath(); ctx.arc(q.x, q.y, 5, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = '#0a1424'; ctx.beginPath(); ctx.arc(q.x + 2.2, q.y - 1.3, 4.4, 0, Math.PI * 2); ctx.fill(); }
+      else { const big = g.kind !== 'star'; if (big) this.glow(q.x, q.y, g.kind === 'sun' ? 12 : 8, g.kind === 'sun' ? [255, 180, 107] : [255, 242, 179], 0.3); ctx.fillStyle = col; ctx.globalAlpha = a * (big ? 1 : 0.7); ctx.beginPath(); ctx.arc(q.x, q.y, g.kind === 'sun' ? 4.5 : big ? 3 : 1.8, 0, Math.PI * 2); ctx.fill(); ctx.globalAlpha = a; }
+    }
+    // Spokes and names: everything but stars, neighbours within 15° sharing one spoke.
+    const rank = (g) => (g.isNew ? 0 : g.kind === 'moon' || g.kind === 'planet' ? 1 : g.kind === 'sun' ? 2 : 3);
+    const named = list.filter((g) => g.kind !== 'star').sort((x, y) => x.az - y.az), groups = [];
+    for (const g of named) { const last = groups[groups.length - 1]; if (last && g.az - last.az1 <= 15) { last.m.push(g); last.az1 = g.az; } else groups.push({ m: [g], az1: g.az }); }
+    if (groups.length > 1) { const f = groups[0], l = groups[groups.length - 1]; if (f.m[0].az + 360 - l.az1 <= 15) { l.m.push(...f.m); groups.shift(); } }
+    const mem = (this.feetMem ??= new Map()), boxes = [];
+    const hit = (bx) => bx.x < 6 || bx.x + bx.w > this.w - 6 || boxes.some((o) => bx.x < o.x + o.w + 6 && bx.x + bx.w + 6 > o.x && bx.y < o.y + o.h + 3 && bx.y + bx.h + 3 > o.y);
+    const SPOKES = [2.6, 5.2, 7.8, 10.4];
+    for (const gr of groups) {
+      const m = gr.m.sort((x, y) => rank(x) - rank(y) || y.el - x.el), top = m[0];
+      const az = Math.atan2(m.reduce((s2, g) => s2 + Math.sin(g.az * Math.PI / 180), 0), m.reduce((s2, g) => s2 + Math.cos(g.az * Math.PI / 180), 0)) * 180 / Math.PI;
+      const allNew = m.length > 1 && m.every((g) => g.isNew);
+      const name = m.length === 1 ? top.name.replace(/^The /, '').toUpperCase() : allNew ? `${m.length} NEW SATELLITES` : `${top.name.replace(/^The /, '').toUpperCase()} +${m.length - 1}`;
+      const sub = allNew ? `around ${Math.round(top.el)}° up` : `${Math.round(top.el)}° up`;
+      const col = colOf(top), u = dir(az); if (!u) continue;
+      const lm = mem.get(name) ?? {};
       let align = u[0] > 0.35 ? 'left' : u[0] < -0.35 ? 'right' : 'center';
-      if (lm.align === 'left' && u[0] > 0.2) align = 'left'; else if (lm.align === 'right' && u[0] < -0.2) align = 'right';
-      else if (lm.align === 'center' && Math.abs(u[0]) < 0.5) align = 'center';
-      // Crowded (several things rising in the east): slide the label up or down a row until it's clear.
-      const out = 14, lx = x + u[0] * out, ly0 = y + u[1] * out;
-      let bx = align === 'left' ? lx : align === 'right' ? lx - w : lx - w / 2, by = ly0 - h / 2, ly = ly0, row = 0;
-      bx = Math.max(10, Math.min(this.w - 10 - w, bx)); // never off the screen edge
-      for (const dy of [...new Set([lm.row ?? 0, 0, 15, -15, 30, -30, 45, -45, 60, -60])]) {
-        ly = ly0 + dy; by = ly - h / 2; row = dy;
-        if (!boxes.some((b) => bx < b[0] + b[2] + 4 && bx + w + 4 > b[0] && by < b[1] + b[3] + 2 && by + h + 2 > b[1])) break;
-      }
-      boxes.push([bx, by, w, h]);
-      // Glide from where it was drawn last time, relative to its dot (so it still tracks the dot exactly as you turn).
-      const ox = bx - x, oy = by - y;
-      if (lm.ox != null && Math.hypot(ox - lm.ox, oy - lm.oy) < 140) { lm.ox += (ox - lm.ox) * 0.2; lm.oy += (oy - lm.oy) * 0.2; } else { lm.ox = ox; lm.oy = oy; }
-      Object.assign(lm, { align, row }); mem.set(name, lm);
-      bx = Math.max(10, Math.min(this.w - 10 - w, x + lm.ox)); by = y + lm.oy; ly = by + h / 2;
-      ctx.strokeStyle = col; ctx.globalAlpha = a * (ly !== ly0 ? 0.75 : 0.45); // a nudged label gets a clearer leader back to its dot
-      const sx = x + u[0] * 7; // the leader meets the label on the side facing its dot, never across the text (2026-10-13, Sevaan)
-      ctx.beginPath(); ctx.moveTo(sx, y + u[1] * 7); ctx.lineTo(align === 'center' ? bx + w / 2 : sx > bx + w / 2 ? bx + w + 4 : bx - 4, align === 'center' ? (u[1] > 0 ? by - 2 : by + h + 2) : ly); ctx.stroke();
-      ctx.globalAlpha = a; ctx.textAlign = 'left';
-      ctx.fillStyle = col; ctx.fillText(name, bx, by + h / 2);
-      ctx.fillStyle = ink + '.6)'; ctx.fillText(when, bx + wN, by + h / 2);
+      if (lm.align === 'left' && u[0] > 0.2) align = 'left'; else if (lm.align === 'right' && u[0] < -0.2) align = 'right'; else if (lm.align === 'center' && Math.abs(u[0]) < 0.5) align = 'center';
+      ctx.font = `600 12px ${FONT}`; const w1 = ctx.measureText(name).width; ctx.font = `500 11px ${FONT}`; const w2 = ctx.measureText(sub).width, w = Math.max(w1, w2);
+      const gap = m.length > 1 ? 22 : 14;
+      const place = (i, al = align) => {
+        const s1 = at(az, EL + SPOKES[i]); if (!s1) return null;
+        // From the spoke tip (or past the count badge), the label sits off to the side the spoke points, so the spoke never runs into it.
+        const bx0 = s1.x + u[0] * (gap - 13), by0 = s1.y + u[1] * (gap - 13), side = m.length > 1 ? 13 : 4;
+        const lx = bx0 + (al === 'left' ? side : al === 'right' ? -side : 0), ly = by0 + (al === 'center' ? (u[1] < 0 ? -side - 14 : side + 14) : u[1] * 16);
+        const x0 = al === 'left' ? lx : al === 'right' ? lx - w : lx - w / 2;
+        // Too wide to fit beside the spoke at the screen edge: stack it above or below the tip instead.
+        if (al !== 'center' && (x0 < 10 || x0 + w > this.w - 10)) return place(i, 'center');
+        return { s1, ly, al, box: { x: x0, y: ly - 14, w, h: 28 } };
+      };
+      // Longer spokes push a crowded label outward; a label keeps its length while that's still clear (steady text).
+      let pick = null;
+      for (const i of [...new Set([lm.step ?? 0, 0, 1, 2, 3])]) { const c = place(i); if (c && !hit(c.box)) { pick = c; lm.step = i; break; } }
+      if (!pick) { pick = place(lm.step ?? 0) ?? place(0); if (!pick) continue; }
+      lm.align = align; mem.set(name, lm); boxes.push(pick.box); align = pick.al;
+      // Leaders from each dot out to the ring, then one spoke beyond it.
+      ctx.strokeStyle = col; ctx.globalAlpha = a * 0.4; ctx.setLineDash([2, 3]);
+      for (const g of m) { const q = sky(g.az, g.el), r0 = at(g.az); if (q && r0) { ctx.beginPath(); ctx.moveTo(q.x, q.y); ctx.lineTo(r0.x, r0.y); ctx.stroke(); } }
+      ctx.setLineDash([]); ctx.globalAlpha = a;
+      const s0 = at(az, EL + 0.3), s1 = pick.s1; if (!s0) continue;
+      ctx.lineWidth = top.isNew ? 2.5 : 1.6; ctx.beginPath(); ctx.moveTo(s0.x, s0.y); ctx.lineTo(s1.x, s1.y); ctx.stroke(); ctx.lineWidth = 1;
+      if (m.length > 1) { ctx.fillStyle = col; ctx.beginPath(); ctx.arc(s1.x + u[0] * 9, s1.y + u[1] * 9, 8, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = '#05090f'; ctx.font = `600 11px ${FONT}`; ctx.textAlign = 'center'; ctx.fillText(String(m.length), s1.x + u[0] * 9, s1.y + u[1] * 9 + 0.5); }
+      const { box, ly } = pick, x0 = Math.max(10, Math.min(this.w - 10 - w, box.x));
+      ctx.textAlign = 'left'; ctx.shadowColor = 'rgba(0,0,0,.7)'; ctx.shadowBlur = 4;
+      ctx.font = `600 12px ${FONT}`; ctx.fillStyle = col; ctx.fillText(name, x0 + (align === 'right' ? w - w1 : align === 'center' ? (w - w1) / 2 : 0), ly - 6);
+      ctx.font = `500 11px ${FONT}`; ctx.fillStyle = ink + '.6)'; ctx.fillText(sub, x0 + (align === 'right' ? w - w2 : align === 'center' ? (w - w2) / 2 : 0), ly + 8);
+      ctx.shadowBlur = 0;
     }
     ctx.restore();
   }
@@ -1396,7 +1432,7 @@ export class SkyView {
     if (this.basis.back[2] < 0.15 && this.feetA < 0.98) this.drawBelowSky(sky, belowSats, belowStarLimit);
     if (daySats?.length && this.basis.back[2] > -0.15) this.drawDaySats(daySats); else this.dayHitId = null;
     if ((below?.length || belowSats?.length) && this.basis.back[2] < 0.15 && this.feetA < 0.98) this.drawBelow([...(below ?? []), ...(belowSats ?? []).map((s) => ({ enu: s.enu, kind: 'dot', id: s.obj.id, name: s.name, what: s.what, place: s.place, note: s.note ?? '', where: '', owned: s.owned }))]);
-    this.drawFeet(feet ?? below); // the ring at your feet shows what's UP and which way to face (2026-10-13, Sevaan)
+    this.drawFeet(feet); // the ring at your feet shows what's UP and which way to face (2026-10-13, Sevaan)
     this.drawRising(rising);
     this.drawGrid();
 

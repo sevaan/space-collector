@@ -13,6 +13,7 @@ h1{font:400 clamp(26px,6vw,38px)/1.1 var(--display);margin:8px 0 8px}
 .opt h2{font:400 20px/1.1 var(--display);margin:0 0 4px}.opt p{color:var(--muted);margin:0 0 12px}
 canvas{display:block;width:100%;max-width:340px;aspect-ratio:340/560;border-radius:30px;border:6px solid #1b2433;background:var(--sky);margin:0 auto}
 ul{color:var(--muted);padding-left:18px;margin:12px 0 0;font-size:15.5px} li{margin-bottom:4px} b{color:var(--ink)}
+.combo{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,330px),1fr));gap:24px;margin-top:34px;align-items:center}.combo ul{font-size:17px}
 .pick{margin-top:30px;padding:16px;border-radius:14px;border:1px solid #fa812766;background:#1a1410;max-width:820px}
 </style>
 <main><span class="k">Explore · looking down</span><h1>Three ground compasses</h1>
@@ -25,6 +26,8 @@ ul{color:var(--muted);padding-left:18px;margin:12px 0 0;font-size:15.5px} li{mar
 <div class="opt"><h2>C · Sky map at your feet</h2><p>A small all-sky map on the ground: the edge is the horizon, the centre is straight up, things sit where they really are.</p><canvas id="c" width="680" height="1120"></canvas>
 <ul><li>Same picture as a printed <b>star chart</b>: height is distance from the edge.</li><li>Icons, not text, for most things; <b>only the best 3 are named</b> and a tight bunch gets one label.</li><li>The wedge shows where you're facing, and turns with you.</li></ul></div>
 </div>
+<div class="combo"><div class="opt"><h2>A + C · Sky map in a compass ring</h2><p>C's map inside A's ring. Each thing sits where it really is (edge = horizon, centre = straight up), and a short spoke carries its name out past the ring, so labels never sit on top of the map.</p><canvas id="d" width="680" height="1120"></canvas></div>
+<ul><li><b>Inside:</b> the true sky, so you can see height at a glance: near the rim is low, near the middle is high.</li><li><b>Outside:</b> the names, on spokes at their compass direction, like A. A thin line joins each dot to its spoke.</li><li>Bunches share one spoke with a count ("3 new satellites"); stars stay as small dots, and only planets, the Moon and new cards get a name.</li><li>The wedge shows where you're facing and the whole dial turns with you.</li></ul></div>
 <div class="pick"><b>My pick: B, the heading tape.</b> It's the easiest to read at a glance and can't get tangled however many things are up, which is the problem in your screenshot. A is the prettiest; C matches the old map, but it's busier.</div>
 </main>
 <script>
@@ -77,7 +80,23 @@ function C(c,h){base(c);const cx=340,cy=560,R=230;
  groups().filter(g=>g.k!=='star').sort((a,b)=>RANK[a.k]-RANK[b.k]).slice(0,3).forEach(g=>{const t=(rel(g.az,h)-90)*Math.PI/180,r=R*(1-g.el/90),x=cx+Math.cos(t)*r,y=cy+Math.sin(t)*r,al=Math.cos(t)>=0?'left':'right';
   label(c,x+(al==='left'?24:-24),y-4,al,g.name,g.sub||g.el+'° up',g.k==='new'?ORG:INK);});
  c.fillStyle=ORG;c.beginPath();c.arc(cx,cy,5,0,7);c.fill();F(c,20,600);c.fillStyle=MUT;c.textAlign='center';c.fillText('THE EDGE IS THE HORIZON · CENTRE IS STRAIGHT UP',cx,cy+R+80);}
-const cs={a:[A,document.getElementById('a').getContext('2d')],b:[B,document.getElementById('b').getContext('2d')],c:[C,document.getElementById('c').getContext('2d')]};
+function D(c,h){base(c);const cx=340,cy=560,R=190;
+ c.fillStyle='#0b1626';c.beginPath();c.arc(cx,cy,R,0,7);c.fill();[R*2/3,R/3].forEach(r=>{c.strokeStyle='#1c2b3c';c.lineWidth=1.5;c.beginPath();c.arc(cx,cy,r,0,7);c.stroke();});
+ c.fillStyle='#fa812720';c.beginPath();c.moveTo(cx,cy);c.arc(cx,cy,R,-Math.PI/2-0.33,-Math.PI/2+0.33);c.fill();
+ c.strokeStyle='#fff2b366';c.lineWidth=2;c.beginPath();c.arc(cx,cy,R,0,7);c.stroke();
+ for(let a=0;a<360;a+=15){const t=(rel(a,h)-90)*Math.PI/180,l=a%90?8:16;c.strokeStyle='#fff2b344';c.beginPath();c.moveTo(cx+Math.cos(t)*R,cy+Math.sin(t)*R);c.lineTo(cx+Math.cos(t)*(R+l),cy+Math.sin(t)*(R+l));c.stroke();}
+ F(c,22,600);c.textAlign='center';c.textBaseline='middle';[['N',0],['E',90],['S',180],['W',270]].forEach(([n,a])=>{const t=(rel(a,h)-90)*Math.PI/180;c.fillStyle=n==='N'?ORG:'#9fb3c899';c.fillText(n,cx+Math.cos(t)*(R-20),cy+Math.sin(t)*(R-20));});
+ ITEMS.forEach(([n,az,el,k])=>{const t=(rel(az,h)-90)*Math.PI/180,r=R*(1-el/90),x=cx+Math.cos(t)*r,y=cy+Math.sin(t)*r,col=colOf(k);if(k==='new'){c.strokeStyle=ORG;c.lineWidth=2;c.beginPath();c.arc(x,y,12,0,7);c.stroke();}icon(c,x,y,k,col);});
+ groups().filter(g=>g.k!=='star').forEach(g=>{const t=(rel(g.az,h)-90)*Math.PI/180,r=R*(1-g.el/90),col=colOf(g.k),x=cx+Math.cos(t)*r,y=cy+Math.sin(t)*r;
+  c.strokeStyle=g.k==='new'?'#fa812777':'#fff2b344';c.lineWidth=1.5;c.setLineDash([3,4]);c.beginPath();c.moveTo(x+Math.cos(t)*14,y+Math.sin(t)*14);c.lineTo(cx+Math.cos(t)*R,cy+Math.sin(t)*R);c.stroke();c.setLineDash([]);
+  c.strokeStyle=col;c.lineWidth=g.k==='new'?4:2.5;c.beginPath();c.moveTo(cx+Math.cos(t)*(R+4),cy+Math.sin(t)*(R+4));c.lineTo(cx+Math.cos(t)*(R+44),cy+Math.sin(t)*(R+44));c.stroke();
+  const tx=cx+Math.cos(t)*(R+54),ty=cy+Math.sin(t)*(R+54);
+  if(g.n>1){c.fillStyle=col;c.beginPath();c.arc(tx,ty,12,0,7);c.fill();F(c,16,600);c.fillStyle='#05090f';c.textAlign='center';c.fillText(g.n,tx,ty+1);}
+  const al=Math.cos(t)>0.25?'left':Math.cos(t)<-0.25?'right':'center',off=al==='center'?(Math.sin(t)<0?-34:30):0;
+  label(c,tx+Math.cos(t)*18,ty+Math.sin(t)*14+off-6,al,g.name,g.sub||g.el+'° up',g.k==='new'?ORG:INK);});
+ c.fillStyle=ORG;c.beginPath();c.moveTo(cx,cy-R-6);c.lineTo(cx-9,cy-R-22);c.lineTo(cx+9,cy-R-22);c.fill();c.beginPath();c.arc(cx,cy,4,0,7);c.fill();
+ F(c,19,600);c.fillStyle=MUT;c.textAlign='center';c.fillText('EDGE = HORIZON · CENTRE = STRAIGHT UP',cx,cy+R+150);}
+const cs={d:[D,document.getElementById('d').getContext('2d')],a:[A,document.getElementById('a').getContext('2d')],b:[B,document.getElementById('b').getContext('2d')],c:[C,document.getElementById('c').getContext('2d')]};
 let h=135,still=matchMedia('(prefers-reduced-motion: reduce)').matches;
 function frame(){for(const [fn,c] of Object.values(cs))fn(c,h);if(!still){h=135+Math.sin(performance.now()/3000)*25;requestAnimationFrame(frame);}}
 document.fonts.ready.then(frame);
