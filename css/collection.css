@@ -468,3 +468,4 @@ body.has-cards .collection-intro { display: none; }
 .fd-acts .ic { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; border: 1px solid #22344a; background: #0a1220; color: #e6ecf5; cursor: pointer; }
 .fd-acts .ic.on { border-color: #fa8127; color: #fa8127; }
 .fd-art > * { width: 100%; height: 100%; }
+.logbook.compact .lb-pic { height: 160px; } /* the full ladder picture, compact or not (2026-10-13, Sevaan: see the ranks better) */

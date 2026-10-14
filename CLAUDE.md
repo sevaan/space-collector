@@ -901,3 +901,7 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - **Buttons:** a target (closes the Collection and runs showMePass) and a bell (remindPass; only for passes more than 10 minutes away). Tapping a row opens the card viewer.
 - **Before you type:** "Rare ones you can see this week" lists the rarest new Uncommon+ cards with a pass in Tonight's and the Week's plans, soonest first.
 - **How passes are found:** Explore works them out (js/find-worker.js, 1-minute steps, daylight skipped, 10 days) via postMessage: find-passes, find-suggest, find-remind and find-show from the frame; find-passes, find-suggest and find-reminded replies.
+
+2026-10-13 · v0.1.660 (Sevaan):
+- **Observer stats moved:** now in Settings → Account, under your name (#set-stats-open). It opens the Collection with key '#stats', which runs openStats. The link under the rank card is hidden.
+- **Rank card:** the ladder picture is full height (160px) even when compact.
