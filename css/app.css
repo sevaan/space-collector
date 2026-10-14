@@ -1326,3 +1326,4 @@ body.night .wk4-moon::after { background: #ff7f70; }
 #visible .t-head:first-child, #vtab-tonight .t-head:first-child, #week-body .t-head:first-child { margin-top: 4px !important; }
 :is(#visible, #vtab-tonight, #week-body) .t-head + * { margin-top: 0 !important; }
 :is(#visible) .t-head + .vis-row2 { padding-top: 2px; }
+.wk4-foot { background: #f2c14e14; } .wk4-foot:active { background: #f2c14e26; } .wk4-foot.on { background: #f2c14e0a; }
