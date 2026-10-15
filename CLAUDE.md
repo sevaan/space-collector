@@ -1006,3 +1006,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 2026-10-15 · v0.1.699: CZ-6 stages use cz-6c, CZ-11 stages use jielong-3 (stand-ins until references exist); no Long March stage uses the generic long-march picture now.
 
 2026-10-15 · v0.1.700: Duplex (66906) has its own picture, duplex (from Sevaan's reference: upright CubeSat, silver face with lens and antenna, two green-edged solar wings). FIX: objects released from the ISS (COSPAR 1998-067xx) showed the station's 1998 launch date; scripts/iss-deployed.mjs gives them the launch date of the nearest catalogue number (their cargo flight), sets issDeploy: 1, and runs in build-catalog.mjs before retier. 13 objects (Duplex now 2025-12-04, Hokushin-1 2026-06-17).
+
+2026-10-15 · v0.1.701: Molniya picture (22 cards) redone accurately: silver cylinder, six windmill solar arms at the top, cone base with engine and two dish antennas on arms (from Sevaan's reference, described in the prompt; scratchpad molniya/).
