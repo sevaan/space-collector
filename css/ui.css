@@ -329,3 +329,4 @@ body:has(.overlay.panel:not([hidden])) .patch-coins { visibility: hidden; }
 /* "Last chance" pill (js/last-chance.js): falling satellites in Tonight's run and Find. */
 .lc-pill { font-style: normal !important; color: #ff6b5a !important; letter-spacing: .1em; text-transform: uppercase; font-size: .85em; }
 .run-stop .lc-pill { margin-left: 6px; border: 1px solid #ff6b5a88; border-radius: 4px; padding: 1px 5px; }
+body:has(#gh-remind:not([hidden])) #toasts { opacity: 0; pointer-events: none; transition: opacity .2s; } /* Remind me under the steering pill comes first (2026-10-14) */

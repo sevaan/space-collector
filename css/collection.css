@@ -510,3 +510,7 @@ body.albums-view .album__name { overflow-wrap: normal; }
 .v-where::before { content: '●'; color: #fa8127; margin-right: 6px; }
 .can-orbit .card__art::after { content: 'TAP FOR ITS ORBIT'; position: absolute; right: .8em; bottom: .7em; z-index: 3; font: 600 .95em/1 var(--label, 'Barlow Condensed', sans-serif); letter-spacing: .14em; color: #fff2b3cc; background: #050a12aa; padding: .3em .55em; border-radius: .4em; pointer-events: none; }
 .can-orbit .card__art.orbiting::after { content: 'TAP FOR THE PICTURE'; }
+/* Target and bell centred in their buttons (2026-10-14, Sevaan): the viewer's button padding pushed them off. */
+.fd-acts .ic { padding: 0; line-height: 0; box-sizing: border-box; }
+.fd-acts .ic svg { display: block; margin: auto; }
+#viewer .fd-acts button.ic.ic.ic { padding: 0; min-height: 0; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; } /* beats the viewer's generic button padding */

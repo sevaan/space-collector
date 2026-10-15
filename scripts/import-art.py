@@ -16,19 +16,19 @@ for src in sorted(glob.glob(os.path.join(sys.argv[1], '*.png'))) if len(sys.argv
     im = Image.open(src).convert('RGB')
     big = im.copy(); big.thumbnail((1200, 1200)); big.save(os.path.join(out, name + '.webp'), quality=80, method=6)
     small = im.copy(); small.thumbnail((440, 440)); small.save(os.path.join(sm, name + '.webp'), quality=76, method=6)
-def find_stars(path, n=9):
+def find_stars(path, n=60):  # every background star twinkles (2026-10-14, Sevaan): was 9
     # Small bright points in dark sky: local maxima above 170 brightness, tiny (few bright pixels
     # around them) and with dark surroundings, so planets, satellites and Earth's limb are skipped.
     im = Image.open(path).convert('L'); im.thumbnail((600, 600))
     a = np.asarray(im).astype(float); h, w = a.shape; out = []
-    ys, xs = np.where(a > 170)
+    ys, xs = np.where(a > 135)  # dimmer stars too (was 170)
     for y, x in zip(ys, xs):
         if y < 10 or x < 10 or y >= h - 10 or x >= w - 10: continue
         win = a[y - 3:y + 4, x - 3:x + 4]
-        if a[y, x] < win.max() or (win > 140).sum() > 14: continue
+        if a[y, x] < win.max() or (win > 140).sum() > 30: continue  # big four-point stars too (was 14)
         ring = np.concatenate([a[y - 9, x - 9:x + 10], a[y + 9, x - 9:x + 10], a[y - 9:y + 10, x - 9], a[y - 9:y + 10, x + 9]])
         if ring.mean() > 55 or ring.max() > 120: continue
-        if any(abs(x - ox) < w * .06 and abs(y - oy) < h * .06 for ox, oy, _ in out): continue
+        if any(abs(x - ox) < w * .025 and abs(y - oy) < h * .025 for ox, oy, _ in out): continue  # was 6%
         out.append((x, y, float(a[y, x])))
     out.sort(key=lambda t: -t[2])
     return {'r': round(w / h, 4), 's': [[round(x / w, 4), round(y / h, 4)] for x, y, _ in out[:n]]}

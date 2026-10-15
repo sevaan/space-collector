@@ -516,3 +516,4 @@
 .card--mission .card__footer { flex: none; margin: 0 .25em; padding: .45em 0 .1em; }
 .card--mission .card__lc { font-size: .95em; }
 .card--mission .shiny-tag { top: auto; bottom: .7em; left: .65em; } /* the rarity chip owns the top-left of the picture */
+.card--mission .art-stars { z-index: 3; } /* above the picture, which is absolutely positioned on mission cards (2026-10-14) */

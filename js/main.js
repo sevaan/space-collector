@@ -1,50 +1,50 @@
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.685';
-import * as Secrets from './secrets.js?v=0.1.685';
-import { STORY_BY_SECRET } from './stories.js?v=0.1.685';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.685';
-import * as Ufo from './ufo.js?v=0.1.685';
-import * as Fossil from './fossil.js?v=0.1.685';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.685';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.685';
-import { toast, ticket, dropToast, toastPending, onTicketShown } from './toast.js?v=0.1.685';
-import { VERSION } from './version.js?v=0.1.685';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, overEarth, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.685';
-import { placeName } from './geo.js?v=0.1.685';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.685';
-import { conArt } from './con-art.js?v=0.1.685';
-import { fetchWeather, tonightSky, skyClearAt } from './weather.js?v=0.1.685';
-import { CON_FIGURES } from './con-figures.js?v=0.1.685';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.685';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.685';
-import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.685';
-import { eventOf, activeEvent, nextEvent } from './events.js?v=0.1.685';
-import { conList } from './constellations.js?v=0.1.685';
-import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.685';
-import { SkyView, shortName } from './sky.js?v=0.1.685';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.685';
-import { isPlus, setPlusForTesting, onPlus, PLUS_PERKS } from './plus.js?v=0.1.685';
-import { isNative, getPosition, saveFile, notifyAt, cancelNotify, haptic, onNative, nativeChrome, plugin } from './native.js?v=0.1.685';
-import { initAccount, onAccount, account, signInGoogle, sendEmailLink, completeEmailLink, signOut, syncNow, pushSighting, deleteAccount, signInApple } from './account.js?v=0.1.685';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.685';
-import { cardArt } from './art.js?v=0.1.685';
-import { renderCard, miniCard, cardLevel, artImage, lockedArt, attachTilt, attachGyro, throwOff, attachFlip } from './card.js?v=0.1.685';
-import { applyBack } from './card-backs.js?v=0.1.685';
-import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.685';
-import { audioCtx } from './audio-ctx.js?v=0.1.685';
-import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume } from './music.js?v=0.1.685';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.685';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.685';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.685';
-import { naturalTargets, SOLAR_SYSTEM, DEEP_SKY } from './natural.js?v=0.1.685';
-import { placeFromTimeZone } from './tz-places.js?v=0.1.685';
-import { TIER_INFO } from './rarity.js?v=0.1.685';
-import { SETS, albumList } from './sets.js?v=0.1.685';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.685';
-import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.685';
-import { shareCardEl } from './share-card.js?v=0.1.685';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.685';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.685';
-import { addStarfield } from './starfield.js?v=0.1.685';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.686';
+import * as Secrets from './secrets.js?v=0.1.686';
+import { STORY_BY_SECRET } from './stories.js?v=0.1.686';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.686';
+import * as Ufo from './ufo.js?v=0.1.686';
+import * as Fossil from './fossil.js?v=0.1.686';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.686';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.686';
+import { toast, ticket, dropToast, toastPending, onTicketShown } from './toast.js?v=0.1.686';
+import { VERSION } from './version.js?v=0.1.686';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, overEarth, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.686';
+import { placeName } from './geo.js?v=0.1.686';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.686';
+import { conArt } from './con-art.js?v=0.1.686';
+import { fetchWeather, tonightSky, skyClearAt } from './weather.js?v=0.1.686';
+import { CON_FIGURES } from './con-figures.js?v=0.1.686';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.686';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.686';
+import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.686';
+import { eventOf, activeEvent, nextEvent } from './events.js?v=0.1.686';
+import { conList } from './constellations.js?v=0.1.686';
+import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.686';
+import { SkyView, shortName } from './sky.js?v=0.1.686';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.686';
+import { isPlus, setPlusForTesting, onPlus, PLUS_PERKS } from './plus.js?v=0.1.686';
+import { isNative, getPosition, saveFile, notifyAt, cancelNotify, haptic, onNative, nativeChrome, plugin } from './native.js?v=0.1.686';
+import { initAccount, onAccount, account, signInGoogle, sendEmailLink, completeEmailLink, signOut, syncNow, pushSighting, deleteAccount, signInApple } from './account.js?v=0.1.686';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.686';
+import { cardArt } from './art.js?v=0.1.686';
+import { renderCard, miniCard, cardLevel, artImage, lockedArt, attachTilt, attachGyro, throwOff, attachFlip } from './card.js?v=0.1.686';
+import { applyBack } from './card-backs.js?v=0.1.686';
+import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.686';
+import { audioCtx } from './audio-ctx.js?v=0.1.686';
+import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume } from './music.js?v=0.1.686';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.686';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.686';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.686';
+import { naturalTargets, SOLAR_SYSTEM, DEEP_SKY } from './natural.js?v=0.1.686';
+import { placeFromTimeZone } from './tz-places.js?v=0.1.686';
+import { TIER_INFO } from './rarity.js?v=0.1.686';
+import { SETS, albumList } from './sets.js?v=0.1.686';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.686';
+import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.686';
+import { shareCardEl } from './share-card.js?v=0.1.686';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.686';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.686';
+import { addStarfield } from './starfield.js?v=0.1.686';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -2055,7 +2055,7 @@ function reminderLimitHit(at, key) {
 }
 async function setReminder({ at, title, body, key }) {
   if (!isNative()) return 'app-only';
-  if (reminderLimitHit(at, key)) { openPlus('reminders'); return 'limit'; }
+  if (reminderLimitHit(at, key)) { if (collectionOpen) closeCollection(); openPlus('reminders'); return 'limit'; }
   const id = newRemindId(); if (key) { remindIds.set(key, { id, at }); saveRems(); }
   return notifyAt(at, title, body, { id });
 }
@@ -2065,8 +2065,10 @@ function remindDone(btn, ok, at) {
   if (ok) { label.textContent = `✓ Reminder set for ${fmtTime(at).replace(/\s?[AP]\.?M\.?$/i, '')}`; btn.disabled = true; btn.classList.add('done'); }
   else { const was = label.textContent; label.textContent = isNative() ? 'Couldn\'t set it. Check notifications in Settings' : 'Reminders work in the app'; setTimeout(() => { label.textContent = was; }, 3500); }
 }
+const reminderWords = (r, when) => (r === 'on' ? `We'll remind you at ${fmtTime(when)}.` : r === 'app-only' ? 'Reminders work in the Space Collector app.' : r === 'denied' ? 'Notifications are off for Space Collector. Turn them on in your phone\'s Settings.' : 'Couldn\'t set a reminder here.');
 function reminderToast(r, when) {
   if (r === 'limit') return null; // the Plus sheet is already explaining (null: callers say nothing)
+  if (collectionOpen) { colFrame.contentWindow?.postMessage({ sc: 'say', text: reminderWords(r, when) }, location.origin); return r === 'on'; } // toasts here sit behind the Collection (2026-10-14, Sevaan: "nothing happened")
   toast(r === 'on' ? `We'll remind you at ${fmtTime(when)}.` : r === 'app-only' ? 'Reminders work in the Space Collector app.' : r === 'denied' ? 'Notifications are off for Space Collector. Turn them on in your phone\'s Settings.' : 'Couldn\'t set a reminder here.', 3500);
   return r === 'on';
 }
@@ -3802,16 +3804,23 @@ $('set-data').addEventListener('click', () => {
 let udLast = '';
 // The pass marker in the circle (by day) gets a Remind me pill, 10 minutes before it rises.
 let ghLast = '';
+// The pass Show me is steering you to (state.guidePass), while the "appears here at…" pill shows (2026-10-14, Sevaan:
+// it needed a Remind me too).
+function guideRemindPass() {
+  const gp = state.guidePass, g = $('guidance'); if (!gp || g.hidden || gp.start - 10 * 60e3 <= now().getTime()) return null;
+  const obj = state.byId.get(gp.id); return obj ? { ...gp, obj, peakEl: gp.peakEl ?? gp.riseEl, peakAz: gp.peakAz ?? gp.riseAz } : null;
+}
 function ghRemind() {
-  const b = $('gh-remind'), p = sky.ghostHitId != null ? state.dayPicks?.find((x) => x.obj.id === sky.ghostHitId) : null;
+  const b = $('gh-remind'), dayP = sky.ghostHitId != null ? state.dayPicks?.find((x) => x.obj.id === sky.ghostHitId) : null, p = dayP ?? guideRemindPass();
   if (!p) { if (!b.hidden) { b.hidden = true; ghLast = ''; } return; }
   const key = `${p.obj.id}@${p.start}`, on = reminded.has(key), at = fmtTime(p.start - 10 * 60e3), txt = on ? `Reminder at ${at}` : `Remind me at ${at}`;
   if (txt !== ghLast) { ghLast = txt; $('gh-remind-t').textContent = txt; b.classList.toggle('on', on); b.dataset.key = key; }
-  const rc = sky.ring ?? { y: sky.cy, r: sky.reticlePx }; b.style.top = `${rc.y + rc.r + 54}px`;
+  const rc = sky.ring ?? { y: sky.cy, r: sky.reticlePx }, g = $('guidance');
+  b.style.top = dayP ? `${rc.y + rc.r + 54}px` : `${Math.round(g.getBoundingClientRect().bottom + 10)}px`; // under the steering pill
   b.hidden = false;
 }
 $('gh-remind').addEventListener('click', async () => {
-  const b = $('gh-remind'), key = b.dataset.key, p = state.dayPicks?.find((x) => `${x.obj.id}@${x.start}` === key); if (!p) return;
+  const b = $('gh-remind'), key = b.dataset.key, gp = guideRemindPass(), p = state.dayPicks?.find((x) => `${x.obj.id}@${x.start}` === key) ?? (gp && `${gp.obj.id}@${gp.start}` === key ? gp : null); if (!p) return;
   buzz(8);
   if (reminded.has(key)) { reminded.delete(key); cancelNotify(remindIds.get(key)?.id); remindIds.delete(key); saveRems(); toast(`Reminder off for ${label(p.obj)}.`, 2500); }
   else if (await remindPass(p, key)) reminded.add(key);

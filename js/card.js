@@ -1,19 +1,19 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { fallWords } from './last-chance.js?v=0.1.685';
-import { sfx } from './sfx.js?v=0.1.685';
-import { cardArt } from './art.js?v=0.1.685';
-import { TIER_INFO } from './rarity.js?v=0.1.685';
-import { SET_BY_ID } from './sets.js?v=0.1.685';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.685';
-import { FLEET_ABOUT, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.685';
-import { artFileFor } from './art-keys.js?v=0.1.685';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.685';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.685';
-import { nightsIn } from './observation.js?v=0.1.685';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.685';
-import { SHINY } from './shiny.js?v=0.1.685';
-import { conArt, cometArt } from './con-art.js?v=0.1.685';
-import { CON_FIGURES } from './con-figures.js?v=0.1.685';
+import { fallWords } from './last-chance.js?v=0.1.686';
+import { sfx } from './sfx.js?v=0.1.686';
+import { cardArt } from './art.js?v=0.1.686';
+import { TIER_INFO } from './rarity.js?v=0.1.686';
+import { SET_BY_ID } from './sets.js?v=0.1.686';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.686';
+import { FLEET_ABOUT, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.686';
+import { artFileFor } from './art-keys.js?v=0.1.686';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.686';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.686';
+import { nightsIn } from './observation.js?v=0.1.686';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.686';
+import { SHINY } from './shiny.js?v=0.1.686';
+import { conArt, cometArt } from './con-art.js?v=0.1.686';
+import { CON_FIGURES } from './con-figures.js?v=0.1.686';
 // The animal/symbol figure belongs to the completed (gold) constellation card only (2026-10-05): a single
 // star's card draws just the star pattern with its star marked, so the figure is a reward for finishing the set.
 // A star card's constellation figure comes into focus as you collect the constellation's stars (design/con-focus.html B).
@@ -396,20 +396,33 @@ export function attachFlip(el, { onBack, onTap } = {}) {
   el.addEventListener('pointerdown', (e) => { downX = e.clientX; downY = e.clientY; });
   const still = (e) => Math.hypot(e.clientX - downX, e.clientY - downY) < 10;
   const back = el.querySelector('.card__back');
+  // Smooth back-and-forth (2026-10-14, Sevaan: flipping back and forth was janky): the old animation is dropped instead
+  // of piling up (each one used to stay with fill: forwards), the faces swap on the frame the card is edge-on (read from
+  // the animation's own clock, not a timer that drifts), and a double tap during a flip is queued, not ignored.
+  let anim = null, queued = false;
   const flip = () => {
-    if (busy || !back) return;
+    if (!back) return;
+    if (busy) { queued = true; return; }
     busy = true; flipped = !flipped; sfx('flip', { gain: 0.8 });
     if (flipped) onBack?.(back);
-    const ms = reducedMotion() ? 1 : 560, from = flipped ? 0 : 180, to = flipped ? 180 : 360;
-    // Ease in to edge-on, out from it, so edge-on lands exactly at ms / 2 when the faces swap (an overall
-    // ease-out passed 90° early, flashing the mirrored front and then a flat back).
-    el.animate([
-      { transform: `perspective(1600px) rotateY(${from}deg)`, easing: 'cubic-bezier(.5,0,1,1)' },
-      { transform: `perspective(1600px) rotateY(${from + 90}deg)`, easing: 'cubic-bezier(0,0,.4,1)', offset: .5 },
+    const ms = reducedMotion() ? 1 : 520, from = flipped ? 0 : 180, to = flipped ? 180 : 360, show = flipped;
+    anim?.cancel();
+    anim = el.animate([
+      { transform: `perspective(1600px) rotateY(${from}deg)`, easing: 'cubic-bezier(.45,0,.9,.6)' },
+      { transform: `perspective(1600px) rotateY(${from + 90}deg)`, easing: 'cubic-bezier(.1,.4,.55,1)', offset: .5 },
       { transform: `perspective(1600px) rotateY(${to}deg)` }],
       { duration: ms, easing: 'linear', fill: 'forwards' });
-    setTimeout(() => { back.style.opacity = flipped ? '1' : ''; }, ms / 2); // edge-on: swap faces
-    setTimeout(() => { busy = false; }, ms);
+    const a = anim; let swapped = false;
+    const tick = () => {
+      if (a !== anim) return;
+      const t = a.currentTime ?? ms;
+      if (!swapped && t >= ms / 2) { swapped = true; back.style.opacity = show ? '1' : ''; }
+      if (t < ms && a.playState !== 'finished') { requestAnimationFrame(tick); return; }
+      if (!swapped) back.style.opacity = show ? '1' : '';
+      busy = false;
+      if (queued) { queued = false; flip(); }
+    };
+    requestAnimationFrame(tick);
   };
   const onUp = (e) => {
     if (el.dataset.swiping || !still(e)) return;
