@@ -990,3 +990,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 2026-10-14 · v0.1.691: all 89 constellations have a figure (71 new, assets/art/con/<id>.webp 900×600, CON_FIGURES), so every constellation star card brings its figure into focus. Made with Nano Banana Pro from two existing figures (style) plus the constellation's own chart rendered by design/con-guides.html at the card's framing (placement); script copied to scripts/con-figures-gen.py (needs gcloud login sevaan@gmail.com). Redone after checking overlays: Andromeda (stars drawn in), Carina (needs Leo+Sco refs, Orion's hunter kept appearing), Corona Borealis, Horologium, Octans, Norma, Scutum, Vela.
 
 2026-10-15 · v0.1.692: review.html shows constellation star cards with their figure in full focus (all its stars treated as owned) and groups them one per figure ("figure-<id>", search "figure-" for all 89).
+
+2026-10-15 · v0.1.693: Hokushin-1 (69648) has its own picture, assets/art/cards/hokushin (3U CubeSat with one 4×5 solar wing), drawn from Sevaan's photo + CAD references (session scratchpad hokushin/); art-keys.js NAMED. It used to share classic-satellite-1.
