@@ -1,17 +1,17 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.680';
+import { extinction } from './sky-limit.js?v=0.1.681';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.680';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.681';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.680';
-import { createCloudGL } from './clouds-gl.js?v=0.1.680';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.681';
+import { createCloudGL } from './clouds-gl.js?v=0.1.681';
 // Cloud colours by light: sunlit tops, shadowed bellies, and the horizon haze they melt into (0–1 RGB).
 const CLOUD_LIGHT = {
   day: { lit: [1, 1, 1], shade: [0.62, 0.68, 0.77], haze: [0.82, 0.87, 0.93] },
   dusk: { lit: [1, 0.8, 0.68], shade: [0.36, 0.33, 0.42], haze: [0.62, 0.5, 0.52] },
   night: { lit: [0.22, 0.25, 0.31], shade: [0.1, 0.12, 0.16], haze: [0.14, 0.15, 0.2] },
 };
-import { TIER_INFO } from './rarity.js?v=0.1.680';
+import { TIER_INFO } from './rarity.js?v=0.1.681';
 
 const RAD = Math.PI / 180;
 const BELOW_ICON = 10.5, BELOW_ICON_HIT = 20; // every satellite under the horizon, passes and halo alike (80% of 13 since 2026-10-13); lined up in the circle it grows
@@ -930,7 +930,7 @@ export class SkyView {
       const p = this.project(s.enu); if (!p || !this.onScreen(p, 30)) continue;
       // Deep-space spots (Voyagers, Pioneers, New Horizons, the Wow! signal) are invisible until they're in your
       // circle, so you stumble on them (2026-10-09, Sevaan). Found ones show quietly there too, never elsewhere.
-      const hidden = ['voyager', 'voyager2', 'pioneer10', 'pioneer11', 'newhorizons', 'wow'].includes(s.kind);
+      const hidden = ['voyager', 'voyager2', 'pioneer10', 'pioneer11', 'newhorizons', 'wow', 'arecibo', 'halley'].includes(s.kind);
       if (hidden && !s.inCircle) continue;
       if (s.done) continue; // once found, a secret leaves the sky for good (2026-10-09, Sevaan)
       const sc = s.inCircle && !s.done ? 1.6 : 1;
@@ -953,6 +953,15 @@ export class SkyView {
       } else if (s.kind === 'newhorizons') { // a little triangle body with its dish
         ctx.shadowColor = 'rgba(143,208,255,.6)'; ctx.shadowBlur = 4; ctx.fillStyle = '#c9d8e6'; ctx.beginPath(); ctx.moveTo(-2.5, 2); ctx.lineTo(2.5, 2); ctx.lineTo(0, -2.2); ctx.closePath(); ctx.fill();
         ctx.strokeStyle = '#fff2b3'; ctx.lineWidth = 0.8; ctx.beginPath(); ctx.arc(0, -0.4, 3, Math.PI * 1.1, Math.PI * 1.9); ctx.stroke();
+      } else if (s.kind === 'arecibo') { // the message: a tiny grid of pixels
+        ctx.fillStyle = '#3fc7b5'; for (const [x, y] of [[-2, -3], [0, -3], [2, -3], [-1, -1], [1, -1], [0, 1], [-2, 3], [2, 3], [0, 3]]) ctx.fillRect(x - 0.6, y - 0.6, 1.2, 1.2);
+      } else if (s.kind === 'halley') { // a small comet, its short tail pointing away from the Sun
+        ctx.shadowColor = 'rgba(143,208,255,.7)'; ctx.shadowBlur = 5; ctx.fillStyle = '#dff1ff'; ctx.beginPath(); ctx.arc(0, 0, 1.6, 0, Math.PI * 2); ctx.fill();
+        const tg = ctx.createLinearGradient(0, 0, 9, -4); tg.addColorStop(0, 'rgba(223,241,255,.7)'); tg.addColorStop(1, 'rgba(223,241,255,0)'); ctx.strokeStyle = tg; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(9, -4); ctx.stroke();
+      } else if (s.kind === 'sputnik' || s.kind === 'laika') { // a shiny ball with four swept-back antennas
+        ctx.shadowColor = 'rgba(255,242,179,.7)'; ctx.shadowBlur = 5; ctx.fillStyle = '#e8e3c8'; ctx.beginPath(); ctx.arc(0, 0, 2.2, 0, Math.PI * 2); ctx.fill();
+        ctx.strokeStyle = '#e8e3c8'; ctx.lineWidth = 0.6; for (const dy of [-1.4, -0.5, 0.5, 1.4]) { ctx.beginPath(); ctx.moveTo(-1.5, dy * 0.6); ctx.lineTo(-9, dy * 2.4); ctx.stroke(); }
+        if (s.kind === 'laika') { ctx.fillStyle = '#ffc93d'; ctx.beginPath(); ctx.arc(3.6, -2.6, 0.9, 0, Math.PI * 2); ctx.fill(); }
       } else if (s.kind === 'wow') { // a faint radio pulse
         ctx.strokeStyle = '#ff6b6b'; ctx.lineWidth = 0.9; ctx.globalAlpha = 0.85;
         for (const r of [1.4, 3, 4.6]) { ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI * 2); ctx.stroke(); ctx.globalAlpha *= 0.6; }

@@ -1,19 +1,19 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { fallWords } from './last-chance.js?v=0.1.680';
-import { sfx } from './sfx.js?v=0.1.680';
-import { cardArt } from './art.js?v=0.1.680';
-import { TIER_INFO } from './rarity.js?v=0.1.680';
-import { SET_BY_ID } from './sets.js?v=0.1.680';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.680';
-import { FLEET_ABOUT, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.680';
-import { artFileFor } from './art-keys.js?v=0.1.680';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.680';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.680';
-import { nightsIn } from './observation.js?v=0.1.680';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.680';
-import { SHINY } from './shiny.js?v=0.1.680';
-import { conArt, cometArt } from './con-art.js?v=0.1.680';
-import { CON_FIGURES } from './con-figures.js?v=0.1.680';
+import { fallWords } from './last-chance.js?v=0.1.681';
+import { sfx } from './sfx.js?v=0.1.681';
+import { cardArt } from './art.js?v=0.1.681';
+import { TIER_INFO } from './rarity.js?v=0.1.681';
+import { SET_BY_ID } from './sets.js?v=0.1.681';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.681';
+import { FLEET_ABOUT, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.681';
+import { artFileFor } from './art-keys.js?v=0.1.681';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.681';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.681';
+import { nightsIn } from './observation.js?v=0.1.681';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.681';
+import { SHINY } from './shiny.js?v=0.1.681';
+import { conArt, cometArt } from './con-art.js?v=0.1.681';
+import { CON_FIGURES } from './con-figures.js?v=0.1.681';
 // The animal/symbol figure belongs to the completed (gold) constellation card only (2026-10-05): a single
 // star's card draws just the star pattern with its star marked, so the figure is a reward for finishing the set.
 const conFig = (id) => (CON_FIGURES.has(id) ? { figure: `assets/art/con/${id}.webp` } : {});
@@ -99,18 +99,19 @@ export function renderCard(o, opts = {}) {
   const conCard = o.natural === 'constellation', prog = conCard ? conProgress(o, opts.ownedKeys ?? new Set()) : null;
   const caught = conCard ? prog.level === 'gold' : sightings.length > 0; // a constellation joins your collection only when complete
   const shinyOf = o.launches ? null : sightings.find((x) => x.shiny && SHINY[x.shiny])?.shiny; // a shiny sighting makes the card shiny (js/shiny.js); fleet cards never are
-  const revealed = caught || opts.preview;
+  const revealed = caught || (opts.preview && !o.story); // a story's picture stays hidden until you find it
   const AS = opts.mini ? 'small' : 'full'; // opts.mini: the same card shrunk into a Collection tile (small pictures, no sparkles)
   const extinct = opts.forceExtinct || !!o.decay;
   const fleet = !!o.launches, stamps = fleet ? stampsIn(sightings) : null;
   const level = opts.forceLevel ?? (conCard ? prog.level : fleet ? fleetLevel(o.family, stamps.size) : cardLevel(sightings));
-  const tier = TIER_INFO[o.tier] ?? TIER_INFO.common;
+  const tier = o.story ? { gem: '❖', label: 'Story', color: '#3fc7b5' } : TIER_INFO[o.tier] ?? TIER_INFO.common; // story cards (js/stories.js) wear their own teal label
   const set = SET_BY_ID[o.set] ?? { name: 'Field archive', color: '#d74730' };
   const stats = orbitStats(o), age = yearsUp(o.launches ? { launch: o.launches[0]?.launch } : o), laps = lapsPerDay(o); // a fleet's age is from its FIRST launch, the date shown (Starlink said 6 years for 2019)
   // A crew count changes often and is not supplied by the orbital catalogue.
   const loreStat = thirdStat(o, sizeLabel(o.rcs), opts.seenMembers ?? 0);
   const third = loreStat.label === 'CREW' ? { label: 'LAUNCHED', value: o.launch?.slice(0, 4) ?? '—' } : loreStat;
-  const title = titleFor(o);
+  const secretStory = o.story && !caught; // a story you haven't found keeps its secret
+  const title = secretStory ? 'Secret story' : titleFor(o);
   const el = document.createElement('article');
   el.className = `card card--retro${o.icon ? ' is-icon' : ''}${shinyOf ? ' shiny' : ''}${fleet ? ' card--fleet' : ''}${(conCard || fleet) && level === 'gold' ? ' gold-foil' : ''} tier-${o.tier ?? 'common'} level-${level}${revealed ? '' : ' uncaught'}${!caught ? ' not-owned' : ''}${extinct ? ' extinct' : ''}${title.length > 24 ? ' long-name' : ''}`;
   el.style.setProperty('--set', set.color);
@@ -124,13 +125,14 @@ export function renderCard(o, opts = {}) {
   const firstDate = first != null ? new Date(first).toLocaleDateString('en-GB', { month: 'short', day: '2-digit', year: 'numeric' }).toUpperCase() : '';
   const nat = !!o.natural;
   const identifier = nat ? o.code : o.members ? `${o.members.length.toLocaleString('en-US')} SATELLITES` : o.runOf > 1 ? `NO. ${o.runNo} OF ${o.runOf}` : `NORAD ${o.id}`;
-  const identity = nat ? (conCard ? (o.system ? 'Planetary system' : o.zodiac ? 'Zodiac constellation' : 'Constellation') : o.type === 'star' ? `Star in ${o.constellation}` : o.type === 'deepsky' ? o.kind : o.type === 'comet' ? 'Comet' : o.type === 'sun' ? 'Star' : o.type === 'moon' ? 'Natural satellite' : 'Planet') : fleet ? 'Satellite fleet' : o.type === 'rocket-body' && o.parent ? `Carried ${titleCase(o.parent)}${o.launch ? ` · ${o.launch.slice(0, 4)}` : ''}` : o.type === 'debris' && o.launch ? `${TYPE_LABEL[o.type] ?? 'Debris'} · ${o.launch.slice(0, 4)}` : TYPE_LABEL[o.type] ?? 'Orbital object'; // what it carried and when, so same-name stages differ
+  const identity = o.type === 'story' ? (secretStory ? 'Hidden somewhere in the sky' : o.when) : nat ? (conCard ? (o.system ? 'Planetary system' : o.zodiac ? 'Zodiac constellation' : 'Constellation') : o.type === 'star' ? `Star in ${o.constellation}` : o.type === 'deepsky' ? o.kind : o.type === 'comet' ? 'Comet' : o.type === 'sun' ? 'Star' : o.type === 'moon' ? 'Natural satellite' : 'Planet') : fleet ? 'Satellite fleet' : o.type === 'rocket-body' && o.parent ? `Carried ${titleCase(o.parent)}${o.launch ? ` · ${o.launch.slice(0, 4)}` : ''}` : o.type === 'debris' && o.launch ? `${TYPE_LABEL[o.type] ?? 'Debris'} · ${o.launch.slice(0, 4)}` : TYPE_LABEL[o.type] ?? 'Orbital object'; // what it carried and when, so same-name stages differ
   const ageText = age == null ? '' : age === 0 ? 'Less than a year ago' : `${age} ${age === 1 ? 'year' : 'years'} ago`;
   // Fleet cards: the ringed dot is your newest stamp; say which launch that was (the dots alone don't).
   const lk = fleet ? latestStamp(sightings) : null, ll = lk ? o.launches.find((l) => l.key === lk) : null;
   const latestLine = ll ? `Launched ${launchDay(ll.launch).replace(/ (\d{4})$/, ', $1')}` : ''; // sits right of the grid's heading
   const factBlock = fleet ? dotMap(o, stamps, lk, `${stamps.size} / ${o.launches.length} stamped` /* no "N more for Silver" (2026-10-12, Sevaan: it wrapped and took room from the art) */, latestLine) + (FLEET_ABOUT[o.family] ? `<div class="card__fact fl-about"><p>${richText(FLEET_ABOUT[o.family])}</p></div>` : '')
     : conCard ? `<div class="card__fact"><p>${richText(prog.level === 'gold' ? factFor(o).replace(/Collect all \d+ of its stars to turn this card \*\*gold\*\*\./, `You've found **all ${prog.total}** of its stars.`).replace(/Collect the Sun, the Moon and all \*\*seven\*\* planets to turn this card \*\*gold\*\*\./, `You've seen **all nine** of them with your own eyes.`) : factFor(o))}</p><p class="con-progress">${o.stars.map((k) => `<i class="${(opts.ownedKeys ?? new Set()).has(k) ? 'on' : ''}"></i>`).join('')}<span>${prog.have} / ${prog.total} ${o.system ? 'WORLDS' : 'STARS'}${prog.level === 'gold' ? ' · COMPLETE' : ''}</span></p></div>`
+    : secretStory ? '<div class="card__fact"><p>Somewhere in the sky there\'s a story waiting. Keep looking, at night, in odd places, on special days.</p></div>'
     : `<div class="card__fact"><p>${richText(factFor(o))}</p></div>`; // the fact shows on cards you don't have too: it's what makes you want one (2026-10-13, Sevaan)
   // Long facts take room from the art, not the card: each line past three shrinks the art window (about
   // 52 characters a line), so every card stays the same height.
@@ -147,7 +149,7 @@ export function renderCard(o, opts = {}) {
   // fact, and the footer.
   const sub = nat || fleet || o.type === 'rocket-body' || o.type === 'debris' ? identity : [ownerWord(o.owner, o.year ?? Number(o.launch?.slice(0, 4))), roleOf(o).replace(/^./, (ch) => (ownerWord(o.owner) ? ch.toLowerCase() : ch))].filter(Boolean).join(' ').replace(/^./, (ch) => ch.toUpperCase()) + (o.launch ? ` · ${o.launch.slice(0, 4)}` : '');
   const kmh = laps ? Math.round(speedKmh(laps) / 100) * 100 : null;
-  const four = nat ? o.stats.map(([label, value, unit]) => [label, value, unit])
+  const four = secretStory ? [] : nat ? o.stats.map(([label, value, unit]) => [label, value, unit])
     : fleet ? [['HEIGHT', stats ? stats.alt.toLocaleString('en-US') : '—', 'km'], ['SPEED', kmh ? kmh.toLocaleString('en-US') : '—', 'km/h'], ['FIRST', o.launch?.slice(0, 4) ?? '—', ''], ['LAUNCHES', String(o.launches.length), '']]
     : [['HEIGHT', stats ? stats.alt.toLocaleString('en-US') : '—', 'km'], ['SPEED', kmh ? kmh.toLocaleString('en-US') : '—', 'km/h'], ['LAPS A DAY', laps ? laps.toFixed(laps < 10 ? 1 : 0) : '—', ''], [o.type === 'rocket-body' || o.type === 'debris' ? 'YEARS UP' : 'LAUNCHED', o.type === 'rocket-body' || o.type === 'debris' ? (age == null ? '—' : String(age)) : (o.launch?.slice(0, 4) ?? '—'), '']];
   el.classList.add('card--mission');

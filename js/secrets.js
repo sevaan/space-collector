@@ -13,6 +13,13 @@ export const SECRET_PATCHES = {
   pioneer11: { id: 'pioneer11', name: 'Ringside', text: 'You found Pioneer 11, the first visitor to Saturn. It went quiet in 1995 and keeps coasting outward.' },
   newhorizons: { id: 'newhorizons', name: 'Heart of Pluto', text: 'You found New Horizons, which flew past Pluto in 2015 and kept going.' },
   wow: { id: 'wow', name: 'Wow!', text: 'You aimed where the 1977 Wow! signal came from. It has never been heard again.' },
+  // Story secrets (2026-10-14, js/stories.js): each also gives a story card.
+  arecibo: { id: 'arecibo', name: 'Hello From Earth', text: 'You found where the 1974 Arecibo message is heading: the Hercules Cluster.' },
+  halley: { id: 'halley', name: 'Way Home', text: 'You found Halley\'s Comet, far out and falling back towards the Sun. Due in 2061.' },
+  sputnik: { id: 'sputnik', name: 'Beep-Beep', text: 'You heard Sputnik on the anniversary of its launch, 4 October 1957.' },
+  laika: { id: 'laika', name: 'Good Dog', text: 'You remembered Laika on the anniversary of Sputnik 2, 3 November 1957.' },
+  apollo11: { id: 'apollo11', name: 'One Small Step', text: 'You looked at the Moon on 20 July, the day people first walked on it.' },
+  twohomes: { id: 'twohomes', name: 'Two Homes', text: 'You caught the ISS and Tiangong within ten minutes of each other.' },
 };
 for (const p of Object.values(SECRET_PATCHES)) { p.secret = true; p.icon = ''; }
 export function found() { try { return JSON.parse(localStorage.getItem('secrets')) || {}; } catch { return {}; } }
@@ -53,7 +60,18 @@ export const DEEP = [
   ['pioneer11', 283.97, -8.91, 'Pioneer 11', 'First to Saturn · drifting outward', '#e2b53c'],
   ['newhorizons', 288.84, -20.29, 'New Horizons', 'Past Pluto · 66 AU out', '#8fd0ff'],
   ['wow', 291.8, -27.0, 'Wow!', 'Big Ear radio telescope · 15 Aug 1977', '#ff6b6b'],
+  ['arecibo', 250.42, 36.46, 'Hello from Earth', 'Arecibo message · sent 1974', '#3fc7b5'], // the Hercules Cluster (M13), where the message is going
+  ['halley', 124.0, 1.5, "Halley's Comet", 'Heading home · due 2061', '#8fd0ff'], // in Hydra, near the far end of its orbit (2026)
 ];
+// Anniversary crossings (2026-10-14): Sputnik on 4 October, Sputnik 2 (Laika) on 3 November. That evening and night, a
+// ghost crosses for two minutes at the start of every 20 (like Santa). Tap it.
+export const DATED = [['sputnik', 9, 4, 'Sputnik 1', 'Beep · beep · 4 Oct 1957', '#e8e3c8', 'Tap to listen'], ['laika', 10, 3, 'Sputnik 2', 'Laika · 3 Nov 1957', '#ffc93d', 'Tap to remember']];
+export function datedCrossing(t, month, day, seed) {
+  const d = new Date(t), y = new Date(t - 6 * 3600e3); // the night counts until 6 am
+  if (!((d.getMonth() === month && d.getDate() === day) || (y.getMonth() === month && y.getDate() === day && d.getHours() < 6))) return null;
+  const start = Math.floor(t / 1200e3) * 1200e3; if (t > start + 120e3) return null;
+  return { start, end: start + 120e3, az0: (start / 1200e3 * 61 + seed) % 360 };
+}
 
 // Dizzy: three full turns (1,080°) within 30 seconds.
 const turns = [];
