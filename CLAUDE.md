@@ -1010,3 +1010,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 2026-10-15 · v0.1.701: Molniya picture (22 cards) redone accurately: silver cylinder, six windmill solar arms at the top, cone base with engine and two dish antennas on arms (from Sevaan's reference, described in the prompt; scratchpad molniya/).
 
 2026-10-15 · v0.1.702: Molniya and Fregat art redone with Sevaan's real photos as the image reference (Desktop molniya2.jpg, image-1792090367910.png), not a text description. Lesson: when a reference image is only in chat, ask for the file instead of describing it.
+
+2026-10-15 · v0.1.703: fleet cards get a 16:10 picture window (was a 10.2em strip) framed low (object-position 50% 8%), so the satellites sit below the rarity and set chips (Sevaan). The after-mount trim still shortens it if a launch grid would overflow.

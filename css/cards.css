@@ -521,3 +521,7 @@
 .wc-mission .card__stats.m4 { padding: .7em 0 .8em; }
 .wc-mission .card__stats.m4 .card__label { font-size: .85em; }
 .wc-mission .card__stats.m4 b.wc-step { font-size: 1.7em; line-height: 1.15; }
+/* Fleet cards have a short picture window: frame the picture lower, so its subject sits below the rarity and set chips
+   instead of under them (2026-10-15, Sevaan). Taller windows (3:2 art in 4:3) have no vertical slack, so this only moves fleets. */
+.card--mission.card--fleet .card__art > img.card-art-image { object-position: 50% 8%; }
+.card--mission.card--fleet .card__art { height: auto; aspect-ratio: 16 / 10; } /* fleets get a proper picture window; the after-mount trim still shortens it if a big launch grid would overflow */
