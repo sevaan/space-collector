@@ -992,3 +992,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 2026-10-15 · v0.1.692: review.html shows constellation star cards with their figure in full focus (all its stars treated as owned) and groups them one per figure ("figure-<id>", search "figure-" for all 89).
 
 2026-10-15 · v0.1.693: Hokushin-1 (69648) has its own picture, assets/art/cards/hokushin (3U CubeSat with one 4×5 solar wing), drawn from Sevaan's photo + CAD references (session scratchpad hokushin/); art-keys.js NAMED. It used to share classic-satellite-1.
+
+2026-10-15 · v0.1.694: Hokushin-1 picture redone with the unfolded hinged solar wing beside the upright body, as in the reference photo (copy at design/hokushin-art.png).
