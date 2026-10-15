@@ -3,18 +3,18 @@
 // picture" shows one card for each art file (most satellites share a picture by kind) with how many cards use it.
 // Stars (☆) are saved in this browser (localStorage 'reviewStars'); "Copy starred" puts a list on the clipboard to
 // hand back. Not linked from the app.
-import { expandFacts } from './catalog-facts.js?v=0.1.678';
-import { renderCard, miniCard, artImage } from './card.js?v=0.1.678';
-import { buildCards } from './card-model.js?v=0.1.678';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.678';
-import { loadLore, titleFor } from './lore.js?v=0.1.678';
-import { loadConstellations } from './constellations.js?v=0.1.678';
-import { loadComets } from './comets.js?v=0.1.678';
+import { expandFacts } from './catalog-facts.js?v=0.1.679';
+import { renderCard, miniCard, artImage } from './card.js?v=0.1.679';
+import { buildCards } from './card-model.js?v=0.1.679';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.679';
+import { loadLore, titleFor } from './lore.js?v=0.1.679';
+import { loadConstellations } from './constellations.js?v=0.1.679';
+import { loadComets } from './comets.js?v=0.1.679';
 
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
 const SEEN = Date.parse('2026-10-01T03:00:00Z'); // a pretend sighting, so every card shows its picture
-let cards = [], stars = new Map();
+let cards = [], stars = new Map(), usage = new Map();
 try { stars = new Map(JSON.parse(localStorage.getItem('reviewStars') ?? '[]')); } catch {}
 const saveStars = () => { try { localStorage.setItem('reviewStars', JSON.stringify([...stars])); } catch {} };
 
@@ -41,6 +41,10 @@ function list() {
     for (const c of out) { const k = c._art ? `art:${c._art}` : `card:${c.key}`; const g = by.get(k); if (g) g.n++; else by.set(k, { c, n: 1 }); }
     out = [...by.values()].map(({ c, n }) => ({ c, n }));
   } else out = out.map((c) => ({ c, n: 1 }));
+  // Most used first (default): a bad picture used by 370 cards matters more than one used by 2.
+  const sort = $('sort').value, used = (c) => (c._art ? usage.get(c._art) : 1);
+  if (sort === 'used') out.sort((a, b) => used(b.c) - used(a.c) || TIERS.indexOf(b.c.tier) - TIERS.indexOf(a.c.tier));
+  else if (sort === 'name') out.sort((a, b) => a.c._name.localeCompare(b.c._name));
   if (only) out = out.filter(({ c }) => stars.has(starKey(c, one)) || stars.has(`card:${c.key}`) || (c._art && stars.has(`art:${c._art}`)));
   return { out, one };
 }
@@ -55,7 +59,7 @@ function render() {
     el.className = `rv${stars.has(k) ? ' starred' : ''}`;
     el.innerHTML = `<div class="slot" role="button" tabindex="0" aria-label="Open ${esc(c._name)}"></div><button type="button" class="star" aria-label="Star for redo" aria-pressed="${stars.has(k)}">${stars.has(k) ? '★' : '☆'}</button>
       <div class="cap"><b>${esc(c._name)}</b> · ${esc(TIER_INFO[c.tier]?.label ?? c.tier)}</div>
-      <div class="cap">${esc(c._art ?? 'drawn')}${one && n > 1 ? ` · used by ${n.toLocaleString()}` : ''}</div>`;
+      <div class="cap">${esc(c._art ?? 'drawn')}${c._art && usage.get(c._art) > 1 ? ` · used by ${usage.get(c._art).toLocaleString()}` : ''}</div>`;
     const slot = el.querySelector('.slot'); slot._card = c; io.observe(slot);
     slot.addEventListener('click', () => open(c, k));
     slot.addEventListener('keydown', (e) => { if (e.key === 'Enter') open(c, k); });
@@ -90,7 +94,7 @@ async function boot() {
   ]);
   const seen = new Set();
   cards = buildCards(cat).filter((c) => !seen.has(c.key) && seen.add(c.key));
-  for (const c of cards) { c._name = titleFor(c); c._art = artOf(c); c._type = typeOf(c); }
+  for (const c of cards) { c._name = titleFor(c); c._art = artOf(c); c._type = typeOf(c); if (c._art) usage.set(c._art, (usage.get(c._art) ?? 0) + 1); }
   // Rarest first, then by picture so cards sharing art sit together.
   cards.sort((a, b) => TIERS.indexOf(b.tier) - TIERS.indexOf(a.tier) || String(a._art ?? '~').localeCompare(String(b._art ?? '~')) || a._name.localeCompare(b._name));
   for (const t of [...new Set(cards.map((c) => c._type))].sort()) $('type').add(new Option(t, t));
@@ -100,7 +104,7 @@ async function boot() {
 
 let deb = 0;
 $('q').addEventListener('input', () => { clearTimeout(deb); deb = setTimeout(render, 200); });
-for (const id of ['type', 'tier', 'art', 'one', 'starred']) $(id).addEventListener('change', render);
+for (const id of ['type', 'tier', 'art', 'sort', 'one', 'starred']) $(id).addEventListener('change', render);
 for (const id of ['one', 'starred']) $(id).addEventListener('change', () => $(`${id}-l`).classList.toggle('on', $(id).checked));
 $('one-l').classList.toggle('on', $('one').checked);
 const setSize = () => document.documentElement.style.setProperty('--mini-s', $('size').value);

@@ -1,18 +1,18 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { sfx } from './sfx.js?v=0.1.678';
-import { cardArt } from './art.js?v=0.1.678';
-import { TIER_INFO } from './rarity.js?v=0.1.678';
-import { SET_BY_ID } from './sets.js?v=0.1.678';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.678';
-import { FLEET_ABOUT, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.678';
-import { artFileFor } from './art-keys.js?v=0.1.678';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.678';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.678';
-import { nightsIn } from './observation.js?v=0.1.678';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.678';
-import { SHINY } from './shiny.js?v=0.1.678';
-import { conArt, cometArt } from './con-art.js?v=0.1.678';
-import { CON_FIGURES } from './con-figures.js?v=0.1.678';
+import { sfx } from './sfx.js?v=0.1.679';
+import { cardArt } from './art.js?v=0.1.679';
+import { TIER_INFO } from './rarity.js?v=0.1.679';
+import { SET_BY_ID } from './sets.js?v=0.1.679';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.679';
+import { FLEET_ABOUT, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.679';
+import { artFileFor } from './art-keys.js?v=0.1.679';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.679';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.679';
+import { nightsIn } from './observation.js?v=0.1.679';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.679';
+import { SHINY } from './shiny.js?v=0.1.679';
+import { conArt, cometArt } from './con-art.js?v=0.1.679';
+import { CON_FIGURES } from './con-figures.js?v=0.1.679';
 // The animal/symbol figure belongs to the completed (gold) constellation card only (2026-10-05): a single
 // star's card draws just the star pattern with its star marked, so the figure is a reward for finishing the set.
 const conFig = (id) => (CON_FIGURES.has(id) ? { figure: `assets/art/con/${id}.webp` } : {});
@@ -171,7 +171,8 @@ const latestStamp = (sightings) => stampHistory(sightings.filter((s) => !s.sim))
 // Every launch in the fleet as a dot, oldest to newest; stamped ones filled, the newest ringed.
 // summary ("4 / 421 stamped · SILVER AT 10") sits between the first and last launch years, under the dots.
 function dotMap(o, stamps, latest, summary = '', latestLine = '') {
-  const n = o.launches.length, cols = n > 200 ? 36 : n > 60 ? 18 : Math.min(14, Math.max(10, n)), gap = n > 200 ? '.15em' : '.45em';
+  // Huge fleets (Starlink, 400+ launches) get finer dots in about six rows, so the grid doesn't eat the picture (2026-10-14).
+  const n = o.launches.length, cols = n > 200 ? Math.min(72, Math.ceil(n / 6)) : n > 60 ? 18 : Math.min(14, Math.max(10, n)), gap = n > 200 ? '.1em' : '.45em';
   const dots = o.launches.map((l) => `<i class="${stamps.has(l.key) ? 'on' : ''}${l.key === latest ? ' latest' : ''}"></i>`).join('');
   const y0 = o.launches[0]?.launch?.slice(0, 4) ?? '', y1 = o.launches.at(-1)?.launch?.slice(0, 4) ?? '';
   return `<div class="fl-dots"><div class="fl-head"><span class="card__note-label">EVERY LAUNCH</span>${latestLine ? `<span class="fl-latest"><i></i>${esc(latestLine)}</span>` : ''}</div><div class="fl-grid" style="--cols:${cols};--gap:${gap}">${dots}</div><div class="fl-years"><span>${esc(y0)}</span>${summary ? `<span class="fl-sum">${esc(summary)}</span>` : ''}<span>${esc(y1)}</span></div></div>`;

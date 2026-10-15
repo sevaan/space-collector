@@ -4,7 +4,7 @@
 // facts only state what the catalogue says today (orbit, launch date and site) or simple date
 // comparisons. No extrapolating today's orbit back over decades (lifetime laps or distance).
 
-import { orbitStats, titleCase, siteName, ownerName } from './facts.js?v=0.1.678';
+import { orbitStats, titleCase, siteName, ownerName } from './facts.js?v=0.1.679';
 
 const FAMILY = [
   [/^IRIDIUM 33 DEB/, 'A piece of the **first-ever crash between two satellites**: Iridium 33 hit the dead Cosmos 2251 in 2009.'],
@@ -60,6 +60,7 @@ export function titleFor(o) {
     .replace(/(Stage|Motor)\s+R\/B(\(\d\))?/i, '$1') // "Electron Kick Stage R/B" was "Electron Kick Stage Rocket Stage"
     .replace(/\bR\/B(\(\d\))?/i, 'Rocket Stage')
     .replace(/\bDeb\b/i, 'Debris')
+    .replace(/([^\s(])\(/g, '$1 (') // "SL-12 Rocket Stage(Aux Motor)": a space before a bracket (2026-10-14)
     .replace(/\s+/g, ' ')
     .trim();
 }

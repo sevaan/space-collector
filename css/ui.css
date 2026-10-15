@@ -320,3 +320,9 @@ body:has(#reveal:not([hidden])) #toasts, body:has(#ob-done:not([hidden])) #toast
    there and vanished). */
 .patch-coins .pc-coin.out .pc-disc { animation: pc-roll .6s cubic-bezier(.5,0,.75,.4) forwards; }
 @media (prefers-reduced-motion: reduce) { .patch-coins .pc-coin.out .pc-disc { animation: pc-fade .3s forwards; } }
+/* Something in the circle: its name and Collect / View card button come first (2026-10-14 playtest: a patch coin's label
+   sat over "VEGA", a constellation toast over View card). Toasts step aside and wait (js/toast.js); coins keep only the coin. */
+body:has(#discover:not([hidden])) .pc-tag { opacity: 0 !important; }
+body:has(#discover:not([hidden])) #toasts { opacity: 0; pointer-events: none; transition: opacity .2s; }
+/* A patch coin never sits over a panel (2026-10-14 playtest: "Stage Hand" over the Settings rows). */
+body:has(.overlay.panel:not([hidden])) .patch-coins { visibility: hidden; }
