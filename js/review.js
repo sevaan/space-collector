@@ -3,14 +3,14 @@
 // picture" shows one card for each art file (most satellites share a picture by kind) with how many cards use it.
 // Stars (☆) are saved in this browser (localStorage 'reviewStars'); "Copy starred" puts a list on the clipboard to
 // hand back. Not linked from the app.
-import { expandFacts } from './catalog-facts.js?v=0.1.687';
-import { renderCard, miniCard, artImage } from './card.js?v=0.1.687';
-import { buildCards } from './card-model.js?v=0.1.687';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.687';
-import { loadLore, titleFor } from './lore.js?v=0.1.687';
+import { expandFacts } from './catalog-facts.js?v=0.1.688';
+import { renderCard, miniCard, artImage } from './card.js?v=0.1.688';
+import { buildCards } from './card-model.js?v=0.1.688';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.688';
+import { loadLore, titleFor } from './lore.js?v=0.1.688';
 import './stories.js?v=0.1.680';
-import { loadConstellations } from './constellations.js?v=0.1.687';
-import { loadComets } from './comets.js?v=0.1.687';
+import { loadConstellations } from './constellations.js?v=0.1.688';
+import { loadComets } from './comets.js?v=0.1.688';
 
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);

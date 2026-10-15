@@ -980,3 +980,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - Everything else only from reminders you set. Settings rows "Look up" / "Catch of the day" (app only; turning one on asks permission).
 - **Tour:** in the app, a third card "When to look up" (Turn on / Not now; asks permission inside the tap, OB_ART.notify), before the first catch. Steps read "Step N of 3" in the app, "of 2" on the web.
 - No secrets during the tour (the sky behind the cards could land on Pioneer 11's spot and hand out a story card).
+
+2026-10-14 · v0.1.688: tonight's headliner (and so the Catch of the day notification) must be easy to see for the sky slider: its brightest moment beats the slider's satellite limit (binocular limit with binoculars on) by 0.8 mag (Sevaan). Checked: city sky 17.5 → an SL-3 stage at mag 1.3; halfway → mag 2.7; dark site → mag 4.9. Recomputed when the slider changes (T._headSb).
