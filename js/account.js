@@ -8,8 +8,8 @@
 //   · here, uploaded before, gone from the cloud → deleted on another device, so deleted here
 //   · deleted here while offline → remembered (localStorage acctDeleted) and deleted from the cloud next sync
 // Firebase loads only when someone signs in or was signed in before, so a blocked or slow Google never stops the app.
-import { allSightings, addSighting, putSighting, deleteSighting } from './store.js?v=0.1.682';
-import { isNative, plugin } from './native.js?v=0.1.682';
+import { allSightings, addSighting, putSighting, deleteSighting } from './store.js?v=0.1.683';
+import { isNative, plugin } from './native.js?v=0.1.683';
 
 const FB = 'https://www.gstatic.com/firebasejs/12.4.0/';
 const CONFIG = {

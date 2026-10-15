@@ -22,6 +22,11 @@ export const SECRET_PATCHES = {
   twohomes: { id: 'twohomes', name: 'Two Homes', text: 'You caught the ISS and Tiangong within ten minutes of each other.' },
 };
 for (const p of Object.values(SECRET_PATCHES)) { p.secret = true; p.icon = ''; }
+// Secrets that give a story card (js/stories.js) give no patch (2026-10-14, Sevaan). Patches already earned before this
+// change are kept: a found time before STORY_PATCH_CUTOFF still shows on the wall.
+export const STORY_SECRETS = new Set(['wow', 'voyager', 'voyager2', 'pioneer10', 'pioneer11', 'newhorizons', 'roadster', 'arecibo', 'halley', 'sputnik', 'laika', 'apollo11', 'twohomes']);
+export const STORY_PATCH_CUTOFF = 1792031581700;
+export const hasPatch = (id, foundAt) => !STORY_SECRETS.has(id) || (foundAt != null && foundAt < STORY_PATCH_CUTOFF);
 export function found() { try { return JSON.parse(localStorage.getItem('secrets')) || {}; } catch { return {}; } }
 export function markFound(id) { const f = found(); f[id] ??= Date.now(); try { localStorage.setItem('secrets', JSON.stringify(f)); } catch {} }
 

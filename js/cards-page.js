@@ -1,29 +1,29 @@
-import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.682';
-import { computeStats, statsHtml } from './stats.js?v=0.1.682';
-import { nightKey } from './observation.js?v=0.1.682';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.682';
-import { sfx } from './sfx.js?v=0.1.682';
-import { expandFacts } from './catalog-facts.js?v=0.1.682';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.682';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.682';
-import { ticket } from './toast.js?v=0.1.682';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.682';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.682';
-import { cardArt } from './art.js?v=0.1.682';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.682';
-import { applyBack } from './card-backs.js?v=0.1.682';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.682';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.682';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.682';
+import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.683';
+import { computeStats, statsHtml } from './stats.js?v=0.1.683';
+import { nightKey } from './observation.js?v=0.1.683';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.683';
+import { sfx } from './sfx.js?v=0.1.683';
+import { expandFacts } from './catalog-facts.js?v=0.1.683';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.683';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.683';
+import { ticket } from './toast.js?v=0.1.683';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.683';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.683';
+import { cardArt } from './art.js?v=0.1.683';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.683';
+import { applyBack } from './card-backs.js?v=0.1.683';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.683';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.683';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.683';
 import './stories.js?v=0.1.680';
-import { loadConstellations, conList } from './constellations.js?v=0.1.682';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.682';
-import { eventBadges, nextEvent } from './events.js?v=0.1.682';
-import { shareCardEl } from './share-card.js?v=0.1.682';
-import { removeSighting } from './account.js?v=0.1.682';
-import { allSightings, deleteSighting } from './store.js?v=0.1.682';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.682';
-import { SECRET_PATCHES } from './secrets.js?v=0.1.682';
+import { loadConstellations, conList } from './constellations.js?v=0.1.683';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.683';
+import { eventBadges, nextEvent } from './events.js?v=0.1.683';
+import { shareCardEl } from './share-card.js?v=0.1.683';
+import { removeSighting } from './account.js?v=0.1.683';
+import { allSightings, deleteSighting } from './store.js?v=0.1.683';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.683';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.683';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -835,7 +835,7 @@ function renderPatches() {
   let ufo = null; try { ufo = JSON.parse(localStorage.getItem('ufoFound')); } catch {}
   let sec = {}; try { sec = JSON.parse(localStorage.getItem('secrets')) || {}; } catch {}
   const SEC = Object.fromEntries(Object.values(SECRET_PATCHES).map((x) => [x.id, [x.name, x.text.replace(/\.$/, '')]])); // every secret, from js/secrets.js
-  const secs = Object.keys(SEC).filter((k) => sec[k]).map((k) => ({ id: k, name: SEC[k][0], text: SEC[k][1], icon: '', secret: true, done: true }));
+  const secs = Object.keys(SEC).filter((k) => sec[k] && hasPatch(k, sec[k])).map((k) => ({ id: k, name: SEC[k][0], text: SEC[k][1], icon: '', secret: true, done: true }));
   const all = [...secs, ...(fossil ? [{ id: 'fossil', name: 'Fossil Hunter', text: 'Found dinosaur bones buried under your feet', icon: '', secret: true, done: true }] : []), ...(ufo ? [{ id: 'ufo', name: 'Close Encounter', text: "Something crossed your sky that isn't in any catalogue", icon: '', secret: true, done: true }] : []), ...(state.achievements ?? [])];
   if (ufo) dates.ufo ??= ufo.at;
   for (const k of Object.keys(sec)) dates[k] ??= sec[k];
@@ -861,7 +861,7 @@ function openPatch(id, from = null) {
   let ufo = null; try { ufo = JSON.parse(localStorage.getItem('ufoFound')); } catch {}
   let sec = {}; try { sec = JSON.parse(localStorage.getItem('secrets')) || {}; } catch {}
   const SEC = Object.fromEntries(Object.values(SECRET_PATCHES).map((x) => [x.id, [x.name, x.text.replace(/\.$/, '')]])); // every secret, from js/secrets.js
-  const secs = Object.keys(SEC).filter((k) => sec[k]).map((k) => ({ id: k, name: SEC[k][0], text: SEC[k][1], icon: '', secret: true, done: true }));
+  const secs = Object.keys(SEC).filter((k) => sec[k] && hasPatch(k, sec[k])).map((k) => ({ id: k, name: SEC[k][0], text: SEC[k][1], icon: '', secret: true, done: true }));
   const all = [...secs, ...(fossil ? [{ id: 'fossil', name: 'Fossil Hunter', text: 'Found dinosaur bones buried under your feet', icon: '', secret: true, done: true }] : []), ...(ufo ? [{ id: 'ufo', name: 'Close Encounter', text: "Something crossed your sky that isn't in any catalogue", icon: '', secret: true, done: true }] : []), ...(state.achievements ?? [])], a = all.find((x) => x.id === id); if (!a) return;
   const date = earnedDates()[id] ?? (id === 'fossil' ? fossil?.at : id === 'ufo' ? ufo?.at : sec[id] ?? null), f = finishOf(a);
   $('pv-position').textContent = `PATCH · ${all.filter((x) => x.done).length} / ${all.length}`;
