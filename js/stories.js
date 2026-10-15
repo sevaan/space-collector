@@ -1,7 +1,7 @@
 // Story cards (2026-10-14, Sevaan; design/card-redesign.html): moments and history, not objects you can point at. Each is
 // earned by finding a secret (js/secrets.js): the deep-space probes, the Wow! signal, Starman, and the dated and hidden
 // ones. Registered as natural cards (natural: 'story'), album "Stories". Facts must stay true. Art: assets/art/cards/story-*.
-import { NATURAL, NATURAL_BY_KEY } from './natural.js?v=0.1.712';
+import { NATURAL, NATURAL_BY_KEY } from './natural.js?v=0.1.713';
 
 const S = (id, secret, name, when, stats, fact) => ({ key: `story:${id}`, id: `story:${id}`, card: `story:${id}`, natural: 'story', type: 'story', story: true, secret, name, when, code: 'STORY', tier: 'epic', stats, fact, art: id });
 export const STORIES = [
@@ -17,8 +17,8 @@ export const STORIES = [
     'The **first visitor to Saturn**: it flew under the rings and found a new ring of its own. It went quiet in **1995** and keeps coasting outward.'),
   S('heart', 'newhorizons', 'Heart of Pluto', '14 July 2015 · New Horizons', [['LAUNCHED', '2006', ''], ['PLUTO', '2015', ''], ['ARROKOTH', '2019', ''], ['OUT', '~66', 'AU']],
     'Nine years to reach Pluto, and it found a giant **heart-shaped plain of ice**. On board is some of the ashes of **Clyde Tombaugh**, who discovered Pluto.'),
-  S('starman', 'roadster', 'Starman', '6 February 2018 · Falcon Heavy', [['LAUNCHED', '2018', ''], ['ROCKET', 'Falcon Heavy', ''], ['DRIVER', 'Starman', ''], ['ONE LAP', '~557', 'days']],
-    'A red sports car with a dummy in a spacesuit at the wheel, sent round the Sun as a test load on the **first Falcon Heavy**. The dashboard says "**Don\'t Panic**".'),
+  S('starman', 'roadster', 'Starman', '6 February 2018 · Falcon Heavy', [['LAUNCHED', '2018', ''], ['CAR', 'Tesla Roadster', ''], ['DRIVER', 'Starman', ''], ['ONE LAP', '~557', 'days']],
+    'Elon Musk\'s own cherry-red **Tesla Roadster**, with a dummy in a spacesuit at the wheel, sent round the Sun as a test load on the **first Falcon Heavy**. The dashboard says "**Don\'t Panic**".'),
   S('arecibo', 'arecibo', 'The Arecibo Message', '16 November 1974 · Arecibo, Puerto Rico', [['SENT', '1974', ''], ['BITS', '1,679', ''], ['TO', 'M13', ''], ['ARRIVES', '~27,000', 'AD']],
     'A picture made of **1,679 radio pulses**, beamed at the Hercules Cluster: numbers, DNA, a person, our planets and the telescope itself. It will take about **25,000 years** to get there.'),
   S('halley', 'halley', 'Halley\'s Way Home', '9 February 1986 · last time round', [['LAST', '1986', ''], ['NEXT', '2061', ''], ['ONE LAP', '~76', 'yrs'], ['NOW', '~35', 'AU']],
