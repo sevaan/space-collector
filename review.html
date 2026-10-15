@@ -7,8 +7,8 @@
   <title>Card Review</title>
   <link rel="icon" href="icons/icon-192.png">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600;650;700;750;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/cards.css?v=0.1.707">
-  <link rel="stylesheet" href="css/ui.css?v=0.1.707">
+  <link rel="stylesheet" href="css/cards.css?v=0.1.708">
+  <link rel="stylesheet" href="css/ui.css?v=0.1.708">
   <style>
     /* Every card on one page, for scanning art and layout (2026-10-14). Not linked from the app. */
     :root { color-scheme: dark; }
@@ -26,6 +26,7 @@
     #grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(calc(280px * var(--mini-s)), 1fr)); gap: 18px 12px; padding: 16px; }
     .rv { position: relative; display: grid; gap: 5px; justify-items: center; content-visibility: auto; contain-intrinsic-size: calc(280px * var(--mini-s)) calc(420px * var(--mini-s) + 40px); }
     .rv .slot { width: calc(280px * var(--mini-s)); height: calc(420px * var(--mini-s)); border-radius: calc(14px * var(--mini-s)); background: #0e1a29; cursor: zoom-in; }
+    .rv .slot.old-art { opacity: .5; } /* still on its original art */
     .rv .cap { width: calc(280px * var(--mini-s)); box-sizing: border-box; padding-right: 38px; font-size: 12px; line-height: 1.25; color: #9fb3c8; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .rv .cap b { color: #fff2b3; font-weight: 600; }
     .rv .star { position: absolute; bottom: 0; right: max(0px, calc(50% - 140px * var(--mini-s))); width: 34px; height: 34px; padding: 0; border-radius: 50%; background: #080f1bcc; border: 1px solid #22344a; font-size: 18px; line-height: 1; color: #9fb3c8; }
@@ -60,6 +61,6 @@
   <main id="grid" aria-live="polite"></main>
   <div id="view" hidden></div>
   <div id="toast" hidden></div>
-  <script type="module" src="js/review.js?v=0.1.707"></script>
+  <script type="module" src="js/review.js?v=0.1.708"></script>
 </body>
 </html>

@@ -3,15 +3,15 @@
 // picture" shows one card for each art file (most satellites share a picture by kind) with how many cards use it.
 // Stars (☆) are saved in this browser (localStorage 'reviewStars'); "Copy starred" puts a list on the clipboard to
 // hand back. Not linked from the app.
-import { expandFacts } from './catalog-facts.js?v=0.1.707';
-import { renderCard, miniCard, artImage } from './card.js?v=0.1.707';
-import { buildCards } from './card-model.js?v=0.1.707';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.707';
-import { loadLore, titleFor } from './lore.js?v=0.1.707';
+import { expandFacts } from './catalog-facts.js?v=0.1.708';
+import { renderCard, miniCard, artImage } from './card.js?v=0.1.708';
+import { buildCards } from './card-model.js?v=0.1.708';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.708';
+import { loadLore, titleFor, debrisOf } from './lore.js?v=0.1.708';
 import './stories.js?v=0.1.680';
-import { CON_FIGURES } from './con-figures.js?v=0.1.707';
-import { loadConstellations, CON_BY_ID } from './constellations.js?v=0.1.707';
-import { loadComets } from './comets.js?v=0.1.707';
+import { CON_FIGURES } from './con-figures.js?v=0.1.708';
+import { loadConstellations, CON_BY_ID } from './constellations.js?v=0.1.708';
+import { loadComets } from './comets.js?v=0.1.708';
 
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
@@ -20,21 +20,32 @@ let cards = [], stars = new Map(), usage = new Map();
 try { stars = new Map(JSON.parse(localStorage.getItem('reviewStars') ?? '[]')); } catch {}
 const saveStars = () => { try { localStorage.setItem('reviewStars', JSON.stringify([...stars])); } catch {} };
 
-const artOf = (c) => { const src = artImage(c); if (src) return src.split('/').pop().replace(/\.webp$/, ''); return c.con && CON_FIGURES.has(c.con) && !c.skyName ? `figure-${c.con}` : null; }; // constellation star cards: their figure
+const artOf = (c) => { const d = debrisOf(c); if (d?.art && NEW_ART.has(`deb-${d.art}`)) return `deb-${d.art}`; const src = artImage(c); if (src) return src.split('/').pop().replace(/\.webp$/, ''); return c.con && CON_FIGURES.has(c.con) && !c.skyName ? `figure-${c.con}` : null; }; // constellation star cards: their figure
 const starKey = (c, one) => (one && c._art ? `art:${c._art}` : `card:${c.key}`);
 const typeOf = (c) => c.natural ? (c.natural === 'star' ? 'star' : c.type) : c.launches ? 'fleet' : c.type ?? 'satellite';
 
 function toast(text) { const t = $('toast'); t.textContent = text; t.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => { t.hidden = true; }, 2200); }
 
+// Restyle preview (2026-10-15, Sevaan): pictures already redone in the new engraved style come from
+// design/restyle-preview/<art>.webp (listed in manifest.json, refreshed as the batch runs); cards still on their
+// original art show at 50% so the two are easy to tell apart.
+let NEW_ART = new Set();
+async function loadNewArt() { try { NEW_ART = new Set(await (await fetch('design/restyle-preview/manifest.json', { cache: 'no-store' })).json()); } catch {} }
+function markNew(el, c) {
+  const isNew = c._art && NEW_ART.has(c._art);
+  if (isNew) for (const im of el.querySelectorAll('.card__art img.card-art-image')) im.src = `design/restyle-preview/${c._art}.webp`;
+  return isNew;
+}
 function face(c, full = false) {
   const sightings = [{ time: SEEN, cardKey: c.key, objectId: c.id }];
   // Every star of its constellation owned, so the figure shows fully in focus (2026-10-15, Sevaan).
   const ownedKeys = c.con ? new Set(CON_BY_ID.get(c.con)?.stars ?? []) : undefined;
-  return full ? renderCard(c, { sightings, ownedKeys }) : miniCard(c, { sightings, ownedKeys, status: c._art ?? 'drawn' });
+  const el = full ? renderCard(c, { sightings, ownedKeys }) : miniCard(c, { sightings, ownedKeys, status: c._art ?? 'drawn' });
+  markNew(el, c); return el;
 }
 
 // Draw a tile's card only when it scrolls near the screen (there are thousands).
-const io = new IntersectionObserver((es) => { for (const e of es) if (e.isIntersecting) { const slot = e.target; io.unobserve(slot); slot.replaceChildren(face(slot._card)); } }, { rootMargin: '600px 0px' });
+const io = new IntersectionObserver((es) => { for (const e of es) if (e.isIntersecting) { const slot = e.target; io.unobserve(slot); slot.replaceChildren(face(slot._card)); slot.classList.toggle('old-art', !(slot._card._art && NEW_ART.has(slot._card._art))); } }, { rootMargin: '600px 0px' });
 
 function list() {
   const q = $('q').value.trim().toLowerCase(), type = $('type').value, tier = $('tier').value, art = $('art').value, one = $('one').checked, only = $('starred').checked;
@@ -56,7 +67,7 @@ function list() {
 function render() {
   const { out, one } = list(), grid = $('grid');
   io.disconnect(); grid.replaceChildren();
-  $('count').textContent = `${out.length.toLocaleString()} shown · ${cards.length.toLocaleString()} cards · ${stars.size} starred`;
+  $('count').textContent = `${out.length.toLocaleString()} shown · ${cards.length.toLocaleString()} cards · ${NEW_ART.size} new pictures · ${stars.size} starred`;
   const frag = document.createDocumentFragment();
   for (const { c, n } of out) {
     const k = starKey(c, one), el = document.createElement('div');
@@ -98,6 +109,7 @@ async function boot() {
   ]);
   const seen = new Set();
   cards = buildCards(cat).filter((c) => !seen.has(c.key) && seen.add(c.key));
+  await loadNewArt();
   for (const c of cards) { c._name = titleFor(c); c._art = artOf(c); c._type = typeOf(c); if (c._art) usage.set(c._art, (usage.get(c._art) ?? 0) + 1); }
   // Rarest first, then by picture so cards sharing art sit together.
   cards.sort((a, b) => TIERS.indexOf(b.tier) - TIERS.indexOf(a.tier) || String(a._art ?? '~').localeCompare(String(b._art ?? '~')) || a._name.localeCompare(b._name));
@@ -120,4 +132,5 @@ $('copy').addEventListener('click', async () => {
 });
 $('clear').addEventListener('click', () => { if (stars.size && confirm(`Clear all ${stars.size} stars?`)) { stars.clear(); saveStars(); render(); } });
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !$('view').hidden) { $('view').hidden = true; $('view').replaceChildren(); } });
+setInterval(async () => { const n = NEW_ART.size; await loadNewArt(); if (NEW_ART.size !== n) render(); }, 60000); // new pictures appear as they arrive
 boot().catch((e) => { $('count').textContent = `Couldn't load: ${e.message}`; });
