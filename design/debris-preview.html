@@ -1,0 +1,40 @@
+<!doctype html><meta charset="utf-8"><title>Debris Before and After</title>
+<link rel="stylesheet" href="../css/cards.css?v=0.1.704">
+<style>body{margin:0;background:#070d17;color:#fff2b3;font:500 15px 'Barlow Condensed',sans-serif;padding:20px}
+.row{display:grid;grid-template-columns:repeat(2,250px);gap:14px;align-items:start;margin-bottom:26px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(530px,1fr));gap:10px 28px}
+.card{font-size:8.9px} h3{grid-column:1/-1;margin:0;font:600 14px 'Barlow Condensed';letter-spacing:.14em;text-transform:uppercase;color:#9fb3c8}</style>
+<div class="grid" id="g"></div>
+<script type="module">
+import { expandFacts } from '../js/catalog-facts.js?v=0.1.704';
+import { renderCard } from '../js/card.js?v=0.1.704';
+import { buildCards } from '../js/card-model.js?v=0.1.704';
+import { loadLore, richText } from '../js/lore.js?v=0.1.704';
+const ITEMS = [
+ [51, 'echo-canister', "Half of the **metal canister** that carried NASA's **Echo 1** balloon into orbit in 1960. In space the canister split in two and the folded balloon inflated into a 30-metre silver sphere."],
+ [24700, 'iso-cover', "The **cryostat cover** of ESA's Infrared Space Observatory. It was thrown off after launch in 1995 so the telescope, chilled with liquid helium, could see the infrared sky."],
+ [133, 'despin-weight', "A **yo-yo despin weight** from the **Transit 4A** navigation satellite (1961). Weights on cables unwound to slow the satellite's spin, then let go and flew off on their own."],
+ [15166, 'sylda', "The **SYLDA** from an Ariane 3 launch in 1984: a hollow shell that let one rocket carry two satellites, one hidden inside it and one sitting on top."],
+ [20718, 'spelda', "The **SPELDA** from an Ariane 4 launch in 1990: a tall shell that carried one satellite inside it and a second on top, so one rocket could launch both."],
+ [25026, 'speltra', "The **SPELTRA** from an Ariane 5 launch in 1997: a big carbon-fibre shell, as wide as the rocket, that held one satellite inside while another rode on top."],
+ [29054, 'lens-cover', "The **telescope cover** of Japan's **AKARI** infrared space telescope, let go after launch in 2006 so the telescope could open its eye."],
+ [27000, 'dpaf', "The **dual payload attach fitting** from a Delta II launch in 2001: a canister that hid one satellite inside while a second sat on top."],
+ [39162, 'avum-adaptor', "A **payload adapter** from the AVUM top stage of a **Vega** rocket, 2013: the ring that held the satellites in place until they were released."],
+ [27646, 'briz-apt', "The extra **fuel tank** of a Russian **Breeze-M** stage: a ring-shaped tank wrapped round the stage, dropped once it was empty."],
+];
+const [cat] = await Promise.all([fetch('../data/catalog.json').then((r) => r.json()).then((d) => { for (const o of d.objects) expandFacts(o); return d; }), loadLore('../data/lore.json')]);
+const cards = new Map(buildCards(cat).map((c) => [c.id, c]));
+const g = document.getElementById('g');
+for (const [id, art, fact] of ITEMS) {
+  const c = cards.get(id); if (!c) continue;
+  const s = [{ time: Date.now(), cardKey: c.key, objectId: id }];
+  const before = renderCard(c, { sightings: s }), after = renderCard(c, { sightings: s });
+  for (const im of before.querySelectorAll('img')) im.src = '../' + im.getAttribute('src'); // paths are relative to the app root
+  const img = after.querySelector('.card__art img'); if (img) img.src = 'debris-preview/' + art + '.webp';
+  after.querySelector('.card__fact p').innerHTML = richText(fact);
+  const row = document.createElement('div'); row.className = 'row'; row.innerHTML = '<h3>' + c.name + ' · before / after</h3>';
+  row.append(before, after); g.append(row);
+}
+await Promise.all([...document.images].map((i) => { i.loading = 'eager'; i.removeAttribute('loading'); return i.decode().catch(() => {}); }));
+document.body.dataset.ready = 1;
+</script>
