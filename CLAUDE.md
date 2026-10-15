@@ -982,3 +982,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - No secrets during the tour (the sky behind the cards could land on Pioneer 11's spot and hand out a story card).
 
 2026-10-14 · v0.1.688: tonight's headliner (and so the Catch of the day notification) must be easy to see for the sky slider: its brightest moment beats the slider's satellite limit (binocular limit with binoculars on) by 0.8 mag (Sevaan). Checked: city sky 17.5 → an SL-3 stage at mag 1.3; halfway → mag 2.7; dark site → mag 4.9. Recomputed when the slider changes (T._headSb).
+
+2026-10-14 · v0.1.689: welcome card (Sevaan): the fact now explains the game ("Point your phone at the night sky. Every light up there is a card… Line one up in the circle and tap Collect… level cards up, earn mission patches and find secrets."); the three steps are bigger (1.7em); the opening flip is smoother (the shake eases out instead of snapping, the card gets its own layer a frame before turning, faces swap on the edge-on frame from the animation clock, sound starts after the first frame). Measured in WebKit: 1 frame over 34 ms out of 78.

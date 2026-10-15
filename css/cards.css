@@ -517,3 +517,7 @@
 .card--mission .card__lc { font-size: .95em; }
 .card--mission .shiny-tag { top: auto; bottom: .7em; left: .65em; } /* the rarity chip owns the top-left of the picture */
 .card--mission .art-stars { z-index: 3; } /* above the picture, which is absolutely positioned on mission cards (2026-10-14) */
+/* Welcome card (2026-10-14, Sevaan: lots of room): the three steps are bigger. */
+.wc-mission .card__stats.m4 { padding: .7em 0 .8em; }
+.wc-mission .card__stats.m4 .card__label { font-size: .85em; }
+.wc-mission .card__stats.m4 b.wc-step { font-size: 1.7em; line-height: 1.15; }
