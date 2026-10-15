@@ -3,15 +3,15 @@
 // picture" shows one card for each art file (most satellites share a picture by kind) with how many cards use it.
 // Stars (☆) are saved in this browser (localStorage 'reviewStars'); "Copy starred" puts a list on the clipboard to
 // hand back. Not linked from the app.
-import { expandFacts } from './catalog-facts.js?v=0.1.709';
-import { renderCard, miniCard, artImage } from './card.js?v=0.1.709';
-import { buildCards } from './card-model.js?v=0.1.709';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.709';
-import { loadLore, titleFor, debrisOf } from './lore.js?v=0.1.709';
+import { expandFacts } from './catalog-facts.js?v=0.1.710';
+import { renderCard, miniCard, artImage } from './card.js?v=0.1.710';
+import { buildCards } from './card-model.js?v=0.1.710';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.710';
+import { loadLore, titleFor, debrisOf } from './lore.js?v=0.1.710';
 import './stories.js?v=0.1.680';
-import { CON_FIGURES } from './con-figures.js?v=0.1.709';
-import { loadConstellations, CON_BY_ID } from './constellations.js?v=0.1.709';
-import { loadComets } from './comets.js?v=0.1.709';
+import { CON_FIGURES } from './con-figures.js?v=0.1.710';
+import { loadConstellations, CON_BY_ID } from './constellations.js?v=0.1.710';
+import { loadComets } from './comets.js?v=0.1.710';
 
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
@@ -29,11 +29,11 @@ function toast(text) { const t = $('toast'); t.textContent = text; t.hidden = fa
 // Restyle preview (2026-10-15, Sevaan): pictures already redone in the new engraved style come from
 // design/restyle-preview/<art>.webp (listed in manifest.json, refreshed as the batch runs); cards still on their
 // original art show at 50% so the two are easy to tell apart.
-let NEW_ART = new Set();
-async function loadNewArt() { try { NEW_ART = new Set(await (await fetch('design/restyle-preview/manifest.json', { cache: 'no-store' })).json()); } catch {} }
+let NEW_ART = new Set(), NEW_SHIFT = {};
+async function loadNewArt() { try { NEW_ART = new Set(await (await fetch('design/restyle-preview/manifest.json', { cache: 'no-store' })).json()); NEW_SHIFT = (await import(`../design/restyle-preview/frame.js?${Date.now()}`)).ART_SHIFT ?? {}; } catch {} }
 function markNew(el, c) {
   const isNew = c._art && NEW_ART.has(c._art);
-  if (isNew) for (const im of el.querySelectorAll('.card__art img.card-art-image')) im.src = `design/restyle-preview/${c._art}.webp`;
+  if (isNew) for (const im of el.querySelectorAll('.card__art img.card-art-image')) { im.src = `design/restyle-preview/${c._art}.webp`; im.style.top = `${NEW_SHIFT[c._art] ?? 0}%`; } // the new picture's own framing
   return isNew;
 }
 function face(c, full = false) {
