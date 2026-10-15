@@ -1014,3 +1014,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 2026-10-15 · v0.1.703: fleet cards get a 16:10 picture window (was a 10.2em strip) framed low (object-position 50% 8%), so the satellites sit below the rarity and set chips (Sevaan). The after-mount trim still shortens it if a launch grid would overflow.
 
 2026-10-15 · v0.1.704: Tucana figure redrawn with full detail (feathers, eye, beak, branch) and Corona Borealis as a pearl-tipped crown without the laurel, matching the other figures (Sevaan).
+
+2026-10-15 · v0.1.705: card pictures sit lower: the image is moved down 11% (fleets 9%) and its top fades into the card navy (::before gradient), so subjects clear the rarity/set chips without redrawing any art (Sevaan).

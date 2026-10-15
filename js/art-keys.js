@@ -1,3 +1,4 @@
+import { debrisOf } from './lore.js?v=0.1.705';
 // Which illustration each card uses. The illustrator's brief (scripts/art-brief.py) is generated from this
 // table, and when the art arrives the card renderer can load assets/art/cards/<key>.webp, falling back to
 // the drawn art in js/art.js. Every card maps to exactly one key. Order of rules matters.
@@ -126,6 +127,7 @@ export function artKeyFor(card, seriesOf = {}) {
   if (card.launches) return { GLOBALSTAR: 'globalstar', ORBCOMM: 'orbcomm', IRIDIUM: 'iridium' }[card.family] ?? `fleet-${card.family.toLowerCase()}`; // the newer fleets use their satellite's picture
   if (NAMED[card.id]) return NAMED[card.id];
   const n = String(card.name ?? '').toUpperCase();
+  if (card.type === 'debris' && debrisOf(card)?.art) return `deb-${debrisOf(card).art}`; // what it really is (data/debris.json)
   if (card.type === 'debris') return /^BREEZE/.test(n) ? 'briz-tank' : /^(ARIANE|CZ-|SL-|DELTA|THOR|TITAN|FREGAT|ATLAS|PSLV|GSLV|H-|TAURUS|PEGASUS|SCOUT|AGENA|CENTAUR|FALCON)/.test(n) ? 'debris-rocket' : 'debris-satellite';
   if (card.type === 'rocket-body') {
     const rules = [[/^SL-8\b/, 'sl-8'], [/^SL-14\b/, 'sl-14'], [/^(SL-12\b|BLOCK)/, 'sl-12'], [/^SL-3\b/, 'sl-3'], [/^SL-16\b/, 'sl-16'],

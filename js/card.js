@@ -1,19 +1,19 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { fallWords } from './last-chance.js?v=0.1.704';
-import { sfx } from './sfx.js?v=0.1.704';
-import { cardArt } from './art.js?v=0.1.704';
-import { TIER_INFO } from './rarity.js?v=0.1.704';
-import { SET_BY_ID } from './sets.js?v=0.1.704';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.704';
-import { FLEET_ABOUT, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.704';
-import { artFileFor } from './art-keys.js?v=0.1.704';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.704';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.704';
-import { nightsIn } from './observation.js?v=0.1.704';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.704';
-import { SHINY } from './shiny.js?v=0.1.704';
-import { conArt, cometArt } from './con-art.js?v=0.1.704';
-import { CON_FIGURES } from './con-figures.js?v=0.1.704';
+import { fallWords } from './last-chance.js?v=0.1.705';
+import { sfx } from './sfx.js?v=0.1.705';
+import { cardArt } from './art.js?v=0.1.705';
+import { TIER_INFO } from './rarity.js?v=0.1.705';
+import { SET_BY_ID } from './sets.js?v=0.1.705';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.705';
+import { FLEET_ABOUT, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.705';
+import { artFileFor } from './art-keys.js?v=0.1.705';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.705';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.705';
+import { nightsIn } from './observation.js?v=0.1.705';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.705';
+import { SHINY } from './shiny.js?v=0.1.705';
+import { conArt, cometArt } from './con-art.js?v=0.1.705';
+import { CON_FIGURES } from './con-figures.js?v=0.1.705';
 // The animal/symbol figure belongs to the completed (gold) constellation card only (2026-10-05): a single
 // star's card draws just the star pattern with its star marked, so the figure is a reward for finishing the set.
 // A star card's constellation figure comes into focus as you collect the constellation's stars (design/con-focus.html B).
@@ -132,7 +132,7 @@ export function renderCard(o, opts = {}) {
   const firstDate = first != null ? new Date(first).toLocaleDateString('en-GB', { month: 'short', day: '2-digit', year: 'numeric' }).toUpperCase() : '';
   const nat = !!o.natural;
   const identifier = nat ? o.code : o.members ? `${o.members.length.toLocaleString('en-US')} SATELLITES` : o.runOf > 1 ? `NO. ${o.runNo} OF ${o.runOf}` : `NORAD ${o.id}`;
-  const identity = o.type === 'story' ? (secretStory ? 'Hidden somewhere in the sky' : o.when) : nat ? (conCard ? (o.system ? 'Planetary system' : o.zodiac ? 'Zodiac constellation' : 'Constellation') : o.type === 'star' ? `Star in ${o.constellation}` : o.type === 'deepsky' ? o.kind : o.type === 'comet' ? 'Comet' : o.type === 'sun' ? 'Star' : o.type === 'moon' ? 'Natural satellite' : 'Planet') : fleet ? 'Satellite fleet' : o.type === 'rocket-body' && o.parent ? `Carried ${titleCase(o.parent)}${o.launch ? ` · ${o.launch.slice(0, 4)}` : ''}` : o.type === 'debris' && o.launch ? `${TYPE_LABEL[o.type] ?? 'Debris'} · ${o.launch.slice(0, 4)}` : TYPE_LABEL[o.type] ?? 'Orbital object'; // what it carried and when, so same-name stages differ
+  const identity = o.type === 'story' ? (secretStory ? 'Hidden somewhere in the sky' : o.when) : nat ? (conCard ? (o.system ? 'Planetary system' : o.zodiac ? 'Zodiac constellation' : 'Constellation') : o.type === 'star' ? `Star in ${o.constellation}` : o.type === 'deepsky' ? o.kind : o.type === 'comet' ? 'Comet' : o.type === 'sun' ? 'Star' : o.type === 'moon' ? 'Natural satellite' : 'Planet') : fleet ? 'Satellite fleet' : o.type === 'rocket-body' && o.parent ? `Carried ${titleCase(o.parent)}${o.launch ? ` · ${o.launch.slice(0, 4)}` : ''}` : o.type === 'debris' && o.launch ? `${debrisOf(o)?.what ?? TYPE_LABEL[o.type] ?? 'Debris'} · ${o.launch.slice(0, 4)}` : TYPE_LABEL[o.type] ?? 'Orbital object'; // what it carried and when, so same-name stages differ
   const ageText = age == null ? '' : age === 0 ? 'Less than a year ago' : `${age} ${age === 1 ? 'year' : 'years'} ago`;
   // Fleet cards: the ringed dot is your newest stamp; say which launch that was (the dots alone don't).
   const lk = fleet ? latestStamp(sightings) : null, ll = lk ? o.launches.find((l) => l.key === lk) : null;

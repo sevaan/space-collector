@@ -4,7 +4,7 @@
 // facts only state what the catalogue says today (orbit, launch date and site) or simple date
 // comparisons. No extrapolating today's orbit back over decades (lifetime laps or distance).
 
-import { orbitStats, titleCase, siteName, ownerName } from './facts.js?v=0.1.704';
+import { orbitStats, titleCase, siteName, ownerName } from './facts.js?v=0.1.705';
 
 const FAMILY = [
   [/^IRIDIUM 33 DEB/, 'A piece of the **first-ever crash between two satellites**: Iridium 33 hit the dead Cosmos 2251 in 2009.'],
@@ -35,13 +35,15 @@ const WEB = '1989-03-12';      // Tim Berners-Lee's proposal for the World Wide 
 const GOOGLE = '1998-09-04';   // Google founded
 const IPHONE = '2007-06-29';   // first iPhone on sale
 
-let loreCache = null, seriesCache = null, purposeCache = null;
+let loreCache = null, seriesCache = null, purposeCache = null, debrisCache = null;
 export async function loadLore(url = 'data/lore.json', seriesUrl = url.replace('lore.json', 'series.json'), purposeUrl = url.replace('lore.json', 'purpose.json')) {
   const get = async (u) => { try { return await (await fetch(u)).json(); } catch { return {}; } };
-  [loreCache, seriesCache, purposeCache] = await Promise.all([get(url), get(seriesUrl), get(purposeUrl)]);
+  [loreCache, seriesCache, purposeCache, debrisCache] = await Promise.all([get(url), get(seriesUrl), get(purposeUrl), get(url.replace('lore.json', 'debris.json'))]);
   return loreCache;
 }
 const seriesOf = (o) => seriesCache?.series?.[seriesCache?.members?.[o.id]] ?? null;
+// What a debris card really is (data/debris.json, scripts/build-debris.py, 2026-10-15): { what, art?, fact }.
+export const debrisOf = (o) => (o?.type === 'debris' ? debrisCache?.[o.id] ?? null : null);
 // The researched programme a satellite belongs to (e.g. 'strela-1m'), once loadLore has run.
 export const seriesKeyOf = (o) => seriesCache?.members?.[o.id] ?? null;
 
@@ -239,6 +241,7 @@ export function factFor(o, now = new Date()) {
   if (o.members) return familyFact(o, now);
   const hand = loreCache?.[o.id]?.fact;
   if (hand) return hand;
+  const deb = debrisOf(o); if (deb) return deb.fact;
   const series = seriesOf(o);
   if (series) return series.facts ? series.facts[Number(o.id) % series.facts.length] : series.fact;
   const fam = FAMILY.find(([re, , kinds]) => re.test(o.name) && (!kinds || kinds.includes(o.kind)));
