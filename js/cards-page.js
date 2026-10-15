@@ -1,29 +1,29 @@
-import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.681';
-import { computeStats, statsHtml } from './stats.js?v=0.1.681';
-import { nightKey } from './observation.js?v=0.1.681';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.681';
-import { sfx } from './sfx.js?v=0.1.681';
-import { expandFacts } from './catalog-facts.js?v=0.1.681';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.681';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.681';
-import { ticket } from './toast.js?v=0.1.681';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.681';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.681';
-import { cardArt } from './art.js?v=0.1.681';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.681';
-import { applyBack } from './card-backs.js?v=0.1.681';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.681';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.681';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.681';
+import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.682';
+import { computeStats, statsHtml } from './stats.js?v=0.1.682';
+import { nightKey } from './observation.js?v=0.1.682';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.682';
+import { sfx } from './sfx.js?v=0.1.682';
+import { expandFacts } from './catalog-facts.js?v=0.1.682';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.682';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.682';
+import { ticket } from './toast.js?v=0.1.682';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.682';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.682';
+import { cardArt } from './art.js?v=0.1.682';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.682';
+import { applyBack } from './card-backs.js?v=0.1.682';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.682';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.682';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.682';
 import './stories.js?v=0.1.680';
-import { loadConstellations, conList } from './constellations.js?v=0.1.681';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.681';
-import { eventBadges, nextEvent } from './events.js?v=0.1.681';
-import { shareCardEl } from './share-card.js?v=0.1.681';
-import { removeSighting } from './account.js?v=0.1.681';
-import { allSightings, deleteSighting } from './store.js?v=0.1.681';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.681';
-import { SECRET_PATCHES } from './secrets.js?v=0.1.681';
+import { loadConstellations, conList } from './constellations.js?v=0.1.682';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.682';
+import { eventBadges, nextEvent } from './events.js?v=0.1.682';
+import { shareCardEl } from './share-card.js?v=0.1.682';
+import { removeSighting } from './account.js?v=0.1.682';
+import { allSightings, deleteSighting } from './store.js?v=0.1.682';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.682';
+import { SECRET_PATCHES } from './secrets.js?v=0.1.682';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -503,8 +503,8 @@ function showCard() {
       const launch = c.launches && s.stampKey ? c.launches.find((l) => l.key === s.stampKey) : null;
       const launchLine = c.launches ? (launch ? `Launch ${esc(s.stampKey.split(':')[1] ?? s.stampKey)} · ${launch.n ?? ''} satellites launched ${esc(new Date(`${launch.launch}T12:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }))}` : 'Launch unknown') : '';
       row.className = launchLine ? 'with-launch' : '';
-      row.innerHTML = `<span class="h-main"><span>${esc(when)}</span>${where ? `<span> · ${esc(where)}</span>` : ''}</span>${launchLine ? `<span class="h-launch">${launchLine.replace(/\s+satellites/, ' satellites')}</span>` : ''}<button type="button" class="history-delete" aria-label="Delete this sighting">×</button>`;
-      row.querySelector('button').addEventListener('click', async () => {
+      row.innerHTML = `<span class="h-main"><span>${esc(when)}</span>${where ? `<span> · ${esc(where)}</span>` : ''}</span>${launchLine ? `<span class="h-launch">${launchLine.replace(/\s+satellites/, ' satellites')}</span>` : ''}`; // no delete button (2026-10-14, Sevaan: people don't need to delete when they saw it)
+      row.querySelector('button')?.addEventListener('click', async () => {
         if (!confirm('Delete this sighting? If it was your only one, the card leaves your collection.')) return;
         try { await deleteSighting(s.key); } catch { ticket({ kind: 'info', line: 'That sighting could not be deleted. Try again.' }); return; }
         removeSighting(s); // and from the backup, when signed in
