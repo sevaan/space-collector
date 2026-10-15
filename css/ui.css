@@ -332,3 +332,15 @@ body:has(.overlay.panel:not([hidden])) .patch-coins { visibility: hidden; }
 body:has(#gh-remind:not([hidden])) #toasts { opacity: 0; pointer-events: none; transition: opacity .2s; } /* Remind me under the steering pill comes first (2026-10-14) */
 /* Tour notifications card art (2026-10-14): two notifications drop onto the little phone. */
 @media (prefers-reduced-motion: no-preference) { .ob-note { animation: ob-note 3.2s ease-out infinite; } .ob-note2 { animation-delay: .45s; } @keyframes ob-note { 0% { transform: translateY(-10px); opacity: 0; } 18%, 80% { transform: none; opacity: 1; } 100% { opacity: 0; } } }
+/* Tour card art moves, like the notifications card (2026-10-14, Sevaan). Location: the pin drops and a ring ripples out;
+   motion: the phone sways side to side and the waves pulse. */
+@media (prefers-reduced-motion: no-preference) {
+  .ob-pin { transform-box: fill-box; transform-origin: 50% 100%; animation: ob-pin 3.2s cubic-bezier(.3,.7,.4,1) infinite; }
+  @keyframes ob-pin { 0% { transform: translateY(-18px); opacity: 0; } 14% { opacity: 1; } 24% { transform: none; } 30% { transform: scaleY(.9); } 36%, 100% { transform: none; } }
+  .ob-ripple { transform-box: fill-box; transform-origin: center; opacity: 0; animation: ob-ripple 3.2s ease-out infinite; }
+  @keyframes ob-ripple { 0%, 24% { transform: scale(.4); opacity: 0; } 30% { opacity: .9; } 70%, 100% { transform: scale(3.2); opacity: 0; } }
+  .ob-phone { animation: ob-phone 3.2s ease-in-out infinite; }
+  @keyframes ob-phone { 0%, 100% { transform: rotate(-14deg); } 50% { transform: rotate(14deg); } }
+  .ob-waves path { animation: ob-wave 1.6s ease-in-out infinite; } .ob-waves path:nth-child(even) { animation-delay: .25s; }
+  @keyframes ob-wave { 0%, 100% { opacity: .25; } 50% { opacity: 1; } }
+}

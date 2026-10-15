@@ -965,7 +965,7 @@ html.quick #hud[hidden] ~ #nav { display: grid !important; }
 .nt-head .d-title { margin: 6px 0 8px; }
 .nt-eyebrow { color: var(--cyan) !important; }
 .nt-head .od-sub em { font-style: normal; color: var(--gold); }
-.nt-week { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-top: -6px; }
+.nt-week { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; /* however many days the forecast has, they fill the width (2026-10-14, Sevaan) */ gap: 5px; margin-top: -6px; }
 .nt-week div { display: flex; flex-direction: column; align-items: center; gap: 5px; padding: 8px 0 7px; border-radius: 10px; background: #ffffff08; }
 .nt-week b { font: 500 12px var(--label); letter-spacing: .1em; color: var(--muted); }
 .nt-week i { font-style: normal; font-size: 15px; height: 18px; line-height: 18px; }
