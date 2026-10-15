@@ -1,29 +1,29 @@
-import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.683';
-import { computeStats, statsHtml } from './stats.js?v=0.1.683';
-import { nightKey } from './observation.js?v=0.1.683';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.683';
-import { sfx } from './sfx.js?v=0.1.683';
-import { expandFacts } from './catalog-facts.js?v=0.1.683';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.683';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.683';
-import { ticket } from './toast.js?v=0.1.683';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.683';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.683';
-import { cardArt } from './art.js?v=0.1.683';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.683';
-import { applyBack } from './card-backs.js?v=0.1.683';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.683';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.683';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.683';
+import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.684';
+import { computeStats, statsHtml } from './stats.js?v=0.1.684';
+import { nightKey } from './observation.js?v=0.1.684';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.684';
+import { sfx } from './sfx.js?v=0.1.684';
+import { expandFacts } from './catalog-facts.js?v=0.1.684';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.684';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.684';
+import { ticket } from './toast.js?v=0.1.684';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.684';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.684';
+import { cardArt } from './art.js?v=0.1.684';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.684';
+import { applyBack } from './card-backs.js?v=0.1.684';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.684';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.684';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.684';
 import './stories.js?v=0.1.680';
-import { loadConstellations, conList } from './constellations.js?v=0.1.683';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.683';
-import { eventBadges, nextEvent } from './events.js?v=0.1.683';
-import { shareCardEl } from './share-card.js?v=0.1.683';
-import { removeSighting } from './account.js?v=0.1.683';
-import { allSightings, deleteSighting } from './store.js?v=0.1.683';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.683';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.683';
+import { loadConstellations, conList } from './constellations.js?v=0.1.684';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.684';
+import { eventBadges, nextEvent } from './events.js?v=0.1.684';
+import { shareCardEl } from './share-card.js?v=0.1.684';
+import { removeSighting } from './account.js?v=0.1.684';
+import { allSightings, deleteSighting } from './store.js?v=0.1.684';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.684';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.684';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -844,7 +844,7 @@ function renderPatches() {
   $('results').textContent = `${done} of ${all.length} patches earned`;
   const groups = GROUP_ORDER.filter((g) => all.some((a) => groupOf(a) === g));
   const shown = all.filter((a) => state.patchGroup === 'all' || groupOf(a) === state.patchGroup)
-    .sort((a, b) => Number(b.done) - Number(a.done) || GROUP_ORDER.indexOf(groupOf(a)) - GROUP_ORDER.indexOf(groupOf(b))); // earned first, then by group
+    .sort((a, b) => Number(b.done) - Number(a.done) || (a.done ? (dates[b.id] ?? 0) - (dates[a.id] ?? 0) : 0) || GROUP_ORDER.indexOf(groupOf(a)) - GROUP_ORDER.indexOf(groupOf(b))); // earned first, newest at the top (2026-10-14, Sevaan), then by group
   wall.innerHTML = `<div class="pw-chips">${['all', ...groups].map((g) => `<button type="button" class="ui-chip pw-chip${state.patchGroup === g ? ' on' : ''}" data-g="${g}"><b>${g === 'all' ? 'All' : esc(GROUPS[g].t)}</b><span class="ui-chip__k">${(g === 'all' ? all : all.filter((a) => groupOf(a) === g)).filter((a) => a.done).length}</span></button>`).join('')}</div>
     ${state.patchGroup !== 'all' && !shown.some((a) => a.done) ? `<div class="pw-empty"><span class="empty__orbit" aria-hidden="true">✦</span><span>None yet in ${esc(GROUPS[state.patchGroup]?.t ?? 'this group')}. Each outline below says what earns it.</span></div>` : ''}
     ${state.patchGroup === 'all' && all.filter((a) => a.done).length < 3 ? (() => { const easy = ['first', 'moon', 'twilight', 'station', 'stars10'].map((id) => all.find((a) => a.id === id && !a.done)).filter(Boolean).slice(0, 3);

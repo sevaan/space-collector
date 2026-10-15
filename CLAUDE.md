@@ -961,3 +961,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 2026-10-14 · v0.1.682: no delete (×) on "When you saw it" rows in the card viewer (Sevaan). The delete code stays but nothing calls it.
 
 2026-10-14 · v0.1.683: the 13 story secrets (secrets.js STORY_SECRETS) give their story card only, no patch (Sevaan). Patches found before STORY_PATCH_CUTOFF stay on the wall (`hasPatch`). Patch-only secrets: UFO, fossil, Santa, Dizzy, shooting star.
+
+2026-10-14 · v0.1.684: patch wall puts the newest earned patches first (earned date, then group; Sevaan).
