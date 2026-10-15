@@ -5,7 +5,9 @@
 const RAD = Math.PI / 180;
 const vec = (ra, dec) => [Math.cos(dec * RAD) * Math.cos(ra * RAD), Math.cos(dec * RAD) * Math.sin(ra * RAD), Math.sin(dec * RAD)];
 
-export function conArt(con, highlightHip = null, { w = 360, h = 240, figure = null, bare = false, lit = null, mark = null } = {}) {
+export function conArt(con, highlightHip = null, { w = 360, h = 240, figure = null, bare = false, lit = null, mark = null, focus = null } = {}) {
+  // focus (2026-10-14, Sevaan: design/con-focus.html B): 0..1 share of the constellation's stars you own; the figure
+  // starts faint and blurred and sharpens as you collect them, crisp at 1.
   // mark (2026-10-11): a deep-sky object { ra, dec, kind } drawn as a soft glow, ringed in orange, among its constellation.
   // lit (2026-10-07): a Set of HIP numbers you've found; those shine, the rest are faint dots still to collect.
   const stars = con.stars;
@@ -55,7 +57,7 @@ export function conArt(con, highlightHip = null, { w = 360, h = 240, figure = nu
   return `<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <defs><radialGradient id="cg"><stop offset="0" stop-color="#fa8127" stop-opacity=".7"/><stop offset="1" stop-color="#fa8127" stop-opacity="0"/></radialGradient>
     <radialGradient id="cdeep"><stop offset="0" stop-color="#fff2d0" stop-opacity=".95"/><stop offset=".35" stop-color="#e8dcc0" stop-opacity=".45"/><stop offset="1" stop-color="#e8dcc0" stop-opacity="0"/></radialGradient><radialGradient id="cneb"><stop offset="0" stop-color="#ffd6e0" stop-opacity=".85"/><stop offset=".5" stop-color="#d07a9a" stop-opacity=".35"/><stop offset="1" stop-color="#7a4a9a" stop-opacity="0"/></radialGradient><radialGradient id="csk"><stop offset="0" stop-color="#fffbe6"/><stop offset=".45" stop-color="#fff2b3" stop-opacity=".55"/><stop offset="1" stop-color="#fff2b3" stop-opacity="0"/></radialGradient><radialGradient id="cs" cx="50%" cy="40%" r="75%"><stop offset="0" stop-color="#14213a"/><stop offset="1" stop-color="#080e1a"/></radialGradient></defs>
-    <rect width="${w}" height="${h}" fill="url(#cs)"/>${figure ? `<image href="${figure}" width="${w}" height="${h}" preserveAspectRatio="xMidYMid slice" opacity=".62"/>` : ''}${bg}<g fill="none" stroke="#fff2b3" stroke-opacity=".45" stroke-width=".9" stroke-linejoin="round">${lines}</g>${dots}${glow}${spark}</svg>`;
+    <rect width="${w}" height="${h}" fill="url(#cs)"/>${figure ? `<image href="${figure}" width="${w}" height="${h}" preserveAspectRatio="xMidYMid slice" opacity="${focus == null ? .62 : focus >= 1 ? .9 : (.06 + .55 * focus).toFixed(2)}"${focus != null && focus < 1 ? ` style="filter:blur(${((1 - focus) * 7).toFixed(1)}px)"` : ''}/>` : ''}${bg}<g fill="none" stroke="#fff2b3" stroke-opacity=".45" stroke-width=".9" stroke-linejoin="round">${lines}</g>${dots}${glow}${spark}</svg>`;
 }
 
 // A comet (2026-10-11): bright head, soft coma, a curved dust tail and a straight blue ion tail, over a starfield.

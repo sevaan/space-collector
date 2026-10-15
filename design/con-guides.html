@@ -1,0 +1,9 @@
+<!doctype html><meta charset="utf-8"><title>guides</title><style>body{margin:0;background:#000}svg{display:block}</style><div id="g"></div>
+<script type="module">
+import { conArt } from '../js/con-art.js?v=0.1.683';
+import { CON_FIGURES } from '../js/con-figures.js?v=0.1.683';
+const d = await (await fetch('../data/constellations.json')).json();
+window.LIST = d.constellations.filter((c) => !CON_FIGURES.has(c.id)).map((c) => ({ id: c.id, name: c.name, nick: c.nick }));
+window.show = (id) => { const c = d.constellations.find((x) => x.id === id); document.getElementById('g').innerHTML = conArt(c, null, { w: 900, h: 600 }); };
+document.body.dataset.ready = 1;
+</script>

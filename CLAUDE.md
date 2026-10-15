@@ -963,3 +963,7 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 2026-10-14 · v0.1.683: the 13 story secrets (secrets.js STORY_SECRETS) give their story card only, no patch (Sevaan). Patches found before STORY_PATCH_CUTOFF stay on the wall (`hasPatch`). Patch-only secrets: UFO, fossil, Santa, Dizzy, shooting star.
 
 2026-10-14 · v0.1.684: patch wall puts the newest earned patches first (earned date, then group; Sevaan).
+
+2026-10-14 · v0.1.685 (Sevaan):
+- Rank card ladder: the line through ranks you've passed is solid orange (it was only drawn from your rank to the next), and the rungs are centred (37.5 from each side, was 30 / 45).
+- Constellation figures come into focus (design/con-focus.html B): a constellation star card's chart shows the figure (assets/art/con/<id>.webp, CON_FIGURES) faint and blurred, sharpening with the share of that constellation's stars you own, crisp at all of them (con-art.js `focus`, card.js `conFocus`; the reveal now passes ownedKeys). 71 more figures are being generated (scratchpad congen/, guides rendered by design/con-guides.html at the card's framing).

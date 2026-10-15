@@ -1,29 +1,29 @@
-import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.684';
-import { computeStats, statsHtml } from './stats.js?v=0.1.684';
-import { nightKey } from './observation.js?v=0.1.684';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.684';
-import { sfx } from './sfx.js?v=0.1.684';
-import { expandFacts } from './catalog-facts.js?v=0.1.684';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.684';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.684';
-import { ticket } from './toast.js?v=0.1.684';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.684';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.684';
-import { cardArt } from './art.js?v=0.1.684';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.684';
-import { applyBack } from './card-backs.js?v=0.1.684';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.684';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.684';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.684';
+import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.685';
+import { computeStats, statsHtml } from './stats.js?v=0.1.685';
+import { nightKey } from './observation.js?v=0.1.685';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.685';
+import { sfx } from './sfx.js?v=0.1.685';
+import { expandFacts } from './catalog-facts.js?v=0.1.685';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.685';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.685';
+import { ticket } from './toast.js?v=0.1.685';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.685';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.685';
+import { cardArt } from './art.js?v=0.1.685';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.685';
+import { applyBack } from './card-backs.js?v=0.1.685';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.685';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.685';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.685';
 import './stories.js?v=0.1.680';
-import { loadConstellations, conList } from './constellations.js?v=0.1.684';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.684';
-import { eventBadges, nextEvent } from './events.js?v=0.1.684';
-import { shareCardEl } from './share-card.js?v=0.1.684';
-import { removeSighting } from './account.js?v=0.1.684';
-import { allSightings, deleteSighting } from './store.js?v=0.1.684';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.684';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.684';
+import { loadConstellations, conList } from './constellations.js?v=0.1.685';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.685';
+import { eventBadges, nextEvent } from './events.js?v=0.1.685';
+import { shareCardEl } from './share-card.js?v=0.1.685';
+import { removeSighting } from './account.js?v=0.1.685';
+import { allSightings, deleteSighting } from './store.js?v=0.1.685';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.685';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.685';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -246,11 +246,12 @@ function renderLogbook() {
   // Front (2026-10-08, design/rank-card.html C): your rank ladder as the picture (twinkling stars), the rank and
   // XP, tonight's missions, and Events at the foot.
   const ri = p.rank.index, lo = Math.max(0, Math.min(ri - 2, RANKS.length - 4)), rungs = RANKS.slice(lo, lo + 4);
-  const H = 160, pts = rungs.map((_, i) => [30 + i * 75, H / 2 + 34 - i * 18]);
+  const H = 160, pts = rungs.map((_, i) => [37.5 + i * 75, H / 2 + 34 - i * 18]); // centred: 37.5 in from each side (2026-10-14, Sevaan)
   let seed = 11; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
   const stars = Array.from({ length: 30 }, (_, i) => `<circle class="lb-tw" style="--d:${(rnd() * 5).toFixed(2)}s;--t:${(2.5 + rnd() * 3).toFixed(2)}s" cx="${(rnd() * 300).toFixed(0)}" cy="${(rnd() * H).toFixed(0)}" r="${(0.5 + rnd() * 0.8).toFixed(1)}" fill="#fff2b3"/>`).join('');
   const cur = ri - lo, ladder = `<svg class="lb-ladder" viewBox="0 0 300 ${H}" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${stars}
     <path d="M${pts.map((q) => q.join(' ')).join(' L')}" fill="none" stroke="#344654" stroke-dasharray="3 5"/>
+    ${cur > 0 ? `<path d="M${pts.slice(0, cur + 1).map((q) => q.join(' ')).join(' L')}" fill="none" stroke="#fa8127" stroke-width="2"/>` : ''}<!-- ranks you have passed: solid (2026-10-14) -->
     ${pts[cur + 1] ? `<path d="M${pts[cur].join(' ')} L${pts[cur][0] + (pts[cur + 1][0] - pts[cur][0]) * into} ${pts[cur][1] + (pts[cur + 1][1] - pts[cur][1]) * into}" stroke="#fa8127" stroke-width="2"/>` : ''}
     ${rungs.map(([, n], i) => { const [x, y] = pts[i]; return `<circle cx="${x}" cy="${y}" r="${i === cur ? 6 : 4}" fill="${i <= cur ? '#fa8127' : '#0b1626'}" ${i > cur ? 'stroke="#fff2b3" stroke-dasharray="2 2"' : ''}/>${i === cur ? `<circle cx="${x}" cy="${y}" r="12" fill="none" stroke="#fa8127" opacity=".5"/>` : ''}<text x="${x}" y="${y + 20}" text-anchor="middle" font-family="SC Label, Arial Narrow" font-size="9.5" letter-spacing="1.5" fill="${i >= cur ? '#fff2b3' : '#bdbea9'}">${esc(n.toUpperCase())}</text>${i === cur + 1 ? `<text x="${x}" y="${y - 14}" text-anchor="middle" font-family="SC Label, Arial Narrow" font-size="9" letter-spacing="1.5" fill="#fa8127">NEXT</text>` : ''}`; }).join('')}</svg>`;
   const streak = p.streak.current >= 2 ? `${p.streak.current}-week streak` : p.streak.current ? 'Week 1 · come back next week' : 'Observe this week to start a streak'; // the flame is earned at week 2 (playtest 2026-10-09)

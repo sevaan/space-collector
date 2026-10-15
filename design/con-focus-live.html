@@ -1,0 +1,25 @@
+<!doctype html><meta charset="utf-8"><title>Constellation focus (live)</title>
+<link rel="stylesheet" href="../css/cards.css"><link rel="stylesheet" href="../css/ui.css">
+<style>body{margin:0;background:#070d17;color:#fff2b3;font:500 15px 'Barlow Condensed',sans-serif;padding:20px}.row{display:flex;gap:18px;flex-wrap:wrap}.slot{display:grid;gap:8px;justify-items:center}.slot .card{font-size:9px}.slot span{letter-spacing:.14em;text-transform:uppercase;color:#9fb3c8}h2{font:400 22px 'Russo One',sans-serif;margin:18px 0 10px}</style>
+<h2 id="hA">A · Fades in</h2><div class="row" id="A"></div><h2>B · Comes into focus</h2><div class="row" id="B"></div>
+<script type="module">
+import { loadConstellations, CON_BY_ID } from '../js/constellations.js?v=0.1.683';
+import { NATURAL_BY_KEY } from '../js/natural.js?v=0.1.683';
+import { renderCard } from '../js/card.js?v=0.1.683';
+import { conArt } from '../js/con-art.js?v=0.1.683';
+import { loadLore } from '../js/lore.js?v=0.1.683';
+await Promise.all([loadConstellations('../data/constellations.json').catch(() => loadConstellations()), loadLore('../data/lore.json')]);
+const con = CON_BY_ID.get('Ori'), keys = con.stars, n = keys.length;
+const star = NATURAL_BY_KEY.get(keys[3]);
+for (const [row, mode] of [['A', 'fade'], ['B', 'focus']]) for (const k of [1, Math.round(n * 0.3), Math.round(n * 0.65), n]) {
+  const owned = keys.slice(0, k), lit = new Set(owned.map((x) => NATURAL_BY_KEY.get(x).hip)), f = k / n;
+  const el = renderCard(star, { sightings: [{ time: Date.now(), cardKey: star.key, objectId: star.id }] });
+  const art = el.querySelector('.card__art'); const keep = [...art.querySelectorAll('.m-chip, .card__foil')];
+  art.innerHTML = conArt(con.data, NATURAL_BY_KEY.get(owned[owned.length - 1]).hip, { figure: '../assets/art/con/Ori.webp', lit }); keep.forEach((x) => art.appendChild(x));
+  const img = art.querySelector('image'); img.setAttribute('opacity', (k === n ? 0.9 : 0.06 + 0.55 * f).toFixed(2));
+  if (mode === 'focus') img.setAttribute('style', `filter: blur(${((1 - f) * 7).toFixed(1)}px)`);
+  if (k === n) art.insertAdjacentHTML('beforeend', '<span class="m-chip" style="left:50%;translate:-50% 0;top:auto;bottom:.7em;color:#ffc93d;border:1px solid #ffc93d88">★ ORION COMPLETE</span>');
+  const s = document.createElement('div'); s.className = 'slot'; s.append(el); s.insertAdjacentHTML('beforeend', `<span>${k} of ${n} stars</span>`); document.getElementById(row).append(s);
+}
+document.body.dataset.ready = '1';
+</script>

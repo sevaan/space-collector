@@ -1,21 +1,28 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { fallWords } from './last-chance.js?v=0.1.684';
-import { sfx } from './sfx.js?v=0.1.684';
-import { cardArt } from './art.js?v=0.1.684';
-import { TIER_INFO } from './rarity.js?v=0.1.684';
-import { SET_BY_ID } from './sets.js?v=0.1.684';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.684';
-import { FLEET_ABOUT, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.684';
-import { artFileFor } from './art-keys.js?v=0.1.684';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.684';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.684';
-import { nightsIn } from './observation.js?v=0.1.684';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.684';
-import { SHINY } from './shiny.js?v=0.1.684';
-import { conArt, cometArt } from './con-art.js?v=0.1.684';
-import { CON_FIGURES } from './con-figures.js?v=0.1.684';
+import { fallWords } from './last-chance.js?v=0.1.685';
+import { sfx } from './sfx.js?v=0.1.685';
+import { cardArt } from './art.js?v=0.1.685';
+import { TIER_INFO } from './rarity.js?v=0.1.685';
+import { SET_BY_ID } from './sets.js?v=0.1.685';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.685';
+import { FLEET_ABOUT, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.685';
+import { artFileFor } from './art-keys.js?v=0.1.685';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.685';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.685';
+import { nightsIn } from './observation.js?v=0.1.685';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.685';
+import { SHINY } from './shiny.js?v=0.1.685';
+import { conArt, cometArt } from './con-art.js?v=0.1.685';
+import { CON_FIGURES } from './con-figures.js?v=0.1.685';
 // The animal/symbol figure belongs to the completed (gold) constellation card only (2026-10-05): a single
 // star's card draws just the star pattern with its star marked, so the figure is a reward for finishing the set.
+// A star card's constellation figure comes into focus as you collect the constellation's stars (design/con-focus.html B).
+function conFocus(o, owned) {
+  const con = CON_BY_ID.get(o.con); if (!con || !CON_FIGURES.has(o.con)) return {};
+  const have = owned ? con.stars.filter((k) => owned.has(k)).length : 1;
+  const lit = new Set(con.stars.filter((k) => owned?.has(k)).map((k) => Number(String(k).replace('star:hip', ''))).filter(Boolean));
+  return { figure: `assets/art/con/${o.con}.webp`, focus: have / con.stars.length, ...(owned ? { lit } : {}) };
+}
 const conFig = (id) => (CON_FIGURES.has(id) ? { figure: `assets/art/con/${id}.webp` } : {});
 
 // The footer says the card's level, not a bare count (collectors 2026-10-11: Saturn on 7 nights looked like a first
@@ -155,7 +162,7 @@ export function renderCard(o, opts = {}) {
   el.classList.add('card--mission');
   el.innerHTML = `
   <div class="card__rotator"><div class="card__face">
-    <div class="card__art" data-art-slot aria-hidden="true">${lcMark(o)}${conCard && o.system ? (revealed && artImage(o) ? `<img class="card-art-image" src="${artImage(o, AS)}" alt="" decoding="async">${opts.mini ? '' : artStars(o)}` : lockedArt(o, revealed, set.color, opts.mini ? 'small' : undefined)) : conCard ? conArt(o.data, null, revealed ? conFig(o.con) : {}) : o.type === 'comet' && revealed ? cometArt(o.key) : o.type === 'deepsky' && revealed && !artImage(o) && CON_BY_ID.get(o.conId) ? conArt(CON_BY_ID.get(o.conId).data, null, { mark: o }) : o.con && !o.skyName && revealed && CON_BY_ID.get(o.con) ? conArt(CON_BY_ID.get(o.con).data, o.hip, {}) : revealed && artImage(o) ? `<img class="card-art-image" src="${artImage(o, AS)}" alt="" decoding="async">${opts.mini ? '' : artStars(o)}` : lockedArt(o, revealed, set.color, opts.mini ? 'small' : undefined)}${shinyOf ? `<span class="shiny-tag">✦ SHINY · ${esc(SHINY[shinyOf].label.toUpperCase())}</span>` : ''}<span class="m-chip m-tier card__tier"><i aria-hidden="true">${tier.gem}</i>${esc(tier.label.toUpperCase())}${o.icon ? '<b class="card__icon-badge">ICON</b>' : ''}</span><span class="m-chip m-set card__setbar"><span><span>${esc(set.name.toUpperCase())}</span></span></span><div class="card__foil"></div></div>
+    <div class="card__art" data-art-slot aria-hidden="true">${lcMark(o)}${conCard && o.system ? (revealed && artImage(o) ? `<img class="card-art-image" src="${artImage(o, AS)}" alt="" decoding="async">${opts.mini ? '' : artStars(o)}` : lockedArt(o, revealed, set.color, opts.mini ? 'small' : undefined)) : conCard ? conArt(o.data, null, revealed ? conFig(o.con) : {}) : o.type === 'comet' && revealed ? cometArt(o.key) : o.type === 'deepsky' && revealed && !artImage(o) && CON_BY_ID.get(o.conId) ? conArt(CON_BY_ID.get(o.conId).data, null, { mark: o }) : o.con && !o.skyName && revealed && CON_BY_ID.get(o.con) ? conArt(CON_BY_ID.get(o.con).data, o.hip, conFocus(o, opts.ownedKeys)) : revealed && artImage(o) ? `<img class="card-art-image" src="${artImage(o, AS)}" alt="" decoding="async">${opts.mini ? '' : artStars(o)}` : lockedArt(o, revealed, set.color, opts.mini ? 'small' : undefined)}${shinyOf ? `<span class="shiny-tag">✦ SHINY · ${esc(SHINY[shinyOf].label.toUpperCase())}</span>` : ''}<span class="m-chip m-tier card__tier"><i aria-hidden="true">${tier.gem}</i>${esc(tier.label.toUpperCase())}${o.icon ? '<b class="card__icon-badge">ICON</b>' : ''}</span><span class="m-chip m-set card__setbar"><span><span>${esc(set.name.toUpperCase())}</span></span></span><div class="card__foil"></div></div>
     <div class="card__heading"><h3 class="card__name">${esc(title)}</h3>
     <div class="card__identity"><span>${esc(sub)}</span><span class="card__mono">${esc(identifier)}</span></div></div>
     ${tempStrip(o)}
