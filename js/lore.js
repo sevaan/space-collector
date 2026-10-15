@@ -4,7 +4,7 @@
 // facts only state what the catalogue says today (orbit, launch date and site) or simple date
 // comparisons. No extrapolating today's orbit back over decades (lifetime laps or distance).
 
-import { orbitStats, titleCase, siteName, ownerName } from './facts.js?v=0.1.711';
+import { orbitStats, titleCase, siteName, ownerName } from './facts.js?v=0.1.712';
 
 const FAMILY = [
   [/^IRIDIUM 33 DEB/, 'A piece of the **first-ever crash between two satellites**: Iridium 33 hit the dead Cosmos 2251 in 2009.'],
@@ -242,6 +242,9 @@ export function factFor(o, now = new Date()) {
   const hand = loreCache?.[o.id]?.fact;
   if (hand) return hand;
   const deb = debrisOf(o); if (deb) return deb.fact;
+  // Released from the ISS but not identified yet (2026-10-15, Sevaan): objects let go together get letters (YK, YL,
+  // YM…) until trackers work out which CubeSat is which; their real launch is the cargo flight that carried them up.
+  if (o.issDeploy && /^ISS OBJECT/.test(o.name ?? '')) return `A small satellite **released from the International Space Station** in ${String(o.launch ?? '').slice(0, 4)}. Trackers haven't confirmed **which CubeSat** it is yet: ones let go together get letters (YK, YL, YM…) until each is identified.`;
   const series = seriesOf(o);
   if (series) return series.facts ? series.facts[Number(o.id) % series.facts.length] : series.fact;
   const fam = FAMILY.find(([re, , kinds]) => re.test(o.name) && (!kinds || kinds.includes(o.kind)));

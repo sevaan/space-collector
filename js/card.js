@@ -1,19 +1,19 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { fallWords } from './last-chance.js?v=0.1.711';
-import { sfx } from './sfx.js?v=0.1.711';
-import { cardArt } from './art.js?v=0.1.711';
-import { TIER_INFO } from './rarity.js?v=0.1.711';
-import { SET_BY_ID } from './sets.js?v=0.1.711';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.711';
-import { FLEET_ABOUT, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.711';
-import { artFileFor } from './art-keys.js?v=0.1.711';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.711';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.711';
-import { nightsIn } from './observation.js?v=0.1.711';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.711';
-import { SHINY } from './shiny.js?v=0.1.711';
-import { conArt, cometArt } from './con-art.js?v=0.1.711';
-import { CON_FIGURES } from './con-figures.js?v=0.1.711';
+import { fallWords } from './last-chance.js?v=0.1.712';
+import { sfx } from './sfx.js?v=0.1.712';
+import { cardArt } from './art.js?v=0.1.712';
+import { TIER_INFO } from './rarity.js?v=0.1.712';
+import { SET_BY_ID } from './sets.js?v=0.1.712';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.712';
+import { FLEET_ABOUT, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.712';
+import { artFileFor } from './art-keys.js?v=0.1.712';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.712';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.712';
+import { nightsIn } from './observation.js?v=0.1.712';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.712';
+import { SHINY } from './shiny.js?v=0.1.712';
+import { conArt, cometArt } from './con-art.js?v=0.1.712';
+import { CON_FIGURES } from './con-figures.js?v=0.1.712';
 // The animal/symbol figure belongs to the completed (gold) constellation card only (2026-10-05): a single
 // star's card draws just the star pattern with its star marked, so the figure is a reward for finishing the set.
 // A star card's constellation figure comes into focus as you collect the constellation's stars (design/con-focus.html B).
@@ -154,7 +154,8 @@ export function renderCard(o, opts = {}) {
   // Mission card front (2026-10-14, Sevaan: design/card-redesign.html style A): the picture first at a fixed 4:3 with the
   // rarity and set on it, the name, a plain "what it is" line, a colour-temperature strip for stars, four numbers, the
   // fact, and the footer.
-  const sub = nat || fleet || o.type === 'rocket-body' || o.type === 'debris' ? identity : [ownerWord(o.owner, o.year ?? Number(o.launch?.slice(0, 4))), roleOf(o).replace(/^./, (ch) => (ownerWord(o.owner) ? ch.toLowerCase() : ch))].filter(Boolean).join(' ').replace(/^./, (ch) => ch.toUpperCase()) + (o.launch ? ` · ${o.launch.slice(0, 4)}` : '');
+  const fromIss = o.issDeploy && o.launch ? `${/^ISS OBJECT/.test(o.name ?? '') ? 'Unidentified CubeSat' : roleOf(o)} · from the ISS · ${o.launch.slice(0, 4)}` : null;
+  const sub = fromIss ?? (nat || fleet || o.type === 'rocket-body' || o.type === 'debris' ? identity : [ownerWord(o.owner, o.year ?? Number(o.launch?.slice(0, 4))), roleOf(o).replace(/^./, (ch) => (ownerWord(o.owner) ? ch.toLowerCase() : ch))].filter(Boolean).join(' ').replace(/^./, (ch) => ch.toUpperCase()) + (o.launch ? ` · ${o.launch.slice(0, 4)}` : ''));
   const kmh = laps ? Math.round(speedKmh(laps) / 100) * 100 : null;
   const four = secretStory ? [] : nat ? o.stats.map(([label, value, unit]) => [label, value, unit])
     : fleet ? [['HEIGHT', stats ? stats.alt.toLocaleString('en-US') : '—', 'km'], ['SPEED', kmh ? kmh.toLocaleString('en-US') : '—', 'km/h'], ['FIRST', o.launch?.slice(0, 4) ?? '—', ''], ['LAUNCHES', String(o.launches.length), '']]
