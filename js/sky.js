@@ -1,17 +1,17 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.679';
+import { extinction } from './sky-limit.js?v=0.1.680';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.679';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.680';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.679';
-import { createCloudGL } from './clouds-gl.js?v=0.1.679';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.680';
+import { createCloudGL } from './clouds-gl.js?v=0.1.680';
 // Cloud colours by light: sunlit tops, shadowed bellies, and the horizon haze they melt into (0–1 RGB).
 const CLOUD_LIGHT = {
   day: { lit: [1, 1, 1], shade: [0.62, 0.68, 0.77], haze: [0.82, 0.87, 0.93] },
   dusk: { lit: [1, 0.8, 0.68], shade: [0.36, 0.33, 0.42], haze: [0.62, 0.5, 0.52] },
   night: { lit: [0.22, 0.25, 0.31], shade: [0.1, 0.12, 0.16], haze: [0.14, 0.15, 0.2] },
 };
-import { TIER_INFO } from './rarity.js?v=0.1.679';
+import { TIER_INFO } from './rarity.js?v=0.1.680';
 
 const RAD = Math.PI / 180;
 const BELOW_ICON = 10.5, BELOW_ICON_HIT = 20; // every satellite under the horizon, passes and halo alike (80% of 13 since 2026-10-13); lined up in the circle it grows
@@ -1399,6 +1399,7 @@ export class SkyView {
     this.drawBackground();
     if ((this.dayF ?? 0) < 0.2 && !this.camera) this.drawMilkyWay(milky); // no Milky Way in camera view
     if (sky && (this.dayF ?? 0) < 0.6) this.drawStars(sky, { lines: lines && this.dayF < 0.2, time: this.reducedMotion ? 0 : time, starLimit });
+    if (this.showShadow !== false) this.drawEarthShadow();
     if (deep?.length && (this.dayF ?? 0) < 0.2) this.drawDeep(deep);
     if (weather && !this.camera) this.drawWeather(weather, this.reducedMotion ? 0 : time); // the camera shows the real clouds
     if (bodies) this.drawBodies(bodies);
@@ -1499,6 +1500,7 @@ export class SkyView {
     const locked = lockedOn ?? (!!focus && focus.obj.id === targetId && !!focus.candidate);
     if (planeAt && !locked) this.drawReticle(true, 0, false, planeAt);
     else { this.ownedInk = ownedTarget; this.drawReticle(locked, this.reducedMotion ? 0 : time, newFind && locked && !quietTarget, null, quietTarget); }
+    if (this.fade && !planeAt) this.drawFade(this.fade, time);
     if (ufo) this.drawUfo(ufo);
     if (secrets?.length) this.drawSecrets(secrets);
     this.drawLabels();
@@ -1598,6 +1600,67 @@ export class SkyView {
     return this.ring;
   }
 
+  // Catch the fade (main.js fadeCountdown): a gold ring just outside the circle that runs down over the last 20 s
+  // before the target slides into Earth's shadow; in the last 3 s it turns bright and says NOW.
+  drawFade({ left, total }, time = 0) {
+    const ctx = this.ctx, ring = this.ring ?? { x: this.cx, y: this.cy, r: this.reticlePx }, r = ring.r + 11, now = left <= 3;
+    const gold = this.theme === THEMES.night ? 'rgb(255,110,90)' : now ? '#ffd54a' : 'rgba(255,201,61,.8)';
+    ctx.save(); ctx.lineCap = 'round';
+    ctx.strokeStyle = 'rgba(255,201,61,.18)'; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(ring.x, ring.y, r, 0, Math.PI * 2); ctx.stroke();
+    ctx.strokeStyle = gold; ctx.lineWidth = now ? 4 + Math.sin(time / 90) * 1.2 : 3;
+    ctx.beginPath(); ctx.arc(ring.x, ring.y, r, -Math.PI / 2, -Math.PI / 2 + Math.max(0.02, left / total) * Math.PI * 2); ctx.stroke();
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.shadowColor = 'rgba(0,0,0,.7)'; ctx.shadowBlur = 4;
+    if ('letterSpacing' in ctx) ctx.letterSpacing = '2px';
+    ctx.font = `600 ${now ? 13 : 11}px ${FONT}`; ctx.fillStyle = gold; // inside the circle, at the bottom: the name sits above it, the button below
+    ctx.fillText(now ? 'NOW!' : `FADES IN ${Math.ceil(left)}S`, ring.x, ring.y + ring.r - 13);
+    ctx.restore();
+  }
+  // Earth's shadow (2026-10-14, Sevaan: "let's do it and I'll feel it out"; design/fun-and-learning.html): at dusk and
+  // dawn, the part of the sky where a satellite 500 km up would be in Earth's shadow, so you can see why things blink
+  // out. Line of sight from you (Earth's centre straight below at R) meets the 500 km shell; that point is in shadow if
+  // it's behind Earth from the Sun and within R of the Sun-Earth line. Shaded faintly, its edge dashed gold.
+  drawEarthShadow() {
+    const s = this.sunEnu; if (!s || s[2] > -0.035 || (this.basis?.back?.[2] ?? 0) < -0.25) return; // night side only, looking up
+    const R = 6371, H = 500, ctx = this.ctx;
+    const dark = (az, el) => {
+      const d = enuFromAzEl(az, el), t = -R * d[2] + Math.sqrt(R * R * d[2] * d[2] + (R + H) ** 2 - R * R);
+      const v = [t * d[0], t * d[1], t * d[2] + R], proj = v[0] * s[0] + v[1] * s[1] + v[2] * s[2];
+      return proj < 0 && v[0] * v[0] + v[1] * v[1] + v[2] * v[2] - proj * proj < R * R;
+    };
+    const AZ = 6, EL = 3, edge = [];
+    let any = false, all = true;
+    ctx.save(); ctx.fillStyle = 'rgba(2,5,12,.22)';
+    for (let az = 0; az < 360; az += AZ) {
+      let prev = dark(az, 0), from = prev ? 0 : null;
+      for (let el = EL; el <= 90; el += EL) {
+        const cur = dark(az, el);
+        if (cur !== prev) edge.push([az + AZ / 2, el - EL / 2]);
+        if (cur && from == null) from = el; if (!cur && from != null) { this.shadeCell(az, from, el, AZ); from = null; }
+        if (cur) any = true; else all = false; prev = cur;
+      }
+      if (from != null) this.shadeCell(az, from, 90, AZ);
+    }
+    ctx.restore();
+    if (!any || all || !edge.length) return;
+    // The edge: dashed gold through the boundary points, joined in azimuth order.
+    ctx.save(); ctx.strokeStyle = 'rgba(255,201,61,.45)'; ctx.lineWidth = 1.2; ctx.setLineDash([5, 7]);
+    let best = null;
+    edge.sort((a, b) => a[0] - b[0]);
+    ctx.beginPath(); let pen = false;
+    for (const [az, el] of edge) {
+      const p = this.project(enuFromAzEl(az, el)); if (!p) { pen = false; continue; }
+      if (pen) ctx.lineTo(p.x, p.y); else ctx.moveTo(p.x, p.y); pen = true;
+      const dd = Math.hypot(p.x - this.cx, p.y - this.cy); if (dd > (this.reticlePx ?? 60) * 2.2 && p.x > 90 && p.x < this.w - 90 && p.y > this.h * 0.32 && p.y < this.h - 200 && (!best || dd < best.dd)) best = { p, dd };
+    }
+    ctx.stroke(); ctx.setLineDash([]);
+    if (best) { ctx.font = `600 11px ${FONT}`; ctx.textAlign = 'center'; ctx.fillStyle = 'rgba(255,201,61,.75)'; if ('letterSpacing' in ctx) ctx.letterSpacing = '1.5px'; ctx.fillText("EARTH'S SHADOW · 500 KM UP", best.p.x, best.p.y - 10); }
+    ctx.restore();
+  }
+  shadeCell(az, el0, el1, w) {
+    const pts = [[az, el0], [az + w, el0], [az + w, el1], [az, el1]].map(([a, e]) => this.project(enuFromAzEl(a, e)));
+    if (pts.some((p) => !p)) return;
+    const ctx = this.ctx; ctx.beginPath(); pts.forEach((p, i) => (i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y))); ctx.closePath(); ctx.fill();
+  }
   drawReticle(locked, time = 0, newFind = false, plane = null, quiet = false) {
     const ctx = this.ctx, t = this.theme;
     const { r: radius, x: cx, y: cy } = this.updateRing(locked && !quiet, plane ?? this.targetPos); // quiet: no snap, the circle just turns orange

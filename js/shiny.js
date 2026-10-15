@@ -2,7 +2,7 @@
 // collect. Decided once, at the moment of the sighting (js/main.js recordSighting), and saved on it.
 // No DOM.
 export const SHINY = {
-  eclipse: { label: 'Into the shadow', line: 'You watched it slip into Earth\'s shadow.' },
+  eclipse: { label: 'Caught the fade', line: 'You caught it just as it slipped into Earth\'s shadow.' },
   moon: { label: 'Moon crossing', line: 'Caught right beside the Moon.' },
   overhead: { label: 'Straight overhead', line: 'Caught passing almost straight overhead.' },
   fresh: { label: 'Fresh from launch', line: 'Caught within a month of its launch.' },

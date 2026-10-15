@@ -1338,3 +1338,9 @@ body.night .wk4-moon::after { background: #ff7f70; }
 @keyframes nh-shine { 0% { background-position: 100% 0; opacity: 0; } 10% { opacity: 1; } 88% { opacity: 1; } 100% { background-position: 0% 0; opacity: 0; } }
 @keyframes nh-glow { 0%, 100% { box-shadow: 0 0 0 0 transparent; } 35% { box-shadow: 0 0 28px -4px color-mix(in srgb, var(--c) 55%, transparent); border-color: var(--c); } }
 @media (prefers-reduced-motion: reduce) { .now-hero.shine::after, .now-hero.shine { animation: none; } }
+/* Tonight's headliner (2026-10-14): the first thing on the Tonight tab, a gold card. */
+.headliner { display: grid; gap: 4px; margin: 0 0 14px; padding: 12px 14px; border-radius: 16px; border: 1px solid #ffc93d; background: radial-gradient(ellipse at 90% 0%, #ffc93d22, transparent 60%), #14160f; }
+.headliner .k { color: #ffc93d; font: 600 12px/1 var(--label, 'SC Label', sans-serif); letter-spacing: .2em; text-transform: uppercase; }
+.headliner b { font: 400 20px/1.1 var(--display, 'SC Display', sans-serif); color: var(--text, #fff2b3); }
+.headliner small { color: #c9d4de; font-size: 14px; }
+.headliner .hl-acts { display: flex; gap: 8px; margin-top: 6px; }

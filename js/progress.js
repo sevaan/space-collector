@@ -1,7 +1,7 @@
 // Player progress from the sighting log: XP and observer rank, tonight's three missions, a weekly streak and
 // achievements. Everything is derived from the saved sightings (nothing extra is stored), so it can't drift.
 // info(cardKey) -> { tier, type, owner, launch, natural, con } | null. No DOM.
-import { nightKey } from './observation.js?v=0.1.679';
+import { nightKey } from './observation.js?v=0.1.680';
 
 // A longer climb (2026-10-12, playtest room: three ranks on night 1, Mission Control in about two weeks), with two
 // prestige ranks past Mission Control. Nobody drops a rank they had on the old curve (rankFloor below).
@@ -154,6 +154,8 @@ export const ACHIEVEMENTS = [
   { id: 'sputnik', name: 'Sputnik Era', text: 'Catch something launched before 1960', icon: '58', done: (a) => a.oldest != null && a.oldest < 1960 },
   { id: 'coldwar', name: 'Cold War', text: '10 objects launched before 1991', icon: '≤90', done: (a) => a.pre1991 >= 10 },
   { id: 'decades', name: 'Time Traveller', text: 'Objects from 6 different decades', icon: '6×10', done: (a) => a.decades.size >= 6 },
+  { id: 'headliners', name: 'Top of the Bill', text: 'Catch 10 of tonight\'s headliners', icon: 'TOP', done: (a) => (a.headliners ?? 0) >= 10 },
+  { id: 'witness', name: 'Witness', text: 'Collect 3 last-chance satellites before they fall', icon: 'LC', done: (a) => (a.witness ?? 0) >= 3 },
   { id: 'brandnew', name: 'Fresh Off the Pad', text: 'Catch something launched within the last 30 days', icon: 'NEW', done: (a) => a.brandNew },
   // Fleets
   { id: 'starlink', name: 'Train Spotter', text: 'Stamp a Starlink launch', icon: 'SL', done: (a) => (a.fleet.STARLINK ?? 0) >= 1 },
@@ -207,7 +209,7 @@ export const ACHIEVEMENTS = [
 // How far along a locked patch is, [have, goal], for the ones that count something (playtest 2026-10-09: a locked
 // patch shows its progress stitched part-way round the border, and the detail view says "3 of 10").
 const PROG = {
-  first: (a) => [a.cards, 1], ten: (a) => [a.cards, 10], twentyfive: (a) => [a.cards, 25], fifty: (a) => [a.cards, 50], hundred: (a) => [a.cards, 100],
+  witness: (a) => [a.witness ?? 0, 3], headliners: (a) => [a.headliners ?? 0, 10], first: (a) => [a.cards, 1], ten: (a) => [a.cards, 10], twentyfive: (a) => [a.cards, 25], fifty: (a) => [a.cards, 50], hundred: (a) => [a.cards, 100],
   archivist: (a) => [a.cards, 250], curator: (a) => [a.cards, 500], catalogue: (a) => [a.cards, 1000], sightings100: (a) => [a.sightings, 100],
   spectrum: (a) => [a.tiers.size, 5], legends5: (a) => [a.tierCount.legendary ?? 0, 5], legends25: (a) => [a.tierCount.legendary ?? 0, 15], shiny5: (a) => [a.shinies, 5],
   stages25: (a) => [a.typeCount['rocket-body'] ?? 0, 25], stations: (a) => [a.typeCount.station ?? 0, 2], satellites50: (a) => [a.typeCount.satellite ?? 0, 50],
@@ -263,6 +265,8 @@ export function progress(sightings, info, { constellations = [], albums = [], no
         if (y) { if (y < 1991) a.pre1991++; a.decades.add(Math.floor(y / 10)); }
         if (s.time - Date.parse(i.launch) <= 30 * 86400e3 && s.time >= Date.parse(i.launch)) a.brandNew = true;
       }
+      if (s.headliner) { xp += 25; a.headliners = (a.headliners ?? 0) + 1; } // tonight's headliner (main.js headliner)
+      if (s.lastChance) a.witness = (a.witness ?? 0) + 1; // collected while it was falling (js/last-chance.js)
     }
     else if (!seenNight.has(nk)) xp += REPEAT_XP;
     let lv = false;

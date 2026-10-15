@@ -1,9 +1,9 @@
 // Orbit math: where every object is in the observer's sky, and whether it can be seen.
 // Pure functions, no DOM, so this module carries over unchanged to a native wrapper.
 
-import { expandFacts } from './catalog-facts.js?v=0.1.679';
-import * as sat from './lib/satellite.js?v=0.1.679';
-import { extinction, starlinkStdMag } from './sky-limit.js?v=0.1.679';
+import { expandFacts } from './catalog-facts.js?v=0.1.680';
+import * as sat from './lib/satellite.js?v=0.1.680';
+import { extinction, starlinkStdMag } from './sky-limit.js?v=0.1.680';
 
 const RAD = Math.PI / 180;
 const EARTH_RADIUS_KM = 6371;
@@ -45,7 +45,7 @@ export async function loadCatalog(url) {
 // Orbital elements come as JSON (OMM) values in scripts/build-catalog.mjs EL_FIELDS order. Older
 // catalogues carried TLE lines, which can't hold catalogue numbers above 99999.
 const EL_FIELDS = ['EPOCH', 'MEAN_MOTION', 'ECCENTRICITY', 'INCLINATION', 'RA_OF_ASC_NODE', 'ARG_OF_PERICENTER', 'MEAN_ANOMALY', 'BSTAR', 'MEAN_MOTION_DOT', 'MEAN_MOTION_DDOT'];
-function satrecFor(o) {
+export function satrecFor(o) {
   if (o.el) return sat.json2satrec({ NORAD_CAT_ID: o.id, ...Object.fromEntries(EL_FIELDS.map((k, i) => [k, o.el[i]])) });
   if (o.l1 && o.l2) return sat.twoline2satrec(o.l1, o.l2);
   return null;

@@ -1,18 +1,19 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { sfx } from './sfx.js?v=0.1.679';
-import { cardArt } from './art.js?v=0.1.679';
-import { TIER_INFO } from './rarity.js?v=0.1.679';
-import { SET_BY_ID } from './sets.js?v=0.1.679';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.679';
-import { FLEET_ABOUT, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.679';
-import { artFileFor } from './art-keys.js?v=0.1.679';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.679';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.679';
-import { nightsIn } from './observation.js?v=0.1.679';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.679';
-import { SHINY } from './shiny.js?v=0.1.679';
-import { conArt, cometArt } from './con-art.js?v=0.1.679';
-import { CON_FIGURES } from './con-figures.js?v=0.1.679';
+import { fallWords } from './last-chance.js?v=0.1.680';
+import { sfx } from './sfx.js?v=0.1.680';
+import { cardArt } from './art.js?v=0.1.680';
+import { TIER_INFO } from './rarity.js?v=0.1.680';
+import { SET_BY_ID } from './sets.js?v=0.1.680';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.680';
+import { FLEET_ABOUT, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.680';
+import { artFileFor } from './art-keys.js?v=0.1.680';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.680';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.680';
+import { nightsIn } from './observation.js?v=0.1.680';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.680';
+import { SHINY } from './shiny.js?v=0.1.680';
+import { conArt, cometArt } from './con-art.js?v=0.1.680';
+import { CON_FIGURES } from './con-figures.js?v=0.1.680';
 // The animal/symbol figure belongs to the completed (gold) constellation card only (2026-10-05): a single
 // star's card draws just the star pattern with its star marked, so the figure is a reward for finishing the set.
 const conFig = (id) => (CON_FIGURES.has(id) ? { figure: `assets/art/con/${id}.webp` } : {});
@@ -72,6 +73,26 @@ const reducedMotion = () => window.matchMedia?.('(prefers-reduced-motion: reduce
 const orbitIcon = '<svg viewBox="0 0 32 24" fill="none" aria-hidden="true"><circle cx="16" cy="12" r="7"/><ellipse cx="16" cy="12" rx="15" ry="4.5" transform="rotate(-30 16 12)"/></svg>';
 
 // Preview exposes the artwork and fact without claiming the card was earned.
+// Mission card helpers (2026-10-14). Orbital speed from laps a day (circular orbit): v = 2πa / T.
+const speedKmh = (laps) => { const T = 86400 / laps, a = Math.cbrt(398600.4418 * (T / (2 * Math.PI)) ** 2); return 2 * Math.PI * a / T * 3600; };
+// A star's surface temperature: known values for the bright stars and the Sun, else from its B-V colour (Ballesteros 2012).
+const TEMP_K = { sun: 5772, 'star:sirius': 9940, 'star:canopus': 7350, 'star:arcturus': 4290, 'star:alpha-centauri': 5790, 'star:vega': 9600, 'star:capella': 4970, 'star:rigel': 12100, 'star:procyon': 6530, 'star:achernar': 15000, 'star:betelgeuse': 3600, 'star:hadar': 25000, 'star:altair': 7700, 'star:acrux': 28000, 'star:aldebaran': 3910, 'star:antares': 3400, 'star:spica': 22400, 'star:pollux': 4670, 'star:fomalhaut': 8590, 'star:deneb': 8500, 'star:mimosa': 27000, 'star:regulus': 12460, 'star:polaris': 6000 };
+const tempK = (o) => TEMP_K[o.key] ?? (o.bv != null ? 4600 * (1 / (0.92 * o.bv + 1.7) + 1 / (0.92 * o.bv + 0.62)) : null);
+// The colour-temperature strip (Sevaan loved it): red-cool to blue-hot, the star marked on it.
+function tempStrip(o) {
+  if (o.type !== 'star' && o.type !== 'sun') return '';
+  const K = tempK(o); if (!K) return '';
+  const f = Math.max(0, Math.min(1, Math.log(K / 2500) / Math.log(30000 / 2500))), C = Math.round((K - 273) / 100) * 100;
+  return `<div class="card__temp"><i><b style="left:${(f * 100).toFixed(1)}%"></b></i><span><span>COOL · 2,000 °C</span><em>${C.toLocaleString('en-US')} °C</em><span>30,000 °C · HOT</span></span></div>`;
+}
+// Last chance (js/last-chance.js): a red bar over the picture while it's falling; once it has fallen out of the
+// catalogue, a "Burned up" stamp on the card you kept.
+function lcMark(o) {
+  if (!o.fallAt) return '';
+  const day = new Date(o.fallAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }).toUpperCase();
+  if (o.archived && Date.now() > o.fallAt - 5 * 86400e3) return `<span class="card__burned">BURNED UP ~${day}</span>`;
+  return `<span class="card__lc">LAST CHANCE · ${fallWords(o.fallAt).toUpperCase()}</span>`;
+}
 export function renderCard(o, opts = {}) {
   const sightings = (opts.sightings ?? []).filter((s) => !s.sim);
   // A constellation card is earned by its stars: opts.ownedKeys = card keys you own; opts.sightings = theirs.
@@ -121,13 +142,22 @@ export function renderCard(o, opts = {}) {
     if (over > 0.05) art.style.height = `${Math.max(4, art.offsetHeight / fs - over).toFixed(2)}em`;
   });
   if (!fleet && revealed) { const len = factFor(o).replace(/\*\*/g, '').length; const extra = Math.max(0, Math.ceil(len / 52) - 3); if (extra) el.style.setProperty('--fact-extra', extra); }
+  // Mission card front (2026-10-14, Sevaan: design/card-redesign.html style A): the picture first at a fixed 4:3 with the
+  // rarity and set on it, the name, a plain "what it is" line, a colour-temperature strip for stars, four numbers, the
+  // fact, and the footer.
+  const sub = nat || fleet || o.type === 'rocket-body' || o.type === 'debris' ? identity : [ownerWord(o.owner, o.year ?? Number(o.launch?.slice(0, 4))), roleOf(o).replace(/^./, (ch) => (ownerWord(o.owner) ? ch.toLowerCase() : ch))].filter(Boolean).join(' ').replace(/^./, (ch) => ch.toUpperCase()) + (o.launch ? ` · ${o.launch.slice(0, 4)}` : '');
+  const kmh = laps ? Math.round(speedKmh(laps) / 100) * 100 : null;
+  const four = nat ? o.stats.map(([label, value, unit]) => [label, value, unit])
+    : fleet ? [['HEIGHT', stats ? stats.alt.toLocaleString('en-US') : '—', 'km'], ['SPEED', kmh ? kmh.toLocaleString('en-US') : '—', 'km/h'], ['FIRST', o.launch?.slice(0, 4) ?? '—', ''], ['LAUNCHES', String(o.launches.length), '']]
+    : [['HEIGHT', stats ? stats.alt.toLocaleString('en-US') : '—', 'km'], ['SPEED', kmh ? kmh.toLocaleString('en-US') : '—', 'km/h'], ['LAPS A DAY', laps ? laps.toFixed(laps < 10 ? 1 : 0) : '—', ''], [o.type === 'rocket-body' || o.type === 'debris' ? 'YEARS UP' : 'LAUNCHED', o.type === 'rocket-body' || o.type === 'debris' ? (age == null ? '—' : String(age)) : (o.launch?.slice(0, 4) ?? '—'), '']];
+  el.classList.add('card--mission');
   el.innerHTML = `
   <div class="card__rotator"><div class="card__face">
-    <div class="card__setbar"><span>${orbitIcon}<span>${esc(set.name.toUpperCase())}</span></span><span class="card__tier"><i aria-hidden="true">${tier.gem}</i>${esc(tier.label.toUpperCase())}${o.icon ? '<b class="card__icon-badge">ICON</b>' : ''}</span></div>
-    <div class="card__heading"><h3 class="card__name">${String(o.id) === '25544' ? esc(title).replace('International Space Station', 'International<br>Space Station') : esc(title)}</h3>
-    <div class="card__identity"><span>${esc(identity)}</span><span class="card__mono">${esc(identifier)}</span></div></div>
-    <div class="card__art" data-art-slot aria-hidden="true">${conCard && o.system ? (revealed && artImage(o) ? `<img class="card-art-image" src="${artImage(o, AS)}" alt="" decoding="async">${opts.mini ? '' : artStars(o)}` : lockedArt(o, revealed, set.color, opts.mini ? 'small' : undefined)) : conCard ? conArt(o.data, null, revealed ? conFig(o.con) : {}) : o.type === 'comet' && revealed ? cometArt(o.key) : o.type === 'deepsky' && revealed && !artImage(o) && CON_BY_ID.get(o.conId) ? conArt(CON_BY_ID.get(o.conId).data, null, { mark: o }) : o.con && !o.skyName && revealed && CON_BY_ID.get(o.con) ? conArt(CON_BY_ID.get(o.con).data, o.hip, {}) : revealed && artImage(o) ? `<img class="card-art-image" src="${artImage(o, AS)}" alt="" decoding="async">${opts.mini ? '' : artStars(o)}` : lockedArt(o, revealed, set.color, opts.mini ? 'small' : undefined)}${shinyOf ? `<span class="shiny-tag">✦ SHINY · ${esc(SHINY[shinyOf].label.toUpperCase())}</span>` : ''}<div class="card__foil"></div></div>
-    ${nat ? `<div class="card__stats">${o.stats.map(([label, value, unit], i) => `<div><span class="card__label">${esc(label)}</span><b${statClass(value, unit, i)}>${esc(value)}${unit ? ` <small>${esc(unit)}</small>` : ''}</b></div>`).join('')}</div>` : `<div class="card__stats"><div><span class="card__label">MEAN ALTITUDE</span><b>${stats ? `${stats.alt.toLocaleString('en-US')} <small>km</small>` : '—'}</b></div><div><span class="card__label">ORBITS / DAY</span><b>${laps ? laps.toFixed(laps < 10 ? 1 : 0) : '—'}</b></div><div><span class="card__label">${esc(third.label)}</span><b>${esc(third.value)}</b>${/LAUNCH/.test(third.label) && ageText ? `<span class="card__stat-detail">${esc(ageText)}</span>` : ''}</div></div>`}
+    <div class="card__art" data-art-slot aria-hidden="true">${lcMark(o)}${conCard && o.system ? (revealed && artImage(o) ? `<img class="card-art-image" src="${artImage(o, AS)}" alt="" decoding="async">${opts.mini ? '' : artStars(o)}` : lockedArt(o, revealed, set.color, opts.mini ? 'small' : undefined)) : conCard ? conArt(o.data, null, revealed ? conFig(o.con) : {}) : o.type === 'comet' && revealed ? cometArt(o.key) : o.type === 'deepsky' && revealed && !artImage(o) && CON_BY_ID.get(o.conId) ? conArt(CON_BY_ID.get(o.conId).data, null, { mark: o }) : o.con && !o.skyName && revealed && CON_BY_ID.get(o.con) ? conArt(CON_BY_ID.get(o.con).data, o.hip, {}) : revealed && artImage(o) ? `<img class="card-art-image" src="${artImage(o, AS)}" alt="" decoding="async">${opts.mini ? '' : artStars(o)}` : lockedArt(o, revealed, set.color, opts.mini ? 'small' : undefined)}${shinyOf ? `<span class="shiny-tag">✦ SHINY · ${esc(SHINY[shinyOf].label.toUpperCase())}</span>` : ''}<span class="m-chip m-tier card__tier"><i aria-hidden="true">${tier.gem}</i>${esc(tier.label.toUpperCase())}${o.icon ? '<b class="card__icon-badge">ICON</b>' : ''}</span><span class="m-chip m-set card__setbar"><span><span>${esc(set.name.toUpperCase())}</span></span></span><div class="card__foil"></div></div>
+    <div class="card__heading"><h3 class="card__name">${esc(title)}</h3>
+    <div class="card__identity"><span>${esc(sub)}</span><span class="card__mono">${esc(identifier)}</span></div></div>
+    ${tempStrip(o)}
+    <div class="card__stats m4" style="--n:${four.length}">${four.map(([label, value, unit], i) => `<div><span class="card__label">${esc(label)}</span><b${nat ? statClass(value, unit, i) : ''}>${esc(value)}${unit ? `<small>${esc(unit)}</small>` : ''}</b></div>`).join('')}</div>
     ${factBlock}
     <div class="card__footer"><span class="card__status${caught ? ' is-collected' : ''}"><span class="card__status-icon" aria-hidden="true">${caught ? '✓' : ''}</span><span>${caught ? `COLLECTED · ${esc(firstDate)}` : 'NOT YET COLLECTED'}</span>${caught ? `<span class="card__seen-count">${seenLine(level, conCard || fleet ? 0 : nightsIn(sightings), sightings.length)}</span>` : ''}</span><span class="card__brand">${o.setNumber && o.setSize > 1 ? `<small class="card__no">${String(o.setNumber).padStart(String(o.setSize).length, '0')}/${o.setSize}</small>` : ''}SPACE COLLECTOR</span></div>
     <div class="card__shine"></div><div class="card__glare"></div>
@@ -350,8 +380,12 @@ export function throwOff(el, dx, dy, dt) {
 // Double-tap (or double-click) a card to flip it over and see its back; do it again to flip it back.
 // onBack(backEl) dresses the back (a random poster, js/card-backs.js) each time it turns to the back.
 // The back is pre-mirrored in CSS, so it reads correctly while the card faces away.
-export function attachFlip(el, { onBack } = {}) {
-  let flipped = false, busy = false, lastTap = 0, lastX = 0, lastY = 0;
+export function attachFlip(el, { onBack, onTap } = {}) {
+  // onTap (2026-10-14, orbit view): a single tap, fired once it's clear no second tap is coming; a double tap flips.
+  let flipped = false, busy = false, lastTap = 0, lastX = 0, lastY = 0, tapTimer = 0, downX = 0, downY = 0;
+  const single = () => { clearTimeout(tapTimer); if (onTap) tapTimer = setTimeout(() => { if (!flipped) onTap(); }, 330); };
+  el.addEventListener('pointerdown', (e) => { downX = e.clientX; downY = e.clientY; });
+  const still = (e) => Math.hypot(e.clientX - downX, e.clientY - downY) < 10;
   const back = el.querySelector('.card__back');
   const flip = () => {
     if (busy || !back) return;
@@ -369,12 +403,13 @@ export function attachFlip(el, { onBack } = {}) {
     setTimeout(() => { busy = false; }, ms);
   };
   const onUp = (e) => {
-    if (e.pointerType === 'mouse' || el.dataset.swiping) return; // mice use dblclick
+    if (el.dataset.swiping || !still(e)) return;
+    if (e.pointerType === 'mouse') { single(); return; } // mice: dblclick flips and cancels the single tap
     const now = performance.now();
-    if (now - lastTap < 320 && Math.hypot(e.clientX - lastX, e.clientY - lastY) < 30) { lastTap = 0; flip(); }
-    else { lastTap = now; lastX = e.clientX; lastY = e.clientY; }
+    if (now - lastTap < 320 && Math.hypot(e.clientX - lastX, e.clientY - lastY) < 30) { lastTap = 0; clearTimeout(tapTimer); flip(); }
+    else { lastTap = now; lastX = e.clientX; lastY = e.clientY; single(); }
   };
-  const onDbl = (e) => { e.preventDefault(); flip(); };
+  const onDbl = (e) => { e.preventDefault(); clearTimeout(tapTimer); flip(); };
   el.addEventListener('pointerup', onUp);
   el.addEventListener('dblclick', onDbl);
   return {

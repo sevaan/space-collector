@@ -4,7 +4,7 @@
 // facts only state what the catalogue says today (orbit, launch date and site) or simple date
 // comparisons. No extrapolating today's orbit back over decades (lifetime laps or distance).
 
-import { orbitStats, titleCase, siteName, ownerName } from './facts.js?v=0.1.679';
+import { orbitStats, titleCase, siteName, ownerName } from './facts.js?v=0.1.680';
 
 const FAMILY = [
   [/^IRIDIUM 33 DEB/, 'A piece of the **first-ever crash between two satellites**: Iridium 33 hit the dead Cosmos 2251 in 2009.'],
@@ -207,6 +207,27 @@ const PURPOSE = [
   [/^RELAY/, 'A NASA **Relay** satellite: an early experiment in **relaying TV and phone calls** across oceans (1962–64).'],
   [/^ALOUETTE/, 'An **Alouette** satellite. Alouette 1 (1962) was Canada\'s first satellite; the Alouettes studied the **upper atmosphere**.'],
 ];
+// What it is, in two or three words, for the line under a card's name (2026-10-14, mission card): "Weather satellite".
+// The UCS database first (working satellites), then the Soviet series lists, then well-known name families.
+const ROLE_DETAIL = [[/Electronic Intelligence/i, 'Signals-spy satellite'], [/AIS|Automatic Identification/i, 'Ship-tracking satellite'], [/Radar Imaging/i, 'Radar imaging satellite'],
+  [/Hyperspectral|Multispectral|Optical Imaging|Infrared/i, 'Earth-imaging satellite'], [/Meteorology|Meterology/i, 'Weather satellite'], [/Earth Science/i, 'Earth science satellite'], [/Navigation|Positioning/i, 'Navigation satellite']];
+const ROLE_PURPOSE = [[/Communications/i, 'Communications satellite'], [/Navigation/i, 'Navigation satellite'], [/Earth Observation/i, 'Earth-watching satellite'], [/Earth Science/i, 'Earth science satellite'],
+  [/Space Science/i, 'Science satellite'], [/Space Observation/i, 'Space-watching satellite'], [/Surveillance/i, 'Surveillance satellite'], [/Technology/i, 'Test satellite'], [/Educational/i, 'Student satellite']];
+const ROLE_SERIES = [[/^strela|^gonets/, 'Communications satellite'], [/^parus|^tsikada|^nadezhda|^geo-ik/, 'Navigation satellite'], [/^us-a/, 'Ocean radar satellite'], [/^us-p|^tselina|^is-a/, 'Signals-spy satellite'],
+  [/^ds-p|^i2p|^sfera|^taifun/, 'Test satellite'], [/^bars|^persona/, 'Spy satellite'], [/^lotos/, 'Signals-spy satellite']];
+const ROLE_NAME = [[/^NOAA|^METEOR|^GOES|^METOP|^FENGYUN|^DMSP|^TIROS|^NIMBUS|^ELEKTRO|^HIMAWARI|^ESSA/, 'Weather satellite'], [/^NAVSTAR|^GPS|^GLONASS|^BEIDOU|^GALILEO|^TRANSIT|^PARUS|^TSIKADA|^NNSS/, 'Navigation satellite'],
+  [/^LANDSAT|^SPOT|^RESURS|^SENTINEL|^TERRA|^AQUA|^ENVISAT|^ERS-|^CBERS|^OKEAN|^KOMPSAT|^JILIN|^GAOFEN/, 'Earth-watching satellite'], [/^HST|HUBBLE|TELESCOPE|^SWIFT|^FERMI|^XMM|^CHANDRA/, 'Space telescope'],
+  [/^IRIDIUM|^GLOBALSTAR|^ORBCOMM|^INTELSAT|^MOLNIYA|^STRELA|^GONETS|^TELSTAR|^RELAY|^ECHO/, 'Communications satellite'], [/^YAOGAN|^USA \d|^NROL|^LACROSSE|^KH-/, 'Spy satellite'], [/^OPS \d/, 'Military satellite'],
+  [/^FLOCK|^LEMUR|^DOVE|^SKYSAT/, 'Earth-imaging satellite'], [/^CUBESAT|SAT-?\d*$/, 'Small satellite']];
+export const ownerWord = (owner, year) => (owner === 'CIS' ? (year && year < 1992 ? 'Soviet' : 'Russian') : { US: 'American', PRC: 'Chinese', JPN: 'Japanese', FR: 'French', ESA: 'European', CA: 'Canadian', IT: 'Italian', IND: 'Indian', UK: 'British', GER: 'German', SKOR: 'South Korean', ISRA: 'Israeli', BRAZ: 'Brazilian', ARGN: 'Argentinian', IRAN: 'Iranian', NKOR: 'North Korean', TURK: 'Turkish', AUS: 'Australian' }[owner] ?? '');
+export function roleOf(o) {
+  if (o.type === 'station') return 'Space station';
+  const named = ROLE_NAME.find(([re]) => re.test(String(o.name ?? '').toUpperCase()))?.[1]; if (named) return named; // the hand-picked list knows the famous ones best
+  const r = purposeCache?.sats?.[o.id];
+  if (r) { const [, purpose, detail] = r; const hit = (detail && ROLE_DETAIL.find(([re]) => re.test(detail))) || ROLE_PURPOSE.find(([re]) => re.test(purpose)); if (hit) return hit[1]; }
+  const sk = seriesKeyOf(o); if (sk) { const hit = ROLE_SERIES.find(([re]) => re.test(sk)); if (hit) return hit[1]; }
+  return ROLE_NAME.find(([re]) => re.test(String(o.name ?? '').toUpperCase()))?.[1] ?? 'Satellite';
+}
 export function purposeFact(o) {
   if (o.type !== 'satellite' || o.launches) return null;
   return PURPOSE.find(([re]) => re.test(o.name))?.[1] ?? ucsPurpose(o) ?? null;

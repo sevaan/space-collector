@@ -1,27 +1,28 @@
-import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.679';
-import { computeStats, statsHtml } from './stats.js?v=0.1.679';
-import { nightKey } from './observation.js?v=0.1.679';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.679';
-import { sfx } from './sfx.js?v=0.1.679';
-import { expandFacts } from './catalog-facts.js?v=0.1.679';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.679';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.679';
-import { ticket } from './toast.js?v=0.1.679';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.679';
-import { cardArt } from './art.js?v=0.1.679';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.679';
-import { applyBack } from './card-backs.js?v=0.1.679';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.679';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.679';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.679';
-import { loadConstellations, conList } from './constellations.js?v=0.1.679';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.679';
-import { eventBadges, nextEvent } from './events.js?v=0.1.679';
-import { shareCardEl } from './share-card.js?v=0.1.679';
-import { removeSighting } from './account.js?v=0.1.679';
-import { allSightings, deleteSighting } from './store.js?v=0.1.679';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.679';
-import { SECRET_PATCHES } from './secrets.js?v=0.1.679';
+import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.680';
+import { computeStats, statsHtml } from './stats.js?v=0.1.680';
+import { nightKey } from './observation.js?v=0.1.680';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.680';
+import { sfx } from './sfx.js?v=0.1.680';
+import { expandFacts } from './catalog-facts.js?v=0.1.680';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.680';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.680';
+import { ticket } from './toast.js?v=0.1.680';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.680';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.680';
+import { cardArt } from './art.js?v=0.1.680';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.680';
+import { applyBack } from './card-backs.js?v=0.1.680';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.680';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.680';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.680';
+import { loadConstellations, conList } from './constellations.js?v=0.1.680';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.680';
+import { eventBadges, nextEvent } from './events.js?v=0.1.680';
+import { shareCardEl } from './share-card.js?v=0.1.680';
+import { removeSighting } from './account.js?v=0.1.680';
+import { allSightings, deleteSighting } from './store.js?v=0.1.680';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.680';
+import { SECRET_PATCHES } from './secrets.js?v=0.1.680';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -304,7 +305,7 @@ function renderFind() {
   for (const c of list) {
     const t = TIER_INFO[c.tier] ?? TIER_INFO.common, owned = hasSightings(c), row = document.createElement('div'); row.className = 'find-row'; row.style.setProperty('--c', t.color);
     const art = owned && artImage(c, 'small') ? `<img src="${artImage(c, 'small')}" alt="" loading="lazy">` : lockedArt(c, owned, t.color, 'small');
-    row.innerHTML = `<span class="fd-art">${art}</span><span class="fd-main"><b>${esc(titleFor(c))}</b><small><em>${t.gem} ${t.label}</em>${owned ? ' · <i>in your collection</i>' : ''}</small><span class="fd-pass" data-id="${esc(String(c.id))}">${findPassLine(c)}</span></span><span class="fd-acts"></span>`;
+    row.innerHTML = `<span class="fd-art">${art}</span><span class="fd-main"><b>${esc(titleFor(c))}</b><small><em>${t.gem} ${t.label}</em>${c.fallAt && !c.archived ? ' · <em class="lc-pill">Last chance</em>' : ''}${owned ? ' · <i>in your collection</i>' : ''}</small><span class="fd-pass" data-id="${esc(String(c.id))}">${findPassLine(c)}</span></span><span class="fd-acts"></span>`;
     row.addEventListener('click', (e) => { if (e.target.closest('.fd-acts')) return; openViewer(list.indexOf(c), row.getBoundingClientRect()); });
     grid.append(row); if (!c.natural && !c.launches && !findPasses.has(c.id)) need.push(c.id); else findActs(row, c);
   }
@@ -444,7 +445,7 @@ $('sort-by').addEventListener('change', (e) => { const v = e.target.value; if (s
 
 
 let tilt = null, stopGyro = null, lastFocus = null;
-function stopEffects() { stopGyro?.(); stopGyro = null; tilt?.destroy(); tilt = null; }
+function stopEffects() { stopGyro?.(); stopGyro = null; tilt?.destroy(); tilt = null; globe?.stop(); globe = null; clearInterval(whereTimer); }
 
 // Phone tilt is always on in the viewer. iOS needs permission once, asked from the tap that opens a card.
 let motionPermission = typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function' ? 'unknown' : 'granted';
@@ -455,6 +456,8 @@ function askMotion() {
     .then((r) => { motionPermission = r === 'granted' ? 'granted' : 'denied'; if (motionPermission === 'granted' && tilt && !stopGyro) stopGyro = attachGyro($('slot').firstElementChild, tilt); })
     .catch(() => { motionPermission = 'unknown'; }); // not from a tap (e.g. a deep link); try again on the next tap
 }
+let globe = null, whereTimer = 0;
+const myPlace = () => { try { const o = JSON.parse(localStorage.getItem('observer')); return o && Number.isFinite(o.lat) ? { lat: o.lat, lon: o.lon } : null; } catch { return null; } };
 function showCard() {
   stopEffects();
   const c = state.list[state.index]; if (!c) return;
@@ -463,7 +466,16 @@ function showCard() {
   $('v-share').hidden = !sightings.length;
   $('slot').replaceChildren(el);
   tilt = attachTilt(el);
-  attachFlip(el, { onBack: (b) => applyBack(b, c) });
+  // Orbit view (js/orbit-view.js): one tap swaps the picture for a live globe of its orbit, another tap swaps back.
+  const art = el.querySelector('.card__art'), canOrbit = !!c.el && !c.natural && !c.archived;
+  attachFlip(el, { onBack: (b) => applyBack(b, c), onTap: canOrbit ? () => {
+    if (globe) { globe.stop(); globe = null; art.classList.remove('orbiting'); return; }
+    globe = orbitGlobe(c, art, myPlace()); if (globe) { art.classList.add('orbiting'); sfx('page', { gain: 0.6 }); }
+  } : null });
+  if (canOrbit) el.classList.add('can-orbit');
+  // Where it is now, under the card, live (2026-10-14).
+  const where = () => { const t = canOrbit ? whereLine(c) : null; $('v-where').hidden = !t; if (t) $('v-where').textContent = t; };
+  where(); whereTimer = canOrbit ? setInterval(where, 1000) : 0;
   if (!reducedMotion.matches && motionPermission !== 'denied') stopGyro = attachGyro(el, tilt);
   $('v-position').textContent = `${state.index + 1} / ${state.list.length.toLocaleString()}`;
   const firstTime = sightings.length ? Math.min(...sightings.map((s) => s.time)) : 0;

@@ -503,3 +503,10 @@ body:not(.has-cards) #logbook { display: none; }
 /* A long one-word album name ("CONSTELLATIONS") ran into its count: the count drops under it instead (2026-10-13 playtest). */
 .album__top { flex-wrap: wrap; row-gap: 2px; }
 body.albums-view .album__name { overflow-wrap: normal; }
+/* Orbit view + live position (2026-10-14, js/orbit-view.js). */
+.orbit-globe { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; }
+.card__art.orbiting > img, .card__art.orbiting > .card-art-stars { visibility: hidden; }
+.v-where { margin: 10px auto 0; text-align: center; font: 600 13px/1.3 var(--label, 'SC Label', sans-serif); letter-spacing: .06em; color: #fff2b3; max-width: 34ch; }
+.v-where::before { content: '●'; color: #fa8127; margin-right: 6px; }
+.can-orbit .card__art::after { content: 'TAP FOR ITS ORBIT'; position: absolute; right: .8em; bottom: .7em; z-index: 3; font: 600 .95em/1 var(--label, 'Barlow Condensed', sans-serif); letter-spacing: .14em; color: #fff2b3cc; background: #050a12aa; padding: .3em .55em; border-radius: .4em; pointer-events: none; }
+.can-orbit .card__art.orbiting::after { content: 'TAP FOR THE PICTURE'; }

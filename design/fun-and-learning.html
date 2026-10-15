@@ -1,0 +1,350 @@
+<meta charset="utf-8">
+<title>Fun and Learning</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Russo+One&family=Barlow+Condensed:wght@500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<style>
+/* Layout: one long field-guide page, each idea a section with mock phones/cards beside the reasoning. Single dark look to match the app. */
+:root {
+  --sky: #080f1b; --panel: #0e1a29; --edge: #22344a; --ink: #fff2b3; --muted: #9fb3c8; --org: #fa8127; --gold: #ffc93d;
+  --rare: #4aa8ff; --epic: #e46ad6; --unc: #5fd08a; --leg: #f2b134; --red: #ff6b5a;
+  --display: 'Russo One', Impact, sans-serif; --label: 'Barlow Condensed', 'Arial Narrow', sans-serif; --serif: 'Source Serif 4', Georgia, serif;
+  color-scheme: dark;
+}
+body { margin: 0; background: var(--sky); color: var(--ink); font: 500 16px/1.45 var(--label); }
+main { max-width: 1180px; margin: 0 auto; padding-inline: 16px; padding-block: 28px 80px; }
+.k { font: 600 12px/1 var(--label); letter-spacing: .22em; text-transform: uppercase; color: var(--org); }
+h1 { font: 400 clamp(28px, 6vw, 42px)/1.05 var(--display); margin: 8px 0 10px; text-wrap: balance; }
+h2 { font: 400 24px/1.1 var(--display); margin: 6px 0 6px; text-wrap: balance; }
+h3 { font: 600 15px/1.2 var(--label); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin: 0 0 8px; }
+p { margin: 0 0 10px; max-width: 66ch; color: #d9e2ec; }
+.lead { color: var(--muted); font-size: 18px; }
+nav.toc { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 8px; }
+nav.toc a { color: var(--ink); text-decoration: none; border: 1px solid var(--edge); border-radius: 999px; padding: 6px 12px; font-size: 14px; letter-spacing: .06em; }
+nav.toc a:hover, nav.toc a:focus-visible { border-color: var(--org); color: var(--org); outline: none; }
+section { border-top: 1px solid var(--edge); padding-block: 34px 10px; display: grid; gap: 16px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 18px; align-items: start; }
+.opt { background: var(--panel); border: 1px solid var(--edge); border-radius: 16px; padding: 16px; display: grid; gap: 8px; min-width: 0; }
+.opt.pick { border-color: var(--org); }
+.opt .tag { justify-self: start; font: 600 11px/1 var(--label); letter-spacing: .16em; text-transform: uppercase; padding: 4px 8px; border-radius: 6px; background: #fa812722; color: var(--org); }
+.opt b { color: var(--ink); }
+.opt p { font-size: 15px; margin: 0; color: #cfd9e4; }
+.why { color: var(--muted); font-size: 14px; }
+ul.list { margin: 0; padding-left: 18px; display: grid; gap: 8px; max-width: 70ch; }
+ul.list li { color: #d9e2ec; } ul.list b { color: var(--ink); }
+/* phone */
+.phone { width: 250px; max-width: 100%; aspect-ratio: 9/19; border-radius: 34px; border: 6px solid #1b2433; background: radial-gradient(ellipse at 50% 30%, #12233a, #070d17 70%); position: relative; overflow: hidden; margin-inline: auto; }
+.phone .hdr { position: absolute; left: 14px; right: 14px; top: 16px; font: 400 11px/1 var(--display); color: var(--ink); border-bottom: 1px solid #2b3d52; padding-bottom: 8px; }
+.ring { position: absolute; left: 50%; top: 46%; width: 92px; height: 92px; translate: -50% -50%; border: 1.5px solid var(--org); border-radius: 50%; }
+.chip { position: absolute; font: 600 10px/1.2 var(--label); letter-spacing: .1em; text-transform: uppercase; padding: 5px 8px; border-radius: 999px; background: #0c1725ee; border: 1px solid #344654; color: var(--ink); }
+.chip em { font-style: normal; color: var(--org); }
+.sw { position: absolute; left: 14px; right: 14px; bottom: 16px; height: 36px; border-radius: 999px; border: 1px solid #2b3d52; display: grid; grid-template-columns: 1fr 1fr; padding: 3px; font: 600 10px/30px var(--label); letter-spacing: .14em; text-align: center; color: var(--muted); }
+.sw span:first-child { border: 1px solid var(--org); border-radius: 999px; color: var(--org); background: #fa812718; }
+.toast { position: absolute; left: 12px; right: 12px; bottom: 62px; border-radius: 12px; background: #0c1725f2; border: 1px solid #344654; border-left: 3px solid var(--gold); padding: 8px 10px; font-size: 12px; line-height: 1.3; }
+.toast small { display: block; color: var(--gold); letter-spacing: .14em; font-size: 10px; }
+/* mini card (retro face) */
+.card { width: 230px; max-width: 100%; border-radius: 14px; border: 2px solid #9fb0bf; outline: 1px solid #45576a; outline-offset: -6px; background: #0a1220; padding: 10px 10px 8px; display: grid; gap: 6px; margin-inline: auto; position: relative; }
+.card .bar { display: flex; justify-content: space-between; font: 600 9px/1 var(--label); letter-spacing: .14em; color: #cfd6c2; border-bottom: 1px solid #45576a; padding-bottom: 5px; }
+.card .t { font: 400 20px/1 var(--display); }
+.card .sub { display: flex; justify-content: space-between; font: 600 10px/1 var(--label); color: #cfd6c2; border-bottom: 1px solid #45576a; padding-bottom: 5px; }
+.card .art { aspect-ratio: 3/2; border-radius: 4px; background: radial-gradient(circle at 60% 120%, #2a4b6d 0 38%, transparent 39%), radial-gradient(ellipse at 50% 40%, #13243a, #050a12); position: relative; overflow: hidden; }
+.card .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; font: 600 8px/1.2 var(--label); letter-spacing: .1em; color: #cfd6c2; }
+.card .stats b { display: block; font: 400 14px/1.1 var(--display); color: var(--ink); letter-spacing: 0; }
+.card .fact { border-left: 2px solid var(--org); padding-left: 7px; font: 400 10.5px/1.35 var(--serif); color: #e8e3c8; }
+.card .foot { display: flex; justify-content: space-between; font: 600 8px/1 var(--label); letter-spacing: .12em; color: #cfd6c2; border-top: 1px solid #45576a; padding-top: 5px; }
+.sat { position: absolute; left: 50%; top: 48%; translate: -50% -50%; width: 70px; height: 26px; }
+.sat i { position: absolute; top: 9px; width: 26px; height: 9px; background: repeating-linear-gradient(90deg, #4f6c8a 0 4px, #8fb0cf 4px 5px); }
+.sat i:first-child { left: 0; } .sat i:last-child { right: 0; }
+.sat s { position: absolute; left: 27px; top: 3px; width: 16px; height: 20px; border-radius: 3px; background: linear-gradient(#f1e3bf, #c9a96a); }
+.stamp { position: absolute; right: 10px; top: 56px; rotate: -12deg; border: 2px solid var(--red); color: var(--red); font: 400 13px/1 var(--display); padding: 5px 8px; border-radius: 6px; background: #0a1220cc; letter-spacing: .04em; }
+.badge { justify-self: start; font: 600 9px/1 var(--label); letter-spacing: .14em; color: #0a1220; background: var(--red); padding: 4px 6px; border-radius: 4px; }
+canvas { display: block; max-width: 100%; }
+.pair { display: flex; flex-wrap: wrap; gap: 18px; justify-content: center; align-items: start; }
+.cap { text-align: center; color: var(--muted); font-size: 13px; margin-top: 8px; max-width: 250px; margin-inline: auto; }
+.dots { display: flex; gap: 5px; justify-content: center; } .dots i { width: 6px; height: 6px; border-radius: 50%; background: #45576a; } .dots i.on { background: var(--ink); }
+.lock { color: #6f8396; font-style: italic; }
+.notes { display: grid; gap: 7px; font: 400 11px/1.35 var(--serif); color: #e8e3c8; }
+.notes div { border: 1px solid #2b3d52; border-radius: 6px; padding: 6px 8px; }
+.notes small { display: block; font: 600 8.5px/1 var(--label); letter-spacing: .14em; color: var(--muted); margin-bottom: 3px; }
+.notes .L { color: #6f8396; }
+.recommend { background: #1a1410; border: 1px solid #fa812766; border-radius: 14px; padding: 12px 14px; max-width: 80ch; }
+.recommend b { color: var(--org); }
+@media (prefers-reduced-motion: no-preference) { .pulse { animation: pulse 2.4s ease-in-out infinite; } @keyframes pulse { 50% { opacity: .45; } } }
+</style>
+
+<main>
+  <span class="k">Space Collector · ideas board · 14 Oct 2026</span>
+  <h1>Making it more fun, and teaching more</h1>
+  <p class="lead">Your answers from the last round, worked through. Each section is options to pick from, with my recommendation marked. Nothing here is built yet.</p>
+  <nav class="toc" aria-label="Sections">
+    <a href="#skill">Skill ideas</a><a href="#last">Last chance cards</a><a href="#headline">Tonight's headliner</a><a href="#secrets">More secrets</a>
+    <a href="#facts">Showing more facts</a><a href="#orbit">Orbit view</a><a href="#shadow">Earth's shadow</a><a href="#where">Where and how fast</a><a href="#stars">Myths and star colours</a>
+  </nav>
+
+  <!-- 1 SKILL -->
+  <section id="skill">
+    <span class="k">Fun · 1</span><h2>A small skill, without fast satellites</h2>
+    <p>Tracking is out because satellites drift slowly. These ask for timing, judgement or knowledge instead.</p>
+    <div class="grid">
+      <div class="opt pick"><span class="tag">Recommended</span><b>Catch the fade</b><p>When a satellite is about to slide into Earth's shadow, a thin ring counts down around the circle. Tap in the last 3 seconds before it vanishes for a <b>shiny</b>. Too early: a normal card. Too late: it's gone until next pass.</p><p class="why">Real timing skill, it's a lovely moment to watch, and it teaches the shadow. Builds on the eclipse shiny we already detect.</p></div>
+      <div class="opt pick"><span class="tag">Recommended</span><b>Name that light</b><p>Before a new card is revealed, guess what it is from the way it looks: <b>steady</b> (satellite), <b>flashing or tumbling</b> (rocket stage), or <b>faint and fast</b> (debris). Right guess: +10 XP and a "Sharp eye" streak.</p><p class="why">Teaches people to read the sky. One tap, no slowdown.</p></div>
+      <div class="opt"><b>Call the rise</b><p>By day, for a pass tonight, drag a marker to where you think it will come up over the horizon. At the pass, the closer you were, the more XP.</p><p class="why">Teaches orbits and directions. Slower; better as a weekly challenge.</p></div>
+      <div class="opt"><b>Faint is worth more</b><p>A catch near your sky's limit (only just visible) earns a "Hard catch" bonus, shown as a small diamond on the card.</p><p class="why">Rewards dark sites and binoculars. No new UI, but less of a moment.</p></div>
+    </div>
+  </section>
+
+  <!-- 2 LAST CHANCE -->
+  <section id="last">
+    <span class="k">Fun · 2 · you liked this</span><h2>Last chance cards</h2>
+    <p>Low satellites are slowing down and will burn up. The catalogue's orbit data shows which (very low perigee and a fast-shrinking orbit), so we can estimate a fall date.</p>
+    <div class="pair">
+      <div>
+        <div class="card">
+          <div class="bar"><span>LAST CHANCE</span><span>◆ RARE</span></div>
+          <span class="t">COSMOS 2558</span>
+          <div class="sub"><span>Satellite</span><span>NORAD 53328</span></div>
+          <div class="art"><div class="sat"><i></i><s></s><i></i></div></div>
+          <span class="badge">FALLS IN ABOUT 9 DAYS</span>
+          <div class="fact">Its orbit is shrinking fast: it drops about a kilometre a day and will burn up over the ocean.</div>
+          <div class="foot"><span>NOT YET COLLECTED</span><span>SPACE COLLECTOR</span></div>
+        </div>
+        <p class="cap">Before it falls: a red "last chance" bar and the countdown.</p>
+      </div>
+      <div>
+        <div class="card">
+          <div class="bar"><span>LAST CHANCE</span><span>◆ RARE</span></div>
+          <span class="t">COSMOS 2558</span>
+          <div class="sub"><span>Satellite</span><span>NORAD 53328</span></div>
+          <div class="art"><div class="sat"><i></i><s></s><i></i></div></div>
+          <span class="stamp">BURNED UP 23 OCT</span>
+          <div class="fact">You saw it 4 nights before it came down. Nobody can collect it now.</div>
+          <div class="foot"><span>COLLECTED · 19 OCT 2026</span><span>SPACE COLLECTOR</span></div>
+        </div>
+        <p class="cap">After it falls: kept forever, stamped, and retired from the game.</p>
+      </div>
+    </div>
+    <ul class="list">
+      <li><b>Where it shows:</b> a red "LAST CHANCE" pill on its passes in Tonight and Find, a red ring on it in the sky, and one alert when it's in its final week.</li>
+      <li><b>How many:</b> usually a handful at any time, so it stays special. Cards that are falling get +1 rarity step while they last.</li>
+      <li><b>Patch:</b> "Witness" for collecting 3 before they fell.</li>
+    </ul>
+  </section>
+
+  <!-- 4 HEADLINE -->
+  <section id="headline">
+    <span class="k">Fun · 4 · where and how</span><h2>Tonight's headliner</h2>
+    <p><b>How it's picked:</b> one object a night, the same for everyone in your area: the most special pass you haven't collected (famous icons like Hubble and the stations first, then rarity, then height), in the evening only. <b>Reward:</b> +25 XP on top of the card, and a patch for 10 headliners.</p>
+    <div class="pair">
+      <div><div class="phone"><div class="hdr">SPACE COLLECTOR</div>
+        <span class="chip" style="right:12px;top:52px"><em>HEADLINER</em> · HUBBLE 9:41 PM</span>
+        <div class="ring" style="border-color:#3b5470"></div>
+        <div class="sw"><span>EXPLORE</span><span>COLLECTION</span></div></div>
+        <p class="cap">1 · By day: the corner chip says it, all day.</p></div>
+      <div><div class="phone"><div class="hdr">UP IN YOUR SKY</div>
+        <div style="position:absolute;left:12px;right:12px;top:54px;border:1px solid var(--gold);border-radius:14px;padding:10px;background:#16170f">
+          <span class="k" style="color:var(--gold)">Tonight's headliner</span>
+          <div style="font:400 17px/1.1 var(--display);margin:6px 0 2px">Hubble Space Telescope</div>
+          <div style="font-size:12px;color:var(--muted)">9:41 PM · climbs high in the south · +25 XP</div>
+          <div style="display:flex;gap:6px;margin-top:8px"><span class="chip" style="position:static">◎ Show me</span><span class="chip" style="position:static">🔔 Remind me</span></div>
+        </div>
+        <div class="sw"><span>EXPLORE</span><span>COLLECTION</span></div></div>
+        <p class="cap">2 · The first thing on the Tonight tab, above the run.</p></div>
+      <div><div class="phone"><div class="hdr">SPACE COLLECTOR</div>
+        <div class="ring pulse" style="border-color:var(--gold);border-style:dashed"></div>
+        <span class="chip" style="left:50%;translate:-50% 0;top:30%"><em style="color:var(--gold)">HEADLINER</em> · rises here 9:41</span>
+        <div class="toast"><small>HEADLINER IN 10 MIN</small>Hubble rises in the southwest. Look up!</div>
+        <div class="sw"><span>EXPLORE</span><span>COLLECTION</span></div></div>
+        <p class="cap">3 · In the sky: a gold dashed ring where it rises, and one alert 10 min before (free, doesn't count toward the reminder limit).</p></div>
+    </div>
+  </section>
+
+  <!-- 5 SECRETS -->
+  <section id="secrets">
+    <span class="k">Fun · 5</span><h2>More secrets</h2>
+    <p>Same rules as the others: never mentioned, a patch when found. Ones tied to real dates and real history teach something too.</p>
+    <div class="grid">
+      <div class="opt"><b>Sputnik's beep</b><p>Every 4 October (launch day, 1957), a ghost Sputnik crosses the evening sky, beeping. Tap it: "Beep-beep" patch.</p></div>
+      <div class="opt"><b>The lost tool bag</b><p>In 2008 an astronaut let go of a tool bag on a spacewalk and amateurs tracked it for months. A tiny bag drifts near the ISS on one random pass a month.</p></div>
+      <div class="opt"><b>Ed White's glove</b><p>Lost on the first American spacewalk (1965). A glove tumbles across the sky very rarely, by day only.</p></div>
+      <div class="opt"><b>The Arecibo message</b><p>Hold the circle on the Hercules Cluster (M13) for 10 s and the 1974 Arecibo radio message draws itself, pixel by pixel. "Hello from Earth".</p></div>
+      <div class="opt"><b>Halley's way home</b><p>Aim where Halley's Comet really is now (far out in Hydra). "Coming back in 2061" and a countdown patch.</p></div>
+      <div class="opt"><b>Hold still on Polaris</b><p>Keep Polaris in the circle for 60 s and the stars start wheeling around it, sped up. "Pole Star" patch.</p></div>
+      <div class="opt"><b>Apollo 11's footprints</b><p>On 20 July, line up the Moon and a marker appears on the Sea of Tranquility. "One small step".</p></div>
+      <div class="opt"><b>Laika</b><p>On 3 November, Sputnik 2's ghost crosses with a small paw print. A gentle story card about the first animal in orbit.</p></div>
+      <div class="opt"><b>An old Iridium flare</b><p>The original Iridium satellites flashed brighter than Venus; the last flare was in 2019. Once in a long while at dusk, a phantom flare: tap it while it's bright.</p></div>
+      <div class="opt"><b>Two stations</b><p>When the ISS and Tiangong are both up at once (it happens a few times a year), catch both within 10 minutes: "Two Homes" patch.</p></div>
+      <div class="opt"><b>The space jellyfish</b><p>A rocket launch at dusk lights its plume like a jellyfish. When a real launch happens near twilight, a glowing jellyfish shape appears where it would be.</p></div>
+      <div class="opt"><b>Night owl's hour</b><p>Open the app between 3 and 4 am and point straight up: a tiny owl sits on the meridian. "3 AM Club".</p></div>
+    </div>
+  </section>
+
+  <!-- E1 FACTS -->
+  <section id="facts">
+    <span class="k">Learning · 1 · there's no room on the card</span><h2>How more facts get shown</h2>
+    <p>Idea: each card has three facts. You get one when you collect it, the second at silver (3 nights), the full story at gold (10 nights). Three ways to show them without making the card bigger:</p>
+    <div class="pair">
+      <div>
+        <div class="card">
+          <div class="bar"><span>FIELD NOTES</span><span>◆ RARE</span></div>
+          <span class="t">HUBBLE</span>
+          <div class="notes">
+            <div><small>BRONZE · COLLECTED</small>It's about the size of a school bus and goes round the Earth every 95 minutes.</div>
+            <div><small>SILVER · 3 NIGHTS</small>Its first pictures were blurry: the main mirror was ground 2 microns too flat. Astronauts fitted glasses in 1993.</div>
+            <div class="L"><small>GOLD · SEE IT ON 10 NIGHTS</small>Locked. Keep watching to read its biggest discovery.</div>
+          </div>
+          <div class="foot"><span>SEEN ON 4 NIGHTS</span><span>SPACE COLLECTOR</span></div>
+        </div>
+        <p class="cap"><b style="color:var(--org)">A · Recommended.</b> The back of the card becomes "Field notes". Double-tap flips to it (we already flip cards). The seal moves to the corner.</p>
+      </div>
+      <div>
+        <div class="card">
+          <div class="bar"><span>STATIONS</span><span>◆ RARE</span></div>
+          <span class="t">HUBBLE</span>
+          <div class="art"></div>
+          <div class="fact">Its first pictures were blurry: the mirror was ground 2 microns too flat. Astronauts fitted glasses in 1993.</div>
+          <div class="dots"><i></i><i class="on"></i><i></i></div>
+          <div class="foot"><span>FACT 2 OF 3</span><span>SPACE COLLECTOR</span></div>
+        </div>
+        <p class="cap"><b>B ·</b> The fact line on the front swipes sideways between unlocked facts, with dots. Fits, but only a sentence each.</p>
+      </div>
+      <div>
+        <div class="phone" style="aspect-ratio:9/16"><div class="hdr">HUBBLE</div>
+          <div style="position:absolute;left:30px;right:30px;top:42px;height:150px;border:2px solid #9fb0bf;border-radius:10px;background:#0a1220"></div>
+          <div style="position:absolute;left:12px;right:12px;top:206px;display:grid;gap:6px;font:400 11px/1.35 var(--serif);color:#e8e3c8">
+            <span class="k">The story so far</span>
+            <span>1 · Size of a school bus, 95 minutes a lap.</span>
+            <span>2 · Launched with a flawed mirror; fixed in 1993.</span>
+            <span class="lock">3 · Locked · see it on 6 more nights</span>
+          </div></div>
+        <p class="cap"><b>C ·</b> Under the card in the collection viewer, a "story so far" list. Most room, but it's off the card itself.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- E2 ORBIT -->
+  <section id="orbit">
+    <span class="k">Learning · 2 · you liked this</span><h2>Orbit view: one tap shows it, double tap flips</h2>
+    <p>Tap a card in the viewer and the picture window turns into a small globe: the orbit, where it is right now (moving live), your location, and when it next passes over you. Tap again to go back to the art. Double-tap still flips the card.</p>
+    <div class="pair">
+      <div><div class="card">
+          <div class="bar"><span>STATIONS</span><span>◆ RARE · ICON</span></div>
+          <span class="t">ISS (ZARYA)</span>
+          <div class="sub"><span>Space station</span><span>NORAD 25544</span></div>
+          <div class="art" style="background:#050a12"><canvas id="globe" width="420" height="280" aria-label="Globe with the ISS orbit"></canvas></div>
+          <div class="stats"><span>NOW OVER<b>Atlantic</b></span><span>HEIGHT<b>418 km</b></span><span>SPEED<b>27,600</b></span></div>
+          <div class="fact">Next over you: <b>9:41 PM</b>, climbing high in the south. One lap takes 93 minutes.</div>
+          <div class="foot"><span>TAP FOR THE PICTURE</span><span>SPACE COLLECTOR</span></div>
+        </div><p class="cap">The globe turns slowly; the orange dot is the ISS now, the pin is you, the bright stretch of orbit is the part you'll see tonight.</p></div>
+    </div>
+  </section>
+
+  <!-- E3 SHADOW -->
+  <section id="shadow">
+    <span class="k">Learning · 3 · where and how</span><h2>Earth's shadow</h2>
+    <p>Satellites only shine while sunlight reaches them. After dusk, Earth's shadow rises up the sky from the east; anything inside it goes dark. Three places this can show:</p>
+    <div class="pair">
+      <div><div class="phone"><div class="hdr">SPACE COLLECTOR</div>
+        <canvas id="shadowsky" width="476" height="980" style="position:absolute;inset:0;width:100%;height:100%"></canvas>
+        <span class="chip" style="left:12px;top:33%">EARTH'S SHADOW · 400 KM UP</span>
+        <div class="sw"><span>EXPLORE</span><span>COLLECTION</span></div></div>
+        <p class="cap"><b style="color:var(--org)">1 · Recommended.</b> In the sky at dusk and dawn: a soft dark band where the shadow is (at the height most satellites fly). You see things blink out as they cross it.</p></div>
+      <div><div class="phone" style="aspect-ratio:9/16"><div class="hdr">WHY IS NOTHING UP?</div>
+        <canvas id="shadowdia" width="476" height="520" style="position:absolute;left:0;right:0;top:44px;width:100%"></canvas>
+        <div style="position:absolute;left:12px;right:12px;bottom:14px;font-size:12px;color:#d9e2ec">At 1 am you're deep in Earth's shadow, and so is everything low overhead. Satellites light up again about 2 hours before sunrise.</div></div>
+        <p class="cap">2 · A short explainer, opened from the Now tab when it's empty in the middle of the night ("Why is nothing up?").</p></div>
+      <div><div class="phone"><div class="hdr">SPACE COLLECTOR</div>
+        <div class="ring" style="border-color:var(--gold)"></div>
+        <svg viewBox="0 0 100 100" style="position:absolute;left:50%;top:46%;width:112px;translate:-50% -50%" aria-hidden="true"><circle cx="50" cy="50" r="48" fill="none" stroke="#ffc93d" stroke-width="3" stroke-dasharray="250 302" transform="rotate(-90 50 50)"/></svg>
+        <span class="chip" style="left:50%;translate:-50% 0;top:62%">FADES IN 4 S · TAP AS IT GOES</span>
+        <div class="sw"><span>EXPLORE</span><span>COLLECTION</span></div></div>
+        <p class="cap">3 · With "Catch the fade": the countdown ring around the circle as it reaches the shadow.</p></div>
+    </div>
+  </section>
+
+  <!-- E4 WHERE -->
+  <section id="where">
+    <span class="k">Learning · 4 · you liked this</span><h2>Where it is and how fast</h2>
+    <p>Where it goes: one live line under the card in the viewer and on the reveal, not on the card face (no room). It updates every second while you look.</p>
+    <div class="pair"><div>
+      <div class="card"><div class="bar"><span>STATIONS</span><span>◆ RARE</span></div><span class="t">ISS (ZARYA)</span><div class="art"></div><div class="fact">The biggest thing people have built in space.</div><div class="foot"><span>COLLECTED · 14 OCT</span><span>SPACE COLLECTOR</span></div></div>
+      <p class="cap" style="max-width:300px;color:var(--ink);font-size:14px;letter-spacing:.04em"><span style="color:var(--org)">●</span> Now over the North Atlantic · 418 km up · 27,600 km/h</p>
+    </div></div>
+    <p class="why">For stars and planets it says something true instead: "Light from Vega left in 2001" or "Jupiter is 640 million km away tonight".</p>
+  </section>
+
+  <!-- E5 STARS -->
+  <section id="stars">
+    <span class="k">Learning · 5 · mock-ups</span><h2>Constellation myths and star colours</h2>
+    <div class="pair">
+      <div><div class="card">
+        <div class="bar"><span>CONSTELLATIONS</span><span>● COMMON</span></div><span class="t">BETELGEUSE</span>
+        <div class="sub"><span>Star in Orion</span><span>α Ori</span></div>
+        <div class="art" style="background:radial-gradient(circle at 50% 50%, #ff8a4d 0 22%, #b8401f 30%, transparent 46%), #050a12"></div>
+        <div style="display:grid;gap:3px"><div style="height:7px;border-radius:4px;background:linear-gradient(90deg,#ff5a36,#ffb46b,#fff3d6,#cfe0ff,#8fb4ff)"></div>
+          <div style="display:flex;justify-content:space-between;font:600 8px/1 var(--label);letter-spacing:.1em;color:#cfd6c2"><span>3,000 °C</span><span style="color:var(--org)">▲ BETELGEUSE · 3,300 °C</span><span>30,000 °C</span></div></div>
+        <div class="fact">Red means cool for a star. Betelgeuse is so big it would swallow Jupiter's orbit.</div>
+        <div class="foot"><span>COLLECTED</span><span>SPACE COLLECTOR</span></div>
+      </div><p class="cap">Star colour as a temperature strip, the star marked on it. Every star card gets this.</p></div>
+      <div><div class="card">
+        <div class="bar"><span>MISSION PATCH</span><span>CONSTELLATIONS</span></div><span class="t">ORION</span>
+        <div class="art" style="display:grid;place-items:center"><canvas id="orion" width="300" height="200" aria-label="Orion stick figure"></canvas></div>
+        <div class="fact">The Greeks saw a hunter who boasted he could kill every animal on Earth, so a scorpion was sent after him. That's why Orion sets in the west just as Scorpius rises in the east: they're never in the sky together.</div>
+        <div class="foot"><span>7 OF 7 STARS</span><span>SPACE COLLECTOR</span></div>
+      </div><p class="cap">The myth on the constellation's patch card, plus a sky fact that the myth explains.</p></div>
+    </div>
+  </section>
+
+  <div class="recommend"><b>Where I'd start:</b> catch the fade (skill + shiny + shadow teaching in one), field notes on the back of the card, and the orbit view. Last chance cards next. Tell me per section what to build.</div>
+</main>
+
+<script>
+(() => {
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // Orbit globe
+  const g = document.getElementById('globe'), c = g.getContext('2d'); let t0 = performance.now();
+  function globe(now) {
+    const W = g.width, H = g.height, R = 92, cx = W / 2, cy = H / 2 + 6, rot = still ? 0.6 : (now - t0) / 9000, tilt = 0.55;
+    c.clearRect(0, 0, W, H);
+    for (let i = 0; i < 60; i++) { c.fillStyle = '#fff2b355'; c.fillRect((i * 97) % W, (i * 57) % H, 1.4, 1.4); }
+    const grd = c.createRadialGradient(cx - 30, cy - 30, 10, cx, cy, R); grd.addColorStop(0, '#3d6f9e'); grd.addColorStop(1, '#14304d');
+    c.fillStyle = grd; c.beginPath(); c.arc(cx, cy, R, 0, 7); c.fill();
+    c.strokeStyle = '#8fb4d855'; c.lineWidth = 1;
+    for (let k = -2; k <= 2; k++) { c.beginPath(); c.ellipse(cx, cy + k * 30, Math.sqrt(R * R - (k * 30) ** 2), 6, 0, 0, 7); c.stroke(); }
+    for (let k = 0; k < 6; k++) { const a = rot + k * Math.PI / 6; c.beginPath(); c.ellipse(cx, cy, Math.abs(Math.cos(a)) * R, R, 0, 0, 7); c.stroke(); }
+    // land blobs
+    c.fillStyle = '#c9b98a88';
+    for (const [lo, la, s] of [[0.2, 0.5, 26], [1.5, 0.3, 30], [2.6, 0.8, 22], [4.2, -0.3, 28], [5.4, 0.2, 18]]) { const a = lo + rot; if (Math.cos(a) < 0) continue; c.beginPath(); c.ellipse(cx + Math.sin(a) * R * Math.cos(la), cy - Math.sin(la) * R, s * Math.cos(a), s * 0.7, 0, 0, 7); c.fill(); }
+    // orbit
+    const pts = []; for (let i = 0; i <= 120; i++) { const u = i / 120 * Math.PI * 2; const x = Math.cos(u) * (R + 14), y = Math.sin(u) * (R + 14) * Math.sin(tilt), z = Math.sin(u); pts.push([cx + x, cy + y * 0.9 - Math.sin(u) * 0, z]); }
+    c.lineWidth = 2;
+    for (let i = 1; i < pts.length; i++) { const [x0, y0, z0] = pts[i - 1], [x1, y1] = pts[i]; c.strokeStyle = z0 < 0 ? '#fa812733' : (i > 20 && i < 40 ? '#ffc93d' : '#fa8127'); c.beginPath(); c.moveTo(x0, y0); c.lineTo(x1, y1); c.stroke(); }
+    const u = still ? 0.9 : (now - t0) / 2600 % (Math.PI * 2); const sx = cx + Math.cos(u) * (R + 14), sy = cy + Math.sin(u) * (R + 14) * Math.sin(tilt) * 0.9;
+    c.fillStyle = '#fa8127'; c.beginPath(); c.arc(sx, sy, 6, 0, 7); c.fill(); c.strokeStyle = '#fff2b3'; c.lineWidth = 1.5; c.stroke();
+    // you pin
+    const pa = 0.9 + rot; if (Math.cos(pa) > 0) { const px = cx + Math.sin(pa) * R * 0.75, py = cy - R * 0.55; c.fillStyle = '#fff2b3'; c.beginPath(); c.arc(px, py, 4, 0, 7); c.fill(); c.font = '600 13px Barlow Condensed, sans-serif'; c.fillText('YOU', px + 7, py + 4); }
+    if (!still) requestAnimationFrame(globe);
+  }
+  requestAnimationFrame(globe);
+  // Shadow band in the sky
+  const s = document.getElementById('shadowsky').getContext('2d'), SW = 476, SH = 980;
+  const sg = s.createLinearGradient(0, 0, 0, SH); sg.addColorStop(0, '#0e1d33'); sg.addColorStop(.7, '#24385a'); sg.addColorStop(1, '#4a3a4a'); s.fillStyle = sg; s.fillRect(0, 0, SW, SH);
+  s.fillStyle = 'rgba(3,6,12,.55)'; s.beginPath(); s.moveTo(0, 420); s.bezierCurveTo(150, 380, 330, 380, SW, 430); s.lineTo(SW, SH); s.lineTo(0, SH); s.fill();
+  s.strokeStyle = '#ffc93d88'; s.setLineDash([6, 8]); s.lineWidth = 2; s.beginPath(); s.moveTo(0, 420); s.bezierCurveTo(150, 380, 330, 380, SW, 430); s.stroke(); s.setLineDash([]);
+  for (let i = 0; i < 80; i++) { s.fillStyle = '#fff2b3aa'; s.fillRect((i * 131) % SW, (i * 71) % 760, 1.6, 1.6); }
+  s.fillStyle = '#fff2b3'; s.beginPath(); s.arc(170, 300, 5, 0, 7); s.fill(); s.fillStyle = '#fff2b355'; s.beginPath(); s.arc(260, 470, 5, 0, 7); s.fill();
+  s.font = '600 22px Barlow Condensed, sans-serif'; s.fillStyle = '#fff2b3'; s.fillText('lit', 184, 306); s.fillStyle = '#9fb3c8'; s.fillText('in shadow: gone', 274, 476);
+  // Shadow diagram
+  const d = document.getElementById('shadowdia').getContext('2d'), DW = 476, DH = 520, ex = 210, ey = 250, ER = 80;
+  d.fillStyle = '#ffd56a'; d.beginPath(); d.arc(20, ey, 46, 0, 7); d.fill();
+  d.fillStyle = 'rgba(0,0,0,.6)'; d.beginPath(); d.moveTo(ex, ey - ER); d.lineTo(DW, ey - ER + 20); d.lineTo(DW, ey + ER - 20); d.lineTo(ex, ey + ER); d.fill();
+  d.fillStyle = '#2f6aa0'; d.beginPath(); d.arc(ex, ey, ER, 0, 7); d.fill();
+  d.fillStyle = '#0d2238'; d.beginPath(); d.arc(ex, ey, ER, -Math.PI / 2, Math.PI / 2); d.fill();
+  d.strokeStyle = '#fa8127aa'; d.setLineDash([5, 6]); d.lineWidth = 2; d.beginPath(); d.arc(ex, ey, ER + 34, 0, 7); d.stroke(); d.setLineDash([]);
+  d.fillStyle = '#fff2b3'; d.beginPath(); d.arc(ex - ER - 20, ey - 50, 6, 0, 7); d.fill();
+  d.fillStyle = '#5a6b7c'; d.beginPath(); d.arc(ex + ER + 24, ey + 24, 6, 0, 7); d.fill();
+  d.fillStyle = '#fa8127'; d.beginPath(); d.arc(ex + ER - 4, ey - 4, 6, 0, 7); d.fill();
+  d.font = '600 20px Barlow Condensed, sans-serif'; d.fillStyle = '#fff2b3'; d.fillText('SUN', 4, ey + 74); d.fillText('YOU, 1 AM', ex + ER + 14, ey - 4); d.fillStyle = '#9fb3c8'; d.fillText('in the shadow', ex + ER + 40, ey + 54); d.fillStyle = '#fff2b3'; d.fillText('lit', ex - ER - 46, ey - 64);
+  // Orion
+  const o = document.getElementById('orion').getContext('2d'), S = [[95, 30], [190, 40], [125, 95], [143, 100], [161, 105], [100, 170], [205, 160]];
+  o.strokeStyle = '#fff2b366'; o.lineWidth = 1.5; for (const [a, b] of [[0, 2], [1, 4], [2, 3], [3, 4], [2, 5], [4, 6]]) { o.beginPath(); o.moveTo(...S[a]); o.lineTo(...S[b]); o.stroke(); }
+  S.forEach(([x, y], i) => { o.fillStyle = i === 0 ? '#ff8a4d' : i === 6 ? '#bcd3ff' : '#fff2b3'; o.beginPath(); o.arc(x, y, i === 0 || i === 6 ? 5 : 3.5, 0, 7); o.fill(); });
+})();
+</script>

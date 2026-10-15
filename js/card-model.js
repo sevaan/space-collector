@@ -1,8 +1,9 @@
 // Shared catalogue → card mapping. Fleets (Starlink, OneWeb, Qianfan, Kuiper, Globalstar, Orbcomm, Iridium) are one fleet
 // card each; every launch in the fleet is a stamp on that card. Other objects are one card each.
-import { assignSets } from './sets.js?v=0.1.679';
-import { tierFor } from './rarity.js?v=0.1.679';
-import { NATURAL } from './natural.js?v=0.1.679';
+import { assignSets } from './sets.js?v=0.1.680';
+import { tierFor } from './rarity.js?v=0.1.680';
+import { fallAt, bumpTier } from './last-chance.js?v=0.1.680';
+import { NATURAL } from './natural.js?v=0.1.680';
 
 // Fleet members carry their launch key in the catalogue (`card` = 'STARLINK:2024-012'). That's the
 // stamp; the card itself is the fleet ('STARLINK').
@@ -51,7 +52,8 @@ export function buildCards(cat) {
     const first = members[0];
     if (!first.family) {
       const { satrec, _label, _setColor, ...record } = first;
-      cards.push({ ...record, key, tier: first.tier ?? tierFor(first) });
+      const tier = first.tier ?? tierFor(first), fall = fallAt(first); // falling: a last chance card, one rarity step up while it lasts
+      cards.push({ ...record, key, tier: fall ? bumpTier(tier) : tier, ...(fall ? { fallAt: fall } : {}) });
       continue;
     }
     const fam = cat.families?.[first.family] ?? { name: first.family };
