@@ -1002,3 +1002,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 2026-10-15 · v0.1.697: Long March stage art by type (art-keys.js rocket rules): CZ-2C/2D/2F → cz-2 (new: one YF-22 main bell, four YF-23 verniers, lattice interstage ring); CZ-12/12B → cz-12 (new: wide 3.8 m stage, two YF-115); CZ-8/8A/7A/5 → long-march-3 (same twin YF-75 hydrogen stage as the CZ-3); CZ-4/4B/4C → cz-4. Only CZ-6, 6C, 11 and 10B (7 cards) still use the generic long-march.
 
 2026-10-15 · v0.1.698: CZ-6C (cz-6c: 2.9 m stage, one YF-115) and CZ-10B (cz-10b: 5 m methane stage, one bell with dense plumbing, from the CASC slide engine photo) get their own stage art from Sevaan's references (scratchpad cz6c10b/). CZ-6 and CZ-11 stay on the generic long-march picture until there are references for their isolated upper stages.
+
+2026-10-15 · v0.1.699: CZ-6 stages use cz-6c, CZ-11 stages use jielong-3 (stand-ins until references exist); no Long March stage uses the generic long-march picture now.
