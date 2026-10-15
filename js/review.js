@@ -3,14 +3,15 @@
 // picture" shows one card for each art file (most satellites share a picture by kind) with how many cards use it.
 // Stars (☆) are saved in this browser (localStorage 'reviewStars'); "Copy starred" puts a list on the clipboard to
 // hand back. Not linked from the app.
-import { expandFacts } from './catalog-facts.js?v=0.1.691';
-import { renderCard, miniCard, artImage } from './card.js?v=0.1.691';
-import { buildCards } from './card-model.js?v=0.1.691';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.691';
-import { loadLore, titleFor } from './lore.js?v=0.1.691';
+import { expandFacts } from './catalog-facts.js?v=0.1.692';
+import { renderCard, miniCard, artImage } from './card.js?v=0.1.692';
+import { buildCards } from './card-model.js?v=0.1.692';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.692';
+import { loadLore, titleFor } from './lore.js?v=0.1.692';
 import './stories.js?v=0.1.680';
-import { loadConstellations } from './constellations.js?v=0.1.691';
-import { loadComets } from './comets.js?v=0.1.691';
+import { CON_FIGURES } from './con-figures.js?v=0.1.692';
+import { loadConstellations, CON_BY_ID } from './constellations.js?v=0.1.692';
+import { loadComets } from './comets.js?v=0.1.692';
 
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
@@ -19,7 +20,7 @@ let cards = [], stars = new Map(), usage = new Map();
 try { stars = new Map(JSON.parse(localStorage.getItem('reviewStars') ?? '[]')); } catch {}
 const saveStars = () => { try { localStorage.setItem('reviewStars', JSON.stringify([...stars])); } catch {} };
 
-const artOf = (c) => { const src = artImage(c); return src ? src.split('/').pop().replace(/\.webp$/, '') : null; };
+const artOf = (c) => { const src = artImage(c); if (src) return src.split('/').pop().replace(/\.webp$/, ''); return c.con && CON_FIGURES.has(c.con) && !c.skyName ? `figure-${c.con}` : null; }; // constellation star cards: their figure
 const starKey = (c, one) => (one && c._art ? `art:${c._art}` : `card:${c.key}`);
 const typeOf = (c) => c.natural ? (c.natural === 'star' ? 'star' : c.type) : c.launches ? 'fleet' : c.type ?? 'satellite';
 
@@ -27,7 +28,9 @@ function toast(text) { const t = $('toast'); t.textContent = text; t.hidden = fa
 
 function face(c, full = false) {
   const sightings = [{ time: SEEN, cardKey: c.key, objectId: c.id }];
-  return full ? renderCard(c, { sightings }) : miniCard(c, { sightings, status: c._art ?? 'drawn' });
+  // Every star of its constellation owned, so the figure shows fully in focus (2026-10-15, Sevaan).
+  const ownedKeys = c.con ? new Set(CON_BY_ID.get(c.con)?.stars ?? []) : undefined;
+  return full ? renderCard(c, { sightings, ownedKeys }) : miniCard(c, { sightings, ownedKeys, status: c._art ?? 'drawn' });
 }
 
 // Draw a tile's card only when it scrolls near the screen (there are thousands).
