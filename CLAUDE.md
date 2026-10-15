@@ -1028,3 +1028,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 2026-10-15 · v0.1.709: card pictures are lowered per picture, not all by 11% (Sevaan: "use some judgement"). scripts/art-frame.py measures each picture's subject in the 4:3 window and lowers it by 15% minus its top, at most 12%, and never so far that the subject's bottom leaves the window (very wide rows count as Earth, not subject) → js/art-frame.js ART_SHIFT; card.js sets the img top. 72 of 165 move, the rest stay put. Rerun after importing art. Also rejected the deb-avum-adaptor restyle (it swapped the object and took the style sample's colours).
 
 2026-10-15 · v0.1.710: framing keeps a 6% margin under the subject (was 1.5%; Ampte/CCE's panel was cut off): 51 of 165 lowered. Restyled preview art gets its own framing (design/restyle-preview/frame.js, written by sync-restyle-preview.sh) on review.html.
+
+2026-10-15 · v0.1.711: the per-picture shift, zoom and top fade are all removed (Sevaan: "the fade is a bad idea… regen with the different aspect ratio"). Pictures show as drawn; framing gets fixed by regenerating the art at 4:3 with the object centred and room above it.

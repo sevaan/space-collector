@@ -527,7 +527,5 @@
 .card--mission.card--fleet .card__art { height: auto; aspect-ratio: 16 / 10; } /* fleets get a proper picture window; the after-mount trim still shortens it if a big launch grid would overflow */
 /* Art sits lower (2026-10-15, Sevaan): the picture is moved down a little so its subject clears the rarity and set
    chips, and its top fades into the card's own navy, so no picture needs redrawing. The bottom edge is trimmed. */
-.card--mission .card__art > img.card-art-image { top: 0; height: 100%; object-position: 50% 0; } /* lowered per picture by card.js (js/art-frame.js) */
-.card--mission .card__art:has(> img.card-art-image)::before { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 30%; z-index: 1; pointer-events: none;
-  background: linear-gradient(180deg, var(--paper, #080f1b) 0%, color-mix(in srgb, var(--paper, #080f1b) 70%, transparent) 38%, transparent 100%); }
+.card--mission .card__art > img.card-art-image { object-position: 50% 50%; } /* shown as drawn: framing is fixed in the art (2026-10-15) */
 .card--mission.card--fleet .card__art > img.card-art-image { object-position: 50% 8%; }
