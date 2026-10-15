@@ -998,3 +998,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 2026-10-15 · v0.1.695: Hokushin-1 picture redone from the CAD drawing: flat 3U body with grey end box, green-edged cells, yellow antenna patches, round sensor, tall gold hinged wing standing up (gen2.py in scratchpad hokushin/).
 
 2026-10-15 · v0.1.696: CZ-4 / 4B / 4C stages (70 cards) get their own picture, cz-4: white third stage with seams, rings and one blue band, twin YF-40A ribbed bells with pipework and frames, no gold domes; from Sevaan's reference photos (session scratchpad cz4c/). Other Long March stages keep long-march.
+
+2026-10-15 · v0.1.697: Long March stage art by type (art-keys.js rocket rules): CZ-2C/2D/2F → cz-2 (new: one YF-22 main bell, four YF-23 verniers, lattice interstage ring); CZ-12/12B → cz-12 (new: wide 3.8 m stage, two YF-115); CZ-8/8A/7A/5 → long-march-3 (same twin YF-75 hydrogen stage as the CZ-3); CZ-4/4B/4C → cz-4. Only CZ-6, 6C, 11 and 10B (7 cards) still use the generic long-march.
