@@ -994,3 +994,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 2026-10-15 · v0.1.693: Hokushin-1 (69648) has its own picture, assets/art/cards/hokushin (3U CubeSat with one 4×5 solar wing), drawn from Sevaan's photo + CAD references (session scratchpad hokushin/); art-keys.js NAMED. It used to share classic-satellite-1.
 
 2026-10-15 · v0.1.694: Hokushin-1 picture redone with the unfolded hinged solar wing beside the upright body, as in the reference photo (copy at design/hokushin-art.png).
+
+2026-10-15 · v0.1.695: Hokushin-1 picture redone from the CAD drawing: flat 3U body with grey end box, green-edged cells, yellow antenna patches, round sensor, tall gold hinged wing standing up (gen2.py in scratchpad hokushin/).
