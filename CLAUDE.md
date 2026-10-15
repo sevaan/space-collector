@@ -1024,3 +1024,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 2026-10-15 · v0.1.707: Equator-S (25068) has its own picture, equator-s, drawn from Sevaan's photo (Desktop image-1000-61a8…jpeg) in the new engraved style with the card colours. It used to share classic-satellite-1.
 
 2026-10-15 · v0.1.708: review.html shows restyled pictures as they arrive (design/restyle-preview/<art>.webp + manifest.json, refreshed every minute) at full opacity; cards still on original art are at 50%. scripts/sync-restyle-preview.sh copies and lists them; rejected restyles are left out.
+
+2026-10-15 · v0.1.709: card pictures are lowered per picture, not all by 11% (Sevaan: "use some judgement"). scripts/art-frame.py measures each picture's subject in the 4:3 window and lowers it by 15% minus its top, at most 12%, and never so far that the subject's bottom leaves the window (very wide rows count as Earth, not subject) → js/art-frame.js ART_SHIFT; card.js sets the img top. 72 of 165 move, the rest stay put. Rerun after importing art. Also rejected the deb-avum-adaptor restyle (it swapped the object and took the style sample's colours).
