@@ -488,7 +488,7 @@
 .card--mission .card__art > svg { width: 100%; height: 100%; }
 .card--mission .m-chip { position: absolute; top: .65em; z-index: 4; display: inline-flex; align-items: center; gap: .35em; padding: .4em .6em; border-radius: .45em; background: #070d17cc; font: 600 .82em/1 var(--label); letter-spacing: .14em; text-transform: uppercase; white-space: nowrap; }
 .card--mission .m-tier { left: .65em; color: var(--tier); border: 1px solid color-mix(in srgb, var(--tier) 60%, transparent); }
-.card--mission .m-tier i { font-style: normal; }
+.card--mission .m-tier i { font-style: normal; display: inline-grid; place-items: center; width: 1em; height: 1em; line-height: 1; font-family: system-ui, sans-serif; font-size: 1.05em; } /* the rarity shape centred on the label's middle, not its baseline (2026-10-15) */
 .card--mission .m-tier .card__icon-badge { margin-left: .3em; }
 .card--mission .m-set.card__setbar { right: .65em; left: auto; min-height: 0; border: 0; color: #d6dccb; max-width: 48%; overflow: hidden; }
 .card--mission .m-set.card__setbar > span:first-child::after { display: none; }

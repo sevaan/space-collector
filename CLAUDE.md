@@ -1036,3 +1036,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 2026-10-15 · v0.1.713: new pictures from Sevaan's references: essa (all 9 ESSA cards: tall 18-sided drum with the side camera), lusat (LUSAT LO-19 cube with antennas), story-starman (the real cherry-red first-gen Tesla Roadster; fact and a CAR stat now name it), story-ringside (Saturn with correct flat rings). Restyle pipeline is now two steps: restyle only (run.py), then frame.py centres each object inside the area below the labels (x 5-95%, y 19-95%) by shrinking/moving the finished picture and having the model paint only the empty margin; review.html shows the framed results.
 
 2026-10-15 · v0.1.714: LUSAT picture redone from Sevaan's QSL card (Desktop qsl25.jpg): one long antenna from the top, short ones angled down from the bottom, none from the sides.
+
+2026-10-15 · v0.1.715: rarity shape in the card's rarity chip is centred on the label (inline-grid 1em box, system font for the glyph) instead of sitting on the text baseline (Sevaan).
