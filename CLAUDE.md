@@ -1020,3 +1020,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 2026-10-15 · v0.1.706:
 - Card pictures sit lower: moved down 11% (fleets 9%) with the top fading into the card navy, so subjects clear the rarity/set chips without redrawing (Sevaan).
 - **Debris identities** (Sevaan: "if we know what the object is, it should be in the fact"): scripts/build-debris.py → data/debris.json { id: { what, art?, fact } } for all 453 debris cards, from catalogue names plus satellitemap.space / isstracker.pl alternative names (looked up 2026-10-15). lore.js loads it (`debrisOf`); factFor uses its fact after hand lore; the card subtitle reads "SYLDA · 1984" etc.; art-keys uses `deb-<art>` only once that picture exists (ART_FILES). 295 are plain fragments ("A fragment of Cosmos 2251, launched in 1993…"). Debris pictures and the engraved restyle of all art are in progress (scratchpad restyle-all/), not imported yet.
+
+2026-10-15 · v0.1.707: Equator-S (25068) has its own picture, equator-s, drawn from Sevaan's photo (Desktop image-1000-61a8…jpeg) in the new engraved style with the card colours. It used to share classic-satellite-1.
