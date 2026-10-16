@@ -1366,3 +1366,8 @@ body.night #wake .wk-ring { border-color: #ff6e5a; } body.night #wake span { col
 .d-cta.done > span:first-child .ico, .nt-bell.done > span:first-child .ico { color: var(--gold); }
 .d-cta.done > span:last-child, .nt-bell.done > span:last-child { font-size: 12px; letter-spacing: .16em; color: var(--muted); }
 @media (prefers-reduced-motion: no-preference) { .d-cta.done, .nt-bell.done { animation: rem-on .42s var(--ease-spring, ease-out); } @keyframes rem-on { 40% { transform: scale(1.03); } } }
+/* Tonight page (2026-10-16, Sevaan: "buttons look squished"): the column can't shrink its buttons, and scrolls on short
+   screens instead; the tier in a timeline row is body text, not the big time font (it's a <b> inside the row). */
+#ob-done .d-cta { flex: none; }
+#ob-done:not(.nt) { overflow-y: auto; overscroll-behavior: contain; }
+.od-tl .it span b.od-tier { font: inherit; font-weight: 600; letter-spacing: inherit; }
