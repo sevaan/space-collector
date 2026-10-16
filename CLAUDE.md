@@ -1069,3 +1069,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - v0.1.726: OV1 satellites (8 cards) get their own picture 'ov1', drawn from Sevaan's OV1-14 photo (scratchpad restyle-all/refgen.py: photo + style.png → framed/<art>.png). Taifun redrawn as a true sphere (Sevaan: it was squashed). OV1 R/B cards keep kick-motor (they are the separate Altair-2 module; no reference yet).
 - v0.1.727: GSLV stage's open forward end redrawn in correct perspective (look.py MODE=persp; Sevaan).
 - v0.1.728: CAT 4 (13011) has its own picture 'cat', drawn from the ESA/CNES/Arianespace photo of the Capsule Ariane Technologique (futura-sciences l01-5.jpg; Sevaan's own reference was a modern ESA satellite, not the 1981 capsule).
+- v0.1.729: geodetic (Cosmos 203 etc.): background swirls removed and the left extension seam cropped off (Sevaan).
