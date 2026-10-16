@@ -1,29 +1,29 @@
-import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.737';
-import { computeStats, statsHtml } from './stats.js?v=0.1.737';
-import { nightKey } from './observation.js?v=0.1.737';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.737';
-import { sfx } from './sfx.js?v=0.1.737';
-import { expandFacts } from './catalog-facts.js?v=0.1.737';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.737';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.737';
-import { ticket } from './toast.js?v=0.1.737';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.737';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.737';
-import { cardArt } from './art.js?v=0.1.737';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.737';
-import { applyBack } from './card-backs.js?v=0.1.737';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.737';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.737';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.737';
+import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.738';
+import { computeStats, statsHtml } from './stats.js?v=0.1.738';
+import { nightKey } from './observation.js?v=0.1.738';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.738';
+import { sfx } from './sfx.js?v=0.1.738';
+import { expandFacts } from './catalog-facts.js?v=0.1.738';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.738';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.738';
+import { ticket } from './toast.js?v=0.1.738';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.738';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.738';
+import { cardArt } from './art.js?v=0.1.738';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.738';
+import { applyBack } from './card-backs.js?v=0.1.738';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.738';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.738';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.738';
 import './stories.js?v=0.1.680';
-import { loadConstellations, conList } from './constellations.js?v=0.1.737';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.737';
-import { eventBadges, nextEvent } from './events.js?v=0.1.737';
-import { shareCardEl } from './share-card.js?v=0.1.737';
-import { removeSighting } from './account.js?v=0.1.737';
-import { allSightings, deleteSighting } from './store.js?v=0.1.737';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.737';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.737';
+import { loadConstellations, conList } from './constellations.js?v=0.1.738';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.738';
+import { eventBadges, nextEvent } from './events.js?v=0.1.738';
+import { shareCardEl } from './share-card.js?v=0.1.738';
+import { removeSighting } from './account.js?v=0.1.738';
+import { allSightings, deleteSighting } from './store.js?v=0.1.738';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.738';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.738';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -64,22 +64,11 @@ state.plan = readPlan();
 const planStart = () => new Map(state.plan.map((x) => [x.key, x.start]).reverse()); // first (soonest) pass per card
 for (const tier of TIERS.slice().reverse()) $('rarity-filter').add(new Option(TIER_INFO[tier].label, tier));
 
-async function boot() {
-  const [catalogueResult, sightingResult] = await Promise.allSettled([
-    // Inside the app, borrow the catalogue Explore already loaded instead of downloading and parsing it again.
-    (() => { try { const sh = window.parent !== window && window.parent.__catalogShare; if (sh) return Promise.resolve(sh); } catch {} return fetch('data/catalog.json', { cache: 'no-cache' }).then((r) => { if (!r.ok) throw new Error('catalogue'); return r.json(); }).then((d) => { for (const o of d.objects) expandFacts(o); return d; }); })(),
-    allSightings(),
-    loadLore(),
-    loadConstellations(),
-    loadComets(),
-  ]);
-  const cat = catalogueResult.status === 'fulfilled' ? catalogueResult.value : { objects: [] };
-  // One card per key: a star in two constellations (Dubhe: Big Dipper and Ursa Major) showed twice and was counted twice
-  // in Mine (collectors 2026-10-11).
-  { const seen = new Set(); state.cards = buildCards(cat).filter((c) => !seen.has(c.key) && seen.add(c.key)); }
-  state.byKey = new Map(state.cards.map((c) => [c.key, c]));
-  const keyOfId = new Map(cat.objects.map((o) => [String(o.id), cardKeyFor(o)])); state.keyOfId = keyOfId;
-  const sightings = sightingResult.status === 'fulfilled' ? sightingResult.value : [];
+// Read the sighting log into state (boot, and 'refresh' from Explore after a catch, 2026-10-16: a whole-page reload
+// made "View in collection" wait for the page, then slide and spin at once, which looked janky).
+function ingest(sightings) {
+  const keyOfId = state.keyOfId;
+  state.raw = []; state.sightingsByKey = new Map(); state.seenMembers = new Map();
   for (const raw of sightings) {
     if (raw.sim) continue;
     // Launch-keyed sightings from before fleet cards read as fleet card + stamp.
@@ -98,6 +87,28 @@ async function boot() {
       state.cards.push(card); state.byKey.set(key, card);
     }
   }
+}
+async function refreshSightings() {
+  if (!state.ready) return;
+  try { ingest(await allSightings()); linkConstellations(); render(); } catch {}
+}
+async function boot() {
+  const [catalogueResult, sightingResult] = await Promise.allSettled([
+    // Inside the app, borrow the catalogue Explore already loaded instead of downloading and parsing it again.
+    (() => { try { const sh = window.parent !== window && window.parent.__catalogShare; if (sh) return Promise.resolve(sh); } catch {} return fetch('data/catalog.json', { cache: 'no-cache' }).then((r) => { if (!r.ok) throw new Error('catalogue'); return r.json(); }).then((d) => { for (const o of d.objects) expandFacts(o); return d; }); })(),
+    allSightings(),
+    loadLore(),
+    loadConstellations(),
+    loadComets(),
+  ]);
+  const cat = catalogueResult.status === 'fulfilled' ? catalogueResult.value : { objects: [] };
+  // One card per key: a star in two constellations (Dubhe: Big Dipper and Ursa Major) showed twice and was counted twice
+  // in Mine (collectors 2026-10-11).
+  { const seen = new Set(); state.cards = buildCards(cat).filter((c) => !seen.has(c.key) && seen.add(c.key)); }
+  state.byKey = new Map(state.cards.map((c) => [c.key, c]));
+  const keyOfId = new Map(cat.objects.map((o) => [String(o.id), cardKeyFor(o)])); state.keyOfId = keyOfId;
+  const sightings = sightingResult.status === 'fulfilled' ? sightingResult.value : [];
+  ingest(sightings);
   linkConstellations();
   if (catalogueResult.status === 'rejected') notice('The catalogue could not load. Your saved field records are still shown. Refresh to try again.');
   if (sightingResult.status === 'rejected') notice('Your saved sightings could not be opened. You can explore the field guide; refresh to retry your collection.');
@@ -784,6 +795,7 @@ if (EMBED) {
       if ($('stats-view').open) $('stats-view').close(); else if ($('patch-view').open) closePatch(); else if ($('viewer').open) closeViewer();
       else window.parent.postMessage({ sc: 'explore' }, location.origin);
     }
+    if (e.data.sc === 'refresh') refreshSightings();
     if (e.data.sc === 'tonight') { state.plan = readPlan(); if (state.ready && ['owned', 'discover'].includes(state.view)) render(); }
   });
 }
