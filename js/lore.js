@@ -4,7 +4,7 @@
 // facts only state what the catalogue says today (orbit, launch date and site) or simple date
 // comparisons. No extrapolating today's orbit back over decades (lifetime laps or distance).
 
-import { orbitStats, titleCase, siteName, ownerName } from './facts.js?v=0.1.718';
+import { orbitStats, titleCase, siteName, ownerName } from './facts.js?v=0.1.719';
 
 const FAMILY = [
   [/^IRIDIUM 33 DEB/, 'A piece of the **first-ever crash between two satellites**: Iridium 33 hit the dead Cosmos 2251 in 2009.'],
@@ -35,12 +35,17 @@ const WEB = '1989-03-12';      // Tim Berners-Lee's proposal for the World Wide 
 const GOOGLE = '1998-09-04';   // Google founded
 const IPHONE = '2007-06-29';   // first iPhone on sale
 
-let loreCache = null, seriesCache = null, purposeCache = null, debrisCache = null;
+let loreCache = null, seriesCache = null, purposeCache = null, debrisCache = null, factsCache = null, rocketFacts = [];
 export async function loadLore(url = 'data/lore.json', seriesUrl = url.replace('lore.json', 'series.json'), purposeUrl = url.replace('lore.json', 'purpose.json')) {
   const get = async (u) => { try { return await (await fetch(u)).json(); } catch { return {}; } };
-  [loreCache, seriesCache, purposeCache, debrisCache] = await Promise.all([get(url), get(seriesUrl), get(purposeUrl), get(url.replace('lore.json', 'debris.json'))]);
+  [loreCache, seriesCache, purposeCache, debrisCache, factsCache] = await Promise.all([get(url), get(seriesUrl), get(purposeUrl), get(url.replace('lore.json', 'debris.json')), get(url.replace('lore.json', 'facts.json'))]);
+  rocketFacts = (factsCache?.rockets ?? []).map((r) => ({ ...r, re: new RegExp(r.match) }));
   return loreCache;
 }
+// Researched facts (pre-launch writing review, 2026-10-15; data/facts.json, each with its source): one per satellite in
+// `sats`, and for rocket stages a few true lines per rocket in `rockets`, picked by NORAD id so neighbours differ.
+const researched = (o) => factsCache?.sats?.[o.id]?.fact ?? null;
+const rocketFact = (o) => { if (o.type !== 'rocket-body') return null; const r = rocketFacts.find((x) => x.re.test(o.name ?? '')); return r?.facts?.length ? r.facts[Number(o.id) % r.facts.length] : null; };
 const seriesOf = (o) => seriesCache?.series?.[seriesCache?.members?.[o.id]] ?? null;
 // What a debris card really is (data/debris.json, scripts/build-debris.py, 2026-10-15): { what, art?, fact }.
 export const debrisOf = (o) => (o?.type === 'debris' ? debrisCache?.[o.id] ?? null : null);
@@ -242,6 +247,7 @@ export function factFor(o, now = new Date()) {
   const hand = loreCache?.[o.id]?.fact;
   if (hand) return hand;
   const deb = debrisOf(o); if (deb) return deb.fact;
+  const res = researched(o) ?? rocketFact(o); if (res) return res;
   // Released from the ISS but not identified yet (2026-10-15, Sevaan): objects let go together get letters (YK, YL,
   // YM…) until trackers work out which CubeSat is which; their real launch is the cargo flight that carried them up.
   if (o.issDeploy && /^ISS OBJECT/.test(o.name ?? '')) return `A small satellite **released from the International Space Station** in ${String(o.launch ?? '').slice(0, 4)}. Trackers haven't confirmed **which CubeSat** it is yet: ones let go together get letters (YK, YL, YM…) until each is identified.`;
@@ -259,6 +265,7 @@ export function factFor(o, now = new Date()) {
 export function factSourceFor(o) {
   if (o.natural || loreCache?.[o.id]?.fact) return 'Hand-written';
   if (o.launches) return 'Fleet summary';
+  if (researched(o) || rocketFact(o)) return 'Researched';
   if (seriesOf(o)) return 'Researched series';
   if (FAMILY.some(([re, , kinds]) => re.test(o.name) && (!kinds || kinds.includes(o.kind)))) return 'Rocket/satellite family';
   if (PURPOSE.some(([re]) => re.test(o.name)) && o.type === 'satellite') return 'Satellite family purpose';

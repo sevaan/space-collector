@@ -97,8 +97,10 @@ export function autoLore(o) {
 
 // Acronyms stay capitals, and so do letters run together with digits ("DMSP 5D-3", "PSLV"; playtest room 2026-10-11:
 // "Dmsp 5d-3", "Pslv Rocket Stage").
-const ACRONYMS = /\b(Iss|Us|Usa|Noaa|Cz|Sl|Oao|Ers|Spot|Pslv|Gslv|Dmsp|Gps|Hst|Goes|Tdrs|Nrol|Nasa|Esa|Jaxa|Css|Atv|Htv|Ses|Gsat|Irs|Insat|Cosmo|Orbcomm|Sbirs|Wgs|Dsp|Ols|Ctv)\b/g;
+const ACRONYMS = /\b(Iss|Us|Usa|Noaa|Cz|Sl|Oao|Ers|Spot|Pslv|Gslv|Dmsp|Gps|Hst|Goes|Tdrs|Nrol|Nasa|Esa|Jaxa|Css|Atv|Htv|Ses|Gsat|Irs|Insat|Cosmo|Orbcomm|Sbirs|Wgs|Dsp|Ols|Ctv|Dove|Most|Image|Ops|Sj|Pam|Sylda|Spelda|Ius|Dm|Km|Pkm|Akm|Essa|Tos|Itos|Tiros|Ais|Ggse|Ggrs|Greb|Egrs|Cbers|Canx|Kslv|Isis|Ets|Jas|Strv|Bpa|Avum|Lcs|Nnss|Sbs|Iras|Mos|Cobe|Scd|Vep|Iso|Adeos|Sac|Dpaf|Uk|Dmc|Alos|Sds|Mka|Skrl|Ftv|Grs|Sert|Dfh|Erts|Stp|Ssu|Exos|Ampte|Cce|Asc|Egs|Ssus|Crres|Nato|Topex|Oxp|Upm|Msx|Toms|Stex|Dlr|Tsx|Snap|Lre|Mds|Xss|Galex|Sseti|Rss|Sar|Nts|Ims|Fgrst|Glast|Ostm|Kks|Smos|Sbss|Blits|Iceye|Ghgsat|Popacs|Macsat|Oscar|Sitro|Secor|Solrad|Traac|Surcal|Soical|Radcal|Hilat|Swas|Timed|Sorce|Rocsat|Aissat|Stsat|Lbsat|Brite|Elisa|Anser|Cinema|Jawsat|Asusat|Pcsat|Megsat|Weos|Sedsat|Posat|Tubsat|Kitsat|Unisat|Alsat|Fasat|Faisat|Tmsat|Dtusat|Ctv|Ssetl|Iuss)\b/g;
 export function titleCase(s) {
   return s.toLowerCase().replace(/\b([a-z])/g, (m) => m.toUpperCase()).replace(ACRONYMS, (m) => m.toUpperCase())
-    .replace(/\b(?=[a-z]*\d)(?=\d*[a-z])[a-z0-9]+\b/gi, (m) => m.toUpperCase()); // letters and digits run together: 5D, F18
+    .replace(/\b(?=[a-z]*\d)(?=\d*[a-z])[a-z0-9]+\b/gi, (m) => m.toUpperCase())
+    .replace(/\b[A-Za-z]{2,3}(?=-\d)/g, (m) => m.toUpperCase()); // short codes before a number: AO-7, SO-50, DO-17
+    // letters and digits run together: 5D, F18
 }

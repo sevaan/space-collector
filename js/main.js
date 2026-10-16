@@ -1,50 +1,50 @@
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.718';
-import * as Secrets from './secrets.js?v=0.1.718';
-import { STORY_BY_SECRET } from './stories.js?v=0.1.718';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.718';
-import * as Ufo from './ufo.js?v=0.1.718';
-import * as Fossil from './fossil.js?v=0.1.718';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.718';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.718';
-import { toast, ticket, dropToast, toastPending, onTicketShown } from './toast.js?v=0.1.718';
-import { VERSION } from './version.js?v=0.1.718';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, overEarth, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.718';
-import { placeName } from './geo.js?v=0.1.718';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.718';
-import { conArt } from './con-art.js?v=0.1.718';
-import { fetchWeather, tonightSky, skyClearAt } from './weather.js?v=0.1.718';
-import { CON_FIGURES } from './con-figures.js?v=0.1.718';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.718';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.718';
-import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.718';
-import { eventOf, activeEvent, nextEvent } from './events.js?v=0.1.718';
-import { conList } from './constellations.js?v=0.1.718';
-import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.718';
-import { SkyView, shortName } from './sky.js?v=0.1.718';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.718';
-import { isPlus, setPlusForTesting, onPlus, PLUS_PERKS } from './plus.js?v=0.1.718';
-import { isNative, getPosition, saveFile, notifyAt, cancelNotify, haptic, onNative, nativeChrome, plugin } from './native.js?v=0.1.718';
-import { initAccount, onAccount, account, signInGoogle, sendEmailLink, completeEmailLink, signOut, syncNow, pushSighting, deleteAccount, signInApple } from './account.js?v=0.1.718';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.718';
-import { cardArt } from './art.js?v=0.1.718';
-import { renderCard, miniCard, cardLevel, artImage, lockedArt, attachTilt, attachGyro, throwOff, attachFlip } from './card.js?v=0.1.718';
-import { applyBack } from './card-backs.js?v=0.1.718';
-import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.718';
-import { audioCtx } from './audio-ctx.js?v=0.1.718';
-import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume } from './music.js?v=0.1.718';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.718';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.718';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.718';
-import { naturalTargets, SOLAR_SYSTEM, DEEP_SKY } from './natural.js?v=0.1.718';
-import { placeFromTimeZone } from './tz-places.js?v=0.1.718';
-import { TIER_INFO } from './rarity.js?v=0.1.718';
-import { SETS, albumList } from './sets.js?v=0.1.718';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.718';
-import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.718';
-import { shareCardEl } from './share-card.js?v=0.1.718';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.718';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.718';
-import { addStarfield } from './starfield.js?v=0.1.718';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.719';
+import * as Secrets from './secrets.js?v=0.1.719';
+import { STORY_BY_SECRET } from './stories.js?v=0.1.719';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.719';
+import * as Ufo from './ufo.js?v=0.1.719';
+import * as Fossil from './fossil.js?v=0.1.719';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.719';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.719';
+import { toast, ticket, dropToast, toastPending, onTicketShown } from './toast.js?v=0.1.719';
+import { VERSION } from './version.js?v=0.1.719';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, overEarth, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.719';
+import { placeName } from './geo.js?v=0.1.719';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.719';
+import { conArt } from './con-art.js?v=0.1.719';
+import { fetchWeather, tonightSky, skyClearAt, goodSkyAt } from './weather.js?v=0.1.719';
+import { CON_FIGURES } from './con-figures.js?v=0.1.719';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.719';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.719';
+import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.719';
+import { eventOf, activeEvent, nextEvent } from './events.js?v=0.1.719';
+import { conList } from './constellations.js?v=0.1.719';
+import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.719';
+import { SkyView, shortName } from './sky.js?v=0.1.719';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.719';
+import { isPlus, setPlusForTesting, onPlus, PLUS_PERKS } from './plus.js?v=0.1.719';
+import { isNative, getPosition, saveFile, notifyAt, cancelNotify, haptic, onNative, nativeChrome, plugin } from './native.js?v=0.1.719';
+import { initAccount, onAccount, account, signInGoogle, sendEmailLink, completeEmailLink, signOut, syncNow, pushSighting, deleteAccount, signInApple } from './account.js?v=0.1.719';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.719';
+import { cardArt } from './art.js?v=0.1.719';
+import { renderCard, miniCard, cardLevel, artImage, lockedArt, attachTilt, attachGyro, throwOff, attachFlip } from './card.js?v=0.1.719';
+import { applyBack } from './card-backs.js?v=0.1.719';
+import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.719';
+import { audioCtx } from './audio-ctx.js?v=0.1.719';
+import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume } from './music.js?v=0.1.719';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.719';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.719';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.719';
+import { naturalTargets, SOLAR_SYSTEM, DEEP_SKY } from './natural.js?v=0.1.719';
+import { placeFromTimeZone } from './tz-places.js?v=0.1.719';
+import { TIER_INFO } from './rarity.js?v=0.1.719';
+import { SETS, albumList } from './sets.js?v=0.1.719';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.719';
+import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.719';
+import { shareCardEl } from './share-card.js?v=0.1.719';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.719';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.719';
+import { addStarfield } from './starfield.js?v=0.1.719';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -2348,7 +2348,7 @@ function headliner(T) {
 const isHeadliner = (obj) => { const h = headliner(state.tonight); return !!h && h.obj.id === obj.id; };
 // Notifications (2026-10-14, Sevaan; design/notifications.html): the app sends at most two a day on its own, and the
 // automatic pass alerts are gone. 1) Look up: at the start of the evening's best hour (from dusk, never after 10:30 pm),
-// only when the forecast is clear then. 2) Catch of the day: tonight's headliner, 10 minutes before it rises, if you don't
+// only when the forecast is clear then. 2) Catch of the day: tonight's headliner, 5 minutes before it rises (was 10; 2026-10-15), if you don't
 // have it and it's clear. Anything else comes only from reminders you set. Native app only (local notifications);
 // rescheduled whenever tonight's plan or the forecast changes. Settings: prefs nLookUp / nCatch (both on by default).
 const NOTE_LOOK = 7120, NOTE_CATCH = 7110;
@@ -2366,15 +2366,15 @@ function lookUpAt(T) {
 async function scheduleNotes(T) {
   if (!(await notesAllowed())) return;
   await cancelNotify(NOTE_LOOK); await cancelNotify(NOTE_CATCH); for (const id of ALERT_IDS) await cancelNotify(id); // old automatic pass alerts
-  const t0 = Date.now(), clear = (t) => !state.weather || skyClearAt(state.weather, t);
+  const t0 = Date.now(), clear = (t) => goodSkyAt(state.weather, t); // only on a good night, never on unknown weather
   const lu = lookUpAt(T);
   if (notePref('nLookUp') && lu && lu.at > t0 + 60000 && clear(lu.at) && !(new Date(t0).getHours() >= 17 && t0 > T.dusk - 3 * 3600e3 && openedTonight)) {
     const fresh = new Set(tonightPasses(T, lu.at).filter((p) => p.fresh && p.start <= lu.until).map((p) => cardKeyFor(p.obj))).size;
     await notifyAt(lu.at, 'Clear skies. Look up!', `It's dark now and the best of tonight runs until ${fmtTime(lu.until)}.${fresh ? ` ${fresh} new card${fresh === 1 ? ' is' : 's are'} up.` : ''}`, { id: NOTE_LOOK });
   }
   const h = headliner(T);
-  if (notePref('nCatch') && h && h.start - 10 * 60000 > t0 && isNewFind(h.obj) && clear(h.start)) {
-    await notifyAt(h.start - 10 * 60000, 'Catch of the day in 10 min', `${label(h.obj)}, ${describe(h.obj, { stamp: false }).replace(/^A /, 'a ').replace(/^The /, 'the ')}, ${whereWords({ el: h.peakEl, az: h.peakAz }).toLowerCase().replace(/^/, 'climbs ')} at ${fmtTime(h.start)}. +25 XP.`, { id: NOTE_CATCH });
+  if (notePref('nCatch') && h && h.start - 5 * 60000 > t0 && isNewFind(h.obj) && clear(h.start)) {
+    await notifyAt(h.start - 5 * 60000, 'Catch of the day in 5 min', `${label(h.obj)}, ${describe(h.obj, { stamp: false }).replace(/^A /, 'a ').replace(/^The /, 'the ')}, ${whereWords({ el: h.peakEl, az: h.peakAz }).toLowerCase().replace(/^/, 'climbs ')} at ${fmtTime(h.start)}. +25 XP.`, { id: NOTE_CATCH });
   }
 }
 // Opening the app in the evening means you don't need the Look up nudge tonight.

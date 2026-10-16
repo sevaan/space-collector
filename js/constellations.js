@@ -3,8 +3,8 @@
 // Every star in a stick figure (magnitude <= 5) is its own card; the constellation card turns gold when
 // you own all of them. Bright stars that already have cards (Regulus, Spica…) count as members.
 // No DOM.
-import { NATURAL, NATURAL_BY_KEY, SOLAR_SYSTEM } from './natural.js?v=0.1.718';
-import { starVector } from './celestial.js?v=0.1.718';
+import { NATURAL, NATURAL_BY_KEY, SOLAR_SYSTEM } from './natural.js?v=0.1.719';
+import { starVector } from './celestial.js?v=0.1.719';
 
 const GEN = { Ari: 'Arietis', Tau: 'Tauri', Gem: 'Geminorum', Cnc: 'Cancri', Leo: 'Leonis', Vir: 'Virginis', Lib: 'Librae', Sco: 'Scorpii', Sgr: 'Sagittarii',
   Cap: 'Capricorni', Aqr: 'Aquarii', Psc: 'Piscium', Ori: 'Orionis', BigDipper: 'Ursae Majoris', UMi: 'Ursae Minoris', Cas: 'Cassiopeiae', Cyg: 'Cygni', Cru: 'Crucis',
@@ -39,11 +39,21 @@ const colourOf = (bv) => bv == null ? '—' : bv < 0 ? 'Blue-white' : bv < 0.3 ?
 export const CONSTELLATIONS = [];
 export const CON_BY_ID = new Map();
 export const CON_STARS = [];               // star cards with a v (equatorial unit vector) for targeting
-let loading = null;
+let loading = null, starFacts = {};
 export function loadConstellations(url = 'data/constellations.json') {
-  return (loading ??= fetch(url).then((r) => r.json()).then(register).catch(() => {}));
+  // Each star's own researched fact (pre-launch writing review, 2026-10-15): data/star-facts.json, keyed by HIP.
+  const facts = fetch(url.replace('constellations.json', 'star-facts.json')).then((r) => r.json()).catch(() => ({}));
+  return (loading ??= Promise.all([fetch(url).then((r) => r.json()), facts]).then(([d, f]) => { starFacts = f ?? {}; register(d); }).catch(() => {}));
 }
 
+// Name and constellation fixes from the pre-launch fact check (2026-10-15): d3-celestial gives some stars a name that
+// belongs to a neighbour (η Aql "Tarazed" is γ Aql's, κ¹ Pup "Markab" is α Peg's…) or an old name the IAU never adopted;
+// those show their Bayer name instead. Stars shared by figures (the False Cross) get the constellation they're really in.
+const STAR_FIX = {
+  43103: { name: null }, 89642: { name: null }, 92041: { name: null }, 94779: { name: null }, 97804: { name: null },
+  13954: { name: null }, 20042: { name: null }, 81693: { name: null }, 112440: { name: null }, 37229: { name: null },
+  86670: { name: 'Girtab' }, 39953: { con: 'Vela', id: 'Vel' }, 42913: { con: 'Vela', id: 'Vel' }, 31685: { con: 'Puppis', id: 'Pup' },
+};
 function register(data) {
   const byName = new Map(NATURAL.filter((o) => o.type === 'star').map((o) => [o.name.toLowerCase(), o]));
   let order = 100;
@@ -51,18 +61,21 @@ function register(data) {
     const abbr = ABBR[c.id] ?? c.id, gen = GEN[c.id];
     const used = new Set(), keys = [];
     c.stars.forEach((s, i) => {
+      const fix = STAR_FIX[s.hip]; if (fix && 'name' in fix) s = { ...s, name: fix.name };
+      const conName = fix?.con ?? c.name;
       const existing = s.name && byName.get(s.name.toLowerCase());
       let card = existing;
       if (!card) {
+        const gen = GEN[fix?.id] ?? GEN[c.id], abbr = fix?.id ?? (ABBR[c.id] ?? c.id);
         const sci = s.bayer ? `${spell(s.bayer)} ${gen}` : s.flam ? `${s.flam} ${gen}` : `HIP ${s.hip}`;
         const name = s.name && !used.has(s.name) ? s.name : sci;
         used.add(name);
         const key = `star:hip${s.hip}`;
         card = {
           key, id: key, card: key, natural: 'star', type: 'star', name, skyName: null, hip: s.hip, tier: tierFor(s.mag), order: order++,
-          code: s.bayer ? `${s.bayer} ${abbr}` : s.flam ? `${s.flam} ${abbr}` : `HIP ${s.hip}`, constellation: c.name, mag: s.mag,
-          stats: [['BRIGHTNESS', s.mag.toFixed(1).replace('-', '−'), 'mag'], ['CONSTELLATION', c.name, ''], ['COLOUR', colourOf(s.bv), '']],
-          fact: `One of the **${c.stars.length} stars** that draw **${c.name}**, ${c.nick}, and the **${ordinal(i + 1)}brightest** of them.`,
+          code: s.bayer ? `${s.bayer} ${abbr}` : s.flam ? `${s.flam} ${abbr}` : `HIP ${s.hip}`, constellation: conName, mag: s.mag,
+          stats: [['BRIGHTNESS', s.mag.toFixed(1).replace('-', '−'), 'mag'], ['CONSTELLATION', conName, ''], ['COLOUR', colourOf(s.bv), '']],
+          fact: starFacts[s.hip]?.fact ?? `One of the **${c.stars.length} stars** that draw **${c.name}**, ${c.nick}, and the **${ordinal(i + 1)}brightest** of them.`,
         };
         NATURAL.push(card); NATURAL_BY_KEY.set(key, card);
       }

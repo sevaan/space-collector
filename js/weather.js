@@ -36,6 +36,14 @@ const CLEAR = 40; // % cloud at or under which a sky counts as usable
 const clearHour = (h) => h.cloud <= CLEAR && !['rain', 'snow', 'storm', 'fog'].includes(h.kind);
 // Can you see the sky at time t? The forecast hour nearest t (or right now, within the hour). Unknown -> true, so missing
 // weather never silences anything. Used to skip pass alerts in fog, rain or cloud (2026-10-12, Sevaan got one in fog).
+// A good night to send someone outside (2026-10-15, Sevaan got a headliner alert on a cloudy night): the forecast must be
+// known and every forecast hour within 90 minutes of t clear. Unknown weather is NOT good here (unlike skyClearAt).
+export function goodSkyAt(wx, t) {
+  const hrs = (wx?.hours ?? []).filter((h) => Math.abs(h.t - t) <= 90 * 60e3);
+  if (!hrs.length) return false;
+  if (Math.abs(t - Date.now()) < 3600e3 && wx.now && Date.now() - (wx.at ?? 0) < 90 * 60e3 && !clearHour(wx.now)) return false;
+  return hrs.every(clearHour);
+}
 export function skyClearAt(wx, t) {
   if (!wx) return true;
   if (Math.abs(t - Date.now()) < 3600e3 && wx.now && Date.now() - (wx.at ?? 0) < 90 * 60e3) return clearHour(wx.now);

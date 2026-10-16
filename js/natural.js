@@ -1,4 +1,4 @@
-import { extinction } from './sky-limit.js?v=0.1.718';
+import { extinction } from './sky-limit.js?v=0.1.719';
 // The Moon, the naked-eye planets and the brightest named stars, as collectible cards.
 // Positions come from js/celestial.js (state.bodies, state.skyEnu); this file holds the card facts and
 // the "can you see it right now" rules. No DOM. Every fact must be true; approximate values say so.
@@ -15,7 +15,7 @@ const moon = {
   key: 'moon', id: 'moon', natural: 'moon', type: 'moon', name: 'Moon', tier: 'common', order: 1, code: "EARTH'S MOON",
   far: ['1.3', 'LIGHT-SECONDS AWAY'],
   stats: [['MEAN DISTANCE', '384,400', 'km'], ['PHASE CYCLE', '29.5', 'd'], ['DIAMETER', '3,474', 'km']],
-  fact: 'The Moon spins exactly once for every trip around Earth, so it always keeps the **same face** turned towards us.',
+  fact: 'It spins exactly once for every trip around Earth, so we always see the **same face**. It drifts about **3.8 cm** farther from us every year.',
 };
 
 // Rarity (2026-10-09, Sevaan): the Moon and every star you can see from a city are Common; the bright planets are
@@ -24,9 +24,9 @@ const moon = {
 const PLANETS = [
   ['Mercury', 'rare', 2, '3.2', '4,879', ['88', 'd'], ['59', 'd'], 'The smallest planet and the closest to the Sun. It races round in **88 days**, so it never strays far from the Sun in our sky: look low, just after sunset or before dawn.'],
   ['Venus', 'uncommon', 3, '6.0', '12,104', ['225', 'd'], ['243', 'd'], 'A day on Venus is **longer than its year**, and it spins the opposite way to most planets. It\'s the brightest thing in the night sky after the Moon.'],
-  ['Mars', 'uncommon', 4, '12.7', '6,779', ['687', 'd'], ['24.6', 'h'], 'Its red colour is **rust**: iron minerals in the dust on its surface have oxidised.'],
+  ['Mars', 'uncommon', 4, '12.7', '6,779', ['687', 'd'], ['24.6', 'h'], 'Its red colour is **rust** in the dust. It also has the tallest volcano we know of, **Olympus Mons**, about two and a half times the height of Everest.'],
   ['Jupiter', 'uncommon', 5, '43', '139,820', ['11.9', 'yr'], ['9.9', 'h'], 'The biggest planet: more than **1,300 Earths** would fit inside it. A pair of binoculars shows its four largest moons as tiny dots.'],
-  ['Saturn', 'uncommon', 6, '79', '116,460', ['29.4', 'yr'], ['10.7', 'h'], 'Its rings are countless chunks of **ice and rock**. You need a telescope to see them, but they\'re there around that steady golden dot.'],
+  ['Saturn', 'uncommon', 6, '79', '116,460', ['29.4', 'yr'], ['10.7', 'h'], 'Its rings are countless chunks of **ice and rock**, too thin for your eyes but there around that steady golden dot. Saturn is so light it would **float in water**.'],
   ['Uranus', 'epic', 7, '160', '50,724', ['84', 'yr'], ['17.2', 'h'], 'It spins almost **on its side**, so it rolls around the Sun like a ball. At its brightest it\'s just visible to the naked eye from a truly dark site: a faint, steady, pale-green point.'],
   ['Neptune', 'legendary', 8, '250', '49,244', ['165', 'yr'], ['16.1', 'h'], 'The farthest planet, found in 1846 by **maths** before anyone saw it: Uranus was being tugged off course. Too faint for the naked eye, but binoculars show it as a dim blue-grey point.'],
 ].map(([name, tier, order, lm, dia, year, day, fact]) => ({
@@ -47,9 +47,9 @@ function lightLeft(ly) {
 // Star: [card name, name in data/sky.json, designation, constellation, distance (light-years), tier,
 //        apparent magnitude (from data/sky.json; Betelgeuse and Antares vary), fact]
 const STARS = [
-  ['Sirius', 'Sirius', 'α CMa', 'Canis Major', '8.6', 'common', -1.44, 'The **brightest star** in the night sky. It has a tiny, faint companion: a white dwarf called Sirius B.'],
+  ['Sirius', 'Sirius', 'α CMa', 'Canis Major', '8.6', 'common', -1.44, 'The **brightest star** in the night sky; its name comes from the Greek for **scorching**. A tiny white dwarf, Sirius B, circles it.'],
   ['Canopus', 'Canopus', 'α Car', 'Carina', '~310', 'common', -0.62, 'The **second-brightest star** in the night sky. Spacecraft have used it as a guide star to keep themselves pointed the right way.'],
-  ['Arcturus', 'Arcturus', 'α Boo', 'Boötes', '37', 'common', -0.05, 'The brightest star in the northern half of the sky, an **orange giant** many times wider than the Sun.'],
+  ['Arcturus', 'Arcturus', 'α Boo', 'Boötes', '37', 'common', -0.05, 'An **orange giant** about 25 times wider than the Sun. In 1933 its light was used to switch on the lights of the **Chicago World\'s Fair**.'],
   ['Alpha Centauri', 'Rigil Kentaurus', 'α Cen', 'Centaurus', '4.4', 'common', -0.01, 'Part of the **nearest star system** to the Sun. Its faint third star, Proxima, is the closest star of all.'],
   ['Vega', 'Vega', 'α Lyr', 'Lyra', '25', 'common', 0.03, 'One corner of the **Summer Triangle**, with Deneb and Altair. In about 12,000 years, Earth\'s wobble will make it the North Star.'],
   ['Capella', 'Capella', 'α Aur', 'Auriga', '43', 'common', 0.08, 'It looks like one star, but it\'s **four**: two yellow giants orbiting each other, plus a faint pair of red dwarfs.'],
@@ -65,9 +65,9 @@ const STARS = [
   ['Antares', 'Antares', 'α Sco', 'Scorpius', '~550', 'common', 1.06, 'Its name means **rival of Mars**, because its red colour looks so like the planet.'],
   ['Pollux', 'Pollux', 'β Gem', 'Gemini', '34', 'common', 1.16, 'The closest **giant star** to the Sun, and it has a planet of its own.'],
   ['Fomalhaut', 'Fomalhaut', 'α PsA', 'Piscis Austrinus', '25', 'common', 1.17, 'A lonely bright star in the autumn sky, wrapped in a huge **ring of dust**.'],
-  ['Deneb', 'Deneb', 'α Cyg', 'Cygnus', '~2,000', 'common', 1.25, 'One of the most **distant stars** you can see with your eyes, yet still one of the brightest. Estimates of its distance vary a lot.'],
+  ['Deneb', 'Deneb', 'α Cyg', 'Cygnus', '~2,000', 'common', 1.25, 'One of the most **distant stars** you can see with your eyes. To look this bright from so far, it must shine **tens of thousands of times** brighter than the Sun.'],
   ['Regulus', 'Regulus', 'α Leo', 'Leo', '79', 'common', 1.36, 'The heart of Leo. It sits almost exactly on the **Moon\'s path**, so the Moon often passes in front of it.'],
-  ['Polaris', 'Polaris', 'α UMi', 'Ursa Minor', '~430', 'common', 1.97, 'The **North Star**. It sits almost exactly above Earth\'s North Pole, so it barely moves while every other star circles around it.'],
+  ['Polaris', 'Polaris', 'α UMi', 'Ursa Minor', '~430', 'common', 1.97, 'The **North Star** sits almost exactly above Earth\'s North Pole, so it barely moves while every other star circles it. It isn\'t even among the **40 brightest**.'],
 ].map(([name, skyName, desig, con, ly, tier, mag, fact], i) => ({
   key: `star:${name.toLowerCase().replace(/\s+/g, '-')}`, id: `star:${name.toLowerCase().replace(/\s+/g, '-')}`, natural: 'star', type: 'star',
   name, skyName, tier, order: 10 + i, code: desig, constellation: con,
