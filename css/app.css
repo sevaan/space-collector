@@ -1373,3 +1373,22 @@ body.night #wake .wk-ring { border-color: #ff6e5a; } body.night #wake span { col
 .od-tl .it span b.od-tier { font: inherit; font-weight: 600; letter-spacing: inherit; }
 /* Settings opened from the Collection rises over it (2026-10-16): above #collection-frame (60) and the switcher (70). */
 body.panel-over-col #debug { z-index: 75; }
+/* Settings = field cards (2026-10-16, design/settings-redesign.html A, Sevaan): each group is a card from the game, cream
+   double frame and a header bar like a card's set bar with its number; cream line icons instead of coloured tiles; switches
+   are ON/OFF tags like the rarity chip. Behaviour and ids are unchanged. */
+#debug .set-card { border: 2px solid #cfd6c2; outline: 1px solid #45576a; outline-offset: -7px; border-radius: 12px; background: #0a1220; padding: 6px 12px 4px; overflow: visible; margin-bottom: 18px; }
+#debug .set-bar { display: flex; justify-content: space-between; align-items: center; padding: 8px 2px 8px; border-bottom: 1px solid #8b7b4d; }
+#debug .set-bar h3 { margin: 0; font: 600 13px/1 var(--label); letter-spacing: .2em; text-transform: uppercase; color: #cfd6c2; }
+#debug .set-bar b { font: 600 13px/1 var(--label); letter-spacing: .14em; color: var(--gold, #fa8127); }
+#debug .set-card .set-row { padding: 0 2px; border-top: 1px solid #1f2d3f; background: none; }
+#debug .set-card .set-bar + .set-row, #debug .set-card .set-bar + .set-slider { border-top: 0; }
+#debug .set-card .set-slider { padding-inline: 2px; }
+#debug .set-ic { background: none !important; width: 22px; height: 22px; color: #e9dfb8; }
+#debug .set-ic .ico { width: 18px; height: 18px; }
+#debug .set-tog { width: auto; min-width: 46px; height: 26px; padding: 0 8px; border-radius: 6px; background: transparent; box-shadow: inset 0 0 0 1px #45576a; display: inline-grid; place-items: center; }
+#debug .set-tog::before { content: 'OFF'; position: static; width: auto; height: auto; border-radius: 0; background: none; transform: none; font: 600 12px/1 var(--label); letter-spacing: .16em; color: var(--muted); transition: none; }
+#debug .set-tog:checked { background: #fa812714; box-shadow: inset 0 0 0 1px #fa8127; }
+#debug .set-tog:checked::before { content: 'ON'; transform: none; background: none; color: #fa8127; }
+#debug .set-tog:focus-visible { outline: 2px solid #fa8127; outline-offset: 2px; }
+body.night #debug .set-card { background: #120505; border-color: #7a2a20; outline-color: #3a1410; }
+body.night #debug .set-bar { border-color: #5a1e18; } body.night #debug .set-bar h3, body.night #debug .set-ic { color: #ff7f70; }
