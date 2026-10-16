@@ -3,15 +3,15 @@
 // picture" shows one card for each art file (most satellites share a picture by kind) with how many cards use it.
 // Stars (☆) are saved in this browser (localStorage 'reviewStars'); "Copy starred" puts a list on the clipboard to
 // hand back. Not linked from the app.
-import { expandFacts } from './catalog-facts.js?v=0.1.733';
-import { renderCard, miniCard, artImage } from './card.js?v=0.1.733';
-import { buildCards } from './card-model.js?v=0.1.733';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.733';
-import { loadLore, titleFor, debrisOf } from './lore.js?v=0.1.733';
+import { expandFacts } from './catalog-facts.js?v=0.1.734';
+import { renderCard, miniCard, artImage } from './card.js?v=0.1.734';
+import { buildCards } from './card-model.js?v=0.1.734';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.734';
+import { loadLore, titleFor, debrisOf } from './lore.js?v=0.1.734';
 import './stories.js?v=0.1.680';
-import { CON_FIGURES } from './con-figures.js?v=0.1.733';
-import { loadConstellations, CON_BY_ID } from './constellations.js?v=0.1.733';
-import { loadComets } from './comets.js?v=0.1.733';
+import { CON_FIGURES } from './con-figures.js?v=0.1.734';
+import { loadConstellations, CON_BY_ID } from './constellations.js?v=0.1.734';
+import { loadComets } from './comets.js?v=0.1.734';
 
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
@@ -31,6 +31,15 @@ function toast(text) { const t = $('toast'); t.textContent = text; t.hidden = fa
 // original art show at 50% so the two are easy to tell apart.
 let NEW_ART = new Set(), NEW_SHIFT = {};
 const ART_T = Date.now(); // replaced pictures keep their name, so bust the browser cache on each visit (2026-10-16)
+// Framing that has been baked into the art (design/restyle-preview/baked.json, written when Claude bakes a "Copy framing"):
+// a saved frame that matches is dropped, so it isn't applied a second time on top of the new picture.
+async function dropBaked() {
+  try {
+    const baked = await (await fetch('design/restyle-preview/baked.json', { cache: 'no-store' })).json(); let n = 0;
+    for (const [art, f] of Object.entries(frames)) { const b = baked[art]; if (b && ['x', 'y', 'z'].every((k) => Math.abs((b[k] ?? 0) - (f[k] ?? 0)) < 1e-4)) { delete frames[art]; n++; } }
+    if (n) { saveFrames(); toast(`${n} framing${n === 1 ? '' : 's'} now baked into the art`); }
+  } catch {}
+}
 async function loadNewArt() { try { NEW_ART = new Set(await (await fetch('design/restyle-preview/manifest.json', { cache: 'no-store' })).json()); } catch {} }
 function markNew(el, c) {
   const isNew = c._art && NEW_ART.has(c._art);
@@ -178,7 +187,7 @@ async function boot() {
   ]);
   const seen = new Set();
   cards = buildCards(cat).filter((c) => !seen.has(c.key) && seen.add(c.key));
-  await loadNewArt();
+  await loadNewArt(); await dropBaked(); $('copy-frames').textContent = `Copy framing (${Object.keys(frames).length})`;
   for (const c of cards) { c._name = titleFor(c); c._art = artOf(c); c._type = typeOf(c); if (c._art) usage.set(c._art, (usage.get(c._art) ?? 0) + 1); }
   // Rarest first, then by picture so cards sharing art sit together.
   cards.sort((a, b) => TIERS.indexOf(b.tier) - TIERS.indexOf(a.tier) || String(a._art ?? '~').localeCompare(String(b._art ?? '~')) || a._name.localeCompare(b._name));
