@@ -1399,15 +1399,18 @@ body.night #debug .set-bar { border-color: #5a1e18; } body.night #debug .set-bar
 .tl-nextclear .ico { width: 16px; height: 16px; flex: none; color: var(--gold); }
 /* Card back picker (2026-10-16, design/card-backs.html): a grid of backs at card proportions, the one in use outlined in
    orange, locked ones dimmed with how to earn them or PLUS. Random is a tile of three stacked backs. */
-.back-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px 10px; margin-top: 12px; max-height: 60vh; overflow-y: auto; padding: 4px 2px 8px; }
-.back-tile { display: grid; gap: 4px; justify-items: center; text-align: center; padding: 0; border: 0; background: none; color: var(--text); cursor: pointer; }
-.back-art { width: 100%; aspect-ratio: 2 / 3; border-radius: 8px; background: #0a1220 center / cover no-repeat; box-shadow: 0 0 0 1px #45576a; display: grid; place-items: center; overflow: hidden; }
-.back-tile.on .back-art { box-shadow: 0 0 0 2px #fa8127, 0 0 14px #fa812755; }
-.back-tile.locked .back-art { filter: saturate(.75) brightness(.78); } /* still tempting: see the art, the note says how to get it */
-.back-tile b { font: 600 13px/1.1 var(--label); letter-spacing: .06em; }
-.back-tile small { font: 500 11px/1.2 var(--label); letter-spacing: .06em; color: var(--muted); }
-.back-tile.locked small { color: var(--gold); }
-.back-tile.on small { color: #fa8127; }
+.back-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px 8px; margin-top: 14px; padding: 2px 2px 6px; }
+.back-tile { display: grid; gap: 6px; justify-items: center; align-content: start; text-align: center; padding: 0; border: 0; background: none; color: var(--text); cursor: pointer; min-width: 0; }
+.back-art { position: relative; width: 100%; aspect-ratio: 2 / 3; border-radius: 7px; background: #0a1220 center / cover no-repeat; box-shadow: 0 0 0 1px #45576a; display: grid; place-items: center; overflow: hidden; transition: transform .18s ease, box-shadow .18s ease; }
+.back-tile:active .back-art { transform: scale(.96); }
+.back-tile.on .back-art { box-shadow: 0 0 0 2px #fa8127, 0 0 14px #fa812766; }
+.back-tile.locked .back-art { filter: saturate(.7) brightness(.72); }
+.back-lock { position: absolute; right: 5px; top: 5px; width: 22px; height: 22px; border-radius: 50%; background: #080f1bd9; border: 1px solid #ffffff33; color: var(--gold); display: grid; place-items: center; }
+.back-lock svg { width: 12px; height: 12px; }
+.back-on { position: absolute; right: 5px; top: 5px; width: 22px; height: 22px; border-radius: 50%; background: #fa8127; color: #1a0f05; display: grid; place-items: center; font: 700 13px/1 system-ui, sans-serif; }
+.back-tile b { font: 600 12.5px/1.1 var(--label); letter-spacing: .04em; min-height: 2.2em; text-wrap: balance; }
+.back-tile.on b { color: #fa8127; }
+.back-tile.locked b { color: var(--muted); }
 .back-rand { position: relative; width: 52%; aspect-ratio: 2 / 3; }
 .back-rand i { position: absolute; inset: 0; border-radius: 5px; border: 1.5px solid #cfd6c2; background: #0e1a29; }
 .back-rand i:nth-child(1) { transform: rotate(-12deg) translateX(-14%); } .back-rand i:nth-child(2) { transform: rotate(8deg) translateX(12%); } .back-rand i:nth-child(3) { background: #13243a; border-color: #fa8127; }

@@ -1127,3 +1127,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - Radar tip is centred on the radar dial's canvas (it sat ~7 px low because the radar button includes the "N passing" label).
   - Note: "Tap anywhere to line the sky up with your phone" (seen on Sevaan's TestFlight build) was replaced by the #wake circle in v0.1.718; builds 10/11 have it.
 - v0.1.758: Plus Member patch redrawn (Sevaan: the comet overlapped the lettering): telescope at 82% and one star, all inside the inner ring.
+- v0.1.759: card back picker redesigned (Sevaan: two backs hid below the fold; the notes under each were noise): all eight (7 backs + Random) fit on one screen, four across, name only. Selected = orange outline + ✓ badge; locked = dimmed + lock badge; tapping an earnable locked one says how to earn it in the line at the top, a Plus one opens Plus.
