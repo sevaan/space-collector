@@ -1,17 +1,17 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.748';
+import { extinction } from './sky-limit.js?v=0.1.749';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.748';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.749';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.748';
-import { createCloudGL } from './clouds-gl.js?v=0.1.748';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.749';
+import { createCloudGL } from './clouds-gl.js?v=0.1.749';
 // Cloud colours by light: sunlit tops, shadowed bellies, and the horizon haze they melt into (0–1 RGB).
 const CLOUD_LIGHT = {
   day: { lit: [1, 1, 1], shade: [0.62, 0.68, 0.77], haze: [0.82, 0.87, 0.93] },
   dusk: { lit: [1, 0.8, 0.68], shade: [0.36, 0.33, 0.42], haze: [0.62, 0.5, 0.52] },
   night: { lit: [0.22, 0.25, 0.31], shade: [0.1, 0.12, 0.16], haze: [0.14, 0.15, 0.2] },
 };
-import { TIER_INFO } from './rarity.js?v=0.1.748';
+import { TIER_INFO } from './rarity.js?v=0.1.749';
 
 const RAD = Math.PI / 180;
 const BELOW_ICON = 10.5, BELOW_ICON_HIT = 20; // every satellite under the horizon, passes and halo alike (80% of 13 since 2026-10-13); lined up in the circle it grows
@@ -1667,7 +1667,11 @@ export class SkyView {
     for (const [az, el] of edge) {
       const p = this.project(enuFromAzEl(az, el)); if (!p) { pen = false; continue; }
       if (pen) ctx.lineTo(p.x, p.y); else ctx.moveTo(p.x, p.y); pen = true;
-      const dd = Math.hypot(p.x - this.cx, p.y - this.cy); if (dd > (this.reticlePx ?? 60) * 2.2 && p.x > 90 && p.x < this.w - 90 && p.y > this.h * 0.32 && p.y < this.h - 200 && (!best || dd < best.dd)) best = { p, dd };
+      const dd = Math.hypot(p.x - this.cx, p.y - this.cy), R = this.reticlePx ?? 60;
+      // Keep the label clear of the circle and of the column above and below it, where the target's name, rarity and
+      // button sit (playtest 2026-10-16: it crowded "COMMON · MOON").
+      const inColumn = Math.abs(p.x - this.cx) < 130 && Math.abs(p.y - this.cy) < R * 3.6;
+      if (dd > R * 2.6 && !inColumn && p.x > 90 && p.x < this.w - 90 && p.y > this.h * 0.32 && p.y < this.h - 200 && (!best || dd < best.dd)) best = { p, dd };
     }
     ctx.stroke(); ctx.setLineDash([]);
     if (best) { ctx.font = `600 11px ${FONT}`; ctx.textAlign = 'center'; ctx.fillStyle = 'rgba(255,201,61,.75)'; if ('letterSpacing' in ctx) ctx.letterSpacing = '1.5px'; ctx.fillText("EARTH'S SHADOW · 500 KM UP", best.p.x, best.p.y - 10); }
