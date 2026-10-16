@@ -1,5 +1,5 @@
-import { ART_FILES } from './art-files.js?v=0.1.756';
-import { debrisOf } from './lore.js?v=0.1.756';
+import { ART_FILES } from './art-files.js?v=0.1.757';
+import { debrisOf } from './lore.js?v=0.1.757';
 // Which illustration each card uses. The illustrator's brief (scripts/art-brief.py) is generated from this
 // table, and when the art arrives the card renderer can load assets/art/cards/<key>.webp, falling back to
 // the drawn art in js/art.js. Every card maps to exactly one key. Order of rules matters.
@@ -25,6 +25,7 @@ export const ART = {
   'sun': ['Moon & planets', 1, 'The Sun', 'Huge orange-cream disc with sunspots, looping prominences and a soft corona.', 'https://science.nasa.gov/sun/'],
   'planet-uranus': ['Moon & planets', 1, 'Uranus', 'Smooth pale cyan-green sphere tipped on its side with one thin faint ring.', 'https://science.nasa.gov/uranus/'],
   'planet-neptune': ['Moon & planets', 1, 'Neptune', 'Deep blue sphere with a dark storm oval and thin white cloud streaks.', 'https://science.nasa.gov/neptune/'],
+  'planet-earth': ['Moon & planets', 1, 'Earth', 'The whole Earth from space: blue oceans, green and tan continents, white cloud.', 'https://science.nasa.gov/earth/'],
   'solar-system': ['Moon & planets', 1, 'The Solar System', 'Poster diagram: the Sun at the left edge and the eight planets in a line, roughly to scale.', 'https://science.nasa.gov/solar-system/'],
   // ---- Satellite fleets (wide format) ----
   'fleet-starlink': ['Fleets', 1, 'Starlink', 'A "train" of flat Starlink satellites in a line, each a flat body with one long solar wing, as seen soon after launch.', 'https://en.wikipedia.org/wiki/Starlink'],
@@ -124,7 +125,7 @@ const SERIES = { 'strela-1': 'strela-1m', 'strela-1m': 'strela-1m', 'strela-2m':
 // card: a card from buildCards. seriesOf: NORAD id -> series key (data/series.json members), optional.
 export function artKeyFor(card, seriesOf = {}) {
   if (card.natural === 'story') return `story-${card.art}`;
-  if (card.natural) return card.system ? 'solar-system' : card.type === 'sun' ? 'sun' : card.type === 'moon' ? 'moon' : card.type === 'planet' ? `planet-${card.name.toLowerCase()}` : card.type === 'deepsky' ? `deep-${card.key.split(':')[1]}` : `star-${card.key.split(':')[1]}`;
+  if (card.natural) return card.system ? 'solar-system' : card.type === 'sun' ? 'sun' : card.type === 'moon' ? 'moon' : card.type === 'earth' ? 'planet-earth' : card.type === 'planet' ? `planet-${card.name.toLowerCase()}` : card.type === 'deepsky' ? `deep-${card.key.split(':')[1]}` : `star-${card.key.split(':')[1]}`;
   if (card.launches) return { GLOBALSTAR: 'globalstar', ORBCOMM: 'orbcomm', IRIDIUM: 'iridium' }[card.family] ?? `fleet-${card.family.toLowerCase()}`; // the newer fleets use their satellite's picture
   if (NAMED[card.id]) return NAMED[card.id];
   if (card.issDeploy && /^ISS OBJECT/.test(String(card.name ?? ''))) return 'smallsat'; // an unidentified CubeSat from the ISS

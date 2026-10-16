@@ -1121,3 +1121,8 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - roleOf: the catch-all "…SAT → Small satellite" only applies after the UCS purpose data (RADARSAT etc. got the right role when UCS knows it).
 - 2026-10-16 · TestFlight build 1.0 (11) archived (web v0.1.754: bug-hunt fixes); opened in Organizer, not uploaded.
 - v0.1.756: scripts/bump.mjs now stamps bare side-effect imports too (import './x.js'): js/stories.js had been stuck at ?v=0.1.680 in cards-page.js and review.js since 2026-10-14, so phones with the service worker's cache kept an old copy of it. Website designs for spacecollector.app are in site/ (a.html The Circle, b.html Field Guide, c.html Tonight; shared loader.js = the app's lock-on loader; assets rendered from the app by design/site-stage.html); not committed until one is chosen.
+- v0.1.757 (Sevaan):
+  - **Earth card**: look straight down, the centre of the ring at your feet (el −90°), and Earth is in the circle with Collect, day or night (natural.js `earthCard`, key `earth`, type `earth` so it never counts as a planet for missions or the Solar System patch; Common; The Wanderers; art planet-earth, made from planet-jupiter's style; naturalTargets always adds it). Kept out of the Now tab list and the UFO's 3+ things up count.
+  - Vanguard 1 art: background swirl rings removed (art-boxes now has vanguard-1 and planet-earth so twinkles stay off them).
+  - Radar tip is centred on the radar dial's canvas (it sat ~7 px low because the radar button includes the "N passing" label).
+  - Note: "Tap anywhere to line the sky up with your phone" (seen on Sevaan's TestFlight build) was replaced by the #wake circle in v0.1.718; builds 10/11 have it.

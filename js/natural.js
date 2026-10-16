@@ -1,4 +1,4 @@
-import { extinction } from './sky-limit.js?v=0.1.756';
+import { extinction } from './sky-limit.js?v=0.1.757';
 // The Moon, the naked-eye planets and the brightest named stars, as collectible cards.
 // Positions come from js/celestial.js (state.bodies, state.skyEnu); this file holds the card facts and
 // the "can you see it right now" rules. No DOM. Every fact must be true; approximate values say so.
@@ -10,6 +10,15 @@ const sunCard = {
   far: ['8.3', 'LIGHT-MINUTES AWAY'],
   stats: [['DIAMETER', '1,392,700', 'km'], ['ONE SPIN', '~25', 'd'], ['AGE', '4.6', 'billion yr']],
   fact: 'A middle-aged star that would fit **1.3 million Earths**. Never look straight at it: point the phone, catch it, and keep your eyes on the screen.',
+};
+// Earth (2026-10-16, Sevaan): look straight down at your feet, the centre of the ring on the ground, and collect the
+// planet you're standing on. Any time, day or night. Its own type (not 'planet'), so it never counts toward planet
+// missions or the Solar System patch.
+const earthCard = {
+  key: 'earth', id: 'earth', natural: 'earth', type: 'earth', name: 'Earth', tier: 'common', order: 1.5, code: 'UNDER YOUR FEET',
+  far: ['8.3', 'LIGHT-MINUTES FROM THE SUN'],
+  stats: [['DIAMETER', '12,742', 'km'], ['ONE YEAR', '365.25', 'd'], ['ONE SPIN', '23.9', 'h']],
+  fact: 'You\'re standing on it. Earth carries you around the Sun at about **107,000 km/h**, and it\'s the only place we know of with **life**.',
 };
 const moon = {
   key: 'moon', id: 'moon', natural: 'moon', type: 'moon', name: 'Moon', tier: 'common', order: 1, code: "EARTH'S MOON",
@@ -116,7 +125,7 @@ export const SOLAR_SYSTEM = {
   stats: [['WORLDS', '9', ''], ['PLANETS', '7', 'of 8'], ['AGE', '4.6', 'billion yr']],
   fact: 'Everything in the Solar System you can see with your own eyes. Collect the Sun, the Moon and all **seven** planets to turn this card **gold**.',
 };
-export const NATURAL = [sunCard, moon, ...PLANETS, ...STARS, ...DEEP_SKY]; // SOLAR_SYSTEM is a mission patch now, not a card (2026-10-09)
+export const NATURAL = [sunCard, moon, earthCard, ...PLANETS, ...STARS, ...DEEP_SKY]; // SOLAR_SYSTEM is a mission patch now, not a card (2026-10-09)
 for (const o of NATURAL) o.card = o.key;
 export const NATURAL_BY_KEY = new Map(NATURAL.map((o) => [o.key, o]));
 const STAR_BY_SKY_NAME = new Map(STARS.map((o) => [o.skyName, o]));
@@ -155,6 +164,7 @@ export function naturalTargets(bodies, stars, extra = [], starLimit = 6.5, binoL
     const visible = b.kind === 'sun' ? el > 2 : b.kind === 'moon' ? el > 0 && moonOk : b.kind === 'planet' && !faint && sunEl > -12 && el < 6 && b.name !== 'Venus' ? false : faint ? el > 5 && sunEl < -12 && b.mag + extinction(el) <= Math.max(starLimit, binoLimit ?? -99) : el > 2 && sunEl < brightLimit(b.mag);
     out.push({ obj, look: { az: azOf(b.enu), el, mag: b.mag, visible, enu: b.enu, phaseName: b.phaseName, illum: b.illum } });
   }
+  out.push({ obj: earthCard, look: { az: 0, el: -90, mag: -99, visible: true, enu: [0, 0, -1] } }); // straight down, always there
   for (const s of stars ?? []) {
     const obj = s.name && STAR_BY_SKY_NAME.get(s.name);
     if (!obj) continue;
