@@ -1414,3 +1414,38 @@ body.night #debug .set-bar { border-color: #5a1e18; } body.night #debug .set-bar
 /* Panels take focus themselves when they open (screen readers start there); no outline on the panel box. */
 .overlay[tabindex="-1"]:focus { outline: none; }
 #tonight-list > .shiny-sec { margin-top: 28px; } /* its own section after Tonight's run (2026-10-16) */
+
+/* Plus sheet as a card (2026-10-16, design/plus-sheet-card.html). The Plus card, the prices and the button share one
+   width (28 × the card's font size), sized to fit the screen's height as well as its width. */
+#set-plus-sheet { --pf: min(calc((100vw - 56px) / 28), max(9.4px, min(11px, calc((100dvh - var(--safe-top, 0px) - var(--safe-bottom, 0px) - 270px) / 42)))); --pw: calc(var(--pf) * 28); }
+#set-plus-sheet .set-sheet-card { display: grid; justify-items: center; gap: calc(var(--pf) * .9); padding-top: 10px; padding-bottom: max(10px, var(--safe-bottom, 0px)); }
+#set-plus-sheet .set-grab { justify-self: center; }
+.plus-lead { margin: 0; width: var(--pw); text-align: center; font: 500 13px/1.35 var(--label); letter-spacing: .03em; color: var(--muted); }
+.plus-host { display: grid; justify-items: center; perspective: 1600px; }
+.plus-host .card { font-size: var(--pf); }
+.plus-card .card--mission .card__art, .plus-host .card--mission .card__art { aspect-ratio: 16 / 11; }
+.plus-host .card__art > img.card-art-image { object-position: 50% 50%; }
+.plus-host .member-patch { position: absolute; right: .7em; bottom: .7em; width: 6.4em; z-index: 6; filter: drop-shadow(0 .2em .4em #000c); transform: rotate(-8deg); pointer-events: none; }
+.plus-host .member-patch .patch, .plus-host .member-patch svg { display: block; width: 100%; height: auto; }
+.plus-host .perks { display: grid; grid-template-columns: auto 1fr; column-gap: .8em; row-gap: .6em; }
+.plus-host .perks b { white-space: nowrap; }
+.plus-host .perks b.lead { color: var(--orange, #fa8127); }
+.plus-host .card__footer .mini-status { font-size: 1.1em; }
+.plus-host .plus-brand { margin-left: auto; font: 400 1em var(--display, 'Russo One'); }
+#plus-buy { display: grid; grid-template-columns: 1fr; gap: calc(var(--pf) * .8); width: var(--pw); }
+#plus-buy[hidden] { display: none; }
+.plus-prices { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+.plus-pr { min-width: 0; display: grid; gap: calc(var(--pf) * .35); justify-items: center; padding: calc(var(--pf) * .8) 2px; border-radius: 12px; border: 1px solid #2b3d52; background: #122033; color: var(--text); }
+.plus-pr small { font: 600 calc(var(--pf) * 1.1)/1 var(--label); letter-spacing: .18em; color: var(--muted); }
+.plus-pr b { font: 400 calc(var(--pf) * 1.8)/1 var(--display); color: var(--ink, #fff2b3); }
+.plus-pr em { font: 600 calc(var(--pf) * .95)/1 var(--label); letter-spacing: .1em; color: #fa8127; font-style: normal; min-height: 1em; }
+.plus-pr.on { border-color: #fa8127; background: #2a1d14; }
+.plus-pr.on small { color: #fa8127; }
+.plus-cta { border: 0; border-radius: 12px; padding: calc(var(--pf) * 1.25); background: #fa8127; color: #1a0f05; font: 600 calc(var(--pf) * 1.35)/1 var(--label); letter-spacing: .16em; text-transform: uppercase; }
+.plus-fine { margin: -2px 0 0; text-align: center; font: 400 max(11.5px, calc(var(--pf) * 1.12))/1.35 -apple-system, system-ui, sans-serif; color: var(--muted); }
+.plus-thanks { margin: 0; width: var(--pw); text-align: center; color: var(--gold); font: 500 14px/1.35 var(--label); letter-spacing: .04em; }
+#set-plus-sheet #plus-restore { margin-top: 0; }
+body.night .plus-pr { background: #1c0909; border-color: #2e1010; }
+body.night .plus-pr.on { border-color: #f2654f; background: #2a0d0a; }
+body.night .plus-cta { background: #c23a2a; color: #1a0505; }
+.plus-host .card__stats b.plus-inf { font-size: 1.9em; line-height: .9; }

@@ -1,6 +1,8 @@
 // More secrets (2026-10-08, design/easter-eggs.html): Santa's sleigh, Starman's Roadster, a shooting star, Voyager's
 // golden record and Dizzy. None is mentioned anywhere; each earns a secret patch. Found ones: localStorage 'secrets'.
 export const SECRET_PATCHES = {
+  // Not a secret: the Plus Member patch (2026-10-16, Sevaan), earned by joining Plus and kept on the wall if Plus ends.
+  plus: { id: 'plus', name: 'Plus Member', text: 'You joined Space Collector Plus. Thank you for supporting the game.' },
   santa: { id: 'santa', name: 'Nice List', text: 'You waved at Santa on Christmas Eve.' },
   roadster: { id: 'roadster', name: "Don't Panic", text: 'You found Starman and his Roadster, still driving round the Sun.' },
   meteor: { id: 'meteor', name: 'Make a Wish', text: 'You caught a shooting star.' },

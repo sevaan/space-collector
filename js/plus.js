@@ -9,12 +9,18 @@ export function setPlusForTesting(on) {
   for (const f of listeners) try { f(!!on); } catch {}
 }
 export function onPlus(f) { listeners.add(f); return () => listeners.delete(f); }
-// What Plus adds, in the order the sheet lists them. `live` = built today (the rest say "coming").
+// What Plus adds, in the order the Plus card lists them (2026-10-16, design/plus-sheet-card.html). `why` = the openPlus
+// reason that leads with it (its label turns orange on the card).
 export const PLUS_PERKS = [
-  { icon: 'bell', name: 'Unlimited reminders', text: 'Set as many as you like. ISS passes and dark are free.', live: true },
-  { icon: '⏱', name: 'Widget and lock-screen countdown', text: '"ISS in 12 min · NW" without opening the app.' },
-  { icon: '⌚', name: 'Apple Watch tap', text: 'A tap on the wrist as a pass rises.' },
-  { icon: 'stars', name: 'Shiny forecast', text: 'When the next shiny can happen.', live: true },
-  { icon: 'cards', name: 'Card backs', text: 'Six new backs for your cards, or a random one each time.', live: true },
-  { icon: '🎵', name: 'More music', text: 'Extra tracks for the night sky.' },
+  { why: 'reminders', name: 'Pass reminders', text: 'Alerts for any pass you choose.' },
+  { why: 'rare', name: 'Rare alerts', text: 'A ping when a new Rare card passes.' },
+  { why: 'shiny', name: 'Shiny forecast', text: 'When and where a Shiny can happen.' },
+  { why: 'backs', name: 'Card backs', text: '6 designs, or a random one each flip.' },
+  { why: 'patch', name: 'Member patch', text: 'Only Plus members wear this one.' },
+];
+// Prices (2026-10-16, Sevaan). The yearly plan has the 7-day free trial; all three are shared with Family Sharing.
+export const PLUS_PRICES = [
+  { id: 'month', label: 'Month', price: '$1.99', note: '' },
+  { id: 'year', label: 'Year', price: '$9.99', note: 'Best value', trial: 7 },
+  { id: 'once', label: 'Forever', price: '$24.99', note: 'One time' },
 ];
