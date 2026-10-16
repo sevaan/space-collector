@@ -1109,3 +1109,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - **Rare alerts** (Plus, app only, off by default, Settings row #row-rare, pref nRare): up to 2 a night (ids 7130/7131), a new Rare or better (no fleets) on a clear evening, 5 min ahead, 30 min apart, never 11 pm–7 am, never the headliner; wording from alertText.
   - **Plus Member patch**: SECRET_PATCHES.plus (secrets.js) in its own 'member' group (patches.js; telescope art, holo finish). Earned via earnSecret('plus') when Plus turns on (or at boot if already Plus); stays on the wall after Plus ends.
   - Catch of the day row text fixed to "Five minutes before".
+- 2026-10-16 · TestFlight build 1.0 (10) archived (web v0.1.752: Plus card sheet, Rare alerts, Plus Member patch); opened in Organizer, not uploaded.
