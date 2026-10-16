@@ -1042,3 +1042,7 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 2026-10-15 · v0.1.716: TeamSat (25025) has its own picture, teamsat, from Sevaan's photo (Desktop TeamSat_Auto6.jpg): the solar-celled cylinder of the MaqSat platform on its orange foil ring with the TeamSat experiment box underneath. Queued for the restyle.
 
 2026-10-15 · v0.1.717: PACSAT (AO-16), DOVE (DO-17) and WEBERSAT (WO-18) use the lusat picture: all four are the same AMSAT Microsat (23 cm cube, one long antenna on top), launched together on Ariane in Jan 1990 (Sevaan's pacsat.jpg confirms the shape).
+
+2026-10-15 · v0.1.718 (Sevaan):
+- **Tap to wake the sky** (design/tap-to-resume.html A): back in the app with motion not live after 1.5 s (`checkMotionBack` on visibilitychange), the target circle turns orange and pulses with a fingertip tapping in it, "TAP TO WAKE THE SKY / Motion pauses while you're away" under it (#wake, `syncWake` each tick; hidden during the tour, panels and onboarding). Replaces the "Tap anywhere…" standing message.
+- **Reminder buttons are toggles** (Tonight page #ob-remind, bad-weather #nt-remind): on = dark glass, gold outline, gold bell, "REMINDER ON · 9:00" and "TURN OFF"; a success haptic when set, a tick when cancelled (`remindDone` / `remindUndo`). The Tonight page's reminder now uses the shared pass key, so its Tonight-tab bell agrees.

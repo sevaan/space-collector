@@ -22,11 +22,11 @@
   <link rel="preload" href="fonts/RussoOne-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="fonts/BarlowCondensed-Medium.ttf" as="font" type="font/ttf" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600;650;700;750;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/cards.css?v=0.1.717">
-  <link rel="stylesheet" href="css/app.css?v=0.1.717">
-  <link rel="stylesheet" href="css/icons.css?v=0.1.717">
-  <link rel="stylesheet" href="css/reveal.css?v=0.1.717">
-  <link rel="stylesheet" href="css/ui.css?v=0.1.717">
+  <link rel="stylesheet" href="css/cards.css?v=0.1.718">
+  <link rel="stylesheet" href="css/app.css?v=0.1.718">
+  <link rel="stylesheet" href="css/icons.css?v=0.1.718">
+  <link rel="stylesheet" href="css/reveal.css?v=0.1.718">
+  <link rel="stylesheet" href="css/ui.css?v=0.1.718">
 </head>
 <body>
   <video id="cam" playsinline muted autoplay hidden></video>
@@ -80,6 +80,7 @@
 
   <button id="banner" hidden></button>
   <button id="gh-remind" type="button" hidden><span class="ico" data-ico="bell" aria-hidden="true"></span><span id="gh-remind-t">Remind me</span></button>
+  <div id="wake" hidden aria-live="polite"><i class="wk-ring" aria-hidden="true"></i><i class="wk-finger" aria-hidden="true"></i><span>Tap to wake the sky<small>Motion pauses while you're away</small></span></div>
   <div id="until-dark" hidden aria-live="off"><b id="ud-time"></b><span id="ud-at"></span><button id="ud-bell" type="button" aria-label="Remind me"><span class="ico" data-ico="bell" aria-hidden="true"></span> Remind me</button></div>
   <div class="set-sheet" id="ud-sheet" hidden><div class="set-sheet-card"><div class="set-grab"></div><h3>Remind me tonight</h3><div id="ud-opts"></div>
     <button class="d-cta o" id="ud-set" type="button"><span>Set reminder</span><span></span></button><button class="set-link" id="ud-cancel" type="button" hidden>Cancel the reminder</button></div></div>
@@ -337,7 +338,7 @@
     </div></div>
   </section>
 
-  <script type="module" src="js/main.js?v=0.1.717"></script>
+  <script type="module" src="js/main.js?v=0.1.718"></script>
 <div id="rotate" role="status"><b>Turn your phone upright</b><span>Space Collector is made for portrait.</span></div>
 </body>
 </html>

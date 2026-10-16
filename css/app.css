@@ -1344,3 +1344,25 @@ body.night .wk4-moon::after { background: #ff7f70; }
 .headliner b { font: 400 20px/1.1 var(--display, 'SC Display', sans-serif); color: var(--text, #fff2b3); }
 .headliner small { color: #c9d4de; font-size: 14px; }
 .headliner .hl-acts { display: flex; gap: 8px; margin-top: 6px; }
+/* Tap to wake the sky (2026-10-15, design/tap-to-resume.html A): motion is paused (back from another app, or not yet
+   allowed), so the circle itself asks: an orange pulsing ring, a fingertip tapping in it, and two lines under it. */
+#wake { position: fixed; left: 50%; top: 50%; z-index: 6; width: 0; height: 0; pointer-events: none; }
+#wake[hidden] { display: none; }
+#wake .wk-ring { position: absolute; left: -54px; top: -54px; width: 108px; height: 108px; border-radius: 50%; border: 2px solid var(--accent, #fa8127); }
+#wake .wk-finger { position: absolute; left: -13px; top: -13px; width: 26px; height: 26px; border-radius: 50%; background: #fff2b3; opacity: 0; }
+#wake span { position: absolute; left: -110px; width: 220px; top: 74px; text-align: center; font: 600 13px/1.3 var(--label, 'SC Label', sans-serif); letter-spacing: .2em; text-transform: uppercase; color: var(--accent, #fa8127); text-shadow: 0 1px 6px #000; }
+#wake small { display: block; font: 500 12px/1.3 var(--label, 'SC Label', sans-serif); letter-spacing: .04em; text-transform: none; color: #c9d4de; }
+@media (prefers-reduced-motion: no-preference) {
+  #wake .wk-ring { animation: wk-pulse 2s ease-out infinite; }
+  @keyframes wk-pulse { 0% { box-shadow: 0 0 0 0 #fa812799; } 100% { box-shadow: 0 0 0 26px #fa812700; } }
+  #wake .wk-finger { animation: wk-tap 2s ease-in-out infinite; }
+  @keyframes wk-tap { 0%, 60%, 100% { opacity: 0; transform: scale(1); } 20% { opacity: .85; transform: scale(.8); } 35% { opacity: 0; transform: scale(1.5); } }
+}
+@media (prefers-reduced-motion: reduce) { #wake .wk-finger { opacity: .6; } }
+body.night #wake .wk-ring { border-color: #ff6e5a; } body.night #wake span { color: #ff6e5a; }
+/* A reminder that's on (2026-10-15, Sevaan: the filled-then-dimmed button read as disabled): outlined in gold on dark
+   glass, cream words with a gold bell, "TURN OFF" small on the right; tapping it again cancels. */
+.d-cta.done, .nt-bell.done { opacity: 1; background: #0c1725e6; color: var(--ink, #fff2b3); box-shadow: inset 0 0 0 1.5px var(--gold); }
+.d-cta.done > span:first-child .ico, .nt-bell.done > span:first-child .ico { color: var(--gold); }
+.d-cta.done > span:last-child, .nt-bell.done > span:last-child { font-size: 12px; letter-spacing: .16em; color: var(--muted); }
+@media (prefers-reduced-motion: no-preference) { .d-cta.done, .nt-bell.done { animation: rem-on .42s var(--ease-spring, ease-out); } @keyframes rem-on { 40% { transform: scale(1.03); } } }

@@ -1,50 +1,50 @@
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.717';
-import * as Secrets from './secrets.js?v=0.1.717';
-import { STORY_BY_SECRET } from './stories.js?v=0.1.717';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.717';
-import * as Ufo from './ufo.js?v=0.1.717';
-import * as Fossil from './fossil.js?v=0.1.717';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.717';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.717';
-import { toast, ticket, dropToast, toastPending, onTicketShown } from './toast.js?v=0.1.717';
-import { VERSION } from './version.js?v=0.1.717';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, overEarth, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.717';
-import { placeName } from './geo.js?v=0.1.717';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.717';
-import { conArt } from './con-art.js?v=0.1.717';
-import { fetchWeather, tonightSky, skyClearAt } from './weather.js?v=0.1.717';
-import { CON_FIGURES } from './con-figures.js?v=0.1.717';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.717';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.717';
-import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.717';
-import { eventOf, activeEvent, nextEvent } from './events.js?v=0.1.717';
-import { conList } from './constellations.js?v=0.1.717';
-import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.717';
-import { SkyView, shortName } from './sky.js?v=0.1.717';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.717';
-import { isPlus, setPlusForTesting, onPlus, PLUS_PERKS } from './plus.js?v=0.1.717';
-import { isNative, getPosition, saveFile, notifyAt, cancelNotify, haptic, onNative, nativeChrome, plugin } from './native.js?v=0.1.717';
-import { initAccount, onAccount, account, signInGoogle, sendEmailLink, completeEmailLink, signOut, syncNow, pushSighting, deleteAccount, signInApple } from './account.js?v=0.1.717';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.717';
-import { cardArt } from './art.js?v=0.1.717';
-import { renderCard, miniCard, cardLevel, artImage, lockedArt, attachTilt, attachGyro, throwOff, attachFlip } from './card.js?v=0.1.717';
-import { applyBack } from './card-backs.js?v=0.1.717';
-import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.717';
-import { audioCtx } from './audio-ctx.js?v=0.1.717';
-import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume } from './music.js?v=0.1.717';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.717';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.717';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.717';
-import { naturalTargets, SOLAR_SYSTEM, DEEP_SKY } from './natural.js?v=0.1.717';
-import { placeFromTimeZone } from './tz-places.js?v=0.1.717';
-import { TIER_INFO } from './rarity.js?v=0.1.717';
-import { SETS, albumList } from './sets.js?v=0.1.717';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.717';
-import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.717';
-import { shareCardEl } from './share-card.js?v=0.1.717';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.717';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.717';
-import { addStarfield } from './starfield.js?v=0.1.717';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.718';
+import * as Secrets from './secrets.js?v=0.1.718';
+import { STORY_BY_SECRET } from './stories.js?v=0.1.718';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.718';
+import * as Ufo from './ufo.js?v=0.1.718';
+import * as Fossil from './fossil.js?v=0.1.718';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.718';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.718';
+import { toast, ticket, dropToast, toastPending, onTicketShown } from './toast.js?v=0.1.718';
+import { VERSION } from './version.js?v=0.1.718';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, overEarth, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.718';
+import { placeName } from './geo.js?v=0.1.718';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.718';
+import { conArt } from './con-art.js?v=0.1.718';
+import { fetchWeather, tonightSky, skyClearAt } from './weather.js?v=0.1.718';
+import { CON_FIGURES } from './con-figures.js?v=0.1.718';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.718';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.718';
+import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.718';
+import { eventOf, activeEvent, nextEvent } from './events.js?v=0.1.718';
+import { conList } from './constellations.js?v=0.1.718';
+import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.718';
+import { SkyView, shortName } from './sky.js?v=0.1.718';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.718';
+import { isPlus, setPlusForTesting, onPlus, PLUS_PERKS } from './plus.js?v=0.1.718';
+import { isNative, getPosition, saveFile, notifyAt, cancelNotify, haptic, onNative, nativeChrome, plugin } from './native.js?v=0.1.718';
+import { initAccount, onAccount, account, signInGoogle, sendEmailLink, completeEmailLink, signOut, syncNow, pushSighting, deleteAccount, signInApple } from './account.js?v=0.1.718';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.718';
+import { cardArt } from './art.js?v=0.1.718';
+import { renderCard, miniCard, cardLevel, artImage, lockedArt, attachTilt, attachGyro, throwOff, attachFlip } from './card.js?v=0.1.718';
+import { applyBack } from './card-backs.js?v=0.1.718';
+import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.718';
+import { audioCtx } from './audio-ctx.js?v=0.1.718';
+import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume } from './music.js?v=0.1.718';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.718';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.718';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.718';
+import { naturalTargets, SOLAR_SYSTEM, DEEP_SKY } from './natural.js?v=0.1.718';
+import { placeFromTimeZone } from './tz-places.js?v=0.1.718';
+import { TIER_INFO } from './rarity.js?v=0.1.718';
+import { SETS, albumList } from './sets.js?v=0.1.718';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.718';
+import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.718';
+import { shareCardEl } from './share-card.js?v=0.1.718';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.718';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.718';
+import { addStarfield } from './starfield.js?v=0.1.718';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -195,8 +195,20 @@ async function keepAwake() {
   try { wakeLock = await navigator.wakeLock?.request('screen'); } catch {}
 }
 document.addEventListener('visibilitychange', () => {
-  if (document.visibilityState === 'visible' && state.started) { keepAwake(); checkForUpdate(); }
+  if (document.visibilityState === 'visible' && state.started) { keepAwake(); checkForUpdate(); checkMotionBack(); }
 });
+// Coming back to the app (2026-10-15, Sevaan): iPhone stops sending motion until the screen is touched again, so the
+// sky sits frozen. If motion was in use and hasn't come back within a moment, the circle asks for a tap (#wake).
+function checkMotionBack() {
+  if (state.drag.on || state.needsMotionTap) return;
+  setTimeout(() => { if (!state.drag.on && !hasLiveSensors() && document.visibilityState === 'visible') state.needsMotionTap = true; }, 1500);
+}
+function syncWake() {
+  const on = !!state.needsMotionTap && !document.body.classList.contains('ob-tour') && $('onboard').hidden && !activePanel;
+  if (on && hasLiveSensors() && !state.drag.on) { state.needsMotionTap = false; } // it came back by itself
+  const w = $('wake'), show = on && state.needsMotionTap; if (w.hidden === !show) return;
+  w.hidden = !show; if (show) w.style.top = `${uiCenterY}px`;
+}
 
 // ---------- updates ----------
 
@@ -365,7 +377,7 @@ function updateStatus(f) {
   if (!bannerKey.startsWith('New build')) {
     if (state.timeOffsetMs && $('peak-toggle').classList.contains('on')) showBanner(''); // the testing ⏱ button is the way back
     else if (state.timeOffsetMs) showBanner(`Sky at ${now().toLocaleString([], { weekday: 'short', hour: 'numeric', minute: '2-digit' })} · back to now`, backToNow); // one short line (2026-10-08)
-    else if (state.needsMotionTap) showBanner('Tap anywhere to line the sky up with your phone.');
+    else if (state.needsMotionTap) showBanner(''); // the circle asks instead (#wake, design/tap-to-resume.html A)
     // (compass trouble is the figure-8 toast in checkCompass, not a standing message)
     else if (pointing.source === 'relative') showBanner('Check your heading against a known landmark. Adjust the compass in settings.', openDebug);
     else showBanner('');
@@ -595,7 +607,7 @@ function tick(ts) {
     fossil: fossilState(t, basis, target),
     ufo: ufoState(t, basis, target, items),
     secrets: secretsState(t, basis, target),
-    _ud: untilDark(target),
+    _ud: untilDark(target), _wk: syncWake(),
     planes: state.planeItems,
     planeHit: plane?.plane.hex ?? null,
     planeTrail: plane ? planePath(plane.plane, state.observer) : null, // where the lined-up plane has been and is going
@@ -2034,11 +2046,23 @@ async function setReminder({ at, title, body, key }) {
   const id = newRemindId(); if (key) { remindIds.set(key, { id, at }); saveRems(); }
   return notifyAt(at, title, body, { id });
 }
-function remindDone(btn, ok, at) {
-  const label = btn.firstElementChild ?? btn;
+// Reminder buttons (Tonight page, bad-weather page) are toggles (2026-10-15, Sevaan): set → an outlined "on" state with
+// a success buzz; tap again → the notification is cancelled and the button goes back to how it was.
+function remindDone(btn, ok, at, key) {
+  const label = btn.firstElementChild ?? btn, side = btn.children[1];
   if (ok === null) return; // over the free limit: the Plus sheet is up
-  if (ok) { label.textContent = `✓ Reminder set for ${fmtTime(at).replace(/\s?[AP]\.?M\.?$/i, '')}`; btn.disabled = true; btn.classList.add('done'); }
-  else { const was = label.textContent; label.textContent = isNative() ? 'Couldn\'t set it. Check notifications in Settings' : 'Reminders work in the app'; setTimeout(() => { label.textContent = was; }, 3500); }
+  if (ok) {
+    btn.dataset.idle ??= label.innerHTML; btn.dataset.side ??= side?.textContent ?? ''; btn.dataset.key = key ?? '';
+    label.innerHTML = `<span class="ico" data-ico="bell" aria-hidden="true"></span> Reminder on · ${fmtTime(at).replace(/\s?[AP]\.?M\.?$/i, '')}`;
+    if (side) side.textContent = 'Turn off'; btn.classList.add('done'); btn.setAttribute('aria-pressed', 'true'); buzz([20, 40, 20]);
+  } else { const was = label.innerHTML; label.textContent = isNative() ? 'Couldn\'t set it. Check notifications in Settings' : 'Reminders work in the app'; setTimeout(() => { label.innerHTML = was; }, 3500); }
+}
+// Undo a reminder button that's on; true when it was on (and is now off).
+function remindUndo(btn) {
+  if (!btn.classList.contains('done')) return false;
+  const key = btn.dataset.key; if (key) { reminded.delete(key); cancelNotify(remindIds.get(key)?.id); remindIds.delete(key); saveRems(); }
+  (btn.firstElementChild ?? btn).innerHTML = btn.dataset.idle ?? 'Remind me'; if (btn.children[1]) btn.children[1].textContent = btn.dataset.side || '→';
+  btn.classList.remove('done'); btn.setAttribute('aria-pressed', 'false'); buzz(8); return true;
 }
 const reminderWords = (r, when) => (r === 'on' ? `We'll remind you at ${fmtTime(when)}.` : r === 'app-only' ? 'Reminders work in the Space Collector app.' : r === 'denied' ? 'Notifications are off for Space Collector. Turn them on in your phone\'s Settings.' : 'Couldn\'t set a reminder here.');
 function reminderToast(r, when) {
@@ -3113,7 +3137,7 @@ function renderNotTonight(wx, T, t0) {
   $('nt-all')?.addEventListener('click', () => { leave(); showVTab('tonight'); openPanel('visible'); });
   if (!next) return;
   let busiest = null;
-  $('nt-remind').onclick = async () => { if ($('nt-remind').disabled) return; const at = next.clearFrom ?? next.t; const r = await setReminder({ at, title: 'A clear night for Space Collector', body: 'The forecast says clear. Open Space Collector and look up.', key: 'clear-night' }); remindDone($('nt-remind'), reminderToast(r, at), at); };
+  $('nt-remind').onclick = async () => { if (remindUndo($('nt-remind'))) return; const at = next.clearFrom ?? next.t; const r = await setReminder({ at, title: 'A clear night for Space Collector', body: 'The forecast says clear. Open Space Collector and look up.', key: 'clear-night' }); remindDone($('nt-remind'), reminderToast(r, at), at, 'clear-night'); };
   $('nt-preview').onclick = () => { const t = busiest ?? (next.clearFrom ?? next.t) + 3600e3; leave(); state.timeOffsetMs = t - Date.now(); state.pinnedId = null; state.targetId = null; afterTimeJump(); renderPeakToggle(); };
   planNight(next.n).then((N) => {
     if (!N || !document.getElementById('nt-passes')) { for (const id of ['nt-passes', 'nt-new', 'nt-busy']) { const e = document.getElementById(id); if (e) e.textContent = '–'; } return; }
@@ -3217,11 +3241,11 @@ function obFinish(caught) {
   const best2 = chosen;
   // Only offer a reminder that's still ahead (2026-10-09 tour test: "Remind me at 7:36" showed at 7:46 for a pass up now).
   const remindable = best2 && best2.start - 10 * 60e3 > now().getTime() + 60e3;
-  $('ob-remind').disabled = false; $('ob-remind').classList.remove('done');
-  $('ob-remind').hidden = !remindable; if (remindable) $('ob-remind').firstElementChild.textContent = `Remind me at ${fmtTime(best2.start - 10 * 60e3).replace(/\s?[AP]\.?M\.?$/i, '')}`;
+  const rb = $('ob-remind'); rb.disabled = false; rb.classList.remove('done'); delete rb.dataset.idle; delete rb.dataset.side; if (rb.children[1]) rb.children[1].textContent = '→';
+  rb.hidden = !remindable; if (remindable) rb.firstElementChild.textContent = `Remind me at ${fmtTime(best2.start - 10 * 60e3).replace(/\s?[AP]\.?M\.?$/i, '')}`;
   // The button answers for itself (2026-10-12, Sevaan: "tapping the reminder button does nothing"; the confirming toast
   // waits behind this page, so there was no sign it worked).
-  $('ob-remind').onclick = async () => { if (!remindable || $('ob-remind').disabled) return; buzz(8); const ok = await remindPass(best2); remindDone($('ob-remind'), ok, best2.start - 10 * 60e3); };
+  $('ob-remind').onclick = async () => { if (!remindable || remindUndo($('ob-remind'))) return; const k = `${best2.obj.id}@${best2.start}`; const ok = await remindPass(best2, k); if (ok) reminded.add(k); remindDone($('ob-remind'), ok, best2.start - 10 * 60e3, k); };
   $('ob-explore').firstElementChild.textContent = 'Explore the sky';
   $('ob-explore').onclick = () => { hideDone(); setTimeout(maybeAskSignIn, 600); radarTip(); };
   $('ob-done').hidden = false;
