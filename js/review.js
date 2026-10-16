@@ -3,15 +3,15 @@
 // picture" shows one card for each art file (most satellites share a picture by kind) with how many cards use it.
 // Stars (☆) are saved in this browser (localStorage 'reviewStars'); "Copy starred" puts a list on the clipboard to
 // hand back. Not linked from the app.
-import { expandFacts } from './catalog-facts.js?v=0.1.721';
-import { renderCard, miniCard, artImage } from './card.js?v=0.1.721';
-import { buildCards } from './card-model.js?v=0.1.721';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.721';
-import { loadLore, titleFor, debrisOf } from './lore.js?v=0.1.721';
+import { expandFacts } from './catalog-facts.js?v=0.1.722';
+import { renderCard, miniCard, artImage } from './card.js?v=0.1.722';
+import { buildCards } from './card-model.js?v=0.1.722';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.722';
+import { loadLore, titleFor, debrisOf } from './lore.js?v=0.1.722';
 import './stories.js?v=0.1.680';
-import { CON_FIGURES } from './con-figures.js?v=0.1.721';
-import { loadConstellations, CON_BY_ID } from './constellations.js?v=0.1.721';
-import { loadComets } from './comets.js?v=0.1.721';
+import { CON_FIGURES } from './con-figures.js?v=0.1.722';
+import { loadConstellations, CON_BY_ID } from './constellations.js?v=0.1.722';
+import { loadComets } from './comets.js?v=0.1.722';
 
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
@@ -37,16 +37,34 @@ function markNew(el, c) {
   if (isNew) for (const im of el.querySelectorAll('.card__art img.card-art-image')) { im.src = `design/restyle-preview/${c._art}.webp?t=${ART_T}`; }
   return isNew;
 }
+// Framing (2026-10-16, Sevaan): in the card viewer, tap the picture to drag it into place (and drag the corner or pinch
+// to zoom), then Save. Saved per picture in this browser (localStorage 'reviewFrames') and shown on every card using it;
+// "Copy framing" hands the numbers back so scripts bake them into the art file itself (no CSS shifting in the game).
+// A frame is { x, y, z, py }: shift in units of the picture's width, zoom, and where the window's centre sits in the
+// picture (0–1 down it), which is the point the zoom is around.
+let frames = {}; try { frames = JSON.parse(localStorage.getItem('reviewFrames') ?? '{}'); } catch {}
+const saveFrames = () => { try { localStorage.setItem('reviewFrames', JSON.stringify(frames)); } catch {} };
+const imgW = (im) => Math.max(im.offsetWidth, im.offsetHeight * 4 / 3); // object-fit: cover on a 4:3 picture
+function centreY(im) { // the window's centre, as a fraction down the picture
+  const w = imgW(im), ih = w * 0.75, eh = im.offsetHeight, pos = parseFloat(getComputedStyle(im).objectPosition.split(' ')[1] ?? '50') / 100;
+  return ih > eh ? ((ih - eh) * pos + eh / 2) / ih : 0.5;
+}
+function setFrame(im, f) {
+  if (!f) { im.style.transform = ''; return; }
+  const w = imgW(im); im.style.transformOrigin = '50% 50%';
+  im.style.transform = `translate(${f.x * w}px, ${f.y * w}px) scale(${f.z})`;
+}
+function applyFrames(el, art) { const f = art && frames[art]; for (const im of el.querySelectorAll('.card__art img.card-art-image')) setFrame(im, f); }
 function face(c, full = false) {
   const sightings = [{ time: SEEN, cardKey: c.key, objectId: c.id }];
   // Every star of its constellation owned, so the figure shows fully in focus (2026-10-15, Sevaan).
   const ownedKeys = c.con ? new Set(CON_BY_ID.get(c.con)?.stars ?? []) : undefined;
   const el = full ? renderCard(c, { sightings, ownedKeys }) : miniCard(c, { sightings, ownedKeys, status: c._art ?? 'drawn' });
-  markNew(el, c); return el;
+  markNew(el, c); requestAnimationFrame(() => applyFrames(el, c._art)); return el;
 }
 
 // Draw a tile's card only when it scrolls near the screen (there are thousands).
-const io = new IntersectionObserver((es) => { for (const e of es) if (e.isIntersecting) { const slot = e.target; io.unobserve(slot); slot.replaceChildren(face(slot._card)); slot.classList.toggle('old-art', !(slot._card._art && NEW_ART.has(slot._card._art))); } }, { rootMargin: '600px 0px' });
+const io = new IntersectionObserver((es) => { for (const e of es) if (e.isIntersecting) { const slot = e.target; io.unobserve(slot); slot.replaceChildren(face(slot._card)); slot.classList.toggle('old-art', !(slot._card._art && NEW_ART.has(slot._card._art))); slot.classList.toggle('framed', !!(slot._card._art && frames[slot._card._art])); } }, { rootMargin: '600px 0px' });
 
 function list() {
   const q = $('q').value.trim().toLowerCase(), type = $('type').value, tier = $('tier').value, art = $('art').value, one = $('one').checked, only = $('starred').checked;
@@ -94,13 +112,59 @@ function toggle(c, k) {
 function open(c, k) {
   const v = $('view');
   v.innerHTML = `<div class="wrap"><div class="host"></div><div class="meta"><b>${esc(c._name)}</b> · ${esc(c._type)} · ${esc(TIER_INFO[c.tier]?.label ?? c.tier)}<br>art: <b>${esc(c._art ?? 'drawn')}</b> · key ${esc(c.key)}</div>
-    <div class="acts"><button type="button" class="vstar">${stars.has(k) ? '★ Starred' : '☆ Star for redo'}</button><button type="button" class="vclose">Close</button></div></div>`;
-  v.querySelector('.host').appendChild(face(c, true));
+    ${c._art ? '<p class="fr-hint">Tap the picture to adjust its framing</p><p class="fr-read" hidden></p>' : ''}
+    <div class="acts"><button type="button" class="vstar">${stars.has(k) ? '★ Starred' : '☆ Star for redo'}</button><button type="button" class="vclose">Close</button></div>
+    <div class="acts fr-acts" hidden><button type="button" class="fr-save on">Save framing</button><button type="button" class="fr-reset">Reset</button><button type="button" class="fr-cancel">Cancel</button></div></div>`;
+  const host = v.querySelector('.host'); host.appendChild(face(c, true));
   v.querySelector('.vstar').addEventListener('click', (e) => { toggle(c, k); e.currentTarget.textContent = stars.has(k) ? '★ Starred' : '☆ Star for redo'; render(); });
   const close = () => { v.hidden = true; v.replaceChildren(); };
   v.querySelector('.vclose').addEventListener('click', close);
   v.onclick = (e) => { if (e.target === v) close(); };
   v.hidden = false;
+  if (c._art) host.querySelector('.card__art')?.addEventListener('click', () => frameEdit(v, host, c), { once: true });
+}
+
+// Drag to move, drag a corner (or pinch, or scroll) to zoom. Zooming out shows the window's background where the
+// picture no longer reaches: the bake step has the background painted in there.
+function frameEdit(v, host, c) {
+  const art = host.querySelector('.card__art'), im = art.querySelector('img.card-art-image'); if (!im) return;
+  const was = frames[c._art] ?? null, f = { x: 0, y: 0, z: 1, ...was, py: centreY(im) };
+  const ov = document.createElement('div'); ov.className = 'fr-ov';
+  ov.innerHTML = '<i class="fr-box"><span>Keep the object inside</span></i><b class="fr-h tl"></b><b class="fr-h tr"></b><b class="fr-h bl"></b><b class="fr-h br"></b>';
+  art.appendChild(ov); host.classList.add('framing');
+  const read = v.querySelector('.fr-read'), acts = v.querySelector('.fr-acts');
+  v.querySelector('.fr-hint').hidden = true; read.hidden = false; acts.hidden = false; v.querySelector('.acts:not(.fr-acts)').hidden = true;
+  const pct = (n) => Math.round(Math.abs(n) * 100);
+  const show = () => { setFrame(im, f); read.textContent = `Zoom ${pct(f.z)}% · ${f.y < -0.002 ? `up ${pct(f.y)}%` : f.y > 0.002 ? `down ${pct(f.y)}%` : 'level'} · ${f.x < -0.002 ? `left ${pct(f.x)}%` : f.x > 0.002 ? `right ${pct(f.x)}%` : 'centred'}`; };
+  const clampZ = (z) => Math.min(2.5, Math.max(0.5, z));
+  const pts = new Map(); let start = null;
+  const centre = () => { const r = art.getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height / 2]; };
+  const scaleOf = () => art.getBoundingClientRect().width / art.offsetWidth; // the viewer card is drawn at a font size, not a transform, but be safe
+  const begin = () => {
+    const ps = [...pts.values()], [cx, cy] = centre();
+    start = { f: { ...f }, ps: ps.map((p) => [...p]), d: ps.length > 1 ? Math.hypot(ps[0][0] - ps[1][0], ps[0][1] - ps[1][1]) : Math.hypot(ps[0][0] - cx, ps[0][1] - cy), handle: start?.handle };
+  };
+  ov.addEventListener('pointerdown', (e) => { e.preventDefault(); ov.setPointerCapture(e.pointerId); pts.set(e.pointerId, [e.clientX, e.clientY]); start = { handle: e.target.classList.contains('fr-h') }; begin(); });
+  ov.addEventListener('pointermove', (e) => {
+    if (!pts.has(e.pointerId) || !start) return; pts.set(e.pointerId, [e.clientX, e.clientY]);
+    const ps = [...pts.values()], w = imgW(im) * scaleOf(), [cx, cy] = centre();
+    if (ps.length > 1) { const d = Math.hypot(ps[0][0] - ps[1][0], ps[0][1] - ps[1][1]); f.z = clampZ(start.f.z * d / start.d); }
+    else if (start.handle) f.z = clampZ(start.f.z * Math.hypot(ps[0][0] - cx, ps[0][1] - cy) / start.d);
+    else { f.x = start.f.x + (ps[0][0] - start.ps[0][0]) / w; f.y = start.f.y + (ps[0][1] - start.ps[0][1]) / w; }
+    show();
+  });
+  const up = (e) => { pts.delete(e.pointerId); if (pts.size) begin(); else start = null; };
+  ov.addEventListener('pointerup', up); ov.addEventListener('pointercancel', up);
+  ov.addEventListener('wheel', (e) => { e.preventDefault(); f.z = clampZ(f.z * Math.exp(-e.deltaY / 500)); show(); }, { passive: false });
+  const done = () => { ov.remove(); host.classList.remove('framing'); acts.hidden = true; read.hidden = true; v.querySelector('.acts:not(.fr-acts)').hidden = false; const h = v.querySelector('.fr-hint'); h.hidden = false; art.addEventListener('click', () => frameEdit(v, host, c), { once: true }); };
+  v.querySelector('.fr-save').onclick = () => {
+    const flat = Math.abs(f.x) < 0.002 && Math.abs(f.y) < 0.002 && Math.abs(f.z - 1) < 0.005;
+    if (flat) delete frames[c._art]; else frames[c._art] = { x: +f.x.toFixed(4), y: +f.y.toFixed(4), z: +f.z.toFixed(4), py: +f.py.toFixed(4) };
+    saveFrames(); setFrame(im, frames[c._art]); done(); render(); $('copy-frames').textContent = `Copy framing (${Object.keys(frames).length})`; toast(flat ? 'Framing cleared' : `Framing saved for ${c._art}`);
+  };
+  v.querySelector('.fr-reset').onclick = () => { Object.assign(f, { x: 0, y: 0, z: 1 }); show(); };
+  v.querySelector('.fr-cancel').onclick = () => { setFrame(im, was); done(); };
+  show();
 }
 
 async function boot() {
@@ -130,6 +194,12 @@ $('copy').addEventListener('click', async () => {
   const lines = [...stars.values()].map((s) => `- ${s.art ? `art "${s.art}"` : 'drawn art'} · ${s.name} (${s.type}, ${s.tier}, key ${s.key})`);
   const text = `Space Collector cards to redo (${lines.length}):\n${lines.join('\n')}`;
   try { await navigator.clipboard.writeText(text); toast(`Copied ${lines.length} starred`); } catch { prompt('Copy this list:', text); }
+});
+$('copy-frames').textContent = `Copy framing (${Object.keys(frames).length})`;
+$('copy-frames').addEventListener('click', async () => {
+  const n = Object.keys(frames).length; if (!n) { toast('No framing saved yet'); return; }
+  const text = `Space Collector framing (${n}):\n${JSON.stringify(frames)}`;
+  try { await navigator.clipboard.writeText(text); toast(`Copied framing for ${n} picture${n === 1 ? '' : 's'}`); } catch { prompt('Copy this:', text); }
 });
 $('clear').addEventListener('click', () => { if (stars.size && confirm(`Clear all ${stars.size} stars?`)) { stars.clear(); saveStars(); render(); } });
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !$('view').hidden) { $('view').hidden = true; $('view').replaceChildren(); } });
