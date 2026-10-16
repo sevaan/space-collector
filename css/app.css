@@ -1452,3 +1452,7 @@ body.night .plus-pr { background: #1c0909; border-color: #2e1010; }
 body.night .plus-pr.on { border-color: #f2654f; background: #2a0d0a; }
 body.night .plus-cta { background: #c23a2a; color: #1a0505; }
 .plus-host .card__stats b.plus-inf { font-size: 1.9em; line-height: .9; }
+/* Plus card face down: it shakes once like the welcome card (same rattle), and a tap turns it over (2026-10-16). */
+.plus-host.face-down { cursor: pointer; }
+.plus-host.plus-shake { animation: plusShake .6s ease-in-out; }
+@keyframes plusShake { 0% { transform: rotate(0); } 16% { transform: rotate(-3deg) translateY(-2px); } 33% { transform: rotate(3deg); } 50% { transform: rotate(-2.4deg); } 66% { transform: rotate(1.8deg); } 83% { transform: rotate(-1deg); } 100% { transform: rotate(0); } }
