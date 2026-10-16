@@ -3,7 +3,7 @@
 // group (or the date earned) along the bottom, one icon in the middle. Milestones get gold foil, the rarest holo
 // (css/ui.css .patch--gold / .patch--holo). Shared by Explore (the earning moment, its toast) and Collection (the wall).
 
-import { CON_BY_ID } from './constellations.js?v=0.1.757';
+import { CON_BY_ID } from './constellations.js?v=0.1.758';
 
 export const GROUPS = {
   collect: { c: '#14284a', t: 'Collection' }, rarity: { c: '#3a2259', t: 'Rarity' }, rocket: { c: '#5a2a1a', t: 'Rockets' },
@@ -132,12 +132,12 @@ const UFO_ART = (id) => `<defs><linearGradient id="${id}beam" x1="0" y1="0" x2="
 const SECRET_TWILL = { plus: '#14284a', santa: '#6a1d1d', roadster: '#14284a', meteor: '#22265a', voyager: '#0f1b2a', dizzy: '#3a2259', voyager2: '#0f1b2a', pioneer10: '#2a1d0c', pioneer11: '#1f1a2e', newhorizons: '#101c2c', wow: '#2a0f12' };
 const SLEIGH = '<g fill="#fff2b3">' + [0, 1, 2].map((k) => `<g transform="translate(${k * 13 - 30} ${4 - k * 2})"><path d="M0 5 Q3 1 8 2 L10 0 L9.5 4 Q11 6 8 7 L3 7 Z"/><path d="M8.5 1 l1.5 -3.5 M10 1 l2 -3" stroke="#fff2b3" stroke-width=".8"/></g>`).join('') + '</g><path d="M10 6 Q11 0 20 0 L30 0 Q34 0 33 5 L32 8 L12 8 Z" fill="#d94f38"/><path d="M8 11 L34 11 Q37 11 36 8" fill="none" stroke="#fff2b3" stroke-width="1.6"/><circle cx="24" cy="-3" r="3" fill="#fff2b3"/><circle cx="-28" cy="5" r="1.4" fill="#ff4a3a"/>';
 const SECRET_ART = {
-  // Plus Member (2026-10-16, design/plus-sheet-card.html): the brass telescope from the Plus card under a comet and a star.
-  plus: () => '<path d="M-34 -30 Q-14 -24 2 -30" fill="none" stroke="#f2b45a" stroke-width="2.2" stroke-linecap="round" stroke-opacity=".8"/><circle cx="4" cy="-30.5" r="3" fill="#fff2b3"/>'
-    + '<path d="M26 -30 l1.6 4 4 1.6 -4 1.6 -1.6 4 -1.6 -4 -4 -1.6 4 -1.6z" fill="#fff2b3"/>'
-    + '<g stroke="#8a5a36" stroke-width="2.8" stroke-linecap="round"><path d="M0 2 L-15 30 M0 2 L0 32 M0 2 L15 30"/></g>'
-    + '<g transform="translate(0 -2) rotate(-28)"><rect x="-30" y="-6" width="50" height="12" rx="2" fill="#d9a441" stroke="#f4d27a" stroke-width="1.2"/><rect x="20" y="-8" width="7" height="16" rx="1.6" fill="#e8c068"/><rect x="-36" y="-3.5" width="6" height="7" rx="1" fill="#b88a2e"/><path d="M-12 -6 V6 M6 -6 V6" stroke="#8a6420" stroke-width="1.4"/><rect x="-10" y="-13" width="18" height="5" rx="1.5" fill="#c9952f"/></g>'
-    + '<circle cy="2" r="3.4" fill="#8a6420"/>',
+  // Plus Member (2026-10-16, design/plus-sheet-card.html): the brass telescope from the Plus card and one star, all inside
+  // the inner ring so nothing crosses the lettering (Sevaan: the comet overlapped the text).
+  plus: () => '<path d="M19 -24 l1.4 3.6 3.6 1.4 -3.6 1.4 -1.4 3.6 -1.4 -3.6 -3.6 -1.4 3.6 -1.4z" fill="#fff2b3"/><circle cx="-20" cy="-18" r="1.1" fill="#fff2b3" opacity=".7"/><circle cx="26" cy="2" r=".9" fill="#fff2b3" opacity=".6"/>'
+    + '<g transform="translate(-1 2) scale(.82)"><g stroke="#8a5a36" stroke-width="3" stroke-linecap="round"><path d="M0 4 L-14 30 M0 4 L0 32 M0 4 L14 30"/></g>'
+    + '<g transform="rotate(-30)"><rect x="-28" y="-6" width="46" height="12" rx="2" fill="#d9a441" stroke="#f4d27a" stroke-width="1.2"/><rect x="18" y="-8" width="7" height="16" rx="1.6" fill="#e8c068"/><rect x="-34" y="-3.5" width="6" height="7" rx="1" fill="#b88a2e"/><path d="M-11 -6 V6 M5 -6 V6" stroke="#8a6420" stroke-width="1.4"/><rect x="-9" y="-13" width="16" height="5" rx="1.5" fill="#c9952f"/></g>'
+    + '<circle cy="4" r="3.4" fill="#8a6420"/></g>',
   santa: () => `<g transform="translate(-2 -6) scale(1.25)">${SLEIGH}</g>`,
   roadster: () => '<g transform="translate(-27 -12)"><path d="M2 16 Q4 8 16 7 L24 2 L36 2 L44 8 Q52 9 52 16 Z" fill="#d22b2b"/><circle cx="13" cy="17" r="4" fill="#111"/><circle cx="41" cy="17" r="4" fill="#111"/><circle cx="29" cy="6" r="3.4" fill="#f4f4f4"/></g>',
   meteor: () => '<path d="M-26 -22 L10 14" stroke="#fff2b3" stroke-width="3" stroke-linecap="round"/><circle cx="10" cy="14" r="4" fill="#fff"/>',

@@ -1126,3 +1126,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - Vanguard 1 art: background swirl rings removed (art-boxes now has vanguard-1 and planet-earth so twinkles stay off them).
   - Radar tip is centred on the radar dial's canvas (it sat ~7 px low because the radar button includes the "N passing" label).
   - Note: "Tap anywhere to line the sky up with your phone" (seen on Sevaan's TestFlight build) was replaced by the #wake circle in v0.1.718; builds 10/11 have it.
+- v0.1.758: Plus Member patch redrawn (Sevaan: the comet overlapped the lettering): telescope at 82% and one star, all inside the inner ring.
