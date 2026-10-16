@@ -1,5 +1,5 @@
-import { ART_FILES } from './art-files.js?v=0.1.725';
-import { debrisOf } from './lore.js?v=0.1.725';
+import { ART_FILES } from './art-files.js?v=0.1.726';
+import { debrisOf } from './lore.js?v=0.1.726';
 // Which illustration each card uses. The illustrator's brief (scripts/art-brief.py) is generated from this
 // table, and when the art arrives the card renderer can load assets/art/cards/<key>.webp, falling back to
 // the drawn art in js/art.js. Every card maps to exactly one key. Order of rules matters.
@@ -115,7 +115,7 @@ export const ART = {
   'debris-satellite': ['Debris', 2, 'Satellite fragments', 'Pieces of broken-up satellites (collisions, explosions, anti-satellite tests): bent solar panels, torn foil, shards.', 'https://en.wikipedia.org/wiki/2009_satellite_collision', 2],
 };
 
-const NAMED = { 25025: 'teamsat', 20439: 'lusat', 20440: 'lusat', 20441: 'lusat', 20442: 'lusat', /* PACSAT, DOVE, WEBERSAT and LUSAT are the same AMSAT Microsat, launched together in 1990 */ 1982: 'essa', 2091: 'essa', 2435: 'essa', 2657: 'essa', 2757: 'essa', 3035: 'essa', 3345: 'essa', 3615: 'essa', 3764: 'essa', 25068: 'equator-s', 66906: 'duplex', 69648: 'hokushin', 25544: 'iss', 48274: 'tiangong', 20580: 'hubble', 5: 'vanguard-1', 16908: 'ajisai' };
+const NAMED = { 25025: 'teamsat', 20439: 'lusat', 20440: 'lusat', 20441: 'lusat', 20442: 'lusat', /* PACSAT, DOVE, WEBERSAT and LUSAT are the same AMSAT Microsat, launched together in 1990 */ 1982: 'essa', 2091: 'essa', 2435: 'essa', 2657: 'essa', 2757: 'essa', 3035: 'essa', 3345: 'essa', 3615: 'essa', 3764: 'essa', 25068: 'equator-s', 66906: 'duplex', 69648: 'hokushin', 25544: 'iss', 48274: 'tiangong', 20580: 'hubble', 5: 'vanguard-1', 16908: 'ajisai', 1613: 'ov1', 2121: 'ov1', 2122: 'ov1', 2610: 'ov1', 3173: 'ov1', 3174: 'ov1', 3825: 'ov1', 5397: 'ov1' /* OV1 satellites, from Sevaan's OV1-14 photo (2026-10-16) */ };
 const SERIES = { 'strela-1': 'strela-1m', 'strela-1m': 'strela-1m', 'strela-2m': 'strela-2m', 'strela-3': 'strela-3', 'strela-3-late': 'strela-3', 'strela-3m': 'strela-3',
   parus: 'parus', tsikada: 'parus', nadezhda: 'parus', 'us-a': 'us-a', 'us-a-core': 'us-a', 'us-ao': 'us-a', 'tselina-d': 'tselina', 'tselina-2': 'tselina',
   sfera: 'geodetic', 'geo-ik': 'geodetic', 'ds-p1-m': 'asat-target', 'is-a': 'asat-interceptor', i2p: 'asat-interceptor', 'taifun-1': 'taifun',
