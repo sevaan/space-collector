@@ -3,15 +3,15 @@
 // picture" shows one card for each art file (most satellites share a picture by kind) with how many cards use it.
 // Stars (☆) are saved in this browser (localStorage 'reviewStars'); "Copy starred" puts a list on the clipboard to
 // hand back. Not linked from the app.
-import { expandFacts } from './catalog-facts.js?v=0.1.723';
-import { renderCard, miniCard, artImage } from './card.js?v=0.1.723';
-import { buildCards } from './card-model.js?v=0.1.723';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.723';
-import { loadLore, titleFor, debrisOf } from './lore.js?v=0.1.723';
+import { expandFacts } from './catalog-facts.js?v=0.1.724';
+import { renderCard, miniCard, artImage } from './card.js?v=0.1.724';
+import { buildCards } from './card-model.js?v=0.1.724';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.724';
+import { loadLore, titleFor, debrisOf } from './lore.js?v=0.1.724';
 import './stories.js?v=0.1.680';
-import { CON_FIGURES } from './con-figures.js?v=0.1.723';
-import { loadConstellations, CON_BY_ID } from './constellations.js?v=0.1.723';
-import { loadComets } from './comets.js?v=0.1.723';
+import { CON_FIGURES } from './con-figures.js?v=0.1.724';
+import { loadConstellations, CON_BY_ID } from './constellations.js?v=0.1.724';
+import { loadComets } from './comets.js?v=0.1.724';
 
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
@@ -42,8 +42,9 @@ function markNew(el, c) {
 // "Copy framing" hands the numbers back so scripts bake them into the art file itself (no CSS shifting in the game).
 // A frame is { x, y, z, py }: shift in units of the picture's width, zoom, and where the window's centre sits in the
 // picture (0–1 down it), which is the point the zoom is around.
-let frames = {}; try { frames = JSON.parse(localStorage.getItem('reviewFrames') ?? '{}'); } catch {}
-const saveFrames = () => { try { localStorage.setItem('reviewFrames', JSON.stringify(frames)); } catch {} };
+// 'reviewFrames2' (2026-10-16): Sevaan started over once the edges were locked; earlier saves under 'reviewFrames' are ignored.
+let frames = {}; try { frames = JSON.parse(localStorage.getItem('reviewFrames2') ?? '{}'); } catch {}
+const saveFrames = () => { try { localStorage.setItem('reviewFrames2', JSON.stringify(frames)); } catch {} };
 const imgW = (im) => Math.max(im.offsetWidth, im.offsetHeight * 4 / 3); // object-fit: cover on a 4:3 picture
 function centreY(im) { // the window's centre, as a fraction down the picture
   const w = imgW(im), ih = w * 0.75, eh = im.offsetHeight, pos = parseFloat(getComputedStyle(im).objectPosition.split(' ')[1] ?? '50') / 100;
@@ -130,13 +131,16 @@ function frameEdit(v, host, c) {
   const art = host.querySelector('.card__art'), im = art.querySelector('img.card-art-image'); if (!im) return;
   const was = frames[c._art] ?? null, f = { x: 0, y: 0, z: 1, ...was, py: centreY(im) };
   const ov = document.createElement('div'); ov.className = 'fr-ov';
-  ov.innerHTML = '<b class="fr-h tl"></b><b class="fr-h tr"></b><b class="fr-h bl"></b><b class="fr-h br"></b>';
+  ov.innerHTML = '<p class="fr-tip">Drag a corner to zoom in, then drag to move</p><b class="fr-h tl"></b><b class="fr-h tr"></b><b class="fr-h bl"></b><b class="fr-h br"></b>';
   art.appendChild(ov); host.classList.add('framing');
   const read = v.querySelector('.fr-read'), acts = v.querySelector('.fr-acts');
   v.querySelector('.fr-hint').hidden = true; read.hidden = false; acts.hidden = false; v.querySelector('.acts:not(.fr-acts)').hidden = true;
   const pct = (n) => Math.round(Math.abs(n) * 100);
-  const show = () => { setFrame(im, f); read.textContent = `Zoom ${pct(f.z)}% · ${f.y < -0.002 ? `up ${pct(f.y)}%` : f.y > 0.002 ? `down ${pct(f.y)}%` : 'level'} · ${f.x < -0.002 ? `left ${pct(f.x)}%` : f.x > 0.002 ? `right ${pct(f.x)}%` : 'centred'}`; };
-  const clampZ = (z) => Math.min(2.5, Math.max(0.5, z));
+  const show = () => { clampXY(); setFrame(im, f); read.textContent = `Zoom ${pct(f.z)}% · ${f.y < -0.002 ? `up ${pct(f.y)}%` : f.y > 0.002 ? `down ${pct(f.y)}%` : 'level'} · ${f.x < -0.002 ? `left ${pct(f.x)}%` : f.x > 0.002 ? `right ${pct(f.x)}%` : 'centred'}`; };
+  // The picture's edges always stay on the frame's edges (2026-10-16, Sevaan): zoom 100% or more, and the shift is
+  // limited so the zoomed picture still covers the whole 4:3 picture area (x, y in picture widths; height = 0.75 width).
+  const clampZ = (z) => Math.min(2.5, Math.max(1, z));
+  const clampXY = () => { const e = f.z - 1; f.x = Math.min(e / 2, Math.max(-e / 2, f.x)); f.y = Math.min(0.75 * f.py * e, Math.max(-0.75 * (1 - f.py) * e, f.y)); };
   const pts = new Map(); let start = null;
   const centre = () => { const r = art.getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height / 2]; };
   const scaleOf = () => art.getBoundingClientRect().width / art.offsetWidth; // the viewer card is drawn at a font size, not a transform, but be safe
