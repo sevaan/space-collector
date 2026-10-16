@@ -1,28 +1,35 @@
-import { SETS, goldAlbums } from './sets.js?v=0.1.746';
-// Card backs. Since 2026-10-05 there is one: Sevaan's "Space Collector" seal (orbits, compass rings and
-// four satellites), with its light-blue outer band trimmed so the card's own frame colour shows instead.
-// The list still supports several (the six retro posters, back-navy-1..6.webp, were used before): a
-// random one shows each time a back appears, never the same twice in a row, loaded ahead of time.
-
-const BACKS = [
-  { url: 'assets/art/backs/back-collector.webp', title: 'middle' }, // Space Collector seal (2026-10-05)
+import { SETS, goldAlbums } from './sets.js?v=0.1.747';
+import { isPlus } from './plus.js?v=0.1.747';
+// Card backs you can choose (2026-10-16, design/card-backs.html, Sevaan liked all six). Mission Control is everyone's;
+// Plus unlocks the rest; two can also be earned free: Golden Record (find the Pale Blue Dot story) and Star Chart
+// (complete 10 constellations); main.js writes what's been earned to localStorage 'backEarned'. The choice is
+// localStorage 'cardBack': a back's id, or 'random' for a different unlocked one each time a card turns over.
+export const CARD_BACKS = [
+  { id: 'mission-control', name: 'Mission Control', url: 'assets/art/backs/back-collector.webp', title: 'middle', free: true },
+  { id: 'golden-record', name: 'Golden Record', url: 'assets/art/backs/back-golden-record.webp', title: 'middle', earn: 'Find the Pale Blue Dot story' },
+  { id: 'star-chart', name: 'Star Chart', url: 'assets/art/backs/back-star-chart.webp', title: 'middle', earn: 'Complete 10 constellations' },
+  { id: 'mission-patch', name: 'Mission Patch', url: 'assets/art/backs/back-mission-patch.webp', title: 'middle' },
+  { id: 'blueprint', name: 'Blueprint', url: 'assets/art/backs/back-blueprint.webp', title: 'middle' },
+  { id: 'aurora', name: 'Northern Lights', url: 'assets/art/backs/back-aurora.webp', title: 'middle' },
+  { id: 'nebula-foil', name: 'Nebula Foil', url: 'assets/art/backs/back-nebula-foil.webp', title: 'middle' },
 ];
-
-const pick = (not) => {
-  let b;
-  do b = BACKS[Math.floor(Math.random() * BACKS.length)]; while (b === not && BACKS.length > 1);
-  return b;
-};
+const read = (k, d) => { try { return localStorage.getItem(k) ?? d; } catch { return d; } };
+export const backEarned = () => { try { return new Set(JSON.parse(read('backEarned', '[]'))); } catch { return new Set(); } };
+export const backUnlocked = (b) => !!b && (b.free || isPlus() || backEarned().has(b.id));
+export const chosenBack = () => read('cardBack', 'mission-control');
+export function chooseBack(id) { try { localStorage.setItem('cardBack', id); } catch {} last = null; next = pick(); preload(next); }
+const pool = () => { const c = chosenBack(); if (c === 'random') { const u = CARD_BACKS.filter(backUnlocked); return u.length ? u : [CARD_BACKS[0]]; } const b = CARD_BACKS.find((x) => x.id === c); return [backUnlocked(b) ? b : CARD_BACKS[0]]; };
+let last = null;
+const pick = () => { const P = pool(); let b; do b = P[Math.floor(Math.random() * P.length)]; while (b === last && P.length > 1); return b; };
 const preload = (b) => { const i = new Image(); i.decoding = 'async'; i.src = b.url; };
 
 let next = pick();
 preload(next);
 
-// The back to show now ({ url, title: 'top' | 'bottom' }); queues and preloads a different one for next time.
+// The back to show now ({ url, title }); queues and preloads the next one (a different one when Random is chosen).
 export function nextBack() {
-  const b = next;
-  next = pick(b);
-  preload(next);
+  const P = pool(); const b = P.includes(next) ? next : pick();
+  last = b; next = pick(); preload(next);
   return b;
 }
 

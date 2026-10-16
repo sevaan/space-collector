@@ -15,6 +15,6 @@ export const PLUS_PERKS = [
   { icon: '⏱', name: 'Widget and lock-screen countdown', text: '"ISS in 12 min · NW" without opening the app.' },
   { icon: '⌚', name: 'Apple Watch tap', text: 'A tap on the wrist as a pass rises.' },
   { icon: 'stars', name: 'Shiny forecast', text: 'When the next shiny can happen.', live: true },
-  { icon: '🎨', name: 'Card backs, foils and themes', text: 'New looks for your cards, patch wall and shares.' },
+  { icon: 'cards', name: 'Card backs', text: 'Six new backs for your cards, or a random one each time.', live: true },
   { icon: '🎵', name: 'More music', text: 'Extra tracks for the night sky.' },
 ];
