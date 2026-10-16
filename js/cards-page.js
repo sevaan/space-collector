@@ -1,29 +1,29 @@
-import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.742';
-import { computeStats, statsHtml } from './stats.js?v=0.1.742';
-import { nightKey } from './observation.js?v=0.1.742';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.742';
-import { sfx } from './sfx.js?v=0.1.742';
-import { expandFacts } from './catalog-facts.js?v=0.1.742';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.742';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.742';
-import { ticket } from './toast.js?v=0.1.742';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.742';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.742';
-import { cardArt } from './art.js?v=0.1.742';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.742';
-import { applyBack } from './card-backs.js?v=0.1.742';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.742';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.742';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.742';
+import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.743';
+import { computeStats, statsHtml } from './stats.js?v=0.1.743';
+import { nightKey } from './observation.js?v=0.1.743';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.743';
+import { sfx } from './sfx.js?v=0.1.743';
+import { expandFacts } from './catalog-facts.js?v=0.1.743';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.743';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.743';
+import { ticket } from './toast.js?v=0.1.743';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.743';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.743';
+import { cardArt } from './art.js?v=0.1.743';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.743';
+import { applyBack } from './card-backs.js?v=0.1.743';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.743';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.743';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.743';
 import './stories.js?v=0.1.680';
-import { loadConstellations, conList } from './constellations.js?v=0.1.742';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.742';
-import { eventBadges, nextEvent } from './events.js?v=0.1.742';
-import { shareCardEl } from './share-card.js?v=0.1.742';
-import { removeSighting } from './account.js?v=0.1.742';
-import { allSightings, deleteSighting } from './store.js?v=0.1.742';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.742';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.742';
+import { loadConstellations, conList } from './constellations.js?v=0.1.743';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.743';
+import { eventBadges, nextEvent } from './events.js?v=0.1.743';
+import { shareCardEl } from './share-card.js?v=0.1.743';
+import { removeSighting } from './account.js?v=0.1.743';
+import { allSightings, deleteSighting } from './store.js?v=0.1.743';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.743';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.743';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -346,7 +346,7 @@ window.addEventListener('message', (e) => {
     for (const [id, p] of Object.entries(e.data.passes)) findPasses.set(isNaN(id) ? id : Number(id), p);
     for (const el of document.querySelectorAll('.fd-pass[data-id]')) { const id = isNaN(el.dataset.id) ? el.dataset.id : Number(el.dataset.id), c = state.cards.find((k) => k.id === id); if (c) { el.innerHTML = findPassLine(c); findActs(el.closest('.find-row, .v-next'), c); } } findTrim(); }
   if (e.data?.sc === 'say' && e.data.text) ticket({ kind: 'info', line: e.data.text, ms: 3500 }); // a message from Explore (reminder results)
-  if (e.data?.sc === 'find-reminded') { findReminded = new Set(e.data.set); for (const el of document.querySelectorAll('.fd-pass[data-id]')) { const id = isNaN(el.dataset.id) ? el.dataset.id : Number(el.dataset.id), c = state.cards.find((k) => k.id === id); if (c) findActs(el.closest('.find-row, .v-next'), c); } }
+  if (e.data?.sc === 'find-reminded') { findReminded = new Set(e.data.set); { const u = $('v-up'); if (u && !u.hidden && u._up) renderUpPanel(u._card, u._up); } for (const el of document.querySelectorAll('.fd-pass[data-id]')) { const id = isNaN(el.dataset.id) ? el.dataset.id : Number(el.dataset.id), c = state.cards.find((k) => k.id === id); if (c) findActs(el.closest('.find-row, .v-next'), c); } }
 });
 function render() {
   renderLogbook();
@@ -404,6 +404,19 @@ function render() {
   $('grid').append(frag);
   appendUpNext(total);
   for (const slot of $('grid').children) if (!slot.classList.contains('up-next')) observer.observe(slot);
+}
+const DIR_WORD = { N: 'north', NE: 'northeast', E: 'east', SE: 'southeast', S: 'south', SW: 'southwest', W: 'west', NW: 'northwest' };
+const hm = (t) => new Date(t).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+function renderUpPanel(c, up) {
+  const el = $('v-up'); el.hidden = !up; if (!up) return;
+  const key = `${up.id}@${up.start}`, far = up.start > Date.now() + 10 * 60000, on = findReminded.has(key);
+  const where = `${up.peakEl >= 70 ? 'almost overhead' : up.peakEl >= 35 ? 'high' : 'low'} in the ${DIR_WORD[up.dir] ?? up.dir}`;
+  el.innerHTML = `<p class="v-up__when">Up tonight · <b>${esc(hm(up.start))}</b> · ${esc(where)}</p>
+    <div class="v-up__btns">${far ? `<button type="button" class="v-up__remind${on ? ' on' : ''}" aria-pressed="${on}">${BEL}<span>${on ? `Reminder on · ${esc(hm(up.start - 10 * 60000))}` : `Remind me at ${esc(hm(up.start - 10 * 60000))}`}</span></button>` : '<span class="v-up__soon">Starting soon: look now</span>'}<button type="button" class="v-up__show">Show me</button></div>`;
+  const send = (sc) => { if (EMBED) window.parent.postMessage({ sc, id: up.id, start: up.start }, location.origin); else ticket({ kind: 'info', line: sc === 'up-remind' ? 'Reminders work in the Space Collector app.' : 'Open Explore to be shown where to look.', ms: 3000 }); };
+  el.querySelector('.v-up__remind')?.addEventListener('click', () => send('up-remind'));
+  el.querySelector('.v-up__show').addEventListener('click', () => send('up-show'));
+  el._key = key; el._card = c; el._up = up;
 }
 let upCards = [];
 function openUpNext(i) {
@@ -504,7 +517,11 @@ function showCard() {
   $('v-preview').hidden = sightings.length > 0;
   $('v-preview').textContent = state.preview ? 'Back to uncollected card' : 'Preview artwork';
   // Its next pass with a target and a bell, like Find (2026-10-13, Sevaan).
-  const vn = $('v-next'); vn.hidden = !EMBED || !!c.natural || !!c.launches;
+  // Up tonight panel (2026-10-16, design/upnext-remind.html 1): any card with a pass in tonight's plan, fleets included,
+  // gets when and where plus a big Remind me and Show me. It replaces the small next-pass pill below.
+  const up = state.plan.filter((x) => x.key === c.key && x.end > Date.now()).sort((a, b) => a.start - b.start)[0];
+  renderUpPanel(c, up);
+  const vn = $('v-next'); vn.hidden = !EMBED || !!c.natural || !!c.launches || !!up;
   if (!vn.hidden) { vn.innerHTML = `<span class="fd-pass" data-id="${esc(String(c.id))}">${findPassLine(c)}</span><span class="fd-acts"></span>`; findActs(vn, c);
     if (!findPasses.has(c.id)) window.parent.postMessage({ sc: 'find-passes', ids: [c.id], req: ++findReq }, location.origin); }
   $('v-history').replaceChildren();

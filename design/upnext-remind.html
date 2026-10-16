@@ -1,0 +1,81 @@
+<title>Up Tonight Reminders</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Russo+One&family=Barlow+Condensed:wght@500;600&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Layout: two rows of phone-sized mockups (the tile, then the card viewer), three options each, with a recommendation.
+   Single dark look, the app's own palette. */
+:root { --sky:#080f1b; --panel:#0e1a29; --edge:#22344a; --ink:#fff2b3; --muted:#9fb3c8; --org:#fa8127; --gold:#ffc93d;
+  --display:'Russo One',Impact,sans-serif; --label:'Barlow Condensed','Arial Narrow',sans-serif; --ui:'Inter',system-ui,sans-serif; color-scheme:dark; }
+body { margin:0; background:var(--sky); color:var(--ink); font:500 16px/1.45 var(--label); }
+main { max-width:1100px; margin:0 auto; padding-inline:16px; padding-block:28px 64px; }
+.k { font:600 12px/1 var(--label); letter-spacing:.22em; text-transform:uppercase; color:var(--org); }
+h1 { font:400 clamp(26px,6vw,38px)/1.1 var(--display); margin:8px 0; text-wrap:balance; }
+h2 { font:400 22px/1.1 var(--display); margin:34px 0 4px; }
+p { max-width:68ch; color:#d9e2ec; margin:0 0 10px; } .lead { color:var(--muted); font-size:18px; }
+.row { display:flex; flex-wrap:wrap; gap:26px; justify-content:center; margin-top:16px; }
+.slot { display:grid; gap:8px; justify-items:center; width:250px; max-width:100%; }
+.slot h3 { margin:0; font:400 17px/1.1 var(--display); }
+.slot p { font-size:15px; color:var(--muted); text-align:center; margin:0; }
+/* tile mockups */
+.tile { width:170px; aspect-ratio:28/42; border-radius:12px; border:2px dashed #9fb0bf88; background:#0b1422; position:relative; overflow:hidden; display:flex; flex-direction:column; }
+.t-set { height:28px; display:flex; align-items:center; padding:0 10px; font:600 12px/1 var(--label); letter-spacing:.14em; text-transform:uppercase; color:#cfd6c2; border-bottom:1px solid #8b7b4d; flex:none; }
+.t-art { flex:1; position:relative; background:repeating-linear-gradient(0deg,#0f1a29 0 3px,#0c1522 3px 6px); }
+.t-body { padding:8px 10px 10px; display:grid; gap:3px; }
+.t-tier { font:500 12px/1 var(--label); letter-spacing:.14em; color:var(--muted); text-transform:uppercase; }
+.t-name { font:400 15px/1.05 var(--display); color:var(--ink); }
+.t-st { border-top:1px solid #8b7b4d; padding-top:6px; font:500 13px/1 var(--label); color:var(--ink); }
+.pill { border:1px solid #fa812799; background:#080f1bdd; color:var(--org); border-radius:10px; padding:5px 6px; text-align:center; font:600 13px/1.1 var(--label); letter-spacing:.08em; }
+.pill small { display:block; font-size:10.5px; letter-spacing:.16em; color:#fff2b3b3; }
+.a .pill { position:absolute; left:8px; right:8px; top:8px; }
+.b .ribbon { position:absolute; left:0; right:0; top:0; background:var(--org); color:#1a0f05; font:600 12px/1 var(--label); letter-spacing:.12em; text-transform:uppercase; padding:6px 10px; display:flex; justify-content:space-between; }
+.c .t-set { background:#fa812722; color:var(--org); justify-content:space-between; }
+.c .t-set b { font-weight:600; color:var(--ink); }
+.bell { width:13px; height:13px; display:inline-block; vertical-align:-2px; }
+/* viewer mockups */
+.phone { width:250px; max-width:100%; aspect-ratio:9/19.3; border-radius:36px; border:7px solid #1b2433; position:relative; overflow:hidden; background:radial-gradient(ellipse at 50% 30%,#14263d,#070d17 70%); display:flex; flex-direction:column; align-items:center; padding:46px 14px 14px; box-sizing:border-box; gap:10px; }
+.phone .x { position:absolute; right:16px; top:16px; color:var(--muted); font-size:14px; }
+.card { width:170px; aspect-ratio:28/42; border-radius:10px; border:2px solid #cfd6c2; outline:1px solid #45576a; outline-offset:-5px; background:#0a1220; position:relative; overflow:hidden; display:flex; flex-direction:column; flex:none; }
+.card .art { height:46%; background:repeating-linear-gradient(0deg,#0f1a29 0 3px,#0c1522 3px 6px); filter:blur(.3px); position:relative; }
+.card .art::after { content:'?'; position:absolute; inset:0; display:grid; place-items:center; font:400 34px var(--display); color:#2b3d52; }
+.card .nm { margin:7px 9px 2px; font:400 15px/1 var(--display); }
+.card .ln { margin:0 9px; height:5px; border-radius:3px; background:#1d2c3e; margin-top:6px; } .card .ln.s { width:60%; }
+.pass { width:100%; border-radius:14px; border:1px solid #fa812766; background:#0e1a29; padding:10px 12px; box-sizing:border-box; display:grid; gap:8px; }
+.pass .when { font:600 12px/1.2 var(--label); letter-spacing:.14em; text-transform:uppercase; color:var(--muted); }
+.pass .when b { color:var(--org); font-weight:600; }
+.btns { display:grid; grid-template-columns:1fr auto; gap:8px; }
+.btn { border-radius:10px; padding:9px 10px; font:600 12px/1 var(--label); letter-spacing:.14em; text-transform:uppercase; text-align:center; display:flex; gap:6px; align-items:center; justify-content:center; }
+.btn.o { background:var(--org); color:#1a0f05; } .btn.g { background:#14202f; color:var(--ink); }
+.bar { position:absolute; left:0; right:0; bottom:0; padding:10px 12px 16px; background:linear-gradient(transparent,#070d17 30%); display:grid; gap:6px; }
+.stamp { position:absolute; top:8px; right:8px; transform:rotate(6deg); border:2px solid var(--org); color:var(--org); border-radius:6px; padding:3px 6px; font:600 11px/1.05 var(--label); letter-spacing:.12em; text-align:center; background:#080f1bcc; }
+.chipbell { width:44px; height:44px; border-radius:50%; background:var(--org); display:grid; place-items:center; position:absolute; right:-6px; bottom:-6px; box-shadow:0 4px 14px #0008; }
+.pick { margin-top:28px; padding:12px 14px; border-radius:14px; border:1px solid #fa812766; background:#1a1410; max-width:84ch; } .pick b { color:var(--org); }
+</style>
+<svg width="0" height="0" style="position:absolute"><symbol id="bell" viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15zM10 20a2 2 0 0 0 4 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol></svg>
+<main>
+  <span class="k">Space Collector · Collection · 16 Oct 2026</span>
+  <h1>Up tonight: higher on the tile, and a reminder on the card</h1>
+  <p class="lead">Two parts. Where "Up tonight" sits on the dashed tiles in a small collection, and how you set a reminder once you've tapped one open. Today the viewer's reminder is a small pill that doesn't show for fleets like Starlink.</p>
+
+  <h2>1 · The tile</h2>
+  <div class="row">
+    <div class="slot"><div class="tile a"><div class="t-set">Dead Satellites…</div><div class="t-art"><div class="pill"><small>Up tonight</small>7:05 PM · NE</div></div><div class="t-body"><span class="t-tier">● Common</span><span class="t-name">SAC-C</span><span class="t-st">Not yet collected</span></div></div>
+      <h3>A · Top of the picture</h3><p>The same pill, moved to the top of the art window, just under the set name.</p></div>
+    <div class="slot"><div class="tile b"><div class="t-set">Dead Satellites…</div><div class="t-art"><div class="ribbon"><span>Up 7:05 PM</span><span>NE</span></div></div><div class="t-body"><span class="t-tier">● Common</span><span class="t-name">SAC-C</span><span class="t-st">Not yet collected</span></div></div>
+      <h3>B · Orange band</h3><p>A solid band across the top of the picture. Loudest; reads like a time slot.</p></div>
+    <div class="slot"><div class="tile c"><div class="t-set"><span>Up 7:05 PM</span><b>NE</b></div><div class="t-art"></div><div class="t-body"><span class="t-tier">● Common</span><span class="t-name">SAC-C</span><span class="t-st">Not yet collected</span></div></div>
+      <h3>C · In the header</h3><p>The time replaces the set name in the header strip. Cleanest, but the set name is gone.</p></div>
+  </div>
+
+  <h2>2 · The card, once tapped</h2>
+  <div class="row">
+    <div class="slot"><div class="phone"><span class="x">✕</span><div class="card"><div class="art"></div><div class="nm">SAC-C</div><div class="ln"></div><div class="ln s"></div></div>
+      <div class="pass"><span class="when">Up tonight · <b>7:05 PM</b> · high in the northeast</span><div class="btns"><span class="btn o"><svg class="bell"><use href="#bell"/></svg>Remind me at 6:55</span><span class="btn g">Show me</span></div></div></div>
+      <h3>1 · Pass card under it</h3><p>A small panel right under the card: when and where, a big Remind me, and Show me. Works for fleets too.</p></div>
+    <div class="slot"><div class="phone"><span class="x">✕</span><div class="card"><div class="art"></div><div class="nm">SAC-C</div><div class="ln"></div><div class="ln s"></div></div>
+      <div class="bar"><span class="when" style="font:600 12px/1.2 var(--label);letter-spacing:.14em;color:var(--muted);text-transform:uppercase;text-align:center">Up tonight 7:05 PM · NE</span><span class="btn o"><svg class="bell"><use href="#bell"/></svg>Remind me at 6:55 PM</span></div></div>
+      <h3>2 · Button at the bottom</h3><p>One full-width button pinned to the foot of the screen, where your thumb is. Show me lives elsewhere.</p></div>
+    <div class="slot"><div class="phone"><span class="x">✕</span><div class="card" style="overflow:visible"><div class="art"></div><div class="stamp">UP TONIGHT<br>7:05 PM</div><div class="nm">SAC-C</div><div class="ln"></div><div class="ln s"></div><span class="chipbell"><svg class="bell" style="width:20px;height:20px;color:#1a0f05"><use href="#bell"/></svg></span></div>
+      <p style="margin-top:6px">Tap the bell to be reminded</p></div>
+      <h3>3 · On the card itself</h3><p>A stamp on the card and a round bell on its corner. Playful, but the bell is easy to miss.</p></div>
+  </div>
+  <div class="pick"><b>My pick: A + 1.</b> The pill moves up out of the middle without changing its look, and the opened card gets a clear pass panel with a big Remind me button and Show me, for every card that has a pass tonight, fleets included. On the website (your test build) the button explains reminders work in the app.</div>
+</main>
