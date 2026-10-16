@@ -1073,3 +1073,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - v0.1.730: Mu stages (M-4S, M-3H…) use the generic cylinder 'rocket-stage-1' instead of the spherical mu-rocket picture (Sevaan; no M-4S fourth-stage reference found).
 - v0.1.731: start-rocket (SL-18): open end perspective fixed, swirls removed. Twinkles skip each picture's object box (scripts/art-boxes.json, being filled by scratchpad restyle-all/boxes.py; import-art.py off_object).
 - v0.1.732: SL-18 (start-rocket) and GSLV stages redrawn in correct 3D (look.py MODE=persp2): nozzle end toward the viewer, forward end turned away so only its rim shows. Lesson: 'fix the ellipse' kept both open ends visible; spell out which end faces the viewer.
+- v0.1.733: the until-dark countdown's Remind me is free for everyone and doesn't count toward the free one-a-night reminder (FREE_KEYS in main.js; Sevaan).
