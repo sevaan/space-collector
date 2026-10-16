@@ -1040,3 +1040,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 2026-10-15 · v0.1.715: rarity shape in the card's rarity chip is centred on the label (inline-grid 1em box, system font for the glyph) instead of sitting on the text baseline (Sevaan).
 
 2026-10-15 · v0.1.716: TeamSat (25025) has its own picture, teamsat, from Sevaan's photo (Desktop TeamSat_Auto6.jpg): the solar-celled cylinder of the MaqSat platform on its orange foil ring with the TeamSat experiment box underneath. Queued for the restyle.
+
+2026-10-15 · v0.1.717: PACSAT (AO-16), DOVE (DO-17) and WEBERSAT (WO-18) use the lusat picture: all four are the same AMSAT Microsat (23 cm cube, one long antenna on top), launched together on Ariane in Jan 1990 (Sevaan's pacsat.jpg confirms the shape).
