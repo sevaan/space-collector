@@ -540,3 +540,5 @@ html.away *, html.away *::before, html.away *::after { animation-play-state: pau
 .v-up__soon { color: #fa8127; background: transparent; padding: 0; justify-content: flex-start; }
 /* With the Up tonight panel showing, the card shrinks so the panel's buttons fit on screen without scrolling. */
 #viewer:has(#v-up:not([hidden])) #slot .card { font-size: min(14px, calc((100vw - 58px) / 28), calc((100dvh - 330px) / 42)); }
+/* Constellations album: stars as a quiet second line under the constellations count (2026-10-16). */
+.album__sub { display: block; font: 500 13px/1.2 'SC Label', 'Barlow Condensed', sans-serif; letter-spacing: .06em; color: var(--muted, #9fb3c8); margin-top: 2px; }

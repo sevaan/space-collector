@@ -1,29 +1,29 @@
-import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.749';
-import { computeStats, statsHtml } from './stats.js?v=0.1.749';
-import { nightKey } from './observation.js?v=0.1.749';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.749';
-import { sfx } from './sfx.js?v=0.1.749';
-import { expandFacts } from './catalog-facts.js?v=0.1.749';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.749';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.749';
-import { ticket } from './toast.js?v=0.1.749';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.749';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.749';
-import { cardArt } from './art.js?v=0.1.749';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.749';
-import { applyBack } from './card-backs.js?v=0.1.749';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.749';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.749';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.749';
+import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.750';
+import { computeStats, statsHtml } from './stats.js?v=0.1.750';
+import { nightKey } from './observation.js?v=0.1.750';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.750';
+import { sfx } from './sfx.js?v=0.1.750';
+import { expandFacts } from './catalog-facts.js?v=0.1.750';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.750';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.750';
+import { ticket } from './toast.js?v=0.1.750';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.750';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.750';
+import { cardArt } from './art.js?v=0.1.750';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.750';
+import { applyBack } from './card-backs.js?v=0.1.750';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.750';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.750';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.750';
 import './stories.js?v=0.1.680';
-import { loadConstellations, conList } from './constellations.js?v=0.1.749';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.749';
-import { eventBadges, nextEvent } from './events.js?v=0.1.749';
-import { shareCardEl } from './share-card.js?v=0.1.749';
-import { removeSighting } from './account.js?v=0.1.749';
-import { allSightings, deleteSighting } from './store.js?v=0.1.749';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.749';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.749';
+import { loadConstellations, conList } from './constellations.js?v=0.1.750';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.750';
+import { eventBadges, nextEvent } from './events.js?v=0.1.750';
+import { shareCardEl } from './share-card.js?v=0.1.750';
+import { removeSighting } from './account.js?v=0.1.750';
+import { allSightings, deleteSighting } from './store.js?v=0.1.750';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.750';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.750';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -188,6 +188,11 @@ function albumBar({ have, goals, cards }) {
   const top = goals[2], pct = (n) => Math.min(100, (n / top) * 100);
   return `<div class="album-bar"><i style="width:${pct(have.length)}%"></i>${goals.map((g, i) => `<b class="g${i}${have.length >= g ? ' hit' : ''}" style="left:${pct(g)}%" title="${LEVELS[i]} at ${g}"></b>`).join('')}</div>`;
 }
+// The Constellations album counts constellations completed, with its stars as a second line (2026-10-16, Sevaan: "0 / 709"
+// read as 709 constellations). Its levels still count stars, so the next goal says "stars".
+const conDone = () => { const cs = conList().filter((c) => !c.system && c.stars?.length); return { done: cs.filter((c) => c.stars.every((k) => state.sightingsByKey.has(k))).length, total: cs.length }; };
+const albumCount = (set, st) => set.id === 'constellations' ? (() => { const d = conDone(); return `<b>${d.done}</b> / ${d.total} constellations`; })() : `<b>${st.have.length.toLocaleString()}</b> / ${st.cards.length.toLocaleString()}`;
+const unit = (set) => (set.id === 'constellations' ? ' stars' : '');
 function renderAlbums() {
   $('grid').replaceChildren();
   const frag = document.createDocumentFragment();
@@ -201,8 +206,8 @@ function renderAlbums() {
     const crossed = (lv[set.id] ?? st.level) < st.level; lv[set.id] = st.level; try { localStorage.setItem('albumLevels', JSON.stringify(lv)); } catch {}
     b.className = `album${st.level === 3 ? ' gold' : ''}${latest ? '' : ' empty'}${crossed ? ' crossed' : ''}`; b.style.setProperty('--set', set.color);
     b.innerHTML = `<span class="album__art">${img ? `<img src="${img}" alt="" loading="lazy">` : cardArt(show, { accent: set.color, silhouette: !latest })}</span>
-      <span class="album__body"><span class="album__top"><span class="album__name">${esc(set.name)}</span><span class="album__count"><b>${st.have.length.toLocaleString()}</b> / ${st.cards.length.toLocaleString()}</span></span>
-      ${albumBar(st)}<span class="album__foot">${st.level ? `<span class="album__level l${st.level}">${LEVELS[st.level - 1]}</span>` : ''}<span class="album__next">${st.level === 3 ? 'Gold album' : `${(st.next - st.have.length).toLocaleString()} more for ${LEVELS[st.level]}`}</span></span></span>`;
+      <span class="album__body"><span class="album__top"><span class="album__name">${esc(set.name)}</span><span class="album__count">${albumCount(set, st)}</span></span>${set.id === 'constellations' ? `<span class="album__sub">${st.have.length.toLocaleString()} of ${st.cards.length.toLocaleString()} stars</span>` : ''}
+      ${albumBar(st)}<span class="album__foot">${st.level ? `<span class="album__level l${st.level}">${LEVELS[st.level - 1]}</span>` : ''}<span class="album__next">${st.level === 3 ? 'Gold album' : `${(st.next - st.have.length).toLocaleString()} more${unit(set)} for ${LEVELS[st.level]}`}</span></span></span>`;
     b.addEventListener('click', () => { state.set = set.id; $('set-filter').value = set.id; setView('discover'); window.scrollTo({ top: $('grid').offsetTop - 160, behavior: 'smooth' }); });
     frag.append(b);
   }
@@ -214,8 +219,8 @@ function renderAlbumHead() {
   if (state.set === 'all' || state.view === 'albums') { head.hidden = true; return; }
   const set = SETS.find((s) => s.id === state.set), st = albumStats(state.set);
   head.hidden = false; head.style.setProperty('--set', set.color); head.classList.toggle('gold', st.level === 3);
-  head.innerHTML = `<div><span class="album__name">${esc(set.name)}</span><span class="album__count"><b>${st.have.length.toLocaleString()}</b> / ${st.cards.length.toLocaleString()} collected${st.level ? ` · ${LEVELS[st.level - 1]} album` : ''}</span></div>${albumBar(st)}
-    <span class="album__next">${st.level === 3 ? 'Gold album. Every card here is a bonus.' : `${(st.next - st.have.length).toLocaleString()} more for a ${LEVELS[st.level]} album (${st.next.toLocaleString()} cards).`}</span>`;
+  head.innerHTML = `<div><span class="album__name">${esc(set.name)}</span><span class="album__count">${set.id === 'constellations' ? `${albumCount(set, st)} · ${st.have.length.toLocaleString()} of ${st.cards.length.toLocaleString()} stars` : `<b>${st.have.length.toLocaleString()}</b> / ${st.cards.length.toLocaleString()} collected`}${st.level ? ` · ${LEVELS[st.level - 1]} album` : ''}</span></div>${albumBar(st)}
+    <span class="album__next">${st.level === 3 ? 'Gold album. Every card here is a bonus.' : `${(st.next - st.have.length).toLocaleString()} more${unit(set)} for a ${LEVELS[st.level]} album (${st.next.toLocaleString()}${unit(set) || ' cards'}).`}</span>`;
 }
 
 // ---------- logbook: rank, streak, tonight's missions, achievements (js/progress.js) ----------
