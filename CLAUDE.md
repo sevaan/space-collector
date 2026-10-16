@@ -1088,3 +1088,10 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - Nothing animates at idle any more: the hidden Collection pauses all CSS animations (html.away via {sc:'away'}; removed on open/show), and the welcome card's filled animations are cancelled once the sky starts.
   - Stress: no leaks (heap 64 → 64 MB, +38 nodes after 32 toggles). Collection, viewer flips/swipes, panels: p95 ≈ 10 ms.
   - Still heavy (one-offs): first sky frame when the tour starts (~270 ms long task at 4×), the Tonight page while the planner lands (16 long tasks), Collection slide-down as the sky wakes (one ~150 ms frame).
+- v0.1.741 perf sweep, round 2 (Sevaan: "fix those"):
+  - `dayGhosts` (daytime pass markers) is memoized per tonight plan / collection size / half-minute; it re-sorted tonight's passes every frame and was a quarter of the sky's work by day.
+  - Layout is measured every 2 s (and on resize) instead of right after renderTarget's DOM writes 4× a second (each read forced a full layout); #target's rect is skipped when hidden.
+  - Satellite model's first sweep (2.6 s) and the cloud shader (sky.warmClouds, 3.2 s) are warmed while the welcome card is up, like the Milky Way.
+  - The hidden Collection preloads only once the tour and Tonight page are closed (requestIdleCallback).
+  - The sky's first frame after a pause only draws; refreshAbove and the once-a-second chip/weather/banner work run 200–400 ms later (skyPaused).
+  - Results at 4× CPU: tour start longest task 520 → 224 ms; Tonight page long tasks 45 → 7; drag-pan p50 42 → 25 ms, janky 64 → 7; sky idle p50 32 → 16 ms; Collection slide-down worst frame 141 → 126 ms (now one raster frame, no long task); stress loops ≤ 1 janky frame.
