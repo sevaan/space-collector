@@ -1120,3 +1120,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - Unfound story cards: tile aria-label says "Secret story", and search can't find them.
   - roleOf: the catch-all "…SAT → Small satellite" only applies after the UCS purpose data (RADARSAT etc. got the right role when UCS knows it).
 - 2026-10-16 · TestFlight build 1.0 (11) archived (web v0.1.754: bug-hunt fixes); opened in Organizer, not uploaded.
+- v0.1.756: scripts/bump.mjs now stamps bare side-effect imports too (import './x.js'): js/stories.js had been stuck at ?v=0.1.680 in cards-page.js and review.js since 2026-10-14, so phones with the service worker's cache kept an old copy of it. Website designs for spacecollector.app are in site/ (a.html The Circle, b.html Field Guide, c.html Tonight; shared loader.js = the app's lock-on loader; assets rendered from the app by design/site-stage.html); not committed until one is chosen.

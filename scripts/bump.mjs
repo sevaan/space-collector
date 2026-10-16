@@ -11,8 +11,9 @@ const next = `${current[1]}.${current[2]}.${Number(current[3]) + 1}`;
 writeFileSync(jsPath, js.replace(/VERSION = '[^']+'/, `VERSION = '${next}'`));
 writeFileSync(new URL('version.json', root), JSON.stringify({ version: next }) + '\n');
 
-// import ... from './x.js'  →  './x.js?v=NEXT'
-const stampImports = (s) => s.replace(/(from\s+'\.{1,2}\/[^'?]+\.js)(\?v=[^']*)?'/g, `$1?v=${next}'`);
+// import ... from './x.js' and bare import './x.js'  →  './x.js?v=NEXT'
+// (bare side-effect imports were missed until 2026-10-16: stories.js stayed at ?v=0.1.680, so cached phones kept an old copy)
+const stampImports = (s) => s.replace(/((?:from|import)\s+'\.{1,2}\/[^'?]+\.js)(\?v=[^']*)?'/g, `$1?v=${next}'`);
 for (const f of readdirSync(new URL('js/', root))) {
   if (!f.endsWith('.js')) continue;
   const p = new URL(`js/${f}`, root);
