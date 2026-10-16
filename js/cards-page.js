@@ -1,29 +1,29 @@
-import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.738';
-import { computeStats, statsHtml } from './stats.js?v=0.1.738';
-import { nightKey } from './observation.js?v=0.1.738';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.738';
-import { sfx } from './sfx.js?v=0.1.738';
-import { expandFacts } from './catalog-facts.js?v=0.1.738';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.738';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.738';
-import { ticket } from './toast.js?v=0.1.738';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.738';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.738';
-import { cardArt } from './art.js?v=0.1.738';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.738';
-import { applyBack } from './card-backs.js?v=0.1.738';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.738';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.738';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.738';
+import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.739';
+import { computeStats, statsHtml } from './stats.js?v=0.1.739';
+import { nightKey } from './observation.js?v=0.1.739';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.739';
+import { sfx } from './sfx.js?v=0.1.739';
+import { expandFacts } from './catalog-facts.js?v=0.1.739';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.739';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.739';
+import { ticket } from './toast.js?v=0.1.739';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.739';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.739';
+import { cardArt } from './art.js?v=0.1.739';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.739';
+import { applyBack } from './card-backs.js?v=0.1.739';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.739';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.739';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.739';
 import './stories.js?v=0.1.680';
-import { loadConstellations, conList } from './constellations.js?v=0.1.738';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.738';
-import { eventBadges, nextEvent } from './events.js?v=0.1.738';
-import { shareCardEl } from './share-card.js?v=0.1.738';
-import { removeSighting } from './account.js?v=0.1.738';
-import { allSightings, deleteSighting } from './store.js?v=0.1.738';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.738';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.738';
+import { loadConstellations, conList } from './constellations.js?v=0.1.739';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.739';
+import { eventBadges, nextEvent } from './events.js?v=0.1.739';
+import { shareCardEl } from './share-card.js?v=0.1.739';
+import { removeSighting } from './account.js?v=0.1.739';
+import { allSightings, deleteSighting } from './store.js?v=0.1.739';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.739';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.739';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -405,25 +405,31 @@ function render() {
   appendUpNext(total);
   for (const slot of $('grid').children) if (!slot.classList.contains('up-next')) observer.observe(slot);
 }
+let upCards = [];
+function openUpNext(i) {
+  const was = state.list; state.list = upCards.slice();
+  $('viewer').addEventListener('close', () => { state.list = was; }, { once: true });
+  openViewer(i);
+}
 function appendUpNext(total) {
   const frag = document.createDocumentFragment();
   // A small collection (under 9 cards) fills the rest of its first rows with "Up tonight" slots: the next things you
   // could catch, with times. Tap one for a reminder (playtest 2026-10-09, #10).
   if (!(state.view === 'owned' && total < 9 && !state.query && state.set === 'all' && state.rarity === 'all')) return;
   {
-    const seen = new Set();
+    const seen = new Set(); upCards = [];
     for (const x of state.plan) {
       if (seen.size >= 9 - total) break;
       const c = state.byKey.get(x.key); if (!c || seen.has(x.key) || hasSightings(c)) continue; seen.add(x.key);
       const slot = document.createElement('div'); slot.className = 'tile-slot up-next';
       const tile = renderCardTile(c, { sightings: [] }); tile.classList.add('up-next__tile');
       const when = new Date(x.start).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
-      tile.insertAdjacentHTML('afterbegin', `<span class="up-next__when">Up ${esc(when)} · ${esc(x.dir)}</span>`);
-      tile.setAttribute('aria-label', `${titleFor(c)}, up tonight at ${when} in the ${x.dir}. Set a reminder`);
-      tile.addEventListener('click', () => {
-        if (EMBED) window.parent.postMessage({ sc: 'remind', id: x.id }, location.origin);
-        else openViewer(state.list.findIndex((k) => k.key === c.key));
-      });
+      tile.insertAdjacentHTML('afterbegin', `<span class="up-next__when"><small>Up tonight</small>${esc(when)} · ${esc(x.dir)}</span>`);
+      tile.setAttribute('aria-label', `${titleFor(c)}, up tonight at ${when} in the ${x.dir}. Preview the card`);
+      // Tap previews the card in the viewer (2026-10-16, Sevaan: a tap used to set a reminder blind); the viewer's
+      // next-pass pill has the bell. The Up tonight cards are the viewer's list, so you can swipe through them.
+      upCards.push(c); const i = upCards.length - 1;
+      tile.addEventListener('click', () => openUpNext(i));
       slot.append(tile); frag.append(slot);
     }
     $('grid').append(frag);

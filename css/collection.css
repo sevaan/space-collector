@@ -514,3 +514,9 @@ body.albums-view .album__name { overflow-wrap: normal; }
 .fd-acts .ic { padding: 0; line-height: 0; box-sizing: border-box; }
 .fd-acts .ic svg { display: block; margin: auto; }
 #viewer .fd-acts button.ic.ic.ic { padding: 0; min-height: 0; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; } /* beats the viewer's generic button padding */
+
+/* Up tonight slots (2026-10-16, Sevaan): the time fits (label over it, wraps rather than cutting off), and every tile's
+   set header is one line of fixed height, so the dividing line sits level across a row. */
+.up-next__when { display: grid; gap: 3px; justify-items: center; text-align: center; white-space: normal; line-height: 1.1; padding: 5px 6px; border-radius: 12px; }
+.up-next__when small { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: #fff2b3b3; }
+.grid .card-tile__set { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; height: 2.1em; min-height: 0; max-height: 2.1em; box-sizing: border-box; display: block; line-height: 1.1em; padding-top: .5em; padding-bottom: .5em; }
