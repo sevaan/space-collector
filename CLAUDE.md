@@ -1110,3 +1110,12 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - **Plus Member patch**: SECRET_PATCHES.plus (secrets.js) in its own 'member' group (patches.js; telescope art, holo finish). Earned via earnSecret('plus') when Plus turns on (or at boot if already Plus); stays on the wall after Plus ends.
   - Catch of the day row text fixed to "Five minutes before".
 - 2026-10-16 · TestFlight build 1.0 (10) archived (web v0.1.752: Plus card sheet, Rare alerts, Plus Member patch); opened in Organizer, not uploaded.
+- v0.1.754 bug hunt (playtest harness on two phones, Collection tabs, Plus sheet, plus a code review of the last 3 days):
+  - Tonight's run showed a "Last chance" pill on every headliner (lcTag also returns ' · headliner'); the pill now checks fallAt.
+  - Catch of the day respects quiet hours (11 pm–7 am), like Rare alerts (Night owl headliners can be after midnight).
+  - scheduleNotes runs one at a time (notesQ): overlapping runs could let a stale clear-forecast run schedule an alert after a cloudy one cancelled it.
+  - Orbit view: a tap timer firing after a swipe/close no longer builds a hidden globe on the old card.
+  - Collection: while the viewer shows the Up tonight list (openUpNext), render() waits (upHold) and redraws on close, so a 'tonight'/'refresh' message can't swap the list under the viewer.
+  - Red night mode: the fade ring track and the Earth's-shadow edge/label are red, not gold; the "NOW!" pulse is still under reduced motion.
+  - Unfound story cards: tile aria-label says "Secret story", and search can't find them.
+  - roleOf: the catch-all "…SAT → Small satellite" only applies after the UCS purpose data (RADARSAT etc. got the right role when UCS knows it).

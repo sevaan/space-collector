@@ -4,7 +4,7 @@
 // facts only state what the catalogue says today (orbit, launch date and site) or simple date
 // comparisons. No extrapolating today's orbit back over decades (lifetime laps or distance).
 
-import { orbitStats, titleCase, siteName, ownerName } from './facts.js?v=0.1.753';
+import { orbitStats, titleCase, siteName, ownerName } from './facts.js?v=0.1.754';
 
 const FAMILY = [
   [/^IRIDIUM 33 DEB/, 'A piece of the **first-ever crash between two satellites**: Iridium 33 hit the dead Cosmos 2251 in 2009.'],
@@ -229,7 +229,7 @@ const ROLE_NAME = [[/^NOAA|^METEOR|^GOES|^METOP|^FENGYUN|^DMSP|^TIROS|^NIMBUS|^E
 export const ownerWord = (owner, year) => (owner === 'CIS' ? (year && year < 1992 ? 'Soviet' : 'Russian') : { US: 'American', PRC: 'Chinese', JPN: 'Japanese', FR: 'French', ESA: 'European', CA: 'Canadian', IT: 'Italian', IND: 'Indian', UK: 'British', GER: 'German', SKOR: 'South Korean', ISRA: 'Israeli', BRAZ: 'Brazilian', ARGN: 'Argentinian', IRAN: 'Iranian', NKOR: 'North Korean', TURK: 'Turkish', AUS: 'Australian' }[owner] ?? '');
 export function roleOf(o) {
   if (o.type === 'station') return 'Space station';
-  const named = ROLE_NAME.find(([re]) => re.test(String(o.name ?? '').toUpperCase()))?.[1]; if (named) return named; // the hand-picked list knows the famous ones best
+  const named = ROLE_NAME.slice(0, -1).find(([re]) => re.test(String(o.name ?? '').toUpperCase()))?.[1]; if (named) return named; // the hand-picked list knows the famous ones best; its last entry ("…SAT" = small satellite) is only a fallback (QA 2026-10-16)
   const r = purposeCache?.sats?.[o.id];
   if (r) { const [, purpose, detail] = r; const hit = (detail && ROLE_DETAIL.find(([re]) => re.test(detail))) || ROLE_PURPOSE.find(([re]) => re.test(purpose)); if (hit) return hit[1]; }
   const sk = seriesKeyOf(o); if (sk) { const hit = ROLE_SERIES.find(([re]) => re.test(sk)); if (hit) return hit[1]; }
