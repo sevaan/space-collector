@@ -1095,3 +1095,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - The hidden Collection preloads only once the tour and Tonight page are closed (requestIdleCallback).
   - The sky's first frame after a pause only draws; refreshAbove and the once-a-second chip/weather/banner work run 200–400 ms later (skyPaused).
   - Results at 4× CPU: tour start longest task 520 → 224 ms; Tonight page long tasks 45 → 7; drag-pan p50 42 → 25 ms, janky 64 → 7; sky idle p50 32 → 16 ms; Collection slide-down worst frame 141 → 126 ms (now one raster frame, no long task); stress loops ≤ 1 janky frame.
+- v0.1.742: next-pass/headliner chip: a short name ("FR 1") isn't padded to 4.5em any more, so no gap after 'HEADLINER:' (min-width only on names over 8 characters, data-long).

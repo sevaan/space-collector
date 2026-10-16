@@ -471,7 +471,7 @@ html.quick #hud[hidden] > :not(#sky-header):not(#nav):not(#skybar) { display: no
 #collection-frame[hidden] { display: block !important; visibility: hidden; }
 #collection-frame.open[hidden] { visibility: visible; }
 /* The name never collapses to nothing: the time gives way first. */
-#nextpass .np-n { min-width: 4.5em; }
+#nextpass .np-n[data-long] { min-width: 4.5em; } /* only long names keep room before they ellipsize; a short one ("FR 1") isn't padded out (2026-10-16, Sevaan) */
 #nextpass .np-m { flex: 0 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 /* The sky slider only matters once it's getting dark (2026-10-08, Sevaan): gone in daylight, fades back in at dusk
    (body.day is set while the Sun is above −2°). */
