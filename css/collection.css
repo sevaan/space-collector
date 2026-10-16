@@ -520,3 +520,6 @@ body.albums-view .album__name { overflow-wrap: normal; }
 .up-next__when { display: grid; gap: 3px; justify-items: center; text-align: center; white-space: normal; line-height: 1.1; padding: 5px 6px; border-radius: 12px; }
 .up-next__when small { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: #fff2b3b3; }
 .grid .card-tile__set { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; height: 2.1em; min-height: 0; max-height: 2.1em; box-sizing: border-box; display: block; line-height: 1.1em; padding-top: .5em; padding-bottom: .5em; }
+
+/* The Collection is hidden behind the sky: pause everything that animates (2026-10-16 perf sweep). */
+html.away *, html.away *::before, html.away *::after { animation-play-state: paused !important; }

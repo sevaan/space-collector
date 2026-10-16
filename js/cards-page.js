@@ -1,29 +1,29 @@
-import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.739';
-import { computeStats, statsHtml } from './stats.js?v=0.1.739';
-import { nightKey } from './observation.js?v=0.1.739';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.739';
-import { sfx } from './sfx.js?v=0.1.739';
-import { expandFacts } from './catalog-facts.js?v=0.1.739';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.739';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.739';
-import { ticket } from './toast.js?v=0.1.739';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.739';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.739';
-import { cardArt } from './art.js?v=0.1.739';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.739';
-import { applyBack } from './card-backs.js?v=0.1.739';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.739';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.739';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.739';
+import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.740';
+import { computeStats, statsHtml } from './stats.js?v=0.1.740';
+import { nightKey } from './observation.js?v=0.1.740';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.740';
+import { sfx } from './sfx.js?v=0.1.740';
+import { expandFacts } from './catalog-facts.js?v=0.1.740';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.740';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.740';
+import { ticket } from './toast.js?v=0.1.740';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.740';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.740';
+import { cardArt } from './art.js?v=0.1.740';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.740';
+import { applyBack } from './card-backs.js?v=0.1.740';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.740';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.740';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.740';
 import './stories.js?v=0.1.680';
-import { loadConstellations, conList } from './constellations.js?v=0.1.739';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.739';
-import { eventBadges, nextEvent } from './events.js?v=0.1.739';
-import { shareCardEl } from './share-card.js?v=0.1.739';
-import { removeSighting } from './account.js?v=0.1.739';
-import { allSightings, deleteSighting } from './store.js?v=0.1.739';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.739';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.739';
+import { loadConstellations, conList } from './constellations.js?v=0.1.740';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.740';
+import { eventBadges, nextEvent } from './events.js?v=0.1.740';
+import { shareCardEl } from './share-card.js?v=0.1.740';
+import { removeSighting } from './account.js?v=0.1.740';
+import { allSightings, deleteSighting } from './store.js?v=0.1.740';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.740';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.740';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -802,6 +802,9 @@ if (EMBED) {
       else window.parent.postMessage({ sc: 'explore' }, location.origin);
     }
     if (e.data.sc === 'refresh') refreshSightings();
+    // Hidden behind the sky, its animations (twinkles, shimmers, drift) pause (2026-10-16 perf sweep).
+    if (e.data.sc === 'away') document.documentElement.classList.add('away');
+    if (e.data.sc === 'open' || e.data.sc === 'show') document.documentElement.classList.remove('away');
     if (e.data.sc === 'tonight') { state.plan = readPlan(); if (state.ready && ['owned', 'discover'].includes(state.view)) render(); }
   });
 }

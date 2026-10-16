@@ -1,17 +1,17 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.739';
+import { extinction } from './sky-limit.js?v=0.1.740';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.739';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.740';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.739';
-import { createCloudGL } from './clouds-gl.js?v=0.1.739';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.740';
+import { createCloudGL } from './clouds-gl.js?v=0.1.740';
 // Cloud colours by light: sunlit tops, shadowed bellies, and the horizon haze they melt into (0–1 RGB).
 const CLOUD_LIGHT = {
   day: { lit: [1, 1, 1], shade: [0.62, 0.68, 0.77], haze: [0.82, 0.87, 0.93] },
   dusk: { lit: [1, 0.8, 0.68], shade: [0.36, 0.33, 0.42], haze: [0.62, 0.5, 0.52] },
   night: { lit: [0.22, 0.25, 0.31], shade: [0.1, 0.12, 0.16], haze: [0.14, 0.15, 0.2] },
 };
-import { TIER_INFO } from './rarity.js?v=0.1.739';
+import { TIER_INFO } from './rarity.js?v=0.1.740';
 
 const RAD = Math.PI / 180;
 const BELOW_ICON = 10.5, BELOW_ICON_HIT = 20; // every satellite under the horizon, passes and halo alike (80% of 13 since 2026-10-13); lined up in the circle it grows
@@ -533,7 +533,7 @@ export class SkyView {
       if (this.cloudGL && this.basis) {
         const L = f > 0.5 ? CLOUD_LIGHT.day : f > 0 ? CLOUD_LIGHT.dusk : CLOUD_LIGHT.night;
         const sun = this.sunEnu ?? [0, -0.5, 0.5];
-        const out = this.cloudGL.render({ basis: this.basis, w: this.w, h: this.h, f: this.f, cx: this.cx, cy: this.cy, scale: 0.75, sun,
+        const out = this.cloudGL.render({ basis: this.basis, w: this.w, h: this.h, f: this.f, cx: this.cx, cy: this.cy, scale: 0.5, sun,
           wind: [sec * 0.012, sec * 0.004], cover, alpha: f > 0 ? 0.95 : 0.7, ...L });
         ctx.drawImage(out, 0, 0, this.w, this.h);
       } else {
@@ -583,7 +583,9 @@ export class SkyView {
         const vis = this.starLimit == null ? 1 : Math.max(0, Math.min(1, (this.starLimit - 3.6) / 2.4));
         if (!vis) return;
         const night = this.theme === THEMES.night;
-        const out = this.mwGL.render({ basis: this.basis, gal: milky.gal, w: this.w, h: this.h, f: this.f, cx: this.cx, cy: this.cy, scale: 1,
+        // Half resolution (2026-10-16 perf sweep): copying the WebGL canvas into the 2D sky was ~60% of a frame's work; the
+        // photo is soft, so a quarter of the pixels looks the same.
+        const out = this.mwGL.render({ basis: this.basis, gal: milky.gal, w: this.w, h: this.h, f: this.f, cx: this.cx, cy: this.cy, scale: 0.5,
           alpha: (this.theme.milkyPhoto ?? 1) * vis * (1 - Math.min(1, (this.dayF ?? 0) / 0.2)), mono: night ? 1 : 0, tint: night ? [0.75, 0.1, 0.07] : [1, 1, 1] });
         const ctx = this.ctx; ctx.save(); ctx.globalCompositeOperation = 'screen'; ctx.drawImage(out, 0, 0, this.w, this.h); ctx.restore();
         return;
