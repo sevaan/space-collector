@@ -3,15 +3,15 @@
 // picture" shows one card for each art file (most satellites share a picture by kind) with how many cards use it.
 // Stars (☆) are saved in this browser (localStorage 'reviewStars'); "Copy starred" puts a list on the clipboard to
 // hand back. Not linked from the app.
-import { expandFacts } from './catalog-facts.js?v=0.1.722';
-import { renderCard, miniCard, artImage } from './card.js?v=0.1.722';
-import { buildCards } from './card-model.js?v=0.1.722';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.722';
-import { loadLore, titleFor, debrisOf } from './lore.js?v=0.1.722';
+import { expandFacts } from './catalog-facts.js?v=0.1.723';
+import { renderCard, miniCard, artImage } from './card.js?v=0.1.723';
+import { buildCards } from './card-model.js?v=0.1.723';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.723';
+import { loadLore, titleFor, debrisOf } from './lore.js?v=0.1.723';
 import './stories.js?v=0.1.680';
-import { CON_FIGURES } from './con-figures.js?v=0.1.722';
-import { loadConstellations, CON_BY_ID } from './constellations.js?v=0.1.722';
-import { loadComets } from './comets.js?v=0.1.722';
+import { CON_FIGURES } from './con-figures.js?v=0.1.723';
+import { loadConstellations, CON_BY_ID } from './constellations.js?v=0.1.723';
+import { loadComets } from './comets.js?v=0.1.723';
 
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
@@ -130,7 +130,7 @@ function frameEdit(v, host, c) {
   const art = host.querySelector('.card__art'), im = art.querySelector('img.card-art-image'); if (!im) return;
   const was = frames[c._art] ?? null, f = { x: 0, y: 0, z: 1, ...was, py: centreY(im) };
   const ov = document.createElement('div'); ov.className = 'fr-ov';
-  ov.innerHTML = '<i class="fr-box"><span>Keep the object inside</span></i><b class="fr-h tl"></b><b class="fr-h tr"></b><b class="fr-h bl"></b><b class="fr-h br"></b>';
+  ov.innerHTML = '<b class="fr-h tl"></b><b class="fr-h tr"></b><b class="fr-h bl"></b><b class="fr-h br"></b>';
   art.appendChild(ov); host.classList.add('framing');
   const read = v.querySelector('.fr-read'), acts = v.querySelector('.fr-acts');
   v.querySelector('.fr-hint').hidden = true; read.hidden = false; acts.hidden = false; v.querySelector('.acts:not(.fr-acts)').hidden = true;
