@@ -5,12 +5,12 @@
 //  Everything scales with rarity (Legendary dims the sky, shockwave, held breath, slow flip, fanfare).
 // Waits use timers, not animation.finished, so a paused tab can never freeze the sequence.
 
-import { sfx, loadSfx } from './sfx.js?v=0.1.747';
-import { audioCtx } from './audio-ctx.js?v=0.1.747';
-import { TIER_INFO } from './rarity.js?v=0.1.747';
-import { levelFor, attachTilt, attachGyro, attachFlip, throwOff } from './card.js?v=0.1.747';
-import { applyBack } from './card-backs.js?v=0.1.747';
-import { addStarfield } from './starfield.js?v=0.1.747';
+import { sfx, loadSfx } from './sfx.js?v=0.1.748';
+import { audioCtx } from './audio-ctx.js?v=0.1.748';
+import { TIER_INFO } from './rarity.js?v=0.1.748';
+import { levelFor, attachTilt, attachGyro, attachFlip, throwOff } from './card.js?v=0.1.748';
+import { applyBack } from './card-backs.js?v=0.1.748';
+import { addStarfield } from './starfield.js?v=0.1.748';
 
 const FX = {
   common:    { particles: 14,  flip: 520,  spin: 0,   dim: 0,   shock: false, notes: [880],                            hold: 0 },
@@ -204,6 +204,7 @@ export async function playView({ card, o, from, sighting = null, eyebrow = null 
   const my = run, alive = () => my === run;
   const tierKey = FX[o.tier] ? o.tier : 'common';
   const fx = FX[tierKey], color = (TIER_INFO[tierKey] ?? TIER_INFO.common).color;
+  $('rv-news').replaceChildren(); // a plain view shows no earned chips (playtest 2026-10-16: the last catch's chips came back)
   const root = $('reveal');
   root.style.setProperty('--fx', color);
   root.classList.remove('rv-done');

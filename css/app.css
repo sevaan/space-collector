@@ -1411,3 +1411,5 @@ body.night #debug .set-bar { border-color: #5a1e18; } body.night #debug .set-bar
 .back-rand { position: relative; width: 52%; aspect-ratio: 2 / 3; }
 .back-rand i { position: absolute; inset: 0; border-radius: 5px; border: 1.5px solid #cfd6c2; background: #0e1a29; }
 .back-rand i:nth-child(1) { transform: rotate(-12deg) translateX(-14%); } .back-rand i:nth-child(2) { transform: rotate(8deg) translateX(12%); } .back-rand i:nth-child(3) { background: #13243a; border-color: #fa8127; }
+/* Panels take focus themselves when they open (screen readers start there); no outline on the panel box. */
+.overlay[tabindex="-1"]:focus { outline: none; }

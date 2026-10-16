@@ -110,3 +110,6 @@ body.night #reveal { background: #000; }
 .rv-roll { overflow: visible; height: auto; vertical-align: baseline; clip-path: inset(0 -4px); }
 .rv-roll > span { color: #5fd08a; }
 body.night .rv-roll > span { color: inherit; }
+
+/* The share button gets focus when the reveal opens; no ring unless the keyboard put it there (playtest 2026-10-16). */
+#reveal .rv-share:focus:not(:focus-visible) { outline: none; box-shadow: none; }
