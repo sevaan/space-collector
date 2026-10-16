@@ -1071,3 +1071,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - v0.1.728: CAT 4 (13011) has its own picture 'cat', drawn from the ESA/CNES/Arianespace photo of the Capsule Ariane Technologique (futura-sciences l01-5.jpg; Sevaan's own reference was a modern ESA satellite, not the 1981 capsule).
 - v0.1.729: geodetic (Cosmos 203 etc.): background swirls removed and the left extension seam cropped off (Sevaan).
 - v0.1.730: Mu stages (M-4S, M-3H…) use the generic cylinder 'rocket-stage-1' instead of the spherical mu-rocket picture (Sevaan; no M-4S fourth-stage reference found).
+- v0.1.731: start-rocket (SL-18): open end perspective fixed, swirls removed. Twinkles skip each picture's object box (scripts/art-boxes.json, being filled by scratchpad restyle-all/boxes.py; import-art.py off_object).
