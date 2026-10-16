@@ -1371,3 +1371,5 @@ body.night #wake .wk-ring { border-color: #ff6e5a; } body.night #wake span { col
 #ob-done .d-cta { flex: none; }
 #ob-done:not(.nt) { overflow-y: auto; overscroll-behavior: contain; }
 .od-tl .it span b.od-tier { font: inherit; font-weight: 600; letter-spacing: inherit; }
+/* Settings opened from the Collection rises over it (2026-10-16): above #collection-frame (60) and the switcher (70). */
+body.panel-over-col #debug { z-index: 75; }
