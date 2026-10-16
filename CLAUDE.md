@@ -1119,3 +1119,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - Red night mode: the fade ring track and the Earth's-shadow edge/label are red, not gold; the "NOW!" pulse is still under reduced motion.
   - Unfound story cards: tile aria-label says "Secret story", and search can't find them.
   - roleOf: the catch-all "…SAT → Small satellite" only applies after the UCS purpose data (RADARSAT etc. got the right role when UCS knows it).
+- 2026-10-16 · TestFlight build 1.0 (11) archived (web v0.1.754: bug-hunt fixes); opened in Organizer, not uploaded.
