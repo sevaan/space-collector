@@ -1392,3 +1392,8 @@ body.panel-over-col #debug { z-index: 75; }
 #debug .set-tog:focus-visible { outline: 2px solid #fa8127; outline-offset: 2px; }
 body.night #debug .set-card { background: #120505; border-color: #7a2a20; outline-color: #3a1410; }
 body.night #debug .set-bar { border-color: #5a1e18; } body.night #debug .set-bar h3, body.night #debug .set-ic { color: #ff7f70; }
+
+/* The next clear night, one line at the foot of Tonight (2026-10-16). */
+.tl-nextclear { margin: 22px 0 8px; padding-top: 14px; border-top: 1px solid var(--edge-soft, #22344a); font: 500 15px/1.35 var(--label); color: var(--muted); display: flex; gap: 8px; align-items: center; }
+.tl-nextclear b { color: var(--text); font-weight: 600; }
+.tl-nextclear .ico { width: 16px; height: 16px; flex: none; color: var(--gold); }
