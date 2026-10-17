@@ -1,29 +1,29 @@
-import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.784';
-import { computeStats, statsHtml } from './stats.js?v=0.1.784';
-import { nightKey } from './observation.js?v=0.1.784';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.784';
-import { sfx } from './sfx.js?v=0.1.784';
-import { expandFacts } from './catalog-facts.js?v=0.1.784';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.784';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.784';
-import { ticket } from './toast.js?v=0.1.784';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.784';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.784';
-import { cardArt } from './art.js?v=0.1.784';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.784';
-import { applyBack } from './card-backs.js?v=0.1.784';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.784';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.784';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.784';
-import { STORIES } from './stories.js?v=0.1.784';
-import { loadConstellations, conList } from './constellations.js?v=0.1.784';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.784';
-import { eventBadges, nextEvent } from './events.js?v=0.1.784';
-import { shareCardEl } from './share-card.js?v=0.1.784';
-import { forgetSighting } from './cloud-backup.js?v=0.1.784';
-import { allSightings, deleteSighting } from './store.js?v=0.1.784';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.784';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.784';
+import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.785';
+import { computeStats, statsHtml } from './stats.js?v=0.1.785';
+import { nightKey } from './observation.js?v=0.1.785';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.785';
+import { sfx } from './sfx.js?v=0.1.785';
+import { expandFacts } from './catalog-facts.js?v=0.1.785';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.785';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.785';
+import { ticket } from './toast.js?v=0.1.785';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.785';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.785';
+import { cardArt } from './art.js?v=0.1.785';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.785';
+import { applyBack } from './card-backs.js?v=0.1.785';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.785';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.785';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.785';
+import { STORIES } from './stories.js?v=0.1.785';
+import { loadConstellations, conList } from './constellations.js?v=0.1.785';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.785';
+import { eventBadges, nextEvent } from './events.js?v=0.1.785';
+import { shareCardEl } from './share-card.js?v=0.1.785';
+import { forgetSighting } from './cloud-backup.js?v=0.1.785';
+import { allSightings, deleteSighting } from './store.js?v=0.1.785';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.785';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.785';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -273,7 +273,10 @@ function renderLogbook() {
   const el = card.querySelector('.lb-face');
   const span = p.rank.next ? p.rank.next - p.rank.at : 1, into = p.rank.next ? Math.max(0, Math.min(1, (p.xp - p.rank.at) / span)) : 1; // a rank kept from the old curve can sit above your XP: never below 0
   const done = p.achievements.filter((a) => a.done).length;
-  el.onclick = (e) => { if (e.target.closest('#streak-remind')) remindStreak(); };
+  // Tapping the card opens Observer stats (2026-10-17, Sevaan); its own buttons (Missions ›, Remind me), the mission
+  // list and the events row keep doing their own thing.
+  el.onclick = (e) => { if (e.target.closest('#streak-remind')) return remindStreak(); if (e.target.closest('button, a, .lb-mission, .lb-foot')) return; openStats(); };
+  el.style.cursor = 'pointer';
   // Front (2026-10-08, design/rank-card.html C): your rank ladder as the picture (twinkling stars), the rank and
   // XP, tonight's missions, and Events at the foot.
   const ri = p.rank.index, lo = Math.max(0, Math.min(ri - 2, RANKS.length - 4)), rungs = RANKS.slice(lo, lo + 4);

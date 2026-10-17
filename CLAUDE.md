@@ -1180,3 +1180,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - 2026-10-17: Plus card flip smoothed: .plus-host.flipping hides the shimmer layers (shine/foil/glare/glitter blend modes) during the turn, will-change on the card, shimmer fades back in (.landed).
 
 - 2026-10-17: Text audit (agent, Playwright at 360/375/390/402; scripts in scratchpad/ta, shots in scratchpad/text-audit) fixes: text-wrap pretty app-wide (balance on headings); next-pass chip hides under the radar tip; patch coins/badge hide over #ob-done (the "badge over the Tonight page"); settings labels never break (value ellipsis, compass buttons wrap); .lb-top fits at 360; .v-up__when balanced; tour no longer says "Catch the The Sun". Still open: tile names cut at 360, card-back names wrapping, stats label "Nights in a row", Find name truncation, sky canvas labels under HUD.
+
+- 2026-10-17: Tapping the Observer rank card in the Collection opens Observer stats (cards-page.js .lb-face onclick; its buttons, missions and events row excluded).
