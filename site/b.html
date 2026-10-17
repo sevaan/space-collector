@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Space Collector Field Guide</title>
+<meta name="description" content="A collecting game for the night sky. Every satellite, planet and star you catch with your phone becomes a card with real orbit data.">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="icon" href="assets/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600&family=IBM+Plex+Mono:wght@400;500&family=Barlow:wght@400;500&family=Russo+One&display=swap">
+<style>
+/* Layout: a spec sheet. Cobalt drafting paper with a grid, the card as the object under study, callout lines naming its parts; sections read like plates in a field guide. */
+:root {
+  --paper: #123a6b; --paper-deep: #0d2c53; --grid: #ffffff12; --grid-major: #ffffff1f;
+  --line: #e8f0ff; --ink: #fff2b3; --orange: #fa8127; --soft: #b9cbe6; --dim: #7f9cc4;
+  --common: #c3cad3; --uncommon: #6fe09a; --rare: #7cc4ff; --epic: #f08fe3; --legend: #ffc545;
+  --display: 'Russo One', 'Arial Black', sans-serif; --label: 'Barlow Condensed', 'Arial Narrow', sans-serif; --body: 'Barlow', system-ui, sans-serif; --mono: 'IBM Plex Mono', ui-monospace, monospace;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { background: var(--paper); }
+body { margin: 0; color: var(--line); font: 400 17px/1.55 var(--body); -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  background: var(--paper); background-image: linear-gradient(var(--grid-major) 1px, transparent 1px), linear-gradient(90deg, var(--grid-major) 1px, transparent 1px), linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 120px 120px, 120px 120px, 24px 24px, 24px 24px; }
+img, video { max-width: 100%; display: block; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--orange); outline-offset: 3px; }
+.wrap { width: 100%; max-width: 1180px; margin: 0 auto; padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px)); }
+h1, h2, h3 { font-family: var(--display); font-weight: 400; margin: 0; text-wrap: balance; color: var(--ink); }
+p { margin: 0; }
+.tag { font: 500 12px/1.3 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--soft); }
+.plate { display: flex; align-items: baseline; gap: 14px; border-top: 1px solid #ffffff55; padding-top: 12px; }
+.plate b { font: 600 13px/1 var(--label); letter-spacing: .26em; color: var(--orange); text-transform: uppercase; }
+.plate span { font: 500 12px/1 var(--mono); color: var(--dim); }
+section { padding-block: clamp(64px, 10vw, 128px); }
+.lede { color: var(--soft); max-width: 34em; }
+
+/* Title block (as on a drawing) */
+.titleblock { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding-top: max(16px, env(safe-area-inset-top, 0px)); padding-bottom: 14px; border-bottom: 1px solid #ffffff40; }
+.titleblock .mark { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.titleblock img { width: 32px; height: 32px; border-radius: 8px; }
+.titleblock .mark span { font: 400 16px/1 var(--display); color: var(--ink); }
+.titleblock .meta { display: flex; gap: 20px; }
+
+/* Hero: the card under study, with callouts */
+.hero { padding-block: clamp(36px, 6vw, 72px) clamp(64px, 9vw, 110px); }
+.hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: clamp(24px, 4vw, 64px); align-items: center; }
+.hero h1 { font-size: clamp(46px, 7.6vw, 104px); line-height: .92; letter-spacing: -.01em; }
+.hero h1 em { font-style: normal; color: var(--orange); }
+.hero .lede { margin-top: 22px; font-size: 18px; }
+.cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; align-items: center; }
+.btn { font: 600 14px/1 var(--label); letter-spacing: .2em; text-transform: uppercase; text-decoration: none; padding: 15px 22px; border: 1px solid var(--line); color: var(--line); background: transparent; cursor: pointer; }
+.btn.hot { background: var(--orange); border-color: var(--orange); color: #1a0f05; }
+.study { position: relative; width: 100%; max-width: 560px; justify-self: center; aspect-ratio: 560 / 520; }
+.study .card { position: absolute; left: 22%; top: 3.6%; width: 56%; transform-style: preserve-3d; transition: transform .15s ease-out; will-change: transform; }
+.study .card img { width: 100%; border-radius: 4.5%; box-shadow: 0 30px 60px #04122688; }
+.study .card .glare { position: absolute; inset: 0; border-radius: 4.5%; background: radial-gradient(circle at var(--gx, 30%) var(--gy, 20%), #ffffff45, transparent 40%); mix-blend-mode: soft-light; pointer-events: none; }
+.study svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.study svg line, .study svg polyline { stroke: var(--line); stroke-width: 1; fill: none; vector-effect: non-scaling-stroke; }
+.study svg circle { fill: var(--orange); }
+.callout { position: absolute; width: 21%; font: 500 11px/1.35 var(--mono); color: var(--soft); text-transform: uppercase; letter-spacing: .04em; }
+.callout b { display: block; font: 600 12px/1.1 var(--label); letter-spacing: .2em; color: var(--ink); margin-bottom: 3px; }
+.callout.r { text-align: left; } .callout.l { text-align: right; }
+
+/* Specimen drawer */
+.drawer { display: grid; grid-auto-flow: column; grid-auto-columns: clamp(210px, 24vw, 270px); gap: 26px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 34px 4px 26px; margin-top: 30px; cursor: grab; scrollbar-width: thin; scrollbar-color: #ffffff55 transparent; }
+.drawer.drag { cursor: grabbing; scroll-snap-type: none; }
+.spec { scroll-snap-align: start; display: grid; gap: 12px; }
+.spec .flip { position: relative; aspect-ratio: 2 / 3; perspective: 1200px; cursor: pointer; background: none; border: 0; padding: 0; }
+.spec .in { position: absolute; inset: 0; transform-style: preserve-3d; transition: transform .6s cubic-bezier(.45, 0, .2, 1); }
+.spec .flip.over .in { transform: rotateY(180deg); }
+.spec .in img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 4.5%; }
+.spec .in img.bk { transform: rotateY(180deg); }
+.spec .in .front { box-shadow: 0 18px 34px #04122688; }
+.spec figcaption { display: grid; gap: 4px; border-top: 1px dashed #ffffff55; padding-top: 10px; }
+.spec figcaption b { font: 600 15px/1.1 var(--label); letter-spacing: .12em; text-transform: uppercase; color: var(--ink); }
+.spec figure { margin: 0; display: grid; gap: 12px; }
+.drawer-hint { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+
+/* Field key */
+.key { margin-top: 36px; overflow-x: auto; }
+.key table { width: 100%; border-collapse: collapse; min-width: 640px; font-size: 16px; }
+.key th { text-align: left; font: 600 12px/1 var(--label); letter-spacing: .22em; text-transform: uppercase; color: var(--dim); padding: 0 14px 12px 0; border-bottom: 1px solid #ffffff66; }
+.key td { padding: 16px 14px 16px 0; border-bottom: 1px solid #ffffff22; vertical-align: top; color: var(--soft); }
+.key td:first-child { font: 600 18px/1 var(--label); letter-spacing: .14em; text-transform: uppercase; white-space: nowrap; }
+.key td.ex { color: var(--ink); }
+.key tr { transition: background .2s; } .key tr:hover { background: #ffffff0c; }
+.key .shape { display: inline-block; width: 1.3em; }
+
+/* Observing log */
+.logbox { margin-top: 34px; border: 1px solid #ffffff55; background: #0d2c53cc; }
+.loghead { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; padding: 14px 18px; border-bottom: 1px solid #ffffff33; }
+.log { list-style: none; margin: 0; padding: 0; }
+.log li { display: grid; grid-template-columns: 6.6em minmax(0, 1fr) auto; gap: 16px; padding: 14px 18px; border-bottom: 1px solid #ffffff1a; align-items: baseline; opacity: .55; transition: opacity .4s, background .4s; }
+.log li.lit { opacity: 1; background: #ffffff08; }
+.log time { font: 500 14px/1 var(--mono); color: var(--ink); }
+.log li b { font: 500 16px/1.3 var(--body); color: var(--line); }
+.log li small { display: block; color: var(--soft); font-size: 14px; }
+.log li em { font: 600 12px/1 var(--label); letter-spacing: .16em; text-transform: uppercase; font-style: normal; white-space: nowrap; }
+.logfoot { padding: 12px 18px; }
+
+/* Patch board */
+.board { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: clamp(10px, 2vw, 22px); margin-top: 36px; }
+.board figure { margin: 0; display: grid; gap: 8px; justify-items: center; text-align: center; }
+.board img { width: 100%; max-width: 140px; transform: rotate(var(--r, 0deg)); transition: transform .4s cubic-bezier(.2, .9, .3, 1.3); }
+.board figure:hover img { transform: rotate(0deg) scale(1.08); }
+.board figcaption { font: 500 11px/1.2 var(--mono); text-transform: uppercase; color: var(--soft); }
+
+/* Backs */
+.backs { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 14px; margin-top: 34px; }
+.backs figure { margin: 0; display: grid; gap: 8px; }
+.backs img { width: 100%; border-radius: 4.5%; box-shadow: 0 12px 24px #04122688; transition: transform .3s; }
+.backs figure:hover img { transform: translateY(-8px) rotate(-2deg); }
+.backs figcaption { font: 600 12px/1.2 var(--label); letter-spacing: .14em; text-transform: uppercase; color: var(--soft); }
+.backs figcaption i { display: block; font: 500 11px/1.3 var(--mono); letter-spacing: 0; text-transform: none; font-style: normal; color: var(--dim); }
+
+.two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(24px, 5vw, 64px); align-items: start; margin-top: 36px; }
+.box { border: 1px solid #ffffff55; padding: clamp(18px, 3vw, 28px); background: #0d2c53cc; display: grid; gap: 14px; align-content: start; }
+.box h3 { font-size: clamp(24px, 3vw, 32px); }
+.box ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+.box li { display: grid; grid-template-columns: 1.4em minmax(0, 1fr); gap: 8px; color: var(--soft); }
+.box li b { color: var(--line); font-weight: 500; }
+.prices { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.price { border: 1px solid #ffffff44; padding: 12px 6px; text-align: center; display: grid; gap: 4px; }
+.price small { font: 500 11px/1 var(--mono); letter-spacing: .1em; color: var(--dim); }
+.price b { font: 400 22px/1 var(--display); color: var(--ink); }
+.price em { font: 600 11px/1 var(--label); letter-spacing: .14em; color: var(--orange); font-style: normal; min-height: 11px; }
+.price.best { border-color: var(--orange); }
+
+.closing { text-align: center; }
+.closing .wrap { display: grid; justify-items: center; gap: 20px; }
+.closing h2 { font-size: clamp(44px, 8vw, 104px); line-height: .95; }
+footer { border-top: 1px solid #ffffff40; padding-block: 24px max(24px, env(safe-area-inset-bottom, 0px)); }
+footer .wrap { display: flex; flex-wrap: wrap; gap: 10px 24px; justify-content: space-between; }
+
+@media (max-width: 860px) {
+  .hero-grid, .two { grid-template-columns: minmax(0, 1fr); }
+  .board { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .backs { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .titleblock .meta { display: none; }
+  .log li { grid-template-columns: 5.4em minmax(0, 1fr); } .log li em { grid-column: 2; }
+}
+.anat { display: none; }
+@media (max-width: 600px) {
+  .study { aspect-ratio: auto; }
+  .study svg, .study .callout { display: none; }
+  .study .card { position: relative; left: auto; top: auto; width: min(78%, 300px); margin: 0 auto; }
+  .anat { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 18px; margin: 26px 0 0; padding: 0; list-style: none; counter-reset: a; }
+  .anat li { font: 500 11.5px/1.4 var(--mono); text-transform: uppercase; color: var(--soft); border-top: 1px solid #ffffff44; padding-top: 8px; }
+  .anat li b { display: block; font: 600 12px/1.1 var(--label); letter-spacing: .2em; color: var(--ink); margin-bottom: 3px; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition-duration: .01ms !important; animation: none !important; } }
+</style>
+</head>
+<body>
+<script src="loader.js"></script>
+
+<header class="wrap"><div class="titleblock">
+  <a class="mark" href="#top"><img src="assets/icon.png" alt=""><span>SPACE COLLECTOR</span></a>
+  <div class="meta"><span class="tag">Field guide · Sheet 1 of 1</span><span class="tag">Coming soon · iPhone &amp; Android</span></div>
+</div></header>
+
+<section class="hero" id="top"><div class="wrap hero-grid">
+  <div>
+    <p class="tag">A collecting game for the night sky</p>
+    <h1 style="margin-top:16px">Collect<br>the <em>cosmos.</em></h1>
+    <p class="lede">Point your phone at the night sky. Every satellite, rocket stage, planet and star you line up in the circle becomes a card, with its real orbit and the story behind it.</p>
+    <div class="cta"><a class="btn hot" href="#drawer">Open the drawer</a><span class="tag">No telescope needed</span></div>
+  </div>
+  <div class="study" id="study" aria-label="Anatomy of a card: Hubble Space Telescope">
+    <svg viewBox="0 0 560 520" preserveAspectRatio="none" aria-hidden="true">
+      <polyline points="150,38 118,38 108,58"/><circle cx="150" cy="38" r="3"/>
+      <polyline points="400,40 445,40 452,64"/><circle cx="400" cy="40" r="3"/>
+      <polyline points="250,160 118,160 108,180"/><circle cx="250" cy="160" r="3"/>
+      <polyline points="300,345 448,345 455,365"/><circle cx="300" cy="345" r="3"/>
+      <polyline points="170,410 118,410 108,430"/><circle cx="170" cy="410" r="3"/>
+      <polyline points="380,465 448,465 455,485"/><circle cx="380" cy="465" r="3"/>
+      <polyline points="175,470 118,470 108,490"/><circle cx="175" cy="470" r="3"/>
+    </svg>
+    <div class="card" id="hcard"><img src="assets/hubble.webp" alt="The Hubble Space Telescope card: Rare, launched 1990, 470 km up at 27,500 km/h"><span class="glare"></span></div>
+    <p class="callout l" style="left:0;top:9.2%"><b>Rarity</b>◆ Rare. How hard it is to see from where people live.</p>
+    <p class="callout r" style="right:0;top:9.8%"><b>Album</b>Launch Nations, one of 13 albums to fill.</p>
+    <p class="callout l" style="left:0;top:32.5%"><b>Art</b>Drawn for every kind of object.</p>
+    <p class="callout r" style="right:0;top:68.2%"><b>Real orbit</b>470 km up, 27,500 km/h, 15 laps a day.</p>
+    <p class="callout l" style="left:0;top:80.8%"><b>The story</b>Short, true, checked.</p>
+    <p class="callout r" style="right:0;top:91.5%"><b>Levels</b>Bronze, then Silver at 3 nights, Gold at 10.</p>
+    <ul class="anat" aria-hidden="true"><li><b>Rarity</b>How hard it is to see</li><li><b>Album</b>One of 13 to fill</li><li><b>Real orbit</b>470 km up, 27,500 km/h</li><li><b>The story</b>Short, true, checked</li><li><b>Levels</b>Silver at 3 nights, Gold at 10</li><li><b>Logged</b>The night you caught it</li></ul>
+    <p class="callout l" style="left:0;top:93.3%"><b>Logged</b>The night you caught it.</p>
+  </div>
+</div></section>
+
+<section id="drawer" style="padding-top:0"><div class="wrap">
+  <div class="plate"><b>Plate 1 · Specimens</b><span>Drag the drawer · tap a card to turn it over</span></div>
+  <h2 style="font-size:clamp(32px,5vw,58px);margin-top:18px">More than 4,800 cards overhead.</h2>
+  <p class="lede" style="margin-top:14px">Space stations, telescopes, weather satellites, rocket stages from the 1960s, planets, the Moon, 700 stars and the galaxies you can see without a telescope.</p>
+  <div class="drawer" id="drw"></div>
+</div></section>
+
+<section id="key" style="padding-top:0"><div class="wrap">
+  <div class="plate"><b>Plate 2 · Field key</b><span>Rarity is difficulty, not luck</span></div>
+  <h2 style="font-size:clamp(32px,5vw,58px);margin-top:18px">How rare is it?</h2>
+  <p class="lede" style="margin-top:14px">Each satellite is scored on how bright it gets, how often it passes over the places people live, how much of the night it spends in sunlight, and how long it has been up there.</p>
+  <div class="key"><table>
+    <thead><tr><th>Rarity</th><th>What it means</th><th>For example</th></tr></thead>
+    <tbody>
+      <tr><td style="color:var(--common)"><span class="shape">●</span>Common</td><td>Up most clear nights. Bright stars, the Moon, the Sun.</td><td class="ex">The Moon, Betelgeuse</td></tr>
+      <tr><td style="color:var(--uncommon)"><span class="shape">▲</span>Uncommon</td><td>Easy once you know when to look.</td><td class="ex">Saturn, the Pleiades, an SL-8 rocket stage</td></tr>
+      <tr><td style="color:var(--rare)"><span class="shape">◆</span>Rare</td><td>Fewer, dimmer or briefer passes.</td><td class="ex">Hubble, the Space Station</td></tr>
+      <tr><td style="color:var(--epic)"><span class="shape">✦</span>Epic</td><td>Faint, far, or seldom over your part of the world.</td><td class="ex">The Andromeda Galaxy, Uranus</td></tr>
+      <tr><td style="color:var(--legend)"><span class="shape">★</span>Legendary</td><td>The hardest catches in the sky.</td><td class="ex">Vanguard 1, launched 1958 and still up there. Neptune.</td></tr>
+    </tbody>
+  </table></div>
+</div></section>
+
+<section id="log" style="padding-top:0"><div class="wrap">
+  <div class="plate"><b>Plate 3 · Observing log</b><span>From the app's plan</span></div>
+  <h2 style="font-size:clamp(32px,5vw,58px);margin-top:18px">One evening, planned.</h2>
+  <p class="lede" style="margin-top:14px">The app plans your night: what passes over and when, the one to look out for, and your chances at a Shiny. This is its plan for Peterborough, Ontario, on 16 October 2026.</p>
+  <div class="logbox">
+    <div class="loghead"><span class="tag">Fri 16 Oct 2026 · Peterborough, ON</span><span class="tag">Tonight's run</span></div>
+    <ol class="log" id="lg">
+      <li><time>8:41 PM</time><span><b>Cosmos 1513</b><small>A 1983 Soviet satellite, high in the west.</small></span><em style="color:var(--uncommon)">▲ Uncommon</em></li>
+      <li><time>8:45 PM</time><span><b>CZ-8A Rocket Stage</b><small>Slips into Earth's shadow halfway up in the northeast. Catch it as it fades.</small></span><em style="color:var(--epic)">Shiny chance</em></li>
+      <li><time>8:45 PM</time><span><b>Cosmos 2026</b><small>Halfway up in the east. New to your collection.</small></span><em style="color:var(--uncommon)">▲ Uncommon</em></li>
+      <li><time>9:01 PM</time><span><b>SL-8 Rocket Stage, tonight's headliner</b><small>High in the northeast. +25 XP.</small></span><em style="color:var(--orange)">Headliner</em></li>
+      <li><time>9:06 PM</time><span><b>Busiest moment</b><small>Ten objects up at once.</small></span><em style="color:var(--soft)">Peak</em></li>
+      <li><time>5:07 AM</time><span><b>International Space Station</b><small>Low in the southeast, for early risers.</small></span><em style="color:var(--rare)">◆ Rare</em></li>
+    </ol>
+    <p class="logfoot tag">Planned from the real catalogue of about 16,000 tracked objects, updated every day.</p>
+  </div>
+</div>
+</div></section>
+
+<section id="patches" style="padding-top:0"><div class="wrap">
+  <div class="plate"><b>Plate 4 · Insignia</b><span>Embroidered, more than 180 to earn</span></div>
+  <h2 style="font-size:clamp(32px,5vw,58px);margin-top:18px">Mission patches.</h2>
+  <p class="lede" style="margin-top:14px">For your first card, the Moon, a whole constellation, a Shiny, twelve weeks in a row. Some are secret, and the sky won't tell you where.</p>
+  <div class="board" id="bd"></div>
+</div></section>
+
+<section id="plus" style="padding-top:0"><div class="wrap">
+  <div class="plate"><b>Plate 5 · Terms</b><span>Free to play, for good</span></div>
+  <div class="two">
+    <div class="box"><h3>Free</h3><ul>
+      <li><span>✓</span><span><b>Every card.</b> All 4,800 of them, from the ISS to Neptune.</span></li>
+      <li><span>✓</span><span><b>Every patch and mission.</b> No paid shortcuts.</span></li>
+      <li><span>✓</span><span><b>Tonight's plan</b> and reminders for the Space Station.</span></li>
+      <li><span>✓</span><span><b>No ads.</b> No energy meters. No loot boxes.</span></li>
+    </ul></div>
+    <div class="box"><h3>Plus</h3><ul>
+      <li><span>+</span><span><b>Pass reminders</b> for anything you choose.</span></li>
+      <li><span>+</span><span><b>Rare alerts</b> when a new Rare card passes.</span></li>
+      <li><span>+</span><span><b>Shiny forecast</b>: when and where one can happen.</span></li>
+      <li><span>+</span><span><b>Six card backs</b>, or a random one each flip.</span></li>
+      <li><span>+</span><span><b>The Plus Member patch.</b></span></li>
+    </ul>
+    <div class="prices"><div class="price"><small>MONTH</small><b>$1.99</b><em></em></div><div class="price best"><small>YEAR</small><b>$9.99</b><em>7 DAYS FREE</em></div><div class="price"><small>FOREVER</small><b>$24.99</b><em>ONE TIME</em></div></div></div>
+  </div>
+  <div class="backs" id="bks"></div>
+</div></section>
+
+<section class="closing"><div class="wrap">
+  <p class="tag">Coming soon to iPhone and Android</p>
+  <h2>Look up<br>tonight.</h2>
+  <a class="btn hot" href="#top">Back to the top</a>
+</div></section>
+
+<footer><div class="wrap"><span class="tag">© 2026 Space Collector</span><span class="tag"><a href="https://sevaan.github.io/space-collector/privacy.html">Privacy</a></span></div></footer>
+
+<script>
+const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+// The card under study leans toward the pointer (or the phone, once it's held).
+const study = document.getElementById('study'), hc = document.getElementById('hcard');
+const lean = (x, y) => { hc.style.transform = `perspective(1100px) rotateY(${x * 14}deg) rotateX(${-y * 12}deg)`; hc.style.setProperty('--gx', `${50 + x * 60}%`); hc.style.setProperty('--gy', `${40 + y * 60}%`); };
+study.addEventListener('pointermove', (e) => { const b = hc.getBoundingClientRect(); lean((e.clientX - b.left) / b.width - .5, (e.clientY - b.top) / b.height - .5); });
+study.addEventListener('pointerleave', () => lean(0, 0));
+if (!still) { let t0 = performance.now(); const idle = (t) => { if (!study.matches(':hover')) lean(Math.sin((t - t0) / 2200) * .35, Math.cos((t - t0) / 3100) * .2); requestAnimationFrame(idle); }; requestAnimationFrame(idle); }
+
+// Plate 1: the drawer of specimens. Drag to browse; tap one to turn it over to a card back.
+const SPEC = [['iss', 'International Space Station', '◆ Rare · Icon', 'NORAD 25544 · 1998'], ['hubble', 'Hubble Space Telescope', '◆ Rare · Icon', 'NORAD 20580 · 1990'], ['legend', 'Vanguard 1', '★ Legendary', 'NORAD 5 · 1958'], ['stage', 'SL-8 Rocket Stage', '▲ Uncommon', 'Carried Cosmos 1250 · 1981'], ['shiny', 'Gonets-M 11', '▲ Uncommon · Shiny', 'Caught the fade · 2015'], ['andromeda', 'The Andromeda Galaxy', '✦ Epic', '2.5 million light years'], ['saturn', 'Saturn', '▲ Uncommon', '6th from the Sun'], ['jupiter', 'Jupiter', '▲ Uncommon', '5th from the Sun'], ['moon', 'The Moon', '● Common', '384,400 km away'], ['pleiades', 'The Pleiades', '▲ Uncommon', 'Open cluster in Taurus'], ['betelgeuse', 'Betelgeuse', '● Common', 'Red supergiant in Orion'], ['wow', 'The Wow! Signal', '❖ Story', 'A hidden story card']];
+const BACKS = ['collector', 'golden-record', 'star-chart', 'mission-patch', 'blueprint', 'aurora', 'nebula-foil'];
+const drw = document.getElementById('drw');
+drw.innerHTML = SPEC.map(([f, n, t, s], i) => `<div class="spec"><figure><button class="flip" type="button" aria-label="${n}. Tap to turn over"><span class="in"><img class="front" src="assets/${f}.webp" alt="" loading="lazy"><img class="bk" src="assets/backs/back-${BACKS[i % BACKS.length]}.webp" alt="" loading="lazy"></span></button><figcaption><span class="tag">Specimen ${String(i + 1).padStart(3, '0')} · ${t}</span><b>${n}</b><span class="tag" style="color:var(--dim)">${s}</span></figcaption></figure></div>`).join('');
+let dx = null, sx = 0, moved = false;
+drw.addEventListener('pointerdown', (e) => { if (e.pointerType !== 'mouse') return; dx = e.clientX; sx = drw.scrollLeft; moved = false; });
+addEventListener('pointermove', (e) => { if (dx == null) return; const d = e.clientX - dx; if (Math.abs(d) > 4) { moved = true; drw.classList.add('drag'); } drw.scrollLeft = sx - d; });
+addEventListener('pointerup', () => { dx = null; setTimeout(() => drw.classList.remove('drag'), 0); });
+drw.addEventListener('click', (e) => { const f = e.target.closest('.flip'); if (!f || moved) return; f.classList.toggle('over'); });
+
+// Plate 3: the log lights up line by line as it comes into view.
+const lis = [...document.querySelectorAll('#lg li')];
+new IntersectionObserver((es, ob) => { for (const e of es) if (e.isIntersecting) { lis.forEach((li, i) => setTimeout(() => li.classList.add('lit'), still ? 0 : i * 260)); ob.disconnect(); } }, { threshold: .3 }).observe(document.getElementById('lg'));
+
+// Plate 4: the patch board, pinned at slight angles.
+const PATCH = [['first', 'First Light'], ['moon', 'Moonstruck'], ['station', 'Crewed'], ['zodiac', 'Zodiac'], ['shiny', 'Shiny Hunter'], ['legend', 'Legend'], ['starlink', 'Train Spotter'], ['race', 'Space Race'], ['twilight', 'Early Bird'], ['cons25', 'Atlas'], ['plus', 'Plus Member'], ['meteor', 'Secret']];
+document.getElementById('bd').innerHTML = PATCH.map(([id, n], i) => `<figure><img src="assets/patch-${id}.webp" alt="" loading="lazy" style="--r:${[-6, 4, -2, 7, -4, 3][i % 6]}deg${id === 'meteor' ? ';filter:brightness(0) opacity(.4) drop-shadow(0 0 1px #e8f0ff)' : ''}"><figcaption>${id === 'meteor' ? '??? · Secret' : n}</figcaption></figure>`).join('');
+
+// Plate 5: the seven card backs.
+const BN = [['collector', 'Mission Control', 'Free'], ['golden-record', 'Golden Record', 'Earn it, or Plus'], ['star-chart', 'Star Chart', 'Earn it, or Plus'], ['mission-patch', 'Mission Patch', 'Plus'], ['blueprint', 'Blueprint', 'Plus'], ['aurora', 'Northern Lights', 'Plus'], ['nebula-foil', 'Nebula Foil', 'Plus']];
+document.getElementById('bks').innerHTML = BN.map(([f, n, h]) => `<figure><img src="assets/backs/back-${f}.webp" alt="" loading="lazy"><figcaption>${n}<i>${h}</i></figcaption></figure>`).join('');
+</script>
+</body>
+</html>

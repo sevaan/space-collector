@@ -1,0 +1,365 @@
+<title>Space Collector</title>
+<meta name="description" content="A collecting game for the night sky. Point your phone up, line up a satellite, a planet or a star in the circle, and collect it as a card.">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="icon" href="assets/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600&family=Barlow:wght@400;500&family=Russo+One&display=swap">
+<style>
+/* Layout: the page is the app. A live sky with the app's own target circle, then short chapters that each end on something you can watch or touch. */
+:root {
+  --night: #080f1b; --deep: #0c1d29; --panel: #0f1a29; --edge: #22344a;
+  --cream: #fff2b3; --orange: #fa8127; --steel: #adbcc8; --muted: #9fb3c8;
+  --common: #9aa4b1; --uncommon: #5fd08a; --rare: #4aa8ff; --epic: #e46ad6; --legend: #ffc545;
+  --display: 'Russo One', 'Arial Black', sans-serif; --label: 'Barlow Condensed', 'Arial Narrow', sans-serif; --body: 'Barlow', system-ui, sans-serif;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { background: var(--night); }
+body { margin: 0; background: var(--night); color: var(--cream); font: 400 17px/1.55 var(--body); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+img, video { max-width: 100%; display: block; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--orange); outline-offset: 3px; border-radius: 6px; }
+.wrap { width: 100%; max-width: 1140px; margin: 0 auto; padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px)); }
+.eyebrow { font: 600 13px/1 var(--label); letter-spacing: .26em; text-transform: uppercase; color: var(--orange); margin: 0; }
+h1, h2 { font-family: var(--display); font-weight: 400; letter-spacing: -.005em; text-wrap: balance; margin: 0; }
+h2 { font-size: clamp(32px, 5.2vw, 56px); line-height: 1.02; }
+p { margin: 0; }
+.lede { color: var(--steel); max-width: 34em; }
+
+/* Top bar */
+.top { position: absolute; z-index: 5; top: 0; left: 0; right: 0; padding-top: max(18px, env(safe-area-inset-top, 0px)); }
+.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.mark { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.mark img { width: 34px; height: 34px; border-radius: 9px; }
+.mark span { font: 400 17px/1 var(--display); letter-spacing: .02em; }
+.soon { font: 600 12px/1 var(--label); letter-spacing: .18em; text-transform: uppercase; color: var(--cream); border: 1px solid #ffffff2a; border-radius: 99px; padding: 8px 12px; background: #080f1b99; backdrop-filter: blur(6px); white-space: nowrap; }
+
+/* Hero sky */
+.hero { position: relative; height: min(100svh, 920px); min-height: 620px; overflow: hidden; background: radial-gradient(120% 90% at 50% 110%, #12283a 0%, var(--night) 60%); touch-action: pan-y; }
+#sky { position: absolute; inset: 0; width: 100%; height: 100%; }
+.hero-copy { position: absolute; z-index: 3; left: 0; right: 0; bottom: max(36px, env(safe-area-inset-bottom, 0px)); pointer-events: none; }
+.hero-copy .wrap { display: grid; gap: 14px; }
+.hero h1 { font-size: clamp(40px, 7.4vw, 84px); line-height: .98; max-width: 11em; text-shadow: 0 2px 30px #080f1b; }
+.hero .lede { text-shadow: 0 1px 12px #080f1b; }
+.hint { font: 600 13px/1.2 var(--label); letter-spacing: .2em; text-transform: uppercase; color: var(--muted); display: flex; gap: 10px; align-items: center; }
+.hint i { width: 26px; height: 1px; background: currentColor; display: inline-block; }
+
+/* The target circle (the app's reticle: same ticks, orange when something's inside) */
+#tgt { position: absolute; z-index: 4; left: 0; top: 0; width: 0; height: 0; pointer-events: none; }
+#tgt svg { position: absolute; overflow: visible; left: 0; top: 0; }
+#tgt .name { position: absolute; left: 50%; transform: translate(-50%, -100%); white-space: nowrap; text-align: center; opacity: 0; transition: opacity .2s; }
+#tgt .name small { display: block; font: 600 12px/1 var(--label); letter-spacing: .24em; text-transform: uppercase; margin-bottom: 6px; }
+#tgt .name b { font: 400 22px/1 var(--display); color: var(--cream); text-shadow: 0 2px 10px #000; }
+#tgt.on .name { opacity: 1; }
+#collect { position: absolute; left: 50%; transform: translate(-50%, 0) scale(.9); pointer-events: none; opacity: 0; transition: opacity .18s, transform .18s; font: 600 15px/1 var(--label); letter-spacing: .26em; text-transform: uppercase; color: var(--orange); background: #fa812724; border: 1px solid #fa8127aa; border-radius: 99px; padding: 14px 28px; cursor: pointer; }
+#tgt.on #collect { opacity: 1; pointer-events: auto; transform: translate(-50%, 0) scale(1); }
+#collect:active { background: var(--orange); color: var(--night); }
+
+/* Reveal */
+#reveal { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; background: #050a12e8; opacity: 0; visibility: hidden; transition: opacity .3s, visibility .3s; padding: max(20px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(20px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+#reveal.open { opacity: 1; visibility: visible; }
+.rv { display: grid; justify-items: center; gap: 18px; }
+.rv-head { font: 600 13px/1 var(--label); letter-spacing: .24em; text-transform: uppercase; color: var(--tier, var(--rare)); }
+.rv-head b { color: var(--uncommon); margin-left: .6em; }
+.rv-card { width: min(300px, 72vw, calc((100svh - 220px) / 1.5)); aspect-ratio: 2 / 3; perspective: 1400px; }
+.rv-flip { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform .62s cubic-bezier(.45, 0, .2, 1); }
+.rv-flip.face { transform: rotateY(180deg); }
+.rv-flip img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 4.5%; }
+.rv-flip .back { box-shadow: 0 0 60px var(--tier, var(--rare)); animation: rattle 1s ease .35s; }
+.rv-flip .front { transform: rotateY(180deg); filter: drop-shadow(0 18px 40px #000a); }
+@keyframes rattle { 15%, 45%, 75% { transform: rotate(-2deg); } 30%, 60% { transform: rotate(2deg); } }
+.rv-acts { display: flex; gap: 12px; }
+.btn { font: 600 14px/1 var(--label); letter-spacing: .2em; text-transform: uppercase; color: var(--cream); background: #ffffff10; border: 1px solid #ffffff2a; border-radius: 99px; padding: 14px 22px; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; }
+.btn.hot { background: var(--orange); border-color: var(--orange); color: #1a0f05; }
+
+/* Chapters */
+section.ch { padding-block: clamp(72px, 11vw, 140px); }
+.ch-head { display: grid; gap: 16px; max-width: 760px; }
+.steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(16px, 3vw, 36px); margin-top: 48px; }
+.step { display: grid; gap: 16px; align-content: start; }
+.step h3 { font: 400 22px/1.1 var(--display); margin: 0; }
+.step p { color: var(--steel); font-size: 16px; }
+.phone { position: relative; width: 100%; max-width: 300px; aspect-ratio: 9 / 16; border-radius: 34px; padding: 9px; background: linear-gradient(160deg, #2a3a50, #121c2a 40%, #0a111c); box-shadow: 0 30px 60px #0009, inset 0 0 0 1px #ffffff18; }
+.phone video { width: 100%; height: 100%; object-fit: cover; border-radius: 26px; background: #000; }
+.step .num { font: 600 13px/1 var(--label); letter-spacing: .24em; color: var(--orange); }
+
+.fan { position: relative; height: clamp(360px, 46vw, 520px); margin-top: 40px; }
+.fan figure { position: absolute; left: 50%; bottom: 0; width: clamp(150px, 20vw, 240px); margin: 0; transform-origin: 50% 120%; transition: transform .35s cubic-bezier(.2, .8, .2, 1); cursor: pointer; }
+.fan figure img { width: 100%; border-radius: 4.5%; filter: drop-shadow(0 18px 30px #000c); }
+.fan figure .glare { position: absolute; inset: 0; border-radius: 4.5%; background: radial-gradient(circle at var(--gx, 50%) var(--gy, 30%), #ffffff38, transparent 45%); mix-blend-mode: soft-light; opacity: 0; transition: opacity .3s; pointer-events: none; }
+.fan figure:hover .glare, .fan figure.lift .glare { opacity: 1; }
+.tiers { display: flex; flex-wrap: wrap; gap: 10px 22px; margin-top: 34px; font: 600 14px/1 var(--label); letter-spacing: .16em; text-transform: uppercase; }
+.tiers span { display: inline-flex; gap: 8px; align-items: center; }
+
+.split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(28px, 6vw, 80px); align-items: center; }
+.split .phone { justify-self: center; max-width: 320px; }
+.ways { display: grid; gap: 10px; margin-top: 24px; padding: 0; list-style: none; }
+.ways li { display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 10px; color: var(--steel); font-size: 16px; }
+.ways li b { color: var(--cream); font-weight: 500; }
+.ways li span:first-child { color: var(--cream); text-align: center; }
+
+.patches { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: clamp(10px, 2vw, 24px); margin-top: 44px; }
+.patch { margin: 0; display: grid; justify-items: center; gap: 8px; text-align: center; font: 600 12px/1.2 var(--label); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.patch img { width: 100%; max-width: 150px; transition: transform .3s cubic-bezier(.2, .8, .2, 1); }
+.patch:hover img { transform: rotate(-6deg) scale(1.06); }
+.secret { cursor: pointer; background: none; border: 0; padding: 0; color: inherit; font: inherit; }
+.secret img { filter: brightness(0) saturate(0) opacity(.42) drop-shadow(0 0 1px #adbcc8); transition: filter .5s, transform .3s; }
+.secret.open img { filter: none; }
+.secret .q { color: var(--cream); }
+
+.plus { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: clamp(28px, 6vw, 72px); align-items: center; }
+.free { font: 400 clamp(26px, 3.6vw, 40px)/1.1 var(--display); }
+.perks { list-style: none; padding: 0; margin: 22px 0 0; display: grid; gap: 12px; }
+.perks li { display: grid; grid-template-columns: 9.5em minmax(0, 1fr); gap: 14px; color: var(--steel); font-size: 16px; border-top: 1px solid var(--edge); padding-top: 12px; }
+.perks li b { color: var(--cream); font-weight: 500; }
+.prices { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 26px; max-width: 460px; }
+.price { border: 1px solid var(--edge); border-radius: 14px; padding: 14px 8px; text-align: center; display: grid; gap: 6px; background: var(--panel); }
+.price small { font: 600 12px/1 var(--label); letter-spacing: .2em; color: var(--muted); }
+.price b { font: 400 24px/1 var(--display); }
+.price em { font: 600 11px/1 var(--label); letter-spacing: .14em; color: var(--orange); font-style: normal; min-height: 11px; }
+.price.best { border-color: var(--orange); background: #2a1d14; }
+.plus-card { justify-self: center; width: min(320px, 80vw); position: relative; }
+.plus-card img.p { position: absolute; width: 38%; right: -6%; bottom: 8%; transform: rotate(-10deg); filter: drop-shadow(0 10px 20px #000c); }
+
+.end { text-align: center; padding-block: clamp(80px, 12vw, 160px); background: radial-gradient(80% 60% at 50% 100%, #12283a, var(--night) 70%); }
+.end .wrap { display: grid; justify-items: center; gap: 22px; }
+.end h2 { font-size: clamp(44px, 8vw, 96px); }
+.end .phone { max-width: 280px; }
+.film { position: relative; cursor: pointer; }
+.film .play { position: absolute; inset: 0; display: grid; place-items: center; border-radius: 34px; background: linear-gradient(transparent 55%, #080f1bcc); }
+.film .play span { font: 600 14px/1 var(--label); letter-spacing: .22em; text-transform: uppercase; padding: 14px 20px; border-radius: 99px; background: #080f1bcc; border: 1px solid #ffffff3a; align-self: end; margin-bottom: 24px; }
+.film.playing .play { display: none; }
+footer { border-top: 1px solid var(--edge); padding-block: 28px max(28px, env(safe-area-inset-bottom, 0px)); color: var(--muted); font-size: 14px; }
+footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 24px; }
+footer a { color: var(--steel); }
+
+@media (max-width: 760px) {
+  .steps { grid-template-columns: minmax(0, 1fr); }
+  .steps .phone { max-width: 240px; }
+  .split, .plus { grid-template-columns: minmax(0, 1fr); }
+  .patches { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .perks li { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+  .soon { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition-duration: .01ms !important; animation: none !important; } }
+</style>
+
+<script src="loader.js"></script>
+
+<header class="top"><div class="wrap">
+  <a class="mark" href="#top"><img src="assets/icon.png" alt=""><span>SPACE COLLECTOR</span></a>
+  <span class="soon">Coming soon · iPhone &amp; Android</span>
+</div></header>
+
+<section class="hero" id="top" aria-label="Try it: a live sky">
+  <canvas id="sky" aria-hidden="true"></canvas>
+  <div id="tgt" aria-live="polite">
+    <svg id="ret" aria-hidden="true"></svg>
+    <div class="name" id="tname"><small id="ttier"></small><b id="tlabel"></b></div>
+    <button id="collect" type="button">Collect</button>
+  </div>
+  <div class="hero-copy"><div class="wrap">
+    <p class="hint"><i></i>Drag the circle onto a moving light</p>
+    <h1>Every light up there is a card.</h1>
+    <p class="lede">Point your phone at the night sky. Line up a satellite, a planet or a star in the circle, tap Collect, and it's yours.</p>
+  </div></div>
+</section>
+
+<section class="ch" id="how"><div class="wrap">
+  <div class="ch-head"><p class="eyebrow">How it works</p><h2>Point. Tap. Collect.</h2>
+    <p class="lede">No telescope and no tickets. Your phone already knows what's overhead from where you stand.</p></div>
+  <div class="steps">
+    <div class="step"><div class="phone"><video src="assets/video/catch.mp4" poster="assets/video/catch.jpg" muted loop playsinline autoplay preload="metadata"></video></div>
+      <span class="num">01 · Point</span><h3>Hold your phone up</h3><p>The sky on your screen lines up with the real one. Satellites drift across it with their paths drawn ahead of them.</p></div>
+    <div class="step"><div class="phone"><video src="assets/video/reveal.mp4" poster="assets/video/reveal.jpg" muted loop playsinline autoplay preload="metadata"></video></div>
+      <span class="num">02 · Tap</span><h3>Catch it in the circle</h3><p>When something moves into the circle it turns orange. Tap Collect before it slips away, and the card flips open.</p></div>
+    <div class="step"><div class="phone"><video src="assets/video/collection.mp4" poster="assets/video/collection.jpg" muted loop playsinline autoplay preload="metadata"></video></div>
+      <span class="num">03 · Keep</span><h3>Build your collection</h3><p>Every card carries real numbers: how high it flies, how fast, and the story behind it. Clear nights level your cards up.</p></div>
+  </div>
+</div></section>
+
+<section class="ch" id="cards" style="padding-top:0"><div class="wrap">
+  <div class="ch-head"><p class="eyebrow">What's up there</p><h2>More than 4,800 cards over your head.</h2>
+    <p class="lede">The Space Station and Hubble. Rocket stages from the 1960s still tumbling round. Planets, the Moon, 700 stars, galaxies you can see without a telescope. Rarity is how hard each one is to see from where people live.</p></div>
+  <div class="fan" id="fan"></div>
+  <div class="tiers" aria-label="Rarities">
+    <span style="color:var(--common)">● Common</span><span style="color:var(--uncommon)">▲ Uncommon</span><span style="color:var(--rare)">◆ Rare</span><span style="color:var(--epic)">✦ Epic</span><span style="color:var(--legend)">★ Legendary</span>
+  </div>
+</div></section>
+
+<section class="ch" id="shiny" style="padding-top:0"><div class="wrap split">
+  <div class="ch-head"><p class="eyebrow">Shinies</p><h2>Catch the fade.</h2>
+    <p class="lede">Satellites shine because the Sun still lights them after dark. Watch one slide into Earth's shadow and it vanishes mid-sky. Tap in the last seconds before it goes dark and the card comes out Shiny.</p>
+    <ul class="ways">
+      <li><span>☾</span><span><b>Beside the Moon.</b> Catch something passing close to it.</span></li>
+      <li><span>↑</span><span><b>Straight overhead.</b> Catch it at the top of the sky.</span></li>
+      <li><span>✦</span><span><b>Just launched.</b> Catch a satellite in its first 30 days.</span></li>
+      <li><span>○</span><span><b>Full Moon.</b> Catch anything under a full Moon.</span></li>
+    </ul></div>
+  <div class="phone"><video src="assets/video/shiny.mp4" poster="assets/video/shiny.jpg" muted loop playsinline autoplay preload="metadata"></video></div>
+</div></section>
+
+<section class="ch" id="patches" style="padding-top:0"><div class="wrap">
+  <div class="ch-head"><p class="eyebrow">Mission patches</p><h2>Earn the patch.</h2>
+    <p class="lede">More than 180 embroidered patches for the nights you put in: your first card, the Moon, all twelve signs of the zodiac. A few are hidden. Some nights, something strange crosses the sky. Tap a hidden one for a hint.</p></div>
+  <div class="patches" id="pgrid"></div>
+</div></section>
+
+<section class="ch" id="plus" style="padding-top:0"><div class="wrap plus">
+  <div>
+    <p class="eyebrow">Free to play</p>
+    <p class="free" style="margin-top:14px">Every card, every patch and every mission is free. No ads, no energy, no paid shortcuts.</p>
+    <p class="lede" style="margin-top:18px">Space Collector Plus adds extras for keen collectors.</p>
+    <ul class="perks">
+      <li><b>Pass reminders</b><span>Alerts for any pass you choose.</span></li>
+      <li><b>Rare alerts</b><span>A ping when a new Rare card passes.</span></li>
+      <li><b>Shiny forecast</b><span>When and where a Shiny can happen.</span></li>
+      <li><b>Card backs</b><span>6 designs, or a random one each flip.</span></li>
+      <li><b>Member patch</b><span>Only Plus members wear this one.</span></li>
+    </ul>
+    <div class="prices"><div class="price"><small>MONTH</small><b>$1.99</b><em></em></div><div class="price best"><small>YEAR</small><b>$9.99</b><em>7 DAYS FREE</em></div><div class="price"><small>FOREVER</small><b>$24.99</b><em>ONE TIME</em></div></div>
+  </div>
+  <div class="plus-card"><img src="assets/backs/back-nebula-foil.webp" alt="The Nebula Foil card back, one of six Plus backs" style="border-radius:4.5%;filter:drop-shadow(0 20px 40px #000c)"><img class="p" src="assets/patch-plus.webp" alt="The Plus Member patch"></div>
+</div></section>
+
+<section class="end" id="film"><div class="wrap">
+  <p class="eyebrow">Coming soon to iPhone and Android</p>
+  <h2>Look up tonight.</h2>
+  <div class="phone film" id="filmbox"><video id="filmvid" src="assets/video/commercial.mp4" poster="assets/video/commercial.jpg" playsinline preload="metadata"></video><div class="play"><span>▶ Watch the 30-second film</span></div></div>
+</div></section>
+
+<footer><div class="wrap">
+  <span>© 2026 Space Collector</span>
+  <span><a href="https://sevaan.github.io/space-collector/privacy.html">Privacy</a> · Milky Way: ESO/S. Brunier (CC BY 4.0) · Music: Scott Buckley (CC BY 4.0)</span>
+</div></footer>
+
+<div id="reveal" role="dialog" aria-modal="true" aria-label="New card">
+  <div class="rv"><p class="rv-head" id="rvhead">New card <b>+25 XP</b></p>
+    <div class="rv-card"><div class="rv-flip" id="rvflip"><img class="back" src="assets/backs/back-collector.webp" alt=""><img class="front" id="rvfront" alt=""></div></div>
+    <div class="rv-acts"><button class="btn" id="rvclose" type="button">Back to the sky</button><a class="btn hot" href="#how">How it works</a></div>
+  </div>
+</div>
+
+<script>
+// ---- The sky: stars, the Milky Way band, and a few satellites crossing. The circle is the app's own reticle.
+const TIER = { common: ['● Common', '#9aa4b1'], uncommon: ['▲ Uncommon', '#5fd08a'], rare: ['◆ Rare', '#4aa8ff'], epic: ['✦ Epic', '#e46ad6'], legendary: ['★ Legendary', '#ffc545'] };
+const SATS = [
+  { name: 'Hubble Space Telescope', tier: 'rare', card: 'hubble', xp: 25 },
+  { name: 'International Space Station', tier: 'rare', card: 'iss', xp: 25 },
+  { name: 'SL-8 Rocket Stage', tier: 'uncommon', card: 'stage', xp: 15 },
+  { name: 'Vanguard 1', tier: 'legendary', card: 'legend', xp: 60 },
+  { name: 'Gonets-M 11', tier: 'uncommon', card: 'shiny', xp: 115, shiny: true },
+];
+const cvs = document.getElementById('sky'), ctx = cvs.getContext('2d'), hero = document.querySelector('.hero');
+const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+let W = 0, H = 0, DPR = 1, R = 60, stars = [], band = new Image(); band.src = 'assets/milkyway-band.jpg';
+let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+function size() {
+  DPR = Math.min(2, devicePixelRatio || 1); W = hero.clientWidth; H = hero.clientHeight;
+  cvs.width = W * DPR; cvs.height = H * DPR; ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  R = Math.max(46, (H / 2) * Math.tan(6 * Math.PI / 180) / Math.tan(35 * Math.PI / 180)); drawReticle();
+  seed = 7; stars = Array.from({ length: Math.round(W * H / 1700) }, () => ({ x: rnd() * W, y: rnd() * H, r: Math.pow(rnd(), 3) * 1.6 + .3, a: .25 + rnd() * .7, tw: rnd() * 6.28 }));
+}
+// Satellites: each crosses on a straight line, edge to edge, with its path dashed ahead (as in the app).
+const live = [];
+function launch(i, t, ahead = 0) {
+  const s = SATS[i % SATS.length], side = rnd() < .5, a = rnd() * Math.PI * .5 - Math.PI * .25 + (side ? 0 : Math.PI);
+  const cx = W * (.25 + rnd() * .5), cy = H * (.18 + rnd() * .42), L = Math.hypot(W, H) * .65;
+  live.push({ s, x0: cx - Math.cos(a) * L, y0: cy - Math.sin(a) * L, x1: cx + Math.cos(a) * L, y1: cy + Math.sin(a) * L, dur: (24 + rnd() * 14) * 1000 * (W < 700 ? .7 : 1), done: false }); const o = live[live.length - 1]; o.t0 = t - o.dur * ahead;
+}
+const pos = (o, t) => { const k = (t - o.t0) / o.dur; return { k, x: o.x0 + (o.x1 - o.x0) * k, y: o.y0 + (o.y1 - o.y0) * k }; };
+
+// The circle follows the pointer (desktop) or your finger; left alone it drifts to the nearest light by itself.
+const tgt = document.getElementById('tgt'), ret = document.getElementById('ret');
+let cx = 0, cy = 0, aimX = 0, aimY = 0, lastTouch = -1e9, locked = null, dragging = false;
+function drawReticle() {
+  const D = Math.PI / 180; let t = '';
+  for (let a = 0; a < 360; a += 15) { const c = a % 90 === 0, i = R + 5, o = R + (c ? 13 : 9); t += `<line x1="${Math.cos(a * D) * i}" y1="${Math.sin(a * D) * i}" x2="${Math.cos(a * D) * o}" y2="${Math.sin(a * D) * o}" stroke="${c ? '#fa8127' : 'rgba(255,242,179,.66)'}" stroke-opacity="${c ? .9 : .42}" stroke-width="${c ? 1.5 : .75}"/>`; }
+  ret.setAttribute('viewBox', `${-R - 40} ${-R - 40} ${2 * R + 80} ${2 * R + 80}`); ret.setAttribute('width', 2 * R + 80); ret.setAttribute('height', 2 * R + 80);
+  ret.style.left = `${-R - 40}px`; ret.style.top = `${-R - 40}px`;
+  ret.innerHTML = `<circle id="ring" r="${R}" fill="none" stroke="rgba(255,242,179,.66)" stroke-width="1.2"/><circle r="${R + 5}" fill="none" stroke="rgba(173,188,200,.35)" stroke-width=".75"/>${t}<circle id="snap" r="13" fill="none" stroke="#fa8127" stroke-width="1.5" opacity="0"/><circle id="pulse" r="${R}" fill="none" stroke="#fa8127" stroke-width="1.5" opacity="0"/>`;
+  document.getElementById('tname').style.top = `${-R - 22}px`; document.getElementById('collect').style.top = `${R + 26}px`;
+}
+const toLocal = (e) => { const b = hero.getBoundingClientRect(); return [e.clientX - b.left, e.clientY - b.top]; };
+hero.addEventListener('pointermove', (e) => { if (e.pointerType === 'mouse' || dragging) { [aimX, aimY] = toLocal(e); lastTouch = performance.now(); } });
+hero.addEventListener('pointerdown', (e) => { if (e.target.closest('#collect, a, button')) return; const [x, y] = toLocal(e); if (e.pointerType !== 'mouse' && Math.hypot(x - cx, y - cy) > R * 1.6) return; dragging = true; hero.style.touchAction = 'none'; [aimX, aimY] = [x, y]; lastTouch = performance.now(); });
+addEventListener('pointerup', () => { dragging = false; hero.style.touchAction = ''; });
+
+function frame(t) {
+  ctx.clearRect(0, 0, W, H);
+  // Milky Way: the app's photo of the galactic plane, laid across the sky at an angle.
+  if (band.complete && band.naturalWidth) { ctx.save(); ctx.globalAlpha = .42; ctx.globalCompositeOperation = 'screen'; ctx.translate(W * .5, H * .4); ctx.rotate(-.5); const bw = Math.hypot(W, H) * 1.25, bh = bw * band.naturalHeight / band.naturalWidth * 1.15; ctx.drawImage(band, -bw / 2 + (still ? 0 : Math.sin(t / 9000) * 18), -bh / 2, bw, bh); ctx.restore(); }
+  for (const s of stars) { const a = still ? s.a : s.a * (.75 + .25 * Math.sin(t / 900 + s.tw)); ctx.fillStyle = `rgba(255,248,225,${a})`; ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, 6.283); ctx.fill(); }
+  // Satellites
+  if (!live.length) launch(Math.floor(t / 997), t, .3); else if (live.length < 3 && t - lastLaunch > 5200) launch(live.length + Math.floor(t / 997), t, .12); if (live.length && live[live.length - 1].t0 + live[live.length - 1].dur * .0 !== lastSeen) { lastSeen = live[live.length - 1].t0 + 0; lastLaunch = t; }
+  let best = null, bestD = Infinity;
+  for (const o of live) {
+    const p = pos(o, t); if (p.k > 1) { o.done = true; continue; }
+    const ang = Math.atan2(o.y1 - o.y0, o.x1 - o.x0);
+    ctx.save(); ctx.setLineDash([4, 7]); ctx.strokeStyle = 'rgba(250,129,39,.45)'; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p.x + Math.cos(ang) * 150, p.y + Math.sin(ang) * 150); ctx.stroke();
+    ctx.setLineDash([]); ctx.strokeStyle = 'rgba(255,242,179,.18)'; ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p.x - Math.cos(ang) * 60, p.y - Math.sin(ang) * 60); ctx.stroke(); ctx.restore();
+    const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, 9); g.addColorStop(0, 'rgba(255,248,230,1)'); g.addColorStop(.3, 'rgba(255,242,179,.55)'); g.addColorStop(1, 'rgba(255,242,179,0)'); ctx.fillStyle = g; ctx.beginPath(); ctx.arc(p.x, p.y, 9, 0, 6.283); ctx.fill();
+    const onScreen = p.x > 40 && p.x < W - 40 && p.y > Math.max(170, H * .2) && p.y < H * .6, d = Math.hypot(p.x - cx, p.y - cy); if (onScreen && d < bestD) { bestD = d; best = { o, p }; }
+  }
+  for (let i = live.length - 1; i >= 0; i--) if (live[i].done) live.splice(i, 1);
+  // Left alone, the circle drifts to the nearest light (so the page shows the catch by itself).
+  if (performance.now() - lastTouch > 3500 && best) { aimX = best.p.x; aimY = best.p.y; }
+  else if (!aimX && !aimY) { aimX = W * .62; aimY = H * .38; }
+  const e = performance.now() - lastTouch > 3500 ? .035 : .2; cx += (aimX - cx) * e; cy += (aimY - cy) * e;
+  tgt.style.transform = `translate(${cx}px, ${cy}px)`;
+  const inside = best && bestD < R - 4 ? best : null;
+  if ((inside?.o ?? null) !== locked) setLock(inside?.o ?? null, t);
+  const snap = document.getElementById('snap');
+  if (inside) { snap.setAttribute('cx', inside.p.x - cx); snap.setAttribute('cy', inside.p.y - cy); }
+  const pulse = document.getElementById('pulse'), pk = locked ? Math.min(1, (t - lockedAt) / 600) : 1;
+  pulse.setAttribute('r', R + 4 + pk * 22); pulse.setAttribute('opacity', locked ? (1 - pk) * .7 : 0);
+  if (!still || !frame.once) requestAnimationFrame(frame); frame.once = true;
+}
+let lockedAt = 0, lastLaunch = 0, lastSeen = null;
+function setLock(o, t) {
+  locked = o; lockedAt = t;
+  tgt.classList.toggle('on', !!o);
+  document.getElementById('ring').setAttribute('stroke', o ? '#fa8127' : 'rgba(255,242,179,.66)');
+  document.getElementById('snap').setAttribute('opacity', o ? 1 : 0);
+  if (o) { const [label, col] = TIER[o.s.tier]; const tt = document.getElementById('ttier'); tt.textContent = label + (o.s.shiny ? ' · fading' : ''); tt.style.color = col; document.getElementById('tlabel').textContent = o.s.name; }
+}
+// Collect: the sealed card glows in its rarity colour, rattles, then flips to the real card.
+const rv = document.getElementById('reveal'), flip = document.getElementById('rvflip');
+document.getElementById('collect').addEventListener('click', () => {
+  if (!locked) return; const s = locked.s; locked.done = true; setLock(null, performance.now());
+  rv.style.setProperty('--tier', TIER[s.tier][1]);
+  document.getElementById('rvhead').innerHTML = `${s.shiny ? 'New card · Shiny' : 'New card'} <b>+${s.xp} XP</b>`;
+  document.getElementById('rvfront').src = `assets/${s.card}.webp`; document.getElementById('rvfront').alt = `${s.name} card`;
+  flip.classList.remove('face'); rv.classList.add('open'); document.getElementById('rvclose').focus();
+  setTimeout(() => flip.classList.add('face'), still ? 0 : 1300);
+});
+const closeRv = () => { rv.classList.remove('open'); lastTouch = -1e9; };
+document.getElementById('rvclose').addEventListener('click', closeRv);
+rv.addEventListener('click', (e) => { if (e.target === rv) closeRv(); });
+addEventListener('keydown', (e) => { if (e.key === 'Escape') closeRv(); });
+addEventListener('resize', size);
+size(); cx = aimX = W * .62; cy = aimY = H * .38;
+(window.scLoaded ?? Promise.resolve()).then(() => requestAnimationFrame(frame));
+
+// ---- Cards fanned; each one leans toward your pointer and catches the light.
+const FAN = ['stage', 'iss', 'hubble', 'legend', 'andromeda', 'saturn', 'wow'], fan = document.getElementById('fan');
+FAN.forEach((n, i) => { const f = document.createElement('figure'), mid = (FAN.length - 1) / 2, a = (i - mid) * 9; f.style.transform = `translateX(-50%) rotate(${a}deg)`; f.dataset.a = a; f.style.zIndex = 10 - Math.abs(i - mid); f.innerHTML = `<img src="assets/${n}.webp" alt="" loading="lazy"><span class="glare"></span>`; fan.append(f); });
+fan.addEventListener('pointermove', (e) => { for (const f of fan.children) { const b = f.getBoundingClientRect(); f.style.setProperty('--gx', `${(e.clientX - b.left) / b.width * 100}%`); f.style.setProperty('--gy', `${(e.clientY - b.top) / b.height * 100}%`); } });
+for (const f of fan.children) {
+  const up = () => { f.style.transform = `translateX(-50%) rotate(${f.dataset.a * .4}deg) translateY(-34px) scale(1.06)`; f.style.zIndex = 20; f.classList.add('lift'); };
+  const down = () => { f.style.transform = `translateX(-50%) rotate(${f.dataset.a}deg)`; f.style.zIndex = 10 - Math.abs([...fan.children].indexOf(f) - (FAN.length - 1) / 2); f.classList.remove('lift'); };
+  f.addEventListener('pointerenter', up); f.addEventListener('pointerleave', down); f.addEventListener('click', () => (f.classList.contains('lift') ? down : up)());
+}
+
+// ---- Patches, and four secrets that only show their outline until tapped.
+const PATCHES = [['first', 'First Light'], ['moon', 'Moonstruck'], ['station', 'Crewed'], ['zodiac', 'Zodiac'], ['shiny', 'Shiny Hunter'], ['legend', 'Legend'], ['starlink', 'Train Spotter'], ['race', 'Space Race'], ['twilight', 'Early Bird'], ['cons25', 'Atlas']];
+const SECRETS = [['ufo', 'Close Encounter', 'Some nights, something crosses the sky that isn’t on any list.'], ['fossil', 'Fossil Hunter', 'Look down by day. Something is buried under your feet.'], ['santa', 'Nice List', 'One night a year, someone else is flying.'], ['meteor', 'Make a Wish', 'During a meteor shower, keep looking up.']];
+const pg = document.getElementById('pgrid');
+pg.innerHTML = PATCHES.map(([id, n]) => `<figure class="patch"><img src="assets/patch-${id}.webp" alt="" loading="lazy"><figcaption>${n}</figcaption></figure>`).join('')
+  + SECRETS.map(([id, n, hint]) => `<button class="patch secret" type="button" aria-label="Hidden patch. Tap for a hint" data-n="${n}" data-hint="${hint}"><img src="assets/patch-${id}.webp" alt="" loading="lazy"><span class="q">???</span></button>`).join('');
+pg.addEventListener('click', (e) => { const b = e.target.closest('.secret'); if (!b) return; const o = b.classList.toggle('open'); b.querySelector('.q').textContent = o ? b.dataset.hint : '???'; b.setAttribute('aria-label', o ? `${b.dataset.n}. ${b.dataset.hint}` : 'Hidden patch. Tap for a hint'); });
+
+// ---- The film: tap to play with sound.
+const fb = document.getElementById('filmbox'), fv = document.getElementById('filmvid');
+fb.addEventListener('click', () => { if (fv.paused) { fv.controls = true; fv.play(); fb.classList.add('playing'); } });
+</script>

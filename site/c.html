@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Space Collector Tonight</title>
+<meta name="description" content="Tonight's sky is full of cards. Point your phone up, catch satellites, planets and stars in the circle, and collect them.">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="icon" href="assets/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600&family=Barlow:wght@400;500&family=Russo+One&display=swap">
+<style>
+/* Layout: one night, start to finish. A live countdown to dark where you are, then a phone that plays each part of the night as you scroll. */
+:root {
+  --dusk-top: #0b1a30; --night: #070d18; --panel: #0f1a29; --edge: #22344a;
+  --cream: #fff2b3; --orange: #fa8127; --steel: #adbcc8; --muted: #8fa3b8; --glow: #ffb36b;
+  --uncommon: #5fd08a; --rare: #4aa8ff; --epic: #e46ad6; --legend: #ffc545;
+  --display: 'Russo One', 'Arial Black', sans-serif; --label: 'Barlow Condensed', 'Arial Narrow', sans-serif; --body: 'Barlow', system-ui, sans-serif;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { background: var(--night); }
+body { margin: 0; color: var(--cream); font: 400 17px/1.55 var(--body); -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  background: linear-gradient(180deg, #1d2f4a 0, #142440 380px, var(--night) 1100px) var(--night); }
+img, video { max-width: 100%; display: block; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--orange); outline-offset: 3px; border-radius: 6px; }
+.wrap { width: 100%; max-width: 1160px; margin: 0 auto; padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px)); }
+h1, h2, h3 { font-family: var(--display); font-weight: 400; margin: 0; text-wrap: balance; }
+p { margin: 0; }
+.label { font: 600 13px/1.2 var(--label); letter-spacing: .24em; text-transform: uppercase; color: var(--muted); }
+.lede { color: var(--steel); max-width: 32em; }
+.btn { font: 600 14px/1 var(--label); letter-spacing: .2em; text-transform: uppercase; color: var(--cream); background: #ffffff12; border: 1px solid #ffffff30; border-radius: 99px; padding: 15px 22px; cursor: pointer; text-decoration: none; display: inline-flex; gap: 8px; align-items: center; }
+.btn.hot { background: var(--orange); border-color: var(--orange); color: #1a0f05; }
+
+/* Horizon: a strip of pine silhouettes along the bottom of the hero, the app's tree line. */
+.top { padding-top: max(18px, env(safe-area-inset-top, 0px)); }
+.top .wrap { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.mark { display: flex; gap: 10px; align-items: center; text-decoration: none; }
+.mark img { width: 34px; height: 34px; border-radius: 9px; }
+.mark span { font: 400 17px/1 var(--display); }
+.hero { position: relative; padding-block: clamp(40px, 7vw, 90px) 0; }
+.hero-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: clamp(28px, 5vw, 72px); align-items: end; }
+.clock { display: grid; gap: 6px; }
+.clock .when { font: 400 clamp(52px, 9vw, 116px)/.9 var(--display); color: var(--cream); letter-spacing: -.01em; }
+.clock .when em { font-style: normal; color: var(--glow); }
+.clock .left { font: 500 clamp(18px, 2.2vw, 24px)/1.2 var(--label); letter-spacing: .12em; text-transform: uppercase; color: var(--steel); font-variant-numeric: tabular-nums; }
+.hero h1 { font-size: clamp(28px, 3.6vw, 44px); line-height: 1.08; margin-top: 30px; max-width: 16em; }
+.hero .lede { margin-top: 14px; }
+.cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; align-items: center; }
+.note { font-size: 13px; color: var(--muted); margin-top: 14px; }
+.phone { position: relative; width: 100%; max-width: 300px; aspect-ratio: 9 / 16; border-radius: 36px; padding: 9px; background: linear-gradient(160deg, #2c3c53, #121c2a 40%, #0a111c); box-shadow: 0 40px 80px #000a, inset 0 0 0 1px #ffffff1c; justify-self: center; }
+.phone video { position: absolute; inset: 9px; width: calc(100% - 18px); height: calc(100% - 18px); object-fit: cover; border-radius: 28px; background: #000; transition: opacity .45s; }
+.sound { position: absolute; z-index: 2; right: 18px; bottom: 18px; width: 40px; height: 40px; border-radius: 50%; border: 1px solid #ffffff40; background: #080f1bcc; color: var(--cream); cursor: pointer; font-size: 16px; }
+.trees { height: 90px; margin-top: clamp(30px, 5vw, 60px); background: linear-gradient(transparent, var(--night) 85%); position: relative; }
+.trees canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+/* The night, chapter by chapter */
+.night { padding-block: clamp(40px, 8vw, 100px) clamp(60px, 10vw, 120px); }
+.night-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 360px); gap: clamp(30px, 6vw, 90px); }
+.stick { position: sticky; top: max(10vh, calc(env(safe-area-inset-top, 0px) + 20px)); height: max-content; display: grid; justify-items: center; gap: 18px; }
+.rail { display: flex; gap: 8px; }
+.rail i { width: 26px; height: 3px; border-radius: 2px; background: #ffffff26; transition: background .3s; }
+.rail i.on { background: var(--orange); }
+.chapters { display: grid; }
+.chap { min-height: 82vh; display: grid; align-content: center; gap: 14px; padding-block: 8vh; opacity: .4; transition: opacity .4s; }
+.chap.on { opacity: 1; }
+.chap .time { font: 600 14px/1 var(--label); letter-spacing: .24em; text-transform: uppercase; color: var(--glow); }
+.chap h2 { font-size: clamp(34px, 5vw, 60px); line-height: 1; }
+.chap p { color: var(--steel); max-width: 30em; }
+.chap .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { font: 600 12px/1 var(--label); letter-spacing: .16em; text-transform: uppercase; padding: 8px 12px; border-radius: 99px; border: 1px solid #ffffff2a; color: var(--steel); }
+
+/* Numbers band */
+.band { border-block: 1px solid var(--edge); background: #0b1422; }
+.band .wrap { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.stat { padding: 28px 12px; display: grid; gap: 6px; border-left: 1px solid var(--edge); }
+.stat:first-child { border-left: 0; }
+.stat b { font: 400 clamp(30px, 4vw, 48px)/1 var(--display); font-variant-numeric: tabular-nums; }
+.stat span { font: 600 13px/1.2 var(--label); letter-spacing: .18em; text-transform: uppercase; color: var(--muted); }
+
+section.s { padding-block: clamp(70px, 10vw, 130px); }
+.first { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 36px; counter-reset: s; }
+.first li { list-style: none; border: 1px solid var(--edge); border-radius: 18px; padding: 22px; background: var(--panel); display: grid; gap: 10px; align-content: start; }
+.first li::before { counter-increment: s; content: 'Step ' counter(s); font: 600 12px/1 var(--label); letter-spacing: .24em; text-transform: uppercase; color: var(--orange); }
+.first h3 { font-size: 26px; }
+.first p { color: var(--steel); font-size: 16px; }
+.first ol { padding: 0; margin: 0; display: contents; }
+
+.plus { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(24px, 5vw, 64px); margin-top: 36px; align-items: start; }
+.tier { border: 1px solid var(--edge); border-radius: 20px; padding: clamp(20px, 3vw, 30px); background: var(--panel); display: grid; gap: 14px; align-content: start; }
+.tier.p { border-color: #fa812777; background: linear-gradient(160deg, #2a1d14, var(--panel) 60%); }
+.tier h3 { font-size: 28px; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.tier h3 img { width: 64px; }
+.tier ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 9px; color: var(--steel); }
+.tier li b { color: var(--cream); font-weight: 500; }
+.prices { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.price { border: 1px solid var(--edge); border-radius: 12px; padding: 12px 6px; text-align: center; display: grid; gap: 4px; background: #0b1422; }
+.price small { font: 600 11px/1 var(--label); letter-spacing: .18em; color: var(--muted); }
+.price b { font: 400 22px/1 var(--display); }
+.price em { font: 600 11px/1 var(--label); letter-spacing: .12em; color: var(--orange); font-style: normal; min-height: 11px; }
+.price.best { border-color: var(--orange); }
+
+.faq { margin-top: 30px; display: grid; gap: 10px; max-width: 820px; }
+.faq details { border: 1px solid var(--edge); border-radius: 14px; background: var(--panel); }
+.faq summary { cursor: pointer; padding: 18px 20px; font: 500 18px/1.3 var(--body); list-style: none; display: flex; justify-content: space-between; gap: 16px; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: '+'; color: var(--orange); font: 400 22px/1 var(--display); transition: transform .25s; }
+.faq details[open] summary::after { transform: rotate(45deg); }
+.faq details p { padding: 0 20px 18px; color: var(--steel); }
+
+.close { text-align: center; padding-block: clamp(80px, 12vw, 150px); }
+.close .wrap { display: grid; justify-items: center; gap: 18px; }
+.close h2 { font-size: clamp(46px, 8vw, 100px); line-height: .95; }
+footer { border-top: 1px solid var(--edge); padding-block: 24px max(24px, env(safe-area-inset-bottom, 0px)); color: var(--muted); font-size: 14px; }
+footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px 24px; }
+
+@media (max-width: 820px) {
+  .hero-grid { grid-template-columns: minmax(0, 1fr); }
+  .hero .phone { max-width: 250px; }
+  .night-grid { grid-template-columns: minmax(0, 1fr); }
+  .stick { order: -1; top: max(8px, env(safe-area-inset-top, 0px)); z-index: 3; padding-block: 8px; background: linear-gradient(var(--night) 80%, transparent); }
+  .stick .phone { max-width: min(170px, 36vh * .5625); border-radius: 24px; padding: 6px; }
+  .stick .phone video { inset: 6px; width: calc(100% - 12px); height: calc(100% - 12px); border-radius: 19px; }
+  .chap { min-height: 60vh; padding-block: 4vh; }
+  .band .wrap { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .stat:nth-child(3) { border-left: 0; } .stat:nth-child(n+3) { border-top: 1px solid var(--edge); }
+  .first, .plus { grid-template-columns: minmax(0, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) { * { transition-duration: .01ms !important; animation: none !important; } }
+</style>
+</head>
+<body>
+<script src="loader.js"></script>
+
+<header class="top"><div class="wrap">
+  <a class="mark" href="#top"><img src="assets/icon.png" alt=""><span>SPACE COLLECTOR</span></a>
+  <span class="label">Coming soon</span>
+</div></header>
+
+<section class="hero" id="top"><div class="wrap hero-grid">
+  <div>
+    <div class="clock" aria-live="polite">
+      <p class="label" id="where">Tonight</p>
+      <p class="when" id="when">Dark at <em>—</em></p>
+      <p class="left" id="left">&nbsp;</p>
+    </div>
+    <h1>Every light up there is a card. Tonight, go and collect one.</h1>
+    <p class="lede">Point your phone at the night sky. Satellites, rocket stages, planets and stars. Line one up in the circle, tap Collect, and it's yours.</p>
+    <div class="cta"><span class="btn hot">Coming soon to iPhone &amp; Android</span><a class="btn" href="#night">See a night ↓</a></div>
+    <p class="note" id="note">Worked out from your time zone, right here in your browser. The app uses your location.</p>
+  </div>
+  <div class="phone" id="hphone"><video id="hvid" src="assets/video/commercial.mp4" poster="assets/video/commercial.jpg" muted loop playsinline autoplay preload="metadata"></video><button class="sound" id="snd" type="button" aria-label="Turn the sound on">♪</button></div>
+</div>
+<div class="trees" aria-hidden="true"><canvas id="trees"></canvas></div>
+</section>
+
+<section class="night" id="night"><div class="wrap night-grid">
+  <div class="chapters" id="chaps">
+    <article class="chap" data-v="0"><span class="time">8:40 PM · It's dark</span><h2>Hold your phone up.</h2><p>The sky on your screen lines up with the real one: stars, the Milky Way, and every satellite that's passing, with its path drawn ahead. A dial in the corner shows how many are up.</p><div class="chips"><span class="chip">No telescope</span><span class="chip">Works in the city</span></div></article>
+    <article class="chap" data-v="1"><span class="time">8:41 PM · Something's in the circle</span><h2>Tap Collect.</h2><p>The circle turns orange when something moves into it. Tap before it slips away. A sealed card flies in and flips open: Hubble, the Space Station, or a rocket stage left up there in 1981.</p><div class="chips"><span class="chip" style="color:var(--rare)">◆ Rare</span><span class="chip" style="color:var(--epic)">✦ Epic</span><span class="chip" style="color:var(--legend)">★ Legendary</span></div></article>
+    <article class="chap" data-v="2"><span class="time">8:45 PM · Watch it fade</span><h2>Catch the fade.</h2><p>Satellites shine because the Sun still lights them. When one slides into Earth's shadow it vanishes mid-sky. A gold ring counts it down. Tap in the last seconds and the card comes out Shiny.</p><div class="chips"><span class="chip">Fades in 3s</span><span class="chip">Now!</span></div></article>
+    <article class="chap" data-v="3"><span class="time">9:06 PM · The busiest moment</span><h2>Fill the album.</h2><p>Every card carries real numbers: how high, how fast, how many laps a day, and a true story. Come back on clear nights to turn cards Silver and Gold, finish constellations and earn mission patches.</p><div class="chips"><span class="chip">Bronze</span><span class="chip">Silver · 3 nights</span><span class="chip">Gold · 10 nights</span></div></article>
+    <article class="chap" data-v="4"><span class="time">Some night, late</span><h2>Keep looking up.</h2><p>Some things aren't on any list. They show up on their own nights, and they're worth staying out for. We won't say any more.</p><div class="chips"><span class="chip">???</span></div></article>
+  </div>
+  <div class="stick">
+    <div class="phone" id="sphone">
+      <video src="assets/video/catch.mp4" poster="assets/video/catch.jpg" muted loop playsinline preload="metadata" style="opacity:1"></video>
+      <video src="assets/video/reveal.mp4" poster="assets/video/reveal.jpg" muted loop playsinline preload="none" style="opacity:0"></video>
+      <video src="assets/video/shiny.mp4" poster="assets/video/shiny.jpg" muted loop playsinline preload="none" style="opacity:0"></video>
+      <video src="assets/video/collection.mp4" poster="assets/video/collection.jpg" muted loop playsinline preload="none" style="opacity:0"></video>
+      <video src="assets/video/ufo.mp4" poster="assets/video/ufo.jpg" muted loop playsinline preload="none" style="opacity:0"></video>
+    </div>
+    <div class="rail" id="rail" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i><i></i></div>
+  </div>
+</div></section>
+
+<div class="band"><div class="wrap">
+  <div class="stat"><b data-n="4800">4,800</b><span>Cards to collect</span></div>
+  <div class="stat"><b data-n="89">89</b><span>Constellations</span></div>
+  <div class="stat"><b data-n="180">180</b><span>Mission patches</span></div>
+  <div class="stat"><b data-n="13">13</b><span>Hidden stories</span></div>
+</div></div>
+
+<section class="s" id="first"><div class="wrap">
+  <p class="label">Your first night</p>
+  <h2 style="font-size:clamp(34px,5vw,60px);margin-top:12px">Three steps.</h2>
+  <ol class="first">
+    <li><h3>Go outside</h3><p>Any clear evening after dark. The app tells you when it's dark enough where you are, and what's worth waiting for.</p></li>
+    <li><h3>Look up</h3><p>Hold your phone to the sky. You'll see what's passing, where it's headed, and which way to turn.</p></li>
+    <li><h3>Collect</h3><p>Line something up in the circle and tap. Your first card is usually the Moon or a bright planet, and it only takes a minute.</p></li>
+  </ol>
+</div></section>
+
+<section class="s" id="plus" style="padding-top:0"><div class="wrap">
+  <p class="label">Free to play</p>
+  <h2 style="font-size:clamp(34px,5vw,60px);margin-top:12px">The whole sky is free.</h2>
+  <div class="plus">
+    <div class="tier"><h3>Free</h3><ul>
+      <li><b>Every card</b>, every patch, every mission</li>
+      <li><b>Tonight's plan</b> and the best thing to catch</li>
+      <li><b>Space Station reminders</b> and a nudge when it's dark</li>
+      <li><b>No ads</b>, no energy, no loot boxes</li>
+    </ul></div>
+    <div class="tier p"><h3>Plus <img src="assets/patch-plus.webp" alt="The Plus Member patch"></h3><ul>
+      <li><b>Pass reminders</b> for anything you choose</li>
+      <li><b>Rare alerts</b> when a new Rare card passes</li>
+      <li><b>Shiny forecast</b>: when and where one can happen</li>
+      <li><b>Six card backs</b>, or a random one each flip</li>
+      <li><b>The Plus Member patch</b>, yours to keep</li>
+    </ul>
+    <div class="prices"><div class="price"><small>MONTH</small><b>$1.99</b><em></em></div><div class="price best"><small>YEAR</small><b>$9.99</b><em>7 DAYS FREE</em></div><div class="price"><small>FOREVER</small><b>$24.99</b><em>ONE TIME</em></div></div></div>
+  </div>
+</div></section>
+
+<section class="s" id="faq" style="padding-top:0"><div class="wrap">
+  <p class="label">Questions</p>
+  <h2 style="font-size:clamp(34px,5vw,60px);margin-top:12px">Before you look up.</h2>
+  <div class="faq">
+    <details open><summary>Do I need a telescope?</summary><p>No. Everything in the game can be seen from the ground, most of it with your eyes alone. Binocular mode, free in Settings, adds fainter things like Neptune.</p></details>
+    <details><summary>Does it work in the city?</summary><p>Yes. Set how bright your sky is with the slider and the app only shows what you can actually see. The Moon, planets, bright stars and the brightest satellites show up even downtown.</p></details>
+    <details><summary>What if it's cloudy?</summary><p>The app checks the forecast, tells you the next clear night, and only nudges you when it's clear. If you spot a gap in the cloud, anything you can see still counts.</p></details>
+    <details><summary>What does it do with my location?</summary><p>Your approximate location works out your sky. A rounded version fetches your weather and nearby planes, and it's never sold. Your collection stays on your phone unless you sign in to back it up.</p></details>
+    <details><summary>Is it really free?</summary><p>Every card, patch and mission is free, with no ads. Plus is an optional extra for keen collectors.</p></details>
+  </div>
+</div></section>
+
+<section class="close"><div class="wrap">
+  <p class="label" id="close-when">Coming soon to iPhone and Android</p>
+  <h2>Look up<br>tonight.</h2>
+</div></section>
+
+<footer><div class="wrap"><span>© 2026 Space Collector</span><span><a href="https://sevaan.github.io/space-collector/privacy.html">Privacy</a> · Music: Scott Buckley (CC BY 4.0)</span></div></footer>
+
+<script type="module">
+import { placeFromTimeZone } from './tz-places.js';
+const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+// ---- When it's dark tonight, from the time zone's city: the Sun 6° below the horizon (when the app's sky gets going).
+const RAD = Math.PI / 180;
+function sunEl(t, lat, lon) {
+  const d = t / 864e5 + 2440587.5 - 2451545, g = (357.529 + .98560028 * d) * RAD, q = 280.459 + .98564736 * d;
+  const L = (q + 1.915 * Math.sin(g) + .02 * Math.sin(2 * g)) * RAD, e = (23.439 - 3.6e-7 * d) * RAD;
+  const ra = Math.atan2(Math.cos(e) * Math.sin(L), Math.cos(L)), dec = Math.asin(Math.sin(e) * Math.sin(L));
+  const gmst = ((18.697374558 + 24.06570982441908 * d) % 24 + 24) % 24, H = (gmst * 15 + lon) * RAD - ra;
+  return Math.asin(Math.sin(lat * RAD) * Math.sin(dec) + Math.cos(lat * RAD) * Math.cos(dec) * Math.cos(H)) / RAD;
+}
+const next = (t0, lat, lon, fn) => { for (let t = t0; t < t0 + 36 * 3600e3; t += 60e3) if (fn(sunEl(t, lat, lon), sunEl(t + 60e3, lat, lon))) return t + 60e3; return null; };
+const place = placeFromTimeZone() ?? { lat: 43.65, lon: -79.38, label: 'Example: Toronto' };
+const city = place.label.replace(/^Example: /, '');
+const fmt = (t) => new Date(t).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+function tick() {
+  const now = Date.now(), el = sunEl(now, place.lat, place.lon), when = document.getElementById('when'), left = document.getElementById('left');
+  document.getElementById('where').textContent = `Tonight in ${city}`;
+  if (el <= -6) {
+    const light = next(now, place.lat, place.lon, (a, b) => a <= -6 && b > -6);
+    when.innerHTML = 'It’s <em>dark.</em>'; left.textContent = `Go and look up · light again at ${light ? fmt(light) : 'dawn'}`;
+  } else {
+    const dark = next(now, place.lat, place.lon, (a, b) => a > -6 && b <= -6); if (!dark) return;
+    const m = Math.max(0, Math.round((dark - now) / 60000)), h = Math.floor(m / 60);
+    when.innerHTML = `Dark at <em>${fmt(dark)}</em>`;
+    left.textContent = `${h ? `${h} h ` : ''}${m % 60} min to go`;
+  }
+}
+tick(); setInterval(tick, 15000);
+
+// ---- The film in the hero: muted until you ask.
+const hv = document.getElementById('hvid'), snd = document.getElementById('snd');
+snd.addEventListener('click', () => { hv.muted = !hv.muted; if (!hv.muted) { hv.currentTime = 0; hv.play(); } snd.textContent = hv.muted ? '♪' : '❚❚'; snd.setAttribute('aria-label', hv.muted ? 'Turn the sound on' : 'Turn the sound off'); });
+
+// ---- The night: whichever chapter is in the middle of the screen plays on the phone.
+const vids = [...document.querySelectorAll('#sphone video')], rail = [...document.querySelectorAll('#rail i')], chaps = [...document.querySelectorAll('.chap')];
+let cur = -1;
+function show(i) {
+  if (i === cur) return; cur = i;
+  vids.forEach((v, k) => { v.style.opacity = k === i ? 1 : 0; if (k === i) { v.preload = 'auto'; v.currentTime = 0; v.play().catch(() => {}); } else v.pause(); });
+  rail.forEach((r, k) => r.classList.toggle('on', k <= i)); chaps.forEach((c, k) => c.classList.toggle('on', k === i));
+}
+const io = new IntersectionObserver((es) => { for (const e of es) if (e.isIntersecting) show(Number(e.target.dataset.v)); }, { rootMargin: '-45% 0px -45% 0px' });
+chaps.forEach((c) => io.observe(c)); show(0);
+
+// ---- Numbers count up once, when the band comes into view.
+const band = document.querySelector('.band');
+new IntersectionObserver((es, ob) => { if (!es[0].isIntersecting || still) return; ob.disconnect();
+  for (const b of band.querySelectorAll('b[data-n]')) { const n = +b.dataset.n, t0 = performance.now(), suf = n >= 180 ? '+' : ''; const f = (t) => { const k = Math.min(1, (t - t0) / 1200), v = Math.round(n * (1 - Math.pow(1 - k, 3))); b.textContent = v.toLocaleString() + (k === 1 ? suf : ''); if (k < 1) requestAnimationFrame(f); }; requestAnimationFrame(f); }
+}, { threshold: .5 }).observe(band);
+for (const b of band.querySelectorAll('b[data-n]')) if (+b.dataset.n >= 180) b.textContent += '+';
+
+// ---- The tree line along the hero's foot (the app's pines: drooping tiers to a spike).
+const cv = document.getElementById('trees'), cx = cv.getContext('2d');
+function trees() {
+  const w = cv.clientWidth, h = cv.clientHeight, d = Math.min(2, devicePixelRatio || 1); cv.width = w * d; cv.height = h * d; cx.setTransform(d, 0, 0, d, 0, 0); cx.clearRect(0, 0, w, h);
+  let s = 11; const r = () => (s = (s * 16807) % 2147483647) / 2147483647;
+  for (const [col, base, scale] of [['#0b1626', h * .55, .7], ['#070d18', h, 1]]) {
+    cx.fillStyle = col; cx.beginPath(); cx.moveTo(0, h); cx.lineTo(0, base);
+    for (let x = 0; x < w + 30; x += 12 + r() * 22) { const th = (24 + r() * 46) * scale, tiers = 4 + Math.floor(r() * 3), bw = th * .34;
+      for (let k = 0; k < tiers; k++) { const y = base - th * (k / tiers), ww = bw * (1 - k / tiers); cx.lineTo(x - ww, y); cx.lineTo(x - ww * .3, y - th / tiers * .6); }
+      cx.lineTo(x, base - th - 6); for (let k = tiers - 1; k >= 0; k--) { const y = base - th * (k / tiers), ww = bw * (1 - k / tiers); cx.lineTo(x + ww * .3, y - th / tiers * .6); cx.lineTo(x + ww, y); } cx.lineTo(x + 6, base); }
+    cx.lineTo(w, base); cx.lineTo(w, h); cx.closePath(); cx.fill();
+  }
+}
+trees(); addEventListener('resize', trees);
+</script>
+</body>
+</html>
