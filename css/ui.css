@@ -385,7 +385,7 @@ body:has(#gh-remind:not([hidden])) #toasts { opacity: 0; pointer-events: none; t
 /* ---------- Explore / Collection switcher, design B (2026-10-17, Sevaan picked "Solid segment" on the Switcher Options
    canvas): a narrower dark capsule; the side you're on is a solid orange segment with dark words, like the ticket
    buttons, icon beside the word. Height stays 72px (asked for three times for easier taps). ---------- */
-.sc-switch { width: min(var(--nav-w), 320px) !important; padding: 5px !important; gap: 4px; border: 0 !important; background: rgba(8, 15, 27, .9) !important; box-shadow: 0 10px 24px rgba(0, 0, 0, .35); }
+.sc-switch { width: var(--nav-w) !important; padding: 5px !important; gap: 4px; border: 0 !important; background: rgba(8, 15, 27, .9) !important; box-shadow: 0 10px 24px rgba(0, 0, 0, .35); }
 .sc-switch::before { top: 5px !important; bottom: 5px !important; left: 5px !important; width: calc((100% - 10px - (var(--n, 2) - 1) * 4px) / var(--n, 2)) !important; background: #fa8127 !important; box-shadow: none !important; }
 .sc-switch__item { color: #c9cbb6; font: 600 14px/1 var(--ui-label, 'SC Label', sans-serif) !important; letter-spacing: .18em !important; gap: 8px !important; }
 .sc-switch__item .ico { display: inline-block !important; width: 18px; height: 18px; flex: none; }

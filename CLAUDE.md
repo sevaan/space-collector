@@ -1188,3 +1188,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - 2026-10-17: Tap to wake no longer gets stuck: if motion can't start (no sensors, or two failed taps on a phone) the tap clears #wake, turns on drag mode and says so (motionFromTap, wakeFails).
 
 - 2026-10-17 · Switcher design B ("Solid segment", picked on the Switcher Options canvas): the Explore/Collection capsule is 320px max, dark (rgba(8,15,27,.9)), the side you're on is a solid #fa8127 segment with #0b1018 words, inactive #c9cbb6; night mode #ff6a55 / #120606 / #a8463b. Icons beside the words: new `sight` and `deck` icons in css/icons.css (index.html and cards.html). Height stays 72px for the tap target. Override block at the end of css/ui.css.
+- 2026-10-17 · Switcher widened to `var(--nav-w)` (Sevaan): it now matches the notification tickets' width so their edges line up when stacked; the 320px cap from design B is gone.
