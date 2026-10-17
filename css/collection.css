@@ -587,3 +587,13 @@ html.away *, html.away *::before, html.away *::after { animation-play-state: pau
 html { text-wrap: pretty; } h1, h2, h3 { text-wrap: balance; }
 @media (max-width: 370px) { .lb-top { font-size: 11px; letter-spacing: .1em; } .lb-top > * { white-space: nowrap; } } /* "OBSERVER RANK" / "WEEK 1 · COME BACK NEXT WEEK" on one line at 360 */
 .v-up__when { text-wrap: balance; } /* "Up tonight · 8:56 PM · almost overhead in the southwest" breaks evenly */
+/* Observer stats slides up over the Collection and back down, like the app's panels (2026-10-17, Sevaan). */
+@keyframes stats-up { from { transform: translateY(100%); } to { transform: none; } }
+@keyframes stats-down { from { transform: none; } to { transform: translateY(100%); } }
+@keyframes stats-dim-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes stats-dim-out { from { opacity: 1; } to { opacity: 0; } }
+#stats-view[open] { animation: stats-up .42s cubic-bezier(.2, .9, .25, 1); }
+#stats-view[open]::backdrop { animation: stats-dim-in .42s ease-out; }
+#stats-view.leaving { animation: stats-down .3s cubic-bezier(.5, 0, .75, .4) forwards; }
+#stats-view.leaving::backdrop { animation: stats-dim-out .3s ease-in forwards; }
+@media (prefers-reduced-motion: reduce) { #stats-view[open], #stats-view[open]::backdrop { animation: none; } }
