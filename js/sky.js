@@ -1,17 +1,17 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.778';
+import { extinction } from './sky-limit.js?v=0.1.779';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.778';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.779';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.778';
-import { createCloudGL } from './clouds-gl.js?v=0.1.778';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.779';
+import { createCloudGL } from './clouds-gl.js?v=0.1.779';
 // Cloud colours by light: sunlit tops, shadowed bellies, and the horizon haze they melt into (0–1 RGB).
 const CLOUD_LIGHT = {
   day: { lit: [1, 1, 1], shade: [0.62, 0.68, 0.77], haze: [0.82, 0.87, 0.93] },
   dusk: { lit: [1, 0.8, 0.68], shade: [0.36, 0.33, 0.42], haze: [0.62, 0.5, 0.52] },
   night: { lit: [0.22, 0.25, 0.31], shade: [0.1, 0.12, 0.16], haze: [0.14, 0.15, 0.2] },
 };
-import { TIER_INFO } from './rarity.js?v=0.1.778';
+import { TIER_INFO } from './rarity.js?v=0.1.779';
 
 const RAD = Math.PI / 180;
 const BELOW_ICON = 10.5, BELOW_ICON_HIT = 20; // every satellite under the horizon, passes and halo alike (80% of 13 since 2026-10-13); lined up in the circle it grows
@@ -887,7 +887,10 @@ export class SkyView {
   // "✦ UNIDENTIFIED / ???" shows above it (the Tap to collect button is #ufo-cta in the HUD). u: { enu, inCircle }.
   drawUfo(u) {
     const p = this.project(u.enu); if (!p || !this.onScreen(p, 30)) return;
-    const ctx = this.ctx, s = u.inCircle ? 1.15 : 0.5; // rocket-stage size; it enlarges only in the circle (2026-10-08)
+    // Satellite-icon size in the open sky; in the circle it grows like any other target, easing in (2026-10-17, Sevaan:
+    // "small like all the other icons until it's in the circle"; it was a jump to a slightly bigger 1.15).
+    const want = u.inCircle ? 0.9 : 0.5; this.ufoScale = this.reducedMotion ? want : (this.ufoScale ?? want) + (want - (this.ufoScale ?? want)) * 0.18;
+    const ctx = this.ctx, s = this.ufoScale;
     ctx.save(); ctx.translate(p.x, p.y); ctx.scale(s, s);
     ctx.shadowColor = `rgba(125,255,138,${u.inCircle ? .8 : .45})`; ctx.shadowBlur = u.inCircle ? 12 : 7;
     ctx.fillStyle = 'rgba(207,232,255,.85)'; ctx.beginPath(); ctx.moveTo(-6, -1); ctx.quadraticCurveTo(-5, -7, 0, -7); ctx.quadraticCurveTo(5, -7, 6, -1); ctx.fill();

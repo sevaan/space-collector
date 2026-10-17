@@ -1168,3 +1168,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - 2026-10-17: Tap to wake is a ticket too ("Motion paused" / "Tap to wake the sky", #wake span, --r set in syncWake); the until-dark line and bell hide under it. Distances in miles (planes in feet) when the phone region is US/LR/MM (main.js MILES, kmText); km elsewhere.
 
 - 2026-10-17: Moon, Sun and planets show their real distance tonight in the target ticket (celestial.js solarSystem bodies carry distKm; natural.js passes it in look.distKm; main.js distText: thousands under 1M, "41.9M km", "1.27B km"; miles in the US).
+
+- 2026-10-17: Until-dark Remind me matches the pass ticket button (solid blue, "Remind me at 7:00 PM", "Reminder at …" outlined when set); the "Around 7:00 PM" line is gone. UFO grows to 0.9 (about other targets' size) in the circle, easing in, 0.5 outside.

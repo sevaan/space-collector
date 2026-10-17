@@ -1551,3 +1551,10 @@ body.night #d-dist { color: #e8705f; }
 #wake small { order: 1; font: 500 13px/1.3 var(--label) !important; letter-spacing: .06em !important; color: #c3c9d1 !important; }
 body.night #wake span { border-top-color: #ff6a55; color: #ff7f70 !important; } body.night #wake span::before { color: #ff6a55; } body.night #wake small { color: #e8705f !important; }
 body:has(#wake:not([hidden])) #until-dark, body:has(#wake:not([hidden])) #ud-bell { visibility: hidden; } /* the wake ticket has the spot under the circle */
+/* The until-dark Remind me matches the pass ticket's button (2026-10-17, Sevaan): solid blue, the time on it, no
+   "Around 7:00 PM" line. Set: outlined. */
+#ud-at:empty { display: none; }
+#ud-bell { box-sizing: border-box; width: min(260px, calc(100vw - 48px)); justify-content: center; min-height: 46px; margin-top: 16px; padding: 0 16px; border: 0 !important; border-radius: 10px !important;
+  background: #7fb2ff !important; color: #0b1018 !important; font: 600 15px/1 var(--label) !important; letter-spacing: .16em !important; text-transform: uppercase; white-space: nowrap; text-shadow: none !important; box-shadow: 0 8px 20px rgba(0, 0, 0, .3) !important; }
+#ud-bell.on { background: rgba(8, 15, 27, .88) !important; color: #7fb2ff !important; box-shadow: inset 0 0 0 1.5px #7fb2ff !important; }
+body.night #ud-bell { background: #ff6a55 !important; color: #120606 !important; } body.night #ud-bell.on { background: rgba(12, 3, 3, .9) !important; color: #ff6a55 !important; box-shadow: inset 0 0 0 1.5px #ff6a55 !important; }
