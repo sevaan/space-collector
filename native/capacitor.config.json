@@ -11,13 +11,6 @@
     "backgroundColor": "#080f1b"
   },
   "plugins": {
-    "FirebaseAuthentication": {
-      "skipNativeAuth": true,
-      "providers": [
-        "google.com",
-        "apple.com"
-      ]
-    },
     "StatusBar": {
       "style": "DARK",
       "overlaysWebView": true
@@ -29,17 +22,7 @@
   "experimental": {
     "ios": {
       "spm": {
-        "swiftToolsVersion": "6.1",
-        "packageOptions": {
-          "@capacitor-firebase/authentication": {
-            "symlink": true
-          }
-        },
-        "packageTraits": {
-          "@capacitor-firebase/authentication": [
-            "Google"
-          ]
-        }
+        "swiftToolsVersion": "6.1"
       }
     }
   }

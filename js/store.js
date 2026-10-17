@@ -38,7 +38,7 @@ export function deleteSighting(key) {
   return tx('readwrite', (store) => store.delete(key));
 }
 
-// Replace a stored sighting (by its key): used by cloud sync to mark records uploaded (js/account.js).
+// Replace a stored sighting (by its key): (kept for tools; the old account sync used it).
 export function putSighting(s) {
   return tx('readwrite', (store) => store.put(s));
 }

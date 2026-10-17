@@ -1,29 +1,29 @@
-import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.764';
-import { computeStats, statsHtml } from './stats.js?v=0.1.764';
-import { nightKey } from './observation.js?v=0.1.764';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.764';
-import { sfx } from './sfx.js?v=0.1.764';
-import { expandFacts } from './catalog-facts.js?v=0.1.764';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.764';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.764';
-import { ticket } from './toast.js?v=0.1.764';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.764';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.764';
-import { cardArt } from './art.js?v=0.1.764';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.764';
-import { applyBack } from './card-backs.js?v=0.1.764';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.764';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.764';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.764';
-import { STORIES } from './stories.js?v=0.1.764';
-import { loadConstellations, conList } from './constellations.js?v=0.1.764';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.764';
-import { eventBadges, nextEvent } from './events.js?v=0.1.764';
-import { shareCardEl } from './share-card.js?v=0.1.764';
-import { removeSighting } from './account.js?v=0.1.764';
-import { allSightings, deleteSighting } from './store.js?v=0.1.764';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.764';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.764';
+import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.765';
+import { computeStats, statsHtml } from './stats.js?v=0.1.765';
+import { nightKey } from './observation.js?v=0.1.765';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.765';
+import { sfx } from './sfx.js?v=0.1.765';
+import { expandFacts } from './catalog-facts.js?v=0.1.765';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.765';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.765';
+import { ticket } from './toast.js?v=0.1.765';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.765';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.765';
+import { cardArt } from './art.js?v=0.1.765';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.765';
+import { applyBack } from './card-backs.js?v=0.1.765';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.765';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.765';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.765';
+import { STORIES } from './stories.js?v=0.1.765';
+import { loadConstellations, conList } from './constellations.js?v=0.1.765';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.765';
+import { eventBadges, nextEvent } from './events.js?v=0.1.765';
+import { shareCardEl } from './share-card.js?v=0.1.765';
+import { forgetSighting } from './cloud-backup.js?v=0.1.765';
+import { allSightings, deleteSighting } from './store.js?v=0.1.765';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.765';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.765';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -384,7 +384,6 @@ function render() {
   const caught = state.cards.filter(hasSightings).length;
   $('owned-count').textContent = caught.toLocaleString();
   document.body.classList.toggle('has-cards', caught > 0); // the intro banner is for an empty collection only (UX room 2026-10-12)
-  renderBackupLine(caught);
   $('count').textContent = caught ? `${caught.toLocaleString()} ${caught === 1 ? 'story' : 'stories'} collected. Every one, a moment under the sky.` : 'Real objects. Remarkable stories. Yours to discover.';
   const ps = planStart(); state.planKeys = new Set(ps.keys());
   state.list = state.cards.filter(matches).sort((a, b) => {
@@ -581,7 +580,7 @@ function showCard() {
       row.querySelector('button')?.addEventListener('click', async () => {
         if (!confirm('Delete this sighting? If it was your only one, the card leaves your collection.')) return;
         try { await deleteSighting(s.key); } catch { ticket({ kind: 'info', line: 'That sighting could not be deleted. Try again.' }); return; }
-        removeSighting(s); // and from the backup, when signed in
+        forgetSighting(s); // and from the iCloud backup
         state.raw = state.raw.filter((x) => x.key !== s.key);
         // Remove it from its own card's list (a constellation shows its stars' sightings, so that's the star's card),
         // then re-render the grid before the viewer so the position and Next stay in step (QA 2026-10-08).
@@ -818,16 +817,6 @@ try { sessionStorage.setItem('scBooted', '1'); } catch {} // the app is open: go
 // navigating; the shell sends the safe-area insets (an iframe doesn't get them) and asks us to open a card.
 // "12 cards · not backed up · Sign in ›" under the heading until you sign in (2026-10-11, design/auth-moments.html 3).
 // Inside the app it asks Explore to open the sign-in sheet; on its own it goes to Settings.
-function renderBackupLine(caught) {
-  let signedIn = false; try { signedIn = !!JSON.parse(localStorage.getItem('acct')); } catch {}
-  const el = document.getElementById('backup-line'); if (!el) return;
-  el.hidden = signedIn || !caught;
-  if (!el.hidden) document.getElementById('backup-text').textContent = `${caught.toLocaleString()} card${caught === 1 ? '' : 's'} · not backed up`;
-}
-document.getElementById('backup-line')?.addEventListener('click', () => {
-  if (window.parent !== window) window.parent.postMessage({ sc: 'signin' }, location.origin); else location.href = 'index.html?resume=1&more=1';
-});
-window.addEventListener('storage', (e) => { if (e.key === 'acct') renderBackupLine(state.cards.filter(hasSightings).length); });
 const EMBED = window.parent !== window && new URLSearchParams(location.search).has('embed');
 if (EMBED) {
   document.documentElement.classList.add('embedded');

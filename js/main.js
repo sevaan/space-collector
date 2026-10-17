@@ -1,50 +1,50 @@
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.764';
-import * as Secrets from './secrets.js?v=0.1.764';
-import { STORY_BY_SECRET } from './stories.js?v=0.1.764';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.764';
-import * as Ufo from './ufo.js?v=0.1.764';
-import * as Fossil from './fossil.js?v=0.1.764';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.764';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.764';
-import { toast, ticket, dropToast, toastPending, onTicketShown } from './toast.js?v=0.1.764';
-import { VERSION } from './version.js?v=0.1.764';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, overEarth, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.764';
-import { placeName } from './geo.js?v=0.1.764';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, SLIDER_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.764';
-import { conArt } from './con-art.js?v=0.1.764';
-import { fetchWeather, tonightSky, skyClearAt, goodSkyAt } from './weather.js?v=0.1.764';
-import { CON_FIGURES } from './con-figures.js?v=0.1.764';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.764';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.764';
-import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.764';
-import { eventOf, activeEvent, nextEvent } from './events.js?v=0.1.764';
-import { conList } from './constellations.js?v=0.1.764';
-import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.764';
-import { SkyView, shortName } from './sky.js?v=0.1.764';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.764';
-import { isPlus, setPlusForTesting, onPlus, PLUS_PERKS, PLUS_PRICES } from './plus.js?v=0.1.764';
-import { isNative, getPosition, saveFile, notifyAt, cancelNotify, haptic, onNative, nativeChrome, plugin } from './native.js?v=0.1.764';
-import { initAccount, onAccount, account, signInGoogle, sendEmailLink, completeEmailLink, signOut, syncNow, pushSighting, deleteAccount, signInApple } from './account.js?v=0.1.764';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.764';
-import { cardArt } from './art.js?v=0.1.764';
-import { renderCard, miniCard, cardLevel, artImage, lockedArt, attachTilt, attachGyro, throwOff, attachFlip } from './card.js?v=0.1.764';
-import { applyBack, CARD_BACKS, backUnlocked, chosenBack, chooseBack, backEarned } from './card-backs.js?v=0.1.764';
-import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.764';
-import { audioCtx } from './audio-ctx.js?v=0.1.764';
-import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume } from './music.js?v=0.1.764';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.764';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.764';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.764';
-import { naturalTargets, SOLAR_SYSTEM, DEEP_SKY } from './natural.js?v=0.1.764';
-import { placeFromTimeZone } from './tz-places.js?v=0.1.764';
-import { TIER_INFO } from './rarity.js?v=0.1.764';
-import { SETS, albumList } from './sets.js?v=0.1.764';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.764';
-import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.764';
-import { shareCardEl } from './share-card.js?v=0.1.764';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.764';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.764';
-import { addStarfield } from './starfield.js?v=0.1.764';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.765';
+import * as Secrets from './secrets.js?v=0.1.765';
+import { STORY_BY_SECRET } from './stories.js?v=0.1.765';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.765';
+import * as Ufo from './ufo.js?v=0.1.765';
+import * as Fossil from './fossil.js?v=0.1.765';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.765';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.765';
+import { toast, ticket, dropToast, toastPending, onTicketShown } from './toast.js?v=0.1.765';
+import { VERSION } from './version.js?v=0.1.765';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, overEarth, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.765';
+import { placeName } from './geo.js?v=0.1.765';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, SLIDER_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.765';
+import { conArt } from './con-art.js?v=0.1.765';
+import { fetchWeather, tonightSky, skyClearAt, goodSkyAt } from './weather.js?v=0.1.765';
+import { CON_FIGURES } from './con-figures.js?v=0.1.765';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.765';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.765';
+import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.765';
+import { eventOf, activeEvent, nextEvent } from './events.js?v=0.1.765';
+import { conList } from './constellations.js?v=0.1.765';
+import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.765';
+import { SkyView, shortName } from './sky.js?v=0.1.765';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.765';
+import { isPlus, setPlusForTesting, onPlus, PLUS_PERKS, PLUS_PRICES } from './plus.js?v=0.1.765';
+import { isNative, getPosition, saveFile, notifyAt, cancelNotify, haptic, onNative, nativeChrome, plugin } from './native.js?v=0.1.765';
+import { initBackup, onBackupChange, backupSoon, clearBackup } from './cloud-backup.js?v=0.1.765';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.765';
+import { cardArt } from './art.js?v=0.1.765';
+import { renderCard, miniCard, cardLevel, artImage, lockedArt, attachTilt, attachGyro, throwOff, attachFlip } from './card.js?v=0.1.765';
+import { applyBack, CARD_BACKS, backUnlocked, chosenBack, chooseBack, backEarned } from './card-backs.js?v=0.1.765';
+import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.765';
+import { audioCtx } from './audio-ctx.js?v=0.1.765';
+import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume } from './music.js?v=0.1.765';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.765';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.765';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.765';
+import { naturalTargets, SOLAR_SYSTEM, DEEP_SKY } from './natural.js?v=0.1.765';
+import { placeFromTimeZone } from './tz-places.js?v=0.1.765';
+import { TIER_INFO } from './rarity.js?v=0.1.765';
+import { SETS, albumList } from './sets.js?v=0.1.765';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.765';
+import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.765';
+import { shareCardEl } from './share-card.js?v=0.1.765';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.765';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.765';
+import { addStarfield } from './starfield.js?v=0.1.765';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -1197,7 +1197,7 @@ async function recordSighting(obj, d, l = null) {
     const saved = { ...sighting, key };
     state.sightings.unshift(saved);
     for (const id of ['tonight', 'rank', 'sun-safety', 'guide']) dropToast(id); // a catch clears the notes that were waiting for one (playtest room 2026-10-12)
-    pushSighting(saved); // backed up straight away when signed in (js/account.js)
+    backupSoon(); // into iCloud shortly (js/cloud-backup.js)
     checkTwoHomes(saved);
     return saved;
   } catch {
@@ -2478,7 +2478,7 @@ $('location-form').addEventListener('submit', e => {
   state.model?.reset(); state.rising?.reset(); state.trails.clear(); cancelPassSearch(); renderLocation(); refreshAbove();
 });
 document.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', () => closePanel(b.dataset.close)));
-onRevealDismiss(() => { closePanel('reveal'); duckMusic(false); setTimeout(maybeAskSignIn, 700); }); // the sign-in ask waits for the reveal to close
+onRevealDismiss(() => { closePanel('reveal'); duckMusic(false); });
 // The Plus sheet opens from outside Settings too (the Week tab, the shiny tease), so it lives at the top level; inside
 // the hidden Settings panel it never showed (playtest 2026-10-11).
 document.body.append($('set-plus-sheet'));
@@ -3003,7 +3003,7 @@ function firstTarget() {
 function radarTip(delay = 3000) {
   try { if (localStorage.getItem('radarTip')) return; } catch {}
   setTimeout(() => {
-    if (activePanel || !$('reveal').hidden || !$('auth-sheet').hidden || !$('ob-done').hidden || !$('recap').hidden || document.body.classList.contains('ob-tour') || document.querySelector('.set-sheet:not([hidden]), .patch-moment, .patch-coins, #toasts .ticket.in') || collectionOpen) { radarTip(1500); return; } // also any sheet (2026-10-13: it came up behind the reminder sheet) // one thing at a time (playtest 2026-10-09)
+    if (activePanel || !$('reveal').hidden || !$('ob-done').hidden || !$('recap').hidden || document.body.classList.contains('ob-tour') || document.querySelector('.set-sheet:not([hidden]), .patch-moment, .patch-coins, #toasts .ticket.in') || collectionOpen) { radarTip(1500); return; } // also any sheet (2026-10-13: it came up behind the reminder sheet) // one thing at a time (playtest 2026-10-09)
     try { localStorage.setItem('radarTip', '1'); } catch {}
     const r = $('radar').getBoundingClientRect(), tip = document.createElement('button');
     tip.type = 'button'; tip.className = 'radar-tip';
@@ -3216,7 +3216,7 @@ function obFinish(caught) {
     renderNotTonight(wx, T, t0);
     $('ob-remind').hidden = true;
     $('ob-explore').firstElementChild.textContent = 'Explore the sky anyway';
-    $('ob-explore').onclick = () => { hideDone(); setTimeout(maybeAskSignIn, 600); radarTip(); };
+    $('ob-explore').onclick = () => { hideDone(); radarTip(); };
     $('ob-done').hidden = false;
     return;
   } else {
@@ -3241,7 +3241,7 @@ function obFinish(caught) {
   // waits behind this page, so there was no sign it worked).
   $('ob-remind').onclick = async () => { if (!remindable || remindUndo($('ob-remind'))) return; const k = `${best2.obj.id}@${best2.start}`; const ok = await remindPass(best2, k); if (ok) reminded.add(k); remindDone($('ob-remind'), ok, best2.start - 10 * 60e3, k); };
   $('ob-explore').firstElementChild.textContent = 'Explore the sky';
-  $('ob-explore').onclick = () => { hideDone(); setTimeout(maybeAskSignIn, 600); radarTip(); };
+  $('ob-explore').onclick = () => { hideDone(); radarTip(); };
   $('ob-done').hidden = false;
 }
 
@@ -3324,7 +3324,6 @@ window.addEventListener('message', (e) => {
   // rises over the Collection, which closes without its slide once Settings has landed.
   if (e.data.sc === 'explore') { if (e.data.more) { document.body.classList.add('panel-over-col'); openDebug(); setTimeout(() => { closeCollection(false, true); setTimeout(() => document.body.classList.remove('panel-over-col'), 60); }, 440); } else closeCollection(); }
   if (e.data.sc === 'modal') document.body.classList.toggle('col-modal', !!e.data.on); // a card or stats open in there
-  if (e.data.sc === 'signin') openAuth('collection'); // the Collection's "not backed up" line
   // Find tab (2026-10-13): next passes for the objects on screen, and reminders / Show me for them.
   if (e.data.sc === 'find-passes') findPasses(e.data.ids, e.data.req);
   if (e.data.sc === 'find-suggest') { // the rarest new cards with a pass tonight or this week, from the plans we already have
@@ -3498,11 +3497,13 @@ async function boot() {
   }
   try { state.sky=await loadSky('data/sky.json'); } catch {}
   await loadLore(); await loadSightings(); setTimeout(() => { try { updateBackEarned(); } catch {} }, 4000);
-  initAccount(); renderAccount(); // signed-in phones sync in the background; nothing waits on it
+  initBackup(); // iPhone app: merge with the player's iCloud copy in the background; nothing waits on it
+  { const ios = isNative() && /iP(hone|ad|od)|Mac/.test(navigator.userAgent), droid = isNative() && !ios; // Settings → Collection: where your cards are kept
+    $('set-backup-name').textContent = ios ? 'Backed up to your iCloud' : droid ? 'Backed up with your phone' : 'Saved in this browser';
+    $('set-backup-note').textContent = ios ? 'Comes back after a reinstall and on your iPad. No account needed.' : droid ? 'Android restores it on a new phone. No account needed.' : 'Install the app to keep it backed up.'; }
   { const sv = loadSavedLocation(); state.locationStatus = sv?.manual ? 'manual' : sv ? 'saved' : 'example'; } renderLocation();
   state.frame = frame(now(), state.observer); renderStartHand(); 
   $('btn-start').firstElementChild.textContent='Swipe away'; $('btn-start').disabled=false; wcReady = true; if (wcWantFlip) welcomeFlip();
-  $('wc-signin').hidden = !!account() || state.sightings.some((x) => !x.sim); // "Already collecting? Sign in", not for someone replaying the tour with cards
   const params=new URLSearchParams(location.search);
   if(params.has('resume')) {
     try {
@@ -3654,23 +3655,8 @@ const sheetTimers = new Map();
 const openSheet = (id) => { clearTimeout(sheetTimers.get(id)); $(id).hidden = false; requestAnimationFrame(() => $(id).classList.add('in')); };
 const closeSheet = (el) => { el.classList.remove('in'); clearTimeout(sheetTimers.get(el.id)); sheetTimers.set(el.id, setTimeout(() => { if (!el.classList.contains('in')) el.hidden = true; }, 260)); renderSettings(); };
 $('set-loc-open').addEventListener('click', () => openSheet('set-loc-sheet'));
-// ---------- account (2026-10-10, js/account.js) ----------
-// The emailed link can't open this copy of the app: the iPhone Home Screen web app, or the native app (2026-10-11).
-const standaloneIOS = () => isNative() || ((navigator.standalone === true || matchMedia('(display-mode: standalone)').matches) && /iP(hone|ad|od)/.test(navigator.userAgent));
-function renderAccount(extra = {}) {
-  const a = account(), ago = (t) => { if (!t) return 'not yet'; const m = Math.round((Date.now() - t) / 60000); return m < 1 ? 'just now' : m < 60 ? `${m} min ago` : m < 1440 ? `${Math.round(m / 60)} h ago` : new Date(t).toLocaleDateString(); };
-  const n = state.sightings.filter((s) => !s.sim).length;
-  $('set-acct-name').textContent = a ? (a.name || a.email || 'Signed in') : 'Back up your collection';
-  $('set-acct-note').textContent = a ? (a.syncedAt ? `Backed up ${ago(a.syncedAt)}` : 'Backing up…') : 'Sign in to keep your cards safe and on every device';
-  $('acct-out').hidden = !!a; $('acct-in').hidden = !a;
-  if (a) { $('acct-who').textContent = a.name || a.email || 'Signed in'; $('acct-status').textContent = `${a.email ?? ''}${a.email ? ' · ' : ''}${n.toLocaleString()} sighting${n === 1 ? '' : 's'} · ${a.syncedAt ? `backed up ${ago(a.syncedAt)}` : 'backing up…'}`; }
-  $('acct-paste-form').hidden = !standaloneIOS() || !localStorage.getItem('emailForSignIn');
-  if (extra.msg != null) $('acct-msg').textContent = extra.msg;
-}
-onAccount(async (a) => {
-  if (a.changed) { await loadSightings(); collectionStale(); refreshOwned(); } // another device added or deleted sightings
-  renderAccount();
-});
+// ---------- backup (2026-10-16, js/cloud-backup.js): no accounts; iCloud on iPhone, Android's own backup ----------
+onBackupChange(async () => { await loadSightings(); collectionStale(); refreshOwned(); }); // cards arrived from iCloud (a reinstall, or the iPad)
 // Card backs (2026-10-16, design/card-backs.html): a grid of every back plus Random. Locked ones show how to earn them
 // or a PLUS tag (tapping opens the Plus sheet). The row in Settings shows the current choice.
 // Card back picker (2026-10-16, Sevaan: two backs hid below the fold, and the notes under each were noise): all eight
@@ -3704,145 +3690,6 @@ function updateBackEarned() {
   try { localStorage.setItem('backEarned', JSON.stringify([...now2])); } catch {}
   for (const id of now2) if (!had.has(id)) { const b = CARD_BACKS.find((x) => x.id === id); ticket({ kind: 'patch', eyebrow: 'NEW CARD BACK', line: `${b.name} · choose it in Settings`, ms: 6000 }); }
   renderBackRow();
-}
-$('set-acct-open').addEventListener('click', () => { renderAccount({ msg: '' }); openSheet('set-acct-sheet'); });
-const acctBusy = (on) => document.querySelectorAll('#set-acct-sheet button').forEach((b) => { b.disabled = on; });
-$('acct-google').addEventListener('click', async () => {
-  acctBusy(true); renderAccount({ msg: '' });
-  try { await signInGoogle(); renderAccount({ msg: '' }); toast('Signed in. Your collection is backing up.', 3000); }
-  catch (e) { console.error('google sign-in failed', e?.code, e?.message); renderAccount({ msg: signInError(e) }); }
-  acctBusy(false);
-});
-$('acct-email-form').addEventListener('submit', async (e) => {
-  e.preventDefault(); acctBusy(true);
-  try { await sendEmailLink($('acct-email').value.trim()); renderAccount({ msg: `Check ${$('acct-email').value.trim()} for a sign-in link.${standaloneIOS() ? ' If it opens in Safari, copy the address and paste it below.' : ''}` }); }
-  catch (er) { renderAccount({ msg: `Couldn't send the link (${er?.code ?? er?.message ?? 'error'}).` }); }
-  acctBusy(false);
-});
-$('acct-paste-form').addEventListener('submit', async (e) => {
-  e.preventDefault(); acctBusy(true);
-  try { await completeEmailLink($('acct-paste').value.trim()); renderAccount({ msg: '' }); toast('Signed in. Your collection is backing up.', 3000); }
-  catch (er) { renderAccount({ msg: er?.message === 'need-email' ? 'Enter your email above first, then paste the link.' : `That link didn't work (${er?.code ?? er?.message}).` }); }
-  acctBusy(false);
-});
-$('acct-delete').addEventListener('click', () => { $('acct-confirm').hidden = false; $('acct-delete').hidden = true; });
-$('acct-delete-no').addEventListener('click', () => { $('acct-confirm').hidden = true; $('acct-delete').hidden = false; });
-$('acct-delete-yes').addEventListener('click', async () => {
-  acctBusy(true);
-  try { await deleteAccount(() => (APPLE_SIGNIN && account()?.provider === 'apple' ? signInApple() : signInGoogle())); renderAccount({ msg: '' }); $('acct-confirm').hidden = true; $('acct-delete').hidden = false; toast('Account deleted. Your cards are still on this phone.', 3500); }
-  catch (e) { console.error('delete account failed', e?.code, e?.message); renderAccount({ msg: /network|offline/i.test(`${e?.code}${e?.message}`) ? 'Couldn\'t reach the server. Check your connection and try again.' : `Couldn't delete the account. Sign out, sign in again, then try once more. (${e?.code ?? e?.message ?? 'error'})` }); }
-  acctBusy(false);
-});
-$('acct-signout').addEventListener('click', async () => { acctBusy(true); try { await signOut(); } catch {} renderAccount({ msg: '' }); acctBusy(false); toast('Signed out. Your collection stays on this phone.', 2600); });
-// ---------- sign-in moments (2026-10-11, design/auth-moments.html) ----------
-// One sheet (#auth-sheet), worded for what opened it: the welcome card's "Already collecting?" link (restore), the
-// first card's reveal closing (first), a first night of 3+ cards (night), the Collection's "not backed up" line.
-// Every one but Plus has "Not now". The Apple button waits for Sign in with Apple (paid developer account).
-const APPLE_SIGNIN = isNative() && /iP(hone|ad|od)|Mac/.test(navigator.userAgent); // the native iPhone app (2026-10-12: paid developer account, App ID capability, Firebase provider)
-const realSightings = () => state.sightings.filter((s) => !s.sim);
-const cardCount = () => new Set(realSightings().map((s) => s.cardKey)).size;
-const AUTH_COPY = {
-  restore: () => ({ eyebrow: 'Welcome back', title: 'Pick up where you left off', body: 'Sign in with the account you used before. Your cards, patches and rank come back, and the tour is skipped.', later: 'Back' }),
-  first: () => ({ eyebrow: `${cardCount()} cards so far`, title: 'Keep your cards safe', body: 'Right now your collection lives only on this phone. Sign in and it\'s backed up, and it follows you to any phone.', later: 'Not now' }),
-  night: () => ({ eyebrow: `${cardCount()} cards and counting`, title: 'Keep your cards safe', body: 'Your collection lives only on this phone. Sign in and it\'s backed up, and it follows you to any phone.', later: 'Not now' }),
-  collection: () => ({ eyebrow: `${cardCount()} card${cardCount() === 1 ? '' : 's'} · not backed up`, title: 'Keep your cards safe', body: 'Sign in and your collection is backed up, and it follows you to any phone.', later: 'Not now' }),
-};
-let authMode = null;
-function authMsg(t) { $('auth-msg').textContent = t || ''; }
-function openAuth(mode) {
-  if (account()) return;
-  authMode = mode; const c = AUTH_COPY[mode]();
-  $('auth-eyebrow').textContent = c.eyebrow; $('auth-title').textContent = c.title; $('auth-body').textContent = c.body; $('auth-later').textContent = c.later;
-  $('auth-apple').hidden = !APPLE_SIGNIN; $('auth-email-form').hidden = true; $('auth-email-open').hidden = false;
-  $('auth-paste-form').hidden = !standaloneIOS() || !localStorage.getItem('emailForSignIn');
-  $('auth-google').hidden = false; $('auth-next').hidden = true; authLater = null;
-  authMsg(''); openSheet('auth-sheet');
-}
-const authBusy = (on) => document.querySelectorAll('#auth-sheet button').forEach((b) => { b.disabled = on; });
-// Sign-in failures in plain words (2026-10-11, Sevaan: a raw error code, then a weak "nothing to restore" toast).
-function signInError(e) {
-  const code = e?.code ?? '', msg = e?.message ?? '';
-  if (/popup-closed|cancelled-popup|cancel/i.test(code + msg)) return '';
-  if (standaloneIOS() && !isNative()) return 'Google sign-in needs Safari here. Try the email link instead.';
-  if (/No credentials available/i.test(msg)) return 'Add a Google account to this phone first (Settings → Accounts), or use the email link.';
-  if (/network|offline|Failed to fetch|dynamically imported/i.test(code + msg)) return 'Couldn\'t reach Google. Check your connection and try again.';
-  if (/popup-blocked/.test(code)) return 'The Google window was blocked. Allow pop-ups for this site, or use the email link.';
-  if (/account-exists-with-different-credential/.test(code)) return 'That email already signs in another way. Use the email link instead.';
-  if (/too-many-requests/.test(code)) return 'Too many tries. Wait a minute and try again.';
-  return 'Couldn\'t sign in. Try again, or use the email link.'; // the code goes to the console, not the screen (writing room)
-}
-// The sheet's end states: "restored", "nothing on this account", or "couldn't reach the backup". Shown in the sheet
-// itself, not a toast, so the answer stays in front of you until you choose what's next.
-function authResult({ eyebrow, title, body, next, later, onNext, onLater }) {
-  $('auth-eyebrow').textContent = eyebrow; $('auth-title').textContent = title; $('auth-body').textContent = body; authMsg('');
-  for (const id of ['auth-apple', 'auth-google', 'auth-email-open', 'auth-email-form', 'auth-paste-form']) $(id).hidden = true;
-  $('auth-next').hidden = false; $('auth-next').firstElementChild.textContent = next; $('auth-next').onclick = onNext;
-  $('auth-later').textContent = later; authLater = onLater;
-}
-let authLater = null;
-async function authDone() {
-  renderAccount();
-  if (authMode !== 'restore') { closeSheet($('auth-sheet')); toast('Signed in. Your collection is backing up.', 3000); return; }
-  // Restore: pull the collection down, then skip the tour if there was anything to bring back.
-  const who = account()?.email ?? 'This account';
-  $('auth-title').textContent = 'Looking for your cards…'; $('auth-body').textContent = ''; authBusy(true);
-  let failed = null;
-  try { await syncNow(); } catch (e) { failed = e; console.error('restore sync failed', e); }
-  authBusy(false);
-  await loadSightings(); refreshOwned();
-  const n = cardCount();
-  if (n) {
-    writePref('started', true); collectionStale(); closeSheet($('auth-sheet')); quickStart();
-    toast(`Welcome back. ${n.toLocaleString()} card${n === 1 ? '' : 's'} restored.`, 3500); return;
-  }
-  const switchAccount = async () => { try { await signOut(); } catch {} renderAccount(); openAuth('restore'); };
-  if (failed) authResult({ eyebrow: 'Signed in', title: 'Couldn\'t reach your backup', body: `You're signed in as ${who}, but your cards didn't come down (${failed?.code ?? failed?.message ?? 'error'}). Check your connection and try again.`, next: 'Try again', later: 'Use a different account', onNext: () => authDone(), onLater: switchAccount });
-  else authResult({ eyebrow: who, title: 'No cards on this account yet', body: 'Nothing has been backed up with this account. If you collected with a different Google account or email, switch to it. Otherwise, start fresh and your cards will back up as you go.', next: 'Start collecting', later: 'Use a different account', onNext: () => closeSheet($('auth-sheet')), onLater: switchAccount });
-}
-$('auth-apple').addEventListener('click', async () => {
-  authBusy(true); authMsg('');
-  try { await signInApple(); } catch (e) { console.error('apple sign-in failed', e?.code, e?.message); authMsg(signInError(e)); authBusy(false); return; }
-  authBusy(false); await authDone();
-});
-$('acct-apple').hidden = !APPLE_SIGNIN;
-$('acct-apple').addEventListener('click', async () => {
-  acctBusy(true); renderAccount({ msg: '' });
-  try { await signInApple(); renderAccount({ msg: '' }); toast('Signed in. Your collection is backing up.', 3000); }
-  catch (e) { console.error('apple sign-in failed', e?.code, e?.message); renderAccount({ msg: signInError(e) }); }
-  acctBusy(false);
-});
-$('auth-google').addEventListener('click', async () => {
-  authBusy(true); authMsg('');
-  try { await signInGoogle(); } catch (e) { console.error('google sign-in failed', e?.code, e?.message); authMsg(signInError(e)); authBusy(false); return; }
-  authBusy(false); await authDone();
-});
-$('auth-email-open').addEventListener('click', () => { $('auth-email-open').hidden = true; $('auth-email-form').hidden = false; $('auth-email').focus(); });
-$('auth-email-form').addEventListener('submit', async (e) => {
-  e.preventDefault(); authBusy(true);
-  const email = $('auth-email').value.trim();
-  try { await sendEmailLink(email); authMsg(`Check ${email} for a sign-in link.${standaloneIOS() ? ' If it opens in Safari, copy the address and paste it below.' : ''}`); $('auth-paste-form').hidden = !standaloneIOS(); }
-  catch (er) { authMsg(`Couldn't send the link (${er?.code ?? er?.message ?? 'error'}).`); }
-  authBusy(false);
-});
-$('auth-paste-form').addEventListener('submit', async (e) => {
-  e.preventDefault(); authBusy(true);
-  try { await completeEmailLink($('auth-paste').value.trim()); await authDone(); }
-  catch (er) { authMsg(er?.message === 'need-email' ? 'Enter your email above first, then paste the link.' : `That link didn't work (${er?.code ?? er?.message}).`); }
-  authBusy(false);
-});
-$('auth-later').addEventListener('click', () => { const f = authLater; authLater = null; f ? f() : closeSheet($('auth-sheet')); });
-$('wc-signin').addEventListener('click', (e) => { e.stopPropagation(); openAuth('restore'); });
-// The two asks: once after the first card, once more after a first night of 3+ cards, then never.
-function maybeAskSignIn() {
-  if (account() || !$('onboard').hidden || !$('reveal').hidden || activePanel || collectionOpen || !$('auth-sheet').hidden) return;
-  let asked = 0; try { asked = Number(localStorage.getItem('authAsked') ?? 0); } catch {}
-  const n = cardCount();
-  const tonight = String(nightKey(now().getTime(), state.observer.lon ?? 0));
-  const tonightCards = new Set(realSightings().filter((s) => String(nightKey(s.time, s.lon ?? 0)) === tonight).map((s) => s.cardKey)).size;
-  const mode = asked === 0 && n >= 3 ? 'first' : asked === 1 && tonightCards >= 3 ? 'night' : null;
-  if (!mode) return;
-  try { localStorage.setItem('authAsked', String(asked + 1)); } catch {}
-  openAuth(mode);
 }
 $('set-hl-open').addEventListener('click', () => openSheet('set-hl-sheet'));
 document.querySelectorAll('.set-sheet').forEach((sh) => sh.addEventListener('click', (e) => { if (e.target === sh || e.target.closest('[data-sheet-close]')) closeSheet(sh); }));
@@ -3998,7 +3845,7 @@ async function earnStory(id, quiet = false) {
   const sighting = { objectId: st.id, cardKey: st.key, name: st.name, type: 'story', time: at, loggedAt: Date.now(), lat: state.observer?.lat, lon: state.observer?.lon, sim: false, appVersion: VERSION, cardSnapshot: cardSnapshot(st) };
   try {
     const key = await addSighting(sighting); const saved = { ...sighting, key };
-    state.sightings.unshift(saved); collectionStale(); pushSighting(saved);
+    state.sightings.unshift(saved); collectionStale(); backupSoon();
     if (!quiet) showCaptureCard(st);
   } catch {}
 }
@@ -4055,7 +3902,8 @@ $('btn-meteor')?.addEventListener('click', () => { Secrets.summonMeteor(); close
 // Reset everything (2026-10-08): sightings, patches, settings and every saved flag go, then the app reloads as a brand-new
 // player (welcome card and tour). The browser keeps its own location/motion permissions; the tour asks again regardless.
 $('set-reset').addEventListener('click', async () => {
-  if (!confirm('Reset everything? Your cards, patches and settings on this phone will be deleted. This can\u2019t be undone.')) return;
+  if (!confirm('Reset everything? Your cards, patches and settings will be deleted, here and in your iCloud backup. This can\u2019t be undone.')) return;
+  await clearBackup(); // or iCloud would bring the old collection straight back
   try { localStorage.clear(); sessionStorage.clear(); } catch {}
   await new Promise((res) => { try { const r = indexedDB.deleteDatabase('space-collector'); r.onsuccess = r.onerror = r.onblocked = () => res(); } catch { res(); } });
   location.href = location.pathname;

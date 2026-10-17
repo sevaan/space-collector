@@ -22,11 +22,11 @@
   <link rel="preload" href="fonts/RussoOne-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="fonts/BarlowCondensed-Medium.ttf" as="font" type="font/ttf" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600;650;700;750;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/cards.css?v=0.1.764">
-  <link rel="stylesheet" href="css/app.css?v=0.1.764">
-  <link rel="stylesheet" href="css/icons.css?v=0.1.764">
-  <link rel="stylesheet" href="css/reveal.css?v=0.1.764">
-  <link rel="stylesheet" href="css/ui.css?v=0.1.764">
+  <link rel="stylesheet" href="css/cards.css?v=0.1.765">
+  <link rel="stylesheet" href="css/app.css?v=0.1.765">
+  <link rel="stylesheet" href="css/icons.css?v=0.1.765">
+  <link rel="stylesheet" href="css/reveal.css?v=0.1.765">
+  <link rel="stylesheet" href="css/ui.css?v=0.1.765">
 </head>
 <body>
   <video id="cam" playsinline muted autoplay hidden></video>
@@ -136,27 +136,11 @@
         <button id="btn-start" class="text-button" type="button" disabled><span>Loading the sky…</span></button>
       </div>
       <p class="d-under" id="start-note" hidden></p>
-      <button class="wc-signin" id="wc-signin" type="button" hidden><small>Already collecting?</small><span>Sign in to restore your cards ›</span></button>
     </div>
   </section>
 
   <!-- Guided setup (2026-10-06, design/welcome-flows.html D): bottom sheets over the live sky, then your first catch. -->
   <div id="recap" hidden role="dialog" aria-modal="true" aria-label="Your week"></div>
-  <!-- Sign-in sheet (2026-10-11, design/auth-moments.html): one sheet, worded for the moment that opened it. -->
-  <div class="set-sheet auth-sheet" id="auth-sheet" hidden role="dialog" aria-modal="true" aria-labelledby="auth-title"><div class="set-sheet-card">
-    <div class="set-grab"></div>
-    <div class="auth-eyebrow" id="auth-eyebrow"></div>
-    <div class="auth-title" id="auth-title"></div>
-    <p class="auth-body" id="auth-body"></p>
-    <button class="auth-btn apple" id="auth-apple" type="button" hidden><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.4 12.7c0-2.5 2-3.7 2.1-3.8-1.2-1.7-3-1.9-3.6-2-1.5-.2-3 .9-3.8.9-.8 0-2-.9-3.3-.9-1.7 0-3.3 1-4.1 2.5-1.8 3.1-.5 7.6 1.3 10.1.8 1.2 1.8 2.6 3.1 2.5 1.2 0 1.7-.8 3.2-.8s1.9.8 3.2.8c1.3 0 2.2-1.2 3-2.4.9-1.4 1.3-2.7 1.3-2.8-.1 0-2.4-.9-2.4-4.1zM14 5.3c.7-.8 1.1-1.9 1-3.1-1 0-2.2.7-2.9 1.5-.6.7-1.2 1.9-1 3 1.1.1 2.2-.6 2.9-1.4z"/></svg><span>Continue with Apple</span></button>
-    <button class="auth-btn google" id="auth-google" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M22.5 12.2c0-.8-.1-1.5-.2-2.2H12v4.2h5.9a5 5 0 0 1-2.2 3.3v2.7h3.5c2.1-1.9 3.3-4.7 3.3-8z"/><path fill="#34A853" d="M12 23c3 0 5.5-1 7.3-2.7l-3.5-2.7c-1 .7-2.3 1.1-3.8 1.1-2.9 0-5.4-2-6.3-4.6H2.1v2.8A11 11 0 0 0 12 23z"/><path fill="#FBBC05" d="M5.7 14.1a6.6 6.6 0 0 1 0-4.2V7.1H2.1a11 11 0 0 0 0 9.8z"/><path fill="#EA4335" d="M12 5.4c1.6 0 3.1.6 4.2 1.7l3.2-3.2A11 11 0 0 0 2.1 7.1l3.6 2.8C6.6 7.4 9.1 5.4 12 5.4z"/></svg><span>Continue with Google</span></button>
-    <button class="auth-btn email" id="auth-email-open" type="button"><span>Email me a sign-in link</span></button>
-    <form id="auth-email-form" class="set-coords" hidden><label>Your email<input id="auth-email" type="email" required autocomplete="email" placeholder="you@example.com"></label><button class="d-cta ghost acct-btn" type="submit"><span>Send the link</span><span>→</span></button></form>
-    <form id="auth-paste-form" class="set-coords" hidden><label>Opened the link in Safari? Copy it and paste it here<input id="auth-paste" type="url" placeholder="https://sevaan.github.io/space-collector/?…"></label><button class="d-cta ghost acct-btn" type="submit"><span>Sign in with the link</span><span>→</span></button></form>
-    <small class="set-sl-note auth-msg" id="auth-msg" aria-live="polite"></small>
-    <button class="d-cta o auth-next" id="auth-next" type="button" hidden><span>Start collecting</span><span aria-hidden="true">→</span></button>
-    <button class="auth-later" id="auth-later" type="button">Not now</button>
-  </div></div>
   <section id="onboard" hidden>
     <!-- Tour as cards (2026-10-06, design/tour-cards.html): each step is the top of a card laid over the live sky,
          with the next ones stacked underneath; a choice throws it off and the sky reacts. -->
@@ -215,8 +199,8 @@
     <!-- Settings (2026-10-08, design/settings.html; restyled 2026-10-16 as design/settings-redesign.html A "Field cards": each group is a card with a numbered header bar). Element ids are the old ones. -->
     <div class="panel-head"><div class="wordmark set-title"><h2>Settings</h2><span>Make it yours</span></div><button class="pill x-close" data-close="debug" aria-label="Close">✕</button></div>
 
-    <div class="set-group set-card"><div class="set-bar"><h3>Account</h3><b aria-hidden="true">01</b></div>
-      <button class="set-row" type="button" id="set-acct-open"><span class="set-ic" aria-hidden="true" style="background:#3a2259"><span class="ico" data-ico="cloud"></span></span><span class="set-main"><span id="set-acct-name">Back up your collection</span><small id="set-acct-note">Sign in to keep your cards safe and on every device</small></span><span class="set-chev">›</span></button>
+    <div class="set-group set-card"><div class="set-bar"><h3>Collection</h3><b aria-hidden="true">01</b></div>
+      <div class="set-row" id="set-backup"><span class="set-ic" aria-hidden="true" style="background:#3a2259"><span class="ico" data-ico="cloud"></span></span><span class="set-main"><span id="set-backup-name">Saved on this phone</span><small id="set-backup-note">No account needed</small></span></div>
       <button class="set-row" type="button" id="set-stats-open"><span class="set-ic" aria-hidden="true" style="background:#1d3a52"><span class="ico" data-ico="chart"></span></span><span class="set-main"><span>Observer stats</span><small>Your nights, places and rarest finds</small></span><span class="set-chev">›</span></button>
       <button class="set-row" type="button" id="set-plus-open"><span class="set-ic" aria-hidden="true" style="background:#5a3c12"><span class="ico" data-ico="stars"></span></span><span class="set-main"><span>Space Collector Plus</span><small id="set-plus-note">Reminders, card backs and more</small></span><span class="set-val" id="set-plus-val">Free</span><span class="set-chev">›</span></button>
       <button class="set-row" type="button" id="set-back-open"><span class="set-ic" aria-hidden="true"><span class="ico" data-ico="cards"></span></span><span class="set-main"><span>Card back</span><small>The back of every card you flip</small></span><span class="set-val" id="set-back-val">Mission Control</span><span class="set-chev">›</span></button>
@@ -287,26 +271,6 @@
       <form id="location-form" class="set-coords"><span class="set-sl-top"><span>Or enter coordinates</span></span><div class="row wrap"><label>Latitude<input id="latitude" type="number" min="-90" max="90" step="any" required inputmode="decimal"></label><label>Longitude<input id="longitude" type="number" min="-180" max="180" step="any" required inputmode="decimal"></label></div><button class="pill" type="submit">Use these</button></form>
       <small class="set-sl-note">South and west are negative. Used only to work out your sky, never sold or shared. <a href="privacy.html" target="_blank" rel="noopener">Privacy</a></small>
     </div></div>
-    <!-- Account sheet (2026-10-10, js/account.js) -->
-    <div class="set-sheet" id="set-acct-sheet" hidden><div class="set-sheet-card"><div class="set-grab"></div>
-      <div id="acct-out">
-        <h3>Back up your collection</h3>
-        <p class="hint">Your sightings live on this phone. Sign in and they're saved to your account, and the same on every device you sign in on.</p>
-        <button class="d-cta acct-apple" id="acct-apple" type="button" hidden><span>Continue with Apple</span><span>→</span></button>
-        <button class="d-cta o" id="acct-google" type="button"><span>Continue with Google</span><span>→</span></button>
-        <form id="acct-email-form" class="set-coords"><label>Or get a sign-in link by email<input id="acct-email" type="email" required autocomplete="email" placeholder="you@example.com"></label><button class="d-cta ghost acct-btn" type="submit"><span>Email me a link</span><span>→</span></button></form>
-        <form id="acct-paste-form" class="set-coords" hidden><label>Opened the link in Safari instead? Copy it and paste it here<input id="acct-paste" type="url" placeholder="https://sevaan.github.io/space-collector/?…"></label><button class="d-cta ghost acct-btn" type="submit"><span>Sign in with the link</span><span>→</span></button></form>
-        <small class="set-sl-note" id="acct-msg" aria-live="polite"></small>
-      </div>
-      <div id="acct-in" hidden>
-        <h3 id="acct-who"></h3>
-        <p class="hint" id="acct-status"></p>
-        <button class="d-cta ghost acct-btn" id="acct-signout" type="button"><span>Sign out</span><span></span></button>
-        <button class="acct-delete" id="acct-delete" type="button">Delete account</button>
-        <div class="acct-confirm" id="acct-confirm" hidden><p>This deletes your account and everything backed up with it. Your cards stay on this phone. It can't be undone.</p><button class="d-cta acct-danger" id="acct-delete-yes" type="button"><span>Delete my account</span><span></span></button><button class="auth-later" id="acct-delete-no" type="button">Keep it</button></div>
-        <small class="set-sl-note">Signing out keeps everything on this phone.</small>
-      </div>
-    </div></div>
     <!-- Space Collector Plus sheet (2026-10-16, design/plus-sheet-card.html): the Plus card (opens face down on a random
          back, flips after a second), three prices, one button. -->
     <div class="set-sheet" id="set-plus-sheet" hidden><div class="set-sheet-card"><div class="set-grab"></div>
@@ -341,7 +305,7 @@
     </div></div>
   </section>
 
-  <script type="module" src="js/main.js?v=0.1.764"></script>
+  <script type="module" src="js/main.js?v=0.1.765"></script>
 <div id="rotate" role="status"><b>Turn your phone upright</b><span>Space Collector is made for portrait.</span></div>
 </body>
 </html>
