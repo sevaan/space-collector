@@ -582,3 +582,8 @@ html.away *, html.away *::before, html.away *::after { animation-play-state: pau
 #viewer .v-up .v-up__btns button { white-space: nowrap; letter-spacing: .1em; gap: 8px; min-width: 0; }
 #viewer .v-up .v-up__btns button svg { flex: none; }
 #viewer .v-up .v-up__btns button span { overflow: hidden; text-overflow: ellipsis; }
+
+/* ---------- Text audit fixes (2026-10-17) ---------- */
+html { text-wrap: pretty; } h1, h2, h3 { text-wrap: balance; }
+@media (max-width: 370px) { .lb-top { font-size: 11px; letter-spacing: .1em; } .lb-top > * { white-space: nowrap; } } /* "OBSERVER RANK" / "WEEK 1 · COME BACK NEXT WEEK" on one line at 360 */
+.v-up__when { text-wrap: balance; } /* "Up tonight · 8:56 PM · almost overhead in the southwest" breaks evenly */
