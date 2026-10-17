@@ -2,7 +2,7 @@
 // zone needs no permission and no network, and puts the sky within a few hundred km for most people: close enough that
 // the same satellites, planets and stars are up. Each zone maps to a well-known city in it: [lat, lon, city].
 // placeFromTimeZone() → { lat, lon, label } or null (unknown zone: the caller keeps its own default).
-const Z = {
+export const TZ_PLACES = {
   // Canada
   'America/St_Johns': [47.56, -52.71, "St. John's"], 'America/Halifax': [44.65, -63.58, 'Halifax'], 'America/Moncton': [46.09, -64.78, 'Moncton'],
   'America/Glace_Bay': [46.2, -59.96, 'Sydney, NS'], 'America/Goose_Bay': [53.3, -60.42, 'Goose Bay'], 'America/Toronto': [43.65, -79.38, 'Toronto'],
@@ -62,6 +62,6 @@ const Z = {
   'Pacific/Guam': [13.44, 144.79, 'Hagåtña'],
 };
 export function placeFromTimeZone(tz = (() => { try { return Intl.DateTimeFormat().resolvedOptions().timeZone; } catch { return ''; } })()) {
-  const p = Z[tz]; if (!p) return null;
+  const p = TZ_PLACES[tz]; if (!p) return null;
   return { lat: p[0], lon: p[1], label: `Example: ${p[2]}`, fromTz: tz };
 }

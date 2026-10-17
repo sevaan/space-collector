@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><base href="../"><title>Card Render</title>
+<link rel="stylesheet" href="css/cards.css?v=0.1.765"><link rel="stylesheet" href="css/ui.css?v=0.1.765">
+<style>html,body{margin:0;background:transparent}#stage{display:flex;flex-wrap:wrap;gap:30px;padding:30px}#stage .card{font-size:12px}</style>
+</head><body><div id="stage"></div>
+<script type="module">
+// Renders real cards (as collected tonight) for the website build: scripts/render-site-cards.mjs passes keys in the hash.
+import { renderCard } from './js/card.js?v=0.1.765';
+import { expandFacts } from './js/catalog-facts.js?v=0.1.765';
+import { buildCards } from './js/card-model.js?v=0.1.765';
+import { loadLore } from './js/lore.js?v=0.1.765';
+import { loadConstellations } from './js/constellations.js?v=0.1.765';
+await Promise.all([loadLore(), loadConstellations()]);
+const cat = await (await fetch('data/catalog.json')).json(); for (const o of cat.objects) expandFacts(o);
+const byKey = new Map(buildCards(cat).map((c) => [String(c.key), c]));
+const keys = decodeURIComponent(location.hash.slice(1)).split(',').filter(Boolean), st = document.getElementById('stage');
+for (const k of keys) { const c = byKey.get(k); if (!c) continue; const el = renderCard(c, { sightings: [{ time: Date.now(), cardKey: k }] }); const w = document.createElement('div'); w.dataset.key = k; w.append(el); st.append(w); }
+await Promise.all([...document.images].map((im) => im.complete ? 0 : new Promise((r) => { im.onload = im.onerror = r; })));
+await new Promise((r) => setTimeout(r, 800)); document.body.dataset.ready = '1';
+</script></body></html>
