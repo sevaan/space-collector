@@ -1176,3 +1176,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - 2026-10-17: Remind-me-tonight sheet: every option keeps the ✓ space (hidden unless picked), so picking doesn't re-wrap the text and jump the sheet.
 
 - 2026-10-17: Reminder sheet best-pass option reads "Best pass · <name> at 6:56 PM" with a no-break space in the time (was "10 min before the best pass · …", which wrapped PM alone).
+
+- 2026-10-17: Plus card flip smoothed: .plus-host.flipping hides the shimmer layers (shine/foil/glare/glitter blend modes) during the turn, will-change on the card, shimmer fades back in (.landed).

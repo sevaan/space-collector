@@ -1579,3 +1579,9 @@ body.night #until-dark.tk-card b { color: #ff7f70 !important; } body.night #unti
    the sheet doesn't jump in height (2026-10-17, Sevaan). */
 .ud-opt em { flex: none; width: 16px; text-align: center; visibility: hidden; }
 .ud-opt.sel em { visibility: visible; }
+/* The Plus card's flip (2026-10-17, Sevaan: "janky"): one GPU layer for the turn, and the holo/foil/glare layers
+   (blend modes and filters, costly to repaint while rotating) step out until it lands, then fade back in. */
+.plus-host.face-down > *, .plus-host.flipping > * { will-change: transform; backface-visibility: visible; }
+.plus-host.flipping :is(.card__shine, .card__foil, .card__glare, .card__glitter) { opacity: 0 !important; transition: none !important; animation-play-state: paused !important; }
+.plus-host.landed :is(.card__shine, .card__foil, .card__glare, .card__glitter) { animation: plusShimmerIn .45s ease-out; }
+@keyframes plusShimmerIn { from { opacity: 0; } }
