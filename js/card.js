@@ -1,19 +1,19 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { fallWords } from './last-chance.js?v=0.1.793';
-import { sfx } from './sfx.js?v=0.1.793';
-import { cardArt } from './art.js?v=0.1.793';
-import { TIER_INFO } from './rarity.js?v=0.1.793';
-import { SET_BY_ID } from './sets.js?v=0.1.793';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.793';
-import { FLEET_ABOUT, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.793';
-import { artFileFor } from './art-keys.js?v=0.1.793';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.793';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.793';
-import { nightsIn } from './observation.js?v=0.1.793';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.793';
-import { SHINY } from './shiny.js?v=0.1.793';
-import { conArt, cometArt } from './con-art.js?v=0.1.793';
-import { CON_FIGURES } from './con-figures.js?v=0.1.793';
+import { fallWords } from './last-chance.js?v=0.1.795';
+import { sfx } from './sfx.js?v=0.1.795';
+import { cardArt } from './art.js?v=0.1.795';
+import { TIER_INFO } from './rarity.js?v=0.1.795';
+import { SET_BY_ID } from './sets.js?v=0.1.795';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.795';
+import { FLEET_ABOUT, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.795';
+import { artFileFor } from './art-keys.js?v=0.1.795';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.795';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys } from './card-model.js?v=0.1.795';
+import { nightsIn } from './observation.js?v=0.1.795';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.795';
+import { SHINY } from './shiny.js?v=0.1.795';
+import { conArt, cometArt } from './con-art.js?v=0.1.795';
+import { CON_FIGURES } from './con-figures.js?v=0.1.795';
 // The animal/symbol figure belongs to the completed (gold) constellation card only (2026-10-05): a single
 // star's card draws just the star pattern with its star marked, so the figure is a reward for finishing the set.
 // A star card's constellation figure comes into focus as you collect the constellation's stars (design/con-focus.html B).
@@ -276,6 +276,7 @@ export function attachTilt(el, { scroll = false } = {}) { // scroll: let a finge
   let spring = SETTLE, raf = 0;
   const state = { touching: false };
   const write = () => {
+    if (el.classList.contains('turning')) return; // mid-flip: new tilt values would restyle the whole card every frame (turnCard)
     const { x, y } = cur, o = Math.max(0, Math.min(1, cur.o));
     el.style.setProperty('--mx', `${(x * 100).toFixed(1)}%`);
     el.style.setProperty('--my', `${(y * 100).toFixed(1)}%`);
@@ -391,6 +392,40 @@ export function throwOff(el, dx, dy, dt) {
 // Double-tap (or double-click) a card to flip it over and see its back; do it again to flip it back.
 // onBack(backEl) dresses the back (a random poster, js/card-backs.js) each time it turns to the back.
 // The back is pre-mirrored in CSS, so it reads correctly while the card faces away.
+// One smooth card turn for every flip (2026-10-17, Sevaan: the flips were janky). Everything runs on the compositor:
+//  · the back's show/hide is a stepped opacity animation on the same clock as the turn, so the faces swap on exactly
+//    the edge-on frame (a requestAnimationFrame check could land a frame late and flash the wrong face);
+//  · .turning parks the shimmer layers and pauses the tilt, which otherwise restyled the whole card every frame;
+//  · the card gets its own layer a frame before it moves.
+// from/to in degrees (0 = face up, 180 = back showing); lift scales the card at the edge-on moment.
+export function turnCard(el, { from, to, ms = 520, lift = 1, back = el.querySelector('.card__back'), easeIn = 'cubic-bezier(.45,0,.9,.6)', easeOut = 'cubic-bezier(.1,.4,.55,1)' } = {}) {
+  const showEnd = ((((to % 360) + 360) % 360) === 180);
+  const showStart = ((((from % 360) + 360) % 360) === 180);
+  if (reducedMotion() || ms <= 1) {
+    if (back) back.style.opacity = showEnd ? '1' : '';
+    el.style.transform = to % 360 ? `perspective(1600px) rotateY(${to}deg)` : '';
+    return { finished: Promise.resolve(), cancel() {} };
+  }
+  el.classList.add('turning'); el.style.willChange = 'transform';
+  const mid = from + (to - from) / 2;
+  const a = el.animate([
+    { transform: `perspective(1600px) rotateY(${from}deg) scale(1)`, easing: easeIn },
+    { transform: `perspective(1600px) rotateY(${mid}deg) scale(${lift})`, offset: .5, easing: easeOut },
+    { transform: `perspective(1600px) rotateY(${to}deg) scale(1)` }], { duration: ms, fill: 'forwards' });
+  // Opacity 0/1 as a step at the half: same start time and duration as the turn, so it can't drift from it.
+  const s0 = showStart ? 1 : 0, s1 = showEnd ? 1 : 0;
+  const b = back?.animate([{ opacity: s0 }, { opacity: s0, offset: .5 }, { opacity: s1, offset: .5 }, { opacity: s1 }], { duration: ms, fill: 'forwards' });
+  let done = false;
+  const settle = () => {
+    if (done) return; done = true;
+    if (back) back.style.opacity = showEnd ? '1' : '';
+    el.style.transform = to % 360 ? `perspective(1600px) rotateY(${to}deg)` : '';
+    a.cancel(); b?.cancel(); el.classList.remove('turning'); el.style.willChange = '';
+  };
+  const finished = a.finished.then(settle, settle);
+  return { finished, cancel: () => { settle(); } };
+}
+
 export function attachFlip(el, { onBack, onTap } = {}) {
   // onTap (2026-10-14, orbit view): a single tap, fired once it's clear no second tap is coming; a double tap flips.
   let flipped = false, busy = false, lastTap = 0, lastX = 0, lastY = 0, tapTimer = 0, downX = 0, downY = 0;
@@ -401,30 +436,14 @@ export function attachFlip(el, { onBack, onTap } = {}) {
   // Smooth back-and-forth (2026-10-14, Sevaan: flipping back and forth was janky): the old animation is dropped instead
   // of piling up (each one used to stay with fill: forwards), the faces swap on the frame the card is edge-on (read from
   // the animation's own clock, not a timer that drifts), and a double tap during a flip is queued, not ignored.
-  let anim = null, queued = false;
+  let turn = null, queued = false;
   const flip = () => {
     if (!back) return;
     if (busy) { queued = true; return; }
     busy = true; flipped = !flipped; sfx('flip', { gain: 0.8 });
     if (flipped) onBack?.(back);
-    const ms = reducedMotion() ? 1 : 520, from = flipped ? 0 : 180, to = flipped ? 180 : 360, show = flipped;
-    anim?.cancel();
-    anim = el.animate([
-      { transform: `perspective(1600px) rotateY(${from}deg)`, easing: 'cubic-bezier(.45,0,.9,.6)' },
-      { transform: `perspective(1600px) rotateY(${from + 90}deg)`, easing: 'cubic-bezier(.1,.4,.55,1)', offset: .5 },
-      { transform: `perspective(1600px) rotateY(${to}deg)` }],
-      { duration: ms, easing: 'linear', fill: 'forwards' });
-    const a = anim; let swapped = false;
-    const tick = () => {
-      if (a !== anim) return;
-      const t = a.currentTime ?? ms;
-      if (!swapped && t >= ms / 2) { swapped = true; back.style.opacity = show ? '1' : ''; }
-      if (t < ms && a.playState !== 'finished') { requestAnimationFrame(tick); return; }
-      if (!swapped) back.style.opacity = show ? '1' : '';
-      busy = false;
-      if (queued) { queued = false; flip(); }
-    };
-    requestAnimationFrame(tick);
+    turn = turnCard(el, { from: flipped ? 0 : 180, to: flipped ? 180 : 360, back });
+    turn.finished.then(() => { busy = false; if (queued) { queued = false; flip(); } });
   };
   const onUp = (e) => {
     if (el.dataset.swiping || !still(e)) return;

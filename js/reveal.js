@@ -5,12 +5,12 @@
 //  Everything scales with rarity (Legendary dims the sky, shockwave, held breath, slow flip, fanfare).
 // Waits use timers, not animation.finished, so a paused tab can never freeze the sequence.
 
-import { sfx, loadSfx } from './sfx.js?v=0.1.793';
-import { audioCtx } from './audio-ctx.js?v=0.1.793';
-import { TIER_INFO } from './rarity.js?v=0.1.793';
-import { levelFor, attachTilt, attachGyro, attachFlip, throwOff } from './card.js?v=0.1.793';
-import { applyBack } from './card-backs.js?v=0.1.793';
-import { addStarfield } from './starfield.js?v=0.1.793';
+import { sfx, loadSfx } from './sfx.js?v=0.1.795';
+import { audioCtx } from './audio-ctx.js?v=0.1.795';
+import { TIER_INFO } from './rarity.js?v=0.1.795';
+import { levelFor, attachTilt, attachGyro, attachFlip, throwOff } from './card.js?v=0.1.795';
+import { applyBack } from './card-backs.js?v=0.1.795';
+import { addStarfield } from './starfield.js?v=0.1.795';
 
 const FX = {
   common:    { particles: 14,  flip: 520,  spin: 0,   dim: 0,   shock: false, notes: [880],                            hold: 0 },
@@ -190,9 +190,12 @@ export async function playReveal({ card, o, seen, origin, fleet = null, progress
     { transform: `rotateY(${90 + fx.spin / 2}deg) scale(1.12)`, offset: .5, easing: 'cubic-bezier(0,0,.4,1)' },
     { transform: `rotateY(${180 + fx.spin}deg) scale(1)` },
   ], { duration: flipMs, easing: 'linear', fill: 'forwards' }); // per-keyframe easing: edge-on exactly at flipMs / 2
-  setTimeout(() => { if (alive()) showFace('front'); }, flipMs / 2); // edge-on: swap faces
+  // Both faces stay visible through the turn: each hides itself when it faces away (backface-visibility), so the swap
+  // lands on the exact edge-on frame. The old half-time timer could drift a frame and flash (2026-10-17, flip sweep).
+  $('reveal-card').style.visibility = 'visible';
   await flipped;
   if (!alive()) return;
+  showFace('front');
   return finish({ fx, color, fresh, seen, level, levelUp, card, alive, fleet, newStamp, nights, collected, con, shiny });
 }
 

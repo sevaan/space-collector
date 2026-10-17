@@ -532,3 +532,6 @@
 /* Four stats on a star card (2026-10-17: Distance added): every column reads from the left, like Brightness, so a long
    constellation name doesn't float in the middle of its column (Sevaan). */
 .card--retro .card__stats[style*="--n:4"] > div { text-align: left; }
+/* A card mid-flip (turnCard, js/card.js, 2026-10-17): the shimmer layers sit out the turn. Repainting their blend modes
+   in 3D every frame is what made flips judder. */
+.turning :is(.card__shine, .card__foil, .card__glare, .card__glitter, .art-stars) { opacity: 0 !important; transition: none !important; animation-play-state: paused !important; }

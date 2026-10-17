@@ -1,29 +1,29 @@
-import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.793';
-import { computeStats, statsHtml } from './stats.js?v=0.1.793';
-import { nightKey } from './observation.js?v=0.1.793';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.793';
-import { sfx } from './sfx.js?v=0.1.793';
-import { expandFacts } from './catalog-facts.js?v=0.1.793';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.793';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.793';
-import { ticket } from './toast.js?v=0.1.793';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.793';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.793';
-import { cardArt } from './art.js?v=0.1.793';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.793';
-import { applyBack } from './card-backs.js?v=0.1.793';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.793';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.793';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.793';
-import { STORIES } from './stories.js?v=0.1.793';
-import { loadConstellations, conList } from './constellations.js?v=0.1.793';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.793';
-import { eventBadges, nextEvent } from './events.js?v=0.1.793';
-import { shareCardEl } from './share-card.js?v=0.1.793';
-import { forgetSighting } from './cloud-backup.js?v=0.1.793';
-import { allSightings, deleteSighting } from './store.js?v=0.1.793';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.793';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.793';
+import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.795';
+import { computeStats, statsHtml } from './stats.js?v=0.1.795';
+import { nightKey } from './observation.js?v=0.1.795';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.795';
+import { sfx } from './sfx.js?v=0.1.795';
+import { expandFacts } from './catalog-facts.js?v=0.1.795';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.795';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.795';
+import { ticket } from './toast.js?v=0.1.795';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.795';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.795';
+import { cardArt } from './art.js?v=0.1.795';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.795';
+import { applyBack } from './card-backs.js?v=0.1.795';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.795';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.795';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.795';
+import { STORIES } from './stories.js?v=0.1.795';
+import { loadConstellations, conList } from './constellations.js?v=0.1.795';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.795';
+import { eventBadges, nextEvent } from './events.js?v=0.1.795';
+import { shareCardEl } from './share-card.js?v=0.1.795';
+import { forgetSighting } from './cloud-backup.js?v=0.1.795';
+import { allSightings, deleteSighting } from './store.js?v=0.1.795';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.795';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.795';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -659,8 +659,9 @@ function spin(card, rect, opening) {
     { opacity: .55, backgroundPosition: '80% 80%, 20% 20%, 85% 75%' },
   ], opts);
   backEl?.querySelector('.back-glare')?.animate([{ opacity: .5 }, { opacity: .5 }], opts);
+  card.classList.add('turning'); // tilt and shimmer sit out the spin (turnCard, js/card.js)
   const a = card.animate(opening ? [{ transform: away }, { transform: here }] : [{ transform: here }, { transform: away, opacity: rect ? 1 : 0 }], { ...opts, fill: 'forwards' });
-  return new Promise((r) => setTimeout(() => { r(); if (opening) a.cancel(); }, opts.duration));
+  return new Promise((r) => setTimeout(() => { r(); card.classList.remove('turning'); if (opening) a.cancel(); }, opts.duration));
 }
 // Done: spin the card back into its tile if that tile is on screen, then close.
 async function closeViewer() {
