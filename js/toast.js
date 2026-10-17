@@ -69,6 +69,7 @@ function show(t) {
   busy = true;
   const el = document.createElement('div');
   el.className = `ticket ticket--${t.kind}${t.href || t.action ? ' linked' : ''}${t.art ? ' ticket--art' : ''}${t.sticky ? ' ticket--sticky' : ''}`;
+  el.dataset.eyebrow = (t.eyebrow ?? '').toUpperCase(); if (t.id) el.dataset.id = t.id; // the colour of its top edge (css/ui.css, 2026-10-17 design A)
   el.innerHTML = `${t.art ? `<span class="ticket__art" aria-hidden="true">${t.art}</span>` : '<i class="ticket__mark" aria-hidden="true"></i>'}<span class="ticket__body">${t.eyebrow ? `<span class="ticket__eyebrow">${esc(t.eyebrow)}</span>` : ''}<span class="ticket__line">${t.html ? t.line : esc(t.line)}</span></span>${t.xp ? `<span class="ticket__xp">+${t.xp}<small>XP</small></span>` : t.href || t.action ? `<span class="ticket__go">${esc(t.go ?? 'OPEN')} ›</span>` : ''}${t.sticky ? '<button type="button" class="ticket__x" aria-label="Dismiss">✕</button>' : ''}`;
   // Up long enough to read (2026-10-06: at least 5 s, about 1.6× the old times); a tap sends it away sooner.
   let gone = false, stopConfetti = () => {};

@@ -347,3 +347,37 @@ body:has(#gh-remind:not([hidden])) #toasts { opacity: 0; pointer-events: none; t
   .ob-waves path { animation: ob-wave 1.6s ease-in-out infinite; } .ob-waves path:nth-child(even) { animation-delay: .25s; }
   @keyframes ob-wave { 0%, 100% { opacity: .25; } 50% { opacity: 1; } }
 }
+
+/* ---------- Notifications, design A (2026-10-17, Sevaan picked "Ticket strip" on design/notifications): the same dark
+   glass ticket as the target circle. A coloured top edge and label say what kind it is, the words are cream, an action
+   is a solid button in that colour and ✕ is a soft square. --tkc is the kind's colour. ---------- */
+.ticket { --tkc: #c9cbb6; gap: 12px !important; min-height: 52px; padding: 9px 10px 9px 14px !important; border: 0 !important; border-top: 3px solid var(--tkc) !important; border-radius: 14px !important;
+  background: rgba(8, 15, 27, .9) !important; box-shadow: 0 10px 22px rgba(0, 0, 0, .3) !important; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); color: #fff2b3; text-shadow: none; }
+.ticket--mission, .ticket--compass, .ticket--standing { --tkc: #fa8127; }
+.ticket--rank, .ticket--event, .ticket--achievement { --tkc: #ffc93d; }
+.ticket--xp { --tkc: #8fb3cf; }
+.ticket--patch { --tkc: #e46ad6; }
+.ticket--info, .ticket--standing { --tkc: #c9cbb6; }
+.ticket[data-eyebrow="REMINDER SET"], .ticket[data-eyebrow="STREAK"] { --tkc: #7fb2ff; }
+.ticket[data-eyebrow="NEW STAMP"] { --tkc: #6fd3e0; }
+.ticket[data-eyebrow^="SHINY"] { --tkc: #ff8fd8; }
+.ticket[data-eyebrow="THE SUN"], .ticket[data-id="save-fail"] { --tkc: #ff6a5c; }
+.ticket[data-eyebrow$="COMPLETE"]:not(.ticket--mission), .ticket[data-eyebrow="MILESTONE"] { --tkc: #ffc93d; }
+.ticket .ticket__mark { display: none !important; }
+.ticket .ticket__body { gap: 3px; }
+.ticket .ticket__eyebrow { font: 600 11px/1.2 var(--label, 'SC Label', sans-serif) !important; letter-spacing: .2em !important; color: var(--tkc) !important; }
+.ticket .ticket__line { font: 500 15px/1.25 var(--label, 'SC Label', sans-serif) !important; letter-spacing: .02em !important; color: #fff2b3 !important; white-space: normal !important; }
+.ticket .ticket__line .big-line { color: var(--tkc); }
+.ticket .ticket__xp { font: 400 16px/1 var(--display, 'SC Display', sans-serif) !important; color: var(--tkc) !important; }
+.ticket .ticket__xp small { color: #c3c9d1 !important; }
+.ticket .ticket__go { display: inline-grid; place-items: center; height: 36px; padding: 0 12px; border-radius: 9px; background: var(--tkc); color: #0b1018 !important; font: 600 13px/1 var(--label, 'SC Label', sans-serif) !important; letter-spacing: .16em !important; text-transform: uppercase; }
+.ticket .ticket__x { flex: none; width: 36px; height: 36px; border: 0 !important; border-radius: 9px !important; background: rgba(255, 255, 255, .06) !important; color: #c3c9d1 !important; display: grid; place-items: center; font-size: 13px; }
+.ticket--art .ticket__art { flex: none; }
+:where(html[data-theme='night'], body.night) .ticket { --tkc: #ff6a55 !important; background: rgba(12, 3, 3, .92) !important; color: #ff7f70; }
+:where(html[data-theme='night'], body.night) .ticket .ticket__line { color: #ff7f70 !important; }
+:where(html[data-theme='night'], body.night) .ticket .ticket__go { color: #120606 !important; }
+
+/* The patch coin's label as a little ticket (gold edge). */
+.pc-tag { padding: 7px 12px 8px !important; border: 0 !important; border-top: 3px solid #ffc93d !important; border-radius: 12px !important; background: rgba(8, 15, 27, .9) !important; box-shadow: 0 8px 18px rgba(0, 0, 0, .3); }
+.pc-tag small { color: #ffc93d !important; font-weight: 600 !important; font-size: 11px !important; letter-spacing: .2em !important; }
+.pc-tag b { font: 400 15px/1.1 var(--display, 'SC Display', sans-serif) !important; text-transform: none !important; }
