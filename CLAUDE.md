@@ -1156,3 +1156,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - 2026-10-17: reveal card raised 26pt (css/reveal.css --rv-top safe+52, --rv-bot safe+84): Sevaan found it sat low, ~105pt of air above vs ~50pt below on his iPhone.
 
 - 2026-10-17: Collect button hidden while #wake ("Tap to wake the sky") is showing (css/app.css).
+
+- 2026-10-17: Build 1.0 (13) archived (web v0.1.773: RevenueCat purchases (Test Store key), honest backup status, playtest fixes, Arecibo art, reveal card raised, Collect hidden during tap-to-wake); opened in Organizer, not uploaded.
