@@ -1142,3 +1142,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - Settings → Collection shows where cards are kept. Privacy policy rewritten (no accounts; Cloudflare Web Analytics on the website; contact hello@spacecollector.app). The Firebase project stays (Hosting for spacecollector.app); Auth/Firestore are unused.
 - 2026-10-16 · iOS cleanup after accounts: Info.plist drops the Google sign-in URL scheme and the unused Always-location string, armv7 → arm64; PrivacyInfo declares only coarse location, not linked. Platform review + haptics review results summarised to Sevaan (pending decisions).
 - 2026-10-16 · Build 1.0 (12) archived (web v0.1.765: no accounts, iCloud backup, privacy cleanup); entitlement ubiquity-kvstore confirmed in the signed app; opened in Organizer, not uploaded.
+
+- 2026-10-16: Plus sheet reminders lead shortened to "Pass reminders are part of Plus." (dropped the always-free sentence).
