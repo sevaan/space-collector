@@ -1543,3 +1543,11 @@ body.tk-low #skybar { opacity: 0; pointer-events: none; transition: opacity .2s;
 #d-dist { flex: none; font: 500 12px/1.25 var(--label); letter-spacing: .1em; color: #c3c9d1; font-variant-numeric: tabular-nums; white-space: nowrap; }
 #d-dist:empty { display: none; }
 body.night #d-dist { color: #e8705f; }
+/* Tap to wake as a ticket too (2026-10-17, Sevaan: "Should tap to wake the sky have the same treatment as the other cards"). */
+#wake span { box-sizing: border-box; left: calc(var(--tk-w) / -2) !important; width: var(--tk-w) !important; top: calc(var(--r, 100px) + 26px) !important; padding: 12px 14px 14px; border-radius: 14px;
+  background: var(--tk-bg); border-top: 3px solid var(--gold); box-shadow: 0 10px 24px rgba(0, 0, 0, .35); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  text-align: left !important; text-shadow: none !important; text-transform: none !important; letter-spacing: 0 !important; font: 400 20px/1.1 var(--display) !important; color: #fff2b3 !important; display: flex; flex-direction: column; gap: 4px; }
+#wake span::before { content: 'Motion paused'; order: -1; font: 500 12px/1.25 var(--label); letter-spacing: .18em; text-transform: uppercase; color: var(--gold); }
+#wake small { order: 1; font: 500 13px/1.3 var(--label) !important; letter-spacing: .06em !important; color: #c3c9d1 !important; }
+body.night #wake span { border-top-color: #ff6a55; color: #ff7f70 !important; } body.night #wake span::before { color: #ff6a55; } body.night #wake small { color: #e8705f !important; }
+body:has(#wake:not([hidden])) #until-dark, body:has(#wake:not([hidden])) #ud-bell { visibility: hidden; } /* the wake ticket has the spot under the circle */
