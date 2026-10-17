@@ -1,29 +1,29 @@
-import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.773';
-import { computeStats, statsHtml } from './stats.js?v=0.1.773';
-import { nightKey } from './observation.js?v=0.1.773';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.773';
-import { sfx } from './sfx.js?v=0.1.773';
-import { expandFacts } from './catalog-facts.js?v=0.1.773';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.773';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.773';
-import { ticket } from './toast.js?v=0.1.773';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.773';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.773';
-import { cardArt } from './art.js?v=0.1.773';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.773';
-import { applyBack } from './card-backs.js?v=0.1.773';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.773';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.773';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.773';
-import { STORIES } from './stories.js?v=0.1.773';
-import { loadConstellations, conList } from './constellations.js?v=0.1.773';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.773';
-import { eventBadges, nextEvent } from './events.js?v=0.1.773';
-import { shareCardEl } from './share-card.js?v=0.1.773';
-import { forgetSighting } from './cloud-backup.js?v=0.1.773';
-import { allSightings, deleteSighting } from './store.js?v=0.1.773';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.773';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.773';
+import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.774';
+import { computeStats, statsHtml } from './stats.js?v=0.1.774';
+import { nightKey } from './observation.js?v=0.1.774';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.774';
+import { sfx } from './sfx.js?v=0.1.774';
+import { expandFacts } from './catalog-facts.js?v=0.1.774';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.774';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.774';
+import { ticket } from './toast.js?v=0.1.774';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.774';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.774';
+import { cardArt } from './art.js?v=0.1.774';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.774';
+import { applyBack } from './card-backs.js?v=0.1.774';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.774';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.774';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.774';
+import { STORIES } from './stories.js?v=0.1.774';
+import { loadConstellations, conList } from './constellations.js?v=0.1.774';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.774';
+import { eventBadges, nextEvent } from './events.js?v=0.1.774';
+import { shareCardEl } from './share-card.js?v=0.1.774';
+import { forgetSighting } from './cloud-backup.js?v=0.1.774';
+import { allSightings, deleteSighting } from './store.js?v=0.1.774';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.774';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.774';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -440,7 +440,7 @@ function renderUpPanel(c, up, find = false) {
   const d = new Date(up.start), today = d.toDateString() === new Date().toDateString(), tmr = d.toDateString() === new Date(Date.now() + 86400e3).toDateString();
   const when = !find ? 'Up tonight' : today ? 'Tonight' : tmr ? 'Tomorrow' : d.toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' });
   el.innerHTML = `<p class="v-up__when">${esc(when)} · <b>${esc(hm(up.start))}</b> · ${esc(where)}</p>${up.cloud ? '<p class="v-up__cloud">Cloud is forecast then. If you spot a gap, it still counts.</p>' : ''}
-    <div class="v-up__btns">${far ? `<button type="button" class="v-up__remind${on ? ' on' : ''}" aria-pressed="${on}">${BEL}<span>${on ? `Reminder on · ${esc(hm(up.start - 10 * 60000))}` : `Remind me at ${esc(hm(up.start - 10 * 60000))}`}</span></button>` : '<span class="v-up__soon">Starting soon: look now</span>'}<button type="button" class="v-up__show">${TGT}<span>Show me</span></button></div>`;
+    <div class="v-up__btns">${far ? `<button type="button" class="v-up__remind${on ? ' on' : ''}" aria-pressed="${on}">${BEL}<span>${on ? `Reminder on · ${esc(hm(up.start - 10 * 60000))}` : `Remind me ${esc(hm(up.start - 10 * 60000))}`}</span></button>` : '<span class="v-up__soon">Starting soon: look now</span>'}<button type="button" class="v-up__show">${TGT}<span>Show me</span></button></div>`;
   const send = (sc) => { if (!EMBED) { ticket({ kind: 'info', line: sc.endsWith('remind') ? 'Reminders work in the Space Collector app.' : 'Open Explore to be shown where to look.', ms: 3500 }); return; }
     window.parent.postMessage(find ? { sc, pass: up } : { sc, id: up.id, start: up.start }, location.origin); };
   el.querySelector('.v-up__remind')?.addEventListener('click', () => send(find ? 'find-remind' : 'up-remind'));
@@ -847,11 +847,14 @@ if (EMBED) {
     }
     if (e.data.sc === 'refresh') refreshSightings();
     // Hidden behind the sky, its animations (twinkles, shimmers, drift) pause (2026-10-16 perf sweep).
-    if (e.data.sc === 'away') document.documentElement.classList.add('away');
+    if (e.data.sc === 'away') { document.documentElement.classList.add('away'); if (returnView) { if ($('viewer').open) $('viewer').close(); backFromBorrowed(); } }
     if (e.data.sc === 'open' || e.data.sc === 'show') document.documentElement.classList.remove('away');
     if (e.data.sc === 'tonight') { state.plan = readPlan(); if (state.ready && ['owned', 'discover'].includes(state.view)) render(); }
   });
 }
+let returnView = null;
+function backFromBorrowed() { if (!returnView) return; const v = returnView; returnView = null; setView(v); }
+$('viewer').addEventListener('close', () => setTimeout(backFromBorrowed, 0));
 function openKey(key) {
   const go = () => {
     if (key === 'patches') { setView('patches'); return; }
@@ -861,6 +864,9 @@ function openKey(key) {
     // Open it in a list that contains it: the right tab, and filters cleared if they hide it (QA 2026-10-08: a
     // leftover rarity filter, or the Albums / Patches tab, made "View in collection" open nothing).
     const want = state.sightingsByKey.has(key) ? 'owned' : 'discover';
+    // A card you don't have, opened from Explore, borrows the Albums list only while it's open: closing it (or the
+    // Collection) lands on Mine (2026-10-17, Sevaan). Opened from Albums yourself, you go back to Albums as before.
+    if (want === 'discover' && state.view !== 'discover') returnView = 'owned';
     if (!['owned', 'discover'].includes(state.view) || (want === 'discover' && state.view !== 'discover')) setView(want);
     let i = state.list.findIndex((c) => c.key === key);
     if (i < 0) { resetFilters(); i = state.list.findIndex((c) => c.key === key); }

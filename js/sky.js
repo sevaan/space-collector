@@ -1,17 +1,17 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.773';
+import { extinction } from './sky-limit.js?v=0.1.774';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.773';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.774';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.773';
-import { createCloudGL } from './clouds-gl.js?v=0.1.773';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.774';
+import { createCloudGL } from './clouds-gl.js?v=0.1.774';
 // Cloud colours by light: sunlit tops, shadowed bellies, and the horizon haze they melt into (0–1 RGB).
 const CLOUD_LIGHT = {
   day: { lit: [1, 1, 1], shade: [0.62, 0.68, 0.77], haze: [0.82, 0.87, 0.93] },
   dusk: { lit: [1, 0.8, 0.68], shade: [0.36, 0.33, 0.42], haze: [0.62, 0.5, 0.52] },
   night: { lit: [0.22, 0.25, 0.31], shade: [0.1, 0.12, 0.16], haze: [0.14, 0.15, 0.2] },
 };
-import { TIER_INFO } from './rarity.js?v=0.1.773';
+import { TIER_INFO } from './rarity.js?v=0.1.774';
 
 const RAD = Math.PI / 180;
 const BELOW_ICON = 10.5, BELOW_ICON_HIT = 20; // every satellite under the horizon, passes and halo alike (80% of 13 since 2026-10-13); lined up in the circle it grows
@@ -354,7 +354,7 @@ export class SkyView {
     ctx.restore();
     // One in the circle: name it in full above and below the circle, like things below the horizon (2026-10-13).
     const timed = ghosts.filter((g) => g.time && g.enu[2] > 0);
-    const hit = timed.length && !this.ghostBusy ? this.ghostHit(timed.map((g) => ({ ...g, kicker: `APPEARING HERE TONIGHT AT ${g.time}` })), '', '20,34,54', { day: true, kickerOf: (g) => g.kicker }) : null;
+    const hit = timed.length && !this.ghostBusy ? this.ghostHit(timed.map((g) => ({ ...g, kicker: `Here tonight · ${g.time}` })), '', '20,34,54', { day: true, kickerOf: (g) => g.kicker }) : null;
     this.ghostHitId = hit?.g.id ?? null;
   }
 
@@ -490,21 +490,10 @@ export class SkyView {
     for (const g of list) { const q = this.project(g.enu); if (!q) continue;
       const d = Math.hypot(q.x - rc.x, q.y - rc.y); if (d < rc.r && (!hit || d < hit.d)) hit = { g, d }; }
     if (!hit) return null;
-    const ctx = this.ctx, g = hit.g, y0 = rc.y - rc.r - 26, INK = ink;
-    this.clearZone ??= { left: this.cx - Math.min(190, this.w / 2 - 12), right: this.cx + Math.min(190, this.w / 2 - 12), top: rc.y - rc.r - 100, bottom: rc.y + rc.r + 75 }; // keep sky labels off its name
-    ctx.save(); ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic'; ctx.shadowColor = day ? 'rgba(255,255,255,.75)' : 'rgba(0,0,0,.6)'; ctx.shadowBlur = day ? 6 : 4;
-    ctx.font = `500 13px ${FONT}`; ctx.fillStyle = day ? `rgba(${INK},.75)` : 'rgba(189,190,169,.95)';
-    if ('letterSpacing' in ctx) ctx.letterSpacing = '2.5px';
-    ctx.fillText(kickerOf ? kickerOf(g) : g.owned === undefined ? kicker : `${kicker} · ${g.owned ? 'IN YOUR COLLECTION' : 'NOT COLLECTED YET'}`, rc.x, y0 - 30, this.w - 32);
-    if ('letterSpacing' in ctx) ctx.letterSpacing = '0px';
-    ctx.font = `400 26px ${DISPLAY_FONT}`; ctx.fillStyle = `rgb(${INK})`;
-    ctx.fillText(g.name.toUpperCase(), rc.x, y0, this.w - 32); // squeezed rather than clipped on narrow phones (QA 2026-10-08)
-    ctx.font = `500 15px ${FONT}`; ctx.fillStyle = `rgba(${INK},.75)`;
-    if ('letterSpacing' in ctx) ctx.letterSpacing = '1px';
-    if (g.what) { ctx.font = `500 16px ${FONT}`; if ('letterSpacing' in ctx) ctx.letterSpacing = '0px'; ctx.fillStyle = `rgba(${INK},.92)`; ctx.fillText(g.what, rc.x, rc.y + rc.r + 34, this.w - 32); ctx.font = `500 13px ${FONT}`; if ('letterSpacing' in ctx) ctx.letterSpacing = '1px'; ctx.fillStyle = `rgba(${INK},.7)`; }
+    // Named in the ticket under the circle (2026-10-17, design/target-states B), not painted around it.
+    const g = hit.g, head = kickerOf ? kickerOf(g) : g.owned === undefined ? kicker : `${kicker} · ${g.owned ? 'in your collection' : 'not collected yet'}`;
     const tail = [g.note ? g.note.replace(/^up /, 'comes up ') : '', g.where ? `in the ${g.where}` : ''].filter(Boolean).join(' · ');
-    if (tail) ctx.fillText(tail.toUpperCase(), rc.x, rc.y + rc.r + (g.what ? 58 : 34), this.w - 32);
-    ctx.restore();
+    this.ticket = { ink: kickerOf ? 'later' : /DAYLIGHT/.test(kicker) ? 'hidden' : 'below', k: head, n: g.name, m: [g.what, tail].filter(Boolean).join(' · ') };
     return hit;
   }
   // Up in the daytime sky (2026-10-11, Sevaan): the same halo and naming as below the horizon, for the bright
@@ -886,13 +875,8 @@ export class SkyView {
     ctx.restore();
     if (f.inCircle && !f.done) { // already found: no words around the circle (2026-10-08)
       const rc = this.ring ?? { x: this.cx, y: this.cy, r: this.reticlePx };
-      ctx.save(); ctx.textAlign = 'center'; ctx.shadowColor = 'rgba(0,0,0,.6)'; ctx.shadowBlur = 4;
-      if ('letterSpacing' in ctx) ctx.letterSpacing = '2.5px';
-      ctx.font = `500 12px ${FONT}`; ctx.fillStyle = 'rgba(232,217,184,.9)'; ctx.fillText(`BELOW THE HORIZON · ${Math.round(-el)}° DOWN`, rc.x, rc.y - rc.r - 54);
-      if ('letterSpacing' in ctx) ctx.letterSpacing = '1px';
-      ctx.font = `400 22px ${DISPLAY_FONT}`; ctx.fillStyle = 'rgb(255,242,179)'; ctx.fillText(f.done ? 'DINO BONES' : "SOMETHING'S BURIED HERE…", rc.x, rc.y - rc.r - 26, this.w - 32);
-      if ('letterSpacing' in ctx) ctx.letterSpacing = '2.5px';
-      ctx.font = `500 13px ${FONT}`; ctx.fillStyle = 'rgba(232,217,184,.9)'; ctx.fillText(f.done ? 'A FOSSIL, RIGHT UNDER YOUR FEET' : 'HOLD IT IN THE CIRCLE', rc.x, rc.y + rc.r + 34);
+      this.ticket = { ink: 'fossil', k: `Below the horizon · ${Math.round(-el)}° down`, n: f.done ? 'Dino bones' : "Something's buried here…", m: f.done ? 'A fossil, right under your feet' : 'Hold it in the circle' };
+      ctx.save();
       if (!f.done && f.hold > 0) { ctx.shadowBlur = 0; ctx.strokeStyle = 'rgba(255,229,192,.95)'; ctx.lineWidth = 3; ctx.lineCap = 'round';
         ctx.beginPath(); ctx.arc(rc.x, rc.y, rc.r + 9, -Math.PI / 2, -Math.PI / 2 + f.hold * Math.PI * 2); ctx.stroke(); }
       ctx.restore();
@@ -913,11 +897,7 @@ export class SkyView {
     if (u.inCircle) {
       const rc = this.ring ?? { x: this.cx, y: this.cy, r: this.reticlePx };
       ctx.save(); ctx.strokeStyle = this.theme === THEMES.night ? '#ff6a55' : '#7dff8a'; ctx.lineWidth = 1.8; ctx.beginPath(); ctx.arc(rc.x, rc.y, rc.r, 0, Math.PI * 2); ctx.stroke();
-      ctx.textAlign = 'center'; ctx.shadowColor = 'rgba(0,0,0,.6)'; ctx.shadowBlur = 4;
-      if ('letterSpacing' in ctx) ctx.letterSpacing = '2.5px';
-      ctx.font = `500 12px ${FONT}`; ctx.fillStyle = '#9cff9c'; ctx.fillText('✦ UNIDENTIFIED', rc.x, rc.y - rc.r - 54);
-      if ('letterSpacing' in ctx) ctx.letterSpacing = '1px';
-      ctx.font = `400 26px ${DISPLAY_FONT}`; ctx.fillStyle = 'rgb(255,242,179)'; ctx.fillText('???', rc.x, rc.y - rc.r - 24);
+      this.ticket = { ink: 'ufo', k: '✦ Unidentified', n: '???', m: '' };
       ctx.restore();
     }
   }
@@ -977,11 +957,7 @@ export class SkyView {
       ctx.restore();
       if (s.inCircle && !s.done) {
         ctx.save(); ctx.strokeStyle = s.color; ctx.lineWidth = 1.8; ctx.beginPath(); ctx.arc(rc.x, rc.y, rc.r, 0, Math.PI * 2); ctx.stroke();
-        ctx.textAlign = 'center'; ctx.shadowColor = 'rgba(0,0,0,.6)'; ctx.shadowBlur = 4;
-        if ('letterSpacing' in ctx) ctx.letterSpacing = '2.5px';
-        ctx.font = `500 12px ${FONT}`; ctx.fillStyle = s.color; ctx.fillText(s.sub.toUpperCase(), rc.x, rc.y - rc.r - 54);
-        if ('letterSpacing' in ctx) ctx.letterSpacing = '1px';
-        ctx.font = `400 24px ${DISPLAY_FONT}`; ctx.fillStyle = 'rgb(255,242,179)'; ctx.fillText(s.title.toUpperCase(), rc.x, rc.y - rc.r - 24);
+        this.ticket = { ink: 'secret', color: s.color, k: s.sub, n: s.title, m: '' };
         if (s.hold > 0) { ctx.shadowBlur = 0; ctx.lineWidth = 3; ctx.lineCap = 'round'; ctx.beginPath(); ctx.arc(rc.x, rc.y, rc.r + 9, -Math.PI / 2, -Math.PI / 2 + s.hold * Math.PI * 2); ctx.stroke(); }
         ctx.restore();
       }
@@ -1420,6 +1396,7 @@ export class SkyView {
     if (deep?.length && (this.dayF ?? 0) < 0.2) this.drawDeep(deep);
     if (weather && !this.camera) this.drawWeather(weather, this.reducedMotion ? 0 : time); // the camera shows the real clouds
     if (bodies) this.drawBodies(bodies);
+    this.ticket = null; // what the circle names this frame, for the ticket under it (js/main.js syncTicket)
     this.ghostBusy = !!targetId || !!planeHit; // the circle names a pass marker only when nothing real is in it
     if (ghosts?.length) this.drawGhosts(ghosts); else { this.ghostHits = []; this.ghostHitId = null; }
     this.feetA = Math.max(0, Math.min(1, (-this.basis.back[2] - 0.8) / 0.1)); // fades in from ~53° down, full by ~64° (it is on the ground now, so it can show sooner)
@@ -1690,33 +1667,25 @@ export class SkyView {
     const activeInk = plane ? t.plane : this.ownedInk ? (t.label ?? '#fff2b3') : t.tick; // orange = new, cream = collected, red = plane
     // The inner rule keeps the existing aiming radius. An outer rule and fine
     // indexed marks echo the orbital dial on the cards without obscuring the sky.
-    ctx.strokeStyle = locked ? activeInk : t.reticle;
-    ctx.lineWidth = locked ? 1.5 : 1;
+    // The sight (2026-10-17, design/target-states A, Sevaan): one ring in the state's colour over a soft dark halo, so
+    // it reads on a blue day sky as well as at night, and four ticks at the compass points. No fine dial.
+    const ink = locked ? activeInk : t.reticle;
+    ctx.strokeStyle = 'rgba(8,15,27,.28)'; ctx.lineWidth = 6;
     ctx.beginPath(); ctx.arc(cx, cy, radius, 0, Math.PI * 2); ctx.stroke();
-    ctx.strokeStyle = locked ? activeInk : t.reticleSoft;
-    ctx.lineWidth = 0.75;
-    ctx.globalAlpha = locked ? 0.55 : 1;
-    ctx.beginPath(); ctx.arc(cx, cy, radius + 5, 0, Math.PI * 2); ctx.stroke();
-    ctx.lineCap = 'butt';
-    for (let angle = 0; angle < 360; angle += 15) {
-      const cardinal = angle % 90 === 0;
-      const a = angle * RAD, inner = radius + 5, outer = radius + (cardinal ? 13 : 9);
-      ctx.strokeStyle = cardinal ? activeInk : t.reticle;
-      ctx.globalAlpha = cardinal ? 0.9 : 0.42;
-      ctx.lineWidth = cardinal ? 1.5 : 0.75;
-      ctx.beginPath();
-      ctx.moveTo(cx + Math.cos(a) * inner, cy + Math.sin(a) * inner);
-      ctx.lineTo(cx + Math.cos(a) * outer, cy + Math.sin(a) * outer);
-      ctx.stroke();
+    if (locked) { ctx.shadowColor = activeInk; ctx.shadowBlur = newFind ? 18 : 10; }
+    ctx.strokeStyle = ink; ctx.lineWidth = locked ? 2.25 : 1.5;
+    ctx.beginPath(); ctx.arc(cx, cy, radius, 0, Math.PI * 2); ctx.stroke();
+    ctx.shadowBlur = 0; ctx.lineCap = 'butt';
+    for (const angle of [0, 90, 180, 270]) {
+      const a = angle * RAD, inner = radius + 6, outer = radius + 18;
+      ctx.strokeStyle = 'rgba(8,15,27,.28)'; ctx.lineWidth = 5;
+      ctx.beginPath(); ctx.moveTo(cx + Math.cos(a) * inner, cy + Math.sin(a) * inner); ctx.lineTo(cx + Math.cos(a) * outer, cy + Math.sin(a) * outer); ctx.stroke();
+      ctx.strokeStyle = ink; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(cx + Math.cos(a) * inner, cy + Math.sin(a) * inner); ctx.lineTo(cx + Math.cos(a) * outer, cy + Math.sin(a) * outer); ctx.stroke();
     }
-    if (newFind) {
-      // A restrained ink pulse makes a new collectible distinct from an owned target.
-      ctx.globalAlpha = time ? 0.6 + 0.25 * Math.sin(time / 650) : 0.85;
-      ctx.fillStyle = activeInk;
-      for (const angle of [45, 135, 225, 315]) {
-        const a = angle * RAD, d = radius + 11;
-        ctx.beginPath(); ctx.arc(cx + Math.cos(a) * d, cy + Math.sin(a) * d, 2, 0, Math.PI * 2); ctx.fill();
-      }
+    if (newFind && time) { // a new find breathes: a soft second glow on the ring
+      ctx.save(); ctx.globalAlpha = 0.25 + 0.2 * Math.sin(time / 650); ctx.strokeStyle = activeInk; ctx.lineWidth = 6; ctx.shadowColor = activeInk; ctx.shadowBlur = 22;
+      ctx.beginPath(); ctx.arc(cx, cy, radius, 0, Math.PI * 2); ctx.stroke(); ctx.restore();
     }
     // Lock pulse (2026-10-08 polish): a ring expands and fades from the circle the moment it catches something.
     const lp = this.lockPulseAt ? (performance.now() - this.lockPulseAt) / 450 : 2;

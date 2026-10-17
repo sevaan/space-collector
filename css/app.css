@@ -1466,3 +1466,75 @@ body:has(.set-sheet.in:not([hidden]):not(.x)) #toasts { top: calc(var(--safe-top
 body:has(.set-sheet.in) #toasts .ticket--sticky { display: none; } /* "Example location" and the like wait until the sheet closes */
 /* Settings and the Now list scrolled under the clock and battery: a backdrop behind the status bar while one is open. */
 body:has(.overlay.panel:not([hidden]))::before { content: ''; position: fixed; left: 0; right: 0; top: 0; height: var(--safe-top, 0px); z-index: 21; pointer-events: none; background: linear-gradient(var(--bg) 70%, color-mix(in srgb, var(--bg) 0%, transparent)); }
+
+/* ---------- Target ticket (2026-10-17, Sevaan picked design/target-states B with A's sight) ----------
+   Every state of the circle says the same thing in the same place: one dark ticket under the circle with what it is
+   (coloured), its name, one line of facts and, when there is something to do, one solid button. Dark glass behind the
+   words, so they read on a blue day sky, at night and over the ground. --tk is the state's colour; the sight in
+   js/sky.js uses the same inks. */
+:root { --tk-w: min(300px, calc(100vw - 48px)); --tk-bg: rgba(8, 15, 27, .88); }
+.tk-card { box-sizing: border-box; width: var(--tk-w); padding: 12px 14px 14px; border-radius: 14px; background: var(--tk-bg); border-top: 3px solid var(--tk, var(--gold));
+  box-shadow: 0 10px 24px rgba(0, 0, 0, .35); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); text-align: left; text-shadow: none; pointer-events: auto; }
+
+/* New find and seen before */
+#discover { --tk: var(--find-tier-ink, #fa8127); }
+#discover.owned { --tk: #fff2b3; }
+#discover .d-ticket { position: absolute; left: var(--cx); top: calc(var(--cy) + var(--r) + 26px); transform: translateX(-50%); display: flex; flex-direction: column; gap: 10px; }
+#discover .d-ticket .d-label { position: static !important; transform: none !important; width: auto !important; text-align: left !important; text-shadow: none !important; display: flex; flex-direction: column; gap: 4px; }
+#discover .d-ticket #d-tier { margin: 0 !important; font: 500 12px/1.25 var(--label) !important; letter-spacing: .18em !important; color: var(--find-tier, var(--tk)) !important; text-shadow: none !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#discover .d-ticket #d-name { font: 400 20px/1.1 var(--display) !important; letter-spacing: 0 !important; text-transform: none !important; color: #fff2b3 !important; text-shadow: none !important; }
+#discover .d-ticket .d-actions { position: static !important; transform: none !important; max-width: none !important; display: flex !important; flex-direction: column !important; align-items: stretch !important; gap: 6px !important; animation: none !important; }
+#discover .d-ticket #d-cta, #discover.owned .d-ticket #d-cta { width: 100%; min-height: 46px; padding: 0 14px; border: 0 !important; border-radius: 10px !important; background: var(--tk) !important; color: #0b1018 !important; box-shadow: none !important;
+  font: 600 15px/1 var(--label) !important; letter-spacing: .2em !important; text-transform: uppercase; white-space: nowrap; }
+#discover .d-ticket #d-cta:active, #discover .d-ticket #d-cta.tapped { filter: brightness(1.12); transform: scale(.98); }
+#discover .d-ticket #d-sub { text-shadow: none !important; color: #c3c9d1 !important; }
+#discover .d-ticket #d-switch { align-self: flex-start; color: #c3c9d1 !important; padding: 2px 0 !important; }
+
+/* Just a plane */
+#plane { --tk: #ff6a5c; }
+#plane .p-ticket { position: absolute; left: var(--cx); top: calc(var(--cy) + var(--r) + 26px); transform: translateX(-50%); display: flex; flex-direction: column; gap: 4px; }
+#plane .p-ticket .p-label, #plane .p-ticket .p-info { position: static !important; transform: none !important; width: auto !important; text-align: left !important; text-shadow: none !important; display: flex !important; flex-direction: column !important; align-items: stretch !important; gap: 4px !important; }
+#plane .p-ticket #p-kind { margin: 0 !important; font: 500 12px/1.25 var(--label); letter-spacing: .18em; color: var(--tk) !important; }
+#plane .p-ticket #p-name { font: 400 20px/1.1 var(--display) !important; text-transform: none !important; color: #fff2b3 !important; }
+#plane .p-ticket .p-route { display: block !important; min-height: 0 !important; padding: 0 !important; border: 0 !important; background: none !important; font: 500 14px/1.3 var(--label) !important; letter-spacing: .06em !important; text-transform: none !important; color: #dfe3e8 !important; }
+#plane .p-ticket .p-meta { font: 500 13px/1.3 var(--label) !important; letter-spacing: .06em !important; text-transform: none !important; color: #c3c9d1 !important; text-shadow: none !important; }
+
+/* Lining it up (and a pass that hasn't risen yet): the hint is the coloured line, the name under it */
+#guidance:not(.first) { --tk: #9fb0c2; box-sizing: border-box; width: var(--tk-w) !important; max-width: none !important; padding: 12px 14px 14px !important; border-radius: 14px !important; background: var(--tk-bg) !important;
+  border: 0 !important; border-top: 3px solid var(--tk) !important; box-shadow: 0 10px 24px rgba(0, 0, 0, .35) !important; text-shadow: none !important; text-align: left !important; display: flex !important; flex-direction: column-reverse; gap: 4px; }
+#guidance.later:not(.first) { --tk: #7fb2ff; }
+#guidance:not(.first) span { font: 500 12px/1.25 var(--label) !important; letter-spacing: .18em !important; text-transform: uppercase; color: var(--tk) !important; }
+#guidance:not(.first) small { margin: 0 !important; font: 400 20px/1.1 var(--display) !important; letter-spacing: 0 !important; text-transform: none !important; color: #fff2b3 !important; white-space: normal; }
+body.day #guidance:not(.first) { color: #fff2b3 !important; }
+#gh-remind { box-sizing: border-box; width: var(--tk-w); justify-content: center; min-height: 46px; border: 0 !important; border-radius: 10px !important; background: #7fb2ff !important; color: #0b1018 !important;
+  font: 600 15px/1 var(--label) !important; letter-spacing: .16em !important; text-transform: uppercase; white-space: nowrap; box-shadow: 0 8px 20px rgba(0, 0, 0, .3) !important; }
+#gh-remind.on { background: var(--tk-bg) !important; color: #7fb2ff !important; box-shadow: inset 0 0 0 1.5px #7fb2ff !important; }
+
+/* What the sky names itself (#tk, js/main.js syncTicket) */
+#tk { position: fixed; z-index: 4; transform: translateX(-50%); display: flex; flex-direction: column; gap: 4px; --tk: #c9cbb6; }
+#tk[hidden] { display: none; }
+#tk[data-ink="later"] { --tk: #7fb2ff; } #tk[data-ink="hidden"], #tk[data-ink="below"] { --tk: #c9cbb6; } #tk[data-ink="fossil"] { --tk: #e8d9b8; }
+#tk[data-ink="ufo"] { --tk: #7dff8a; } #tk[data-ink="secret"] { --tk: #ffd257; }
+#tk-k { font: 500 12px/1.25 var(--label); letter-spacing: .18em; text-transform: uppercase; color: var(--tk); }
+#tk-n { font: 400 20px/1.1 var(--display); color: #fff2b3; }
+#tk-m { font: 500 13px/1.3 var(--label); letter-spacing: .06em; color: #c3c9d1; }
+#tk-k:empty, #tk-n:empty { display: none; }
+#tk-act { display: flex; flex-direction: column; gap: 6px; margin-top: 6px; }
+#tk-act:empty, #tk.bare #tk-act { margin-top: 0; }
+#tk-act > button { position: static !important; transform: none !important; translate: none !important; left: auto !important; top: auto !important; width: 100%; min-height: 46px; border-radius: 10px !important;
+  background: var(--tk) !important; color: #0b1018 !important; font: 600 15px/1 var(--label) !important; letter-spacing: .18em !important; text-transform: uppercase; white-space: nowrap; }
+#tk-act > button[hidden] { display: none !important; }
+#tk-act > #ufo-cta small { position: static !important; transform: none !important; display: block; margin-top: 4px; color: #0b1018 !important; opacity: .7; font-size: 11px; letter-spacing: .12em; }
+#tk.bare { padding-top: 10px; }
+
+/* Night mode: everything red, like the rest of the screen */
+body.night #discover, body.night #discover.owned, body.night #plane, body.night #guidance:not(.first), body.night #tk { --tk: #ff6a55 !important; }
+body.night .tk-card, body.night #guidance:not(.first) { --tk-bg: rgba(12, 3, 3, .9); }
+body.night #discover .d-ticket #d-name, body.night #plane .p-ticket #p-name, body.night #guidance:not(.first) small, body.night #tk-n { color: #ff7f70 !important; }
+body.night #discover .d-ticket #d-tier { color: #ff6a55 !important; }
+body.night #gh-remind { background: #ff6a55 !important; color: #120606 !important; }
+#guidance[hidden] { display: none !important; } /* the ticket's display:flex must not bring back a hidden steering line */
+body:has(#wake:not([hidden])) #discover .d-ticket, body:has(#wake:not([hidden])) #plane .p-ticket, body:has(#wake:not([hidden])) #tk, body:has(#wake:not([hidden])) #guidance { visibility: hidden !important; } /* the tap-to-wake words sit where the ticket goes; it comes back on the tap */
+.rs-gets span.h { background: color-mix(in srgb, #ffc93d 18%, transparent); color: #ffc93d; box-shadow: inset 0 0 0 1px color-mix(in srgb, #ffc93d 45%, transparent); } /* the headliner's pill (2026-10-17) */
+body.night .rs-gets span.h { background: rgba(255, 106, 85, .14); color: #ff6a55; box-shadow: inset 0 0 0 1px rgba(255, 106, 85, .4); }
+body.tk-low #skybar { opacity: 0; pointer-events: none; transition: opacity .2s; } /* a ticket reaches the slider on small phones: it steps aside */
