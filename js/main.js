@@ -1,50 +1,50 @@
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.768';
-import * as Secrets from './secrets.js?v=0.1.768';
-import { STORY_BY_SECRET } from './stories.js?v=0.1.768';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.768';
-import * as Ufo from './ufo.js?v=0.1.768';
-import * as Fossil from './fossil.js?v=0.1.768';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.768';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.768';
-import { toast, ticket, dropToast, toastPending, onTicketShown } from './toast.js?v=0.1.768';
-import { VERSION } from './version.js?v=0.1.768';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, overEarth, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.768';
-import { placeName } from './geo.js?v=0.1.768';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, SLIDER_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.768';
-import { conArt } from './con-art.js?v=0.1.768';
-import { fetchWeather, tonightSky, skyClearAt, goodSkyAt } from './weather.js?v=0.1.768';
-import { CON_FIGURES } from './con-figures.js?v=0.1.768';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.768';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.768';
-import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.768';
-import { eventOf, activeEvent, nextEvent } from './events.js?v=0.1.768';
-import { conList } from './constellations.js?v=0.1.768';
-import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.768';
-import { SkyView, shortName } from './sky.js?v=0.1.768';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.768';
-import { isPlus, setPlusForTesting, onPlus, PLUS_PERKS, PLUS_PRICES } from './plus.js?v=0.1.768';
-import { isNative, getPosition, saveFile, notifyAt, cancelNotify, haptic, onNative, nativeChrome, plugin } from './native.js?v=0.1.768';
-import { initBackup, onBackupChange, backupSoon, clearBackup, backupStatus } from './cloud-backup.js?v=0.1.768';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.768';
-import { cardArt } from './art.js?v=0.1.768';
-import { renderCard, miniCard, cardLevel, artImage, lockedArt, attachTilt, attachGyro, throwOff, attachFlip } from './card.js?v=0.1.768';
-import { applyBack, CARD_BACKS, backUnlocked, chosenBack, chooseBack, backEarned } from './card-backs.js?v=0.1.768';
-import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.768';
-import { audioCtx } from './audio-ctx.js?v=0.1.768';
-import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume } from './music.js?v=0.1.768';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.768';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.768';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.768';
-import { naturalTargets, SOLAR_SYSTEM, DEEP_SKY } from './natural.js?v=0.1.768';
-import { placeFromTimeZone } from './tz-places.js?v=0.1.768';
-import { TIER_INFO } from './rarity.js?v=0.1.768';
-import { SETS, albumList } from './sets.js?v=0.1.768';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.768';
-import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.768';
-import { shareCardEl } from './share-card.js?v=0.1.768';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.768';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.768';
-import { addStarfield } from './starfield.js?v=0.1.768';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.769';
+import * as Secrets from './secrets.js?v=0.1.769';
+import { STORY_BY_SECRET } from './stories.js?v=0.1.769';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.769';
+import * as Ufo from './ufo.js?v=0.1.769';
+import * as Fossil from './fossil.js?v=0.1.769';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.769';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.769';
+import { toast, ticket, dropToast, toastPending, onTicketShown } from './toast.js?v=0.1.769';
+import { VERSION } from './version.js?v=0.1.769';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, overEarth, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.769';
+import { placeName } from './geo.js?v=0.1.769';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, SLIDER_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.769';
+import { conArt } from './con-art.js?v=0.1.769';
+import { fetchWeather, tonightSky, skyClearAt, goodSkyAt } from './weather.js?v=0.1.769';
+import { CON_FIGURES } from './con-figures.js?v=0.1.769';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress } from './constellations.js?v=0.1.769';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.769';
+import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.769';
+import { eventOf, activeEvent, nextEvent } from './events.js?v=0.1.769';
+import { conList } from './constellations.js?v=0.1.769';
+import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.769';
+import { SkyView, shortName } from './sky.js?v=0.1.769';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.769';
+import { isPlus, setPlusForTesting, onPlus, PLUS_PERKS, PLUS_PRICES, initStore, storePlans, buyPlus, restorePlus } from './plus.js?v=0.1.769';
+import { isNative, getPosition, saveFile, notifyAt, cancelNotify, haptic, onNative, nativeChrome, plugin } from './native.js?v=0.1.769';
+import { initBackup, onBackupChange, backupSoon, clearBackup, backupStatus } from './cloud-backup.js?v=0.1.769';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.769';
+import { cardArt } from './art.js?v=0.1.769';
+import { renderCard, miniCard, cardLevel, artImage, lockedArt, attachTilt, attachGyro, throwOff, attachFlip } from './card.js?v=0.1.769';
+import { applyBack, CARD_BACKS, backUnlocked, chosenBack, chooseBack, backEarned } from './card-backs.js?v=0.1.769';
+import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.769';
+import { audioCtx } from './audio-ctx.js?v=0.1.769';
+import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume } from './music.js?v=0.1.769';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.769';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel } from './card-model.js?v=0.1.769';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.769';
+import { naturalTargets, SOLAR_SYSTEM, DEEP_SKY } from './natural.js?v=0.1.769';
+import { placeFromTimeZone } from './tz-places.js?v=0.1.769';
+import { TIER_INFO } from './rarity.js?v=0.1.769';
+import { SETS, albumList } from './sets.js?v=0.1.769';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.769';
+import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.769';
+import { shareCardEl } from './share-card.js?v=0.1.769';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.769';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.769';
+import { addStarfield } from './starfield.js?v=0.1.769';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -2704,18 +2704,25 @@ function renderPlus() {
   document.body.classList.toggle('is-plus', on);
   $('set-plus-val').textContent = on ? 'Plus ✓' : 'Free';
   $('set-plus-note').textContent = on ? 'Thanks for supporting Space Collector' : 'Reminders, card backs and more';
-  $('chk-plus-test').checked = on;
+  try { $('chk-plus-test').checked = localStorage.getItem('plusTest') === '1'; } catch {} // the testing switch only; a store purchase doesn't flip it
   $('plus-buy').hidden = on; $('plus-thanks').hidden = !on;
   if (!on && $('chk-rare')) $('chk-rare').checked = false; // Rare alerts are a Plus perk
 }
-$('plus-restore').addEventListener('click', () => toast(isPlus() ? 'Plus is already on for this account.' : 'Nothing to restore yet. Purchases open in the App Store and Google Play versions.', 3500));
+$('plus-restore').addEventListener('click', async () => {
+  if (!isNative()) { toast('Purchases are in the App Store and Google Play apps.', 3500); return; }
+  const b = $('plus-restore'); b.disabled = true;
+  const on = await restorePlus(); b.disabled = false;
+  if (on === null) toast('Couldn\u2019t reach the store. Check your connection and try again.', 3500);
+  else if (!on) toast(`No Plus purchase found for this ${/iP(hone|ad|od)|Mac/.test(navigator.userAgent) ? 'Apple ID' : 'Google account'}.`, 3500);
+  // on: onPlus says so
+});
 // The Plus sheet (2026-10-16, design/plus-sheet-card.html): Plus as a Shiny card made by renderCard, opening face down
 // on a random back and turning over after a second; five perks as its fact (the one you tapped in orange); the Plus
 // Member patch stitched on its picture; three prices (Year picked, with the free trial) and one button.
 let plusPlan = 'year';
 function plusCard(why) {
   const o = { key: 'plus', id: 'plus', natural: 'planet', type: 'planet', name: 'Space Collector Plus', tier: 'legendary', set: 'wanderers',
-    stats: [['REMINDERS', '∞', ''], ['CARD BACKS', String(CARD_BACKS.length - 1), ''], ['SHINY FORECAST', 'On', ''], ['FREE TRIAL', '7', 'days']], fact: '' };
+    stats: [['REMINDERS', '∞', ''], ['CARD BACKS', String(CARD_BACKS.length - 1), ''], ['SHINY FORECAST', 'On', ''], isPlus() ? ['MEMBER', '✓', ''] : trialDays() ? ['FREE TRIAL', String(trialDays()), 'days'] : ['NO ADS', '✓', '']], fact: '' }; // the trial the store really offers (2026-10-16)
   const el = renderCard(o, { sightings: [{ time: Date.now(), cardKey: 'plus', shiny: 'overhead' }] });
   el.classList.add('shiny', 'plus-card'); el.querySelector('.card')?.classList.add('shiny');
   const art = el.querySelector('.card__art');
@@ -2730,7 +2737,7 @@ function plusCard(why) {
   if (q('.m-tier, .card__tier')) q('.m-tier, .card__tier').innerHTML = '★ PLUS';
   if (q('.card__identity > span')) q('.card__identity > span').textContent = 'Membership · extras for collectors';
   if (q('.card__identity .card__mono')) q('.card__identity .card__mono').textContent = isPlus() ? 'MEMBER' : 'CANCEL ANYTIME';
-  if (q('.card__footer')) q('.card__footer').innerHTML = `<span class="mini-status">${isPlus() ? 'THANK YOU' : 'FIRST 7 DAYS FREE'}</span><span class="plus-brand">SPACE COLLECTOR</span>`;
+  if (q('.card__footer')) q('.card__footer').innerHTML = `<span class="mini-status">${isPlus() ? 'THANK YOU' : trialDays() ? `FIRST ${trialDays()} DAYS FREE` : 'CANCEL ANYTIME'}</span><span class="plus-brand">SPACE COLLECTOR</span>`;
   // Android's fonts set the perks taller and the last one ("Member patch") fell off the card (2026-10-16 playtest):
   // once it's on screen, shrink the list a step at a time until all five fit.
   requestAnimationFrame(() => requestAnimationFrame(() => {
@@ -2773,30 +2780,52 @@ function plusFlip(el, backId = null) {
     timers.push(setTimeout(() => host.classList.remove('plus-shake'), 650), setTimeout(flip, 600 + 3000));
   }, 1000));
 }
+// The store's own prices (local currency, the real trial) replace the list prices once they arrive (2026-10-16).
+let storeP = null;
+const trialDays = () => (storeP ? storeP.year?.trial || 0 : PLUS_PRICES.find((p) => p.id === 'year')?.trial || 0);
+const shownPrices = () => PLUS_PRICES.map((p) => { const s = storeP?.[p.id]; return s ? { ...p, price: s.price || p.price, trial: p.id === 'year' ? s.trial || 0 : 0 } : p; });
 function renderPlusBuy() {
-  const plan = PLUS_PRICES.find((p) => p.id === plusPlan) ?? PLUS_PRICES[1];
-  $('plus-prices').innerHTML = PLUS_PRICES.map((p) => `<button type="button" class="plus-pr${p.id === plusPlan ? ' on' : ''}" role="radio" aria-checked="${p.id === plusPlan}" data-plan="${p.id}"><small>${escapeHtml(p.label.toUpperCase())}</small><b>${escapeHtml(p.price)}</b><em>${escapeHtml((p.note || '').toUpperCase())}</em></button>`).join('');
-  $('plus-cta').textContent = plan.trial ? `Try Plus free for ${plan.trial} days` : plan.id === 'once' ? `Get Plus forever · ${plan.price}` : `Get Plus · ${plan.price} a month`;
-  $('plus-fine').innerHTML = (plan.trial ? `Then ${plan.price} a year.` : plan.id === 'once' ? 'One payment, yours for good.' : `${plan.price} a month. Cancel anytime.`) + '<br>Every card, patch and mission stays free.';
+  const prices = shownPrices(), plan = prices.find((p) => p.id === plusPlan) ?? prices[1];
+  $('plus-prices').innerHTML = prices.map((p) => `<button type="button" class="plus-pr${p.id === plusPlan ? ' on' : ''}" role="radio" aria-checked="${p.id === plusPlan}" data-plan="${p.id}"><small>${escapeHtml(p.label.toUpperCase())}</small><b>${escapeHtml(p.price)}</b><em>${escapeHtml((p.note || '').toUpperCase())}</em></button>`).join('');
+  const per = plan.id === 'year' ? 'a year' : 'a month';
+  $('plus-cta').textContent = plan.trial ? `Try Plus free for ${plan.trial} days` : plan.id === 'once' ? `Get Plus forever · ${plan.price}` : `Get Plus · ${plan.price} ${per}`;
+  $('plus-fine').innerHTML = (plan.trial ? `Then ${plan.price} a year.` : plan.id === 'once' ? 'One payment, yours for good.' : `${plan.price} ${per}. Cancel anytime.`) + '<br>Every card, patch and mission stays free.';
 }
 $('plus-prices').addEventListener('click', (e) => { const b = e.target.closest('[data-plan]'); if (!b) return; plusPlan = b.dataset.plan; buzz(6); renderPlusBuy(); });
-$('plus-cta').addEventListener('click', () => toast('Plus opens with the App Store and Google Play release.', 3500));
+$('plus-cta').addEventListener('click', async () => {
+  if (!isNative()) { toast('Plus is sold in the App Store and Google Play apps.', 3500); return; }
+  const b = $('plus-cta'); if (b.disabled) return; b.disabled = true;
+  if (!storeP) storeP = await storePlans();
+  const r = await buyPlus(storeP?.[plusPlan]); b.disabled = false;
+  if (r.result === 'pending') toast('Waiting for approval. Plus turns on as soon as it\u2019s approved.', 4000); // Ask to Buy
+  else if (r.result === 'error') toast(r.message, 4000);
+  // ok: onPlus thanks them and the sheet turns to its thank-you; cancelled: nothing to say
+});
+// The store said a different trial from the list price (or none): fix the card's trial stat and footer in place,
+// without rebuilding it mid-flip.
+function plusTrialText(host) {
+  const d = trialDays(), stat = [...host.querySelectorAll('.card__stats > div')].pop(), ms = host.querySelector('.card__footer .mini-status');
+  if (stat) { const [lab, val] = [stat.querySelector('span, small, em'), stat.querySelector('b')]; if (lab) lab.textContent = d ? 'FREE TRIAL' : 'NO ADS'; if (val) val.innerHTML = d ? `${d}<small>days</small>` : '✓'; }
+  if (ms) ms.textContent = d ? `FIRST ${d} DAYS FREE` : 'CANCEL ANYTIME';
+}
 function openPlus(why, { back = null } = {}) {
   // `why`: what was tapped ('reminders', 'rare', 'shiny', 'backs'); a short line says why the sheet opened, and that perk is lit.
   const lead = { reminders: 'Pass reminders are part of Plus.', rare: 'Rare alerts are part of Plus.', shiny: 'The full Shiny forecast is part of Plus.', backs: 'That card back is part of Plus.' }[why];
   $('plus-lead').textContent = lead ?? ''; $('plus-lead').hidden = !lead || isPlus();
   const host = $('plus-card'); host.replaceChildren(plusCard(why));
   renderPlusBuy(); renderPlus(); openSheet('set-plus-sheet');
+  if (!isPlus()) storePlans().then((p) => { if (!p) return; const t = trialDays(); storeP = p; renderPlusBuy(); if (trialDays() !== t) plusTrialText(host); });
   plusFlip(host.firstElementChild, back);
 }
 $('set-plus-open').addEventListener('click', () => openPlus());
 $('set-stats-open').addEventListener('click', () => { closePanel(); openCollection('#stats'); });
 $('chk-plus-test').addEventListener('change', (e) => setPlusForTesting(e.target.checked));
-onPlus((on) => {
+onPlus((on, how) => {
   renderPlus();
+  if (!$('set-plus-sheet').hidden) $('plus-card').replaceChildren(plusCard()); // face up, with the member lines
   if (on) earnSecret('plus'); // the Plus Member patch: earned once, kept if Plus ends
   if (state.tonight) scheduleNotes(state.tonight).catch(() => {});
-  toast(on ? 'Plus is on (testing).' : 'Plus is off (testing).', 2000);
+  toast(how === 'testing' ? (on ? 'Plus is on (testing).' : 'Plus is off (testing).') : on ? (how === 'restored' ? 'Plus is back. Welcome back!' : 'Welcome to Plus. Thank you!') : 'Plus has ended. Your Member patch stays on your wall.', 3000);
 });
 renderPlus();
 // Accessibility (2026-10-11, QA): every Settings switch and slider is named after its row, for VoiceOver/TalkBack.
@@ -3512,6 +3541,7 @@ async function boot() {
   }
   try { state.sky=await loadSky('data/sky.json'); } catch {}
   await loadLore(); await loadSightings(); setTimeout(() => { try { updateBackEarned(); } catch {} }, 4000);
+  initStore(); // the apps: is Plus on for this Apple ID / Google account? (js/plus.js, RevenueCat)
   initBackup(); // iPhone app: merge with the player's iCloud copy in the background; nothing waits on it
   renderBackup();
   { const sv = loadSavedLocation(); state.locationStatus = sv?.manual ? 'manual' : sv ? 'saved' : 'example'; } renderLocation();
