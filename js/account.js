@@ -8,13 +8,13 @@
 //   · here, uploaded before, gone from the cloud → deleted on another device, so deleted here
 //   · deleted here while offline → remembered (localStorage acctDeleted) and deleted from the cloud next sync
 // Firebase loads only when someone signs in or was signed in before, so a blocked or slow Google never stops the app.
-import { allSightings, addSighting, putSighting, deleteSighting } from './store.js?v=0.1.763';
-import { isNative, plugin } from './native.js?v=0.1.763';
+import { allSightings, addSighting, putSighting, deleteSighting } from './store.js?v=0.1.764';
+import { isNative, plugin } from './native.js?v=0.1.764';
 
 const FB = 'https://www.gstatic.com/firebasejs/12.4.0/';
 const CONFIG = {
   apiKey: 'AIzaSyDROR9ZTza6vqoo3f7exk61MNtSYNOB8Bw', // a Firebase web key is public by design; the rules do the protecting
-  authDomain: 'space-collector-91cc7.firebaseapp.com',
+  authDomain: 'spacecollector.app', // sign-in shows spacecollector.app, not firebaseapp.com (2026-10-16; Firebase Hosting serves /__/auth there)
   projectId: 'space-collector-91cc7',
   storageBucket: 'space-collector-91cc7.firebasestorage.app',
   messagingSenderId: '798585939717',
