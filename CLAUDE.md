@@ -1174,3 +1174,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - 2026-10-17: Until dark is one slim bar (Sevaan picked design/target-states Until dark C): #until-dark.tk-card with a moon, "Dark in 2 h 24 min" (seconds only in the last minute) over "At 7:00 PM" / "Reminder at … ✓", and a square blue bell (#ud-bell, icon only, aria-label carries the time; outlined when set). Night mode red.
 
 - 2026-10-17: Remind-me-tonight sheet: every option keeps the ✓ space (hidden unless picked), so picking doesn't re-wrap the text and jump the sheet.
+
+- 2026-10-17: Reminder sheet best-pass option reads "Best pass · <name> at 6:56 PM" with a no-break space in the time (was "10 min before the best pass · …", which wrapped PM alone).
