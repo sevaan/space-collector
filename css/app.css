@@ -1456,3 +1456,11 @@ body.night .plus-cta { background: #c23a2a; color: #1a0505; }
 .plus-host.face-down { cursor: pointer; }
 .plus-host.plus-shake { animation: plusShake .6s ease-in-out; }
 @keyframes plusShake { 0% { transform: rotate(0); } 16% { transform: rotate(-3deg) translateY(-2px); } 33% { transform: rotate(3deg); } 50% { transform: rotate(-2.4deg); } 66% { transform: rotate(1.8deg); } 83% { transform: rotate(-1deg); } 100% { transform: rotate(0); } }
+
+/* 2026-10-16 playtest fixes. A message raised over a sheet sat under it (toasts z 30, sheets z 80): toasts go above
+   sheets, and while a sheet is up they show at the top so they don't cover its buttons. */
+#toasts { z-index: 85; }
+body:has(.set-sheet.in:not([hidden]):not(.x)) #toasts { top: calc(var(--safe-top) + 14px) !important; bottom: auto !important; flex-direction: column; }
+body:has(.set-sheet.in) #toasts .ticket--sticky { display: none; } /* "Example location" and the like wait until the sheet closes */
+/* Settings and the Now list scrolled under the clock and battery: a backdrop behind the status bar while one is open. */
+body:has(.overlay.panel:not([hidden]))::before { content: ''; position: fixed; left: 0; right: 0; top: 0; height: var(--safe-top, 0px); z-index: 21; pointer-events: none; background: linear-gradient(var(--bg) 70%, color-mix(in srgb, var(--bg) 0%, transparent)); }

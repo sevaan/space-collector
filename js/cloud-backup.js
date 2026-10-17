@@ -6,8 +6,8 @@
 //   iCloud key 'sc-backup' = { v: 1, s: [sightings], gone: [ids deleted], st: { progress keys }, at }
 // Sync merges both ways and never loses anything earned: sightings are a union by a stable id (time + card + object),
 // minus ids someone deleted; progress keys merge as in the old account sync.
-import { allSightings, addSighting, deleteSighting } from './store.js?v=0.1.767';
-import { plugin, onNative, isNative } from './native.js?v=0.1.767';
+import { allSightings, addSighting, deleteSighting } from './store.js?v=0.1.768';
+import { plugin, onNative, isNative } from './native.js?v=0.1.768';
 
 const KEY = 'sc-backup';
 const STATE_KEYS = ['secrets', 'fossilFound', 'ufoFound', 'missionDeals', 'xpCarry2', 'patchSeen', 'patchDates', 'backEarned', 'rankFloor2'];
@@ -24,7 +24,16 @@ const strip = (s) => { const { key, synced, cloudId, ...rest } = s; return JSON.
 const listeners = new Set();
 export const onBackupChange = (fn) => { listeners.add(fn); return () => listeners.delete(fn); };
 export const backupAvailable = () => !!kv();
-let running = null, again = false, timer = 0;
+let running = null, again = false, timer = 0, failed = false;
+
+// Where the collection is kept right now, for Settings (2026-10-16 playtest: the row said "Backed up to your iCloud"
+// even with iCloud off). 'icloud' | 'icloud-off' (signed out, iCloud Drive off, or the last write failed) |
+// 'android' (Auto Backup, if the player has Google backup on) | 'web'.
+export async function backupStatus() {
+  if (!isNative()) return 'web';
+  const store = kv(); if (!store) return 'android';
+  try { const r = await store.status(); return r?.available && !failed ? 'icloud' : 'icloud-off'; } catch { return 'icloud-off'; }
+}
 
 // Merge this phone with iCloud. Calls listeners with { added } when sightings arrived from iCloud.
 export function backupNow() {
@@ -44,8 +53,8 @@ export function backupNow() {
     const merged = new Map([...theirs].filter(([id]) => !gone.has(id))); for (const [id, s] of here) merged.set(id, strip(s));
     const st = mergeState(cloud.st ?? {});
     const out = { v: 1, s: [...merged.values()], gone: [...gone].slice(-2000), st, at: Date.now() };
-    try { await store.set({ key: KEY, value: JSON.stringify(out) }); ls.set('backupGone', null); ls.set('backupAt', String(Date.now())); }
-    catch (e) { console.warn('icloud write failed', e?.message ?? e); }
+    try { await store.set({ key: KEY, value: JSON.stringify(out) }); failed = false; ls.set('backupGone', null); ls.set('backupAt', String(Date.now())); }
+    catch (e) { failed = true; console.warn('icloud write failed', e?.message ?? e); }
     if (added) listeners.forEach((fn) => { try { fn({ added }); } catch {} });
     return { added, total: out.s.length };
   })().finally(() => { running = null; if (again) { again = false; backupSoon(2000); } });

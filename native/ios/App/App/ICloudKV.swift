@@ -44,7 +44,9 @@ public class ICloudKVPlugin: CAPPlugin, CAPBridgedPlugin {
             let packed = try (Data(value.utf8) as NSData).compressed(using: .zlib) as Data
             if packed.count > 950_000 { call.reject("too-big"); return } // the store's limit is 1 MB in total
             store.set(packed, forKey: key)
-            store.synchronize()
+            // false when the app has no iCloud entitlement; no iCloud account means it stays on this phone only
+            if !store.synchronize() { call.reject("icloud-unavailable"); return }
+            if FileManager.default.ubiquityIdentityToken == nil { call.reject("icloud-off"); return }
             call.resolve(["bytes": packed.count])
         } catch { call.reject("could not pack the backup") }
     }

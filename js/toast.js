@@ -53,7 +53,9 @@ function pump() {
   const t = queue[0], wait = t.at - Date.now();
   if (wait > 0) { busy = true; setTimeout(() => { busy = false; pump(); }, wait); return; }
   // Never over a card reveal or a patch moment (2026-10-08 playtest: toasts covered the new card); they wait their turn.
-  if (document.querySelector('#reveal:not([hidden]), .patch-moment, .patch-coins, #ob-done:not([hidden]), #discover:not([hidden])')) { busy = true; setTimeout(() => { busy = false; pump(); }, 500); return; }
+  // A sheet covers all of that, so its own messages go straight up (2026-10-16 playtest: "Try Plus free" said nothing,
+  // its toast waiting behind the Plus sheet for whatever sat in the circle to leave).
+  if (!document.querySelector('.set-sheet.in') && document.querySelector('#reveal:not([hidden]), .patch-moment, .patch-coins, #ob-done:not([hidden]), #discover:not([hidden])')) { busy = true; setTimeout(() => { busy = false; pump(); }, 500); return; }
   // One sticky at a time (2026-10-13 playtest: two stacked stickies covered 40% of an SE). A sticky waits while
   // another is up; plain toasts behind it still go ahead.
   let qi = 0;

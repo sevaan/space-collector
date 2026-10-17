@@ -1144,3 +1144,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - 2026-10-16 · Build 1.0 (12) archived (web v0.1.765: no accounts, iCloud backup, privacy cleanup); entitlement ubiquity-kvstore confirmed in the signed app; opened in Organizer, not uploaded.
 
 - 2026-10-16: Plus sheet reminders lead shortened to "Pass reminders are part of Plus." (dropped the always-free sentence).
+
+- 2026-10-16: playtest fixes. Backup row and "Your data" line now say where cards really are (cloud-backup.js backupStatus: icloud / icloud-off / android / web; ICloudKV.set rejects when iCloud is off or unentitled). Toasts z 85, shown at the top over sheets, and not held back by #discover while a sheet is up (toast.js). openCollection sets the switcher to Collection from any route. Status-bar backdrop over panels. Plus card perks shrink to fit (Android). Android Back on a tour card skips the tour. Reminder-limit Plus sheet opens over the Collection instead of closing it. Aim hint uses the drag view in finger mode. Notification switches show ON only when notifications are allowed.
