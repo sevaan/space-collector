@@ -1154,3 +1154,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - 2026-10-16: story-arecibo art re-extended (Sevaan: the widened edges showed). Kept the original centre (x 180-1015), Nano Banana Pro outpainted it to 4:3 (jungle, palms, stars, left cable continued); both sizes replaced. Other story art checked, fine.
 
 - 2026-10-17: reveal card raised 26pt (css/reveal.css --rv-top safe+52, --rv-bot safe+84): Sevaan found it sat low, ~105pt of air above vs ~50pt below on his iPhone.
+
+- 2026-10-17: Collect button hidden while #wake ("Tap to wake the sky") is showing (css/app.css).
