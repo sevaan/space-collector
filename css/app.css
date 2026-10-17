@@ -1456,3 +1456,15 @@ body.night .plus-cta { background: #c23a2a; color: #1a0505; }
 .plus-host.face-down { cursor: pointer; }
 .plus-host.plus-shake { animation: plusShake .6s ease-in-out; }
 @keyframes plusShake { 0% { transform: rotate(0); } 16% { transform: rotate(-3deg) translateY(-2px); } 33% { transform: rotate(3deg); } 50% { transform: rotate(-2.4deg); } 66% { transform: rotate(1.8deg); } 83% { transform: rotate(-1deg); } 100% { transform: rotate(0); } }
+/* The sky slider carries on past Dark site into binoculars (2026-10-16, Sevaan): the last 38% of the track (3 of 7.9) is
+   the binocular stretch, dashed orange until you slide into it; there the thumb fills orange. 62% = 4.9 / 7.9. */
+#sky-range::-webkit-slider-runnable-track, #set-sky-range::-webkit-slider-runnable-track {
+  background: linear-gradient(90deg, var(--gold) 0 var(--p, 50%), transparent var(--p, 50%)),
+    linear-gradient(90deg, color-mix(in srgb, var(--edge) 70%, transparent) 0 62%, transparent 62%),
+    repeating-linear-gradient(90deg, #fa8127aa 0 4px, transparent 4px 8px) 100% 0 / 38% 100% no-repeat; }
+body.day #sky-range::-webkit-slider-runnable-track { background: linear-gradient(90deg, var(--gold) 0 var(--p, 50%), transparent var(--p, 50%)), linear-gradient(90deg, #14304666 0 62%, transparent 62%), repeating-linear-gradient(90deg, #fa8127aa 0 4px, transparent 4px 8px) 100% 0 / 38% 100% no-repeat; }
+#sky-range.bino::-webkit-slider-thumb { background: #fa8127; border-color: #fa8127; }
+#sky-range::-moz-range-track, #set-sky-range::-moz-range-track { background: linear-gradient(90deg, color-mix(in srgb, var(--edge) 70%, transparent) 0 62%, transparent 62%), repeating-linear-gradient(90deg, #fa8127aa 0 4px, transparent 4px 8px) 100% 0 / 38% 100% no-repeat; }
+.set-sl-ends { position: relative; }
+.set-sl-ends span:nth-child(2) { position: absolute; left: 62%; transform: translateX(-50%); }
+.set-sl-ends span:nth-child(3) { color: #fa8127; }

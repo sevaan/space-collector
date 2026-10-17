@@ -17,9 +17,13 @@ export const SKIES = {
 export const DEFAULT_SKY = 'suburbs';
 // The sky slider (2026-10-06) sets the sky's own brightness continuously, from a lit-up city to a pristine site.
 export const SB_MIN = 17.0, SB_MAX = 21.9;
+// One slider, no binocular switch (2026-10-16, Sevaan): past the darkest sky it carries on into binoculars. A slider value
+// above SB_MAX keeps the sky at its darkest and adds the excess (up to BINOCULAR_GAIN) to satellites and faint planets.
+export const SLIDER_MAX = SB_MAX + 3;
 export const sbOfSky = (key) => SKIES[key]?.sb ?? SKIES[DEFAULT_SKY].sb;
 // The nearest named sky, for the slider's label.
 export function skyNameFor(sb) {
+  if (sb > SB_MAX + 0.04) return 'Binoculars';
   if (sb < 18.5) return 'City'; if (sb < 19.9) return 'Suburbs'; if (sb < 21.25) return 'Countryside'; return 'Dark site';
 }
 const NATURAL_SB = 21.9;           // a pristine moonless sky
@@ -49,13 +53,14 @@ function moonSb(moonEl, illum) {
 // the combined sky brightness.
 // sb (mag/arcsec², from the sky slider) wins over a named sky.
 export function skyLimit({ sky = DEFAULT_SKY, sb: base = null, sunEl = -90, moonEl = -90, moonIllum = 0 } = {}) {
+  const boost = base != null && base > SB_MAX ? Math.min(BINOCULAR_GAIN, base - SB_MAX) : 0; if (boost) base = SB_MAX;
   let f = flux(base ?? sbOfSky(sky));
   const tw = twilightSb(sunEl); if (tw !== null) f += flux(tw);
   const mo = moonSb(moonEl, moonIllum); if (mo !== null) f += flux(mo);
   const sb = sbOf(f);
   const stars = nelmFromSb(sb);
-  const satellites = stars - MOVING_PENALTY;
-  return { sb, stars, satellites, binoculars: satellites + BINOCULAR_GAIN };
+  const satellites = stars - MOVING_PENALTY + boost;
+  return { sb, stars, satellites, boost, binoculars: satellites + BINOCULAR_GAIN };
 }
 
 // Extra dimming (magnitudes) for an object at elevation el° compared with straight overhead.

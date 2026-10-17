@@ -22,11 +22,11 @@
   <link rel="preload" href="fonts/RussoOne-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="fonts/BarlowCondensed-Medium.ttf" as="font" type="font/ttf" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600;650;700;750;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/cards.css?v=0.1.761">
-  <link rel="stylesheet" href="css/app.css?v=0.1.761">
-  <link rel="stylesheet" href="css/icons.css?v=0.1.761">
-  <link rel="stylesheet" href="css/reveal.css?v=0.1.761">
-  <link rel="stylesheet" href="css/ui.css?v=0.1.761">
+  <link rel="stylesheet" href="css/cards.css?v=0.1.762">
+  <link rel="stylesheet" href="css/app.css?v=0.1.762">
+  <link rel="stylesheet" href="css/icons.css?v=0.1.762">
+  <link rel="stylesheet" href="css/reveal.css?v=0.1.762">
+  <link rel="stylesheet" href="css/ui.css?v=0.1.762">
 </head>
 <body>
   <video id="cam" playsinline muted autoplay hidden></video>
@@ -71,7 +71,7 @@
 
     <div id="skybar" role="group" aria-label="How dark is your sky">
       <span class="sb-end" aria-hidden="true">SEE LESS</span>
-      <input type="range" id="sky-range" min="17" max="21.9" step="0.05" aria-label="Sky darkness: slide until the screen matches what you can see">
+      <input type="range" id="sky-range" min="17" max="24.9" step="0.05" aria-label="Sky darkness: slide until the screen matches what you can see">
       <span class="sb-end" aria-hidden="true">SEE MORE</span>
       <span id="sky-read"><b id="sky-name"></b> · <span id="sky-mag"></span></span>
     </div>
@@ -227,7 +227,7 @@
       <div class="set-row"><span class="set-ic" aria-hidden="true" style="background:#173d5c"><span class="ico" data-ico="compass"></span></span><span class="set-main">Motion<small>The sky follows your phone</small></span><span id="set-motion"></span><button class="set-link" id="retry-motion" type="button">Turn on</button></div>
       <div class="set-slider"><div class="set-sl-top"><span>How dark is your sky?</span><span id="set-sky-name"></span></div>
         <input type="range" id="set-sky-range" class="ui-range" step="0.05" aria-label="How dark is your sky">
-        <div class="set-sl-ends"><span>Bright city</span><span>Dark site</span></div><small class="set-sl-note" id="sky-limit-info"></small></div>
+        <div class="set-sl-ends"><span>Bright city</span><span>Dark site</span><span>Binoculars</span></div><small class="set-sl-note" id="sky-limit-info"></small></div>
       <label class="set-row"><span class="set-ic" aria-hidden="true" style="background:#4a1414"><span class="ico" data-ico="moon"></span></span><span class="set-main">Red night mode<small>Saves your night vision</small></span><input type="checkbox" class="set-tog" id="chk-night"></label>
       <label class="set-row" id="row-push" hidden><span class="set-ic" aria-hidden="true" style="background:#5a2a1a"><span class="ico" data-ico="moon"></span></span><span class="set-main">Look up<small>One a day, at the best time this evening. Only when it's clear</small></span><input type="checkbox" class="set-tog" id="chk-push"></label>
       <label class="set-row" id="row-catch" hidden><span class="set-ic" aria-hidden="true" style="background:#4a3a12"><span class="ico" data-ico="bell"></span></span><span class="set-main">Catch of the day<small>Five minutes before tonight's headliner</small></span><input type="checkbox" class="set-tog" id="chk-catch"></label>
@@ -240,7 +240,7 @@
       <label class="set-row"><span class="set-ic" aria-hidden="true" style="background:#1d4a2a"><span class="ico" data-ico="tree"></span></span><span class="set-main">Tree line on the horizon</span><input type="checkbox" class="set-tog" id="chk-landscape"></label>
       <label class="set-row"><span class="set-ic" aria-hidden="true" style="background:#2a2a14"><span class="ico" data-ico="moon"></span></span><span class="set-main">Earth's shadow<small>Where satellites go dark, at dusk and dawn</small></span><input type="checkbox" class="set-tog" id="chk-shadow"></label>
       <label class="set-row"><span class="set-ic" aria-hidden="true" style="background:#22265a"><span class="ico" data-ico="ring"></span></span><span class="set-main">Satellites by day<small>The ones daylight hides, not collectable</small></span><input type="checkbox" class="set-tog" id="chk-daysats"></label>
-      <label class="set-row"><span class="set-ic" aria-hidden="true" style="background:#3a2259"><span class="ico" data-ico="binoculars"></span></span><span class="set-main">Binocular mode<small>Show what binoculars reveal</small></span><input type="checkbox" class="set-tog" id="chk-bino"></label>
+      
     </div>
 
     <div class="set-group set-card"><div class="set-bar"><h3>Aiming</h3><b aria-hidden="true">04</b></div>
@@ -341,7 +341,7 @@
     </div></div>
   </section>
 
-  <script type="module" src="js/main.js?v=0.1.761"></script>
+  <script type="module" src="js/main.js?v=0.1.762"></script>
 <div id="rotate" role="status"><b>Turn your phone upright</b><span>Space Collector is made for portrait.</span></div>
 </body>
 </html>
