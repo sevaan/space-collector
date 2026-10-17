@@ -1184,3 +1184,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - 2026-10-17: Tapping the Observer rank card in the Collection opens Observer stats (cards-page.js .lb-face onclick; its buttons, missions and events row excluded).
 
 - 2026-10-17: Notifications redesigned to design A (Sevaan picked "Ticket strip", canvas Notification Styles): every .ticket is dark glass with a 3px top edge in --tkc, coloured eyebrow, cream line, solid --tkc action button, soft square ✕, no diamond mark. Kind colours: info grey, mission/compass orange, rank/event/milestone/complete gold, xp (constellation progress) steel, card back pink-purple; by eyebrow: REMINDER SET/STREAK blue, NEW STAMP cyan, SHINY pink, THE SUN and save-fail red (toast.js sets data-eyebrow/data-id). Patch coin tag, next-pass and meteor chips, radar tip get the same edge-and-glass look. Night mode: all red.
+
+- 2026-10-17: Tap to wake no longer gets stuck: if motion can't start (no sensors, or two failed taps on a phone) the tap clears #wake, turns on drag mode and says so (motionFromTap, wakeFails).
