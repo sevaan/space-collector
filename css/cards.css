@@ -529,3 +529,6 @@
    chips, and its top fades into the card's own navy, so no picture needs redrawing. The bottom edge is trimmed. */
 .card--mission .card__art > img.card-art-image { object-position: 50% 50%; } /* shown as drawn: framing is fixed in the art (2026-10-15) */
 .card--mission.card--fleet .card__art > img.card-art-image { object-position: 50% 82%; } /* new art centres the object at about 57% height (y 19-95%); 82% centres a 16:10 or shorter crop on it (2026-10-16, Sevaan: Starlink too low, Globalstar cut off) */
+/* Four stats on a star card (2026-10-17: Distance added): every column reads from the left, like Brightness, so a long
+   constellation name doesn't float in the middle of its column (Sevaan). */
+.card--retro .card__stats[style*="--n:4"] > div { text-align: left; }

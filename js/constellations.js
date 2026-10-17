@@ -3,8 +3,8 @@
 // Every star in a stick figure (magnitude <= 5) is its own card; the constellation card turns gold when
 // you own all of them. Bright stars that already have cards (Regulus, Spica…) count as members.
 // No DOM.
-import { NATURAL, NATURAL_BY_KEY, SOLAR_SYSTEM } from './natural.js?v=0.1.775';
-import { starVector } from './celestial.js?v=0.1.775';
+import { NATURAL, NATURAL_BY_KEY, SOLAR_SYSTEM } from './natural.js?v=0.1.776';
+import { starVector } from './celestial.js?v=0.1.776';
 
 const GEN = { Ari: 'Arietis', Tau: 'Tauri', Gem: 'Geminorum', Cnc: 'Cancri', Leo: 'Leonis', Vir: 'Virginis', Lib: 'Librae', Sco: 'Scorpii', Sgr: 'Sagittarii',
   Cap: 'Capricorni', Aqr: 'Aquarii', Psc: 'Piscium', Ori: 'Orionis', BigDipper: 'Ursae Majoris', UMi: 'Ursae Minoris', Cas: 'Cassiopeiae', Cyg: 'Cygni', Cru: 'Crucis',
@@ -43,6 +43,7 @@ export const CON_STARS = [];               // star cards with a v (equatorial un
 // 1,000, and a "~" when the parallax is uncertain by more than 10% (2026-10-17).
 const lyText = ([ly, err]) => { const r = ly < 100 ? Math.round(ly) : ly < 1000 ? Math.round(ly / 10) * 10 : Math.round(ly / 100) * 100; return `${err > 0.1 ? '~' : ''}${r.toLocaleString('en-US')}`; };
 let loading = null, starFacts = {}, starDist = {};
+export const starDistance = (hip) => starDist[hip] ?? null; // [light-years, relative error] or null
 export function loadConstellations(url = 'data/constellations.json') {
   // Each star's own researched fact (pre-launch writing review, 2026-10-15): data/star-facts.json, keyed by HIP.
   const facts = fetch(url.replace('constellations.json', 'star-facts.json')).then((r) => r.json()).catch(() => ({}));
