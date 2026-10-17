@@ -1170,3 +1170,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - 2026-10-17: Moon, Sun and planets show their real distance tonight in the target ticket (celestial.js solarSystem bodies carry distKm; natural.js passes it in look.distKm; main.js distText: thousands under 1M, "41.9M km", "1.27B km"; miles in the US).
 
 - 2026-10-17: Until-dark Remind me matches the pass ticket button (solid blue, "Remind me at 7:00 PM", "Reminder at …" outlined when set); the "Around 7:00 PM" line is gone. UFO grows to 0.9 (about other targets' size) in the circle, easing in, 0.5 outside.
+
+- 2026-10-17: Until dark is one slim bar (Sevaan picked design/target-states Until dark C): #until-dark.tk-card with a moon, "Dark in 2 h 24 min" (seconds only in the last minute) over "At 7:00 PM" / "Reminder at … ✓", and a square blue bell (#ud-bell, icon only, aria-label carries the time; outlined when set). Night mode red.
