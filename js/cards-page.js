@@ -1,29 +1,29 @@
-import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.760';
-import { computeStats, statsHtml } from './stats.js?v=0.1.760';
-import { nightKey } from './observation.js?v=0.1.760';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.760';
-import { sfx } from './sfx.js?v=0.1.760';
-import { expandFacts } from './catalog-facts.js?v=0.1.760';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.760';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.760';
-import { ticket } from './toast.js?v=0.1.760';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.760';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.760';
-import { cardArt } from './art.js?v=0.1.760';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.760';
-import { applyBack } from './card-backs.js?v=0.1.760';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.760';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.760';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.760';
-import './stories.js?v=0.1.760';
-import { loadConstellations, conList } from './constellations.js?v=0.1.760';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.760';
-import { eventBadges, nextEvent } from './events.js?v=0.1.760';
-import { shareCardEl } from './share-card.js?v=0.1.760';
-import { removeSighting } from './account.js?v=0.1.760';
-import { allSightings, deleteSighting } from './store.js?v=0.1.760';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.760';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.760';
+import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.761';
+import { computeStats, statsHtml } from './stats.js?v=0.1.761';
+import { nightKey } from './observation.js?v=0.1.761';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.761';
+import { sfx } from './sfx.js?v=0.1.761';
+import { expandFacts } from './catalog-facts.js?v=0.1.761';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.761';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.761';
+import { ticket } from './toast.js?v=0.1.761';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.761';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.761';
+import { cardArt } from './art.js?v=0.1.761';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.761';
+import { applyBack } from './card-backs.js?v=0.1.761';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.761';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.761';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.761';
+import { STORIES } from './stories.js?v=0.1.761';
+import { loadConstellations, conList } from './constellations.js?v=0.1.761';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.761';
+import { eventBadges, nextEvent } from './events.js?v=0.1.761';
+import { shareCardEl } from './share-card.js?v=0.1.761';
+import { removeSighting } from './account.js?v=0.1.761';
+import { allSightings, deleteSighting } from './store.js?v=0.1.761';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.761';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.761';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -235,7 +235,21 @@ function remindStreak() {
 }
 // Observer stats (free for everyone, 2026-10-12): a link under the rank card opens #stats-view.
 function openStats() {
-  $('stats-body').innerHTML = statsHtml(computeStats(state.raw, state.byKey, nightKey));
+  // Everything the Collection already knows, for the stats page (2026-10-16 redesign).
+  const info = (k) => { const c = state.byKey.get(k); return c ? { tier: c.tier, tier0: c.tier0, type: c.type, owner: c.owner, launch: c.launch, natural: c.natural, con: c.con } : null; };
+  const p = progress(state.raw, info, { constellations: conList(), deals: readDeals(), albums: state.albums, carry: xpCarry(state.raw, info, { constellations: conList(), deals: readDeals() }) });
+  let sec = {}; try { sec = JSON.parse(localStorage.getItem('secrets')) || {}; } catch {}
+  let extra = Object.keys(sec).filter((k) => SECRET_PATCHES[k] && hasPatch(k, sec[k])).length;
+  try { if (JSON.parse(localStorage.getItem('fossilFound'))) extra++; if (JSON.parse(localStorage.getItem('ufoFound'))) extra++; } catch {}
+  const lv = SETS.map((set) => albumStats(set.id)).filter((a) => a.cards.length);
+  const cd = conDone();
+  const ctx = { cards: state.cards, title: titleFor, art: (c) => artImage(c, 'small'),
+    rank: { name: p.rank.name, xp: p.xp, next: p.rank.next },
+    patches: [p.achievements.filter((a) => a.done).length + extra, p.achievements.length + extra],
+    events: eventBadges(state.raw).length, cons: [cd.done, cd.total],
+    stories: [STORIES.filter((st) => state.sightingsByKey.has(st.key)).length, STORIES.length],
+    albums: { bronze: lv.filter((a) => a.level >= 1).length, silver: lv.filter((a) => a.level >= 2).length, gold: lv.filter((a) => a.level >= 3).length, total: lv.length } };
+  $('stats-body').innerHTML = statsHtml(computeStats(state.raw, state.byKey, nightKey, null, ctx));
   $('stats-view').showModal();
 }
 $('stats-open')?.addEventListener('click', openStats);
@@ -350,9 +364,10 @@ window.addEventListener('message', (e) => {
   if (e.data?.sc === 'find-suggest') { findSuggest = e.data.items; findReminded = new Set(e.data.reminded); for (const p of findSuggest) findPasses.set(p.id, p); if (state.view === 'find' && !state.query) renderFind(); }
   if (e.data?.sc === 'find-passes') { if (e.data.reminded) findReminded = new Set(e.data.reminded);
     for (const [id, p] of Object.entries(e.data.passes)) findPasses.set(isNaN(id) ? id : Number(id), p);
+    { const u = $('v-up'); if ($('viewer').open && u._card && !u._up && !u.hidden) renderNextPanel(u._card); }
     for (const el of document.querySelectorAll('.fd-pass[data-id]')) { const id = isNaN(el.dataset.id) ? el.dataset.id : Number(el.dataset.id), c = state.cards.find((k) => k.id === id); if (c) { el.innerHTML = findPassLine(c); findActs(el.closest('.find-row, .v-next'), c); } } findTrim(); }
   if (e.data?.sc === 'say' && e.data.text) ticket({ kind: 'info', line: e.data.text, ms: 3500 }); // a message from Explore (reminder results)
-  if (e.data?.sc === 'find-reminded') { findReminded = new Set(e.data.set); { const u = $('v-up'); if (u && !u.hidden && u._up) renderUpPanel(u._card, u._up); } for (const el of document.querySelectorAll('.fd-pass[data-id]')) { const id = isNaN(el.dataset.id) ? el.dataset.id : Number(el.dataset.id), c = state.cards.find((k) => k.id === id); if (c) findActs(el.closest('.find-row, .v-next'), c); } }
+  if (e.data?.sc === 'find-reminded') { findReminded = new Set(e.data.set); { const u = $('v-up'); if (u && !u.hidden && u._up) renderUpPanel(u._card, u._up, u._find); } for (const el of document.querySelectorAll('.fd-pass[data-id]')) { const id = isNaN(el.dataset.id) ? el.dataset.id : Number(el.dataset.id), c = state.cards.find((k) => k.id === id); if (c) findActs(el.closest('.find-row, .v-next'), c); } }
 });
 let upHold = false; // true while the viewer shows Up tonight's list; 'again' if a redraw waited (openUpNext)
 function render() {
@@ -415,16 +430,30 @@ function render() {
 }
 const DIR_WORD = { N: 'north', NE: 'northeast', E: 'east', SE: 'southeast', S: 'south', SW: 'southwest', W: 'west', NW: 'northwest' };
 const hm = (t) => new Date(t).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
-function renderUpPanel(c, up) {
-  const el = $('v-up'); el.hidden = !up; if (!up) return;
+// The pass panel (2026-10-16, Sevaan: the small next-pass pill "needs redesigning"): one design for every pass. A pass in
+// tonight's plan (find = false) says "Up tonight"; any other next pass from the Find search (find = true) says when.
+// Both get the big Remind me and Show me; they reach Explore as up-remind/up-show or find-remind/find-show.
+function renderUpPanel(c, up, find = false) {
+  const el = $('v-up'); el.hidden = !up; el._card = c; if (!up) return;
   const key = `${up.id}@${up.start}`, far = up.start > Date.now() + 10 * 60000, on = findReminded.has(key);
-  const where = `${up.peakEl >= 70 ? 'almost overhead' : up.peakEl >= 35 ? 'high' : 'low'} in the ${DIR_WORD[up.dir] ?? up.dir}`;
-  el.innerHTML = `<p class="v-up__when">Up tonight · <b>${esc(hm(up.start))}</b> · ${esc(where)}</p>
-    <div class="v-up__btns">${far ? `<button type="button" class="v-up__remind${on ? ' on' : ''}" aria-pressed="${on}">${BEL}<span>${on ? `Reminder on · ${esc(hm(up.start - 10 * 60000))}` : `Remind me at ${esc(hm(up.start - 10 * 60000))}`}</span></button>` : '<span class="v-up__soon">Starting soon: look now</span>'}<button type="button" class="v-up__show">Show me</button></div>`;
-  const send = (sc) => { if (EMBED) window.parent.postMessage({ sc, id: up.id, start: up.start }, location.origin); else ticket({ kind: 'info', line: sc === 'up-remind' ? 'Reminders work in the Space Collector app.' : 'Open Explore to be shown where to look.', ms: 3000 }); };
-  el.querySelector('.v-up__remind')?.addEventListener('click', () => send('up-remind'));
-  el.querySelector('.v-up__show').addEventListener('click', () => send('up-show'));
-  el._key = key; el._card = c; el._up = up;
+  const pt = up.dir ?? ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'][Math.round((((up.peakAz ?? 0) % 360) + 360) % 360 / 45) % 8];
+  const where = `${up.peakEl >= 70 ? 'almost overhead' : up.peakEl >= 35 ? 'high' : 'low'} in the ${DIR_WORD[pt] ?? pt}`;
+  const d = new Date(up.start), today = d.toDateString() === new Date().toDateString(), tmr = d.toDateString() === new Date(Date.now() + 86400e3).toDateString();
+  const when = !find ? 'Up tonight' : today ? 'Tonight' : tmr ? 'Tomorrow' : d.toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' });
+  el.innerHTML = `<p class="v-up__when">${esc(when)} · <b>${esc(hm(up.start))}</b> · ${esc(where)}</p>${up.cloud ? '<p class="v-up__cloud">Cloud is forecast then. If you spot a gap, it still counts.</p>' : ''}
+    <div class="v-up__btns">${far ? `<button type="button" class="v-up__remind${on ? ' on' : ''}" aria-pressed="${on}">${BEL}<span>${on ? `Reminder on · ${esc(hm(up.start - 10 * 60000))}` : `Remind me at ${esc(hm(up.start - 10 * 60000))}`}</span></button>` : '<span class="v-up__soon">Starting soon: look now</span>'}<button type="button" class="v-up__show">${TGT}<span>Show me</span></button></div>`;
+  const send = (sc) => { if (!EMBED) { ticket({ kind: 'info', line: sc.endsWith('remind') ? 'Reminders work in the Space Collector app.' : 'Open Explore to be shown where to look.', ms: 3500 }); return; }
+    window.parent.postMessage(find ? { sc, pass: up } : { sc, id: up.id, start: up.start }, location.origin); };
+  el.querySelector('.v-up__remind')?.addEventListener('click', () => send(find ? 'find-remind' : 'up-remind'));
+  el.querySelector('.v-up__show').addEventListener('click', () => send(find ? 'find-show' : 'up-show'));
+  el._key = key; el._up = up; el._find = find;
+}
+// A card with no pass tonight: its next pass from the Find search, in the same panel (or a short line while it looks).
+function renderNextPanel(c) {
+  const el = $('v-up'), p = findPasses.get(c.id);
+  if (p) { renderUpPanel(c, p, true); return; }
+  el.hidden = false; el._card = c; el._up = null;
+  el.innerHTML = `<p class="v-up__when">${p === undefined ? '<span class="fd-wait">Finding its next pass…</span>' : 'Not visible from here in the next 10 days'}</p>`;
 }
 let upCards = [];
 function openUpNext(i) {
@@ -529,10 +558,10 @@ function showCard() {
   // Up tonight panel (2026-10-16, design/upnext-remind.html 1): any card with a pass in tonight's plan, fleets included,
   // gets when and where plus a big Remind me and Show me. It replaces the small next-pass pill below.
   const up = state.plan.filter((x) => x.key === c.key && x.end > Date.now()).sort((a, b) => a.start - b.start)[0];
-  renderUpPanel(c, up);
-  const vn = $('v-next'); vn.hidden = !EMBED || !!c.natural || !!c.launches || !!up;
-  if (!vn.hidden) { vn.innerHTML = `<span class="fd-pass" data-id="${esc(String(c.id))}">${findPassLine(c)}</span><span class="fd-acts"></span>`; findActs(vn, c);
-    if (!findPasses.has(c.id)) window.parent.postMessage({ sc: 'find-passes', ids: [c.id], req: ++findReq }, location.origin); }
+  $('v-next').hidden = true; // the small pill is replaced by the panel for every pass (2026-10-16)
+  if (up) renderUpPanel(c, up);
+  else if (EMBED && !c.natural && !c.launches) { renderNextPanel(c); if (!findPasses.has(c.id)) window.parent.postMessage({ sc: 'find-passes', ids: [c.id], req: ++findReq }, location.origin); }
+  else renderUpPanel(c, null);
   $('v-history').replaceChildren();
   // (The cream passport block is gone, 2026-10-06: each sighting row names its launch instead.)
   if (sightings.length) {

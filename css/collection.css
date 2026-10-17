@@ -391,7 +391,7 @@ body.albums-view .album__count { flex: none; font-size: 14px; }
 .up-next__tile { opacity: .82; border-style: dashed !important; position: relative; }
 .up-next__when { position: absolute; left: 6px; right: 6px; top: 34%; z-index: 3; padding: 4px 6px 3px; border-radius: 99px; background: #080f1bdd; border: 1px solid #fa812788; color: #fa8127; font: 500 12px/1 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .1em; text-transform: uppercase; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 /* "12 cards · not backed up · Sign in ›" (2026-10-11, design/auth-moments.html 3) */
-.backup-line { display:flex; align-items:center; gap:10px; width:100%; box-sizing:border-box; height:44px; margin:2px 0 16px; padding:0 14px; border-radius:12px; background:#0e1a29; border:1px solid rgba(250,129,39,.45); cursor:pointer;
+.backup-line { display:flex; align-items:center; gap:10px; width:100%; box-sizing:border-box; height:44px; margin:14px 0 16px; /* clear of the header's double rule (2026-10-16, Sevaan) */ padding:0 14px; border-radius:12px; background:#0e1a29; border:1px solid rgba(250,129,39,.45); cursor:pointer;
   font:500 15px/1 'SC Label', 'Barlow Condensed', sans-serif; letter-spacing:.1em; text-transform:uppercase; color:#fff2b3; }
 .backup-line[hidden] { display:none; }
 .backup-line svg { width:18px; height:18px; flex:none; color:#fa8127; }
@@ -407,17 +407,50 @@ body.night::after { content: ''; position: fixed; inset: 0; z-index: 2147483646;
 #stats-view::backdrop { background:rgba(4,8,14,.7); }
 .stats-body { padding:8px 20px calc(var(--safe-bottom) + 30px); overflow-y:auto; height:calc(100% - 70px); box-sizing:border-box; }
 .week-lock b { font:400 22px 'SC Display', Impact, sans-serif; color:#fff2b3; } .week-lock p { color:#bdbea9; }
-.st-tiles { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin:6px 0 10px; }
-.st-tile { background:#0e1a29; border:1px solid #2a3a48; border-radius:12px; padding:12px 6px; text-align:center; }
-.st-tile b { display:block; font:400 26px 'SC Display', Impact, sans-serif; color:#fff2b3; } .st-tile small { font:500 12px 'SC Label', sans-serif; letter-spacing:.1em; text-transform:uppercase; color:#bdbea9; }
-.st-since { color:#bdbea9; font-size:14px; margin:4px 0 16px; }
-.st-head { font:500 13px 'SC Label', sans-serif; letter-spacing:.18em; text-transform:uppercase; color:#fa8127; margin:18px 0 8px; }
-.st-bars { display:grid; grid-template-columns:repeat(12,1fr); gap:5px; height:110px; align-items:end; }
-.st-bar { display:flex; flex-direction:column; align-items:center; height:100%; justify-content:flex-end; gap:4px; }
-.st-bar span { width:100%; min-height:2px; border-radius:4px 4px 1px 1px; background:linear-gradient(#fa8127,#c9622a); } .st-bar small { font:500 12px 'SC Label', sans-serif; color:#bdbea9; }
+/* Observer stats, redesigned (2026-10-16, Sevaan): rank on top, the collection by rarity, what you've earned, highlights
+   with their cards' pictures, time under the sky, the map and the rarest finds. Sections are framed like the field cards. */
+.st-rank { display:flex; justify-content:space-between; align-items:flex-end; gap:12px; padding:16px 18px; margin:4px 0 14px; border-radius:16px; border:1px solid #2a3a48; background:radial-gradient(120% 140% at 0% 0%, #1b2f48, #0e1a29 60%); }
+.st-rank small { display:block; font:500 12px/1 'SC Label', sans-serif; letter-spacing:.2em; text-transform:uppercase; color:#9fb3c8; margin-bottom:6px; }
+.st-rank b { font:400 28px/1 'SC Display', 'Russo One', sans-serif; color:#fff2b3; }
+.st-xp { text-align:right; } .st-xp b { color:#fa8127; font-size:24px; display:block; } .st-xp small { margin:4px 0 0; letter-spacing:.12em; }
+.st-sec { border:1px solid #22344a; border-radius:16px; background:#0b1524; padding:14px 16px 16px; margin:0 0 12px; }
+.st-head { display:flex; justify-content:space-between; align-items:baseline; gap:10px; font:500 13px/1.2 'SC Label', sans-serif; letter-spacing:.18em; text-transform:uppercase; color:#fa8127; margin:0 0 12px; }
+.st-since { font:500 12px/1.2 'SC Label', sans-serif; letter-spacing:.12em; color:#9fb3c8; text-transform:uppercase; }
+.st-big { color:#9fb3c8; letter-spacing:.08em; } .st-big b { font:400 20px/1 'SC Display', 'Russo One', sans-serif; color:#fff2b3; letter-spacing:0; }
+.st-tiers { display:grid; gap:9px; }
+.st-tier { display:grid; grid-template-columns:7.2em minmax(0,1fr) 5.6em; gap:10px; align-items:center; }
+.st-tl { font:500 13px/1 'SC Label', sans-serif; letter-spacing:.1em; text-transform:uppercase; color:var(--c); white-space:nowrap; }
+.st-tb { height:8px; border-radius:4px; background:#18263a; overflow:hidden; } .st-tb i { display:block; height:100%; border-radius:4px; background:var(--c); }
+.st-tn { text-align:right; font:500 14px/1 'SC Label', sans-serif; color:#fff2b3; font-variant-numeric:tabular-nums; } .st-tn small { color:#7f93a8; }
+.st-goals { display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:10px; }
+.st-goal { position:relative; overflow:hidden; border-radius:12px; background:#0f1d30; border:1px solid #22344a; padding:12px 12px 14px; display:grid; gap:4px; }
+.st-goal b { font:400 24px/1 'SC Display', 'Russo One', sans-serif; color:#fff2b3; font-variant-numeric:tabular-nums; } .st-goal b small { font-size:15px; color:#7f93a8; }
+.st-goal span { font:500 13px/1.2 'SC Label', sans-serif; letter-spacing:.12em; text-transform:uppercase; color:#c9d3dd; }
+.st-goal em { font:500 12px/1.2 'SC Label', sans-serif; letter-spacing:.04em; color:#7f93a8; font-style:normal; }
+.st-goal i { position:absolute; left:0; bottom:0; height:3px; width:calc(var(--p) * 100%); background:#fa8127; }
+.st-hls { display:grid; gap:10px; }
+.st-hl { display:grid; grid-template-columns:64px minmax(0,1fr); gap:12px; align-items:center; }
+.st-hl img, .st-noart { width:64px; height:48px; object-fit:cover; border-radius:8px; background:#0a1220; box-shadow:0 0 0 1px #2a3a48; }
+.st-hl small { display:block; font:500 11px/1 'SC Label', sans-serif; letter-spacing:.2em; text-transform:uppercase; color:#9fb3c8; margin-bottom:4px; }
+.st-hl b { display:block; font:400 17px/1.15 'SC Display', 'Russo One', sans-serif; color:#fff2b3; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.st-hl span { font-size:13px; color:#9fb3c8; }
+.st-cal { width:64px; height:48px; border-radius:8px; background:#fff2b3; color:#0b1524; display:grid; place-items:center; align-content:center; gap:1px; }
+.st-cal small { margin:0; color:#c9622a; font-size:10px; letter-spacing:.14em; } .st-cal b { color:#0b1524; font-size:20px; }
+.st-tiles { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin:0 0 14px; }
+.st-tile { background:#0f1d30; border:1px solid #22344a; border-radius:12px; padding:10px 4px; text-align:center; }
+.st-tile b { display:block; font:400 22px/1.1 'SC Display', 'Russo One', sans-serif; color:#fff2b3; } .st-tile small { font:500 11px/1.15 'SC Label', sans-serif; letter-spacing:.08em; text-transform:uppercase; color:#9fb3c8; }
+.st-bars { display:grid; grid-template-columns:repeat(12,1fr); gap:5px; height:96px; align-items:end; }
+.st-bar { display:flex; flex-direction:column; align-items:center; height:100%; justify-content:flex-end; gap:3px; }
+.st-bar em { font:500 11px/1 'SC Label', sans-serif; color:#fff2b3; font-style:normal; min-height:11px; }
+.st-bar span { width:100%; min-height:2px; border-radius:4px 4px 1px 1px; background:#2a3a50; }
+.st-bar.now span, .st-bar span[style*="height:"]:not([style*="height:0%"]) { background:linear-gradient(#fa8127,#c9622a); }
+.st-bar small { font:500 11px 'SC Label', sans-serif; color:#7f93a8; } .st-bar.now small { color:#fa8127; }
 .st-map { width:100%; height:auto; display:block; }
-.st-rare { display:grid; gap:8px; } .st-rare div { display:grid; grid-template-columns:auto 1fr auto; gap:10px; align-items:baseline; font:500 15px 'SC Label', sans-serif; padding:8px 12px; border-radius:10px; background:#0e1a29; }
-.st-rare span { font-size:12px; letter-spacing:.08em; } .st-rare small { color:#bdbea9; }
+.st-rare { display:grid; gap:8px; } .st-rare div { display:grid; grid-template-columns:48px auto minmax(0,1fr) auto; gap:10px; align-items:center; }
+.st-rare img, .st-rare .st-noart { width:48px; height:36px; object-fit:cover; border-radius:6px; }
+.st-rare b { font:400 15px/1.1 'SC Display', 'Russo One', sans-serif; color:#fff2b3; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.st-rt { font:500 12px/1 'SC Label', sans-serif; letter-spacing:.06em; white-space:nowrap; } .st-rare small { color:#9fb3c8; font-size:12px; }
+.st-empty { color:#bdbea9; padding:24px 4px; text-align:center; }
 /* Inside the app, Explore's switcher sits on top of this page, so the page's own copy is hidden (2026-10-11) */
 html.embedded .bottom-nav { visibility: hidden; }
 /* Your cards first (2026-10-12, UX room): the intro banner only for an empty collection, and the rank card compact until
@@ -542,3 +575,4 @@ html.away *, html.away *::before, html.away *::after { animation-play-state: pau
 #viewer:has(#v-up:not([hidden])) #slot .card { font-size: min(14px, calc((100vw - 58px) / 28), calc((100dvh - 330px) / 42)); }
 /* Constellations album: stars as a quiet second line under the constellations count (2026-10-16). */
 .album__sub { display: block; font: 500 13px/1.2 'SC Label', 'Barlow Condensed', sans-serif; letter-spacing: .06em; color: var(--muted, #9fb3c8); margin-top: 2px; }
+.v-up__cloud { margin: 6px 0 0; font: 500 13px/1.3 'SC Label', 'Barlow Condensed', sans-serif; letter-spacing: .04em; color: #9fb3c8; }
