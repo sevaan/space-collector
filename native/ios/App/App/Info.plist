@@ -20,17 +20,6 @@
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
 	<string>$(MARKETING_VERSION)</string>
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleURLRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>com.googleusercontent.apps.798585939717-ohq18pfuh2td3mmkk6e33do06m31i7ge</string>
-			</array>
-		</dict>
-	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
@@ -39,8 +28,6 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>Camera view shows the real sky behind the satellite labels.</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Space Collector only uses your location while the app is open, to work out which satellites, planets and stars are in your sky.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Space Collector uses your location to work out which satellites, planets and stars are in your sky.</string>
 	<key>NSMotionUsageDescription</key>
@@ -70,7 +57,7 @@
 	<string>Main</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
-		<string>armv7</string>
+		<string>arm64</string>
 	</array>
 	<key>UIStatusBarStyle</key>
 	<string>UIStatusBarStyleLightContent</string>
