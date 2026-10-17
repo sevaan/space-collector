@@ -3,12 +3,12 @@
 // (2026-10-16): the purchase belongs to the player's Apple ID / Google account, no sign-in of ours. The last answer is
 // kept (localStorage 'plusStore') so Plus holds offline. The testing toggle (Settings → Testing tools → "Plus
 // (testing)", 'plusTest') still turns it on anywhere; the website never sells Plus.
-import { plugin, isNative, onNative } from './native.js?v=0.1.769';
+import { plugin, isNative, onNative } from './native.js?v=0.1.770';
 
 // RevenueCat public SDK keys (safe in the app). The Test Store key works with no App Store / Play setup; swap in the
 // appl_ / goog_ keys from RevenueCat → Project settings → API keys once the store apps are connected.
 const RC_KEYS = { ios: 'test_JraFtXiozFSxozSuydeJskzEQGO', android: 'test_JraFtXiozFSxozSuydeJskzEQGO' };
-const ENTITLEMENT = 'plus';
+const ENTITLEMENT = 'space_collector_plus'; // RevenueCat → Entitlements (display name Space Collector Plus)
 const listeners = new Set();
 const ls = { get: (k) => { try { return localStorage.getItem(k); } catch { return null; } }, set: (k, v) => { try { localStorage.setItem(k, v); } catch {} } };
 const testing = () => ls.get('plusTest') === '1';
@@ -21,7 +21,7 @@ export function onPlus(f) { listeners.add(f); return () => listeners.delete(f); 
 // ---- the store (native apps only) ----
 const rc = () => (isNative() ? plugin('Purchases') : null);
 let ready = null;
-// Any active entitlement counts: the project has one, named Plus (its identifier may not be exactly 'plus').
+// Plus = the space_collector_plus entitlement; any other active one counts too, in case it's ever renamed.
 const active = (info) => { const a = info?.entitlements?.active ?? {}; return !!(a[ENTITLEMENT] ?? Object.values(a).find((e) => e?.isActive)); };
 function apply(info, how = 'store') { if (!info) return; const was = isPlus(); ls.set('plusStore', active(info) ? '1' : '0'); emit(was, how); }
 export function initStore() {
