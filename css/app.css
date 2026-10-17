@@ -1575,3 +1575,7 @@ body.night #until-dark .ud-moon { stroke: #ff6a55; } body.night #until-dark.tk-c
 body.night #until-dark.tk-card #ud-bell.on { background: transparent !important; color: #ff6a55 !important; box-shadow: inset 0 0 0 1.5px #ff6a55 !important; }
 body.night #until-dark.tk-card b { color: #ff7f70 !important; } body.night #until-dark.tk-card #ud-at { color: #e8705f !important; }
 #until-dark.tk-card #ud-bell .ico { color: inherit !important; display: inline-block; margin: 0 !important; } /* not the old "#until-dark span" white */
+/* The ✓ always takes its space, shown only on the picked one, so the text wraps the same way whichever is picked and
+   the sheet doesn't jump in height (2026-10-17, Sevaan). */
+.ud-opt em { flex: none; width: 16px; text-align: center; visibility: hidden; }
+.ud-opt.sel em { visibility: visible; }
