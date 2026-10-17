@@ -2,7 +2,7 @@
 // Planet and Moon positions use Paul Schlyter's low-precision method ("How to compute planetary
 // positions"), good to a few arcminutes — far better than a phone compass.
 
-import { gstime } from './lib/satellite.js?v=0.1.777';
+import { gstime } from './lib/satellite.js?v=0.1.778';
 
 const RAD = Math.PI / 180;
 const sin = (d) => Math.sin(d * RAD), cos = (d) => Math.cos(d * RAD);
@@ -109,7 +109,8 @@ export function solarSystem(date, obs) {
   const ws = 282.9404 + 4.70935e-5 * d, es = 0.016709 - 1.151e-9 * d, Ms = rev(356.047 + 0.9856002585 * d);
   const sunP = orbitPos(0, 0, ws, 1, es, Ms);
   const sunEq = eclToEq(sunP, ecl);
-  const bodies = [{ name: 'Sun', kind: 'sun', v: unit(sunEq), mag: -26.7 }];
+  const AU = 149597870.7; // km. distKm (2026-10-17): how far each body is from Earth, for the target ticket
+  const bodies = [{ name: 'Sun', kind: 'sun', v: unit(sunEq), mag: -26.7, distKm: sunP.r * AU }];
 
   // Moon (geocentric, Earth radii) with the main perturbations
   const Nm = rev(125.1228 - 0.0529538083 * d), wm = rev(318.0634 + 0.1643573223 * d), Mm = rev(115.3654 + 13.0649929509 * d);
@@ -134,7 +135,7 @@ export function solarSystem(date, obs) {
   const phaseAngle = 180 - elong;
   const illum = (1 + cos(phaseAngle)) / 2;
   const waxing = rev(lon - Math.atan2(sunP.y, sunP.x) / RAD) < 180;
-  bodies.push({ name: 'Moon', kind: 'moon', v: moonU, mag: -12.7 + 0.026 * phaseAngle, illum, phaseAngle, waxing, phaseName: phaseName(illum, waxing) });
+  bodies.push({ name: 'Moon', kind: 'moon', distKm: dist * 6378.14, v: moonU, mag: -12.7 + 0.026 * phaseAngle, illum, phaseAngle, waxing, phaseName: phaseName(illum, waxing) });
 
   // Planets
   const xs = sunP.x, ys = sunP.y;
@@ -143,7 +144,7 @@ export function solarSystem(date, obs) {
     const g = { x: h.x + xs, y: h.y + ys, z: h.z };
     const R = Math.hypot(g.x, g.y, g.z);
     const fv = Math.acos(Math.max(-1, Math.min(1, (h.r ** 2 + R ** 2 - sunP.r ** 2) / (2 * h.r * R)))) / RAD;
-    bodies.push({ name, kind: 'planet', v: unit(eclToEq(g, ecl)), mag: MAG[name](fv) + 5 * Math.log10(h.r * R) });
+    bodies.push({ name, kind: 'planet', distKm: R * AU, v: unit(eclToEq(g, ecl)), mag: MAG[name](fv) + 5 * Math.log10(h.r * R) });
   }
   return bodies;
 }

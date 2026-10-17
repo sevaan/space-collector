@@ -1166,3 +1166,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - 2026-10-17: Target ticket first line shows distance on the right (#d-dist, main.js distText): satellites the live range in km, constellation stars Hipparcos ly (one decimal under 100 ly, ~ when uncertain), bright stars/deep sky their card ly, Moon 384,000 km, Sun 150M km, planets none yet. Four-stat star cards left-align every stat column (cards.css, Sevaan: Constellation floated in the middle).
 
 - 2026-10-17: Tap to wake is a ticket too ("Motion paused" / "Tap to wake the sky", #wake span, --r set in syncWake); the until-dark line and bell hide under it. Distances in miles (planes in feet) when the phone region is US/LR/MM (main.js MILES, kmText); km elsewhere.
+
+- 2026-10-17: Moon, Sun and planets show their real distance tonight in the target ticket (celestial.js solarSystem bodies carry distKm; natural.js passes it in look.distKm; main.js distText: thousands under 1M, "41.9M km", "1.27B km"; miles in the US).

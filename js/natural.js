@@ -1,4 +1,4 @@
-import { extinction } from './sky-limit.js?v=0.1.777';
+import { extinction } from './sky-limit.js?v=0.1.778';
 // The Moon, the naked-eye planets and the brightest named stars, as collectible cards.
 // Positions come from js/celestial.js (state.bodies, state.skyEnu); this file holds the card facts and
 // the "can you see it right now" rules. No DOM. Every fact must be true; approximate values say so.
@@ -162,7 +162,7 @@ export function naturalTargets(bodies, stars, extra = [], starLimit = 6.5, binoL
     const sunSep = sun ? Math.acos(Math.max(-1, Math.min(1, b.enu[0] * sun.enu[0] + b.enu[1] * sun.enu[1] + b.enu[2] * sun.enu[2]) / ((Math.hypot(...b.enu) * Math.hypot(...sun.enu)) || 1))) * 180 / Math.PI : 180;
     const moonOk = sunEl < -6 ? b.illum >= 0.03 : b.illum >= 0.15 && sunSep >= 30;
     const visible = b.kind === 'sun' ? el > 2 : b.kind === 'moon' ? el > 0 && moonOk : b.kind === 'planet' && !faint && sunEl > -12 && el < 6 && b.name !== 'Venus' ? false : faint ? el > 5 && sunEl < -12 && b.mag + extinction(el) <= Math.max(starLimit, binoLimit ?? -99) : el > 2 && sunEl < brightLimit(b.mag);
-    out.push({ obj, look: { az: azOf(b.enu), el, mag: b.mag, visible, enu: b.enu, phaseName: b.phaseName, illum: b.illum } });
+    out.push({ obj, look: { az: azOf(b.enu), el, mag: b.mag, visible, enu: b.enu, phaseName: b.phaseName, illum: b.illum, distKm: b.distKm } });
   }
   out.push({ obj: earthCard, look: { az: 0, el: -90, mag: -99, visible: true, enu: [0, 0, -1] } }); // straight down, always there
   for (const s of stars ?? []) {
