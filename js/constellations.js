@@ -3,8 +3,8 @@
 // Every star in a stick figure (magnitude <= 5) is its own card; the constellation card turns gold when
 // you own all of them. Bright stars that already have cards (Regulus, Spica…) count as members.
 // No DOM.
-import { NATURAL, NATURAL_BY_KEY, SOLAR_SYSTEM } from './natural.js?v=0.1.774';
-import { starVector } from './celestial.js?v=0.1.774';
+import { NATURAL, NATURAL_BY_KEY, SOLAR_SYSTEM } from './natural.js?v=0.1.775';
+import { starVector } from './celestial.js?v=0.1.775';
 
 const GEN = { Ari: 'Arietis', Tau: 'Tauri', Gem: 'Geminorum', Cnc: 'Cancri', Leo: 'Leonis', Vir: 'Virginis', Lib: 'Librae', Sco: 'Scorpii', Sgr: 'Sagittarii',
   Cap: 'Capricorni', Aqr: 'Aquarii', Psc: 'Piscium', Ori: 'Orionis', BigDipper: 'Ursae Majoris', UMi: 'Ursae Minoris', Cas: 'Cassiopeiae', Cyg: 'Cygni', Cru: 'Crucis',
@@ -39,11 +39,16 @@ const colourOf = (bv) => bv == null ? '—' : bv < 0 ? 'Blue-white' : bv < 0.3 ?
 export const CONSTELLATIONS = [];
 export const CON_BY_ID = new Map();
 export const CON_STARS = [];               // star cards with a v (equatorial unit vector) for targeting
-let loading = null, starFacts = {};
+// "690" light-years, rounded as far as the measurement allows: whole numbers close by, tens past 100, hundreds past
+// 1,000, and a "~" when the parallax is uncertain by more than 10% (2026-10-17).
+const lyText = ([ly, err]) => { const r = ly < 100 ? Math.round(ly) : ly < 1000 ? Math.round(ly / 10) * 10 : Math.round(ly / 100) * 100; return `${err > 0.1 ? '~' : ''}${r.toLocaleString('en-US')}`; };
+let loading = null, starFacts = {}, starDist = {};
 export function loadConstellations(url = 'data/constellations.json') {
   // Each star's own researched fact (pre-launch writing review, 2026-10-15): data/star-facts.json, keyed by HIP.
   const facts = fetch(url.replace('constellations.json', 'star-facts.json')).then((r) => r.json()).catch(() => ({}));
-  return (loading ??= Promise.all([fetch(url).then((r) => r.json()), facts]).then(([d, f]) => { starFacts = f ?? {}; register(d); }).catch(() => {}));
+  // Distances (2026-10-17): Hipparcos parallaxes, data/star-dist.json { hip: [light-years, relative error] }.
+  const dist = fetch(url.replace('constellations.json', 'star-dist.json')).then((r) => r.json()).catch(() => ({}));
+  return (loading ??= Promise.all([fetch(url).then((r) => r.json()), facts, dist]).then(([d, f, ds]) => { starFacts = f ?? {}; starDist = ds ?? {}; register(d); }).catch(() => {}));
 }
 
 // Name and constellation fixes from the pre-launch fact check (2026-10-15): d3-celestial gives some stars a name that
@@ -74,7 +79,7 @@ function register(data) {
         card = {
           key, id: key, card: key, natural: 'star', type: 'star', name, skyName: null, hip: s.hip, tier: tierFor(s.mag), order: order++,
           code: s.bayer ? `${s.bayer} ${abbr}` : s.flam ? `${s.flam} ${abbr}` : `HIP ${s.hip}`, constellation: conName, mag: s.mag,
-          stats: [['BRIGHTNESS', s.mag.toFixed(1).replace('-', '−'), 'mag'], ['CONSTELLATION', conName, ''], ['COLOUR', colourOf(s.bv), '']],
+          stats: [['BRIGHTNESS', s.mag.toFixed(1).replace('-', '−'), 'mag'], ...(starDist[s.hip] ? [['DISTANCE', lyText(starDist[s.hip]), 'ly']] : []), ['CONSTELLATION', conName, ''], ['COLOUR', colourOf(s.bv), '']],
           fact: starFacts[s.hip]?.fact ?? `One of the **${c.stars.length} stars** that draw **${c.name}**, ${c.nick}, and the **${ordinal(i + 1)}brightest** of them.`,
         };
         NATURAL.push(card); NATURAL_BY_KEY.set(key, card);
