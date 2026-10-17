@@ -1613,3 +1613,6 @@ body:has(#ob-done:not([hidden])) :is(.patch-coins, .pc-badge) { visibility: hidd
 .radar-tip b { color: #fff2b3 !important; font-size: 15px !important; }
 body.night #nextpass, body.night #event-banner, body.night .radar-tip { --chip: #ff6a55; border-top-color: #ff6a55 !important; background: rgba(12, 3, 3, .92) !important; }
 body.night #nextpass .np-n, body.night .radar-tip b { color: #ff7f70 !important; } body.night .radar-tip small { color: #ff6a55 !important; }
+/* Plus card (2026-10-17, Sevaan): a little room under the last perk ("Member patch"), paid for by a smidge less art. */
+.plus-card .card--mission .card__art, .plus-host .card--mission .card__art { aspect-ratio: 16 / 10.4; }
+.plus-host .perks { padding-bottom: .5em; }
