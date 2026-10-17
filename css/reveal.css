@@ -100,7 +100,11 @@ body.night #reveal { background: #000; }
 @media (prefers-reduced-motion: reduce) { .rv-chip { transition: opacity .2s; transform: none; } }
 /* Layout without dead space (2026-10-12, Sevaan: "empty space at the bottom… the card appears up too high"). Two zones:
    header and chips at the top, rank bar and "View in collection" pinned near the bottom; the card is centred between them. */
-#reveal { --rv-top: calc(var(--safe-top, 0px) + 112px); --rv-bot: calc(var(--safe-bottom, 0px) + 92px); }
+/* 2026-10-17 (Sevaan: "is this card too low?" 105pt of air above it, 50pt below): the zones are now the real edges
+   the eye measures from, the bottom of the NEW CARD row and the top of the rank bar, so the gaps come out even.
+   Measured on Sevaan's iPhone screenshot: the card moves up 26pt, about 82pt above and below. It still clears the
+   chips row (top + 58..84px). */
+#reveal { --rv-top: calc(var(--safe-top, 0px) + 52px); --rv-bot: calc(var(--safe-bottom, 0px) + 84px); }
 #reveal, #reveal.has-rank { --rv-y: calc((var(--rv-top) - var(--rv-bot)) / 2); }
 #reveal:not(.has-rank) { --rv-bot: calc(var(--safe-bottom, 0px) + 56px); }
 #rv-rank { top: auto; bottom: calc(var(--safe-bottom, 0px) + 52px); }

@@ -1152,3 +1152,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - 2026-10-16: RevenueCat catalog: entitlement space_collector_plus ("Space Collector Plus"); Test Store products plus_monthly $1.99, plus_yearly $9.99 with 1-week trial (new customers), plus_forever $24.99 non-consumable; default offering packages $rc_monthly/$rc_annual/$rc_lifetime point at them. The auto-made monthly/yearly/lifetime test products ($9.99/$79.99/$99.99) are unused. Use the same product IDs in App Store Connect and Play.
 
 - 2026-10-16: story-arecibo art re-extended (Sevaan: the widened edges showed). Kept the original centre (x 180-1015), Nano Banana Pro outpainted it to 4:3 (jungle, palms, stars, left cable continued); both sizes replaced. Other story art checked, fine.
+
+- 2026-10-17: reveal card raised 26pt (css/reveal.css --rv-top safe+52, --rv-bot safe+84): Sevaan found it sat low, ~105pt of air above vs ~50pt below on his iPhone.
