@@ -1479,7 +1479,7 @@ body:has(.overlay.panel:not([hidden]))::before { content: ''; position: fixed; l
 /* New find and seen before */
 #discover { --tk: var(--find-tier-ink, #fa8127); }
 #discover.owned { --tk: #fff2b3; }
-#discover .d-ticket { position: absolute; left: var(--cx); top: calc(var(--cy) + var(--r) + 26px); transform: translateX(-50%); display: flex; flex-direction: column; gap: 10px; }
+#discover .d-ticket { position: absolute; left: var(--cx); top: calc(var(--cy) + var(--r) + 26px - var(--tk-lift, 0px)); transform: translateX(-50%); display: flex; flex-direction: column; gap: 10px; }
 #discover .d-ticket .d-label { position: static !important; transform: none !important; width: auto !important; text-align: left !important; text-shadow: none !important; display: flex; flex-direction: column; gap: 4px; }
 #discover .d-ticket #d-tier { margin: 0 !important; font: 500 12px/1.25 var(--label) !important; letter-spacing: .18em !important; color: var(--find-tier, var(--tk)) !important; text-shadow: none !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 #discover .d-ticket #d-name { font: 400 20px/1.1 var(--display) !important; letter-spacing: 0 !important; text-transform: none !important; color: #fff2b3 !important; text-shadow: none !important; }
@@ -1492,7 +1492,7 @@ body:has(.overlay.panel:not([hidden]))::before { content: ''; position: fixed; l
 
 /* Just a plane */
 #plane { --tk: #ff6a5c; }
-#plane .p-ticket { position: absolute; left: var(--cx); top: calc(var(--cy) + var(--r) + 26px); transform: translateX(-50%); display: flex; flex-direction: column; gap: 4px; }
+#plane .p-ticket { position: absolute; left: var(--cx); top: calc(var(--cy) + var(--r) + 26px - var(--tk-lift, 0px)); transform: translateX(-50%); display: flex; flex-direction: column; gap: 4px; }
 #plane .p-ticket .p-label, #plane .p-ticket .p-info { position: static !important; transform: none !important; width: auto !important; text-align: left !important; text-shadow: none !important; display: flex !important; flex-direction: column !important; align-items: stretch !important; gap: 4px !important; }
 #plane .p-ticket #p-kind { margin: 0 !important; font: 500 12px/1.25 var(--label); letter-spacing: .18em; color: var(--tk) !important; }
 #plane .p-ticket #p-name { font: 400 20px/1.1 var(--display) !important; text-transform: none !important; color: #fff2b3 !important; }
@@ -1616,3 +1616,10 @@ body.night #nextpass .np-n, body.night .radar-tip b { color: #ff7f70 !important;
 /* Plus card (2026-10-17, Sevaan): a little room under the last perk ("Member patch"), paid for by a smidge less art. */
 .plus-card .card--mission .card__art, .plus-host .card--mission .card__art { aspect-ratio: 16 / 10.4; }
 .plus-host .perks { padding-bottom: .5em; }
+/* The slider lights up while your finger is on it (2026-10-17, Sevaan): the same bright orange as the switcher's edge
+   (red in night mode); at rest it stays the soft gold. */
+#skybar.dragging #sky-range::-webkit-slider-runnable-track, body.day #skybar.dragging #sky-range::-webkit-slider-runnable-track { background: linear-gradient(90deg, var(--sb-hot, #fa8127) 0 var(--p,50%), color-mix(in srgb, var(--edge) 55%, transparent) var(--p,50%)); }
+#skybar.dragging #sky-range::-moz-range-progress { background: var(--sb-hot, #fa8127); }
+#skybar.dragging #sky-range::-webkit-slider-thumb { border-color: var(--sb-hot, #fa8127); box-shadow: 0 0 0 5px color-mix(in srgb, var(--sb-hot, #fa8127) 22%, transparent), 0 0 14px color-mix(in srgb, var(--sb-hot, #fa8127) 55%, transparent); }
+#skybar.dragging #sky-range::-moz-range-thumb { border-color: var(--sb-hot, #fa8127); }
+:where(html[data-theme='night'], body.night) #skybar { --sb-hot: #ff6a55; }

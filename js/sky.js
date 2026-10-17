@@ -1,17 +1,17 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.797';
+import { extinction } from './sky-limit.js?v=0.1.799';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.797';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.799';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.797';
-import { createCloudGL } from './clouds-gl.js?v=0.1.797';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.799';
+import { createCloudGL } from './clouds-gl.js?v=0.1.799';
 // Cloud colours by light: sunlit tops, shadowed bellies, and the horizon haze they melt into (0–1 RGB).
 const CLOUD_LIGHT = {
   day: { lit: [1, 1, 1], shade: [0.62, 0.68, 0.77], haze: [0.82, 0.87, 0.93] },
   dusk: { lit: [1, 0.8, 0.68], shade: [0.36, 0.33, 0.42], haze: [0.62, 0.5, 0.52] },
   night: { lit: [0.22, 0.25, 0.31], shade: [0.1, 0.12, 0.16], haze: [0.14, 0.15, 0.2] },
 };
-import { TIER_INFO } from './rarity.js?v=0.1.797';
+import { TIER_INFO } from './rarity.js?v=0.1.799';
 
 const RAD = Math.PI / 180;
 const BELOW_ICON = 10.5, BELOW_ICON_HIT = 20; // every satellite under the horizon, passes and halo alike (80% of 13 since 2026-10-13); lined up in the circle it grows
@@ -90,6 +90,40 @@ const LANDSCAPE = (() => {
   for (let az = 0; az < 360; az += 0.25 + r() * 0.35) tufts.push([az, -0.4 - r() * 3.5, 0.25 + r() * 0.5, (r() - 0.5) * 0.6]);
   return { hills, trees, far, ridge, rolls, tufts };
 })();
+
+// Earth's shadow at 500 km for a Sun direction s (ENU unit vector): shaded columns [az, el0, el1] on a SHADOW_AZ° grid and
+// the edge as runs of [az, el] points, each crossing found by bisection so the line is smooth (2026-10-17).
+const SHADOW_AZ = 2;
+function shadowShape(s) {
+  const R = 6371, H = 500, EL = 3;
+  const dark = (az, el) => {
+    const d = enuFromAzEl(az, el), t = -R * d[2] + Math.sqrt(R * R * d[2] * d[2] + (R + H) ** 2 - R * R);
+    const v = [t * d[0], t * d[1], t * d[2] + R], proj = v[0] * s[0] + v[1] * s[1] + v[2] * s[2];
+    return proj < 0 && v[0] * v[0] + v[1] * v[1] + v[2] * v[2] - proj * proj < R * R;
+  };
+  const cross = (az, lo, hi, loDark) => { for (let i = 0; i < 8; i++) { const m = (lo + hi) / 2; if (dark(az, m) === loDark) lo = m; else hi = m; } return (lo + hi) / 2; };
+  const cols = [], perAz = []; let any = false, all = true;
+  for (let az = 0; az < 360; az += SHADOW_AZ) {
+    const mid = az + SHADOW_AZ / 2, xs = [];
+    let prev = dark(mid, 0), from = prev ? 0 : null;
+    for (let el = EL; el <= 90; el += EL) {
+      const cur = dark(mid, el);
+      if (cur !== prev) { const e = cross(mid, el - EL, el, prev); xs.push(e); if (cur) from = e; else { cols.push([az, from, e]); from = null; } }
+      if (cur) any = true; else all = false; prev = cur;
+    }
+    if (from != null) cols.push([az, from, 90]);
+    perAz.push([mid, xs]);
+  }
+  // Join crossings into runs: a point joins the run whose last point is the next column over and close in height.
+  const runs = [];
+  for (const [az, xs] of perAz) for (const el of xs) {
+    const r = runs.find((run) => { const [a, e] = run[run.length - 1]; return Math.abs(az - SHADOW_AZ - a) < 1e-6 && Math.abs(e - el) < 8; });
+    if (r) r.push([az, el]); else runs.push([[az, el]]);
+  }
+  // Close the circle: a run ending at 359° continues into one starting at 1°.
+  for (const r of runs) { const [a, e] = r[r.length - 1]; const first = runs.find((q) => q !== r && Math.abs(q[0][0] - SHADOW_AZ / 2) < 1e-6 && Math.abs(q[0][1] - e) < 8 && a > 360 - SHADOW_AZ); if (first) r.push([first[0][0] + 360, first[0][1]]); }
+  return { cols, edges: runs, any, all };
+}
 
 export class SkyView {
   constructor(canvas) {
@@ -959,9 +993,14 @@ export class SkyView {
       }
       ctx.restore();
       if (s.inCircle && !s.done) {
-        ctx.save(); ctx.strokeStyle = s.color; ctx.lineWidth = 1.8; ctx.beginPath(); ctx.arc(rc.x, rc.y, rc.r, 0, Math.PI * 2); ctx.stroke();
-        this.ticket = { ink: 'secret', color: s.color, k: s.sub, n: s.title, m: '' };
-        if (s.hold > 0) { ctx.shadowBlur = 0; ctx.lineWidth = 3; ctx.lineCap = 'round'; ctx.beginPath(); ctx.arc(rc.x, rc.y, rc.r + 9, -Math.PI / 2, -Math.PI / 2 + s.hold * Math.PI * 2); ctx.stroke(); }
+        // The whole sight turns the secret's colour and glows (2026-10-17, Sevaan: you should notice as you pan past),
+        // breathing faster as the 4 s hold fills the outer ring.
+        ctx.save(); ctx.strokeStyle = s.color; ctx.shadowColor = s.color;
+        const breathe = this.reducedMotion ? 0.5 : 0.5 + 0.5 * Math.sin(performance.now() / (420 - 250 * (s.hold ?? 0)));
+        ctx.shadowBlur = 10 + 10 * breathe; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.arc(rc.x, rc.y, rc.r, 0, Math.PI * 2); ctx.stroke();
+        ctx.lineWidth = 2; for (const angle of [0, 90, 180, 270]) { const a = angle * RAD; ctx.beginPath(); ctx.moveTo(rc.x + Math.cos(a) * (rc.r + 6), rc.y + Math.sin(a) * (rc.r + 6)); ctx.lineTo(rc.x + Math.cos(a) * (rc.r + 18), rc.y + Math.sin(a) * (rc.r + 18)); ctx.stroke(); }
+        this.ticket = { ink: 'secret', color: s.color, k: s.sub, n: s.title, m: s.hold != null ? 'Hold steady to find it' : '' };
+        if (s.hold > 0) { ctx.shadowBlur = 6; ctx.lineWidth = 3; ctx.lineCap = 'round'; ctx.beginPath(); ctx.arc(rc.x, rc.y, rc.r + 9, -Math.PI / 2, -Math.PI / 2 + s.hold * Math.PI * 2); ctx.stroke(); }
         ctx.restore();
       }
     }
@@ -1495,7 +1534,11 @@ export class SkyView {
     this.drawOffscreen(offscreen, targetId);
     // The app decides what counts as locked on, so the ring, labels and tap area always agree.
     const locked = lockedOn ?? (!!focus && focus.obj.id === targetId && !!focus.candidate);
-    if (planeAt && !locked) this.drawReticle(true, 0, false, planeAt);
+    // An unfound secret in the circle draws its own sight in its colour (drawSecrets); the usual one steps aside so the
+    // circle doesn't double up (2026-10-17).
+    const secretSight = secrets?.some((x) => x.inCircle && !x.done && x.kind !== 'meteor');
+    if (secretSight) this.updateRing(false);
+    else if (planeAt && !locked) this.drawReticle(true, 0, false, planeAt);
     else { this.ownedInk = ownedTarget; this.drawReticle(locked, this.reducedMotion ? 0 : time, newFind && locked && !quietTarget, null, quietTarget); }
     if (this.fade && !planeAt) this.drawFade(this.fade, this.reducedMotion ? 0 : time);
     if (ufo) this.drawUfo(ufo);
@@ -1618,50 +1661,53 @@ export class SkyView {
   // it's behind Earth from the Sun and within R of the Sun-Earth line. Shaded faintly, its edge dashed gold.
   drawEarthShadow() {
     const s = this.sunEnu; if (!s || s[2] > -0.035 || (this.basis?.back?.[2] ?? 0) < -0.25) return; // night side only, looking up
-    const R = 6371, H = 500, ctx = this.ctx;
-    const dark = (az, el) => {
-      const d = enuFromAzEl(az, el), t = -R * d[2] + Math.sqrt(R * R * d[2] * d[2] + (R + H) ** 2 - R * R);
-      const v = [t * d[0], t * d[1], t * d[2] + R], proj = v[0] * s[0] + v[1] * s[1] + v[2] * s[2];
-      return proj < 0 && v[0] * v[0] + v[1] * v[1] + v[2] * v[2] - proj * proj < R * R;
-    };
-    const AZ = 6, EL = 3, edge = [];
-    let any = false, all = true;
-    ctx.save(); ctx.fillStyle = 'rgba(2,5,12,.22)';
-    for (let az = 0; az < 360; az += AZ) {
-      let prev = dark(az, 0), from = prev ? 0 : null;
-      for (let el = EL; el <= 90; el += EL) {
-        const cur = dark(az, el);
-        if (cur !== prev) edge.push([az + AZ / 2, el - EL / 2]);
-        if (cur && from == null) from = el; if (!cur && from != null) { this.shadeCell(az, from, el, AZ); from = null; }
-        if (cur) any = true; else all = false; prev = cur;
-      }
-      if (from != null) this.shadeCell(az, from, 90, AZ);
-    }
-    ctx.restore();
-    if (!any || all || !edge.length) return;
-    // The edge: dashed gold through the boundary points, joined in azimuth order.
+    // Smooth edge (2026-10-17, Sevaan: "super jagged"): a 2° azimuth grid with each crossing found by bisection, instead
+    // of a 6° × 3° grid joined corner to corner. The Sun barely moves, so the shape is cached until it does.
+    const key = s.map((v) => v.toFixed(4)).join();
+    if (this._shadowKey !== key) { this._shadowKey = key; this._shadow = shadowShape(s); }
+    const { cols, edges, any, all } = this._shadow, ctx = this.ctx;
+    // The shade: every column added to one path and filled once, so neighbouring pieces don't overlap into seams.
+    ctx.save(); ctx.fillStyle = 'rgba(2,5,12,.22)'; ctx.beginPath();
+    for (const [az, el0, el1] of cols) this.shadeCell(az, el0, el1, SHADOW_AZ);
+    ctx.fill(); ctx.restore();
+    if (!any || all || !edges.length) return;
+    // The edge: dashed gold, one stroke per run of neighbouring crossings.
     const red = this.theme === THEMES.night; // red night mode: no gold (QA 2026-10-16)
-    ctx.save(); ctx.strokeStyle = red ? 'rgba(255,110,90,.45)' : 'rgba(255,201,61,.45)'; ctx.lineWidth = 1.2; ctx.setLineDash([5, 7]);
+    ctx.save(); ctx.strokeStyle = red ? 'rgba(255,110,90,.5)' : 'rgba(255,201,61,.5)'; ctx.lineWidth = 1.3; ctx.setLineDash([5, 7]); ctx.lineJoin = 'round';
     let best = null;
-    edge.sort((a, b) => a[0] - b[0]);
-    ctx.beginPath(); let pen = false;
-    for (const [az, el] of edge) {
-      const p = this.project(enuFromAzEl(az, el)); if (!p) { pen = false; continue; }
-      if (pen) ctx.lineTo(p.x, p.y); else ctx.moveTo(p.x, p.y); pen = true;
-      const dd = Math.hypot(p.x - this.cx, p.y - this.cy), R = this.reticlePx ?? 60;
-      // Keep the label clear of the circle and of the column above and below it, where the target's name, rarity and
-      // button sit (playtest 2026-10-16: it crowded "COMMON · MOON").
-      const inColumn = Math.abs(p.x - this.cx) < 130 && Math.abs(p.y - this.cy) < R * 3.6;
-      if (dd > R * 2.6 && !inColumn && p.x > 90 && p.x < this.w - 90 && p.y > this.h * 0.32 && p.y < this.h - 200 && (!best || dd < best.dd)) best = { p, dd };
+    ctx.beginPath();
+    for (const run of edges) {
+      let pen = false;
+      for (const [az, el] of run) {
+        const p = this.project(enuFromAzEl(az, el)); if (!p) { pen = false; continue; }
+        if (pen) ctx.lineTo(p.x, p.y); else ctx.moveTo(p.x, p.y); pen = true;
+        // The label's own box (two lines, ~190 × 34 px) must stay on screen, off the sight and its ticks, and out of the
+        // column under it where the target's ticket sits (playtest 2026-10-16: it crowded "COMMON · MOON").
+        const R = (this.reticlePx ?? 60) + 24, dd = Math.hypot(p.x - this.cx, p.y - this.cy);
+        for (const dy of [-36, 12]) { // above the line, else below it
+          const x0 = p.x - 96, x1 = p.x + 96, y0 = p.y + dy, y1 = y0 + 30;
+          if (x0 < 8 || x1 > this.w - 8 || y0 < this.h * 0.2 || y1 > this.h - 200) continue;
+          const hitsSight = x1 > this.cx - R && x0 < this.cx + R && y1 > this.cy - R && y0 < this.cy + R;
+          const hitsTicket = x1 > this.cx - 150 && x0 < this.cx + 150 && y1 > this.cy + R - 10 && y0 < this.cy + R + 170;
+          if (!hitsSight && !hitsTicket && (!best || dd < best.dd)) { best = { p, dd, top: y0 }; break; }
+        }
+      }
     }
     ctx.stroke(); ctx.setLineDash([]);
-    if (best) { ctx.font = `600 11px ${FONT}`; ctx.textAlign = 'center'; ctx.fillStyle = red ? 'rgba(255,110,90,.75)' : 'rgba(255,201,61,.75)'; if ('letterSpacing' in ctx) ctx.letterSpacing = '1.5px'; ctx.fillText("EARTH'S SHADOW · 500 KM UP", best.p.x, best.p.y - 10); }
+    // Always say what the line is when there's room for it (2026-10-17, Sevaan: "we need a label for it").
+    if (best) {
+      const x = best.p.x, y = best.top;
+      ctx.textAlign = 'center'; if ('letterSpacing' in ctx) ctx.letterSpacing = '1.5px';
+      ctx.fillStyle = red ? 'rgba(255,110,90,.85)' : 'rgba(255,201,61,.85)'; ctx.font = `600 11px ${FONT}`; ctx.fillText("EARTH'S SHADOW", x, y + 11);
+      if ('letterSpacing' in ctx) ctx.letterSpacing = '0.5px';
+      ctx.fillStyle = red ? 'rgba(255,110,90,.65)' : 'rgba(255,242,179,.65)'; ctx.font = `500 11px ${FONT}`; ctx.fillText('Satellites past this line go dark', x, y + 25);
+    }
     ctx.restore();
   }
-  shadeCell(az, el0, el1, w) {
+  shadeCell(az, el0, el1, w) { // adds one column of shade to the current path (drawEarthShadow fills them all at once)
     const pts = [[az, el0], [az + w, el0], [az + w, el1], [az, el1]].map(([a, e]) => this.project(enuFromAzEl(a, e)));
     if (pts.some((p) => !p)) return;
-    const ctx = this.ctx; ctx.beginPath(); pts.forEach((p, i) => (i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y))); ctx.closePath(); ctx.fill();
+    const ctx = this.ctx; pts.forEach((p, i) => (i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y))); ctx.closePath();
   }
   drawReticle(locked, time = 0, newFind = false, plane = null, quiet = false) {
     const ctx = this.ctx, t = this.theme;
