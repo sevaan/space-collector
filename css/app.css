@@ -1728,3 +1728,8 @@ body.night .shiny-what .sw-shiny { background: linear-gradient(#130606, #130606)
 body.night .shiny-what .sw-shiny::after { display: none; }
 body.night .shiny-what .sw-moments li { color: var(--text); } body.night .shiny-what .sw-moments i { color: var(--gold); background: rgba(242, 101, 79, .14); }
 @media (prefers-reduced-motion: reduce) { .shiny-what .sw-shiny, .shiny-what .sw-shiny::after { animation: none; } }
+/* The Tonight page (#ob-done): a ✕ top right like Settings, and its stars twinkle like the ones behind a card (2026-10-18). */
+.ob-done .od-x { position: absolute; top: calc(var(--safe-top) + 16px); right: 18px; z-index: 2; }
+.od-sky .od-stars { position: absolute; inset: 0; }
+.od-sky .od-stars.starfield i { width: var(--s); height: var(--s); }
+.ob-done .od-head { padding-right: 52px; }
