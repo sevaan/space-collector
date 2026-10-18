@@ -1700,3 +1700,32 @@ body:has(#nextpass:not([hidden])):has(#event-banner:not([hidden])):not(:has(.ove
 #toasts .ticket:has(.ticket__go) .ticket__body { flex: 1 0 100%; }
 #toasts .ticket:has(.ticket__go) .ticket__go { flex: 1 1 auto; text-align: center; }
 #toasts .ticket .ticket__xp { color: var(--k) !important; }
+/* Patch badge + notifications at once (2026-10-18): the badge's "Patch earned · name" label goes under the coin, in the
+   left column, instead of sliding right under the notifications. Width set in pumpPatch (--tag-max). */
+.patch-coins .pc-coin { flex-direction: column; align-items: flex-start; gap: 6px; }
+.patch-coins .pc-tag { margin-left: 0; max-width: var(--tag-max, 110px); white-space: normal; transform: translateY(-8px); }
+.patch-coins .pc-tag b { line-height: 1.1; overflow-wrap: anywhere; }
+.patch-coins .pc-coin.out .pc-tag { transform: translateY(-6px); }
+/* Buttons inside a notification are shorter up here, so a notice with one doesn't reach down to the circle. */
+#toasts .ticket:has(.ticket__go) .ticket__go, #toasts .ticket:has(.ticket__go) .ticket__x { min-height: 34px !important; height: 34px !important; padding-block: 0 !important; display: grid; place-items: center; margin-block: 0 !important; }
+/* "What's a shiny?" redesign (2026-10-18, Sevaan): a tiny ISS card, plain › shiny (the shiny one has the Collection's
+   warm moving edge, a sheen sweeping across and a ✦), a short line, then the four lucky moments as a 2×2 grid. */
+.shiny-what { padding: 14px 40px 14px 14px; }
+.shiny-what .sw-top { display: flex; align-items: center; gap: 14px; }
+.shiny-what .sw-cards { flex: none; display: flex; align-items: center; gap: 4px; }
+.shiny-what .sw-mini { position: relative; width: 40px; aspect-ratio: 2 / 3; border-radius: 5px; overflow: hidden; border: 1.5px solid #3a4a5c; background: #080f1b; }
+.shiny-what .sw-mini img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.shiny-what .sw-arrow { color: var(--muted); font: 500 16px/1 var(--label); }
+.shiny-what .sw-shiny { width: 46px; border: 2px solid transparent; background: linear-gradient(#080f1b, #080f1b) padding-box, linear-gradient(120deg, #fff2b3, #ffcf7a, #fa8127, #ffb3a1, #fff2b3) border-box; background-size: 100% 100%, 300% 300%; box-shadow: 0 0 14px rgba(250, 129, 39, .4); animation: shiny-edge 4s ease-in-out infinite alternate; }
+.shiny-what .sw-shiny::after { content: ''; position: absolute; inset: 0; background: linear-gradient(115deg, transparent 30%, rgba(255, 242, 179, .55) 45%, rgba(255, 179, 161, .35) 52%, transparent 66%); background-size: 260% 100%; mix-blend-mode: screen; animation: sw-sheen 2.8s ease-in-out infinite; }
+.shiny-what .sw-shiny i { position: absolute; right: 2px; top: 1px; z-index: 1; font: 400 11px/1 var(--label); font-style: normal; color: #fff2b3; text-shadow: 0 0 6px #fa8127; }
+@keyframes sw-sheen { 0% { background-position: 120% 0; } 60%, 100% { background-position: -40% 0; } }
+.shiny-what b { font: 400 16px/1.15 var(--display); letter-spacing: 0; margin-bottom: 4px; }
+.shiny-what p { font-size: 14px; line-height: 1.35; }
+.shiny-what .sw-moments { list-style: none; margin: 12px -26px 0 0; padding: 12px 0 0; border-top: 1px solid var(--edge-soft); display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 12px; }
+.shiny-what .sw-moments li { display: flex; align-items: center; gap: 8px; font: 500 13px/1.2 var(--label); letter-spacing: .04em; color: var(--text, #fff2b3); }
+.shiny-what .sw-moments i { flex: none; width: 22px; height: 22px; display: grid; place-items: center; border-radius: 50%; background: rgba(250, 129, 39, .14); color: #ffcf7a; font: 400 12px/1 var(--label); font-style: normal; }
+body.night .shiny-what .sw-shiny { background: linear-gradient(#130606, #130606) padding-box, linear-gradient(135deg, #b45b53, #7a2e2a) border-box; box-shadow: none; animation: none; }
+body.night .shiny-what .sw-shiny::after { display: none; }
+body.night .shiny-what .sw-moments li { color: var(--text); } body.night .shiny-what .sw-moments i { color: var(--gold); background: rgba(242, 101, 79, .14); }
+@media (prefers-reduced-motion: reduce) { .shiny-what .sw-shiny, .shiny-what .sw-shiny::after { animation: none; } }
