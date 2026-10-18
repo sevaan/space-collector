@@ -1,29 +1,29 @@
-import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.832';
-import { computeStats, statsHtml } from './stats.js?v=0.1.832';
-import { nightKey } from './observation.js?v=0.1.832';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.832';
-import { sfx } from './sfx.js?v=0.1.832';
-import { expandFacts } from './catalog-facts.js?v=0.1.832';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.832';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.832';
-import { ticket } from './toast.js?v=0.1.832';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.832';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.832';
-import { cardArt } from './art.js?v=0.1.832';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.832';
-import { applyBack } from './card-backs.js?v=0.1.832';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.832';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.832';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.832';
-import { STORIES } from './stories.js?v=0.1.832';
-import { loadConstellations, conList } from './constellations.js?v=0.1.832';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.832';
-import { eventBadges, nextEvent } from './events.js?v=0.1.832';
-import { shareCardEl } from './share-card.js?v=0.1.832';
-import { forgetSighting } from './cloud-backup.js?v=0.1.832';
-import { allSightings, deleteSighting } from './store.js?v=0.1.832';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.832';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.832';
+import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.833';
+import { computeStats, statsHtml } from './stats.js?v=0.1.833';
+import { nightKey } from './observation.js?v=0.1.833';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.833';
+import { sfx } from './sfx.js?v=0.1.833';
+import { expandFacts } from './catalog-facts.js?v=0.1.833';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.833';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.833';
+import { ticket } from './toast.js?v=0.1.833';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.833';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.833';
+import { cardArt } from './art.js?v=0.1.833';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.833';
+import { applyBack } from './card-backs.js?v=0.1.833';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.833';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.833';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.833';
+import { STORIES } from './stories.js?v=0.1.833';
+import { loadConstellations, conList } from './constellations.js?v=0.1.833';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.833';
+import { eventBadges, nextEvent } from './events.js?v=0.1.833';
+import { shareCardEl } from './share-card.js?v=0.1.833';
+import { forgetSighting } from './cloud-backup.js?v=0.1.833';
+import { allSightings, deleteSighting } from './store.js?v=0.1.833';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.833';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.833';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -48,7 +48,10 @@ $('night-toggle').addEventListener('click', () => {
   setNight(on);
   try { localStorage.setItem('night', on ? '1' : '0'); } catch {}
 });
-window.addEventListener('storage', (e) => { if (e.key === 'night') setNight(e.newValue === '1'); });
+// Hidden behind Explore, night mode waits until the Collection is shown (jank playtest 2026-10-17: restyling the whole
+// hidden page made a 359 ms frame on the toggle).
+let nightPending = null;
+window.addEventListener('storage', (e) => { if (e.key !== 'night') return; if (document.documentElement.classList.contains('away')) nightPending = e.newValue === '1'; else setNight(e.newValue === '1'); });
 
 $('set-filter').add(new Option('Up tonight from here', 'tonight'));
 for (const set of SETS) $('set-filter').add(new Option(set.name, set.id));
@@ -90,7 +93,11 @@ function ingest(sightings) {
 }
 async function refreshSightings() {
   if (!state.ready) return;
-  try { ingest(await allSightings()); linkConstellations(); render(); } catch {}
+  try { ingest(await allSightings()); linkConstellations();
+    // Hidden behind a fresh reveal: rebuild a little later, in idle time, not in the reveal's first frames (jank playtest
+    // 2026-10-17); showing the Collection before then renders straight away (awayDirty).
+    if (document.documentElement.classList.contains('away')) { awayDirty = true; setTimeout(() => (window.requestIdleCallback ?? setTimeout)(() => { if (awayDirty && document.documentElement.classList.contains('away')) { awayDirty = false; render(); } }, { timeout: 3000 }), 2200); }
+    else render(); } catch {}
 }
 async function boot() {
   const [catalogueResult, sightingResult] = await Promise.allSettled([
@@ -139,23 +146,30 @@ function matches(c) {
 
 // Three a row (2026-10-09): names wrap at whole words; a word too long for the tile ("INTERNATIONAL") shrinks the
 // name until it fits instead of breaking mid-word.
+// Batched (2026-10-17 jank playtest): names queue up and are fitted together in one frame, instead of one frame callback
+// (and forced layout) per tile.
+const fitQueue = new Set(); let fitRaf = 0;
 function fitTileName(tile) {
   const el = tile.querySelector('.card-tile__name'); if (!el || !/\S{9,}/.test(el.textContent)) return;
-  requestAnimationFrame(() => { let fs = parseFloat(getComputedStyle(el).fontSize); while (el.scrollWidth > el.clientWidth + 1 && fs > 8.5) el.style.fontSize = `${(fs -= 0.5)}px`; });
+  fitQueue.add(el); fitRaf ||= requestAnimationFrame(() => { fitRaf = 0; const els = [...fitQueue]; fitQueue.clear();
+    const fs0 = els.map((e) => parseFloat(getComputedStyle(e).fontSize));
+    els.forEach((e, i) => { let fs = fs0[i]; while (e.scrollWidth > e.clientWidth + 1 && fs > 8.5) e.style.fontSize = `${(fs -= 0.5)}px`; }); });
 }
 // Collection tiles as small copies of the full card (2026-10-13, Sevaan: "look like the shrunken down version of the
 // bigger cards… the collected info overlaid over the bottom where the text is tiny"). The tile keeps its classes,
 // level badge and label; its face becomes renderCard(…, { mini }) sized by container units, and the status line
 // ("✓ Collected Oct 13, 2026" / "Not yet collected" / "3 of 7 stars") sits over the card's footer.
 // One scale for every tile: tile width / the card's natural 280 px, kept on the grid as --mini-s.
-const miniScale = () => { const t = document.querySelector('.card-tile--mini, #grid .card-slot'); const w = t?.offsetWidth; if (w) document.getElementById('grid')?.style.setProperty('--mini-s', (w / 280).toFixed(4)); };
-addEventListener('resize', () => requestAnimationFrame(miniScale));
+let miniS = '', miniRaf = 0;
+const miniScale = () => { miniRaf = 0; const t = document.querySelector('.card-tile--mini, #grid .card-slot'); const w = t?.offsetWidth; if (!w) return; const v = (w / 280).toFixed(4); if (v !== miniS) { miniS = v; document.getElementById('grid')?.style.setProperty('--mini-s', v); } };
+const queueMiniScale = () => { miniRaf ||= requestAnimationFrame(miniScale); }; // once a frame, however many tiles were built (jank playtest 2026-10-17)
+addEventListener('resize', () => { miniS = ''; queueMiniScale(); });
 function miniFace(tile, c) {
   const status = (tile.querySelector('.card-tile__status')?.textContent ?? '').replace(/^✓\s*Collected\s*/, '✓ '), badge = tile.querySelector('.tile-lvl');
   const face = miniCard(c, { sightings: state.sightingsByKey.get(c.key) ?? [], ownedKeys: c.natural === 'constellation' ? ownedKeys() : undefined, status, locked: !tile.classList.contains('is-owned') });
   tile.classList.add('card-tile--mini');
   tile.replaceChildren(...(badge ? [badge] : []), face);
-  requestAnimationFrame(miniScale);
+  queueMiniScale();
 }
 let cascadeLeft = 24; // the first screenful cascades in on open (2026-10-08 polish)
 const observer = new IntersectionObserver((entries) => {
@@ -183,8 +197,13 @@ const observer = new IntersectionObserver((entries) => {
 // One album per set. Goals scale with the set's size, so every album has a reachable gold:
 // small sets (<= 30 cards) are completed; bigger ones aim for 100 or 200 cards.
 const LEVELS = ['Bronze', 'Silver', 'Gold'];
+// Cards grouped by set once, then reused until the collection changes (jank playtest 2026-10-17: every album filtered
+// all ~4,900 cards on each Albums render).
+let albumMemo = { key: '', bySet: new Map() };
 function albumStats(setId) {
-  const cards = state.cards.filter((c) => c.set === setId && !c.archived), have = cards.filter(hasSightings);
+  const key = `${state.cards.length}|${state.raw?.length ?? 0}|${state.sightingsByKey.size}`;
+  if (albumMemo.key !== key) { const bySet = new Map(); for (const c of state.cards) if (!c.archived) { let l = bySet.get(c.set); if (!l) bySet.set(c.set, (l = [])); l.push(c); } albumMemo = { key, bySet }; }
+  const cards = albumMemo.bySet.get(setId) ?? [], have = cards.filter(hasSightings);
   const goals = albumGoals(cards.length), level = goals.filter((g) => have.length >= g).length; // 0..3
   return { cards, have, goals, level, next: goals[level] ?? null };
 }
@@ -200,14 +219,14 @@ const unit = (set) => (set.id === 'constellations' ? ' stars' : '');
 function renderAlbums() {
   $('grid').replaceChildren();
   const frag = document.createDocumentFragment();
+  let lv = {}; try { lv = JSON.parse(localStorage.getItem('albumLevels')) || {}; } catch {} // read and written once, not per album
   for (const set of SETS) {
     const st = albumStats(set.id); if (!st.cards.length) continue;
     const latest = st.have.slice().sort((a, b) => (state.sightingsByKey.get(b.key)?.[0]?.time ?? 0) - (state.sightingsByKey.get(a.key)?.[0]?.time ?? 0))[0];
     const show = latest ?? st.cards.find((c) => c.tier === 'legendary') ?? st.cards[0];
     const img = artImage(show, 'small'); // the set's best card, dimmed (CSS .album.empty) until you own one
     const b = document.createElement('button'); b.type = 'button';
-    let lv = {}; try { lv = JSON.parse(localStorage.getItem('albumLevels')) || {}; } catch {}
-    const crossed = (lv[set.id] ?? st.level) < st.level; lv[set.id] = st.level; try { localStorage.setItem('albumLevels', JSON.stringify(lv)); } catch {}
+    const crossed = (lv[set.id] ?? st.level) < st.level; lv[set.id] = st.level;
     b.className = `album${st.level === 3 ? ' gold' : ''}${latest ? '' : ' empty'}${crossed ? ' crossed' : ''}`; b.style.setProperty('--set', set.color);
     b.innerHTML = `<span class="album__art">${img ? `<img src="${img}" alt="" loading="lazy">` : cardArt(show, { accent: set.color, silhouette: !latest })}</span>
       <span class="album__body"><span class="album__top"><span class="album__name">${esc(set.name)}</span><span class="album__count">${albumCount(set, st)}</span></span>${set.id === 'constellations' ? `<span class="album__sub">${st.have.length.toLocaleString()} of ${st.cards.length.toLocaleString()} stars</span>` : ''}
@@ -215,6 +234,7 @@ function renderAlbums() {
     b.addEventListener('click', () => { state.set = set.id; $('set-filter').value = set.id; setView('discover'); window.scrollTo({ top: $('grid').offsetTop - 160, behavior: 'smooth' }); });
     frag.append(b);
   }
+  try { localStorage.setItem('albumLevels', JSON.stringify(lv)); } catch {}
   $('grid').append(frag);
   $('results').textContent = 'Fill each album to turn it gold.';
 }
@@ -632,7 +652,7 @@ async function openViewer(i, from = null) {
   if (img && !img.complete) { opening = true; await Promise.race([img.decode().catch(() => {}), new Promise((r) => setTimeout(r, 600))]); opening = false; }
   $('viewer').showModal();
   document.body.style.overflow = 'hidden';
-  $('v-close').focus({ focusVisible: false }); // keep it focusable for screen readers without a ring on open
+  requestAnimationFrame(() => $('v-close').focus({ focusVisible: false })); // keep it focusable for screen readers without a ring on open (a frame later: jank playtest 2026-10-17)
   $('viewer').querySelector('.viewer-scroll').scrollTop = 0;
   fadeViewer(true);
   spin($('slot').firstElementChild, from, true);
@@ -871,11 +891,13 @@ if (EMBED) {
     if (e.data.sc === 'refresh') refreshSightings();
     // Hidden behind the sky, its animations (twinkles, shimmers, drift) pause (2026-10-16 perf sweep).
     if (e.data.sc === 'away') { clearTimeout(awayT); document.documentElement.classList.add('away'); for (const id of ['viewer', 'stats-view', 'patch-view']) { const d = $(id); if (d?.open) { d.classList.remove('leaving'); d.close(); } } if (returnView) backFromBorrowed(); } // leaving the Collection closes whatever was open in it (bug hunt 2026-10-17: after Show me the viewer stayed open, clipped under the header)
+    if ((e.data.sc === 'open' || e.data.sc === 'show') && nightPending != null) { setNight(nightPending); nightPending = null; }
+    if ((e.data.sc === 'open' || e.data.sc === 'show') && awayDirty) { awayDirty = false; if (state.ready) render(); }
     if (e.data.sc === 'open' || e.data.sc === 'show') { clearTimeout(awayT); awayT = setTimeout(() => document.documentElement.classList.remove('away'), 460); } // after the slide-up lands (2026-10-17 perf): restarting every twinkle and shimmer mid-slide hitched
-    if (e.data.sc === 'tonight') { state.plan = readPlan(); if (state.ready && ['owned', 'discover'].includes(state.view)) render(); }
+    if (e.data.sc === 'tonight') { state.plan = readPlan(); if (state.ready && ['owned', 'discover'].includes(state.view)) { if (document.documentElement.classList.contains('away')) awayDirty = true; else render(); } } // hidden: render when shown (jank playtest 2026-10-17)
   });
 }
-let returnView = null, awayT = 0;
+let returnView = null, awayT = 0, awayDirty = false;
 function backFromBorrowed() { if (!returnView) return; const v = returnView; returnView = null; setView(v); }
 $('viewer').addEventListener('close', () => setTimeout(backFromBorrowed, 0));
 function openKey(key) {

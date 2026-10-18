@@ -605,3 +605,8 @@ html.embedded .collection-header { visibility: hidden; }
    carries its own red multiply. */
 body.night dialog[open]::after { content: ''; position: fixed; inset: 0; z-index: 2147483646; pointer-events: none; background: #ff1a00; mix-blend-mode: multiply; }
 body.night dialog::backdrop { background: rgba(12, 3, 3, .82); }
+/* Scrolling a big collection (jank playtest 2026-10-17: a third of frames over 50 ms): tiles off screen skip layout and
+   paint (content-visibility), and the shrunken cards don't each become a 3D layer (no preserve-3d on a tile's card;
+   tile tilt moves the tile itself). */
+.grid .tile-slot { content-visibility: auto; contain-intrinsic-size: auto 180px; }
+.mini-face .card__rotator { transform: none !important; transform-style: flat !important; }

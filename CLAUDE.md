@@ -1248,3 +1248,10 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - upOnce(n) plurals; a "busiest moment" needs 3+ objects everywhere it's shown or notified.
   - Players with cards (e.g. restored from backup) skip the welcome card; cards arriving from iCloud while it's up go straight to the sky.
   - Found and fixed two lines silently swallowed by `//` comments: the tour's assignment card subtitle/text ("It's up right now… Follow the arrow"), and the radar tip's pulse ring. Scanned js/ for more (none).
+- 2026-10-17 · Playtest batch 2 (jank):
+  - Collection tiles: one --mini-s measurement per frame (queueMiniScale, written only on change) instead of one rAF + forced layout per tile; long names fitted together in one frame (fitQueue). `.grid .tile-slot { content-visibility: auto }` and mini cards drop preserve-3d (no layer per tile).
+  - The hidden Collection preloads 6 s after the sky starts (rIC timeout 8 s), not on top of its first frames.
+  - Sky: pines outside the view (screen half-diagonal + 12°) are skipped; they were ~a third of each frame.
+  - Tonight planner gets its object list once (worker keeps it; `tonightSentKey` = limit + catalogue size), not a 16k structured clone per time jump.
+  - The hidden Collection defers renders: `{sc:'tonight'}` while away marks it dirty (render on show); a post-catch refresh reads the sightings at once but rebuilds ~2 s later in idle time; night mode toggled while hidden applies on show.
+  - Reveal sweep moves by transform (no layout shift per frame). Panel and viewer focus a frame later. Albums: cards grouped by set once (albumMemo), albumLevels read/written once.

@@ -1,17 +1,17 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.832';
+import { extinction } from './sky-limit.js?v=0.1.833';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.832';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.833';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.832';
-import { createCloudGL } from './clouds-gl.js?v=0.1.832';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.833';
+import { createCloudGL } from './clouds-gl.js?v=0.1.833';
 // Cloud colours by light: sunlit tops, shadowed bellies, and the horizon haze they melt into (0–1 RGB).
 const CLOUD_LIGHT = {
   day: { lit: [1, 1, 1], shade: [0.62, 0.68, 0.77], haze: [0.82, 0.87, 0.93] },
   dusk: { lit: [1, 0.8, 0.68], shade: [0.36, 0.33, 0.42], haze: [0.62, 0.5, 0.52] },
   night: { lit: [0.22, 0.25, 0.31], shade: [0.1, 0.12, 0.16], haze: [0.14, 0.15, 0.2] },
 };
-import { TIER_INFO } from './rarity.js?v=0.1.832';
+import { TIER_INFO } from './rarity.js?v=0.1.833';
 
 const RAD = Math.PI / 180;
 const BELOW_ICON = 10.5, BELOW_ICON_HIT = 20; // every satellite under the horizon, passes and halo alike (80% of 13 since 2026-10-13); lined up in the circle it grows
@@ -838,7 +838,12 @@ export class SkyView {
     band(LANDSCAPE.hills, dF > 0 ? mix('0a1826', '6f8f78') : (t.hills ?? '#0a1826'), dF > 0.4 ? `rgba(200,225,180,${(0.4 * dF).toFixed(2)})` : null);
     // Tree lines (2026-10-08, higher fidelity): a far row, hazier, then the near row. Each pine is a trunk and a stack of
     // drooping, ragged tiers that narrow to a spike, with a lighter lit side by day.
+    // Only trees in view are drawn (jank playtest 2026-10-17: ~900 pines a frame were a third of the sky's work). A tree is
+    // kept if its direction is within the screen's half-diagonal plus a margin of where the phone points.
+    const back = this.basis?.back, halfDiag = Math.atan(Math.hypot(1, this.w / Math.max(1, this.h)) * Math.tan((this.fovV / 2) * RAD)) / RAD;
+    const keepCos = Math.cos(Math.min(89, halfDiag + 12) * RAD);
     const pine = ([az, ht, w, tiers, lean, sd], body, lit) => {
+      if (back) { const a = az * RAD, e = Math.max(0.5, ht / 2) * RAD, ce = Math.cos(e); if (Math.sin(a) * ce * back[0] + Math.cos(a) * ce * back[1] + Math.sin(e) * back[2] < keepCos) return; }
       const base = -0.3, trunkH = ht * 0.12, top = ht, tw = w * 0.07;
       if (!this.camera) this.poly([[az - tw, base], [az + tw, base], [az + tw, base + trunkH + 0.05], [az - tw, base + trunkH + 0.05]]);
       const left = [], right = [];
