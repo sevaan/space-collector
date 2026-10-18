@@ -1,17 +1,17 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.810';
+import { extinction } from './sky-limit.js?v=0.1.813';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.810';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.813';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.810';
-import { createCloudGL } from './clouds-gl.js?v=0.1.810';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.813';
+import { createCloudGL } from './clouds-gl.js?v=0.1.813';
 // Cloud colours by light: sunlit tops, shadowed bellies, and the horizon haze they melt into (0–1 RGB).
 const CLOUD_LIGHT = {
   day: { lit: [1, 1, 1], shade: [0.62, 0.68, 0.77], haze: [0.82, 0.87, 0.93] },
   dusk: { lit: [1, 0.8, 0.68], shade: [0.36, 0.33, 0.42], haze: [0.62, 0.5, 0.52] },
   night: { lit: [0.22, 0.25, 0.31], shade: [0.1, 0.12, 0.16], haze: [0.14, 0.15, 0.2] },
 };
-import { TIER_INFO } from './rarity.js?v=0.1.810';
+import { TIER_INFO } from './rarity.js?v=0.1.813';
 
 const RAD = Math.PI / 180;
 const BELOW_ICON = 10.5, BELOW_ICON_HIT = 20; // every satellite under the horizon, passes and halo alike (80% of 13 since 2026-10-13); lined up in the circle it grows
@@ -91,9 +91,14 @@ const LANDSCAPE = (() => {
   return { hills, trees, far, ridge, rolls, tufts };
 })();
 
-// Earth's shadow at H km (default 500) for a Sun direction s (ENU unit vector): shaded columns [az, el0, el1] on a SHADOW_AZ° grid and
-// the edge as runs of [az, el] points, each crossing found by bisection so the line is smooth (2026-10-17).
+// Earth's shadow at H km (default 500) for a Sun direction s (ENU unit vector, observer at (0,0,R) from Earth's centre).
+// edges: the outline as runs of ENU directions, horizon to horizon. It is drawn straight from geometry (2026-10-17,
+// Sevaan: the traced line stopped partway down where the edge runs steeply): the shadow's edge at height H is the circle
+// where the cylinder of radius R behind Earth meets the sphere of radius R + H; each of its points, seen from you, is
+// one point of the line. cols: the shade as quads of ENU directions, strips 2° of azimuth wide whose top and bottom follow
+// the edge at both sides (slanted, not stepped).
 const SHADOW_AZ = 2;
+const BELOW_SAT_A = 0.6; // satellites under the ground, at their brightest (next to the circle)
 function shadowShape(s, H = 500) {
   const R = 6371, EL = 3;
   const dark = (az, el) => {
@@ -101,28 +106,40 @@ function shadowShape(s, H = 500) {
     const v = [t * d[0], t * d[1], t * d[2] + R], proj = v[0] * s[0] + v[1] * s[1] + v[2] * s[2];
     return proj < 0 && v[0] * v[0] + v[1] * v[1] + v[2] * v[2] - proj * proj < R * R;
   };
-  const cross = (az, lo, hi, loDark) => { for (let i = 0; i < 8; i++) { const m = (lo + hi) / 2; if (dark(az, m) === loDark) lo = m; else hi = m; } return (lo + hi) / 2; };
-  const cols = [], perAz = []; let any = false, all = true;
-  for (let az = 0; az < 360; az += SHADOW_AZ) {
-    const mid = az + SHADOW_AZ / 2, xs = [];
-    let prev = dark(mid, 0), from = prev ? 0 : null;
+  const cross = (az, lo, hi, loDark) => { for (let i = 0; i < 10; i++) { const m = (lo + hi) / 2; if (dark(az, m) === loDark) lo = m; else hi = m; } return (lo + hi) / 2; };
+  let any = false, all = true;
+  // Dark stretches of elevation [from, to] along one azimuth, ends found by bisection.
+  const spans = (az) => {
+    const out = []; let prev = dark(az, 0), from = prev ? 0 : null;
     for (let el = EL; el <= 90; el += EL) {
-      const cur = dark(mid, el);
-      if (cur !== prev) { const e = cross(mid, el - EL, el, prev); xs.push(e); if (cur) from = e; else { cols.push([az, from, e]); from = null; } }
+      const cur = dark(az, el);
+      if (cur !== prev) { const e = cross(az, el - EL, el, prev); if (cur) from = e; else { out.push([from, e]); from = null; } }
       if (cur) any = true; else all = false; prev = cur;
     }
-    if (from != null) cols.push([az, from, 90]);
-    perAz.push([mid, xs]);
+    if (from != null) out.push([from, 90]);
+    return out;
+  };
+  const at = []; for (let az = 0; az <= 360; az += SHADOW_AZ) at.push(spans(az % 360));
+  const cols = [];
+  for (let k = 0; k < at.length - 1; k++) {
+    const a0 = k * SHADOW_AZ, a1 = a0 + SHADOW_AZ, L = at[k], Rr = at[k + 1];
+    if (L.length === Rr.length) L.forEach(([f0, t0], n) => { const [f1, t1] = Rr[n]; cols.push([enuFromAzEl(a0, f0), enuFromAzEl(a1, f1), enuFromAzEl(a1, t1), enuFromAzEl(a0, t0)]); });
+    else for (const [f, t] of spans(a0 + SHADOW_AZ / 2)) cols.push([enuFromAzEl(a0, f), enuFromAzEl(a1, f), enuFromAzEl(a1, t), enuFromAzEl(a0, t)]); // the edge turns here: a plain strip
   }
-  // Join crossings into runs: a point joins the run whose last point is the next column over and close in height.
-  const runs = [];
-  for (const [az, xs] of perAz) for (const el of xs) {
-    const r = runs.find((run) => { const [a, e] = run[run.length - 1]; return Math.abs(az - SHADOW_AZ - a) < 1e-6 && Math.abs(e - el) < 8; });
-    if (r) r.push([az, el]); else runs.push([[az, el]]);
+  // The outline: P(φ) = −a·ŝ + R(cos φ·u + sin φ·w), a = √((R+H)² − R²), seen from the observer at (0, 0, R).
+  const a = Math.sqrt((R + H) ** 2 - R * R), h = Math.abs(s[2]) < 0.9 ? [0, 0, 1] : [1, 0, 0];
+  const cr = (x, y) => [x[1] * y[2] - x[2] * y[1], x[2] * y[0] - x[0] * y[2], x[0] * y[1] - x[1] * y[0]], nz = (x) => { const m = Math.hypot(...x); return x.map((c) => c / m); };
+  const u = nz(cr(s, h)), w = cr(s, u);
+  const edges = []; let run = null;
+  for (let deg = 0; deg <= 360; deg += 0.75) {
+    const f = deg * Math.PI / 180, c = Math.cos(f), sn = Math.sin(f);
+    const d = nz([-a * s[0] + R * (c * u[0] + sn * w[0]), -a * s[1] + R * (c * u[1] + sn * w[1]), -a * s[2] + R * (c * u[2] + sn * w[2]) - R]);
+    if (d[2] < -0.01) { run = null; continue; } // below the horizon
+    if (!run) { run = []; edges.push(run); } run.push(d);
   }
-  // Close the circle: a run ending at 359° continues into one starting at 1°.
-  for (const r of runs) { const [a, e] = r[r.length - 1]; const first = runs.find((q) => q !== r && Math.abs(q[0][0] - SHADOW_AZ / 2) < 1e-6 && Math.abs(q[0][1] - e) < 8 && a > 360 - SHADOW_AZ); if (first) r.push([first[0][0] + 360, first[0][1]]); }
-  return { cols, edges: runs, any, all };
+  // A run that wraps past φ = 360° joins the one that started at 0°.
+  if (edges.length > 1 && edges[0].length && edges.at(-1).length) { const first = edges[0], last = edges.at(-1); const g = Math.hypot(first[0][0] - last.at(-1)[0], first[0][1] - last.at(-1)[1], first[0][2] - last.at(-1)[2]); if (g < 0.05) { edges[0] = last.concat(first); edges.pop(); } }
+  return { cols, edges, any, all };
 }
 
 export class SkyView {
@@ -427,7 +444,7 @@ export class SkyView {
       // The thing itself, faint, inside its dashed ring (2026-10-07: empty rings read as missing): a soft disc for
       // the Sun, Moon and planets, the satellite icon for passes.
       ctx.save(); ctx.globalAlpha = 0.6 * k;
-      if (g.kind === 'sat') { ctx.globalAlpha = 0.8 * k; this.drawIcon(g.obj ? this.iconKind(g.obj) : 'sat', p.x, p.y, (g.id ?? g.obj?.id) != null && (g.id ?? g.obj?.id) === this.belowHitId ? BELOW_ICON_HIT : BELOW_ICON, t.sat); } // same size and style as the halo ones, no ring (2026-10-11)
+      if (g.kind === 'sat') { ctx.globalAlpha = BELOW_SAT_A * k; this.drawIcon(g.obj ? this.iconKind(g.obj) : 'sat', p.x, p.y, (g.id ?? g.obj?.id) != null && (g.id ?? g.obj?.id) === this.belowHitId ? BELOW_ICON_HIT : BELOW_ICON, t.sat); } // same size and style as the halo ones, no ring (2026-10-11)
       else { const c = g.kind === 'sun' ? SUN : INKA; this.glow(p.x, p.y, r * 1.8, c, 0.3); ctx.fillStyle = `rgb(${c.join(',')})`; ctx.beginPath(); ctx.arc(p.x, p.y, g.kind === 'planet' ? 2.6 : r * 0.55, 0, Math.PI * 2); ctx.fill(); }
       ctx.restore();
       if (g.kind !== 'sat') { // dashed rings stay on the Sun, Moon and planets only
@@ -511,7 +528,7 @@ export class SkyView {
       const p = this.project(s.enu); if (!this.onScreen(p, 12)) continue;
       const d = Math.hypot(p.x - rc.x, p.y - rc.y); if (d >= r2) continue;
       const h = d <= r1 ? 1 : 1 - (d - r1) / (r2 - r1);
-      ctx.globalAlpha = 0.8 * h * h * (3 - 2 * h) * k;
+      ctx.globalAlpha = BELOW_SAT_A * h * h * (3 - 2 * h) * k; // 75% of the old 0.8 (2026-10-17, Sevaan: they got bright round the target)
       this.drawIcon(this.iconKind(s.obj), p.x, p.y, (s.id ?? s.obj?.id) != null && ((s.id ?? s.obj?.id) === this.belowHitId || (s.id ?? s.obj?.id) === this.dayHitId) ? BELOW_ICON_HIT : BELOW_ICON, color);
     }
     ctx.restore();
@@ -1668,7 +1685,7 @@ export class SkyView {
     const { cols, edges, any, all } = this._shadow, ctx = this.ctx;
     // The shade: every column added to one path and filled once, so neighbouring pieces don't overlap into seams.
     ctx.save(); ctx.fillStyle = 'rgba(2,5,12,.22)'; ctx.beginPath();
-    for (const [az, el0, el1] of cols) this.shadeCell(az, el0, el1, SHADOW_AZ);
+    for (const q of cols) this.shadeQuad(q);
     ctx.fill(); ctx.restore();
     if (!any || all || !edges.length) return;
     // The edge: dashed gold, one stroke per run of neighbouring crossings.
@@ -1678,8 +1695,8 @@ export class SkyView {
     ctx.beginPath();
     for (const run of edges) {
       let pen = false;
-      for (const [az, el] of run) {
-        const p = this.project(enuFromAzEl(az, el)); if (!p) { pen = false; continue; }
+      for (const e of run) {
+        const p = this.project(e); if (!p) { pen = false; continue; }
         if (pen) ctx.lineTo(p.x, p.y); else ctx.moveTo(p.x, p.y); pen = true;
         // The label's own box (two lines, ~224 × 30 px) must stay on screen, off the sight and its ticks, and out of the
         // column under it where the target's ticket sits (playtest 2026-10-16: it crowded "COMMON · MOON").
@@ -1704,8 +1721,8 @@ export class SkyView {
     }
     ctx.restore();
   }
-  shadeCell(az, el0, el1, w) { // adds one column of shade to the current path (drawEarthShadow fills them all at once)
-    const pts = [[az, el0], [az + w, el0], [az + w, el1], [az, el1]].map(([a, e]) => this.project(enuFromAzEl(a, e)));
+  shadeQuad(q) { // adds one strip of shade (four ENU directions) to the current path; drawEarthShadow fills them all at once
+    const pts = q.map((e) => this.project(e));
     if (pts.some((p) => !p)) return;
     const ctx = this.ctx; pts.forEach((p, i) => (i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y))); ctx.closePath();
   }
