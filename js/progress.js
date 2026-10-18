@@ -1,7 +1,7 @@
 // Player progress from the sighting log: XP and observer rank, tonight's three missions, a weekly streak and
 // achievements. Everything is derived from the saved sightings (nothing extra is stored), so it can't drift.
 // info(cardKey) -> { tier, type, owner, launch, natural, con } | null. No DOM.
-import { nightKey } from './observation.js?v=0.1.826';
+import { nightKey } from './observation.js?v=0.1.827';
 
 // A longer climb (2026-10-12, playtest room: three ranks on night 1, Mission Control in about two weeks), with two
 // prestige ranks past Mission Control. Nobody drops a rank they had on the old curve (rankFloor below).
@@ -226,15 +226,22 @@ const PROG = {
 // your first night out, not Monday to Sunday (playtest room 2026-10-11: Sunday then Monday read "2-week streak 🔥" on
 // day 2, which felt unearned).
 const dayNum = (time) => { const d = new Date(time); d.setHours(12, 0, 0, 0); return Math.round(d.getTime() / 86400e3); };
-export function streaks(sightings, now = Date.now()) {
+// Cloudy weeks don't break a streak (2026-10-17, Sevaan: "just don't count cloudy days towards streaks"). Explore saves
+// each night's forecast as it learns it (localStorage skyNights: { dayNum: 1 cloudy | 0 clear }, main.js recordSkyNights);
+// a week with no sighting and 4 or more cloudy nights is skipped: it neither adds to the streak nor ends it.
+function cloudyDays() { try { return JSON.parse(localStorage.getItem('skyNights') || '{}'); } catch { return {}; } }
+export function streaks(sightings, now = Date.now(), cloudy = cloudyDays()) {
   const days = real(sightings).map((s) => dayNum(s.time)); if (!days.length) return { current: 0, best: 0, thisWeek: false };
-  const first = Math.min(...days), weekIndex = (t) => Math.floor((dayNum(t) - first) / 7);
-  const weeks = [...new Set(days.map((d) => Math.floor((d - first) / 7)))].sort((a, b) => a - b);
-  let best = 0, run = 0, prev = null;
-  for (const w of weeks) { run = prev != null && w === prev + 1 ? run + 1 : 1; best = Math.max(best, run); prev = w; }
-  const cur = weekIndex(now), last = weeks[weeks.length - 1];
-  const current = last === cur || last === cur - 1 ? run : 0;
-  return { current, best, thisWeek: last === cur };
+  const first = Math.min(...days), weekIndex = (t) => Math.floor((dayNum(t) - first) / 7), cur = weekIndex(now);
+  const seen = new Set(days.map((d) => Math.floor((d - first) / 7)));
+  const cloudyWeek = (w) => { let n = 0; for (let d = first + w * 7; d < first + w * 7 + 7; d++) if (cloudy[d] === 1) n++; return n >= 4; };
+  let best = 0, run = 0;
+  for (let w = 0; w <= cur; w++) {
+    if (seen.has(w)) { run++; best = Math.max(best, run); }
+    else if (w === cur || cloudyWeek(w)) continue; // this week isn't over yet; a cloudy week is skipped
+    else run = 0;
+  }
+  return { current: run, best, thisWeek: seen.has(cur) };
 }
 
 // constellations: [{ id, stars: [cardKey], zodiac }] for completion counts.

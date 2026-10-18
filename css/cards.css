@@ -556,3 +556,12 @@
 :where(html[data-theme='night'], body.night) .wc-a, :where(html[data-theme='night'], body.night) .wc-a-title, :where(html[data-theme='night'], body.night) .wc-a-steps b { color: #ff7f70; }
 :where(html[data-theme='night'], body.night) .wc-a-top .hot, :where(html[data-theme='night'], body.night) .wc-a-text { color: #e8705f; }
 :where(html[data-theme='night'], body.night) .wc-a-pic i { background: #ff6a55; color: #120606; }
+/* The Moon's phase stamps (2026-10-17): eight moons under the stats, lit once seen in that phase, the newest ringed. */
+.mn-row { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: .35em; margin-top: .55em; }
+.mn-row svg { display: block; width: 100%; aspect-ratio: 1; overflow: visible; }
+.mn-row circle { fill: color-mix(in srgb, var(--ink, #fff2b3) 8%, transparent); stroke: color-mix(in srgb, var(--ink, #fff2b3) 25%, transparent); stroke-width: 1; }
+.mn-row path { fill: color-mix(in srgb, var(--ink, #fff2b3) 16%, transparent); }
+.mn-row svg.on circle { stroke: color-mix(in srgb, var(--ink, #fff2b3) 70%, transparent); }
+.mn-row svg.on path { fill: var(--ink, #fff2b3); }
+.mn-row svg.latest circle { stroke: var(--accent, #fa8127); stroke-width: 2.6; }
+.mn-phases { margin-bottom: .5em; }

@@ -1,14 +1,20 @@
 // Shared catalogue → card mapping. Fleets (Starlink, OneWeb, Qianfan, Kuiper, Globalstar, Orbcomm, Iridium) are one fleet
 // card each; every launch in the fleet is a stamp on that card. Other objects are one card each.
-import { assignSets } from './sets.js?v=0.1.826';
-import { tierFor } from './rarity.js?v=0.1.826';
-import { fallAt, bumpTier } from './last-chance.js?v=0.1.826';
-import { NATURAL } from './natural.js?v=0.1.826';
+import { assignSets } from './sets.js?v=0.1.827';
+import { tierFor } from './rarity.js?v=0.1.827';
+import { fallAt, bumpTier } from './last-chance.js?v=0.1.827';
+import { NATURAL } from './natural.js?v=0.1.827';
 
 // Fleet members carry their launch key in the catalogue (`card` = 'STARLINK:2024-012'). That's the
 // stamp; the card itself is the fleet ('STARLINK').
 export const cardKeyFor = (o) => String(o.family ?? o.card ?? o.key ?? o.id);
-export const stampKeyFor = (o) => (o.family && o.card ? String(o.card) : null);
+// The Moon's phases are stamps on the Moon card, like a fleet's launches (2026-10-17, Sevaan): eight phases, the phase
+// at the moment you saw it. A mean synodic month from a known new Moon is plenty for eighths (±half a day).
+export const MOON_PHASES = ['New Moon', 'Waxing crescent', 'First quarter', 'Waxing gibbous', 'Full Moon', 'Waning gibbous', 'Last quarter', 'Waning crescent'];
+export function moonPhaseAt(t) { const f = ((((t - Date.UTC(2000, 0, 6, 18, 14)) / 86400e3 / 29.530588853) % 1) + 1) % 1; return Math.floor(f * 8 + 0.5) % 8; }
+export const moonPhaseOf = (stampKey) => { const m = /^MOON:(\d)$/.exec(stampKey ?? ''); return m ? Number(m[1]) : null; };
+// t: the sighting's time (the Moon's stamp depends on when you saw it; fleets' don't).
+export const stampKeyFor = (o, t = null) => (o.family && o.card ? String(o.card) : o.type === 'moon' && o.natural && t != null ? `MOON:${moonPhaseAt(t)}` : null);
 
 // Sightings saved before fleet cards (up to v0.1.55) have cardKey = the launch key. Read them as
 // fleet card + stamp without rewriting what's stored.
@@ -18,6 +24,7 @@ export const stampKeyFor = (o) => (o.family && o.card ? String(o.card) : null);
 const fleetOf = new Map();
 export function sightingKeys(s) {
   if (s.stampKey) return { cardKey: String(s.cardKey), stampKey: String(s.stampKey) };
+  if (String(s.cardKey ?? s.objectId) === 'moon' && s.time) return { cardKey: 'moon', stampKey: `MOON:${moonPhaseAt(s.time)}` }; // Moon sightings from before phase stamps
   const joined = fleetOf.get(String(s.objectId));
   if (joined && String(s.cardKey ?? s.objectId) === String(s.objectId)) return joined;
   const key = String(s.cardKey ?? s.objectId);

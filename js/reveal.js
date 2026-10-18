@@ -5,12 +5,12 @@
 //  Everything scales with rarity (Legendary dims the sky, shockwave, held breath, slow flip, fanfare).
 // Waits use timers, not animation.finished, so a paused tab can never freeze the sequence.
 
-import { sfx, loadSfx } from './sfx.js?v=0.1.826';
-import { audioCtx } from './audio-ctx.js?v=0.1.826';
-import { TIER_INFO } from './rarity.js?v=0.1.826';
-import { levelFor, attachTilt, attachGyro, attachFlip, throwOff } from './card.js?v=0.1.826';
-import { applyBack } from './card-backs.js?v=0.1.826';
-import { addStarfield } from './starfield.js?v=0.1.826';
+import { sfx, loadSfx } from './sfx.js?v=0.1.827';
+import { audioCtx } from './audio-ctx.js?v=0.1.827';
+import { TIER_INFO } from './rarity.js?v=0.1.827';
+import { levelFor, attachTilt, attachGyro, attachFlip, throwOff } from './card.js?v=0.1.827';
+import { applyBack } from './card-backs.js?v=0.1.827';
+import { addStarfield } from './starfield.js?v=0.1.827';
 
 const FX = {
   common:    { particles: 14,  flip: 520,  spin: 0,   dim: 0,   shock: false, notes: [880],                            hold: 0 },
@@ -116,7 +116,7 @@ export async function playReveal({ card, o, seen, origin, fleet = null, progress
   const root = $('reveal');
   root.style.setProperty('--fx', color);
   root.classList.remove('rv-done');
-  $('reveal-eyebrow').textContent = fresh ? 'NEW CARD' : newStamp ? 'NEW LAUNCH STAMP' : NIGHT_MILESTONES.includes(nights) ? `SEEN ON ${nights} NIGHTS` : 'SEEN AGAIN';
+  $('reveal-eyebrow').textContent = fresh ? 'NEW CARD' : newStamp ? (fleet?.line ? 'NEW PHASE STAMP' : 'NEW LAUNCH STAMP') : NIGHT_MILESTONES.includes(nights) ? `SEEN ON ${nights} NIGHTS` : 'SEEN AGAIN';
   if (xp > 0) $('reveal-eyebrow').insertAdjacentHTML('beforeend', `<span class="rv-xp"> ·<span class="rv-roll"><span>+${xp} XP</span></span></span>`); // rolls in when the card lands
   setRank(xp > 0 ? rank : null);
   $('rv-news').replaceChildren(); earnedNow = earned;
@@ -269,7 +269,7 @@ async function finish({ fx, color, fresh, seen, level, levelUp, card, alive, fle
   await sleep(250);
   if (!alive()) return;
   const date = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }).toUpperCase();
-  const stampLine = fleet ? `LAUNCH ${fleet.cospar} · ${fleet.stamps} OF ${fleet.total}` : '';
+  const stampLine = fleet ? (fleet.line ?? `LAUNCH ${fleet.cospar} · ${fleet.stamps} OF ${fleet.total}`) : ''; // fleet.line: the Moon's phase
   const conDone = !!con && con.level === 'gold';
   // 1, 10, 25, 50, 100… cards each earn a patch, and the patch coin says so; no second "milestone" toast for them (playtest 2026-10-09).
   const PATCHED = [1, 10, 25, 50, 100, 250, 500, 1000];
@@ -278,7 +278,7 @@ async function finish({ fx, color, fresh, seen, level, levelUp, card, alive, fle
   const news = shiny && !conDone ? { kind: 'event', eyebrow: `SHINY · ${shiny.label.toUpperCase()}`, line: shiny.line, ms: 5000 } // say why it's shiny (2026-10-08)
     : fresh && con ? (conDone ? { kind: 'event', eyebrow: `${con.name.toUpperCase()} COMPLETE`, line: `All ${con.total} ${con.unit ?? 'stars'} · patch earned`, art: con.art } : { kind: 'xp', eyebrow: con.name.toUpperCase(), line: `${con.have} of ${con.total} ${con.unit ?? 'stars'}`, art: con.art })
     : fresh ? (milestone ? { kind: 'event', eyebrow: 'MILESTONE', line: collected === 1 ? 'Your first card!' : `${collected.toLocaleString('en-US')} cards collected` } : null)
-    : newStamp ? (STAMP_MILESTONES.includes(fleet?.stamps) ? { kind: 'event', eyebrow: 'NEW STAMP', line: `${fleet.stamps} launches stamped` } : { kind: 'xp', eyebrow: 'NEW STAMP', line: stampLine })
+    : newStamp ? (fleet?.milestone ? { kind: 'event', eyebrow: 'NEW STAMP', line: fleet.milestone } : !fleet?.line && STAMP_MILESTONES.includes(fleet?.stamps) ? { kind: 'event', eyebrow: 'NEW STAMP', line: `${fleet.stamps} launches stamped` } : { kind: 'xp', eyebrow: 'NEW STAMP', line: stampLine })
     : NIGHT_MILESTONES.includes(nights) ? { kind: 'event', eyebrow: 'MILESTONE', line: `Seen on ${nights} different nights` }
     : null; // a plain repeat: no toast (2026-10-07)
   if (news) announce?.({ ms: 3200, ...news, delay: 900 }); // its sound plays as it appears (main.js onTicketShown)
