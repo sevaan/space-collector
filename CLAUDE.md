@@ -1219,3 +1219,11 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - The Collection's tile IntersectionObserver now uses `root: document` (the frame's own viewport). With the default root (the top window) the off-screen Collection built no tiles until it slid up, so the first screenful (full mini cards, art, cascade) was built mid-slide. Now they're built and their pictures loaded in the background (checked: 14 tiles, 12/12 images ready before opening). Tile images switch to loading="eager" when the tile is built.
   - On show, the Collection restarts its paused animations 460 ms later, after the slide-up lands (`awayT`), not at the start.
   - The target's full card art is fetched and decoded while you line it up (`warmArt`, last 12 kept), so the reveal has its picture ready.
+- 2026-10-17 · Notification copy rewritten (Sevaan's writing agent; never names the app, the icon already does; time or "Now" first in every title):
+  - Clear night: "{Tomorrow|weekday}: clear skies ahead" / "The forecast looks good. See what's passing over and plan a few catches."
+  - Daily look up: "Until {until}: best viewing" / "{N} cards you haven't collected are up now. Go find your next." (none new: "It's dark and clear. See what's in your sky.")
+  - Catch of the day: "{time}: catch of the day" / "Catch {Name} for +25 XP. Look high in the {south}."
+  - Rare alert: "{time}: a rare find" / "Look {west} for {Name}. You haven't collected this one yet." (fleets: "{time}: a new {fleet} batch" / "… One more for your {fleet} card.")
+  - Pass reminder: "{time}: {Name}" / "Look {west}. At its peak: high in the {south}."
+  - Until-dark bell, each with its own title: best pass "{time}: tonight's best pass" / "Look {south} for {Name}, {40}° above the horizon."; dark "Now: time to look up" / "It's dark enough to start collecting. See what's in your sky."; busiest "Now: rush hour overhead" / "{N} satellites, all up at once. How many can you catch?"
+  - Streak: "This week: keep your streak" / "One sighting is all it takes. See what's up tonight."
