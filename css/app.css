@@ -1631,3 +1631,12 @@ body.ob-tour #hud, body.ob-tour #hud *, body.ob-tour #sky, body.ob-tour .overlay
 .nudge-reset { min-height: 28px; margin: -4px 0 -6px; padding: 0; border: 0; background: none; color: var(--gold); font: 600 12.5px/1 var(--label); letter-spacing: .08em; text-transform: uppercase; cursor: pointer; }
 .nudge-reset:disabled { color: var(--muted); opacity: .55; cursor: default; }
 body.night .nudge-reset:not(:disabled) { color: #ff6a55; }
+/* The header stays (2026-10-17, Sevaan: the Collection slid up with a second copy of the same header). The Collection
+   sheet is clipped to start at the header's dividing line, so only the part under it slides; Explore's header stays on
+   top, turning solid, and its testing stopwatch steps out. A card or stats open in there (col-modal) takes the whole
+   screen again. The Collection hides its own header while embedded (css/collection.css). */
+#collection-frame { clip-path: inset(calc(var(--safe-top) + 80px) 0 0 0); }
+body.col-modal #collection-frame { clip-path: none; }
+#sky-header { transition: background-color .3s ease, box-shadow .3s ease; }
+body.col-open #sky-header { background: var(--bg); box-shadow: 0 calc(-1 * var(--safe-top)) 0 0 var(--bg); }
+body.col-open #peak-toggle { visibility: hidden; }

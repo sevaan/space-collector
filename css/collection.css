@@ -597,3 +597,5 @@ html { text-wrap: pretty; } h1, h2, h3 { text-wrap: balance; }
 #stats-view.leaving { animation: stats-down .3s cubic-bezier(.5, 0, .75, .4) forwards; }
 #stats-view.leaving::backdrop { animation: stats-dim-out .3s ease-in forwards; }
 @media (prefers-reduced-motion: reduce) { #stats-view[open], #stats-view[open]::backdrop { animation: none; } }
+/* Embedded in the app, Explore's header stays on top of the Collection (2026-10-17): this one keeps its space but hides. */
+html.embedded .collection-header { visibility: hidden; }
