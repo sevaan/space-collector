@@ -1,17 +1,17 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.800';
+import { extinction } from './sky-limit.js?v=0.1.801';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.800';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.801';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.800';
-import { createCloudGL } from './clouds-gl.js?v=0.1.800';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.801';
+import { createCloudGL } from './clouds-gl.js?v=0.1.801';
 // Cloud colours by light: sunlit tops, shadowed bellies, and the horizon haze they melt into (0–1 RGB).
 const CLOUD_LIGHT = {
   day: { lit: [1, 1, 1], shade: [0.62, 0.68, 0.77], haze: [0.82, 0.87, 0.93] },
   dusk: { lit: [1, 0.8, 0.68], shade: [0.36, 0.33, 0.42], haze: [0.62, 0.5, 0.52] },
   night: { lit: [0.22, 0.25, 0.31], shade: [0.1, 0.12, 0.16], haze: [0.14, 0.15, 0.2] },
 };
-import { TIER_INFO } from './rarity.js?v=0.1.800';
+import { TIER_INFO } from './rarity.js?v=0.1.801';
 
 const RAD = Math.PI / 180;
 const BELOW_ICON = 10.5, BELOW_ICON_HIT = 20; // every satellite under the horizon, passes and halo alike (80% of 13 since 2026-10-13); lined up in the circle it grows
@@ -91,11 +91,11 @@ const LANDSCAPE = (() => {
   return { hills, trees, far, ridge, rolls, tufts };
 })();
 
-// Earth's shadow at 500 km for a Sun direction s (ENU unit vector): shaded columns [az, el0, el1] on a SHADOW_AZ° grid and
+// Earth's shadow at H km (default 500) for a Sun direction s (ENU unit vector): shaded columns [az, el0, el1] on a SHADOW_AZ° grid and
 // the edge as runs of [az, el] points, each crossing found by bisection so the line is smooth (2026-10-17).
 const SHADOW_AZ = 2;
-function shadowShape(s) {
-  const R = 6371, H = 500, EL = 3;
+function shadowShape(s, H = 500) {
+  const R = 6371, EL = 3;
   const dark = (az, el) => {
     const d = enuFromAzEl(az, el), t = -R * d[2] + Math.sqrt(R * R * d[2] * d[2] + (R + H) ** 2 - R * R);
     const v = [t * d[0], t * d[1], t * d[2] + R], proj = v[0] * s[0] + v[1] * s[1] + v[2] * s[2];
@@ -1663,8 +1663,8 @@ export class SkyView {
     const s = this.sunEnu; if (!s || s[2] > -0.035 || (this.basis?.back?.[2] ?? 0) < -0.25) return; // night side only, looking up
     // Smooth edge (2026-10-17, Sevaan: "super jagged"): a 2° azimuth grid with each crossing found by bisection, instead
     // of a 6° × 3° grid joined corner to corner. The Sun barely moves, so the shape is cached until it does.
-    const key = s.map((v) => v.toFixed(4)).join();
-    if (this._shadowKey !== key) { this._shadowKey = key; this._shadow = shadowShape(s); }
+    const H = this.shadowKm ?? 500, key = `${s.map((v) => v.toFixed(4)).join()}|${H}`; // the height of the target in the circle (main.js)
+    if (this._shadowKey !== key) { this._shadowKey = key; this._shadow = shadowShape(s, H); }
     const { cols, edges, any, all } = this._shadow, ctx = this.ctx;
     // The shade: every column added to one path and filled once, so neighbouring pieces don't overlap into seams.
     ctx.save(); ctx.fillStyle = 'rgba(2,5,12,.22)'; ctx.beginPath();
@@ -1681,11 +1681,11 @@ export class SkyView {
       for (const [az, el] of run) {
         const p = this.project(enuFromAzEl(az, el)); if (!p) { pen = false; continue; }
         if (pen) ctx.lineTo(p.x, p.y); else ctx.moveTo(p.x, p.y); pen = true;
-        // The label's own box (two lines, ~190 × 34 px) must stay on screen, off the sight and its ticks, and out of the
+        // The label's own box (two lines, ~224 × 30 px) must stay on screen, off the sight and its ticks, and out of the
         // column under it where the target's ticket sits (playtest 2026-10-16: it crowded "COMMON · MOON").
         const R = (this.reticlePx ?? 60) + 24, dd = Math.hypot(p.x - this.cx, p.y - this.cy);
         for (const dy of [-36, 12]) { // above the line, else below it
-          const x0 = p.x - 96, x1 = p.x + 96, y0 = p.y + dy, y1 = y0 + 30;
+          const x0 = p.x - 112, x1 = p.x + 112, y0 = p.y + dy, y1 = y0 + 30;
           if (x0 < 8 || x1 > this.w - 8 || y0 < this.h * 0.2 || y1 > this.h - 200) continue;
           const hitsSight = x1 > this.cx - R && x0 < this.cx + R && y1 > this.cy - R && y0 < this.cy + R;
           const hitsTicket = x1 > this.cx - 150 && x0 < this.cx + 150 && y1 > this.cy + R - 10 && y0 < this.cy + R + 170;
@@ -1698,9 +1698,9 @@ export class SkyView {
     if (best) {
       const x = best.p.x, y = best.top;
       ctx.textAlign = 'center'; if ('letterSpacing' in ctx) ctx.letterSpacing = '1.5px';
-      ctx.fillStyle = red ? 'rgba(255,110,90,.85)' : 'rgba(255,201,61,.85)'; ctx.font = `600 11px ${FONT}`; ctx.fillText("EARTH'S SHADOW", x, y + 11);
+      ctx.fillStyle = red ? 'rgba(255,110,90,.85)' : 'rgba(255,201,61,.85)'; ctx.font = `600 11px ${FONT}`; ctx.fillText(this.shadowLabel?.[0] ?? "EARTH'S SHADOW", x, y + 11);
       if ('letterSpacing' in ctx) ctx.letterSpacing = '0.5px';
-      ctx.fillStyle = red ? 'rgba(255,110,90,.65)' : 'rgba(255,242,179,.65)'; ctx.font = `500 11px ${FONT}`; ctx.fillText('Satellites past this line go dark', x, y + 25);
+      ctx.fillStyle = red ? 'rgba(255,110,90,.65)' : 'rgba(255,242,179,.65)'; ctx.font = `500 11px ${FONT}`; ctx.fillText(this.shadowLabel?.[1] ?? 'Satellites past this line go dark', x, y + 25);
     }
     ctx.restore();
   }
