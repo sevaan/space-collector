@@ -1,0 +1,44 @@
+/* Shared pieces for the v2 design options: the sky stage, the reveal, the shiny game, the UFO, store buttons. */
+.sky-stage { position: relative; overflow: hidden; touch-action: pan-y; cursor: grab; outline: none; isolation: isolate; }
+.sky-stage:focus-visible { box-shadow: inset 0 0 0 2px #fa8127; }
+.sk-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.sk-clock { position: absolute; left: 12px; top: 10px; z-index: 2; font: 600 13px/1 'Barlow Condensed', sans-serif; letter-spacing: .14em; color: #fff2b3; text-shadow: 0 1px 6px #000; font-variant-numeric: tabular-nums; pointer-events: none; }
+.sk-clock small { display: block; margin-top: 3px; font-size: 10.5px; letter-spacing: .12em; color: #9fb3c8; }
+.sk-hint { position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%); z-index: 2; font: 600 12px/1 'Barlow Condensed', sans-serif; letter-spacing: .2em; text-transform: uppercase; color: #cfd8e2; background: #080f1bb3; padding: 8px 12px; border-radius: 99px; pointer-events: none; white-space: nowrap; }
+.sk-collect { position: absolute; left: 50%; top: calc(50% + 74px); transform: translateX(-50%); z-index: 3; font: 600 15px/1 'Barlow Condensed', sans-serif; letter-spacing: .26em; text-transform: uppercase; color: #fa8127; background: #fa812726; border: 1px solid #fa8127; border-radius: 99px; padding: 13px 26px; cursor: pointer; }
+.sk-collect:active { background: #fa8127; color: #1a0f05; }
+.sk-me { position: absolute; right: 10px; top: 8px; z-index: 2; font: 600 11.5px/1 'Barlow Condensed', sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #9fb3c8; background: #080f1bb3; border: 1px solid #ffffff2a; border-radius: 99px; padding: 7px 10px; cursor: pointer; }
+.rv { position: absolute; inset: 0; z-index: 4; display: grid; place-items: center; background: radial-gradient(circle, color-mix(in srgb, var(--tier) 30%, transparent), #050a12e6 70%); opacity: 0; transition: opacity .3s; }
+.rv.in { opacity: 1; }
+.rv-card { height: min(86%, 380px); aspect-ratio: 2 / 3; perspective: 1200px; }
+.rv.shake .rv-card { animation: rvShake .7s ease-in-out; }
+@keyframes rvShake { 15%, 45%, 75% { transform: rotate(-3deg) translateY(-2px); } 30%, 60% { transform: rotate(3deg); } 90% { transform: rotate(-1deg); } }
+.rv-in { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform .6s cubic-bezier(.45, 0, .2, 1); }
+.rv-in.flipped { transform: rotateY(180deg); }
+.rv-in img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 4.5%; }
+.rv-back { box-shadow: 0 0 40px var(--tier); }
+.rv-front { transform: rotateY(180deg); filter: drop-shadow(0 16px 30px #000b); }
+.store { display: inline-flex; align-items: center; gap: 10px; padding: 11px 16px; border-radius: 12px; border: 1px solid #ffffff3a; background: #0d1828; color: #fff2b3; text-decoration: none; min-width: 168px; }
+.store svg { width: 22px; height: 22px; flex: none; }
+.store span { display: grid; text-align: left; font: 500 16px/1.1 'Barlow', system-ui, sans-serif; }
+.store small { font: 600 10.5px/1.2 'Barlow Condensed', sans-serif; letter-spacing: .16em; text-transform: uppercase; color: #9fb3c8; }
+.stores { display: flex; flex-wrap: wrap; gap: 10px; }
+.fade { --p: 1; display: grid; justify-items: center; gap: 10px; }
+.fd-ring { width: 180px; height: 180px; border-radius: 50%; border: 0; cursor: pointer; background: conic-gradient(#ffc93d calc(var(--p) * 360deg), #ffc93d22 0); -webkit-mask: radial-gradient(circle, transparent 62%, #000 63%); mask: radial-gradient(circle, transparent 62%, #000 63%); }
+.fade-wrap { position: relative; width: 180px; height: 180px; }
+.fade-wrap .fd-sat { position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none; font: 400 22px/1 'Russo One', sans-serif; color: #fff2b3; transition: opacity .3s; }
+.fade.now .fd-ring { background: conic-gradient(#ffd54a calc(var(--p) * 360deg), #ffd54a33 0); animation: fdPulse .5s ease-in-out infinite alternate; }
+@keyframes fdPulse { to { transform: scale(1.04); } }
+.fade.won .fd-ring { background: conic-gradient(from 0deg, #ff9ad5, #ffd54a, #7cf4ff, #c79bff, #ff9ad5); }
+.fade.missed .fd-sat { opacity: .2; }
+.fd-msg { font: 600 15px/1 'Barlow Condensed', sans-serif; letter-spacing: .22em; text-transform: uppercase; color: #ffc93d; min-height: 15px; }
+.fd-btns { display: flex; gap: 8px; }
+.fd-btns button { font: 600 12px/1 'Barlow Condensed', sans-serif; letter-spacing: .16em; text-transform: uppercase; color: #cfd8e2; background: none; border: 1px solid #ffffff33; border-radius: 99px; padding: 8px 12px; cursor: pointer; }
+.ufo { position: absolute; left: -80px; top: 30%; width: 64px; height: 34px; border: 0; padding: 0; background: none; cursor: pointer; opacity: 0; z-index: 3; }
+.ufo svg { width: 100%; height: 100%; filter: drop-shadow(0 0 10px #6dff9a); }
+.ufo.fly { animation: ufoFly 5s linear forwards; }
+.ufo.caught { animation: none; opacity: 1; left: 70%; top: 18%; }
+@keyframes ufoFly { 0% { opacity: 0; transform: translate(0, 0); } 8% { opacity: 1; } 92% { opacity: 1; } 100% { opacity: 0; transform: translate(calc(100vw + 160px), -60px); } }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+@media (prefers-reduced-motion: reduce) { .rv, .rv-in { transition: none; } .fade.now .fd-ring { animation: none; } }
+[hidden] { display: none !important; }
