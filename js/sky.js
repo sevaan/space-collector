@@ -1,17 +1,17 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.815';
+import { extinction } from './sky-limit.js?v=0.1.816';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.815';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.816';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.815';
-import { createCloudGL } from './clouds-gl.js?v=0.1.815';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.816';
+import { createCloudGL } from './clouds-gl.js?v=0.1.816';
 // Cloud colours by light: sunlit tops, shadowed bellies, and the horizon haze they melt into (0–1 RGB).
 const CLOUD_LIGHT = {
   day: { lit: [1, 1, 1], shade: [0.62, 0.68, 0.77], haze: [0.82, 0.87, 0.93] },
   dusk: { lit: [1, 0.8, 0.68], shade: [0.36, 0.33, 0.42], haze: [0.62, 0.5, 0.52] },
   night: { lit: [0.22, 0.25, 0.31], shade: [0.1, 0.12, 0.16], haze: [0.14, 0.15, 0.2] },
 };
-import { TIER_INFO } from './rarity.js?v=0.1.815';
+import { TIER_INFO } from './rarity.js?v=0.1.816';
 
 const RAD = Math.PI / 180;
 const BELOW_ICON = 10.5, BELOW_ICON_HIT = 20; // every satellite under the horizon, passes and halo alike (80% of 13 since 2026-10-13); lined up in the circle it grows
@@ -975,7 +975,7 @@ export class SkyView {
       const hidden = ['voyager', 'voyager2', 'pioneer10', 'pioneer11', 'newhorizons', 'wow', 'arecibo', 'halley'].includes(s.kind);
       if (hidden && !s.inCircle) continue;
       if (s.done) continue; // once found, a secret leaves the sky for good (2026-10-09, Sevaan)
-      const sc = s.inCircle && !s.done ? 1.6 : 1;
+      const sc = s.inCircle && !s.done ? 4.2 : 1.2; // big enough in the circle to read as the thing, not a dot (2026-10-17, Sevaan)
       ctx.save(); ctx.translate(p.x, p.y); ctx.scale(sc, sc);
       if (s.kind === 'santa') {
         ctx.shadowColor = 'rgba(255,210,122,.6)'; ctx.shadowBlur = 5; ctx.fillStyle = '#fff2b3';
@@ -986,12 +986,20 @@ export class SkyView {
         ctx.shadowColor = 'rgba(255,90,90,.55)'; ctx.shadowBlur = 4; ctx.fillStyle = '#d22b2b';
         ctx.beginPath(); ctx.moveTo(-6, 1.5); ctx.quadraticCurveTo(-5.5, -1, -2, -1.2); ctx.lineTo(0, -2.6); ctx.lineTo(3, -2.6); ctx.lineTo(5, -1); ctx.quadraticCurveTo(6.5, -0.8, 6.5, 1.5); ctx.closePath(); ctx.fill();
         ctx.shadowBlur = 0; ctx.fillStyle = '#111'; ctx.beginPath(); ctx.arc(-3.4, 1.7, 1.1, 0, Math.PI * 2); ctx.arc(3.6, 1.7, 1.1, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = '#f4f4f4'; ctx.beginPath(); ctx.arc(1.4, -2, 0.9, 0, Math.PI * 2); ctx.fill();
-      } else if (s.kind === 'voyager' || s.kind === 'voyager2') {
-        ctx.shadowColor = 'rgba(226,181,60,.7)'; ctx.shadowBlur = 5; ctx.fillStyle = '#e2b53c'; ctx.beginPath(); ctx.arc(0, 0, 2.6, 0, Math.PI * 2); ctx.fill();
-        ctx.fillStyle = '#2a1a08'; ctx.beginPath(); ctx.arc(0, 0, 0.8, 0, Math.PI * 2); ctx.fill();
-      } else if (s.kind === 'pioneer10' || s.kind === 'pioneer11') { // a dish with its boom
-        ctx.shadowColor = 'rgba(226,181,60,.6)'; ctx.shadowBlur = 4; ctx.strokeStyle = '#fff2b3'; ctx.lineWidth = 0.9;
-        ctx.beginPath(); ctx.ellipse(0, 0, 3, 1.2, -0.5, 0, Math.PI * 2); ctx.stroke(); ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(4.5, 2.6); ctx.stroke();
+      } else if (s.kind === 'voyager' || s.kind === 'voyager2') { // the spacecraft: its big dish, the long magnetometer boom, the RTG arm
+        ctx.shadowColor = 'rgba(226,181,60,.7)'; ctx.shadowBlur = 4; ctx.strokeStyle = '#e8e3c8'; ctx.lineWidth = 0.6;
+        ctx.beginPath(); ctx.moveTo(0.6, 1); ctx.lineTo(-7.5, -5.5); ctx.moveTo(1, 1.4); ctx.lineTo(5.5, 4.2); ctx.stroke();
+        ctx.fillStyle = '#e8e3c8'; ctx.fillRect(4.6, 3.4, 2.2, 1.6);
+        ctx.fillStyle = '#e2b53c'; ctx.beginPath(); ctx.ellipse(0, -0.6, 3.4, 2.2, -0.35, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#7a5a14'; ctx.beginPath(); ctx.ellipse(0, -0.6, 1.4, 0.9, -0.35, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#c9a44a'; ctx.fillRect(-0.9, 0.9, 2, 1.5); // the bus under the dish
+      } else if (s.kind === 'pioneer10' || s.kind === 'pioneer11') { // its dish face-on, two RTG arms and the magnetometer boom
+        ctx.shadowColor = 'rgba(226,181,60,.6)'; ctx.shadowBlur = 4; ctx.strokeStyle = '#e8e3c8'; ctx.lineWidth = 0.55;
+        ctx.beginPath(); ctx.moveTo(-1.5, 1.8); ctx.lineTo(-5, 4.6); ctx.moveTo(1.5, 1.8); ctx.lineTo(5, 4.6); ctx.moveTo(0, 2.6); ctx.lineTo(0, 8); ctx.stroke();
+        ctx.fillStyle = '#e8e3c8'; ctx.fillRect(-5.9, 4.2, 1.8, 1.2); ctx.fillRect(4.1, 4.2, 1.8, 1.2);
+        ctx.fillStyle = '#fff2b3'; ctx.beginPath(); ctx.arc(0, -0.6, 3.2, 0, Math.PI * 2); ctx.fill();
+        ctx.strokeStyle = '#7a5a14'; ctx.lineWidth = 0.4; ctx.beginPath(); ctx.arc(0, -0.6, 1.9, 0, Math.PI * 2); ctx.stroke();
+        ctx.fillStyle = '#7a5a14'; ctx.beginPath(); ctx.arc(0, -0.6, 0.55, 0, Math.PI * 2); ctx.fill();
       } else if (s.kind === 'newhorizons') { // a little triangle body with its dish
         ctx.shadowColor = 'rgba(143,208,255,.6)'; ctx.shadowBlur = 4; ctx.fillStyle = '#c9d8e6'; ctx.beginPath(); ctx.moveTo(-2.5, 2); ctx.lineTo(2.5, 2); ctx.lineTo(0, -2.2); ctx.closePath(); ctx.fill();
         ctx.strokeStyle = '#fff2b3'; ctx.lineWidth = 0.8; ctx.beginPath(); ctx.arc(0, -0.4, 3, Math.PI * 1.1, Math.PI * 1.9); ctx.stroke();
