@@ -29,12 +29,18 @@ h2 { font: 500 13px/1 'SC Label'; letter-spacing: .24em; text-transform: upperca
 .sets { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; margin-top: 9px; }
 .sets button { font: 500 14px/1.1 'SC Label'; letter-spacing: .1em; text-transform: uppercase; color: var(--cream); background: #0e1a29; border: 1.5px solid var(--line); border-radius: 12px; min-height: 48px; padding: 4px 6px; cursor: pointer; }
 .sets button small { display: block; font-size: 11px; letter-spacing: .08em; color: var(--muted); text-transform: none; margin-top: 2px; }
-.sets button.chosen { border-color: var(--orange); box-shadow: inset 0 0 0 1px var(--orange); }
+.sets button.sel { border-color: var(--cream); }
+.sets button.locked { border-color: var(--orange); box-shadow: inset 0 0 0 1px var(--orange); }
+.sets button.locked::after { content: ' ✓'; color: var(--orange); }
+.act { display: flex; align-items: center; gap: 10px; margin-top: 9px; }
+.act .use { font: 500 15px/1 'SC Label'; letter-spacing: .14em; text-transform: uppercase; color: #080f1b; background: var(--orange); border: 0; border-radius: 10px; padding: 0 18px; min-height: 42px; cursor: pointer; }
+.act .use:disabled { opacity: .35; cursor: default; }
+.act .st { font-size: 14px; color: var(--muted); }
+.act .st b { color: var(--orange); font-weight: 500; }
 .sets button.playing { background: rgba(250,129,39,.2); }
 .alt { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; margin-top: 8px; font-size: 14px; color: var(--muted); }
 .alt select { font: inherit; font-size: 15px; color: var(--cream); background: #0e1a29; border: 1px solid var(--line); border-radius: 10px; padding: 6px 8px; min-height: 40px; }
 .alt button { font: 500 14px/1 'SC Label'; letter-spacing: .12em; text-transform: uppercase; color: var(--cream); background: #0e1a29; border: 1px solid var(--line); border-radius: 10px; padding: 0 12px; min-height: 40px; cursor: pointer; }
-.alt button.use.on { border-color: var(--orange); color: var(--orange); }
 .bar { position: fixed; left: 0; right: 0; bottom: 0; padding: 12px 16px max(12px, env(safe-area-inset-bottom)); background: rgba(8,15,27,.96); border-top: 1px solid var(--line); display: flex; gap: 10px; justify-content: center; }
 .bar button { font: 500 15px/1 'SC Label'; letter-spacing: .14em; text-transform: uppercase; border-radius: 12px; padding: 0 18px; min-height: 46px; cursor: pointer; border: 1px solid var(--orange); background: var(--orange); color: #080f1b; }
 .bar button.ghost { background: none; color: var(--cream); border-color: var(--line); }
@@ -45,7 +51,7 @@ h2 { font: 500 13px/1 'SC Label'; letter-spacing: .24em; text-transform: upperca
 <div class="music"><button id="music" type="button">▶ Music</button><span>Permafrost</span><input id="vol" type="range" min="0" max="100" value="35" aria-label="Music volume"></div>
 <div class="wrap">
 <h1>Sound board</h1>
-<p class="lead">Every sound in the game and when it plays. Tap a set to hear that version: <b>Old</b> (the sounds before today), <b>Mechanical</b> (in the game now), <b>Soft</b> or <b>Zen</b>. The one you tap last is your choice for that moment. Or try any cue from any set below it. Then "Copy my picks" and paste them to me.</p>
+<p class="lead">Every sound in the game and when it plays. Tap a version to hear it: <b>Old</b> (the sounds before today), <b>Mechanical</b> (in the game now), <b>Soft</b> or <b>Zen</b>, or try any cue from any set below it. Tap <b>Use</b> to lock in the one you last played (✓). When you're done, "Copy my picks" and paste them to me.</p>
 <div id="list"></div>
 <pre id="out" hidden></pre>
 </div>
@@ -96,8 +102,8 @@ const G = [
   ]],
 ];
 
-let picks = {}; try { picks = JSON.parse(localStorage.getItem('sbPicks2') || '{}'); } catch {}
-const save = () => { try { localStorage.setItem('sbPicks2', JSON.stringify(picks)); } catch {} };
+let picks = {}; try { picks = JSON.parse(localStorage.getItem('sbPicks3') || '{}'); } catch {}
+const save = () => { try { localStorage.setItem('sbPicks3', JSON.stringify(picks)); } catch {} };
 const src = (set, name, cue) => set === 'old' ? `sound-board/old/${name}.mp3` : set === 'mechanical' && cue === undefined ? `../assets/audio/sfx/${name}.mp3` : `sound-board/${set}/${cue}.mp3`;
 let cur = null;
 const play = (url, btn) => { if (cur) { cur.pause(); cur.btn?.classList.remove('playing'); } const a = new Audio(url); a.btn = btn; btn?.classList.add('playing'); a.onended = () => btn?.classList.remove('playing'); a.play().catch(() => {}); cur = a; return a; };
@@ -106,16 +112,25 @@ for (const [title, rows] of G) {
   const h = document.createElement('h2'); h.textContent = title; list.append(h);
   for (const [name, cue, label, when] of rows) {
     const r = document.createElement('div'); r.className = 'row'; r.dataset.name = name; r.dataset.cue = cue;
-    const p = picks[name] ?? { set: 'mechanical' };
+    const lk = picks[name] ?? null;
     r.innerHTML = `<div class="ev"><b>${label}</b><small>${when}</small></div>
-      <div class="sets">${SETS.map(([k, l, note]) => `<button type="button" data-set="${k}" class="${p.set === k && !p.cue ? 'chosen' : ''}">${l}<small>${k === 'old' ? note : `${cue}${note ? ` · ${note}` : ''}`}</small></button>`).join('')}</div>
-      <div class="alt">Or: <select class="aset">${SETS.slice(1).map(([k, l]) => `<option value="${k}"${p.cue && p.set === k ? ' selected' : ''}>${l}</option>`).join('')}</select><select class="acue">${CUES.map((c) => `<option${c === (p.cue ?? cue) ? ' selected' : ''}>${c}</option>`).join('')}</select><button type="button" class="try">Try</button><button type="button" class="use${p.cue ? ' on' : ''}">Use</button></div>`;
-    const chips = [...r.querySelectorAll('.sets button')], aset = r.querySelector('.aset'), acue = r.querySelector('.acue'), use = r.querySelector('.use');
-    const choose = (pk) => { chips.forEach((c) => c.classList.toggle('chosen', !pk.cue && c.dataset.set === pk.set)); use.classList.toggle('on', !!pk.cue); if (pk.set === 'mechanical' && !pk.cue) delete picks[name]; else picks[name] = pk; save(); };
-    chips.forEach((c) => c.onclick = () => { const set = c.dataset.set; play(set === 'mechanical' ? src('mechanical', name) : src(set, name, cue), c); choose({ set }); });
-    r.querySelector('.try').onclick = () => play(src(aset.value, name, acue.value), null);
-    acue.onchange = aset.onchange = () => play(src(aset.value, name, acue.value), null);
-    use.onclick = () => { play(src(aset.value, name, acue.value), null); choose({ set: aset.value, cue: acue.value }); };
+      <div class="sets">${SETS.map(([k, l, note]) => `<button type="button" data-set="${k}">${l}<small>${k === 'old' ? note : `${cue}${note ? ` · ${note}` : ''}`}</small></button>`).join('')}</div>
+      <div class="alt">Or any cue: <select class="aset">${SETS.slice(1).map(([k, l]) => `<option value="${k}">${l}</option>`).join('')}</select><select class="acue">${CUES.map((c) => `<option${c === cue ? ' selected' : ''}>${c}</option>`).join('')}</select><button type="button" class="try">Try</button></div>
+      <div class="act"><button type="button" class="use" disabled>Use</button><span class="st"></span></div>`;
+    const chips = [...r.querySelectorAll('.sets button')], aset = r.querySelector('.aset'), acue = r.querySelector('.acue'), use = r.querySelector('.use'), st = r.querySelector('.st');
+    let sel = null; // what you last played on this row: { set } or { set, cue }
+    const words = (pk) => pk.cue ? `${SETS.find(([k]) => k === pk.set)[1]} · ${pk.cue}` : pk.set === 'old' ? 'Old' : `${SETS.find(([k]) => k === pk.set)[1]} · ${cue}`;
+    const paint = () => {
+      const lock = picks[name];
+      chips.forEach((c) => { c.classList.toggle('sel', !!sel && !sel.cue && sel.set === c.dataset.set); c.classList.toggle('locked', !!lock && !lock.cue && lock.set === c.dataset.set); });
+      use.disabled = !sel || (lock && lock.set === sel.set && lock.cue === sel.cue);
+      st.innerHTML = lock ? `Locked: <b>${words(lock)}</b>` : sel ? `Playing: ${words(sel)}` : 'Not chosen yet';
+    };
+    chips.forEach((c) => c.onclick = () => { const set = c.dataset.set; play(set === 'mechanical' ? src('mechanical', name) : src(set, name, cue), c); sel = { set }; paint(); });
+    const tryCue = () => { play(src(aset.value, name, acue.value), null); sel = { set: aset.value, cue: acue.value }; paint(); };
+    r.querySelector('.try').onclick = tryCue; acue.onchange = aset.onchange = tryCue;
+    use.onclick = () => { if (!sel) return; picks[name] = { ...sel }; save(); paint(); };
+    paint();
     list.append(r);
   }
 }
@@ -129,17 +144,19 @@ document.getElementById('all').onclick = async () => {
   const hs = [...list.querySelectorAll('h2')]; const h = hs.slice().reverse().find((x) => x.getBoundingClientRect().top < innerHeight * .45) ?? hs[0];
   let el = h.nextElementSibling;
   while (el && el.classList.contains('row')) {
-    const name = el.dataset.name, pk = picks[name] ?? { set: 'mechanical' }, chip = el.querySelector(`.sets button[data-set="${pk.set}"]`);
+    const name = el.dataset.name, pk = picks[name] ?? { set: 'mechanical' }, chip = el.querySelector(`.sets button[data-set="${pk.set}"]`); // your locked choice, or what's in the game
     const a = play(pk.cue ? src(pk.set, name, pk.cue) : pk.set === 'mechanical' ? src('mechanical', name) : src(pk.set, name, el.dataset.cue), pk.cue ? null : chip);
     await new Promise((res) => { a.onended = () => { chip?.classList.remove('playing'); setTimeout(res, 350); }; setTimeout(res, 2600); });
     el = el.nextElementSibling;
   }
 };
 document.getElementById('copy').onclick = async () => {
-  const lines = Object.entries(picks).map(([n, p]) => { const row = list.querySelector(`[data-name="${n}"]`); return `${row.querySelector('b').textContent} (${n}): ${p.cue ? `${p.set} ${p.cue}` : p.set === 'old' ? 'the old sound' : `${p.set} ${row.dataset.cue}`}`; });
-  const text = lines.length ? `Sound picks (everything else stays Mechanical):\n${lines.join('\n')}` : 'No changes: keep Mechanical for everything.';
+  const rows = [...list.querySelectorAll('.row')], locked = rows.filter((r) => picks[r.dataset.name]);
+  const lines = locked.map((r) => { const n = r.dataset.name, p = picks[n], c = r.dataset.cue; return `${r.querySelector('b').textContent} (${n}): ${p.set === 'old' ? 'old' : `${p.set} ${p.cue ?? c}`}`; });
+  const left = rows.length - locked.length;
+  const text = lines.length ? `Space Collector sounds, locked in:\n${lines.join('\n')}${left ? `\n(${left} not chosen: keep what's in the game)` : ''}` : 'Nothing locked in yet.';
   const out = document.getElementById('out'); out.hidden = false; out.textContent = text;
-  try { await navigator.clipboard.writeText(text); document.getElementById('copy').textContent = 'Copied'; } catch { document.getElementById('copy').textContent = 'Shown below'; }
+  try { await navigator.clipboard.writeText(text); document.getElementById('copy').textContent = 'Copied'; setTimeout(() => { document.getElementById('copy').textContent = 'Copy my picks'; }, 1800); } catch { document.getElementById('copy').textContent = 'Shown below'; }
 };
 </script>
 </body>
