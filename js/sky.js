@@ -1,17 +1,17 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.839';
+import { extinction } from './sky-limit.js?v=0.1.840';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.839';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.840';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.839';
-import { createCloudGL } from './clouds-gl.js?v=0.1.839';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.840';
+import { createCloudGL } from './clouds-gl.js?v=0.1.840';
 // Cloud colours by light: sunlit tops, shadowed bellies, and the horizon haze they melt into (0–1 RGB).
 const CLOUD_LIGHT = {
   day: { lit: [1, 1, 1], shade: [0.62, 0.68, 0.77], haze: [0.82, 0.87, 0.93] },
   dusk: { lit: [1, 0.8, 0.68], shade: [0.36, 0.33, 0.42], haze: [0.62, 0.5, 0.52] },
   night: { lit: [0.22, 0.25, 0.31], shade: [0.1, 0.12, 0.16], haze: [0.14, 0.15, 0.2] },
 };
-import { TIER_INFO } from './rarity.js?v=0.1.839';
+import { TIER_INFO } from './rarity.js?v=0.1.840';
 
 const RAD = Math.PI / 180;
 const BELOW_ICON = 10.5, BELOW_ICON_HIT = 20; // every satellite under the horizon, passes and halo alike (80% of 13 since 2026-10-13); lined up in the circle it grows
@@ -925,7 +925,9 @@ export class SkyView {
     const ctx = this.ctx, k = Math.min(1, (dayF - 0.5) * 4);
     this.fossilGrow = (this.fossilGrow ?? 1) + ((f.inCircle ? 1.3 : 1) - (this.fossilGrow ?? 1)) * 0.15; // grows a little in the circle, eased (2026-10-13)
     ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(ang > Math.PI / 2 || ang < -Math.PI / 2 ? ang + Math.PI : ang); ctx.scale(this.fossilGrow, this.fossilGrow);
-    if (f.inCircle && !f.done) { ctx.shadowColor = 'rgba(255,229,192,.55)'; ctx.shadowBlur = 14; ctx.globalAlpha = 0.95 * k; }
+    // Not found yet (2026-10-18, Sevaan): plainly there at 15%, and held in the circle it fades in over the 4 s hold, the
+    // glow growing with it. Once found it goes back to the soft, sunk-in look below.
+    if (!f.done) { const hk = f.inCircle ? Math.max(0, Math.min(1, f.hold ?? 0)) : 0; if (hk > 0) { ctx.shadowColor = 'rgba(255,229,192,.55)'; ctx.shadowBlur = 14 * hk; } ctx.globalAlpha = (0.15 + 0.8 * hk) * k; }
     else { ctx.globalCompositeOperation = 'soft-light'; ctx.globalAlpha = 0.9 * k; ctx.drawImage(f.img, -w / 2, -h / 2, w, h); ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 0.18 * k; }
     ctx.drawImage(f.img, -w / 2, -h / 2, w, h);
     ctx.restore();
