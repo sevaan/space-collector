@@ -24,11 +24,14 @@ const T = {
   intro: [0, 4], raise: [4, 5.4], sky: [5.4, 14], iss: [14, 16], saturn: [16, 18], thor: [18, 20],
   grid: [20, 22], moon: [22, 23.6], patch: [23.6, 25], outro: [25, 30],
 };
-const CAPTIONS = [ // [from, to, text]  (the intro and end card carry their own words)
-  [5.5, 7.7, 'Point.'], [7.8, 9.6, 'Track.'], [9.7, 12.4, 'Collect.'],
-  [14.15, 15.9, 'The Space Station'], [16.15, 17.9, 'Saturn'], [18.15, 19.9, 'A rocket stage from 1964'],
+const CAPTIONS = [ // [from, to, text]: the script's lines, on screen (no voiceover: Sevaan, 2026-10-18). The intro and
+  // end card carry their own words; all of them also go to store/promo/space-collector-30s.srt.
+  [4.3, 7.6, 'Point your phone. Find out.'], [7.75, 9.65, 'Track it.'], [9.75, 11.7, 'Collect it.'], [11.8, 13.9, 'Keep its card.'],
+  [14.15, 15.9, 'The Space Station.'], [16.15, 17.9, 'Saturn.'], [18.15, 19.9, 'A rocket stage from 1964.'],
   [20.3, 24.85, 'Build a collection from the sky above you.'],
 ];
+const SRT_EXTRA = [[0.4, 3.9, 'What’s that light?'], [25.5, 30, 'Space Collector. Collect the night sky.']];
+const VOICE = false; // the ElevenLabs voiceover (the VO table) is kept but off
 const VO = [ // [at, file, words]
   [0.45, 'vo1', 'What’s that light?'], [4.25, 'vo2', 'Point your phone. Find out.'], [8.1, 'vo3', 'Track it. Collect it. Keep its card.'],
   [14.2, 'vo4', 'The Space Station.'], [16.15, 'vo5', 'Saturn.'], [18.1, 'vo6', 'A rocket stage from 1964.'],
@@ -231,21 +234,24 @@ function build() {
   events.push(['page', 14.05, 0.55], ['page', 16.05, 0.55], ['page', 18.05, 0.55], ['stamp', 20.2, 0.5], ['seen', 22.05, 0.5], ['patch', 23.7, 0.7], ['complete', 25.6, 0.7]);
   const ins = [['-stream_loop', '-1', '-i', join(ROOT, 'assets/audio/permafrost.m4a')], ['-f', 'lavfi', '-t', '30', '-i', 'anoisesrc=color=brown:amplitude=0.5:sample_rate=48000']];
   events.forEach(([n]) => ins.push(['-i', SFX(n)]));
-  VO.forEach(([, n]) => ins.push(['-i', join(TMP, n + '.wav')]));
-  let af = `[0:a]atrim=0:30,asetpts=N/SR/TB,volume=0.16,afade=t=in:st=0:d=2.5,afade=t=out:st=27.5:d=2.5[mus];`
+  if (VOICE) VO.forEach(([, n]) => ins.push(['-i', join(TMP, n + '.wav')]));
+  let af = `[0:a]atrim=0:30,asetpts=N/SR/TB,volume=${VOICE ? 0.16 : 0.26},afade=t=in:st=0:d=2.5,afade=t=out:st=27.5:d=2.5[mus];`
     + `[1:a]lowpass=f=700,highpass=f=60,volume=0.10,afade=t=in:st=0:d=1,afade=t=out:st=8:d=3,apad,atrim=0:30[amb];`;
   const lab = ['[mus]', '[amb]'];
   events.forEach(([, t, g], i) => { af += `[${i + 2}:a]aformat=sample_rates=48000:channel_layouts=stereo,volume=${g},adelay=${Math.round(t * 1000)}|${Math.round(t * 1000)}[e${i}];`; lab.push(`[e${i}]`); });
-  VO.forEach(([t], i) => { const k = events.length + 2 + i; af += `[${k}:a]aformat=sample_rates=48000:channel_layouts=stereo,volume=1.6,adelay=${Math.round(t * 1000)}|${Math.round(t * 1000)}[vo${i}];`; lab.push(`[vo${i}]`); });
+  if (VOICE) VO.forEach(([t], i) => { const k = events.length + 2 + i; af += `[${k}:a]aformat=sample_rates=48000:channel_layouts=stereo,volume=1.6,adelay=${Math.round(t * 1000)}|${Math.round(t * 1000)}[vo${i}];`; lab.push(`[vo${i}]`); });
   // the voice ducks the music a little
   af += `${lab.join('')}amix=inputs=${lab.length}:normalize=0:duration=longest,atrim=0:30,alimiter=limit=0.9,loudnorm=I=-16:TP=-1.5:LRA=11[aout]`;
   ff(...ins.flat(), '-filter_complex', af, '-map', '[aout]', '-ar', '48000', '-c:a', 'pcm_s16le', join(TMP, 'sound.wav'));
   const out = join(OUT, 'space-collector-30s.mp4');
   ff('-i', join(TMP, 'picture.mp4'), '-i', join(TMP, 'sound.wav'), '-c:v', 'copy', '-c:a', 'aac', '-b:a', '256k', '-shortest', '-movflags', '+faststart', out);
+  const ts = (t) => { const ms = Math.round(t * 1000), h = Math.floor(ms / 3600000), m = Math.floor(ms / 60000) % 60, sec = Math.floor(ms / 1000) % 60; return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(sec).padStart(2, '0')},${String(ms % 1000).padStart(3, '0')}`; };
+  const srt = [...SRT_EXTRA, ...CAPTIONS].sort((a, b) => a[0] - b[0]).map(([a, z, text], i) => `${i + 1}\n${ts(a)} --> ${ts(z)}\n${text}\n`).join('\n');
+  writeFileSync(out.replace(/\.mp4$/, '.srt'), srt);
   console.log('→', out, dur(out).toFixed(2), 's');
 }
 
 if (step === 'record' || step === 'all') await record();
 if (step === 'scenes' || step === 'all') await scenes();
-if (step === 'voice' || step === 'all') await voice();
+if ((step === 'voice' || step === 'all') && VOICE) await voice();
 if (step === 'build' || step === 'all') build();

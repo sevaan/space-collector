@@ -636,3 +636,7 @@ body[data-view]:not([data-view="owned"]) .logbook .lb-pic { max-height: 0 !impor
 .logbook .lb-pic { overflow: hidden; max-height: 280px; transition: max-height .32s cubic-bezier(.3,.7,.3,1), opacity .25s ease, margin .32s ease, padding .32s ease; }
 @media (prefers-reduced-motion: reduce) { .logbook .lb-pic { transition: none; } }
 .pw-item { content-visibility: auto; contain-intrinsic-size: auto 132px; }
+/* "Up tonight" suggestions on Mine get their own labelled row under your cards (2026-10-18 playtest). */
+.grid-head.up-next-head { grid-column: 1 / -1; display: flex; align-items: baseline; gap: 10px; margin: 14px 0 2px; padding-top: 14px; border-top: 1px solid #22344a; }
+.up-next-head b { font: 500 13px/1 'SC Label', sans-serif; letter-spacing: .2em; text-transform: uppercase; color: var(--accent, #fa8127); }
+.up-next-head span { font: 500 13px/1.2 'SC Label', sans-serif; letter-spacing: .06em; color: #8fa3b8; }

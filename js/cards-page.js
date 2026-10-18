@@ -1,29 +1,29 @@
-import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.848';
-import { computeStats, statsHtml } from './stats.js?v=0.1.848';
-import { nightKey } from './observation.js?v=0.1.848';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.848';
-import { sfx } from './sfx.js?v=0.1.848';
-import { expandFacts } from './catalog-facts.js?v=0.1.848';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.848';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.848';
-import { ticket } from './toast.js?v=0.1.848';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.848';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.848';
-import { cardArt } from './art.js?v=0.1.848';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.848';
-import { applyBack } from './card-backs.js?v=0.1.848';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.848';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.848';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.848';
-import { STORIES } from './stories.js?v=0.1.848';
-import { loadConstellations, conList } from './constellations.js?v=0.1.848';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.848';
-import { eventBadges, nextEvent } from './events.js?v=0.1.848';
-import { shareCardEl } from './share-card.js?v=0.1.848';
-import { forgetSighting } from './cloud-backup.js?v=0.1.848';
-import { allSightings, deleteSighting } from './store.js?v=0.1.848';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.848';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.848';
+import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.849';
+import { computeStats, statsHtml } from './stats.js?v=0.1.849';
+import { nightKey } from './observation.js?v=0.1.849';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.849';
+import { sfx } from './sfx.js?v=0.1.849';
+import { expandFacts } from './catalog-facts.js?v=0.1.849';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.849';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.849';
+import { ticket } from './toast.js?v=0.1.849';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.849';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.849';
+import { cardArt } from './art.js?v=0.1.849';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.849';
+import { applyBack } from './card-backs.js?v=0.1.849';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.849';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.849';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.849';
+import { STORIES } from './stories.js?v=0.1.849';
+import { loadConstellations, conList } from './constellations.js?v=0.1.849';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.849';
+import { eventBadges, nextEvent } from './events.js?v=0.1.849';
+import { shareCardEl } from './share-card.js?v=0.1.849';
+import { forgetSighting } from './cloud-backup.js?v=0.1.849';
+import { allSightings, deleteSighting } from './store.js?v=0.1.849';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.849';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.849';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -516,6 +516,8 @@ function appendUpNext(total) {
       tile.addEventListener('click', () => openUpNext(i));
       slot.append(tile); frag.append(slot);
     }
+    // Their own row, clearly labelled (2026-10-18 playtest: they looked like part of your collection).
+    if (upCards.length) { const head = document.createElement('div'); head.className = 'grid-head up-next-head'; head.innerHTML = '<b>Up tonight</b><span>Not yours yet · catch them tonight</span>'; frag.prepend(head); }
     $('grid').append(frag);
   }
 }
