@@ -92,3 +92,7 @@ export function nativeChrome() {
   const sb = plugin('StatusBar');
   sb?.setStyle({ style: 'DARK' }).catch(() => {}); // DARK = light text, for dark backgrounds
 }
+
+// The same haptics with the player's Vibration setting applied (localStorage 'haptics'), for pages without main.js's
+// buzz (the Collection; 2026-10-17 haptics playtest: it had none at all).
+export function feel(kind = 'light') { try { if (localStorage.getItem('haptics') === '0') return; } catch {} haptic(kind); }

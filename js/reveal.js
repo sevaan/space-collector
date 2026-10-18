@@ -5,12 +5,12 @@
 //  Everything scales with rarity (Legendary dims the sky, shockwave, held breath, slow flip, fanfare).
 // Waits use timers, not animation.finished, so a paused tab can never freeze the sequence.
 
-import { sfx, loadSfx } from './sfx.js?v=0.1.833';
-import { audioCtx } from './audio-ctx.js?v=0.1.833';
-import { TIER_INFO } from './rarity.js?v=0.1.833';
-import { levelFor, attachTilt, attachGyro, attachFlip, throwOff } from './card.js?v=0.1.833';
-import { applyBack } from './card-backs.js?v=0.1.833';
-import { addStarfield } from './starfield.js?v=0.1.833';
+import { sfx, loadSfx } from './sfx.js?v=0.1.834';
+import { audioCtx } from './audio-ctx.js?v=0.1.834';
+import { TIER_INFO } from './rarity.js?v=0.1.834';
+import { levelFor, attachTilt, attachGyro, attachFlip, throwOff } from './card.js?v=0.1.834';
+import { applyBack } from './card-backs.js?v=0.1.834';
+import { addStarfield } from './starfield.js?v=0.1.834';
 
 const FX = {
   common:    { particles: 14,  flip: 520,  spin: 0,   dim: 0,   shock: false, notes: [880],                            hold: 0 },
@@ -259,7 +259,7 @@ const STAMP_INK = '#8fb8ff';
 async function finish({ fx, color, fresh, seen, level, levelUp, card, alive, fleet = null, newStamp = false, nights = 0, collected = 0, con = null, shiny = null }) {
   const r = $('rv-holder').getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height / 2;
   // The haptic lands with the payoff, not when the sealed card arrives (UX room 2026-10-12): main.js listens.
-  dispatchEvent(new CustomEvent('sc:payoff', { detail: { tier: Object.keys(FX).find((k) => FX[k] === fx) ?? 'common', fresh, levelUp } }));
+  dispatchEvent(new CustomEvent('sc:payoff', { detail: { tier: Object.keys(FX).find((k) => FX[k] === fx) ?? 'common', fresh, levelUp, newStamp: !!newStamp } }));
   // The payoff: the rarity stinger for a new card, a soft tap for one you have; layers for level-up, stamp and shiny.
   const tk = Object.keys(STINGER).find((k) => FX[k] === fx) ?? 'common';
   sfx(fresh ? STINGER[tk] : newStamp ? 'stamp' : 'seen');
@@ -313,7 +313,8 @@ function showNews(news, alive) {
     const c = document.createElement('span'); c.className = `rv-chip rv-chip--${n.kind}`;
     c.innerHTML = `${n.kind === 'more' ? '' : `<i aria-hidden="true">${NEWS_ICON[n.kind] ?? '◆'}</i>`}${esc(n.text)}${n.xp ? `<b>+${n.xp}</b>` : ''}`;
     box.append(c); requestAnimationFrame(() => c.classList.add('in'));
-    sfx('xp', { gain: 0.7 });
+    // Each chip sounds and feels like what it is (2026-10-17 haptics playtest: a rank-up got the generic XP tick).
+    if (n.kind === 'rank') sfx('rankup'); else if (n.kind === 'mission') { sfx('mission', { gain: 0.8 }); dispatchEvent(new CustomEvent('sc:feel', { detail: 'light' })); } else if (n.kind === 'patch') sfx('patch', { gain: 0.7 }); else sfx('xp', { gain: 0.7 });
   }, (reduced() ? 0 : 900) + i * (reduced() ? 0 : 260)));
 }
 // The rank bar under a new card (design D): XP counts up from before to after while the bar fills.
@@ -323,13 +324,23 @@ function setRank(r) {
   rankInfo = r; $('reveal').classList.toggle('has-rank', !!r); $('rv-rank').hidden = !r;
   if (!r) return;
   const pct = (v) => (r.next ? Math.max(0, Math.min(1, (v - r.at) / (r.next - r.at))) : 1) * 100;
-  $('rv-rank-name').textContent = r.name; $('rv-rank-next').textContent = r.next ?? r.to;
-  $('rv-rank-xp').textContent = Math.max(r.at, r.from);
-  $('rv-rank-fill').style.transition = 'none'; $('rv-rank-fill').style.width = `${pct(Math.max(r.at, r.from))}%`;
+  // A rank-up starts on the old rank, part-filled (2026-10-17 haptics playtest: it began at the new rank's floor, so
+  // the old rank never filled); fillRank runs it to the end, flashes, and carries on into the new one.
+  const p = r.prev, startPct = p ? Math.max(0, Math.min(1, (r.from - p.at) / Math.max(1, (p.next ?? r.at) - p.at))) * 100 : pct(Math.max(r.at, r.from));
+  $('rv-rank-name').textContent = p ? p.name : r.name; $('rv-rank-next').textContent = p ? (p.next ?? r.at) : (r.next ?? r.to);
+  $('rv-rank-xp').textContent = p ? r.from : Math.max(r.at, r.from);
+  $('rv-rank-fill').style.transition = 'none'; $('rv-rank-fill').style.width = `${startPct}%`;
   r.pct = pct;
 }
 function fillRank(alive) {
   const r = rankInfo; if (!r) return;
+  if (r.prev && !r.wrapped) { // fill the old rank, flash, swap the name, then fill the new rank from its floor
+    r.wrapped = true; const f = $('rv-rank-fill'), ms = reduced() ? 1 : 500;
+    setTimeout(() => { if (!alive()) return; f.style.transition = `width ${ms}ms cubic-bezier(.4,0,.6,1)`; f.style.width = '100%'; $('rv-rank-xp').textContent = r.prev.next ?? r.at; }, reduced() ? 0 : 200);
+    setTimeout(() => { if (!alive()) return; $('rv-rank').classList.remove('wrap'); void $('rv-rank').offsetWidth; $('rv-rank').classList.add('wrap'); sfx('rankup'); dispatchEvent(new CustomEvent('sc:feel', { detail: 'success' }));
+      $('rv-rank-name').textContent = r.name; $('rv-rank-next').textContent = r.next ?? r.to; f.style.transition = 'none'; f.style.width = '0%'; void f.offsetWidth; r.from = r.at; fillRank(alive); }, reduced() ? 0 : 200 + ms + 160);
+    return;
+  }
   const from = Math.max(r.at, r.from), ms = reduced() ? 1 : 900, t0 = performance.now() + (reduced() ? 0 : 200);
   setTimeout(() => { if (!alive()) return; const f = $('rv-rank-fill'); f.style.transition = `width ${ms}ms cubic-bezier(.3,.8,.3,1)`; f.style.width = `${r.pct(r.to)}%`; }, reduced() ? 0 : 200);
   const step = (t) => { if (!alive()) return; const k = Math.max(0, Math.min(1, (t - t0) / ms)), e = 1 - (1 - k) ** 3; { const v = Math.round(from + (r.to - from) * e); if ($('rv-rank-xp').textContent !== String(v)) { $('rv-rank-xp').textContent = v; sfx('xp', { gain: 0.6, gap: 75 }); } } if (k < 1) requestAnimationFrame(step); };

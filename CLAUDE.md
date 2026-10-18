@@ -1255,3 +1255,10 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - Tonight planner gets its object list once (worker keeps it; `tonightSentKey` = limit + catalogue size), not a 16k structured clone per time jump.
   - The hidden Collection defers renders: `{sc:'tonight'}` while away marks it dirty (render on show); a post-catch refresh reads the sightings at once but rebuilds ~2 s later in idle time; night mode toggled while hidden applies on show.
   - Reveal sweep moves by transform (no layout shift per frame). Panel and viewer focus a frame later. Albums: cards grouped by set once (albumMemo), albumLevels read/written once.
+- 2026-10-17 · Playtest batch 3 (sound and haptics):
+  - sfx.js: the two-at-once cap frees a slot when the file actually goes quiet (audibleLength: last sample over 2% of peak, measured on load), not at its silent tail; 'arrive' is never capped. The reveal whoosh and XP ticks no longer drop.
+  - Lock haptic only for something collectable, once per target per 1.5 s; lock hysteresis (once locked it holds to 1.2× the ring). Plane haptic shares the sound's 4 s gap.
+  - buzz() takes a kind by name ('warning', 'success'…); native.js `feel(kind)` = haptic with the Vibration pref, for the Collection. Reminders are felt once, in setReminder, after the result (success / warning); the early or duplicate ones are gone. Warning + shake() on failed reminders, purchase errors; warning on save failure and location denied.
+  - Reveal: chips sound like what they are (rank-up → rankup, mission → mission + light haptic, patch → patch); on a rank-up the bar fills the old rank, flashes gold (#rv-rank.wrap) with rankup + success, then fills the new one (progressGain rank.prev). Rank chip pops in. A new Moon phase / launch stamp gets a medium payoff haptic instead of the repeat tick.
+  - Collection haptics: open a card, swipe between cards, double-tap flip (attachFlip, everywhere), flick closed, tab changes, open a patch.
+  - Secret hold ticks once a second; the fossil find is a success haptic like the other secrets.

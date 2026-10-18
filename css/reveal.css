@@ -117,3 +117,9 @@ body.night .rv-roll > span { color: inherit; }
 
 /* The share button gets focus when the reveal opens; no ring unless the keyboard put it there (playtest 2026-10-16). */
 #reveal .rv-share:focus:not(:focus-visible) { outline: none; box-shadow: none; }
+/* Rank-up on the reveal (2026-10-17): the bar flashes gold as it wraps into the new rank, and the rank chip pops in. */
+@keyframes rvRankWrap { 0% { filter: brightness(1); } 30% { filter: brightness(1.9) drop-shadow(0 0 10px #ffc93d); } 100% { filter: brightness(1); } }
+#rv-rank.wrap { animation: rvRankWrap .5s ease-out; }
+@keyframes rvChipPop { 0% { transform: scale(.6); } 60% { transform: scale(1.08); } 100% { transform: scale(1); } }
+.rv-chip--rank.in { animation: rvChipPop .32s cubic-bezier(.3, 1.4, .5, 1); }
+@media (prefers-reduced-motion: reduce) { #rv-rank.wrap, .rv-chip--rank.in { animation: none; } }

@@ -1,29 +1,29 @@
-import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.833';
-import { computeStats, statsHtml } from './stats.js?v=0.1.833';
-import { nightKey } from './observation.js?v=0.1.833';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.833';
-import { sfx } from './sfx.js?v=0.1.833';
-import { expandFacts } from './catalog-facts.js?v=0.1.833';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.833';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.833';
-import { ticket } from './toast.js?v=0.1.833';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.833';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.833';
-import { cardArt } from './art.js?v=0.1.833';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.833';
-import { applyBack } from './card-backs.js?v=0.1.833';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.833';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.833';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.833';
-import { STORIES } from './stories.js?v=0.1.833';
-import { loadConstellations, conList } from './constellations.js?v=0.1.833';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.833';
-import { eventBadges, nextEvent } from './events.js?v=0.1.833';
-import { shareCardEl } from './share-card.js?v=0.1.833';
-import { forgetSighting } from './cloud-backup.js?v=0.1.833';
-import { allSightings, deleteSighting } from './store.js?v=0.1.833';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.833';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.833';
+import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.834';
+import { computeStats, statsHtml } from './stats.js?v=0.1.834';
+import { nightKey } from './observation.js?v=0.1.834';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.834';
+import { sfx } from './sfx.js?v=0.1.834';
+import { expandFacts } from './catalog-facts.js?v=0.1.834';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.834';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.834';
+import { ticket } from './toast.js?v=0.1.834';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.834';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.834';
+import { cardArt } from './art.js?v=0.1.834';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.834';
+import { applyBack } from './card-backs.js?v=0.1.834';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.834';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.834';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.834';
+import { STORIES } from './stories.js?v=0.1.834';
+import { loadConstellations, conList } from './constellations.js?v=0.1.834';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.834';
+import { eventBadges, nextEvent } from './events.js?v=0.1.834';
+import { shareCardEl } from './share-card.js?v=0.1.834';
+import { forgetSighting } from './cloud-backup.js?v=0.1.834';
+import { allSightings, deleteSighting } from './store.js?v=0.1.834';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.834';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.834';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -537,9 +537,9 @@ function resetFilters() {
 }
 $('filters-btn').addEventListener('click', () => { const b = $('filters-btn'), open = b.getAttribute('aria-expanded') !== 'true'; b.setAttribute('aria-expanded', String(open)); $('filter-row').classList.toggle('open', open); });
 function markFilters() { return $('filters-btn').classList.toggle('active', state.set !== 'all' || state.rarity !== 'all' || (state.sort ?? 'auto') !== 'auto'); } // a dot when a filter is on
-$('tab-owned').addEventListener('click', () => setView('owned'));
-$('tab-discover').addEventListener('click', () => setView('find'));
-$('tab-albums').addEventListener('click', () => { resetFilters(); setView('albums'); });
+$('tab-owned').addEventListener('click', () => { feel('select'); setView('owned'); });
+$('tab-discover').addEventListener('click', () => { feel('select'); setView('find'); });
+$('tab-albums').addEventListener('click', () => { feel('select'); resetFilters(); setView('albums'); });
 $('reset-filters').addEventListener('click', resetFilters);
 let searchTimer;
 $('search').addEventListener('input', (e) => { clearTimeout(searchTimer); state.query = e.target.value.trim().toLowerCase(); searchTimer = setTimeout(() => { if (state.ready) (window.flipGrid ?? ((f) => f()))(render); }, 120); });
@@ -645,7 +645,7 @@ async function openViewer(i, from = null) {
   askMotion();
   state.index = i; state.preview = false;
   lastFocus = document.activeElement;
-  showCard();
+  showCard(); feel('select');
   // Wait a moment for the big picture so the card doesn't arrive blank and fill in a second later
   // (2026-10-17, Sevaan: the Sun card). Capped, so a slow network still opens it.
   const img = $('slot').querySelector('.card__art img.card-art-image');
@@ -710,6 +710,7 @@ async function closeViewer() {
 }
 // Flick the card up and away to close the viewer (like flicking away a fresh capture in the sky).
 async function flickClose(dx, dy, dt) {
+  feel('light');
   const card = $('slot').firstElementChild; sfx('swipe');
   stopEffects();
   fadeViewer(false);
@@ -750,6 +751,7 @@ function linkConstellations() {
 const ownedKeys = () => new Set([...state.sightingsByKey.keys()]);
 function step(d) {
   if (!state.list.length) return;
+  feel('select'); // the Collection's haptics (2026-10-17 haptics playtest: it had none)
   state.index = (state.index + d + state.list.length) % state.list.length;
   state.preview = false;
   showCard();
@@ -925,7 +927,7 @@ function openKey(key) {
 // Every achievement is a patch; earned ones in full colour (gold foil / holo on the special ones), the rest a faint
 // stitched outline with the name so you can see what's out there. Group chips filter. Tap a patch for its detail.
 state.patchGroup = 'all';
-$('tab-patches').addEventListener('click', () => setView('patches'));
+$('tab-patches').addEventListener('click', () => { feel('select'); setView('patches'); });
 let earnedCache = null;
 function earnedDates() {
   // When each patch was earned: replay your sightings in order and note when each one first turns on. Explore also
@@ -975,6 +977,7 @@ function renderPatches() {
   void dates;
 }
 function openPatch(id, from = null) {
+  feel('light');
   let fossil = null; try { fossil = JSON.parse(localStorage.getItem('fossilFound')); } catch {}
   let ufo = null; try { ufo = JSON.parse(localStorage.getItem('ufoFound')); } catch {}
   let sec = {}; try { sec = JSON.parse(localStorage.getItem('secrets')) || {}; } catch {}

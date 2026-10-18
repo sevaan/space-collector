@@ -3,7 +3,7 @@
 // "Notification Sound 2" by deadrobotmusic (Freesound, CC0), softened. Files: assets/audio/sfx/<name>.mp3.
 // Decoded once into memory after the first tap, played through the shared context (js/audio-ctx.js) so they're instant.
 // Off with Settings → Sounds and vibration (localStorage sound = '0').
-import { audioCtx } from './audio-ctx.js?v=0.1.833';
+import { audioCtx } from './audio-ctx.js?v=0.1.834';
 export const SFX = ['lock', 'collect', 'arrive', 'flip', 'r_common', 'r_uncommon', 'r_rare', 'r_epic', 'r_legend', 'shiny', 'seen', 'stamp', 'levelup', 'xp',
   'mission', 'rankup', 'patch', 'coinroll', 'complete', 'secret', 'fossil', 'ufo', 'welcome', 'swipe', 'step', 'toggle', 'toast', 'page', 'rattle', 'plane'];
 const BASE = new URL('../assets/audio/sfx/', import.meta.url).href;
@@ -15,7 +15,7 @@ export const sfxVolume = () => { try { const v = parseFloat(localStorage.getItem
 const soundOff = () => { try { return localStorage.getItem('sound') === '0'; } catch { return false; } };
 export function loadSfx() {
   const ctx = audioCtx(); if (!ctx || loading) return loading;
-  return (loading = Promise.all(SFX.map((n) => fetch(`${BASE}${n}.mp3`).then((r) => r.arrayBuffer()).then((a) => new Promise((ok, no) => ctx.decodeAudioData(a, ok, no))).then((b) => bufs.set(n, b)).catch(() => {}))));
+  return (loading = Promise.all(SFX.map((n) => fetch(`${BASE}${n}.mp3`).then((r) => r.arrayBuffer()).then((a) => new Promise((ok, no) => ctx.decodeAudioData(a, ok, no))).then((b) => { bufs.set(n, b); audible.set(n, audibleLength(b)); }).catch(() => {}))));
 }
 // name: one of SFX. gain: 0–1 on top of the file's own level. gap: skip if the same sound played less than gap ms ago.
 // delay: seconds from now (scheduled on the audio clock, so it stays in time with animations).
@@ -26,13 +26,23 @@ const NORM = { arrive: 1.4, coinroll: 1.38, collect: 0.59, complete: 1.39, flip:
 // At most two at once: a third small sound is skipped rather than piling on (a Saturn catch stacked four over 5 s).
 const STINGERS = new Set(['r_common', 'r_uncommon', 'r_rare', 'r_epic', 'r_legend', 'shiny', 'rankup', 'levelup', 'mission', 'complete', 'secret', 'welcome']);
 let playing = 0;
+// How long each file is actually audible (2026-10-17 haptics playtest: the cap counted silent tails, e.g. lock is heard
+// for 0.22 s of 1.05 s, so lock + collect filled both slots and the reveal's whoosh was dropped). Measured once on load:
+// the last sample louder than 2% of the file's peak.
+const audible = new Map();
+function audibleLength(b) {
+  const d = b.getChannelData(0); let peak = 0; for (let i = 0; i < d.length; i += 4) peak = Math.max(peak, Math.abs(d[i]));
+  const th = peak * 0.02; let end = d.length - 1; while (end > 0 && Math.abs(d[end]) < th) end -= 8;
+  return Math.max(0.05, end / b.sampleRate);
+}
+const UNCAPPED = new Set(['arrive']); // the reveal's whoosh always plays
 export function sfx(name, { gain = 1, gap = 0, delay = 0 } = {}) {
   if (soundOff()) return;
   const ctx = audioCtx(); if (!ctx) return;
   const b = bufs.get(name); if (!b) { loadSfx(); return; }
   const now = performance.now(); if (gap && now - (last.get(name) ?? -1e9) < gap) return; last.set(name, now);
-  if (playing >= 2 && !STINGERS.has(name)) return;
-  try { const src = ctx.createBufferSource(), g = ctx.createGain(); src.buffer = b; g.gain.value = gain * (NORM[name] ?? 1) * LEVEL * sfxVolume(); src.connect(g).connect(ctx.destination); playing++; src.onended = () => { playing = Math.max(0, playing - 1); }; src.start(ctx.currentTime + delay); } catch {}
+  if (playing >= 2 && !STINGERS.has(name) && !UNCAPPED.has(name)) return;
+  try { const src = ctx.createBufferSource(), g = ctx.createGain(); src.buffer = b; g.gain.value = gain * (NORM[name] ?? 1) * LEVEL * sfxVolume(); src.connect(g).connect(ctx.destination); playing++; let freed = false; const free = () => { if (!freed) { freed = true; playing = Math.max(0, playing - 1); } }; src.onended = free; setTimeout(free, (delay + (audible.get(name) ?? b.duration)) * 1000 + 30); src.start(ctx.currentTime + delay); } catch {}
 }
 // Load on the first tap (the context can only start from one), so the first real sound is ready.
 if (typeof document !== 'undefined') document.addEventListener('pointerdown', () => loadSfx(), { once: true, capture: true });
