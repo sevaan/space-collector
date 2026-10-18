@@ -1,20 +1,20 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { fallWords } from './last-chance.js?v=0.1.847';
-import { feel } from './native.js?v=0.1.847';
-import { sfx } from './sfx.js?v=0.1.847';
-import { cardArt } from './art.js?v=0.1.847';
-import { TIER_INFO } from './rarity.js?v=0.1.847';
-import { SET_BY_ID } from './sets.js?v=0.1.847';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.847';
-import { FLEET_ABOUT, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.847';
-import { artFileFor } from './art-keys.js?v=0.1.847';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.847';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.847';
-import { nightsIn } from './observation.js?v=0.1.847';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.847';
-import { SHINY } from './shiny.js?v=0.1.847';
-import { conArt, cometArt } from './con-art.js?v=0.1.847';
-import { CON_FIGURES } from './con-figures.js?v=0.1.847';
+import { fallWords } from './last-chance.js?v=0.1.848';
+import { feel } from './native.js?v=0.1.848';
+import { sfx } from './sfx.js?v=0.1.848';
+import { cardArt } from './art.js?v=0.1.848';
+import { TIER_INFO } from './rarity.js?v=0.1.848';
+import { SET_BY_ID } from './sets.js?v=0.1.848';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.848';
+import { FLEET_ABOUT, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.848';
+import { artFileFor } from './art-keys.js?v=0.1.848';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.848';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.848';
+import { nightsIn } from './observation.js?v=0.1.848';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.848';
+import { SHINY } from './shiny.js?v=0.1.848';
+import { conArt, cometArt } from './con-art.js?v=0.1.848';
+import { CON_FIGURES } from './con-figures.js?v=0.1.848';
 // The animal/symbol figure belongs to the completed (gold) constellation card only (2026-10-05): a single
 // star's card draws just the star pattern with its star marked, so the figure is a reward for finishing the set.
 // A star card's constellation figure comes into focus as you collect the constellation's stars (design/con-focus.html B).
@@ -142,7 +142,7 @@ export function renderCard(o, opts = {}) {
   // Moon in that phase, your newest ringed, then the fact.
   const moonCard = o.type === 'moon' && !!o.natural && revealed;
   const mStamps = moonCard ? stampsIn(sightings) : null, mLatest = moonCard ? moonPhaseOf(latestStamp(sightings)) : null;
-  const moonBlock = moonCard ? `<div class="fl-dots mn-phases"><div class="fl-head"><span class="card__note-label">PHASES · ${mStamps.size}/8</span>${mLatest != null ? `<span class="fl-latest"><i></i>${esc(MOON_PHASES[mLatest])}</span>` : ''}</div><div class="mn-row">${MOON_PHASES.map((name, k) => `<svg viewBox="-20 -20 40 40" class="${mStamps.has(`MOON:${k}`) ? 'on' : ''}${k === mLatest ? ' latest' : ''}" role="img" aria-label="${esc(name)}${mStamps.has(`MOON:${k}`) ? '' : ' (not yet)'}"><circle r="15"></circle>${k ? `<path d="${phasePath(k)}"${k > 4 ? ' transform="scale(-1,1)"' : ''}></path>` : ''}</svg>`).join('')}</div></div>` : '';
+  const moonBlock = moonCard ? `<div class="fl-dots mn-phases"><div class="fl-head"><span class="card__note-label">PHASES · ${mStamps.size}/8</span>${mLatest != null ? `<span class="fl-latest"><i></i>${esc(MOON_PHASES[mLatest])}</span>` : ''}</div><div class="mn-row">${MOON_PHASES.map((name, k) => `<svg viewBox="-20 -20 40 40" class="${mStamps.has(`MOON:${k}`) ? 'on' : ''}${k === mLatest ? ' latest' : ''}${k ? '' : ' nm'}" role="img" aria-label="${esc(name)}${mStamps.has(`MOON:${k}`) ? '' : ' (not yet)'}"><circle r="15"></circle>${k ? `<path d="${phasePath(k)}"${k > 4 ? ' transform="scale(-1,1)"' : ''}></path>` : ''}</svg>`).join('')}</div></div>` : '';
   const factBlock = moonCard ? moonBlock + `<div class="card__fact"><p>${richText(factFor(o))}</p></div>`
     : fleet ? dotMap(o, stamps, lk, `${stamps.size} / ${o.launches.length} stamped` /* no "N more for Silver" (2026-10-12, Sevaan: it wrapped and took room from the art) */, latestLine) + (FLEET_ABOUT[o.family] ? `<div class="card__fact fl-about"><p>${richText(FLEET_ABOUT[o.family])}</p></div>` : '')
     : conCard ? `<div class="card__fact"><p>${richText(prog.level === 'gold' ? factFor(o).replace(/Collect all \d+ of its stars to turn this card \*\*gold\*\*\./, `You've found **all ${prog.total}** of its stars.`).replace(/Collect the Sun, the Moon and all \*\*seven\*\* planets to turn this card \*\*gold\*\*\./, `You've seen **all nine** of them with your own eyes.`) : factFor(o))}</p><p class="con-progress">${o.stars.map((k) => `<i class="${(opts.ownedKeys ?? new Set()).has(k) ? 'on' : ''}"></i>`).join('')}<span>${prog.have} / ${prog.total} ${o.system ? 'WORLDS' : 'STARS'}${prog.level === 'gold' ? ' · COMPLETE' : ''}</span></p></div>`
@@ -170,7 +170,7 @@ export function renderCard(o, opts = {}) {
   el.classList.add('card--mission'); if (moonCard) el.classList.add('mn-card'); // the phase row needs room: a shorter picture (css/cards.css)
   el.innerHTML = `
   <div class="card__rotator"><div class="card__face">
-    <div class="card__art" data-art-slot aria-hidden="true">${lcMark(o)}${o.partners && caught && opts.ownedKeys && o.partners.some((k) => opts.ownedKeys.has(k)) ? '<span class="m-chip m-reunion">⇄ REUNITED</span>' : ''}${conCard && o.system ? (revealed && artImage(o) ? `<img class="card-art-image" src="${artImage(o, AS)}" alt="" decoding="async">${opts.mini ? '' : artStars(o)}` : lockedArt(o, revealed, set.color, opts.mini ? 'small' : undefined)) : conCard ? conArt(o.data, null, revealed ? conFig(o.con) : {}) : o.type === 'comet' && revealed ? cometArt(o.key) : o.type === 'deepsky' && revealed && !artImage(o) && CON_BY_ID.get(o.conId) ? conArt(CON_BY_ID.get(o.conId).data, null, { mark: o }) : o.con && !o.skyName && revealed && CON_BY_ID.get(o.con) ? conArt(CON_BY_ID.get(o.con).data, o.hip, conFocus(o, opts.ownedKeys)) : revealed && artImage(o) ? `<img class="card-art-image" src="${artImage(o, AS)}" alt="" decoding="async">${opts.mini ? '' : artStars(o)}` : lockedArt(o, revealed, set.color, opts.mini ? 'small' : undefined)}${shinyOf ? `<span class="shiny-tag">✦ SHINY · ${esc(SHINY[shinyOf].label.toUpperCase())}</span>` : ''}<span class="m-chip m-tier card__tier"><i aria-hidden="true">${tier.gem}</i>${esc(tier.label.toUpperCase())}${o.icon ? '<b class="card__icon-badge">ICON</b>' : ''}</span><span class="m-chip m-set card__setbar"><span><span>${esc(set.name.toUpperCase())}</span></span></span><div class="card__foil"></div></div>
+    <div class="card__art" data-art-slot aria-hidden="true">${lcMark(o)}${o.partners && caught && opts.ownedKeys && o.partners.some((k) => opts.ownedKeys.has(k)) ? '<span class="m-chip m-reunion">⇄ REUNITED</span>' : ''}${conCard && o.system ? (revealed && artImage(o) ? `<img class="card-art-image" src="${artImage(o, AS)}" alt="" decoding="async">${opts.mini ? '' : artStars(o)}` : lockedArt(o, revealed, set.color, opts.mini ? 'small' : undefined)) : conCard ? conArt(o.data, null, revealed ? conFig(o.con) : {}) : o.type === 'comet' && revealed ? cometArt(o.key) : o.type === 'deepsky' && revealed && !artImage(o) && CON_BY_ID.get(o.conId) ? conArt(CON_BY_ID.get(o.conId).data, null, { mark: o }) : o.con && !o.skyName && revealed && CON_BY_ID.get(o.con) ? conArt(CON_BY_ID.get(o.con).data, o.hip, conFocus(o, opts.ownedKeys)) : revealed && artImage(o) ? `<img class="card-art-image" src="${artImage(o, AS)}" alt="" decoding="async">${opts.mini ? '' : artStars(o)}${moonCard && mLatest != null && mLatest !== 4 ? moonShade(mLatest) : ''}` : lockedArt(o, revealed, set.color, opts.mini ? 'small' : undefined)}${shinyOf ? `<span class="shiny-tag">✦ SHINY · ${esc(SHINY[shinyOf].label.toUpperCase())}</span>` : ''}<span class="m-chip m-tier card__tier"><i aria-hidden="true">${tier.gem}</i>${esc(tier.label.toUpperCase())}${o.icon ? '<b class="card__icon-badge">ICON</b>' : ''}</span><span class="m-chip m-set card__setbar"><span><span>${esc(set.name.toUpperCase())}</span></span></span><div class="card__foil"></div></div>
     <div class="card__heading"><h3 class="card__name">${esc(title)}</h3>
     <div class="card__identity"><span>${esc(sub)}</span><span class="card__mono">${esc(identifier)}</span></div></div>
     ${tempStrip(o)}
@@ -202,6 +202,12 @@ function nextLevel(family, level, have = 0) {
   const [, s, g] = fleetThresholds(family);
   const more = (n) => `${Math.max(1, n - have)} MORE FOR`;
   return level === 'bronze' ? `${more(s)} SILVER` : level === 'silver' ? `${more(g)} GOLD` : level === 'gold' ? 'TOP LEVEL' : 'STAMP ONE FOR BRONZE';
+}
+// The Moon card's picture shows the phase you caught last (2026-10-18 playtest: a full Moon over "First Quarter"):
+// the shadowed part laid over the drawn Moon (centre 603,510, radius 318 in the 1194×896 art), cropped like the image.
+function moonShade(k) {
+  const lit = k ? `<path d="${phasePath(k)}" fill="#000"${k > 4 ? ' transform="scale(-1,1)"' : ''}/>` : '';
+  return `<svg class="mn-shade" viewBox="0 0 1194 896" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><mask id="mns${k}"><g transform="translate(603 510) scale(21.4)"><circle r="15.05" fill="#fff"/>${lit}</g></mask></defs><rect width="1194" height="896" fill="rgba(4,8,18,.8)" mask="url(#mns${k})"/></svg>`;
 }
 // The lit part of the Moon for phase k (1–7; 0 is new): the right half, then the terminator as an ellipse arc. Waning
 // phases are the waxing ones mirrored.

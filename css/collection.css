@@ -612,7 +612,7 @@ body.night dialog::backdrop { background: rgba(12, 3, 3, .82); }
 .mini-face .card__rotator { transform: none !important; transform-style: flat !important; }
 /* The rank card's ladder picture shows on Mine only (2026-10-17 playtests: on Albums, Patches and Find it pushed the
    first row behind the switcher, so those tabs opened with no content in view). Rank, XP and the bar stay. */
-body[data-view]:not([data-view="owned"]) .logbook .lb-pic { display: none !important; }
+body[data-view]:not([data-view="owned"]) .logbook .lb-pic { max-height: 0 !important; opacity: 0; margin-block: 0 !important; padding-block: 0 !important; } /* collapses, eased (below), instead of jumping 180px (2026-10-18 playtest) */
 /* Collection colours match Explore's (visual playtest 2026-10-17: two sets of values under the same names) and its
    pass-panel buttons are 44px. */
 :root:not([data-theme="night"]) { --bg: #080f1b; --text: #fff2b3; --line: #344654; }
@@ -626,3 +626,13 @@ body[data-view]:not([data-view="owned"]) .logbook .lb-pic { display: none !impor
   #slot .card { font-size: min(24px, calc((100vw - 58px) / 28), calc((100dvh - 300px) / 42)); }
   #viewer:has(#v-up:not([hidden])) #slot .card { font-size: min(24px, calc((100vw - 58px) / 28), calc((100dvh - 470px) / 42)); }
 }
+/* Find rows (2026-10-18 playtest): the rarity colour is a short bar inside the card's left edge, not a thick border that
+   curved into a crescent outside the rounded corners. */
+.find-row { position: relative; border-left: 1px solid #22344a !important; }
+.find-row::before { content: ''; position: absolute; left: -1px; top: 12px; bottom: 12px; width: 3px; border-radius: 0 3px 3px 0; background: var(--c); }
+/* Playtest 2026-10-18 jank:
+   · the rank picture on Mine eases shut / open when you change tab, so the tabs glide instead of jumping 180px;
+   · the patch wall only lays out and paints the patches near the screen (185 drawn patches made a 140 ms frame). */
+.logbook .lb-pic { overflow: hidden; max-height: 280px; transition: max-height .32s cubic-bezier(.3,.7,.3,1), opacity .25s ease, margin .32s ease, padding .32s ease; }
+@media (prefers-reduced-motion: reduce) { .logbook .lb-pic { transition: none; } }
+.pw-item { content-visibility: auto; contain-intrinsic-size: auto 132px; }

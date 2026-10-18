@@ -1,17 +1,17 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.847';
+import { extinction } from './sky-limit.js?v=0.1.848';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.847';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.848';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.847';
-import { createCloudGL } from './clouds-gl.js?v=0.1.847';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.848';
+import { createCloudGL } from './clouds-gl.js?v=0.1.848';
 // Cloud colours by light: sunlit tops, shadowed bellies, and the horizon haze they melt into (0–1 RGB).
 const CLOUD_LIGHT = {
   day: { lit: [1, 1, 1], shade: [0.62, 0.68, 0.77], haze: [0.82, 0.87, 0.93] },
   dusk: { lit: [1, 0.8, 0.68], shade: [0.36, 0.33, 0.42], haze: [0.62, 0.5, 0.52] },
   night: { lit: [0.22, 0.25, 0.31], shade: [0.1, 0.12, 0.16], haze: [0.14, 0.15, 0.2] },
 };
-import { TIER_INFO } from './rarity.js?v=0.1.847';
+import { TIER_INFO } from './rarity.js?v=0.1.848';
 
 const RAD = Math.PI / 180;
 const BELOW_ICON = 10.5, BELOW_ICON_HIT = 20; // every satellite under the horizon, passes and halo alike (80% of 13 since 2026-10-13); lined up in the circle it grows
@@ -142,6 +142,11 @@ function shadowShape(s, H = 500) {
   return { cols, edges, any, all };
 }
 
+// Is this canvas colour dark? (#rrggbb or rgb()/rgba(), as ctx.fillStyle reports it.)
+function inkIsDark(c) {
+  const m = /^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})/i.exec(c), n = m ? m.slice(1).map((h) => parseInt(h, 16)) : (String(c).match(/[\d.]+/g) ?? []).slice(0, 3).map(Number);
+  return n.length === 3 && 0.299 * n[0] + 0.587 * n[1] + 0.114 * n[2] < 110;
+}
 export class SkyView {
   constructor(canvas) {
     this.canvas = canvas;
@@ -332,7 +337,7 @@ export class SkyView {
         if (!mem.shownAt || this.frameNo - (mem.lastDrawn ?? -99) > 2) mem.shownAt = this.frameNo;
         mem.lastDrawn = this.frameNo;
         const fa = this.reducedMotion ? 1 : Math.min(1, (this.frameNo - mem.shownAt) / 14);
-        ctx.save(); ctx.globalAlpha *= fa; if ((this.dayF ?? 0) > 0.3 && !this.camera) { ctx.shadowColor = 'rgba(8,15,27,.6)'; ctx.shadowBlur = 4; } ctx.fillText(text, x, y); ctx.restore(); // a soft dark halo by day, so cream text reads on the pale sky (visual playtest 2026-10-17)
+        ctx.save(); ctx.globalAlpha *= fa; if ((this.dayF ?? 0) > 0.3 && !this.camera) { const dark = inkIsDark(ctx.fillStyle); ctx.shadowColor = dark ? 'rgba(238,243,255,.55)' : 'rgba(8,15,27,.6)'; ctx.shadowBlur = dark ? 3 : 4; } /* dark ink (the Sun's label by day) gets a light halo, not a smudge (2026-10-18 playtest) */ ctx.fillText(text, x, y); ctx.restore(); // a soft dark halo by day, so cream text reads on the pale sky (visual playtest 2026-10-17)
         occupied.push(box);
       } else if (!this.reducedMotion && mem.lastDrawn && mem.i < candidates.length && this.frameNo - mem.lastDrawn < 10) {
         // Briefly blocked: fade out where it was over ~1/6 s instead of vanishing (2026-10-08, Sevaan: text jumping).
@@ -544,7 +549,7 @@ export class SkyView {
     // Named in the ticket under the circle (2026-10-17, design/target-states B), not painted around it.
     const g = hit.g, head = kickerOf ? kickerOf(g) : g.owned === undefined ? kicker : `${kicker} · ${g.owned ? 'in your collection' : 'not collected yet'}`;
     const tail = [g.note ? g.note.replace(/^up /, 'comes up ') : '', g.where ? `in the ${g.where}` : ''].filter(Boolean).join(' · ');
-    this.ticket = { ink: kickerOf ? 'later' : /DAYLIGHT/.test(kicker) ? 'hidden' : 'below', k: head, n: g.name, m: [g.what, tail].filter(Boolean).join(' · ') };
+    if (this.ticket?.ink !== 'fossil') this.ticket = { ink: kickerOf ? 'later' : /DAYLIGHT/.test(kicker) ? 'hidden' : 'below', k: head, n: g.name, m: [g.what, tail].filter(Boolean).join(' · ') }; // the bones you're holding keep the label (2026-10-18 playtest)
     return hit;
   }
   // Up in the daytime sky (2026-10-11, Sevaan): the same halo and naming as below the horizon, for the bright

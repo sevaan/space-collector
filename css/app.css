@@ -1472,7 +1472,7 @@ body:has(.overlay.panel:not([hidden]))::before { content: ''; position: fixed; l
    (coloured), its name, one line of facts and, when there is something to do, one solid button. Dark glass behind the
    words, so they read on a blue day sky, at night and over the ground. --tk is the state's colour; the sight in
    js/sky.js uses the same inks. */
-:root { --tk-w: min(300px, calc(100vw - 48px)); --tk-bg: rgba(8, 15, 27, .88); }
+:root { --tk-w: min(300px, calc(100vw - 48px)); --tk-bg: rgba(8, 15, 27, .96); } /* nearly solid: the tree line showed through (2026-10-18 playtest) */
 .tk-card { box-sizing: border-box; width: var(--tk-w); padding: 12px 14px 14px; border-radius: 14px; background: var(--tk-bg); border-top: 3px solid var(--tk, var(--gold));
   box-shadow: 0 10px 24px rgba(0, 0, 0, .35); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); text-align: left; text-shadow: none; pointer-events: auto; }
 
@@ -1735,3 +1735,39 @@ body.night .shiny-what .sw-moments li { color: var(--text); } body.night .shiny-
 .ob-done .od-head { padding-right: 52px; }
 /* The Tonight page on iPad (2026-10-18): one centred column, not hugging the left edge. */
 @media (min-width: 700px) { #onboard .ob-done > :not(.od-sky):not(.od-x) { width: 100%; max-width: 620px; margin-inline: auto; } }
+/* Playtest 2026-10-18, notifications:
+   · only the newest stay-up notice shows (older ones are shelved, js/toast.js) and tickets that would reach down over the
+     circle wait out of sight (.over, toast.js fitStack with --toast-limit from main.js);
+   · under the meteor-shower chip when it's there without the Headliner chip;
+   · with a panel open (Settings) they show at the top under its header instead of over its rows at the bottom;
+   · no radar tip while patch badges have the stage. */
+#toasts .ticket.shelved, #toasts .ticket.over { display: none !important; }
+body:has(#event-banner:not([hidden])):not(:has(#nextpass:not([hidden]))):not(:has(.overlay.panel:not([hidden]), #reveal:not([hidden]), .set-sheet.in:not([hidden]):not(.x))) #toasts { top: calc(var(--safe-top) + 143px) !important; }
+body:has(.overlay.panel:not([hidden])) #toasts { top: calc(var(--safe-top) + 76px) !important; bottom: auto !important; flex-direction: column !important; }
+body:is(.patch-run, .patch-waiting, :has(.patch-coins)) .radar-tip { visibility: hidden !important; }
+/* The Headliner chip on small phones (2026-10-18 playtest: "LANDSAT 1 (ER… · 8:17 …" on an SE): the time is never cut;
+   the name gives way, with a little less letter-spacing below 400px. */
+#nextpass .np-m { flex: none !important; overflow: visible !important; }
+#nextpass .np-n { flex: 0 1 auto !important; min-width: 2.5em !important; }
+@media (max-width: 399px) { #nextpass .np-k, #nextpass .np-n, #nextpass .np-m { letter-spacing: .05em !important; } #nextpass { padding-inline: 9px !important; } }
+/* Playtest 2026-10-18, more:
+   · the sky's own label (#tk) never shows over the tour;
+   · notification lines get a third line before they're cut (mission names on an SE), kind lines a little tighter;
+   · night mode: the tier word on the Tonight page in the night ink, not dark red on black;
+   · the Tonight page's ✕ stays put while the page scrolls; the object link there is a 44px-tall target. */
+body.ob-tour #tk { visibility: hidden !important; }
+#toasts .ticket__line { -webkit-line-clamp: 3; }
+#toasts .ticket__eyebrow { letter-spacing: .14em; }
+body.night .od-tier { color: var(--text) !important; }
+.ob-done .od-x { position: fixed; }
+.ob-done .od-pass { padding: 12px 2px; margin: -12px -2px; }
+/* Playtest 2026-10-18, layout:
+   · Now → Coming up rows: the second line is a block, so wrapped lines keep the same spacing; the time sits at the top
+     like the other lists, the target button stays centred;
+   · Settings: a long value (Card back → Mission Control) wraps onto two lines instead of being cut; the testing toggles
+     line up with the other toggles. */
+.nh-after { align-items: start; } .nh-after .na-go { align-self: center; } .nh-after small { display: block; margin-top: 2px; }
+.set-val { white-space: normal; text-align: right; line-height: 1.15; max-width: 42%; }
+.set-test > .set-row { margin-inline: 0 !important; padding-inline: 2px !important; width: auto !important; max-width: none !important; }
+@media (max-height: 600px) { .ob-deck { height: min(68%, 470px); } }
+.set-test > .set-row .set-main { flex: 1; min-width: 0; } .set-test > .set-row > .set-tog { margin-left: auto; } /* toggles at the right edge like the others */
