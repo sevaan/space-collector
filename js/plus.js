@@ -3,7 +3,7 @@
 // (2026-10-16): the purchase belongs to the player's Apple ID / Google account, no sign-in of ours. The last answer is
 // kept (localStorage 'plusStore') so Plus holds offline. The testing toggle (Settings → Testing tools → "Plus
 // (testing)", 'plusTest') still turns it on anywhere; the website never sells Plus.
-import { plugin, isNative, onNative } from './native.js?v=0.1.851';
+import { plugin, isNative, onNative } from './native.js?v=0.1.852';
 
 // RevenueCat public SDK keys (safe in the app). The Test Store key works with no App Store / Play setup; swap in the
 // appl_ / goog_ keys from RevenueCat → Project settings → API keys once the store apps are connected.
@@ -24,10 +24,15 @@ let ready = null;
 // Plus = the space_collector_plus entitlement; any other active one counts too, in case it's ever renamed.
 const active = (info) => { const a = info?.entitlements?.active ?? {}; return !!(a[ENTITLEMENT] ?? Object.values(a).find((e) => e?.isActive)); };
 function apply(info, how = 'store') { if (!info) return; const was = isPlus(); ls.set('plusStore', active(info) ? '1' : '0'); emit(was, how); }
+export const rcTestStore = (on) => (on === undefined ? ls.get('rcTestStore') === '1' : ls.set('rcTestStore', on ? '1' : '0'));
 export function initStore() {
   const p = rc(); if (!p || ready) return ready;
-  const ios = /iP(hone|ad|od)|Mac/.test(navigator.userAgent);
-  ready = p.configure({ apiKey: ios ? RC_KEYS.ios : RC_KEYS.android }).then(() => true).catch((e) => { console.warn('store setup failed', e?.message ?? e); ready = null; return false; });
+  const ios = /iP(hone|ad|od)|Mac/.test(navigator.userAgent), key = ios ? RC_KEYS.ios : RC_KEYS.android;
+  // RevenueCat closes a release build (TestFlight, the App Store) that uses a Test Store key (2026-10-18, Sevaan: "the app
+  // will close now"). So the Test Store key is only used when Settings → Testing tools → "RevenueCat Test Store" is on
+  // (simulator and Xcode debug builds); otherwise there's no store until the real appl_/goog_ keys are in RC_KEYS.
+  if (key.startsWith('test_') && ls.get('rcTestStore') !== '1') return null;
+  ready = p.configure({ apiKey: key }).then(() => true).catch((e) => { console.warn('store setup failed', e?.message ?? e); ready = null; return false; });
   ready.then((ok) => ok && refreshPlus());
   onNative('App', 'appStateChange', ({ isActive }) => { if (isActive) refreshPlus(); }); // bought or cancelled elsewhere
   return ready;
