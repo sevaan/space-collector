@@ -1,17 +1,17 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.834';
+import { extinction } from './sky-limit.js?v=0.1.835';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.834';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.835';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.834';
-import { createCloudGL } from './clouds-gl.js?v=0.1.834';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.835';
+import { createCloudGL } from './clouds-gl.js?v=0.1.835';
 // Cloud colours by light: sunlit tops, shadowed bellies, and the horizon haze they melt into (0–1 RGB).
 const CLOUD_LIGHT = {
   day: { lit: [1, 1, 1], shade: [0.62, 0.68, 0.77], haze: [0.82, 0.87, 0.93] },
   dusk: { lit: [1, 0.8, 0.68], shade: [0.36, 0.33, 0.42], haze: [0.62, 0.5, 0.52] },
   night: { lit: [0.22, 0.25, 0.31], shade: [0.1, 0.12, 0.16], haze: [0.14, 0.15, 0.2] },
 };
-import { TIER_INFO } from './rarity.js?v=0.1.834';
+import { TIER_INFO } from './rarity.js?v=0.1.835';
 
 const RAD = Math.PI / 180;
 const BELOW_ICON = 10.5, BELOW_ICON_HIT = 20; // every satellite under the horizon, passes and halo alike (80% of 13 since 2026-10-13); lined up in the circle it grows
@@ -332,7 +332,7 @@ export class SkyView {
         if (!mem.shownAt || this.frameNo - (mem.lastDrawn ?? -99) > 2) mem.shownAt = this.frameNo;
         mem.lastDrawn = this.frameNo;
         const fa = this.reducedMotion ? 1 : Math.min(1, (this.frameNo - mem.shownAt) / 14);
-        ctx.save(); ctx.globalAlpha *= fa; ctx.fillText(text, x, y); ctx.restore();
+        ctx.save(); ctx.globalAlpha *= fa; if ((this.dayF ?? 0) > 0.3 && !this.camera) { ctx.shadowColor = 'rgba(8,15,27,.6)'; ctx.shadowBlur = 4; } ctx.fillText(text, x, y); ctx.restore(); // a soft dark halo by day, so cream text reads on the pale sky (visual playtest 2026-10-17)
         occupied.push(box);
       } else if (!this.reducedMotion && mem.lastDrawn && mem.i < candidates.length && this.frameNo - mem.lastDrawn < 10) {
         // Briefly blocked: fade out where it was over ~1/6 s instead of vanishing (2026-10-08, Sevaan: text jumping).
@@ -1716,7 +1716,7 @@ export class SkyView {
         const R = (this.reticlePx ?? 60) + 24, dd = Math.hypot(p.x - this.cx, p.y - this.cy);
         for (const dy of [-36, 12]) { // above the line, else below it
           const x0 = p.x - 112, x1 = p.x + 112, y0 = p.y + dy, y1 = y0 + 30;
-          if (x0 < 8 || x1 > this.w - 8 || y0 < this.h * 0.2 || y1 > this.h - 200) continue;
+          if (x0 < 8 || x1 > this.w - 8 || y0 < Math.max(this.h * 0.2, (this.safeTop ?? 0) + 6) || y1 > this.h - 200) continue; // below the radar and its 'N passing' and the corner chips (playtests 2026-10-17)
           const hitsSight = x1 > this.cx - R && x0 < this.cx + R && y1 > this.cy - R && y0 < this.cy + R;
           const hitsTicket = x1 > this.cx - 150 && x0 < this.cx + 150 && y1 > this.cy + R - 10 && y0 < this.cy + R + 170;
           if (!hitsSight && !hitsTicket && (!best || dd < best.dd)) { best = { p, dd, top: y0 }; break; }

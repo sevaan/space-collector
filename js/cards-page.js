@@ -1,29 +1,29 @@
-import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.834';
-import { computeStats, statsHtml } from './stats.js?v=0.1.834';
-import { nightKey } from './observation.js?v=0.1.834';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.834';
-import { sfx } from './sfx.js?v=0.1.834';
-import { expandFacts } from './catalog-facts.js?v=0.1.834';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.834';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.834';
-import { ticket } from './toast.js?v=0.1.834';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.834';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.834';
-import { cardArt } from './art.js?v=0.1.834';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.834';
-import { applyBack } from './card-backs.js?v=0.1.834';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.834';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.834';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.834';
-import { STORIES } from './stories.js?v=0.1.834';
-import { loadConstellations, conList } from './constellations.js?v=0.1.834';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.834';
-import { eventBadges, nextEvent } from './events.js?v=0.1.834';
-import { shareCardEl } from './share-card.js?v=0.1.834';
-import { forgetSighting } from './cloud-backup.js?v=0.1.834';
-import { allSightings, deleteSighting } from './store.js?v=0.1.834';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.834';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.834';
+import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.835';
+import { computeStats, statsHtml } from './stats.js?v=0.1.835';
+import { nightKey } from './observation.js?v=0.1.835';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.835';
+import { sfx } from './sfx.js?v=0.1.835';
+import { expandFacts } from './catalog-facts.js?v=0.1.835';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.835';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.835';
+import { ticket } from './toast.js?v=0.1.835';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.835';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.835';
+import { cardArt } from './art.js?v=0.1.835';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.835';
+import { applyBack } from './card-backs.js?v=0.1.835';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.835';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.835';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.835';
+import { STORIES } from './stories.js?v=0.1.835';
+import { loadConstellations, conList } from './constellations.js?v=0.1.835';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.835';
+import { eventBadges, nextEvent } from './events.js?v=0.1.835';
+import { shareCardEl } from './share-card.js?v=0.1.835';
+import { forgetSighting } from './cloud-backup.js?v=0.1.835';
+import { allSightings, deleteSighting } from './store.js?v=0.1.835';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.835';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.835';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -521,7 +521,7 @@ function appendUpNext(total) {
 }
 function setView(view) {
   const changed = state.view !== view;
-  state.view = view;
+  state.view = view; document.body.dataset.view = view; // CSS: the rank ladder shows on Mine only
   if (changed) { for (const el of [$('grid'), $('patch-wall')]) { el.classList.remove('swap'); void el.offsetWidth; el.classList.add('swap'); } cascadeLeft = 16; }
   $('tab-owned').setAttribute('aria-pressed', String(view === 'owned'));
   $('tab-discover').setAttribute('aria-pressed', String(view === 'find'));

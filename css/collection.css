@@ -610,3 +610,10 @@ body.night dialog::backdrop { background: rgba(12, 3, 3, .82); }
    tile tilt moves the tile itself). */
 .grid .tile-slot { content-visibility: auto; contain-intrinsic-size: auto 180px; }
 .mini-face .card__rotator { transform: none !important; transform-style: flat !important; }
+/* The rank card's ladder picture shows on Mine only (2026-10-17 playtests: on Albums, Patches and Find it pushed the
+   first row behind the switcher, so those tabs opened with no content in view). Rank, XP and the bar stay. */
+body[data-view]:not([data-view="owned"]) .logbook .lb-pic { display: none !important; }
+/* Collection colours match Explore's (visual playtest 2026-10-17: two sets of values under the same names) and its
+   pass-panel buttons are 44px. */
+:root:not([data-theme="night"]) { --bg: #080f1b; --text: #fff2b3; --line: #344654; }
+.fd-acts .ic { width: 44px; height: 44px; }

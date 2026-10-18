@@ -1262,3 +1262,12 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - Reveal: chips sound like what they are (rank-up → rankup, mission → mission + light haptic, patch → patch); on a rank-up the bar fills the old rank, flashes gold (#rv-rank.wrap) with rankup + success, then fills the new one (progressGain rank.prev). Rank chip pops in. A new Moon phase / launch stamp gets a medium payoff haptic instead of the repeat tick.
   - Collection haptics: open a card, swipe between cards, double-tap flip (attachFlip, everywhere), flick closed, tab changes, open a patch.
   - Secret hold ticks once a second; the fossil find is a success haptic like the other secrets.
+- 2026-10-17 · Playtest batch 4 (look and clarity):
+  - Collection: the rank ladder picture shows on Mine only (body[data-view] set by setView); Albums, Patches and Find open with content in view.
+  - Earth's shadow label stays below the radar/chips band (y ≥ sky.safeTop + 6); no shadow during the first catch.
+  - Sky labels get a soft dark halo by day (dayF > .3).
+  - newUpCount(): the radar badge and "Now · N new" are the same count (new cards up, one per card, satellites + naturals except stars/Earth).
+  - Bells that need Plus show a PLUS tag (needsPlus(key)); "Set reminders" shows PLUS instead of a count when most need it.
+  - Rocket stages and debris show their launch year in Tonight's run and the headliner (yearLabel).
+  - Design cleanup: 44px taps (.vtabs, .pill-o/.pill-g, viewer pass buttons), Settings chevrons right-aligned, SEE LESS/MORE at full muted strength, one 16px radius for the sky panel's cards, headliner detail in the label face, night versions of the slate chevron and blue reminder buttons, Collection base colours = Explore's.
+  - The ⏱ stays: it's already hidden in the apps unless testing tools are unlocked; the website is the test build.
