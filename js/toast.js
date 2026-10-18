@@ -73,7 +73,7 @@ function show(t) {
   el.innerHTML = `${t.art ? `<span class="ticket__art" aria-hidden="true">${t.art}</span>` : '<i class="ticket__mark" aria-hidden="true"></i>'}<span class="ticket__body">${t.eyebrow ? `<span class="ticket__eyebrow">${esc(t.eyebrow)}</span>` : ''}<span class="ticket__line">${t.html ? t.line : esc(t.line)}</span></span>${t.xp ? `<span class="ticket__xp">+${t.xp}<small>XP</small></span>` : t.href || t.action ? `<span class="ticket__go">${esc(t.go ?? 'OPEN')} ›</span>` : ''}${t.sticky ? '<button type="button" class="ticket__x" aria-label="Dismiss">✕</button>' : ''}`;
   // Up long enough to read (2026-10-06: at least 5 s, about 1.6× the old times); a tap sends it away sooner.
   let gone = false, stopConfetti = () => {};
-  const dismiss = () => { if (gone) return; gone = true; clearTimeout(timer); stopConfetti(); if (t.id) live.delete(t.id); stickies.delete(dismiss); el.classList.add('out'); el.classList.remove('in'); setTimeout(() => { el.remove(); if (!t.sticky) { busy = false; } pump(); }, 200); };
+  const dismiss = () => { if (gone) return; gone = true; clearInterval(timer); stopConfetti(); if (t.id) live.delete(t.id); stickies.delete(dismiss); el.classList.add('out'); el.classList.remove('in'); setTimeout(() => { el.remove(); if (!t.sticky) { busy = false; } pump(); }, 200); };
   el.addEventListener('click', (e) => {
     if (e.target.closest('.ticket__x')) { dismiss(); return; }
     if (t.action) { dismiss(); try { t.action(); } catch {} return; }
@@ -85,7 +85,10 @@ function show(t) {
     el.classList.add('in'); try { onShown?.(t); } catch {}
     if (t.celebrate) stopConfetti = confetti(el);
   });
-  const timer = t.sticky ? 0 : setTimeout(dismiss, Math.max(5000, t.ms * 1.6));
+  // A patch badge takes the stage (2026-10-18, Sevaan): while one shows, toasts already up fade away (css/app.css) and
+  // their clock stops, so they come back afterwards with the rest of their time.
+  let left = Math.max(5000, t.ms * 1.6);
+  const timer = t.sticky ? 0 : setInterval(() => { if (document.querySelector('.patch-coins')) return; left -= 250; if (left <= 0) dismiss(); }, 250);
   if (t.id) live.set(t.id, dismiss);
   if (t.sticky) {
     stickies.add(dismiss);

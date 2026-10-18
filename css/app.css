@@ -1700,12 +1700,12 @@ body:has(#nextpass:not([hidden])):has(#event-banner:not([hidden])):not(:has(.ove
 #toasts .ticket:has(.ticket__go) .ticket__body { flex: 1 0 100%; }
 #toasts .ticket:has(.ticket__go) .ticket__go { flex: 1 1 auto; text-align: center; }
 #toasts .ticket .ticket__xp { color: var(--k) !important; }
-/* Patch badge + notifications at once (2026-10-18): the badge's "Patch earned · name" label goes under the coin, in the
-   left column, instead of sliding right under the notifications. Width set in pumpPatch (--tag-max). */
-.patch-coins .pc-coin { flex-direction: column; align-items: flex-start; gap: 6px; }
-.patch-coins .pc-tag { margin-left: 0; max-width: var(--tag-max, 110px); white-space: normal; transform: translateY(-8px); }
-.patch-coins .pc-tag b { line-height: 1.1; overflow-wrap: anywhere; }
-.patch-coins .pc-coin.out .pc-tag { transform: translateY(-6px); }
+/* Patch badge + notifications at once (2026-10-18, Sevaan): the badge's one-line label stays to the right of the coin
+   (under it was a word per line) and the notifications step aside while it shows: they fade out and their clock stops
+   (js/toast.js), then come back. New ones already wait for the badge (toast.js pump). */
+body:has(.patch-coins) #toasts { opacity: 0; transition: opacity .25s ease; }
+#toasts { transition: opacity .3s ease .1s; }
+.patch-coins { z-index: 86; }
 /* Buttons inside a notification are shorter up here, so a notice with one doesn't reach down to the circle. */
 #toasts .ticket:has(.ticket__go) .ticket__go, #toasts .ticket:has(.ticket__go) .ticket__x { min-height: 34px !important; height: 34px !important; padding-block: 0 !important; display: grid; place-items: center; margin-block: 0 !important; }
 /* "What's a shiny?" redesign (2026-10-18, Sevaan): a tiny ISS card, plain › shiny (the shiny one has the Collection's
