@@ -3,7 +3,7 @@
 // "Notification Sound 2" by deadrobotmusic (Freesound, CC0), softened. Files: assets/audio/sfx/<name>.mp3.
 // Decoded once into memory after the first tap, played through the shared context (js/audio-ctx.js) so they're instant.
 // Off with Settings → Sounds and vibration (localStorage sound = '0').
-import { audioCtx } from './audio-ctx.js?v=0.1.853';
+import { audioCtx } from './audio-ctx.js?v=0.1.854';
 export const SFX = ['lock', 'collect', 'arrive', 'flip', 'r_common', 'r_uncommon', 'r_rare', 'r_epic', 'r_legend', 'shiny', 'seen', 'stamp', 'levelup', 'xp',
   'mission', 'rankup', 'patch', 'coinroll', 'complete', 'secret', 'fossil', 'ufo', 'welcome', 'swipe', 'step', 'toggle', 'toast', 'page', 'rattle', 'plane'];
 const BASE = new URL('../assets/audio/sfx/', import.meta.url).href;
@@ -19,10 +19,9 @@ export function loadSfx() {
 }
 // name: one of SFX. gain: 0–1 on top of the file's own level. gap: skip if the same sound played less than gap ms ago.
 // delay: seconds from now (scheduled on the audio clock, so it stays in time with animations).
-// Loudness matched per file (2026-10-12, craft room: the files were balanced by peak, so measured loudness ran from −22
-// to −39 LUFS and the small sounds vanished under the music). Measured with ffmpeg ebur128; stingers sit at about −22,
-// ticks and swishes at −28, the shiny at −19 (the loudest). Lock, toast and toggle are too short to measure: unchanged.
-const NORM = { arrive: 1.4, coinroll: 1.38, collect: 0.59, complete: 1.39, flip: 4.0, fossil: 2.43, levelup: 1.23, lock: 2.75, mission: 1.02, page: 3.97, patch: 0.91, plane: 0.94, r_common: 1.24, r_epic: 1.17, r_legend: 0.88, r_rare: 1.44, r_uncommon: 1.03, rankup: 1.04, rattle: 4.0, secret: 1.64, seen: 1.58, shiny: 3.02, stamp: 0.86, step: 2.14, swipe: 1.3, toggle: 1.74, ufo: 1.38, welcome: 1.27, xp: 4.0 };
+// Sounds: the Zen set from UI SFX (uisfx.com, CC0; 2026-10-18, Sevaan), mapped cue by cue (CLAUDE.md lists the map) and
+// levelled when converted (rewards and stingers peak at −4 dB, taps and ticks at −9), so no per-file gain here.
+const NORM = {};
 // At most two at once: a third small sound is skipped rather than piling on (a Saturn catch stacked four over 5 s).
 const STINGERS = new Set(['r_common', 'r_uncommon', 'r_rare', 'r_epic', 'r_legend', 'shiny', 'rankup', 'levelup', 'mission', 'complete', 'secret', 'welcome']);
 let playing = 0;
