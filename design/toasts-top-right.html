@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Toasts top right</title>
+<style>
+/* Mock (2026-10-18, Sevaan): notifications in the top right, under the Headliner chip. Three options. */
+@font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf'); }
+@font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf'); font-weight: 500; }
+:root { --text: #fff2b3; --muted: #bdbea9; --gold: #fa8127; --cyan: #8fb3cf; --event: #e8b84a; --steel: #c3c9d1; --display: 'SC Display', Impact, sans-serif; --label: 'SC Label', 'Arial Narrow', sans-serif; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #1b1f26; color: var(--text); font-family: var(--label); padding: 28px; }
+h1 { font: 400 22px/1 var(--display); margin: 0 0 6px; }
+.sub { color: var(--muted); letter-spacing: .06em; margin: 0 0 24px; }
+.row { display: flex; gap: 28px; flex-wrap: wrap; }
+.opt { width: 390px; }
+.opt h2 { font: 400 17px/1.1 var(--display); margin: 0 0 4px; }
+.opt p { margin: 0 0 12px; color: var(--muted); font-size: 15px; letter-spacing: .03em; line-height: 1.35; min-height: 62px; }
+.phone { position: relative; width: 390px; height: 560px; border-radius: 28px 28px 0 0; overflow: hidden; background: linear-gradient(180deg, #080f1b 0 118px, #1f2329 150px, #3a3022 340px, #2f281e 560px); }
+/* the app's header */
+.hdr { position: absolute; left: 20px; right: 20px; top: 58px; display: flex; justify-content: space-between; align-items: flex-start; }
+.word b { display: block; font: 400 20px/1 var(--display); }
+.word span { display: block; margin-top: 8px; font-size: 12.5px; letter-spacing: .26em; color: var(--muted); }
+.icons { display: flex; gap: 26px; margin-top: 4px; font-size: 22px; }
+.rule { position: absolute; left: 20px; right: 20px; top: 122px; height: 4px; border-top: 1px solid #5d6672; border-bottom: 1px solid #5d6672; }
+.compass { position: absolute; left: 28px; top: 152px; width: 92px; height: 92px; border-radius: 50%; background: radial-gradient(circle, #5a5045, #4a4339); border: 2px solid #3d4248; box-shadow: inset 0 0 0 6px #ffffff10; }
+.compass::after { content: ''; position: absolute; inset: 8px; border-radius: 50%; border: 1px dashed #ffffff40; }
+.badge { position: absolute; left: 112px; top: 140px; width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--gold); background: #080f1b; display: grid; place-items: center; font-size: 15px; }
+.stars i { position: absolute; width: 2px; height: 2px; border-radius: 50%; background: #fff2b366; }
+/* the Headliner chip (css/app.css #nextpass) */
+.chip { position: absolute; right: 12px; top: 148px; display: flex; gap: .35em; align-items: baseline; padding: 9px 12px; border-top: 3px solid var(--gold); border-radius: 12px; background: rgba(8,15,27,.92); box-shadow: 0 8px 18px rgba(0,0,0,.28); font: 500 12.5px/1.2 var(--label); letter-spacing: .1em; text-transform: uppercase; white-space: nowrap; }
+.chip .k { color: var(--gold); font-weight: 600; } .chip .n { color: var(--text); letter-spacing: .06em; } .chip .m { color: var(--steel); }
+
+/* A · Tickets under the chip: the chip's own shape, two lines, stacked newest-first */
+.a-stack { position: absolute; right: 12px; top: 196px; width: 230px; display: grid; gap: 8px; }
+.a-t { border-top: 3px solid var(--c); border-radius: 12px; background: rgba(8,15,27,.92); box-shadow: 0 8px 18px rgba(0,0,0,.3); padding: 8px 12px 9px; display: grid; grid-template-columns: minmax(0,1fr) auto; column-gap: 10px; align-items: center; animation: aIn 3.6s cubic-bezier(.2,.9,.3,1.15) infinite; }
+.a-t:nth-child(2) { animation-delay: .25s; opacity: .92; }
+.a-t .e { font: 500 11px/1.2 var(--label); letter-spacing: .2em; text-transform: uppercase; color: var(--c); }
+.a-t .l { font: 500 15px/1.2 var(--label); letter-spacing: .02em; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.a-t .x { grid-row: 1 / span 2; grid-column: 2; font: 400 15px/1 var(--display); color: var(--c); }
+@keyframes aIn { 0% { opacity: 0; transform: translateX(24px); } 10%, 85% { opacity: 1; transform: none; } 100% { opacity: 0; transform: translateX(24px); } }
+
+/* B · Slim pills: one line each, hugging their words, a shape per kind like the rarity gems */
+.b-stack { position: absolute; right: 12px; top: 196px; display: grid; justify-items: end; gap: 6px; }
+.b-p { display: flex; align-items: center; gap: 8px; padding: 7px 12px 7px 10px; border-radius: 99px; background: rgba(8,15,27,.9); border: 1px solid color-mix(in srgb, var(--c) 55%, transparent); box-shadow: 0 6px 14px rgba(0,0,0,.28); font: 500 13px/1.1 var(--label); letter-spacing: .08em; text-transform: uppercase; white-space: nowrap; animation: bIn 3.6s cubic-bezier(.2,.9,.3,1.2) infinite; transform-origin: right center; }
+.b-p:nth-child(2) { animation-delay: .2s; } .b-p:nth-child(3) { animation-delay: .4s; }
+.b-p .g { color: var(--c); font-size: 12px; } .b-p .w { color: var(--text); } .b-p .xp { color: var(--c); font-family: var(--display); letter-spacing: 0; font-size: 13px; }
+@keyframes bIn { 0% { opacity: 0; transform: scale(.85); } 8%, 86% { opacity: 1; transform: none; } 100% { opacity: 0; transform: scale(.9); } }
+
+/* C · Drops from the chip: the Headliner chip opens a tray under itself for the message, then folds back up */
+.c-wrap { position: absolute; right: 12px; top: 148px; width: 222px; border-top: 3px solid var(--c, var(--gold)); border-radius: 12px; background: rgba(8,15,27,.94); box-shadow: 0 10px 22px rgba(0,0,0,.32); overflow: hidden; animation: cTop 4s ease infinite; }
+.c-wrap .chip { position: static; box-shadow: none; border: 0; background: none; padding: 9px 12px; }
+.c-tray { display: grid; grid-template-columns: auto minmax(0,1fr) auto; gap: 10px; align-items: center; padding: 10px 12px 11px; border-top: 1px solid #ffffff18; animation: cTray 4s ease infinite; }
+.c-tray .g { width: 30px; height: 30px; display: grid; place-items: center; border-radius: 8px; background: color-mix(in srgb, var(--c) 18%, transparent); color: var(--c); font-size: 14px; }
+.c-tray .e { display: block; font: 500 11px/1.2 var(--label); letter-spacing: .2em; text-transform: uppercase; color: var(--c); }
+.c-tray .l { display: block; font: 400 15px/1.2 var(--display); color: var(--text); }
+.c-tray .x { font: 400 16px/1 var(--display); color: var(--c); }
+@keyframes cTray { 0%, 4% { max-height: 0; opacity: 0; padding-block: 0; } 14%, 84% { max-height: 80px; opacity: 1; padding-block: 10px 11px; } 96%, 100% { max-height: 0; opacity: 0; padding-block: 0; } }
+@keyframes cTop { 0%, 6% { border-top-color: var(--gold); } 12%, 86% { border-top-color: var(--c); } 96%, 100% { border-top-color: var(--gold); } }
+.c-wrap .chip .k { color: var(--gold); }
+@media (prefers-reduced-motion: reduce) { .a-t, .b-p, .c-wrap, .c-tray { animation: none; } }
+.still .a-t, .still .b-p, .still .c-wrap, .still .c-tray { animation: none; }
+</style>
+</head>
+<body>
+<h1>Notifications, top right</h1>
+<p class="sub">Under the Headliner chip. Same dark glass, coloured edge by kind: orange mission, steel-blue XP, gold event.</p>
+<div class="row">
+
+<section class="opt">
+  <h2>A · Tickets under the chip</h2>
+  <p>The chip's own shape: a coloured top edge, a small kind line, then the message. Two at most, newest on top; they slide in from the right edge.</p>
+  <div class="phone" data-stars>
+    <div class="hdr"><div class="word"><b>SPACE COLLECTOR</b><span>FIELD NOTES FROM ORBIT</span></div><div class="icons">⏱️ 🌙 ⚙︎</div></div>
+    <div class="rule"></div><div class="compass"></div><div class="badge">1</div>
+    <div class="chip"><span class="k">Headliner:</span><span class="n">Cosmos 192</span><span class="m">· 7:30 PM</span></div>
+    <div class="a-stack">
+      <div class="a-t" style="--c: var(--gold)"><span class="e">Mission complete</span><span class="l">Night Shift</span><span class="x">+50</span></div>
+      <div class="a-t" style="--c: var(--cyan)"><span class="e">First rocket stage</span><span class="l">Atlas 2 Centaur</span><span class="x">+40</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="opt">
+  <h2>B · Slim pills</h2>
+  <p>One line each, only as wide as the words, with a shape per kind (◆ mission, ● XP, ★ event). Quietest: they read like the Headliner chip's little siblings.</p>
+  <div class="phone" data-stars>
+    <div class="hdr"><div class="word"><b>SPACE COLLECTOR</b><span>FIELD NOTES FROM ORBIT</span></div><div class="icons">⏱️ 🌙 ⚙︎</div></div>
+    <div class="rule"></div><div class="compass"></div><div class="badge">1</div>
+    <div class="chip"><span class="k">Headliner:</span><span class="n">Cosmos 192</span><span class="m">· 7:30 PM</span></div>
+    <div class="b-stack">
+      <div class="b-p" style="--c: var(--gold)"><span class="g">◆</span><span class="w">Night Shift complete</span><span class="xp">+50</span></div>
+      <div class="b-p" style="--c: var(--cyan)"><span class="g">●</span><span class="w">First rocket stage</span><span class="xp">+40</span></div>
+      <div class="b-p" style="--c: var(--event)"><span class="g">★</span><span class="w">ISS rises in 10 min · west</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="opt">
+  <h2>C · Drops from the chip</h2>
+  <p>The Headliner chip opens a tray under itself for the news, its top edge takes the kind's colour, then it folds back up. One thing at a time, nothing new on screen.</p>
+  <div class="phone" data-stars>
+    <div class="hdr"><div class="word"><b>SPACE COLLECTOR</b><span>FIELD NOTES FROM ORBIT</span></div><div class="icons">⏱️ 🌙 ⚙︎</div></div>
+    <div class="rule"></div><div class="compass"></div><div class="badge">1</div>
+    <div class="c-wrap" style="--c: var(--gold)">
+      <div class="chip"><span class="k">Headliner:</span><span class="n">Cosmos 192</span><span class="m">· 7:30 PM</span></div>
+      <div class="c-tray"><span class="g">◆</span><span><span class="e">Mission complete</span><span class="l">Night Shift</span></span><span class="x">+50</span></div>
+    </div>
+  </div>
+</section>
+
+</div>
+<script>
+// a few stars on each sky
+document.querySelectorAll('[data-stars]').forEach((p) => { const s = document.createElement('div'); s.className = 'stars'; let r = 7;
+  for (let i = 0; i < 40; i++) { r = (r * 16807) % 2147483647; const x = r % 390; r = (r * 16807) % 2147483647; const y = 140 + (r % 420); s.insertAdjacentHTML('beforeend', `<i style="left:${x}px;top:${y}px"></i>`); } p.prepend(s); });
+if (location.hash === '#still') document.body.classList.add('still');
+</script>
+</body>
+</html>

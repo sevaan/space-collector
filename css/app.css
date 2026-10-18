@@ -1674,3 +1674,29 @@ body.night .rs-gets span.r { background: rgba(255, 106, 85, .14); color: #ff6a55
    matches the top. */
 #tk-act:not(:has(> button:not([hidden]))) { display: none; }
 #tk.tk-card { padding-bottom: 12px; }
+/* Notifications, design A (2026-10-18, Sevaan, design/toasts-top-right.html): on the sky they sit top right, under the
+   Headliner chip, in the chip's own shape: a top edge in the kind's colour (orange mission/achievement/rank, steel-blue
+   XP, gold event, grey info), the small kind line, then the message; newest on top; in from the right edge.
+   With a panel, sheet or the reveal open they keep their old place at the bottom (the rules above). */
+#toasts .ticket { --k: #8a96a3; border: 0 !important; border-top: 3px solid var(--k) !important; border-radius: 12px !important; background: rgba(8, 15, 27, .92) !important;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, .3) !important; padding: 8px 12px 9px !important; gap: 10px; min-height: 0; transform: translateX(28px) scale(.98); }
+#toasts .ticket.in { transform: none; }
+#toasts .ticket--mission, #toasts .ticket--achievement, #toasts .ticket--rank { --k: var(--gold); }
+#toasts .ticket--xp { --k: var(--cyan); }
+#toasts .ticket--event { --k: var(--ticket-event); }
+#toasts .ticket__mark { display: none; }
+#toasts .ticket__eyebrow { font-size: 11px; letter-spacing: .2em; color: var(--k); }
+#toasts .ticket--info .ticket__eyebrow { color: var(--muted); }
+#toasts .ticket__xp { color: var(--k); }
+body.night #toasts .ticket { background: rgba(12, 3, 3, .92) !important; }
+body:not(:has(.overlay.panel:not([hidden]), #reveal:not([hidden]), .set-sheet.in:not([hidden]):not(.x))) #toasts {
+  top: calc(var(--safe-top) + 101px) !important; bottom: auto !important; left: auto !important; right: 12px !important; transform: none !important;
+  width: min(300px, calc(100vw - 150px)) !important; max-width: none !important; margin: 0 !important; flex-direction: column-reverse !important; justify-content: flex-end; }
+body:has(#nextpass:not([hidden])):not(:has(.overlay.panel:not([hidden]), #reveal:not([hidden]), .set-sheet.in:not([hidden]):not(.x))) #toasts { top: calc(var(--safe-top) + 143px) !important; }
+body:has(#nextpass:not([hidden])):has(#event-banner:not([hidden])):not(:has(.overlay.panel:not([hidden]), #reveal:not([hidden]), .set-sheet.in:not([hidden]):not(.x))) #toasts { top: calc(var(--safe-top) + 183px) !important; }
+@media (prefers-reduced-motion: reduce) { #toasts .ticket, #toasts .ticket.in { transform: none; } }
+/* At this narrower width a ticket with a button (the sticky "Example location · Set yours ›") puts its buttons on a second row. */
+#toasts .ticket:has(.ticket__go) { flex-wrap: wrap; row-gap: 8px; }
+#toasts .ticket:has(.ticket__go) .ticket__body { flex: 1 0 100%; }
+#toasts .ticket:has(.ticket__go) .ticket__go { flex: 1 1 auto; text-align: center; }
+#toasts .ticket .ticket__xp { color: var(--k) !important; }
