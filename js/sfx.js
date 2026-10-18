@@ -3,7 +3,7 @@
 // "Notification Sound 2" by deadrobotmusic (Freesound, CC0), softened. Files: assets/audio/sfx/<name>.mp3.
 // Decoded once into memory after the first tap, played through the shared context (js/audio-ctx.js) so they're instant.
 // Off with Settings → Sounds and vibration (localStorage sound = '0').
-import { audioCtx } from './audio-ctx.js?v=0.1.854';
+import { audioCtx } from './audio-ctx.js?v=0.1.855';
 export const SFX = ['lock', 'collect', 'arrive', 'flip', 'r_common', 'r_uncommon', 'r_rare', 'r_epic', 'r_legend', 'shiny', 'seen', 'stamp', 'levelup', 'xp',
   'mission', 'rankup', 'patch', 'coinroll', 'complete', 'secret', 'fossil', 'ufo', 'welcome', 'swipe', 'step', 'toggle', 'toast', 'page', 'rattle', 'plane'];
 const BASE = new URL('../assets/audio/sfx/', import.meta.url).href;
@@ -19,7 +19,7 @@ export function loadSfx() {
 }
 // name: one of SFX. gain: 0–1 on top of the file's own level. gap: skip if the same sound played less than gap ms ago.
 // delay: seconds from now (scheduled on the audio clock, so it stays in time with animations).
-// Sounds: the Zen set from UI SFX (uisfx.com, CC0; 2026-10-18, Sevaan), mapped cue by cue (CLAUDE.md lists the map) and
+// Sounds: the Mechanical set from UI SFX (uisfx.com, CC0; 2026-10-18, Sevaan; Zen first, then Mechanical), mapped cue by cue (CLAUDE.md lists the map) and
 // levelled when converted (rewards and stingers peak at −4 dB, taps and ticks at −9), so no per-file gain here.
 const NORM = {};
 // At most two at once: a third small sound is skipped rather than piling on (a Saturn catch stacked four over 5 s).

@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sound board</title>
+<style>
+/* Every game sound, what it's for, and the Mechanical cue it uses (2026-10-18, Sevaan). Each row also auditions any other Mechanical
+   cue for that moment; ★ marks a swap, and "Copy my picks" makes a list to paste back. Files: ../assets/audio/sfx (the
+   game's), sound-board/mechanical (the whole UI SFX Mechanical set, CC0). */
+@font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf'); }
+@font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf'); font-weight: 500; }
+:root { color-scheme: dark; --cream: #fff2b3; --muted: #aab6c3; --orange: #fa8127; --line: #22344a; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #080f1b; color: var(--cream); font: 500 16px/1.35 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .02em; padding: max(20px, env(safe-area-inset-top)) 16px 120px; }
+.wrap { max-width: 760px; margin: 0 auto; }
+h1 { font: 400 26px/1.05 'SC Display', Impact, sans-serif; margin: 0 0 6px; }
+.lead { color: var(--muted); margin: 0 0 18px; }
+h2 { font: 500 13px/1 'SC Label'; letter-spacing: .24em; text-transform: uppercase; color: var(--orange); margin: 26px 0 8px; }
+.row { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 4px 12px; align-items: center; padding: 12px 0; border-top: 1px solid var(--line); }
+.play { width: 52px; height: 52px; border-radius: 50%; border: 1.5px solid var(--orange); background: rgba(250,129,39,.12); color: var(--orange); font-size: 18px; cursor: pointer; grid-row: span 2; }
+.play.on { background: var(--orange); color: #080f1b; }
+.ev b { font: 500 17px/1.2 'SC Label'; letter-spacing: .03em; }
+.ev small { display: block; color: var(--muted); font-size: 14px; margin-top: 1px; }
+.cue { color: #8fb3cf; font-size: 13px; letter-spacing: .14em; text-transform: uppercase; }
+.alt { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; grid-column: 2; }
+.alt select { font: inherit; font-size: 15px; color: var(--cream); background: #0e1a29; border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; min-height: 40px; }
+.alt button { font: 500 14px/1 'SC Label'; letter-spacing: .12em; text-transform: uppercase; color: var(--cream); background: #0e1a29; border: 1px solid var(--line); border-radius: 10px; padding: 0 12px; min-height: 40px; cursor: pointer; }
+.alt button.pick.on { border-color: var(--orange); color: var(--orange); }
+.bar { position: fixed; left: 0; right: 0; bottom: 0; padding: 12px 16px max(12px, env(safe-area-inset-bottom)); background: rgba(8,15,27,.96); border-top: 1px solid var(--line); display: flex; gap: 10px; justify-content: center; }
+.bar button { font: 500 15px/1 'SC Label'; letter-spacing: .14em; text-transform: uppercase; border-radius: 12px; padding: 0 18px; min-height: 46px; cursor: pointer; border: 1px solid var(--orange); background: var(--orange); color: #080f1b; }
+.bar button.ghost { background: none; color: var(--cream); border-color: var(--line); }
+#out { white-space: pre-wrap; background: #0e1a29; border: 1px solid var(--line); border-radius: 12px; padding: 12px; margin-top: 20px; color: var(--muted); font-size: 14px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>Sound board</h1>
+<p class="lead">Every sound in the game, when it plays, and the Mechanical cue it uses now. Tap ▶ to hear it. To try another, pick a cue on the row and tap Try; tap ★ to mark it as the one you want. Then "Copy my picks" and paste them to me.</p>
+<div id="list"></div>
+<pre id="out" hidden></pre>
+</div>
+<div class="bar"><button class="ghost" id="all" type="button">Play a section</button><button id="copy" type="button">Copy my picks</button></div>
+<script>
+const CUES = 'achievement add-to-cart back badge blocked bonus cancel check checkout checkpoint close collapse complete connect copy coupon delete deselect disconnect double-click drag-start drop error expand focus forward hover info invalid-drop level-up lock long-press mention notification open paste pause play press progress-step purchase queued reaction receive redo refund release remove-from-cart reorder retry reward seek select send skip-next skip-previous sleep snap start stop streak success swipe toggle-off toggle-on typing uncheck undo unlock volume-change wake warning'.split(' ');
+const G = [
+  ['Catching', [
+    ['lock', 'snap', 'Lock-on', 'The circle locks onto something you can collect.'],
+    ['collect', 'press', 'Collect', 'You tap Collect.'],
+    ['arrive', 'receive', 'The card arrives', 'The sealed card flies out of the circle (the reveal’s whoosh).'],
+    ['flip', 'forward', 'Card turns over', 'A card flips: on the reveal, and double-tapping a card.'],
+    ['plane', 'info', 'Just a plane', 'A plane is in the circle (not a card).'],
+  ]],
+  ['The new card', [
+    ['r_common', 'reward', 'Common', 'A new Common card lands.'],
+    ['r_uncommon', 'success', 'Uncommon', 'A new Uncommon card lands.'],
+    ['r_rare', 'badge', 'Rare', 'A new Rare card lands.'],
+    ['r_epic', 'level-up', 'Epic', 'A new Epic card lands.'],
+    ['r_legend', 'achievement', 'Legendary', 'A new Legendary card lands.'],
+    ['shiny', 'bonus', 'Shiny', 'A Shiny card (caught at a lucky moment).'],
+    ['seen', 'select', 'Seen again', 'You catch something you already have.'],
+    ['stamp', 'check', 'New stamp', 'A new launch stamped on a fleet card (Starlink, OneWeb…).'],
+    ['levelup', 'streak', 'Card levels up', 'A card goes up a level (seen on more nights).'],
+    ['xp', 'progress-step', 'XP ticks', 'The XP counting up on the reveal (plays in quick ticks).'],
+  ]],
+  ['Progress', [
+    ['mission', 'checkpoint', 'Mission complete', 'A nightly mission or sky challenge is done.'],
+    ['patch', 'badge', 'Patch earned', 'A patch coin pops up.'],
+    ['coinroll', 'drop', 'Patch rolls away', 'The patch coin rolls down into the Collection tab.'],
+    ['rankup', 'level-up', 'New rank', 'You rank up (Spotter, Tracker, Navigator…).'],
+    ['complete', 'complete', 'Set complete', 'A constellation or set finished; also Reunited.'],
+  ]],
+  ['Secrets', [
+    ['secret', 'wake', 'Secret found', 'A hidden thing is found (the Wow! signal, Voyager…).'],
+    ['fossil', 'unlock', 'Dinosaur bones', 'The buried fossil is found.'],
+    ['ufo', 'connect', 'UFO', 'You catch the UFO.'],
+  ]],
+  ['Around the app', [
+    ['welcome', 'start', 'Welcome', 'The welcome card turns over / you begin.'],
+    ['rattle', 'drag-start', 'Card rattle', 'The sealed welcome card shakes (each shake).'],
+    ['step', 'focus', 'Tour step', 'Moving to the next card in the tour.'],
+    ['toast', 'notification', 'Notification', 'A notification appears (top right).'],
+    ['toggle', 'toggle-on', 'Switch', 'A switch in Settings.'],
+    ['page', 'open', 'Orbit view', 'Tapping a card’s picture to see its orbit.'],
+    ['swipe', 'swipe', 'Flick away', 'Flicking a card closed in the Collection.'],
+  ]],
+];
+let picks = {}; try { picks = JSON.parse(localStorage.getItem('sbPicks') || '{}'); } catch {}
+const save = () => { try { localStorage.setItem('sbPicks', JSON.stringify(picks)); } catch {} };
+let cur = null;
+const play = (src, btn) => { if (cur) { cur.pause(); cur.btn?.classList.remove('on'); } const a = new Audio(src); a.btn = btn; btn?.classList.add('on'); a.onended = () => btn?.classList.remove('on'); a.play().catch(() => {}); cur = a; return a; };
+const list = document.getElementById('list');
+for (const [title, rows] of G) {
+  const h = document.createElement('h2'); h.textContent = title; list.append(h);
+  for (const [name, cue, label, when] of rows) {
+    const r = document.createElement('div'); r.className = 'row'; r.dataset.name = name;
+    r.innerHTML = `<button class="play" type="button" aria-label="Play ${label}">▶</button><div class="ev"><b>${label}</b> <span class="cue">· mechanical ${cue}</span><small>${when}</small></div>
+      <div class="alt"><select aria-label="Another cue for ${label}">${CUES.map((c) => `<option${c === (picks[name] ?? cue) ? ' selected' : ''}>${c}</option>`).join('')}</select><button type="button" class="try">Try</button><button type="button" class="pick${picks[name] ? ' on' : ''}" aria-label="Use this one">★</button></div>`;
+    const sel = r.querySelector('select'), pick = r.querySelector('.pick');
+    r.querySelector('.play').onclick = (e) => play(`../assets/audio/sfx/${name}.mp3`, e.currentTarget);
+    r.querySelector('.try').onclick = () => play(`sound-board/mechanical/${sel.value}.mp3`, null);
+    sel.onchange = () => { play(`sound-board/mechanical/${sel.value}.mp3`, null); pick.classList.toggle('on', picks[name] === sel.value); };
+    pick.onclick = () => { if (picks[name] === sel.value || sel.value === cue) { delete picks[name]; pick.classList.remove('on'); } else { picks[name] = sel.value; pick.classList.add('on'); } save(); };
+    list.append(r);
+  }
+}
+// Play a section: the rows of the section nearest the top of the screen, one after another
+document.getElementById('all').onclick = async () => {
+  const hs = [...list.querySelectorAll('h2')]; const h = hs.reverse().find((x) => x.getBoundingClientRect().top < innerHeight * .4) ?? hs.at(-1);
+  let el = h.nextElementSibling; while (el && el.classList.contains('row')) { const b = el.querySelector('.play'); const a = play(`../assets/audio/sfx/${el.dataset.name}.mp3`, b); await new Promise((res) => { a.onended = () => { b.classList.remove('on'); setTimeout(res, 350); }; setTimeout(res, 2500); }); el = el.nextElementSibling; }
+};
+document.getElementById('copy').onclick = async () => {
+  const lines = Object.entries(picks).map(([n, c]) => `${list.querySelector(`[data-name="${n}"] b`).textContent} (${n}): mechanical ${c}`);
+  const text = lines.length ? `Sound swaps:\n${lines.join('\n')}` : 'No swaps: keep them all.';
+  const out = document.getElementById('out'); out.hidden = false; out.textContent = text;
+  try { await navigator.clipboard.writeText(text); document.getElementById('copy').textContent = 'Copied'; } catch { document.getElementById('copy').textContent = 'Shown below'; }
+};
+</script>
+</body>
+</html>
