@@ -1626,3 +1626,8 @@ body.night #nextpass .np-n, body.night .radar-tip b { color: #ff7f70 !important;
 /* During the tour cards nothing behind them answers a tap (2026-10-17, Sevaan: the radar opened "Up in your sky" behind
    step 1). Only the tour itself (#onboard: its cards and Skip) can be pressed until you finish or skip. */
 body.ob-tour #hud, body.ob-tour #hud *, body.ob-tour #sky, body.ob-tour .overlay.panel { pointer-events: none !important; }
+/* Compass nudge (2026-10-17, Sevaan: Reset had wrapped to its own line): Reset is a small link under the label, so the
+   row stays one line with −5° · value · +5° on the right. Dimmed at 0°. */
+.nudge-reset { min-height: 28px; margin: -4px 0 -6px; padding: 0; border: 0; background: none; color: var(--gold); font: 600 12.5px/1 var(--label); letter-spacing: .08em; text-transform: uppercase; cursor: pointer; }
+.nudge-reset:disabled { color: var(--muted); opacity: .55; cursor: default; }
+body.night .nudge-reset:not(:disabled) { color: #ff6a55; }
