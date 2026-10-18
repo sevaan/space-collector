@@ -1,29 +1,29 @@
-import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.830';
-import { computeStats, statsHtml } from './stats.js?v=0.1.830';
-import { nightKey } from './observation.js?v=0.1.830';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.830';
-import { sfx } from './sfx.js?v=0.1.830';
-import { expandFacts } from './catalog-facts.js?v=0.1.830';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.830';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.830';
-import { ticket } from './toast.js?v=0.1.830';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.830';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.830';
-import { cardArt } from './art.js?v=0.1.830';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.830';
-import { applyBack } from './card-backs.js?v=0.1.830';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.830';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.830';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.830';
-import { STORIES } from './stories.js?v=0.1.830';
-import { loadConstellations, conList } from './constellations.js?v=0.1.830';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.830';
-import { eventBadges, nextEvent } from './events.js?v=0.1.830';
-import { shareCardEl } from './share-card.js?v=0.1.830';
-import { forgetSighting } from './cloud-backup.js?v=0.1.830';
-import { allSightings, deleteSighting } from './store.js?v=0.1.830';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.830';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.830';
+import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.832';
+import { computeStats, statsHtml } from './stats.js?v=0.1.832';
+import { nightKey } from './observation.js?v=0.1.832';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.832';
+import { sfx } from './sfx.js?v=0.1.832';
+import { expandFacts } from './catalog-facts.js?v=0.1.832';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.832';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.832';
+import { ticket } from './toast.js?v=0.1.832';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.832';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.832';
+import { cardArt } from './art.js?v=0.1.832';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.832';
+import { applyBack } from './card-backs.js?v=0.1.832';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.832';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.832';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.832';
+import { STORIES } from './stories.js?v=0.1.832';
+import { loadConstellations, conList } from './constellations.js?v=0.1.832';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.832';
+import { eventBadges, nextEvent } from './events.js?v=0.1.832';
+import { shareCardEl } from './share-card.js?v=0.1.832';
+import { forgetSighting } from './cloud-backup.js?v=0.1.832';
+import { allSightings, deleteSighting } from './store.js?v=0.1.832';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.832';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.832';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -870,7 +870,7 @@ if (EMBED) {
     }
     if (e.data.sc === 'refresh') refreshSightings();
     // Hidden behind the sky, its animations (twinkles, shimmers, drift) pause (2026-10-16 perf sweep).
-    if (e.data.sc === 'away') { clearTimeout(awayT); document.documentElement.classList.add('away'); if (returnView) { if ($('viewer').open) $('viewer').close(); backFromBorrowed(); } }
+    if (e.data.sc === 'away') { clearTimeout(awayT); document.documentElement.classList.add('away'); for (const id of ['viewer', 'stats-view', 'patch-view']) { const d = $(id); if (d?.open) { d.classList.remove('leaving'); d.close(); } } if (returnView) backFromBorrowed(); } // leaving the Collection closes whatever was open in it (bug hunt 2026-10-17: after Show me the viewer stayed open, clipped under the header)
     if (e.data.sc === 'open' || e.data.sc === 'show') { clearTimeout(awayT); awayT = setTimeout(() => document.documentElement.classList.remove('away'), 460); } // after the slide-up lands (2026-10-17 perf): restarting every twinkle and shimmer mid-slide hitched
     if (e.data.sc === 'tonight') { state.plan = readPlan(); if (state.ready && ['owned', 'discover'].includes(state.view)) render(); }
   });

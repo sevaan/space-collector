@@ -565,3 +565,10 @@
 .mn-row svg.on path { fill: var(--ink, #fff2b3); }
 .mn-row svg.latest circle { stroke: var(--accent, #fa8127); stroke-width: 2.6; }
 .mn-phases { margin-bottom: .5em; }
+/* The Moon card fits its phase row (bug hunt 2026-10-17: the label wrapped, the fact was cut mid-line and the heading's
+   rule ran through the subtitle): a 16:10 picture instead of 4:3, a one-line label, smaller gaps. */
+.card--mission.mn-card .card__art { aspect-ratio: 16 / 10 !important; height: auto !important; }
+.mn-phases .card__note-label { white-space: nowrap; }
+.mn-phases .fl-latest { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.mn-card .mn-row { gap: .25em; margin-top: .4em; }
+.mn-card .mn-phases { margin-bottom: .3em; }

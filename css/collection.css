@@ -1,6 +1,6 @@
 :root { color-scheme: dark; --bg: #080f18; --panel: #111d29; --text: #f3ecd4; --muted: #bdbea9; --line: #2a3a48; --accent: #fa8127; /* card palette (2026-10-05): orange accent, cream ink; the old mint #99d0cc is gone */ --safe-top: env(safe-area-inset-top, 0px); --safe-bottom: env(safe-area-inset-bottom, 0px); }
 html.standalone { --safe-bottom: max(6px, calc(env(safe-area-inset-bottom, 0px) - 20px)); } /* no Safari bars: sit lower (2026-10-11) */
-:root[data-theme="night"] { --bg: #090303; --panel: #160707; --text: #b85e56; --muted: #a04d48; --line: #411917; --accent: #b45b53; }
+:root[data-theme="night"] { --bg: #0c0303; --panel: #160707; --text: #ff7f70; --muted: #e8705f; --line: #361719; --accent: #f2654f; } /* the same reds as Explore (app.css), not the older dimmer set (visual playtest 2026-10-17) */
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.45 Inter, system-ui, sans-serif; }
 button, input, select { font: inherit; }
@@ -599,3 +599,9 @@ html { text-wrap: pretty; } h1, h2, h3 { text-wrap: balance; }
 @media (prefers-reduced-motion: reduce) { #stats-view[open], #stats-view[open]::backdrop { animation: none; } }
 /* Embedded in the app, Explore's header stays on top of the Collection (2026-10-17): this one keeps its space but hides. */
 html.embedded .collection-header { visibility: hidden; }
+
+/* Red night mode reaches the dialogs (visual playtest 2026-10-17): a modal <dialog> paints in the browser's top layer,
+   above body.night::after, so the card viewer, Observer stats and patch detail showed full colour. Each open dialog
+   carries its own red multiply. */
+body.night dialog[open]::after { content: ''; position: fixed; inset: 0; z-index: 2147483646; pointer-events: none; background: #ff1a00; mix-blend-mode: multiply; }
+body.night dialog::backdrop { background: rgba(12, 3, 3, .82); }

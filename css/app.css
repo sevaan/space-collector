@@ -1640,3 +1640,7 @@ body.col-modal #collection-frame { clip-path: none; }
 #sky-header { transition: background-color .3s ease, box-shadow .3s ease; }
 body.col-open #sky-header { background: var(--bg); box-shadow: 0 calc(-1 * var(--safe-top)) 0 0 var(--bg); }
 body.col-open #peak-toggle { visibility: hidden; }
+/* Explore's toasts (the sticky TONIGHT ticket and others) step aside while the Collection is up, and come back when you
+   return to the sky (improve playtest 2026-10-17: TONIGHT floated over the card grid and search results). Messages meant
+   for the Collection are shown inside it. */
+body.col-open #toasts { visibility: hidden; }

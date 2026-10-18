@@ -1,19 +1,19 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { fallWords } from './last-chance.js?v=0.1.830';
-import { sfx } from './sfx.js?v=0.1.830';
-import { cardArt } from './art.js?v=0.1.830';
-import { TIER_INFO } from './rarity.js?v=0.1.830';
-import { SET_BY_ID } from './sets.js?v=0.1.830';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.830';
-import { FLEET_ABOUT, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.830';
-import { artFileFor } from './art-keys.js?v=0.1.830';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.830';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.830';
-import { nightsIn } from './observation.js?v=0.1.830';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.830';
-import { SHINY } from './shiny.js?v=0.1.830';
-import { conArt, cometArt } from './con-art.js?v=0.1.830';
-import { CON_FIGURES } from './con-figures.js?v=0.1.830';
+import { fallWords } from './last-chance.js?v=0.1.832';
+import { sfx } from './sfx.js?v=0.1.832';
+import { cardArt } from './art.js?v=0.1.832';
+import { TIER_INFO } from './rarity.js?v=0.1.832';
+import { SET_BY_ID } from './sets.js?v=0.1.832';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.832';
+import { FLEET_ABOUT, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.832';
+import { artFileFor } from './art-keys.js?v=0.1.832';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.832';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.832';
+import { nightsIn } from './observation.js?v=0.1.832';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.832';
+import { SHINY } from './shiny.js?v=0.1.832';
+import { conArt, cometArt } from './con-art.js?v=0.1.832';
+import { CON_FIGURES } from './con-figures.js?v=0.1.832';
 // The animal/symbol figure belongs to the completed (gold) constellation card only (2026-10-05): a single
 // star's card draws just the star pattern with its star marked, so the figure is a reward for finishing the set.
 // A star card's constellation figure comes into focus as you collect the constellation's stars (design/con-focus.html B).
@@ -141,7 +141,7 @@ export function renderCard(o, opts = {}) {
   // Moon in that phase, your newest ringed, then the fact.
   const moonCard = o.type === 'moon' && !!o.natural && revealed;
   const mStamps = moonCard ? stampsIn(sightings) : null, mLatest = moonCard ? moonPhaseOf(latestStamp(sightings)) : null;
-  const moonBlock = moonCard ? `<div class="fl-dots mn-phases"><div class="fl-head"><span class="card__note-label">PHASES STAMPED · ${mStamps.size} / 8</span>${mLatest != null ? `<span class="fl-latest"><i></i>${esc(MOON_PHASES[mLatest])}</span>` : ''}</div><div class="mn-row">${MOON_PHASES.map((name, k) => `<svg viewBox="-20 -20 40 40" class="${mStamps.has(`MOON:${k}`) ? 'on' : ''}${k === mLatest ? ' latest' : ''}" role="img" aria-label="${esc(name)}${mStamps.has(`MOON:${k}`) ? '' : ' (not yet)'}"><circle r="15"></circle>${k ? `<path d="${phasePath(k)}"${k > 4 ? ' transform="scale(-1,1)"' : ''}></path>` : ''}</svg>`).join('')}</div></div>` : '';
+  const moonBlock = moonCard ? `<div class="fl-dots mn-phases"><div class="fl-head"><span class="card__note-label">PHASES · ${mStamps.size}/8</span>${mLatest != null ? `<span class="fl-latest"><i></i>${esc(MOON_PHASES[mLatest])}</span>` : ''}</div><div class="mn-row">${MOON_PHASES.map((name, k) => `<svg viewBox="-20 -20 40 40" class="${mStamps.has(`MOON:${k}`) ? 'on' : ''}${k === mLatest ? ' latest' : ''}" role="img" aria-label="${esc(name)}${mStamps.has(`MOON:${k}`) ? '' : ' (not yet)'}"><circle r="15"></circle>${k ? `<path d="${phasePath(k)}"${k > 4 ? ' transform="scale(-1,1)"' : ''}></path>` : ''}</svg>`).join('')}</div></div>` : '';
   const factBlock = moonCard ? moonBlock + `<div class="card__fact"><p>${richText(factFor(o))}</p></div>`
     : fleet ? dotMap(o, stamps, lk, `${stamps.size} / ${o.launches.length} stamped` /* no "N more for Silver" (2026-10-12, Sevaan: it wrapped and took room from the art) */, latestLine) + (FLEET_ABOUT[o.family] ? `<div class="card__fact fl-about"><p>${richText(FLEET_ABOUT[o.family])}</p></div>` : '')
     : conCard ? `<div class="card__fact"><p>${richText(prog.level === 'gold' ? factFor(o).replace(/Collect all \d+ of its stars to turn this card \*\*gold\*\*\./, `You've found **all ${prog.total}** of its stars.`).replace(/Collect the Sun, the Moon and all \*\*seven\*\* planets to turn this card \*\*gold\*\*\./, `You've seen **all nine** of them with your own eyes.`) : factFor(o))}</p><p class="con-progress">${o.stars.map((k) => `<i class="${(opts.ownedKeys ?? new Set()).has(k) ? 'on' : ''}"></i>`).join('')}<span>${prog.have} / ${prog.total} ${o.system ? 'WORLDS' : 'STARS'}${prog.level === 'gold' ? ' · COMPLETE' : ''}</span></p></div>`
@@ -166,7 +166,7 @@ export function renderCard(o, opts = {}) {
   const four = secretStory ? [] : nat ? o.stats.map(([label, value, unit]) => [label, value, unit])
     : fleet ? [['HEIGHT', stats ? stats.alt.toLocaleString('en-US') : '—', 'km'], ['SPEED', kmh ? kmh.toLocaleString('en-US') : '—', 'km/h'], ['FIRST', o.launch?.slice(0, 4) ?? '—', ''], ['LAUNCHES', String(o.launches.length), '']]
     : [['HEIGHT', stats ? stats.alt.toLocaleString('en-US') : '—', 'km'], ['SPEED', kmh ? kmh.toLocaleString('en-US') : '—', 'km/h'], ['LAPS A DAY', laps ? laps.toFixed(laps < 10 ? 1 : 0) : '—', ''], [o.type === 'rocket-body' || o.type === 'debris' ? 'YEARS UP' : 'LAUNCHED', o.type === 'rocket-body' || o.type === 'debris' ? (age == null ? '—' : String(age)) : (o.launch?.slice(0, 4) ?? '—'), '']];
-  el.classList.add('card--mission');
+  el.classList.add('card--mission'); if (moonCard) el.classList.add('mn-card'); // the phase row needs room: a shorter picture (css/cards.css)
   el.innerHTML = `
   <div class="card__rotator"><div class="card__face">
     <div class="card__art" data-art-slot aria-hidden="true">${lcMark(o)}${conCard && o.system ? (revealed && artImage(o) ? `<img class="card-art-image" src="${artImage(o, AS)}" alt="" decoding="async">${opts.mini ? '' : artStars(o)}` : lockedArt(o, revealed, set.color, opts.mini ? 'small' : undefined)) : conCard ? conArt(o.data, null, revealed ? conFig(o.con) : {}) : o.type === 'comet' && revealed ? cometArt(o.key) : o.type === 'deepsky' && revealed && !artImage(o) && CON_BY_ID.get(o.conId) ? conArt(CON_BY_ID.get(o.conId).data, null, { mark: o }) : o.con && !o.skyName && revealed && CON_BY_ID.get(o.con) ? conArt(CON_BY_ID.get(o.con).data, o.hip, conFocus(o, opts.ownedKeys)) : revealed && artImage(o) ? `<img class="card-art-image" src="${artImage(o, AS)}" alt="" decoding="async">${opts.mini ? '' : artStars(o)}` : lockedArt(o, revealed, set.color, opts.mini ? 'small' : undefined)}${shinyOf ? `<span class="shiny-tag">✦ SHINY · ${esc(SHINY[shinyOf].label.toUpperCase())}</span>` : ''}<span class="m-chip m-tier card__tier"><i aria-hidden="true">${tier.gem}</i>${esc(tier.label.toUpperCase())}${o.icon ? '<b class="card__icon-badge">ICON</b>' : ''}</span><span class="m-chip m-set card__setbar"><span><span>${esc(set.name.toUpperCase())}</span></span></span><div class="card__foil"></div></div>
@@ -458,14 +458,18 @@ export function attachFlip(el, { onBack, onTap } = {}) {
     turn = turnCard(el, { from: flipped ? 0 : 180, to: flipped ? 180 : 360, back });
     turn.finished.then(() => { busy = false; if (queued) { queued = false; flip(); } });
   };
+  let lastTouchUp = 0;
   const onUp = (e) => {
+    if (e.pointerType !== 'mouse') lastTouchUp = performance.now();
     if (el.dataset.swiping || !still(e)) return;
     if (e.pointerType === 'mouse') { single(); return; } // mice: dblclick flips and cancels the single tap
     const now = performance.now();
     if (now - lastTap < 320 && Math.hypot(e.clientX - lastX, e.clientY - lastY) < 30) { lastTap = 0; clearTimeout(tapTimer); flip(); }
     else { lastTap = now; lastX = e.clientX; lastY = e.clientY; single(); }
   };
-  const onDbl = (e) => { e.preventDefault(); clearTimeout(tapTimer); flip(); };
+  // Android also fires dblclick after a touch double-tap, which onUp has already flipped: ignore that one (bug hunt
+  // 2026-10-17: it flipped the card and straight back). Mice still flip on dblclick.
+  const onDbl = (e) => { e.preventDefault(); clearTimeout(tapTimer); if (performance.now() - lastTouchUp < 600) return; flip(); };
   el.addEventListener('pointerup', onUp);
   el.addEventListener('dblclick', onDbl);
   return {
