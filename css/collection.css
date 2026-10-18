@@ -617,3 +617,12 @@ body[data-view]:not([data-view="owned"]) .logbook .lb-pic { display: none !impor
    pass-panel buttons are 44px. */
 :root:not([data-theme="night"]) { --bg: #080f1b; --text: #fff2b3; --line: #344654; }
 .fd-acts .ic { width: 44px; height: 44px; }
+/* iPad and other big screens (2026-10-18, Sevaan: "the card should always appear in the middle"): the viewer's card
+   grows with the screen instead of stopping at phone size, and sits in the middle, top to bottom. */
+@media (min-width: 700px) {
+  .viewer-scroll { display: flex; flex-direction: column; align-items: center; }
+  .viewer-scroll > #slot { margin-top: auto; }
+  .viewer-scroll > :last-child { margin-bottom: auto; }
+  #slot .card { font-size: min(24px, calc((100vw - 58px) / 28), calc((100dvh - 300px) / 42)); }
+  #viewer:has(#v-up:not([hidden])) #slot .card { font-size: min(24px, calc((100vw - 58px) / 28), calc((100dvh - 470px) / 42)); }
+}

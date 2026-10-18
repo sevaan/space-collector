@@ -2,3 +2,5 @@
 node_modules/
 .claude/
 scripts/.cache/
+store/raw/
+store/appstore/

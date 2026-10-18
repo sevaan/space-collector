@@ -1733,3 +1733,5 @@ body.night .shiny-what .sw-moments li { color: var(--text); } body.night .shiny-
 .od-sky .od-stars { position: absolute; inset: 0; }
 .od-sky .od-stars.starfield i { width: var(--s); height: var(--s); }
 .ob-done .od-head { padding-right: 52px; }
+/* The Tonight page on iPad (2026-10-18): one centred column, not hugging the left edge. */
+@media (min-width: 700px) { #onboard .ob-done > :not(.od-sky):not(.od-x) { width: 100%; max-width: 620px; margin-inline: auto; } }
