@@ -399,3 +399,31 @@ body:has(#gh-remind:not([hidden])) #toasts { opacity: 0; pointer-events: none; t
 /* One close ✕ everywhere (2026-10-18, Sevaan: "use the view card one"): the reveal's, drawn in the app's label font, not
    the heavier system glyph Settings and the Now page fell back to. */
 .x-close, .pill.x-close, #viewer .close { font: 500 24px/1.2 var(--label, 'SC Label'), 'Arial Narrow', sans-serif !important; }
+/* ---- Notices, redesign (2026-10-18, Sevaan approved design/notifications-all.html) ----
+   An icon tile, a short kind line, a title, an optional detail, one thing on the right. One width and place (css/app.css
+   puts the stack top right on the sky). Tones: orange rewards, gold the night's news, steel progress, cream info, red
+   failures, a shiny edge for shinies. The whole notice is the button. */
+#toasts .ticket { --k: #c9cbb6; display: grid !important; grid-template-columns: 32px minmax(0, 1fr) auto; column-gap: 10px; align-items: start; min-height: 0 !important;
+  padding: 10px 10px 11px !important; border: 0 !important; border-top: 3px solid var(--k) !important; border-radius: 14px !important;
+  background: rgba(9, 16, 28, .96) !important; box-shadow: 0 10px 24px rgba(0, 0, 0, .38), inset 0 0 0 1px rgba(255, 255, 255, .05) !important; color: #fff2b3; }
+#toasts .ticket.tone-orange { --k: #fa8127; } #toasts .ticket.tone-gold { --k: #f1c04e; } #toasts .ticket.tone-steel { --k: #8fb3cf; }
+#toasts .ticket.tone-info { --k: #c9cbb6; } #toasts .ticket.tone-red { --k: #ff7a64; } #toasts .ticket.tone-shiny { --k: #ffcf7a; }
+#toasts .ticket.tone-shiny { border-top: 3px solid transparent !important; background: linear-gradient(rgba(9,16,28,.96), rgba(9,16,28,.96)) padding-box, linear-gradient(90deg, #fff2b3, #ffcf7a, #fa8127, #ffb3a1) border-box !important; }
+#toasts .ticket .ticket__mark, #toasts .ticket .ticket__art, #toasts .ticket .ticket__go { display: none !important; }
+#toasts .tn-ic { width: 32px; height: 32px; border-radius: 9px; display: grid; place-items: center; color: var(--k); background: color-mix(in srgb, var(--k) 15%, transparent); overflow: hidden; }
+#toasts .tn-ic svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+#toasts .tn-ic.art { background: #0b1626; border: 1px solid color-mix(in srgb, var(--k) 35%, transparent); }
+#toasts .tn-ic.art svg, #toasts .tn-ic.art img { width: 100%; height: 100%; object-fit: cover; stroke: none; }
+#toasts .ticket__body { display: block !important; min-width: 0; }
+#toasts .ticket__eyebrow { display: block; font: 500 10.5px/1.25 var(--label, 'SC Label', 'Arial Narrow', sans-serif) !important; letter-spacing: .18em !important; text-transform: uppercase; color: var(--k) !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-top: 1px; }
+#toasts .ticket__line { display: -webkit-box !important; -webkit-line-clamp: 2 !important; -webkit-box-orient: vertical; overflow: hidden; white-space: normal !important; margin-top: 2px; font: 500 16.5px/1.12 var(--label, 'SC Label', 'Arial Narrow', sans-serif) !important; letter-spacing: .02em !important; color: #fff2b3 !important; }
+#toasts .ticket__line:first-child { margin-top: 1px; }
+#toasts .ticket__sub { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-top: 3px; font: 500 13px/1.28 var(--label, 'SC Label', 'Arial Narrow', sans-serif); letter-spacing: .03em; color: #aab6c3; }
+#toasts .tn-go { color: var(--k); white-space: nowrap; }
+#toasts .ticket__xp { align-self: center; font: 400 17px/1 var(--display, 'SC Display', sans-serif) !important; color: var(--k) !important; white-space: nowrap; }
+#toasts .ticket__xp small { font: 500 11px var(--label, 'SC Label', sans-serif); letter-spacing: .12em; color: #aab6c3 !important; margin-left: 2px; }
+#toasts .ticket .ticket__x { width: 28px !important; height: 28px !important; min-height: 0 !important; margin: -4px -4px 0 0 !important; padding: 0 !important; border: 0 !important; border-radius: 50% !important; background: none !important; box-shadow: none !important; color: #7f8fa1 !important; font: 500 17px/1 var(--label, 'SC Label', 'Arial Narrow', sans-serif) !important; display: grid; place-items: center; }
+:where(html[data-theme='night'], body.night) #toasts .ticket { --k: #ff6a55 !important; background: rgba(18, 6, 6, .96) !important; }
+:where(html[data-theme='night'], body.night) #toasts .ticket .ticket__line { color: #ff7f70 !important; }
+:where(html[data-theme='night'], body.night) #toasts .ticket :is(.ticket__sub, .ticket__x, .ticket__xp small) { color: #c95a4c !important; }
+#toasts .ticket__sub { -webkit-line-clamp: 3; } /* a compass or error detail gets a third line before it's cut */

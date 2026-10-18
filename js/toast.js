@@ -19,9 +19,29 @@ export function toast(html, ms = 2200, href = null, opts = {}) { ticket({ kind: 
 // Called with each ticket as it appears (main.js plays its sound: mission, rank up, or the quiet toast).
 let onShown = null;
 export function onTicketShown(fn) { onShown = fn; }
-export function ticket({ kind = 'info', eyebrow = '', line = '', xp = 0, ms = 3000, href = null, html = false, delay = 0, id = null, art = '', celebrate = false, sticky = false, action = null, go = null }) {
+// Notices, design/notifications-all.html (2026-10-18, Sevaan approved): an icon tile, a short kind line, a title (line),
+// an optional detail (sub), and one thing on the right (XP, ›, or a light ✕). `icon` names one of ICONS (or `art` fills the
+// tile); `tone` sets the colour (orange rewards, gold the night's news, steel progress, cream info, red failures);
+// `go` is the words for a tap ("See the plan"), shown in the detail line.
+export const ICONS = {
+  diamond: '<path d="M12 3l7 9-7 9-7-9z"/>', star: '<path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7z"/>',
+  stamp: '<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.2"/>', chevrons: '<path d="M6 14l6-6 6 6M6 19l6-6 6 6"/>',
+  card: '<rect x="6" y="3.5" width="12" height="17" rx="2"/><path d="M9 8h6M9 11h6"/>', bell: '<path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/>',
+  belloff: '<path d="M6 16.5V11a6 6 0 0 1 9.5-4.9M18 11v5.5l1.5 2H8"/><path d="M4 4l16 16"/>', moon: '<path d="M19 14.5A7.5 7.5 0 0 1 9.5 5a7.5 7.5 0 1 0 9.5 9.5z"/>',
+  pin: '<path d="M12 21s-6-5.6-6-11a6 6 0 0 1 12 0c0 5.4-6 11-6 11z"/><circle cx="12" cy="10" r="2.2"/>', compass: '<circle cx="12" cy="12" r="8.5"/><path d="M14.8 9.2l-1.9 4.7-4.7 1.9 1.9-4.7z"/>',
+  sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/>',
+  ff: '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/><path d="M19.5 4.5l1 3-3 .5"/>', sparkle: '<path d="M12 3c.6 4.6 2.4 6.4 7 7-4.6.6-6.4 2.4-7 7-.6-4.6-2.4-6.4-7-7 4.6-.6 6.4-2.4 7-7z"/><path d="M19 15.5c.2 1.4.8 2 2.2 2.2-1.4.2-2 .8-2.2 2.2-.2-1.4-.8-2-2.2-2.2 1.4-.2 2-.8 2.2-2.2z"/>',
+  target: '<circle cx="12" cy="12" r="7.5"/><circle cx="12" cy="12" r="2.4"/><path d="M12 1.8v3M12 19.2v3M1.8 12h3M19.2 12h3"/>', alert: '<path d="M12 3.5l9 16H3z"/><path d="M12 10v4.5M12 17.3v.2"/>',
+  meteor: '<path d="M20 4l-9.5 9.5M17 3.5l-8 8M20.5 7l-8 8"/><circle cx="8" cy="16" r="3.2"/>', update: '<path d="M20 12a8 8 0 1 1-2.4-5.7"/><path d="M20 4.5v4h-4"/>',
+  calendar: '<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 9.5h16M8.5 3v4M15.5 3v4"/><path d="M8.5 13.5h.01M12 13.5h.01M15.5 13.5h.01M8.5 16.8h.01M12 16.8h.01"/>',
+  info: '<circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5M12 7.8v.2"/>', check: '<circle cx="12" cy="12" r="8.5"/><path d="M8.3 12.3l2.6 2.5 4.9-5.3"/>',
+};
+const KIND_ICON = { mission: 'diamond', rank: 'chevrons', event: 'star', xp: 'stamp', patch: 'card', compass: 'compass', info: 'info', error: 'alert', shiny: 'sparkle' };
+const KIND_TONE = { mission: 'orange', rank: 'orange', patch: 'orange', compass: 'orange', event: 'gold', xp: 'steel', info: 'info', error: 'red', shiny: 'shiny' };
+export const iconSvg = (name) => `<svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[name] ?? ICONS.info}</svg>`;
+export function ticket({ kind = 'info', eyebrow = '', line = '', sub = '', icon = '', tone = '', xp = 0, ms = 3000, href = null, html = false, delay = 0, id = null, art = '', celebrate = false, sticky = false, action = null, go = null }) {
   if (id && toastPending(id)) dropToast(id); // the same message again replaces the old one
-  queue.push({ kind, eyebrow, line, xp, ms, href, html, id, art, celebrate, sticky, action, go, at: Date.now() + delay });
+  queue.push({ kind, eyebrow, line, sub, icon, tone, xp, ms, href, html, id, art, celebrate, sticky, action, go, at: Date.now() + delay });
   pump();
 }
 export function toastPending(id) { return live.has(id) || queue.some((q) => q.id === id); }
@@ -77,10 +97,13 @@ function pump() {
 function show(t) {
   busy = true;
   const el = document.createElement('div');
-  el.className = `ticket ticket--${t.kind}${t.href || t.action ? ' linked' : ''}${t.art ? ' ticket--art' : ''}${t.sticky ? ' ticket--sticky' : ''}`;
+  el.className = `ticket ticket--${t.kind} tone-${t.tone || KIND_TONE[t.kind] || 'info'}${t.href || t.action ? ' linked' : ''}${t.art ? ' ticket--art' : ''}${t.sticky ? ' ticket--sticky' : ''}`;
   el.dataset.eyebrow = (t.eyebrow ?? '').toUpperCase(); if (t.id) el.dataset.id = t.id;
   if (document.querySelector('.overlay.panel:not([hidden])')) el.dataset.panel = '1'; // made while a page (Now, Settings) is open: it answers something done there, so it may show over it (css/app.css) // the colour of its top edge (css/ui.css, 2026-10-17 design A)
-  el.innerHTML = `${t.art ? `<span class="ticket__art" aria-hidden="true">${t.art}</span>` : '<i class="ticket__mark" aria-hidden="true"></i>'}<span class="ticket__body">${t.eyebrow ? `<span class="ticket__eyebrow">${esc(t.eyebrow)}</span>` : ''}<span class="ticket__line">${t.html ? t.line : esc(t.line)}</span></span>${t.xp ? `<span class="ticket__xp">+${t.xp}<small>XP</small></span>` : t.href || t.action ? `<span class="ticket__go">${esc(t.go ?? 'OPEN')} ›</span>` : ''}${t.sticky ? '<button type="button" class="ticket__x" aria-label="Dismiss">✕</button>' : ''}`;
+  const go = t.href || t.action ? `<span class="tn-go">${esc(t.go ?? 'Open')} ›</span>` : '', sub = t.sub ? (t.html ? t.sub : esc(t.sub)) : '';
+  el.innerHTML = `<span class="tn-ic${t.art ? ' art' : ''}" aria-hidden="true">${t.art || iconSvg(t.icon || KIND_ICON[t.kind])}</span>`
+    + `<span class="ticket__body">${t.eyebrow ? `<span class="ticket__eyebrow">${esc(t.eyebrow)}</span>` : ''}<span class="ticket__line">${t.html ? t.line : esc(t.line)}</span>${sub || go ? `<span class="ticket__sub">${sub}${sub && go ? ' · ' : ''}${go}</span>` : ''}</span>`
+    + (t.xp ? `<span class="ticket__xp">+${t.xp}<small>XP</small></span>` : t.sticky ? '<button type="button" class="ticket__x" aria-label="Dismiss">✕</button>' : '<span></span>');
   // Up long enough to read (2026-10-06: at least 5 s, about 1.6× the old times); a tap sends it away sooner.
   let gone = false, stopConfetti = () => {};
   const dismiss = () => { if (gone) return; gone = true; clearInterval(timer); stopConfetti(); if (t.id) live.delete(t.id); stickies.delete(dismiss); if (t.sticky) { shelf.splice(shelf.indexOf(el), 1); shelf.at(-1)?.classList.remove('shelved'); } el.classList.add('out'); el.classList.remove('in'); setTimeout(() => { el.remove(); if (!t.sticky) { busy = false; } pump(); }, 200); };

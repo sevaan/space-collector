@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Notifications: every type</title>
+<style>
+/* Every notification the sky can show, top right under the Headliner chip (2026-10-18, Sevaan: "make one with all the
+   notification types… and make them look good"). Left: today, captured from the app (design/notifications/now-*.png).
+   Right: the redesign. */
+@font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf'); }
+@font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf'); font-weight: 500; }
+:root { --cream: #fff2b3; --muted: #aab6c3; --orange: #fa8127; --gold: #f1c04e; --steel: #8fb3cf; --info: #c9cbb6; --red: #ff7a64;
+  --D: 'SC Display', Impact, sans-serif; --L: 'SC Label', 'Arial Narrow', sans-serif; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #1a1e25; color: var(--cream); font-family: var(--L); padding: 32px; }
+h1 { font: 400 26px/1 var(--D); margin: 0 0 8px; }
+.lead { margin: 0 0 8px; color: #c3c9d1; font-size: 16px; letter-spacing: .03em; max-width: 960px; line-height: 1.4; }
+.rules { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 8px 24px; margin: 18px 0 28px; max-width: 1400px; color: #c3c9d1; font-size: 15px; line-height: 1.35; }
+.rules b { color: var(--cream); font-weight: 500; letter-spacing: .04em; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(640px, 1fr)); gap: 22px; }
+.pair { background: #12161c; border-radius: 16px; padding: 14px; }
+.pair h2 { margin: 0 0 10px; font: 500 14px/1 var(--L); letter-spacing: .2em; text-transform: uppercase; color: #8f99a6; }
+.cols { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.lab { font: 500 12px/1 var(--L); letter-spacing: .2em; color: #6f7a87; margin: 0 0 6px; }
+/* a slice of the sky's top right, the same 393-pt-wide phone, cropped to where notices go */
+.sky { position: relative; width: 300px; height: 252px; border-radius: 12px; overflow: hidden; background: radial-gradient(120% 90% at 30% 0%, #101d30, #080f1b 70%); }
+.sky img { width: 100%; height: 100%; object-fit: cover; object-position: right top; display: block; }
+.sky .chip { position: absolute; right: 9px; top: 12px; height: 26px; width: 182px; border-radius: 9px; border-top: 2px solid var(--orange); background: rgba(8,15,27,.9); font: 500 9.5px/24px var(--L); letter-spacing: .1em; color: var(--orange); padding-left: 9px; }
+.sky .chip b { color: var(--cream); font-weight: 500; }
+.sky .comp { position: absolute; left: -26px; top: 6px; width: 76px; height: 76px; border-radius: 50%; border: 1.5px solid #3a4a5c; }
+.sky .ring { position: absolute; left: 50%; bottom: -70px; width: 120px; height: 120px; margin-left: -60px; border-radius: 50%; border: 1.5px solid #bcb585; opacity: .8; }
+.slot { position: absolute; right: 9px; top: 46px; transform: scale(.763); transform-origin: right top; } /* 300/393 */
+
+/* ---- the redesign ---- */
+.nt { --k: var(--info); width: 252px; display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; gap: 10px; align-items: start; padding: 10px 10px 11px 10px;
+  border-radius: 14px; background: rgba(9, 16, 28, .96); border-top: 3px solid var(--k); box-shadow: 0 10px 24px rgba(0, 0, 0, .38), inset 0 0 0 1px rgba(255, 255, 255, .05); color: var(--cream); }
+.nt + .nt { margin-top: 8px; }
+.nt .ic { width: 32px; height: 32px; border-radius: 9px; display: grid; place-items: center; color: var(--k); background: color-mix(in srgb, var(--k) 15%, transparent); }
+.nt .ic svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.nt .ic.art { background: #0b1626; overflow: hidden; border: 1px solid color-mix(in srgb, var(--k) 35%, transparent); }
+.nt .ic.art svg { width: 30px; height: 30px; stroke-width: 1.2; }
+.nt .eb { font: 500 10.5px/1.25 var(--L); letter-spacing: .18em; text-transform: uppercase; color: var(--k); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-top: 1px; }
+.nt .tt { margin-top: 2px; font: 500 16.5px/1.12 var(--L); letter-spacing: .02em; color: var(--cream); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.nt .dt { margin-top: 3px; font: 500 13px/1.28 var(--L); letter-spacing: .03em; color: var(--muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.nt .dt .go { color: var(--k); white-space: nowrap; }
+.nt .xp { align-self: center; font: 400 17px/1 var(--D); color: var(--k); white-space: nowrap; }
+.nt .xp small { font: 500 11px var(--L); letter-spacing: .12em; color: var(--muted); margin-left: 2px; }
+.nt .chev { align-self: center; font: 500 22px/1 var(--L); color: var(--k); padding: 0 2px; }
+.nt .x { margin: -4px -4px 0 0; width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; font: 500 17px/1 var(--L); color: #7f8fa1; }
+.nt.shiny { border-top: 0; padding-top: 13px; background: linear-gradient(rgba(9,16,28,.96), rgba(9,16,28,.96)) padding-box, linear-gradient(90deg, #fff2b3, #ffcf7a, #fa8127, #ffb3a1) border-box; border-top: 3px solid transparent; }
+.k-mission { --k: var(--orange); } .k-xp { --k: var(--steel); } .k-event { --k: var(--gold); } .k-info { --k: var(--info); } .k-error { --k: var(--red); } .k-shiny { --k: #ffcf7a; }
+.night .sky { background: radial-gradient(120% 90% at 30% 0%, #1f0807, #0c0303 70%); }
+.night .nt { --k: #ff6a55 !important; background: rgba(18, 6, 6, .96); color: #ff7f70; }
+.night .nt .tt { color: #ff7f70; } .night .nt .dt, .night .nt .x, .night .nt .xp small { color: #c95a4c; }
+.night .sky .chip { border-top-color: #ff6a55; color: #ff6a55; background: rgba(12,3,3,.92); } .night .sky .chip b { color: #ff7f70; }
+.night .sky .comp, .night .sky .ring { border-color: #7a3533; }
+</style>
+</head>
+<body>
+<h1>Notifications: every type</h1>
+<p class="lead">Every notification the sky can show, in the top right under the Headliner chip. Left: today, captured from the app on an iPhone 15. Right: the redesign. Same width, place and colours; one layout for all of them.</p>
+<div class="rules">
+  <div><b>One layout.</b> An icon tile, a short kind line, a bold title, and an optional detail line. Everything has a kind line now, so a bare sentence never floats on its own.</div>
+  <div><b>One thing on the right.</b> XP for rewards, › when tapping goes somewhere, a light ✕ for notices that stay. No big yellow buttons, no boxed ✕.</div>
+  <div><b>Pictures as icons.</b> The compass and constellation pictures shrink to the 32-pt tile, so the words get the full width.</div>
+  <div><b>Four colours.</b> Orange rewards (missions, rank, card backs), gold the night's news (events, milestones, Tonight), steel blue progress (stamps, constellations, reminders), cream info; red only for a failure; the shiny one gets the shiny edge.</div>
+  <div><b>Two lines each, at most.</b> Titles say the thing ("Navigator", "Sky over Toronto"); the detail says what to do or why. Words rewritten to fit.</div>
+  <div><b>Tap anywhere.</b> The whole notice is the button; the › or the "See ›" in the detail just says so.</div>
+</div>
+<div class="grid" id="grid"></div>
+<script>
+const I = {
+  diamond: '<path d="M12 3l7 9-7 9-7-9z"/>', star: '<path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7z"/>',
+  stamp: '<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.2"/>', chevrons: '<path d="M6 14l6-6 6 6M6 19l6-6 6 6"/>',
+  card: '<rect x="6" y="3.5" width="12" height="17" rx="2"/><path d="M9 8h6M9 11h6"/>', bell: '<path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/>',
+  belloff: '<path d="M6 16.5V11a6 6 0 0 1 9.5-4.9M18 11v5.5l1.5 2H8"/><path d="M4 4l16 16"/>', moon: '<path d="M19 14.5A7.5 7.5 0 0 1 9.5 5a7.5 7.5 0 1 0 9.5 9.5z"/>',
+  pin: '<path d="M12 21s-6-5.6-6-11a6 6 0 0 1 12 0c0 5.4-6 11-6 11z"/><circle cx="12" cy="10" r="2.2"/>', compass: '<circle cx="12" cy="12" r="8.5"/><path d="M14.8 9.2l-1.9 4.7-4.7 1.9 1.9-4.7z"/>',
+  sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/>',
+  ff: '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/><path d="M19.5 4.5l1 3-3 .5"/>', sparkle: '<path d="M12 3c.6 4.6 2.4 6.4 7 7-4.6.6-6.4 2.4-7 7-.6-4.6-2.4-6.4-7-7 4.6-.6 6.4-2.4 7-7z"/><path d="M19 15.5c.2 1.4.8 2 2.2 2.2-1.4.2-2 .8-2.2 2.2-.2-1.4-.8-2-2.2-2.2 1.4-.2 2-.8 2.2-2.2z"/>',
+  target: '<circle cx="12" cy="12" r="7.5"/><circle cx="12" cy="12" r="2.4"/><path d="M12 1.8v3M12 19.2v3M1.8 12h3M19.2 12h3"/>', alert: '<path d="M12 3.5l9 16H3z"/><path d="M12 10v4.5M12 17.3v.2"/>',
+  meteor: '<path d="M20 4l-9.5 9.5M17 3.5l-8 8M20.5 7l-8 8"/><circle cx="8" cy="16" r="3.2"/>', update: '<path d="M20 12a8 8 0 1 1-2.4-5.7"/><path d="M20 4.5v4h-4"/>',
+  calendar: '<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 9.5h16M8.5 3v4M15.5 3v4"/><path d="M8.5 13.5h.01M12 13.5h.01M15.5 13.5h.01M8.5 16.8h.01M12 16.8h.01"/>',
+};
+// Orion, as the constellation tile
+const ORION = '<svg viewBox="0 0 30 30"><g stroke="#8fb3cf" stroke-opacity=".7"><path d="M10 6l4 6 6-1M14 12l-1 5 3 0 1-5M13 17l-4 7M16 17l5 6"/></g><g fill="#fff2b3"><circle cx="10" cy="6" r="1.4"/><circle cx="20" cy="11" r="1.1"/><circle cx="14" cy="12" r="1"/><circle cx="13" cy="17" r="1"/><circle cx="16" cy="17" r="1"/><circle cx="9" cy="24" r="1.4"/><circle cx="21" cy="23" r="1"/></g></svg>';
+const T = [ // [id, title of the pair, kind, icon, kind line, title, detail, accessory]
+  ['mission', 'Mission complete', 'mission', 'diamond', 'Mission complete', 'Catch a satellite', '', 'xp'],
+  ['challenge', 'Sky challenge', 'mission', 'star', 'Sky challenge', 'Catch something launched before 1970', '', 'xp'],
+  ['stamp', 'New stamp (fleets)', 'xp', 'stamp', 'New stamp', 'Starlink', '12 launches stamped', ''],
+  ['con', 'Constellation progress', 'xp', 'art', 'Orion', '3 of 7 stars', 'Four to go', ''],
+  ['condone', 'Constellation complete', 'event', 'art', 'Constellation complete', 'Orion', 'All 7 stars · patch earned', ''],
+  ['event', 'Event badge', 'event', 'meteor', 'Event badge', 'Orionid meteor shower', '', ''],
+  ['milestone', 'Milestone', 'event', 'calendar', 'Milestone', 'Seen on 5 different nights', 'Space Station', ''],
+  ['rank', 'New rank (stays)', 'mission', 'chevrons', 'New rank', 'Navigator', 'See what’s next <span class="go">›</span>', 'x'],
+  ['back', 'New card back', 'mission', 'card', 'New card back', 'Aurora', 'Choose it in Settings <span class="go">›</span>', ''],
+  ['reminder', 'Reminder set', 'xp', 'bell', 'Reminder set', '7:06 PM', 'Before the Space Station passes', ''],
+  ['reminderoff', 'Reminder off', 'info', 'belloff', 'Reminder off', 'Space Station', '', ''],
+  ['tonight', 'Tonight (stays)', 'event', 'moon', 'Tonight', 'Clear all night', 'Busiest at 7:48 PM · <span class="go">See the plan ›</span>', 'x'],
+  ['location', 'Example location (stays)', 'info', 'pin', 'Example location', 'Sky over Toronto', '<span class="go">Set yours ›</span>', 'x'],
+  ['compass', 'Compass needs a nudge (stays)', 'mission', 'compass', 'Compass', 'Needs a nudge', 'Wave the phone in a slow figure-8, away from metal.', 'x'],
+  ['sun', 'The Sun', 'event', 'sun', 'The Sun', 'Don’t look straight at it', 'Keep your eyes on the screen.', ''],
+  ['jumped', 'Jumped ahead (testing)', 'mission', 'ff', 'Jumped ahead', '8:41 PM', 'Delta 1 Rocket Stage is up in the northwest', ''],
+  ['shiny', 'Shiny (seen again)', 'shiny', 'sparkle', 'Shiny!', 'Geosat', 'Caught as it slipped into Earth’s shadow.', ''],
+  ['info', 'Not quite', 'info', 'target', 'Not quite', 'Put it inside the circle', 'while it’s up, then tap.', ''],
+  ['error', 'Couldn’t save (stays)', 'error', 'alert', 'Couldn’t save', 'That card didn’t save', 'Close private browsing or free up space, then try again.', 'x'],
+  ['shower', 'Meteor shower', 'event', 'meteor', 'Meteor shower', 'Orionids tonight', 'Up to 20 an hour. Collect any card to earn its patch.', ''],
+  ['update', 'Update ready (stays)', 'info', 'update', 'Update ready', 'A new version is here', '<span class="go">Tap to update ›</span>', ''],
+];
+const nt = ([, , kind, icon, eb, tt, dt, acc]) => `<div class="nt k-${kind}${kind === 'shiny' ? ' shiny' : ''}">
+  <div class="ic${icon === 'art' ? ' art' : ''}">${icon === 'art' ? ORION : `<svg viewBox="0 0 24 24">${I[icon]}</svg>`}</div>
+  <div><div class="eb">${eb}</div><div class="tt">${tt}</div>${dt ? `<div class="dt">${dt}</div>` : ''}</div>
+  ${acc === 'xp' ? '<div class="xp">+50<small>XP</small></div>' : acc === 'x' ? '<div class="x">✕</div>' : acc === 'chev' ? '<div class="chev">›</div>' : '<div></div>'}</div>`;
+const sky = (inner) => `<div class="sky"><div class="comp"></div><div class="chip">HEADLINER: <b>COSMOS 192</b> · 7:30 PM</div><div class="ring"></div><div class="slot">${inner}</div></div>`;
+document.getElementById('grid').innerHTML = T.map((t) => `<section class="pair"><h2>${t[1]}</h2><div class="cols">
+  <div><p class="lab">TODAY</p><div class="sky"><img src="notifications/now-${t[0]}.png" alt="" onerror="this.replaceWith(Object.assign(document.createElement('p'),{textContent:'(not captured)',style:'color:#6f7a87;font-size:13px;padding:20px'}))"></div></div>
+  <div><p class="lab">REDESIGN</p>${sky(nt(t))}</div></div></section>`).join('')
+  + `<section class="pair"><h2>Two at once (a stay-up notice under a new one)</h2><div class="cols"><div><p class="lab">REDESIGN</p>${sky(nt(T[0]) + nt(T[11]))}</div><div><p class="lab">REDESIGN · NIGHT MODE</p><div class="night">${sky(nt(T[7]) + nt(T[13]))}</div></div></div></section>`;
+</script>
+</body>
+</html>

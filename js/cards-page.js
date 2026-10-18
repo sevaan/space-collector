@@ -1,29 +1,29 @@
-import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.852';
-import { computeStats, statsHtml } from './stats.js?v=0.1.852';
-import { nightKey } from './observation.js?v=0.1.852';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.852';
-import { sfx } from './sfx.js?v=0.1.852';
-import { expandFacts } from './catalog-facts.js?v=0.1.852';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.852';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.852';
-import { ticket } from './toast.js?v=0.1.852';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.852';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.852';
-import { cardArt } from './art.js?v=0.1.852';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.852';
-import { applyBack } from './card-backs.js?v=0.1.852';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.852';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.852';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.852';
-import { STORIES } from './stories.js?v=0.1.852';
-import { loadConstellations, conList } from './constellations.js?v=0.1.852';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.852';
-import { eventBadges, nextEvent } from './events.js?v=0.1.852';
-import { shareCardEl } from './share-card.js?v=0.1.852';
-import { forgetSighting } from './cloud-backup.js?v=0.1.852';
-import { allSightings, deleteSighting } from './store.js?v=0.1.852';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.852';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.852';
+import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.853';
+import { computeStats, statsHtml } from './stats.js?v=0.1.853';
+import { nightKey } from './observation.js?v=0.1.853';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.853';
+import { sfx } from './sfx.js?v=0.1.853';
+import { expandFacts } from './catalog-facts.js?v=0.1.853';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.853';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.853';
+import { ticket } from './toast.js?v=0.1.853';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.853';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.853';
+import { cardArt } from './art.js?v=0.1.853';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.853';
+import { applyBack } from './card-backs.js?v=0.1.853';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.853';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.853';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.853';
+import { STORIES } from './stories.js?v=0.1.853';
+import { loadConstellations, conList } from './constellations.js?v=0.1.853';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.853';
+import { eventBadges, nextEvent } from './events.js?v=0.1.853';
+import { shareCardEl } from './share-card.js?v=0.1.853';
+import { forgetSighting } from './cloud-backup.js?v=0.1.853';
+import { allSightings, deleteSighting } from './store.js?v=0.1.853';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.853';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.853';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -254,7 +254,7 @@ function remindStreak() {
   let ahead = (6 - d.getDay() + 7) % 7; if (ahead === 0 && d.getTime() < Date.now()) ahead = 7; // this Saturday, unless 8 pm has passed
   d.setDate(d.getDate() + ahead);
   (isNative() ? notifyAt(d.getTime(), 'This week: keep your streak', 'One sighting is all it takes. See what’s up tonight.') : Promise.resolve('app-only'))
-    .then((r) => ticket({ kind: 'mission', eyebrow: 'STREAK', line: r === 'on' ? 'We\'ll remind you Saturday at 8 pm.' : r === 'app-only' ? 'Reminders work in the Space Collector app.' : r === 'denied' ? 'Notifications are off for Space Collector.' : 'Couldn\'t set a reminder here.', ms: 4000 }));
+    .then((r) => ticket({ kind: 'mission', tone: 'steel', icon: 'bell', eyebrow: 'STREAK', line: r === 'on' ? 'We\'ll remind you Saturday at 8 pm.' : r === 'app-only' ? 'Reminders work in the Space Collector app.' : r === 'denied' ? 'Notifications are off for Space Collector.' : 'Couldn\'t set a reminder here.', ms: 4000 }));
 }
 // Observer stats (free for everyone, 2026-10-12): a link under the rank card opens #stats-view.
 function openStats() {
@@ -618,7 +618,7 @@ function showCard() {
       row.innerHTML = `<span class="h-main"><span>${esc(when)}</span>${where ? `<span> · ${esc(where)}</span>` : ''}</span>${launchLine ? `<span class="h-launch">${launchLine.replace(/\s+satellites/, ' satellites')}</span>` : ''}`; // no delete button (2026-10-14, Sevaan: people don't need to delete when they saw it)
       row.querySelector('button')?.addEventListener('click', async () => {
         if (!confirm('Delete this sighting? If it was your only one, the card leaves your collection.')) return;
-        try { await deleteSighting(s.key); } catch { ticket({ kind: 'info', line: 'That sighting could not be deleted. Try again.' }); return; }
+        try { await deleteSighting(s.key); } catch { ticket({ kind: 'error', eyebrow: 'COULDN’T DELETE', line: 'That sighting is still there', sub: 'Try again.' }); return; }
         forgetSighting(s); // and from the iCloud backup
         state.raw = state.raw.filter((x) => x.key !== s.key);
         // Remove it from its own card's list (a constellation shows its stars' sightings, so that's the star's card),
