@@ -396,3 +396,6 @@ body:has(#gh-remind:not([hidden])) #toasts { opacity: 0; pointer-events: none; t
 .sc-switch[data-side='left'] .sc-switch__item:first-child, .sc-switch[data-side='right'] .sc-switch__item:last-child, .sc-switch:not([data-side]) .sc-switch__item[aria-current] { color: #fa8127 !important; }
 :where(html[data-theme='night'], body.night) .sc-switch__item { color: #a8463b !important; }
 :where(html[data-theme='night'], body.night) .sc-switch[data-side='left'] .sc-switch__item:first-child, :where(html[data-theme='night'], body.night) .sc-switch[data-side='right'] .sc-switch__item:last-child { color: #ff6a55 !important; }
+/* One close ✕ everywhere (2026-10-18, Sevaan: "use the view card one"): the reveal's, drawn in the app's label font, not
+   the heavier system glyph Settings and the Now page fell back to. */
+.x-close, .pill.x-close, #viewer .close { font: 500 24px/1.2 var(--label, 'SC Label'), 'Arial Narrow', sans-serif !important; }
