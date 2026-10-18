@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<base href="/play/">
+<title>Space Collector · the sky</title>
+<meta name="robots" content="noindex">
+<style>
+/* The app's look (css/app.css tokens), only what the sky and the circle's label need. */
+@font-face { font-family: 'SC Display'; src: url('fonts/RussoOne-Regular.ttf') format('truetype'); font-display: swap; }
+@font-face { font-family: 'SC Label'; src: url('fonts/BarlowCondensed-Medium.ttf') format('truetype'); font-weight: 500; font-display: swap; }
+:root { --bg: #080f1b; --text: #fff2b3; --muted: #bdbea9; --gold: #fa8127; --ink-on-gold: #080f1b; --rule: #bcb585; --display: 'SC Display', Impact, sans-serif; --label: 'SC Label', 'Arial Narrow', sans-serif; --cx: 50vw; --cy: 52vh; --r: 40px; color-scheme: dark; }
+html, body { margin: 0; height: 100%; overflow: hidden; background: var(--bg); color: var(--text); -webkit-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent; }
+#sky { position: fixed; inset: 0; display: block; touch-action: pan-y; cursor: grab; }
+#sky:active { cursor: grabbing; }
+#discover { position: fixed; inset: 0; pointer-events: none; }
+#discover .d-label { position: absolute; left: var(--cx); top: calc(var(--cy) - var(--r) - 18px); transform: translate(-50%, -100%); text-align: center; width: min(360px, calc(100vw - 32px)); text-shadow: 0 2px 4px var(--bg), 0 0 18px var(--bg); }
+#d-tier { display: block; font: 500 13px/1.3 var(--label); letter-spacing: .2em; color: var(--find-tier, var(--gold)); text-transform: uppercase; margin-bottom: 7px; }
+#d-name { display: block; font: 400 clamp(18px, 5.4vw, 26px)/1.1 var(--display); letter-spacing: -.025em; text-transform: uppercase; overflow-wrap: anywhere; text-wrap: balance; }
+#d-cta { position: absolute; left: var(--cx); top: calc(var(--cy) + var(--r) + 20px); transform: translateX(-50%); min-height: 44px; padding: 10px 22px; border: 1px solid var(--gold); border-radius: 4px; font: 500 16px/1.3 var(--label); letter-spacing: .16em; text-transform: uppercase; color: var(--ink-on-gold); background: var(--gold); white-space: nowrap; pointer-events: auto; cursor: pointer; box-shadow: 0 3px 0 var(--bg), 0 4px 0 var(--rule); }
+#d-cta:active { transform: translateX(-50%) translateY(2px); box-shadow: none; }
+.chip { position: fixed; left: 50%; transform: translateX(-50%); bottom: max(58px, calc(env(safe-area-inset-bottom) + 50px)); font: 500 12px/1 var(--label); letter-spacing: .18em; text-transform: uppercase; color: var(--muted); background: #080f1bb3; border: 1px solid #ffffff1f; border-radius: 99px; padding: 8px 12px; white-space: nowrap; pointer-events: none; }
+#hint { bottom: max(96px, calc(env(safe-area-inset-bottom) + 88px)); color: var(--text); transition: opacity .6s; }
+#hint.done { opacity: 0; }
+#hint .touch { display: none; }
+@media (hover: none) { #hint .mouse { display: none; } #hint .touch { display: inline; } }
+body:not(.ready) .chip, body:not(.ready) #discover { visibility: hidden; }
+[hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<canvas id="sky" tabindex="0" aria-label="The night sky. Drag to look around; tap something to aim at it."></canvas>
+<div id="discover" hidden aria-live="polite"><div class="d-label"><span id="d-tier"></span><span id="d-name"></span></div><button id="d-cta" type="button">Collect</button></div>
+<p class="chip" id="hint"><span class="mouse">Drag to look around · click something to aim</span><span class="touch">Swipe sideways to look · tap something to aim</span></p>
+<p class="chip" id="when">Loading the sky…</p>
+<script type="module" src="play.js"></script>
+</body>
+</html>

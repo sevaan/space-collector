@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Space Collector</title>
+<meta name="description" content="A free night-sky collecting game for iPhone and Android. Hold your phone up, put a moving light in the circle, and keep its card.">
+<meta property="og:title" content="Space Collector"><meta property="og:description" content="Every moving light has a name."><meta property="og:image" content="https://spacecollector.app/assets/hubble.webp">
+<meta name="theme-color" content="#04070e">
+<link rel="icon" href="/icon.png"><link rel="apple-touch-icon" href="/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600&family=Barlow:wght@400;500;600&family=Russo+One&display=swap">
+<link rel="stylesheet" href="/v5/base.css">
+<style>
+/* A · Night Field (picked 2026-10-17). Phone first: everything below is the phone layout; one media query widens it. */
+:root { --ink: #04070e; --night: #08111f; --deep: #0b1628; --cream: #fff2b3; --body: #d6d1bb; --muted: #b7b4a3; --orange: #fa8127; --line: rgba(255,242,179,.18); color-scheme: dark; }
+* { box-sizing: border-box; }
+html { background: var(--ink); scroll-behavior: smooth; }
+html, body { overflow-x: clip; }
+body { margin: 0; background: var(--ink); color: var(--cream); font: 400 17px/1.45 'Barlow', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+h1, h2, h3 { font-family: 'Russo One', 'Arial Black', sans-serif; font-weight: 400; margin: 0; text-transform: uppercase; text-wrap: balance; }
+p { margin: 0; }
+a { color: inherit; }
+.wrap { max-width: 1120px; margin: 0 auto; padding-left: max(20px, env(safe-area-inset-left)); padding-right: max(20px, env(safe-area-inset-right)); }
+.eyebrow { font: 600 12px/1 'Barlow Condensed', sans-serif; letter-spacing: .26em; text-transform: uppercase; color: var(--orange); }
+.lede { color: var(--body); max-width: 30em; }
+.cond { font-family: 'Barlow Condensed', sans-serif; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; }
+
+/* Hero: the field */
+.hero { position: relative; min-height: max(100svh, 760px); overflow: hidden; background: radial-gradient(120% 70% at 70% 18%, #12243c 0%, #0a1426 42%, var(--ink) 100%); isolation: isolate; }
+.field { position: absolute; left: 0; right: 0; top: 0; height: 330px; z-index: -1; }
+.field .band { position: absolute; left: 65%; top: 55%; width: 1500px; height: 180px; object-fit: cover; transform: translate(-50%, -50%) rotate(-58deg); opacity: .62; mix-blend-mode: screen; filter: saturate(.8); pointer-events: none; }
+.field svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.top { position: relative; display: flex; justify-content: space-between; align-items: center; gap: 12px; padding-top: max(22px, env(safe-area-inset-top)); }
+.top .mark { white-space: nowrap; font: 400 15px/1 'Russo One', sans-serif; letter-spacing: .02em; text-decoration: none; display: flex; align-items: center; gap: 9px; }
+.top .mark img { width: 26px; height: 26px; border-radius: 7px; }
+.top .pill { font: 600 11px/1 'Barlow Condensed', sans-serif; letter-spacing: .2em; padding: 7px 11px; border-radius: 99px; border: 1px solid rgba(255,242,179,.22); background: rgba(4,7,14,.5); white-space: nowrap; }
+.hero-copy { position: relative; padding-top: 268px; display: grid; gap: 16px; }
+.hero h1 { font-size: clamp(44px, 12.8vw, 50px); line-height: .96; letter-spacing: -.01em; max-width: 9em; }
+.hero .lede { max-width: 320px; }
+.tonight { display: inline-flex; align-self: start; justify-self: start; align-items: center; gap: 9px; padding: 9px 13px; border-radius: 16px; background: rgba(8,15,27,.75); border: 1px solid rgba(255,242,179,.16); font: 500 14px/1.3 'Barlow Condensed', sans-serif; letter-spacing: .04em; text-decoration: none; max-width: 100%; }
+.tonight .dot { width: 7px; height: 7px; flex: none; border-radius: 50%; background: var(--orange); box-shadow: 0 0 10px var(--orange); }
+.tonight b { font-weight: 600; border-bottom: 1px dashed var(--orange); }
+.stores { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 10px; }
+.store { height: 52px; border-radius: 13px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; text-decoration: none; font: 600 15px/1 'Barlow Condensed', sans-serif; letter-spacing: .08em; border: 1.5px solid rgba(255,242,179,.4); color: var(--cream); background: transparent; min-width: 0; padding: 0; }
+.store.solid { background: var(--cream); color: var(--ink); border-color: var(--cream); }
+.store small { font-size: 10px; letter-spacing: .2em; text-transform: uppercase; opacity: .7; }
+.hero-card { position: relative; height: clamp(150px, 24svh, 230px); margin-top: 26px; display: flex; justify-content: center; }
+.hero-card img { width: 230px; height: auto; border-radius: 12px; transform: rotate(-5deg); transform-origin: 50% 0; filter: drop-shadow(0 -10px 40px rgba(74,168,255,.35)); }
+.hero::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 70px; background: linear-gradient(transparent, var(--ink)); pointer-events: none; }
+
+/* The lock-on in the hero: the satellite drifts in, the circle turns orange, the label appears */
+.lk-ring, .lk-halo, .lk-ticks, .lk-label { transition: opacity .5s ease, stroke .4s ease; }
+.hero:not(.locked) .lk-ring { stroke: rgba(255,242,179,.55); }
+.hero:not(.locked) .lk-ticks { stroke: rgba(255,242,179,.55); }
+.hero:not(.locked) .lk-halo, .hero:not(.locked) .lk-label, .hero:not(.locked) .lk-future { opacity: 0; }
+.lk-future { transition: opacity .8s ease .2s; }
+
+section.s { padding-block: 72px; border-top: 1px solid rgba(255,242,179,.08); }
+.s h2 { font-size: clamp(34px, 10vw, 40px); line-height: .98; margin-top: 14px; }
+.s .lede { margin-top: 14px; }
+
+/* Try it: tonight's real pass */
+.try { background: linear-gradient(180deg, var(--ink), var(--night)); }
+.where { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin-top: 18px; font: 600 13px/1.2 'Barlow Condensed', sans-serif; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.where select { font: inherit; letter-spacing: inherit; text-transform: inherit; color: var(--cream); background: #0e1a29; border: 1px solid rgba(255,242,179,.22); border-radius: 99px; padding: 9px 30px 9px 13px; min-height: 44px; appearance: none; -webkit-appearance: none; background-image: linear-gradient(45deg, transparent 50%, var(--cream) 50%), linear-gradient(135deg, var(--cream) 50%, transparent 50%); background-position: calc(100% - 16px) 50%, calc(100% - 11px) 50%; background-size: 5px 5px; background-repeat: no-repeat; }
+.when { font-size: 19px; line-height: 1.35; margin-top: 12px; }
+.when b { font-weight: 600; }
+.status { color: var(--muted); margin-top: 6px; font-size: 15px; }
+.sky-stage { height: min(68svh, 520px); min-height: 380px; margin-top: 18px; margin-inline: calc(-1 * max(20px, env(safe-area-inset-left))); background: #060c18; border-block: 1px solid rgba(255,242,179,.1); }
+.sk-me, .sk-collect { min-height: 44px; }
+.after { display: grid; gap: 10px; margin-top: 18px; padding: 18px; border-radius: 16px; background: rgba(8,15,27,.8); border: 1px solid rgba(255,242,179,.16); }
+.after p { font-size: 16px; color: var(--body); }
+.after b { color: var(--cream); font-weight: 600; }
+.btn { font: 600 14px/1 'Barlow Condensed', sans-serif; letter-spacing: .18em; text-transform: uppercase; color: var(--cream); background: rgba(255,255,255,.06); border: 1px solid rgba(255,242,179,.3); border-radius: 99px; padding: 14px 18px; min-height: 44px; cursor: pointer; justify-self: start; }
+
+/* The cards: a fanned hand */
+.cards-s { background: linear-gradient(180deg, var(--night) 0%, #08111f 55%, var(--deep) 100%); }
+.fan { position: relative; height: 330px; margin-top: 30px; margin-inline: calc(-1 * max(20px, env(safe-area-inset-left))); }
+.fan button { position: absolute; top: 0; left: 50%; width: 160px; aspect-ratio: 2 / 3; border: 0; padding: 0; background: none; cursor: pointer; transition: translate .35s cubic-bezier(.3,.7,.3,1); }
+.fan .in { position: absolute; inset: 0; transition: scale .2s ease-in; }
+.fan button.turning .in { scale: 0 1; }
+.fan img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; border-radius: 9px; box-shadow: 0 16px 30px rgba(0,0,0,.55); }
+.fan .bk, .fan button.over img:not(.bk) { visibility: hidden; }
+.fan button.over .bk { visibility: visible; }
+.fan .c1 { transform: translate(-205px, 46px) rotate(-14deg); width: 150px; }
+.fan .c2 { transform: translate(-140px, 18px) rotate(-6deg); }
+.fan .c3 { transform: translate(-60px, 0) rotate(2deg); width: 172px; z-index: 2; }
+.fan .c3 img:not(.bk) { box-shadow: 0 20px 40px rgba(0,0,0,.6), 0 0 40px rgba(74,168,255,.25); }
+.fan .c4 { transform: translate(58px, 30px) rotate(11deg); }
+.fan .c4 img:not(.bk) { box-shadow: 0 16px 30px rgba(0,0,0,.55), 0 0 36px rgba(255,197,69,.25); }
+.fan button:focus-visible { outline: 2px solid var(--orange); outline-offset: 4px; border-radius: 10px; }
+.tiers { display: flex; justify-content: space-between; gap: 4px; white-space: nowrap; font: 600 11px/1.2 'Barlow Condensed', sans-serif; letter-spacing: .06em; margin-top: 8px; }
+.tap-hint { text-align: center; margin-top: 14px; font: 600 12px/1 'Barlow Condensed', sans-serif; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+.stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 34px; padding-top: 18px; border-top: 1px solid var(--line); }
+.stats div { display: flex; flex-direction: column; gap: 4px; }
+.stats b { font: 400 26px/1 'Russo One', sans-serif; font-weight: 400; }
+.stats span { font: 500 13px/1.2 'Barlow Condensed', sans-serif; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+
+/* How to play: three steps, each with a looping clip from the app */
+.steps { display: grid; gap: 34px; margin-top: 30px; counter-reset: step; }
+.step { display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 18px; align-items: center; }
+.step .clip { aspect-ratio: 9 / 16; border-radius: 16px; overflow: hidden; background: #000; border: 1px solid rgba(255,242,179,.16); }
+.step video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.step h3 { font-size: 22px; line-height: 1.02; }
+.step h3::before { counter-increment: step; content: counter(step); display: block; font: 600 12px/1 'Barlow Condensed', sans-serif; letter-spacing: .26em; color: var(--orange); margin-bottom: 8px; }
+.step p { color: var(--body); font-size: 16px; margin-top: 8px; }
+
+/* Shiny */
+.shiny-s .fade { margin-top: 30px; }
+.fd-btns button { min-height: 44px; padding-inline: 16px; }
+
+/* Secrets */
+.hidden-s { position: relative; overflow: hidden; background: radial-gradient(100% 60% at 20% 0%, #0f1d33, var(--ink) 70%); }
+.teasers { display: grid; gap: 12px; margin-top: 26px; }
+.teasers p { border: 1px solid rgba(255,242,179,.14); border-radius: 14px; padding: 16px; color: var(--body); background: rgba(8,15,27,.7); font-size: 16px; }
+.teasers b { display: block; color: var(--cream); font: 400 17px/1.2 'Russo One', sans-serif; text-transform: uppercase; margin-bottom: 6px; }
+.patch-found { display: flex; gap: 12px; align-items: center; margin-top: 18px; }
+.patch-found img { width: 72px; }
+
+/* Free + patches */
+.free-s { text-align: center; background: radial-gradient(90% 70% at 50% 110%, #12283a, var(--ink) 65%); }
+.patches { display: flex; justify-content: center; margin-bottom: 26px; }
+.patches img { width: 76px; height: 76px; object-fit: contain; margin-inline: -8px; filter: drop-shadow(0 8px 14px rgba(0,0,0,.5)); }
+.patches img:nth-child(odd) { transform: rotate(-8deg) translateY(4px); }
+.patches img:nth-child(even) { transform: rotate(7deg); }
+.free-s h2 { margin-inline: auto; max-width: 11em; }
+.free-s .lede { margin-inline: auto; }
+.free-s .stores { max-width: 420px; margin: 26px auto 0; }
+footer { border-top: 1px solid rgba(255,242,179,.08); padding-block: 26px max(26px, env(safe-area-inset-bottom)); color: var(--muted); font: 500 14px/1.4 'Barlow Condensed', sans-serif; letter-spacing: .08em; }
+footer .wrap { display: flex; flex-wrap: wrap; gap: 10px 22px; justify-content: space-between; }
+footer a { color: var(--cream); }
+
+/* Wider screens: the field moves to the right half, sections go two-up */
+@media (min-width: 900px) {
+  body { font-size: 18px; }
+  .hero { min-height: max(100svh, 720px); }
+  .field { left: 42%; height: 100%; }
+  .field .band { left: 60%; top: 34%; width: 2000px; height: 240px; }
+  .hero-copy { padding-top: clamp(110px, 18vh, 200px); max-width: 520px; }
+  .hero h1 { font-size: 68px; }
+  .stores { max-width: 400px; }
+  .hero-card { position: absolute; right: max(40px, 6vw); bottom: -250px; height: auto; margin: 0; }
+  .hero-card img { width: 280px; }
+  section.s { padding-block: 110px; }
+  .s h2 { font-size: 52px; }
+  .try .wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: 0 48px; align-items: start; }
+  .try .intro { grid-column: 1; }
+  .try .sky-stage { grid-column: 2; grid-row: 1 / span 2; margin: 0; border-radius: 18px; border: 1px solid rgba(255,242,179,.12); height: 560px; }
+  .cards-s .wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 0 48px; align-items: center; }
+  .cards-s .fan { grid-column: 2; grid-row: 1 / span 3; margin: 0; height: 420px; transform: scale(1.15); transform-origin: 50% 30%; }
+  .steps { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; }
+  .step { grid-template-columns: minmax(0, 1fr); }
+  .step .clip { max-width: 230px; }
+  .shiny-s .wrap, .hidden-s .wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0 48px; align-items: center; }
+  .shiny-s .fade { margin-top: 0; grid-column: 2; grid-row: 1 / span 3; }
+  .teasers { grid-column: 2; grid-row: 1 / span 4; margin-top: 0; }
+}
+
+/* v4 hero: the game's sky, playable (2026-10-18) */
+.hero { height: 100svh; min-height: 600px; max-height: 1100px; touch-action: manipulation; cursor: crosshair; user-select: none; -webkit-user-select: none; background: radial-gradient(120% 80% at 60% 10%, #12243c 0%, #0a1426 45%, #04070e 100%); }
+.hero .band { position: absolute; left: 62%; top: 42%; width: 1700px; height: 200px; object-fit: cover; transform: translate(-50%, -50%) rotate(-58deg); opacity: .5; mix-blend-mode: screen; filter: saturate(.8); pointer-events: none; z-index: -1; -webkit-mask-image: linear-gradient(transparent, #000 30%, #000 70%, transparent); mask-image: linear-gradient(transparent, #000 30%, #000 70%, transparent); }
+.hero canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.hud { position: relative; pointer-events: none; }
+.hud a, .hud .pill { pointer-events: auto; }
+.count { font-variant-numeric: tabular-nums; transition: transform .2s, border-color .2s; }
+.count.bump { transform: scale(1.12); border-color: var(--orange); color: var(--orange); }
+.headline { margin-top: 18px; display: grid; gap: 8px; }
+.hero h1 { font-size: clamp(28px, 8.4vw, 34px); line-height: 1; max-width: 11em; text-shadow: 0 2px 18px rgba(4,7,14,.8); }
+.hint { font: 600 13px/1.3 'Barlow Condensed', sans-serif; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); transition: opacity .6s; }
+.hint.done { opacity: 0; }
+.hint .touch { display: none; }
+@media (hover: none) { .hint .mouse { display: none; } .hint .touch { display: inline; } }
+.lock-ui { position: absolute; left: 0; top: 0; display: grid; justify-items: center; gap: 2px; padding: 7px 12px; border-radius: 12px; background: rgba(4,7,14,.72); border: 1px solid rgba(250,129,39,.45); pointer-events: none; text-align: center; max-width: min(300px, 86vw); will-change: transform; }
+.lock-ui span { font: 600 11px/1.2 'Barlow Condensed', sans-serif; letter-spacing: .18em; text-transform: uppercase; }
+.lock-ui b { font: 600 16px/1.2 'Barlow Condensed', sans-serif; letter-spacing: .04em; }
+.h-collect { position: absolute; left: 0; top: 0; font: 600 15px/1 'Barlow Condensed', sans-serif; letter-spacing: .26em; text-transform: uppercase; color: #1a0f05; background: var(--orange); border: 0; border-radius: 99px; padding: 14px 28px; min-height: 46px; cursor: pointer; box-shadow: 0 0 24px rgba(250,129,39,.5); will-change: transform; }
+.scroll-cue { position: absolute; left: 50%; bottom: max(18px, env(safe-area-inset-bottom)); transform: translateX(-50%); font: 600 12px/1 'Barlow Condensed', sans-serif; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); text-decoration: none; padding: 10px 14px; white-space: nowrap; z-index: 2; }
+.wc-over { position: absolute; inset: 0; z-index: 5; display: grid; place-items: center; padding: 16px; background: radial-gradient(circle at 50% 40%, color-mix(in srgb, var(--orange) 14%, transparent), rgba(4,7,14,.9) 70%); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); opacity: 0; transition: opacity .25s; cursor: default; overflow-y: auto; }
+.wc-over.in { opacity: 1; }
+.wc-stage { display: grid; justify-items: center; gap: 14px; width: 100%; max-width: 420px; }
+.wc-card { --tier: #fa8127; width: min(78vw, 46svh, 330px); aspect-ratio: 2 / 3; padding: 0; border: 0; background: none; cursor: pointer; border-radius: 4.5%; }
+.wc-card img { width: 100%; height: 100%; object-fit: contain; display: block; border-radius: 4.5%; box-shadow: 0 0 40px color-mix(in srgb, var(--tier) 55%, transparent), 0 18px 40px rgba(0,0,0,.6); }
+.wc-after { display: grid; gap: 12px; justify-items: center; text-align: center; width: 100%; }
+.wc-after > div { display: grid; gap: 12px; justify-items: center; width: 100%; }
+.wc-cap { font-size: 16px; color: var(--body); }
+.wc-cap b { font-weight: 600; }
+.wc-after .stores { width: 100%; margin: 0; }
+.btn.ghost { justify-self: center; }
+@media (min-width: 900px) {
+  .hero h1 { font-size: 46px; }
+  .wc-stage { max-width: 760px; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 32px; }
+  .wc-card { width: min(340px, 62svh * .667); }
+  .wc-after, .wc-after > div { justify-items: start; text-align: left; }
+  .btn.ghost { justify-self: start; }
+}
+
+/* v5: the hero is the real game (site/public/play, the app's own sky renderer) in a frame */
+.hero { cursor: auto; }
+#game { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block; background: #080f1b; }
+.hero::after { display: none; }
+.hud { z-index: 2; }
+.headline { margin-top: 14px; }
+.hero h1 { font-size: clamp(24px, 7vw, 30px); }
+.caught { position: absolute; left: 50%; top: max(150px, 22svh); transform: translateX(-50%); z-index: 3; margin: 0; padding: 9px 14px; border-radius: 99px; background: rgba(8,15,27,.85); border: 1px solid rgba(250,129,39,.5); font: 600 13px/1.3 'Barlow Condensed', sans-serif; letter-spacing: .1em; text-transform: uppercase; white-space: nowrap; pointer-events: none; animation: caughtIn .35s cubic-bezier(.2,.9,.3,1.2); }
+@keyframes caughtIn { from { opacity: 0; transform: translate(-50%, -8px); } }
+.scroll-cue { z-index: 3; }
+@media (min-width: 900px) { .hero h1 { font-size: 40px; } }
+@media (hover: hover) { .fan button:hover { translate: 0 -10px; } }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .fan button, .fan .in { transition: none; } }
+</style>
+</head>
+<body>
+<p id="announce" class="sr-only" aria-live="polite"></p>
+
+<header class="hero" id="hero">
+  <iframe id="game" src="/play/" title="The night sky, playable: drag to look around, tap something to aim at it, and collect it" allow="vibrate"></iframe>
+  <div class="wrap hud">
+    <nav class="top"><a class="mark" href="/"><img src="/icon.png" alt="">SPACE COLLECTOR</a><span class="pill count" id="count" aria-live="polite">0 / 4,850</span></nav>
+    <div class="headline">
+      <h1>Every moving light has a name.</h1>
+    </div>
+  </div>
+  <p class="caught" id="caught" hidden aria-live="polite"></p>
+  <a class="scroll-cue" href="#cards">More about the game ↓</a>
+  <div class="wc-over" id="wc-over" hidden role="dialog" aria-modal="true" aria-label="Your card">
+    <div class="wc-stage">
+      <button class="wc-card" id="wc-card" type="button" aria-label="Turn the card over"><img id="wc-img" alt=""></button>
+      <div class="wc-after">
+        <p class="wc-cap" id="wc-cap"></p>
+        <div id="wc-first">
+          <a class="tonight" id="hero-line" href="#how"><span class="dot"></span><span>Finding what's over you tonight…</span></a>
+          <div class="stores">
+            <a class="store solid" href="#get" aria-disabled="true"><small>Coming soon</small>App Store</a>
+            <a class="store" href="#get" aria-disabled="true"><small>Coming soon</small>Google Play</a>
+          </div>
+          <button class="btn ghost" id="wc-close" type="button">Keep collecting</button>
+        </div>
+        <div id="wc-again" hidden><button class="btn ghost" id="wc-close2" type="button">Back to the sky</button></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+<section class="s cards-s" id="cards"><div class="wrap">
+  <div>
+    <p class="eyebrow">The cards</p>
+    <h2>Rarity is how hard it is to see.</h2>
+    <p class="lede">Never what you pay. A bright, slow station is easy. A faint stage skimming the horizon at dusk is not.</p>
+  </div>
+  <div class="fan">
+    <button class="c1" type="button" data-flip aria-pressed="false" aria-label="The Moon, Common. Tap to turn over."><span class="in"><img src="/assets/moon.webp" alt=""><img class="bk" src="/backs/back-star-chart.webp" alt=""></span></button>
+    <button class="c2" type="button" data-flip aria-pressed="false" aria-label="Jupiter, Uncommon. Tap to turn over."><span class="in"><img src="/assets/jupiter.webp" alt=""><img class="bk" src="/backs/back-aurora.webp" alt=""></span></button>
+    <button class="c3" type="button" data-flip aria-pressed="false" aria-label="The International Space Station, Rare. Tap to turn over."><span class="in"><img src="/assets/iss.webp" alt=""><img class="bk" src="/backs/back-collector.webp" alt=""></span></button>
+    <button class="c4" type="button" data-flip aria-pressed="false" aria-label="Vanguard 1, Legendary. Tap to turn over."><span class="in"><img src="/assets/legend.webp" alt=""><img class="bk" src="/backs/back-golden-record.webp" alt=""></span></button>
+  </div>
+  <div>
+    <div class="tiers"><span style="color:#9aa4b1">● COMMON</span><span style="color:#5fd08a">▲ UNCOMMON</span><span style="color:#4aa8ff">◆ RARE</span><span style="color:#e46ad6">✦ EPIC</span><span style="color:#ffc545">★ LEGEND</span></div>
+    <p class="tap-hint">Tap a card to turn it over</p>
+    <div class="stats">
+      <div><b>4,850</b><span>Cards</span></div>
+      <div><b>89</b><span>Constellations</span></div>
+      <div><b>180+</b><span>Patches</span></div>
+    </div>
+  </div>
+</div></section>
+
+<section class="s how-s" id="how"><div class="wrap">
+  <p class="eyebrow">How to play</p>
+  <h2>Point. Line it up. Collect.</h2>
+  <div class="steps">
+    <div class="step"><div class="clip"><video data-src="/assets/video/catch.mp4" poster="/assets/video/catch.jpg" muted loop playsinline preload="none" aria-hidden="true"></video></div><div><h3>Point your phone at the sky.</h3><p>The app shows what's really up there, right where you're looking: satellites, planets, stars and the Moon.</p></div></div>
+    <div class="step"><div class="clip"><video data-src="/assets/video/reveal.mp4" poster="/assets/video/reveal.jpg" muted loop playsinline preload="none" aria-hidden="true"></video></div><div><h3>Line up an object in the circle.</h3><p>Hold it there and the circle locks on. Tap Collect and the card is yours.</p></div></div>
+    <div class="step"><div class="clip"><video data-src="/assets/video/collection.mp4" poster="/assets/video/collection.jpg" muted loop playsinline preload="none" aria-hidden="true"></video></div><div><h3>Come back on clear nights.</h3><p>Level up your cards, finish constellations star by star and earn mission patches.</p></div></div>
+  </div>
+</div></section>
+
+<section class="s shiny-s"><div class="wrap">
+  <div>
+    <p class="eyebrow">Shiny cards</p>
+    <h2>Catch it as it fades.</h2>
+    <p class="lede">Some nights a satellite slides into Earth's shadow and vanishes mid-sky. Tap in the last seconds before it goes dark and the card comes out Shiny. Try it.</p>
+  </div>
+  <div class="fade" id="fade"><div class="fade-wrap"><button class="fd-ring" type="button" aria-label="Tap when it says NOW"></button><span class="fd-sat">✦</span></div><p class="fd-msg"></p><div class="fd-btns"><button class="fd-again" type="button">Again</button><button class="fd-slow" type="button">Slow it down</button></div></div>
+</div></section>
+
+<section class="s hidden-s" id="hidden"><div class="wrap">
+  <div>
+    <p class="eyebrow">Secrets</p>
+    <h2>Some things are hidden.</h2>
+    <p class="lede">Not everything up there is on a list.</p>
+    <p class="patch-found" id="ufo-patch" hidden><img src="/assets/patch-ufo.webp" alt="">You found the Close Encounter patch. That one's real in the game too.</p>
+  </div>
+  <div class="teasers">
+    <p><b>Aim where the Wow! signal came from.</b>A 1977 radio signal nobody has heard since.</p>
+    <p><b>Look down in daylight.</b>Something is buried under your feet.</p>
+    <p><b>Try Christmas Eve.</b>Someone else is flying that night.</p>
+  </div>
+  <button class="ufo" id="ufo" type="button" aria-label="Something odd"><svg viewBox="0 0 64 34"><ellipse cx="32" cy="22" rx="30" ry="8" fill="#9fb3c8"/><path d="M18 20q14-22 28 0z" fill="#cfe9ff" opacity=".85"/><circle cx="16" cy="23" r="2" fill="#6dff9a"/><circle cx="32" cy="25" r="2" fill="#6dff9a"/><circle cx="48" cy="23" r="2" fill="#6dff9a"/></svg></button>
+</div></section>
+
+<section class="s free-s" id="get"><div class="wrap">
+  <div class="patches" aria-hidden="true"><img src="/assets/patch-first.webp" alt=""><img src="/assets/patch-station.webp" alt=""><img src="/assets/patch-shiny.webp" alt=""><img src="/assets/patch-moon.webp" alt=""><img src="/assets/patch-race.webp" alt=""></div>
+  <h2>Free. No ads. No loot boxes.</h2>
+  <p class="lede" style="margin-top:14px">Just the sky. Plus adds pass reminders, Rare alerts and the Shiny forecast if you want them.</p>
+  <div class="stores">
+    <a class="store solid" href="#get" aria-disabled="true"><small>Coming soon</small>App Store</a>
+    <a class="store" href="#get" aria-disabled="true"><small>Coming soon</small>Google Play</a>
+  </div>
+</div></section>
+</main>
+
+<footer><div class="wrap"><span>© 2026 Space Collector · <a href="mailto:hello@spacecollector.app">hello@spacecollector.app</a></span><span><a href="/privacy">Privacy</a></span></div></footer>
+<script type="module" src="/v5/hero.js"></script>
+<script type="module" src="/v5/page.js"></script>
+</body>
+</html>
