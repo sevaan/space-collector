@@ -599,5 +599,3 @@ html { text-wrap: pretty; } h1, h2, h3 { text-wrap: balance; }
 @media (prefers-reduced-motion: reduce) { #stats-view[open], #stats-view[open]::backdrop { animation: none; } }
 /* Embedded in the app, Explore's header stays on top of the Collection (2026-10-17): this one keeps its space but hides. */
 html.embedded .collection-header { visibility: hidden; }
-/* No rubber-band pull at the top inside the app (2026-10-17): it dragged the page down under Explore's header. */
-html.embedded, html.embedded body { overscroll-behavior-y: none; }
