@@ -55,7 +55,7 @@ function pump() {
   // Never over a card reveal or a patch moment (2026-10-08 playtest: toasts covered the new card); they wait their turn.
   // A sheet covers all of that, so its own messages go straight up (2026-10-16 playtest: "Try Plus free" said nothing,
   // its toast waiting behind the Plus sheet for whatever sat in the circle to leave).
-  if (!document.querySelector('.set-sheet.in') && document.querySelector('#reveal:not([hidden]), .patch-moment, .patch-coins, #ob-done:not([hidden]), #discover:not([hidden]), body.first-catch')) { /* body.first-catch: the first catch after the tour (main.js) */ busy = true; setTimeout(() => { busy = false; pump(); }, 500); return; }
+  if (!document.querySelector('.set-sheet.in') && document.querySelector('#reveal:not([hidden]), .patch-moment, .patch-coins, body.patch-waiting, #ob-done:not([hidden]), #discover:not([hidden]), body.first-catch')) { /* body.first-catch: the first catch after the tour (main.js) */ busy = true; setTimeout(() => { busy = false; pump(); }, 500); return; }
   // One sticky at a time (2026-10-13 playtest: two stacked stickies covered 40% of an SE). A sticky waits while
   // another is up; plain toasts behind it still go ahead.
   let qi = 0;
