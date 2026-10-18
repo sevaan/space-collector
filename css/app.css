@@ -1744,6 +1744,9 @@ body.night .shiny-what .sw-moments li { color: var(--text); } body.night .shiny-
 #toasts .ticket.shelved, #toasts .ticket.over { display: none !important; }
 body:has(#event-banner:not([hidden])):not(:has(#nextpass:not([hidden]))):not(:has(.overlay.panel:not([hidden]), #reveal:not([hidden]), .set-sheet.in:not([hidden]):not(.x))) #toasts { top: calc(var(--safe-top) + 143px) !important; }
 body:has(.overlay.panel:not([hidden])) #toasts { top: calc(var(--safe-top) + 76px) !important; bottom: auto !important; flex-direction: column !important; }
+/* Never over a page like Now or Settings (2026-10-18, Sevaan): notices from the sky wait (hidden, clock stopped) until it
+   closes; only one made while the page is open (a reminder set from it, data-panel) shows. */
+body:has(.overlay.panel:not([hidden])) #toasts .ticket:not([data-panel]) { display: none !important; }
 body:is(.patch-run, .patch-waiting, :has(.patch-coins)) .radar-tip { visibility: hidden !important; }
 /* The Headliner chip on small phones (2026-10-18 playtest: "LANDSAT 1 (ER… · 8:17 …" on an SE): the time is never cut;
    the name gives way, with a little less letter-spacing below 400px. */

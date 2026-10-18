@@ -78,7 +78,8 @@ function show(t) {
   busy = true;
   const el = document.createElement('div');
   el.className = `ticket ticket--${t.kind}${t.href || t.action ? ' linked' : ''}${t.art ? ' ticket--art' : ''}${t.sticky ? ' ticket--sticky' : ''}`;
-  el.dataset.eyebrow = (t.eyebrow ?? '').toUpperCase(); if (t.id) el.dataset.id = t.id; // the colour of its top edge (css/ui.css, 2026-10-17 design A)
+  el.dataset.eyebrow = (t.eyebrow ?? '').toUpperCase(); if (t.id) el.dataset.id = t.id;
+  if (document.querySelector('.overlay.panel:not([hidden])')) el.dataset.panel = '1'; // made while a page (Now, Settings) is open: it answers something done there, so it may show over it (css/app.css) // the colour of its top edge (css/ui.css, 2026-10-17 design A)
   el.innerHTML = `${t.art ? `<span class="ticket__art" aria-hidden="true">${t.art}</span>` : '<i class="ticket__mark" aria-hidden="true"></i>'}<span class="ticket__body">${t.eyebrow ? `<span class="ticket__eyebrow">${esc(t.eyebrow)}</span>` : ''}<span class="ticket__line">${t.html ? t.line : esc(t.line)}</span></span>${t.xp ? `<span class="ticket__xp">+${t.xp}<small>XP</small></span>` : t.href || t.action ? `<span class="ticket__go">${esc(t.go ?? 'OPEN')} ›</span>` : ''}${t.sticky ? '<button type="button" class="ticket__x" aria-label="Dismiss">✕</button>' : ''}`;
   // Up long enough to read (2026-10-06: at least 5 s, about 1.6× the old times); a tap sends it away sooner.
   let gone = false, stopConfetti = () => {};
@@ -98,7 +99,7 @@ function show(t) {
   // their clock stops, so they come back afterwards with the rest of their time.
   let left = Math.max(5000, t.ms * 1.6);
   // Same whenever the stack can't be seen (2026-10-18 playtest: they ran out unseen behind the Collection and the reveal).
-  const timer = t.sticky ? 0 : setInterval(() => { if (!stackSeen()) return; left -= 250; if (left <= 0) dismiss(); }, 250);
+  const timer = t.sticky ? 0 : setInterval(() => { if (!stackSeen() || getComputedStyle(el).display === 'none') return; left -= 250; if (left <= 0) dismiss(); }, 250); // hidden (a page open, shelved, no room): the clock waits
   if (t.id) live.set(t.id, dismiss);
   if (t.sticky) {
     shelf.forEach((o) => o.classList.add('shelved')); shelf.push(el);
