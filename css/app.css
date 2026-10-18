@@ -23,7 +23,7 @@ a { color:var(--cyan); }
 #nav-more .ico { width:22px; height:22px; }
 .icon-button { width:44px; height:44px; border:1px solid var(--edge); border-radius:50%; display:grid; place-items:center; font-size:24px; color:var(--text);background:var(--glass); }
 .icon-button[aria-pressed=true] { border-color:var(--gold);color:var(--gold); }
-.wordmark { color:var(--text); text-decoration:none; font:400 clamp(13px,3.9vw,16px)/1.15 var(--display);letter-spacing:-.03em; }
+.wordmark { display:block; cursor:default; -webkit-user-select:none; user-select:none; color:var(--text); text-decoration:none; font:400 clamp(13px,3.9vw,16px)/1.15 var(--display);letter-spacing:-.03em; }
 .wordmark span { display:block; color:var(--muted);font:500 12px/1.2 var(--label);letter-spacing:.18em;margin-top:6px; }
 .eyebrow { display:block; color:var(--gold);font:500 13px/1.25 var(--label);letter-spacing:.17em; }
 .hint { color:var(--muted); font-size:14px; line-height:1.6; }

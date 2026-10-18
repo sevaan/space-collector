@@ -14,7 +14,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .collection-header { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: var(--safe-top) auto 0; max-width: 1056px; height: 80px; padding: 0 20px; --h-text: #fff2b3; --h-muted: #bdbea9; --h-edge: #627a8b; --h-glass: #0c1725f2; }
 :root[data-theme="night"] .collection-header { --h-text: #ff7f70; --h-muted: #e8705f; --h-edge: #58272b; --h-glass: #1a0909f5; }
 .collection-header::after { content: ""; position: absolute; left: 20px; right: 20px; bottom: 0; height: 3px; border-block: 1px solid var(--h-edge); opacity: .65; }
-.wordmark { color: var(--h-text); text-decoration: none; font: 400 clamp(13px, 3.9vw, 16px)/1.15 'SC Display', Impact, sans-serif; letter-spacing: -.03em; }
+.wordmark { display: block; cursor: default; -webkit-user-select: none; user-select: none; color: var(--h-text); text-decoration: none; font: 400 clamp(13px, 3.9vw, 16px)/1.15 'SC Display', Impact, sans-serif; letter-spacing: -.03em; }
 .wordmark span { display: block; color: var(--h-muted); font: 500 12px/1.2 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .18em; margin-top: 6px; }
 .header-buttons { display: flex; gap: 8px; flex: none; }
 .icon-button { width: 44px; height: 44px; border: 1px solid var(--h-edge); border-radius: 50%; display: grid; place-items: center; color: var(--h-text); background: var(--h-glass); font-size: 24px; text-decoration: none; box-sizing: border-box; }
