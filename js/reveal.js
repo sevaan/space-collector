@@ -5,12 +5,12 @@
 //  Everything scales with rarity (Legendary dims the sky, shockwave, held breath, slow flip, fanfare).
 // Waits use timers, not animation.finished, so a paused tab can never freeze the sequence.
 
-import { sfx, loadSfx } from './sfx.js?v=0.1.827';
-import { audioCtx } from './audio-ctx.js?v=0.1.827';
-import { TIER_INFO } from './rarity.js?v=0.1.827';
-import { levelFor, attachTilt, attachGyro, attachFlip, throwOff } from './card.js?v=0.1.827';
-import { applyBack } from './card-backs.js?v=0.1.827';
-import { addStarfield } from './starfield.js?v=0.1.827';
+import { sfx, loadSfx } from './sfx.js?v=0.1.828';
+import { audioCtx } from './audio-ctx.js?v=0.1.828';
+import { TIER_INFO } from './rarity.js?v=0.1.828';
+import { levelFor, attachTilt, attachGyro, attachFlip, throwOff } from './card.js?v=0.1.828';
+import { applyBack } from './card-backs.js?v=0.1.828';
+import { addStarfield } from './starfield.js?v=0.1.828';
 
 const FX = {
   common:    { particles: 14,  flip: 520,  spin: 0,   dim: 0,   shock: false, notes: [880],                            hold: 0 },
@@ -190,9 +190,12 @@ export async function playReveal({ card, o, seen, origin, fleet = null, progress
     { transform: `rotateY(${90 + fx.spin / 2}deg) scale(1.12)`, offset: .5, easing: 'cubic-bezier(0,0,.4,1)' },
     { transform: `rotateY(${180 + fx.spin}deg) scale(1)` },
   ], { duration: flipMs, easing: 'linear', fill: 'forwards' }); // per-keyframe easing: edge-on exactly at flipMs / 2
-  // Both faces stay visible through the turn: each hides itself when it faces away (backface-visibility), so the swap
-  // lands on the exact edge-on frame. The old half-time timer could drift a frame and flash (2026-10-17, flip sweep).
-  $('reveal-card').style.visibility = 'visible';
+  // Swap faces on the edge-on frame, read from the turn's own clock (2026-10-17). Safari ignores backface-visibility
+  // here (the card's children have their own transforms), so relying on it showed the front mirrored mid-turn; a
+  // plain half-time timer could drift a frame and flash.
+  { const a = $('rv-flipper').getAnimations().at(-1), half = flipMs / 2;
+    const tick = () => { if (!alive()) return; const t = a?.currentTime ?? half; if (t >= half || a?.playState === 'finished') showFace('front'); else requestAnimationFrame(tick); };
+    requestAnimationFrame(tick); }
   await flipped;
   if (!alive()) return;
   showFace('front');
