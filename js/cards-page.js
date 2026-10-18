@@ -1,29 +1,29 @@
-import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.829';
-import { computeStats, statsHtml } from './stats.js?v=0.1.829';
-import { nightKey } from './observation.js?v=0.1.829';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.829';
-import { sfx } from './sfx.js?v=0.1.829';
-import { expandFacts } from './catalog-facts.js?v=0.1.829';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.829';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.829';
-import { ticket } from './toast.js?v=0.1.829';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.829';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.829';
-import { cardArt } from './art.js?v=0.1.829';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.829';
-import { applyBack } from './card-backs.js?v=0.1.829';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.829';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.829';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.829';
-import { STORIES } from './stories.js?v=0.1.829';
-import { loadConstellations, conList } from './constellations.js?v=0.1.829';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.829';
-import { eventBadges, nextEvent } from './events.js?v=0.1.829';
-import { shareCardEl } from './share-card.js?v=0.1.829';
-import { forgetSighting } from './cloud-backup.js?v=0.1.829';
-import { allSightings, deleteSighting } from './store.js?v=0.1.829';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.829';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.829';
+import { isNative, saveFile, notifyAt, shareFile } from './native.js?v=0.1.830';
+import { computeStats, statsHtml } from './stats.js?v=0.1.830';
+import { nightKey } from './observation.js?v=0.1.830';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.830';
+import { sfx } from './sfx.js?v=0.1.830';
+import { expandFacts } from './catalog-facts.js?v=0.1.830';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.830';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.830';
+import { ticket } from './toast.js?v=0.1.830';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.830';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff } from './card.js?v=0.1.830';
+import { cardArt } from './art.js?v=0.1.830';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.830';
+import { applyBack } from './card-backs.js?v=0.1.830';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.830';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.830';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.830';
+import { STORIES } from './stories.js?v=0.1.830';
+import { loadConstellations, conList } from './constellations.js?v=0.1.830';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.830';
+import { eventBadges, nextEvent } from './events.js?v=0.1.830';
+import { shareCardEl } from './share-card.js?v=0.1.830';
+import { forgetSighting } from './cloud-backup.js?v=0.1.830';
+import { allSightings, deleteSighting } from './store.js?v=0.1.830';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.830';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.830';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -379,7 +379,7 @@ window.addEventListener('message', (e) => {
   if (e.data?.sc === 'find-suggest') { findSuggest = e.data.items; findReminded = new Set(e.data.reminded); for (const p of findSuggest) findPasses.set(p.id, p); if (state.view === 'find' && !state.query) renderFind(); }
   if (e.data?.sc === 'find-passes') { if (e.data.reminded) findReminded = new Set(e.data.reminded);
     for (const [id, p] of Object.entries(e.data.passes)) findPasses.set(isNaN(id) ? id : Number(id), p);
-    { const u = $('v-up'); if ($('viewer').open && u._card && !u._up && !u.hidden) renderNextPanel(u._card); }
+    { const u = $('v-up'); if (($('viewer').open || opening) && u._card && !u._up && !u.hidden) renderNextPanel(u._card); } // also while it waits for its art (opening), or the reply was dropped (bug hunt 2026-10-17)
     for (const el of document.querySelectorAll('.fd-pass[data-id]')) { const id = isNaN(el.dataset.id) ? el.dataset.id : Number(el.dataset.id), c = state.cards.find((k) => k.id === id); if (c) { el.innerHTML = findPassLine(c); findActs(el.closest('.find-row, .v-next'), c); } } findTrim(); }
   if (e.data?.sc === 'say' && e.data.text) ticket({ kind: 'info', line: e.data.text, ms: 3500 }); // a message from Explore (reminder results)
   if (e.data?.sc === 'find-reminded') { findReminded = new Set(e.data.set); { const u = $('v-up'); if (u && !u.hidden && u._up) renderUpPanel(u._card, u._up, u._find); } for (const el of document.querySelectorAll('.fd-pass[data-id]')) { const id = isNaN(el.dataset.id) ? el.dataset.id : Number(el.dataset.id), c = state.cards.find((k) => k.id === id); if (c) findActs(el.closest('.find-row, .v-next'), c); } }
