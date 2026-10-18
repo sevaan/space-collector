@@ -123,3 +123,5 @@ body.night .rv-roll > span { color: inherit; }
 @keyframes rvChipPop { 0% { transform: scale(.6); } 60% { transform: scale(1.08); } 100% { transform: scale(1); } }
 .rv-chip--rank.in { animation: rvChipPop .32s cubic-bezier(.3, 1.4, .5, 1); }
 @media (prefers-reduced-motion: reduce) { #rv-rank.wrap, .rv-chip--rank.in { animation: none; } }
+.rv-chip--reunion { color: #7fe0c4; border-color: #7fe0c466; }
+body.night .rv-chip--reunion { color: #ff7f70; border-color: #ff7f7066; }

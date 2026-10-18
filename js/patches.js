@@ -3,7 +3,7 @@
 // group (or the date earned) along the bottom, one icon in the middle. Milestones get gold foil, the rarest holo
 // (css/ui.css .patch--gold / .patch--holo). Shared by Explore (the earning moment, its toast) and Collection (the wall).
 
-import { CON_BY_ID } from './constellations.js?v=0.1.835';
+import { CON_BY_ID } from './constellations.js?v=0.1.836';
 
 export const GROUPS = {
   collect: { c: '#14284a', t: 'Collection' }, rarity: { c: '#3a2259', t: 'Rarity' }, rocket: { c: '#5a2a1a', t: 'Rockets' },
@@ -16,7 +16,7 @@ export const GROUP_ORDER = ['member', 'secret', 'album', 'collect', 'rarity', 'r
 const GROUP_OF = {
   collect: 'first ten twentyfive fifty hundred archivist curator catalogue sightings100 station stations satellites50 silver gold gold3 missions10',
   rarity: 'legend epic spectrum legends5 legends25 shiny shiny5',
-  rocket: 'stage stages25 junk',
+  rocket: 'stage stages25 junk reunion reunion10 reunion25',
   nation: 'nations diplomat bigthree redstar stripes longmarch europe japan india',
   history: 'race oldtimer sputnik coldwar decades brandnew witness headliners',
   fleet: 'starlink starlink10 starlink50 fleets',
@@ -38,7 +38,7 @@ const GLYPH = {
   // Picture icons for the patches that used to show a text code (playtest 2026-10-09: "M10", "3/3", "≤90"…)
   missions10: 'clipboard', missions50: 'clipboard', fullhouse: 'three', streak4: 'calendar', streak12: 'calendar', months3: 'calendar', months12: 'calendar',
   silver: 'cardAg', gold: 'cardAu', gold3: 'cardAu3', marathon: 'tally', double: 'cards2', hattrick: 'cards3', twilight: 'sunset', dawn: 'sunrise',
-  horizon: 'horizon', coldwar: 'rocketOld', decades: 'hourglass', brandnew: 'launch', witness: 'flare', headliners: 'star5', arecibo: 'globe', halley: 'far', sputnik: 'sputnik', laika: 'star', apollo11: 'moon', twohomes: 'station', anniversary: 'candle', close: 'close', far: 'far', roadtrip: 'road',
+  horizon: 'horizon', coldwar: 'rocketOld', decades: 'hourglass', brandnew: 'launch', witness: 'flare', reunion: 'launch', reunion10: 'launch', reunion25: 'launch', headliners: 'star5', arecibo: 'globe', halley: 'far', sputnik: 'sputnik', laika: 'star', apollo11: 'moon', twohomes: 'station', anniversary: 'candle', close: 'close', far: 'far', roadtrip: 'road',
   brilliant: 'flare', spectrum: 'gems', europe: 'ring12', satellites50: 'sat',
 };
 // Finishes: gold foil for milestones, holo for the rarest few.

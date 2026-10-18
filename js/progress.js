@@ -1,7 +1,7 @@
 // Player progress from the sighting log: XP and observer rank, tonight's three missions, a weekly streak and
 // achievements. Everything is derived from the saved sightings (nothing extra is stored), so it can't drift.
 // info(cardKey) -> { tier, type, owner, launch, natural, con } | null. No DOM.
-import { nightKey } from './observation.js?v=0.1.835';
+import { nightKey } from './observation.js?v=0.1.836';
 
 // A longer climb (2026-10-12, playtest room: three ranks on night 1, Mission Control in about two weeks), with two
 // prestige ranks past Mission Control. Nobody drops a rank they had on the old curve (rankFloor below).
@@ -156,6 +156,10 @@ export const ACHIEVEMENTS = [
   { id: 'decades', name: 'Time Traveller', text: 'Objects from 6 different decades', icon: '6×10', done: (a) => a.decades.size >= 6 },
   { id: 'headliners', name: 'Top of the Bill', text: 'Catch 10 of tonight\'s headliners', icon: 'TOP', done: (a) => (a.headliners ?? 0) >= 10 },
   { id: 'witness', name: 'Witness', text: 'Collect 3 last-chance satellites before they fall', icon: 'LC', done: (a) => (a.witness ?? 0) >= 3 },
+  // Reunions (2026-10-17): own a rocket stage and the satellite it carried (card-model.js partners).
+  { id: 'reunion', name: 'Reunited', text: 'Collect a rocket stage and the satellite it carried', icon: 'RU', done: (a) => (a.reunions ?? 0) >= 1 },
+  { id: 'reunion10', name: 'Family Reunion', text: 'Reunite 10 rocket stages with their satellites', icon: 'RU', done: (a) => (a.reunions ?? 0) >= 10 },
+  { id: 'reunion25', name: 'Mission Control Archivist', text: 'Reunite 25 rocket stages with their satellites', icon: 'RU', done: (a) => (a.reunions ?? 0) >= 25 },
   { id: 'brandnew', name: 'Fresh Off the Pad', text: 'Catch something launched within the last 30 days', icon: 'NEW', done: (a) => a.brandNew },
   // Fleets
   { id: 'starlink', name: 'Train Spotter', text: 'Stamp a Starlink launch', icon: 'SL', done: (a) => (a.fleet.STARLINK ?? 0) >= 1 },
@@ -209,7 +213,7 @@ export const ACHIEVEMENTS = [
 // How far along a locked patch is, [have, goal], for the ones that count something (playtest 2026-10-09: a locked
 // patch shows its progress stitched part-way round the border, and the detail view says "3 of 10").
 const PROG = {
-  witness: (a) => [a.witness ?? 0, 3], headliners: (a) => [a.headliners ?? 0, 10], first: (a) => [a.cards, 1], ten: (a) => [a.cards, 10], twentyfive: (a) => [a.cards, 25], fifty: (a) => [a.cards, 50], hundred: (a) => [a.cards, 100],
+  witness: (a) => [a.witness ?? 0, 3], reunion: (a) => [a.reunions ?? 0, 1], reunion10: (a) => [a.reunions ?? 0, 10], reunion25: (a) => [a.reunions ?? 0, 25], headliners: (a) => [a.headliners ?? 0, 10], first: (a) => [a.cards, 1], ten: (a) => [a.cards, 10], twentyfive: (a) => [a.cards, 25], fifty: (a) => [a.cards, 50], hundred: (a) => [a.cards, 100],
   archivist: (a) => [a.cards, 250], curator: (a) => [a.cards, 500], catalogue: (a) => [a.cards, 1000], sightings100: (a) => [a.sightings, 100],
   spectrum: (a) => [a.tiers.size, 5], legends5: (a) => [a.tierCount.legendary ?? 0, 5], legends25: (a) => [a.tierCount.legendary ?? 0, 15], shiny5: (a) => [a.shinies, 5],
   stages25: (a) => [a.typeCount['rocket-body'] ?? 0, 25], stations: (a) => [a.typeCount.station ?? 0, 2], satellites50: (a) => [a.typeCount.satellite ?? 0, 50],
@@ -254,7 +258,7 @@ export function progress(sightings, info, { constellations = [], albums = [], no
     owners: new Set(), ownerCount: {}, fleet: {}, maxEl: -90, minSatEl: null, quadrants: new Set(), faintest: null, brightestSat: null,
     closest: null, farthest: null, maxNight: 0, months: new Set(), spanDays: 0, maxNightsOnCard: 0, goldCards: 0, spreadKm: 0, missionsDone: 0, fullHouse: false };
   // (Legacy XP reads tier0, each object's tier before the 2026-10-10 difficulty re-tier.)
-  const firsts = [], nightsOnCard = new Map(), fleetStamps = new Map(), places = [], placeSeen = new Set();
+  const firsts = [], nightsOnCard = new Map(), fleetStamps = new Map(), places = [], placeSeen = new Set(), reunionRoles = new Map();
   for (const s of list) {
     const i = info(s.cardKey), night = nightKey(s.time, s.lon ?? 0), first = !seenCard.has(s.cardKey), nk = `${s.cardKey}|${night}`;
     if (first) {
@@ -274,6 +278,7 @@ export function progress(sightings, info, { constellations = [], albums = [], no
       }
       if (s.headliner) { xp += 25; a.headliners = (a.headliners ?? 0) + 1; } // tonight's headliner (main.js headliner)
       if (s.lastChance) a.witness = (a.witness ?? 0) + 1; // collected while it was falling (js/last-chance.js)
+      if (i?.reunion) { const r = reunionRoles.get(i.reunion) ?? reunionRoles.set(i.reunion, new Set()).get(i.reunion); r.add(i.role); }
     }
     else if (!seenNight.has(nk)) xp += REPEAT_XP;
     let lv = false;
@@ -311,6 +316,7 @@ export function progress(sightings, info, { constellations = [], albums = [], no
     xp += done * MISSION_XP; a.missionsDone += done; if (done === 3) a.fullHouse = true;
     if (night !== firstNight && challengeFor(night).done(n, n[0].time)) xp += MISSION_XP;
   }
+  a.reunions = [...reunionRoles.values()].filter((r) => r.size === 2).length; // launches where you own the stage and its satellite
   const st = streaks(list, now); a.bestStreak = st.best;
   const tonightKey = nightKey(now, list[list.length - 1]?.lon ?? 0), tonight = nights.get(tonightKey) ?? [];
   const missions = missionsOf(tonightKey, { first: !nights.size || tonightKey === firstNight, deals }).map((m) => ({ id: m.id, text: m.text, done: m.done(tonight, now) }));

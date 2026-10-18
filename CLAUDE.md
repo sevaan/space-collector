@@ -1271,3 +1271,8 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - Rocket stages and debris show their launch year in Tonight's run and the headliner (yearLabel).
   - Design cleanup: 44px taps (.vtabs, .pill-o/.pill-g, viewer pass buttons), Settings chevrons right-aligned, SEE LESS/MORE at full muted strength, one 16px radius for the sky panel's cards, headliner detail in the label face, night versions of the slate chevron and blue reminder buttons, Collection base colours = Explore's.
   - The ⏱ stays: it's already hidden in the apps unless testing tools are unlocked; the website is the test build.
+- 2026-10-17 · Playtest batch 5 (Reunions, item 27; item 28 Wanderer stamps skipped by request):
+  - card-model.js buildCards: a rocket stage and the satellite(s) from the same launch (COSPAR first 8 chars, no debris, no families) get `reunion` (launch id) and `partners` (keys). ~751 launches, ~2,227 cards.
+  - progress.js: reunionRoles map filled on first catch; a.reunions = launches with both stage and payload owned. Patches reunion (Reunited), reunion10 (Family Reunion), reunion25 (Mission Control Archivist), rocket group, launch glyph.
+  - Card art chip "⇄ REUNITED" (teal) when a partner is owned (opts.ownedKeys; cards-page memoises ownedKeys as ownedMemo).
+  - Reveal news chip "Reunited with …" on the first sighting that completes a pair (complete sound + success haptic). Tonight's run shows a "Reunion" pill.

@@ -1,9 +1,9 @@
 // Shared catalogue → card mapping. Fleets (Starlink, OneWeb, Qianfan, Kuiper, Globalstar, Orbcomm, Iridium) are one fleet
 // card each; every launch in the fleet is a stamp on that card. Other objects are one card each.
-import { assignSets } from './sets.js?v=0.1.835';
-import { tierFor } from './rarity.js?v=0.1.835';
-import { fallAt, bumpTier } from './last-chance.js?v=0.1.835';
-import { NATURAL } from './natural.js?v=0.1.835';
+import { assignSets } from './sets.js?v=0.1.836';
+import { tierFor } from './rarity.js?v=0.1.836';
+import { fallAt, bumpTier } from './last-chance.js?v=0.1.836';
+import { NATURAL } from './natural.js?v=0.1.836';
 
 // Fleet members carry their launch key in the catalogue (`card` = 'STARLINK:2024-012'). That's the
 // stamp; the card itself is the fleet ('STARLINK').
@@ -88,6 +88,16 @@ export function buildCards(cat) {
   { const runs = new Map();
     for (const c of cards) if (!c.family && (c.type === 'rocket-body' || c.type === 'debris')) { const k = c.name.replace(/\s*\(.*\)\s*$/, ''); if (!runs.has(k)) runs.set(k, []); runs.get(k).push(c); }
     for (const run of runs.values()) if (run.length > 1) { run.sort((a, b) => String(a.launch ?? '').localeCompare(String(b.launch ?? '')) || a.id - b.id); run.forEach((c, i) => { c.runNo = i + 1; c.runOf = run.length; }); } }
+  // Reunions (2026-10-17, Sevaan approved from the fun playtest): a rocket stage and the satellite it carried share a
+  // launch (the first 8 characters of COSPAR, 1965-088). Each card from a launch that has both lists its partners, so
+  // owning a stage and its passenger reunites them. ~770 launches qualify.
+  { const byLaunch = new Map();
+    for (const c of cards) { if (c.family || !c.cospar || c.type === 'debris') continue; const k = String(c.cospar).slice(0, 8);
+      let l = byLaunch.get(k); if (!l) byLaunch.set(k, (l = { stages: [], payloads: [] })); (c.type === 'rocket-body' ? l.stages : l.payloads).push(c); }
+    for (const [k, l] of byLaunch) if (l.stages.length && l.payloads.length) {
+      for (const c of l.stages) { c.reunion = k; c.partners = l.payloads.map((x) => x.key); }
+      for (const c of l.payloads) { c.reunion = k; c.partners = l.stages.map((x) => x.key); }
+    } }
   // The Moon, planets and bright stars aren't in the orbital catalogue but are cards too.
   for (const n of NATURAL) cards.push({ ...n });
   assignSets(cards);

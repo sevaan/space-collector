@@ -1667,3 +1667,5 @@ body.day #skybar .sb-end { opacity: 1; }
 /* Slate and the blue reminder colour have night versions (they all but vanished under the red filter). */
 body.night .set-chev { color: var(--edge); }
 body.night #gh-remind, body.night #ud-bell { background: var(--gold) !important; color: #120606 !important; }
+.rs-gets span.r { background: color-mix(in srgb, #7fe0c4 16%, transparent); color: #7fe0c4; box-shadow: inset 0 0 0 1px color-mix(in srgb, #7fe0c4 45%, transparent); } /* a pass that reunites a stage and its satellite (2026-10-17) */
+body.night .rs-gets span.r { background: rgba(255, 106, 85, .14); color: #ff6a55; box-shadow: inset 0 0 0 1px rgba(255, 106, 85, .4); }

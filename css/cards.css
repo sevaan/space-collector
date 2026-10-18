@@ -572,3 +572,6 @@
 .mn-phases .fl-latest { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
 .mn-card .mn-row { gap: .25em; margin-top: .4em; }
 .mn-card .mn-phases { margin-bottom: .3em; }
+/* Reunited: you own this rocket stage and the satellite it carried (2026-10-17). A chip at the picture's foot. */
+.card--mission .m-chip.m-reunion { top: auto; bottom: .65em; left: .65em; color: #7fe0c4; border: .07em solid #7fe0c466; letter-spacing: .14em; }
+:where(html[data-theme="night"], body.night) .card--mission .m-chip.m-reunion { color: #ff7f70; border-color: #ff7f7066; }
