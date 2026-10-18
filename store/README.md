@@ -34,3 +34,14 @@ Order on the store page: 1 sky (lock-on), 2 reveal, 3 Tonight, 4 shiny ISS card,
 App Store Connect → Space Collector → the 1.0 version → App Previews and Screenshots. Drag the PNGs and `preview.mp4`
 from `store/appstore/phone` onto "iPhone with Dynamic Island (medium display)" and from `store/appstore/pad` onto
 "iPad 13" display". iPhone Duo is optional (it scales from the iPhone set).
+
+## The 30-second marketing video
+```bash
+node scripts/store/promo.mjs          # record → scenes → voice → build: store/promo/space-collector-30s.mp4 (1080 × 1920, 30 fps)
+node scripts/store/promo.mjs build    # just re-assemble (e.g. after editing captions or voice timings)
+```
+Steps can run alone: `record` (real app footage into store/promo/clips), `scenes` (the rendered intro, the phone raised,
+the end card, the caption cards), `voice` (ElevenLabs "Brian"; key from ELEVENLABS_API_KEY, ~/.elevenlabs_key or the
+keychain item `elevenlabs-api-key`; macOS `say` as a stand-in without one), `build` (picture + captions + sound).
+The timeline, captions and voice lines are the `T`, `CAPTIONS` and `VO` tables at the top of `scripts/store/promo.mjs`.
+The app's own sounds are logged while recording and placed where they happened; "Permafrost" plays underneath.
