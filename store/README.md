@@ -47,3 +47,7 @@ the end card, the caption cards), `voice` (ElevenLabs "Brian"; key from ELEVENLA
 keychain item `elevenlabs-api-key`; macOS `say` as a stand-in without one), `build` (picture + captions + sound).
 The timeline, captions and voice lines are the `T`, `CAPTIONS` and `VO` tables at the top of `scripts/store/promo.mjs`.
 The app's own sounds are logged while recording and placed where they happened; "Permafrost" plays underneath.
+
+## Product page header (optional)
+
+`node scripts/store/header.mjs` makes the wide banner for App Store Connect → version → Header and Search Results → Header: `store/appstore/header/header-5244x2950.png` and `header-3840x1646.png`. It captures the real sky (locked on the ISS) and three cards, then lays out the words and cards. Change the words in `WORDS` and the cards in `CARDS` at the top of the script.
