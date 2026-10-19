@@ -2,9 +2,9 @@
 // many satellites are visible over the night. Runs off the main thread; ~4,000 objects × 1-minute steps
 // takes a few seconds. Visibility uses the same rules as the live sky: sunlit, dark sky, and brighter than
 // the limit for your sky at that moment (light pollution, twilight, Moon; js/sky-limit.js).
-import { frame, look, setSkyLimit, setBinocularMode, DARK_SUN_ELEVATION } from './orbit.js?v=0.1.870';
-import { skyLimit } from './sky-limit.js?v=0.1.870';
-import { solarSystem, eqToEnu } from './celestial.js?v=0.1.870';
+import { frame, look, setSkyLimit, setBinocularMode, DARK_SUN_ELEVATION } from './orbit.js?v=0.1.871';
+import { skyLimit } from './sky-limit.js?v=0.1.871';
+import { solarSystem, eqToEnu } from './celestial.js?v=0.1.871';
 
 const STEP0 = 60000;         // 1 minute (other nights in the week ahead use 2)
 const GAP = 3;               // a pass ends after this many minutes out of sight
@@ -24,6 +24,12 @@ self.onmessage = ({ data }) => {
     const open = new Map(), passes = [], curve = [];
     let dusk = null, dawn = null, lastDark = false, limitAt = -1, moonEl = -90, moonIllum = 0, moonU = null;
     const sep = (a, b) => Math.acos(Math.max(-1, Math.min(1, a[0] * b[0] + a[1] * b[1] + a[2] * b[2]))) * 180 / Math.PI;
+    // Planned after dark (2026-10-18 playtest): dusk is when it really got dark, not the moment the plan was made, so
+    // "Dark 6:54 PM", the evening window and the weather's nights stay right. Stepped back 2 min at a time, up to 16 h.
+    if (frame(new Date(startMs), observer).sunEl < DARK_SUN_ELEVATION) {
+      let t = startMs; for (let i = 0; i < 480; i++) { const u = t - 120000; if (frame(new Date(u), observer).sunEl >= DARK_SUN_ELEVATION) break; t = u; }
+      dusk = t;
+    }
     for (let k = 0; k <= (hours * 3600000 / STEP); k++) {
       const t = startMs + k * STEP, d = new Date(t), f = frame(d, observer);
       const dark = f.sunEl < DARK_SUN_ELEVATION;
