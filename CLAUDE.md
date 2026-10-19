@@ -1360,3 +1360,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - 2026-10-19 · v0.1.875: "Just a plane / helicopter" (plane) is the original sound again (Sevaan); levels rerun.
 - 2026-10-19 · v0.1.876: a fleet card's typed launch line ("LAUNCHED 13 JUL, 2011") replays once the face is showing (card.js `retype(root)`, a fresh copy of each .fl-type): after the catch reveal's flip, partway through the repeat-view turn (playView) and the Collection viewer's opening spin. It had typed itself in while the card was still face down (Sevaan, Globalstar).
 - 2026-10-19 · v0.1.877: the reveal's "+1 night · N nights" stamp is removed (Sevaan: didn't make sense, went too fast, and showed on a new fleet launch). The SEEN ON N NIGHTS eyebrow and level milestones are unchanged.
+- 2026-10-19 · v0.1.878: music volume defaults to 75% (js/music.js musicVolume; was 100%) for anyone who hasn't moved the Music volume slider (Sevaan).
