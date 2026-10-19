@@ -3,7 +3,7 @@
 // (2026-10-16): the purchase belongs to the player's Apple ID / Google account, no sign-in of ours. The last answer is
 // kept (localStorage 'plusStore') so Plus holds offline. The testing toggle (Settings → Testing tools → "Plus
 // (testing)", 'plusTest') still turns it on anywhere; the website never sells Plus.
-import { plugin, isNative, onNative } from './native.js?v=0.1.883';
+import { plugin, isNative, onNative } from './native.js?v=0.1.884';
 
 // RevenueCat public SDK keys (safe in the app). The Test Store key works with no App Store / Play setup; swap in the
 // appl_ / goog_ keys from RevenueCat → Project settings → API keys once the store apps are connected.
@@ -88,6 +88,6 @@ export const PLUS_PERKS = [
 // Prices (2026-10-16, Sevaan). The yearly plan has the 7-day free trial; all three are shared with Family Sharing.
 export const PLUS_PRICES = [
   { id: 'month', label: 'Month', price: '$1.99', note: '' },
-  { id: 'year', label: 'Year', price: '$14.99', note: 'Best value', trial: 7 },
-  { id: 'once', label: 'Forever', price: '$29.99', note: 'One time' },
+  { id: 'year', label: 'Year', price: '$14.99', note: 'Save 37%', trial: 7 }, // the % is worked out from the shown prices (main.js shownPrices)
+  { id: 'once', label: 'Forever', price: '$29.99', note: 'No subscription' },
 ];
