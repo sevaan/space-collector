@@ -1,20 +1,20 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { fallWords } from './last-chance.js?v=0.1.884';
-import { feel } from './native.js?v=0.1.884';
-import { sfx } from './sfx.js?v=0.1.884';
-import { cardArt } from './art.js?v=0.1.884';
-import { TIER_INFO } from './rarity.js?v=0.1.884';
-import { SET_BY_ID } from './sets.js?v=0.1.884';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.884';
-import { FLEET_ABOUT, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.884';
-import { artFileFor } from './art-keys.js?v=0.1.884';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.884';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.884';
-import { nightsIn } from './observation.js?v=0.1.884';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.884';
-import { SHINY } from './shiny.js?v=0.1.884';
-import { conArt, cometArt } from './con-art.js?v=0.1.884';
-import { CON_FIGURES } from './con-figures.js?v=0.1.884';
+import { fallWords } from './last-chance.js?v=0.1.885';
+import { feel } from './native.js?v=0.1.885';
+import { sfx } from './sfx.js?v=0.1.885';
+import { cardArt } from './art.js?v=0.1.885';
+import { TIER_INFO } from './rarity.js?v=0.1.885';
+import { SET_BY_ID } from './sets.js?v=0.1.885';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.885';
+import { FLEET_ABOUT, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.885';
+import { artFileFor } from './art-keys.js?v=0.1.885';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.885';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.885';
+import { nightsIn } from './observation.js?v=0.1.885';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.885';
+import { SHINY } from './shiny.js?v=0.1.885';
+import { conArt, cometArt } from './con-art.js?v=0.1.885';
+import { CON_FIGURES } from './con-figures.js?v=0.1.885';
 // The animal/symbol figure belongs to the completed (gold) constellation card only (2026-10-05): a single
 // star's card draws just the star pattern with its star marked, so the figure is a reward for finishing the set.
 // A star card's constellation figure comes into focus as you collect the constellation's stars (design/con-focus.html B).
