@@ -21,14 +21,15 @@ body { overflow-x: hidden; }
 body.sky-ready #sky { opacity: 1; }
 /* Keeps the words readable over the moving sky. */
 .shade { position: fixed; inset: 0; z-index: 1; pointer-events: none; background: linear-gradient(90deg, rgba(8,15,27,.78) 0%, rgba(8,15,27,.5) 32%, rgba(8,15,27,0) 52%); }
+@media (min-width: 1500px) { .shade { background: linear-gradient(90deg, rgba(8,15,27,0) 0, rgba(8,15,27,.62) calc(50% - 620px), rgba(8,15,27,.4) calc(50% - 160px), rgba(8,15,27,0) 50%); } }
 
-.page { position: relative; z-index: 2; min-height: 100vh; min-height: 100svh; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; gap: 4vw;
+.page { position: relative; z-index: 2; min-height: 100vh; min-height: 100svh; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; gap: 4vw; max-width: 1360px; margin: 0 auto; /* wide screens: the words and the card stay together in the middle */
   padding: max(40px, env(safe-area-inset-top)) max(6vw, env(safe-area-inset-right)) max(40px, env(safe-area-inset-bottom)) max(6vw, env(safe-area-inset-left)); pointer-events: none; }
 .words { pointer-events: auto; display: grid; justify-items: start; gap: 18px; max-width: 32em; }
 .words img.icon { width: 88px; height: 88px; border-radius: 20px; box-shadow: 0 18px 44px #000a; }
-h1 { margin: 0; font: 400 clamp(40px, 5.4vw, 72px)/1 var(--display); letter-spacing: -.01em; text-shadow: 0 2px 24px #080f1b; }
+h1 { margin: 0; font: 400 clamp(40px, 5.4vw, 84px)/1 var(--display); letter-spacing: -.01em; text-shadow: 0 2px 24px #080f1b; }
 .tag { margin: -6px 0 0; font: 600 15px/1 var(--label); letter-spacing: .26em; text-transform: uppercase; color: var(--gold); }
-.lede { margin: 0; color: #c9d3de; font-size: 19px; max-width: 30em; text-shadow: 0 1px 12px #080f1b; }
+.lede { margin: 0; color: #c9d3de; font-size: clamp(17px, 1.25vw, 21px); max-width: 30em; text-shadow: 0 1px 12px #080f1b; }
 .soon { margin: 10px 0 -6px; font: 600 13px/1 var(--label); letter-spacing: .24em; text-transform: uppercase; color: var(--muted); }
 .stores { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
 .stores a { display: block; line-height: 0; border-radius: 9px; transition: transform .15s ease, filter .15s ease; }
@@ -48,7 +49,7 @@ h1 { margin: 0; font: 400 clamp(40px, 5.4vw, 72px)/1 var(--display); letter-spac
 
 /* The welcome card: the app's 28 × 42 card, shaking like the app's (css/app.css wcRattle). */
 .card-side { display: grid; justify-items: center; gap: 16px; pointer-events: none; }
-.wc { pointer-events: auto; width: min(360px, 30vw, calc((100svh - 160px) / 1.5)); aspect-ratio: 1032 / 1548; cursor: pointer; perspective: 1400px; border-radius: 6%; outline: none; }
+.wc { pointer-events: auto; width: min(440px, 30vw, calc((100svh - 170px) / 1.5)); aspect-ratio: 1032 / 1548; cursor: pointer; perspective: 1400px; border-radius: 6%; outline: none; }
 .wc:focus-visible .wc-card { box-shadow: 0 0 0 3px var(--gold), 0 30px 80px #000c; }
 .wc.rattle { animation: wcRattle 5s ease-in-out 1s infinite; }
 @keyframes wcRattle { 0% { transform: rotate(0); } 2% { transform: rotate(-3deg) translateY(-2px); } 4% { transform: rotate(3deg); } 6% { transform: rotate(-2.4deg); } 8% { transform: rotate(1.8deg); } 10% { transform: rotate(-1deg); } 12%, 100% { transform: rotate(0); } }

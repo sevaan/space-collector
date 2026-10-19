@@ -73,7 +73,7 @@ const touring = () => !hasMouse || performance.now() - aim.mouseAt > 5000;
 let lastKind = '';
 function pickTour(items, ufo) {
   if (ufo?.p && !inBox(ufo.p.x, ufo.p.y, 60)) return { ufo: true };
-  const pad = 70, ok = items.filter((it) => it.p && it.p.x > pad && it.p.x < sky.w - pad && it.p.y > 170 && it.p.y < sky.h - 90 && !inBox(it.p.x, it.p.y, 140)); // room for the label too
+  const pad = 70, ok = items.filter((it) => it.p && it.p.x > pad && it.p.x < sky.w - pad && it.p.y > 170 && it.p.y < sky.h - 90 && !inBox(it.p.x, it.p.y, sky.reticlePx + 110)); // room for the label too
   if (!ok.length) return null;
   const fresh = ok.filter((it) => (it.obj.type ?? it.obj.natural) !== lastKind && idOf(it.obj) !== aim.tour?.id);
   const pool = fresh.length ? fresh : ok, pick = pool[Math.floor(Math.random() * pool.length)];
@@ -146,7 +146,7 @@ function tick(ts) {
   }
   const k = still ? 1 : touring() ? 0.06 : 0.35;
   aim.x += (aim.tx - aim.x) * k; aim.y += (aim.ty - aim.y) * k;
-  const wantA = aim.overUI || inBox(aim.x, aim.y, 110) ? 0 : (aim.mouseAt || !hasMouse || touring()) ? 1 : 0; // never over the words or the card
+  const wantA = aim.overUI || inBox(aim.x, aim.y, sky.reticlePx + 80) ? 0 : (aim.mouseAt || !hasMouse || touring()) ? 1 : 0; // never over the words or the card
   aim.alpha += (wantA - aim.alpha) * (still ? 1 : 0.15);
 
   // What's in it: the mouse's own line of sight, the app's 6° circle; a satellite before a star.
