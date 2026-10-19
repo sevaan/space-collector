@@ -93,11 +93,23 @@ h1 { margin: 0; font: 400 clamp(40px, 5.4vw, 84px)/1 var(--display); letter-spac
 h2 { margin: 0; font: 400 clamp(28px, 4vw, 44px)/1.08 var(--display); text-wrap: balance; }
 .sec-head p.sub { margin: 0; color: #c9d3de; max-width: 34em; }
 /* The screenshots ride a slow conveyor: two copies of the row, the track slides by one copy's width and repeats. */
-.strip { overflow: hidden; padding: 34px 0 18px; -webkit-mask: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+.strip { overflow: hidden; padding: 34px 0 18px; -webkit-mask: linear-gradient(90deg, transparent, #000 22%, #000 78%, transparent); mask: linear-gradient(90deg, transparent, #000 22%, #000 78%, transparent); } /* they come out of a fade and go back into one */
 .track { display: flex; gap: 22px; width: max-content; animation: belt 70s linear infinite; }
 .strip:hover .track, .strip:focus-within .track { animation-play-state: paused; }
 @keyframes belt { to { transform: translateX(calc(-50% - 11px)); } }
-.track figure { margin: 0; flex: none; width: clamp(200px, 19vw, 270px); }
+.track figure { margin: 0; flex: none; width: clamp(240px, 24vw, 400px); }
+.track button { all: unset; display: block; cursor: zoom-in; border-radius: 22px; transition: transform .25s ease; }
+.track button:hover { transform: translateY(-6px); }
+.track button:focus-visible { outline: 2px solid var(--gold); outline-offset: 4px; }
+/* Tap a screenshot: it opens big over the page. */
+#shot { border: 0; padding: 0; background: transparent; max-width: 96vw; max-height: 96vh; overflow: visible; }
+#shot::backdrop { background: rgba(3,7,14,.9); backdrop-filter: blur(4px); }
+#shot[open] { animation: shotIn .28s cubic-bezier(.2,.8,.3,1); }
+@keyframes shotIn { from { opacity: 0; transform: scale(.94); } }
+#shot img { display: block; height: min(86vh, 1965px); width: auto; max-width: 92vw; object-fit: contain; border-radius: 28px; box-shadow: 0 0 0 1px #22324a, 0 40px 120px #000; cursor: zoom-out; }
+#shot .x { position: fixed; top: max(16px, env(safe-area-inset-top)); right: max(16px, env(safe-area-inset-right)); all: unset; position: fixed; top: 18px; right: 22px; font: 500 30px/1 var(--label); color: var(--ink); cursor: pointer; padding: 8px; }
+#shot .nav { all: unset; position: fixed; top: 50%; transform: translateY(-50%); font: 400 44px/1 var(--label); color: var(--ink); cursor: pointer; padding: 18px; opacity: .8; }
+#shot .nav:hover { opacity: 1; } #shot .prev { left: 2vw; } #shot .next { right: 2vw; }
 .track img { display: block; width: 100%; height: auto; border-radius: 22px; box-shadow: 0 0 0 1px #22324a, 0 24px 60px #000b; }
 @media (prefers-reduced-motion: reduce) { .strip { overflow-x: auto; } .track { animation: none; padding: 0 20px; } .track [aria-hidden] { display: none; } }
 .film { display: flex; flex-wrap: wrap; gap: 40px 56px; align-items: center; justify-content: center; padding: 0 max(6vw, 20px); }
@@ -111,7 +123,7 @@ h2 { margin: 0; font: 400 clamp(28px, 4vw, 44px)/1.08 var(--display); text-wrap:
 .foot a { color: var(--ink); text-underline-offset: 4px; }
 @media (max-width: 860px) {
   .more { gap: 90px; }
-  .track figure { width: 62vw; }
+  .track figure { width: 66vw; }
   @keyframes belt { to { transform: translateX(calc(-50% - 11px)); } }
   .film { flex-direction: column; gap: 30px; }
   .film .copy { justify-items: center; text-align: center; }
@@ -150,18 +162,18 @@ h2 { margin: 0; font: 400 clamp(28px, 4vw, 44px)/1.08 var(--display); text-wrap:
     <div class="sec-head" data-ui><p class="eyebrow">Real satellites · right now</p><h2 id="h-shots">Every light that moves is a card</h2><p class="sub">Stations, rocket stages, planets and stars: thousands of real objects, each with its own card.</p></div>
     <div class="strip" data-ui aria-label="Screenshots from the app">
      <div class="track">
-      <figure><img src="/home/shots/1-sky.webp" alt="That light is a satellite. Catch it." width="603" height="1311" loading="lazy" decoding="async"></figure>
-      <figure><img src="/home/shots/2-reveal.webp" alt="Every catch is a card" width="603" height="1311" loading="lazy" decoding="async"></figure>
-      <figure><img src="/home/shots/3-card.webp" alt="Lucky catches shine" width="603" height="1311" loading="lazy" decoding="async"></figure>
-      <figure><img src="/home/shots/4-tonight.webp" alt="Know when to look up" width="603" height="1311" loading="lazy" decoding="async"></figure>
-      <figure><img src="/home/shots/5-collection.webp" alt="Build your collection" width="603" height="1311" loading="lazy" decoding="async"></figure>
-      <figure><img src="/home/shots/6-patches.webp" alt="Earn patches. Find the secrets." width="603" height="1311" loading="lazy" decoding="async"></figure>
-      <figure aria-hidden="true"><img src="/home/shots/1-sky.webp" alt="" width="603" height="1311" loading="lazy" decoding="async"></figure>
-      <figure aria-hidden="true"><img src="/home/shots/2-reveal.webp" alt="" width="603" height="1311" loading="lazy" decoding="async"></figure>
-      <figure aria-hidden="true"><img src="/home/shots/3-card.webp" alt="" width="603" height="1311" loading="lazy" decoding="async"></figure>
-      <figure aria-hidden="true"><img src="/home/shots/4-tonight.webp" alt="" width="603" height="1311" loading="lazy" decoding="async"></figure>
-      <figure aria-hidden="true"><img src="/home/shots/5-collection.webp" alt="" width="603" height="1311" loading="lazy" decoding="async"></figure>
-      <figure aria-hidden="true"><img src="/home/shots/6-patches.webp" alt="" width="603" height="1311" loading="lazy" decoding="async"></figure>
+      <figure><button type="button" data-shot="1-sky" aria-label="Enlarge: That light is a satellite. Catch it."><img src="/home/shots/1-sky.webp" alt="That light is a satellite. Catch it." width="603" height="1311" loading="lazy" decoding="async"></button></figure>
+      <figure><button type="button" data-shot="2-reveal" aria-label="Enlarge: Every catch is a card"><img src="/home/shots/2-reveal.webp" alt="Every catch is a card" width="603" height="1311" loading="lazy" decoding="async"></button></figure>
+      <figure><button type="button" data-shot="3-card" aria-label="Enlarge: Lucky catches shine"><img src="/home/shots/3-card.webp" alt="Lucky catches shine" width="603" height="1311" loading="lazy" decoding="async"></button></figure>
+      <figure><button type="button" data-shot="4-tonight" aria-label="Enlarge: Know when to look up"><img src="/home/shots/4-tonight.webp" alt="Know when to look up" width="603" height="1311" loading="lazy" decoding="async"></button></figure>
+      <figure><button type="button" data-shot="5-collection" aria-label="Enlarge: Build your collection"><img src="/home/shots/5-collection.webp" alt="Build your collection" width="603" height="1311" loading="lazy" decoding="async"></button></figure>
+      <figure><button type="button" data-shot="6-patches" aria-label="Enlarge: Earn patches. Find the secrets."><img src="/home/shots/6-patches.webp" alt="Earn patches. Find the secrets." width="603" height="1311" loading="lazy" decoding="async"></button></figure>
+      <figure aria-hidden="true"><button type="button" data-shot="1-sky" tabindex="-1" aria-label="Enlarge: screenshot"><img src="/home/shots/1-sky.webp" alt="" width="603" height="1311" loading="lazy" decoding="async"></button></figure>
+      <figure aria-hidden="true"><button type="button" data-shot="2-reveal" tabindex="-1" aria-label="Enlarge: screenshot"><img src="/home/shots/2-reveal.webp" alt="" width="603" height="1311" loading="lazy" decoding="async"></button></figure>
+      <figure aria-hidden="true"><button type="button" data-shot="3-card" tabindex="-1" aria-label="Enlarge: screenshot"><img src="/home/shots/3-card.webp" alt="" width="603" height="1311" loading="lazy" decoding="async"></button></figure>
+      <figure aria-hidden="true"><button type="button" data-shot="4-tonight" tabindex="-1" aria-label="Enlarge: screenshot"><img src="/home/shots/4-tonight.webp" alt="" width="603" height="1311" loading="lazy" decoding="async"></button></figure>
+      <figure aria-hidden="true"><button type="button" data-shot="5-collection" tabindex="-1" aria-label="Enlarge: screenshot"><img src="/home/shots/5-collection.webp" alt="" width="603" height="1311" loading="lazy" decoding="async"></button></figure>
+      <figure aria-hidden="true"><button type="button" data-shot="6-patches" tabindex="-1" aria-label="Enlarge: screenshot"><img src="/home/shots/6-patches.webp" alt="" width="603" height="1311" loading="lazy" decoding="async"></button></figure>
      </div>
     </div>
   </section>
@@ -180,6 +192,7 @@ h2 { margin: 0; font: 400 clamp(28px, 4vw, 44px)/1.08 var(--display); text-wrap:
   </section>
   <footer class="foot" data-ui><a href="mailto:hello@spacecollector.app">hello@spacecollector.app</a><a href="/privacy">Privacy</a><span>© 2026 Space Collector</span></footer>
 </div>
+<dialog id="shot" aria-label="Screenshot"><button class="x" type="button" aria-label="Close">✕</button><button class="nav prev" type="button" aria-label="Previous screenshot">‹</button><img alt=""><button class="nav next" type="button" aria-label="Next screenshot">›</button></dialog>
 <p id="when"></p>
 <p class="sr">Behind the page is tonight's real sky: move the mouse and the target circle names the satellites, rocket stages, debris, planets and stars it lands on.</p>
 <script type="module" src="/home/audio.js"></script>
@@ -188,6 +201,18 @@ h2 { margin: 0; font: 400 clamp(28px, 4vw, 44px)/1.08 var(--display); text-wrap:
 <script>
 // The store badges go live with the apps. Until then they say so.
 document.querySelectorAll('.stores a[href="#"]').forEach((a) => a.addEventListener('click', (e) => { e.preventDefault(); const s = a.closest('.words, .copy').querySelector('.soon'); s.animate([{ color: '#fa8127' }, { color: '' }], { duration: 1200 }); }));
+// Screenshots open big; arrows (and ← →) step through them, a click on the picture or Esc closes.
+const shot = document.getElementById('shot'), shotImg = shot.querySelector('img');
+const SHOTS = [...new Set([...document.querySelectorAll('[data-shot]')].map((b) => b.dataset.shot))];
+const ALTS = Object.fromEntries([...document.querySelectorAll('[data-shot] img')].filter((i) => i.alt).map((i) => [i.closest('[data-shot]').dataset.shot, i.alt]));
+let shotI = 0;
+const showShot = (i) => { shotI = (i + SHOTS.length) % SHOTS.length; shotImg.src = `/home/shots/full/${SHOTS[shotI]}.webp`; shotImg.alt = ALTS[SHOTS[shotI]] ?? ''; };
+document.querySelectorAll('[data-shot]').forEach((b) => b.addEventListener('click', () => { showShot(SHOTS.indexOf(b.dataset.shot)); shot.showModal(); }));
+shot.querySelector('.prev').addEventListener('click', () => showShot(shotI - 1));
+shot.querySelector('.next').addEventListener('click', () => showShot(shotI + 1));
+shot.querySelector('.x').addEventListener('click', () => shot.close());
+shot.addEventListener('click', (e) => { if (e.target === shot || e.target === shotImg) shot.close(); });
+shot.addEventListener('keydown', (e) => { if (e.key === 'ArrowLeft') showShot(shotI - 1); if (e.key === 'ArrowRight') showShot(shotI + 1); });
 // The film plays (muted) while it's on screen; its controls turn the sound on.
 const promo = document.getElementById('promo');
 new IntersectionObserver(([e]) => { if (e.isIntersecting) { promo.preload = 'auto'; promo.play().catch(() => {}); } else promo.pause(); }, { threshold: 0.5 }).observe(promo);
