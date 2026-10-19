@@ -7,7 +7,7 @@ import { chromium } from 'playwright';
 import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { execFileSync } from 'node:child_process';
-import { ROOT, DEVICES, setup, hideNoise } from './common.mjs';
+import { ROOT, DEVICES, setup, hideNoise, jumpToHero } from './common.mjs';
 
 const args = process.argv.slice(2), which = args.find((a) => !a.startsWith('--')) ?? 'all', when = args.find((a) => a.startsWith('--when='))?.slice(7);
 const OUT = { phone: [886, 1920], pad: [1200, 1600] };
@@ -24,6 +24,7 @@ for (const kind of which === 'all' ? Object.keys(OUT) : [which]) {
   cdp.on('Page.screencastFrame', async ({ data, metadata, sessionId }) => { const f = join(tmp, `${String(frames.length).padStart(5, '0')}.jpg`); writeFileSync(f, Buffer.from(data, 'base64')); frames.push({ f, t: metadata.timestamp }); await cdp.send('Page.screencastFrameAck', { sessionId }).catch(() => {}); });
   const w = (ms) => p.waitForTimeout(ms);
   // The script. Steering goes through the app's own drag view, eased, so it moves like a hand.
+  await jumpToHero(p); // the same hero as the screenshots: the ISS (reference-accurate art), not whatever is up
   await p.evaluate(() => { const st = window.__store.state; st.drag.on = true; st.pinnedId = null; window.__pan = 0.06; window.__aim = null;
     const step = () => { const s = window.__store.state;
       if (window.__aim != null) { const it = s.items.find((x) => x.obj.id === window.__aim); if (it) { let da = ((it.look.az - s.drag.az + 540) % 360) - 180; s.drag.az = (s.drag.az + da * 0.06 + 360) % 360; s.drag.el += (Math.max(it.look.el, 15) - s.drag.el) * 0.06; } }
