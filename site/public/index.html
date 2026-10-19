@@ -94,9 +94,9 @@ h2 { margin: 0; font: 400 clamp(28px, 4vw, 44px)/1.08 var(--display); text-wrap:
 .sec-head p.sub { margin: 0; color: #c9d3de; max-width: 34em; }
 /* The screenshots ride a slow conveyor: two copies of the row, the track slides by one copy's width and repeats. */
 .strip { overflow: hidden; padding: 34px 0 18px; -webkit-mask: linear-gradient(90deg, transparent, #000 22%, #000 78%, transparent); mask: linear-gradient(90deg, transparent, #000 22%, #000 78%, transparent); } /* they come out of a fade and go back into one */
-.track { display: flex; gap: 22px; width: max-content; animation: belt 70s linear infinite; }
-.strip:hover .track, .strip:focus-within .track { animation-play-state: paused; }
-@keyframes belt { to { transform: translateX(calc(-50% - 11px)); } }
+.track { display: flex; gap: 22px; width: max-content; will-change: transform; }
+.strip { touch-action: pan-y; cursor: grab; user-select: none; -webkit-user-select: none; } .strip.dragging { cursor: grabbing; }
+.track img { -webkit-user-drag: none; pointer-events: none; }
 .track figure { margin: 0; flex: none; width: clamp(240px, 24vw, 400px); }
 .track button { all: unset; display: block; cursor: zoom-in; border-radius: 22px; transition: transform .25s ease; }
 .track button:hover { transform: translateY(-6px); }
@@ -111,7 +111,7 @@ h2 { margin: 0; font: 400 clamp(28px, 4vw, 44px)/1.08 var(--display); text-wrap:
 #shot .nav { all: unset; position: fixed; top: 50%; transform: translateY(-50%); font: 400 44px/1 var(--label); color: var(--ink); cursor: pointer; padding: 18px; opacity: .8; }
 #shot .nav:hover { opacity: 1; } #shot .prev { left: 2vw; } #shot .next { right: 2vw; }
 .track img { display: block; width: 100%; height: auto; border-radius: 22px; box-shadow: 0 0 0 1px #22324a, 0 24px 60px #000b; }
-@media (prefers-reduced-motion: reduce) { .strip { overflow-x: auto; } .track { animation: none; padding: 0 20px; } .track [aria-hidden] { display: none; } }
+
 .film { display: flex; flex-wrap: wrap; gap: 40px 56px; align-items: center; justify-content: center; padding: 0 max(6vw, 20px); }
 .film video { flex: none; }
 .film .copy { flex: 0 1 30em; min-width: min(100%, 300px); }
@@ -124,7 +124,6 @@ h2 { margin: 0; font: 400 clamp(28px, 4vw, 44px)/1.08 var(--display); text-wrap:
 @media (max-width: 860px) {
   .more { gap: 90px; }
   .track figure { width: 66vw; }
-  @keyframes belt { to { transform: translateX(calc(-50% - 11px)); } }
   .film { flex-direction: column; gap: 30px; }
   .film .copy { justify-items: center; text-align: center; }
   .film .copy h2, .film .copy .eyebrow { text-align: center; }
@@ -229,6 +228,37 @@ h2 { margin: 0; font: 400 clamp(28px, 4vw, 44px)/1.08 var(--display); text-wrap:
 <script>
 // The store badges go live with the apps. Until then they say so.
 document.querySelectorAll('.stores a[href="#"]').forEach((a) => a.addEventListener('click', (e) => { e.preventDefault(); const s = a.closest('.words, .copy').querySelector('.soon'); s.animate([{ color: '#fa8127' }, { color: '' }], { duration: 1200 }); }));
+// The belt: drifts left on its own, and a swipe or drag moves it (with a little glide after). It wraps round, since the row
+// is there twice. A drag isn't a click, so it doesn't open the screenshot.
+(() => {
+  const strip = document.querySelector('.strip'), track = strip.querySelector('.track'), still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const DRIFT = still ? 0 : 24; // px a second
+  let x = 0, v = 0, drag = null, moved = 0, hover = false, last = performance.now(), seen = false;
+  const half = () => (track.scrollWidth + 22) / 2; // one copy of the row, with its gap
+  const wrap = () => { const h = half(); if (h > 0) { x %= h; if (x > 0) x -= h; } };
+  new IntersectionObserver(([e]) => { seen = e.isIntersecting; }).observe(strip);
+  strip.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') hover = true; });
+  strip.addEventListener('pointerleave', () => { hover = false; });
+  strip.addEventListener('pointerdown', (e) => { drag = { x: e.clientX, y: e.clientY, t: performance.now(), id: e.pointerId, on: false }; moved = 0; v = 0; });
+  strip.addEventListener('pointermove', (e) => {
+    if (!drag || e.pointerId !== drag.id) return;
+    const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+    if (!drag.on) { if (Math.abs(dx) < 6 || Math.abs(dx) < Math.abs(dy)) return; drag.on = true; strip.classList.add('dragging'); try { strip.setPointerCapture(e.pointerId); } catch {} }
+    const t = performance.now(); x += dx; moved += Math.abs(dx); v = dx / Math.max(8, t - drag.t) * 1000; drag.x = e.clientX; drag.y = e.clientY; drag.t = t; wrap();
+  });
+  const end = () => { if (!drag) return; drag = null; strip.classList.remove('dragging'); };
+  strip.addEventListener('pointerup', end); strip.addEventListener('pointercancel', end);
+  strip.addEventListener('click', (e) => { if (moved > 6) { e.preventDefault(); e.stopPropagation(); } moved = 0; }, true);
+  strip.addEventListener('keydown', (e) => { if (e.key === 'ArrowLeft') v = 900; if (e.key === 'ArrowRight') v = -900; });
+  const tick = (t) => {
+    requestAnimationFrame(tick);
+    const dt = Math.min(0.05, (t - last) / 1000); last = t;
+    if (!seen || document.hidden) return;
+    if (!drag) { x += v * dt; v *= Math.pow(0.04, dt); if (Math.abs(v) < 5) v = 0; if (!hover && !v) x -= DRIFT * dt; }
+    wrap(); track.style.transform = `translateX(${x.toFixed(1)}px)`;
+  };
+  requestAnimationFrame(tick);
+})();
 // Screenshots open big; arrows (and ← →) step through them, a click on the picture or Esc closes.
 const shot = document.getElementById('shot'), shotImg = shot.querySelector('img');
 const SHOTS = [...new Set([...document.querySelectorAll('[data-shot]')].map((b) => b.dataset.shot))];
