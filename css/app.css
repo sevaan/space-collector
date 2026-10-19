@@ -1774,3 +1774,8 @@ body.night .od-tier { color: var(--text) !important; }
 .set-test > .set-row { margin-inline: 0 !important; padding-inline: 2px !important; width: auto !important; max-width: none !important; }
 @media (max-height: 600px) { .ob-deck { height: min(68%, 470px); } }
 .set-test > .set-row .set-main { flex: 1; min-width: 0; } .set-test > .set-row > .set-tog { margin-left: auto; } /* toggles at the right edge like the others */
+
+/* The sky slider: the bar takes every touch (main.js grab), the input only draws it and keeps keyboard use; a taller
+   touch band reaching up into the sky above it (2026-10-18, Sevaan: hard to move). */
+#skybar { touch-action: none; padding-top: 14px; }
+#sky-range { pointer-events: none; }
