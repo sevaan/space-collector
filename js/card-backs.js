@@ -1,5 +1,5 @@
-import { SETS, goldAlbums } from './sets.js?v=0.1.887';
-import { isPlus } from './plus.js?v=0.1.887';
+import { SETS, goldAlbums } from './sets.js?v=0.1.888';
+import { isPlus } from './plus.js?v=0.1.888';
 // Card backs you can choose (2026-10-16, design/card-backs.html, Sevaan liked all six). Mission Control is everyone's;
 // Plus unlocks the rest; two can also be earned free: Golden Record (find the Pale Blue Dot story) and Star Chart
 // (complete 10 constellations); main.js writes what's been earned to localStorage 'backEarned'. The choice is
