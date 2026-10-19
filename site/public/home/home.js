@@ -154,7 +154,8 @@ function tick(ts) {
     basis.right[1] * (aim.x - sky.cx) / sky.f + basis.up[1] * (sky.cy - aim.y) / sky.f + basis.back[1],
     basis.right[2] * (aim.x - sky.cx) / sky.f + basis.up[2] * (sky.cy - aim.y) / sky.f + basis.back[2]]);
   const rc = Math.cos(sky.reticleDeg * RAD), score = (it) => Math.acos(Math.min(1, it.angCos)) / RAD - (it.obj.natural ? 0 : 0.6) - (idOf(it.obj) === lockedId ? 0.8 : 0);
-  const items = sats.map((s) => { const angCos = dot(s.enu, ray); return { obj: s.obj, label: label(s.obj), look: s.look, candidate: angCos > rc, angCos }; });
+  const named = aim.alpha > 0.5; // no names in the sky while the circle is hidden (they'd sit behind the words)
+  const items = sats.map((s) => { const angCos = dot(s.enu, ray); return { obj: s.obj, label: named ? label(s.obj) : '', look: s.look, candidate: angCos > rc, angCos }; });
   const nItems = nats.map((n) => { const angCos = dot(n.enu, ray); return { obj: n.obj, label: label(n.obj), look: n.look, candidate: angCos > rc, angCos }; });
   const ufoIn = !!u && aim.alpha > 0.5 && dot(u.enu, ray) > Math.cos((sky.reticleDeg + 1) * RAD);
   const target = aim.alpha > 0.5 && !ufoIn ? [...items, ...nItems].filter((it) => it.candidate).sort((a, b) => score(a) - score(b))[0] ?? null : null;

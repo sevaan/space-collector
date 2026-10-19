@@ -1,7 +1,7 @@
 // The game's sounds on the homepage: the same files and levels as the app (js/sfx.js LEVEL × NORM, js/music.js
 // "Permafrost" at LEVEL × the 75% default, faded in over 4 s). Browsers only allow sound after a click or key, so
 // everything waits for the first one. The speaker button turns it all off (remembered in localStorage 'siteSound').
-const LEVEL = 0.25, NORM = { lock: 4.84, rattle: 1.35, ufo: 1.58, welcome: 1.02 }, MUSIC = 0.15 * 0.75;
+const LEVEL = 0.25 * 0.75, NORM = { lock: 4.84, rattle: 1.35, ufo: 1.58, welcome: 1.02 }, MUSIC = 0.15 * 0.5;
 let ctx = null, music = null, musicGain = null, unlocked = false, justUnlocked = false;
 const bufs = {};
 let on = (() => { try { return localStorage.getItem('siteSound') !== 'off'; } catch { return true; } })();
