@@ -68,6 +68,11 @@ function confetti(el) {
   const timer = setTimeout(() => burst.remove(), 2000);
   return () => { clearTimeout(timer); burst.remove(); };
 }
+function tray() {
+  let el = document.getElementById('toast-tray');
+  if (!el) { el = document.createElement('div'); el.id = 'toast-tray'; document.body.append(el); }
+  return el;
+}
 function stackSeen() {
   if (document.querySelector('.patch-coins') || document.body.classList.contains('col-open')) return false;
   const cs = getComputedStyle(stack()); return cs.visibility !== 'hidden' && cs.display !== 'none' && Number(cs.opacity) > 0.3;
@@ -106,8 +111,16 @@ function show(t) {
     + (t.xp ? `<span class="ticket__xp">+${t.xp}<small>XP</small></span>` : t.sticky ? '<button type="button" class="ticket__x" aria-label="Dismiss">✕</button>' : '<span></span>');
   // Up long enough to read (2026-10-06: at least 5 s, about 1.6× the old times); a tap sends it away sooner.
   let gone = false, stopConfetti = () => {};
-  const dismiss = () => { if (gone) return; gone = true; clearInterval(timer); stopConfetti(); if (t.id) live.delete(t.id); stickies.delete(dismiss); if (t.sticky) { shelf.splice(shelf.indexOf(el), 1); shelf.at(-1)?.classList.remove('shelved'); } el.classList.add('out'); el.classList.remove('in'); setTimeout(() => { el.remove(); if (!t.sticky) { busy = false; } pump(); }, 200); };
+  const dismiss = () => { if (gone) return; gone = true; clearInterval(timer); stopConfetti(); if (t.id) live.delete(t.id); stickies.delete(dismiss); if (t.sticky) { clearTimeout(tuckT); const i = shelf.indexOf(el); if (i >= 0) shelf.splice(i, 1); } el.classList.add('out'); el.classList.remove('in'); setTimeout(() => { el.remove(); if (!t.sticky) { busy = false; } pump(); }, 200); };
+  // Swipe up to send it away, like the phone's own notifications (2026-10-18).
+  let y0 = null, dy = 0, swiped = false;
+  el.addEventListener('pointerdown', (e) => { y0 = e.clientY; dy = 0; });
+  el.addEventListener('pointermove', (e) => { if (y0 == null) return; dy = Math.min(0, e.clientY - y0); if (dy < -4) { el.classList.add('dragging'); el.style.transform = `translateY(${dy}px)`; } });
+  const up = () => { if (y0 == null) return; y0 = null; el.classList.remove('dragging'); el.style.transform = ''; if (dy < -28) { swiped = true; dismiss(); } };
+  el.addEventListener('pointerup', up); el.addEventListener('pointercancel', up);
   el.addEventListener('click', (e) => {
+    if (swiped) { swiped = false; return; }
+    if (el.classList.contains('tucked')) { untuck(); return; } // the chip opens back into the banner
     if (e.target.closest('.ticket__x')) { dismiss(); return; }
     if (t.action) { dismiss(); try { t.action(); } catch {} return; }
     if (t.href) { if (!window.scNavigate?.(t.href)) location.href = t.href; dismiss(); } else dismiss();
@@ -124,8 +137,16 @@ function show(t) {
   // Same whenever the stack can't be seen (2026-10-18 playtest: they ran out unseen behind the Collection and the reveal).
   const timer = t.sticky ? 0 : setInterval(() => { if (!stackSeen() || getComputedStyle(el).display === 'none') return; left -= 250; if (left <= 0) dismiss(); }, 250); // hidden (a page open, shelved, no room): the clock waits
   if (t.id) live.set(t.id, dismiss);
+  // A notice that stays (Tonight, Example location, a new rank…) comes down as a banner like the rest, then after 6 s
+  // tucks into a small chip under the header (#toast-tray) so it never sits over the header's buttons; tap the chip to
+  // open it again, ✕ or a swipe up to send it away. A newer one tucks the older ones straight away (2026-10-18).
+  let tuckT = 0;
+  function tuck() { clearTimeout(tuckT); if (gone || el.classList.contains('tucked')) return; el.classList.remove('in'); el.classList.add('tucked'); tray().append(el); requestAnimationFrame(() => el.classList.add('in')); }
+  function untuck() { el.classList.remove('tucked', 'in'); stack().append(el); requestAnimationFrame(() => { el.classList.add('in'); fitStack(); }); tuckT = setTimeout(tuck, 6000); }
+  el.tuck = tuck;
   if (t.sticky) {
-    shelf.forEach((o) => o.classList.add('shelved')); shelf.push(el);
+    shelf.forEach((o) => o.tuck?.()); shelf.push(el);
+    tuckT = setTimeout(tuck, 6000);
     stickies.add(dismiss);
     setTimeout(() => { busy = false; pump(); }, 700); // the next toast can come in above it
   }
