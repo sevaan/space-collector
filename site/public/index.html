@@ -115,7 +115,7 @@ h2 { margin: 0; font: 400 clamp(28px, 4vw, 44px)/1.08 var(--display); text-wrap:
 .film { display: flex; flex-wrap: wrap; gap: 40px 56px; align-items: center; justify-content: center; padding: 0 max(6vw, 20px); }
 .film video { flex: none; }
 .film .copy { flex: 0 1 30em; min-width: min(100%, 300px); }
-.film video { display: block; width: min(340px, 80vw); aspect-ratio: 9 / 16; border-radius: 24px; background: #000; box-shadow: 0 0 0 1px #22324a, 0 30px 80px #000c; }
+.film video { display: block; width: min(340px, 80vw); aspect-ratio: 886 / 1920; border-radius: 24px; background: #000; box-shadow: 0 0 0 1px #22324a, 0 30px 80px #000c; }
 .film .copy { display: grid; gap: 16px; justify-items: start; }
 .film .copy h2, .film .copy .eyebrow { text-align: left; }
 .film .copy p { margin: 0; color: #c9d3de; }
@@ -178,9 +178,9 @@ h2 { margin: 0; font: 400 clamp(28px, 4vw, 44px)/1.08 var(--display); text-wrap:
     </div>
   </section>
   <section class="film" aria-labelledby="h-film">
-    <video id="promo" src="/home/promo.mp4" poster="/home/promo-poster.jpg" muted playsinline loop preload="none" controls data-ui aria-label="A 30-second look at Space Collector"></video>
+    <video id="promo" src="/home/preview.mp4" poster="/home/preview-poster.jpg" muted playsinline loop preload="none" data-ui aria-label="The app in use: the circle sweeps past satellites and rocket stages, locks on to the Space Station and collects its card, then the collection, a shiny Hubble card and mission patches"></video>
     <div class="copy" data-ui>
-      <p class="eyebrow">30 seconds</p>
+      <p class="eyebrow">See it in play</p>
       <h2 id="h-film">What's that light?</h2>
       <p>Point your phone at it and find out. Track it, collect it, keep its card. Then build a collection from the sky above you.</p>
       <p class="soon">Coming soon to iPhone &amp; Android</p>
@@ -213,7 +213,7 @@ shot.querySelector('.next').addEventListener('click', () => showShot(shotI + 1))
 shot.querySelector('.x').addEventListener('click', () => shot.close());
 shot.addEventListener('click', (e) => { if (e.target === shot || e.target === shotImg) shot.close(); });
 shot.addEventListener('keydown', (e) => { if (e.key === 'ArrowLeft') showShot(shotI - 1); if (e.key === 'ArrowRight') showShot(shotI + 1); });
-// The film plays (muted) while it's on screen; its controls turn the sound on.
+// The App Store preview plays (it's silent) while it's on screen.
 const promo = document.getElementById('promo');
 new IntersectionObserver(([e]) => { if (e.isIntersecting) { promo.preload = 'auto'; promo.play().catch(() => {}); } else promo.pause(); }, { threshold: 0.5 }).observe(promo);
 </script>
