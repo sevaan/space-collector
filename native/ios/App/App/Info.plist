@@ -28,6 +28,8 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>Camera view shows the real sky behind the satellite labels.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Space Collector uses your location only while you use the app, to work out which satellites, planets and stars are in your sky.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Space Collector uses your location to work out which satellites, planets and stars are in your sky.</string>
 	<key>NSMotionUsageDescription</key>
