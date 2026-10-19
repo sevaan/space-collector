@@ -5,12 +5,12 @@
 //  Everything scales with rarity (Legendary dims the sky, shockwave, held breath, slow flip, fanfare).
 // Waits use timers, not animation.finished, so a paused tab can never freeze the sequence.
 
-import { sfx, loadSfx } from './sfx.js?v=0.1.881';
-import { audioCtx } from './audio-ctx.js?v=0.1.881';
-import { TIER_INFO } from './rarity.js?v=0.1.881';
-import { levelFor, attachTilt, attachGyro, attachFlip, throwOff, retype } from './card.js?v=0.1.881';
-import { applyBack } from './card-backs.js?v=0.1.881';
-import { addStarfield } from './starfield.js?v=0.1.881';
+import { sfx, loadSfx } from './sfx.js?v=0.1.882';
+import { audioCtx } from './audio-ctx.js?v=0.1.882';
+import { TIER_INFO } from './rarity.js?v=0.1.882';
+import { levelFor, attachTilt, attachGyro, attachFlip, throwOff, retype } from './card.js?v=0.1.882';
+import { applyBack } from './card-backs.js?v=0.1.882';
+import { addStarfield } from './starfield.js?v=0.1.882';
 
 const FX = {
   common:    { particles: 14,  flip: 520,  spin: 0,   dim: 0,   shock: false, notes: [880],                            hold: 0 },
@@ -382,11 +382,14 @@ function holderTo(x, y, ms) {
     if (!(dy < -45 && total < -60 && Math.abs(dx) < -dy * 0.9 && -dy / dt > 0.6)) return;
     // Fly off the top at the speed of the flick (no fade: you should see it go), keeping some of the
     // sideways throw and a little spin that way.
+    const cur = getComputedStyle(h).transform; // where it's drawn now, before its landing animation is dropped
     h.getAnimations().forEach((a) => a.cancel()); h.style.opacity = '1';
     tilt?.reset();
     sfx('swipe');
-    const ms = throwOff(h, dx, dy, dt);
-    setTimeout(() => { h.getAnimations().forEach((a) => a.cancel()); h.style.opacity = ''; onDismiss?.(); }, ms + 20);
+    const ms = throwOff(h, dx, dy, dt, cur);
+    // Close first and tidy up after the reveal has gone: cancelling the throw before closing put the card back in the
+    // middle for a moment as the reveal faded (2026-10-19, Sevaan: janky). The next reveal resets the holder anyway.
+    setTimeout(() => { onDismiss?.(); setTimeout(() => { if (!document.getElementById('reveal').hidden) return; /* a new reveal owns it now */ h.getAnimations().forEach((a) => a.cancel()); h.style.opacity = ''; }, 500); }, ms + 20);
   };
   h.addEventListener('pointerup', end);
   h.addEventListener('pointercancel', () => { flick = null; });

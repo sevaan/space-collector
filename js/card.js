@@ -1,20 +1,20 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { fallWords } from './last-chance.js?v=0.1.881';
-import { feel } from './native.js?v=0.1.881';
-import { sfx } from './sfx.js?v=0.1.881';
-import { cardArt } from './art.js?v=0.1.881';
-import { TIER_INFO } from './rarity.js?v=0.1.881';
-import { SET_BY_ID } from './sets.js?v=0.1.881';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.881';
-import { FLEET_ABOUT, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.881';
-import { artFileFor } from './art-keys.js?v=0.1.881';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.881';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.881';
-import { nightsIn } from './observation.js?v=0.1.881';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.881';
-import { SHINY } from './shiny.js?v=0.1.881';
-import { conArt, cometArt } from './con-art.js?v=0.1.881';
-import { CON_FIGURES } from './con-figures.js?v=0.1.881';
+import { fallWords } from './last-chance.js?v=0.1.882';
+import { feel } from './native.js?v=0.1.882';
+import { sfx } from './sfx.js?v=0.1.882';
+import { cardArt } from './art.js?v=0.1.882';
+import { TIER_INFO } from './rarity.js?v=0.1.882';
+import { SET_BY_ID } from './sets.js?v=0.1.882';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.882';
+import { FLEET_ABOUT, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.882';
+import { artFileFor } from './art-keys.js?v=0.1.882';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.882';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.882';
+import { nightsIn } from './observation.js?v=0.1.882';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.882';
+import { SHINY } from './shiny.js?v=0.1.882';
+import { conArt, cometArt } from './con-art.js?v=0.1.882';
+import { CON_FIGURES } from './con-figures.js?v=0.1.882';
 // The animal/symbol figure belongs to the completed (gold) constellation card only (2026-10-05): a single
 // star's card draws just the star pattern with its star marked, so the figure is a reward for finishing the set.
 // A star card's constellation figure comes into focus as you collect the constellation's stars (design/con-focus.html B).
@@ -406,12 +406,15 @@ export function attachGyro(el, tilt) {
 
 // Throw an element off the top of the screen, starting at the finger's speed (dx, dy px over dt ms) and
 // keeping it fully visible until it's gone. Returns the duration in ms. Used by the reveal and the collection viewer.
-export function throwOff(el, dx, dy, dt) {
+// It starts from wherever the card is drawn right now (its current transform, e.g. a centring translate or a landing
+// animation's end), so it never jumps before it flies (2026-10-19, Sevaan: the card vanished for part of the swipe).
+export function throwOff(el, dx, dy, dt, from = getComputedStyle(el).transform) {
   const r = el.getBoundingClientRect(), dist = r.bottom + 40;               // until its bottom edge clears the top
+  const b = from && from !== 'none' ? `${from} ` : '';
   const v = Math.max(1.2, -dy / dt);                                        // px per ms, at least brisk
   const ms = Math.round(Math.min(300, Math.max(160, dist * 1.25 / v)));     // quick (2026-10-06: was 200–420 ms)
   const x = Math.max(-140, Math.min(140, dx * (ms / dt) * .5)), turn = Math.max(-14, Math.min(14, x / 10));
-  el.animate([{ transform: 'translate(0, 0) rotate(0)' }, { transform: `translate(${x}px, ${-dist}px) rotate(${turn}deg)` }],
+  el.animate([{ transform: `${b}translate(0, 0) rotate(0)` }, { transform: `${b}translate(${x}px, ${-dist}px) rotate(${turn}deg)` }],
     { duration: ms, easing: 'cubic-bezier(.25,.4,.55,1)', fill: 'forwards' });
   return ms;
 }
