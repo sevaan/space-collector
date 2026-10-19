@@ -3,11 +3,14 @@
 // (2026-10-16): the purchase belongs to the player's Apple ID / Google account, no sign-in of ours. The last answer is
 // kept (localStorage 'plusStore') so Plus holds offline. The testing toggle (Settings → Testing tools → "Plus
 // (testing)", 'plusTest') still turns it on anywhere; the website never sells Plus.
-import { plugin, isNative, onNative } from './native.js?v=0.1.878';
+import { plugin, isNative, onNative } from './native.js?v=0.1.879';
 
 // RevenueCat public SDK keys (safe in the app). The Test Store key works with no App Store / Play setup; swap in the
 // appl_ / goog_ keys from RevenueCat → Project settings → API keys once the store apps are connected.
-const RC_KEYS = { ios: 'test_JraFtXiozFSxozSuydeJskzEQGO', android: 'test_JraFtXiozFSxozSuydeJskzEQGO' };
+// RevenueCat public SDK keys (safe to ship). iOS is the real App Store key (2026-10-19); Android still has only the Test Store
+// key until Google Play is set up. TEST_KEY is used anywhere when Testing tools → "RevenueCat Test Store" is on.
+const TEST_KEY = 'test_JraFtXiozFSxozSuydeJskzEQGO';
+const RC_KEYS = { ios: 'appl_kcCLaPloJiZyAENoVFnxOxyhGVY', android: TEST_KEY };
 const ENTITLEMENT = 'space_collector_plus'; // RevenueCat → Entitlements (display name Space Collector Plus)
 const listeners = new Set();
 const ls = { get: (k) => { try { return localStorage.getItem(k); } catch { return null; } }, set: (k, v) => { try { localStorage.setItem(k, v); } catch {} } };
@@ -27,7 +30,7 @@ function apply(info, how = 'store') { if (!info) return; const was = isPlus(); l
 export const rcTestStore = (on) => (on === undefined ? ls.get('rcTestStore') === '1' : ls.set('rcTestStore', on ? '1' : '0'));
 export function initStore() {
   const p = rc(); if (!p || ready) return ready;
-  const ios = /iP(hone|ad|od)|Mac/.test(navigator.userAgent), key = ios ? RC_KEYS.ios : RC_KEYS.android;
+  const ios = /iP(hone|ad|od)|Mac/.test(navigator.userAgent), key = ls.get('rcTestStore') === '1' ? TEST_KEY : ios ? RC_KEYS.ios : RC_KEYS.android;
   // RevenueCat closes a release build (TestFlight, the App Store) that uses a Test Store key (2026-10-18, Sevaan: "the app
   // will close now"). So the Test Store key is only used when Settings → Testing tools → "RevenueCat Test Store" is on
   // (simulator and Xcode debug builds); otherwise there's no store until the real appl_/goog_ keys are in RC_KEYS.
