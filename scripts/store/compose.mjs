@@ -13,8 +13,8 @@ import { ROOT } from './common.mjs';
 export const ORDER = ['sky', 'reveal', 'card', 'tonight', 'collection', 'patches'];
 export const CAPTIONS = {
   sky: ['Real satellites · right now', 'That light is a satellite. Catch it.'],
-  reveal: ['Line it up · tap Collect', 'Every catch is a card'],
-  card: ['Thousands of real objects', 'Catch the Space Station'],
+  reveal: ['Line it up · tap Collect', 'Every catch is a card'], // the ISS, new to the seeded collection
+  card: ['Thousands of real objects', 'Lucky catches shine'], // the shiny Hubble (the ISS is the hero catch now)
   tonight: ['Tonight, timed to the minute', 'Know when to look up'],
   collection: ['Stations · rockets · planets · stars', 'Build your collection'],
   patches: ['Free to play · no ads', 'Earn patches. Find the secrets.'],

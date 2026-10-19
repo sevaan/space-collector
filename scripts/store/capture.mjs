@@ -15,7 +15,7 @@ const OUT = join(ROOT, 'store/raw'); mkdirSync(OUT, { recursive: true });
 
 for (const kind of which === 'all' ? Object.keys(DEVICES) : [which]) {
   const b = await webkit.launch();
-  const { p, errs } = await setup(b, kind, { when });
+  const { p, errs } = await setup(b, kind, { when, heroIss: true });
   const w = (ms) => p.waitForTimeout(ms), shot = (n) => p.screenshot({ path: join(OUT, `${kind}-${n}.png`) });
   // 1 · Tonight: the daily TONIGHT notice opens the plan for the night
   const see = p.locator('#toasts .ticket[data-eyebrow="TONIGHT"], #toast-tray .ticket[data-eyebrow="TONIGHT"]').first();
@@ -31,7 +31,7 @@ for (const kind of which === 'all' ? Object.keys(DEVICES) : [which]) {
   await p.click('#nav-collection'); await w(3500); await shot('collection');
   const f = p.frameLocator('#collection-frame');
   // 5 · the shiny ISS card
-  await f.locator('.card-tile', { hasText: /space station/i }).first().click().catch((e) => console.log(kind, 'ISS tile:', e.message.slice(0, 80))); await w(2600); await shot('card');
+  await f.locator('.card-tile', { hasText: /hubble/i }).first().click().catch((e) => console.log(kind, 'Hubble tile:', e.message.slice(0, 80))); await w(2600); await f.locator('#v-up, #v-next').evaluateAll((els) => els.forEach((e) => { e.hidden = true; })).catch(() => {}); /* no 'not visible from here' line under the showcase card */ await shot('card');
   await f.locator('#viewer').evaluate((v) => v.open && v.close()).catch(() => {}); await w(800);
   // 6 · patches
   await f.locator('#tab-patches').click().catch(() => {}); await w(2200); await shot('patches');

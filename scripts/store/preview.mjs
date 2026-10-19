@@ -17,7 +17,7 @@ const REC = { phone: { ...DEVICES.phone, viewport: { width: 443, height: 960 }, 
 for (const kind of which === 'all' ? Object.keys(OUT) : [which]) {
   DEVICES[kind] = REC[kind];
   const b = await chromium.launch();
-  const { p, ctx, errs } = await setup(b, kind, { when });
+  const { p, ctx, errs } = await setup(b, kind, { when, heroIss: true });
   await hideNoise(p);
   const tmp = join(ROOT, 'scripts/.cache/preview-' + kind); rmSync(tmp, { recursive: true, force: true }); mkdirSync(tmp, { recursive: true });
   const cdp = await ctx.newCDPSession(p), frames = [];
@@ -46,7 +46,7 @@ for (const kind of which === 'all' ? Object.keys(OUT) : [which]) {
   await f.locator('body').evaluate(() => { const sc = document.scrollingElement; let y = 0; const t = setInterval(() => { y += 6; sc.scrollTo(0, y); if (y > 360) clearInterval(t); }, 16); }).catch(() => {});
   await w(1600);
   await f.locator('body').evaluate(() => document.scrollingElement.scrollTo({ top: 0, behavior: 'smooth' })).catch(() => {}); await w(700);
-  await f.locator('.card-tile', { hasText: /space station/i }).first().click().catch(() => {}); await w(3200); // the shiny ISS
+  await f.locator('.card-tile', { hasText: /hubble/i }).first().click().catch(() => {}); await w(3200); // the shiny Hubble
   await f.locator('#viewer').evaluate((v) => v.open && v.close()).catch(() => {}); await w(700);
   await f.locator('#tab-patches').click().catch(() => {}); await w(2600);                   // the patches
   await cdp.send('Page.stopScreencast'); await w(300);

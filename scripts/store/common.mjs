@@ -18,17 +18,21 @@ const nextEvening = () => { const d = new Date(); d.setHours(20, 30, 0, 0); retu
 // A believable collection: 22 satellites (stations, telescopes, old stages, Vanguard), the Moon and four planets, and a
 // shiny ISS (caught as it faded) so the card shot has the shimmer.
 const SATS = [25544, 20580, 48274, 6126, 38358, 29, 7736, 6683, 9330, 5, 11, 12, 397, 716, 3047, 12442, 19920, 26452, 21223, 10820, 11416, 7593];
-function collection(now) {
+// heroIss (store screenshots and previews, 2026-10-19): the ISS is NOT owned, so the hero shot catches it as a new card
+// (its art is drawn from real references; Sevaan didn't trust a generic picture there), and the shiny showcase card is
+// Hubble instead. The promo video keeps the original set.
+function collection(now, { heroIss = false } = {}) {
   const cat = JSON.parse(readFileSync(join(ROOT, 'data/catalog.json'), 'utf8')).objects, byId = new Map(cat.map((o) => [o.id, o])), D = 864e5;
   const at = { lat: PLACE.latitude, lon: PLACE.longitude }, list = [];
-  SATS.forEach((id, i) => { const o = byId.get(id); if (o) list.push({ time: now - (i % 9 + 1) * D - i * 3600e3, cardKey: String(id), objectId: id, name: o.name, type: o.type ?? 'satellite', ...at }); });
+  (heroIss ? SATS.filter((id) => id !== 25544) : SATS).forEach((id, i) => { const o = byId.get(id); if (o) list.push({ time: now - (i % 9 + 1) * D - i * 3600e3, cardKey: String(id), objectId: id, name: o.name, type: o.type ?? 'satellite', ...at }); });
   for (const [k, n, t] of [['moon', 'Moon', 'moon'], ['planet:jupiter', 'Jupiter', 'planet'], ['planet:saturn', 'Saturn', 'planet'], ['planet:mars', 'Mars', 'planet'], ['planet:venus', 'Venus', 'planet']]) list.push({ time: now - 3 * D, cardKey: k, objectId: k, name: n, type: t, ...at });
-  list.push({ time: now - 2 * D, cardKey: '25544', objectId: 25544, name: 'ISS (ZARYA)', type: 'station', ...at, shiny: 'eclipse' });
+  list.push(heroIss ? { time: now - 2 * D, cardKey: '20580', objectId: 20580, name: 'HST', type: 'satellite', ...at, shiny: 'eclipse' }
+    : { time: now - 2 * D, cardKey: '25544', objectId: 25544, name: 'ISS (ZARYA)', type: 'station', ...at, shiny: 'eclipse' });
   return list;
 }
 
 // A returning player on a clear evening: seeded collection, the App Store safe areas, no testing button.
-export async function setup(browser, kind, { when, video = null, extra = [] } = {}) {
+export async function setup(browser, kind, { when, video = null, extra = [], heroIss = false } = {}) {
   const d = DEVICES[kind], at = when ? new Date(when) : nextEvening();
   const ctx = await browser.newContext({ viewport: d.viewport, deviceScaleFactor: d.deviceScaleFactor, isMobile: d.isMobile, hasTouch: d.hasTouch, userAgent: d.userAgent,
     serviceWorkers: 'block', timezoneId: PLACE.tz, geolocation: { latitude: PLACE.latitude, longitude: PLACE.longitude }, permissions: ['geolocation'], ...(video ? { recordVideo: video } : {}) });
@@ -44,7 +48,7 @@ export async function setup(browser, kind, { when, video = null, extra = [] } = 
   await p.goto(APP + 'cards.html'); await p.waitForTimeout(1500);
   await p.evaluate(async (list) => { const m = await import('./js/store.js'); for (const s of list) await m.addSighting(s);
     localStorage.setItem('wcSeen', '1'); localStorage.setItem('started', '1'); localStorage.setItem('radarTip', '1'); localStorage.setItem('shinyExplained', '1');
-    const d = new Date(); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() - ((d.getDay() + 6) % 7)); localStorage.setItem('recapWeek', String(d.getTime())); }, [...collection(at.getTime()), ...extra]);
+    const d = new Date(); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() - ((d.getDay() + 6) % 7)); localStorage.setItem('recapWeek', String(d.getTime())); }, [...collection(at.getTime(), { heroIss }), ...extra]);
   await p.goto(APP); await p.waitForTimeout(9000);
   return { ctx, p, errs };
 }
@@ -60,7 +64,8 @@ export async function aimBest(p, { follow = true } = {}) {
   for (let i = 0; i < 30 && !(await p.evaluate(() => !!window.__store.state.tonight)); i++) await p.waitForTimeout(1000);
   const ahead = await p.evaluate(() => { const st = window.__store.state, T = st.tonight, rank = { legendary: 0, epic: 1, rare: 2 }, now = Date.now();
     const best = (T?.passes ?? []).filter((x) => x.peakEl >= 30 && x.peakAt > now + 60000 && x.peakAt < now + 11 * 3600e3).map((x) => ({ x, o: st.byId.get(x.id) }))
-      .filter(({ o }) => o && rank[o.tier] != null && !o.family).sort((a, b) => rank[a.o.tier] - rank[b.o.tier] || a.x.peakAt - b.x.peakAt)[0];
+      .filter(({ o }) => o && rank[o.tier] != null && !o.family && !st.sightings.some((s) => String(s.objectId) === String(o.id)))
+      .sort((a, b) => (!!(b.o.icon || b.o.type === 'station') - !!(a.o.icon || a.o.type === 'station')) || rank[a.o.tier] - rank[b.o.tier] || a.x.peakAt - b.x.peakAt)[0]; // a station or icon first: its art is drawn from references
     return best ? best.x.peakAt - now : 0; });
   if (ahead > 0) { await p.clock.fastForward(Math.round(ahead)); await p.waitForTimeout(2500); }
   for (let tries = 0; tries < 12; tries++) {
