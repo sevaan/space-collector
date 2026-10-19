@@ -4,10 +4,10 @@
 # Testing tools always on in Settings, no ⏱ in Explore (js/build-flavor.js TESTER = true in this copy only).
 # Purchases use the RevenueCat Test Store toggle (the real App Store key is tied to the real bundle id).
 # Usage: native/build-tester.sh [device-udid]   (default: the first connected iPhone)
-set -e
+set -eo pipefail
 cd "$(dirname "$0")"
 export PATH=~/.nvm/versions/node/v22.23.1/bin:$PATH
-DEV=${1:-$(xcrun devicectl list devices 2>/dev/null | awk '/available \(paired\)/ && /physical/ {for(i=1;i<=NF;i++) if ($i ~ /^[0-9A-F]{8}-/) {print $i; exit}}')}
+DEV=${1:-$(xcrun devicectl list devices 2>/dev/null | awk '/physical/ && (/connected/ || /available/) {for(i=1;i<=NF;i++) if ($i ~ /^[0-9A-F]{8}-/) {print $i; exit}}')}
 [ -n "$DEV" ] || { echo "No iPhone connected"; exit 1; }
 OUT=${TMPDIR:-/tmp}/sc-tester-build
 # Whatever happens, put the normal web copy back so a regular build never ships the tester flag.
