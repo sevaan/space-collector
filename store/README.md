@@ -22,10 +22,12 @@ Each script takes `phone`, `pad` or nothing (both). `capture.mjs` and `preview.m
 | Screenshots | 1206 × 2622 PNG, 6 | 2064 × 2752 PNG, 6 |
 | App Preview | 886 × 1920 MP4, ~27 s, 30 fps, silent stereo track | 1200 × 1600 MP4, same |
 
-Order on the store page: 1 sky (lock-on), 2 reveal, 3 Tonight, 4 shiny ISS card, 5 Collection, 6 patches.
+Order on the store page (set by `ORDER` in compose.mjs; 2026-10-19 marketing pass): 1 sky (lock-on, hero), 2 reveal, 3 shiny ISS card, 4 Tonight, 5 Collection, 6 patches.
+The hero shot jumps the clock to the peak of tonight's best Rare-or-better pass (common.mjs `aimBest`), so the first screenshot never shows a Common.
+Captions follow one rule: the orange eyebrow is a fact, the big headline is a feeling; "Free to play · no ads" closes the set.
 
 ## Changing things
-- **Captions:** `CAPTIONS` at the top of `scripts/store/compose.mjs`.
+- **Captions and order:** `CAPTIONS` and `ORDER` at the top of `scripts/store/compose.mjs` (then re-run compose only; no need to re-capture).
 - **The seeded collection, place, sizes, safe areas:** `scripts/store/common.mjs`.
 - **Scenes and the video's script (timing, what it taps):** `capture.mjs` and `preview.mjs`.
 - **The store text** (description, keywords, review notes): `store/listing.md`.

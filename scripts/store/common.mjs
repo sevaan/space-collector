@@ -55,6 +55,14 @@ export const hideNoise = (p) => p.addStyleTag({ content: '#toasts, .patch-coins,
 // Point at the best new thing up (a station, then rarer, then brighter), steadying the view on it; if nothing is up,
 // move the clock on a few minutes and look again.
 export async function aimBest(p, { follow = true } = {}) {
+  // The hero shot deserves a Rare or better (2026-10-19 marketing pass): wait for tonight's plan and jump the clock to the
+  // peak of the best Rare+ pass before dawn, high in the sky (on 2026-10-19 the only ones were around 5 AM); otherwise take what's up.
+  for (let i = 0; i < 30 && !(await p.evaluate(() => !!window.__store.state.tonight)); i++) await p.waitForTimeout(1000);
+  const ahead = await p.evaluate(() => { const st = window.__store.state, T = st.tonight, rank = { legendary: 0, epic: 1, rare: 2 }, now = Date.now();
+    const best = (T?.passes ?? []).filter((x) => x.peakEl >= 30 && x.peakAt > now + 60000 && x.peakAt < now + 11 * 3600e3).map((x) => ({ x, o: st.byId.get(x.id) }))
+      .filter(({ o }) => o && rank[o.tier] != null && !o.family).sort((a, b) => rank[a.o.tier] - rank[b.o.tier] || a.x.peakAt - b.x.peakAt)[0];
+    return best ? best.x.peakAt - now : 0; });
+  if (ahead > 0) { await p.clock.fastForward(Math.round(ahead)); await p.waitForTimeout(2500); }
   for (let tries = 0; tries < 12; tries++) {
     const name = await p.evaluate(() => { const st = window.__store.state, own = new Set(st.sightings.map((s) => String(s.objectId)));
       const rank = { legendary: 0, epic: 1, rare: 2, uncommon: 3, common: 4 };

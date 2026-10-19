@@ -7,13 +7,17 @@ import { readdirSync, mkdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { ROOT } from './common.mjs';
 
+// Marketing pass (2026-10-19, Sevaan's "room full of marketers"): screenshot 1 states the whole idea, the shiny ISS
+// moves up to 3 (collectors buy rarity), every eyebrow is a fact and every headline a feeling; "Free · no ads" closes.
+// ORDER sets the App Store order (file numbers); CAPTIONS sets the words. Change either and re-run this script.
+export const ORDER = ['sky', 'reveal', 'card', 'tonight', 'collection', 'patches'];
 export const CAPTIONS = {
-  sky: ['Point your phone up', 'Every light up there is a card.'],
-  reveal: ['Line it up · tap Collect', 'Catch it, and it’s yours.'],
-  tonight: ['Plan your night', 'Know what’s passing over you tonight.'],
-  card: ['Shiny cards', 'Catch it at a lucky moment and it shimmers.'],
-  collection: ['Build your collection', 'Space stations, rocket stages, planets and stars.'],
-  patches: ['Missions and patches', 'Rank up from Stargazer to Mission Control.'],
+  sky: ['Real satellites · right now', 'That light is a satellite. Catch it.'],
+  reveal: ['Line it up · tap Collect', 'Every catch is a card'],
+  card: ['Thousands of real objects', 'Catch the Space Station'],
+  tonight: ['Tonight, timed to the minute', 'Know when to look up'],
+  collection: ['Stations · rockets · planets · stars', 'Build your collection'],
+  patches: ['Free to play · no ads', 'Earn patches. Find the secrets.'],
 };
 const SIZE = { phone: [1206, 2622], pad: [2064, 2752] };
 const which = process.argv[2] ?? 'all', RAW = join(ROOT, 'store/raw');
@@ -58,7 +62,8 @@ for (const kind of which === 'all' ? Object.keys(SIZE) : [which]) {
   const shots = readdirSync(RAW).filter((f) => f.startsWith(kind + '-') && f.endsWith('.png')).sort();
   const pg = await b.newPage({ viewport: { width: SIZE[kind][0], height: SIZE[kind][1] }, deviceScaleFactor: 1 });
   for (const f of shots) {
-    const scene = f.replace(/^\w+-\d-/, '').replace('.png', ''), n = f.match(/-(\d)-/)[1];
+    const scene = f.replace(/^\w+-(\d-)?/, '').replace('.png', ''), n = ORDER.indexOf(scene) + 1;
+    if (!n) { console.log(kind, 'skipping', f, '(not in ORDER)'); continue; }
     await pg.setContent(page(kind, join(RAW, f), CAPTIONS[scene] ?? ['', scene]), { waitUntil: 'load' }); await pg.evaluate(() => document.fonts.ready);
     await pg.screenshot({ path: join(out, `${n}-${scene}.png`) }); console.log(kind, n, scene);
   }
