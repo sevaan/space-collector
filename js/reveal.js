@@ -5,12 +5,12 @@
 //  Everything scales with rarity (Legendary dims the sky, shockwave, held breath, slow flip, fanfare).
 // Waits use timers, not animation.finished, so a paused tab can never freeze the sequence.
 
-import { sfx, loadSfx } from './sfx.js?v=0.1.876';
-import { audioCtx } from './audio-ctx.js?v=0.1.876';
-import { TIER_INFO } from './rarity.js?v=0.1.876';
-import { levelFor, attachTilt, attachGyro, attachFlip, throwOff, retype } from './card.js?v=0.1.876';
-import { applyBack } from './card-backs.js?v=0.1.876';
-import { addStarfield } from './starfield.js?v=0.1.876';
+import { sfx, loadSfx } from './sfx.js?v=0.1.877';
+import { audioCtx } from './audio-ctx.js?v=0.1.877';
+import { TIER_INFO } from './rarity.js?v=0.1.877';
+import { levelFor, attachTilt, attachGyro, attachFlip, throwOff, retype } from './card.js?v=0.1.877';
+import { applyBack } from './card-backs.js?v=0.1.877';
+import { addStarfield } from './starfield.js?v=0.1.877';
 
 const FX = {
   common:    { particles: 14,  flip: 520,  spin: 0,   dim: 0,   shock: false, notes: [880],                            hold: 0 },
@@ -290,7 +290,8 @@ async function finish({ fx, color, fresh, seen, level, levelUp, card, alive, fle
     : null; // a plain repeat: no toast (2026-10-07)
   if (news) announce?.({ ms: 3200, ...news, delay: 900 }); // its sound plays as it appears (main.js onTicketShown)
   // A second (third…) night on an old friend: a little "+1 NIGHT" stamp drops onto the card (2026-10-08 polish).
-  if (!fresh && nights > 1 && !reduced()) { const st = document.createElement('div'); st.className = 'rv-night'; st.textContent = `+1 night · ${nights} nights`; $('rv-holder').append(st); setTimeout(() => st.remove(), 2600); }
+  // (The "+1 night · N nights" stamp is gone: 2026-10-19, Sevaan found it confusing, gone too fast, and on fleet cards
+  // it counted different launches as the same card's nights.)
   if (!reduced()) $('reveal').animate([{ transform: 'translate(0,0)' }, { transform: 'translate(-3px,2px)' }, { transform: 'translate(3px,-2px)' }, { transform: 'translate(0,0)' }], { duration: 180 });
   if (levelUp) card.querySelector('.card__face')?.animate([{ boxShadow: '0 0 0 transparent' }, { boxShadow: `0 0 34px ${LEVEL_COLOR[level]}` }, { boxShadow: '0 0 0 transparent' }], { duration: 1300 });
   tilt = attachTilt(card);
