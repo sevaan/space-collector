@@ -3,7 +3,7 @@
 // "Notification Sound 2" by deadrobotmusic (Freesound, CC0), softened. Files: assets/audio/sfx/<name>.mp3.
 // Decoded once into memory after the first tap, played through the shared context (js/audio-ctx.js) so they're instant.
 // Off with Settings → Sounds and vibration (localStorage sound = '0').
-import { audioCtx } from './audio-ctx.js?v=0.1.862';
+import { audioCtx } from './audio-ctx.js?v=0.1.863';
 export const SFX = ['lock', 'collect', 'arrive', 'flip', 'r_common', 'r_uncommon', 'r_rare', 'r_epic', 'r_legend', 'shiny', 'seen', 'stamp', 'levelup', 'xp',
   'mission', 'rankup', 'patch', 'coinroll', 'complete', 'secret', 'fossil', 'ufo', 'welcome', 'swipe', 'step', 'toggle', 'toast', 'page', 'rattle', 'plane'];
 const BASE = new URL('../assets/audio/sfx/', import.meta.url).href;
@@ -19,9 +19,12 @@ export function loadSfx() {
 }
 // name: one of SFX. gain: 0–1 on top of the file's own level. gap: skip if the same sound played less than gap ms ago.
 // delay: seconds from now (scheduled on the audio clock, so it stays in time with animations).
-// Sounds: the Mechanical set from UI SFX (uisfx.com, CC0; 2026-10-18, Sevaan; Zen first, then Mechanical), mapped cue by cue (CLAUDE.md lists the map) and
-// levelled when converted (rewards and stingers peak at −4 dB, taps and ticks at −9), so no per-file gain here.
-const NORM = {};
+// Sounds: Sevaan's picks from the sound board (design/sound-board.html, 2026-10-18): mostly the original designed set
+// ("old", scripts/sfx-synth.py / sfx-round.py), plus a few UI SFX cues (uisfx.com, CC0): lock zen snap, flip zen forward,
+// plane mechanical info, seen zen select, stamp zen check, levelup zen streak, xp mechanical progress-step, rankup soft
+// level-up, secret soft wake, rattle zen drag-start. NORM keeps each event as loud as the original sound was in the game
+// (old files keep their measured gains; new cues are matched to the old one's peak × its gain).
+const NORM = {"lock": 1.38, "collect": 0.59, "arrive": 1.4, "flip": 1.79, "plane": 0.34, "r_common": 1.24, "r_uncommon": 1.03, "r_rare": 1.44, "r_epic": 1.17, "r_legend": 0.88, "shiny": 3.02, "seen": 0.83, "stamp": 0.62, "levelup": 1.11, "xp": 0.59, "mission": 1.02, "patch": 0.91, "coinroll": 1.38, "rankup": 0.7, "complete": 1.39, "secret": 0.63, "fossil": 2.43, "ufo": 1.38, "welcome": 1.27, "rattle": 1.26, "step": 2.14, "toggle": 1.74, "page": 3.97, "swipe": 1.3};
 // At most two at once: a third small sound is skipped rather than piling on (a Saturn catch stacked four over 5 s).
 const STINGERS = new Set(['r_common', 'r_uncommon', 'r_rare', 'r_epic', 'r_legend', 'shiny', 'rankup', 'levelup', 'mission', 'complete', 'secret', 'welcome']);
 let playing = 0;
