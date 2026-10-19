@@ -1692,8 +1692,7 @@ body.night #toasts .ticket { background: rgba(12, 3, 3, .92) !important; }
 body:not(:has(.overlay.panel:not([hidden]), #reveal:not([hidden]), .set-sheet.in:not([hidden]):not(.x))) #toasts {
   top: calc(var(--safe-top) + 101px) !important; bottom: auto !important; left: auto !important; right: 12px !important; transform: none !important;
   width: min(300px, calc(100vw - 150px)) !important; max-width: none !important; margin: 0 !important; flex-direction: column-reverse !important; justify-content: flex-end; }
-body:has(#nextpass:not([hidden])):not(:has(.overlay.panel:not([hidden]), #reveal:not([hidden]), .set-sheet.in:not([hidden]):not(.x))) #toasts { top: calc(var(--safe-top) + 143px) !important; }
-body:has(#nextpass:not([hidden])):has(#event-banner:not([hidden])):not(:has(.overlay.panel:not([hidden]), #reveal:not([hidden]), .set-sheet.in:not([hidden]):not(.x))) #toasts { top: calc(var(--safe-top) + 183px) !important; }
+/* (2026-10-18) The top-right placement's rules under the Next / meteor chips are gone: notices drop in at the very top (css/ui.css); those rules out-ranked it whenever a chip showed. */
 @media (prefers-reduced-motion: reduce) { #toasts .ticket, #toasts .ticket.in { transform: none; } }
 /* At this narrower width a ticket with a button (the sticky "Example location · Set yours ›") puts its buttons on a second row. */
 #toasts .ticket:has(.ticket__go) { flex-wrap: wrap; row-gap: 8px; }
@@ -1742,7 +1741,6 @@ body.night .shiny-what .sw-moments li { color: var(--text); } body.night .shiny-
    · with a panel open (Settings) they show at the top under its header instead of over its rows at the bottom;
    · no radar tip while patch badges have the stage. */
 #toasts .ticket.shelved, #toasts .ticket.over { display: none !important; }
-body:has(#event-banner:not([hidden])):not(:has(#nextpass:not([hidden]))):not(:has(.overlay.panel:not([hidden]), #reveal:not([hidden]), .set-sheet.in:not([hidden]):not(.x))) #toasts { top: calc(var(--safe-top) + 143px) !important; }
 body:has(.overlay.panel:not([hidden])) #toasts { top: calc(var(--safe-top) + 76px) !important; bottom: auto !important; flex-direction: column !important; }
 /* Never over a page like Now or Settings (2026-10-18, Sevaan): notices from the sky wait (hidden, clock stopped) until it
    closes; only one made while the page is open (a reminder set from it, data-panel) shows. */
