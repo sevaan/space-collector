@@ -470,3 +470,6 @@ body.ob-tour #toast-tray, body:has(#start:not([hidden])) #toast-tray, body:has(.
 /* Inside the Collection (embedded under Explore's header, its top clipped away) notices drop in just under that header;
    with a card or stats open the frame takes the whole screen, but they still sit under the header line, which is fine. */
 html.embedded body #toasts#toasts#toasts { top: calc(var(--safe-top, env(safe-area-inset-top, 0px)) + 88px) !important; }
+
+/* Nothing over the welcome card (2026-10-18, Sevaan): notices wait (toast.js pump) and any already up step aside. */
+body:has(#start:not([hidden])) #toasts { visibility: hidden !important; }

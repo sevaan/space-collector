@@ -77,7 +77,7 @@ function tray() {
   return el;
 }
 function stackSeen() {
-  if (document.querySelector('.patch-coins') || document.body.classList.contains('col-open')) return false;
+  if (document.querySelector('.patch-coins, #start:not([hidden])') || document.body.classList.contains('col-open')) return false;
   const cs = getComputedStyle(stack()); return cs.visibility !== 'hidden' && cs.display !== 'none' && Number(cs.opacity) > 0.3;
 }
 // Up top, the stack never reaches down over the circle (2026-10-18 playtest: on an SE two notices covered half of it).
@@ -97,7 +97,7 @@ function pump() {
   // Never over a card reveal or a patch moment (2026-10-08 playtest: toasts covered the new card); they wait their turn.
   // A sheet covers all of that, so its own messages go straight up (2026-10-16 playtest: "Try Plus free" said nothing,
   // its toast waiting behind the Plus sheet for whatever sat in the circle to leave).
-  if (!document.querySelector('.set-sheet.in') && document.querySelector('#reveal:not([hidden]), .patch-moment, .patch-coins, body.patch-waiting, #ob-done:not([hidden]), body.first-catch')) { /* body.first-catch: the first catch after the tour (main.js) */ busy = true; setTimeout(() => { busy = false; pump(); }, 500); return; }
+  if (!document.querySelector('.set-sheet.in') && document.querySelector('#start:not([hidden]), #reveal:not([hidden]), .patch-moment, .patch-coins, body.patch-waiting, #ob-done:not([hidden]), body.first-catch')) { /* body.first-catch: the first catch after the tour (main.js) */ busy = true; setTimeout(() => { busy = false; pump(); }, 500); return; }
   // One sticky on screen at a time (2026-10-13 playtest: two stacked stickies covered 40% of an SE). A new one shows
   // straight away and the older one is shelved until it goes (2026-10-18 playtest: NEW RANK waited forever behind TONIGHT).
   const [cur] = queue.splice(0, 1); return show(cur);
