@@ -5,12 +5,12 @@
 //  Everything scales with rarity (Legendary dims the sky, shockwave, held breath, slow flip, fanfare).
 // Waits use timers, not animation.finished, so a paused tab can never freeze the sequence.
 
-import { sfx, loadSfx } from './sfx.js?v=0.1.875';
-import { audioCtx } from './audio-ctx.js?v=0.1.875';
-import { TIER_INFO } from './rarity.js?v=0.1.875';
-import { levelFor, attachTilt, attachGyro, attachFlip, throwOff } from './card.js?v=0.1.875';
-import { applyBack } from './card-backs.js?v=0.1.875';
-import { addStarfield } from './starfield.js?v=0.1.875';
+import { sfx, loadSfx } from './sfx.js?v=0.1.876';
+import { audioCtx } from './audio-ctx.js?v=0.1.876';
+import { TIER_INFO } from './rarity.js?v=0.1.876';
+import { levelFor, attachTilt, attachGyro, attachFlip, throwOff, retype } from './card.js?v=0.1.876';
+import { applyBack } from './card-backs.js?v=0.1.876';
+import { addStarfield } from './starfield.js?v=0.1.876';
 
 const FX = {
   common:    { particles: 14,  flip: 520,  spin: 0,   dim: 0,   shock: false, notes: [880],                            hold: 0 },
@@ -199,6 +199,7 @@ export async function playReveal({ card, o, seen, origin, fleet = null, progress
   await flipped;
   if (!alive()) return;
   showFace('front');
+  retype(card);
   return finish({ fx, color, fresh, seen, level, levelUp, card, alive, fleet, newStamp, nights, collected, con, shiny });
 }
 
@@ -232,6 +233,7 @@ export async function playView({ card, o, from, sighting = null, eyebrow = null 
   const dy = from ? from.top + from.height / 2 - (h.top + h.height / 2) : innerHeight * .35;
   const s = from ? Math.max(0.15, from.width / h.width) : 0.3;
   const opts = { duration: reduced() ? 1 : 760, easing: 'cubic-bezier(.25,.8,.25,1)' };
+  setTimeout(() => { if (alive()) retype(card); }, opts.duration * .6); // the launch line types in once the face is round
   const backEl = card.querySelector('.card__back');
   if (backEl && !reduced()) {
     applyBack(backEl, o);
