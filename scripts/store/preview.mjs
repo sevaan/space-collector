@@ -33,7 +33,17 @@ for (const kind of which === 'all' ? Object.keys(OUT) : [which]) {
     st.drag.el = 32; requestAnimationFrame(step); });
   await w(600);
   await cdp.send('Page.startScreencast', { format: 'jpeg', quality: 92, maxWidth: OUT[kind][0], maxHeight: OUT[kind][1], everyNthFrame: 1 });
-  await w(4500);                                                                             // look around
+  // Look around like spotting wild Pokémon (2026-10-19, Sevaan: "it's mainly about the space objects"): the circle
+  // passes over three real things in turn (rocket stages and satellites, mixed), each locking on long enough to show its
+  // name and rarity, before it settles on the hero catch. Picked in compass order so the sweep reads as one pan.
+  const tour = await p.evaluate(() => { const s = window.__store.state, own = new Set(s.sightings.map((x) => String(x.objectId)));
+    const ok = s.items.filter((x) => x.look?.visible && x.look.el > 18 && x.look.el < 75 && !own.has(String(x.obj.id)) && !x.obj.family && x.obj.type !== 'station' && x.obj.type !== 'debris');
+    const stages = ok.filter((x) => /R\/B|rocket/i.test(x.obj.name) || x.obj.type === 'rocket'), sats = ok.filter((x) => !stages.includes(x));
+    const pick = [stages[0], sats[0], stages[1] ?? sats[1]].filter(Boolean).sort((a, b) => a.look.az - b.look.az);
+    return pick.map((x) => [x.obj.id, x.obj.name]); });
+  console.log(kind, 'tour', tour.map((t) => t[1]).join(' → '));
+  for (const [id] of tour) { await p.evaluate((id) => { window.__aim = id; }, id); await w(1500); }
+  if (!tour.length) await w(4500);
   const target = await p.evaluate(() => { const s = window.__store.state, own = new Set(s.sightings.map((x) => String(x.objectId))), rank = { legendary: 0, epic: 1, rare: 2, uncommon: 3, common: 4 };
     const it = s.items.filter((x) => x.look?.visible && x.look.el > 12 && !own.has(String(x.obj.id)) && !x.obj.family).sort((a, b) => (b.obj.type === 'station') - (a.obj.type === 'station') || (rank[a.obj.tier] ?? 5) - (rank[b.obj.tier] ?? 5) || (a.look.mag ?? 9) - (b.look.mag ?? 9))[0];
     window.__aim = it?.obj.id ?? null; return it ? it.obj.name : null; });
