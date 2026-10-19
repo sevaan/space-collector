@@ -465,7 +465,7 @@ body:not(:has(#nextpass:not([hidden]))) #toast-tray { top: calc(var(--safe-top, 
 #toast-tray .ticket__body { display: block !important; }
 #toast-tray .ticket__eyebrow { display: inline !important; margin: 0 !important; }
 #toast-tray .ticket__eyebrow::after { content: '\00a0›'; letter-spacing: 0; }
-body.ob-tour #toast-tray, body:has(.overlay.panel:not([hidden])) #toast-tray, body:has(#reveal:not([hidden])) #toast-tray, body.col-open #toast-tray { visibility: hidden; }
+body.ob-tour #toast-tray, body:has(#start:not([hidden])) #toast-tray, body:has(.overlay.panel:not([hidden])) #toast-tray, body:has(#reveal:not([hidden])) #toast-tray, body.col-open #toast-tray { visibility: hidden; }
 :where(html[data-theme='night'], body.night) #toast-tray .ticket { --k: #ff6a55 !important; background: rgba(18, 6, 6, .94); }
 /* Inside the Collection (embedded under Explore's header, its top clipped away) notices drop in just under that header;
    with a card or stats open the frame takes the whole screen, but they still sit under the header line, which is fine. */
