@@ -1,19 +1,20 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.836';
+import { extinction } from './sky-limit.js';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.836';
+import { createMilkyGL } from './milkyway-gl.js';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.836';
-import { createCloudGL } from './clouds-gl.js?v=0.1.836';
+import { enuFromAzEl, compassPoint } from './orbit.js';
+import { createCloudGL } from './clouds-gl.js';
 // Cloud colours by light: sunlit tops, shadowed bellies, and the horizon haze they melt into (0–1 RGB).
 const CLOUD_LIGHT = {
   day: { lit: [1, 1, 1], shade: [0.62, 0.68, 0.77], haze: [0.82, 0.87, 0.93] },
   dusk: { lit: [1, 0.8, 0.68], shade: [0.36, 0.33, 0.42], haze: [0.62, 0.5, 0.52] },
   night: { lit: [0.22, 0.25, 0.31], shade: [0.1, 0.12, 0.16], haze: [0.14, 0.15, 0.2] },
 };
-import { TIER_INFO } from './rarity.js?v=0.1.836';
+import { TIER_INFO } from './rarity.js';
 
 const RAD = Math.PI / 180;
+const SECRET_PX = { santa: 24, roadster: 12.4, voyager: 14.5, voyager2: 14.5, pioneer10: 11.7, pioneer11: 11.7, newhorizons: 6.4, arecibo: 6.9, halley: 8.6, sputnik: 11.2, laika: 13.3, wow: 9.8 };
 const BELOW_ICON = 10.5, BELOW_ICON_HIT = 20; // every satellite under the horizon, passes and halo alike (80% of 13 since 2026-10-13); lined up in the circle it grows
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
 const DISPLAY_FONT = '"SC Display", "Russo One", sans-serif';
@@ -142,6 +143,11 @@ function shadowShape(s, H = 500) {
   return { cols, edges, any, all };
 }
 
+// Is this canvas colour dark? (#rrggbb or rgb()/rgba(), as ctx.fillStyle reports it.)
+function inkIsDark(c) {
+  const m = /^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})/i.exec(c), n = m ? m.slice(1).map((h) => parseInt(h, 16)) : (String(c).match(/[\d.]+/g) ?? []).slice(0, 3).map(Number);
+  return n.length === 3 && 0.299 * n[0] + 0.587 * n[1] + 0.114 * n[2] < 110;
+}
 export class SkyView {
   constructor(canvas) {
     this.canvas = canvas;
@@ -332,7 +338,7 @@ export class SkyView {
         if (!mem.shownAt || this.frameNo - (mem.lastDrawn ?? -99) > 2) mem.shownAt = this.frameNo;
         mem.lastDrawn = this.frameNo;
         const fa = this.reducedMotion ? 1 : Math.min(1, (this.frameNo - mem.shownAt) / 14);
-        ctx.save(); ctx.globalAlpha *= fa; if ((this.dayF ?? 0) > 0.3 && !this.camera) { ctx.shadowColor = 'rgba(8,15,27,.6)'; ctx.shadowBlur = 4; } ctx.fillText(text, x, y); ctx.restore(); // a soft dark halo by day, so cream text reads on the pale sky (visual playtest 2026-10-17)
+        ctx.save(); ctx.globalAlpha *= fa; if ((this.dayF ?? 0) > 0.3 && !this.camera) { const dark = inkIsDark(ctx.fillStyle); ctx.shadowColor = dark ? 'rgba(238,243,255,.55)' : 'rgba(8,15,27,.6)'; ctx.shadowBlur = dark ? 3 : 4; } /* dark ink (the Sun's label by day) gets a light halo, not a smudge (2026-10-18 playtest) */ ctx.fillText(text, x, y); ctx.restore(); // a soft dark halo by day, so cream text reads on the pale sky (visual playtest 2026-10-17)
         occupied.push(box);
       } else if (!this.reducedMotion && mem.lastDrawn && mem.i < candidates.length && this.frameNo - mem.lastDrawn < 10) {
         // Briefly blocked: fade out where it was over ~1/6 s instead of vanishing (2026-10-08, Sevaan: text jumping).
@@ -544,7 +550,7 @@ export class SkyView {
     // Named in the ticket under the circle (2026-10-17, design/target-states B), not painted around it.
     const g = hit.g, head = kickerOf ? kickerOf(g) : g.owned === undefined ? kicker : `${kicker} · ${g.owned ? 'in your collection' : 'not collected yet'}`;
     const tail = [g.note ? g.note.replace(/^up /, 'comes up ') : '', g.where ? `in the ${g.where}` : ''].filter(Boolean).join(' · ');
-    this.ticket = { ink: kickerOf ? 'later' : /DAYLIGHT/.test(kicker) ? 'hidden' : 'below', k: head, n: g.name, m: [g.what, tail].filter(Boolean).join(' · ') };
+    if (this.ticket?.ink !== 'fossil') this.ticket = { ink: kickerOf ? 'later' : /DAYLIGHT/.test(kicker) ? 'hidden' : 'below', k: head, n: g.name, m: [g.what, tail].filter(Boolean).join(' · ') }; // the bones you're holding keep the label (2026-10-18 playtest)
     return hit;
   }
   // Up in the daytime sky (2026-10-11, Sevaan): the same halo and naming as below the horizon, for the bright
@@ -925,7 +931,9 @@ export class SkyView {
     const ctx = this.ctx, k = Math.min(1, (dayF - 0.5) * 4);
     this.fossilGrow = (this.fossilGrow ?? 1) + ((f.inCircle ? 1.3 : 1) - (this.fossilGrow ?? 1)) * 0.15; // grows a little in the circle, eased (2026-10-13)
     ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(ang > Math.PI / 2 || ang < -Math.PI / 2 ? ang + Math.PI : ang); ctx.scale(this.fossilGrow, this.fossilGrow);
-    if (f.inCircle && !f.done) { ctx.shadowColor = 'rgba(255,229,192,.55)'; ctx.shadowBlur = 14; ctx.globalAlpha = 0.95 * k; }
+    // Not found yet (2026-10-18, Sevaan): plainly there at 15%, and held in the circle it fades in over the 4 s hold, the
+    // glow growing with it. Once found it goes back to the soft, sunk-in look below.
+    if (!f.done) { const hk = f.inCircle ? Math.max(0, Math.min(1, f.hold ?? 0)) : 0; if (hk > 0) { ctx.shadowColor = 'rgba(255,229,192,.55)'; ctx.shadowBlur = 14 * hk; } ctx.globalAlpha = (0.15 + 0.8 * hk) * k; }
     else { ctx.globalCompositeOperation = 'soft-light'; ctx.globalAlpha = 0.9 * k; ctx.drawImage(f.img, -w / 2, -h / 2, w, h); ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 0.18 * k; }
     ctx.drawImage(f.img, -w / 2, -h / 2, w, h);
     ctx.restore();
@@ -980,7 +988,9 @@ export class SkyView {
       const hidden = ['voyager', 'voyager2', 'pioneer10', 'pioneer11', 'newhorizons', 'wow', 'arecibo', 'halley'].includes(s.kind);
       if (hidden && !s.inCircle) continue;
       if (s.done) continue; // once found, a secret leaves the sky for good (2026-10-09, Sevaan)
-      const sc = s.inCircle && !s.done ? 4.2 : 1.2; // big enough in the circle to read as the thing, not a dot (2026-10-17, Sevaan)
+      // In the circle a secret grows to about the size a locked-on satellite or rocket stage is drawn (~16 px across, 2026-10-18 second pass: 26 still read too big;
+      // 2026-10-18, Sevaan: the 4.2× of 2026-10-17 was far too big). SECRET_PX = each drawing's width at scale 1, measured.
+      const sc = s.inCircle && !s.done ? Math.max(1.2, 16 / (SECRET_PX[s.kind] ?? 12)) : 1.2;
       ctx.save(); ctx.translate(p.x, p.y); ctx.scale(sc, sc);
       if (s.kind === 'santa') {
         ctx.shadowColor = 'rgba(255,210,122,.6)'; ctx.shadowBlur = 5; ctx.fillStyle = '#fff2b3';
