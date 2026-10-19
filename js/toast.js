@@ -114,10 +114,10 @@ function show(t) {
     + (t.xp ? `<span class="ticket__xp">+${t.xp}<small>XP</small></span>` : t.sticky ? '<button type="button" class="ticket__x" aria-label="Dismiss">✕</button>' : '<span></span>');
   // Up long enough to read (2026-10-06: at least 5 s, about 1.6× the old times); a tap sends it away sooner.
   let gone = false, stopConfetti = () => {};
-  const dismiss = () => { if (gone) return; gone = true; clearInterval(timer); stopConfetti(); if (t.id) live.delete(t.id); stickies.delete(dismiss); if (t.sticky) { clearTimeout(tuckT); const i = shelf.indexOf(el); if (i >= 0) shelf.splice(i, 1); } el.classList.add('out'); el.classList.remove('in'); setTimeout(() => { el.remove(); if (!t.sticky) { busy = false; } pump(); }, 200); };
+  const dismiss = () => { if (gone) return; gone = true; clearInterval(timer); stopConfetti(); if (t.id) live.delete(t.id); stickies.delete(dismiss); if (t.sticky) { clearInterval(tuckT); const i = shelf.indexOf(el); if (i >= 0) shelf.splice(i, 1); } el.classList.add('out'); el.classList.remove('in'); setTimeout(() => { el.remove(); if (!t.sticky) { busy = false; } pump(); }, 200); };
   // Swipe up to send it away, like the phone's own notifications (2026-10-18).
   let y0 = null, dy = 0, swiped = false;
-  el.addEventListener('pointerdown', (e) => { y0 = e.clientY; dy = 0; });
+  el.addEventListener('pointerdown', (e) => { y0 = e.clientY; dy = 0; try { el.setPointerCapture(e.pointerId); } catch {} });
   el.addEventListener('pointermove', (e) => { if (y0 == null) return; dy = Math.min(0, e.clientY - y0); if (dy < -4) { el.classList.add('dragging'); el.style.transform = `translateY(${dy}px)`; } });
   const up = () => { if (y0 == null) return; y0 = null; el.classList.remove('dragging'); el.style.transform = ''; if (dy < -28) { swiped = true; dismiss(); } };
   el.addEventListener('pointerup', up); el.addEventListener('pointercancel', up);
@@ -143,13 +143,16 @@ function show(t) {
   // A notice that stays (Tonight, Example location, a new rank…) comes down as a banner like the rest, then after 6 s
   // tucks into a small chip under the header (#toast-tray) so it never sits over the header's buttons; tap the chip to
   // open it again, ✕ or a swipe up to send it away. A newer one tucks the older ones straight away (2026-10-18).
+  // The 6 s count only while the banner can actually be seen (2026-10-18 playtest: one made behind the Collection came
+  // back already tucked, never shown as a banner).
   let tuckT = 0;
-  function tuck() { clearTimeout(tuckT); if (gone || el.classList.contains('tucked')) return; el.classList.remove('in'); el.classList.add('tucked'); tray().append(el); requestAnimationFrame(() => el.classList.add('in')); }
-  function untuck() { el.classList.remove('tucked', 'in'); stack().append(el); requestAnimationFrame(() => { el.classList.add('in'); fitStack(); }); tuckT = setTimeout(tuck, 6000); }
+  const tuckLater = () => { clearInterval(tuckT); let seen = 0; tuckT = setInterval(() => { if (!stackSeen() || getComputedStyle(el).display === 'none' || !el.classList.contains('in')) return; if ((seen += 250) >= 6000) tuck(); }, 250); };
+  function tuck() { clearInterval(tuckT); if (gone || el.classList.contains('tucked')) return; el.classList.remove('in'); el.classList.add('tucked'); tray().append(el); requestAnimationFrame(() => el.classList.add('in')); }
+  function untuck() { el.classList.remove('tucked', 'in'); stack().append(el); requestAnimationFrame(() => { el.classList.add('in'); fitStack(); }); tuckLater(); shelf.forEach((o) => { if (o !== el) o.tuck?.(); }); }
   el.tuck = tuck;
   if (t.sticky) {
     shelf.forEach((o) => o.tuck?.()); shelf.push(el);
-    tuckT = setTimeout(tuck, 6000);
+    tuckLater();
     stickies.add(dismiss);
     setTimeout(() => { busy = false; pump(); }, 700); // the next toast can come in above it
   }
