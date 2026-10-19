@@ -1,19 +1,20 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.858';
+import { extinction } from './sky-limit.js?v=0.1.859';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.858';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.859';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.858';
-import { createCloudGL } from './clouds-gl.js?v=0.1.858';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.859';
+import { createCloudGL } from './clouds-gl.js?v=0.1.859';
 // Cloud colours by light: sunlit tops, shadowed bellies, and the horizon haze they melt into (0–1 RGB).
 const CLOUD_LIGHT = {
   day: { lit: [1, 1, 1], shade: [0.62, 0.68, 0.77], haze: [0.82, 0.87, 0.93] },
   dusk: { lit: [1, 0.8, 0.68], shade: [0.36, 0.33, 0.42], haze: [0.62, 0.5, 0.52] },
   night: { lit: [0.22, 0.25, 0.31], shade: [0.1, 0.12, 0.16], haze: [0.14, 0.15, 0.2] },
 };
-import { TIER_INFO } from './rarity.js?v=0.1.858';
+import { TIER_INFO } from './rarity.js?v=0.1.859';
 
 const RAD = Math.PI / 180;
+const SECRET_PX = { santa: 24, roadster: 12.4, voyager: 14.5, voyager2: 14.5, pioneer10: 11.7, pioneer11: 11.7, newhorizons: 6.4, arecibo: 6.9, halley: 8.6, sputnik: 11.2, laika: 13.3, wow: 9.8 };
 const BELOW_ICON = 10.5, BELOW_ICON_HIT = 20; // every satellite under the horizon, passes and halo alike (80% of 13 since 2026-10-13); lined up in the circle it grows
 const FONT = '"SC Label", "Barlow Condensed", "Arial Narrow", sans-serif';
 const DISPLAY_FONT = '"SC Display", "Russo One", sans-serif';
@@ -987,7 +988,9 @@ export class SkyView {
       const hidden = ['voyager', 'voyager2', 'pioneer10', 'pioneer11', 'newhorizons', 'wow', 'arecibo', 'halley'].includes(s.kind);
       if (hidden && !s.inCircle) continue;
       if (s.done) continue; // once found, a secret leaves the sky for good (2026-10-09, Sevaan)
-      const sc = s.inCircle && !s.done ? 4.2 : 1.2; // big enough in the circle to read as the thing, not a dot (2026-10-17, Sevaan)
+      // In the circle a secret grows to about the size a locked-on satellite or rocket stage is drawn (~26 px across;
+      // 2026-10-18, Sevaan: the 4.2× of 2026-10-17 was far too big). SECRET_PX = each drawing's width at scale 1, measured.
+      const sc = s.inCircle && !s.done ? Math.max(1.2, 26 / (SECRET_PX[s.kind] ?? 12)) : 1.2;
       ctx.save(); ctx.translate(p.x, p.y); ctx.scale(sc, sc);
       if (s.kind === 'santa') {
         ctx.shadowColor = 'rgba(255,210,122,.6)'; ctx.shadowBlur = 5; ctx.fillStyle = '#fff2b3';
