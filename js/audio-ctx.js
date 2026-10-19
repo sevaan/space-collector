@@ -5,6 +5,6 @@ let ctx = null;
 try { if (typeof navigator !== 'undefined' && navigator.audioSession) navigator.audioSession.type = 'ambient'; } catch {}
 export function audioCtx() {
   if (!ctx) { try { ctx = new (window.AudioContext || window.webkitAudioContext)(); } catch { return null; } }
-  if (ctx.state === 'suspended') ctx.resume().catch(() => {});
+  if (ctx.state === 'suspended' || ctx.state === 'interrupted') ctx.resume().catch(() => {}); // iPhone reports 'interrupted' after the app was in the background
   return ctx;
 }
