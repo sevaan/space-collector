@@ -91,10 +91,14 @@ h1 { margin: 0; font: 400 clamp(40px, 5.4vw, 72px)/1 var(--display); letter-spac
 .eyebrow { margin: 0; font: 600 14px/1 var(--label); letter-spacing: .26em; text-transform: uppercase; color: var(--gold); }
 h2 { margin: 0; font: 400 clamp(28px, 4vw, 44px)/1.08 var(--display); text-wrap: balance; }
 .sec-head p.sub { margin: 0; color: #c9d3de; max-width: 34em; }
-.strip { display: grid; grid-auto-flow: column; grid-auto-columns: clamp(220px, 19vw, 280px); gap: 22px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 34px max(6vw, 20px) 18px; scrollbar-width: thin; scrollbar-color: #2a3b54 transparent; }
-@media (min-width: 1500px) { .strip { justify-content: center; } }
-.strip figure { margin: 0; scroll-snap-align: center; }
-.strip img { display: block; width: 100%; height: auto; border-radius: 22px; box-shadow: 0 0 0 1px #22324a, 0 24px 60px #000b; }
+/* The screenshots ride a slow conveyor: two copies of the row, the track slides by one copy's width and repeats. */
+.strip { overflow: hidden; padding: 34px 0 18px; -webkit-mask: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+.track { display: flex; gap: 22px; width: max-content; animation: belt 70s linear infinite; }
+.strip:hover .track, .strip:focus-within .track { animation-play-state: paused; }
+@keyframes belt { to { transform: translateX(calc(-50% - 11px)); } }
+.track figure { margin: 0; flex: none; width: clamp(200px, 19vw, 270px); }
+.track img { display: block; width: 100%; height: auto; border-radius: 22px; box-shadow: 0 0 0 1px #22324a, 0 24px 60px #000b; }
+@media (prefers-reduced-motion: reduce) { .strip { overflow-x: auto; } .track { animation: none; padding: 0 20px; } .track [aria-hidden] { display: none; } }
 .film { display: flex; flex-wrap: wrap; gap: 40px 56px; align-items: center; justify-content: center; padding: 0 max(6vw, 20px); }
 .film video { flex: none; }
 .film .copy { flex: 0 1 30em; min-width: min(100%, 300px); }
@@ -106,7 +110,8 @@ h2 { margin: 0; font: 400 clamp(28px, 4vw, 44px)/1.08 var(--display); text-wrap:
 .foot a { color: var(--ink); text-underline-offset: 4px; }
 @media (max-width: 860px) {
   .more { gap: 90px; }
-  .strip { grid-auto-columns: 68vw; }
+  .track figure { width: 62vw; }
+  @keyframes belt { to { transform: translateX(calc(-50% - 11px)); } }
   .film { flex-direction: column; gap: 30px; }
   .film .copy { justify-items: center; text-align: center; }
   .film .copy h2, .film .copy .eyebrow { text-align: center; }
@@ -142,13 +147,21 @@ h2 { margin: 0; font: 400 clamp(28px, 4vw, 44px)/1.08 var(--display); text-wrap:
 <div class="more">
   <section aria-labelledby="h-shots">
     <div class="sec-head" data-ui><p class="eyebrow">Real satellites · right now</p><h2 id="h-shots">Every light that moves is a card</h2><p class="sub">Stations, rocket stages, planets and stars: thousands of real objects, each with its own card.</p></div>
-    <div class="strip" data-ui tabindex="0" aria-label="Screenshots from the app">
+    <div class="strip" data-ui aria-label="Screenshots from the app">
+     <div class="track">
       <figure><img src="/home/shots/1-sky.webp" alt="That light is a satellite. Catch it." width="603" height="1311" loading="lazy" decoding="async"></figure>
       <figure><img src="/home/shots/2-reveal.webp" alt="Every catch is a card" width="603" height="1311" loading="lazy" decoding="async"></figure>
       <figure><img src="/home/shots/3-card.webp" alt="Lucky catches shine" width="603" height="1311" loading="lazy" decoding="async"></figure>
       <figure><img src="/home/shots/4-tonight.webp" alt="Know when to look up" width="603" height="1311" loading="lazy" decoding="async"></figure>
       <figure><img src="/home/shots/5-collection.webp" alt="Build your collection" width="603" height="1311" loading="lazy" decoding="async"></figure>
       <figure><img src="/home/shots/6-patches.webp" alt="Earn patches. Find the secrets." width="603" height="1311" loading="lazy" decoding="async"></figure>
+      <figure aria-hidden="true"><img src="/home/shots/1-sky.webp" alt="" width="603" height="1311" loading="lazy" decoding="async"></figure>
+      <figure aria-hidden="true"><img src="/home/shots/2-reveal.webp" alt="" width="603" height="1311" loading="lazy" decoding="async"></figure>
+      <figure aria-hidden="true"><img src="/home/shots/3-card.webp" alt="" width="603" height="1311" loading="lazy" decoding="async"></figure>
+      <figure aria-hidden="true"><img src="/home/shots/4-tonight.webp" alt="" width="603" height="1311" loading="lazy" decoding="async"></figure>
+      <figure aria-hidden="true"><img src="/home/shots/5-collection.webp" alt="" width="603" height="1311" loading="lazy" decoding="async"></figure>
+      <figure aria-hidden="true"><img src="/home/shots/6-patches.webp" alt="" width="603" height="1311" loading="lazy" decoding="async"></figure>
+     </div>
     </div>
   </section>
   <section class="film" aria-labelledby="h-film">
