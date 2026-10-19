@@ -55,10 +55,13 @@ function confetti(el) {
   const burst = document.createElement('span');
   burst.className = 'ticket__confetti';
   burst.setAttribute('aria-hidden', 'true');
+  // Notices at the top of the screen burst downward, over the sky, instead of off the top edge (2026-10-18).
+  const down = el.getBoundingClientRect().top < innerHeight / 2;
+  if (down) burst.classList.add('down');
   for (let i = 0; i < 24; i++) {
     const piece = document.createElement('i');
     piece.style.setProperty('--dx', `${(i / 23 - .5) * 260}px`);
-    piece.style.setProperty('--dy', `${-55 - Math.random() * 90}px`);
+    piece.style.setProperty('--dy', `${(down ? 1 : -1) * (55 + Math.random() * 90)}px`);
     piece.style.setProperty('--turn', `${(Math.random() - .5) * 540}deg`);
     piece.style.setProperty('--delay', `${420 + Math.random() * 120}ms`);
     burst.append(piece);

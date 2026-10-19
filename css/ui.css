@@ -54,6 +54,13 @@ html[data-theme=night],body.night { --ticket-event:var(--gold, #fa8127); --ticke
   48% { opacity: 1; transform: translate(calc(var(--dx) * .7), var(--dy)) rotate(calc(var(--turn) * .6)) scale(1); }
   100% { opacity: 0; transform: translate(var(--dx), 24px) rotate(var(--turn)) scale(.7); }
 }
+.ticket__confetti.down i { top: auto; bottom: 0; animation-name: ticketConfettiDown; }
+@keyframes ticketConfettiDown {
+  0% { opacity: 0; transform: translate(-50%, 0) rotate(0deg) scale(.5); }
+  12% { opacity: 1; }
+  55% { opacity: 1; transform: translate(calc(var(--dx) * .7), var(--dy)) rotate(calc(var(--turn) * .6)) scale(1); }
+  100% { opacity: 0; transform: translate(var(--dx), calc(var(--dy) + 70px)) rotate(var(--turn)) scale(.7); }
+}
 @media (prefers-reduced-motion: reduce) { .ticket__confetti { display: none; } .ticket__confetti i { animation: none; } }
 .ticket.linked { cursor:pointer; }
 .ticket__mark { flex:none; width:12px; height:12px; }
@@ -438,6 +445,11 @@ html body #toasts#toasts#toasts .ticket { width: 100%; touch-action: none; backg
   transition: transform .32s cubic-bezier(.4, 0, .9, .6), opacity .25s ease-in !important; }
 html body #toasts#toasts#toasts .ticket.in { transform: none; opacity: 1; transition: transform .5s cubic-bezier(.18, 1.15, .4, 1), opacity .2s ease-out !important; }
 html body #toasts#toasts#toasts .ticket.dragging { transition: none !important; }
+html body #toasts#toasts#toasts .ticket--celebrate { overflow: visible !important; }
+/* Up top the standing message (new version, time travel…) is nowhere near the circle, so it stays when something's in it. */
+body:has(#discover:not([hidden])) #toasts #banner:not([hidden]) { display: grid; }
+body:has(#discover:not([hidden])) #toast-tray #banner:not([hidden]) { display: flex; }
+#toast-tray .ticket[hidden] { display: none !important; }
 @media (prefers-reduced-motion: reduce) { html body #toasts#toasts#toasts .ticket, html body #toasts#toasts#toasts .ticket.in { transform: none; transition: opacity .2s !important; } }
 /* Tucked stay-up notices: small chips under the header on the right (js/toast.js tray), icon + kind line; tap to open. */
 #toast-tray { position: fixed; z-index: 30; right: 12px; top: calc(var(--safe-top, env(safe-area-inset-top, 0px)) + 143px); display: flex; flex-direction: column; align-items: flex-end; gap: 6px; pointer-events: none; }
@@ -455,3 +467,6 @@ body:not(:has(#nextpass:not([hidden]))) #toast-tray { top: calc(var(--safe-top, 
 #toast-tray .ticket__eyebrow::after { content: '\00a0›'; letter-spacing: 0; }
 body.ob-tour #toast-tray, body:has(.overlay.panel:not([hidden])) #toast-tray, body:has(#reveal:not([hidden])) #toast-tray, body.col-open #toast-tray { visibility: hidden; }
 :where(html[data-theme='night'], body.night) #toast-tray .ticket { --k: #ff6a55 !important; background: rgba(18, 6, 6, .94); }
+/* Inside the Collection (embedded under Explore's header, its top clipped away) notices drop in just under that header;
+   with a card or stats open the frame takes the whole screen, but they still sit under the header line, which is fine. */
+html.embedded body #toasts#toasts#toasts { top: calc(var(--safe-top, env(safe-area-inset-top, 0px)) + 88px) !important; }
