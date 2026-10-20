@@ -27,7 +27,7 @@
    "name": "Strela-3",
    "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm",
    "facts": [
-    "A Strela-3 military **message relay**, launched **six at a time** on a Tsyklon-3 rocket. Twelve of them, in two orbital planes, made up the working network.",
+    "A Strela-3 military **message relay**, launched **up to six at a time** on a Tsyklon-3 rocket. Twelve of them, in two orbital planes, made up the working network.",
     "Each Strela-3 had a long **boom** that let gravity keep it pointed at Earth, with no fuel needed.",
     "It could hold about **12 megabits** of messages at a time, about one and a half megabytes."
    ]
@@ -61,12 +61,12 @@
   },
   "us-a": {
    "name": "US-A (RORSAT)",
-   "fact": "Part of a Soviet radar **spy satellite** that watched ships at sea, powered by a **nuclear reactor**. At the end of each mission the reactor was boosted up to a higher storage orbit. Another one, Kosmos 954, fell on Canada in 1978.",
+   "fact": "Part of a Soviet radar **spy satellite** that watched ships, powered by a **nuclear reactor** and boosted to this higher orbit when its mission ended. Another, Kosmos 954, fell on Canada in 1978.",
    "source": "https://space.skyrocket.de/doc_sdat/us-a.htm"
   },
   "us-ao": {
    "name": "US-AO",
-   "fact": "An early test flight for the Soviet **radar ocean-surveillance** programme (US-A), flown before the nuclear-powered satellites went into service in 1970.",
+   "fact": "A battery-powered test satellite for the Soviet **radar ocean-surveillance** programme (US-A). It tried out every part except the **nuclear reactor** later ones carried.",
    "source": "https://space.skyrocket.de/doc_sdat/us-ao.htm"
   },
   "ds-p1-m": {
@@ -121,19 +121,19 @@
   },
   "persona": {
    "name": "Persona",
-   "fact": "A Persona **spy camera** satellite. Its optics were reportedly built from parts made for a cancelled space telescope with a 1.5-metre mirror.",
+   "fact": "A Persona **spy camera** satellite. Its telescope, with a 1.5-metre mirror, was reportedly built for **Sapfir-V**, a cancelled Soviet spy satellite.",
    "source": "https://space.skyrocket.de/doc_sdat/persona.htm"
   },
   "strela-3-late": {
    "name": "Strela-3",
-   "fact": "A Strela-3 military **message relay**. Once the Tsyklon-3 rocket retired in 2002, these went up two or three at a time on smaller rockets.",
+   "fact": "A Strela-3 military **message relay**. From 2002 these went up one to three at a time on smaller Kosmos-3M and Rokot rockets, not six at a time on a Tsyklon-3.",
    "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
   },
   "us-a-core": {
    "name": "US-A (RORSAT)",
    "source": "https://space.skyrocket.de/doc_sdat/us-a.htm",
    "facts": [
-    "Part of a Soviet radar **spy satellite** that watched ships at sea, powered by a **nuclear reactor**. At the end of each mission the reactor was boosted up to a higher storage orbit. Another one, Kosmos 954, fell on Canada in 1978.",
+    "Part of a Soviet radar **spy satellite** that watched ships, powered by a **nuclear reactor** and boosted to this higher orbit when its mission ended. Another, Kosmos 954, fell on Canada in 1978.",
     "Satellites like this one could throw their reactor core clear, so that if it ever fell, the radioactive core would burn up instead of reaching the ground."
    ]
   }
@@ -919,8 +919,8 @@
   "32955": "strela-3-late",
   "32956": "strela-3-late",
   "33272": "persona",
-  "35498": "strela-3m",
-  "35500": "strela-3m",
+  "35498": "strela-3-late",
+  "35500": "strela-3-late",
   "35635": "parus",
   "36095": "lotos-s",
   "36519": "parus",

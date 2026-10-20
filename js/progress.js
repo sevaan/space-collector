@@ -1,7 +1,7 @@
 // Player progress from the sighting log: XP and observer rank, tonight’s three missions, a weekly streak and
 // achievements. Everything is derived from the saved sightings (nothing extra is stored), so it can’t drift.
 // info(cardKey) -> { tier, type, owner, launch, natural, con } | null. No DOM.
-import { nightKey } from './observation.js?v=0.1.905';
+import { nightKey } from './observation.js?v=0.1.906';
 
 // A longer climb (2026-10-12, playtest room: three ranks on night 1, Mission Control in about two weeks), with two
 // prestige ranks past Mission Control. Nobody drops a rank they had on the old curve (rankFloor below).
@@ -33,7 +33,7 @@ export const MISSIONS = [
   { id: 'stage', text: 'Catch a rocket stage', done: (n) => n.some((s) => s.info?.type === 'rocket-body') },
   { id: 'old', text: 'Find something launched before 1980', done: (n) => n.some((s) => !s.info?.natural && year(s.info?.launch) < 1980) },
   { id: 'star', text: 'Collect a constellation star', done: (n) => n.some((s) => s.info?.con) },
-  { id: 'recent', text: 'Catch a satellite launched in the last 5 years', done: (n, t) => n.some((s) => !s.info?.natural && year(s.info?.launch) >= new Date(t).getFullYear() - 5) },
+  { id: 'recent', text: 'Catch something launched in the last 5 years', done: (n, t) => n.some((s) => !s.info?.natural && year(s.info?.launch) >= new Date(t).getFullYear() - 5) },
   { id: 'soviet', text: 'Spot something Soviet or Russian', done: (n) => n.some((s) => soviet(s.info)) },
   { id: 'epic', text: 'Catch something Epic or Legendary', done: (n) => n.some((s) => ['epic', 'legendary'].includes(s.info?.tier)) },
   { id: 'race', text: 'Space Race: a Soviet object and an American one', done: (n) => n.some((s) => soviet(s.info)) && n.some((s) => american(s.info)) },
@@ -122,7 +122,7 @@ export const ACHIEVEMENTS = [
   { id: 'archivist', name: 'Archivist', text: 'Collect 250 cards', icon: '250', done: (a) => a.cards >= 250 },
   { id: 'curator', name: 'Curator', text: 'Collect 500 cards', icon: '500', done: (a) => a.cards >= 500 },
   { id: 'catalogue', name: 'The Catalogue', text: 'Collect 1,000 cards', icon: '1k', done: (a) => a.cards >= 1000 },
-  { id: 'sightings100', name: 'Hundred Nights', text: 'Log 100 sightings', icon: '§', done: (a) => a.sightings >= 100 },
+  { id: 'sightings100', name: 'Hundred Sightings', text: 'Log 100 sightings', icon: '§', done: (a) => a.sightings >= 100 },
   // Rarity
   { id: 'legend', name: 'Legend', text: 'Collect a Legendary card', icon: '★', done: T_HAS('legendary') },
   { id: 'epic', name: 'Epic', text: 'Collect an Epic card', icon: '✪', done: T_HAS('epic') },
@@ -164,7 +164,7 @@ export const ACHIEVEMENTS = [
   // Fleets
   { id: 'starlink', name: 'Train Spotter', text: 'Stamp a Starlink launch', icon: 'SL', done: (a) => (a.fleet.STARLINK ?? 0) >= 1 },
   { id: 'starlink10', name: 'Regular Service', text: 'Stamp 10 Starlink launches', icon: 'SL10', done: (a) => (a.fleet.STARLINK ?? 0) >= 10 },
-  { id: 'starlink50', name: 'Megaconstellation', text: 'Stamp 50 Starlink launches — a gold fleet card', icon: 'SL50', done: (a) => (a.fleet.STARLINK ?? 0) >= 50 },
+  { id: 'starlink50', name: 'Megaconstellation', text: 'Stamp 50 Starlink launches for a gold fleet card', icon: 'SL50', done: (a) => (a.fleet.STARLINK ?? 0) >= 50 },
   { id: 'fleets', name: 'Fleet Admiral', text: 'Stamp a launch from all four fleets', icon: '⚓', done: (a) => ['STARLINK', 'ONEWEB', 'KUIPER', 'QIANFAN'].every((f) => (a.fleet[f] ?? 0) >= 1) },
   // Sky
   { id: 'moon', name: 'Moonstruck', text: 'Collect the Moon', icon: '☾', done: (a) => a.naturals.has('moon') },
@@ -188,9 +188,9 @@ export const ACHIEVEMENTS = [
   { id: 'close', name: 'Close Pass', text: 'Catch something within 450 km', icon: '450', done: (a) => a.closest != null && a.closest <= 450 },
   { id: 'far', name: 'Far Out', text: 'Catch something more than 2,000 km away', icon: '2k', done: (a) => a.farthest != null && a.farthest >= 2000 },
   // When you looked
-  { id: 'twilight', name: 'Early Bird', text: 'Log a sighting before 9 pm', icon: '21', done: (a) => a.hours.some((h) => h >= 17 && h < 21) },
-  { id: 'owl', name: 'Night Owl', text: 'Log a sighting between 1 and 4 am', icon: '☾', done: (a) => a.hours.some((h) => h >= 1 && h < 4) },
-  { id: 'dawn', name: 'Dawn Patrol', text: 'Log a sighting between 4 and 7 am', icon: '☀', done: (a) => a.hours.some((h) => h >= 4 && h < 7) },
+  { id: 'twilight', name: 'Early Bird', text: 'Log a sighting between 5 and 9 PM', icon: '21', done: (a) => a.hours.some((h) => h >= 17 && h < 21) },
+  { id: 'owl', name: 'Night Owl', text: 'Log a sighting between 1 and 4 AM', icon: '☾', done: (a) => a.hours.some((h) => h >= 1 && h < 4) },
+  { id: 'dawn', name: 'Dawn Patrol', text: 'Log a sighting between 4 and 7 AM', icon: '☀', done: (a) => a.hours.some((h) => h >= 4 && h < 7) },
   { id: 'marathon', name: 'Marathon', text: 'Log 10 sightings in one night', icon: '10/n', done: (a) => a.maxNight >= 10 },
   { id: 'double', name: 'Double Sighting', text: 'Collect two new cards within a minute', icon: '×2', done: (a) => a.double },
   { id: 'hattrick', name: 'Hat Trick', text: 'Collect three new cards within five minutes', icon: '×3', done: (a) => a.triple },

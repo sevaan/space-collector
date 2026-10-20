@@ -10,7 +10,7 @@
   },
   "48274": {
     "title": "Tiangong Space Station",
-    "fact": "China’s own space station. Its name means **Heavenly Palace**, and astronauts have lived aboard since 2021.",
+    "fact": "China’s own space station. Its name means **Heavenly Palace**, and astronauts have lived aboard non-stop since 2022.",
     "stat": [
       "CREW",
       "3"
@@ -65,7 +65,7 @@
     "source": "https://space.skyrocket.de/doc_sdat/tsikada.htm"
   },
   "13301": {
-    "fact": "The very first **COSPAS search-and-rescue** satellite. In September 1982, a few months after launch, it helped a ground station in Ottawa find a plane that had crashed in the mountains of **British Columbia**, and everyone on board was rescued.",
+    "fact": "The very first **COSPAS search-and-rescue** satellite. In September 1982 it helped a station in Ottawa find a plane that had crashed in **British Columbia**, and everyone aboard was rescued.",
     "source": "https://ethw.org/Milestones:Human_Rescue_Enabled_by_Space_Technology,_1982"
   },
   "17369": {
@@ -77,7 +77,7 @@
     "source": "https://en.wikipedia.org/wiki/TOPAZ_nuclear_reactor"
   },
   "22675": {
-    "fact": "In 2009 this dead Strela-2M relay satellite was hit by Iridium 33, the **first-ever crash between two satellites**. More than 600 pieces of debris were tracked afterwards.",
+    "fact": "In 2009 this dead Strela-2M relay satellite was hit by Iridium 33, the **first-ever crash between two satellites**. More than 2,000 pieces of debris were tracked afterwards.",
     "source": "https://space.skyrocket.de/doc_sdat/strela-2m.htm"
   }
 }

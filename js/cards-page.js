@@ -1,29 +1,29 @@
-import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.905';
-import { computeStats, statsHtml } from './stats.js?v=0.1.905';
-import { nightKey } from './observation.js?v=0.1.905';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.905';
-import { sfx } from './sfx.js?v=0.1.905';
-import { expandFacts } from './catalog-facts.js?v=0.1.905';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.905';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.905';
-import { ticket } from './toast.js?v=0.1.905';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.905';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.905';
-import { cardArt } from './art.js?v=0.1.905';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.905';
-import { applyBack } from './card-backs.js?v=0.1.905';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.905';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.905';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.905';
-import { STORIES } from './stories.js?v=0.1.905';
-import { loadConstellations, conList } from './constellations.js?v=0.1.905';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.905';
-import { eventBadges, nextEvent } from './events.js?v=0.1.905';
-import { shareCardEl } from './share-card.js?v=0.1.905';
-import { forgetSighting } from './cloud-backup.js?v=0.1.905';
-import { allSightings, deleteSighting } from './store.js?v=0.1.905';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.905';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.905';
+import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.906';
+import { computeStats, statsHtml } from './stats.js?v=0.1.906';
+import { nightKey } from './observation.js?v=0.1.906';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.906';
+import { sfx } from './sfx.js?v=0.1.906';
+import { expandFacts } from './catalog-facts.js?v=0.1.906';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.906';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.906';
+import { ticket } from './toast.js?v=0.1.906';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.906';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.906';
+import { cardArt } from './art.js?v=0.1.906';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.906';
+import { applyBack } from './card-backs.js?v=0.1.906';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.906';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.906';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.906';
+import { STORIES } from './stories.js?v=0.1.906';
+import { loadConstellations, conList } from './constellations.js?v=0.1.906';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.906';
+import { eventBadges, nextEvent } from './events.js?v=0.1.906';
+import { shareCardEl } from './share-card.js?v=0.1.906';
+import { forgetSighting } from './cloud-backup.js?v=0.1.906';
+import { allSightings, deleteSighting } from './store.js?v=0.1.906';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.906';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.906';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -254,7 +254,7 @@ function remindStreak() {
   let ahead = (6 - d.getDay() + 7) % 7; if (ahead === 0 && d.getTime() < Date.now()) ahead = 7; // this Saturday, unless 8 pm has passed
   d.setDate(d.getDate() + ahead);
   (isNative() ? notifyAt(d.getTime(), 'This week: keep your streak', 'One sighting is all it takes. See what’s up tonight.', { id: 7140 }) /* one fixed id: tapping twice replaces it instead of stacking two (bug hunt 2026-10-20) */ : Promise.resolve('app-only'))
-    .then((r) => ticket({ kind: 'mission', tone: 'steel', icon: 'bell', eyebrow: 'STREAK', line: r === 'on' ? 'We’ll remind you Saturday at 8 pm.' : r === 'app-only' ? 'Reminders work in the Space Collector app.' : r === 'denied' ? 'Notifications are off for Space Collector.' : 'Couldn’t set a reminder here.', ms: 4000 }));
+    .then((r) => ticket({ kind: 'mission', tone: 'steel', icon: 'bell', eyebrow: 'STREAK', line: r === 'on' ? 'We’ll remind you Saturday at 8 PM.' : r === 'app-only' ? 'Reminders work in the Space Collector app.' : r === 'denied' ? 'Notifications are off for Space Collector.' : 'Couldn’t set a reminder here.', ms: 4000 }));
 }
 // Observer stats (free for everyone, 2026-10-12): a link under the rank card opens #stats-view.
 function openStats() {
@@ -379,7 +379,7 @@ function renderFind() {
   state.list = list;
   $('results').textContent = q ? `${list.length}${list.length === 30 ? '+' : ''} found` : 'Search any satellite, rocket or planet';
   const head = document.createElement('div'); head.className = 'find-head'; head.textContent = q ? '' : 'New ones you can see this week'; // not just Rares: Uncommons fill in (2026-10-18 playtest) if (!q) grid.append(head);
-  if (!list.length) { grid.insertAdjacentHTML('beforeend', q ? '<p class="find-none">Nothing by that name. Try "ISS", "Hubble" or "Starlink".</p>' : '<p class="find-none">Nothing new passes this week. Search any satellite to see when it’s next up.</p>'); return; }
+  if (!list.length) { grid.insertAdjacentHTML('beforeend', q ? '<p class="find-none">Nothing by that name. Try “ISS”, “Hubble” or “Starlink”.</p>' : '<p class="find-none">Nothing new passes this week. Search any satellite to see when it’s next up.</p>'); return; }
   const need = [];
   for (const c of list) {
     const t = TIER_INFO[c.tier] ?? TIER_INFO.common, owned = hasSightings(c), row = document.createElement('div'); row.className = 'find-row'; row.style.setProperty('--c', t.color);
@@ -430,7 +430,7 @@ function render() {
   const caught = state.cards.filter(hasSightings).length;
   $('owned-count').textContent = caught.toLocaleString();
   document.body.classList.toggle('has-cards', caught > 0); // the intro banner is for an empty collection only (UX room 2026-10-12)
-  $('count').textContent = caught ? `${caught.toLocaleString()} ${caught === 1 ? 'story' : 'stories'} collected. Every one, a moment under the sky.` : 'Real objects. Remarkable stories. Yours to discover.';
+  $('count').textContent = caught ? `${caught.toLocaleString()} ${caught === 1 ? 'card' : 'cards'} collected. Every one, a moment under the sky.` : 'Real objects. Remarkable stories. Yours to discover.';
   const ps = planStart(); state.planKeys = new Set(ps.keys());
   state.list = state.cards.filter(matches).sort((a, b) => {
     // Sort menu (2026-10-06): default = newest first for your collection, featured order for the field guide.
@@ -456,10 +456,10 @@ function render() {
   if (!total) {
     const empty = document.createElement('div'); empty.className = 'empty';
     if (state.view === 'owned' && !caught) {
-      empty.innerHTML = '<span class="empty__orbit" aria-hidden="true">✧</span><h2>Your first story is up there.</h2><p>Record a sighting in the live sky to earn your first card. The ISS is a wonderful place to start.</p><a href="./?resume=1">Explore the sky ↗</a><button type="button" class="secondary">Browse the field guide</button>';
+      empty.innerHTML = '<span class="empty__orbit" aria-hidden="true">✧</span><h2>Your first card is up there.</h2><p>Catch something in the live sky to earn your first card. The ISS is a good place to start.</p><a href="./?resume=1">Explore the sky ↗</a><button type="button" class="secondary">Browse the field guide</button>';
       empty.querySelector('button').addEventListener('click', () => setView('discover'));
     } else {
-      empty.innerHTML = '<span class="empty__orbit empty__search" aria-hidden="true"><svg viewBox="0 0 48 48" width="44" height="44" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="21" cy="21" r="12"/><path d="M30 30 L40 40"/><circle cx="21" cy="21" r="5.5" stroke-dasharray="2 3.2" opacity=".6"/><path d="M17 13.5a8 8 0 0 1 8.5-0.8" opacity=".55"/></svg></span><h2>No cards found</h2><p>Try a different name, collection or rarity.</p><button type="button">Clear filters</button>';
+      empty.innerHTML = '<span class="empty__orbit empty__search" aria-hidden="true"><svg viewBox="0 0 48 48" width="44" height="44" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="21" cy="21" r="12"/><path d="M30 30 L40 40"/><circle cx="21" cy="21" r="5.5" stroke-dasharray="2 3.2" opacity=".6"/><path d="M17 13.5a8 8 0 0 1 8.5-0.8" opacity=".55"/></svg></span><h2>No cards found</h2><p>Try a different name, album or rarity.</p><button type="button">Clear filters</button>';
       empty.querySelector('button').addEventListener('click', resetFilters);
     }
     $('grid').append(empty); appendUpNext(0); return;

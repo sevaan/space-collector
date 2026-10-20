@@ -6,7 +6,7 @@ export const SECRET_PATCHES = {
   santa: { id: 'santa', name: 'Nice List', text: 'You waved at Santa on Christmas Eve.' },
   roadster: { id: 'roadster', name: "Don’t Panic", text: 'You found Starman and his Roadster, still driving round the Sun.' },
   meteor: { id: 'meteor', name: 'Make a Wish', text: 'You caught a shooting star.' },
-  voyager: { id: 'voyager', name: 'Pale Blue Dot', text: 'You found Voyager 1 and its golden record, 24 billion km away.' },
+  voyager: { id: 'voyager', name: 'Pale Blue Dot', text: 'You found Voyager 1 and its golden record, nearly 26 billion km away.' },
   dizzy: { id: 'dizzy', name: 'Dizzy', text: 'Three full turns. The compass needs a sit-down.' },
   // Deep-space probes and a famous signal (2026-10-09, Sevaan): fixed spots among the stars, invisible until one is in
   // your circle, so you stumble on them. Directions from JPL Horizons, Oct 2026 (they drift less than 0.1° a year).
@@ -20,7 +20,7 @@ export const SECRET_PATCHES = {
   halley: { id: 'halley', name: 'Way Home', text: 'You found Halley’s Comet, far out and falling back towards the Sun. Due in 2061.' },
   sputnik: { id: 'sputnik', name: 'Beep-Beep', text: 'You heard Sputnik on the anniversary of its launch, 4 October 1957.' },
   laika: { id: 'laika', name: 'Good Dog', text: 'You remembered Laika on the anniversary of Sputnik 2, 3 November 1957.' },
-  apollo11: { id: 'apollo11', name: 'One Small Step', text: 'You looked at the Moon on 20 July, the day people first walked on it.' },
+  apollo11: { id: 'apollo11', name: 'One Small Step', text: 'You looked at the Moon on 20 July, the day people first landed on it.' },
   twohomes: { id: 'twohomes', name: 'Two Homes', text: 'You caught the ISS and Tiangong within ten minutes of each other.' },
 };
 for (const p of Object.values(SECRET_PATCHES)) { p.secret = true; p.icon = ''; }

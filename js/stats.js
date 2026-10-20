@@ -2,8 +2,8 @@
 // badges"). Your history under the sky, from the sighting log plus what the Collection page already knows (rank,
 // patches, constellations, stories, albums). computeStats(sightings, byKey, nightKey, year, ctx) -> numbers;
 // statsHtml(st) -> the panel. No network; the map uses js/geo.js’s coarse outlines.
-import { LAND } from './geo.js?v=0.1.905';
-import { TIER_INFO, TIERS } from './rarity.js?v=0.1.905';
+import { LAND } from './geo.js?v=0.1.906';
+import { TIER_INFO, TIERS } from './rarity.js?v=0.1.906';
 
 const RANK = { common: 0, uncommon: 1, rare: 2, epic: 3, legendary: 4 };
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -88,7 +88,7 @@ export function statsHtml(st) {
     ${top ? hl('Rarest find', top.c, `${tierOf(top.c).label} · ${day(top.s.time)}`) : ''}
     ${st.most && st.most.nights > 1 ? hl('Most seen', st.most.c, `On ${plural(st.most.nights, 'night')}`) : ''}
     ${st.firstCard ? hl('Your first card', st.firstCard.c, day(st.firstCard.s.time)) : ''}
-    ${st.busiest ? `<div class="st-hl st-hl--day"><span class="st-cal"><small>${esc(day(st.busiest.t, { month: 'short' }))}</small><b>${new Date(st.busiest.t).getDate()}</b></span><div><small>Best day</small><b>${esc(day(st.busiest.t, { weekday: 'long', month: 'long', day: 'numeric' }))}</b><span>${plural(st.busiest.cards.size, 'card')} collected</span></div></div>` : ''}
+    ${st.busiest ? `<div class="st-hl st-hl--day"><span class="st-cal"><small>${esc(day(st.busiest.t, { month: 'short' }))}</small><b>${new Date(st.busiest.t).getDate()}</b></span><div><small>Best day</small><b>${esc(day(st.busiest.t, { weekday: 'long', month: 'long', day: 'numeric' }))}</b><span>${plural(st.busiest.cards.size, 'card')} seen</span></div></div>` : ''}
   </div></section>`;
   const map = `<section class="st-sec"><div class="st-head"><span>Where you’ve looked up</span><span class="st-since">${plural(st.places.length, 'place')}</span></div>${mapSvg(st.places)}</section>`;
   const rare = st.rarest.length > 1 ? `<section class="st-sec"><div class="st-head"><span>Rarest finds</span></div><div class="st-rare">${st.rarest.map(({ s, c }) => { const t = tierOf(c); return `<div>${thumb(c)}<span class="st-rt" style="color:${t.color}">${t.gem} ${esc(t.label)}</span><b>${esc(title(c))}</b><small>${day(s.time, { month: 'short', day: 'numeric' })}</small></div>`; }).join('')}</div></section>` : '';

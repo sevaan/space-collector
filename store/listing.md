@@ -10,12 +10,12 @@ Kept here so they can be edited and pasted again. Screenshots and previews: `sto
 
 ## Version page
 **Promotional text (170):**
-Point your phone at the night sky and collect what's really passing over you: the Space Station, Hubble, old rocket stages, the planets and the stars.
+Point your phone at the night sky and collect what’s really passing over you: the Space Station, Hubble, old rocket stages, the planets and the stars.
 
 **Description (4,000):**
 Every moving light in the night sky has a name. Space Collector turns each one into a card.
 
-Hold your phone up to the sky. Satellites, rocket stages, the International Space Station, the planets, the Moon and the brightest stars show up right where they really are, worked out from real orbits for where you're standing. Line one up in the circle, tap Collect, and its card is yours.
+Hold your phone up to the sky. Satellites, rocket stages, the International Space Station, the planets, the Moon and the brightest stars show up right where they really are, worked out from real orbits for where you’re standing. Line one up in the circle, tap Collect, and its card is yours.
 
 HOW TO PLAY
 • Point your phone at the sky.
@@ -26,19 +26,19 @@ THOUSANDS OF REAL CARDS
 Space stations and telescopes, weather satellites, Cold War relics, rocket stages from the 1960s, the planets, the Moon and the stars. Every card has real numbers and one true fact. Rarity is how hard something is to see, never what you pay.
 
 PLAN YOUR NIGHT
-Tonight's plan shows when it gets dark, the best pass to catch, the busiest moment and the weather, so you know when to step outside.
+Tonight’s plan shows when it gets dark, the best pass to catch, the busiest moment and the weather, so you know when to step outside.
 
 SHINY CARDS
-Catch something at a lucky moment — slipping into Earth's shadow, passing right beside the Moon, straight overhead, or just launched — and its card comes out Shiny.
+Catch something at a lucky moment, like slipping into Earth’s shadow, passing right beside the Moon, straight overhead or just launched, and its card comes out shiny. Catch a full Moon for a shiny Moon.
 
 MISSIONS, PATCHES AND SECRETS
-Nightly missions, more than 180 mission patches, constellations to finish star by star, ranks from Stargazer to Mission Control, and a few secrets hidden in the sky. Some are even under your feet.
+Nightly missions, more than 180 mission patches, constellations to finish star by star, ranks from Stargazer to Voyager, and a few secrets hidden in the sky. Some are even under your feet.
 
 FREE. NO ADS. NO LOOT BOXES.
 The sky, every card, every patch and every mission are free.
 
 SPACE COLLECTOR PLUS (optional)
-Pass reminders for any pass you choose, Rare alerts when a new Rare card passes, the Shiny forecast, six card back designs and a members-only patch. Monthly, yearly (with a 7-day free trial) or once, forever. Shared with Family Sharing.
+Pass reminders for any pass you choose, Rare alerts when a new Rare or better card passes, the shiny forecast, six card back designs and a members-only patch. Monthly, yearly (with a 7-day free trial) or once, forever. Shared with Family Sharing.
 
 Subscriptions renew automatically unless cancelled at least 24 hours before the end of the current period, and are charged to your Apple Account. Manage or cancel them in your Apple Account settings.
 Terms of Use: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

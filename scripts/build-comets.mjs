@@ -20,7 +20,7 @@ for (const row of d.data) {
   out.push({ id: o.pdes.replace(/[^\w]+/g, '-').toLowerCase(), name: periodic ? `Comet ${name.split('/')[1] ?? name}` : `Comet ${short}`, designation: o.pdes, periodic,
     ...c, peakMag: +best.toFixed(1), peakDate: new Date(bestT).toISOString().slice(0, 10),
     perihelion: `${c.q.toFixed(2)} AU`, returns: o.per_y && +o.per_y < 1000 ? `every ${Math.round(+o.per_y)} yr` : 'not for thousands of years',
-    fact: `A comet you can only collect while it's bright: it peaks around **${new Date(bestT).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}**. ${periodic ? `It comes back about every ${Math.round(+o.per_y)} years.` : 'Once it leaves, it won\'t be back in our lifetimes.'}` });
+    fact: `A comet you can only collect while it’s bright: it peaks around **${new Date(bestT).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}**. ${periodic ? `It comes back about every ${Math.round(+o.per_y)} years.` : 'Once it leaves, it won’t be back in our lifetimes.'}` });
 }
 writeFileSync(new URL('../data/comets.json', import.meta.url), JSON.stringify({ source: 'NASA/JPL Small-Body Database', built: new Date().toISOString().slice(0, 10), comets: out }, null, 1));
 console.log(out.length, 'comets', out.map((c) => `${c.name} peak ${c.peakMag} on ${c.peakDate}`).join('; '));

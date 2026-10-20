@@ -1,4 +1,4 @@
-import { extinction } from './sky-limit.js?v=0.1.905';
+import { extinction } from './sky-limit.js?v=0.1.906';
 // The Moon, the naked-eye planets and the brightest named stars, as collectible cards.
 // Positions come from js/celestial.js (state.bodies, state.skyEnu); this file holds the card facts and
 // the "can you see it right now" rules. No DOM. Every fact must be true; approximate values say so.
@@ -31,13 +31,13 @@ const moon = {
 // Uncommon; Mercury (low in twilight, a few weeks a year) Rare; Uranus Epic and Neptune Legendary (dark skies / binoculars).
 // Planet: [name, tier, order, light-minutes from the Sun, diameter km, year, day, fact]
 const PLANETS = [
-  ['Mercury', 'rare', 2, '3.2', '4,879', ['88', 'd'], ['59', 'd'], 'The smallest planet and the closest to the Sun. It races round in **88 days**, so it never strays far from the Sun in our sky: look low, just after sunset or before dawn.'],
-  ['Venus', 'uncommon', 3, '6.0', '12,104', ['225', 'd'], ['243', 'd'], 'A day on Venus is **longer than its year**, and it spins the opposite way to most planets. It’s the brightest thing in the night sky after the Moon.'],
+  ['Mercury', 'rare', 2, '3.2', '4,879', ['88', 'd'], ['59', 'd'], 'The smallest planet and the closest to the Sun, so it never strays far from it in our sky. It races round in **88 days**. Look low, just after sunset or before dawn.'],
+  ['Venus', 'uncommon', 3, '6.0', '12,104', ['225', 'd'], ['243', 'd'], 'A day on Venus is **longer than its year**, and it spins the opposite way to most planets. After the Moon, it’s the brightest natural light in the night sky.'],
   ['Mars', 'uncommon', 4, '12.7', '6,779', ['687', 'd'], ['24.6', 'h'], 'Its red colour is **rust** in the dust. It also has the tallest volcano we know of, **Olympus Mons**, about two and a half times the height of Everest.'],
   ['Jupiter', 'uncommon', 5, '43', '139,820', ['11.9', 'yr'], ['9.9', 'h'], 'The biggest planet: more than **1,300 Earths** would fit inside it. A pair of binoculars shows its four largest moons as tiny dots.'],
-  ['Saturn', 'uncommon', 6, '79', '116,460', ['29.4', 'yr'], ['10.7', 'h'], 'Its rings are countless chunks of **ice and rock**, too thin for your eyes but there around that steady golden dot. Saturn is so light it would **float in water**.'],
+  ['Saturn', 'uncommon', 6, '79', '116,460', ['29.4', 'yr'], ['10.7', 'h'], 'Its rings are countless chunks of **ice and rock**, too small to see by eye but there around that steady golden dot. Saturn is so light it would **float in water**.'],
   ['Uranus', 'epic', 7, '160', '50,724', ['84', 'yr'], ['17.2', 'h'], 'It spins almost **on its side**, so it rolls around the Sun like a ball. At its brightest it’s just visible to the naked eye from a truly dark site: a faint, steady, pale-green point.'],
-  ['Neptune', 'legendary', 8, '250', '49,244', ['165', 'yr'], ['16.1', 'h'], 'The farthest planet, found in 1846 by **maths** before anyone saw it: Uranus was being tugged off course. Too faint for the naked eye, but binoculars show it as a dim blue-grey point.'],
+  ['Neptune', 'legendary', 8, '250', '49,244', ['165', 'yr'], ['16.1', 'h'], 'The farthest planet, and the first found by **maths**: in 1846, Uranus being tugged off course told astronomers where to look. Too faint for the naked eye, but binoculars show a dim blue-grey point.'],
 ].map(([name, tier, order, lm, dia, year, day, fact]) => ({
   key: `planet:${name.toLowerCase()}`, id: `planet:${name.toLowerCase()}`, natural: 'planet', type: 'planet', name, tier, order,
   code: `${{ Mercury: '1ST', Venus: '2ND', Mars: '4TH', Jupiter: '5TH', Saturn: '6TH', Uranus: '7TH', Neptune: '8TH' }[name]} FROM THE SUN`,
@@ -67,15 +67,15 @@ const STARS = [
   ['Achernar', 'Achernar', 'α Eri', 'Eridanus', '139', 'common', 0.45, 'It spins so fast it’s **squashed**: much wider across its middle than from pole to pole.'],
   ['Betelgeuse', 'Betelgeuse', 'α Ori', 'Orion', '~550', 'common', 0.45, 'A **red supergiant** in Orion’s shoulder. Put it where the Sun is and it would reach past the orbit of Mars.'],
   ['Hadar', 'Hadar', 'β Cen', 'Centaurus', '~390', 'common', 0.61, 'With Alpha Centauri, one of the two **Pointers** that lead your eye to the Southern Cross.'],
-  ['Altair', 'Altair', 'α Aql', 'Aquila', '17', 'common', 0.76, 'One of the **fastest-spinning** bright stars: it turns once in about 9 hours. The Sun takes nearly a month.'],
+  ['Altair', 'Altair', 'α Aql', 'Aquila', '17', 'common', 0.76, 'One of the **fastest-spinning** bright stars: it turns once in under 8 hours. The Sun takes nearly a month.'],
   ['Acrux', 'Acrux', 'α Cru', 'Crux', '~320', 'common', 0.77, 'The brightest star of the **Southern Cross**, which appears on the flags of Australia, New Zealand and Brazil.'],
   ['Aldebaran', 'Aldebaran', 'α Tau', 'Taurus', '65', 'common', 0.87, 'The **red eye of Taurus**, the Bull. It seems to sit in the Hyades star cluster, but it’s less than half as far away.'],
   ['Spica', 'Spica', 'α Vir', 'Virgo', '~250', 'common', 0.98, 'Really **two hot stars** so close together that they orbit each other every four days.'],
   ['Antares', 'Antares', 'α Sco', 'Scorpius', '~550', 'common', 1.06, 'Its name means **rival of Mars**, because its red colour looks so like the planet.'],
   ['Pollux', 'Pollux', 'β Gem', 'Gemini', '34', 'common', 1.16, 'The closest **giant star** to the Sun, and it has a planet of its own.'],
-  ['Fomalhaut', 'Fomalhaut', 'α PsA', 'Piscis Austrinus', '25', 'common', 1.17, 'A lonely bright star in the autumn sky, wrapped in a huge **ring of dust**.'],
+  ['Fomalhaut', 'Fomalhaut', 'α PsA', 'Piscis Austrinus', '25', 'common', 1.17, 'A lonely bright star in a dim patch of sky, wrapped in a huge **ring of dust**.'],
   ['Deneb', 'Deneb', 'α Cyg', 'Cygnus', '~2,000', 'common', 1.25, 'One of the most **distant stars** you can see with your eyes. To look this bright from so far, it must shine **tens of thousands of times** brighter than the Sun.'],
-  ['Regulus', 'Regulus', 'α Leo', 'Leo', '79', 'common', 1.36, 'The heart of Leo. It sits almost exactly on the **Moon’s path**, so the Moon often passes in front of it.'],
+  ['Regulus', 'Regulus', 'α Leo', 'Leo', '79', 'common', 1.36, 'The heart of Leo. It sits almost exactly on the **Moon’s path**, so the Moon sometimes passes right in front of it.'],
   ['Polaris', 'Polaris', 'α UMi', 'Ursa Minor', '~430', 'common', 1.97, 'The **North Star** sits almost exactly above Earth’s North Pole, so it barely moves while every other star circles it. It isn’t even among the **40 brightest**.'],
 ].map(([name, skyName, desig, con, ly, tier, mag, fact], i) => ({
   key: `star:${name.toLowerCase().replace(/\s+/g, '-')}`, id: `star:${name.toLowerCase().replace(/\s+/g, '-')}`, natural: 'star', type: 'star',
@@ -92,15 +92,15 @@ const STARS = [
 //  tier, fact]
 const DEEP = [
   ['pleiades', 'The Pleiades', 'Open cluster', 56.85, 24.12, 'Tau', 1.6, 3.2, '444', 'uncommon', 'The **Seven Sisters**. Most people count six stars by eye, but the cluster holds over a thousand. In Japan it is **Subaru**, the car maker’s name and logo.'],
-  ['hyades', 'The Hyades', 'Open cluster', 66.75, 15.87, 'Tau', 0.5, 3.5, '153', 'uncommon', 'The **nearest star cluster** to Earth. Its V of stars is the face of Taurus the Bull. Bright Aldebaran sits in front of it but isn’t a member.'],
+  ['hyades', 'The Hyades', 'Open cluster', 66.75, 15.87, 'Tau', 0.5, 3.5, '153', 'uncommon', 'The **nearest open star cluster** to Earth. Its V of stars is the face of Taurus the Bull. Bright Aldebaran sits in front of it but isn’t a member.'],
   ['alpha-persei', 'The Alpha Persei Cluster', 'Open cluster', 51.6, 49.0, 'Per', 1.2, 4.0, '~570', 'uncommon', 'A loose spray of stars around **Mirfak**, the brightest star of Perseus. Binoculars turn it into a glittering river.'],
-  ['orion-nebula', 'The Orion Nebula', 'Nebula', 83.82, -5.39, 'Ori', 4.0, 4.0, '~1,344', 'rare', 'A cloud of gas where **new stars are being born**. It is the fuzzy middle "star" of the sword that hangs from Orion’s belt.'],
+  ['orion-nebula', 'The Orion Nebula', 'Nebula', 83.82, -5.39, 'Ori', 4.0, 4.0, '~1,344', 'rare', 'A cloud of gas where **new stars are being born**. It is the fuzzy middle “star” of the sword that hangs from Orion’s belt.'],
   ['beehive', 'The Beehive Cluster', 'Open cluster', 130.03, 19.67, 'Cnc', 3.7, 5.0, '~577', 'rare', 'About a thousand stars in Cancer. To the eye a faint misty patch; **Galileo** saw it as a swarm of stars through his telescope and wrote about it in 1610.'],
   ['double-cluster', 'The Double Cluster', 'Open cluster', 35.13, 57.13, 'Per', 3.7, 5.0, '~7,500', 'rare', '**Two star clusters side by side** in Perseus, each with thousands of stars. A faint smudge to the eye, a stunning pair in binoculars.'],
   ['ptolemy-cluster', 'Ptolemy’s Cluster', 'Open cluster', 268.47, -34.79, 'Sco', 3.3, 4.5, '~980', 'rare', 'Recorded by **Ptolemy** nearly 2,000 years ago as a misty patch after the sting of Scorpius, one of the first deep-sky objects anyone wrote down.'],
   ['coathanger', 'The Coathanger', 'Star pattern', 291.35, 20.18, 'Vul', 3.6, 6.0, '~200–1,100', 'rare', 'Looks just like an **upside-down coat hanger** in binoculars. It isn’t a real cluster: its stars are at very different distances and only line up from here.'],
   ['andromeda', 'The Andromeda Galaxy', 'Galaxy', 10.68, 41.27, 'And', 3.4, 5.0, '2.5 million', 'epic', 'A whole galaxy of about a **trillion stars**. The light you see left it **2.5 million years ago**, and it is slowly heading toward the Milky Way.'],
-  ['hercules-cluster', 'The Hercules Cluster', 'Globular cluster', 250.42, 36.46, 'Her', 5.8, 6.0, '~22,000', 'epic', 'Hundreds of thousands of stars packed into a ball. In **1974** the Arecibo radio telescope beamed a message toward it.'],
+  ['hercules-cluster', 'The Hercules Cluster', 'Globular cluster', 250.42, 36.46, 'Her', 5.8, 6.0, '~25,000', 'epic', 'Hundreds of thousands of stars packed into a ball. In **1974** the Arecibo radio telescope beamed a message toward it.'],
   ['lagoon-nebula', 'The Lagoon Nebula', 'Nebula', 270.9, -24.38, 'Sgr', 6.0, 5.6, '~4,100', 'epic', 'A glowing cloud where stars are forming, in the thick of the Milky Way toward the **centre of our galaxy**. From a dark site it is a faint patch you can see without binoculars.'],
   ['carina-nebula', 'The Carina Nebula', 'Nebula', 161.27, -59.87, 'Car', 1.0, 4.5, '~7,500', 'epic', 'One of the **biggest, brightest nebulae** in the sky. It holds **Eta Carinae**, a star that briefly became the second-brightest in the night sky in the 1840s.'],
   ['omega-centauri', 'Omega Centauri', 'Globular cluster', 201.7, -47.48, 'Cen', 3.9, 4.5, '~17,000', 'epic', 'The Milky Way’s **biggest globular cluster**, about 10 million stars. It may be the core of a small galaxy our own swallowed long ago.'],

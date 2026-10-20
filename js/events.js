@@ -3,7 +3,7 @@
 // Meteor Organization calendar); the window runs from the evening before the peak to the morning after.
 // No DOM.
 const SHOWERS = [
-  { id: 'quadrantids', name: 'Quadrantids', month: 1, day: 3, rate: 'up to 120 an hour, briefly' },
+  { id: 'quadrantids', name: 'Quadrantids', month: 1, day: 3, rate: 'up to 80 an hour, in a short peak' },
   { id: 'lyrids', name: 'Lyrids', month: 4, day: 22, rate: 'up to 18 an hour' },
   { id: 'etaaquariids', name: 'Eta Aquariids', month: 5, day: 6, rate: 'up to 50 an hour, best before dawn' },
   { id: 'perseids', name: 'Perseids', month: 8, day: 12, rate: 'up to 100 an hour' },

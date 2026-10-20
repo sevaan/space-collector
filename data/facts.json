@@ -6,7 +6,7 @@
    "source": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1959-001A"
   },
   "978": {
-   "fact": "The first **'cartwheel' weather satellite**: instead of spinning like a top, it rolled along its path like a wheel, letting its two TV cameras snap the clouds below.",
+   "fact": "The first **‘cartwheel’ weather satellite**: instead of spinning like a top, it rolled along its path like a wheel, letting its two TV cameras snap the clouds below.",
    "source": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1965-004A"
   },
   "1806": {
@@ -46,7 +46,7 @@
    "source": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2000-075A"
   },
   "26998": {
-   "fact": "Sent to study a layer of air nicknamed the **'ignorosphere'**: too high for even the biggest balloons, yet too thick for satellites to stay in for long.",
+   "fact": "Sent to study a layer of air nicknamed the **‘ignorosphere’**: too high for even the biggest balloons, yet too thick for satellites to stay in for long.",
    "source": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2001-055B"
   },
   "30580": {
@@ -62,7 +62,7 @@
    "source": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2016-078C"
   },
   "116": {
-   "fact": "It went up three-on-one-rocket, and besides its solar cells it carried a small **nuclear power source** called SNAP-3 as a test.",
+   "fact": "It shared its rocket with two other satellites, and besides solar cells it carried **SNAP-3**, the **first nuclear power source** ever used in space.",
    "source": "https://space.skyrocket.de/doc_sdat/transit-4.htm"
   },
   "369": {
@@ -86,7 +86,7 @@
    "source": "https://space.skyrocket.de/doc_sdat/dodecapole-1.htm"
   },
   "2119": {
-   "fact": "Navy crews called these **'Oscars'**, the radio-alphabet word for O, meaning operational. Ships used its radio signal to work out their position, long before GPS.",
+   "fact": "Navy crews called these **‘Oscars’**, the radio-alphabet word for O, meaning operational. Ships used its radio signal to work out their position, long before GPS.",
    "source": "https://space.skyrocket.de/doc_sdat/transit-o.htm"
   },
   "2834": {
@@ -94,7 +94,7 @@
    "source": "https://space.skyrocket.de/doc_sdat/poppy_mf.htm"
   },
   "4331": {
-   "fact": "The first of **Block 5A**, the sixth version of America’s secret military weather satellites. The name 'DMSP' was only given to them later.",
+   "fact": "The first of **Block 5A**, the sixth version of America’s secret military weather satellites. The name ‘DMSP’ was only given to them later.",
    "source": "https://space.skyrocket.de/doc_sdat/dmsp-5a.htm"
   },
   "4578": {
@@ -242,7 +242,7 @@
    "source": "https://space.skyrocket.de/doc_sdat/us-k.htm"
   },
   "23788": {
-   "fact": "Gonets means **'messenger'**. These satellites were offered to health groups to send **medical records** to remote places, holding messages and passing them on later.",
+   "fact": "Gonets means **‘messenger’**. These satellites were offered to health groups to send **medical records** to remote places, holding messages and passing them on later.",
    "source": "https://space.skyrocket.de/doc_sdat/gonets.htm"
   },
   "24971": {
@@ -258,7 +258,7 @@
    "source": "https://space.skyrocket.de/doc_sdat/argos.htm"
   },
   "25736": {
-   "fact": "A test of using a satellite as an **incredibly tall radio tower**, so soldiers with **hand-held radios** could talk far beyond the horizon.",
+   "fact": "A test of using a satellite as a **very tall radio tower**, so soldiers with **hand-held radios** could talk far beyond the horizon.",
    "source": "https://space.skyrocket.de/doc_sdat/mublcom.htm"
   },
   "25940": {
@@ -306,7 +306,7 @@
    "source": "https://space.skyrocket.de/doc_sdat/aprizesat-1_latinsat-1.htm"
   },
   "28479": {
-   "fact": "An 'experiment' satellite (that is what **Shiyan** means) testing **digital stereo imaging**, a way to map hills and valleys in 3D from space.",
+   "fact": "An ‘experiment’ satellite (that is what **Shiyan** means) testing **digital stereo imaging**, a way to map hills and valleys in 3D from space.",
    "source": "https://space.skyrocket.de/doc_sdat/sy-1.htm"
   },
   "28654": {
@@ -346,7 +346,7 @@
    "source": "https://space.skyrocket.de/doc_sdat/radarsat-2.htm"
   },
   "32953": {
-   "fact": "Its name means **'jubilee'**: it was built to honour the **50th anniversary of Sputnik**, with parts of its radio made by students in Krasnoyarsk.",
+   "fact": "Its name means **‘jubilee’**: it was built to honour the **50th anniversary of Sputnik**, with parts of its radio made by students in Krasnoyarsk.",
    "source": "https://space.skyrocket.de/doc_sdat/yubileyniy.htm"
   },
   "33316": {
@@ -370,11 +370,11 @@
    "source": "https://space.skyrocket.de/doc_sdat/meteor-m-1.htm"
   },
   "35946": {
-   "fact": "Its camera could spot objects as small as **half a metre**, and it added four new colour bands, including ones called **'coastal'** and **'yellow'**.",
+   "fact": "Its camera could spot objects as small as **half a metre**, and it added four new colour bands, including ones called **‘coastal’** and **‘yellow’**.",
    "source": "https://space.skyrocket.de/doc_sdat/worldview-2.htm"
   },
   "36413": {
-   "fact": "One of a **trio** of Chinese satellites that fly together. Experts think they work like America’s NOSS spies, using **ships' radio signals** to locate them at sea.",
+   "fact": "One of a **trio** of Chinese satellites that fly together. Experts think they work like America’s NOSS spies, using **ships’ radio signals** to locate them at sea.",
    "source": "https://space.skyrocket.de/doc_sdat/yaogan-9.htm"
   },
   "39239": {
@@ -434,7 +434,7 @@
    "source": "https://space.skyrocket.de/doc_sdat/vnredsat-1.htm"
   },
   "39265": {
-   "fact": "Carried **Cascade**, a test 'space courier' meant to pick up big data parcels at the end of a work day and deliver them across the world by the next morning.",
+   "fact": "Carried **Cascade**, a test ‘space courier’ meant to pick up big data parcels at the end of a work day and deliver them across the world by the next morning.",
    "source": "https://space.skyrocket.de/doc_sdat/cassiope-1.htm"
   },
   "39418": {
@@ -450,7 +450,7 @@
    "source": "https://space.skyrocket.de/doc_sdat/cubebug-1.htm"
   },
   "39453": {
-   "fact": "One of **three** satellites mapping Earth’s **magnetic field** to learn about the planet’s insides. It flies a bit higher than its twins, at about 530 km.",
+   "fact": "One of **three** satellites mapping Earth’s **magnetic field** to learn about the planet’s insides. It flies side by side with its twin, Swarm A, lower than their sister Swarm B.",
    "source": "https://space.skyrocket.de/doc_sdat/swarm.htm"
   },
   "39492": {
@@ -534,7 +534,7 @@
    "source": "https://space.skyrocket.de/doc_sdat/hawk-2a.htm"
   },
   "51102": {
-   "fact": "Its name means **'Experiment 13'**: one of China’s Shiyan test satellites, flying in a low orbit about **480 km** up.",
+   "fact": "Its name means **‘Experiment 13’**: one of China’s Shiyan test satellites. China has said almost nothing about what it tests.",
    "source": "https://space.skyrocket.de/doc_sdat/sy-13.htm"
   },
   "54253": {
@@ -606,11 +606,11 @@
    "source": "https://www.arrl.org/news/canadian-radio-amateur-finds-resurrected-nasa-satellite"
   },
   "23179": {
-   "fact": "Nadezhda means **'hope'** in Russian, a fitting name: these satellites listened for **distress signals** from ships and aircraft and passed them on to rescuers.",
+   "fact": "Nadezhda means **‘hope’** in Russian, a fitting name: these satellites listened for **distress signals** from ships and aircraft and passed them on to rescuers.",
    "source": "https://terradaily.com/sending-out-an-sos-russian-satellites-come-to-the-rescue-999/"
   },
   "53446": {
-   "fact": "Trackers call it '**Object C**' until they can say exactly which satellite it is. It came from a launch carrying a big batch of **Jilin-1** camera satellites.",
+   "fact": "Trackers call it ‘**Object C**’ until they can say exactly which satellite it is. It came from a launch carrying a big batch of **Jilin-1** camera satellites.",
    "source": "https://space.skyrocket.de/doc_chr/lau2022.htm"
   },
   "56749": {
@@ -626,7 +626,7 @@
    "source": "https://space.skyrocket.de/doc_chr/lau2026.htm"
   },
   "62691": {
-   "fact": "Came from **Transporter-12**, a SpaceX 'rideshare' flight that carried **dozens** of small satellites for customers around the world, like a bus with many passengers.",
+   "fact": "Came from **Transporter-12**, a SpaceX ‘rideshare’ flight that carried **dozens** of small satellites for customers around the world, like a bus with many passengers.",
    "source": "https://space.skyrocket.de/doc_chr/lau2025.htm"
   },
   "69794": {
@@ -890,11 +890,11 @@
    "source": "https://en.wikipedia.org/wiki/%C3%98rsted_(satellite)"
   },
   "25756": {
-   "fact": "The first satellite **designed entirely in South Korea**, renamed **Uribyol 3** once in orbit. It was also the first paying customer of India’s PSLV rocket.",
+   "fact": "The first satellite **designed entirely in South Korea**, renamed **Uribyol 3** once in orbit. It was also one of the first paying passengers on India’s PSLV rocket.",
    "source": "https://en.wikipedia.org/wiki/KITSAT-3"
   },
   "25941": {
-   "fact": "A 60 kg science satellite meant to study **plasma bubbles** high in the atmosphere and the faint **airglow** of the night sky. Sadly, contact was lost soon after launch.",
+   "fact": "A 60 kg science satellite meant to study **plasma bubbles** high in the atmosphere and the faint **airglow** of the night sky. Contact was lost soon after launch.",
    "source": "https://space.skyrocket.de/doc_sdat/saci-1.htm"
   },
   "26063": {
@@ -1010,7 +1010,7 @@
    "source": "https://space.skyrocket.de/doc_sdat/sterkh-1.htm"
   },
   "35951": {
-   "fact": "Earlier DMSP satellites used a built-in motor to finish the climb to orbit, but this one rode a more powerful rocket that put it **straight into orbit**. It carried **ultraviolet** imagers to study the upper air.",
+   "fact": "Earlier DMSP satellites finished the climb to orbit with their own motor, but this one rode a bigger rocket **straight into orbit**. It carried **ultraviolet** imagers to study the upper air.",
    "source": "https://space.skyrocket.de/doc_sdat/dmsp-5d3.htm"
   },
   "36414": {
@@ -1034,7 +1034,7 @@
    "source": "https://space.skyrocket.de/doc_sdat/sj-11.htm"
   },
   "37793": {
-   "fact": "It has gone by several names, including **exactView 6** and **Myriota 2**. Besides picking up ships' position signals, it **stores messages** and passes them on later.",
+   "fact": "It has gone by several names, including **exactView 6** and **Myriota 2**. Besides picking up ships’ position signals, it **stores messages** and passes them on later.",
    "source": "https://db.satnogs.org/satellite/37793"
   },
   "37875": {
@@ -1066,7 +1066,7 @@
    "source": "https://en.wikipedia.org/wiki/TUGSAT-1"
   },
   "39161": {
-   "fact": "**Estonia’s first satellite** and the first ever to try an **electric solar sail**, a tether meant to be pushed by the solar wind. The tether didn’t unreel, but students wrote over 50 theses using its data.",
+   "fact": "**Estonia’s first satellite** and the first ever to try an **electric solar sail**, a tether meant to be pushed by the solar wind. Sadly, the tether never unreeled.",
    "source": "https://en.wikipedia.org/wiki/ESTCube-1"
   },
   "39240": {
@@ -1074,7 +1074,7 @@
    "source": "https://space.skyrocket.de/doc_sdat/yaogan-9.htm"
   },
   "39267": {
-   "fact": "Built by **University of Colorado** students to measure winds and **air drag** high above Earth. A fault stopped it taking commands, so the team studied drag by watching how its **orbit changed**.",
+   "fact": "Built by **University of Colorado** students to measure **air drag** high above Earth. A fault stopped it taking commands, so the team measured drag by watching its **orbit change**.",
    "source": "https://en.wikipedia.org/wiki/Drag_and_Atmospheric_Neutral_Density_Explorer"
   },
   "39419": {
@@ -1082,7 +1082,7 @@
    "source": "https://space.skyrocket.de/doc_sdat/dubaisat-2.htm"
   },
   "39427": {
-   "fact": "A **CubeSat** about the size of a shoebox, testing a new receiver for ships' **position signals**. Radio hobbyists could get free software to decode what it heard.",
+   "fact": "A **CubeSat** about the size of a shoebox, testing a new receiver for ships’ **position signals**. Radio hobbyists could get free software to decode what it heard.",
    "source": "https://space.skyrocket.de/doc_sdat/triton-1.htm"
   },
   "39442": {
@@ -1094,7 +1094,7 @@
    "source": "https://www.spaceflightnow.com/news/n1311/25longmarch/"
   },
   "39574": {
-   "fact": "Its radar uses **two frequencies**, so it can map storms in **3D** and even estimate the size of raindrops and snowflakes. It leads a fleet that maps rain around the world every 2 to 3 hours.",
+   "fact": "Its radar uses **two frequencies**, so it can map storms in **3D** and even estimate the size of raindrops and snowflakes. It leads a fleet that maps the world’s rain every 2 to 3 hours.",
    "source": "https://en.wikipedia.org/wiki/Global_Precipitation_Measurement"
   },
   "39763": {
@@ -1110,7 +1110,7 @@
    "source": "https://space.skyrocket.de/doc_sdat/brite-ca.htm"
   },
   "40039": {
-   "fact": "A small **6U CubeSat** that picked up ships' position signals. It was built by an American offshoot of a Russian company, and at first it was meant to carry a **camera** instead.",
+   "fact": "A small **6U CubeSat** that picked up ships’ position signals. It was built by an American offshoot of a Russian company, and at first it was meant to carry a **camera** instead.",
    "source": "https://space.skyrocket.de/doc_sdat/perseus-m.htm"
   },
   "40057": {
@@ -1130,7 +1130,7 @@
    "source": "https://space.skyrocket.de/doc_sdat/sj-11.htm"
   },
   "40362": {
-   "fact": "Believed to be a military **optical spy** satellite. It circles about **490 km** up, in an orbit like the earlier Yaogan 5 series, which ended after just three launches.",
+   "fact": "Believed to be a military **optical spy** satellite. It was launched about **490 km** up, in an orbit like the earlier Yaogan 5 series, which ended after just three launches.",
    "source": "https://space.skyrocket.de/doc_sdat/yaogan-26.htm"
   },
   "40701": {
@@ -1150,7 +1150,7 @@
    "source": "https://space.skyrocket.de/doc_sdat/kent-ridge-1.htm"
   },
   "41457": {
-   "fact": "Tested whether **everything falls the same way**, by watching titanium and platinum cylinders fall together in orbit. Einstein’s idea passed, measured **ten times** more precisely than before.",
+   "fact": "Tested whether **everything falls the same way** by letting two metal cylinders fall together in orbit. Einstein passed, in a test about **100 times** more precise than any on Earth.",
    "source": "https://en.wikipedia.org/wiki/MICROSCOPE"
   },
   "41727": {
@@ -1178,11 +1178,11 @@
    "source": "https://space.skyrocket.de/doc_sdat/lkw-1.htm"
   },
   "44499": {
-   "fact": "Its 24 cm telescope sees things about **1 metre** across, and it can take up to **1,000 pictures a day**. The first four BlackSky satellites each went up on a different rocket.",
+   "fact": "Its 24 cm telescope sees things about **1 metre** across, and it can take up to **1,000 pictures a day**. It rode a small **Electron** rocket from New Zealand.",
    "source": "https://space.skyrocket.de/doc_sdat/blacksky-global.htm"
   },
   "46955": {
-   "fact": "The **control** in a race to fall out of orbit. Its twin, Alchemy, unrolled a **70 m tape** to drag itself down fast; Augury had no tape, so engineers could compare how quickly each one fell.",
+   "fact": "The **control** in a race to fall out of orbit. Its twin, Alchemy, unrolled a **70 m tape** to drag itself down fast; Augury had none, so engineers could compare how fast each fell.",
    "source": "https://space.skyrocket.de/doc_sdat/dragracer.htm"
   },
   "48958": {
@@ -1202,11 +1202,11 @@
    "source": "https://en.wikipedia.org/wiki/Jilin-1"
   },
   "55135": {
-   "fact": "One of **five** small satellites on a Ceres-1 rocket. Two of them were **Tianmu-1** weather satellites, which study the air by watching how **navigation signals** bend as they pass through it.",
+   "fact": "One of **five** small satellites on a Ceres-1 rocket. Two were **Tianmu-1** weather satellites, which study the air by watching how **navigation signals** bend through it.",
    "source": "https://space.skyrocket.de/doc_sdat/tianmu-1.htm"
   },
   "56963": {
-   "fact": "Made by **ICEYE**, a Finnish start-up that began at Aalto University. Its big idea was shrinking **radar satellites** to a tiny size, and it grew into the world’s largest radar satellite fleet.",
+   "fact": "Made by **ICEYE**, a Finnish start-up from Aalto University that shrank **radar satellites** to a tiny size. It grew into the world’s largest radar satellite fleet.",
    "source": "https://en.wikipedia.org/wiki/ICEYE"
   },
   "58273": {
@@ -1234,7 +1234,7 @@
    "source": "https://space.skyrocket.de/doc_sdat/khors-1.htm"
   },
   "61776": {
-   "fact": "One of a long series of **SITRO-AIS** CubeSats built by the Russian company SPUTNIX. Each listens for ships' **position signals** to help keep shipping safe.",
+   "fact": "One of a long series of **SITRO-AIS** CubeSats built by the Russian company SPUTNIX. Each listens for ships’ **position signals** to help keep shipping safe.",
    "source": "https://space.skyrocket.de/doc_sdat/sitro-ais-5.htm"
   },
   "62385": {
@@ -1258,7 +1258,7 @@
    "source": "https://en.wikipedia.org/wiki/Bureau_1440"
   },
   "69795": {
-   "fact": "PROVES stands for **Pleiades Rapid Orbital Verification Experiment System**. Electra, named after a star in the Pleiades, was one of six CubeSats from US schools and non-profits sent to the **space station**.",
+   "fact": "Electra is named after a star in the **Pleiades**. It was one of six CubeSats from US schools and non-profits sent to the **space station** and released into orbit.",
    "source": "https://www.nasa.gov/image-article/nasa-launches-six-cubesats-to-international-space-station/"
   },
   "101031": {
@@ -1386,7 +1386,7 @@
    "source": "https://space.skyrocket.de/doc_sdat/crres.htm"
   },
   "21655": {
-   "fact": "A third-generation weather satellite with two TV camera systems and an infrared sensor called **Klimat**, the Russian word for 'climate'.",
+   "fact": "A third-generation weather satellite with two TV camera systems and an infrared sensor called **Klimat**, the Russian word for ‘climate’.",
    "source": "https://space.skyrocket.de/doc_sdat/meteor-3.htm"
   },
   "22969": {
@@ -1426,7 +1426,7 @@
    "source": "https://space.skyrocket.de/doc_sdat/maqsat-b.htm"
   },
   "25503": {
-   "fact": "A **stand-in satellite** built in just **three months** for Ariane 5's third test launch. It copied the weight and wobble of a TV satellite that wasn’t ready to fly.",
+   "fact": "A **stand-in satellite** built in just **three months** for Ariane 5’s third test launch. It copied the weight and wobble of a TV satellite that wasn’t ready to fly.",
    "source": "https://space.skyrocket.de/doc_sdat/maqsat-3.htm"
   },
   "25636": {
@@ -1450,7 +1450,7 @@
    "source": "https://space.skyrocket.de/doc_sdat/kompass.htm"
   },
   "27368": {
-   "fact": "Carried a test copy of the **Hayabusa** asteroid probe’s return capsule. Sadly it most likely never separated from its carrier, and no contact was ever made.",
+   "fact": "Carried a test copy of the **Hayabusa** asteroid probe’s return capsule. It most likely never separated from its carrier, and no contact was ever made.",
    "source": "https://space.skyrocket.de/doc_sdat/dash.htm"
   },
   "27651": {
@@ -1538,11 +1538,11 @@
    "source": "https://space.skyrocket.de/doc_sdat/glast.htm"
   },
   "33321": {
-   "fact": "**Huan Jing** means 'environment' in Chinese. HJ-1B carried an **infrared camera**, while its twin HJ-1A had a camera that split light into many colours.",
+   "fact": "**Huan Jing** means ‘environment’ in Chinese. HJ-1B carried an **infrared camera**, while its twin HJ-1A had a camera that split light into many colours.",
    "source": "https://space.skyrocket.de/doc_sdat/hj-1a.htm"
   },
   "33434": {
-   "fact": "**Chuangxin** means 'innovation'. This 88 kg satellite worked like a **space post office**, picking up messages and delivering them later as it flew over the receiver.",
+   "fact": "**Chuangxin** means ‘innovation’. This 88 kg satellite worked like a **space post office**, picking up messages and delivering them later as it flew over the receiver.",
    "source": "https://space.skyrocket.de/doc_sdat/cx-1.htm"
   },
   "37930": {
@@ -1658,11 +1658,11 @@
    "source": "https://space.skyrocket.de/doc_sdat/cygnss.htm"
   },
   "43585": {
-   "fact": "Officially a civilian imaging satellite, but experts believe it is really **military**. Its oval orbit swoops as low as about **250 km**, closer to the ground than most.",
+   "fact": "Officially a civilian imaging satellite, but experts believe it is really **military**. It was launched into an oval orbit that dipped to about **250 km**, lower than most satellites fly.",
    "source": "https://space.skyrocket.de/doc_sdat/gf-11.htm"
   },
   "53876": {
-   "fact": "**Chuangxin** means 'innovation'. CX-16B and its twin CX-16A were small Chinese Academy of Sciences satellites launched together on a **Kuaizhou-1A** rocket.",
+   "fact": "**Chuangxin** means ‘innovation’. CX-16B and its twin CX-16A were small Chinese Academy of Sciences satellites launched together on a **Kuaizhou-1A** rocket.",
    "source": "https://space.skyrocket.de/doc_sdat/cx-16.htm"
   },
   "57047": {
@@ -1762,7 +1762,7 @@
    "source": "https://arrl.org/news/amsat-announces-end-of-oscar-51-mission"
   },
   "28909": {
-   "fact": "The first upgraded **Gonets-M** satellite. **Gonets** means 'messenger': it stores messages and data and delivers them later to people in **remote places**.",
+   "fact": "The first upgraded **Gonets-M** satellite. **Gonets** means ‘messenger’: it stores messages and data and delivers them later to people in **remote places**.",
    "source": "https://space.skyrocket.de/doc_sdat/gonets-m.htm"
   },
   "29051": {
@@ -1830,7 +1830,7 @@
    "source": "https://space.skyrocket.de/doc_sdat/elisa.htm"
   },
   "63523": {
-   "fact": "An unidentified object from the launch of **Tianhe**, the first module of China’s space station. Tianhe is **16.6 m long** and holds the astronauts' living quarters.",
+   "fact": "An unidentified object from the launch of **Tianhe**, the first module of China’s space station. Tianhe is **16.6 m long** and holds the astronauts’ living quarters.",
    "source": "https://spaceflightnow.com/2021/04/29/assembly-of-chinese-space-station-begins-with-successful-core-module-launch/"
   },
   "49319": {
@@ -1894,7 +1894,7 @@
    "source": "https://celestrak.org/satcat/records.php?CATNR=69796"
   },
   "29": {
-   "fact": "The **first weather satellite**. In about two and a half months it sent back some **23,000 pictures**, letting forecasters see whole storm systems from above for the first time.",
+   "fact": "The **first successful weather satellite**. In about two and a half months it sent back some **23,000 pictures**, letting forecasters see whole storm systems from above for the first time.",
    "source": "https://en.wikipedia.org/wiki/TIROS-1"
   },
   "202": {
@@ -1906,7 +1906,7 @@
    "source": "https://space.skyrocket.de/doc_sdat/transit-5e3.htm"
   },
   "737": {
-   "fact": "In **June 2025**, more than 55 years after NASA stopped using it, astronomers caught a **brief radio blip** from it, probably a spark of static or a tiny space-rock hit.",
+   "fact": "In **June 2024**, more than 55 years after NASA stopped using it, astronomers caught a **brief radio blip** from it, probably a spark of static or a tiny space-rock hit.",
    "source": "https://en.wikipedia.org/wiki/Relay_program"
   },
   "897": {
@@ -1970,7 +1970,7 @@
    "source": "https://space.skyrocket.de/doc_sdat/zaliv.htm"
   },
   "5485": {
-   "fact": "Japan’s **first science satellite**. Its name means **\"new star\"**, and it carried receivers for radio waves from the Sun. An earlier try to launch it failed in 1970.",
+   "fact": "Japan’s **first science satellite**. Its name means **“new star”**, and it carried receivers for radio waves from the Sun. An earlier try to launch it failed in 1970.",
    "source": "https://space.skyrocket.de/doc_sdat/ss-1.htm"
   },
   "5903": {
@@ -2094,7 +2094,7 @@
    "source": "https://space.skyrocket.de/doc_sdat/irs-1a.htm"
   },
   "22036": {
-   "fact": "The **first Gonets** prototype. Gonets means **\"messenger\"**, and the system was offered to send medical records to remote places that had no other links.",
+   "fact": "The **first Gonets** prototype. Gonets means **“messenger”**, and the system was offered to send medical records to remote places that had no other links.",
    "source": "https://space.skyrocket.de/doc_sdat/gonets.htm"
   },
   "22490": {
@@ -2210,7 +2210,7 @@
    "source": "https://space.skyrocket.de/doc_sdat/parasol.htm"
   },
   "28810": {
-   "fact": "Its name means **\"dawn\"** in Japanese. This small satellite took close-up looks at the **fine structure of the northern lights**.",
+   "fact": "Its name means **“dawn”** in Japanese. This small satellite took close-up looks at the **fine structure of the northern lights**.",
    "source": "https://en.wikipedia.org/wiki/Reimei"
   },
   "28931": {
@@ -2250,7 +2250,7 @@
    "source": "https://en.wikipedia.org/wiki/GeoEye-1"
   },
   "33446": {
-   "fact": "Its name simply means **\"remote sensing\"**. Officially it watches Earth for the government, but it is likely also used as a **military spy camera**.",
+   "fact": "Its name simply means **“remote sensing”**. Officially it watches Earth for the government, but it is likely also used as a **military spy camera**.",
    "source": "https://space.skyrocket.de/doc_sdat/yaogan-2.htm"
   },
   "33504": {
@@ -2270,7 +2270,7 @@
    "source": "https://en.wikipedia.org/wiki/PROBA-2"
   },
   "36508": {
-   "fact": "Built to measure how **thick the sea ice** is near the North Pole. It replaced CryoSat-1, which was **lost in a rocket failure** in 2005, and reaches closer to the pole than earlier missions.",
+   "fact": "Built to measure how **thick the sea ice** is near the North Pole. It replaced CryoSat-1, **lost in a rocket failure** in 2005, and reaches closer to the pole than earlier missions.",
    "source": "https://en.wikipedia.org/wiki/CryoSat-2"
   },
   "39630": {
@@ -2282,7 +2282,7 @@
    "source": "https://en.wikipedia.org/wiki/Cartosat-2B"
   },
   "37165": {
-   "fact": "Like other Yaogan spy satellites, it also has a secret military name in the **Jianbing** family, which means **\"vanguard\"** or \"point soldier\".",
+   "fact": "Like other Yaogan spy satellites, it also has a secret military name in the **Jianbing** family, which means **“vanguard”** or “point soldier”.",
    "source": "https://en.wikipedia.org/wiki/Yaogan"
   },
   "37214": {
@@ -2298,7 +2298,7 @@
    "source": "https://space.skyrocket.de/doc_sdat/bpa-1.htm"
   },
   "37931": {
-   "fact": "Shiyan means **\"experiment\"**. This Chinese test satellite carried a digital camera system able to make **3D maps** of the land below.",
+   "fact": "Shiyan means **“experiment”**. This Chinese test satellite carried a digital camera system able to make **3D maps** of the land below.",
    "source": "https://space.skyrocket.de/doc_sdat/sy-3.htm"
   },
   "38038": {
@@ -2330,7 +2330,7 @@
    "source": "https://space.skyrocket.de/doc_sdat/sj-11.htm"
   },
   "39249": {
-   "fact": "Gonets means **\"messenger\"**. It works like a flying post office: it **stores messages** as it passes one place and drops them off when it passes another.",
+   "fact": "Gonets means **“messenger”**. It works like a flying post office: it **stores messages** as it passes one place and drops them off when it passes another.",
    "source": "https://space.skyrocket.de/doc_sdat/gonets-m.htm"
   },
   "39270": {
@@ -2350,11 +2350,11 @@
    "source": "https://space.skyrocket.de/doc_sdat/hincube.htm"
   },
   "39484": {
-   "fact": "A modern Russian **mailbox** satellite in the Strela family. In 2018 a spy caught in Austria had a **suitcase radio** for sending secret messages through Strela satellites.",
+   "fact": "A modern Russian **mailbox** satellite in the Strela family. A retired Austrian colonel convicted of spying for Russia had been trained to send messages via **Strela-3** satellites.",
    "source": "https://en.wikipedia.org/wiki/Strela_(satellite)"
   },
   "40920": {
-   "fact": "Strela means **\"arrow\"**. These satellites grab messages as they pass over a sender and **beam them down later** when they reach the receiver, handy in remote regions.",
+   "fact": "Strela means **“arrow”**. These satellites grab messages as they pass over a sender and **beam them down later** when they reach the receiver, handy in remote regions.",
    "source": "https://en.wikipedia.org/wiki/Strela_(satellite)"
   },
   "40061": {
@@ -2458,7 +2458,7 @@
    "source": "https://space.skyrocket.de/doc_sdat/menut.htm"
   },
   "55861": {
-   "fact": "Shiyan means **\"experiment\"**. China has released **no details at all** about what this secretive satellite does.",
+   "fact": "Shiyan means **“experiment”**. China has released **no details at all** about what this secretive satellite does.",
    "source": "https://space.skyrocket.de/doc_sdat/sy-19.htm"
   },
   "57206": {
@@ -2466,7 +2466,7 @@
    "source": "https://space.skyrocket.de/doc_chr/lau2023.htm"
   },
   "58282": {
-   "fact": "A **SuperDove**: a shoebox-sized satellite whose camera sees **eight colours** of light, including yellow and \"red edge\", useful for spotting things like **algal blooms** in water.",
+   "fact": "A **SuperDove**: a shoebox-sized satellite whose camera sees **eight colours** of light, including yellow and “red edge”, useful for spotting things like **algal blooms** in water.",
    "source": "https://public-pages-files-2025.frontiersin.org/journals/remote-sensing/articles/10.3389/frsen.2025.1624783/text"
   },
   "58328": {
@@ -2550,7 +2550,7 @@
    "source": "https://en.wikipedia.org/wiki/GEOS-1"
   },
   "1952": {
-   "fact": "A Navy **Transit-O** navigation satellite, also called \"Oscar\". Ships used the Transit system to find their way until GPS replaced it at the end of **1996**.",
+   "fact": "A Navy **Transit-O** navigation satellite, also called “Oscar”. Ships used the Transit system to find their way until GPS replaced it at the end of **1996**.",
    "source": "https://space.skyrocket.de/doc_sdat/transit-o.htm"
   },
   "2142": {
@@ -2582,11 +2582,11 @@
    "source": "https://en.wikipedia.org/wiki/Tsiklon_(satellite_navigation_system)"
   },
   "4382": {
-   "fact": "Weighed **173 kg**, more than the first satellites of the four earlier space nations **put together**. A shiny ring was added so people could see it.",
+   "fact": "Weighed **173 kg**, more than the first satellites of the four earlier space nations **put together**. A shiny skirt on its rocket’s last stage was meant to help people see it.",
    "source": "https://en.wikipedia.org/wiki/Dong_Fang_Hong_I"
   },
   "4952": {
-   "fact": "Its name **Tansei** means **\"light blue\"**, the school colour of the University of Tokyo, which built it. It was **Japan’s second satellite**.",
+   "fact": "Its name, **Tansei**, means “light blue”, the school colour of the University of Tokyo, which built it. It was **Japan’s second satellite**.",
    "source": "https://en.wikipedia.org/wiki/Tansei"
   },
   "6235": {
@@ -2594,7 +2594,7 @@
    "source": "https://en.wikipedia.org/wiki/NOAA-2"
   },
   "7646": {
-   "fact": "A ball just **24 cm wide** with a heavy **uranium core** and **60 mirrors**. Lasers bounced off it helped scientists map the world’s **ocean tides**.",
+   "fact": "A ball just **24 cm wide** with a heavy uranium core and 60 mirrors. Lasers bounced off it helped scientists map the world’s **ocean tides**.",
    "source": "https://en.wikipedia.org/wiki/Starlette_(satellite)"
   },
   "1272": {
@@ -2626,7 +2626,7 @@
    "source": "https://en.wikipedia.org/wiki/Molniya_(satellite)"
   },
   "21706": {
-   "fact": "**Molniya** is Russian for **\"lightning\"**: the name comes from how fast these satellites race through the lowest point of their orbit.",
+   "fact": "**Molniya** is Russian for **“lightning”**: the name comes from how fast these satellites race through the lowest point of their orbit.",
    "source": "https://en.wikipedia.org/wiki/Molniya_(satellite)"
   },
   "8860": {
@@ -2726,7 +2726,7 @@
    "source": "https://en.wikipedia.org/wiki/Stella_(satellite)"
   },
   "23323": {
-   "fact": "Designed, built and tested in just **18 months**. The \"P\" in its name means it was made to ride India’s new **PSLV** rocket.",
+   "fact": "Designed, built and tested in just **18 months**. The “P” in its name means it was made to ride India’s new **PSLV** rocket.",
    "source": "https://en.wikipedia.org/wiki/IRS-P2"
   },
   "23715": {
@@ -2750,7 +2750,7 @@
    "source": "https://en.wikipedia.org/wiki/SEDSAT-1"
   },
   "25682": {
-   "fact": "In 2003 a pair of tiny mirrors in its camera broke, leaving **zig-zag gaps** that miss about **22%** of each picture. It kept imaging until its mission ended in 2025.",
+   "fact": "In 2003 a pair of tiny mirrors in its camera broke, leaving **zig-zag gaps** that miss about **22%** of each picture. It kept taking pictures until 2024 and was switched off in 2025.",
    "source": "https://en.wikipedia.org/wiki/Landsat_7"
   },
   "25789": {
@@ -2766,7 +2766,7 @@
    "source": "https://en.wikipedia.org/wiki/PicoSAT"
   },
   "26384": {
-   "fact": "**Nadezhda** means **\"hope\"** in Russian, a good name for a satellite that listened for distress beacons. Each one weighed **870 kg**.",
+   "fact": "**Nadezhda** means “hope” in Russian, a good name for a satellite that listened for distress beacons. Each one weighed **870 kg**.",
    "source": "https://en.wikipedia.org/wiki/Nadezhda_(satellite)"
   },
   "25396": {
@@ -2826,7 +2826,7 @@
    "source": "https://en.wikipedia.org/wiki/EgyptSat_1"
   },
   "31128": {
-   "fact": "**Colombia’s first satellite**, a tiny CubeSat built by university students. Its name means **\"Freedom\"**. Expected to last 50 days, it was still working two years later.",
+   "fact": "**Colombia’s first satellite**, a tiny CubeSat built by university students. Its name means **“Freedom”**. Expected to last 50 days, it was still working two years later.",
    "source": "https://en.wikipedia.org/wiki/Libertad_1"
   },
   "32060": {
@@ -2894,7 +2894,7 @@
    "source": "https://en.wikipedia.org/wiki/Gaofen_1"
   },
   "39250": {
-   "fact": "**Gonets** means **\"messenger\"** in Russian. The system started as a government project and was handed to a **private company** in 1996.",
+   "fact": "**Gonets** means **“messenger”** in Russian. The system started as a government project and was handed to a **private company** in 1996.",
    "source": "https://en.wikipedia.org/wiki/Gonets"
   },
   "40062": {
@@ -2906,11 +2906,11 @@
    "source": "https://en.wikipedia.org/wiki/Gonets"
   },
   "39485": {
-   "fact": "Works like a **mailbox in space**: it stores encrypted messages and passes them on later. Rodnik is the newest version of the Soviet **Strela** (\"Arrow\") design.",
+   "fact": "Works like a **mailbox in space**: it stores encrypted messages and passes them on later. Rodnik is the newest version of the Soviet **Strela** (“Arrow”) design.",
    "source": "https://en.wikipedia.org/wiki/Strela_(satellite)"
   },
   "40921": {
-   "fact": "A Rodnik, the newest kind of Strela relay satellite. In 2018 a spy in Austria was caught with a **suitcase radio** for sending secret messages through **Strela-3** satellites.",
+   "fact": "A Rodnik, the newest kind of Strela relay satellite. A retired Austrian colonel who spied for Russia had been trained to pass secret messages through **Strela-3** satellites.",
    "source": "https://en.wikipedia.org/wiki/Strela_(satellite)"
   },
   "39634": {
@@ -2934,7 +2934,7 @@
    "source": "https://en.wikipedia.org/wiki/SkySat"
   },
   "41875": {
-   "fact": "Turkey’s sharp-eyed military satellite, seeing details smaller than **50 cm**. In 2025 its **100,000th photo** showed the Çanakkale Martyrs' Memorial.",
+   "fact": "Turkey’s sharp-eyed military satellite, seeing details under **1 metre** across. In 2025 its **100,000th photo** showed the Çanakkale Martyrs’ Memorial.",
    "source": "https://en.wikipedia.org/wiki/G%C3%B6kt%C3%BCrk-1"
   },
   "41891": {
@@ -3082,15 +3082,15 @@
    "source": "https://everydayastronaut.com/yaogan-36-long-march-2d"
   },
   "55011": {
-   "fact": "Listens for the **radio signals ships give off**, day or night and in any weather, to find and track vessels at sea, even **\"dark\" ships**.",
+   "fact": "Listens for the **radio signals ships give off**, day or night and in any weather, to find and track vessels at sea, even **“dark” ships**.",
    "source": "https://unseenlabs.com/en/news/launch-of-bro-8/"
   },
   "57422": {
-   "fact": "Built to test flying in **very low orbit**. After launch it fired its own **ion thrusters** to sink to about 357 km, and it carries test cameras.",
+   "fact": "Built to test flying in **very low orbit**. After launch it used its own **ion thrusters** to lower its orbit, and it carries test cameras.",
    "source": "https://space.skyrocket.de/doc_sdat/qiankun-1.htm"
   },
   "58295": {
-   "fact": "A **space delivery van**. In February 2024 it released a small satellite into its own orbit, the company’s first **\"last-mile\" delivery** in space.",
+   "fact": "A **space delivery van**. In February 2024 it released a small satellite into its own orbit, the company’s first **“last-mile” delivery** in space.",
    "source": "https://www.exotrail.com/blog/exotrail-becomes-a-space-services-provider-with-successful-in-orbit-delivery-of-a-commercial-satellite"
   },
   "59129": {
@@ -3114,11 +3114,11 @@
    "source": "https://spaceflightnow.com/2025/01/14/spacex-to-launch-131-spacecraft-on-transporter-12-falcon-9-rideshare-mission-from-california/"
   },
   "63209": {
-   "fact": "**Tianyan** means **\"Sky Eye\"** in Chinese. It is listed as an Earth-watching satellite, launched alongside the imaging satellite Siwei Gaojing 3-02.",
+   "fact": "**Tianyan** means **“Sky Eye”** in Chinese. It is listed as an Earth-watching satellite, launched alongside the imaging satellite Siwei Gaojing 3-02.",
    "source": "https://en.wikipedia.org/wiki/Tianyan_(satellite)"
   },
   "66376": {
-   "fact": "One of **three** satellites launched together for **\"orbital technology testing\"**. China has not said what they actually do.",
+   "fact": "One of **three** satellites launched together for **“orbital technology testing”**. China has not said what they actually do.",
    "source": "https://nextspaceflight.com/launches/details/8024"
   },
   "67685": {
@@ -3226,7 +3226,7 @@
    "source": "https://space.skyrocket.de/doc_sdat/toms-ep.htm"
   },
   "25693": {
-   "fact": "The **first test** of Surrey Satellite Technology’s bigger 'minisatellite' design. It carried cameras, GPS and a **radio relay for hobbyists**.",
+   "fact": "The **first test** of Surrey Satellite Technology’s bigger ‘minisatellite’ design. It carried cameras, GPS and a **radio relay for hobbyists**.",
    "source": "https://space.skyrocket.de/doc_sdat/uosat-12.htm"
   },
   "26385": {
@@ -3374,7 +3374,7 @@
    "source": "https://en.wikipedia.org/wiki/Terra_(satellite)"
   },
   "26093": {
-   "fact": "A **200-gram** radio beacon built by Santa Clara University students and launched **from inside another satellite**, OPAL. Sadly, no signal was ever heard from it.",
+   "fact": "A **200-gram** radio beacon built by Santa Clara University students and launched **from inside another satellite**, OPAL. No signal was ever heard from it.",
    "source": "https://space.skyrocket.de/doc_sdat/artemis_picosat.htm"
   },
   "26609": {
@@ -3422,7 +3422,7 @@
    "source": "https://space.skyrocket.de/doc_sdat/sj-6.htm"
   },
   "28982": {
-   "fact": "One of three small NASA test satellites that flew together. During a **'lights out'** test they ran for a time on **pre-programmed commands**, with no help from the ground.",
+   "fact": "One of three small NASA test satellites that flew together. During a **‘lights out’** test they ran for a time on **pre-programmed commands**, with no help from the ground.",
    "source": "https://space.skyrocket.de/doc_sdat/st-5.htm"
   },
   "29107": {
@@ -3462,7 +3462,7 @@
    "source": "https://space.skyrocket.de/doc_sdat/oceansat-2.htm"
   },
   "36797": {
-   "fact": "A **6 kg** cube just 20 cm wide. It listened for ships' **identity beacons**, which normally reach only about 50 km from shore, to track vessels far out at sea.",
+   "fact": "A **6 kg** cube just 20 cm wide. It listened for ships’ **identity beacons**, which normally reach only about 50 km from shore, to track vessels far out at sea.",
    "source": "https://space.skyrocket.de/doc_sdat/aissat-1.htm"
   },
   "37167": {
@@ -3470,7 +3470,7 @@
    "source": "https://space.skyrocket.de/doc_sdat/zdps-1.htm"
   },
   "37387": {
-   "fact": "Carried **three cameras**, from sharp close-ups to wide views, plus a receiver that picked up **ships' location signals** from space.",
+   "fact": "Carried **three cameras**, from sharp close-ups to wide views, plus a receiver that picked up **ships’ location signals** from space.",
    "source": "https://space.skyrocket.de/doc_sdat/resourcesat-2.htm"
   },
   "37789": {
@@ -3558,7 +3558,7 @@
    "source": "https://space.skyrocket.de/doc_sdat/sj-12.htm"
   },
   "38257": {
-   "fact": "Officially a 'remote sensing' satellite, but experts think it is an **optical spy satellite**. It flies fairly low, at about **470 km**, to see more detail.",
+   "fact": "Officially a ‘remote sensing’ satellite, but experts think it is an **optical spy satellite**. It flies fairly low, at about **470 km**, to see more detail.",
    "source": "https://space.skyrocket.de/doc_sdat/yaogan-14.htm"
   },
   "52422": {
@@ -3578,7 +3578,7 @@
    "source": "https://space.skyrocket.de/doc_sdat/lemur-2.htm"
   },
   "58336": {
-   "fact": "A Spire **Lemur** CubeSat. Newer Lemurs like this listen for **aircraft position signals** as well as ships' radio beacons, tracking traffic all over the globe.",
+   "fact": "A Spire **Lemur** CubeSat. Newer Lemurs like this listen for **aircraft position signals** as well as ships’ radio beacons, tracking traffic all over the globe.",
    "source": "https://space.skyrocket.de/doc_sdat/lemur-2.htm"
   },
   "59146": {
@@ -3598,7 +3598,7 @@
    "source": "https://space.skyrocket.de/doc_sdat/tselina-r.htm"
   },
   "24728": {
-   "fact": "**Gonets** means 'messenger'. It stored messages and passed them on later, and the system was even offered to help send **medical records** to remote places.",
+   "fact": "**Gonets** means ‘messenger’. It stored messages and passed them on later, and the system was even offered to help send **medical records** to remote places.",
    "source": "https://space.skyrocket.de/doc_sdat/gonets-m.htm"
   },
   "39251": {
@@ -3610,7 +3610,7 @@
    "source": "https://space.skyrocket.de/doc_sdat/gonets-m.htm"
   },
   "40553": {
-   "fact": "Flies about **1,400 km** up, more than three times higher than the space station, so each pass covers a huge area as it **collects and delivers messages**.",
+   "fact": "Flies about **1,500 km** up, more than three times higher than the space station, so each pass covers a huge area as it **collects and delivers messages**.",
    "source": "https://space.skyrocket.de/doc_sdat/gonets-m.htm"
   },
   "39497": {
@@ -3630,7 +3630,7 @@
    "source": "https://space.skyrocket.de/doc_sdat/kosmos-2561.htm"
   },
   "40137": {
-   "fact": "The fourth of China’s small **Chuangxin 1** messenger satellites, which pick up data from remote stations and relay it later. Chuangxin means **'innovation'**.",
+   "fact": "The fourth of China’s small **Chuangxin 1** messenger satellites, which pick up data from remote stations and relay it later. Chuangxin means **‘innovation’**.",
    "source": "https://space.skyrocket.de/doc_sdat/cx-1.htm"
   },
   "36110": {
@@ -3694,7 +3694,7 @@
    "source": "https://space.skyrocket.de/doc_sdat/spritesat.htm"
   },
   "41896": {
-   "fact": "Gave the **first proof** that 'chorus' radio waves in space knock electrons down into the air, the cause of flickering **pulsating auroras**.",
+   "fact": "Gave the **first proof** that ‘chorus’ radio waves in space knock electrons down into the air, the cause of flickering **pulsating auroras**.",
    "source": "https://www.isee.nagoya-u.ac.jp/en/news/topics/2018/20180220.html"
   },
   "38711": {
@@ -3706,7 +3706,7 @@
    "source": "https://www.esa.int/ESA_Multimedia/Images/2019/05/Ariane_L04"
   },
   "35684": {
-   "fact": "A **12 kg** satellite run for exactEarth, a Canadian ship-tracking company. It picked up ships' **position signals** from space and relayed data for tracking equipment.",
+   "fact": "A **12 kg** satellite run for exactEarth, a Canadian ship-tracking company. It picked up ships’ **position signals** from space and relayed data for tracking equipment.",
    "source": "https://space.skyrocket.de/doc_sdat/aprizesat-1_latinsat-1.htm"
   },
   "24926": {
@@ -3734,7 +3734,7 @@
    "source": "https://smallsatnews.com/2025/03/19/startical-launches-their-first-satellite-iod-1/"
   },
   "62628": {
-   "fact": "A D-Orbit **space tug**: it carries a load of small satellites and releases each one into its own orbit. Each ION also gets a person’s name, like **'Joyful Julia'**.",
+   "fact": "A D-Orbit **space tug**: it carries a load of small satellites and releases each one into its own orbit. Each ION also gets a person’s name, like **‘Joyful Julia’**.",
    "source": "https://en.wikipedia.org/wiki/D-Orbit"
   },
   "69328": {
@@ -3862,7 +3862,7 @@
    "source": "https://en.wikipedia.org/wiki/NOAA-5"
   },
   "10457": {
-   "fact": "A Transit satellite rebuilt to pretend to be a **Trident missile** in flight. It copied GPS signals so the Navy could test the system that made its missiles more accurate.",
+   "fact": "A Transit satellite rebuilt to pretend to be a **Trident missile** in flight. It passed on **GPS signals** so the Navy could test the system that made its missiles more accurate.",
    "source": "https://space.skyrocket.de/doc_sdat/transat.htm"
   },
   "10731": {
@@ -3886,7 +3886,7 @@
    "source": "https://en.wikipedia.org/wiki/Molniya_(satellite)"
   },
   "13875": {
-   "fact": "A **Molniya-3**, the version made for **civilian** communications. Its orbit swung out to about **40,000 km** over the north and back in to 500 km every **12 hours**.",
+   "fact": "A **Molniya-3**, the version made for civilian communications. Its orbit swung out to about **40,000 km** over the north and back in to 500 km every 12 hours.",
    "source": "https://space.skyrocket.de/doc_sdat/molniya-3.htm"
   },
   "14780": {
@@ -3946,7 +3946,7 @@
    "source": "https://space.skyrocket.de/doc_sdat/noss-2.htm"
   },
   "22077": {
-   "fact": "South Korea’s **first satellite**, nicknamed **\"Our Star\"** (Uribyeol). Built with help from Britain’s University of Surrey, it was meant to last five years but kept in touch for **12**.",
+   "fact": "South Korea’s **first satellite**, nicknamed “Our Star” (Uribyol). Built with help from Britain’s University of Surrey, it was meant to last five years but kept in touch for **12**.",
    "source": "https://en.wikipedia.org/wiki/KITSAT-1"
   },
   "22671": {
@@ -4030,7 +4030,7 @@
    "source": "https://space.skyrocket.de/doc_sdat/gonets.htm"
   },
   "27424": {
-   "fact": "Aqua is Latin for **water**. One of its six instruments, built to last three years, kept working for **over nine**. Two planned sister satellites were never built.",
+   "fact": "Aqua is Latin for **water**. Its Japanese microwave sensor, AMSR-E, was built to last three years and kept working for **over nine**, until 2011.",
    "source": "https://space.skyrocket.de/doc_sdat/eos-pm-1.htm"
   },
   "27561": {
@@ -4102,7 +4102,7 @@
    "source": "https://space.skyrocket.de/doc_sdat/rapideye-1.htm"
   },
   "33408": {
-   "fact": "One half of the third **Shi Jian 6 pair**: the 'A' satellites use a different body design from their 'B' partners. Their stated job was measuring **radiation** in space.",
+   "fact": "One half of the third **Shi Jian 6 pair**: the ‘A’ satellites use a different body design from their ‘B’ partners. Their stated job was measuring **radiation** in space.",
    "source": "https://space.skyrocket.de/doc_sdat/sj-6.htm"
   },
   "33495": {
@@ -4126,7 +4126,7 @@
    "source": "https://space.skyrocket.de/doc_sdat/yaogan-8.htm"
   },
   "36598": {
-   "fact": "Named after **Jean Picard**, a 1600s French astronomer who made the first accurate measurement of the Sun’s size. This satellite measured the **Sun’s size and brightness** to learn how it affects our climate.",
+   "fact": "Named after **Jean Picard**, a 1600s French astronomer who measured the Sun’s size accurately. This satellite measured the **Sun’s size and brightness** to see how they affect our climate.",
    "source": "https://space.skyrocket.de/doc_sdat/picard.htm"
   },
   "36798": {
@@ -4134,7 +4134,7 @@
    "source": "https://en.wikipedia.org/wiki/Alsat-2A"
   },
   "37168": {
-   "fact": "A **watchtower in space**: its camera tracks other satellites and **space junk** from orbit. That data can help keep astronauts' spacecraft out of harm’s way.",
+   "fact": "A **watchtower in space**: its camera tracks other satellites and **space junk** from orbit. That data can help keep astronauts’ spacecraft out of harm’s way.",
    "source": "https://space.skyrocket.de/doc_sdat/sbss-1.htm"
   },
   "37388": {
@@ -4182,7 +4182,7 @@
    "source": "https://space.skyrocket.de/doc_sdat/sj-15.htm"
   },
   "39253": {
-   "fact": "Named after a cape where fishermen prayed for safe trips, its name can also mean **\"beyond the Sun\"**. It studied planets like **Jupiter** in ultraviolet light from Earth orbit.",
+   "fact": "Named after a cape where fishermen prayed for safe trips, its name can also mean **“beyond the Sun”**. It studied planets like **Jupiter** in ultraviolet light from Earth orbit.",
    "source": "https://en.wikipedia.org/wiki/Hisaki_(satellite)"
   },
   "39416": {
@@ -4222,7 +4222,7 @@
    "source": "https://space.skyrocket.de/doc_sdat/qb50p2.htm"
   },
   "40054": {
-   "fact": "A **14 kg** German satellite with a **4-metre** coiled antenna for catching ships' position signals, even the signals from **rescue beacons**.",
+   "fact": "A **14 kg** German satellite with a **4-metre** coiled antenna for catching ships’ position signals, even the signals from **rescue beacons**.",
    "source": "https://space.skyrocket.de/doc_sdat/aisat.htm"
   },
   "40069": {
@@ -4266,7 +4266,7 @@
    "source": "https://space.skyrocket.de/doc_sdat/skysat-3.htm"
   },
   "41774": {
-   "fact": "One of **four** SkySats launched together on a European **Vega** rocket. Its thrusters use a **\"green\"** fuel meant to be safer than the usual satellite fuel.",
+   "fact": "One of **four** SkySats launched together on a European **Vega** rocket. Its thrusters use a **“green”** fuel meant to be safer than the usual satellite fuel.",
    "source": "https://space.skyrocket.de/doc_sdat/skysat-3.htm"
   },
   "41847": {
@@ -4306,7 +4306,7 @@
    "source": "https://space.skyrocket.de/doc_sdat/yaogan-35a.htm"
   },
   "54251": {
-   "fact": "One of five Jilin-1 satellites launched together on a small **Ceres-1** rocket. Two of its sister satellites were later **sold to Russia’s Wagner Group**.",
+   "fact": "One of five Jilin-1 satellites launched together on a small **Ceres-1** rocket. Two other satellites of the same type were later **sold to Russia’s Wagner Group**.",
    "source": "https://space.skyrocket.de/doc_sdat/jilin-1-gaofen-03a.htm"
   },
   "55041": {
@@ -4374,7 +4374,7 @@
    "source": "https://space.skyrocket.de/doc_sdat/rassvet-3.htm"
   },
   "107": {
-   "fact": "Carried the **first gamma-ray telescope** ever flown in space. In seven months it caught 22 gamma rays from the sky, the very start of gamma-ray astronomy.",
+   "fact": "Carried the **first gamma-ray telescope** ever flown in space. It caught just **22 gamma rays** from the sky, the very start of gamma-ray astronomy.",
    "source": "https://en.wikipedia.org/wiki/Explorer_11"
   },
   "340": {
@@ -4398,7 +4398,7 @@
    "source": "https://space.skyrocket.de/doc_sdat/transit-o.htm"
   },
   "1293": {
-   "fact": "Earlier OSCARs could only beep \"HI\" in Morse code. This was the **first that relayed signals** from the ground, passing on messages between radio hams in North America and Europe.",
+   "fact": "Earlier OSCARs could only beep “HI” in Morse code. This was the **first that relayed signals** from the ground, passing on messages between radio hams in North America and Europe.",
    "source": "https://en.wikipedia.org/wiki/OSCAR_3"
   },
   "1514": {
@@ -4518,7 +4518,7 @@
    "source": "https://en.wikipedia.org/wiki/Molniya_(satellite)"
   },
   "14781": {
-   "fact": "Carries a **speech synthesiser** that could talk over the radio, and a microphone to hear specks of space dust hitting it. Fans still heard its signal **over 40 years** after launch.",
+   "fact": "Carried a **speech synthesiser** that could talk over the radio, and a microphone to hear specks of space dust hitting it. Fans still heard its signal **over 40 years** after launch.",
    "source": "https://en.wikipedia.org/wiki/UoSAT-2"
   },
   "15595": {
@@ -4686,7 +4686,7 @@
    "source": "https://space.skyrocket.de/doc_sdat/saudisat-2.htm"
   },
   "28470": {
-   "fact": "Officially a civilian **Ziyuan** (\"resource\") satellite. It was reportedly part of China’s first sharp-eyed **military camera** series, seeing details 2 m across or less.",
+   "fact": "Officially a civilian **Ziyuan** (“resource”) satellite. It was reportedly part of China’s first sharp-eyed **military camera** series, seeing details 2 m across or less.",
    "source": "https://space.skyrocket.de/doc_sdat/zy-2.htm"
   },
   "28650": {
@@ -4694,7 +4694,7 @@
    "source": "https://en.wikipedia.org/wiki/HAMSAT"
   },
   "28894": {
-   "fact": "The **first spacecraft built by European students**, about the size of a washing machine. Twenty-one university teams worked together **over the internet** to make it.",
+   "fact": "The **first spacecraft built by European students**, about the size of a washing machine. Twenty-three university teams worked together **over the internet** to make it.",
    "source": "https://en.wikipedia.org/wiki/SSETI_Express"
   },
   "29048": {
@@ -4706,7 +4706,7 @@
    "source": "https://space.skyrocket.de/doc_sdat/resurs-dk.htm"
   },
   "29709": {
-   "fact": "Indonesia’s **first remote sensing satellite**, built with the Technical University of Berlin. Before it, Indonesia had to rely on pictures from **other countries' satellites**.",
+   "fact": "Indonesia’s **first remote sensing satellite**, built with the Technical University of Berlin. Before it, Indonesia had to rely on pictures from **other countries’ satellites**.",
    "source": "https://en.wikipedia.org/wiki/LAPAN-TUBSAT"
   },
   "31121": {
@@ -4722,7 +4722,7 @@
    "source": "https://en.wikipedia.org/wiki/COSMO-SkyMed"
   },
   "32792": {
-   "fact": "Never let go of its rocket: this German experiment stayed **bolted to the rocket’s top stage** in orbit, testing how to pick up ships' position signals from space.",
+   "fact": "Never let go of its rocket: this German experiment stayed **bolted to the rocket’s top stage** in orbit, testing how to pick up ships’ position signals from space.",
    "source": "https://en.wikipedia.org/wiki/Rubin-8"
   },
   "33315": {
@@ -4754,7 +4754,7 @@
    "source": "https://space.skyrocket.de/doc_sdat/xw-1.htm"
   },
   "36599": {
-   "fact": "The steerable half of a Swedish pair. Mango practised **flying in formation** with its little partner **Tango**, which split off after about two weeks in orbit.",
+   "fact": "The steerable half of a Swedish pair. Mango practised **flying in formation** with its little partner **Tango**, which split off after about two months in orbit.",
    "source": "https://space.skyrocket.de/doc_sdat/prisma.htm"
   },
   "36799": {
@@ -4858,7 +4858,7 @@
    "source": "https://space.skyrocket.de/doc_sdat/relek.htm"
   },
   "40110": {
-   "fact": "One of three Chinese satellites flying as a team, thought to work like the US Navy’s spy trios: listening for **ships' radio signals** to find them at sea.",
+   "fact": "One of three Chinese satellites flying as a team, thought to work like the US Navy’s spy trios: listening for **ships’ radio signals** to find them at sea.",
    "source": "https://space.skyrocket.de/doc_sdat/yaogan-9.htm"
   },
   "40261": {
@@ -4942,7 +4942,7 @@
    "source": "https://space.skyrocket.de/doc_sdat/vigoride.htm"
   },
   "56204": {
-   "fact": "Nicknamed **Mey-Lin**: GHGSat names its satellites after **team members' children**. It hunts for leaks of **methane**, a powerful greenhouse gas.",
+   "fact": "Nicknamed **Mey-Lin**: GHGSat names its satellites after **team members’ children**. It hunts for leaks of **methane**, a powerful greenhouse gas.",
    "source": "https://www.newswire.com/news/ghgsat-to-launch-6-new-high-resolution-emission-monitoring-satellites-21963054"
   },
   "58019": {
@@ -4970,7 +4970,7 @@
    "source": "https://space.skyrocket.de/doc_sdat/sitro-ais-5.htm"
   },
   "61788": {
-   "fact": "Helps keep shipping **safe** by collecting ships' AIS position signals from space. **24 SITRO-AIS** satellites rode up on this one Soyuz launch.",
+   "fact": "Helps keep shipping **safe** by collecting ships’ AIS position signals from space. **24 SITRO-AIS** satellites rode up on this one Soyuz launch.",
    "source": "https://space.skyrocket.de/doc_sdat/sitro-ais-5.htm"
   },
   "62644": {
@@ -4994,7 +4994,7 @@
    "source": "https://humans-in-space.jaxa.jp/en/biz-lab/news/detail/005757.html"
   },
   "100089": {
-   "fact": "Part of **Bureau 1440**'s plan for Russian satellite internet. These satellites talk to each other with **lasers** and steer using electric thrusters fed with krypton gas.",
+   "fact": "Part of **Bureau 1440**’s plan for Russian satellite internet. These satellites talk to each other with **lasers** and steer using electric thrusters fed with krypton gas.",
    "source": "https://space.skyrocket.de/doc_sdat/rassvet-3.htm"
   }
  },
@@ -5009,7 +5009,7 @@
     "A Kosmos-3M second stage could **fire its engine twice**: once to reach space, then again later to round out its orbit.",
     "A single Kosmos-3M could drop off **eight small satellites** on one launch, spacing them out around the same orbit.",
     "Most of these rockets launched from **Plesetsk**, a military cosmodrome in the forests of northern Russia that was kept secret for years.",
-    "A Kosmos-3M launched **Aryabhata**, India’s very first satellite, from Kapustin Yar, a launch site near the Volga River.",
+    "In 1975 a Kosmos-3M launched **Aryabhata**, India’s very first satellite, from Kapustin Yar, a launch site near the Volga River.",
     "Empty stages like this one slowly **tumble end over end**, so they brighten and fade as sunlight glints off their sides."
    ],
    "source": "https://space.skyrocket.de/doc_lau_det/kosmos-3m.htm"
@@ -5035,7 +5035,7 @@
    "facts": [
     "From an **Ariane 5**, Europe’s heavy-lift rocket, which flew **117 times** between 1996 and 2023.",
     "Ariane 5 launched the **James Webb Space Telescope** so precisely that Webb saved enough fuel to possibly double its working life.",
-    "Ariane 5's upper stage is **5.4 metres wide** but less than 5 metres tall, so it looks more like a giant drum than a rocket.",
+    "Ariane 5’s upper stage is **5.4 metres wide** but less than 5 metres tall, so it looks more like a giant drum than a rocket.",
     "From 2003 to 2017, Ariane 5 pulled off **82 successful launches in a row** without a single failure.",
     "It launched from **Kourou in French Guiana**, close to the equator, where Earth’s spin gives rockets a free push eastward.",
     "Ariane 5 often carried **two big satellites** at once, one stacked above the other inside its nose cone.",
@@ -5049,7 +5049,7 @@
    "match": "^ARIANE [123] R/B",
    "facts": [
     "From one of Europe’s first Ariane rockets. **Ariane 1** first flew on Christmas Eve 1979, giving Europe its own ride to space.",
-    "This third stage burned **liquid hydrogen and liquid oxygen**, kept so cold that the hydrogen stays liquid only below about minus 253°C.",
+    "This third stage burned **liquid hydrogen and liquid oxygen**. Hydrogen stays liquid only when chilled below about minus 253°C.",
     "By early 1986, the first Ariane rockets **led the world market** for launching commercial satellites.",
     "Ariane 1, 2 and 3 flew **28 times** in total, all from Kourou in French Guiana on the northeast coast of South America."
    ],
@@ -5068,7 +5068,7 @@
    "rocket": "ARIANE",
    "match": "^ARIANE 6 R/B",
    "facts": [
-    "From an **Ariane 6**, Europe’s newest rocket. Its upper stage’s **Vinci engine** burns hydrogen and can restart up to five times in space."
+    "From an **Ariane 6**, Europe’s new heavy-lift rocket. Its upper stage’s **Vinci engine** burns hydrogen and can restart several times in space."
    ],
    "source": "https://en.wikipedia.org/wiki/Ariane_6"
   },
@@ -5078,7 +5078,7 @@
    "facts": [
     "From a **Delta** rocket, a family that grew out of the **Thor** nuclear missile and began launching satellites in 1960.",
     "Delta got its name because it was the **fourth** upper stage tried on the Thor missile, and delta is the fourth Greek letter.",
-    "A Delta launched **Syncom 3**, the first communications satellite to hover over one spot on the equator.",
+    "In 1964 a Delta launched **Syncom 3**, the first communications satellite to hover over one spot on the equator.",
     "Japan built its own **licensed copies** of the Delta rocket and used them to launch Japanese satellites from 1975 to 1992.",
     "NASA planned Delta as a **stopgap** rocket for 1960 and 1961. The family ended up flying for **64 years**.",
     "The Delta family flew **more than 300 times** between 1960 and 2024, with a 95% success rate."
@@ -5173,7 +5173,7 @@
    "match": "^FALCON 9 R/B",
    "facts": [
     "From a **Falcon 9**, the most-launched rocket flying today, with **more than 600 successful flights**.",
-    "Falcon 9's first stage lands to fly again, but the **second stage is not reused**. This one was left in orbit after its job.",
+    "Falcon 9’s first stage lands to fly again, but the **second stage is not reused**. This one was left in orbit after its job.",
     "This second stage runs on a single **Merlin Vacuum** engine, burning rocket-grade kerosene and liquid oxygen.",
     "In 2020 Falcon 9 became the **first commercial rocket to carry astronauts** into orbit.",
     "A Falcon 9 booster first landed itself in **December 2015**. Some boosters have since flown more than 30 times.",
@@ -5197,7 +5197,7 @@
     "Molniya was built from the **R-7**, the world’s first intercontinental missile, in the same family of rockets that launched Sputnik.",
     "Molniya’s top stage was built to coast in orbit and then **fire again in weightlessness**, flinging its cargo far from Earth.",
     "Like its satellite, this stage was left in a **long, looping orbit** that climbs about 40,000 km high above the northern half of the world.",
-    "Molniya rockets launched **Luna 9**, the first spacecraft to land softly on the Moon, plus early probes to Venus and Mars.",
+    "Molniya rockets launched early probes to Venus and Mars, and in 1966 **Luna 9**, the first spacecraft to land softly on the Moon.",
     "The upgraded Molniya-M flew **nearly 300 times**, mostly from Plesetsk in northern Russia, before retiring in 2010."
    ],
    "source": "https://www.russianspaceweb.com/molniya_lv.html"
@@ -5229,7 +5229,7 @@
    "facts": [
     "From a **Long March 3B**, China’s main rocket for high orbits and the first Long March version to fly **100 times**.",
     "This third stage burns **liquid hydrogen and liquid oxygen** with two engines. Hydrogen must be chilled to minus 253°C to stay liquid.",
-    "A Long March 3B launched **Chang’e 3**, which put China’s first Moon rover, Yutu, on the lunar surface.",
+    "In 2013 a Long March 3B launched **Chang’e 3**, which put China’s first Moon rover, Yutu, on the lunar surface.",
     "It launches from **Xichang**, deep inland in Sichuan, so spent lower stages sometimes fall near villages downrange.",
     "The 3B is the biggest of the Long March 3 family, with **four strap-on boosters** around its core.",
     "Long March 3Bs have launched many of China’s **BeiDou** navigation satellites, China’s own version of GPS."
@@ -5254,7 +5254,7 @@
     "From a **Long March 2C**, a two-stage Chinese rocket first launched in 1982 and flown **more than 80 times**.",
     "The Long March 2C was developed from the **DF-5**, a Chinese long-range nuclear missile.",
     "Both stages burn **nitrogen tetroxide and UDMH**, fuels that light on contact and can be stored for long periods.",
-    "In 1998 and 1999, Long March 2C rockets launched satellites for the American **Iridium** phone network, two at a time."
+    "From 1997 to 1999, Long March 2C rockets launched satellites for the American **Iridium** phone network, two at a time."
    ],
    "source": "https://en.wikipedia.org/wiki/Long_March_2C"
   },
@@ -5309,7 +5309,7 @@
     "From a **Pegasus**, a winged rocket dropped from under an airplane at about 12,000 metres before its motor lit.",
     "Pegasus was the **world’s first privately developed** orbital rocket, first flying in 1990.",
     "Pegasus’s carrier plane, Stargazer, was a converted jetliner that once flew for **Air Canada**.",
-    "After being dropped, Pegasus **free-falls for five seconds** before lighting, then steers with a small triangle-shaped wing."
+    "After being dropped, Pegasus **free-falls for five seconds** before lighting, then climbs on a small triangle-shaped wing."
    ],
    "source": "https://en.wikipedia.org/wiki/Pegasus_(rocket)"
   },
@@ -5320,7 +5320,7 @@
     "From an **H-IIA**, Japan’s main rocket, which flew **50 times** from 2001 to 2025 with only one failure.",
     "Both of its stages burned **liquid hydrogen and liquid oxygen**, the most efficient common rocket fuel.",
     "Every H-IIA launched from **Tanegashima**, a small island off the southern tip of Japan.",
-    "H-IIA launched **Akatsuki** to Venus and the United Arab Emirates' **Hope** orbiter to Mars."
+    "H-IIA launched **Akatsuki** to Venus and the United Arab Emirates’ **Hope** orbiter to Mars."
    ],
    "source": "https://en.wikipedia.org/wiki/H-IIA"
   },
@@ -5418,7 +5418,7 @@
    "facts": [
     "From a **Long March 12**, a Chinese rocket that first flew in 2024 from a new commercial launch site at Wenchang.",
     "Its first stage has **four YF-100K engines** and its second stage two YF-115s, all burning kerosene and liquid oxygen.",
-    "Long March 12 is built in Shanghai and can lift **at least 12 tonnes** into low orbit, about the weight of two elephants.",
+    "Long March 12 is built in Shanghai and can lift **12 tonnes** into a low orbit, about the weight of two elephants.",
     "Long March 12 has been busy launching **Guowang** internet satellites, part of a huge planned Chinese network."
    ],
    "source": "https://en.wikipedia.org/wiki/Long_March_12"
@@ -5446,7 +5446,7 @@
    "match": "^CZ-3A R/B",
    "facts": [
     "From a **Long March 3A**, which flew **27 times** from 1994 to 2018 without a single failure.",
-    "A Long March 3A launched **Chang’e 1**, China’s first Moon probe, as well as the very first BeiDou navigation satellites."
+    "In 2007 a Long March 3A launched **Chang’e 1**, China’s first Moon probe. Earlier, in 2000, it launched the very first BeiDou navigation satellites."
    ],
    "source": "https://en.wikipedia.org/wiki/Long_March_3A"
   },
@@ -5482,7 +5482,7 @@
    "match": "^ATLAS 5 CENTAUR R/B",
    "facts": [
     "From an **Atlas V**, which launched the New Horizons probe to Pluto and the Mars rovers **Curiosity and Perseverance**.",
-    "Atlas V’s first stage is powered by a **Russian-made RD-180** engine, while this Centaur stage uses American RL10s."
+    "Atlas V’s first stage is powered by a **Russian-made RD-180** engine, while this Centaur stage uses a single American RL10."
    ],
    "source": "https://en.wikipedia.org/wiki/Atlas_V"
   },
@@ -5500,7 +5500,7 @@
    "match": "^FREGAT R/B",
    "facts": [
     "This is a **Fregat**, a squat Russian upper stage that is **wider than it is tall**. Its name means frigate.",
-    "Fregat’s engine can **start up to seven times**, so a single stage can drop satellites into several different orbits."
+    "Fregat’s engine can **restart many times** in space, so a single stage can drop satellites into several different orbits."
    ],
    "source": "https://en.wikipedia.org/wiki/Fregat"
   },
@@ -5607,8 +5607,8 @@
    "rocket": "THOR AGENA B",
    "match": "^THOR AGENA B R/B",
    "facts": [
-    "A Thor-Agena B launched **Canada’s first satellite**, the first satellite ever built by a country other than the US or USSR.",
-    "Thor-Agena was the **first two-stage rocket** to put a satellite into orbit, back in 1959."
+    "In 1962 a Thor-Agena B launched **Canada’s first satellite**, Alouette 1, the first satellite built by a country other than the US or USSR.",
+    "The Agena B on top could **restart its engine** in space, something the first Agena could not do."
    ],
    "source": "https://en.wikipedia.org/wiki/Thor-Agena"
   },
@@ -5626,7 +5626,7 @@
    "match": "^TITAN 34B R/B",
    "facts": [
     "From the **Titan IIIB** family, which flew 68 times from California between 1966 and 1987, always with an Agena on top.",
-    "Titan rockets began as the **Titan II nuclear missile**, which also launched NASA’s two-person Gemini spacecraft."
+    "Titan IIIB grew out of the **Titan II nuclear missile**, which also launched NASA’s two-person Gemini spacecraft."
    ],
    "source": "https://en.wikipedia.org/wiki/Titan_IIIB"
   },
@@ -5635,7 +5635,7 @@
    "match": "^DIAMANT R/B",
    "facts": [
     "From a **Diamant**, French for diamond, the first satellite launcher built by a country other than the US or USSR.",
-    "Diamant launched **France’s first satellite** from Hammaguir, a desert launch site in Algeria, making France the third nation to reach orbit on its own."
+    "In 1965 Diamant launched **France’s first satellite** from Hammaguir in Algeria, making France the third nation to reach orbit on its own."
    ],
    "source": "https://en.wikipedia.org/wiki/Diamant"
   },
@@ -5643,7 +5643,7 @@
    "rocket": "N-1",
    "match": "^N-1 R/B",
    "facts": [
-    "From Japan’s **N-I**, a licensed copy of the American Thor-Delta. The N stands for **Nippon**, meaning Japan.",
+    "From Japan’s **N-I**, built under licence from the American Thor-Delta with a Japanese second stage. The N stands for **Nippon**, meaning Japan.",
     "An N-I made the **first orbital launch ever on a leap day**, lifting off from Tanegashima island on 29 February."
    ],
    "source": "https://en.wikipedia.org/wiki/N-I_(rocket)"
@@ -5734,7 +5734,7 @@
    "match": "^CZ-6 R/B",
    "facts": [
     "From a **Long March 6**, a small quick-launch rocket whose 2015 first flight debuted China’s new **YF-100** kerosene engine.",
-    "The Long March 6 has succeeded on **all 15** of its first launches, flying from Taiyuan in northern China."
+    "Every Long March 6 launch so far has **succeeded**, all of them flying from Taiyuan in northern China."
    ],
    "source": "https://en.wikipedia.org/wiki/Long_March_6"
   },
@@ -5770,7 +5770,7 @@
    "match": "^LIJIAN-1 R/B",
    "facts": [
     "From a **Kinetica-1**, also called Lijian-1, built by CAS Space, a rocket company linked to the Chinese Academy of Sciences.",
-    "Kinetica-1's first three stages burn **solid fuel**, and one launch carried **more than 20 satellites** at once."
+    "All four of Kinetica-1’s stages burn **solid fuel**. Its second launch, in 2023, carried **more than 20 satellites** at once."
    ],
    "source": "https://en.wikipedia.org/wiki/Lijian-1"
   },
@@ -5794,7 +5794,7 @@
    "rocket": "THOR BURNER 2A",
    "match": "^THOR BURNER 2A R/B",
    "facts": [
-    "The **Burner IIA** stacked a second solid motor on top of the first, giving it almost twice the push of the original Burner II."
+    "The **Burner IIA** added a second solid motor in tandem with the first, giving it almost **twice the capability** of the original Burner II."
    ],
    "source": "https://en.wikipedia.org/wiki/Burner_(rocket_stage)"
   },
@@ -5866,7 +5866,7 @@
    "rocket": "TELSTAR",
    "match": "^TELSTAR 30[23] R/B",
    "facts": [
-    "This **PAM-D** motor rode in Space Shuttle **Discovery**'s cargo bay, then fired to boost its satellite toward a high orbit."
+    "This **PAM-D** motor rode in Space Shuttle **Discovery**’s cargo bay, then fired to boost its satellite toward a high orbit."
    ],
    "source": "https://en.wikipedia.org/wiki/STS-51-G"
   },
@@ -6170,7 +6170,7 @@
    "rocket": "SL-26",
    "match": "^SL-26 R/B",
    "facts": [
-    "This is a **Fregat** upper stage from a Soyuz-2 launch. Fregat is **wider than it is tall**, and its engine can start up to seven times."
+    "This is a **Fregat** upper stage from a Soyuz-2 launch. Fregat is **wider than it is tall**, and its engine can restart many times to reach different orbits."
    ],
    "source": "https://keeptrack.space/satellite/37213"
   },
@@ -6218,7 +6218,7 @@
    "rocket": "ANIK D2",
    "match": "^ANIK D2 R/B",
    "facts": [
-    "This motor launched on Discovery’s STS-51-A. On the same flight, astronauts **caught two broken satellites** and brought them home."
+    "This motor launched on Discovery’s STS-51-A. On the same flight, astronauts **caught two stranded satellites** and brought them home."
    ],
    "source": "https://en.wikipedia.org/wiki/STS-51-A"
   },
@@ -6226,7 +6226,7 @@
    "rocket": "ANIK C1",
    "match": "^ANIK C1 R/B",
    "facts": [
-    "On this motor’s Shuttle flight, astronauts taped homemade **flyswatter tools** to the Canadarm to try to switch on a stuck satellite."
+    "On this motor’s Shuttle flight, astronauts attached homemade **flyswatter tools** to the Canadarm to try to switch on a stuck satellite."
    ],
    "source": "https://en.wikipedia.org/wiki/STS-51-D"
   },
@@ -6338,7 +6338,7 @@
    "rocket": "OPTUS B3",
    "match": "^OPTUS B3",
    "facts": [
-    "This kick motor flew on a **Long March 2E**, a Chinese rocket that only ever launched satellites **made in the United States**."
+    "This kick motor flew on a **Long March 2E**, the Chinese rocket that launched all three of Australia’s US-built **Optus B** satellites."
    ],
    "source": "https://en.wikipedia.org/wiki/Long_March_2E"
   },
@@ -6362,7 +6362,7 @@
    "rocket": "OV1-4",
    "match": "^OV1-4 R/B",
    "facts": [
-    "This is the **Altair-2 kick motor** that pushed a small OV1 science satellite into orbit after an Atlas missile test carried it up."
+    "This is the **Altair-2 kick motor** from an OV1 science satellite. A retired Atlas missile lifted the satellite, then this motor pushed it into orbit."
    ],
    "source": "https://en.wikipedia.org/wiki/Orbiting_Vehicle"
   },
@@ -6370,7 +6370,7 @@
    "rocket": "OV1-5",
    "match": "^OV1-5 R/B",
    "facts": [
-    "OV1 satellites rode in the **nose cone of Atlas missiles** on test flights, then used this motor to reach orbit. A launch cost just $1.25 million."
+    "OV1 satellites rode **retired Atlas missiles**, often two at a time, then used this motor to reach orbit. A launch cost just $1.25 million."
    ],
    "source": "https://en.wikipedia.org/wiki/Orbiting_Vehicle"
   },
@@ -6378,7 +6378,7 @@
    "rocket": "OV1-9",
    "match": "^OV1-9 R/B",
    "facts": [
-    "OV satellites were cheap **space hitchhikers**, using spare room on other launches to study hazards for astronauts and equipment."
+    "OV satellites were cheap Air Force satellites that often **shared a ride**, studying space hazards for astronauts and equipment."
    ],
    "source": "https://en.wikipedia.org/wiki/Orbiting_Vehicle"
   },
@@ -6394,7 +6394,7 @@
    "rocket": "OV1-13",
    "match": "^OV1-13 R/B",
    "facts": [
-    "This is the **Altair-2 kick motor** that pushed a small OV1 science satellite into orbit after an Atlas missile test carried it up."
+    "This is the **Altair-2 kick motor** from an OV1 science satellite. A retired Atlas missile lifted the satellite, then this motor pushed it into orbit."
    ],
    "source": "https://en.wikipedia.org/wiki/Orbiting_Vehicle"
   },
@@ -6402,7 +6402,7 @@
    "rocket": "OV1-14",
    "match": "^OV1-14 R/B",
    "facts": [
-    "OV1 satellites rode in the **nose cone of Atlas missiles** on test flights, then used this motor to reach orbit. A launch cost just $1.25 million."
+    "OV1 satellites rode **retired Atlas missiles**, often two at a time, then used this motor to reach orbit. A launch cost just $1.25 million."
    ],
    "source": "https://en.wikipedia.org/wiki/Orbiting_Vehicle"
   },
@@ -6410,7 +6410,7 @@
    "rocket": "OV1-19",
    "match": "^OV1-19 R/B",
    "facts": [
-    "OV satellites were cheap **space hitchhikers**, using spare room on other launches to study hazards for astronauts and equipment."
+    "OV satellites were cheap Air Force satellites that often **shared a ride**, studying space hazards for astronauts and equipment."
    ],
    "source": "https://en.wikipedia.org/wiki/Orbiting_Vehicle"
   },
@@ -6418,7 +6418,7 @@
    "rocket": "1971-067",
    "match": "^1971-067 AKM",
    "facts": [
-    "This **kick motor** comes from the **last OV1 satellite** ever flown, launched on a retired Atlas missile."
+    "This **kick motor** comes from the **last OV1 launch**, in 1971, which carried two satellites on a retired Atlas missile."
    ],
    "source": "https://en.wikipedia.org/wiki/Orbiting_Vehicle"
   },
@@ -6586,7 +6586,7 @@
    "rocket": "LVM3",
    "match": "^LVM3 R/B",
    "facts": [
-    "From an **LVM3**, India’s heavy rocket, which launched the **Chandrayaan-2 and 3** Moon missions and is meant to carry India’s first astronauts."
+    "From an **LVM3**, India’s heavy rocket, which launched the **Chandrayaan-2 and 3** Moon missions and is being readied to carry Gaganyaan astronauts."
    ],
    "source": "https://en.wikipedia.org/wiki/LVM3"
   },
@@ -6602,7 +6602,7 @@
    "rocket": "CZ-12B",
    "match": "^CZ-12B R/B",
    "facts": [
-    "From a **Long March 12B**, a 4-metre-wide Chinese rocket whose nine-engine first stage is designed to **land and fly again**."
+    "From a **Long March 12B**, a 4.4-metre-wide Chinese rocket whose nine-engine first stage is designed to **land and fly again**."
    ],
    "source": "https://en.wikipedia.org/wiki/Long_March_12B"
   },

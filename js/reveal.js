@@ -5,12 +5,12 @@
 //  Everything scales with rarity (Legendary dims the sky, shockwave, held breath, slow flip, fanfare).
 // Waits use timers, not animation.finished, so a paused tab can never freeze the sequence.
 
-import { sfx, loadSfx } from './sfx.js?v=0.1.905';
-import { audioCtx } from './audio-ctx.js?v=0.1.905';
-import { TIER_INFO } from './rarity.js?v=0.1.905';
-import { levelFor, attachTilt, attachGyro, attachFlip, throwOff, retype } from './card.js?v=0.1.905';
-import { applyBack } from './card-backs.js?v=0.1.905';
-import { addStarfield } from './starfield.js?v=0.1.905';
+import { sfx, loadSfx } from './sfx.js?v=0.1.906';
+import { audioCtx } from './audio-ctx.js?v=0.1.906';
+import { TIER_INFO } from './rarity.js?v=0.1.906';
+import { levelFor, attachTilt, attachGyro, attachFlip, throwOff, retype } from './card.js?v=0.1.906';
+import { applyBack } from './card-backs.js?v=0.1.906';
+import { addStarfield } from './starfield.js?v=0.1.906';
 
 const FX = {
   common:    { particles: 14,  flip: 520,  spin: 0,   dim: 0,   shock: false, notes: [880],                            hold: 0 },
@@ -284,7 +284,7 @@ async function finish({ fx, color, fresh, seen, level, levelUp, card, alive, fle
   const left = con ? con.total - con.have : 0, label = card.querySelector('.card__title, .card__name, h2, h3')?.textContent?.trim() || '';
   const news = shiny && !conDone ? { kind: 'shiny', eyebrow: `SHINY · ${shiny.label.toUpperCase()}`, line: label, sub: shiny.line, ms: 5000 } // say why it’s shiny (2026-10-08)
     : fresh && con ? (conDone ? { kind: 'event', eyebrow: con.unit === 'worlds' ? 'SET COMPLETE' : 'CONSTELLATION COMPLETE', line: con.name, sub: `All ${con.total} ${con.unit ?? 'stars'} · patch earned`, art: con.art } : { kind: 'xp', eyebrow: con.name.toUpperCase(), line: `${con.have} of ${con.total} ${con.unit ?? 'stars'}`, sub: left === 1 ? 'One to go' : `${left} to go`, art: con.art })
-    : fresh ? (milestone ? { kind: 'event', icon: 'calendar', eyebrow: 'MILESTONE', line: collected === 1 ? 'Your first card!' : `${collected.toLocaleString('en-US')} cards collected` } : null)
+    : fresh ? (milestone ? { kind: 'event', icon: 'calendar', eyebrow: 'MILESTONE', line: collected === 1 ? 'Your first card' : `${collected.toLocaleString('en-US')} cards collected` } : null)
     : newStamp ? (fleet?.milestone ? { kind: 'event', eyebrow: 'NEW STAMP', line: fleet.milestone } : !fleet?.line && STAMP_MILESTONES.includes(fleet?.stamps) ? { kind: 'event', icon: 'stamp', eyebrow: 'NEW STAMP', line: `${fleet.stamps} launches stamped` } : { kind: 'xp', eyebrow: 'NEW STAMP', line: stampLine })
     : NIGHT_MILESTONES.includes(nights) ? { kind: 'event', icon: 'calendar', eyebrow: 'MILESTONE', line: `Seen on ${nights} different nights`, sub: label }
     : null; // a plain repeat: no toast (2026-10-07)
