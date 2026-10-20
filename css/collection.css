@@ -1,4 +1,4 @@
-:root { color-scheme: dark; --bg: #080f18; --panel: #111d29; --text: #f3ecd4; --muted: #bdbea9; --line: #2a3a48; --accent: #fa8127; /* card palette (2026-10-05): orange accent, cream ink; the old mint #99d0cc is gone */ --safe-top: env(safe-area-inset-top, 0px); --safe-bottom: env(safe-area-inset-bottom, 0px); }
+:root { --label: 'SC Label', 'Arial Narrow', sans-serif; --display: 'SC Display', Impact, sans-serif; color-scheme: dark; --bg: #080f18; --panel: #111d29; --text: #f3ecd4; --muted: #bdbea9; --line: #2a3a48; --accent: #fa8127; /* card palette (2026-10-05): orange accent, cream ink; the old mint #99d0cc is gone */ --safe-top: env(safe-area-inset-top, 0px); --safe-bottom: env(safe-area-inset-bottom, 0px); }
 html.standalone { --safe-bottom: max(6px, calc(env(safe-area-inset-bottom, 0px) - 20px)); } /* no Safari bars: sit lower (2026-10-11) */
 :root[data-theme="night"] { --bg: #0c0303; --panel: #160707; --text: #ff7f70; --muted: #e8705f; --line: #361719; --accent: #f2654f; } /* the same reds as Explore (app.css), not the older dimmer set (visual playtest 2026-10-17) */
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -667,3 +667,7 @@ body.night dialog::backdrop { background: rgba(12, 3, 3, .82); }
 :where(html[data-theme='night'], body.night) .lb-bar > * { background: #ff6a55 !important; }
 :where(html[data-theme='night'], body.night) .lb-to { color: #dd6455 !important; }
 :where(html[data-theme='night'], body.night) .lb-to b { color: #ff7f70 !important; }
+/* Find rows (iOS playtest 2026-10-20): the time on one line, where to look on the next; long names get two lines. */
+.fd-pass .fd-where { display: block; }
+.fd-pass .fd-where::first-letter { text-transform: uppercase; }
+.fd-main b { white-space: normal; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }

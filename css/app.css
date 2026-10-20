@@ -1819,3 +1819,6 @@ body.night #d-tier[data-gem]::before { color: #ff6a55 !important; }
 #until-dark.tk-card { border-radius: 14px; }
 #discover .d-ticket #d-cta, #discover.owned .d-ticket #d-cta { padding-left: calc(14px + .2em); } /* tracked caps sit optically centred */
 .sc-switch__item { padding-left: .2em; }
+/* During the tour the header's buttons can't be used (the tour holds the screen), so they look it (iOS playtest 2026-10-20). */
+body.ob-tour #sky-header .header-buttons { opacity: .35; }
+.loc-denied { margin: 10px 2px 4px; font: 500 14px/1.4 var(--label); letter-spacing: .02em; color: #ffb38a; }

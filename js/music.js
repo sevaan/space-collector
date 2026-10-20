@@ -3,7 +3,7 @@
 // play sound before one), loops, dips under card reveals, and pauses when the app is hidden.
 // iPhone Safari ignores an audio element’s volume, so the level goes through Web Audio (a gain node). The page’s
 // audio session is "ambient", so the ring/silent switch mutes it and it never stops the player’s own music.
-import { audioCtx } from './audio-ctx.js?v=0.1.899';
+import { audioCtx } from './audio-ctx.js?v=0.1.900';
 const SRC = 'assets/audio/permafrost.m4a', LEVEL = 0.15; // halved 2026-10-11 (Sevaan)
 let ctx = null, el = null, gain = null, playing = false;
 
@@ -59,7 +59,9 @@ function retryOnTouch() {
   ['touchend', 'pointerdown', 'click'].forEach((t) => addEventListener(t, go, { capture: true, passive: true }));
 }
 document.addEventListener('visibilitychange', () => {
-  if (document.hidden) { wasPlaying = playing; stopMusic(0.3); return; }
+  // Pause at once (2026-10-20, iOS playtest: the fade's pause timer never ran once the app was hidden, so the music kept
+  // playing from a locked phone with a lock-screen player).
+  if (document.hidden) { wasPlaying = playing; playing = false; try { if (gain && ctx) gain.gain.setValueAtTime(0, ctx.currentTime); el?.pause(); } catch {} return; }
   if (!wasPlaying || !musicOn()) return;
   wasPlaying = false; startMusic();
   setTimeout(() => { if (!document.hidden && (ctx?.state !== 'running' || el?.paused)) retryOnTouch(); }, 500);

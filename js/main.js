@@ -1,51 +1,51 @@
-import { TESTER } from './build-flavor.js?v=0.1.899';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.899';
-import * as Secrets from './secrets.js?v=0.1.899';
-import { STORY_BY_SECRET } from './stories.js?v=0.1.899';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.899';
-import * as Ufo from './ufo.js?v=0.1.899';
-import * as Fossil from './fossil.js?v=0.1.899';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.899';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.899';
-import { toast, ticket, dropToast, toastPending, onTicketShown, iconSvg } from './toast.js?v=0.1.899';
-import { VERSION } from './version.js?v=0.1.899';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, overEarth, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.899';
-import { placeName } from './geo.js?v=0.1.899';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, SLIDER_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.899';
-import { conArt } from './con-art.js?v=0.1.899';
-import { fetchWeather, tonightSky, skyClearAt, goodSkyAt } from './weather.js?v=0.1.899';
-import { CON_FIGURES } from './con-figures.js?v=0.1.899';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress, starDistance } from './constellations.js?v=0.1.899';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.899';
-import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.899';
-import { eventOf, activeEvent, nextEvent } from './events.js?v=0.1.899';
-import { conList } from './constellations.js?v=0.1.899';
-import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination, hasSensorView, resumeSensors, needsPermission } from './sensors.js?v=0.1.899';
-import { SkyView, shortName } from './sky.js?v=0.1.899';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.899';
-import { isPlus, setPlusForTesting, onPlus, PLUS_PERKS, PLUS_PRICES, initStore, storePlans, buyPlus, restorePlus, rcTestStore, storeOpen } from './plus.js?v=0.1.899';
-import { isNative, getPosition, saveFile, notifyAt, cancelNotify, haptic, onNative, nativeChrome, plugin } from './native.js?v=0.1.899';
-import { initBackup, onBackupChange, backupSoon, clearBackup, backupStatus } from './cloud-backup.js?v=0.1.899';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.899';
-import { cardArt } from './art.js?v=0.1.899';
-import { renderCard, miniCard, cardLevel, artImage, lockedArt, attachTilt, attachGyro, throwOff, attachFlip, turnCard } from './card.js?v=0.1.899';
-import { applyBack, CARD_BACKS, backUnlocked, chosenBack, chooseBack, backEarned } from './card-backs.js?v=0.1.899';
-import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.899';
-import { audioCtx } from './audio-ctx.js?v=0.1.899';
-import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume } from './music.js?v=0.1.899';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.899';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel, moonPhaseOf, MOON_PHASES } from './card-model.js?v=0.1.899';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.899';
-import { naturalTargets, SOLAR_SYSTEM, DEEP_SKY } from './natural.js?v=0.1.899';
-import { placeFromTimeZone } from './tz-places.js?v=0.1.899';
-import { TIER_INFO } from './rarity.js?v=0.1.899';
-import { SETS, albumList } from './sets.js?v=0.1.899';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.899';
-import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.899';
-import { shareCardEl } from './share-card.js?v=0.1.899';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.899';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.899';
-import { addStarfield } from './starfield.js?v=0.1.899';
+import { TESTER } from './build-flavor.js?v=0.1.900';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.900';
+import * as Secrets from './secrets.js?v=0.1.900';
+import { STORY_BY_SECRET } from './stories.js?v=0.1.900';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.900';
+import * as Ufo from './ufo.js?v=0.1.900';
+import * as Fossil from './fossil.js?v=0.1.900';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.900';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.900';
+import { toast, ticket, dropToast, toastPending, onTicketShown, iconSvg } from './toast.js?v=0.1.900';
+import { VERSION } from './version.js?v=0.1.900';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, overEarth, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.900';
+import { placeName } from './geo.js?v=0.1.900';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, SLIDER_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.900';
+import { conArt } from './con-art.js?v=0.1.900';
+import { fetchWeather, tonightSky, skyClearAt, goodSkyAt } from './weather.js?v=0.1.900';
+import { CON_FIGURES } from './con-figures.js?v=0.1.900';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress, starDistance } from './constellations.js?v=0.1.900';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.900';
+import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.900';
+import { eventOf, activeEvent, nextEvent } from './events.js?v=0.1.900';
+import { conList } from './constellations.js?v=0.1.900';
+import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination, hasSensorView, resumeSensors, needsPermission } from './sensors.js?v=0.1.900';
+import { SkyView, shortName } from './sky.js?v=0.1.900';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.900';
+import { isPlus, setPlusForTesting, onPlus, PLUS_PERKS, PLUS_PRICES, initStore, storePlans, buyPlus, restorePlus, rcTestStore, storeOpen } from './plus.js?v=0.1.900';
+import { isNative, getPosition, saveFile, notifyAt, cancelNotify, haptic, onNative, nativeChrome, plugin } from './native.js?v=0.1.900';
+import { initBackup, onBackupChange, backupSoon, clearBackup, backupStatus } from './cloud-backup.js?v=0.1.900';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.900';
+import { cardArt } from './art.js?v=0.1.900';
+import { renderCard, miniCard, cardLevel, artImage, lockedArt, attachTilt, attachGyro, throwOff, attachFlip, turnCard } from './card.js?v=0.1.900';
+import { applyBack, CARD_BACKS, backUnlocked, chosenBack, chooseBack, backEarned } from './card-backs.js?v=0.1.900';
+import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.900';
+import { audioCtx } from './audio-ctx.js?v=0.1.900';
+import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume } from './music.js?v=0.1.900';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.900';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel, moonPhaseOf, MOON_PHASES } from './card-model.js?v=0.1.900';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.900';
+import { naturalTargets, SOLAR_SYSTEM, DEEP_SKY } from './natural.js?v=0.1.900';
+import { placeFromTimeZone } from './tz-places.js?v=0.1.900';
+import { TIER_INFO } from './rarity.js?v=0.1.900';
+import { SETS, albumList } from './sets.js?v=0.1.900';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.900';
+import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.900';
+import { shareCardEl } from './share-card.js?v=0.1.900';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.900';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.900';
+import { addStarfield } from './starfield.js?v=0.1.900';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -198,19 +198,22 @@ async function keepAwake() {
   try { wakeLock = await navigator.wakeLock?.request('screen'); } catch {}
 }
 document.addEventListener('visibilitychange', () => {
-  if (document.visibilityState === 'visible' && state.started) { keepAwake(); checkForUpdate(); checkMotionBack(); }
+  if (document.visibilityState === 'visible' && state.started) { keepAwake(); checkForUpdate(); checkMotionBack();
+    // Back after a while: you may have moved, so look again quietly (iOS playtest 2026-10-20). Only with location already allowed.
+    if (['ready', 'stale'].includes(state.locationStatus) && Date.now() - (state.observer.fixedAt ?? 0) > 15 * 60e3) requestLocation(); }
 });
 // Coming back to the app (2026-10-15, Sevaan): iPhone stops sending motion until the screen is touched again, so the
 // sky sits frozen. If motion was in use and hasn’t come back within a moment, the circle asks for a tap (#wake).
 function checkMotionBack() {
   if (state.drag.on || state.needsMotionTap || !needsPermission()) return; // only iPhones stop motion while away; a still Android phone just goes quiet
   state.motionCheckUntil = performance.now() + 1600; // a tap meanwhile is a tap, not a switch to finger mode (bug hunt 2026-10-20)
-  setTimeout(() => { if (!state.drag.on && !hasLiveSensors() && document.visibilityState === 'visible') state.needsMotionTap = true; }, 1500);
+  setTimeout(() => { if (!state.drag.on && !hasLiveSensors() && document.visibilityState === 'visible') { state.needsMotionTap = true; state.wakeCold = false; } }, 1500);
 }
 function syncWake() {
   const on = !!state.needsMotionTap && !document.body.classList.contains('ob-tour') && $('onboard').hidden && !activePanel;
   if (on && hasLiveSensors() && !state.drag.on) { state.needsMotionTap = false; } // it came back by itself
   const w = $('wake'), show = on && state.needsMotionTap; if (w.hidden === !show) return;
+  if (show) { const sp = w.querySelector('span'); if (sp) sp.innerHTML = state.wakeCold ? 'Tap to turn on motion<small>The sky follows your phone</small>' : 'Tap to wake the sky<small>Motion pauses while you’re away</small>'; }
   w.hidden = !show; if (show) { w.style.top = `${uiCenterY}px`; w.style.setProperty('--r', `${sky.ring?.r ?? sky.reticlePx}px`); } // the ticket sits under the circle
 }
 
@@ -934,7 +937,10 @@ function turnHint(l) {
   // Once it’s on screen, say so: "Turn right" stayed up while the Moon was already half in view (iOS playtest 2026-10-19).
   const pv = sky.basis ? sky.project(enuFromAzEl(l.az, l.el)) : null, inView = !!pv && pv.x > 0 && pv.x < sky.w && pv.y > 0 && pv.y < sky.h; // on the screen, by projection (works overhead too)
   if (inView && Math.abs(turn) > 4 && !gr) return 'On screen now · put it in the circle';
-  const move = Math.abs(turn) > 8 ? (turn > 0 ? 'Turn right →' : '← Turn left') : l.el > currentEl ? '↑ Raise your phone' : '↓ Lower your phone';
+  // With a finger, say which way to drag (iOS playtest 2026-10-20: "Turn right" didn't say how). Dragging left turns right.
+  const move = !sens
+    ? (Math.abs(turn) > 8 ? (turn > 0 ? '← Drag left' : 'Drag right →') : l.el > currentEl ? '↓ Drag down' : '↑ Drag up')
+    : Math.abs(turn) > 8 ? (turn > 0 ? 'Turn right →' : '← Turn left') : l.el > currentEl ? '↑ Raise your phone' : '↓ Lower your phone';
   return gr ? `${move} · ${Math.round(l.el)}° up ${compassPoint(l.az)} at ${fmtTime(gr.start)}` : `${move} · ${Math.round(l.el)}° up ${compassPoint(l.az)}`; // short, so it fits one line (2026-10-09)
 }
 const ICON_TARGET = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="7.5"/><circle cx="12" cy="12" r="2.4" fill="currentColor" stroke="none"/><path d="M12 1.8v3.4M12 18.8v3.4M1.8 12h3.4M18.8 12h3.4"/></svg>';
@@ -2151,6 +2157,8 @@ function setReminder(opts) {
 }
 async function setReminderNow({ at, title, body, key }) {
   if (!isNative()) return 'app-only';
+  // Notifications refused: say so before anything else (iOS playtest 2026-10-20: it offered Plus, which couldn't help).
+  try { const perm = await plugin('LocalNotifications')?.checkPermissions(); if (perm?.display === 'denied') { buzz('warning'); return 'denied'; } } catch {}
   if (reminderLimitHit(at, key)) { openPlus('reminders'); return 'limit'; } // over the Collection, so closing it puts you back where you were (2026-10-16 playtest)
   if (key && remindIds.has(key)) { try { await cancelNotify(remindIds.get(key).id); } catch {} }
   const id = newRemindId(); if (key) { remindIds.set(key, { id, at }); saveRems(); }
@@ -2471,6 +2479,7 @@ function groundHint(t) {
 // Compact (2026-10-06): a short detail rides on the label line ('NEXT UP · 9:44 PM ›' over the name); a long one gets its own line.
 // One line (2026-10-06): 'NEXT UP · COSMOS 2082 · 9:44 PM ›', one size, the name bold orange (it gives way with … first).
 // 'NEXT: COSMOS 2082 · 9:44 PM' (2026-10-07: a colon instead of a dot after the label, no ›, so the name gets the room).
+const chipName = (o) => label(o).replace(/\s*\([^)]*\)\s*$/, ''); // "OPS 6182 (DMSP 5D-1 F2)" → "OPS 6182": the chip has room for a name, not its alias (iOS playtest 2026-10-20)
 const npChip = (k, n, m) => `${k ? `<span class="np-k">${escapeHtml(k)}</span>` : ''}<b class="np-n"${String(n).length > 8 ? ' data-long' : ''}>${escapeHtml(n)}</b>${m ? `<span class="np-m">· ${escapeHtml(m)}</span>` : ''}`;
 // The pass to suggest (2026-10-13, Sevaan: "we don’t need to tell people about common objects unless every other object
 // rarity has been exhausted"): new to you, Uncommon or rarer, rarest then soonest; Commons only once fewer than 10
@@ -2578,12 +2587,12 @@ function updateNextPassChip() {
       ? npChip('', `${({ rain: 'Rain', snow: 'Snow', storm: 'Storms', fog: 'Fog' })[wx.worst] ?? 'Cloud'} tonight`, wx.nextClear ? `Clear ${new Date(wx.nextClear).toLocaleDateString([], { weekday: 'short' })}` : '')
       // Daytime: 'TONIGHT: ISS · 7:16 PM' (2026-10-08, Sevaan: it didn’t fit and the name vanished). Dusk and a good
       // forecast are left out; bad weather has its own 'Not tonight' chip above.
-      : head && head.start > t0 ? npChip('Headliner', label(head.obj), fmtTime(head.start))
+      : head && head.start > t0 ? npChip('Headliner', chipName(head.obj), fmtTime(head.start))
       : npChip('Tonight', best ? label(best.obj) : 'See the plan', best ? fmtTime(best.start) : (dusk ? `dark ${dusk}` : ''));
     chip.hidden = false; return;
   }
   const head = headliner(T), headNext = head && head.start > t0 && isNewFind(head.obj) && head.start - t0 < 3 * 3600e3;
-  chip.innerHTML = headNext ? npChip('Headliner', label(head.obj), fmtTime(head.start)) : next ? npChip(dark ? 'Next' : `From ${fmtTime(win?.s ?? next.start)}`, label(next.obj), fmtTime(next.start))
+  chip.innerHTML = headNext ? npChip('Headliner', chipName(head.obj), fmtTime(head.start)) : next ? npChip(dark ? 'Next' : `From ${fmtTime(win?.s ?? next.start)}`, chipName(next.obj), fmtTime(next.start))
     : win ? npChip('Nothing lit right now', `Back at ${fmtTime(win.s)}`, 'See the plan') : npChip('No more satellites', 'Tonight', 'See what else is up');
   chip.hidden = false;
 }
@@ -2707,7 +2716,7 @@ function openPanel(id) {
   // Focus the panel itself, not its first button (playtest 2026-10-16: the card view’s share button showed a focus ring).
   { const el = $(id); if (!el.hasAttribute('tabindex')) el.setAttribute('tabindex', '-1'); requestAnimationFrame(() => el.focus({ preventScroll: true })); } // a frame later, so focus doesn’t force layout in the tap (jank playtest 2026-10-17)
 }
-let tourRevealLeaving = null;
+let tourRevealLeaving = null, colAfterTour = null;
 function closePanel(id = activePanel) {
   if (!id) return;
   if (id === 'reveal') { stopReveal(); if (tourRevealLeaving) { const go = tourRevealLeaving; tourRevealLeaving = null; go(); } }
@@ -2729,7 +2738,16 @@ function openDebug() {
 function settingsOverCollection() { document.body.classList.add('panel-over-col'); openDebug(); setTimeout(() => { closeCollection(false, true); setTimeout(() => document.body.classList.remove('panel-over-col'), 60); }, 440); }
 $('nav-more').addEventListener('click', () => (collectionOpen ? settingsOverCollection() : openDebug()));
 $('nav-explore').addEventListener('click', () => { if (collectionOpen) { setSwitch($('nav'), 'left'); setTimeout(() => closeCollection(), SLIDE_MS); return; } closePanel(); }); // over the Collection, this is the way back
-$('retry-location').addEventListener('click', () => requestLocation({ gps: true }));
+// Use my location (iOS playtest 2026-10-20): the sheet stays open and says why when it can't, instead of closing silently.
+$('retry-location').addEventListener('click', async () => {
+  const note = $('loc-denied'); note.hidden = true;
+  const ok = await requestLocation({ gps: true });
+  if (ok) { closeSheet($('set-loc-sheet')); return; }
+  note.textContent = state.locationStatus === 'denied'
+    ? 'Location is off for Space Collector. Turn it on in your phone’s Settings › Privacy › Location Services › Space Collector, or enter coordinates below.'
+    : 'Couldn’t find you just now. Try again outside, or enter coordinates below.';
+  note.hidden = false;
+});
 $('retry-motion').addEventListener('click', enableMotion);
 $('location-form').addEventListener('submit', e => {
   e.preventDefault();
@@ -2852,6 +2870,7 @@ async function backToNow() {
 }
 async function enableMotion() {
   let ok=false; try { ok=await startSensors(); } catch {}
+  if (ok) { try { localStorage.removeItem('noMotion'); } catch {} }
   state.drag.on=!ok;
   if (!ok) toast('Motion is unavailable, so drag the sky to look around.',4000);
   $('chk-drag').checked=state.drag.on;
@@ -2976,8 +2995,10 @@ $('plus-restore').addEventListener('click', async () => {
   if (!isNative()) { toast('Purchases are in the App Store and Google Play apps.', 3500); return; }
   const b = $('plus-restore'); b.disabled = true;
   const on = await restorePlus(); b.disabled = false;
-  if (on === null) toast('Couldn\u2019t reach the store. Check your connection and try again.', 3500);
-  else if (!on) toast(`No Plus purchase found for this ${/iP(hone|ad|od)|Mac/.test(navigator.userAgent) ? 'Apple ID' : 'Google account'}.`, 3500);
+  // The answer shows on the button itself (iOS playtest 2026-10-20: a notice behind the sheet looked like nothing happened).
+  const say = (t) => { const was = 'Restore purchases'; b.textContent = t; clearTimeout(b._t); b._t = setTimeout(() => { b.textContent = was; }, 4000); };
+  if (on === null) say('Couldn’t reach the store. Try again');
+  else if (!on) say(`No Plus purchase on this ${/iP(hone|ad|od)|Mac/.test(navigator.userAgent) ? 'Apple ID' : 'Google account'}`);
   // on: onPlus says so
 });
 // The Plus sheet (2026-10-16, design/plus-sheet-card.html): Plus as a Shiny card made by renderCard, opening face down
@@ -3494,7 +3515,7 @@ function releaseLaterPatches() {
   const all = progressNow(state.sightings).achievements; for (const id of ids) { const a = all.find((x) => x.id === id && x.done); if (a) earnPatch(a); }
 }
 function hideDone() {
-  const ob = $('onboard'), done = $('ob-done'), go = () => { ob.hidden = true; done.hidden = true; ob.style.opacity = ''; setTimeout(releaseLaterPatches, 1500); };
+  const ob = $('onboard'), done = $('ob-done'), go = () => { ob.hidden = true; done.hidden = true; ob.style.opacity = ''; setTimeout(releaseLaterPatches, 1500); if (colAfterTour != null) { const k = colAfterTour === '#' ? '' : colAfterTour; colAfterTour = null; setTimeout(() => openCollection(k), 250); } };
   if (done.hidden || matchMedia('(prefers-reduced-motion: reduce)').matches) { go(); return; }
   ob.style.pointerEvents = 'none';
   done.animate([{ transform: 'none', opacity: 1 }, { transform: 'translateY(6%)', opacity: 0 }], { duration: 280, easing: 'cubic-bezier(.4,0,.8,.6)' }).finished.then(go, go).finally(() => { ob.style.pointerEvents = ''; });
@@ -3505,6 +3526,7 @@ function obFinish(caught) {
   $('sky').classList.remove('asleep'); // never leave the sky asleep (a skip mid-tour)
   // Let go of the tour’s target (2026-10-09, Sevaan: Vega stayed selected with View card while pointing elsewhere).
   state.pinnedId = null; state.targetId = null; state.guidePass = null; state.sticky.clear();
+  writePref('tourDone', true); // finished or skipped: a relaunch won't run it again
   const ob = $('onboard'); ob.style.pointerEvents = ''; onboarding = null; document.body.classList.remove('ob-tour'); state.tourCatchId = null; state.tourRevealed = false; $('ob-deck').replaceChildren(); $('ob-pips').hidden = false;
   if (!caught) { ob.hidden = true; return; }
   const T = state.tonight, t0 = now().getTime(), wx = tonightWeather();
@@ -3586,6 +3608,7 @@ function obFinish(caught) {
   const remindable = best2 && best2.start - 10 * 60e3 > now().getTime() + 60e3;
   const rb = $('ob-remind'); rb.disabled = false; rb.classList.remove('done'); delete rb.dataset.idle; delete rb.dataset.side; if (rb.children[1]) rb.children[1].textContent = '→';
   rb.hidden = !remindable; if (remindable) rb.firstElementChild.textContent = `Remind me at ${fmtTime(best2.start - 10 * 60e3).replace(/\s?[AP]\.?M\.?$/i, '')}`;
+  rb.classList.toggle('needs-plus', !!remindable && !!needsPlus(`${best2.obj.id}@${best2.start}`)); // say it's Plus before the tap (iOS playtest 2026-10-20)
   // The button answers for itself (2026-10-12, Sevaan: "tapping the reminder button does nothing"; the confirming toast
   // waits behind this page, so there was no sign it worked).
   $('ob-remind').onclick = async () => { if (!remindable || remindUndo($('ob-remind'))) return; const k = `${best2.obj.id}@${best2.start}`; const ok = await remindPass(best2, k); if (ok) reminded.add(k); remindDone($('ob-remind'), ok, best2.start - 10 * 60e3, k); };
@@ -3605,7 +3628,10 @@ async function quickStart() {
   try { ok = await startSensors(); } catch {}
   if (!ok) ok = await trySensorsQuietly(); // already allowed? then motion just works, no tap
   state.drag.on = !ok;
-  state.needsMotionTap = !ok;
+  // A fresh launch says "turn on", not "paused while you were away"; a device that already showed it has no motion
+  // (no sensors, or refused twice) goes straight to finger mode next time (iOS playtest 2026-10-20). Settings can still turn motion on.
+  let noMotion = false; try { noMotion = localStorage.getItem('noMotion') === '1'; } catch {}
+  state.needsMotionTap = !ok && !noMotion; state.wakeCold = true;
 }
 // iPhones only count a finished tap (touchend/click) as permission to ask, not a finger landing (pointerdown),
 // so ask on the release. Until it works, keep asking on the next touch instead of giving up after one try.
@@ -3618,7 +3644,7 @@ async function motionFromTap() {
   motionAsking = false;
   // No motion to wake (a computer, sensors refused): the tap still clears the prompt and the sky goes to dragging
   // (2026-10-17, Sevaan: "I’m tapping to wake the screen and nothing is happening").
-  if (!ok && (++wakeFails >= 2 || !('DeviceOrientationEvent' in window) || !matchMedia('(pointer: coarse)').matches)) { wakeFails = 0; state.needsMotionTap = false; state.drag.on = true; $('chk-drag').checked = true; toast('Motion is unavailable, so drag the sky to look around.', 3500); return; }
+  if (!ok && (++wakeFails >= 2 || !('DeviceOrientationEvent' in window) || !matchMedia('(pointer: coarse)').matches)) { wakeFails = 0; state.needsMotionTap = false; state.drag.on = true; try { localStorage.setItem('noMotion', '1'); } catch {} $('chk-drag').checked = true; toast('Motion is unavailable, so drag the sky to look around.', 3500); return; }
   if (!ok) return; // a phone: one more tap gets another try
   state.needsMotionTap = false;
   state.drag.on = false;
@@ -3719,8 +3745,11 @@ window.addEventListener('resize', () => { if (colFrame.src) sendInsets(); });
 // Any link to the collection opens the layer instead of leaving the page.
 document.addEventListener('click', (e) => {
   const a = e.target.closest('a[href^="cards.html"]'); if (!a || e.defaultPrevented || !state.started) return;
-  e.preventDefault(); if (!$('reveal').hidden) $('reveal').querySelector('[data-close="reveal"]')?.click();
   let key = ''; try { key = decodeURIComponent((a.getAttribute('href').split('#')[1] ?? '')); } catch {}
+  // The first catch's "View in collection": the tour's Tonight page comes first, then the card opens in the Collection
+  // when you close it (iOS playtest 2026-10-20: both opened at once and left the Tonight page's ✕ over the Collection).
+  if (tourRevealLeaving && !$('reveal').hidden) { e.preventDefault(); colAfterTour = key || '#'; $('reveal').querySelector('[data-close="reveal"]')?.click(); return; }
+  e.preventDefault(); if (!$('reveal').hidden) $('reveal').querySelector('[data-close="reveal"]')?.click();
   if (a.closest('#nav')) { setSwitch($('nav'), 'right'); setTimeout(() => openCollection(key), SLIDE_MS); } // the pill slides over first
   else openCollection(key);
 });
@@ -3871,7 +3900,12 @@ async function boot() {
         if(params.has('more')) openDebug();   // the Collection page’s settings button lands here
       }
     } catch {}
-  } else if (readPref('started', false) || loadSavedLocation() || state.sightings.some((x) => !x.sim)) quickStart(); // anyone who has used the app before, or whose cards came back from a backup (bug hunt 2026-10-17)
+  } else if (readPref('started', false) || loadSavedLocation() || state.sightings.some((x) => !x.sim)) {
+    quickStart();
+    // Quit during the tour, before the first catch (iOS playtest 2026-10-20: the relaunch dropped you in the sky with no
+    // first-catch guidance): run it again. Permissions already given go by quickly.
+    if (readPref('started', false) && !readPref('tourDone', false) && !state.sightings.some((x) => !x.sim)) setTimeout(() => runOnboarding(), 600);
+  } // anyone who has used the app before, or whose cards came back from a backup (bug hunt 2026-10-17)
   try { sessionStorage.setItem('scBooted', '1'); } catch {}
   // The loader always gets a proper moment (2026-10-08, Sevaan: after a reset it flashed straight to the welcome card):
   // at least 1.4 s from page start, then the welcome card or the sky.
@@ -4084,7 +4118,7 @@ document.querySelectorAll('.set-sheet-card').forEach((card) => {
     card.style.transform = ''; if (dy > 110 || (fast && dy > 40)) closeSheet(card.closest('.set-sheet')); };
   card.addEventListener('pointerup', end); card.addEventListener('pointercancel', end);
 });
-$('retry-location').addEventListener('click', () => closeSheet($('set-loc-sheet')));
+/* (the Use my location button closes the sheet itself once it has a fix) */
 $('location-form').addEventListener('submit', () => setTimeout(() => closeSheet($('set-loc-sheet')), 50));
 document.querySelectorAll('[data-hl]').forEach((c) => c.addEventListener('change', renderSettings));
 $('chk-sound').addEventListener('change', (e) => writePref('sound', e.target.checked));
@@ -4132,6 +4166,7 @@ $('set-data').addEventListener('click', () => {
 // ---------- countdown to dark (2026-10-08) ----------
 // By day, with nothing in the circle: "3 h 57 min until dark" under the circle, and when it gets dark.
 let udLast = '';
+$('ud-time')?.addEventListener('animationend', () => $('ud-time').classList.remove('roll')); // never left mid-roll
 // The pass marker in the circle (by day) gets a Remind me pill, 10 minutes before it rises.
 let ghLast = '';
 // The pass Show me is steering you to (state.guidePass), while the "appears here at…" pill shows (2026-10-14, Sevaan:
@@ -4164,7 +4199,7 @@ function untilDark(target) {
   // With seconds (2026-10-11, Sevaan). Only a new minute rolls; the seconds just tick.
   const secs = Math.max(0, Math.floor((T.dusk - now0) / 1000)), h = Math.floor(secs / 3600), m = Math.floor(secs / 60) % 60, sc = secs % 60;
   const txt = `Dark in ${h ? `${h} h ` : ''}${h || m ? `${m} min` : `${sc} s`}`.trim(); // the slim bar (2026-10-17, design/target-states Until dark C): minutes, seconds only in the last one
-  if (txt !== udLast) { const roll = !!udLast && txt.replace(/\d+ s/, '') !== udLast.replace(/\d+ s/, ''); udLast = txt; $('ud-time').textContent = txt; if (roll) { $('ud-time').classList.remove('roll'); void $('ud-time').offsetWidth; $('ud-time').classList.add('roll'); } if ($('ud-bell').dataset.dusk !== String(T.dusk)) { $('ud-bell').dataset.dusk = String(T.dusk); udRender(); }; }
+  if (txt !== udLast) { const roll = !!udLast && !matchMedia('(prefers-reduced-motion: reduce)').matches && txt.replace(/\d+ s/, '') !== udLast.replace(/\d+ s/, ''); /* no roll under Reduce Motion: it could stop half-way (iOS playtest 2026-10-20) */ udLast = txt; $('ud-time').textContent = txt; if (roll) { $('ud-time').classList.remove('roll'); void $('ud-time').offsetWidth; $('ud-time').classList.add('roll'); } if ($('ud-bell').dataset.dusk !== String(T.dusk)) { $('ud-bell').dataset.dusk = String(T.dusk); udRender(); }; }
   const rc = sky.ring ?? { y: sky.cy, r: sky.reticlePx }; el.style.top = `${rc.y + rc.r + 26}px`;
   el.hidden = false;
 }
