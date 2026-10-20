@@ -2,8 +2,8 @@
 // badges"). Your history under the sky, from the sighting log plus what the Collection page already knows (rank,
 // patches, constellations, stories, albums). computeStats(sightings, byKey, nightKey, year, ctx) -> numbers;
 // statsHtml(st) -> the panel. No network; the map uses js/geo.js's coarse outlines.
-import { LAND } from './geo.js?v=0.1.890';
-import { TIER_INFO, TIERS } from './rarity.js?v=0.1.890';
+import { LAND } from './geo.js?v=0.1.891';
+import { TIER_INFO, TIERS } from './rarity.js?v=0.1.891';
 
 const RANK = { common: 0, uncommon: 1, rare: 2, epic: 3, legendary: 4 };
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -77,7 +77,7 @@ export function statsHtml(st) {
   const tiles = `<section class="st-sec"><div class="st-head"><span>Time under the sky</span>${since ? `<span class="st-since">since ${esc(since)}</span>` : ''}</div><div class="st-tiles">
     <div class="st-tile"><b>${n(st.nights)}</b><small>${st.nights === 1 ? 'night out' : 'nights out'}</small></div>
     <div class="st-tile"><b>${n(st.sightings)}</b><small>${st.sightings === 1 ? 'sighting' : 'sightings'}</small></div>
-    <div class="st-tile"><b>${n(st.bestRun)}</b><small>nights in a row</small></div>
+    <div class="st-tile"><b>${n(st.bestRun)}</b><small>Best night run</small></div>
     <div class="st-tile"><b>${n(st.places.length)}</b><small>${st.places.length === 1 ? 'place' : 'places'}</small></div></div>
     <div class="st-bars" aria-label="Nights out by month">${st.months.map((v, i) => `<div class="st-bar${i === nowM ? ' now' : ''}"><em>${v || ''}</em><span style="height:${(v / max) * 100}%"></span><small>${MONTHS[i][0]}</small></div>`).join('')}</div></section>`;
   // Highlights, each with its card's picture.

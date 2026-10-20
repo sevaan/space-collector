@@ -1,51 +1,51 @@
-import { TESTER } from './build-flavor.js?v=0.1.890';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.890';
-import * as Secrets from './secrets.js?v=0.1.890';
-import { STORY_BY_SECRET } from './stories.js?v=0.1.890';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.890';
-import * as Ufo from './ufo.js?v=0.1.890';
-import * as Fossil from './fossil.js?v=0.1.890';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.890';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.890';
-import { toast, ticket, dropToast, toastPending, onTicketShown, iconSvg } from './toast.js?v=0.1.890';
-import { VERSION } from './version.js?v=0.1.890';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, overEarth, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.890';
-import { placeName } from './geo.js?v=0.1.890';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, SLIDER_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.890';
-import { conArt } from './con-art.js?v=0.1.890';
-import { fetchWeather, tonightSky, skyClearAt, goodSkyAt } from './weather.js?v=0.1.890';
-import { CON_FIGURES } from './con-figures.js?v=0.1.890';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress, starDistance } from './constellations.js?v=0.1.890';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.890';
-import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.890';
-import { eventOf, activeEvent, nextEvent } from './events.js?v=0.1.890';
-import { conList } from './constellations.js?v=0.1.890';
-import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.890';
-import { SkyView, shortName } from './sky.js?v=0.1.890';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.890';
-import { isPlus, setPlusForTesting, onPlus, PLUS_PERKS, PLUS_PRICES, initStore, storePlans, buyPlus, restorePlus, rcTestStore, storeOpen } from './plus.js?v=0.1.890';
-import { isNative, getPosition, saveFile, notifyAt, cancelNotify, haptic, onNative, nativeChrome, plugin } from './native.js?v=0.1.890';
-import { initBackup, onBackupChange, backupSoon, clearBackup, backupStatus } from './cloud-backup.js?v=0.1.890';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.890';
-import { cardArt } from './art.js?v=0.1.890';
-import { renderCard, miniCard, cardLevel, artImage, lockedArt, attachTilt, attachGyro, throwOff, attachFlip, turnCard } from './card.js?v=0.1.890';
-import { applyBack, CARD_BACKS, backUnlocked, chosenBack, chooseBack, backEarned } from './card-backs.js?v=0.1.890';
-import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.890';
-import { audioCtx } from './audio-ctx.js?v=0.1.890';
-import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume } from './music.js?v=0.1.890';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.890';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel, moonPhaseOf, MOON_PHASES } from './card-model.js?v=0.1.890';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.890';
-import { naturalTargets, SOLAR_SYSTEM, DEEP_SKY } from './natural.js?v=0.1.890';
-import { placeFromTimeZone } from './tz-places.js?v=0.1.890';
-import { TIER_INFO } from './rarity.js?v=0.1.890';
-import { SETS, albumList } from './sets.js?v=0.1.890';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.890';
-import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.890';
-import { shareCardEl } from './share-card.js?v=0.1.890';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.890';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.890';
-import { addStarfield } from './starfield.js?v=0.1.890';
+import { TESTER } from './build-flavor.js?v=0.1.891';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.891';
+import * as Secrets from './secrets.js?v=0.1.891';
+import { STORY_BY_SECRET } from './stories.js?v=0.1.891';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.891';
+import * as Ufo from './ufo.js?v=0.1.891';
+import * as Fossil from './fossil.js?v=0.1.891';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.891';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.891';
+import { toast, ticket, dropToast, toastPending, onTicketShown, iconSvg } from './toast.js?v=0.1.891';
+import { VERSION } from './version.js?v=0.1.891';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, overEarth, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.891';
+import { placeName } from './geo.js?v=0.1.891';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, SLIDER_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.891';
+import { conArt } from './con-art.js?v=0.1.891';
+import { fetchWeather, tonightSky, skyClearAt, goodSkyAt } from './weather.js?v=0.1.891';
+import { CON_FIGURES } from './con-figures.js?v=0.1.891';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress, starDistance } from './constellations.js?v=0.1.891';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.891';
+import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.891';
+import { eventOf, activeEvent, nextEvent } from './events.js?v=0.1.891';
+import { conList } from './constellations.js?v=0.1.891';
+import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination } from './sensors.js?v=0.1.891';
+import { SkyView, shortName } from './sky.js?v=0.1.891';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.891';
+import { isPlus, setPlusForTesting, onPlus, PLUS_PERKS, PLUS_PRICES, initStore, storePlans, buyPlus, restorePlus, rcTestStore, storeOpen } from './plus.js?v=0.1.891';
+import { isNative, getPosition, saveFile, notifyAt, cancelNotify, haptic, onNative, nativeChrome, plugin } from './native.js?v=0.1.891';
+import { initBackup, onBackupChange, backupSoon, clearBackup, backupStatus } from './cloud-backup.js?v=0.1.891';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.891';
+import { cardArt } from './art.js?v=0.1.891';
+import { renderCard, miniCard, cardLevel, artImage, lockedArt, attachTilt, attachGyro, throwOff, attachFlip, turnCard } from './card.js?v=0.1.891';
+import { applyBack, CARD_BACKS, backUnlocked, chosenBack, chooseBack, backEarned } from './card-backs.js?v=0.1.891';
+import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.891';
+import { audioCtx } from './audio-ctx.js?v=0.1.891';
+import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume } from './music.js?v=0.1.891';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.891';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel, moonPhaseOf, MOON_PHASES } from './card-model.js?v=0.1.891';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.891';
+import { naturalTargets, SOLAR_SYSTEM, DEEP_SKY } from './natural.js?v=0.1.891';
+import { placeFromTimeZone } from './tz-places.js?v=0.1.891';
+import { TIER_INFO } from './rarity.js?v=0.1.891';
+import { SETS, albumList } from './sets.js?v=0.1.891';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.891';
+import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.891';
+import { shareCardEl } from './share-card.js?v=0.1.891';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.891';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.891';
+import { addStarfield } from './starfield.js?v=0.1.891';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -832,10 +832,14 @@ function updateCompass(basis) {
   // Letters around the edge (heading-up, so they turn as you turn) and the facing notch.
   ctx.font = '500 11px "SC Label", "Arial Narrow", sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
   for (const [az, L] of [[0, 'N'], [90, 'E'], [180, 'S'], [270, 'W']]) {
-    const a = (az - heading) * RAD, r = R + 7.5;
+    const a = (az - heading) * RAD, r = R + 7.5, rel = ((az - heading) % 360 + 360) % 360;
+    // Letters step aside where the facing notch (top) and the new-count badge (upper right, when shown) sit (polish 2026-10-20).
+    const gap = (d) => Math.min(1, Math.max(0, (d - 6) / 14)), toTop = Math.min(rel, 360 - rel), badge = !$('radar-new').hidden ? gap(Math.abs(rel - 45) - 12) : 1;
+    ctx.globalAlpha = 0.3 + 0.7 * Math.min(gap(toTop), badge); // dimmed, not gone: you still see which letter is ahead
     ctx.fillStyle = az === 0 ? C.gold : C.muted;
     ctx.fillText(L, c + r * Math.sin(a), c - r * Math.cos(a));
   }
+  ctx.globalAlpha = 1;
   ctx.fillStyle = C.cyan;
   ctx.beginPath(); ctx.moveTo(c, c - R - 1); ctx.lineTo(c - 3.5, c - R - 6.5); ctx.lineTo(c + 3.5, c - R - 6.5); ctx.closePath(); ctx.fill();
 }
@@ -1775,7 +1779,7 @@ function renderShinyForecast(list, T, t0) {
   const wrap = document.createElement('div'); wrap.className = 'shiny-sec';
   wrap.innerHTML = `<div class="t-head">Shiny chances</div>`
     + (explained ? '' : SHINY_WHAT)
-    + `<div class="shiny-list">${rows.map((x, i) => `<div class="shiny-row"><b>${fmtTime(x.t)}</b><span><i>${escapeHtml(label(x.o))}</i> ${escapeHtml(x.line)}</span><small>${escapeHtml(SHINY[x.kind]?.label ?? '')}</small><button class="ic showme" type="button" data-i="${i}" aria-label="Show me where to look">${ICON_TARGET}</button></div>`).join('')}</div>`
+    + `<div class="shiny-list">${rows.map((x, i) => `<div class="shiny-row"><b>${fmtTime(x.t)}</b><span><i>${escapeHtml(label(x.o))}</i> ${escapeHtml(x.line)}</span><small>${escapeHtml(({ eclipse: 'Catch the fade', moon: 'Beside the Moon', overhead: 'Straight overhead', fresh: 'Just launched' })[x.kind] ?? SHINY[x.kind]?.label ?? '')}</small><button class="ic showme" type="button" data-i="${i}" aria-label="Show me where to look">${ICON_TARGET}</button></div>`).join('')}</div>`
     + (plus || ch.length < 2 ? '' : `<button type="button" class="shiny-tease" id="shiny-tease">+${Math.min(ch.length, 8) - 1} more tonight <span class="plus-tag">PLUS</span></button>`);
   list.appendChild(wrap);
   wrap.querySelectorAll('.showme').forEach((b) => b.addEventListener('click', (e) => { e.stopPropagation(); flyToCircle(b); showMePass(rows[Number(b.dataset.i)].p); }));
@@ -2021,7 +2025,7 @@ function renderTonight() {
   if (wxT?.clearFrom > t0) marks.push([wxT.clearFrom, `Clears${ev && t0 >= ev.start ? ` · ${ev.name.replace(/\s*\d{4}$/, '')} best now` : ''}`, 'clear']);
   if (peak[1] >= 3 && peak[0] > t0) marks.push([peak[0], `Busiest: ${upOnce(peak[1])}`, 'peak']);
   if (T.dawn) marks.push([T.dawn, 'Dawn: the sky closes', 'dawn']);
-  const markHtml = ([t, txt, k]) => `<div class="t-mark ${k}"><span class="time">${fmtTime(t)}</span><span>${escapeHtml(txt)}</span></div>`;
+  const markHtml = ([t, txt, k]) => `<div class="t-mark ${k}"><span class="time">${fmtTime(t).replace(/\s?[AP]M$/i, '')}</span><span>${escapeHtml(txt)}</span></div>`;
   marks.sort((a, b) => a[0] - b[0]);
   const SOON = 10 * 60000, soonList = passes.filter((p) => p.start <= t0 + SOON), laterList = passes.filter((p) => p.start > t0 + SOON);
   const row = (p) => {
@@ -2090,7 +2094,7 @@ function renderTonight() {
     }
   };
   while (marks.length && marks[0][0] <= t0 + SOON) marks.shift();
-  part('This evening', 'The best of them · swipe left to set a reminder', laterList.filter((p) => p.start <= eveEnd), 'later', 8, t0, eveEnd);
+  part('This evening', 'Swipe left to remind', laterList.filter((p) => p.start <= eveEnd), 'later', 8, t0, eveEnd);
   part('Late night', 'The best of them', laterList.filter((p) => p.start > eveEnd && p.start <= dawnCut), 'late', 4, eveEnd, dawnCut);
   part('Before dawn', 'The best of them', laterList.filter((p) => p.start > dawnCut), 'dawn', 4, dawnCut, Infinity);
   for (const mk of marks) list.insertAdjacentHTML('beforeend', markHtml(mk));
@@ -2443,7 +2447,7 @@ function groundHint(t) {
 // Compact (2026-10-06): a short detail rides on the label line ('NEXT UP · 9:44 PM ›' over the name); a long one gets its own line.
 // One line (2026-10-06): 'NEXT UP · COSMOS 2082 · 9:44 PM ›', one size, the name bold orange (it gives way with … first).
 // 'NEXT: COSMOS 2082 · 9:44 PM' (2026-10-07: a colon instead of a dot after the label, no ›, so the name gets the room).
-const npChip = (k, n, m) => `${k ? `<span class="np-k">${escapeHtml(k)}:</span>` : ''}<b class="np-n"${String(n).length > 8 ? ' data-long' : ''}>${escapeHtml(n)}</b>${m ? `<span class="np-m">· ${escapeHtml(m)}</span>` : ''}`;
+const npChip = (k, n, m) => `${k ? `<span class="np-k">${escapeHtml(k)}</span>` : ''}<b class="np-n"${String(n).length > 8 ? ' data-long' : ''}>${escapeHtml(n)}</b>${m ? `<span class="np-m">· ${escapeHtml(m)}</span>` : ''}`;
 // The pass to suggest (2026-10-13, Sevaan: "we don't need to tell people about common objects unless every other object
 // rarity has been exhausted"): new to you, Uncommon or rarer, rarest then soonest; Commons only once fewer than 10
 // Uncommon-or-better cards are left that you don't have. Null if nothing qualifies.
@@ -3129,7 +3133,7 @@ function obAimTick() {
   g.querySelector('.ob-arrow').setAttribute('transform', `rotate(${ang.toFixed(1)} 150 60)`);
   g.querySelector('.ob-arrow').style.opacity = off < 6 ? 0 : 1;
   const msg = off < 6 ? 'Right there' : `${Math.abs(dAz) > 8 ? `Turn ${dAz > 0 ? 'right' : 'left'} ${Math.round(Math.abs(dAz))}°` : ''}${Math.abs(dAz) > 8 && Math.abs(dEl) > 8 ? ' · ' : ''}${Math.abs(dEl) > 8 ? `${dEl > 0 ? 'up' : 'down'} ${Math.round(Math.abs(dEl))}°` : ''}`;
-  const t = g.querySelector('.ob-aim-txt'); if (t.textContent !== msg) t.textContent = msg;
+  const txt = msg.charAt(0).toUpperCase() + msg.slice(1), t = g.querySelector('.ob-aim-txt'); if (t.textContent !== txt) t.textContent = txt;
 }
 requestAnimationFrame(obAimTick);
 const OB_ART = {
@@ -3218,7 +3222,7 @@ async function runOnboarding(force = false) {
     { tier: 'Your first card', title: 'Your first catch', sub: ['Up right now', ''], art: OB_ART.catch, text: '', yes: 'Show me where', gold: true },
   ];
   let tgt0 = null; const A = steps.length - 1; // the assignment card
-  const nameTarget = () => { tgt0 = firstTarget(); if (!tgt0) return; steps[A].title = `Catch ${['moon', 'sun'].includes(tgt0.obj.type) && !/^the /i.test(label(tgt0.obj)) ? 'the ' : ''}${label(tgt0.obj)}`; /* not "the The Sun" (text audit 2026-10-17); "Catch the Moon" (playtest 2026-10-16) */ steps[A].sub = [tgt0.obj.type === 'star' ? 'Bright star' : tgt0.obj.type === 'sun' ? 'Our star' : tgt0.obj.type === 'moon' ? 'The Moon' : tgt0.obj.natural ? 'Planet' : 'Satellite', whereWords(tgt0.look)]; steps[A].text = `It's up right now. ${tgt0.hint} Follow the arrow, then tap the circle to collect your first card.`;
+  const nameTarget = () => { tgt0 = firstTarget(); if (!tgt0) return; steps[A].title = `Catch ${['moon', 'sun'].includes(tgt0.obj.type) && !/^the /i.test(label(tgt0.obj)) ? 'the ' : ''}${label(tgt0.obj)}`; /* not "the The Sun" (text audit 2026-10-17); "Catch the Moon" (playtest 2026-10-16) */ steps[A].sub = [tgt0.obj.type === 'star' ? 'Bright star' : tgt0.obj.type === 'sun' ? 'Our star' : tgt0.obj.type === 'moon' ? 'Natural satellite' : tgt0.obj.natural ? 'Planet' : 'Satellite', whereWords(tgt0.look)]; steps[A].text = `It's up right now. ${tgt0.hint} Follow the arrow, then tap Collect to keep your first card.`;
     // The card's art becomes a live pointer (2026-10-08, Sevaan): the circle with an arrow that turns toward the target as you turn.
     steps[A].art = OB_ART.aim(tgt0.look.az, tgt0.look.el); obAimTarget = tgt0;
  };
@@ -3516,7 +3520,7 @@ function obFinish(caught) {
   } else {
     chosen = pickBest(passes); const pk = peakIn(t0, dawn ?? Infinity); // rarest new card first, as in the other cases
     items = [[dusk, T?.dusk && T.dusk > t0 ? 'Dark enough to start' : "It's dark: go now"], ...(chosen ? [[chosen.start, passLine(chosen), 'hot']] : []), ...(pk[1] >= 3 ? [[pk[0], `Busiest: ${upOnce(pk[1])}`]] : []), ...(dawn ? [[dawn, T?.dawn && dawn < T.dawn ? 'The evening plan ends here' : 'Dawn: the sky closes']] : [])];
-    $('od-eyebrow').textContent = "You're set"; $('ob-done-title').innerHTML = 'Tonight<br>looks good.'; $('od-sub').textContent = `${wx ? wx.line : 'Clear skies'}${pk[1] >= 3 ? ` · ${pk[1]} satellites at the peak` : ''}`;
+    $('od-eyebrow').textContent = "You're set"; $('ob-done-title').innerHTML = 'Tonight<br>looks good.'; $('od-sub').textContent = `${wx ? wx.line : 'Clear skies'}${pk[1] >= 3 ? ` · ${pk[1]} objects at the peak` : ''}`;
     // Late, with no satellite passing in the window (2026-10-18, Sevaan: at 11:31 PM the page said only "go now" and
     // "the evening plan ends here"): satellites are in Earth's shadow, so say that, name when they come back before
     // dawn, and run the timeline to dawn.

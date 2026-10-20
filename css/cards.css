@@ -615,3 +615,10 @@
 @keyframes flCaret { 0% { opacity: 1; } 50% { opacity: 0; } }
 @keyframes flDot { from { transform: scale(0); } }
 @media (prefers-reduced-motion: reduce) { .card--retro .fl-type { animation: none; clip-path: none; } .card--retro .fl-type::after, .card--retro .fl-latest i { animation: none; } }
+
+/* ---------- Fine-detail polish (2026-10-20, Collection audit) ---------- */
+.card--retro .card__stats > div { text-align: left; display: flex; flex-direction: column; } /* every stat column left-aligned, like the four-stat cards */
+.card--retro .card__stats b { margin-top: auto; } /* shrunk words sit on the same baseline as numbers */
+.card--retro .card__name { text-wrap: balance; }
+.card--mission .card__art:has(.shiny-tag) .m-chip.m-reunion { bottom: calc(.65em + 1.9em); } /* REUNITED above SHINY, not hidden under it */
+.card-tile--retro .tile-lvl { right: 6px; }

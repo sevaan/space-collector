@@ -641,3 +641,28 @@ body[data-view]:not([data-view="owned"]) .logbook .lb-pic { max-height: 0 !impor
 .up-next-head b { font: 500 13px/1 'SC Label', sans-serif; letter-spacing: .2em; text-transform: uppercase; color: var(--accent, #fa8127); }
 .up-next-head span { font: 500 13px/1.2 'SC Label', sans-serif; letter-spacing: .06em; color: #8fa3b8; }
 #stats-view .close:focus-visible { outline: none; border-color: #fff2b3; } /* same quiet cue as the viewer: the dialog focuses it on open (iOS playtest 2026-10-19) */
+
+/* ---------- Fine-detail polish (2026-10-20, Collection audit) ---------- */
+.v-where { text-wrap: balance; }
+.v-up__when .nw, .fd-pass .nw, .nw { white-space: nowrap; }
+.result-row { min-height: 44px; } /* no jump when Clear filters appears */
+.pw-chips { padding: 2px 4px 14px; margin: 0; -webkit-mask-image: linear-gradient(90deg, #000 90%, transparent); mask-image: linear-gradient(90deg, #000 90%, transparent); }
+.viewer-header { padding-left: 20px; padding-right: 20px; } /* the header on the same 20px gutter as what's under it */
+#owned-count { vertical-align: 1px; line-height: 1; padding: 2px 7px; }
+.collection-tabs button { min-width: 44px; }
+.lb-more { padding: 10px 2px; margin-block: -8px; }
+.album-head { border-radius: 12px; }
+.st-goal { align-content: start; } /* labels in a row line up when one tile has no sub-line */
+.st-rare div { grid-template-columns: 48px 6.2em minmax(0, 1fr) auto; }
+.filters-btn { border-color: var(--line); }
+#viewer .ui-btn { border-radius: 10px; }
+@media (min-width: 900px) { body.albums-view #grid, .find-mode { max-width: 720px; margin-inline: auto; } }
+/* Red night mode: the last bright bits (badges, album level, the rank card's XP row) */
+:where(html[data-theme='night'], body.night) .card-tile--retro :is(.tile-lvl--gold, .tile-lvl--silver) { color: #ff7f70 !important; border-color: #ff7f70 !important; background: #1a0705 !important; }
+:where(html[data-theme='night'], body.night) .card-tile.is-icon { box-shadow: 0 0 0 2px #a83a2c !important; }
+:where(html[data-theme='night'], body.night) .album__level { color: #ff7f70 !important; border-color: #ff7f70 !important; background: transparent !important; }
+:where(html[data-theme='night'], body.night) .album-bar b.hit { background: #ff7f70 !important; }
+:where(html[data-theme='night'], body.night) .lb-bar { background: #2a0d09 !important; }
+:where(html[data-theme='night'], body.night) .lb-bar > * { background: #ff6a55 !important; }
+:where(html[data-theme='night'], body.night) .lb-to { color: #dd6455 !important; }
+:where(html[data-theme='night'], body.night) .lb-to b { color: #ff7f70 !important; }

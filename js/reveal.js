@@ -5,12 +5,12 @@
 //  Everything scales with rarity (Legendary dims the sky, shockwave, held breath, slow flip, fanfare).
 // Waits use timers, not animation.finished, so a paused tab can never freeze the sequence.
 
-import { sfx, loadSfx } from './sfx.js?v=0.1.890';
-import { audioCtx } from './audio-ctx.js?v=0.1.890';
-import { TIER_INFO } from './rarity.js?v=0.1.890';
-import { levelFor, attachTilt, attachGyro, attachFlip, throwOff, retype } from './card.js?v=0.1.890';
-import { applyBack } from './card-backs.js?v=0.1.890';
-import { addStarfield } from './starfield.js?v=0.1.890';
+import { sfx, loadSfx } from './sfx.js?v=0.1.891';
+import { audioCtx } from './audio-ctx.js?v=0.1.891';
+import { TIER_INFO } from './rarity.js?v=0.1.891';
+import { levelFor, attachTilt, attachGyro, attachFlip, throwOff, retype } from './card.js?v=0.1.891';
+import { applyBack } from './card-backs.js?v=0.1.891';
+import { addStarfield } from './starfield.js?v=0.1.891';
 
 const FX = {
   common:    { particles: 14,  flip: 520,  spin: 0,   dim: 0,   shock: false, notes: [880],                            hold: 0 },
@@ -117,7 +117,7 @@ export async function playReveal({ card, o, seen, origin, fleet = null, progress
   root.style.setProperty('--fx', color);
   root.classList.remove('rv-done');
   $('reveal-eyebrow').textContent = fresh ? 'NEW CARD' : newStamp ? (fleet?.line ? 'NEW PHASE STAMP' : 'NEW LAUNCH STAMP') : NIGHT_MILESTONES.includes(nights) ? `SEEN ON ${nights} NIGHTS` : 'SEEN AGAIN';
-  if (xp > 0) $('reveal-eyebrow').insertAdjacentHTML('beforeend', `<span class="rv-xp"> ·<span class="rv-roll"><span>+${xp} XP</span></span></span>`); // rolls in when the card lands
+  if (xp > 0) $('reveal-eyebrow').insertAdjacentHTML('beforeend', `<span class="rv-xp"><span class="rv-roll"><span><i class="rv-dot"> · </i>+${xp} XP</span></span></span>`); // rolls in when the card lands
   setRank(xp > 0 ? rank : null);
   $('rv-news').replaceChildren(); earnedNow = earned;
   $('reveal-card').replaceChildren(card);

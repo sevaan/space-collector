@@ -1778,3 +1778,44 @@ body.night .od-tier { color: var(--text) !important; }
    touch band reaching up into the sky above it (2026-10-18, Sevaan: hard to move). */
 #skybar { touch-action: none; padding-top: 14px; }
 #sky-range { pointer-events: none; }
+
+/* ---------- Fine-detail polish (2026-10-20, panels and sheets audit) ---------- */
+body.night :is(.now-hero, .nh-tier, .nh-after, .run-stop, .rs-h, .shiny-row) { --c: var(--gold) !important; --tier: var(--gold) !important; } /* rarity colours vanish through the red filter */
+body.night .run-stop::before { background: var(--gold) !important; box-shadow: none !important; }
+.b-sec { gap: 12px; } .b-sec span:first-child { white-space: nowrap; } .b-sec span:last-child { text-align: right; min-width: 0; }
+.t-mark .time { white-space: nowrap; }
+.tl-chips { margin: 4px -20px 2px; padding: 2px 20px 6px; -webkit-mask-image: linear-gradient(90deg, #000 85%, transparent); mask-image: linear-gradient(90deg, #000 85%, transparent); }
+.tl-chip { min-height: 44px; height: auto; }
+.set-row > .set-tog, .set-row > .set-range { margin-left: auto; } /* every switch ends on the same right edge */
+.set-row > .set-val { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 48%; }
+#ob-done.nt #od-body { -webkit-mask-image: linear-gradient(transparent 0, #000 28px, #000 calc(100% - 110px), transparent calc(100% - 70px)); mask-image: linear-gradient(transparent 0, #000 28px, #000 calc(100% - 110px), transparent calc(100% - 70px)); padding-bottom: 120px; }
+.rc-go { background: #1a2330; }
+body:has(#recap:not([hidden])) #skybar { opacity: 0; }
+#recap .rc-card { box-shadow: 0 10px 24px #0008; }
+#recap .rc-stats { margin: 10px 0 0; }
+.shiny-row b { font: 400 15px/1.2 var(--display); color: var(--text); }
+.shiny-row .showme { width: 44px; height: 44px; border-radius: 50%; border: 1px solid #22344a; display: grid; place-items: center; }
+.needs-plus::after { font: 700 10px/1.2 var(--label); padding: 1px 5px; }
+.rs-acts .ic:disabled { opacity: 1; color: #46586b; border-color: #18263a; }
+.rs-acts .ic { width: 40px; height: 40px; }
+#nt-all { padding: 11px 0 11px 12px; margin: -11px 0; }
+.set-sl-top { align-items: baseline; }
+.set-step { height: 36px; }
+.nudge-reset { margin: -2px 0 -4px; }
+.set-sheet h3 { font: 500 13px/1.2 var(--label); letter-spacing: .16em; text-transform: uppercase; color: var(--gold); }
+.set-prev { height: 132px; } .set-prev > span:last-child { bottom: 8px; }
+.nt-tile { display: grid; grid-template-rows: 30px 1fr auto; } .nt-tile b { align-self: end; margin-top: 0; } .nt-tile small { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+.plus-host .card__footer { padding: .35em .6em .55em; }
+.plus-fine { font-family: var(--label); letter-spacing: .03em; }
+/* ---------- Fine-detail polish (2026-10-20, sky screen audit) ---------- */
+html body #toasts#toasts#toasts .ticket { background: rgb(9, 16, 28); } /* opaque: the header no longer ghosts through a notice */
+body.night .tk-card { --tk-bg: rgb(12, 3, 3); }
+body.night #d-tier[data-gem]::before { color: #ff6a55 !important; }
+#nextpass::after { content: ''; position: absolute; inset: -6px 0; } /* a 44px tap target around the 32px chip */
+#nextpass .np-k { color: var(--gold); }
+#ob-skip::after { content: ''; position: absolute; inset: -7px -4px; }
+#btn-start { min-height: 44px; }
+.wc-step b { text-wrap: balance; }
+#until-dark.tk-card { border-radius: 14px; }
+#discover .d-ticket #d-cta, #discover.owned .d-ticket #d-cta { padding-left: calc(14px + .2em); } /* tracked caps sit optically centred */
+.sc-switch__item { padding-left: .2em; }

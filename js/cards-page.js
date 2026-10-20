@@ -1,35 +1,35 @@
-import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.890';
-import { computeStats, statsHtml } from './stats.js?v=0.1.890';
-import { nightKey } from './observation.js?v=0.1.890';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.890';
-import { sfx } from './sfx.js?v=0.1.890';
-import { expandFacts } from './catalog-facts.js?v=0.1.890';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.890';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.890';
-import { ticket } from './toast.js?v=0.1.890';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.890';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.890';
-import { cardArt } from './art.js?v=0.1.890';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.890';
-import { applyBack } from './card-backs.js?v=0.1.890';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.890';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.890';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.890';
-import { STORIES } from './stories.js?v=0.1.890';
-import { loadConstellations, conList } from './constellations.js?v=0.1.890';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.890';
-import { eventBadges, nextEvent } from './events.js?v=0.1.890';
-import { shareCardEl } from './share-card.js?v=0.1.890';
-import { forgetSighting } from './cloud-backup.js?v=0.1.890';
-import { allSightings, deleteSighting } from './store.js?v=0.1.890';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.890';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.890';
+import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.891';
+import { computeStats, statsHtml } from './stats.js?v=0.1.891';
+import { nightKey } from './observation.js?v=0.1.891';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.891';
+import { sfx } from './sfx.js?v=0.1.891';
+import { expandFacts } from './catalog-facts.js?v=0.1.891';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.891';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.891';
+import { ticket } from './toast.js?v=0.1.891';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.891';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.891';
+import { cardArt } from './art.js?v=0.1.891';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.891';
+import { applyBack } from './card-backs.js?v=0.1.891';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.891';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.891';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.891';
+import { STORIES } from './stories.js?v=0.1.891';
+import { loadConstellations, conList } from './constellations.js?v=0.1.891';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.891';
+import { eventBadges, nextEvent } from './events.js?v=0.1.891';
+import { shareCardEl } from './share-card.js?v=0.1.891';
+import { forgetSighting } from './cloud-backup.js?v=0.1.891';
+import { allSightings, deleteSighting } from './store.js?v=0.1.891';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.891';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.891';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const hasSightings = (c) => state.sightingsByKey.has(c.key);
-const dateLabel = (time) => new Date(time).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+const dateLabel = (time) => new Date(time).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
 function notice(message) { $('notice').hidden = !message; $('notice').textContent = message; }
@@ -230,7 +230,7 @@ function renderAlbums() {
     b.className = `album${st.level === 3 ? ' gold' : ''}${latest ? '' : ' empty'}${crossed ? ' crossed' : ''}`; b.style.setProperty('--set', set.color);
     b.innerHTML = `<span class="album__art">${img ? `<img src="${img}" alt="" loading="lazy">` : cardArt(show, { accent: set.color, silhouette: !latest })}</span>
       <span class="album__body"><span class="album__top"><span class="album__name">${esc(set.name)}</span><span class="album__count">${albumCount(set, st)}</span></span>${set.id === 'constellations' ? `<span class="album__sub">${st.have.length.toLocaleString()} of ${st.cards.length.toLocaleString()} stars</span>` : ''}
-      ${albumBar(st)}<span class="album__foot">${st.level ? `<span class="album__level l${st.level}">${LEVELS[st.level - 1]}</span>` : ''}<span class="album__next">${st.level === 3 ? 'Gold album' : `${(st.next - st.have.length).toLocaleString()} more${unit(set)} for ${LEVELS[st.level]}`}</span></span></span>`;
+      ${albumBar(st)}<span class="album__foot">${st.level ? `<span class="album__level l${st.level}">${LEVELS[st.level - 1]}</span>` : ''}<span class="album__next">${st.level === 3 ? 'Complete' : `${(st.next - st.have.length).toLocaleString()} more${unit(set)} for ${LEVELS[st.level]}`}</span></span></span>`;
     b.addEventListener('click', () => { state.set = set.id; $('set-filter').value = set.id; setView('discover'); window.scrollTo({ top: $('grid').offsetTop - 160, behavior: 'smooth' }); });
     frag.append(b);
   }
@@ -244,7 +244,7 @@ function renderAlbumHead() {
   const set = SETS.find((s) => s.id === state.set), st = albumStats(state.set);
   head.hidden = false; head.style.setProperty('--set', set.color); head.classList.toggle('gold', st.level === 3);
   head.innerHTML = `<div><span class="album__name">${esc(set.name)}</span><span class="album__count">${set.id === 'constellations' ? `${albumCount(set, st)} · ${st.have.length.toLocaleString()} of ${st.cards.length.toLocaleString()} stars` : `<b>${st.have.length.toLocaleString()}</b> / ${st.cards.length.toLocaleString()} collected`}${st.level ? ` · ${LEVELS[st.level - 1]} album` : ''}</span></div>${albumBar(st)}
-    <span class="album__next">${st.level === 3 ? 'Gold album. Every card here is a bonus.' : `${(st.next - st.have.length).toLocaleString()} more${unit(set)} for a ${LEVELS[st.level]} album (${st.next.toLocaleString()}${unit(set) || ' cards'}).`}</span>`;
+    <span class="album__next">${st.level === 3 ? 'Gold album. Every card here is a bonus.' : `${(st.next - st.have.length).toLocaleString()} more${unit(set)} for a ${LEVELS[st.level]} album (${st.next.toLocaleString()}${unit(set) || ' cards'})`}</span>`;
 }
 
 // ---------- logbook: rank, streak, tonight's missions, achievements (js/progress.js) ----------
@@ -344,6 +344,12 @@ function renderLogbook() {
 // you have it, and its next visible pass from here (worked out by Explore, js/find-worker.js, up to 10 days), with a
 // target (be shown where) and a bell (remind me). Before you type: the famous ones you don't have yet.
 const findPasses = new Map(); let findReq = 0, findReminded = new Set(), findSuggest = null;
+// "Tonight" is the observing night (noon to noon), so a 4:57 AM pass is tonight's everywhere (Android playtest 2026-10-19).
+function nightWord(t) {
+  const nightOf = (x) => new Date(x - 12 * 3600e3).toDateString(), nowD = new Date();
+  const tonightKey = nowD.getHours() < 6 ? nightOf(nowD.getTime()) : nowD.toDateString(), tmrKey = new Date(new Date(tonightKey).getTime() + 86400e3 + 3600e3).toDateString();
+  return { today: nightOf(t) === tonightKey, tmr: nightOf(t) === tmrKey };
+}
 function findPassLine(c) {
   if (c.natural) return c.natural === 'star' ? 'A star · out on clear nights' : c.type === 'sun' ? 'By day' : 'Look for it on a clear night';
   if (c.launches) return 'A fleet · passes most nights';
@@ -353,12 +359,10 @@ function findPassLine(c) {
   if (!p) return 'Not visible from here in the next 10 days';
   // "Tonight" means the observing night, not the calendar day, so a 4:57 AM pass is tonight's like the card viewer says
   // (Android playtest 2026-10-19: Find said "Tomorrow 4:57 AM" for the same pass).
-  const d = new Date(p.start), nightOf = (t) => new Date(t - 12 * 3600e3).toDateString(), nowD = new Date();
-  const tonightKey = nowD.getHours() < 6 ? nightOf(nowD.getTime()) : nowD.toDateString(), tmrKey = new Date(new Date(tonightKey).getTime() + 86400e3 + 3600e3).toDateString();
-  const today = nightOf(p.start) === tonightKey, tmr = nightOf(p.start) === tmrKey;
+  const d = new Date(p.start), { today, tmr } = nightWord(p.start);
   const day = today ? 'Tonight' : tmr ? 'Tomorrow' : d.toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' });
   const where = `${p.peakEl >= 60 ? 'high' : p.peakEl >= 30 ? 'halfway up' : 'low'} in the ${({ N: 'north', NE: 'northeast', E: 'east', SE: 'southeast', S: 'south', SW: 'southwest', W: 'west', NW: 'northwest' })[['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'][Math.round(p.peakAz / 45) % 8]]}`;
-  return `<b>${day} ${d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}</b> · ${p.cloud ? '<span class="fd-cloud">cloud forecast</span>' : where}`;
+  return `<b>${day} ${d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}</b> <span class="nw">· ${p.cloud ? '<span class="fd-cloud">cloud forecast</span>' : where}</span>`;
 }
 const TGT = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="7.5"/><circle cx="12" cy="12" r="2.5" fill="currentColor"/><path d="M12 1.5v4M12 18.5v4M1.5 12h4M18.5 12h4"/></svg>';
 const BEL = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg>';
@@ -455,7 +459,7 @@ function render() {
       empty.innerHTML = '<span class="empty__orbit" aria-hidden="true">✧</span><h2>Your first story is up there.</h2><p>Record a sighting in the live sky to earn your first card. The ISS is a wonderful place to start.</p><a href="./?resume=1">Explore the sky ↗</a><button type="button" class="secondary">Browse the field guide</button>';
       empty.querySelector('button').addEventListener('click', () => setView('discover'));
     } else {
-      empty.innerHTML = '<span class="empty__orbit empty__search" aria-hidden="true"><svg viewBox="0 0 48 48" width="44" height="44" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="21" cy="21" r="12"/><path d="M30 30 L40 40"/><circle cx="21" cy="21" r="5.5" stroke-dasharray="2 3.2" opacity=".6"/><path d="M17 13.5a8 8 0 0 1 8.5-0.8" opacity=".55"/></svg></span><h2>No cards found.</h2><p>Try a different name, collection or rarity.</p><button type="button">Clear filters</button>';
+      empty.innerHTML = '<span class="empty__orbit empty__search" aria-hidden="true"><svg viewBox="0 0 48 48" width="44" height="44" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="21" cy="21" r="12"/><path d="M30 30 L40 40"/><circle cx="21" cy="21" r="5.5" stroke-dasharray="2 3.2" opacity=".6"/><path d="M17 13.5a8 8 0 0 1 8.5-0.8" opacity=".55"/></svg></span><h2>No cards found</h2><p>Try a different name, collection or rarity.</p><button type="button">Clear filters</button>';
       empty.querySelector('button').addEventListener('click', resetFilters);
     }
     $('grid').append(empty); appendUpNext(0); return;
@@ -479,9 +483,9 @@ function renderUpPanel(c, up, find = false) {
   const key = `${up.id}@${up.start}`, far = up.start > Date.now() + 10 * 60000, on = findReminded.has(key);
   const pt = up.dir ?? ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'][Math.round((((up.peakAz ?? 0) % 360) + 360) % 360 / 45) % 8];
   const where = `${up.peakEl >= 60 ? 'high' : up.peakEl >= 30 ? 'halfway up' : 'low'} in the ${DIR_WORD[pt] ?? pt}`; // the same words as Find and the Tonight page (Android playtest 2026-10-19)
-  const d = new Date(up.start), today = d.toDateString() === new Date().toDateString(), tmr = d.toDateString() === new Date(Date.now() + 86400e3).toDateString();
+  const d = new Date(up.start), { today, tmr } = nightWord(up.start);
   const when = !find ? 'Up tonight' : today ? 'Tonight' : tmr ? 'Tomorrow' : d.toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' });
-  el.innerHTML = `<p class="v-up__when">${esc(when)} · <b>${esc(hm(up.start))}</b> · ${esc(where)}</p>${up.cloud ? '<p class="v-up__cloud">Cloud is forecast then. If you spot a gap, it still counts.</p>' : ''}
+  el.innerHTML = `<p class="v-up__when">${esc(when)}&nbsp;· <b>${esc(hm(up.start))}</b><span class="nw">&nbsp;· ${esc(where)}</span></p>${up.cloud ? '<p class="v-up__cloud">Cloud is forecast then. If you spot a gap, it still counts.</p>' : ''}
     <div class="v-up__btns">${far ? `<button type="button" class="v-up__remind${on ? ' on' : ''}" aria-pressed="${on}">${BEL}<span>${on ? `Reminder on · ${esc(hm(up.start - 10 * 60000))}` : `Remind me ${esc(hm(up.start - 10 * 60000))}`}</span></button>` : '<span class="v-up__soon">Starting soon: look now</span>'}<button type="button" class="v-up__show">${TGT}<span>Show me</span></button></div>`;
   const send = (sc) => { if (!EMBED) { ticket({ kind: 'info', line: sc.endsWith('remind') ? 'Reminders work in the Space Collector app.' : 'Open Explore to be shown where to look.', ms: 3500 }); return; }
     window.parent.postMessage(find ? { sc, pass: up } : { sc, id: up.id, start: up.start }, location.origin); };
@@ -530,6 +534,7 @@ function appendUpNext(total) {
 }
 function setView(view) {
   const changed = state.view !== view;
+  if (changed && state.view === 'discover' && view !== 'albums' && state.set !== 'all' && state.set !== 'tonight') { state.set = 'all'; $('set-filter').value = 'all'; } // an album's filter stays in the album (polish 2026-10-20)
   state.view = view; document.body.dataset.view = view; // CSS: the rank ladder shows on Mine only
   if (changed) { for (const el of [$('grid'), $('patch-wall')]) { el.classList.remove('swap'); void el.offsetWidth; el.classList.add('swap'); } cascadeLeft = 16; }
   $('tab-owned').setAttribute('aria-pressed', String(view === 'owned'));
@@ -611,13 +616,13 @@ function showCard() {
   // (The cream passport block is gone, 2026-10-06: each sighting row names its launch instead.)
   if (sightings.length) {
     const heading = document.createElement('h2');
-    heading.textContent = c.launches ? `Every sighting · ${sightings.length}` : sightings.length === 1 ? 'When you saw it' : `When you saw it · ${sightings.length} times`;
+    heading.textContent = c.launches && sightings.length > 1 ? `Every sighting · ${sightings.length}` : sightings.length === 1 ? 'When you saw it' : `When you saw it · ${sightings.length} times`;
     $('v-history').append(heading);
     const points = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
     for (const s of [...sightings].sort((a, b) => b.time - a.time)) {
       const row = document.createElement('p');
       const when = `${dateLabel(s.time)} · ${new Date(s.time).toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' })}`;
-      const where = s.el != null ? `${Math.round(s.el)}° up in the ${points[Math.round(((s.az % 360) + 360) % 360 / 45) % 8]}` : '';
+      const where = s.el != null ? `${Math.round(s.el)}° up in the ${DIR_WORD[points[Math.round(((s.az % 360) + 360) % 360 / 45) % 8]] ?? points[Math.round(((s.az % 360) + 360) % 360 / 45) % 8]}` : '';
       // Fleet cards: which launch this sighting was (its stamp), with the launch date.
       const launch = c.launches && s.stampKey ? c.launches.find((l) => l.key === s.stampKey) : null;
       const launchLine = c.launches ? (launch ? `Launch ${esc(s.stampKey.split(':')[1] ?? s.stampKey)} · ${launch.n ?? ''} satellites launched ${esc(new Date(`${launch.launch}T12:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }))}` : 'Launch unknown') : '';
@@ -675,7 +680,7 @@ function fadeViewer(opening) {
   const dir = opening ? 'normal' : 'reverse';
   v.animate([{ backgroundColor: 'rgba(0, 0, 0, 0)' }, { backgroundColor: bg }], { duration: ms, direction: dir, fill: opening ? 'none' : 'forwards' });
   try { v.animate([{ opacity: 0 }, { opacity: 1 }], { duration: ms, direction: dir, fill: opening ? 'none' : 'forwards', pseudoElement: '::backdrop' }); } catch {}
-  for (const el of [v.querySelector('.viewer-header'), $('v-status'), $('v-history'), $('v-preview')]) {
+  for (const el of [v.querySelector('.viewer-header'), $('v-status'), $('v-history'), $('v-preview'), $('v-up'), $('v-where'), $('v-share'), $('v-next')]) { // the pass panel and the orbit line wait for the spin too (polish 2026-10-20)
     el?.animate([{ opacity: 0 }, { opacity: 1 }], { duration: opening ? 350 : 200, delay: opening ? 400 : 0, direction: dir, fill: 'both' });
   }
 }
@@ -996,7 +1001,7 @@ function openPatch(id, from = null) {
   const secs = Object.keys(SEC).filter((k) => sec[k] && hasPatch(k, sec[k])).map((k) => ({ id: k, name: SEC[k][0], text: SEC[k][1], icon: '', secret: true, done: true }));
   const all = [...secs, ...(fossil ? [{ id: 'fossil', name: 'Fossil Hunter', text: 'Found dinosaur bones buried under your feet', icon: '', secret: true, done: true }] : []), ...(ufo ? [{ id: 'ufo', name: 'Close Encounter', text: "Something crossed your sky that isn't in any catalogue", icon: '', secret: true, done: true }] : []), ...(state.achievements ?? [])], a = all.find((x) => x.id === id); if (!a) return;
   const date = earnedDates()[id] ?? (id === 'fossil' ? fossil?.at : id === 'ufo' ? ufo?.at : sec[id] ?? null), f = finishOf(a);
-  $('pv-position').textContent = `PATCH · ${all.filter((x) => x.done).length} / ${all.length}`;
+  $('pv-position').textContent = `PATCH · ${all.filter((x) => x.done).length} of ${all.length} earned`;
   // On a card (2026-10-09, Sevaan): the patch sits on a card like the collection's, which you flick up and away.
   $('pv-body').innerHTML = `<div class="pv-card${a.done ? '' : ' locked'}"><div class="pv-bar"><span>Mission patch</span><span>${esc(GROUPS[groupOf(a)].t)}</span></div>
     <div class="pv-patch">${patchHtml(a, { locked: !a.done, prog: a.prog })}</div>

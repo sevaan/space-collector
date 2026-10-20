@@ -480,3 +480,6 @@ body:has(#start:not([hidden])) #toasts { visibility: hidden !important; }
 #toast-tray { transition: opacity .2s ease; }
 body:has(#toasts .ticket.in:not([hidden])) #toast-tray { opacity: 0; pointer-events: none; }
 body:has(.overlay.panel:not([hidden])) .pc-badge { display: none; } /* the Collection "+1" never shows through a page (iOS playtest 2026-10-19) */
+/* Tucked chips stack under the meteor-shower banner too (polish 2026-10-20: the TONIGHT chip sat on the ORIONIDS banner). */
+body:has(#event-banner:not([hidden])) #toast-tray { top: calc(var(--safe-top, env(safe-area-inset-top, 0px)) + 141px); }
+body:has(#event-banner:not([hidden])):has(#nextpass:not([hidden])) #toast-tray { top: calc(var(--safe-top, env(safe-area-inset-top, 0px)) + 183px); }
