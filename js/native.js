@@ -3,8 +3,12 @@
 export const isNative = () => !!globalThis.Capacitor?.isNativePlatform?.();
 // A native plugin as an object of async methods, called through the bridge’s nativePromise (the @capacitor/core
 // registerPlugin helper isn’t loaded, since the web app has no bundler).
+// The Collection runs in an iframe, and Android's Capacitor refuses plugin calls made from a frame ("Plugin execution
+// is allowed in Main Frame only"; Android playtest 2026-10-20: Share and every Collection haptic did nothing). Same-origin
+// frames call through the top window's bridge instead, so the call counts as the main frame's.
+const capOf = () => { try { if (window.top !== window && window.top.Capacitor) return window.top.Capacitor; } catch {} return globalThis.Capacitor; };
 export function plugin(name) {
-  const cap = globalThis.Capacitor;
+  const cap = capOf();
   if (!isNative() || typeof cap?.nativePromise !== 'function') return null;
   return new Proxy({}, { get: (_, method) => (opts = {}) => cap.nativePromise(name, String(method), opts) });
 }
@@ -23,7 +27,7 @@ export async function getPosition(opts) {
       // (asking for it is what made Android show "change to precise?" again, QA 2026-10-11).
       try { return await geo.getCurrentPosition(opts); }
       catch (e) { if (perm?.location === 'granted') return await geo.getCurrentPosition({ ...opts, enableHighAccuracy: true, timeout: 20000 }); throw e; }
-    } catch (e) { throw { code: e?.code === 1 || /denied/i.test(e?.message ?? '') ? 1 : 2 }; }
+    } catch (e) { const m = `${e?.code ?? ''} ${e?.message ?? ''}`; throw { code: e?.code === 1 || /denied/i.test(m) ? 1 : /GLOC-0007|not enabled|services are (off|disabled)/i.test(m) ? 3 : 2 }; } // 3 = the phone's location is switched off (Android playtest 2026-10-20)
   }
   if (!navigator.geolocation) throw { code: 2 };
   return new Promise((ok, no) => navigator.geolocation.getCurrentPosition(ok, no, opts));

@@ -1831,3 +1831,6 @@ body.ob-tour #sky-header .header-buttons { opacity: .35; }
 .loc-none { margin: 6px 2px; color: var(--muted); font: 500 13px var(--label); }
 body.is-plus .set-row .plus-tag { display: none; } /* Plus already: no PLUS tag on its own perks (iOS playtest 2026-10-20) */
 .overlay.leaving, #reveal.leaving { pointer-events: none; } /* a closing layer never eats the next tap (iOS playtest 2026-10-20: Settings and the radar needed two taps after a reveal) */
+
+/* A landed panel is a plain scroller (Android playtest 2026-10-20: stale tap regions after the slide-in). */
+.overlay.panel.opened:not([hidden]):not(.leaving) { animation: none !important; }

@@ -4,7 +4,7 @@
 // facts only state what the catalogue says today (orbit, launch date and site) or simple date
 // comparisons. No extrapolating today’s orbit back over decades (lifetime laps or distance).
 
-import { orbitStats, titleCase, siteName, ownerName } from './facts.js?v=0.1.906';
+import { orbitStats, titleCase, siteName, ownerName } from './facts.js?v=0.1.907';
 
 const FAMILY = [
   [/^IRIDIUM 33 DEB/, 'A piece of the **first-ever crash between two satellites**: Iridium 33 hit the dead Kosmos 2251 in 2009.'],
@@ -65,6 +65,7 @@ export function titleFor(o) {
   return titleCase(o.name)
     .replace(/\s*\[[^\]]*\]/g, '') // "Breeze-M Deb [Tank]": the catalogue’s notes in square brackets aren’t part of the name
     .replace(/(Stage|Motor)\s+R\/B(\(\d\))?/i, '$1') // "Electron Kick Stage R/B" was "Electron Kick Stage Rocket Stage"
+    .replace(/\s*&\s*([\w-]+)\s+R\/B(\(\d\))?$/i, o.type === 'rocket-body' ? ' & $1 Rocket Stage' : ' (on its $1 stage)') // a satellite still on its stage: "Rubin-3/4 (on its SL-8 stage)" read as a stage (Android playtest 2026-10-20)
     .replace(/\bR\/B(\(\d\))?/i, 'Rocket Stage')
     .replace(/\bDeb\b/i, 'Debris')
     .replace(/\bCosmos\b/g, 'Kosmos') // the Russian name (Космос), as Wikipedia and Gunter’s Space Page write it; the US catalogue says COSMOS (Sevaan 2026-10-20)
