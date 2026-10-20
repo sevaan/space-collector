@@ -22,11 +22,11 @@
   <link rel="preload" href="fonts/RussoOne-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="fonts/BarlowCondensed-Medium.ttf" as="font" type="font/ttf" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600;650;700;750;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/cards.css?v=0.1.900">
-  <link rel="stylesheet" href="css/app.css?v=0.1.900">
-  <link rel="stylesheet" href="css/icons.css?v=0.1.900">
-  <link rel="stylesheet" href="css/reveal.css?v=0.1.900">
-  <link rel="stylesheet" href="css/ui.css?v=0.1.900">
+  <link rel="stylesheet" href="css/cards.css?v=0.1.902">
+  <link rel="stylesheet" href="css/app.css?v=0.1.902">
+  <link rel="stylesheet" href="css/icons.css?v=0.1.902">
+  <link rel="stylesheet" href="css/reveal.css?v=0.1.902">
+  <link rel="stylesheet" href="css/ui.css?v=0.1.902">
 </head>
 <body>
   <video id="cam" playsinline muted autoplay hidden></video>
@@ -276,6 +276,7 @@
       <h3>Where are you observing from?</h3>
       <button class="d-cta o" id="retry-location" type="button"><span><span class="ico" data-ico="pin" aria-hidden="true"></span> Use my location</span><span aria-hidden="true">→</span></button>
       <p class="loc-denied" id="loc-denied" hidden></p>
+      <div class="loc-search"><input id="loc-q" type="search" placeholder="Or search a city or town" autocomplete="off" autocapitalize="words" enterkeyhint="search" aria-label="Search a city or town"><div id="loc-results" role="listbox" aria-label="Places"></div></div>
       <form id="location-form" class="set-coords"><span class="set-sl-top"><span>Or enter coordinates</span></span><div class="row wrap"><label>Latitude<input id="latitude" type="number" min="-90" max="90" step="any" required inputmode="decimal"></label><label>Longitude<input id="longitude" type="number" min="-180" max="180" step="any" required inputmode="decimal"></label></div><button class="pill" type="submit">Use these</button></form>
       <small class="set-sl-note">South and west are negative. Used only to work out your sky, never sold or shared. <a href="privacy.html" target="_blank" rel="noopener">Privacy</a></small>
     </div></div>
@@ -314,7 +315,8 @@
     </div></div>
   </section>
 
-  <script type="module" src="js/main.js?v=0.1.900"></script>
+  <script type="module" src="js/text-size.js?v=0.1.902"></script>
+  <script type="module" src="js/main.js?v=0.1.902"></script>
 <div id="rotate" role="status"><b>Turn your phone upright</b><span>Space Collector is made for portrait.</span></div>
 </body>
 </html>

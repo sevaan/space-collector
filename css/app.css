@@ -1822,3 +1822,10 @@ body.night #d-tier[data-gem]::before { color: #ff6a55 !important; }
 /* During the tour the header's buttons can't be used (the tour holds the screen), so they look it (iOS playtest 2026-10-20). */
 body.ob-tour #sky-header .header-buttons { opacity: .35; }
 .loc-denied { margin: 10px 2px 4px; font: 500 14px/1.4 var(--label); letter-spacing: .02em; color: #ffb38a; }
+.loc-search { margin: 12px 0 4px; }
+.loc-search input { width: 100%; box-sizing: border-box; min-height: 44px; padding: 10px 14px; border-radius: 12px; border: 1px solid var(--edge-soft); background: #0b1424; color: var(--text); font: 500 16px/1.2 var(--label); letter-spacing: .03em; }
+.loc-search input::placeholder { color: var(--muted); }
+#loc-results { display: grid; gap: 4px; margin-top: 6px; }
+.loc-hit { display: grid; gap: 2px; text-align: left; min-height: 44px; padding: 8px 12px; border-radius: 10px; border: 1px solid #22344a; background: #0a1220; color: var(--text); }
+.loc-hit b { font: 600 15px/1.2 var(--label); } .loc-hit small { font: 500 12.5px/1.2 var(--label); color: var(--muted); letter-spacing: .04em; }
+.loc-none { margin: 6px 2px; color: var(--muted); font: 500 13px var(--label); }

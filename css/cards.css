@@ -634,3 +634,5 @@
 .card-tile.card-tile--mini, .grid .tile-slot > .card-tile.card-tile--mini { border-radius: calc(14px * var(--mini-s, .4)); overflow: visible; }
 .card-tile--mini .mini-face { border-radius: 0; overflow: clip; }
 .card-tile.card-tile--retro.card-tile--mini.shiny { border: 0; background: none; }
+/* Card faces keep their printed size whatever the phone's text size (js/text-size.js scales the rest of the app). */
+.card, .card-tile, .mini-face { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }

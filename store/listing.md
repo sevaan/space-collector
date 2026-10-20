@@ -52,7 +52,32 @@ satellite,astronomy,stargazing,night sky,ISS,planets,stars,constellation,moon,te
 **Copyright:** 2026 Sevaan Franks
 
 ## App Review notes
-No account or sign-in is needed.
-Space Collector uses the location (to work out the sky above you) and the motion sensors (to know where the phone is pointing). Hold the phone up and turn around; objects in the sky are shown where they really are. In the daytime the app shows the day sky; the Moon or the Sun can be collected then, and satellites appear after dark.
-To see the night sky at any time: open Settings (the sliders icon, top right), tap the version line at the bottom 7 times to show Testing tools, then use the time buttons (+1h) or "Jump to next visible pass", and "Allow capturing anything".
-Space Collector Plus (in-app purchase) is in Settings → Space Collector Plus: monthly, yearly with a 7-day free trial, or a one-time Forever purchase.
+(Updated 2026-10-20. Paste the block between the lines into App Store Connect → the version → App Review Information → Notes. Fill the contact fields there yourself.)
+
+---
+Thank you for reviewing Space Collector. No account or sign-in is needed, and there is no server account to create.
+
+WHAT IT IS
+Point the phone at the sky: the app shows the real satellites, rocket stages, planets and stars overhead, where they actually are. Line one up in the circle and tap Collect to keep its card.
+
+DURING THE DAY (most reviews happen in daylight)
+- On first launch, follow the short tour. The first catch it guides you to by day is the Sun: follow the arrow, put it in the circle, tap Collect. (The app tells players never to look at the Sun directly; they aim the phone, not their eyes.)
+- Satellites are only visible from Earth after dusk, so by day the sky shows where tonight's passes will appear.
+- To see the night sky at any time: open Settings (sliders icon, top right), scroll to the bottom and tap the version line 7 times. A "Testing tools" section appears. Tap "Jump to next visible pass" (or +1h), then close Settings. Turn on "Allow capturing anything" there to collect without precise aiming.
+- If the device has no motion sensors or you prefer, drag the sky with a finger to look around.
+
+IN-APP PURCHASE (Space Collector Plus)
+Settings → Space Collector Plus, or any bell icon marked PLUS. Options: Monthly ($1.99), Yearly ($14.99 with a 7-day free trial for new subscribers), Forever ($29.99, one-time, non-consumable). Restore purchases is on the same sheet, with links to the Terms of Use (Apple standard EULA) and our Privacy Policy. Every card, patch and mission is free; Plus adds extras (unlimited pass reminders, card backs, the full shiny forecast). Purchases use RevenueCat with StoreKit.
+
+PERMISSIONS
+- Location (While Using): to work out the sky above the player. An approximate position is all it needs. NSLocationAlwaysAndWhenInUseUsageDescription is present only because the location plugin references that API (ITMS-90683); the app never requests Always.
+- Motion: to know where the phone is pointing.
+- Notifications (optional): reminders the player sets for a pass, plus a few alerts on clear evenings (a "look up" alert and tonight's best pass; Plus adds rare-pass alerts). Each can be turned off in Settings.
+- Camera: NSCameraUsageDescription belongs to an experimental camera view in the hidden Testing tools only; it is not part of the normal app and is never requested otherwise.
+
+DATA
+No ads, no tracking, no analytics in the app. The collection stays on the device and in the player's own iCloud key-value storage. Weather (Open-Meteo) and aircraft lookups (to say "Just a plane") use a rounded location. Privacy Policy: https://spacecollector.app/privacy
+
+CONTACT
+hello@spacecollector.app
+---

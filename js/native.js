@@ -96,3 +96,18 @@ export function nativeChrome() {
 // The same haptics with the player’s Vibration setting applied (localStorage 'haptics'), for pages without main.js’s
 // buzz (the Collection; 2026-10-17 haptics playtest: it had none at all).
 export function feel(kind = 'light') { try { if (localStorage.getItem('haptics') === '0') return; } catch {} haptic(kind); }
+
+// Links out of the app open in an in-app browser sheet, not full Safari or Chrome (iOS playtest 2026-10-20: Terms of Use
+// left the app and showed Safari's start page first). The bundled privacy.html opens the live page, so there's always a
+// way back. On the website links behave normally.
+if (isNative()) document.addEventListener('click', (e) => {
+  const a = e.target.closest?.('a[href]'); if (!a) return;
+  const href = a.getAttribute('href') ?? '';
+  let url = null;
+  if (/^https?:\/\//i.test(href)) url = href;
+  else if (/^privacy\.html/i.test(href)) url = 'https://spacecollector.app/privacy';
+  if (!url) return;
+  const b = plugin('Browser'); if (!b) return;
+  e.preventDefault(); e.stopPropagation();
+  b.open({ url, presentationStyle: 'popover' }).catch(() => { location.href = url; });
+}, true);
