@@ -479,3 +479,4 @@ body:has(#start:not([hidden])) #toasts { visibility: hidden !important; }
 #toast-tray > .ticket:nth-last-child(n+3) { display: none !important; }
 #toast-tray { transition: opacity .2s ease; }
 body:has(#toasts .ticket.in:not([hidden])) #toast-tray { opacity: 0; pointer-events: none; }
+body:has(.overlay.panel:not([hidden])) .pc-badge { display: none; } /* the Collection "+1" never shows through a page (iOS playtest 2026-10-19) */

@@ -1,29 +1,29 @@
-import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.888';
-import { computeStats, statsHtml } from './stats.js?v=0.1.888';
-import { nightKey } from './observation.js?v=0.1.888';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.888';
-import { sfx } from './sfx.js?v=0.1.888';
-import { expandFacts } from './catalog-facts.js?v=0.1.888';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.888';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.888';
-import { ticket } from './toast.js?v=0.1.888';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.888';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.888';
-import { cardArt } from './art.js?v=0.1.888';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.888';
-import { applyBack } from './card-backs.js?v=0.1.888';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.888';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.888';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.888';
-import { STORIES } from './stories.js?v=0.1.888';
-import { loadConstellations, conList } from './constellations.js?v=0.1.888';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.888';
-import { eventBadges, nextEvent } from './events.js?v=0.1.888';
-import { shareCardEl } from './share-card.js?v=0.1.888';
-import { forgetSighting } from './cloud-backup.js?v=0.1.888';
-import { allSightings, deleteSighting } from './store.js?v=0.1.888';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.888';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.888';
+import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.889';
+import { computeStats, statsHtml } from './stats.js?v=0.1.889';
+import { nightKey } from './observation.js?v=0.1.889';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.889';
+import { sfx } from './sfx.js?v=0.1.889';
+import { expandFacts } from './catalog-facts.js?v=0.1.889';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.889';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.889';
+import { ticket } from './toast.js?v=0.1.889';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.889';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.889';
+import { cardArt } from './art.js?v=0.1.889';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.889';
+import { applyBack } from './card-backs.js?v=0.1.889';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.889';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.889';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.889';
+import { STORIES } from './stories.js?v=0.1.889';
+import { loadConstellations, conList } from './constellations.js?v=0.1.889';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.889';
+import { eventBadges, nextEvent } from './events.js?v=0.1.889';
+import { shareCardEl } from './share-card.js?v=0.1.889';
+import { forgetSighting } from './cloud-backup.js?v=0.1.889';
+import { allSightings, deleteSighting } from './store.js?v=0.1.889';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.889';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.889';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -213,7 +213,7 @@ function albumBar({ have, goals, cards }) {
 }
 // The Constellations album counts constellations completed, with its stars as a second line (2026-10-16, Sevaan: "0 / 709"
 // read as 709 constellations). Its levels still count stars, so the next goal says "stars".
-const conDone = () => { const cs = conList().filter((c) => !c.system && c.stars?.length); return { done: cs.filter((c) => c.stars.every((k) => state.sightingsByKey.has(k))).length, total: cs.length }; };
+const conDone = () => { const cs = conList().filter((c) => !c.system && c.stars?.length && c.id !== 'BigDipper'); /* 88: the Big Dipper is part of Ursa Major, not a constellation (iOS playtest 2026-10-19) */ return { done: cs.filter((c) => c.stars.every((k) => state.sightingsByKey.has(k))).length, total: cs.length }; };
 const albumCount = (set, st) => set.id === 'constellations' ? (() => { const d = conDone(); return `<b>${d.done}</b> / ${d.total} constellations`; })() : `<b>${st.have.length.toLocaleString()}</b> / ${st.cards.length.toLocaleString()}`;
 const unit = (set) => (set.id === 'constellations' ? ' stars' : '');
 function renderAlbums() {
@@ -277,8 +277,11 @@ function openStats() {
 }
 $('stats-open')?.addEventListener('click', openStats);
 // It slides up over the Collection and back down, like the app's other pages (2026-10-17, Sevaan).
+let statsFromSettings = false;
 function closeStats() {
   const d = $('stats-view'); if (!d.open || d.classList.contains('leaving')) return;
+  // Opened from Settings: closing goes back to Settings, not the Collection behind it (iOS playtest 2026-10-19).
+  if (statsFromSettings) { statsFromSettings = false; d.addEventListener('close', () => { if (EMBED) window.parent.postMessage({ sc: 'explore', more: true }, location.origin); }, { once: true }); }
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) { d.close(); return; }
   d.classList.add('leaving');
   const done = () => { d.classList.remove('leaving'); d.close(); };
@@ -320,7 +323,7 @@ function renderLogbook() {
     ${cur > 0 ? `<path d="M${pts.slice(0, cur + 1).map((q) => q.join(' ')).join(' L')}" fill="none" stroke="#fa8127" stroke-width="2"/>` : ''}<!-- ranks you have passed: solid (2026-10-14) -->
     ${pts[cur + 1] ? `<path d="M${pts[cur].join(' ')} L${pts[cur][0] + (pts[cur + 1][0] - pts[cur][0]) * into} ${pts[cur][1] + (pts[cur + 1][1] - pts[cur][1]) * into}" stroke="#fa8127" stroke-width="2"/>` : ''}
     ${rungs.map(([, n], i) => { const [x, y] = pts[i]; return `<circle cx="${x}" cy="${y}" r="${i === cur ? 6 : 4}" fill="${i <= cur ? '#fa8127' : '#0b1626'}" ${i > cur ? 'stroke="#fff2b3" stroke-dasharray="2 2"' : ''}/>${i === cur ? `<circle cx="${x}" cy="${y}" r="12" fill="none" stroke="#fa8127" opacity=".5"/>` : ''}<text x="${x}" y="${y + 20}" text-anchor="middle" font-family="SC Label, Arial Narrow" font-size="9.5" letter-spacing="1.5" fill="${i >= cur ? '#fff2b3' : '#bdbea9'}">${esc(n.toUpperCase())}</text>${i === cur + 1 ? `<text x="${x}" y="${y - 14}" text-anchor="middle" font-family="SC Label, Arial Narrow" font-size="9" letter-spacing="1.5" fill="#fa8127">NEXT</text>` : ''}`; }).join('')}</svg>`;
-  const streak = p.streak.current >= 2 ? `${p.streak.current}-week streak` : p.streak.current ? 'Week 1 · come back next week' : 'Observe this week to start a streak'; // the flame is earned at week 2 (playtest 2026-10-09)
+  const streak = p.streak.current >= 2 ? `${p.streak.current}-week streak` : p.streak.current ? 'Week 1 started · keep it going next week' : 'Observe this week to start a streak'; // the flame is earned at week 2 (playtest 2026-10-09)
   const ev = eventBadges(state.raw), nx = nextEvent();
   // At risk (a streak going, nothing logged yet this week): a Remind me for Saturday evening (QA 2026-10-09: the button
   // was lost in the card redesign, so remindStreak was unreachable).
@@ -888,7 +891,7 @@ if (EMBED) {
     if (e.origin !== location.origin || !e.data?.sc) return;
     if (e.data.sc === 'insets') { const r = document.documentElement.style; r.setProperty('--safe-top', `${e.data.top}px`); r.setProperty('--safe-bottom', `${e.data.bottom}px`); }
     if (e.data.sc === 'open' || e.data.sc === 'show') setSwitch(document.querySelector('.sc-switch'), 'right', false); // shown again: pill on Collection
-    if ((e.data.sc === 'open' || e.data.sc === 'show') && e.data.key === '#stats') { const go = () => (state.ready ? openStats() : setTimeout(go, 200)); go(); } // from Settings → Observer stats
+    if ((e.data.sc === 'open' || e.data.sc === 'show') && e.data.key === '#stats') { statsFromSettings = true; const go = () => (state.ready ? openStats() : setTimeout(go, 200)); go(); } // from Settings → Observer stats
     else if ((e.data.sc === 'open' || e.data.sc === 'show') && e.data.key) openKey(e.data.key);
     if (e.data.sc === 'back') { // Android Back from the app shell: close the top thing here, else go back to Explore
       if ($('stats-view').open) closeStats(); else if ($('patch-view').open) closePatch(); else if ($('viewer').open) closeViewer();

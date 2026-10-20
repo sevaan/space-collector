@@ -22,11 +22,11 @@
   <link rel="preload" href="fonts/RussoOne-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="fonts/BarlowCondensed-Medium.ttf" as="font" type="font/ttf" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600;650;700;750;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/cards.css?v=0.1.888">
-  <link rel="stylesheet" href="css/app.css?v=0.1.888">
-  <link rel="stylesheet" href="css/icons.css?v=0.1.888">
-  <link rel="stylesheet" href="css/reveal.css?v=0.1.888">
-  <link rel="stylesheet" href="css/ui.css?v=0.1.888">
+  <link rel="stylesheet" href="css/cards.css?v=0.1.889">
+  <link rel="stylesheet" href="css/app.css?v=0.1.889">
+  <link rel="stylesheet" href="css/icons.css?v=0.1.889">
+  <link rel="stylesheet" href="css/reveal.css?v=0.1.889">
+  <link rel="stylesheet" href="css/ui.css?v=0.1.889">
 </head>
 <body>
   <video id="cam" playsinline muted autoplay hidden></video>
@@ -219,7 +219,7 @@
         <input type="range" id="set-sky-range" class="ui-range" step="0.05" aria-label="How dark is your sky">
         <div class="set-sl-ends"><span>Bright city</span><span>Binoculars</span></div><small class="set-sl-note" id="sky-limit-info"></small></div>
       <label class="set-row"><span class="set-ic" aria-hidden="true" style="background:#4a1414"><span class="ico" data-ico="moon"></span></span><span class="set-main">Red night mode<small>Saves your night vision</small></span><input type="checkbox" class="set-tog" id="chk-night"></label>
-      <label class="set-row" id="row-push" hidden><span class="set-ic" aria-hidden="true" style="background:#5a2a1a"><span class="ico" data-ico="moon"></span></span><span class="set-main">Look up<small>One a day, at the best time this evening. Only when it's clear</small></span><input type="checkbox" class="set-tog" id="chk-push"></label>
+      <label class="set-row" id="row-push" hidden><span class="set-ic" aria-hidden="true" style="background:#5a2a1a"><span class="ico" data-ico="moon"></span></span><span class="set-main">Look up<small>Once a day, at the best time this evening. Only when it's clear</small></span><input type="checkbox" class="set-tog" id="chk-push"></label>
       <label class="set-row" id="row-catch" hidden><span class="set-ic" aria-hidden="true" style="background:#4a3a12"><span class="ico" data-ico="bell"></span></span><span class="set-main">Catch of the day<small>Five minutes before tonight's headliner</small></span><input type="checkbox" class="set-tog" id="chk-catch"></label>
       <label class="set-row" id="row-rare" hidden><span class="set-ic" aria-hidden="true" style="background:#123a5a"><span class="ico" data-ico="stars"></span></span><span class="set-main">Rare alerts <span class="plus-tag">PLUS</span><small>A ping when a new Rare card passes on a clear night</small></span><input type="checkbox" class="set-tog" id="chk-rare"></label>
     </div>
@@ -287,6 +287,7 @@
         <div class="plus-prices" id="plus-prices" role="radiogroup" aria-label="Plan"></div>
         <button class="plus-cta" id="plus-cta" type="button">Try Plus free for 7 days</button>
         <p class="plus-fine" id="plus-fine"></p>
+        <p class="plus-fine plus-legal"><a href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/" target="_blank" rel="noopener">Terms of Use</a> · <a href="https://spacecollector.app/privacy" target="_blank" rel="noopener">Privacy Policy</a></p>
       </div>
       <p class="plus-thanks" id="plus-thanks" hidden>You have Plus. Thank you for supporting Space Collector.</p>
       <button class="auth-later" id="plus-restore" type="button">Restore purchases</button>
@@ -312,7 +313,7 @@
     </div></div>
   </section>
 
-  <script type="module" src="js/main.js?v=0.1.888"></script>
+  <script type="module" src="js/main.js?v=0.1.889"></script>
 <div id="rotate" role="status"><b>Turn your phone upright</b><span>Space Collector is made for portrait.</span></div>
 </body>
 </html>

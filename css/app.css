@@ -1447,6 +1447,7 @@ body.night #debug .set-bar { border-color: #5a1e18; } body.night #debug .set-bar
 .plus-pr.on { border-color: #fa8127; background: #2a1d14; }
 .plus-pr.on small { color: #fa8127; }
 .plus-cta { border: 0; border-radius: 12px; padding: calc(var(--pf) * 1.25); background: #fa8127; color: #1a0f05; font: 600 calc(var(--pf) * 1.35)/1 var(--label); letter-spacing: .16em; text-transform: uppercase; }
+.plus-legal a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
 .plus-fine { margin: -2px 0 0; text-align: center; font: 400 max(11.5px, calc(var(--pf) * 1.12))/1.35 -apple-system, system-ui, sans-serif; color: var(--muted); }
 .plus-thanks { margin: 0; width: var(--pw); text-align: center; color: var(--gold); font: 500 14px/1.35 var(--label); letter-spacing: .04em; }
 #set-plus-sheet #plus-restore { margin-top: 0; }

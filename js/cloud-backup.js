@@ -6,8 +6,8 @@
 //   iCloud key 'sc-backup' = { v: 1, s: [sightings], gone: [ids deleted], st: { progress keys }, at }
 // Sync merges both ways and never loses anything earned: sightings are a union by a stable id (time + card + object),
 // minus ids someone deleted; progress keys merge as in the old account sync.
-import { allSightings, addSighting, deleteSighting } from './store.js?v=0.1.888';
-import { plugin, onNative, isNative } from './native.js?v=0.1.888';
+import { allSightings, addSighting, deleteSighting } from './store.js?v=0.1.889';
+import { plugin, onNative, isNative } from './native.js?v=0.1.889';
 
 const KEY = 'sc-backup';
 const STATE_KEYS = ['secrets', 'fossilFound', 'ufoFound', 'missionDeals', 'xpCarry2', 'patchSeen', 'patchDates', 'backEarned', 'rankFloor2'];
@@ -24,7 +24,7 @@ const strip = (s) => { const { key, synced, cloudId, ...rest } = s; return JSON.
 const listeners = new Set();
 export const onBackupChange = (fn) => { listeners.add(fn); return () => listeners.delete(fn); };
 export const backupAvailable = () => !!kv();
-let running = null, again = false, timer = 0, failed = false;
+let running = null, again = false, timer = 0, failed = false, offUntil = 0; // offUntil: iCloud said it's off, so don't try every save (iOS playtest 2026-10-19)
 
 // Where the collection is kept right now, for Settings (2026-10-16 playtest: the row said "Backed up to your iCloud"
 // even with iCloud off). 'icloud' | 'icloud-off' (signed out, iCloud Drive off, or the last write failed) |
@@ -41,6 +41,8 @@ export function backupNow() {
   if (running) { again = true; return running; }
   running = (async () => {
     const store = kv();
+    if (Date.now() < offUntil) return null;
+    try { const r = await store.status(); if (!r?.available) { offUntil = Date.now() + 5 * 60e3; failed = true; return null; } } catch {}
     let cloud = { v: 1, s: [], gone: [], st: {} };
     try { const r = await store.get({ key: KEY }); if (r?.found && r.value) cloud = { ...cloud, ...JSON.parse(r.value) }; } catch (e) { console.warn('icloud read failed', e); return null; }
     const gone = new Set([...(cloud.gone ?? []), ...json('backupGone', [])]);
