@@ -1,6 +1,6 @@
 // Phone orientation -> where the back of the phone is pointing in the sky.
 // Produces a camera basis in local East-North-Up: right, up (screen edges) and back (view direction).
-import { declination } from './declination.js?v=0.1.895';
+import { declination } from './declination.js?v=0.1.896';
 
 const RAD = Math.PI / 180;
 
@@ -172,6 +172,12 @@ export function trySensorsQuietly(ms = 1200) {
   });
 }
 
+// The view keeps the phone's last direction while the phone lies still (2026-10-20, Android: Chrome stops sending
+// readings when nothing moves, so after 2 s the view fell back to the finger view looking up, then swept back down
+// at the next nudge, over and over on a table). Only a long silence (10 min) hands the view back to the finger.
+export function hasSensorView() {
+  return pointing.basis !== null && performance.now() - pointing.lastEvent < 600000;
+}
 export function hasLiveSensors() {
   return pointing.basis !== null && performance.now() - pointing.lastEvent < 2000;
 }
