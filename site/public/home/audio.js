@@ -26,7 +26,7 @@ export function unlockAudio() {
 
 function startMusic() {
   if (!ctx) return;
-  ctx.resume?.(); music.play().catch(() => {});
+  ctx.resume?.().catch?.(() => {}); music.play().catch(() => {});
   const t = ctx.currentTime; musicGain.gain.cancelScheduledValues(t); musicGain.gain.setValueAtTime(musicGain.gain.value, t); musicGain.gain.linearRampToValueAtTime(MUSIC, t + 4);
 }
 function stopMusic() {
@@ -42,15 +42,23 @@ export function sfx(name, gain = 1) {
   src.connect(g).connect(ctx.destination); src.start();
 }
 
+// Phones only count some touches as permission to play (iPhone: not a pointerdown; Android: not a scroll). Until the
+// sound is really running, every later tap, click or key tries again.
+export function wakeAudio() {
+  if (!unlocked) return unlockAudio();
+  if (!on || !ctx) return;
+  if (ctx.state !== 'running' || (music && music.paused)) startMusic();
+}
 const btn = document.getElementById('sound');
 function renderButton() {
   if (!btn) return;
-  btn.setAttribute('aria-pressed', String(on && unlocked));
+  const live = on && unlocked;
+  btn.setAttribute('aria-pressed', String(live));
   btn.querySelector('span').textContent = !unlocked ? 'Play sound' : on ? 'Sound on' : 'Sound off';
 }
 btn?.addEventListener('click', (e) => {
   e.stopPropagation();
-  if (justUnlocked) { if (!on) { on = true; startMusic(); } } else { on = !on; on ? startMusic() : stopMusic(); } // the first click just woke the sound: it means "on"
+  if (justUnlocked) { on = true; startMusic(); } else { on = !on; on ? startMusic() : stopMusic(); } // the first click just woke the sound: it means "on"
   try { localStorage.setItem('siteSound', on ? 'on' : 'off'); } catch {}
   renderButton();
 });

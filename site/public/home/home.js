@@ -10,7 +10,7 @@ import { skyLimit } from '../play/js/sky-limit.js';
 import { loadLore, titleFor, roleOf, ownerWord } from '../play/js/lore.js';
 import { placeFromTimeZone } from '../play/js/tz-places.js';
 import { TIER_INFO } from '../play/js/rarity.js';
-import { sfx, unlockAudio } from './audio.js';
+import { sfx, wakeAudio } from './audio.js';
 
 const RAD = Math.PI / 180, $ = (id) => document.getElementById(id);
 const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -67,14 +67,18 @@ addEventListener('pointermove', (e) => {
   aim.overUI = !!e.target.closest?.('[data-ui], a, button');
 });
 document.addEventListener('mouseleave', () => { aim.mouseAt = 0; });
-const touring = () => !hasMouse || performance.now() - aim.mouseAt > 5000;
+const touring = () => !hasMouse || !aim.mouseAt || performance.now() - aim.mouseAt > 5000; // until the mouse moves, and once it rests
 
 // Pick something for the tour: on screen, in open sky (not behind the words or the card), a different kind each time.
 let lastKind = '';
+const onScreen = (p, pad = 0) => p && p.x > pad && p.x < sky.w - pad && p.y > pad && p.y < sky.h - pad;
 function pickTour(items, ufo) {
-  if (ufo?.p && !inBox(ufo.p.x, ufo.p.y, 60)) return { ufo: true };
-  const pad = 70, ok = items.filter((it) => it.p && it.p.x > pad && it.p.x < sky.w - pad && it.p.y > 170 && it.p.y < sky.h - 90 && !inBox(it.p.x, it.p.y, sky.reticlePx + 110)); // room for the label too
+  if (onScreen(ufo?.p, 40)) return { ufo: true };
+  // The circle may pass behind the words (they sit above it); it just shouldn't stop right on them.
+  const ok = items.filter((it) => onScreen(it.p, 60) && it.p.y > 80 && !inBox(it.p.x, it.p.y, sky.reticlePx * 0.5));
   if (!ok.length) return null;
+  const icon = document.querySelector('.words .icon')?.getBoundingClientRect(), topOfWords = icon && icon.top > 0 ? icon.top : sky.h, band = ok.filter((it) => it.p.y < topOfWords - sky.reticlePx * 0.6), clear = ok.filter((it) => !inBox(it.p.x, it.p.y, sky.reticlePx + 40));
+  if (sky.w < 860 && band.length) ok.splice(0, ok.length, ...band); else if (clear.length) ok.splice(0, ok.length, ...clear); /* phones: the open band above the words */ // above the words, there's room for its name
   const fresh = ok.filter((it) => (it.obj.type ?? it.obj.natural) !== lastKind && idOf(it.obj) !== aim.tour?.id);
   const pool = fresh.length ? fresh : ok, pick = pool[Math.floor(Math.random() * pool.length)];
   lastKind = pick.obj.type ?? pick.obj.natural; return { id: idOf(pick.obj) };
@@ -83,15 +87,19 @@ function pickTour(items, ufo) {
 // ---- the UFO: every minute or two, a 24-second crossing through the part of the sky you're looking at ----
 let ufo = null, ufoNext = performance.now() + (location.search.includes('ufo') ? 3000 : 25000 + Math.random() * 25000), ufoHeard = false; // ?ufo: one straight away (testing)
 function ufoAt(t) {
-  if (!ufo && t > ufoNext && !document.hidden) { ufo = { start: t, end: t + 24000, az0: state.az - 55 + Math.random() * 20, dir: Math.random() < 0.5 ? 1 : -1, peak: state.el + 20 + Math.random() * 5 }; /* high, above the words and the card */ ufoHeard = false; }
+  if (!ufo && t > ufoNext && !document.hidden && scrollY < innerHeight * 0.6) {
+    // Planned on screen: right across the top band of the window, above the words and the card, edge to edge.
+    const half = Math.atan((sky.w / 2) / sky.f) / RAD, up = Math.atan((sky.h / 2 - sky.h * 0.13) / sky.f) / RAD;
+    ufo = { start: t, end: t + 20000, span: 2 * half * 1.15, dir: Math.random() < 0.5 ? 1 : -1, el: state.el + up }; ufoHeard = false;
+  }
   if (!ufo) return null;
   if (t > ufo.end) { ufo = null; ufoNext = t + 60000 + Math.random() * 60000; return null; }
-  const k = (t - ufo.start) / (ufo.end - ufo.start), az = ufo.dir > 0 ? ufo.az0 + 110 * k : ufo.az0 + 110 * (1 - k), el = ufo.peak - 12 + 12 * Math.sin(Math.PI * k);
+  const k = (t - ufo.start) / (ufo.end - ufo.start), off = (ufo.dir > 0 ? k - 0.5 : 0.5 - k) * ufo.span, az = state.az + off, el = ufo.el + 1.5 * Math.sin(Math.PI * k * 3);
   return { enu: enuFromAzEl((az + 360) % 360, el) };
 }
 
 // ---- the label: what's in the circle, like the app's ---
-const ui = { box: $('find'), tier: $('f-tier'), name: $('f-name'), kind: $('f-kind') };
+const ui = { box: $('find'), top: $('f-top'), tier: $('f-tier'), name: $('f-name'), kind: $('f-kind') };
 function kindLine(o) {
   if (o.natural === 'star') return 'Star';
   if (o.natural === 'planet') return 'Planet';
@@ -104,7 +112,10 @@ let shownKey = '';
 function renderLabel(tg, ufoIn, alpha) {
   const r = sky.reticlePx;
   ui.box.style.cssText = `--x:${aim.x}px; --y:${aim.y}px; --r:${r}px; opacity:${alpha.toFixed(2)}`;
-  ui.box.classList.toggle('below', aim.y - r < 110); // no room above the circle: the name goes under it
+  const below = aim.y - r < 110; ui.box.classList.toggle('below', below); // no room above the circle: the name goes under it
+  // The words win: the circle's name steps aside while it would sit on the page's text.
+  const hit = (e) => { const l = e.getBoundingClientRect(); return l.width > 0 && uiBoxes().some((b) => b.right > l.left && b.left < l.right && b.bottom > l.top && b.top < l.bottom); };
+  const on = ui.box.classList.contains('on'); ui.top.classList.toggle('muted', on && hit(ui.top)); ui.kind.classList.toggle('muted', on && hit(ui.kind)); // each line steps aside on its own
   const key = ufoIn ? 'ufo' : tg ? idOf(tg.obj) : '';
   if (key === shownKey) return; shownKey = key;
   ui.box.classList.toggle('on', !!key); ui.box.classList.toggle('ufo', ufoIn);
@@ -115,6 +126,10 @@ function renderLabel(tg, ufoIn, alpha) {
   ui.name.textContent = label(o); ui.kind.textContent = kindLine(o);
 }
 
+// The sky's own names (stars, constellations, satellites) never sit under the page's text.
+const queueLabel = sky.queueLabel.bind(sky);
+sky.queueLabel = (text, p, o) => { if (p && inBox(p.x, p.y, 36)) return; return queueLabel(text, p, o); };
+
 // The game's circle is drawn at the view's centre; here it's drawn where the mouse is.
 const drawReticle = sky.drawReticle.bind(sky);
 sky.drawReticle = (...a) => {
@@ -123,10 +138,11 @@ sky.drawReticle = (...a) => {
 };
 
 // ---- the loop ----
-let lastRefresh = 0, lockedId = null, lastLockSound = 0, last = performance.now();
+let lastDraw = 0, lastRefresh = 0, lockedId = null, lastLockSound = 0, last = performance.now();
 function tick(ts) {
   requestAnimationFrame(tick);
   if (!state.model || document.hidden) return;
+  if (scrollY > innerHeight * 0.9 && ts - lastDraw < 66) return; /* below the fold the sky is dimmed: 15 fps is plenty */ lastDraw = ts;
   const d = now(), t = performance.now(), dt = Math.min(0.1, (t - last) / 1000); last = t;
   if (!still) state.az = (state.az + dt * 0.35) % 360; // a slow drift, so the sky turns past
   state.model.update(d, observer);
@@ -140,13 +156,13 @@ function tick(ts) {
 
   // Where the circle goes.
   if (touring()) {
-    if (!aim.tour || t - aim.tourAt > 7000 || (u?.p && !aim.tour.ufo && !inBox(u.p.x, u.p.y, 60))) { aim.tour = pickTour(sats, u); aim.tourAt = t; } // the UFO takes over the tour
+    if (!aim.tour || t - aim.tourAt > 7000 || (onScreen(u?.p, 40) && !aim.tour.ufo)) { aim.tour = pickTour(sats, u); aim.tourAt = t; } /* the UFO takes over the tour */
     const f = aim.tour?.ufo ? u : sats.find((s) => idOf(s.obj) === aim.tour?.id);
-    if (f?.p && !inBox(f.p.x, f.p.y, 40)) { aim.tx = f.p.x; aim.ty = f.p.y; } else if (aim.tour) aim.tourAt = -1e9; // gone: pick again
+    if (onScreen(f?.p, 20)) { aim.tx = f.p.x; aim.ty = f.p.y; } else if (aim.tour) aim.tourAt = -1e9; // gone: pick again
   }
   const k = still ? 1 : touring() ? 0.06 : 0.35;
   aim.x += (aim.tx - aim.x) * k; aim.y += (aim.ty - aim.y) * k;
-  const wantA = aim.overUI || inBox(aim.x, aim.y, sky.reticlePx + 80) ? 0 : (aim.mouseAt || !hasMouse || touring()) ? 1 : 0; // never over the words or the card
+  const wantA = aim.overUI || !onScreen(aim, -10) ? 0 : (aim.mouseAt || !hasMouse || touring()) ? 1 : 0; /* hidden while the mouse is on the words or the card */
   aim.alpha += (wantA - aim.alpha) * (still ? 1 : 0.15);
 
   // What's in it: the mouse's own line of sight, the app's 6° circle; a satellite before a star.
@@ -190,5 +206,4 @@ function tick(ts) {
   requestAnimationFrame(tick);
 })().catch((e) => { console.error(e); });
 
-addEventListener('pointerdown', unlockAudio, { capture: true });
-addEventListener('keydown', unlockAudio, { capture: true });
+for (const ev of ['click', 'touchend', 'keydown']) addEventListener(ev, wakeAudio, { capture: true }); // gestures phones accept as permission to play
