@@ -4,10 +4,10 @@
 // facts only state what the catalogue says today (orbit, launch date and site) or simple date
 // comparisons. No extrapolating today’s orbit back over decades (lifetime laps or distance).
 
-import { orbitStats, titleCase, siteName, ownerName } from './facts.js?v=0.1.903';
+import { orbitStats, titleCase, siteName, ownerName } from './facts.js?v=0.1.904';
 
 const FAMILY = [
-  [/^IRIDIUM 33 DEB/, 'A piece of the **first-ever crash between two satellites**: Iridium 33 hit the dead Cosmos 2251 in 2009.'],
+  [/^IRIDIUM 33 DEB/, 'A piece of the **first-ever crash between two satellites**: Iridium 33 hit the dead Kosmos 2251 in 2009.'],
   [/^COSMOS 2251 DEB/, 'Left over from the **first-ever crash between two satellites**, when this dead satellite hit Iridium 33 in 2009.'],
   [/^FENGYUN 1C DEB/, 'Debris from a weather satellite China **destroyed with a missile** in a 2007 test, which created a huge cloud of junk.'],
   [/^COSMOS 1408 DEB/, 'Debris from an old satellite Russia **destroyed with a missile** in 2021. The ISS crew had to shelter from the cloud.'],
@@ -67,6 +67,7 @@ export function titleFor(o) {
     .replace(/(Stage|Motor)\s+R\/B(\(\d\))?/i, '$1') // "Electron Kick Stage R/B" was "Electron Kick Stage Rocket Stage"
     .replace(/\bR\/B(\(\d\))?/i, 'Rocket Stage')
     .replace(/\bDeb\b/i, 'Debris')
+    .replace(/\bCosmos\b/g, 'Kosmos') // the Russian name (Космос), as Wikipedia and Gunter’s Space Page write it; the US catalogue says COSMOS (Sevaan 2026-10-20)
     .replace(/([^\s(])\(/g, '$1 (') // "SL-12 Rocket Stage(Aux Motor)": a space before a bracket (2026-10-14)
     .replace(/\s+/g, ' ')
     .trim();
