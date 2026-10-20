@@ -1,7 +1,7 @@
 // What you can actually see from here, right now. No DOM.
 //
 // The faintest star you can see (naked-eye limiting magnitude) depends on how bright the sky is. We add up
-// the sky's brightness from light pollution (your "sky" setting), twilight and the Moon, then turn that into
+// the sky’s brightness from light pollution (your "sky" setting), twilight and the Moon, then turn that into
 // a limiting magnitude with the usual approximation (Schaefer 1990 / Crumey 2014 style):
 //   NELM ≈ 7.93 − 5·log10(10^(4.316 − SB/5) + 1),  SB in magnitudes per square arcsecond.
 // Satellites are moving points, which are harder to pick out than a star, so we take half a magnitude
@@ -15,13 +15,13 @@ export const SKIES = {
   dark: { label: 'Dark site', sb: 21.7, hint: 'the Milky Way casts shadows' },
 };
 export const DEFAULT_SKY = 'suburbs';
-// The sky slider (2026-10-06) sets the sky's own brightness continuously, from a lit-up city to a pristine site.
+// The sky slider (2026-10-06) sets the sky’s own brightness continuously, from a lit-up city to a pristine site.
 export const SB_MIN = 17.0, SB_MAX = 21.9;
 // One slider, no binocular switch (2026-10-16, Sevaan): past the darkest sky it carries on into binoculars. A slider value
 // above SB_MAX keeps the sky at its darkest and adds the excess (up to BINOCULAR_GAIN) to satellites and faint planets.
 export const SLIDER_MAX = SB_MAX + 3;
 export const sbOfSky = (key) => SKIES[key]?.sb ?? SKIES[DEFAULT_SKY].sb;
-// The nearest named sky, for the slider's label.
+// The nearest named sky, for the slider’s label.
 export function skyNameFor(sb) {
   if (sb > SB_MAX + 0.04) return 'Binoculars';
   if (sb < 18.5) return 'City'; if (sb < 19.9) return 'Suburbs'; if (sb < 21.25) return 'Countryside'; return 'Dark site';
@@ -40,7 +40,7 @@ function twilightSb(sunEl) {
   if (sunEl <= -18) return null;
   return NATURAL_SB - 0.45 * (18 + Math.max(-18, Math.min(-6, sunEl)));
 }
-// Moonlight: a high full Moon brightens a dark sky to roughly 19.5 mag/arcsec²; less when it's a
+// Moonlight: a high full Moon brightens a dark sky to roughly 19.5 mag/arcsec²; less when it’s a
 // crescent (brightness falls off faster than the lit fraction) or low.
 function moonSb(moonEl, illum) {
   if (!(moonEl > 0) || !(illum > 0.02)) return null;

@@ -1,17 +1,17 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.891';
+import { extinction } from './sky-limit.js?v=0.1.892';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.891';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.892';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.891';
-import { createCloudGL } from './clouds-gl.js?v=0.1.891';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.892';
+import { createCloudGL } from './clouds-gl.js?v=0.1.892';
 // Cloud colours by light: sunlit tops, shadowed bellies, and the horizon haze they melt into (0–1 RGB).
 const CLOUD_LIGHT = {
   day: { lit: [1, 1, 1], shade: [0.62, 0.68, 0.77], haze: [0.82, 0.87, 0.93] },
   dusk: { lit: [1, 0.8, 0.68], shade: [0.36, 0.33, 0.42], haze: [0.62, 0.5, 0.52] },
   night: { lit: [0.22, 0.25, 0.31], shade: [0.1, 0.12, 0.16], haze: [0.14, 0.15, 0.2] },
 };
-import { TIER_INFO } from './rarity.js?v=0.1.891';
+import { TIER_INFO } from './rarity.js?v=0.1.892';
 
 const RAD = Math.PI / 180;
 const SECRET_PX = { santa: 24, roadster: 12.4, voyager: 14.5, voyager2: 14.5, pioneer10: 11.7, pioneer11: 11.7, newhorizons: 6.4, arecibo: 6.9, halley: 8.6, sputnik: 11.2, laika: 13.3, wow: 9.8 };
@@ -92,9 +92,9 @@ const LANDSCAPE = (() => {
   return { hills, trees, far, ridge, rolls, tufts };
 })();
 
-// Earth's shadow at H km (default 500) for a Sun direction s (ENU unit vector, observer at (0,0,R) from Earth's centre).
+// Earth’s shadow at H km (default 500) for a Sun direction s (ENU unit vector, observer at (0,0,R) from Earth’s centre).
 // edges: the outline as runs of ENU directions, horizon to horizon. It is drawn straight from geometry (2026-10-17,
-// Sevaan: the traced line stopped partway down where the edge runs steeply): the shadow's edge at height H is the circle
+// Sevaan: the traced line stopped partway down where the edge runs steeply): the shadow’s edge at height H is the circle
 // where the cylinder of radius R behind Earth meets the sphere of radius R + H; each of its points, seen from you, is
 // one point of the line. cols: the shade as quads of ENU directions, strips 2° of azimuth wide whose top and bottom follow
 // the edge at both sides (slanted, not stepped).
@@ -177,7 +177,7 @@ export class SkyView {
     this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     this.f = (this.h / 2) / Math.tan((this.fovV / 2) * RAD);
     this.cx = this.w / 2;
-    this.cy = this.h / 2; // the middle of the phone, same spot as the loader's circle (index.html #ld-ret)
+    this.cy = this.h / 2; // the middle of the phone, same spot as the loader’s circle (index.html #ld-ret)
   }
 
   // Angular radius (degrees) that the reticle circle covers.
@@ -251,7 +251,7 @@ export class SkyView {
     return sprite;
   }
 
-  // A broad, even falloff (gaussian) for the Milky Way's haze: the star-glow sprite above is bright only at its very
+  // A broad, even falloff (gaussian) for the Milky Way’s haze: the star-glow sprite above is bright only at its very
   // centre, which drew the band as a thin beam (2026-10-08).
   softSprite(rgb) {
     const key = `soft:${rgb.join(',')}`;
@@ -338,7 +338,7 @@ export class SkyView {
         if (!mem.shownAt || this.frameNo - (mem.lastDrawn ?? -99) > 2) mem.shownAt = this.frameNo;
         mem.lastDrawn = this.frameNo;
         const fa = this.reducedMotion ? 1 : Math.min(1, (this.frameNo - mem.shownAt) / 14);
-        ctx.save(); ctx.globalAlpha *= fa; if ((this.dayF ?? 0) > 0.3 && !this.camera) { const dark = inkIsDark(ctx.fillStyle); ctx.shadowColor = dark ? 'rgba(238,243,255,.55)' : 'rgba(8,15,27,.6)'; ctx.shadowBlur = dark ? 3 : 4; } /* dark ink (the Sun's label by day) gets a light halo, not a smudge (2026-10-18 playtest) */ ctx.fillText(text, x, y); ctx.restore(); // a soft dark halo by day, so cream text reads on the pale sky (visual playtest 2026-10-17)
+        ctx.save(); ctx.globalAlpha *= fa; if ((this.dayF ?? 0) > 0.3 && !this.camera) { const dark = inkIsDark(ctx.fillStyle); ctx.shadowColor = dark ? 'rgba(238,243,255,.55)' : 'rgba(8,15,27,.6)'; ctx.shadowBlur = dark ? 3 : 4; } /* dark ink (the Sun’s label by day) gets a light halo, not a smudge (2026-10-18 playtest) */ ctx.fillText(text, x, y); ctx.restore(); // a soft dark halo by day, so cream text reads on the pale sky (visual playtest 2026-10-17)
         occupied.push(box);
       } else if (!this.reducedMotion && mem.lastDrawn && mem.i < candidates.length && this.frameNo - mem.lastDrawn < 10) {
         // Briefly blocked: fade out where it was over ~1/6 s instead of vanishing (2026-10-08, Sevaan: text jumping).
@@ -350,7 +350,7 @@ export class SkyView {
     ctx.textBaseline = 'alphabetic';
   }
 
-  // Camera view's ground tint: full by day, half at night (2026-10-08, Sevaan), easing across twilight with dayF.
+  // Camera view’s ground tint: full by day, half at night (2026-10-08, Sevaan), easing across twilight with dayF.
   // The sky tint itself goes to nothing at night (drawBackground), so the real night sky shows untouched.
   camDim() { return 0.5 + 0.5 * Math.max(0, Math.min(1, this.dayF ?? 0)); }
   drawBackground() {
@@ -376,13 +376,13 @@ export class SkyView {
     if (f < 0.2) this.glow(this.cx, this.cy, Math.max(this.w, this.h) * 0.72, t.milky, 0.045 * (1 - f * 5));
   }
 
-  // Dashed "ghost" markers: things up there right now that can't be seen until dark (daytime Explore).
+  // Dashed "ghost" markers: things up there right now that can’t be seen until dark (daytime Explore).
   // ghosts: [{ enu, name, note }]
   drawGhosts(ghosts) {
     const ctx = this.ctx; this.ghostHits = [];
     ctx.save(); ctx.lineWidth = 1.2;
     for (const g of ghosts) {
-      if (g.path?.ahead) { // a soft trail in the pass's rarity colour: faint where it comes from, fading out where it goes
+      if (g.path?.ahead) { // a soft trail in the pass’s rarity colour: faint where it comes from, fading out where it goes
         const pts = (list) => list.filter((e) => e[2] > 0).map((e) => this.project(e)).filter(Boolean);
         const cap = (ps, max) => { const out = ps.slice(0, 1); let d = 0; for (let i = 1; i < ps.length; i++) { d += Math.hypot(ps[i].x - ps[i - 1].x, ps[i].y - ps[i - 1].y); if (d > max) break; out.push(ps[i]); } return out; }; // short on screen however fast it moves
         const back = cap(pts(g.path.past).reverse(), 60).reverse(), fwd = cap(pts(g.path.ahead), 200), col = g.color ?? '#ffffff';
@@ -403,8 +403,8 @@ export class SkyView {
       ctx.setLineDash([3, 4]); ctx.strokeStyle = g.color ?? 'rgba(255,255,255,.8)'; ctx.lineWidth = g.color ? 1.8 : 1.2;
       const big = g.time && g.id === this.ghostHitId; // lined up: it grows, like a real target in the circle
       ctx.beginPath(); ctx.arc(p.x, p.y, g.color ? (big ? 17 : 11) : 7, 0, Math.PI * 2); ctx.stroke(); ctx.lineWidth = 1.2;
-      if (g.obj) { ctx.save(); ctx.setLineDash([]); ctx.globalAlpha = 0.5; this.drawIcon(this.iconKind(g.obj), p.x, p.y, big ? 22 : 12, 'rgba(20,34,54,1)'); ctx.restore(); } // what it is, see-through: it isn't there yet (2026-10-13)
-      if (g.time) this.queueLabel(`${g.name} · ${g.time}`, p, { color: 'rgba(255,255,255,.95)', size: 12, weight: 600, gap: 16, priority: 7 }); // tonight's pass markers: one line
+      if (g.obj) { ctx.save(); ctx.setLineDash([]); ctx.globalAlpha = 0.5; this.drawIcon(this.iconKind(g.obj), p.x, p.y, big ? 22 : 12, 'rgba(20,34,54,1)'); ctx.restore(); } // what it is, see-through: it isn’t there yet (2026-10-13)
+      if (g.time) this.queueLabel(`${g.name} · ${g.time}`, p, { color: 'rgba(255,255,255,.95)', size: 12, weight: 600, gap: 16, priority: 7 }); // tonight’s pass markers: one line
       else { this.queueLabel(g.name, p, { color: 'rgba(255,255,255,.95)', size: 12, weight: 600, gap: 16, priority: 7 });
         if (g.note) this.queueLabel(g.note, { x: p.x, y: p.y + 14 }, { color: 'rgba(255,255,255,.8)', size: 10, weight: 500, gap: 16, priority: 6 }); }
     }
@@ -423,14 +423,14 @@ export class SkyView {
     const ctx = this.ctx, t = this.theme, k = 1 - (this.feetA ?? 0); // fades out as the ring at your feet fades in
     ctx.save(); ctx.globalAlpha = k;
     // In the circle (2026-10-07, Sevaan): you can identify something under the ground by lining it up. Its name and
-    // when it rises show above the circle in cream (it can't be collected, so the circle doesn't turn orange).
+    // when it rises show above the circle in cream (it can’t be collected, so the circle doesn’t turn orange).
     let hit = null;
     this.belowHitId = null;
     if (this.belowFree && k > 0.5) {
       hit = this.ghostHit(below.filter((g) => g.enu[2] < 0), 'BELOW THE HORIZON', INK);
       this.belowHitId = hit ? (hit.g.id ?? hit.g.obj?.id ?? null) : null;
     }
-    // Where each one has been and where it's going under the ground, drawn exactly like a satellite's trail in the
+    // Where each one has been and where it’s going under the ground, drawn exactly like a satellite’s trail in the
     // sky (drawTrail, 2026-10-07 consistency): a faint solid line behind it, the dotted orange prediction ahead up to
     // where it rises. Faint until you line it up in the circle, then as bright as a selected trail.
     for (const g of below) {
@@ -463,7 +463,7 @@ export class SkyView {
     }
     ctx.restore();
   }
-  // Deep-sky objects (2026-10-11): faint glows where clusters, nebulae and galaxies are, only when they'd really be
+  // Deep-sky objects (2026-10-11): faint glows where clusters, nebulae and galaxies are, only when they’d really be
   // visible tonight. Galaxies are tilted ovals, nebulae a soft pink-grey haze, clusters a little knot of specks.
   drawDeep(list) {
     const ctx = this.ctx, night = this.theme === THEMES.night, rgb = night ? [255, 90, 70] : [235, 228, 210];
@@ -483,7 +483,7 @@ export class SkyView {
     }
     ctx.restore();
   }
-  // A comet: a soft head and a tail pointing away from the Sun (the tangent on the sky away from the Sun's direction).
+  // A comet: a soft head and a tail pointing away from the Sun (the tangent on the sky away from the Sun’s direction).
   drawComet(d, p, r, rgb) {
     const ctx = this.ctx, c = d.enu, s = d.sun;
     let ang = -Math.PI / 4;
@@ -526,7 +526,7 @@ export class SkyView {
     ctx.restore();
   }
   // Satellites as their icons, revealed in a halo round the circle (2026-10-11, Sevaan): full strength near it,
-  // fading out further away, so sweeping the phone across the ground (or the daytime sky) uncovers what's there.
+  // fading out further away, so sweeping the phone across the ground (or the daytime sky) uncovers what’s there.
   drawHalo(sats, k, color) {
     const ctx = this.ctx, rc = this.ring ?? { x: this.cx, y: this.cy, r: this.reticlePx }, r1 = rc.r * 1.4, r2 = rc.r * 3.2;
     ctx.save();
@@ -550,7 +550,7 @@ export class SkyView {
     // Named in the ticket under the circle (2026-10-17, design/target-states B), not painted around it.
     const g = hit.g, head = kickerOf ? kickerOf(g) : g.owned === undefined ? kicker : `${kicker} · ${g.owned ? 'in your collection' : 'not collected yet'}`;
     const tail = [g.note ? g.note.replace(/^up /, 'comes up ') : '', g.where ? `in the ${g.where}` : ''].filter(Boolean).join(' · ');
-    if (this.ticket?.ink !== 'fossil') this.ticket = { ink: kickerOf ? 'later' : /DAYLIGHT/.test(kicker) ? 'hidden' : 'below', k: head, n: g.name, m: [g.what, tail].filter(Boolean).join(' · ') }; // the bones you're holding keep the label (2026-10-18 playtest)
+    if (this.ticket?.ink !== 'fossil') this.ticket = { ink: kickerOf ? 'later' : /DAYLIGHT/.test(kicker) ? 'hidden' : 'below', k: head, n: g.name, m: [g.what, tail].filter(Boolean).join(' · ') }; // the bones you’re holding keep the label (2026-10-18 playtest)
     return hit;
   }
   // Up in the daytime sky (2026-10-11, Sevaan): the same halo and naming as below the horizon, for the bright
@@ -572,8 +572,8 @@ export class SkyView {
     if (cover > 0.08) {
       // Clouds live in the sky (2026-10-07, Sevaan: they were stuck to the glass): each has a fixed spot by azimuth
       // and height, drifts slowly round, and is projected like a star, so it stays put as you move the phone.
-      // The cloud deck (js/clouds-gl.js): real perspective, wind drift, lit from the Sun's side. Falls back to the
-      // old soft blobs where WebGL isn't available.
+      // The cloud deck (js/clouds-gl.js): real perspective, wind drift, lit from the Sun’s side. Falls back to the
+      // old soft blobs where WebGL isn’t available.
       if (this.cloudGL?.lost) this.cloudGL = undefined;
       if (this.cloudGL === undefined) { try { this.cloudGL = createCloudGL(); } catch { this.cloudGL = null; } }
       if (this.cloudGL && this.basis) {
@@ -615,9 +615,9 @@ export class SkyView {
   // Each glow follows a supplied point on the true galactic equator.
   // milky: { spine: [{enu, width°, bright}], specks: [{enu, a, s}], rift: [{enu, w°}] }
   // Build the Milky Way renderer (fetch, decode, GPU upload) ahead of time, e.g. while the welcome card is up, so the
-  // sky's first frames don't pay for it (playtest 2026-10-09).
-  // The cloud deck's shader compiles and draws once while the welcome card is up (2026-10-16 perf sweep), not in the
-  // sky's first frame.
+  // sky’s first frames don’t pay for it (playtest 2026-10-09).
+  // The cloud deck’s shader compiles and draws once while the welcome card is up (2026-10-16 perf sweep), not in the
+  // sky’s first frame.
   warmClouds() {
     if (this.cloudGL !== undefined) return;
     try { this.cloudGL = createCloudGL(); this.cloudGL?.render({ basis: { right: [1, 0, 0], up: [0, 0, 1], back: [0, -1, 0] }, w: 8, h: 8, f: 8, cx: 4, cy: 4, scale: 1, sun: [0, -0.5, 0.5], wind: [0, 0], cover: 0.5, alpha: 0, ...CLOUD_LIGHT.night }); } catch { this.cloudGL = null; }
@@ -625,8 +625,8 @@ export class SkyView {
   warmMilky() { if (this.mwGL === undefined) { try { this.mwGL = createMilkyGL('assets/sky/milkyway.webp?v=2'); } catch { this.mwGL = null; } } }
   drawMilkyWay(milky) {
     if (!milky?.spine) return;
-    // The real thing (2026-10-08): ESO's all-sky photograph, mapped onto your view by js/milkyway-gl.js. The
-    // drawn-by-hand version below stays as the fallback where WebGL isn't available or the photo hasn't loaded.
+    // The real thing (2026-10-08): ESO’s all-sky photograph, mapped onto your view by js/milkyway-gl.js. The
+    // drawn-by-hand version below stays as the fallback where WebGL isn’t available or the photo hasn’t loaded.
     if (milky.gal) {
       if (this.mwGL?.lost) this.mwGL = undefined; // rebuilt after the phone dropped its WebGL context
       this.warmMilky();
@@ -635,7 +635,7 @@ export class SkyView {
         const vis = this.starLimit == null ? 1 : Math.max(0, Math.min(1, (this.starLimit - 3.6) / 2.4));
         if (!vis) return;
         const night = this.theme === THEMES.night;
-        // Half resolution (2026-10-16 perf sweep): copying the WebGL canvas into the 2D sky was ~60% of a frame's work; the
+        // Half resolution (2026-10-16 perf sweep): copying the WebGL canvas into the 2D sky was ~60% of a frame’s work; the
         // photo is soft, so a quarter of the pixels looks the same.
         const out = this.mwGL.render({ basis: this.basis, gal: milky.gal, w: this.w, h: this.h, f: this.f, cx: this.cx, cy: this.cy, scale: 0.5,
           alpha: (this.theme.milkyPhoto ?? 1) * vis * (1 - Math.min(1, (this.dayF ?? 0) / 0.2)), mono: night ? 1 : 0, tint: night ? [0.75, 0.1, 0.07] : [1, 1, 1] });
@@ -674,7 +674,7 @@ export class SkyView {
       if (!this.onScreen(p, radius)) continue;
       this.soft(p.x, p.y, radius, this.theme.milky, 0.3 * c.a * f);
     }
-    // 3. Dust: the Great Rift's two lanes, the Pipe and Ophiuchus clouds, the Coalsack and small dark knots.
+    // 3. Dust: the Great Rift’s two lanes, the Pipe and Ophiuchus clouds, the Coalsack and small dark knots.
     const dark = this.theme.riftRgb ?? [4, 10, 22];
     for (const pt of milky.rift) {
       const p = this.project(pt.enu);
@@ -733,7 +733,7 @@ export class SkyView {
       // (−77°), then fading to clear at the very bottom, inside the ring (2026-10-08, Sevaan). Drawn as a radial
       // gradient around the point straight below you, so it follows the ring.
       const b = this.basis.back, az = (Math.atan2(b[0], b[1]) / RAD + 360) % 360;
-      const c = this.theme === THEMES.night ? [10, 1, 0] : [8, 15, 27]; // the header's near-black, day or night
+      const c = this.theme === THEMES.night ? [10, 1, 0] : [8, 15, 27]; // the header’s near-black, day or night
       const n = this.project([0, 0, -1]), hm = this.project(enuFromAzEl(az, -45)), hr = this.project(enuFromAzEl(az, -77));
       ctx.save(); poly();
       if (n && hm && hr) {
@@ -762,7 +762,7 @@ export class SkyView {
       const tw = Math.max(0, Math.min(1, (6 - (this.sunEl ?? 90)) / 12)); // 0 with the Sun 6°+ up, 1 at −6°
       const mix = (d, n) => Math.round(d + (n - d) * tw);
       ctx.fillStyle = `rgb(${mix(92, 58) - Math.round(down * 34)}, ${mix(72, 42) - Math.round(down * 26)}, ${mix(52, 48) - Math.round(down * 20)})`; ctx.fillRect(0, 0, this.w, this.h);
-      // The soil texture is drawn once into an offscreen layer and reused until you've turned enough to move it by
+      // The soil texture is drawn once into an offscreen layer and reused until you’ve turned enough to move it by
       // about a pixel (2026-10-08 performance): 1,100 pebbles and 70 gradients a frame were the heaviest part of the sky.
       const bb = this.basis, key = [bb.back, bb.up].flat().map((v) => Math.round(v * 2000)).join(',') + `|${this.w}x${this.h}|${Math.round(dayF * 20)}`;
       const dpr = this.canvas.width / this.w;
@@ -801,7 +801,7 @@ export class SkyView {
         this.ctx = main; this.soil = { key, canvas: layer };
       }
       ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = dayF; ctx.drawImage(this.soil.canvas, 0, 0); ctx.restore(); ctx.globalAlpha = dayF;
-      // (2026-10-08: the grass tufts and twigs on the soil were removed, Sevaan didn't like them.)
+      // (2026-10-08: the grass tufts and twigs on the soil were removed, Sevaan didn’t like them.)
       ctx.globalAlpha = 1;
     }
     // a soft glow just under the horizon, warmer where the Sun is hiding
@@ -844,8 +844,8 @@ export class SkyView {
     band(LANDSCAPE.hills, dF > 0 ? mix('0a1826', '6f8f78') : (t.hills ?? '#0a1826'), dF > 0.4 ? `rgba(200,225,180,${(0.4 * dF).toFixed(2)})` : null);
     // Tree lines (2026-10-08, higher fidelity): a far row, hazier, then the near row. Each pine is a trunk and a stack of
     // drooping, ragged tiers that narrow to a spike, with a lighter lit side by day.
-    // Only trees in view are drawn (jank playtest 2026-10-17: ~900 pines a frame were a third of the sky's work). A tree is
-    // kept if its direction is within the screen's half-diagonal plus a margin of where the phone points.
+    // Only trees in view are drawn (jank playtest 2026-10-17: ~900 pines a frame were a third of the sky’s work). A tree is
+    // kept if its direction is within the screen’s half-diagonal plus a margin of where the phone points.
     const back = this.basis?.back, halfDiag = Math.atan(Math.hypot(1, this.w / Math.max(1, this.h)) * Math.tan((this.fovV / 2) * RAD)) / RAD;
     const keepCos = Math.cos(Math.min(89, halfDiag + 12) * RAD);
     const pine = ([az, ht, w, tiers, lean, sd], body, lit) => {
@@ -875,7 +875,7 @@ export class SkyView {
     ctx.restore();
   }
 
-  // The ground's markings (2026-10-07, Sevaan picked "C · Quiet ring"): the survey contours and bearing labels are
+  // The ground’s markings (2026-10-07, Sevaan picked "C · Quiet ring"): the survey contours and bearing labels are
   // gone, the straight grid is back. Near the horizon: small ticks every 10° and N/E/S/W. Looking down, those give way to the quiet ring
   // at your feet (drawFeet).
   drawGroundCompass() {
@@ -884,7 +884,7 @@ export class SkyView {
     ctx.strokeStyle = t.groundInk;
     ctx.lineWidth = 1;
     // The straight grid is back (2026-10-07, Sevaan: it fills the void): rings at 20°, 45° and 70° down and spokes
-    // every 30°, heavier on N/E/S/W. It softens as the quiet ring at your feet comes in, so the two don't fight.
+    // every 30°, heavier on N/E/S/W. It softens as the quiet ring at your feet comes in, so the two don’t fight.
     ctx.globalAlpha = 1 - 0.55 * (this.feetA ?? 0);
     for (const el of [-20, -45, -70]) {
       const pts = [];
@@ -918,7 +918,7 @@ export class SkyView {
   }
 
   // The buried fossil (js/fossil.js): drawn in the daytime soil, lying along the ground (its baseline follows the
-  // ground's horizontal at that spot). Faint and blended until it's in the circle; then full colour with a glow,
+  // ground’s horizontal at that spot). Faint and blended until it’s in the circle; then full colour with a glow,
   // a quiet line above and a hold ring that fills. f: { enu, img, inCircle, hold (0..1) }.
   drawFossil(f) {
     const dayF = this.theme === THEMES.night ? 0 : (this.dayF ?? 0);
@@ -939,7 +939,7 @@ export class SkyView {
     ctx.restore();
     if (f.inCircle && !f.done) { // already found: no words around the circle (2026-10-08)
       const rc = this.ring ?? { x: this.cx, y: this.cy, r: this.reticlePx };
-      this.ticket = { ink: 'fossil', k: `Below the horizon · ${Math.round(-el)}° down`, n: f.done ? 'Dino bones' : "Something's buried here…", m: f.done ? 'A fossil, right under your feet' : 'Hold it in the circle' };
+      this.ticket = { ink: 'fossil', k: `Below the horizon · ${Math.round(-el)}° down`, n: f.done ? 'Dino bones' : "Something’s buried here…", m: f.done ? 'A fossil, right under your feet' : 'Hold it in the circle' };
       ctx.save();
       if (!f.done && f.hold > 0) { ctx.shadowBlur = 0; ctx.strokeStyle = 'rgba(255,229,192,.95)'; ctx.lineWidth = 3; ctx.lineCap = 'round';
         ctx.beginPath(); ctx.arc(rc.x, rc.y, rc.r + 9, -Math.PI / 2, -Math.PI / 2 + f.hold * Math.PI * 2); ctx.stroke(); }
@@ -952,7 +952,7 @@ export class SkyView {
   drawUfo(u) {
     const p = this.project(u.enu); if (!p || !this.onScreen(p, 30)) return;
     // Satellite-icon size in the open sky; in the circle it grows like any other target, easing in (2026-10-17, Sevaan:
-    // "small like all the other icons until it's in the circle"; it was a jump to a slightly bigger 1.15).
+    // "small like all the other icons until it’s in the circle"; it was a jump to a slightly bigger 1.15).
     const want = u.inCircle ? 0.9 : 0.5; this.ufoScale = this.reducedMotion ? want : (this.ufoScale ?? want) + (want - (this.ufoScale ?? want)) * 0.18;
     const ctx = this.ctx, s = this.ufoScale;
     ctx.save(); ctx.translate(p.x, p.y); ctx.scale(s, s);
@@ -983,13 +983,13 @@ export class SkyView {
         continue;
       }
       const p = this.project(s.enu); if (!p || !this.onScreen(p, 30)) continue;
-      // Deep-space spots (Voyagers, Pioneers, New Horizons, the Wow! signal) are invisible until they're in your
+      // Deep-space spots (Voyagers, Pioneers, New Horizons, the Wow! signal) are invisible until they’re in your
       // circle, so you stumble on them (2026-10-09, Sevaan). Found ones show quietly there too, never elsewhere.
       const hidden = ['voyager', 'voyager2', 'pioneer10', 'pioneer11', 'newhorizons', 'wow', 'arecibo', 'halley'].includes(s.kind);
       if (hidden && !s.inCircle) continue;
       if (s.done) continue; // once found, a secret leaves the sky for good (2026-10-09, Sevaan)
       // In the circle a secret grows to about the size a locked-on satellite or rocket stage is drawn (~16 px across, 2026-10-18 second pass: 26 still read too big;
-      // 2026-10-18, Sevaan: the 4.2× of 2026-10-17 was far too big). SECRET_PX = each drawing's width at scale 1, measured.
+      // 2026-10-18, Sevaan: the 4.2× of 2026-10-17 was far too big). SECRET_PX = each drawing’s width at scale 1, measured.
       const sc = s.inCircle && !s.done ? Math.max(1.2, 16 / (SECRET_PX[s.kind] ?? 12)) : 1.2;
       ctx.save(); ctx.translate(p.x, p.y); ctx.scale(sc, sc);
       if (s.kind === 'santa') {
@@ -1033,7 +1033,7 @@ export class SkyView {
       }
       ctx.restore();
       if (s.inCircle && !s.done) {
-        // The whole sight turns the secret's colour and glows (2026-10-17, Sevaan: you should notice as you pan past),
+        // The whole sight turns the secret’s colour and glows (2026-10-17, Sevaan: you should notice as you pan past),
         // breathing faster as the 4 s hold fills the outer ring.
         ctx.save(); ctx.strokeStyle = s.color; ctx.shadowColor = s.color;
         const breathe = this.reducedMotion ? 0.5 : 0.5 + 0.5 * Math.sin(performance.now() / (420 - 250 * (s.hold ?? 0)));
@@ -1062,7 +1062,7 @@ export class SkyView {
     ctx.save(); ctx.globalAlpha = a;
     const ringPts = []; for (let az = 0; az <= 360; az += 4) ringPts.push(enuFromAzEl(az, EL));
     const ring = ringPts.map((v) => this.project(v)).filter(Boolean);
-    // The map's face and its height rings (30° and 60° up).
+    // The map’s face and its height rings (30° and 60° up).
     if (ring.length > 60) {
       ctx.beginPath(); ring.forEach((q, i) => (i ? ctx.lineTo(q.x, q.y) : ctx.moveTo(q.x, q.y))); ctx.closePath();
       ctx.fillStyle = night ? 'rgba(20,2,0,.55)' : 'rgba(8,16,30,.55)'; ctx.fill();
@@ -1131,7 +1131,7 @@ export class SkyView {
         if (al !== 'center' && (x0 < 10 || x0 + w > this.w - 10)) return place(i, 'center');
         return { s1, ly, al, box: { x: x0, y: ly - 14, w, h: 28 } };
       };
-      // Longer spokes push a crowded label outward; a label keeps its length while that's still clear (steady text).
+      // Longer spokes push a crowded label outward; a label keeps its length while that’s still clear (steady text).
       let pick = null;
       for (const i of [...new Set([lm.step ?? 0, 0, 1, 2, 3])]) { const c = place(i); if (c && !hit(c.box)) { pick = c; lm.step = i; break; } }
       if (!pick) { pick = place(lm.step ?? 0) ?? place(0); if (!pick) continue; }
@@ -1325,13 +1325,13 @@ export class SkyView {
         this.queueLabel(t.constCase(c.name), this.project(c.enu), { color: t.constLabel, size: 12, weight: 500, priority: 2, align: 'center' });
       }
     }
-    // Stars towards the edges of the screen twinkle, ever so slightly; the middle, where you're aiming,
+    // Stars towards the edges of the screen twinkle, ever so slightly; the middle, where you’re aiming,
     // stays still. Each star gets its own slow, irregular rhythm (two sines, per-star phase and speed).
     const sec = time / 1000, hw = this.w / 2, hh = this.h / 2;
     for (let i = 0; i < sky.stars.length; i++) {
       const s = sky.stars[i];
       if (s.enu[2] < 0) continue;
-      // The sky slider: stars fainter than tonight's limit (after the extra air near the horizon) aren't drawn;
+      // The sky slider: stars fainter than tonight’s limit (after the extra air near the horizon) aren’t drawn;
       // the last half magnitude fades, so dragging the slider brings stars up gently.
       let fade = 1;
       if (starLimit != null) { const m = s.mag + extinction(Math.asin(Math.min(1, s.enu[2])) * 180 / Math.PI); if (m > starLimit) continue; fade = Math.min(1, (starLimit - m) / 0.5 + 0.15); }
@@ -1376,7 +1376,7 @@ export class SkyView {
       const p = this.project(b.enu);
       if (!this.onScreen(p, 30)) continue;
       if (b.kind === 'moon') {
-        // In daylight a thin or new Moon is invisible: don't paint a black disc on a blue sky (2026-10-08 playtest).
+        // In daylight a thin or new Moon is invisible: don’t paint a black disc on a blue sky (2026-10-08 playtest).
         if ((this.dayF ?? 0) > 0.3 && (b.illum ?? 1) < 0.25) continue;
         const radius = 12;
         this.glow(p.x, p.y, 34, t.starRGB, 0.2);
@@ -1387,16 +1387,16 @@ export class SkyView {
         this.glow(p.x, p.y, 70 + f * 90, f > 0 ? [255, 246, 207] : t.satGlow, 0.55);
         ctx.fillStyle = f > 0.3 ? '#fffbea' : t.sun;
         ctx.beginPath(); ctx.arc(p.x, p.y, 12 + f * 6, 0, Math.PI * 2); ctx.fill();
-        // (The dashed orange guard ring by day was removed 2026-10-10, Sevaan: "I don't want that.")
+        // (The dashed orange guard ring by day was removed 2026-10-10, Sevaan: "I don’t want that.")
         this.queueLabel('Sun', p, { color: f > 0.3 ? '#143046' : t.body, size: 14, gap: 22 + f * 24, priority: 8 });
       } else {
         // Planets on the same brightness scale as the stars (2026-10-06, Sevaan: Saturn looked far brighter than
-        // it is). Apparent magnitude after the air near the horizon; anything fainter than tonight's limit (the sky
-        // slider, twilight, the Moon) isn't drawn, so Neptune no longer shows to the naked eye.
+        // it is). Apparent magnitude after the air near the horizon; anything fainter than tonight’s limit (the sky
+        // slider, twilight, the Moon) isn’t drawn, so Neptune no longer shows to the naked eye.
         const elDeg = Math.asin(Math.min(1, Math.max(-1, b.enu[2]))) * 180 / Math.PI, m = b.mag + extinction(elDeg);
         if (this.starLimit != null && m > this.starLimit) continue;
-        // By day only Venus can show, and only when it's well clear of the Sun (30°+), when people really can spot it;
-        // closer in it's lost in the glare and looking for it means looking near the Sun (2026-10-11, Sevaan asked).
+        // By day only Venus can show, and only when it’s well clear of the Sun (30°+), when people really can spot it;
+        // closer in it’s lost in the glare and looking for it means looking near the Sun (2026-10-11, Sevaan asked).
         const sunSep = sun ? Math.acos(Math.max(-1, Math.min(1, sun.enu[0] * b.enu[0] + sun.enu[1] * b.enu[1] + sun.enu[2] * b.enu[2]))) * 180 / Math.PI : 180;
         const dayK = 1 - Math.min(1, (this.dayF ?? 0) / 0.6) * (m <= -3 && sunSep >= 30 ? 0.6 : 1);
         if (dayK <= 0.02) continue;
@@ -1439,7 +1439,7 @@ export class SkyView {
     ctx.restore();
   }
 
-  // Only the focused object's trajectory is shown. The dotted future is prediction,
+  // Only the focused object’s trajectory is shown. The dotted future is prediction,
   // while the faint solid segment is recent history; neither suggests actual light trails.
   drawTrail(trail, hot) {
     const ctx = this.ctx, t = this.theme, [r, g, b] = t.bead;
@@ -1504,12 +1504,12 @@ export class SkyView {
     this.drawGroundCompass();
     if (fossil && !this.camera) this.drawFossil(fossil); // not in camera view
     // Looking down: the quiet ring takes over from the see-through ghosts (same things, by rise direction).
-    this.belowFree = !targetId && !planeHit; // the circle can name a below-horizon thing only when it isn't busy
+    this.belowFree = !targetId && !planeHit; // the circle can name a below-horizon thing only when it isn’t busy
     if (below?.length && belowSats?.length) { const ids = new Set(below.filter((g) => g.obj).map((g) => g.obj.id)); belowSats = belowSats.filter((s) => !ids.has(s.obj.id)); } // a pass is drawn once
     if (this.basis.back[2] < 0.15 && this.feetA < 0.98) this.drawBelowSky(sky, belowSats, belowStarLimit);
     if (daySats?.length && this.basis.back[2] > -0.15) this.drawDaySats(daySats); else this.dayHitId = null;
     if ((below?.length || belowSats?.length) && this.basis.back[2] < 0.15 && this.feetA < 0.98) this.drawBelow([...(below ?? []), ...(belowSats ?? []).map((s) => ({ enu: s.enu, kind: 'dot', id: s.obj.id, name: s.name, what: s.what, place: s.place, note: s.note ?? '', where: '', owned: s.owned }))]);
-    this.drawFeet(feet); // the ring at your feet shows what's UP and which way to face (2026-10-13, Sevaan)
+    this.drawFeet(feet); // the ring at your feet shows what’s UP and which way to face (2026-10-13, Sevaan)
     this.drawRising(rising);
     this.drawGrid();
 
@@ -1575,7 +1575,7 @@ export class SkyView {
     // The app decides what counts as locked on, so the ring, labels and tap area always agree.
     const locked = lockedOn ?? (!!focus && focus.obj.id === targetId && !!focus.candidate);
     // An unfound secret in the circle draws its own sight in its colour (drawSecrets); the usual one steps aside so the
-    // circle doesn't double up (2026-10-17).
+    // circle doesn’t double up (2026-10-17).
     const secretSight = secrets?.some((x) => x.inCircle && !x.done && x.kind !== 'meteor');
     if (secretSight) this.updateRing(false);
     else if (planeAt && !locked) this.drawReticle(true, 0, false, planeAt);
@@ -1586,7 +1586,7 @@ export class SkyView {
     this.drawLabels();
   }
 
-  // The lined-up plane's path, like a satellite's: faint solid for the last minute, red dashes for the
+  // The lined-up plane’s path, like a satellite’s: faint solid for the last minute, red dashes for the
   // next two minutes (a straight line along its current track; it may turn).
   drawPlaneTrail(trail) {
     const ctx = this.ctx, t = this.theme;
@@ -1599,7 +1599,7 @@ export class SkyView {
     ctx.restore();
   }
 
-  // Aircraft from js/planes.js: small red plane shapes pointing the way they're flying. Returns the
+  // Aircraft from js/planes.js: small red plane shapes pointing the way they’re flying. Returns the
   // screen position of the one in the circle (planeHit is its hex), if any.
   drawPlanes(planes, planeHit) {
     if (!planes?.length) return null;
@@ -1650,7 +1650,7 @@ export class SkyView {
       ctx.save();
       ctx.translate(x, y); ctx.rotate(angle);
       if (isTarget) {
-        // The one you're looking for (2026-10-06): a solid orange arrow in a ring, pulsing gently, so it reads at a glance.
+        // The one you’re looking for (2026-10-06): a solid orange arrow in a ring, pulsing gently, so it reads at a glance.
         const pulse = 1 + 0.08 * Math.sin(performance.now() / 260);
         ctx.fillStyle = 'rgba(8,14,26,.82)'; ctx.beginPath(); ctx.arc(0, 0, 15 * pulse, 0, Math.PI * 2); ctx.fill();
         ctx.strokeStyle = t.tick; ctx.lineWidth = 2; ctx.stroke();
@@ -1665,7 +1665,7 @@ export class SkyView {
   }
 
   // The ring you aim with. When it locks on, it shrinks a little and glides onto the object, then
-  // eases back when the lock is released. this.ring is what's drawn (the tap area follows it).
+  // eases back when the lock is released. this.ring is what’s drawn (the tap area follows it).
   // snap (Settings, default on): the circle jumps onto a locked-on target. Off, it stays put in the
   // middle and only changes colour.
   updateRing(locked, at = this.targetPos) {
@@ -1681,7 +1681,7 @@ export class SkyView {
   }
 
   // Catch the fade (main.js fadeCountdown): a gold ring just outside the circle that runs down over the last 20 s
-  // before the target slides into Earth's shadow; in the last 3 s it turns bright and says NOW.
+  // before the target slides into Earth’s shadow; in the last 3 s it turns bright and says NOW.
   drawFade({ left, total }, time = 0) {
     const ctx = this.ctx, ring = this.ring ?? { x: this.cx, y: this.cy, r: this.reticlePx }, r = ring.r + 11, now = left <= 3;
     const gold = this.theme === THEMES.night ? 'rgb(255,110,90)' : now ? '#ffd54a' : 'rgba(255,201,61,.8)';
@@ -1695,10 +1695,10 @@ export class SkyView {
     ctx.fillText(now ? 'NOW!' : `FADES IN ${Math.ceil(left)}S`, ring.x, ring.y + ring.r - 13);
     ctx.restore();
   }
-  // Earth's shadow (2026-10-14, Sevaan: "let's do it and I'll feel it out"; design/fun-and-learning.html): at dusk and
-  // dawn, the part of the sky where a satellite 500 km up would be in Earth's shadow, so you can see why things blink
-  // out. Line of sight from you (Earth's centre straight below at R) meets the 500 km shell; that point is in shadow if
-  // it's behind Earth from the Sun and within R of the Sun-Earth line. Shaded faintly, its edge dashed gold.
+  // Earth’s shadow (2026-10-14, Sevaan: "let’s do it and I’ll feel it out"; design/fun-and-learning.html): at dusk and
+  // dawn, the part of the sky where a satellite 500 km up would be in Earth’s shadow, so you can see why things blink
+  // out. Line of sight from you (Earth’s centre straight below at R) meets the 500 km shell; that point is in shadow if
+  // it’s behind Earth from the Sun and within R of the Sun-Earth line. Shaded faintly, its edge dashed gold.
   drawEarthShadow() {
     const s = this.sunEnu; if (!s || s[2] > -0.035 || (this.basis?.back?.[2] ?? 0) < -0.25) return; // night side only, looking up
     // Smooth edge (2026-10-17, Sevaan: "super jagged"): a 2° azimuth grid with each crossing found by bisection, instead
@@ -1706,7 +1706,7 @@ export class SkyView {
     const H = this.shadowKm ?? 500, key = `${s.map((v) => v.toFixed(4)).join()}|${H}`; // the height of the target in the circle (main.js)
     if (this._shadowKey !== key) { this._shadowKey = key; this._shadow = shadowShape(s, H); }
     const { cols, edges, any, all } = this._shadow, ctx = this.ctx;
-    // The shade: every column added to one path and filled once, so neighbouring pieces don't overlap into seams.
+    // The shade: every column added to one path and filled once, so neighbouring pieces don’t overlap into seams.
     ctx.save(); ctx.fillStyle = 'rgba(2,5,12,.22)'; ctx.beginPath();
     for (const q of cols) this.shadeQuad(q);
     ctx.fill(); ctx.restore();
@@ -1721,8 +1721,8 @@ export class SkyView {
       for (const e of run) {
         const p = this.project(e); if (!p) { pen = false; continue; }
         if (pen) ctx.lineTo(p.x, p.y); else ctx.moveTo(p.x, p.y); pen = true;
-        // The label's own box (two lines, ~224 × 30 px) must stay on screen, off the sight and its ticks, and out of the
-        // column under it where the target's ticket sits (playtest 2026-10-16: it crowded "COMMON · MOON").
+        // The label’s own box (two lines, ~224 × 30 px) must stay on screen, off the sight and its ticks, and out of the
+        // column under it where the target’s ticket sits (playtest 2026-10-16: it crowded "COMMON · MOON").
         const R = (this.reticlePx ?? 60) + 24, dd = Math.hypot(p.x - this.cx, p.y - this.cy);
         for (const dy of [-36, 12]) { // above the line, else below it
           const x0 = p.x - 112, x1 = p.x + 112, y0 = p.y + dy, y1 = y0 + 30;
@@ -1734,11 +1734,11 @@ export class SkyView {
       }
     }
     ctx.stroke(); ctx.setLineDash([]);
-    // Always say what the line is when there's room for it (2026-10-17, Sevaan: "we need a label for it").
+    // Always say what the line is when there’s room for it (2026-10-17, Sevaan: "we need a label for it").
     if (best) {
       const x = best.p.x, y = best.top;
       ctx.textAlign = 'center'; if ('letterSpacing' in ctx) ctx.letterSpacing = '1.5px';
-      ctx.fillStyle = red ? 'rgba(255,110,90,.85)' : 'rgba(255,201,61,.85)'; ctx.font = `600 11px ${FONT}`; ctx.fillText(this.shadowLabel?.[0] ?? "EARTH'S SHADOW", x, y + 11);
+      ctx.fillStyle = red ? 'rgba(255,110,90,.85)' : 'rgba(255,201,61,.85)'; ctx.font = `600 11px ${FONT}`; ctx.fillText(this.shadowLabel?.[0] ?? "EARTH’S SHADOW", x, y + 11);
       if ('letterSpacing' in ctx) ctx.letterSpacing = '0.5px';
       ctx.fillStyle = red ? 'rgba(255,110,90,.65)' : 'rgba(255,242,179,.65)'; ctx.font = `500 11px ${FONT}`; ctx.fillText(this.shadowLabel?.[1] ?? 'Satellites past this line go dark', x, y + 25);
     }
@@ -1756,7 +1756,7 @@ export class SkyView {
     const activeInk = plane ? t.plane : this.ownedInk ? (t.label ?? '#fff2b3') : t.tick; // orange = new, cream = collected, red = plane
     // The inner rule keeps the existing aiming radius. An outer rule and fine
     // indexed marks echo the orbital dial on the cards without obscuring the sky.
-    // The sight (2026-10-17, design/target-states A, Sevaan): one ring in the state's colour over a soft dark halo, so
+    // The sight (2026-10-17, design/target-states A, Sevaan): one ring in the state’s colour over a soft dark halo, so
     // it reads on a blue day sky as well as at night, and four ticks at the compass points. No fine dial.
     const ink = locked ? activeInk : t.reticle;
     ctx.strokeStyle = 'rgba(8,15,27,.28)'; ctx.lineWidth = 6;

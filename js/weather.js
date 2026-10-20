@@ -71,7 +71,7 @@ export function tonightSky(wx, dusk, dawn, fmt) {
     const hs = wx.hours.filter((h) => h.t >= s && h.t <= e);
     if (hs.length >= 4 && hs.filter(clearHour).length >= hs.length * 0.6) nextClear = s;
   }
-  // For the tour's last page (2026-10-08): which of the four cases, when it clears / clouds over, the worst weather,
+  // For the tour’s last page (2026-10-08): which of the four cases, when it clears / clouds over, the worst weather,
   // and a summary of the next few nights.
   const kase = !ok ? 'bad' : clear.every(Boolean) ? 'clear' : !clear[0] ? 'clearing' : 'closing';
   const clearFrom = kase === 'clearing' ? night[clear.indexOf(true)].t : null, coverFrom = kase === 'closing' ? night[clear.indexOf(false)].t : null;

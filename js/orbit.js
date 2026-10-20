@@ -1,9 +1,9 @@
-// Orbit math: where every object is in the observer's sky, and whether it can be seen.
+// Orbit math: where every object is in the observer’s sky, and whether it can be seen.
 // Pure functions, no DOM, so this module carries over unchanged to a native wrapper.
 
-import { expandFacts } from './catalog-facts.js?v=0.1.891';
-import * as sat from './lib/satellite.js?v=0.1.891';
-import { extinction, starlinkStdMag } from './sky-limit.js?v=0.1.891';
+import { expandFacts } from './catalog-facts.js?v=0.1.892';
+import * as sat from './lib/satellite.js?v=0.1.892';
+import { extinction, starlinkStdMag } from './sky-limit.js?v=0.1.892';
 
 const RAD = Math.PI / 180;
 const EARTH_RADIUS_KM = 6371;
@@ -29,7 +29,7 @@ export async function loadCatalog(url) {
     expandFacts(o);
     const satrec = satrecFor(o);
     if (!satrec || satrec.error) continue;
-    // Constellation members share their family's facts to keep the file small.
+    // Constellation members share their family’s facts to keep the file small.
     const fam = o.family ? families[o.family] : null;
     if (fam) Object.assign(o, { kind: 'PAY', type: 'satellite', tier: fam.tier ?? 'common', stdMag: o.family === 'STARLINK' ? starlinkStdMag(o) : o.stdMag ?? fam.stdMag, owner: fam.owner, familyName: fam.name, year: o.launch ? Number(o.launch.slice(0, 4)) : null });
     o.card ??= String(o.id);
@@ -37,13 +37,13 @@ export async function loadCatalog(url) {
     delete o.el; delete o.l1; delete o.l2;
     objects.push(o);
   }
-  // Shared with the Collection layer so it doesn't download and parse the catalogue again (2026-10-08 performance).
+  // Shared with the Collection layer so it doesn’t download and parse the catalogue again (2026-10-08 performance).
   globalThis.__catalogShare = { generated: data.generated, source: data.source, families, objects };
   return { generated: new Date(data.generated), families, objects };
 }
 
 // Orbital elements come as JSON (OMM) values in scripts/build-catalog.mjs EL_FIELDS order. Older
-// catalogues carried TLE lines, which can't hold catalogue numbers above 99999.
+// catalogues carried TLE lines, which can’t hold catalogue numbers above 99999.
 const EL_FIELDS = ['EPOCH', 'MEAN_MOTION', 'ECCENTRICITY', 'INCLINATION', 'RA_OF_ASC_NODE', 'ARG_OF_PERICENTER', 'MEAN_ANOMALY', 'BSTAR', 'MEAN_MOTION_DOT', 'MEAN_MOTION_DDOT'];
 export function satrecFor(o) {
   if (o.el) return sat.json2satrec({ NORAD_CAT_ID: o.id, ...Object.fromEntries(EL_FIELDS.map((k, i) => [k, o.el[i]])) });
@@ -103,7 +103,7 @@ function apparentMag(stdMag, rangeKm, r, f) {
   return stdMag + 5 * Math.log10(rangeKm / 1000) - 2.5 * Math.log10(Math.max(lit * Math.PI, 1e-3));
 }
 
-// Position of one object in the observer's sky. Returns null if propagation fails.
+// Position of one object in the observer’s sky. Returns null if propagation fails.
 export function look(obj, f) {
   const pv = sat.propagate(obj.satrec, f.date);
   if (!pv || !pv.position) return null;
@@ -114,13 +114,13 @@ export function look(obj, f) {
   if (el < 0) return { az, el, rangeKm: la.rangeSat, sunlit: false, visible: false, mag: null };
   const sunlit = isSunlit(r, f.sunDir);
   const dark = f.sunEl < DARK_SUN_ELEVATION;
-  // mag includes the dimming from the air near the horizon, so it's what you'd see.
+  // mag includes the dimming from the air near the horizon, so it’s what you’d see.
   const mag = sunlit ? apparentMag(obj.stdMag, la.rangeSat, r, f) + extinction(el) : null;
   const bright = mag !== null && mag <= currentLimit();
   return { az, el, rangeKm: la.rangeSat, sunlit, dark, bright, visible: sunlit && dark && bright, mag };
 }
 
-// The point on Earth it's over, its height and its speed: { lat, lon (degrees), altKm, kmh } or null.
+// The point on Earth it’s over, its height and its speed: { lat, lon (degrees), altKm, kmh } or null.
 export function overEarth(obj, date) {
   const pv = sat.propagate(obj.satrec, date);
   if (!pv?.position || !pv.velocity) return null;
@@ -130,7 +130,7 @@ export function overEarth(obj, date) {
 
 // Below the horizon, as if the Earth were glass and you stood at a dark site (2026-10-11, Sevaan): lit by the Sun
 // and bright enough for a dark sky (limit) as it would be on a pass over you, not at its true distance (far-side
-// satellites are 10,000+ km off, and judged there almost none would show). Null when it's above the horizon.
+// satellites are 10,000+ km off, and judged there almost none would show). Null when it’s above the horizon.
 export function lookBelow(obj, f, limit) {
   const pv = sat.propagate(obj.satrec, f.date);
   if (!pv || !pv.position) return null;
@@ -153,7 +153,7 @@ export class BelowModel {
     const n = this.objects.length, slice = Math.ceil(n / this.frames);
     for (let i = 0; i < slice; i++) {
       const o = this.objects[this.cursor]; this.cursor = (this.cursor + 1) % n;
-      if (o.stdMag == null || o.stdMag > limit) continue; // can't reach the limit from thousands of km away
+      if (o.stdMag == null || o.stdMag > limit) continue; // can’t reach the limit from thousands of km away
       const l = lookBelow(o, f, limit), prev = this.map.get(o.id);
       if (!l) { this.map.delete(o.id); continue; }
       this.map.set(o.id, { obj: o, t0: prev?.t1 ?? null, s0: prev?.s1 ?? null, t1: t, s1: l });
@@ -221,7 +221,7 @@ export function nextVisiblePass(allObjects, date, obs, hours = 24) {
   return null;
 }
 
-// Keeps track of what's above the horizon without recomputing the whole catalogue every frame.
+// Keeps track of what’s above the horizon without recomputing the whole catalogue every frame.
 // Each frame it checks a slice of the catalogue (a full sweep takes ~3 s), and for objects above the
 // horizon it keeps two exact samples one second apart and interpolates between them.
 const SAMPLE_MS = 1000;
@@ -249,7 +249,7 @@ export class SkyModel {
   // Forget everything (after a time jump or location change).
   reset() { this.above.clear(); this.frames.clear(); this.cursor = 0; this.primed = false; }
 
-  // Full sweep at once, used right after a reset so the sky isn't empty for 3 seconds.
+  // Full sweep at once, used right after a reset so the sky isn’t empty for 3 seconds.
   prime(date, obs) {
     const f = frame(date, obs);
     for (const o of this.objects) {
@@ -284,7 +284,7 @@ export class SkyModel {
       if (l && l.el > -3) this.add(o, t, obs);
     }
 
-    // Advance samples for objects we're tracking; drop ones that have set.
+    // Advance samples for objects we’re tracking; drop ones that have set.
     for (const [id, e] of this.above) {
       if (t < e.t1) continue;
       const next = e.t1 + SAMPLE_MS;

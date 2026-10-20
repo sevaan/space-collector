@@ -1,4 +1,4 @@
-// A fossil under your feet (2026-10-08, design/fossil.html): a daytime easter egg. One of Sevaan's ten skeletons
+// A fossil under your feet (2026-10-08, design/fossil.html): a daytime easter egg. One of Sevaan’s ten skeletons
 // (assets/art/fossils) lies in the soil, a different one each time the app opens, always at the same buried spot for
 // this player. Hold it in the circle for a moment to earn the secret Fossil Hunter patch. Never mentioned anywhere.
 export const FOSSILS = [
@@ -6,11 +6,11 @@ export const FOSSILS = [
   ['5.svg', 'Stegosaurus'], ['6.svg', 'Gallimimus'], ['7.svg', 'Dilophosaurus'], ['8.svg', 'Pachycephalosaurus'], ['9.svg', 'Pteranodon'],
 ].map(([file, name]) => ({ file, name }));
 
-// Today's skeleton: picked once per app open.
+// Today’s skeleton: picked once per app open.
 export const fossil = FOSSILS[Math.floor(Math.random() * FOSSILS.length)];
 
 // The buried spot: a random direction and depth chosen once and kept on this device.
-// Chosen the first time you're in daylight (2026-10-08, Sevaan): behind you, so it's a surprise when you turn round.
+// Chosen the first time you’re in daylight (2026-10-08, Sevaan): behind you, so it’s a surprise when you turn round.
 export let spot = (() => { try { const s = JSON.parse(localStorage.getItem('fossilSpot')); return s && typeof s.az === 'number' ? s : null; } catch { return null; } })();
 export function placeBehind(heading) {
   if (spot) return spot;
@@ -19,7 +19,7 @@ export function placeBehind(heading) {
   return spot;
 }
 
-// Loaded only when it's first needed (daylight), not on every open (2026-10-08 performance).
+// Loaded only when it’s first needed (daylight), not on every open (2026-10-08 performance).
 export const image = new Image();
 image.decoding = 'async';
 export function loadImage() { if (!image.src) image.src = `assets/art/fossils/${fossil.file}`; return image; }

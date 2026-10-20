@@ -1,13 +1,13 @@
 // Backup without accounts (2026-10-16, Sevaan: "do we need account signups?"). In the iPhone app the sighting log and a
-// few progress keys are kept in the player's own iCloud key-value store (native plugin ICloudKV, native/ios/App/App/
+// few progress keys are kept in the player’s own iCloud key-value store (native plugin ICloudKV, native/ios/App/App/
 // ICloudKV.swift), so a reinstall or an iPad gets the same collection back, with no sign-in and nothing sent to us.
 // Android restores app data to a new phone with its own Auto Backup (allowBackup in the manifest). The website keeps
 // everything on the device.
 //   iCloud key 'sc-backup' = { v: 1, s: [sightings], gone: [ids deleted], st: { progress keys }, at }
 // Sync merges both ways and never loses anything earned: sightings are a union by a stable id (time + card + object),
 // minus ids someone deleted; progress keys merge as in the old account sync.
-import { allSightings, addSighting, deleteSighting } from './store.js?v=0.1.891';
-import { plugin, onNative, isNative } from './native.js?v=0.1.891';
+import { allSightings, addSighting, deleteSighting } from './store.js?v=0.1.892';
+import { plugin, onNative, isNative } from './native.js?v=0.1.892';
 
 const KEY = 'sc-backup';
 const STATE_KEYS = ['secrets', 'fossilFound', 'ufoFound', 'missionDeals', 'xpCarry2', 'patchSeen', 'patchDates', 'backEarned', 'rankFloor2'];
@@ -24,7 +24,7 @@ const strip = (s) => { const { key, synced, cloudId, ...rest } = s; return JSON.
 const listeners = new Set();
 export const onBackupChange = (fn) => { listeners.add(fn); return () => listeners.delete(fn); };
 export const backupAvailable = () => !!kv();
-let running = null, again = false, timer = 0, failed = false, offUntil = 0; // offUntil: iCloud said it's off, so don't try every save (iOS playtest 2026-10-19)
+let running = null, again = false, timer = 0, failed = false, offUntil = 0; // offUntil: iCloud said it’s off, so don’t try every save (iOS playtest 2026-10-19)
 
 // Where the collection is kept right now, for Settings (2026-10-16 playtest: the row said "Backed up to your iCloud"
 // even with iCloud off). 'icloud' | 'icloud-off' (signed out, iCloud Drive off, or the last write failed) |

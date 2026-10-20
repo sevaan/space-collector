@@ -1,11 +1,11 @@
-import { isNative, shareFile } from './native.js?v=0.1.891';
+import { isNative, shareFile } from './native.js?v=0.1.892';
 // Share a card as an image (1080 × 1350, Instagram portrait): drawn on a canvas in the card style (art,
 // name, rarity, stats, fact, when you saw it, your observer rank), then handed to the share sheet
 // (navigator.share with a file) or downloaded. Drawing it ourselves avoids DOM-screenshot libraries,
-// which mangle Safari's fonts and blend modes.
-import { conArt } from './con-art.js?v=0.1.891';
-import { CON_BY_ID } from './constellations.js?v=0.1.891';
-import { TIER_INFO } from './rarity.js?v=0.1.891';
+// which mangle Safari’s fonts and blend modes.
+import { conArt } from './con-art.js?v=0.1.892';
+import { CON_BY_ID } from './constellations.js?v=0.1.892';
+import { TIER_INFO } from './rarity.js?v=0.1.892';
 const W = 1080, H = 1350, INK = '#fff2b3', MUTED = '#bdbea9', ORANGE = '#fa8127', NAVY = '#080f1b';
 const loadImg = (src) => new Promise((ok, bad) => { const i = new Image(); i.onload = () => ok(i); i.onerror = bad; i.src = src; });
 const svgImg = async (svg) => { const u = URL.createObjectURL(new Blob([svg], { type: 'image/svg+xml' })); try { return await loadImg(u); } finally { URL.revokeObjectURL(u); } };
@@ -91,7 +91,7 @@ export async function drawShareCard(card, art, info) {
   ctx.letterSpacing = '3px'; ctx.font = '500 25px "SC Label", sans-serif'; ctx.fillStyle = ink;
   ctx.fillText(`✓ ${info.collected}  |  ${info.seen}`, L, fyy);
   ctx.textAlign = 'right'; ctx.letterSpacing = '0px'; ctx.font = '400 28px "SC Display", Impact, sans-serif'; ctx.fillText('SPACE COLLECTOR', Rr, fyy); ctx.textAlign = 'left';
-  // Under the card: the observer's rank.
+  // Under the card: the observer’s rank.
   ctx.letterSpacing = '4px'; ctx.font = '500 26px "SC Label", sans-serif'; ctx.fillStyle = MUTED; ctx.textAlign = 'center';
   ctx.fillText(`OBSERVER RANK · ${info.rank.toUpperCase()}`, W / 2, H - 22); ctx.textAlign = 'left';
   return c;
@@ -114,13 +114,13 @@ export async function shareCardEl(el, c, { title, rank = '', fact = '' }) {
   const img = el.querySelector('.card__art img.card-art-image'), svg = el.querySelector('.card__art svg');
   const art = img ? { src: img.src } : c.natural === 'constellation' ? { svg: conArt(c.data) } : c.con && !c.skyName && CON_BY_ID.get(c.con) ? { svg: conArt(CON_BY_ID.get(c.con).data, c.hip) } : { svg: svg ? new XMLSerializer().serializeToString(svg) : '' };
   const stats = [...el.querySelectorAll('.card__stats > div')].map((d) => [d.querySelector('.card__label')?.textContent ?? '', d.querySelector('b')?.childNodes[0]?.textContent.trim() ?? '', d.querySelector('b small')?.textContent ?? '']);
-  const tier = TIER_INFO[c.tier]?.color ?? '#fa8127'; // not the card's CSS colour, which red night mode overrides (QA 2026-10-08)
+  const tier = TIER_INFO[c.tier]?.color ?? '#fa8127'; // not the card’s CSS colour, which red night mode overrides (QA 2026-10-08)
   const canvas = await drawShareCard(c, art, {
     title, setName: txt('.card__setbar > span:first-child'), tierLabel: txt('.card__tier').replace(/^\W+/, ''), tierColor: tier, stats,
     fact: txt('.card__fact p') || fact, // fleet cards have no fact line on the card
     collected: txt('.card__status > span:nth-child(2)'), seen: txt('.card__seen-count'), rank, // (a comment had swallowed this line until 2026-10-11)
     gold: el.classList.contains('gold-foil'), shiny: el.querySelector('.shiny-tag')?.textContent.split('·')[1]?.trim() ?? null,
   });
-  // Readable file names with the game's name (2026-10-12, Sevaan): "Space Collector - Arcturus.png".
+  // Readable file names with the game’s name (2026-10-12, Sevaan): "Space Collector - Arcturus.png".
   return shareCard(canvas, `Space Collector - ${title.replace(/[\\/:*?"<>|]+/g, '').trim()}.png`, `${title} · Space Collector`);
 }

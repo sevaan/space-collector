@@ -22,19 +22,19 @@
   <link rel="preload" href="fonts/RussoOne-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="fonts/BarlowCondensed-Medium.ttf" as="font" type="font/ttf" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600;650;700;750;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/cards.css?v=0.1.891">
-  <link rel="stylesheet" href="css/app.css?v=0.1.891">
-  <link rel="stylesheet" href="css/icons.css?v=0.1.891">
-  <link rel="stylesheet" href="css/reveal.css?v=0.1.891">
-  <link rel="stylesheet" href="css/ui.css?v=0.1.891">
+  <link rel="stylesheet" href="css/cards.css?v=0.1.892">
+  <link rel="stylesheet" href="css/app.css?v=0.1.892">
+  <link rel="stylesheet" href="css/icons.css?v=0.1.892">
+  <link rel="stylesheet" href="css/reveal.css?v=0.1.892">
+  <link rel="stylesheet" href="css/ui.css?v=0.1.892">
 </head>
 <body>
   <video id="cam" playsinline muted autoplay hidden></video>
   <canvas id="sky" role="img" aria-label="Sky map aligned with your viewing direction"></canvas>
 
   <div id="hud" hidden>
-    <header id="sky-header"><span class="wordmark">SPACE COLLECTOR<span>COLLECT THE NIGHT SKY</span></span><span class="header-buttons"><button id="peak-toggle" class="icon-button" aria-label="Jump to tonight's busiest moment (testing)" aria-pressed="false" title="Testing: busiest moment tonight">⏱</button><button id="night-toggle" class="icon-button" aria-label="Turn on red night mode" aria-pressed="false">☾</button><button id="nav-more" class="icon-button" aria-label="Settings"><span class="ico" data-ico="sliders"></span></button></span></header>
-    <button id="radar" aria-label="What's up now: open the list">
+    <header id="sky-header"><span class="wordmark">SPACE COLLECTOR<span>COLLECT THE NIGHT SKY</span></span><span class="header-buttons"><button id="peak-toggle" class="icon-button" aria-label="Jump to tonight’s busiest moment (testing)" aria-pressed="false" title="Testing: busiest moment tonight">⏱</button><button id="night-toggle" class="icon-button" aria-label="Turn on red night mode" aria-pressed="false">☾</button><button id="nav-more" class="icon-button" aria-label="Settings"><span class="ico" data-ico="sliders"></span></button></span></header>
+    <button id="radar" aria-label="What’s up now: open the list">
       <canvas id="radar-canvas" width="96" height="96"></canvas>
       <span id="radar-new" aria-label="new to collect"><b id="new-count">0</b></span><span id="radar-up" hidden><b id="visible-count">0</b> passing</span>
     </button>
@@ -85,19 +85,19 @@
        lined up by day, hidden by daylight, below the horizon, the fossil, the UFO, a secret. js/main.js syncTicket. -->
   <div id="tk" class="tk-card" hidden aria-live="polite"><span id="tk-k"></span><span id="tk-n"></span><span id="tk-m" hidden></span><div id="tk-act"></div></div>
   <button id="gh-remind" type="button" hidden><span class="ico" data-ico="bell" aria-hidden="true"></span><span id="gh-remind-t">Remind me</span></button>
-  <div id="wake" hidden aria-live="polite"><i class="wk-ring" aria-hidden="true"></i><i class="wk-finger" aria-hidden="true"></i><span>Tap to wake the sky<small>Motion pauses while you're away</small></span></div>
+  <div id="wake" hidden aria-live="polite"><i class="wk-ring" aria-hidden="true"></i><i class="wk-finger" aria-hidden="true"></i><span>Tap to wake the sky<small>Motion pauses while you’re away</small></span></div>
   <div id="until-dark" class="tk-card" hidden aria-live="off"><svg class="ud-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"></path></svg><span class="ud-text"><b id="ud-time"></b><span id="ud-at"></span></span><button id="ud-bell" type="button" aria-label="Remind me"><span class="ico" data-ico="bell" aria-hidden="true"></span></button></div>
   <div class="set-sheet" id="ud-sheet" hidden><div class="set-sheet-card"><div class="set-grab"></div><h3>Remind me tonight</h3><div id="ud-opts"></div>
     <button class="d-cta o" id="ud-set" type="button"><span>Set reminder</span><span></span></button><button class="set-link" id="ud-cancel" type="button" hidden>Cancel the reminder</button></div></div>
   <button id="secret-cta" type="button" hidden></button>
-  <button id="ufo-cta" type="button" hidden>Tap to collect<small>Quick, it won't stay</small></button>
+  <button id="ufo-cta" type="button" hidden>Tap to collect<small>Quick, it won’t stay</small></button>
   <div id="toasts" aria-live="polite"></div>
   <div id="version"></div>
 
   <section id="start" class="overlay booting">
     <!-- Loader (2026-10-06): shown until the app knows whether to open the sky or the welcome card. -->
     <div class="wc-loader" role="status" aria-label="Loading the sky">
-      <!-- The loader is the sky's target circle (2026-10-07, Sevaan): same size, ticks and spot as js/sky.js drawReticle,
+      <!-- The loader is the sky’s target circle (2026-10-07, Sevaan): same size, ticks and spot as js/sky.js drawReticle,
            so the app opens with the circle already where it will be. Built here, before any module loads. -->
       <svg id="ld-ret" aria-hidden="true"></svg>
       <script>
@@ -154,10 +154,10 @@
     <div class="ob-lock" id="ob-lock" aria-live="polite"></div>
     <div class="ob-deck" id="ob-deck"></div>
     <div class="ob-done" id="ob-done" hidden>
-      <!-- The tour's last page (2026-10-08, design/tonight-weather.html B): tonight as a timeline, by weather. -->
+      <!-- The tour’s last page (2026-10-08, design/tonight-weather.html B): tonight as a timeline, by weather. -->
       <div class="od-sky" id="od-sky" aria-hidden="true"></div>
       <button class="pill x-close od-x" id="od-close" type="button" aria-label="Close">✕</button>
-      <div class="od-head"><span class="eyebrow" id="od-eyebrow">You're set</span>
+      <div class="od-head"><span class="eyebrow" id="od-eyebrow">You’re set</span>
       <h2 class="d-title small" id="ob-done-title">Tonight<br>looks good.</h2>
       <span class="od-sub" id="od-sub"></span></div>
       <div class="od-body" id="od-body"></div>
@@ -198,7 +198,7 @@
       <p class="hint small" id="next-pass-info"></p>
       <div id="visible-list"></div>
     </div>
-    <div id="vtab-tonight" hidden><p class="hint" id="tonight-summary">Working out tonight's sky…</p><div id="tonight-chart"></div><div id="tonight-list"></div><p class="tl-nextclear" id="tonight-next" hidden></p></div>
+    <div id="vtab-tonight" hidden><p class="hint" id="tonight-summary">Working out tonight’s sky…</p><div id="tonight-chart"></div><div id="tonight-list"></div><p class="tl-nextclear" id="tonight-next" hidden></p></div>
     </section>
 
   <section id="debug" class="overlay panel set-panel" role="dialog" aria-modal="true" aria-label="Settings" hidden>
@@ -219,8 +219,8 @@
         <input type="range" id="set-sky-range" class="ui-range" step="0.05" aria-label="How dark is your sky">
         <div class="set-sl-ends"><span>Bright city</span><span>Binoculars</span></div><small class="set-sl-note" id="sky-limit-info"></small></div>
       <label class="set-row"><span class="set-ic" aria-hidden="true" style="background:#4a1414"><span class="ico" data-ico="moon"></span></span><span class="set-main">Red night mode<small>Saves your night vision</small></span><input type="checkbox" class="set-tog" id="chk-night"></label>
-      <label class="set-row" id="row-push" hidden><span class="set-ic" aria-hidden="true" style="background:#5a2a1a"><span class="ico" data-ico="moon"></span></span><span class="set-main">Look up<small>Once a day, at the best time this evening. Only when it's clear</small></span><input type="checkbox" class="set-tog" id="chk-push"></label>
-      <label class="set-row" id="row-catch" hidden><span class="set-ic" aria-hidden="true" style="background:#4a3a12"><span class="ico" data-ico="bell"></span></span><span class="set-main">Catch of the day<small>Five minutes before tonight's headliner</small></span><input type="checkbox" class="set-tog" id="chk-catch"></label>
+      <label class="set-row" id="row-push" hidden><span class="set-ic" aria-hidden="true" style="background:#5a2a1a"><span class="ico" data-ico="moon"></span></span><span class="set-main">Look up<small>Once a day, at the best time this evening. Only when it’s clear</small></span><input type="checkbox" class="set-tog" id="chk-push"></label>
+      <label class="set-row" id="row-catch" hidden><span class="set-ic" aria-hidden="true" style="background:#4a3a12"><span class="ico" data-ico="bell"></span></span><span class="set-main">Catch of the day<small>Five minutes before tonight’s headliner</small></span><input type="checkbox" class="set-tog" id="chk-catch"></label>
       <label class="set-row" id="row-rare" hidden><span class="set-ic" aria-hidden="true" style="background:#123a5a"><span class="ico" data-ico="stars"></span></span><span class="set-main">Rare alerts <span class="plus-tag">PLUS</span><small>A ping when a new Rare card passes on a clear night</small></span><input type="checkbox" class="set-tog" id="chk-rare"></label>
     </div>
 
@@ -228,7 +228,7 @@
       <label class="set-row"><span class="set-ic" aria-hidden="true" style="background:#22265a"><span class="ico" data-ico="stars"></span></span><span class="set-main">Stars, planets &amp; Moon</span><input type="checkbox" class="set-tog" id="chk-stars" checked></label>
       <label class="set-row"><span class="set-ic" aria-hidden="true" style="background:#22265a"><span class="ico" data-ico="constellation"></span></span><span class="set-main">Constellation lines</span><input type="checkbox" class="set-tog" id="chk-lines"></label>
       <label class="set-row"><span class="set-ic" aria-hidden="true" style="background:#1d4a2a"><span class="ico" data-ico="tree"></span></span><span class="set-main">Tree line on the horizon</span><input type="checkbox" class="set-tog" id="chk-landscape"></label>
-      <label class="set-row"><span class="set-ic" aria-hidden="true" style="background:#2a2a14"><span class="ico" data-ico="cloud-part"></span></span><span class="set-main">Earth's shadow<small>Where satellites go dark, at dusk and dawn</small></span><input type="checkbox" class="set-tog" id="chk-shadow"></label>
+      <label class="set-row"><span class="set-ic" aria-hidden="true" style="background:#2a2a14"><span class="ico" data-ico="cloud-part"></span></span><span class="set-main">Earth’s shadow<small>Where satellites go dark, at dusk and dawn</small></span><input type="checkbox" class="set-tog" id="chk-shadow"></label>
       <label class="set-row"><span class="set-ic" aria-hidden="true" style="background:#22265a"><span class="ico" data-ico="stars"></span></span><span class="set-main">Satellites by day<small>The ones daylight hides, not collectable</small></span><input type="checkbox" class="set-tog" id="chk-daysats"></label>
       
     </div>
@@ -265,7 +265,7 @@
       <div class="row wrap"><button class="pill accent" id="btn-next-pass">Jump to next visible pass</button><button class="pill" id="btn-ufo">Summon the UFO</button><button class="pill" id="btn-santa">Summon Santa</button><button class="pill" id="btn-meteor">Shooting star</button><button class="pill" id="btn-toasts">Sample notifications</button><button class="pill" id="btn-cam">Camera view (prototype)</button><button class="pill" id="btn-fov-">Camera fit −</button><button class="pill" id="btn-fov+">Camera fit +</button></div>
       <label class="set-row"><span class="set-main">Plus (testing)<small>Turns on every Plus perk on this device</small></span><input type="checkbox" class="set-tog" id="chk-plus-test"></label>
       <label class="set-row"><span class="set-main">RevenueCat Test Store<small>Simulator and Xcode builds only: TestFlight and the App Store close with it. Restart after changing.</small></span><input type="checkbox" class="set-tog" id="chk-rc-test"></label>
-      <label class="set-row"><span class="set-main">Show objects that aren't visible</span><input type="checkbox" class="set-tog" id="chk-dim"></label>
+      <label class="set-row"><span class="set-main">Show objects that aren’t visible</span><input type="checkbox" class="set-tog" id="chk-dim"></label>
       <label class="set-row"><span class="set-main">Allow capturing anything</span><input type="checkbox" class="set-tog" id="chk-any"></label>
       <pre id="debug-info"></pre>
     </div></div>
@@ -300,7 +300,7 @@
     </div></div>
     <div class="set-sheet" id="set-hl-sheet" hidden><div class="set-sheet-card"><div class="set-grab"></div>
       <h3>What the circle highlights</h3>
-      <p class="hint">Highlighted things get the inner ring (and the snap, if it's on). The rest just brighten. Everything new has a Collect button.</p>
+      <p class="hint">Highlighted things get the inner ring (and the snap, if it’s on). The rest just brighten. Everything new has a Collect button.</p>
       <div class="set-prev"><span class="set-prev-ring"></span><span>Collect</span></div>
       <div class="set-chips">
         <label class="set-chip"><input type="checkbox" data-hl="satellite"><span>Satellites</span></label>
@@ -313,7 +313,7 @@
     </div></div>
   </section>
 
-  <script type="module" src="js/main.js?v=0.1.891"></script>
+  <script type="module" src="js/main.js?v=0.1.892"></script>
 <div id="rotate" role="status"><b>Turn your phone upright</b><span>Space Collector is made for portrait.</span></div>
 </body>
 </html>

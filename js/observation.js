@@ -34,7 +34,7 @@ export function canCapture({ visible = false, aligned = false, practice = false,
 }
 
 // An observing night runs from local noon to the next local noon, using the longitude where the
-// sighting was made (local solar time), so it doesn't depend on the phone's time zone.
+// sighting was made (local solar time), so it doesn’t depend on the phone’s time zone.
 export function nightKey(time, lon = 0) {
   return Math.floor((Number(time) + (Number(lon) || 0) / 15 * 3600e3 - 12 * 3600e3) / 86400e3);
 }

@@ -1,5 +1,5 @@
-// Sky events: the main annual meteor showers, each a time-limited event. Catch anything during a shower's
-// peak nights to earn that year's badge (Logbook). Peak dates are the usual annual ones (International
+// Sky events: the main annual meteor showers, each a time-limited event. Catch anything during a shower’s
+// peak nights to earn that year’s badge (Logbook). Peak dates are the usual annual ones (International
 // Meteor Organization calendar); the window runs from the evening before the peak to the morning after.
 // No DOM.
 const SHOWERS = [
@@ -8,7 +8,7 @@ const SHOWERS = [
   { id: 'etaaquariids', name: 'Eta Aquariids', month: 5, day: 6, rate: 'up to 50 an hour, best before dawn' },
   { id: 'perseids', name: 'Perseids', month: 8, day: 12, rate: 'up to 100 an hour' },
   { id: 'draconids', name: 'Draconids', month: 10, day: 8, rate: 'usually a few an hour, best in the evening' },
-  { id: 'orionids', name: 'Orionids', month: 10, day: 21, rate: 'up to 20 an hour, from Halley\'s Comet' },
+  { id: 'orionids', name: 'Orionids', month: 10, day: 21, rate: 'up to 20 an hour, from Halley’s Comet' },
   { id: 'leonids', name: 'Leonids', month: 11, day: 17, rate: 'up to 15 an hour' },
   { id: 'geminids', name: 'Geminids', month: 12, day: 14, rate: 'up to 150 an hour, the best of the year' },
 ];

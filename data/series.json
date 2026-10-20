@@ -1,5 +1,5 @@
 {
- "_about": "Researched facts for satellite series (mostly Kosmos), keyed by series, with the NORAD ids that belong to each. Membership and facts come from each series' source page (Gunter's Space Page, checked 2026-09-30). Keep every fact true. A series can list several true facts ('facts'); each satellite shows one, chosen by its NORAD id.",
+ "_about": "Researched facts for satellite series (mostly Kosmos), keyed by series, with the NORAD ids that belong to each. Membership and facts come from each series' source page (Gunter’s Space Page, checked 2026-09-30). Keep every fact true. A series can list several true facts ('facts'); each satellite shows one, chosen by its NORAD id.",
  "series": {
   "strela-1": {
    "name": "Strela-1",
@@ -76,17 +76,17 @@
   },
   "is-a": {
    "name": "IS-A",
-   "fact": "One of the Soviet Union's **anti-satellite interceptors**. It was built to match a target satellite's orbit, close in and destroy it.",
+   "fact": "One of the Soviet Union’s **anti-satellite interceptors**. It was built to match a target satellite’s orbit, close in and destroy it.",
    "source": "https://space.skyrocket.de/doc_sdat/is-a.htm"
   },
   "i2p": {
    "name": "I2P",
-   "fact": "From the Soviet Union's first **anti-satellite interceptor** tests, in 1968 to 1971. The interceptors were built to catch up with a target satellite and destroy it.",
+   "fact": "From the Soviet Union’s first **anti-satellite interceptor** tests, in 1968 to 1971. The interceptors were built to catch up with a target satellite and destroy it.",
    "source": "https://space.skyrocket.de/doc_sdat/i2p.htm"
   },
   "geo-ik": {
    "name": "Geo-IK (Musson)",
-   "fact": "A Geo-IK **geodesy** satellite, used to pin down exact positions on Earth's surface for accurate maps and to study the shape of the ocean surface.",
+   "fact": "A Geo-IK **geodesy** satellite, used to pin down exact positions on Earth’s surface for accurate maps and to study the shape of the ocean surface.",
    "source": "https://space.skyrocket.de/doc_sdat/geo-ik.htm"
   },
   "sfera": {
@@ -116,7 +116,7 @@
   },
   "lotos-s": {
    "name": "Lotos-S",
-   "fact": "A Lotos-S **eavesdropping** satellite, part of Russia's newer Liana system, which replaced the Tselina-2 satellites.",
+   "fact": "A Lotos-S **eavesdropping** satellite, part of Russia’s newer Liana system, which replaced the Tselina-2 satellites.",
    "source": "https://space.skyrocket.de/doc_sdat/lotos-s.htm"
   },
   "persona": {

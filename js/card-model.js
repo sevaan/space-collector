@@ -1,25 +1,25 @@
 // Shared catalogue → card mapping. Fleets (Starlink, OneWeb, Qianfan, Kuiper, Globalstar, Orbcomm, Iridium) are one fleet
 // card each; every launch in the fleet is a stamp on that card. Other objects are one card each.
-import { assignSets } from './sets.js?v=0.1.891';
-import { tierFor } from './rarity.js?v=0.1.891';
-import { fallAt, bumpTier } from './last-chance.js?v=0.1.891';
-import { NATURAL } from './natural.js?v=0.1.891';
+import { assignSets } from './sets.js?v=0.1.892';
+import { tierFor } from './rarity.js?v=0.1.892';
+import { fallAt, bumpTier } from './last-chance.js?v=0.1.892';
+import { NATURAL } from './natural.js?v=0.1.892';
 
-// Fleet members carry their launch key in the catalogue (`card` = 'STARLINK:2024-012'). That's the
+// Fleet members carry their launch key in the catalogue (`card` = 'STARLINK:2024-012'). That’s the
 // stamp; the card itself is the fleet ('STARLINK').
 export const cardKeyFor = (o) => String(o.family ?? o.card ?? o.key ?? o.id);
-// The Moon's phases are stamps on the Moon card, like a fleet's launches (2026-10-17, Sevaan): eight phases, the phase
+// The Moon’s phases are stamps on the Moon card, like a fleet’s launches (2026-10-17, Sevaan): eight phases, the phase
 // at the moment you saw it. A mean synodic month from a known new Moon is plenty for eighths (±half a day).
 export const MOON_PHASES = ['New Moon', 'Waxing crescent', 'First quarter', 'Waxing gibbous', 'Full Moon', 'Waning gibbous', 'Last quarter', 'Waning crescent'];
 export function moonPhaseAt(t) { const f = ((((t - Date.UTC(2000, 0, 6, 18, 14)) / 86400e3 / 29.530588853) % 1) + 1) % 1; return Math.floor(f * 8 + 0.5) % 8; }
 export const moonPhaseOf = (stampKey) => { const m = /^MOON:(\d)$/.exec(stampKey ?? ''); return m ? Number(m[1]) : null; };
-// t: the sighting's time (the Moon's stamp depends on when you saw it; fleets' don't).
+// t: the sighting’s time (the Moon’s stamp depends on when you saw it; fleets' don’t).
 export const stampKeyFor = (o, t = null) => (o.family && o.card ? String(o.card) : o.type === 'moon' && o.natural && t != null ? `MOON:${moonPhaseAt(t)}` : null);
 
 // Sightings saved before fleet cards (up to v0.1.55) have cardKey = the launch key. Read them as
-// fleet card + stamp without rewriting what's stored.
+// fleet card + stamp without rewriting what’s stored.
 // Satellites that joined a fleet later (Globalstar, Orbcomm, Iridium: 2026-10-08) have sightings saved as their own
-// card (cardKey = the object id). buildCards records every fleet member's launch key here so those read as
+// card (cardKey = the object id). buildCards records every fleet member’s launch key here so those read as
 // fleet card + stamp too.
 const fleetOf = new Map();
 export function sightingKeys(s) {
@@ -98,7 +98,7 @@ export function buildCards(cat) {
       for (const c of l.stages) { c.reunion = k; c.partners = l.payloads.map((x) => x.key); }
       for (const c of l.payloads) { c.reunion = k; c.partners = l.stages.map((x) => x.key); }
     } }
-  // The Moon, planets and bright stars aren't in the orbital catalogue but are cards too.
+  // The Moon, planets and bright stars aren’t in the orbital catalogue but are cards too.
   for (const n of NATURAL) cards.push({ ...n });
   assignSets(cards);
   return cards;

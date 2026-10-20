@@ -1,5 +1,5 @@
 // Card art in the flat NASA-manual style: navy space, white stars, a blue Earth limb and the object
-// drawn in white with one accent in the card's set colour. Deterministic per NORAD id.
+// drawn in white with one accent in the card’s set colour. Deterministic per NORAD id.
 // silhouette: true draws an outline only (uncaught cards).
 
 const NAVY = '#0b2632';

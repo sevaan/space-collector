@@ -1,7 +1,7 @@
 // Last chance cards (2026-10-14, Sevaan; design/fun-and-learning.html): satellites low enough to be falling. The
-// catalogue's orbit carries how fast it's speeding up (MEAN_MOTION_DOT, revs/day² ÷ 2); at that rate, when does it
+// catalogue’s orbit carries how fast it’s speeding up (MEAN_MOTION_DOT, revs/day² ÷ 2); at that rate, when does it
 // reach ~16.4 laps a day (about 150 km, where it burns up)? A straight-line guess: real decay speeds up, so the true
-// date is usually a little sooner. Fleet members (Starlink…) are left out: they're stamps, not cards.
+// date is usually a little sooner. Fleet members (Starlink…) are left out: they’re stamps, not cards.
 const MU = 398600.4418, RE = 6378.137;
 export function fallAt(o) {
   if (!o?.el || o.family) return null;

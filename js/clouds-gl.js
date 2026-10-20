@@ -1,7 +1,7 @@
-// Clouds as a real layer in the sky (2026-10-11, Sevaan: the soft ovals "don't look good, need higher fidelity").
-// A WebGL shader casts each screen pixel's view ray up to a flat cloud deck overhead and reads warped fractal noise
+// Clouds as a real layer in the sky (2026-10-11, Sevaan: the soft ovals "don’t look good, need higher fidelity").
+// A WebGL shader casts each screen pixel’s view ray up to a flat cloud deck overhead and reads warped fractal noise
 // there, so clouds shrink and crowd toward the horizon with true perspective, drift with the wind, cover as much
-// of the sky as the forecast says, and are lit from the Sun's side: bright edges facing it, grey-blue bellies away.
+// of the sky as the forecast says, and are lit from the Sun’s side: bright edges facing it, grey-blue bellies away.
 // Same camera maths as js/milkyway-gl.js. js/sky.js draws the result over the sky with a normal blend.
 
 const VS = `attribute vec2 p; void main() { gl_Position = vec4(p, 0.0, 1.0); }`;
@@ -15,7 +15,7 @@ float noise(vec2 p) {
   vec2 i = floor(p), u = fract(p); u = u * u * (3.0 - 2.0 * u);
   return mix(mix(hash(i), hash(i + vec2(1, 0)), u.x), mix(hash(i + vec2(0, 1)), hash(i + vec2(1, 1)), u.x), u.y);
 }
-// fractal noise; octaves finer than a pixel fade out (lod), so the far deck near the horizon doesn't shimmer.
+// fractal noise; octaves finer than a pixel fade out (lod), so the far deck near the horizon doesn’t shimmer.
 // A dropped octave becomes its average (0.5), so brightness holds as detail goes.
 float fbm(vec2 p, float lod) {
   float t = 0.0, a = 0.5, fr = 1.0; mat2 m = mat2(1.6, 1.2, -1.2, 1.6);

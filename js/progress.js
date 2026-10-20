@@ -1,7 +1,7 @@
-// Player progress from the sighting log: XP and observer rank, tonight's three missions, a weekly streak and
-// achievements. Everything is derived from the saved sightings (nothing extra is stored), so it can't drift.
+// Player progress from the sighting log: XP and observer rank, tonight’s three missions, a weekly streak and
+// achievements. Everything is derived from the saved sightings (nothing extra is stored), so it can’t drift.
 // info(cardKey) -> { tier, type, owner, launch, natural, con } | null. No DOM.
-import { nightKey } from './observation.js?v=0.1.891';
+import { nightKey } from './observation.js?v=0.1.892';
 
 // A longer climb (2026-10-12, playtest room: three ranks on night 1, Mission Control in about two weeks), with two
 // prestige ranks past Mission Control. Nobody drops a rank they had on the old curve (rankFloor below).
@@ -52,8 +52,8 @@ const RETIRED = [
   { id: 'three', text: 'Collect 3 new cards', done: (n) => n.filter((s) => s.first).length >= 3 },
   { id: 'five', text: 'Log 5 sightings', done: (n) => n.length >= 5 },
 ];
-// Tonight's sky challenge (playtest 2026-10-09, #22): a fourth, bonus goal for nights when nothing new is overhead.
-// All of them can be done with cards you already own. +50 XP; doesn't count toward the mission patches.
+// Tonight’s sky challenge (playtest 2026-10-09, #22): a fourth, bonus goal for nights when nothing new is overhead.
+// All of them can be done with cards you already own. +50 XP; doesn’t count toward the mission patches.
 export const CHALLENGES = [
   { id: 'revisit3', text: 'See 3 cards you own again', done: (n) => n.filter((s) => !s.first).length >= 3 },
   { id: 'pair10', text: 'Catch two satellites in 10 minutes', done: (n) => { const t = n.filter((s) => !s.info?.natural).map((s) => s.time); return t.some((x, i) => i && x - t[i - 1] <= 600000); } },
@@ -63,7 +63,7 @@ export const CHALLENGES = [
 ];
 export function challengeFor(night) { let h = 7; for (const c of String(night)) h = Math.imul(h ^ c.charCodeAt(0), 2246822519) >>> 0; return CHALLENGES[h % CHALLENGES.length]; }
 
-// A player's first night gets a fixed starter set a beginner can finish (playtest 2026-10-09: the random three were
+// A player’s first night gets a fixed starter set a beginner can finish (playtest 2026-10-09: the random three were
 // debris, pre-1980 and a rocket stage, and the first catch left them 0 / 3).
 export const STARTER = [
   { id: 'firstcard', text: 'Collect your first card', done: (n) => n.some((s) => s.first) },
@@ -83,7 +83,7 @@ export function missionsFor(night, possible = null) {
   while (pick.length < 3) pick.push(pool.splice(next() % pool.length, 1)[0]);
   return pick;
 }
-// The missions a night actually had: the starter set on a first night, else a stored deal (main.js saves tonight's
+// The missions a night actually had: the starter set on a first night, else a stored deal (main.js saves tonight’s
 // once, from the sky), else the plain draw. Everywhere that shows or scores missions goes through this.
 function missionsOf(night, { first = false, deals = null } = {}) {
   if (first) return STARTER;
@@ -95,7 +95,7 @@ function missionsOf(night, { first = false, deals = null } = {}) {
 // Stored deals (see main.js dealMissions): { [nightKey]: [missionId × 3] }.
 export function readDeals() { try { return JSON.parse(localStorage.getItem('missionDeals')) || {}; } catch { return {}; } }
 
-// The one-time carry that keeps an existing player's rank through the flatter XP (see TIER_XP): the XP needed to
+// The one-time carry that keeps an existing player’s rank through the flatter XP (see TIER_XP): the XP needed to
 // reach the rank the old numbers gave them. Worked out once, the first time the new numbers run, and kept.
 export function xpCarry(sightings, info, opts = {}) {
   try { const v = localStorage.getItem('xpCarry2'); if (v != null) return Number(v) || 0; } catch {} // v2: after the difficulty re-tier (2026-10-10)
@@ -154,7 +154,7 @@ export const ACHIEVEMENTS = [
   { id: 'sputnik', name: 'Sputnik Era', text: 'Catch something launched before 1960', icon: '58', done: (a) => a.oldest != null && a.oldest < 1960 },
   { id: 'coldwar', name: 'Cold War', text: '10 objects launched before 1991', icon: '≤90', done: (a) => a.pre1991 >= 10 },
   { id: 'decades', name: 'Time Traveller', text: 'Objects from 6 different decades', icon: '6×10', done: (a) => a.decades.size >= 6 },
-  { id: 'headliners', name: 'Top of the Bill', text: 'Catch 10 of tonight\'s headliners', icon: 'TOP', done: (a) => (a.headliners ?? 0) >= 10 },
+  { id: 'headliners', name: 'Top of the Bill', text: 'Catch 10 of tonight’s headliners', icon: 'TOP', done: (a) => (a.headliners ?? 0) >= 10 },
   { id: 'witness', name: 'Witness', text: 'Collect 3 last-chance satellites before they fall', icon: 'LC', done: (a) => (a.witness ?? 0) >= 3 },
   // Reunions (2026-10-17): own a rocket stage and the satellite it carried (card-model.js partners).
   { id: 'reunion', name: 'Reunited', text: 'Collect a rocket stage and the satellite it carried', icon: 'RU', done: (a) => (a.reunions ?? 0) >= 1 },
@@ -174,7 +174,7 @@ export const ACHIEVEMENTS = [
   { id: 'stars10', name: 'Astronomer', text: 'Collect 10 constellation stars', icon: '✶10', done: (a) => a.stars >= 10 },
   { id: 'deep3', name: 'Deep Sky', text: 'Collect 3 star clusters, nebulae or galaxies', icon: '◌3', done: (a) => (a.deep ?? 0) >= 3 }, // 2026-10-11
   { id: 'deep10', name: 'Island Universes', text: 'Collect 10 star clusters, nebulae or galaxies', icon: '◌10', done: (a) => (a.deep ?? 0) >= 10 },
-  // Star Map ('Complete a constellation') retired 2026-10-10: it always landed with that constellation's own patch.
+  // Star Map ('Complete a constellation') retired 2026-10-10: it always landed with that constellation’s own patch.
   { id: 'cons5', name: 'Cartographer', text: 'Complete 5 constellations', icon: '✶5', done: (a) => a.cons >= 5 },
   { id: 'zodiac', name: 'Zodiac', text: 'Complete all 12 zodiac constellations', icon: 'XII', done: (a) => a.zodiac >= 12 },
   { id: 'cons25', name: 'Atlas', text: 'Complete 18 constellations', icon: '✶18', done: (a) => a.cons >= 18 }, // any 18 of the 88 (2026-10-11); it was all 18 when there were only 18 (playtest 2026-10-09), and 25 before that; id kept so earned dates stay
@@ -230,8 +230,8 @@ const PROG = {
 // your first night out, not Monday to Sunday (playtest room 2026-10-11: Sunday then Monday read "2-week streak 🔥" on
 // day 2, which felt unearned).
 const dayNum = (time) => { const d = new Date(time); d.setHours(12, 0, 0, 0); return Math.round(d.getTime() / 86400e3); };
-// Cloudy weeks don't break a streak (2026-10-17, Sevaan: "just don't count cloudy days towards streaks"). Explore saves
-// each night's forecast as it learns it (localStorage skyNights: { dayNum: 1 cloudy | 0 clear }, main.js recordSkyNights);
+// Cloudy weeks don’t break a streak (2026-10-17, Sevaan: "just don’t count cloudy days towards streaks"). Explore saves
+// each night’s forecast as it learns it (localStorage skyNights: { dayNum: 1 cloudy | 0 clear }, main.js recordSkyNights);
 // a week with no sighting and 4 or more cloudy nights is skipped: it neither adds to the streak nor ends it.
 function cloudyDays() { try { return JSON.parse(localStorage.getItem('skyNights') || '{}'); } catch { return {}; } }
 export function streaks(sightings, now = Date.now(), cloudy = cloudyDays()) {
@@ -242,7 +242,7 @@ export function streaks(sightings, now = Date.now(), cloudy = cloudyDays()) {
   let best = 0, run = 0;
   for (let w = 0; w <= cur; w++) {
     if (seen.has(w)) { run++; best = Math.max(best, run); }
-    else if (w === cur || cloudyWeek(w)) continue; // this week isn't over yet; a cloudy week is skipped
+    else if (w === cur || cloudyWeek(w)) continue; // this week isn’t over yet; a cloudy week is skipped
     else run = 0;
   }
   return { current: run, best, thisWeek: seen.has(cur) };
@@ -257,7 +257,7 @@ export function progress(sightings, info, { constellations = [], albums = [], no
     oldest: null, pre1991: 0, decades: new Set(), brandNew: false, race: false, wanderers: 0, naturals: new Set(), stars: 0, cons: 0, zodiac: 0,
     owners: new Set(), ownerCount: {}, fleet: {}, maxEl: -90, minSatEl: null, quadrants: new Set(), faintest: null, brightestSat: null,
     closest: null, farthest: null, maxNight: 0, months: new Set(), spanDays: 0, maxNightsOnCard: 0, goldCards: 0, spreadKm: 0, missionsDone: 0, fullHouse: false };
-  // (Legacy XP reads tier0, each object's tier before the 2026-10-10 difficulty re-tier.)
+  // (Legacy XP reads tier0, each object’s tier before the 2026-10-10 difficulty re-tier.)
   const firsts = [], nightsOnCard = new Map(), fleetStamps = new Map(), places = [], placeSeen = new Set(), reunionRoles = new Map();
   for (const s of list) {
     const i = info(s.cardKey), night = nightKey(s.time, s.lon ?? 0), first = !seenCard.has(s.cardKey), nk = `${s.cardKey}|${night}`;
@@ -276,7 +276,7 @@ export function progress(sightings, info, { constellations = [], albums = [], no
         if (y) { if (y < 1991) a.pre1991++; a.decades.add(Math.floor(y / 10)); }
         if (s.time - Date.parse(i.launch) <= 30 * 86400e3 && s.time >= Date.parse(i.launch)) a.brandNew = true;
       }
-      if (s.headliner) { xp += 25; a.headliners = (a.headliners ?? 0) + 1; } // tonight's headliner (main.js headliner)
+      if (s.headliner) { xp += 25; a.headliners = (a.headliners ?? 0) + 1; } // tonight’s headliner (main.js headliner)
       if (s.lastChance) a.witness = (a.witness ?? 0) + 1; // collected while it was falling (js/last-chance.js)
       if (i?.reunion) { const r = reunionRoles.get(i.reunion) ?? reunionRoles.set(i.reunion, new Set()).get(i.reunion); r.add(i.role); }
     }
@@ -309,7 +309,7 @@ export function progress(sightings, info, { constellations = [], albums = [], no
     const [la1, lo1] = places[x], [la2, lo2] = places[y], dLat = (la2 - la1) * 111.2, dLon = (lo2 - lo1) * 111.2 * Math.cos(((la1 + la2) / 2) * Math.PI / 180);
     a.spreadKm = Math.max(a.spreadKm, Math.hypot(dLat, dLon));
   }
-  // Missions: every completed mission on any night counts once for XP; tonight's three are shown.
+  // Missions: every completed mission on any night counts once for XP; tonight’s three are shown.
   const firstNight = nights.keys().next().value;
   for (const [night, n] of nights) {
     const done = missionsOf(night, { first: night === firstNight, deals }).filter((m) => m.done(n, n[0].time)).length;

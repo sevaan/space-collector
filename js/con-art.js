@@ -1,15 +1,15 @@
 // Constellation charts drawn from the real star positions (data/constellations.json) in the cards' poster
-// style: navy sky, cream stars sized by brightness, thin cream lines, and the card's own star glowing
-// orange. figure: an illustration of the constellation's figure (assets/art/con, same framing) shown
+// style: navy sky, cream stars sized by brightness, thin cream lines, and the card’s own star glowing
+// orange. figure: an illustration of the constellation’s figure (assets/art/con, same framing) shown
 // behind the stars. Used for the constellation-star cards and the constellation cards. Returns an SVG string.
 const RAD = Math.PI / 180;
 const vec = (ra, dec) => [Math.cos(dec * RAD) * Math.cos(ra * RAD), Math.cos(dec * RAD) * Math.sin(ra * RAD), Math.sin(dec * RAD)];
 
 export function conArt(con, highlightHip = null, { w = 360, h = 240, figure = null, bare = false, lit = null, mark = null, focus = null } = {}) {
-  // focus (2026-10-14, Sevaan: design/con-focus.html B): 0..1 share of the constellation's stars you own; the figure
+  // focus (2026-10-14, Sevaan: design/con-focus.html B): 0..1 share of the constellation’s stars you own; the figure
   // starts faint and blurred and sharpens as you collect them, crisp at 1.
   // mark (2026-10-11): a deep-sky object { ra, dec, kind } drawn as a soft glow, ringed in orange, among its constellation.
-  // lit (2026-10-07): a Set of HIP numbers you've found; those shine, the rest are faint dots still to collect.
+  // lit (2026-10-07): a Set of HIP numbers you’ve found; those shine, the rest are faint dots still to collect.
   const stars = con.stars;
   // Centre of the figure (average direction), then a gnomonic projection with east on the left, as the sky looks.
   const c = stars.reduce((a, s) => { const v = vec(s.ra, s.dec); return [a[0] + v[0], a[1] + v[1], a[2] + v[2]]; }, [0, 0, 0]);
@@ -27,8 +27,8 @@ export function conArt(con, highlightHip = null, { w = 360, h = 240, figure = nu
   let seed = (con.id.charCodeAt(0) * 131 + con.id.length * 17) % 2147483647 || 7;
   const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
   let bg = '', spark = '';
-  // Sparkles (2026-10-07, Sevaan: the chart's stars should twinkle like the painted cards' do): the same cross-glint
-  // as js/card.js artStars, on a few background specks only (not the figure's stars). Full cards only (css/cards.css).
+  // Sparkles (2026-10-07, Sevaan: the chart’s stars should twinkle like the painted cards' do): the same cross-glint
+  // as js/card.js artStars, on a few background specks only (not the figure’s stars). Full cards only (css/cards.css).
   const glint = (x, y, s, i) => `<g class="con-spark" style="--d:${((i * 37 + seed % 50) % 50 / 10).toFixed(1)}s;--t:${(2.6 + (i * 13 % 20) / 10).toFixed(1)}s" transform="translate(${(+x).toFixed(1)} ${(+y).toFixed(1)})"><g class="con-spark__g"><circle r="${(s * 0.32).toFixed(2)}" fill="url(#csk)"/><path d="M${-s} 0H${s}M0 ${-s}V${s}" stroke="#fff6d2" stroke-width=".7" stroke-linecap="round"/></g></g>`;
   // About a third of them twinkle on full cards (css/cards.css .con-tw; gallery tiles stay still).
   for (let i = 0; i < 70; i++) {
@@ -61,7 +61,7 @@ export function conArt(con, highlightHip = null, { w = 360, h = 240, figure = nu
 }
 
 // A comet (2026-10-11): bright head, soft coma, a curved dust tail and a straight blue ion tail, over a starfield.
-// Same chart style as the constellations; seeded by the comet's key so each one looks a little different.
+// Same chart style as the constellations; seeded by the comet’s key so each one looks a little different.
 export function cometArt(key = 'comet', { w = 360, h = 240 } = {}) {
   let seed = [...key].reduce((a, c) => (a * 31 + c.charCodeAt(0)) % 2147483647, 7) || 7;
   const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;

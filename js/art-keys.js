@@ -1,12 +1,12 @@
-import { ART_FILES } from './art-files.js?v=0.1.891';
-import { debrisOf } from './lore.js?v=0.1.891';
-// Which illustration each card uses. The illustrator's brief (scripts/art-brief.py) is generated from this
+import { ART_FILES } from './art-files.js?v=0.1.892';
+import { debrisOf } from './lore.js?v=0.1.892';
+// Which illustration each card uses. The illustrator’s brief (scripts/art-brief.py) is generated from this
 // table, and when the art arrives the card renderer can load assets/art/cards/<key>.webp, falling back to
 // the drawn art in js/art.js. Every card maps to exactly one key. Order of rules matters.
 // No DOM.
 
 // key: [group, priority, title, what to draw, reference, variations]. Catch-all keys get several
-// variations so neighbouring cards don't look identical; artFileFor picks one by NORAD id.
+// variations so neighbouring cards don’t look identical; artFileFor picks one by NORAD id.
 export const ART = {
   // ---- Hero pieces (one card each) ----
   'iss': ['Hero', 1, 'International Space Station', 'The ISS: long main truss with its eight large solar-array wings (four pairs), radiators, and the pressurised modules in the middle.', 'https://www.nasa.gov/international-space-station/'],
@@ -30,7 +30,7 @@ export const ART = {
   // ---- Satellite fleets (wide format) ----
   'fleet-starlink': ['Fleets', 1, 'Starlink', 'A "train" of flat Starlink satellites in a line, each a flat body with one long solar wing, as seen soon after launch.', 'https://en.wikipedia.org/wiki/Starlink'],
   'fleet-oneweb': ['Fleets', 1, 'OneWeb', 'A line of OneWeb satellites: small boxy bodies with two solar panels each.', 'https://en.wikipedia.org/wiki/OneWeb_satellite_constellation'],
-  'fleet-qianfan': ['Fleets', 1, 'Qianfan', 'A line of Qianfan (Thousand Sails) flat-panel satellites, China\'s broadband constellation.', 'https://en.wikipedia.org/wiki/Qianfan'],
+  'fleet-qianfan': ['Fleets', 1, 'Qianfan', 'A line of Qianfan (Thousand Sails) flat-panel satellites, China’s broadband constellation.', 'https://en.wikipedia.org/wiki/Qianfan'],
   'fleet-kuiper': ['Fleets', 1, 'Amazon Leo (formerly Project Kuiper)', 'A line of Amazon Leo broadband satellites (the constellation was called Project Kuiper until its renaming).', 'https://en.wikipedia.org/wiki/Amazon_Leo'],
   // ---- Soviet / Russian satellite programmes ----
   'strela-1m': ['Satellites', 2, 'Strela-1M message relay', 'Small (about 70 kg) Soviet relay satellite, launched eight at a time: a compact body covered in solar cells.', 'https://space.skyrocket.de/doc_sdat/strela-1m.htm'],
@@ -60,7 +60,7 @@ export const ART = {
   // ---- Rocket stages ----
   'sl-8': ['Rocket stages', 2, 'Kosmos-3M rocket (SL-8)', 'The whole Kosmos-3M: a slim two-stage Soviet rocket, pale grey-green, with a small payload fairing. The spent second stage of this rocket is the most common rocket body in the sky.', 'https://space.skyrocket.de/doc_lau/kosmos-3.htm'],
   'sl-14': ['Rocket stages', 2, 'Tsyklon-3 rocket (SL-14)', 'The whole Tsyklon-3: a slim three-stage Ukrainian-built rocket (derived from the R-36 missile) with a pointed fairing.', 'https://space.skyrocket.de/doc_lau/tsiklon.htm'],
-  'sl-12': ['Rocket stages', 2, 'Proton Blok-DM upper stage (SL-12)', 'Proton\'s Blok-DM upper stage with its spherical propellant tanks.', 'https://en.wikipedia.org/wiki/Blok_D'],
+  'sl-12': ['Rocket stages', 2, 'Proton Blok-DM upper stage (SL-12)', 'Proton’s Blok-DM upper stage with its spherical propellant tanks.', 'https://en.wikipedia.org/wiki/Blok_D'],
   'sl-3': ['Rocket stages', 3, 'Vostok rocket (SL-3)', 'The whole Vostok rocket: the R-7 core with four tapered strap-on boosters flaring out at the base, and the small Blok E upper stage on top.', 'https://en.wikipedia.org/wiki/Vostok_(rocket_family)'],
   'sl-16': ['Rocket stages', 3, 'Zenit-2 rocket (SL-16)', 'The whole Zenit-2: a big two-stage Ukrainian rocket, uniform wide body, dark grey and white.', 'https://en.wikipedia.org/wiki/Zenit-2'],
   'briz': ['Rocket stages', 3, 'Briz-M upper stage', 'Russian Briz-M upper stage: a central core inside a doughnut-shaped drop tank.', 'https://en.wikipedia.org/wiki/Briz-M'],
@@ -81,7 +81,7 @@ export const ART = {
   'long-march-3': ['Rocket stages', 2, 'Long March 3B rocket', 'The whole Long March 3B: a white core with four liquid strap-on boosters with pointed tops, and a large fairing.', 'https://en.wikipedia.org/wiki/Long_March_3B'],
   'h2a': ['Rocket stages', 3, 'H-IIA rocket', 'The whole H-IIA: an orange-brown foam-insulated core with two white solid boosters and a white fairing.', 'https://en.wikipedia.org/wiki/H-IIA'],
   'falcon-9': ['Rocket stages', 3, 'Falcon 9 second stage', 'Falcon 9 second stage: a long slim white cylinder with a single Merlin Vacuum engine with a very large dark nozzle extension; long, not stubby, not orange.', 'https://en.wikipedia.org/wiki/Falcon_9'],
-  'electron': ['Rocket stages', 3, 'Electron kick stage', 'Rocket Lab Electron\'s small kick stage.', 'https://en.wikipedia.org/wiki/Rocket_Lab_Electron'],
+  'electron': ['Rocket stages', 3, 'Electron kick stage', 'Rocket Lab Electron’s small kick stage.', 'https://en.wikipedia.org/wiki/Rocket_Lab_Electron'],
   'long-march-6a': ['Rocket stages', 3, 'Long March 6A rocket', 'The whole Long March 6A: a white core with four slim solid boosters around its base.', 'https://en.wikipedia.org/wiki/Long_March_6A'],
   'pslv': ['Rocket stages', 3, 'PSLV rocket', 'The whole PSLV: a slim Indian rocket with six solid strap-on boosters around its base and a bulbous fairing.', 'https://en.wikipedia.org/wiki/Polar_Satellite_Launch_Vehicle'],
   'gslv': ['Rocket stages', 3, 'GSLV rocket', 'The whole GSLV Mk II: a core with four liquid strap-on boosters and a large bulbous fairing.', 'https://en.wikipedia.org/wiki/Geosynchronous_Satellite_Launch_Vehicle'],
@@ -116,7 +116,7 @@ export const ART = {
   'debris-satellite': ['Debris', 2, 'Satellite fragments', 'Pieces of broken-up satellites (collisions, explosions, anti-satellite tests): bent solar panels, torn foil, shards.', 'https://en.wikipedia.org/wiki/2009_satellite_collision', 2],
 };
 
-const NAMED = { 25025: 'teamsat', 20439: 'lusat', 20440: 'lusat', 20441: 'lusat', 20442: 'lusat', /* PACSAT, DOVE, WEBERSAT and LUSAT are the same AMSAT Microsat, launched together in 1990 */ 1982: 'essa', 2091: 'essa', 2435: 'essa', 2657: 'essa', 2757: 'essa', 3035: 'essa', 3345: 'essa', 3615: 'essa', 3764: 'essa', 25068: 'equator-s', 66906: 'duplex', 69648: 'hokushin', 25544: 'iss', 48274: 'tiangong', 20580: 'hubble', 5: 'vanguard-1', 16908: 'ajisai', 1613: 'ov1', 2121: 'ov1', 2122: 'ov1', 2610: 'ov1', 3173: 'ov1', 3174: 'ov1', 3825: 'ov1', 5397: 'ov1', 13011: 'cat' /* CAT 4: the 1981 Ariane test capsule, from the ESA/CNES photo; OV1 satellites, from Sevaan's OV1-14 photo (2026-10-16) */ };
+const NAMED = { 25025: 'teamsat', 20439: 'lusat', 20440: 'lusat', 20441: 'lusat', 20442: 'lusat', /* PACSAT, DOVE, WEBERSAT and LUSAT are the same AMSAT Microsat, launched together in 1990 */ 1982: 'essa', 2091: 'essa', 2435: 'essa', 2657: 'essa', 2757: 'essa', 3035: 'essa', 3345: 'essa', 3615: 'essa', 3764: 'essa', 25068: 'equator-s', 66906: 'duplex', 69648: 'hokushin', 25544: 'iss', 48274: 'tiangong', 20580: 'hubble', 5: 'vanguard-1', 16908: 'ajisai', 1613: 'ov1', 2121: 'ov1', 2122: 'ov1', 2610: 'ov1', 3173: 'ov1', 3174: 'ov1', 3825: 'ov1', 5397: 'ov1', 13011: 'cat' /* CAT 4: the 1981 Ariane test capsule, from the ESA/CNES photo; OV1 satellites, from Sevaan’s OV1-14 photo (2026-10-16) */ };
 const SERIES = { 'strela-1': 'strela-1m', 'strela-1m': 'strela-1m', 'strela-2m': 'strela-2m', 'strela-3': 'strela-3', 'strela-3-late': 'strela-3', 'strela-3m': 'strela-3',
   parus: 'parus', tsikada: 'parus', nadezhda: 'parus', 'us-a': 'us-a', 'us-a-core': 'us-a', 'us-ao': 'us-a', 'tselina-d': 'tselina', 'tselina-2': 'tselina',
   sfera: 'geodetic', 'geo-ik': 'geodetic', 'ds-p1-m': 'asat-target', 'is-a': 'asat-interceptor', i2p: 'asat-interceptor', 'taifun-1': 'taifun',
@@ -126,7 +126,7 @@ const SERIES = { 'strela-1': 'strela-1m', 'strela-1m': 'strela-1m', 'strela-2m':
 export function artKeyFor(card, seriesOf = {}) {
   if (card.natural === 'story') return `story-${card.art}`;
   if (card.natural) return card.system ? 'solar-system' : card.type === 'sun' ? 'sun' : card.type === 'moon' ? 'moon' : card.type === 'earth' ? 'planet-earth' : card.type === 'planet' ? `planet-${card.name.toLowerCase()}` : card.type === 'deepsky' ? `deep-${card.key.split(':')[1]}` : `star-${card.key.split(':')[1]}`;
-  if (card.launches) return { GLOBALSTAR: 'globalstar', ORBCOMM: 'orbcomm', IRIDIUM: 'iridium' }[card.family] ?? `fleet-${card.family.toLowerCase()}`; // the newer fleets use their satellite's picture
+  if (card.launches) return { GLOBALSTAR: 'globalstar', ORBCOMM: 'orbcomm', IRIDIUM: 'iridium' }[card.family] ?? `fleet-${card.family.toLowerCase()}`; // the newer fleets use their satellite’s picture
   if (NAMED[card.id]) return NAMED[card.id];
   if (card.issDeploy && /^ISS OBJECT/.test(String(card.name ?? ''))) return 'smallsat'; // an unidentified CubeSat from the ISS
   const n = String(card.name ?? '').toUpperCase();
@@ -137,7 +137,7 @@ export function artKeyFor(card, seriesOf = {}) {
       [/^BREEZE/, 'briz'], [/^FREGAT/, 'fregat'], [/^SL-6\b/, 'molniya-rocket'], [/^(SL-24|SS-18|DNEPR)/, 'dnepr'], [/^SL-19\b/, 'rokot'], [/^SL-18\b/, 'start-rocket'], [/^(SL-4\b|VOLGA)/, 'soyuz-rocket'], [/^SL-11\b/, 'tsyklon-2'], [/^SL-\d/, 'russian-stage'], [/^ARIANE 5|^ARIANE 6/, 'ariane-5'], [/^ARIANE/, 'ariane-early'],
       [/^(THORAD |THOR )?DELTA 1|^THOR DELTA/, 'delta-early'], [/^DELTA/, 'delta-2'], [/CENTAUR/, 'centaur'], [/AGENA/, 'agena'],
       [/^THOR/, 'thor-upper'], [/^TITAN/, 'titan-transtage'], [/^SCOUT/, 'scout'], [/^(PEGASUS|MINOTAUR|TAURUS)/, 'pegasus'], [/^IUS/, 'ius'],
-      [/^CZ-3/, 'long-march-3'], [/^CZ-6A/, 'long-march-6a'], [/^CZ-4/, 'cz-4'], [/^CZ-2/, 'cz-2'], [/^CZ-12/, 'cz-12'], [/^CZ-6C/, 'cz-6c'], [/^CZ-6\b(?!A)/, 'cz-6c'], [/^CZ-11\b/, 'jielong-3'], /* CZ-6: a small one-engine white upper stage like the 6C's; CZ-11: all-solid, like the Jielong-3's solid upper stage (2026-10-15, stand-ins until there are references) */ [/^CZ-10B/, 'cz-10b'], [/^CZ-(8A?|7A|5)\b/, 'long-march-3'], [/^CZ-/, 'long-march'], [/^H-2A|^H-IIA|^H-2\b/, 'h2a'], [/^(LVM3|GSLV MK ?III)/, 'lvm3'], [/^PSLV|^IRS-P2/, 'pslv'], [/^GSLV/, 'gslv'], [/^ATLAS/, 'atlas'], [/^DIAMANT/, 'diamant'], [/^M-\d/, 'rocket-stage-1'] /* Mu stages: a generic cylinder until there's a reference (2026-10-16, Sevaan: not the round one) */, [/^(N-1|N-2|H-1)\b/, 'n1-rocket'], [/^KSLV/, 'nuri'], [/^(LIJIAN|ZK-1A)/, 'kinetica-1'], [/^EPSILON/, 'epsilon'], [/^JIELONG/, 'jielong-3'], [/^QAEM/, 'qaem'], [/^FIREFLY/, 'firefly-alpha'], [/^H-3\b/, 'h3'], [/^KZ-/, 'kuaizhou'], [/^ZHUQUE/, 'zhuque-2'], [/^VANGUARD/, 'vanguard-rocket'], [/^CHOLLIMA/, 'chollima-1'], [/^(YINLI|GRAVITY)/, 'gravity-1'], [/^FALCON/, 'falcon-9'], [/^ELECTRON/, 'electron']];
+      [/^CZ-3/, 'long-march-3'], [/^CZ-6A/, 'long-march-6a'], [/^CZ-4/, 'cz-4'], [/^CZ-2/, 'cz-2'], [/^CZ-12/, 'cz-12'], [/^CZ-6C/, 'cz-6c'], [/^CZ-6\b(?!A)/, 'cz-6c'], [/^CZ-11\b/, 'jielong-3'], /* CZ-6: a small one-engine white upper stage like the 6C’s; CZ-11: all-solid, like the Jielong-3's solid upper stage (2026-10-15, stand-ins until there are references) */ [/^CZ-10B/, 'cz-10b'], [/^CZ-(8A?|7A|5)\b/, 'long-march-3'], [/^CZ-/, 'long-march'], [/^H-2A|^H-IIA|^H-2\b/, 'h2a'], [/^(LVM3|GSLV MK ?III)/, 'lvm3'], [/^PSLV|^IRS-P2/, 'pslv'], [/^GSLV/, 'gslv'], [/^ATLAS/, 'atlas'], [/^DIAMANT/, 'diamant'], [/^M-\d/, 'rocket-stage-1'] /* Mu stages: a generic cylinder until there’s a reference (2026-10-16, Sevaan: not the round one) */, [/^(N-1|N-2|H-1)\b/, 'n1-rocket'], [/^KSLV/, 'nuri'], [/^(LIJIAN|ZK-1A)/, 'kinetica-1'], [/^EPSILON/, 'epsilon'], [/^JIELONG/, 'jielong-3'], [/^QAEM/, 'qaem'], [/^FIREFLY/, 'firefly-alpha'], [/^H-3\b/, 'h3'], [/^KZ-/, 'kuaizhou'], [/^ZHUQUE/, 'zhuque-2'], [/^VANGUARD/, 'vanguard-rocket'], [/^CHOLLIMA/, 'chollima-1'], [/^(YINLI|GRAVITY)/, 'gravity-1'], [/^FALCON/, 'falcon-9'], [/^ELECTRON/, 'electron']];
     for (const [re, key] of rules) if (re.test(n)) return key;
     // Named after the satellite it boosted (e.g. ANIK C3 R/B, LEASAT 5 PKM): a payload kick motor.
     if (/^(ANIK|LEASAT|OPTUS|SBS|TELSTAR|MORELOS|SATCOM|PALAPA|INSAT|ARABSAT|ASC|USA|SKYNET|MARCOPOLO|NATO|INMARSAT|SPACENET|AURORA|TOS|APEX|ASIASAT|ECHOSTAR|OV1)\b/.test(n) || /\b(PKM|PAM|AKM)\b/.test(n)) return 'kick-motor';

@@ -1,29 +1,29 @@
-import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.891';
-import { computeStats, statsHtml } from './stats.js?v=0.1.891';
-import { nightKey } from './observation.js?v=0.1.891';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.891';
-import { sfx } from './sfx.js?v=0.1.891';
-import { expandFacts } from './catalog-facts.js?v=0.1.891';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.891';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.891';
-import { ticket } from './toast.js?v=0.1.891';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.891';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.891';
-import { cardArt } from './art.js?v=0.1.891';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.891';
-import { applyBack } from './card-backs.js?v=0.1.891';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.891';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.891';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.891';
-import { STORIES } from './stories.js?v=0.1.891';
-import { loadConstellations, conList } from './constellations.js?v=0.1.891';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.891';
-import { eventBadges, nextEvent } from './events.js?v=0.1.891';
-import { shareCardEl } from './share-card.js?v=0.1.891';
-import { forgetSighting } from './cloud-backup.js?v=0.1.891';
-import { allSightings, deleteSighting } from './store.js?v=0.1.891';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.891';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.891';
+import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.892';
+import { computeStats, statsHtml } from './stats.js?v=0.1.892';
+import { nightKey } from './observation.js?v=0.1.892';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.892';
+import { sfx } from './sfx.js?v=0.1.892';
+import { expandFacts } from './catalog-facts.js?v=0.1.892';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.892';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.892';
+import { ticket } from './toast.js?v=0.1.892';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.892';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.892';
+import { cardArt } from './art.js?v=0.1.892';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.892';
+import { applyBack } from './card-backs.js?v=0.1.892';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.892';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.892';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.892';
+import { STORIES } from './stories.js?v=0.1.892';
+import { loadConstellations, conList } from './constellations.js?v=0.1.892';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.892';
+import { eventBadges, nextEvent } from './events.js?v=0.1.892';
+import { shareCardEl } from './share-card.js?v=0.1.892';
+import { forgetSighting } from './cloud-backup.js?v=0.1.892';
+import { allSightings, deleteSighting } from './store.js?v=0.1.892';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.892';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.892';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -33,7 +33,7 @@ const dateLabel = (time) => new Date(time).toLocaleDateString('en-US', { month: 
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
 function notice(message) { $('notice').hidden = !message; $('notice').textContent = message; }
-let hasSkyTone = false; // Explore's sky colours behind the page (applySkyTone); off in red night mode (QA 2026-10-08: they stayed on)
+let hasSkyTone = false; // Explore’s sky colours behind the page (applySkyTone); off in red night mode (QA 2026-10-08: they stayed on)
 function setNight(on) {
   document.documentElement.dataset.theme = on ? 'night' : 'default';
   document.body.classList.toggle('night', on);
@@ -55,7 +55,7 @@ window.addEventListener('storage', (e) => { if (e.key !== 'night') return; if (d
 
 $('set-filter').add(new Option('Up tonight from here', 'tonight'));
 for (const set of SETS) $('set-filter').add(new Option(set.name, set.id));
-// Tonight's catchable passes from where you are (playtest 2026-10-09, #9/#10): Explore works them out and shares
+// Tonight’s catchable passes from where you are (playtest 2026-10-09, #9/#10): Explore works them out and shares
 // them (localStorage tonightPlan, and a sc:tonight message while this page is embedded). { at, passes: [{ key, id,
 // start, end, peakEl, dir }] }, soonest first.
 function readPlan() {
@@ -94,7 +94,7 @@ function ingest(sightings) {
 async function refreshSightings() {
   if (!state.ready) return;
   try { ingest(await allSightings()); linkConstellations();
-    // Hidden behind a fresh reveal: rebuild a little later, in idle time, not in the reveal's first frames (jank playtest
+    // Hidden behind a fresh reveal: rebuild a little later, in idle time, not in the reveal’s first frames (jank playtest
     // 2026-10-17); showing the Collection before then renders straight away (awayDirty).
     if (document.documentElement.classList.contains('away')) { awayDirty = true; setTimeout(() => (window.requestIdleCallback ?? setTimeout)(() => { if (awayDirty && document.documentElement.classList.contains('away')) { awayDirty = false; render(); } }, { timeout: 3000 }), 2200); }
     else render(); } catch {}
@@ -126,13 +126,13 @@ async function boot() {
   try { key = decodeURIComponent(location.hash.slice(1)); } catch {}
   if (key === 'patches') { setView('patches'); return; }
   if (!state.byKey.has(key) && /^[A-Z]+:/.test(key)) key = key.split(':')[0]; // old launch-card link
-  if (key && !state.byKey.has(key)) key = state.keyOfId.get(key) ?? key; // a satellite that's now part of a fleet
+  if (key && !state.byKey.has(key)) key = state.keyOfId.get(key) ?? key; // a satellite that’s now part of a fleet
   if (key && state.byKey.has(key)) openKey(key);
   else if (key) notice('That card is not in this catalogue or your saved collection. Search the field guide to find another target.');
 }
 
 function matches(c) {
-  if (state.query && c.story && !hasSightings(c)) return false; // searching can't find a story you haven't found
+  if (state.query && c.story && !hasSightings(c)) return false; // searching can’t find a story you haven’t found
   if (state.view === 'owned' && !hasSightings(c)) return false;
   if (state.view === 'find') { if (!state.query) return true; const h = `${titleFor(c)} ${c.name} ${c.id} ${c.cospar ?? ''} ${c.type ?? ''} ${SETS.find((s) => s.id === c.set)?.name ?? ''}`.toLowerCase(); return state.query.split(/\s+/).every((w) => h.includes(w)); }
   if (state.set === 'tonight') { if (!state.planKeys?.has(c.key)) return false; } else if (state.set !== 'all' && c.set !== state.set) return false;
@@ -158,8 +158,8 @@ function fitTileName(tile) {
 // Collection tiles as small copies of the full card (2026-10-13, Sevaan: "look like the shrunken down version of the
 // bigger cards… the collected info overlaid over the bottom where the text is tiny"). The tile keeps its classes,
 // level badge and label; its face becomes renderCard(…, { mini }) sized by container units, and the status line
-// ("✓ Collected Oct 13, 2026" / "Not yet collected" / "3 of 7 stars") sits over the card's footer.
-// One scale for every tile: tile width / the card's natural 280 px, kept on the grid as --mini-s.
+// ("✓ Collected Oct 13, 2026" / "Not yet collected" / "3 of 7 stars") sits over the card’s footer.
+// One scale for every tile: tile width / the card’s natural 280 px, kept on the grid as --mini-s.
 let miniS = '', miniRaf = 0;
 const miniScale = () => { miniRaf = 0; const t = document.querySelector('.card-tile--mini, #grid .card-slot'); const w = t?.offsetWidth; if (!w) return; const v = (w / 280).toFixed(4); if (v !== miniS) { miniS = v; document.getElementById('grid')?.style.setProperty('--mini-s', v); } };
 const queueMiniScale = () => { miniRaf ||= requestAnimationFrame(miniScale); }; // once a frame, however many tiles were built (jank playtest 2026-10-17)
@@ -189,12 +189,12 @@ const observer = new IntersectionObserver((entries) => {
     if (cascadeLeft > 0) { cascadeLeft--; target.classList.add('cascade'); target.style.setProperty('--i', String(24 - cascadeLeft)); setTimeout(() => target.classList.remove('cascade'), 1200); }
     for (const img of tile.querySelectorAll('img.card-art-image')) { if (img.complete && img.naturalWidth) img.classList.add('loaded'); else { img.addEventListener('load', () => img.classList.add('loaded'), { once: true }); img.addEventListener('error', () => img.classList.add('loaded'), { once: true }); } }
   }
-}, { root: document, rootMargin: '500px 0px' }); // root: this page's own viewport (2026-10-17 perf pass): the default root is the
-// top window, where the Collection sits off-screen while you're on Explore, so no tile was built until it slid up and the
-// first screenful was built mid-slide. Now they're built (and their pictures loaded) in the background.
+}, { root: document, rootMargin: '500px 0px' }); // root: this page’s own viewport (2026-10-17 perf pass): the default root is the
+// top window, where the Collection sits off-screen while you’re on Explore, so no tile was built until it slid up and the
+// first screenful was built mid-slide. Now they’re built (and their pictures loaded) in the background.
 
 // ---------- albums ----------
-// One album per set. Goals scale with the set's size, so every album has a reachable gold:
+// One album per set. Goals scale with the set’s size, so every album has a reachable gold:
 // small sets (<= 30 cards) are completed; bigger ones aim for 100 or 200 cards.
 const LEVELS = ['Bronze', 'Silver', 'Gold'];
 // Cards grouped by set once, then reused until the collection changes (jank playtest 2026-10-17: every album filtered
@@ -224,7 +224,7 @@ function renderAlbums() {
     const st = albumStats(set.id); if (!st.cards.length) continue;
     const latest = st.have.slice().sort((a, b) => (state.sightingsByKey.get(b.key)?.[0]?.time ?? 0) - (state.sightingsByKey.get(a.key)?.[0]?.time ?? 0))[0];
     const show = latest ?? st.cards.find((c) => c.tier === 'legendary') ?? st.cards[0];
-    const img = artImage(show, 'small'); // the set's best card, dimmed (CSS .album.empty) until you own one
+    const img = artImage(show, 'small'); // the set’s best card, dimmed (CSS .album.empty) until you own one
     const b = document.createElement('button'); b.type = 'button';
     const crossed = (lv[set.id] ?? st.level) < st.level; lv[set.id] = st.level;
     b.className = `album${st.level === 3 ? ' gold' : ''}${latest ? '' : ' empty'}${crossed ? ' crossed' : ''}`; b.style.setProperty('--set', set.color);
@@ -247,14 +247,14 @@ function renderAlbumHead() {
     <span class="album__next">${st.level === 3 ? 'Gold album. Every card here is a bonus.' : `${(st.next - st.have.length).toLocaleString()} more${unit(set)} for a ${LEVELS[st.level]} album (${st.next.toLocaleString()}${unit(set) || ' cards'})`}</span>`;
 }
 
-// ---------- logbook: rank, streak, tonight's missions, achievements (js/progress.js) ----------
-// A notification next Saturday 8 pm (local), so the week's streak isn't lost. The app only: no calendar files (2026-10-12).
+// ---------- logbook: rank, streak, tonight’s missions, achievements (js/progress.js) ----------
+// A notification next Saturday 8 pm (local), so the week’s streak isn’t lost. The app only: no calendar files (2026-10-12).
 function remindStreak() {
   const d = new Date(); d.setHours(20, 0, 0, 0);
   let ahead = (6 - d.getDay() + 7) % 7; if (ahead === 0 && d.getTime() < Date.now()) ahead = 7; // this Saturday, unless 8 pm has passed
   d.setDate(d.getDate() + ahead);
   (isNative() ? notifyAt(d.getTime(), 'This week: keep your streak', 'One sighting is all it takes. See what’s up tonight.') : Promise.resolve('app-only'))
-    .then((r) => ticket({ kind: 'mission', tone: 'steel', icon: 'bell', eyebrow: 'STREAK', line: r === 'on' ? 'We\'ll remind you Saturday at 8 pm.' : r === 'app-only' ? 'Reminders work in the Space Collector app.' : r === 'denied' ? 'Notifications are off for Space Collector.' : 'Couldn\'t set a reminder here.', ms: 4000 }));
+    .then((r) => ticket({ kind: 'mission', tone: 'steel', icon: 'bell', eyebrow: 'STREAK', line: r === 'on' ? 'We’ll remind you Saturday at 8 pm.' : r === 'app-only' ? 'Reminders work in the Space Collector app.' : r === 'denied' ? 'Notifications are off for Space Collector.' : 'Couldn’t set a reminder here.', ms: 4000 }));
 }
 // Observer stats (free for everyone, 2026-10-12): a link under the rank card opens #stats-view.
 function openStats() {
@@ -276,7 +276,7 @@ function openStats() {
   $('stats-view').showModal();
 }
 $('stats-open')?.addEventListener('click', openStats);
-// It slides up over the Collection and back down, like the app's other pages (2026-10-17, Sevaan).
+// It slides up over the Collection and back down, like the app’s other pages (2026-10-17, Sevaan).
 let statsFromSettings = false;
 function closeStats() {
   const d = $('stats-view'); if (!d.open || d.classList.contains('leaving')) return;
@@ -303,7 +303,7 @@ function renderLogbook() {
   if (!card.querySelector('.lb-face')) {
     card.classList.add('lb-card');
     card.innerHTML = '<div class="lb-rot"><div class="lb-face"></div><div class="lb-glare"></div><div class="card__back lb-back"></div></div>';
-    // No tilt, glare or flip any more (2026-10-13, Sevaan): it's a plain panel you read.
+    // No tilt, glare or flip any more (2026-10-13, Sevaan): it’s a plain panel you read.
   }
   const el = card.querySelector('.lb-face');
   const span = p.rank.next ? p.rank.next - p.rank.at : 1, into = p.rank.next ? Math.max(0, Math.min(1, (p.xp - p.rank.at) / span)) : 1; // a rank kept from the old curve can sit above your XP: never below 0
@@ -313,7 +313,7 @@ function renderLogbook() {
   el.onclick = (e) => { if (e.target.closest('#streak-remind')) return remindStreak(); if (e.target.closest('button, a, .lb-mission, .lb-foot')) return; openStats(); };
   el.style.cursor = 'pointer';
   // Front (2026-10-08, design/rank-card.html C): your rank ladder as the picture (twinkling stars), the rank and
-  // XP, tonight's missions, and Events at the foot.
+  // XP, tonight’s missions, and Events at the foot.
   const ri = p.rank.index, lo = Math.max(0, Math.min(ri - 2, RANKS.length - 4)), rungs = RANKS.slice(lo, lo + 4);
   const H = 160, pts = rungs.map((_, i) => [37.5 + i * 75, H / 2 + 34 - i * 18]); // centred: 37.5 in from each side (2026-10-14, Sevaan)
   let seed = 11; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
@@ -342,9 +342,9 @@ function renderLogbook() {
 // Find (2026-10-13, Sevaan: "someone may want to search up an object like the ISS to preview the card and then set an
 // alert for when it flies over, however long in the future"): a search-first list. Each row: art, name, rarity, whether
 // you have it, and its next visible pass from here (worked out by Explore, js/find-worker.js, up to 10 days), with a
-// target (be shown where) and a bell (remind me). Before you type: the famous ones you don't have yet.
+// target (be shown where) and a bell (remind me). Before you type: the famous ones you don’t have yet.
 const findPasses = new Map(); let findReq = 0, findReminded = new Set(), findSuggest = null;
-// "Tonight" is the observing night (noon to noon), so a 4:57 AM pass is tonight's everywhere (Android playtest 2026-10-19).
+// "Tonight" is the observing night (noon to noon), so a 4:57 AM pass is tonight’s everywhere (Android playtest 2026-10-19).
 function nightWord(t) {
   const nightOf = (x) => new Date(x - 12 * 3600e3).toDateString(), nowD = new Date();
   const tonightKey = nowD.getHours() < 6 ? nightOf(nowD.getTime()) : nowD.toDateString(), tmrKey = new Date(new Date(tonightKey).getTime() + 86400e3 + 3600e3).toDateString();
@@ -357,7 +357,7 @@ function findPassLine(c) {
   const p = findPasses.get(c.id);
   if (p === undefined) return '<span class="fd-wait">Finding its next pass…</span>';
   if (!p) return 'Not visible from here in the next 10 days';
-  // "Tonight" means the observing night, not the calendar day, so a 4:57 AM pass is tonight's like the card viewer says
+  // "Tonight" means the observing night, not the calendar day, so a 4:57 AM pass is tonight’s like the card viewer says
   // (Android playtest 2026-10-19: Find said "Tomorrow 4:57 AM" for the same pass).
   const d = new Date(p.start), { today, tmr } = nightWord(p.start);
   const day = today ? 'Tonight' : tmr ? 'Tomorrow' : d.toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' });
@@ -374,12 +374,12 @@ function renderFind() {
   // then names that start with it, debris last, rarer first.
   const rankQ = (c) => { const t = titleFor(c).toLowerCase(); return (t === q ? 0 : 6) + (c.icon || c.type === 'station' ? 0 : 3) + (t.startsWith(q) ? 0 : 1) + (c.type === 'debris' ? 2 : 0); };
   if (q) list = state.cards.filter((c) => !c.archived && matches(c)).sort((a, b) => rankQ(a) - rankQ(b) || TIERS.indexOf(b.tier) - TIERS.indexOf(a.tier)).slice(0, 30);
-  else list = (findSuggest ?? []).map((p) => state.cards.find((c) => c.id === p.id) ?? state.byKey.get(state.keyOfId?.get(p.id))).filter(Boolean); // from Explore's plans: tonight and this week
+  else list = (findSuggest ?? []).map((p) => state.cards.find((c) => c.id === p.id) ?? state.byKey.get(state.keyOfId?.get(p.id))).filter(Boolean); // from Explore’s plans: tonight and this week
   if (!q && !findSuggest && EMBED) { window.parent.postMessage({ sc: 'find-suggest' }, location.origin); grid.insertAdjacentHTML('beforeend', '<p class="find-none">Finding what you can see this week…</p>'); return; }
   state.list = list;
   $('results').textContent = q ? `${list.length}${list.length === 30 ? '+' : ''} found` : 'Search any satellite, rocket or planet';
   const head = document.createElement('div'); head.className = 'find-head'; head.textContent = q ? '' : 'New ones you can see this week'; // not just Rares: Uncommons fill in (2026-10-18 playtest) if (!q) grid.append(head);
-  if (!list.length) { grid.insertAdjacentHTML('beforeend', q ? '<p class="find-none">Nothing by that name. Try "ISS", "Hubble" or "Starlink".</p>' : '<p class="find-none">Nothing new passes this week. Search any satellite to see when it\'s next up.</p>'); return; }
+  if (!list.length) { grid.insertAdjacentHTML('beforeend', q ? '<p class="find-none">Nothing by that name. Try "ISS", "Hubble" or "Starlink".</p>' : '<p class="find-none">Nothing new passes this week. Search any satellite to see when it’s next up.</p>'); return; }
   const need = [];
   for (const c of list) {
     const t = TIER_INFO[c.tier] ?? TIER_INFO.common, owned = hasSightings(c), row = document.createElement('div'); row.className = 'find-row'; row.style.setProperty('--c', t.color);
@@ -415,16 +415,16 @@ window.addEventListener('message', (e) => {
   if (e.data?.sc === 'say' && e.data.text) ticket({ kind: 'info', line: e.data.text, ms: 3500 }); // a message from Explore (reminder results)
   if (e.data?.sc === 'find-reminded') { findReminded = new Set(e.data.set); { const u = $('v-up'); if (u && !u.hidden && u._up) renderUpPanel(u._card, u._up, u._find); } for (const el of document.querySelectorAll('.fd-pass[data-id]')) { const id = isNaN(el.dataset.id) ? el.dataset.id : Number(el.dataset.id), c = state.cards.find((k) => k.id === id); if (c) findActs(el.closest('.find-row, .v-next'), c); } }
 });
-let upHold = false; // true while the viewer shows Up tonight's list; 'again' if a redraw waited (openUpNext)
+let upHold = false; // true while the viewer shows Up tonight’s list; 'again' if a redraw waited (openUpNext)
 function render() {
-  if (upHold) { upHold = 'again'; return; } // the viewer is showing Up tonight's own list: redraw once it closes (QA 2026-10-16)
+  if (upHold) { upHold = 'again'; return; } // the viewer is showing Up tonight’s own list: redraw once it closes (QA 2026-10-16)
   renderLogbook();
   $('grid').classList.toggle('find-mode', state.view === 'find');
   if (state.view === 'find') { $('patch-wall').hidden = true; $('grid').hidden = false; document.body.classList.remove('patches-view', 'albums-view'); renderFind(); return; }
   renderAlbumHead();
   document.body.classList.toggle('patches-view', state.view === 'patches');
   $('patch-wall').hidden = state.view !== 'patches'; $('grid').hidden = state.view === 'patches';
-  if (state.view === 'patches') { $('reset-filters').hidden = true; renderPatches(); return; } // Mine's filters don't apply here (playtest room 2026-10-11)
+  if (state.view === 'patches') { $('reset-filters').hidden = true; renderPatches(); return; } // Mine’s filters don’t apply here (playtest room 2026-10-11)
   document.body.classList.toggle('albums-view', state.view === 'albums');
   if (state.view === 'albums') { const caught = state.cards.filter(hasSightings).length; $('owned-count').textContent = caught.toLocaleString(); renderAlbums(); return; }
   const caught = state.cards.filter(hasSightings).length;
@@ -476,7 +476,7 @@ function render() {
 const DIR_WORD = { N: 'north', NE: 'northeast', E: 'east', SE: 'southeast', S: 'south', SW: 'southwest', W: 'west', NW: 'northwest' };
 const hm = (t) => new Date(t).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
 // The pass panel (2026-10-16, Sevaan: the small next-pass pill "needs redesigning"): one design for every pass. A pass in
-// tonight's plan (find = false) says "Up tonight"; any other next pass from the Find search (find = true) says when.
+// tonight’s plan (find = false) says "Up tonight"; any other next pass from the Find search (find = true) says when.
 // Both get the big Remind me and Show me; they reach Explore as up-remind/up-show or find-remind/find-show.
 function renderUpPanel(c, up, find = false) {
   const el = $('v-up'); el.hidden = !up; el._card = c; if (!up) return;
@@ -521,8 +521,8 @@ function appendUpNext(total) {
       const when = new Date(x.start).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
       tile.insertAdjacentHTML('afterbegin', `<span class="up-next__when"><small>Up tonight</small>${esc(when)} · ${esc(x.dir)}</span>`);
       tile.setAttribute('aria-label', `${titleFor(c)}, up tonight at ${when} in the ${x.dir}. Preview the card`);
-      // Tap previews the card in the viewer (2026-10-16, Sevaan: a tap used to set a reminder blind); the viewer's
-      // next-pass pill has the bell. The Up tonight cards are the viewer's list, so you can swipe through them.
+      // Tap previews the card in the viewer (2026-10-16, Sevaan: a tap used to set a reminder blind); the viewer’s
+      // next-pass pill has the bell. The Up tonight cards are the viewer’s list, so you can swipe through them.
       upCards.push(c); const i = upCards.length - 1;
       tile.addEventListener('click', () => openUpNext(i));
       slot.append(tile); frag.append(slot);
@@ -534,7 +534,7 @@ function appendUpNext(total) {
 }
 function setView(view) {
   const changed = state.view !== view;
-  if (changed && state.view === 'discover' && view !== 'albums' && state.set !== 'all' && state.set !== 'tonight') { state.set = 'all'; $('set-filter').value = 'all'; } // an album's filter stays in the album (polish 2026-10-20)
+  if (changed && state.view === 'discover' && view !== 'albums' && state.set !== 'all' && state.set !== 'tonight') { state.set = 'all'; $('set-filter').value = 'all'; } // an album’s filter stays in the album (polish 2026-10-20)
   state.view = view; document.body.dataset.view = view; // CSS: the rank ladder shows on Mine only
   if (changed) { for (const el of [$('grid'), $('patch-wall')]) { el.classList.remove('swap'); void el.offsetWidth; el.classList.add('swap'); } cascadeLeft = 16; }
   $('tab-owned').setAttribute('aria-pressed', String(view === 'owned'));
@@ -589,7 +589,7 @@ function showCard() {
   // Orbit view (js/orbit-view.js): one tap swaps the picture for a live globe of its orbit, another tap swaps back.
   const art = el.querySelector('.card__art'), canOrbit = !!c.el && !c.natural && !c.archived;
   attachFlip(el, { onBack: (b) => applyBack(b, c), onTap: canOrbit ? () => {
-    if (!el.isConnected) return; // the tap's timer can fire after a swipe or close (QA 2026-10-16)
+    if (!el.isConnected) return; // the tap’s timer can fire after a swipe or close (QA 2026-10-16)
     if (globe) { globe.stop(); globe = null; art.classList.remove('orbiting'); return; }
     globe = orbitGlobe(c, art, myPlace()); if (globe) { art.classList.add('orbiting'); sfx('page', { gain: 0.6 }); }
   } : null });
@@ -605,7 +605,7 @@ function showCard() {
   $('v-preview').hidden = sightings.length > 0;
   $('v-preview').textContent = state.preview ? 'Back to uncollected card' : 'Preview artwork';
   // Its next pass with a target and a bell, like Find (2026-10-13, Sevaan).
-  // Up tonight panel (2026-10-16, design/upnext-remind.html 1): any card with a pass in tonight's plan, fleets included,
+  // Up tonight panel (2026-10-16, design/upnext-remind.html 1): any card with a pass in tonight’s plan, fleets included,
   // gets when and where plus a big Remind me and Show me. It replaces the small next-pass pill below.
   const up = state.plan.filter((x) => x.key === c.key && x.end > Date.now()).sort((a, b) => a.start - b.start)[0];
   $('v-next').hidden = true; // the small pill is replaced by the panel for every pass (2026-10-16)
@@ -627,13 +627,13 @@ function showCard() {
       const launch = c.launches && s.stampKey ? c.launches.find((l) => l.key === s.stampKey) : null;
       const launchLine = c.launches ? (launch ? `Launch ${esc(s.stampKey.split(':')[1] ?? s.stampKey)} · ${launch.n ?? ''} satellites launched ${esc(new Date(`${launch.launch}T12:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }))}` : 'Launch unknown') : '';
       row.className = launchLine ? 'with-launch' : '';
-      row.innerHTML = `<span class="h-main"><span>${esc(when)}</span>${where ? `<span> · ${esc(where)}</span>` : ''}</span>${launchLine ? `<span class="h-launch">${launchLine.replace(/\s+satellites/, ' satellites')}</span>` : ''}`; // no delete button (2026-10-14, Sevaan: people don't need to delete when they saw it)
+      row.innerHTML = `<span class="h-main"><span>${esc(when)}</span>${where ? `<span> · ${esc(where)}</span>` : ''}</span>${launchLine ? `<span class="h-launch">${launchLine.replace(/\s+satellites/, ' satellites')}</span>` : ''}`; // no delete button (2026-10-14, Sevaan: people don’t need to delete when they saw it)
       row.querySelector('button')?.addEventListener('click', async () => {
         if (!confirm('Delete this sighting? If it was your only one, the card leaves your collection.')) return;
         try { await deleteSighting(s.key); } catch { ticket({ kind: 'error', eyebrow: 'COULDN’T DELETE', line: 'That sighting is still there', sub: 'Try again.' }); return; }
         forgetSighting(s); // and from the iCloud backup
         state.raw = state.raw.filter((x) => x.key !== s.key);
-        // Remove it from its own card's list (a constellation shows its stars' sightings, so that's the star's card),
+        // Remove it from its own card’s list (a constellation shows its stars' sightings, so that’s the star’s card),
         // then re-render the grid before the viewer so the position and Next stay in step (QA 2026-10-08).
         for (const k of new Set([s.cardKey ?? c.key, c.key])) {
           const left = (state.sightingsByKey.get(k) ?? []).filter((x) => x.key !== s.key);
@@ -652,7 +652,7 @@ function showCard() {
   }
 }
 let opening = false;
-// from: the tile's screen rect, when opened by tapping a tile. The card rises out of it with a full
+// from: the tile’s screen rect, when opened by tapping a tile. The card rises out of it with a full
 // spin (its back shows while it faces away), like taking a closer look at a real card.
 async function openViewer(i, from = null) {
   if (i < 0 || i >= state.list.length || opening) return;
@@ -660,7 +660,7 @@ async function openViewer(i, from = null) {
   state.index = i; state.preview = false;
   lastFocus = document.activeElement;
   showCard(); feel('select');
-  // Wait a moment for the big picture so the card doesn't arrive blank and fill in a second later
+  // Wait a moment for the big picture so the card doesn’t arrive blank and fill in a second later
   // (2026-10-17, Sevaan: the Sun card). Capped, so a slow network still opens it.
   const img = $('slot').querySelector('.card__art img.card-art-image');
   if (img && !img.complete) { opening = true; await Promise.race([img.decode().catch(() => {}), new Promise((r) => setTimeout(r, 600))]); opening = false; }
@@ -672,7 +672,7 @@ async function openViewer(i, from = null) {
   spin($('slot').firstElementChild, from, true);
 }
 
-// The viewer's background, backdrop and text fade in (and out) around the spinning card, so you see
+// The viewer’s background, backdrop and text fade in (and out) around the spinning card, so you see
 // it leave the grid.
 function fadeViewer(opening) {
   if (reducedMotion.matches) return;
@@ -730,7 +730,7 @@ async function flickClose(dx, dy, dt) {
   stopEffects();
   fadeViewer(false);
   if (card && !reducedMotion.matches) {
-    const ms = throwOff(card, dx, dy, dt); // flies off the top at the flick's speed, fully visible 
+    const ms = throwOff(card, dx, dy, dt); // flies off the top at the flick’s speed, fully visible 
     await new Promise((r) => setTimeout(r, ms));
   }
   $('viewer').close();
@@ -753,7 +753,7 @@ $('slot').addEventListener('pointerup', (e) => {
 $('slot').addEventListener('pointercancel', () => { flick = null; });
 // A constellation card is owned through its stars, and only once you have ALL of them (it then arrives
 // gold, 2026-10-05): it carries their sightings (for dates and counts). Before that it stays in the field
-// guide, showing which stars you've found (from the star cards you own).
+// guide, showing which stars you’ve found (from the star cards you own).
 function linkConstellations() {
   for (const c of state.cards) {
     if (c.natural !== 'constellation') continue;
@@ -767,7 +767,7 @@ let ownedMemo = null; // rebuilt only when the sightings change (tiles ask for i
 const ownedKeys = () => { const m = state.sightingsByKey; if (!ownedMemo || ownedMemo.m !== m || ownedMemo.n !== m.size) ownedMemo = { m, n: m.size, set: new Set(m.keys()) }; return ownedMemo.set; };
 function step(d) {
   if (!state.list.length) return;
-  feel('select'); // the Collection's haptics (2026-10-17 haptics playtest: it had none)
+  feel('select'); // the Collection’s haptics (2026-10-17 haptics playtest: it had none)
   state.index = (state.index + d + state.list.length) % state.list.length;
   state.preview = false;
   showCard();
@@ -827,7 +827,7 @@ addStarfield($('viewer'));
   let tone = null; try { tone = JSON.parse(localStorage.getItem('skyTone')); } catch {}
   if (!tone?.a || Date.now() - (tone.at ?? 0) > 3 * 3600e3) return;
   const scrim = Math.min(0.72, (tone.f ?? 0) * 0.9);
-  const glow = (tone.f ?? 0) < 0.2 ? 'radial-gradient(ellipse 90% 70% at 50% 45%, rgba(143,179,207,.07), transparent 70%), ' : ''; // Explore's soft atmospheric glow at night
+  const glow = (tone.f ?? 0) < 0.2 ? 'radial-gradient(ellipse 90% 70% at 50% 45%, rgba(143,179,207,.07), transparent 70%), ' : ''; // Explore’s soft atmospheric glow at night
   const bg = `${glow}linear-gradient(rgba(6,10,18,${scrim.toFixed(2)}), rgba(6,10,18,${scrim.toFixed(2)})), linear-gradient(${tone.a}, ${tone.b})`;
   document.documentElement.style.setProperty('--page-sky', bg);
   hasSkyTone = true;
@@ -845,7 +845,7 @@ $('v-share').addEventListener('click', async () => {
     const info = (k) => { const x = state.byKey.get(k); return x ? { tier: x.tier, tier0: x.tier0, type: x.type, owner: x.owner, launch: x.launch, natural: x.natural, con: x.con } : null; };
     const how = await shareCardEl(el, c, { title: titleFor(c), rank: progress(state.raw, info, { constellations: conList(), deals: readDeals(), albums: state.albums, carry: xpCarry(state.raw, info, { constellations: conList(), deals: readDeals() }) }).rank.name, fact: factFor(c) }); // same rank as the logbook (QA 2026-10-08)
     btn.textContent = how === 'downloaded' ? 'Saved the image' : 'Share this card';
-  } catch { btn.textContent = 'Couldn\'t make the image'; }
+  } catch { btn.textContent = 'Couldn’t make the image'; }
   btn.disabled = false; setTimeout(() => { btn.textContent = 'Share this card'; }, 2500);
 });
 $('viewer').addEventListener('keydown', (e) => {
@@ -875,14 +875,14 @@ boot().catch(() => {
 try { sessionStorage.setItem('scBooted', '1'); } catch {} // the app is open: going to Explore skips the loader
 
 // Inside the app shell (index.html #collection-frame, 2026-10-07): links back to Explore tell the shell instead of
-// navigating; the shell sends the safe-area insets (an iframe doesn't get them) and asks us to open a card.
+// navigating; the shell sends the safe-area insets (an iframe doesn’t get them) and asks us to open a card.
 // "12 cards · not backed up · Sign in ›" under the heading until you sign in (2026-10-11, design/auth-moments.html 3).
 // Inside the app it asks Explore to open the sign-in sheet; on its own it goes to Settings.
 const EMBED = window.parent !== window && new URLSearchParams(location.search).has('embed');
 if (EMBED) {
   document.documentElement.classList.add('embedded');
-  // Explore's switcher sits over this page; while a card, patch or the stats are open it steps aside so it doesn't
-  // cover their bottom rows (playtest 2026-10-11: the sighting list's delete × was under it).
+  // Explore’s switcher sits over this page; while a card, patch or the stats are open it steps aside so it doesn’t
+  // cover their bottom rows (playtest 2026-10-11: the sighting list’s delete × was under it).
   { const dlgs = ['viewer', 'patch-view', 'stats-view'].map((id) => document.getElementById(id)).filter(Boolean); let was = null;
     const tell = () => { const on = dlgs.some((d) => d.open); if (on !== was) { was = on; window.parent.postMessage({ sc: 'modal', on }, location.origin); } };
     const mo = new MutationObserver(tell); dlgs.forEach((d) => mo.observe(d, { attributes: true, attributeFilter: ['open'] })); }
@@ -922,12 +922,12 @@ function openKey(key) {
   const go = () => {
     if (key === 'patches') { setView('patches'); return; }
     if (!state.byKey.has(key) && /^[A-Z]+:/.test(key)) key = key.split(':')[0];
-    if (!state.byKey.has(key)) key = state.keyOfId?.get(String(key)) ?? key; // a satellite that's now part of a fleet (QA 2026-10-08)
+    if (!state.byKey.has(key)) key = state.keyOfId?.get(String(key)) ?? key; // a satellite that’s now part of a fleet (QA 2026-10-08)
     if (!state.byKey.has(key)) return;
     // Open it in a list that contains it: the right tab, and filters cleared if they hide it (QA 2026-10-08: a
     // leftover rarity filter, or the Albums / Patches tab, made "View in collection" open nothing).
     const want = state.sightingsByKey.has(key) ? 'owned' : 'discover';
-    // A card you don't have, opened from Explore, borrows the Albums list only while it's open: closing it (or the
+    // A card you don’t have, opened from Explore, borrows the Albums list only while it’s open: closing it (or the
     // Collection) lands on Mine (2026-10-17, Sevaan). Opened from Albums yourself, you go back to Albums as before.
     if (want === 'discover' && state.view !== 'discover') returnView = 'owned';
     if (!['owned', 'discover'].includes(state.view) || (want === 'discover' && state.view !== 'discover')) setView(want);
@@ -941,7 +941,7 @@ function openKey(key) {
 
 // ---------- mission patches: the wall and the detail view (2026-10-08, design/patches.html) ----------
 // Every achievement is a patch; earned ones in full colour (gold foil / holo on the special ones), the rest a faint
-// stitched outline with the name so you can see what's out there. Group chips filter. Tap a patch for its detail.
+// stitched outline with the name so you can see what’s out there. Group chips filter. Tap a patch for its detail.
 state.patchGroup = 'all';
 $('tab-patches').addEventListener('click', () => { feel('select'); setView('patches'); });
 let earnedCache = null;
@@ -972,7 +972,7 @@ function renderPatches() {
   let sec = {}; try { sec = JSON.parse(localStorage.getItem('secrets')) || {}; } catch {}
   const SEC = Object.fromEntries(Object.values(SECRET_PATCHES).map((x) => [x.id, [x.name, x.text.replace(/\.$/, '')]])); // every secret, from js/secrets.js
   const secs = Object.keys(SEC).filter((k) => sec[k] && hasPatch(k, sec[k])).map((k) => ({ id: k, name: SEC[k][0], text: SEC[k][1], icon: '', secret: true, done: true }));
-  const all = [...secs, ...(fossil ? [{ id: 'fossil', name: 'Fossil Hunter', text: 'Found dinosaur bones buried under your feet', icon: '', secret: true, done: true }] : []), ...(ufo ? [{ id: 'ufo', name: 'Close Encounter', text: "Something crossed your sky that isn't in any catalogue", icon: '', secret: true, done: true }] : []), ...(state.achievements ?? [])];
+  const all = [...secs, ...(fossil ? [{ id: 'fossil', name: 'Fossil Hunter', text: 'Found dinosaur bones buried under your feet', icon: '', secret: true, done: true }] : []), ...(ufo ? [{ id: 'ufo', name: 'Close Encounter', text: "Something crossed your sky that isn’t in any catalogue", icon: '', secret: true, done: true }] : []), ...(state.achievements ?? [])];
   if (ufo) dates.ufo ??= ufo.at;
   for (const k of Object.keys(sec)) dates[k] ??= sec[k];
   if (fossil) dates.fossil ??= fossil.at;
@@ -999,10 +999,10 @@ function openPatch(id, from = null) {
   let sec = {}; try { sec = JSON.parse(localStorage.getItem('secrets')) || {}; } catch {}
   const SEC = Object.fromEntries(Object.values(SECRET_PATCHES).map((x) => [x.id, [x.name, x.text.replace(/\.$/, '')]])); // every secret, from js/secrets.js
   const secs = Object.keys(SEC).filter((k) => sec[k] && hasPatch(k, sec[k])).map((k) => ({ id: k, name: SEC[k][0], text: SEC[k][1], icon: '', secret: true, done: true }));
-  const all = [...secs, ...(fossil ? [{ id: 'fossil', name: 'Fossil Hunter', text: 'Found dinosaur bones buried under your feet', icon: '', secret: true, done: true }] : []), ...(ufo ? [{ id: 'ufo', name: 'Close Encounter', text: "Something crossed your sky that isn't in any catalogue", icon: '', secret: true, done: true }] : []), ...(state.achievements ?? [])], a = all.find((x) => x.id === id); if (!a) return;
+  const all = [...secs, ...(fossil ? [{ id: 'fossil', name: 'Fossil Hunter', text: 'Found dinosaur bones buried under your feet', icon: '', secret: true, done: true }] : []), ...(ufo ? [{ id: 'ufo', name: 'Close Encounter', text: "Something crossed your sky that isn’t in any catalogue", icon: '', secret: true, done: true }] : []), ...(state.achievements ?? [])], a = all.find((x) => x.id === id); if (!a) return;
   const date = earnedDates()[id] ?? (id === 'fossil' ? fossil?.at : id === 'ufo' ? ufo?.at : sec[id] ?? null), f = finishOf(a);
   $('pv-position').textContent = `PATCH · ${all.filter((x) => x.done).length} of ${all.length} earned`;
-  // On a card (2026-10-09, Sevaan): the patch sits on a card like the collection's, which you flick up and away.
+  // On a card (2026-10-09, Sevaan): the patch sits on a card like the collection’s, which you flick up and away.
   $('pv-body').innerHTML = `<div class="pv-card${a.done ? '' : ' locked'}"><div class="pv-bar"><span>Mission patch</span><span>${esc(GROUPS[groupOf(a)].t)}</span></div>
     <div class="pv-patch">${patchHtml(a, { locked: !a.done, prog: a.prog })}</div>
     <h2>${esc(a.name)}</h2><p>${esc(a.text)}</p>
@@ -1020,7 +1020,7 @@ function openPatch(id, from = null) {
     for (const el of d.querySelectorAll('.pv-card > :not(.pv-patch), .pv-hint')) el.animate([{ opacity: 0, transform: 'translateY(8px)' }, { opacity: 1, transform: 'none' }], { duration: 300, delay: 160, easing: 'ease-out', fill: 'backwards' });
   }
   const patch = d.querySelector('.patch'), host = d.querySelector('.pv-patch');
-  // The patch leans toward your finger or the phone's tilt, and the foil sheen follows.
+  // The patch leans toward your finger or the phone’s tilt, and the foil sheen follows.
   const lean = (nx, ny) => { host.style.transform = `perspective(700px) rotateY(${(nx * 16).toFixed(1)}deg) rotateX(${(-ny * 16).toFixed(1)}deg)`; patch.classList.add('tilt'); patch.style.setProperty('--x', `${(50 + nx * 50).toFixed(0)}%`); };
   host.onpointermove = (e) => { const r = host.getBoundingClientRect(); lean((e.clientX - r.left) / r.width - 0.5, (e.clientY - r.top) / r.height - 0.5); };
   host.onpointerleave = () => { host.style.transform = ''; };
@@ -1058,12 +1058,12 @@ $('pv-close').addEventListener('click', closePatch);
 addStarfield($('patch-view'));
 $('patch-view').addEventListener('click', (e) => { if (e.target === $('patch-view')) closePatch(); });
 $('patch-view').addEventListener('cancel', (e) => { e.preventDefault(); closePatch(); });
-// Earned patches you haven't opened yet wear a NEW tag (localStorage patchSeen).
+// Earned patches you haven’t opened yet wear a NEW tag (localStorage patchSeen).
 function patchSeen() { try { return new Set(JSON.parse(localStorage.getItem('patchSeen')) || []); } catch { return new Set(); } }
 function markSeen(id) { const s = patchSeen(); s.add(id); try { localStorage.setItem('patchSeen', JSON.stringify([...s])); } catch {} }
 addEventListener('hashchange', () => { let k = ''; try { k = decodeURIComponent(location.hash.slice(1)); } catch {} if (k) openKey(k); });
 
-// 7 · Show the card-size slider only while there's a grid of cards on screen (2026-10-08 playtest).
+// 7 · Show the card-size slider only while there’s a grid of cards on screen (2026-10-08 playtest).
 {
   let onScreen = false;
   const update = () => { const has = !!$('grid').querySelector('.tile-slot') && !$('grid').hidden; document.body.classList.toggle('grid-off', !(has && onScreen)); };
@@ -1105,7 +1105,7 @@ addEventListener('resize', moveInk); setTimeout(moveInk, 300);
     }
     last = el.textContent; }).observe($('owned-count'), { childList: true, characterData: true, subtree: true }); }
 
-// Offline caching (sw.js, 2026-10-08). Inside the app's Collection layer the parent page has already registered it.
+// Offline caching (sw.js, 2026-10-08). Inside the app’s Collection layer the parent page has already registered it.
 if ('serviceWorker' in navigator && window.parent === window && !isNative()) addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
 // The rank card opens to show missions, the ladder and events, and remembers it (2026-10-12).
 document.addEventListener('click', (e) => {

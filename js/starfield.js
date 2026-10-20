@@ -1,4 +1,4 @@
-// A quiet twinkling starfield for backgrounds (the collection's card viewer). Plain spans with CSS
+// A quiet twinkling starfield for backgrounds (the collection’s card viewer). Plain spans with CSS
 // animation (css/collection.css .starfield), placed at random; nothing runs in JS after setup.
 export function addStarfield(host, count = 70) {
   if (host.querySelector(':scope > .starfield')) return;

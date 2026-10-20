@@ -3,8 +3,8 @@
 // Every star in a stick figure (magnitude <= 5) is its own card; the constellation card turns gold when
 // you own all of them. Bright stars that already have cards (Regulus, Spica…) count as members.
 // No DOM.
-import { NATURAL, NATURAL_BY_KEY, SOLAR_SYSTEM } from './natural.js?v=0.1.891';
-import { starVector } from './celestial.js?v=0.1.891';
+import { NATURAL, NATURAL_BY_KEY, SOLAR_SYSTEM } from './natural.js?v=0.1.892';
+import { starVector } from './celestial.js?v=0.1.892';
 
 const GEN = { Ari: 'Arietis', Tau: 'Tauri', Gem: 'Geminorum', Cnc: 'Cancri', Leo: 'Leonis', Vir: 'Virginis', Lib: 'Librae', Sco: 'Scorpii', Sgr: 'Sagittarii',
   Cap: 'Capricorni', Aqr: 'Aquarii', Psc: 'Piscium', Ori: 'Orionis', BigDipper: 'Ursae Majoris', UMi: 'Ursae Minoris', Cas: 'Cassiopeiae', Cyg: 'Cygni', Cru: 'Crucis',
@@ -45,7 +45,7 @@ const lyText = ([ly, err]) => { const r = ly < 100 ? Math.round(ly) : ly < 1000 
 let loading = null, starFacts = {}, starDist = {};
 export const starDistance = (hip) => starDist[hip] ?? null; // [light-years, relative error] or null
 export function loadConstellations(url = 'data/constellations.json') {
-  // Each star's own researched fact (pre-launch writing review, 2026-10-15): data/star-facts.json, keyed by HIP.
+  // Each star’s own researched fact (pre-launch writing review, 2026-10-15): data/star-facts.json, keyed by HIP.
   const facts = fetch(url.replace('constellations.json', 'star-facts.json')).then((r) => r.json()).catch(() => ({}));
   // Distances (2026-10-17): Hipparcos parallaxes, data/star-dist.json { hip: [light-years, relative error] }.
   const dist = fetch(url.replace('constellations.json', 'star-dist.json')).then((r) => r.json()).catch(() => ({}));
@@ -53,8 +53,8 @@ export function loadConstellations(url = 'data/constellations.json') {
 }
 
 // Name and constellation fixes from the pre-launch fact check (2026-10-15): d3-celestial gives some stars a name that
-// belongs to a neighbour (η Aql "Tarazed" is γ Aql's, κ¹ Pup "Markab" is α Peg's…) or an old name the IAU never adopted;
-// those show their Bayer name instead. Stars shared by figures (the False Cross) get the constellation they're really in.
+// belongs to a neighbour (η Aql "Tarazed" is γ Aql’s, κ¹ Pup "Markab" is α Peg’s…) or an old name the IAU never adopted;
+// those show their Bayer name instead. Stars shared by figures (the False Cross) get the constellation they’re really in.
 const STAR_FIX = {
   43103: { name: null }, 89642: { name: null }, 92041: { name: null }, 94779: { name: null }, 97804: { name: null },
   13954: { name: null }, 20042: { name: null }, 81693: { name: null }, 112440: { name: null }, 37229: { name: null },

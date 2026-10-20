@@ -1,23 +1,23 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { fallWords } from './last-chance.js?v=0.1.891';
-import { feel } from './native.js?v=0.1.891';
-import { sfx } from './sfx.js?v=0.1.891';
-import { cardArt } from './art.js?v=0.1.891';
-import { TIER_INFO } from './rarity.js?v=0.1.891';
-import { SET_BY_ID } from './sets.js?v=0.1.891';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.891';
-import { FLEET_ABOUT, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.891';
-import { artFileFor } from './art-keys.js?v=0.1.891';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.891';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.891';
-import { nightsIn } from './observation.js?v=0.1.891';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.891';
-import { SHINY } from './shiny.js?v=0.1.891';
-import { conArt, cometArt } from './con-art.js?v=0.1.891';
-import { CON_FIGURES } from './con-figures.js?v=0.1.891';
+import { fallWords } from './last-chance.js?v=0.1.892';
+import { feel } from './native.js?v=0.1.892';
+import { sfx } from './sfx.js?v=0.1.892';
+import { cardArt } from './art.js?v=0.1.892';
+import { TIER_INFO } from './rarity.js?v=0.1.892';
+import { SET_BY_ID } from './sets.js?v=0.1.892';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.892';
+import { FLEET_ABOUT, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.892';
+import { artFileFor } from './art-keys.js?v=0.1.892';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.892';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.892';
+import { nightsIn } from './observation.js?v=0.1.892';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.892';
+import { SHINY } from './shiny.js?v=0.1.892';
+import { conArt, cometArt } from './con-art.js?v=0.1.892';
+import { CON_FIGURES } from './con-figures.js?v=0.1.892';
 // The animal/symbol figure belongs to the completed (gold) constellation card only (2026-10-05): a single
-// star's card draws just the star pattern with its star marked, so the figure is a reward for finishing the set.
-// A star card's constellation figure comes into focus as you collect the constellation's stars (design/con-focus.html B).
+// star’s card draws just the star pattern with its star marked, so the figure is a reward for finishing the set.
+// A star card’s constellation figure comes into focus as you collect the constellation’s stars (design/con-focus.html B).
 function conFocus(o, owned) {
   const con = CON_BY_ID.get(o.con); if (!con || !CON_FIGURES.has(o.con)) return {};
   const have = owned ? con.stars.filter((k) => owned.has(k)).length : 1;
@@ -26,7 +26,7 @@ function conFocus(o, owned) {
 }
 const conFig = (id) => (CON_FIGURES.has(id) ? { figure: `assets/art/con/${id}.webp` } : {});
 
-// The footer says the card's level, not a bare count (collectors 2026-10-11: Saturn on 7 nights looked like a first
+// The footer says the card’s level, not a bare count (collectors 2026-10-11: Saturn on 7 nights looked like a first
 // sighting): "SILVER · 7 NIGHTS", "GOLD · 12 NIGHTS"; a first-level card just counts its nights, "1 NIGHT".
 function seenLine(level, nights, count) {
   const n = nights || count, unit = nights ? `NIGHT${n === 1 ? '' : 'S'}` : `TIME${n === 1 ? '' : 'S'}`;
@@ -52,10 +52,10 @@ export function artImage(o, size = 'full') {
   const file = artFileFor(o, { [o.id]: seriesKeyOf(o) });
   return ART_FILES.has(file) ? `assets/art/cards/${size === 'small' ? 'sm/' : ''}${file}.webp` : null;
 }
-// A few of the picture's own stars twinkle (positions found by scripts/import-art.py). The layer has the
-// picture's shape and is scaled like object-fit: cover, so each sparkle lands on its star.
+// A few of the picture’s own stars twinkle (positions found by scripts/import-art.py). The layer has the
+// picture’s shape and is scaled like object-fit: cover, so each sparkle lands on its star.
 // Hand-placed glints for pictures whose sky the import script found no stars in (the big close-ups fill
-// the frame with glare). Kept here so a re-run of scripts/import-art.py doesn't wipe them.
+// the frame with glare). Kept here so a re-run of scripts/import-art.py doesn’t wipe them.
 const STAR_CORNERS = [[0.08, 0.12], [0.12, 0.78], [0.91, 0.14], [0.89, 0.72], [0.05, 0.45], [0.95, 0.46]];
 const ART_STARS_EXTRA = {
   dnepr: { r: 1.519, s: [[0.15, 0.13], [0.08, 0.45], [0.78, 0.62], [0.93, 0.42], [0.52, 0.78]] },
@@ -83,7 +83,7 @@ const orbitIcon = '<svg viewBox="0 0 32 24" fill="none" aria-hidden="true"><circ
 // Preview exposes the artwork and fact without claiming the card was earned.
 // Mission card helpers (2026-10-14). Orbital speed from laps a day (circular orbit): v = 2πa / T.
 const speedKmh = (laps) => { const T = 86400 / laps, a = Math.cbrt(398600.4418 * (T / (2 * Math.PI)) ** 2); return 2 * Math.PI * a / T * 3600; };
-// A star's surface temperature: known values for the bright stars and the Sun, else from its B-V colour (Ballesteros 2012).
+// A star’s surface temperature: known values for the bright stars and the Sun, else from its B-V colour (Ballesteros 2012).
 const TEMP_K = { sun: 5772, 'star:sirius': 9940, 'star:canopus': 7350, 'star:arcturus': 4290, 'star:alpha-centauri': 5790, 'star:vega': 9600, 'star:capella': 4970, 'star:rigel': 12100, 'star:procyon': 6530, 'star:achernar': 15000, 'star:betelgeuse': 3600, 'star:hadar': 25000, 'star:altair': 7700, 'star:acrux': 28000, 'star:aldebaran': 3910, 'star:antares': 3400, 'star:spica': 22400, 'star:pollux': 4670, 'star:fomalhaut': 8590, 'star:deneb': 8500, 'star:mimosa': 27000, 'star:regulus': 12460, 'star:polaris': 6000 };
 const tempK = (o) => TEMP_K[o.key] ?? (o.bv != null ? 4600 * (1 / (0.92 * o.bv + 1.7) + 1 / (0.92 * o.bv + 0.62)) : null);
 // The colour-temperature strip (Sevaan loved it): red-cool to blue-hot, the star marked on it.
@@ -93,7 +93,7 @@ function tempStrip(o) {
   const f = Math.max(0, Math.min(1, Math.log(K / 2500) / Math.log(30000 / 2500))), C = Math.round((K - 273) / 100) * 100;
   return `<div class="card__temp"><i><b style="left:${(f * 100).toFixed(1)}%"></b></i><span><span>COOL · 2,000 °C</span><em>${C.toLocaleString('en-US')} °C</em><span>30,000 °C · HOT</span></span></div>`;
 }
-// Last chance (js/last-chance.js): a red bar over the picture while it's falling; once it has fallen out of the
+// Last chance (js/last-chance.js): a red bar over the picture while it’s falling; once it has fallen out of the
 // catalogue, a "Burned up" stamp on the card you kept.
 function lcMark(o) {
   if (!o.fallAt) return '';
@@ -107,18 +107,18 @@ export function renderCard(o, opts = {}) {
   const conCard = o.natural === 'constellation', prog = conCard ? conProgress(o, opts.ownedKeys ?? new Set()) : null;
   const caught = conCard ? prog.level === 'gold' : sightings.length > 0; // a constellation joins your collection only when complete
   const shinyOf = o.launches ? null : sightings.find((x) => x.shiny && SHINY[x.shiny])?.shiny; // a shiny sighting makes the card shiny (js/shiny.js); fleet cards never are
-  const revealed = caught || (opts.preview && !o.story); // a story's picture stays hidden until you find it
+  const revealed = caught || (opts.preview && !o.story); // a story’s picture stays hidden until you find it
   const AS = opts.mini ? 'small' : 'full'; // opts.mini: the same card shrunk into a Collection tile (small pictures, no sparkles)
   const extinct = opts.forceExtinct || !!o.decay;
   const fleet = !!o.launches, stamps = fleet ? stampsIn(sightings) : null;
   const level = opts.forceLevel ?? (conCard ? prog.level : fleet ? fleetLevel(o.family, stamps.size) : cardLevel(sightings));
   const tier = o.story ? { gem: '❖', label: 'Story', color: '#3fc7b5' } : TIER_INFO[o.tier] ?? TIER_INFO.common; // story cards (js/stories.js) wear their own teal label
   const set = SET_BY_ID[o.set] ?? { name: 'Field archive', color: '#d74730' };
-  const stats = orbitStats(o), age = yearsUp(o.launches ? { launch: o.launches[0]?.launch } : o), laps = lapsPerDay(o); // a fleet's age is from its FIRST launch, the date shown (Starlink said 6 years for 2019)
+  const stats = orbitStats(o), age = yearsUp(o.launches ? { launch: o.launches[0]?.launch } : o), laps = lapsPerDay(o); // a fleet’s age is from its FIRST launch, the date shown (Starlink said 6 years for 2019)
   // A crew count changes often and is not supplied by the orbital catalogue.
   const loreStat = thirdStat(o, sizeLabel(o.rcs), opts.seenMembers ?? 0);
   const third = loreStat.label === 'CREW' ? { label: 'LAUNCHED', value: o.launch?.slice(0, 4) ?? '—' } : loreStat;
-  const secretStory = o.story && !caught; // a story you haven't found keeps its secret
+  const secretStory = o.story && !caught; // a story you haven’t found keeps its secret
   const title = secretStory ? 'Secret story' : titleFor(o);
   const el = document.createElement('article');
   el.className = `card card--retro${o.icon ? ' is-icon' : ''}${shinyOf ? ' shiny' : ''}${fleet ? ' card--fleet' : ''}${(conCard || fleet) && level === 'gold' ? ' gold-foil' : ''} tier-${o.tier ?? 'common'} level-${level}${revealed ? '' : ' uncaught'}${!caught ? ' not-owned' : ''}${extinct ? ' extinct' : ''}${title.length > 24 ? ' long-name' : ''}`;
@@ -126,7 +126,7 @@ export function renderCard(o, opts = {}) {
   el.style.setProperty('--tier', tier.color);
   el.dataset.id = o.id;
   el.setAttribute('aria-label', `${title}, ${tier.label}, ${caught ? 'collected' : 'not collected'}`);
-  // A constellation is collected the day its last star was found: the latest of each star's first sighting (QA 2026-10-08).
+  // A constellation is collected the day its last star was found: the latest of each star’s first sighting (QA 2026-10-08).
   const firstOf = (list) => Math.min(...list.map((s) => s.time));
   const byStar = new Map(); if (conCard) for (const s of sightings) byStar.set(s.cardKey, Math.min(byStar.get(s.cardKey) ?? Infinity, s.time));
   const first = !caught ? null : conCard && byStar.size ? Math.max(...byStar.values()) : firstOf(sightings);
@@ -135,22 +135,22 @@ export function renderCard(o, opts = {}) {
   const identifier = nat ? o.code : o.members ? `${o.members.length.toLocaleString('en-US')} SATELLITES` : o.runOf > 1 ? `NO. ${o.runNo} OF ${o.runOf}` : `NORAD ${o.id}`;
   const identity = o.type === 'story' ? (secretStory ? 'Hidden somewhere in the sky' : o.when) : nat ? (conCard ? (o.system ? 'Planetary system' : o.zodiac ? 'Zodiac constellation' : 'Constellation') : o.type === 'star' ? `Star in ${o.constellation}` : o.type === 'deepsky' ? o.kind : o.type === 'comet' ? 'Comet' : o.type === 'sun' ? 'Star' : o.type === 'moon' ? 'Natural satellite' : 'Planet') : fleet ? 'Satellite fleet' : o.type === 'rocket-body' && o.parent ? `Carried ${titleCase(o.parent)}${o.launch ? ` · ${o.launch.slice(0, 4)}` : ''}` : o.type === 'debris' && o.launch ? `${debrisOf(o)?.what ?? TYPE_LABEL[o.type] ?? 'Debris'} · ${o.launch.slice(0, 4)}` : TYPE_LABEL[o.type] ?? 'Orbital object'; // what it carried and when, so same-name stages differ
   const ageText = age == null ? '' : age === 0 ? 'Less than a year ago' : `${age} ${age === 1 ? 'year' : 'years'} ago`;
-  // Fleet cards: the ringed dot is your newest stamp; say which launch that was (the dots alone don't).
+  // Fleet cards: the ringed dot is your newest stamp; say which launch that was (the dots alone don’t).
   const lk = fleet ? latestStamp(sightings) : null, ll = lk ? o.launches.find((l) => l.key === lk) : null;
-  const latestLine = ll ? `Launched ${launchDay(ll.launch).replace(/ (\d{4})$/, ', $1')}` : ''; // sits right of the grid's heading
-  // The Moon: its phases as stamps, like a fleet's launches (2026-10-17, Sevaan): eight moons, lit once you've seen the
+  const latestLine = ll ? `Launched ${launchDay(ll.launch).replace(/ (\d{4})$/, ', $1')}` : ''; // sits right of the grid’s heading
+  // The Moon: its phases as stamps, like a fleet’s launches (2026-10-17, Sevaan): eight moons, lit once you’ve seen the
   // Moon in that phase, your newest ringed, then the fact.
   const moonCard = o.type === 'moon' && !!o.natural && revealed;
   const mStamps = moonCard ? stampsIn(sightings) : null, mLatest = moonCard ? moonPhaseOf(latestStamp(sightings)) : null;
   const moonBlock = moonCard ? `<div class="fl-dots mn-phases"><div class="fl-head"><span class="card__note-label">PHASES · ${mStamps.size}/8</span>${mLatest != null ? `<span class="fl-latest"><i></i>${esc(MOON_PHASES[mLatest])}</span>` : ''}</div><div class="mn-row">${MOON_PHASES.map((name, k) => `<svg viewBox="-20 -20 40 40" class="${mStamps.has(`MOON:${k}`) ? 'on' : ''}${k === mLatest ? ' latest' : ''}${k ? '' : ' nm'}" role="img" aria-label="${esc(name)}${mStamps.has(`MOON:${k}`) ? '' : ' (not yet)'}"><circle r="15"></circle>${k ? `<path d="${phasePath(k)}"${k > 4 ? ' transform="scale(-1,1)"' : ''}></path>` : ''}</svg>`).join('')}</div></div>` : '';
   const factBlock = moonCard ? moonBlock + `<div class="card__fact"><p>${richText(factFor(o))}</p></div>`
     : fleet ? dotMap(o, stamps, lk, `${stamps.size} / ${o.launches.length} stamped` /* no "N more for Silver" (2026-10-12, Sevaan: it wrapped and took room from the art) */, latestLine) + (FLEET_ABOUT[o.family] ? `<div class="card__fact fl-about"><p>${richText(FLEET_ABOUT[o.family])}</p></div>` : '')
-    : conCard ? `<div class="card__fact"><p>${richText(prog.level === 'gold' ? factFor(o).replace(/Collect all \d+ of its stars to turn this card \*\*gold\*\*\./, `You've found **all ${prog.total}** of its stars.`).replace(/Collect the Sun, the Moon and all \*\*seven\*\* planets to turn this card \*\*gold\*\*\./, `You've seen **all nine** of them with your own eyes.`) : factFor(o))}</p><p class="con-progress">${o.stars.map((k) => `<i class="${(opts.ownedKeys ?? new Set()).has(k) ? 'on' : ''}"></i>`).join('')}<span>${prog.have} / ${prog.total} ${o.system ? 'WORLDS' : 'STARS'}${prog.level === 'gold' ? ' · COMPLETE' : ''}</span></p></div>`
-    : secretStory ? '<div class="card__fact"><p>Somewhere in the sky there\'s a story waiting. Keep looking, at night, in odd places, on special days.</p></div>'
-    : `<div class="card__fact"><p>${richText(factFor(o))}</p></div>`; // the fact shows on cards you don't have too: it's what makes you want one (2026-10-13, Sevaan)
+    : conCard ? `<div class="card__fact"><p>${richText(prog.level === 'gold' ? factFor(o).replace(/Collect all \d+ of its stars to turn this card \*\*gold\*\*\./, `You’ve found **all ${prog.total}** of its stars.`).replace(/Collect the Sun, the Moon and all \*\*seven\*\* planets to turn this card \*\*gold\*\*\./, `You’ve seen **all nine** of them with your own eyes.`) : factFor(o))}</p><p class="con-progress">${o.stars.map((k) => `<i class="${(opts.ownedKeys ?? new Set()).has(k) ? 'on' : ''}"></i>`).join('')}<span>${prog.have} / ${prog.total} ${o.system ? 'WORLDS' : 'STARS'}${prog.level === 'gold' ? ' · COMPLETE' : ''}</span></p></div>`
+    : secretStory ? '<div class="card__fact"><p>Somewhere in the sky there’s a story waiting. Keep looking, at night, in odd places, on special days.</p></div>'
+    : `<div class="card__fact"><p>${richText(factFor(o))}</p></div>`; // the fact shows on cards you don’t have too: it’s what makes you want one (2026-10-13, Sevaan)
   // Long facts take room from the art, not the card: each line past three shrinks the art window (about
   // 52 characters a line), so every card stays the same height.
-  // Fleet cards with a big launch grid plus the fleet's fact can run past the card's 42em: once it's on the page,
+  // Fleet cards with a big launch grid plus the fleet’s fact can run past the card’s 42em: once it’s on the page,
   // take the overflow out of the art window so every card stays the same height (2026-10-09).
   if (fleet) requestAnimationFrame(() => {
     const art = el.querySelector('.card__art'), face = el.querySelector('.card__face'); if (!art || !face || !el.isConnected) return;
@@ -184,7 +184,7 @@ export function renderCard(o, opts = {}) {
   if (!opts.mini) fitFact(el);
   return el;
 }
-// A long fact shrinks a little rather than being cut off, e.g. with Android's text size turned up (Android playtest
+// A long fact shrinks a little rather than being cut off, e.g. with Android’s text size turned up (Android playtest
 // 2026-10-19: OPS 0082's last line was clipped at 130%). Down to 82%, once the card is on screen.
 function fitFact(el) {
   const f = el.querySelector('.card__fact'); if (!f || typeof ResizeObserver === 'undefined') return;
@@ -215,7 +215,7 @@ function nextLevel(family, level, have = 0) {
   const more = (n) => `${Math.max(1, n - have)} MORE FOR`;
   return level === 'bronze' ? `${more(s)} SILVER` : level === 'silver' ? `${more(g)} GOLD` : level === 'gold' ? 'TOP LEVEL' : 'STAMP ONE FOR BRONZE';
 }
-// The Moon card's picture shows the phase you caught last (2026-10-18 playtest: a full Moon over "First Quarter"):
+// The Moon card’s picture shows the phase you caught last (2026-10-18 playtest: a full Moon over "First Quarter"):
 // the shadowed part laid over the drawn Moon (centre 603,510, radius 318 in the 1194×896 art), cropped like the image.
 function moonShade(k) {
   const lit = k ? `<path d="${phasePath(k)}" fill="#000"${k > 4 ? ' transform="scale(-1,1)"' : ''}/>` : '';
@@ -243,7 +243,7 @@ const latestStamp = (sightings) => stampHistory(sightings.filter((s) => !s.sim))
 // Every launch in the fleet as a dot, oldest to newest; stamped ones filled, the newest ringed.
 // summary ("4 / 421 stamped · SILVER AT 10") sits between the first and last launch years, under the dots.
 function dotMap(o, stamps, latest, summary = '', latestLine = '') {
-  // Huge fleets (Starlink, 400+ launches) get finer dots in about six rows, so the grid doesn't eat the picture (2026-10-14).
+  // Huge fleets (Starlink, 400+ launches) get finer dots in about six rows, so the grid doesn’t eat the picture (2026-10-14).
   const n = o.launches.length, cols = n > 200 ? Math.min(72, Math.ceil(n / 6)) : n > 60 ? 18 : Math.min(14, Math.max(10, n)), gap = n > 200 ? '.1em' : '.45em';
   const dots = o.launches.map((l) => `<i class="${stamps.has(l.key) ? 'on' : ''}${l.key === latest ? ' latest' : ''}"></i>`).join('');
   const y0 = o.launches[0]?.launch?.slice(0, 4) ?? '', y1 = o.launches.at(-1)?.launch?.slice(0, 4) ?? '';
@@ -260,7 +260,7 @@ function inkStamp(stamp, launch, i, big = false) {
 }
 
 // Card viewer: your stamps for a fleet card, newest first and larger, then the rest, then empty slots.
-// Restart the fleet card's typed launch line once its face is actually showing (2026-10-19, Sevaan: on a catch it typed
+// Restart the fleet card’s typed launch line once its face is actually showing (2026-10-19, Sevaan: on a catch it typed
 // itself in while the card was still face down, so it had already finished when the card turned over). A fresh copy
 // of the element replays both the typing and the caret.
 export function retype(root) {
@@ -370,10 +370,10 @@ export function attachTilt(el, { scroll = false } = {}) { // scroll: let a finge
 // Phone tilt moves the card and its foil. The resting angle is whatever the phone was at when the
 // card opened, and it slowly follows you so the card settles back if you just change how you hold it.
 // A finger on the card takes over until it lifts.
-// Phone tilt is measured RELATIVE to however you're holding the phone when the card appears (flat, upright,
+// Phone tilt is measured RELATIVE to however you’re holding the phone when the card appears (flat, upright,
 // pointed at the sky, upside down): the card starts level and moves only as you turn the phone from there.
 // Raw beta/gamma angles jump near upright and upside down (gimbal lock), which threw the card to full tilt,
-// so we work with the whole orientation as a quaternion and take the small turn about the phone's own
+// so we work with the whole orientation as a quaternion and take the small turn about the phone’s own
 // x (top tips toward/away) and y (sides tip) axes. The resting pose drifts slowly toward how you hold it now.
 const D2R = Math.PI / 180;
 const qMul = (a, b) => [
@@ -402,11 +402,11 @@ export function attachGyro(el, tilt) {
     const dev = 2 * Math.acos(Math.min(1, Math.abs(q[0] * base[0] + q[1] * base[1] + q[2] * base[2] + q[3] * base[3]))) / D2R;
     const k = dev > 12 ? Math.min(0.2, 0.01 + (dev - 12) * 0.006) : 0.01;
     base = qNorm(base.map((v, i) => v + (q[i] - v) * k));
-    // Turn from the resting pose, in the phone's own frame: conj(base) * q.
+    // Turn from the resting pose, in the phone’s own frame: conj(base) * q.
     let r = qMul([base[0], -base[1], -base[2], -base[3]], q);
     if (r[0] < 0) r = r.map((v) => -v);
-    const ax = 2 * Math.asin(Math.max(-1, Math.min(1, r[1]))) / D2R; // about the phone's x axis (like beta)
-    const ay = 2 * Math.asin(Math.max(-1, Math.min(1, r[2]))) / D2R; // about the phone's y axis (like gamma)
+    const ax = 2 * Math.asin(Math.max(-1, Math.min(1, r[1]))) / D2R; // about the phone’s x axis (like beta)
+    const ay = 2 * Math.asin(Math.max(-1, Math.min(1, r[2]))) / D2R; // about the phone’s y axis (like gamma)
     const tx = .5 + Math.max(-1, Math.min(1, ay / 20)) * .5;
     const ty = .5 + Math.max(-1, Math.min(1, ax / 20)) * .5;
     px += (tx - px) * 0.5; py += (ty - py) * 0.5; // take the edge off sensor jitter; the spring does the rest
@@ -416,10 +416,10 @@ export function attachGyro(el, tilt) {
   return () => { window.removeEventListener('deviceorientation', onOri); tilt.reset(); };
 }
 
-// Throw an element off the top of the screen, starting at the finger's speed (dx, dy px over dt ms) and
-// keeping it fully visible until it's gone. Returns the duration in ms. Used by the reveal and the collection viewer.
+// Throw an element off the top of the screen, starting at the finger’s speed (dx, dy px over dt ms) and
+// keeping it fully visible until it’s gone. Returns the duration in ms. Used by the reveal and the collection viewer.
 // It starts from wherever the card is drawn right now (its current transform, e.g. a centring translate or a landing
-// animation's end), so it never jumps before it flies (2026-10-19, Sevaan: the card vanished for part of the swipe).
+// animation’s end), so it never jumps before it flies (2026-10-19, Sevaan: the card vanished for part of the swipe).
 export function throwOff(el, dx, dy, dt, from = getComputedStyle(el).transform) {
   const r = el.getBoundingClientRect(), dist = r.bottom + 40;               // until its bottom edge clears the top
   const b = from && from !== 'none' ? `${from} ` : '';
@@ -434,7 +434,7 @@ export function throwOff(el, dx, dy, dt, from = getComputedStyle(el).transform) 
 // onBack(backEl) dresses the back (a random poster, js/card-backs.js) each time it turns to the back.
 // The back is pre-mirrored in CSS, so it reads correctly while the card faces away.
 // One smooth card turn for every flip (2026-10-17, Sevaan: the flips were janky). Everything runs on the compositor:
-//  · the back's show/hide is a stepped opacity animation on the same clock as the turn, so the faces swap on exactly
+//  · the back’s show/hide is a stepped opacity animation on the same clock as the turn, so the faces swap on exactly
 //    the edge-on frame (a requestAnimationFrame check could land a frame late and flash the wrong face);
 //  · .turning parks the shimmer layers and pauses the tilt, which otherwise restyled the whole card every frame;
 //  · the card gets its own layer a frame before it moves.
@@ -453,7 +453,7 @@ export function turnCard(el, { from, to, ms = 520, lift = 1, back = el.querySele
     { transform: `perspective(1600px) rotateY(${from}deg) scale(1)`, easing: easeIn },
     { transform: `perspective(1600px) rotateY(${mid}deg) scale(${lift})`, offset: .5, easing: easeOut },
     { transform: `perspective(1600px) rotateY(${to}deg) scale(1)` }], { duration: ms, fill: 'forwards' });
-  // Opacity 0/1 as a step at the half: same start time and duration as the turn, so it can't drift from it.
+  // Opacity 0/1 as a step at the half: same start time and duration as the turn, so it can’t drift from it.
   const s0 = showStart ? 1 : 0, s1 = showEnd ? 1 : 0;
   const b = back?.animate([{ opacity: s0 }, { opacity: s0, offset: .5 }, { opacity: s1, offset: .5 }, { opacity: s1 }], { duration: ms, fill: 'forwards' });
   let done = false;
@@ -468,7 +468,7 @@ export function turnCard(el, { from, to, ms = 520, lift = 1, back = el.querySele
 }
 
 export function attachFlip(el, { onBack, onTap } = {}) {
-  // onTap (2026-10-14, orbit view): a single tap, fired once it's clear no second tap is coming; a double tap flips.
+  // onTap (2026-10-14, orbit view): a single tap, fired once it’s clear no second tap is coming; a double tap flips.
   let flipped = false, busy = false, lastTap = 0, lastX = 0, lastY = 0, tapTimer = 0, downX = 0, downY = 0;
   const single = () => { clearTimeout(tapTimer); if (onTap) tapTimer = setTimeout(() => { if (!flipped) onTap(); }, 330); };
   el.addEventListener('pointerdown', (e) => { downX = e.clientX; downY = e.clientY; });
@@ -476,7 +476,7 @@ export function attachFlip(el, { onBack, onTap } = {}) {
   const back = el.querySelector('.card__back');
   // Smooth back-and-forth (2026-10-14, Sevaan: flipping back and forth was janky): the old animation is dropped instead
   // of piling up (each one used to stay with fill: forwards), the faces swap on the frame the card is edge-on (read from
-  // the animation's own clock, not a timer that drifts), and a double tap during a flip is queued, not ignored.
+  // the animation’s own clock, not a timer that drifts), and a double tap during a flip is queued, not ignored.
   let turn = null, queued = false;
   const flip = () => {
     if (!back) return;

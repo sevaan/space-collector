@@ -1,9 +1,9 @@
-import { SETS, goldAlbums } from './sets.js?v=0.1.891';
-import { isPlus } from './plus.js?v=0.1.891';
-// Card backs you can choose (2026-10-16, design/card-backs.html, Sevaan liked all six). Mission Control is everyone's;
+import { SETS, goldAlbums } from './sets.js?v=0.1.892';
+import { isPlus } from './plus.js?v=0.1.892';
+// Card backs you can choose (2026-10-16, design/card-backs.html, Sevaan liked all six). Mission Control is everyone’s;
 // Plus unlocks the rest; two can also be earned free: Golden Record (find the Pale Blue Dot story) and Star Chart
-// (complete 10 constellations); main.js writes what's been earned to localStorage 'backEarned'. The choice is
-// localStorage 'cardBack': a back's id, or 'random' for a different unlocked one each time a card turns over.
+// (complete 10 constellations); main.js writes what’s been earned to localStorage 'backEarned'. The choice is
+// localStorage 'cardBack': a back’s id, or 'random' for a different unlocked one each time a card turns over.
 export const CARD_BACKS = [
   { id: 'mission-control', name: 'Mission Control', url: 'assets/art/backs/back-collector.webp', title: 'middle', free: true },
   { id: 'golden-record', name: 'Golden Record', url: 'assets/art/backs/back-golden-record.webp', title: 'middle', earn: 'Find the Pale Blue Dot story' },
@@ -33,9 +33,9 @@ export function nextBack() {
   return b;
 }
 
-// Put a random back on an element (its background), marking where the poster's title sits.
-// o (optional): the card. A card from an album you've filled to gold wears that album's back: the seal framed in the
-// album's colour with its name across the bottom (2026-10-10, playtest #17).
+// Put a random back on an element (its background), marking where the poster’s title sits.
+// o (optional): the card. A card from an album you’ve filled to gold wears that album’s back: the seal framed in the
+// album’s colour with its name across the bottom (2026-10-10, playtest #17).
 export function applyBack(el, o = null) {
   if (!el) return null;
   const b = nextBack();

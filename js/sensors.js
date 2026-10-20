@@ -1,6 +1,6 @@
 // Phone orientation -> where the back of the phone is pointing in the sky.
 // Produces a camera basis in local East-North-Up: right, up (screen edges) and back (view direction).
-import { declination } from './declination.js?v=0.1.891';
+import { declination } from './declination.js?v=0.1.892';
 
 const RAD = Math.PI / 180;
 
@@ -15,14 +15,14 @@ export const pointing = {
 };
 
 // The compass nudge is remembered on this phone (2026-10-08, Sevaan: −20° lined everything up). Most of a steady
-// error like that is the phone's compass plus magnetic declination (iOS reports magnetic north), which don't change
-// from night to night, so it shouldn't need redoing every visit.
+// error like that is the phone’s compass plus magnetic declination (iOS reports magnetic north), which don’t change
+// from night to night, so it shouldn’t need redoing every visit.
 const readNudge = () => { try { const n = Number(localStorage.getItem('compassNudge')); return Number.isFinite(n) ? n : 0; } catch { return 0; } };
 let manualNudge = readNudge(), headingLocked = false, nudgeSave = 0;
 export function lockHeading(on) { headingLocked = !!on; }
-// True north (2026-10-08): iOS's compass is magnetic, so add the local declination (js/declination.js, WMM2025).
-// The first time it's applied, a saved nudge is moved by the same amount so the sky doesn't jump for someone who
-// had already lined it up by hand (Sevaan's −20° becomes about −9°).
+// True north (2026-10-08): iOS’s compass is magnetic, so add the local declination (js/declination.js, WMM2025).
+// The first time it’s applied, a saved nudge is moved by the same amount so the sky doesn’t jump for someone who
+// had already lined it up by hand (Sevaan’s −20° becomes about −9°).
 let decl = 0, declAt = '';
 export function setCompassPlace(lat, lon) {
   if (lat == null || lon == null) return;
@@ -66,7 +66,7 @@ function rawAzimuth(v) {
   return (Math.atan2(v[0], v[1]) / RAD + 360) % 360;
 }
 
-// Circular smoothing so the heading offset doesn't jitter.
+// Circular smoothing so the heading offset doesn’t jitter.
 function blendAngle(prev, next, k) {
   const d = ((next - prev + 540) % 360) - 180;
   return (prev + d * k + 360) % 360;

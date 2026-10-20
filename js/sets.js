@@ -4,7 +4,7 @@
 const year = (o) => (o.launch ? Number(o.launch.slice(0, 4)) : null);
 const isDead = (o) => o.kind === 'PAY' && (o.ops === '-' || o.ops === 'D' || ((!o.ops || o.ops === '?') && year(o) < 2000));
 
-// Order matters: the first matching set is the card's primary set.
+// Order matters: the first matching set is the card’s primary set.
 export const SETS = [
   { id: 'wanderers', name: 'The Wanderers', color: '#c08a2e', test: (o) => o.type === 'sun' || o.type === 'moon' || o.type === 'earth' || o.type === 'planet' || !!o.system },
   { id: 'constellations', name: 'Constellations', color: '#c9a227', test: (o) => o.type === 'constellation' || (o.type === 'star' && !!o.con && !o.skyName) },
@@ -39,11 +39,11 @@ export function assignSets(objects) {
   return members;
 }
 
-// Albums (one per set): bronze / silver / gold goals scale with the set's size, so every album has a reachable gold.
+// Albums (one per set): bronze / silver / gold goals scale with the set’s size, so every album has a reachable gold.
 export function albumGoals(n) { return n <= 30 ? [1, Math.ceil(n / 2), n] : n <= 300 ? [10, 50, 100] : [10, 50, 200]; }
-// For progress(): each album's cards and its gold goal (a filled album earns its own patch, 2026-10-10 #17).
+// For progress(): each album’s cards and its gold goal (a filled album earns its own patch, 2026-10-10 #17).
 export function albumList(cards) {
   return SETS.map((s) => { const keys = cards.filter((c) => c.set === s.id).map((c) => String(c.key ?? c.id)); return { id: s.id, name: s.name, keys, goal: albumGoals(keys.length)[2] }; }).filter((a) => a.keys.length);
 }
-// Albums you've filled to gold (cards-page writes localStorage goldAlbums): their cards wear an album card back.
+// Albums you’ve filled to gold (cards-page writes localStorage goldAlbums): their cards wear an album card back.
 export function goldAlbums() { try { return new Set(JSON.parse(localStorage.getItem('goldAlbums')) || []); } catch { return new Set(); } }

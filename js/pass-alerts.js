@@ -1,9 +1,9 @@
 // Pass alerts (2026-10-10, playtest #14). Not named push.js: content blockers block scripts called push.js, and on
-// Sevaan's iPhone that stopped the whole app loading (main.js's imports failed).
+// Sevaan’s iPhone that stopped the whole app loading (main.js’s imports failed).
 // real push notifications a few minutes before a bright or new pass. The
 // phone works out the passes; relay/push.ts (a Val Town val) holds the next few alert times and pushes them when due.
 // On iPhone, web push only works once Space Collector is added to the Home Screen (iOS 16.4+).
-// PUSH: the push val (val.town/x/sevaan/space-collector-push, deployed 2026-10-10). The Settings row hides if it's empty.
+// PUSH: the push val (val.town/x/sevaan/space-collector-push, deployed 2026-10-10). The Settings row hides if it’s empty.
 export const PUSH = 'https://sevaan--54192ae4c4ad11f18b0f1607ee4eb77e.web.val.run';
 
 export const pushConfigured = () => !!PUSH;
@@ -13,7 +13,7 @@ export const isIOS = () => /iP(hone|ad|od)/.test(navigator.userAgent) || (naviga
 export const pushOn = () => { try { return localStorage.getItem('pushOn') === '1'; } catch { return false; } };
 
 const b64 = (s) => { const p = '='.repeat((4 - (s.length % 4)) % 4), raw = atob((s + p).replace(/-/g, '+').replace(/_/g, '/')); return Uint8Array.from(raw, (c) => c.charCodeAt(0)); };
-// The server's public key, fetched ahead of time and kept (2026-10-10: on iPhone, fetching it between the tap and the
+// The server’s public key, fetched ahead of time and kept (2026-10-10: on iPhone, fetching it between the tap and the
 // subscribe could make the subscribe fail, so the tap goes straight from permission to subscribe).
 let keyP = null;
 export function prefetchKey() {

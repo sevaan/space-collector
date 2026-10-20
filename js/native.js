@@ -1,15 +1,15 @@
 // Running inside the native iPhone/Android app (Capacitor, native/)? Then a few things go through native plugins
 // instead of the browser APIs. Plugins are reached through the bridge Capacitor injects (no bundler needed).
 export const isNative = () => !!globalThis.Capacitor?.isNativePlatform?.();
-// A native plugin as an object of async methods, called through the bridge's nativePromise (the @capacitor/core
-// registerPlugin helper isn't loaded, since the web app has no bundler).
+// A native plugin as an object of async methods, called through the bridge’s nativePromise (the @capacitor/core
+// registerPlugin helper isn’t loaded, since the web app has no bundler).
 export function plugin(name) {
   const cap = globalThis.Capacitor;
   if (!isNative() || typeof cap?.nativePromise !== 'function') return null;
   return new Proxy({}, { get: (_, method) => (opts = {}) => cap.nativePromise(name, String(method), opts) });
 }
-// One location fix. In the app this uses the native plugin, so the player sees only the iPhone's own prompt (the
-// web view's getCurrentPosition stacked a second "localhost would like to use your location" on top, 2026-10-11).
+// One location fix. In the app this uses the native plugin, so the player sees only the iPhone’s own prompt (the
+// web view’s getCurrentPosition stacked a second "localhost would like to use your location" on top, 2026-10-11).
 // Resolves a GeolocationPosition-like { coords }, rejects with { code } (1 = denied) like the browser API.
 export async function getPosition(opts) {
   const geo = plugin('Geolocation');
@@ -37,7 +37,7 @@ export function onNative(pluginName, event, fn) {
   const h = cap.addListener(pluginName, event, fn); return () => h?.remove?.();
 }
 const b64 = (blob) => new Promise((ok, no) => { const r = new FileReader(); r.onload = () => ok(String(r.result).split(',')[1]); r.onerror = no; r.readAsDataURL(blob); });
-// Write a file to the app's cache and hand it to the system share sheet (images, .ics, exports). Resolves true if a
+// Write a file to the app’s cache and hand it to the system share sheet (images, .ics, exports). Resolves true if a
 // share sheet opened. Web: the Web Share API with the file, else false (the caller downloads instead).
 export async function shareFile(blob, name, { title = '', text = '' } = {}) {
   if (isNative()) {
@@ -86,13 +86,13 @@ export async function notifyAt(at, title, body, { id } = {}) {
   } catch { return 'unsupported'; }
 }
 export async function cancelNotify(id) { if (isNative()) try { await plugin('LocalNotifications').cancel({ notifications: [{ id }] }); } catch {} }
-// The app's chrome is always dark: light status-bar icons on both platforms, from the first frame.
+// The app’s chrome is always dark: light status-bar icons on both platforms, from the first frame.
 export function nativeChrome() {
   if (!isNative()) return;
   const sb = plugin('StatusBar');
   sb?.setStyle({ style: 'DARK' }).catch(() => {}); // DARK = light text, for dark backgrounds
 }
 
-// The same haptics with the player's Vibration setting applied (localStorage 'haptics'), for pages without main.js's
+// The same haptics with the player’s Vibration setting applied (localStorage 'haptics'), for pages without main.js’s
 // buzz (the Collection; 2026-10-17 haptics playtest: it had none at all).
 export function feel(kind = 'light') { try { if (localStorage.getItem('haptics') === '0') return; } catch {} haptic(kind); }

@@ -2,7 +2,7 @@
   "_about": "Hand-written card facts, keyed by NORAD id. 'fact' shows on the card; 'source' is where it was checked; 'stats' can override the third stat. Keep every fact true and checkable. Objects without an entry get a computed fact (see js/lore.js).",
   "25544": {
     "title": "International Space Station",
-    "fact": "It's about the size of a football field and flies at **28,000 km/h**. It could cross Canada in about 12 minutes.",
+    "fact": "It’s about the size of a football field and flies at **28,000 km/h**. It could cross Canada in about 12 minutes.",
     "stat": [
       "CREW",
       "7"
@@ -10,7 +10,7 @@
   },
   "48274": {
     "title": "Tiangong Space Station",
-    "fact": "China's own space station. Its name means **Heavenly Palace**, and astronauts have lived aboard since 2021.",
+    "fact": "China’s own space station. Its name means **Heavenly Palace**, and astronauts have lived aboard since 2021.",
     "stat": [
       "CREW",
       "3"

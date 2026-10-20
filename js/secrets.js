@@ -1,10 +1,10 @@
-// More secrets (2026-10-08, design/easter-eggs.html): Santa's sleigh, Starman's Roadster, a shooting star, Voyager's
+// More secrets (2026-10-08, design/easter-eggs.html): Santa’s sleigh, Starman’s Roadster, a shooting star, Voyager’s
 // golden record and Dizzy. None is mentioned anywhere; each earns a secret patch. Found ones: localStorage 'secrets'.
 export const SECRET_PATCHES = {
   // Not a secret: the Plus Member patch (2026-10-16, Sevaan), earned by joining Plus and kept on the wall if Plus ends.
   plus: { id: 'plus', name: 'Plus Member', text: 'You joined Space Collector Plus. Thank you for supporting the game.' },
   santa: { id: 'santa', name: 'Nice List', text: 'You waved at Santa on Christmas Eve.' },
-  roadster: { id: 'roadster', name: "Don't Panic", text: 'You found Starman and his Roadster, still driving round the Sun.' },
+  roadster: { id: 'roadster', name: "Don’t Panic", text: 'You found Starman and his Roadster, still driving round the Sun.' },
   meteor: { id: 'meteor', name: 'Make a Wish', text: 'You caught a shooting star.' },
   voyager: { id: 'voyager', name: 'Pale Blue Dot', text: 'You found Voyager 1 and its golden record, 24 billion km away.' },
   dizzy: { id: 'dizzy', name: 'Dizzy', text: 'Three full turns. The compass needs a sit-down.' },
@@ -17,7 +17,7 @@ export const SECRET_PATCHES = {
   wow: { id: 'wow', name: 'Wow!', text: 'You aimed where the 1977 Wow! signal came from. It has never been heard again.' },
   // Story secrets (2026-10-14, js/stories.js): each also gives a story card.
   arecibo: { id: 'arecibo', name: 'Hello From Earth', text: 'You found where the 1974 Arecibo message is heading: the Hercules Cluster.' },
-  halley: { id: 'halley', name: 'Way Home', text: 'You found Halley\'s Comet, far out and falling back towards the Sun. Due in 2061.' },
+  halley: { id: 'halley', name: 'Way Home', text: 'You found Halley’s Comet, far out and falling back towards the Sun. Due in 2061.' },
   sputnik: { id: 'sputnik', name: 'Beep-Beep', text: 'You heard Sputnik on the anniversary of its launch, 4 October 1957.' },
   laika: { id: 'laika', name: 'Good Dog', text: 'You remembered Laika on the anniversary of Sputnik 2, 3 November 1957.' },
   apollo11: { id: 'apollo11', name: 'One Small Step', text: 'You looked at the Moon on 20 July, the day people first walked on it.' },
@@ -43,7 +43,7 @@ export function santa(t) {
 export function summonSanta(t) { santaForced = { start: t, end: t + 120e3, az0: Math.random() * 360 }; }
 export const santaWhere = (f, t) => { const k = (t - f.start) / (f.end - f.start); return { az: (f.az0 + 160 * k) % 360, el: 8 + 42 * Math.sin(Math.PI * k) }; };
 
-// Shooting star: during a meteor shower, every few minutes while you're looking up, one streaks through near the circle.
+// Shooting star: during a meteor shower, every few minutes while you’re looking up, one streaks through near the circle.
 let nextMeteor = 0, meteor = null;
 export function meteorAt(t, active, aimAz, aimEl) {
   if (meteor && t < meteor.end + 400) return meteor;
@@ -52,7 +52,7 @@ export function meteorAt(t, active, aimAz, aimEl) {
   if (!nextMeteor) nextMeteor = t + (60 + Math.random() * 120) * 1000;
   if (t < nextMeteor) return null;
   nextMeteor = t + (180 + Math.random() * 300) * 1000;
-  const ang = Math.random() * Math.PI * 2, off = Math.random() * 3; // passes within 3° of where you're aiming
+  const ang = Math.random() * Math.PI * 2, off = Math.random() * 3; // passes within 3° of where you’re aiming
   const cAz = aimAz + Math.cos(ang) * off, cEl = aimEl + Math.sin(ang) * off, dir = Math.random() * Math.PI * 2;
   return (meteor = { start: t, end: t + 700, from: [cAz - Math.cos(dir) * 9, cEl - Math.sin(dir) * 9], to: [cAz + Math.cos(dir) * 5, cEl + Math.sin(dir) * 5] });
 }
@@ -68,7 +68,7 @@ export const DEEP = [
   ['newhorizons', 288.84, -20.29, 'New Horizons', 'Past Pluto · 66 AU out', '#8fd0ff'],
   ['wow', 291.8, -27.0, 'Wow!', 'Big Ear radio telescope · 15 Aug 1977', '#ff6b6b'],
   ['arecibo', 250.42, 36.46, 'Hello from Earth', 'Arecibo message · sent 1974', '#3fc7b5'], // the Hercules Cluster (M13), where the message is going
-  ['halley', 124.0, 1.5, "Halley's Comet", 'Heading home · due 2061', '#8fd0ff'], // in Hydra, near the far end of its orbit (2026)
+  ['halley', 124.0, 1.5, "Halley’s Comet", 'Heading home · due 2061', '#8fd0ff'], // in Hydra, near the far end of its orbit (2026)
 ];
 // Anniversary crossings (2026-10-14): Sputnik on 4 October, Sputnik 2 (Laika) on 3 November. That evening and night, a
 // ghost crosses for two minutes at the start of every 20 (like Santa). Tap it.

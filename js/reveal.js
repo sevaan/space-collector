@@ -5,12 +5,12 @@
 //  Everything scales with rarity (Legendary dims the sky, shockwave, held breath, slow flip, fanfare).
 // Waits use timers, not animation.finished, so a paused tab can never freeze the sequence.
 
-import { sfx, loadSfx } from './sfx.js?v=0.1.891';
-import { audioCtx } from './audio-ctx.js?v=0.1.891';
-import { TIER_INFO } from './rarity.js?v=0.1.891';
-import { levelFor, attachTilt, attachGyro, attachFlip, throwOff, retype } from './card.js?v=0.1.891';
-import { applyBack } from './card-backs.js?v=0.1.891';
-import { addStarfield } from './starfield.js?v=0.1.891';
+import { sfx, loadSfx } from './sfx.js?v=0.1.892';
+import { audioCtx } from './audio-ctx.js?v=0.1.892';
+import { TIER_INFO } from './rarity.js?v=0.1.892';
+import { levelFor, attachTilt, attachGyro, attachFlip, throwOff, retype } from './card.js?v=0.1.892';
+import { applyBack } from './card-backs.js?v=0.1.892';
+import { addStarfield } from './starfield.js?v=0.1.892';
 
 const FX = {
   common:    { particles: 14,  flip: 520,  spin: 0,   dim: 0,   shock: false, notes: [880],                            hold: 0 },
@@ -29,7 +29,7 @@ addStarfield($('reveal')); // twinkling stars behind the reveal (css/reveal.css)
 function play(el, frames, opts) { el.animate(frames, opts); return sleep((opts.duration ?? 0) * (opts.iterations ?? 1)); }
 const reduced = () => window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 
-// ---------- sound (iPhones can't vibrate from the web, so sound carries the "thump") ----------
+// ---------- sound (iPhones can’t vibrate from the web, so sound carries the "thump") ----------
 // Call from inside the tap handler, before any await, so iOS lets the sound play. The sounds themselves are the
 // designed set (js/sfx.js, 2026-10-11); the old oscillator tones are gone.
 export function primeReveal() { audioCtx(); loadSfx(); }
@@ -95,7 +95,7 @@ function sizeCard(cardEl) {
 // card: rendered card element. o: catalogue card (for tier). seen: sightings of this card incl. this one.
 // origin: {x, y} screen point the object was at (the reticle centre).
 // fleet (fleet cards only): { newStamp, stamps, total, cospar, level, before }. A launch seen for the
-// first time lands a NEW STAMP on the card, and the card's level counts stamps, not sightings.
+// first time lands a NEW STAMP on the card, and the card’s level counts stamps, not sightings.
 // collected: how many different cards you own now, counting this one. A new card only gets a stamp when
 // that number is a milestone (MILESTONES); repeat sightings keep their SEEN / NEW STAMP / level stamps.
 export const MILESTONES = [1, 10, 25, 50, 75, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000];
@@ -126,7 +126,7 @@ export async function playReveal({ card, o, seen, origin, fleet = null, progress
   $('rv-flipper').style.transform = '';
   $('rv-back').classList.remove('glow');
   $('rv-dim').style.opacity = 0;
-  // Safari doesn't reliably hide the reverse face of a 3D card, so show one face at a time ourselves.
+  // Safari doesn’t reliably hide the reverse face of a 3D card, so show one face at a time ourselves.
   { const rb = $('rv-back'); rb.className = rb.className.replace(/\btier-\w+|\bshiny\b|\bgold-foil\b/g, '').replace(/\s+/g, ' ').trim(); rb.classList.add(`tier-${tierKey}`); if (shiny) rb.classList.add('shiny'); if (card.classList.contains('gold-foil')) rb.classList.add('gold-foil'); }
   if (fresh) applyBack($('rv-back'), o);
   showFace(fresh ? 'back' : 'front');
@@ -164,7 +164,7 @@ export async function playReveal({ card, o, seen, origin, fleet = null, progress
   await play($('rv-holder'), [{ opacity: 0, transform: 'scale(.4) translateY(60px) rotate(-8deg)' }, { opacity: 1, transform: 'scale(1.05) rotate(2deg)' }, { opacity: 1, transform: 'scale(1) rotate(0)' }], { duration: reduced() ? 1 : 520, easing: 'cubic-bezier(.2,.9,.3,1.3)', fill: 'forwards' });
   if (!alive()) return;
   $('rv-back').classList.add('glow');
-  // Listen on the holder, which doesn't rotate: the back inherits the tilt values, and the finger never
+  // Listen on the holder, which doesn’t rotate: the back inherits the tilt values, and the finger never
   // "leaves" the card just because its tilted edge moved out from under it.
   backTilt = attachTilt($('rv-holder'));
   if (!reduced()) backGyro = attachGyro($('rv-holder'), backTilt);
@@ -190,8 +190,8 @@ export async function playReveal({ card, o, seen, origin, fleet = null, progress
     { transform: `rotateY(${90 + fx.spin / 2}deg) scale(1.12)`, offset: .5, easing: 'cubic-bezier(0,0,.4,1)' },
     { transform: `rotateY(${180 + fx.spin}deg) scale(1)` },
   ], { duration: flipMs, easing: 'linear', fill: 'forwards' }); // per-keyframe easing: edge-on exactly at flipMs / 2
-  // Swap faces on the edge-on frame, read from the turn's own clock (2026-10-17). Safari ignores backface-visibility
-  // here (the card's children have their own transforms), so relying on it showed the front mirrored mid-turn; a
+  // Swap faces on the edge-on frame, read from the turn’s own clock (2026-10-17). Safari ignores backface-visibility
+  // here (the card’s children have their own transforms), so relying on it showed the front mirrored mid-turn; a
   // plain half-time timer could drift a frame and flash.
   { const a = $('rv-flipper').getAnimations().at(-1), half = flipMs / 2;
     const tick = () => { if (!alive()) return; const t = a?.currentTime ?? half; if (t >= half || a?.playState === 'finished') showFace('front'); else requestAnimationFrame(tick); };
@@ -203,15 +203,15 @@ export async function playReveal({ card, o, seen, origin, fleet = null, progress
   return finish({ fx, color, fresh, seen, level, levelUp, card, alive, fleet, newStamp, nights, collected, con, shiny });
 }
 
-// Already in your collection: the card spins out of the toast's thumbnail and settles, ready to tilt.
-// from: the thumbnail's screen rect. sighting: { seen, nights, level, levelUp } when tapping View also
-// counted as seeing it again tonight (then a stamp lands), or null when you're only looking.
+// Already in your collection: the card spins out of the toast’s thumbnail and settles, ready to tilt.
+// from: the thumbnail’s screen rect. sighting: { seen, nights, level, levelUp } when tapping View also
+// counted as seeing it again tonight (then a stamp lands), or null when you’re only looking.
 export async function playView({ card, o, from, sighting = null, eyebrow = null }) {
   stopReveal();
   const my = run, alive = () => my === run;
   const tierKey = FX[o.tier] ? o.tier : 'common';
   const fx = FX[tierKey], color = (TIER_INFO[tierKey] ?? TIER_INFO.common).color;
-  $('rv-news').replaceChildren(); // a plain view shows no earned chips (playtest 2026-10-16: the last catch's chips came back)
+  $('rv-news').replaceChildren(); // a plain view shows no earned chips (playtest 2026-10-16: the last catch’s chips came back)
   const root = $('reveal');
   root.style.setProperty('--fx', color);
   root.classList.remove('rv-done');
@@ -274,7 +274,7 @@ async function finish({ fx, color, fresh, seen, level, levelUp, card, alive, fle
   await sleep(250);
   if (!alive()) return;
   const date = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }).toUpperCase();
-  const stampLine = fleet ? (fleet.line ?? `LAUNCH ${fleet.cospar} · ${fleet.stamps} OF ${fleet.total}`) : ''; // fleet.line: the Moon's phase
+  const stampLine = fleet ? (fleet.line ?? `LAUNCH ${fleet.cospar} · ${fleet.stamps} OF ${fleet.total}`) : ''; // fleet.line: the Moon’s phase
   const conDone = !!con && con.level === 'gold';
   // 1, 10, 25, 50, 100… cards each earn a patch, and the patch coin says so; no second "milestone" toast for them (playtest 2026-10-09).
   const PATCHED = [1, 10, 25, 50, 100, 250, 500, 1000];
@@ -282,7 +282,7 @@ async function finish({ fx, color, fresh, seen, level, levelUp, card, alive, fle
   // The stamp that used to land on the card is now a ticket toast with the same words.
   // In the notice layout (design/notifications-all.html, 2026-10-18): kind line, title, detail.
   const left = con ? con.total - con.have : 0, label = card.querySelector('.card__title, .card__name, h2, h3')?.textContent?.trim() || '';
-  const news = shiny && !conDone ? { kind: 'shiny', eyebrow: `SHINY · ${shiny.label.toUpperCase()}`, line: label, sub: shiny.line, ms: 5000 } // say why it's shiny (2026-10-08)
+  const news = shiny && !conDone ? { kind: 'shiny', eyebrow: `SHINY · ${shiny.label.toUpperCase()}`, line: label, sub: shiny.line, ms: 5000 } // say why it’s shiny (2026-10-08)
     : fresh && con ? (conDone ? { kind: 'event', eyebrow: con.unit === 'worlds' ? 'SET COMPLETE' : 'CONSTELLATION COMPLETE', line: con.name, sub: `All ${con.total} ${con.unit ?? 'stars'} · patch earned`, art: con.art } : { kind: 'xp', eyebrow: con.name.toUpperCase(), line: `${con.have} of ${con.total} ${con.unit ?? 'stars'}`, sub: left === 1 ? 'One to go' : `${left} to go`, art: con.art })
     : fresh ? (milestone ? { kind: 'event', icon: 'calendar', eyebrow: 'MILESTONE', line: collected === 1 ? 'Your first card!' : `${collected.toLocaleString('en-US')} cards collected` } : null)
     : newStamp ? (fleet?.milestone ? { kind: 'event', eyebrow: 'NEW STAMP', line: fleet.milestone } : !fleet?.line && STAMP_MILESTONES.includes(fleet?.stamps) ? { kind: 'event', icon: 'stamp', eyebrow: 'NEW STAMP', line: `${fleet.stamps} launches stamped` } : { kind: 'xp', eyebrow: 'NEW STAMP', line: stampLine })
@@ -291,7 +291,7 @@ async function finish({ fx, color, fresh, seen, level, levelUp, card, alive, fle
   if (news) announce?.({ ms: 3200, ...news, delay: 900 }); // its sound plays as it appears (main.js onTicketShown)
   // A second (third…) night on an old friend: a little "+1 NIGHT" stamp drops onto the card (2026-10-08 polish).
   // (The "+1 night · N nights" stamp is gone: 2026-10-19, Sevaan found it confusing, gone too fast, and on fleet cards
-  // it counted different launches as the same card's nights.)
+  // it counted different launches as the same card’s nights.)
   if (!reduced()) $('reveal').animate([{ transform: 'translate(0,0)' }, { transform: 'translate(-3px,2px)' }, { transform: 'translate(3px,-2px)' }, { transform: 'translate(0,0)' }], { duration: 180 });
   if (levelUp) card.querySelector('.card__face')?.animate([{ boxShadow: '0 0 0 transparent' }, { boxShadow: `0 0 34px ${LEVEL_COLOR[level]}` }, { boxShadow: '0 0 0 transparent' }], { duration: 1300 });
   tilt = attachTilt(card);
@@ -305,7 +305,7 @@ async function finish({ fx, color, fresh, seen, level, levelUp, card, alive, fle
 // What this catch earned, as chips under the header (2026-10-12, playtest room: missions, patches and rank-ups used to
 // arrive afterwards as a pile of toasts over the circle). news: [{ kind: 'mission'|'patch'|'rank'|'event', text, xp }].
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-let earnedNow = []; // playReveal's earned list, for the finish step
+let earnedNow = []; // playReveal’s earned list, for the finish step
 const NEWS_ICON = { mission: '◆', patch: '◎', rank: '▲', event: '✦', reunion: '⇄' };
 function showNews(news, alive) {
   const box = $('rv-news'); if (!news?.length) return;
@@ -329,7 +329,7 @@ function setRank(r) {
   rankInfo = r; $('reveal').classList.toggle('has-rank', !!r); $('rv-rank').hidden = !r;
   if (!r) return;
   const pct = (v) => (r.next ? Math.max(0, Math.min(1, (v - r.at) / (r.next - r.at))) : 1) * 100;
-  // A rank-up starts on the old rank, part-filled (2026-10-17 haptics playtest: it began at the new rank's floor, so
+  // A rank-up starts on the old rank, part-filled (2026-10-17 haptics playtest: it began at the new rank’s floor, so
   // the old rank never filled); fillRank runs it to the end, flashes, and carries on into the new one.
   const p = r.prev, startPct = p ? Math.max(0, Math.min(1, (r.from - p.at) / Math.max(1, (p.next ?? r.at) - p.at))) * 100 : pct(Math.max(r.at, r.from));
   $('rv-rank-name').textContent = p ? p.name : r.name; $('rv-rank-next').textContent = p ? (p.next ?? r.at) : (r.next ?? r.to);
@@ -382,7 +382,7 @@ function holderTo(x, y, ms) {
     if (!(dy < -45 && total < -60 && Math.abs(dx) < -dy * 0.9 && -dy / dt > 0.6)) return;
     // Fly off the top at the speed of the flick (no fade: you should see it go), keeping some of the
     // sideways throw and a little spin that way.
-    const cur = getComputedStyle(h).transform; // where it's drawn now, before its landing animation is dropped
+    const cur = getComputedStyle(h).transform; // where it’s drawn now, before its landing animation is dropped
     h.getAnimations().forEach((a) => a.cancel()); h.style.opacity = '1';
     tilt?.reset();
     sfx('swipe');

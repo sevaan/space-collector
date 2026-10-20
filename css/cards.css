@@ -622,3 +622,8 @@
 .card--retro .card__name { text-wrap: balance; }
 .card--mission .card__art:has(.shiny-tag) .m-chip.m-reunion { bottom: calc(.65em + 1.9em); } /* REUNITED above SHINY, not hidden under it */
 .card-tile--retro .tile-lvl { right: 6px; }
+/* The welcome card keeps one edge colour as it turns (2026-10-20, Sevaan: the gold rim of the back became the front's
+   cream at the edge-on frame): the front's frame is the back's gold. */
+.card.wc-mission .card__face { border-color: #ffc545 !important; }
+.card.wc-mission .card__face::after { box-shadow: inset 0 0 0 .09em #a87b22, 0 0 0 .17em #ffd56a !important; }
+.card.wc-mission .card__back { border-width: 2px; }

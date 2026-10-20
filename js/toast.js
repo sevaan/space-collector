@@ -2,8 +2,8 @@
 // Kinds colour the left edge: mission (orange), xp (steel blue), event / achievement / rank (gold), info.
 // They queue rather than stack: one at a time, oldest first; a tap sends one away sooner. An `id` lets a toast
 // be withdrawn the moment it stops being true (dropToast).
-// Sticky tickets (2026-10-11, Sevaan: "that kind of toast shouldn't auto-disappear… a close x… they have to be
-// dismissed") stay until tapped or closed with their ✕. They don't hold up the queue: ordinary toasts keep coming above
+// Sticky tickets (2026-10-11, Sevaan: "that kind of toast shouldn’t auto-disappear… a close x… they have to be
+// dismissed") stay until tapped or closed with their ✕. They don’t hold up the queue: ordinary toasts keep coming above
 // them. At most two stay up; a third sends the oldest away. `action` runs on a tap (like `href`, without a page).
 const queue = [];
 const live = new Map();
@@ -21,7 +21,7 @@ let onShown = null;
 export function onTicketShown(fn) { onShown = fn; }
 // Notices, design/notifications-all.html (2026-10-18, Sevaan approved): an icon tile, a short kind line, a title (line),
 // an optional detail (sub), and one thing on the right (XP, ›, or a light ✕). `icon` names one of ICONS (or `art` fills the
-// tile); `tone` sets the colour (orange rewards, gold the night's news, steel progress, cream info, red failures);
+// tile); `tone` sets the colour (orange rewards, gold the night’s news, steel progress, cream info, red failures);
 // `go` is the words for a tap ("See the plan"), shown in the detail line.
 export const ICONS = {
   diamond: '<path d="M12 3l7 9-7 9-7-9z"/>', star: '<path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7z"/>',
@@ -84,7 +84,7 @@ function stackSeen() {
   const cs = getComputedStyle(stack()); return cs.visibility !== 'hidden' && cs.display !== 'none' && Number(cs.opacity) > 0.3;
 }
 // Up top, the stack never reaches down over the circle (2026-10-18 playtest: on an SE two notices covered half of it).
-// main.js sets --toast-limit (the circle's top); the newest tickets that fit show, older ones wait out of sight.
+// main.js sets --toast-limit (the circle’s top); the newest tickets that fit show, older ones wait out of sight.
 function fitStack() {
   const el = document.getElementById('toasts'); if (!el) return;
   const lim = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--toast-limit'));
@@ -118,7 +118,7 @@ function show(t) {
   // Up long enough to read (2026-10-06: at least 5 s, about 1.6× the old times); a tap sends it away sooner.
   let gone = false, stopConfetti = () => {};
   const dismiss = () => { if (gone) return; gone = true; clearInterval(timer); stopConfetti(); if (t.id) live.delete(t.id); stickies.delete(dismiss); if (t.sticky) { clearInterval(tuckT); const i = shelf.indexOf(el); if (i >= 0) shelf.splice(i, 1); } el.classList.add('out'); el.classList.remove('in'); setTimeout(() => { el.remove(); if (!t.sticky) { busy = false; } pump(); }, 200); };
-  // Swipe up to send it away, like the phone's own notifications (2026-10-18).
+  // Swipe up to send it away, like the phone’s own notifications (2026-10-18).
   let y0 = null, dy = 0, swiped = false;
   el.addEventListener('pointerdown', (e) => { y0 = e.clientY; dy = 0; try { el.setPointerCapture(e.pointerId); } catch {} });
   el.addEventListener('pointermove', (e) => { if (y0 == null) return; dy = Math.min(0, e.clientY - y0); if (dy < -4) { el.classList.add('dragging'); el.style.transform = `translateY(${dy}px)`; } });
@@ -140,11 +140,11 @@ function show(t) {
   // A patch badge takes the stage (2026-10-18, Sevaan): while one shows, toasts already up fade away (css/app.css) and
   // their clock stops, so they come back afterwards with the rest of their time.
   let left = Math.max(5000, t.ms * 1.6);
-  // Same whenever the stack can't be seen (2026-10-18 playtest: they ran out unseen behind the Collection and the reveal).
+  // Same whenever the stack can’t be seen (2026-10-18 playtest: they ran out unseen behind the Collection and the reveal).
   const timer = t.sticky ? 0 : setInterval(() => { if (!stackSeen() || getComputedStyle(el).display === 'none') return; left -= 250; if (left <= 0) dismiss(); }, 250); // hidden (a page open, shelved, no room): the clock waits
   if (t.id) live.set(t.id, dismiss);
   // A notice that stays (Tonight, Example location, a new rank…) comes down as a banner like the rest, then after 6 s
-  // tucks into a small chip under the header (#toast-tray) so it never sits over the header's buttons; tap the chip to
+  // tucks into a small chip under the header (#toast-tray) so it never sits over the header’s buttons; tap the chip to
   // open it again, ✕ or a swipe up to send it away. A newer one tucks the older ones straight away (2026-10-18).
   // The 6 s count only while the banner can actually be seen (2026-10-18 playtest: one made behind the Collection came
   // back already tucked, never shown as a banner).

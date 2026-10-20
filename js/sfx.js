@@ -1,10 +1,10 @@
-// Sound effects (2026-10-11, Sevaan's picks from the v2 sound board). All but one are the designed set: glass bells,
+// Sound effects (2026-10-11, Sevaan’s picks from the v2 sound board). All but one are the designed set: glass bells,
 // soft mallets, kalimba and airy breaths, all in G major so they sit inside the music ("Permafrost"). The toast is
 // "Notification Sound 2" by deadrobotmusic (Freesound, CC0), softened. Files: assets/audio/sfx/<name>.mp3.
-// Decoded once into memory after the first tap, played through the shared context (js/audio-ctx.js) so they're instant.
+// Decoded once into memory after the first tap, played through the shared context (js/audio-ctx.js) so they’re instant.
 // Off with Settings → Sounds and vibration (localStorage sound = '0').
-import { audioCtx } from './audio-ctx.js?v=0.1.891';
-import { VERSION } from './version.js?v=0.1.891';
+import { audioCtx } from './audio-ctx.js?v=0.1.892';
+import { VERSION } from './version.js?v=0.1.892';
 export const SFX = ['lock', 'collect', 'arrive', 'flip', 'r_common', 'r_uncommon', 'r_rare', 'r_epic', 'r_legend', 'shiny', 'seen', 'stamp', 'levelup', 'xp',
   'mission', 'rankup', 'patch', 'coinroll', 'complete', 'secret', 'fossil', 'ufo', 'welcome', 'swipe', 'step', 'toggle', 'toast', 'page', 'rattle', 'plane'];
 const BASE = new URL('../assets/audio/sfx/', import.meta.url).href;
@@ -18,27 +18,27 @@ export function loadSfx() {
   const ctx = audioCtx(); if (!ctx || loading) return loading;
   return (loading = Promise.all(SFX.map((n) => fetch(`${BASE}${n}.mp3?v=${VERSION}`).then((r) => r.arrayBuffer()).then((a) => new Promise((ok, no) => ctx.decodeAudioData(a, ok, no))).then((b) => { bufs.set(n, b); audible.set(n, audibleLength(b)); }).catch(() => {}))));
 }
-// name: one of SFX. gain: 0–1 on top of the file's own level. gap: skip if the same sound played less than gap ms ago.
+// name: one of SFX. gain: 0–1 on top of the file’s own level. gap: skip if the same sound played less than gap ms ago.
 // delay: seconds from now (scheduled on the audio clock, so it stays in time with animations).
-// Sounds: Sevaan's picks from the sound board (design/sound-board.html, 2026-10-18): mostly the original designed set
+// Sounds: Sevaan’s picks from the sound board (design/sound-board.html, 2026-10-18): mostly the original designed set
 // ("old", scripts/sfx-synth.py / sfx-round.py), plus a few UI SFX cues (uisfx.com, CC0): lock zen snap, flip zen forward,
 // seen zen select, stamp zen check, levelup zen streak, xp mechanical progress-step,
-// secret soft wake, rattle zen drag-start. NORM is written by scripts/sfx-levels.py from each file's measured
+// secret soft wake, rattle zen drag-start. NORM is written by scripts/sfx-levels.py from each file’s measured
 // loudness (EBU R128) and a target per event: payoffs loudest, taps and ticks quietest. Rerun it after changing a file.
 const NORM = {"arrive": 2.14, "coinroll": 1.66, "collect": 1.14, "complete": 1.4, "flip": 1.24, "fossil": 2.6, "levelup": 1.58, "lock": 4.84, "mission": 1.11, "page": 3.35, "patch": 1.17, "plane": 1.01, "r_common": 0.95, "r_epic": 1.36, "r_legend": 1.32, "r_rare": 1.45, "r_uncommon": 0.95, "rankup": 1.26, "rattle": 1.35, "secret": 1.19, "seen": 1.93, "shiny": 2.4, "stamp": 2.32, "step": 1.74, "swipe": 1.78, "toast": 2.66, "toggle": 7.08, "ufo": 1.58, "welcome": 1.02, "xp": 1.22};
 // At most two at once: a third small sound is skipped rather than piling on (a Saturn catch stacked four over 5 s).
 const STINGERS = new Set(['r_common', 'r_uncommon', 'r_rare', 'r_epic', 'r_legend', 'shiny', 'rankup', 'levelup', 'mission', 'complete', 'secret', 'welcome']);
 let playing = 0;
 // How long each file is actually audible (2026-10-17 haptics playtest: the cap counted silent tails, e.g. lock is heard
-// for 0.22 s of 1.05 s, so lock + collect filled both slots and the reveal's whoosh was dropped). Measured once on load:
-// the last sample louder than 2% of the file's peak.
+// for 0.22 s of 1.05 s, so lock + collect filled both slots and the reveal’s whoosh was dropped). Measured once on load:
+// the last sample louder than 2% of the file’s peak.
 const audible = new Map();
 function audibleLength(b) {
   const d = b.getChannelData(0); let peak = 0; for (let i = 0; i < d.length; i += 4) peak = Math.max(peak, Math.abs(d[i]));
   const th = peak * 0.02; let end = d.length - 1; while (end > 0 && Math.abs(d[end]) < th) end -= 8;
   return Math.max(0.05, end / b.sampleRate);
 }
-const UNCAPPED = new Set(['arrive']); // the reveal's whoosh always plays
+const UNCAPPED = new Set(['arrive']); // the reveal’s whoosh always plays
 export function sfx(name, { gain = 1, gap = 0, delay = 0 } = {}) {
   if (soundOff()) return;
   const ctx = audioCtx(); if (!ctx) return;

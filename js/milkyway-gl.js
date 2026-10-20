@@ -1,8 +1,8 @@
-// The Milky Way from a real photograph (2026-10-08, Sevaan: it has to look accurate). The source is ESO's all-sky
+// The Milky Way from a real photograph (2026-10-08, Sevaan: it has to look accurate). The source is ESO’s all-sky
 // panorama by Serge Brunier (eso0932a, CC BY 4.0) in galactic coordinates, with the point stars filtered out and the
 // sky background removed (assets/sky/milkyway.webp, 4096 × 2048, l = 0 in the middle, increasing to the left).
-// For every screen pixel a small WebGL shader works out the direction you're looking, turns it into galactic l, b
-// and reads the photo there, so the band's shape, the Great Rift, the star clouds and the Magellanic Clouds land
+// For every screen pixel a small WebGL shader works out the direction you’re looking, turns it into galactic l, b
+// and reads the photo there, so the band’s shape, the Great Rift, the star clouds and the Magellanic Clouds land
 // exactly where they are in your sky. js/sky.js draws the result into the 2D sky with a screen blend.
 // No DOM beyond an offscreen canvas.
 
@@ -57,8 +57,8 @@ export function createMilkyGL(src) {
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
     gl.uniform1i(u.tex, 0);
-    // One throwaway 1 × 1 draw and read-back now, so the first real frame doesn't pay for the GPU's first use of the
-    // texture (a ~50 ms hitch on the sky's first frame, playtest 2026-10-09).
+    // One throwaway 1 × 1 draw and read-back now, so the first real frame doesn’t pay for the GPU’s first use of the
+    // texture (a ~50 ms hitch on the sky’s first frame, playtest 2026-10-09).
     try { if (canvas.width < 1) canvas.width = canvas.height = 1; gl.viewport(0, 0, 1, 1); gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4); gl.readPixels(0, 0, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array(4)); } catch {}
     ready = true;
     pic.close?.();

@@ -3,15 +3,15 @@
 // picture" shows one card for each art file (most satellites share a picture by kind) with how many cards use it.
 // Stars (☆) are saved in this browser (localStorage 'reviewStars'); "Copy starred" puts a list on the clipboard to
 // hand back. Not linked from the app.
-import { expandFacts } from './catalog-facts.js?v=0.1.891';
-import { renderCard, miniCard, artImage } from './card.js?v=0.1.891';
-import { buildCards } from './card-model.js?v=0.1.891';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.891';
-import { loadLore, titleFor, debrisOf } from './lore.js?v=0.1.891';
-import './stories.js?v=0.1.891';
-import { CON_FIGURES } from './con-figures.js?v=0.1.891';
-import { loadConstellations, CON_BY_ID } from './constellations.js?v=0.1.891';
-import { loadComets } from './comets.js?v=0.1.891';
+import { expandFacts } from './catalog-facts.js?v=0.1.892';
+import { renderCard, miniCard, artImage } from './card.js?v=0.1.892';
+import { buildCards } from './card-model.js?v=0.1.892';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.892';
+import { loadLore, titleFor, debrisOf } from './lore.js?v=0.1.892';
+import './stories.js?v=0.1.892';
+import { CON_FIGURES } from './con-figures.js?v=0.1.892';
+import { loadConstellations, CON_BY_ID } from './constellations.js?v=0.1.892';
+import { loadComets } from './comets.js?v=0.1.892';
 
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
@@ -32,7 +32,7 @@ function toast(text) { const t = $('toast'); t.textContent = text; t.hidden = fa
 let NEW_ART = new Set(), NEW_SHIFT = {};
 const ART_T = Date.now(); // replaced pictures keep their name, so bust the browser cache on each visit (2026-10-16)
 // Framing that has been baked into the art (design/restyle-preview/baked.json, written when Claude bakes a "Copy framing"):
-// a saved frame that matches is dropped, so it isn't applied a second time on top of the new picture.
+// a saved frame that matches is dropped, so it isn’t applied a second time on top of the new picture.
 async function dropBaked() {
   try {
     const baked = await (await fetch('design/restyle-preview/baked.json', { cache: 'no-store' })).json(); let n = 0;
@@ -49,13 +49,13 @@ function markNew(el, c) {
 // Framing (2026-10-16, Sevaan): in the card viewer, tap the picture to drag it into place (and drag the corner or pinch
 // to zoom), then Save. Saved per picture in this browser (localStorage 'reviewFrames') and shown on every card using it;
 // "Copy framing" hands the numbers back so scripts bake them into the art file itself (no CSS shifting in the game).
-// A frame is { x, y, z, py }: shift in units of the picture's width, zoom, and where the window's centre sits in the
+// A frame is { x, y, z, py }: shift in units of the picture’s width, zoom, and where the window’s centre sits in the
 // picture (0–1 down it), which is the point the zoom is around.
 // 'reviewFrames2' (2026-10-16): Sevaan started over once the edges were locked; earlier saves under 'reviewFrames' are ignored.
 let frames = {}; try { frames = JSON.parse(localStorage.getItem('reviewFrames2') ?? '{}'); } catch {}
 const saveFrames = () => { try { localStorage.setItem('reviewFrames2', JSON.stringify(frames)); } catch {} };
 const imgW = (im) => Math.max(im.offsetWidth, im.offsetHeight * 4 / 3); // object-fit: cover on a 4:3 picture
-function centreY(im) { // the window's centre, as a fraction down the picture
+function centreY(im) { // the window’s centre, as a fraction down the picture
   const w = imgW(im), ih = w * 0.75, eh = im.offsetHeight, pos = parseFloat(getComputedStyle(im).objectPosition.split(' ')[1] ?? '50') / 100;
   return ih > eh ? ((ih - eh) * pos + eh / 2) / ih : 0.5;
 }
@@ -73,7 +73,7 @@ function face(c, full = false) {
   markNew(el, c); requestAnimationFrame(() => applyFrames(el, c._art)); return el;
 }
 
-// Draw a tile's card only when it scrolls near the screen (there are thousands).
+// Draw a tile’s card only when it scrolls near the screen (there are thousands).
 const io = new IntersectionObserver((es) => { for (const e of es) if (e.isIntersecting) { const slot = e.target; io.unobserve(slot); slot.replaceChildren(face(slot._card)); slot.classList.toggle('old-art', !(slot._card._art && NEW_ART.has(slot._card._art))); slot.classList.toggle('framed', !!(slot._card._art && frames[slot._card._art])); } }, { rootMargin: '600px 0px' });
 
 function list() {
@@ -134,7 +134,7 @@ function open(c, k) {
   if (c._art) host.querySelector('.card__art')?.addEventListener('click', () => frameEdit(v, host, c), { once: true });
 }
 
-// Drag to move, drag a corner (or pinch, or scroll) to zoom. Zooming out shows the window's background where the
+// Drag to move, drag a corner (or pinch, or scroll) to zoom. Zooming out shows the window’s background where the
 // picture no longer reaches: the bake step has the background painted in there.
 function frameEdit(v, host, c) {
   const art = host.querySelector('.card__art'), im = art.querySelector('img.card-art-image'); if (!im) return;
@@ -146,7 +146,7 @@ function frameEdit(v, host, c) {
   v.querySelector('.fr-hint').hidden = true; read.hidden = false; acts.hidden = false; v.querySelector('.acts:not(.fr-acts)').hidden = true;
   const pct = (n) => Math.round(Math.abs(n) * 100);
   const show = () => { clampXY(); setFrame(im, f); read.textContent = `Zoom ${pct(f.z)}% · ${f.y < -0.002 ? `up ${pct(f.y)}%` : f.y > 0.002 ? `down ${pct(f.y)}%` : 'level'} · ${f.x < -0.002 ? `left ${pct(f.x)}%` : f.x > 0.002 ? `right ${pct(f.x)}%` : 'centred'}`; };
-  // The picture's edges always stay on the frame's edges (2026-10-16, Sevaan): zoom 100% or more, and the shift is
+  // The picture’s edges always stay on the frame’s edges (2026-10-16, Sevaan): zoom 100% or more, and the shift is
   // limited so the zoomed picture still covers the whole 4:3 picture area (x, y in picture widths; height = 0.75 width).
   const clampZ = (z) => Math.min(2.5, Math.max(1, z));
   const clampXY = () => { const e = f.z - 1; f.x = Math.min(e / 2, Math.max(-e / 2, f.x)); f.y = Math.min(0.75 * f.py * e, Math.max(-0.75 * (1 - f.py) * e, f.y)); };
@@ -217,4 +217,4 @@ $('copy-frames').addEventListener('click', async () => {
 $('clear').addEventListener('click', () => { if (stars.size && confirm(`Clear all ${stars.size} stars?`)) { stars.clear(); saveStars(); render(); } });
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !$('view').hidden) { $('view').hidden = true; $('view').replaceChildren(); } });
 setInterval(async () => { const n = NEW_ART.size; await loadNewArt(); if (NEW_ART.size !== n) render(); }, 60000); // new pictures appear as they arrive
-boot().catch((e) => { $('count').textContent = `Couldn't load: ${e.message}`; });
+boot().catch((e) => { $('count').textContent = `Couldn’t load: ${e.message}`; });

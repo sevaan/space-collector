@@ -1,9 +1,9 @@
 // Mission patches (2026-10-08, Sevaan picked design/patches.html option A): every achievement in js/progress.js is
-// an embroidered roundel — stitched cream border, twill in its group's colour, the name curving over the top, the
+// an embroidered roundel — stitched cream border, twill in its group’s colour, the name curving over the top, the
 // group (or the date earned) along the bottom, one icon in the middle. Milestones get gold foil, the rarest holo
 // (css/ui.css .patch--gold / .patch--holo). Shared by Explore (the earning moment, its toast) and Collection (the wall).
 
-import { CON_BY_ID } from './constellations.js?v=0.1.891';
+import { CON_BY_ID } from './constellations.js?v=0.1.892';
 
 export const GROUPS = {
   collect: { c: '#14284a', t: 'Collection' }, rarity: { c: '#3a2259', t: 'Rarity' }, rocket: { c: '#5a2a1a', t: 'Rockets' },
@@ -28,7 +28,7 @@ const GROUP_OF = {
 const groupById = new Map(Object.entries(GROUP_OF).flatMap(([g, ids]) => ids.split(' ').map((id) => [id, g])));
 export const groupOf = (a) => (a.id === 'plus' ? 'member' : a.secret ? 'secret' : a.album ? 'album' : a.con === 'solar' ? 'planet' : a.con ? 'con' : groupById.get(a.id) ?? 'collect');
 
-// Picture icons where one reads better than the achievement's text icon.
+// Picture icons where one reads better than the achievement’s text icon.
 const GLYPH = {
   first: 'star', legend: 'star5', shiny: 'spark', shiny5: 'spark', stage: 'stage', stages25: 'stage', junk: 'debris',
   station: 'station', stations: 'station', nations: 'globe', diplomat: 'globe', race: 'versus', sputnik: 'sputnik',
@@ -99,7 +99,7 @@ function glyph(k, text) {
 
 // Constellation patches (2026-10-09): the stick figure from the real star positions (the same projection as the
 // cards' charts, js/con-art.js), fitted inside the inner ring; stars sized by brightness, the brightest in orange.
-// Each one on its own shade of night-blue twill, so the row of them doesn't read as one patch repeated.
+// Each one on its own shade of night-blue twill, so the row of them doesn’t read as one patch repeated.
 const RAD = Math.PI / 180, vec = (ra, dec) => [Math.cos(dec * RAD) * Math.cos(ra * RAD), Math.cos(dec * RAD) * Math.sin(ra * RAD), Math.sin(dec * RAD)];
 const CON_TWILL = ['#22265a', '#1a2f52', '#2d2257', '#16324a', '#2a2350', '#1c2a5e'];
 function conGlyph(data) {
@@ -148,7 +148,7 @@ const SECRET_ART = {
   voyager2: () => '<path d="M-38 22 Q-10 -2 14 -6 Q30 -9 38 -26" fill="none" stroke="#fff2b3" stroke-opacity=".55" stroke-width="1.2" stroke-dasharray="1.5 3"/>'
     + [[-26, 12, 3.2, '#d9a066'], [-8, 2, 2.6, '#e8cf9a'], [10, -5, 2.2, '#9fd4dc'], [26, -14, 2.2, '#5c86d6']].map(([x, y, r, c]) => `<circle cx="${x}" cy="${y}" r="${r}" fill="${c}"/>`).join('')
     + '<g transform="translate(0 8)"><circle r="17" fill="#2a1a08" stroke="#e2b53c" stroke-width="6"/>' + [11, 8.5, 6].map((r) => `<circle r="${r}" fill="none" stroke="#e2b53c" stroke-opacity=".35" stroke-width=".6"/>`).join('') + '<circle r="3.6" fill="#e2b53c"/><circle r="1" fill="#2a1a08"/></g>',
-  // The Plaque · Pioneer 10: the gold plaque with its line drawing of two people beside the probe's outline.
+  // The Plaque · Pioneer 10: the gold plaque with its line drawing of two people beside the probe’s outline.
   pioneer10: () => '<rect x="-30" y="-20" width="60" height="38" rx="3" fill="#c9a24a" stroke="#f4d27a" stroke-width="1.6"/>'
     + '<g fill="none" stroke="#3a2a10" stroke-width="1.2" stroke-linecap="round"><circle cx="-6" cy="-10" r="2.4"/><path d="M-6 -7.5 V3 M-6 -4 L-10 1 M-6 -4 L-2 1 M-6 3 L-8.5 12 M-6 3 L-3.5 12"/><circle cx="4" cy="-9" r="2.2"/><path d="M4 -6.8 V3 M4 -4 L1 1 M4 -4 L7 1 M4 3 L2 12 M4 3 L6 12"/>'
     + '<path d="M14 -12 L24 -12 M19 -12 V8 M14 8 L24 8"/><path d="M-26 14 L26 14" stroke-dasharray="1.5 2.5"/><circle cx="-24" cy="-14" r="1.6"/><path d="M-24 -14 L-14 -16 M-24 -14 L-18 -6"/></g>',
@@ -157,12 +157,12 @@ const SECRET_ART = {
     + '<path d="M-16 -4 Q0 -8 16 -4 M-15 4 Q0 0 15 4" stroke="#b07a40" stroke-width="2" fill="none"/>'
     + '<path d="M-33 6 A34 9 0 0 0 33 -6" fill="none" stroke="#efe0a8" stroke-width="3" transform="rotate(-18)"/>'
     + '<g transform="translate(26 -26)"><ellipse rx="5" ry="2" fill="none" stroke="#fff2b3" stroke-width="1.4" transform="rotate(-30)"/><path d="M0 0 L6 4" stroke="#fff2b3" stroke-width="1.2"/></g>',
-  // Heart of Pluto · New Horizons: Pluto with its pale heart (Tombaugh Regio), Charon behind, the probe's dish passing.
+  // Heart of Pluto · New Horizons: Pluto with its pale heart (Tombaugh Regio), Charon behind, the probe’s dish passing.
   newhorizons: () => '<circle cx="24" cy="-20" r="7" fill="#9a9a96"/><circle r="22" fill="#c08a5c"/>'
     + '<path d="M2 -2 C2 -10 12 -12 14 -4 C16 -12 26 -8 22 2 C19 9 10 13 8 16 C6 12 0 6 2 -2Z" fill="#f4e6cc"/>'
     + '<path d="M-20 -6 Q-12 -12 -4 -10 M-18 8 Q-10 4 -4 10" stroke="#8a5a36" stroke-width="2.4" fill="none" stroke-linecap="round"/>'
     + '<g transform="translate(-26 -24) rotate(-20)"><path d="M-4 3 L4 3 L0 -3 Z" fill="#c9d8e6"/><path d="M-5 -1 A5 5 0 0 1 5 -1" fill="none" stroke="#fff2b3" stroke-width="1.2"/></g>',
-  // Wow! · the 1977 signal: the printout's "6EQUJ5" with Jerry Ehman's red circle and "Wow!" in the margin.
+  // Wow! · the 1977 signal: the printout’s "6EQUJ5" with Jerry Ehman’s red circle and "Wow!" in the margin.
   wow: () => '<rect x="-30" y="-22" width="60" height="44" rx="2" fill="#efe6cf"/>'
     + [-14, -6, 2, 10].map((y) => `<path d="M-26 ${y} H26" stroke="#c9bf9f" stroke-width=".6"/>`).join('')
     + '<text x="-2" y="2" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="600" fill="#2a2a2a" letter-spacing="1">6EQUJ5</text>'
@@ -180,7 +180,7 @@ export function patchSvg(a, opts = {}) {
   const ic = SECRET_ART[a.id] ? SECRET_ART[a.id](id) : a.id === 'ufo' ? UFO_ART(id) : fossil ? '<image href="assets/art/fossils/patch.svg" x="-46" y="-17.5" width="92" height="43"/>' : con ? conGlyph(con.data) : a.con === 'solar' ? SOLAR_GLYPH : a.album ? (ALBUM_ICON[a.album] ? glyph(ALBUM_ICON[a.album], a.icon) : ALBUM_GLYPH) : glyph(GLYPH[a.id], a.icon);
   if (locked) {
     const ghost = ic.replace(/fill="(?!none)[^"]*"/g, 'fill="none"').replace(/<(polygon|rect|circle|path|ellipse|polyline|text)/g, '<$1 stroke="#627a8b" stroke-width="1.5"');
-    // Not earned yet (playtest 2026-10-09, Sevaan: the empty ones should look better): the patch before it's
+    // Not earned yet (playtest 2026-10-09, Sevaan: the empty ones should look better): the patch before it’s
     // stitched. Its twill, faint; the name already marked out round the top; the icon as an outline; and for
     // the ones that count something, the border stitched part-way round with "3 / 10" along the bottom.
     const C = 2 * Math.PI * (R - 3), pr = opts.prog && opts.prog[1] > 1 ? Math.max(0, Math.min(1, opts.prog[0] / opts.prog[1])) : 0;

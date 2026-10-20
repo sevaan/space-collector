@@ -1,6 +1,6 @@
 // Live aircraft near you, so the app can say "Just a plane" when you line one up by mistake.
 // Positions come from adsb.lol (community ADS-B receivers) through our relay (relay/handler.ts), because
-// adsb.lol doesn't allow browser requests directly. Routes come from adsbdb.com, which does.
+// adsb.lol doesn’t allow browser requests directly. Routes come from adsbdb.com, which does.
 // No DOM here. Positions are extrapolated between fetches using ground speed, track and climb rate.
 
 // Empty = feature off. localStorage 'planeRelay' overrides it (testing).
@@ -8,7 +8,7 @@ const RELAY = 'https://sevaan--cd67f53abd3511f18ee51607ee4eb77e.web.val.run'; //
 const ROUTE_API = 'https://api.adsbdb.com/v0/callsign/';
 const POLL_MS = 10000;
 const RADIUS_NM = 40;    // ~75 km: an airliner at cruise height is ~8° up at that distance
-const MAX_AGE_S = 60;    // drop planes we haven't heard about for a minute
+const MAX_AGE_S = 60;    // drop planes we haven’t heard about for a minute
 
 const RAD = Math.PI / 180, A = 6378.137, E2 = 0.00669437999014; // WGS84, km
 const FT = 0.0003048, KT = 0.000514444; // feet -> km, knots -> km/s
@@ -24,7 +24,7 @@ function ecef(lat, lon, hKm) {
   return [(n + hKm) * cl * Math.cos(lon * RAD), (n + hKm) * cl * Math.sin(lon * RAD), (n * (1 - E2) + hKm) * sl];
 }
 
-// Where a point is in the observer's sky: { az, el, rangeKm, enu } (enu is a unit East-North-Up vector).
+// Where a point is in the observer’s sky: { az, el, rangeKm, enu } (enu is a unit East-North-Up vector).
 export function skyPosition(obs, lat, lon, hKm) {
   const o = ecef(obs.lat, obs.lon, obs.heightKm ?? 0), p = ecef(lat, lon, hKm);
   const dx = p[0] - o[0], dy = p[1] - o[1], dz = p[2] - o[2];
@@ -122,7 +122,7 @@ export class PlaneTracker {
   }
 }
 
-// Friendly names for the aircraft you're most likely to see overhead.
+// Friendly names for the aircraft you’re most likely to see overhead.
 const TYPES = {
   A19N: 'Airbus A319neo', A20N: 'Airbus A320neo', A21N: 'Airbus A321neo', A319: 'Airbus A319', A320: 'Airbus A320', A321: 'Airbus A321',
   A332: 'Airbus A330', A333: 'Airbus A330', A338: 'Airbus A330neo', A339: 'Airbus A330neo', A359: 'Airbus A350', A35K: 'Airbus A350',
@@ -135,7 +135,7 @@ const TYPES = {
   AT72: 'ATR 72', AT76: 'ATR 72', C172: 'Cessna 172', C182: 'Cessna 182', C208: 'Cessna Caravan', PC12: 'Pilatus PC-12', P28A: 'Piper Cherokee', SR22: 'Cirrus SR22',
 };
 export function aircraftName(p) { return TYPES[p.type] ?? (p.desc ? p.desc.replace(/\b([A-Z])([A-Z]+)\b/g, (m, a, b) => a + b.toLowerCase()) : ''); }
-// Helicopters: ADS-B emitter category A7, or an ICAO type designator that is a helicopter (many helicopters don't
+// Helicopters: ADS-B emitter category A7, or an ICAO type designator that is a helicopter (many helicopters don’t
 // broadcast a category). Covers the common civil, medical, police and military types.
 const HELI_TYPES = /^(A1(09|19|39|69|89)|AS(32|35|50|55|65)|AW(09|39|69|89)|B(06|05|07|12|17|22|212|412|407|429|505)|B4(07|12|29)|BK17|EC(20|25|30|35|45|55|75|130|135|145|155|175|225)|EH10|EN(28|48)|EXPL|H(12|13|25|46|47|53|60|64|72)|H1(25|30|35|45|55|60|75)|H(215|225)|HUCO|K(32|MAX)|LYNX|MI(2|8|17|24|26)|NH90|PUMA|R(22|44|66)|S(55|58|61|64|70|76|92)|SCHW|TIGR|UH1|UH60|V22|NOTA)$/;
 export function isHelicopter(p) { return p.category === 'A7' || HELI_TYPES.test(String(p.type ?? '').toUpperCase()); }

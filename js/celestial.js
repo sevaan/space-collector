@@ -1,8 +1,8 @@
 // Stars, constellations, Sun, Moon and planets, for orientation. Pure math, no DOM.
-// Planet and Moon positions use Paul Schlyter's low-precision method ("How to compute planetary
+// Planet and Moon positions use Paul Schlyter’s low-precision method ("How to compute planetary
 // positions"), good to a few arcminutes — far better than a phone compass.
 
-import { gstime } from './lib/satellite.js?v=0.1.891';
+import { gstime } from './lib/satellite.js?v=0.1.892';
 
 const RAD = Math.PI / 180;
 const sin = (d) => Math.sin(d * RAD), cos = (d) => Math.cos(d * RAD);
@@ -20,7 +20,7 @@ function precess(raDeg, decDeg, years) {
   return [raDeg + (m + n * sin(raDeg) * tanDec) * years, decDeg + n * cos(raDeg) * years];
 }
 
-// Unit vector (J2000 RA/Dec in degrees, precessed to today) for a star that isn't in data/sky.json.
+// Unit vector (J2000 RA/Dec in degrees, precessed to today) for a star that isn’t in data/sky.json.
 export function starVector(ra, dec) {
   const years = (Date.now() / 86400000 + 2440587.5 - 2451545) / 365.25;
   return eq(...precess(ra, dec, years));
@@ -156,7 +156,7 @@ function phaseName(illum, waxing) {
   return `${waxing ? 'Waxing' : 'Waning'} ${illum < 0.5 ? 'crescent' : 'gibbous'}`;
 }
 
-// The Milky Way's midline (galactic equator) as equatorial unit vectors, with a brightness weight
+// The Milky Way’s midline (galactic equator) as equatorial unit vectors, with a brightness weight
 // that peaks toward the galactic centre in Sagittarius. J2000 galactic pole: RA 192.86°, Dec 27.13°.
 export function galacticPlane(stepDeg = 4) {
   const raG = 192.85948, decG = 27.12825, lNcp = 122.93192;
@@ -172,7 +172,7 @@ export function galacticPlane(stepDeg = 4) {
 
 // ---------- Milky Way ----------
 // A light-weight model of how the Milky Way really looks to the eye: a band along the galactic
-// equator that's broad and bright toward the centre (Sagittarius) and thin and faint toward the
+// equator that’s broad and bright toward the centre (Sagittarius) and thin and faint toward the
 // anticentre (Auriga), grainy star clouds, a few famous bright patches, and the Great Rift, the
 // dark dust lane that splits it from Cygnus down to Aquila.
 const GAL = { ra: 192.85948, dec: 27.12825, lNcp: 122.93192 };
@@ -250,7 +250,7 @@ function eqToGal(v) {
   return [((GAL.lNcp - Math.atan2(y, x) / RAD) + 720) % 360, b / RAD];
 }
 
-// Tesla Roadster + Starman (2018-017A), heliocentric orbit from JPL's elements (perihelion 2018-11-09), good to a
+// Tesla Roadster + Starman (2018-017A), heliocentric orbit from JPL’s elements (perihelion 2018-11-09), good to a
 // degree or two: plenty for an easter egg. Returns a geocentric equatorial unit vector.
 export function roadster(date) {
   const d = date.getTime() / 86400000 + 2440587.5 - 2451543.5;

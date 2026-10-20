@@ -20,4 +20,4 @@ export function where(f, t) {
 }
 export function caught() { try { return JSON.parse(localStorage.getItem('ufoFound')); } catch { return null; } }
 export function markCaught() { const c = { at: Date.now() }; try { localStorage.setItem('ufoFound', JSON.stringify(c)); } catch {} return c; }
-export const UFO_PATCH = { id: 'ufo', name: 'Close Encounter', text: "Something crossed your sky that isn't in any catalogue. You were looking.", icon: '', secret: true };
+export const UFO_PATCH = { id: 'ufo', name: 'Close Encounter', text: "Something crossed your sky that isn’t in any catalogue. You were looking.", icon: '', secret: true };
