@@ -1,20 +1,20 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { fallWords } from './last-chance.js?v=0.1.911';
-import { feel } from './native.js?v=0.1.911';
-import { sfx } from './sfx.js?v=0.1.911';
-import { cardArt } from './art.js?v=0.1.911';
-import { TIER_INFO } from './rarity.js?v=0.1.911';
-import { SET_BY_ID } from './sets.js?v=0.1.911';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.911';
-import { FLEET_ABOUT, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.911';
-import { artFileFor } from './art-keys.js?v=0.1.911';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.911';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.911';
-import { nightsIn } from './observation.js?v=0.1.911';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.911';
-import { SHINY } from './shiny.js?v=0.1.911';
-import { conArt, cometArt } from './con-art.js?v=0.1.911';
-import { CON_FIGURES } from './con-figures.js?v=0.1.911';
+import { fallWords } from './last-chance.js?v=0.1.912';
+import { feel } from './native.js?v=0.1.912';
+import { sfx } from './sfx.js?v=0.1.912';
+import { cardArt } from './art.js?v=0.1.912';
+import { TIER_INFO } from './rarity.js?v=0.1.912';
+import { SET_BY_ID } from './sets.js?v=0.1.912';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.912';
+import { FLEET_ABOUT, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.912';
+import { artFileFor } from './art-keys.js?v=0.1.912';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.912';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.912';
+import { nightsIn } from './observation.js?v=0.1.912';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.912';
+import { SHINY } from './shiny.js?v=0.1.912';
+import { conArt, cometArt } from './con-art.js?v=0.1.912';
+import { CON_FIGURES } from './con-figures.js?v=0.1.912';
 // The animal/symbol figure belongs to the completed (gold) constellation card only (2026-10-05): a single
 // star’s card draws just the star pattern with its star marked, so the figure is a reward for finishing the set.
 // A star card’s constellation figure comes into focus as you collect the constellation’s stars (design/con-focus.html B).
@@ -241,13 +241,13 @@ function stampHistory(sightings) {
 const latestStamp = (sightings) => stampHistory(sightings.filter((s) => !s.sim))[0]?.key ?? null;
 
 // Every launch in the fleet as a dot, oldest to newest; stamped ones filled, the newest ringed.
-// summary ("4 / 421 stamped · SILVER AT 10") sits between the first and last launch years, under the dots.
+// The heading counts your stamps ("3 LAUNCHES", 2026-10-20, Sevaan: was "EVERY LAUNCH"); summary ("3 / 422 stamped") sits between the first and last launch years, under the dots.
 function dotMap(o, stamps, latest, summary = '', latestLine = '') {
   // Huge fleets (Starlink, 400+ launches) get finer dots in about six rows, so the grid doesn’t eat the picture (2026-10-14).
   const n = o.launches.length, cols = n > 200 ? Math.min(72, Math.ceil(n / 6)) : n > 60 ? 18 : Math.min(14, Math.max(10, n)), gap = n > 200 ? '.1em' : '.45em';
   const dots = o.launches.map((l) => `<i class="${stamps.has(l.key) ? 'on' : ''}${l.key === latest ? ' latest' : ''}"></i>`).join('');
   const y0 = o.launches[0]?.launch?.slice(0, 4) ?? '', y1 = o.launches.at(-1)?.launch?.slice(0, 4) ?? '';
-  return `<div class="fl-dots"><div class="fl-head"><span class="card__note-label">EVERY LAUNCH</span>${latestLine ? `<span class="fl-latest"><i></i><span class="fl-type" style="--n:${latestLine.length}">${esc(latestLine)}</span></span>` : ''}</div><div class="fl-grid" style="--cols:${cols};--gap:${gap}">${dots}</div><div class="fl-years"><span>${esc(y0)}</span>${summary ? `<span class="fl-sum">${esc(summary)}</span>` : ''}<span>${esc(y1)}</span></div></div>`;
+  return `<div class="fl-dots"><div class="fl-head"><span class="card__note-label">${stamps.size.toLocaleString('en-US')} LAUNCH${stamps.size === 1 ? '' : 'ES'}</span>${latestLine ? `<span class="fl-latest"><i></i><span class="fl-type" style="--n:${latestLine.length}">${esc(latestLine)}</span></span>` : ''}</div><div class="fl-grid" style="--cols:${cols};--gap:${gap}">${dots}</div><div class="fl-years"><span>${esc(y0)}</span>${summary ? `<span class="fl-sum">${esc(summary)}</span>` : ''}<span>${esc(y1)}</span></div></div>`;
 }
 
 const shortDay = (t) => new Date(t).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }).toUpperCase();
