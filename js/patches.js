@@ -3,7 +3,7 @@
 // group (or the date earned) along the bottom, one icon in the middle. Milestones get gold foil, the rarest holo
 // (css/ui.css .patch--gold / .patch--holo). Shared by Explore (the earning moment, its toast) and Collection (the wall).
 
-import { CON_BY_ID } from './constellations.js?v=0.1.904';
+import { CON_BY_ID } from './constellations.js?v=0.1.905';
 
 export const GROUPS = {
   collect: { c: '#14284a', t: 'Collection' }, rarity: { c: '#3a2259', t: 'Rarity' }, rocket: { c: '#5a2a1a', t: 'Rockets' },
@@ -195,39 +195,35 @@ export function patchSvg(a, opts = {}) {
       ${pr > 0 ? `<text font-family="SC Label, Arial Narrow, sans-serif" font-size="9" letter-spacing="2" fill="${OR}" text-anchor="middle" dy="7"><textPath href="#${id}b" startOffset="50%">${opts.prog[0]} / ${opts.prog[1]}</textPath></text>` : ''}
       <g opacity=".6" transform="scale(.82)">${ghost.replace(/#627a8b/g, '#bcb585')}</g></svg>`;
   }
-  // Higher fidelity (2026-10-08, Sevaan): a real embroidered patch.
-  //  · merrowed edge: a dense satin wrap of short slanted threads in two shades, with a soft shadow under the rim
-  //  · twill: woven diagonal threads plus a fine fabric noise, shaded darker toward the edge
-  //  · embroidery (icon and lettering): thread texture, a raised feel (light from the top left, a shadow below)
-  //  · a running-stitch ring inside the border
-  const n = 160, rim = R - 1, rIn = R - 8;
-  const merrow = Array.from({ length: n }, (_, i) => { const t = (i / n) * Math.PI * 2, t2 = t + 0.075; const c = i % 2 ? '#d9cc98' : '#efe4bb';
-    return `<line x1="${(Math.cos(t) * rIn).toFixed(2)}" y1="${(Math.sin(t) * rIn).toFixed(2)}" x2="${(Math.cos(t2) * rim).toFixed(2)}" y2="${(Math.sin(t2) * rim).toFixed(2)}" stroke="${c}"/>`; }).join('');
+  // Real patches (2026-10-20, Sevaan: like the Mission Patch card back): the merrowed edge is the card back's own
+  // stitched rim, unrolled and wrapped round (assets/art/patch/merrow.webp); the base is a woven twill tile over the
+  // group colour (twill.webp); icon and lettering are lit like raised satin stitching (light from the top left).
+  const rIn = 51;
   const name = a.name.toUpperCase(), nameSize = name.length > 16 ? 8.5 : name.length > 12 ? 9.5 : 11;
   const lift = `filter="url(#${id}e)"`;
-  return `<svg class="patch-svg" viewBox="-64 -64 128 128" aria-hidden="true"><defs><path id="${id}t" d="M-42 0 A42 42 0 0 1 42 0"/><path id="${id}b" d="M-41 0 A41 41 0 0 0 41 0"/>
-    <pattern id="${id}w" width="3" height="3" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="3" height="3" fill="${g.c}"/><rect width="1.4" height="3" fill="#ffffff10"/><rect x="1.4" width=".4" height="3" fill="#00000022"/></pattern>
-    <radialGradient id="${id}s" r="1"><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".38"/></radialGradient>
-    <radialGradient id="${id}h" cx=".35" cy=".25" r=".9"><stop offset="0" stop-color="#fff" stop-opacity=".16"/><stop offset=".6" stop-color="#fff" stop-opacity="0"/></radialGradient>
-    <filter id="${id}n" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="1.6 .35" numOctaves="2" seed="${uid}"/><feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .22 0"/><feComposite in2="SourceGraphic" operator="in"/></filter>
-    <filter id="${id}e" x="-20%" y="-20%" width="140%" height="140%">
-      <feTurbulence type="fractalNoise" baseFrequency="2.2 .5" numOctaves="1" seed="${uid + 3}" result="thr"/>
-      <feColorMatrix in="thr" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .35 -.05" result="thrA"/>
-      <feComposite in="thrA" in2="SourceGraphic" operator="in" result="thrIn"/>
-      <feComposite in="SourceGraphic" in2="thrIn" operator="arithmetic" k1="0" k2="1" k3="-.6" k4="0" result="textured"/>
-      <feGaussianBlur in="SourceAlpha" stdDeviation=".7" result="b"/><feOffset in="b" dx=".5" dy="1" result="o"/>
-      <feFlood flood-color="#000" flood-opacity=".55"/><feComposite in2="o" operator="in" result="sh"/>
-      <feMerge><feMergeNode in="sh"/><feMergeNode in="textured"/></feMerge></filter>
+  return `<svg class="patch-svg" viewBox="-64 -64 128 128" aria-hidden="true"><defs><path id="${id}t" d="M-40 0 A40 40 0 0 1 40 0"/><path id="${id}b" d="M-41 0 A41 41 0 0 0 41 0"/>
+    <pattern id="${id}w" width="30" height="30" patternUnits="userSpaceOnUse" patternTransform="rotate(-6)"><image href="assets/art/patch/twill.webp" width="30" height="30"/></pattern>
+    <radialGradient id="${id}s" r="1"><stop offset=".6" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".45"/></radialGradient>
+    <radialGradient id="${id}h" cx=".35" cy=".25" r=".9"><stop offset="0" stop-color="#fff" stop-opacity=".12"/><stop offset=".6" stop-color="#fff" stop-opacity="0"/></radialGradient>
+    <filter id="${id}e" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
+      <feGaussianBlur in="SourceAlpha" stdDeviation=".8" result="h"/>
+      <feDiffuseLighting in="h" surfaceScale="2.4" diffuseConstant="1.15" lighting-color="#fff" result="dif"><feDistantLight azimuth="225" elevation="50"/></feDiffuseLighting>
+      <feComposite in="SourceGraphic" in2="dif" operator="arithmetic" k1="1.12" result="lit"/>
+      <feSpecularLighting in="h" surfaceScale="2.4" specularConstant=".7" specularExponent="16" lighting-color="#fff" result="sp"><feDistantLight azimuth="225" elevation="40"/></feSpecularLighting>
+      <feComposite in="sp" in2="SourceAlpha" operator="in" result="spIn"/>
+      <feTurbulence type="fractalNoise" baseFrequency="1.5 .16" numOctaves="1" seed="${uid % 50}" result="thr"/>
+      <feColorMatrix in="thr" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -1.1 .62" result="thrA"/>
+      <feComposite in="thrA" in2="SourceAlpha" operator="in" result="thrIn"/>
+      <feGaussianBlur in="SourceAlpha" stdDeviation=".9" result="b"/><feOffset in="b" dx=".6" dy="1.1" result="o"/>
+      <feFlood flood-color="#000" flood-opacity=".6"/><feComposite in2="o" operator="in" result="sh"/>
+      <feMerge><feMergeNode in="sh"/><feMergeNode in="lit"/><feMergeNode in="thrIn"/><feMergeNode in="spIn"/></feMerge></filter>
     ${stitch ? `<mask id="${id}m"><circle class="patch-thread" r="${R - 3}" fill="none" stroke="#fff" stroke-width="12" pathLength="100" transform="rotate(-90)"/></mask>` : ''}</defs>
-    <circle r="${R + 1.5}" fill="#00000066" transform="translate(.5 2.5)"/>
-    <circle r="${R}" fill="#c9bb86"/><g stroke-width="1.15" stroke-linecap="round"${stitch ? ` mask="url(#${id}m)"` : ''}>${merrow}</g>
-    <circle r="${rim}" fill="none" stroke="#7d7148" stroke-width=".6" opacity=".6"/>
-    <circle r="${rIn - .2}" fill="url(#${id}w)"/><circle r="${rIn - .2}" fill="#000" filter="url(#${id}n)"/><circle r="${rIn - .2}" fill="url(#${id}s)"/>
-    <circle r="${rIn - .3}" fill="none" stroke="#00000055" stroke-width="1.2"/>
-    <circle r="${rIn - 1.6}" fill="none" stroke="${INK}" stroke-opacity=".45" stroke-width=".7" stroke-dasharray="1.8 1.4"/>
-    ${fossil ? '' : `<circle r="${R - 22}" fill="none" stroke="${INK}" stroke-opacity=".3" stroke-width=".9" stroke-dasharray="1.6 1.6"/>`}
-    <g ${lift}><text font-family="SC Label, Arial Narrow, sans-serif" font-size="${nameSize}" letter-spacing="2" fill="${INK}" text-anchor="middle"><textPath href="#${id}t" startOffset="50%">${esc(name)}</textPath></text>
-    <text font-family="SC Label, Arial Narrow, sans-serif" font-size="8.5" letter-spacing="2" fill="${OR}" text-anchor="middle" dy="7"><textPath href="#${id}b" startOffset="50%">${esc(date || (a.sub ?? g.t).toUpperCase())}</textPath></text>
+    <circle r="${R + 0.5}" fill="#00000070" transform="translate(.6 2.6)"/>
+    <circle r="${rIn + 1}" fill="${g.c}"/><circle r="${rIn + 1}" fill="url(#${id}w)"/><circle r="${rIn + 1}" fill="url(#${id}s)"/>
+    <image href="assets/art/patch/merrow.webp" x="${-R}" y="${-R}" width="${2 * R}" height="${2 * R}"${stitch ? ` mask="url(#${id}m)"` : ''}/>
+    ${fossil ? '' : `<circle r="${R - 22}" fill="none" stroke="${INK}" stroke-opacity=".35" stroke-width=".9" stroke-dasharray="1.6 1.6"/>`}
+    <g ${lift}><text font-family="SC Label, Arial Narrow, sans-serif" font-size="${nameSize}" font-weight="600" letter-spacing="2" fill="${INK}" text-anchor="middle"><textPath href="#${id}t" startOffset="50%">${esc(name)}</textPath></text>
+    <text font-family="SC Label, Arial Narrow, sans-serif" font-size="8.5" font-weight="600" letter-spacing="2" fill="${OR}" text-anchor="middle" dy="7"><textPath href="#${id}b" startOffset="50%">${esc(date || (a.sub ?? g.t).toUpperCase())}</textPath></text>
     ${fossil ? ic : `<g transform="scale(.82)">${ic}</g>`}</g>
     <circle r="${R}" fill="url(#${id}h)" pointer-events="none"/></svg>`;
 }
