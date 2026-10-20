@@ -16,7 +16,8 @@
       "overlaysWebView": true
     },
     "LocalNotifications": {
-      "iconColor": "#FA8127"
+      "iconColor": "#FA8127",
+      "smallIcon": "ic_stat_sc"
     }
   },
   "experimental": {

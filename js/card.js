@@ -1,20 +1,20 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { fallWords } from './last-chance.js?v=0.1.889';
-import { feel } from './native.js?v=0.1.889';
-import { sfx } from './sfx.js?v=0.1.889';
-import { cardArt } from './art.js?v=0.1.889';
-import { TIER_INFO } from './rarity.js?v=0.1.889';
-import { SET_BY_ID } from './sets.js?v=0.1.889';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.889';
-import { FLEET_ABOUT, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.889';
-import { artFileFor } from './art-keys.js?v=0.1.889';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.889';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.889';
-import { nightsIn } from './observation.js?v=0.1.889';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.889';
-import { SHINY } from './shiny.js?v=0.1.889';
-import { conArt, cometArt } from './con-art.js?v=0.1.889';
-import { CON_FIGURES } from './con-figures.js?v=0.1.889';
+import { fallWords } from './last-chance.js?v=0.1.890';
+import { feel } from './native.js?v=0.1.890';
+import { sfx } from './sfx.js?v=0.1.890';
+import { cardArt } from './art.js?v=0.1.890';
+import { TIER_INFO } from './rarity.js?v=0.1.890';
+import { SET_BY_ID } from './sets.js?v=0.1.890';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.890';
+import { FLEET_ABOUT, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.890';
+import { artFileFor } from './art-keys.js?v=0.1.890';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.890';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.890';
+import { nightsIn } from './observation.js?v=0.1.890';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.890';
+import { SHINY } from './shiny.js?v=0.1.890';
+import { conArt, cometArt } from './con-art.js?v=0.1.890';
+import { CON_FIGURES } from './con-figures.js?v=0.1.890';
 // The animal/symbol figure belongs to the completed (gold) constellation card only (2026-10-05): a single
 // star's card draws just the star pattern with its star marked, so the figure is a reward for finishing the set.
 // A star card's constellation figure comes into focus as you collect the constellation's stars (design/con-focus.html B).
@@ -181,7 +181,19 @@ export function renderCard(o, opts = {}) {
     <div class="card__back" aria-hidden="true"><div class="back-holo"></div><div class="back-glare"></div></div>
     ${extinct ? `<div class="card__stamp">REENTERED${o.decay ? `<small>${esc(formatDate(o.decay)).toUpperCase()}</small>` : ''}</div>` : ''}
   </div></div>`;
+  if (!opts.mini) fitFact(el);
   return el;
+}
+// A long fact shrinks a little rather than being cut off, e.g. with Android's text size turned up (Android playtest
+// 2026-10-19: OPS 0082's last line was clipped at 130%). Down to 82%, once the card is on screen.
+function fitFact(el) {
+  const f = el.querySelector('.card__fact'); if (!f || typeof ResizeObserver === 'undefined') return;
+  const ro = new ResizeObserver(() => {
+    if (!f.clientHeight) return; ro.disconnect();
+    const px = parseFloat(getComputedStyle(f).fontSize);
+    for (let k = 0.96; f.scrollHeight > f.clientHeight + 1 && k >= 0.82; k -= 0.04) f.style.fontSize = `${(px * k).toFixed(2)}px`;
+  });
+  ro.observe(f);
 }
 
 // Natural-object stats: a number and its short unit stay on one line ("10.7 h"). Only long figures

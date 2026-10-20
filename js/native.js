@@ -81,7 +81,7 @@ export async function notifyAt(at, title, body, { id } = {}) {
   try {
     let p = await ln.checkPermissions(); if (p.display !== 'granted') p = await ln.requestPermissions();
     if (p.display !== 'granted') return 'denied';
-    await ln.schedule({ notifications: [{ id: id ?? notifId++, title, body, schedule: { at: new Date(at), allowWhileIdle: true } }] });
+    await ln.schedule({ notifications: [{ id: id ?? notifId++, title, body, schedule: { at: new Date(at), allowWhileIdle: true }, isExactNotification: false }] }); // a few minutes' slack is fine; exact alarms send Android players to a system screen and need a Play-restricted permission (Android playtest 2026-10-19)
     return 'on';
   } catch { return 'unsupported'; }
 }

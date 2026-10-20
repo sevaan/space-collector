@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Notification icon (Android playtest 2026-10-19: notifications used a framework icon): the target circle with its four
+     ticks and a satellite inside, white on transparent as Android requires; tinted orange by iconColor. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android" android:width="24dp" android:height="24dp" android:viewportWidth="24" android:viewportHeight="24">
+    <path android:fillColor="#00000000" android:strokeColor="#FFFFFFFF" android:strokeWidth="1.8" android:pathData="M12,5.5a6.5,6.5 0,1 1,0 13a6.5,6.5 0,1 1,0 -13z" />
+    <path android:fillColor="#00000000" android:strokeColor="#FFFFFFFF" android:strokeWidth="1.8" android:strokeLineCap="round" android:pathData="M12,1.5V4M12,20V22.5M1.5,12H4M20,12H22.5" />
+    <path android:fillColor="#FFFFFFFF" android:pathData="M10.6,10.9h2.8v2.2h-2.8z M7.6,11.2h2.4v1.6h-2.4z M14,11.2h2.4v1.6h-2.4z" />
+</vector>

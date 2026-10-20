@@ -1,29 +1,29 @@
-import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.889';
-import { computeStats, statsHtml } from './stats.js?v=0.1.889';
-import { nightKey } from './observation.js?v=0.1.889';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.889';
-import { sfx } from './sfx.js?v=0.1.889';
-import { expandFacts } from './catalog-facts.js?v=0.1.889';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.889';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.889';
-import { ticket } from './toast.js?v=0.1.889';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.889';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.889';
-import { cardArt } from './art.js?v=0.1.889';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.889';
-import { applyBack } from './card-backs.js?v=0.1.889';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.889';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.889';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.889';
-import { STORIES } from './stories.js?v=0.1.889';
-import { loadConstellations, conList } from './constellations.js?v=0.1.889';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.889';
-import { eventBadges, nextEvent } from './events.js?v=0.1.889';
-import { shareCardEl } from './share-card.js?v=0.1.889';
-import { forgetSighting } from './cloud-backup.js?v=0.1.889';
-import { allSightings, deleteSighting } from './store.js?v=0.1.889';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.889';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.889';
+import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.890';
+import { computeStats, statsHtml } from './stats.js?v=0.1.890';
+import { nightKey } from './observation.js?v=0.1.890';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.890';
+import { sfx } from './sfx.js?v=0.1.890';
+import { expandFacts } from './catalog-facts.js?v=0.1.890';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.890';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.890';
+import { ticket } from './toast.js?v=0.1.890';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.890';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.890';
+import { cardArt } from './art.js?v=0.1.890';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.890';
+import { applyBack } from './card-backs.js?v=0.1.890';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.890';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.890';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.890';
+import { STORIES } from './stories.js?v=0.1.890';
+import { loadConstellations, conList } from './constellations.js?v=0.1.890';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.890';
+import { eventBadges, nextEvent } from './events.js?v=0.1.890';
+import { shareCardEl } from './share-card.js?v=0.1.890';
+import { forgetSighting } from './cloud-backup.js?v=0.1.890';
+import { allSightings, deleteSighting } from './store.js?v=0.1.890';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.890';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.890';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -351,7 +351,11 @@ function findPassLine(c) {
   const p = findPasses.get(c.id);
   if (p === undefined) return '<span class="fd-wait">Finding its next pass…</span>';
   if (!p) return 'Not visible from here in the next 10 days';
-  const d = new Date(p.start), today = d.toDateString() === new Date().toDateString(), tmr = d.toDateString() === new Date(Date.now() + 86400e3).toDateString();
+  // "Tonight" means the observing night, not the calendar day, so a 4:57 AM pass is tonight's like the card viewer says
+  // (Android playtest 2026-10-19: Find said "Tomorrow 4:57 AM" for the same pass).
+  const d = new Date(p.start), nightOf = (t) => new Date(t - 12 * 3600e3).toDateString(), nowD = new Date();
+  const tonightKey = nowD.getHours() < 6 ? nightOf(nowD.getTime()) : nowD.toDateString(), tmrKey = new Date(new Date(tonightKey).getTime() + 86400e3 + 3600e3).toDateString();
+  const today = nightOf(p.start) === tonightKey, tmr = nightOf(p.start) === tmrKey;
   const day = today ? 'Tonight' : tmr ? 'Tomorrow' : d.toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' });
   const where = `${p.peakEl >= 60 ? 'high' : p.peakEl >= 30 ? 'halfway up' : 'low'} in the ${({ N: 'north', NE: 'northeast', E: 'east', SE: 'southeast', S: 'south', SW: 'southwest', W: 'west', NW: 'northwest' })[['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'][Math.round(p.peakAz / 45) % 8]]}`;
   return `<b>${day} ${d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}</b> · ${p.cloud ? '<span class="fd-cloud">cloud forecast</span>' : where}`;
@@ -474,7 +478,7 @@ function renderUpPanel(c, up, find = false) {
   const el = $('v-up'); el.hidden = !up; el._card = c; if (!up) return;
   const key = `${up.id}@${up.start}`, far = up.start > Date.now() + 10 * 60000, on = findReminded.has(key);
   const pt = up.dir ?? ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'][Math.round((((up.peakAz ?? 0) % 360) + 360) % 360 / 45) % 8];
-  const where = `${up.peakEl >= 70 ? 'almost overhead' : up.peakEl >= 35 ? 'high' : 'low'} in the ${DIR_WORD[pt] ?? pt}`;
+  const where = `${up.peakEl >= 60 ? 'high' : up.peakEl >= 30 ? 'halfway up' : 'low'} in the ${DIR_WORD[pt] ?? pt}`; // the same words as Find and the Tonight page (Android playtest 2026-10-19)
   const d = new Date(up.start), today = d.toDateString() === new Date().toDateString(), tmr = d.toDateString() === new Date(Date.now() + 86400e3).toDateString();
   const when = !find ? 'Up tonight' : today ? 'Tonight' : tmr ? 'Tomorrow' : d.toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' });
   el.innerHTML = `<p class="v-up__when">${esc(when)} · <b>${esc(hm(up.start))}</b> · ${esc(where)}</p>${up.cloud ? '<p class="v-up__cloud">Cloud is forecast then. If you spot a gap, it still counts.</p>' : ''}
