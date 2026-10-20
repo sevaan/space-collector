@@ -2,8 +2,8 @@
 // badges"). Your history under the sky, from the sighting log plus what the Collection page already knows (rank,
 // patches, constellations, stories, albums). computeStats(sightings, byKey, nightKey, year, ctx) -> numbers;
 // statsHtml(st) -> the panel. No network; the map uses js/geo.js’s coarse outlines.
-import { LAND } from './geo.js?v=0.1.897';
-import { TIER_INFO, TIERS } from './rarity.js?v=0.1.897';
+import { LAND } from './geo.js?v=0.1.898';
+import { TIER_INFO, TIERS } from './rarity.js?v=0.1.898';
 
 const RANK = { common: 0, uncommon: 1, rare: 2, epic: 3, legendary: 4 };
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -33,7 +33,7 @@ export function computeStats(sightings, byKey, nightKey, year = null, ctx = {}) 
   const days2 = new Map(); for (const s of list) { const d = new Date(s.time), k = `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`; if (!days2.has(k)) days2.set(k, { t: s.time, cards: new Set() }); days2.get(k).cards.add(s.cardKey); }
   const busiest = [...days2.values()].sort((a, b) => b.cards.size - a.cards.size || a.t - b.t)[0] ?? null;
   // Longest run of consecutive observing nights.
-  const days = [...new Set(list.map((s) => Math.floor((s.time - 12 * 3600e3) / 86400e3)))].sort((a, b) => a - b);
+  const days = [...new Set(list.map((s) => Math.floor((s.time - 12 * 3600e3 - new Date(s.time).getTimezoneOffset() * 60000) / 86400e3)))].sort((a, b) => a - b); // local noon to noon (was UTC noon: one night in Tokyo or Sydney counted as two; bug hunt 2026-10-20)
   let run = 0, best = 0; for (let i = 0; i < days.length; i++) { run = i && days[i] === days[i - 1] + 1 ? run + 1 : 1; best = Math.max(best, run); }
   // The card you’ve come back to most (most nights), and your very first.
   const most = [...nightsOf.entries()].map(([k, ns]) => ({ c: byKey.get(k), nights: ns.size })).filter((x) => x.c).sort((a, b) => b.nights - a.nights)[0] ?? null;

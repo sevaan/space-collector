@@ -23,7 +23,7 @@ export async function fetchWeather(lat, lon) {
   const key = `${lat.toFixed(2)},${lon.toFixed(2)}`;
   if (cache && cache.key === key && Date.now() - cache.at < CACHE_MS) return cache.data;
   const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat.toFixed(2)}&longitude=${lon.toFixed(2)}&current=cloud_cover,weather_code&hourly=cloud_cover,weather_code,temperature_2m,wind_speed_10m&forecast_days=7&timeformat=unixtime&timezone=auto`;
-  const res = await fetch(url);
+  const res = await fetch(url, { signal: AbortSignal.timeout?.(8000) }); // never hangs (bug hunt 2026-10-20)
   if (!res.ok) throw new Error(String(res.status));
   const j = await res.json();
   const hours = (j.hourly?.time ?? []).map((t, i) => ({ t: t * 1000, cloud: j.hourly.cloud_cover[i], code: j.hourly.weather_code[i], kind: kindOf(j.hourly.weather_code[i]), temp: j.hourly.temperature_2m?.[i] ?? null, wind: j.hourly.wind_speed_10m?.[i] ?? null }));

@@ -1,7 +1,7 @@
 // Player progress from the sighting log: XP and observer rank, tonight’s three missions, a weekly streak and
 // achievements. Everything is derived from the saved sightings (nothing extra is stored), so it can’t drift.
 // info(cardKey) -> { tier, type, owner, launch, natural, con } | null. No DOM.
-import { nightKey } from './observation.js?v=0.1.897';
+import { nightKey } from './observation.js?v=0.1.898';
 
 // A longer climb (2026-10-12, playtest room: three ranks on night 1, Mission Control in about two weeks), with two
 // prestige ranks past Mission Control. Nobody drops a rank they had on the old curve (rankFloor below).
@@ -235,8 +235,11 @@ const dayNum = (time) => { const d = new Date(time); d.setHours(12, 0, 0, 0); re
 // a week with no sighting and 4 or more cloudy nights is skipped: it neither adds to the streak nor ends it.
 function cloudyDays() { try { return JSON.parse(localStorage.getItem('skyNights') || '{}'); } catch { return {}; } }
 export function streaks(sightings, now = Date.now(), cloudy = cloudyDays()) {
-  const days = real(sightings).map((s) => dayNum(s.time)); if (!days.length) return { current: 0, best: 0, thisWeek: false };
-  const first = Math.min(...days), weekIndex = (t) => Math.floor((dayNum(t) - first) / 7), cur = weekIndex(now);
+  // Counted by observing night (noon to noon), so a session that runs past midnight is one night, not two days that
+  // can land in two streak weeks (bug hunt 2026-10-20). Cloudy nights are keyed by the evening's day, which matches.
+  const night = (t) => dayNum(t - 12 * 3600e3);
+  const days = real(sightings).map((s) => night(s.time)); if (!days.length) return { current: 0, best: 0, thisWeek: false };
+  const first = Math.min(...days), weekIndex = (t) => Math.floor((night(t) - first) / 7), cur = weekIndex(now);
   const seen = new Set(days.map((d) => Math.floor((d - first) / 7)));
   const cloudyWeek = (w) => { let n = 0; for (let d = first + w * 7; d < first + w * 7 + 7; d++) if (cloudy[d] === 1) n++; return n >= 4; };
   let best = 0, run = 0;

@@ -1,17 +1,17 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.897';
+import { extinction } from './sky-limit.js?v=0.1.898';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.897';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.898';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.897';
-import { createCloudGL } from './clouds-gl.js?v=0.1.897';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.898';
+import { createCloudGL } from './clouds-gl.js?v=0.1.898';
 // Cloud colours by light: sunlit tops, shadowed bellies, and the horizon haze they melt into (0–1 RGB).
 const CLOUD_LIGHT = {
   day: { lit: [1, 1, 1], shade: [0.62, 0.68, 0.77], haze: [0.82, 0.87, 0.93] },
   dusk: { lit: [1, 0.8, 0.68], shade: [0.36, 0.33, 0.42], haze: [0.62, 0.5, 0.52] },
   night: { lit: [0.22, 0.25, 0.31], shade: [0.1, 0.12, 0.16], haze: [0.14, 0.15, 0.2] },
 };
-import { TIER_INFO } from './rarity.js?v=0.1.897';
+import { TIER_INFO } from './rarity.js?v=0.1.898';
 
 const RAD = Math.PI / 180;
 const SECRET_PX = { santa: 24, roadster: 12.4, voyager: 14.5, voyager2: 14.5, pioneer10: 11.7, pioneer11: 11.7, newhorizons: 6.4, arecibo: 6.9, halley: 8.6, sputnik: 11.2, laika: 13.3, wow: 9.8 };
@@ -248,6 +248,7 @@ export class SkyView {
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, 128, 128);
     this.sprites.set(key, sprite);
+    if (this.sprites.size > 48) this.sprites.delete(this.sprites.keys().next().value); // oldest out: canvas memory is precious on iPhone
     return sprite;
   }
 
@@ -818,7 +819,8 @@ export class SkyView {
     const sunAz = this.sunAz;
     for (const { p, az } of hz) {
       const warm = sunAz == null ? 0 : Math.max(0, Math.cos((az - sunAz) * RAD)) ** 3 * Math.max(0, Math.min(1, (this.sunEl + 18) / 16));
-      const rgb = night ? [255, 70, 50] : [Math.round(98 + warm * 140), Math.round(122 + warm * 40), Math.round(139 - warm * 80)];
+      const wq = Math.round(warm * 12) / 12; // a dozen warmth steps: the glow-sprite cache stays small (bug hunt 2026-10-20: 150 sprites a sunset)
+      const rgb = night ? [255, 70, 50] : [Math.round(98 + wq * 140), Math.round(122 + wq * 40), Math.round(139 - wq * 80)];
       const twi = night ? 0 : Math.max(0, 1 - Math.abs((this.sunEl ?? -90) + 2) / 8); // peaks around sunset/sunrise
       this.glow(p.x, p.y, 46 + twi * 30, rgb, (night ? 0.05 : 0.07) + warm * (0.12 + twi * 0.3));
     }

@@ -84,7 +84,7 @@ export class PlaneTracker {
     if (Date.now() - this.lastFetch < wait) return;
     this.busy = true; this.lastFetch = Date.now();
     const q = `${url.replace(/\/$/, '')}/?lat=${obs.lat.toFixed(2)}&lon=${obs.lon.toFixed(2)}&dist=${RADIUS_NM}`;
-    fetch(q).then((r) => (r.ok ? r.json() : Promise.reject(new Error(r.status))))
+    fetch(q, { signal: AbortSignal.timeout?.(8000) }).then((r) => (r.ok ? r.json() : Promise.reject(new Error(r.status))))
       .then((j) => { this.planes = parse(j); this.failures = 0; })
       .catch(() => { this.failures++; })
       .finally(() => { this.busy = false; });
