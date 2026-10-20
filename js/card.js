@@ -1,20 +1,20 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { fallWords } from './last-chance.js?v=0.1.907';
-import { feel } from './native.js?v=0.1.907';
-import { sfx } from './sfx.js?v=0.1.907';
-import { cardArt } from './art.js?v=0.1.907';
-import { TIER_INFO } from './rarity.js?v=0.1.907';
-import { SET_BY_ID } from './sets.js?v=0.1.907';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.907';
-import { FLEET_ABOUT, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.907';
-import { artFileFor } from './art-keys.js?v=0.1.907';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.907';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.907';
-import { nightsIn } from './observation.js?v=0.1.907';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.907';
-import { SHINY } from './shiny.js?v=0.1.907';
-import { conArt, cometArt } from './con-art.js?v=0.1.907';
-import { CON_FIGURES } from './con-figures.js?v=0.1.907';
+import { fallWords } from './last-chance.js?v=0.1.908';
+import { feel } from './native.js?v=0.1.908';
+import { sfx } from './sfx.js?v=0.1.908';
+import { cardArt } from './art.js?v=0.1.908';
+import { TIER_INFO } from './rarity.js?v=0.1.908';
+import { SET_BY_ID } from './sets.js?v=0.1.908';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.908';
+import { FLEET_ABOUT, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.908';
+import { artFileFor } from './art-keys.js?v=0.1.908';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.908';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.908';
+import { nightsIn } from './observation.js?v=0.1.908';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.908';
+import { SHINY } from './shiny.js?v=0.1.908';
+import { conArt, cometArt } from './con-art.js?v=0.1.908';
+import { CON_FIGURES } from './con-figures.js?v=0.1.908';
 // The animal/symbol figure belongs to the completed (gold) constellation card only (2026-10-05): a single
 // star’s card draws just the star pattern with its star marked, so the figure is a reward for finishing the set.
 // A star card’s constellation figure comes into focus as you collect the constellation’s stars (design/con-focus.html B).
@@ -191,7 +191,7 @@ function fitFact(el) {
   const ro = new ResizeObserver(() => {
     if (!f.clientHeight) return; ro.disconnect();
     const px = parseFloat(getComputedStyle(f).fontSize);
-    for (let k = 0.96; f.scrollHeight > f.clientHeight + 1 && k >= 0.82; k -= 0.04) f.style.fontSize = `${(px * k).toFixed(2)}px`;
+    for (let k = 0.96; f.scrollHeight > f.clientHeight + 1 && k >= 0.66; k -= 0.03) f.style.fontSize = `${(px * k).toFixed(2)}px`;
   });
   ro.observe(f);
 }
@@ -219,7 +219,7 @@ function nextLevel(family, level, have = 0) {
 // the shadowed part laid over the drawn Moon (centre 603,510, radius 318 in the 1194×896 art), cropped like the image.
 function moonShade(k) {
   const lit = k ? `<path d="${phasePath(k)}" fill="#000"${k > 4 ? ' transform="scale(-1,1)"' : ''}/>` : '';
-  return `<svg class="mn-shade" viewBox="0 0 1194 896" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><mask id="mns${k}"><g transform="translate(603 510) scale(21.4)"><circle r="15.05" fill="#fff"/>${lit}</g></mask></defs><rect width="1194" height="896" fill="rgba(4,8,18,.8)" mask="url(#mns${k})"/></svg>`;
+  return `<svg class="mn-shade" viewBox="0 0 1194 896" preserveAspectRatio="xMidYMax slice" aria-hidden="true"><defs><mask id="mns${k}"><g transform="translate(603 510) scale(21.4)"><circle r="15.05" fill="#fff"/>${lit}</g></mask></defs><rect width="1194" height="896" fill="rgba(4,8,18,.8)" mask="url(#mns${k})"/></svg>`;
 }
 // The lit part of the Moon for phase k (1–7; 0 is new): the right half, then the terminator as an ellipse arc. Waning
 // phases are the waxing ones mirrored.

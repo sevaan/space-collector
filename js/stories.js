@@ -1,7 +1,7 @@
 // Story cards (2026-10-14, Sevaan; design/card-redesign.html): moments and history, not objects you can point at. Each is
 // earned by finding a secret (js/secrets.js): the deep-space probes, the Wow! signal, Starman, and the dated and hidden
 // ones. Registered as natural cards (natural: 'story'), album "Stories". Facts must stay true. Art: assets/art/cards/story-*.
-import { NATURAL, NATURAL_BY_KEY } from './natural.js?v=0.1.907';
+import { NATURAL, NATURAL_BY_KEY } from './natural.js?v=0.1.908';
 
 const S = (id, secret, name, when, stats, fact) => ({ key: `story:${id}`, id: `story:${id}`, card: `story:${id}`, natural: 'story', type: 'story', story: true, secret, name, when, code: 'STORY', tier: 'epic', stats, fact, art: id });
 export const STORIES = [
@@ -14,7 +14,7 @@ export const STORIES = [
   S('plaque', 'pioneer10', 'The Plaque', '2 March 1972 · Pioneer 10', [['LAUNCHED', '1972', ''], ['JUPITER', '1973', ''], ['LAST HEARD', '2003', ''], ['OUT', '~142', 'AU']],
     'The first craft through the asteroid belt and the first to Jupiter. It carries a **gold-coloured plaque** with a drawing of two people and a **map to the Sun**, in case anyone finds it.'),
   S('ringside', 'pioneer11', 'Ringside', 'September 1979 · Pioneer 11 at Saturn', [['LAUNCHED', '1973', ''], ['SATURN', '1979', ''], ['LAST HEARD', '1995', ''], ['HEADING', 'Aquila', '']],
-    'The **first visitor to Saturn**: it crossed just outside the rings and found a new one, now called the F ring. It went quiet in **1995** and keeps coasting outward.'),
+    'The **first spacecraft to visit Saturn**. Skimming past the edge of the rings, it spotted a thin new one: the **F ring**. It fell silent in 1995 and is still heading out of the solar system.'),
   S('heart', 'newhorizons', 'Heart of Pluto', '14 July 2015 · New Horizons', [['LAUNCHED', '2006', ''], ['PLUTO', '2015', ''], ['ARROKOTH', '2019', ''], ['OUT', '~66', 'AU']],
     'Nine years to reach Pluto, and it found a giant **heart-shaped plain of ice**. On board is some of the ashes of **Clyde Tombaugh**, who discovered Pluto.'),
   S('starman', 'roadster', 'Starman', '6 February 2018 · Falcon Heavy', [['LAUNCHED', '2018', ''], ['CAR', 'Tesla Roadster', ''], ['DRIVER', 'Starman', ''], ['ONE LAP', '~557', 'days']],
