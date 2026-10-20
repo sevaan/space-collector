@@ -627,3 +627,10 @@
 .card.wc-mission .card__face { border-color: #ffc545 !important; }
 .card.wc-mission .card__face::after { box-shadow: inset 0 0 0 .09em #a87b22, 0 0 0 .17em #ffd56a !important; }
 .card.wc-mission .card__back { border-width: 2px; }
+/* Collection tiles show the card's own rounded frame, uncut (2026-10-20, Sevaan: "the border of the card gets cut off").
+   The tile used to clip the card with a rounding almost exactly on the card's edge, which ate its thin outer rim at each
+   corner on phone-sized tiles. Now the card rounds itself (its face has radius and overflow hidden), the tile only clips
+   square, and a shiny tile's 2px foil border no longer squeezes the card 4px (the card shows its own shiny finish). */
+.card-tile.card-tile--mini, .grid .tile-slot > .card-tile.card-tile--mini { border-radius: calc(14px * var(--mini-s, .4)); overflow: visible; }
+.card-tile--mini .mini-face { border-radius: 0; overflow: clip; }
+.card-tile.card-tile--retro.card-tile--mini.shiny { border: 0; background: none; }
