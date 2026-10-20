@@ -638,7 +638,7 @@
 .card, .card-tile, .mini-face { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 /* Bigger fact text on full cards (2026-10-20, Sevaan: room to be the size of the welcome card's text). fitFact steps a
    long fact back down so it always fits; tiles keep the small size. */
-.card--mission .card__fact p { font-size: 1.1em; line-height: 1.42; }
+.card--mission .card__fact p { font-size: 1.03em; line-height: 1.42; } /* 1.1em was a touch big (Sevaan) */
 .mini-face .card--mission .card__fact p { font-size: .87em; line-height: 1.45; }
 /* The Moon card's shorter (16:10) window crops from the top of the picture, so the Moon sits higher in it (2026-10-20,
    Sevaan: it looked low). The phase shade (js/card.js moonShade, xMidYMax) crops the same way. */
