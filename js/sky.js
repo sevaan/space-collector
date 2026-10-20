@@ -1,17 +1,17 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.892';
+import { extinction } from './sky-limit.js?v=0.1.893';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.892';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.893';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.892';
-import { createCloudGL } from './clouds-gl.js?v=0.1.892';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.893';
+import { createCloudGL } from './clouds-gl.js?v=0.1.893';
 // Cloud colours by light: sunlit tops, shadowed bellies, and the horizon haze they melt into (0–1 RGB).
 const CLOUD_LIGHT = {
   day: { lit: [1, 1, 1], shade: [0.62, 0.68, 0.77], haze: [0.82, 0.87, 0.93] },
   dusk: { lit: [1, 0.8, 0.68], shade: [0.36, 0.33, 0.42], haze: [0.62, 0.5, 0.52] },
   night: { lit: [0.22, 0.25, 0.31], shade: [0.1, 0.12, 0.16], haze: [0.14, 0.15, 0.2] },
 };
-import { TIER_INFO } from './rarity.js?v=0.1.892';
+import { TIER_INFO } from './rarity.js?v=0.1.893';
 
 const RAD = Math.PI / 180;
 const SECRET_PX = { santa: 24, roadster: 12.4, voyager: 14.5, voyager2: 14.5, pioneer10: 11.7, pioneer11: 11.7, newhorizons: 6.4, arecibo: 6.9, halley: 8.6, sputnik: 11.2, laika: 13.3, wow: 9.8 };
@@ -151,7 +151,7 @@ function inkIsDark(c) {
 export class SkyView {
   constructor(canvas) {
     this.canvas = canvas;
-    this.ctx = canvas.getContext('2d');
+    this.ctx = this.mainCtx = canvas.getContext('2d'); // mainCtx: what every frame draws to, whatever happened before
     this.fovV = 70; // vertical field of view, degrees
     this.theme = THEMES.glass;
     this.targetPos = null;
@@ -766,11 +766,17 @@ export class SkyView {
       // about a pixel (2026-10-08 performance): 1,100 pebbles and 70 gradients a frame were the heaviest part of the sky.
       const bb = this.basis, key = [bb.back, bb.up].flat().map((v) => Math.round(v * 2000)).join(',') + `|${this.w}x${this.h}|${Math.round(dayF * 20)}`;
       const dpr = this.canvas.width / this.w;
+      // If the layer can't be made (an iPhone out of canvas memory returns no context) or drawing it fails, the ground
+      // is just its plain colour for a while: never a half-drawn layer, and the sky always goes back to the screen.
+      if (Date.now() < (this.soilOffUntil ?? 0)) { /* plain ground, retry later */ } else
       if (!this.soil || this.soil.key !== key) {
+        const main = this.ctx;
+        try {
         const layer = this.soil?.canvas ?? (typeof OffscreenCanvas !== 'undefined' ? new OffscreenCanvas(1, 1) : document.createElement('canvas'));
         if (layer.width !== this.canvas.width || layer.height !== this.canvas.height) { layer.width = this.canvas.width; layer.height = this.canvas.height; }
-        const lctx = layer.getContext('2d'); lctx.setTransform(1, 0, 0, 1, 0, 0); lctx.clearRect(0, 0, layer.width, layer.height); lctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        const main = this.ctx; this.ctx = lctx;
+        const lctx = layer.getContext('2d'); if (!lctx) throw new Error('no 2d context for the soil layer');
+        lctx.setTransform(1, 0, 0, 1, 0, 0); lctx.clearRect(0, 0, layer.width, layer.height); lctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        this.ctx = lctx;
         (() => { const ctx = lctx;
       // Higher-fidelity soil (2026-10-08): all of it fixed to the ground (projected), sized by distance so it shrinks
         // toward the horizon. 1) broad soft patches of lighter and darker earth; 2) pebbles with a lit top and a shadow;
@@ -798,9 +804,12 @@ export class SkyView {
           }
         }
           })();
-        this.ctx = main; this.soil = { key, canvas: layer };
+        this.soil = { key, canvas: layer };
+        } catch (e) { this.soil = null; this.soilOffUntil = Date.now() + 10000; console.warn('soil layer skipped', e?.message ?? e); }
+        finally { this.ctx = main; }
       }
-      ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = dayF; ctx.drawImage(this.soil.canvas, 0, 0); ctx.restore(); ctx.globalAlpha = dayF;
+      if (this.soil && Date.now() >= (this.soilOffUntil ?? 0)) { ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = dayF; ctx.drawImage(this.soil.canvas, 0, 0); ctx.restore(); }
+      ctx.globalAlpha = dayF;
       // (2026-10-08: the grass tufts and twigs on the soil were removed, Sevaan didn’t like them.)
       ctx.globalAlpha = 1;
     }
@@ -1458,6 +1467,9 @@ export class SkyView {
   // safeTop/safeBottom are HUD insets in CSS pixels; centerY is an optional pixel
   // override. Projection and the reticle always share the same cx/cy.
   draw(basis, items, { showDim, sky, bodies, milky, lines = true, targetId = null, time = 0, safeTop = 150, safeBottom = 230, centerY, starLimit = null, naturalTargetName = null, quietTarget = false, below = null, belowSats = null, daySats = null, deep = null, belowStarLimit = 6.5, ownedTarget = false, sunEl = -90, ghosts = null, weather = null, newFind = false, rising = null, landscape = false, lockedOn = null, planes = null, planeHit = null, planeTrail = null, naturalTarget = null, feet = null, fossil = null, ufo = null, secrets = null } = {}) {
+    // Every frame starts on the screen's own canvas with a clean state (2026-10-20, Sevaan's phone: a failed daytime
+    // ground layer once left the sky drawing into that hidden layer, and the screen filled with stale frames).
+    this.ctx = this.mainCtx; this.ctx.setTransform(this.canvas.width / this.w, 0, 0, this.canvas.width / this.w, 0, 0); this.ctx.globalAlpha = 1; this.ctx.globalCompositeOperation = 'source-over'; this.ctx.shadowBlur = 0; this.ctx.filter = 'none';
     this.basis = basis;
     this.safeTop = Math.max(12, Math.min(safeTop, this.h * 0.45));
     this.safeBottom = Math.max(12, Math.min(safeBottom, this.h - this.safeTop - 100));
