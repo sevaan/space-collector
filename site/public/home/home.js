@@ -33,14 +33,19 @@ const label = (o) => (o._label ??= titleFor(o));
 const idOf = (o) => o.id ?? o.key;
 
 // If it's light out where you are, show tonight: the first moment the sky is properly dark, plus a little.
+// Always night (2026-10-20, Sevaan: "the website shouldn't have daytime"): unless it's properly dark right now, show
+// tonight once it is (Sun 16° down, plus 40 min so the sky is black and satellites still catch the sunlight).
+const DARK = -16;
 function pickTime() {
-  const t0 = Date.now(); if (frame(new Date(t0), observer).sunEl < -10) return 0;
-  for (let m = 10; m < 24 * 60; m += 10) if (frame(new Date(t0 + m * 60000), observer).sunEl < -12) return (m + 30) * 60000;
-  return 0;
+  const t0 = Date.now(); if (frame(new Date(t0), observer).sunEl < DARK) return 0;
+  for (let m = 5; m < 24 * 60; m += 5) if (frame(new Date(t0 + m * 60000), observer).sunEl < DARK) return (m + 40) * 60000;
+  return 0; // midsummer far north: it never gets that dark
 }
 
 let milkyEq = null, skyData = null;
 function refresh() {
+  // A visitor who stays until dawn: jump back to the next night before the sky brightens.
+  if (frame(now(), observer).sunEl > DARK + 2) { state.offset = 0; state.offset = pickTime(); state.model?.reset?.(); }
   const d = now(), f = frame(d, observer), toEnu = eqToEnu(d, observer);
   state.frame = f;
   state.bodies = solarSystem(d, observer).map((b) => ({ ...b, enu: toEnu(b.v) }));
