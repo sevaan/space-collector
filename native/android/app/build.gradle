@@ -7,8 +7,9 @@ android {
         applicationId "io.github.sevaan.spacecollector"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        // Play needs a higher versionCode for every upload: native/build-android.sh passes -PversionCode=N.
+        versionCode Integer.parseInt((project.findProperty('versionCode') ?: '1').toString())
+        versionName((project.findProperty('versionName') ?: '1.0').toString())
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
@@ -16,8 +17,21 @@ android {
             ignoreAssetsPattern = '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
+    // Release signing (2026-10-20): the upload key lives outside the repo, in ~/.space-collector/upload.jks, and its
+    // password in the macOS keychain (service "space-collector-upload-key"), never in a file. Google Play re-signs
+    // the app with its own key (Play App Signing), so this upload key can be reset through Play support if lost.
+    signingConfigs {
+        release {
+            def ks = new File(System.getProperty('user.home'), '.space-collector/upload.jks')
+            if (ks.exists()) {
+                def pw = ['security', 'find-generic-password', '-s', 'space-collector-upload-key', '-w'].execute().text.trim()
+                storeFile ks; storePassword pw; keyAlias 'upload'; keyPassword pw
+            }
+        }
+    }
     buildTypes {
         release {
+            if (new File(System.getProperty('user.home'), '.space-collector/upload.jks').exists()) signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
