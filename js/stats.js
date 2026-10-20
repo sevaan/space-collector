@@ -2,8 +2,8 @@
 // badges"). Your history under the sky, from the sighting log plus what the Collection page already knows (rank,
 // patches, constellations, stories, albums). computeStats(sightings, byKey, nightKey, year, ctx) -> numbers;
 // statsHtml(st) -> the panel. No network; the map uses js/geo.js’s coarse outlines.
-import { LAND } from './geo.js?v=0.1.902';
-import { TIER_INFO, TIERS } from './rarity.js?v=0.1.902';
+import { LAND } from './geo.js?v=0.1.903';
+import { TIER_INFO, TIERS } from './rarity.js?v=0.1.903';
 
 const RANK = { common: 0, uncommon: 1, rare: 2, epic: 3, legendary: 4 };
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -81,7 +81,7 @@ export function statsHtml(st) {
     <div class="st-tile"><b>${n(st.places.length)}</b><small>${st.places.length === 1 ? 'place' : 'places'}</small></div></div>
     <div class="st-bars" aria-label="Nights out by month">${st.months.map((v, i) => `<div class="st-bar${i === nowM ? ' now' : ''}"><em>${v || ''}</em><span style="height:${(v / max) * 100}%"></span><small>${MONTHS[i][0]}</small></div>`).join('')}</div></section>`;
   // Highlights, each with its card’s picture.
-  const thumb = (c) => { const u = x.art?.(c); return u ? `<img src="${u}" alt="" loading="lazy">` : `<span class="st-noart"></span>`; };
+  const thumb = (c) => { const u = x.art?.(c); return u ? `<img src="${u}" alt="" loading="lazy">` : `<span class="st-noart" style="color:${tierOf(c).color}">${c.natural === 'star' ? '✦' : tierOf(c).gem}</span>`; }; // stars have no painted picture: a mark, not an empty box (iOS playtest 2026-10-20)
   const hl = (label, c, line) => c ? `<div class="st-hl">${thumb(c)}<div><small>${esc(label)}</small><b>${esc(title(c))}</b><span>${esc(line)}</span></div></div>` : '';
   const top = st.rarest[0];
   const highlights = `<section class="st-sec"><div class="st-head"><span>Highlights</span></div><div class="st-hls">

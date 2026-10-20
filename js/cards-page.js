@@ -1,29 +1,29 @@
-import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.902';
-import { computeStats, statsHtml } from './stats.js?v=0.1.902';
-import { nightKey } from './observation.js?v=0.1.902';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.902';
-import { sfx } from './sfx.js?v=0.1.902';
-import { expandFacts } from './catalog-facts.js?v=0.1.902';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.902';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.902';
-import { ticket } from './toast.js?v=0.1.902';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.902';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.902';
-import { cardArt } from './art.js?v=0.1.902';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.902';
-import { applyBack } from './card-backs.js?v=0.1.902';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.902';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.902';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.902';
-import { STORIES } from './stories.js?v=0.1.902';
-import { loadConstellations, conList } from './constellations.js?v=0.1.902';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.902';
-import { eventBadges, nextEvent } from './events.js?v=0.1.902';
-import { shareCardEl } from './share-card.js?v=0.1.902';
-import { forgetSighting } from './cloud-backup.js?v=0.1.902';
-import { allSightings, deleteSighting } from './store.js?v=0.1.902';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.902';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.902';
+import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.903';
+import { computeStats, statsHtml } from './stats.js?v=0.1.903';
+import { nightKey } from './observation.js?v=0.1.903';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.903';
+import { sfx } from './sfx.js?v=0.1.903';
+import { expandFacts } from './catalog-facts.js?v=0.1.903';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.903';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.903';
+import { ticket } from './toast.js?v=0.1.903';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.903';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.903';
+import { cardArt } from './art.js?v=0.1.903';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.903';
+import { applyBack } from './card-backs.js?v=0.1.903';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.903';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.903';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.903';
+import { STORIES } from './stories.js?v=0.1.903';
+import { loadConstellations, conList } from './constellations.js?v=0.1.903';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.903';
+import { eventBadges, nextEvent } from './events.js?v=0.1.903';
+import { shareCardEl } from './share-card.js?v=0.1.903';
+import { forgetSighting } from './cloud-backup.js?v=0.1.903';
+import { allSightings, deleteSighting } from './store.js?v=0.1.903';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.903';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.903';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -330,7 +330,7 @@ function renderLogbook() {
   const atRisk = p.streak.current && !p.streak.thisWeek;
   el.innerHTML = `<div class="lb-top"><span>Observer rank</span><span class="lb-streak">${streak}${atRisk ? '<button type="button" class="lb-remind" id="streak-remind">Remind me Sat</button>' : ''}</span></div>
     <div class="lb-pic">${ladder}<button type="button" class="lb-more" id="lb-more" aria-expanded="${!$('logbook').classList.contains('compact')}">${$('logbook').classList.contains('compact') ? 'Missions ›' : 'Less'}</button></div>
-    <div class="lb-rankrow"><span class="lb-name">${esc(p.rank.name)}</span><span class="lb-xp"><b>${p.xp.toLocaleString()}</b>${p.rank.next ? ` / ${p.rank.next.toLocaleString()}` : ''} XP</span></div>
+    <div class="lb-rankrow"><span class="lb-name">${esc(p.rank.name)}</span><span class="lb-xp"><b>${p.xp.toLocaleString()}</b> XP</span></div>
     ${p.rank.next ? `<div class="lb-bar"><i style="width:${(into * 100).toFixed(1)}%"></i></div><div class="lb-to"><span>${(p.rank.next - p.xp).toLocaleString()} XP to <b>${esc(RANKS[ri + 1]?.[1] ?? 'the next rank')}</b></span><span>${Math.round(into * 100)}%</span></div>` : '<div class="lb-to"><span>Top rank. Every catch still counts.</span></div>'}
     ${p.missions.map((m) => `<div class="lb-mission${m.done ? ' done' : ''}"><i></i>${esc(m.text)}</div>`).join('')}
     ${p.challenge ? `<div class="lb-mission lb-challenge${p.challenge.done ? ' done' : ''}"><i></i>${esc(p.challenge.text)}<small>Sky challenge · +50</small></div>` : ''}
@@ -931,6 +931,7 @@ function openKey(key) {
     // Collection) lands on Mine (2026-10-17, Sevaan). Opened from Albums yourself, you go back to Albums as before.
     if (want === 'discover' && state.view !== 'discover') returnView = 'owned';
     if (!['owned', 'discover'].includes(state.view) || (want === 'discover' && state.view !== 'discover')) setView(want);
+    if (state.query || state.set !== 'all' || state.rarity !== 'all') resetFilters(); // a search left in Find doesn't shrink the list to 1 / 1 (iOS playtest 2026-10-20)
     let i = state.list.findIndex((c) => c.key === key);
     if (i < 0) { resetFilters(); i = state.list.findIndex((c) => c.key === key); }
     if (i < 0 && state.view !== 'discover') { setView('discover'); i = state.list.findIndex((c) => c.key === key); }

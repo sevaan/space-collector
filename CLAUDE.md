@@ -1434,3 +1434,14 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - City search in the location sheet (#loc-q / #loc-results): Open-Meteo geocoding, tap a result → setManualLocation(lat, lon, place); the place name shows in Settings and is saved. Privacy policy mentions it.
   - In-app browser: @capacitor/browser 8.0.5 (native/package.json); js/native.js opens every http(s) link, and the bundled privacy.html (as the live page), in the Browser sheet in the apps. Needs the next native build.
   - App Review notes rewritten in store/listing.md (paste-ready block; Sevaan will ask Claude to fill App Review Information at submission).
+- 2026-10-20 · iOS playtest fixes, round 2 (returning-player agent):
+  - Collect takes what the ticket showed when the finger went down (state.pressTarget from state.shownTarget), not whatever crossed the circle by the click.
+  - Finger mode "Aim at it" follows the target for up to 8 s (state.dragFollow) so fast satellites stay in the circle; a drag stops it.
+  - Reminders whose time has passed return 'past' ("It's starting now: look up instead"), never "set".
+  - "View in collection" clears a leftover Find search/filter before opening the card (it showed 1 / 1).
+  - Settings Card back row re-renders when Plus changes (showed the locked back). Location row has wording for 'stale'/'saved' ("Your last location"), which fell through to "An example sky".
+  - Rank card shows total XP alone ("325 XP"); the bar and % are progress through this rank. Haul line says "tonight's run: about +N XP". The until-dark sheet's best pass is tonight's headliner when there is one.
+  - Now hero: an arrow with a shaft (the dart read backwards at an angle; the code was right); countdown unit "to go" (not "min" for seconds). Tonight refreshes every minute while open; past shiny chances drop off.
+  - Reveal "+N more" chip opens the rest. Star distances under the circle use the card's rounding. Stats thumbnails for stars show a mark. Welcome card: a long slow drag up (160 px) also begins. Closing layers never eat the next tap.
+  - Small: Look up row uses the bell icon; PLUS tags hidden for Plus members in Settings; fleet launch caret disappears after typing; no spellcheck on search fields; rank card header gap; the viewer's time never splits.
+  - Not done (by design or later): notices covering the header for a few seconds, "Kosmos/Cosmos", the UP/haul direction differences between rise and peak, catalogue/album denominators (709 vs 724 stars, 9 vs 10 worlds).

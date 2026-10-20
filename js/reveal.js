@@ -5,12 +5,12 @@
 //  Everything scales with rarity (Legendary dims the sky, shockwave, held breath, slow flip, fanfare).
 // Waits use timers, not animation.finished, so a paused tab can never freeze the sequence.
 
-import { sfx, loadSfx } from './sfx.js?v=0.1.902';
-import { audioCtx } from './audio-ctx.js?v=0.1.902';
-import { TIER_INFO } from './rarity.js?v=0.1.902';
-import { levelFor, attachTilt, attachGyro, attachFlip, throwOff, retype } from './card.js?v=0.1.902';
-import { applyBack } from './card-backs.js?v=0.1.902';
-import { addStarfield } from './starfield.js?v=0.1.902';
+import { sfx, loadSfx } from './sfx.js?v=0.1.903';
+import { audioCtx } from './audio-ctx.js?v=0.1.903';
+import { TIER_INFO } from './rarity.js?v=0.1.903';
+import { levelFor, attachTilt, attachGyro, attachFlip, throwOff, retype } from './card.js?v=0.1.903';
+import { applyBack } from './card-backs.js?v=0.1.903';
+import { addStarfield } from './starfield.js?v=0.1.903';
 
 const FX = {
   common:    { particles: 14,  flip: 520,  spin: 0,   dim: 0,   shock: false, notes: [880],                            hold: 0 },
@@ -308,15 +308,20 @@ const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '
 let earnedNow = []; // playReveal’s earned list, for the finish step
 const NEWS_ICON = { mission: '◆', patch: '◎', rank: '▲', event: '✦', reunion: '⇄' };
 function showNews(news, alive) {
-  const box = $('rv-news'); if (!news?.length) return;
+  const box = $('rv-news'); box.style.flexWrap = ''; if (!news?.length) return;
   // One row: the two biggest pieces of news, then "+N" (a second row covered the card on small phones).
   const ORDER = { rank: 0, reunion: 1, event: 2, patch: 3, mission: 4 };
   const sorted = news.slice().sort((a, b) => (ORDER[a.kind] ?? 9) - (ORDER[b.kind] ?? 9));
-  news = sorted.length > 3 ? [...sorted.slice(0, 2), { kind: 'more', text: `+${sorted.length - 2} more` }] : sorted;
+  const rest = sorted.length > 3 ? sorted.slice(2) : [];
+  news = rest.length ? [...sorted.slice(0, 2), { kind: 'more', text: `+${rest.length} more` }] : sorted;
   news.forEach((n, i) => setTimeout(() => {
     if (!alive()) return;
     const c = document.createElement('span'); c.className = `rv-chip rv-chip--${n.kind}`;
     c.innerHTML = `${n.kind === 'more' ? '' : `<i aria-hidden="true">${NEWS_ICON[n.kind] ?? '◆'}</i>`}${esc(n.text)}${n.xp ? `<b>+${n.xp}</b>` : ''}`;
+    if (n.kind === 'more') { // tap to see the rest (iOS playtest 2026-10-20: it was a dead tap)
+      c.setAttribute('role', 'button'); c.tabIndex = 0; c.style.pointerEvents = 'auto'; c.style.cursor = 'pointer';
+      c.addEventListener('click', () => { c.remove(); box.style.flexWrap = 'wrap'; for (const m of rest) { const x = document.createElement('span'); x.className = `rv-chip rv-chip--${m.kind} in`; x.innerHTML = `<i aria-hidden="true">${NEWS_ICON[m.kind] ?? '◆'}</i>${esc(m.text)}${m.xp ? `<b>+${m.xp}</b>` : ''}`; box.append(x); } }, { once: true });
+    }
     box.append(c); requestAnimationFrame(() => c.classList.add('in'));
     // Each chip sounds and feels like what it is (2026-10-17 haptics playtest: a rank-up got the generic XP tick).
     if (n.kind === 'rank') sfx('rankup'); else if (n.kind === 'reunion') { sfx('complete', { gain: 0.8 }); dispatchEvent(new CustomEvent('sc:feel', { detail: 'success' })); } else if (n.kind === 'mission') { sfx('mission', { gain: 0.8 }); dispatchEvent(new CustomEvent('sc:feel', { detail: 'light' })); } else if (n.kind === 'patch') sfx('patch', { gain: 0.7 }); else sfx('xp', { gain: 0.7 });

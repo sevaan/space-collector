@@ -609,7 +609,7 @@
 /* A fleet card's "LAUNCHED 21 MAY, 2025" types itself in when the card appears (2026-10-18, Sevaan), one character a
    step, with a block cursor that blinks out after; the orange dot pops in first. */
 .card--retro .fl-type { position: relative; display: inline-block; clip-path: inset(-.2em 100% -.2em 0); animation: flType calc(var(--n, 20) * 45ms) steps(var(--n, 20), end) .45s forwards; }
-.card--retro .fl-type::after { content: ''; position: absolute; right: -.55em; top: .05em; bottom: .05em; width: .42em; background: #fa8127; opacity: 0; animation: flCaret .5s steps(1) calc(.45s + var(--n, 20) * 45ms) 3 both; }
+.card--retro .fl-type::after { content: ''; position: absolute; right: -.55em; top: .05em; bottom: .05em; width: .42em; background: #fa8127; opacity: 0; animation: flCaret .5s steps(1) calc(.45s + var(--n, 20) * 45ms) 3 backwards; } /* the caret blinks and goes: it stayed as an orange block (iOS playtest 2026-10-20) */
 .card--retro .fl-latest i { animation: flDot .35s cubic-bezier(.2,1.6,.4,1) .15s both; }
 @keyframes flType { to { clip-path: inset(-.2em -1em -.2em 0); } }
 @keyframes flCaret { 0% { opacity: 1; } 50% { opacity: 0; } }
