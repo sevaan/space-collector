@@ -1,6 +1,6 @@
 // Phone orientation -> where the back of the phone is pointing in the sky.
 // Produces a camera basis in local East-North-Up: right, up (screen edges) and back (view direction).
-import { declination } from './declination.js?v=0.1.896';
+import { declination } from './declination.js?v=0.1.897';
 
 const RAD = Math.PI / 180;
 
@@ -85,8 +85,8 @@ function updateHeadingOffset(heading, basis) {
   const elBack = Math.asin(Math.max(-1, Math.min(1, basis.back[2]))) / RAD;
   const upright = basis.up[2] > 0.6 && Math.abs(elBack) < 40;
   const measured = (heading - rawAzimuth(basis.back) + 360) % 360;
-  if (!offsetSeeded) { pointing.headingOffset = measured; offsetSeeded = true; offsetTrusted = upright; return; }
-  if (!upright) return; // hold the last good offset while pointing high or at odd angles
+  if (!offsetSeeded) { if (Math.abs(basis.back[2]) > 0.9) return; /* flat or overhead: azimuth is noise; wait for a usable pose (bug hunt 2026-10-20) */ pointing.headingOffset = measured; offsetSeeded = true; offsetTrusted = upright; return; }
+  if (!upright) { rejectStreak = 0; pointing.compassDoubt = Math.max(0, pointing.compassDoubt - 0.01); return; } // hold the last good offset while pointing high or at odd angles; old doubt fades
   const diff = Math.abs(((measured - pointing.headingOffset + 540) % 360) - 180);
   if (!offsetTrusted) { // first upright reading replaces a guess taken in a bad pose
     pointing.headingOffset = measured; offsetTrusted = true; goodSamples = 1; return;
@@ -123,6 +123,8 @@ function onOrientation(e, absolute) {
     pointing.source = 'ios';
     pointing.compassAccuracy = e.webkitCompassAccuracy;
     updateHeadingOffset(e.webkitCompassHeading, basis);
+  } else if (pointing.source === 'ios') {
+    // a reading without a compass value (before the first heading, or a hiccup): keep iOS and its offset (bug hunt 2026-10-20)
   } else if (absolute) {
     pointing.source = 'absolute';
     pointing.headingOffset = 0;
@@ -154,6 +156,14 @@ export async function startSensors() {
   attach();
   listening = true;
   return true;
+}
+
+// Tap to wake (bug hunt 2026-10-20): ask again inside the tap even when already listening (iPhone after the app was
+// away, or permission changed), then only report success if readings actually arrive.
+export async function resumeSensors(ms = 1200) {
+  if (typeof DeviceOrientationEvent === 'undefined') return false;
+  if (needsPermission()) { try { if ((await DeviceOrientationEvent.requestPermission()) !== 'granted') return false; } catch { return false; } }
+  return trySensorsQuietly(ms);
 }
 
 // Without a tap: listen anyway and see whether motion arrives. When this iPhone already allowed motion for the
@@ -192,7 +202,7 @@ export function rotateAz(v, deg) {
 export function trueBasis() {
   const b = pointing.basis;
   if (!b) return null;
-  const off = pointing.headingOffset + (pointing.source === 'ios' ? decl : 0) + manualNudge;
+  const off = pointing.headingOffset + (pointing.source === 'ios' || pointing.source === 'absolute' ? decl : 0) + manualNudge; // Android's absolute orientation is magnetic north too (rotation vector; bug hunt 2026-10-20)
   return { right: rotateAz(b.right, off), up: rotateAz(b.up, off), back: rotateAz(b.back, off) };
 }
 

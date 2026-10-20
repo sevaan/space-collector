@@ -1,51 +1,51 @@
-import { TESTER } from './build-flavor.js?v=0.1.896';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.896';
-import * as Secrets from './secrets.js?v=0.1.896';
-import { STORY_BY_SECRET } from './stories.js?v=0.1.896';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.896';
-import * as Ufo from './ufo.js?v=0.1.896';
-import * as Fossil from './fossil.js?v=0.1.896';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.896';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.896';
-import { toast, ticket, dropToast, toastPending, onTicketShown, iconSvg } from './toast.js?v=0.1.896';
-import { VERSION } from './version.js?v=0.1.896';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, overEarth, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.896';
-import { placeName } from './geo.js?v=0.1.896';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, SLIDER_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.896';
-import { conArt } from './con-art.js?v=0.1.896';
-import { fetchWeather, tonightSky, skyClearAt, goodSkyAt } from './weather.js?v=0.1.896';
-import { CON_FIGURES } from './con-figures.js?v=0.1.896';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress, starDistance } from './constellations.js?v=0.1.896';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.896';
-import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.896';
-import { eventOf, activeEvent, nextEvent } from './events.js?v=0.1.896';
-import { conList } from './constellations.js?v=0.1.896';
-import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination, hasSensorView } from './sensors.js?v=0.1.896';
-import { SkyView, shortName } from './sky.js?v=0.1.896';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.896';
-import { isPlus, setPlusForTesting, onPlus, PLUS_PERKS, PLUS_PRICES, initStore, storePlans, buyPlus, restorePlus, rcTestStore, storeOpen } from './plus.js?v=0.1.896';
-import { isNative, getPosition, saveFile, notifyAt, cancelNotify, haptic, onNative, nativeChrome, plugin } from './native.js?v=0.1.896';
-import { initBackup, onBackupChange, backupSoon, clearBackup, backupStatus } from './cloud-backup.js?v=0.1.896';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.896';
-import { cardArt } from './art.js?v=0.1.896';
-import { renderCard, miniCard, cardLevel, artImage, lockedArt, attachTilt, attachGyro, throwOff, attachFlip, turnCard } from './card.js?v=0.1.896';
-import { applyBack, CARD_BACKS, backUnlocked, chosenBack, chooseBack, backEarned } from './card-backs.js?v=0.1.896';
-import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.896';
-import { audioCtx } from './audio-ctx.js?v=0.1.896';
-import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume } from './music.js?v=0.1.896';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.896';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel, moonPhaseOf, MOON_PHASES } from './card-model.js?v=0.1.896';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.896';
-import { naturalTargets, SOLAR_SYSTEM, DEEP_SKY } from './natural.js?v=0.1.896';
-import { placeFromTimeZone } from './tz-places.js?v=0.1.896';
-import { TIER_INFO } from './rarity.js?v=0.1.896';
-import { SETS, albumList } from './sets.js?v=0.1.896';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.896';
-import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.896';
-import { shareCardEl } from './share-card.js?v=0.1.896';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.896';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.896';
-import { addStarfield } from './starfield.js?v=0.1.896';
+import { TESTER } from './build-flavor.js?v=0.1.897';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.897';
+import * as Secrets from './secrets.js?v=0.1.897';
+import { STORY_BY_SECRET } from './stories.js?v=0.1.897';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.897';
+import * as Ufo from './ufo.js?v=0.1.897';
+import * as Fossil from './fossil.js?v=0.1.897';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.897';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.897';
+import { toast, ticket, dropToast, toastPending, onTicketShown, iconSvg } from './toast.js?v=0.1.897';
+import { VERSION } from './version.js?v=0.1.897';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, overEarth, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.897';
+import { placeName } from './geo.js?v=0.1.897';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, SLIDER_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.897';
+import { conArt } from './con-art.js?v=0.1.897';
+import { fetchWeather, tonightSky, skyClearAt, goodSkyAt } from './weather.js?v=0.1.897';
+import { CON_FIGURES } from './con-figures.js?v=0.1.897';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress, starDistance } from './constellations.js?v=0.1.897';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.897';
+import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.897';
+import { eventOf, activeEvent, nextEvent } from './events.js?v=0.1.897';
+import { conList } from './constellations.js?v=0.1.897';
+import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination, hasSensorView, resumeSensors, needsPermission } from './sensors.js?v=0.1.897';
+import { SkyView, shortName } from './sky.js?v=0.1.897';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.897';
+import { isPlus, setPlusForTesting, onPlus, PLUS_PERKS, PLUS_PRICES, initStore, storePlans, buyPlus, restorePlus, rcTestStore, storeOpen } from './plus.js?v=0.1.897';
+import { isNative, getPosition, saveFile, notifyAt, cancelNotify, haptic, onNative, nativeChrome, plugin } from './native.js?v=0.1.897';
+import { initBackup, onBackupChange, backupSoon, clearBackup, backupStatus } from './cloud-backup.js?v=0.1.897';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.897';
+import { cardArt } from './art.js?v=0.1.897';
+import { renderCard, miniCard, cardLevel, artImage, lockedArt, attachTilt, attachGyro, throwOff, attachFlip, turnCard } from './card.js?v=0.1.897';
+import { applyBack, CARD_BACKS, backUnlocked, chosenBack, chooseBack, backEarned } from './card-backs.js?v=0.1.897';
+import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.897';
+import { audioCtx } from './audio-ctx.js?v=0.1.897';
+import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume } from './music.js?v=0.1.897';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.897';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel, moonPhaseOf, MOON_PHASES } from './card-model.js?v=0.1.897';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.897';
+import { naturalTargets, SOLAR_SYSTEM, DEEP_SKY } from './natural.js?v=0.1.897';
+import { placeFromTimeZone } from './tz-places.js?v=0.1.897';
+import { TIER_INFO } from './rarity.js?v=0.1.897';
+import { SETS, albumList } from './sets.js?v=0.1.897';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.897';
+import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.897';
+import { shareCardEl } from './share-card.js?v=0.1.897';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.897';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.897';
+import { addStarfield } from './starfield.js?v=0.1.897';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -203,7 +203,8 @@ document.addEventListener('visibilitychange', () => {
 // Coming back to the app (2026-10-15, Sevaan): iPhone stops sending motion until the screen is touched again, so the
 // sky sits frozen. If motion was in use and hasn’t come back within a moment, the circle asks for a tap (#wake).
 function checkMotionBack() {
-  if (state.drag.on || state.needsMotionTap) return;
+  if (state.drag.on || state.needsMotionTap || !needsPermission()) return; // only iPhones stop motion while away; a still Android phone just goes quiet
+  state.motionCheckUntil = performance.now() + 1600; // a tap meanwhile is a tap, not a switch to finger mode (bug hunt 2026-10-20)
   setTimeout(() => { if (!state.drag.on && !hasLiveSensors() && document.visibilityState === 'visible') state.needsMotionTap = true; }, 1500);
 }
 function syncWake() {
@@ -410,7 +411,9 @@ function updateStatus(f) {
 // Smooth the camera basis to take the jitter out of the sensors.
 function smoothBasis(b) {
   if (!state.smooth) { state.smooth = { back: [...b.back], up: [...b.up] }; }
-  const k = 0.25, s = state.smooth;
+  // Time-based, so it feels the same at 30 fps (iPhone Low Power Mode) as at 60 (bug hunt 2026-10-20).
+  const now = performance.now(), dt = Math.min(100, now - (state.smooth.at ?? now - 16.7)); state.smooth.at = now;
+  const k = 1 - Math.pow(0.75, dt / 16.7), s = state.smooth;
   for (let i = 0; i < 3; i++) {
     s.back[i] += (b.back[i] - s.back[i]) * k;
     s.up[i] += (b.up[i] - s.up[i]) * k;
@@ -425,6 +428,13 @@ function smoothBasis(b) {
     back[0] * up[1] - back[1] * up[0],
   ];
   return { right, up, back };
+}
+// Which way you face, still defined when the phone points straight up or down (bug hunt 2026-10-20: near the zenith
+// atan2 of the camera axis alone is noise, so the radar spun and "Turn left/right" flipped with hand shake).
+// At the horizon it equals the camera's azimuth; overhead it is the way you were facing.
+function headingOf(b) {
+  const x = b.back[0] - b.up[0] * b.back[2], y = b.back[1] - b.up[1] * b.back[2];
+  return (Math.atan2(x, y) * 180 / Math.PI + 360) % 360;
 }
 const dot = (a, b) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
 const norm = (v) => { const l = Math.hypot(v[0], v[1], v[2]) || 1; return [v[0] / l, v[1] / l, v[2] / l]; };
@@ -513,7 +523,7 @@ function snapTick(audible = true) {
 }
 let lastLockId = null, planeBuzzAt = -1e9;
 let uiSafeTop = 202, uiSafeBottom = 320, uiCenterY = window.innerHeight / 2; // set from the first frame, so the circle never starts high and slides down (2026-10-07)
-let idleBasis = null, idleFlip = false, skyPaused = false;
+let idleBasis = null, idleFlip = false, skyPaused = false, lastDrawnAt = 0;
 function tick(ts) {
   requestAnimationFrame(tick);
   if (!state.catalog || !state.started || document.hidden || activePanel || collectionOpen) { skyPaused = true; return; }
@@ -532,9 +542,10 @@ function tick(ts) {
   // Ease off when nothing’s moving (2026-10-08 performance): if the view hasn’t turned since the last drawn frame, draw
   // every other frame (~30 fps). Satellites still move smoothly at that rate and it saves battery outside.
   { const lb = idleBasis, moved = !lb || Math.abs(lb[0] - basis.back[0]) + Math.abs(lb[1] - basis.back[1]) + Math.abs(lb[2] - basis.back[2]) > 0.0015;
-    idleFlip = !idleFlip;
-    if (!moved && idleFlip && !state.lockedOn && performance.now() - (sky.lockPulseAt ?? 0) > 500) return;
-    idleBasis = [...basis.back]; }
+    // Skip by time, not by count: at 30 fps (Low Power Mode) skipping every other frame dropped to 15 (bug hunt 2026-10-20).
+    const since = performance.now() - lastDrawnAt;
+    if (!moved && since < 30 && !state.lockedOn && performance.now() - (sky.lockPulseAt ?? 0) > 500) return;
+    lastDrawnAt = performance.now(); idleBasis = [...basis.back]; }
   const reticleCos = Math.cos(sky.reticleDeg * RAD);
   const t = performance.now();
 
@@ -794,7 +805,7 @@ function updateCompass(basis) {
   ctx.clearRect(0, 0, size, size);
   const c = size / 2, R = RADAR_R;
   const b = basis.back;
-  const heading = (Math.atan2(b[0], b[1]) / RAD + 360) % 360;
+  const heading = headingOf(basis);
   const at = (az, el) => { const r = R * (1 - Math.max(0, el) / 90), a = (az - heading) * RAD; return [c + r * Math.sin(a), c - r * Math.cos(a)]; };
   // In daylight the disc is see-through glass, not navy (2026-10-08 playtest).
   const dayGlass = document.body.classList.contains('day');
@@ -917,11 +928,11 @@ function turnHint(l) {
   if (l.el < 0) return 'This pass has ended';
   if (!l.visible && !state.captureAny && !gr) return 'Not visible right now';
   const sens = state.basis && !state.drag.on; // in finger mode the view is the drag, even when the phone reports a basis (2026-10-16 playtest: the hint never changed while dragging)
-  const currentAz = sens ? (Math.atan2(state.basis.back[0], state.basis.back[1]) / RAD + 360) % 360 : state.drag.az;
+  const currentAz = sens ? headingOf(state.basis) : state.drag.az;
   const currentEl = sens ? Math.asin(state.basis.back[2]) / RAD : state.drag.el;
   const turn = ((l.az - currentAz + 540) % 360) - 180;
   // Once it’s on screen, say so: "Turn right" stayed up while the Moon was already half in view (iOS playtest 2026-10-19).
-  const inView = Math.abs(turn) < (sky.w / sky.h) * sky.fovV * 0.42 && Math.abs(l.el - currentEl) < sky.fovV * 0.42;
+  const pv = sky.basis ? sky.project(enuFromAzEl(l.az, l.el)) : null, inView = !!pv && pv.x > 0 && pv.x < sky.w && pv.y > 0 && pv.y < sky.h; // on the screen, by projection (works overhead too)
   if (inView && Math.abs(turn) > 4 && !gr) return 'On screen now · put it in the circle';
   const move = Math.abs(turn) > 8 ? (turn > 0 ? 'Turn right →' : '← Turn left') : l.el > currentEl ? '↑ Raise your phone' : '↓ Lower your phone';
   return gr ? `${move} · ${Math.round(l.el)}° up ${compassPoint(l.az)} at ${fmtTime(gr.start)}` : `${move} · ${Math.round(l.el)}° up ${compassPoint(l.az)}`; // short, so it fits one line (2026-10-09)
@@ -943,7 +954,7 @@ function guideTo(obj, l, hint = '') {
   state.pinnedId = obj.id; state.targetId = obj.id; state.sticky.clear(); state.guidePass = null;
   // Close by, so the arrow has something to show, and on the side you were already turning toward (2026-10-18 playtest:
   // the tour said "Turn right 28°", then the sky said "← Turn left").
-  if (state.drag.on || !hasLiveSensors()) { const was = state.drag.on ? state.drag.az : (Math.atan2(state.basis?.back?.[0] ?? 0, state.basis?.back?.[1] ?? 1) / RAD + 360) % 360, right = ((l.az - was + 540) % 360) - 180 > 0;
+  if (state.drag.on || !hasSensorView()) { const was = state.drag.on ? state.drag.az : (state.basis ? headingOf(state.basis) : 0), right = ((l.az - was + 540) % 360) - 180 > 0;
     state.drag.on = true; state.drag.az = (l.az + (right ? -40 : 40) + 360) % 360; state.drag.el = Math.max(10, l.el - 10); }
   void hint; // no toast (playtest 2026-10-09): it repeated the guide pill (name · turn · height) and stayed up after you’d lined it up
 }
@@ -952,7 +963,7 @@ function showMePass(p) {
   cancelPassSearch();
   state.pinnedId = p.obj.id; state.targetId = p.obj.id; state.sticky.clear();
   state.guidePass = { id: p.obj.id, start: p.start, end: p.end, riseAz: p.riseAz, riseEl: p.riseEl };
-  if (state.drag.on || !hasLiveSensors()) { state.drag.on = true; state.drag.az = p.riseAz; state.drag.el = Math.max(4, p.riseEl ?? 10); }
+  if (state.drag.on || !hasSensorView()) { state.drag.on = true; state.drag.az = p.riseAz; state.drag.el = Math.max(4, p.riseEl ?? 10); }
   closePanel('visible');
   // No toast here (2026-10-13): the steering line under the circle already says what it is, which way and when, and a
   // sticky toast sat on top of it.
@@ -1398,7 +1409,7 @@ async function loadSightings() {
 function aimAt(it) {
   cancelPassSearch();
   state.pinnedId = it.obj.id; state.targetId = it.obj.id;
-  if (state.drag.on || !hasLiveSensors()) { state.drag.on = true; state.drag.az = it.look.az; state.drag.el = it.look.el; }
+  if (state.drag.on || !hasSensorView()) { state.drag.on = true; state.drag.az = it.look.az; state.drag.el = it.look.el; }
   closePanel('visible');
 }
 // The sky’s own icon for an object, drawn once per kind and colour into a small image for the Now map.
@@ -1465,7 +1476,7 @@ function nowHero(list, vis) {
   const spin = () => {
     if (!hero.isConnected) return;
     if ($('visible').hidden) { heroRaf = requestAnimationFrame(spin); return; } // rendered just before the panel shows
-    let b0 = [0, 1, 0]; try { b0 = (!state.drag.on && hasLiveSensors() ? trueBasis() : basisFromAzEl(state.drag.az, state.drag.el))?.back ?? b0; } catch {}
+    let b0 = [0, 1, 0]; try { b0 = (!state.drag.on && hasSensorView() ? trueBasis() : basisFromAzEl(state.drag.az, state.drag.el))?.back ?? b0; } catch {}
     const hd = (Math.atan2(b0[0], b0[1]) / RAD + 360) % 360, d = ((tgt.az - hd + 540) % 360) - 180;
     arrow.style.transform = `rotate(${d.toFixed(0)}deg)`;
     const txt = Math.abs(d) < 20 ? `Ahead of you · ${where}` : Math.abs(d) > 150 ? `Behind you · ${where}` : `Turn ${d < 0 ? 'left' : 'right'}${Math.abs(d) < 60 ? ' a little' : ''} · ${where}`;
@@ -1531,7 +1542,7 @@ function spinVisMap(map, start) {
   const tick = () => {
     if (!map.isConnected || $('visible').hidden) return;
     // The sky loop pauses while a panel is open, so read the phone directly (smoothed below).
-    const b0 = (!state.drag.on && hasLiveSensors() ? trueBasis() : basisFromAzEl(state.drag.az, state.drag.el))?.back ?? [0, 1, 0];
+    const b0 = (!state.drag.on && hasSensorView() ? trueBasis() : basisFromAzEl(state.drag.az, state.drag.el))?.back ?? [0, 1, 0];
     if (Math.hypot(b0[0], b0[1]) > 0.15) { // straight up there’s no "facing": hold still
       const h = (Math.atan2(b0[0], b0[1]) / RAD + 360) % 360, d = ((h - cur + 540) % 360) - 180;
       if (Math.abs(d) > 0.2) {
@@ -2615,26 +2626,30 @@ function updateEventBanner() {
 
 let dragStart = null, tapStart = null;
 $('sky').addEventListener('pointerdown', (e) => {
-  tapStart = { x: e.clientX, y: e.clientY, t: performance.now() };
-  if (!state.drag.on && hasLiveSensors()) return;
-  if (!hasLiveSensors()) state.drag.on = true; // no motion sensors (a computer): dragging is how you look, so targets work (2026-10-08)
+  if (dragStart) return; // a second finger doesn't take over the drag (bug hunt 2026-10-20: the view jumped)
+  tapStart = { x: e.clientX, y: e.clientY, t: performance.now(), id: e.pointerId };
+  // A phone that has given a direction keeps motion, even lying still (it sends nothing then). Only a device that never
+  // sent a reading (a computer) turns to finger mode on touch (2026-10-08), and not while checking motion after a return.
+  if (!state.drag.on && (hasSensorView() || performance.now() < (state.motionCheckUntil ?? 0))) return;
+  if (!hasSensorView()) state.drag.on = true;
   state.followPreview = false;
-  dragStart = { x: e.clientX, y: e.clientY, az: state.drag.az, el: state.drag.el };
+  dragStart = { x: e.clientX, y: e.clientY, az: state.drag.az, el: state.drag.el, id: e.pointerId };
   $('sky').setPointerCapture(e.pointerId);
 });
 $('sky').addEventListener('pointermove', (e) => {
-  if (!dragStart) return;
+  if (!dragStart || e.pointerId !== dragStart.id) return;
   const degPerPx = sky.fovV / sky.h;
   state.drag.az = (dragStart.az - (e.clientX - dragStart.x) * degPerPx + 360) % 360;
   state.drag.el = Math.max(-89, Math.min(89, dragStart.el + (e.clientY - dragStart.y) * degPerPx)); // all the way down to your feet (2026-10-08)
 });
 $('sky').addEventListener('pointerup', (e) => {
+  if ((dragStart && e.pointerId !== dragStart.id) || (tapStart && e.pointerId !== tapStart.id)) return; // the other finger
   // A tap (not a drag): select whatever is under your finger, or clear the selection.
   const tap = tapStart && Math.hypot(e.clientX - tapStart.x, e.clientY - tapStart.y) < 10 && performance.now() - tapStart.t < 500;
   dragStart = tapStart = null;
   if (tap) tapSky(e.clientX, e.clientY);
 });
-$('sky').addEventListener('pointercancel', () => { dragStart = tapStart = null; });
+$('sky').addEventListener('pointercancel', (e) => { if (!dragStart || e.pointerId === dragStart.id) dragStart = tapStart = null; });
 
 // Tap a satellite, the Moon, a planet or a bright star to select it: it stays the target and the
 // guidance tells you which way to turn. Tap empty sky to let go of the selection.
@@ -2850,7 +2865,7 @@ $('chk-drag').addEventListener('change', (e) => {
   state.drag.on = e.target.checked;
   if (state.drag.on && state.basis) {
     const b = state.basis.back;
-    state.drag.az = (Math.atan2(b[0], b[1]) / RAD + 360) % 360;
+    state.drag.az = headingOf(state.basis);
     state.drag.el = Math.asin(b[2]) / RAD;
   }
 });
@@ -3585,7 +3600,7 @@ async function motionFromTap() {
   if (!state.needsMotionTap || motionAsking) return;
   motionAsking = true;
   let ok = false;
-  try { ok = await startSensors(); } catch {}
+  try { ok = await resumeSensors(); } catch {} // asks inside the tap and waits for real readings (bug hunt 2026-10-20)
   motionAsking = false;
   // No motion to wake (a computer, sensors refused): the tap still clears the prompt and the sky goes to dragging
   // (2026-10-17, Sevaan: "I’m tapping to wake the screen and nothing is happening").
@@ -3837,7 +3852,7 @@ async function boot() {
       if(saved) {
         state.observer=saved.observer; state.locationStatus=['manual','example'].includes(saved.locationStatus)?saved.locationStatus:'saved';
         state.timeOffsetMs=saved.timeOffsetMs??0; state.drag=saved.drag; state.preview=!!saved.preview; state.followPreview=!!saved.followPreview; state.pinnedId=saved.preview ? saved.pinnedId : null; // a selection only survives a reload inside a pass preview (2026-10-06)
-        if(!state.preview && !state.drag.on) { startSensors().catch(()=>{}); requestLocation(); }
+        if(!state.preview && !state.drag.on) { (async () => { const ok = (await startSensors().catch(() => false)) || (await trySensorsQuietly()); state.needsMotionTap = !ok; })(); requestLocation(); } // no silent dead motion on return (bug hunt 2026-10-20)
         renderLocation(); enterSky();
         if(params.has('more')) openDebug();   // the Collection page’s settings button lands here
       }
@@ -3986,7 +4001,7 @@ function renderSettings() {
   const st = state.locationStatus, o = state.observer;
   $('set-loc-name').textContent = o.label && !['ready', 'manual'].includes(st) ? o.label.replace(/^Example:\s*/, '') : st === 'ready' ? 'Your location' : st === 'manual' ? 'Chosen place' : 'Location';
   $('location-note').textContent = { ready: `Using your location · ${o.lat.toFixed(2)}°, ${o.lon.toFixed(2)}°`, manual: `${o.lat.toFixed(2)}°, ${o.lon.toFixed(2)}°`, waiting: 'Finding you…', denied: 'Location is off · tap to set it', unavailable: 'Couldn\u2019t find you · tap to set it' }[st] ?? 'An example sky · tap to use yours';
-  const live = hasLiveSensors();
+  const live = hasSensorView(); // a still phone is still "on"
   $('set-motion').innerHTML = live ? '<span class="set-ok">On ✓</span>' : ''; $('retry-motion').hidden = live;
   const r = $('set-sky-range'); r.min = SB_MIN; r.max = SLIDER_MAX; if (document.activeElement !== r) r.value = String(state.skySb);
   r.style.setProperty('--p', `${((state.skySb - SB_MIN) / (SLIDER_MAX - SB_MIN) * 100).toFixed(1)}%`);
