@@ -684,3 +684,19 @@ html.embedded, html.embedded body, html.embedded body.sky-tone { background: var
 html.embedded, html.embedded body { overscroll-behavior: none; }
 
 #stats-view.pulled { animation: none !important; }
+
+/* Landscape screen looks like the loader (2026-10-21, Sevaan): the target circle, a phone in it turning upright (the
+   ring locks orange as it does), the wordmark and one line. The apps are portrait-locked, so only browsers see it. */
+@media (orientation: landscape) and (max-height: 600px) and (pointer: coarse) {
+  #rotate { gap: 0; background: #080f1b; }
+  #rotate .rt-ret { width: 124px; height: 124px; margin-bottom: 26px; overflow: visible; }
+  #rotate .rt-ring { stroke: rgba(255,242,179,.66); animation: rtRing 2.8s ease-in-out infinite; }
+  #rotate .rt-phone { animation: rtTurn 2.8s cubic-bezier(.5,0,.2,1) infinite; }
+  #rotate .rt-word { font: 400 15px/1 'SC Display', Impact, sans-serif; letter-spacing: .06em; color: #fff2b3; text-transform: none; }
+  #rotate .rt-sub { margin-top: 12px; font: 500 12px/1 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .26em; text-transform: uppercase; color: #bdbea9; animation: ldPulse 1.8s ease-in-out infinite; }
+}
+@keyframes rtTurn { 0%, 18% { transform: rotate(-90deg); } 52%, 100% { transform: rotate(0deg); } }
+@keyframes rtRing { 0%, 45% { stroke: rgba(255,242,179,.66); } 55%, 88% { stroke: #fa8127; } 100% { stroke: rgba(255,242,179,.66); } }
+@media (prefers-reduced-motion: reduce) { #rotate .rt-phone, #rotate .rt-ring, #rotate .rt-sub { animation: none; } }
+html.embedded #rotate { display: none !important; }
+@keyframes ldPulse { 50% { opacity:.55; } }
