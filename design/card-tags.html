@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Card tags</title>
+<style>
+@font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf'); }
+@font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf'); }
+* { box-sizing: border-box; }
+body { margin: 0; background: #080f1b; color: #fff2b3; font: 15px/1.4 system-ui, sans-serif; padding: 26px 20px 50px; }
+h1 { font: 400 26px 'SC Display'; margin: 0 0 4px; } .lead { color: #bdbea9; margin: 0 0 22px; max-width: 980px; }
+.style { margin: 0 0 30px; } .style h2 { font: 500 15px 'SC Label'; letter-spacing: .14em; text-transform: uppercase; color: #fa8127; margin: 0 0 2px; }
+.style p { color: #bdbea9; margin: 0 0 12px; font-size: 13.5px; max-width: 860px; }
+.tiles { display: flex; gap: 14px; flex-wrap: wrap; }
+.cap { font: 500 12px 'SC Label'; letter-spacing: .12em; color: #bdbea9; text-transform: uppercase; text-align: center; margin-top: 6px; }
+.t { position: relative; width: 132px; aspect-ratio: 28/42; border-radius: 6px; border: 1.5px solid #e9dfb8; background: #0b1220; overflow: hidden; }
+.t img { position: absolute; left: 6%; right: 6%; top: 7%; width: 88%; aspect-ratio: 4/3; object-fit: cover; border-radius: 3px; }
+.t .nm { position: absolute; left: 7%; top: 62%; font: 400 12.5px 'SC Display'; }
+.t .ft { position: absolute; left: 4%; right: 4%; bottom: 3.5%; height: 13%; border-top: 1px solid #bcb58566; font: 500 10.5px/2.2 'SC Label'; letter-spacing: .06em; padding-left: 4px; }
+.t .chip { position: absolute; left: 9%; top: 9%; font: 500 7px 'SC Label'; letter-spacing: .12em; padding: 2px 4px; border: 1px solid #bdbea9aa; border-radius: 3px; background: #080f1bcc; }
+.t.silver { border-color: #eef3f7; box-shadow: 0 0 10px #dfe8ef33; } .t.gold { border-color: #e2b53c; box-shadow: 0 0 12px #e2b53c55; }
+/* A · corner ribbon */
+.A .rb { position: absolute; top: 12px; right: -26px; width: 100px; transform: rotate(40deg); text-align: center; font: 500 9px/16px 'SC Label'; letter-spacing: .16em; color: #080f1b; }
+.A .rb.ag { background: linear-gradient(90deg, #c9d3dc, #ffffff, #c9d3dc); } .A .rb.au { background: linear-gradient(90deg, #c99a2e, #ffe08a, #c99a2e); }
+.A .rb.sh { background: linear-gradient(90deg, #ffb3a1, #fff2b3, #8fe3d2, #b9a3ff); } .A .rb.nw { background: #fa8127; } .A .rb.lc { background: #e0503c; color: #fff; }
+/* B · coin */
+.B .coin { position: absolute; right: 7%; top: 47%; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; font: 400 11px 'SC Display'; color: #080f1b; box-shadow: 0 2px 6px #0009, inset 0 0 0 2px #ffffff55; }
+.B .coin.ag { background: radial-gradient(circle at 35% 30%, #fff, #c4ced8 55%, #8796a4); } .B .coin.au { background: radial-gradient(circle at 35% 30%, #fff1b8, #e2b53c 55%, #a8781c); }
+.B .coin.sh { background: conic-gradient(#ffb3a1, #fff2b3, #8fe3d2, #b9a3ff, #ffb3a1); } .B .coin.nw { background: #fa8127; font: 500 9px 'SC Label'; letter-spacing: .08em; } .B .coin.lc { background: #e0503c; color: #fff; font-size: 13px; }
+/* C · footer strip */
+.C .ft.ag { background: linear-gradient(90deg, #dfe6ec22, #dfe6ec10); color: #eef3f7; } .C .ft.au { background: linear-gradient(90deg, #e2b53c33, #e2b53c11); color: #ffd36b; }
+.C .ft.sh { background: linear-gradient(90deg, #ffb3a133, #8fe3d233, #b9a3ff33); } .C .ft.nw { color: #fa8127; } .C .ft.lc { background: #e0503c33; color: #ff9a87; }
+/* D · small pill on the picture's top-right, same shape as the rarity chip */
+.D .pl { position: absolute; right: 9%; top: 9%; font: 500 7px 'SC Label'; letter-spacing: .12em; padding: 2px 5px; border-radius: 3px; }
+.D .pl.ag { background: #e6edf3; color: #080f1b; } .D .pl.au { background: #e2b53c; color: #080f1b; } .D .pl.sh { background: linear-gradient(90deg, #ffb3a1, #fff2b3, #8fe3d2); color: #080f1b; } .D .pl.nw { background: #fa8127; color: #080f1b; } .D .pl.lc { background: #e0503c; color: #fff; }
+</style></head><body>
+<h1>Card tags</h1>
+<p class="lead">Every tag a small card can carry: Silver and Gold (satellites and stages seen on 3 and 10 nights), Shiny, New (just collected), Last chance (falling soon). Four ways to show them. The frame colour already changes for Silver and Gold in every option.</p>
+<div id="out"></div>
+<script>
+const ART = '../assets/art/cards/sm/';
+const tiles = [['ag', 'silver', 'Silver', 'iridium', 'Iridium 33', '3 NIGHTS'], ['au', 'gold', 'Gold', 'hubble', 'Hubble', '10 NIGHTS'], ['sh', '', 'Shiny', 'iss', 'ISS', 'Oct 21'], ['nw', '', 'New', 'falcon-9', 'Falcon 9 stage', 'Oct 21'], ['lc', '', 'Last chance', 'smallsat', 'Kosmos 2504', 'Oct 21'], ['', '', 'Plain', 'molniya', 'Molniya', 'Oct 18']];
+const word = { ag: 'SILVER', au: 'GOLD', sh: 'SHINY', nw: 'NEW', lc: 'LAST CHANCE' }, coin = { ag: 'Ag', au: 'Au', sh: '✦', nw: 'NEW', lc: '!' };
+const styles = [
+  ['A', 'Corner ribbon', 'A diagonal sash across the top-right corner, metal-coloured for Silver and Gold. Unmistakable, but covers the set name.', (k) => k ? `<span class="rb ${k}">${word[k]}</span>` : '', () => ''],
+  ['B', 'Coin', 'A small round medallion at the edge of the picture: Ag, Au, a prism for Shiny. Collectible-feeling, and it never covers words.', (k) => k ? `<span class="coin ${k}">${coin[k]}</span>` : '', () => ''],
+  ['C', 'Footer strip', 'No badge on the art: the footer line itself takes the colour and says it ("SILVER · 3 NIGHTS"). Quietest; the frame does the shouting.', () => '', (k, f) => k ? `${word[k]}${k === 'ag' || k === 'au' ? ' · ' + f : ''}` : `✓ ${f}`],
+  ['D', 'Chip', 'A small solid chip in the picture\'s top-right corner, the same shape as the rarity chip on the left. Neat and consistent.', (k) => k ? `<span class="pl ${k}">${word[k]}</span>` : '', () => ''],
+];
+document.getElementById('out').innerHTML = styles.map(([id, name, desc, tag, foot]) => `<div class="style ${id}"><h2>${id} · ${name}</h2><p>${desc}</p><div class="tiles">${tiles.map(([k, frame, cap, art, nm, f]) => `<div><div class="t ${frame}"><img src="${ART}${art}.webp" alt=""><span class="chip">● COMMON</span><span class="nm">${nm}</span><span class="ft ${id === 'C' ? k : ''}">${foot(k, f) || (k === 'ag' || k === 'au' ? '✓ ' + f : '✓ ' + f)}</span>${tag(k)}</div><div class="cap">${cap}</div></div>`).join('')}</div></div>`).join('');
+</script></body></html>

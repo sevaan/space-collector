@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>One sky page</title>
+<style>
+@font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf'); }
+@font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf'); }
+:root { --ink: #fff2b3; --mu: #bdbea9; --or: #fa8127; --gold: #e2b53c; --line: #1d2a3c; --card: #0e1828; --c: #9aa3ad; --u: #5fd08a; --r: #6aa8ff; --e: #e46ad6; --l: #f2c94c; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #04080f; color: var(--ink); font: 15px/1.4 system-ui, sans-serif; padding: 26px 20px 50px; }
+h1 { font: 400 26px 'SC Display'; margin: 0 0 4px; } .lead { color: var(--mu); margin: 0 0 22px; max-width: 1100px; }
+.row { display: flex; gap: 26px; flex-wrap: wrap; align-items: flex-start; }
+.opt { width: 380px; } .opt h2 { font: 500 15px 'SC Label'; letter-spacing: .14em; text-transform: uppercase; color: var(--or); margin: 0 0 4px; }
+.opt > p { color: var(--mu); margin: 0 0 12px; font-size: 13.5px; min-height: 76px; }
+.ph { background: #080f1b; border-radius: 30px; padding: 18px 16px 24px; height: 1180px; overflow: hidden; border: 1px solid #1a2436; }
+.top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; }
+.top b { font: 400 22px 'SC Display'; display: block; } .top small { font: 500 12px 'SC Label'; letter-spacing: .14em; color: var(--mu); text-transform: uppercase; } .x { font-size: 22px; color: var(--mu); }
+.lab { font: 500 12.5px 'SC Label'; letter-spacing: .16em; text-transform: uppercase; color: var(--or); margin: 18px 0 8px; }
+.lab span { color: var(--mu); }
+.box { background: var(--card); border: 1px solid #22304a; border-radius: 16px; padding: 14px; }
+.g { display: inline-block; width: 9px; height: 9px; transform: rotate(45deg); margin-right: 7px; }
+.c { background: var(--c); } .u { background: var(--u); } .rr { background: var(--r); } .ep { background: var(--e); } .lg { background: var(--l); }
+.pass { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--line); }
+.pass .tm { font: 400 15px 'SC Display'; width: 62px; flex: none; } .pass .tm small { display: block; font: 500 11px 'SC Label'; letter-spacing: .1em; color: var(--mu); }
+.pass .nm { flex: 1; min-width: 0; } .pass .nm b { display: block; font: 500 16px 'SC Label'; letter-spacing: .02em; } .pass .nm small { color: var(--mu); font-size: 12.5px; }
+.ic { width: 32px; height: 32px; border-radius: 50%; border: 1px solid #2c3a54; display: grid; place-items: center; color: var(--mu); font-size: 14px; flex: none; }
+.ic.on { border-color: var(--or); color: var(--or); }
+.new { font: 500 11px 'SC Label'; letter-spacing: .12em; color: var(--or); margin-left: 5px; }
+.mis { display: flex; gap: 8px; flex-wrap: wrap; } .mis span { font: 500 13px 'SC Label'; letter-spacing: .03em; padding: 7px 10px; border-radius: 10px; border: 1px solid #2c3a54; color: var(--ink); }
+.mis span.done { color: var(--mu); text-decoration: line-through; text-decoration-color: var(--or); border-color: #3b2a1a; }
+.minis { display: flex; gap: 8px; overflow: hidden; } .mini { width: 74px; flex: none; aspect-ratio: 28/42; border-radius: 6px; border: 1.5px solid #e9dfb8; background: #0b1220 center 30% / 120% no-repeat; position: relative; }
+.mini small { position: absolute; left: 4px; right: 4px; bottom: 4px; font: 500 9.5px 'SC Label'; letter-spacing: .06em; color: var(--ink); background: #080f1bcc; border-radius: 3px; padding: 1px 3px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; height: 40px; border-radius: 12px; padding: 0 14px; font: 500 13.5px 'SC Label'; letter-spacing: .16em; text-transform: uppercase; background: var(--or); color: #0b1018; }
+.btn.g2 { background: #1a2333; color: var(--ink); }
+.big { font: 400 34px 'SC Display'; line-height: 1; }
+.chart { height: 64px; display: flex; align-items: flex-end; gap: 2px; margin-top: 8px; position: relative; }
+.chart i { flex: 1; background: #2c3a54; border-radius: 2px 2px 0 0; } .chart i.now { background: var(--or); }
+.chart .play { position: absolute; top: -6px; bottom: -14px; width: 2px; background: var(--or); }
+.chart .play::after { content: 'NOW'; position: absolute; top: -14px; left: -10px; font: 500 10px 'SC Label'; letter-spacing: .1em; color: var(--or); }
+.axis { display: flex; justify-content: space-between; font: 500 11px 'SC Label'; letter-spacing: .08em; color: var(--mu); margin-top: 14px; }
+.tabs { display: flex; gap: 6px; margin: 4px 0 6px; } .tabs span { font: 500 13px 'SC Label'; letter-spacing: .12em; text-transform: uppercase; padding: 7px 12px; border-radius: 999px; border: 1px solid #2c3a54; color: var(--mu); } .tabs span.on { background: #2a1d10; border-color: var(--or); color: var(--ink); }
+.tl { position: relative; padding-left: 20px; } .tl::before { content: ''; position: absolute; left: 6px; top: 6px; bottom: 6px; width: 2px; background: #22304a; }
+.tl .nowline { position: relative; margin: 6px 0 10px -20px; padding-left: 20px; font: 500 12px 'SC Label'; letter-spacing: .14em; color: var(--or); }
+.tl .nowline::before { content: ''; position: absolute; left: 1px; top: 3px; width: 12px; height: 12px; border-radius: 50%; background: var(--or); box-shadow: 0 0 0 5px #fa812733; }
+.tl .mo { font: 500 12.5px 'SC Label'; letter-spacing: .1em; color: var(--mu); text-transform: uppercase; margin: 10px 0 2px; position: relative; } .tl .mo::before { content: ''; position: absolute; left: -18px; top: 4px; width: 8px; height: 8px; border-radius: 50%; background: #3a4a62; }
+.wx { display: flex; gap: 10px; font: 500 13px 'SC Label'; letter-spacing: .06em; color: var(--mu); margin-top: 8px; }
+.think { margin-top: 30px; max-width: 1100px; color: var(--mu); font-size: 14px; } .think b { color: var(--ink); }
+</style></head><body>
+<h1>One sky page</h1>
+<p class="lead">Now and Tonight merged into one page, opened from the radar. It answers, in order: what can I catch right this minute, what's next and when, what does the rest of the night look like, and what am I working towards (missions). Example: 8:30 PM, clear, dark from 6:50 PM.</p>
+<div class="row">
+
+<div class="opt"><h2>A · Now, then the night</h2><p>A single scroll. The top is "right now" (what's up, the next catch with a countdown), then tonight's plan as a timeline with a NOW marker. Missions sit as chips at the top so they're always in view.</p>
+<div class="ph">
+ <div class="top"><span><b>Your sky</b><small>Toronto · 8:30 PM · clear until 2 AM</small></span><span class="x">✕</span></div>
+ <div class="lab">Tonight’s missions <span>· 1 of 3</span></div>
+ <div class="mis"><span class="done">Collect a satellite</span><span>3 stars in one constellation</span><span>A planet or the Moon</span></div>
+ <div class="lab">Up right now <span>· 4 new</span></div>
+ <div class="minis"><div class="mini" style="background-image:url(../assets/art/cards/sm/molniya.webp)"><small>NE · 40° up</small></div><div class="mini" style="background-image:url(../assets/art/cards/sm/falcon-9.webp)"><small>S · 32° up</small></div><div class="mini" style="background-image:url(../assets/art/cards/sm/smallsat.webp)"><small>SW · 38° up</small></div><div class="mini" style="background-image:url(../assets/art/cards/sm/planet-saturn.webp)"><small>SE · 28° up</small></div></div>
+ <div class="lab">Next new card</div>
+ <div class="box" style="display:flex;align-items:center;gap:14px"><div style="flex:1"><div class="big">0:14</div><div style="font:500 12px 'SC Label';letter-spacing:.12em;color:var(--mu)">TO GO · 8:44 PM</div><div style="margin-top:6px;font:500 16px 'SC Label'"><span class="g rr"></span>Kosmos 381</div><small style="color:var(--mu)">High in the northeast</small></div><div style="display:grid;gap:8px"><span class="btn">Show me</span><span class="btn g2">🔔 Remind</span></div></div>
+ <div class="lab">The rest of tonight <span>· 51 new cards</span></div>
+ <div class="tl">
+  <div class="nowline">NOW · 8:30 PM</div>
+  <div class="pass"><span class="tm">8:44<small>NE</small></span><span class="nm"><b><span class="g rr"></span>Kosmos 381<span class="new">NEW</span></b><small>High · bright</small></span><span class="ic">◎</span><span class="ic on">🔔</span></div>
+  <div class="mo">★ Busiest · 9:10 PM · 65 up at once</div>
+  <div class="pass"><span class="tm">9:26<small>S</small></span><span class="nm"><b><span class="g c"></span>SL-14 Rocket Stage<span class="new">NEW</span></b><small>Halfway up · faint</small></span><span class="ic">◎</span><span class="ic">🔔</span></div>
+  <div class="pass"><span class="tm">10:02<small>W</small></span><span class="nm"><b><span class="g ep"></span>Seasat<span class="new">NEW</span></b><small>Low · Epic</small></span><span class="ic">◎</span><span class="ic">🔔</span></div>
+  <div class="mo">☁ Cloud rolls in · 2:00 AM</div>
+  <div class="pass"><span class="tm">5:41<small>NW</small></span><span class="nm"><b><span class="g rr"></span>ISS</b><small>Early riser · very bright</small></span><span class="ic">◎</span><span class="ic">🔔</span></div>
+ </div>
+</div></div>
+
+<div class="opt"><h2>B · A chart you can scrub</h2><p>Tonight's busyness chart is the hero, with a NOW playhead. The list below shows what's up at the playhead's time: drag it to 10 PM and see 10 PM. One list instead of two tabs.</p>
+<div class="ph">
+ <div class="top"><span><b>Your sky</b><small>Toronto · clear until 2 AM</small></span><span class="x">✕</span></div>
+ <div class="box"><div style="display:flex;justify-content:space-between"><span style="font:500 12.5px 'SC Label';letter-spacing:.14em;color:var(--or)">NOW · 8:30 PM</span><span style="font:500 12.5px 'SC Label';letter-spacing:.1em;color:var(--mu)">7 NEW UP</span></div>
+  <div class="chart"><i style="height:30%"></i><i style="height:42%"></i><i style="height:55%"></i><i class="now" style="height:68%"></i><i style="height:80%"></i><i style="height:95%"></i><i style="height:88%"></i><i style="height:70%"></i><i style="height:52%"></i><i style="height:40%"></i><i style="height:30%"></i><i style="height:22%"></i><i style="height:14%"></i><i style="height:10%"></i><i style="height:12%"></i><i style="height:20%"></i><i style="height:34%"></i><span class="play" style="left:21%"></span></div>
+  <div class="axis"><span>DARK 6:50</span><span>9 PM</span><span>MIDNIGHT</span><span>3 AM</span><span>DAWN 6:40</span></div>
+  <div class="wx"><span>☾ Waxing gibbous</span><span>· ☁ cloud from 2 AM</span></div></div>
+ <div class="tabs" style="margin-top:14px"><span class="on">New to you · 7</span><span>Seen before · 2</span><span>Missions · 1/3</span></div>
+ <div class="pass"><span class="tm">Up<small>NE 40°</small></span><span class="nm"><b><span class="g u"></span>Kosmos 2506<span class="new">NEW</span></b><small>Common · easy to see</small></span><span class="ic">◎</span></div>
+ <div class="pass"><span class="tm">Up<small>S 66°</small></span><span class="nm"><b><span class="g c"></span>Yaogan-29<span class="new">NEW</span></b><small>Common · easy to see</small></span><span class="ic">◎</span></div>
+ <div class="pass"><span class="tm">Up<small>S 32°</small></span><span class="nm"><b><span class="g c"></span>SL-8 Rocket Stage<span class="new">NEW</span></b><small>Common · faint</small></span><span class="ic">◎</span></div>
+ <div class="lab">Coming at this time</div>
+ <div class="pass"><span class="tm">8:44<small>in 14 min</small></span><span class="nm"><b><span class="g rr"></span>Kosmos 381<span class="new">NEW</span></b><small>High in the northeast</small></span><span class="ic">◎</span><span class="ic on">🔔</span></div>
+ <div class="pass"><span class="tm">8:52<small>in 22 min</small></span><span class="nm"><b><span class="g u"></span>Delta 1 Rocket Stage<span class="new">NEW</span></b><small>Halfway up in the east</small></span><span class="ic">◎</span><span class="ic">🔔</span></div>
+ <p style="color:var(--mu);font-size:13px;margin-top:14px">Drag the playhead to see any time tonight; tap NOW to snap back.</p>
+</div></div>
+
+<div class="opt"><h2>C · Three cards</h2><p>Three stacked cards with clear jobs: Right now, Next up, Tonight's run (your best 4 catches with Set reminder). Missions fold into the run. "Everything tonight" is a link for the full list. The calmest.</p>
+<div class="ph">
+ <div class="top"><span><b>Your sky</b><small>Toronto · 8:30 PM</small></span><span class="x">✕</span></div>
+ <div class="box"><div style="font:500 12.5px 'SC Label';letter-spacing:.14em;color:var(--or)">RIGHT NOW</div><div style="display:flex;align-items:baseline;gap:8px;margin:6px 0 10px"><span class="big">7</span><span style="font:500 15px 'SC Label';color:var(--mu)">new cards up · 2 you have</span></div>
+  <div class="minis"><div class="mini" style="background-image:url(../assets/art/cards/sm/molniya.webp)"><small>NE 40°</small></div><div class="mini" style="background-image:url(../assets/art/cards/sm/falcon-9.webp)"><small>S 32°</small></div><div class="mini" style="background-image:url(../assets/art/cards/sm/smallsat.webp)"><small>SW 38°</small></div><div class="mini" style="background-image:url(../assets/art/cards/sm/hubble.webp)"><small>W 20°</small></div></div>
+  <div style="margin-top:10px;font:500 13px 'SC Label';letter-spacing:.14em;color:var(--ink)">SEE ALL 9 ›</div></div>
+ <div class="box" style="margin-top:12px;border-color:#5a3a16"><div style="font:500 12.5px 'SC Label';letter-spacing:.14em;color:var(--or)">NEXT UP · IN 14 MIN</div>
+  <div style="margin-top:6px;font:400 20px 'SC Display'">Kosmos 381</div><small style="color:var(--mu)"><span class="g rr"></span>Rare · 8:44 PM · high in the northeast</small>
+  <div style="display:flex;gap:8px;margin-top:12px"><span class="btn" style="flex:1">Show me</span><span class="btn g2" style="flex:1">Set reminder</span></div></div>
+ <div class="box" style="margin-top:12px"><div style="display:flex;justify-content:space-between"><span style="font:500 12.5px 'SC Label';letter-spacing:.14em;color:var(--or)">TONIGHT’S RUN</span><span style="font:500 12px 'SC Label';letter-spacing:.1em;color:var(--mu)">CLEAR UNTIL 2 AM</span></div>
+  <div class="pass"><span class="tm">9:26<small>S</small></span><span class="nm"><b><span class="g u"></span>SL-14 Rocket Stage</b><small>Counts for “a rocket stage”</small></span><span class="ic">🔔</span></div>
+  <div class="pass"><span class="tm">10:02<small>W</small></span><span class="nm"><b><span class="g ep"></span>Seasat</b><small>Epic · low in the west</small></span><span class="ic">🔔</span></div>
+  <div class="pass"><span class="tm">10:30<small>SE</small></span><span class="nm"><b>Saturn</b><small>Counts for “a planet or the Moon”</small></span><span class="ic">◎</span></div>
+  <div class="pass" style="border:0"><span class="tm">5:41<small>NW</small></span><span class="nm"><b><span class="g rr"></span>ISS</b><small>Early riser</small></span><span class="ic">🔔</span></div>
+  <div style="display:flex;justify-content:space-between;margin-top:10px"><span class="btn" style="height:36px">Set reminders</span><span style="font:500 13px 'SC Label';letter-spacing:.14em;align-self:center">EVERYTHING TONIGHT ›</span></div></div>
+ <div class="lab">Missions <span>· 1 of 3 · +50 XP each</span></div>
+ <div class="mis"><span class="done">Collect a satellite</span><span>3 stars in one constellation</span><span>A planet or the Moon</span></div>
+</div></div>
+
+</div>
+<div class="think"><b>What a player is asking when they open it:</b> "Is anything good up right now?", then "When's the next good one, and where?", then "Is tonight worth staying out?", and "What should I go for?" Today those answers are split across two tabs, so the next pass and the plan never sit together. <b>A</b> answers them top to bottom in one scroll and is the closest to today. <b>B</b> is the most visual and makes "later" feel explorable, but the scrubbing has to be discovered. <b>C</b> is the calmest and most glanceable, and ties missions to actual passes ("counts for a planet or the Moon"), which gives people a reason to catch them. My pick: <b>C</b>, with A's timeline behind "Everything tonight".</div>
+</body></html>
