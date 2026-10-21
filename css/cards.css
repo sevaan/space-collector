@@ -642,7 +642,7 @@
 .mini-face .card--mission .card__fact p { font-size: .87em; line-height: 1.45; }
 /* The Moon card's shorter (16:10) window crops from the top of the picture, so the Moon sits higher in it (2026-10-20,
    Sevaan: it looked low). The phase shade (js/card.js moonShade, xMidYMax) crops the same way. */
-.mn-card .card__art > .card-art-image { object-position: 50% 100%; }
+.card--mission.mn-card .card__art > img.card-art-image { object-position: 50% 100%; } /* more specific than the 50% 50% rule above, which was winning */
 /* Even frame at the corners (2026-10-20, Sevaan: tiles' corners weren't a uniform border). The edge is .3em (3 px on a
    tile's 10 px card, so layout doesn't round it), and the inner frame lines follow the inside curve (1.4em - .3em)
    instead of the outside one, which pinched them at the corners. */
