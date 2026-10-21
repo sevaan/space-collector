@@ -495,8 +495,6 @@ body.nav-tabs .sc-switch__item { flex: 1 1 0 !important; min-width: 0; }
 body.nav-tabs #nav-sky .nav-sky-t { font-variant-numeric: tabular-nums; white-space: nowrap; }
 @keyframes sky-in-left { from { transform: translateX(-100%); } to { transform: none; } }
 @keyframes sky-out-left { from { transform: none; } to { transform: translateX(-100%); } }
-body.nav-tabs #visible:not([hidden]) { animation: sky-in-left .36s cubic-bezier(.2, .9, .25, 1) !important; }
-body.nav-tabs #visible.leaving { animation: sky-out-left .28s cubic-bezier(.5, 0, .75, .4) forwards !important; }
 /* B · wings and a raised round Explore lens */
 body.nav-lens .sc-switch { overflow: visible !important; background: rgba(8, 15, 27, .92) !important; display: grid !important; grid-template-columns: 1fr 84px 1fr; align-items: center; }
 body.nav-lens #nav-explore { width: 76px; height: 76px; margin-top: -26px; border-radius: 50% !important; justify-self: center; background: #0e1828; box-shadow: 0 0 0 3px #fa8127, 0 10px 20px rgba(0,0,0,.5); font-size: 10px !important; letter-spacing: .12em !important; gap: 3px !important; }
@@ -520,3 +518,10 @@ body.night #sky-strip { color: #ff7f70; border-color: #5a1d18; } body.night #sky
 body.nav-lens #nav-explore { background: #0e1828 !important; }
 body.nav-lens .sc-switch[data-side='mid'] #nav-explore { background: #fa8127 !important; }
 body:is(.nav-tabs, .nav-lens).sky-open .sc-switch { background-color: #0b1220 !important; } body.nav-lens.sky-open .sc-switch { background: #0b1220 !important; }
+/* Three tabs are the navigation now (2026-10-21): Up in your sky rises like the other pages, not from the left. */
+/* A dark soft fade behind the tabs over the sky page, so its rows don't show through. */
+body.nav-tabs.sky-open::after { content: ''; position: fixed; left: 0; right: 0; bottom: 0; height: calc(var(--safe-bottom, 0px) + 140px); z-index: 69; pointer-events: none;
+  background: linear-gradient(rgba(6, 11, 20, 0), rgba(6, 11, 20, .92) 45%, rgba(6, 11, 20, .98));
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); -webkit-mask: linear-gradient(transparent, #000 40%); mask: linear-gradient(transparent, #000 40%); }
+body.nav-tabs:has(#visible.leaving) #nav, body.nav-tabs:has(#visible:not([hidden])) #nav { z-index: 70; visibility: visible !important; } /* the sky page sliding away never covers the tabs (2026-10-21) */
+body.nav-tabs.sky-open::after { height: calc(var(--safe-bottom, 0px) + 175px); background: linear-gradient(rgba(6, 11, 20, 0), rgba(6, 11, 20, .96) 38%, #060b14); -webkit-mask: linear-gradient(transparent, #000 30%); mask: linear-gradient(transparent, #000 30%); }
