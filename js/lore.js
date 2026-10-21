@@ -4,7 +4,7 @@
 // facts only state what the catalogue says today (orbit, launch date and site) or simple date
 // comparisons. No extrapolating today’s orbit back over decades (lifetime laps or distance).
 
-import { orbitStats, titleCase, siteName, ownerName } from './facts.js?v=0.1.923';
+import { orbitStats, titleCase, siteName, ownerName } from './facts.js?v=0.1.924';
 
 const FAMILY = [
   [/^IRIDIUM 33 DEB/, 'A piece of the **first-ever crash between two satellites**: Iridium 33 hit the dead Kosmos 2251 in 2009.'],
@@ -131,6 +131,53 @@ export const FLEET_ABOUT = {
   ORBCOMM: 'Small satellites that **pass messages for machines**: trucks, ships and shipping containers checking in from anywhere on Earth.',
   IRIDIUM: '**66 satellites cover the whole planet**, poles included, so a satellite phone works anywhere. Named after element 77, the size first planned.',
 };
+// More about each fleet (2026-10-20, Sevaan: a different fact each time you stamp a launch). The card shows
+// FLEET_ABOUT for the first stamp, then steps through these, one per new stamp, and round again (fleetAbout).
+export const FLEET_MORE = {
+  STARLINK: [
+    'Starlink satellites are flat and **stack like a deck of cards** inside the rocket, so one Falcon 9 can carry more than 20 at once.',
+    'Each one has **ion thrusters** that run on krypton or argon, not rocket fuel. They raise its orbit and steer it clear of debris.',
+    'A fresh launch crosses the sky as a **string of lights** in a line, before the satellites spread out to their working orbits.',
+    'They fly low on purpose: a satellite that fails is pulled down by the thin air and **burns up within about five years**.',
+    'Newer ones pass data to each other with **laser links**, so your signal can cross an ocean without touching the ground.',
+  ],
+  ONEWEB: [
+    'After Russia invaded Ukraine in 2022, OneWeb moved its last launches from Soyuz to **SpaceX and India’s LVM3**.',
+    'The company went **bankrupt in 2020**. The UK government and India’s Bharti bought it, and it later joined Eutelsat.',
+    'Flying higher than Starlink means **fewer satellites** cover the whole Earth, and each one stays up far longer.',
+  ],
+  QIANFAN: [
+    'Its satellites go up **18 at a time** on Long March 6A rockets from Taiyuan, in northern China.',
+    'In 2024 the upper stage that carried the first batch **broke apart in orbit**, scattering hundreds of tracked pieces.',
+    'The name means **“a thousand sails”**: a fleet big enough to look like a harbour full of boats.',
+  ],
+  KUIPER: [
+    'To launch fast enough, Amazon booked almost every big rocket going: **Atlas V, Vulcan, Falcon 9, Ariane 6 and New Glenn**.',
+    'Two test satellites went up first in 2023 on an Atlas V. When the test was done, Amazon **steered them down to burn up**.',
+    'The satellites fly at three heights, from about **590 to 630 km**, in shells that cover different parts of the globe.',
+  ],
+  GLOBALSTAR: [
+    'Globalstar satellites are **“bent pipes”**: they bounce your call straight down to a ground station rather than to each other.',
+    'They orbit at about **1,400 km**, high enough that each one sees a wide circle of the Earth below.',
+    'The first Globalstar satellites went up in 1998. Twelve were lost at once when a **Zenit rocket failed** that September.',
+  ],
+  ORBCOMM: [
+    'Orbcomm sends **short bursts of data**, not calls: a truck’s location, a tank’s fill level, a ship checking in.',
+    'Many carry a receiver for ships’ **AIS beacons**, the signal every large ship sends to say where it is.',
+    'The first two Orbcomm satellites launched in 1995 on a **Pegasus rocket**, dropped from under a plane in flight.',
+  ],
+  IRIDIUM: [
+    'The first Iridium satellites had mirror-like antennas that caused **Iridium flares**, flashes brighter than Venus.',
+    'The satellites pass calls **from one to the next** across the sky, so a call can cross the planet before it comes down.',
+    'In 2009 an Iridium satellite was destroyed in the first accidental **crash between two satellites**, with dead Kosmos 2251.',
+    'The original fleet was replaced by **Iridium NEXT** between 2017 and 2019, launched ten at a time on Falcon 9s.',
+  ],
+};
+// The fleet line for a card with n launches stamped: the first stamp gets FLEET_ABOUT, each later one the next fact.
+export function fleetAbout(family, n = 1) {
+  const all = [FLEET_ABOUT[family], ...(FLEET_MORE[family] ?? [])].filter(Boolean);
+  return all.length ? all[Math.max(0, n - 1) % all.length] : '';
+}
 
 function fleetFact(o) {
   const n = o.members.length.toLocaleString('en-US'), first = o.launches[0]?.launch?.slice(0, 4);

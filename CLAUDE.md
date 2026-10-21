@@ -1468,3 +1468,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - 2026-10-20 (Sevaan): card facts use text-wrap: wrap (fill each line); the app-wide text-wrap: pretty was evening out lines on iPhone and pushing words down early.
 - 2026-10-20 (Sevaan): planet-earth cropped in 1.18× around the planet so Earth fills the frame (still fits the wider share-image crop); art-boxes box widened to match.
 - 2026-10-20: Build 1.0 (25) archived (web v0.1.923: tour Collect fix, Moon whole in its picture, Earth's shadow wedges, music pause/resume with the app, lock sound halved, card facts fill lines, Earth bigger); opened in Organizer, not uploaded. SC Tester reinstalled.
+- 2026-10-20 (Sevaan): fleet cards show a different fact as you stamp launches: lore.js FLEET_MORE (3–5 true lines per fleet) after FLEET_ABOUT, picked by fleetAbout(family, stamps) and cycling round.
