@@ -22,11 +22,11 @@
   <link rel="preload" href="fonts/RussoOne-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="fonts/BarlowCondensed-Medium.ttf" as="font" type="font/ttf" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600;650;700;750;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/cards.css?v=0.1.942">
-  <link rel="stylesheet" href="css/app.css?v=0.1.942">
-  <link rel="stylesheet" href="css/icons.css?v=0.1.942">
-  <link rel="stylesheet" href="css/reveal.css?v=0.1.942">
-  <link rel="stylesheet" href="css/ui.css?v=0.1.942">
+  <link rel="stylesheet" href="css/cards.css?v=0.1.943">
+  <link rel="stylesheet" href="css/app.css?v=0.1.943">
+  <link rel="stylesheet" href="css/icons.css?v=0.1.943">
+  <link rel="stylesheet" href="css/reveal.css?v=0.1.943">
+  <link rel="stylesheet" href="css/ui.css?v=0.1.943">
 </head>
 <body>
   <video id="cam" playsinline muted autoplay hidden></video>
@@ -38,7 +38,7 @@
       <canvas id="radar-canvas" width="96" height="96"></canvas>
       <span id="radar-new" aria-label="new to collect"><b id="new-count">0</b></span><span id="radar-up" hidden><b id="visible-count">0</b> passing</span>
     </button>
-    <button id="nextpass" hidden></button>
+    <button id="nextpass" hidden></button><button type="button" id="sky-strip" hidden></button>
     <button id="event-banner" hidden></button>
     <div id="guidance" aria-live="polite" hidden></div>
     <div id="sr-target" class="sr-only" aria-live="polite" aria-atomic="true"></div>
@@ -184,7 +184,7 @@
        switcher, so moving between Explore and Collection never reloads anything. js/main.js openCollection. -->
   <!-- The switcher lives outside #hud (2026-10-11) so it can sit above the Collection layer; #hud forms its own stack. -->
   <nav id="nav" class="sc-switch" data-side="left" style="--n:2;--i:0" aria-label="Main navigation">
-      <button class="nav-item sc-switch__item" id="nav-explore" aria-current="page"><span class="ico" data-ico="sight" aria-hidden="true"></span>Explore</button>
+      <button class="nav-item sc-switch__item" id="nav-sky" type="button" hidden><span class="ico" data-ico="stars" aria-hidden="true"></span><span class="nav-sky-t">Sky</span></button><button class="nav-item sc-switch__item" id="nav-explore" aria-current="page"><span class="ico" data-ico="sight" aria-hidden="true"></span>Explore</button>
       <a class="nav-item sc-switch__item" id="nav-collection" href="cards.html" role="button"><span class="ico" data-ico="deck" aria-hidden="true"></span>Collection</a>
     </nav>
   <iframe id="collection-frame" title="Collection" hidden></iframe>
@@ -263,7 +263,7 @@
     <div class="set-group set-test">
       <div class="row" id="sim-time-label"></div>
       <div class="row wrap"><button class="pill" data-time="-3600">−1h</button><button class="pill" data-time="-600">−10m</button><button class="pill" data-time="600">+10m</button><button class="pill" data-time="3600">+1h</button><button class="pill" data-time="now">Now</button></div>
-      <div class="row wrap"><button class="pill accent" id="btn-next-pass">Jump to next visible pass</button><button class="pill" id="btn-replay-setup">Replay the tour</button><button class="pill" id="btn-ufo">Summon the UFO</button><button class="pill" id="btn-santa">Summon Santa</button><button class="pill" id="btn-meteor">Shooting star</button><button class="pill" id="btn-toasts">Sample notifications</button><button class="pill" id="btn-cam">Camera view (prototype)</button><button class="pill" id="btn-fov-">Camera fit −</button><button class="pill" id="btn-fov+">Camera fit +</button></div>
+      <div class="row wrap"><label class="set-row" style="width:100%"><span class="set-main">Navigation prototype<small>Try a three-place layout: Up in the sky, Explore, Collection</small></span><select id="nav-proto" class="pill"><option value="">Today</option><option value="tabs">A · Three tabs, live</option><option value="lens">B · Lens hub</option><option value="stack">C · Sky stack</option></select></label></div><div class="row wrap"><label class="set-row" style="width:100%"><span class="set-main">Page transition prototype<small>How Settings, Up in the sky and the Collection come in</small></span><select id="tr-proto" class="pill"><option value="">Slide up (today)</option><option value="iris">Iris from your tap</option><option value="zoom">Zoom from the button</option><option value="lift">Lift and fade</option><option value="blur">Sky blurs away</option></select></label></div><div class="row wrap"><button class="pill accent" id="btn-next-pass">Jump to next visible pass</button><button class="pill" id="btn-replay-setup">Replay the tour</button><button class="pill" id="btn-ufo">Summon the UFO</button><button class="pill" id="btn-santa">Summon Santa</button><button class="pill" id="btn-meteor">Shooting star</button><button class="pill" id="btn-toasts">Sample notifications</button><button class="pill" id="btn-cam">Camera view (prototype)</button><button class="pill" id="btn-fov-">Camera fit −</button><button class="pill" id="btn-fov+">Camera fit +</button></div>
       <label class="set-row"><span class="set-main">Plus (testing)<small>Turns on every Plus perk on this device</small></span><input type="checkbox" class="set-tog" id="chk-plus-test"></label>
       <label class="set-row"><span class="set-main">RevenueCat Test Store<small>Simulator and Xcode builds only: TestFlight and the App Store close with it. Restart after changing.</small></span><input type="checkbox" class="set-tog" id="chk-rc-test"></label>
       <label class="set-row"><span class="set-main">Show objects that aren’t visible</span><input type="checkbox" class="set-tog" id="chk-dim"></label>
@@ -316,8 +316,8 @@
     </div></div>
   </section>
 
-  <script type="module" src="js/text-size.js?v=0.1.942"></script>
-  <script type="module" src="js/main.js?v=0.1.942"></script>
+  <script type="module" src="js/text-size.js?v=0.1.943"></script>
+  <script type="module" src="js/main.js?v=0.1.943"></script>
 <div id="rotate" role="status"><b>Turn your phone upright</b><span>Space Collector is made for portrait.</span></div>
 </body>
 </html>

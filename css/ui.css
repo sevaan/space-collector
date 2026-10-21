@@ -483,3 +483,40 @@ body:has(.overlay.panel:not([hidden])) .pc-badge { display: none; } /* the Colle
 /* Tucked chips stack under the meteor-shower banner too (polish 2026-10-20: the TONIGHT chip sat on the ORIONIDS banner). */
 body:has(#event-banner:not([hidden])) #toast-tray { top: calc(var(--safe-top, env(safe-area-inset-top, 0px)) + 141px); }
 body:has(#event-banner:not([hidden])):has(#nextpass:not([hidden])) #toast-tray { top: calc(var(--safe-top, env(safe-area-inset-top, 0px)) + 183px); }
+
+/* ---------- Navigation prototypes (2026-10-21, Testing tools → Navigation prototype) ---------- */
+.sc-switch[data-side='mid'] { background-position: 50% 0, 0 0 !important; }
+.sc-switch[data-side='mid'] .sc-switch__item:nth-child(2) { color: #fa8127 !important; }
+body:is(.nav-tabs, .nav-lens).sky-open #nav { z-index: 70; visibility: visible !important; }
+body:is(.nav-tabs, .nav-lens) #visible { padding-bottom: calc(var(--safe-bottom, 0px) + 110px); }
+/* A · three equal parts with a live Sky tab */
+body.nav-tabs .sc-switch { background-size: 33.34% 3px, auto !important; }
+body.nav-tabs .sc-switch__item { flex: 1 1 0 !important; min-width: 0; }
+body.nav-tabs #nav-sky .nav-sky-t { font-variant-numeric: tabular-nums; white-space: nowrap; }
+@keyframes sky-in-left { from { transform: translateX(-100%); } to { transform: none; } }
+@keyframes sky-out-left { from { transform: none; } to { transform: translateX(-100%); } }
+body.nav-tabs #visible:not([hidden]) { animation: sky-in-left .36s cubic-bezier(.2, .9, .25, 1) !important; }
+body.nav-tabs #visible.leaving { animation: sky-out-left .28s cubic-bezier(.5, 0, .75, .4) forwards !important; }
+/* B · wings and a raised round Explore lens */
+body.nav-lens .sc-switch { overflow: visible !important; background: rgba(8, 15, 27, .92) !important; display: grid !important; grid-template-columns: 1fr 84px 1fr; align-items: center; }
+body.nav-lens #nav-explore { width: 76px; height: 76px; margin-top: -26px; border-radius: 50% !important; justify-self: center; background: #0e1828; box-shadow: 0 0 0 3px #fa8127, 0 10px 20px rgba(0,0,0,.5); font-size: 10px !important; letter-spacing: .12em !important; gap: 3px !important; }
+body.nav-lens .sc-switch[data-side='mid'] #nav-explore { background: #fa8127; color: #0b1018 !important; }
+body.nav-lens .sc-switch[data-side='left'] #nav-sky, body.nav-lens .sc-switch[data-side='right'] #nav-collection { color: #fa8127 !important; }
+body.nav-lens .sc-switch[data-side='left'] .sc-switch__item:first-child:not(#nav-sky) { color: inherit; }
+body.nav-lens #nav-sky .nav-sky-t { font-size: 11px; letter-spacing: .14em; }
+/* C · a live strip at the top of Explore; the sky page drops from the top */
+#sky-strip { position: fixed; z-index: 3; top: calc(var(--safe-top) + 92px); left: 132px; right: 12px; min-height: 44px; display: flex; align-items: center; gap: 9px; padding: 8px 12px; border-radius: 14px; border: 1px solid #34466a; background: rgba(8, 15, 27, .82); color: #fff2b3; font: 500 13.5px/1.2 var(--label); letter-spacing: .04em; text-align: left; box-shadow: 0 8px 18px rgba(0,0,0,.35); }
+#sky-strip[hidden] { display: none; }
+#sky-strip .ss-dot { width: 8px; height: 8px; border-radius: 50%; background: #fa8127; flex: none; box-shadow: 0 0 0 4px #fa812733; }
+#sky-strip .ss-t { flex: 1; min-width: 0; font-variant-numeric: tabular-nums; } #sky-strip .ss-c { color: #fa8127; font-size: 16px; }
+body.nav-stack #nextpass { display: none !important; }
+body.ob-tour #sky-strip, body.col-open #sky-strip { display: none; }
+@keyframes sky-in-top { from { transform: translateY(-100%); } to { transform: none; } }
+@keyframes sky-out-top { from { transform: none; } to { transform: translateY(-100%); } }
+body.nav-stack #visible:not([hidden]) { animation: sky-in-top .38s cubic-bezier(.2, .9, .25, 1) !important; }
+body.nav-stack #visible.leaving { animation: sky-out-top .3s cubic-bezier(.5, 0, .75, .4) forwards !important; }
+body.night #sky-strip { color: #ff7f70; border-color: #5a1d18; } body.night #sky-strip .ss-dot { background: #ff6a55; }
+#nav-sky .nav-sky-t { display: inline !important; }
+body.nav-lens #nav-explore { background: #0e1828 !important; }
+body.nav-lens .sc-switch[data-side='mid'] #nav-explore { background: #fa8127 !important; }
+body:is(.nav-tabs, .nav-lens).sky-open .sc-switch { background-color: #0b1220 !important; } body.nav-lens.sky-open .sc-switch { background: #0b1220 !important; }

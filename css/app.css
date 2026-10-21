@@ -1888,3 +1888,29 @@ body.night .sky-jump button.on { color: #ff7f70; border-color: #ff6a5566; backgr
 .ev-btn { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 46px; margin-top: 12px; border-radius: 13px; border: 1px solid #34466a; background: #1a2333; color: var(--ink, #fff2b3); font: 500 14px var(--label); letter-spacing: .16em; text-transform: uppercase; }
 body.night .ev-chart i.pk { background: #ff6a55; } body.night .ev-chart i { background: #3a1814; }
 .ev-axis { position: relative; } .ev-mid { position: absolute; transform: translateX(-50%); } /* midnight where it really falls */
+
+/* ---------- Page transition prototypes (2026-10-21) ---------- */
+/* Iris: the page opens as a circle growing from where you tapped (the target circle, echoed), and closes back into it. */
+@keyframes tr-iris-in { from { clip-path: circle(0 at var(--tx, 50%) var(--ty, 90%)); } to { clip-path: circle(150% at var(--tx, 50%) var(--ty, 90%)); } }
+@keyframes tr-iris-out { from { clip-path: circle(150% at var(--tx, 50%) var(--ty, 90%)); } to { clip-path: circle(0 at var(--tx, 50%) var(--ty, 90%)); } }
+body.tr-iris .overlay.panel:not([hidden]) { animation: tr-iris-in .5s cubic-bezier(.4, 0, .2, 1) !important; }
+body.tr-iris .overlay.panel.leaving { animation: tr-iris-out .34s cubic-bezier(.4, 0, 1, 1) forwards !important; }
+/* Zoom: grows out of the button you tapped, like an app opening. */
+@keyframes tr-zoom-in { from { transform: scale(.12); opacity: 0; border-radius: 40px; } 60% { opacity: 1; } to { transform: none; opacity: 1; border-radius: 0; } }
+@keyframes tr-zoom-out { from { transform: none; opacity: 1; } to { transform: scale(.12); opacity: 0; border-radius: 40px; } }
+body.tr-zoom .overlay.panel { transform-origin: var(--txp, 50%) var(--typ, 90%); }
+body.tr-zoom .overlay.panel:not([hidden]) { animation: tr-zoom-in .42s cubic-bezier(.2, .9, .25, 1.02) !important; }
+body.tr-zoom .overlay.panel.leaving { animation: tr-zoom-out .3s cubic-bezier(.5, 0, .75, .4) forwards !important; }
+/* Lift: rises a little while fading in, the sky sinks back behind it. */
+@keyframes tr-lift-in { from { transform: translateY(36px) scale(.97); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes tr-lift-out { from { transform: none; opacity: 1; } to { transform: translateY(24px) scale(.98); opacity: 0; } }
+body.tr-lift .overlay.panel:not([hidden]) { animation: tr-lift-in .34s cubic-bezier(.2, .8, .2, 1) !important; }
+body.tr-lift .overlay.panel.leaving { animation: tr-lift-out .22s ease-in forwards !important; }
+body.tr-lift:has(.overlay.panel:not([hidden]):not(.leaving)) #sky { transform: scale(.94); filter: brightness(.5); transition: transform .4s cubic-bezier(.2,.8,.2,1), filter .4s; }
+body.tr-lift #sky { transition: transform .35s, filter .35s; }
+/* Blur: the sky goes soft and dark, and the page fades in on top of it, slightly see-through. */
+@keyframes tr-blur-in { from { opacity: 0; backdrop-filter: blur(0); } to { opacity: 1; backdrop-filter: blur(18px); } }
+body.tr-blur .overlay.panel { background: rgba(8, 15, 27, .72) !important; -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); }
+body.tr-blur .overlay.panel:not([hidden]) { animation: tr-blur-in .4s ease-out !important; }
+body.tr-blur .overlay.panel.leaving { animation: tr-lift-out .25s ease-in forwards !important; }
+@media (prefers-reduced-motion: reduce) { body[class*='tr-'] .overlay.panel { animation-duration: .01s !important; } }
