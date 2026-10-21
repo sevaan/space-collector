@@ -1914,3 +1914,10 @@ body.tr-blur .overlay.panel { background: rgba(8, 15, 27, .72) !important; -webk
 body.tr-blur .overlay.panel:not([hidden]) { animation: tr-blur-in .4s ease-out !important; }
 body.tr-blur .overlay.panel.leaving { animation: tr-lift-out .25s ease-in forwards !important; }
 @media (prefers-reduced-motion: reduce) { body[class*='tr-'] .overlay.panel { animation-duration: .01s !important; } }
+/* Tonight while it's being planned (2026-10-21). */
+.tl-plan .tl-sh { display: inline-block; height: .8em; border-radius: 6px; background: linear-gradient(90deg, #1a2638, #25344d, #1a2638); background-size: 200% 100%; animation: tl-sh 1.4s linear infinite; vertical-align: middle; }
+@keyframes tl-sh { to { background-position: -200% 0; } }
+.tl-plan .tl-bar { display: block; height: 3px; margin-top: 12px; border-radius: 2px; background: #1d2a3c; overflow: hidden; } .tl-plan .tl-bar i { display: block; height: 100%; background: #fa8127; transition: width .6s ease; }
+.tl-plan-chart { display: block; width: 100%; height: auto; margin: 4px 0 6px; }
+@media (prefers-reduced-motion: reduce) { .tl-plan .tl-sh { animation: none; } }
+#tonight-list .tl-skel { background: linear-gradient(90deg, #0f1a2a, #18263a, #0f1a2a); background-size: 200% 100%; animation: tl-sh 1.6s linear infinite; } @media (prefers-reduced-motion: reduce) { #tonight-list .tl-skel { animation: none; } }
