@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Reminder sheet options</title>
+<style>
+@font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf'); }
+@font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf'); }
+:root { --sheet: #101a2a; --row: #0b1220; --ink: #fff2b3; --muted: #bdbea9; --or: #fa8127; --line: #26314a; --gold: #e2b53c; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #070c16; color: var(--ink); font: 15px/1.4 system-ui, sans-serif; padding: 28px 20px 60px; }
+h1 { font: 400 26px 'SC Display'; margin: 0 0 4px; }
+.lead { color: var(--muted); margin: 0 0 24px; max-width: 980px; }
+.row { display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start; }
+.opt { width: 340px; }
+.opt h2 { font: 500 15px 'SC Label'; letter-spacing: .14em; text-transform: uppercase; color: var(--or); margin: 0 0 4px; }
+.opt p { color: var(--muted); margin: 0 0 12px; font-size: 13.5px; min-height: 76px; }
+.phone { height: 600px; border-radius: 28px; background: linear-gradient(#2a3d58, #1a2639); position: relative; overflow: hidden; }
+.sheet { position: absolute; left: 0; right: 0; bottom: 0; background: var(--sheet); border-radius: 24px 24px 0 0; padding: 10px 18px 22px; }
+.grab { width: 40px; height: 5px; border-radius: 3px; background: #3a4a62; margin: 0 auto 14px; }
+.lab { font: 500 12.5px 'SC Label'; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); }
+.k { color: var(--or); }
+.hd { display: flex; gap: 12px; align-items: center; margin-bottom: 14px; }
+.thumb { width: 46px; height: 46px; border-radius: 10px; background: radial-gradient(circle at 40% 40%, #e9dfb8 0 20%, #48607e 21% 34%, #0b1220 35%); flex: none; border: 1px solid #3a4a62; }
+.hd b { display: block; font: 400 18px 'SC Display'; }
+.hd small { display: block; color: var(--muted); font-size: 13.5px; margin-top: 2px; }
+.btn { display: flex; align-items: center; justify-content: center; height: 50px; border-radius: 14px; border: 0; width: 100%; font: 500 15.5px 'SC Label'; letter-spacing: .18em; text-transform: uppercase; background: var(--or); color: #0b1018; margin-top: 14px; }
+.cancel { display: block; text-align: center; margin-top: 12px; font: 500 13px 'SC Label'; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+/* A: segmented */
+.seg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; padding: 5px; background: var(--row); border-radius: 14px; border: 1px solid var(--line); }
+.seg span { text-align: center; padding: 10px 4px 9px; border-radius: 10px; font: 500 14px 'SC Label'; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.seg span b { display: block; font: 400 17px 'SC Display'; letter-spacing: 0; color: var(--ink); margin-bottom: 3px; text-transform: none; }
+.seg span.on { background: #2a2219; box-shadow: inset 0 0 0 1.5px var(--or); color: var(--ink); }
+.say { color: var(--muted); font-size: 14px; margin-top: 12px; text-align: center; }
+/* B: one tap rows */
+.list { display: grid; gap: 8px; }
+.li { display: flex; align-items: center; gap: 12px; padding: 13px 14px; border-radius: 14px; background: var(--row); border: 1px solid var(--line); }
+.li .t { font: 400 19px 'SC Display'; width: 92px; }
+.li .w { flex: 1; } .li .w b { display: block; font: 500 15px 'SC Label'; letter-spacing: .06em; text-transform: uppercase; } .li .w small { color: var(--muted); font-size: 13px; }
+.li.on { border-color: var(--or); background: #20190f; } .li .chk { color: var(--or); font-size: 18px; }
+.li.rec .w b::after { content: ' · BEST'; color: var(--gold); }
+/* C: timeline */
+.tl { position: relative; height: 120px; margin: 8px 4px 0; }
+.tl .bar { position: absolute; left: 0; right: 0; top: 44px; height: 3px; background: #3a4a62; border-radius: 2px; }
+.tl .fill { position: absolute; left: 0; top: 44px; height: 3px; width: 48%; background: var(--or); border-radius: 2px; }
+.tl .m { position: absolute; top: 30px; transform: translateX(-50%); text-align: center; width: 96px; }
+.tl .m i { display: block; width: 30px; height: 30px; margin: 0 auto 8px; border-radius: 50%; background: var(--row); border: 2px solid #4a5a74; }
+.tl .m.on i { background: var(--or); border-color: var(--or); box-shadow: 0 0 0 6px #fa812733; }
+.tl .m b { display: block; font: 400 15px 'SC Display'; } .tl .m small { font: 500 12px 'SC Label'; letter-spacing: .1em; color: var(--muted); text-transform: uppercase; }
+.tl .rise { position: absolute; right: -2px; top: 0; font: 500 12px 'SC Label'; letter-spacing: .12em; color: var(--gold); text-transform: uppercase; }
+/* D: card-like with sentence */
+.d .big { font: 400 26px 'SC Display'; line-height: 1.15; margin: 4px 0 6px; }
+.d .big em { font-style: normal; color: var(--or); }
+.chips { display: flex; gap: 8px; margin: 14px 0 0; }
+.chips span { flex: 1; text-align: center; padding: 11px 4px; border-radius: 999px; border: 1px solid var(--line); background: var(--row); font: 500 14px 'SC Label'; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.chips span.on { border-color: var(--or); color: var(--ink); background: #2a2219; }
+.note { color: var(--muted); font-size: 13px; margin-top: 10px; }
+.think { margin: 34px 0 0; max-width: 980px; color: var(--muted); font-size: 14px; }
+.think b { color: var(--ink); }
+</style></head><body>
+<h1>Reminder sheet</h1>
+<p class="lead">The sheet that opens when you tap a bell or Set reminder. Three choices now: 10 minutes before, 5 minutes before, as it rises. Example: Delta 1 Rocket Stage, rising 7:35 PM in the east, a 4-minute pass. Today's sheet is four tall rows plus a Set button, and it covers most of the screen.</p>
+<div class="row">
+
+<div class="opt"><h2>A · Three-way switch</h2><p>The three times side by side in one control, a sentence saying what will happen, and the button. Short: about a third of the screen.</p>
+<div class="phone"><div class="sheet"><div class="grab"></div>
+ <div class="hd"><span class="thumb"></span><span><b>Delta 1 Rocket Stage</b><small>Rises 7:35 PM in the east</small></span></div>
+ <div class="seg"><span><b>7:25</b>10 min</span><span class="on"><b>7:30</b>5 min</span><span><b>7:35</b>As it rises</span></div>
+ <div class="say">We’ll nudge you at 7:30 PM, 5 minutes before it rises.</div>
+ <div class="btn">Set reminder</div></div></div></div>
+
+<div class="opt"><h2>B · Tap to set</h2><p>Each row says who it’s for. One tap sets it and closes the sheet: no separate button. The one already set is ticked; Cancel underneath.</p>
+<div class="phone"><div class="sheet"><div class="grab"></div>
+ <div class="hd"><span class="thumb"></span><span><b>Delta 1 Rocket Stage</b><small>Rises 7:35 PM in the east</small></span></div>
+ <div class="list">
+  <div class="li rec"><span class="t">7:25 PM</span><span class="w"><b>10 min before</b><small>Time to get outside</small></span></div>
+  <div class="li on"><span class="t">7:30 PM</span><span class="w"><b>5 min before</b><small>If you’re near a door</small></span><span class="chk">✓</span></div>
+  <div class="li"><span class="t">7:35 PM</span><span class="w"><b>As it rises</b><small>If you’re already out</small></span></div>
+ </div><span class="cancel">Cancel the reminder</span></div></div></div>
+
+<div class="opt"><h2>C · On a timeline</h2><p>Now to rise as a line, with the three times as stops on it. Shows how much time you have left at a glance.</p>
+<div class="phone"><div class="sheet"><div class="grab"></div>
+ <div class="hd"><span class="thumb"></span><span><b>Delta 1 Rocket Stage</b><small>Rises 7:35 PM in the east · in 2 h 58 min</small></span></div>
+ <div class="tl"><span class="rise">Rises 7:35</span><span class="bar"></span><span class="fill"></span>
+  <span class="m on" style="left:18%"><i></i><b>7:25</b><small>10 min</small></span>
+  <span class="m" style="left:52%"><i></i><b>7:30</b><small>5 min</small></span>
+  <span class="m" style="left:86%"><i></i><b>7:35</b><small>Rises</small></span></div>
+ <div class="btn">Set reminder</div></div></div></div>
+
+<div class="opt"><h2>D · One sentence</h2><p>Reads like the notification you’ll get: “Remind me 10 minutes before Delta 1 rises.” Chips change the words. Friendly, and clear what will arrive.</p>
+<div class="phone"><div class="sheet d"><div class="grab"></div>
+ <div class="lab">Remind me</div>
+ <div class="big"><em>10 minutes</em> before Delta 1 Rocket Stage rises</div>
+ <div class="note">At 7:25 PM · it rises in the east at 7:35</div>
+ <div class="chips"><span class="on">10 min</span><span>5 min</span><span>As it rises</span></div>
+ <div class="btn">Set reminder</div></div></div></div>
+
+</div>
+<div class="think"><b>Thinking it through.</b> A visible pass lasts only 2 to 6 minutes, so “as it rises” is late for most people: by the time you get shoes on and find the direction, half of it is gone. <b>10 minutes</b> suits the most common case (indoors: get outside, open the app, find the east). <b>5 minutes</b> suits someone already near a door or on a balcony. <b>As it rises</b> is for when you’re already out with the phone. 15 minutes added little: you’d end up waiting outside. So three choices, defaulting to 10.</div>
+</body></html>

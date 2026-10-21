@@ -1834,3 +1834,20 @@ body.is-plus .set-row .plus-tag { display: none; } /* Plus already: no PLUS tag 
 
 /* A landed panel is a plain scroller (Android playtest 2026-10-20: stale tap regions after the slide-in). */
 .overlay.panel.opened:not([hidden]):not(.leaving) { animation: none !important; }
+
+/* Pass reminder sheet, design/reminder-sheet.html B (2026-10-21): what and where at the top, three rows, one tap sets. */
+.pr-head { display: flex; align-items: center; gap: 12px; margin: 2px 0 14px; }
+.pr-head .pr-thumb { width: 46px; height: 46px; flex: none; border-radius: 10px; border: 1px solid #3a4a62; background: #0b1220 center / cover; }
+.pr-head .pr-thumb.hid { filter: brightness(.45) saturate(.5) blur(1.5px); }
+.pr-head b { display: block; font: 400 18px/1.15 var(--display); color: var(--ink, #fff2b3); }
+.pr-head small { display: block; margin-top: 3px; font-size: 14px; color: var(--ui-muted, #bdbea9); }
+#pr-opts { display: grid; gap: 8px; }
+.pr-row { display: flex; align-items: center; gap: 12px; width: 100%; padding: 13px 14px; border-radius: 14px; border: 1px solid #26314a; background: #0b1220; color: inherit; text-align: left; cursor: pointer; }
+.pr-row .t { font: 400 19px var(--display); width: 6.2em; flex: none; white-space: nowrap; }
+.pr-row .w { flex: 1; min-width: 0; } .pr-row .w b { display: block; font: 500 15px var(--label); letter-spacing: .06em; text-transform: uppercase; } .pr-row .w b i { font-style: normal; color: var(--gold, #e2b53c); }
+.pr-row .w small { display: block; margin-top: 2px; font-size: 13px; color: var(--ui-muted, #bdbea9); }
+.pr-row .chk { color: #fa8127; font-size: 18px; visibility: hidden; } .pr-row.on { border-color: #fa8127; background: #20190f; } .pr-row.on .chk { visibility: visible; }
+.pr-row:active { transform: scale(.985); }
+.pr-cloud { margin: 0 0 4px; font-size: 13.5px; color: #8fb3ff; }
+#pr-cancel { margin-top: 12px; }
+body.night .pr-row.on { border-color: #ff6a55; background: #1a0705; } body.night .pr-row .chk, body.night .pr-row .w b i, body.night .pr-cloud { color: #ff7f70; }
