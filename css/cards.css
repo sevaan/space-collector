@@ -648,3 +648,6 @@
    instead of the outside one, which pinched them at the corners. */
 .card--retro .card__face { border-width: .3em; }
 .card--retro .card__face::after { border-radius: 1.1em; }
+/* Card facts fill each line before wrapping (2026-10-20, Sevaan: "drifts" fitted on line two). The app-wide
+   text-wrap: pretty evens lines out, which on iPhone left short lines on cards. */
+.card .card__fact, .card .card__fact p { text-wrap: wrap; }
