@@ -2010,3 +2010,12 @@ body.around-open #nav-more .nm-set { transform: translateY(-14px); opacity: 0; }
 /* Bigger targets for cold hands (UX playtest 2026-10-21): 44 px hit areas, the visible sizes barely change. */
 .rs-acts .ic { width: 44px; height: 44px; }
 .sky-jump button { position: relative; } .sky-jump button::after { content: ''; position: absolute; inset: -4px 0; }
+/* Plus on the sky page (2026-10-21, Sevaan): one line says reminders come with Plus; the bells that need it are just
+   dimmed (no PLUS tag on every row); a tap still opens the Plus sheet. */
+#visible .needs-plus::after { display: none; }
+#visible .needs-plus { opacity: .5; }
+.sky-plus-line { display: flex; align-items: center; gap: 9px; width: 100%; margin: 10px 0 2px; padding: 10px 12px; min-height: 44px; border-radius: 12px; border: 1px solid #f2c14e44; background: #f2c14e10; color: var(--ink, #fff2b3); font: 500 13.5px/1.25 var(--label); text-align: left; cursor: pointer; }
+.sky-plus-line[hidden] { display: none; }
+.sky-plus-line .ico-svg { color: var(--gold); display: grid; } .sky-plus-line .ico-svg svg { width: 16px; height: 16px; }
+.sky-plus-line span:nth-child(2) { flex: 1; } .sky-plus-line b { color: var(--gold); font-size: 16px; }
+body.night .sky-plus-line { border-color: #5a1d18; background: #2a0d0a; color: #ff7f70; } body.night .sky-plus-line .ico-svg, body.night .sky-plus-line b { color: #ff7f70; }
