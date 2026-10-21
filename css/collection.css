@@ -708,3 +708,17 @@ html.embedded #rotate { display: none !important; }
 .grid .tile-slot { box-sizing: content-box; width: auto; padding: 2px; margin: -2px; border-radius: calc(14px * var(--mini-s, .4) + 2px); background: transparent; }
 .grid .tile-slot:empty { background: #0f1b2a; background-clip: content-box; }
 .grid .tile-slot > .card-tile.card-tile--mini { height: auto; aspect-ratio: 28 / 42; }
+/* The rank card folds to one row (2026-10-21, Sevaan picked design/collection-rank.html D): fixed under the header
+   (Explore's header when embedded), sliding down once the full card has scrolled away. */
+.lb-slim { position: fixed; left: 0; right: 0; top: var(--safe-top); z-index: 30; margin: 0 auto; max-width: 1056px; display: flex; align-items: center; gap: 10px; padding: 9px 20px 10px; background: var(--bg, #080f1b); border-bottom: 1px solid #22304a; transform: translateY(-110%); opacity: 0; pointer-events: none; transition: transform .28s cubic-bezier(.2,.9,.3,1), opacity .2s; cursor: pointer; }
+html.embedded .lb-slim { top: calc(var(--safe-top) + 80px); }
+.lb-slim.on { transform: none; opacity: 1; pointer-events: auto; }
+body:not(.has-cards) .lb-slim, body[data-view]:not([data-view="owned"]) .lb-slim { display: none; }
+.lbs-dot { width: 26px; height: 26px; flex: none; border-radius: 50%; border: 2px solid #fa8127; display: grid; place-items: center; } .lbs-dot i { width: 8px; height: 8px; border-radius: 50%; background: #fa8127; }
+.lbs-main { flex: 1; min-width: 0; display: grid; gap: 3px; }
+.lbs-name { font: 400 15px/1 var(--display, "SC Display"); color: var(--ink, #fff2b3); text-transform: uppercase; }
+.lbs-bar { display: block; height: 3px; border-radius: 2px; background: #22324a; overflow: hidden; } .lbs-bar i { display: block; height: 100%; background: #fa8127; }
+.lbs-main small { display: flex; justify-content: space-between; gap: 8px; font: 500 11px/1.2 var(--label, 'SC Label'); letter-spacing: .06em; color: var(--muted, #bdbea9); white-space: nowrap; }
+.lbs-m { flex: none; min-height: 44px; padding: 0 2px 0 8px; border: 0; background: none; color: #fa8127; font: 500 12px var(--label, 'SC Label'); letter-spacing: .14em; text-transform: uppercase; cursor: pointer; }
+:where(html[data-theme="night"], body.night) .lb-slim { border-color: #58272b; } :where(html[data-theme="night"], body.night) :is(.lbs-dot, .lbs-m) { color: #ff7f70; border-color: #ff6a55; } :where(html[data-theme="night"], body.night) :is(.lbs-dot i, .lbs-bar i) { background: #ff6a55; } :where(html[data-theme="night"], body.night) .lbs-name { color: #ff7f70; }
+@media (prefers-reduced-motion: reduce) { .lb-slim { transition: opacity .15s; } }

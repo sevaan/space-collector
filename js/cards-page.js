@@ -1,30 +1,30 @@
-import { pullToClose } from './pull-close.js?v=0.1.960';
-import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.960';
-import { computeStats, statsHtml } from './stats.js?v=0.1.960';
-import { nightKey } from './observation.js?v=0.1.960';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.960';
-import { sfx } from './sfx.js?v=0.1.960';
-import { expandFacts } from './catalog-facts.js?v=0.1.960';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.960';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.960';
-import { ticket } from './toast.js?v=0.1.960';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.960';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.960';
-import { cardArt } from './art.js?v=0.1.960';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.960';
-import { applyBack } from './card-backs.js?v=0.1.960';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.960';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.960';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.960';
-import { STORIES } from './stories.js?v=0.1.960';
-import { loadConstellations, conList } from './constellations.js?v=0.1.960';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.960';
-import { eventBadges, nextEvent } from './events.js?v=0.1.960';
-import { shareCardEl } from './share-card.js?v=0.1.960';
-import { forgetSighting } from './cloud-backup.js?v=0.1.960';
-import { allSightings, deleteSighting } from './store.js?v=0.1.960';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.960';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.960';
+import { pullToClose } from './pull-close.js?v=0.1.961';
+import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.961';
+import { computeStats, statsHtml } from './stats.js?v=0.1.961';
+import { nightKey } from './observation.js?v=0.1.961';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.961';
+import { sfx } from './sfx.js?v=0.1.961';
+import { expandFacts } from './catalog-facts.js?v=0.1.961';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.961';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.961';
+import { ticket } from './toast.js?v=0.1.961';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.961';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.961';
+import { cardArt } from './art.js?v=0.1.961';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.961';
+import { applyBack } from './card-backs.js?v=0.1.961';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.961';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.961';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.961';
+import { STORIES } from './stories.js?v=0.1.961';
+import { loadConstellations, conList } from './constellations.js?v=0.1.961';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.961';
+import { eventBadges, nextEvent } from './events.js?v=0.1.961';
+import { shareCardEl } from './share-card.js?v=0.1.961';
+import { forgetSighting } from './cloud-backup.js?v=0.1.961';
+import { allSightings, deleteSighting } from './store.js?v=0.1.961';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.961';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.961';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -339,6 +339,12 @@ function renderLogbook() {
     <div class="lb-foot"><div class="lb-head">EVENTS ${ev.length ? `<span>${ev.length} badge${ev.length === 1 ? '' : 's'}</span>` : ''}</div>
     <div class="lb-events">${ev.map((e) => `<span class="ui-chip ui-chip--earned">☄ <b>${esc(e.name.replace(/\s*\d{4}$/, ''))}</b></span>`).join('')}${nx ? `<span class="ui-chip"><span class="ui-chip__k">Next:</span><b>${esc(nx.name.replace(/\s*\d{4}$/, ''))}</b><span class="ui-chip__k">· ${new Date(nx.start + 30 * 3600e3).toLocaleDateString([], { month: 'short', day: 'numeric' })}</span></span>` : ''}</div></div>`;
   state.achievements = p.achievements;
+  // D (design/collection-rank.html, 2026-10-21, Sevaan): once the full card scrolls away, a slim row with the same rank
+  // slides down under the header and stays; scroll back up and the full card is there again.
+  const slim = $('lb-slim');
+  slim.innerHTML = `<span class="lbs-dot" aria-hidden="true"><i></i></span><span class="lbs-main"><span class="lbs-name">${esc(p.rank.name)}</span>${p.rank.next ? `<span class="lbs-bar"><i style="width:${(into * 100).toFixed(1)}%"></i></span><small><span>${p.xp.toLocaleString()} XP</span><span>${(p.rank.next - p.xp).toLocaleString()} to ${esc(RANKS[ri + 1]?.[1] ?? 'next')}</span></small>` : `<small><span>${p.xp.toLocaleString()} XP</span></small>`}</span><button type="button" class="lbs-m">Missions ›</button>`;
+  slim.onclick = (e) => { if (e.target.closest('.lbs-m')) { try { localStorage.setItem('lbOpen', '1'); } catch {} window.scrollTo({ top: 0, behavior: 'smooth' }); renderLogbook(); return; } openStats(); };
+  if (!slim._io) { slim._io = new IntersectionObserver(([en]) => { const on = !en.isIntersecting && en.boundingClientRect.top < 0 && !card.hidden; slim.classList.toggle('on', on); slim.setAttribute('aria-hidden', on ? 'false' : 'true'); }, { root: document, rootMargin: `${-Math.round(parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--safe-top')) || 0) - 140}px 0px 0px 0px` }); slim._io.observe(card); }
 }
 
 // Find (2026-10-13, Sevaan: "someone may want to search up an object like the ISS to preview the card and then set an
