@@ -22,11 +22,11 @@
   <link rel="preload" href="fonts/RussoOne-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="fonts/BarlowCondensed-Medium.ttf" as="font" type="font/ttf" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600;650;700;750;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/cards.css?v=0.1.926">
-  <link rel="stylesheet" href="css/app.css?v=0.1.926">
-  <link rel="stylesheet" href="css/icons.css?v=0.1.926">
-  <link rel="stylesheet" href="css/reveal.css?v=0.1.926">
-  <link rel="stylesheet" href="css/ui.css?v=0.1.926">
+  <link rel="stylesheet" href="css/cards.css?v=0.1.927">
+  <link rel="stylesheet" href="css/app.css?v=0.1.927">
+  <link rel="stylesheet" href="css/icons.css?v=0.1.927">
+  <link rel="stylesheet" href="css/reveal.css?v=0.1.927">
+  <link rel="stylesheet" href="css/ui.css?v=0.1.927">
 </head>
 <body>
   <video id="cam" playsinline muted autoplay hidden></video>
@@ -250,7 +250,6 @@
     </div>
 
     <div class="set-group set-card"><div class="set-bar"><h3>About</h3><b aria-hidden="true">06</b></div>
-      <button class="set-row" type="button" id="btn-replay-setup"><span class="set-ic" aria-hidden="true" style="background:#14284a"><span class="ico" data-ico="replay"></span></span><span class="set-main">Replay the tour</span><span class="set-chev">›</span></button>
       <button class="set-row" type="button" id="set-data"><span class="set-ic" aria-hidden="true" style="background:#14284a"><span class="ico" data-ico="list"></span></span><span class="set-main">Your data<small id="set-data-note">On this phone only</small></span><span class="set-val">Export</span><span class="set-chev">›</span></button>
       <button class="set-row" type="button" id="set-reset"><span class="set-ic" aria-hidden="true" style="background:#4a1414"><span class="ico" data-ico="reset"></span></span><span class="set-main">Reset everything<small>Start again as a new player</small></span><span class="set-chev">›</span></button>
     </div>
@@ -262,7 +261,7 @@
     <div class="set-group set-test">
       <div class="row" id="sim-time-label"></div>
       <div class="row wrap"><button class="pill" data-time="-3600">−1h</button><button class="pill" data-time="-600">−10m</button><button class="pill" data-time="600">+10m</button><button class="pill" data-time="3600">+1h</button><button class="pill" data-time="now">Now</button></div>
-      <div class="row wrap"><button class="pill accent" id="btn-next-pass">Jump to next visible pass</button><button class="pill" id="btn-ufo">Summon the UFO</button><button class="pill" id="btn-santa">Summon Santa</button><button class="pill" id="btn-meteor">Shooting star</button><button class="pill" id="btn-toasts">Sample notifications</button><button class="pill" id="btn-cam">Camera view (prototype)</button><button class="pill" id="btn-fov-">Camera fit −</button><button class="pill" id="btn-fov+">Camera fit +</button></div>
+      <div class="row wrap"><button class="pill accent" id="btn-next-pass">Jump to next visible pass</button><button class="pill" id="btn-replay-setup">Replay the tour</button><button class="pill" id="btn-ufo">Summon the UFO</button><button class="pill" id="btn-santa">Summon Santa</button><button class="pill" id="btn-meteor">Shooting star</button><button class="pill" id="btn-toasts">Sample notifications</button><button class="pill" id="btn-cam">Camera view (prototype)</button><button class="pill" id="btn-fov-">Camera fit −</button><button class="pill" id="btn-fov+">Camera fit +</button></div>
       <label class="set-row"><span class="set-main">Plus (testing)<small>Turns on every Plus perk on this device</small></span><input type="checkbox" class="set-tog" id="chk-plus-test"></label>
       <label class="set-row"><span class="set-main">RevenueCat Test Store<small>Simulator and Xcode builds only: TestFlight and the App Store close with it. Restart after changing.</small></span><input type="checkbox" class="set-tog" id="chk-rc-test"></label>
       <label class="set-row"><span class="set-main">Show objects that aren’t visible</span><input type="checkbox" class="set-tog" id="chk-dim"></label>
@@ -315,8 +314,8 @@
     </div></div>
   </section>
 
-  <script type="module" src="js/text-size.js?v=0.1.926"></script>
-  <script type="module" src="js/main.js?v=0.1.926"></script>
+  <script type="module" src="js/text-size.js?v=0.1.927"></script>
+  <script type="module" src="js/main.js?v=0.1.927"></script>
 <div id="rotate" role="status"><b>Turn your phone upright</b><span>Space Collector is made for portrait.</span></div>
 </body>
 </html>
