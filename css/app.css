@@ -1937,3 +1937,14 @@ body.sky-open #sky-header #peak-toggle { visibility: hidden; }
 #sky-header .wordmark.hw-out.hw-fade > * { opacity: 0; transition: opacity .15s; }
 #sky-header .wordmark.hw-in.hw-fade > * { animation: hw-fade .26s ease-out; } @keyframes hw-fade { from { opacity: 0; } }
 #sky-header .wordmark .hw-t { display: block; color: inherit; font: inherit; letter-spacing: inherit; margin: 0; white-space: nowrap; }
+/* Settings uses the shared header too (2026-10-21, Sevaan): the page sits below it, and the Settings button turns
+   into its ✕ with the same slide as the title. */
+body.set-open #debug { top: calc(var(--safe-top) + 80px); padding-top: 0; }
+body.set-open #debug > .panel-head { display: none; }
+body.set-open #sky-header { background: var(--bg); box-shadow: 0 calc(-1 * var(--safe-top)) 0 0 var(--bg); position: fixed; z-index: 21; }
+body.set-open #sky-header #peak-toggle { visibility: hidden; }
+#nav-more { overflow: hidden; } #nav-more .nm-swap { position: relative; display: grid; place-items: center; width: 24px; height: 24px; }
+#nav-more .nm-set, #nav-more .nm-x { grid-area: 1 / 1; transition: transform .26s cubic-bezier(.2,.9,.3,1.1), opacity .2s; }
+#nav-more .nm-x { font: 500 24px/1 'SC Label', sans-serif; color: var(--ink, #fff2b3); transform: translateY(14px); opacity: 0; }
+body.set-open #nav-more .nm-set { transform: translateY(-14px); opacity: 0; } body.set-open #nav-more .nm-x { transform: none; opacity: 1; }
+@media (prefers-reduced-motion: reduce) { #nav-more .nm-set, #nav-more .nm-x { transition: none; } }
