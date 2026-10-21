@@ -1,10 +1,10 @@
-// A starting place from the phone's time zone (2026-10-13, Sevaan: the example sky was always Peterborough). The time
+// A starting place from the phone’s time zone (2026-10-13, Sevaan: the example sky was always Peterborough). The time
 // zone needs no permission and no network, and puts the sky within a few hundred km for most people: close enough that
 // the same satellites, planets and stars are up. Each zone maps to a well-known city in it: [lat, lon, city].
 // placeFromTimeZone() → { lat, lon, label } or null (unknown zone: the caller keeps its own default).
 export const TZ_PLACES = {
   // Canada
-  'America/St_Johns': [47.56, -52.71, "St. John's"], 'America/Halifax': [44.65, -63.58, 'Halifax'], 'America/Moncton': [46.09, -64.78, 'Moncton'],
+  'America/St_Johns': [47.56, -52.71, "St. John’s"], 'America/Halifax': [44.65, -63.58, 'Halifax'], 'America/Moncton': [46.09, -64.78, 'Moncton'],
   'America/Glace_Bay': [46.2, -59.96, 'Sydney, NS'], 'America/Goose_Bay': [53.3, -60.42, 'Goose Bay'], 'America/Toronto': [43.65, -79.38, 'Toronto'],
   'America/Montreal': [45.5, -73.57, 'Montreal'], 'America/Nipigon': [49.01, -88.27, 'Nipigon'], 'America/Thunder_Bay': [48.38, -89.25, 'Thunder Bay'],
   'America/Winnipeg': [49.9, -97.14, 'Winnipeg'], 'America/Regina': [50.45, -104.62, 'Regina'], 'America/Swift_Current': [50.29, -107.8, 'Swift Current'],

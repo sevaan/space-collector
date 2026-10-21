@@ -49,7 +49,7 @@ export function tierFor(o) {
 // 14 was. Each object gets a difficulty score from its catalogue entry, and the tiers are cut by share of the
 // catalogue: 40% Common, 30% Uncommon, 18% Rare, 9% Epic, 3% Legendary. The parts of the score:
 //   brightness  (half)   best-case magnitude straight overhead at perigee; binocular-only objects score high
-//   reach       (30%)    how far from the equator it's ever seen: inclination plus how far it can be seen from, so a
+//   reach       (30%)    how far from the equator it’s ever seen: inclination plus how far it can be seen from, so a
 //                        low-inclination object never rises for most players (who live at 30–55°)
 //   night light (10%)    low orbits are only sunlit in twilight; higher ones stay lit later into the night
 //   age         (15%)    a nod to history, so Space Race objects still lean rare
@@ -68,7 +68,7 @@ export function difficulty(o) {
   return 0.5 * bright + 0.3 * reach + 0.1 * lit + 0.15 * age;
 }
 export const TIER_SHARE = [['common', 0.40], ['uncommon', 0.30], ['rare', 0.18], ['epic', 0.09], ['legendary', 0.03]];
-// Re-tiers single-object cards in place (fleet members keep their family's tier). Returns how many changed.
+// Re-tiers single-object cards in place (fleet members keep their family’s tier). Returns how many changed.
 export function retier(objects) {
   const solo = objects.filter((o) => !o.family).map((o) => ({ o, d: difficulty(o) })).sort((x, y) => x.d - y.d);
   let changed = 0, i = 0;
