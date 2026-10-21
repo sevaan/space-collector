@@ -2007,3 +2007,6 @@ body.around-open #nav-more .nm-set { transform: translateY(-14px); opacity: 0; }
 .ar-n b { display: block; font: 600 15px/1.2 var(--label); color: var(--ink, #fff2b3); } .ar-n b em { font-style: normal; font-size: 10px; letter-spacing: .14em; color: var(--gold); margin-left: 6px; }
 .ar-n small { font: 500 12.5px/1.3 var(--label); color: var(--muted); } .ar-n small i { font-style: normal; }
 .ar-dir { font: 500 13px/1 var(--label); letter-spacing: .1em; color: var(--muted); }
+/* Bigger targets for cold hands (UX playtest 2026-10-21): 44 px hit areas, the visible sizes barely change. */
+.rs-acts .ic { width: 44px; height: 44px; }
+.sky-jump button { position: relative; } .sky-jump button::after { content: ''; position: absolute; inset: -4px 0; }
