@@ -1,30 +1,30 @@
-import { pullToClose } from './pull-close.js?v=0.1.954';
-import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.954';
-import { computeStats, statsHtml } from './stats.js?v=0.1.954';
-import { nightKey } from './observation.js?v=0.1.954';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.954';
-import { sfx } from './sfx.js?v=0.1.954';
-import { expandFacts } from './catalog-facts.js?v=0.1.954';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.954';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.954';
-import { ticket } from './toast.js?v=0.1.954';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.954';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.954';
-import { cardArt } from './art.js?v=0.1.954';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.954';
-import { applyBack } from './card-backs.js?v=0.1.954';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.954';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.954';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.954';
-import { STORIES } from './stories.js?v=0.1.954';
-import { loadConstellations, conList } from './constellations.js?v=0.1.954';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.954';
-import { eventBadges, nextEvent } from './events.js?v=0.1.954';
-import { shareCardEl } from './share-card.js?v=0.1.954';
-import { forgetSighting } from './cloud-backup.js?v=0.1.954';
-import { allSightings, deleteSighting } from './store.js?v=0.1.954';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.954';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.954';
+import { pullToClose } from './pull-close.js?v=0.1.955';
+import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.955';
+import { computeStats, statsHtml } from './stats.js?v=0.1.955';
+import { nightKey } from './observation.js?v=0.1.955';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.955';
+import { sfx } from './sfx.js?v=0.1.955';
+import { expandFacts } from './catalog-facts.js?v=0.1.955';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.955';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.955';
+import { ticket } from './toast.js?v=0.1.955';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.955';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.955';
+import { cardArt } from './art.js?v=0.1.955';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.955';
+import { applyBack } from './card-backs.js?v=0.1.955';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.955';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.955';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.955';
+import { STORIES } from './stories.js?v=0.1.955';
+import { loadConstellations, conList } from './constellations.js?v=0.1.955';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.955';
+import { eventBadges, nextEvent } from './events.js?v=0.1.955';
+import { shareCardEl } from './share-card.js?v=0.1.955';
+import { forgetSighting } from './cloud-backup.js?v=0.1.955';
+import { allSightings, deleteSighting } from './store.js?v=0.1.955';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.955';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.955';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -619,7 +619,7 @@ function showCard() {
   // gets when and where plus a big Remind me and Show me. It replaces the small next-pass pill below.
   const up = state.plan.filter((x) => x.key === c.key && x.end > Date.now()).sort((a, b) => a.start - b.start)[0];
   $('v-next').hidden = true; // the small pill is replaced by the panel for every pass (2026-10-16)
-  if (sightings.length && !c.launches) renderUpPanel(c, null); // cards you already have don't need a pass to catch (2026-10-21, Sevaan); fleets still show a new launch to stamp
+  if (sightings.length && (!c.launches || state.view !== 'find')) renderUpPanel(c, null); // cards you already have don't need a pass to catch (2026-10-21, Sevaan); an owned fleet shows its next launch to stamp only when opened from Find, never from Mine
   else if (up) renderUpPanel(c, up);
   else if (EMBED && !c.natural && !c.launches) { renderNextPanel(c); if (!findPasses.has(c.id)) window.parent.postMessage({ sc: 'find-passes', ids: [c.id], req: ++findReq }, location.origin); }
   else renderUpPanel(c, null);
