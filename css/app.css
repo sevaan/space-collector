@@ -1927,3 +1927,13 @@ body.sky-open #visible > .panel-head { display: none; }
 body.sky-open #sky-header { background: var(--bg); box-shadow: 0 calc(-1 * var(--safe-top)) 0 0 var(--bg); }
 body.sky-open .sky-jump.stuck { box-shadow: none; }
 body.sky-open #sky-header #peak-toggle { visibility: hidden; }
+#visible.no-anim { animation: none !important; }
+/* Header word transitions (setPageHeader → headerTo). */
+#sky-header .wordmark .hw-t { display: inline; }
+#sky-header .wordmark .hw-s { display: block; }
+#sky-header .wordmark.hw-out.hw-slide > * { transform: translateY(-8px); opacity: 0; transition: transform .15s ease-in, opacity .15s ease-in; }
+#sky-header .wordmark.hw-in.hw-slide > * { animation: hw-rise .26s cubic-bezier(.2,.9,.3,1.1); }
+@keyframes hw-rise { from { transform: translateY(10px); opacity: 0; } to { transform: none; opacity: 1; } }
+#sky-header .wordmark.hw-out.hw-fade > * { opacity: 0; transition: opacity .15s; }
+#sky-header .wordmark.hw-in.hw-fade > * { animation: hw-fade .26s ease-out; } @keyframes hw-fade { from { opacity: 0; } }
+#sky-header .wordmark .hw-t { display: block; color: inherit; font: inherit; letter-spacing: inherit; margin: 0; white-space: nowrap; }
