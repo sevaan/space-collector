@@ -664,3 +664,16 @@
 /* The real culprit (2026-10-21): .tile-slot has content-visibility: auto, which clips paint to its box including its
    12 px rounding, rounder than the card's own corners, so every tile's corners were shaved off. Same rounding as the card. */
 .grid .tile-slot { border-radius: calc(14px * var(--mini-s, .4)); }
+/* Card tags are the border only (2026-10-21, Sevaan): no SILVER/GOLD badge on tiles; the frame colour says it. */
+.card-tile--retro .tile-lvl { display: none; }
+.card-tile.card-tile--mini.lvl-silver::after { border-color: #dfe8ef; box-shadow: 0 0 8px #dfe8ef55; }
+.card-tile.card-tile--mini.lvl-gold::after { border-color: #e9b533; box-shadow: 0 0 10px #e2b53c77; }
+/* Shiny: a saturated moving rainbow edge (it read as white). Drawn as a gradient ring masked to the border width. */
+.card-tile.card-tile--mini.shiny::after { display: block; opacity: 1; mix-blend-mode: normal; border: 0; padding: max(2px, calc(4px * var(--mini-s, .4)));
+  background: linear-gradient(120deg, #ff4fa3, #ffb02e, #ffe14a, #36d6ff, #8f5bff, #ff4fa3) 0 0 / 300% 300%;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude;
+  box-shadow: none; animation: shinyEdge 6s linear infinite; }
+.card-tile.card-tile--mini.shiny { box-shadow: 0 0 12px #ff4fa355, 0 0 18px #36d6ff33; }
+@keyframes shinyEdge { to { background-position: 300% 300%; } }
+@media (prefers-reduced-motion: reduce) { .card-tile.card-tile--mini.shiny::after { animation: none; } }
+:where(html[data-theme='night'], body.night) .card-tile.card-tile--mini.shiny::after { background: #ff6a55; }
