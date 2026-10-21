@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Big compass</title>
+<style>
+@font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf'); }
+@font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf'); }
+:root { --ink: #fff2b3; --mu: #bdbea9; --or: #fa8127; --gold: #f2c14e; --steel: #6f8fae; --line: #1d2a3c; --card: #0e1828; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #04080f; color: var(--ink); font: 15px/1.4 system-ui, sans-serif; padding: 26px 20px 60px; }
+h1 { font: 400 26px 'SC Display'; margin: 0 0 4px; } .lead { color: var(--mu); margin: 0 0 22px; max-width: 1100px; }
+.row { display: flex; gap: 26px; flex-wrap: wrap; align-items: flex-start; }
+.opt { width: 360px; } .opt h2 { font: 500 15px 'SC Label'; letter-spacing: .14em; text-transform: uppercase; color: var(--or); margin: 0 0 4px; }
+.opt > p { color: var(--mu); margin: 0 0 12px; font-size: 13.5px; min-height: 96px; }
+.ph { background: #080f1b; border-radius: 30px; padding: 18px 14px 20px; border: 1px solid #1a2436; min-height: 700px; position: relative; overflow: hidden; }
+.hd { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+.hd b { font: 400 17px 'SC Display'; display: block; } .hd small { font: 500 11px 'SC Label'; letter-spacing: .2em; color: var(--mu); text-transform: uppercase; }
+.x { font: 500 22px 'SC Label'; color: var(--ink); }
+.lab { font: 500 12px 'SC Label'; letter-spacing: .18em; text-transform: uppercase; color: var(--or); margin: 14px 0 6px; }
+.chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.chip { background: #0e1828; border: 1px solid #22304a; border-radius: 10px; padding: 6px 9px; font: 500 12.5px 'SC Label'; letter-spacing: .04em; }
+.chip small { display: block; font-size: 10px; letter-spacing: .16em; color: var(--mu); text-transform: uppercase; }
+.li { display: flex; align-items: center; gap: 10px; padding: 7px 0; border-bottom: 1px solid var(--line); font: 500 14.5px 'SC Label'; }
+.li .d { width: 34px; text-align: center; font: 400 13px 'SC Display'; color: var(--or); }
+.li .n { flex: 1; } .li .n small { display: block; color: var(--mu); font-size: 12px; }
+.li .e { color: var(--mu); font-size: 13px; }
+.new { color: var(--or); font-size: 10px; letter-spacing: .14em; margin-left: 5px; }
+svg text { font-family: 'SC Label', 'Arial Narrow', sans-serif; }
+.think { margin-top: 28px; max-width: 1100px; color: var(--mu); font-size: 14px; } .think b { color: var(--ink); }
+.big-h { text-align: center; font: 400 44px/1 'SC Display'; } .big-h small { display: block; font: 500 13px 'SC Label'; letter-spacing: .26em; color: var(--mu); margin-top: 6px; }
+</style></head><body>
+<h1>Tap the compass: a big one</h1>
+<p class="lead">Tapping the little dial top left opens a full page, made for one job: <b>where is everything above me right now, and which way do I turn?</b> Everything turns with the phone (the way you face is always at the top), and tapping anything on it closes the page and aims you there, like Show me. Four takes.</p>
+<div class="row">
+
+<div class="opt"><h2>A · Sky dome</h2><p>The whole sky as a circle: the rim is the horizon, the centre is straight overhead, rings at 30° and 60°. Everything up now is drawn as its sky icon at its real spot, new ones ringed orange. Your view is a soft wedge. Under it: what’s up, nearest your view first.</p>
+<div class="ph">
+  <div class="hd"><div><b>YOUR SKY</b><small>Peterborough · 9:42 PM</small></div><span class="x">✕</span></div>
+  <svg viewBox="-170 -170 340 340" width="100%">
+    <defs><radialGradient id="g1"><stop offset="0" stop-color="#14223a"/><stop offset="1" stop-color="#0a1322"/></radialGradient></defs>
+    <path d="M0 0 L-62 -150 A162 162 0 0 1 62 -150 Z" fill="#fa8127" opacity=".1"/>
+    <circle r="150" fill="url(#g1)" stroke="#3a4c66"/><circle r="100" fill="none" stroke="#1f2f45"/><circle r="50" fill="none" stroke="#1f2f45"/>
+    <path d="M0-150V150M-150 0H150" stroke="#1f2f45"/>
+    <g font-size="13" fill="#bdbea9" text-anchor="middle"><text y="-156" fill="#fa8127">SW</text><text x="160" y="4">NW</text><text y="166">NE</text><text x="-160" y="4">SE</text></g>
+    <g font-size="9" fill="#5e728c" text-anchor="middle"><text x="4" y="-102" text-anchor="start">30°</text><text x="4" y="-52" text-anchor="start">60°</text></g>
+    <!-- Milky Way hint -->
+    <path d="M-150 60 C-60 20 40 -40 140 -90" stroke="#9fb3d9" stroke-opacity=".08" stroke-width="40" fill="none"/>
+    <!-- stars -->
+    <g fill="#fff2b3" opacity=".7"><circle cx="-30" cy="-40" r="2"/><circle cx="40" cy="20" r="1.5"/><circle cx="-80" cy="70" r="1.2"/><circle cx="90" cy="-60" r="1.4"/><circle cx="10" cy="90" r="1.2"/><circle cx="-110" cy="-30" r="1.3"/><circle cx="60" cy="110" r="1"/></g>
+    <text x="-24" y="-46" font-size="10" fill="#bdbea9">Vega</text>
+    <!-- Moon -->
+    <circle cx="-70" cy="-95" r="8" fill="#fff2b3"/><text x="-70" y="-110" font-size="11" fill="#fff2b3" text-anchor="middle">Moon</text>
+    <!-- Jupiter -->
+    <circle cx="100" cy="70" r="4" fill="#f2c14e"/><text x="108" y="74" font-size="11" fill="#f2c14e">Jupiter</text>
+    <!-- satellites, new ringed -->
+    <g stroke="#fff2b3" stroke-width="1.4" fill="none"><path d="M18 -86 l6 0 M15 -89 h3 v6 h-3z M24 -89 h3 v6 h-3z"/></g>
+    <circle cx="21" cy="-86" r="10" fill="none" stroke="#fa8127" stroke-width="1.5"/><text x="34" y="-82" font-size="11" fill="#fa8127">Timation 1</text>
+    <path d="M-20 -150 Q 10 -90 21 -86" stroke="#fa8127" stroke-dasharray="3 4" fill="none" opacity=".7"/>
+    <g stroke="#fff2b3" stroke-width="1.3" fill="none"><rect x="-58" y="18" width="5" height="12" rx="1"/><path d="M-55 30 l-2 4 h4z"/></g><text x="-48" y="28" font-size="10" fill="#bdbea9">SL-8 stage</text>
+    <g stroke="#fff2b3" stroke-width="1.3" fill="none"><path d="M52 -10 h8 M48 -13 h4 v6 h-4z M60 -13 h4 v6 h-4z"/></g>
+    <circle cx="56" cy="-10" r="9" fill="none" stroke="#fa8127" stroke-width="1.4"/>
+    <!-- rising soon at the rim -->
+    <circle cx="-118" cy="92" r="7" fill="none" stroke="#6aa8ff" stroke-dasharray="2 2"/><text x="-112" y="110" font-size="10" fill="#6aa8ff">ISS · 10:04</text>
+    <!-- you -->
+    <circle r="3" fill="#fa8127"/>
+  </svg>
+  <div class="chips"><span class="chip"><small>Up now</small>14 · 3 new</span><span class="chip"><small>Dark until</small>6:12 AM</span><span class="chip"><small>Moon</small>62% · sets 1:10</span><span class="chip"><small>Sky</small>Clear</span></div>
+  <div class="lab">Nearest your view</div>
+  <div class="li"><span class="d">↑</span><span class="n">Timation 1<span class="new">NEW</span><small>Legendary · 40° up · climbing</small></span><span class="e">SW</span></div>
+  <div class="li"><span class="d">→</span><span class="n">Jupiter<small>Uncommon · 22° up</small></span><span class="e">W</span></div>
+  <div class="li"><span class="d">↙</span><span class="n">SL-8 rocket stage<span class="new">NEW</span><small>Common · 55° up</small></span><span class="e">SE</span></div>
+</div></div>
+
+<div class="opt"><h2>B · Compass rose</h2><p>A proper compass first: your heading huge in the middle (“247° WSW”), a fine rose turning with you. Things in the sky sit as pins round the rim at their direction, with how high to look on each pin. The Sun and Moon’s rise and set points are marked on the rim too.</p>
+<div class="ph">
+  <div class="hd"><div><b>COMPASS</b><small>True north · Peterborough</small></div><span class="x">✕</span></div>
+  <svg viewBox="-170 -170 340 340" width="100%">
+    <circle r="118" fill="#0b1626" stroke="#3a4c66"/>
+    <g stroke="#5e728c">
+      <!-- generated-ish ticks -->
+      <path d="M0 -118v10M0 118v-10M118 0h-10M-118 0h10" stroke="#fff2b3" stroke-width="2"/>
+      <path d="M83 -83l-6 6M-83 -83l6 6M83 83l-6 -6M-83 83l6 -6" stroke-width="1.5"/>
+      <path d="M45 -109l-3 6M-45 -109l3 6M109 -45l-6 3M-109 -45l6 3M45 109l-3 -6M-45 109l3 -6M109 45l-6 -3M-109 45l6 -3" stroke-width="1"/>
+    </g>
+    <g font-size="15" text-anchor="middle" fill="#fff2b3"><text y="-90">SW</text><text x="-92" y="5">S</text><text x="92" y="5">W</text><text y="100">NE</text></g>
+    <text y="-90" font-size="15" text-anchor="middle" fill="#fa8127" opacity="0">.</text>
+    <path d="M0 -136 l-7 -12 h14z" fill="#fa8127"/>
+    <text text-anchor="middle" y="6" font-family="SC Display" font-size="34" fill="#fff2b3" style="font-family:'SC Display'">247°</text>
+    <text text-anchor="middle" y="28" font-size="13" fill="#bdbea9" letter-spacing="3">WSW · FACING</text>
+    <!-- pins on rim -->
+    <g font-size="10.5">
+      <line x1="30" y1="-115" x2="38" y2="-146" stroke="#fa8127"/><circle cx="38" cy="-150" r="5" fill="#fa8127"/><text x="46" y="-152" fill="#fa8127">Timation 1 · 40°</text>
+      <line x1="114" y1="20" x2="146" y2="26" stroke="#f2c14e"/><circle cx="150" cy="27" r="4" fill="#f2c14e"/><text x="132" y="44" fill="#f2c14e" text-anchor="middle">Jupiter 22°</text>
+      <line x1="-100" y1="-62" x2="-128" y2="-80" stroke="#fff2b3"/><circle cx="-132" cy="-82" r="6" fill="#fff2b3"/><text x="-132" y="-96" fill="#fff2b3" text-anchor="middle">Moon 48°</text>
+      <line x1="-80" y1="86" x2="-102" y2="112" stroke="#fa8127"/><circle cx="-105" cy="115" r="4" fill="none" stroke="#fa8127" stroke-width="1.5"/><text x="-105" y="132" fill="#fa8127" text-anchor="middle">SL-8 · 55°</text>
+      <line x1="60" y1="100" x2="72" y2="128" stroke="#6aa8ff" stroke-dasharray="2 2"/><circle cx="74" cy="132" r="4" fill="none" stroke="#6aa8ff"/><text x="74" y="150" fill="#6aa8ff" text-anchor="middle">ISS rises 10:04</text>
+    </g>
+    <g font-size="9" fill="#bdbea9"><text x="-150" y="-20">☾ sets 1:10</text><text x="104" y="-70">☀ rises 7:21</text></g>
+  </svg>
+  <div class="lab">Look here next</div>
+  <div class="li"><span class="d">↖</span><span class="n">Timation 1<span class="new">NEW</span><small>Turn left 12° · tilt up to 40°</small></span><span class="e">now</span></div>
+  <div class="li"><span class="d">↘</span><span class="n">ISS<small>Rises in the northwest · climbs high</small></span><span class="e">10:04</span></div>
+  <div class="chips" style="margin-top:12px"><span class="chip"><small>Compass</small>Good · ±4°</span><span class="chip"><small>Magnetic north</small>11° west of true</span><span class="chip"><small>Up now</small>14 · 3 new</span></div>
+</div></div>
+
+<div class="opt"><h2>C · Radar sweep</h2><p>The little heat radar, grown up: a beam sweeps round and each thing pings and names itself as it passes. Tonight’s next passes are drawn as tracks across it with times, so you see both now and the next half hour. The most alive; the busiest to read.</p>
+<div class="ph" style="background:radial-gradient(circle at 50% 40%,#0d1a2c,#080f1b 70%)">
+  <div class="hd"><div><b>RADAR</b><small>Now and the next 30 min</small></div><span class="x">✕</span></div>
+  <svg viewBox="-170 -170 340 340" width="100%">
+    <defs><radialGradient id="glow"><stop offset="0" stop-color="#fa8127" stop-opacity=".55"/><stop offset="1" stop-color="#fa8127" stop-opacity="0"/></radialGradient>
+      <linearGradient id="beam" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#5fd08a" stop-opacity="0"/><stop offset="1" stop-color="#5fd08a" stop-opacity=".28"/></linearGradient></defs>
+    <circle r="150" fill="#06101c" stroke="#2c4a3c"/><circle r="100" fill="none" stroke="#173024"/><circle r="50" fill="none" stroke="#173024"/>
+    <path d="M0 0 L150 0 A150 150 0 0 0 106 -106 Z" fill="url(#beam)"/>
+    <line x1="0" y1="0" x2="150" y2="0" stroke="#5fd08a" stroke-opacity=".7"/>
+    <g font-size="12" fill="#7fae95" text-anchor="middle"><text y="-156">SW</text><text x="161" y="4">NW</text><text y="166">NE</text><text x="-161" y="4">SE</text></g>
+    <circle cx="70" cy="-40" r="22" fill="url(#glow)"/><circle cx="70" cy="-40" r="3" fill="#fa8127"/>
+    <g font-size="11"><rect x="80" y="-62" width="96" height="30" rx="6" fill="#0e1828" stroke="#fa8127"/><text x="88" y="-49" fill="#fa8127">PING · NEW</text><text x="88" y="-37" fill="#fff2b3">Timation 1 · 40°</text></g>
+    <circle cx="-40" cy="60" r="16" fill="url(#glow)" opacity=".5"/><circle cx="-40" cy="60" r="2.5" fill="#fff2b3"/>
+    <circle cx="-90" cy="-70" r="2.5" fill="#fff2b3" opacity=".5"/><circle cx="30" cy="110" r="2" fill="#fff2b3" opacity=".4"/>
+    <path d="M-150 40 C-60 10 40 30 120 120" stroke="#6aa8ff" stroke-dasharray="4 5" fill="none"/><text x="-140" y="30" font-size="10.5" fill="#6aa8ff">ISS 10:04 →</text>
+    <path d="M60 -150 C40 -60 -20 0 -120 60" stroke="#e46ad6" stroke-dasharray="4 5" fill="none" opacity=".8"/><text x="66" y="-138" font-size="10.5" fill="#e46ad6">Epic · Seasat 10:20</text>
+    <circle r="3" fill="#5fd08a"/>
+  </svg>
+  <div class="chips"><span class="chip"><small>Up now</small>14</span><span class="chip"><small>New</small>3</span><span class="chip"><small>Next 30 min</small>9 passes</span><span class="chip"><small>Busiest</small>10:30 · 21 up</span></div>
+  <div class="lab">Just pinged</div>
+  <div class="li"><span class="d">↑</span><span class="n">Timation 1<span class="new">NEW</span><small>Legendary · 40° up in the southwest</small></span><span class="e">now</span></div>
+  <div class="li"><span class="d">↓</span><span class="n">Cosmos 1408 debris<small>Common · behind you, 30° up</small></span><span class="e">now</span></div>
+</div></div>
+
+<div class="opt"><h2>D · All around you</h2><p>Not a circle: a 360° strip of your horizon, the way you face in the middle, with height marks up the side. Things sit at their real direction and height, so it reads like the view itself, unrolled. Drag it round; tap anything to aim. Easiest to match to the real sky; least like a compass.</p>
+<div class="ph">
+  <div class="hd"><div><b>ALL AROUND YOU</b><small>Drag to look round</small></div><span class="x">✕</span></div>
+  <div class="big-h">247°<small>WSW · facing</small></div>
+  <svg viewBox="0 0 332 300" width="100%" style="margin-top:12px">
+    <defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0a1322"/><stop offset="1" stop-color="#16263e"/></linearGradient></defs>
+    <rect x="0" y="0" width="332" height="230" fill="url(#sky)" rx="10"/>
+    <path d="M0 230 L20 222 L40 226 L62 214 L80 220 L104 210 L130 218 L160 212 L190 220 L214 214 L240 222 L270 212 L300 220 L332 216 V240 H0Z" fill="#0b1a12"/>
+    <rect x="0" y="236" width="332" height="10" fill="#0b1a12"/>
+    <g stroke="#1f2f45"><line x1="0" y1="153" x2="332" y2="153"/><line x1="0" y1="77" x2="332" y2="77"/></g>
+    <g font-size="9" fill="#5e728c"><text x="4" y="150">30°</text><text x="4" y="74">60°</text></g>
+    <rect x="128" y="40" width="76" height="190" fill="#fa8127" opacity=".08" stroke="#fa8127" stroke-opacity=".5" stroke-dasharray="3 4"/>
+    <g font-size="12" fill="#bdbea9" text-anchor="middle"><text x="25" y="262">S</text><text x="83" y="262">SSW</text><text x="166" y="262" fill="#fa8127">SW</text><text x="249" y="262">W</text><text x="307" y="262">WNW</text></g>
+    <g font-size="10.5">
+      <circle cx="180" cy="128" r="9" fill="none" stroke="#fa8127" stroke-width="1.5"/><circle cx="180" cy="128" r="2.5" fill="#fff2b3"/><text x="192" y="126" fill="#fa8127">Timation 1</text><text x="192" y="138" fill="#bdbea9">40° · new</text>
+      <circle cx="70" cy="85" r="8" fill="#fff2b3"/><text x="82" y="88" fill="#fff2b3">Moon 48°</text>
+      <circle cx="285" cy="170" r="4" fill="#f2c14e"/><text x="270" y="190" fill="#f2c14e">Jupiter 22°</text>
+      <circle cx="120" cy="60" r="2" fill="#fff2b3"/><text x="104" y="54" fill="#bdbea9">Vega</text>
+      <path d="M300 230 Q 260 120 210 90" stroke="#6aa8ff" stroke-dasharray="3 4" fill="none"/><text x="276" y="226" fill="#6aa8ff">ISS 10:04</text>
+    </g>
+    <g fill="#5e728c" font-size="10" text-anchor="middle"><text x="16" y="290">‹ behind you: 6 more</text></g>
+    <text x="320" y="290" fill="#5e728c" font-size="10" text-anchor="end">Dark until 6:12 AM ›</text>
+  </svg>
+  <div class="lab">In front of you</div>
+  <div class="li"><span class="d">↑</span><span class="n">Timation 1<span class="new">NEW</span><small>Legendary · 40° up</small></span><span class="e">SW</span></div>
+  <div class="li"><span class="d">↗</span><span class="n">Jupiter<small>Uncommon · 22° up</small></span><span class="e">W</span></div>
+</div></div>
+
+</div>
+<div class="think"><b>My pick: A, with B’s heading.</b> The dome is the one view that answers “what’s above me” in one look, including straight overhead, which a rose (B) or a strip (D) can’t show. Add B’s big heading number and the compass-quality chip at the top, and it doubles as a real compass for checking the phone is pointing true. C is fun but hard to read on a dark night; D is the easiest to match to the sky but loses what’s behind you.</div>
+</body></html>

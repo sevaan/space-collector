@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Best catch, with its card</title>
+<style>
+@font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf'); }
+@font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf'); }
+:root { --ink: #fff2b3; --mu: #bdbea9; --or: #fa8127; --gold: #f2c14e; --line: #1d2a3c; --card: #0e1828; --leg: #f2c14e; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #04080f; color: var(--ink); font: 15px/1.4 system-ui, sans-serif; padding: 26px 20px 60px; }
+h1 { font: 400 26px 'SC Display'; margin: 0 0 4px; } .lead { color: var(--mu); margin: 0 0 22px; max-width: 1100px; }
+.row { display: flex; gap: 26px; flex-wrap: wrap; align-items: flex-start; }
+.opt { width: 360px; } .opt h2 { font: 500 15px 'SC Label'; letter-spacing: .14em; text-transform: uppercase; color: var(--or); margin: 0 0 4px; }
+.opt > p { color: var(--mu); margin: 0 0 12px; font-size: 13.5px; min-height: 76px; }
+.ph { background: #080f1b; border-radius: 26px; padding: 16px; border: 1px solid #1a2436; }
+.k { font: 500 13px 'SC Label'; letter-spacing: .22em; text-transform: uppercase; color: var(--or); }
+.tier { font: 500 13px 'SC Label'; letter-spacing: .16em; text-transform: uppercase; color: var(--leg); }
+.nm { font: 400 26px/1.05 'SC Display'; }
+.dir { display: flex; align-items: center; gap: 9px; font: 500 15px 'SC Label'; }
+.dir i { width: 30px; height: 30px; border-radius: 50%; background: #2a2622; display: grid; place-items: center; color: var(--or); font-style: normal; font-size: 15px; }
+.acts { display: flex; gap: 10px; align-items: center; }
+.go { flex: 1; height: 46px; border-radius: 23px; border: 1.5px solid var(--or); color: var(--or); display: flex; align-items: center; justify-content: center; gap: 8px; font: 500 14px 'SC Label'; letter-spacing: .22em; text-transform: uppercase; background: rgba(250,129,39,.1); }
+.bell { width: 46px; height: 46px; border-radius: 50%; border: 1px solid #2c3b52; display: grid; place-items: center; position: relative; font-size: 17px; }
+.bell b { position: absolute; top: -7px; right: -10px; background: var(--gold); color: #1a1408; font: 500 10px 'SC Label'; letter-spacing: .1em; padding: 2px 5px; border-radius: 4px; }
+.cd { font: 400 30px/1 'SC Display'; } .cd small { display: block; font: 500 11px 'SC Label'; letter-spacing: .24em; color: var(--mu); margin-top: 5px; text-transform: uppercase; }
+/* locked art, as uncollected cards show it everywhere else */
+.locked { filter: blur(1.5px) brightness(.45) saturate(.6); }
+.scan { position: absolute; inset: 0; background: repeating-linear-gradient(0deg, rgba(0,0,0,.28) 0 1px, transparent 1px 3px); pointer-events: none; }
+.q { position: absolute; inset: 0; display: grid; place-items: center; font: 400 44px 'SC Display'; color: rgba(255,242,179,.55); }
+
+/* A */
+.a { border: 1px solid #6b5a2c; border-radius: 22px; padding: 20px 18px 18px; text-align: center; display: grid; gap: 10px; justify-items: center; background: radial-gradient(circle at 50% 30%, #2a2a20, #0e1828 70%); }
+.a .dial { position: relative; width: 210px; height: 210px; }
+.a .dial img { position: absolute; inset: 14px; width: 182px; height: 182px; border-radius: 50%; object-fit: cover; }
+.a .dial .shade { position: absolute; inset: 14px; border-radius: 50%; background: linear-gradient(transparent 35%, rgba(4,8,15,.85)); }
+.a .dial svg { position: absolute; inset: 0; }
+.a .dial .cd { position: absolute; left: 0; right: 0; bottom: 40px; }
+/* B */
+.b { border: 1px solid #6b5a2c; border-radius: 22px; padding: 18px; background: #0e1828; display: grid; gap: 14px; }
+.b .top { display: flex; gap: 16px; align-items: center; }
+.mini { width: 120px; flex: none; aspect-ratio: 28/42; border-radius: 9px; border: 2px solid var(--leg); background: #0b1626; padding: 5px; display: flex; flex-direction: column; gap: 5px; transform: rotate(-4deg); box-shadow: 0 10px 24px rgba(0,0,0,.5), 0 0 22px rgba(242,193,78,.25); }
+.mini .bar { font: 500 8px 'SC Label'; letter-spacing: .14em; color: #1a1408; background: var(--leg); border-radius: 3px; padding: 2px 4px; }
+.mini .win { position: relative; flex: 1 1 auto; border-radius: 4px; overflow: hidden; }
+.mini .win img { width: 100%; height: 100%; object-fit: cover; }
+.mini .t { font: 400 11px 'SC Display'; } .mini .l { height: 3px; background: #22324a; border-radius: 2px; } .mini .l.s { width: 60%; }
+.b .right { display: grid; gap: 6px; }
+/* C */
+.c { border: 1px solid #6b5a2c; border-radius: 22px; overflow: hidden; background: #0e1828; }
+.c .hero { position: relative; height: 210px; }
+.c .hero img { width: 100%; height: 100%; object-fit: cover; }
+.c .hero .fade { position: absolute; inset: 0; background: linear-gradient(rgba(4,8,15,.3), transparent 40%, #0e1828 98%); }
+.c .hero .k { position: absolute; top: 14px; left: 16px; }
+.c .pill { position: absolute; top: 12px; right: 12px; background: rgba(8,15,27,.8); border: 1px solid #f2c14e66; border-radius: 12px; padding: 8px 11px; text-align: right; }
+.c .pill .cd { font-size: 20px; }
+.c .pill .cd small { margin-top: 3px; font-size: 9px; }
+.c .ring { height: 3px; background: #22324a; } .c .ring b { display: block; height: 3px; width: 38%; background: var(--leg); }
+.c .body { padding: 6px 18px 18px; display: grid; gap: 9px; }
+/* D */
+.d { border-radius: 16px; padding: 7px; background: linear-gradient(135deg, #f7d77a, #b98a2a); box-shadow: 0 0 26px rgba(242,193,78,.25); }
+.d .face { border-radius: 11px; background: #0b1626; padding: 12px; display: grid; gap: 9px; border: 1px solid #fff2b355; }
+.d .win { position: relative; aspect-ratio: 4/3; border-radius: 7px; overflow: hidden; }
+.d .win img { width: 100%; height: 100%; object-fit: cover; }
+.d .chip { position: absolute; top: 8px; font: 500 10px 'SC Label'; letter-spacing: .14em; padding: 3px 7px; border-radius: 4px; text-transform: uppercase; }
+.d .chip.l { left: 8px; background: var(--leg); color: #1a1408; } .d .chip.r { right: 8px; background: rgba(8,15,27,.8); color: var(--ink); }
+.d .stamp { position: absolute; right: 10px; bottom: 10px; width: 86px; height: 86px; border-radius: 50%; background: rgba(8,15,27,.88); border: 2px solid var(--or); display: grid; place-items: center; text-align: center; transform: rotate(-8deg); }
+.d .stamp .cd { font-size: 19px; } .d .stamp .cd small { font-size: 8px; margin-top: 3px; }
+.d .row2 { display: flex; justify-content: space-between; font: 500 12px 'SC Label'; letter-spacing: .12em; color: var(--mu); text-transform: uppercase; border-top: 1px solid var(--line); padding-top: 8px; }
+.toggle { margin: 0 0 18px; display: flex; gap: 8px; } .toggle button { background: #142033; color: var(--ink); border: 1px solid #2c3b52; border-radius: 16px; padding: 7px 14px; font: 500 13px 'SC Label'; letter-spacing: .1em; text-transform: uppercase; } .toggle button.on { border-color: var(--or); color: var(--or); }
+body.show .locked { filter: none; } body.show .scan, body.show .q { display: none; }
+.think { margin-top: 28px; max-width: 1100px; color: var(--mu); font-size: 14px; } .think b { color: var(--ink); }
+</style></head><body>
+<h1>Best catch tonight, with its card</h1>
+<p class="lead">Four ways to put the card into the countdown at the top of Up in your sky. It’s a card you don’t have yet, and everywhere else those show their picture hidden (dim, blurred, scan lines) so the reveal stays a surprise. Use the switch to compare that with showing the picture in full.</p>
+<div class="toggle"><button class="on" id="t-l">Picture hidden (as today)</button><button id="t-s">Picture shown</button></div>
+<div class="row">
+
+<div class="opt"><h2>A · The picture is the dial</h2><p>The countdown ring stays; the card’s picture fills the circle inside it, with the time on a dark fade at the bottom. The ring fills in the rarity colour over the last hour. Closest to today, just more to look at.</p>
+<div class="ph"><div class="a">
+  <span class="k">Best catch tonight</span>
+  <div class="dial"><img class="locked" src="../assets/art/cards/classic-satellite-2.webp" alt=""><span class="scan" style="inset:14px;border-radius:50%"></span><div class="shade"></div>
+    <svg viewBox="0 0 210 210"><circle cx="105" cy="105" r="98" fill="none" stroke="#22344a" stroke-width="6"/><circle cx="105" cy="105" r="98" fill="none" stroke="#f2c14e" stroke-width="6" stroke-linecap="round" stroke-dasharray="616" stroke-dashoffset="400" transform="rotate(-90 105 105)"/></svg>
+    <div class="cd">1 h 13 m<small>to go</small></div></div>
+  <span class="tier">★ Legendary · new to you</span><span class="nm">Timation 1</span>
+  <span class="dir"><i>↖</i>Turn left · halfway up in the south</span>
+  <div class="acts" style="width:100%"><span class="go">⌖ Show me</span><span class="bell">🔔<b>PLUS</b></span></div></div></div></div>
+
+<div class="opt"><h2>B · The card waiting for you</h2><p>A real mini card (the same one the Collection uses), tilted, glowing in its rarity, beside the countdown and the way to look. Reads as “this is what you’ll get”. Tapping the card opens it, like a Tonight row.</p>
+<div class="ph"><div class="b">
+  <span class="k">Best catch tonight</span>
+  <div class="top"><div class="mini"><span class="bar">★ LEGENDARY</span><div class="win"><img class="locked" src="../assets/art/cards/classic-satellite-2.webp" alt=""><span class="scan"></span><span class="q">?</span></div><span class="t">Timation 1</span><span class="l"></span><span class="l s"></span></div>
+    <div class="right"><div class="cd">1 h 13 m<small>to go · 7:54 PM</small></div><span class="tier" style="margin-top:6px">★ Legendary</span><span class="nm" style="font-size:22px">Timation 1</span><span style="color:var(--mu);font:500 14px 'SC Label'">US Navy navigation test · 1967</span></div></div>
+  <span class="dir"><i>↖</i>Turn left · halfway up in the south</span>
+  <div class="acts"><span class="go">⌖ Show me</span><span class="bell">🔔<b>PLUS</b></span></div></div></div></div>
+
+<div class="opt"><h2>C · A poster across the top</h2><p>The picture runs edge to edge across the top of the box and fades into it, the time in a small chip in the corner, a thin bar under the picture filling toward the pass. The most room for the art; the clock is quieter.</p>
+<div class="ph"><div class="c">
+  <div class="hero"><img class="locked" src="../assets/art/cards/classic-satellite-2.webp" alt=""><span class="scan"></span><div class="fade"></div><span class="k">Best catch tonight</span><div class="pill"><div class="cd">1 h 13 m<small>to go · 7:54 PM</small></div></div></div>
+  <div class="ring"><b></b></div>
+  <div class="body"><span class="tier">★ Legendary · new to you</span><span class="nm">Timation 1</span><span class="dir"><i>↖</i>Turn left · halfway up in the south</span><div class="acts"><span class="go">⌖ Show me</span><span class="bell">🔔<b>PLUS</b></span></div></div></div></div></div>
+
+<div class="opt"><h2>D · It is the card</h2><p>The whole box is the card front at full width: rarity frame, picture window with its rarity and set chips, name. The countdown is a round stamp on the picture. Strongest “collect this” feeling, and the tallest of the four.</p>
+<div class="ph"><div class="d"><div class="face">
+  <div class="win"><img class="locked" src="../assets/art/cards/classic-satellite-2.webp" alt=""><span class="scan"></span><span class="chip l">★ Legendary</span><span class="chip r">Navigation</span><div class="stamp"><div class="cd">1 h 13 m<small>to go</small></div></div></div>
+  <span class="nm">Timation 1</span><span style="color:var(--mu);font:500 14px 'SC Label'">US Navy navigation test · 1967</span>
+  <span class="dir"><i>↖</i>Turn left · halfway up in the south</span>
+  <div class="acts"><span class="go">⌖ Show me</span><span class="bell">🔔<b>PLUS</b></span></div>
+  <div class="row2"><span>Best catch tonight</span><span>7:54 PM</span></div></div></div></div></div>
+
+</div>
+<div class="think"><b>My pick: B.</b> It uses the real mini card, so it matches the Collection and the reveal, keeps the countdown big, and stays about today’s height. <b>A</b> is the smallest change. Whichever you pick, I’d keep the picture hidden like every other card you don’t own yet. Showing it is a one-line change if you want it.</div>
+<script>
+const t = (on) => { document.body.classList.toggle('show', on); document.getElementById('t-s').classList.toggle('on', on); document.getElementById('t-l').classList.toggle('on', !on); };
+document.getElementById('t-l').onclick = () => t(false); document.getElementById('t-s').onclick = () => t(true);
+</script>
+</body></html>

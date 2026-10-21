@@ -1503,3 +1503,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - The radar tip ("Tap the radar / See what's up tonight") is retired (radarTip returns at once).
   - Landscape screen (#rotate, index + cards) looks like the loader: the target circle and ticks, a phone in it turning upright as the ring locks orange, SPACE COLLECTOR, "Turn your phone upright". The apps are portrait-locked on phones, so only browsers see it; hidden inside the embedded Collection.
   - The Sun is catchable until its top edge sets (natural.js: el > −0.8, was > 2; Sevaan saw it on the horizon and a plane took the circle instead).
+- 2026-10-21 (Sevaan): Seen before cards on the sky page open the card (showViewCard, not counted as a sighting; putting it away returns to the page); they used to aim. Design boards: design/next-card-art.html (best catch with its card, A–D) and design/sky-compass.html (big compass on tapping the radar, A–D).
