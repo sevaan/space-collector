@@ -678,3 +678,7 @@ body.night dialog::backdrop { background: rgba(12, 3, 3, .82); }
    short screens the rank picture is shorter so the tabs and search sit above the switcher. */
 @media (max-width: 370px) { .lb-top { align-items: flex-start; } .lb-top .lb-streak { white-space: normal; min-width: 0; } }
 @media (max-height: 700px) { .lb-pic { height: 96px; } }
+/* The Collection is one flat colour, the header's (2026-10-21, Sevaan), not the sky's gradient, and it doesn't stretch
+   when pulled at the top or bottom. */
+html.embedded, html.embedded body, html.embedded body.sky-tone { background: var(--bg) !important; }
+html.embedded, html.embedded body { overscroll-behavior: none; }

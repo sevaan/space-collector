@@ -651,3 +651,16 @@
 /* Card facts fill each line before wrapping (2026-10-20, Sevaan: "drifts" fitted on line two). The app-wide
    text-wrap: pretty evens lines out, which on iPhone left short lines on cards. */
 .card .card__fact, .card .card__fact p { text-wrap: wrap; }
+/* Small tiles draw their own cream edge at screen size (2026-10-21, Sevaan: corners still not right). A 3 px edge on
+   the full card scaled to ~0.4 is a 1.2 px line that anti-aliases unevenly round the corners; this one is drawn at
+   the tile's size, so it stays crisp and even all the way round. The card's own edge is hidden under it. */
+.card-tile.card-tile--mini { position: relative; }
+.card-tile.card-tile--mini::after { content: ''; position: absolute; inset: 0; z-index: 4; pointer-events: none; border-radius: calc(14px * var(--mini-s, .4)); border: max(1px, calc(3px * var(--mini-s, .4))) solid #e9dfb8; }
+.card-tile--mini .mini-face .card__face { border-color: transparent; }
+.card-tile.card-tile--mini.lvl-silver::after { border-color: #eef3f7; }
+.card-tile.card-tile--mini.lvl-gold::after { border-color: #e2b53c; }
+:where(html[data-theme='night'], body.night) .card-tile.card-tile--mini::after { border-color: #a8463b; }
+.card-tile--mini .mini-face .card--retro .card__face::after { display: none; } /* the full card's fine double line is sub-pixel at tile size: one crisp edge instead */
+/* The real culprit (2026-10-21): .tile-slot has content-visibility: auto, which clips paint to its box including its
+   12 px rounding, rounder than the card's own corners, so every tile's corners were shaved off. Same rounding as the card. */
+.grid .tile-slot { border-radius: calc(14px * var(--mini-s, .4)); }
