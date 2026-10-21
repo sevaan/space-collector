@@ -1921,3 +1921,9 @@ body.tr-blur .overlay.panel.leaving { animation: tr-lift-out .25s ease-in forwar
 .tl-plan-chart { display: block; width: 100%; height: auto; margin: 4px 0 6px; }
 @media (prefers-reduced-motion: reduce) { .tl-plan .tl-sh { animation: none; } }
 #tonight-list .tl-skel { background: linear-gradient(90deg, #0f1a2a, #18263a, #0f1a2a); background-size: 200% 100%; animation: tl-sh 1.6s linear infinite; } @media (prefers-reduced-motion: reduce) { #tonight-list .tl-skel { animation: none; } }
+/* Up in your sky uses Explore's header like the Collection (2026-10-21, Sevaan): the page sits below it, no ✕ of its own. */
+body.sky-open #visible { top: calc(var(--safe-top) + 80px); padding-top: 0; }
+body.sky-open #visible > .panel-head { display: none; }
+body.sky-open #sky-header { background: var(--bg); box-shadow: 0 calc(-1 * var(--safe-top)) 0 0 var(--bg); }
+body.sky-open .sky-jump.stuck { box-shadow: none; }
+body.sky-open #sky-header #peak-toggle { visibility: hidden; }
