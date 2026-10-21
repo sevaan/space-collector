@@ -1987,3 +1987,23 @@ html.embedded #rotate { display: none !important; }
 .now-hero .nh-tier { font-size: 12px; } .now-hero .nh-name { font-size: 21px; overflow-wrap: anywhere; }
 .nh-what { font: 500 13px/1.25 var(--label); color: var(--muted); }
 @media (prefers-reduced-motion: reduce) { .nh-card, .nh-fill { transition: none; } }
+/* All around you (2026-10-21, design/sky-compass.html D): under the shared header like Settings; the ✕ is the Settings
+   button sliding over, as on Settings. */
+#around { top: calc(var(--safe-top) + 80px) !important; padding-top: 0 !important; }
+body.around-open #sky-header { background: var(--bg); box-shadow: 0 calc(-1 * var(--safe-top)) 0 0 var(--bg); position: fixed; z-index: 21; }
+body.around-open #sky-header #peak-toggle { visibility: hidden; }
+body.around-open #nav-more .nm-set { transform: translateY(-14px); opacity: 0; } body.around-open #nav-more .nm-x { transform: none; opacity: 1; }
+.ar-head { display: grid; justify-items: center; gap: 4px; width: 100%; margin: 14px 0 10px; padding: 0; border: 0; background: none; color: var(--ink, #fff2b3); cursor: pointer; }
+.ar-head b { font: 400 46px/1 var(--display); font-variant-numeric: tabular-nums; }
+.ar-head small { font: 600 12px/1 var(--label); letter-spacing: .22em; text-transform: uppercase; color: var(--muted); }
+.ar-wrap { margin: 0 -4px; }
+#ar-strip { display: block; width: 100%; height: 300px; touch-action: pan-y; cursor: grab; }
+.ar-hint { margin: 6px 0 12px; text-align: center; font: 500 12px/1.3 var(--label); letter-spacing: .08em; color: var(--muted); }
+.ar-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 4px; }
+.ar-chip { background: #0e1828; border: 1px solid #22304a; border-radius: 10px; padding: 6px 9px; font: 500 13px/1.2 var(--label); color: var(--ink, #fff2b3); }
+.ar-chip small { display: block; font-size: 10px; letter-spacing: .16em; color: var(--muted); text-transform: uppercase; }
+.ar-row { display: grid; grid-template-columns: 30px minmax(0, 1fr) auto; gap: 10px; align-items: center; width: 100%; min-height: 48px; padding: 6px 2px; border: 0; border-bottom: 1px solid #1d2a3c; background: none; color: var(--text); text-align: left; font: inherit; cursor: pointer; }
+.ar-arr { font: 400 16px/1 var(--display); color: var(--gold); text-align: center; }
+.ar-n b { display: block; font: 600 15px/1.2 var(--label); color: var(--ink, #fff2b3); } .ar-n b em { font-style: normal; font-size: 10px; letter-spacing: .14em; color: var(--gold); margin-left: 6px; }
+.ar-n small { font: 500 12.5px/1.3 var(--label); color: var(--muted); } .ar-n small i { font-style: normal; }
+.ar-dir { font: 500 13px/1 var(--label); letter-spacing: .1em; color: var(--muted); }

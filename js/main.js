@@ -1,52 +1,52 @@
-import { pullToClose } from './pull-close.js?v=0.1.956';
-import { TESTER } from './build-flavor.js?v=0.1.956';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.956';
-import * as Secrets from './secrets.js?v=0.1.956';
-import { STORY_BY_SECRET } from './stories.js?v=0.1.956';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.956';
-import * as Ufo from './ufo.js?v=0.1.956';
-import * as Fossil from './fossil.js?v=0.1.956';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.956';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.956';
-import { toast, ticket, dropToast, toastPending, onTicketShown, iconSvg } from './toast.js?v=0.1.956';
-import { VERSION } from './version.js?v=0.1.956';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, overEarth, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.956';
-import { placeName } from './geo.js?v=0.1.956';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, SLIDER_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.956';
-import { conArt } from './con-art.js?v=0.1.956';
-import { fetchWeather, tonightSky, skyClearAt, goodSkyAt } from './weather.js?v=0.1.956';
-import { CON_FIGURES } from './con-figures.js?v=0.1.956';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress, starDistance } from './constellations.js?v=0.1.956';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.956';
-import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.956';
-import { eventOf, activeEvent, nextEvent } from './events.js?v=0.1.956';
-import { conList } from './constellations.js?v=0.1.956';
-import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination, hasSensorView, resumeSensors, needsPermission } from './sensors.js?v=0.1.956';
-import { SkyView, shortName } from './sky.js?v=0.1.956';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.956';
-import { isPlus, setPlusForTesting, onPlus, PLUS_PERKS, PLUS_PRICES, initStore, storePlans, buyPlus, restorePlus, rcTestStore, storeOpen } from './plus.js?v=0.1.956';
-import { isNative, getPosition, saveFile, notifyAt, cancelNotify, haptic, onNative, nativeChrome, plugin } from './native.js?v=0.1.956';
-import { initBackup, onBackupChange, backupSoon, clearBackup, backupStatus } from './cloud-backup.js?v=0.1.956';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.956';
-import { cardArt } from './art.js?v=0.1.956';
-import { renderCard, miniCard, cardLevel, artImage, lockedArt, attachTilt, attachGyro, throwOff, attachFlip, turnCard } from './card.js?v=0.1.956';
-import { applyBack, CARD_BACKS, backUnlocked, chosenBack, chooseBack, backEarned } from './card-backs.js?v=0.1.956';
-import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.956';
-import { audioCtx } from './audio-ctx.js?v=0.1.956';
-import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume, musicAway } from './music.js?v=0.1.956';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.956';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel, moonPhaseOf, MOON_PHASES } from './card-model.js?v=0.1.956';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.956';
-import { naturalTargets, SOLAR_SYSTEM, DEEP_SKY } from './natural.js?v=0.1.956';
-import { placeFromTimeZone } from './tz-places.js?v=0.1.956';
-import { TIER_INFO } from './rarity.js?v=0.1.956';
-import { SETS, albumList } from './sets.js?v=0.1.956';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.956';
-import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.956';
-import { shareCardEl } from './share-card.js?v=0.1.956';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.956';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.956';
-import { addStarfield } from './starfield.js?v=0.1.956';
+import { pullToClose } from './pull-close.js?v=0.1.957';
+import { TESTER } from './build-flavor.js?v=0.1.957';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.957';
+import * as Secrets from './secrets.js?v=0.1.957';
+import { STORY_BY_SECRET } from './stories.js?v=0.1.957';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.957';
+import * as Ufo from './ufo.js?v=0.1.957';
+import * as Fossil from './fossil.js?v=0.1.957';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.957';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.957';
+import { toast, ticket, dropToast, toastPending, onTicketShown, iconSvg } from './toast.js?v=0.1.957';
+import { VERSION } from './version.js?v=0.1.957';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, overEarth, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.957';
+import { placeName } from './geo.js?v=0.1.957';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, SLIDER_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.957';
+import { conArt } from './con-art.js?v=0.1.957';
+import { fetchWeather, tonightSky, skyClearAt, goodSkyAt } from './weather.js?v=0.1.957';
+import { CON_FIGURES } from './con-figures.js?v=0.1.957';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress, starDistance } from './constellations.js?v=0.1.957';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.957';
+import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.957';
+import { eventOf, activeEvent, nextEvent } from './events.js?v=0.1.957';
+import { conList } from './constellations.js?v=0.1.957';
+import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination, hasSensorView, resumeSensors, needsPermission } from './sensors.js?v=0.1.957';
+import { SkyView, shortName } from './sky.js?v=0.1.957';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.957';
+import { isPlus, setPlusForTesting, onPlus, PLUS_PERKS, PLUS_PRICES, initStore, storePlans, buyPlus, restorePlus, rcTestStore, storeOpen } from './plus.js?v=0.1.957';
+import { isNative, getPosition, saveFile, notifyAt, cancelNotify, haptic, onNative, nativeChrome, plugin } from './native.js?v=0.1.957';
+import { initBackup, onBackupChange, backupSoon, clearBackup, backupStatus } from './cloud-backup.js?v=0.1.957';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.957';
+import { cardArt } from './art.js?v=0.1.957';
+import { renderCard, miniCard, cardLevel, artImage, lockedArt, attachTilt, attachGyro, throwOff, attachFlip, turnCard } from './card.js?v=0.1.957';
+import { applyBack, CARD_BACKS, backUnlocked, chosenBack, chooseBack, backEarned } from './card-backs.js?v=0.1.957';
+import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.957';
+import { audioCtx } from './audio-ctx.js?v=0.1.957';
+import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume, musicAway } from './music.js?v=0.1.957';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.957';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel, moonPhaseOf, MOON_PHASES } from './card-model.js?v=0.1.957';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.957';
+import { naturalTargets, SOLAR_SYSTEM, DEEP_SKY } from './natural.js?v=0.1.957';
+import { placeFromTimeZone } from './tz-places.js?v=0.1.957';
+import { TIER_INFO } from './rarity.js?v=0.1.957';
+import { SETS, albumList } from './sets.js?v=0.1.957';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.957';
+import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.957';
+import { shareCardEl } from './share-card.js?v=0.1.957';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.957';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.957';
+import { addStarfield } from './starfield.js?v=0.1.957';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -1665,7 +1665,138 @@ function dragScroll(el) {
   const up = () => { removeEventListener('pointermove', move); removeEventListener('pointerup', up); if (x0 == null) return; x0 = null; el.style.scrollSnapType = ''; setTimeout(() => delete el.dataset.dragged, 0); };
   el.addEventListener('pointerdown', (e) => { if (e.pointerType !== 'mouse') return; x0 = e.clientX; s0 = el.scrollLeft; delete el.dataset.dragged; addEventListener('pointermove', move); addEventListener('pointerup', up); });
 }
-$('radar').addEventListener('click', () => { showVTab('now'); openPanel('visible'); });
+
+// ---------- All around you (2026-10-21, Sevaan picked design/sky-compass.html D) ----------
+// Tap the radar: a 360° strip of your horizon, unrolled. The way you face is in the middle (it turns with the phone),
+// height marks up the side, everything up now at its real direction and height (new ones ringed orange), and the next
+// good passes as markers on the horizon where they'll rise. Drag it round; tap the big heading to come back to where
+// you face; tap anything to close the page and aim at it. The sky loop pauses under panels, so this page moves the
+// satellites itself (look() once a second for the ones that were up when it opened).
+const AR_FOV = 180; // degrees across the strip
+function arCollect() {
+  const d = now(), f = frame(d, state.observer), t0 = d.getTime(); arFrame = f;
+  const out = [];
+  for (const it of state.items) {
+    if (!it.look.visible && !it._ar) continue;
+    let l = it.look; try { l = look(it.obj, f) ?? l; } catch {}
+    if (!l.visible) continue;
+    out.push({ kind: 'sat', obj: it.obj, it: { obj: it.obj, look: l }, az: l.az, el: l.el, mag: l.mag, isNew: isNewFind(it.obj) });
+  }
+  for (const n of state.naturals ?? []) {
+    const o = n.obj, l = n.look; if (!l.visible || o.key === 'earth') continue;
+    const star = o.natural === 'star', isNew = isNewFind(o);
+    if (star && l.mag > 1.6 && !isNew) continue; // bright named stars only, plus ones you still need (as dots)
+    out.push({ kind: o.type === 'moon' ? 'moon' : o.type === 'sun' ? 'sun' : o.type === 'planet' ? 'planet' : star ? 'star' : 'deep', obj: o, it: n, az: l.az, el: l.el, mag: l.mag, isNew: isNew && !star, starNew: star && isNew });
+  }
+  const T = state.tonight;
+  if (T) { const seen = new Set(); for (const p of tonightPasses(T, t0)) {
+    if (p.start <= t0 || p.start > t0 + 45 * 60000 || !p.fresh) continue; const k = cardKeyFor(p.obj); if (seen.has(k)) continue; seen.add(k);
+    if ((TIER_RANK[(state.cardModels.get(k) ?? p.obj).tier] ?? 0) < 1 && !p.obj.type?.includes('station')) continue;
+    out.push({ kind: 'rise', obj: p.obj, p, az: p.riseAz, el: Math.max(0, p.riseEl ?? 0), isNew: true }); if (seen.size >= 4) break; } }
+  arItems = out; arAt = performance.now();
+}
+function arHeading() {
+  let b; try { b = !state.drag.on && hasSensorView() ? trueBasis() : basisFromAzEl(state.drag.az, state.drag.el); } catch {}
+  const h = b ? headingOf(b) : state.drag.az ?? 0;
+  if (arHeadSm == null) arHeadSm = h; else arHeadSm = (arHeadSm + (((h - arHeadSm + 540) % 360) - 180) * 0.2 + 360) % 360;
+  return arHeadSm;
+}
+const arTierColor = (o) => (TIER_INFO[(state.cardModels.get(cardKeyFor(o)) ?? o).tier] ?? TIER_INFO.common).color;
+function arDraw() {
+  if (activePanel !== 'around') return;
+  if (performance.now() - arAt > 1000) { arCollect(); arLists(); }
+  const cv = $('ar-strip'), dpr = Math.min(3, devicePixelRatio || 1), W = cv.clientWidth, H = cv.clientHeight;
+  if (cv.width !== Math.round(W * dpr) || cv.height !== Math.round(H * dpr)) { cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); }
+  const ctx = cv.getContext('2d'); ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H);
+  const face = arHeading(), centre = (face + arPan + 360) % 360, top = 14, hz = H - 34, k = W / AR_FOV;
+  const xOf = (az) => W / 2 + ((((az - centre) + 540) % 360) - 180) * k, yOf = (el) => hz - (Math.max(0, el) / 90) * (hz - top);
+  // heading readout
+  const hd = Math.round(face) % 360; if ($('ar-deg').textContent !== `${hd}°`) { $('ar-deg').textContent = `${hd}°`; $('ar-face').textContent = `${compassPoint(face)} · facing${Math.abs(arPan) > 3 ? ' · tap to come back' : ''}`; }
+  // sky + ground
+  const g = ctx.createLinearGradient(0, top, 0, hz); g.addColorStop(0, '#0a1322'); g.addColorStop(1, '#17283f');
+  ctx.fillStyle = g; ctx.beginPath(); ctx.roundRect(0, 0, W, hz, 12); ctx.fill();
+  ctx.fillStyle = '#0b1a12'; ctx.beginPath(); ctx.moveTo(0, hz);
+  for (let x = 0; x <= W; x += 6) { const az = centre + (x - W / 2) / k, n = Math.sin(az * 0.11) * 3 + Math.sin(az * 0.37 + 1) * 2 + Math.sin(az * 1.3) * 1; ctx.lineTo(x, hz - 4 - n); }
+  ctx.lineTo(W, H); ctx.lineTo(0, H); ctx.closePath(); ctx.fill();
+  // height lines
+  ctx.strokeStyle = '#1f2f45'; ctx.lineWidth = 1; ctx.fillStyle = '#5e728c'; ctx.font = '500 10px "SC Label", "Arial Narrow", sans-serif';
+  for (const e of [30, 60]) { const y = yOf(e); ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); ctx.fillText(`${e}°`, 6, y - 4); }
+  // where the phone points (the view box) and the facing notch
+  const vx = xOf(face), vw = 62 * k * 0.5; ctx.fillStyle = 'rgba(250,129,39,.08)'; ctx.strokeStyle = 'rgba(250,129,39,.45)'; ctx.setLineDash([3, 4]);
+  ctx.beginPath(); ctx.rect(vx - vw, top + 6, vw * 2, hz - top - 6); ctx.fill(); ctx.stroke(); ctx.setLineDash([]);
+  // compass letters along the bottom
+  ctx.textAlign = 'center'; ctx.font = '500 12px "SC Label", "Arial Narrow", sans-serif';
+  const PTS = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+  for (let a = 0; a < 360; a += 15) { const x = xOf(a); if (x < -20 || x > W + 20) continue; const major = a % 45 === 0;
+    ctx.strokeStyle = major ? '#8a97a8' : '#3a4c66'; ctx.beginPath(); ctx.moveTo(x, hz + 6); ctx.lineTo(x, hz + (major ? 13 : 9)); ctx.stroke();
+    if (major) { ctx.fillStyle = Math.abs(((a - face + 540) % 360) - 180) < 23 ? '#fa8127' : '#bdbea9'; ctx.fillText(PTS[a / 45], x, hz + 27); } }
+  // things
+  const r = Object.create(Object.getPrototypeOf(sky)); r.ctx = ctx;
+  arHits = []; const labels = [];
+  const order = [...arItems].sort((a, b) => (a.kind === 'star') - (b.kind === 'star') || (b.isNew - a.isNew));
+  for (const it of order.reverse()) {
+    const x = xOf(it.az); if (x < -14 || x > W + 14) continue; const y = it.kind === 'rise' ? hz - 6 : yOf(it.el);
+    ctx.save();
+    if (it.kind === 'star') { const s = Math.max(1.2, 3 - it.mag * 0.9); ctx.fillStyle = '#fff2b3'; ctx.globalAlpha = it.mag < 1.6 ? .8 : .4; /* stars stay quiet: you find them by panning the circle */ ctx.beginPath(); ctx.arc(x, y, s, 0, 7); ctx.fill(); if (it.mag < 0.9) labels.push({ x, y, t: label(it.obj), c: '#bdbea9', s: 10 }); }
+    else if (it.kind === 'moon' || it.kind === 'sun') { ctx.fillStyle = it.kind === 'sun' ? '#ffd27a' : '#fff2b3'; ctx.beginPath(); ctx.arc(x, y, 8, 0, 7); ctx.fill(); labels.push({ x, y, t: `${label(it.obj)} ${Math.round(it.el)}°`, c: '#fff2b3', s: 11 }); }
+    else if (it.kind === 'planet' || it.kind === 'deep') { ctx.fillStyle = '#f2c14e'; ctx.beginPath(); ctx.arc(x, y, it.kind === 'deep' ? 3 : 4, 0, 7); ctx.fill(); if (it.isNew) { ctx.strokeStyle = '#fa8127'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(x, y, 9, 0, 7); ctx.stroke(); } labels.push({ x, y, t: `${label(it.obj)} ${Math.round(it.el)}°`, c: it.isNew ? '#fa8127' : '#f2c14e', s: 11 }); }
+    else if (it.kind === 'rise') { ctx.strokeStyle = '#6aa8ff'; ctx.setLineDash([2, 2]); ctx.lineWidth = 1.3; ctx.beginPath(); ctx.arc(x, y, 7, 0, 7); ctx.stroke(); ctx.setLineDash([]); labels.push({ x, y: y - 6, t: `${label(it.obj)} ${fmtTime(it.p.start)}`, c: '#6aa8ff', s: 10.5 }); }
+    else { const col = it.isNew ? '#fff2b3' : 'rgba(255,242,179,.55)'; try { r.drawIcon(sky.iconKind(it.obj), x, y, it.isNew ? 15 : 11, col); } catch { ctx.fillStyle = col; ctx.fillRect(x - 2, y - 2, 4, 4); }
+      if (it.isNew) { ctx.strokeStyle = arTierColor(it.obj); ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(x, y, 11, 0, 7); ctx.stroke(); labels.push({ x, y, t: label(it.obj), c: arTierColor(it.obj), s: 11 }); } }
+    ctx.restore();
+    if (it.kind !== 'star') arHits.push({ x, y, it });
+  }
+  // labels: right of the thing, nudged down when they'd overlap
+  ctx.textAlign = 'left'; const placed = [];
+  for (const l of labels) { ctx.font = `500 ${l.s}px "SC Label", "Arial Narrow", sans-serif`; const w = ctx.measureText(l.t).width; let lx = l.x + 12, ly = l.y + 4; if (lx + w > W - 4) lx = l.x - 12 - w;
+    for (let i = 0; i < 4 && placed.some((p) => lx < p.x + p.w && lx + w > p.x && Math.abs(ly - p.y) < 12); i++) ly += 12;
+    placed.push({ x: lx, y: ly, w }); ctx.fillStyle = 'rgba(8,15,27,.7)'; ctx.fillRect(lx - 2, ly - l.s + 1, w + 4, l.s + 3); ctx.fillStyle = l.c; ctx.fillText(l.t, lx, ly); }
+  arRaf = requestAnimationFrame(arDraw);
+}
+function arLists() {
+  const face = arHeadSm ?? 0, rel = (az) => (((az - face) + 540) % 360) - 180;
+  const rows = arItems.filter((x) => x.kind !== 'star' || x.starNew).map((x) => ({ ...x, d: rel(x.az) }));
+  const score = (x) => (x.isNew ? 0 : 1) * 1000 + Math.abs(x.d);
+  const front = rows.filter((x) => Math.abs(x.d) <= 70 && x.kind !== 'rise').sort((a, b) => score(a) - score(b)).slice(0, 6);
+  const back = rows.filter((x) => Math.abs(x.d) > 70 && x.kind !== 'rise').sort((a, b) => score(a) - score(b));
+  const arrow = (d) => (Math.abs(d) < 20 ? '↑' : Math.abs(d) > 150 ? '↓' : d < 0 ? (Math.abs(d) < 80 ? '↖' : '←') : (Math.abs(d) < 80 ? '↗' : '→'));
+  const row = (x) => { const o = x.obj, tier = TIER_INFO[(state.cardModels.get(cardKeyFor(o)) ?? o).tier] ?? TIER_INFO.common;
+    return `<button type="button" class="ar-row" data-i="${arItems.indexOf(arItems.find((y) => y.obj === o && y.kind === x.kind))}"><span class="ar-arr">${arrow(x.d)}</span><span class="ar-n"><b>${escapeHtml(label(o))}${x.isNew || x.starNew ? '<em>NEW</em>' : ''}</b><small><i style="color:${tier.color}">${tier.gem} ${tier.label}</i> · ${Math.round(x.el)}° up</small></span><span class="ar-dir">${compassPoint(x.az)}</span></button>`; };
+  const fh = front.map(row).join(''), bh = back.slice(0, 5).map(row).join('') + (back.length > 5 ? `<p class="hint small">+ ${back.length - 5} more behind you</p>` : '');
+  if ($('ar-front')._h !== fh) { $('ar-front').innerHTML = fh || '<p class="hint small">Nothing up in front of you. Turn round, or drag the strip.</p>'; $('ar-front')._h = fh; }
+  if ($('ar-back')._h !== bh) { $('ar-back').innerHTML = bh; $('ar-back')._h = bh; $('ar-back-h').hidden = !back.length; }
+  const T = state.tonight, t0 = now().getTime(), nUp = arItems.filter((x) => x.kind === 'sat').length, nNew = arItems.filter((x) => x.isNew && x.kind !== 'rise').length;
+  const moon = arItems.find((x) => x.kind === 'moon'), wx = tonightWeather();
+  const chips = [['Up now', `${nUp}${nNew ? ` · ${nNew} new` : ''}`], T?.dawn > t0 && (state.frame?.sunEl ?? 0) < -6 ? ['Dark until', fmtTime(T.dawn)] : T?.dusk > t0 ? ['Dark at', fmtTime(T.dusk)] : null, moon ? ['Moon', `${Math.round((moon.it.look.illum ?? 0) * 100)}% · ${Math.round(moon.el)}° up`] : null, wx ? ['Sky', escapeHtml(wx.line)] : null].filter(Boolean);
+  const ch = chips.map(([k, v]) => `<span class="ar-chip"><small>${k}</small>${v}</span>`).join(''); if ($('ar-chips')._h !== ch) { $('ar-chips').innerHTML = ch; $('ar-chips')._h = ch; }
+}
+function arAim(x) {
+  if (!x) return;
+  if (x.kind === 'rise') { closePanel('around'); setTimeout(() => showMePass(x.p), 320); return; }
+  const it = x.it?.look ? x.it : { obj: x.obj, look: { az: x.az, el: x.el } };
+  cancelPassSearch(); state.pinnedId = it.obj.id; state.targetId = it.obj.id;
+  if (state.drag.on || !hasSensorView()) { state.drag.on = true; state.drag.az = it.look.az; state.drag.el = it.look.el; state.dragFollow = { id: it.obj.id, until: performance.now() + 8000 }; }
+  closePanel('around');
+}
+function openAround() {
+  if (activePanel === 'visible') closePanel('visible');
+  arPan = 0; arHeadSm = null; arCollect(); openPanel('around'); arLists();
+  cancelAnimationFrame(arRaf); arRaf = requestAnimationFrame(arDraw);
+}
+(() => {
+  const cv = $('ar-strip'); let x0 = null, p0 = 0, moved = false;
+  cv.addEventListener('pointerdown', (e) => { x0 = e.clientX; p0 = arPan; moved = false; cv.setPointerCapture?.(e.pointerId); });
+  cv.addEventListener('pointermove', (e) => { if (x0 == null) return; const dx = e.clientX - x0; if (Math.abs(dx) > 6) moved = true; if (moved) arPan = p0 - dx / (cv.clientWidth / AR_FOV); });
+  cv.addEventListener('pointerup', (e) => { if (x0 == null) return; x0 = null; if (moved) return;
+    const r = cv.getBoundingClientRect(), px = e.clientX - r.left, py = e.clientY - r.top;
+    const hit = arHits.map((h) => ({ h, d: Math.hypot(h.x - px, h.y - py) })).sort((a, b) => a.d - b.d)[0];
+    if (hit && hit.d < 26) { buzz('select'); arAim(hit.h.it); } });
+  cv.addEventListener('pointercancel', () => { x0 = null; });
+  $('ar-head').addEventListener('click', () => { arPan = 0; });
+  for (const id of ['ar-front', 'ar-back']) $(id).addEventListener('click', (e) => { const b = e.target.closest('.ar-row'); if (b) arAim(arItems[Number(b.dataset.i)]); });
+})();
+
+$('radar').addEventListener('click', () => openAround()); // the big compass: All around you (2026-10-21, Sevaan picked design/sky-compass.html D)
 
 // ---------- tonight planner ----------
 // js/tonight-worker.js forecasts every visible pass from now to dawn (same visibility rules as the live sky).
@@ -2839,6 +2970,7 @@ function tapSky(cx, cy) {
 // ---------- nav & panels ----------
 
 let activePanel = null, panelReturn = null;
+let arRaf = 0, arPan = 0, arHeadSm = null, arItems = [], arAt = 0, arHits = [], arFrame = null; // All around you (below)
 const panelHideTimers = {}; // one per page: opening one page mustn’t cancel another page’s hide (2026-10-21: fast taps left Settings stuck over the sky page)
 let settingsFrom = null; // where Settings was opened from, so closing it goes back there (2026-10-21, Sevaan)
 let navSeq = 0; // the last tab tapped wins: a page change waiting on the pill’s slide is dropped when another tab is tapped
@@ -2856,7 +2988,9 @@ function openPanel(id, back = false) {
   if (activePanel === 'visible' && id !== 'visible') skyScroll = $('visible').scrollTop;
   if (activePanel) $(activePanel).hidden = true;
   else panelReturn = document.activeElement;
-  activePanel = id; $(id).hidden = false; $('hud').inert = id !== 'visible' && id !== 'debug'; // the sky page sits under Explore's header, whose buttons stay live
+  activePanel = id; $(id).hidden = false; $('hud').inert = id !== 'visible' && id !== 'debug' && id !== 'around'; // the sky page sits under Explore's header, whose buttons stay live
+  if (activePanel === 'around' && id !== 'around') { document.body.classList.remove('around-open'); cancelAnimationFrame(arRaf); }
+  if (id === 'around') { document.body.classList.add('around-open'); setPageHeader('around'); }
   if (id === 'debug') { document.body.classList.add('set-open'); setPageHeader('settings'); $('nav-more').setAttribute('aria-label', 'Close settings'); }
   if (id === 'visible' && navProto()) { document.body.classList.add('sky-open'); setPageHeader('sky'); if (navProto() !== 'stack') setSwitch($('nav'), 'left'); }
   // Android WebView kept stale tap regions in a panel that slid in (it's the scroller and the animated layer at once),
@@ -2873,6 +3007,7 @@ function closePanel(id = activePanel) {
   const el = $(id); activePanel = null; $('hud').inert = false;
   if (id === 'debug' && document.body.classList.contains('set-open')) { document.body.classList.remove('set-open'); setPageHeader(collectionOpen ? 'collection' : 'explore'); $('nav-more').setAttribute('aria-label', 'Settings'); }
   if (id === 'visible') skyScroll = $('visible').scrollTop;
+  if (id === 'around') { document.body.classList.remove('around-open'); cancelAnimationFrame(arRaf); setPageHeader(collectionOpen ? 'collection' : 'explore'); }
   if (id === 'visible' && document.body.classList.contains('sky-open')) { setTimeout(() => { if (activePanel !== 'visible') document.body.classList.remove('sky-open'); }, 340); if (!collectionOpen) setPageHeader('explore'); /* sky-open stays while it slides away, as col-open does */ if (navProto() && navProto() !== 'stack') setSwitch($('nav'), 'mid'); }
   // Slide away, then hide (2026-10-08 polish); the reveal has its own exit.
   if (id !== 'reveal' && el.classList.contains('panel') && !matchMedia('(prefers-reduced-motion: reduce)').matches) { el.classList.add('leaving'); clearTimeout(panelHideTimers[id]); panelHideTimers[id] = setTimeout(() => { if (activePanel === id) return; el.hidden = true; el.classList.remove('leaving'); el.style.transform = ''; }, 300); }
@@ -2895,7 +3030,7 @@ function openDebug() {
 // Collection’s own button used to: Settings rises on top, then the Collection closes underneath without a slide.
 function settingsOverCollection() { document.body.classList.add('panel-over-col'); openDebug(); } // Settings rises over the Collection, which stays open under it, so closing Settings goes back there (2026-10-21, Sevaan)
 $('nav-more').addEventListener('click', () => { ++navSeq; if (activePanel !== 'debug') setSwitch($('nav'), collectionOpen ? 'right' : activePanel === 'visible' ? 'left' : 'mid', false); }); // a tab change still waiting on its slide is dropped: Settings was the last tap
-$('nav-more').addEventListener('click', () => (activePanel === 'debug' ? closePanel('debug') : collectionOpen ? settingsOverCollection() : openDebug())); // on Settings this button is its ✕
+$('nav-more').addEventListener('click', () => (activePanel === 'around' ? closePanel('around') : activePanel === 'debug' ? closePanel('debug') : collectionOpen ? settingsOverCollection() : openDebug())); // on Settings this button is its ✕
 $('nav-explore').addEventListener('click', () => { setSwitch($('nav'), exploreSide()); navLater(() => { if (collectionOpen) { closeCollection(); if (activePanel === 'visible') setTimeout(() => { if (!collectionOpen && activePanel === 'visible') closePanel('visible'); }, 40); return; } if (activePanel === 'visible') { closePanel('visible'); return; } if (activePanel && activePanel !== 'debug') closePanel(); }); }); // over the Collection or the sky page, this is the way back // over the Collection, this is the way back
 // Use my location (iOS playtest 2026-10-20): the sheet stays open and says why when it can't, instead of closing silently.
 $('retry-location').addEventListener('click', async () => {
@@ -4575,7 +4710,7 @@ $('set-reset').addEventListener('click', async () => {
 
 // ---------- polish (2026-10-08) ----------
 // Pull a page down to close it, from anywhere once it's at the top (2026-10-21): Settings and Up in your sky.
-for (const id of ['debug', 'visible']) pullToClose($(id), () => closePanel(id));
+for (const id of ['debug', 'visible', 'around']) pullToClose($(id), () => closePanel(id));
 // Drag a panel’s header down to dismiss it.
 document.querySelectorAll('.overlay.panel .panel-head').forEach((h) => {
   let y0 = null; const panel = h.closest('.overlay.panel');
@@ -4733,6 +4868,7 @@ function setPageHeader(page) {
     const n = (() => { try { return ownedCardKeys().size; } catch { return 0; } })(), pr = (() => { try { return progressNow(state.sightings); } catch { return null; } })();
     title = 'YOUR COLLECTION'; sub = `${n.toLocaleString('en-US')} CARD${n === 1 ? '' : 'S'}${pr?.rank?.name ? ` · ${pr.rank.name.toUpperCase()}` : ''}`;
   } else if (page === 'settings') { title = 'SETTINGS'; sub = 'MAKE IT YOURS'; }
+  else if (page === 'around') { title = 'ALL AROUND YOU'; sub = 'WHAT’S UP, AND WHICH WAY'; }
   else if (page === 'sky') { title = 'UP IN YOUR SKY'; sub = `${(state.observer.label?.replace(/^Example:\s*/, '') ?? 'Your sky').toUpperCase()} · ${fmtTime(now().getTime())}`; }
   else { title = 'SPACE COLLECTOR'; sub = 'COLLECT THE NIGHT SKY'; }
   headerTo(w, title, sub);
