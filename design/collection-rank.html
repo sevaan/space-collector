@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Collection rank card</title>
+<style>
+@font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf'); }
+@font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf'); }
+:root { --ink: #fff2b3; --mu: #bdbea9; --or: #fa8127; --gold: #f2c14e; --line: #1d2a3c; --bg: #080f1b; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #04080f; color: var(--ink); font: 15px/1.4 system-ui, sans-serif; padding: 26px 20px 60px; }
+h1 { font: 400 26px 'SC Display'; margin: 0 0 4px; } .lead { color: var(--mu); margin: 0 0 22px; max-width: 1100px; }
+.row { display: flex; gap: 26px; flex-wrap: wrap; align-items: flex-start; }
+.opt { width: 340px; } .opt h2 { font: 500 15px 'SC Label'; letter-spacing: .14em; text-transform: uppercase; color: var(--or); margin: 0 0 4px; }
+.opt > p { color: var(--mu); margin: 0 0 12px; font-size: 13.5px; min-height: 96px; }
+/* a 375 x 667 phone at 0.9 */
+.ph { width: 338px; height: 600px; background: var(--bg); border-radius: 26px; border: 1px solid #1a2436; overflow: hidden; position: relative; padding: 0 14px; }
+.hdr { padding: 22px 0 8px; display: flex; justify-content: space-between; border-bottom: 3px double #3a4c66; margin-bottom: 10px; }
+.hdr b { display: block; font: 400 15px 'SC Display'; } .hdr small { font: 500 10px 'SC Label'; letter-spacing: .2em; color: var(--mu); }
+.hdr i { font-style: normal; color: var(--ink); font-size: 16px; letter-spacing: 10px; }
+.tabs { display: flex; justify-content: space-between; font: 500 12px 'SC Label'; letter-spacing: .14em; color: var(--mu); border-bottom: 1px solid var(--line); padding: 8px 0; }
+.tabs b { color: var(--ink); border-bottom: 2px solid var(--or); padding-bottom: 6px; font-weight: 500; }
+.search { display: flex; gap: 6px; margin: 9px 0; } .search span { flex: 1; height: 34px; border: 1px solid #2c3b52; border-radius: 9px; font: 500 12px 'SC Label'; color: var(--mu); display: flex; align-items: center; padding-left: 10px; } .search em { width: 74px; height: 34px; border: 1px solid #2c3b52; border-radius: 9px; font: 500 11px 'SC Label'; letter-spacing: .12em; display: grid; place-items: center; font-style: normal; }
+.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; }
+.tile { aspect-ratio: 28/42; border: 1.5px solid #e9dfb8; border-radius: 6px; background: #0b1626; overflow: hidden; display: flex; flex-direction: column; }
+.tile img { width: 100%; aspect-ratio: 4/3; object-fit: cover; } .tile b { font: 400 9px 'SC Display'; padding: 4px 5px 0; } .tile i { height: 2px; background: #22324a; margin: 4px 5px 0; }
+.nav { position: absolute; left: 10px; right: 10px; bottom: 10px; height: 56px; border-radius: 16px; background: rgba(14,24,40,.96); display: flex; justify-content: space-around; align-items: center; font: 500 11px 'SC Label'; letter-spacing: .14em; color: var(--mu); }
+.nav b { color: var(--or); font-weight: 500; }
+.fade { position: absolute; left: 0; right: 0; bottom: 0; height: 110px; background: linear-gradient(transparent, var(--bg) 55%); }
+/* rank pieces */
+.big { border: 1.5px solid #c9c1a0; border-radius: 12px; padding: 8px 10px 10px; background: radial-gradient(circle at 60% 40%, #13213a, #0a1322); }
+.big .t { display: flex; justify-content: space-between; font: 500 10px 'SC Label'; letter-spacing: .16em; } .big .t span:last-child { color: var(--or); }
+.lad { height: 120px; position: relative; } .lad svg { width: 100%; height: 100%; }
+.rk { display: flex; justify-content: space-between; align-items: baseline; margin-top: 4px; } .rk b { font: 400 20px 'SC Display'; } .rk span { font: 400 16px 'SC Display'; color: var(--or); }
+.bar { height: 4px; background: #22324a; border-radius: 2px; margin-top: 6px; } .bar i { display: block; height: 4px; width: 22%; background: var(--or); border-radius: 2px; }
+.slim { display: flex; align-items: center; gap: 10px; border: 1px solid #2c3b52; border-radius: 12px; padding: 9px 11px; background: #0e1828; }
+.slim .r { font: 400 15px 'SC Display'; } .slim .x { flex: 1; } .slim .x small { display: flex; justify-content: space-between; font: 500 10px 'SC Label'; letter-spacing: .1em; color: var(--mu); }
+.slim .m { font: 500 11px 'SC Label'; letter-spacing: .14em; color: var(--or); white-space: nowrap; }
+.dot { width: 26px; height: 26px; border-radius: 50%; border: 2px solid var(--or); display: grid; place-items: center; flex: none; } .dot i { width: 8px; height: 8px; border-radius: 50%; background: var(--or); }
+.hbar { height: 3px; background: #22324a; margin: -8px 0 10px; } .hbar i { display: block; height: 3px; width: 22%; background: var(--or); }
+.mini-rank { display: flex; gap: 10px; align-items: center; margin-bottom: 4px; font: 500 12px 'SC Label'; color: var(--mu); letter-spacing: .06em; }
+.scrollnote { position: absolute; right: 10px; top: 210px; font: 500 10px 'SC Label'; letter-spacing: .12em; color: var(--or); writing-mode: vertical-rl; opacity: .8; }
+.anim .big { animation: shrink 4s ease-in-out infinite; transform-origin: top; }
+@keyframes shrink { 0%, 30% { height: 196px; } 55%, 85% { height: 54px; } 100% { height: 196px; } }
+.anim .big .lad { animation: ladfade 4s ease-in-out infinite; } @keyframes ladfade { 0%, 30% { opacity: 1; height: 120px; } 50%, 85% { opacity: 0; height: 0; } 100% { opacity: 1; height: 120px; } }
+.anim .big { overflow: hidden; }
+.think { margin-top: 28px; max-width: 1100px; color: var(--mu); font-size: 14px; } .think b { color: var(--ink); }
+.tag { display: inline-block; font: 500 11px 'SC Label'; letter-spacing: .12em; padding: 2px 7px; border-radius: 4px; border: 1px solid #2c3b52; margin-right: 4px; color: var(--mu); }
+</style></head><body>
+<h1>Collection: room for the cards</h1>
+<p class="lead">On a small phone (375 × 667, shown here) the rank card fills the first screen of Mine, so you see no cards until you scroll. Four ways to fix it. Each mock-up is that phone’s first screen.</p>
+<div class="row" id="row"></div>
+<div class="think"><b>My pick: A.</b> You keep what’s useful at a glance (your rank, how close the next one is, Missions) in one row, and two full rows of cards show on the first screen. The ladder picture moves into Observer stats, which a tap on the row opens. <b>D</b> keeps the picture but moves while you scroll, which is more to get used to; <b>C</b> is the cleanest but hides Missions one tap further away.</div>
+<template id="rest">
+  <div class="tabs"><b>MINE 27</b><span>ALBUMS</span><span>PATCHES</span><span>FIND</span></div>
+  <div class="search"><span>⌕ Search cards…</span><em>FILTERS ⌄</em></div>
+  <div class="grid">
+    <div class="tile"><img src="../assets/art/cards/hubble.webp" alt=""><b>HUBBLE</b><i></i></div>
+    <div class="tile"><img src="../assets/art/cards/iss.webp" alt=""><b>ISS</b><i></i></div>
+    <div class="tile"><img src="../assets/art/cards/planet-saturn.webp" alt=""><b>SATURN</b><i></i></div>
+    <div class="tile"><img src="../assets/art/cards/planet-jupiter.webp" alt=""><b>JUPITER</b><i></i></div>
+    <div class="tile"><img src="../assets/art/cards/vanguard-1.webp" alt=""><b>VANGUARD 1</b><i></i></div>
+    <div class="tile"><img src="../assets/art/cards/tiangong.webp" alt=""><b>TIANGONG</b><i></i></div>
+  </div>
+  <div class="fade"></div>
+  <div class="nav"><span>SKY</span><span>EXPLORE</span><b>COLLECTION</b></div>
+</template>
+<script>
+const LAD = '<div class="lad"><svg viewBox="0 0 300 120"><path d="M30 92 L120 76 L200 52" stroke="#fa8127" stroke-width="2.5" fill="none"/><path d="M200 52 L270 32" stroke="#fff2b3" stroke-opacity=".5" stroke-dasharray="3 4"/><g fill="#fa8127"><circle cx="30" cy="92" r="4"/><circle cx="120" cy="76" r="4"/><circle cx="200" cy="52" r="6"/></g><circle cx="200" cy="52" r="11" fill="none" stroke="#fa8127"/><circle cx="270" cy="32" r="4" fill="none" stroke="#fff2b3"/><g font-family="SC Label" font-size="9" fill="#bdbea9" letter-spacing="1.5"><text x="18" y="108">STARGAZER</text><text x="104" y="92">SPOTTER</text><text x="186" y="70" fill="#fff2b3">TRACKER</text><text x="246" y="50">NAVIGATOR</text></g></svg></div>';
+const HDR = (sub = '27 CARDS · TRACKER') => `<div class="hdr"><div><b>YOUR COLLECTION</b><small>${sub}</small></div><i>☾ ⚙</i></div>`;
+const RANKROW = '<div class="rk"><b>TRACKER</b><span>1,095 XP</span></div><div class="bar"><i></i></div>';
+const opts = [
+  ['A · One slim row', 'The rank card becomes a single row: a dot for your rank, its name, the bar to the next one, and Missions ›. Tap the row for Observer stats, where the ladder picture now lives. Two full rows of cards on the first screen.', HDR() + `<div class="slim"><span class="dot"><i></i></span><div class="x"><span class="r">TRACKER</span><div class="bar" style="margin-top:4px"><i></i></div><small><span>1,095 XP</span><span>1,905 to Navigator</span></small></div><span class="m">MISSIONS ›</span></div>`, 'small'],
+  ['B · It scrolls away, the tabs stay', 'Keep the full card, but make it part of the page: as you scroll down it slides up out of view and the tabs and search stick under the header. On a small phone the first row of cards peeks in at the bottom.', HDR() + `<div class="big"><div class="t"><span>OBSERVER RANK</span><span>2-WEEK STREAK</span></div>${LAD}${RANKROW}</div>`, 'small'],
+  ['C · Rank in the header only', 'No rank card on Mine at all. The header already says “27 cards · Tracker”; a thin orange line under it fills toward the next rank. Tap the header for Observer stats (with the ladder and Missions). The most room for cards.', HDR('27 CARDS · TRACKER · 1,905 XP TO NAVIGATOR') + '<div class="hbar"><i></i></div>', 'small'],
+  ['D · Big, then small as you scroll', 'The full card shows when you arrive; as soon as you start scrolling it folds down into option A’s slim row, which then stays put. Scroll back to the top and it opens again. Keeps the picture, still makes room. (Animated here.)', HDR() + `<div class="big"><div class="t"><span>OBSERVER RANK</span><span>2-WEEK STREAK</span></div>${LAD}${RANKROW}</div>`, 'medium', true],
+];
+const tpl = document.getElementById('rest').innerHTML, row = document.getElementById('row');
+for (const [h, p, top, eff, anim] of opts) row.insertAdjacentHTML('beforeend', `<div class="opt"><h2>${h}</h2><p>${p}<br><span class="tag">${eff}</span></p><div class="ph${anim ? ' anim' : ''}">${top}${tpl}</div></div>`);
+</script>
+</body></html>
