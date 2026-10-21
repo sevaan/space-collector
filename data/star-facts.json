@@ -1,7 +1,10 @@
 {
  "9884": {
-  "fact": "Its name means **“the head of the ram”** in Arabic. It’s an orange giant about 66 light-years away, with a planet bigger than Jupiter circling it.",
-  "source": "https://en.wikipedia.org/wiki/Hamal"
+  "fact": "Its name means **“the head of the ram”** in Arabic. It’s an orange giant about 66 light-years away, with a planet **more massive than Jupiter** circling it.",
+  "source": [
+   "https://en.wikipedia.org/wiki/Hamal",
+   "https://doi.org/10.1051/0004-6361/201016293"
+  ]
  },
  "13209": {
   "fact": "Really **three stars** sharing one point of light, about 170 light-years away. Its name comes from **Bharani**, one of the lunar mansions of ancient Hindu astronomy.",
@@ -96,7 +99,7 @@
   "source": "https://en.wikipedia.org/wiki/Delta_Virginis"
  },
  "72220": {
-  "fact": "Spins so fast, about **285 km every second**, that its middle bulges out like a **squashed ball**. It’s about 130 light-years away.",
+  "fact": "Its middle bulges like a **squashed ball**. Astronomers measure a rotation speed of **285 km every second or more**. It’s about 130 light-years away.",
   "source": "https://en.wikipedia.org/wiki/109_Virginis"
  },
  "60129": {
@@ -356,7 +359,7 @@
   "source": "https://en.wikipedia.org/wiki/Zeta_Ursae_Minoris"
  },
  "79822": {
-  "fact": "A yellow-white star about 97 light-years away and **coming closer**. It’s spinning fast, at about **85 km every second**.",
+  "fact": "A yellow-white star about 97 light-years away and **coming closer**. Its surface races around at **85 km every second or more**.",
   "source": "https://en.wikipedia.org/wiki/Eta_Ursae_Minoris"
  },
  "3179": {
@@ -380,7 +383,7 @@
   "source": "https://en.wikipedia.org/wiki/Albireo"
  },
  "95853": {
-  "fact": "A white star spinning at about **240 km every second**. It’s heading our way and in about 783,000 years will be within **92 light-years**.",
+  "fact": "A white star spinning at **240 km every second or more**. It’s heading our way and in about 783,000 years will be within **92 light-years**.",
   "source": "https://en.wikipedia.org/wiki/Iota2_Cygni"
  },
  "98110": {
@@ -580,7 +583,7 @@
   "source": "https://en.wikipedia.org/wiki/Nu_Puppis"
  },
  "51576": {
-  "fact": "A hot star spinning at about **325 km every second**, wrapped in glowing gas. It belongs to the **Southern Pleiades** star cluster.",
+  "fact": "A hot star spinning at **325 km every second or more**, wrapped in glowing gas. It belongs to the **Southern Pleiades** star cluster.",
   "source": "https://en.wikipedia.org/wiki/PP_Carinae"
  },
  "38827": {
@@ -1048,8 +1051,11 @@
   "source": "https://en.wikipedia.org/wiki/Chi_Lupi"
  },
  "74911": {
-  "fact": "A system of **three stars and a brown dwarf**, a “failed star” too small to shine. Two of the stars take **772 years** to orbit each other.",
-  "source": "https://en.wikipedia.org/wiki/Mu_Lupi"
+  "fact": "A system of **three stars and a brown dwarf**, an object too small to sustain the hydrogen fusion that powers stars. Two of the stars take **772 years** to orbit each other.",
+  "source": [
+   "https://en.wikipedia.org/wiki/Mu_Lupi",
+   "https://science.nasa.gov/mission/webb/science-overview/science-explainers/what-makes-brown-dwarfs-unique/"
+  ]
  },
  "45860": {
   "fact": "The **only star** in the Lynx with a Greek letter. It’s a red giant about **58 times** the Sun’s width, roughly 200 light-years away.",
@@ -1240,7 +1246,7 @@
   "source": "https://en.wikipedia.org/wiki/Phi_Persei"
  },
  "12777": {
-  "fact": "One of the closest naked-eye stars, just **37 light-years** away. A small **red dwarf** circles it at about 250 times the Earth-Sun distance.",
+  "fact": "One of the closest naked-eye stars, just **36 light-years** away. A small **red dwarf** circles it at about 250 times the Earth-Sun distance.",
   "source": "https://en.wikipedia.org/wiki/Theta_Persei"
  },
  "19167": {
@@ -1276,7 +1282,7 @@
   "source": "https://en.wikipedia.org/wiki/Gamma_Pictoris"
  },
  "111954": {
-  "fact": "A hot star spinning at about **216 km every second**, not far from the speed that would make it **fly apart**. It’s about 490 light-years away.",
+  "fact": "A hot star spinning at **216 km every second or more**. Its rapid rotation makes it **bulge at the middle**. It’s about 490 light-years away.",
   "source": "https://en.wikipedia.org/wiki/Epsilon_Piscis_Austrini"
  },
  "111188": {
@@ -1348,7 +1354,7 @@
   "source": "https://en.wikipedia.org/wiki/Epsilon_Serpentis"
  },
  "78072": {
-  "fact": "A star a bit bigger than our Sun, just **36 light-years** away, in **the Serpent’s head**.",
+  "fact": "A star a bit bigger than our Sun, just **37 light-years** away, in **the Serpent’s head**.",
   "source": "https://en.wikipedia.org/wiki/Gamma_Serpentis"
  },
  "76852": {
@@ -1384,7 +1390,7 @@
   "source": "https://en.wikipedia.org/wiki/Zeta_Tucanae"
  },
  "118322": {
-  "fact": "It spins at around **300 km every second**, so its middle bulges out about **36%**. It’s a hot blue-white star about 370 light-years away.",
+  "fact": "Its middle bulges about **36% wider** than its poles. This hot blue-white star spins at **300 km every second or more**, about 370 light-years away.",
   "source": "https://en.wikipedia.org/wiki/Epsilon_Tucanae"
  },
  "54539": {
@@ -1488,7 +1494,7 @@
   "source": "https://en.wikipedia.org/wiki/Delta1_Tauri"
  },
  "16852": {
-  "fact": "A Sun-like star just **45 light-years** away and older than our Sun. It was once the brightest star of a forgotten constellation, **George’s Harp**.",
+  "fact": "A Sun-like star just **46 light-years** away and older than our Sun. It was once the brightest star of a forgotten constellation, **George’s Harp**.",
   "source": "https://en.wikipedia.org/wiki/10_Tauri"
  },
  "36850": {
@@ -1512,8 +1518,11 @@
   "source": "https://en.wikipedia.org/wiki/Zeta_Geminorum"
  },
  "34693": {
-  "fact": "An orange giant 30 times wider than the Sun, with a **brown dwarf** circling it every 305 days. Brown dwarfs are too big to be planets but too small to be true stars.",
-  "source": "https://en.wikipedia.org/wiki/Tau_Geminorum"
+  "fact": "An orange giant 30 times wider than the Sun, with a **brown dwarf** circling it every 305 days. Brown dwarfs lack the mass to sustain the **hydrogen fusion** that powers stars.",
+  "source": [
+   "https://en.wikipedia.org/wiki/Tau_Geminorum",
+   "https://science.nasa.gov/mission/webb/science-overview/science-explainers/what-makes-brown-dwarfs-unique/"
+  ]
  },
  "42911": {
   "fact": "Its name is Latin for **“southern donkey colt”**. It sits beside the **Beehive Cluster** and so close to the Sun’s path that the Moon sometimes covers it.",
@@ -1632,8 +1641,12 @@
   "source": "https://en.wikipedia.org/wiki/Xi2_Sagittarii"
  },
  "89341": {
-  "fact": "A **blue supergiant** about 36,200 light-years away, much farther than most stars you can see by eye. It has several partner stars around it.",
-  "source": "https://en.wikipedia.org/wiki/Mu_Sagittarii"
+  "fact": "A **blue supergiant** in an eclipsing binary: its light dims slightly as a companion passes in front. Several other stars crowd around it in our sky.",
+  "source": [
+   "https://en.wikipedia.org/wiki/Mu_Sagittarii",
+   "https://simbad.cds.unistra.fr/simbad/sim-id?Ident=HIP+89341",
+   "https://en.wikipedia.org/wiki/Mu_Sagittarii"
+  ]
  },
  "95241": {
   "fact": "A blue-white star nearly at the end of its calm, steady life. It has a **partner star** that a small telescope can show, about 310 light-years away.",
@@ -1644,8 +1657,11 @@
   "source": "https://en.wikipedia.org/wiki/Iota_Sagittarii"
  },
  "95176": {
-  "fact": "One of only **four known** star pairs where one star has lost almost all its hydrogen. Its partner is pulling gas off it, about 1,800 light-years away.",
-  "source": "https://en.wikipedia.org/wiki/Upsilon_Sagittarii"
+  "fact": "A rare pair where one star has lost almost all its **hydrogen**. Gas transferred between the stars has changed how they evolve. They’re about 1,800 light-years away.",
+  "source": [
+   "https://en.wikipedia.org/wiki/Upsilon_Sagittarii",
+   "https://simbad.cds.unistra.fr/simbad/sim-id?Ident=HIP+95176"
+  ]
  },
  "98066": {
   "fact": "Two stars in a very stretched orbit, circling each other every **4.7 years**. Its name once covered a little group of **four stars** at the Archer’s back.",
@@ -1920,7 +1936,7 @@
   "source": "https://en.wikipedia.org/wiki/Beta_Aquilae"
  },
  "85792": {
-  "fact": "A **Be star** spinning so fast, around 375 km per second, that it throws off a disc of gas. It sits about 270 light-years away.",
+  "fact": "A **Be star** wrapped in a disc of gas. Its surface races around at **375 km per second or more**. It sits about 270 light-years away.",
   "source": "https://en.wikipedia.org/wiki/Alpha_Arae"
  },
  "83081": {
@@ -2036,8 +2052,11 @@
   "source": "https://en.wikipedia.org/wiki/Delta_Velorum"
  },
  "52419": {
-  "fact": "The brightest star of the **Southern Pleiades** cluster. Its two stars orbit in just **2.2 days**, the fastest known for such heavy stars.",
-  "source": "https://en.wikipedia.org/wiki/Theta_Carinae"
+  "fact": "The brightest star of the **Southern Pleiades** cluster. Its two stars orbit in just **2.2 days**. Past mass transfer may explain why the main star looks younger than its neighbours.",
+  "source": [
+   "https://en.wikipedia.org/wiki/Theta_Carinae",
+   "https://doi.org/10.1051/0004-6361:200809972"
+  ]
  },
  "50099": {
   "fact": "The most southern bright star of Carina, part of the **Diamond Cross**. It spins fast and wears a **disc of gas** around its middle.",
@@ -2080,7 +2099,7 @@
   "source": "https://en.wikipedia.org/wiki/Nu_Centauri"
  },
  "55425": {
-  "fact": "The main star spins at around 340 km per second, so it **bulges 22% wider** at its middle than from pole to pole. It has a partner star.",
+  "fact": "The main star spins at **340 km per second or more** and **bulges 22% wider** at its middle than from pole to pole. It has a partner star.",
   "source": "https://en.wikipedia.org/wiki/Pi_Centauri"
  },
  "59449": {
@@ -2172,7 +2191,7 @@
   "source": "https://en.wikipedia.org/wiki/Delta_Coronae_Australis"
  },
  "93542": {
-  "fact": "A young blue-white star, only about **76 million years old**, spinning at around 300 km per second. It’s about 190 light-years away.",
+  "fact": "A young blue-white star, only about **76 million years old**, spinning at **300 km per second or more**. It’s about 190 light-years away.",
   "source": "https://en.wikipedia.org/wiki/Zeta_Coronae_Australis"
  },
  "76267": {
@@ -2308,7 +2327,7 @@
   "source": "https://en.wikipedia.org/wiki/Iota_Eridani"
  },
  "17651": {
-  "fact": "A yellow-white star about **57 light-years** away, a little bigger and brighter than our Sun. It’s quiet, with no magnetic storms seen.",
+  "fact": "A yellow-white star about **58 light-years** away, a little bigger and brighter than our Sun. It’s quiet, with no magnetic storms seen.",
   "source": "https://en.wikipedia.org/wiki/Tau6_Eridani"
  },
  "11407": {
@@ -2512,7 +2531,7 @@
   "source": "https://en.wikipedia.org/wiki/Phi1_Lupi"
  },
  "78918": {
-  "fact": "Spinning at around 330 km per second, it **bulges** 15% at its middle. It’s only about **25 million years old**, about 410 light-years away.",
+  "fact": "Spinning at **330 km per second or more**, it **bulges** 15% at its middle. It’s only about **25 million years old**, about 410 light-years away.",
   "source": "https://en.wikipedia.org/wiki/Theta_Lupi"
  },
  "76705": {
@@ -2604,8 +2623,11 @@
   "source": "https://en.wikipedia.org/wiki/Alpha_Ophiuchi"
  },
  "81377": {
-  "fact": "The **nearest O-type star**, a blazing blue giant **ploughing** through dust clouds and pushing up a glowing bow wave.",
-  "source": "https://en.wikipedia.org/wiki/Zeta_Ophiuchi"
+  "fact": "The **nearest O-type star**, a scorching blue star **ploughing** through dust clouds and pushing up a glowing bow wave. It was likely flung away when a companion exploded.",
+  "source": [
+   "https://en.wikipedia.org/wiki/Zeta_Ophiuchi",
+   "https://www.nasa.gov/image-article/zeta-ophiuchi-star-with-complicated-past/"
+  ]
  },
  "86742": {
   "fact": "Its name comes from the Arabic for **“the shepherd’s dog”**. This orange giant is about 12 times wider than the Sun, about 82 light-years away.",
@@ -2708,7 +2730,7 @@
   "source": "https://en.wikipedia.org/wiki/Xi_Persei"
  },
  "14632": {
-  "fact": "A Sun-like star just **34.5 light-years** away, a little bigger and about twice as bright as our Sun.",
+  "fact": "A Sun-like star just **34 light-years** away, a little bigger and about twice as bright as our Sun.",
   "source": "https://en.wikipedia.org/wiki/Iota_Persei"
  },
  "19812": {
@@ -2752,7 +2774,7 @@
   "source": "https://en.wikipedia.org/wiki/Iota_Piscis_Austrini"
  },
  "109285": {
-  "fact": "Spinning at about 308 km per second, it **bulges** 23% wider at its middle. It gives off X-rays that might come from a **hidden partner**.",
+  "fact": "Spinning at **308 km per second or more**, it **bulges** 23% wider at its middle. It gives off X-rays that might come from a **hidden partner**.",
   "source": "https://en.wikipedia.org/wiki/Mu_Piscis_Austrini"
  },
  "35264": {
@@ -2868,7 +2890,7 @@
   "source": "https://en.wikipedia.org/wiki/Theta_Ursae_Majoris"
  },
  "50372": {
-  "fact": "With Tania Australis, it marks one of the gazelle’s leaps, a pair of stars under the Great Bear’s paws. It’s a white star about **138 light-years** away.",
+  "fact": "With Tania Australis, it marks one of the gazelle’s leaps, a pair of stars under the Great Bear’s paws. It’s a white star about **140 light-years** away.",
   "source": "https://en.wikipedia.org/wiki/Lambda_Ursae_Majoris"
  },
  "44471": {

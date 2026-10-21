@@ -1,20 +1,20 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { fallWords } from './last-chance.js?v=0.1.924';
-import { feel } from './native.js?v=0.1.924';
-import { sfx } from './sfx.js?v=0.1.924';
-import { cardArt } from './art.js?v=0.1.924';
-import { TIER_INFO } from './rarity.js?v=0.1.924';
-import { SET_BY_ID } from './sets.js?v=0.1.924';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.924';
-import { FLEET_ABOUT, fleetAbout, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.924';
-import { artFileFor } from './art-keys.js?v=0.1.924';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.924';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.924';
-import { nightsIn } from './observation.js?v=0.1.924';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.924';
-import { SHINY } from './shiny.js?v=0.1.924';
-import { conArt, cometArt } from './con-art.js?v=0.1.924';
-import { CON_FIGURES } from './con-figures.js?v=0.1.924';
+import { fallWords } from './last-chance.js?v=0.1.925';
+import { feel } from './native.js?v=0.1.925';
+import { sfx } from './sfx.js?v=0.1.925';
+import { cardArt } from './art.js?v=0.1.925';
+import { TIER_INFO } from './rarity.js?v=0.1.925';
+import { SET_BY_ID } from './sets.js?v=0.1.925';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.925';
+import { FLEET_ABOUT, fleetAbout, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.925';
+import { artFileFor } from './art-keys.js?v=0.1.925';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.925';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.925';
+import { nightsIn } from './observation.js?v=0.1.925';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.925';
+import { SHINY } from './shiny.js?v=0.1.925';
+import { conArt, cometArt } from './con-art.js?v=0.1.925';
+import { CON_FIGURES } from './con-figures.js?v=0.1.925';
 // The animal/symbol figure belongs to the completed (gold) constellation card only (2026-10-05): a single
 // star’s card draws just the star pattern with its star marked, so the figure is a reward for finishing the set.
 // A star card’s constellation figure comes into focus as you collect the constellation’s stars (design/con-focus.html B).
@@ -81,8 +81,14 @@ const reducedMotion = () => window.matchMedia?.('(prefers-reduced-motion: reduce
 const orbitIcon = '<svg viewBox="0 0 32 24" fill="none" aria-hidden="true"><circle cx="16" cy="12" r="7"/><ellipse cx="16" cy="12" rx="15" ry="4.5" transform="rotate(-30 16 12)"/></svg>';
 
 // Preview exposes the artwork and fact without claiming the card was earned.
-// Mission card helpers (2026-10-14). Orbital speed from laps a day (circular orbit): v = 2πa / T.
-const speedKmh = (laps) => { const T = 86400 / laps, a = Math.cbrt(398600.4418 * (T / (2 * Math.PI)) ** 2); return 2 * Math.PI * a / T * 3600; };
+// A circular speed is a useful approximation only for nearly circular orbits. An eccentric
+// orbit speeds up and slows down; do not present its circular-equivalent speed as a measured speed.
+export function orbitalCardStats(o) {
+  const stats = orbitStats(o), span = o.apogee != null && o.perigee != null ? o.apogee - o.perigee : null;
+  const nearCircular = span != null && span >= 0 && span < 300;
+  const speed = stats && nearCircular ? `~${(Math.round(stats.speed * 36) * 100).toLocaleString('en-US')}` : span != null && span >= 300 ? 'Varies' : '—';
+  return [['MEAN HEIGHT', stats ? stats.alt.toLocaleString('en-US') : '—', 'km'], ['SPEED', speed, stats && nearCircular ? 'km/h' : '']];
+}
 // A star’s surface temperature: known values for the bright stars and the Sun, else from its B-V colour (Ballesteros 2012).
 const TEMP_K = { sun: 5772, 'star:sirius': 9940, 'star:canopus': 7350, 'star:arcturus': 4290, 'star:alpha-centauri': 5790, 'star:vega': 9600, 'star:capella': 4970, 'star:rigel': 12100, 'star:procyon': 6530, 'star:achernar': 15000, 'star:betelgeuse': 3600, 'star:hadar': 25000, 'star:altair': 7700, 'star:acrux': 28000, 'star:aldebaran': 3910, 'star:antares': 3400, 'star:spica': 22400, 'star:pollux': 4670, 'star:fomalhaut': 8590, 'star:deneb': 8500, 'star:mimosa': 27000, 'star:regulus': 12460, 'star:polaris': 6000 };
 const tempK = (o) => TEMP_K[o.key] ?? (o.bv != null ? 4600 * (1 / (0.92 * o.bv + 1.7) + 1 / (0.92 * o.bv + 0.62)) : null);
@@ -91,7 +97,7 @@ function tempStrip(o) {
   if (o.type !== 'star' && o.type !== 'sun') return '';
   const K = tempK(o); if (!K) return '';
   const f = Math.max(0, Math.min(1, Math.log(K / 2500) / Math.log(30000 / 2500))), C = Math.round((K - 273) / 100) * 100;
-  return `<div class="card__temp"><i><b style="left:${(f * 100).toFixed(1)}%"></b></i><span><span>COOL · 2,000 °C</span><em>${C.toLocaleString('en-US')} °C</em><span>30,000 °C · HOT</span></span></div>`;
+  return `<div class="card__temp"><i><b style="left:${(f * 100).toFixed(1)}%"></b></i><span><span>COOL · 2,000 °C</span><em>~${C.toLocaleString('en-US')} °C</em><span>30,000 °C · HOT</span></span></div>`;
 }
 // Last chance (js/last-chance.js): a red bar over the picture while it’s falling; once it has fallen out of the
 // catalogue, a "Burned up" stamp on the card you kept.
@@ -163,10 +169,9 @@ export function renderCard(o, opts = {}) {
   // fact, and the footer.
   const fromIss = o.issDeploy && o.launch ? `${/^ISS OBJECT/.test(o.name ?? '') ? 'Unidentified CubeSat' : roleOf(o)} · from the ISS · ${o.launch.slice(0, 4)}` : null;
   const sub = fromIss ?? (nat || fleet || o.type === 'rocket-body' || o.type === 'debris' ? identity : [ownerWord(o.owner, o.year ?? Number(o.launch?.slice(0, 4))), roleOf(o).replace(/^./, (ch) => (ownerWord(o.owner) ? ch.toLowerCase() : ch))].filter(Boolean).join(' ').replace(/^./, (ch) => ch.toUpperCase()) + (o.launch ? ` · ${o.launch.slice(0, 4)}` : ''));
-  const kmh = laps ? Math.round(speedKmh(laps) / 100) * 100 : null;
   const four = secretStory ? [] : nat ? o.stats.map(([label, value, unit]) => [label, value, unit])
-    : fleet ? [['HEIGHT', stats ? stats.alt.toLocaleString('en-US') : '—', 'km'], ['SPEED', kmh ? kmh.toLocaleString('en-US') : '—', 'km/h'], ['FIRST', o.launch?.slice(0, 4) ?? '—', ''], ['LAUNCHES', String(o.launches.length), '']]
-    : [['HEIGHT', stats ? stats.alt.toLocaleString('en-US') : '—', 'km'], ['SPEED', kmh ? kmh.toLocaleString('en-US') : '—', 'km/h'], ['LAPS A DAY', laps ? laps.toFixed(laps < 10 ? 1 : 0) : '—', ''], [o.type === 'rocket-body' || o.type === 'debris' ? 'YEARS UP' : 'LAUNCHED', o.type === 'rocket-body' || o.type === 'debris' ? (age == null ? '—' : String(age)) : (o.launch?.slice(0, 4) ?? '—'), '']];
+    : fleet ? [...orbitalCardStats(o), ['FIRST', o.launch?.slice(0, 4) ?? '—', ''], ['LAUNCHES', String(o.launches.length), '']]
+    : [...orbitalCardStats(o), ['LAPS A DAY', laps ? laps.toFixed(laps < 10 ? 1 : 0) : '—', ''], [o.type === 'rocket-body' || o.type === 'debris' ? 'YEARS UP' : 'LAUNCHED', o.type === 'rocket-body' || o.type === 'debris' ? (age == null ? '—' : String(age)) : (o.launch?.slice(0, 4) ?? '—'), '']];
   el.classList.add('card--mission'); if (moonCard) el.classList.add('mn-card'); // the phase row needs room: a shorter picture (css/cards.css)
   el.innerHTML = `
   <div class="card__rotator"><div class="card__face">

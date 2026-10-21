@@ -6,7 +6,8 @@
     "stat": [
       "CREW",
       "7"
-    ]
+    ],
+    "source": "https://www.nasa.gov/international-space-station/space-station-facts-and-figures/"
   },
   "48274": {
     "title": "Tiangong Space Station",
@@ -14,7 +15,8 @@
     "stat": [
       "CREW",
       "3"
-    ]
+    ],
+    "source": "https://en.cmse.gov.cn/missions/shenzhouXIV/"
   },
   "20580": {
     "title": "Hubble Space Telescope",
@@ -22,35 +24,42 @@
     "stat": [
       "MIRROR",
       "2.4 m"
-    ]
+    ],
+    "source": "https://science.nasa.gov/mission/hubble/overview/hubble-by-the-numbers/"
   },
   "16908": {
     "title": "Ajisai, the mirror ball",
-    "fact": "Covered in **318 mirrors**. As it spins it throws flashes of sunlight at the ground, so watch for it twinkling."
+    "fact": "Covered in **318 mirrors**. As it spins it throws flashes of sunlight at the ground, so watch for it twinkling.",
+    "source": "https://ilrs.gsfc.nasa.gov/missions/satellite_missions/current_missions/ajis_general.html"
   },
   "3597": {
     "title": "OAO 2 Space Telescope",
-    "fact": "One of the **first successful space telescopes**, launched in 1968 to study stars in ultraviolet light the atmosphere blocks."
+    "fact": "One of the **first successful space telescopes**, launched in 1968 to study stars in ultraviolet light the atmosphere blocks.",
+    "source": "https://science.nasa.gov/mission/oao/"
   },
   "6153": {
     "title": "Copernicus Telescope",
-    "fact": "Named after Nicolaus Copernicus, it launched the year before his **500th birthday**. It studied ultraviolet light from stars until 1981."
+    "fact": "Named after Nicolaus Copernicus, it launched the year before his **500th birthday**. It studied ultraviolet light from stars until 1981.",
+    "source": "https://science.nasa.gov/mission/oao/"
   },
   "3669": {
     "title": "ISIS 1",
-    "fact": "A **Canadian** satellite from 1969, built to study the upper atmosphere that bounces radio signals around the world."
+    "fact": "A **Canadian** satellite from 1969, built to study the upper atmosphere that bounces radio signals around the world.",
+    "source": "https://www.asc-csa.gc.ca/eng/satellites/isis.asp"
   },
   "4327": {
     "title": "SERT 2",
-    "fact": "A NASA test of **ion engines**, which push with a gentle stream of charged gas. The idea now flies on deep-space probes."
+    "fact": "A NASA test of **ion engines**, which push with a gentle stream of charged gas. The idea now flies on deep-space probes.",
+    "source": "https://www.nasa.gov/centers-and-facilities/glenn/nasas-sert-ii-a-genuine-space-success-story/"
   },
   "5": {
     "title": "Vanguard 1",
-    "fact": "The **oldest human-made object still in orbit**. Launched in 1958, it will keep circling for centuries.",
+    "fact": "The **oldest human-made object still in orbit**. Launched in 1958, it was the **first satellite with solar power**. Its radio fell silent in 1964.",
     "stat": [
       "WEIGHT",
       "1.5 kg"
-    ]
+    ],
+    "source": "https://www.nasa.gov/image-article/vanguard-satellite-1958/"
   },
   "1573": {
     "fact": "One of only two Strela-1 test satellites that carried an experimental **nuclear battery** (an RTG) as well as solar cells.",
@@ -77,7 +86,12 @@
     "source": "https://en.wikipedia.org/wiki/TOPAZ_nuclear_reactor"
   },
   "22675": {
-    "fact": "In 2009 this dead Strela-2M relay satellite was hit by Iridium 33, the **first-ever crash between two satellites**. More than 2,000 pieces of debris were tracked afterwards.",
-    "source": "https://space.skyrocket.de/doc_sdat/strela-2m.htm"
+    "fact": "In 2009 this dead relay satellite collided with Iridium 33: the **first accidental collision between two intact satellites**. More than 2,000 pieces of debris were tracked afterwards.",
+    "source": "https://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/20100008433.pdf"
+  },
+  "11792": {
+    "title": "Unidentified rocket object",
+    "fact": "Its **origin is uncertain**. The US catalogue links it to a 1966 Delta launch; independent analysis suggests debris from **Ariane’s first launch in 1979** instead.",
+    "source": "https://planet4589.org/space/gcat/tsv/cat/satcat.tsv"
   }
 }

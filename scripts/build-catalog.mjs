@@ -8,6 +8,7 @@
 // cached in scripts/.cache for 12 hours and requests are spaced out.
 
 import { fixIssDeployed } from './iss-deployed.mjs';
+import { applyCatalogCorrections } from './catalog-corrections.mjs';
 import { writeFileSync, readFileSync, mkdirSync, statSync } from 'node:fs';
 import { tierFor, retier } from '../js/rarity.js';
 
@@ -16,6 +17,7 @@ const SATCAT_URL = 'https://celestrak.org/pub/satcat.csv';
 const CACHE = new URL('./.cache/', import.meta.url);
 const FRESH = process.argv.includes('--fresh');
 const CACHE_MS = 12 * 3600 * 1000;
+const CORRECTIONS = JSON.parse(readFileSync(new URL('../data/catalog-corrections.json', import.meta.url), 'utf8'));
 
 // Brightness cutoffs, as the best-case magnitude when the object passes straight overhead.
 const NAKED_EYE_MAG = 5.0;
@@ -187,7 +189,8 @@ objects.sort((a, b) => a.id - b.id);
 // Wentian, Mengtian and visiting Shenzhou/Tianzhou on Tiangong), so they were extra cards on the same dot (playtest
 // room 2026-10-11). Keep the first catalogue number of each identical orbit: the station itself.
 { const seen = new Set(); for (let i = 0; i < objects.length; i++) { const k = JSON.stringify(objects[i].el.slice(0, 7)); if (seen.has(k)) objects.splice(i--, 1); else seen.add(k); } }
-fixIssDeployed(objects); // ISS-deployed CubeSats: a real launch date, not the station's 1998 (2026-10-15)
+fixIssDeployed(objects, CORRECTIONS);
+applyCatalogCorrections(objects, CORRECTIONS); // reviewed dates and identities survive the daily refresh
 retier(objects); // rarity by difficulty, cut by share of the catalogue (2026-10-10; tierFor above is only the seed)
 
 // Drop fields that are null, or shared by the whole family, to keep the file small.

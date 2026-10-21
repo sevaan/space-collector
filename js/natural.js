@@ -1,4 +1,4 @@
-import { extinction } from './sky-limit.js?v=0.1.924';
+import { extinction } from './sky-limit.js?v=0.1.925';
 // The Moon, the naked-eye planets and the brightest named stars, as collectible cards.
 // Positions come from js/celestial.js (state.bodies, state.skyEnu); this file holds the card facts and
 // the "can you see it right now" rules. No DOM. Every fact must be true; approximate values say so.
@@ -8,8 +8,8 @@ import { extinction } from './sky-limit.js?v=0.1.924';
 const sunCard = {
   key: 'sun', id: 'sun', natural: 'sun', type: 'sun', name: 'The Sun', tier: 'common', /* Common: everyone sees it every day (2026-10-12, Sevaan; was Rare, Epic before that) */ order: 0, code: 'OUR STAR',
   far: ['8.3', 'LIGHT-MINUTES AWAY'],
-  stats: [['DIAMETER', '1,392,700', 'km'], ['ONE SPIN', '~25', 'd'], ['AGE', '4.6', 'billion yr']],
-  fact: 'A middle-aged star that would fit **1.3 million Earths**. Never look straight at it: point the phone, catch it, and keep your eyes on the screen.',
+  stats: [['DIAMETER', '1,392,700', 'km'], ['EQUATOR SPIN', '~25', 'd'], ['AGE', '4.6', 'billion yr']],
+  fact: 'A middle-aged star with **1.3 million times Earth’s volume**. Never look straight at it: point the phone, catch it, and keep your eyes on the screen.',
 };
 // Earth (2026-10-16, Sevaan): look straight down at your feet, the centre of the ring on the ground, and collect the
 // planet you’re standing on. Any time, day or night. Its own type (not 'planet'), so it never counts toward planet
@@ -24,7 +24,7 @@ const moon = {
   key: 'moon', id: 'moon', natural: 'moon', type: 'moon', name: 'Moon', tier: 'common', order: 1, code: "EARTH’S MOON",
   far: ['1.3', 'LIGHT-SECONDS AWAY'],
   stats: [['MEAN DISTANCE', '384,400', 'km'], ['PHASE CYCLE', '29.5', 'd'], ['DIAMETER', '3,474', 'km']],
-  fact: 'It spins exactly once for every trip around Earth, so we always see the **same face**. It drifts about **3.8 cm** farther from us every year.',
+  fact: 'The Moon spins once per orbit, keeping **nearly the same face** toward Earth. A slight wobble lets us peek around its edges. It drifts about **3.8 cm** farther away each year.',
 };
 
 // Rarity (2026-10-09, Sevaan): the Moon and every star you can see from a city are Common; the bright planets are
@@ -32,12 +32,12 @@ const moon = {
 // Planet: [name, tier, order, light-minutes from the Sun, diameter km, year, day, fact]
 const PLANETS = [
   ['Mercury', 'rare', 2, '3.2', '4,879', ['88', 'd'], ['59', 'd'], 'The smallest planet and the closest to the Sun, so it never strays far from it in our sky. It races round in **88 days**. Look low, just after sunset or before dawn.'],
-  ['Venus', 'uncommon', 3, '6.0', '12,104', ['225', 'd'], ['243', 'd'], 'A day on Venus is **longer than its year**, and it spins the opposite way to most planets. After the Moon, it’s the brightest natural light in the night sky.'],
+  ['Venus', 'uncommon', 3, '6.0', '12,104', ['225', 'd'], ['243', 'd'], 'One **rotation takes 243 Earth days**, longer than its 225-day year. It spins opposite to most planets and is the brightest natural object in the night sky after the Moon.'],
   ['Mars', 'uncommon', 4, '12.7', '6,779', ['687', 'd'], ['24.6', 'h'], 'Its red colour is **rust** in the dust. It also has the tallest volcano we know of, **Olympus Mons**, about two and a half times the height of Everest.'],
-  ['Jupiter', 'uncommon', 5, '43', '139,820', ['11.9', 'yr'], ['9.9', 'h'], 'The biggest planet: more than **1,300 Earths** would fit inside it. A pair of binoculars shows its four largest moons as tiny dots.'],
-  ['Saturn', 'uncommon', 6, '79', '116,460', ['29.4', 'yr'], ['10.7', 'h'], 'Its rings are countless chunks of **ice and rock**, too small to see by eye but there around that steady golden dot. Saturn is so light it would **float in water**.'],
-  ['Uranus', 'epic', 7, '160', '50,724', ['84', 'yr'], ['17.2', 'h'], 'It spins almost **on its side**, so it rolls around the Sun like a ball. At its brightest it’s just visible to the naked eye from a truly dark site: a faint, steady, pale-green point.'],
-  ['Neptune', 'legendary', 8, '250', '49,244', ['165', 'yr'], ['16.1', 'h'], 'The farthest planet, and the first found by **maths**: in 1846, Uranus being tugged off course told astronomers where to look. Too faint for the naked eye, but binoculars show a dim blue-grey point.'],
+  ['Jupiter', 'uncommon', 5, '43', '139,820', ['11.9', 'yr'], ['9.9', 'h'], 'The biggest planet, with more than **1,300 times Earth’s volume**. A pair of binoculars shows its four largest moons as tiny dots.'],
+  ['Saturn', 'uncommon', 6, '79', '116,460', ['29.4', 'yr'], ['10.7', 'h'], 'Its rings are countless chunks of **ice and rock**, hidden around that steady golden dot until you use a telescope. Saturn’s **average density is lower than water’s**.'],
+  ['Uranus', 'epic', 7, '160', '50,724', ['84', 'yr'], ['17.2', 'h'], 'It spins almost **on its side**, with each pole facing years of sunlight and darkness. Under a truly dark sky, keen eyes can just pick it out as a **faint point of light**.'],
+  ['Neptune', 'legendary', 8, '250', '49,244', ['165', 'yr'], ['16.1', 'h'], 'The first planet found through **mathematical prediction**: Uranus’s unexpected motion pointed astronomers toward it in 1846. Too faint for unaided eyes; use binoculars or a telescope to find it.'],
 ].map(([name, tier, order, lm, dia, year, day, fact]) => ({
   key: `planet:${name.toLowerCase()}`, id: `planet:${name.toLowerCase()}`, natural: 'planet', type: 'planet', name, tier, order,
   code: `${{ Mercury: '1ST', Venus: '2ND', Mars: '4TH', Jupiter: '5TH', Saturn: '6TH', Uranus: '7TH', Neptune: '8TH' }[name]} FROM THE SUN`,
@@ -75,8 +75,8 @@ const STARS = [
   ['Pollux', 'Pollux', 'β Gem', 'Gemini', '34', 'common', 1.16, 'The closest **giant star** to the Sun, and it has a planet of its own.'],
   ['Fomalhaut', 'Fomalhaut', 'α PsA', 'Piscis Austrinus', '25', 'common', 1.17, 'A lonely bright star in a dim patch of sky, wrapped in a huge **ring of dust**.'],
   ['Deneb', 'Deneb', 'α Cyg', 'Cygnus', '~2,000', 'common', 1.25, 'One of the most **distant stars** you can see with your eyes. To look this bright from so far, it must shine **tens of thousands of times** brighter than the Sun.'],
-  ['Regulus', 'Regulus', 'α Leo', 'Leo', '79', 'common', 1.36, 'The heart of Leo. It sits almost exactly on the **Moon’s path**, so the Moon sometimes passes right in front of it.'],
-  ['Polaris', 'Polaris', 'α UMi', 'Ursa Minor', '~430', 'common', 1.97, 'The **North Star** sits almost exactly above Earth’s North Pole, so it barely moves while every other star circles it. It isn’t even among the **40 brightest**.'],
+  ['Regulus', 'Regulus', 'α Leo', 'Leo', '79', 'common', 1.36, 'The heart of Leo sits close to the **ecliptic**, the Sun’s yearly path across our sky. The Moon sometimes passes in front of it, briefly hiding the star.'],
+  ['Polaris', 'Polaris', 'α UMi', 'Ursa Minor', '~430', 'common', 1.97, 'The **North Star** lies close to the direction of Earth’s North Pole, so it barely shifts as the northern sky turns. It isn’t even among the **40 brightest stars** at night.'],
 ].map(([name, skyName, desig, con, ly, tier, mag, fact], i) => ({
   key: `star:${name.toLowerCase().replace(/\s+/g, '-')}`, id: `star:${name.toLowerCase().replace(/\s+/g, '-')}`, natural: 'star', type: 'star',
   name, skyName, tier, order: 10 + i, code: desig, constellation: con,
@@ -112,8 +112,9 @@ const CON_NAME = { Tau: 'Taurus', Per: 'Perseus', Ori: 'Orion', Cnc: 'Cancer', S
 const longAgo = (ly) => /million/.test(ly) ? `${ly.replace('~', '')} yr ago` : lightLeft(ly.split('–')[0]);
 export const DEEP_SKY = DEEP.map(([id, name, kind, ra, dec, con, mag, need, ly, tier, fact], i) => ({
   key: `deep:${id}`, id: `deep:${id}`, natural: 'deepsky', type: 'deepsky', kind, name, tier, order: 60 + i, ra, dec, conId: con, mag, need,
-  code: `IN ${CON_NAME[con] ?? con}`.toUpperCase(), constellation: CON_NAME[con] ?? con, far: [ly.replace('~', ''), 'LIGHT-YEARS AWAY'],
-  stats: [['BRIGHTNESS', mag.toFixed(1), 'mag'], ['TYPE', kind, ''], ['LIGHT LEFT IT', longAgo(ly), '']],
+  code: `IN ${CON_NAME[con] ?? con}`.toUpperCase(), constellation: CON_NAME[con] ?? con, far: kind === 'Star pattern' ? ['Various', 'STELLAR DISTANCES'] : [ly.replace('~', ''), 'LIGHT-YEARS AWAY'],
+  // A line-of-sight pattern has several distances, so it has no single light-departure date.
+  stats: [['BRIGHTNESS', mag.toFixed(1), 'mag'], ['TYPE', kind, ''], kind === 'Star pattern' ? ['DISTANCES', 'Different', ''] : ['LIGHT LEFT IT', longAgo(ly), '']],
   fact,
 }));
 

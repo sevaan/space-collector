@@ -485,7 +485,8 @@
 },
 "17254": {
 "what": "Fragment",
-"fact": "A **fragment** of Ariane 3, launched in 1986. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years."
+"fact": "Its **origin is uncertain**. The US catalogue links it to a 1986 Ariane launch, but independent analysis suggests debris from an **earlier Ariane launch in 1983**.",
+"source": "https://planet4589.org/space/gcat/tsv/cat/satcat.tsv"
 },
 "17255": {
 "what": "Fragment",

@@ -14,7 +14,9 @@ for line in txt.splitlines():
   if len(p) < 3 or not p[0].strip().isdigit(): continue
   try: hip, plx, e = int(p[0]), float(p[1]), float(p[2])
   except ValueError: continue
-  if plx <= 0: continue
+  # A positive value alone is insufficient: do not invert a measurement whose
+  # uncertainty exceeds the parallax itself (e.g. HIP 89341 / Mu Sagittarii).
+  if plx <= 0 or e < 0 or e >= plx: continue
   out[hip] = [round(3261.56 / plx, 1), round(e / plx, 3)]  # 1 parsec = 3.26156 ly; parallax in milliarcseconds
 json.dump(out, open('data/star-dist.json', 'w'), separators=(',', ':'))
 print(len(hips), 'stars,', len(out), 'with distances')

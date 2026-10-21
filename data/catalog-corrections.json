@@ -1,0 +1,173 @@
+{
+  "66906": {
+    "cospar": "1998-067XT",
+    "fields": {
+      "launch": "2025-09-14"
+    },
+    "source": "https://planet4589.org/space/gcat/tsv/cat/satcat.tsv",
+    "reason": "Cargo launch date from GCAT; replaces a catalogue-number-neighbour estimate."
+  },
+  "67683": {
+    "cospar": "1998-067YA",
+    "fields": {
+      "launch": "2025-10-26"
+    },
+    "source": "https://planet4589.org/space/gcat/tsv/cat/satcat.tsv",
+    "reason": "Cargo launch date from GCAT; replaces a catalogue-number-neighbour estimate."
+  },
+  "67685": {
+    "cospar": "1998-067YC",
+    "fields": {
+      "launch": "2025-10-26"
+    },
+    "source": "https://planet4589.org/space/gcat/tsv/cat/satcat.tsv",
+    "reason": "Cargo launch date from GCAT; replaces a catalogue-number-neighbour estimate."
+  },
+  "67686": {
+    "cospar": "1998-067YD",
+    "fields": {
+      "launch": "2025-10-26"
+    },
+    "source": "https://planet4589.org/space/gcat/tsv/cat/satcat.tsv",
+    "reason": "Cargo launch date from GCAT; replaces a catalogue-number-neighbour estimate."
+  },
+  "67687": {
+    "cospar": "1998-067YE",
+    "fields": {
+      "launch": "2025-10-26"
+    },
+    "source": "https://planet4589.org/space/gcat/tsv/cat/satcat.tsv",
+    "reason": "Cargo launch date from GCAT; replaces a catalogue-number-neighbour estimate."
+  },
+  "67688": {
+    "cospar": "1998-067YF",
+    "fields": {
+      "launch": "2025-10-26"
+    },
+    "source": "https://planet4589.org/space/gcat/tsv/cat/satcat.tsv",
+    "reason": "Cargo launch date from GCAT; replaces a catalogue-number-neighbour estimate."
+  },
+  "69648": {
+    "cospar": "1998-067YJ",
+    "fields": {
+      "launch": "2026-04-11"
+    },
+    "source": "https://planet4589.org/space/gcat/tsv/cat/satcat.tsv",
+    "reason": "Cargo launch date from GCAT; replaces a catalogue-number-neighbour estimate."
+  },
+  "69794": {
+    "cospar": "1998-067YK",
+    "fields": {
+      "launch": "2026-04-11"
+    },
+    "source": "https://planet4589.org/space/gcat/tsv/cat/satcat.tsv",
+    "reason": "Cargo launch date from GCAT; replaces a catalogue-number-neighbour estimate."
+  },
+  "69795": {
+    "cospar": "1998-067YL",
+    "fields": {
+      "launch": "2026-04-11"
+    },
+    "source": "https://planet4589.org/space/gcat/tsv/cat/satcat.tsv",
+    "reason": "Cargo launch date from GCAT; replaces a catalogue-number-neighbour estimate."
+  },
+  "69796": {
+    "cospar": "1998-067YM",
+    "fields": {
+      "launch": "2026-04-11"
+    },
+    "source": "https://planet4589.org/space/gcat/tsv/cat/satcat.tsv",
+    "reason": "Cargo launch date from GCAT; replaces a catalogue-number-neighbour estimate."
+  },
+  "69797": {
+    "cospar": "1998-067YN",
+    "fields": {
+      "launch": "2026-04-11"
+    },
+    "source": "https://planet4589.org/space/gcat/tsv/cat/satcat.tsv",
+    "reason": "Cargo launch date from GCAT; replaces a catalogue-number-neighbour estimate."
+  },
+  "69798": {
+    "cospar": "1998-067YP",
+    "fields": {
+      "launch": "2026-04-11"
+    },
+    "source": "https://planet4589.org/space/gcat/tsv/cat/satcat.tsv",
+    "reason": "Cargo launch date from GCAT; replaces a catalogue-number-neighbour estimate."
+  },
+  "69799": {
+    "cospar": "1998-067YQ",
+    "fields": {
+      "launch": "2026-04-11"
+    },
+    "source": "https://planet4589.org/space/gcat/tsv/cat/satcat.tsv",
+    "reason": "Cargo launch date from GCAT; replaces a catalogue-number-neighbour estimate."
+  },
+  "14147": {
+    "cospar": "1983-061A",
+    "fields": {
+      "launch": "1983-06-22"
+    },
+    "source": "https://planet4589.org/space/gcat/tsv/cat/satcat.tsv",
+    "reason": "Independent UTC launch-date check against GCAT and launch records."
+  },
+  "14148": {
+    "cospar": "1983-061B",
+    "fields": {
+      "launch": "1983-06-22"
+    },
+    "source": "https://planet4589.org/space/gcat/tsv/cat/satcat.tsv",
+    "reason": "Independent UTC launch-date check against GCAT and launch records."
+  },
+  "23526": {
+    "cospar": "1995-012A",
+    "fields": {
+      "launch": "1995-03-22"
+    },
+    "source": "https://nssdc.gsfc.nasa.gov/spacewarn/spx497.html",
+    "reason": "Independent UTC launch-date check against GCAT and launch records."
+  },
+  "23527": {
+    "cospar": "1995-012B",
+    "fields": {
+      "launch": "1995-03-22"
+    },
+    "source": "https://nssdc.gsfc.nasa.gov/spacewarn/spx497.html",
+    "reason": "Independent UTC launch-date check against GCAT and launch records."
+  },
+  "63523": {
+    "cospar": "2021-035E",
+    "fields": {
+      "launch": "2024-11-15"
+    },
+    "source": "https://planet4589.org/space/gcat/tsv/cat/satcat.tsv",
+    "reason": "Independent UTC launch-date check against GCAT and launch records."
+  },
+  "11792": {
+    "cospar": "1966-096C",
+    "fields": {
+      "launch": null,
+      "parent": null
+    },
+    "source": "https://planet4589.org/space/gcat/tsv/cat/satcat.tsv",
+    "reason": "GCAT marks the original launch association as unidentified and proposes a different parent; suppress the unverified date."
+  },
+  "17254": {
+    "cospar": "1986-026F",
+    "fields": {
+      "launch": null,
+      "parent": null
+    },
+    "source": "https://planet4589.org/space/gcat/tsv/cat/satcat.tsv",
+    "reason": "GCAT marks the original launch association as unidentified and proposes a different parent; suppress the unverified date."
+  },
+  "67647": {
+    "cospar": "2026-021B",
+    "fields": {
+      "type": "rocket-body",
+      "kind": "R/B"
+    },
+    "source": "https://planet4589.org/space/gcat/tsv/cat/satcat.tsv",
+    "reason": "GCAT identifies a rocket stage; CelesTrak’s own name is CZ-2C R/B, but UNK fell through to the satellite type."
+  }
+}

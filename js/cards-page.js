@@ -1,29 +1,29 @@
-import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.924';
-import { computeStats, statsHtml } from './stats.js?v=0.1.924';
-import { nightKey } from './observation.js?v=0.1.924';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.924';
-import { sfx } from './sfx.js?v=0.1.924';
-import { expandFacts } from './catalog-facts.js?v=0.1.924';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.924';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.924';
-import { ticket } from './toast.js?v=0.1.924';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.924';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.924';
-import { cardArt } from './art.js?v=0.1.924';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.924';
-import { applyBack } from './card-backs.js?v=0.1.924';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.924';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.924';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.924';
-import { STORIES } from './stories.js?v=0.1.924';
-import { loadConstellations, conList } from './constellations.js?v=0.1.924';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.924';
-import { eventBadges, nextEvent } from './events.js?v=0.1.924';
-import { shareCardEl } from './share-card.js?v=0.1.924';
-import { forgetSighting } from './cloud-backup.js?v=0.1.924';
-import { allSightings, deleteSighting } from './store.js?v=0.1.924';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.924';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.924';
+import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.925';
+import { computeStats, statsHtml } from './stats.js?v=0.1.925';
+import { nightKey } from './observation.js?v=0.1.925';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.925';
+import { sfx } from './sfx.js?v=0.1.925';
+import { expandFacts } from './catalog-facts.js?v=0.1.925';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.925';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.925';
+import { ticket } from './toast.js?v=0.1.925';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.925';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.925';
+import { cardArt } from './art.js?v=0.1.925';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.925';
+import { applyBack } from './card-backs.js?v=0.1.925';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.925';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.925';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.925';
+import { STORIES } from './stories.js?v=0.1.925';
+import { loadConstellations, conList } from './constellations.js?v=0.1.925';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.925';
+import { eventBadges, nextEvent } from './events.js?v=0.1.925';
+import { shareCardEl } from './share-card.js?v=0.1.925';
+import { forgetSighting } from './cloud-backup.js?v=0.1.925';
+import { allSightings, deleteSighting } from './store.js?v=0.1.925';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.925';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.925';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -343,6 +343,7 @@ function renderLogbook() {
 // alert for when it flies over, however long in the future"): a search-first list. Each row: art, name, rarity, whether
 // you have it, and its next visible pass from here (worked out by Explore, js/find-worker.js, up to 10 days), with a
 // target (be shown where) and a bell (remind me). Before you type: the famous ones you don’t have yet.
+let findContext = '';
 const findPasses = new Map(); let findReq = 0, findReminded = new Set(), findSuggest = null;
 // "Tonight" is the observing night (noon to noon), so a 4:57 AM pass is tonight’s everywhere (Android playtest 2026-10-19).
 function nightWord(t) {
@@ -409,8 +410,12 @@ function findActs(row, c) {
 }
 window.addEventListener('message', (e) => {
   if (e.origin !== location.origin) return;
-  if (e.data?.sc === 'find-suggest') { findSuggest = e.data.items; findReminded = new Set(e.data.reminded); for (const p of findSuggest) findPasses.set(p.id, p); if (state.view === 'find' && !state.query) renderFind(); }
-  if (e.data?.sc === 'find-passes') { if (e.data.reminded) findReminded = new Set(e.data.reminded);
+  if (e.data?.sc === 'find-context' && e.data.context !== findContext) {
+    findContext = e.data.context; findPasses.clear(); findSuggest = null;
+    if (state.ready && state.view === 'find') renderFind();
+  }
+  if (e.data?.sc === 'find-suggest') { if (e.data.context !== findContext) return; findSuggest = e.data.items; findReminded = new Set(e.data.reminded); for (const p of findSuggest) findPasses.set(p.id, p); if (state.view === 'find' && !state.query) renderFind(); }
+  if (e.data?.sc === 'find-passes') { if (e.data.context !== findContext) return; if (e.data.reminded) findReminded = new Set(e.data.reminded);
     for (const [id, p] of Object.entries(e.data.passes)) findPasses.set(isNaN(id) ? id : Number(id), p);
     { const u = $('v-up'); if (($('viewer').open || opening) && u._card && !u._up && !u.hidden) renderNextPanel(u._card); } // also while it waits for its art (opening), or the reply was dropped (bug hunt 2026-10-17)
     for (const el of document.querySelectorAll('.fd-pass[data-id]')) { const id = isNaN(el.dataset.id) ? el.dataset.id : Number(el.dataset.id), c = state.cards.find((k) => k.id === id); if (c) { el.innerHTML = findPassLine(c); findActs(el.closest('.find-row, .v-next'), c); } } findTrim(); }
@@ -915,7 +920,7 @@ if (EMBED) {
     if ((e.data.sc === 'open' || e.data.sc === 'show') && nightPending != null) { setNight(nightPending); nightPending = null; }
     if ((e.data.sc === 'open' || e.data.sc === 'show') && awayDirty) { awayDirty = false; if (state.ready) render(); }
     if (e.data.sc === 'open' || e.data.sc === 'show') { clearTimeout(awayT); awayT = setTimeout(() => document.documentElement.classList.remove('away'), 460); } // after the slide-up lands (2026-10-17 perf): restarting every twinkle and shimmer mid-slide hitched
-    if (e.data.sc === 'tonight') { state.plan = readPlan(); if (state.ready && ['owned', 'discover'].includes(state.view)) { if (document.documentElement.classList.contains('away')) awayDirty = true; else render(); } } // hidden: render when shown (jank playtest 2026-10-17)
+    if (e.data.sc === 'tonight') { state.plan = readPlan(); if (state.ready && state.view === 'find' && !state.query) { findSuggest = null; renderFind(); } if (state.ready && ['owned', 'discover'].includes(state.view)) { if (document.documentElement.classList.contains('away')) awayDirty = true; else render(); } } // hidden: render when shown (jank playtest 2026-10-17)
   });
 }
 let returnView = null, awayT = 0, awayDirty = false;
@@ -933,7 +938,8 @@ function openKey(key) {
     // A card you don’t have, opened from Explore, borrows the Albums list only while it’s open: closing it (or the
     // Collection) lands on Mine (2026-10-17, Sevaan). Opened from Albums yourself, you go back to Albums as before.
     if (want === 'discover' && state.view !== 'discover') returnView = 'owned';
-    if (!['owned', 'discover'].includes(state.view) || (want === 'discover' && state.view !== 'discover')) setView(want);
+    // Deep links to an earned card belong in Mine, even after browsing an album.
+    if (state.view !== want) setView(want);
     if (state.query || state.set !== 'all' || state.rarity !== 'all') resetFilters(); // a search left in Find doesn't shrink the list to 1 / 1 (iOS playtest 2026-10-20)
     let i = state.list.findIndex((c) => c.key === key);
     if (i < 0) { resetFilters(); i = state.list.findIndex((c) => c.key === key); }

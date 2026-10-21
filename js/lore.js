@@ -4,11 +4,11 @@
 // facts only state what the catalogue says today (orbit, launch date and site) or simple date
 // comparisons. No extrapolating today’s orbit back over decades (lifetime laps or distance).
 
-import { orbitStats, titleCase, siteName, ownerName } from './facts.js?v=0.1.924';
+import { orbitStats, titleCase, siteName, ownerName } from './facts.js?v=0.1.925';
 
 const FAMILY = [
-  [/^IRIDIUM 33 DEB/, 'A piece of the **first-ever crash between two satellites**: Iridium 33 hit the dead Kosmos 2251 in 2009.'],
-  [/^COSMOS 2251 DEB/, 'Left over from the **first-ever crash between two satellites**, when this dead satellite hit Iridium 33 in 2009.'],
+  [/^IRIDIUM 33 DEB/, 'A piece of the **first accidental collision between two intact satellites**: Iridium 33 hit the dead Kosmos 2251 in 2009.'],
+  [/^COSMOS 2251 DEB/, 'Left over from the **first accidental collision between two intact satellites**, when this dead satellite hit Iridium 33 in 2009.'],
   [/^FENGYUN 1C DEB/, 'Debris from a weather satellite China **destroyed with a missile** in a 2007 test, which created a huge cloud of junk.'],
   [/^COSMOS 1408 DEB/, 'Debris from an old satellite Russia **destroyed with a missile** in 2021. The ISS crew had to shelter from the cloud.'],
   [/^SL-3\b/, 'Same rocket family that carried **Yuri Gagarin**, the first human in space, in 1961.', ['R/B']],
@@ -103,7 +103,7 @@ export function computedFacts(o) {
   // Today’s orbit.
   if (ecc != null && ecc > 1500) out.push(`Its orbit is a long oval: it swoops from **${o.perigee.toLocaleString('en-US')} km** to **${o.apogee.toLocaleString('en-US')} km** above Earth.`);
   // 96–99° is a sun-synchronous orbit (most Earth-watching satellites), not a "westward" one (astronomers 2026-10-11).
-  if (o.incl >= 95 && o.incl <= 100 && ecc != null && ecc < 300 && Math.abs(Math.acos(-(((6378 + (o.apogee + o.perigee) / 2) / 12352) ** 3.5)) * 180 / Math.PI - o.incl) < 1) out.push('It flies a **sun-synchronous** orbit over the poles: it crosses the equator at the same local time every day, so the light below it always looks the same.');
+  if (o.incl >= 95 && o.incl <= 100 && ecc != null && ecc < 300 && Math.abs(Math.acos(-(((6378 + (o.apogee + o.perigee) / 2) / 12352) ** 3.5)) * 180 / Math.PI - o.incl) < 1) out.push('Its near-polar orbit has the height and tilt typical of **sun-synchronous satellites**, designed to pass places at roughly the same **local solar time**.');
   else if (o.incl > 105) out.push('It orbits **against Earth’s spin**, heading west, which takes extra rocket power to reach.');
   else if (o.incl >= 80) out.push('Its orbit runs **close to the poles**, so over time it passes above almost every part of Earth.');
   if (st && ecc != null && ecc < 300) out.push(`It moves about **${st.speed.toFixed(1)} km every second**. That’s Toronto to Montreal in about ${Math.round(504 / st.speed)} seconds.`);
@@ -136,9 +136,9 @@ export const FLEET_ABOUT = {
 export const FLEET_MORE = {
   STARLINK: [
     'Starlink satellites are flat and **stack like a deck of cards** inside the rocket, so one Falcon 9 can carry more than 20 at once.',
-    'Each one has **ion thrusters** that run on krypton or argon, not rocket fuel. They raise its orbit and steer it clear of debris.',
+    'Their **electric thrusters** accelerate krypton or argon gas instead of burning chemical fuel. They raise the orbit and help steer satellites clear of debris.',
     'A fresh launch crosses the sky as a **string of lights** in a line, before the satellites spread out to their working orbits.',
-    'They fly low on purpose: a satellite that fails is pulled down by the thin air and **burns up within about five years**.',
+    'They fly low on purpose. Starlink designs its satellites so thin air can pull a failed one down to **re-enter within about five years**, even without working thrusters.',
     'Newer ones pass data to each other with **laser links**, so your signal can cross an ocean without touching the ground.',
   ],
   ONEWEB: [
@@ -147,7 +147,7 @@ export const FLEET_MORE = {
     'Flying higher than Starlink means **fewer satellites** cover the whole Earth, and each one stays up far longer.',
   ],
   QIANFAN: [
-    'Its satellites go up **18 at a time** on Long March 6A rockets from Taiyuan, in northern China.',
+    'Its **first batches** went up **18 at a time** on Long March 6A rockets from Taiyuan, in northern China.',
     'In 2024 the upper stage that carried the first batch **broke apart in orbit**, scattering hundreds of tracked pieces.',
     'The name means **“a thousand sails”**: a fleet big enough to look like a harbour full of boats.',
   ],
@@ -169,8 +169,8 @@ export const FLEET_MORE = {
   IRIDIUM: [
     'The first Iridium satellites had mirror-like antennas that caused **Iridium flares**, flashes brighter than Venus.',
     'The satellites pass calls **from one to the next** across the sky, so a call can cross the planet before it comes down.',
-    'In 2009 an Iridium satellite was destroyed in the first accidental **crash between two satellites**, with dead Kosmos 2251.',
-    'The original fleet was replaced by **Iridium NEXT** between 2017 and 2019, launched ten at a time on Falcon 9s.',
+    'In 2009 an Iridium satellite was destroyed in the first accidental **collision between two intact satellites**, with dead Kosmos 2251.',
+    'The original fleet was replaced by **Iridium NEXT** between 2017 and 2019, launched on Falcon 9s, **mostly in batches of ten**.',
   ],
 };
 // The fleet line for a card with n launches stamped: the first stamp gets FLEET_ABOUT, each later one the next fact.
@@ -314,6 +314,7 @@ export function factFor(o, now = new Date()) {
 export function factSourceFor(o) {
   if (o.natural || loreCache?.[o.id]?.fact) return 'Hand-written';
   if (o.launches) return 'Fleet summary';
+  if (debrisOf(o)?.fact) return 'Researched debris';
   if (researched(o) || rocketFact(o)) return 'Researched';
   if (seriesOf(o)) return 'Researched series';
   if (FAMILY.some(([re, , kinds]) => re.test(o.name) && (!kinds || kinds.includes(o.kind)))) return 'Rocket/satellite family';

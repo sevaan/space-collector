@@ -502,8 +502,11 @@
    "source": "https://space.skyrocket.de/doc_sdat/velox-c1.htm"
   },
   "41456": {
-   "fact": "Its **radar** sees through cloud and darkness along a strip up to **700 km** wide, carrying on radar views of Earth begun by Europe’s ERS and Envisat.",
-   "source": "https://space.skyrocket.de/doc_sdat/sentinel-1.htm"
+   "fact": "Its **radar** was built to see through clouds and darkness along a strip up to **700 km** wide. A power failure ended Sentinel-1B’s mission in 2021; ESA announced its retirement in 2022.",
+   "source": [
+    "https://space.skyrocket.de/doc_sdat/sentinel-1.htm",
+    "https://www.esa.int/Applications/Observing_the_Earth/Copernicus/Sentinel-1/Mission_ends_for_Copernicus_Sentinel-1B_satellite"
+   ]
   },
   "41634": {
    "fact": "Reported to study **radiation** in space and how it affects equipment. It flies in the same tilted orbit, about **75 degrees**, as its twin SJ 16-01.",
@@ -830,12 +833,14 @@
    "source": "https://space.skyrocket.de/doc_sdat/meteor-3.htm"
   },
   "21578": {
-   "fact": "Built by a French amateur club to listen to **radio waves from Jupiter** that never reach the ground, because Earth’s ionosphere blocks them. It had six antennas, each **10 metres** long.",
-   "source": "https://space.skyrocket.de/doc_sdat/sara.htm"
+   "fact": "Built by a French amateur club to study **low-frequency radio waves from Jupiter** that Earth’s ionosphere blocks. Its six antennas were each **10 metres** long.",
+   "source": [
+    "https://space.skyrocket.de/doc_sdat/sara.htm"
+   ]
   },
   "21819": {
    "fact": "The only Soviet science satellite launched in 1991. It fired **beams of electrons** into the space around Earth, while a small Czech satellite, **Magion 3**, flew alongside to measure the effects.",
-   "source": "https://space.skyrocket.de/doc_sdat/interkosmos-25.htm"
+   "source": "https://www.lib.cas.cz/space.40/1991/086A.HTM"
   },
   "22178": {
    "fact": "Molniya means **lightning**. The Soviet Union and then Russia launched **164** of these satellites between 1965 and 2004, nearly all on the same long, looping kind of orbit.",
@@ -926,8 +931,10 @@
    "source": "https://en.wikipedia.org/wiki/NOAA-17"
   },
   "27599": {
-   "fact": "Built to track **whales**. Tags on the whales recorded where they swam, how deep they dived and the water temperature, then sent it up whenever a whale **surfaced** below the satellite.",
-   "source": "https://space.skyrocket.de/doc_sdat/weos.htm"
+   "fact": "Built to track **whales**. The plan was for tags to record position, dive depth and water temperature, then send the data up when a whale **surfaced** beneath the satellite.",
+   "source": [
+    "https://space.skyrocket.de/doc_sdat/weos.htm"
+   ]
   },
   "27643": {
    "fact": "Searched for the glow of **million-degree gas** around the Sun’s neighbourhood and found surprisingly little. It was also the first US mission run using **internet protocols**.",
@@ -1238,8 +1245,11 @@
    "source": "https://space.skyrocket.de/doc_sdat/sitro-ais-5.htm"
   },
   "62385": {
-   "fact": "Came from **Bandwagon-2**, a SpaceX rideshare that also carried South Korea’s second **425 Project** radar spy satellite, whose 5-metre dish unfolds from **24 petals**.",
-   "source": "https://space.skyrocket.de/doc_sdat/425-project-sar.htm"
+   "fact": "Came from **Bandwagon-2**, a SpaceX rideshare that carried South Korea’s **second radar satellite** for the 425 Project. Its 5-metre dish unfolds from **24 petals**.",
+   "source": [
+    "https://space.skyrocket.de/doc_sdat/425-project-sar.htm",
+    "https://www.korea.kr/news/policyNewsView.do?newsId=148937792"
+   ]
   },
   "62756": {
    "fact": "Built by **SpaceX** using Starlink technology, under a programme called **Starshield**. It is believed to be part of a new US spy network made of many small satellites.",
@@ -1830,8 +1840,8 @@
    "source": "https://space.skyrocket.de/doc_sdat/elisa.htm"
   },
   "63523": {
-   "fact": "An unidentified object from the launch of **Tianhe**, the first module of China’s space station. Tianhe is **16.6 m long** and holds the astronauts’ living quarters.",
-   "source": "https://spaceflightnow.com/2021/04/29/assembly-of-chinese-space-station-begins-with-successful-core-module-launch/"
+   "fact": "A small satellite **released from China’s space station**. Independent tracking identifies it as **Naxing-4B**, carried to orbit in **2024**.",
+   "source": "https://planet4589.org/space/gcat/tsv/cat/satcat.tsv"
   },
   "49319": {
    "fact": "An unidentified object from the launch of **Xihe**, China’s first solar observatory in space. Xihe is named after a figure from Chinese legends about the **Sun**.",
@@ -1850,8 +1860,11 @@
    "source": "https://en.wikipedia.org/wiki/Ceres-1"
   },
   "58280": {
-   "fact": "One of **36 SuperDoves** launched together by the company Planet. Its Dove satellites work as a team to photograph **the whole Earth every day**.",
-   "source": "https://en.wikipedia.org/wiki/Flock_(satellite)"
+   "fact": "One of **36 SuperDoves** launched together by the company Planet. Its Dove satellites work as a team to photograph **Earth’s land every day**.",
+   "source": [
+    "https://en.wikipedia.org/wiki/Flock_(satellite)",
+    "https://www.planet.com/products/planet-imagery/"
+   ]
   },
   "58322": {
    "fact": "Planet’s Doves are tiny satellites about the size of a **loaf of bread**, 10 by 10 by 30 cm. This one flew up with **35 other Doves** on the same rocket.",
@@ -2858,8 +2871,12 @@
    "source": "https://en.wikipedia.org/wiki/UK-DMC_2"
   },
   "35871": {
-   "fact": "A ball of **layered glass** that works like a lens, bouncing laser beams straight back with less than **0.1 mm** of error. Its name means Ball Lens In The Space.",
-   "source": "https://en.wikipedia.org/wiki/BLITS"
+   "fact": "A ball of **layered glass** built to reflect laser beams back to Earth for precise tracking. Its name means **Ball Lens In The Space**. A collision with debris ended its useful tracking mission in 2013.",
+   "source": [
+    "https://en.wikipedia.org/wiki/BLITS",
+    "https://ilrs.gsfc.nasa.gov/missions/satellite_missions/past_missions/bltm_general.html",
+    "https://ilrs.gsfc.nasa.gov/lw18/docs/papers/Posters/13-Po03-Natalia.pdf"
+   ]
   },
   "36588": {
    "fact": "Tested whether cheap, **off-the-shelf** parts, the kind made for ordinary electronics, could survive in space. It carried **nine experiments**.",
@@ -3170,8 +3187,10 @@
    "source": "https://space.skyrocket.de/doc_sdat/ov3.htm"
   },
   "2610": {
-   "fact": "In 1967 it spotted **protons streaming away** from Earth’s upper air, the first sign that our planet has its own **electric field**.",
-   "source": "https://en.wikipedia.org/wiki/OV1-9"
+   "fact": "In 1967 it detected **protons streaming out** of Earth’s upper atmosphere. Scientists interpreted the findings as evidence of an **electric field** helping particles escape into space.",
+   "source": [
+    "https://en.wikipedia.org/wiki/OV1-9"
+   ]
   },
   "2807": {
    "fact": "Really **Transit-O 13**, a Navy navigation satellite. It turned out to be one of the toughest of its kind, working for **more than 20 years**.",
@@ -4334,8 +4353,11 @@
    "source": "https://space.skyrocket.de/doc_sdat/iod-hammer.htm"
   },
   "60520": {
-   "fact": "First step of an Italian plan for a small **space tug** that works in orbit and then **flies home** through the atmosphere with its cargo. It practises moving around a set point.",
-   "source": "https://space.skyrocket.de/doc_sdat/iperdrone-0.htm"
+   "fact": "An Italian **in-orbit servicing** test: it was designed to manoeuvre around a virtual target. Later missions in the IPERDRONE programme aim to **return cargo safely to Earth**.",
+   "source": [
+    "https://space.skyrocket.de/doc_sdat/iperdrone-0.htm",
+    "https://www.asi.it/2024/08/lanciato-con-successo-il-satellite-italiano-iperdrone-0/"
+   ]
   },
   "61749": {
    "fact": "A small CubeSat testing **VERA**, a new **plasma thruster**, plus a receiver that uses GPS and GLONASS signals to study the **ionosphere**, the electrically charged upper air.",
@@ -4694,8 +4716,11 @@
    "source": "https://en.wikipedia.org/wiki/HAMSAT"
   },
   "28894": {
-   "fact": "The **first spacecraft built by European students**, about the size of a washing machine. Twenty-three university teams worked together **over the internet** to make it.",
-   "source": "https://en.wikipedia.org/wiki/SSETI_Express"
+   "fact": "A **pan-European student satellite**, about the size of a washing machine. Twenty-three university teams worked together **over the internet**, with ESA’s help, to build it.",
+   "source": [
+    "https://en.wikipedia.org/wiki/SSETI_Express",
+    "https://www.esa.int/Education/SSETI_Express/First_Internet-built_student_satellite_successfully_launched"
+   ]
   },
   "29048": {
    "fact": "One of six Taiwanese and American satellites launched together to gather air data for **weather forecasts**. Designed to last 5 years, they worked for about **14**.",
@@ -4950,8 +4975,11 @@
    "source": "https://space.skyrocket.de/doc_sdat/anser.htm"
   },
   "58304": {
-   "fact": "One of **36 SuperDoves** launched together, alongside Planet’s first **Pelican** test satellite, to help photograph the whole planet every day.",
-   "source": "https://markets.financialcontent.com/dowtheoryletters/article/bizwire-2023-11-10-planet-to-launch-pelican-tech-demonstration-and-36-superdoves-with-spacex"
+   "fact": "One of **36 SuperDoves** launched together, alongside Planet’s first **Pelican** test satellite, to help photograph Earth’s land every day.",
+   "source": [
+    "https://markets.financialcontent.com/dowtheoryletters/article/bizwire-2023-11-10-planet-to-launch-pelican-tech-demonstration-and-36-superdoves-with-spacex",
+    "https://www.planet.com/products/planet-imagery/"
+   ]
   },
   "58820": {
    "fact": "Nicknamed **Mofulong**. It was one of five satellites from the company Minospace that rode into space together on a single **Kinetica-1** rocket.",
@@ -5010,7 +5038,7 @@
     "A single Kosmos-3M could drop off **eight small satellites** on one launch, spacing them out around the same orbit.",
     "Most of these rockets launched from **Plesetsk**, a military cosmodrome in the forests of northern Russia that was kept secret for years.",
     "In 1975 a Kosmos-3M launched **Aryabhata**, India’s very first satellite, from Kapustin Yar, a launch site near the Volga River.",
-    "Empty stages like this one slowly **tumble end over end**, so they brighten and fade as sunlight glints off their sides."
+    "An empty stage **can tumble** as it orbits. Sunlight glinting off its changing angles may make it brighten and fade as you watch."
    ],
    "source": "https://space.skyrocket.de/doc_lau_det/kosmos-3m.htm"
   },
@@ -5022,7 +5050,7 @@
     "Tsyklon-3 grew out of the **R-36**, one of the biggest nuclear missiles the Soviet Union ever built.",
     "This third stage could **restart its engine** in space, letting it fine-tune a satellite’s orbit before letting go.",
     "All three stages burned **nitrogen tetroxide and UDMH**, toxic fuels that ignite on contact. That toxicity helped get the rocket retired.",
-    "In 2013 a tiny Ecuadorian satellite was sent **spinning out of control** after flying through a cloud of debris around one of these stages.",
+    "In 2013 Ecuador’s **Pegaso** satellite began tumbling after a close pass by one of these stages. Its operators suspected a strike by nearby debris; a collision was not confirmed.",
     "One Tsyklon-3 stage has **broken apart five times** because of leftover fuel inside, scattering more than 100 pieces of debris.",
     "A Tsyklon-3 could carry **six satellites at once**, a trick used to launch Soviet military communication satellites in batches.",
     "The whole rocket stood about **39 metres tall**, as high as a 13-storey building, and was built by Yuzhmash in Dnipro, Ukraine."
@@ -5172,7 +5200,7 @@
    "rocket": "FALCON",
    "match": "^FALCON 9 R/B",
    "facts": [
-    "From a **Falcon 9**, the most-launched rocket flying today, with **more than 600 successful flights**.",
+    "From a **Falcon 9**, SpaceX’s two-stage rocket. It has carried **hundreds of missions** into orbit, from small satellites to crews bound for the space station.",
     "Falcon 9’s first stage lands to fly again, but the **second stage is not reused**. This one was left in orbit after its job.",
     "This second stage runs on a single **Merlin Vacuum** engine, burning rocket-grade kerosene and liquid oxygen.",
     "In 2020 Falcon 9 became the **first commercial rocket to carry astronauts** into orbit.",
@@ -5195,7 +5223,7 @@
    "facts": [
     "From a **Molniya** rocket, named after the Molniya, or **lightning**, communication satellites it carried.",
     "Molniya was built from the **R-7**, the world’s first intercontinental missile, in the same family of rockets that launched Sputnik.",
-    "Molniya’s top stage was built to coast in orbit and then **fire again in weightlessness**, flinging its cargo far from Earth.",
+    "Molniya’s top stage was built to **coast in a parking orbit**, then ignite in weightlessness to send its cargo into a much longer orbit.",
     "Like its satellite, this stage was left in a **long, looping orbit** that climbs about 40,000 km high above the northern half of the world.",
     "Molniya rockets launched early probes to Venus and Mars, and in 1966 **Luna 9**, the first spacecraft to land softly on the Moon.",
     "The upgraded Molniya-M flew **nearly 300 times**, mostly from Plesetsk in northern Russia, before retiring in 2010."
@@ -5274,7 +5302,7 @@
    "match": "^SL-16 R/B",
    "facts": [
     "This is the second stage of a **Zenit-2**, the last new rocket family designed in the Soviet Union, built in Dnipro, Ukraine.",
-    "Zenit’s first stage doubled as a strap-on booster for **Energia**, the giant rocket that launched the Buran space shuttle.",
+    "Zenit’s first stage shared its design heritage with the strap-on boosters of **Energia**, the giant rocket that launched the Buran space shuttle.",
     "Zenit burned **kerosene and liquid oxygen**, chosen because they are safer and less toxic than other Soviet rocket fuels.",
     "At **3.9 metres wide** and several tonnes empty, stages like this are among the biggest pieces of junk in low orbit."
    ],
@@ -5405,7 +5433,7 @@
    "rocket": "SCOUT A",
    "match": "^SCOUT A R/B",
    "facts": [
-    "Scout A rockets launched US Navy **navigation satellites** in pairs, an early version of GPS used by submarines.",
+    "Scout rockets launched US Navy **Transit navigation satellites**, helping ships and submarines find their position before **GPS**.",
     "From a **Scout**, the first rocket to reach orbit using **only solid-fuel stages**, like four giant fireworks stacked up.",
     "Scout was built from proven parts: its first stage drew on the **Polaris** submarine missile and the second on the Army’s Sergeant missile.",
     "Scout stands for **Solid Controlled Orbital Utility Test**, though the words were picked to fit the name, not the other way round."
@@ -5482,7 +5510,7 @@
    "match": "^ATLAS 5 CENTAUR R/B",
    "facts": [
     "From an **Atlas V**, which launched the New Horizons probe to Pluto and the Mars rovers **Curiosity and Perseverance**.",
-    "Atlas V’s first stage is powered by a **Russian-made RD-180** engine, while this Centaur stage uses a single American RL10."
+    "Atlas V’s first stage uses a **Russian-made RD-180** engine. Its Centaur upper stage uses **one or two American RL10s**, depending on the mission."
    ],
    "source": "https://en.wikipedia.org/wiki/Atlas_V"
   },
@@ -5554,7 +5582,7 @@
    "match": "^THOR AGENA D R/B",
    "facts": [
     "Thor-Agenas launched **CORONA** spy satellites, which dropped film capsules that planes caught in mid-air.",
-    "Agena was named after **a bright star**, Beta Centauri, also called Agena, because this stage would ignite in the sky."
+    "Agena was named after **Beta Centauri**, a bright southern star also known as Agena. The stage helped launch early spy satellites and space probes."
    ],
    "source": "https://en.wikipedia.org/wiki/Thor-Agena"
   },
@@ -5679,7 +5707,7 @@
    "rocket": "CZ-7A",
    "match": "^CZ-7A R/B",
    "facts": [
-    "The Long March 7 family is nicknamed **Bingjian, the Ice Arrow**. Unlike older Chinese rockets, it uses no toxic fuels.",
+    "The Long March 7 family is nicknamed **Bingjian, the Ice Arrow**. Its kerosene and hydrogen fuels replace the highly toxic hypergolic propellants used by older Chinese rockets.",
     "The 7A adds a **hydrogen-burning third stage**, borrowed from the Long March 3 rockets, to reach high orbits."
    ],
    "source": "https://en.wikipedia.org/wiki/Long_March_7"
@@ -5734,7 +5762,7 @@
    "match": "^CZ-6 R/B",
    "facts": [
     "From a **Long March 6**, a small quick-launch rocket whose 2015 first flight debuted China’s new **YF-100** kerosene engine.",
-    "Every Long March 6 launch so far has **succeeded**, all of them flying from Taiyuan in northern China."
+    "The first **Long March 6** carried **20 small satellites** into orbit in September 2015, all on one rocket from Taiyuan in northern China."
    ],
    "source": "https://en.wikipedia.org/wiki/Long_March_6"
   },
@@ -5761,7 +5789,7 @@
    "match": "^TAURUS R/B",
    "facts": [
     "From a **Taurus**, a four-stage solid rocket based on Pegasus, but launched from the ground instead of from under a plane.",
-    "Taurus’s first stage, a Castor 120, came from the **Peacekeeper** nuclear missile. The rocket was later renamed Minotaur-C."
+    "Taurus’s **Castor 120** first stage was developed from the Peacekeeper missile’s motor design. The Taurus rocket was later renamed **Minotaur-C**."
    ],
    "source": "https://en.wikipedia.org/wiki/Minotaur-C"
   },
@@ -6298,7 +6326,7 @@
    "rocket": "NATO 4A",
    "match": "^NATO 4A R/B",
    "facts": [
-    "In 2001 a used PAM-D stage like this one fell back to Earth and **landed in the Saudi Arabian desert**, where it was found and identified."
+    "In 2001 the **titanium motor casing** of a used PAM-D stage survived re-entry and was found in the **Saudi Arabian desert**."
    ],
    "source": "https://en.wikipedia.org/wiki/Payload_Assist_Module"
   },
@@ -6338,7 +6366,7 @@
    "rocket": "OPTUS B3",
    "match": "^OPTUS B3",
    "facts": [
-    "This kick motor flew on a **Long March 2E**, the Chinese rocket that launched all three of Australia’s US-built **Optus B** satellites."
+    "This kick motor flew on a **Long March 2E**. The rocket launched Australia’s Optus B1 and B3 satellites into orbit; **Optus B2 was lost** in a 1992 launch failure."
    ],
    "source": "https://en.wikipedia.org/wiki/Long_March_2E"
   },
@@ -6370,7 +6398,7 @@
    "rocket": "OV1-5",
    "match": "^OV1-5 R/B",
    "facts": [
-    "OV1 satellites rode **retired Atlas missiles**, often two at a time, then used this motor to reach orbit. A launch cost just $1.25 million."
+    "OV1 satellites rode **retired Atlas missiles**, often two at a time, then used a small solid-fuel motor like this one to reach orbit. Sharing a launch helped **keep costs down**."
    ],
    "source": "https://en.wikipedia.org/wiki/Orbiting_Vehicle"
   },
@@ -6402,7 +6430,7 @@
    "rocket": "OV1-14",
    "match": "^OV1-14 R/B",
    "facts": [
-    "OV1 satellites rode **retired Atlas missiles**, often two at a time, then used this motor to reach orbit. A launch cost just $1.25 million."
+    "OV1 satellites rode **retired Atlas missiles**, often two at a time, then used a small solid-fuel motor like this one to reach orbit. Sharing a launch helped **keep costs down**."
    ],
    "source": "https://en.wikipedia.org/wiki/Orbiting_Vehicle"
   },
@@ -6538,7 +6566,7 @@
    "rocket": "M-3H",
    "match": "^M-3H R/B",
    "facts": [
-    "From a **Mu-3H**, one of Japan’s **Mu** solid-fuel rockets, which launched science satellites from Uchinoura between 1966 and 2006."
+    "From a **Mu-3H**, one of Japan’s solid-fuel **Mu** rockets. The Mu family flew from Uchinoura between **1966 and 2006**, carrying many of Japan’s early science missions."
    ],
    "source": "https://en.wikipedia.org/wiki/Mu_(rocket_family)"
   },
@@ -6578,15 +6606,15 @@
    "rocket": "YZ-1S",
    "match": "^YZ-1S R/B",
    "facts": [
-    "This is a **Yuanzheng** upper stage. Yuanzheng means **expedition**, and the stage can restart to carry satellites to faraway orbits."
+    "A **Yuanzheng-1S** upper stage, a simplified member of a family whose name means **“expedition”**. It helps place satellites into their intended orbits."
    ],
-   "source": "https://en.wikipedia.org/wiki/Yuanzheng_(rocket_stage)"
+   "source": "https://www.cnsa.gov.cn/n6758823/n6758838/c6808482/content.html"
   },
   {
    "rocket": "LVM3",
    "match": "^LVM3 R/B",
    "facts": [
-    "From an **LVM3**, India’s heavy rocket, which launched the **Chandrayaan-2 and 3** Moon missions and is being readied to carry Gaganyaan astronauts."
+    "From an **LVM3**, India’s heavy rocket, which launched the **Chandrayaan-2 and 3** Moon missions. A human-rated version was developed for **Gaganyaan**."
    ],
    "source": "https://en.wikipedia.org/wiki/LVM3"
   },

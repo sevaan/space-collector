@@ -3,8 +3,8 @@
 // Every star in a stick figure (magnitude <= 5) is its own card; the constellation card turns gold when
 // you own all of them. Bright stars that already have cards (Regulus, Spica…) count as members.
 // No DOM.
-import { NATURAL, NATURAL_BY_KEY, SOLAR_SYSTEM } from './natural.js?v=0.1.924';
-import { starVector } from './celestial.js?v=0.1.924';
+import { NATURAL, NATURAL_BY_KEY, SOLAR_SYSTEM } from './natural.js?v=0.1.925';
+import { starVector } from './celestial.js?v=0.1.925';
 
 const GEN = { Ari: 'Arietis', Tau: 'Tauri', Gem: 'Geminorum', Cnc: 'Cancri', Leo: 'Leonis', Vir: 'Virginis', Lib: 'Librae', Sco: 'Scorpii', Sgr: 'Sagittarii',
   Cap: 'Capricorni', Aqr: 'Aquarii', Psc: 'Piscium', Ori: 'Orionis', BigDipper: 'Ursae Majoris', UMi: 'Ursae Minoris', Cas: 'Cassiopeiae', Cyg: 'Cygni', Cru: 'Crucis',
@@ -48,7 +48,7 @@ export function loadConstellations(url = 'data/constellations.json') {
   // Each star’s own researched fact (pre-launch writing review, 2026-10-15): data/star-facts.json, keyed by HIP.
   const facts = fetch(url.replace('constellations.json', 'star-facts.json')).then((r) => r.json()).catch(() => ({}));
   // Distances (2026-10-17): Hipparcos parallaxes, data/star-dist.json { hip: [light-years, relative error] }.
-  const dist = fetch(url.replace('constellations.json', 'star-dist.json')).then((r) => r.json()).catch(() => ({}));
+  const dist = fetch(url.replace('constellations.json', 'star-dist.json')).then((r) => r.json()).then((d) => Object.fromEntries(Object.entries(d).filter(([, v]) => Array.isArray(v) && v[0] > 0 && v[1] >= 0 && v[1] < 1))).catch(() => ({}));
   return (loading ??= Promise.all([fetch(url).then((r) => r.json()), facts, dist]).then(([d, f, ds]) => { starFacts = f ?? {}; starDist = ds ?? {}; register(d); }).catch(() => {}));
 }
 
@@ -60,6 +60,9 @@ export function loadConstellations(url = 'data/constellations.json') {
 // letter; `colour` is the COLOUR stat from the spectral class where B-V misleads (K giants with B-V 1.4+ are orange);
 // `bv` is the star's own colour for hot stars reddened by dust (drives both COLOUR and the temperature strip).
 const STAR_FIX = {
+  // IAU boundaries checked for all figure stars with Astropy (Roman 1987), 2026-10-21.
+  677: { con: 'Andromeda', id: 'And' }, 25428: { con: 'Taurus', id: 'Tau' },
+  39429: { con: 'Puppis', id: 'Pup' }, 79593: { con: 'Ophiuchus', id: 'Oph' },
   746: { colour: 'White' }, 3031: { name: 'Anunitu' }, 3092: { name: 'Kuda' }, 3179: { name: 'Schedar' }, 3693: { name: 'Shimu' },
   3786: { name: 'Waiping', colour: 'Orange' }, 4427: { name: 'Tiansi' }, 4463: { name: 'Kui' }, 4906: { colour: 'Orange' },
   5364: { name: 'Gajahmina' }, 5434: { name: 'Junnanmen', bv: -0.16 }, 6537: { name: 'Tiancang' }, 8068: { name: 'Dajiangjunbei' },
@@ -104,6 +107,7 @@ const STAR_FIX = {
   116805: { name: 'Kaffalmusalsala' }, 117221: { colour: 'Yellow' }, 118268: { name: 'Pili' },
 };
 function register(data) {
+  // Reuse HIP cards shared by drawn figures without changing existing collection keys.
   const byName = new Map(NATURAL.filter((o) => o.type === 'star').map((o) => [o.name.toLowerCase(), o]));
   let order = 100;
   for (const c of data.constellations) {
@@ -111,8 +115,8 @@ function register(data) {
     const used = new Set(), keys = [];
     c.stars.forEach((s, i) => {
       const fix = STAR_FIX[s.hip]; if (fix) s = { ...s, ...fix }; // name, bayer, bv overrides
-      const conName = fix?.con ?? c.name;
-      const existing = s.name && byName.get(s.name.toLowerCase());
+      const conName = fix?.con ?? (c.id === 'BigDipper' ? 'Ursa Major' : c.name);
+      const existing = NATURAL_BY_KEY.get(`star:hip${s.hip}`) ?? (s.name && byName.get(s.name.toLowerCase()));
       let card = existing;
       if (!card) {
         const gen = GEN[fix?.id] ?? GEN[c.id], abbr = fix?.id ?? (ABBR[c.id] ?? c.id);

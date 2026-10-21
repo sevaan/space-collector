@@ -19,8 +19,8 @@
    "name": "Strela-2M",
    "source": "https://space.skyrocket.de/doc_sdat/strela-2m.htm",
    "facts": [
-    "A Strela-2M military **message relay**: it recorded messages over one part of the world and played them back over another. Another of these, Kosmos 2251, was destroyed in the first-ever crash between two satellites.",
-    "52 Strela-2M satellites were launched to about **800 km up**, and three of them never reached orbit."
+    "A Strela-2M military **message relay**: it recorded messages over one part of the world and played them back over another. Another of these, Kosmos 2251, was destroyed in the first accidental collision between two intact satellites.",
+    "**52 Strela-2M satellites** were launched, with three lost before reaching orbit. The others were sent to circular orbits about **800 km up**."
    ]
   },
   "strela-3": {
@@ -134,7 +134,7 @@
    "source": "https://space.skyrocket.de/doc_sdat/us-a.htm",
    "facts": [
     "Part of a Soviet radar **spy satellite** that watched ships, powered by a **nuclear reactor** and boosted to this higher orbit when its mission ended. Another, Kosmos 954, fell on Canada in 1978.",
-    "Satellites like this one could throw their reactor core clear, so that if it ever fell, the radioactive core would burn up instead of reaching the ground."
+    "Satellites like this one could **eject their reactor core**. The design aimed to make a returning core break up and burn away high in the atmosphere, reducing radioactive contamination on the ground."
    ]
   }
  },
