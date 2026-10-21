@@ -1,52 +1,52 @@
-import { pullToClose } from './pull-close.js?v=0.1.950';
-import { TESTER } from './build-flavor.js?v=0.1.950';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.950';
-import * as Secrets from './secrets.js?v=0.1.950';
-import { STORY_BY_SECRET } from './stories.js?v=0.1.950';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.950';
-import * as Ufo from './ufo.js?v=0.1.950';
-import * as Fossil from './fossil.js?v=0.1.950';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.950';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.950';
-import { toast, ticket, dropToast, toastPending, onTicketShown, iconSvg } from './toast.js?v=0.1.950';
-import { VERSION } from './version.js?v=0.1.950';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, overEarth, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.950';
-import { placeName } from './geo.js?v=0.1.950';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, SLIDER_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.950';
-import { conArt } from './con-art.js?v=0.1.950';
-import { fetchWeather, tonightSky, skyClearAt, goodSkyAt } from './weather.js?v=0.1.950';
-import { CON_FIGURES } from './con-figures.js?v=0.1.950';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress, starDistance } from './constellations.js?v=0.1.950';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.950';
-import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.950';
-import { eventOf, activeEvent, nextEvent } from './events.js?v=0.1.950';
-import { conList } from './constellations.js?v=0.1.950';
-import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination, hasSensorView, resumeSensors, needsPermission } from './sensors.js?v=0.1.950';
-import { SkyView, shortName } from './sky.js?v=0.1.950';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.950';
-import { isPlus, setPlusForTesting, onPlus, PLUS_PERKS, PLUS_PRICES, initStore, storePlans, buyPlus, restorePlus, rcTestStore, storeOpen } from './plus.js?v=0.1.950';
-import { isNative, getPosition, saveFile, notifyAt, cancelNotify, haptic, onNative, nativeChrome, plugin } from './native.js?v=0.1.950';
-import { initBackup, onBackupChange, backupSoon, clearBackup, backupStatus } from './cloud-backup.js?v=0.1.950';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.950';
-import { cardArt } from './art.js?v=0.1.950';
-import { renderCard, miniCard, cardLevel, artImage, lockedArt, attachTilt, attachGyro, throwOff, attachFlip, turnCard } from './card.js?v=0.1.950';
-import { applyBack, CARD_BACKS, backUnlocked, chosenBack, chooseBack, backEarned } from './card-backs.js?v=0.1.950';
-import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.950';
-import { audioCtx } from './audio-ctx.js?v=0.1.950';
-import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume, musicAway } from './music.js?v=0.1.950';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.950';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel, moonPhaseOf, MOON_PHASES } from './card-model.js?v=0.1.950';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.950';
-import { naturalTargets, SOLAR_SYSTEM, DEEP_SKY } from './natural.js?v=0.1.950';
-import { placeFromTimeZone } from './tz-places.js?v=0.1.950';
-import { TIER_INFO } from './rarity.js?v=0.1.950';
-import { SETS, albumList } from './sets.js?v=0.1.950';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.950';
-import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.950';
-import { shareCardEl } from './share-card.js?v=0.1.950';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.950';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.950';
-import { addStarfield } from './starfield.js?v=0.1.950';
+import { pullToClose } from './pull-close.js?v=0.1.951';
+import { TESTER } from './build-flavor.js?v=0.1.951';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.951';
+import * as Secrets from './secrets.js?v=0.1.951';
+import { STORY_BY_SECRET } from './stories.js?v=0.1.951';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.951';
+import * as Ufo from './ufo.js?v=0.1.951';
+import * as Fossil from './fossil.js?v=0.1.951';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.951';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.951';
+import { toast, ticket, dropToast, toastPending, onTicketShown, iconSvg } from './toast.js?v=0.1.951';
+import { VERSION } from './version.js?v=0.1.951';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, overEarth, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.951';
+import { placeName } from './geo.js?v=0.1.951';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, SLIDER_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.951';
+import { conArt } from './con-art.js?v=0.1.951';
+import { fetchWeather, tonightSky, skyClearAt, goodSkyAt } from './weather.js?v=0.1.951';
+import { CON_FIGURES } from './con-figures.js?v=0.1.951';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress, starDistance } from './constellations.js?v=0.1.951';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.951';
+import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.951';
+import { eventOf, activeEvent, nextEvent } from './events.js?v=0.1.951';
+import { conList } from './constellations.js?v=0.1.951';
+import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination, hasSensorView, resumeSensors, needsPermission } from './sensors.js?v=0.1.951';
+import { SkyView, shortName } from './sky.js?v=0.1.951';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.951';
+import { isPlus, setPlusForTesting, onPlus, PLUS_PERKS, PLUS_PRICES, initStore, storePlans, buyPlus, restorePlus, rcTestStore, storeOpen } from './plus.js?v=0.1.951';
+import { isNative, getPosition, saveFile, notifyAt, cancelNotify, haptic, onNative, nativeChrome, plugin } from './native.js?v=0.1.951';
+import { initBackup, onBackupChange, backupSoon, clearBackup, backupStatus } from './cloud-backup.js?v=0.1.951';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.951';
+import { cardArt } from './art.js?v=0.1.951';
+import { renderCard, miniCard, cardLevel, artImage, lockedArt, attachTilt, attachGyro, throwOff, attachFlip, turnCard } from './card.js?v=0.1.951';
+import { applyBack, CARD_BACKS, backUnlocked, chosenBack, chooseBack, backEarned } from './card-backs.js?v=0.1.951';
+import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.951';
+import { audioCtx } from './audio-ctx.js?v=0.1.951';
+import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume, musicAway } from './music.js?v=0.1.951';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.951';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel, moonPhaseOf, MOON_PHASES } from './card-model.js?v=0.1.951';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.951';
+import { naturalTargets, SOLAR_SYSTEM, DEEP_SKY } from './natural.js?v=0.1.951';
+import { placeFromTimeZone } from './tz-places.js?v=0.1.951';
+import { TIER_INFO } from './rarity.js?v=0.1.951';
+import { SETS, albumList } from './sets.js?v=0.1.951';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.951';
+import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.951';
+import { shareCardEl } from './share-card.js?v=0.1.951';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.951';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.951';
+import { addStarfield } from './starfield.js?v=0.1.951';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -2879,7 +2879,7 @@ function openDebug() {
 }
 // The header stays put over the Collection (2026-10-17), so its Settings button opens Settings over it, the way the
 // Collection’s own button used to: Settings rises on top, then the Collection closes underneath without a slide.
-function settingsOverCollection() { document.body.classList.add('panel-over-col'); openDebug(); setTimeout(() => { closeCollection(false, true); setTimeout(() => document.body.classList.remove('panel-over-col'), 60); }, 440); }
+function settingsOverCollection() { document.body.classList.add('panel-over-col'); openDebug(); setTimeout(() => { closeCollection(false, true); setTimeout(() => document.body.classList.remove('panel-over-col'), 420); }, 440); } // Settings stays above until the Collection under it is fully gone (2026-10-21)
 $('nav-more').addEventListener('click', () => (activePanel === 'debug' ? closePanel('debug') : collectionOpen ? settingsOverCollection() : openDebug())); // on Settings this button is its ✕
 $('nav-explore').addEventListener('click', () => { if (activePanel === 'visible') { setSwitch($('nav'), 'mid'); setTimeout(() => closePanel('visible'), SLIDE_MS); return; } if (collectionOpen) { setSwitch($('nav'), exploreSide()); setTimeout(() => closeCollection(), SLIDE_MS); return; } closePanel(); }); // over the Collection, this is the way back
 // Use my location (iOS playtest 2026-10-20): the sheet stays open and says why when it can't, instead of closing silently.
