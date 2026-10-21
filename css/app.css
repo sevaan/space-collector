@@ -1860,3 +1860,19 @@ body.night .pr-row.on { border-color: #ff6a55; background: #1a0705; } body.night
 .now-missions .nm b { font: 500 13px var(--label); letter-spacing: .08em; color: #5fd08a; }
 .now-missions .nm.done span { color: #bdbea9; text-decoration: line-through; text-decoration-color: #fa8127; } .now-missions .nm.done i { background: #fa8127; border-color: #fa8127; } .now-missions .nm.done b { opacity: .5; }
 body.night .now-missions .nm b { color: #ff7f70; } body.night .now-missions .nm { border-color: #2e1010; }
+
+/* One sky page (2026-10-21, design/sky-page-3.html): jump chips pinned under the title. */
+.sky-jump { position: sticky; top: calc(-1 * var(--safe-top, 0px)); z-index: 5; display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; margin: 0 -20px 6px; padding: 10px 20px 10px; background: var(--bg); -webkit-mask: linear-gradient(90deg, #000 88%, transparent); mask: linear-gradient(90deg, #000 88%, transparent); }
+.sky-jump::-webkit-scrollbar { display: none; }
+.sky-jump button { flex: none; min-height: 36px; padding: 0 13px; border-radius: 999px; border: 1px solid var(--edge-soft, #2c3a54); background: none; color: var(--ui-muted, #bdbea9); font: 500 13px var(--label); letter-spacing: .12em; text-transform: uppercase; }
+.sky-jump button.on { color: var(--gold); background: color-mix(in srgb, var(--gold) 14%, transparent); border-color: color-mix(in srgb, var(--gold) 45%, transparent); }
+.sky-jump button[hidden] { display: none; }
+#visible .sky-tonight-head { margin-top: 34px !important; font-size: 15px; color: var(--ink, #fff2b3); }
+body.night .sky-jump button.on { color: #ff7f70; border-color: #ff6a5566; background: #2a0d0a; }
+.shiny-row { grid-template-columns: auto 1fr auto auto; } .shiny-row .bell { grid-column: 4; grid-row: 1 / span 2; align-self: center; } /* the shiny reminder bell beside Show me */
+.sky-jump { top: var(--safe-top, 0px); } /* clear of the status bar */
+.sky-jump { box-shadow: 0 calc(-1 * var(--safe-top, 0px)) 0 0 var(--bg); } /* the strip above it is covered too */
+.sky-jump { -webkit-mask: none; mask: none; } /* the fade mask also clipped the cover above it */
+.sky-jump.stuck { box-shadow: 0 -200px 0 0 var(--bg); }
+.sky-jump { top: 0; box-shadow: none; } /* sticky offsets count from inside the panel's safe-area padding */
+.sky-jump.stuck { box-shadow: 0 calc(-1 * var(--safe-top, 0px) - 2px) 0 0 var(--bg); }

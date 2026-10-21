@@ -1,51 +1,51 @@
-import { TESTER } from './build-flavor.js?v=0.1.938';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.938';
-import * as Secrets from './secrets.js?v=0.1.938';
-import { STORY_BY_SECRET } from './stories.js?v=0.1.938';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.938';
-import * as Ufo from './ufo.js?v=0.1.938';
-import * as Fossil from './fossil.js?v=0.1.938';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.938';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.938';
-import { toast, ticket, dropToast, toastPending, onTicketShown, iconSvg } from './toast.js?v=0.1.938';
-import { VERSION } from './version.js?v=0.1.938';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, overEarth, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.938';
-import { placeName } from './geo.js?v=0.1.938';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, SLIDER_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.938';
-import { conArt } from './con-art.js?v=0.1.938';
-import { fetchWeather, tonightSky, skyClearAt, goodSkyAt } from './weather.js?v=0.1.938';
-import { CON_FIGURES } from './con-figures.js?v=0.1.938';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress, starDistance } from './constellations.js?v=0.1.938';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.938';
-import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.938';
-import { eventOf, activeEvent, nextEvent } from './events.js?v=0.1.938';
-import { conList } from './constellations.js?v=0.1.938';
-import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination, hasSensorView, resumeSensors, needsPermission } from './sensors.js?v=0.1.938';
-import { SkyView, shortName } from './sky.js?v=0.1.938';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.938';
-import { isPlus, setPlusForTesting, onPlus, PLUS_PERKS, PLUS_PRICES, initStore, storePlans, buyPlus, restorePlus, rcTestStore, storeOpen } from './plus.js?v=0.1.938';
-import { isNative, getPosition, saveFile, notifyAt, cancelNotify, haptic, onNative, nativeChrome, plugin } from './native.js?v=0.1.938';
-import { initBackup, onBackupChange, backupSoon, clearBackup, backupStatus } from './cloud-backup.js?v=0.1.938';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.938';
-import { cardArt } from './art.js?v=0.1.938';
-import { renderCard, miniCard, cardLevel, artImage, lockedArt, attachTilt, attachGyro, throwOff, attachFlip, turnCard } from './card.js?v=0.1.938';
-import { applyBack, CARD_BACKS, backUnlocked, chosenBack, chooseBack, backEarned } from './card-backs.js?v=0.1.938';
-import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.938';
-import { audioCtx } from './audio-ctx.js?v=0.1.938';
-import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume, musicAway } from './music.js?v=0.1.938';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.938';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel, moonPhaseOf, MOON_PHASES } from './card-model.js?v=0.1.938';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.938';
-import { naturalTargets, SOLAR_SYSTEM, DEEP_SKY } from './natural.js?v=0.1.938';
-import { placeFromTimeZone } from './tz-places.js?v=0.1.938';
-import { TIER_INFO } from './rarity.js?v=0.1.938';
-import { SETS, albumList } from './sets.js?v=0.1.938';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.938';
-import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.938';
-import { shareCardEl } from './share-card.js?v=0.1.938';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.938';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.938';
-import { addStarfield } from './starfield.js?v=0.1.938';
+import { TESTER } from './build-flavor.js?v=0.1.939';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.939';
+import * as Secrets from './secrets.js?v=0.1.939';
+import { STORY_BY_SECRET } from './stories.js?v=0.1.939';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.939';
+import * as Ufo from './ufo.js?v=0.1.939';
+import * as Fossil from './fossil.js?v=0.1.939';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.939';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.939';
+import { toast, ticket, dropToast, toastPending, onTicketShown, iconSvg } from './toast.js?v=0.1.939';
+import { VERSION } from './version.js?v=0.1.939';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, overEarth, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.939';
+import { placeName } from './geo.js?v=0.1.939';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, SLIDER_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.939';
+import { conArt } from './con-art.js?v=0.1.939';
+import { fetchWeather, tonightSky, skyClearAt, goodSkyAt } from './weather.js?v=0.1.939';
+import { CON_FIGURES } from './con-figures.js?v=0.1.939';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress, starDistance } from './constellations.js?v=0.1.939';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.939';
+import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.939';
+import { eventOf, activeEvent, nextEvent } from './events.js?v=0.1.939';
+import { conList } from './constellations.js?v=0.1.939';
+import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination, hasSensorView, resumeSensors, needsPermission } from './sensors.js?v=0.1.939';
+import { SkyView, shortName } from './sky.js?v=0.1.939';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.939';
+import { isPlus, setPlusForTesting, onPlus, PLUS_PERKS, PLUS_PRICES, initStore, storePlans, buyPlus, restorePlus, rcTestStore, storeOpen } from './plus.js?v=0.1.939';
+import { isNative, getPosition, saveFile, notifyAt, cancelNotify, haptic, onNative, nativeChrome, plugin } from './native.js?v=0.1.939';
+import { initBackup, onBackupChange, backupSoon, clearBackup, backupStatus } from './cloud-backup.js?v=0.1.939';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.939';
+import { cardArt } from './art.js?v=0.1.939';
+import { renderCard, miniCard, cardLevel, artImage, lockedArt, attachTilt, attachGyro, throwOff, attachFlip, turnCard } from './card.js?v=0.1.939';
+import { applyBack, CARD_BACKS, backUnlocked, chosenBack, chooseBack, backEarned } from './card-backs.js?v=0.1.939';
+import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.939';
+import { audioCtx } from './audio-ctx.js?v=0.1.939';
+import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume, musicAway } from './music.js?v=0.1.939';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.939';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel, moonPhaseOf, MOON_PHASES } from './card-model.js?v=0.1.939';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.939';
+import { naturalTargets, SOLAR_SYSTEM, DEEP_SKY } from './natural.js?v=0.1.939';
+import { placeFromTimeZone } from './tz-places.js?v=0.1.939';
+import { TIER_INFO } from './rarity.js?v=0.1.939';
+import { SETS, albumList } from './sets.js?v=0.1.939';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.939';
+import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.939';
+import { shareCardEl } from './share-card.js?v=0.1.939';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.939';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.939';
+import { addStarfield } from './starfield.js?v=0.1.939';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -1528,7 +1528,7 @@ function nowHero(list, vis) {
     const items = [...more.map((p) => ({ t: p.start, p, name: label(p.obj), sub: `<em style="color:${tierOf(p.obj).color}">${tierOf(p.obj).gem} ${tierOf(p.obj).label}</em> · ${whereWords({ el: p.peakEl, az: p.peakAz }).toLowerCase()}` })),
       ...(sh ? [{ t: sh.t, p: sh.p, name: label(sh.o), sub: `${escapeHtml(sh.line)} · <em style="color:var(--gold)">shiny chance</em>` }] : [])].sort((a, b) => a.t - b.t);
     if (items.length) {
-      list.insertAdjacentHTML('beforeend', '<div class="t-head">Coming up</div>');
+      list.insertAdjacentHTML('beforeend', '<div class="t-head" id="sj-coming">Coming up</div>');
       for (const it of items) {
         const mins = Math.round((it.t - t0) / 60000), r = document.createElement('button'); r.type = 'button'; r.className = 'nh-after';
         r.innerHTML = `<span class="na-t">${mins >= 360 ? fmtTime(it.t) : fmtTime(it.t).replace(/\s?[AP]\.?M\.?$/i, '')}<small>${mins < 1 ? 'now' : mins < 60 ? `${mins} min` : `${Math.floor(mins / 60)} h ${mins % 60} m`}</small></span><span><b>${escapeHtml(it.name)}</b><small>${it.sub}</small></span><span class="na-go">${ICON_TARGET}</span>`;
@@ -1565,8 +1565,8 @@ function renderVisibleEmpty(list) {
     r.addEventListener('click', () => showMePass(next)); list.appendChild(r);
   }
   const acts = document.createElement('div'); acts.className = 'vis-empty-acts';
-  const b = document.createElement('button'); b.className = 'big'; b.textContent = 'See tonight’s run'; b.addEventListener('click', () => showVTab('tonight')); // no more 'next bright pass' toast (2026-10-13): Tonight has the plan // it aims you; it doesn’t move the clock (QA 2026-10-08)
-  const l = document.createElement('button'); l.type = 'button'; l.className = 'ui-link'; l.textContent = 'See tonight’s plan ›'; l.addEventListener('click', () => showVTab('tonight'));
+  const b = document.createElement('button'); b.className = 'big'; b.textContent = 'See tonight’s run'; b.addEventListener('click', () => skyJumpTo('tonight')); // no more 'next bright pass' toast (2026-10-13): Tonight has the plan // it aims you; it doesn’t move the clock (QA 2026-10-08)
+  const l = document.createElement('button'); l.type = 'button'; l.className = 'ui-link'; l.textContent = 'See tonight’s plan ›'; l.addEventListener('click', () => skyJumpTo('tonight'));
   acts.append(b, l); list.appendChild(acts);
 }
 let visMapRaf = 0;
@@ -1598,7 +1598,7 @@ function renderVisible() {
   const vis = [...state.items.filter((i) => i.look.visible), ...(state.naturals ?? []).filter((n) => n.obj.key !== 'earth')].sort((a, b) => a.look.mag - b.look.mag);
   $('visible-sub').textContent = `${state.observer.label?.replace(/^Example:\s*/, '') ?? 'Your sky'} · ${fmtTime(now().getTime())}`;
   const newUp = newUpCount(); // new cards up, not every star (2026-10-13 playtest: "305" vs "8 up at once")
-  document.querySelector('[data-vtab="now"]').textContent = newUp ? `Now · ${newUp} new` : 'Now';
+  { const nb = document.querySelector('[data-jump="now"]'); if (nb) nb.textContent = newUp ? `Now · ${newUp} new` : 'Now'; }
   $('visible-hint').textContent = ''; list.innerHTML = '';
   if (!vis.length) { renderVisibleEmpty(list); return; }
   // The map turns with you (2026-10-08): whichever way you face is at the top, under a fixed soft wedge; the ring,
@@ -1631,13 +1631,6 @@ function renderVisible() {
     if (items.length > 8) { const more = document.createElement('button'); more.type = 'button'; more.className = 'ui-link vis-more'; more.textContent = `Show all ${items.length} ›`;
       more.addEventListener('click', () => { const frag = document.createDocumentFragment(); items.slice(8).forEach((it) => frag.appendChild(row(it))); more.replaceWith(frag); }); list.appendChild(more); } };
   group('New to you', fresh);
-  // Tonight's missions (2026-10-21, Sevaan): the three for this night (and the sky challenge) above Seen before, ticked
-  // as they're done, the same list as the rank card in the Collection.
-  { let pr = null; try { pr = progressNow(state.sightings); } catch {}
-    if (pr?.missions?.length) {
-      const done = pr.missions.filter((m) => m.done).length;
-      list.insertAdjacentHTML('beforeend', `<div class="t-head">Tonight’s missions · ${done} of ${pr.missions.length}</div><div class="now-missions">${pr.missions.map((m) => `<div class="nm${m.done ? ' done' : ''}"><i aria-hidden="true"></i><span>${escapeHtml(m.text)}</span><b>+50 XP</b></div>`).join('')}${pr.challenge ? `<div class="nm ch${pr.challenge.done ? ' done' : ''}"><i aria-hidden="true"></i><span>${escapeHtml(pr.challenge.text)}<small>Sky challenge</small></span><b>+50 XP</b></div>` : ''}</div>`);
-    } }
   // Seen before (2026-10-09, Sevaan): the cards you’ve already collected, as a row of little cards (the "New to
   // collect" strip is gone; new things are the list above). Tap one to aim at it.
   if (seen.length) {
@@ -1792,16 +1785,36 @@ function dealMissions(T) {
   const keep = Object.keys(deals).sort((a, b) => Number(b) - Number(a)).slice(0, 90);
   try { localStorage.setItem('missionDeals', JSON.stringify(Object.fromEntries(keep.map((k) => [k, deals[k]])))); } catch {}
 }
-function showVTab(tab) {
-  if (tab === 'now') heroShine = true; // the next-card hero shimmers once each time you arrive on Now (2026-10-13, Sevaan)
-  document.querySelectorAll('[data-vtab]').forEach((b) => { b.classList.toggle('on', b.dataset.vtab === tab); b.setAttribute('aria-selected', String(b.dataset.vtab === tab)); });
-  $('vtab-now').hidden = tab !== 'now'; $('vtab-tonight').hidden = tab !== 'tonight';
-  $('visible-title').textContent = 'Up in your sky';
-  $('visible-sub').textContent = `${state.observer.label?.replace(/^Example:\s*/, '') ?? 'Your sky'} · ${fmtTime(now().getTime())}`; // also when opening straight on Tonight or Week (2026-10-13)
-  if (tab === 'tonight') renderTonight();
-  else renderVisible(); // always fresh: switching back from Tonight used to show an old (sometimes empty) list (2026-10-08)
+// One page (2026-10-21, Sevaan; design/sky-page-3.html): Now and Tonight together, every section kept, with jump chips
+// pinned under the title. showVTab(tab) renders both and scrolls to that part ('now' = the top, 'tonight', or any
+// chip's name); the chips light up as you scroll.
+const SKY_JUMPS = [['now', 'Now', null], ['coming', 'Coming up', 'sj-coming'], ['tonight', 'Tonight', 'sky-tonight-head'], ['shiny', '✦ Shiny', 'sj-shiny'], ['missions', 'Missions', 'sj-missions'], ['all', 'All passes', 'sj-all']];
+function skyJumpTo(tab, smooth = true) {
+  const panel = $('visible'), id = SKY_JUMPS.find((j) => j[0] === tab)?.[2], el = id && $(id);
+  const pt = panel.getBoundingClientRect().top, barH = $('sky-jump').offsetHeight + parseFloat(getComputedStyle(panel).paddingTop || 0);
+  const top = el ? el.getBoundingClientRect().top - pt + panel.scrollTop - barH - 14 : 0; // lands just under the pinned chips
+  panel.scrollTo({ top: Math.max(0, top), behavior: smooth && !matchMedia('(prefers-reduced-motion: reduce)').matches ? 'smooth' : 'auto' });
 }
-document.querySelectorAll('[data-vtab]').forEach((b) => b.addEventListener('click', () => showVTab(b.dataset.vtab)));
+function skyJumpMark() {
+  const panel = $('visible'), bar = $('sky-jump'); if (!bar || panel.hidden) return;
+  const line = bar.getBoundingClientRect().bottom + 24; let on = 'now';
+  bar.classList.toggle('stuck', bar.getBoundingClientRect().top <= panel.getBoundingClientRect().top + parseFloat(getComputedStyle(panel).paddingTop || 0) + 1 && panel.scrollTop > 0); // pinned: cover everything above it
+  for (const [k, , id] of SKY_JUMPS) { const el = id && $(id); if (el && el.getBoundingClientRect().top <= line) on = k; }
+  const atEnd = panel.scrollTop + panel.clientHeight >= panel.scrollHeight - 4, pin = skyJumpMark.pin;
+  if (pin && (performance.now() < pin.until || atEnd)) on = pin.k; else skyJumpMark.pin = null;
+  bar.querySelectorAll('[data-jump]').forEach((b) => { b.classList.toggle('on', b.dataset.jump === on); b.hidden = !!(SKY_JUMPS.find((j) => j[0] === b.dataset.jump)?.[2] && !$(SKY_JUMPS.find((j) => j[0] === b.dataset.jump)[2])); });
+}
+function showVTab(tab) {
+  heroShine = true; // the next-card hero shimmers once each time you arrive (2026-10-13, Sevaan)
+  $('visible-title').textContent = 'Up in your sky';
+  $('visible-sub').textContent = `${state.observer.label?.replace(/^Example:\s*/, '') ?? 'Your sky'} · ${fmtTime(now().getTime())}`;
+  renderVisible(); renderTonight();
+  // By day nothing's up yet, so the page opens on Tonight.
+  const day = (state.frame?.sunEl ?? -90) > -6;
+  requestAnimationFrame(() => requestAnimationFrame(() => { skyJumpTo(tab === 'now' && day ? 'tonight' : tab, false); skyJumpMark(); }));
+}
+$('sky-jump').addEventListener('click', (e) => { const b = e.target.closest('[data-jump]'); if (!b) return; skyJumpTo(b.dataset.jump); skyJumpMark.pin = { k: b.dataset.jump, until: performance.now() + 900 }; skyJumpMark(); }); // the tapped chip stays lit, even when the page can't scroll its section to the top
+$('visible').addEventListener('scroll', () => { if (!skyJumpMark._q) { skyJumpMark._q = true; requestAnimationFrame(() => { skyJumpMark._q = false; skyJumpMark(); }); } }, { passive: true });
 // ---------- Shiny forecast (Plus, 2026-10-11) ----------
 // The moments tonight a shiny is possible, from the planner (tonight-worker.js): a satellite fading into Earth’s
 // shadow while still high up (eclipse), passing within a degree of the Moon, almost straight overhead (80°+), or
@@ -1832,7 +1845,7 @@ function renderShinyForecast(list, T, t0) {
   const plus = isPlus();
   const rows = plus ? ch.slice(0, 8) : [ch.find((x) => x.kind === 'eclipse' || x.kind === 'moon') ?? ch[0]];
   let explained = false; try { explained = localStorage.getItem('shinyExplained') === '1'; } catch {}
-  const wrap = document.createElement('div'); wrap.className = 'shiny-sec';
+  const wrap = document.createElement('div'); wrap.className = 'shiny-sec'; wrap.id = 'sj-shiny';
   wrap.innerHTML = `<div class="t-head">Shiny chances</div>`
     + (explained ? '' : SHINY_WHAT)
     + `<div class="shiny-list">${rows.map((x, i) => `<div class="shiny-row"><b>${fmtTime(x.t)}</b><span><i>${escapeHtml(label(x.o))}</i> ${escapeHtml(x.line)}</span><small>${escapeHtml(({ eclipse: 'Catch the fade', moon: 'Beside the Moon', overhead: 'Straight overhead', fresh: 'Just launched' })[x.kind] ?? SHINY[x.kind]?.label ?? '')}</small><button class="ic showme" type="button" data-i="${i}" aria-label="Show me where to look">${ICON_TARGET}</button><button class="ic bell${reminded.has(`${x.o.id}@${x.t}`) ? ' on' : ''}${needsPlus(`${x.o.id}@${x.t}`)}" type="button" data-i="${i}" aria-label="Set a reminder"${x.t > t0 + 60e3 ? '' : ' disabled'}>${ICON_BELL}</button></div>`).join('')}</div>`
@@ -2015,6 +2028,14 @@ function fillNextClear() {
 }
 // While Tonight is open, it refreshes once a minute so passes that have gone stop saying "up now" (iOS playtest 2026-10-20).
 setInterval(() => { if (!$('visible')?.hidden && !$('vtab-tonight')?.hidden && !document.hidden && state.tonight) { const sc = $('visible').querySelector('.panel-body, .vis-body') ?? $('visible'); const y = sc.scrollTop; renderTonight(); sc.scrollTop = y; } }, 60000);
+// Tonight's missions (2026-10-21, Sevaan; design/sky-page-3.html): the three for this night and the sky challenge, ticked.
+function renderSkyMissions(list) {
+  { let pr = null; try { pr = progressNow(state.sightings); } catch {}
+    if (pr?.missions?.length) {
+      const done = pr.missions.filter((m) => m.done).length;
+      list.insertAdjacentHTML('beforeend', `<div class="t-head" id="sj-missions">Tonight’s missions · ${done} of ${pr.missions.length}</div><div class="now-missions">${pr.missions.map((m) => `<div class="nm${m.done ? ' done' : ''}"><i aria-hidden="true"></i><span>${escapeHtml(m.text)}</span><b>+50 XP</b></div>`).join('')}${pr.challenge ? `<div class="nm ch${pr.challenge.done ? ' done' : ''}"><i aria-hidden="true"></i><span>${escapeHtml(pr.challenge.text)}<small>Sky challenge</small></span><b>+50 XP</b></div>` : ''}</div>`);
+    } }
+}
 function renderTonight() {
   const T = state.tonight, t0 = now().getTime();
   fillNextClear();
@@ -2055,8 +2076,8 @@ function renderTonight() {
   // Tonight’s run first (2026-10-13, design/sky-pages-combined.html); the old full list sits behind "Everything tonight".
   const root = $('tonight-list'); root.innerHTML = '';
   root.appendChild(renderRun(T, t0, wxT, peak));
-  renderShinyForecast(root, T, t0); // its own section after the run (2026-10-16, Sevaan: it was buried at the end of Everything tonight)
-  const allN = tonightPasses(T, t0).length, tog = document.createElement('button'); tog.type = 'button'; tog.className = 'ui-link run-all';
+  renderShinyForecast(root, T, t0); renderSkyMissions(root); // missions after the shiny chances (design/sky-page-3.html) (2026-10-16, Sevaan: it was buried at the end of Everything tonight)
+  const allN = tonightPasses(T, t0).length, tog = document.createElement('button'); tog.type = 'button'; tog.className = 'ui-link run-all'; tog.id = 'sj-all';
   tog.textContent = tlAll ? 'Hide everything ‹' : `Everything tonight · ${allN} passes ›`;
   tog.addEventListener('click', () => { tlAll = !tlAll; renderTonight(); });
   root.appendChild(tog);
