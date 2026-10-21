@@ -3,9 +3,9 @@
 // play sound before one), loops, dips under card reveals, and pauses when the app is hidden.
 // iPhone Safari ignores an audio element’s volume, so the level goes through Web Audio (a gain node). The page’s
 // audio session is "ambient", so the ring/silent switch mutes it and it never stops the player’s own music.
-import { audioCtx } from './audio-ctx.js?v=0.1.920';
+import { audioCtx } from './audio-ctx.js?v=0.1.921';
 const SRC = 'assets/audio/permafrost.m4a', LEVEL = 0.15; // halved 2026-10-11 (Sevaan)
-let ctx = null, el = null, gain = null, playing = false;
+let ctx = null, el = null, gain = null, node = null, playing = false;
 
 export const musicVolume = () => { try { const v = parseFloat(localStorage.getItem('musicVol')); return Number.isFinite(v) ? Math.max(0, Math.min(1, v)) : 0.5; } catch { return 0.5; } }; // default 50% (2026-10-19, Sevaan; was 75%)
 const level = () => LEVEL * musicVolume();
@@ -22,15 +22,32 @@ export function startMusic() {
   if (!musicOn() || playing) return;
   try {
     if (!el) {
-      el = new Audio(SRC); el.loop = true; el.preload = 'auto';
       ctx = audioCtx(); if (!ctx) return;
-      gain = ctx.createGain(); gain.gain.value = 0;
-      ctx.createMediaElementSource(el).connect(gain).connect(ctx.destination);
+      gain = ctx.createGain(); gain.gain.value = 0; gain.connect(ctx.destination);
+      fresh();
     }
-    ctx.resume().catch(() => {});
     playing = true;
-    el.play().then(() => fadeTo(level(), 4)).catch(() => { playing = false; });
+    // The element only plays once the context is really running (2026-10-20, Sevaan: back in the app the music was
+    // "stuck on a loop": iPhone's media-element source repeats its last chunk while the context is still interrupted).
+    // play() stays inside the tap (Safari needs that); the level stays at 0 until the context is running.
+    gain.gain.cancelScheduledValues(ctx.currentTime); gain.gain.setValueAtTime(0, ctx.currentTime);
+    el.play().then(() => running()).then((ok) => { if (!playing) return; if (ok) fadeTo(level(), 4); else { playing = false; el.pause(); retryOnTouch(); } })
+      .catch(() => { playing = false; retryOnTouch(); });
   } catch { playing = false; }
+}
+// The element and its source node (once; a second element for the same file never loaded in testing).
+function fresh() {
+  const at = el ? el.currentTime : 0;
+  try { el?.pause(); node?.disconnect(); } catch {}
+  el = new Audio(SRC); el.loop = true; el.preload = 'auto';
+  if (at) el.addEventListener('loadedmetadata', () => { try { el.currentTime = at; } catch {} }, { once: true });
+  node = ctx.createMediaElementSource(el); node.connect(gain);
+}
+// Resume the shared context and say whether it's running (up to 1.2 s).
+function running() {
+  if (!ctx) return Promise.resolve(false);
+  if (ctx.state === 'running') return Promise.resolve(true);
+  return Promise.race([ctx.resume().then(() => ctx.state === 'running', () => false), new Promise((r) => setTimeout(() => r(ctx.state === 'running'), 1200))]);
 }
 export function stopMusic(fade = 0.8) {
   if (!el || !playing) return;
@@ -54,15 +71,21 @@ function wakeAudio() {
   try { ctx?.resume().catch(() => {}); } catch {}
   if (el && el.paused) { playing = false; startMusic(); }
 }
+let retrying = false;
 function retryOnTouch() {
-  const go = () => { ['touchend', 'pointerdown', 'click'].forEach((t) => removeEventListener(t, go, true)); wakeAudio(); };
+  if (retrying) return; retrying = true;
+  const go = () => { retrying = false; ['touchend', 'pointerdown', 'click'].forEach((t) => removeEventListener(t, go, true)); wakeAudio(); };
   ['touchend', 'pointerdown', 'click'].forEach((t) => addEventListener(t, go, { capture: true, passive: true }));
 }
-document.addEventListener('visibilitychange', () => {
-  // Pause at once (2026-10-20, iOS playtest: the fade's pause timer never ran once the app was hidden, so the music kept
-  // playing from a locked phone with a lock-screen player).
-  if (document.hidden) { wasPlaying = playing; playing = false; try { if (gain && ctx) gain.gain.setValueAtTime(0, ctx.currentTime); el?.pause(); } catch {} return; }
+// Leaving and coming back. Pause at once (2026-10-20, iOS playtest: the fade's pause timer never ran once the app was
+// hidden, so the music kept playing from a locked phone). Both the page's visibility and the native app's active state
+// (Control Center, a notification, the app switcher) come here, so the element is never left playing into a suspended
+// context, which is what replayed the same chunk on return (2026-10-20, Sevaan: "stuck on a loop").
+let away = false;
+export function musicAway(hidden) {
+  if (hidden) { if (away) return; away = true; wasPlaying = wasPlaying || playing; playing = false; try { if (gain && ctx) gain.gain.setValueAtTime(0, ctx.currentTime); el?.pause(); } catch {} return; }
+  if (!away) return; away = false;
   if (!wasPlaying || !musicOn()) return;
   wasPlaying = false; startMusic();
-  setTimeout(() => { if (!document.hidden && (ctx?.state !== 'running' || el?.paused)) retryOnTouch(); }, 500);
-});
+}
+document.addEventListener('visibilitychange', () => musicAway(document.hidden));

@@ -1,17 +1,17 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.920';
+import { extinction } from './sky-limit.js?v=0.1.921';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.920';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.921';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.920';
-import { createCloudGL } from './clouds-gl.js?v=0.1.920';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.921';
+import { createCloudGL } from './clouds-gl.js?v=0.1.921';
 // Cloud colours by light: sunlit tops, shadowed bellies, and the horizon haze they melt into (0–1 RGB).
 const CLOUD_LIGHT = {
   day: { lit: [1, 1, 1], shade: [0.62, 0.68, 0.77], haze: [0.82, 0.87, 0.93] },
   dusk: { lit: [1, 0.8, 0.68], shade: [0.36, 0.33, 0.42], haze: [0.62, 0.5, 0.52] },
   night: { lit: [0.22, 0.25, 0.31], shade: [0.1, 0.12, 0.16], haze: [0.14, 0.15, 0.2] },
 };
-import { TIER_INFO } from './rarity.js?v=0.1.920';
+import { TIER_INFO } from './rarity.js?v=0.1.921';
 
 const RAD = Math.PI / 180;
 const SECRET_PX = { santa: 24, roadster: 12.4, voyager: 14.5, voyager2: 14.5, pioneer10: 11.7, pioneer11: 11.7, newhorizons: 6.4, arecibo: 6.9, halley: 8.6, sputnik: 11.2, laika: 13.3, wow: 9.8 };
@@ -1759,8 +1759,20 @@ export class SkyView {
     ctx.restore();
   }
   shadeQuad(q) { // adds one strip of shade (four ENU directions) to the current path; drawEarthShadow fills them all at once
+    // A strip runs from low in the sky to high, so looking up, part of it is behind you and can't be drawn. It used to be
+    // dropped whole, leaving light wedges meeting overhead (2026-10-20, Sevaan). Now it's cut into short pieces along
+    // its length and only the pieces behind you are skipped.
+    const N = 12, mix = (u, v, t) => { const x = u[0] + (v[0] - u[0]) * t, y = u[1] + (v[1] - u[1]) * t, z = u[2] + (v[2] - u[2]) * t, l = Math.hypot(x, y, z) || 1; return [x / l, y / l, z / l]; };
+    if (q.every((e) => this.project(e))) { this.shadePiece(q); return; }
+    for (let k = 0; k < N; k++) { const t0 = k / N, t1 = (k + 1) / N; this.shadePiece([mix(q[0], q[3], t0), mix(q[1], q[2], t0), mix(q[1], q[2], t1), mix(q[0], q[3], t1)]); }
+  }
+  shadePiece(q) {
     const pts = q.map((e) => this.project(e));
     if (pts.some((p) => !p)) return;
+    // Every strip wound the same way on screen (2026-10-20, Sevaan: light triangles meeting overhead). Near the zenith
+    // some strips project mirrored, and in one nonzero-filled path a mirrored strip cancels its neighbour where they meet.
+    let a = 0; for (let i = 0; i < pts.length; i++) { const p = pts[i], q2 = pts[(i + 1) % pts.length]; a += p.x * q2.y - q2.x * p.y; }
+    if (a < 0) pts.reverse();
     const ctx = this.ctx; pts.forEach((p, i) => (i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y))); ctx.closePath();
   }
   drawReticle(locked, time = 0, newFind = false, plane = null, quiet = false) {
