@@ -682,3 +682,5 @@ body.night dialog::backdrop { background: rgba(12, 3, 3, .82); }
    when pulled at the top or bottom. */
 html.embedded, html.embedded body, html.embedded body.sky-tone { background: var(--bg) !important; }
 html.embedded, html.embedded body { overscroll-behavior: none; }
+
+#stats-view.pulled { animation: none !important; }

@@ -1876,3 +1876,5 @@ body.night .sky-jump button.on { color: #ff7f70; border-color: #ff6a5566; backgr
 .sky-jump.stuck { box-shadow: 0 -200px 0 0 var(--bg); }
 .sky-jump { top: 0; box-shadow: none; } /* sticky offsets count from inside the panel's safe-area padding */
 .sky-jump.stuck { box-shadow: 0 calc(-1 * var(--safe-top, 0px) - 2px) 0 0 var(--bg); }
+
+.overlay.panel.pulled { animation: none !important; } /* pulled down to close: keep where the finger left it */

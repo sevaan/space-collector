@@ -1,29 +1,30 @@
-import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.939';
-import { computeStats, statsHtml } from './stats.js?v=0.1.939';
-import { nightKey } from './observation.js?v=0.1.939';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.939';
-import { sfx } from './sfx.js?v=0.1.939';
-import { expandFacts } from './catalog-facts.js?v=0.1.939';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.939';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.939';
-import { ticket } from './toast.js?v=0.1.939';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.939';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.939';
-import { cardArt } from './art.js?v=0.1.939';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.939';
-import { applyBack } from './card-backs.js?v=0.1.939';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.939';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.939';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.939';
-import { STORIES } from './stories.js?v=0.1.939';
-import { loadConstellations, conList } from './constellations.js?v=0.1.939';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.939';
-import { eventBadges, nextEvent } from './events.js?v=0.1.939';
-import { shareCardEl } from './share-card.js?v=0.1.939';
-import { forgetSighting } from './cloud-backup.js?v=0.1.939';
-import { allSightings, deleteSighting } from './store.js?v=0.1.939';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.939';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.939';
+import { pullToClose } from './pull-close.js?v=0.1.941';
+import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.941';
+import { computeStats, statsHtml } from './stats.js?v=0.1.941';
+import { nightKey } from './observation.js?v=0.1.941';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.941';
+import { sfx } from './sfx.js?v=0.1.941';
+import { expandFacts } from './catalog-facts.js?v=0.1.941';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.941';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.941';
+import { ticket } from './toast.js?v=0.1.941';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.941';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.941';
+import { cardArt } from './art.js?v=0.1.941';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.941';
+import { applyBack } from './card-backs.js?v=0.1.941';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.941';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.941';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.941';
+import { STORIES } from './stories.js?v=0.1.941';
+import { loadConstellations, conList } from './constellations.js?v=0.1.941';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.941';
+import { eventBadges, nextEvent } from './events.js?v=0.1.941';
+import { shareCardEl } from './share-card.js?v=0.1.941';
+import { forgetSighting } from './cloud-backup.js?v=0.1.941';
+import { allSightings, deleteSighting } from './store.js?v=0.1.941';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.941';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.941';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -288,6 +289,7 @@ function closeStats() {
   d.addEventListener('animationend', done, { once: true }); setTimeout(() => { if (d.classList.contains('leaving')) done(); }, 450);
 }
 $('stats-close')?.addEventListener('click', closeStats);
+pullToClose($('stats-view'), () => { const d = $('stats-view'); if (statsFromSettings) { statsFromSettings = false; d.addEventListener('close', () => { if (EMBED) window.parent.postMessage({ sc: 'explore', more: true }, location.origin); }, { once: true }); } d.close(); }, document.querySelector('#stats-view .stats-body') ?? $('stats-view')); // pull it down to close (2026-10-21)
 $('stats-view').addEventListener('cancel', (e) => { e.preventDefault(); closeStats(); }); // Escape slides it down too
 function renderLogbook() {
   const info = (k) => { const c = state.byKey.get(k); return c ? { tier: c.tier, tier0: c.tier0, type: c.type, owner: c.owner, launch: c.launch, natural: c.natural, con: c.con, reunion: c.reunion, role: c.type === 'rocket-body' ? 'stage' : 'payload' } : null; };
