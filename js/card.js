@@ -1,20 +1,20 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { fallWords } from './last-chance.js?v=0.1.934';
-import { feel } from './native.js?v=0.1.934';
-import { sfx } from './sfx.js?v=0.1.934';
-import { cardArt } from './art.js?v=0.1.934';
-import { TIER_INFO } from './rarity.js?v=0.1.934';
-import { SET_BY_ID } from './sets.js?v=0.1.934';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.934';
-import { FLEET_ABOUT, fleetAbout, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.934';
-import { artFileFor } from './art-keys.js?v=0.1.934';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.934';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.934';
-import { nightsIn } from './observation.js?v=0.1.934';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.934';
-import { SHINY } from './shiny.js?v=0.1.934';
-import { conArt, cometArt } from './con-art.js?v=0.1.934';
-import { CON_FIGURES } from './con-figures.js?v=0.1.934';
+import { fallWords } from './last-chance.js?v=0.1.935';
+import { feel } from './native.js?v=0.1.935';
+import { sfx } from './sfx.js?v=0.1.935';
+import { cardArt } from './art.js?v=0.1.935';
+import { TIER_INFO } from './rarity.js?v=0.1.935';
+import { SET_BY_ID } from './sets.js?v=0.1.935';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.935';
+import { FLEET_ABOUT, fleetAbout, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.935';
+import { artFileFor } from './art-keys.js?v=0.1.935';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.935';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.935';
+import { nightsIn } from './observation.js?v=0.1.935';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.935';
+import { SHINY } from './shiny.js?v=0.1.935';
+import { conArt, cometArt } from './con-art.js?v=0.1.935';
+import { CON_FIGURES } from './con-figures.js?v=0.1.935';
 // The animal/symbol figure belongs to the completed (gold) constellation card only (2026-10-05): a single
 // star’s card draws just the star pattern with its star marked, so the figure is a reward for finishing the set.
 // A star card’s constellation figure comes into focus as you collect the constellation’s stars (design/con-focus.html B).
@@ -39,8 +39,10 @@ export function levelFor(nights) {
 }
 const LEGACY_UNTIL = Date.UTC(2026, 9, 1);
 const RANK = { none: 0, bronze: 1, silver: 2, gold: 3 };
-export function cardLevel(sightings) {
+// The Moon, planets, stars and other natural cards have no levels (2026-10-21, Sevaan): collected is all there is.
+export function cardLevel(sightings, o = null) {
   const real = sightings.filter((s) => !s.sim);
+  if (o?.natural) return real.length ? 'bronze' : 'none';
   const old = real.filter((s) => s.time < LEGACY_UNTIL).length;
   const legacy = old >= 25 ? 'gold' : old >= 5 ? 'silver' : 'none';
   const now = levelFor(nightsIn(real));
@@ -117,7 +119,7 @@ export function renderCard(o, opts = {}) {
   const AS = opts.mini ? 'small' : 'full'; // opts.mini: the same card shrunk into a Collection tile (small pictures, no sparkles)
   const extinct = opts.forceExtinct || !!o.decay;
   const fleet = !!o.launches, stamps = fleet ? stampsIn(sightings) : null;
-  const level = opts.forceLevel ?? (conCard ? prog.level : fleet ? fleetLevel(o.family, stamps.size) : cardLevel(sightings));
+  const level = opts.forceLevel ?? (conCard ? prog.level : fleet ? fleetLevel(o.family, stamps.size) : cardLevel(sightings, o));
   const tier = o.story ? { gem: '❖', label: 'Story', color: '#3fc7b5' } : TIER_INFO[o.tier] ?? TIER_INFO.common; // story cards (js/stories.js) wear their own teal label
   const set = SET_BY_ID[o.set] ?? { name: 'Field archive', color: '#d74730' };
   const stats = orbitStats(o), age = yearsUp(o.launches ? { launch: o.launches[0]?.launch } : o), laps = lapsPerDay(o); // a fleet’s age is from its FIRST launch, the date shown (Starlink said 6 years for 2019)
@@ -181,7 +183,7 @@ export function renderCard(o, opts = {}) {
     ${tempStrip(o)}
     <div class="card__stats m4" style="--n:${four.length}">${four.map(([label, value, unit], i) => `<div><span class="card__label">${esc(label)}</span><b${nat ? statClass(value, unit, i) : ''}>${esc(value)}${unit ? `<small>${esc(unit)}</small>` : ''}</b></div>`).join('')}</div>
     ${factBlock}
-    <div class="card__footer"><span class="card__status${caught ? ' is-collected' : ''}"><span class="card__status-icon" aria-hidden="true">${caught ? '✓' : ''}</span><span>${caught ? `COLLECTED · ${esc(firstDate)}` : 'NOT YET COLLECTED'}</span>${caught ? `<span class="card__seen-count">${seenLine(level, conCard || fleet ? 0 : nightsIn(sightings), sightings.length)}</span>` : ''}</span><span class="card__brand">${o.setNumber && o.setSize > 1 ? `<small class="card__no">${String(o.setNumber).padStart(String(o.setSize).length, '0')}/${o.setSize}</small>` : ''}SPACE COLLECTOR</span></div>
+    <div class="card__footer"><span class="card__status${caught ? ' is-collected' : ''}"><span class="card__status-icon" aria-hidden="true">${caught ? '✓' : ''}</span><span>${caught ? `COLLECTED · ${esc(firstDate)}` : 'NOT YET COLLECTED'}</span>${caught && !o.natural ? `<span class="card__seen-count">${seenLine(level, conCard || fleet ? 0 : nightsIn(sightings), sightings.length)}</span>` : ''}</span><span class="card__brand">${o.setNumber && o.setSize > 1 ? `<small class="card__no">${String(o.setNumber).padStart(String(o.setSize).length, '0')}/${o.setSize}</small>` : ''}SPACE COLLECTOR</span></div>
     <div class="card__shine"></div><div class="card__glare"></div>
     <div class="card__back" aria-hidden="true"><div class="back-holo"></div><div class="back-glare"></div></div>
     ${extinct ? `<div class="card__stamp">REENTERED${o.decay ? `<small>${esc(formatDate(o.decay)).toUpperCase()}</small>` : ''}</div>` : ''}
@@ -300,7 +302,7 @@ export function renderCardTile(o, opts = {}) {
   tile.type = 'button';
   const conDone = (conCard && caught) || (!!o.launches && fleetLevel(o.family, stampsIn(sightings).size) === 'gold');
   const shinyTile = !o.launches && sightings.some((x) => x.shiny && SHINY[x.shiny]);
-  const lvl = caught && !conCard && !o.launches ? cardLevel(sightings) : null, lvlUp = lvl === 'silver' || lvl === 'gold'; // a level badge on the tile (collectors 2026-10-11)
+  const lvl = caught && !conCard && !o.launches ? cardLevel(sightings, o) : null, lvlUp = lvl === 'silver' || lvl === 'gold'; // a level badge on the tile (collectors 2026-10-11)
   tile.className = `card-tile card-tile--retro${o.icon ? ' is-icon' : ''}${caught ? ' is-owned' : ''}${conDone ? ' gold-foil' : ''}${shinyTile ? ' shiny' : ''}${lvlUp ? ` lvl-${lvl}` : ''}`;
   tile.style.setProperty('--set', set.color); tile.style.setProperty('--tier', tier.color);
   const hide = o.story && !caught; // an unfound story stays a secret, read aloud too (QA 2026-10-16)

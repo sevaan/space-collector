@@ -1,7 +1,7 @@
 // Player progress from the sighting log: XP and observer rank, tonight’s three missions, a weekly streak and
 // achievements. Everything is derived from the saved sightings (nothing extra is stored), so it can’t drift.
 // info(cardKey) -> { tier, type, owner, launch, natural, con } | null. No DOM.
-import { nightKey } from './observation.js?v=0.1.934';
+import { nightKey } from './observation.js?v=0.1.935';
 
 // A longer climb (2026-10-12, playtest room: three ranks on night 1, Mission Control in about two weeks), with two
 // prestige ranks past Mission Control. Nobody drops a rank they had on the old curve (rankFloor below).
@@ -200,8 +200,8 @@ export const ACHIEVEMENTS = [
   { id: 'streak12', name: 'Devoted', text: 'Observe 12 weeks in a row', icon: '12w', done: (a) => a.bestStreak >= 12 },
   { id: 'anniversary', name: 'Anniversary', text: 'Still observing a year after your first sighting', icon: '1y', done: (a) => a.spanDays >= 365 },
   // Coming back
-  { id: 'silver', name: 'Regular Visitor', text: 'Turn a card silver: see it on 3 different nights', icon: 'Ag', done: (a) => a.maxNightsOnCard >= 3 },
-  { id: 'gold', name: 'Old Friend', text: 'Turn a card gold: see it on 10 different nights', icon: 'Au', done: (a) => a.maxNightsOnCard >= 10 },
+  { id: 'silver', name: 'Regular Visitor', text: 'Turn a card silver: see a satellite or rocket stage on 3 different nights', icon: 'Ag', done: (a) => a.maxNightsOnCard >= 3 },
+  { id: 'gold', name: 'Old Friend', text: 'Turn a card gold: see a satellite or rocket stage on 10 different nights', icon: 'Au', done: (a) => a.maxNightsOnCard >= 10 },
   { id: 'gold3', name: 'Inner Circle', text: 'Three gold cards', icon: 'Au3', done: (a) => a.goldCards >= 3 },
   { id: 'roadtrip', name: 'Road Trip', text: 'Sightings from two places more than 100 km apart', icon: '100k', done: (a) => a.spreadKm >= 100 },
   // Missions
@@ -285,7 +285,7 @@ export function progress(sightings, info, { constellations = [], albums = [], no
     }
     else if (!seenNight.has(nk)) xp += REPEAT_XP;
     let lv = false;
-    if (!seenNight.has(nk)) { const c = (nightsOnCard.get(s.cardKey) ?? 0) + 1; nightsOnCard.set(s.cardKey, c); lv = c === 3 || c === 10; }
+    if (!seenNight.has(nk) && !i?.natural) { const c = (nightsOnCard.get(s.cardKey) ?? 0) + 1; /* no levels for the Moon, planets, stars… (2026-10-21, Sevaan) */ nightsOnCard.set(s.cardKey, c); lv = c === 3 || c === 10; }
     seenNight.add(nk);
     if (s.stampKey) { const fam = String(s.stampKey).split(':')[0]; if (!fleetStamps.has(fam)) fleetStamps.set(fam, new Set()); fleetStamps.get(fam).add(s.stampKey); }
     if (s.shiny) { xp += SHINY_XP; a.shinies++; }
