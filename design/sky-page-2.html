@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>One sky page, round 2</title>
+<style>
+@font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf'); }
+@font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf'); }
+:root { --ink: #fff2b3; --mu: #bdbea9; --or: #fa8127; --gold: #e2b53c; --line: #1d2a3c; --card: #0e1828; --c: #9aa3ad; --u: #5fd08a; --r: #6aa8ff; --e: #e46ad6; --l: #f2c94c; --sh: linear-gradient(90deg, #ff4fa3, #ffb02e, #36d6ff, #8f5bff); }
+* { box-sizing: border-box; }
+body { margin: 0; background: #04080f; color: var(--ink); font: 15px/1.4 system-ui, sans-serif; padding: 26px 20px 50px; }
+h1 { font: 400 26px 'SC Display'; margin: 0 0 4px; } .lead { color: var(--mu); margin: 0 0 8px; max-width: 1150px; }
+.inv { color: var(--mu); font-size: 13.5px; max-width: 1150px; margin: 0 0 22px; } .inv b { color: var(--ink); }
+.row { display: flex; gap: 26px; flex-wrap: wrap; align-items: flex-start; }
+.opt { width: 380px; } .opt h2 { font: 500 15px 'SC Label'; letter-spacing: .14em; text-transform: uppercase; color: var(--or); margin: 0 0 4px; }
+.opt > p { color: var(--mu); margin: 0 0 12px; font-size: 13.5px; min-height: 96px; }
+.ph { background: #080f1b; border-radius: 30px; padding: 18px 16px 24px; border: 1px solid #1a2436; }
+.top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+.top b { font: 400 22px 'SC Display'; display: block; } .top small { font: 500 12px 'SC Label'; letter-spacing: .14em; color: var(--mu); text-transform: uppercase; } .x { font-size: 22px; color: var(--mu); }
+.lab { font: 500 12.5px 'SC Label'; letter-spacing: .16em; text-transform: uppercase; color: var(--or); margin: 18px 0 8px; display: flex; justify-content: space-between; } .lab span { color: var(--mu); }
+.box { background: var(--card); border: 1px solid #22304a; border-radius: 16px; padding: 14px; }
+.g { display: inline-block; width: 9px; height: 9px; transform: rotate(45deg); margin-right: 7px; }
+.c { background: var(--c); } .u { background: var(--u); } .rr { background: var(--r); } .ep { background: var(--e); } .lg { background: var(--l); }
+.pass { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--line); }
+.pass:last-child { border-bottom: 0; }
+.pass .tm { font: 400 15px 'SC Display'; width: 58px; flex: none; } .pass .tm small { display: block; font: 500 11px 'SC Label'; letter-spacing: .1em; color: var(--mu); }
+.pass .nm { flex: 1; min-width: 0; } .pass .nm b { display: block; font: 500 16px 'SC Label'; letter-spacing: .02em; } .pass .nm small { color: var(--mu); font-size: 12.5px; }
+.ic { width: 32px; height: 32px; border-radius: 50%; border: 1px solid #2c3a54; display: grid; place-items: center; color: var(--mu); font-size: 13px; flex: none; } .ic.on { border-color: var(--or); color: var(--or); }
+.new { font: 500 11px 'SC Label'; letter-spacing: .12em; color: var(--or); margin-left: 5px; }
+.pill { display: inline-block; font: 500 10.5px 'SC Label'; letter-spacing: .12em; padding: 2px 6px; border-radius: 5px; margin-left: 5px; vertical-align: 2px; }
+.pill.sh { background: var(--sh); color: #0b1018; } .pill.hl { background: var(--gold); color: #0b1018; }
+.haul .k { font: 500 12.5px 'SC Label'; letter-spacing: .16em; color: var(--or); text-transform: uppercase; }
+.haul .big { font: 400 30px 'SC Display'; margin: 4px 0 2px; } .haul .big em { font-style: normal; color: var(--e); font-size: 22px; }
+.haul .sub { color: var(--mu); font-size: 13.5px; }
+.bars { display: flex; align-items: flex-end; gap: 5px; height: 34px; margin: 10px 0 6px; } .bars i { width: 16px; border-radius: 2px 2px 0 0; }
+.wx { display: flex; gap: 12px; flex-wrap: wrap; font: 500 13px 'SC Label'; letter-spacing: .06em; color: var(--mu); border-top: 1px solid var(--line); padding-top: 8px; margin-top: 4px; }
+.mis .m { display: flex; gap: 10px; align-items: center; padding: 7px 0; font: 500 14.5px 'SC Label'; letter-spacing: .02em; border-bottom: 1px solid var(--line); } .mis .m:last-child { border: 0; }
+.mis .m i { width: 10px; height: 10px; transform: rotate(45deg); border: 1.5px solid #bcb585; flex: none; } .mis .m.d { color: var(--mu); text-decoration: line-through; text-decoration-color: var(--or); } .mis .m.d i { background: var(--or); border-color: var(--or); }
+.mis .m b { margin-left: auto; font: 500 12px 'SC Label'; color: var(--u); }
+.minis { display: flex; gap: 8px; overflow: hidden; } .mini { width: 72px; flex: none; aspect-ratio: 28/42; border-radius: 6px; border: 1.5px solid #e9dfb8; background: #0b1220 center 30% / 120% no-repeat; position: relative; }
+.mini small { position: absolute; left: 4px; right: 4px; bottom: 4px; font: 500 9.5px 'SC Label'; color: var(--ink); background: #080f1bcc; border-radius: 3px; padding: 1px 3px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; height: 40px; border-radius: 12px; padding: 0 14px; font: 500 13.5px 'SC Label'; letter-spacing: .16em; text-transform: uppercase; background: var(--or); color: #0b1018; }
+.btn.g2 { background: #1a2333; color: var(--ink); }
+.link { font: 500 13px 'SC Label'; letter-spacing: .14em; text-transform: uppercase; color: var(--ink); margin-top: 10px; display: block; }
+.hero { display: flex; align-items: center; gap: 14px; } .ring { width: 74px; height: 74px; border-radius: 50%; border: 5px solid #22304a; border-top-color: var(--r); border-right-color: var(--r); display: grid; place-items: center; font: 400 16px 'SC Display'; flex: none; }
+.seg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; padding: 4px; background: var(--card); border: 1px solid #22304a; border-radius: 14px; margin-bottom: 4px; }
+.seg span { text-align: center; padding: 9px 2px; border-radius: 10px; font: 500 13px 'SC Label'; letter-spacing: .12em; text-transform: uppercase; color: var(--mu); } .seg span.on { background: #2a1d10; box-shadow: inset 0 0 0 1.5px var(--or); color: var(--ink); }
+.hl { border-color: #6a531c; background: linear-gradient(#1a1608, #0e1828); }
+.tl { position: relative; padding-left: 18px; } .tl::before { content: ''; position: absolute; left: 5px; top: 4px; bottom: 4px; width: 2px; background: #22304a; }
+.tl .now { position: relative; font: 500 12px 'SC Label'; letter-spacing: .14em; color: var(--or); margin: 4px 0 4px; } .tl .now::before { content: ''; position: absolute; left: -18px; top: 2px; width: 12px; height: 12px; border-radius: 50%; background: var(--or); box-shadow: 0 0 0 5px #fa812733; }
+.tl .mo { position: relative; font: 500 12px 'SC Label'; letter-spacing: .1em; color: var(--mu); text-transform: uppercase; margin: 8px 0 2px; } .tl .mo::before { content: ''; position: absolute; left: -16px; top: 4px; width: 8px; height: 8px; border-radius: 50%; background: #3a4a62; }
+.tl .mo.shm { color: #ffb3a1; } .tl .mo.shm::before { background: var(--sh); }
+.think { margin-top: 30px; max-width: 1150px; color: var(--mu); font-size: 14px; } .think b { color: var(--ink); }
+</style></head><body>
+<h1>One sky page, round 2</h1>
+<p class="lead">Now and Tonight as one page from the radar, keeping everything both tabs have today. Example: 8:30 PM, clear until 2 AM.</p>
+<p class="inv"><b>Everything that has to fit:</b> Tonight’s haul (new cards, top rarity, rarity bars, best window, XP, dark time, weather), tonight’s headliner, the next new card with a countdown, what’s up right now (new to you), cards you have that are up (Seen before), tonight’s run with reminders, <b>shiny chances</b> (with reminders now), tonight’s missions and the sky challenge, the full list of every pass, and the next clear night.</p>
+<div class="row">
+
+<div class="opt"><h2>A · The night, top to bottom</h2><p>One scroll in the order you'd think it: is tonight good (haul), what's the big one (headliner), what's next, what's up now, then the run with shiny chances woven in, missions, and the full timeline at the end.</p>
+<div class="ph">
+ <div class="top"><span><b>Your sky</b><small>Toronto · 8:30 PM</small></span><span class="x">✕</span></div>
+ <div class="box haul"><div class="k">Tonight’s haul</div><div class="big">51 new cards, <em>2 Epic</em></div><div class="sub">Best between 8:32 and 9:35 PM · about +60 XP</div>
+  <div class="bars"><i class="c" style="height:100%"></i><i class="u" style="height:46%"></i><i class="rr" style="height:22%"></i><i class="ep" style="height:12%"></i><i class="lg" style="height:3px"></i></div>
+  <div class="wx"><span>☾ Dark 6:50 PM</span><span>☀︎ Clear until 2 AM</span><span>Next clear: Thursday</span></div></div>
+ <div class="box hl" style="margin-top:12px"><div class="haul"><div class="k" style="color:var(--gold)">★ Tonight’s headliner</div></div><div style="font:400 20px 'SC Display';margin-top:4px">Kosmos 381</div><small style="color:var(--mu)">8:44 PM · high in the northeast · +40 XP</small><div style="display:flex;gap:8px;margin-top:10px"><span class="btn" style="flex:1">Show me</span><span class="btn g2" style="flex:1">Set reminder</span></div></div>
+ <div class="lab">Up right now <span>7 new · 2 you have</span></div>
+ <div class="minis"><div class="mini" style="background-image:url(../assets/art/cards/sm/molniya.webp)"><small>NE 40°</small></div><div class="mini" style="background-image:url(../assets/art/cards/sm/falcon-9.webp)"><small>S 32°</small></div><div class="mini" style="background-image:url(../assets/art/cards/sm/smallsat.webp)"><small>SW 38°</small></div><div class="mini" style="background-image:url(../assets/art/cards/sm/planet-saturn.webp)"><small>SE 28°</small></div></div>
+ <div class="lab">Tonight’s run <span>Set reminders ›</span></div>
+ <div class="box">
+  <div class="pass"><span class="tm">8:44<small>NE</small></span><span class="nm"><b><span class="g rr"></span>Kosmos 381<span class="pill hl">HEADLINER</span></b><small>High · bright</small></span><span class="ic">◎</span><span class="ic on">🔔</span></div>
+  <div class="pass"><span class="tm">9:02<small>S</small></span><span class="nm"><b><span class="g u"></span>SL-14 stage<span class="pill sh">SHINY</span></b><small>Catch the fade: slips into shadow high in the south</small></span><span class="ic">◎</span><span class="ic">🔔</span></div>
+  <div class="pass"><span class="tm">10:02<small>W</small></span><span class="nm"><b><span class="g ep"></span>Seasat<span class="new">NEW</span></b><small>Epic · low in the west</small></span><span class="ic">◎</span><span class="ic">🔔</span></div>
+  <div class="pass"><span class="tm">5:41<small>NW</small></span><span class="nm"><b><span class="g rr"></span>ISS</b><small>Early riser · very bright</small></span><span class="ic">◎</span><span class="ic">🔔</span></div></div>
+ <div class="lab">Missions <span>1 of 3</span></div>
+ <div class="box mis"><div class="m d"><i></i>Collect a satellite<b>+50</b></div><div class="m"><i></i>3 stars in one constellation<b>+50</b></div><div class="m"><i></i>A planet or the Moon<b>+50</b></div></div>
+ <span class="link">Every pass tonight · 214 ›</span>
+</div></div>
+
+<div class="opt"><h2>B · Now · Next · Later</h2><p>The haul stays on top. One switch underneath: <b>Now</b> (what's up, Seen before, missions you can do right now), <b>Next</b> (the countdown to the next new card, the headliner, shiny chances coming up), <b>Later</b> (the timeline to dawn). Never more than a screen of each.</p>
+<div class="ph">
+ <div class="top"><span><b>Your sky</b><small>Toronto · 8:30 PM</small></span><span class="x">✕</span></div>
+ <div class="box haul"><div style="display:flex;justify-content:space-between;align-items:flex-start"><div><div class="k">Tonight’s haul</div><div class="big">51 new</div><div class="sub">2 Epic · best 8:32–9:35 PM</div></div><div class="bars" style="margin:2px 0 0"><i class="c" style="height:100%"></i><i class="u" style="height:46%"></i><i class="rr" style="height:22%"></i><i class="ep" style="height:12%"></i><i class="lg" style="height:3px"></i></div></div>
+  <div class="wx"><span>☾ Dark 6:50</span><span>☀︎ Clear until 2 AM</span><span>Missions 1/3</span></div></div>
+ <div class="seg" style="margin-top:14px"><span>Now · 7</span><span class="on">Next</span><span>Later</span></div>
+ <div class="box" style="margin-top:8px"><div class="hero"><div class="ring">0:14</div><div><div class="haul"><div class="k">Next new card</div></div><div style="font:400 19px 'SC Display'">Kosmos 381</div><small style="color:var(--mu)"><span class="g rr"></span>Rare · 8:44 PM · high in the NE ↗</small></div></div>
+  <div style="display:flex;gap:8px;margin-top:12px"><span class="btn" style="flex:1">Show me</span><span class="btn g2" style="flex:1">Set reminder</span></div></div>
+ <div class="lab">Shiny chances <span>3 tonight</span></div>
+ <div class="box">
+  <div class="pass"><span class="tm">9:02<small>S</small></span><span class="nm"><b>SL-14 stage<span class="pill sh">FADE</span></b><small>Slips into Earth’s shadow high in the south</small></span><span class="ic">◎</span><span class="ic">🔔</span></div>
+  <div class="pass"><span class="tm">9:48<small>E</small></span><span class="nm"><b>Kosmos 2506<span class="pill sh">MOON</span></b><small>Passes right beside the Moon</small></span><span class="ic">◎</span><span class="ic">🔔</span></div>
+  <div class="pass"><span class="tm">11:10<small>↑</small></span><span class="nm"><b>Delta 1 stage<span class="pill sh">OVERHEAD</span></b><small>Almost straight overhead</small></span><span class="ic">◎</span><span class="ic">🔔</span></div></div>
+ <div class="lab">Coming up</div>
+ <div class="box">
+  <div class="pass"><span class="tm">8:44<small>NE</small></span><span class="nm"><b><span class="g rr"></span>Kosmos 381<span class="pill hl">HEADLINER</span></b><small>+40 XP</small></span><span class="ic on">🔔</span></div>
+  <div class="pass"><span class="tm">8:52<small>E</small></span><span class="nm"><b><span class="g u"></span>Delta 1 Rocket Stage<span class="new">NEW</span></b><small>Halfway up</small></span><span class="ic">🔔</span></div></div>
+</div></div>
+
+<div class="opt"><h2>C · Haul, then one timeline</h2><p>The haul and missions on top, then everything else on one timeline from now to dawn: what's up now at the top, then each pass, shiny chance, the headliner, the busiest moment and the weather in time order. Filter chips to narrow it down.</p>
+<div class="ph">
+ <div class="top"><span><b>Your sky</b><small>Toronto · 8:30 PM</small></span><span class="x">✕</span></div>
+ <div class="box haul"><div class="k">Tonight’s haul</div><div class="big">51 new cards, <em>2 Epic</em></div>
+  <div class="bars"><i class="c" style="height:100%"></i><i class="u" style="height:46%"></i><i class="rr" style="height:22%"></i><i class="ep" style="height:12%"></i><i class="lg" style="height:3px"></i></div>
+  <div class="mis" style="margin-top:6px"><div class="m d"><i></i>Collect a satellite<b>+50</b></div><div class="m"><i></i>3 stars in one constellation<b>+50</b></div><div class="m"><i></i>A planet or the Moon<b>+50</b></div></div></div>
+ <div style="display:flex;gap:6px;margin:14px 0 6px;flex-wrap:wrap"><span class="btn g2" style="height:32px;box-shadow:inset 0 0 0 1.5px var(--or)">All</span><span class="btn g2" style="height:32px">New</span><span class="btn g2" style="height:32px">Rare+</span><span class="btn g2" style="height:32px">✦ Shiny</span></div>
+ <div class="tl">
+  <div class="now">NOW · 8:30 PM · 7 NEW UP</div>
+  <div class="minis" style="margin:4px 0 8px"><div class="mini" style="background-image:url(../assets/art/cards/sm/molniya.webp)"><small>NE 40°</small></div><div class="mini" style="background-image:url(../assets/art/cards/sm/falcon-9.webp)"><small>S 32°</small></div><div class="mini" style="background-image:url(../assets/art/cards/sm/smallsat.webp)"><small>SW 38°</small></div><div class="mini" style="background-image:url(../assets/art/cards/sm/planet-saturn.webp)"><small>SE 28°</small></div></div>
+  <div class="pass"><span class="tm">8:44<small>NE</small></span><span class="nm"><b><span class="g rr"></span>Kosmos 381<span class="pill hl">HEADLINER</span></b><small>High · in 14 min</small></span><span class="ic">◎</span><span class="ic on">🔔</span></div>
+  <div class="mo shm">✦ 9:02 · Shiny chance: SL-14 stage slips into the shadow</div>
+  <div class="mo">★ 9:10 · Busiest: 65 up at once</div>
+  <div class="pass"><span class="tm">10:02<small>W</small></span><span class="nm"><b><span class="g ep"></span>Seasat<span class="new">NEW</span></b><small>Epic · low</small></span><span class="ic">◎</span><span class="ic">🔔</span></div>
+  <div class="mo">☁ 2:00 AM · Cloud rolls in</div>
+  <div class="pass"><span class="tm">5:41<small>NW</small></span><span class="nm"><b><span class="g rr"></span>ISS</b><small>Early riser</small></span><span class="ic">◎</span><span class="ic">🔔</span></div>
+  <div class="mo">◑ 6:40 AM · Dawn · next clear night Thursday</div>
+ </div>
+</div></div>
+
+</div>
+<div class="think"><b>My pick: A.</b> It keeps the haul up top (your favourite), puts the headliner and shiny chances where you'd plan around them, and needs no tabs at all; the full list is one tap away. <b>B</b> is tidiest if one long scroll feels like too much. <b>C</b> is the most complete, but mixing every pass with moments makes it long on a busy night.</div>
+</body></html>
