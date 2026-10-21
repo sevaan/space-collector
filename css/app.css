@@ -1851,3 +1851,12 @@ body.is-plus .set-row .plus-tag { display: none; } /* Plus already: no PLUS tag 
 .pr-cloud { margin: 0 0 4px; font-size: 13.5px; color: #8fb3ff; }
 #pr-cancel { margin-top: 12px; }
 body.night .pr-row.on { border-color: #ff6a55; background: #1a0705; } body.night .pr-row .chk, body.night .pr-row .w b i, body.night .pr-cloud { color: #ff7f70; }
+
+/* Tonight's missions on the Now tab (2026-10-21), the rank card's list. */
+.now-missions { margin: 0 0 4px; }
+.now-missions .nm { display: flex; align-items: center; gap: 12px; padding: 11px 2px; border-bottom: 1px solid #1d2a3c; font: 500 15.5px/1.25 var(--label); letter-spacing: .03em; color: var(--ink, #fff2b3); }
+.now-missions .nm i { width: 11px; height: 11px; flex: none; transform: rotate(45deg); border: 1.5px solid #bcb585; }
+.now-missions .nm span { flex: 1; } .now-missions .nm small { display: block; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--gold, #e2b53c); margin-top: 2px; }
+.now-missions .nm b { font: 500 13px var(--label); letter-spacing: .08em; color: #5fd08a; }
+.now-missions .nm.done span { color: #bdbea9; text-decoration: line-through; text-decoration-color: #fa8127; } .now-missions .nm.done i { background: #fa8127; border-color: #fa8127; } .now-missions .nm.done b { opacity: .5; }
+body.night .now-missions .nm b { color: #ff7f70; } body.night .now-missions .nm { border-color: #2e1010; }
