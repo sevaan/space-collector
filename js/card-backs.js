@@ -1,17 +1,17 @@
-import { SETS, goldAlbums } from './sets.js?v=0.1.928';
-import { isPlus } from './plus.js?v=0.1.928';
+import { SETS, goldAlbums } from './sets.js?v=0.1.929';
+import { isPlus } from './plus.js?v=0.1.929';
 // Card backs you can choose (2026-10-16, design/card-backs.html, Sevaan liked all six). Mission Control is everyone’s;
 // Plus unlocks the rest; two can also be earned free: Golden Record (find the Pale Blue Dot story) and Star Chart
 // (complete 10 constellations); main.js writes what’s been earned to localStorage 'backEarned'. The choice is
 // localStorage 'cardBack': a back’s id, or 'random' for a different unlocked one each time a card turns over.
 export const CARD_BACKS = [
-  { id: 'mission-control', name: 'Mission Control', url: 'assets/art/backs/back-collector.webp', title: 'middle', free: true },
-  { id: 'golden-record', name: 'Golden Record', url: 'assets/art/backs/back-golden-record.webp', title: 'middle', earn: 'Find the Pale Blue Dot story' },
-  { id: 'star-chart', name: 'Star Chart', url: 'assets/art/backs/back-star-chart.webp', title: 'middle', earn: 'Complete 10 constellations' },
-  { id: 'mission-patch', name: 'Mission Patch', url: 'assets/art/backs/back-mission-patch.webp', title: 'middle' },
-  { id: 'blueprint', name: 'Blueprint', url: 'assets/art/backs/back-blueprint.webp', title: 'middle' },
-  { id: 'aurora', name: 'Northern Lights', url: 'assets/art/backs/back-aurora.webp', title: 'middle' },
-  { id: 'nebula-foil', name: 'Nebula Foil', url: 'assets/art/backs/back-nebula-foil.webp', title: 'middle' },
+  { id: 'mission-control', bg: '#01121c', name: 'Mission Control', url: 'assets/art/backs/back-collector.webp', title: 'middle', free: true },
+  { id: 'golden-record', bg: '#031622', name: 'Golden Record', url: 'assets/art/backs/back-golden-record.webp', title: 'middle', earn: 'Find the Pale Blue Dot story' },
+  { id: 'star-chart', bg: '#02151e', name: 'Star Chart', url: 'assets/art/backs/back-star-chart.webp', title: 'middle', earn: 'Complete 10 constellations' },
+  { id: 'mission-patch', bg: '#071723', name: 'Mission Patch', url: 'assets/art/backs/back-mission-patch.webp', title: 'middle' },
+  { id: 'blueprint', bg: '#124e87', name: 'Blueprint', url: 'assets/art/backs/back-blueprint.webp', title: 'middle' },
+  { id: 'aurora', bg: '#021520', name: 'Northern Lights', url: 'assets/art/backs/back-aurora.webp', title: 'middle' },
+  { id: 'nebula-foil', bg: '#152338', name: 'Nebula Foil', url: 'assets/art/backs/back-nebula-foil.webp', title: 'middle' },
 ];
 const read = (k, d) => { try { return localStorage.getItem(k) ?? d; } catch { return d; } };
 export const backEarned = () => { try { return new Set(JSON.parse(read('backEarned', '[]'))); } catch { return new Set(); } };
@@ -39,7 +39,7 @@ export function nextBack() {
 export function applyBack(el, o = null) {
   if (!el) return null;
   const b = nextBack();
-  el.style.backgroundImage = `url('${b.url}')`;
+  el.style.backgroundImage = `url('${b.url}')`; el.style.backgroundColor = b.bg ?? ''; // the picture's own edge colour fills any margin round it (2026-10-21: the reveal card is a little wider than the pictures)
   el.dataset.title = b.title;
   const set = o?.set && goldAlbums().has(o.set) ? SETS.find((s) => s.id === o.set) : null;
   el.classList.toggle('back--album', !!set);
