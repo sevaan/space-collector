@@ -1878,3 +1878,13 @@ body.night .sky-jump button.on { color: #ff7f70; border-color: #ff6a5566; backgr
 .sky-jump.stuck { box-shadow: 0 calc(-1 * var(--safe-top, 0px) - 2px) 0 0 var(--bg); }
 
 .overlay.panel.pulled { animation: none !important; } /* pulled down to close: keep where the finger left it */
+
+/* Every pass tonight, design/everything-tonight.html B (2026-10-21). */
+.ev-card { margin-top: 8px; } .ev-head { display: flex; justify-content: space-between; } .ev-head span:last-child { color: var(--ui-muted, #bdbea9); }
+.ev-box { background: #0e1828; border: 1px solid #22304a; border-radius: 16px; padding: 14px; }
+.ev-busy { font: 500 15px var(--label); letter-spacing: .04em; color: var(--ink, #fff2b3); }
+.ev-chart { display: flex; align-items: flex-end; gap: 3px; height: 48px; margin: 10px 0 6px; } .ev-chart i { flex: 1; background: #34466a; border-radius: 2px 2px 0 0; } .ev-chart i.pk { background: #fa8127; }
+.ev-axis { display: flex; justify-content: space-between; font: 500 12px var(--label); letter-spacing: .1em; text-transform: uppercase; color: var(--ui-muted, #bdbea9); }
+.ev-btn { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 46px; margin-top: 12px; border-radius: 13px; border: 1px solid #34466a; background: #1a2333; color: var(--ink, #fff2b3); font: 500 14px var(--label); letter-spacing: .16em; text-transform: uppercase; }
+body.night .ev-chart i.pk { background: #ff6a55; } body.night .ev-chart i { background: #3a1814; }
+.ev-axis { position: relative; } .ev-mid { position: absolute; transform: translateX(-50%); } /* midnight where it really falls */
