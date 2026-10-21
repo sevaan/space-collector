@@ -1948,3 +1948,9 @@ body.set-open #sky-header #peak-toggle { visibility: hidden; }
 #nav-more .nm-x { font: 500 24px/1 'SC Label', sans-serif; color: var(--ink, #fff2b3); transform: translateY(14px); opacity: 0; }
 body.set-open #nav-more .nm-set { transform: translateY(-14px); opacity: 0; } body.set-open #nav-more .nm-x { transform: none; opacity: 1; }
 @media (prefers-reduced-motion: reduce) { #nav-more .nm-set, #nav-more .nm-x { transition: none; } }
+/* The sky page and Settings always sit under the shared header, also while they slide away (2026-10-21: the page
+   jumped up over the header as it left, unlike the Collection). */
+#visible, #debug { top: calc(var(--safe-top) + 80px) !important; padding-top: 0 !important; }
+#visible > .panel-head, #debug > .panel-head { display: none !important; }
+body:has(#debug:not([hidden])) #sky-header, body:has(#visible:not([hidden])) #sky-header { background: var(--bg); box-shadow: 0 calc(-1 * var(--safe-top)) 0 0 var(--bg); }
+body.nav-tabs.sky-open:has(#visible.leaving)::after { opacity: 0; transition: opacity .2s; }
