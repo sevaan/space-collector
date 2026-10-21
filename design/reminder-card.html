@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Reminder card options</title>
+<style>
+@font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf'); }
+@font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf'); }
+:root { --bg: #0c1726; --card: #0b1220; --ink: #fff2b3; --muted: #bdbea9; --or: #fa8127; --blue: #8fb3ff; --line: #2a3446; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #070c16; color: var(--ink); font: 15px/1.4 system-ui, sans-serif; padding: 28px 20px 60px; }
+h1 { font: 400 26px 'SC Display'; margin: 0 0 4px; }
+.lead { color: var(--muted); margin: 0 0 24px; max-width: 900px; }
+.row { display: flex; flex-wrap: wrap; gap: 26px; }
+.opt { width: 360px; }
+.opt h2 { font: 500 15px 'SC Label'; letter-spacing: .14em; text-transform: uppercase; color: var(--or); margin: 0 0 4px; }
+.opt p { color: var(--muted); margin: 0 0 12px; font-size: 13.5px; min-height: 58px; }
+.phone { background: linear-gradient(#1c2a3e, #121c2c); border-radius: 26px; padding: 18px 16px 22px; }
+.stub { height: 120px; border-radius: 14px 14px 18px 18px; background: linear-gradient(#0b1220 70%, #0b1220), #0b1220; border: 3px solid #e9dfb8; border-top: 0; border-radius: 0 0 18px 18px; position: relative; margin-bottom: 14px; }
+.stub::before { content: 'KOSMOS 1950 card'; position: absolute; left: 14px; top: 16px; font: 400 20px 'SC Display'; color: var(--ink); }
+.stub::after { content: 'NOT YET COLLECTED'; position: absolute; left: 14px; bottom: 14px; font: 500 12px 'SC Label'; letter-spacing: .14em; color: var(--muted); }
+.lab { font: 500 12.5px 'SC Label'; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.k { color: var(--or); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 9px; height: 46px; border-radius: 12px; border: 0; font: 500 15px 'SC Label'; letter-spacing: .16em; text-transform: uppercase; cursor: pointer; }
+.btn svg { width: 18px; height: 18px; }
+.solid { background: var(--or); color: #0b1018; }
+.ghost { background: #1a2333; color: var(--ink); }
+.round { width: 46px; padding: 0; border-radius: 50%; }
+/* A: ticket, like the notifications */
+.a { background: #0e1626f2; border-radius: 16px; padding: 14px 16px 16px; border-top: 3px solid var(--or); }
+.a .top { display: flex; justify-content: space-between; align-items: baseline; }
+.a .t { font: 400 30px 'SC Display'; margin: 6px 0 2px; }
+.a .w { color: var(--muted); font-size: 14px; }
+.a .acts { display: flex; gap: 10px; margin-top: 14px; } .a .acts .solid { flex: 1; }
+/* B: the pass drawn as an arc */
+.b { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 14px 16px 16px; }
+.b svg.arc { width: 100%; height: 92px; display: block; margin: 6px 0 4px; }
+.b .acts { display: flex; gap: 10px; margin-top: 10px; } .b .acts .btn { flex: 1; white-space: nowrap; } .b .acts .solid { flex: 1.5; }
+/* C: one compact row */
+.c { background: var(--card); border: 1px solid var(--line); border-radius: 999px; padding: 8px 8px 8px 18px; display: flex; align-items: center; gap: 12px; }
+.c .tm { font: 400 20px 'SC Display'; line-height: 1; }
+.c .tm small { display: block; font: 500 12px 'SC Label'; letter-spacing: .12em; color: var(--muted); margin-top: 4px; text-transform: uppercase; }
+.c .dir { flex: 1; min-width: 0; font-size: 12px !important; display: flex; align-items: center; gap: 8px; color: var(--muted); font: 500 13px 'SC Label'; letter-spacing: .08em; text-transform: uppercase; }
+.c .dir svg { width: 30px; height: 30px; flex: none; }
+.c .bell { background: var(--or); color: #0b1018; }
+/* D: countdown hero */
+.d { text-align: center; padding: 6px 4px 0; }
+.d .cd { font: 400 44px 'SC Display'; line-height: 1; letter-spacing: -.01em; }
+.d .cd small { font: 500 16px 'SC Label'; letter-spacing: .12em; color: var(--muted); margin-left: 6px; }
+.d .w { color: var(--muted); margin: 8px 0 14px; font-size: 14.5px; }
+.d .solid { width: 100%; }
+.d .link { display: block; margin-top: 12px; font: 500 13px 'SC Label'; letter-spacing: .16em; color: var(--ink); text-transform: uppercase; opacity: .85; }
+.now { font: 500 12px 'SC Label'; letter-spacing: .14em; color: var(--muted); text-transform: uppercase; margin: 22px 0 6px; }
+.cur { background: var(--card); border: 1px solid #3b2a1a; border-radius: 16px; padding: 14px 16px 16px; }
+.cur .l { text-align: center; } .cur .acts { display: flex; gap: 10px; margin-top: 12px; } .cur .acts .solid { flex: 1.4; } .cur .acts .ghost { flex: 1; }
+</style></head><body>
+<h1>Reminder card</h1>
+<p class="lead">The panel under an uncollected card when it passes tonight (Kosmos 1950: rises 7:01 PM, halfway up in the east, 2 h 31 min from now). Each option keeps two actions: set a reminder (opens the choice of times) and Show me.</p>
+<div class="row">
+
+<div class="opt"><h2>Now</h2><p>Today's panel, for reference.</p><div class="phone"><div class="stub"></div>
+  <div class="cur"><div class="l lab">Tonight · <span class="k">7:01 PM</span> · halfway up in the east</div>
+  <div class="acts"><button class="btn solid"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 20a2 2 0 0 0 4 0"/></svg>Set reminder</button><button class="btn ghost"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2.5"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>Show me</button></div></div></div></div>
+
+<div class="opt"><h2>A · Ticket</h2><p>Looks like the app's notices: an orange top edge, the time big, where to look in plain words, and how long until it rises.</p><div class="phone"><div class="stub"></div>
+  <div class="a"><div class="top"><span class="lab">Passes tonight</span><span class="lab k">in 2 h 31 min</span></div>
+  <div class="t">7:01 PM</div><div class="w">Rises in the east and climbs halfway up</div>
+  <div class="acts"><button class="btn solid"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 20a2 2 0 0 0 4 0"/></svg>Set reminder</button><button class="btn ghost round" aria-label="Show me"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2.5"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></button></div></div></div></div>
+
+<div class="opt"><h2>B · The pass, drawn</h2><p>A little arc of its path across the sky, horizon to horizon, with rise, highest and set times. You see the pass before you go out.</p><div class="phone"><div class="stub"></div>
+  <div class="b"><div class="lab">Tonight · <span class="k">in 2 h 31 min</span></div>
+  <svg class="arc" viewBox="0 0 320 92"><path d="M10 80 H310" stroke="#3a465c" stroke-width="1.5"/><path d="M28 80 Q160 -6 292 80" fill="none" stroke="#fa8127" stroke-width="2" stroke-dasharray="5 6"/><circle cx="160" cy="37" r="5" fill="#fff2b3"/>
+    <g font-family="SC Label" font-size="12.5" fill="#bdbea9" letter-spacing="1"><text x="10" y="70">E · 7:01</text><text x="160" y="22" text-anchor="middle" fill="#fff2b3">45° UP · 7:05</text><text x="310" y="70" text-anchor="end">7:10 · N</text></g></svg>
+  <div class="acts"><button class="btn solid"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 20a2 2 0 0 0 4 0"/></svg>Set reminder</button><button class="btn ghost">Show me</button></div></div></div></div>
+
+<div class="opt"><h2>C · One line</h2><p>A slim pill: time, a tiny compass pointing where it rises, and two round buttons. Gives the card more room.</p><div class="phone"><div class="stub"></div>
+  <div class="c"><div class="tm">7:01 PM<small>tonight</small></div><div class="dir"><svg viewBox="0 0 30 30"><circle cx="15" cy="15" r="13" fill="none" stroke="#3a465c" stroke-width="1.5"/><path d="M15 15 L27 15" stroke="#fa8127" stroke-width="2.5" stroke-linecap="round"/><circle cx="15" cy="15" r="2" fill="#fff2b3"/></svg>East · halfway up</div>
+  <button class="btn ghost round" aria-label="Show me"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2.5"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></button><button class="btn round bell" aria-label="Set reminder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 20a2 2 0 0 0 4 0"/></svg></button></div></div></div>
+
+<div class="opt"><h2>D · Countdown</h2><p>The countdown leads, like the Now tab's hero: big time until it rises, where to look underneath, one big button, Show me as a link.</p><div class="phone"><div class="stub"></div>
+  <div class="d"><div class="cd">2:31<small>TO GO</small></div><div class="w">Rises at 7:01 PM in the east, then climbs halfway up</div>
+  <button class="btn solid"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 20a2 2 0 0 0 4 0"/></svg>Set reminder</button><span class="link">Show me where ›</span></div></div></div>
+
+</div></body></html>
