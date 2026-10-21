@@ -1,0 +1,11 @@
+import { webkit } from 'playwright';
+import { setup } from './common.mjs';
+const b = await webkit.launch();
+const d = new Date(); d.setHours(17, 50, 0, 0);
+const { p } = await setup(b, 'phone', { when: d }); await p.waitForTimeout(9000);
+await p.click('#nav-sky'); await p.waitForTimeout(2500);
+console.log(await p.evaluate(() => ({ cd: document.querySelector('.nh-cd')?.textContent, card: !!document.querySelector('.nh-card .mini-face img'), k: document.querySelector('.nh-k')?.textContent })));
+const h = await p.$('.now-hero'); if (h) await h.screenshot({ path: '/private/tmp/claude-501/-Users-sevaan/04a71ae5-eb6a-4f90-ae24-1b4114851804/scratchpad/hero.png' });
+await p.click('#nav-explore'); await p.waitForTimeout(900); await p.click('#nav-sky'); await p.waitForTimeout(80);
+console.log('cd right after return', await p.evaluate(() => document.querySelector('.nh-cd')?.textContent));
+await b.close();

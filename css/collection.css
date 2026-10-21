@@ -700,3 +700,11 @@ html.embedded, html.embedded body { overscroll-behavior: none; }
 @media (prefers-reduced-motion: reduce) { #rotate .rt-phone, #rotate .rt-ring, #rotate .rt-sub { animation: none; } }
 html.embedded #rotate { display: none !important; }
 @keyframes ldPulse { 50% { opacity:.55; } }
+
+/* Bottom edge cut off on the phone (2026-10-21, Sevaan): content-visibility clips each slot at its exact box, and on
+   a 3× screen a fractional bottom edge shaved off the tile's last pixel row, which is the cream border. The slot now
+   reaches 2 px past the card on every side (padding, cancelled by a negative margin), so the clip never meets the edge;
+   the content box keeps the card's 28:42, so nothing moves. */
+.grid .tile-slot { box-sizing: content-box; width: auto; padding: 2px; margin: -2px; border-radius: calc(14px * var(--mini-s, .4) + 2px); background: transparent; }
+.grid .tile-slot:empty { background: #0f1b2a; background-clip: content-box; }
+.grid .tile-slot > .card-tile.card-tile--mini { height: auto; aspect-ratio: 28 / 42; }

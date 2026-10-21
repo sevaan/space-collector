@@ -1971,3 +1971,19 @@ body:not(.panel-over-col) #debug.leaving { z-index: 21; }
 @keyframes rtRing { 0%, 45% { stroke: rgba(255,242,179,.66); } 55%, 88% { stroke: #fa8127; } 100% { stroke: rgba(255,242,179,.66); } }
 @media (prefers-reduced-motion: reduce) { #rotate .rt-phone, #rotate .rt-ring, #rotate .rt-sub { animation: none; } }
 html.embedded #rotate { display: none !important; }
+/* Now hero, option B (design/next-card-art.html, 2026-10-21, Sevaan): the real mini card from the Collection with its
+   real picture, tilted and glowing in its rarity, beside the countdown, rarity, name and what it is. */
+.now-hero { justify-items: stretch; text-align: left; }
+.now-hero .nh-k, .now-hero .nh-dir, .now-hero .nh-acts { justify-self: center; }
+.nh-top { display: flex; gap: 16px; align-items: center; margin: 6px 0 4px; }
+.nh-card { flex: none; width: 116px; aspect-ratio: 28 / 42; padding: 0; border: 0; background: none; border-radius: calc(14px * .4143); --mini-s: .4143; transform: rotate(-4deg); box-shadow: 0 10px 22px rgba(0,0,0,.5), 0 0 22px color-mix(in srgb, var(--c) 35%, transparent); cursor: pointer; transition: transform .2s var(--ease-out, ease-out); }
+.nh-card:active { transform: rotate(-2deg) scale(.97); }
+.nh-card .mini-face { width: 100%; height: 100%; }
+.nh-card .mini-face .card__face { border-color: var(--c); }
+.nh-side { display: grid; gap: 5px; min-width: 0; }
+.now-hero .nh-t { position: static; display: grid; place-content: start; gap: 4px; }
+.now-hero .nh-t b { font-size: 30px; } .now-hero .nh-t b.long { font-size: 26px; }
+.nh-bar { display: block; height: 3px; border-radius: 2px; background: #22344a; overflow: hidden; margin: 2px 0 4px; } .nh-fill { display: block; height: 100%; width: 0; background: var(--c); transition: width 1s linear; }
+.now-hero .nh-tier { font-size: 12px; } .now-hero .nh-name { font-size: 21px; overflow-wrap: anywhere; }
+.nh-what { font: 500 13px/1.25 var(--label); color: var(--muted); }
+@media (prefers-reduced-motion: reduce) { .nh-card, .nh-fill { transition: none; } }

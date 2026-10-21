@@ -1,20 +1,20 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { fallWords } from './last-chance.js?v=0.1.955';
-import { feel } from './native.js?v=0.1.955';
-import { sfx } from './sfx.js?v=0.1.955';
-import { cardArt } from './art.js?v=0.1.955';
-import { TIER_INFO } from './rarity.js?v=0.1.955';
-import { SET_BY_ID } from './sets.js?v=0.1.955';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.955';
-import { FLEET_ABOUT, fleetAbout, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.955';
-import { artFileFor } from './art-keys.js?v=0.1.955';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.955';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.955';
-import { nightsIn } from './observation.js?v=0.1.955';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.955';
-import { SHINY } from './shiny.js?v=0.1.955';
-import { conArt, cometArt } from './con-art.js?v=0.1.955';
-import { CON_FIGURES } from './con-figures.js?v=0.1.955';
+import { fallWords } from './last-chance.js?v=0.1.956';
+import { feel } from './native.js?v=0.1.956';
+import { sfx } from './sfx.js?v=0.1.956';
+import { cardArt } from './art.js?v=0.1.956';
+import { TIER_INFO } from './rarity.js?v=0.1.956';
+import { SET_BY_ID } from './sets.js?v=0.1.956';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.956';
+import { FLEET_ABOUT, fleetAbout, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.956';
+import { artFileFor } from './art-keys.js?v=0.1.956';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.956';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.956';
+import { nightsIn } from './observation.js?v=0.1.956';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.956';
+import { SHINY } from './shiny.js?v=0.1.956';
+import { conArt, cometArt } from './con-art.js?v=0.1.956';
+import { CON_FIGURES } from './con-figures.js?v=0.1.956';
 // The animal/symbol figure belongs to the completed (gold) constellation card only (2026-10-05): a single
 // star’s card draws just the star pattern with its star marked, so the figure is a reward for finishing the set.
 // A star card’s constellation figure comes into focus as you collect the constellation’s stars (design/con-focus.html B).
@@ -515,8 +515,8 @@ export function attachFlip(el, { onBack, onTap } = {}) {
 
 // The real card, small (2026-10-13): returns a .mini-face element holding renderCard(o, { mini }) with `status` written
 // into its footer. Size it with --mini-s (width / 280) on it or any ancestor.
-export function miniCard(o, { sightings = [], ownedKeys, status = '', locked = false } = {}) {
-  const card = renderCard(o, { sightings, ownedKeys, mini: true });
+export function miniCard(o, { sightings = [], ownedKeys, status = '', locked = false, preview = false } = {}) {
+  const card = renderCard(o, { sightings, ownedKeys, mini: true, preview }); // preview: show the real picture of a card you don’t have yet (the Now hero, 2026-10-21)
   const foot = card.querySelector('.card__footer');
   if (foot) foot.innerHTML = `<span class="mini-status">${esc(status)}</span>`;
   const face = document.createElement('span'); face.className = `mini-face${locked ? ' locked' : ''}`; face.appendChild(card);
