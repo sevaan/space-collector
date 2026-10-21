@@ -1,17 +1,17 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.917';
+import { extinction } from './sky-limit.js?v=0.1.918';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.917';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.918';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.917';
-import { createCloudGL } from './clouds-gl.js?v=0.1.917';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.918';
+import { createCloudGL } from './clouds-gl.js?v=0.1.918';
 // Cloud colours by light: sunlit tops, shadowed bellies, and the horizon haze they melt into (0–1 RGB).
 const CLOUD_LIGHT = {
   day: { lit: [1, 1, 1], shade: [0.62, 0.68, 0.77], haze: [0.82, 0.87, 0.93] },
   dusk: { lit: [1, 0.8, 0.68], shade: [0.36, 0.33, 0.42], haze: [0.62, 0.5, 0.52] },
   night: { lit: [0.22, 0.25, 0.31], shade: [0.1, 0.12, 0.16], haze: [0.14, 0.15, 0.2] },
 };
-import { TIER_INFO } from './rarity.js?v=0.1.917';
+import { TIER_INFO } from './rarity.js?v=0.1.918';
 
 const RAD = Math.PI / 180;
 const SECRET_PX = { santa: 24, roadster: 12.4, voyager: 14.5, voyager2: 14.5, pioneer10: 11.7, pioneer11: 11.7, newhorizons: 6.4, arecibo: 6.9, halley: 8.6, sputnik: 11.2, laika: 13.3, wow: 9.8 };
@@ -1308,16 +1308,13 @@ export class SkyView {
       ctx.globalAlpha /= 0.85;
       rect(-0.3, -0.16, 0.6, 0.32); rect(-0.1, -0.34, 0.2, 0.68); // modules
     } else {
-      // Debris (2026-10-13, Sevaan: "could be a bit better"): a torn-off scrap of panel with a jagged edge, a cell line
-      // across it, a bent strut sticking out, and two tiny flecks drifting with it. It reads as broken, not a pebble.
-      ctx.rotate(0.5); ctx.scale(1.45, 1.45); // fill the icon box like the other icons
+      // Debris (2026-10-20, Sevaan: "a better space debris icon"): three jagged fragments drifting apart, a big one and
+      // two small, so it reads as broken pieces at sky size and never as a satellite or a stage.
+      ctx.rotate(0.3); ctx.scale(1.25, 1.25);
       const P = (pts) => { ctx.beginPath(); pts.forEach(([px, py], i) => (i ? ctx.lineTo(px * u, py * u) : ctx.moveTo(px * u, py * u))); ctx.closePath(); ctx.fill(); };
-      P([[-0.62, -0.38], [0.18, -0.52], [0.3, -0.3], [0.5, -0.36], [0.42, -0.08], [0.6, 0.06], [0.34, 0.2], [0.4, 0.42], [0.08, 0.3], [-0.14, 0.46], [-0.24, 0.22], [-0.56, 0.3], [-0.44, 0.02]]);
-      ctx.save(); ctx.globalCompositeOperation = 'destination-out'; ctx.lineWidth = Math.max(0.6, 0.05 * u); // panel cell lines cut through
-      ctx.beginPath(); ctx.moveTo(-0.5 * u, -0.12 * u); ctx.lineTo(0.45 * u, -0.22 * u); ctx.moveTo(-0.12 * u, -0.42 * u); ctx.lineTo(-0.02 * u, 0.32 * u); ctx.stroke(); ctx.restore();
-      ctx.lineWidth = Math.max(1, 0.11 * u); ctx.lineCap = 'round';
-      ctx.beginPath(); ctx.moveTo(-0.52 * u, 0.12 * u); ctx.lineTo(-0.74 * u, 0.26 * u); ctx.lineTo(-0.8 * u, 0.46 * u); ctx.stroke(); // bent strut
-      if (u > 6) { ctx.beginPath(); ctx.arc(0.72 * u, -0.5 * u, 0.07 * u, 0, Math.PI * 2); ctx.fill(); } // a fleck, only when big enough to see
+      P([[-0.7, -0.15], [-0.05, -0.55], [0.2, -0.05], [-0.1, 0.25], [-0.55, 0.3]]);
+      P([[0.3, -0.75], [0.75, -0.55], [0.55, -0.25]]);
+      P([[0.35, 0.3], [0.8, 0.2], [0.65, 0.65], [0.4, 0.6]]);
     }
     ctx.restore();
   }
