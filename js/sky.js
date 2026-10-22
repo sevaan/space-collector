@@ -1,17 +1,17 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.987';
+import { extinction } from './sky-limit.js?v=0.1.988';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.987';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.988';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.987';
-import { createCloudGL } from './clouds-gl.js?v=0.1.987';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.988';
+import { createCloudGL } from './clouds-gl.js?v=0.1.988';
 // Cloud colours by light: sunlit tops, shadowed bellies, and the horizon haze they melt into (0–1 RGB).
 const CLOUD_LIGHT = {
   day: { lit: [1, 1, 1], shade: [0.62, 0.68, 0.77], haze: [0.82, 0.87, 0.93] },
   dusk: { lit: [1, 0.8, 0.68], shade: [0.36, 0.33, 0.42], haze: [0.62, 0.5, 0.52] },
   night: { lit: [0.22, 0.25, 0.31], shade: [0.1, 0.12, 0.16], haze: [0.14, 0.15, 0.2] },
 };
-import { TIER_INFO } from './rarity.js?v=0.1.987';
+import { TIER_INFO } from './rarity.js?v=0.1.988';
 
 const RAD = Math.PI / 180;
 const SECRET_PX = { santa: 24, roadster: 12.4, voyager: 14.5, voyager2: 14.5, pioneer10: 11.7, pioneer11: 11.7, newhorizons: 6.4, arecibo: 6.9, halley: 8.6, sputnik: 11.2, laika: 13.3, wow: 9.8 };
@@ -281,6 +281,8 @@ export class SkyView {
       p.y >= this.safeTop + pad && p.y <= this.h - this.safeBottom - pad;
   }
 
+  // Settings → Sky labels (2026-10-21): 'all', 'new' (only cards you don't have yet) or 'off'. main sets ownedObj/ownedName.
+  labelOk(o, name) { const m = this.labelMode ?? 'all'; if (m === 'all') return true; if (m === 'off') return false; return o ? !this.ownedObj?.(o) : !this.ownedName?.(name); }
   queueLabel(text, p, { color = this.theme.labelDim, size = 12, weight = 600, gap = 9, priority = 0, align = 'auto' } = {}) {
     if (!text || !this.inSky(p)) return;
     // Keep the area around a new find clear so its name and "tap to collect" are easy to read.
@@ -522,7 +524,7 @@ export class SkyView {
       for (const seg of sky.lines) { let run = []; for (const e of seg) { if (e[2] < 0.01) run.push(e); else { if (run.length > 1) this.path(run); run = []; } } if (run.length > 1) this.path(run); }
       for (const c of sky.constellations ?? []) {
         if (c.enu[2] > -0.05) continue; // every one named down here: most are unfamiliar southern figures (2026-10-13)
-        this.queueLabel(t.constCase(c.name), this.project(c.enu), { color: t.constLabel, size: 12, weight: 500, priority: 2, align: 'center' });
+        if (this.labelMode !== 'off') this.queueLabel(t.constCase(c.name), this.project(c.enu), { color: t.constLabel, size: 12, weight: 500, priority: 2, align: 'center' });
       }
       ctx.globalAlpha = 1;
     }
@@ -580,7 +582,7 @@ export class SkyView {
       // old soft blobs where WebGL isn’t available.
       if (this.cloudGL?.lost) this.cloudGL = undefined;
       if (this.cloudGL === undefined) { try { this.cloudGL = createCloudGL(); } catch { this.cloudGL = null; } }
-      if (this.cloudGL && this.basis) {
+      if (this.cloudGL && this.basis && !this.saver) { // Battery saver: the light fallback clouds
         const L = f > 0.5 ? CLOUD_LIGHT.day : f > 0 ? CLOUD_LIGHT.dusk : CLOUD_LIGHT.night;
         const sun = this.sunEnu ?? [0, -0.5, 0.5];
         const out = this.cloudGL.render({ basis: this.basis, w: this.w, h: this.h, f: this.f, cx: this.cx, cy: this.cy, scale: 0.5, sun,
@@ -1338,7 +1340,7 @@ export class SkyView {
       for (const seg of sky.lines) this.path(seg, 0.01);
       for (const c of sky.constellations) {
         if (c.rank > 2 || c.enu[2] < 0.05) continue;
-        this.queueLabel(t.constCase(c.name), this.project(c.enu), { color: t.constLabel, size: 12, weight: 500, priority: 2, align: 'center' });
+        if (this.labelMode !== 'off') this.queueLabel(t.constCase(c.name), this.project(c.enu), { color: t.constLabel, size: 12, weight: 500, priority: 2, align: 'center' });
       }
     }
     // Stars towards the edges of the screen twinkle, ever so slightly; the middle, where you’re aiming,
@@ -1379,7 +1381,7 @@ export class SkyView {
         ctx.lineTo(p.x - tip, p.y); ctx.lineTo(p.x - shoulder, p.y - shoulder);
         ctx.closePath(); ctx.fill();
       }
-      if (s.name && s.mag < 1.2) this.queueLabel(s.name, p, { color: t.starLabel, gap: r + 6, priority: 0 });
+      if (s.name && s.mag < 1.2 && this.labelOk(null, s.name)) this.queueLabel(s.name, p, { color: t.starLabel, gap: r + 6, priority: 0 });
     }
   }
 
@@ -1397,14 +1399,14 @@ export class SkyView {
         const radius = 12;
         this.glow(p.x, p.y, 34, t.starRGB, 0.2);
         this.drawMoon(p, radius, sun ? this.brightLimbAngle(b.enu, sun.enu, p) : 0, b.phaseAngle);
-        this.queueLabel('Moon', p, { color: t.body, size: 14, weight: 500, gap: radius + 10, priority: 8 });
+        if (this.labelOk(null, 'Moon')) this.queueLabel('Moon', p, { color: t.body, size: 14, weight: 500, gap: radius + 10, priority: 8 });
       } else if (b.kind === 'sun') {
         const f = this.dayF ?? 0;
         this.glow(p.x, p.y, 70 + f * 90, f > 0 ? [255, 246, 207] : t.satGlow, 0.55);
         ctx.fillStyle = f > 0.3 ? '#fffbea' : t.sun;
         ctx.beginPath(); ctx.arc(p.x, p.y, 12 + f * 6, 0, Math.PI * 2); ctx.fill();
         // (The dashed orange guard ring by day was removed 2026-10-10, Sevaan: "I don’t want that.")
-        this.queueLabel('Sun', p, { color: f > 0.3 ? '#143046' : t.body, size: 14, gap: 22 + f * 24, priority: 8 });
+        if (this.labelOk(null, 'Sun')) this.queueLabel('Sun', p, { color: f > 0.3 ? '#143046' : t.body, size: 14, gap: 22 + f * 24, priority: 8 });
       } else {
         // Planets on the same brightness scale as the stars (2026-10-06, Sevaan: Saturn looked far brighter than
         // it is). Apparent magnitude after the air near the horizon; anything fainter than tonight’s limit (the sky
@@ -1420,7 +1422,7 @@ export class SkyView {
         if (m < 0.5) this.glow(p.x, p.y, radius * (m < -2 ? 5 : 3.2), t.starRGB, (m < -2 ? 0.34 : 0.16) * dayK);
         ctx.save(); ctx.globalAlpha *= a; ctx.fillStyle = t.planet;
         ctx.beginPath(); ctx.arc(p.x, p.y, radius, 0, Math.PI * 2); ctx.fill(); ctx.restore();
-        this.queueLabel(b.name, p, { color: t.body, size: 14, weight: 500, gap: radius + 10, priority: 8 });
+        if (this.labelOk(null, b.name)) this.queueLabel(b.name, p, { color: t.body, size: 14, weight: 500, gap: radius + 10, priority: 8 });
       }
     }
   }
@@ -1495,7 +1497,7 @@ export class SkyView {
     if (sky && (this.dayF ?? 0) < 0.6) this.drawStars(sky, { lines: lines && this.dayF < 0.2, time: this.reducedMotion ? 0 : time, starLimit });
     if (this.showShadow !== false) this.drawEarthShadow();
     if (deep?.length && (this.dayF ?? 0) < 0.2) this.drawDeep(deep);
-    if (weather && !this.camera) this.drawWeather(weather, this.reducedMotion ? 0 : time); // the camera shows the real clouds
+    if (weather && !this.camera) this.drawWeather(weather, this.reducedMotion || this.saver ? 0 : time); // the camera shows the real clouds
     if (bodies) this.drawBodies(bodies);
     this.ticket = null; // what the circle names this frame, for the ticket under it (js/main.js syncTicket)
     this.ghostBusy = !!targetId || !!planeHit; // the circle names a pass marker only when nothing real is in it
@@ -1568,7 +1570,7 @@ export class SkyView {
         ctx.beginPath(); ctx.arc(p.x, p.y, radius + 7, 0, Math.PI * 2); ctx.stroke();
       }
       ctx.restore();
-      if (look.visible && labelIds.has(it.obj.id)) this.queueLabel(it.label ?? shortName(it.obj.name), p, { color: it.candidate ? t.label : t.labelDim, size: 13, weight: 500, gap: radius + 8, priority: it.candidate ? 7 : 4 });
+      if (look.visible && labelIds.has(it.obj.id) && this.labelOk(it.obj)) this.queueLabel(it.label ?? shortName(it.obj.name), p, { color: it.candidate ? t.label : t.labelDim, size: 13, weight: 500, gap: radius + 8, priority: it.candidate ? 7 : 4 });
     }
 
     // Moon, planet or star as the target: the sky already draws it, so just mark it and let the ring lock on.

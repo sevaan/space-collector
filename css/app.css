@@ -2102,3 +2102,16 @@ body.night .ar-facing { color: #ff7f70; } body.night .ar-card em { background: #
 #around .ap b i { font-style: normal; font-size: 11px; margin-left: 2px; color: var(--muted); }
 #around .ap small { font: 500 11px/1.2 var(--label); color: var(--muted); text-wrap: balance; }
 body.night #around .ap-k .ico { color: #ff7f70; }
+
+/* Settings additions (2026-10-21, Sevaan): segmented choices in a row, the slider's subtitle, a link row, How to play. */
+#debug .set-seg { display: inline-flex; flex: none; border-radius: 6px; box-shadow: inset 0 0 0 1px #45576a; overflow: hidden; }
+#debug .set-seg button { appearance: none; border: 0; margin: 0; background: transparent; color: var(--muted); font: 600 12px/1 var(--label); letter-spacing: .08em; text-transform: uppercase; padding: 0 9px; height: 30px; min-width: 40px; cursor: pointer; }
+#debug .set-seg button + button { box-shadow: inset 1px 0 0 #45576a; }
+#debug .set-seg button.on { background: #fa812714; color: #fa8127; box-shadow: inset 0 0 0 1px #fa8127; }
+#debug .set-seg button:focus-visible { outline: 2px solid #fa8127; outline-offset: -2px; }
+body.night #debug .set-seg button.on { color: #ff7f70; background: #ff6a5514; box-shadow: inset 0 0 0 1px #ff6a55; }
+.set-sl-sub { display: block; color: var(--muted); font: 400 12px/1.3 system-ui, sans-serif; letter-spacing: 0; text-transform: none; margin-top: 2px; }
+a.set-row { color: inherit; text-decoration: none; }
+.howto-list { margin: 4px 0 16px; padding-left: 22px; display: grid; gap: 10px; font-size: 14px; line-height: 1.4; color: var(--text); }
+.howto-list b { color: #fa8127; font-weight: 600; } body.night .howto-list b { color: #ff7f70; }
+#set-howto-sheet .set-sheet-card { max-height: calc(100vh - var(--safe-top, 0px) - 40px); overflow-y: auto; }
