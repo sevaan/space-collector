@@ -1,17 +1,17 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.989';
+import { extinction } from './sky-limit.js?v=0.1.990';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.989';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.990';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.989';
-import { createCloudGL } from './clouds-gl.js?v=0.1.989';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.990';
+import { createCloudGL } from './clouds-gl.js?v=0.1.990';
 // Cloud colours by light: sunlit tops, shadowed bellies, and the horizon haze they melt into (0–1 RGB).
 const CLOUD_LIGHT = {
   day: { lit: [1, 1, 1], shade: [0.62, 0.68, 0.77], haze: [0.82, 0.87, 0.93] },
   dusk: { lit: [1, 0.8, 0.68], shade: [0.36, 0.33, 0.42], haze: [0.62, 0.5, 0.52] },
   night: { lit: [0.22, 0.25, 0.31], shade: [0.1, 0.12, 0.16], haze: [0.14, 0.15, 0.2] },
 };
-import { TIER_INFO } from './rarity.js?v=0.1.989';
+import { TIER_INFO } from './rarity.js?v=0.1.990';
 
 const RAD = Math.PI / 180;
 const SECRET_PX = { santa: 24, roadster: 12.4, voyager: 14.5, voyager2: 14.5, pioneer10: 11.7, pioneer11: 11.7, newhorizons: 6.4, arecibo: 6.9, halley: 8.6, sputnik: 11.2, laika: 13.3, wow: 9.8 };
@@ -1826,4 +1826,43 @@ export class SkyView {
 
 export function shortName(name) {
   return name.replace(/\s+/g, ' ').trim();
+}
+
+// All around you’s strip draws the same landscape as Explore (2026-10-21, Sevaan): the same hills, pines and meadow at
+// the same bearings, in the same night/day colours, flattened onto the strip. x(az) gives the strip’s x for an azimuth
+// (or null when off the strip), k its pixels per degree across, hz the horizon’s y, vy pixels per degree of height
+// (true scale, so nothing worth seeing hides behind a tree). dF: how far into day (0 night … 1 day), as the sky uses.
+export function stripLandscape(ctx, { W, H, hz, k, vy, centre, dF = 0, night = false, trees = true }) {
+  const theme = night ? THEMES.night : THEMES.glass, d = night ? 0 : dF;
+  const mix = (n0, d0) => { if (night) return theme.ground; const n = n0.match(/\w\w/g).map((h) => parseInt(h, 16)), dd = d0.match(/\w\w/g).map((h) => parseInt(h, 16)); return `rgb(${n.map((v, i) => Math.round(v + (dd[i] - v) * d)).join(',')})`; };
+  const azAt = (x) => (((centre + (x - W / 2) / k) % 360) + 360) % 360;
+  const elOn = (pts, az) => { const step = pts[1][0] - pts[0][0], i = Math.min(pts.length - 2, Math.floor(az / step)), f = (az - pts[i][0]) / step; return pts[i][1] + (pts[i + 1][1] - pts[i][1]) * f; };
+  const band = (pts, fill, crest) => {
+    ctx.fillStyle = fill; ctx.beginPath(); ctx.moveTo(0, H + 20);
+    const line = []; for (let x = 0; x <= W + 3; x += 3) line.push([x, hz - elOn(pts, azAt(x)) * vy]);
+    for (const [x, y] of line) ctx.lineTo(x, y);
+    ctx.lineTo(W + 3, H + 20); ctx.closePath(); ctx.fill();
+    if (crest) { ctx.strokeStyle = crest; ctx.lineWidth = 1; ctx.beginPath(); line.forEach(([x, y], i) => (i ? ctx.lineTo(x, y + 0.5) : ctx.moveTo(x, y + 0.5))); ctx.stroke(); }
+  };
+  if (!trees) { ctx.fillStyle = mix('070c13', '4f6e3e'); ctx.fillRect(0, hz, W, H - hz + 20); return; }
+  band(LANDSCAPE.ridge, d > 0 ? mix('0c1a29', '8aa6b2') : (theme.hills ?? '#0a1826'), d > 0.4 ? `rgba(220,235,240,${(0.35 * d).toFixed(2)})` : null);
+  band(LANDSCAPE.hills, d > 0 ? mix('0a1826', '6f8f78') : (theme.hills ?? '#0a1826'), d > 0.4 ? `rgba(200,225,180,${(0.4 * d).toFixed(2)})` : null);
+  const pine = ([az, ht, w, tiers, lean, sd], body, lit) => {
+    const off = ((((az - centre) + 540) % 360) - 180) * k, x0 = W / 2 + off; if (x0 < -10 || x0 > W + 10) return;
+    const X = (a) => x0 + (a - az) * Math.max(k, vy * 0.6), Y = (e) => hz - e * vy; // pines keep most of their shape: the strip squeezes bearings, not the trees
+    const base = -0.3, trunkH = ht * 0.12, top = ht, left = [], right = [];
+    for (let i = 0; i < tiers; i++) {
+      const f = i / tiers, y0 = base + trunkH + (top - trunkH - base) * f, y1 = base + trunkH + (top - trunkH - base) * ((i + 1) / tiers) * 0.98;
+      const half = (w / 2) * (1 - f * 0.78) * (0.9 + ((sd * 7 + i * 0.37) % 1) * 0.2), x = az + lean * (y0 - base);
+      left.push([x - half, y0 - 0.06], [x - half * 0.42, y1 - 0.02]); right.push([x + half, y0 - 0.06], [x + half * 0.42, y1 - 0.02]);
+    }
+    const tip = [az + lean * (top - base), top + 0.12], outline = [...left, tip, ...right.reverse()];
+    ctx.fillStyle = body; ctx.beginPath(); outline.forEach(([a, e], i) => (i ? ctx.lineTo(X(a), Y(e)) : ctx.moveTo(X(a), Y(e)))); ctx.closePath(); ctx.fill();
+    if (lit) { ctx.fillStyle = lit; ctx.beginPath(); [...left, tip, [az, base + trunkH]].forEach(([a, e], i) => (i ? ctx.lineTo(X(a), Y(e)) : ctx.moveTo(X(a), Y(e)))); ctx.closePath(); ctx.fill(); }
+  };
+  const farC = d > 0 ? mix('0b1622', '557265') : (theme.hills ?? '#0a1826');
+  for (const tr of LANDSCAPE.far) pine(tr, farC, null);
+  const nearC = d > 0 ? mix('070c13', '2a4430') : theme.ground, litC = d > 0.3 ? `rgba(120,160,110,${(0.25 * d).toFixed(2)})` : null;
+  for (const tr of LANDSCAPE.trees) pine(tr, nearC, litC);
+  band(LANDSCAPE.rolls, d > 0 ? mix('070c13', '4f6e3e') : theme.ground, d > 0.4 ? `rgba(190,215,140,${(0.35 * d).toFixed(2)})` : null);
 }
