@@ -1557,3 +1557,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - 2026-10-21 (Sevaan: match design A): Settings cards are a single cream frame with a faint inner line, a tinted header bar in gold (title and number), rows edge to edge; the sky slider is a row (icon, title + sky name, one line, slim orange-filled track, cream knob); the BRIGHT CITY/BINOCULARS ends and the star-count note are gone (#sky-limit-info kept hidden). Volume knobs cream too.
 - 2026-10-21 (Sevaan): the in-shadow chip reads 'SATELLITES BACK 3:40 AM' (was 'Nothing lit right now Back at… · See the plan', which cut off); 'NO MORE SATELLITES TONIGHT' likewise.
 - 2026-10-21 (Sevaan): 'Red mode after dark' removed (row, autoNight).
+- 2026-10-21 (Sevaan): segmented choices: each button has its own edge, the end ones rounded, so the lit one's orange edge follows the corner; Units/Clock buttons 52px so their AUTOs line up.

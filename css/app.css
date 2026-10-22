@@ -2171,3 +2171,14 @@ body.night #debug .set-sl-thin::-webkit-slider-thumb { background: #ff7f70; box-
 #debug .set-range::-webkit-slider-thumb { width: 20px; height: 20px; margin-top: -8px; background: #fff2b3; box-shadow: 0 0 0 3px #080f1b; }
 #debug .set-range::-moz-range-thumb { width: 20px; height: 20px; background: #fff2b3; }
 body.night #debug .set-range::-webkit-slider-thumb { background: #ff7f70; box-shadow: 0 0 0 3px #120505; }
+/* Segmented choices, corners fixed (2026-10-21, Sevaan): each button draws its own edge and the end buttons round
+   with the group, so the lit one's orange edge follows the corner; Units and Clock buttons are one width so their
+   AUTOs line up. */
+#debug .set-seg { box-shadow: none; overflow: visible; gap: 0; }
+#debug .set-seg button { box-shadow: inset 0 0 0 1px #45576a; border-radius: 0; margin-left: -1px; position: relative; }
+#debug .set-seg button:first-child { margin-left: 0; border-radius: 6px 0 0 6px; }
+#debug .set-seg button:last-child { border-radius: 0 6px 6px 0; }
+#debug .set-seg button + button { box-shadow: inset 0 0 0 1px #45576a; }
+#debug .set-seg button.on { z-index: 1; box-shadow: inset 0 0 0 1px #fa8127; }
+body.night #debug .set-seg button.on { box-shadow: inset 0 0 0 1px #ff6a55; }
+#debug .set-seg [data-units], #debug .set-seg [data-clock] { width: 52px; min-width: 0; flex: none; }
