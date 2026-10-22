@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Notices under the header</title>
+<style>
+@font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf'); }
+@font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf'); }
+:root { --ink: #fff2b3; --mu: #bdbea9; --or: #fa8127; --gold: #f2c14e; --bg: #080f1b; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #04080f; color: var(--ink); font: 15px/1.4 system-ui, sans-serif; padding: 26px 20px 60px; }
+h1 { font: 400 26px 'SC Display'; margin: 0 0 4px; } .lead { color: var(--mu); margin: 0 0 22px; max-width: 1100px; }
+.row { display: flex; gap: 26px; flex-wrap: wrap; align-items: flex-start; }
+.opt { width: 320px; } .opt h2 { font: 500 15px 'SC Label'; letter-spacing: .14em; text-transform: uppercase; color: var(--or); margin: 0 0 4px; }
+.opt > p { color: var(--mu); margin: 0 0 12px; font-size: 13.5px; min-height: 96px; }
+.ph { position: relative; width: 320px; height: 560px; border-radius: 30px; overflow: hidden; border: 1px solid #1a2436;
+  background: radial-gradient(ellipse at 60% 70%, #17283f, #0a1322 60%, #060b14); }
+.stars { position: absolute; inset: 0; background-image: radial-gradient(1px 1px at 20% 30%, #fff8 50%, transparent 51%), radial-gradient(1px 1px at 70% 22%, #fff8 50%, transparent 51%), radial-gradient(1.4px 1.4px at 45% 55%, #fffa 50%, transparent 51%), radial-gradient(1px 1px at 85% 60%, #fff6 50%, transparent 51%), radial-gradient(1px 1px at 12% 70%, #fff6 50%, transparent 51%); }
+.ret { position: absolute; left: 50%; top: 60%; width: 74px; height: 74px; margin: -37px; border-radius: 50%; border: 1.5px solid #fff2b3aa; }
+.ret::before, .ret::after { content: ''; position: absolute; background: #fa8127; }
+.ret::before { left: 50%; top: -9px; width: 1.5px; height: 7px; } .ret::after { top: 50%; left: -9px; height: 1.5px; width: 7px; }
+.hdr { position: absolute; z-index: 5; left: 0; right: 0; top: 0; height: 88px; padding: 34px 16px 0; background: var(--bg); display: flex; justify-content: space-between; }
+.hdr::after { content: ''; position: absolute; left: 16px; right: 16px; bottom: 0; height: 3px; border-top: 1px solid #3a4c66; border-bottom: 1px solid #3a4c66; }
+.hdr b { display: block; font: 400 15px 'SC Display'; } .hdr small { font: 500 9px 'SC Label'; letter-spacing: .24em; color: var(--mu); }
+.hdr .btns { display: flex; gap: 18px; font-size: 18px; padding-top: 2px; } .hdr .btns i { font-style: normal; }
+.radar { position: absolute; left: 14px; top: 104px; width: 64px; height: 64px; border-radius: 50%; border: 1px solid #3a4c66; background: #0b1626aa; }
+.chip { position: absolute; right: 12px; top: 112px; padding: 6px 9px; border-radius: 10px; background: #0e1828ee; border-top: 2px solid var(--or); font: 500 10px 'SC Label'; letter-spacing: .1em; }
+.tabs { position: absolute; left: 10px; right: 10px; bottom: 10px; height: 54px; border-radius: 16px; background: #0e1828f2; display: flex; justify-content: space-around; align-items: center; font: 500 10px 'SC Label'; letter-spacing: .14em; color: var(--mu); }
+.tabs b { color: var(--or); font-weight: 500; }
+/* the notice itself, as today */
+.note { display: flex; gap: 10px; align-items: center; padding: 10px 12px; border-radius: 14px; background: #0e1828f5; box-shadow: 0 10px 24px rgba(0,0,0,.5); border-top: 2.5px solid var(--or); }
+.note .ic { width: 30px; height: 30px; border-radius: 9px; background: #fa812722; display: grid; place-items: center; color: var(--or); font-size: 15px; flex: none; }
+.note .tx { flex: 1; min-width: 0; } .note .k { font: 600 9.5px 'SC Label'; letter-spacing: .18em; color: var(--or); text-transform: uppercase; }
+.note .t { font: 500 14px/1.15 'SC Label'; color: var(--ink); } .note .s { font: 500 11.5px/1.25 'SC Label'; color: var(--mu); }
+.note .xp { font: 400 13px 'SC Display'; color: var(--or); }
+/* A: slides out from under the header rule */
+.a .slot { position: absolute; z-index: 4; left: 10px; right: 10px; top: 96px; }
+.a .note { animation: aIn 4.5s cubic-bezier(.2,.9,.3,1) infinite; }
+@keyframes aIn { 0%, 8% { transform: translateY(-120%); } 22%, 78% { transform: none; } 92%, 100% { transform: translateY(-120%); } }
+.a .radar, .a .chip, .c .radar, .c .chip { animation: aPush 4.5s cubic-bezier(.2,.9,.3,1) infinite; }
+@keyframes aPush { 0%, 8% { transform: none; } 22%, 78% { transform: translateY(70px); } 92%, 100% { transform: none; } }
+/* B: a compact pill under the header, centred */
+.b .slot { position: absolute; z-index: 4; left: 50%; top: 98px; transform: translateX(-50%); }
+.b .pill { display: flex; align-items: center; gap: 8px; padding: 7px 14px 7px 8px; border-radius: 99px; background: #0e1828f5; border: 1px solid #fa812766; box-shadow: 0 8px 20px rgba(0,0,0,.5); white-space: nowrap; animation: bIn 4.5s cubic-bezier(.2,1.3,.4,1) infinite; }
+.b .pill .ic { width: 22px; height: 22px; border-radius: 50%; background: #fa812733; display: grid; place-items: center; color: var(--or); font-size: 12px; }
+.b .pill span { font: 500 13px 'SC Label'; } .b .pill em { font-style: normal; font: 400 12px 'SC Display'; color: var(--or); }
+@keyframes bIn { 0%, 8% { opacity: 0; transform: scale(.6) translateY(-8px); } 18%, 80% { opacity: 1; transform: none; } 92%, 100% { opacity: 0; transform: scale(.85); } }
+.b .radar, .b .chip { top: 146px; } .b .chip { top: 154px; }
+/* C: grows out of the header line itself, as a drawer */
+.c .drawer { position: absolute; z-index: 4; left: 16px; right: 16px; top: 88px; overflow: hidden; border-radius: 0 0 14px 14px; background: #0e1828f7; box-shadow: 0 12px 22px rgba(0,0,0,.45); animation: cIn 4.5s cubic-bezier(.3,.8,.3,1) infinite; }
+.c .drawer .note { background: none; box-shadow: none; border-top: 0; border-radius: 0; }
+@keyframes cIn { 0%, 8% { max-height: 0; } 22%, 78% { max-height: 80px; } 92%, 100% { max-height: 0; } }
+.c .drawer::before { content: ''; display: block; height: 2px; background: linear-gradient(90deg, transparent, var(--or), transparent); }
+/* D: right column under the header, beside the radar */
+.d .slot { position: absolute; z-index: 4; left: 90px; right: 10px; top: 100px; }
+.d .note { padding: 8px 10px; animation: dIn 4.5s cubic-bezier(.2,.9,.3,1) infinite; }
+.d .note .s { display: none; }
+@keyframes dIn { 0%, 8% { transform: translateX(110%); } 20%, 80% { transform: none; } 92%, 100% { transform: translateX(110%); } }
+.d .chip { top: 172px; }
+.think { margin-top: 28px; max-width: 1100px; color: var(--mu); font-size: 14px; } .think b { color: var(--ink); }
+.tag { display: inline-block; margin-top: 6px; font: 500 11px 'SC Label'; letter-spacing: .12em; padding: 2px 7px; border-radius: 4px; border: 1px solid #2c3b52; color: var(--mu); }
+</style></head><body>
+<h1>Notices under the header</h1>
+<p class="lead">Today a notice drops over the top of the screen and covers the header (the moon and Settings buttons) for a few seconds. Four ways to keep the header free: the notice always appears <b>below</b> the double line. Each mock-up plays on a loop; the header always stays on top and tappable.</p>
+<div class="row" id="row"></div>
+<div class="think"><b>My pick: A.</b> It reads like a real notification, keeps all the information we show today (kind, title, detail, XP), and it comes from somewhere: out from under the header. The radar and chip step down while it's there, so nothing is covered, and they slide back up after. <b>B</b> is the calmest (one line) but has to drop the detail line; <b>C</b> looks the most built-in; <b>D</b> keeps the sky clearest but is cramped on small phones.</div>
+<template id="phone">
+  <div class="stars"></div><div class="ret"></div>
+  <div class="hdr"><div><b>SPACE COLLECTOR</b><small>COLLECT THE NIGHT SKY</small></div><div class="btns"><i>☾</i><i>⚙︎</i></div></div>
+  <div class="radar"></div><div class="chip">HEADLINER · RELAY 2 · 8:01</div>
+  <div class="tabs"><span>SKY</span><b>EXPLORE</b><span>COLLECTION</span></div>
+</template>
+<script>
+const NOTE = '<div class="note"><span class="ic">✓</span><span class="tx"><div class="k">Mission complete</div><div class="t">Catch something after dark</div><div class="s">Night Shift · 2 of 3 tonight</div></span><span class="xp">+50</span></div>';
+const OPTS = [
+  ['a', 'A · Out from under the header', 'The full notice slides down from behind the header’s double line, as if it was tucked under it. The radar and chip step down to make room, then slide back.', 'small', `<div class="slot">${NOTE}</div>`],
+  ['b', 'B · A pill under the header', 'A short one-line pill pops in, centred just under the header (icon, words, XP). The calmest; the detail line goes, and tapping it opens the full notice.', 'small', '<div class="slot"><div class="pill"><span class="ic">✓</span><span>Mission complete · Night Shift</span><em>+50</em></div></div>'],
+  ['c', 'C · A drawer from the header line', 'The header’s double line opens like a drawer and the notice unrolls from it, attached to the header. Looks built in, like part of the header.', 'medium', `<div class="drawer">${NOTE}</div>`],
+  ['d', 'D · Beside the radar', 'A narrower notice slides in from the right, under the header and beside the radar, where the chips live. Leaves the middle of the sky clear; tight on small phones.', 'small', `<div class="slot">${NOTE}</div>`],
+];
+const tpl = document.getElementById('phone').innerHTML;
+for (const [k, h, p, eff, inner] of OPTS) document.getElementById('row').insertAdjacentHTML('beforeend', `<div class="opt"><h2>${h}</h2><p>${p}<br><span class="tag">${eff}</span></p><div class="ph ${k}">${tpl}${inner}</div></div>`);
+</script>
+</body></html>
