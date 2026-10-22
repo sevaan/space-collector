@@ -5,12 +5,12 @@
 //  Everything scales with rarity (Legendary dims the sky, shockwave, held breath, slow flip, fanfare).
 // Waits use timers, not animation.finished, so a paused tab can never freeze the sequence.
 
-import { sfx, loadSfx, heartbeat } from './sfx.js?v=0.1.971';
-import { audioCtx } from './audio-ctx.js?v=0.1.971';
-import { TIER_INFO } from './rarity.js?v=0.1.971';
-import { levelFor, attachTilt, attachGyro, attachFlip, throwOff, retype } from './card.js?v=0.1.971';
-import { applyBack } from './card-backs.js?v=0.1.971';
-import { addStarfield } from './starfield.js?v=0.1.971';
+import { sfx, loadSfx, heartbeat } from './sfx.js?v=0.1.973';
+import { audioCtx } from './audio-ctx.js?v=0.1.973';
+import { TIER_INFO } from './rarity.js?v=0.1.973';
+import { levelFor, attachTilt, attachGyro, attachFlip, throwOff, retype } from './card.js?v=0.1.973';
+import { applyBack } from './card-backs.js?v=0.1.973';
+import { addStarfield } from './starfield.js?v=0.1.973';
 
 const FX = {
   common:    { particles: 14,  flip: 520,  spin: 0,   dim: 0,   shock: false, notes: [880],                            hold: 0 },
@@ -370,6 +370,9 @@ function fillRank(alive) {
 // never follows your finger); only a quick, mostly upward flick throws it off the top of the screen.
 let onDismiss = null, flick = null;
 export function onRevealDismiss(fn) { onDismiss = fn; }
+// A swipe-away of a brand-new card goes into the binder instead of off the top (2026-10-21, Sevaan): main says yes or no.
+let intoBinderOk = null;
+export function onRevealSwipeIntoBinder(fn) { intoBinderOk = fn; }
 function holderTo(x, y, ms) {
   const h = $('rv-holder');
   h.style.transition = ms ? `transform ${ms}ms cubic-bezier(.3,.6,.4,1), opacity ${ms}ms` : 'none';
@@ -396,6 +399,7 @@ function holderTo(x, y, ms) {
     if (!(dy < -45 && total < -60 && Math.abs(dx) < -dy * 0.9 && -dy / dt > 0.6)) return;
     // Fly off the top at the speed of the flick (no fade: you should see it go), keeping some of the
     // sideways throw and a little spin that way.
+    if (intoBinderOk?.()) { tilt?.reset(); sfx('swipe'); onDismiss?.(); return; } // it flies from here into the Collection tab
     const cur = getComputedStyle(h).transform; // where it’s drawn now, before its landing animation is dropped
     h.getAnimations().forEach((a) => a.cancel()); h.style.opacity = '1';
     tilt?.reset();
