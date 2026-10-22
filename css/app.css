@@ -2079,3 +2079,16 @@ body.night .binder-plus { background: #ff6a55; color: #120606; }
 .ar-chip > small:first-child { font-size: 9.5px; letter-spacing: .12em; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .ar-chip small + small, .ar-chip > small:not(:first-child) { display: block; margin-top: 2px; font-size: 11px; letter-spacing: .02em; text-transform: none; color: var(--muted); }
 #ar-strip { border-radius: 12px; }
+/* All around you, design A (2026-10-21, Sevaan picked design/all-around-you-2.html A): the strip is a big window onto
+   your horizon with card pictures on it, "Facing SE · 137°" floats at its top, then a row of cards worth a look. */
+#around .ar-wrap { position: relative; margin: 12px -4px 0; }
+#around #ar-strip { height: min(52vh, 440px); }
+.ar-facing { position: absolute; left: 50%; top: 10px; transform: translateX(-50%); min-height: 32px; padding: 6px 14px; border-radius: 99px; border: 1px solid #ffffff1f; background: rgba(8, 15, 27, .78); color: var(--ink, #fff2b3); font: 600 12px/1 var(--label); letter-spacing: .16em; text-transform: uppercase; white-space: nowrap; cursor: pointer; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+.ar-cards { display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 2px 2px 8px; margin: 0 -2px; scrollbar-width: none; } .ar-cards::-webkit-scrollbar { display: none; }
+.ar-card { position: relative; flex: none; width: 112px; scroll-snap-align: start; display: grid; gap: 3px; padding: 6px 6px 8px; border-radius: 12px; border: 1px solid #22304a; background: #0e1828; color: var(--ink, #fff2b3); text-align: left; font: inherit; cursor: pointer; }
+.ar-card.new { border-color: color-mix(in srgb, var(--tier) 60%, transparent); box-shadow: 0 0 14px -6px var(--tier); }
+.ar-card .ac-art { display: block; height: 76px; border-radius: 8px; background: #0b1626 center / cover no-repeat; }
+.ar-card b { font: 600 13.5px/1.15 var(--label); overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.ar-card small { font: 500 11.5px/1.2 var(--label); color: var(--muted); }
+.ar-card em { position: absolute; top: 10px; right: 10px; padding: 1px 5px; border-radius: 4px; background: var(--tier); color: #0b1018; font: 700 9.5px/1.3 var(--label); letter-spacing: .1em; font-style: normal; }
+body.night .ar-facing { color: #ff7f70; } body.night .ar-card em { background: #ff6a55; color: #120606; }
