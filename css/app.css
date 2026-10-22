@@ -2021,7 +2021,7 @@ body.around-open #nav-more .nm-set { transform: translateY(-14px); opacity: 0; }
 body.night .sky-plus-line { border-color: #5a1d18; background: #2a0d0a; color: #ff7f70; } body.night .sky-plus-line .ico-svg, body.night .sky-plus-line b { color: #ff7f70; }
 /* Lights out (2026-10-21): the sweep layer for turning red night mode on/off; its bottom edge is a bright red line. */
 .night-sweep { position: fixed; left: 0; right: 0; top: 0; height: 0; overflow: visible; z-index: 2147483646; pointer-events: none; background: #ff1a00; mix-blend-mode: multiply; }
-.night-sweep::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: #ff5a3c; box-shadow: 0 0 14px 3px #ff3a1e; mix-blend-mode: screen; }
+.night-sweep::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: #ff5a3c; box-shadow: 0 0 20px 4px #ff3a1e; mix-blend-mode: screen; }
 /* Sheet folds into the bell (2026-10-21): the backdrop fades as the card flies; the time sits beside the bell. */
 #pr-sheet.folding { background: transparent !important; transition: background .3s; }
 .pr-fold-time { position: fixed; z-index: 90; transform: translateY(-50%); padding: 4px 8px; border-radius: 8px; background: #0e1828f0; border: 1px solid #fa812766; color: #fa8127; font: 600 12px/1 var(--label); letter-spacing: .08em; pointer-events: none; animation: prTime 2.4s ease forwards; }
@@ -2069,3 +2069,7 @@ body.night .binder-plus { background: #ff6a55; color: #120606; }
 .nh-top { justify-content: center; }
 .nh-side { flex: 0 1 auto; width: fit-content; max-width: 190px; }
 .nh-side .nh-name, .nh-side .nh-what { text-wrap: balance; }
+
+.pr-fold-time.under { transform: translateX(-50%); font-size: 11px; }
+.binder-plus { font-size: 15px; padding: 2px 9px; }
+.ev-scrub { top: 0; }

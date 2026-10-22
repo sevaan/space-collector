@@ -1,52 +1,52 @@
-import { pullToClose } from './pull-close.js?v=0.1.968';
-import { TESTER } from './build-flavor.js?v=0.1.968';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.968';
-import * as Secrets from './secrets.js?v=0.1.968';
-import { STORY_BY_SECRET } from './stories.js?v=0.1.968';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.968';
-import * as Ufo from './ufo.js?v=0.1.968';
-import * as Fossil from './fossil.js?v=0.1.968';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.968';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.968';
-import { toast, ticket, dropToast, toastPending, onTicketShown, iconSvg } from './toast.js?v=0.1.968';
-import { VERSION } from './version.js?v=0.1.968';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, overEarth, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.968';
-import { placeName } from './geo.js?v=0.1.968';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, SLIDER_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.968';
-import { conArt } from './con-art.js?v=0.1.968';
-import { fetchWeather, tonightSky, skyClearAt, goodSkyAt } from './weather.js?v=0.1.968';
-import { CON_FIGURES } from './con-figures.js?v=0.1.968';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress, starDistance } from './constellations.js?v=0.1.968';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.968';
-import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.968';
-import { eventOf, activeEvent, nextEvent } from './events.js?v=0.1.968';
-import { conList } from './constellations.js?v=0.1.968';
-import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination, hasSensorView, resumeSensors, needsPermission } from './sensors.js?v=0.1.968';
-import { SkyView, shortName } from './sky.js?v=0.1.968';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.968';
-import { isPlus, setPlusForTesting, onPlus, PLUS_PERKS, PLUS_PRICES, initStore, storePlans, buyPlus, restorePlus, rcTestStore, storeOpen } from './plus.js?v=0.1.968';
-import { isNative, getPosition, saveFile, notifyAt, cancelNotify, haptic, onNative, nativeChrome, plugin } from './native.js?v=0.1.968';
-import { initBackup, onBackupChange, backupSoon, clearBackup, backupStatus } from './cloud-backup.js?v=0.1.968';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.968';
-import { cardArt } from './art.js?v=0.1.968';
-import { renderCard, miniCard, cardLevel, artImage, lockedArt, attachTilt, attachGyro, throwOff, attachFlip, turnCard } from './card.js?v=0.1.968';
-import { applyBack, CARD_BACKS, backUnlocked, chosenBack, chooseBack, backEarned } from './card-backs.js?v=0.1.968';
-import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.968';
-import { audioCtx } from './audio-ctx.js?v=0.1.968';
-import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume, musicAway } from './music.js?v=0.1.968';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.968';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel, moonPhaseOf, MOON_PHASES } from './card-model.js?v=0.1.968';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.968';
-import { naturalTargets, SOLAR_SYSTEM, DEEP_SKY } from './natural.js?v=0.1.968';
-import { placeFromTimeZone } from './tz-places.js?v=0.1.968';
-import { TIER_INFO } from './rarity.js?v=0.1.968';
-import { SETS, albumList } from './sets.js?v=0.1.968';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.968';
-import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.968';
-import { shareCardEl } from './share-card.js?v=0.1.968';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.968';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.968';
-import { addStarfield } from './starfield.js?v=0.1.968';
+import { pullToClose } from './pull-close.js?v=0.1.969';
+import { TESTER } from './build-flavor.js?v=0.1.969';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.969';
+import * as Secrets from './secrets.js?v=0.1.969';
+import { STORY_BY_SECRET } from './stories.js?v=0.1.969';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.969';
+import * as Ufo from './ufo.js?v=0.1.969';
+import * as Fossil from './fossil.js?v=0.1.969';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.969';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.969';
+import { toast, ticket, dropToast, toastPending, onTicketShown, iconSvg } from './toast.js?v=0.1.969';
+import { VERSION } from './version.js?v=0.1.969';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, overEarth, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.969';
+import { placeName } from './geo.js?v=0.1.969';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, SLIDER_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.969';
+import { conArt } from './con-art.js?v=0.1.969';
+import { fetchWeather, tonightSky, skyClearAt, goodSkyAt } from './weather.js?v=0.1.969';
+import { CON_FIGURES } from './con-figures.js?v=0.1.969';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress, starDistance } from './constellations.js?v=0.1.969';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.969';
+import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.969';
+import { eventOf, activeEvent, nextEvent } from './events.js?v=0.1.969';
+import { conList } from './constellations.js?v=0.1.969';
+import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination, hasSensorView, resumeSensors, needsPermission } from './sensors.js?v=0.1.969';
+import { SkyView, shortName } from './sky.js?v=0.1.969';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.969';
+import { isPlus, setPlusForTesting, onPlus, PLUS_PERKS, PLUS_PRICES, initStore, storePlans, buyPlus, restorePlus, rcTestStore, storeOpen } from './plus.js?v=0.1.969';
+import { isNative, getPosition, saveFile, notifyAt, cancelNotify, haptic, onNative, nativeChrome, plugin } from './native.js?v=0.1.969';
+import { initBackup, onBackupChange, backupSoon, clearBackup, backupStatus } from './cloud-backup.js?v=0.1.969';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.969';
+import { cardArt } from './art.js?v=0.1.969';
+import { renderCard, miniCard, cardLevel, artImage, lockedArt, attachTilt, attachGyro, throwOff, attachFlip, turnCard } from './card.js?v=0.1.969';
+import { applyBack, CARD_BACKS, backUnlocked, chosenBack, chooseBack, backEarned } from './card-backs.js?v=0.1.969';
+import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.969';
+import { audioCtx } from './audio-ctx.js?v=0.1.969';
+import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume, musicAway } from './music.js?v=0.1.969';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss } from './reveal.js?v=0.1.969';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel, moonPhaseOf, MOON_PHASES } from './card-model.js?v=0.1.969';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.969';
+import { naturalTargets, SOLAR_SYSTEM, DEEP_SKY } from './natural.js?v=0.1.969';
+import { placeFromTimeZone } from './tz-places.js?v=0.1.969';
+import { TIER_INFO } from './rarity.js?v=0.1.969';
+import { SETS, albumList } from './sets.js?v=0.1.969';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.969';
+import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.969';
+import { shareCardEl } from './share-card.js?v=0.1.969';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.969';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.969';
+import { addStarfield } from './starfield.js?v=0.1.969';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -1304,7 +1304,7 @@ function showCaptureCard(obj) {
   { const mate = sightings.length === 1 && model.partners?.find((k) => k !== key && ownedCardKeys().has(k));
     if (mate) news.unshift({ kind: 'reunion', text: `Reunited with ${label(state.cardModels.get(mate) ?? { name: mate })}` }); }
   $('rv-share').hidden = false; revealShare = { card, o: model };
-  revealIntoBinder = sightings.length === 1 && !model.launches; // a brand-new card goes into the binder when closed (2026-10-21)
+  revealIntoBinder = sightings.length === 1 && !model.launches; revealFaced = false; // a brand-new card goes into the binder when closed (2026-10-21)
   duckMusic(true); playReveal({ card, o: model, seen: sightings.length, fleet, progress, collected, con, xp: gain.xp, rank: gain.rank, earned: news, shiny: sightings[0]?.shiny && !model.launches ? SHINY[sightings[0].shiny] : null, origin: { x: sky.ring?.x ?? sky.cx, y: sky.ring?.y ?? sky.cy } });
 }
 // The tour’s catch when you already own it (replaying the tour): the same sealed-card reveal as a first catch,
@@ -1737,9 +1737,14 @@ function arDraw() {
   // A compass with clicks (2026-10-21, slick idea 09): passing N, E, S or W clicks and lights that letter; something
   // worth a look sliding into your view pings once.
   { const tNow = performance.now();
-    if (arPrevFace != null) { const d = (((centre - arPrevFace) + 540) % 360) - 180;
-      if (Math.abs(d) < 45) for (const c of [0, 90, 180, 270]) { const a0 = (((arPrevFace - c) + 540) % 360) - 180, a1 = a0 + d; if ((a0 < 0 && a1 >= 0) || (a0 > 0 && a1 <= 0)) { arFlash[c] = tNow; buzz('select'); sfx('toggle', { gain: .6, gap: 120 }); } } }
-    arPrevFace = centre;
+    // One click per real pass (bug test 2026-10-21: hand tremble across a letter clicked 59 times in 2 s): a letter
+    // clicks when the heading crosses it, then re-arms only after the heading has moved 6° away. The phone's turn
+    // only, not a drag of the strip (the big heading wouldn't match).
+    if (arPrevFace != null) { const d = (((face - arPrevFace) + 540) % 360) - 180;
+      for (const c of [0, 90, 180, 270]) { const a0 = (((arPrevFace - c) + 540) % 360) - 180, a1 = a0 + d;
+        if (Math.abs(a1) > 6) arArmed[c] = true;
+        if (Math.abs(d) < 45 && arArmed[c] !== false && ((a0 < 0 && a1 >= 0) || (a0 > 0 && a1 <= 0))) { arArmed[c] = false; arFlash[c] = tNow; buzz('select'); sfx('toggle', { gain: .6, gap: 120 }); } } }
+    arPrevFace = face;
     const inView = new Set(arItems.filter((x) => x.worth && x.kind !== 'rise' && Math.abs((((x.az - face) + 540) % 360) - 180) < 31).map((x) => x.obj.id));
     for (const id of inView) if (!arInView.has(id) && arInView.size + inView.size > 0 && arSeeded) { arPings.set(id, tNow); if (tNow - arPingBuzz > 400) { arPingBuzz = tNow; buzz('light'); } }
     arInView = inView; arSeeded = true; }
@@ -2241,14 +2246,17 @@ function evChart(ch) {
     const io = new IntersectionObserver(([en]) => { if (!en.isIntersecting) return; io.disconnect(); evGrown = true; ch.classList.remove('pre'); ch.classList.add('grow'); }, { root: $('visible'), threshold: .6 });
     io.observe(ch);
   }
-  const line = ch.querySelector('.ev-scrub'), lab = line.firstElementChild, bars = [...ch.querySelectorAll('i')];
-  let on = false, last = -1, hideT = 0;
+  const line = ch.querySelector('.ev-scrub'), bars = [...ch.querySelectorAll('i')];
+  let head = ch.parentElement.querySelector('.ev-busy'); if (!head) { head = document.createElement('div'); head.className = 'ev-busy'; ch.before(head); } const headWas = head.textContent;
+  const lab = { set textContent(v) { if (head) head.textContent = v; } }; // the reading replaces the card's headline while you scrub (it covered it)
+  let on = false, last = -1, hideT = 0, x0 = 0, live = false;
   const at = (x) => { const r = ch.getBoundingClientRect(), i = Math.max(0, Math.min(bars.length - 1, Math.floor((x - r.left) / r.width * bars.length))), b = bars[i];
-    line.style.left = `${((i + .5) / bars.length * 100).toFixed(2)}%`; if (i !== last) { last = i; buzz('select'); const n = Number(b.dataset.n); lab.textContent = `${fmtTime(Number(b.dataset.t))} · ${n} up`; lab.style.transform = `translateX(${i < 3 ? -15 : i > bars.length - 4 ? -85 : -50}%)`; bars.forEach((x) => x.classList.toggle('sel', x === b)); } };
-  ch.addEventListener('pointerdown', (e) => { on = true; clearTimeout(hideT); line.hidden = false; last = -1; ch.setPointerCapture?.(e.pointerId); at(e.clientX); });
-  ch.addEventListener('pointermove', (e) => { if (on) at(e.clientX); });
-  const end = () => { if (!on) return; on = false; hideT = setTimeout(() => { line.hidden = true; bars.forEach((x) => x.classList.remove('sel')); }, 900); };
-  ch.addEventListener('pointerup', end); ch.addEventListener('pointercancel', end);
+    line.style.left = `${((i + .5) / bars.length * 100).toFixed(2)}%`; if (i !== last) { last = i; buzz('select'); const n = Number(b.dataset.n), tt = Math.round(Number(b.dataset.t) / 1800e3) * 1800e3; lab.textContent = `${fmtTime(tt)} · ${n ? `${n} up` : 'nothing up'}`; bars.forEach((x) => x.classList.toggle('sel', x === b)); } };
+  ch.addEventListener('pointerdown', (e) => { on = true; live = false; x0 = e.clientX; clearTimeout(hideT); last = -1; ch.setPointerCapture?.(e.pointerId); });
+  ch.addEventListener('pointermove', (e) => { if (!on) return; if (!live && Math.abs(e.clientX - x0) < 6) return; if (!live) { live = true; line.hidden = false; } at(e.clientX); }); // a vertical scroll that starts on the chart doesn't flash it
+  ch.addEventListener('click', (e) => { if (!live) { line.hidden = false; at(e.clientX); end(); } });
+  const end = () => { if (!on && !live) return; on = false; hideT = setTimeout(() => { line.hidden = true; live = false; bars.forEach((x) => x.classList.remove('sel')); if (head) head.textContent = headWas; }, 1100); };
+  ch.addEventListener('pointerup', end); ch.addEventListener('pointercancel', end); ch.addEventListener('lostpointercapture', end);
 }
 function renderTonight() {
   const T = state.tonight, t0 = now().getTime();
@@ -2298,7 +2306,7 @@ function renderTonight() {
     for (const [t, n] of T.curve) if (t >= from && t <= to) { const i = Math.min(15, Math.floor((t - from) / span * 16)); bins[i] = Math.max(bins[i], n); }
     const mx = Math.max(1, ...bins), bi = bins.indexOf(Math.max(...bins)), pk = T.curve.filter(([t]) => t >= from && t <= to).reduce((a, c) => (c[1] > a[1] ? c : a), [0, 0]);
     tog.innerHTML = `<div class="t-head ev-head"><span>Every pass tonight</span><span>${allN}</span></div><div class="ev-box">${pk[1] >= 3 ? `<div class="ev-busy">${pk[0] > eveningEnd(T) ? 'Busiest before dawn' : 'Busiest'} at ${fmtTime(pk[0])} · ${upOnce(pk[1])}</div>` : ''}
-      <div class="ev-chart${evGrown ? '' : ' pre'}" aria-hidden="true">${bins.map((n, i) => `<i class="${i === bi ? 'pk' : ''}" data-t="${Math.round(from + (i + .5) * span / 16)}" data-n="${n}" style="height:${Math.max(6, Math.round(n / mx * 100))}%;--i:${i}"></i>`).join('')}<b class="ev-scrub" hidden><span></span></b></div>
+      <div class="ev-chart${evGrown ? '' : ' pre'}" aria-hidden="true">${bins.map((n, i) => `<i class="${i === bi ? 'pk' : ''}" data-t="${Math.round(from + (i + .5) * span / 16)}" data-n="${n}" style="height:${Math.max(6, Math.round(n / mx * 100))}%;--i:${i}"></i>`).join('')}<b class="ev-scrub" hidden></b></div>
       <div class="ev-axis"><span>Now</span>${(() => { const m = new Date(from); m.setHours(24, 0, 0, 0); const f = (m - from) / span; return f > 0.15 && f < 0.85 ? `<span class="ev-mid" style="left:${(f * 100).toFixed(1)}%">Midnight</span>` : ''; })()}<span>Dawn</span></div>
       <button type="button" class="ev-btn">${tlAll ? 'Hide the list' : `See all ${allN} passes`}</button></div>`; }
   evChart(tog.querySelector('.ev-chart'));
@@ -2528,14 +2536,14 @@ function prFold(bell, time) {
         bell.animate([{ transform: 'rotate(0)' }, { transform: 'rotate(-16deg)' }, { transform: 'rotate(12deg)' }, { transform: 'rotate(-7deg)' }, { transform: 'rotate(3deg)' }, { transform: 'rotate(0)' }], { duration: 560, easing: 'ease-out', composite: 'add' });
         sfx('stamp'); buzz('select');
         const tag = document.createElement('span'); tag.className = 'pr-fold-time'; tag.textContent = time;
-        tag.style.left = `${r.right + 6}px`; tag.style.top = `${r.top + r.height / 2}px`;
-        if (r.right + 70 > innerWidth) { tag.style.left = `${r.left - 6}px`; tag.classList.add('left'); }
+        tag.style.left = `${r.left + r.width / 2}px`; tag.style.top = `${r.bottom + 6}px`; tag.classList.add('under'); // under the bell, clear of the buttons beside it (playtest 2026-10-21)
         document.body.append(tag); setTimeout(() => tag.remove(), 2400);
       }, () => closeSheet(sheet));
   }, 160); // let the row's tick show first
 }
 async function prSet(i, row) {
-  const c = prChoices[i]; if (!c || !prPass) return;
+  const c = prChoices[i]; if (!c || !prPass || $('pr-sheet').classList.contains('folding') || prSet.busy) return;
+  prSet.busy = true; setTimeout(() => { prSet.busy = false; }, 700);
   const m = prMoment, title = m ? (c.lead ? `${fmtTime(m.t)}: a shiny chance` : `Now: a shiny chance`) : c.lead ? `${fmtTime(prPass.start)}: ${label(prPass.obj)}` : `Now: ${label(prPass.obj)}`;
   const body = m ? `${label(prPass.obj)} ${m.line}. Catch it then for a shiny card.` : `Look ${dirWord(prPass.riseAz)}. At its peak: ${whereWords({ el: prPass.peakEl, az: prPass.peakAz }).toLowerCase()}.`;
   const r = await setReminder({ at: c.t, title, body, key: prKey });
@@ -3057,7 +3065,7 @@ function tapSky(cx, cy) {
 // ---------- nav & panels ----------
 
 let activePanel = null, panelReturn = null;
-let arPrevFace = null, arFlash = {}, arInView = new Set(), arPings = new Map(), arPingBuzz = 0, arSeeded = false; // compass clicks and view pings
+let arArmed = {}; let arPrevFace = null, arFlash = {}, arInView = new Set(), arPings = new Map(), arPingBuzz = 0, arSeeded = false; // compass clicks and view pings
 let arLeft = { n: -1, v: 0 }; // Uncommon+ cards still to find (cached per collection size)
 let arRaf = 0, arPan = 0, arHeadSm = null, arItems = [], arAt = 0, arHits = [], arFrame = null; // All around you (below)
 const panelHideTimers = {}; // one per page: opening one page mustn’t cancel another page’s hide (2026-10-21: fast taps left Settings stuck over the sky page)
@@ -3092,9 +3100,10 @@ function openPanel(id, back = false) {
 let tourRevealLeaving = null, colAfterTour = null;
 // It goes into your binder (2026-10-21, slick idea 07): closing a brand-new card shrinks it into the Collection tab,
 // which bumps, with a "+1". Not for a flick (the card is already thrown off), the tour's first catch, or over a page.
-let revealIntoBinder = false;
+let revealIntoBinder = false, revealFaced = false;
+addEventListener('sc:payoff', () => { revealFaced = true; });
 function intoBinder() {
-  const go = revealIntoBinder; revealIntoBinder = false;
+  const go = revealIntoBinder && revealFaced; revealIntoBinder = false;
   if (!go || collectionOpen || revealBack || !$('ob-done').hidden || document.body.classList.contains('ob-tour') || state.tourCatchId != null) return;
   const front = $('reveal-card'), hr = $('rv-holder').getBoundingClientRect(), tab = $('nav-collection'), tr = tab.getBoundingClientRect();
   if (!front || !tr.width || hr.bottom < 40 || hr.top > innerHeight - 40) return;
@@ -3102,17 +3111,19 @@ function intoBinder() {
   Object.assign(fly.style, { left: `${hr.left}px`, top: `${hr.top}px`, width: `${hr.width}px`, height: `${hr.height}px` });
   fly.style.setProperty('--cf', getComputedStyle($('reveal')).getPropertyValue('--cf') || '12px');
   const face = front.cloneNode(true); face.removeAttribute('id'); face.style.transform = 'none'; fly.append(face); document.body.append(fly);
-  const dx = tr.left + tr.width / 2 - (hr.left + hr.width / 2), dy = tr.top + tr.height / 2 - (hr.top + hr.height / 2), sc = Math.max(.08, (tr.height * .8) / hr.height);
-  fly.animate([{ transform: 'none', opacity: 1 }, { transform: `translate(${dx * .35}px, ${dy * .2 - 30}px) scale(.62) rotate(-4deg)`, opacity: 1, offset: .35 }, { transform: `translate(${dx}px, ${dy}px) scale(${sc}) rotate(-8deg)`, opacity: .3 }], { duration: 560, easing: 'cubic-bezier(.45,0,.55,1)', fill: 'forwards' })
+  $('rv-holder').style.visibility = 'hidden'; setTimeout(() => { $('rv-holder').style.visibility = ''; }, 600); // only the flying copy is seen
+  const ic = tab.querySelector('.ico')?.getBoundingClientRect() ?? tr, dx = ic.left + ic.width / 2 - (hr.left + hr.width / 2), dy = ic.top + ic.height / 2 - (hr.top + hr.height / 2), sc = Math.max(.06, (tr.height * .5) / hr.height);
+  fly.animate([{ transform: 'none', opacity: 1 }, { transform: `translate(${dx * .35}px, ${dy * .2 - 30}px) scale(.62) rotate(-4deg)`, opacity: 1, offset: .35 }, { transform: `translate(${dx}px, ${dy}px) scale(${sc}) rotate(-8deg)`, opacity: 0 }], { duration: 560, easing: 'cubic-bezier(.45,0,.55,1)', fill: 'forwards' })
     .finished.then(() => {
       fly.remove(); buzz('light'); sfx('stamp', { gain: .7 });
       tab.animate([{ transform: 'scale(1)' }, { transform: 'scale(1.16)' }, { transform: 'scale(.96)' }, { transform: 'scale(1)' }], { duration: 420, easing: 'ease-out' });
       const plus = document.createElement('span'); plus.className = 'binder-plus'; plus.textContent = '+1';
-      plus.style.left = `${tr.left + tr.width / 2}px`; plus.style.top = `${tr.top}px`; document.body.append(plus); setTimeout(() => plus.remove(), 1100);
+      plus.style.left = `${ic.right + 4}px`; plus.style.top = `${ic.top + 6}px`; document.body.append(plus); setTimeout(() => plus.remove(), 1100);
     }, () => fly.remove());
 }
 function closePanel(id = activePanel) {
   if (!id) return;
+  if (id === 'reveal' && matchMedia('(prefers-reduced-motion: reduce)').matches) revealIntoBinder = false;
   if (id === 'reveal') { stopReveal(); if (tourRevealLeaving) { const go = tourRevealLeaving; tourRevealLeaving = null; go(); } }
   const el = $(id); activePanel = null; $('hud').inert = false;
   if (id === 'debug' && document.body.classList.contains('set-open')) { document.body.classList.remove('set-open'); setPageHeader(collectionOpen ? 'collection' : 'explore'); $('nav-more').setAttribute('aria-label', 'Settings'); }
@@ -3977,6 +3988,7 @@ function releaseLaterPatches() {
   const all = progressNow(state.sightings).achievements; for (const id of ids) { const a = all.find((x) => x.id === id && x.done); if (a) earnPatch(a); }
 }
 function hideDone() {
+  clearInterval(odNowTimer); clearTimeout(odFuseT); // the NOW line stops with the page
   const ob = $('onboard'), done = $('ob-done'), go = () => { ob.hidden = true; done.hidden = true; ob.style.opacity = ''; setTimeout(releaseLaterPatches, 1500); if (colAfterTour != null) { const k = colAfterTour === '#' ? '' : colAfterTour; colAfterTour = null; setTimeout(() => openCollection(k), 250); } };
   if (done.hidden || matchMedia('(prefers-reduced-motion: reduce)').matches) { go(); return; }
   ob.style.pointerEvents = 'none';
@@ -3984,24 +3996,24 @@ function hideDone() {
 }
 // Tonight lights like a fuse (2026-10-21, slick idea 16): a spark runs down the timeline lighting each time as it passes;
 // then a small orange NOW line settles where you are in the evening and creeps down with the clock.
-let odNowTimer = 0;
+let odNowTimer = 0, odFuseT = 0;
 function odFuse(tl) {
-  clearInterval(odNowTimer); if (!tl) return;
-  const rows = [...tl.querySelectorAll('.it')], reduced = matchMedia('(prefers-reduced-motion: reduce)').matches, step = 200;
+  clearInterval(odNowTimer); clearTimeout(odFuseT); if (!tl) return;
+  const rows = [...tl.querySelectorAll('.it')], reduced = matchMedia('(prefers-reduced-motion: reduce)').matches, step = rows.length <= 5 ? 260 : 200; // starts once the page has slid in
   const placeNow = () => {
-    if (!tl.isConnected) { clearInterval(odNowTimer); return; }
+    if (!tl.isConnected || $('ob-done').hidden) return; // the page is closed (its timer is cleared by the next open or hideDone)
     const t = now().getTime(), ts = rows.map((r) => Number(r.dataset.t)); let y = null;
-    for (let i = 0; i < rows.length; i++) { if (t < ts[i]) { if (i === 0) y = rows[0].offsetTop - 4; else { const a = rows[i - 1], f = (t - ts[i - 1]) / Math.max(1, ts[i] - ts[i - 1]); y = a.offsetTop + 8 + f * (rows[i].offsetTop - a.offsetTop); } break; } }
+    for (let i = 0; i < rows.length; i++) { if (t < ts[i]) { y = rows[i].offsetTop - 10; break; } } // between the rows, never through one (playtest 2026-10-21)
     let line = tl.querySelector('.od-now');
     if (y == null) { line?.remove(); return; }
     if (!line) { line = document.createElement('div'); line.className = 'od-now'; line.innerHTML = '<span>Now</span>'; tl.append(line); }
     line.style.top = `${Math.round(y)}px`;
   };
   if (reduced || !rows.length) { placeNow(); odNowTimer = setInterval(placeNow, 30000); return; }
-  tl.classList.add('fuse'); rows.forEach((r, i) => r.style.setProperty('--d', `${300 + i * step}ms`));
+  tl.classList.add('fuse'); rows.forEach((r, i) => r.style.setProperty('--d', `${500 + i * step}ms`));
   const spark = document.createElement('i'); spark.className = 'od-spark'; tl.append(spark);
-  requestAnimationFrame(() => { const end = rows.at(-1).offsetTop + 8; spark.animate([{ top: '6px', opacity: 1 }, { top: `${end}px`, opacity: 1, offset: .95 }, { top: `${end}px`, opacity: 0 }], { duration: rows.length * step, delay: 300, easing: 'linear', fill: 'both' }).finished.then(() => spark.remove(), () => spark.remove()); });
-  setTimeout(() => { placeNow(); tl.querySelector('.od-now')?.classList.add('in'); odNowTimer = setInterval(placeNow, 30000); }, 300 + rows.length * step + 150);
+  requestAnimationFrame(() => { const end = rows.at(-1).offsetTop + 8; spark.animate([{ top: '6px', opacity: 1 }, { top: `${end}px`, opacity: 1, offset: .95 }, { top: `${end}px`, opacity: 0 }], { duration: rows.length * step, delay: 500, easing: 'linear', fill: 'both' }).finished.then(() => spark.remove(), () => spark.remove()); });
+  odFuseT = setTimeout(() => { placeNow(); tl.querySelector('.od-now')?.classList.add('in'); odNowTimer = setInterval(placeNow, 30000); }, 500 + rows.length * step + 150);
 }
 function obFinish(caught) {
   setTimeout(warnExample, 1500); // the sky is someone else’s until you share a location
@@ -4208,14 +4220,14 @@ window.addEventListener('message', (e) => {
     const key = `${obj.id}@${p.start}`;
     if (e.data.sc === 'find-show') { closeCollection(); setTimeout(() => showMePass({ ...p, obj }), 450); }
     else (async () => { let on;
-      openPassRemind({ ...p, obj }, key); void on; })(); } } // the choice of times, over the Collection (2026-10-21, Sevaan)
+      lastPress = null; openPassRemind({ ...p, obj }, key); void on; })(); } } // the choice of times, over the Collection (2026-10-21, Sevaan)
   // The card viewer’s "Up tonight" panel (2026-10-16, design/upnext-remind.html 1): the exact pass from tonight’s plan.
   if (e.data.sc === 'up-remind' || e.data.sc === 'up-show') {
     const p = state.tonight?.passes?.find((x) => x.id === e.data.id && x.start === e.data.start), obj = p && state.byId.get(p.id);
     if (!obj) { colFrame.contentWindow?.postMessage({ sc: 'say', text: 'That pass has moved on. Check Tonight for the next one.' }, location.origin); }
     else if (e.data.sc === 'up-show') { closeCollection(); setTimeout(() => showMePass({ ...p, obj }), 450); }
     else (async () => { const key = `${p.id}@${p.start}`; let on;
-      openPassRemind({ ...p, obj }, key); void on; })(); // the choice of times, over the Collection (2026-10-21, Sevaan)
+      lastPress = null; openPassRemind({ ...p, obj }, key); void on; })(); // the choice of times, over the Collection (2026-10-21, Sevaan)
   }
   if (e.data.sc === 'remind') { const p = state.tonight?.passes?.filter((x) => x.id === e.data.id && x.end > now().getTime()).sort((a, b) => a.start - b.start)[0], obj = p && state.byId.get(p.id); if (obj) remindPass({ ...p, obj }); } // an "Up tonight" slot in Collection
 });
@@ -4597,7 +4609,7 @@ function cardsTurnOver() {
   if (keys.length < 2) return;
   document.querySelector('.back-fan')?.remove();
   const fan = document.createElement('div'); fan.className = 'back-fan'; document.body.append(fan);
-  const n = keys.length, W = Math.min(150, (innerWidth - 40) / (n * .62));
+  const n = keys.length, W = Math.min(110, (innerWidth - 40) / ((n - 1) * .62 + 1.15)); // the whole fan fits (playtest 2026-10-21)
   const cards = keys.map((k, i) => {
     const m = state.cardModels.get(k), ss = state.sightings.filter((x) => !x.sim && x.cardKey === k);
     const c = renderCard(m, { sightings: ss }); c.style.fontSize = `${W / 28}px`;
@@ -4607,7 +4619,7 @@ function cardsTurnOver() {
   });
   sfx('page'); buzz('light');
   cards.forEach((c, i) => setTimeout(() => { if (!c.isConnected) return; const back = c.querySelector('.card__back'); applyBack(back); turnCard(c, { from: 0, to: 180, ms: 460, lift: 1.06, back }); buzz('select'); if (i === cards.length - 1) sfx('flip', { gain: .7 }); }, 520 + i * 120));
-  setTimeout(() => { fan.classList.add('out'); setTimeout(() => fan.remove(), 380); }, 520 + n * 120 + 1300);
+  setTimeout(() => { fan.classList.add('out'); setTimeout(() => fan.remove(), 380); }, 520 + n * 120 + 900);
   fan.addEventListener('click', () => { fan.classList.add('out'); setTimeout(() => fan.remove(), 380); });
 }
 function renderBackRow() { const c = chosenBack(); $('set-back-val').textContent = c === 'random' ? 'Random' : (CARD_BACKS.find((b) => b.id === c && backUnlocked(b)) ?? CARD_BACKS[0]).name; }

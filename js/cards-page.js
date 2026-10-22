@@ -1,30 +1,30 @@
-import { pullToClose } from './pull-close.js?v=0.1.968';
-import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.968';
-import { computeStats, statsHtml } from './stats.js?v=0.1.968';
-import { nightKey } from './observation.js?v=0.1.968';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.968';
-import { sfx } from './sfx.js?v=0.1.968';
-import { expandFacts } from './catalog-facts.js?v=0.1.968';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.968';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.968';
-import { ticket } from './toast.js?v=0.1.968';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.968';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.968';
-import { cardArt } from './art.js?v=0.1.968';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.968';
-import { applyBack } from './card-backs.js?v=0.1.968';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.968';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.968';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.968';
-import { STORIES } from './stories.js?v=0.1.968';
-import { loadConstellations, conList } from './constellations.js?v=0.1.968';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.968';
-import { eventBadges, nextEvent } from './events.js?v=0.1.968';
-import { shareCardEl } from './share-card.js?v=0.1.968';
-import { forgetSighting } from './cloud-backup.js?v=0.1.968';
-import { allSightings, deleteSighting } from './store.js?v=0.1.968';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.968';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.968';
+import { pullToClose } from './pull-close.js?v=0.1.969';
+import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.969';
+import { computeStats, statsHtml } from './stats.js?v=0.1.969';
+import { nightKey } from './observation.js?v=0.1.969';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.969';
+import { sfx } from './sfx.js?v=0.1.969';
+import { expandFacts } from './catalog-facts.js?v=0.1.969';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.969';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.969';
+import { ticket } from './toast.js?v=0.1.969';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.969';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.969';
+import { cardArt } from './art.js?v=0.1.969';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.969';
+import { applyBack } from './card-backs.js?v=0.1.969';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.969';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.969';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.969';
+import { STORIES } from './stories.js?v=0.1.969';
+import { loadConstellations, conList } from './constellations.js?v=0.1.969';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.969';
+import { eventBadges, nextEvent } from './events.js?v=0.1.969';
+import { shareCardEl } from './share-card.js?v=0.1.969';
+import { forgetSighting } from './cloud-backup.js?v=0.1.969';
+import { allSightings, deleteSighting } from './store.js?v=0.1.969';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.969';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.969';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -188,7 +188,7 @@ function holdToPeek(tile, c) {
 function openPeek(tile, c) {
   if (peekEl || $('viewer').open) return;
   tile._peeked = true; feel('light');
-  const r = tile.getBoundingClientRect(), W = Math.min(innerWidth - 48, 320), scale = r.width / W;
+  const r = tile.getBoundingClientRect(), W = Math.min(innerWidth - 64, 280), scale = r.width / W;
   const wrap = document.createElement('div'); wrap.className = 'peek';
   const card = renderCard(c, tile.classList.contains('is-owned') ? { sightings: state.sightingsByKey.get(c.key) ?? [], ownedKeys: ownedKeys() } : {});
   card.style.fontSize = `${W / 28}px`; wrap.append(card); document.body.append(wrap); document.body.classList.add('peeking');
@@ -330,18 +330,28 @@ $('stats-view').addEventListener('cancel', (e) => { e.preventDefault(); closeSta
 let lbLast = null, since = (() => { try { return JSON.parse(localStorage.getItem('colVisit') ?? 'null'); } catch { return null; } })();
 let peeled = (() => { try { return new Set(JSON.parse(localStorage.getItem('colPeeled') ?? '[]')); } catch { return new Set(); } })();
 const firstSeen = (c) => { const ss = state.sightingsByKey?.get(c.key); return ss?.length ? Math.min(...ss.map((x) => x.time)) : null; };
-const isFreshTile = (c) => since?.at != null && (firstSeen(c) ?? 0) > since.at && !peeled.has(c.key);
+let freshKeys = (() => { try { return new Set(JSON.parse(localStorage.getItem('colFresh') ?? '[]')); } catch { return new Set(); } })(); // caught since a visit, not opened yet (bug test 2026-10-21: comparing to the last visit lost them after one more visit)
+const saveFresh = () => { try { localStorage.setItem('colFresh', JSON.stringify([...freshKeys].slice(-400))); } catch {} };
+const isFreshTile = (c) => freshKeys.has(c.key) && !peeled.has(c.key);
 function saveVisit() { if (!lbLast) return; try { localStorage.setItem('colVisit', JSON.stringify({ at: Date.now(), xp: lbLast.xp })); } catch {} }
 function stickerOn(tile, c) { if (!isFreshTile(c) || tile.querySelector('.tile-new')) return; const t = document.createElement('span'); t.className = 'tile-new'; t.textContent = 'NEW'; tile.append(t); }
 function peelSticker(c) {
-  if (!c || peeled.has(c.key) || !isFreshTile(c)) return; peeled.add(c.key);
+  if (!c || !isFreshTile(c)) return; peeled.add(c.key); freshKeys.delete(c.key); saveFresh();
   try { localStorage.setItem('colPeeled', JSON.stringify([...peeled].slice(-400))); } catch {}
   for (const t of document.querySelectorAll(`.tile-slot[data-key="${CSS.escape(c.key)}"] .tile-new`)) { t.classList.add('peel'); setTimeout(() => t.remove(), 700); }
 }
+function primeSince() { // as the Collection is shown: the old XP and bar are in place before it slides up (no flash of the final number)
+  let v = null; try { v = JSON.parse(localStorage.getItem('colVisit') ?? 'null'); } catch {}
+  if (!lbLast || !v?.xp || lbLast.xp <= v.xp || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const xpEl = document.querySelector('#logbook .lb-xp b'), bar = document.querySelector('#logbook .lb-bar i'), span = lbLast.next ? lbLast.next - lbLast.at : 1;
+  if (xpEl) xpEl.textContent = v.xp.toLocaleString();
+  if (bar) { bar.style.transition = 'none'; bar.style.width = `${(Math.max(0, Math.min(1, (v.xp - lbLast.at) / span)) * 100).toFixed(1)}%`; }
+}
 function replaySince() {
   const prev = since; since = (() => { try { return JSON.parse(localStorage.getItem('colVisit') ?? 'null'); } catch { return null; } })() ?? prev;
+  if (since?.at != null) { let n = 0; for (const c of state.cards) if (!peeled.has(c.key) && !freshKeys.has(c.key) && (firstSeen(c) ?? 0) > since.at) { freshKeys.add(c.key); n++; } if (n) saveFresh(); }
   for (const slot of document.querySelectorAll('#grid .tile-slot[data-key]')) { const c = state.byKey.get(slot.dataset.key), tile = slot.firstElementChild; if (c && tile) stickerOn(tile, c); }
-  if (!lbLast || since?.xp == null || lbLast.xp <= since.xp || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (!lbLast || !since?.xp || lbLast.xp <= since.xp || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   const gain = lbLast.xp - since.xp, xpEl = document.querySelector('#logbook .lb-xp b'), bar = document.querySelector('#logbook .lb-bar i');
   const span = lbLast.next ? lbLast.next - lbLast.at : 1, from = Math.max(0, Math.min(1, (since.xp - lbLast.at) / span));
   if (bar) { bar.style.transition = 'none'; bar.style.width = `${(from * 100).toFixed(1)}%`; void bar.offsetWidth; bar.style.transition = 'width 1.1s cubic-bezier(.3,.7,.3,1)'; bar.style.width = `${(lbLast.into * 100).toFixed(1)}%`; }
@@ -1013,10 +1023,10 @@ if (EMBED) {
     }
     if (e.data.sc === 'refresh') refreshSightings();
     // Hidden behind the sky, its animations (twinkles, shimmers, drift) pause (2026-10-16 perf sweep).
-    if (e.data.sc === 'away') { saveVisit(); clearTimeout(awayT); document.documentElement.classList.add('away'); for (const id of ['viewer', 'stats-view', 'patch-view']) { const d = $(id); if (d?.open) { d.classList.remove('leaving'); d.close(); } } if (returnView) backFromBorrowed(); } // leaving the Collection closes whatever was open in it (bug hunt 2026-10-17: after Show me the viewer stayed open, clipped under the header)
+    if (e.data.sc === 'away') { saveVisit(); closePeek(); clearTimeout(awayT); document.documentElement.classList.add('away'); for (const id of ['viewer', 'stats-view', 'patch-view']) { const d = $(id); if (d?.open) { d.classList.remove('leaving'); d.close(); } } if (returnView) backFromBorrowed(); } // leaving the Collection closes whatever was open in it (bug hunt 2026-10-17: after Show me the viewer stayed open, clipped under the header)
     if ((e.data.sc === 'open' || e.data.sc === 'show') && nightPending != null) { setNight(nightPending); nightPending = null; }
     if ((e.data.sc === 'open' || e.data.sc === 'show') && awayDirty) { awayDirty = false; if (state.ready) render(); }
-    if (e.data.sc === 'open' || e.data.sc === 'show') { setTimeout(() => { if (state.ready) replaySince(); }, 480); }
+    if (e.data.sc === 'open' || e.data.sc === 'show') { if (state.ready) primeSince(); setTimeout(() => { if (state.ready) replaySince(); }, 480); }
     if (e.data.sc === 'open' || e.data.sc === 'show') { clearTimeout(awayT); awayT = setTimeout(() => document.documentElement.classList.remove('away'), 460); } // after the slide-up lands (2026-10-17 perf): restarting every twinkle and shimmer mid-slide hitched
     if (e.data.sc === 'tonight') { state.plan = readPlan(); if (state.ready && state.view === 'find' && !state.query) { findSuggest = null; renderFind(); } if (state.ready && ['owned', 'discover'].includes(state.view)) { if (document.documentElement.classList.contains('away')) awayDirty = true; else render(); } } // hidden: render when shown (jank playtest 2026-10-17)
   });

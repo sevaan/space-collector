@@ -5,12 +5,12 @@
 //  Everything scales with rarity (Legendary dims the sky, shockwave, held breath, slow flip, fanfare).
 // Waits use timers, not animation.finished, so a paused tab can never freeze the sequence.
 
-import { sfx, loadSfx, heartbeat } from './sfx.js?v=0.1.968';
-import { audioCtx } from './audio-ctx.js?v=0.1.968';
-import { TIER_INFO } from './rarity.js?v=0.1.968';
-import { levelFor, attachTilt, attachGyro, attachFlip, throwOff, retype } from './card.js?v=0.1.968';
-import { applyBack } from './card-backs.js?v=0.1.968';
-import { addStarfield } from './starfield.js?v=0.1.968';
+import { sfx, loadSfx, heartbeat } from './sfx.js?v=0.1.969';
+import { audioCtx } from './audio-ctx.js?v=0.1.969';
+import { TIER_INFO } from './rarity.js?v=0.1.969';
+import { levelFor, attachTilt, attachGyro, attachFlip, throwOff, retype } from './card.js?v=0.1.969';
+import { applyBack } from './card-backs.js?v=0.1.969';
+import { addStarfield } from './starfield.js?v=0.1.969';
 
 const FX = {
   common:    { particles: 14,  flip: 520,  spin: 0,   dim: 0,   shock: false, notes: [880],                            hold: 0 },
@@ -180,8 +180,8 @@ export async function playReveal({ card, o, seen, origin, fleet = null, progress
     // phone thumps in time; then it turns over. A tap still turns it at once.
     const big = !reduced() && ['epic', 'legendary'].includes(tierKey);
     if (big) for (const [ms, strong] of [[120, false], [330, true], [980, false], [1190, true]]) beats.push(setTimeout(() => { if (!alive() || !onFlipTap) return; heartbeat(strong); dispatchEvent(new CustomEvent('sc:heartbeat', { detail: { strong } }));
-      $('rv-dim').animate([{ opacity: getComputedStyle($('rv-dim')).opacity }, { opacity: strong ? .82 : .74, offset: .25 }, { opacity: getComputedStyle($('rv-dim')).opacity }], { duration: 420, easing: 'ease-out' });
-      $('rv-holder').animate([{ transform: 'scale(1)' }, { transform: `scale(${strong ? 1.035 : 1.02})`, offset: .2 }, { transform: 'scale(1)' }], { duration: 360, easing: 'ease-out', composite: 'add' }); }, ms));
+      $('rv-dim').animate([{ opacity: getComputedStyle($('rv-dim')).opacity }, { opacity: strong ? .9 : .8, offset: .25 }, { opacity: getComputedStyle($('rv-dim')).opacity }], { duration: 420, easing: 'ease-out' });
+      $('rv-holder').animate([{ transform: 'scale(1)', filter: 'none' }, { transform: `scale(${strong ? 1.05 : 1.03})`, filter: strong ? 'brightness(1.25)' : 'brightness(1.12)', offset: .2 }, { transform: 'scale(1)', filter: 'none' }], { duration: 360, easing: 'ease-out', composite: 'add' }); }, ms));
     timer = setTimeout(() => onFlipTap?.(), reduced() ? 400 : big ? 1700 : ['common', 'uncommon'].includes(tierKey) ? 700 : 1000); // the rare ones keep their second of suspense
   });
   if (!alive()) return;
