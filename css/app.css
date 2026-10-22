@@ -2182,3 +2182,34 @@ body.night #debug .set-range::-webkit-slider-thumb { background: #ff7f70; box-sh
 #debug .set-seg button.on { z-index: 1; box-shadow: inset 0 0 0 1px #fa8127; }
 body.night #debug .set-seg button.on { box-shadow: inset 0 0 0 1px #ff6a55; }
 #debug .set-seg [data-units], #debug .set-seg [data-clock] { width: 52px; min-width: 0; flex: none; }
+
+/* How to play as a deck (2026-10-21): swipe sideways, one idea per card, dots, Next / See tonight. */
+#set-howto-sheet .set-sheet-card { overflow: hidden; }
+.ht-track { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; margin: 6px -4px 0; overscroll-behavior-x: contain; }
+.ht-track::-webkit-scrollbar { display: none; }
+.ht-slide { flex: 0 0 100%; scroll-snap-align: center; padding: 0 4px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; text-align: center; }
+.ht-pic { width: 100%; height: 190px; border-radius: 12px; border: 1px solid #c9c1a0; box-shadow: inset 0 0 0 3px #0e1828, inset 0 0 0 4px #c9c1a055; background: radial-gradient(ellipse at 50% 30%, #17283f, #0a1322 70%); display: grid; place-items: center; overflow: hidden; margin-bottom: 14px; }
+.ht-pic > svg { width: 100%; height: 100%; }
+.ht-t { font: 400 19px/1.2 var(--display, 'SC Display'); color: var(--text); margin-bottom: 6px; letter-spacing: .01em; }
+.ht-d { margin: 0; font: 500 15px/1.4 var(--label); color: var(--muted); letter-spacing: .02em; max-width: 30em; min-height: 4.2em; }
+.ht-dots { display: flex; justify-content: center; gap: 6px; margin: 14px 0 14px; }
+.ht-dots i { width: 6px; height: 6px; border-radius: 3px; background: #2c3b52; transition: width .25s, background .25s; }
+.ht-dots i.on { width: 18px; background: #fa8127; }
+.ht-row, .ht-col { display: flex; gap: 12px; align-items: center; justify-content: center; } .ht-col { flex-direction: column; gap: 10px; }
+.ht-mini { width: 64px; aspect-ratio: 28 / 42; border-radius: 6px; background: #0b1626 center 30% / cover no-repeat; box-shadow: 0 0 0 2px #c9a26a, 0 6px 14px rgba(0,0,0,.5); }
+.ht-mini.lvl-s { box-shadow: 0 0 0 2px #dfe6ee, 0 0 12px rgba(223,230,238,.45), 0 6px 14px rgba(0,0,0,.5); }
+.ht-mini.lvl-g { box-shadow: 0 0 0 2px #f2c14e, 0 0 16px rgba(242,193,78,.55), 0 6px 14px rgba(0,0,0,.5); }
+.ht-col .ht-mini { width: 54px; }
+.ht-mini.shiny { width: 84px; position: relative; overflow: hidden; box-shadow: 0 0 0 2px transparent, 0 6px 14px rgba(0,0,0,.5); outline: 2px solid; outline-color: #ff8ad8; animation: htShine 3s linear infinite; }
+.ht-mini.shiny::after { content: '✦'; position: absolute; top: 4px; right: 6px; color: #fff; font-size: 14px; text-shadow: 0 0 6px #fff; }
+.ht-mini.shiny::before { content: ''; position: absolute; inset: 0; background: linear-gradient(115deg, transparent 30%, rgba(255,255,255,.45) 45%, rgba(255,160,230,.25) 52%, transparent 65%); background-size: 250% 100%; animation: htSweep 2.4s ease-in-out infinite; }
+@keyframes htShine { 0% { outline-color: #ff8ad8; } 33% { outline-color: #7fe0ff; } 66% { outline-color: #ffe27a; } 100% { outline-color: #ff8ad8; } }
+@keyframes htSweep { 0% { background-position: 120% 0; } 60%, 100% { background-position: -40% 0; } }
+.ht-phases { display: flex; gap: 4px; } .ht-ph { width: 18px; height: 18px; } .ht-ph.new { filter: drop-shadow(0 0 3px #fa8127); }
+.ht-sec { animation: htSec 2.4s ease-in-out infinite; transform-origin: 50px 50px; }
+@keyframes htSec { 50% { stroke: #fa8127; transform: scale(1.06); } }
+.ht-tonight { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text); }
+.ht-tonight .ico { width: 30px; height: 30px; color: #fa8127; animation: htBell 2.6s ease-in-out infinite; transform-origin: 50% 10%; }
+.ht-tonight b { font: 400 22px var(--display, 'SC Display'); } .ht-tonight small { font: 500 13px var(--label); color: var(--muted); letter-spacing: .04em; }
+@keyframes htBell { 0%, 70%, 100% { transform: rotate(0); } 76% { transform: rotate(-14deg); } 84% { transform: rotate(10deg); } 92% { transform: rotate(-5deg); } }
+@media (prefers-reduced-motion: reduce) { .ht-mini.shiny, .ht-mini.shiny::before, .ht-sec, .ht-tonight .ico { animation: none; } }
