@@ -1,6 +1,6 @@
 /* Shared with the retro card stock: cream ink, orange accents and a steel frame.
    Legacy --gold / --cyan names remain for the radar and reveal consumers. */
-:root { --bg:#080f1b; --text:#fff2b3; --muted:#bdbea9; --gold:#fa8127; --cyan:#8fb3cf; --glass:#0c1725f2; --glass-strong:#0c1725; --edge:#627a8b; --edge-soft:#344654; --rule:#bcb585; --ink-on-gold:#080f1b; --display:'SC Display',Impact,sans-serif; --label:'SC Label','Arial Narrow',sans-serif; --safe-top:env(safe-area-inset-top,0px); --safe-bottom:env(safe-area-inset-bottom,0px); --nav-h:112px; color-scheme:dark; }
+:root { --safe-l: env(safe-area-inset-left, 0px); --safe-r: env(safe-area-inset-right, 0px); --vws: calc(100vw - 2 * max(var(--safe-l), var(--safe-r))); --bg:#080f1b; --text:#fff2b3; --muted:#bdbea9; --gold:#fa8127; --cyan:#8fb3cf; --glass:#0c1725f2; --glass-strong:#0c1725; --edge:#627a8b; --edge-soft:#344654; --rule:#bcb585; --ink-on-gold:#080f1b; --display:'SC Display',Impact,sans-serif; --label:'SC Label','Arial Narrow',sans-serif; --safe-top:env(safe-area-inset-top,0px); --safe-bottom:env(safe-area-inset-bottom,0px); --nav-h:112px; color-scheme:dark; }
 html.standalone { --safe-bottom:max(6px, calc(env(safe-area-inset-bottom,0px) - 20px)); } /* no Safari bars: sit lower (2026-10-11) */
 html[data-theme=night],body.night { --bg:#0c0303; --text:#ff7f70; --muted:#e8705f; --gold:#f2654f; --cyan:#f0695c; --glass:#1a0909f5; --glass-strong:#120606; --edge:#7a3533; --edge-soft:#361719; --ink-on-gold:#180706; --rule:#7a3533; }
 * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
@@ -59,13 +59,13 @@ a { color:var(--cyan); }
 @media (prefers-reduced-motion: reduce) { #target:not([hidden]) { animation:none; } }
 #t-close { flex:none;width:44px;height:44px;margin:-4px -2px -4px 0;border-radius:50%;background:none;border:0;color:var(--muted);font-size:20px; }
 #discover { position:fixed;inset:0;pointer-events:none;z-index:2; }
-#discover .d-label { position:absolute;left:50%;top:calc(var(--cy) - var(--r) - 18px);transform:translate(-50%,-100%);text-align:center;width:min(360px,calc(100vw - 32px));text-shadow:0 2px 4px var(--bg),0 0 18px var(--bg); }
+#discover .d-label { position:absolute;left:50%;top:calc(var(--cy) - var(--r) - 18px);transform:translate(-50%,-100%);text-align:center;width:min(360px,calc(var(--vws) - 32px));text-shadow:0 2px 4px var(--bg),0 0 18px var(--bg); }
 #d-tier { display:block;font:500 13px/1.3 var(--label);letter-spacing:.2em;color:var(--find-tier,var(--gold));text-transform:uppercase;margin-bottom:7px; }
 #d-tier::before { content:"✦";color:var(--gold);margin-right:8px; }
 #d-name { display:block;font:400 clamp(18px,5.4vw,26px)/1.1 var(--display);letter-spacing:-.025em;text-transform:uppercase;overflow-wrap:anywhere;text-wrap:balance; }
 /* Lined up a plane by mistake: red ring (js/sky.js), who it is above, where it's going below. */
 #plane { position:fixed;inset:0;pointer-events:none;z-index:2;--plane:#ff5a4e; }
-#plane .p-label { position:absolute;left:50%;top:calc(var(--cy) - var(--r) - 18px);transform:translate(-50%,-100%);text-align:center;width:min(360px,calc(100vw - 32px));text-shadow:0 2px 4px var(--bg),0 0 18px var(--bg); }
+#plane .p-label { position:absolute;left:50%;top:calc(var(--cy) - var(--r) - 18px);transform:translate(-50%,-100%);text-align:center;width:min(360px,calc(var(--vws) - 32px));text-shadow:0 2px 4px var(--bg),0 0 18px var(--bg); }
 #p-kind { display:block;font:500 13px/1.3 var(--label);letter-spacing:.16em;color:var(--plane);text-transform:uppercase;margin-bottom:6px; }
 #p-name { display:block;font:400 22px/1.15 var(--display);text-transform:uppercase;overflow-wrap:anywhere; }
 #plane .p-info { position:absolute;left:var(--cx);top:calc(var(--cy) + var(--r) + 16px);transform:translateX(-50%);width:min(88vw,340px);text-align:center;font-size:13px;line-height:1.4;color:var(--muted);text-shadow:0 1px 6px #000,0 0 14px #000; }
@@ -73,7 +73,7 @@ a { color:var(--cyan); }
 body.night #plane { --plane:#ff3b2b; }
 #d-hit { position:absolute;left:calc(var(--cx) - var(--r) - 16px);top:calc(var(--cy) - var(--r) - 16px);width:calc(var(--r) * 2 + 32px);height:calc(var(--r) * 2 + 32px);border-radius:50%;background:transparent;border:0;pointer-events:auto;cursor:pointer; }
 #d-hit:active { background:color-mix(in srgb,var(--gold) 12%,transparent); }
-#discover .d-actions { position:absolute;left:50%;top:calc(var(--cy) + var(--r) + 20px);transform:translateX(-50%);display:flex;align-items:center;gap:8px;max-width:calc(100vw - 32px); }
+#discover .d-actions { position:absolute;left:50%;top:calc(var(--cy) + var(--r) + 20px);transform:translateX(-50%);display:flex;align-items:center;gap:8px;max-width:calc(var(--vws) - 32px); }
 #d-cta { flex:none;min-height:44px;padding:10px 20px;border:1px solid var(--gold);border-radius:4px;font:500 16px/1.3 var(--label);letter-spacing:.16em;color:var(--ink-on-gold);background:var(--gold);white-space:nowrap;pointer-events:auto;box-shadow:0 3px 0 var(--bg),0 4px 0 var(--rule); }
 #d-cta:active { transform:translateY(2px);box-shadow:none; }
 #d-switch { flex:none;pointer-events:auto;min-width:64px;min-height:44px;font:500 15px var(--label);color:var(--cyan);background:none;border:0; }
@@ -120,7 +120,7 @@ body.night #plane { --plane:#ff3b2b; }
 .ob-lock.on { opacity:1; }
 /* the deck: cards laid from the bottom edge, top two-thirds on screen */
 .ob-deck { position:absolute; left:0; right:0; bottom:env(safe-area-inset-bottom, 0px); height:min(58%, 470px); perspective:1400px; } /* clear of Android's navigation buttons (Android playtest 2026-10-19) */
-.tc { position:absolute; left:50%; top:0; width:min(360px, calc(100vw - 28px)); height:150%; margin-left:calc(min(360px, calc(100vw - 28px)) / -2); border-radius:22px; background:var(--bg); border:4px solid #adbcc8; box-shadow:inset 0 0 0 5px var(--bg), inset 0 0 0 6px #bcb58566, 0 -14px 50px #000b; overflow:hidden; pointer-events:auto; touch-action:none;
+.tc { position:absolute; left:50%; top:0; width:min(360px, calc(var(--vws) - 28px)); height:150%; margin-left:calc(min(360px, calc(var(--vws) - 28px)) / -2); border-radius:22px; background:var(--bg); border:4px solid #adbcc8; box-shadow:inset 0 0 0 5px var(--bg), inset 0 0 0 6px #bcb58566, 0 -14px 50px #000b; overflow:hidden; pointer-events:auto; touch-action:none;
   transform:translate(var(--x, 0px), var(--y, 0px)) rotate(var(--r, 0deg)); transition:transform .5s cubic-bezier(.2,.9,.3,1), opacity .4s, filter .5s ease; }
 .tc.under { --y:26px; --r:-2.5deg; filter:brightness(.6); } .tc.under2 { --y:46px; --r:3deg; filter:brightness(.45); }
 .tc.gone { opacity:0; transition:transform .45s cubic-bezier(.5,0,.8,.4), opacity .45s; }
@@ -149,7 +149,7 @@ body.ob-tour #skybar, body.ob-tour #nav, body.ob-tour #target, body.ob-tour #dis
 body.night #start .hero img { filter:grayscale(1) sepia(1) saturate(3) hue-rotate(310deg) brightness(.6); }
 /* Panel headers share the page header's geometry (2026-10-06, Sevaan): 80px tall from the safe area, contents centred,
    the same thin double rule (two 1px lines, 1px apart, at 65%) at the bottom, 20px side padding. */
-.panel { padding:var(--safe-top) max(20px,calc((100vw - 580px)/2)) calc(var(--safe-bottom) + 32px); }
+.panel { padding:var(--safe-top) max(20px,calc((var(--vws) - 580px)/2)) calc(var(--safe-bottom) + 32px); }
 .panel-head { position:relative; display:flex;align-items:center;justify-content:space-between;gap:16px;height:80px;margin-bottom:20px; }
 .panel-head::after { content:"";position:absolute;left:0;right:0;bottom:0;height:3px;border-block:1px solid var(--edge);opacity:.65; }
 .panel h2 { font:400 27px/1.1 var(--display);text-transform:uppercase;letter-spacing:-.03em;margin:0; }
@@ -237,7 +237,7 @@ body.night #t-art { border-color:var(--rule); }
 .t-row .dot { display:inline-block; width:7px; height:7px; transform:rotate(45deg); background:var(--tier,var(--gold)); margin-right:7px; }
 /* Next pass / tonight chip (2026-10-06): upper right, level with the radar, so it never sits under the
    object names in the middle of the sky. Three short stacked lines, right-aligned. */
-#nextpass { position:fixed; right:12px; top:calc(var(--safe-top) + 92px); z-index:2; box-sizing:border-box; max-width:calc(100vw - 150px); padding:7px 11px; border-radius:99px; text-align:right;
+#nextpass { position:fixed; right:12px; top:calc(var(--safe-top) + 92px); z-index:2; box-sizing:border-box; max-width:calc(var(--vws) - 150px); padding:7px 11px; border-radius:99px; text-align:right;
   background:color-mix(in srgb,var(--bg) 78%,transparent); border:1px solid var(--edge-soft); color:var(--text); -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px); }
 #nextpass:not([hidden]) { display:flex; flex-direction:row; align-items:baseline; gap:.35em; white-space:nowrap; }
 #nextpass .np-k, #nextpass .np-n, #nextpass .np-m { font:500 12px/1.2 var(--label); letter-spacing:.1em; text-transform:uppercase; }
@@ -256,7 +256,7 @@ body.day #nextpass .np-k, body.day #nextpass .np-m { color:rgba(238,243,255,.82)
 .t-row .ic:active { transform:scale(.92); }
 .t-row .ic-none { visibility:hidden; }
 .t-row .ic svg { width:18px; height:18px; }
-#event-banner { position:fixed; right:12px; top:calc(var(--safe-top) + 100px); z-index:3; max-width:calc(100vw - 150px); text-align:left;
+#event-banner { position:fixed; right:12px; top:calc(var(--safe-top) + 100px); z-index:3; max-width:calc(var(--vws) - 150px); text-align:left;
   padding:7px 12px; border-radius:12px; background:color-mix(in srgb,var(--bg) 80%,transparent); border:1px solid color-mix(in srgb,var(--gold) 55%,transparent);
   color:var(--text); font:500 12.5px/1.3 var(--label); letter-spacing:.06em; -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px); }
 #event-banner b { color:var(--gold); font-weight:500; }
@@ -274,7 +274,7 @@ body.day #nextpass .np-k, body.day #nextpass .np-m { color:rgba(238,243,255,.82)
 }
 
 /* The sky slider (2026-10-06): a slim retro "exposure" control just above the switcher, Explore only. */
-#skybar { position:fixed; left:50%; transform:translateX(-50%); bottom:calc(104px + var(--safe-bottom)); /* clear of the switcher (top at 92px since it grew to 72px, 2026-10-11) */ width:min(300px, calc(100vw - 48px)); z-index:3; display:grid; grid-template-columns:auto 1fr auto; align-items:center; column-gap:9px; row-gap:2px; pointer-events:auto; }
+#skybar { position:fixed; left:50%; transform:translateX(-50%); bottom:calc(104px + var(--safe-bottom)); /* clear of the switcher (top at 92px since it grew to 72px, 2026-10-11) */ width:min(300px, calc(var(--vws) - 48px)); z-index:3; display:grid; grid-template-columns:auto 1fr auto; align-items:center; column-gap:9px; row-gap:2px; pointer-events:auto; }
 #skybar .sb-end { font:500 11px/1 var(--label); letter-spacing:.16em; color:var(--muted); opacity:.75; }
 #sky-read { display:none; grid-column:1 / -1; text-align:center; font:500 12px/1.2 var(--label); letter-spacing:.12em; text-transform:uppercase; color:var(--muted); opacity:.7; transition:opacity .25s; }
 #sky-range:focus, #sky-range:focus-visible { outline:none; }
@@ -300,7 +300,7 @@ body.day #radar-up, body.day #d-tier, body.day #d-name { color:#143046; text-sha
 #start { background:radial-gradient(ellipse at 50% 38%, #0c1d29, #080f1b 70%); } /* the night sky's own blues (2026-10-09, Sevaan: #142650 was too blue) */
 #start .hero { display:none; }
 .wc-stage { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:22px; padding:calc(var(--safe-top) + 20px) 16px calc(var(--safe-bottom) + 64px); z-index:1; }
-.wc-holder { position:relative; flex:none; --cf:max(7px, min(14px, calc((100vw - 58px) / 28), calc((100dvh - 120px) / 39.2))); width:calc(28 * var(--cf)); height:auto; /* same size as every card in the app (the capture reveal's sizeCard) */ perspective:1400px; cursor:pointer; -webkit-tap-highlight-color:transparent; touch-action:none; }
+.wc-holder { position:relative; flex:none; --cf:max(7px, min(14px, calc((var(--vws) - 58px) / 28), calc((100dvh - 120px) / 39.2))); width:calc(28 * var(--cf)); height:auto; /* same size as every card in the app (the capture reveal's sizeCard) */ perspective:1400px; cursor:pointer; -webkit-tap-highlight-color:transparent; touch-action:none; }
 .wc-holder .card { font-size:var(--cf); margin:0; }
 .wc-holder.rattle { animation:wcRattle 5s ease-in-out 1s infinite; } /* first shake 1 s after the card appears (2026-10-09, Sevaan), then every 5 s */
 @keyframes wcRattle { 0% { transform:rotate(0); } 2% { transform:rotate(-3deg) translateY(-2px); } 4% { transform:rotate(3deg); } 6% { transform:rotate(-2.4deg); } 8% { transform:rotate(1.8deg); } 10% { transform:rotate(-1deg); } 12%, 100% { transform:rotate(0); } } /* the shake opens the cycle */
@@ -486,7 +486,7 @@ body.ob-tour #event-banner, body.ob-tour #banner, body.ob-tour #toasts { visibil
 #ob-skip.ob-exit { position: fixed; top: calc(var(--safe-top) + 90px); right: 12px; left: auto; bottom: auto; transform: none; min-height: 36px; padding: 6px 10px;
   border: 0; background: none; box-shadow: none; color: rgba(255, 242, 179, .7); font: 500 13px/1 var(--label); letter-spacing: .16em; text-transform: uppercase; z-index: 40; }
 /* 5 · The meteor-shower banner is a chip, stacked with the next-up chip in the same style. */
-#event-banner { top: calc(var(--safe-top) + 92px); max-width: calc(100vw - 150px); padding: 7px 11px; border-radius: 99px; display: flex; align-items: baseline; gap: .35em; white-space: nowrap; overflow: hidden;
+#event-banner { top: calc(var(--safe-top) + 92px); max-width: calc(var(--vws) - 150px); padding: 7px 11px; border-radius: 99px; display: flex; align-items: baseline; gap: .35em; white-space: nowrap; overflow: hidden;
   border: 1px solid color-mix(in srgb, var(--gold) 45%, transparent); font: 500 12px/1.2 var(--label); letter-spacing: .1em; text-transform: uppercase; }
 #event-banner[hidden] { display: none; }
 #event-banner .np-k { color: var(--gold); flex: none; } #event-banner .np-n { color: var(--gold); font-weight: 700; letter-spacing: .06em; flex: none; }
@@ -653,7 +653,7 @@ body:has(#secret-cta:not([hidden])) #toasts, body:has(#secret-cta:not([hidden]))
 .ts-note { display: block; margin-top: 10px; font: 500 14px/1.3 var(--label); letter-spacing: .03em; color: color-mix(in srgb, var(--text) 75%, transparent); }
 .ts-note b { color: var(--gold); font-weight: 500; }
 /* The steering line gets a soft dark backing so it reads over trees and bright sky. */
-#guidance:not(.first) { left: 50% !important; right: auto !important; transform: translateX(-50%); width: max-content; max-width: calc(100vw - 32px); padding: 7px 14px; border-radius: 99px;
+#guidance:not(.first) { left: 50% !important; right: auto !important; transform: translateX(-50%); width: max-content; max-width: calc(var(--vws) - 32px); padding: 7px 14px; border-radius: 99px;
   background: rgba(8, 15, 27, .55); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
 /* "0 UP" under the compass reads by day too. */
 body.day #radar-up, body.day #radar-up b { color: #fff !important; text-shadow: 0 1px 4px rgba(8, 15, 27, .55); }
@@ -773,7 +773,7 @@ body.night #ufo-cta { background: var(--gold) !important; color: #120606 !import
 
 /* Welcome card truly centred (2026-10-09, Sevaan): the hint, Begin and the note under it no longer count toward the
    centring; they hang just below the card. --cf (the card's size unit) moves up to the stage so they can use it. */
-.wc-stage { --cf: max(7px, min(14px, calc((100vw - 58px) / 28), calc((100dvh - 120px) / 39.2))); padding: calc(var(--safe-top) + 16px) 16px calc(var(--safe-bottom) + 16px); }
+.wc-stage { --cf: max(7px, min(14px, calc((var(--vws) - 58px) / 28), calc((100dvh - 120px) / 39.2))); padding: calc(var(--safe-top) + 16px) 16px calc(var(--safe-bottom) + 16px); }
 .wc-stage > .wc-hint, .wc-stage > .wc-after, .wc-stage > #start-note { position: absolute; left: 16px; right: 16px; top: calc(50% + (var(--safe-top) - var(--safe-bottom)) / 2 + 39.2 * var(--cf) / 2 + 22px); text-align: center; }
 .wc-stage > #start-note { margin-top: 64px; }
 
@@ -1422,7 +1422,7 @@ body.night #debug .set-bar { border-color: #5a1e18; } body.night #debug .set-bar
 
 /* Plus sheet as a card (2026-10-16, design/plus-sheet-card.html). The Plus card, the prices and the button share one
    width (28 × the card's font size), sized to fit the screen's height as well as its width. */
-#set-plus-sheet { --pf: min(calc((100vw - 56px) / 28), max(9.4px, min(11px, calc((100dvh - var(--safe-top, 0px) - var(--safe-bottom, 0px) - 270px) / 42)))); --pw: calc(var(--pf) * 28); }
+#set-plus-sheet { --pf: min(calc((var(--vws) - 56px) / 28), max(9.4px, min(11px, calc((100dvh - var(--safe-top, 0px) - var(--safe-bottom, 0px) - 270px) / 42)))); --pw: calc(var(--pf) * 28); }
 #set-plus-sheet .set-sheet-card { display: grid; justify-items: center; gap: calc(var(--pf) * .9); padding-top: 10px; padding-bottom: max(10px, var(--safe-bottom, 0px)); }
 #set-plus-sheet .set-grab { justify-self: center; }
 .plus-lead { margin: 0; width: var(--pw); text-align: center; font: 500 13px/1.35 var(--label); letter-spacing: .03em; color: var(--muted); }
@@ -1473,7 +1473,7 @@ body:has(.overlay.panel:not([hidden]))::before { content: ''; position: fixed; l
    (coloured), its name, one line of facts and, when there is something to do, one solid button. Dark glass behind the
    words, so they read on a blue day sky, at night and over the ground. --tk is the state's colour; the sight in
    js/sky.js uses the same inks. */
-:root { --tk-w: min(300px, calc(100vw - 48px)); --tk-bg: rgba(8, 15, 27, .96); } /* nearly solid: the tree line showed through (2026-10-18 playtest) */
+:root { --tk-w: min(300px, calc(var(--vws) - 48px)); --tk-bg: rgba(8, 15, 27, .96); } /* nearly solid: the tree line showed through (2026-10-18 playtest) */
 .tk-card { box-sizing: border-box; width: var(--tk-w); padding: 12px 14px 14px; border-radius: 14px; background: var(--tk-bg); border-top: 3px solid var(--tk, var(--gold));
   box-shadow: 0 10px 24px rgba(0, 0, 0, .35); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); text-align: left; text-shadow: none; pointer-events: auto; }
 
@@ -1555,7 +1555,7 @@ body:has(#wake:not([hidden])) #until-dark, body:has(#wake:not([hidden])) #ud-bel
 /* The until-dark Remind me matches the pass ticket's button (2026-10-17, Sevaan): solid blue, the time on it, no
    "Around 7:00 PM" line. Set: outlined. */
 #ud-at:empty { display: none; }
-#ud-bell { box-sizing: border-box; width: min(260px, calc(100vw - 48px)); justify-content: center; min-height: 46px; margin-top: 16px; padding: 0 16px; border: 0 !important; border-radius: 10px !important;
+#ud-bell { box-sizing: border-box; width: min(260px, calc(var(--vws) - 48px)); justify-content: center; min-height: 46px; margin-top: 16px; padding: 0 16px; border: 0 !important; border-radius: 10px !important;
   background: #7fb2ff !important; color: #0b1018 !important; font: 600 15px/1 var(--label) !important; letter-spacing: .16em !important; text-transform: uppercase; white-space: nowrap; text-shadow: none !important; box-shadow: 0 8px 20px rgba(0, 0, 0, .3) !important; }
 #ud-bell.on { background: rgba(8, 15, 27, .88) !important; color: #7fb2ff !important; box-shadow: inset 0 0 0 1.5px #7fb2ff !important; }
 body.night #ud-bell { background: #ff6a55 !important; color: #120606 !important; } body.night #ud-bell.on { background: rgba(12, 3, 3, .9) !important; color: #ff6a55 !important; box-shadow: inset 0 0 0 1.5px #ff6a55 !important; }
@@ -1692,7 +1692,7 @@ body.night .rs-gets span.r { background: rgba(255, 106, 85, .14); color: #ff6a55
 body.night #toasts .ticket { background: rgba(12, 3, 3, .92) !important; }
 body:not(:has(.overlay.panel:not([hidden]), #reveal:not([hidden]), .set-sheet.in:not([hidden]):not(.x))) #toasts {
   top: calc(var(--safe-top) + 101px) !important; bottom: auto !important; left: auto !important; right: 12px !important; transform: none !important;
-  width: min(300px, calc(100vw - 150px)) !important; max-width: none !important; margin: 0 !important; flex-direction: column-reverse !important; justify-content: flex-end; }
+  width: min(300px, calc(var(--vws) - 150px)) !important; max-width: none !important; margin: 0 !important; flex-direction: column-reverse !important; justify-content: flex-end; }
 /* (2026-10-18) The top-right placement's rules under the Next / meteor chips are gone: notices drop in at the very top (css/ui.css); those rules out-ranked it whenever a chip showed. */
 @media (prefers-reduced-motion: reduce) { #toasts .ticket, #toasts .ticket.in { transform: none; } }
 /* At this narrower width a ticket with a button (the sticky "Example location · Set yours ›") puts its buttons on a second row. */
@@ -2219,3 +2219,42 @@ body.night #debug .set-seg button.on { box-shadow: inset 0 0 0 1px #ff6a55; }
 #around .ap small, #around .ap .s { white-space: normal; overflow-wrap: anywhere; } /* the line under a value wraps instead of cutting */
 #test-tools pre#debug-info { margin: 10px 14px 12px; } /* inside the card's frame like every other row */
 #debug .set-row.set-off { opacity: .45; } /* a switch another setting overrides (Milky Way under Battery saver) */
+
+/* iPhone Duo (2026-10-22): its status bar is a strip down one side (about 84pt, on both screens), so nothing important
+   may sit under a side safe area. --safe-l / --safe-r are the side insets (0 on every other phone, so nothing moves
+   there); --vws (in the :root above) is the width that's clear on BOTH sides of the centre, which the centred HUD
+   (circle tickets, switcher, slider, toasts) sizes itself to. Side-anchored pieces step in by their side's inset. */
+#sky-header { padding-left: calc(20px + var(--safe-l)); padding-right: calc(20px + var(--safe-r)); }
+#radar { left: calc(10px + var(--safe-l)); }
+#nextpass, #event-banner { right: calc(12px + var(--safe-r)); }
+.panel { padding-left: max(calc(20px + var(--safe-l)), calc((100vw - 580px) / 2)); padding-right: max(calc(20px + var(--safe-r)), calc((100vw - 580px) / 2)); }
+.set-sheet-card { padding-left: calc(18px + var(--safe-l)); padding-right: calc(18px + var(--safe-r)); }
+#ob-done, #onboard .ob-done { padding-left: calc(24px + var(--safe-l)); padding-right: calc(24px + var(--safe-r)); }
+#ob-done.nt #ob-explore { left: calc(24px + var(--safe-l)); right: calc(24px + var(--safe-r)); }
+#recap { padding-left: calc(20px + var(--safe-l)); padding-right: calc(20px + var(--safe-r)); }
+#rv-top { left: calc(16px + var(--safe-l)); right: calc(16px + var(--safe-r)); }
+#rv-news { left: calc(16px + var(--safe-l)) !important; right: calc(16px + var(--safe-r)) !important; }
+.ob-deck { left: var(--safe-l); right: var(--safe-r); }
+
+/* Wide windows (iPhone Duo unfolded on its side, iPads; 2026-10-22). By size, never by device (Apple's Duo guidance).
+   The Tonight page goes two columns (what's up now on the left, tonight's plan on the right; the jump chips go, both
+   halves are on screen), Settings two columns of cards, All around you uses the width. */
+@media (min-width: 900px) and (min-height: 560px) {
+  /* Both sides padded by the larger inset, so the two columns centre on the screen and the 56px gap between them
+     covers the fold (about 40pt down the middle of the Duo's inner screen). */
+  .panel { padding-left: max(calc(28px + max(var(--safe-l), var(--safe-r))), calc((100vw - 1180px) / 2)); padding-right: max(calc(28px + max(var(--safe-l), var(--safe-r))), calc((100vw - 1180px) / 2)); }
+  #visible { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-auto-rows: max-content; column-gap: 56px; align-content: start;
+    grid-template-areas: "head head" "jump jump" "plus plus" "now thead" "now tonight"; }
+  #visible > .panel-head { grid-area: head; } #visible > .sky-jump { grid-area: jump; } #visible > .sky-plus-line { grid-area: plus; }
+  #visible > #vtab-now { grid-area: now; } #visible > .sky-tonight-head { grid-area: thead; margin-top: 0 !important; } #visible > #vtab-tonight { grid-area: tonight; }
+  #visible > .sky-jump { display: none; }
+  #debug { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-auto-rows: max-content; column-gap: 56px; align-content: start; align-items: start; } /* rows the height of their cards: the page has a fixed height (it scrolls inside), which squeezed auto rows */
+  #debug > * { grid-column: 1 / -1; } /* the head, credits, version and testing tools run full width */
+  #debug > .set-group { grid-column: auto; margin-top: 0; } /* the cards pair up, two to a row */
+  #test-tools { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 56px; align-items: start; }
+}
+/* Fold hook (2026-10-22): body.folded is set by window.scFold(true) (main.js), for the native app's hinge signal
+   (UIHingeInteraction, iOS 27.1) when the Duo is half-folded like a book. Moving the sky's circle off the crease while
+   folded is not built yet; this is where it would go. */
+/* Bottom sheets keep a phone's width on a wide screen (Duo unfolded, iPads; 2026-10-22), centred. Phones are narrower, so unchanged there. */
+.set-sheet-card { max-width: 620px; margin-left: auto; margin-right: auto; }
