@@ -7,7 +7,7 @@
 set -eo pipefail
 cd "$(dirname "$0")"
 export PATH=~/.nvm/versions/node/v22.23.1/bin:$PATH
-DEV=${1:-$(xcrun devicectl list devices 2>/dev/null | awk '/physical/ && (/connected/ || /available/) {for(i=1;i<=NF;i++) if ($i ~ /^[0-9A-F]{8}-/) {print $i; exit}}')}
+DEV=${1:-$(xcrun devicectl list devices 2>/dev/null | awk '!/simulated/ && (/connected/ || /available/) {for(i=1;i<=NF;i++) if ($i ~ /^[0-9A-F]{8}-/) {print $i; exit}}')}
 [ -n "$DEV" ] || { echo "No iPhone connected"; exit 1; }
 OUT=${TMPDIR:-/tmp}/sc-tester-build
 # Whatever happens, put the normal web copy back so a regular build never ships the tester flag.
