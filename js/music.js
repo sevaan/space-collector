@@ -3,7 +3,7 @@
 // play sound before one), loops, dips under card reveals, and pauses when the app is hidden.
 // iPhone Safari ignores an audio element’s volume, so the level goes through Web Audio (a gain node). The page’s
 // audio session is "ambient", so the ring/silent switch mutes it and it never stops the player’s own music.
-import { audioCtx } from './audio-ctx.js?v=0.1.978';
+import { audioCtx } from './audio-ctx.js?v=0.1.979';
 const SRC = 'assets/audio/permafrost.m4a', LEVEL = 0.15; // halved 2026-10-11 (Sevaan)
 let ctx = null, el = null, gain = null, node = null, playing = false;
 
@@ -83,7 +83,11 @@ function retryOnTouch() {
 // context, which is what replayed the same chunk on return (2026-10-20, Sevaan: "stuck on a loop").
 let away = false;
 export function musicAway(hidden) {
-  if (hidden) { if (away) return; away = true; wasPlaying = wasPlaying || playing; playing = false; try { if (gain && ctx) gain.gain.setValueAtTime(0, ctx.currentTime); el?.pause(); } catch {} return; }
+  // A quick fade, never a hard cut (2026-10-21, Sevaan: a beep/click on swiping out of the app was the gain jumping to 0
+  // mid-wave); the element pauses once it's silent.
+  if (hidden) { if (away) return; away = true; wasPlaying = wasPlaying || playing; playing = false;
+    try { if (gain && ctx) { const t = ctx.currentTime; gain.gain.cancelScheduledValues(t); gain.gain.setValueAtTime(gain.gain.value, t); gain.gain.linearRampToValueAtTime(0, t + 0.06); } } catch {}
+    setTimeout(() => { if (away) try { el?.pause(); } catch {} }, 80); return; }
   if (!away) return; away = false;
   if (!wasPlaying || !musicOn()) return;
   wasPlaying = false; startMusic();

@@ -2078,3 +2078,4 @@ body.night .binder-plus { background: #ff6a55; color: #120606; }
 .ar-chip { padding: 7px 7px 8px; font-size: 13.5px; line-height: 1.2; text-wrap: balance; overflow-wrap: anywhere; }
 .ar-chip > small:first-child { font-size: 9.5px; letter-spacing: .12em; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .ar-chip small + small, .ar-chip > small:not(:first-child) { display: block; margin-top: 2px; font-size: 11px; letter-spacing: .02em; text-transform: none; color: var(--muted); }
+#ar-strip { border-radius: 12px; }
