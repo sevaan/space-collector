@@ -815,3 +815,14 @@ dialog[open] { padding-left: var(--safe-l) !important; padding-right: var(--safe
 .up-next__when small { font-size: min(11px, 11cqi); }
 /* The card's picture never starts an image drag, so a flick or swipe that begins on it is the card's (as in the reveal, Duo playtest 2026-10-22). */
 #slot img { -webkit-user-drag: none; user-select: none; -webkit-touch-callout: none; }
+/* The open card on the right page (Duo simulator, Sevaan 2026-10-22: "I have to scroll a little to see the bottom of
+   the card and that blue background should maybe be the same colour as the rest of the page"): the page's own navy,
+   and the whole card fits under the ✕ row with room to spare. */
+@media (min-width: 900px) and (min-height: 560px) and (orientation: landscape) {
+  #viewer.docked, #viewer.docked .viewer-scroll { background: var(--bg) !important; background-image: none !important; }
+  #viewer.docked #slot .card { font-size: min(18px, calc((100cqw - 36px) / 28), calc((100cqh - 104px) / 42)); }
+  #viewer.docked:has(#v-up:not([hidden])) #slot .card { font-size: min(18px, calc((100cqw - 36px) / 28), calc((100cqh - 204px) / 42)); }
+}
+@media (min-width: 600px) and (min-height: 900px) and (orientation: portrait) {
+  #viewer.docked, #viewer.docked .viewer-scroll { background: var(--bg) !important; background-image: none !important; }
+}
