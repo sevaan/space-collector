@@ -3,16 +3,18 @@
 // follows the finger with some resistance; a long pull (120 px) or a quick flick down closes it, anything less springs
 // back. close(): the page's own close; while it runs the page keeps its pulled-down position (class .pulled).
 export function pullToClose(el, close, scroller = el) {
-  let y0 = null, t0 = 0, dy = 0, live = false;
+  let y0 = null, t0 = 0, dy = 0, live = false, sc = scroller;
   const ok = (e) => !e.target.closest('input[type=range], .sky-jump, .mini-cards, .minis, [data-no-pull]');
   el.addEventListener('touchstart', (e) => {
     if (e.touches.length !== 1 || !ok(e)) { y0 = null; return; }
     y0 = e.touches[0].clientY; t0 = performance.now(); dy = 0; live = false; el.classList.remove('pulled');
+    // A wide screen's book pages ([data-col], 2026-10-22) scroll on their own: the pull waits for the one you're on.
+    const col = e.target.closest?.('[data-col]'); sc = col && el.contains(col) && /auto|scroll/.test(getComputedStyle(col).overflowY) ? col : scroller;
   }, { passive: true });
   el.addEventListener('touchmove', (e) => {
     if (y0 == null) return;
     const d = e.touches[0].clientY - y0;
-    if (!live) { if (scroller.scrollTop > 0 || d < 6) { if (d < -6 || scroller.scrollTop > 0) y0 = null; return; } live = true; y0 = e.touches[0].clientY; }
+    if (!live) { if (sc.scrollTop > 0 || d < 6) { if (d < -6 || sc.scrollTop > 0) y0 = null; return; } live = true; y0 = e.touches[0].clientY; }
     dy = Math.max(0, e.touches[0].clientY - y0); e.preventDefault();
     el.style.transition = 'none'; el.style.transform = `translateY(${(dy < 200 ? dy : 200 + (dy - 200) * 0.4).toFixed(1)}px)`;
   }, { passive: false });

@@ -2225,6 +2225,7 @@ body.night #debug .set-seg button.on { box-shadow: inset 0 0 0 1px #ff6a55; }
    there); --vws (in the :root above) is the width that's clear on BOTH sides of the centre, which the centred HUD
    (circle tickets, switcher, slider, toasts) sizes itself to. Side-anchored pieces step in by their side's inset. */
 #sky-header { padding-left: calc(20px + var(--safe-l)); padding-right: calc(20px + var(--safe-r)); }
+#sky-header::after { left: calc(20px + var(--safe-l)); right: calc(20px + var(--safe-r)); } /* the double rule too */
 #radar { left: calc(10px + var(--safe-l)); }
 #nextpass, #event-banner { right: calc(12px + var(--safe-r)); }
 .panel { padding-left: max(calc(20px + var(--safe-l)), calc((100vw - 580px) / 2)); padding-right: max(calc(20px + var(--safe-r)), calc((100vw - 580px) / 2)); }
@@ -2236,22 +2237,64 @@ body.night #debug .set-seg button.on { box-shadow: inset 0 0 0 1px #ff6a55; }
 #rv-news { left: calc(16px + var(--safe-l)) !important; right: calc(16px + var(--safe-r)) !important; }
 .ob-deck { left: var(--safe-l); right: var(--safe-r); }
 
-/* Wide windows (iPhone Duo unfolded on its side, iPads; 2026-10-22). By size, never by device (Apple's Duo guidance).
-   The Tonight page goes two columns (what's up now on the left, tonight's plan on the right; the jump chips go, both
-   halves are on screen), Settings two columns of cards, All around you uses the width. */
+/* Wide windows (iPhone Duo unfolded, iPads; 2026-10-22). By size, never by device (Apple's Duo guidance). Other
+   pages (All around you) use the width as a centred column. */
 @media (min-width: 900px) and (min-height: 560px) {
-  /* Both sides padded by the larger inset, so the two columns centre on the screen and the 56px gap between them
-     covers the fold (about 40pt down the middle of the Duo's inner screen). */
   .panel { padding-left: max(calc(28px + max(var(--safe-l), var(--safe-r))), calc((100vw - 1180px) / 2)); padding-right: max(calc(28px + max(var(--safe-l), var(--safe-r))), calc((100vw - 1180px) / 2)); }
-  #visible { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-auto-rows: max-content; column-gap: 56px; align-content: start;
-    grid-template-areas: "head head" "jump jump" "plus plus" "now thead" "now tonight"; }
-  #visible > .panel-head { grid-area: head; } #visible > .sky-jump { grid-area: jump; } #visible > .sky-plus-line { grid-area: plus; }
-  #visible > #vtab-now { grid-area: now; } #visible > .sky-tonight-head { grid-area: thead; margin-top: 0 !important; } #visible > #vtab-tonight { grid-area: tonight; }
-  #visible > .sky-jump { display: none; }
-  #debug { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-auto-rows: max-content; column-gap: 56px; align-content: start; align-items: start; } /* rows the height of their cards: the page has a fixed height (it scrolls inside), which squeezed auto rows */
-  #debug > * { grid-column: 1 / -1; } /* the head, credits, version and testing tools run full width */
-  #debug > .set-group { grid-column: auto; margin-top: 0; } /* the cards pair up, two to a row */
-  #test-tools { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 56px; align-items: start; }
+}
+/* The book (2026-10-22, design/duo-layouts.html; Sevaan: "go with your picks"). On its side (≥900 × 560, landscape) the
+   screen is two pages with the fold as the spine: the 40px gap down the middle (where the Duo's crease is) stays empty.
+   Upright (≥600 × 900, portrait: the Duo unfolded upright, iPads upright) the same two pages stack, the fold across the
+   middle. Tonight: what's up now | the plan for later, each page scrolling on its own ([data-col]). Settings: an index of
+   the groups | the chosen group's card. js/main.js bookQ matches the same sizes. Phones never match, so the
+   #sky-later wrapper is display: contents there and nothing moves. */
+#sky-later { display: contents; }
+#visible #sky-later > #sky-tonight-head { margin-top: 34px !important; } /* as before the wrapper (it made the heading a :first-child) */
+#set-index { display: none; }
+@media (min-width: 900px) and (min-height: 560px) and (orientation: landscape), (min-width: 600px) and (min-height: 900px) and (orientation: portrait) {
+  #visible, #debug { --pl: calc(20px + var(--safe-l)); --pr: calc(20px + var(--safe-r)); }
+  #visible:not([hidden]) { display: grid; overflow: hidden; padding-left: var(--pl); padding-right: var(--pr); padding-bottom: 0; }
+  #visible > .sky-jump { display: none; } /* both pages are on screen: nothing to jump to */
+  #visible > .sky-plus-line { grid-area: plus; margin: 0 0 12px; }
+  #vtab-now { grid-area: now; } #sky-later { display: block; grid-area: later; }
+  #visible [data-col] { min-width: 0; min-height: 0; overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; padding-bottom: calc(var(--safe-bottom) + 112px); }
+  #visible #sky-later > #sky-tonight-head { margin-top: 18px !important; }
+  /* Settings: the chosen group only (About brings the credits and version; the testing tools are their own entry). */
+  #debug > .set-group:not(.on), #debug.set-tools > .set-group, #debug:not(.set-about) > .set-credit, #debug:not(.set-about) > .set-version, #debug:not(.set-tools) > #test-tools { display: none !important; }
+  #debug > .set-group.on { margin-top: 0; }
+  #set-index { display: block; }
+  .set-ix { display: grid; grid-template-columns: 38px minmax(0, 1fr) auto; align-items: center; gap: 12px; width: 100%; min-height: 52px; padding: 7px 12px 7px 10px; margin: 0; border: 0; border-bottom: 1px solid #16233a; border-radius: 0; background: transparent; color: var(--text); text-align: left; font: inherit; cursor: pointer; position: relative; }
+  .set-ix > b { display: grid; place-items: center; height: 30px; border: 1px solid #2a3a52; border-radius: 6px; font: 500 13px/1 var(--label, 'SC Label'), sans-serif; letter-spacing: .08em; color: #c9a84a; }
+  .set-ix > span { display: flex; flex-direction: column; gap: 3px; min-width: 0; font: 500 16px/1.15 var(--label, 'SC Label'), sans-serif; letter-spacing: .06em; text-transform: uppercase; }
+  .set-ix small { font: 400 13px/1.25 system-ui, sans-serif; letter-spacing: 0; text-transform: none; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .set-ix > i { font-style: normal; color: var(--muted); font-size: 18px; }
+  .set-ix.on { background: rgba(250, 129, 39, .1); }
+  .set-ix.on::before { content: ''; position: absolute; left: 0; top: 8px; bottom: 8px; width: 3px; border-radius: 2px; background: #fa8127; }
+  .set-ix.on > b { border-color: #fa8127; color: #fa8127; }
+  .set-ix.on > i { color: #fa8127; }
+  .set-ix:focus-visible { outline: 2px solid #fa8127; outline-offset: -2px; }
+}
+@media (min-width: 900px) and (min-height: 560px) and (orientation: landscape) {
+  #visible:not([hidden]) { grid-template-columns: calc(50vw - 20px - var(--pl)) calc(50vw - 20px - var(--pr)); column-gap: 40px; grid-template-rows: auto minmax(0, 1fr); grid-template-areas: "plus plus" "now later"; }
+  #visible #sky-later > #sky-tonight-head { margin-top: 6px !important; }
+  #debug:not([hidden]) { display: grid; grid-template-columns: calc(50vw - 20px - var(--pl)) calc(50vw - 20px - var(--pr)); column-gap: 40px; grid-template-rows: repeat(5, max-content) 1fr; align-content: start; align-items: start; padding-left: var(--pl); padding-right: var(--pr); }
+  #debug > * { grid-column: 2; }
+  #debug > #set-index { grid-column: 1; grid-row: 1 / -1; position: sticky; top: 0; max-height: calc(100dvh - var(--safe-top) - 80px - var(--safe-bottom) - 12px); overflow-y: auto; overscroll-behavior: contain; padding-top: 6px; }
+  #debug > .set-group.on { margin-top: 6px; }
+}
+@media (min-width: 600px) and (min-height: 900px) and (orientation: portrait) {
+  /* The fold runs across the middle: the top page ends 20px above it, the bottom page starts 20px below. */
+  #visible:not([hidden]) { grid-template-columns: minmax(0, 1fr); grid-template-rows: calc(50dvh - 20px - var(--safe-top) - 80px) 40px auto minmax(0, 1fr); grid-template-areas: "now" "." "plus" "later"; }
+  #vtab-now[data-col] { padding-bottom: 16px; }
+  #visible #sky-later > #sky-tonight-head { margin-top: 0 !important; }
+  #debug:not([hidden]) { padding-left: max(var(--pl), calc((100vw - 720px) / 2)); padding-right: max(var(--pr), calc((100vw - 720px) / 2)); }
+  /* The index fills the top page, so the chosen group starts below the fold (it scrolls on if it's long). */
+  #set-index { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; align-content: start; min-height: calc(50dvh - 20px - var(--safe-top) - 80px); margin: 0 0 40px; padding: 8px 0 0; box-sizing: border-box; }
+  .set-ix { grid-template-columns: 30px minmax(0, 1fr); min-height: 48px; padding: 6px 8px; border: 1px solid #1d2b41; border-radius: 10px; }
+  .set-ix > b { height: 26px; font-size: 12px; }
+  .set-ix > span { font-size: 14px; }
+  .set-ix small, .set-ix > i, .set-ix.on::before { display: none; }
+  .set-ix.on { border-color: #fa8127; }
 }
 /* Fold hook (2026-10-22): body.folded is set by window.scFold(true) (main.js), for the native app's hinge signal
    (UIHingeInteraction, iOS 27.1) when the Duo is half-folded like a book. Moving the sky's circle off the crease while

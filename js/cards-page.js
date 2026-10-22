@@ -1,30 +1,30 @@
-import { pullToClose } from './pull-close.js?v=0.1.1005';
-import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.1005';
-import { computeStats, statsHtml } from './stats.js?v=0.1.1005';
-import { nightKey } from './observation.js?v=0.1.1005';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1005';
-import { sfx } from './sfx.js?v=0.1.1005';
-import { expandFacts } from './catalog-facts.js?v=0.1.1005';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.1005';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1005';
-import { ticket } from './toast.js?v=0.1.1005';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.1005';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.1005';
-import { cardArt } from './art.js?v=0.1.1005';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.1005';
-import { applyBack } from './card-backs.js?v=0.1.1005';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.1005';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1005';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.1005';
-import { STORIES } from './stories.js?v=0.1.1005';
-import { loadConstellations, conList } from './constellations.js?v=0.1.1005';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.1005';
-import { eventBadges, nextEvent } from './events.js?v=0.1.1005';
-import { shareCardEl } from './share-card.js?v=0.1.1005';
-import { forgetSighting } from './cloud-backup.js?v=0.1.1005';
-import { allSightings, deleteSighting } from './store.js?v=0.1.1005';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.1005';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.1005';
+import { pullToClose } from './pull-close.js?v=0.1.1006';
+import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.1006';
+import { computeStats, statsHtml } from './stats.js?v=0.1.1006';
+import { nightKey } from './observation.js?v=0.1.1006';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1006';
+import { sfx } from './sfx.js?v=0.1.1006';
+import { expandFacts } from './catalog-facts.js?v=0.1.1006';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.1006';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1006';
+import { ticket } from './toast.js?v=0.1.1006';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.1006';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.1006';
+import { cardArt } from './art.js?v=0.1.1006';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.1006';
+import { applyBack } from './card-backs.js?v=0.1.1006';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.1006';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1006';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.1006';
+import { STORIES } from './stories.js?v=0.1.1006';
+import { loadConstellations, conList } from './constellations.js?v=0.1.1006';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.1006';
+import { eventBadges, nextEvent } from './events.js?v=0.1.1006';
+import { shareCardEl } from './share-card.js?v=0.1.1006';
+import { forgetSighting } from './cloud-backup.js?v=0.1.1006';
+import { allSightings, deleteSighting } from './store.js?v=0.1.1006';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.1006';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.1006';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -165,11 +165,42 @@ let miniS = '', miniRaf = 0;
 const miniScale = () => { miniRaf = 0; const t = document.querySelector('.card-tile--mini, #grid .card-slot'); const w = t?.offsetWidth; if (!w) return; const v = (w / 280).toFixed(4); if (v !== miniS) { miniS = v; document.getElementById('grid')?.style.setProperty('--mini-s', v); } };
 const queueMiniScale = () => { miniRaf ||= requestAnimationFrame(miniScale); }; // once a frame, however many tiles were built (jank playtest 2026-10-17)
 addEventListener('resize', () => { miniS = ''; queueMiniScale(); });
-// Folding or unfolding (iPhone Duo, 2026-10-22): when the page switches between the phone layout and the wide one
-// (rank card in a column on the left), start it from the top. A scroll kept from the folded phone left the unfolded
-// page scrolled down, with your first cards and the "Up tonight" heading hidden under the pinned tabs.
-const WIDE_Q = matchMedia('(min-width: 900px) and (min-height: 560px) and (orientation: landscape)');
-WIDE_Q.addEventListener?.('change', () => scrollTo(0, 0));
+// Wide screens (iPhone Duo unfolded, iPads; 2026-10-22, design/duo-layouts.html Collection A; Sevaan: "go with your
+// picks"): the grid is one page and the card you tap opens on the other at full size, beside the grid (upright: below
+// it), so you can keep tapping or swiping through without covering it. Same sizes as the book in css/app.css. There
+// the viewer dialog is shown non-modally (.docked); a phone keeps the full-screen viewer. Albums and Patches keep the
+// whole width.
+const DOCK_Q = matchMedia('(min-width: 900px) and (min-height: 560px) and (orientation: landscape), (min-width: 600px) and (min-height: 900px) and (orientation: portrait)');
+const docked = () => DOCK_Q.matches && !['albums', 'patches'].includes(state.view);
+const isDocked = () => $('viewer').open && $('viewer').classList.contains('docked');
+let redocking = false; // moving the open viewer between the two (fold/unfold): its close isn’t a real close
+function showViewerDialog() { const v = $('viewer'), d = docked(); v.classList.toggle('docked', d); if (d) v.show(); else { v.showModal(); document.body.style.overflow = 'hidden'; } }
+// Folding, unfolding or turning keeps your place: the open card stays open (moved between the two kinds of viewer),
+// and the grid keeps that card’s tile in view; with no card open the page starts from the top (a scroll kept from
+// the other layout left your first cards under the pinned tabs, Duo playtest 2026-10-22).
+DOCK_Q.addEventListener?.('change', () => {
+  const v = $('viewer');
+  if (v.open && v.classList.contains('docked') !== docked()) {
+    const sc = v.querySelector('.viewer-scroll').scrollTop; redocking = true;
+    v.addEventListener('close', () => { redocking = false; }, { once: true });
+    v.close(); document.body.style.overflow = ''; showViewerDialog(); showCard(); v.querySelector('.viewer-scroll').scrollTop = sc;
+  }
+  requestAnimationFrame(() => { if (isDocked()) revealTile(false); else scrollTo(0, 0); });
+});
+// The open card’s tile is ringed and kept in view on its page (on its side: under the pinned tabs and above Explore’s
+// tabs; upright: above the fold), as you tap or swipe from card to card.
+function revealTile(smooth = true) {
+  document.querySelectorAll('.tile-slot.shown').forEach((t) => t.classList.remove('shown'));
+  const c = isDocked() && state.list[state.index], tile = c && document.querySelector(`.tile-slot[data-key="${CSS.escape(c.key)}"]`); if (!tile) return;
+  tile.classList.add('shown');
+  const r = tile.getBoundingClientRect(), up = innerHeight > innerWidth;
+  const top = up ? parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--col-top')) || 0 : (document.querySelector('.collection-tools')?.getBoundingClientRect().bottom ?? 0);
+  const bottom = up ? innerHeight / 2 - 20 : innerHeight - 100;
+  const dy = r.top < top + 8 ? r.top - top - 8 : r.bottom > bottom - 8 ? Math.min(r.bottom - bottom + 8, r.top - top - 8) : 0;
+  if (dy) scrollBy({ top: dy, behavior: smooth && !reducedMotion.matches ? 'smooth' : 'auto' });
+}
+$('viewer').addEventListener('close', () => { if (!redocking) document.querySelectorAll('.tile-slot.shown').forEach((t) => t.classList.remove('shown')); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && isDocked() && !$('stats-view').open && !$('patch-view').open) closeViewer(); }); // a docked viewer isn’t modal, so Escape is ours
 function miniFace(tile, c) {
   const status = (tile.querySelector('.card-tile__status')?.textContent ?? '').replace(/^✓\s*Collected\s*/, '✓ '), badge = tile.querySelector('.tile-lvl');
   const face = miniCard(c, { sightings: state.sightingsByKey.get(c.key) ?? [], ownedKeys: c.natural === 'constellation' || c.partners ? ownedKeys() : undefined, status, locked: !tile.classList.contains('is-owned') });
@@ -219,7 +250,7 @@ const observer = new IntersectionObserver((entries) => {
     const dup = (state.titleCount?.get(titleFor(c)) ?? 0) > 1, yr = c.launch ? String(c.launch).slice(0, 4) : '';
     const tile = renderCardTile(c, { sightings: state.sightingsByKey.get(c.key) ?? [], ownedKeys: c.natural === 'constellation' ? ownedKeys() : undefined, sub: dup ? [yr, c.id && /^\d+$/.test(String(c.id)) ? `#${c.id}` : ''].filter(Boolean).join(' · ') : '' });
     miniFace(tile, c); // the tile is the real card, shrunk, with the collected line over its footer (2026-10-13, Sevaan)
-    tile.addEventListener('click', (e) => { if (tile._peeked) { tile._peeked = false; e.preventDefault(); return; } openViewer(state.list.findIndex((card) => card.key === c.key), tile.getBoundingClientRect()); });
+    tile.addEventListener('click', (e) => { if (tile._peeked) { tile._peeked = false; e.preventDefault(); return; } if (upWas) leaveUpList(); /* beside the grid, Up tonight’s list was still the viewer’s */ openViewer(state.list.findIndex((card) => card.key === c.key), tile.getBoundingClientRect()); });
     holdToPeek(tile, c);
     for (const im of tile.querySelectorAll('img[loading="lazy"]')) im.loading = 'eager'; // the tile is near the view already; lazy waited for the top window (off-screen)
     target.replaceChildren(tile);
@@ -505,7 +536,13 @@ window.addEventListener('message', (e) => {
   if (e.data?.sc === 'find-reminded') { findReminded = new Set(e.data.set); { const u = $('v-up'); if (u && !u.hidden && u._up) renderUpPanel(u._card, u._up, u._find); } for (const el of document.querySelectorAll('.fd-pass[data-id]')) { const id = isNaN(el.dataset.id) ? el.dataset.id : Number(el.dataset.id), c = state.cards.find((k) => k.id === id); if (c) findActs(el.closest('.find-row, .v-next'), c); } }
 });
 let upHold = false; // true while the viewer shows Up tonight’s list; 'again' if a redraw waited (openUpNext)
+// A card open beside the grid stays the one shown when the list is redrawn (its place in the list may move).
 function render() {
+  const k = isDocked() ? state.list[state.index]?.key : null;
+  renderView();
+  if (k && !upHold) { const i = state.list.findIndex((c) => c.key === k); if (i >= 0) { state.index = i; $('v-position').textContent = `${i + 1} / ${state.list.length.toLocaleString()}`; } }
+}
+function renderView() {
   if (upHold) { upHold = 'again'; return; } // the viewer is showing Up tonight’s own list: redraw once it closes (QA 2026-10-16)
   renderLogbook();
   $('grid').classList.toggle('find-mode', state.view === 'find');
@@ -589,10 +626,11 @@ function renderNextPanel(c) {
   el.hidden = false; el._card = c; el._up = null;
   el.innerHTML = `<p class="v-up__when">${p === undefined ? '<span class="fd-wait">Finding its next pass…</span>' : 'Not visible from here in the next 10 days'}</p>`;
 }
-let upCards = [];
+let upCards = [], upWas = null;
+function leaveUpList() { if (!upWas) return; state.list = upWas; upWas = null; const again = upHold === 'again'; upHold = false; if (again) render(); }
 function openUpNext(i) {
-  const was = state.list; state.list = upCards.slice(); upHold = true;
-  $('viewer').addEventListener('close', () => { state.list = was; const again = upHold === 'again'; upHold = false; if (again) render(); }, { once: true });
+  if (!upWas) upWas = state.list; state.list = upCards.slice(); upHold = true;
+  const v = $('viewer'); v.addEventListener('close', function back() { if (redocking) { v.addEventListener('close', back, { once: true }); return; } leaveUpList(); }, { once: true });
   openViewer(i);
 }
 function appendUpNext(total) {
@@ -624,6 +662,7 @@ function appendUpNext(total) {
 function setView(view) {
   const changed = state.view !== view;
   if (changed && state.view === 'discover' && view !== 'albums' && state.set !== 'all' && state.set !== 'tonight') { state.set = 'all'; $('set-filter').value = 'all'; } // an album’s filter stays in the album (polish 2026-10-20)
+  if (changed && isDocked()) $('viewer').close(); // the card beside the grid belonged to the old tab
   state.view = view; document.body.dataset.view = view; // CSS: the rank ladder shows on Mine only
   if (changed && state.query && view !== 'albums') { state.query = ''; $('search').value = ''; } // a Find search doesn’t follow you to Mine (Android playtest 2026-10-20)
   if (changed) { for (const el of [$('grid'), $('patch-wall')]) { el.classList.remove('swap'); void el.offsetWidth; el.classList.add('swap'); } cascadeLeft = 16; }
@@ -748,19 +787,21 @@ let opening = false;
 async function openViewer(i, from = null) {
   if (i < 0 || i >= state.list.length || opening) return;
   askMotion();
+  const again = isDocked(); // already open beside the grid: just bring in the new card
+  if (docked()) from = null; // a docked card rises within its own page (a flight from the tile was clipped at the page’s edge)
   state.index = i; state.preview = false;
   peelSticker(state.list[i]);
-  lastFocus = document.activeElement;
+  if (!again) lastFocus = document.activeElement;
   showCard(); feel('select');
   // Wait a moment for the big picture so the card doesn’t arrive blank and fill in a second later
   // (2026-10-17, Sevaan: the Sun card). Capped, so a slow network still opens it.
   const img = $('slot').querySelector('.card__art img.card-art-image');
   if (img && !img.complete) { opening = true; await Promise.race([img.decode().catch(() => {}), new Promise((r) => setTimeout(r, 600))]); opening = false; }
-  $('viewer').showModal();
-  document.body.style.overflow = 'hidden';
-  requestAnimationFrame(() => $('v-close').focus({ focusVisible: false })); // keep it focusable for screen readers without a ring on open (a frame later: jank playtest 2026-10-17)
+  if (!again) showViewerDialog();
+  if (!again) requestAnimationFrame(() => $('v-close').focus({ focusVisible: false, preventScroll: true })); // keep it focusable for screen readers without a ring on open (a frame later: jank playtest 2026-10-17)
   $('viewer').querySelector('.viewer-scroll').scrollTop = 0;
-  fadeViewer(true);
+  if (!again) fadeViewer(true);
+  if (isDocked()) requestAnimationFrame(() => revealTile());
   spin($('slot').firstElementChild, from, true);
 }
 
@@ -807,7 +848,7 @@ async function closeViewer() {
   const c = state.list[state.index], card = $('slot').firstElementChild;
   const tile = c && document.querySelector(`.tile-slot[data-key="${CSS.escape(c.key)}"]`);
   const r = tile?.getBoundingClientRect();
-  const onScreen = r && r.bottom > 0 && r.top < innerHeight && r.width > 0;
+  const onScreen = r && r.bottom > 0 && r.top < innerHeight && r.width > 0 && !isDocked();
   stopEffects();
   fadeViewer(false);
   await spin(card, onScreen ? r : null, false);
@@ -864,6 +905,7 @@ function step(d) {
   state.preview = false;
   showCard();
   $('viewer').querySelector('.viewer-scroll').scrollTop = 0;
+  if (isDocked()) revealTile();
 }
 
 // Swipe between cards. A clear sideways drag (or a quick flick) moves the card with your finger and
@@ -926,7 +968,7 @@ addStarfield($('viewer'));
   document.body.classList.toggle('sky-tone', document.documentElement.dataset.theme !== 'night' && !document.body.classList.contains('night'));
 })();
 attachTileTilt($('grid'));
-$('viewer').addEventListener('close', () => { stopEffects(); document.body.style.overflow = ''; lastFocus?.focus(); });
+$('viewer').addEventListener('close', () => { if (redocking) return; stopEffects(); document.body.style.overflow = ''; lastFocus?.focus({ preventScroll: true }); });
 $('slot').addEventListener('pointerdown', askMotion);
 $('v-preview').addEventListener('click', () => { state.preview = !state.preview; showCard(); });
 // Share the card on screen as an image (js/share-card.js), reading what it shows so the image matches.
@@ -955,7 +997,7 @@ boot().catch(() => {
 {
   const grid = $('grid');
   const applySize = () => {
-    const cols = innerWidth >= 700 ? 5 : 3;
+    const cols = DOCK_Q.matches ? Math.max(3, Math.min(5, Math.floor((grid.clientWidth || innerWidth / 2) / 140))) : innerWidth >= 700 ? 5 : 3; // a page of a wide screen: as many as fit at 140px, 3 to 5
     grid.dataset.cols = cols; grid.style.setProperty('--cols', cols);
     const w = (grid.clientWidth || innerWidth - 40) / cols;
     grid.classList.toggle('single', false); grid.classList.toggle('dense', w < 140); grid.classList.toggle('tiny', w < 92); grid.classList.toggle('micro', w < 66);
@@ -976,8 +1018,8 @@ if (EMBED) {
   // Explore’s switcher sits over this page; while a card, patch or the stats are open it steps aside so it doesn’t
   // cover their bottom rows (playtest 2026-10-11: the sighting list’s delete × was under it).
   { const dlgs = ['viewer', 'patch-view', 'stats-view'].map((id) => document.getElementById(id)).filter(Boolean); let was = null;
-    const tell = () => { const on = dlgs.some((d) => d.open); if (on !== was) { was = on; window.parent.postMessage({ sc: 'modal', on }, location.origin); } };
-    const mo = new MutationObserver(tell); dlgs.forEach((d) => mo.observe(d, { attributes: true, attributeFilter: ['open'] })); }
+    const tell = () => { const on = dlgs.some((d) => d.open && !d.classList.contains('docked')); if (on !== was) { was = on; window.parent.postMessage({ sc: 'modal', on }, location.origin); } };
+    const mo = new MutationObserver(tell); dlgs.forEach((d) => mo.observe(d, { attributes: true, attributeFilter: ['open', 'class'] })); }
   document.addEventListener('click', (e) => {
     // The Collection pill itself: already here, so stay (QA 2026-10-08: it loaded cards.html without ?embed inside
     // the frame, and the next Explore tap then ran a second copy of the whole app in there).
@@ -1000,7 +1042,7 @@ if (EMBED) {
     }
     if (e.data.sc === 'refresh') refreshSightings();
     // Hidden behind the sky, its animations (twinkles, shimmers, drift) pause (2026-10-16 perf sweep).
-    if (e.data.sc === 'away') { saveVisit(); closePeek(); clearTimeout(awayT); document.documentElement.classList.add('away'); for (const id of ['viewer', 'stats-view', 'patch-view']) { const d = $(id); if (d?.open) { d.classList.remove('leaving'); d.close(); } } if (returnView) backFromBorrowed(); } // leaving the Collection closes whatever was open in it (bug hunt 2026-10-17: after Show me the viewer stayed open, clipped under the header)
+    if (e.data.sc === 'away') { saveVisit(); closePeek(); clearTimeout(awayT); document.documentElement.classList.add('away'); for (const id of ['viewer', 'stats-view', 'patch-view']) { const d = $(id); if (d?.open && !d.classList.contains('docked')) { d.classList.remove('leaving'); d.close(); } } if (returnView) backFromBorrowed(); } // leaving the Collection closes whatever was open in it (bug hunt 2026-10-17: after Show me the viewer stayed open, clipped under the header)
     if ((e.data.sc === 'open' || e.data.sc === 'show') && nightPending != null) { setNight(nightPending); nightPending = null; }
     if ((e.data.sc === 'open' || e.data.sc === 'show') && awayDirty) { awayDirty = false; if (state.ready) render(); }
     if (e.data.sc === 'open' || e.data.sc === 'show') { if (state.ready) primeSince(); setTimeout(() => { if (state.ready) replaySince(); }, 480); }
@@ -1010,7 +1052,7 @@ if (EMBED) {
 }
 let returnView = null, awayT = 0, awayDirty = false;
 function backFromBorrowed() { if (!returnView) return; const v = returnView; returnView = null; setView(v); }
-$('viewer').addEventListener('close', () => setTimeout(backFromBorrowed, 0));
+$('viewer').addEventListener('close', () => { if (!redocking) setTimeout(backFromBorrowed, 0); });
 function openKey(key) {
   const go = () => {
     if (key === 'patches') { setView('patches'); return; }

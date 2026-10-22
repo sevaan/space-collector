@@ -758,13 +758,50 @@ main { padding-left: calc(var(--main-pad, 24px) + var(--safe-l)) !important; pad
 @media (max-width: 350px) { main { --main-pad: 14px; } }
 dialog[open] { padding-left: var(--safe-l) !important; padding-right: var(--safe-r) !important; box-sizing: border-box; }
 
-/* Wide windows (iPhone Duo unfolded on its side, iPads; 2026-10-22): the rank card sits in a column on the left and
-   stays put while the cards scroll on the right, so a short, wide screen isn't filled by the rank picture. */
+/* The book (iPhone Duo unfolded, iPads; 2026-10-22, design/duo-layouts.html Collection A; Sevaan: "go with your
+   picks"). On its side (≥900 × 560, landscape): the grid on the left page, the card you tap open at full size on the
+   right (#viewer.docked, shown non-modally by js/cards-page.js), the fold's 40px down the middle empty between them.
+   Upright (≥600 × 900, portrait): the grid on the top page, the card on the bottom one. The rank card folds into a slim
+   bar (rank, XP, the bar to the next rank) above the tabs. Albums and Patches keep the whole width. Phones never match. */
+#dock-empty { display: none; }
+@media (min-width: 900px) and (min-height: 560px) and (orientation: landscape), (min-width: 600px) and (min-height: 900px) and (orientation: portrait) {
+  body:not([data-view="albums"]):not([data-view="patches"]) main { max-width: none; margin: 0; }
+  body:not([data-view="albums"]):not([data-view="patches"]) .logbook :is(.lb-top, .lb-pic, .lb-mission, .lb-foot) { display: none !important; }
+  body:not([data-view="albums"]):not([data-view="patches"]) .logbook { margin: 4px 0 12px; padding: 10px 14px 8px; }
+  body:not([data-view="albums"]):not([data-view="patches"]) .logbook .lb-rankrow { margin-top: 0; }
+  body:not([data-view="albums"]):not([data-view="patches"]) main > .stats-link { display: none !important; }
+  #viewer.docked { position: fixed; z-index: 30; margin: 0; max-width: none; max-height: none; width: auto; height: auto; container-type: size; background: var(--bg); }
+  #viewer.docked .viewer-scroll { padding-bottom: calc(var(--safe-bottom) + 110px) !important; } /* clear of Explore's tabs, which stay over the Collection */
+  #viewer.docked .viewer-header { height: 44px; min-height: 0; padding: 0 4px 0 16px; }
+  #viewer.docked #slot { padding: 0; }
+  .grid .tile-slot.shown { outline: 2px solid #fa8127; outline-offset: 3px; border-radius: calc(14px * var(--mini-s, .5) + 3px); } /* the card open on the other page */
+  #dock-empty { position: fixed; z-index: 2; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding-bottom: calc(var(--safe-bottom) + 90px); color: var(--muted); font: 500 14px/1.3 var(--label, 'SC Label'), 'Barlow Condensed', sans-serif; letter-spacing: .16em; text-transform: uppercase; text-align: center; pointer-events: none; }
+  #dock-empty .de-card { width: min(46%, 220px); aspect-ratio: 28 / 42; border: 2px dashed #2b3c55; border-radius: 14px; display: grid; place-items: center; color: #3c516f; font-size: 30px; }
+}
 @media (min-width: 900px) and (min-height: 560px) and (orientation: landscape) {
-  main { max-width: 1240px; display: grid; grid-template-columns: 360px minmax(0, 1fr); column-gap: 28px; align-items: start; }
-  main > * { grid-column: 2; }
-  main > .logbook { grid-column: 1; grid-row: 1 / span 30; position: sticky; top: calc(var(--col-top, var(--safe-top, 0px)) + 12px); margin-top: 6px; }
-  main > .lb-slim, main > .stats-link { display: none !important; }
+  body:not([data-view="albums"]):not([data-view="patches"]) main { padding-left: calc(20px + var(--safe-l)) !important; padding-right: calc(50vw + 20px) !important; }
+  #viewer.docked, #dock-empty { top: var(--col-top); bottom: 0; left: calc(50vw + 20px); right: 0; padding: 0 var(--safe-r) 0 0 !important; }
+  #dock-empty { padding-bottom: calc(var(--safe-bottom) + 90px) !important; }
+  body:not([data-view="albums"]):not([data-view="patches"]):not(:has(#viewer[open])) #dock-empty { display: flex; }
+  /* The whole card fits above Explore's tabs (about 92px at the foot); with a pass to catch it shrinks a little so
+     the Remind me / Show me panel shows under it. */
+  #viewer.docked #slot .card { font-size: min(18px, calc((100cqw - 36px) / 28), calc((100cqh - 185px) / 42)); }
+  #viewer.docked:has(#v-up:not([hidden])) #slot .card { font-size: min(18px, calc((100cqw - 36px) / 28), calc((100cqh - 285px) / 42)); }
+}
+@media (min-width: 600px) and (min-height: 900px) and (orientation: portrait) {
+  /* With no card open the grid has the whole screen (the top page alone is too short for the rank bar, tabs and a row
+     of cards). A card opens on the bottom page, 20px below the fold (the middle of the screen); the grid keeps the top
+     page, its tabs no longer pinned, and can scroll its last row up there. */
+  body:has(#viewer.docked[open]) main { padding-bottom: calc(50dvh + 20px) !important; }
+  body:has(#viewer.docked[open]) :is(.collection-tabs, .collection-tools) { position: static; }
+  #viewer.docked { top: calc(50dvh - 20px); bottom: 0; left: 0; right: 0; padding: 40px var(--safe-r) 0 var(--safe-l) !important; }
+  /* The card on the left of its page, what goes with it (passes, history, share) beside it; the ✕ in the corner. */
+  #viewer.docked .viewer-header { position: absolute; top: 40px; right: calc(4px + var(--safe-r)); width: auto; height: 44px; padding: 0; z-index: 2; }
+  #viewer.docked #v-position { display: none; }
+  #viewer.docked .viewer-scroll { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 20px; align-content: start; align-items: start; text-align: left; padding-top: 0 !important; padding-right: 56px !important; }
+  #viewer.docked .viewer-scroll > * { grid-column: 2; }
+  #viewer.docked .viewer-scroll > #slot { grid-column: 1; grid-row: 1 / span 20; width: auto; }
+  #viewer.docked #slot .card, #viewer.docked:has(#v-up:not([hidden])) #slot .card { font-size: min(16px, calc((100cqh - 125px) / 42), calc((100cqw - 330px) / 28)); }
 }
 /* "Up tonight" slot pill: two lines that never wrap (Duo playtest 2026-10-22: on narrower tiles it broke into three
    and covered the card's name). */
@@ -773,6 +810,3 @@ dialog[open] { padding-left: var(--safe-l) !important; padding-right: var(--safe
 .up-next__tile { container-type: inline-size; }
 .up-next__when { font-size: min(12px, 12.5cqi); left: 4px; right: 4px; padding-inline: 3px; }
 .up-next__when small { font-size: min(11px, 11cqi); }
-@media (min-width: 900px) and (min-height: 560px) and (orientation: landscape) {
-  .grid[data-cols] { --cols: 4 !important; } /* the right column is narrower than the page: four across keeps the cards readable */
-}

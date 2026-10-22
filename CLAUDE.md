@@ -1583,3 +1583,22 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - "Collection rows collapsed" on the unfolded Duo was the page left scrolled down from the folded phone layout: the count line, your first cards and the Up tonight heading sat under the pinned tabs/search. cards-page.js scrolls to the top whenever the wide-layout media query flips (WIDE_Q). Wide landscape Collection shows 4 cards a row (`.grid[data-cols] { --cols: 4 !important }`; the right column is narrower).
   - Up tonight slot pill: two lines that never wrap, sized to its tile with container units (.up-next__tile container-type inline-size; min(12px, 12.5cqi)), so it no longer covers the card's name on small tiles.
   - Welcome card: "Swipe away" never overlaps the card: --cf (.wc-holder and .wc-stage) also caps at (100dvh − safe-top − safe-bottom − 136px) / 42, which only bites on short screens (951×669: card top 36 → 92, hint gap 5px like the SE's 6px; 669×951, 466×678, 402×874, 375×667 and iPads measured unchanged).
+- 2026-10-22 · Duo picks built (Sevaan: "go with your picks", design/duo-layouts.html). They replace the two-column wide layouts above. "Book" sizes are by size, not device: on its side ≥900 × 560 landscape, upright ≥600 × 900 portrait; Duo, iPads and iPad portrait all match, phones never do. The same media query is in css/app.css, css/collection.css, main.js `bookQ` and cards-page.js `DOCK_Q`.
+  - **Tonight is a book.** The left (or top) page is `#vtab-now`; the right (or bottom) page is the new `#sky-later` wrapper around the Tonight heading and `#vtab-tonight`. Each page (`[data-col]`) scrolls on its own, the 40px fold gap stays empty, and the jump chips are hidden. On phones `#sky-later` is `display: contents`, so nothing moves there.
+    - Places are saved with `panelPos`/`panelRestore` (page scroll, each column, layout, section) for the Sky tab, cards opened from the page, and so on.
+    - `skyJumpTo` scrolls whichever column holds the section.
+    - `skyLiveSec`/`skyCol` track where you're reading. They ignore scrolls within 500 ms of a resize, because WebKit fires the reflow's scrolls before the media change. A fold or unfold mid-page lands on that section.
+  - **pull-close.js:** a pull waits for the `[data-col]` page under the finger to be at its top.
+  - **Settings is an index and a group.**
+    - `renderSetIndex` builds `#set-index`, run on every open. Each entry shows the number, the name and its first three row names; Testing tools gets its own entry when shown.
+    - `chooseSetGroup` sets `.on` on the chosen group, plus `set-about` (credits and version show with About) and `set-tools`.
+    - On its side, the index is sticky in the left column (`#debug` is a grid). Upright, it's a 3 × 3 block of tabs filling the top page, so the group starts below the fold.
+    - The chosen group is kept across changes. Going back to a phone scrolls to it; from a phone, the group you'd scrolled to becomes the chosen one (`setLive`).
+  - **The Collection is a grid and a card.** In the book sizes the viewer opens non-modally beside the grid (`showViewerDialog`, `#viewer.docked`, `container-type: size` so the card sizes to its page). Tapping another tile or swiping swaps the card in place; the open card's tile is ringed and kept in view (`revealTile`).
+    - The rank card becomes a slim bar (rank, XP, bar). With nothing open, the empty page shows `#dock-empty`.
+    - Upright: with no card open the grid gets the whole screen. A card opens on the bottom page, the tabs unpin, and the ✕ sits in the corner.
+    - Albums and Patches keep the whole width, and changing tab closes the docked card.
+    - A docked viewer doesn't tell Explore it's modal (the switcher stays), isn't closed by `away`, and closes with Escape.
+    - Fold or unfold with a card open: the card stays open, moved between docked and modal (`redocking` guards the close listeners; Up tonight's list is restored by `leaveUpList`).
+  - **Header rule:** `#sky-header::after` now stops at the side insets too.
+  - **Checks:** phones re-measured identical at 402×874 and 375×667 (WebKit rect diff of Explore, Tonight, Settings, Collection and the viewer; only time-dependent text differed). Fold/unfold/rotate place-keeping was tested in Chromium and WebKit. Harness: session scratchpad `duo/` (`book.mjs`, `place.mjs`, `phone.mjs`).

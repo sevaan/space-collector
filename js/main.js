@@ -1,52 +1,52 @@
-import { pullToClose } from './pull-close.js?v=0.1.1005';
-import { TESTER } from './build-flavor.js?v=0.1.1005';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1005';
-import * as Secrets from './secrets.js?v=0.1.1005';
-import { STORY_BY_SECRET } from './stories.js?v=0.1.1005';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.1005';
-import * as Ufo from './ufo.js?v=0.1.1005';
-import * as Fossil from './fossil.js?v=0.1.1005';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.1005';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1005';
-import { toast, ticket, dropToast, toastPending, onTicketShown, iconSvg } from './toast.js?v=0.1.1005';
-import { VERSION } from './version.js?v=0.1.1005';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, overEarth, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.1005';
-import { placeName } from './geo.js?v=0.1.1005';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, SLIDER_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.1005';
-import { conArt } from './con-art.js?v=0.1.1005';
-import { fetchWeather, tonightSky, skyClearAt, goodSkyAt } from './weather.js?v=0.1.1005';
-import { CON_FIGURES } from './con-figures.js?v=0.1.1005';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress, starDistance } from './constellations.js?v=0.1.1005';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.1005';
-import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.1005';
-import { eventOf, activeEvent, nextEvent } from './events.js?v=0.1.1005';
-import { conList } from './constellations.js?v=0.1.1005';
-import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination, hasSensorView, resumeSensors, needsPermission } from './sensors.js?v=0.1.1005';
-import { SkyView, shortName, stripLandscape } from './sky.js?v=0.1.1005';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.1005';
-import { isPlus, setPlusForTesting, onPlus, PLUS_PERKS, PLUS_PRICES, initStore, storePlans, buyPlus, restorePlus, rcTestStore, storeOpen } from './plus.js?v=0.1.1005';
-import { isNative, getPosition, saveFile, notifyAt, cancelNotify, haptic, onNative, nativeChrome, plugin } from './native.js?v=0.1.1005';
-import { initBackup, onBackupChange, backupSoon, clearBackup, backupStatus } from './cloud-backup.js?v=0.1.1005';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.1005';
-import { cardArt } from './art.js?v=0.1.1005';
-import { renderCard, miniCard, cardLevel, artImage, lockedArt, attachTilt, attachGyro, throwOff, attachFlip, turnCard } from './card.js?v=0.1.1005';
-import { applyBack, CARD_BACKS, backUnlocked, chosenBack, chooseBack, backEarned } from './card-backs.js?v=0.1.1005';
-import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.1005';
-import { audioCtx } from './audio-ctx.js?v=0.1.1005';
-import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume, musicAway } from './music.js?v=0.1.1005';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss, onRevealSwipeIntoBinder } from './reveal.js?v=0.1.1005';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel, moonPhaseOf, MOON_PHASES } from './card-model.js?v=0.1.1005';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.1005';
-import { naturalTargets, SOLAR_SYSTEM, DEEP_SKY, NATURAL } from './natural.js?v=0.1.1005';
-import { placeFromTimeZone } from './tz-places.js?v=0.1.1005';
-import { TIER_INFO } from './rarity.js?v=0.1.1005';
-import { SETS, albumList } from './sets.js?v=0.1.1005';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.1005';
-import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.1005';
-import { shareCardEl } from './share-card.js?v=0.1.1005';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.1005';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.1005';
-import { addStarfield } from './starfield.js?v=0.1.1005';
+import { pullToClose } from './pull-close.js?v=0.1.1006';
+import { TESTER } from './build-flavor.js?v=0.1.1006';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1006';
+import * as Secrets from './secrets.js?v=0.1.1006';
+import { STORY_BY_SECRET } from './stories.js?v=0.1.1006';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.1006';
+import * as Ufo from './ufo.js?v=0.1.1006';
+import * as Fossil from './fossil.js?v=0.1.1006';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.1006';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1006';
+import { toast, ticket, dropToast, toastPending, onTicketShown, iconSvg } from './toast.js?v=0.1.1006';
+import { VERSION } from './version.js?v=0.1.1006';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, overEarth, RisingSoon, setBinocularMode, setSkyLimit } from './orbit.js?v=0.1.1006';
+import { placeName } from './geo.js?v=0.1.1006';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, SLIDER_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.1006';
+import { conArt } from './con-art.js?v=0.1.1006';
+import { fetchWeather, tonightSky, skyClearAt, goodSkyAt } from './weather.js?v=0.1.1006';
+import { CON_FIGURES } from './con-figures.js?v=0.1.1006';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress, starDistance } from './constellations.js?v=0.1.1006';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.1006';
+import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.1006';
+import { eventOf, activeEvent, nextEvent } from './events.js?v=0.1.1006';
+import { conList } from './constellations.js?v=0.1.1006';
+import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination, hasSensorView, resumeSensors, needsPermission } from './sensors.js?v=0.1.1006';
+import { SkyView, shortName, stripLandscape } from './sky.js?v=0.1.1006';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.1006';
+import { isPlus, setPlusForTesting, onPlus, PLUS_PERKS, PLUS_PRICES, initStore, storePlans, buyPlus, restorePlus, rcTestStore, storeOpen } from './plus.js?v=0.1.1006';
+import { isNative, getPosition, saveFile, notifyAt, cancelNotify, haptic, onNative, nativeChrome, plugin } from './native.js?v=0.1.1006';
+import { initBackup, onBackupChange, backupSoon, clearBackup, backupStatus } from './cloud-backup.js?v=0.1.1006';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.1006';
+import { cardArt } from './art.js?v=0.1.1006';
+import { renderCard, miniCard, cardLevel, artImage, lockedArt, attachTilt, attachGyro, throwOff, attachFlip, turnCard } from './card.js?v=0.1.1006';
+import { applyBack, CARD_BACKS, backUnlocked, chosenBack, chooseBack, backEarned } from './card-backs.js?v=0.1.1006';
+import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.1006';
+import { audioCtx } from './audio-ctx.js?v=0.1.1006';
+import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume, musicAway } from './music.js?v=0.1.1006';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss, onRevealSwipeIntoBinder } from './reveal.js?v=0.1.1006';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel, moonPhaseOf, MOON_PHASES } from './card-model.js?v=0.1.1006';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.1006';
+import { naturalTargets, SOLAR_SYSTEM, DEEP_SKY, NATURAL } from './natural.js?v=0.1.1006';
+import { placeFromTimeZone } from './tz-places.js?v=0.1.1006';
+import { TIER_INFO } from './rarity.js?v=0.1.1006';
+import { SETS, albumList } from './sets.js?v=0.1.1006';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.1006';
+import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.1006';
+import { shareCardEl } from './share-card.js?v=0.1.1006';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.1006';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.1006';
+import { addStarfield } from './starfield.js?v=0.1.1006';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -2038,10 +2038,32 @@ function dealMissions(T) {
 // pinned under the title. showVTab(tab) renders both and scrolls to that part ('now' = the top, 'tonight', or any
 // chip's name); the chips light up as you scroll.
 const SKY_JUMPS = [['now', 'Now', null], ['coming', 'Coming up', 'sj-coming'], ['tonight', 'Tonight', 'sky-tonight-head'], ['shiny', '✦ Shiny', 'sj-shiny'], ['missions', 'Missions', 'sj-missions'], ['all', 'All passes', 'sj-all']];
-let skyScroll = 0, skyLeftAt = 0; // where the sky page was left (and when: after 5 minutes away it opens at the top again, playtest 2026-10-22), so the Sky tab comes back to it (2026-10-21, Sevaan)
+// Wide screens (iPhone Duo unfolded, iPads; 2026-10-22, design/duo-layouts.html, Sevaan: "go with your picks"): the
+// Tonight page is a book, what's up now on the left page and the plan for later on the right (upright: top and bottom),
+// each page scrolling on its own ([data-col]); Settings is an index of its groups beside the chosen group. Same sizes
+// as the book block in css/app.css; phones never match.
+const bookQ = matchMedia('(min-width: 900px) and (min-height: 560px) and (orientation: landscape), (min-width: 600px) and (min-height: 900px) and (orientation: portrait)');
+let skyCol = null, skyLiveSec = 'now'; // the book page last scrolled, and the section in view (kept up to date so a fold/unfold can land on it)
+function skySection() {
+  const book = bookQ.matches, sc = book ? (skyCol ?? $('vtab-now')) : $('visible');
+  const later = book && sc === $('sky-later'); if (later && sc.scrollTop < 4) return 'tonight';
+  const top = sc.getBoundingClientRect().top + (book ? 0 : $('sky-jump').offsetHeight) + 40; let on = later ? 'tonight' : 'now';
+  for (const [k, , id] of SKY_JUMPS) { const el = id && $(id); if (el && sc.contains(el) && el.getBoundingClientRect().top <= top) on = k; }
+  return on;
+}
+// A page's place: its own scroll and each book page's. Coming back in the other layout (folded or unfolded meanwhile)
+// lands on the same section instead.
+const panelPos = (id) => ({ p: $(id).scrollTop, cols: [...$(id).querySelectorAll('[data-col]')].map((c) => c.scrollTop), book: bookQ.matches, sec: id === 'visible' ? skySection() : null });
+function panelRestore(id, pos) {
+  if (id === 'visible' && pos && pos.book !== bookQ.matches) { skyJumpTo(pos.sec ?? 'now', false); return; }
+  $(id).scrollTop = bookQ.matches && id === 'visible' ? 0 : pos?.p ?? 0; $(id).querySelectorAll('[data-col]').forEach((c, i) => { c.scrollTop = pos?.cols?.[i] ?? 0; });
+}
+let skyScroll = null, skyLeftAt = 0; // where the sky page was left (and when: after 5 minutes away it opens at the top again, playtest 2026-10-22), so the Sky tab comes back to it (2026-10-21, Sevaan)
 function skyJumpTo(tab, smooth = true) {
-  const panel = $('visible'), id = SKY_JUMPS.find((j) => j[0] === tab)?.[2], el = id && ($(id) ?? (tab !== 'now' ? $('sky-tonight-head') : null));
-  const pt = panel.getBoundingClientRect().top, barH = $('sky-jump').offsetHeight + parseFloat(getComputedStyle(panel).paddingTop || 0);
+  const id = SKY_JUMPS.find((j) => j[0] === tab)?.[2], el = id && ($(id) ?? (tab !== 'now' ? $('sky-tonight-head') : null));
+  const book = bookQ.matches, panel = book ? el?.closest('[data-col]') ?? $('vtab-now') : $('visible'); // a book scrolls the page the section is on
+  if (book) { $('visible').scrollTop = 0; skyCol = panel; }
+  const pt = panel.getBoundingClientRect().top, barH = book ? 0 : $('sky-jump').offsetHeight + parseFloat(getComputedStyle(panel).paddingTop || 0);
   const top = el ? el.getBoundingClientRect().top - pt + panel.scrollTop - barH - 14 : 0; // lands just under the pinned chips
   panel.scrollTo({ top: Math.max(0, top), behavior: smooth && !matchMedia('(prefers-reduced-motion: reduce)').matches ? 'smooth' : 'auto' });
 }
@@ -2064,9 +2086,49 @@ function showVTab(tab) {
   $('visible-sub').textContent = `${state.observer.label?.replace(/^Example:\s*/, '') ?? 'Your sky'} · ${fmtTime(now().getTime())}`;
   renderVisible(); renderTonight();
   // The radar always opens at the top (2026-10-21, Sevaan); the Tonight links open at Tonight.
-  requestAnimationFrame(() => requestAnimationFrame(() => { if (tab === 'keep') $('visible').scrollTop = Date.now() - skyLeftAt < 5 * 60e3 ? skyScroll : 0; else skyJumpTo(tab, false); skyJumpMark(); }));
+  requestAnimationFrame(() => requestAnimationFrame(() => { if (tab === 'keep') panelRestore('visible', Date.now() - skyLeftAt < 5 * 60e3 ? skyScroll : null); else skyJumpTo(tab, false); skyJumpMark(); skyLiveSec = skySection(); }));
 }
 $('sky-plus-line').addEventListener('click', () => openPlus('reminders'));
+// The book's pages scroll on their own: remember which one you were reading and where, so folding or unfolding the
+// phone (or turning an iPad) keeps you on that section.
+let bookResizedAt = 0; addEventListener('resize', () => { bookResizedAt = performance.now(); }); // scrolls caused by the resize itself (the layout reflowing) aren't the reader's
+{ let q = 0; const live = (e) => { if (performance.now() - bookResizedAt < 500) return; if (e.currentTarget !== $('visible')) skyCol = e.currentTarget; if (!q) q = requestAnimationFrame(() => { q = 0; if (!$('visible').hidden) skyLiveSec = skySection(); }); };
+  for (const id of ['visible', 'vtab-now', 'sky-later']) $(id).addEventListener('scroll', live, { passive: true }); }
+// Settings on a wide screen (2026-10-22, design/duo-layouts.html Settings A): the groups as an index (number, name, a
+// line of what's in it) beside the chosen group's card, so nothing needs a long scroll; upright, a block of tabs above
+// it. The chosen group is kept when the layout changes; on a phone it's where the page scrolls to.
+let setGroup = 0, setLive = null;
+const setGroups = () => [...$('debug').querySelectorAll(':scope > .set-group')];
+function renderSetIndex() {
+  let nav = $('set-index');
+  if (!nav) {
+    nav = document.createElement('nav'); nav.id = 'set-index'; nav.className = 'set-index'; nav.setAttribute('aria-label', 'Settings groups');
+    $('debug').querySelector('.panel-head').after(nav);
+    nav.addEventListener('click', (e) => { const b = e.target.closest('[data-g]'); if (b) { buzz('select'); chooseSetGroup(b.dataset.g === 't' ? 't' : Number(b.dataset.g)); } });
+  }
+  const label = (r) => (r.querySelector('.set-main')?.firstChild?.textContent ?? '').trim();
+  const items = setGroups().map((g, i) => ({ g: i, n: g.querySelector('.set-bar b')?.textContent ?? '', name: g.querySelector('.set-bar h3')?.textContent ?? '',
+    sum: [...g.querySelectorAll('.set-row')].filter((r) => !r.hidden && !r.closest('[hidden]')).map(label).filter(Boolean).slice(0, 3).join(' · ') }));
+  if (!$('test-tools').hidden) items.push({ g: 't', n: 'T', name: 'Testing tools', sum: 'Time travel · Try it now · Prototypes' });
+  if (setGroup === 't' && $('test-tools').hidden) setGroup = 0;
+  nav.innerHTML = items.map((x) => `<button type="button" class="set-ix" data-g="${x.g}"><b>${escapeHtml(x.n)}</b><span>${escapeHtml(x.name)}<small>${escapeHtml(x.sum)}</small></span><i aria-hidden="true">›</i></button>`).join('');
+  chooseSetGroup(setGroup, false);
+}
+function chooseSetGroup(g, scroll = true) {
+  setGroup = g; const d = $('debug'), gs = setGroups();
+  gs.forEach((el, i) => el.classList.toggle('on', i === g));
+  d.classList.toggle('set-about', gs[g]?.querySelector('.set-bar h3')?.textContent === 'About'); d.classList.toggle('set-tools', g === 't');
+  $('set-index')?.querySelectorAll('[data-g]').forEach((b) => { const on = b.dataset.g === String(g); b.classList.toggle('on', on); if (on) b.setAttribute('aria-current', 'true'); else b.removeAttribute('aria-current'); });
+  if (scroll && bookQ.matches) d.scrollTop = 0;
+}
+$('debug').addEventListener('scroll', () => { if (bookQ.matches || performance.now() - bookResizedAt < 500) return; const d = $('debug'), top = d.getBoundingClientRect().top + 60; let on = 0; setGroups().forEach((g, i) => { if (g.getBoundingClientRect().top <= top) on = i; }); setLive = $('test-tools').hidden || $('test-tools').getBoundingClientRect().top > top ? on : 't'; }, { passive: true });
+// Folding, unfolding or turning while a page is open keeps your place (2026-10-22).
+bookQ.addEventListener('change', () => {
+  const sky = activePanel === 'visible' && !$('visible').hidden, set = activePanel === 'debug' && !$('debug').hidden;
+  if (sky) { const sec = skyLiveSec; requestAnimationFrame(() => requestAnimationFrame(() => { skyJumpTo(sec, false); skyLiveSec = skySection(); skyJumpMark(); })); }
+  if (set && bookQ.matches) { if (setLive != null) chooseSetGroup(setLive); setLive = null; }
+  else if (set) requestAnimationFrame(() => { const d = $('debug'), el = setGroup === 't' ? $('test-tools') : setGroups()[setGroup]; if (el) d.scrollTop = Math.max(0, el.getBoundingClientRect().top - d.getBoundingClientRect().top + d.scrollTop - 12); });
+});
 $('sky-jump').addEventListener('click', (e) => { const b = e.target.closest('[data-jump]'); if (!b) return; skyJumpTo(b.dataset.jump); skyJumpMark.pin = { k: b.dataset.jump, until: performance.now() + 900 }; skyJumpMark(); }); // the tapped chip stays lit, even when the page can't scroll its section to the top
 $('visible').addEventListener('scroll', () => { if (!skyJumpMark._q) { skyJumpMark._q = true; requestAnimationFrame(() => { skyJumpMark._q = false; skyJumpMark(); }); } }, { passive: true });
 // ---------- Shiny forecast (Plus, 2026-10-11) ----------
@@ -3141,15 +3203,15 @@ function openPanel(id, back = false) {
   clearTimeout(panelHideTimers[id]); $(id).classList.remove('leaving', 'pulled'); $(id).style.transform = ''; $(id).style.transition = '';
   // A card opened from a page (Tonight, Now…) remembers it, so putting the card away goes back there, not to the sky
   // (2026-10-20, Sevaan).
-  if (id === 'reveal') revealBack = activePanel && activePanel !== 'reveal' ? { id: activePanel, top: $(activePanel).scrollTop } : null;
+  if (id === 'reveal') revealBack = activePanel && activePanel !== 'reveal' ? { id: activePanel, pos: panelPos(activePanel) } : null;
   if (activePanel === 'visible' && id !== 'visible' && document.body.classList.contains('sky-open')) { document.body.classList.remove('sky-open'); setPageHeader('explore'); setSwitch($('nav'), 'mid', false); } // another page over the sky page
-  if (activePanel === 'visible' && id !== 'visible') { skyScroll = $('visible').scrollTop; skyLeftAt = Date.now(); }
+  if (activePanel === 'visible' && id !== 'visible') { skyScroll = panelPos('visible'); skyLeftAt = Date.now(); }
   if (activePanel) $(activePanel).hidden = true;
   else panelReturn = document.activeElement;
   activePanel = id; $(id).hidden = false; $('hud').inert = id !== 'visible' && id !== 'debug' && id !== 'around'; // the sky page sits under Explore's header, whose buttons stay live
   if (activePanel === 'around' && id !== 'around') { document.body.classList.remove('around-open'); cancelAnimationFrame(arRaf); }
   if (id === 'around') { document.body.classList.add('around-open'); setPageHeader('around'); }
-  if (id === 'debug') { document.body.classList.add('set-open'); setPageHeader('settings'); $('nav-more').setAttribute('aria-label', 'Close settings'); }
+  if (id === 'debug') { renderSetIndex(); document.body.classList.add('set-open'); setPageHeader('settings'); $('nav-more').setAttribute('aria-label', 'Close settings'); }
   if (id === 'visible' && navProto()) { document.body.classList.add('sky-open'); setPageHeader('sky'); if (navProto() !== 'stack') setSwitch($('nav'), 'left'); }
   // Android WebView kept stale tap regions in a panel that slid in (it's the scroller and the animated layer at once),
   // so taps in Up in your sky landed on another row (Android playtest 2026-10-20). Start at the top, and once the slide
@@ -3190,7 +3252,7 @@ function closePanel(id = activePanel) {
   if (id === 'reveal') { stopReveal(); if (tourRevealLeaving) { const go = tourRevealLeaving; tourRevealLeaving = null; go(); } }
   const el = $(id); activePanel = null; $('hud').inert = false;
   if (id === 'debug' && document.body.classList.contains('set-open')) { document.body.classList.remove('set-open'); setPageHeader(collectionOpen ? 'collection' : 'explore'); $('nav-more').setAttribute('aria-label', 'Settings'); }
-  if (id === 'visible') { skyScroll = $('visible').scrollTop; skyLeftAt = Date.now(); }
+  if (id === 'visible') { skyScroll = panelPos('visible'); skyLeftAt = Date.now(); }
   if (id === 'around') { document.body.classList.remove('around-open'); cancelAnimationFrame(arRaf); setPageHeader(collectionOpen ? 'collection' : 'explore'); }
   if (id === 'visible' && document.body.classList.contains('sky-open')) { setTimeout(() => { if (activePanel !== 'visible') document.body.classList.remove('sky-open'); }, 340); if (!collectionOpen) setPageHeader('explore'); /* sky-open stays while it slides away, as col-open does */ if (navProto() && navProto() !== 'stack') setSwitch($('nav'), 'mid'); }
   // Slide away, then hide (2026-10-08 polish); the reveal has its own exit.
@@ -3200,7 +3262,7 @@ function closePanel(id = activePanel) {
   else el.hidden = true;
   if (id === 'debug' && settingsFrom === 'sky' && !collectionOpen) { settingsFrom = null; const v = $('visible'); v.classList.add('no-anim'); showVTab('keep'); openPanel('visible', true); setTimeout(() => v.classList.remove('no-anim'), 500); return; } // back to the sky page, already there under Settings as it slides away
   if (id === 'debug') { settingsFrom = null; if (collectionOpen) { setSwitch($('nav'), 'right', false); setTimeout(() => { if (activePanel !== 'debug') document.body.classList.remove('panel-over-col'); }, 340); } else document.body.classList.remove('panel-over-col'); }
-  if (id === 'reveal' && revealBack && !collectionOpen) { const b = revealBack; revealBack = null; openPanel(b.id, true); $(b.id).scrollTop = b.top; return; }
+  if (id === 'reveal' && revealBack && !collectionOpen) { const b = revealBack; revealBack = null; openPanel(b.id, true); panelRestore(b.id, b.pos); return; }
   revealBack = null;
   if (panelReturn?.isConnected) panelReturn.focus({ preventScroll: true });
 }
@@ -5108,7 +5170,7 @@ function openSky(where = 'keep') {
 // Put the sky page away without its slide (it's under the Collection by then).
 function hideSkyQuietly() {
   if (activePanel !== 'visible' || !collectionOpen) return;
-  const el = $('visible'); skyScroll = el.scrollTop; skyLeftAt = Date.now(); el.hidden = true; activePanel = null; $('hud').inert = false; document.body.classList.remove('sky-open'); setPageHeader('collection');
+  const el = $('visible'); skyScroll = panelPos('visible'); skyLeftAt = Date.now(); el.hidden = true; activePanel = null; $('hud').inert = false; document.body.classList.remove('sky-open'); setPageHeader('collection');
 }
 function applyNavProto() {
   const p = navProto(), nav = $('nav'), three = p === 'tabs' || p === 'lens';
