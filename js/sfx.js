@@ -3,8 +3,8 @@
 // "Notification Sound 2" by deadrobotmusic (Freesound, CC0), softened. Files: assets/audio/sfx/<name>.mp3.
 // Decoded once into memory after the first tap, played through the shared context (js/audio-ctx.js) so they’re instant.
 // Off with Settings → Sounds and vibration (localStorage sound = '0').
-import { audioCtx } from './audio-ctx.js?v=0.1.963';
-import { VERSION } from './version.js?v=0.1.963';
+import { audioCtx } from './audio-ctx.js?v=0.1.964';
+import { VERSION } from './version.js?v=0.1.964';
 export const SFX = ['lock', 'collect', 'arrive', 'flip', 'r_common', 'r_uncommon', 'r_rare', 'r_epic', 'r_legend', 'shiny', 'seen', 'stamp', 'levelup', 'xp',
   'mission', 'rankup', 'patch', 'coinroll', 'complete', 'secret', 'fossil', 'ufo', 'welcome', 'swipe', 'step', 'toggle', 'toast', 'page', 'rattle', 'plane'];
 const BASE = new URL('../assets/audio/sfx/', import.meta.url).href;
@@ -49,3 +49,18 @@ export function sfx(name, { gain = 1, gap = 0, delay = 0 } = {}) {
 }
 // Load on the first tap (the context can only start from one), so the first real sound is ready.
 if (typeof document !== 'undefined') document.addEventListener('pointerdown', () => loadSfx(), { once: true, capture: true });
+
+// A heartbeat thump (2026-10-21, slick idea 05): a low, soft beat drawn on the fly (no file), for the held breath before
+// an Epic or Legendary card turns over. Follows the Sounds switch and volume like every other sound.
+export function heartbeat(strong = false) {
+  if (soundOff()) return;
+  const ctx = audioCtx(); if (!ctx || ctx.state !== 'running') return;
+  try {
+    const t = ctx.currentTime, o = ctx.createOscillator(), g = ctx.createGain(), f = ctx.createBiquadFilter();
+    o.type = 'sine'; o.frequency.setValueAtTime(strong ? 68 : 60, t); o.frequency.exponentialRampToValueAtTime(40, t + 0.16);
+    f.type = 'lowpass'; f.frequency.value = 180;
+    const peak = (strong ? 0.9 : 0.6) * LEVEL * 2.4 * sfxVolume();
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(Math.max(0.001, peak), t + 0.012); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.22);
+    o.connect(f).connect(g).connect(ctx.destination); o.start(t); o.stop(t + 0.25);
+  } catch {}
+}

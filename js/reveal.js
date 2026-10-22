@@ -5,12 +5,12 @@
 //  Everything scales with rarity (Legendary dims the sky, shockwave, held breath, slow flip, fanfare).
 // Waits use timers, not animation.finished, so a paused tab can never freeze the sequence.
 
-import { sfx, loadSfx } from './sfx.js?v=0.1.963';
-import { audioCtx } from './audio-ctx.js?v=0.1.963';
-import { TIER_INFO } from './rarity.js?v=0.1.963';
-import { levelFor, attachTilt, attachGyro, attachFlip, throwOff, retype } from './card.js?v=0.1.963';
-import { applyBack } from './card-backs.js?v=0.1.963';
-import { addStarfield } from './starfield.js?v=0.1.963';
+import { sfx, loadSfx, heartbeat } from './sfx.js?v=0.1.964';
+import { audioCtx } from './audio-ctx.js?v=0.1.964';
+import { TIER_INFO } from './rarity.js?v=0.1.964';
+import { levelFor, attachTilt, attachGyro, attachFlip, throwOff, retype } from './card.js?v=0.1.964';
+import { applyBack } from './card-backs.js?v=0.1.964';
+import { addStarfield } from './starfield.js?v=0.1.964';
 
 const FX = {
   common:    { particles: 14,  flip: 520,  spin: 0,   dim: 0,   shock: false, notes: [880],                            hold: 0 },
@@ -172,9 +172,17 @@ export async function playReveal({ card, o, seen, origin, fleet = null, progress
   await new Promise((resolve) => {
     // It flips by itself after a second (2026-10-05: no more "tap to reveal"); a tap flips it sooner.
     let timer = 0;
-    onFlipTap = () => { clearTimeout(timer); $('rv-holder').removeEventListener('click', onFlipTap); onFlipTap = null; primeReveal(); resolve(); };
+    const beats = [];
+    onFlipTap = () => { clearTimeout(timer); beats.forEach(clearTimeout); $('rv-holder').removeEventListener('click', onFlipTap); onFlipTap = null; primeReveal(); resolve(); };
     $('rv-holder').addEventListener('click', onFlipTap);
-    timer = setTimeout(() => onFlipTap?.(), reduced() ? 400 : ['common', 'uncommon'].includes(tierKey) ? 700 : 1000); // the rare ones keep their second of suspense
+    // A heartbeat before the big ones (2026-10-21, slick idea 05, Sevaan): for Epic and Legendary the wait is two slow
+    // double beats (thump-thump, thump-thump): the sky dims a little more and the card's glow swells on each, and the
+    // phone thumps in time; then it turns over. A tap still turns it at once.
+    const big = !reduced() && ['epic', 'legendary'].includes(tierKey);
+    if (big) for (const [ms, strong] of [[120, false], [330, true], [980, false], [1190, true]]) beats.push(setTimeout(() => { if (!alive() || !onFlipTap) return; heartbeat(strong); dispatchEvent(new CustomEvent('sc:heartbeat', { detail: { strong } }));
+      $('rv-dim').animate([{ opacity: getComputedStyle($('rv-dim')).opacity }, { opacity: strong ? .82 : .74, offset: .25 }, { opacity: getComputedStyle($('rv-dim')).opacity }], { duration: 420, easing: 'ease-out' });
+      $('rv-holder').animate([{ transform: 'scale(1)' }, { transform: `scale(${strong ? 1.035 : 1.02})`, offset: .2 }, { transform: 'scale(1)' }], { duration: 360, easing: 'ease-out', composite: 'add' }); }, ms));
+    timer = setTimeout(() => onFlipTap?.(), reduced() ? 400 : big ? 1700 : ['common', 'uncommon'].includes(tierKey) ? 700 : 1000); // the rare ones keep their second of suspense
   });
   if (!alive()) return;
   $('rv-holder').classList.remove('live');
