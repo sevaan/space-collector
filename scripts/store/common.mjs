@@ -34,7 +34,9 @@ function collection(now, { heroIss = false } = {}) {
 }
 
 // A returning player on a clear evening: seeded collection, the App Store safe areas, no testing button.
-export async function setup(browser, kind, { when, video = null, extra = [], heroIss = false } = {}) {
+// clear: the weather can't be fetched, so the Tonight page shows the plan without a forecast (2026-10-22: a date picked for a
+// good ISS pass came out 'Overcast all night', the real forecast for that week).
+export async function setup(browser, kind, { when, video = null, extra = [], heroIss = false, clear = false } = {}) {
   const d = DEVICES[kind], at = when ? new Date(when) : nextEvening();
   const ctx = await browser.newContext({ viewport: d.viewport, deviceScaleFactor: d.deviceScaleFactor, isMobile: d.isMobile, hasTouch: d.hasTouch, userAgent: d.userAgent,
     serviceWorkers: 'block', timezoneId: PLACE.tz, geolocation: { latitude: PLACE.latitude, longitude: PLACE.longitude }, permissions: ['geolocation'], ...(video ? { recordVideo: video } : {}) });
@@ -45,6 +47,7 @@ export async function setup(browser, kind, { when, video = null, extra = [], her
   await ctx.route(/\/js\/main\.js/, async (route) => { const r = await route.fetch(); await route.fulfill({ response: r, body: (await r.text()) + '\n;window.__store = { state, sky };', headers: { ...r.headers(), 'content-type': 'text/javascript' } }); });
   // Log the app's sounds with their wall-clock time (the promo puts them in its soundtrack at the same moments).
   await ctx.route(/\/js\/sfx\.js/, async (route) => { const r = await route.fetch(); const body = (await r.text()).replace('export function sfx(name, { gain = 1, gap = 0, delay = 0 } = {}) {', 'export function sfx(name, { gain = 1, gap = 0, delay = 0 } = {}) { (window.__sfxLog ??= []).push([name, Date.now() + delay * 1000]);'); await route.fulfill({ response: r, body, headers: { ...r.headers(), 'content-type': 'text/javascript' } }); });
+  if (clear) await ctx.route(/open-meteo\.com/, (route) => route.abort());
   await ctx.clock.install({ time: at });
   const p = await ctx.newPage(), errs = []; p.on('pageerror', (e) => errs.push(e.message));
   await p.goto(APP + 'cards.html'); await p.waitForTimeout(1500);

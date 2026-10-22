@@ -16,6 +16,19 @@ node scripts/store/preview.mjs         # App Preview videos → store/appstore/<
 
 Each script takes `phone`, `pad` or nothing (both). `capture.mjs` and `preview.mjs` also take `--when=2026-10-19T20:30:00-04:00`; by default they use tonight at 8:30 PM, Toronto, and move on a few minutes if nothing good is up.
 
+### iPhone Duo (inner display, landscape)
+```bash
+node scripts/store/capture.mjs duo --when=2026-10-28T20:30:00-04:00   # pick an evening with a high ISS pass before dawn
+node scripts/store/compose.mjs duo                                     # store/appstore/duo/1…6-*.png, 2853 × 2007
+cp store/appstore/duo/[1-6]-*.png ~/Desktop/"Space Collector App Store/iPhone Duo/"
+```
+The Duo set uses the Duo's own layouts: 951 × 669 @3x with its 84pt status strip on the right faked as `--safe-r`
+(common.mjs `DEVICES.duo`), Tonight as a book (the Tonight tab, captured first, in the evening), the shiny Hubble and
+Saturn open beside the grid in the Collection. The weather is blocked (`clear`) so a far-off date never reads "Overcast".
+compose.mjs puts the caption in a band across the top and the screen under it, with the time and icons drawn in the
+status strip. `--when` matters: the hero is the ISS only if it has a high pass that night (check with any pass
+predictor, or try a date and read the `aim:` line). Same captions and order as the phone set.
+
 ## What they make
 | | iPhone (6.3", Dynamic Island) | iPad (13") |
 |---|---|---|
@@ -35,7 +48,8 @@ Captions follow one rule: the orange eyebrow is a fact, the big headline is a fe
 ## Uploading
 App Store Connect → Space Collector → the 1.0 version → App Previews and Screenshots. Drag the PNGs and `preview.mp4`
 from `store/appstore/phone` onto "iPhone with Dynamic Island (medium display)" and from `store/appstore/pad` onto
-"iPad 13" display". iPhone Duo is optional (it scales from the iPhone set).
+"iPad 13" display". The six PNGs in `store/appstore/duo` go on "iPhone Duo" (inner display, 2853 × 2007 landscape;
+the outer display uses 1398 × 2034 and has no set yet). Duo screenshots are required from April 2027.
 
 ## The 30-second marketing video
 ```bash

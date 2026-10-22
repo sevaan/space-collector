@@ -17,12 +17,13 @@ const OUT = join(ROOT, 'store/raw'); mkdirSync(OUT, { recursive: true });
 
 for (const kind of which === 'all' ? Object.keys(DEVICES) : [which]) {
   const b = await webkit.launch();
-  const { p, errs } = await setup(b, kind, { when, heroIss: true });
+  const { ctx, p, errs } = await setup(b, kind, { when, heroIss: true, ...(kind === 'duo' ? { clear: true } : {}) });
   const w = (ms) => p.waitForTimeout(ms), shot = (n) => p.screenshot({ path: join(OUT, `${kind}-${n}.png`) });
   const duo = kind === 'duo';
   // 1 · Tonight: the daily TONIGHT notice opens the plan for the night (the Duo shows the Tonight tab as a book, later)
   const see = p.locator('#toasts .ticket[data-eyebrow="TONIGHT"], #toast-tray .ticket[data-eyebrow="TONIGHT"]').first();
-  if (duo) { /* below */ } else if (await see.count()) { await see.click(); await w(1500); if (await p.locator('#ob-done').isHidden()) { await see.click().catch(() => {}); await w(2000); } /* a tucked chip first unfolds, the second tap opens the plan */ await shot('tonight'); await p.click('#od-close', { force: true, timeout: 3000 }).catch(() => p.keyboard.press('Escape')); await w(900); }
+  if (duo) { await hideNoise(p); await p.click('#nav-sky'); await w(4500); await shot('tonight'); await p.click('#nav-explore'); await w(1800); } /* the evening plan, before the hero shot moves the clock */
+  else if (await see.count()) { await see.click(); await w(1500); if (await p.locator('#ob-done').isHidden()) { await see.click().catch(() => {}); await w(2000); } /* a tucked chip first unfolds, the second tap opens the plan */ await shot('tonight'); await p.click('#od-close', { force: true, timeout: 3000 }).catch(() => p.keyboard.press('Escape')); await w(900); }
   else console.log(kind, 'no TONIGHT notice (already seen today?)');
   await hideNoise(p);
   // 2 · the sky, locked on the best new thing up
@@ -30,7 +31,6 @@ for (const kind of which === 'all' ? Object.keys(DEVICES) : [which]) {
   // 3 · Collect → the reveal
   await p.click('#d-cta').catch((e) => console.log(kind, 'no Collect:', e.message.slice(0, 80))); await w(3300); await shot('reveal');
   await p.locator('#reveal .x-close').first().click().catch(() => {}); await w(1500);
-  if (duo) { await p.click('#nav-sky'); await w(4500); await shot('tonight'); }
   // 4 · the Collection
   await p.click('#nav-collection'); await w(3500); if (!duo) await shot('collection');
   const f = p.frameLocator('#collection-frame');
@@ -40,7 +40,9 @@ for (const kind of which === 'all' ? Object.keys(DEVICES) : [which]) {
   if (duo) { await f.locator('.card-tile', { hasText: /saturn/i }).first().click().catch((e) => console.log(kind, 'Saturn tile:', e.message.slice(0, 80))); await w(2600); await f.locator('#v-up, #v-next').evaluateAll((els) => els.forEach((e) => { e.hidden = true; })).catch(() => {}); await shot('collection'); }
   await f.locator('#viewer').evaluate((v) => v.open && v.close()).catch(() => {}); await w(800);
   // 6 · patches
-  await f.locator('#tab-patches').click().catch(() => {}); await w(2200); await shot('patches');
+  await f.locator('#tab-patches').click().catch(() => {}); await w(2200);
+  if (duo) { await f.locator('#patch-wall').evaluate((el) => { const tabs = document.querySelector('.collection-tabs').getBoundingClientRect().bottom; scrollTo(0, scrollY + el.getBoundingClientRect().top - tabs - 12); }).catch(() => {}); await w(900); } // the wall from its first row
+  await shot('patches');
   console.log(kind, errs.length ? errs : 'no page errors');
   await b.close();
 }
