@@ -1953,7 +1953,7 @@ body.set-open #nav-more .nm-set { transform: translateY(-14px); opacity: 0; } bo
 #visible, #debug { top: calc(var(--safe-top) + 80px) !important; padding-top: 0 !important; }
 #visible > .panel-head, #debug > .panel-head { display: none !important; }
 body:has(#debug:not([hidden])) #sky-header, body:has(#visible:not([hidden])) #sky-header { background: var(--bg); box-shadow: 0 calc(-1 * var(--safe-top)) 0 0 var(--bg); }
-body.nav-tabs.sky-open:has(#visible.leaving)::after { opacity: 0; transition: opacity .2s; }
+body.nav-tabs.sky-open:has(#visible.leaving) #tab-fade { opacity: 0; transition: opacity .2s; }
 /* Settings closing over the sky page slides away above it (2026-10-21) */
 body:not(.panel-over-col) #debug.leaving { z-index: 21; }
 

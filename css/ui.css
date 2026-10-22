@@ -519,12 +519,13 @@ body.nav-lens #nav-explore { background: #0e1828 !important; }
 body.nav-lens .sc-switch[data-side='mid'] #nav-explore { background: #fa8127 !important; }
 body:is(.nav-tabs, .nav-lens).sky-open .sc-switch { background-color: #0b1220 !important; } body.nav-lens.sky-open .sc-switch { background: #0b1220 !important; }
 /* Three tabs are the navigation now (2026-10-21): Up in your sky rises like the other pages, not from the left. */
-/* A dark soft fade behind the tabs over the sky page, so its rows don't show through. */
-body.nav-tabs.sky-open::after { content: ''; position: fixed; left: 0; right: 0; bottom: 0; height: calc(var(--safe-bottom, 0px) + 140px); z-index: 69; pointer-events: none;
+/* A dark soft fade behind the tabs over the sky page, so its rows don't show through. Its own element (2026-10-21):
+   as body::after it took over red night mode's full-screen tint, which then only covered the top of the screen. */
+#tab-fade { display: none; } body.nav-tabs.sky-open #tab-fade { display: block; position: fixed; left: 0; right: 0; bottom: 0; height: calc(var(--safe-bottom, 0px) + 140px); z-index: 69; pointer-events: none;
   background: linear-gradient(rgba(6, 11, 20, 0), rgba(6, 11, 20, .92) 45%, rgba(6, 11, 20, .98));
   -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); -webkit-mask: linear-gradient(transparent, #000 40%); mask: linear-gradient(transparent, #000 40%); }
 body.nav-tabs:has(#visible.leaving) #nav, body.nav-tabs:has(#visible:not([hidden])) #nav { z-index: 70; visibility: visible !important; } /* the sky page sliding away never covers the tabs (2026-10-21) */
-body.nav-tabs.sky-open::after { height: calc(var(--safe-bottom, 0px) + 175px); background: linear-gradient(rgba(6, 11, 20, 0), rgba(6, 11, 20, .96) 38%, #060b14); -webkit-mask: linear-gradient(transparent, #000 30%); mask: linear-gradient(transparent, #000 30%); }
+body.nav-tabs.sky-open #tab-fade { height: calc(var(--safe-bottom, 0px) + 175px); background: linear-gradient(rgba(6, 11, 20, 0), rgba(6, 11, 20, .96) 38%, #060b14); -webkit-mask: linear-gradient(transparent, #000 30%); mask: linear-gradient(transparent, #000 30%); }
 /* Sky tab: always the word SKY, the live value (Next 1:51 / Dark 6:49 / 3 new) small underneath (2026-10-21, Sevaan). */
 body.nav-tabs #nav-sky { position: relative; }
 body.nav-tabs #nav-sky .nav-sky-v { position: absolute; left: 0; right: 0; bottom: 7px; font: 600 10px/1 var(--label, 'SC Label'), sans-serif; letter-spacing: .12em; text-transform: uppercase; color: #8f9aa6; font-variant-numeric: tabular-nums; white-space: nowrap; text-align: center; }
