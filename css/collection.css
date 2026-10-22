@@ -766,3 +766,13 @@ dialog[open] { padding-left: var(--safe-l) !important; padding-right: var(--safe
   main > .logbook { grid-column: 1; grid-row: 1 / span 30; position: sticky; top: calc(var(--col-top, var(--safe-top, 0px)) + 12px); margin-top: 6px; }
   main > .lb-slim, main > .stats-link { display: none !important; }
 }
+/* "Up tonight" slot pill: two lines that never wrap (Duo playtest 2026-10-22: on narrower tiles it broke into three
+   and covered the card's name). */
+.up-next__when { white-space: nowrap; overflow: hidden; }
+.up-next__when small { letter-spacing: .1em; }
+.up-next__tile { container-type: inline-size; }
+.up-next__when { font-size: min(12px, 12.5cqi); left: 4px; right: 4px; padding-inline: 3px; }
+.up-next__when small { font-size: min(11px, 11cqi); }
+@media (min-width: 900px) and (min-height: 560px) and (orientation: landscape) {
+  .grid[data-cols] { --cols: 4 !important; } /* the right column is narrower than the page: four across keeps the cards readable */
+}

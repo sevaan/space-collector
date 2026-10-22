@@ -1,30 +1,30 @@
-import { pullToClose } from './pull-close.js?v=0.1.1004';
-import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.1004';
-import { computeStats, statsHtml } from './stats.js?v=0.1.1004';
-import { nightKey } from './observation.js?v=0.1.1004';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1004';
-import { sfx } from './sfx.js?v=0.1.1004';
-import { expandFacts } from './catalog-facts.js?v=0.1.1004';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.1004';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1004';
-import { ticket } from './toast.js?v=0.1.1004';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.1004';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.1004';
-import { cardArt } from './art.js?v=0.1.1004';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.1004';
-import { applyBack } from './card-backs.js?v=0.1.1004';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.1004';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1004';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.1004';
-import { STORIES } from './stories.js?v=0.1.1004';
-import { loadConstellations, conList } from './constellations.js?v=0.1.1004';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.1004';
-import { eventBadges, nextEvent } from './events.js?v=0.1.1004';
-import { shareCardEl } from './share-card.js?v=0.1.1004';
-import { forgetSighting } from './cloud-backup.js?v=0.1.1004';
-import { allSightings, deleteSighting } from './store.js?v=0.1.1004';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.1004';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.1004';
+import { pullToClose } from './pull-close.js?v=0.1.1005';
+import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.1005';
+import { computeStats, statsHtml } from './stats.js?v=0.1.1005';
+import { nightKey } from './observation.js?v=0.1.1005';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1005';
+import { sfx } from './sfx.js?v=0.1.1005';
+import { expandFacts } from './catalog-facts.js?v=0.1.1005';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.1005';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1005';
+import { ticket } from './toast.js?v=0.1.1005';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.1005';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.1005';
+import { cardArt } from './art.js?v=0.1.1005';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.1005';
+import { applyBack } from './card-backs.js?v=0.1.1005';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.1005';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1005';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.1005';
+import { STORIES } from './stories.js?v=0.1.1005';
+import { loadConstellations, conList } from './constellations.js?v=0.1.1005';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.1005';
+import { eventBadges, nextEvent } from './events.js?v=0.1.1005';
+import { shareCardEl } from './share-card.js?v=0.1.1005';
+import { forgetSighting } from './cloud-backup.js?v=0.1.1005';
+import { allSightings, deleteSighting } from './store.js?v=0.1.1005';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.1005';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.1005';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -165,6 +165,11 @@ let miniS = '', miniRaf = 0;
 const miniScale = () => { miniRaf = 0; const t = document.querySelector('.card-tile--mini, #grid .card-slot'); const w = t?.offsetWidth; if (!w) return; const v = (w / 280).toFixed(4); if (v !== miniS) { miniS = v; document.getElementById('grid')?.style.setProperty('--mini-s', v); } };
 const queueMiniScale = () => { miniRaf ||= requestAnimationFrame(miniScale); }; // once a frame, however many tiles were built (jank playtest 2026-10-17)
 addEventListener('resize', () => { miniS = ''; queueMiniScale(); });
+// Folding or unfolding (iPhone Duo, 2026-10-22): when the page switches between the phone layout and the wide one
+// (rank card in a column on the left), start it from the top. A scroll kept from the folded phone left the unfolded
+// page scrolled down, with your first cards and the "Up tonight" heading hidden under the pinned tabs.
+const WIDE_Q = matchMedia('(min-width: 900px) and (min-height: 560px) and (orientation: landscape)');
+WIDE_Q.addEventListener?.('change', () => scrollTo(0, 0));
 function miniFace(tile, c) {
   const status = (tile.querySelector('.card-tile__status')?.textContent ?? '').replace(/^✓\s*Collected\s*/, '✓ '), badge = tile.querySelector('.tile-lvl');
   const face = miniCard(c, { sightings: state.sightingsByKey.get(c.key) ?? [], ownedKeys: c.natural === 'constellation' || c.partners ? ownedKeys() : undefined, status, locked: !tile.classList.contains('is-owned') });
