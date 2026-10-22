@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Numbers count up</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600;650;700;750;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/cards.css?v=0.1.964">
+  <link rel="stylesheet" href="css/ui.css?v=0.1.964">
+  <style>
+    @font-face { font-family: 'SC Label'; src: url('fonts/BarlowCondensed-Medium.ttf'); }
+    @font-face { font-family: 'SC Display'; src: url('fonts/RussoOne-Regular.ttf'); }
+    body { margin: 0; background: #04080f; color: #fff2b3; font: 15px/1.4 system-ui, sans-serif; padding: 26px 20px 60px; }
+    h1 { font: 400 26px 'SC Display'; margin: 0 0 4px; }
+    .lead { color: #bdbea9; margin: 0 0 18px; max-width: 900px; }
+    .bar { display: flex; gap: 10px; align-items: center; margin-bottom: 22px; flex-wrap: wrap; }
+    .bar button { min-height: 44px; padding: 0 18px; border-radius: 22px; border: 1.5px solid #fa8127; background: rgba(250,129,39,.12); color: #fa8127; font: 500 14px 'SC Label'; letter-spacing: .18em; text-transform: uppercase; cursor: pointer; }
+    .bar label { color: #bdbea9; font: 500 14px 'SC Label'; letter-spacing: .06em; display: flex; gap: 6px; align-items: center; }
+    .row { display: flex; gap: 28px; flex-wrap: wrap; align-items: flex-start; }
+    .slot { width: 300px; perspective: 1400px; }
+    .slot h2 { font: 500 13px 'SC Label'; letter-spacing: .16em; text-transform: uppercase; color: #fa8127; margin: 0 0 10px; }
+    .turn { font-size: 10.7px; transform-style: preserve-3d; }
+    .turn.go { animation: turn .7s cubic-bezier(.3,.1,.3,1) both; }
+    @keyframes turn { 0% { transform: rotateY(-180deg) scale(.92); } 60% { transform: rotateY(8deg) scale(1.03); } 100% { transform: none; } }
+    /* the effect: numbers tick up, then the fact fades in */
+    .counting .card__fact { opacity: 0; transform: translateY(6px); }
+    .card__fact.in { opacity: 1; transform: none; transition: opacity .5s ease, transform .5s ease; }
+    .card__stats b.ticking { color: #fff2b3; text-shadow: 0 0 10px rgba(250,129,39,.35); }
+    .note { margin-top: 26px; max-width: 900px; color: #bdbea9; font-size: 14px; } .note b { color: #fff2b3; }
+  </style>
+</head>
+<body>
+  <h1>06 · The numbers count up</h1>
+  <p class="lead">Real cards from the game. When a card lands face up, its numbers spin up from zero like an instrument panel, a soft tick for each (you'd hear it in the app), then the fact fades in. About a second in all, and only the first time you see a new card.</p>
+  <div class="bar"><button type="button" id="again">Play again</button><label><input type="checkbox" id="sound" checked> Ticks</label></div>
+  <div class="row" id="row"><p class="lead">Loading the real cards…</p></div>
+  <p class="note"><b>How it would work in the app:</b> in the catch reveal, right after the card turns over (the same moment the fleet card's launch line types itself in). Years and stats with words in them ("Varies", "Capricornus", "White") just fade in. Reduce Motion shows them at once.</p>
+  <script type="module">
+    import { expandFacts } from './js/catalog-facts.js?v=0.1.964';
+    import { renderCard } from './js/card.js?v=0.1.964';
+    import { buildCards } from './js/card-model.js?v=0.1.964';
+    import { loadLore } from './js/lore.js?v=0.1.964';
+    import './js/stories.js?v=0.1.964';
+    import { loadConstellations } from './js/constellations.js?v=0.1.964';
+    import { loadComets } from './js/comets.js?v=0.1.964';
+    const $ = (id) => document.getElementById(id);
+    const PICKS = [['25544', 'The Space Station'], ['20580', 'Hubble'], ['planet:saturn', 'Saturn'], ['11', 'Vanguard 2']];
+    const SEEN = Date.parse('2026-10-19T02:00:00Z');
+    let ac = null;
+    const tick = () => { if (!$('sound').checked) return; try { ac ??= new AudioContext(); const t = ac.currentTime, o = ac.createOscillator(), g = ac.createGain(); o.type = 'square'; o.frequency.value = 2400; g.gain.setValueAtTime(0.015, t); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.025); o.connect(g).connect(ac.destination); o.start(t); o.stop(t + 0.03); } catch {} };
+    // Count every stat that is a number ("~27,600", "1,723", "15", "4.6"), keeping its sign, commas and decimals.
+    function countUp(card) {
+      card.classList.add('counting');
+      const stats = [...card.querySelectorAll('.card__stats b')];
+      stats.forEach((b, i) => {
+        const textNode = [...b.childNodes].find((n) => n.nodeType === 3 && /\d/.test(n.textContent));
+        if (!textNode) { b.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 400, delay: 200 + i * 120, fill: 'backwards' }); return; }
+        const raw = textNode.textContent, m = raw.match(/^([^\d]*)([\d,]*\.?\d+)(.*)$/); if (!m) return;
+        if (/^(19|20)\d\d$/.test(m[2])) { b.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 400, delay: 200 + i * 120, fill: 'backwards' }); return; } // a year is a date: it fades in, never counts
+        const [, pre, num, post] = m, dec = (num.split('.')[1] ?? '').length, target = parseFloat(num.replace(/,/g, '')), comma = num.includes(',');
+        const fmt = (v) => pre + (comma ? v.toLocaleString('en-US', { minimumFractionDigits: dec, maximumFractionDigits: dec }) : v.toFixed(dec)) + post;
+        const delay = 150 + i * 120, dur = 650; let lastShown = '';
+        textNode.textContent = fmt(0); b.classList.add('ticking');
+        const t0 = performance.now() + delay;
+        const step = (t) => {
+          const k = Math.max(0, Math.min(1, (t - t0) / dur)), e = 1 - (1 - k) ** 3, v = target * e, s = fmt(dec ? v : Math.round(v));
+          if (s !== lastShown) { textNode.textContent = s; if (k > 0 && k < 1 && Math.random() < .35) tick(); lastShown = s; }
+          if (k < 1) requestAnimationFrame(step); else { textNode.textContent = raw; b.classList.remove('ticking'); }
+        };
+        requestAnimationFrame(step);
+      });
+      const fact = card.querySelector('.card__fact'); setTimeout(() => fact?.classList.add('in'), 150 + stats.length * 120 + 650);
+    }
+    let cards = [];
+    function play() {
+      const row = $('row'); row.innerHTML = '';
+      cards.forEach(([c, title], i) => {
+        const slot = document.createElement('div'); slot.className = 'slot'; slot.innerHTML = `<h2>${title}</h2>`;
+        const wrap = document.createElement('div'); wrap.className = 'turn';
+        const el = renderCard(c, { sightings: [{ time: SEEN, cardKey: c.key, objectId: c.id }] });
+        wrap.append(el); slot.append(wrap); row.append(slot);
+        setTimeout(() => { wrap.classList.add('go'); setTimeout(() => countUp(el), 520); }, 250 + i * 350);
+      });
+    }
+    (async () => {
+      const [cat] = await Promise.all([fetch('data/catalog.json').then((r) => r.json()).then((d) => { for (const o of d.objects) expandFacts(o); return d; }), loadLore(), loadConstellations(), loadComets()]);
+      const all = buildCards(cat), byKey = new Map(all.map((c) => [c.key, c]));
+      cards = PICKS.map(([k, t]) => [byKey.get(k), t]).filter(([c]) => c);
+      play();
+    })();
+    $('again').addEventListener('click', play);
+  </script>
+</body>
+</html>
