@@ -2130,3 +2130,9 @@ body.night #debug .set-select { color: #ff7f70; }
 #test-tools .set-test > .set-row > .set-main { flex: 1; min-width: 0; }
 #test-tools .set-test > .set-row > .set-chev { margin-left: auto; }
 #debug .set-select { width: auto !important; min-width: 0; margin-left: auto; }
+
+/* The sky slider's text keeps still while you drag (2026-10-21, Sevaan: it rewrapped and jumped): the subtitle has the
+   full width under the title, the place name never wraps, and the note below keeps room for three lines. */
+#debug .set-sl-top > span:first-child { flex: 1; min-width: 0; } #set-sky-name { white-space: nowrap; flex: none; }
+#debug .set-sl-sub { margin: 2px 0 0; }
+#sky-limit-info { display: block; min-height: calc(3 * 1.35em); line-height: 1.35; }
