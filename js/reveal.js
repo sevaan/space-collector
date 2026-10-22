@@ -5,12 +5,12 @@
 //  Everything scales with rarity (Legendary dims the sky, shockwave, held breath, slow flip, fanfare).
 // Waits use timers, not animation.finished, so a paused tab can never freeze the sequence.
 
-import { sfx, loadSfx, heartbeat } from './sfx.js?v=0.1.1017';
-import { audioCtx } from './audio-ctx.js?v=0.1.1017';
-import { TIER_INFO } from './rarity.js?v=0.1.1017';
-import { levelFor, attachTilt, attachGyro, attachFlip, throwOff, retype } from './card.js?v=0.1.1017';
-import { applyBack } from './card-backs.js?v=0.1.1017';
-import { addStarfield } from './starfield.js?v=0.1.1017';
+import { sfx, loadSfx, heartbeat } from './sfx.js?v=0.1.1018';
+import { audioCtx } from './audio-ctx.js?v=0.1.1018';
+import { TIER_INFO } from './rarity.js?v=0.1.1018';
+import { levelFor, attachTilt, attachGyro, attachFlip, throwOff, retype } from './card.js?v=0.1.1018';
+import { applyBack } from './card-backs.js?v=0.1.1018';
+import { addStarfield } from './starfield.js?v=0.1.1018';
 
 const FX = {
   common:    { particles: 14,  flip: 520,  spin: 0,   dim: 0,   shock: false, notes: [880],                            hold: 0 },
@@ -90,7 +90,12 @@ function unzoom() {
   const m = document.querySelector('meta[name="viewport"]'); if (!m) return;
   const was = m.content; m.content = `${was}, maximum-scale=1`; setTimeout(() => { m.content = was; }, 400);
 }
+// Fold, unfold or rotate with a card up: size it again for the new window (big-screen playtest 2026-10-22: it kept the
+// old size, a small card in the middle of an iPad).
+let sizedCard = null;
+addEventListener('resize', () => { if (sizedCard && !$('reveal').hidden) requestAnimationFrame(() => sizeCard(sizedCard)); });
 function sizeCard(cardEl) {
+  sizedCard = cardEl;
   unzoom();
   const root = $('reveal');
   root.style.setProperty('--cf', '12px');

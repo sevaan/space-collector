@@ -2307,3 +2307,21 @@ body.night #debug .set-seg button.on { box-shadow: inset 0 0 0 1px #ff6a55; }
 body.folded #wake, body.folded #until-dark.tk-card, body.folded #guidance:not(.first), body.folded #gh-remind,
 body.folded #discover .d-label, body.folded #discover .d-actions, body.folded #plane .p-label { left: var(--ucx, 50%) !important; }
 #visible .sky-plus-line { margin-top: 16px !important; } /* clear of the header's double rule (Sevaan 2026-10-22) */
+
+/* Big-screen playtest 2026-10-22: the Tonight page's ✕ keeps clear of the Duo's side strip, like the reveal's; sheets
+   centred in a wide window never reach the strip, so they drop its padding (their contents sat 42px off centre). */
+.ob-done .od-x { right: calc(18px + var(--safe-r, 0px)); }
+@media (min-width: 900px) and (min-height: 560px) and (orientation: landscape), (min-width: 600px) and (min-height: 900px) and (orientation: portrait) {
+  .set-sheet-card { padding-left: 18px; padding-right: 18px; }
+}
+
+/* Narrow phones (web playtest 2026-10-22, 320 wide): the recap's rarest find shrinks to two lines instead of climbing
+   over the numbers; Settings values keep their words (they were "Fr…", "Mission C…") and choice rows put the buttons
+   on their own line instead of a word per line beside them. */
+@media (max-width: 360px) {
+  .rc-cap b { font-size: 18px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .set-row > .set-val { max-width: none; flex-shrink: 0; }
+  .set-row > .set-main { min-width: 0; }
+  .set-row:has(> .set-seg) { flex-wrap: wrap; }
+  .set-row > .set-seg { flex-basis: 100%; margin: 8px 0 0; justify-content: flex-end; }
+}

@@ -114,7 +114,7 @@ struct TierLine: View {
     let pass: Pass; var size: CGFloat = 11
     var body: some View {
         HStack(spacing: 4) {
-            Text("\(Tier.gem(pass.tier)) \(Tier.label(pass.tier).uppercased())").font(.label(size)).tracking(size * 0.14).foregroundStyle(Tier.color(pass.tier))
+            Text(pass.icon ? Tier.gem(pass.tier) : "\(Tier.gem(pass.tier)) \(Tier.label(pass.tier).uppercased())").font(.label(size)).tracking(size * 0.14).foregroundStyle(Tier.color(pass.tier))
             if pass.icon { Text("ICON").font(.label(size - 2)).tracking(1).foregroundStyle(Color(hex: 0x1b1405)).padding(.horizontal, 4).background(Color.gold, in: RoundedRectangle(cornerRadius: 4)) }
         }.lineLimit(1)
     }
@@ -170,7 +170,7 @@ struct NextCatch: View {
                     RingArt(pass: p, size: ring, full: up)
                     VStack(alignment: .leading, spacing: 3) {
                         TierLine(pass: p, size: 10)
-                        Text(p.name).font(.display(compact ? 14 : 15)).foregroundStyle(Color.ink).lineLimit(3).minimumScaleFactor(0.8).fixedSize(horizontal: false, vertical: true)
+                        Text(p.name).font(.display(compact ? 14 : 15)).foregroundStyle(Color.ink).lineLimit(3).minimumScaleFactor(0.6).fixedSize(horizontal: false, vertical: true)
                     }
                 }.padding(.top, 7)
                 Spacer(minLength: 2)
@@ -243,7 +243,7 @@ struct PassRow: View {
                         .frame(width: 26, height: 26).clipShape(Circle()).overlay(Circle().stroke(lead ? Color.orange : Color.white.opacity(0.15), lineWidth: 1.5))
                 }
                 VStack(alignment: .leading, spacing: 0) {
-                    Text(p.name).font(.label(14)).foregroundStyle(Color.cream).lineLimit(1)
+                    Text(p.name).font(.label(14)).foregroundStyle(Color.cream).lineLimit(1).minimumScaleFactor(0.75)
                     Text(art ? "\(Tier.label(p.tier)) · \(p.where.lowercased())" : p.short).font(.label(12)).foregroundStyle(Color.muted).lineLimit(1)
                 }
                 Spacer(minLength: 4)
@@ -332,7 +332,7 @@ struct PlusOnly: View {
 
 func shortName(_ n: String) -> String {
     let w = n.split(separator: " ").first.map(String.init) ?? n
-    return n.hasPrefix("International Space Station") ? "ISS" : String(w.prefix(7))
+    return n.hasPrefix("Space Station") || n.hasPrefix("International Space Station") ? "ISS" : String(w.prefix(7))
 }
 struct LockView: View {
     @Environment(\.widgetFamily) var family
@@ -380,19 +380,19 @@ struct LockView: View {
         VStack(alignment: .leading, spacing: 1) {
             switch m {
             case .next(let p):
-                Text(p.kick == "headliner" ? "◎ HEADLINER" : "◎ NEXT CATCH").font(.system(size: 12, weight: .semibold)).opacity(0.8)
-                Text(p.name).font(.headline).lineLimit(1)
-                (timeText(p.startDate) + Text(" · \(p.where.lowercased())")).font(.system(size: 13, weight: .semibold)).opacity(0.8).lineLimit(1)
+                Text(p.kick == "headliner" ? "◎ HEADLINER" : "◎ NEXT").font(.system(size: 12, weight: .semibold)).opacity(0.8)
+                Text(p.name).font(.headline).lineLimit(1).minimumScaleFactor(0.7)
+                (timeText(p.startDate) + Text(" · \(p.short)")).font(.system(size: 13, weight: .semibold)).opacity(0.8).lineLimit(1).minimumScaleFactor(0.8)
                 ProgressView(timerInterval: p.startDate.addingTimeInterval(-3600)...p.startDate, countsDown: true) { EmptyView() } currentValueLabel: { EmptyView() }
             case .upNow(let p):
                 Text("◎ UP NOW").font(.system(size: 12, weight: .semibold)).opacity(0.8)
-                Text(p.name).font(.headline).lineLimit(1)
+                Text(p.name).font(.headline).lineLimit(1).minimumScaleFactor(0.7)
                 Text("Look \(p.where.lowercased())").font(.system(size: 13, weight: .semibold)).opacity(0.8).lineLimit(1)
             case .day(let dusk, let head):
-                Text(head?.kick == "headliner" ? "◎ TONIGHT'S HEADLINER" : "☾ TONIGHT").font(.system(size: 12, weight: .semibold)).opacity(0.8)
+                Text(head?.kick == "headliner" ? "◎ HEADLINER" : "☾ TONIGHT").font(.system(size: 12, weight: .semibold)).opacity(0.8)
                 if let h = head {
-                    Text(h.name).font(.headline).lineLimit(1)
-                    (timeText(h.startDate) + Text(" · \(h.where.lowercased())")).font(.system(size: 13, weight: .semibold)).opacity(0.8).lineLimit(1)
+                    Text(h.name).font(.headline).lineLimit(1).minimumScaleFactor(0.7)
+                    (timeText(h.startDate) + Text(" · \(h.short)")).font(.system(size: 13, weight: .semibold)).opacity(0.8).lineLimit(1).minimumScaleFactor(0.8)
                 } else {
                     (Text("Dark at ") + timeText(dusk)).font(.headline)
                 }
@@ -458,7 +458,7 @@ enum Sample {
         func pass(_ k: String, _ n: String, _ t: String, _ s: Double, _ w: String, _ sh: String, kick: String = "next", icon: Bool = false, art: String? = nil) -> Pass {
             Pass(key: k, name: n, tier: t, icon: icon, art: art, start: now + s * min, end: now + (s + 5) * min, where: w, short: sh, kick: kick, cloud: false)
         }
-        let iss = pass("25544@0", "International Space Station", "rare", 12, "High in the southeast", "High · SE", icon: true, art: "iss")
+        let iss = pass("25544@0", "Space Station", "rare", 12, "High in the southeast", "High · SE", icon: true, art: "iss")
         let list = [pass("1@1", "Radiation Sat (5E-1)", "rare", 23, "High in the southeast", "High · SE"), pass("2@2", "Kosmos 422", "epic", 45, "Halfway up in the north", "Halfway · N", kick: "headliner"), pass("3@3", "Hubble", "rare", 71, "Low in the south", "Low · S")]
         return Plan(at: now, place: "Peterborough", plus: true, dusk: now - 90 * min, dawn: now + 600 * min, eve: now + 180 * min,
                     chain: [Step(from: now, pass: iss)], list: [iss] + list, run: [iss] + list, back: nil,

@@ -1,30 +1,30 @@
-import { pullToClose } from './pull-close.js?v=0.1.1017';
-import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.1017';
-import { computeStats, statsHtml } from './stats.js?v=0.1.1017';
-import { nightKey } from './observation.js?v=0.1.1017';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1017';
-import { sfx } from './sfx.js?v=0.1.1017';
-import { expandFacts } from './catalog-facts.js?v=0.1.1017';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.1017';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1017';
-import { ticket } from './toast.js?v=0.1.1017';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.1017';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.1017';
-import { cardArt } from './art.js?v=0.1.1017';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.1017';
-import { applyBack } from './card-backs.js?v=0.1.1017';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.1017';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1017';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.1017';
-import { STORIES } from './stories.js?v=0.1.1017';
-import { loadConstellations, conList } from './constellations.js?v=0.1.1017';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.1017';
-import { eventBadges, nextEvent } from './events.js?v=0.1.1017';
-import { shareCardEl } from './share-card.js?v=0.1.1017';
-import { forgetSighting } from './cloud-backup.js?v=0.1.1017';
-import { allSightings, deleteSighting } from './store.js?v=0.1.1017';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.1017';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.1017';
+import { pullToClose } from './pull-close.js?v=0.1.1018';
+import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.1018';
+import { computeStats, statsHtml } from './stats.js?v=0.1.1018';
+import { nightKey } from './observation.js?v=0.1.1018';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1018';
+import { sfx } from './sfx.js?v=0.1.1018';
+import { expandFacts } from './catalog-facts.js?v=0.1.1018';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.1018';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1018';
+import { ticket } from './toast.js?v=0.1.1018';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.1018';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.1018';
+import { cardArt } from './art.js?v=0.1.1018';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.1018';
+import { applyBack } from './card-backs.js?v=0.1.1018';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.1018';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1018';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.1018';
+import { STORIES } from './stories.js?v=0.1.1018';
+import { loadConstellations, conList } from './constellations.js?v=0.1.1018';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.1018';
+import { eventBadges, nextEvent } from './events.js?v=0.1.1018';
+import { shareCardEl } from './share-card.js?v=0.1.1018';
+import { forgetSighting } from './cloud-backup.js?v=0.1.1018';
+import { allSightings, deleteSighting } from './store.js?v=0.1.1018';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.1018';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.1018';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -429,7 +429,7 @@ function renderLogbook() {
   const H = 160, pts = rungs.map((_, i) => [37.5 + i * 75, H / 2 + 34 - i * 18]); // centred: 37.5 in from each side (2026-10-14, Sevaan)
   let seed = 11; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
   const stars = Array.from({ length: 30 }, (_, i) => `<circle class="lb-tw" style="--d:${(rnd() * 5).toFixed(2)}s;--t:${(2.5 + rnd() * 3).toFixed(2)}s" cx="${(rnd() * 300).toFixed(0)}" cy="${(rnd() * H).toFixed(0)}" r="${(0.5 + rnd() * 0.8).toFixed(1)}" fill="#fff2b3"/>`).join('');
-  const cur = ri - lo, ladder = `<svg class="lb-ladder" viewBox="0 0 300 ${H}" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${stars}
+  const cur = ri - lo, ladder = `<svg class="lb-ladder" viewBox="0 0 300 ${H}" preserveAspectRatio="${innerWidth < 360 ? 'xMidYMid meet' : 'xMidYMid slice'}" aria-hidden="true">${stars}
     <path d="M${pts.map((q) => q.join(' ')).join(' L')}" fill="none" stroke="#344654" stroke-dasharray="3 5"/>
     ${cur > 0 ? `<path d="M${pts.slice(0, cur + 1).map((q) => q.join(' ')).join(' L')}" fill="none" stroke="#fa8127" stroke-width="2"/>` : ''}<!-- ranks you have passed: solid (2026-10-14) -->
     ${pts[cur + 1] ? `<path d="M${pts[cur].join(' ')} L${pts[cur][0] + (pts[cur + 1][0] - pts[cur][0]) * into} ${pts[cur][1] + (pts[cur + 1][1] - pts[cur][1]) * into}" stroke="#fa8127" stroke-width="2"/>` : ''}
@@ -997,7 +997,8 @@ boot().catch(() => {
 {
   const grid = $('grid');
   const applySize = () => {
-    const cols = DOCK_Q.matches ? Math.max(3, Math.min(5, Math.floor((grid.clientWidth || innerWidth / 2) / 140))) : innerWidth >= 700 ? 5 : 3; // a page of a wide screen: as many as fit at 140px, 3 to 5
+    const page = matchMedia('(orientation: landscape)').matches ? innerWidth / 2 - 60 : innerWidth - 48; /* the grid's page, from the window (clientWidth could be read before the book layout applied: 5 tiny tiles on the Duo) */
+    const cols = DOCK_Q.matches ? Math.max(3, Math.min(5, Math.floor(page / 100))) : innerWidth >= 700 ? 5 : 3; // a page of a wide screen: as many as fit at 100px, 3 to 5 (4 on the Duo)
     grid.dataset.cols = cols; grid.style.setProperty('--cols', cols);
     const w = (grid.clientWidth || innerWidth - 40) / cols;
     grid.classList.toggle('single', false); grid.classList.toggle('dense', w < 140); grid.classList.toggle('tiny', w < 92); grid.classList.toggle('micro', w < 66);

@@ -603,7 +603,7 @@ html.embedded .collection-header { visibility: hidden; }
 /* Red night mode reaches the dialogs (visual playtest 2026-10-17): a modal <dialog> paints in the browser's top layer,
    above body.night::after, so the card viewer, Observer stats and patch detail showed full colour. Each open dialog
    carries its own red multiply. */
-body.night dialog[open]::after { content: ''; position: fixed; inset: 0; z-index: 2147483646; pointer-events: none; background: #ff1a00; mix-blend-mode: multiply; }
+body.night dialog[open]:not(.docked)::after { content: ''; position: fixed; inset: 0; z-index: 2147483646; pointer-events: none; background: #ff1a00; mix-blend-mode: multiply; }
 body.night dialog::backdrop { background: rgba(12, 3, 3, .82); }
 /* Scrolling a big collection (jank playtest 2026-10-17: a third of frames over 50 ms): tiles off screen skip layout and
    paint (content-visibility), and the shrunken cards don't each become a 3D layer (no preserve-3d on a tile's card;
@@ -766,9 +766,9 @@ dialog[open] { padding-left: var(--safe-l) !important; padding-right: var(--safe
 #dock-empty { display: none; }
 @media (min-width: 900px) and (min-height: 560px) and (orientation: landscape), (min-width: 600px) and (min-height: 900px) and (orientation: portrait) {
   body:not([data-view="albums"]):not([data-view="patches"]) main { max-width: none; margin: 0; }
-  body:not([data-view="albums"]):not([data-view="patches"]) .logbook :is(.lb-top, .lb-pic, .lb-mission, .lb-foot) { display: none !important; }
-  body:not([data-view="albums"]):not([data-view="patches"]) .logbook { margin: 4px 0 12px; padding: 10px 14px 8px; }
-  body:not([data-view="albums"]):not([data-view="patches"]) .logbook .lb-rankrow { margin-top: 0; }
+  .logbook :is(.lb-top, .lb-pic, .lb-mission, .lb-foot) { display: none !important; }
+  .logbook { margin: 4px 0 12px; padding: 10px 14px 8px; }
+  .logbook .lb-rankrow { margin-top: 0; }
   body:not([data-view="albums"]):not([data-view="patches"]) main > .stats-link { display: none !important; }
   #viewer.docked { position: fixed; z-index: 30; margin: 0; max-width: none; max-height: none; width: auto; height: auto; container-type: size; background: var(--bg); }
   #viewer.docked .viewer-scroll { padding-bottom: 16px !important; }
@@ -831,3 +831,6 @@ dialog[open] { padding-left: var(--safe-l) !important; padding-right: var(--safe
 @media (min-width: 900px) and (min-height: 560px) and (orientation: landscape) {
   body:not([data-view="albums"]):not([data-view="patches"]) .logbook { max-width: none !important; width: auto !important; margin-left: 0 !important; margin-right: 0 !important; padding-left: 0 !important; padding-right: 0 !important; }
 }
+
+/* Big-screen playtest 2026-10-22: the patch group chips end before the Duo's side strip. */
+.pw-chips { margin-right: var(--safe-r, 0px); }
