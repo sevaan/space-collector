@@ -35,7 +35,7 @@ export default async function handler(request: Request): Promise<Response> {
     for (const src of SOURCES) {
       if (Date.now() < (benched.get(src.name) ?? 0)) continue;
       try {
-        const res = await fetch(src.url(L, O, D), { headers: { "User-Agent": "space-collector (https://sevaan.github.io/space-collector/)" } });
+        const res = await fetch(src.url(L, O, D), { headers: { "User-Agent": "space-collector (https://sevaan.github.io/space-collector/)" }, signal: AbortSignal.timeout(4000) }); // a slow feed gives up after 4 s, so the relay always answers itself (with CORS) before Val Town cuts it off with a bare 502 (playtest 2026-10-22)
         if (res.status === 200) { hit = { at: Date.now(), body: await res.text(), status: 200 }; break; }
         benched.set(src.name, Date.now() + 60000);
       } catch { benched.set(src.name, Date.now() + 60000); }
