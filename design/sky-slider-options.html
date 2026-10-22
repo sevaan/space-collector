@@ -1,202 +1,87 @@
-<title>Sky Slider Options</title>
-<meta name="claude:viewport-fit-sides" content="cover">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600&family=Barlow:wght@400;500&family=Russo+One&display=swap">
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sky slider options</title>
 <style>
-/* Layout: four phone-width controls side by side (stacked on a phone), each over a live mini sky that fills in as you drag. */
-:root {
-  --night: #080f1b; --panel: #0e1a29; --edge: #24364b; --cream: #fff2b3; --orange: #fa8127; --steel: #adbcc8; --muted: #8fa3b8; --track: #263547;
-  --display: 'Russo One', 'Arial Black', sans-serif; --label: 'Barlow Condensed', 'Arial Narrow', sans-serif; --body: 'Barlow', system-ui, sans-serif;
-  color-scheme: dark;
-}
+@font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf'); }
+@font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf'); }
+:root { --ink: #fff2b3; --mu: #bdbea9; --or: #fa8127; --gold: #f2c14e; --bg: #080f1b; }
 * { box-sizing: border-box; }
-body { margin: 0; background: var(--night); color: var(--cream); font: 400 16px/1.5 var(--body); padding: 28px max(16px, env(safe-area-inset-right, 0px)) 60px max(16px, env(safe-area-inset-left, 0px)); }
-header { max-width: 1240px; margin: 0 auto 26px; display: grid; gap: 10px; }
-h1 { font: 400 clamp(28px, 4vw, 42px)/1.05 var(--display); margin: 0; }
-.lede { color: var(--steel); max-width: 60em; margin: 0; }
-.note { color: var(--muted); font-size: 14px; max-width: 60em; margin: 0; }
-.grid { max-width: 1240px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 18px; }
-.opt { border: 1px solid var(--edge); border-radius: 18px; background: var(--panel); padding: 16px; display: grid; gap: 12px; align-content: start; min-width: 0; }
-.opt h2 { margin: 0; font: 400 20px/1.1 var(--display); display: flex; gap: 10px; align-items: baseline; }
-.opt h2 span { font: 600 13px/1 var(--label); letter-spacing: .2em; color: var(--orange); }
-.opt p { margin: 0; color: var(--steel); font-size: 14px; }
-.opt ul { margin: 0; padding-left: 18px; color: var(--muted); font-size: 13.5px; display: grid; gap: 3px; }
-.phone { border-radius: 22px; overflow: hidden; background: #050b14; border: 1px solid #1c2a3c; position: relative; }
-.phone canvas { display: block; width: 100%; height: 170px; }
-.ctl { padding: 12px 14px 16px; background: linear-gradient(transparent, #080f1bee 30%); margin-top: -36px; position: relative; }
-.read { min-height: 38px; font: 500 13.5px/1.35 var(--body); color: var(--steel); margin: 10px 2px 0; }
-.read b { color: var(--cream); font-weight: 500; }
-.lab { display: flex; justify-content: space-between; font: 600 12px/1 var(--label); letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
-.lab .on { color: var(--cream); }
-.bino-on { color: var(--orange) !important; }
-.lab-a { position: relative; height: 12px; display: block; } .lab-a span { position: absolute; top: 0; white-space: nowrap; }
-
-/* A: one long track with a binocular zone past a notch */
-.ta { position: relative; height: 40px; touch-action: none; cursor: pointer; margin: 6px 0 8px; }
-.ta .rail { position: absolute; left: 0; right: 0; top: 18px; height: 4px; border-radius: 2px; background: var(--track); }
-.ta .fill { position: absolute; left: 0; top: 18px; height: 4px; border-radius: 2px; background: linear-gradient(90deg, #6b4a2c, var(--orange)); }
-.ta .zone { position: absolute; top: 12px; height: 16px; right: 0; width: 20%; border-radius: 8px; border: 1px dashed #fa812799; background: #fa81271a; }
-.ta .notch { position: absolute; top: 8px; width: 2px; height: 24px; background: #fa8127aa; left: 80%; }
-.ta .thumb { position: absolute; top: 4px; width: 32px; height: 32px; margin-left: -16px; border-radius: 50%; border: 2px solid var(--orange); background: #0a121e; display: grid; place-items: center; transition: background .2s; }
-.ta .thumb svg { width: 18px; height: 18px; opacity: 0; transition: opacity .2s; }
-.ta.bino .thumb { background: var(--orange); } .ta.bino .thumb svg { opacity: 1; }
-
-/* B: rubber-band past the end */
-.tb { position: relative; height: 40px; touch-action: none; cursor: pointer; margin: 6px 0 8px; }
-.tb .rail { position: absolute; left: 0; top: 18px; height: 4px; border-radius: 2px; background: var(--track); transition: width .3s cubic-bezier(.2, 1.4, .4, 1); }
-.tb .fill { position: absolute; left: 0; top: 18px; height: 4px; border-radius: 2px; background: linear-gradient(90deg, #6b4a2c, var(--orange)); }
-.tb .ext { position: absolute; top: 14px; height: 12px; border-radius: 6px; background: var(--orange); box-shadow: 0 0 14px #fa8127aa; opacity: 0; transition: opacity .25s; }
-.tb .thumb { position: absolute; top: 4px; width: 32px; height: 32px; margin-left: -16px; border-radius: 50%; border: 2px solid var(--orange); background: #0a121e; display: grid; place-items: center; }
-.tb .thumb svg { width: 18px; height: 18px; opacity: 0; }
-.tb.bino .thumb { background: var(--orange); } .tb.bino .thumb svg { opacity: 1; } .tb.bino .ext { opacity: 1; }
-.tb .pull { position: absolute; right: 0; top: -14px; font: 600 11px/1 var(--label); letter-spacing: .18em; text-transform: uppercase; color: var(--orange); opacity: 0; transition: opacity .2s; white-space: nowrap; }
-.tb.pulling .pull { opacity: 1; }
-
-/* C: five stops with pictures */
-.tc { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; margin: 4px 0 2px; position: relative; }
-.tc::before { content: ''; position: absolute; left: 10%; right: 10%; top: 25px; height: 2px; background: var(--track); }
-.tc button { position: relative; background: none; border: 0; padding: 0; color: var(--muted); display: grid; justify-items: center; gap: 6px; cursor: pointer; font: 600 11px/1.1 var(--label); letter-spacing: .1em; text-transform: uppercase; }
-.tc .dot { width: 50px; height: 50px; border-radius: 50%; border: 1.5px solid var(--edge); background: #0a121e; display: grid; place-items: center; transition: border-color .2s, background .2s, transform .2s; }
-.tc .dot svg { width: 26px; height: 26px; }
-.tc button.on { color: var(--cream); } .tc button.on .dot { border-color: var(--orange); background: #2a1d14; transform: scale(1.08); }
-.tc button.b .dot { border-style: dashed; border-color: #fa812788; } .tc button.b.on .dot { border-style: solid; background: var(--orange); color: #1a0f05; }
-
-/* D: darkness slider plus a binocular lens that extends the scale */
-.td { display: grid; grid-template-columns: minmax(0, 1fr) 46px; gap: 12px; align-items: center; margin: 6px 0 8px; }
-.td .t { position: relative; height: 40px; touch-action: none; cursor: pointer; }
-.td .rail { position: absolute; left: 0; right: 0; top: 18px; height: 4px; border-radius: 2px; background: var(--track); }
-.td .fill { position: absolute; left: 0; top: 18px; height: 4px; border-radius: 2px; background: linear-gradient(90deg, #6b4a2c, var(--orange)); }
-.td .boost { position: absolute; top: 15px; height: 10px; border-radius: 5px; background: repeating-linear-gradient(90deg, #fa8127 0 6px, #fa812755 6px 10px); opacity: 0; transition: opacity .25s, width .25s; }
-.td.bino .boost { opacity: 1; }
-.td .thumb { position: absolute; top: 4px; width: 32px; height: 32px; margin-left: -16px; border-radius: 50%; border: 2px solid var(--orange); background: #0a121e; }
-.td .lens { width: 46px; height: 46px; border-radius: 50%; border: 1.5px solid var(--edge); background: #0a121e; color: var(--muted); display: grid; place-items: center; cursor: pointer; transition: all .2s; }
-.td .lens svg { width: 24px; height: 24px; }
-.td.bino .lens { background: var(--orange); border-color: var(--orange); color: #1a0f05; box-shadow: 0 0 16px #fa812788; }
-.pick { border-top: 1px solid var(--edge); padding-top: 10px; font-size: 13.5px; color: var(--muted); }
-.pick b { color: var(--orange); font-weight: 500; }
-</style>
-
-<header>
-  <h1>Sky slider: city to dark site, then binoculars</h1>
-  <p class="lede">Four ways to make the one slider run from a lit-up city to a pristine dark site and then keep going into binoculars. Drag each one: the little sky above it fills in exactly as the game's does (the app's own formula). Binoculars add about 3 magnitudes for satellites and for Uranus and Neptune; the stars themselves stay at your sky's limit.</p>
-  <p class="note">One thing to decide: binoculars aren't really darker sky, they're a tool. In A, B and C, reaching binoculars means a dark site plus binoculars, so "city with binoculars" goes away. D keeps them separate and still reads as one scale.</p>
-</header>
-
-<div class="grid">
-  <section class="opt" id="A">
-    <h2><span>A</span>One long track</h2>
-    <p>The track runs City → Dark site, then past a notch into a dashed orange zone. Slide the thumb into it and it turns into binoculars.</p>
-    <div class="phone"><canvas></canvas><div class="ctl">
-      <div class="lab lab-a"><span style="left:0">City</span><span style="left:40%;transform:translateX(-50%)">Country</span><span style="left:80%;transform:translateX(-100%)">Dark site</span><span class="bino-on" style="right:0">Binoculars</span></div>
-      <div class="ta" role="slider" tabindex="0" aria-label="How dark is your sky"><span class="rail"></span><span class="zone"></span><span class="notch"></span><span class="fill"></span><span class="thumb"></span></div>
-      <p class="read"></p></div></div>
-    <ul><li>Simplest to explain: further right, more to see.</li><li>The notch makes the switch into binoculars feel deliberate.</li></ul>
-  </section>
-
-  <section class="opt" id="B">
-    <h2><span>B</span>Pull past the end</h2>
-    <p>A normal slider that stops at Dark site. Keep dragging past the end and the track stretches, "keep pulling for binoculars" appears, and letting go there locks it on.</p>
-    <div class="phone"><canvas></canvas><div class="ctl">
-      <div class="lab"><span>City</span><span>Suburbs</span><span>Country</span><span>Dark site</span></div>
-      <div class="tb" role="slider" tabindex="0" aria-label="How dark is your sky"><span class="pull">Keep pulling for binoculars →</span><span class="rail"></span><span class="fill"></span><span class="ext"></span><span class="thumb"></span></div>
-      <p class="read"></p></div></div>
-    <ul><li>A small secret that rewards curiosity.</li><li>Easy to miss; it would need a first-time hint.</li></ul>
-  </section>
-
-  <section class="opt" id="C">
-    <h2><span>C</span>Five stops</h2>
-    <p>Five tappable stops, each with a picture: city lights, a house, trees, mountains, then binoculars. Drag along them or tap one.</p>
-    <div class="phone"><canvas></canvas><div class="ctl">
-      <div class="tc" role="radiogroup" aria-label="How dark is your sky"></div>
-      <p class="read"></p></div></div>
-    <ul><li>Clearest at a glance, and easy to tap in the dark.</li><li>Loses the fine-grained in-between settings.</li></ul>
-  </section>
-
-  <section class="opt" id="D">
-    <h2><span>D</span>Slider plus lens</h2>
-    <p>The darkness slider with a binocular lens at its end. Tap the lens and a striped boost extends past the fill, wherever the slider sits.</p>
-    <div class="phone"><canvas></canvas><div class="ctl">
-      <div class="lab" style="margin-right:58px"><span>City</span><span>Suburbs</span><span>Dark site</span></div>
-      <div class="td"><div class="t" role="slider" tabindex="0" aria-label="How dark is your sky"><span class="rail"></span><span class="fill"></span><span class="boost"></span><span class="thumb"></span></div><button class="lens" type="button" aria-pressed="false" aria-label="Binoculars"></button></div>
-      <p class="read"></p></div></div>
-    <ul><li>Keeps city + binoculars, which is real.</li><li>Two controls, but they read as one scale.</li></ul>
-  </section>
-</div>
-<p class="pick" style="max-width:1240px;margin:22px auto 0">My pick: <b>A</b>, with D's idea as a fallback if city + binoculars matters. A is one gesture with one meaning ("further right, more to see"), and the notch stops anyone sliding into binoculars by accident.</p>
-
+body { margin: 0; background: #04080f; color: var(--ink); font: 15px/1.4 system-ui, sans-serif; padding: 26px 20px 60px; }
+h1 { font: 400 26px 'SC Display'; margin: 0 0 4px; } .lead { color: var(--mu); margin: 0 0 22px; max-width: 1200px; }
+.row { display: flex; gap: 24px; flex-wrap: wrap; align-items: flex-start; }
+.opt { width: 300px; } .opt h2 { font: 500 15px 'SC Label'; letter-spacing: .14em; text-transform: uppercase; color: var(--or); margin: 0 0 4px; }
+.opt > p { color: var(--mu); margin: 0 0 12px; font-size: 13.5px; min-height: 112px; }
+.ph { position: relative; width: 300px; height: 600px; border-radius: 30px; overflow: hidden; border: 1px solid #1a2436;
+  background: radial-gradient(ellipse at 50% 30%, #17283f, #0a1322 60%, #060b14); }
+.stars { position: absolute; inset: 0; background-image: radial-gradient(1px 1px at 20% 30%, #fff8 50%, transparent 51%), radial-gradient(1px 1px at 70% 22%, #fff8 50%, transparent 51%), radial-gradient(1.4px 1.4px at 45% 55%, #fffa 50%, transparent 51%), radial-gradient(1px 1px at 85% 60%, #fff6 50%, transparent 51%), radial-gradient(1px 1px at 12% 70%, #fff6 50%, transparent 51%), radial-gradient(1px 1px at 60% 75%, #fff5 50%, transparent 51%), radial-gradient(1px 1px at 33% 15%, #fff6 50%, transparent 51%); }
+.hz { position: absolute; left: 0; right: 0; bottom: 0; height: 120px; background: linear-gradient(transparent, #070e16 40%); }
+.ret { position: absolute; left: 50%; top: 45%; width: 72px; height: 72px; margin: -36px; border-radius: 50%; border: 1.5px solid #fff2b3aa; }
+.hdr { position: absolute; left: 0; right: 0; top: 0; height: 74px; padding: 30px 14px 0; background: var(--bg); border-bottom: 3px double #3a4c66; display: flex; justify-content: space-between; }
+.hdr b { font: 400 13px 'SC Display'; } .hdr i { font-style: normal; letter-spacing: 10px; }
+.radar { position: absolute; left: 12px; top: 88px; width: 58px; height: 58px; border-radius: 50%; border: 1px solid #3a4c66; background: #0b1626aa; }
+.tabs { position: absolute; left: 10px; right: 10px; bottom: 10px; height: 58px; border-radius: 16px; background: #0e1828f2; display: flex; justify-content: space-around; align-items: center; font: 500 10px 'SC Label'; letter-spacing: .14em; color: var(--mu); }
+.tabs b { color: var(--or); font-weight: 500; }
+.lbl { font: 500 10px 'SC Label'; letter-spacing: .16em; color: var(--mu); text-transform: uppercase; }
+/* A — today */
+.a .bar { position: absolute; left: 34px; right: 34px; bottom: 84px; display: flex; align-items: center; gap: 8px; }
+.a .tr { flex: 1; height: 4px; border-radius: 2px; background: linear-gradient(90deg, var(--or) 52%, #2a3a4c 52%); position: relative; }
+.a .tr i { position: absolute; left: 52%; top: 50%; width: 22px; height: 22px; margin: -11px; border-radius: 50%; border: 2px solid var(--or); background: #0b1220; }
+/* B — a pill that opens */
+.b .pill { position: absolute; left: 50%; bottom: 82px; transform: translateX(-50%); display: flex; align-items: center; gap: 8px; padding: 7px 12px; border-radius: 99px; background: #0e1828ee; border: 1px solid #2c3b52; font: 500 12px 'SC Label'; letter-spacing: .12em; white-space: nowrap; animation: bPill 6s ease-in-out infinite; }
+.b .pill em { font-style: normal; color: var(--mu); letter-spacing: .06em; }
+.b .open { position: absolute; left: 16px; right: 16px; bottom: 82px; padding: 12px 14px; border-radius: 16px; background: #0e1828f5; border: 1px solid #fa812766; opacity: 0; animation: bOpen 6s ease-in-out infinite; }
+.b .open .t { display: flex; justify-content: space-between; font: 500 12px 'SC Label'; letter-spacing: .12em; } .b .open .t em { font-style: normal; color: var(--or); }
+.b .open .tr { height: 4px; border-radius: 2px; margin: 12px 0 8px; background: linear-gradient(90deg, var(--or) 64%, #2a3a4c 64%); position: relative; }
+.b .open .tr i { position: absolute; left: 64%; top: 50%; width: 20px; height: 20px; margin: -10px; border-radius: 50%; background: var(--ink); }
+.b .open .ends { display: flex; justify-content: space-between; }
+@keyframes bPill { 0%, 30% { opacity: 1; } 36%, 84% { opacity: 0; } 92%, 100% { opacity: 1; } }
+@keyframes bOpen { 0%, 30% { opacity: 0; transform: translateY(10px) scale(.95); } 36%, 84% { opacity: 1; transform: none; } 92%, 100% { opacity: 0; transform: translateY(10px) scale(.95); } }
+/* C — the right edge */
+.c .rail { position: absolute; right: 14px; top: 190px; bottom: 120px; width: 4px; border-radius: 2px; background: linear-gradient(0deg, var(--or) 55%, #2a3a4c 55%); }
+.c .rail i { position: absolute; left: 50%; bottom: 55%; width: 20px; height: 20px; margin: 0 0 -10px -10px; border-radius: 50%; background: var(--ink); box-shadow: 0 0 0 3px #080f1b; animation: cKnob 5s ease-in-out infinite; }
+.c .rail .tip { position: absolute; right: 22px; bottom: 55%; transform: translateY(50%); white-space: nowrap; padding: 6px 10px; border-radius: 10px; background: #0e1828f5; border: 1px solid #2c3b52; font: 500 12px 'SC Label'; letter-spacing: .1em; animation: cTip 5s ease-in-out infinite; }
+.c .rail .tip em { display: block; font-style: normal; color: var(--mu); font-size: 11px; letter-spacing: .04em; }
+.c .end { position: absolute; right: 6px; font: 600 9px 'SC Label'; letter-spacing: .1em; color: var(--mu); writing-mode: vertical-rl; }
+@keyframes cKnob { 0%, 20% { bottom: 40%; } 50%, 70% { bottom: 70%; } 100% { bottom: 40%; } }
+@keyframes cTip { 0%, 15% { opacity: 0; } 25%, 75% { opacity: 1; } 90%, 100% { opacity: 0; } }
+/* D — five skies */
+.d .steps { position: absolute; left: 12px; right: 12px; bottom: 80px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; padding: 6px; border-radius: 14px; background: #0e1828ee; border: 1px solid #2c3b52; }
+.d .s { display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 6px 0 5px; border-radius: 10px; font: 500 9.5px 'SC Label'; letter-spacing: .08em; color: var(--mu); text-transform: uppercase; }
+.d .s svg { width: 22px; height: 16px; }
+.d .s.on { background: #fa812722; color: var(--or); box-shadow: inset 0 0 0 1px #fa8127aa; }
+/* E — the star field itself */
+.e .field { position: absolute; left: 16px; right: 16px; bottom: 80px; height: 44px; border-radius: 14px; background: #0e1828ee; border: 1px solid #2c3b52; overflow: hidden; }
+.e .dots { position: absolute; inset: 0; }
+.e .dots span { position: absolute; border-radius: 50%; background: var(--ink); }
+.e .cover { position: absolute; top: 0; bottom: 0; left: 58%; right: 0; background: #0e1828d9; border-left: 2px solid var(--or); animation: eCover 6s ease-in-out infinite; }
+.e .read { position: absolute; left: 50%; bottom: 132px; transform: translateX(-50%); white-space: nowrap; font: 500 12px 'SC Label'; letter-spacing: .12em; }
+.e .read em { font-style: normal; color: var(--mu); letter-spacing: .04em; margin-left: 6px; }
+@keyframes eCover { 0%, 15% { left: 58%; } 45%, 65% { left: 82%; } 100% { left: 58%; } }
+.think { margin-top: 28px; max-width: 1200px; color: var(--mu); font-size: 14px; } .think b { color: var(--ink); }
+.tag { display: inline-block; margin-top: 6px; font: 500 11px 'SC Label'; letter-spacing: .12em; padding: 2px 7px; border-radius: 4px; border: 1px solid #2c3b52; color: var(--mu); }
+</style></head><body>
+<h1>The sky slider on Explore</h1>
+<p class="lead">Today it's a full-width slider above the tabs (SEE LESS ↔ SEE MORE) that dims when you're not using it. Four other ways to do the same job: tell the app how dark your sky is (and, past the end, binoculars). Each mock-up plays on a loop.</p>
+<div class="row" id="row"></div>
+<div class="think"><b>My pick: B.</b> Most of the time you don't touch the slider, so it shouldn't take a whole row of the screen. A small pill that names your sky keeps the setting visible, and one tap opens the full slider when you want it. <b>D</b> is the easiest to understand (five named skies, no fiddly dragging) but loses fine control. <b>C</b> frees the bottom completely and is a thumb's reach away, but it's less discoverable. <b>E</b> is the most fun: you literally see stars appear as you slide, but it's the biggest piece of chrome.</div>
+<template id="sky"><div class="stars"></div><div class="hz"></div><div class="ret"></div><div class="hdr"><b>SPACE COLLECTOR</b><i>☾ ⚙︎</i></div><div class="radar"></div><div class="tabs"><span>TONIGHT</span><b>EXPLORE</b><span>COLLECTION</span></div></template>
 <script>
-// The game's own numbers (js/sky-limit.js): sky brightness 17.0 (city) … 21.9 (pristine), stars to ~3.1 … 6.6 mag.
-const SB_MIN = 17, SB_MAX = 21.9;
-const starsLim = (sb) => { const t = (sb - SB_MIN) / (SB_MAX - SB_MIN); return 3.1 + t * 3.48 - Math.pow(t - .5, 2) * .25 + .06; };
-const count = (m) => Math.round(0.5 * 10 ** (0.5 * m + 0.6) / 50) * 50;
-const NAME = (sb) => (sb < 18.5 ? 'City' : sb < 19.9 ? 'Suburbs' : sb < 21.25 ? 'Countryside' : 'Dark site');
-const BINO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="6.5" cy="15" r="4"/><circle cx="17.5" cy="15" r="4"/><path d="M10.5 15h3M4 11.5 6 5h3l1 6M20 11.5 18 5h-3l-1 6"/></svg>';
-// A seeded sky: stars with magnitudes, a few satellites with theirs, and Neptune.
-function makeSky(seed) { let s = seed; const r = () => (s = (s * 16807) % 2147483647) / 2147483647;
-  const stars = Array.from({ length: 900 }, () => ({ x: r(), y: r(), m: 6.8 - Math.log10(1 + r() * 900) * 1.32 }));
-  const sats = Array.from({ length: 14 }, () => ({ x: r(), y: r() * .7, a: r() * 6.28, m: 2.5 + r() * 6.2 }));
-  return { stars, sats, nep: { x: .78, y: .32, m: 7.8 } }; }
-function draw(cv, sky, sb, bino) {
-  const w = cv.clientWidth, h = cv.clientHeight, d = Math.min(2, devicePixelRatio || 1); if (cv.width !== w * d) { cv.width = w * d; cv.height = h * d; }
-  const c = cv.getContext('2d'); c.setTransform(d, 0, 0, d, 0, 0);
-  const t = (sb - SB_MIN) / (SB_MAX - SB_MIN), g = c.createLinearGradient(0, 0, 0, h);
-  g.addColorStop(0, `rgb(${Math.round(30 - 22 * t)},${Math.round(38 - 24 * t)},${Math.round(58 - 32 * t)})`); g.addColorStop(1, `rgb(${Math.round(70 - 55 * t)},${Math.round(52 - 36 * t)},${Math.round(48 - 26 * t)})`);
-  c.fillStyle = g; c.fillRect(0, 0, w, h);
-  if (t > .55) { c.save(); c.globalAlpha = (t - .55) * .9; const mw = c.createLinearGradient(0, h * .9, w, h * .1); mw.addColorStop(.35, 'rgba(255,240,220,0)'); mw.addColorStop(.5, 'rgba(225,215,200,.28)'); mw.addColorStop(.65, 'rgba(255,240,220,0)'); c.fillStyle = mw; c.fillRect(0, 0, w, h); c.restore(); }
-  const L = starsLim(sb), sat = L - .5 + (bino ? 3 : 0);
-  for (const s of sky.stars) if (s.m <= L) { const a = Math.min(1, .25 + (L - s.m) * .45); c.fillStyle = `rgba(255,248,226,${a})`; c.beginPath(); c.arc(s.x * w, s.y * h, Math.max(.45, 1.7 - s.m * .2), 0, 6.283); c.fill(); }
-  for (const s of sky.sats) if (s.m <= sat) { const x = s.x * w, y = s.y * h; c.strokeStyle = s.m > L - .5 ? 'rgba(250,129,39,.55)' : 'rgba(255,242,179,.35)'; c.setLineDash([3, 5]); c.beginPath(); c.moveTo(x, y); c.lineTo(x + Math.cos(s.a) * 26, y + Math.sin(s.a) * 26); c.stroke(); c.setLineDash([]); c.fillStyle = s.m > L - .5 ? '#fa8127' : '#fff2b3'; c.beginPath(); c.arc(x, y, 2.1, 0, 6.283); c.fill(); }
-  if (bino && sky.nep.m <= L + 3) { const x = sky.nep.x * w, y = sky.nep.y * h; c.fillStyle = '#7fb0ff'; c.beginPath(); c.arc(x, y, 2.4, 0, 6.283); c.fill(); c.font = '600 10px Barlow Condensed, sans-serif'; c.fillText('NEPTUNE', x + 6, y + 3); }
-  c.fillStyle = '#05090f'; c.beginPath(); c.moveTo(0, h); for (let x = 0; x <= w; x += 8) c.lineTo(x, h - 10 - (Math.sin(x * .09) + Math.sin(x * .023) * 2) * 3 - ((x * 37) % 11)); c.lineTo(w, h); c.fill();
-}
-const readout = (el, sb, bino) => { const L = starsLim(sb); el.innerHTML = `<b>${NAME(sb)}${bino ? ' + binoculars' : ''}</b> · about ${count(L).toLocaleString()} stars${bino ? ', <b>fainter satellites</b>, and Uranus and Neptune' : sb > 21.25 ? ' and the Milky Way' : ''}.`; };
-// A slider helper: drag along el, value 0..1 of its width, with an optional overshoot.
-function drag(el, onMove, over = 0) {
-  const at = (e) => { const b = el.getBoundingClientRect(); return (e.clientX - b.left) / b.width; };
-  el.addEventListener('pointerdown', (e) => { el.setPointerCapture(e.pointerId); onMove(Math.max(0, Math.min(1 + over, at(e))), false); const mv = (ev) => onMove(Math.max(0, Math.min(1 + over, at(ev))), false); const up = (ev) => { onMove(Math.max(0, Math.min(1 + over, at(ev))), true); el.removeEventListener('pointermove', mv); el.removeEventListener('pointerup', up); }; el.addEventListener('pointermove', mv); el.addEventListener('pointerup', up); });
-}
-
-// A: track 0..0.8 = sky, 0.8..1 = binoculars (snaps to its middle).
-{ const root = document.getElementById('A'), cv = root.querySelector('canvas'), sky = makeSky(3), tr = root.querySelector('.ta'), rd = root.querySelector('.read');
-  tr.querySelector('.thumb').innerHTML = BINO;
-  let v = .5;
-  const set = (x, done) => { v = x > .84 ? (done ? .9 : x) : Math.min(x, .8); const bino = v > .8, sb = SB_MIN + Math.min(1, v / .8) * (SB_MAX - SB_MIN);
-    tr.classList.toggle('bino', bino); tr.querySelector('.thumb').style.left = `${v * 100}%`; tr.querySelector('.fill').style.width = `${Math.min(v, .8) * 100}%`; tr.setAttribute('aria-valuetext', NAME(sb) + (bino ? ' plus binoculars' : ''));
-    draw(cv, sky, sb, bino); readout(rd, sb, bino); };
-  drag(tr, set); tr.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight') set(v + .05, true); if (e.key === 'ArrowLeft') set(v - .05, true); }); set(.5, true); addEventListener('resize', () => set(v, true)); }
-
-// B: 0..1 = sky; dragging past 1 stretches (up to 1.18); release past 1.1 locks binoculars on.
-{ const root = document.getElementById('B'), cv = root.querySelector('canvas'), sky = makeSky(3), tr = root.querySelector('.tb'), rd = root.querySelector('.read');
-  tr.querySelector('.thumb').innerHTML = BINO;
-  let v = .5, bino = false;
-  const set = (x, done) => { const over = Math.max(0, x - 1);
-    if (done) { if (over > .1) bino = true; else if (x < .97) bino = false; v = Math.min(1, x); } else v = x;
-    const vis = bino && done ? 1.12 : v > 1 ? 1 + over * .55 : v;
-    tr.classList.toggle('pulling', !done && over > .02); tr.classList.toggle('bino', bino);
-    tr.querySelector('.rail').style.width = `${Math.max(100, vis * 100)}%`; tr.querySelector('.fill').style.width = `${Math.min(1, v) * 100}%`;
-    const ext = tr.querySelector('.ext'); ext.style.left = '100%'; ext.style.width = `${(bino ? .12 : Math.max(0, vis - 1)) * 100}%`; ext.style.opacity = bino || over > .02 ? 1 : 0;
-    tr.querySelector('.thumb').style.left = `${(bino && done ? 1.12 : vis) * 100}%`;
-    const sb = SB_MIN + Math.min(1, v) * (SB_MAX - SB_MIN); draw(cv, sky, sb, bino || over > .1); readout(rd, sb, bino || over > .1); };
-  drag(tr, set, .2); set(.5, true); addEventListener('resize', () => set(v, true)); }
-
-// C: five stops.
-{ const root = document.getElementById('C'), cv = root.querySelector('canvas'), sky = makeSky(3), tc = root.querySelector('.tc'), rd = root.querySelector('.read');
-  const IC = { city: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 21V11h4v10zM7 21V6h5v15zM13 21V9h4v12zM18 21v-7h4v7z" opacity=".9"/><circle cx="9.5" cy="9" r=".8" fill="#080f1b"/><circle cx="15" cy="12" r=".8" fill="#080f1b"/></svg>',
-    town: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M4 20v-8l8-6 8 6v8z"/><path d="M10 20v-5h4v5"/></svg>',
-    country: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 3 2 13h3l-3 6h10l-3-6h3zM17 6l-4 7h2.5L13 18h8l-2.5-5H21z"/></svg>',
-    dark: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M1 20 8 8l4 6 3-4 8 10z"/><circle cx="18" cy="5" r="1"/><circle cx="12" cy="3" r=".7"/><circle cx="5" cy="5" r=".7"/></svg>' };
-  const STOPS = [['City', 18.0, IC.city], ['Suburbs', 19.2, IC.town], ['Country', 20.6, IC.country], ['Dark', 21.8, IC.dark], ['Binoculars', 21.8, BINO, 1]];
-  tc.innerHTML = STOPS.map(([n, , ic, b], i) => `<button type="button" role="radio" class="${b ? 'b' : ''}" data-i="${i}"><span class="dot">${ic}</span>${n}</button>`).join('');
-  let cur = 1; const set = (i) => { cur = i; tc.querySelectorAll('button').forEach((b, k) => { b.classList.toggle('on', k === i); b.setAttribute('aria-checked', k === i); }); const [, sb, , bino] = STOPS[i]; draw(cv, sky, sb, !!bino); readout(rd, sb, !!bino); };
-  tc.addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) set(+b.dataset.i); });
-  drag(tc, (x) => set(Math.max(0, Math.min(4, Math.round(x * 5 - .5)))));
-  set(1); addEventListener('resize', () => set(cur)); }
-
-// D: darkness slider + a lens that adds a striped boost past the fill.
-{ const root = document.getElementById('D'), cv = root.querySelector('canvas'), sky = makeSky(3), td = root.querySelector('.td'), tr = td.querySelector('.t'), lens = td.querySelector('.lens'), rd = root.querySelector('.read');
-  lens.innerHTML = BINO; let v = .5, bino = false;
-  const set = () => { const sb = SB_MIN + v * (SB_MAX - SB_MIN); td.classList.toggle('bino', bino); lens.setAttribute('aria-pressed', bino);
-    tr.querySelector('.thumb').style.left = `${v * 100}%`; tr.querySelector('.fill').style.width = `${v * 100}%`; const bo = tr.querySelector('.boost'); bo.style.left = `${v * 100}%`; bo.style.width = `${Math.min(30, (1 - v) * 100 + 14)}%`;
-    draw(cv, sky, sb, bino); readout(rd, sb, bino); };
-  drag(tr, (x) => { v = Math.min(1, x); set(); }); lens.addEventListener('click', () => { bino = !bino; set(); }); set(); addEventListener('resize', set); }
+const ICON = {
+  city: '<svg viewBox="0 0 22 16"><path d="M2 15V7h4v8M7 15V3h5v12M13 15V8h3v7M17 15V5h3v10" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>',
+  sub: '<svg viewBox="0 0 22 16"><path d="M3 15V9l4-3 4 3v6M12 15v-5l3.5-3 3.5 3v5" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="18" cy="3" r="1" fill="currentColor"/></svg>',
+  country: '<svg viewBox="0 0 22 16"><path d="M1 15c4-5 7-6 10-4s6 0 10-4" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="5" cy="4" r="1" fill="currentColor"/><circle cx="12" cy="2" r="1" fill="currentColor"/><circle cx="17" cy="6" r=".9" fill="currentColor"/></svg>',
+  dark: '<svg viewBox="0 0 22 16"><g fill="currentColor"><circle cx="3" cy="4" r="1"/><circle cx="8" cy="9" r="1.2"/><circle cx="12" cy="3" r="1"/><circle cx="16" cy="11" r="1"/><circle cx="19" cy="5" r="1.2"/><circle cx="6" cy="14" r=".8"/><circle cx="13" cy="14" r=".8"/></g></svg>',
+  bino: '<svg viewBox="0 0 22 16"><g fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="6" cy="10" r="4"/><circle cx="16" cy="10" r="4"/><path d="M10 10h2M4 6l2-4h3l1 4M18 6l-2-4h-3l-1 4"/></g></svg>',
+};
+const dots = Array.from({ length: 60 }, (_, i) => { const x = (i * 37 % 100), y = 8 + (i * 53 % 84), r = 0.6 + (i % 5) * 0.35; return `<span style="left:${x}%;top:${y}%;width:${r * 2}px;height:${r * 2}px;opacity:${0.4 + (i % 4) * 0.15}"></span>`; }).join('');
+const OPTS = [
+  ['a', 'A · Today', 'A full-width slider above the tabs with SEE LESS / SEE MORE at its ends. It dims when idle and brightens under your finger. Always there, always taking a row.', 'small', `<div class="bar"><span class="lbl">See less</span><span class="tr"><i></i></span><span class="lbl">See more</span></div>`],
+  ['b', 'B · A pill that opens', 'A small pill above the tabs says your sky: "✦ SUBURBS · 1,900 stars". Tap it and it grows into the full slider with the place names at its ends; it folds back a moment after you let go. Frees the bottom of the sky most of the time.', 'small', `<div class="pill">✦ SUBURBS <em>1,900 stars</em></div><div class="open"><div class="t"><span>HOW DARK IS YOUR SKY?</span><em>COUNTRYSIDE</em></div><div class="tr"><i></i></div><div class="ends"><span class="lbl">City</span><span class="lbl">Binoculars</span></div></div>`],
+  ['c', 'C · Up the right edge', 'A thin vertical rail on the right edge, where your thumb already is. Slide up for darker skies (more stars), down for brighter. A label pops out beside the knob while you drag, then hides. The bottom of the screen is clear.', 'medium', `<span class="end" style="top:170px">MORE</span><span class="end" style="bottom:96px">LESS</span><div class="rail"><i></i><span class="tip">COUNTRYSIDE<em>about 2,600 stars</em></span></div>`],
+  ['d', 'D · Five skies', 'Five named steps instead of a slider: City, Suburbs, Countryside, Dark site, Binoculars, each with a little picture. One tap and you’re set; no guessing where to drag. Loses the fine tuning in between.', 'small', `<div class="steps">${[['city', 'City'], ['sub', 'Suburbs', 1], ['country', 'Country'], ['dark', 'Dark site'], ['bino', 'Binocs']].map(([k, n, on]) => `<div class="s${on ? ' on' : ''}">${ICON[k]}${n}</div>`).join('')}</div>`],
+  ['e', 'E · Slide the stars in', 'The slider is a strip of stars. Everything left of the orange line is what you can see; drag the line right and more stars switch on behind it. The sky name and star count sit above it. Shows what the setting does, not just a number.', 'medium', `<div class="read">SUBURBS<em>about 1,900 stars</em></div><div class="field"><div class="dots">${dots}</div><div class="cover"></div></div>`],
+];
+const tpl = document.getElementById('sky').innerHTML;
+for (const [k, h, p, eff, inner] of OPTS) document.getElementById('row').insertAdjacentHTML('beforeend', `<div class="opt"><h2>${h}</h2><p>${p}<br><span class="tag">${eff}</span></p><div class="ph ${k}">${tpl}${inner}</div></div>`);
 </script>
+</body></html>
