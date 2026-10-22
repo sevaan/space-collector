@@ -6,10 +6,12 @@ export const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../..');
 export const APP = 'http://localhost:8765/';
 const PHONE_UA = 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1';
 const PAD_UA = 'Mozilla/5.0 (iPad; CPU OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1';
-// App Store sizes: iPhone 6.3" 1206 × 2622 (402 × 874 @3x); iPad 13" 2064 × 2752 (1032 × 1376 @2x).
+// App Store sizes: iPhone 6.3" 1206 × 2622 (402 × 874 @3x); iPad 13" 2064 × 2752 (1032 × 1376 @2x); iPhone Duo inner
+// display in landscape 2853 × 2007 (951 × 669 @3x), its status bar an 84pt strip down the trailing edge (safeR).
 export const DEVICES = {
   phone: { viewport: { width: 402, height: 874 }, deviceScaleFactor: 3, isMobile: true, hasTouch: true, userAgent: PHONE_UA, safeTop: 54, safeBottom: 30 },
   pad: { viewport: { width: 1032, height: 1376 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true, userAgent: PAD_UA, safeTop: 24, safeBottom: 20 },
+  duo: { viewport: { width: 951, height: 669 }, deviceScaleFactor: 3, isMobile: true, hasTouch: true, userAgent: PHONE_UA, safeTop: 0, safeBottom: 20, safeR: 84 },
 };
 // Toronto-ish, so the sky and the Tonight plan are real for a place with a big audience.
 export const PLACE = { latitude: 44.3, longitude: -78.3, tz: 'America/Toronto' };
@@ -36,9 +38,9 @@ export async function setup(browser, kind, { when, video = null, extra = [], her
   const d = DEVICES[kind], at = when ? new Date(when) : nextEvening();
   const ctx = await browser.newContext({ viewport: d.viewport, deviceScaleFactor: d.deviceScaleFactor, isMobile: d.isMobile, hasTouch: d.hasTouch, userAgent: d.userAgent,
     serviceWorkers: 'block', timezoneId: PLACE.tz, geolocation: { latitude: PLACE.latitude, longitude: PLACE.longitude }, permissions: ['geolocation'], ...(video ? { recordVideo: video } : {}) });
-  await ctx.addInitScript(([t, bt]) => { const add = () => { const s = document.createElement('style');
-    s.textContent = `:root, html.standalone { --safe-top: ${t}px !important; --safe-bottom: ${bt}px !important; } #peak-toggle { display: none !important; }`; document.head.append(s); };
-    if (document.head) add(); else document.addEventListener('DOMContentLoaded', add); }, [d.safeTop, d.safeBottom]);
+  await ctx.addInitScript(([t, bt, r]) => { const add = () => { const s = document.createElement('style');
+    s.textContent = `:root, html.standalone { --safe-top: ${t}px !important; --safe-bottom: ${bt}px !important;${r ? ` --safe-r: ${r}px !important;` : ''} } #peak-toggle { display: none !important; }`; document.head.append(s); };
+    if (document.head) add(); else document.addEventListener('DOMContentLoaded', add); }, [d.safeTop, d.safeBottom, d.safeR ?? 0]);
   // A handle on the app's state, for aiming (capture only; nothing is saved).
   await ctx.route(/\/js\/main\.js/, async (route) => { const r = await route.fetch(); await route.fulfill({ response: r, body: (await r.text()) + '\n;window.__store = { state, sky };', headers: { ...r.headers(), 'content-type': 'text/javascript' } }); });
   // Log the app's sounds with their wall-clock time (the promo puts them in its soundtrack at the same moments).

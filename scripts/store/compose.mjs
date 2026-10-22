@@ -1,7 +1,9 @@
 // App Store captures, step 2 of 3: the captioned screenshots. Takes store/raw/<device>-<n>-<scene>.png (from
 // capture.mjs), sets each under a short caption on the night-sky background, adds an iOS status bar, and writes
 // store/appstore/<device>/<n>-<scene>.png at the exact App Store size. Edit CAPTIONS to change the words.
-// Usage: node scripts/store/compose.mjs [phone|pad|all]
+// Usage: node scripts/store/compose.mjs [phone|pad|duo|all]
+// duo (2026-10-22): the iPhone Duo's inner display on its side, 2853 × 2007: the caption in a band across the top, the
+// screen below with the Duo's status bar drawn in its 84pt strip down the right-hand edge.
 import { chromium } from 'playwright';
 import { readdirSync, mkdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -19,12 +21,45 @@ export const CAPTIONS = {
   collection: ['Stations · rockets · planets · stars', 'Build your collection'],
   patches: ['Free to play · no ads', 'Earn patches. Find the secrets.'],
 };
-const SIZE = { phone: [1206, 2622], pad: [2064, 2752] };
+const SIZE = { phone: [1206, 2622], pad: [2064, 2752], duo: [2853, 2007] };
 const which = process.argv[2] ?? 'all', RAW = join(ROOT, 'store/raw');
 const data = (f, type) => `data:${type};base64,${readFileSync(f).toString('base64')}`; // inline: a page from setContent can't load file:// URLs
 const font = (f) => data(join(ROOT, 'fonts', f), 'font/ttf');
 
-function page(kind, img, [eyebrow, line]) {
+const ICONS = `<svg viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx=".7" fill="#fff"/><rect x="5" y="5.5" width="3" height="6.5" rx=".7" fill="#fff"/><rect x="10" y="3" width="3" height="9" rx=".7" fill="#fff"/><rect x="15" y="0" width="3" height="12" rx=".7" fill="#fff"/></svg>
+    <svg viewBox="0 0 16 12"><path d="M8 11.5 5.6 8.9a3.4 3.4 0 0 1 4.8 0zM3.4 6.7a6.5 6.5 0 0 1 9.2 0l-1.3 1.3a4.6 4.6 0 0 0-6.6 0zM1 4.3a9.9 9.9 0 0 1 14 0l-1.3 1.3a8 8 0 0 0-11.4 0z" fill="#fff"/></svg>
+    <svg viewBox="0 0 27 13"><rect x=".5" y=".5" width="23" height="12" rx="3.5" fill="none" stroke="#fff" stroke-opacity=".45"/><rect x="2" y="2" width="20" height="9" rx="2" fill="#fff"/><rect x="25" y="4.5" width="1.6" height="4" rx=".8" fill="#fff" fill-opacity=".45"/></svg>`;
+const STARS = (W, H) => Array.from({ length: 110 }, (_, i) => { const x = (i * 9301 + 49297) % 233280 / 233280, y = (i * 7919 + 1543) % 104729 / 104729, r = i % 11 === 0 ? 3 : 1.6; return `<i style="left:${(x * W).toFixed(0)}px;top:${(y * H * 0.7).toFixed(0)}px;width:${r}px;height:${r}px;opacity:${(0.25 + (i % 5) * 0.12).toFixed(2)}"></i>`; }).join('');
+// The iPhone Duo on its side: a wide canvas, so the caption runs across the top and the screen sits under it, centred.
+// The Duo's status bar is a strip down the trailing edge (84pt of the 951pt screen): the time, then the icons, stacked.
+function duoPage(img, [eyebrow, line]) {
+  const [W, H] = SIZE.duo, shotW = 2150, shotH = Math.round(shotW * 669 / 951), top = 430, scale = shotW / 2853, strip = 84 * 3 * scale;
+  return `<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face { font-family: D; src: url('${font('RussoOne-Regular.ttf')}'); }
+@font-face { font-family: L; src: url('${font('BarlowCondensed-Medium.ttf')}'); }
+html, body { margin: 0; width: ${W}px; height: ${H}px; overflow: hidden; }
+body { background: radial-gradient(70% 60% at 50% 0%, #17304d 0%, #0b1628 45%, #060b15 100%); color: #fff2b3; font-family: L; position: relative; }
+.stars i { position: absolute; border-radius: 50%; background: #fff2b3; }
+.cap { position: absolute; left: 200px; right: 200px; top: 120px; text-align: center; }
+.eb { font: 500 44px/1 L; letter-spacing: .26em; text-transform: uppercase; color: #fa8127; }
+.hl { margin-top: 30px; font: 400 104px/1.04 D; letter-spacing: -.01em; white-space: nowrap; }
+.dev { position: absolute; left: ${(W - shotW) / 2}px; top: ${top}px; width: ${shotW}px; height: ${shotH}px; border-radius: 70px; overflow: hidden;
+  box-shadow: 0 0 0 11px #1b2738, 0 0 0 13px #34465a, 0 40px 120px rgba(0,0,0,.6), 0 0 180px rgba(250,129,39,.12); }
+.dev img { width: 100%; height: 100%; display: block; }
+.sbar { position: absolute; top: 0; bottom: 0; right: 0; width: ${strip}px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 34px 0 40px; box-sizing: border-box; font: 600 34px/1 -apple-system, 'SF Pro Text', system-ui, sans-serif; color: #fff; }
+.sbar .ic { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+.sbar svg { height: 22px; }
+</style></head><body>
+<div class="stars">${STARS(W, H)}</div>
+<div class="cap"><div class="eb">${eyebrow}</div><div class="hl">${line}</div></div>
+<div class="dev"><img src="${data(img, 'image/png')}">
+  <div class="sbar"><span>9:41</span><span class="ic">${ICONS}</span></div>
+</div></body></html>`;
+}
+
+function page(kind, img, caption) {
+  if (kind === 'duo') return duoPage(img, caption);
+  const [eyebrow, line] = caption;
   const [W, H] = SIZE[kind], pad = kind === 'pad';
   const shotW = pad ? 1660 : 1000, top = pad ? 600 : 590, radius = pad ? 64 : 84, sb = pad ? 48 : 162; // status bar height in the shot
   const scale = shotW / W;
