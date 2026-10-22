@@ -1,17 +1,17 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.966';
+import { extinction } from './sky-limit.js?v=0.1.967';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.966';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.967';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.966';
-import { createCloudGL } from './clouds-gl.js?v=0.1.966';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.967';
+import { createCloudGL } from './clouds-gl.js?v=0.1.967';
 // Cloud colours by light: sunlit tops, shadowed bellies, and the horizon haze they melt into (0–1 RGB).
 const CLOUD_LIGHT = {
   day: { lit: [1, 1, 1], shade: [0.62, 0.68, 0.77], haze: [0.82, 0.87, 0.93] },
   dusk: { lit: [1, 0.8, 0.68], shade: [0.36, 0.33, 0.42], haze: [0.62, 0.5, 0.52] },
   night: { lit: [0.22, 0.25, 0.31], shade: [0.1, 0.12, 0.16], haze: [0.14, 0.15, 0.2] },
 };
-import { TIER_INFO } from './rarity.js?v=0.1.966';
+import { TIER_INFO } from './rarity.js?v=0.1.967';
 
 const RAD = Math.PI / 180;
 const SECRET_PX = { santa: 24, roadster: 12.4, voyager: 14.5, voyager2: 14.5, pioneer10: 11.7, pioneer11: 11.7, newhorizons: 6.4, arecibo: 6.9, halley: 8.6, sputnik: 11.2, laika: 13.3, wow: 9.8 };
@@ -1000,6 +1000,11 @@ export class SkyView {
       // Deep-space spots (Voyagers, Pioneers, New Horizons, the Wow! signal) are invisible until they’re in your
       // circle, so you stumble on them (2026-10-09, Sevaan). Found ones show quietly there too, never elsewhere.
       const hidden = ['voyager', 'voyager2', 'pioneer10', 'pioneer11', 'newhorizons', 'wow', 'arecibo', 'halley'].includes(s.kind);
+      if (s.xray && !s.inCircle) { // testing: where it is, found or not (Show items that aren't visible)
+        ctx.save(); ctx.strokeStyle = s.color ?? '#e2b53c'; ctx.globalAlpha = s.done ? .45 : .9; ctx.setLineDash([3, 3]); ctx.lineWidth = 1.2; ctx.beginPath(); ctx.arc(p.x, p.y, 9, 0, Math.PI * 2); ctx.stroke();
+        ctx.setLineDash([]); ctx.fillStyle = s.color ?? '#e2b53c'; ctx.font = '600 11px "SC Label", "Arial Narrow", sans-serif'; ctx.textAlign = 'left'; ctx.fillText(`${s.title ?? s.kind}${s.done ? ' · found' : ''}`, p.x + 13, p.y + 4); ctx.restore();
+        if (hidden || s.done) continue;
+      }
       if (hidden && !s.inCircle) continue;
       if (s.done) continue; // once found, a secret leaves the sky for good (2026-10-09, Sevaan)
       // In the circle a secret grows to about the size a locked-on satellite or rocket stage is drawn (~16 px across, 2026-10-18 second pass: 26 still read too big;
