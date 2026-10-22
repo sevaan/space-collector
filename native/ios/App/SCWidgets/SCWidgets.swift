@@ -258,7 +258,7 @@ struct Medium: View {
     let plan: Plan; let m: Moment; let now: Date
     var body: some View {
         let main: Pass? = { switch m { case .next(let p), .upNow(let p): return p; default: return nil } }()
-        let after = plan.list.filter { $0.startDate > (main?.startDate ?? now) && $0.key != main?.key }.prefix(3)
+        let after = plan.list.filter { $0.endDate > now && $0.key != main?.key }.prefix(3) // what's next tonight, before or after the main pick (2026-10-22: rows only after the headliner left the list empty)
         HStack(spacing: 13) {
             NextCatch(m: m, compact: true).frame(width: 140)
             Rectangle().fill(Color.line).frame(width: 1)
