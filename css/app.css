@@ -2019,3 +2019,49 @@ body.around-open #nav-more .nm-set { transform: translateY(-14px); opacity: 0; }
 .sky-plus-line .ico-svg { color: var(--gold); display: grid; } .sky-plus-line .ico-svg svg { width: 16px; height: 16px; }
 .sky-plus-line span:nth-child(2) { flex: 1; } .sky-plus-line b { color: var(--gold); font-size: 16px; }
 body.night .sky-plus-line { border-color: #5a1d18; background: #2a0d0a; color: #ff7f70; } body.night .sky-plus-line .ico-svg, body.night .sky-plus-line b { color: #ff7f70; }
+/* Lights out (2026-10-21): the sweep layer for turning red night mode on/off; its bottom edge is a bright red line. */
+.night-sweep { position: fixed; left: 0; right: 0; top: 0; height: 0; overflow: visible; z-index: 2147483646; pointer-events: none; background: #ff1a00; mix-blend-mode: multiply; }
+.night-sweep::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: #ff5a3c; box-shadow: 0 0 14px 3px #ff3a1e; mix-blend-mode: screen; }
+/* Sheet folds into the bell (2026-10-21): the backdrop fades as the card flies; the time sits beside the bell. */
+#pr-sheet.folding { background: transparent !important; transition: background .3s; }
+.pr-fold-time { position: fixed; z-index: 90; transform: translateY(-50%); padding: 4px 8px; border-radius: 8px; background: #0e1828f0; border: 1px solid #fa812766; color: #fa8127; font: 600 12px/1 var(--label); letter-spacing: .08em; pointer-events: none; animation: prTime 2.4s ease forwards; }
+.pr-fold-time.left { transform: translate(-100%, -50%); }
+@keyframes prTime { 0% { opacity: 0; } 12%, 78% { opacity: 1; } 100% { opacity: 0; } }
+body.night .pr-fold-time { color: #ff7f70; border-color: #5a1d18; background: #1a0909f0; }
+/* Scrub the night (2026-10-21): bars grow in on first view; a line + label follow the finger. */
+.ev-chart { position: relative; touch-action: pan-y; cursor: ew-resize; height: 56px; }
+.ev-chart i { transform-origin: bottom; }
+.ev-chart.pre i { transform: scaleY(0); }
+.ev-chart.grow i { animation: evGrow .5s cubic-bezier(.2,.9,.3,1.2) both; animation-delay: calc(var(--i) * 35ms); }
+@keyframes evGrow { from { transform: scaleY(0); } }
+.ev-chart i.sel { background: #fff2b3; } .ev-chart i.pk.sel { background: #ffb27a; }
+.ev-scrub { position: absolute; top: -26px; bottom: 0; width: 1.5px; margin-left: -.75px; background: #fff2b3; pointer-events: none; }
+.ev-scrub[hidden] { display: none; }
+.ev-scrub span { position: absolute; top: 0; left: 50%; transform: translateX(-50%); white-space: nowrap; padding: 3px 7px; border-radius: 7px; background: #fff2b3; color: #0b1018; font: 600 12px/1 var(--label); letter-spacing: .04em; }
+body.night .ev-scrub, body.night .ev-scrub span { background: #ff7f70; } body.night .ev-chart i.sel { background: #ff7f70; }
+@media (prefers-reduced-motion: reduce) { .ev-chart.pre i { transform: none; } .ev-chart.grow i { animation: none; } }
+/* Tonight lights like a fuse (2026-10-21): rows light in turn as a spark runs down the line; a NOW line creeps with the clock. */
+.od-tl { position: relative; }
+.od-tl.fuse .it { animation: odLight .45s ease both; animation-delay: var(--d, 0ms); }
+.od-tl.fuse .it::before { animation: odDot .6s ease both; animation-delay: var(--d, 0ms); }
+@keyframes odLight { from { opacity: .3; } }
+@keyframes odDot { 0% { box-shadow: 0 0 0 0 #fa8127; } 30% { box-shadow: 0 0 0 6px #fa812755, 0 0 14px #fa8127; } }
+.od-spark { position: absolute; left: 4px; width: 9px; height: 9px; border-radius: 50%; background: #fff2b3; box-shadow: 0 0 10px 3px #fa8127, 0 0 22px 6px #fa812766; pointer-events: none; z-index: 2; }
+.od-now { position: absolute; left: 0; right: 0; height: 0; border-top: 1.5px solid #fa8127; z-index: 1; opacity: 0; transition: top 1s ease, opacity .4s; pointer-events: none; }
+.od-now.in, .od-tl:not(.fuse) .od-now { opacity: 1; }
+.od-now span { position: absolute; left: 20px; top: -9px; padding: 1px 6px; border-radius: 4px; background: #fa8127; color: #0b1018; font: 700 10px/1.4 var(--label); letter-spacing: .14em; text-transform: uppercase; }
+body.night .od-now { border-color: #ff6a55; } body.night .od-now span { background: #ff6a55; color: #120606; } body.night .od-spark { background: #ff7f70; box-shadow: 0 0 10px 3px #ff3a1e; }
+/* Into your binder (2026-10-21): the new card flying into the Collection tab, and the tab's +1. */
+.binder-fly { position: fixed; z-index: 2147483000; pointer-events: none; transform-origin: 50% 50%; }
+.binder-fly > * { width: 100%; height: 100%; transform: none !important; backface-visibility: visible !important; }
+.binder-plus { position: fixed; z-index: 2147483000; transform: translate(-50%, -100%); padding: 2px 8px; border-radius: 10px; background: #fa8127; color: #0b1018; font: 700 13px/1.3 var(--label); pointer-events: none; animation: binderPlus 1.1s ease-out forwards; }
+@keyframes binderPlus { 0% { opacity: 0; transform: translate(-50%, -60%) scale(.6); } 20% { opacity: 1; transform: translate(-50%, -110%) scale(1.05); } 75% { opacity: 1; } 100% { opacity: 0; transform: translate(-50%, -190%); } }
+body.night .binder-plus { background: #ff6a55; color: #120606; }
+.binder-fly .card { font-size: var(--cf); }
+/* Every card turns over (2026-10-21): a fan of your cards over a dim, flipping in a wave to the new back. */
+.back-fan { position: fixed; inset: 0; z-index: 95; display: grid; place-items: center; background: rgba(4, 8, 15, .72); animation: bfIn .3s ease both; }
+.back-fan.out { animation: bfOut .35s ease forwards; } @keyframes bfIn { from { opacity: 0; } } @keyframes bfOut { to { opacity: 0; } }
+.bf-slot { grid-area: 1 / 1; animation: bfDeal .45s cubic-bezier(.2,.9,.3,1.1) both; }
+.bf-slot:nth-child(2) { animation-delay: 60ms; } .bf-slot:nth-child(3) { animation-delay: 120ms; } .bf-slot:nth-child(4) { animation-delay: 180ms; } .bf-slot:nth-child(5) { animation-delay: 240ms; }
+@keyframes bfDeal { from { opacity: 0; translate: 0 60px; } }
+.bf-slot .card { box-shadow: 0 14px 30px rgba(0,0,0,.55); }

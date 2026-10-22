@@ -1,30 +1,30 @@
-import { pullToClose } from './pull-close.js?v=0.1.964';
-import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.964';
-import { computeStats, statsHtml } from './stats.js?v=0.1.964';
-import { nightKey } from './observation.js?v=0.1.964';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.964';
-import { sfx } from './sfx.js?v=0.1.964';
-import { expandFacts } from './catalog-facts.js?v=0.1.964';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.964';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.964';
-import { ticket } from './toast.js?v=0.1.964';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.964';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.964';
-import { cardArt } from './art.js?v=0.1.964';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.964';
-import { applyBack } from './card-backs.js?v=0.1.964';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.964';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.964';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.964';
-import { STORIES } from './stories.js?v=0.1.964';
-import { loadConstellations, conList } from './constellations.js?v=0.1.964';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.964';
-import { eventBadges, nextEvent } from './events.js?v=0.1.964';
-import { shareCardEl } from './share-card.js?v=0.1.964';
-import { forgetSighting } from './cloud-backup.js?v=0.1.964';
-import { allSightings, deleteSighting } from './store.js?v=0.1.964';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.964';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.964';
+import { pullToClose } from './pull-close.js?v=0.1.965';
+import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.965';
+import { computeStats, statsHtml } from './stats.js?v=0.1.965';
+import { nightKey } from './observation.js?v=0.1.965';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.965';
+import { sfx } from './sfx.js?v=0.1.965';
+import { expandFacts } from './catalog-facts.js?v=0.1.965';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.965';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.965';
+import { ticket } from './toast.js?v=0.1.965';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.965';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.965';
+import { cardArt } from './art.js?v=0.1.965';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.965';
+import { applyBack } from './card-backs.js?v=0.1.965';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.965';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.965';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.965';
+import { STORIES } from './stories.js?v=0.1.965';
+import { loadConstellations, conList } from './constellations.js?v=0.1.965';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.965';
+import { eventBadges, nextEvent } from './events.js?v=0.1.965';
+import { shareCardEl } from './share-card.js?v=0.1.965';
+import { forgetSighting } from './cloud-backup.js?v=0.1.965';
+import { allSightings, deleteSighting } from './store.js?v=0.1.965';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.965';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.965';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -170,7 +170,38 @@ function miniFace(tile, c) {
   const face = miniCard(c, { sightings: state.sightingsByKey.get(c.key) ?? [], ownedKeys: c.natural === 'constellation' || c.partners ? ownedKeys() : undefined, status, locked: !tile.classList.contains('is-owned') });
   tile.classList.add('card-tile--mini');
   tile.replaceChildren(...(badge ? [badge] : []), face);
+  stickerOn(tile, c);
   queueMiniScale();
+}
+// Press and hold to peek (2026-10-21, slick idea 11): hold a tile and the card lifts out big while the grid blurs, with
+// a soft tap; let go and it drops back into its slot. The tap that ends a peek doesn't open the viewer.
+let peekEl = null;
+const noScroll = (e) => { if (peekEl) e.preventDefault(); };
+function holdToPeek(tile, c) {
+  let timer = 0, x0 = 0, y0 = 0;
+  const cancel = () => clearTimeout(timer);
+  tile.addEventListener('pointerdown', (e) => { if (e.button > 0) return; x0 = e.clientX; y0 = e.clientY; cancel(); timer = setTimeout(() => openPeek(tile, c), 380); });
+  tile.addEventListener('pointermove', (e) => { if (!peekEl && Math.hypot(e.clientX - x0, e.clientY - y0) > 8) cancel(); });
+  for (const ev of ['pointerup', 'pointercancel', 'pointerleave']) tile.addEventListener(ev, () => { cancel(); if (peekEl) { closePeek(); setTimeout(() => { tile._peeked = false; }, 450); } }); // the click after a peek is swallowed; if none comes, the next tap still works
+  tile.addEventListener('contextmenu', (e) => e.preventDefault());
+}
+function openPeek(tile, c) {
+  if (peekEl || $('viewer').open) return;
+  tile._peeked = true; feel('light');
+  const r = tile.getBoundingClientRect(), W = Math.min(innerWidth - 48, 320), scale = r.width / W;
+  const wrap = document.createElement('div'); wrap.className = 'peek';
+  const card = renderCard(c, tile.classList.contains('is-owned') ? { sightings: state.sightingsByKey.get(c.key) ?? [], ownedKeys: ownedKeys() } : {});
+  card.style.fontSize = `${W / 28}px`; wrap.append(card); document.body.append(wrap); document.body.classList.add('peeking');
+  const cr = card.getBoundingClientRect();
+  peekEl = { wrap, card, from: `translate(${r.left + r.width / 2 - (cr.left + cr.width / 2)}px, ${r.top + r.height / 2 - (cr.top + cr.height / 2)}px) scale(${scale})` };
+  card.animate([{ transform: peekEl.from }, { transform: 'scale(1.03)', offset: .8 }, { transform: 'none' }], { duration: 300, easing: 'cubic-bezier(.2,.9,.3,1)' });
+  document.addEventListener('touchmove', noScroll, { passive: false });
+}
+function closePeek() {
+  const p = peekEl; if (!p) return; peekEl = null;
+  document.body.classList.remove('peeking'); document.removeEventListener('touchmove', noScroll);
+  p.card.animate([{ transform: 'none' }, { transform: p.from }], { duration: 220, easing: 'cubic-bezier(.5,0,.7,.4)', fill: 'forwards' }).finished.then(() => p.wrap.remove(), () => p.wrap.remove());
+  p.wrap.classList.add('out');
 }
 let cascadeLeft = 24; // the first screenful cascades in on open (2026-10-08 polish)
 const observer = new IntersectionObserver((entries) => {
@@ -183,7 +214,8 @@ const observer = new IntersectionObserver((entries) => {
     const dup = (state.titleCount?.get(titleFor(c)) ?? 0) > 1, yr = c.launch ? String(c.launch).slice(0, 4) : '';
     const tile = renderCardTile(c, { sightings: state.sightingsByKey.get(c.key) ?? [], ownedKeys: c.natural === 'constellation' ? ownedKeys() : undefined, sub: dup ? [yr, c.id && /^\d+$/.test(String(c.id)) ? `#${c.id}` : ''].filter(Boolean).join(' · ') : '' });
     miniFace(tile, c); // the tile is the real card, shrunk, with the collected line over its footer (2026-10-13, Sevaan)
-    tile.addEventListener('click', () => openViewer(state.list.findIndex((card) => card.key === c.key), tile.getBoundingClientRect()));
+    tile.addEventListener('click', (e) => { if (tile._peeked) { tile._peeked = false; e.preventDefault(); return; } openViewer(state.list.findIndex((card) => card.key === c.key), tile.getBoundingClientRect()); });
+    holdToPeek(tile, c);
     for (const im of tile.querySelectorAll('img[loading="lazy"]')) im.loading = 'eager'; // the tile is near the view already; lazy waited for the top window (off-screen)
     target.replaceChildren(tile);
     fitTileName(tile);
@@ -291,6 +323,32 @@ function closeStats() {
 $('stats-close')?.addEventListener('click', closeStats);
 pullToClose($('stats-view'), () => { const d = $('stats-view'); if (statsFromSettings) { statsFromSettings = false; d.addEventListener('close', () => { if (EMBED) window.parent.postMessage({ sc: 'explore', more: true }, location.origin); }, { once: true }); } d.close(); }, document.querySelector('#stats-view .stats-body') ?? $('stats-view')); // pull it down to close (2026-10-21)
 $('stats-view').addEventListener('cancel', (e) => { e.preventDefault(); closeStats(); }); // Escape slides it down too
+// What changed since you were here (2026-10-21, slick idea 10): the Collection remembers when you last left it and your
+// XP then (localStorage colVisit). Coming back after a night out, the XP counts up from where it was, the bar slides
+// from there, "+N XP since last time" shows on the rank card, and cards caught since wear a NEW sticker until you open
+// them (colPeeled), when it peels off.
+let lbLast = null, since = (() => { try { return JSON.parse(localStorage.getItem('colVisit') ?? 'null'); } catch { return null; } })();
+let peeled = (() => { try { return new Set(JSON.parse(localStorage.getItem('colPeeled') ?? '[]')); } catch { return new Set(); } })();
+const firstSeen = (c) => { const ss = state.sightingsByKey?.get(c.key); return ss?.length ? Math.min(...ss.map((x) => x.time)) : null; };
+const isFreshTile = (c) => since?.at != null && (firstSeen(c) ?? 0) > since.at && !peeled.has(c.key);
+function saveVisit() { if (!lbLast) return; try { localStorage.setItem('colVisit', JSON.stringify({ at: Date.now(), xp: lbLast.xp })); } catch {} }
+function stickerOn(tile, c) { if (!isFreshTile(c) || tile.querySelector('.tile-new')) return; const t = document.createElement('span'); t.className = 'tile-new'; t.textContent = 'NEW'; tile.append(t); }
+function peelSticker(c) {
+  if (!c || peeled.has(c.key) || !isFreshTile(c)) return; peeled.add(c.key);
+  try { localStorage.setItem('colPeeled', JSON.stringify([...peeled].slice(-400))); } catch {}
+  for (const t of document.querySelectorAll(`.tile-slot[data-key="${CSS.escape(c.key)}"] .tile-new`)) { t.classList.add('peel'); setTimeout(() => t.remove(), 700); }
+}
+function replaySince() {
+  const prev = since; since = (() => { try { return JSON.parse(localStorage.getItem('colVisit') ?? 'null'); } catch { return null; } })() ?? prev;
+  for (const slot of document.querySelectorAll('#grid .tile-slot[data-key]')) { const c = state.byKey.get(slot.dataset.key), tile = slot.firstElementChild; if (c && tile) stickerOn(tile, c); }
+  if (!lbLast || since?.xp == null || lbLast.xp <= since.xp || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const gain = lbLast.xp - since.xp, xpEl = document.querySelector('#logbook .lb-xp b'), bar = document.querySelector('#logbook .lb-bar i');
+  const span = lbLast.next ? lbLast.next - lbLast.at : 1, from = Math.max(0, Math.min(1, (since.xp - lbLast.at) / span));
+  if (bar) { bar.style.transition = 'none'; bar.style.width = `${(from * 100).toFixed(1)}%`; void bar.offsetWidth; bar.style.transition = 'width 1.1s cubic-bezier(.3,.7,.3,1)'; bar.style.width = `${(lbLast.into * 100).toFixed(1)}%`; }
+  if (xpEl) { const t0 = performance.now(), a = since.xp, b = lbLast.xp; const step = (t) => { const k = Math.min(1, (t - t0) / 1100), e = 1 - (1 - k) ** 3; xpEl.textContent = Math.round(a + (b - a) * e).toLocaleString(); if (k < 1) requestAnimationFrame(step); }; requestAnimationFrame(step); }
+  const top = document.querySelector('#logbook .lb-pic'); if (top && !top.querySelector('.lb-since')) { const t = document.createElement('span'); t.className = 'lb-since'; t.textContent = `+${gain.toLocaleString()} XP since last time`; top.append(t); setTimeout(() => t.classList.add('out'), 4200); setTimeout(() => t.remove(), 4800); }
+  feel('light');
+}
 function renderLogbook() {
   const info = (k) => { const c = state.byKey.get(k); return c ? { tier: c.tier, tier0: c.tier0, type: c.type, owner: c.owner, launch: c.launch, natural: c.natural, con: c.con, reunion: c.reunion, role: c.type === 'rocket-body' ? 'stage' : 'payload' } : null; };
   const p = progress(state.raw, info, { constellations: conList(), deals: readDeals(), albums: state.albums, carry: xpCarry(state.raw, info, { constellations: conList(), deals: readDeals() }) });
@@ -339,6 +397,7 @@ function renderLogbook() {
     <div class="lb-foot"><div class="lb-head">EVENTS ${ev.length ? `<span>${ev.length} badge${ev.length === 1 ? '' : 's'}</span>` : ''}</div>
     <div class="lb-events">${ev.map((e) => `<span class="ui-chip ui-chip--earned">☄ <b>${esc(e.name.replace(/\s*\d{4}$/, ''))}</b></span>`).join('')}${nx ? `<span class="ui-chip"><span class="ui-chip__k">Next:</span><b>${esc(nx.name.replace(/\s*\d{4}$/, ''))}</b><span class="ui-chip__k">· ${new Date(nx.start + 30 * 3600e3).toLocaleDateString([], { month: 'short', day: 'numeric' })}</span></span>` : ''}</div></div>`;
   state.achievements = p.achievements;
+  lbLast = { xp: p.xp, into, at: p.rank.at, next: p.rank.next };
   // D (design/collection-rank.html, 2026-10-21, Sevaan): once the full card scrolls away, a slim row with the same rank
   // slides down under the header and stays; scroll back up and the full card is there again.
   const slim = $('lb-slim');
@@ -675,6 +734,7 @@ async function openViewer(i, from = null) {
   if (i < 0 || i >= state.list.length || opening) return;
   askMotion();
   state.index = i; state.preview = false;
+  peelSticker(state.list[i]);
   lastFocus = document.activeElement;
   showCard(); feel('select');
   // Wait a moment for the big picture so the card doesn’t arrive blank and fill in a second later
@@ -925,9 +985,10 @@ if (EMBED) {
     }
     if (e.data.sc === 'refresh') refreshSightings();
     // Hidden behind the sky, its animations (twinkles, shimmers, drift) pause (2026-10-16 perf sweep).
-    if (e.data.sc === 'away') { clearTimeout(awayT); document.documentElement.classList.add('away'); for (const id of ['viewer', 'stats-view', 'patch-view']) { const d = $(id); if (d?.open) { d.classList.remove('leaving'); d.close(); } } if (returnView) backFromBorrowed(); } // leaving the Collection closes whatever was open in it (bug hunt 2026-10-17: after Show me the viewer stayed open, clipped under the header)
+    if (e.data.sc === 'away') { saveVisit(); clearTimeout(awayT); document.documentElement.classList.add('away'); for (const id of ['viewer', 'stats-view', 'patch-view']) { const d = $(id); if (d?.open) { d.classList.remove('leaving'); d.close(); } } if (returnView) backFromBorrowed(); } // leaving the Collection closes whatever was open in it (bug hunt 2026-10-17: after Show me the viewer stayed open, clipped under the header)
     if ((e.data.sc === 'open' || e.data.sc === 'show') && nightPending != null) { setNight(nightPending); nightPending = null; }
     if ((e.data.sc === 'open' || e.data.sc === 'show') && awayDirty) { awayDirty = false; if (state.ready) render(); }
+    if (e.data.sc === 'open' || e.data.sc === 'show') { setTimeout(() => { if (state.ready) replaySince(); }, 480); }
     if (e.data.sc === 'open' || e.data.sc === 'show') { clearTimeout(awayT); awayT = setTimeout(() => document.documentElement.classList.remove('away'), 460); } // after the slide-up lands (2026-10-17 perf): restarting every twinkle and shimmer mid-slide hitched
     if (e.data.sc === 'tonight') { state.plan = readPlan(); if (state.ready && state.view === 'find' && !state.query) { findSuggest = null; renderFind(); } if (state.ready && ['owned', 'discover'].includes(state.view)) { if (document.documentElement.classList.contains('away')) awayDirty = true; else render(); } } // hidden: render when shown (jank playtest 2026-10-17)
   });
@@ -1134,3 +1195,5 @@ document.addEventListener('click', (e) => {
   b.setAttribute('aria-expanded', String(open)); b.textContent = open ? 'Less' : 'Missions ›';
   try { localStorage.setItem('lbOpen', open ? '1' : '0'); } catch {}
 });
+// The standalone Collection page (not inside Explore) remembers the visit when it's left.
+if (window.parent === window) addEventListener('pagehide', saveVisit);
