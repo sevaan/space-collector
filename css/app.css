@@ -2092,3 +2092,13 @@ body.night .binder-plus { background: #ff6a55; color: #120606; }
 .ar-card small { font: 500 11.5px/1.2 var(--label); color: var(--muted); }
 .ar-card em { position: absolute; top: 10px; right: 10px; padding: 1px 5px; border-radius: 4px; background: var(--tier); color: #0b1018; font: 700 9.5px/1.3 var(--label); letter-spacing: .1em; font-style: normal; }
 body.night .ar-facing { color: #ff7f70; } body.night .ar-card em { background: #ff6a55; color: #120606; }
+/* All around you · Tonight panel (2026-10-21): one box, four parts with thin dividers. */
+#around .ar-chips { display: grid; grid-template-columns: repeat(var(--n, 4), minmax(0, 1fr)); gap: 0; border: 1px solid #22304a; border-radius: 14px; background: linear-gradient(#101b2d, #0b1524); overflow: hidden; }
+#around .ap { display: grid; align-content: start; gap: 4px; padding: 10px 9px 11px; min-width: 0; }
+#around .ap + .ap { border-left: 1px solid #1d2a3c; }
+#around .ap-k { display: flex; align-items: center; gap: 5px; font: 600 9.5px/1 var(--label); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); white-space: nowrap; overflow: hidden; }
+#around .ap-k .ico { width: 12px; height: 12px; color: var(--gold); flex: none; } #around .ap-moon { width: 12px; height: 12px; flex: none; }
+#around .ap b { font: 400 clamp(16px, 5.2vw, 21px)/1.05 var(--display); color: var(--ink, #fff2b3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#around .ap b i { font-style: normal; font-size: 11px; margin-left: 2px; color: var(--muted); }
+#around .ap small { font: 500 11px/1.2 var(--label); color: var(--muted); text-wrap: balance; }
+body.night #around .ap-k .ico { color: #ff7f70; }
