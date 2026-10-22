@@ -14,7 +14,7 @@ TARGET = {  # max momentary LUFS before LEVEL
     'r_legend': -16, 'r_epic': -17, 'shiny': -17, 'rankup': -17, 'r_rare': -18, 'complete': -18, 'secret': -18, 'ufo': -18, 'fossil': -18,
     'r_uncommon': -19, 'levelup': -19, 'mission': -19, 'r_common': -20, 'welcome': -20, 'collect': -20,
     'patch': -21, 'arrive': -22, 'stamp': -22, 'seen': -23, 'toast': -23, 'flip': -24, 'plane': -24, 'coinroll': -24,
-    'lock': -37, 'swipe': -26, 'rattle': -26, 'page': -27, 'step': -27, 'toggle': -28, 'xp': -34, # xp and lock half as loud (2026-10-20, Sevaan)
+    'lock': -43, 'swipe': -26, 'rattle': -26, 'page': -27, 'step': -27, 'toggle': -28, 'xp': -34, # xp half as loud (2026-10-20), lock halved again 2026-10-21 (Sevaan)
 }
 LEVEL_DB = 20 * math.log10(0.25)
 
