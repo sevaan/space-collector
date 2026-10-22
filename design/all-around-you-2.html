@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>All around you, redesigned</title>
+<style>
+@font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf'); }
+@font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf'); }
+:root { --ink: #fff2b3; --mu: #bdbea9; --or: #fa8127; --gold: #f2c14e; --bg: #080f1b; --u: #5fd08a; --r: #6aa8ff; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #04080f; color: var(--ink); font: 15px/1.4 system-ui, sans-serif; padding: 26px 20px 60px; }
+h1 { font: 400 26px 'SC Display'; margin: 0 0 4px; } .lead { color: var(--mu); margin: 0 0 22px; max-width: 1100px; }
+.row { display: flex; gap: 26px; flex-wrap: wrap; align-items: flex-start; }
+.opt { width: 320px; } .opt h2 { font: 500 15px 'SC Label'; letter-spacing: .14em; text-transform: uppercase; color: var(--or); margin: 0 0 4px; }
+.opt > p { color: var(--mu); margin: 0 0 12px; font-size: 13.5px; min-height: 116px; }
+.ph { position: relative; width: 320px; height: 640px; border-radius: 30px; overflow: hidden; border: 1px solid #1a2436; background: var(--bg); }
+.hdr { height: 84px; padding: 30px 16px 0; display: flex; justify-content: space-between; position: relative; }
+.hdr::after { content: ''; position: absolute; left: 16px; right: 16px; bottom: 0; height: 3px; border-top: 1px solid #3a4c66; border-bottom: 1px solid #3a4c66; }
+.hdr b { display: block; font: 400 15px 'SC Display'; } .hdr small { font: 500 9px 'SC Label'; letter-spacing: .22em; color: var(--mu); } .hdr i { font-style: normal; font-size: 18px; letter-spacing: 12px; }
+.lab { font: 500 11px 'SC Label'; letter-spacing: .18em; text-transform: uppercase; color: var(--or); margin: 14px 16px 6px; }
+.sky { background: linear-gradient(#0a1322, #17283f); }
+.thumb { display: block; width: 34px; height: 34px; background-color: #0e1828; border-radius: 8px; background-size: cover; background-position: center; border: 1.5px solid #e9dfb8; flex: none; }
+.dot { position: absolute; width: 3px; height: 3px; border-radius: 50%; background: #fff2b3aa; }
+.nm { font: 500 13px 'SC Label'; } .sm { font: 500 11px 'SC Label'; color: var(--mu); }
+/* A: the strip as a big window */
+.a .win { position: relative; height: 330px; margin: 0; overflow: hidden; }
+.a .ground { position: absolute; left: 0; right: 0; bottom: 0; height: 44px; background: #0b1a12; }
+.a .ground::before { content: ''; position: absolute; left: 0; right: 0; top: -6px; height: 8px; background: radial-gradient(ellipse at 20% 100%, #0b1a12 60%, transparent 61%) 0 0 / 60px 8px repeat-x; }
+.a .compass { position: absolute; left: 0; right: 0; bottom: 8px; display: flex; justify-content: space-around; font: 500 12px 'SC Label'; letter-spacing: .14em; color: var(--mu); } .a .compass b { color: var(--or); font-weight: 500; }
+.a .facing { position: absolute; left: 50%; top: 10px; transform: translateX(-50%); padding: 4px 10px; border-radius: 99px; background: #0e1828cc; font: 500 12px 'SC Label'; letter-spacing: .14em; }
+.a .pin { position: absolute; display: flex; align-items: center; gap: 6px; transform: translate(-17px, -17px); }
+.a .pin .thumb { width: 30px; height: 30px; } .a .pin.new .thumb { border-color: var(--u); box-shadow: 0 0 10px #5fd08a88; }
+.a .pin span:not(.thumb) { padding: 2px 6px; border-radius: 6px; background: #080f1bcc; font: 500 11.5px 'SC Label'; }
+.a .cards { display: flex; gap: 8px; padding: 0 16px; overflow: hidden; }
+.a .mc { flex: none; width: 92px; padding: 6px; border-radius: 10px; background: #0e1828; border: 1px solid #22304a; }
+.a .mc .th { height: 62px; border-radius: 6px; background-size: cover; background-position: center; } .a .mc b { display: block; font: 500 12px 'SC Label'; margin-top: 4px; } .a .mc small { font: 500 10.5px 'SC Label'; color: var(--mu); }
+.a .facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; padding: 0 16px; }
+.fact { padding: 6px 7px; border-radius: 10px; border: 1px solid #22304a; background: #0e1828; font: 500 12.5px/1.2 'SC Label'; } .fact small { display: block; font-size: 9px; letter-spacing: .14em; color: var(--mu); text-transform: uppercase; }
+/* B: the sky dome */
+.b .dome { position: relative; width: 280px; height: 280px; margin: 16px auto 4px; border-radius: 50%; background: radial-gradient(circle, #17283f, #0a1322 70%); border: 1px solid #3a4c66; }
+.b .dome::before, .b .dome::after { content: ''; position: absolute; border-radius: 50%; border: 1px solid #1f2f45; }
+.b .dome::before { inset: 47px; } .b .dome::after { inset: 94px; }
+.b .wedge { position: absolute; left: 50%; top: 0; width: 0; height: 140px; transform: translateX(-50%); }
+.b .wedge::before { content: ''; position: absolute; left: -46px; top: 0; border-left: 46px solid transparent; border-right: 46px solid transparent; border-top: 140px solid #fa812714; }
+.b .cd { position: absolute; font: 500 12px 'SC Label'; letter-spacing: .14em; color: var(--mu); transform: translate(-50%, -50%); } .b .cd.f { color: var(--or); }
+.b .pin { position: absolute; transform: translate(-50%, -50%); }
+.b .pin .thumb { width: 28px; height: 28px; border-radius: 50%; }
+.b .pin.new .thumb { border-color: var(--u); }
+.b .head { text-align: center; font: 400 26px 'SC Display'; } .b .head small { display: block; font: 500 10px 'SC Label'; letter-spacing: .24em; color: var(--mu); }
+.li { display: flex; align-items: center; gap: 10px; padding: 7px 16px; border-bottom: 1px solid #1d2a3c; }
+.li .ar { width: 22px; text-align: center; color: var(--or); font: 400 15px 'SC Display'; } .li .tx { flex: 1; } .li .dir { font: 500 12px 'SC Label'; color: var(--mu); letter-spacing: .1em; }
+/* C: guided, one at a time */
+.c .big { position: relative; height: 260px; display: grid; place-items: center; }
+.c .ring { position: absolute; width: 210px; height: 210px; border-radius: 50%; border: 1px solid #3a4c66; }
+.c .ring::before { content: ''; position: absolute; inset: 22px; border-radius: 50%; border: 1px dashed #22304a; }
+.c .arrow { position: relative; width: 120px; height: 120px; display: grid; place-items: center; transform: rotate(-55deg); }
+.c .arrow::before { content: ''; width: 0; height: 0; border-left: 26px solid transparent; border-right: 26px solid transparent; border-bottom: 70px solid var(--or); filter: drop-shadow(0 0 12px #fa812788); }
+.c .card { margin: 0 16px; padding: 12px; border-radius: 16px; background: #0e1828; border: 1px solid #5fd08a66; display: flex; gap: 12px; align-items: center; }
+.c .card .thumb { width: 64px; height: 84px; border-radius: 8px; }
+.c .card .tier { font: 500 11px 'SC Label'; letter-spacing: .14em; color: var(--u); } .c .card b { display: block; font: 400 20px 'SC Display'; } .c .card .how { font: 500 14px 'SC Label'; }
+.c .dots { display: flex; justify-content: center; gap: 6px; margin: 12px 0 4px; } .c .dots i { width: 7px; height: 7px; border-radius: 50%; background: #34466a; } .c .dots i.on { background: var(--or); }
+.c .go { margin: 12px 16px 0; height: 46px; border-radius: 23px; border: 1.5px solid var(--or); color: var(--or); display: grid; place-items: center; font: 500 13px 'SC Label'; letter-spacing: .2em; }
+/* D: the horizon ring */
+.d .rose { position: relative; width: 290px; height: 290px; margin: 14px auto 6px; }
+.d .rose .o { position: absolute; inset: 30px; border-radius: 50%; border: 1.5px solid #3a4c66; }
+.d .rose .t { position: absolute; left: 50%; top: 50%; width: 1px; height: 10px; background: #5e728c; transform-origin: 0 0; }
+.d .rose .c { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; }
+.d .rose .c b { font: 400 34px 'SC Display'; } .d .rose .c small { display: block; font: 500 10px 'SC Label'; letter-spacing: .24em; color: var(--mu); }
+.d .bar { position: absolute; left: 50%; top: 50%; width: 6px; border-radius: 3px; transform-origin: 3px 0; }
+.d .lbl { position: absolute; transform: translate(-50%, -50%); text-align: center; font: 500 11px 'SC Label'; } .d .lbl small { display: block; color: var(--mu); font-size: 9.5px; }
+.think { margin-top: 28px; max-width: 1100px; color: var(--mu); font-size: 14px; } .think b { color: var(--ink); }
+.tag { display: inline-block; margin-top: 6px; font: 500 11px 'SC Label'; letter-spacing: .12em; padding: 2px 7px; border-radius: 4px; border: 1px solid #2c3b52; color: var(--mu); }
+</style></head><body>
+<h1>All around you, redesigned</h1>
+<p class="lead">The page the radar opens. Today: a big heading number, a strip of the horizon, four boxes and two lists. Four fresh takes on the same job — <b>what's worth looking at right now, and which way</b> — each shown at night with the Moon, Saturn and two new satellites up, the phone facing southeast.</p>
+<div class="row">
+
+<div class="opt"><h2>A · A big window</h2><p>The strip grows into the page: a tall window onto your horizon, the way you face in the middle, and everything worth a look shown as its own card picture on the sky, not a dot. The big number goes; "Facing SE" floats at the top. Under it, the same cards as a row you can swipe, then three small facts.</p><span class="tag">medium</span>
+<div class="ph a"><div class="hdr"><div><b>ALL AROUND YOU</b><small>WHAT'S UP, AND WHICH WAY</small></div><i>☾✕</i></div>
+  <div class="win sky"><span class="facing">FACING SE · 137°</span>
+    <i class="dot" style="left:40px;top:70px"></i><i class="dot" style="left:250px;top:50px"></i><i class="dot" style="left:180px;top:120px"></i><i class="dot" style="left:90px;top:200px"></i>
+    <div class="pin" style="left:120px;top:190px"><span class="thumb" style="background-image:url('../assets/art/cards/planet-saturn.webp')"></span><span>Saturn</span></div>
+    <div class="pin" style="left:210px;top:175px"><span class="thumb" style="background-image:url('../assets/art/cards/moon.webp')"></span><span>Moon</span></div>
+    <div class="pin new" style="left:70px;top:110px"><span class="thumb" style="background-image:url('../assets/art/cards/cz-2.webp')"></span><span>CZ-2D stage</span></div>
+    <div class="pin new" style="left:250px;top:95px"><span class="thumb" style="background-image:url('../assets/art/cards/classic-satellite-1.webp')"></span><span>Kosmos 1796</span></div>
+    <div class="ground"><div class="compass"><span>E</span><b>SE</b><span>S</span></div></div></div>
+  <div class="lab">Worth a look</div>
+  <div class="cards"><div class="mc"><div class="th" style="background-image:url('../assets/art/cards/cz-2.webp')"></div><b>CZ-2D stage</b><small>Ahead · high</small></div><div class="mc"><div class="th" style="background-image:url('../assets/art/cards/classic-satellite-1.webp')"></div><b>Kosmos 1796</b><small>Right · halfway</small></div><div class="mc"><div class="th" style="background-image:url('../assets/art/cards/planet-saturn.webp')"></div><b>Saturn</b><small>Ahead · low</small></div></div>
+  <div class="lab">Tonight</div>
+  <div class="facts"><div class="fact"><small>Up now</small>9</div><div class="fact"><small>Moon</small>81% · 36°</div><div class="fact"><small>Sky</small>Clear till 2</div></div>
+</div></div>
+
+<div class="opt"><h2>B · The whole sky as a dome</h2><p>The sky from above: the rim is the horizon, the middle is straight overhead, and it turns with you (where you face is always at the top, under an orange wedge). Things worth a look sit at their real spot as card pictures. It's the only view that also shows what's right above you. A list under it says which way to turn.</p><span class="tag">medium</span>
+<div class="ph b"><div class="hdr"><div><b>ALL AROUND YOU</b><small>WHAT'S UP, AND WHICH WAY</small></div><i>☾✕</i></div>
+  <div class="dome"><div class="wedge"></div>
+    <span class="cd f" style="left:140px;top:12px">SE</span><span class="cd" style="left:270px;top:140px">SW</span><span class="cd" style="left:140px;top:268px">NW</span><span class="cd" style="left:10px;top:140px">NE</span>
+    <div class="pin" style="left:120px;top:62px"><span class="thumb" style="background-image:url('../assets/art/cards/planet-saturn.webp')"></span></div>
+    <div class="pin" style="left:190px;top:70px"><span class="thumb" style="background-image:url('../assets/art/cards/moon.webp')"></span></div>
+    <div class="pin new" style="left:150px;top:118px"><span class="thumb" style="background-image:url('../assets/art/cards/cz-2.webp')"></span></div>
+    <div class="pin new" style="left:220px;top:170px"><span class="thumb" style="background-image:url('../assets/art/cards/classic-satellite-1.webp')"></span></div>
+    <i class="dot" style="left:60px;top:90px"></i><i class="dot" style="left:100px;top:200px"></i><i class="dot" style="left:200px;top:230px"></i></div>
+  <div class="head">SE<small>FACING · 137°</small></div>
+  <div class="li"><span class="ar">↑</span><span class="thumb" style="background-image:url('../assets/art/cards/cz-2.webp')"></span><span class="tx"><span class="nm">CZ-2D stage</span><br><span class="sm">New · high, almost overhead</span></span></div>
+  <div class="li"><span class="ar">↗</span><span class="thumb" style="background-image:url('../assets/art/cards/classic-satellite-1.webp')"></span><span class="tx"><span class="nm">Kosmos 1796</span><br><span class="sm">New · halfway up</span></span><span class="dir">S</span></div>
+</div></div>
+
+<div class="opt"><h2>C · One at a time</h2><p>Guided: one big arrow that turns with your phone, pointing at the best thing to look at now, and its card under it with plain words ("Turn right a little, then look halfway up"). Swipe for the next one. The least to read; the most like being shown. Pairs well with the hero on the Sky page.</p><span class="tag">medium</span>
+<div class="ph c"><div class="hdr"><div><b>ALL AROUND YOU</b><small>WHAT'S UP, AND WHICH WAY</small></div><i>☾✕</i></div>
+  <div class="big"><div class="ring"></div><div class="arrow"></div></div>
+  <div class="card"><span class="thumb" style="background-image:url('../assets/art/cards/classic-satellite-1.webp')"></span><span><span class="tier">◆ RARE · NEW TO YOU</span><b>Kosmos 1796</b><span class="how">Turn left, then look halfway up</span></span></div>
+  <div class="dots"><i class="on"></i><i></i><i></i><i></i></div>
+  <div class="go">⌖  AIM AT IT</div>
+  <div class="lab" style="margin-top:18px">Also up</div>
+  <div class="li"><span class="thumb" style="background-image:url('../assets/art/cards/planet-saturn.webp')"></span><span class="tx"><span class="nm">Saturn</span><br><span class="sm">Ahead · low</span></span></div>
+</div></div>
+
+<div class="opt"><h2>D · A compass ring</h2><p>A real compass: the ring turns with you, your heading in the middle. Each thing worth a look is a bar pointing out from the ring in its direction — the longer the bar, the higher it is in the sky — with its name at the end. Reads at a glance outside: which way, and how high.</p><span class="tag">small</span>
+<div class="ph d"><div class="hdr"><div><b>ALL AROUND YOU</b><small>WHAT'S UP, AND WHICH WAY</small></div><i>☾✕</i></div>
+  <div class="rose"><div class="o"></div>
+    <div class="c"><div><b>SE</b><small>FACING · 137°</small></div></div>
+    <div class="bar" style="background:var(--gold);height:40px;transform:translate(-3px,-145px) rotate(0deg)"></div>
+    <div class="bar" style="background:var(--u);height:64px;transform:translate(-30px,-150px) rotate(-12deg)"></div>
+    <div class="bar" style="background:#fff2b3;height:44px;transform:translate(70px,-125px) rotate(32deg)"></div>
+    <div class="bar" style="background:var(--u);height:52px;transform:translate(110px,-60px) rotate(68deg)"></div>
+    <div class="lbl" style="left:145px;top:-2px;color:var(--gold)">Saturn<small>low</small></div>
+    <div class="lbl" style="left:88px;top:-14px;color:var(--u)">CZ-2D<small>high</small></div>
+    <div class="lbl" style="left:232px;top:28px">Moon<small>halfway</small></div>
+    <div class="lbl" style="left:282px;top:118px;color:var(--u)">Kosmos<small>halfway</small></div>
+    <span class="lbl" style="left:145px;top:268px;color:var(--mu)">NW</span><span class="lbl" style="left:20px;top:145px;color:var(--mu)">NE</span><span class="lbl" style="left:272px;top:180px;color:var(--mu)">SW</span></div>
+  <div class="li"><span class="ar">↑</span><span class="tx"><span class="nm">CZ-2D stage</span><br><span class="sm">New · high · ahead</span></span><span class="dir">SE</span></div>
+  <div class="li"><span class="ar">→</span><span class="tx"><span class="nm">Kosmos 1796</span><br><span class="sm">New · halfway up</span></span><span class="dir">SW</span></div>
+</div></div>
+
+</div>
+<div class="think"><b>My pick: A.</b> It keeps what's working (the horizon strip, turning with you, tilting) but makes it the page, and uses the card pictures so you can tell at a glance what each thing is and whether it's new. <b>C</b> is the most helpful for a beginner; <b>B</b> shows overhead but is harder to match to the real sky; <b>D</b> is the quickest read but the least pretty.</div>
+</body></html>
