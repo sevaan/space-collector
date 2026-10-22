@@ -131,3 +131,6 @@ body.night .rv-chip--reunion { color: #ff7f70; border-color: #ff7f7066; }
 #reveal img { -webkit-user-drag: none; user-select: none; -webkit-touch-callout: none; pointer-events: none; }
 /* The reveal's top row keeps clear of the iPhone Duo's side status column (2026-10-22, found on the Duo simulator: the ✕ sat under it). */
 #reveal #rv-top { left: calc(16px + var(--safe-l, 0px)); right: calc(16px + var(--safe-r, 0px)); }
+/* 2026-10-22 (Sevaan: the reveal card sat lower than the Collection viewer's): the card's top sits where the viewer's does
+   (safe-top + 92px: its ✕ row, padding and slot), moving up from the centred spot, never down, so short screens stay centred. */
+@media (max-width: 699px) { #reveal, #reveal.has-rank { --rv-y: min(calc((var(--rv-top) - var(--rv-bot)) / 2), calc(var(--safe-top, 0px) + 92px + var(--ch, 39.2) * var(--cf) / 2 - 50%)); } } /* phones; iPad keeps both cards centred */

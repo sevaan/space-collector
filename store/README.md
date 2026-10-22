@@ -24,7 +24,7 @@ cp store/appstore/duo/[1-6]-*.png ~/Desktop/"Space Collector App Store/iPhone Du
 ```
 The Duo set uses the Duo's own layouts: 951 × 669 @3x with its 84pt status strip on the right faked as `--safe-r`
 (common.mjs `DEVICES.duo`), Tonight as a book (the Tonight tab, captured first, in the evening), the shiny Hubble and
-Saturn open beside the grid in the Collection. The weather is blocked (`clear`) so a far-off date never reads "Overcast".
+Saturn open beside the grid in the Collection. The weather is blocked (`clear`, all three sets since 2026-10-22) so a far-off date never reads "Overcast".
 compose.mjs puts the caption in a band across the top and the screen under it, with the time and icons drawn in the
 status strip. `--when` matters: the hero is the ISS only if it has a high pass that night (check with any pass
 predictor, or try a date and read the `aim:` line). Same captions and order as the phone set.

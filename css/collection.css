@@ -796,7 +796,7 @@ dialog[open] { padding-left: var(--safe-l) !important; padding-right: var(--safe
      of cards). A card opens on the bottom page, 20px below the fold (the middle of the screen); the grid keeps the top
      page, its tabs no longer pinned, and can scroll its last row up there. */
   body:has(#viewer.docked[open]) main { padding-bottom: calc(50dvh + 20px) !important; }
-  body:has(#viewer.docked[open]) :is(.collection-tabs, .collection-tools) { position: static; }
+  body:has(#viewer.docked[open]) :is(.collection-tabs, .collection-tools) { position: relative; top: auto; } /* relative, not static: their ::before backdrops must stay on them, not cover the page (iPad store shot 2026-10-22) */
   #viewer.docked { top: calc(50dvh - 20px); bottom: 0; left: 0; right: 0; padding: 40px var(--safe-r) 0 var(--safe-l) !important; }
   /* The card on the left of its page, what goes with it (passes, history, share) beside it; the ✕ in the corner. */
   #viewer.docked .viewer-header { position: absolute; top: 40px; right: calc(4px + var(--safe-r)); width: auto; height: 44px; padding: 0; z-index: 2; }

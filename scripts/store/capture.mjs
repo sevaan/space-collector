@@ -17,7 +17,7 @@ const OUT = join(ROOT, 'store/raw'); mkdirSync(OUT, { recursive: true });
 
 for (const kind of which === 'all' ? Object.keys(DEVICES) : [which]) {
   const b = await webkit.launch();
-  const { ctx, p, errs } = await setup(b, kind, { when, heroIss: true, ...(kind === 'duo' ? { clear: true } : {}) });
+  const { ctx, p, errs } = await setup(b, kind, { when, heroIss: true, clear: true });
   const w = (ms) => p.waitForTimeout(ms), shot = (n) => p.screenshot({ path: join(OUT, `${kind}-${n}.png`) });
   const duo = kind === 'duo';
   // 1 · Tonight: the daily TONIGHT notice opens the plan for the night (the Duo shows the Tonight tab as a book, later)
