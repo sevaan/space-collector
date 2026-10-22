@@ -3,7 +3,7 @@
 // play sound before one), loops, dips under card reveals, and pauses when the app is hidden.
 // iPhone Safari ignores an audio element’s volume, so the level goes through Web Audio (a gain node). The page’s
 // audio session is "ambient", so the ring/silent switch mutes it and it never stops the player’s own music.
-import { audioCtx } from './audio-ctx.js?v=0.1.997';
+import { audioCtx } from './audio-ctx.js?v=0.1.998';
 const SRC = 'assets/audio/permafrost.m4a', LEVEL = 0.15; // halved 2026-10-11 (Sevaan)
 let ctx = null, el = null, gain = null, node = null, playing = false;
 
@@ -86,8 +86,11 @@ export function musicAway(hidden) {
   // A quick fade, never a hard cut (2026-10-21, Sevaan: a beep/click on swiping out of the app was the gain jumping to 0
   // mid-wave); the element pauses once it's silent.
   if (hidden) { if (away) return; away = true; wasPlaying = wasPlaying || playing; playing = false;
-    try { if (gain && ctx) { const t = ctx.currentTime; gain.gain.cancelScheduledValues(t); gain.gain.setValueAtTime(gain.gain.value, t); gain.gain.linearRampToValueAtTime(0, t + 0.06); } } catch {}
-    setTimeout(() => { if (away) try { el?.pause(); } catch {} }, 80); return; }
+    try { if (gain && ctx) { const t = ctx.currentTime; gain.gain.cancelScheduledValues(t); gain.gain.setValueAtTime(gain.gain.value, t); gain.gain.linearRampToValueAtTime(0, t + 0.03); } } catch {}
+    // Then stop the audio ourselves, while the page still runs (2026-10-21, Sevaan: the beep came back on the website).
+    // If iPhone cuts a playing context when the page is frozen, its last few milliseconds of sound repeat as a short
+    // tone; a context we've already suspended has nothing left to repeat. Coming back resumes it (startMusic/audioCtx).
+    setTimeout(() => { if (!away) return; try { el?.pause(); } catch {} try { if (ctx?.state === 'running') ctx.suspend().catch(() => {}); } catch {} }, 40); return; }
   if (!away) return; away = false;
   if (!wasPlaying || !musicOn()) return;
   wasPlaying = false; startMusic();

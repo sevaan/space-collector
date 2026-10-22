@@ -1558,3 +1558,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - 2026-10-21 (Sevaan): the in-shadow chip reads 'SATELLITES BACK 3:40 AM' (was 'Nothing lit right now Back at… · See the plan', which cut off); 'NO MORE SATELLITES TONIGHT' likewise.
 - 2026-10-21 (Sevaan): 'Red mode after dark' removed (row, autoNight).
 - 2026-10-21 (Sevaan): segmented choices: each button has its own edge, the end ones rounded, so the lit one's orange edge follows the corner; Units/Clock buttons 52px so their AUTOs line up.
+- 2026-10-21 (Sevaan): Settings' backup row hidden. Leaving the page (web): music ramps to 0 over 30 ms, then the element pauses and the audio context is suspended 40 ms later while the page still runs, so iPhone has no live buffer to repeat as a beep.

@@ -22,11 +22,11 @@
   <link rel="preload" href="fonts/RussoOne-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="fonts/BarlowCondensed-Medium.ttf" as="font" type="font/ttf" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600;650;700;750;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/cards.css?v=0.1.997">
-  <link rel="stylesheet" href="css/app.css?v=0.1.997">
-  <link rel="stylesheet" href="css/icons.css?v=0.1.997">
-  <link rel="stylesheet" href="css/reveal.css?v=0.1.997">
-  <link rel="stylesheet" href="css/ui.css?v=0.1.997">
+  <link rel="stylesheet" href="css/cards.css?v=0.1.998">
+  <link rel="stylesheet" href="css/app.css?v=0.1.998">
+  <link rel="stylesheet" href="css/icons.css?v=0.1.998">
+  <link rel="stylesheet" href="css/reveal.css?v=0.1.998">
+  <link rel="stylesheet" href="css/ui.css?v=0.1.998">
 </head>
 <body>
   <video id="cam" playsinline muted autoplay hidden></video>
@@ -217,7 +217,7 @@
     <div class="panel-head"><div class="wordmark set-title"><h2>Settings</h2><span>Make it yours</span></div><button class="pill x-close" data-close="debug" aria-label="Close">✕</button></div>
 
     <div class="set-group set-card"><div class="set-bar"><h3>Collection</h3><b aria-hidden="true">01</b></div>
-      <div class="set-row" id="set-backup"><span class="set-ic" aria-hidden="true" style="background:#3a2259"><span class="ico" data-ico="cloud"></span></span><span class="set-main"><span id="set-backup-name">Saved on this phone</span><small id="set-backup-note">No account needed</small></span></div>
+      <div class="set-row" id="set-backup" hidden><span class="set-ic" aria-hidden="true" style="background:#3a2259"><span class="ico" data-ico="cloud"></span></span><span class="set-main"><span id="set-backup-name">Saved on this phone</span><small id="set-backup-note">No account needed</small></span></div>
       <button class="set-row" type="button" id="set-stats-open"><span class="set-ic" aria-hidden="true" style="background:#1d3a52"><span class="ico" data-ico="chart"></span></span><span class="set-main"><span>Observer stats</span><small>Your nights, places and rarest finds</small></span><span class="set-chev">›</span></button>
       <button class="set-row" type="button" id="set-plus-open"><span class="set-ic" aria-hidden="true" style="background:#5a3c12"><span class="ico" data-ico="stars"></span></span><span class="set-main"><span>Space Collector Plus</span><small id="set-plus-note">Reminders, card backs and more</small></span><span class="set-val" id="set-plus-val">Free</span><span class="set-chev">›</span></button>
       <button class="set-row" type="button" id="set-back-open"><span class="set-ic" aria-hidden="true"><span class="ico" data-ico="cards"></span></span><span class="set-main"><span>Card back</span><small>The back of every card you flip</small></span><span class="set-val" id="set-back-val">Mission Control</span><span class="set-chev">›</span></button>
@@ -382,9 +382,9 @@
     </div></div>
   </section>
 
-  <script type="module" src="js/text-size.js?v=0.1.997"></script>
-  <script type="module" src="js/clock.js?v=0.1.997"></script>
-  <script type="module" src="js/main.js?v=0.1.997"></script>
+  <script type="module" src="js/text-size.js?v=0.1.998"></script>
+  <script type="module" src="js/clock.js?v=0.1.998"></script>
+  <script type="module" src="js/main.js?v=0.1.998"></script>
 <div id="rotate" role="status" aria-label="Turn your phone upright"><!-- looks like the loader (2026-10-21, Sevaan) --><svg class="rt-ret" viewBox="-62 -62 124 124" aria-hidden="true"><circle class="rt-ring" r="46" fill="none" stroke-width="1.2"/><circle r="51" fill="none" stroke="rgba(173,188,200,.35)" stroke-width=".75"/><line x1="51.0" y1="0.0" x2="59.0" y2="0.0" stroke="#fa8127" stroke-opacity="0.9" stroke-width="1.5"/><line x1="49.3" y1="13.2" x2="53.1" y2="14.2" stroke="#fff2b3" stroke-opacity="0.28" stroke-width="0.75"/><line x1="44.2" y1="25.5" x2="47.6" y2="27.5" stroke="#fff2b3" stroke-opacity="0.28" stroke-width="0.75"/><line x1="36.1" y1="36.1" x2="38.9" y2="38.9" stroke="#fff2b3" stroke-opacity="0.28" stroke-width="0.75"/><line x1="25.5" y1="44.2" x2="27.5" y2="47.6" stroke="#fff2b3" stroke-opacity="0.28" stroke-width="0.75"/><line x1="13.2" y1="49.3" x2="14.2" y2="53.1" stroke="#fff2b3" stroke-opacity="0.28" stroke-width="0.75"/><line x1="0.0" y1="51.0" x2="0.0" y2="59.0" stroke="#fa8127" stroke-opacity="0.9" stroke-width="1.5"/><line x1="-13.2" y1="49.3" x2="-14.2" y2="53.1" stroke="#fff2b3" stroke-opacity="0.28" stroke-width="0.75"/><line x1="-25.5" y1="44.2" x2="-27.5" y2="47.6" stroke="#fff2b3" stroke-opacity="0.28" stroke-width="0.75"/><line x1="-36.1" y1="36.1" x2="-38.9" y2="38.9" stroke="#fff2b3" stroke-opacity="0.28" stroke-width="0.75"/><line x1="-44.2" y1="25.5" x2="-47.6" y2="27.5" stroke="#fff2b3" stroke-opacity="0.28" stroke-width="0.75"/><line x1="-49.3" y1="13.2" x2="-53.1" y2="14.2" stroke="#fff2b3" stroke-opacity="0.28" stroke-width="0.75"/><line x1="-51.0" y1="0.0" x2="-59.0" y2="0.0" stroke="#fa8127" stroke-opacity="0.9" stroke-width="1.5"/><line x1="-49.3" y1="-13.2" x2="-53.1" y2="-14.2" stroke="#fff2b3" stroke-opacity="0.28" stroke-width="0.75"/><line x1="-44.2" y1="-25.5" x2="-47.6" y2="-27.5" stroke="#fff2b3" stroke-opacity="0.28" stroke-width="0.75"/><line x1="-36.1" y1="-36.1" x2="-38.9" y2="-38.9" stroke="#fff2b3" stroke-opacity="0.28" stroke-width="0.75"/><line x1="-25.5" y1="-44.2" x2="-27.5" y2="-47.6" stroke="#fff2b3" stroke-opacity="0.28" stroke-width="0.75"/><line x1="-13.2" y1="-49.3" x2="-14.2" y2="-53.1" stroke="#fff2b3" stroke-opacity="0.28" stroke-width="0.75"/><line x1="-0.0" y1="-51.0" x2="-0.0" y2="-59.0" stroke="#fa8127" stroke-opacity="0.9" stroke-width="1.5"/><line x1="13.2" y1="-49.3" x2="14.2" y2="-53.1" stroke="#fff2b3" stroke-opacity="0.28" stroke-width="0.75"/><line x1="25.5" y1="-44.2" x2="27.5" y2="-47.6" stroke="#fff2b3" stroke-opacity="0.28" stroke-width="0.75"/><line x1="36.1" y1="-36.1" x2="38.9" y2="-38.9" stroke="#fff2b3" stroke-opacity="0.28" stroke-width="0.75"/><line x1="44.2" y1="-25.5" x2="47.6" y2="-27.5" stroke="#fff2b3" stroke-opacity="0.28" stroke-width="0.75"/><line x1="49.3" y1="-13.2" x2="53.1" y2="-14.2" stroke="#fff2b3" stroke-opacity="0.28" stroke-width="0.75"/><g class="rt-phone"><rect x="-11" y="-19" width="22" height="38" rx="4" fill="none" stroke="#fff2b3" stroke-width="1.6"/><path d="M-3.5 -15.5H3.5" stroke="#fff2b3" stroke-width="1.4" stroke-linecap="round"/></g></svg><span class="rt-word">SPACE COLLECTOR</span><span class="rt-sub">Turn your phone upright</span></div>
 </body>
 </html>
