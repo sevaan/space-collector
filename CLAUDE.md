@@ -1527,3 +1527,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - 15 every card turns over: picking a card back (and joining Plus, not restoring) shows a fan of five of your cards that flip in a wave to the new back (cardsTurnOver; turnCard + applyBack).
   - 16 Tonight lights like a fuse: the Tonight page timeline lights row by row behind a spark, then an orange NOW line settles at the current time and creeps every 30 s (odFuse).
   All off or instant under Reduce Motion.
+- 2026-10-21 (Sevaan): the hero's card and words are one centred block (.nh-top centred, text column fits its longest line); the tab is "Your Sky" with no countdown under it (navLive does nothing for tabs; .nav-sky-v removed); "Carried Kosmos …" in rocket-stage subtitles and facts.

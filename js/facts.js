@@ -85,7 +85,7 @@ export function autoLore(o) {
   const age = o.year ? new Date().getFullYear() - o.year : null;
   if (o.type === 'station') return `A crewed outpost circling Earth every ${Math.round(o.period ?? 92)} minutes. People are living aboard as it passes over you.`;
   if (o.type === 'rocket-body') {
-    const carried = o.parent ? ` It pushed ${titleCase(o.parent)} into orbit` : ' It did its job and was left behind';
+    const carried = o.parent ? ` It pushed ${titleCase(o.parent).replace(/\bCosmos\b/g, 'Kosmos')} into orbit` : ' It did its job and was left behind';
     return `Upper stage of a rocket launched from ${where} in ${o.year ?? 'an unknown year'}.${carried}, and has been coasting ever since${age ? `, ${age} years and counting` : ''}.`;
   }
   if (o.type === 'debris') return `A fragment left over from a ${who} launch in ${o.year}. Small, fast and still up there.`;
