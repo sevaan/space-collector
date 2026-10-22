@@ -14,6 +14,6 @@ OUT=${TMPDIR:-/tmp}/sc-tester-build
 trap 'node copy-web.mjs >/dev/null && npx cap sync ios >/dev/null 2>&1' EXIT
 SC_TESTER=1 node copy-web.mjs && npx cap sync ios >/dev/null
 xcodebuild -project ios/App/App.xcodeproj -scheme App -configuration Release -destination "id=$DEV" -derivedDataPath "$OUT" \
-  PRODUCT_BUNDLE_IDENTIFIER=io.github.sevaan.spacecollector.tester SC_DISPLAY_NAME="SC Tester" -allowProvisioningUpdates build | tail -3
+  SC_APP_ID=io.github.sevaan.spacecollector.tester SC_DISPLAY_NAME="SC Tester" -allowProvisioningUpdates build | tail -3
 xcrun devicectl device install app --device "$DEV" "$OUT/Build/Products/Release-iphoneos/App.app"
 echo "SC Tester installed."

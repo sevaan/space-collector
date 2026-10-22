@@ -68,6 +68,7 @@ public class ICloudKVPlugin: CAPPlugin, CAPBridgedPlugin {
 class MainViewController: CAPBridgeViewController {
     override open func capacitorDidLoad() {
         bridge?.registerPluginInstance(ICloudKVPlugin())
+        bridge?.registerPluginInstance(WidgetBridgePlugin())
     }
 
     // iPhone Duo (2026-10-22): tell the page when the phone is half-folded like a book, so the sky moves its circle off

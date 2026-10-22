@@ -3,7 +3,7 @@
 // (2026-10-16): the purchase belongs to the player’s Apple ID / Google account, no sign-in of ours. The last answer is
 // kept (localStorage 'plusStore') so Plus holds offline. The testing toggle (Settings → Testing tools → "Plus
 // (testing)", 'plusTest') still turns it on anywhere; the website never sells Plus.
-import { plugin, isNative, onNative } from './native.js?v=0.1.1016';
+import { plugin, isNative, onNative } from './native.js?v=0.1.1017';
 
 // RevenueCat public SDK keys (safe in the app). The Test Store key works with no App Store / Play setup; swap in the
 // appl_ / goog_ keys from RevenueCat → Project settings → API keys once the store apps are connected.
@@ -87,6 +87,7 @@ export async function restorePlus() {
 export const PLUS_PERKS = [
   { why: 'reminders', name: 'Pass reminders', text: 'Alerts for any pass you choose.' },
   { why: 'rare', name: 'Rare alerts', text: 'A ping when a new Rare or better card passes.' },
+  { why: 'widgets', name: 'Widgets', text: 'Tonight on your home and lock screen.' }, // every widget is Plus (2026-10-22, Sevaan)
   { why: 'shiny', name: 'Shiny forecast', text: 'When and where a shiny can happen.' },
   { why: 'backs', name: 'Card backs', text: '6 designs, or a random one each flip.' },
   { why: 'patch', name: 'Member patch', text: 'Only Plus members wear this one.' },

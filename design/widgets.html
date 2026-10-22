@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Widgets</title>
+<style>
+  @font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf'); font-weight: 500; }
+  @font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf'); }
+  :root { --ink: #fff2b3; --cream: #f3ead0; --muted: #a9b0a4; --orange: #fa8127; --navy: #080f1b; --rare: #4aa3ff; --epic: #e46ad6; --unc: #5fd08a; --leg: #f2c14e; --line: #22324a; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #04070d; color: #e8eef6; font: 15px/1.45 -apple-system, system-ui, sans-serif; padding: 28px 16px 80px; }
+  h1 { font: 400 26px 'SC Display', sans-serif; color: var(--ink); margin: 0 0 6px; letter-spacing: .02em; }
+  h2 { font: 500 14px 'SC Label', sans-serif; letter-spacing: .2em; text-transform: uppercase; color: var(--orange); margin: 46px 0 6px; }
+  .intro, .sub { color: #9fb0c6; max-width: 900px; margin: 0 0 18px; }
+  .wrap { max-width: 1180px; margin: 0 auto; }
+  .row { display: flex; flex-wrap: wrap; gap: 28px; align-items: flex-start; }
+  .cap { margin-top: 10px; max-width: 364px; } .cap b { display: block; font-size: 14px; } .cap span { color: #9fb0c6; font-size: 13px; }
+  .lab { font: 500 11px/1.15 'SC Label', sans-serif; letter-spacing: .16em; text-transform: uppercase; }
+  .disp { font-family: 'SC Display', sans-serif; font-weight: 400; }
+
+  /* Phones */
+  .phone { position: relative; width: 393px; height: 852px; border-radius: 52px; overflow: hidden; border: 10px solid #121722; flex: none; }
+  .home { background: radial-gradient(120% 70% at 30% 0%, #23325a 0%, #101a33 45%, #070b16 100%); padding: 66px 14px 0; }
+  .status { position: absolute; top: 16px; left: 34px; right: 30px; display: flex; justify-content: space-between; font: 600 16px -apple-system, sans-serif; color: #fff; }
+  .island { position: absolute; top: 12px; left: 50%; width: 120px; height: 34px; margin-left: -60px; border-radius: 20px; background: #000; }
+  .grid { display: grid; grid-template-columns: repeat(4, 64px); justify-content: space-between; row-gap: 22px; padding: 0 12px; }
+  .app { display: flex; flex-direction: column; align-items: center; gap: 5px; font: 11px -apple-system, sans-serif; color: #fff; }
+  .app i { width: 64px; height: 64px; border-radius: 15px; display: block; }
+  .app.sc i { background: var(--navy) url('../icons/icon-180.png') center / cover; }
+  .wid-row { display: flex; justify-content: space-between; margin-bottom: 22px; }
+  .wname { text-align: center; font: 11px -apple-system, sans-serif; color: #fff; margin-top: 5px; }
+  .dock { position: absolute; left: 12px; right: 12px; bottom: 12px; height: 92px; border-radius: 34px; background: rgba(255,255,255,.14); display: flex; justify-content: space-around; align-items: center; }
+  .dock i { width: 62px; height: 62px; border-radius: 15px; display: block; }
+
+  /* Widget shells (points: small 170, medium 364×170, large 364×382) */
+  .w { position: relative; border-radius: 24px; overflow: hidden; background: var(--navy); color: var(--cream); box-shadow: 0 0 0 1px rgba(255,255,255,.06) inset; flex: none; }
+  .w.s { width: 170px; height: 170px; } .w.m { width: 364px; height: 170px; } .w.l { width: 364px; height: 382px; }
+  .w .stars { position: absolute; inset: 0; background-image: radial-gradient(1px 1px at 12% 18%, #fff8 50%, transparent 51%), radial-gradient(1px 1px at 72% 12%, #fff6 50%, transparent 51%), radial-gradient(1.2px 1.2px at 88% 44%, #fff7 50%, transparent 51%), radial-gradient(1px 1px at 34% 62%, #fff5 50%, transparent 51%), radial-gradient(1px 1px at 58% 84%, #fff5 50%, transparent 51%), radial-gradient(1px 1px at 8% 88%, #fff4 50%, transparent 51%); }
+  .art { position: absolute; inset: 0; background-size: cover; background-position: center; }
+  .art::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(8,15,27,.15) 0%, rgba(8,15,27,.35) 40%, rgba(8,15,27,.94) 78%); }
+  .pad { position: absolute; inset: 0; padding: 14px 15px; display: flex; flex-direction: column; }
+  .gem { display: inline-flex; align-items: center; gap: 5px; }
+  .gem::before { content: '◆'; font-size: 10px; letter-spacing: 0; }
+  .gem.rare { color: var(--rare); } .gem.epic { color: var(--epic); } .gem.epic::before { content: '✦'; } .gem.unc { color: var(--unc); } .gem.unc::before { content: '▲'; font-size: 9px; } .gem.icon::after { content: 'ICON'; margin-left: 4px; padding: 0 4px; border-radius: 4px; background: var(--leg); color: #1b1405; font-size: 9px; letter-spacing: .08em; }
+  .gem.head { color: var(--leg); } .gem.head::before { content: '★'; }
+  .count { font: 400 34px/1 'SC Display', sans-serif; color: var(--orange); letter-spacing: .01em; font-variant-numeric: tabular-nums; }
+  .count small { font-size: 15px; margin-left: 2px; }
+  .nm { font: 400 17px/1.05 'SC Display', sans-serif; color: var(--ink); }
+  .meta { font: 500 13px/1.2 'SC Label', sans-serif; color: var(--muted); letter-spacing: .04em; }
+  .top { display: flex; justify-content: space-between; align-items: center; }
+  .mark { width: 16px; height: 16px; border-radius: 50%; border: 1.6px solid var(--orange); position: relative; flex: none; }
+  .mark::after { content: ''; position: absolute; inset: 4.5px; border-radius: 50%; background: var(--orange); }
+  .grow { flex: 1; }
+  .bar { height: 3px; border-radius: 2px; background: #ffffff1c; overflow: hidden; margin-top: 7px; } .bar i { display: block; height: 100%; background: var(--orange); border-radius: 2px; }
+  .div { width: 1px; background: var(--line); margin: 2px 0; }
+  .rowp { display: grid; grid-template-columns: 52px 1fr auto; align-items: center; gap: 8px; padding: 6px 0; border-top: 1px solid var(--line); }
+  .rowp .t { font: 400 14px 'SC Display', sans-serif; color: var(--cream); font-variant-numeric: tabular-nums; }
+  .rowp .n { font: 500 14px/1.1 'SC Label', sans-serif; color: var(--cream); letter-spacing: .03em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .rowp .n small { display: block; color: var(--muted); font-size: 12px; letter-spacing: .05em; }
+  .rowp.a { grid-template-columns: 42px 30px 1fr auto; } .mini { width: 28px; height: 28px; border-radius: 50%; background-size: cover; background-position: center; box-shadow: 0 0 0 1.5px #ffffff26; } .mini.next { box-shadow: 0 0 0 1.5px var(--orange); }
+  .rowp .g { font: 500 11px 'SC Label', sans-serif; letter-spacing: .12em; }
+  .wx { display: inline-flex; align-items: center; gap: 6px; font: 500 12px 'SC Label', sans-serif; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+  .wx b { color: var(--cream); font-weight: 500; }
+  .chart { display: flex; align-items: flex-end; gap: 3px; height: 34px; margin: 8px 0 2px; }
+  .chart i { flex: 1; background: #2c4060; border-radius: 2px 2px 0 0; } .chart i.pk { background: var(--orange); } .chart i.now { background: var(--cream); }
+  .tick { display: flex; justify-content: space-between; font: 500 10px 'SC Label', sans-serif; letter-spacing: .12em; color: #6f7c8c; }
+  .ring { width: 58px; height: 58px; flex: none; }
+  .pulse { animation: pulse 1.6s ease-in-out infinite; } @keyframes pulse { 50% { opacity: .55; } }
+
+  /* Lock screen (accessory widgets render monochrome in the system's vibrant tint) */
+  .lock { background: radial-gradient(140% 80% at 50% 110%, #c06a4c 0%, #5b3d5c 32%, #1c2546 62%, #0a1024 100%); }
+  .lk-date { position: absolute; top: 78px; left: 0; right: 0; text-align: center; color: #fffd; font: 600 19px -apple-system, sans-serif; }
+  .lk-time { position: absolute; top: 96px; left: 0; right: 0; text-align: center; color: #fffe; font: 700 96px/1 -apple-system, 'SF Pro Rounded', sans-serif; letter-spacing: -2px; }
+  .lk-row { position: absolute; top: 222px; left: 0; right: 0; display: flex; justify-content: center; gap: 12px; }
+  .acc { color: #ffffffe6; }
+  .acc.c { width: 72px; height: 72px; border-radius: 50%; background: rgba(255,255,255,.14); display: grid; place-items: center; position: relative; }
+  .acc.r { width: 160px; height: 72px; border-radius: 14px; padding: 6px 4px; display: flex; flex-direction: column; justify-content: center; }
+  .acc .lab { color: #fffc; }
+  .acc .big { font: 700 17px/1.05 -apple-system, sans-serif; }
+  .acc .sm { font: 600 13px/1.2 -apple-system, sans-serif; color: #ffffffc0; }
+  .lk-inline { position: absolute; top: 78px; left: 0; right: 0; text-align: center; font: 600 19px -apple-system, sans-serif; color: #fffd; }
+  .lk-notif { position: absolute; left: 12px; right: 12px; bottom: 120px; padding: 12px 14px; border-radius: 22px; background: rgba(40,40,60,.42); backdrop-filter: blur(20px); color: #fff; display: flex; gap: 10px; font: 13px/1.3 -apple-system, sans-serif; }
+  .lk-notif i { width: 38px; height: 38px; border-radius: 9px; background: var(--navy) url('../icons/icon-180.png') center/cover; flex: none; }
+  .lk-flash { position: absolute; bottom: 36px; left: 46px; width: 50px; height: 50px; border-radius: 50%; background: rgba(0,0,0,.3); } .lk-flash.r { left: auto; right: 46px; }
+  .standby { width: 852px; height: 393px; border-radius: 52px; border: 10px solid #121722; background: #000; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; gap: 26px; }
+  .standby .w { transform: scale(1.12); }
+  .redmode { filter: url(#red); }
+  .note { border: 1px solid #1d2838; border-radius: 14px; padding: 14px 18px; background: #0a111d; max-width: 1080px; }
+  .note li { margin: 4px 0; color: #c5cfdb; } .note b { color: #fff; }
+  .states .w { margin-bottom: 0; }
+  .tag { display: inline-block; font: 500 10px 'SC Label', sans-serif; letter-spacing: .14em; padding: 2px 6px; border-radius: 5px; background: #fa812722; color: var(--orange); }
+
+  .opt-row { display: flex; flex-wrap: wrap; gap: 22px; align-items: flex-start; margin-bottom: 26px; padding-bottom: 22px; border-bottom: 1px solid #141d2b; }
+  .opt-h { width: 230px; } .opt-h b { display: block; font: 400 20px 'SC Display', sans-serif; color: var(--ink); } .opt-h span { color: #9fb0c6; font-size: 13px; }
+  .thumb { border-radius: 12px; background-size: cover; background-position: center; box-shadow: 0 0 0 1px rgba(255,242,179,.25); flex: none; }
+  .tcard { width: 46px; height: 69px; border-radius: 7px; border: 1.5px solid #e9cf7a; background: #0b1424; padding: 3px; display: flex; flex-direction: column; gap: 3px; transform: rotate(6deg); box-shadow: 0 6px 16px rgba(0,0,0,.5), 0 0 18px rgba(74,163,255,.25); flex: none; }
+  .tcard .ti { flex: 0 0 46%; border-radius: 4px; background-size: cover; background-position: center; }
+  .tcard .tl { height: 3px; border-radius: 2px; background: #e9cf7a99; } .tcard .tl.s { width: 60%; background: #ffffff33; }
+  .band { position: absolute; left: 0; right: 0; top: 0; height: 58px; background-size: cover; background-position: center 45%; }
+  .band::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(8,15,27,.2), rgba(8,15,27,1)); }
+</style></head><body>
+<svg width="0" height="0" style="position:absolute"><filter id="red"><feColorMatrix type="matrix" values="0.6 0.3 0.1 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0"/></filter></svg>
+<div class="wrap">
+<h1>Widgets</h1>
+<p class="intro">One idea across every size: <b>what to look up for next, and when</b>. The app writes tonight's plan (next passes, dark and dawn, the forecast) when it plans the night; the widgets count down on their own from it, with no app open. Tapping a widget opens Space Collector straight into <b>Show me</b> for that pass.</p>
+
+<h2>Art, four other ways · A chosen (2026-10-22)</h2>
+<p class="sub">The words sit on plain navy in all four; the picture gets its own place. Small and medium of each.</p>
+<div id="artopts"></div>
+
+<h2>Home screen, as it would sit</h2>
+<div class="row">
+  <div>
+    <div class="phone home">
+      <div class="island"></div><div class="status"><span>8:29</span><span style="letter-spacing:2px">▂▄▆ ◔ ▭</span></div>
+      <div class="wid-row" id="home-top"></div>
+      <div class="grid" id="home-grid"></div>
+      <div class="dock"><i style="background:#3dbd5a"></i><i style="background:#2f7cf6"></i><i style="background:#f4f4f4"></i><i style="background:#f6c344"></i></div>
+    </div>
+    <div class="cap"><b>Medium + small</b><span>The medium one is the "tonight" view; the small one is just the next catch. The card's picture sits in the target circle, whose ring counts down to the pass.</span></div>
+  </div>
+  <div>
+    <div class="phone home">
+      <div class="island"></div><div class="status"><span>8:29</span><span style="letter-spacing:2px">▂▄▆ ◔ ▭</span></div>
+      <div id="home-large" style="margin: 0 0 6px"></div><div class="wname">Space Collector</div>
+      <div class="grid" id="home-grid2" style="margin-top:22px"></div>
+      <div class="dock"><i style="background:#3dbd5a"></i><i style="background:#2f7cf6"></i><i style="background:#f4f4f4"></i><i style="background:#f6c344"></i></div>
+    </div>
+    <div class="cap"><b>Large: tonight's run</b><span>The whole evening at a glance: the haul, how busy the sky gets, the four best stops, the weather.</span></div>
+  </div>
+</div>
+
+<h2>The three sizes</h2>
+<p class="sub">Small = the next catch. Medium = the next catch + the rest of tonight. Large = tonight's run.</p>
+<div class="row" id="sizes"></div>
+
+<h2>How the small one changes through a day</h2>
+<p class="sub">Same widget, six moments. Countdowns tick live (WidgetKit's built-in timer text and progress); the rest changes on the schedule the app hands it.</p>
+<div class="row states" id="states"></div>
+
+<h2>Lock screen</h2>
+<p class="sub">Lock-screen widgets are drawn by iOS in one tint over your wallpaper, so they're shapes and words, no colour or art. Three kinds: a circle, a rectangle, and the line above the clock.</p>
+<div class="row">
+  <div>
+    <div class="phone lock">
+      <div class="island"></div>
+      <div class="lk-inline">✦ ISS 9:41 · high in the SE</div>
+      <div class="lk-time">8:29</div>
+      <div class="lk-row" id="lk-row"></div>
+      <div class="lk-notif"><i></i><div><b>9:31 PM: International Space Station</b><br>Look west. At its peak: high in the southeast.</div></div>
+      <div class="lk-flash"></div><div class="lk-flash r"></div>
+    </div>
+    <div class="cap"><b>Evening, before the ISS</b><span>Inline line above the clock, then circle · rectangle · circle. The notification is the reminder you already get today.</span></div>
+  </div>
+  <div>
+    <div class="phone lock" style="background: radial-gradient(140% 80% at 50% 110%, #6aa0d8 0%, #4a73b5 40%, #23407e 100%)">
+      <div class="island"></div>
+      <div class="lk-inline">☾ Dark at 6:38 PM</div>
+      <div class="lk-time">2:14</div>
+      <div class="lk-row" id="lk-row2"></div>
+      <div class="lk-flash"></div><div class="lk-flash r"></div>
+    </div>
+    <div class="cap"><b>Afternoon</b><span>By day the line counts to dark and the rectangle names tonight's headliner, so you know tonight is worth it before you leave work.</span></div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:18px">
+    <div class="sub" style="margin:0"><b style="color:#fff">The lock-screen pieces, bigger</b></div>
+    <div class="row" id="lk-big" style="gap:16px;background:linear-gradient(#2a2f52,#4b3554);padding:18px;border-radius:18px;width:364px"></div>
+  </div>
+</div>
+
+<h2>StandBy, at night</h2>
+<p class="sub">On its side on a charger, iPhone shows widgets big, and at night StandBy turns them red by itself, which suits stargazing. Two smalls side by side: the next catch and how dark it is.</p>
+<div class="standby redmode" id="standby"></div>
+
+<h2>Notes</h2>
+<div class="note"><ul>
+  <li><b>No app open needed for the countdowns.</b> The app saves tonight's next ~12 passes, dark, dawn and the forecast for the widget whenever it plans the night (already happens on launch and every 20 min while open). The widget steps through them by itself, so it stays right all night.</li>
+  <li><b>It can go stale.</b> If the app hasn't been opened for a day or two there's no plan for tonight; the widget then says "Open Space Collector to plan tonight" (state 6). iOS also refreshes the forecast only when the app runs.</li>
+  <li><b>Tap targets.</b> Small and lock screen: one tap opens Show me for that pass. Medium and large: each row opens its own pass. Buttons inside a widget (say, a bell that sets the reminder) are possible on iOS 17+, but I.d leave them out at first.</li>
+  <li><b>Same pick as the app.</b> "Next" uses the app's own rule (the headliner while it's ahead, then the best new catch), so the widget and the Tonight page never disagree. Commons only once you're nearly out of Uncommons.</li>
+  <li><b>Apple Watch for nearly free.</b> The lock-screen circle and rectangle are the same widget kinds as Watch complications; once these exist they can be put on a watch face with little extra work.</li>
+  <li><b>Plus (decided 2026-10-22).</b> Every widget, home screen and lock screen, comes with Plus. Without it a widget shows what Plus is and opens the Plus sheet; the widget gallery shows a sample night.</li>
+  <li><b>Build cost.</b> A native WidgetKit extension in the iOS project (Swift, not web), plus a small bridge so the web app can hand it the plan. Android would be a separate Glance widget later.</li>
+</ul></div>
+</div>
+
+<script>
+const A = (f) => `../assets/art/cards/sm/${f}.webp`;
+const ring = (p, label, col = 'var(--orange)', track = '#ffffff22', sz = 58, txt = '') => { const r = 24, c = 2 * Math.PI * r; return `<svg class="ring" viewBox="0 0 58 58" style="width:${sz}px;height:${sz}px"><circle cx="29" cy="29" r="${r}" fill="none" stroke="${track}" stroke-width="4"/><circle cx="29" cy="29" r="${r}" fill="none" stroke="${col}" stroke-width="4" stroke-linecap="round" stroke-dasharray="${c * p} ${c}" transform="rotate(-90 29 29)"/>${txt}</svg>`; };
+
+// ---- Art options ----
+const ringArt = (art, p, sz) => { const r = sz / 2 - 3, c = 2 * Math.PI * r; return `<div style="position:relative;width:${sz}px;height:${sz}px;flex:none">
+  <div style="position:absolute;inset:7px;border-radius:50%;background:url(${A(art)}) center/cover"></div>
+  <svg width="${sz}" height="${sz}" style="position:absolute;inset:0"><circle cx="${sz/2}" cy="${sz/2}" r="${r}" fill="none" stroke="#ffffff1f" stroke-width="2.5"/><circle cx="${sz/2}" cy="${sz/2}" r="${r}" fill="none" stroke="var(--orange)" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="${c*p} ${c}" transform="rotate(-90 ${sz/2} ${sz/2})"/>
+  ${[0,90,180,270].map(a => `<line x1="${sz/2}" y1="1" x2="${sz/2}" y2="6" stroke="var(--orange)" stroke-width="2" transform="rotate(${a} ${sz/2} ${sz/2})"/>`).join('')}</svg></div>`; };
+const tcard = (art) => `<div class="tcard"><div class="ti" style="background-image:url(${A(art)})"></div><div class="tl"></div><div class="tl s"></div><div class="tl s"></div></div>`;
+const txt = (k = 'NEXT CATCH') => ({ k: `<span class="lab" style="color:#fff2b3cc">${k}</span>`, gem: '<span class="lab gem rare icon">RARE</span>', nm: '<div class="nm" style="margin:3px 0 2px">Space Station</div>', ct: '<div class="count">12:04</div>', meta: '<div class="meta" style="margin-top:2px">9:41 PM · high in the SE</div>' });
+const right = `<div class="div"></div><div style="flex:1;display:flex;flex-direction:column;min-width:0">
+  <div class="top"><span class="lab" style="color:var(--orange)">TONIGHT</span><span class="wx">☾ <b>CLEAR</b></span></div><div style="margin-top:6px">
+  <div class="rowp"><span class="t">9:52</span><span class="n">Radiation Sat<small>High · SE</small></span><span class="g gem rare"></span></div>
+  <div class="rowp"><span class="t">10:14</span><span class="n">Kosmos 422<small>Halfway · N</small></span><span class="g gem head"></span></div>
+  <div class="rowp"><span class="t">10:40</span><span class="n">Hubble<small>Low · S</small></span><span class="g gem rare"></span></div></div></div>`;
+const t = txt();
+
+// Small widget: the next catch
+const small = ({ art, gem, gemTxt, name, count, unit = '', meta, bar = .6, kicker = 'NEXT CATCH', pulse = false }) => `
+<div class="w s"><div class="stars"></div><div class="pad"><div class="top"><span class="lab" style="color:#fff2b3cc">${kicker}</span></div>
+  <div style="display:flex;align-items:center;gap:10px;margin:8px 0 6px"><div class="${pulse ? 'pulse' : ''}">${ringArt(art, bar ?? 1, 62)}</div><div style="min-width:0"><span class="lab gem ${gem}">${gemTxt}</span><div class="nm" style="font-size:15px;margin-top:3px">${name}</div></div></div>
+  <div class="grow"></div><div class="count" style="${pulse ? 'font-size:27px' : ''}">${count}${unit ? `<small>${unit}</small>` : ''}</div><div class="meta" style="margin-top:2px">${meta}</div></div></div>`;
+
+// Medium: next catch + tonight
+const medium = (art = 'iss') => `<div class="w m"><div class="stars"></div><div class="pad" style="flex-direction:row;gap:14px"><div style="width:150px;display:flex;flex-direction:column">${t.k}<div style="display:flex;align-items:center;gap:9px;margin:8px 0 4px">${ringArt(art, .8, 54)}<div style="min-width:0">${t.gem}<div class="nm" style="font-size:14px;margin-top:2px">Space Station</div></div></div><div class="grow"></div>${t.ct}${t.meta}</div>${right}</div></div>`;
+
+// Large: tonight's run
+const bars = [3,5,8,12,15,18,16,12,9,7,5,4,3,2,2,3];
+const large = () => `
+<div class="w l"><div class="stars"></div><div class="pad">
+  <div class="top"><span class="lab" style="color:var(--orange)">TONIGHT · PETERBOROUGH</span><span class="wx">☾ <b>CLEAR</b> TILL 2 AM</span></div>
+  <div class="disp" style="font-size:24px;color:var(--ink);margin-top:8px;line-height:1.05">39 new cards, <span style="color:var(--rare)">1 Rare</span></div>
+  <div class="meta">Best 8:32–9:12 PM · dark 6:38 PM</div>
+  <div class="chart">${bars.map((b, i) => `<i class="${i === 5 ? 'pk' : i === 2 ? 'now' : ''}" style="height:${b / 18 * 100}%"></i>`).join('')}</div>
+  <div class="tick"><span>7 PM</span><span>NOW</span><span>MIDNIGHT</span><span>DAWN</span></div>
+  <div style="margin-top:10px">
+    <div class="rowp a"><span class="t" style="color:var(--orange)">9:41</span><i class="mini next" style="background-image:url(${A('iss')})"></i><span class="n">International Space Station<small>Rare · high in the SE · 12 min</small></span><span class="g gem rare icon"></span></div>
+    <div class="rowp a"><span class="t">9:52</span><i class="mini " style="background-image:url(${A('classic-satellite-1')})"></i><span class="n">Radiation Sat (5E-1)<small>Rare · high in the SE · new</small></span><span class="g gem rare"></span></div>
+    <div class="rowp a"><span class="t">10:14</span><i class="mini " style="background-image:url(${A('russian-recon')})"></i><span class="n">Kosmos 422<small>Tonight's headliner · +25 XP</small></span><span class="g gem head"></span></div>
+    <div class="rowp a"><span class="t">10:40</span><i class="mini " style="background-image:url(${A('sl-8')})"></i><span class="n">SL-8 Rocket Stage · 1985<small>Uncommon · low in the N · new</small></span><span class="g gem unc"></span></div>
+  </div><div class="grow"></div>
+  <div class="tick" style="border-top:1px solid var(--line);padding-top:8px"><span>3 MISSIONS TONIGHT</span><span style="color:var(--ink)">OPEN THE SKY ›</span></div>
+</div></div>`;
+
+document.getElementById('home-top').innerHTML = `<div>${medium()}<div class="wname">Space Collector</div></div>`;
+const icons = ['#e5534b','#f4f4f4','#5ac8fa','#ff9f0a','#34c759','#af52de','#ff2d55','#8e8e93','#30b0c7','#ffcc00','#0a84ff','#ff6b3d'];
+const grid = (n, sc = true) => icons.slice(0, n).map((c, i) => `<div class="app ${sc && i === 1 ? '' : ''}"><i style="background:${c}"></i>${['Mail','Photos','Weather','Clock','Maps','Podcasts','Music','Settings','Health','Notes','App Store','Books'][i]}</div>`).join('');
+document.getElementById('home-grid').innerHTML = `<div style="grid-column:1 / span 2;grid-row:1 / span 2">${small({ art: 'hubble', gem: 'rare', gemTxt: 'RARE', name: 'Hubble', count: '1:12', unit: 'h', meta: '10:40 PM · low in the S', bar: .2 })}<div class="wname">Space Collector</div></div>` + grid(10);
+document.getElementById('home-large').innerHTML = large();
+document.getElementById('home-grid2').innerHTML = grid(8);
+
+document.getElementById('sizes').innerHTML = [
+  [small({ art: 'iss', gem: 'rare icon', gemTxt: 'RARE', name: 'Space Station', count: '12:04', meta: '9:41 PM · high in the SE', bar: .8 }), 'Small · 2×2', 'The next catch: its picture in the target circle (the ring empties over the last hour), rarity, a live countdown and where to look.'],
+  [medium(), 'Medium · 4×2', 'The next catch on the left, the next three after it on the right with the sky in one word.'],
+  [large(), 'Large · 4×4', "Tonight's run: the haul, the busyness curve with now and the peak, the four best stops, missions."],
+].map(([h, t, d]) => `<div>${h}<div class="cap"><b>${t}</b><span>${d}</span></div></div>`).join('');
+
+const night = '<div class="stars"></div>';
+document.getElementById('states').innerHTML = [
+  [`<div class="w s" style="background:linear-gradient(#3d6ea8,#7aa7d4)"><div class="pad"><div class="top"><span class="lab" style="color:#fffc">TONIGHT</span><span class="mark"></span></div><div class="grow"></div>
+     <div class="lab" style="color:#fff">DARK IN</div><div class="count" style="color:#fff">3:12<small>h</small></div><div class="meta" style="color:#ffffffd0">Headliner: Kosmos 422 at 10:14</div><div class="bar" style="background:#ffffff40"><i style="width:35%;background:#fff"></i></div></div></div>`, '1 · Afternoon', 'Counts to dark and names tonight\'s headliner.'],
+  [small({ art: 'iss', gem: 'rare icon', gemTxt: 'RARE', name: 'Space Station', count: '12:04', meta: '9:41 PM · high in the SE', bar: .8 }), '2 · Evening', 'The next catch counts down.'],
+  [small({ art: 'iss', gem: 'rare icon', gemTxt: 'RARE', name: 'Space Station', count: 'UP NOW', meta: 'Look SE · fades at 9:47', bar: null, kicker: 'LOOK UP', pulse: true }), '3 · Up now', 'For the few minutes it\'s up: where to look and when it fades.'],
+  [`<div class="w s" style="background:linear-gradient(#262c36,#121722)"><div class="pad"><div class="top"><span class="lab" style="color:#fff2b3cc">TONIGHT</span><span class="mark"></span></div><div class="grow"></div>
+     <div style="font-size:30px;line-height:1;color:#aab4c2">☁</div><div class="nm" style="margin:4px 0 2px">Cloudy tonight</div><div class="meta">Next clear night: <span style="color:var(--ink)">Thursday</span></div><div class="meta" style="font-size:12px;margin-top:2px">Gaps still count</div></div></div>`, '4 · Cloudy', 'No countdown on a cloudy night; when it clears next.'],
+  [`<div class="w s">${night}<div class="pad"><div class="top"><span class="lab" style="color:#fff2b3cc">LATE NIGHT</span><span class="mark"></span></div><div class="grow"></div>
+     <div class="nm" style="margin-bottom:4px">Tonight is for stars</div><div class="lab" style="color:var(--muted)">SATELLITES BACK</div><div class="count">3:40<small>AM</small></div><div class="meta">Saturn and the Moon are up</div></div></div>`, '5 · Late night', 'Satellites are in Earth\'s shadow; when they\'re back.'],
+  [`<div class="w s">${night}<div class="pad" style="align-items:center;justify-content:center;text-align:center"><span class="mark" style="width:30px;height:30px;border-width:2px"></span><div class="nm" style="margin:10px 0 4px;font-size:15px">Plan tonight</div><div class="meta">Open Space Collector to see what's up</div></div></div>`, '6 · No plan yet', 'The app hasn\'t been opened today.'],
+].map(([h, t, d]) => `<div style="width:170px">${h}<div class="cap"><b>${t}</b><span>${d}</span></div></div>`).join('');
+
+// Lock screen accessories (monochrome)
+const circ = (p, mid, top = '') => `<div class="acc c">${ring(p, '', '#fff', '#ffffff30', 66)}<div style="position:absolute;inset:0;display:grid;place-items:center;text-align:center"><div>${top ? `<div class="lab" style="font-size:9px;letter-spacing:.08em">${top}</div>` : ''}<div class="big" style="font-size:16px">${mid}</div></div></div></div>`;
+const rect = (a, b, c, p) => `<div class="acc r"><div class="sm" style="display:flex;align-items:center;gap:5px">◎ ${a}</div><div class="big">${b}</div><div class="sm">${c}</div>${p != null ? `<div style="height:3px;border-radius:2px;background:#ffffff30;margin-top:4px"><div style="height:100%;width:${p * 100}%;background:#fff;border-radius:2px"></div></div>` : ''}</div>`;
+const moon = `<div class="acc c"><svg viewBox="0 0 40 40" width="30" height="30"><circle cx="20" cy="20" r="15" fill="#ffffff30"/><path d="M20 5a15 15 0 0 1 0 30a9 15 0 0 0 0-30z" fill="#fff"/></svg><div class="sm" style="position:absolute;bottom:9px;font-size:10px">81%</div></div>`;
+document.getElementById('lk-row').innerHTML = circ(.8, '12m', 'ISS') + rect('NEXT CATCH', 'Space Station', '9:41 PM · high in SE', .8) + moon;
+document.getElementById('lk-row2').innerHTML = circ(.35, '4h', 'DARK') + rect('HEADLINER', 'Kosmos 422', '10:14 PM · high in N', null) + `<div class="acc c"><div style="text-align:center"><div class="big" style="font-size:20px">39</div><div class="lab" style="font-size:9px">NEW</div></div></div>`;
+document.getElementById('lk-big').innerHTML = `<div style="transform:scale(1.25);transform-origin:left top;display:flex;gap:12px;height:96px">${circ(.8, '12m', 'ISS')}${rect('NEXT CATCH', 'Space Station', '9:41 PM · high in SE', .8)}</div>
+  <div style="color:#fffd;font:600 14px -apple-system, sans-serif;width:100%">Inline: <span style="font-weight:600">✦ ISS 9:41 · high in the SE</span></div>
+  <div style="color:#fffa;font:13px/1.35 -apple-system, sans-serif">Circle: a ring that empties to the pass, the time in the middle (minutes, then seconds in the last minute). Rectangle: what, when, where, plus the same bar. Other circles to choose from: Moon phase, "39 new" tonight, dark countdown.</div>`;
+
+document.getElementById('standby').innerHTML = small({ art: 'iss', gem: 'rare icon', gemTxt: 'RARE', name: 'Space Station', count: '12:04', meta: '9:41 PM · high in the SE', bar: .8 }) +
+  `<div class="w s"><div class="stars"></div><div class="pad"><div class="top"><span class="lab" style="color:#fff2b3cc">TONIGHT</span></div><div class="grow"></div><div class="lab" style="color:var(--muted)">DARK UNTIL</div><div class="count">6:52<small>AM</small></div><div class="meta">Clear · Moon 81% · 39 new</div></div></div>`;
+
+const OPTS = [
+  ['A', 'In the circle', "The picture sits inside the game's target circle, and the circle's ring is the countdown, emptying to the pass. The most \"us\" of the four.",
+    `<div class="w s"><div class="stars"></div><div class="pad"><div class="top">${t.k}</div><div style="display:flex;align-items:center;gap:10px;margin:8px 0 6px">${ringArt('iss', .8, 62)}<div style="min-width:0">${t.gem}<div class="nm" style="font-size:15px;margin-top:3px">Space Station</div></div></div><div class="grow"></div>${t.ct}${t.meta}</div></div>`,
+    `<div class="w m"><div class="stars"></div><div class="pad" style="flex-direction:row;gap:14px"><div style="width:150px;display:flex;flex-direction:column">${t.k}<div style="display:flex;align-items:center;gap:9px;margin:8px 0 4px">${ringArt('iss', .8, 54)}<div style="min-width:0">${t.gem}<div class="nm" style="font-size:14px;margin-top:2px">Space Station</div></div></div><div class="grow"></div>${t.ct}${t.meta}</div>${right}</div></div>`],
+  ['B', 'Framed thumbnail', 'A neat square of the picture in the corner, like an album cover. Calm, and the countdown gets the most room.',
+    `<div class="w s"><div class="pad"><div class="top">${t.k}<div class="thumb" style="width:52px;height:52px;background-image:url(${A('iss')})"></div></div><div class="grow"></div>${t.gem}${t.nm}${t.ct}${t.meta}</div></div>`,
+    `<div class="w m"><div class="pad" style="flex-direction:row;gap:14px"><div style="width:150px;display:flex;flex-direction:column"><div class="top">${t.k}<div class="thumb" style="width:44px;height:44px;background-image:url(${A('iss')})"></div></div><div class="grow"></div>${t.gem}${t.nm}${t.ct}${t.meta}</div>${right}</div></div>`],
+  ['C', 'The card itself', "A tiny version of the card, tilted and glowing in its rarity, like the Tonight page's hero. Says \"this is a card you can win\".",
+    `<div class="w s"><div class="stars"></div><div class="pad"><div class="top">${t.k}</div><div style="display:flex;gap:10px;margin-top:4px"><div style="flex:1;min-width:0;display:flex;flex-direction:column">${t.gem}<div class="nm" style="font-size:15px;margin-top:3px">Space Station</div></div>${tcard('iss')}</div><div class="grow"></div>${t.ct}${t.meta}</div></div>`,
+    `<div class="w m"><div class="stars"></div><div class="pad" style="flex-direction:row;gap:12px"><div style="width:156px;display:flex;flex-direction:column"><div class="top">${t.k}</div><div style="display:flex;gap:8px;margin-top:6px"><div style="flex:1;min-width:0">${t.gem}<div class="nm" style="font-size:14px;margin-top:2px">Space Station</div></div>${tcard('iss').replace('width: 58px', '')}</div><div class="grow"></div>${t.ct}${t.meta}</div>${right}</div></div>`],
+  ['D', 'A strip across the top', 'Only a thin band of the picture at the top, fading into navy; only the small label sits on it. Keeps a little atmosphere without anything behind the name or the countdown.',
+    `<div class="w s"><div class="band" style="background-image:url(${A('iss')})"></div><div class="pad"><div class="top">${t.k}</div><div class="grow"></div>${t.gem}${t.nm}${t.ct}${t.meta}</div></div>`,
+    `<div class="w m"><div class="band" style="background-image:url(${A('iss')});right:auto;width:180px"></div><div class="pad" style="flex-direction:row;gap:14px"><div style="width:150px;display:flex;flex-direction:column">${t.k}<div class="grow"></div>${t.gem}${t.nm}${t.ct}${t.meta}</div>${right}</div></div>`],
+];
+document.getElementById('artopts').innerHTML = OPTS.map(([l, h, d, sm, md]) => `<div class="opt-row"><div class="opt-h"><b>${l} · ${h}${l === 'A' ? ' ✓' : ''}</b><span>${d}</span></div>${sm}${md}</div>`).join('');
+</script>
+</body></html>

@@ -17,7 +17,7 @@ const REC = { phone: { ...DEVICES.phone, viewport: { width: 443, height: 960 }, 
 for (const kind of which === 'all' ? Object.keys(OUT) : [which]) {
   DEVICES[kind] = REC[kind];
   const b = await chromium.launch();
-  const { p, ctx, errs } = await setup(b, kind, { when, heroIss: true });
+  const { p, ctx, errs } = await setup(b, kind, { when, heroIss: true, clear: true });
   await hideNoise(p);
   const tmp = join(ROOT, 'scripts/.cache/preview-' + kind); rmSync(tmp, { recursive: true, force: true }); mkdirSync(tmp, { recursive: true });
   const cdp = await ctx.newCDPSession(p), frames = [];
