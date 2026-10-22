@@ -834,3 +834,8 @@ dialog[open] { padding-left: var(--safe-l) !important; padding-right: var(--safe
 
 /* Big-screen playtest 2026-10-22: the patch group chips end before the Duo's side strip. */
 .pw-chips { margin-right: var(--safe-r, 0px); }
+/* No sideways scroll (2026-10-22, Sevaan: "a few pixels of sideways scrolling"): the pinned tabs' and tools' backdrops
+   reached 24px past the page's 20px (14px) margin, so the page was 4–10px wider than the screen. They now reach exactly
+   the margin, and the page never scrolls sideways (clip keeps the sticky tabs working, unlike hidden). */
+.collection-tabs::before, .collection-tools::before { left: calc(-1 * (var(--main-pad, 24px) + var(--safe-l, 0px))); right: calc(-1 * (var(--main-pad, 24px) + var(--safe-r, 0px))); }
+html, body { overflow-x: clip; }
