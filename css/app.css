@@ -2115,3 +2115,18 @@ a.set-row { color: inherit; text-decoration: none; }
 .howto-list { margin: 4px 0 16px; padding-left: 22px; display: grid; gap: 10px; font-size: 14px; line-height: 1.4; color: var(--text); }
 .howto-list b { color: #fa8127; font-weight: 600; } body.night .howto-list b { color: #ff7f70; }
 #set-howto-sheet .set-sheet-card { max-height: calc(100vh - var(--safe-top, 0px) - 40px); overflow-y: auto; }
+
+/* Testing tools as field cards (2026-10-21, Sevaan): same cards as the rest of Settings, numbered T1–T5. */
+#test-tools { margin-top: 18px; }
+#test-tools .set-test { padding: 0 12px 4px; }
+#test-tools .set-test > .set-row { padding-inline: 2px !important; }
+#debug .set-row--seg { justify-content: center; padding-block: 8px !important; }
+#debug .set-seg--wide { width: 100%; } #debug .set-seg--wide button { flex: 1; padding: 0 4px; }
+#debug .set-select { appearance: none; -webkit-appearance: none; flex: none; max-width: 52%; height: 30px; padding: 0 22px 0 10px; border: 0; border-radius: 6px; background: transparent; box-shadow: inset 0 0 0 1px #45576a; color: #fa8127; font: 600 12px/1 var(--label); letter-spacing: .08em; text-transform: uppercase; text-overflow: ellipsis;
+  background-image: linear-gradient(45deg, transparent 50%, #fa8127 50%), linear-gradient(135deg, #fa8127 50%, transparent 50%); background-size: 5px 5px; background-position: right 11px center, right 6px center; background-repeat: no-repeat; }
+body.night #debug .set-select { color: #ff7f70; }
+#test-tools pre#debug-info { margin: 10px 2px 8px; font-size: 11.5px; line-height: 1.45; white-space: pre-wrap; color: var(--muted); }
+#test-tools .set-test > .set-row { width: 100% !important; }
+#test-tools .set-test > .set-row > .set-main { flex: 1; min-width: 0; }
+#test-tools .set-test > .set-row > .set-chev { margin-left: auto; }
+#debug .set-select { width: auto !important; min-width: 0; margin-left: auto; }
