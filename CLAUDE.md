@@ -1554,3 +1554,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - 2026-10-21 (Sevaan): Settings sky slider text no longer jumps while dragging: subtitle on its own full-width line, place name nowrap, the note under it keeps 3 lines of room.
 - 2026-10-21 (Sevaan): Random card back is locked until two backs are unlocked; tapping it says how to get more.
 - 2026-10-21 (Sevaan): Settings Motion status uses the switches' tag look (ON lit, TURN ON unlit); it stays a status, since motion can't be switched off by the app.
+- 2026-10-21 (Sevaan: match design A): Settings cards are a single cream frame with a faint inner line, a tinted header bar in gold (title and number), rows edge to edge; the sky slider is a row (icon, title + sky name, one line, slim orange-filled track, cream knob); the BRIGHT CITY/BINOCULARS ends and the star-count note are gone (#sky-limit-info kept hidden). Volume knobs cream too.
