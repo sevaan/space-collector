@@ -2073,3 +2073,8 @@ body.night .binder-plus { background: #ff6a55; color: #120606; }
 .pr-fold-time.under { transform: translateX(-50%); font-size: 11px; }
 .binder-plus { font-size: 15px; padding: 2px 9px; }
 .ev-scrub { top: 0; }
+/* All around you: the four boxes on one line (2026-10-21, Sevaan). */
+.ar-chips { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+.ar-chip { padding: 7px 7px 8px; font-size: 13.5px; line-height: 1.2; text-wrap: balance; overflow-wrap: anywhere; }
+.ar-chip > small:first-child { font-size: 9.5px; letter-spacing: .12em; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ar-chip small + small, .ar-chip > small:not(:first-child) { display: block; margin-top: 2px; font-size: 11px; letter-spacing: .02em; text-transform: none; color: var(--muted); }
