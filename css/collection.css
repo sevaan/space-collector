@@ -742,3 +742,25 @@ body.peeking main > *:not(.peek) { filter: blur(6px) brightness(.7); transition:
 main > * { transition: filter .2s; }
 .grid .card-tile { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
 @media (prefers-reduced-motion: reduce) { body.peeking main > * { filter: brightness(.6); } }
+/* The rank card folds in place and pins, with the tabs and search under it (2026-10-21, Sevaan; replaces .lb-slim). */
+html { overflow-anchor: none; } /* the pinned card shrinking must not make the browser nudge the scroll */
+:root { --col-top: var(--safe-top, 0px); --lb-h: 0px; --tabs-h: 0px; }
+html.embedded { --col-top: calc(var(--safe-top, 0px) + 80px); }
+.lb-slim { display: none !important; }
+#logbook { position: sticky; top: var(--col-top); z-index: 26; margin-bottom: 0; }
+#logbook::before { content: ''; position: absolute; left: -24px; right: -24px; top: -40px; bottom: -10px; background: var(--bg, #080f1b); z-index: -1; } /* covers the cards scrolling behind it */
+.collection-tabs { position: sticky; top: calc(var(--col-top) + var(--lb-h) + 10px); z-index: 25; background: var(--bg, #080f1b); margin-top: 10px; }
+.collection-tabs::before { content: ''; position: absolute; left: -24px; right: -24px; top: -12px; bottom: 0; background: var(--bg, #080f1b); z-index: -1; }
+.collection-tools { position: sticky; top: calc(var(--col-top) + var(--lb-h) + 10px + var(--tabs-h)); z-index: 24; background: var(--bg, #080f1b); padding-bottom: 10px; box-shadow: 0 10px 14px -10px rgba(0,0,0,.6); }
+.collection-tools::before { content: ''; position: absolute; left: -24px; right: -24px; top: -12px; bottom: 0; background: var(--bg, #080f1b); z-index: -1; }
+.collection-tools, .collection-tabs { isolation: isolate; }
+/* folded rank row: smaller, with Missions › on the right */
+.lb-fold-m { display: none; margin-left: auto; margin-right: 12px; min-height: 36px; border: 0; background: none; color: #fa8127; font: 500 12px var(--label, 'SC Label'); letter-spacing: .14em; text-transform: uppercase; cursor: pointer; }
+.logbook.lb-folded .lb-fold-m { display: inline-block; animation: lbFoldIn .25s ease both; } @keyframes lbFoldIn { from { opacity: 0; } }
+.logbook .lb-rankrow .lb-name { font-size: calc(26px - 8px * var(--lbk, 0)); transition: none; }
+.logbook .lb-rankrow .lb-xp b { font-size: calc(24px - 7px * var(--lbk, 0)); }
+.logbook .lb-rankrow { padding-top: calc(12px - 4px * var(--lbk, 0)); align-items: center; }
+:where(html[data-theme="night"], body.night) .lb-fold-m { color: #ff7f70; }
+.logbook .lb-rot { min-height: 0 !important; } /* the pinned card shrinks to its slim row */
+#lb-sentinel { height: 0; }
+.lb-face > :is(.lb-top, .lb-pic, .lb-mission, .lb-challenge, .lb-foot), .lb-face .lb-pic { box-sizing: border-box; } /* the fold squeezes padding too */

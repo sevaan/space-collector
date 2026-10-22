@@ -1,30 +1,30 @@
-import { pullToClose } from './pull-close.js?v=0.1.967';
-import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.967';
-import { computeStats, statsHtml } from './stats.js?v=0.1.967';
-import { nightKey } from './observation.js?v=0.1.967';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.967';
-import { sfx } from './sfx.js?v=0.1.967';
-import { expandFacts } from './catalog-facts.js?v=0.1.967';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.967';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.967';
-import { ticket } from './toast.js?v=0.1.967';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.967';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.967';
-import { cardArt } from './art.js?v=0.1.967';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.967';
-import { applyBack } from './card-backs.js?v=0.1.967';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.967';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.967';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.967';
-import { STORIES } from './stories.js?v=0.1.967';
-import { loadConstellations, conList } from './constellations.js?v=0.1.967';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.967';
-import { eventBadges, nextEvent } from './events.js?v=0.1.967';
-import { shareCardEl } from './share-card.js?v=0.1.967';
-import { forgetSighting } from './cloud-backup.js?v=0.1.967';
-import { allSightings, deleteSighting } from './store.js?v=0.1.967';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.967';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.967';
+import { pullToClose } from './pull-close.js?v=0.1.968';
+import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.968';
+import { computeStats, statsHtml } from './stats.js?v=0.1.968';
+import { nightKey } from './observation.js?v=0.1.968';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.968';
+import { sfx } from './sfx.js?v=0.1.968';
+import { expandFacts } from './catalog-facts.js?v=0.1.968';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.968';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.968';
+import { ticket } from './toast.js?v=0.1.968';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.968';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.968';
+import { cardArt } from './art.js?v=0.1.968';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.968';
+import { applyBack } from './card-backs.js?v=0.1.968';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.968';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.968';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.968';
+import { STORIES } from './stories.js?v=0.1.968';
+import { loadConstellations, conList } from './constellations.js?v=0.1.968';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.968';
+import { eventBadges, nextEvent } from './events.js?v=0.1.968';
+import { shareCardEl } from './share-card.js?v=0.1.968';
+import { forgetSighting } from './cloud-backup.js?v=0.1.968';
+import { allSightings, deleteSighting } from './store.js?v=0.1.968';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.968';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.968';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -349,6 +349,39 @@ function replaySince() {
   const top = document.querySelector('#logbook .lb-pic'); if (top && !top.querySelector('.lb-since')) { const t = document.createElement('span'); t.className = 'lb-since'; t.textContent = `+${gain.toLocaleString()} XP since last time`; top.append(t); setTimeout(() => t.classList.add('out'), 4200); setTimeout(() => t.remove(), 4800); }
   feel('light');
 }
+
+// The rank card folds into its slim row as you scroll (2026-10-21, Sevaan: design/collection-rank.html D, "it should
+// collapse down into the smaller version", the same card, not a second one sliding in). The card is pinned under the
+// header; scrolling down shrinks its top bar, ladder picture, missions and events away (each to 0 height, fading) and
+// the rank row tightens, until only the rank, bar and "XP to next" are left, with a Missions › link. The tabs and the
+// search/filters stay pinned under it, so filters are always in reach while the cards scroll.
+let lbMeasure = null, lbRaf = 0;
+const LB_FOLD = '.lb-top, .lb-pic, .lb-mission, .lb-challenge, .lb-foot';
+function lbCollapse() {
+  lbRaf = 0;
+  const lb = $('logbook'), root = document.documentElement;
+  if (!lb || lb.hidden || getComputedStyle(lb).display === 'none') { root.style.setProperty('--lb-h', '0px'); return; }
+  const face = lb.querySelector('.lb-face'); if (!face) return;
+  if (!lbMeasure) {
+    const parts = [...face.querySelectorAll(LB_FOLD)].filter((el) => el.parentElement === face || el.classList.contains('lb-pic'));
+    for (const el of parts) { el.style.maxHeight = ''; el.style.opacity = ''; el.style.transition = 'none'; }
+    const prev = lb.style.getPropertyValue('--lbk'); lb.style.setProperty('--lbk', '0');
+    const hs = parts.map((el) => el.getBoundingClientRect().height), full = lb.getBoundingClientRect().height;
+    const top = parseFloat(getComputedStyle(lb).top) || 0, docTop = lb.getBoundingClientRect().top + scrollY - (lb.classList.contains('lb-stuck') ? 0 : 0);
+    lb.style.setProperty('--lbk', prev || '0');
+    const D = hs.reduce((a, b) => a + b, 0) + 10;
+    const tabs = document.querySelector('.collection-tabs');
+    let sen = $('lb-sentinel'); if (!sen) { sen = document.createElement('div'); sen.id = 'lb-sentinel'; lb.before(sen); } // where the card sits before it pins (a pinned card's own offsetTop moves)
+    lbMeasure = { parts, hs, full, D, start: Math.max(0, sen.getBoundingClientRect().top + scrollY - top), tabsH: tabs ? tabs.getBoundingClientRect().height : 0 };
+    root.style.setProperty('--tabs-h', `${lbMeasure.tabsH}px`);
+  }
+  const m = lbMeasure, k = Math.max(0, Math.min(1, (scrollY - m.start) / m.D));
+  m.parts.forEach((el, i) => { el.style.maxHeight = `${(m.hs[i] * (1 - k)).toFixed(1)}px`; el.style.opacity = String(Math.max(0, 1 - k * 1.8)); el.style.overflow = 'hidden'; el.style.transition = 'none'; });
+  lb.style.setProperty('--lbk', k.toFixed(3)); lb.classList.toggle('lb-folded', k > .85);
+  root.style.setProperty('--lb-h', `${lb.getBoundingClientRect().height.toFixed(1)}px`); // the card's real height now, so the tabs sit right under it
+}
+addEventListener('scroll', () => { if (!lbRaf) lbRaf = requestAnimationFrame(lbCollapse); }, { passive: true });
+addEventListener('resize', () => { lbMeasure = null; lbCollapse(); });
 function renderLogbook() {
   const info = (k) => { const c = state.byKey.get(k); return c ? { tier: c.tier, tier0: c.tier0, type: c.type, owner: c.owner, launch: c.launch, natural: c.natural, con: c.con, reunion: c.reunion, role: c.type === 'rocket-body' ? 'stage' : 'payload' } : null; };
   const p = progress(state.raw, info, { constellations: conList(), deals: readDeals(), albums: state.albums, carry: xpCarry(state.raw, info, { constellations: conList(), deals: readDeals() }) });
@@ -390,7 +423,7 @@ function renderLogbook() {
   const atRisk = p.streak.current && !p.streak.thisWeek;
   el.innerHTML = `<div class="lb-top"><span>Observer rank</span><span class="lb-streak">${streak}${atRisk ? '<button type="button" class="lb-remind" id="streak-remind">Remind me Sat</button>' : ''}</span></div>
     <div class="lb-pic">${ladder}<button type="button" class="lb-more" id="lb-more" aria-expanded="${!$('logbook').classList.contains('compact')}">${$('logbook').classList.contains('compact') ? 'Missions ›' : 'Less'}</button></div>
-    <div class="lb-rankrow"><span class="lb-name">${esc(p.rank.name)}</span><span class="lb-xp"><b>${p.xp.toLocaleString()}</b> XP</span></div>
+    <div class="lb-rankrow"><span class="lb-name">${esc(p.rank.name)}</span><button type="button" class="lb-fold-m" tabindex="-1">Missions ›</button><span class="lb-xp"><b>${p.xp.toLocaleString()}</b> XP</span></div>
     ${p.rank.next ? `<div class="lb-bar"><i style="width:${(into * 100).toFixed(1)}%"></i></div><div class="lb-to"><span>${(p.rank.next - p.xp).toLocaleString()} XP to <b>${esc(RANKS[ri + 1]?.[1] ?? 'the next rank')}</b></span><span>${Math.round(into * 100)}%</span></div>` : '<div class="lb-to"><span>Top rank. Every catch still counts.</span></div>'}
     ${p.missions.map((m) => `<div class="lb-mission${m.done ? ' done' : ''}"><i></i>${esc(m.text)}</div>`).join('')}
     ${p.challenge ? `<div class="lb-mission lb-challenge${p.challenge.done ? ' done' : ''}"><i></i>${esc(p.challenge.text)}<small>Sky challenge · +50</small></div>` : ''}
@@ -398,12 +431,7 @@ function renderLogbook() {
     <div class="lb-events">${ev.map((e) => `<span class="ui-chip ui-chip--earned">☄ <b>${esc(e.name.replace(/\s*\d{4}$/, ''))}</b></span>`).join('')}${nx ? `<span class="ui-chip"><span class="ui-chip__k">Next:</span><b>${esc(nx.name.replace(/\s*\d{4}$/, ''))}</b><span class="ui-chip__k">· ${new Date(nx.start + 30 * 3600e3).toLocaleDateString([], { month: 'short', day: 'numeric' })}</span></span>` : ''}</div></div>`;
   state.achievements = p.achievements;
   lbLast = { xp: p.xp, into, at: p.rank.at, next: p.rank.next };
-  // D (design/collection-rank.html, 2026-10-21, Sevaan): once the full card scrolls away, a slim row with the same rank
-  // slides down under the header and stays; scroll back up and the full card is there again.
-  const slim = $('lb-slim');
-  slim.innerHTML = `<span class="lbs-dot" aria-hidden="true"><i></i></span><span class="lbs-main"><span class="lbs-name">${esc(p.rank.name)}</span>${p.rank.next ? `<span class="lbs-bar"><i style="width:${(into * 100).toFixed(1)}%"></i></span><small><span>${p.xp.toLocaleString()} XP</span><span>${(p.rank.next - p.xp).toLocaleString()} to ${esc(RANKS[ri + 1]?.[1] ?? 'next')}</span></small>` : `<small><span>${p.xp.toLocaleString()} XP</span></small>`}</span><button type="button" class="lbs-m">Missions ›</button>`;
-  slim.onclick = (e) => { if (e.target.closest('.lbs-m')) { try { localStorage.setItem('lbOpen', '1'); } catch {} window.scrollTo({ top: 0, behavior: 'smooth' }); renderLogbook(); return; } openStats(); };
-  if (!slim._io) { slim._io = new IntersectionObserver(([en]) => { const on = !en.isIntersecting && en.boundingClientRect.top < 0 && !card.hidden; slim.classList.toggle('on', on); slim.setAttribute('aria-hidden', on ? 'false' : 'true'); }, { root: document, rootMargin: `${-Math.round(parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--safe-top')) || 0) - 140}px 0px 0px 0px` }); slim._io.observe(card); }
+  lbMeasure = null; requestAnimationFrame(lbCollapse); // re-measure the collapse after each render
 }
 
 // Find (2026-10-13, Sevaan: "someone may want to search up an object like the ISS to preview the card and then set an
@@ -1189,11 +1217,13 @@ addEventListener('resize', moveInk); setTimeout(moveInk, 300);
 if ('serviceWorker' in navigator && window.parent === window && !isNative()) addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
 // The rank card opens to show missions, the ladder and events, and remembers it (2026-10-12).
 document.addEventListener('click', (e) => {
+  if (e.target.closest('.lb-fold-m')) { e.stopPropagation(); const card = $('logbook'); card.classList.remove('compact'); try { localStorage.setItem('lbOpen', '1'); } catch {} const mb = $('lb-more'); if (mb) { mb.textContent = 'Less'; mb.setAttribute('aria-expanded', 'true'); } lbMeasure = null; scrollTo({ top: 0, behavior: 'smooth' }); return; } // folded: back up with the missions open
   const b = e.target.closest('#lb-more'); if (!b) return;
   e.stopPropagation();
   const card = $('logbook'), open = card.classList.toggle('compact') === false;
   b.setAttribute('aria-expanded', String(open)); b.textContent = open ? 'Less' : 'Missions ›';
   try { localStorage.setItem('lbOpen', open ? '1' : '0'); } catch {}
+  lbMeasure = null; lbCollapse();
 });
 // The standalone Collection page (not inside Explore) remembers the visit when it's left.
 if (window.parent === window) addEventListener('pagehide', saveVisit);
