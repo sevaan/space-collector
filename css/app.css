@@ -2213,3 +2213,9 @@ body.night #debug .set-seg button.on { box-shadow: inset 0 0 0 1px #ff6a55; }
 .ht-tonight b { font: 400 22px var(--display, 'SC Display'); } .ht-tonight small { font: 500 13px var(--label); color: var(--muted); letter-spacing: .04em; }
 @keyframes htBell { 0%, 70%, 100% { transform: rotate(0); } 76% { transform: rotate(-14deg); } 84% { transform: rotate(10deg); } 92% { transform: rotate(-5deg); } }
 @media (prefers-reduced-motion: reduce) { .ht-mini.shiny, .ht-mini.shiny::before, .ht-sec, .ht-tonight .ico { animation: none; } }
+
+/* Playtest 2026-10-22 fixes. */
+.tc .sub { gap: 4px 12px; flex-wrap: wrap; } /* the tour card's two halves never touch ("NATURAL SATELLITEHALFWAY UP") */
+#around .ap small, #around .ap .s { white-space: normal; overflow-wrap: anywhere; } /* the line under a value wraps instead of cutting */
+#test-tools pre#debug-info { margin: 10px 14px 12px; } /* inside the card's frame like every other row */
+#debug .set-row.set-off { opacity: .45; } /* a switch another setting overrides (Milky Way under Battery saver) */

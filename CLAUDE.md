@@ -1564,3 +1564,12 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - 2026-10-21 (Sevaan): no 'Update ready' notice; a new version reloads by itself at a quiet moment (updateWhenQuiet: nothing in the circle, no catch/card/page/sheet/tour/patch coins; retried every 2 s); in the sky it reloads to ?resume=1 (sessionStorage explore state, no loader), on the welcome card a plain reload.
 - 2026-10-21 FIX (Sevaan): red night mode on the Tonight page only tinted the top 175px (and darkened it): the tab fade behind the tabs was body.nav-tabs.sky-open::after, which overrode body.night::after (the full-screen red multiply). The fade is now its own element #tab-fade. Rule: never use body::after / body::before for anything else; they belong to red mode and the status-bar backdrop.
 - 2026-10-21: Build 1.0 (27) archived (web v0.1.1002: Settings redesign + new options, How to play deck, All around you landscape, red mode fix, auto-update reload, chip/slider/back fixes); opened in Organizer, not uploaded. SC Tester reinstalled on Sevaan's iPhone.
+- 2026-10-22 · iOS playtest fixes (report docs/playtest-2026-10-22-ios.html):
+  - Weather line follows the clock: weather.js `skyWords` (tonightSky gets the time; main passes now()): before dark "Cloud at dusk, clearing by 9 PM", after dark from the current hour ("Clear now", "Clear until 2 AM", "Overcast for the rest of the night").
+  - Tour card subtitle halves have a gap (.tc .sub gap/wrap). All around you's Sky box: one word big ("Cloud"), the rest under it, wrapping.
+  - T5 Technical text inset inside the card. Sky page opens at the top again after 5 min away (skyLeftAt). At the very bottom the chip under the jump bar lights (not ALL PASSES).
+  - Finger-mode steering says where first: "To your right · drag ←" (agrees with the tour's "Turn right").
+  - Plane airline from the callsign prefix (planes.js AIRLINES; adsbdb's name only if its ICAO matches; else just the flight number).
+  - Re-picking the card back you have just closes the sheet. Ground grid fades by day and spokes start at −12°. Sample notifications' rank is no longer sticky; Settings' Sky time ticks.
+  - Sky names keep off the HUD: main.js `uiBoxes()` (radar, chips, tickets, notices, tray; every 400 ms) → sky.uiBoxes → occupied in drawLabels.
+  - Battery saver greys out the Milky Way switch and shows it off.

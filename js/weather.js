@@ -53,7 +53,7 @@ export function skyClearAt(wx, t) {
 
 // What tonight looks like between dusk and dawn (ms). fmt(ms) -> 'h:mm PM'.
 // -> { ok: boolean, line: string, nextClear: ms | null }
-export function tonightSky(wx, dusk, dawn, fmt) {
+export function tonightSky(wx, dusk, dawn, fmt, t = Date.now()) {
   if (!wx?.hours?.length || !dusk || !dawn) return null;
   const night = wx.hours.filter((h) => h.t >= dusk - 1800e3 && h.t <= dawn);
   if (!night.length) return null;
@@ -62,8 +62,7 @@ export function tonightSky(wx, dusk, dawn, fmt) {
   let line, ok;
   if (clear.every(Boolean)) { ok = true; line = 'Clear all night'; }
   else if (!clear.some(Boolean)) { ok = false; line = `${WORD[worst] ?? 'Cloud'} all night`; }
-  else if (!clear[0]) { const i = clear.indexOf(true); ok = true; line = `${WORD[night[0].kind] === 'Clear' ? 'Cloud' : WORD[night[0].kind]} now, clearing by ${fmt(night[i].t)}`; }
-  else { const i = clear.indexOf(false); ok = true; line = `Clear until ${fmt(night[i].t)}`; }
+  else { ok = true; line = skyWords(night, clear, fmt, t, dusk); }
   // The next night (after this one) with a mostly clear sky, for the "come back on" line.
   let nextClear = null;
   for (let n = 1; n <= 3 && !nextClear; n++) {
@@ -85,5 +84,17 @@ export function tonightSky(wx, dusk, dawn, fmt) {
   }
   const dh = night[0], temp = dh.temp != null ? Math.round(dh.temp) : null, wind = dh.wind != null ? Math.round(dh.wind) : null;
   return { ok, line, nextClear, kase, clearFrom, coverFrom, worst, nights, temp, wind };
+}
+// The words follow the clock (playtest 2026-10-22: "Cloud now, clearing by 9:00 PM" at 1 PM and still at 9:30 PM).
+// Before dark: what dusk looks like ("Cloud at dusk, clearing by 9 PM"). After dark: from the current hour on
+// ("Clear now", "Clear until 2 AM", "Cloud now, clearing by 11 PM"). The case (clearing/closing) is still the evening's.
+function skyWords(night, clear, fmt, t, dusk) {
+  const cloudWord = (k) => (WORD[k] === 'Clear' || !WORD[k] ? 'Cloud' : WORD[k]);
+  const dark = t >= dusk - 1800e3, from = dark ? night.findIndex((h) => h.t + 3600e3 > t) : 0;
+  if (from < 0) return clear[clear.length - 1] ? 'Clear now' : `${cloudWord(night[night.length - 1].kind)} now`;
+  const rest = clear.slice(from), when = dark ? 'now' : 'at dusk';
+  if (rest[0]) { const j = rest.indexOf(false); return j < 0 ? (dark ? 'Clear now' : 'Clear all night') : `Clear until ${fmt(night[from + j].t)}`; }
+  const j = rest.indexOf(true);
+  return j < 0 ? `${cloudWord(night[from].kind)} ${dark ? 'for the rest of the night' : 'all night'}` : `${cloudWord(night[from].kind)} ${when}, clearing by ${fmt(night[from + j].t)}`;
 }
 const rank = (k) => ({ clear: 0, cloudy: 1, fog: 2, snow: 3, rain: 4, storm: 5 }[k] ?? 0);

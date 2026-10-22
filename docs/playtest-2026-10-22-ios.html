@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Space Collector iOS playtest</title>
+<style>
+:root { --bg:#080f1b; --fg:#fff2b3; --muted:#bdbea9; --acc:#fa8127; --line:#24324a; --card:#0f1a2c; --hi:#ff6b5a; --med:#f5b041; --lo:#8fb3cf; }
+body { font:16px/1.6 system-ui, -apple-system, sans-serif; max-width:960px; margin:40px auto; padding:0 20px; background:var(--bg); color:var(--fg); }
+h1,h2,h3 { line-height:1.2; } h2 { color:var(--acc); margin-top:44px; border-bottom:1px solid var(--line); padding-bottom:6px; }
+h3 { margin:0 0 6px; font-size:17px; }
+small, .m { color:var(--muted); } code { color:#8fb3cf; font-size:14px; }
+.f { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:14px 16px; margin:14px 0; }
+.sev { display:inline-block; font:600 12px/1 system-ui; letter-spacing:.06em; padding:4px 7px; border-radius:5px; margin-right:8px; vertical-align:2px; color:#081018; }
+.s-med { background:var(--med); } .s-low { background:var(--lo); } .s-hi { background:var(--hi); }
+dl { margin:6px 0 0; display:grid; grid-template-columns:110px 1fr; gap:4px 12px; } dt { color:var(--muted); } dd { margin:0; }
+.shots { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; } .shots a img { height:260px; border:1px solid var(--line); border-radius:6px; }
+.shots a.wide img { height:220px; }
+ul li, ol li { margin:6px 0; } a { color:#8fb3cf; }
+@media (max-width:600px){ .shots a img{height:180px} dl{grid-template-columns:1fr} }
+</style>
+
+<h1>Space Collector iOS playtest</h1>
+<p class="m">22 October 2026 (run overnight 21–22 Oct) · web build v0.1.1002, the same files as Build 1.0 (27) · Peterborough, Ontario (44.29, −78.33)</p>
+
+<h2>Summary</h2>
+<p>I played as a first-time player twice (iPhone 17, 402×874, and iPhone SE, 375×667) and as a returning player with a seeded 25-card collection (early evening, 8 PM, 9:30 PM, 1 PM, 3 PM and real time), in light and red night mode. No app console errors or warnings came up in any session. I found no stuck states, even with very fast tab switching. Red night mode tinted every screen I captured, and a pixel check found no non-red pixels. The Tonight page fix in v0.1.1002 holds: the whole page is red now.</p>
+<p>The main problems:</p>
+<ol>
+<li>The weather line is wrong outside the evening. It says <em>"Cloud now, clearing by 9:00 PM"</em> at 1 PM and still says it at 9:30 PM.</li>
+<li>The tour card's subtitle runs together on iPhone 17: <em>"NATURAL SATELLITEHALFWAY UP…"</em>.</li>
+<li>All around you cuts off the Sky box ("Clou…").</li>
+<li>The Testing tools' Technical block has no inner padding.</li>
+</ol>
+<p>Everything else is low severity or a design suggestion.</p>
+<p><strong>How it was tested.</strong> The iOS Simulator control tool needed a permission grant that only you can give, so I couldn't tap in the Simulator. Instead I installed and launched the Debug build on the iPhone 17 simulator (iOS 27) with <code>simctl</code>. Its loader and welcome card match the web build pixel for pixel (<a href="playtest-2026-10-22-ios/sim-02-welcome.jpg">sim-02-welcome</a> vs <a href="playtest-2026-10-22-ios/w02-welcome.jpg">w02-welcome</a>). All the interaction was in Playwright WebKit with a phone user agent, touch and safe areas, serving the project folder. I faked touch swipes with pointer and touch events and aimed by setting the drag view. Nothing was changed in the app, nothing was committed or uploaded, and the physical iPhone was not touched.</p>
+
+<h2>Bugs</h2>
+
+<div class="f"><h3><span class="sev s-med">MEDIUM</span>Tonight's weather line uses past times and says "now" for dusk</h3>
+<dl><dt>Steps</dt><dd>Returning player, Oct 22, forecast cloudy at dusk and clearing about 9 PM. Open the app at 1 PM, 8 PM and 9:30 PM.</dd>
+<dt>Expected</dt><dd>At 9:30 PM: "Clear now" or "Clear until …". At 1 PM: something like "Cloudy at dusk, clearing by 9 PM".</dd>
+<dt>Actual</dt><dd>All three say <em>"Cloud now, clearing by 9:00 PM"</em>. That covers the TONIGHT notice in Explore (at 9:32 PM it also says "Busiest at 9:32 PM"), the Tonight's haul footer, and the All around you Sky box ("Cloud now, clearing / by 9:00 PM"). At 1 PM the "now" is false, and at 9:30 PM the "clearing by" time has already passed.</dd>
+<dt>Cause</dt><dd><code>js/weather.js tonightSky()</code> reads the hours from dusk − 30 min and builds "X now, clearing by …" from <code>night[0]</code>, whatever time it is. The comment at <code>main.js:2664</code> says judging by the evening is deliberate, but the wording needs to follow the clock once dusk has passed. Before dusk it should not say "now".</dd></dl>
+<div class="shots"><a class="wide" href="playtest-2026-10-22-ios/m-nt3.jpg"><img src="playtest-2026-10-22-ios/m-nt3.jpg" alt="9:30 PM notice"></a><a class="wide" href="playtest-2026-10-22-ios/m-day.jpg"><img src="playtest-2026-10-22-ios/m-day.jpg" alt="1 PM notice"></a></div></div>
+
+<div class="f"><h3><span class="sev s-med">MEDIUM</span>Tour card subtitle has no gap: "NATURAL SATELLITEHALFWAY UP IN THE SOUTHWEST"</h3>
+<dl><dt>Steps</dt><dd>Fresh install on iPhone 17 (402 pt). Go through the tour to "Catch the Moon".</dd>
+<dt>Expected</dt><dd>"Natural satellite · Halfway up in the southwest", or two separated parts.</dd>
+<dt>Actual</dt><dd>The two spans touch, with no space between them. On the SE they wrap into two columns, which looks fine. Step 2 uses the same row ("Toronto sky for now / Change it in Settings") and is at risk of the same problem.</dd>
+<dt>Cause</dt><dd><code>css/app.css:131 .tc .sub { display:flex; justify-content:space-between }</code> has no <code>gap</code>. When the two texts fill the width there is no space left to share out.</dd></dl>
+<div class="shots"><a href="playtest-2026-10-22-ios/w09-first-catch-card.jpg"><img src="playtest-2026-10-22-ios/w09-first-catch-card.jpg" alt=""></a><a class="wide" href="playtest-2026-10-22-ios/m-se2.jpg"><img src="playtest-2026-10-22-ios/m-se2.jpg" alt=""></a></div></div>
+
+<div class="f"><h3><span class="sev s-med">MEDIUM</span>All around you: the Sky box value is cut to "Clou…" / "Cloud n…"</h3>
+<dl><dt>Steps</dt><dd>Tap the radar on a cloudy-then-clearing evening, on iPhone 17 and SE, by day and at night.</dd>
+<dt>Expected</dt><dd>Per the 2026-10-21 notes, long values wrap inside their box.</dd>
+<dt>Actual</dt><dd>At night, with four boxes, it shows "Clou…". By day, with three boxes because the Moon box is missing, it shows "Cloud n…". The line under it says "by 9:00 PM", so the word that matters ("clearing") is the part that gets cut.</dd></dl>
+<div class="shots"><a href="playtest-2026-10-22-ios/a03-around-night.jpg"><img src="playtest-2026-10-22-ios/a03-around-night.jpg" alt=""></a><a class="wide" href="playtest-2026-10-22-ios/m-ad.jpg"><img src="playtest-2026-10-22-ios/m-ad.jpg" alt=""></a></div></div>
+
+<div class="f"><h3><span class="sev s-low">LOW</span>Settings T5 Technical: text sits on the card's edge</h3>
+<dl><dt>Steps</dt><dd>Settings → scroll to Testing tools → T5 Technical.</dd>
+<dt>Actual</dt><dd>"version", "location", "sensors"… start at the card's inner frame line with no padding. A long line ("sky … stars 4.6, satellites…") wraps back to column 0 and runs into the frame. Every other card has a 20 px inset.</dd></dl>
+<div class="shots"><a href="playtest-2026-10-22-ios/s06-settings.jpg"><img src="playtest-2026-10-22-ios/s06-settings.jpg" alt=""></a></div></div>
+
+<div class="f"><h3><span class="sev s-low">LOW</span>The Tonight tab reopens where you left it, not at the top</h3>
+<dl><dt>Steps</dt><dd>Open Tonight, scroll down to Missions, switch to Explore. Come back to Tonight right away, then again after moving the clock 6 minutes.</dd>
+<dt>Expected</dt><dd>Probably the hero ("Up now"/headliner) at the top, especially after time has passed.</dd>
+<dt>Actual</dt><dd><code>#visible.scrollTop</code> stays the same (1500 → 1500 → 1500). The page opens mid-list with the chip row scrolled to its end, so the NOW chip is off-screen. If this is meant, ignore it.</dd></dl>
+<div class="shots"><a href="playtest-2026-10-22-ios/sw04-reopen-scroll.jpg"><img src="playtest-2026-10-22-ios/sw04-reopen-scroll.jpg" alt=""></a><a class="wide" href="playtest-2026-10-22-ios/m-sw.jpg"><img src="playtest-2026-10-22-ios/m-sw.jpg" alt=""></a></div></div>
+
+<div class="f"><h3><span class="sev s-low">LOW</span>Jump chips light ALL PASSES while Missions is at the top</h3>
+<dl><dt>Steps</dt><dd>Scroll the Tonight page by hand to the bottom.</dd>
+<dt>Actual</dt><dd>The page can't scroll far enough for "Every pass tonight" to reach the top 40%, but ALL PASSES lights anyway while TONIGHT'S MISSIONS sits right under the chips. Tapping a chip lights the right one (checked: Missions, Shiny, All passes, Coming up, Tonight).</dd></dl>
+<div class="shots"><a class="wide" href="playtest-2026-10-22-ios/m-t1b.jpg"><img src="playtest-2026-10-22-ios/m-t1b.jpg" alt=""></a></div></div>
+
+<div class="f"><h3><span class="sev s-low">LOW</span>The first-catch pointer gives two directions</h3>
+<dl><dt>Steps</dt><dd>First run, "Use a finger" or Allow motion on the web, then "Show me where".</dd>
+<dt>Actual</dt><dd>The tour card says "Turn right a little" with a right arrow. The ticket then says "← DRAG LEFT · 34° UP SW". The Moon's off-screen arrow points right, at the right edge. "Drag left" is right for a finger, but a new player sees "right" and then a left arrow. Saying "Moon is to your right · drag left" would read better. With motion on, check the ticket says "turn right".</dd></dl>
+<div class="shots"><a href="playtest-2026-10-22-ios/w10-show-me.jpg"><img src="playtest-2026-10-22-ios/w10-show-me.jpg" alt=""></a></div></div>
+
+<div class="f"><h3><span class="sev s-low">LOW</span>Plane ticket shows the wrong airline</h3>
+<dl><dt>Steps</dt><dd>Real time, aim at callsign ROU1908.</dd>
+<dt>Actual</dt><dd>"JUST A PLANE · Transportes Aereos I.R. Crusoe 08 · Victoria → Montréal · Airbus A319". ROU is Air Canada Rouge. The name comes from adsbdb (<code>js/planes.js:116 f.airline?.name</code>). You could keep a small list of the main Canadian/US ICAO prefixes, or show the flight number alone when the API's airline name doesn't match the prefix.</dd></dl>
+<div class="shots"><a href="playtest-2026-10-22-ios/pl01-plane.jpg"><img src="playtest-2026-10-22-ios/pl01-plane.jpg" alt=""></a></div></div>
+
+<div class="f"><h3><span class="sev s-low">LOW</span>Re-picking the back you already have plays the whole "every card turns over" fan</h3>
+<dl><dt>Steps</dt><dd>Settings → Card back → tap Mission Control, which is already ticked.</dd>
+<dt>Actual</dt><dd>The sheet closes and five cards fan out over Settings and flip, even though nothing changed. It would be better to just close the sheet.</dd></dl>
+<div class="shots"><a class="wide" href="playtest-2026-10-22-ios/m-plus.jpg"><img src="playtest-2026-10-22-ios/m-plus.jpg" alt=""></a></div></div>
+
+<div class="f"><h3><span class="sev s-low">LOW</span>Sky labels and the radar, ticket and notices overlap</h3>
+<dl><dt>Actual</dt><dd>When notices push the radar down, the Moon's sky label ends up under the radar dial (<a href="playtest-2026-10-22-ios/m-nt3.jpg">m-nt3</a>, 2nd panel). Sky labels peek out from under the bottom edge of the ticket ("Fom…" in <a href="playtest-2026-10-22-ios/w13-drag2.jpg">w13</a>, "Thor Burner 2 Rocket Stage" drawn half under the "Not visible right now" ticket). Two satellite icons sit on top of a label in <a href="playtest-2026-10-22-ios/r03-target-new.jpg">r03</a>-style views. The "W"/"S" compass letter also sits under the orange count badge (it's dimmed as designed, but it still collides).</dd></dl></div>
+
+<div class="f"><h3><span class="sev s-low">LOW</span>Faint grid lines below the horizon</h3>
+<dl><dt>Actual</dt><dd>Thin grey lines run from the horizon down past the tab bar to the bottom of the screen: at night under the trees (<a href="playtest-2026-10-22-ios/w10-show-me.jpg">w10</a> bottom), and by day across the brown ground (<a href="playtest-2026-10-22-ios/ds01-daysats.jpg">ds01</a>, line at x≈315 pt). They look like rendering leftovers rather than part of the design.</dd></dl></div>
+
+<div class="f"><h3><span class="sev s-low">LOW</span>Testing tools: odd leftovers</h3>
+<dl><dd>"Sample notifications" leaves a lasting <em>NEW RANK ›</em> tucked chip (Navigator) on a Spotter player (<a href="playtest-2026-10-22-ios/m-mw.jpg">m-mw</a>). The T1 "Sky time" line doesn't tick while Settings is open: it read 9:30:14 PM across about 5 s of screenshots. During the 10 s I watched, the sample sequence showed mission, weather, event badge, rank and patch, but I didn't catch a stamp notice.</dd></dl></div>
+
+<h2>Red night mode</h2>
+<ul>
+<li><strong>Everything I captured was fully red.</strong> I pixel-checked each screenshot for any pixel with green or blue above 45 and above half its red. None turned up on: Explore, the target ticket and Collect, All around you (strip, cards, boxes), Settings (top and testing tools), every scroll position of the Tonight page, Collection (rank card, tiles, tab bar), the sealed card and reveal, How to play (cards 1 and 5), the Plus sheet and the card back picker. (<a href="playtest-2026-10-22-ios/m-nt.jpg">m-nt</a>, <a href="playtest-2026-10-22-ios/m-nr.jpg">m-nr</a>, <a href="playtest-2026-10-22-ios/n07-collection.jpg">n07</a>)</li>
+<li><strong>The v0.1.1002 Tonight fix holds.</strong> All six scroll positions of the Tonight page are tinted to the bottom, including the tab bar and the fade behind it.</li>
+<li><strong>Readability.</strong> The All around you strip is very dark in red mode. The sky, tree line, 30°/60° lines and labels like "Altair" and "SL-8 Rocket Stage" are barely visible (<a href="playtest-2026-10-22-ios/m-nt.jpg">m-nt</a>, last panel). The dimmed Plus bells on Tonight's run almost disappear. Body text on cards (the reveal fact text) is dim red on near-black but still readable. In the Collection, the translucent tab bar puts red tab labels over red card art, so the labels are hard to read (<a href="playtest-2026-10-22-ios/n07-collection.jpg">n07</a>).</li>
+<li>The night sweep animation itself wasn't judged frame by frame.</li>
+</ul>
+
+<h2>Layout and text</h2>
+<ul>
+<li>See the three bugs above: the tour subtitle gap, the Sky box cut-off and the T5 padding.</li>
+<li>The SE Shiny chances card squeezes its text into a narrow column of five lines: "CZ-8A Rocket / Stage slips into Earth's / shadow halfway / up in the northeast" (<a href="playtest-2026-10-22-ios/m-se5.jpg">m-se5</a>, 3rd panel).</li>
+<li>The "NEXT THOR BURNER 2 ROCKET S… · 5:40 AM" chip is cut off with an ellipsis on both phones. That's acceptable, but the name is the useful part.</li>
+<li>On the SE, the target ticket overlaps the circle's bottom tick (<a href="playtest-2026-10-22-ios/m-se3.jpg">m-se3</a>, 2nd panel).</li>
+<li>The tour cards on both phones run off the bottom of the screen with no bottom border. That looks deliberate (a deck), and the buttons are always visible.</li>
+<li>Strip compass letters at the far left and right of All around you are cut in half at the edges ("E", "W").</li>
+<li>Settings section frames, segmented controls and the sky slider look clean. The Units/Clock AUTO buttons line up.</li>
+<li><strong>Dynamic Type: not really tested.</strong> I set the simulator to extra-extra-extra-large and relaunched, but without tap access I could only see the sealed welcome card, and card faces are fixed artwork anyway. Desktop WebKit ignores <code>-webkit-text-size-adjust</code>.</li>
+</ul>
+
+<h2>UX and design suggestions</h2>
+<ul>
+<li><strong>Same-name objects.</strong> Different objects show with the same name side by side. On Tonight, the hero shows SL-14 Rocket Stage "Up now" and Coming up lists another "SL-14 Rocket Stage" at 7:45. All around you's Worth a look shows "SL-8 Rocket Stage" twice (ids 10293 and 10492). The headliner (SL-8 at 8:03) is a different SL-8 from the one New to you lists as up now. Adding the year or payload ("SL-8 · 1977") wherever a name repeats would help.</li>
+<li><strong>The first night after the tour.</strong> The Tonight page sets "Catch a satellite" as an open mission and says "It's dark: go now / clear until 2:00 AM". But satellites are in Earth's shadow until 3:19 AM (and the next good pass is 5:40 AM), after the clouds arrive. It would be fairer to say "Satellites are in Earth's shadow until 3:19 AM" there, or to swap that mission for one that can be done (<a href="playtest-2026-10-22-ios/w18-after-close2.jpg">w18</a>, <a href="playtest-2026-10-22-ios/se10-after-first.jpg">se10</a>).</li>
+<li><strong>Two different counts next to each other.</strong> The radar badge says "10" (new cards up) right above "11 PASSING". New players will read these as the same thing. Maybe "10 new" in the badge, or one number only.</li>
+<li><strong>Finger mode's first view.</strong> By day the Sun sits right in the middle of the circle on launch, but the ticket says "Dark in 5 h 47 min" with no Collect until you drag (the <code>main.js:638</code> gate). A finger player will think the Sun can't be caught (<a href="playtest-2026-10-22-ios/m-day.jpg">m-day</a> vs <a href="playtest-2026-10-22-ios/d03-sun-centered.jpg">d03</a>).</li>
+<li><strong>Battery saver vs Milky Way.</strong> With Battery saver on (which means "no Milky Way"), the Milky Way switch still reads ON. You could grey it out or add "(off with Battery saver)".</li>
+<li><strong>Reminder sheet labels.</strong> The default lead is tagged "· BEST". After picking 5 min in Settings, 5 min is tagged "· USUAL" and 10 min loses "BEST". "Your default" in both cases would be clearer (<a href="playtest-2026-10-22-ios/s13-sheet-5min.jpg">s13</a>).</li>
+<li><strong>Settings icons.</strong> Battery saver uses the speaker icon (the same as Sounds). The sparkle icon is used for six rows (Plus, Stars, Milky Way, Satellites by day, Meteor showers, How dark). "RESET TO 0°" shows under Compass nudge even when it's already 0°.</li>
+<li><strong>Repeated words in the Tonight hero.</strong> By day the hero header reads "TONIGHT'S HEADLINER · +25 XP · CLOUD FORECAST", and the line under the art repeats "UNCOMMON · NEW TO YOU · HEADLINER" (<a href="playtest-2026-10-22-ios/m-dt.jpg">m-dt</a>).</li>
+<li><strong>"Over Africa · not visible tonight"</strong> appears for a CZ-3 stage drawn in your daytime sky with Satellites by day on. For high-orbit objects this reads as a contradiction (<a href="playtest-2026-10-22-ios/ds01-daysats.jpg">ds01</a>).</li>
+<li><strong>Welcome card.</strong> After the flip there's "↑ SWIPE AWAY" above the card and "↑ SWIPE UP TO BEGIN" inside it. One is enough.</li>
+<li><strong>Two forecast notices at once.</strong> By day the Sun warning and the Tonight weather notice stack and push the radar to the middle of the screen (<a href="playtest-2026-10-22-ios/m-day.jpg">m-day</a>).</li>
+</ul>
+
+<h2>What works well</h2>
+<ul>
+<li><strong>First run.</strong> Loader → sealed card → flip → swipe up → three tour cards → "Catch the Moon" → Show me → Collect → heartbeat-free Common reveal (+110 XP, Orionids 2026 and First Light chips, phase stamp 1/8) → Tonight page with the missions ticked → the First Light patch coin in Explore. The decline path (Not now / Use a finger / Not now) goes through the same flow with "Toronto sky for now". Replay the tour returns to the sealed card.</li>
+<li><strong>Returning player.</strong> The Your Week recap is lovely. Target states read clearly: an orange Collect for new, a cream VIEW CARD for owned, NEW STAMP on the Moon, "Below the horizon · not collected yet · not in your sky for 12+ hours", HIDDEN BY DAYLIGHT, and the coral JUST A PLANE with route, type, height and range.</li>
+<li><strong>"Show objects that aren't visible".</strong> Draws the secrets as named dashed rings ("Hello from Earth", "The Golden Record", "Wow!").</li>
+<li><strong>Tonight page.</strong> Hero, Coming up, New to you, Seen before (opens the card), haul with the rarity chart, headliner, Tonight's run with Shiny chance and weather rows, Shiny chances, the PLUS teaser, missions, the Every pass chart and the next clear night. Tapping a jump chip scrolls and lights the right section. The ISS bell is free and the others are dimmed, as designed. The reminder sheet works and closes with a pull down. The whole page also closes with a pull down from the content.</li>
+<li><strong>All around you.</strong> Landscape by day and night, card art on the strip, "FACING S · TAP TO COME BACK" after a drag. Worth a look cards <strong>kept their order</strong>: the same order on open, after 6 s and after a drag. Tapping a card closes the page and aims (the Moon came up with Collect ready).</li>
+<li><strong>Collection.</strong> All four tabs. The card viewer double-tap flip shows the album back and swipe goes to the next card (1/25 → 2/25). Press and hold peek lifts the card over a blurred grid, and letting go doesn't open the viewer. Observer stats opened from Settings goes back to Settings, and Settings goes back to Explore.</li>
+<li><strong>Settings.</strong> Every segmented control takes effect. Clock 24 h changes the Tonight header (20:11), all list times and the reminder sheet (05:05). Units MI changes the satellite ticket (705 mi). Reminders lead moves the sheet's tag. Milky Way off and Battery saver remove the Milky Way. Random card back is locked and explains how to unlock it. The How to play deck has 7 cards with dots that follow the scroll position and ends on See tonight, which opens Tonight. Plus sheet prices are right (Year saves 37% against monthly). Time travel ±1 h and Jump to next visible pass ("JUMPED AHEAD 2:58 AM · Breeze-M Debris is up in the N") both work.</li>
+<li><strong>Page switching.</strong> I rapid-tapped the tabs about 30 times at 120 ms, again at 40 ms, then ended on each tab in turn. Each time the right page and header settled, with nothing left on top. Settings opened from Tonight goes back to Tonight. On All around you the corner button is ✕ and closes the page, as designed.</li>
+<li><strong>Console.</strong> No app errors or warnings in any session. The only messages were Playwright's "Service Worker registration blocked" and one NotFoundError from my own synthetic <code>setPointerCapture</code> (test harness, not the app).</li>
+</ul>
+
+<h2>Not tested</h2>
+<ul>
+<li>Driving the native app in the Simulator: the control tool needs your "Let Claude use it" permission. Because of that I couldn't check real motion sensors, iOS back/edge gestures, haptics, sounds and music, Dynamic Type in context, or the Motion row's TURN ON.</li>
+<li>Native-only features: the Notifications rows Look up, Catch of the day and Rare alerts (hidden on the web), the reminder fold into the bell (the web says "Reminders work in the app"), real notification delivery, Plus purchase and restore, iCloud.</li>
+<li>Shaking the welcome card (no device motion in WebKit). I tested the How to play swipe by scrolling the track rather than with a real finger flick, because native overflow scroll can't be faked.</li>
+<li>iPad, landscape, VoiceOver.</li>
+</ul>
+<p class="m">Screenshots are in <code>docs/playtest-2026-10-22-ios/</code>. Full-resolution PNGs and the Playwright driver (<code>driver.mjs</code>) are in the session scratchpad, <code>/private/tmp/claude-501/-Users-sevaan/04a71ae5-eb6a-4f90-ae24-1b4114851804/scratchpad/ios-playtest/</code>.</p>
+</html>

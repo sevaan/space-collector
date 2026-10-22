@@ -113,13 +113,29 @@ export class PlaneTracker {
       .then((j) => {
         const f = j?.response?.flightroute;
         this.routes.set(callsign, f ? {
-          airline: f.airline?.name ?? '', flight: f.callsign_iata ?? f.callsign ?? callsign,
+          airline: airlineFor(callsign, f.airline), flight: f.callsign_iata ?? f.callsign ?? callsign,
           from: f.origin?.municipality ?? f.origin?.name ?? '', to: f.destination?.municipality ?? f.destination?.name ?? '',
         } : null);
       })
       .catch(() => this.routes.set(callsign, null));
     return undefined;
   }
+}
+
+// The airline from the callsign's ICAO prefix (playtest 2026-10-22: adsbdb named ROU1908, Air Canada Rouge, as
+// "Transportes Aereos I.R. Crusoe"). Common North American and long-haul operators by prefix first; otherwise adsbdb's
+// name only when its own ICAO code matches the prefix; otherwise no airline (the flight number still shows).
+const AIRLINES = { ACA: 'Air Canada', ROU: 'Air Canada Rouge', JZA: 'Air Canada Jazz', WJA: 'WestJet', WEN: 'WestJet Encore', POE: 'Porter',
+  TSC: 'Air Transat', FLE: 'Flair', SWG: 'Sunwing', CJT: 'Cargojet', PCO: 'Pacific Coastal', AAL: 'American', DAL: 'Delta', UAL: 'United',
+  SWA: 'Southwest', JBU: 'JetBlue', ASA: 'Alaska', NKS: 'Spirit', FFT: 'Frontier', AAY: 'Allegiant', SKW: 'SkyWest', RPA: 'Republic',
+  ENY: 'Envoy', EDV: 'Endeavor', JIA: 'PSA', PDT: 'Piedmont', GJS: 'GoJet', CPZ: 'Compass', ASH: 'Mesa', QXE: 'Horizon', FDX: 'FedEx',
+  UPS: 'UPS', BAW: 'British Airways', VIR: 'Virgin Atlantic', AFR: 'Air France', DLH: 'Lufthansa', KLM: 'KLM', ICE: 'Icelandair',
+  UAE: 'Emirates', QTR: 'Qatar Airways', ETD: 'Etihad', THY: 'Turkish Airlines', AMX: 'Aeroméxico', CPA: 'Cathay Pacific', JAL: 'Japan Airlines',
+  ANA: 'All Nippon', KAL: 'Korean Air', EIN: 'Aer Lingus', SAS: 'SAS', IBE: 'Iberia', SWR: 'Swiss', AUA: 'Austrian', TAP: 'TAP Air Portugal' };
+function airlineFor(callsign, a) {
+  const pre = callsign.slice(0, 3).toUpperCase();
+  if (AIRLINES[pre]) return AIRLINES[pre];
+  return a?.name && (a.icao ?? '').toUpperCase() === pre ? a.name : '';
 }
 
 // Friendly names for the aircraft you’re most likely to see overhead.

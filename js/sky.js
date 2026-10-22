@@ -1,17 +1,17 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.1002';
+import { extinction } from './sky-limit.js?v=0.1.1003';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.1002';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.1003';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.1002';
-import { createCloudGL } from './clouds-gl.js?v=0.1.1002';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.1003';
+import { createCloudGL } from './clouds-gl.js?v=0.1.1003';
 // Cloud colours by light: sunlit tops, shadowed bellies, and the horizon haze they melt into (0–1 RGB).
 const CLOUD_LIGHT = {
   day: { lit: [1, 1, 1], shade: [0.62, 0.68, 0.77], haze: [0.82, 0.87, 0.93] },
   dusk: { lit: [1, 0.8, 0.68], shade: [0.36, 0.33, 0.42], haze: [0.62, 0.5, 0.52] },
   night: { lit: [0.22, 0.25, 0.31], shade: [0.1, 0.12, 0.16], haze: [0.14, 0.15, 0.2] },
 };
-import { TIER_INFO } from './rarity.js?v=0.1.1002';
+import { TIER_INFO } from './rarity.js?v=0.1.1003';
 
 const RAD = Math.PI / 180;
 const SECRET_PX = { santa: 24, roadster: 12.4, voyager: 14.5, voyager2: 14.5, pioneer10: 11.7, pioneer11: 11.7, newhorizons: 6.4, arecibo: 6.9, halley: 8.6, sputnik: 11.2, laika: 13.3, wow: 9.8 };
@@ -299,6 +299,7 @@ export class SkyView {
     const ring = this.ring ?? { x: this.cx, y: this.cy, r: this.reticlePx };
     const r = ring.r + 16;
     const occupied = [{ x: ring.x - r, y: ring.y - r, w: 2 * r, h: 2 * r }];
+    for (const b of this.uiBoxes ?? []) occupied.push(b); // the HUD's own boxes (main.js uiBoxes)
     if (this.clearZone) {
       const z = this.clearZone;
       occupied.push({ x:z.left, y:z.top, w:z.right - z.left, h:z.bottom - z.top });
@@ -901,7 +902,9 @@ export class SkyView {
     ctx.lineWidth = 1;
     // The straight grid is back (2026-10-07, Sevaan: it fills the void): rings at 20°, 45° and 70° down and spokes
     // every 30°, heavier on N/E/S/W. It softens as the quiet ring at your feet comes in, so the two don’t fight.
-    ctx.globalAlpha = 1 - 0.55 * (this.feetA ?? 0);
+    // By day the soil already fills the ground, so the grid all but goes; the spokes start clear of the tree line
+    // (playtest 2026-10-22: thin lines ran from the horizon down across the daytime ground).
+    ctx.globalAlpha = (1 - 0.55 * (this.feetA ?? 0)) * (1 - 0.85 * Math.min(1, (this.dayF ?? 0) / 0.6));
     for (const el of [-20, -45, -70]) {
       const pts = [];
       for (let az = 0; az <= 360; az += 3) pts.push(enuFromAzEl(az, el));
@@ -909,7 +912,7 @@ export class SkyView {
     }
     for (let az = 0; az < 360; az += 30) {
       const pts = [];
-      for (let el = -4; el >= -88; el -= 4) pts.push(enuFromAzEl(az, el));
+      for (let el = -12; el >= -88; el -= 4) pts.push(enuFromAzEl(az, el));
       ctx.lineWidth = az % 90 ? 1 : 1.6;
       this.path(pts);
     }
