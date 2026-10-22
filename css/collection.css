@@ -826,3 +826,8 @@ dialog[open] { padding-left: var(--safe-l) !important; padding-right: var(--safe
 @media (min-width: 600px) and (min-height: 900px) and (orientation: portrait) {
   #viewer.docked, #viewer.docked .viewer-scroll { background: var(--bg) !important; background-image: none !important; }
 }
+
+/* The rank bar runs the full width of the left page (Sevaan 2026-10-22, Duo). */
+@media (min-width: 900px) and (min-height: 560px) and (orientation: landscape) {
+  body:not([data-view="albums"]):not([data-view="patches"]) .logbook { max-width: none !important; width: auto !important; margin-left: 0 !important; margin-right: 0 !important; padding-left: 0 !important; padding-right: 0 !important; }
+}

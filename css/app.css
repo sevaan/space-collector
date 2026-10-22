@@ -2301,3 +2301,8 @@ body.night #debug .set-seg button.on { box-shadow: inset 0 0 0 1px #ff6a55; }
    folded is not built yet; this is where it would go. */
 /* Bottom sheets keep a phone's width on a wide screen (Duo unfolded, iPads; 2026-10-22), centred. Phones are narrower, so unchanged there. */
 .set-sheet-card { max-width: 620px; margin-left: auto; margin-right: auto; }
+
+/* iPhone Duo half-folded (body.folded, set by window.scFold): what normally sits in the middle under the circle follows
+   it to the side page (--ucx, set by main.js with the circle's x). */
+body.folded #wake, body.folded #until-dark.tk-card, body.folded #guidance:not(.first), body.folded #gh-remind,
+body.folded #discover .d-label, body.folded #discover .d-actions, body.folded #plane .p-label { left: var(--ucx, 50%) !important; }

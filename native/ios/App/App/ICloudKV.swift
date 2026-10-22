@@ -69,4 +69,24 @@ class MainViewController: CAPBridgeViewController {
     override open func capacitorDidLoad() {
         bridge?.registerPluginInstance(ICloudKVPlugin())
     }
+
+    // iPhone Duo (2026-10-22): tell the page when the phone is half-folded like a book, so the sky moves its circle off
+    // the crease (window.scFold in js/main.js). UIHingeInteraction (iOS 27.1) calls its handler with the first state and
+    // on every change; no hinge (every other device) means never folded.
+    private var lastFolded: Bool?
+    override open func viewDidLoad() {
+        super.viewDidLoad()
+        if #available(iOS 27.1, *) {
+            let hinge = UIHingeInteraction { [weak self] _, update in
+                let folded = update.hinge?.status == .partiallyOpen
+                self?.sendFold(folded)
+            }
+            view.addInteraction(hinge)
+        }
+    }
+    private func sendFold(_ folded: Bool) {
+        guard folded != lastFolded else { return }
+        lastFolded = folded
+        webView?.evaluateJavaScript("window.__fold = \(folded); window.scFold && window.scFold(\(folded))", completionHandler: nil) // __fold: the page picks it up if it loads after the first hinge update
+    }
 }

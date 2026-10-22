@@ -1,17 +1,17 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.1010';
+import { extinction } from './sky-limit.js?v=0.1.1012';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.1010';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.1012';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.1010';
-import { createCloudGL } from './clouds-gl.js?v=0.1.1010';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.1012';
+import { createCloudGL } from './clouds-gl.js?v=0.1.1012';
 // Cloud colours by light: sunlit tops, shadowed bellies, and the horizon haze they melt into (0–1 RGB).
 const CLOUD_LIGHT = {
   day: { lit: [1, 1, 1], shade: [0.62, 0.68, 0.77], haze: [0.82, 0.87, 0.93] },
   dusk: { lit: [1, 0.8, 0.68], shade: [0.36, 0.33, 0.42], haze: [0.62, 0.5, 0.52] },
   night: { lit: [0.22, 0.25, 0.31], shade: [0.1, 0.12, 0.16], haze: [0.14, 0.15, 0.2] },
 };
-import { TIER_INFO } from './rarity.js?v=0.1.1010';
+import { TIER_INFO } from './rarity.js?v=0.1.1012';
 
 const RAD = Math.PI / 180;
 const SECRET_PX = { santa: 24, roadster: 12.4, voyager: 14.5, voyager2: 14.5, pioneer10: 11.7, pioneer11: 11.7, newhorizons: 6.4, arecibo: 6.9, halley: 8.6, sputnik: 11.2, laika: 13.3, wow: 9.8 };
@@ -1478,13 +1478,14 @@ export class SkyView {
 
   // safeTop/safeBottom are HUD insets in CSS pixels; centerY is an optional pixel
   // override. Projection and the reticle always share the same cx/cy.
-  draw(basis, items, { showDim, sky, bodies, milky, lines = true, targetId = null, time = 0, safeTop = 150, safeBottom = 230, centerY, starLimit = null, naturalTargetName = null, quietTarget = false, below = null, belowSats = null, daySats = null, deep = null, belowStarLimit = 6.5, ownedTarget = false, sunEl = -90, ghosts = null, weather = null, newFind = false, rising = null, landscape = false, lockedOn = null, planes = null, planeHit = null, planeTrail = null, naturalTarget = null, feet = null, fossil = null, ufo = null, secrets = null } = {}) {
+  draw(basis, items, { showDim, sky, bodies, milky, lines = true, targetId = null, time = 0, safeTop = 150, safeBottom = 230, centerY, centerX, starLimit = null, naturalTargetName = null, quietTarget = false, below = null, belowSats = null, daySats = null, deep = null, belowStarLimit = 6.5, ownedTarget = false, sunEl = -90, ghosts = null, weather = null, newFind = false, rising = null, landscape = false, lockedOn = null, planes = null, planeHit = null, planeTrail = null, naturalTarget = null, feet = null, fossil = null, ufo = null, secrets = null } = {}) {
     // Every frame starts on the screen's own canvas with a clean state (2026-10-20, Sevaan's phone: a failed daytime
     // ground layer once left the sky drawing into that hidden layer, and the screen filled with stale frames).
     this.ctx = this.mainCtx; this.ctx.setTransform(this.canvas.width / this.w, 0, 0, this.canvas.width / this.w, 0, 0); this.ctx.globalAlpha = 1; this.ctx.globalCompositeOperation = 'source-over'; this.ctx.shadowBlur = 0; this.ctx.filter = 'none';
     this.basis = basis;
     this.safeTop = Math.max(12, Math.min(safeTop, this.h * 0.45));
     this.safeBottom = Math.max(12, Math.min(safeBottom, this.h - this.safeTop - 100));
+    this.cx = Number.isFinite(centerX) ? centerX : this.w / 2; // the iPhone Duo half-folded moves the circle off the crease (main.js foldCX)
     this.cy = Number.isFinite(centerY) ? centerY : this.h / 2; // fixed: no clamping to the measured UI, which shifted it on the first frames
     this.labelQueue = [];
     const r = this.reticlePx;
