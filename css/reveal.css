@@ -126,3 +126,6 @@ body.night .rv-roll > span { color: inherit; }
 .rv-chip--reunion { color: #7fe0c4; border-color: #7fe0c466; }
 body.night .rv-chip--reunion { color: #ff7f70; border-color: #ff7f7066; }
 .rv-dot { font-style: normal; color: var(--muted, #bdbea9); } /* the "·" rolls in with the XP, never dangles on its own (polish 2026-10-20) */
+/* A flick that starts on the card's picture is the card's, never an image drag (Duo playtest 2026-10-22: WebKit began
+   dragging the art and the flick never reached the reveal, so the card couldn't be thrown away). */
+#reveal img { -webkit-user-drag: none; user-select: none; -webkit-touch-callout: none; pointer-events: none; }

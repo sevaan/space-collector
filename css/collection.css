@@ -771,7 +771,10 @@ dialog[open] { padding-left: var(--safe-l) !important; padding-right: var(--safe
   body:not([data-view="albums"]):not([data-view="patches"]) .logbook .lb-rankrow { margin-top: 0; }
   body:not([data-view="albums"]):not([data-view="patches"]) main > .stats-link { display: none !important; }
   #viewer.docked { position: fixed; z-index: 30; margin: 0; max-width: none; max-height: none; width: auto; height: auto; container-type: size; background: var(--bg); }
-  #viewer.docked .viewer-scroll { padding-bottom: calc(var(--safe-bottom) + 110px) !important; } /* clear of Explore's tabs, which stay over the Collection */
+  #viewer.docked .viewer-scroll { padding-bottom: 16px !important; }
+  /* The card's page ends above Explore's tabs, which stay over the Collection (Duo playtest 2026-10-22: Share this card
+     and When you saw it peeked out under them). */
+  #viewer.docked { bottom: calc(var(--safe-bottom) + 96px) !important; }
   #viewer.docked .viewer-header { height: 44px; min-height: 0; padding: 0 4px 0 16px; }
   #viewer.docked #slot { padding: 0; }
   .grid .tile-slot.shown { outline: 2px solid #fa8127; outline-offset: 3px; border-radius: calc(14px * var(--mini-s, .5) + 3px); } /* the card open on the other page */
@@ -785,8 +788,8 @@ dialog[open] { padding-left: var(--safe-l) !important; padding-right: var(--safe
   body:not([data-view="albums"]):not([data-view="patches"]):not(:has(#viewer[open])) #dock-empty { display: flex; }
   /* The whole card fits above Explore's tabs (about 92px at the foot); with a pass to catch it shrinks a little so
      the Remind me / Show me panel shows under it. */
-  #viewer.docked #slot .card { font-size: min(18px, calc((100cqw - 36px) / 28), calc((100cqh - 185px) / 42)); }
-  #viewer.docked:has(#v-up:not([hidden])) #slot .card { font-size: min(18px, calc((100cqw - 36px) / 28), calc((100cqh - 285px) / 42)); }
+  #viewer.docked #slot .card { font-size: min(18px, calc((100cqw - 36px) / 28), calc((100cqh - 60px) / 42)); }
+  #viewer.docked:has(#v-up:not([hidden])) #slot .card { font-size: min(18px, calc((100cqw - 36px) / 28), calc((100cqh - 160px) / 42)); }
 }
 @media (min-width: 600px) and (min-height: 900px) and (orientation: portrait) {
   /* With no card open the grid has the whole screen (the top page alone is too short for the rank bar, tabs and a row
@@ -801,7 +804,7 @@ dialog[open] { padding-left: var(--safe-l) !important; padding-right: var(--safe
   #viewer.docked .viewer-scroll { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 20px; align-content: start; align-items: start; text-align: left; padding-top: 0 !important; padding-right: 56px !important; }
   #viewer.docked .viewer-scroll > * { grid-column: 2; }
   #viewer.docked .viewer-scroll > #slot { grid-column: 1; grid-row: 1 / span 20; width: auto; }
-  #viewer.docked #slot .card, #viewer.docked:has(#v-up:not([hidden])) #slot .card { font-size: min(16px, calc((100cqh - 125px) / 42), calc((100cqw - 330px) / 28)); }
+  #viewer.docked #slot .card, #viewer.docked:has(#v-up:not([hidden])) #slot .card { font-size: min(16px, calc((100cqh - 12px) / 42), calc((100cqw - 330px) / 28)); }
 }
 /* "Up tonight" slot pill: two lines that never wrap (Duo playtest 2026-10-22: on narrower tiles it broke into three
    and covered the card's name). */
@@ -810,3 +813,5 @@ dialog[open] { padding-left: var(--safe-l) !important; padding-right: var(--safe
 .up-next__tile { container-type: inline-size; }
 .up-next__when { font-size: min(12px, 12.5cqi); left: 4px; right: 4px; padding-inline: 3px; }
 .up-next__when small { font-size: min(11px, 11cqi); }
+/* The card's picture never starts an image drag, so a flick or swipe that begins on it is the card's (as in the reveal, Duo playtest 2026-10-22). */
+#slot img { -webkit-user-drag: none; user-select: none; -webkit-touch-callout: none; }

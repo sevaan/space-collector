@@ -1602,3 +1602,11 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
     - Fold or unfold with a card open: the card stays open, moved between docked and modal (`redocking` guards the close listeners; Up tonight's list is restored by `leaveUpList`).
   - **Header rule:** `#sky-header::after` now stops at the side insets too.
   - **Checks:** phones re-measured identical at 402×874 and 375×667 (WebKit rect diff of Explore, Tonight, Settings, Collection and the viewer; only time-dependent text differed). Fold/unfold/rotate place-keeping was tested in Chromium and WebKit. Harness: session scratchpad `duo/` (`book.mjs`, `place.mjs`, `phone.mjs`).
+- 2026-10-22 · Duo simulator fixes, round 2:
+  - **Flicking a card away now works everywhere.** On the capture reveal / View card, a flick that started on the card's picture began a WebKit image drag, so the pointer events stopped after one move and the card couldn't be thrown away; I reproduced this in WebKit at 669×951, 466×678 and 402×874.
+    - Fix: `#reveal img` has no pointer events and can't be dragged (`dragstart` is blocked), and the flick is now read on the whole `#reveal`, not just `#rv-holder`; buttons and links keep their taps.
+    - The Collection viewer's `#slot img` can't be dragged either.
+  - **The reveal card is fitted by measurement.** `sizeCard` still sizes the card as before, then checks the laid-out holder against `#rv-top` above and the rank bar / View in collection below. Only if it doesn't fit does it shrink `--cf` and centre the card with an inline `--rv-y`, so phones are unchanged (checked at 951×669, 669×951, 466×678, two iPad sizes, 402×874, 375×667 and 320×568).
+  - **Zoom is snapped back.** `unzoom()` resets a page left zoomed in (`visualViewport.scale` > 1, from a pinch or a double-tap) by briefly adding `maximum-scale=1` to the viewport meta. A zoomed page is the likeliest cause of the 433 pt card with its top bar off screen, which I couldn't reproduce on desktop. Technical now shows `zoom` beside the screen size.
+  - **Larger Text is capped at 115% on big screens.** When the shorter side is 560+ (unfolded Duo, iPads) the scale stops at 115%; phones still go to 135%. It's re-checked on resize (fold/unfold).
+  - **The docked card page ends above Explore's tabs** (`bottom: safe-bottom + 96px`). Card sizes were refitted to the shorter page.

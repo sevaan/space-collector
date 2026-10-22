@@ -11,9 +11,13 @@ export function applyTextSize() {
   if (!probe.isConnected) document.body?.append(probe);
   const px = parseFloat(getComputedStyle(probe).fontSize);
   if (!Number.isFinite(px) || px <= 0) return;
-  const pct = Math.round(Math.min(1.35, Math.max(1, px / 17)) * 100);
+  // Big screens (the unfolded iPhone Duo, iPads: shorter side 560+) cap at 115% (Duo playtest 2026-10-22: at 135%
+  // the whole UI looked blown up there). Their text is already a comfortable size, and the wide layouts hold together.
+  const big = Math.min(innerWidth, innerHeight) >= 560;
+  const pct = Math.round(Math.min(big ? 1.15 : 1.35, Math.max(1, px / 17)) * 100);
   document.documentElement.style.webkitTextSizeAdjust = `${pct}%`;
   document.documentElement.dataset.textScale = String(pct);
 }
 if (document.body) applyTextSize(); else document.addEventListener('DOMContentLoaded', applyTextSize, { once: true });
 document.addEventListener('visibilitychange', () => { if (!document.hidden) applyTextSize(); }); // changed in Settings while away
+addEventListener('resize', () => applyTextSize()); // folding or unfolding the Duo changes which cap applies

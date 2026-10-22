@@ -5,12 +5,12 @@
 //  Everything scales with rarity (Legendary dims the sky, shockwave, held breath, slow flip, fanfare).
 // Waits use timers, not animation.finished, so a paused tab can never freeze the sequence.
 
-import { sfx, loadSfx, heartbeat } from './sfx.js?v=0.1.1007';
-import { audioCtx } from './audio-ctx.js?v=0.1.1007';
-import { TIER_INFO } from './rarity.js?v=0.1.1007';
-import { levelFor, attachTilt, attachGyro, attachFlip, throwOff, retype } from './card.js?v=0.1.1007';
-import { applyBack } from './card-backs.js?v=0.1.1007';
-import { addStarfield } from './starfield.js?v=0.1.1007';
+import { sfx, loadSfx, heartbeat } from './sfx.js?v=0.1.1008';
+import { audioCtx } from './audio-ctx.js?v=0.1.1008';
+import { TIER_INFO } from './rarity.js?v=0.1.1008';
+import { levelFor, attachTilt, attachGyro, attachFlip, throwOff, retype } from './card.js?v=0.1.1008';
+import { applyBack } from './card-backs.js?v=0.1.1008';
+import { addStarfield } from './starfield.js?v=0.1.1008';
 
 const FX = {
   common:    { particles: 14,  flip: 520,  spin: 0,   dim: 0,   shock: false, notes: [880],                            hold: 0 },
@@ -82,14 +82,35 @@ export function stopReveal() {
   if (onFlipTap) { $('rv-holder').removeEventListener('click', onFlipTap); onFlipTap = null; }
 }
 
+// A page left zoomed in (a pinch, or iOS's double-tap zoom) makes every overlay bigger than the screen, with the
+// reveal's top row and the card off the top (Duo playtest 2026-10-22). Opening a card snaps the zoom back: briefly
+// capping the viewport's scale makes WebKit return to 1.
+function unzoom() {
+  if (!(window.visualViewport?.scale > 1.01)) return;
+  const m = document.querySelector('meta[name="viewport"]'); if (!m) return;
+  const was = m.content; m.content = `${was}, maximum-scale=1`; setTimeout(() => { m.content = was; }, 400);
+}
 function sizeCard(cardEl) {
+  unzoom();
   const root = $('reveal');
   root.style.setProperty('--cf', '12px');
   const em = Math.max(39.2, cardEl.getBoundingClientRect().height / 12);
   // Room for the header and chips above, the rank bar and link below (2026-10-12: the card sat high over dead space).
-  const cf = Math.max(7, Math.min(14, (innerWidth - 58) / 28, (innerHeight - 270) / em)); // 270: both zones plus the notch and home bar
+  let cf = Math.max(7, Math.min(14, (innerWidth - 58) / 28, (innerHeight - 270) / em)); // 270: both zones plus the notch and home bar
+  root.style.removeProperty('--rv-y');
   root.style.setProperty('--cf', `${cf}px`);
   root.style.setProperty('--ch', em);
+  // Then check it really sits between the top row and the rank bar (or View in collection) as laid out, and if not
+  // shrink it and centre it in the room there is (iPhone Duo playtest 2026-10-22: on the unfolded Duo the card ran off
+  // the top of the screen with the ✕; the rows around it grow with Larger Text). Phones that fit are left as they were.
+  const h = $('rv-holder'), H = root.clientHeight;
+  if (!H || !h.offsetHeight) return;
+  const top = $('rv-top').offsetTop + $('rv-top').offsetHeight + 8;
+  const under = root.classList.contains('has-rank') ? $('rv-rank') : $('reveal-view'), bot = (under.offsetHeight ? under.offsetTop : H) - 8;
+  if (h.offsetTop >= top && h.offsetTop + h.offsetHeight <= bot && h.offsetWidth <= root.clientWidth - 16) return;
+  cf = Math.max(5, Math.min(cf, (bot - top) / em, (root.clientWidth - 24) / 28));
+  root.style.setProperty('--cf', `${cf}px`);
+  root.style.setProperty('--rv-y', `${((top + bot) / 2 - H / 2).toFixed(1)}px`);
 }
 
 // card: rendered card element. o: catalogue card (for tier). seen: sightings of this card incl. this one.
@@ -379,12 +400,15 @@ function holderTo(x, y, ms) {
   h.style.transform = x || y ? `translate(${x}px, ${y}px)` : '';
 }
 {
-  const h = $('rv-holder');
-  h.addEventListener('pointerdown', (e) => {
-    if (!$('reveal').classList.contains('rv-done') || (e.pointerType === 'mouse' && e.button !== 0)) return;
+  // The flick is read on the whole reveal, not just the card (Duo playtest 2026-10-22: a flick that began where
+  // another layer sat over the card did nothing, and the player was stuck); buttons and links keep their taps.
+  const h = $('rv-holder'), area = $('reveal');
+  area.addEventListener('dragstart', (e) => e.preventDefault()); // nothing in the reveal is draggable
+  area.addEventListener('pointerdown', (e) => {
+    if (!$('reveal').classList.contains('rv-done') || (e.pointerType === 'mouse' && e.button !== 0) || e.target.closest?.('button, a, input, .pill')) return;
     flick = { id: e.pointerId, pts: [{ x: e.clientX, y: e.clientY, t: performance.now() }] };
   });
-  h.addEventListener('pointermove', (e) => {
+  area.addEventListener('pointermove', (e) => {
     if (!flick || e.pointerId !== flick.id) return;
     flick.pts.push({ x: e.clientX, y: e.clientY, t: performance.now() });
     if (flick.pts.length > 12) flick.pts.shift();
@@ -409,6 +433,6 @@ function holderTo(x, y, ms) {
     // middle for a moment as the reveal faded (2026-10-19, Sevaan: janky). The next reveal resets the holder anyway.
     setTimeout(() => { onDismiss?.(); setTimeout(() => { if (!document.getElementById('reveal').hidden) return; /* a new reveal owns it now */ h.getAnimations().forEach((a) => a.cancel()); h.style.opacity = ''; }, 500); }, ms + 20);
   };
-  h.addEventListener('pointerup', end);
-  h.addEventListener('pointercancel', () => { flick = null; });
+  area.addEventListener('pointerup', end);
+  area.addEventListener('pointercancel', () => { flick = null; });
 }
