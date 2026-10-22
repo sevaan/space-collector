@@ -13,7 +13,16 @@ const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '
 function stack() {
   let el = document.getElementById('toasts');
   if (!el) { el = document.createElement('div'); el.id = 'toasts'; el.setAttribute('aria-live', 'polite'); document.body.append(el); }
+  watchPush(el);
   return el;
+}
+// Notices come out from under the header (2026-10-21, Sevaan picked design/notices-under-header.html A): the radar, chips
+// and tucked notices step down by however tall the showing notices are (--toast-push), and back up when they go.
+function watchPush(el) {
+  if (el._push || typeof ResizeObserver === 'undefined') return; el._push = true;
+  const set = () => { const shown = [...el.querySelectorAll('.ticket.in')].filter((t) => t.offsetParent !== null || getComputedStyle(t).position === 'fixed');
+    const h = shown.length ? el.getBoundingClientRect().height + 8 : 0; document.documentElement.style.setProperty('--toast-push', `${Math.round(h)}px`); };
+  new ResizeObserver(set).observe(el); new MutationObserver(set).observe(el, { subtree: true, childList: true, attributes: true, attributeFilter: ['class', 'hidden'] });
 }
 export function toast(html, ms = 2200, href = null, opts = {}) { ticket({ kind: 'info', line: html, html: true, ms, href, ...opts }); }
 // Called with each ticket as it appears (main.js plays its sound: mission, rank up, or the quiet toast).

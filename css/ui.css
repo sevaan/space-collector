@@ -531,3 +531,11 @@ body.nav-tabs #nav-sky .nav-sky-v { position: absolute; left: 0; right: 0; botto
 body.nav-tabs #nav-sky .nav-sky-v:empty { display: none; }
 .sc-switch[data-side='left'] #nav-sky .nav-sky-v { color: #fa8127; opacity: .8; }
 body.night #nav-sky .nav-sky-v { color: #c4584a; }
+/* Notices out from under the header (2026-10-21, Sevaan picked design/notices-under-header.html A). The stack sits just
+   below the header's double line; anything above that line is clipped, so a notice slides in from behind the header and
+   swipes back up under it. The header (moon, Settings) is never covered. The radar, chips and tucked notices step down
+   by the notices' height (--toast-push, js/toast.js) while one shows. */
+html body #toasts#toasts#toasts { top: calc(var(--safe-top, env(safe-area-inset-top, 0px)) + 86px) !important; width: min(440px, calc(100vw - 20px)) !important; clip-path: inset(0 -40px -100vh -40px); }
+#radar, #nextpass, #event-banner, #toast-tray, .patch-coins, #whatsthis { translate: 0 var(--toast-push, 0px); transition: translate .45s cubic-bezier(.2, .9, .3, 1); }
+body:has(.overlay.panel:not([hidden])) :is(#radar, #nextpass, #toast-tray) { translate: none; }
+@media (prefers-reduced-motion: reduce) { #radar, #nextpass, #event-banner, #toast-tray, .patch-coins { transition: none; } }
