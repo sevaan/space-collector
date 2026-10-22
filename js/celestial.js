@@ -2,7 +2,7 @@
 // Planet and Moon positions use Paul Schlyter’s low-precision method ("How to compute planetary
 // positions"), good to a few arcminutes — far better than a phone compass.
 
-import { gstime } from './lib/satellite.js?v=0.1.975';
+import { gstime } from './lib/satellite.js?v=0.1.976';
 
 const RAD = Math.PI / 180;
 const sin = (d) => Math.sin(d * RAD), cos = (d) => Math.cos(d * RAD);
