@@ -5,12 +5,12 @@
 //  Everything scales with rarity (Legendary dims the sky, shockwave, held breath, slow flip, fanfare).
 // Waits use timers, not animation.finished, so a paused tab can never freeze the sequence.
 
-import { sfx, loadSfx, heartbeat } from './sfx.js?v=0.1.1033';
-import { audioCtx } from './audio-ctx.js?v=0.1.1033';
-import { TIER_INFO } from './rarity.js?v=0.1.1033';
-import { levelFor, attachTilt, attachGyro, attachFlip, throwOff, retype } from './card.js?v=0.1.1033';
-import { applyBack } from './card-backs.js?v=0.1.1033';
-import { addStarfield } from './starfield.js?v=0.1.1033';
+import { sfx, loadSfx, heartbeat } from './sfx.js?v=0.1.1034';
+import { audioCtx } from './audio-ctx.js?v=0.1.1034';
+import { TIER_INFO } from './rarity.js?v=0.1.1034';
+import { levelFor, attachTilt, attachGyro, attachFlip, throwOff, retype } from './card.js?v=0.1.1034';
+import { applyBack } from './card-backs.js?v=0.1.1034';
+import { addStarfield } from './starfield.js?v=0.1.1034';
 
 const FX = {
   common:    { particles: 14,  flip: 520,  spin: 0,   dim: 0,   shock: false, notes: [880],                            hold: 0 },
@@ -110,11 +110,13 @@ function sizeCard(cardEl) {
   // the top of the screen with the ✕; the rows around it grow with Larger Text). Phones that fit are left as they were.
   const h = $('rv-holder'), H = root.clientHeight;
   if (!H || !h.offsetHeight) return;
-  const top = $('rv-top').offsetTop + $('rv-top').offsetHeight + 8;
+  const news = $('rv-news'), top = Math.max($('rv-top').offsetTop + $('rv-top').offsetHeight, news ? news.offsetTop + 26 : 0) + 8; /* clear the chips row too */
   const under = root.classList.contains('has-rank') ? $('rv-rank') : $('reveal-view'), bot = (under.offsetHeight ? under.offsetTop : H) - 8;
-  if (h.offsetTop >= top && h.offsetTop + h.offsetHeight <= bot && h.offsetWidth <= root.clientWidth - 16) return;
-  cf = Math.max(5, Math.min(cf, (bot - top) / em, (root.clientWidth - 24) / 28));
+  // Grow (or shrink) it to the room there really is: the 270 above is a guess, and on phones it left the card small with
+  // dead space above and below (Sevaan 2026-10-22: "has room to be bigger"). 20px a side, 14 at most (big screens).
+  cf = Math.max(5, Math.min(14, (bot - top) / em, (root.clientWidth - 40) / 28));
   root.style.setProperty('--cf', `${cf}px`);
+  if (h.offsetTop >= top && h.offsetTop + h.offsetHeight <= bot) return;
   root.style.setProperty('--rv-y', `${((top + bot) / 2 - H / 2).toFixed(1)}px`);
 }
 
