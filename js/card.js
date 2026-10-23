@@ -1,20 +1,21 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { fallWords } from './last-chance.js?v=0.1.1043';
-import { feel } from './native.js?v=0.1.1043';
-import { sfx } from './sfx.js?v=0.1.1043';
-import { cardArt } from './art.js?v=0.1.1043';
-import { TIER_INFO } from './rarity.js?v=0.1.1043';
-import { SET_BY_ID } from './sets.js?v=0.1.1043';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.1043';
-import { FLEET_ABOUT, fleetAbout, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.1043';
-import { artFileFor } from './art-keys.js?v=0.1.1043';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.1043';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.1043';
-import { nightsIn } from './observation.js?v=0.1.1043';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.1043';
-import { SHINY } from './shiny.js?v=0.1.1043';
-import { conArt, cometArt } from './con-art.js?v=0.1.1043';
-import { CON_FIGURES } from './con-figures.js?v=0.1.1043';
+import { fallWords } from './last-chance.js?v=0.1.1046';
+import { useMiles } from './units.js?v=0.1.1046';
+import { feel } from './native.js?v=0.1.1046';
+import { sfx } from './sfx.js?v=0.1.1046';
+import { cardArt } from './art.js?v=0.1.1046';
+import { TIER_INFO } from './rarity.js?v=0.1.1046';
+import { SET_BY_ID } from './sets.js?v=0.1.1046';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.1046';
+import { FLEET_ABOUT, fleetAbout, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.1046';
+import { artFileFor } from './art-keys.js?v=0.1.1046';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.1046';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.1046';
+import { nightsIn } from './observation.js?v=0.1.1046';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.1046';
+import { SHINY } from './shiny.js?v=0.1.1046';
+import { conArt, cometArt } from './con-art.js?v=0.1.1046';
+import { CON_FIGURES } from './con-figures.js?v=0.1.1046';
 // The animal/symbol figure belongs to the completed (gold) constellation card only (2026-10-05): a single
 // star’s card draws just the star pattern with its star marked, so the figure is a reward for finishing the set.
 // A star card’s constellation figure comes into focus as you collect the constellation’s stars (design/con-focus.html B).
@@ -85,6 +86,17 @@ const orbitIcon = '<svg viewBox="0 0 32 24" fill="none" aria-hidden="true"><circ
 // Preview exposes the artwork and fact without claiming the card was earned.
 // A circular speed is a useful approximation only for nearly circular orbits. An eccentric
 // orbit speeds up and slows down; do not present its circular-equivalent speed as a measured speed.
+// Cards follow Settings → Units like the sky does (Sevaan 2026-10-22: the sky said 239,000 mi, the Moon card 384,400 km).
+// Same rule as main.js setUnits: imperial, metric, or auto by the phone's region. km and km/h stats are converted when
+// shown, keeping about as many figures as the km number had.
+function inUnits([label, value, unit]) {
+  if (!/^km(\/h)?$/.test(unit ?? '') || !useMiles()) return [label, value, unit];
+  const u = unit === 'km' ? 'mi' : 'mph', m = /^(~?)([\d,]+(?:\.\d+)?)$/.exec(String(value));
+  if (!m) return [label, value, u];
+  const digits = m[2].replace(/[,.]/g, '').replace(/^0+/, ''), sig = Math.max(2, digits.replace(/0+$/, '').length);
+  const n = Number(m[2].replace(/,/g, '')) * 0.621371, step = 10 ** Math.max(0, Math.floor(Math.log10(n)) + 1 - sig);
+  return [label, m[1] + (Math.round(n / step) * step).toLocaleString('en-US'), u];
+}
 export function orbitalCardStats(o) {
   const stats = orbitStats(o), span = o.apogee != null && o.perigee != null ? o.apogee - o.perigee : null;
   const nearCircular = span != null && span >= 0 && span < 300;
@@ -181,7 +193,7 @@ export function renderCard(o, opts = {}) {
     <div class="card__heading"><h3 class="card__name">${esc(title)}</h3>
     <div class="card__identity"><span>${esc(sub)}</span><span class="card__mono">${esc(identifier)}</span></div></div>
     ${tempStrip(o)}
-    <div class="card__stats m4" style="--n:${four.length}">${four.map(([label, value, unit], i) => `<div><span class="card__label">${esc(label)}</span><b${nat ? statClass(value, unit, i) : ''}>${esc(value).replace(/(\d)\.(\d)/g, '$1<i class="dp">.</i>$2') /* the display font's point nearly vanishes: 2.3 read 23 (web playtest 2026-10-22) */}${unit ? `<small>${esc(unit)}</small>` : ''}</b></div>`).join('')}</div>
+    <div class="card__stats m4" style="--n:${four.length}">${four.map(inUnits).map(([label, value, unit], i) => `<div><span class="card__label">${esc(label)}</span><b${nat ? statClass(value, unit, i) : ''}>${esc(value).replace(/(\d)\.(\d)/g, '$1<i class="dp">.</i>$2') /* the display font's point nearly vanishes: 2.3 read 23 (web playtest 2026-10-22) */}${unit ? `<small>${esc(unit)}</small>` : ''}</b></div>`).join('')}</div>
     ${factBlock}
     <div class="card__footer"><span class="card__status${caught ? ' is-collected' : ''}"><span class="card__status-icon" aria-hidden="true">${caught ? '✓' : ''}</span><span>${caught ? `COLLECTED · ${esc(firstDate)}` : 'NOT YET COLLECTED'}</span>${caught && !o.natural ? `<span class="card__seen-count">${seenLine(level, conCard || fleet ? 0 : nightsIn(sightings), sightings.length)}</span>` : ''}</span><span class="card__brand">${o.setNumber && o.setSize > 1 ? `<small class="card__no">${String(o.setNumber).padStart(String(o.setSize).length, '0')}/${o.setSize}</small>` : ''}SPACE COLLECTOR</span></div>
     <div class="card__shine"></div><div class="card__glare"></div>

@@ -826,6 +826,7 @@ body.night #discover:not(.owned) #d-cta:active, body.night #discover:not(.owned)
 .od-mhead { display: flex; justify-content: space-between; margin-bottom: 6px; font: 500 12px/1.2 var(--label); letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
 .od-mhead span:first-child { color: var(--gold); }
 .od-m { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid #1d2a3c; font: 500 15px/1.2 var(--label); letter-spacing: .02em; color: var(--text); }
+.od-m .od-ch { margin-left: auto; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--gold); display: inline-block; text-decoration: none; }
 .od-m i { width: 9px; height: 9px; transform: rotate(45deg); border: 1.5px solid #bcb585; flex: none; }
 .od-m.done { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--gold); } .od-m.done i { background: var(--gold); border-color: var(--gold); }
 /* Loader = lock-on (2026-10-09): the wordmark stays still, "Loading the sky" pulses under it. */
@@ -1256,6 +1257,8 @@ body.is-plus .vt-plus { display: none; }
 
 /* Now: the countdown hero (2026-10-13, design/sky-pages-combined.html). */
 .now-hero { display: grid; justify-items: center; text-align: center; gap: 6px; margin: 4px 0 14px; padding: 16px 14px; border-radius: 20px; border: 1px solid color-mix(in srgb, var(--c) 45%, transparent); background: radial-gradient(ellipse at 50% 0%, color-mix(in srgb, var(--c) 16%, transparent), transparent 65%), #0e1a29; }
+.nh-wx { display: flex; align-items: center; gap: 8px; margin: 0 0 12px; padding: 9px 12px; border-radius: 10px; background: #8fa3b814; border: 1px solid #8fa3b833; color: var(--text, #fff2b3); font: 500 13.5px/1.3 var(--label); letter-spacing: .02em; }
+.nh-wx .ico { flex: none; }
 .nh-k { font: 600 12px/1 var(--label); letter-spacing: .2em; text-transform: uppercase; color: var(--gold); }
 .nh-dial { position: relative; width: 160px; height: 160px; margin: 4px 0; }
 .nh-dial svg { position: absolute; inset: 0; } .nh-arc { transition: stroke-dashoffset 1s linear; }
@@ -2013,7 +2016,7 @@ body.around-open #nav-more .nm-set { transform: translateY(-14px); opacity: 0; }
 /* Plus on the sky page (2026-10-21, Sevaan): one line says reminders come with Plus; the bells that need it are just
    dimmed (no PLUS tag on every row); a tap still opens the Plus sheet. */
 #visible .needs-plus::after { display: none; }
-#visible .needs-plus { opacity: .5; }
+#visible .needs-plus, #visible .bell.soon { opacity: .5; }
 .sky-plus-line { display: flex; align-items: center; gap: 9px; width: 100%; margin: 10px 0 2px; padding: 10px 12px; min-height: 44px; border-radius: 12px; border: 1px solid #f2c14e44; background: #f2c14e10; color: var(--ink, #fff2b3); font: 500 13.5px/1.25 var(--label); text-align: left; cursor: pointer; }
 .sky-plus-line[hidden] { display: none; }
 .sky-plus-line .ico-svg { color: var(--gold); display: grid; } .sky-plus-line .ico-svg svg { width: 16px; height: 16px; }

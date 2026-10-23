@@ -1,11 +1,11 @@
-import { isNative, shareFile } from './native.js?v=0.1.1043';
+import { isNative, shareFile } from './native.js?v=0.1.1046';
 // Share a card as an image (1080 × 1350, Instagram portrait): drawn on a canvas in the card style (art,
 // name, rarity, stats, fact, when you saw it, your observer rank), then handed to the share sheet
 // (navigator.share with a file) or downloaded. Drawing it ourselves avoids DOM-screenshot libraries,
 // which mangle Safari’s fonts and blend modes.
-import { conArt } from './con-art.js?v=0.1.1043';
-import { CON_BY_ID } from './constellations.js?v=0.1.1043';
-import { TIER_INFO } from './rarity.js?v=0.1.1043';
+import { conArt } from './con-art.js?v=0.1.1046';
+import { CON_BY_ID } from './constellations.js?v=0.1.1046';
+import { TIER_INFO } from './rarity.js?v=0.1.1046';
 const W = 1080, H = 1350, INK = '#fff2b3', MUTED = '#bdbea9', ORANGE = '#fa8127', NAVY = '#080f1b';
 const loadImg = (src) => new Promise((ok, bad) => { const i = new Image(); i.onload = () => ok(i); i.onerror = bad; i.src = src; });
 const svgImg = async (svg) => { const u = URL.createObjectURL(new Blob([svg], { type: 'image/svg+xml' })); try { return await loadImg(u); } finally { URL.revokeObjectURL(u); } };
@@ -113,7 +113,7 @@ export async function shareCardEl(el, c, { title, rank = '', fact = '' }) {
   const txt = (sel) => el.querySelector(sel)?.textContent.trim() ?? '';
   const img = el.querySelector('.card__art img.card-art-image'), svg = el.querySelector('.card__art svg');
   const art = img ? { src: img.src } : c.natural === 'constellation' ? { svg: conArt(c.data) } : c.con && !c.skyName && CON_BY_ID.get(c.con) ? { svg: conArt(CON_BY_ID.get(c.con).data, c.hip) } : { svg: svg ? new XMLSerializer().serializeToString(svg) : '' };
-  const stats = [...el.querySelectorAll('.card__stats > div')].map((d) => [d.querySelector('.card__label')?.textContent ?? '', d.querySelector('b')?.childNodes[0]?.textContent.trim() ?? '', d.querySelector('b small')?.textContent ?? '']);
+  const stats = [...el.querySelectorAll('.card__stats > div')].map((d) => [d.querySelector('.card__label')?.textContent ?? '', [...(d.querySelector('b')?.childNodes ?? [])].filter((n) => n.nodeName !== 'SMALL').map((n) => n.textContent).join('').trim() /* the value without its unit; a decimal point is its own <i> (2026-10-22) */, d.querySelector('b small')?.textContent ?? '']);
   const tier = TIER_INFO[c.tier]?.color ?? '#fa8127'; // not the card’s CSS colour, which red night mode overrides (QA 2026-10-08)
   const canvas = await drawShareCard(c, art, {
     title, setName: txt('.card__setbar > span:first-child'), tierLabel: txt('.card__tier').replace(/^\W+/, ''), tierColor: tier, stats,

@@ -1667,3 +1667,9 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - Line up the sky: the card shows at once ("Starting the compass…", buttons hidden) while motion starts, instead of up to 1.8 s of empty sky.
   - Tour: if Allow motion fails, the next card's sub says "Motion didn't start · Drag the sky with a finger" (toasts are hidden in the tour).
   - Open for Sevaan (not changed): HUD distances follow Units (miles) but cards are always km; Tonight tab hero ignores cloud; missions count 3 vs 4 (challenge) between pages; disabled grey bells for free players do nothing on tap; Settings shows raw coordinates; three Plus-gate styles on the Tonight tab; welcome card shows two swipe CTAs.
+- 2026-10-22 (Sevaan's answers to the bug-hunt questions):
+  - Cards follow Settings → Units: js/units.js useMiles() (same rule as main.js setUnits, readable from the Collection page); card.js inUnits converts km/km-h stats to mi/mph at render, keeping about the km number's figures (Moon 384,400 km → 238,900 mi); orbit-view's "Now over…" line too. Changing Units refreshes the Collection (not at start-up: colFrame isn't defined yet, which froze the loader once). share-card reads a stat value as all of <b>'s text except <small> (the decimal point is an <i>).
+  - Tonight tab hero: a cloud line on top when the night isn't clear (tonightWeather().line, plus "· if it clears, these count" on a bad night) and "New to you · behind cloud" when up now under cloud.
+  - Missions: the daily Tonight page counts the sky challenge too (x / 4, tagged "Sky challenge"), like the Tonight tab.
+  - Grey bells on the Tonight tab always answer: needs-plus opens the Plus sheet; too soon (<10 min) toasts "Up in N min · too soon for a reminder, head out now". No more disabled bells there.
+  - Settings location note in plain words: "Using where you are now", the searched place's name, "Your last location" (no coordinates).

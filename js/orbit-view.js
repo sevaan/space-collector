@@ -1,8 +1,9 @@
 // Orbit view (2026-10-14, Sevaan; design/fun-and-learning.html): one tap on a satellite card in the collection viewer
 // turns its picture into a small globe: the ground track for the orbit before and after now, where it is right now
 // (moving live), and where you are. Tap again for the picture. Coarse coastlines from js/geo.js. Canvas, no DOM beyond it.
-import { satrecFor, overEarth } from './orbit.js?v=0.1.1043';
-import { LAND, placeName } from './geo.js?v=0.1.1043';
+import { satrecFor, overEarth } from './orbit.js?v=0.1.1046';
+import { useMiles } from './units.js?v=0.1.1046';
+import { LAND, placeName } from './geo.js?v=0.1.1046';
 
 const RAD = Math.PI / 180;
 // Orthographic projection of (lat, lon) onto a globe of radius R centred at (cx, cy), looking at (lat0, lon0).
@@ -75,5 +76,5 @@ export function whereLine(obj, date = new Date()) {
   const o = obj.satrec ? obj : { ...obj, satrec: satrecFor(obj) };
   if (!o.satrec) return null;
   const g = overEarth(o, date); if (!g) return null;
-  return `Now over ${placeName(g.lat, g.lon)}\u00a0· ${Math.round(g.altKm).toLocaleString()}\u00a0km up\u00a0· ${(Math.round(g.kmh / 100) * 100).toLocaleString()}\u00a0km/h`; // no number without its unit, no line starting with "·" (polish 2026-10-20)
+  const mi = useMiles(), k = mi ? 0.621371 : 1; return `Now over ${placeName(g.lat, g.lon)}\u00a0· ${Math.round(g.altKm * k).toLocaleString()}\u00a0${mi ? 'mi' : 'km'} up\u00a0· ${(Math.round(g.kmh * k / 100) * 100).toLocaleString()}\u00a0${mi ? 'mph' : 'km/h'}`; // no number without its unit, no line starting with "·" (polish 2026-10-20)
 }
