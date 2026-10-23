@@ -2,9 +2,9 @@
 // many satellites are visible over the night. Runs off the main thread; ~4,000 objects × 1-minute steps
 // takes a few seconds. Visibility uses the same rules as the live sky: sunlit, dark sky, and brighter than
 // the limit for your sky at that moment (light pollution, twilight, Moon; js/sky-limit.js).
-import { frame, look, setSkyLimit, setBinocularMode, DARK_SUN_ELEVATION } from './orbit.js?v=0.1.1036';
-import { skyLimit } from './sky-limit.js?v=0.1.1036';
-import { solarSystem, eqToEnu } from './celestial.js?v=0.1.1036';
+import { frame, look, setSkyLimit, setBinocularMode, DARK_SUN_ELEVATION, withSatrecs } from './orbit.js?v=0.1.1041';
+import { skyLimit } from './sky-limit.js?v=0.1.1041';
+import { solarSystem, eqToEnu } from './celestial.js?v=0.1.1041';
 
 const STEP0 = 60000;         // 1 minute (other nights in the week ahead use 2)
 const GAP = 3;               // a pass ends after this many minutes out of sight
@@ -12,7 +12,7 @@ const GAP = 3;               // a pass ends after this many minutes out of sight
 // copying ~16k objects to the worker on every time jump cost ~90 ms on the main thread).
 let keptObjects = null;
 self.onmessage = ({ data }) => {
-  if (data.objects) keptObjects = data.objects;
+  if (data.objects) keptObjects = withSatrecs(data.objects);
   const objects = data.objects ?? keptObjects ?? [];
   const { requestId, observer, startMs, sky, sb, binoculars, hours = 24, step = STEP0 } = data; const STEP = step; // to dawn even from midday in winter (QA 2026-10-08; the loop stops at dawn)
   try {

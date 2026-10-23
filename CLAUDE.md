@@ -1651,3 +1651,9 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - progress() takes `lon` (progressNow passes state.observer.lon), so tonight's missions are read under the same night key they were dealt with (they split when you travelled).
   - onBackupChange refreshes fossilDone/ufoCaught/secretFound, so an iCloud restore doesn't re-earn them.
   - Left alone: xpCarry2/rankFloor2 latching 0 if the log hadn't loaded (only affects pre-2026-10-10 players; recomputing risks giving new players free XP).
+- 2026-10-22 bug hunt, performance batch (baseline numbers and scripts: scratchpad perf/ of that session; summary here):
+  - Workers (tonight, week-ahead nights, pass, find) get `toWorker(list)` (no satrec) and rebuild satrecs with `withSatrecs` (orbit.js). Cloning 16,710 objects: 103 ms → 26 ms on a Mac (~4x less on a phone). Tonight plan checked identical (80 passes) before/after. The find-worker test stubs withSatrecs.
+  - Google Fonts (Inter, Plex Mono) load with media=print/onload, so first paint doesn't wait on Google (offline, weak signal). Both pages.
+  - toast.js fitStack skips its layout read when no ticket is in or the page is hidden (it ran 3.3x/s forever).
+  - Tried and reverted: queueing Collection tile builds a few per frame. Big-album scroll jank in headless WebKit was the same over already-built tiles (paint, not building), so it didn't help there; check on a real phone before redoing.
+  - Not done (bigger changes, ask first): split fleets out of catalog.json, share parsed lore/facts with the Collection iframe, lazy stinger sounds, 2048px Milky Way texture, modulepreload, shorter native loader floor (1.4 s is Sevaan's 2026-10-08 call).

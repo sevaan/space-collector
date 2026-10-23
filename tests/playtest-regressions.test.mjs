@@ -39,7 +39,7 @@ test('clearing a city query prevents its pending response from repopulating old 
 });
 
 test('Find worker responses preserve their observing context, including errors', () => {
-  const replies=[]; const ctx={self:{postMessage:r=>replies.push(r)},setBinocularMode:()=>{},frame:()=>{throw Error('test failure');},Date};
+  const replies=[]; const ctx={self:{postMessage:r=>replies.push(r)},setBinocularMode:()=>{},withSatrecs:(l)=>l,frame:()=>{throw Error('test failure');},Date};
   const source=read('js/find-worker.js').replace(/^import .*;\n/gm,'');
   vm.runInNewContext(source,ctx);
   ctx.self.onmessage({data:{requestId:7,context:'toronto',objects:[{id:25544}],startMs:0,days:1}});

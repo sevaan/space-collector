@@ -95,7 +95,7 @@ function stackSeen() {
 // Up top, the stack never reaches down over the circle (2026-10-18 playtest: on an SE two notices covered half of it).
 // main.js sets --toast-limit (the circle’s top); the newest tickets that fit show, older ones wait out of sight.
 function fitStack() {
-  const el = document.getElementById('toasts'); if (!el) return;
+  const el = document.getElementById('toasts'); if (!el || document.hidden || !el.querySelector('.ticket.in')) return; // no tickets, or in the background: no layout read (bug hunt 2026-10-22)
   const lim = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--toast-limit'));
   const top = el.getBoundingClientRect().top, items = [...el.querySelectorAll('.ticket.in:not(.shelved)')].reverse(); // newest first (column-reverse)
   let room = lim && top < innerHeight / 2 ? lim - top : Infinity;
