@@ -839,3 +839,13 @@ dialog[open] { padding-left: var(--safe-l) !important; padding-right: var(--safe
    the margin, and the page never scrolls sideways (clip keeps the sticky tabs working, unlike hidden). */
 .collection-tabs::before, .collection-tools::before { left: calc(-1 * (var(--main-pad, 24px) + var(--safe-l, 0px))); right: calc(-1 * (var(--main-pad, 24px) + var(--safe-r, 0px))); }
 html, body { overflow-x: clip; }
+/* Share is an icon in the viewer's top row, beside the ✕ (2026-10-22, Sevaan), like the catch reveal's; the "Share this
+   card" words under the card are gone. On phones the card sits in the middle of the space under that row, and its
+   sightings start just below the screen. A card with a pass panel (Remind me / Show me) keeps the panel in view instead. */
+.viewer-header .vh-buttons { display: flex; align-items: center; gap: 4px; }
+#viewer .v-share { width: 44px; height: 44px; display: grid; place-items: center; color: var(--cream, #f3ead0); background: none; border: 0; padding: 0; }
+#viewer .v-share[hidden] { display: none; }
+#viewer .v-share.busy { opacity: .45; }
+@media (max-width: 699px) {
+  #viewer:not(.docked):not(:has(#v-up:not([hidden]))) .viewer-scroll > #slot { min-height: calc(100dvh - var(--safe-top, 0px) - var(--safe-bottom, 0px) - 102px); align-items: center; }
+}
