@@ -10,6 +10,11 @@ export function pullToClose(el, close, scroller = el) {
     y0 = e.touches[0].clientY; t0 = performance.now(); dy = 0; live = false; el.classList.remove('pulled');
     // A wide screen's book pages ([data-col], 2026-10-22) scroll on their own: the pull waits for the one you're on.
     const col = e.target.closest?.('[data-col]'); sc = col && el.contains(col) && /auto|scroll/.test(getComputedStyle(col).overflowY) ? col : scroller;
+    // Any part of the page that scrolls on its own counts too (2026-10-22, Sevaan: on the cloudy-night Tonight page, which
+    // scrolls inside an inner panel, a drag back up at the bottom pulled the whole page down instead of scrolling).
+    for (let n = e.target; n && n !== el; n = n.parentElement) {
+      if (n.scrollHeight > n.clientHeight + 1 && /auto|scroll/.test(getComputedStyle(n).overflowY)) { sc = n; break; }
+    }
   }, { passive: true });
   el.addEventListener('touchmove', (e) => {
     if (y0 == null) return;
