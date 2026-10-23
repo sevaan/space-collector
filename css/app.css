@@ -2325,3 +2325,22 @@ body.folded #discover .d-label, body.folded #discover .d-actions, body.folded #p
   .set-row:has(> .set-seg) { flex-wrap: wrap; }
   .set-row > .set-seg { flex-basis: 100%; margin: 8px 0 0; justify-content: flex-end; }
 }
+
+/* Line up the sky (2026-10-22, design/compass-calibrate.html): only the sky, the circle and one card. */
+body.calib #hud, body.calib #nav, body.calib #skybar, body.calib #toasts, body.calib #toast-tray, body.calib #tab-fade, body.calib .patch-coins, body.calib #discover, body.calib #plane, body.calib #tk, body.calib #guidance, body.calib #until-dark, body.calib #wake { visibility: hidden !important; }
+#calib[hidden] { display: none; }
+#calib { position: fixed; inset: 0; z-index: 60; pointer-events: none; }
+#calib .cb-off { position: absolute; left: 50%; top: calc(var(--safe-top, 0px) + 24px); transform: translateX(-50%); padding: 8px 14px; border-radius: 99px; background: #0b1424ee; border: 1px solid #ffffff26; color: var(--ink, #fff2b3); font: 500 12px/1 var(--label); letter-spacing: .14em; text-transform: uppercase; white-space: nowrap; }
+#calib .cb-card { pointer-events: auto; position: absolute; left: calc(14px + var(--safe-l, 0px)); right: calc(14px + var(--safe-r, 0px)); bottom: calc(var(--safe-bottom, 0px) + 16px); max-width: 520px; margin: 0 auto; padding: 16px 16px 10px; border-radius: 20px; background: #0b1424f4; border: 1px solid #ffffff22; box-shadow: 0 10px 30px #0008; }
+#calib .cb-k { font: 500 12px/1 var(--label); letter-spacing: .18em; text-transform: uppercase; color: #fa8127; }
+#calib h3 { margin: 6px 0 6px; font: 400 20px/1.15 var(--display); color: var(--ink, #fff2b3); text-wrap: balance; }
+#calib p { margin: 0 0 14px; font: 500 15px/1.35 var(--label); color: var(--muted, #a9b0a4); letter-spacing: .02em; }
+#calib .cb-btns, #calib .cb-dirs { display: flex; gap: 8px; }
+#calib .cb-dirs { margin-bottom: 8px; }
+#calib .cb-b, #calib .cb-dirs button { flex: 1; min-height: 46px; padding: 0 10px; border-radius: 12px; border: 1px solid #ffffff2e; background: transparent; color: var(--cream, #f3ead0); font: 500 14px/1 var(--label); letter-spacing: .14em; text-transform: uppercase; }
+#calib .cb-b.p { background: #fa8127; border-color: #fa8127; color: #120a02; }
+#calib .cb-foot { display: flex; justify-content: space-between; margin-top: 6px; }
+#calib .cb-foot button { min-height: 40px; padding: 0 4px; background: none; border: 0; color: var(--muted, #a9b0a4); font: 500 13px/1 var(--label); letter-spacing: .08em; }
+#calib .cb-foot #cb-reset { color: #f2c14e; }
+body.night #calib .cb-k, body.night #calib .cb-foot #cb-reset { color: #ff7f70; }
+body.night #calib .cb-b.p { background: #ff6a55; border-color: #ff6a55; }

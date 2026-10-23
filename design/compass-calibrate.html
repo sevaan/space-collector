@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Line Up the Sky</title>
+<style>
+  @font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf'); font-weight: 500; }
+  @font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf'); }
+  :root { --ink: #fff2b3; --cream: #f3ead0; --muted: #a9b0a4; --orange: #fa8127; --navy: #080f1b; --line: #22324a; --blue: #6ea8ff; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #04070d; color: #e8eef6; font: 15px/1.45 -apple-system, system-ui, sans-serif; padding: 28px 16px 80px; }
+  .wrap { max-width: 1240px; margin: 0 auto; }
+  h1 { font: 400 26px 'SC Display', sans-serif; color: var(--ink); margin: 0 0 6px; }
+  h2 { font: 500 14px 'SC Label', sans-serif; letter-spacing: .2em; text-transform: uppercase; color: var(--orange); margin: 44px 0 6px; }
+  .intro, .sub { color: #9fb0c6; max-width: 920px; margin: 0 0 18px; }
+  .row { display: flex; flex-wrap: wrap; gap: 26px; align-items: flex-start; }
+  .cell { width: 300px; } .cap { margin-top: 10px; } .cap b { display: block; font-size: 14px; } .cap span { color: #9fb0c6; font-size: 13px; }
+  .lab { font: 500 11px/1.2 'SC Label', sans-serif; letter-spacing: .16em; text-transform: uppercase; }
+  /* phone */
+  .ph { position: relative; width: 300px; height: 640px; border-radius: 40px; border: 9px solid #121722; overflow: hidden; background: radial-gradient(120% 90% at 50% 10%, #13253f 0%, #0a1426 55%, #070c18 100%); }
+  .ph .hdr { position: absolute; left: 0; right: 0; top: 0; height: 76px; padding: 30px 18px 0; background: #080f1bf0; border-bottom: 1px solid #ffffff1a; }
+  .ph .hdr b { font: 400 15px 'SC Display', sans-serif; color: var(--ink); display: block; }
+  .ph .hdr small { font: 500 10px 'SC Label', sans-serif; letter-spacing: .18em; color: var(--muted); text-transform: uppercase; }
+  .ph .x { position: absolute; right: 16px; top: 34px; color: var(--ink); font: 500 20px 'SC Label'; }
+  .stars i { position: absolute; width: 2px; height: 2px; border-radius: 50%; background: #fff; opacity: .7; }
+  .ret { position: absolute; left: 50%; top: 300px; width: 96px; height: 96px; margin: -48px 0 0 -48px; border-radius: 50%; border: 2px solid var(--cream); box-shadow: 0 0 0 6px #00000055; }
+  .ret::before, .ret::after { content: ''; position: absolute; background: var(--cream); }
+  .ret::before { left: 47px; top: -12px; width: 2px; height: 8px; } .ret::after { left: 47px; bottom: -12px; width: 2px; height: 8px; }
+  .ret.on { border-color: var(--orange); box-shadow: 0 0 0 6px #fa812733, 0 0 26px #fa812755; }
+  .moon { position: absolute; width: 26px; height: 26px; border-radius: 50%; background: radial-gradient(circle at 38% 36%, #fffbe8, #e9dcb3 60%, #b9a979); box-shadow: 0 0 22px #fff6c866; }
+  .ghost { position: absolute; width: 26px; height: 26px; border-radius: 50%; border: 1.5px dashed #fff2b3aa; }
+  .tag { position: absolute; font: 500 11px 'SC Label', sans-serif; letter-spacing: .14em; color: var(--cream); text-transform: uppercase; white-space: nowrap; }
+  .card { position: absolute; left: 14px; right: 14px; bottom: 16px; padding: 14px 15px 14px; border-radius: 18px; background: #0b1424f2; border: 1px solid #ffffff22; }
+  .card .k { color: var(--orange); } .card h3 { margin: 4px 0 4px; font: 400 18px/1.15 'SC Display', sans-serif; color: var(--ink); }
+  .card p { margin: 0 0 12px; font: 500 14px/1.3 'SC Label', sans-serif; color: var(--muted); letter-spacing: .02em; }
+  .btns { display: flex; gap: 8px; } .btn { flex: 1; text-align: center; padding: 11px 6px; border-radius: 12px; font: 500 13px 'SC Label', sans-serif; letter-spacing: .16em; text-transform: uppercase; border: 1px solid #ffffff2a; color: var(--cream); }
+  .btn.p { background: var(--orange); border-color: var(--orange); color: #120a02; }
+  .off { position: absolute; left: 50%; top: 90px; transform: translateX(-50%); padding: 6px 12px; border-radius: 99px; background: #0b1424e8; border: 1px solid #ffffff22; font: 500 12px 'SC Label', sans-serif; letter-spacing: .14em; color: var(--ink); text-transform: uppercase; white-space: nowrap; }
+  .hand { position: absolute; font-size: 30px; filter: drop-shadow(0 2px 4px #000); }
+  .arrowline { position: absolute; height: 2px; background: repeating-linear-gradient(90deg, #fff2b3 0 6px, transparent 6px 11px); }
+  .dim::after { content: ''; position: absolute; inset: 0; background: #04070d88; }
+  .set { position: absolute; left: 0; right: 0; top: 76px; bottom: 0; background: #080f1b; padding: 14px; }
+  .scard { border: 1px solid #e9dcb355; border-radius: 14px; overflow: hidden; }
+  .scard .h { display: flex; justify-content: space-between; padding: 9px 12px; background: #e9dcb312; color: #f2c14e; }
+  .srow { display: flex; align-items: center; gap: 10px; padding: 12px; border-top: 1px solid #ffffff14; }
+  .srow .t { flex: 1; } .srow .t b { display: block; font: 500 16px 'SC Label', sans-serif; color: var(--cream); letter-spacing: .02em; }
+  .srow .t small { display: block; font: 500 12.5px 'SC Label', sans-serif; color: var(--muted); }
+  .srow .v { font: 500 13px 'SC Label', sans-serif; color: var(--muted); letter-spacing: .1em; }
+  .pill { padding: 7px 12px; border-radius: 99px; border: 1px solid var(--orange); color: var(--orange); font: 500 12px 'SC Label', sans-serif; letter-spacing: .14em; text-transform: uppercase; white-space: nowrap; }
+  .toast { position: absolute; left: 14px; right: 14px; top: 86px; padding: 11px 13px; border-radius: 14px; background: #0b1424f4; border: 1px solid #ffffff22; border-top: 3px solid #5fd08a; }
+  .toast b { display: block; font: 500 15px 'SC Label', sans-serif; color: var(--cream); } .toast small { font: 500 12px 'SC Label', sans-serif; color: var(--muted); }
+  .note { border: 1px solid #1d2838; border-radius: 14px; padding: 14px 18px; background: #0a111d; max-width: 1100px; } .note li { margin: 5px 0; color: #c5cfdb; } .note b { color: #fff; }
+  .ab { display: inline-block; font: 500 11px 'SC Label'; letter-spacing: .16em; padding: 2px 7px; border-radius: 5px; background: #fa812722; color: var(--orange); margin-right: 6px; }
+</style></head><body><div class="wrap">
+<h1>Line up the sky</h1>
+<p class="intro">Replace the ±5° compass nudge with one button in Settings that takes you to Explore in a lining-up mode, then back to the normal sky. The app picks something real to line up against (the Moon, else the brightest planet, else a bright star), so you don't have to guess.</p>
+
+<h2>The flow</h2>
+<div class="row">
+  <div class="cell"><div class="ph"><div class="hdr"><b>SETTINGS</b><small>Make it yours</small><span class="x">✕</span></div>
+    <div class="set">
+      <div class="scard"><div class="h lab"><span>Aiming</span><span>06</span></div>
+        <div class="srow"><div class="t"><b>Compass</b><small>Is the sky drifting or off to one side?</small></div><span class="pill">Line up</span></div>
+        <div class="srow"><div class="t"><b>Last lined up</b><small>Against the Moon · 2 days ago</small></div><span class="v">+7°</span></div>
+        <div class="srow"><div class="t"><b>Reset</b><small>Back to the phone's own compass</small></div><span class="v">›</span></div>
+        <div class="srow"><div class="t"><b>Snap onto targets</b></div><span class="v">OFF</span></div>
+      </div>
+    </div></div>
+    <div class="cap"><b>1 · Settings</b><span>The −5° / +5° steppers go. One "Line up" button, a line saying what it was last lined up against and by how much, and Reset.</span></div></div>
+
+  <div class="cell"><div class="ph" id="p2"><div class="hdr"><b>LINE UP THE SKY</b><small>Step 1 of 2</small><span class="x">✕</span></div>
+    <div class="stars" id="s2"></div>
+    <div class="ret on"></div>
+    <div class="ghost" style="left:60px;top:300px"></div><span class="tag" style="left:22px;top:332px;font-size:10px;line-height:1.3;color:#fff2b3aa">WHERE THE APP<br>THINKS IT IS</span>
+    <div class="card"><span class="lab k">Find the Moon</span><h3>Point the circle at the real Moon</h3><p>It's low in the southeast. Hold it in the middle of the circle, then tap.</p><div class="btns"><span class="btn">Drag instead</span><span class="btn p">It's in the circle</span></div></div>
+  </div>
+    <div class="cap"><b>2 · Aim, then confirm <span class="ab">A</span></b><span>Explore opens with the HUD hidden and one card. You point the phone at the real Moon and tap. The app compares where it thought the Moon was with where the phone points, and that difference is the correction. No dragging at all.</span></div></div>
+
+  <div class="cell"><div class="ph"><div class="hdr"><b>LINE UP THE SKY</b><small>Drag to match</small><span class="x">✕</span></div>
+    <div class="stars" id="s3"></div>
+    <div class="ret"></div>
+    <div class="moon" style="left:186px;top:287px"></div><span class="tag" style="left:176px;top:258px">MOON</span>
+    <div class="ghost" style="left:137px;top:287px;border-color:#fa8127"></div>
+    <div class="arrowline" style="left:166px;top:300px;width:18px"></div>
+    <div class="hand" style="left:206px;top:352px">☝︎</div>
+    <div class="off">Turned 7° east · drag to adjust</div>
+    <div class="card"><span class="lab k">Drag to match</span><h3>Slide the sky until the Moon sits on the real one</h3><p>Only sideways moves count. Hold the phone still while you drag.</p><div class="btns"><span class="btn">Cancel</span><span class="btn p">Set</span></div></div>
+  </div>
+    <div class="cap"><b>2 · Drag to match <span class="ab">B</span></b><span>For when nothing bright is up, or you'd rather drag. The sky stays live with the phone; a sideways drag turns it on top. A pill shows how far you've turned it. Set saves it; Cancel puts it back.</span></div></div>
+
+  <div class="cell"><div class="ph"><div class="hdr"><b>SPACE COLLECTOR</b><small>Collect the night sky</small></div>
+    <div class="stars" id="s4"></div>
+    <div class="ret"></div>
+    <div class="moon" style="left:137px;top:287px"></div>
+    <div class="toast"><b>Sky lined up</b><small>Turned 7° east, against the Moon · Change it in Settings</small></div>
+  </div>
+    <div class="cap"><b>3 · Back to Explore</b><span>The normal sky returns with a short notice. The correction is saved and kept until you line up again or reset (it already survives restarts today).</span></div></div>
+</div>
+
+<h2>When there's nothing bright up</h2>
+<div class="row">
+  <div class="cell"><div class="ph"><div class="hdr"><b>LINE UP THE SKY</b><small>By day</small><span class="x">✕</span></div>
+    <div class="stars" id="s5"></div>
+    <div class="ret on"></div>
+    <span class="tag" style="left:50%;transform:translateX(-50%);top:236px;font-size:13px">NORTH</span>
+    <div class="card"><span class="lab k">Use a direction you know</span><h3>Point the circle at north</h3><p>Use a street you know runs north, or your phone's Compass app. Never aim at the Sun.</p><div class="btns"><span class="btn">East</span><span class="btn">South</span><span class="btn">West</span><span class="btn p">Pointing north</span></div></div>
+  </div>
+    <div class="cap"><b>Fallback</b><span>No Moon, planet or bright star up (daytime, cloud): line up against a compass direction instead. The Sun is never offered.</span></div></div>
+  <div class="cell" style="width:auto;max-width:560px">
+    <div class="note"><ul>
+      <li><b>Picking the reference.</b> The Moon if it's up and more than 10° high, else the brightest planet (Venus, Jupiter, Mars, Saturn), else the brightest named star, else a compass direction. "Drag instead" is always there.</li>
+      <li><b>Figure-8 first.</b> If the phone reports a poor compass (the existing compass-doubt check), the mode opens with "Wave your phone in a slow figure-8" for a few seconds before step 1, since lining up a confused compass won't last.</li>
+      <li><b>Drifting phones.</b> On a phone with no compass (Android browsers that only give the gyro, "relative"), lining up is the only fix, so after a few minutes of use the app can offer it: a "Sky drifting? Line it up" notice that opens this mode.</li>
+      <li><b>What it changes.</b> One saved offset (the existing compass nudge, already kept across restarts and locked against small compass wobbles). This replaces the ±5° steppers; the camera-view drag line-up stays as it is.</li>
+      <li><b>My pick:</b> A (aim, then confirm) as the main path, with B (drag) one tap away, and the north fallback.</li>
+    </ul></div>
+  </div>
+</div>
+</div>
+<script>
+for (const id of ['s2', 's3', 's4', 's5']) { const el = document.getElementById(id); if (!el) continue; let h = ''; for (let i = 0; i < 40; i++) h += `<i style="left:${(Math.random() * 100).toFixed(1)}%;top:${(12 + Math.random() * 60).toFixed(1)}%;opacity:${(.3 + Math.random() * .6).toFixed(2)}"></i>`; el.innerHTML = h; }
+document.querySelectorAll('#s5 i').forEach((i) => (i.style.opacity = .12));
+</script>
+</body></html>
