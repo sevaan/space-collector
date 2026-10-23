@@ -677,3 +677,5 @@
 @keyframes shinyEdge { to { background-position: 300% 300%; } }
 @media (prefers-reduced-motion: reduce) { .card-tile.card-tile--mini.shiny::after { animation: none; } }
 :where(html[data-theme='night'], body.night) .card-tile.card-tile--mini.shiny::after { background: #ff6a55; }
+/* A decimal point in a stat value gets room either side (web playtest 2026-10-22: 2.3 laps a day read as 23). */
+.card__stats b i.dp { font-style: normal; margin: 0 .08em 0 .1em; }

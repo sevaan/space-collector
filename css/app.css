@@ -2099,6 +2099,7 @@ body.night .ar-facing { color: #ff7f70; } body.night .ar-card em { background: #
 #around .ap-k { display: flex; align-items: center; gap: 5px; font: 600 9.5px/1 var(--label); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); white-space: nowrap; overflow: hidden; }
 #around .ap-k .ico { width: 12px; height: 12px; color: var(--gold); flex: none; } #around .ap-moon { width: 12px; height: 12px; flex: none; }
 #around .ap b { font: 400 clamp(16px, 5.2vw, 21px)/1.05 var(--display); color: var(--ink, #fff2b3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#around .ap b.long { font-size: clamp(13px, 3.6vw, 18px); } /* "Overcast" read "Over…" at 402px (web playtest 2026-10-22) */
 #around .ap b i { font-style: normal; font-size: 11px; margin-left: 2px; color: var(--muted); }
 #around .ap small { font: 500 11px/1.2 var(--label); color: var(--muted); text-wrap: balance; }
 body.night #around .ap-k .ico { color: #ff7f70; }

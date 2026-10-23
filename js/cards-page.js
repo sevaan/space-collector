@@ -1,30 +1,30 @@
-import { pullToClose } from './pull-close.js?v=0.1.1041';
-import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.1041';
-import { computeStats, statsHtml } from './stats.js?v=0.1.1041';
-import { nightKey } from './observation.js?v=0.1.1041';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1041';
-import { sfx } from './sfx.js?v=0.1.1041';
-import { expandFacts } from './catalog-facts.js?v=0.1.1041';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.1041';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1041';
-import { ticket } from './toast.js?v=0.1.1041';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.1041';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.1041';
-import { cardArt } from './art.js?v=0.1.1041';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.1041';
-import { applyBack } from './card-backs.js?v=0.1.1041';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.1041';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1041';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.1041';
-import { STORIES } from './stories.js?v=0.1.1041';
-import { loadConstellations, conList } from './constellations.js?v=0.1.1041';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.1041';
-import { eventBadges, nextEvent } from './events.js?v=0.1.1041';
-import { shareCardEl } from './share-card.js?v=0.1.1041';
-import { forgetSighting } from './cloud-backup.js?v=0.1.1041';
-import { allSightings, deleteSighting } from './store.js?v=0.1.1041';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.1041';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.1041';
+import { pullToClose } from './pull-close.js?v=0.1.1043';
+import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.1043';
+import { computeStats, statsHtml } from './stats.js?v=0.1.1043';
+import { nightKey } from './observation.js?v=0.1.1043';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1043';
+import { sfx } from './sfx.js?v=0.1.1043';
+import { expandFacts } from './catalog-facts.js?v=0.1.1043';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.1043';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1043';
+import { ticket } from './toast.js?v=0.1.1043';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.1043';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.1043';
+import { cardArt } from './art.js?v=0.1.1043';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.1043';
+import { applyBack } from './card-backs.js?v=0.1.1043';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.1043';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1043';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.1043';
+import { STORIES } from './stories.js?v=0.1.1043';
+import { loadConstellations, conList } from './constellations.js?v=0.1.1043';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.1043';
+import { eventBadges, nextEvent } from './events.js?v=0.1.1043';
+import { shareCardEl } from './share-card.js?v=0.1.1043';
+import { forgetSighting } from './cloud-backup.js?v=0.1.1043';
+import { allSightings, deleteSighting } from './store.js?v=0.1.1043';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.1043';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.1043';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -300,7 +300,7 @@ function renderAlbums() {
     b.innerHTML = `<span class="album__art">${img ? `<img src="${img}" alt="" loading="lazy">` : cardArt(show, { accent: set.color, silhouette: !latest })}</span>
       <span class="album__body"><span class="album__top"><span class="album__name">${esc(set.name)}</span><span class="album__count">${albumCount(set, st)}</span></span>${set.id === 'constellations' ? `<span class="album__sub">${st.have.length.toLocaleString()} of ${st.cards.length.toLocaleString()} stars</span>` : ''}
       ${albumBar(st)}<span class="album__foot">${st.level ? `<span class="album__level l${st.level}">${LEVELS[st.level - 1]}</span>` : ''}<span class="album__next">${st.level === 3 ? 'Complete' : `${(st.next - st.have.length).toLocaleString()} more${unit(set)} for ${LEVELS[st.level]}`}</span></span></span>`;
-    b.addEventListener('click', () => { state.set = set.id; $('set-filter').value = set.id; setView('discover'); window.scrollTo({ top: $('grid').offsetTop - 160, behavior: 'smooth' }); });
+    b.addEventListener('click', () => { state.set = set.id; $('set-filter').value = set.id; setView('discover'); requestAnimationFrame(() => { const pin = document.querySelector('.collection-tools')?.getBoundingClientRect().bottom ?? 160, head = $('album-head'); window.scrollTo({ top: Math.max(0, (head.hidden ? $('grid') : head).getBoundingClientRect().top + scrollY - pin - 8), behavior: 'smooth' }); }); }); // the album's name lands just under the pinned tabs and search (web playtest 2026-10-22: it scrolled under them)
     frag.append(b);
   }
   try { localStorage.setItem('albumLevels', JSON.stringify(lv)); } catch {}
@@ -433,7 +433,7 @@ function renderLogbook() {
     <path d="M${pts.map((q) => q.join(' ')).join(' L')}" fill="none" stroke="#344654" stroke-dasharray="3 5"/>
     ${cur > 0 ? `<path d="M${pts.slice(0, cur + 1).map((q) => q.join(' ')).join(' L')}" fill="none" stroke="#fa8127" stroke-width="2"/>` : ''}<!-- ranks you have passed: solid (2026-10-14) -->
     ${pts[cur + 1] ? `<path d="M${pts[cur].join(' ')} L${pts[cur][0] + (pts[cur + 1][0] - pts[cur][0]) * into} ${pts[cur][1] + (pts[cur + 1][1] - pts[cur][1]) * into}" stroke="#fa8127" stroke-width="2"/>` : ''}
-    ${rungs.map(([, n], i) => { const [x, y] = pts[i]; return `<circle cx="${x}" cy="${y}" r="${i === cur ? 6 : 4}" fill="${i <= cur ? '#fa8127' : '#0b1626'}" ${i > cur ? 'stroke="#fff2b3" stroke-dasharray="2 2"' : ''}/>${i === cur ? `<circle cx="${x}" cy="${y}" r="12" fill="none" stroke="#fa8127" opacity=".5"/>` : ''}<text x="${x}" y="${y + 20}" text-anchor="middle" font-family="SC Label, Arial Narrow" font-size="9.5" letter-spacing="1.5" fill="${i >= cur ? '#fff2b3' : '#bdbea9'}">${esc(n.toUpperCase())}</text>${i === cur + 1 ? `<text x="${x}" y="${y - 14}" text-anchor="middle" font-family="SC Label, Arial Narrow" font-size="9" letter-spacing="1.5" fill="#fa8127">NEXT</text>` : ''}`; }).join('')}</svg>`;
+    ${rungs.map(([, n], i) => { const [x, y] = pts[i]; return `<circle cx="${x}" cy="${y}" r="${i === cur ? 6 : 4}" fill="${i <= cur ? '#fa8127' : '#0b1626'}" ${i > cur ? 'stroke="#fff2b3" stroke-dasharray="2 2"' : ''}/>${i === cur ? `<circle cx="${x}" cy="${y}" r="12" fill="none" stroke="#fa8127" opacity=".5"/>` : ''}<text x="${x}" y="${y + 20}" text-anchor="middle" font-family="SC Label, Arial Narrow" font-size="9.5" letter-spacing="1.5" fill="${i >= cur ? '#fff2b3' : '#bdbea9'}">${n.length > 12 && n.includes(' ') ? n.toUpperCase().split(' ').map((w, k) => `<tspan x="${x}" dy="${k ? 11 : 0}">${esc(w)}</tspan>`).join('') /* two lines: FLIGHT CONTROLLER ran off the card (web playtest 2026-10-22) */ : esc(n.toUpperCase())}</text>${i === cur + 1 ? `<text x="${x}" y="${y - 14}" text-anchor="middle" font-family="SC Label, Arial Narrow" font-size="9" letter-spacing="1.5" fill="#fa8127">NEXT</text>` : ''}`; }).join('')}</svg>`;
   const streak = p.streak.current >= 2 ? `${p.streak.current}-week streak` : p.streak.current ? 'Week 1 started · keep it going next week' : 'Observe this week to start a streak'; // the flame is earned at week 2 (playtest 2026-10-09)
   const ev = eventBadges(state.raw), nx = nextEvent();
   // At risk (a streak going, nothing logged yet this week): a Remind me for Saturday evening (QA 2026-10-09: the button

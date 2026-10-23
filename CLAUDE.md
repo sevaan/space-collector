@@ -1657,3 +1657,13 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - toast.js fitStack skips its layout read when no ticket is in or the page is hidden (it ran 3.3x/s forever).
   - Tried and reverted: queueing Collection tile builds a few per frame. Big-album scroll jank in headless WebKit was the same over already-built tiles (paint, not building), so it didn't help there; check on a real phone before redoing.
   - Not done (bigger changes, ask first): split fleets out of catalog.json, share parsed lore/facts with the Collection iframe, lazy stinger sounds, 2048px Milky Way texture, modulepreload, shorter native loader floor (1.4 s is Sevaan's 2026-10-08 call).
+- 2026-10-22 bug hunt, web playthrough batch (harness + screenshots in that session's scratchpad play/; note: WebKit's iPhone emulation reports screen.orientation.angle 90, pin it to 0 for synthetic-motion tests):
+  - Tour: after "View in collection" on the first catch, the close page's button says "See your card" (it opens the Collection), not "Explore the sky".
+  - All around you: a big value over 6 letters ("Overcast") gets b.long (smaller clamp) instead of "Over…".
+  - Rank ladder: names over 12 letters with a space wrap to two lines (FLIGHT / CONTROLLER ran off the card).
+  - Card stats: a decimal point gets i.dp with a little margin (the display font's point vanished: 2.3 laps a day read 23).
+  - Collection viewer card width (vws - 40)/28, the same as the reveal (was -58: 344 vs 362 wide on a 402 phone).
+  - Opening an album scrolls its head to just under the pinned tabs/search (it scrolled under them).
+  - Line up the sky: the card shows at once ("Starting the compass…", buttons hidden) while motion starts, instead of up to 1.8 s of empty sky.
+  - Tour: if Allow motion fails, the next card's sub says "Motion didn't start · Drag the sky with a finger" (toasts are hidden in the tour).
+  - Open for Sevaan (not changed): HUD distances follow Units (miles) but cards are always km; Tonight tab hero ignores cloud; missions count 3 vs 4 (challenge) between pages; disabled grey bells for free players do nothing on tap; Settings shows raw coordinates; three Plus-gate styles on the Tonight tab; welcome card shows two swipe CTAs.

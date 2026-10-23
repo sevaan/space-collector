@@ -1,20 +1,20 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { fallWords } from './last-chance.js?v=0.1.1041';
-import { feel } from './native.js?v=0.1.1041';
-import { sfx } from './sfx.js?v=0.1.1041';
-import { cardArt } from './art.js?v=0.1.1041';
-import { TIER_INFO } from './rarity.js?v=0.1.1041';
-import { SET_BY_ID } from './sets.js?v=0.1.1041';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.1041';
-import { FLEET_ABOUT, fleetAbout, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.1041';
-import { artFileFor } from './art-keys.js?v=0.1.1041';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.1041';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.1041';
-import { nightsIn } from './observation.js?v=0.1.1041';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.1041';
-import { SHINY } from './shiny.js?v=0.1.1041';
-import { conArt, cometArt } from './con-art.js?v=0.1.1041';
-import { CON_FIGURES } from './con-figures.js?v=0.1.1041';
+import { fallWords } from './last-chance.js?v=0.1.1043';
+import { feel } from './native.js?v=0.1.1043';
+import { sfx } from './sfx.js?v=0.1.1043';
+import { cardArt } from './art.js?v=0.1.1043';
+import { TIER_INFO } from './rarity.js?v=0.1.1043';
+import { SET_BY_ID } from './sets.js?v=0.1.1043';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.1043';
+import { FLEET_ABOUT, fleetAbout, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.1043';
+import { artFileFor } from './art-keys.js?v=0.1.1043';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.1043';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.1043';
+import { nightsIn } from './observation.js?v=0.1.1043';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.1043';
+import { SHINY } from './shiny.js?v=0.1.1043';
+import { conArt, cometArt } from './con-art.js?v=0.1.1043';
+import { CON_FIGURES } from './con-figures.js?v=0.1.1043';
 // The animal/symbol figure belongs to the completed (gold) constellation card only (2026-10-05): a single
 // star’s card draws just the star pattern with its star marked, so the figure is a reward for finishing the set.
 // A star card’s constellation figure comes into focus as you collect the constellation’s stars (design/con-focus.html B).
@@ -181,7 +181,7 @@ export function renderCard(o, opts = {}) {
     <div class="card__heading"><h3 class="card__name">${esc(title)}</h3>
     <div class="card__identity"><span>${esc(sub)}</span><span class="card__mono">${esc(identifier)}</span></div></div>
     ${tempStrip(o)}
-    <div class="card__stats m4" style="--n:${four.length}">${four.map(([label, value, unit], i) => `<div><span class="card__label">${esc(label)}</span><b${nat ? statClass(value, unit, i) : ''}>${esc(value)}${unit ? `<small>${esc(unit)}</small>` : ''}</b></div>`).join('')}</div>
+    <div class="card__stats m4" style="--n:${four.length}">${four.map(([label, value, unit], i) => `<div><span class="card__label">${esc(label)}</span><b${nat ? statClass(value, unit, i) : ''}>${esc(value).replace(/(\d)\.(\d)/g, '$1<i class="dp">.</i>$2') /* the display font's point nearly vanishes: 2.3 read 23 (web playtest 2026-10-22) */}${unit ? `<small>${esc(unit)}</small>` : ''}</b></div>`).join('')}</div>
     ${factBlock}
     <div class="card__footer"><span class="card__status${caught ? ' is-collected' : ''}"><span class="card__status-icon" aria-hidden="true">${caught ? '✓' : ''}</span><span>${caught ? `COLLECTED · ${esc(firstDate)}` : 'NOT YET COLLECTED'}</span>${caught && !o.natural ? `<span class="card__seen-count">${seenLine(level, conCard || fleet ? 0 : nightsIn(sightings), sightings.length)}</span>` : ''}</span><span class="card__brand">${o.setNumber && o.setSize > 1 ? `<small class="card__no">${String(o.setNumber).padStart(String(o.setSize).length, '0')}/${o.setSize}</small>` : ''}SPACE COLLECTOR</span></div>
     <div class="card__shine"></div><div class="card__glare"></div>
