@@ -1641,3 +1641,13 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - 2026-10-22 (Sevaan: on the cloudy-night Tonight page, scrolled to the bottom you couldn't scroll back up): pull-close.js only checked the page's own scrollTop, but #ob-done.nt scrolls inside .od-body, so every downward drag became a pull-to-close (the page slid down). The pull now waits for whichever element under the finger scrolls (nearest ancestor with overflow auto/scroll and more content than fits) to be at its top.
 - 2026-10-22 (Sevaan: the reveal card "has room to be bigger"): sizeCard in js/reveal.js now always sizes the card to the room really there, between the header/chips row and the rank bar or View in collection, 20px a side, --cf at most 14. On a 402pt iPhone the card goes from about 300pt to 362pt wide; iPad stays at 14.
 - 2026-10-22 (Sevaan: "the swoosh sound effect can be a bit quieter too"): the reveal whoosh (arrive) target -22 → -27 LUFS in scripts/sfx-levels.py, NORM 2.14 → 1.20 (-5 dB, "a bit", not half). The swipe sound (dismiss/into binder) is unchanged at -26.
+- 2026-10-22 bug hunt, code review batch:
+  - orbit.js loadCatalog deleted `el` from every object, which switched off in the app (not standalone cards.html) last chance cards (fallAt), their tier bump, the Witness patch, the falling bonus in the headliner score, and the orbit globe on card art. `el` now stays (16,710 objects; 5+ falling today, e.g. Swift, Aureole 2).
+  - setReminderNow: a reminder that didn't get set (prompt declined, schedule error) is no longer saved, so its bell doesn't light after a relaunch.
+  - weeklyRecap fallback named the oldest sighting of the week, not the last (sightings are newest first).
+  - Collection "Up tonight" slots skip passes that have set (the plan is only re-read every ~20 min).
+  - sfx()/heartbeat() do nothing while the page is hidden (a ticket fired in the background woke the suspended audio context).
+  - plus.js initStore registers its appStateChange listener once (each failed configure retry added another).
+  - progress() takes `lon` (progressNow passes state.observer.lon), so tonight's missions are read under the same night key they were dealt with (they split when you travelled).
+  - onBackupChange refreshes fossilDone/ufoCaught/secretFound, so an iCloud restore doesn't re-earn them.
+  - Left alone: xpCarry2/rankFloor2 latching 0 if the log hadn't loaded (only affects pre-2026-10-10 players; recomputing risks giving new players free XP).

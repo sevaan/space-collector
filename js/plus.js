@@ -3,7 +3,7 @@
 // (2026-10-16): the purchase belongs to the player’s Apple ID / Google account, no sign-in of ours. The last answer is
 // kept (localStorage 'plusStore') so Plus holds offline. The testing toggle (Settings → Testing tools → "Plus
 // (testing)", 'plusTest') still turns it on anywhere; the website never sells Plus.
-import { plugin, isNative, onNative } from './native.js?v=0.1.1035';
+import { plugin, isNative, onNative } from './native.js?v=0.1.1036';
 
 // RevenueCat public SDK keys (safe in the app). The Test Store key works with no App Store / Play setup; swap in the
 // appl_ / goog_ keys from RevenueCat → Project settings → API keys once the store apps are connected.
@@ -34,6 +34,7 @@ export function storeOpen() {
   const ios = /iP(hone|ad|od)|Mac/.test(navigator.userAgent), key = ls.get('rcTestStore') === '1' ? TEST_KEY : ios ? RC_KEYS.ios : RC_KEYS.android;
   return !(key.startsWith('test_') && ls.get('rcTestStore') !== '1');
 }
+let watching = false;
 export function initStore() {
   const p = rc(); if (!p || ready) return ready;
   const ios = /iP(hone|ad|od)|Mac/.test(navigator.userAgent), key = ls.get('rcTestStore') === '1' ? TEST_KEY : ios ? RC_KEYS.ios : RC_KEYS.android;
@@ -43,7 +44,7 @@ export function initStore() {
   if (key.startsWith('test_') && ls.get('rcTestStore') !== '1') return null;
   ready = p.configure({ apiKey: key }).then(() => true).catch((e) => { console.warn('store setup failed', e?.message ?? e); ready = null; return false; });
   ready.then((ok) => ok && refreshPlus());
-  onNative('App', 'appStateChange', ({ isActive }) => { if (isActive) refreshPlus(); }); // bought or cancelled elsewhere
+  if (!watching) { watching = true; onNative('App', 'appStateChange', ({ isActive }) => { if (isActive) refreshPlus(); }); } // bought or cancelled elsewhere; once, though a failed setup retries (bug hunt 2026-10-22)
   return ready;
 }
 export async function refreshPlus() {

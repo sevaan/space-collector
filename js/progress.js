@@ -1,7 +1,7 @@
 // Player progress from the sighting log: XP and observer rank, tonight’s three missions, a weekly streak and
 // achievements. Everything is derived from the saved sightings (nothing extra is stored), so it can’t drift.
 // info(cardKey) -> { tier, type, owner, launch, natural, con } | null. No DOM.
-import { nightKey } from './observation.js?v=0.1.1035';
+import { nightKey } from './observation.js?v=0.1.1036';
 
 // A longer climb (2026-10-12, playtest room: three ranks on night 1, Mission Control in about two weeks), with two
 // prestige ranks past Mission Control. Nobody drops a rank they had on the old curve (rankFloor below).
@@ -252,7 +252,7 @@ export function streaks(sightings, now = Date.now(), cloudy = cloudyDays()) {
 }
 
 // constellations: [{ id, stars: [cardKey], zodiac }] for completion counts.
-export function progress(sightings, info, { constellations = [], albums = [], now = Date.now(), deals = null, carry = 0, tierXp = TIER_XP } = {}) {
+export function progress(sightings, info, { constellations = [], albums = [], now = Date.now(), deals = null, carry = 0, tierXp = TIER_XP, lon = null } = {}) {
   const list = real(sightings);
   const seenCard = new Set(), seenNight = new Set(), nights = new Map();
   let xp = 0;
@@ -321,7 +321,7 @@ export function progress(sightings, info, { constellations = [], albums = [], no
   }
   a.reunions = [...reunionRoles.values()].filter((r) => r.size === 2).length; // launches where you own the stage and its satellite
   const st = streaks(list, now); a.bestStreak = st.best;
-  const tonightKey = nightKey(now, list[list.length - 1]?.lon ?? 0), tonight = nights.get(tonightKey) ?? [];
+  const tonightKey = nightKey(now, lon ?? list[list.length - 1]?.lon ?? 0) /* where you are now, as the deal was made (bug hunt 2026-10-22: travel split them) */, tonight = nights.get(tonightKey) ?? [];
   const missions = missionsOf(tonightKey, { first: !nights.size || tonightKey === firstNight, deals }).map((m) => ({ id: m.id, text: m.text, done: m.done(tonight, now) }));
   xp += carry;
   let ri = 0; for (let k = 0; k < RANKS.length; k++) if (xp >= RANKS[k][0]) ri = k;

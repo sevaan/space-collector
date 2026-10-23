@@ -1,9 +1,9 @@
 // Orbit math: where every object is in the observer’s sky, and whether it can be seen.
 // Pure functions, no DOM, so this module carries over unchanged to a native wrapper.
 
-import { expandFacts } from './catalog-facts.js?v=0.1.1035';
-import * as sat from './lib/satellite.js?v=0.1.1035';
-import { extinction, starlinkStdMag } from './sky-limit.js?v=0.1.1035';
+import { expandFacts } from './catalog-facts.js?v=0.1.1036';
+import * as sat from './lib/satellite.js?v=0.1.1036';
+import { extinction, starlinkStdMag } from './sky-limit.js?v=0.1.1036';
 
 const RAD = Math.PI / 180;
 const EARTH_RADIUS_KM = 6371;
@@ -34,7 +34,7 @@ export async function loadCatalog(url) {
     if (fam) Object.assign(o, { kind: 'PAY', type: 'satellite', tier: fam.tier ?? 'common', stdMag: o.family === 'STARLINK' ? starlinkStdMag(o) : o.stdMag ?? fam.stdMag, owner: fam.owner, familyName: fam.name, year: o.launch ? Number(o.launch.slice(0, 4)) : null });
     o.card ??= String(o.id);
     o.satrec = satrec;
-    delete o.el; delete o.l1; delete o.l2;
+    delete o.l1; delete o.l2; // el stays: last chance cards (fallAt) and the orbit globe read it (bug hunt 2026-10-22: deleting it switched both off in the app)
     objects.push(o);
   }
   // Shared with the Collection layer so it doesn’t download and parse the catalogue again (2026-10-08 performance).

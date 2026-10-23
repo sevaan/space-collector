@@ -3,8 +3,8 @@
 // "Notification Sound 2" by deadrobotmusic (Freesound, CC0), softened. Files: assets/audio/sfx/<name>.mp3.
 // Decoded once into memory after the first tap, played through the shared context (js/audio-ctx.js) so they’re instant.
 // Off with Settings → Sounds and vibration (localStorage sound = '0').
-import { audioCtx } from './audio-ctx.js?v=0.1.1035';
-import { VERSION } from './version.js?v=0.1.1035';
+import { audioCtx } from './audio-ctx.js?v=0.1.1036';
+import { VERSION } from './version.js?v=0.1.1036';
 export const SFX = ['lock', 'collect', 'arrive', 'flip', 'r_common', 'r_uncommon', 'r_rare', 'r_epic', 'r_legend', 'shiny', 'seen', 'stamp', 'levelup', 'xp',
   'mission', 'rankup', 'patch', 'coinroll', 'complete', 'secret', 'fossil', 'ufo', 'welcome', 'swipe', 'step', 'toggle', 'toast', 'page', 'rattle', 'plane'];
 const BASE = new URL('../assets/audio/sfx/', import.meta.url).href;
@@ -40,7 +40,7 @@ function audibleLength(b) {
 }
 const UNCAPPED = new Set(['arrive']); // the reveal’s whoosh always plays
 export function sfx(name, { gain = 1, gap = 0, delay = 0 } = {}) {
-  if (soundOff()) return;
+  if (soundOff() || document.hidden) return; // nothing to hear in the background, and audioCtx() would wake the suspended context (bug hunt 2026-10-22)
   const ctx = audioCtx(); if (!ctx) return;
   const b = bufs.get(name); if (!b) { loadSfx(); return; }
   const now = performance.now(); if (gap && now - (last.get(name) ?? -1e9) < gap) return; last.set(name, now);
@@ -53,7 +53,7 @@ if (typeof document !== 'undefined') document.addEventListener('pointerdown', ()
 // A heartbeat thump (2026-10-21, slick idea 05): a low, soft beat drawn on the fly (no file), for the held breath before
 // an Epic or Legendary card turns over. Follows the Sounds switch and volume like every other sound.
 export function heartbeat(strong = false) {
-  if (soundOff()) return;
+  if (soundOff() || document.hidden) return; // nothing to hear in the background, and audioCtx() would wake the suspended context (bug hunt 2026-10-22)
   const ctx = audioCtx(); if (!ctx || ctx.state !== 'running') return;
   try {
     const t = ctx.currentTime, o = ctx.createOscillator(), g = ctx.createGain(), f = ctx.createBiquadFilter();
