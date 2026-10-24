@@ -47,7 +47,10 @@ for (const kind of which === 'all' ? Object.keys(DEVICES) : [which]) {
     await f.locator('#viewer').evaluate((v) => v.open && v.close()).catch(() => {}); await w(800);
   };
   await card(/hubble/i, 'card');
-  if (duo) await shot('collection'); // the Duo: the grid with the card it last opened beside it
+  if (duo) { // the Duo: the grid with Saturn open beside it (an empty dock read as 'tap a card')
+    await f.locator('.card-tile', { hasText: /saturn/i }).first().click().catch(() => {}); await w(2600);
+    await f.locator('#v-up, #v-next').evaluateAll((els) => els.forEach((e) => { e.hidden = true; })).catch(() => {}); await shot('collection');
+    await f.locator('#viewer').evaluate((v) => v.open && v.close()).catch(() => {}); await w(800); }
   await toGrid('#grid'); await w(600);
   await card(/^\s*moon|moon\b/i, 'moon');
   // Patches, the wall scrolled up under the tabs
