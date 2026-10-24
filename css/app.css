@@ -2391,3 +2391,21 @@ body.night .crew-kit .kt.lit { border-color: #ff6a55; }
    pulled back up by its own height) so they stay put while the content scrolls over them. */
 #set-plus-sheet .set-sheet-card > .starfield { position: sticky; top: 0; display: block; height: 100dvh; max-width: none; margin: 0 calc(-18px - var(--safe-r, 0px)) -100dvh calc(-18px - var(--safe-l, 0px)); z-index: 0; overflow: hidden; pointer-events: none; }
 #set-plus-sheet .set-sheet-card > :not(.starfield):not(.crew-top) { position: relative; z-index: 1; }
+/* A shooting star behind the member patch (2026-10-23, Sevaan): from off to the upper left, behind the patch, fading out
+   past its lower right; once every 7 s. None under Reduce Motion. */
+.crew-patch .patch, .crew-patch > svg { position: relative; z-index: 1; }
+.crew-meteor { position: absolute; left: 50%; top: 42%; z-index: 0; width: 150px; height: 2px; margin-left: -150px; border-radius: 2px; pointer-events: none; opacity: 0;
+  background: linear-gradient(90deg, #fff2b300, #fff2b3cc 80%, #fff); filter: drop-shadow(0 0 4px #fff2b3aa); transform-origin: 100% 50%; animation: crewMeteor 7s 1.4s ease-in infinite; }
+.crew-meteor::after { content: ''; position: absolute; right: -2px; top: -2px; width: 6px; height: 6px; border-radius: 50%; background: #fff; box-shadow: 0 0 8px 2px #fff2b3; }
+@keyframes crewMeteor {
+  0% { transform: translate(-150px, -70px) rotate(19deg) scaleX(.4); opacity: 0; }
+  3% { opacity: 1; }
+  13% { transform: translate(260px, 70px) rotate(19deg) scaleX(1); opacity: 0; }
+  100% { transform: translate(260px, 70px) rotate(19deg) scaleX(1); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) { .crew-meteor { display: none; } }
+body.night .crew-meteor { background: linear-gradient(90deg, #ff6a5500, #ff6a55); filter: none; }
+body.night .crew-meteor::after { background: #ff6a55; box-shadow: none; }
+/* Stay-up notices (TONIGHT, new rank…) wait while the Plus page is open; they covered its patch (2026-10-23). Timed
+   ones (a purchase result) still show. */
+body:has(#set-plus-sheet:not([hidden])) #toasts .ticket--sticky, body:has(#set-plus-sheet:not([hidden])) #toast-tray { display: none !important; }
