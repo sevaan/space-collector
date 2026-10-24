@@ -545,6 +545,5 @@ body:has(.overlay.panel:not([hidden])) :is(#radar, #nextpass, #toast-tray) { tra
 .sc-switch { height: 54px !important; }
 .sc-switch__item { gap: 0 !important; }
 .sc-switch__item .ico { display: none !important; }
-/* The fade behind the tabs on the Tonight page follows the shorter bar (2026-10-24, Sevaan: "too tall"): solid only from
-   just above the bar's top (safe + 74px), fading out over the 36px above it. */
-body.nav-tabs.sky-open #tab-fade { height: calc(var(--safe-bottom, 0px) + 112px) !important; background: linear-gradient(rgba(6, 11, 20, 0), rgba(6, 11, 20, .9) 60%, #060b14) !important; -webkit-mask: none !important; mask: none !important; }
+/* No fade behind the tabs on the Tonight page (2026-10-24, Sevaan: "remove the fade entirely"). */
+body.nav-tabs.sky-open #tab-fade { display: none !important; }
