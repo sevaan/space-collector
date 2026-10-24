@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Caption Styles</title>
+<!-- 2026-10-24 (Sevaan: "the captions for the videos could be more visible and similar to how captions are done on social
+     media videos today. Mock up a few styles"). Real frames from the App Preview (store/raw/phone-*.png, no captions)
+     with five caption treatments, animated as they'd play. Not built. -->
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800;900&display=swap" rel="stylesheet">
+<style>
+  @font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf'); }
+  @font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf'); font-weight: 500; }
+  :root { --ink: #fff2b3; --orange: #fa8127; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #04070d; color: #e8eef6; font: 15px/1.5 -apple-system, system-ui, sans-serif; padding: 28px 16px 80px; }
+  .wrap { max-width: 1240px; margin: 0 auto; }
+  h1 { font: 400 28px 'SC Display', sans-serif; color: var(--ink); margin: 0 0 6px; }
+  .intro { color: #9fb0c6; max-width: 860px; margin: 0 0 8px; }
+  h2 { font: 500 15px 'SC Label'; letter-spacing: .2em; text-transform: uppercase; color: var(--orange); margin: 40px 0 2px; }
+  .sub { color: #b9c5d4; margin: 0 0 14px; max-width: 860px; font-size: 14px; }
+  .row { display: flex; flex-wrap: wrap; gap: 18px; }
+  .ph { position: relative; width: 224px; aspect-ratio: 402 / 874; border-radius: 30px; border: 7px solid #121722; overflow: hidden; background: #080f1b center / cover; container-type: inline-size; }
+  .cap { position: absolute; left: 4%; right: 4%; text-align: center; pointer-events: none; text-wrap: balance; }
+  .w { display: inline-block; }
+  .replay { margin-top: 10px; background: none; border: 1px solid #22324a; color: #c9d3de; border-radius: 16px; padding: 6px 14px; font: 500 13px 'SC Label'; letter-spacing: .14em; text-transform: uppercase; cursor: pointer; }
+
+  /* A · Bold outline (TikTok / Shorts default): heavy white, black stroke and shadow, one key word in orange, words pop in */
+  .A .cap { top: 58%; font: 900 9.2cqi/1.08 Montserrat, sans-serif; color: #fff; text-transform: uppercase; letter-spacing: -.01em;
+    -webkit-text-stroke: 1.6cqi #000; paint-order: stroke fill; text-shadow: 0 1cqi 2.4cqi rgba(0,0,0,.8); }
+  .A .k { color: var(--orange); }
+  .A .w { animation: pop .32s cubic-bezier(.2,1.6,.4,1) both; }
+
+  /* B · Boxed lines (Reels / CapCut "box"): white bold on black rounded boxes hugging each line */
+  .B .cap { top: 60%; }
+  .B .cap span.box { display: inline; font: 800 8.4cqi/1.6 Montserrat, sans-serif; color: #fff; background: #000d; padding: .12em .42em; border-radius: .32em;
+    -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+  .B .cap { animation: rise .35s ease-out both; }
+
+  /* C · Highlighter keyword (MrBeast-style): white bold, the key word on an orange block, a slight tilt */
+  .C .cap { top: 57%; font: 900 9cqi/1.12 Montserrat, sans-serif; color: #fff; text-transform: uppercase; text-shadow: 0 .8cqi 0 #000, 0 0 3cqi rgba(0,0,0,.7); }
+  .C .k { background: var(--orange); color: #140a03; text-shadow: none; padding: 0 .2em; border-radius: .14em; display: inline-block; transform: rotate(-3deg); box-shadow: 0 .8cqi 0 #000; }
+  .C .w { animation: pop .3s cubic-bezier(.2,1.6,.4,1) both; }
+
+  /* D · Game title (the app's own type): big Russo One in cream, orange glow, slams in at the top third */
+  .D .cap { top: 18%; font: 400 10.5cqi/1.04 'SC Display', Impact, sans-serif; color: var(--ink); text-shadow: 0 0 3cqi rgba(250,129,39,.55), 0 1cqi 0 #000, 0 0 6cqi rgba(0,0,0,.9); }
+  .D .k { color: var(--orange); }
+  .D .cap { animation: slam .45s cubic-bezier(.2,1.4,.4,1) both; }
+
+  /* E · Karaoke (word by word, the current word lit): white words build up, each lights orange as it lands */
+  .E .cap { top: 60%; font: 900 9cqi/1.1 Montserrat, sans-serif; color: #fff; text-transform: uppercase; -webkit-text-stroke: 1.4cqi #000; paint-order: stroke fill; text-shadow: 0 1cqi 2cqi rgba(0,0,0,.8); }
+  .E .w { animation: karaoke .5s ease-out both; }
+
+  @keyframes pop { from { opacity: 0; transform: scale(.4) translateY(30%); } to { opacity: 1; transform: none; } }
+  @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  @keyframes slam { from { opacity: 0; transform: scale(1.8); filter: blur(4px); } to { opacity: 1; transform: none; filter: none; } }
+  @keyframes karaoke { 0% { opacity: 0; transform: translateY(20%) scale(.8); color: var(--orange); } 50% { opacity: 1; transform: none; color: var(--orange); } 100% { color: #fff; } }
+  .note { max-width: 860px; margin: 40px 0 0; padding: 16px 18px; border: 1px solid #fa812744; border-radius: 14px; background: #fa81270c; color: #d7dfe8; font-size: 14px; }
+  .note b { color: var(--ink); }
+</style></head><body><div class="wrap">
+<h1>Video captions</h1>
+<p class="intro">Five ways to caption the App Preview, on real frames from it. Each animates as it would come in; tap Replay to see it again. Same words as now: “Point your phone at the night sky”, “Every catch is a card”, “Know when to look up”, “Lucky catches shine”, “Catch every phase”.</p>
+<div id="board"></div>
+<div class="note"><b>Notes.</b> A, C and E sit across the middle, where social captions live (that's where eyes are); on the catch and card shots they cross the lower part of the card for about 2 seconds. D keeps to the top third, over the header, so it never covers the card. Montserrat Black is the usual social-video face; D uses the app's own Russo One. Any of them can take the key word in orange.</div>
+</div>
+<script>
+const FRAMES = [['sky', ['Point your', 'phone at the', ['night sky']]], ['reveal', ['Every', ['catch'], 'is a card']], ['tonight', ['Know when', 'to', ['look up']]], ['card', [['Lucky'], 'catches shine']], ['moon', ['Catch', ['every phase']]]];
+const STYLES = [
+  ['A', 'A · Bold outline', 'TikTok / Shorts default: heavy white capitals with a black stroke, the key words in orange, popping in word by word.'],
+  ['B', 'B · Boxed lines', 'Reels / CapCut “box”: white bold on black rounded boxes that hug each line. Calm, very readable over anything.'],
+  ['C', 'C · Highlighter', 'MrBeast-style: white bold capitals, the key word on a tilted orange block. Loud and punchy.'],
+  ['D', 'D · Game title', 'The app’s own Russo One, big and cream with an orange glow, slamming in over the header. Keeps the card clear.'],
+  ['E', 'E · Karaoke', 'Words build up one at a time, each flashing orange as it lands, like auto-captions synced to speech.'],
+];
+const words = (parts, style) => { let i = 0; const out = [];
+  for (const p of parts) { const key = Array.isArray(p); for (const w of (key ? p[0] : p).split(' ')) { const d = (i++) * (style === 'E' ? 0.22 : 0.09);
+    out.push(`<span class="w${key ? ' k' : ''}" style="animation-delay:${d}s">${w}</span>`); } }
+  return out.join(' '); };
+const capHtml = (parts, style) => style === 'B' ? `<span class="box">${parts.map((p) => Array.isArray(p) ? p[0] : p).join(' ')}</span>` : style === 'D' ? parts.map((p) => Array.isArray(p) ? `<span class="k">${p[0]}</span>` : p).join(' ') : words(parts, style);
+document.getElementById('board').innerHTML = STYLES.map(([k, name, text]) => `<h2>${name}</h2><p class="sub">${text}</p><div class="row ${k}" data-style="${k}">${FRAMES.map(([img, parts]) => `<div class="ph" style="background-image:url('caption-styles/${img}.webp')"><div class="cap">${capHtml(parts, k)}</div></div>`).join('')}</div><button class="replay" data-r="${k}">Replay</button>`).join('');
+document.addEventListener('click', (e) => { const k = e.target.dataset?.r; if (!k) return; const row = document.querySelector(`.row[data-style="${k}"]`); row.querySelectorAll('.cap, .w').forEach((el) => { el.style.animation = 'none'; void el.offsetWidth; el.style.animation = ''; }); });
+</script>
+</body></html>
