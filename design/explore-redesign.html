@@ -33,6 +33,10 @@
   .tabs i { display: block; font-style: normal; font-size: 15px; margin-bottom: 2px; }
   .cta { border-radius: 12px; background: var(--orange); color: #140a03; font: 600 14px 'SC Label'; letter-spacing: .2em; text-transform: uppercase; display: grid; place-items: center; }
 
+  /* the sky slider, as in the app (Sevaan uses it a lot: every direction keeps it) */
+  .sl { left: 26px; right: 26px; bottom: 84px; height: 26px; display: flex; align-items: center; gap: 10px; font: 500 9.5px 'SC Label'; letter-spacing: .16em; color: var(--muted); }
+  .sl i { flex: 1; height: 3px; border-radius: 2px; background: linear-gradient(90deg, #fa8127 0 36%, #22324a 36%); position: relative; }
+  .sl i::after { content: ''; position: absolute; left: 36%; top: 50%; width: 18px; height: 18px; margin: -9px 0 0 -9px; border-radius: 50%; border: 2px solid var(--ink); background: #0b1424; }
   /* A · glass cockpit */
   .a-tape { left: 0; right: 0; top: 46px; height: 44px; background: linear-gradient(#080f1bd9, #080f1b00); }
   .a-tape .ticks { position: absolute; left: 0; right: 0; top: 8px; height: 16px; background: repeating-linear-gradient(90deg, #fff2b344 0 1px, transparent 1px 17px); mask: linear-gradient(90deg, transparent, #000 20%, #000 80%, transparent); }
@@ -59,7 +63,7 @@
   .b-dots { display: flex; gap: 4px; } .b-dots i { width: 9px; height: 9px; transform: rotate(45deg); border: 1.5px solid var(--gold); } .b-dots i.on { background: var(--gold); }
   .b-radar { left: 16px; top: 106px; width: 62px; height: 62px; border-radius: 50%; border: 1px solid #8fb3d955; background: rgba(8,15,27,.6); }
   .b-radar::after { content: '5'; position: absolute; right: -6px; top: -6px; width: 20px; height: 20px; border-radius: 50%; background: var(--orange); color: #140a03; font: 600 12px/20px 'SC Label'; text-align: center; }
-  .b-sheet { left: 10px; right: 10px; bottom: 84px; height: 168px; border-radius: 20px; padding: 14px; display: grid; grid-template-columns: 96px 1fr; gap: 12px; }
+  .b-sheet { left: 10px; right: 10px; bottom: 116px; height: 168px; border-radius: 20px; padding: 14px; display: grid; grid-template-columns: 96px 1fr; gap: 12px; }
   .b-card { width: 96px; height: 140px; border-radius: 9px; border: 2px solid #e9dcb3; background: #0b1424 url('../assets/art/cards/sl-8.webp') center 30% / cover; box-shadow: 0 0 22px #5fd08a55; transform: rotate(-4deg); }
   .b-info { display: flex; flex-direction: column; }
   .b-info .t { font: 500 11px 'SC Label'; letter-spacing: .14em; color: var(--unc); } .b-info .n { font: 400 18px/1.1 'SC Display'; color: var(--ink); margin: 3px 0 4px; } .b-info .w { font-size: 12.5px; color: #9fb0c2; line-height: 1.35; }
@@ -84,15 +88,15 @@
   .d-e1 { right: 4px; top: 300px; border-left-color: var(--orange); } .d-e1t { right: 18px; top: 292px; font: 500 10px/1.15 'SC Label'; letter-spacing: .08em; color: var(--orange); text-align: right; }
   .d-e2 { left: 4px; top: 520px; border-right-color: #b48cff; } .d-e2t { left: 20px; top: 512px; font: 500 10px/1.15 'SC Label'; letter-spacing: .08em; color: #c8b0ff; }
   .d-lab { left: 0; right: 0; top: 276px; text-align: center; font: 500 11px 'SC Label'; letter-spacing: .16em; color: var(--unc); } .d-lab b { display: block; font: 400 16px 'SC Display'; letter-spacing: 0; color: var(--ink); }
-  .d-fab { right: 22px; bottom: 92px; width: 84px; height: 84px; border-radius: 50%; background: var(--orange); display: grid; place-items: center; font: 600 13px 'SC Label'; letter-spacing: .14em; color: #140a03; box-shadow: 0 0 0 5px #fa812733, 0 10px 24px #000a; }
+  .d-fab { right: 22px; bottom: 122px; width: 84px; height: 84px; border-radius: 50%; background: var(--orange); display: grid; place-items: center; font: 600 13px 'SC Label'; letter-spacing: .14em; color: #140a03; box-shadow: 0 0 0 5px #fa812733, 0 10px 24px #000a; }
   .d-fab::before { content: ''; position: absolute; inset: -9px; border-radius: 50%; border: 3px solid transparent; border-top-color: var(--ink); border-right-color: var(--ink); }
-  .d-xp { left: 22px; bottom: 112px; font: 500 12px 'SC Label'; letter-spacing: .08em; color: var(--muted); } .d-xp b { display: block; font: 400 20px 'SC Display'; color: var(--unc); letter-spacing: 0; }
+  .d-xp { left: 22px; bottom: 142px; font: 500 12px 'SC Label'; letter-spacing: .08em; color: var(--muted); } .d-xp b { display: block; font: 400 20px 'SC Display'; color: var(--unc); letter-spacing: 0; }
 
   /* E · horizon strip */
   .e-head { left: 18px; right: 18px; top: 50px; display: flex; justify-content: space-between; align-items: center; } .e-head b { font: 400 15px 'SC Display'; color: var(--ink); } .e-head span { color: var(--ink); font-size: 16px; letter-spacing: 12px; }
   .e-lab { left: 0; right: 0; top: 270px; text-align: center; font: 500 11px 'SC Label'; letter-spacing: .16em; color: var(--unc); text-shadow: 0 1px 6px #000; } .e-lab b { display: block; font: 400 17px 'SC Display'; letter-spacing: 0; color: var(--ink); } .e-lab small { display: block; margin-top: 2px; font: 500 11px 'SC Label'; letter-spacing: .1em; color: var(--muted); }
-  .e-collect { left: 105px; top: 450px; width: 130px; height: 40px; }
-  .e-strip { left: 10px; right: 10px; bottom: 84px; height: 112px; border-radius: 16px; overflow: hidden; }
+  .e-collect { left: 105px; top: 446px; width: 130px; height: 40px; }
+  .e-strip { left: 10px; right: 10px; bottom: 114px; height: 104px; border-radius: 16px; overflow: hidden; }
   .e-strip .hz { position: absolute; left: 0; right: 0; top: 72px; height: 1px; background: #8fb3d955; }
   .e-strip .gr { position: absolute; left: 0; right: 0; top: 73px; bottom: 0; background: linear-gradient(#0f1a12, #070c08); }
   .e-strip .view { position: absolute; left: 50%; top: 8px; bottom: 6px; width: 74px; margin-left: -37px; border: 1px dashed #fff2b388; border-radius: 6px; }
@@ -146,6 +150,7 @@
     <div class="stat"><span>8:30</span><span>●●● 77</span></div>
     <div class="b-top glass"><span class="b-rank">Navigator<small>4,795 XP</small></span><span class="b-bar"><i></i></span><span class="b-dots"><i class="on"></i><i class="on"></i><i></i><i></i></span><span style="color:var(--ink)">⚙︎</span></div>
     <div class="b-radar"></div>
+    <div class="sl"><span>SEE LESS</span><i></i><span>SEE MORE</span></div>
     <div class="b-sheet glass"><span class="b-card"></span><div class="b-info"><span class="t">▲ UNCOMMON · NEW</span><span class="n">SL-8 Rocket Stage</span><span class="w">Soviet rocket stage · 1985<br>1,280 km away · 38° up</span><span class="xp">+15 XP</span><span class="cta">Collect</span></div></div>
     <div class="tabs glass"><span><i>✦</i>TONIGHT</span><span><i>◎</i>EXPLORE</span><span><i>▭</i>COLLECTION</span></div>
   </div>
@@ -164,13 +169,14 @@
     <span class="c-set glass">⚙︎</span>
     <span class="c-lab">▲ UNCOMMON<b>SL-8 Rocket Stage</b></span>
     <span class="c-pill">COLLECT</span>
+    <div class="sl"><span>SEE LESS</span><i></i><span>SEE MORE</span></div>
     <div class="c-dock glass"><span>TONIGHT</span><span class="on">EXPLORE</span><span>COLLECTION</span></div>
   </div>
   <div class="cap"><div class="who">Inès · calm, Apple-style interfaces</div><h2>C · Just the sky</h2>
     <p class="q">"You're standing in the dark looking up. The screen should be a window, not a dashboard."</p>
-    <p>Nothing permanent but a small "5 up · 2 new" chip (tap for All around you), Settings, and a floating dock for the tabs. The name floats above the circle, a light Collect pill below it. The sky slider moves into Settings (or a long press on the sky).</p>
+    <p>Nothing permanent but a small "5 up · 2 new" chip (tap for All around you), Settings, and a floating dock for the tabs. The name floats above the circle, a light Collect pill below it. The sky slider stays, just above the dock.</p>
     <p class="pro">+ The most beautiful and the least distracting at night; nothing to learn.</p>
-    <p class="con">− Hides the sky slider, which many players use; less sense of game and progress.</p></div>
+    <p class="con">− Less sense of game and progress.</p></div>
 </div>
 
 <!-- D -->
@@ -183,6 +189,7 @@
     <i class="d-edge d-e1"></i><span class="d-e1t">◆ RARE<br>40° →</span>
     <i class="d-edge d-e2"></i><span class="d-e2t">✦ EPIC<br>← 110°</span>
     <span class="d-xp">THIS CATCH<b>+15 XP</b></span>
+    <div class="sl"><span>SEE LESS</span><i></i><span>SEE MORE</span></div>
     <span class="d-fab">COLLECT</span>
     <div class="tabs glass"><span><i>✦</i>TONIGHT</span><span><i>◎</i>EXPLORE</span><span><i>▭</i>COLLECTION</span></div>
   </div>
@@ -197,9 +204,10 @@
 <div class="cell">
   <div class="ph">
     <div class="stat"><span>8:30</span><span>●●● 77</span></div>
-    <div class="e-head"><b>SPACE COLLECTOR</b><span>☾⚙︎</span></div>
+    <div class="e-head"><b>SPACE COLLECTOR</b><span>⚙︎</span></div>
     <span class="e-lab">▲ UNCOMMON<b>SL-8 Rocket Stage</b><small>1,280 KM · SOVIET · 1985</small></span>
     <span class="e-collect cta">Collect</span>
+    <div class="sl"><span>SEE LESS</span><i></i><span>SEE MORE</span></div>
     <div class="e-strip glass"><span class="k">ALL AROUND YOU</span><i class="hz"></i><i class="gr"></i><i class="view"></i>
       <span class="o" style="left:16%;top:38px"><i style="background:#b48cff"></i>EPIC</span>
       <span class="o" style="left:50%;top:30px"><i style="background:#5fd08a"></i>SL-8</span>
@@ -222,7 +230,7 @@
     <li><b>From C:</b> no wordmark or boxes over the sky; one small "5 up · 2 new" chip (opens All around you), Settings, and the tabs as a floating dock.</li>
     <li><b>From D:</b> rarity-coloured arrows on the screen's edge for new things you're not facing ("◆ Rare · 40° →"), instead of the radar.</li>
     <li><b>From B:</b> when something locks on, a short sheet rises with its card (picture still hidden until you catch it), name, XP and Collect at thumb height.</li>
-    <li>The sky slider stays, but only shows while your finger is on the sky's edge or in Settings; the room was split on this one.</li>
+    <li>The sky slider stays on screen in every version (Sevaan uses it a lot); red night mode moves into Settings, out of the header.</li>
   </ul>
   Split votes: Theo wanted the rank and missions always visible (B's header); Maya argued for the heading tape (A) over edge arrows. Happy to mock the combined version next.</div>
 </div></body></html>
