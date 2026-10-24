@@ -20,11 +20,8 @@ for (const kind of which === 'all' ? Object.keys(DEVICES) : [which]) {
   const { ctx, p, errs } = await setup(b, kind, { when, heroIss: true, clear: true });
   const w = (ms) => p.waitForTimeout(ms), shot = (n) => p.screenshot({ path: join(OUT, `${kind}-${n}.png`) });
   const duo = kind === 'duo';
-  // 1 · Tonight: the daily TONIGHT notice opens the plan for the night (the Duo shows the Tonight tab as a book, later)
-  const see = p.locator('#toasts .ticket[data-eyebrow="TONIGHT"], #toast-tray .ticket[data-eyebrow="TONIGHT"]').first();
-  if (duo) { await hideNoise(p); await p.click('#nav-sky'); await w(4500); await shot('tonight'); await p.click('#nav-explore'); await w(1800); } /* the evening plan, before the hero shot moves the clock */
-  else if (await see.count()) { await see.click(); await w(1500); if (await p.locator('#ob-done').isHidden()) { await see.click().catch(() => {}); await w(2000); } /* a tucked chip first unfolds, the second tap opens the plan */ await shot('tonight'); await p.click('#od-close', { force: true, timeout: 3000 }).catch(() => p.keyboard.press('Escape')); await w(900); }
-  else console.log(kind, 'no TONIGHT notice (already seen today?)');
+  // 1 · Tonight: the Tonight tab, every device (2026-10-24: the daily TONIGHT notice is gone; Tonight is a tab)
+  await hideNoise(p); await p.click('#nav-sky'); await w(4500); await shot('tonight'); await p.click('#nav-explore'); await w(1800); /* the evening plan, before the hero shot moves the clock */
   await hideNoise(p);
   // 2 · the sky, locked on the best new thing up
   console.log(kind, 'aim:', await aimBest(p)); await w(900); await shot('sky');
