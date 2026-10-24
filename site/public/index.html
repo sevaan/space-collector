@@ -122,7 +122,11 @@ h2 { margin: 0; font: 400 clamp(28px, 4vw, 44px)/1.08 var(--display); text-wrap:
 .track img { display: block; width: 100%; height: auto; border-radius: 22px; box-shadow: 0 0 0 1px #22324a, 0 24px 60px #000b; }
 
 .film { display: flex; flex-wrap: wrap; gap: 40px 56px; align-items: center; justify-content: center; padding: 0 max(6vw, 20px); }
-.film video { flex: none; }
+.film video, .film-v { flex: none; }
+.film-v { position: relative; }
+.film-sound { position: absolute; left: 50%; bottom: 16px; transform: translateX(-50%); display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 16px; border: 1px solid #fff2b333; border-radius: 20px; background: rgba(8,15,27,.82); color: #fff2b3; font: 500 13px/1 'SC Label', 'Barlow Condensed', sans-serif; letter-spacing: .14em; text-transform: uppercase; cursor: pointer; white-space: nowrap; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+.film-sound b { font-weight: 500; }
+.film-sound[aria-pressed="true"] { border-color: #fa812799; color: #fa8127; }
 .film .copy { flex: 0 1 30em; min-width: min(100%, 300px); }
 .film video { display: block; width: min(340px, 80vw); aspect-ratio: 886 / 1920; border-radius: 24px; background: #000; box-shadow: 0 0 0 1px #22324a, 0 30px 80px #000c; }
 .film .copy { display: grid; gap: 16px; justify-items: start; }
@@ -217,7 +221,10 @@ h2 { margin: 0; font: 400 clamp(28px, 4vw, 44px)/1.08 var(--display); text-wrap:
     </div>
   </section>
   <section class="film" aria-labelledby="h-film">
+    <div class="film-v">
     <video id="promo" src="/home/preview.mp4" poster="/home/preview-poster.jpg" muted playsinline loop preload="none" data-ui aria-label="The app in use: the circle sweeps past satellites, locks on to the Space Station and collects its card, then Tonight counting down to the next new card, a shiny Hubble card, the Moon’s phases and mission patches"></video>
+     <button type="button" id="film-sound" class="film-sound" aria-pressed="false"><span aria-hidden="true">🔊</span> <b>Watch with sound</b></button>
+    </div>
     <div class="copy" data-ui>
       <p class="eyebrow">See it in action</p>
       <h2 id="h-film">Line it up. Collect it.</h2>
@@ -290,7 +297,17 @@ shot.addEventListener('click', (e) => { if (e.target === shot || e.target === sh
 shot.addEventListener('keydown', (e) => { if (e.key === 'ArrowLeft') showShot(shotI - 1); if (e.key === 'ArrowRight') showShot(shotI + 1); });
 // The App Store preview plays (it's silent) while it's on screen.
 const promo = document.getElementById('promo');
-new IntersectionObserver(([e]) => { if (e.isIntersecting) { promo.preload = 'auto'; promo.play().catch(() => {}); } else promo.pause(); }, { threshold: 0.5 }).observe(promo);
+// Watch with sound (2026-10-24): the film has the app's music and sounds; it plays silent and looping until asked, then
+// once from the start with sound while the page's own music steps aside (home/audio.js listens for sc:film-sound).
+const filmBtn = document.getElementById('film-sound');
+function filmSound(on) {
+  promo.muted = !on; promo.loop = !on; filmBtn.setAttribute('aria-pressed', String(on)); filmBtn.querySelector('b').textContent = on ? 'Sound off' : 'Watch with sound';
+  dispatchEvent(new CustomEvent('sc:film-sound', { detail: on }));
+  if (on) { promo.currentTime = 0; promo.play().catch(() => {}); }
+}
+filmBtn.addEventListener('click', (e) => { e.stopPropagation(); filmSound(promo.muted); });
+promo.addEventListener('ended', () => { filmSound(false); promo.play().catch(() => {}); });
+new IntersectionObserver(([e]) => { if (e.isIntersecting) { promo.preload = 'auto'; promo.play().catch(() => {}); } else { promo.pause(); if (!promo.muted) filmSound(false); } }, { threshold: 0.5 }).observe(promo);
 </script>
 </body>
 </html>

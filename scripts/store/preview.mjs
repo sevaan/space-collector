@@ -6,7 +6,7 @@
 // short captions over the header strip, clear of the cards (window.__cap, drawn in the page so they're in the footage).
 // Usage: node scripts/store/preview.mjs [phone|pad|all] [--when=…]   (needs ffmpeg and the local server on 8765)
 import { chromium } from 'playwright';
-import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdirSync, rmSync, writeFileSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { ROOT, DEVICES, setup, hideNoise, jumpToHero, storeExtras, storeStorage, captureNight } from './common.mjs';
@@ -41,6 +41,9 @@ for (const kind of which === 'all' ? Object.keys(OUT) : [which]) {
     st.drag.el = 32; requestAnimationFrame(step); });
   await w(600);
   await cdp.send('Page.startScreencast', { format: 'jpeg', quality: 92, maxWidth: OUT[kind][0], maxHeight: OUT[kind][1], everyNthFrame: 1 });
+  // The page's clock is faked (moved on to the ISS pass) but runs in real time from here: its offset turns the app's
+  // logged sound times (window.__sfxLog, fake Date.now) into real times, which the screencast frames also use.
+  const clockOff = (await p.evaluate(() => Date.now())) - Date.now(); await p.evaluate(() => { window.__sfxLog = []; });
   // 0–4 s: a quick swing past two real things, lock on the hero, Collect (the catch has to land early: muted autoplay).
   const tour = await p.evaluate(() => { const s = window.__store.state, own = new Set(s.sightings.map((x) => String(x.objectId)));
     const ok = s.items.filter((x) => x.look?.visible && x.look.el > 18 && x.look.el < 75 && !own.has(String(x.obj.id)) && !x.obj.family && x.obj.type !== 'station' && x.obj.type !== 'debris');
@@ -84,8 +87,22 @@ for (const kind of which === 'all' ? Object.keys(OUT) : [which]) {
   writeFileSync(join(tmp, 'list.txt'), list);
   const out = join(ROOT, 'store/appstore', kind); mkdirSync(out, { recursive: true });
   const [W, H] = OUT[kind];
-  execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-f', 'concat', '-safe', '0', '-i', join(tmp, 'list.txt'), '-f', 'lavfi', '-i', 'anullsrc=channel_layout=stereo:sample_rate=44100',
-    '-vf', `scale=${W}:${H}:flags=lanczos,fps=30,format=yuv420p`, '-c:v', 'libx264', '-profile:v', 'high', '-crf', '17', '-preset', 'slow', '-c:a', 'aac', '-b:a', '256k', '-shortest', '-movflags', '+faststart', join(out, 'preview.mp4')]);
+  // Sound (2026-10-24, Sevaan: "with the music and sound too"): "Permafrost" underneath (fading in and out) and the
+  // app's own sound effects where they played in the footage, levelled like the game (js/sfx.js NORM), then loudness-
+  // normalised for the store. Notices' ticks and most XP ticks are left out so the mix stays clean.
+  const dur = frames.at(-1).t - frames[0].t + 0.5, t0 = frames[0].t;
+  const NORM = (() => { try { return JSON.parse(readFileSync(join(ROOT, 'js/sfx.js'), 'utf8').match(/const NORM = (\{[^}]*\})/)[1]); } catch { return {}; } })(); // the game's per-sound levels
+  const log = (await p.evaluate(() => window.__sfxLog ?? []).catch(() => [])).map(([n, ms]) => [n, (ms - clockOff) / 1000 - t0]).filter(([, t]) => t > 0 && t < dur - 0.3);
+  const HIDDEN = new Set(['toast', 'patch', 'coinroll', 'stamp']); // notices and patch coins are hidden in the store footage, so are their sounds
+  const last = {}, events = log.filter(([n, t]) => { if (HIDDEN.has(n)) return false; const gap = n === 'xp' ? 0.22 : 0.4; if (t - (last[n] ?? -9) < gap) return false; last[n] = t; return true; });
+  const ins = ['-f', 'concat', '-safe', '0', '-i', join(tmp, 'list.txt'), '-stream_loop', '-1', '-i', join(ROOT, 'assets/audio/permafrost.m4a')];
+  events.forEach(([n]) => ins.push('-i', join(ROOT, 'assets/audio/sfx', n + '.mp3')));
+  let af = `[1:a]atrim=0:${dur.toFixed(2)},asetpts=N/SR/TB,volume=0.30,afade=t=in:st=0:d=1.5,afade=t=out:st=${(dur - 2.5).toFixed(2)}:d=2.5[mus];`; const lab = ['[mus]'];
+  events.forEach(([n, t], i) => { const ms = Math.round(t * 1000), g = Math.min(1.4, 0.55 * (NORM[n] ?? 1)); af += `[${i + 2}:a]aformat=sample_rates=48000:channel_layouts=stereo,volume=${g.toFixed(3)},adelay=${ms}|${ms}[e${i}];`; lab.push(`[e${i}]`); });
+  af += `${lab.join('')}amix=inputs=${lab.length}:normalize=0:duration=first,alimiter=limit=0.9,loudnorm=I=-16:TP=-1.5:LRA=11[aout]`;
+  console.log(kind, 'sounds', events.map(([n, t]) => `${n}@${t.toFixed(1)}`).join(' '));
+  execFileSync('ffmpeg', ['-y', '-loglevel', 'error', ...ins, '-filter_complex', af, '-map', '0:v', '-map', '[aout]',
+    '-vf', `scale=${W}:${H}:flags=lanczos,fps=30,format=yuv420p`, '-c:v', 'libx264', '-profile:v', 'high', '-crf', '17', '-preset', 'slow', '-c:a', 'aac', '-b:a', '256k', '-ar', '48000', '-shortest', '-movflags', '+faststart', join(out, 'preview.mp4')]);
   console.log(kind, frames.length, 'frames →', join(out, 'preview.mp4'), errs.length ? errs : '');
   await b.close();
 }

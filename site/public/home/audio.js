@@ -47,6 +47,7 @@ export function sfx(name, gain = 1) {
 export function wakeAudio() {
   if (!unlocked) return unlockAudio();
   if (!on || !ctx) return;
+  if (filmOn) return;
   if (ctx.state !== 'running' || (music && music.paused)) startMusic();
 }
 const btn = document.getElementById('sound');
@@ -62,5 +63,8 @@ btn?.addEventListener('click', (e) => {
   try { localStorage.setItem('siteSound', on ? 'on' : 'off'); } catch {}
   renderButton();
 });
-document.addEventListener('visibilitychange', () => { if (!music || !on) return; if (document.hidden) music.pause(); else startMusic(); });
+let filmOn = false; // the film playing with its own sound: the page's music steps aside meanwhile
+addEventListener('sc:film-sound', (e) => { filmOn = !!e.detail; if (filmOn) stopMusicFor(); else if (on) startMusic(); });
+function stopMusicFor() { if (!ctx) return; const t = ctx.currentTime; musicGain.gain.cancelScheduledValues(t); musicGain.gain.setValueAtTime(musicGain.gain.value, t); musicGain.gain.linearRampToValueAtTime(0, t + 0.4); }
+document.addEventListener('visibilitychange', () => { if (!music || !on) return; if (document.hidden) music.pause(); else if (!filmOn) startMusic(); });
 renderButton();
