@@ -1,52 +1,52 @@
-import { pullToClose } from './pull-close.js?v=0.1.1108';
-import { TESTER } from './build-flavor.js?v=0.1.1108';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1108';
-import * as Secrets from './secrets.js?v=0.1.1108';
-import { STORY_BY_SECRET } from './stories.js?v=0.1.1108';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.1108';
-import * as Ufo from './ufo.js?v=0.1.1108';
-import * as Fossil from './fossil.js?v=0.1.1108';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.1108';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1108';
-import { toast, ticket, dropToast, toastPending, onTicketShown, iconSvg } from './toast.js?v=0.1.1108';
-import { VERSION } from './version.js?v=0.1.1108';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, overEarth, RisingSoon, setBinocularMode, setSkyLimit, toWorker } from './orbit.js?v=0.1.1108';
-import { placeName } from './geo.js?v=0.1.1108';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, SLIDER_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.1108';
-import { conArt } from './con-art.js?v=0.1.1108';
-import { fetchWeather, tonightSky, skyClearAt, goodSkyAt } from './weather.js?v=0.1.1108';
-import { CON_FIGURES } from './con-figures.js?v=0.1.1108';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress, starDistance } from './constellations.js?v=0.1.1108';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.1108';
-import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.1108';
-import { eventOf, activeEvent, nextEvent } from './events.js?v=0.1.1108';
-import { conList } from './constellations.js?v=0.1.1108';
-import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination, hasSensorView, resumeSensors, needsPermission } from './sensors.js?v=0.1.1108';
-import { SkyView, shortName, stripLandscape } from './sky.js?v=0.1.1108';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.1108';
-import { isPlus, setPlusForTesting, onPlus, PLUS_PRICES, initStore, storePlans, buyPlus, restorePlus, rcTestStore, storeOpen } from './plus.js?v=0.1.1108';
-import { isNative, getPosition, saveFile, notifyAt, cancelNotify, haptic, onNative, nativeChrome, plugin } from './native.js?v=0.1.1108';
-import { initBackup, onBackupChange, backupSoon, clearBackup, backupStatus } from './cloud-backup.js?v=0.1.1108';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.1108';
-import { cardArt } from './art.js?v=0.1.1108';
-import { renderCard, miniCard, cardLevel, artImage, lockedArt, attachTilt, attachGyro, throwOff, attachFlip, turnCard } from './card.js?v=0.1.1108';
-import { applyBack, CARD_BACKS, backUnlocked, chosenBack, chooseBack, backEarned, showBackNext } from './card-backs.js?v=0.1.1108';
-import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.1108';
-import { audioCtx } from './audio-ctx.js?v=0.1.1108';
-import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume, musicAway } from './music.js?v=0.1.1108';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss, onRevealSwipeIntoBinder } from './reveal.js?v=0.1.1108';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel, moonPhaseOf, MOON_PHASES } from './card-model.js?v=0.1.1108';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.1108';
-import { naturalTargets, SOLAR_SYSTEM, DEEP_SKY, NATURAL } from './natural.js?v=0.1.1108';
-import { placeFromTimeZone } from './tz-places.js?v=0.1.1108';
-import { TIER_INFO } from './rarity.js?v=0.1.1108';
-import { SETS, albumList } from './sets.js?v=0.1.1108';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.1108';
-import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.1108';
-import { shareCardEl } from './share-card.js?v=0.1.1108';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.1108';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.1108';
-import { addStarfield } from './starfield.js?v=0.1.1108';
+import { pullToClose } from './pull-close.js?v=0.1.1109';
+import { TESTER } from './build-flavor.js?v=0.1.1109';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1109';
+import * as Secrets from './secrets.js?v=0.1.1109';
+import { STORY_BY_SECRET } from './stories.js?v=0.1.1109';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.1109';
+import * as Ufo from './ufo.js?v=0.1.1109';
+import * as Fossil from './fossil.js?v=0.1.1109';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.1109';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1109';
+import { toast, ticket, dropToast, toastPending, onTicketShown, iconSvg } from './toast.js?v=0.1.1109';
+import { VERSION } from './version.js?v=0.1.1109';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, overEarth, RisingSoon, setBinocularMode, setSkyLimit, toWorker } from './orbit.js?v=0.1.1109';
+import { placeName } from './geo.js?v=0.1.1109';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, SLIDER_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.1109';
+import { conArt } from './con-art.js?v=0.1.1109';
+import { fetchWeather, tonightSky, skyClearAt, goodSkyAt } from './weather.js?v=0.1.1109';
+import { CON_FIGURES } from './con-figures.js?v=0.1.1109';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress, starDistance } from './constellations.js?v=0.1.1109';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.1109';
+import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.1109';
+import { eventOf, activeEvent, nextEvent } from './events.js?v=0.1.1109';
+import { conList } from './constellations.js?v=0.1.1109';
+import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination, hasSensorView, resumeSensors, needsPermission } from './sensors.js?v=0.1.1109';
+import { SkyView, shortName, stripLandscape } from './sky.js?v=0.1.1109';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.1109';
+import { isPlus, setPlusForTesting, onPlus, PLUS_PRICES, initStore, storePlans, buyPlus, restorePlus, rcTestStore, storeOpen } from './plus.js?v=0.1.1109';
+import { isNative, getPosition, saveFile, notifyAt, cancelNotify, haptic, onNative, nativeChrome, plugin } from './native.js?v=0.1.1109';
+import { initBackup, onBackupChange, backupSoon, clearBackup, backupStatus } from './cloud-backup.js?v=0.1.1109';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.1109';
+import { cardArt } from './art.js?v=0.1.1109';
+import { renderCard, miniCard, cardLevel, artImage, lockedArt, attachTilt, attachGyro, throwOff, attachFlip, turnCard } from './card.js?v=0.1.1109';
+import { applyBack, CARD_BACKS, backUnlocked, chosenBack, chooseBack, backEarned, showBackNext } from './card-backs.js?v=0.1.1109';
+import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.1109';
+import { audioCtx } from './audio-ctx.js?v=0.1.1109';
+import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume, musicAway } from './music.js?v=0.1.1109';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss, onRevealSwipeIntoBinder } from './reveal.js?v=0.1.1109';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel, moonPhaseOf, MOON_PHASES } from './card-model.js?v=0.1.1109';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.1109';
+import { naturalTargets, SOLAR_SYSTEM, DEEP_SKY, NATURAL } from './natural.js?v=0.1.1109';
+import { placeFromTimeZone } from './tz-places.js?v=0.1.1109';
+import { TIER_INFO } from './rarity.js?v=0.1.1109';
+import { SETS, albumList } from './sets.js?v=0.1.1109';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.1109';
+import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.1109';
+import { shareCardEl } from './share-card.js?v=0.1.1109';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.1109';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.1109';
+import { addStarfield } from './starfield.js?v=0.1.1109';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -626,7 +626,10 @@ function tick(ts) {
     else state.targetId = state.pinnedId;
   } else {
     // An unfound secret in the circle takes it over from a background star (2026-10-09): the star steps aside.
-    if (state.secretInCircle || state.ufoInCircle) while (cands[0]?.obj.natural === 'star') cands.shift(); // every star in the circle, not just the nearest (2026-10-18 playtest)
+    if (state.ufoInCircle) while (cands[0]?.obj.natural === 'star') cands.shift(); // every star in the circle, not just the nearest (2026-10-18 playtest)
+    // A secret is one more thing in the circle (2026-10-24, Sevaan): anything farther from the middle than the nearest
+    // secret steps aside (state.secretAng already has the held one's 0.5° stickiness taken off), nearer things keep it.
+    if (state.secretAng < Infinity) for (let i = cands.length - 1; i >= 0; i--) if (Math.acos(Math.min(1, cands[i].angCos ?? 1)) / RAD > state.secretAng) cands.splice(i, 1);
     state.targetId = cands[0]?.obj.id ?? null;
     target = cands[0];
   }
@@ -5283,6 +5286,7 @@ let secretHold = {}, secretOut = {}, secretTap = null, secretTicks = {};
 // One deep-space secret a session (2026-10-13, Sevaan: New Horizons, the Wow! signal and Pioneer 11 sit close together
 // in Sagittarius, so you found them all at once). After one, the others stay hidden until the app is opened again.
 const DEEP_IDS = new Set(Secrets.DEEP.map((d) => d[0]).concat('voyager')); let deepThisSession = false;
+const deepOnce = () => deepThisSession && !state.showDim; // the testing switch "Show items that aren't visible" lifts the one-a-session limit, since it shows them all (2026-10-24, Sevaan couldn't catch Voyager or Arecibo it was showing)
 function earnSecret(id) {
   if (secretFound[id]) return; secretFound[id] = Date.now(); if (DEEP_IDS.has(id)) deepThisSession = true; Secrets.markFound(id); buzz([20, 40, 20]); sfx('secret');
   if (!Secrets.STORY_SECRETS.has(id)) earnPatch(Secrets.SECRET_PATCHES[id]); // story secrets give their story card instead
@@ -5306,8 +5310,11 @@ function checkTwoHomes(saved) {
   if (state.sightings.some((s) => !s.sim && String(s.objectId) === other && Math.abs(s.time - saved.time) <= 10 * 60000)) setTimeout(() => earnSecret('twohomes'), 4500);
 }
 function secretsState(t, basis, target) {
-  if (!$('onboard').hidden) { secretHold = {}; return []; } // no secrets during the setup tour (2026-10-14: the sky behind the cards found Pioneer 11)
-  const out = [], nowMs = now().getTime(), night = (state.frame?.sunEl ?? 0) < -6, inC = (enu, slack = 1) => (!target || target.obj?.natural === 'star' || target.obj?.type === 'deepsky') && dot(enu, basis.back) > Math.cos((sky.reticleDeg + slack) * RAD); // a background star doesn’t block a secret (2026-10-09)
+  if (!$('onboard').hidden) { secretHold = {}; state.secretAng = Infinity; return []; } // no secrets during the setup tour (2026-10-14: the sky behind the cards found Pioneer 11)
+  // In the circle and nearer its middle than the target (2026-10-24, Sevaan: secrets are picked like any other object,
+  // nearest the middle wins; the one being held keeps it unless the other is 0.5° nearer, like the target pick).
+  const angOf = (enu) => Math.acos(Math.max(-1, Math.min(1, dot(enu, basis.back)))) / RAD, tAng = target ? Math.acos(Math.max(-1, Math.min(1, target.angCos ?? 1))) / RAD : Infinity;
+  const out = [], nowMs = now().getTime(), night = (state.frame?.sunEl ?? 0) < -6, inCirc = (enu, slack = 1) => angOf(enu) < sky.reticleDeg + slack, inC = (enu, slack = 1, id = null) => inCirc(enu, slack) && tAng > angOf(enu) - (id && secretHold[id] ? 0.5 : 0);
   const toEnu = eqToEnu(now(), state.observer), b = basis.back, heading = (Math.atan2(b[0], b[1]) / RAD + 360) % 360, aimEl = Math.asin(Math.max(-1, Math.min(1, b[2]))) / RAD;
   let tap = null;
   // Santa (tap to wave)
@@ -5332,7 +5339,7 @@ function secretsState(t, basis, target) {
   // ones in the circle, the one already being held keeps it, else the nearest the centre; the others don't count.
   const pend = [], step = (id, enu, title, sub, color, lead) => {
     if (moonFirst && (id === 'wow' || byMoon(enu))) { delete secretHold[id]; delete secretOut[id]; return; }
-    const c = inC(enu) && (!lead || lead === id);
+    const c = inC(enu, 1, id) && (!lead || lead === id);
     if (lead && lead !== id && !c) { delete secretHold[id]; delete secretOut[id]; }
     if (c) { secretHold[id] ??= t; secretOut[id] = 0; }
     else if (secretHold[id]) { secretOut[id] ||= t; if (t - secretOut[id] > SECRET_SLACK_MS) { delete secretHold[id]; delete secretOut[id]; } }
@@ -5344,10 +5351,11 @@ function secretsState(t, basis, target) {
   const hold = (...a) => pend.push(a);
   if (night) {
     const r = toEnu(roadster(now())); if (r[2] > 0.05) hold('roadster', r, 'Starman', 'Interplanetary · 2018-017A', '#ff6b6b');
-    const v = toEnu(starVector(Secrets.VOYAGER.ra, Secrets.VOYAGER.dec)); if (v[2] > 0.05 && (!deepThisSession || secretFound.voyager)) hold('voyager', v, 'The Golden Record', 'Voyager 1 · almost 26 billion km', '#e2b53c');
-    for (const [id, ra, dec, title, sub, color] of Secrets.DEEP) { if (deepThisSession && !secretFound[id]) continue; const e = toEnu(starVector(ra, dec)); if (e[2] > 0.05) hold(id, e, title, sub, color); }
+    const v = toEnu(starVector(Secrets.VOYAGER.ra, Secrets.VOYAGER.dec)); if (v[2] > 0.05 && (!deepOnce() || secretFound.voyager)) hold('voyager', v, 'The Golden Record', 'Voyager 1 · almost 26 billion km', '#e2b53c');
+    for (const [id, ra, dec, title, sub, color] of Secrets.DEEP) { if (deepOnce() && !secretFound[id]) continue; const e = toEnu(starVector(ra, dec)); if (e[2] > 0.05) hold(id, e, title, sub, color); }
   }
-  { const live = pend.filter(([id, enu]) => !secretFound[id] && inC(enu) && !(moonFirst && (id === 'wow' || byMoon(enu))));
+  { const live = pend.filter(([id, enu]) => !secretFound[id] && inCirc(enu) && !(moonFirst && (id === 'wow' || byMoon(enu))));
+    state.secretAng = live.length ? Math.min(...live.map(([id, enu]) => angOf(enu) - (secretHold[id] ? 0.5 : 0))) : Infinity; /* read by the target pick next frame */
     const lead = live.length < 2 ? null : (live.filter(([id]) => secretHold[id]).sort((a, b) => secretHold[a[0]] - secretHold[b[0]])[0] ?? live.slice().sort((a, b) => dot(b[1], basis.back) - dot(a[1], basis.back))[0])[0];
     for (const a of pend) step(...a, lead); }
   // Testing (2026-10-21, Sevaan): "Show items that aren't visible" also shows where every secret is, found or not, by day
