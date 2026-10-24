@@ -5,12 +5,12 @@
 //  Everything scales with rarity (Legendary dims the sky, shockwave, held breath, slow flip, fanfare).
 // Waits use timers, not animation.finished, so a paused tab can never freeze the sequence.
 
-import { sfx, loadSfx, heartbeat } from './sfx.js?v=0.1.1089';
-import { audioCtx } from './audio-ctx.js?v=0.1.1089';
-import { TIER_INFO } from './rarity.js?v=0.1.1089';
-import { levelFor, attachTilt, attachGyro, attachFlip, throwOff, retype } from './card.js?v=0.1.1089';
-import { applyBack } from './card-backs.js?v=0.1.1089';
-import { addStarfield } from './starfield.js?v=0.1.1089';
+import { sfx, loadSfx, heartbeat } from './sfx.js?v=0.1.1092';
+import { audioCtx } from './audio-ctx.js?v=0.1.1092';
+import { TIER_INFO } from './rarity.js?v=0.1.1092';
+import { levelFor, attachTilt, attachGyro, attachFlip, throwOff, retype } from './card.js?v=0.1.1092';
+import { applyBack } from './card-backs.js?v=0.1.1092';
+import { addStarfield } from './starfield.js?v=0.1.1092';
 
 const FX = {
   common:    { particles: 14,  flip: 520,  spin: 0,   dim: 0,   shock: false, notes: [880],                            hold: 0 },
@@ -342,11 +342,11 @@ async function finish({ fx, color, fresh, seen, level, levelUp, card, alive, fle
 // arrive afterwards as a pile of toasts over the circle). news: [{ kind: 'mission'|'patch'|'rank'|'event', text, xp }].
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 let earnedNow = []; // playReveal’s earned list, for the finish step
-const NEWS_ICON = { mission: '◆', patch: '◎', rank: '▲', event: '✦', reunion: '⇄' };
+const NEWS_ICON = { mission: '◆', patch: '◎', rank: '▲', event: '✦', reunion: '⇄', back: '▭' };
 function showNews(news, alive) {
   const box = $('rv-news'); box.style.flexWrap = ''; if (!news?.length) return;
   // One row: the two biggest pieces of news, then "+N" (a second row covered the card on small phones).
-  const ORDER = { rank: 0, reunion: 1, event: 2, patch: 3, mission: 4 };
+  const ORDER = { rank: 0, back: 1, reunion: 2, event: 3, patch: 4, mission: 5 }; // a new card back is rare news: up front (2026-10-24)
   const sorted = news.slice().sort((a, b) => (ORDER[a.kind] ?? 9) - (ORDER[b.kind] ?? 9));
   const rest = sorted.length > 3 ? sorted.slice(2) : [];
   news = rest.length ? [...sorted.slice(0, 2), { kind: 'more', text: `+${rest.length} more` }] : sorted;

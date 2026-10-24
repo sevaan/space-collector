@@ -1,5 +1,5 @@
-import { SETS, goldAlbums } from './sets.js?v=0.1.1089';
-import { isPlus } from './plus.js?v=0.1.1089';
+import { SETS, goldAlbums } from './sets.js?v=0.1.1092';
+import { isPlus } from './plus.js?v=0.1.1092';
 // Card backs you can choose (2026-10-16, design/card-backs.html, Sevaan liked all six). Mission Control is everyone’s;
 // Plus unlocks the rest; two can also be earned free: Golden Record (find the Pale Blue Dot story) and Star Chart
 // (complete 10 constellations); main.js writes what’s been earned to localStorage 'backEarned'. The choice is
@@ -26,8 +26,12 @@ const preload = (b) => { const i = new Image(); i.decoding = 'async'; i.src = b.
 let next = pick();
 preload(next);
 
+// The very next back shown is this one, once (2026-10-24, Sevaan): the catch that earns a back is sealed in it.
+let once = null;
+export function showBackNext(id) { const b = CARD_BACKS.find((x) => x.id === id); if (!b) return; once = b; preload(b); }
 // The back to show now ({ url, title }); queues and preloads the next one (a different one when Random is chosen).
 export function nextBack() {
+  if (once) { const b = once; once = null; last = b; return b; }
   const P = pool(); const b = P.includes(next) ? next : pick();
   last = b; next = pick(); preload(next);
   return b;
