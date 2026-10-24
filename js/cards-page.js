@@ -1,30 +1,30 @@
-import { pullToClose } from './pull-close.js?v=0.1.1069';
-import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.1069';
-import { computeStats, statsHtml } from './stats.js?v=0.1.1069';
-import { nightKey } from './observation.js?v=0.1.1069';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1069';
-import { sfx } from './sfx.js?v=0.1.1069';
-import { expandFacts } from './catalog-facts.js?v=0.1.1069';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.1069';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1069';
-import { ticket } from './toast.js?v=0.1.1069';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.1069';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.1069';
-import { cardArt } from './art.js?v=0.1.1069';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.1069';
-import { applyBack } from './card-backs.js?v=0.1.1069';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.1069';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1069';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.1069';
-import { STORIES } from './stories.js?v=0.1.1069';
-import { loadConstellations, conList } from './constellations.js?v=0.1.1069';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.1069';
-import { eventBadges, nextEvent } from './events.js?v=0.1.1069';
-import { shareCardEl } from './share-card.js?v=0.1.1069';
-import { forgetSighting } from './cloud-backup.js?v=0.1.1069';
-import { allSightings, deleteSighting } from './store.js?v=0.1.1069';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.1069';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.1069';
+import { pullToClose } from './pull-close.js?v=0.1.1071';
+import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.1071';
+import { computeStats, statsHtml } from './stats.js?v=0.1.1071';
+import { nightKey } from './observation.js?v=0.1.1071';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1071';
+import { sfx } from './sfx.js?v=0.1.1071';
+import { expandFacts } from './catalog-facts.js?v=0.1.1071';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.1071';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1071';
+import { ticket } from './toast.js?v=0.1.1071';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.1071';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.1071';
+import { cardArt } from './art.js?v=0.1.1071';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.1071';
+import { applyBack } from './card-backs.js?v=0.1.1071';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.1071';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1071';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.1071';
+import { STORIES } from './stories.js?v=0.1.1071';
+import { loadConstellations, conList } from './constellations.js?v=0.1.1071';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.1071';
+import { eventBadges, nextEvent } from './events.js?v=0.1.1071';
+import { shareCardEl } from './share-card.js?v=0.1.1071';
+import { forgetSighting } from './cloud-backup.js?v=0.1.1071';
+import { allSightings, deleteSighting } from './store.js?v=0.1.1071';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.1071';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.1071';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -301,7 +301,7 @@ function renderAlbums() {
     b.innerHTML = `<span class="album__art">${img ? `<img src="${img}" alt="" loading="lazy">` : cardArt(show, { accent: set.color, silhouette: !latest })}</span>
       <span class="album__body"><span class="album__top"><span class="album__name">${esc(set.name)}</span><span class="album__count">${albumCount(set, st)}</span></span>${set.id === 'constellations' ? `<span class="album__sub">${st.have.length.toLocaleString()} of ${st.cards.length.toLocaleString()} stars</span>` : ''}
       ${albumBar(st)}<span class="album__foot">${st.level ? `<span class="album__level l${st.level}">${LEVELS[st.level - 1]}</span>` : ''}<span class="album__next">${st.level === 3 ? 'Complete' : `${(st.next - st.have.length).toLocaleString()} more${unit(set)} for ${LEVELS[st.level]}`}</span></span></span>`;
-    b.addEventListener('click', () => { state.set = set.id; $('set-filter').value = set.id; setView('discover'); requestAnimationFrame(() => { const pin = document.querySelector('.collection-tools')?.getBoundingClientRect().bottom ?? 160, head = $('album-head'); window.scrollTo({ top: Math.max(0, (head.hidden ? $('grid') : head).getBoundingClientRect().top + scrollY - pin - 8), behavior: 'smooth' }); }); }); // the album's name lands just under the pinned tabs and search (web playtest 2026-10-22: it scrolled under them)
+    b.addEventListener('click', () => { state.set = set.id; $('set-filter').value = set.id; setView('discover'); requestAnimationFrame(() => { const tools = document.querySelector('.collection-tools'), pin = tools ? parseFloat(getComputedStyle(tools).top) + tools.offsetHeight : 160, head = $('album-head'); /* where the tools sit once pinned, not where they are now (web QA 2026-10-24: it barely scrolled) */ window.scrollTo({ top: Math.max(0, (head.hidden ? $('grid') : head).getBoundingClientRect().top + scrollY - pin - 8), behavior: 'smooth' }); }); }); // the album's name lands just under the pinned tabs and search (web playtest 2026-10-22: it scrolled under them)
     frag.append(b);
   }
   try { localStorage.setItem('albumLevels', JSON.stringify(lv)); } catch {}

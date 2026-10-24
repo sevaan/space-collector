@@ -1702,3 +1702,12 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - Cards turning over to the new backs waits until no page or sheet is open (it played over Settings).
   - Plus page on wide landscape (Duo, iPad): two columns, intro (sticky) left and kit + prices right; index.html wraps them in .crew-intro / .crew-side.
   - Not changed: the widget countdown jumping in the simulator (Text(timerInterval:) in SCWidgets.swift; check on a device), the patch art's "PLUS MEMBER … MEMBERS" lettering.
+- 2026-10-24 QA, web playtest batch (agent; no console errors, red mode clean everywhere; scripts and shots in that session's scratchpad qa-web/):
+  - Bad-weather facts follow Units (°F and mph in miles).
+  - Shiny-chance bells use bellTap too (it takes an optional moment; the time checked is the shiny moment).
+  - The tap-to-wake card makes the slider step aside when it reaches it (it doesn't rise like the tickets).
+  - Opening an album scrolls its head under where the tools sit once pinned (their sticky top + height), not their unpinned bottom.
+  - toast.js: a page's own notice (inPanel, page open) shows on it even while a patch moment waits on the sky.
+  - Plus page wide layout: the intro column isn't sticky (its patch slid under the header).
+  - Pass guidance time is short ("in 6h 25m"); the ticket's mini says "New stamp" for a launch/phase to stamp; the daily page's busiest line is "Busiest this evening"; its missions read "x of 4" like the Tonight tab.
+  - Not changed (design or bigger): reveal vs viewer card size on short phones (reveal is height-limited), the slider stepping aside on Duo landscape / 320 px, the Headliner settings value ellipsis, units inside card prose, skip-tour landing.
