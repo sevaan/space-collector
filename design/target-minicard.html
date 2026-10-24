@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Target Mini Cards</title>
+<!-- 2026-10-23 (Sevaan: "combine our current cards with that new concept… seeing the card itself in the container,
+     and maybe the actual mini card could show up when you've already collected it"). Today's Explore screen
+     (explore-redesign/current-idle.webp) and today's target ticket under the circle, with the real mini cards from the
+     Collection (explore-redesign/mini-*.webp, screenshots of the actual tiles: picture hidden on ones you don't own). -->
+<style>
+  @font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf'); font-weight: 500; }
+  @font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf'); }
+  :root { --ink: #fff2b3; --muted: #a9b0a4; --orange: #fa8127; --unc: #5fd08a; --rare: #6ea8ff; --epic: #e46ad6; --common: #c9d3de; --red: #ff6a55; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #04070d; color: #e8eef6; font: 15px/1.45 -apple-system, system-ui, sans-serif; padding: 28px 16px 80px; }
+  .wrap { max-width: 1500px; margin: 0 auto; }
+  h1 { font: 400 26px 'SC Display', sans-serif; color: var(--ink); margin: 0 0 6px; }
+  .intro { color: #9fb0c6; max-width: 980px; margin: 0 0 10px; }
+  h2 { font: 500 14px 'SC Label'; letter-spacing: .2em; text-transform: uppercase; color: var(--orange); margin: 34px 0 4px; }
+  .sub { color: #9fb0c6; margin: 0 0 14px; font-size: 14px; max-width: 980px; }
+  .row { display: flex; flex-wrap: wrap; gap: 28px; }
+  .cell { width: 358px; } .cap { margin-top: 8px; } .cap b { display: block; font: 500 14px 'SC Label'; letter-spacing: .14em; text-transform: uppercase; color: var(--ink); } .cap span { color: #9fb0c2; font-size: 13.5px; }
+  .ph { position: relative; box-sizing: content-box; width: 340px; height: 739px; border-radius: 44px; border: 9px solid #121722; overflow: hidden; background: #0b1424 url('explore-redesign/current-idle.webp') center / cover; }
+  .ph > * { position: absolute; }
+  .rg { left: 112px; top: 311px; width: 116px; height: 116px; border-radius: 50%; border: 2.5px solid var(--c); box-shadow: 0 0 16px color-mix(in srgb, var(--c) 60%, transparent), inset 0 0 12px color-mix(in srgb, var(--c) 30%, transparent); }
+  .tk { background: var(--c); width: 2.5px; height: 12px; }
+  .tk.t { left: 169px; top: 297px; } .tk.b { left: 169px; top: 429px; } .tk.l { left: 98px; top: 368px; width: 12px; height: 2.5px; } .tk.r { left: 230px; top: 368px; width: 12px; height: 2.5px; }
+  .obj { left: 170px; top: 369px; transform: translate(-50%, -50%); }
+  .noslider { left: 0; right: 0; top: 590px; height: 42px; background: #0a1322; } /* the slider steps aside while a card is up (as tk-low does today) */
+
+  /* Option 1: today's ticket, with the mini card inside it */
+  .tkt { left: 18px; right: 18px; top: 448px; border-radius: 14px; padding: 12px 12px 12px 12px; display: grid; grid-template-columns: 76px 1fr; gap: 12px;
+    background: rgba(9,16,28,.94); border: 1px solid #ffffff12; box-shadow: 0 12px 30px #000a; }
+  .tkt::before { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 3px; border-radius: 14px 14px 0 0; background: var(--c); }
+  .mc { width: 76px; height: 114px; border-radius: 6px; background: center / contain no-repeat; transform: rotate(-3deg); filter: drop-shadow(0 6px 12px #000c); }
+  .tin { display: flex; flex-direction: column; min-width: 0; }
+  .tin .k { display: flex; justify-content: space-between; gap: 8px; font: 500 11px 'SC Label'; letter-spacing: .15em; text-transform: uppercase; color: var(--kc); }
+  .tin .k em { font-style: normal; letter-spacing: .06em; color: var(--ink); }
+  .tin .n { font: 400 17px/1.1 'SC Display'; color: var(--ink); margin: 4px 0 2px; }
+  .tin .w { font: 500 12.5px/1.3 'SC Label'; letter-spacing: .03em; color: #9fb0c2; margin-bottom: 8px; }
+  .bt { margin-top: auto; height: 38px; border-radius: 10px; display: grid; place-items: center; font: 600 13px 'SC Label'; letter-spacing: .24em; text-transform: uppercase; }
+  .bt.go { background: var(--orange); color: #140a03; }
+  .bt.ol { border: 1.5px solid #fff2b388; color: var(--ink); background: #ffffff08; }
+  .bt.no { border: 1px dashed #ffffff22; color: var(--muted); font-size: 11.5px; letter-spacing: .14em; }
+  .glyph { width: 76px; height: 114px; border-radius: 8px; display: grid; place-items: center; border: 1.5px solid color-mix(in srgb, var(--c) 60%, #000); background: radial-gradient(circle at 50% 40%, color-mix(in srgb, var(--c) 22%, #0b1424), #070c16); }
+
+  /* Option 2: you own it, so the card itself stands under the circle */
+  .big { left: 50%; top: 446px; width: 112px; height: 168px; margin-left: -56px; background: center / contain no-repeat; filter: drop-shadow(0 14px 22px #000d) drop-shadow(0 0 14px color-mix(in srgb, var(--c) 35%, transparent)); transform: rotate(-2.5deg); }
+  .big-l { left: 0; right: 0; top: 618px; text-align: center; font: 500 11px 'SC Label'; letter-spacing: .18em; text-transform: uppercase; color: var(--ink); text-shadow: 0 1px 8px #000; }
+  .big-l em { font-style: normal; color: var(--kc, var(--muted)); }
+  .big-chip { left: 50%; top: 432px; transform: translateX(-50%); z-index: 2; padding: 4px 10px; border-radius: 999px; background: var(--orange); color: #140a03; font: 600 10.5px 'SC Label'; letter-spacing: .14em; white-space: nowrap; box-shadow: 0 4px 12px #000a; }
+  .note { max-width: 980px; margin: 36px 0 0; padding: 16px 18px; border: 1px solid #22324a; border-radius: 14px; color: #c9d3de; font-size: 14px; }
+  .note b { color: var(--ink); }
+</style></head><body><div class="wrap">
+<h1>Target ticket + mini card</h1>
+<p class="intro">Today's Explore screen and today's ticket under the circle, now carrying the real mini card from your Collection. These are screenshots of the actual tiles: cards you don't own show the hidden picture, cards you own show everything, foil and stamps included.</p>
+<div id="board"></div>
+<div class="note"><b>How it would work:</b> the mini card is the same one the Collection draws, so there's nothing new to keep in sync. Tapping the card (not just the button) opens it. In Option 2 the slider steps aside while the card stands up, as it does today when a ticket reaches it, and the card sinks back as the circle lets go. <b>Room's take:</b> Option 1 for new things (the hidden card plus Collect is a clear "this could be yours"); Option 2 for things you own, because seeing your actual card, with its level and foil, is the reward for coming back to it.</div>
+</div>
+<script>
+const M = (n) => `explore-redesign/mini-${n}.webp`;
+const ring = (c, obj = '') => `<span class="rg"></span><span class="tk t"></span><span class="tk b"></span><span class="tk l"></span><span class="tk r"></span>${obj ? `<span class="obj">${obj}</span>` : ''}`;
+const sat = '<svg width="26" height="18" viewBox="0 0 26 18"><rect x="10" y="5" width="6" height="8" fill="#fff2b3"/><rect x="0" y="6" width="9" height="6" fill="#6ea8ff"/><rect x="17" y="6" width="9" height="6" fill="#6ea8ff"/></svg>';
+const stage = '<svg width="24" height="12" viewBox="0 0 24 12"><rect x="2" y="2" width="17" height="8" rx="3" fill="#5fd08a"/><path d="M19 3 L24 1 V11 L19 9z" fill="#5fd08a"/></svg>';
+const debris = '<svg width="20" height="16" viewBox="0 0 20 16"><path d="M2 4 L8 2 L9 7 L4 9z M11 8 L17 6 L18 11 L12 13z M6 12 L9 11 L10 14 L7 15z" fill="#5fd08a"/></svg>';
+const moon = '<svg width="28" height="28" viewBox="0 0 28 28"><circle cx="14" cy="14" r="12" fill="#3a3a33"/><path d="M14 2 A12 12 0 0 1 14 26 A7 12 0 0 0 14 2z" fill="#f4ecc8"/></svg>';
+const plane = '<svg width="26" height="26" viewBox="0 0 26 26"><path d="M13 2 L15 10 L24 14 V16 L15 14 L14 21 L17 23 V24 L13 23 L9 24 V23 L12 21 L11 14 L2 16 V14 L11 10z" fill="#ff6a55"/></svg>';
+const ticket = (v) => `<div class="ph" style="--c:${v.c}">${ring(v.c, v.obj)}<div class="noslider"></div>
+  <div class="tkt">${v.mini ? `<span class="mc" style="background-image:url('${M(v.mini)}')"></span>` : `<span class="glyph">${v.glyph}</span>`}
+  <div class="tin" style="--kc:${v.kc}"><span class="k"><span>${v.k}</span><em>${v.d ?? ''}</em></span><span class="n">${v.n}</span><span class="w">${v.w}</span><span class="bt ${v.bt[0]}">${v.bt[1]}</span></div></div></div>`;
+const stand = (v) => `<div class="ph" style="--c:${v.c}">${ring(v.c, v.obj)}<div class="noslider"></div>${v.chip ? `<span class="big-chip">${v.chip}</span>` : ''}
+  <span class="big" style="background-image:url('${M(v.mini)}')"></span><span class="big-l" style="--kc:${v.kc}">${v.l}</span></div>`;
+const cell = (html, cap) => `<div class="cell">${html}<div class="cap"><b>${cap[0]}</b><span>${cap[1]}</span></div></div>`;
+const o1 = [
+  [ticket({ c: 'var(--orange)', obj: stage, mini: 'new-a', kc: 'var(--unc)', k: '▲ Uncommon · New', d: '1,280 km', n: 'SL-8 Rocket Stage', w: 'Soviet rocket stage · 1968', bt: ['go', 'Collect'] }), ['New card', 'The hidden mini card beside the name: you can see it’s a card, not what’s on it.']],
+  [ticket({ c: 'var(--orange)', obj: debris, mini: 'new-b', kc: 'var(--unc)', k: '▲ Uncommon · New', d: '912 km', n: 'Delta 1 Debris', w: 'Fragment · 1975', bt: ['go', 'Collect'] }), ['New card (debris)', 'Same layout for every new thing.']],
+  [ticket({ c: 'var(--ink)', obj: sat, mini: 'owned-a', kc: 'var(--muted)', k: 'Yours · Shiny', d: '540 km', n: 'Hubble Space Telescope', w: 'Seen on 1 night · 2 more for Silver', bt: ['ol', 'View card'] }), ['Already yours', 'Your real card, foil and all, with View card.']],
+  [ticket({ c: 'var(--orange)', obj: moon, mini: 'owned-moon', kc: 'var(--orange)', k: 'New phase stamp · 2 of 8', d: '384,400 km', n: 'The Moon', w: 'Waxing gibbous · 81% lit', bt: ['go', 'Stamp it'] }), ['Moon phase', 'Your Moon card, and the phase you can stamp tonight.']],
+  [ticket({ c: 'var(--red)', obj: plane, glyph: plane.replace(/26/g, '40'), kc: 'var(--red)', k: 'Just a plane', d: '35,000 ft', n: 'AC 852 · Air Canada', w: 'Toronto → London', bt: ['no', 'Not a card'] }), ['Not a card', 'No mini card: a red tile with the plane instead.']],
+];
+const o2 = [
+  [stand({ c: 'var(--ink)', obj: sat, mini: 'owned-a', kc: 'var(--muted)', l: 'In your collection · <em>tap to view</em>' }), ['Already yours', 'The card itself stands under the circle; tap it to open.']],
+  [stand({ c: 'var(--ink)', obj: sat, mini: 'owned-b', kc: 'var(--epic)', l: '<em>✦ Epic</em> · seen on 1 night · tap to view' }), ['Already yours (Epic)', 'Rarity, level and foil all show on the card itself.']],
+  [stand({ c: 'var(--orange)', obj: moon, mini: 'owned-moon', kc: 'var(--orange)', chip: 'NEW PHASE · TAP TO STAMP', l: 'Waxing gibbous · <em>2 of 8 phases</em>' }), ['Something to stamp', 'An orange chip on the card when there’s a stamp to collect.']],
+];
+document.getElementById('board').innerHTML = `<h2>Option 1 · The card in the ticket</h2><p class="sub">Today's ticket under the circle, a little wider, with the mini card on the left. Same button as today (Collect, View card, or none).</p><div class="row">${o1.map(([h, c]) => cell(h, c)).join('')}</div>
+<h2>Option 2 · Your card stands up</h2><p class="sub">For things you already own, the ticket goes and the card itself stands under the circle, tilted like it's been pulled from your binder. New things keep Option 1's ticket.</p><div class="row">${o2.map(([h, c]) => cell(h, c)).join('')}</div>`;
+</script>
+</body></html>
