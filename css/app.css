@@ -2449,3 +2449,12 @@ body.night .kt-fan img { border-color: #5a1d18; }
 /* No next-pass / headliner chip on Explore (2026-10-24, Sevaan: "we don't need this headliner thing here anymore now
    that the Tonight screen is more accessible in the switcher"). Still built by updateNextPass; just never shown. */
 #nextpass, #nextpass:not([hidden]) { display: none !important; }
+/* The Plus page sits under the shared header (2026-10-24, Sevaan: "the same header as all the other pages"): the sheet starts
+   at the header's line, its own title row is gone, and the Settings button is its ✕ (body.plus-open). */
+#set-plus-sheet { top: calc(var(--safe-top, 0px) + 80px); }
+#set-plus-sheet .set-sheet-card { height: calc(100dvh - var(--safe-top, 0px) - 80px) !important; padding-top: 6px !important; }
+#set-plus-sheet .set-sheet-card > .crew-top { display: none !important; }
+#set-plus-sheet .set-sheet-card > .starfield { height: calc(100dvh - var(--safe-top, 0px) - 80px); margin-bottom: calc(-100dvh + var(--safe-top, 0px) + 80px); }
+body.plus-open #nav-more .nm-set { transform: translateY(-14px); opacity: 0; } body.plus-open #nav-more .nm-x { transform: none; opacity: 1; }
+body.plus-open #sky-header { background: var(--bg); box-shadow: 0 calc(-1 * var(--safe-top)) 0 0 var(--bg); position: fixed; z-index: 81; visibility: visible !important; opacity: 1 !important; }
+body.plus-open #sky-header .header-buttons > :not(#nav-more) { visibility: hidden; } /* just its ✕, like Settings */
