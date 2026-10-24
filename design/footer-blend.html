@@ -38,6 +38,11 @@
   .blend.full { left: 14px; right: 14px; }
   .blend.pill { left: 50%; transform: translateX(-50%); width: 270px; border-radius: 27px; }
   .blend.pill::before { left: calc(var(--i) * 33.333% + 14px); width: calc(33.333% - 28px); border-radius: 0 0 3px 3px; }
+  /* the room's-pick dock, unchanged (design/footer-dock.html Style 1), for comparison */
+  .dock { left: 50%; bottom: 18px; transform: translateX(-50%); height: 54px; border-radius: 27px; display: flex; align-items: center; gap: 4px; padding: 5px;
+    background: rgba(8,15,27,.82); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid #ffffff17; box-shadow: 0 10px 28px #000a; }
+  .dock span { height: 44px; padding: 0 17px; border-radius: 22px; display: flex; align-items: center; font: 500 11.5px 'SC Label'; letter-spacing: .16em; color: #c9cbb6; white-space: nowrap; }
+  .dock span.on { background: var(--orange); color: #140a03; }
   .note { max-width: 900px; margin: 34px 0 0; padding: 16px 18px; border: 1px solid #22324a; border-radius: 14px; color: #c9d3de; font-size: 14px; }
   .note b { color: var(--ink); }
 </style></head><body><div class="wrap">
@@ -54,13 +59,14 @@ const I = {
 };
 const tabs = ['tonight', 'explore', 'collection'];
 const screens = [['explore', 'Explore', 'nd-explore'], ['tonight', 'Tonight', 'nd-tonight'], ['collection', 'Collection', 'nd-collection']];
-const bar = (kind, on) => kind === 'today'
+const bar = (kind, on) => kind === 'dock' ? `<div class="dock">${tabs.map((t) => `<span class="${t === on ? 'on' : ''}">${t.toUpperCase()}</span>`).join('')}</div>` : kind === 'today'
   ? `<div class="today" style="--i:${tabs.indexOf(on)}">${tabs.map((t) => `<span class="${t === on ? 'on' : ''}">${I[t]}${t.toUpperCase()}</span>`).join('')}</div>`
   : `<div class="blend ${kind}" style="--i:${tabs.indexOf(on)}">${tabs.map((t) => `<span class="${t === on ? 'on' : ''}">${t.toUpperCase()}</span>`).join('')}</div>`;
 const row = (kind) => screens.map(([id, name, img]) => `<div class="cell"><div class="ph" style="background-image:url('explore-redesign/${img}.webp')">${id === 'explore' ? '' : '<span class="fade"></span>'}${bar(kind, id)}</div><div class="cap">${name}</div></div>`).join('');
 document.getElementById('board').innerHTML =
   `<h2>Today</h2><p class="sub">For reference: 72 px, icon over word, full width.</p><div class="row">${row('today')}</div>
    <h2>A · Blend, full width</h2><p class="sub">Words only, 54 px, today's width and colours.</p><div class="row">${row('full')}</div>
-   <h2>B · Blend, floating pill</h2><p class="sub">Words only, 54 px, the narrower floating shape, today's colours.</p><div class="row">${row('pill')}</div>`;
+   <h2>B · Blend, floating pill</h2><p class="sub">Words only, 54 px, the narrower floating shape, today's colours.</p><div class="row">${row('pill')}</div>
+   <h2>The new one, as designed</h2><p class="sub">For comparison: the room's-pick floating tabs unchanged, with the page you're on as a solid orange pill.</p><div class="row">${row('dock')}</div>`;
 </script>
 </body></html>
