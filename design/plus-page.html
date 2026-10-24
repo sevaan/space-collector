@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Plus Page Directions</title>
+<!-- 2026-10-23 (Sevaan: "redesigns of the plus panel… maybe as a page… You can play everything in Space Collector for
+     free, but if you love space and want to support this app…"). Three directions, each a full page that scrolls. -->
+<style>
+  @font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf'); font-weight: 500; }
+  @font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf'); }
+  :root { --ink: #fff2b3; --cream: #f3ead0; --muted: #a9b0a4; --orange: #fa8127; --gold: #ffc93d; --navy: #080f1b; --panel: #0e1a29; --line: #22324a; --green: #7fd6a4; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #04070d; color: #e8eef6; font: 15px/1.45 -apple-system, system-ui, sans-serif; padding: 28px 16px 80px; }
+  .wrap { max-width: 1180px; margin: 0 auto; }
+  h1 { font: 400 26px 'SC Display', sans-serif; color: var(--ink); margin: 0 0 6px; }
+  .intro { color: #9fb0c6; max-width: 860px; margin: 0 0 26px; }
+  .row { display: flex; flex-wrap: wrap; gap: 34px; align-items: flex-start; justify-content: center; }
+  .cell { width: 340px; }
+  .cap { margin-top: 14px; } .cap h2 { font: 500 14px 'SC Label', sans-serif; letter-spacing: .2em; text-transform: uppercase; color: var(--orange); margin: 0 0 4px; }
+  .cap p { margin: 0 0 6px; color: #b9c5d4; font-size: 14px; } .cap .pro { color: #8fd0a8; } .cap .con { color: #d9a48a; }
+  .lab { font: 500 11px/1.2 'SC Label', sans-serif; letter-spacing: .16em; text-transform: uppercase; }
+
+  /* phone */
+  .ph { position: relative; width: 340px; height: 720px; border-radius: 44px; border: 9px solid #121722; overflow: hidden; background: var(--navy); }
+  .scr { position: absolute; inset: 0; overflow-y: auto; scrollbar-width: none; padding: 0 18px 40px; }
+  .scr::-webkit-scrollbar { display: none; }
+  .top { position: sticky; top: 0; z-index: 3; display: flex; justify-content: space-between; align-items: center; margin: 0 -18px; padding: 44px 18px 12px; background: linear-gradient(#080f1b 70%, #080f1b00); }
+  .top b { font: 400 15px 'SC Display', sans-serif; color: var(--ink); } .top span { font: 500 22px 'SC Label'; color: var(--ink); }
+  .eye { font: 500 11px 'SC Label'; letter-spacing: .2em; text-transform: uppercase; color: var(--orange); }
+  .big { font: 400 27px/1.08 'SC Display', sans-serif; color: var(--ink); margin: 8px 0 10px; }
+  .body { color: #c9d3de; font-size: 14.5px; line-height: 1.5; margin: 0 0 14px; }
+  .body b { color: var(--ink); font-weight: 600; }
+  .why { display: inline-flex; gap: 6px; align-items: center; margin: 4px 0 14px; padding: 6px 10px; border-radius: 999px; background: #ffc93d14; border: 1px solid #ffc93d40; font: 500 12px 'SC Label'; letter-spacing: .08em; color: var(--gold); text-transform: uppercase; }
+  .sec { font: 500 11px 'SC Label'; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); margin: 22px 0 10px; display: flex; gap: 10px; align-items: center; }
+  .sec::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+  .free { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 12px; margin: 0; padding: 0; list-style: none; }
+  .free li { font: 500 14px/1.25 'SC Label'; letter-spacing: .03em; color: #dfe6ee; display: flex; gap: 7px; align-items: baseline; }
+  .free li::before { content: '✓'; color: var(--green); font-size: 13px; }
+  .perk { display: grid; grid-template-columns: 34px 1fr; gap: 10px; align-items: center; padding: 10px 0; border-bottom: 1px solid #16243a; }
+  .perk:last-child { border-bottom: 0; }
+  .ic { width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; background: #ffc93d14; border: 1px solid #ffc93d33; color: var(--gold); font-size: 16px; }
+  .perk b { display: block; font: 500 15px/1.15 'SC Label'; letter-spacing: .04em; color: var(--ink); }
+  .perk small { color: #9fb0c2; font-size: 12.5px; line-height: 1.3; display: block; }
+  .prices { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; margin: 6px 0 12px; }
+  .pr { border: 1px solid var(--line); border-radius: 12px; padding: 10px 4px 9px; text-align: center; background: #0b1524; }
+  .pr .l { font: 500 11px 'SC Label'; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+  .pr .p { font: 400 19px/1.2 'SC Display'; color: var(--ink); margin: 3px 0 2px; }
+  .pr .n { font: 500 10px 'SC Label'; letter-spacing: .1em; text-transform: uppercase; color: var(--orange); }
+  .pr.on { border-color: var(--orange); background: #fa812714; box-shadow: 0 0 0 1px #fa812755 inset; } .pr.on .l { color: var(--orange); }
+  .cta { display: block; width: 100%; border: 0; border-radius: 14px; padding: 15px 10px; background: var(--orange); color: #120a04; font: 600 15px 'SC Label'; letter-spacing: .14em; text-transform: uppercase; }
+  .fine { color: #8797a8; font-size: 11.5px; text-align: center; margin: 9px 0 0; line-height: 1.4; }
+  .later { display: block; text-align: center; margin: 16px 0 0; font: 500 13px 'SC Label'; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+  .note { border-left: 2px solid var(--orange); padding: 2px 0 2px 12px; margin: 14px 0; color: #c9d3de; font: italic 14px/1.5 Georgia, serif; }
+  .note small { display: block; font: 500 11px 'SC Label'; font-style: normal; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); margin-top: 6px; }
+
+  /* A: supporter's page */
+  .a-hero { position: relative; height: 170px; margin: 0 -18px 6px; overflow: hidden; }
+  .a-hero .sky { position: absolute; inset: 0; background: radial-gradient(90% 120% at 50% 100%, #1a3256 0%, #0b1730 45%, #080f1b 80%); }
+  .a-hero .st { position: absolute; width: 2px; height: 2px; border-radius: 50%; background: #fff; }
+  .a-hero .arc { position: absolute; left: 30px; right: -40px; top: 40px; height: 220px; border-top: 1.5px dashed #fff2b355; border-radius: 50%; }
+  .a-hero .sat { position: absolute; left: 196px; top: 46px; width: 9px; height: 9px; border-radius: 50%; background: var(--ink); box-shadow: 0 0 14px #fff2b3; }
+  .a-hero .ring { position: absolute; left: 180px; top: 30px; width: 41px; height: 41px; border-radius: 50%; border: 2px solid var(--orange); box-shadow: 0 0 18px #fa812766; }
+
+  /* B: crew */
+  .b-patch { width: 168px; height: 168px; margin: 6px auto 12px; border-radius: 50%; position: relative; background: radial-gradient(circle at 50% 40%, #1d3b66, #0d1f3b 62%, #0a1630); border: 6px solid #d8c48a; box-shadow: 0 0 0 3px #0a1630, 0 0 0 5px #d8c48a88, 0 18px 40px #000a; display: grid; place-items: center; text-align: center; }
+  .b-patch::before { content: ''; position: absolute; inset: 14px; border-radius: 50%; border: 1px dashed #d8c48a66; }
+  .b-patch b { font: 400 17px/1 'SC Display'; color: var(--ink); display: block; letter-spacing: .02em; }
+  .b-patch small { font: 500 10px 'SC Label'; letter-spacing: .3em; color: #d8c48a; display: block; margin-top: 6px; }
+  .b-patch i { position: absolute; color: var(--gold); font-style: normal; font-size: 13px; }
+  .b-kit { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .b-kit div { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 11px 11px 10px; }
+  .b-kit .k { color: var(--gold); font-size: 17px; } .b-kit b { display: block; font: 500 14px/1.15 'SC Label'; letter-spacing: .04em; color: var(--ink); margin: 5px 0 2px; } .b-kit small { color: #9fb0c2; font-size: 12px; line-height: 1.3; display: block; }
+  .b-count { text-align: center; color: #9fb0c2; font-size: 12.5px; margin: 14px 0 0; } .b-count b { color: var(--ink); }
+
+  /* C: show the extras */
+  .c-blk { margin: 0 0 18px; }
+  .c-blk h3 { font: 500 16px/1.15 'SC Label'; letter-spacing: .05em; color: var(--ink); margin: 8px 0 2px; } .c-blk p { margin: 0; color: #9fb0c2; font-size: 12.5px; }
+  .c-wid { display: flex; gap: 8px; }
+  .w-s { width: 112px; height: 112px; border-radius: 22px; background: linear-gradient(160deg, #13243d, #0a1426); border: 1px solid #ffffff14; padding: 11px; position: relative; overflow: hidden; }
+  .w-s .k { font: 500 9px 'SC Label'; letter-spacing: .16em; color: var(--orange); } .w-s b { display: block; font: 400 21px/1 'SC Display'; color: var(--ink); margin: 6px 0 3px; } .w-s small { font: 500 11px/1.2 'SC Label'; color: #c9d3de; display: block; }
+  .w-s .tg { position: absolute; right: 10px; bottom: 10px; width: 30px; height: 30px; border-radius: 50%; border: 1.5px solid var(--ink); }
+  .w-l { flex: 1; height: 112px; border-radius: 22px; background: #ffffff0d; border: 1px solid #ffffff14; padding: 12px; color: #e9eef4; }
+  .w-l .t { font: 600 34px/1 -apple-system, system-ui; letter-spacing: -.02em; } .w-l .d { font-size: 11px; opacity: .8; margin-bottom: 4px; }
+  .w-l .r { font: 500 10.5px/1.25 'SC Label'; letter-spacing: .06em; display: flex; gap: 6px; align-items: center; margin-top: 6px; } .w-l .r i { width: 14px; height: 14px; border-radius: 50%; border: 1.5px solid currentColor; display: inline-block; flex: none; }
+  .c-alert { border-radius: 16px; background: #ffffff12; border: 1px solid #ffffff14; padding: 10px 12px; display: grid; grid-template-columns: 30px 1fr auto; gap: 10px; align-items: center; }
+  .c-alert .ap { width: 30px; height: 30px; border-radius: 8px; background: radial-gradient(circle at 40% 35%, #1b3256, #08101f); border: 1px solid #fff2b355; display: grid; place-items: center; color: var(--ink); font-size: 12px; }
+  .c-alert b { font-size: 12.5px; color: #fff; display: block; } .c-alert span { font-size: 12px; color: #d3dbe4; } .c-alert em { font-style: normal; font-size: 11px; color: #9fb0c2; align-self: start; }
+  .c-backs { position: relative; height: 150px; }
+  .c-backs img { position: absolute; top: 6px; width: 92px; height: 138px; object-fit: cover; border-radius: 9px; border: 2px solid #e9dcb3; box-shadow: 0 10px 22px #000b; }
+  .c-shiny { display: flex; gap: 10px; align-items: center; background: linear-gradient(100deg, #ff7ad914, #7ad7ff14, #ffe07a14); border: 1px solid #ffffff1f; border-radius: 14px; padding: 11px 12px; }
+  .c-shiny b { font: 400 18px 'SC Display'; color: var(--ink); } .c-shiny span { font: 500 12.5px/1.25 'SC Label'; letter-spacing: .04em; color: #dfe6ee; }
+  .c-patch { display: flex; gap: 12px; align-items: center; }
+  .c-patch .pt { width: 70px; height: 70px; border-radius: 50%; flex: none; background: radial-gradient(circle at 50% 40%, #1d3b66, #0a1630 65%); border: 4px solid #d8c48a; display: grid; place-items: center; font: 400 10px/1 'SC Display'; color: var(--ink); text-align: center; }
+  .c-free { background: #7fd6a40f; border: 1px solid #7fd6a433; border-radius: 14px; padding: 12px; margin: 6px 0 18px; }
+  .c-free b { font: 500 13px 'SC Label'; letter-spacing: .14em; text-transform: uppercase; color: var(--green); } .c-free p { margin: 4px 0 0; color: #cfe8da; font-size: 13px; }
+
+  .rec { max-width: 860px; margin: 40px auto 0; padding: 16px 18px; border: 1px solid #fa812744; border-radius: 14px; background: #fa81270c; color: #d7dfe8; font-size: 14.5px; }
+  .rec b { color: var(--ink); }
+</style></head><body><div class="wrap">
+<h1>Plus, as a page</h1>
+<p class="intro">Three ways to say it. All three open as a full page (from Settings, a grey bell, a widget, or a card back), all lead with "the game is free", and all end on the same three prices. The small gold line under the header is the reason it opened ("Reminders are one of the extras"), so the page still answers the tap that brought you there. Scroll each phone.</p>
+
+<div class="row">
+
+<!-- A -->
+<div class="cell">
+  <div class="ph"><div class="scr">
+    <div class="top"><b>SPACE COLLECTOR PLUS</b><span>✕</span></div>
+    <div class="a-hero"><div class="sky"></div>
+      <i class="st" style="left:30px;top:30px"></i><i class="st" style="left:90px;top:70px;opacity:.6"></i><i class="st" style="left:270px;top:22px"></i><i class="st" style="left:240px;top:110px;opacity:.5"></i><i class="st" style="left:60px;top:130px;opacity:.7"></i><i class="st" style="left:150px;top:18px;opacity:.5"></i>
+      <div class="arc"></div><div class="ring"></div><div class="sat"></div></div>
+    <span class="why">🔔 Reminders are one of the extras</span>
+    <div class="big">The whole sky is free.</div>
+    <p class="body">Every pass, every card, every patch: <b>you can catch all of it without paying a thing</b>. No ads, no timers, no cards held back.</p>
+    <p class="body">Plus is for people who love this and want to keep it going. It pays for new cards, new art and the data that tracks 16,000 things overhead. As thanks, you get a few extras.</p>
+    <div class="sec">Free, always</div>
+    <ul class="free"><li>Tonight's plan</li><li>Every card</li><li>Missions &amp; XP</li><li>Patches &amp; albums</li><li>The whole Collection</li><li>Line up the sky</li></ul>
+    <div class="sec">The extras, as thanks</div>
+    <div class="perk"><span class="ic">🔔</span><span><b>Pass reminders</b><small>A nudge before any pass you pick.</small></span></div>
+    <div class="perk"><span class="ic">◆</span><span><b>Rare alerts</b><small>A ping when something Rare or better is coming.</small></span></div>
+    <div class="perk"><span class="ic">▦</span><span><b>Widgets</b><small>Tonight on your home and lock screen.</small></span></div>
+    <div class="perk"><span class="ic">✦</span><span><b>Shiny forecast</b><small>When and where a shiny can happen.</small></span></div>
+    <div class="perk"><span class="ic">▭</span><span><b>Card backs</b><small>Six designs, or a different one each flip.</small></span></div>
+    <div class="perk"><span class="ic">◎</span><span><b>Member patch</b><small>Only supporters wear this one.</small></span></div>
+    <div class="sec">Back it your way</div>
+    <div class="prices"><div class="pr"><div class="l">Month</div><div class="p">$1.99</div><div class="n">&nbsp;</div></div><div class="pr on"><div class="l">Year</div><div class="p">$14.99</div><div class="n">7 days free</div></div><div class="pr"><div class="l">Forever</div><div class="p">$29.99</div><div class="n">Pay once</div></div></div>
+    <button class="cta">Support Space Collector</button>
+    <p class="fine">7 days free, then $14.99 a year. Cancel anytime. Shared with Family Sharing.<br>Terms of Use · Privacy Policy · Restore purchases</p>
+    <span class="later">Not now, the sky's still yours</span>
+  </div></div>
+  <div class="cap"><h2>A · The whole sky is free</h2>
+    <p>Your idea, said plainly: free first, then what Plus pays for, then the extras as a thank-you. The "Free, always" list is the reassurance; the price comes last.</p>
+    <p class="pro">+ Honest and warm; nobody feels tricked into thinking the game is locked.</p>
+    <p class="con">− Longest of the three; relies on people reading.</p></div>
+</div>
+
+<!-- B -->
+<div class="cell">
+  <div class="ph"><div class="scr">
+    <div class="top"><b>JOIN THE CREW</b><span>✕</span></div>
+    <span class="why">🔔 Reminders are one of the extras</span>
+    <div class="b-patch"><i style="top:18px">✦</i><div><b>CREW</b><small>SPACE COLLECTOR</small></div><i style="bottom:18px">★ ★ ★</i></div>
+    <div class="big" style="text-align:center">Keep the lights on.<br>Wear the patch.</div>
+    <p class="body" style="text-align:center">Space Collector is free to play, all of it. The crew are the players who chip in to keep it flying, and get a little kit for it.</p>
+    <div class="sec">Your crew kit</div>
+    <div class="b-kit">
+      <div><span class="k">🔔</span><b>Pass reminders</b><small>Never miss the one you wanted.</small></div>
+      <div><span class="k">◆</span><b>Rare alerts</b><small>Pinged when Rare+ is coming.</small></div>
+      <div><span class="k">▦</span><b>Widgets</b><small>Tonight, at a glance.</small></div>
+      <div><span class="k">✦</span><b>Shiny forecast</b><small>Where shinies can happen.</small></div>
+      <div><span class="k">▭</span><b>Card backs</b><small>Six to choose from.</small></div>
+      <div><span class="k">◎</span><b>The crew patch</b><small>On your wall, for good.</small></div>
+    </div>
+    <div class="sec">Pick your mission length</div>
+    <div class="prices"><div class="pr"><div class="l">Month</div><div class="p">$1.99</div><div class="n">&nbsp;</div></div><div class="pr on"><div class="l">Year</div><div class="p">$14.99</div><div class="n">7 days free</div></div><div class="pr"><div class="l">Forever</div><div class="p">$29.99</div><div class="n">Lifetime crew</div></div></div>
+    <button class="cta">Join the crew</button>
+    <p class="fine">7 days free, then $14.99 a year. Cancel anytime. Shared with Family Sharing.<br>Terms of Use · Privacy Policy · Restore purchases</p>
+    <span class="later">Maybe later</span>
+  </div></div>
+  <div class="cap"><h2>B · Join the crew</h2>
+    <p>Supporting as belonging: you're crew, the patch is the badge, the extras are your kit. Plays into the patch wall you already have (the Members patch).</p>
+    <p class="pro">+ Shortest and most game-like; the patch gives people something to show.</p>
+    <p class="con">− "Crew" is a new word in the app; the free part is one line.</p></div>
+</div>
+
+<!-- C -->
+<div class="cell">
+  <div class="ph"><div class="scr">
+    <div class="top"><b>PLUS</b><span>✕</span></div>
+    <span class="why">🔔 Reminders are one of the extras</span>
+    <div class="big">Love the sky?<br>Back the app.</div>
+    <div class="c-free"><b>✓ The game stays free</b><p>Every card, mission and patch can be caught without Plus. These are extras for supporters.</p></div>
+
+    <div class="c-blk"><div class="c-wid">
+      <div class="w-s"><span class="k">NEXT · 8:52 PM</span><b>ISS</b><small>High in the south<br>in 22 min</small><i class="tg"></i></div>
+      <div class="w-l"><div class="d">Thursday 23</div><div class="t">8:30</div><div class="r"><i></i>◎ NEXT · ISS · 8:52</div><div class="r"><i></i>3 new tonight</div></div>
+    </div><h3>Widgets</h3><p>Tonight on your home and lock screen.</p></div>
+
+    <div class="c-blk"><div class="c-alert"><span class="ap">✦</span><span><b>ISS in 10 minutes</b><span>High in the south · look up at 8:52</span></span><em>now</em></div>
+      <h3>Pass reminders &amp; Rare alerts</h3><p>A nudge before the passes you pick, and when something Rare or better is coming.</p></div>
+
+    <div class="c-blk"><div class="c-shiny"><b>✦</b><span>Shiny window tonight<br>9:14–9:20 PM · low in the west</span></div>
+      <h3>Shiny forecast</h3><p>When and where a shiny can happen.</p></div>
+
+    <div class="c-blk"><div class="c-backs">
+      <img src="../assets/art/backs/back-aurora.webp" alt="" style="left:0;transform:rotate(-9deg)">
+      <img src="../assets/art/backs/back-golden-record.webp" alt="" style="left:58px;transform:rotate(-3deg);top:2px">
+      <img src="../assets/art/backs/back-nebula-foil.webp" alt="" style="left:116px;transform:rotate(3deg);top:2px">
+      <img src="../assets/art/backs/back-star-chart.webp" alt="" style="left:174px;transform:rotate(9deg)">
+    </div><h3>Card backs</h3><p>Six designs, or a different one each flip.</p></div>
+
+    <div class="c-blk"><div class="c-patch"><span class="pt">PLUS<br>MEMBER</span><span><h3 style="margin:0 0 2px">Member patch</h3><p>Only supporters wear this one.</p></span></div></div>
+
+    <div class="prices"><div class="pr"><div class="l">Month</div><div class="p">$1.99</div><div class="n">&nbsp;</div></div><div class="pr on"><div class="l">Year</div><div class="p">$14.99</div><div class="n">7 days free</div></div><div class="pr"><div class="l">Forever</div><div class="p">$29.99</div><div class="n">Pay once</div></div></div>
+    <button class="cta">Try Plus free for 7 days</button>
+    <p class="fine">Then $14.99 a year. Cancel anytime. Shared with Family Sharing.<br>Terms of Use · Privacy Policy · Restore purchases</p>
+    <span class="later">Not now</span>
+  </div></div>
+  <div class="cap"><h2>C · Show the extras</h2>
+    <p>One honest line that the game stays free, then each extra shown as the real thing: a widget, a notification, the shiny window, the card backs fanned out, the patch.</p>
+    <p class="pro">+ People see what they get instead of reading a list; best for converting.</p>
+    <p class="con">− Less of your "support the app" voice; the most to build and keep up to date.</p></div>
+</div>
+
+</div>
+<div class="rec"><b>My pick: A's words with C's pictures.</b> Lead with "The whole sky is free." and the free-always list (A), then show each extra as the real thing (C) instead of a list, and end on "Support Space Collector". One App Store note: because Plus unlocks features, it has to stay a normal subscription/purchase. Calling it "support" is fine, but the button can't say "donate".</div>
+</div></body></html>
