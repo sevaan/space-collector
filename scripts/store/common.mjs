@@ -44,10 +44,11 @@ export async function setup(browser, kind, { when, video = null, extra = [], her
     s.textContent = `:root, html.standalone { --safe-top: ${t}px !important; --safe-bottom: ${bt}px !important;${r ? ` --safe-r: ${r}px !important;` : ''} } #peak-toggle { display: none !important; }`; document.head.append(s); };
     if (document.head) add(); else document.addEventListener('DOMContentLoaded', add); }, [d.safeTop, d.safeBottom, d.safeR ?? 0]);
   // A handle on the app's state, for aiming (capture only; nothing is saved).
-  await ctx.route(/\/js\/main\.js/, async (route) => { const r = await route.fetch(); await route.fulfill({ response: r, body: (await r.text()) + '\n;window.__store = { state, sky };', headers: { ...r.headers(), 'content-type': 'text/javascript' } }); });
+  await ctx.route(/\/js\/main\.js/, async (route) => { const r = await route.fetch(); await route.fulfill({ response: r, body: (await r.text()) + '\n;window.__store = { state, sky, skyAt: (ra, dec) => { const v = eqToEnu(now(), state.observer)(starVector(ra, dec)); return { az: (Math.atan2(v[0], v[1]) * 180 / Math.PI + 360) % 360, el: Math.asin(v[2]) * 180 / Math.PI }; } };', headers: { ...r.headers(), 'content-type': 'text/javascript' } }); });
   // Log the app's sounds with their wall-clock time (the promo puts them in its soundtrack at the same moments).
-  await ctx.route(/\/js\/sfx\.js/, async (route) => { const r = await route.fetch(); const body = (await r.text()).replace('export function sfx(name, { gain = 1, gap = 0, delay = 0 } = {}) {', 'export function sfx(name, { gain = 1, gap = 0, delay = 0 } = {}) { (window.__sfxLog ??= []).push([name, Date.now() + delay * 1000]);'); await route.fulfill({ response: r, body, headers: { ...r.headers(), 'content-type': 'text/javascript' } }); });
+  await ctx.route(/\/js\/sfx\.js/, async (route) => { const r = await route.fetch(); const body = (await r.text()).replace('export function sfx(name, { gain = 1, gap = 0, delay = 0 } = {}) {', 'export function sfx(name, { gain = 1, gap = 0, delay = 0 } = {}) { (window.__sfxLog ??= []).push([name, Date.now() + delay * 1000]); try { window.__sfxReal?.(name, delay); } catch {}'); await route.fulfill({ response: r, body, headers: { ...r.headers(), 'content-type': 'text/javascript' } }); });
   if (clear) await ctx.route(/open-meteo\.com/, (route) => route.abort());
+  await ctx.route(/adsb|val\.run|adsbdb/, (route) => route.abort()); // no live planes in store footage (one crossed the circle in a take, 2026-10-24)
   await ctx.clock.install({ time: at });
   const p = await ctx.newPage(), errs = []; p.on('pageerror', (e) => errs.push(e.message));
   await p.goto(APP + 'cards.html'); await p.waitForTimeout(1500);

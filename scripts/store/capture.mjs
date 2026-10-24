@@ -21,8 +21,16 @@ for (const kind of which === 'all' ? Object.keys(DEVICES) : [which]) {
   const w = (ms) => p.waitForTimeout(ms), shot = (n) => p.screenshot({ path: join(OUT, `${kind}-${n}.png`) });
   const duo = kind === 'duo';
   // Tonight first, while it's still the evening (the hero shot moves the clock on to the ISS pass).
-  await hideNoise(p); await p.click('#nav-sky'); await w(4500); await shot('tonight'); await p.click('#nav-explore'); await w(1800);
-  await hideNoise(p);
+  await hideNoise(p); await p.addStyleTag({ content: '#sky-plus-line { display: none !important; }' }); // no Plus banner in a store shot
+  await p.click('#nav-sky'); await w(4500);
+  if (!duo) await p.evaluate(() => { const v = document.getElementById('visible'), h = document.getElementById('sky-tonight-head'); if (h) v.scrollTop += h.getBoundingClientRect().top - v.getBoundingClientRect().top - 8; }); // Tonight: the haul, the headliner, the run
+  await w(900); await shot('tonight'); await p.click('#nav-explore'); await w(1800);
+  // A secret: Voyager 1's spot held in the circle (20:24 that evening) → the Pale Blue Dot story card, turned over
+  await p.clock.fastForward(Math.max(0, Date.parse('2026-10-17T20:24:00-04:00') - await p.evaluate(() => Date.now()))); await w(800);
+  for (let i = 0; i < 40 && !(await p.evaluate(() => !document.getElementById('reveal').hidden)); i++) {
+    await p.evaluate(() => { const s = window.__store.state, q = window.__store.skyAt(258.2, 12.1); s.drag.on = true; s.pinnedId = null; s.drag.az = q.az; s.drag.el = q.el; }); await w(250); }
+  await w(1000); await p.locator('#rv-holder').click({ timeout: 2000 }).catch(() => {}); await w(2600); await shot('story');
+  await p.locator('#reveal .x-close').first().click().catch(() => {}); await w(1500);
   // The sky, locked on the ISS, then Collect → the catch card
   console.log(kind, 'aim:', await aimBest(p)); await w(900); await shot('sky');
   await p.click('#d-cta').catch((e) => console.log(kind, 'no Collect:', e.message.slice(0, 80))); await w(3300); await shot('reveal');

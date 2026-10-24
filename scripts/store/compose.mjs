@@ -12,15 +12,16 @@ import { ROOT } from './common.mjs';
 // Marketing pass (2026-10-19, Sevaan's "room full of marketers"): screenshot 1 states the whole idea, the shiny ISS
 // moves up to 3 (collectors buy rarity), every eyebrow is a fact and every headline a feeling; "Free · no ads" closes.
 // ORDER sets the App Store order (file numbers); CAPTIONS sets the words. Change either and re-run this script.
-export const ORDER = ['sky', 'reveal', 'tonight', 'card', 'collection', 'moon', 'patches', 'around']; // 2026-10-24 marketing review + Sevaan: 8 shots
+export const ORDER = ['sky', 'reveal', 'card', 'tonight', 'story', 'collection', 'moon', 'patches', 'around']; // 2026-10-24 writers' room (script A) + Sevaan: 9 shots, the 9th to decide
 export const CAPTIONS = {
-  sky: ['Point your phone at the sky', 'Catch real satellites overhead'],
-  reveal: ['Line it up · tap Collect', 'Every catch is a card'], // the ISS, new to the seeded collection
+  sky: ['Point your phone at the sky', 'Every light up there has a name'],
+  reveal: ['Line it up · tap Collect', 'Catch it. Keep its card.'],
+  card: ['Caught as it went dark', 'Catch the fade, get a shiny'], // the shiny Hubble ("Caught the fade" on its tag)
   tonight: ['Tonight, timed to the minute', 'Know when to look up'],
-  card: ['Caught at just the right moment', 'Lucky catches shine'], // the shiny Hubble, tilted so the foil shows
+  story: ['Hidden in the sky', 'Some lights hide a secret'], // Pale Blue Dot, found at Voyager 1's spot
   collection: ['Stations · rockets · planets', '4,000+ real cards to find'],
-  moon: ['One Moon, eight phases', 'Catch every phase'],
-  patches: ['Free to play · no ads', 'Earn patches. Find the secrets.'],
+  moon: ['One Moon, eight phases', 'Come back night after night'],
+  patches: ['Free · no ads · no loot boxes', '180+ patches to earn'],
   around: ['A full 360° of sky', 'See what’s all around you'],
 };
 const SIZE = { phone: [1206, 2622], pad: [2064, 2752], duo: [2853, 2007] };
