@@ -2409,3 +2409,12 @@ body.night .crew-meteor::after { background: #ff6a55; box-shadow: none; }
 /* Stay-up notices (TONIGHT, new rank…) wait while the Plus page is open; they covered its patch (2026-10-23). Timed
    ones (a purchase result) still show. */
 body:has(#set-plus-sheet:not([hidden])) #toasts .ticket--sticky, body:has(#set-plus-sheet:not([hidden])) #toast-tray { display: none !important; }
+/* The mini card in the target ticket (2026-10-23, Sevaan picked design/target-minicard.html Option 1): the card on the
+   left, rarity/distance, name and the button on the right. The card is the Collection's own mini (72 × 108). */
+#discover .d-ticket.has-mini { display: grid; grid-template-columns: 72px minmax(0, 1fr); grid-template-areas: "mini label" "mini actions"; column-gap: 12px; row-gap: 10px; align-items: start; }
+#discover .d-ticket.has-mini .d-mini { grid-area: mini; align-self: center; width: 72px; height: 108px; --mini-s: .2571; transform: rotate(-3deg); filter: drop-shadow(0 6px 12px #000c); pointer-events: none; }
+#discover .d-ticket.has-mini .d-mini:empty { visibility: hidden; }
+#discover .d-ticket.has-mini .d-label { grid-area: label; min-width: 0; }
+#discover .d-ticket.has-mini .d-actions { grid-area: actions; align-self: end; }
+#discover .d-ticket.has-mini #d-name { font-size: 18px !important; }
+#discover .d-ticket.has-mini #d-cta { min-height: 42px; }
