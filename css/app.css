@@ -2427,3 +2427,20 @@ body.night .crew-sec::after { background: #3a1410; }
 body.night .crew-kit .kt { background: #140606; border-color: #2e1010; }
 body.night .crew-why { background: #2a0d0a; border-color: #5a1d18; }
 body.night .kt-fan img { border-color: #5a1d18; }
+/* Short screens (the unfolded Duo on its side, an SE): a smaller mini card keeps the ticket short, so it barely has to
+   rise toward the circle to clear the slider (iOS QA 2026-10-23: it covered the circle's lower tick on the Duo). */
+@media (max-height: 720px) {
+  #discover .d-ticket.has-mini { grid-template-columns: 56px minmax(0, 1fr); row-gap: 8px; }
+  #discover .d-ticket.has-mini .d-mini { width: 56px; height: 84px; --mini-s: .2; }
+  #discover .d-ticket.has-mini #d-cta { min-height: 38px; }
+}
+#set-plus-sheet .plus-thanks { display: none !important; } /* the member view's heading and body say it (iOS QA 2026-10-23: three thank-yous) */
+/* Plus page on a wide screen on its side (unfolded Duo, iPad landscape; iOS QA 2026-10-23: one narrow column with the
+   button a screen below): the patch and the promise on the left, the kit and prices on the right, either side of the fold. */
+@media (min-width: 900px) and (min-height: 560px) and (orientation: landscape) {
+  #set-plus-sheet .set-sheet-card { display: grid !important; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 56px; align-content: start; padding-left: calc(28px + var(--safe-l, 0px)); padding-right: calc(28px + var(--safe-r, 0px)); }
+  #set-plus-sheet .set-sheet-card > .starfield, #set-plus-sheet .set-sheet-card > .crew-top { grid-column: 1 / -1; }
+  #set-plus-sheet .set-sheet-card > .crew-intro { grid-column: 1; max-width: 440px; margin: 0 0 0 auto; position: sticky; top: 72px; align-self: start; padding-top: 24px; }
+  #set-plus-sheet .set-sheet-card > .crew-side { grid-column: 2; max-width: 460px; margin: 0 auto 0 0; }
+  #set-plus-sheet .crew-side .crew-sec:first-child { margin-top: 10px; }
+}

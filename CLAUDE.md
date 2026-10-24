@@ -1692,3 +1692,13 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - All around you: only the Sky value shrinks for long words (times like 10:45PM no longer did).
   - Standalone cards.html shows its night switch again (embedded it stays hidden).
   - onPlus keeps each book page's scroll (panelPos/panelRestore).
+- 2026-10-23 QA, iOS simulator batch (agent; Test Store purchase, widgets and Duo all worked; shots in that session's scratchpad qa-ios/):
+  - Tonight page: a clearing whose time has passed is a clear night ("Clear by 8:00 PM" showed at 11:35 PM).
+  - Restore purchases says "Plus is already on" when nothing changed; a failed purchase is our own error notice ("The purchase didn't go through · You haven't been charged"), the store's text goes to the console.
+  - Short screens (max-height 720px): the ticket's mini card is 56 × 84 so the ticket barely rises toward the circle (it covered the lower tick on the Duo).
+  - Battery saver row has a battery icon (icons.css data-ico="battery").
+  - Member view: "You're crew." + "Thank you for keeping Space Collector flying…"; .plus-thanks hidden on the page (three thank-yous).
+  - Hero tier tag says "· new" (it wrapped as "NEW TO / YOU · HEADLINER"). Tonight page reminder button and "Reminder on" keep AM/PM.
+  - Cards turning over to the new backs waits until no page or sheet is open (it played over Settings).
+  - Plus page on wide landscape (Duo, iPad): two columns, intro (sticky) left and kit + prices right; index.html wraps them in .crew-intro / .crew-side.
+  - Not changed: the widget countdown jumping in the simulator (Text(timerInterval:) in SCWidgets.swift; check on a device), the patch art's "PLUS MEMBER … MEMBERS" lettering.
