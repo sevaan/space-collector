@@ -851,5 +851,6 @@ html, body { overflow-x: clip; }
 html.embedded #stats-view { margin-top: var(--col-top); height: calc(100% - var(--col-top)); }
 html.embedded #stats-view > .viewer-header { display: none; }
 html.embedded #stats-view::backdrop { background: transparent; }
-html.embedded #stats-body { padding-bottom: calc(var(--safe-bottom, 0px) + 110px); } /* the tab bar stays over it now */
+html.embedded #stats-body { padding-top: 16px; padding-bottom: calc(var(--safe-bottom, 0px) + 110px); } /* the tab bar stays over it now */
 html.embedded #stats-view, html.embedded #stats-view:focus, html.embedded #stats-view:focus-visible { outline: none; }
+#stats-view.instant[open], #stats-view.instant[open]::backdrop { animation: none !important; } /* opened under Settings, already in place */

@@ -1,30 +1,30 @@
-import { pullToClose } from './pull-close.js?v=0.1.1102';
-import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.1102';
-import { computeStats, statsHtml } from './stats.js?v=0.1.1102';
-import { nightKey } from './observation.js?v=0.1.1102';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1102';
-import { sfx } from './sfx.js?v=0.1.1102';
-import { expandFacts } from './catalog-facts.js?v=0.1.1102';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.1102';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1102';
-import { ticket } from './toast.js?v=0.1.1102';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.1102';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.1102';
-import { cardArt } from './art.js?v=0.1.1102';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.1102';
-import { applyBack } from './card-backs.js?v=0.1.1102';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.1102';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1102';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.1102';
-import { STORIES } from './stories.js?v=0.1.1102';
-import { loadConstellations, conList } from './constellations.js?v=0.1.1102';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.1102';
-import { eventBadges, nextEvent } from './events.js?v=0.1.1102';
-import { shareCardEl } from './share-card.js?v=0.1.1102';
-import { forgetSighting } from './cloud-backup.js?v=0.1.1102';
-import { allSightings, deleteSighting } from './store.js?v=0.1.1102';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.1102';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.1102';
+import { pullToClose } from './pull-close.js?v=0.1.1105';
+import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.1105';
+import { computeStats, statsHtml } from './stats.js?v=0.1.1105';
+import { nightKey } from './observation.js?v=0.1.1105';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1105';
+import { sfx } from './sfx.js?v=0.1.1105';
+import { expandFacts } from './catalog-facts.js?v=0.1.1105';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.1105';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1105';
+import { ticket } from './toast.js?v=0.1.1105';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.1105';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.1105';
+import { cardArt } from './art.js?v=0.1.1105';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.1105';
+import { applyBack } from './card-backs.js?v=0.1.1105';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.1105';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1105';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.1105';
+import { STORIES } from './stories.js?v=0.1.1105';
+import { loadConstellations, conList } from './constellations.js?v=0.1.1105';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.1105';
+import { eventBadges, nextEvent } from './events.js?v=0.1.1105';
+import { shareCardEl } from './share-card.js?v=0.1.1105';
+import { forgetSighting } from './cloud-backup.js?v=0.1.1105';
+import { allSightings, deleteSighting } from './store.js?v=0.1.1105';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.1105';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.1105';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -329,7 +329,7 @@ function remindStreak() {
     .then((r) => ticket({ kind: 'mission', tone: 'steel', icon: 'bell', eyebrow: 'STREAK', line: r === 'on' ? 'We’ll remind you Saturday at 8 PM.' : r === 'app-only' ? 'Reminders work in the Space Collector app.' : r === 'denied' ? 'Notifications are off for Space Collector.' : 'Couldn’t set a reminder here.', ms: 4000 }));
 }
 // Observer stats (free for everyone, 2026-10-12): a link under the rank card opens #stats-view.
-function openStats() {
+function openStats({ instant = false } = {}) { /* instant: already there under Settings, no slide (2026-10-24) */
   // Everything the Collection already knows, for the stats page (2026-10-16 redesign).
   const info = (k) => { const c = state.byKey.get(k); return c ? { tier: c.tier, tier0: c.tier0, type: c.type, owner: c.owner, launch: c.launch, natural: c.natural, con: c.con, reunion: c.reunion, role: c.type === 'rocket-body' ? 'stage' : 'payload' } : null; };
   const p = progress(state.raw, info, { constellations: conList(), deals: readDeals(), albums: state.albums, lon: obsLon(), carry: xpCarry(state.raw, info, { constellations: conList(), deals: readDeals() }) });
@@ -345,7 +345,7 @@ function openStats() {
     stories: [STORIES.filter((st) => state.sightingsByKey.has(st.key)).length, STORIES.length],
     albums: { bronze: lv.filter((a) => a.level >= 1).length, silver: lv.filter((a) => a.level >= 2).length, gold: lv.filter((a) => a.level >= 3).length, total: lv.length } };
   $('stats-body').innerHTML = statsHtml(computeStats(state.raw, state.byKey, nightKey, null, ctx));
-  $('stats-view').showModal();
+  const d = $('stats-view'); d.classList.toggle('instant', instant); d.showModal(); if (instant) setTimeout(() => d.classList.remove('instant'), 600);
 }
 $('stats-open')?.addEventListener('click', openStats);
 // It slides up over the Collection and back down, like the app’s other pages (2026-10-17, Sevaan).
@@ -1043,7 +1043,7 @@ if (EMBED) {
     if (e.origin !== location.origin || !e.data?.sc) return;
     if (e.data.sc === 'insets') { const r = document.documentElement.style; r.setProperty('--safe-top', `${e.data.top}px`); r.setProperty('--safe-bottom', `${e.data.bottom}px`); r.setProperty('--safe-l', `${e.data.left ?? 0}px`); r.setProperty('--safe-r', `${e.data.right ?? 0}px`); }
     if (e.data.sc === 'open' || e.data.sc === 'show') setSwitch(document.querySelector('.sc-switch'), 'right', false); // shown again: pill on Collection
-    if ((e.data.sc === 'open' || e.data.sc === 'show') && e.data.key === '#stats') { statsFromSettings = true; const go = () => (state.ready ? openStats() : setTimeout(go, 200)); go(); } // from Settings → Observer stats
+    if ((e.data.sc === 'open' || e.data.sc === 'show') && e.data.key === '#stats') { statsFromSettings = true; const go = () => (state.ready ? openStats({ instant: true }) : setTimeout(go, 200)); go(); } // from Settings → Observer stats
     else if ((e.data.sc === 'open' || e.data.sc === 'show') && e.data.key) openKey(e.data.key);
     if (e.data.sc === 'stats-close') { closeStats(); return; } // the ✕ in Explore's header
     if (e.data.sc === 'back') { // Android Back from the app shell: close the top thing here, else go back to Explore

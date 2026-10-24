@@ -2463,3 +2463,4 @@ body.plus-open #sky-header .header-buttons > :not(#nav-more) { visibility: hidde
 body.stats-open #nav-more .nm-set { transform: translateY(-14px); opacity: 0; } body.stats-open #nav-more .nm-x { transform: none; opacity: 1; }
 body.stats-open #sky-header .header-buttons > :not(#nav-more) { visibility: hidden; }
 #set-plus-sheet .set-sheet-card { will-change: transform; } /* drawn once, then slid (first-open stutter, 2026-10-24) */
+body.col-instant #collection-frame { transition: none !important; } /* opened under Settings for Observer stats (2026-10-24) */
