@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tabs, Blended</title>
+<!-- 2026-10-24 (Sevaan: "combine the new switcher design with our current design: no icons, the height, but not the
+     colours, use the current styling. Mock first"). Today's Explore, Tonight and Collection (explore-redesign/nd-*.webp,
+     captured with the tab bar removed) with: today's bar for reference, then the blend in two widths. -->
+<style>
+  @font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf'); font-weight: 500; }
+  @font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf'); }
+  :root { --ink: #fff2b3; --orange: #fa8127; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #04070d; color: #e8eef6; font: 15px/1.45 -apple-system, system-ui, sans-serif; padding: 28px 16px 80px; }
+  .wrap { max-width: 1180px; margin: 0 auto; }
+  h1 { font: 400 26px 'SC Display', sans-serif; color: var(--ink); margin: 0 0 6px; }
+  .intro { color: #9fb0c6; max-width: 900px; margin: 0 0 8px; }
+  h2 { font: 500 14px 'SC Label'; letter-spacing: .2em; text-transform: uppercase; color: var(--orange); margin: 30px 0 4px; }
+  .sub { color: #9fb0c6; margin: 0 0 14px; font-size: 14px; max-width: 900px; }
+  .row { display: flex; flex-wrap: wrap; gap: 30px; }
+  .cell { width: 358px; } .cap { margin-top: 8px; font: 500 13px 'SC Label'; letter-spacing: .16em; text-transform: uppercase; color: #9fb0c6; }
+  .ph { position: relative; box-sizing: content-box; width: 340px; height: 739px; border-radius: 44px; border: 9px solid #121722; overflow: hidden; background: #0b1424 center / cover; }
+  .ph > * { position: absolute; }
+  .fade { left: 0; right: 0; bottom: 0; height: 120px; background: linear-gradient(#080f1b00, #080f1bd9 70%); pointer-events: none; }
+
+  /* today's bar (css/ui.css "Glass tab bar"): full width, 72px, icon over word, orange top edge on the page you're on */
+  .today { left: 14px; right: 14px; bottom: 14px; height: 72px; border-radius: 18px; display: grid; grid-template-columns: repeat(3, 1fr);
+    background: rgba(8,15,27,.9) linear-gradient(90deg, transparent calc(var(--i) * 33.333%), var(--orange) calc(var(--i) * 33.333%), var(--orange) calc((var(--i) + 1) * 33.333%), transparent calc((var(--i) + 1) * 33.333%)) top / 100% 3px no-repeat;
+    border: 1px solid #ffffff12; box-shadow: 0 10px 28px #000a; }
+  .today span { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; font: 500 12px 'SC Label'; letter-spacing: .18em; color: #c9cbb6; }
+  .today span.on { color: var(--orange); }
+  .today svg { width: 20px; height: 20px; }
+
+  /* the blend: the new floating, words-only bar at the new height, in today's colours */
+  .blend { bottom: 18px; height: 54px; border-radius: 18px; display: grid; grid-template-columns: repeat(3, 1fr); overflow: hidden;
+    background: rgba(8,15,27,.9); border: 1px solid #ffffff12; box-shadow: 0 10px 28px #000a; }
+  .blend::before { content: ''; position: absolute; top: 0; height: 3px; width: 33.333%; left: calc(var(--i) * 33.333%); background: var(--orange); }
+  .blend span { display: grid; place-items: center; font: 500 12px 'SC Label'; letter-spacing: .2em; color: #c9cbb6; white-space: nowrap; }
+  .blend span.on { color: var(--orange); }
+  .blend.full { left: 14px; right: 14px; }
+  .blend.pill { left: 50%; transform: translateX(-50%); width: 270px; border-radius: 27px; }
+  .blend.pill::before { left: calc(var(--i) * 33.333% + 14px); width: calc(33.333% - 28px); border-radius: 0 0 3px 3px; }
+  .note { max-width: 900px; margin: 34px 0 0; padding: 16px 18px; border: 1px solid #22324a; border-radius: 14px; color: #c9d3de; font-size: 14px; }
+  .note b { color: var(--ink); }
+</style></head><body><div class="wrap">
+<h1>Tabs, blended</h1>
+<p class="intro">The floating bar from the room's pick, words only and 54 px tall (today's is 72 px with icons), but in today's colours: dark glass, the page you're on in orange with today's orange edge along its top. No solid orange pill.</p>
+<div id="board"></div>
+<div class="note"><b>What changes from today:</b> the icons go and the bar drops from 72 to 54 px, so about 18 px more of the sky (or list) shows; it floats 18 px off the bottom instead of 14. Tap targets stay 44 px+ tall. Everything else (glass, orange word, orange top edge) is today's. <b>A</b> keeps today's full width; <b>B</b> is the narrower floating pill, with a shorter orange edge that sits inside its rounded ends.</div>
+</div>
+<script>
+const I = {
+  tonight: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M10 3 L11.6 8.4 L17 10 L11.6 11.6 L10 17 L8.4 11.6 L3 10 L8.4 8.4z"/><path d="M18 14 L18.8 16.2 L21 17 L18.8 17.8 L18 20 L17.2 17.8 L15 17 L17.2 16.2z"/></svg>',
+  explore: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2.2"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3" stroke-linecap="round"/></svg>',
+  collection: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="6" y="3" width="12" height="17" rx="2"/><path d="M9 20.5 h8 a2 2 0 0 0 2-2 V6"/></svg>',
+};
+const tabs = ['tonight', 'explore', 'collection'];
+const screens = [['explore', 'Explore', 'nd-explore'], ['tonight', 'Tonight', 'nd-tonight'], ['collection', 'Collection', 'nd-collection']];
+const bar = (kind, on) => kind === 'today'
+  ? `<div class="today" style="--i:${tabs.indexOf(on)}">${tabs.map((t) => `<span class="${t === on ? 'on' : ''}">${I[t]}${t.toUpperCase()}</span>`).join('')}</div>`
+  : `<div class="blend ${kind}" style="--i:${tabs.indexOf(on)}">${tabs.map((t) => `<span class="${t === on ? 'on' : ''}">${t.toUpperCase()}</span>`).join('')}</div>`;
+const row = (kind) => screens.map(([id, name, img]) => `<div class="cell"><div class="ph" style="background-image:url('explore-redesign/${img}.webp')">${id === 'explore' ? '' : '<span class="fade"></span>'}${bar(kind, id)}</div><div class="cap">${name}</div></div>`).join('');
+document.getElementById('board').innerHTML =
+  `<h2>Today</h2><p class="sub">For reference: 72 px, icon over word, full width.</p><div class="row">${row('today')}</div>
+   <h2>A · Blend, full width</h2><p class="sub">Words only, 54 px, today's width and colours.</p><div class="row">${row('full')}</div>
+   <h2>B · Blend, floating pill</h2><p class="sub">Words only, 54 px, the narrower floating shape, today's colours.</p><div class="row">${row('pill')}</div>`;
+</script>
+</body></html>
