@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tabs Separation</title>
+<!-- 2026-10-24 (Sevaan: "give me a few options on how to make it feel a bit more separated if there is content directly
+     behind it"). The built tab bar (words only, 54 px, today's colours) over the real Tonight and Collection screens with
+     a list running under it, no fade (explore-redesign/nd-*.webp). -->
+<style>
+  @font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf'); font-weight: 500; }
+  @font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf'); }
+  :root { --ink: #fff2b3; --orange: #fa8127; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #04070d; color: #e8eef6; font: 15px/1.45 -apple-system, system-ui, sans-serif; padding: 28px 16px 80px; }
+  .wrap { max-width: 1560px; margin: 0 auto; }
+  h1 { font: 400 26px 'SC Display', sans-serif; color: var(--ink); margin: 0 0 6px; }
+  .intro { color: #9fb0c6; max-width: 980px; margin: 0 0 18px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, 358px); gap: 34px 30px; }
+  .cell h2 { font: 500 14px 'SC Label'; letter-spacing: .2em; text-transform: uppercase; color: var(--orange); margin: 10px 0 2px; }
+  .cell p { margin: 0; color: #b9c5d4; font-size: 13.5px; }
+  .ph { position: relative; box-sizing: content-box; width: 340px; height: 420px; border-radius: 0 0 44px 44px; border: 9px solid #121722; border-top: 0; overflow: hidden; background: #0b1424 bottom / 340px auto no-repeat; }
+  .ph > * { position: absolute; }
+  /* the built bar */
+  .bar { left: 14px; right: 14px; bottom: 20px; height: 54px; border-radius: 18px; display: grid; grid-template-columns: repeat(3, 1fr); overflow: hidden;
+    background: rgba(8,15,27,.9); }
+  .bar::before { content: ''; position: absolute; top: 0; height: 3px; width: 33.333%; left: calc(var(--i) * 33.333%); background: var(--orange); z-index: 2; }
+  .bar span { display: grid; place-items: center; font: 500 12px 'SC Label'; letter-spacing: .2em; color: #c9cbb6; position: relative; z-index: 1; }
+  .bar span.on { color: var(--orange); }
+  /* options */
+  .o-now { box-shadow: 0 10px 24px rgba(0,0,0,.35); }
+  .o-solid { background: #080f1b; box-shadow: 0 0 0 1px #fff2b31f, 0 10px 24px rgba(0,0,0,.35); }
+  .o-lift { background: #080f1b; box-shadow: 0 -10px 26px 6px #04070dee, 0 10px 24px rgba(0,0,0,.5); }
+  .o-raised { background: #142235; box-shadow: inset 0 1px 0 #ffffff14, 0 10px 24px rgba(0,0,0,.45); }
+  .o-raised span { color: #dcdcc8; }
+  .o-frame { background: #080f1b; box-shadow: inset 0 0 0 1px #fff2b333, 0 0 0 4px #04070d, 0 10px 24px rgba(0,0,0,.4); }
+  .o-blur { background: rgba(8,15,27,.62); backdrop-filter: blur(14px) saturate(1.3); -webkit-backdrop-filter: blur(14px) saturate(1.3); box-shadow: inset 0 1px 0 #ffffff1a, 0 10px 24px rgba(0,0,0,.35); }
+  .o-shelf { left: 0; right: 0; bottom: 0; height: 96px; border-radius: 0; background: #080f1b; border-top: 1px solid #22324a; }
+  .o-shelf-bar { background: transparent !important; box-shadow: none !important; }
+  .rec { max-width: 980px; margin: 40px 0 0; padding: 16px 18px; border: 1px solid #fa812744; border-radius: 14px; background: #fa81270c; color: #d7dfe8; font-size: 14.5px; }
+  .rec b { color: var(--ink); }
+</style></head><body><div class="wrap">
+<h1>Tab bar: standing apart from the list</h1>
+<p class="intro">Today's tab bar (words only, 54 px, no fade) over a list that runs right under it, on Tonight and the Collection. Each option keeps the same bar and colours; only what separates it from the content changes.</p>
+<div class="grid" id="g"></div>
+<div class="rec"><b>My pick: 1 · Solid + hairline.</b> A fully solid bar with a faint cream outline: the list stops at a clean edge, nothing shows through, and it matches the cards' thin frames. <b>3 · Raised</b> is the runner-up if you want it to read as a separate surface. I'd avoid 5 (blur), since glass is what you didn't like.</div>
+</div>
+<script>
+const tabs = ['tonight', 'explore', 'collection'];
+const bar = (cls, on) => `<div class="bar ${cls}" style="--i:${tabs.indexOf(on)}">${tabs.map((t) => `<span class="${t === on ? 'on' : ''}">${t.toUpperCase()}</span>`).join('')}</div>`;
+const opts = [
+  ['o-now', 'Now', 'Today’s bar with no fade: 90% dark glass, a soft shadow under it. The list shows faintly through and runs right up to it.'],
+  ['o-solid', '1 · Solid + hairline', 'Fully solid, with a faint cream outline (like the cards’ frames). A clean edge; nothing shows through.'],
+  ['o-lift', '2 · Lifted', 'Solid, with a dark shadow spreading upward, so the list darkens just around the bar as it passes under.'],
+  ['o-raised', '3 · Raised surface', 'A lighter navy than the page, with a light top edge: it reads as its own layer sitting on top.'],
+  ['o-frame', '4 · Framed', 'Solid with a cream outline and a thin dark gap around it, cut out of the list like a sticker.'],
+  ['o-blur', '5 · Frosted', 'More see-through but blurred: the list softens behind it. (The glass look you didn’t like, for comparison.)'],
+  ['o-shelf', '6 · Shelf', 'The bar sits on a solid strip that runs edge to edge across the bottom, with a fine line on top. The list stops at the line.'],
+];
+const screens = [['tonight', 'nd-tonight'], ['collection', 'nd-collection']];
+document.getElementById('g').innerHTML = opts.map(([cls, name, text]) => screens.map(([on, img]) => `<div class="cell"><div class="ph" style="background-image:url('explore-redesign/${img}.webp')">${cls === 'o-shelf' ? '<div class="o-shelf"></div>' + bar('o-shelf-bar', on) : bar(cls, on)}</div><h2>${name} · ${on}</h2><p>${text}</p></div>`).join('')).join('');
+</script>
+</body></html>
