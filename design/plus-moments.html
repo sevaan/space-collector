@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Plus Moments</title>
+<!-- 2026-10-24 (Sevaan: "What about times we could pop the Plus thing?… Mock it up. But also, maybe some of the review
+     prompt times could be plus prompts"). Real app captures (scratchpad play/pm.mjs, pm2.mjs) with the proposed lines
+     dropped in. Not built. -->
+<style>
+  @font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf'); font-weight: 500; }
+  @font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf'); }
+  :root { --ink: #fff2b3; --orange: #fa8127; --gold: #f2c14e; --muted: #9fb0c6; --line: #22324a; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #04070d; color: #e8eef6; font: 15px/1.5 -apple-system, system-ui, sans-serif; padding: 28px 16px 80px; }
+  .wrap { max-width: 1180px; margin: 0 auto; }
+  h1 { font: 400 28px 'SC Display', sans-serif; color: var(--ink); margin: 0 0 6px; }
+  h2 { font: 500 15px 'SC Label'; letter-spacing: .2em; text-transform: uppercase; color: var(--orange); margin: 44px 0 4px; }
+  .intro, .sub { color: var(--muted); max-width: 860px; margin: 0 0 16px; }
+  .row { display: flex; flex-wrap: wrap; gap: 28px; align-items: flex-start; }
+  .cell { width: 300px; }
+  .ph { width: 300px; aspect-ratio: 402 / 874; border-radius: 38px; border: 8px solid #121722; overflow: hidden; background: #080f1b; }
+  .ph img { width: 100%; height: 100%; display: block; object-fit: cover; }
+  .cap { margin-top: 10px; }
+  .cap b { display: block; font: 500 14px 'SC Label'; letter-spacing: .14em; text-transform: uppercase; color: var(--ink); }
+  .cap span { color: #b9c5d4; font-size: 13.5px; }
+  .arrow { align-self: center; font: 400 28px 'SC Display'; color: var(--orange); }
+  .card { max-width: 860px; padding: 16px 18px; border: 1px solid var(--line); border-radius: 14px; background: #0a1220; margin: 0 0 14px; }
+  .rules li { margin: 4px 0; color: #c9d3de; }
+  table { border-collapse: collapse; width: 100%; max-width: 980px; font-size: 14px; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font: 500 13px 'SC Label'; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+  td:first-child { color: var(--ink); width: 30%; }
+  .tag { display: inline-block; padding: 2px 9px; border-radius: 10px; font: 500 12px 'SC Label'; letter-spacing: .12em; text-transform: uppercase; }
+  .rv { background: #2a6bd122; color: #8fb8ff; border: 1px solid #2a6bd166; }
+  .pl { background: #fa812722; color: #ffb36e; border: 1px solid #fa812766; }
+  .both { background: #f2c14e1c; color: var(--gold); border: 1px solid #f2c14e55; }
+  .rec { max-width: 980px; margin: 22px 0 0; padding: 16px 18px; border: 1px solid #fa812744; border-radius: 14px; background: #fa81270c; color: #d7dfe8; }
+  .rec b { color: var(--ink); }
+  @media (max-width: 680px) { .arrow { display: none; } .cell, .ph { width: min(300px, 100%); } }
+</style></head><body><div class="wrap">
+<h1>When to show Plus</h1>
+<p class="intro">Today Plus only appears when someone hits a perk (a grey bell, a locked back, “+N more” shiny chances, the widget). These are the moments where it would offer itself, captured from the real app with the new lines dropped in. Nothing here is built yet.</p>
+
+<h2>1 · The invite</h2>
+<p class="sub">A good night ends (5+ catches, or a new Rare or better, put away), or it’s your 7th night, by day. At most once every 14 days, three times ever. Two ways to show it:</p>
+<div class="row">
+  <div class="cell"><div class="ph"><img src="plus-moments/sky-notice.webp" alt=""></div><div class="cap"><b>A · A notice first</b><span>Drops in from the top after the card is put away. Tap it and the Join the crew page opens. Swipe it away and that’s that. Gentle; my pick.</span></div></div>
+  <div class="arrow">→</div>
+  <div class="cell"><div class="ph"><img src="plus-moments/page-night.webp" alt=""></div><div class="cap"><b>The page, with its reason</b><span>Same Join the crew page, the gold pill says why it opened: “Five catches tonight. Nights like this are what Plus is for.” Option B opens this straight away, no notice.</span></div></div>
+  <div class="cell"><div class="ph"><img src="plus-moments/page-seventh.webp" alt=""></div><div class="cap"><b>7th night</b><span>“Seven nights under the sky. You’re one of us now.” Shown by day, the next calm moment after your 7th night.</span></div></div>
+</div>
+
+<h2>2 · Lines where a perk would help</h2>
+<p class="sub">One line each, never a pop-up. They only open the page if tapped.</p>
+<div class="row">
+  <div class="cell"><div class="ph"><img src="plus-moments/tonight-line.webp" alt=""></div><div class="cap"><b>Tonight · Rares coming</b><span>On a clear night with 2+ Rares still to come, the generic “Set reminders… with Plus” line becomes “3 Rares tonight · get a ping before each one ›”.</span></div></div>
+  <div class="cell"><div class="ph"><img src="plus-moments/reveal-backs.webp" alt=""></div><div class="cap"><b>Earning a card back</b><span>Next to the “New card back” chip: “1 of 7 · see them all ›”. (Captured on a card view; it would show on the catch that earns it.)</span></div></div>
+  <div class="cell"><div class="ph"><img src="plus-moments/recap-line.webp" alt=""></div><div class="cap"><b>Weekly recap</b><span>Under its buttons: “Put next week on your home screen · Plus ›”, opening the page on the Widgets tile.</span></div></div>
+</div>
+
+<h2>3 · Sharing the moments with reviews</h2>
+<p class="sub">Good idea. People rate an app when they’re proud of something; they join when they want more of what just happened. So split the moments by feeling, and never ask for both on the same day.</p>
+<table>
+  <tr><th>Moment</th><th>Ask for</th><th>Why</th></tr>
+  <tr><td>Card put away after a rank up or patch</td><td><span class="tag rv">Review</span></td><td>Pride in progress. “Enjoying it?” lands well.</td></tr>
+  <tr><td>A card shared</td><td><span class="tag rv">Review</span></td><td>They just showed it off to someone.</td></tr>
+  <tr><td>A great night (5+ catches / new Rare+)</td><td><span class="tag pl">Plus</span></td><td>They want more nights like it: reminders and alerts are exactly that.</td></tr>
+  <tr><td>Weekly recap closed</td><td><span class="tag both">Either</span></td><td>Proud of the week and looking ahead. Whichever hasn’t asked for longer.</td></tr>
+  <tr><td>5th night</td><td><span class="tag rv">Review</span></td><td>Clearly hooked, not asked for money yet.</td></tr>
+  <tr><td>7th night</td><td><span class="tag pl">Plus</span></td><td>“You’re one of us now.”</td></tr>
+  <tr><td>10th night</td><td><span class="tag both">Either</span></td><td>Whichever hasn’t asked for longer.</td></tr>
+</table>
+<div class="card rules" style="margin-top:16px"><ul>
+  <li>One ask a day at most, review or Plus. Reviews keep their 60-day gap, the Plus invite its 14-day gap.</li>
+  <li>Never Plus on the first 3 nights, after a miss, on a cloudy night, or where it can’t be bought (Android for now).</li>
+  <li>Same calm rules as reviews: nothing in the circle, no page, card, tour or Collection up, not in red mode, no new pass within 20 minutes.</li>
+  <li>Three closed invites and it stops; the lines in section 2 stay, they’re only ever one line.</li>
+</ul></div>
+<div class="rec"><b>My pick:</b> invite A (notice first) after a great night and on the 7th night; the Tonight line and the card-back chip; the recap line only on weeks the recap isn’t asking for a review. The split in section 3 for everything else.</div>
+</div></body></html>
