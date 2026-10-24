@@ -126,7 +126,7 @@ function show(t) {
     + (t.xp ? `<span class="ticket__xp">+${t.xp}<small>XP</small></span>` : t.sticky ? '<button type="button" class="ticket__x" aria-label="Dismiss">✕</button>' : '<span></span>');
   // Up long enough to read (2026-10-06: at least 5 s, about 1.6× the old times); a tap sends it away sooner.
   let gone = false, stopConfetti = () => {};
-  const dismiss = () => { if (gone) return; gone = true; clearInterval(timer); stopConfetti(); if (t.id) live.delete(t.id); stickies.delete(dismiss); if (t.sticky) { clearInterval(tuckT); const i = shelf.indexOf(el); if (i >= 0) shelf.splice(i, 1); } el.classList.add('out'); el.classList.remove('in'); setTimeout(() => { el.remove(); if (!t.sticky) { busy = false; } pump(); }, 200); };
+  const dismiss = () => { if (gone) return; gone = true; clearInterval(timer); stopConfetti(); if (t.id) live.delete(t.id); stickies.delete(dismiss); if (t.sticky) { clearInterval(tuckT); const i = shelf.indexOf(el); if (i >= 0) shelf.splice(i, 1); } el.classList.add('out'); el.classList.remove('in'); setTimeout(() => { el.remove(); if (!t.sticky && holding) { holding = false; busy = false; } pump(); }, 200); };
   // Swipe up to send it away, like the phone’s own notifications (2026-10-18).
   let y0 = null, dy = 0, swiped = false;
   el.addEventListener('pointerdown', (e) => { y0 = e.clientY; dy = 0; try { el.setPointerCapture(e.pointerId); } catch {} });
@@ -150,7 +150,11 @@ function show(t) {
   // their clock stops, so they come back afterwards with the rest of their time.
   let left = Math.max(5000, t.ms * 1.6);
   // Same whenever the stack can’t be seen (2026-10-18 playtest: they ran out unseen behind the Collection and the reveal).
-  const timer = t.sticky ? 0 : setInterval(() => { if (!stackSeen() || getComputedStyle(el).display === 'none') return; left -= 250; if (left <= 0) dismiss(); }, 250); // hidden (a page open, shelved, no room): the clock waits
+  // A notice hidden by a page that opened after it (it doesn't belong there) lets the queue go on, so one made on that
+  // page (e.g. "Welcome to Plus" after buying from the Tonight page) isn't stuck behind it (2026-10-23 Plus test); it
+  // keeps the rest of its time for when the page closes.
+  let holding = !t.sticky;
+  const timer = t.sticky ? 0 : setInterval(() => { const hid = getComputedStyle(el).display === 'none'; if (hid && holding && !el.dataset.panel && document.querySelector('.overlay.panel:not([hidden])')) { holding = false; busy = false; pump(); } if (!stackSeen() || hid) return; left -= 250; if (left <= 0) dismiss(); }, 250); // hidden (a page open, shelved, no room): the clock waits
   if (t.id) live.set(t.id, dismiss);
   // A notice that stays (Tonight, Example location, a new rank…) comes down as a banner like the rest, then after 6 s
   // tucks into a small chip under the header (#toast-tray) so it never sits over the header’s buttons; tap the chip to
