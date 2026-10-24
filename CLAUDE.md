@@ -1682,3 +1682,13 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - Verified kept after Plus ends and a relaunch: the Plus Member patch on the wall (secrets.plus; also in the iCloud backup keys). Card back falls back to Mission Control, Rare alerts switch off. Not testable here: real store purchase/restore and native widgets/notifications (need the app; Test Store toggle on a simulator or Xcode build).
 - 2026-10-23 (Sevaan): red night mode left the header: #night-toggle is hidden (kept in the DOM, wiring unchanged; also hidden on standalone cards.html), and the Display card (Red night mode first) is now Settings card 01 (Collection 02 … About 09). Long-press-the-sky to toggle was suggested, not built.
 - 2026-10-23 (Sevaan picked design/target-minicard.html Option 1): the target ticket (#discover .d-ticket.has-mini) carries the real mini card on the left (#d-mini, stripCard: picture hidden until it's yours; status 'Not yet collected' / 'In your collection'), rarity/distance, name (18px) and the button on the right. setDiscMini rebuilds it only when the card key or the sighting count changes. Plane/secret/below-horizon tickets are unchanged.
+- 2026-10-23 QA, code review batch (agent review of 00d90092^..HEAD):
+  - toast.js queue: with a page open, a notice made on it (inPanel) goes ahead of older ones waiting for the page to close (pump picks it), and a hidden notice only releases the queue when such a page notice is waiting. Checked: 4 queued on Explore stay as 1 hidden while Tonight is open, a page notice shows over it, the 4 then come out one at a time.
+  - Plus page has red night mode (its id-level colours beat body.night .set-sheet-card).
+  - pull-close.js: every scroller under the finger (and the book page) must be at its top; touches inside a .set-sheet don't pull the page under it.
+  - Collection's missions are read with the observer's longitude (cards-page obsLon), like Explore.
+  - bellTap(bell, p, key, done) in main.js is the one tap rule for every pass bell (hero, run rows, the swipe alarm): up now / too soon (read at tap time) / needs Plus / choose when; no disabled bells.
+  - The ticket's mini card cache key includes the newest sighting's time, the card models' count and Units.
+  - All around you: only the Sky value shrinks for long words (times like 10:45PM no longer did).
+  - Standalone cards.html shows its night switch again (embedded it stays hidden).
+  - onPlus keeps each book page's scroll (panelPos/panelRestore).

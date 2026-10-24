@@ -1,30 +1,30 @@
-import { pullToClose } from './pull-close.js?v=0.1.1064';
-import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.1064';
-import { computeStats, statsHtml } from './stats.js?v=0.1.1064';
-import { nightKey } from './observation.js?v=0.1.1064';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1064';
-import { sfx } from './sfx.js?v=0.1.1064';
-import { expandFacts } from './catalog-facts.js?v=0.1.1064';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.1064';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1064';
-import { ticket } from './toast.js?v=0.1.1064';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.1064';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.1064';
-import { cardArt } from './art.js?v=0.1.1064';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.1064';
-import { applyBack } from './card-backs.js?v=0.1.1064';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.1064';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1064';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.1064';
-import { STORIES } from './stories.js?v=0.1.1064';
-import { loadConstellations, conList } from './constellations.js?v=0.1.1064';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.1064';
-import { eventBadges, nextEvent } from './events.js?v=0.1.1064';
-import { shareCardEl } from './share-card.js?v=0.1.1064';
-import { forgetSighting } from './cloud-backup.js?v=0.1.1064';
-import { allSightings, deleteSighting } from './store.js?v=0.1.1064';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.1064';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.1064';
+import { pullToClose } from './pull-close.js?v=0.1.1067';
+import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.1067';
+import { computeStats, statsHtml } from './stats.js?v=0.1.1067';
+import { nightKey } from './observation.js?v=0.1.1067';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1067';
+import { sfx } from './sfx.js?v=0.1.1067';
+import { expandFacts } from './catalog-facts.js?v=0.1.1067';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.1067';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1067';
+import { ticket } from './toast.js?v=0.1.1067';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.1067';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.1067';
+import { cardArt } from './art.js?v=0.1.1067';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.1067';
+import { applyBack } from './card-backs.js?v=0.1.1067';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.1067';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1067';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.1067';
+import { STORIES } from './stories.js?v=0.1.1067';
+import { loadConstellations, conList } from './constellations.js?v=0.1.1067';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.1067';
+import { eventBadges, nextEvent } from './events.js?v=0.1.1067';
+import { shareCardEl } from './share-card.js?v=0.1.1067';
+import { forgetSighting } from './cloud-backup.js?v=0.1.1067';
+import { allSightings, deleteSighting } from './store.js?v=0.1.1067';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.1067';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.1067';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -44,6 +44,7 @@ function setNight(on) {
   document.querySelector('meta[name=theme-color]').content = on ? '#090303' : '#080f18';
 }
 setNight(document.documentElement.dataset.theme === 'night');
+if (!(window.parent !== window && new URLSearchParams(location.search).has('embed'))) $('night-toggle').hidden = false; // opened on its own, the Collection has no Settings: keep its switch (code review 2026-10-23)
 $('night-toggle').addEventListener('click', () => {
   const on = document.documentElement.dataset.theme !== 'night';
   setNight(on);
@@ -317,6 +318,8 @@ function renderAlbumHead() {
 }
 
 // ---------- logbook: rank, streak, tonight’s missions, achievements (js/progress.js) ----------
+// Tonight's missions are read under the night where you are now, as Explore deals and scores them (code review 2026-10-23).
+function obsLon() { try { const o = JSON.parse(localStorage.getItem('observer')); return Number.isFinite(o?.lon) ? o.lon : null; } catch { return null; } }
 // A notification next Saturday 8 pm (local), so the week’s streak isn’t lost. The app only: no calendar files (2026-10-12).
 function remindStreak() {
   const d = new Date(); d.setHours(20, 0, 0, 0);
@@ -329,7 +332,7 @@ function remindStreak() {
 function openStats() {
   // Everything the Collection already knows, for the stats page (2026-10-16 redesign).
   const info = (k) => { const c = state.byKey.get(k); return c ? { tier: c.tier, tier0: c.tier0, type: c.type, owner: c.owner, launch: c.launch, natural: c.natural, con: c.con, reunion: c.reunion, role: c.type === 'rocket-body' ? 'stage' : 'payload' } : null; };
-  const p = progress(state.raw, info, { constellations: conList(), deals: readDeals(), albums: state.albums, carry: xpCarry(state.raw, info, { constellations: conList(), deals: readDeals() }) });
+  const p = progress(state.raw, info, { constellations: conList(), deals: readDeals(), albums: state.albums, lon: obsLon(), carry: xpCarry(state.raw, info, { constellations: conList(), deals: readDeals() }) });
   let sec = {}; try { sec = JSON.parse(localStorage.getItem('secrets')) || {}; } catch {}
   let extra = Object.keys(sec).filter((k) => SECRET_PATCHES[k] && hasPatch(k, sec[k])).length;
   try { if (JSON.parse(localStorage.getItem('fossilFound'))) extra++; if (JSON.parse(localStorage.getItem('ufoFound'))) extra++; } catch {}
@@ -402,7 +405,7 @@ function tabsPin() { const t = document.querySelector('.collection-tabs'); if (t
 addEventListener('resize', tabsPin);
 function renderLogbook() {
   const info = (k) => { const c = state.byKey.get(k); return c ? { tier: c.tier, tier0: c.tier0, type: c.type, owner: c.owner, launch: c.launch, natural: c.natural, con: c.con, reunion: c.reunion, role: c.type === 'rocket-body' ? 'stage' : 'payload' } : null; };
-  const p = progress(state.raw, info, { constellations: conList(), deals: readDeals(), albums: state.albums, carry: xpCarry(state.raw, info, { constellations: conList(), deals: readDeals() }) });
+  const p = progress(state.raw, info, { constellations: conList(), deals: readDeals(), albums: state.albums, lon: obsLon(), carry: xpCarry(state.raw, info, { constellations: conList(), deals: readDeals() }) });
   state.albums ??= albumList(state.cards);
   try { localStorage.setItem('goldAlbums', JSON.stringify(SETS.filter((s) => albumStats(s.id).level === 3).map((s) => s.id))); } catch {}
   const card = $('logbook'); card.hidden = false; $('stats-open').hidden = true; // Observer stats moved to Settings → Account (2026-10-13, Sevaan)
@@ -978,7 +981,7 @@ $('v-share').addEventListener('click', async () => {
   const btn = $('v-share'); btn.disabled = true; btn.classList.add('busy'); // an icon now (2026-10-22, Sevaan): the words are gone, so results show as a notice
   try {
     const info = (k) => { const x = state.byKey.get(k); return x ? { tier: x.tier, tier0: x.tier0, type: x.type, owner: x.owner, launch: x.launch, natural: x.natural, con: x.con } : null; };
-    const how = await shareCardEl(el, c, { title: titleFor(c), rank: progress(state.raw, info, { constellations: conList(), deals: readDeals(), albums: state.albums, carry: xpCarry(state.raw, info, { constellations: conList(), deals: readDeals() }) }).rank.name, fact: factFor(c) }); // same rank as the logbook (QA 2026-10-08)
+    const how = await shareCardEl(el, c, { title: titleFor(c), rank: progress(state.raw, info, { constellations: conList(), deals: readDeals(), albums: state.albums, lon: obsLon(), carry: xpCarry(state.raw, info, { constellations: conList(), deals: readDeals() }) }).rank.name, fact: factFor(c) }); // same rank as the logbook (QA 2026-10-08)
     if (how === 'downloaded') ticket({ kind: 'info', icon: 'share', line: 'Saved the image', ms: 2200 });
   } catch { ticket({ kind: 'info', tone: 'red', line: 'Couldn’t make the image', ms: 2600 }); }
   btn.disabled = false; btn.classList.remove('busy');

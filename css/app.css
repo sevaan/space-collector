@@ -2418,3 +2418,12 @@ body:has(#set-plus-sheet:not([hidden])) #toasts .ticket--sticky, body:has(#set-p
 #discover .d-ticket.has-mini .d-actions { grid-area: actions; align-self: end; }
 #discover .d-ticket.has-mini #d-name { font-size: 18px !important; }
 #discover .d-ticket.has-mini #d-cta { min-height: 42px; }
+/* Red night mode on the Plus page (code review 2026-10-23: its id-level colours beat body.night .set-sheet-card). */
+body.night #set-plus-sheet .set-sheet-card { background: #090303; }
+body.night .crew-top { background: #090303; box-shadow: 0 8px 12px #090303; }
+body.night .crew-top b, body.night .crew-big, body.night .crew-kit b { color: #ff7f70; }
+body.night .crew-body, body.night .crew-kit small, body.night .crew-sec { color: #e8705f; }
+body.night .crew-sec::after { background: #3a1410; }
+body.night .crew-kit .kt { background: #140606; border-color: #2e1010; }
+body.night .crew-why { background: #2a0d0a; border-color: #5a1d18; }
+body.night .kt-fan img { border-color: #5a1d18; }

@@ -104,7 +104,10 @@ function fitStack() {
 setInterval(fitStack, 300);
 function pump() {
   if (busy || !queue.length) return;
-  const t = queue[0], wait = t.at - Date.now();
+  // With a page open, a notice made on that page goes ahead of older ones waiting for the page to close (code review
+  // 2026-10-23: "Welcome to Plus" sat behind a notice from Explore).
+  let qi = 0; if (!queue[0].inPanel && document.querySelector('.overlay.panel:not([hidden])')) { const j = queue.findIndex((q) => q.inPanel); if (j > 0) qi = j; }
+  const t = queue[qi], wait = t.at - Date.now();
   if (wait > 0) { busy = true; setTimeout(() => { busy = false; pump(); }, wait); return; }
   // Never over a card reveal or a patch moment (2026-10-08 playtest: toasts covered the new card); they wait their turn.
   // A sheet covers all of that, so its own messages go straight up (2026-10-16 playtest: "Try Plus free" said nothing,
@@ -112,7 +115,7 @@ function pump() {
   if (!document.querySelector('.set-sheet.in') && document.querySelector('#start:not([hidden]), #reveal:not([hidden]), .patch-moment, .patch-coins, body.patch-waiting, #ob-done:not([hidden]), body.first-catch')) { /* body.first-catch: the first catch after the tour (main.js) */ busy = true; setTimeout(() => { busy = false; pump(); }, 500); return; }
   // One sticky on screen at a time (2026-10-13 playtest: two stacked stickies covered 40% of an SE). A new one shows
   // straight away and the older one is shelved until it goes (2026-10-18 playtest: NEW RANK waited forever behind TONIGHT).
-  const [cur] = queue.splice(0, 1); return show(cur);
+  const [cur] = queue.splice(qi, 1); return show(cur);
 }
 function show(t) {
   busy = true;
@@ -154,7 +157,7 @@ function show(t) {
   // page (e.g. "Welcome to Plus" after buying from the Tonight page) isn't stuck behind it (2026-10-23 Plus test); it
   // keeps the rest of its time for when the page closes.
   let holding = !t.sticky;
-  const timer = t.sticky ? 0 : setInterval(() => { const hid = getComputedStyle(el).display === 'none'; if (hid && holding && !el.dataset.panel && document.querySelector('.overlay.panel:not([hidden])')) { holding = false; busy = false; pump(); } if (!stackSeen() || hid) return; left -= 250; if (left <= 0) dismiss(); }, 250); // hidden (a page open, shelved, no room): the clock waits
+  const timer = t.sticky ? 0 : setInterval(() => { const hid = getComputedStyle(el).display === 'none'; if (hid && holding && !el.dataset.panel && queue.some((q) => q.inPanel) && document.querySelector('.overlay.panel:not([hidden])')) { /* only for one that may show over the page; the rest keep waiting in order (code review 2026-10-23) */ holding = false; busy = false; pump(); } if (!stackSeen() || hid) return; left -= 250; if (left <= 0) dismiss(); }, 250); // hidden (a page open, shelved, no room): the clock waits
   if (t.id) live.set(t.id, dismiss);
   // A notice that stays (Tonight, Example location, a new rank…) comes down as a banner like the rest, then after 6 s
   // tucks into a small chip under the header (#toast-tray) so it never sits over the header’s buttons; tap the chip to
