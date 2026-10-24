@@ -121,6 +121,17 @@
   .f-row.free i { background: #7fd6a4; }
   .f-sum { color: #c9d3de; font-size: 13.5px; margin: 0 0 12px; } .f-sum b { color: var(--ink); }
 
+  /* B2: crew + card backs */
+  .b2-hero { position: relative; height: 236px; margin: 4px -18px 4px; }
+  .b2-hero img { position: absolute; left: 50%; top: 18px; width: 108px; height: 162px; margin-left: -54px; object-fit: cover; border-radius: 9px; border: 2px solid #e9dcb3; box-shadow: 0 12px 26px #000c; transform-origin: 50% 120%; }
+  .b2-hero .b-patch { position: absolute; left: 50%; top: 92px; width: 124px; height: 124px; margin: 0 0 0 -62px; border-width: 5px; z-index: 2; }
+  .b2-hero .b-patch b { font-size: 14px; } .b2-hero .b-patch small { font-size: 8.5px; letter-spacing: .26em; }
+  .b2-kit-backs { display: flex; margin: 6px 0 2px; }
+  .b2-kit-backs img { width: 22px; height: 33px; object-fit: cover; border-radius: 3px; border: 1px solid #e9dcb3; margin-right: -7px; box-shadow: 0 2px 5px #0008; }
+  .b-kit div.wide { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 10px; }
+  .b-kit div.wide .fan { position: relative; width: 124px; height: 62px; }
+  .b-kit div.wide .fan img { position: absolute; bottom: 0; width: 38px; height: 57px; object-fit: cover; border-radius: 4px; border: 1.5px solid #e9dcb3; box-shadow: 0 4px 10px #000a; transform-origin: 50% 110%; }
+
   .g-card { display: block; width: 92%; margin: 4px auto 16px; transform: rotate(-2deg); border-radius: 14px; box-shadow: 0 0 0 1px #ffc93d55, 0 18px 40px #000c, 0 0 40px #ffc93d22; }
 
   .rec { max-width: 860px; margin: 40px auto 0; padding: 16px 18px; border: 1px solid #fa812744; border-radius: 14px; background: #fa81270c; color: #d7dfe8; font-size: 14.5px; }
@@ -218,6 +229,50 @@
     <p>Supporting as belonging: you're crew, the patch is the badge, the extras are your kit. Plays into the patch wall you already have (the Members patch).</p>
     <p class="pro">+ Shortest and most game-like; the patch gives people something to show.</p>
     <p class="con">− "Crew" is a new word in the app; the free part is one line.</p></div>
+</div>
+
+<!-- B2 -->
+<div class="cell">
+  <div class="ph"><div class="scr">
+    <div class="top"><b>JOIN THE CREW</b><span>✕</span></div>
+    <span class="why">🔔 Reminders are one of the extras</span>
+    <div class="b2-hero">
+      <img src="../assets/art/backs/back-aurora.webp" alt="" style="transform:rotate(-24deg) translateX(-8px)">
+      <img src="../assets/art/backs/back-golden-record.webp" alt="" style="transform:rotate(-12deg)">
+      <img src="../assets/art/backs/back-star-chart.webp" alt="" style="transform:rotate(12deg)">
+      <img src="../assets/art/backs/back-blueprint.webp" alt="" style="transform:rotate(24deg) translateX(8px)">
+      <img src="../assets/art/backs/back-nebula-foil.webp" alt="" style="transform:translateY(-6px)">
+      <div class="b-patch"><i style="top:12px">✦</i><div><b>CREW</b><small>SPACE COLLECTOR</small></div><i style="bottom:12px;font-size:10px">★ ★ ★</i></div>
+    </div>
+    <div class="big" style="text-align:center">Keep the lights on.<br>Wear the patch.</div>
+    <p class="body" style="text-align:center">Space Collector is free to play, all of it. The crew are the players who chip in to keep it flying, and get a little kit for it.</p>
+    <div class="sec">Your crew kit</div>
+    <div class="b-kit">
+      <div class="wide"><span><span class="k">▭</span><b>Six card backs</b><small>Pick the back every card shows, or a different one each flip.</small></span>
+        <span class="fan">
+          <img src="../assets/art/backs/back-mission-patch.webp" alt="" style="left:0;transform:rotate(-14deg)">
+          <img src="../assets/art/backs/back-aurora.webp" alt="" style="left:22px;transform:rotate(-5deg)">
+          <img src="../assets/art/backs/back-golden-record.webp" alt="" style="left:44px;transform:rotate(4deg)">
+          <img src="../assets/art/backs/back-star-chart.webp" alt="" style="left:66px;transform:rotate(12deg)">
+          <img src="../assets/art/backs/back-nebula-foil.webp" alt="" style="left:86px;transform:rotate(20deg)">
+        </span></div>
+      <div><span class="k">🔔</span><b>Pass reminders</b><small>Never miss the one you wanted.</small></div>
+      <div><span class="k">◆</span><b>Rare alerts</b><small>Pinged when Rare+ is coming.</small></div>
+      <div><span class="k">▦</span><b>Widgets</b><small>Tonight, at a glance.</small></div>
+      <div><span class="k">✦</span><b>Shiny forecast</b><small>Where shinies can happen.</small></div>
+      <div class="wide"><span><span class="k">◎</span><b>The crew patch</b><small>On your patch wall, for good, even if you stop.</small></span>
+        <span class="c-patch"><span class="pt" style="width:56px;height:56px;font-size:8px">CREW<br>★</span></span></div>
+    </div>
+    <div class="sec">Pick your mission length</div>
+    <div class="prices"><div class="pr"><div class="l">Month</div><div class="p">$1.99</div><div class="n">&nbsp;</div></div><div class="pr on"><div class="l">Year</div><div class="p">$14.99</div><div class="n">7 days free</div></div><div class="pr"><div class="l">Forever</div><div class="p">$29.99</div><div class="n">Lifetime crew</div></div></div>
+    <button class="cta">Join the crew</button>
+    <p class="fine">7 days free, then $14.99 a year. Cancel anytime. Shared with Family Sharing.<br>Terms of Use · Privacy Policy · Restore purchases</p>
+    <span class="later">Maybe later</span>
+  </div></div>
+  <div class="cap"><h2>B2 · Join the crew, with the card backs</h2>
+    <p>B with the card backs fanned out behind the crew patch at the top, and a wide Card backs tile in the kit with its own small fan. The patch tile is wide too, so the two things you can see (backs, patch) bracket the kit.</p>
+    <p class="pro">+ The most visual first screen; the backs show what you get before any words.</p>
+    <p class="con">− The free promise is still one line; the hero is taller, so the kit starts lower.</p></div>
 </div>
 
 <!-- C -->
