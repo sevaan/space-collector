@@ -345,7 +345,7 @@ main { padding-bottom: calc(var(--safe-bottom) + 210px) !important; } /* the las
 :where(html[data-theme="night"], body.night) .album-bar { background: #2a0e0c; }
 :where(html[data-theme="night"], body.night) .album-bar i { background: linear-gradient(90deg, #a83a2c, #ff6a55); }
 :where(html[data-theme="night"], body.night) .album-bar b { background: #3a1716; }
-:where(html[data-theme="night"], body.night) :is(.album__art, .pw-item svg, .pv-art) { filter: grayscale(1) sepia(1) saturate(5) hue-rotate(318deg) brightness(.6); }
+:where(html[data-theme="night"], body.night) :is(.album__art, .pv-art) { filter: grayscale(1) sepia(1) saturate(5) hue-rotate(318deg) brightness(.6); }
 :where(html[data-theme="night"], body.night) .lb-remind { border-color: #a83a2c; color: #ff6a55; }
 /* Albums as a list (2026-10-09, Sevaan: at three a row the album names were cut off). One full-width row per
    album: the cover on the left, then the name and count, the bar, and the level and what's next. */
@@ -861,3 +861,6 @@ html.embedded #stats-view, html.embedded #stats-view:focus, html.embedded #stats
 html.embedded #stats-view { max-width: none; }
 html.embedded #stats-body { padding-inline: max(20px, calc((100% - 620px) / 2)); }
 #viewer.docked { box-shadow: 0 calc(var(--safe-bottom, 0px) + 96px) 0 0 var(--bg); }
+
+/* Red mode leaves the patch wall's SVGs unfiltered (iPad playtest 2026-10-24: a filter on every patch made WebKit drop or
+   misplace most of them); the page's red multiply layer turns them red. */

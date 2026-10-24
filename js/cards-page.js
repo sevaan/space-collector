@@ -1,30 +1,30 @@
-import { pullToClose } from './pull-close.js?v=0.1.1114';
-import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.1114';
-import { computeStats, statsHtml } from './stats.js?v=0.1.1114';
-import { nightKey } from './observation.js?v=0.1.1114';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1114';
-import { sfx } from './sfx.js?v=0.1.1114';
-import { expandFacts } from './catalog-facts.js?v=0.1.1114';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.1114';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1114';
-import { ticket } from './toast.js?v=0.1.1114';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.1114';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.1114';
-import { cardArt } from './art.js?v=0.1.1114';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.1114';
-import { applyBack } from './card-backs.js?v=0.1.1114';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.1114';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1114';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.1114';
-import { STORIES } from './stories.js?v=0.1.1114';
-import { loadConstellations, conList } from './constellations.js?v=0.1.1114';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.1114';
-import { eventBadges, nextEvent } from './events.js?v=0.1.1114';
-import { shareCardEl } from './share-card.js?v=0.1.1114';
-import { forgetSighting } from './cloud-backup.js?v=0.1.1114';
-import { allSightings, deleteSighting } from './store.js?v=0.1.1114';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.1114';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.1114';
+import { pullToClose } from './pull-close.js?v=0.1.1115';
+import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.1115';
+import { computeStats, statsHtml } from './stats.js?v=0.1.1115';
+import { nightKey } from './observation.js?v=0.1.1115';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1115';
+import { sfx } from './sfx.js?v=0.1.1115';
+import { expandFacts } from './catalog-facts.js?v=0.1.1115';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.1115';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1115';
+import { ticket } from './toast.js?v=0.1.1115';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.1115';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.1115';
+import { cardArt } from './art.js?v=0.1.1115';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.1115';
+import { applyBack } from './card-backs.js?v=0.1.1115';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.1115';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1115';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.1115';
+import { STORIES } from './stories.js?v=0.1.1115';
+import { loadConstellations, conList } from './constellations.js?v=0.1.1115';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.1115';
+import { eventBadges, nextEvent } from './events.js?v=0.1.1115';
+import { shareCardEl } from './share-card.js?v=0.1.1115';
+import { forgetSighting } from './cloud-backup.js?v=0.1.1115';
+import { allSightings, deleteSighting } from './store.js?v=0.1.1115';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.1115';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.1115';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -330,6 +330,7 @@ function remindStreak() {
 }
 // Observer stats (free for everyone, 2026-10-12): a link under the rank card opens #stats-view.
 function openStats({ instant = false } = {}) { /* instant: already there under Settings, no slide (2026-10-24) */
+  if ($('stats-body')) $('stats-body').scrollTop = 0; // always opens at the top (iPad playtest 2026-10-24: it reopened at Rarest finds)
   // Everything the Collection already knows, for the stats page (2026-10-16 redesign).
   const info = (k) => { const c = state.byKey.get(k); return c ? { tier: c.tier, tier0: c.tier0, type: c.type, owner: c.owner, launch: c.launch, natural: c.natural, con: c.con, reunion: c.reunion, role: c.type === 'rocket-body' ? 'stage' : 'payload' } : null; };
   const p = progress(state.raw, info, { constellations: conList(), deals: readDeals(), albums: state.albums, lon: obsLon(), carry: xpCarry(state.raw, info, { constellations: conList(), deals: readDeals() }) });
@@ -388,7 +389,9 @@ function primeSince() { // as the Collection is shown: the old XP and bar are in
 }
 function replaySince() {
   const prev = since; since = (() => { try { return JSON.parse(localStorage.getItem('colVisit') ?? 'null'); } catch { return null; } })() ?? prev;
-  if (since?.at != null) { let n = 0; for (const c of state.cards) if (!peeled.has(c.key) && !freshKeys.has(c.key) && (firstSeen(c) ?? 0) > since.at) { freshKeys.add(c.key); n++; } if (n) saveFresh(); }
+  const showing = $('viewer').open && !state.preview ? state.list[state.index]?.key : null; // the card open right now (View in collection) is already seen (iPad playtest 2026-10-24)
+  if (since?.at != null) { let n = 0; for (const c of state.cards) if (c.key !== showing && !peeled.has(c.key) && !freshKeys.has(c.key) && (firstSeen(c) ?? 0) > since.at) { freshKeys.add(c.key); n++; } if (n) saveFresh(); }
+  if (showing) peelSticker(state.byKey.get(showing));
   for (const slot of document.querySelectorAll('#grid .tile-slot[data-key]')) { const c = state.byKey.get(slot.dataset.key), tile = slot.firstElementChild; if (c && tile) stickerOn(tile, c); }
   if (!lbLast || !since?.xp || lbLast.xp <= since.xp || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   const gain = lbLast.xp - since.xp, xpEl = document.querySelector('#logbook .lb-xp b'), bar = document.querySelector('#logbook .lb-bar i');
