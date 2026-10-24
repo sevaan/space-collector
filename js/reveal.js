@@ -5,12 +5,12 @@
 //  Everything scales with rarity (Legendary dims the sky, shockwave, held breath, slow flip, fanfare).
 // Waits use timers, not animation.finished, so a paused tab can never freeze the sequence.
 
-import { sfx, loadSfx, heartbeat } from './sfx.js?v=0.1.1106';
-import { audioCtx } from './audio-ctx.js?v=0.1.1106';
-import { TIER_INFO } from './rarity.js?v=0.1.1106';
-import { levelFor, attachTilt, attachGyro, attachFlip, throwOff, retype } from './card.js?v=0.1.1106';
-import { applyBack } from './card-backs.js?v=0.1.1106';
-import { addStarfield } from './starfield.js?v=0.1.1106';
+import { sfx, loadSfx, heartbeat } from './sfx.js?v=0.1.1107';
+import { audioCtx } from './audio-ctx.js?v=0.1.1107';
+import { TIER_INFO } from './rarity.js?v=0.1.1107';
+import { levelFor, attachTilt, attachGyro, attachFlip, throwOff, retype } from './card.js?v=0.1.1107';
+import { applyBack } from './card-backs.js?v=0.1.1107';
+import { addStarfield } from './starfield.js?v=0.1.1107';
 
 const FX = {
   common:    { particles: 14,  flip: 520,  spin: 0,   dim: 0,   shock: false, notes: [880],                            hold: 0 },
@@ -342,11 +342,11 @@ async function finish({ fx, color, fresh, seen, level, levelUp, card, alive, fle
 // arrive afterwards as a pile of toasts over the circle). news: [{ kind: 'mission'|'patch'|'rank'|'event', text, xp }].
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 let earnedNow = []; // playReveal’s earned list, for the finish step
-const NEWS_ICON = { mission: '◆', patch: '◎', rank: '▲', event: '✦', reunion: '⇄', back: '▭' };
+const NEWS_ICON = { mission: '◆', patch: '◎', rank: '▲', event: '✦', reunion: '⇄', back: '▭', backs: '✦' };
 function showNews(news, alive) {
   const box = $('rv-news'); box.style.flexWrap = ''; if (!news?.length) return;
   // One row: the two biggest pieces of news, then "+N" (a second row covered the card on small phones).
-  const ORDER = { rank: 0, back: 1, reunion: 2, event: 3, patch: 4, mission: 5 }; // a new card back is rare news: up front (2026-10-24)
+  const ORDER = { rank: 0, back: 1, backs: 1.5, reunion: 2, event: 3, patch: 4, mission: 5 }; // a new card back is rare news: up front (2026-10-24)
   const sorted = news.slice().sort((a, b) => (ORDER[a.kind] ?? 9) - (ORDER[b.kind] ?? 9));
   const rest = sorted.length > 3 ? sorted.slice(2) : [];
   news = rest.length ? [...sorted.slice(0, 2), { kind: 'more', text: `+${rest.length} more` }] : sorted;
@@ -358,6 +358,7 @@ function showNews(news, alive) {
       c.setAttribute('role', 'button'); c.tabIndex = 0; c.style.pointerEvents = 'auto'; c.style.cursor = 'pointer';
       c.addEventListener('click', () => { c.remove(); box.style.flexWrap = 'wrap'; for (const m of rest) { const x = document.createElement('span'); x.className = `rv-chip rv-chip--${m.kind} in`; x.innerHTML = `<i aria-hidden="true">${NEWS_ICON[m.kind] ?? '◆'}</i>${esc(m.text)}${m.xp ? `<b>+${m.xp}</b>` : ''}`; box.append(x); } }, { once: true });
     }
+    if (n.act) { c.setAttribute('role', 'button'); c.tabIndex = 0; c.style.pointerEvents = 'auto'; c.style.cursor = 'pointer'; c.addEventListener('click', (e) => { e.stopPropagation(); dispatchEvent(new CustomEvent('sc:news-act', { detail: n.act })); }); } /* e.g. "see them all" card backs → Plus (2026-10-24) */
     box.append(c); requestAnimationFrame(() => c.classList.add('in'));
     // Each chip sounds and feels like what it is (2026-10-17 haptics playtest: a rank-up got the generic XP tick).
     if (n.kind === 'rank') sfx('rankup'); else if (n.kind === 'reunion') { sfx('complete', { gain: 0.8 }); dispatchEvent(new CustomEvent('sc:feel', { detail: 'success' })); } else if (n.kind === 'mission') { sfx('mission', { gain: 0.8 }); dispatchEvent(new CustomEvent('sc:feel', { detail: 'light' })); } else if (n.kind === 'patch') sfx('patch', { gain: 0.7 }); else sfx('xp', { gain: 0.7 });
