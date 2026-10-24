@@ -540,3 +540,8 @@ html body #toasts#toasts#toasts { top: calc(var(--safe-top, env(safe-area-inset-
 #radar, #nextpass, #event-banner, #toast-tray, .patch-coins, #whatsthis { translate: 0 var(--toast-push, 0px); transition: translate .45s cubic-bezier(.2, .9, .3, 1); }
 body:has(.overlay.panel:not([hidden])) :is(#radar, #nextpass, #toast-tray) { translate: none; }
 @media (prefers-reduced-motion: reduce) { #radar, #nextpass, #event-banner, #toast-tray, .patch-coins { transition: none; } }
+/* Tabs, words only, 54 px (2026-10-24, Sevaan picked design/footer-blend.html A): today's glass, orange word and orange
+   top edge, full width; the icons go and the bar drops from 72 to 54 px (tap targets stay 54 px tall). */
+.sc-switch { height: 54px !important; }
+.sc-switch__item { gap: 0 !important; }
+.sc-switch__item .ico { display: none !important; }
