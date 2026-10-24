@@ -5,12 +5,12 @@
 //  Everything scales with rarity (Legendary dims the sky, shockwave, held breath, slow flip, fanfare).
 // Waits use timers, not animation.finished, so a paused tab can never freeze the sequence.
 
-import { sfx, loadSfx, heartbeat } from './sfx.js?v=0.1.1113';
-import { audioCtx } from './audio-ctx.js?v=0.1.1113';
-import { TIER_INFO } from './rarity.js?v=0.1.1113';
-import { levelFor, attachTilt, attachGyro, attachFlip, throwOff, retype } from './card.js?v=0.1.1113';
-import { applyBack } from './card-backs.js?v=0.1.1113';
-import { addStarfield } from './starfield.js?v=0.1.1113';
+import { sfx, loadSfx, heartbeat } from './sfx.js?v=0.1.1114';
+import { audioCtx } from './audio-ctx.js?v=0.1.1114';
+import { TIER_INFO } from './rarity.js?v=0.1.1114';
+import { levelFor, attachTilt, attachGyro, attachFlip, throwOff, retype } from './card.js?v=0.1.1114';
+import { applyBack } from './card-backs.js?v=0.1.1114';
+import { addStarfield } from './starfield.js?v=0.1.1114';
 
 const FX = {
   common:    { particles: 14,  flip: 520,  spin: 0,   dim: 0,   shock: false, notes: [880],                            hold: 0 },
@@ -101,7 +101,7 @@ function sizeCard(cardEl) {
   root.style.setProperty('--cf', '12px');
   const em = Math.max(39.2, cardEl.getBoundingClientRect().height / 12);
   // Room for the header and chips above, the rank bar and link below (2026-10-12: the card sat high over dead space).
-  let cf = Math.max(7, Math.min(14, (innerWidth - 58) / 28, (innerHeight - 270) / em)); // 270: both zones plus the notch and home bar
+  let cf = Math.max(7, Math.min(Math.min(innerWidth, innerHeight) >= 600 ? 18 : 14, (innerWidth - 58) / 28, (innerHeight - 270) / em)); /* big screens (iPad, unfolded Duo) may go to 18, like the docked card (iPad/Duo playtest 2026-10-24: 100pt empty bands) */ // 270: both zones plus the notch and home bar
   root.style.removeProperty('--rv-y');
   root.style.setProperty('--cf', `${cf}px`);
   root.style.setProperty('--ch', em);

@@ -2443,6 +2443,7 @@ body.night .kt-fan img { border-color: #5a1d18; }
   #set-plus-sheet .set-sheet-card { display: grid !important; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 56px; align-content: start; padding-left: calc(28px + var(--safe-l, 0px)); padding-right: calc(28px + var(--safe-r, 0px)); }
   #set-plus-sheet .set-sheet-card > .starfield, #set-plus-sheet .set-sheet-card > .crew-top { grid-column: 1 / -1; }
   #set-plus-sheet .set-sheet-card > .crew-intro { grid-column: 1; max-width: 440px; margin: 0 0 0 auto; align-self: start; padding-top: 24px; }
+  #set-plus-sheet .set-sheet-card > .crew-intro { position: sticky !important; top: 0; } /* stays beside the kit as it scrolls (iPad/Duo playtest 2026-10-24: a two-thirds empty band); the page starts under the header now, so it can't slide under it */
   #set-plus-sheet .set-sheet-card > .crew-side { grid-column: 2; max-width: 460px; margin: 0 auto 0 0; }
   #set-plus-sheet .crew-side .crew-sec:first-child { margin-top: 10px; }
 }
@@ -2475,3 +2476,10 @@ body:has(#onboard:not([hidden]) #ob-done:not([hidden])) #set-plus-sheet { top: 0
 body:has(#onboard:not([hidden]) #ob-done:not([hidden])) #set-plus-sheet .set-sheet-card > .crew-top { display: flex !important; }
 body:has(#onboard:not([hidden]) #ob-done:not([hidden])) #set-plus-sheet .set-sheet-card { height: 100dvh !important; padding-top: 0 !important; }
 body:has(#onboard:not([hidden]) #ob-done:not([hidden])) #set-plus-sheet .set-sheet-card > .starfield { height: 100dvh; margin-bottom: -100dvh; }
+/* iPad/Duo playtest 2026-10-24. Book Settings: every chosen group starts at the same height (Collection kept its phone
+   16px, Testing tools 18px, the rest 6px, so the card jumped when switching). The tour deck centres on the circle (the
+   screen's middle), not on the safe area, which the Duo's side strip pushes off-centre. */
+@media (min-width: 900px) and (min-height: 560px) and (orientation: landscape), (min-width: 600px) and (min-height: 900px) and (orientation: portrait) {
+  #debug > .set-group.set-card.on, #debug.set-tools > #test-tools { margin-top: 6px !important; }
+  .ob-deck { left: 0; right: 0; }
+}
