@@ -36,7 +36,7 @@ function collection(now, { heroIss = false } = {}) {
 // A returning player on a clear evening: seeded collection, the App Store safe areas, no testing button.
 // clear: the weather can't be fetched, so the Tonight page shows the plan without a forecast (2026-10-22: a date picked for a
 // good ISS pass came out 'Overcast all night', the real forecast for that week).
-export async function setup(browser, kind, { when, video = null, extra = [], heroIss = false, clear = false } = {}) {
+export async function setup(browser, kind, { when, video = null, extra = [], heroIss = false, clear = false, storage = {} } = {}) {
   const d = DEVICES[kind], at = when ? new Date(when) : nextEvening();
   const ctx = await browser.newContext({ viewport: d.viewport, deviceScaleFactor: d.deviceScaleFactor, isMobile: d.isMobile, hasTouch: d.hasTouch, userAgent: d.userAgent,
     serviceWorkers: 'block', timezoneId: PLACE.tz, geolocation: { latitude: PLACE.latitude, longitude: PLACE.longitude }, permissions: ['geolocation'], ...(video ? { recordVideo: video } : {}) });
@@ -51,12 +51,25 @@ export async function setup(browser, kind, { when, video = null, extra = [], her
   await ctx.clock.install({ time: at });
   const p = await ctx.newPage(), errs = []; p.on('pageerror', (e) => errs.push(e.message));
   await p.goto(APP + 'cards.html'); await p.waitForTimeout(1500);
-  await p.evaluate(async (list) => { const m = await import('./js/store.js'); for (const s of list) await m.addSighting(s);
+  await p.evaluate(async ([list, storage]) => { const m = await import('./js/store.js'); for (const s of list) await m.addSighting(s); for (const [k, v] of Object.entries(storage)) localStorage.setItem(k, v);
     localStorage.setItem('wcSeen', '1'); localStorage.setItem('started', '1'); localStorage.setItem('radarTip', '1'); localStorage.setItem('shinyExplained', '1');
-    const d = new Date(); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() - ((d.getDay() + 6) % 7)); localStorage.setItem('recapWeek', String(d.getTime())); }, [...collection(at.getTime(), { heroIss }), ...extra]);
+    const d = new Date(); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() - ((d.getDay() + 6) % 7)); localStorage.setItem('recapWeek', String(d.getTime())); }, [[...collection(at.getTime(), { heroIss }), ...extra], storage]);
   await p.goto(APP); await p.waitForTimeout(9000);
   return { ctx, p, errs };
 }
+
+// The 2026-10-24 store set (marketing review): more to show in the Collection, on the Moon card and on the patch wall.
+// Five Moon phases stamped (a sighting every ~3.7 days back, each a different phase), Tiangong gold (10 nights), two bright
+// stars, and two secret patches found (the fossil and Dizzy). Every date is on or before the capture night.
+export function storeExtras(at) {
+  const t = at.getTime(), D = 864e5, here = { lat: PLACE.latitude, lon: PLACE.longitude }, out = [];
+  for (const k of [1, 4.7, 8.4, 12.1, 15.8]) out.push({ time: t - k * D - 3 * 3600e3, cardKey: 'moon', objectId: 'moon', name: 'Moon', type: 'moon', ...here });
+  for (let k = 1; k <= 10; k++) out.push({ time: t - k * D - 2 * 3600e3, cardKey: '48274', objectId: 48274, name: 'CSS (TIANHE)', type: 'station', ...here });
+  for (const [key, name] of [['star:vega', 'Vega'], ['star:arcturus', 'Arcturus']]) out.push({ time: t - 5 * D, cardKey: key, objectId: key, name, type: 'star', ...here });
+  return out;
+}
+export const storeStorage = (at) => { const t = at.getTime() - 6 * 864e5; return { fossilFound: JSON.stringify({ at: t }), secrets: JSON.stringify({ dizzy: t - 864e5 }) }; };
+export const captureNight = (when) => (when ? new Date(when) : (() => { const d = new Date(); d.setHours(20, 30, 0, 0); return d; })());
 
 // No notices, badges or tips over the shots.
 export const hideNoise = (p) => p.addStyleTag({ content: '#toasts, .patch-coins, .pc-badge, .radar-tip, #until-dark { display: none !important; }' });

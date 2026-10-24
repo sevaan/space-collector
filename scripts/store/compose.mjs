@@ -12,14 +12,16 @@ import { ROOT } from './common.mjs';
 // Marketing pass (2026-10-19, Sevaan's "room full of marketers"): screenshot 1 states the whole idea, the shiny ISS
 // moves up to 3 (collectors buy rarity), every eyebrow is a fact and every headline a feeling; "Free · no ads" closes.
 // ORDER sets the App Store order (file numbers); CAPTIONS sets the words. Change either and re-run this script.
-export const ORDER = ['sky', 'reveal', 'card', 'tonight', 'collection', 'patches'];
+export const ORDER = ['sky', 'reveal', 'tonight', 'card', 'collection', 'moon', 'patches', 'around']; // 2026-10-24 marketing review + Sevaan: 8 shots
 export const CAPTIONS = {
-  sky: ['Real satellites · right now', 'That light is a satellite. Catch it.'],
+  sky: ['Point your phone at the sky', 'Catch real satellites overhead'],
   reveal: ['Line it up · tap Collect', 'Every catch is a card'], // the ISS, new to the seeded collection
-  card: ['Thousands of real objects', 'Lucky catches shine'], // the shiny Hubble (the ISS is the hero catch now)
   tonight: ['Tonight, timed to the minute', 'Know when to look up'],
-  collection: ['Stations · rockets · planets · stars', 'Build your collection'],
+  card: ['Caught at just the right moment', 'Lucky catches shine'], // the shiny Hubble, tilted so the foil shows
+  collection: ['Stations · rockets · planets', '4,000+ real cards to find'],
+  moon: ['One Moon, eight phases', 'Catch every phase'],
   patches: ['Free to play · no ads', 'Earn patches. Find the secrets.'],
+  around: ['A full 360° of sky', 'See what’s all around you'],
 };
 const SIZE = { phone: [1206, 2622], pad: [2064, 2752], duo: [2853, 2007] };
 const which = process.argv[2] ?? 'all', RAW = join(ROOT, 'store/raw');
