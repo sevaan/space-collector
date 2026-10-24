@@ -1,30 +1,30 @@
-import { pullToClose } from './pull-close.js?v=0.1.1116';
-import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.1116';
-import { computeStats, statsHtml } from './stats.js?v=0.1.1116';
-import { nightKey } from './observation.js?v=0.1.1116';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1116';
-import { sfx } from './sfx.js?v=0.1.1116';
-import { expandFacts } from './catalog-facts.js?v=0.1.1116';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.1116';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1116';
-import { ticket } from './toast.js?v=0.1.1116';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.1116';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.1116';
-import { cardArt } from './art.js?v=0.1.1116';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.1116';
-import { applyBack } from './card-backs.js?v=0.1.1116';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.1116';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1116';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.1116';
-import { STORIES } from './stories.js?v=0.1.1116';
-import { loadConstellations, conList } from './constellations.js?v=0.1.1116';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.1116';
-import { eventBadges, nextEvent } from './events.js?v=0.1.1116';
-import { shareCardEl } from './share-card.js?v=0.1.1116';
-import { forgetSighting } from './cloud-backup.js?v=0.1.1116';
-import { allSightings, deleteSighting } from './store.js?v=0.1.1116';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.1116';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.1116';
+import { pullToClose } from './pull-close.js?v=0.1.1117';
+import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.1117';
+import { computeStats, statsHtml } from './stats.js?v=0.1.1117';
+import { nightKey } from './observation.js?v=0.1.1117';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1117';
+import { sfx } from './sfx.js?v=0.1.1117';
+import { expandFacts } from './catalog-facts.js?v=0.1.1117';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.1117';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1117';
+import { ticket } from './toast.js?v=0.1.1117';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.1117';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.1117';
+import { cardArt } from './art.js?v=0.1.1117';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.1117';
+import { applyBack } from './card-backs.js?v=0.1.1117';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.1117';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1117';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.1117';
+import { STORIES } from './stories.js?v=0.1.1117';
+import { loadConstellations, conList } from './constellations.js?v=0.1.1117';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.1117';
+import { eventBadges, nextEvent } from './events.js?v=0.1.1117';
+import { shareCardEl } from './share-card.js?v=0.1.1117';
+import { forgetSighting } from './cloud-backup.js?v=0.1.1117';
+import { allSightings, deleteSighting } from './store.js?v=0.1.1117';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.1117';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.1117';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -171,7 +171,7 @@ addEventListener('resize', () => { miniS = ''; queueMiniScale(); });
 // it), so you can keep tapping or swiping through without covering it. Same sizes as the book in css/app.css. There
 // the viewer dialog is shown non-modally (.docked); a phone keeps the full-screen viewer. Albums and Patches keep the
 // whole width.
-const DOCK_Q = matchMedia('(min-width: 900px) and (min-height: 560px) and (orientation: landscape), (min-width: 600px) and (min-height: 900px) and (orientation: portrait)');
+const DOCK_Q = matchMedia('(min-width: 820px) and (min-height: 560px) and (orientation: landscape), (min-width: 600px) and (min-height: 900px) and (orientation: portrait)');
 const docked = () => DOCK_Q.matches && !['albums', 'patches'].includes(state.view);
 const isDocked = () => $('viewer').open && $('viewer').classList.contains('docked');
 let redocking = false; // moving the open viewer between the two (fold/unfold): its close isn’t a real close

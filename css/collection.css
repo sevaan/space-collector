@@ -761,7 +761,7 @@ dialog[open] { padding-left: var(--safe-l) !important; padding-right: var(--safe
    Upright (≥600 × 900, portrait): the grid on the top page, the card on the bottom one. The rank card folds into a slim
    bar (rank, XP, the bar to the next rank) above the tabs. Albums and Patches keep the whole width. Phones never match. */
 #dock-empty { display: none; }
-@media (min-width: 900px) and (min-height: 560px) and (orientation: landscape), (min-width: 600px) and (min-height: 900px) and (orientation: portrait) {
+@media (min-width: 820px) and (min-height: 560px) and (orientation: landscape), (min-width: 600px) and (min-height: 900px) and (orientation: portrait) {
   body:not([data-view="albums"]):not([data-view="patches"]) main { max-width: none; margin: 0; }
   .logbook :is(.lb-top, .lb-pic, .lb-mission, .lb-foot) { display: none !important; }
   .logbook { margin: 4px 0 12px; padding: 10px 14px 8px; }
@@ -778,7 +778,7 @@ dialog[open] { padding-left: var(--safe-l) !important; padding-right: var(--safe
   #dock-empty { position: fixed; z-index: 2; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding-bottom: calc(var(--safe-bottom) + 90px); color: var(--muted); font: 500 14px/1.3 var(--label, 'SC Label'), 'Barlow Condensed', sans-serif; letter-spacing: .16em; text-transform: uppercase; text-align: center; pointer-events: none; }
   #dock-empty .de-card { width: min(46%, 220px); aspect-ratio: 28 / 42; border: 2px dashed #2b3c55; border-radius: 14px; display: grid; place-items: center; color: #3c516f; font-size: 30px; }
 }
-@media (min-width: 900px) and (min-height: 560px) and (orientation: landscape) {
+@media (min-width: 820px) and (min-height: 560px) and (orientation: landscape) {
   body:not([data-view="albums"]):not([data-view="patches"]) main { padding-left: calc(20px + var(--safe-l)) !important; padding-right: calc(50vw + 20px) !important; }
   #viewer.docked, #dock-empty { top: var(--col-top); bottom: 0; left: calc(50vw + 20px); right: 0; padding: 0 var(--safe-r) 0 0 !important; }
   #dock-empty { padding-bottom: calc(var(--safe-bottom) + 90px) !important; }
@@ -815,7 +815,7 @@ dialog[open] { padding-left: var(--safe-l) !important; padding-right: var(--safe
 /* The open card on the right page (Duo simulator, Sevaan 2026-10-22: "I have to scroll a little to see the bottom of
    the card and that blue background should maybe be the same colour as the rest of the page"): the page's own navy,
    and the whole card fits under the ✕ row with room to spare. */
-@media (min-width: 900px) and (min-height: 560px) and (orientation: landscape) {
+@media (min-width: 820px) and (min-height: 560px) and (orientation: landscape) {
   #viewer.docked, #viewer.docked .viewer-scroll { background: var(--bg) !important; background-image: none !important; }
   #viewer.docked #slot .card { font-size: min(18px, calc((100cqw - 36px) / 28), calc((100cqh - 104px) / 42)); }
   #viewer.docked:has(#v-up:not([hidden])) #slot .card { font-size: min(18px, calc((100cqw - 36px) / 28), calc((100cqh - 204px) / 42)); }
@@ -825,7 +825,7 @@ dialog[open] { padding-left: var(--safe-l) !important; padding-right: var(--safe
 }
 
 /* The rank bar runs the full width of the left page (Sevaan 2026-10-22, Duo). */
-@media (min-width: 900px) and (min-height: 560px) and (orientation: landscape) {
+@media (min-width: 820px) and (min-height: 560px) and (orientation: landscape) {
   body:not([data-view="albums"]):not([data-view="patches"]) .logbook { max-width: none !important; width: auto !important; margin-left: 0 !important; margin-right: 0 !important; padding-left: 0 !important; padding-right: 0 !important; }
 }
 

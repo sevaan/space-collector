@@ -11,6 +11,9 @@
     "backgroundColor": "#080f1b"
   },
   "plugins": {
+    "SystemBars": {
+      "style": "DARK"
+    },
     "StatusBar": {
       "style": "DARK",
       "overlaysWebView": true

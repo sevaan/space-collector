@@ -1,21 +1,21 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { fallWords } from './last-chance.js?v=0.1.1116';
-import { useMiles } from './units.js?v=0.1.1116';
-import { feel } from './native.js?v=0.1.1116';
-import { sfx } from './sfx.js?v=0.1.1116';
-import { cardArt } from './art.js?v=0.1.1116';
-import { TIER_INFO } from './rarity.js?v=0.1.1116';
-import { SET_BY_ID } from './sets.js?v=0.1.1116';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.1116';
-import { FLEET_ABOUT, fleetAbout, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.1116';
-import { artFileFor } from './art-keys.js?v=0.1.1116';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.1116';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.1116';
-import { nightsIn } from './observation.js?v=0.1.1116';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.1116';
-import { SHINY } from './shiny.js?v=0.1.1116';
-import { conArt, cometArt } from './con-art.js?v=0.1.1116';
-import { CON_FIGURES } from './con-figures.js?v=0.1.1116';
+import { fallWords } from './last-chance.js?v=0.1.1117';
+import { useMiles } from './units.js?v=0.1.1117';
+import { feel } from './native.js?v=0.1.1117';
+import { sfx } from './sfx.js?v=0.1.1117';
+import { cardArt } from './art.js?v=0.1.1117';
+import { TIER_INFO } from './rarity.js?v=0.1.1117';
+import { SET_BY_ID } from './sets.js?v=0.1.1117';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.1117';
+import { FLEET_ABOUT, fleetAbout, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.1117';
+import { artFileFor } from './art-keys.js?v=0.1.1117';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.1117';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.1117';
+import { nightsIn } from './observation.js?v=0.1.1117';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.1117';
+import { SHINY } from './shiny.js?v=0.1.1117';
+import { conArt, cometArt } from './con-art.js?v=0.1.1117';
+import { CON_FIGURES } from './con-figures.js?v=0.1.1117';
 // The animal/symbol figure belongs to the completed (gold) constellation card only (2026-10-05): a single
 // star’s card draws just the star pattern with its star marked, so the figure is a reward for finishing the set.
 // A star card’s constellation figure comes into focus as you collect the constellation’s stars (design/con-focus.html B).
@@ -424,8 +424,12 @@ export function attachGyro(el, tilt) {
     // Turn from the resting pose, in the phone’s own frame: conj(base) * q.
     let r = qMul([base[0], -base[1], -base[2], -base[3]], q);
     if (r[0] < 0) r = r.map((v) => -v);
-    const ax = 2 * Math.asin(Math.max(-1, Math.min(1, r[1]))) / D2R; // about the phone’s x axis (like beta)
-    const ay = 2 * Math.asin(Math.max(-1, Math.min(1, r[2]))) / D2R; // about the phone’s y axis (like gamma)
+    const dx = 2 * Math.asin(Math.max(-1, Math.min(1, r[1]))) / D2R; // about the phone’s x axis (like beta)
+    const dy = 2 * Math.asin(Math.max(-1, Math.min(1, r[2]))) / D2R; // about the phone’s y axis (like gamma)
+    // …turned into the screen’s axes when the screen isn’t the device’s natural way up (Android tablet playtest 2026-10-24:
+    // in tablet portrait, tipping the card forward turned it sideways).
+    const th = ((screen.orientation?.angle ?? window.orientation ?? 0) * D2R) || 0, c = Math.cos(th), sn = Math.sin(th);
+    const ax = dx * c + dy * sn, ay = dy * c - dx * sn;
     const tx = .5 + Math.max(-1, Math.min(1, ay / 20)) * .5;
     const ty = .5 + Math.max(-1, Math.min(1, ax / 20)) * .5;
     px += (tx - px) * 0.5; py += (ty - py) * 0.5; // take the edge off sensor jitter; the spring does the rest

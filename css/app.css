@@ -2245,7 +2245,7 @@ body.night #debug .set-seg button.on { box-shadow: inset 0 0 0 1px #ff6a55; }
 
 /* Wide windows (iPhone Duo unfolded, iPads; 2026-10-22). By size, never by device (Apple's Duo guidance). Other
    pages (All around you) use the width as a centred column. */
-@media (min-width: 900px) and (min-height: 560px) {
+@media (min-width: 820px) and (min-height: 560px) {
   .panel { padding-left: max(calc(28px + max(var(--safe-l), var(--safe-r))), calc((100vw - 1180px) / 2)); padding-right: max(calc(28px + max(var(--safe-l), var(--safe-r))), calc((100vw - 1180px) / 2)); }
 }
 /* The book (2026-10-22, design/duo-layouts.html; Sevaan: "go with your picks"). On its side (≥900 × 560, landscape) the
@@ -2257,7 +2257,7 @@ body.night #debug .set-seg button.on { box-shadow: inset 0 0 0 1px #ff6a55; }
 #sky-later { display: contents; }
 #visible #sky-later > #sky-tonight-head { margin-top: 34px !important; } /* as before the wrapper (it made the heading a :first-child) */
 #set-index { display: none; }
-@media (min-width: 900px) and (min-height: 560px) and (orientation: landscape), (min-width: 600px) and (min-height: 900px) and (orientation: portrait) {
+@media (min-width: 820px) and (min-height: 560px) and (orientation: landscape), (min-width: 600px) and (min-height: 900px) and (orientation: portrait) {
   #visible, #debug { --pl: calc(20px + var(--safe-l)); --pr: calc(20px + var(--safe-r)); }
   #visible:not([hidden]) { display: grid; overflow: hidden; padding-left: var(--pl); padding-right: var(--pr); padding-bottom: 0; }
   #visible > .sky-jump { display: none; } /* both pages are on screen: nothing to jump to */
@@ -2280,7 +2280,7 @@ body.night #debug .set-seg button.on { box-shadow: inset 0 0 0 1px #ff6a55; }
   .set-ix.on > i { color: #fa8127; }
   .set-ix:focus-visible { outline: 2px solid #fa8127; outline-offset: -2px; }
 }
-@media (min-width: 900px) and (min-height: 560px) and (orientation: landscape) {
+@media (min-width: 820px) and (min-height: 560px) and (orientation: landscape) {
   #visible:not([hidden]) { grid-template-columns: calc(50vw - 20px - var(--pl)) calc(50vw - 20px - var(--pr)); column-gap: 40px; grid-template-rows: auto minmax(0, 1fr); grid-template-areas: "plus plus" "now later"; }
   #visible #sky-later > #sky-tonight-head { margin-top: 6px !important; }
   #debug:not([hidden]) { display: grid; grid-template-columns: calc(50vw - 20px - var(--pl)) calc(50vw - 20px - var(--pr)); column-gap: 40px; grid-template-rows: repeat(5, max-content) 1fr; align-content: start; align-items: start; padding-left: var(--pl); padding-right: var(--pr); }
@@ -2317,7 +2317,7 @@ body.folded #discover .d-label, body.folded #discover .d-actions, body.folded #p
 /* Big-screen playtest 2026-10-22: the Tonight page's ✕ keeps clear of the Duo's side strip, like the reveal's; sheets
    centred in a wide window never reach the strip, so they drop its padding (their contents sat 42px off centre). */
 .ob-done .od-x { right: calc(18px + var(--safe-r, 0px)); }
-@media (min-width: 900px) and (min-height: 560px) and (orientation: landscape), (min-width: 600px) and (min-height: 900px) and (orientation: portrait) {
+@media (min-width: 820px) and (min-height: 560px) and (orientation: landscape), (min-width: 600px) and (min-height: 900px) and (orientation: portrait) {
   .set-sheet-card { padding-left: 18px; padding-right: 18px; }
 }
 
@@ -2439,7 +2439,7 @@ body.night .kt-fan img { border-color: #5a1d18; }
 #set-plus-sheet .plus-thanks { display: none !important; } /* the member view's heading and body say it (iOS QA 2026-10-23: three thank-yous) */
 /* Plus page on a wide screen on its side (unfolded Duo, iPad landscape; iOS QA 2026-10-23: one narrow column with the
    button a screen below): the patch and the promise on the left, the kit and prices on the right, either side of the fold. */
-@media (min-width: 900px) and (min-height: 560px) and (orientation: landscape) {
+@media (min-width: 820px) and (min-height: 560px) and (orientation: landscape) {
   #set-plus-sheet .set-sheet-card { display: grid !important; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 56px; align-content: start; padding-left: calc(28px + var(--safe-l, 0px)); padding-right: calc(28px + var(--safe-r, 0px)); }
   #set-plus-sheet .set-sheet-card > .starfield, #set-plus-sheet .set-sheet-card > .crew-top { grid-column: 1 / -1; }
   #set-plus-sheet .set-sheet-card > .crew-intro { grid-column: 1; max-width: 440px; margin: 0 0 0 auto; align-self: start; padding-top: 24px; }
@@ -2479,7 +2479,7 @@ body:has(#onboard:not([hidden]) #ob-done:not([hidden])) #set-plus-sheet .set-she
 /* iPad/Duo playtest 2026-10-24. Book Settings: every chosen group starts at the same height (Collection kept its phone
    16px, Testing tools 18px, the rest 6px, so the card jumped when switching). The tour deck centres on the circle (the
    screen's middle), not on the safe area, which the Duo's side strip pushes off-centre. */
-@media (min-width: 900px) and (min-height: 560px) and (orientation: landscape), (min-width: 600px) and (min-height: 900px) and (orientation: portrait) {
+@media (min-width: 820px) and (min-height: 560px) and (orientation: landscape), (min-width: 600px) and (min-height: 900px) and (orientation: portrait) {
   #debug > .set-group.set-card.on, #debug.set-tools > #test-tools { margin-top: 6px !important; }
   .ob-deck { left: 0; right: 0; }
 }
@@ -2488,3 +2488,6 @@ body:has(#onboard:not([hidden]) #ob-done:not([hidden])) #set-plus-sheet .set-she
 @media (min-width: 700px) and (min-height: 900px) and (orientation: portrait) {
   #set-index { min-height: 0; margin-bottom: 18px; }
 }
+
+/* hidden means hidden on the plane ticket's route line (Android playtest 2026-10-24: a star's ticket showed the last plane's "Cessna 172"; the display:block !important above beat [hidden]). */
+#plane .p-ticket .p-route[hidden], #plane .p-ticket [hidden] { display: none !important; }
