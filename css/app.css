@@ -2446,7 +2446,6 @@ body.night .kt-fan img { border-color: #5a1d18; }
 }
 /* The sky slider follows the shorter tab bar down (2026-10-24, Sevaan): bar top at safe + 74px, slider 12px above it. */
 #skybar { bottom: calc(86px + var(--safe-bottom)); }
-#debug .set-plus-line { margin: 16px 0 14px; } #debug .set-plus-line span:nth-child(2) { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; } /* one line (2026-10-24, Sevaan) */ /* top of Settings, clear of the header's double rule (2026-10-24) */
 /* No next-pass / headliner chip on Explore (2026-10-24, Sevaan: "we don't need this headliner thing here anymore now
    that the Tonight screen is more accessible in the switcher"). Still built by updateNextPass; just never shown. */
 #nextpass, #nextpass:not([hidden]) { display: none !important; }
