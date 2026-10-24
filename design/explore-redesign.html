@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Explore Redesigns</title>
+<!-- 2026-10-23 (Sevaan: "a few redesigns of the explore screen… be a roomful of expert designers"). Every phone sits on
+     the real sky captured from the app (explore-redesign/sky.webp: the same moment as current.webp with the HTML chrome
+     hidden; the circle, trail and sky labels are the canvas). Circle centre in the 340×739 phone: 170, 370, ring r 57. -->
+<style>
+  @font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf'); font-weight: 500; }
+  @font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf'); }
+  :root { --ink: #fff2b3; --muted: #a9b0a4; --orange: #fa8127; --gold: #ffc93d; --navy: #080f1b; --line: #22324a; --unc: #5fd08a; --steel: #8fb3d9; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #04070d; color: #e8eef6; font: 15px/1.45 -apple-system, system-ui, sans-serif; padding: 28px 16px 80px; }
+  .wrap { max-width: 1240px; margin: 0 auto; }
+  h1 { font: 400 26px 'SC Display', sans-serif; color: var(--ink); margin: 0 0 6px; }
+  .intro { color: #9fb0c6; max-width: 900px; margin: 0 0 26px; }
+  .row { display: flex; flex-wrap: wrap; gap: 34px; justify-content: center; align-items: flex-start; }
+  .cell { width: 340px; }
+  .cap { margin-top: 14px; }
+  .cap .who { font: 500 12px 'SC Label'; letter-spacing: .16em; text-transform: uppercase; color: #7f93ab; margin: 0 0 2px; }
+  .cap h2 { font: 500 15px 'SC Label', sans-serif; letter-spacing: .18em; text-transform: uppercase; color: var(--orange); margin: 0 0 6px; }
+  .cap p { margin: 0 0 6px; color: #b9c5d4; font-size: 14px; } .cap .pro { color: #8fd0a8; } .cap .con { color: #d9a48a; }
+  .cap .q { font-style: italic; color: #d6dde6; border-left: 2px solid #33465f; padding-left: 10px; }
+  .lab { font: 500 11px/1.2 'SC Label'; letter-spacing: .16em; text-transform: uppercase; }
+
+  /* phone on the real sky */
+  .ph { position: relative; width: 340px; height: 739px; border-radius: 44px; border: 9px solid #121722; overflow: hidden; background: #0b1424 url('explore-redesign/sky.webp') center / cover no-repeat; }
+  .ph.cur { background-image: url('explore-redesign/current.webp'); }
+  .ph > * { position: absolute; }
+  .stat { left: 0; right: 0; top: 0; height: 40px; display: flex; justify-content: space-between; padding: 14px 26px 0; font: 600 13px -apple-system, system-ui; color: #fff; }
+  .glass { background: rgba(8,15,27,.78); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid #ffffff14; }
+  .tabs { left: 14px; right: 14px; bottom: 16px; height: 58px; border-radius: 18px; display: grid; grid-template-columns: repeat(3, 1fr); align-items: center; text-align: center; font: 500 11px 'SC Label'; letter-spacing: .16em; color: #c9cbb6; }
+  .tabs span:nth-child(2) { color: var(--orange); }
+  .tabs i { display: block; font-style: normal; font-size: 15px; margin-bottom: 2px; }
+  .cta { border-radius: 12px; background: var(--orange); color: #140a03; font: 600 14px 'SC Label'; letter-spacing: .2em; text-transform: uppercase; display: grid; place-items: center; }
+
+  /* A · glass cockpit */
+  .a-tape { left: 0; right: 0; top: 46px; height: 44px; background: linear-gradient(#080f1bd9, #080f1b00); }
+  .a-tape .ticks { position: absolute; left: 0; right: 0; top: 8px; height: 16px; background: repeating-linear-gradient(90deg, #fff2b344 0 1px, transparent 1px 17px); mask: linear-gradient(90deg, transparent, #000 20%, #000 80%, transparent); }
+  .a-tape b { position: absolute; top: 4px; font: 500 12px 'SC Label'; letter-spacing: .1em; color: var(--ink); transform: translateX(-50%); }
+  .a-tape .me { position: absolute; left: 50%; top: 0; width: 0; height: 0; border: 6px solid transparent; border-top-color: var(--orange); transform: translateX(-50%); }
+  .a-tape .dot { position: absolute; top: 26px; width: 7px; height: 7px; border-radius: 50%; transform: translateX(-50%); }
+  .a-tape .deg { position: absolute; left: 50%; top: 26px; transform: translateX(-50%); font: 500 11px 'SC Label'; letter-spacing: .12em; color: var(--orange); }
+  .a-gear { right: 18px; top: 96px; font-size: 18px; color: var(--ink); }
+  .a-br { width: 22px; height: 22px; border: 2px solid var(--orange); }
+  .a-tl { left: 98px; top: 298px; border-right: 0; border-bottom: 0; } .a-tr { left: 220px; top: 298px; border-left: 0; border-bottom: 0; }
+  .a-bl { left: 98px; top: 420px; border-right: 0; border-top: 0; } .a-br2 { left: 220px; top: 420px; border-left: 0; border-top: 0; }
+  .a-name { left: 98px; top: 262px; font: 500 11px 'SC Label'; letter-spacing: .14em; color: var(--unc); } .a-name b { display: block; font: 400 15px 'SC Display'; letter-spacing: 0; color: var(--ink); }
+  .a-dist { left: 234px; top: 352px; font: 500 11px 'SC Label'; letter-spacing: .08em; color: var(--ink); line-height: 1.2; } .a-dist small { display: block; color: var(--muted); font-size: 10px; letter-spacing: .14em; }
+  .a-collect { left: 108px; top: 452px; width: 124px; height: 40px; }
+  .a-vs { right: 6px; top: 250px; width: 24px; height: 220px; border-radius: 13px; display: grid; justify-items: center; padding: 10px 0; }
+  .a-vs i { width: 2px; height: 100%; background: linear-gradient(#fa8127, #22324a); border-radius: 1px; }
+  .a-vs b { position: absolute; top: 120px; width: 16px; height: 16px; border-radius: 50%; background: var(--ink); }
+  .a-vs small { position: absolute; font: 500 9px 'SC Label'; letter-spacing: .1em; color: var(--muted); }
+
+  /* B · card rises */
+  .b-top { left: 16px; right: 16px; top: 48px; height: 48px; border-radius: 14px; display: flex; align-items: center; gap: 10px; padding: 0 12px; }
+  .b-rank { font: 400 13px 'SC Display'; color: var(--ink); } .b-rank small { display: block; font: 500 10px 'SC Label'; letter-spacing: .14em; color: var(--muted); }
+  .b-bar { flex: 1; height: 5px; border-radius: 3px; background: #22324a; overflow: hidden; } .b-bar i { display: block; width: 58%; height: 100%; background: var(--orange); }
+  .b-dots { display: flex; gap: 4px; } .b-dots i { width: 9px; height: 9px; transform: rotate(45deg); border: 1.5px solid var(--gold); } .b-dots i.on { background: var(--gold); }
+  .b-radar { left: 16px; top: 106px; width: 62px; height: 62px; border-radius: 50%; border: 1px solid #8fb3d955; background: rgba(8,15,27,.6); }
+  .b-radar::after { content: '5'; position: absolute; right: -6px; top: -6px; width: 20px; height: 20px; border-radius: 50%; background: var(--orange); color: #140a03; font: 600 12px/20px 'SC Label'; text-align: center; }
+  .b-sheet { left: 10px; right: 10px; bottom: 84px; height: 168px; border-radius: 20px; padding: 14px; display: grid; grid-template-columns: 96px 1fr; gap: 12px; }
+  .b-card { width: 96px; height: 140px; border-radius: 9px; border: 2px solid #e9dcb3; background: #0b1424 url('../assets/art/cards/sl-8.webp') center 30% / cover; box-shadow: 0 0 22px #5fd08a55; transform: rotate(-4deg); }
+  .b-info { display: flex; flex-direction: column; }
+  .b-info .t { font: 500 11px 'SC Label'; letter-spacing: .14em; color: var(--unc); } .b-info .n { font: 400 18px/1.1 'SC Display'; color: var(--ink); margin: 3px 0 4px; } .b-info .w { font-size: 12.5px; color: #9fb0c2; line-height: 1.35; }
+  .b-info .cta { margin-top: auto; height: 42px; } .b-info .xp { position: absolute; right: 22px; top: 14px; font: 600 12px 'SC Label'; color: var(--unc); letter-spacing: .08em; }
+
+  /* C · just the sky */
+  .c-chip { left: 16px; top: 52px; height: 34px; border-radius: 17px; display: flex; align-items: center; gap: 8px; padding: 0 12px 0 6px; font: 500 12px 'SC Label'; letter-spacing: .1em; color: var(--ink); }
+  .c-chip i { width: 22px; height: 22px; border-radius: 50%; border: 1px solid #8fb3d977; position: relative; } .c-chip i::after { content: ''; position: absolute; left: 50%; top: 2px; width: 2px; height: 8px; margin-left: -1px; background: var(--orange); }
+  .c-chip b { color: var(--orange); font-weight: 500; }
+  .c-set { right: 16px; top: 52px; width: 34px; height: 34px; border-radius: 17px; display: grid; place-items: center; color: var(--ink); font-size: 15px; }
+  .c-lab { left: 0; right: 0; top: 274px; text-align: center; font: 500 11px 'SC Label'; letter-spacing: .16em; color: var(--unc); text-shadow: 0 1px 6px #000; } .c-lab b { display: block; font: 400 17px 'SC Display'; letter-spacing: 0; color: var(--ink); }
+  .c-pill { left: 116px; top: 446px; width: 108px; height: 38px; border-radius: 19px; background: rgba(250,129,39,.16); border: 1.5px solid var(--orange); color: var(--orange); font: 600 13px/35px 'SC Label'; letter-spacing: .2em; text-align: center; }
+  .c-dock { left: 50%; bottom: 18px; transform: translateX(-50%); height: 52px; border-radius: 26px; display: flex; align-items: center; gap: 4px; padding: 5px; }
+  .c-dock span { height: 42px; padding: 0 16px; border-radius: 21px; display: grid; place-items: center; font: 500 11px 'SC Label'; letter-spacing: .16em; color: #c9cbb6; } .c-dock span.on { background: var(--orange); color: #140a03; }
+
+  /* D · tonight's run */
+  .d-run { left: 12px; right: 12px; top: 48px; border-radius: 16px; padding: 10px 12px; }
+  .d-run .k { font: 500 10.5px 'SC Label'; letter-spacing: .16em; color: var(--gold); display: flex; justify-content: space-between; } .d-run .k em { font-style: normal; color: var(--muted); }
+  .d-run .n { font: 400 14px 'SC Display'; color: var(--ink); margin: 3px 0 7px; } .d-run .n small { font: 500 12px 'SC Label'; color: var(--muted); letter-spacing: .06em; }
+  .d-chips { display: flex; gap: 6px; } .d-chips span { flex: 1; font: 500 10.5px/1.15 'SC Label'; letter-spacing: .04em; color: #dfe6ee; padding: 6px 7px; border-radius: 8px; background: #ffffff0d; border: 1px solid #ffffff12; } .d-chips span.done { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--gold); }
+  .d-edge { width: 0; height: 0; border: 9px solid transparent; }
+  .d-e1 { right: 4px; top: 300px; border-left-color: var(--orange); } .d-e1t { right: 18px; top: 292px; font: 500 10px/1.15 'SC Label'; letter-spacing: .08em; color: var(--orange); text-align: right; }
+  .d-e2 { left: 4px; top: 520px; border-right-color: #b48cff; } .d-e2t { left: 20px; top: 512px; font: 500 10px/1.15 'SC Label'; letter-spacing: .08em; color: #c8b0ff; }
+  .d-lab { left: 0; right: 0; top: 276px; text-align: center; font: 500 11px 'SC Label'; letter-spacing: .16em; color: var(--unc); } .d-lab b { display: block; font: 400 16px 'SC Display'; letter-spacing: 0; color: var(--ink); }
+  .d-fab { right: 22px; bottom: 92px; width: 84px; height: 84px; border-radius: 50%; background: var(--orange); display: grid; place-items: center; font: 600 13px 'SC Label'; letter-spacing: .14em; color: #140a03; box-shadow: 0 0 0 5px #fa812733, 0 10px 24px #000a; }
+  .d-fab::before { content: ''; position: absolute; inset: -9px; border-radius: 50%; border: 3px solid transparent; border-top-color: var(--ink); border-right-color: var(--ink); }
+  .d-xp { left: 22px; bottom: 112px; font: 500 12px 'SC Label'; letter-spacing: .08em; color: var(--muted); } .d-xp b { display: block; font: 400 20px 'SC Display'; color: var(--unc); letter-spacing: 0; }
+
+  /* E · horizon strip */
+  .e-head { left: 18px; right: 18px; top: 50px; display: flex; justify-content: space-between; align-items: center; } .e-head b { font: 400 15px 'SC Display'; color: var(--ink); } .e-head span { color: var(--ink); font-size: 16px; letter-spacing: 12px; }
+  .e-lab { left: 0; right: 0; top: 270px; text-align: center; font: 500 11px 'SC Label'; letter-spacing: .16em; color: var(--unc); text-shadow: 0 1px 6px #000; } .e-lab b { display: block; font: 400 17px 'SC Display'; letter-spacing: 0; color: var(--ink); } .e-lab small { display: block; margin-top: 2px; font: 500 11px 'SC Label'; letter-spacing: .1em; color: var(--muted); }
+  .e-collect { left: 105px; top: 450px; width: 130px; height: 40px; }
+  .e-strip { left: 10px; right: 10px; bottom: 84px; height: 112px; border-radius: 16px; overflow: hidden; }
+  .e-strip .hz { position: absolute; left: 0; right: 0; top: 72px; height: 1px; background: #8fb3d955; }
+  .e-strip .gr { position: absolute; left: 0; right: 0; top: 73px; bottom: 0; background: linear-gradient(#0f1a12, #070c08); }
+  .e-strip .view { position: absolute; left: 50%; top: 8px; bottom: 6px; width: 74px; margin-left: -37px; border: 1px dashed #fff2b388; border-radius: 6px; }
+  .e-strip .o { position: absolute; font: 500 9.5px 'SC Label'; letter-spacing: .08em; color: var(--ink); transform: translateX(-50%); text-align: center; white-space: nowrap; }
+  .e-strip .o i { display: block; margin: 0 auto 2px; width: 8px; height: 8px; border-radius: 50%; }
+  .e-strip .cp { position: absolute; bottom: 6px; font: 500 10px 'SC Label'; letter-spacing: .14em; color: var(--muted); transform: translateX(-50%); }
+  .e-strip .k { position: absolute; left: 10px; top: 7px; font: 500 9.5px 'SC Label'; letter-spacing: .16em; color: var(--muted); }
+
+  .rec { max-width: 900px; margin: 44px auto 0; padding: 18px 20px; border: 1px solid #fa812744; border-radius: 14px; background: #fa81270c; color: #d7dfe8; font-size: 14.5px; }
+  .rec b { color: var(--ink); } .rec ul { margin: 8px 0 0; padding-left: 18px; } .rec li { margin: 4px 0; }
+</style></head><body><div class="wrap">
+<h1>Explore, five ways</h1>
+<p class="intro">Five designers, one brief: make the moment of lining something up feel better, and get everything else out of the sky's way. Every phone uses the real sky from the app at the same moment (an Uncommon SL-8 stage in the circle). The circle itself doesn't change in any of them; what changes is everything around it.</p>
+
+<div class="row">
+
+<!-- NOW -->
+<div class="cell">
+  <div class="ph cur"></div>
+  <div class="cap"><div class="who">Today</div><h2>Now</h2>
+    <p>Header with wordmark, radar top left, Tonight chip top right, a card under the circle with Collect, the sky slider, three tabs.</p>
+    <p class="con">The room's notes: about 45% of the screen is chrome; the wordmark takes the best strip of sky; Collect sits mid-screen, a stretch for a thumb; four different styles of box (radar, chip, card, slider).</p></div>
+</div>
+
+<!-- A -->
+<div class="cell">
+  <div class="ph">
+    <div class="stat"><span>8:30</span><span>●●● 77</span></div>
+    <div class="a-tape"><div class="ticks"></div><span class="me"></span>
+      <b style="left:8%">S</b><b style="left:30%">SW</b><b style="left:52%;color:var(--orange)">W</b><b style="left:74%">NW</b><b style="left:94%">N</b>
+      <i class="dot" style="left:36%;background:#5fd08a"></i><i class="dot" style="left:63%;background:#b48cff"></i><i class="dot" style="left:84%;background:#5fd08a"></i>
+      <span class="deg" style="top:28px;left:50%">268°</span></div>
+    <span class="a-gear">⚙︎</span>
+    <span class="a-name">▲ UNCOMMON<b>SL-8 Rocket Stage</b></span>
+    <i class="a-br a-tl"></i><i class="a-br a-tr"></i><i class="a-br a-bl"></i><i class="a-br a-br2"></i>
+    <span class="a-dist">1,280 km<small>38° UP</small></span>
+    <span class="a-collect cta">Collect</span>
+    <div class="a-vs glass"><i></i><b></b><small style="top:-16px">MORE</small><small style="bottom:-16px">LESS</small></div>
+    <div class="tabs glass"><span><i>✦</i>TONIGHT</span><span><i>◎</i>EXPLORE</span><span><i>▭</i>COLLECTION</span></div>
+  </div>
+  <div class="cap"><div class="who">Maya · AR and avionics HUDs</div><h2>A · Glass cockpit</h2>
+    <p class="q">"A fighter HUD never puts a box over what you're looking at. Put the words on the target, not under it."</p>
+    <p>The radar becomes a heading tape across the top (where you face, with coloured ticks for new things around you). The name and distance hug the circle in corner brackets. Collect is a short bar right under it. The slider stands up on the right edge. No wordmark.</p>
+    <p class="pro">+ The most sky; feels like an instrument; the tape is easier to read than a tiny radar.</p>
+    <p class="con">− Loses the "Space Collector" branding on the main screen; brackets get crowded on long names.</p></div>
+</div>
+
+<!-- B -->
+<div class="cell">
+  <div class="ph">
+    <div class="stat"><span>8:30</span><span>●●● 77</span></div>
+    <div class="b-top glass"><span class="b-rank">Navigator<small>4,795 XP</small></span><span class="b-bar"><i></i></span><span class="b-dots"><i class="on"></i><i class="on"></i><i></i><i></i></span><span style="color:var(--ink)">⚙︎</span></div>
+    <div class="b-radar"></div>
+    <div class="b-sheet glass"><span class="b-card"></span><div class="b-info"><span class="t">▲ UNCOMMON · NEW</span><span class="n">SL-8 Rocket Stage</span><span class="w">Soviet rocket stage · 1985<br>1,280 km away · 38° up</span><span class="xp">+15 XP</span><span class="cta">Collect</span></div></div>
+    <div class="tabs glass"><span><i>✦</i>TONIGHT</span><span><i>◎</i>EXPLORE</span><span><i>▭</i>COLLECTION</span></div>
+  </div>
+  <div class="cap"><div class="who">Theo · collectible card games</div><h2>B · The card rises</h2>
+    <p class="q">"The card is the reward. Show it the second you lock on, before they've earned it, and they'll want it."</p>
+    <p>Locking on slides up a sheet with the real card picture tilted and glowing in its rarity, the name, what it is, the XP and a big Collect at thumb height. The header becomes your rank, XP bar and tonight's missions as four diamonds. The radar stays, smaller.</p>
+    <p class="pro">+ Most rewarding; Collect is where a thumb is; progress is always in view.</p>
+    <p class="con">− The sheet covers the lower third of the sky while locked; shows the art before you catch it (today it's hidden until then).</p></div>
+</div>
+
+<!-- C -->
+<div class="cell">
+  <div class="ph">
+    <div class="stat"><span>8:30</span><span>●●● 77</span></div>
+    <div class="c-chip glass"><i></i>5 UP · <b>2 NEW</b></div>
+    <span class="c-set glass">⚙︎</span>
+    <span class="c-lab">▲ UNCOMMON<b>SL-8 Rocket Stage</b></span>
+    <span class="c-pill">COLLECT</span>
+    <div class="c-dock glass"><span>TONIGHT</span><span class="on">EXPLORE</span><span>COLLECTION</span></div>
+  </div>
+  <div class="cap"><div class="who">Inès · calm, Apple-style interfaces</div><h2>C · Just the sky</h2>
+    <p class="q">"You're standing in the dark looking up. The screen should be a window, not a dashboard."</p>
+    <p>Nothing permanent but a small "5 up · 2 new" chip (tap for All around you), Settings, and a floating dock for the tabs. The name floats above the circle, a light Collect pill below it. The sky slider moves into Settings (or a long press on the sky).</p>
+    <p class="pro">+ The most beautiful and the least distracting at night; nothing to learn.</p>
+    <p class="con">− Hides the sky slider, which many players use; less sense of game and progress.</p></div>
+</div>
+
+<!-- D -->
+<div class="cell">
+  <div class="ph">
+    <div class="stat"><span>8:30</span><span>●●● 77</span></div>
+    <div class="d-run glass"><div class="k"><span>TONIGHT'S RUN · 3 OF 12 NEW</span><em>⚙︎</em></div><div class="n">Next: Hubble at 8:52 <small>· in 22 min · high in the south</small></div>
+      <div class="d-chips"><span class="done">Catch a rocket stage</span><span>A planet or the Moon</span><span>3 stars in Cygnus</span></div></div>
+    <span class="d-lab">▲ UNCOMMON · NEW<b>SL-8 Rocket Stage</b></span>
+    <i class="d-edge d-e1"></i><span class="d-e1t">◆ RARE<br>40° →</span>
+    <i class="d-edge d-e2"></i><span class="d-e2t">✦ EPIC<br>← 110°</span>
+    <span class="d-xp">THIS CATCH<b>+15 XP</b></span>
+    <span class="d-fab">COLLECT</span>
+    <div class="tabs glass"><span><i>✦</i>TONIGHT</span><span><i>◎</i>EXPLORE</span><span><i>▭</i>COLLECTION</span></div>
+  </div>
+  <div class="cap"><div class="who">Jonah · live games and quests</div><h2>D · Tonight's run</h2>
+    <p class="q">"People open it outside with a goal: what's next, what's left. Give them a run to finish."</p>
+    <p>The top card is tonight's run: how many new cards you've caught of tonight's, the next pass with a countdown, and the three missions. New things off-screen get arrows on the screen's edge in their rarity colour with how far to turn (replacing the radar). Collect is a big round button for the right thumb, with a ring that fills as you hold steady.</p>
+    <p class="pro">+ Strongest "one more" pull; edge arrows teach turning without reading a radar.</p>
+    <p class="con">− Busiest of the five; the run card needs good data every night (cloudy nights, daytime).</p></div>
+</div>
+
+<!-- E -->
+<div class="cell">
+  <div class="ph">
+    <div class="stat"><span>8:30</span><span>●●● 77</span></div>
+    <div class="e-head"><b>SPACE COLLECTOR</b><span>☾⚙︎</span></div>
+    <span class="e-lab">▲ UNCOMMON<b>SL-8 Rocket Stage</b><small>1,280 KM · SOVIET · 1985</small></span>
+    <span class="e-collect cta">Collect</span>
+    <div class="e-strip glass"><span class="k">ALL AROUND YOU</span><i class="hz"></i><i class="gr"></i><i class="view"></i>
+      <span class="o" style="left:16%;top:38px"><i style="background:#b48cff"></i>EPIC</span>
+      <span class="o" style="left:50%;top:30px"><i style="background:#5fd08a"></i>SL-8</span>
+      <span class="o" style="left:68%;top:22px"><i style="background:#fff2b3;border-radius:50%"></i>MOON</span>
+      <span class="o" style="left:86%;top:46px"><i style="background:#ffc93d"></i>RARE</span>
+      <span class="cp" style="left:10%">S</span><span class="cp" style="left:32%">SW</span><span class="cp" style="left:50%;color:var(--orange)">W</span><span class="cp" style="left:68%">NW</span><span class="cp" style="left:90%">N</span>
+    </div>
+    <div class="tabs glass"><span><i>✦</i>TONIGHT</span><span><i>◎</i>EXPLORE</span><span><i>▭</i>COLLECTION</span></div>
+  </div>
+  <div class="cap"><div class="who">Ravi · astronomy and star-map apps</div><h2>E · Horizon strip</h2>
+    <p class="q">"Every stargazer thinks in horizons. Show the whole horizon, not a little radar."</p>
+    <p>A slim version of All around you lives above the tabs: the horizon, your view as a dashed box, what's up in each direction with its rarity, turning live as you turn. The radar and Tonight chip go. Name, distance and what it is sit above the circle; Collect below. Wordmark kept, slimmer.</p>
+    <p class="pro">+ Best for finding things; reuses a screen you already built; keeps the brand.</p>
+    <p class="con">− The strip and the circle compete for attention; less sky at the bottom.</p></div>
+</div>
+
+</div>
+<div class="rec"><b>The room's pick: C as the base, with D's edge arrows and B's card on lock.</b>
+  <ul>
+    <li><b>From C:</b> no wordmark or boxes over the sky; one small "5 up · 2 new" chip (opens All around you), Settings, and the tabs as a floating dock.</li>
+    <li><b>From D:</b> rarity-coloured arrows on the screen's edge for new things you're not facing ("◆ Rare · 40° →"), instead of the radar.</li>
+    <li><b>From B:</b> when something locks on, a short sheet rises with its card (picture still hidden until you catch it), name, XP and Collect at thumb height.</li>
+    <li>The sky slider stays, but only shows while your finger is on the sky's edge or in Settings; the room was split on this one.</li>
+  </ul>
+  Split votes: Theo wanted the rank and missions always visible (B's header); Maya argued for the heading tape (A) over edge arrows. Happy to mock the combined version next.</div>
+</div></body></html>
