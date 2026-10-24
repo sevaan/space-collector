@@ -1,52 +1,52 @@
-import { pullToClose } from './pull-close.js?v=0.1.1109';
-import { TESTER } from './build-flavor.js?v=0.1.1109';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1109';
-import * as Secrets from './secrets.js?v=0.1.1109';
-import { STORY_BY_SECRET } from './stories.js?v=0.1.1109';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.1109';
-import * as Ufo from './ufo.js?v=0.1.1109';
-import * as Fossil from './fossil.js?v=0.1.1109';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.1109';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1109';
-import { toast, ticket, dropToast, toastPending, onTicketShown, iconSvg } from './toast.js?v=0.1.1109';
-import { VERSION } from './version.js?v=0.1.1109';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, overEarth, RisingSoon, setBinocularMode, setSkyLimit, toWorker } from './orbit.js?v=0.1.1109';
-import { placeName } from './geo.js?v=0.1.1109';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, SLIDER_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.1109';
-import { conArt } from './con-art.js?v=0.1.1109';
-import { fetchWeather, tonightSky, skyClearAt, goodSkyAt } from './weather.js?v=0.1.1109';
-import { CON_FIGURES } from './con-figures.js?v=0.1.1109';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress, starDistance } from './constellations.js?v=0.1.1109';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.1109';
-import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.1109';
-import { eventOf, activeEvent, nextEvent } from './events.js?v=0.1.1109';
-import { conList } from './constellations.js?v=0.1.1109';
-import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination, hasSensorView, resumeSensors, needsPermission } from './sensors.js?v=0.1.1109';
-import { SkyView, shortName, stripLandscape } from './sky.js?v=0.1.1109';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.1109';
-import { isPlus, setPlusForTesting, onPlus, PLUS_PRICES, initStore, storePlans, buyPlus, restorePlus, rcTestStore, storeOpen } from './plus.js?v=0.1.1109';
-import { isNative, getPosition, saveFile, notifyAt, cancelNotify, haptic, onNative, nativeChrome, plugin } from './native.js?v=0.1.1109';
-import { initBackup, onBackupChange, backupSoon, clearBackup, backupStatus } from './cloud-backup.js?v=0.1.1109';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.1109';
-import { cardArt } from './art.js?v=0.1.1109';
-import { renderCard, miniCard, cardLevel, artImage, lockedArt, attachTilt, attachGyro, throwOff, attachFlip, turnCard } from './card.js?v=0.1.1109';
-import { applyBack, CARD_BACKS, backUnlocked, chosenBack, chooseBack, backEarned, showBackNext } from './card-backs.js?v=0.1.1109';
-import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.1109';
-import { audioCtx } from './audio-ctx.js?v=0.1.1109';
-import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume, musicAway } from './music.js?v=0.1.1109';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss, onRevealSwipeIntoBinder } from './reveal.js?v=0.1.1109';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel, moonPhaseOf, MOON_PHASES } from './card-model.js?v=0.1.1109';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.1109';
-import { naturalTargets, SOLAR_SYSTEM, DEEP_SKY, NATURAL } from './natural.js?v=0.1.1109';
-import { placeFromTimeZone } from './tz-places.js?v=0.1.1109';
-import { TIER_INFO } from './rarity.js?v=0.1.1109';
-import { SETS, albumList } from './sets.js?v=0.1.1109';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.1109';
-import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.1109';
-import { shareCardEl } from './share-card.js?v=0.1.1109';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.1109';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.1109';
-import { addStarfield } from './starfield.js?v=0.1.1109';
+import { pullToClose } from './pull-close.js?v=0.1.1110';
+import { TESTER } from './build-flavor.js?v=0.1.1110';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1110';
+import * as Secrets from './secrets.js?v=0.1.1110';
+import { STORY_BY_SECRET } from './stories.js?v=0.1.1110';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.1110';
+import * as Ufo from './ufo.js?v=0.1.1110';
+import * as Fossil from './fossil.js?v=0.1.1110';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.1110';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1110';
+import { toast, ticket, dropToast, toastPending, onTicketShown, iconSvg } from './toast.js?v=0.1.1110';
+import { VERSION } from './version.js?v=0.1.1110';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, overEarth, RisingSoon, setBinocularMode, setSkyLimit, toWorker } from './orbit.js?v=0.1.1110';
+import { placeName } from './geo.js?v=0.1.1110';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, SLIDER_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.1110';
+import { conArt } from './con-art.js?v=0.1.1110';
+import { fetchWeather, tonightSky, skyClearAt, goodSkyAt } from './weather.js?v=0.1.1110';
+import { CON_FIGURES } from './con-figures.js?v=0.1.1110';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress, starDistance } from './constellations.js?v=0.1.1110';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.1110';
+import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.1110';
+import { eventOf, activeEvent, nextEvent } from './events.js?v=0.1.1110';
+import { conList } from './constellations.js?v=0.1.1110';
+import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination, hasSensorView, resumeSensors, needsPermission } from './sensors.js?v=0.1.1110';
+import { SkyView, shortName, stripLandscape } from './sky.js?v=0.1.1110';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.1110';
+import { isPlus, setPlusForTesting, onPlus, PLUS_PRICES, initStore, storePlans, buyPlus, restorePlus, rcTestStore, storeOpen } from './plus.js?v=0.1.1110';
+import { isNative, getPosition, saveFile, notifyAt, cancelNotify, haptic, onNative, nativeChrome, plugin } from './native.js?v=0.1.1110';
+import { initBackup, onBackupChange, backupSoon, clearBackup, backupStatus } from './cloud-backup.js?v=0.1.1110';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.1110';
+import { cardArt } from './art.js?v=0.1.1110';
+import { renderCard, miniCard, cardLevel, artImage, lockedArt, attachTilt, attachGyro, throwOff, attachFlip, turnCard } from './card.js?v=0.1.1110';
+import { applyBack, CARD_BACKS, backUnlocked, chosenBack, chooseBack, backEarned, showBackNext } from './card-backs.js?v=0.1.1110';
+import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.1110';
+import { audioCtx } from './audio-ctx.js?v=0.1.1110';
+import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume, musicAway } from './music.js?v=0.1.1110';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss, onRevealSwipeIntoBinder } from './reveal.js?v=0.1.1110';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel, moonPhaseOf, MOON_PHASES } from './card-model.js?v=0.1.1110';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.1110';
+import { naturalTargets, SOLAR_SYSTEM, DEEP_SKY, NATURAL } from './natural.js?v=0.1.1110';
+import { placeFromTimeZone } from './tz-places.js?v=0.1.1110';
+import { TIER_INFO } from './rarity.js?v=0.1.1110';
+import { SETS, albumList } from './sets.js?v=0.1.1110';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.1110';
+import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.1110';
+import { shareCardEl } from './share-card.js?v=0.1.1110';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.1110';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.1110';
+import { addStarfield } from './starfield.js?v=0.1.1110';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -1349,7 +1349,7 @@ function showCaptureCard(obj) {
     ...gain.achievements.map((a) => ({ kind: 'patch', text: a.name })),
     ...(gain.event ? [{ kind: 'event', text: gain.event }] : []),
     ...(gain.rankUp ? [{ kind: 'rank', text: `New rank: ${gain.rankUp}` }] : [])];
-  if (gain.rankUp || gain.achievements.length) reviewAfterReveal = true; /* a milestone: a calm moment to ask for a review once the card is put away (2026-10-24) */
+  if ((gain.rankUp || gain.achievements.length) && reviewable()) reviewAfterReveal = true; /* a milestone: a calm moment to ask for a review once the card is put away (2026-10-24) */
   else if (sightings.length === 1) plusAfterReveal = greatNight(model); /* or a great night: the Plus invite (2026-10-24) */
   if (newBacks.length && plusSellable()) news.push({ kind: 'backs', act: 'backs', text: `${CARD_BACKS.filter((b) => backUnlocked(b) || newBacks.includes(b.id)).length} of ${CARD_BACKS.length} · see them all` });
   // Reunited (2026-10-17): this catch completes a stage-and-satellite pair from one launch.
@@ -3358,8 +3358,8 @@ function intoBinder() {
 function closePanel(id = activePanel) {
   if (!id) return;
   if (id === 'reveal' && matchMedia('(prefers-reduced-motion: reduce)').matches) revealIntoBinder = false;
-  if (id === 'reveal' && reviewAfterReveal) { reviewAfterReveal = false; plusAfterReveal = null; setTimeout(() => maybeAskReview('milestone'), 4000); }
-  else if (id === 'reveal' && plusAfterReveal) { const g = plusAfterReveal; plusAfterReveal = null; setTimeout(() => plusInvite(g), 4000); }
+  if (id === 'reveal' && reviewAfterReveal) { reviewAfterReveal = false; plusAfterReveal = null; askSoon('milestone'); }
+  else if (id === 'reveal' && plusAfterReveal) { const g = plusAfterReveal; plusAfterReveal = null; inviteSoon(g); }
   if (id === 'reveal') { stopReveal(); if (tourRevealLeaving) { const go = tourRevealLeaving; tourRevealLeaving = null; go(); } }
   const el = $(id); activePanel = null; $('hud').inert = false;
   if (id === 'debug' && document.body.classList.contains('set-open')) { document.body.classList.remove('set-open'); setPageHeader(collectionOpen ? 'collection' : 'explore'); $('nav-more').setAttribute('aria-label', 'Settings'); }
@@ -3770,7 +3770,7 @@ const KIT = {
 const KIT_ICON = { backs: '<span class="ico" data-ico="cards"></span>', reminders: '<span class="ico" data-ico="bell"></span>', rare: '<i>◆</i>', widgets: '<i>▦</i>', shiny: '<i>✦</i>', patch: '<span class="ico" data-ico="patch"></span>' };
 function plusPage(why) {
   const on = isPlus(), backs = CARD_BACKS.filter((x) => !x.free), n = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight'][backs.length] ?? String(backs.length);
-  const lead = (why === 'invite' ? plusInviteLead : '') || { reminders: 'Pass reminders are part of the crew kit', rare: 'Rare alerts are part of the crew kit', shiny: 'The full shiny forecast is part of the crew kit', backs: 'That card back is part of the crew kit', widgets: 'Widgets are part of the crew kit' }[why];
+  const lead = (why === 'invite' ? plusInviteLead : '') || { reminders: 'Pass reminders are part of the crew kit', rare: 'Rare alerts are part of the crew kit', shiny: 'The full shiny forecast is part of the crew kit', backs: 'That card back is part of the crew kit', allbacks: 'Every card back comes with the crew kit', widgets: 'Widgets are part of the crew kit' }[why];
   $('plus-lead').innerHTML = lead ? `<span class="ico" data-ico="${why === 'reminders' ? 'bell' : 'stars'}"></span>${escapeHtml(lead)}` : ''; $('plus-lead').hidden = !lead || on;
   $('plus-head').textContent = on ? 'THE CREW' : 'JOIN THE CREW';
   $('plus-title').innerHTML = on ? 'You’re crew.' : 'Keep the lights on.<br>Wear the patch.';
@@ -3830,7 +3830,7 @@ $('nav-more').addEventListener('click', (e) => { if (document.body.classList.con
 // Warm the Plus page once the app is idle (2026-10-24, Sevaan: its first opening stuttered on the phone): build it, and
 // decode the card-back pictures it fans, so the first slide-up only moves what's already drawn.
 function warmPlus() {
-  const go = () => { try { plusPage(); for (const b of CARD_BACKS.filter((x) => !x.free).slice(0, 5)) { const i = new Image(); i.decoding = 'async'; i.src = b.url; i.decode?.().catch(() => {}); } } catch {} };
+  const go = () => { if (!$('set-plus-sheet').hidden) return; try { plusPage(); for (const b of CARD_BACKS.filter((x) => !x.free).slice(0, 5)) { const i = new Image(); i.decoding = 'async'; i.src = b.url; i.decode?.().catch(() => {}); } } catch {} };
   (window.requestIdleCallback ?? ((f) => setTimeout(f, 1)))(go, { timeout: 8000 });
 }
 setTimeout(warmPlus, 6000);
@@ -4241,31 +4241,44 @@ function reviewReady() {
   let last = 0; try { last = +localStorage.getItem('reviewAsk') || 0; } catch {}
   return { ok: cards >= 10 && nights >= 3 && Date.now() - first >= 4 * 864e5 && Date.now() - last >= 60 * 864e5, nights };
 }
-function reviewCalm({ passes = true } = {}) {
+function reviewCalm({ passes = true, owned = false, dark = false } = {}) {
   const b = document.body.classList;
   if (activePanel || collectionOpen || !$('reveal').hidden || !$('recap').hidden || !$('ob-done').hidden || !$('start').hidden) return false;
   if (b.contains('night') || b.contains('ob-tour') || b.contains('calib') || document.querySelector('.set-sheet:not([hidden]), .patch-coins')) return false;
-  if (!$('discover').hidden || !$('plane').hidden || state.pinnedId) return false;
+  if ((!$('discover').hidden && !(owned && $('discover').classList.contains('owned'))) || !$('plane').hidden || state.pinnedId) return false; /* owned: still aimed at the card just put away is fine */
+  if (dark && (state.frame?.sunEl ?? 0) < -6) return false; /* Apple's bright sheet: not in the dark outside */
   const t = now().getTime();
   try { if (passes && state.tonight && tonightPasses(state.tonight, t).some((p) => p.fresh && p.start > t - 5 * 60e3 && p.start < t + 20 * 60e3)) return false; } catch {}
   if (cloudAt?.(t)) return false;
   return true;
 }
+const reviewable = () => isNative() && globalThis.Capacitor?.getPlatform?.() === 'ios';
 async function maybeAskReview(why, { force = false } = {}) {
   if (!isNative() || globalThis.Capacitor?.getPlatform?.() !== 'ios') { if (force) ticket({ kind: 'info', line: 'Reviews are asked in the iPhone app', ms: 2600 }); return false; }
-  if (!force && (!reviewReady().ok || !reviewCalm() || sameDay(plusInviteInfo().at))) return false; /* one ask a day, review or Plus */
+  if (!force && (!reviewReady().ok || !reviewCalm({ owned: true, dark: true }) || sameDay(plusInviteInfo().at))) return false; /* one ask a day, review or Plus */
   try { localStorage.setItem('reviewAsk', String(Date.now())); localStorage.setItem('reviewWhy', why); } catch {}
   try { await plugin('Review')?.request(); return true; } catch { return false; }
 }
 // The 5th and 10th night: asked by day once the sky has settled (from quickStart).
 function reviewOnNight(tries = 0) {
+  let pend = ''; try { pend = localStorage.getItem('reviewPending') || ''; } catch {}
+  if (pend && document.body.classList.contains('day')) { if (!reviewCalm()) { if (tries < 20) setTimeout(() => reviewOnNight(tries + 1), 6000); return; } maybeAskReview(pend).then((ok) => { if (ok || !reviewReady().ok) try { localStorage.removeItem('reviewPending'); } catch {} }); return; }
   const { ok, nights } = reviewReady(); if (!ok || ![5, 10].includes(nights)) return;
   let done = ''; try { done = localStorage.getItem('reviewNight') || ''; } catch {}
   if (done === String(nights) || !document.body.classList.contains('day')) return;
   if (!reviewCalm()) { if (tries < 20) setTimeout(() => reviewOnNight(tries + 1), 6000); return; }
-  try { localStorage.setItem('reviewNight', String(nights)); } catch {}
-  maybeAskReview(`night${nights}`);
+  maybeAskReview(`night${nights}`).then((ok) => { if (ok) try { localStorage.setItem('reviewNight', String(nights)); } catch {} });
 }
+// After a card is put away: try for about a minute, from 4 s on, until the moment is calm (you're often still aimed at
+// what you just caught). A review blocked only by the dark waits for the next daytime open (reviewPending).
+function askSoon(why, n = 0) {
+  setTimeout(async () => {
+    if (await maybeAskReview(why)) return;
+    if (n < 10) return askSoon(why, n + 1);
+    if (reviewReady().ok && (state.frame?.sunEl ?? 0) < -6) try { localStorage.setItem('reviewPending', why); } catch {}
+  }, n ? 6000 : 4000);
+}
+function inviteSoon(g, n = 0) { setTimeout(() => { if (!plusInvite(g) && n < 10 && !sameDay(plusInviteInfo().at)) inviteSoon(g, n + 1); }, n ? 6000 : 4000); }
 // Plus invites (2026-10-24, Sevaan; design/plus-moments.html A): a notice that opens the Join the crew page with its
 // reason, after a great night (5+ new cards, or a new Rare or better, from the 4th night on, once a night) or on the 7th
 // night by day. At most every 14 days and three times ever; never the same day as a review ask; same calm rules; only
@@ -4277,7 +4290,7 @@ function plusInviteInfo() { try { return JSON.parse(localStorage.getItem('plusIn
 const WORDS = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten'];
 function greatNight(model) {
   const real = state.sightings.filter((s) => !s.sim), k = nightKey(now().getTime(), state.observer.lon ?? 0), first = new Map();
-  for (const s of real) { const c = String(s.cardKey); if (!first.has(c) || s.time < first.get(c)) first.set(c, s.time); }
+  for (const s of real) { const c = String(s.cardKey); if (c.startsWith('story:')) continue; if (!first.has(c) || s.time < first.get(c)) first.set(c, s.time); } /* story cards are found, not caught */
   const n = [...first.values()].filter((t) => nightKey(t, state.observer.lon ?? 0) === k).length;
   let done = ''; try { done = localStorage.getItem('plusNight') || ''; } catch {}
   if (done === k) return null;
@@ -4290,7 +4303,7 @@ function plusInvite(g) {
   const a = plusInviteInfo();
   if (!plusSellable() || reviewReady().nights < 4 || (a.n ?? 0) >= 3 || Date.now() - (a.at ?? 0) < 14 * 864e5) return false;
   let rv = 0; try { rv = +localStorage.getItem('reviewAsk') || 0; } catch {}
-  if (sameDay(rv) || !reviewCalm({ passes: false })) return false; /* a notice doesn't block the sky, so a pass coming up is fine */
+  if (sameDay(rv) || !reviewCalm({ passes: false, owned: true })) return false; /* a notice doesn't block the sky, so a pass coming up is fine */
   try { localStorage.setItem('plusInvite', JSON.stringify({ at: Date.now(), n: (a.n ?? 0) + 1 })); if (g.night) localStorage.setItem('plusNight', g.night); } catch {}
   ticket({ kind: 'info', tone: 'orange', icon: 'star', eyebrow: g.eyebrow, line: g.line, go: 'Join the crew', sticky: true, id: 'plus-invite', action: () => { plusInviteLead = g.lead; openPlus('invite'); } });
   return true;
@@ -4351,7 +4364,7 @@ function weeklyRecap(tries = 0) {
   const close = () => { el.classList.remove('in'); setTimeout(() => { el.hidden = true; }, 320); setTimeout(() => maybeAskReview('recap'), 2500); };
   el.querySelector('.rc-go').onclick = close;
   // A Plus line under the buttons on weeks the recap won't ask for a review (design/plus-moments.html, 2026-10-24).
-  if (plusSellable() && reviewReady().nights >= 4 && !reviewReady().ok) { const a = document.createElement('button'); a.type = 'button'; a.className = 'rc-plus'; a.textContent = 'Put next week on your home screen · Plus ›'; a.onclick = () => { close(); setTimeout(() => openPlus('widgets'), 340); }; el.querySelector('.rc-actions').after(a); }
+  if (plusSellable() && reviewReady().nights >= 4 && !(reviewable() && reviewReady().ok)) { const a = document.createElement('button'); a.type = 'button'; a.className = 'rc-plus'; a.textContent = 'Put next week on your home screen · Plus ›'; a.onclick = () => { close(); setTimeout(() => openPlus('widgets'), 340); }; el.querySelector('.rc-actions').after(a); }
   el.querySelector('.rc-share').onclick = async () => {
     const text = `My week in Space Collector: ${fresh.length} new card${fresh.length === 1 ? '' : 's'}, ${week.length} sighting${week.length === 1 ? '' : 's'} over ${nights} night${nights === 1 ? '' : 's'}${best ? `. Rarest: ${label(best)} (${tier.label})` : ''}. https://spacecollector.app`;
     try { if (navigator.share) await navigator.share({ text }); else { await navigator.clipboard.writeText(text); toast('Copied. Paste it anywhere.', 2200); } } catch {}
@@ -5015,7 +5028,7 @@ function soundOn() { return readPref('sound', true); }
 $('chk-haptics').checked = readPref('haptics', true);
 $('chk-haptics').addEventListener('change', (e) => { writePref('haptics', e.target.checked); if (e.target.checked) buzz(14); });
 // The payoff haptic, timed with the card turning over (js/reveal.js 'sc:payoff'): stronger for rarer cards.
-addEventListener('sc:news-act', (e) => { if (e.detail === 'backs') { closePanel('reveal'); setTimeout(() => openPlus('backs'), 450); } }); // the reveal's "see them all" chip
+addEventListener('sc:news-act', (e) => { if (e.detail === 'backs') { closePanel('reveal'); duckMusic(false); setTimeout(() => openPlus('allbacks'), 450); } }); // the reveal's "see them all" chip
 addEventListener('sc:feel', (e) => buzz(e.detail)); // reveal.js moments (rank-up chip, mission chip, rank bar wrap)
 addEventListener('sc:heartbeat', (e) => buzz(e.detail?.strong ? 'heavy' : 'medium')); // the heartbeat before an Epic/Legendary turns over (2026-10-21)
 addEventListener('sc:payoff', (e) => { const t = e.detail?.tier; if (!e.detail?.fresh && !e.detail?.levelUp) { buzz(e.detail?.newStamp ? 16 : 8); return; } /* a new Moon phase or launch stamp is felt more than a plain repeat (2026-10-17) */ buzz(t === 'legendary' || t === 'epic' ? [20, 40, 20] : t === 'rare' ? 28 : 16); });
@@ -5314,16 +5327,16 @@ function secretsState(t, basis, target) {
   // In the circle and nearer its middle than the target (2026-10-24, Sevaan: secrets are picked like any other object,
   // nearest the middle wins; the one being held keeps it unless the other is 0.5° nearer, like the target pick).
   const angOf = (enu) => Math.acos(Math.max(-1, Math.min(1, dot(enu, basis.back)))) / RAD, tAng = target ? Math.acos(Math.max(-1, Math.min(1, target.angCos ?? 1))) / RAD : Infinity;
-  const out = [], nowMs = now().getTime(), night = (state.frame?.sunEl ?? 0) < -6, inCirc = (enu, slack = 1) => angOf(enu) < sky.reticleDeg + slack, inC = (enu, slack = 1, id = null) => inCirc(enu, slack) && tAng > angOf(enu) - (id && secretHold[id] ? 0.5 : 0);
+  const out = [], nowMs = now().getTime(), night = (state.frame?.sunEl ?? 0) < -6, inCirc = (enu, slack = 1) => angOf(enu) < sky.reticleDeg + slack, tapAngs = [], tapAt = (enu, found) => { if (!found && inCirc(enu, 2)) tapAngs.push(angOf(enu)); }, inC = (enu, slack = 1, id = null) => inCirc(enu, slack) && tAng > angOf(enu) - (id && secretHold[id] ? 0.5 : 0);
   const toEnu = eqToEnu(now(), state.observer), b = basis.back, heading = (Math.atan2(b[0], b[1]) / RAD + 360) % 360, aimEl = Math.asin(Math.max(-1, Math.min(1, b[2]))) / RAD;
   let tap = null;
   // Santa (tap to wave)
   const sf = Secrets.santa(nowMs);
-  if (sf && night) { const w = Secrets.santaWhere(sf, nowMs), enu = enuFromAzEl(w.az, w.el), c = inC(enu, 2); out.push({ kind: 'santa', enu, inCircle: c, done: !!secretFound.santa, title: "Santa’s sleigh", sub: 'NORAD tracked · S-1', color: '#ff8a6b' }); if (c && !secretFound.santa) tap = { id: 'santa', label: 'Tap to wave' }; }
+  if (sf && night) { const w = Secrets.santaWhere(sf, nowMs), enu = enuFromAzEl(w.az, w.el), c = inC(enu, 2); tapAt(enu, secretFound.santa); out.push({ kind: 'santa', enu, inCircle: c, done: !!secretFound.santa, title: "Santa’s sleigh", sub: 'NORAD tracked · S-1', color: '#ff8a6b' }); if (c && !secretFound.santa) tap = { id: 'santa', label: 'Tap to wave' }; }
   // Sputnik and Laika anniversaries (tap), Apollo 11 on 20 July (hold the Moon). 2026-10-14, js/stories.js.
   for (const [id, m, dd, title, sub, color, label] of Secrets.DATED) {
     const c0 = Secrets.datedCrossing(nowMs, m, dd, id.length * 47); if (!c0 || !night || secretFound[id]) continue;
-    const w = Secrets.santaWhere(c0, nowMs), enu = enuFromAzEl(w.az, w.el), c = inC(enu, 2);
+    const w = Secrets.santaWhere(c0, nowMs), enu = enuFromAzEl(w.az, w.el), c = inC(enu, 2); tapAt(enu, false);
     out.push({ kind: id, enu, inCircle: c, done: false, title, sub, color }); if (c) tap = { id, label };
   }
   { const d0 = new Date(nowMs); if (d0.getMonth() === 6 && d0.getDate() === 20 && !secretFound.apollo11 && target?.obj?.type === 'moon' && state.lockedOn) { secretHold.apollo11 ??= t; if (t - secretHold.apollo11 > 1500) earnSecret('apollo11'); } else delete secretHold.apollo11; }
@@ -5355,8 +5368,9 @@ function secretsState(t, basis, target) {
     for (const [id, ra, dec, title, sub, color] of Secrets.DEEP) { if (deepOnce() && !secretFound[id]) continue; const e = toEnu(starVector(ra, dec)); if (e[2] > 0.05) hold(id, e, title, sub, color); }
   }
   { const live = pend.filter(([id, enu]) => !secretFound[id] && inCirc(enu) && !(moonFirst && (id === 'wow' || byMoon(enu))));
-    state.secretAng = live.length ? Math.min(...live.map(([id, enu]) => angOf(enu) - (secretHold[id] ? 0.5 : 0))) : Infinity; /* read by the target pick next frame */
-    const lead = live.length < 2 ? null : (live.filter(([id]) => secretHold[id]).sort((a, b) => secretHold[a[0]] - secretHold[b[0]])[0] ?? live.slice().sort((a, b) => dot(b[1], basis.back) - dot(a[1], basis.back))[0])[0];
+    const score = ([id, enu]) => angOf(enu) - (secretHold[id] ? 0.5 : 0), best = live.slice().sort((a, b) => score(a) - score(b))[0];
+    state.secretAng = Math.min(best ? score(best) : Infinity, ...tapAngs); /* read by the target pick next frame; tap secrets (Santa, Sputnik, Laika) count too */
+    const lead = live.length < 2 ? null : best[0]; /* nearest the middle, the held one 0.5° ahead (review 2026-10-24) */
     for (const a of pend) step(...a, lead); }
   // Testing (2026-10-21, Sevaan): "Show items that aren't visible" also shows where every secret is, found or not, by day
   // or night, as a dashed ring with its name (drawn only; finding one still means holding it in the circle).
