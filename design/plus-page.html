@@ -92,13 +92,72 @@
   .c-free { background: #7fd6a40f; border: 1px solid #7fd6a433; border-radius: 14px; padding: 12px; margin: 6px 0 18px; }
   .c-free b { font: 500 13px 'SC Label'; letter-spacing: .14em; text-transform: uppercase; color: var(--green); } .c-free p { margin: 4px 0 0; color: #cfe8da; font-size: 13px; }
 
+  /* D: a note */
+  .d-paper { background: #f3ead0; color: #2a2418; border-radius: 6px; padding: 18px 18px 16px; margin: 4px 0 14px; box-shadow: 0 14px 30px #000a; transform: rotate(-.6deg); position: relative; }
+  .d-paper::before { content: ''; position: absolute; left: 50%; top: -9px; width: 70px; height: 18px; margin-left: -35px; background: #ffc93d99; transform: rotate(2deg); }
+  .d-paper p { font: 15px/1.55 Georgia, serif; margin: 0 0 10px; } .d-paper p:last-of-type { margin-bottom: 4px; }
+  .d-paper .sig { font: italic 22px/1 'Snell Roundhand', 'Brush Script MT', cursive; color: #8a3a12; margin-top: 8px; }
+  .d-paper small { display: block; font: 500 11px 'SC Label'; letter-spacing: .14em; text-transform: uppercase; color: #7a6f5a; margin-top: 4px; }
+  .d-mini { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 14px; }
+  .d-mini span { font: 500 12.5px 'SC Label'; letter-spacing: .05em; color: var(--ink); background: var(--panel); border: 1px solid var(--line); border-radius: 999px; padding: 6px 10px; }
+
+  /* E: free vs plus */
+  .e-tbl { width: 100%; border-collapse: collapse; margin: 4px 0 14px; }
+  .e-tbl th { font: 500 11px 'SC Label'; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); text-align: center; padding: 0 0 8px; width: 58px; }
+  .e-tbl th.p { color: var(--gold); } .e-tbl th:first-child { text-align: left; width: auto; }
+  .e-tbl td { padding: 9px 0; border-top: 1px solid #16243a; font: 500 14px/1.2 'SC Label'; letter-spacing: .03em; color: #dfe6ee; text-align: center; }
+  .e-tbl td:first-child { text-align: left; } .e-tbl td small { display: block; color: #8797a8; font: 12px/1.3 -apple-system, system-ui; letter-spacing: 0; margin-top: 2px; }
+  .e-tbl .y { color: var(--green); } .e-tbl .g { color: var(--gold); } .e-tbl .n { color: #44546a; }
+  .e-tbl tr.grp td { border-top: 0; padding: 14px 0 4px; font: 500 11px 'SC Label'; letter-spacing: .18em; text-transform: uppercase; color: var(--orange); }
+  .e-tbl td.pc { background: #ffc93d0a; }
+
+  /* F: tonight with Plus */
+  .f-sky { border-radius: 16px; background: linear-gradient(180deg, #13253f, #0a1426); border: 1px solid #ffffff14; padding: 14px; margin: 2px 0 14px; }
+  .f-sky .k { font: 500 11px 'SC Label'; letter-spacing: .2em; color: var(--muted); text-transform: uppercase; }
+  .f-row { display: grid; grid-template-columns: 48px 1fr auto; gap: 10px; align-items: center; padding: 9px 0; border-bottom: 1px solid #ffffff10; }
+  .f-row:last-child { border-bottom: 0; }
+  .f-row b { font: 400 15px 'SC Display'; color: var(--ink); } .f-row span { font: 500 13.5px/1.2 'SC Label'; letter-spacing: .03em; color: #dfe6ee; } .f-row span small { display: block; color: #8fa0b3; font-size: 12px; margin-top: 1px; }
+  .f-row i { font-style: normal; font: 500 10px 'SC Label'; letter-spacing: .1em; text-transform: uppercase; color: #0b1018; background: var(--gold); border-radius: 5px; padding: 3px 6px; }
+  .f-row.free i { background: #7fd6a4; }
+  .f-sum { color: #c9d3de; font-size: 13.5px; margin: 0 0 12px; } .f-sum b { color: var(--ink); }
+
+  .g-card { display: block; width: 92%; margin: 4px auto 16px; transform: rotate(-2deg); border-radius: 14px; box-shadow: 0 0 0 1px #ffc93d55, 0 18px 40px #000c, 0 0 40px #ffc93d22; }
+
   .rec { max-width: 860px; margin: 40px auto 0; padding: 16px 18px; border: 1px solid #fa812744; border-radius: 14px; background: #fa81270c; color: #d7dfe8; font-size: 14.5px; }
   .rec b { color: var(--ink); }
 </style></head><body><div class="wrap">
 <h1>Plus, as a page</h1>
-<p class="intro">Three ways to say it. All three open as a full page (from Settings, a grey bell, a widget, or a card back), all lead with "the game is free", and all end on the same three prices. The small gold line under the header is the reason it opened ("Reminders are one of the extras"), so the page still answers the tap that brought you there. Scroll each phone.</p>
+<p class="intro">Today's sheet first, then six ways to say it. Each one opens as a full page (from Settings, a grey bell, a widget, or a card back), leads with "the game is free" and ends on the same three prices. The small gold line under the header is the reason it opened ("Reminders are one of the extras"), so the page still answers the tap that brought you there. Scroll each phone.</p>
 
 <div class="row">
+
+<!-- NOW -->
+<div class="cell">
+  <div class="ph"><div class="scr" style="padding:0"><img src="plus-page/current.webp" alt="" style="width:100%;display:block"></div></div>
+  <div class="cap"><h2 style="color:#9fb0c6">Now · the current sheet</h2>
+    <p>Captured from the app today (opened from a grey bell). A sheet that slides up, the Plus card as the centrepiece with every perk on it, three prices, one button.</p>
+    <p class="pro">+ The card is beautiful and feels like part of the game.</p>
+    <p class="con">− Never says the game is free; reads as "pay to unlock", and the card's small type carries the whole pitch.</p></div>
+</div>
+
+<!-- G -->
+<div class="cell">
+  <div class="ph"><div class="scr">
+    <div class="top"><b>SPACE COLLECTOR PLUS</b><span>✕</span></div>
+    <span class="why">🔔 Reminders are one of the extras</span>
+    <div class="big" style="text-align:center">The whole sky is free.<br><span style="color:var(--orange)">This card is a thank-you.</span></div>
+    <img class="g-card" src="plus-page/plus-card.webp" alt="">
+    <p class="body" style="text-align:center">Every card up there can be caught without paying. If you love it and want to keep it going, join Plus: you get the extras on the card, and your Plus card goes in your Collection.</p>
+    <div class="prices"><div class="pr"><div class="l">Month</div><div class="p">$1.99</div><div class="n">&nbsp;</div></div><div class="pr on"><div class="l">Year</div><div class="p">$14.99</div><div class="n">7 days free</div></div><div class="pr"><div class="l">Forever</div><div class="p">$29.99</div><div class="n">Pay once</div></div></div>
+    <button class="cta">Support Space Collector</button>
+    <p class="fine">7 days free, then $14.99 a year. Cancel anytime. Shared with Family Sharing.<br>Terms of Use · Privacy Policy · Restore purchases</p>
+    <span class="later">Not now, the sky's still yours</span>
+  </div></div>
+  <div class="cap"><h2>G · The card, with the free promise</h2>
+    <p>Keeps today's Plus card (people already like it) but frames it: "The whole sky is free. This card is a thank-you." The card becomes something you collect for backing the app, and its perk list does the explaining.</p>
+    <p class="pro">+ Smallest change from today; keeps the card, adds the honesty.</p>
+    <p class="con">− The perks stay in the card's small type; long page on short phones.</p></div>
+</div>
 
 <!-- A -->
 <div class="cell">
@@ -200,6 +259,89 @@
     <p class="con">− Less of your "support the app" voice; the most to build and keep up to date.</p></div>
 </div>
 
+<!-- D -->
+<div class="cell">
+  <div class="ph"><div class="scr">
+    <div class="top"><b>A NOTE</b><span>✕</span></div>
+    <span class="why">🔔 Reminders are one of the extras</span>
+    <div class="d-paper">
+      <p>Hi. I made Space Collector because I wanted a reason to go outside and look up.</p>
+      <p>The whole game is free, and it's staying that way. No ads, nothing held back.</p>
+      <p>If it's given you a few good nights and you'd like to help me keep adding cards, Plus is how. I've thrown in some extras to say thanks.</p>
+      <div class="sig">Sevaan</div><small>Made by one person, under real skies</small>
+    </div>
+    <div class="sec">The thank-you extras</div>
+    <div class="d-mini"><span>🔔 Pass reminders</span><span>◆ Rare alerts</span><span>▦ Widgets</span><span>✦ Shiny forecast</span><span>▭ Card backs</span><span>◎ Member patch</span></div>
+    <div class="prices"><div class="pr"><div class="l">Month</div><div class="p">$1.99</div><div class="n">&nbsp;</div></div><div class="pr on"><div class="l">Year</div><div class="p">$14.99</div><div class="n">7 days free</div></div><div class="pr"><div class="l">Forever</div><div class="p">$29.99</div><div class="n">Pay once</div></div></div>
+    <button class="cta">Count me in</button>
+    <p class="fine">7 days free, then $14.99 a year. Cancel anytime. Shared with Family Sharing.<br>Terms of Use · Privacy Policy · Restore purchases</p>
+    <span class="later">Maybe later</span>
+  </div></div>
+  <div class="cap"><h2>D · A note from you</h2>
+    <p>The most direct form of your idea: a short handwritten-feeling note on cream paper, signed. The extras are just chips under it; this one sells you, not features.</p>
+    <p class="pro">+ Nothing else on the App Store feels like this; people back people.</p>
+    <p class="con">− Puts your name in the app; extras get little room, so the bell/widget taps feel less answered.</p></div>
 </div>
-<div class="rec"><b>My pick: A's words with C's pictures.</b> Lead with "The whole sky is free." and the free-always list (A), then show each extra as the real thing (C) instead of a list, and end on "Support Space Collector". One App Store note: because Plus unlocks features, it has to stay a normal subscription/purchase. Calling it "support" is fine, but the button can't say "donate".</div>
+
+<!-- E -->
+<div class="cell">
+  <div class="ph"><div class="scr">
+    <div class="top"><b>FREE &amp; PLUS</b><span>✕</span></div>
+    <span class="why">🔔 Reminders are one of the extras</span>
+    <div class="big">Free is the game.<br>Plus is the extras.</div>
+    <table class="e-tbl">
+      <tr><th></th><th>Free</th><th class="p">Plus</th></tr>
+      <tr class="grp"><td colspan="3">The game</td></tr>
+      <tr><td>Every card in the sky</td><td class="y">✓</td><td class="y pc">✓</td></tr>
+      <tr><td>Tonight's plan</td><td class="y">✓</td><td class="y pc">✓</td></tr>
+      <tr><td>Missions, XP &amp; ranks</td><td class="y">✓</td><td class="y pc">✓</td></tr>
+      <tr><td>Patches, albums, secrets</td><td class="y">✓</td><td class="y pc">✓</td></tr>
+      <tr><td>Reminders<small>ISS passes and dark</small></td><td class="y">✓</td><td class="y pc">✓</td></tr>
+      <tr class="grp"><td colspan="3">The extras</td></tr>
+      <tr><td>Reminders for any pass</td><td class="n">—</td><td class="g pc">✓</td></tr>
+      <tr><td>Rare alerts</td><td class="n">—</td><td class="g pc">✓</td></tr>
+      <tr><td>Widgets</td><td class="n">—</td><td class="g pc">✓</td></tr>
+      <tr><td>Shiny forecast<small>Free shows tonight's best</small></td><td class="n">1</td><td class="g pc">All</td></tr>
+      <tr><td>Card backs</td><td class="n">1</td><td class="g pc">7</td></tr>
+      <tr><td>Member patch</td><td class="n">—</td><td class="g pc">✓</td></tr>
+    </table>
+    <div class="prices"><div class="pr"><div class="l">Month</div><div class="p">$1.99</div><div class="n">&nbsp;</div></div><div class="pr on"><div class="l">Year</div><div class="p">$14.99</div><div class="n">7 days free</div></div><div class="pr"><div class="l">Forever</div><div class="p">$29.99</div><div class="n">Pay once</div></div></div>
+    <button class="cta">Get the extras</button>
+    <p class="fine">7 days free, then $14.99 a year. Cancel anytime. Shared with Family Sharing.<br>Terms of Use · Privacy Policy · Restore purchases</p>
+    <span class="later">Stay on Free</span>
+  </div></div>
+  <div class="cap"><h2>E · Free and Plus, side by side</h2>
+    <p>A plain table. The top half ("The game") is all ticks in both columns, which proves the free promise without a speech; the bottom half is what Plus adds.</p>
+    <p class="pro">+ Fastest to understand; nobody can feel misled.</p>
+    <p class="con">− Looks like every subscription page; no warmth or story.</p></div>
+</div>
+
+<!-- F -->
+<div class="cell">
+  <div class="ph"><div class="scr">
+    <div class="top"><b>PLUS · TONIGHT</b><span>✕</span></div>
+    <span class="why">🔔 Reminders are one of the extras</span>
+    <div class="big">Here's what Plus would do tonight.</div>
+    <p class="f-sum">You can still catch everything below for free. Plus just makes sure you don't miss it.</p>
+    <div class="f-sky"><span class="k">Tonight over Peterborough</span>
+      <div class="f-row"><b>7:52</b><span>Hubble<small>Reminder 10 min before</small></span><i>Plus</i></div>
+      <div class="f-row free"><b>8:31</b><span>Space Station<small>Reminder · ISS is always free</small></span><i>Free</i></div>
+      <div class="f-row"><b>9:14</b><span>Shiny window · SL-8 stage<small>It slips into Earth's shadow</small></span><i>Plus</i></div>
+      <div class="f-row"><b>9:40</b><span>◆ Rare: Kosmos 1190<small>A ping when it's coming</small></span><i>Plus</i></div>
+      <div class="f-row"><b>All night</b><span>On your lock screen<small>Next catch and the countdown</small></span><i>Plus</i></div>
+    </div>
+    <p class="f-sum">Plus also gets you <b>6 card backs</b> and the <b>member patch</b>, and helps keep new cards coming.</p>
+    <div class="prices"><div class="pr"><div class="l">Month</div><div class="p">$1.99</div><div class="n">&nbsp;</div></div><div class="pr on"><div class="l">Year</div><div class="p">$14.99</div><div class="n">7 days free</div></div><div class="pr"><div class="l">Forever</div><div class="p">$29.99</div><div class="n">Pay once</div></div></div>
+    <button class="cta">Try it free tonight</button>
+    <p class="fine">7 days free, then $14.99 a year. Cancel anytime. Shared with Family Sharing.<br>Terms of Use · Privacy Policy · Restore purchases</p>
+    <span class="later">Not tonight</span>
+  </div></div>
+  <div class="cap"><h2>F · Tonight, with Plus</h2>
+    <p>Built from the real plan for the night (these rows are an example): your actual passes, shiny window, rare one and widget, each marked Free or Plus. The extras stop being abstract.</p>
+    <p class="pro">+ Personal and timely; strongest reason to start the trial tonight.</p>
+    <p class="con">− Needs a fallback by day or on cloudy nights; more code to build.</p></div>
+</div>
+
+</div>
+<div class="rec"><b>If you love the current card, G is the easy win:</b> same card, now framed by "The whole sky is free." <b>Otherwise, my pick: F, with A's opening line.</b> "The whole sky is free." up top, then tonight's real sky marked Free / Plus, then the prices. On a cloudy night or before the plan is ready it falls back to A's list. D is the boldest if you're happy to sign it; E is the safest. Earlier pick kept for comparison: <b>A's words with C's pictures.</b> Lead with "The whole sky is free." and the free-always list (A), then show each extra as the real thing (C) instead of a list, and end on "Support Space Collector". One App Store note: because Plus unlocks features, it has to stay a normal subscription/purchase. Calling it "support" is fine, but the button can't say "donate".</div>
 </div></body></html>
