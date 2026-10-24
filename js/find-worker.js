@@ -1,8 +1,8 @@
 // Find (2026-10-13): the next visible pass of a few chosen objects over the next ~10 days, for the Collection’s Find
 // tab. Same visibility rules as the live sky and Tonight (sunlit, dark sky, bright enough for your sky). Steps a minute
 // at a time but skips daylight in big jumps, so ten days for a handful of objects takes a moment.
-import { frame, look, setSkyLimit, setBinocularMode, DARK_SUN_ELEVATION, withSatrecs } from './orbit.js?v=0.1.1107';
-import { skyLimit } from './sky-limit.js?v=0.1.1107';
+import { frame, look, setSkyLimit, setBinocularMode, DARK_SUN_ELEVATION, withSatrecs } from './orbit.js?v=0.1.1108';
+import { skyLimit } from './sky-limit.js?v=0.1.1108';
 
 self.onmessage = ({ data }) => {
   const objects = withSatrecs(data.objects);
