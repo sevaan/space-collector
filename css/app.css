@@ -483,7 +483,7 @@ body.day #skybar { opacity: 0; pointer-events: none; }
    so the pips go; Skip is a quiet text link top right under the header. */
 body.ob-tour #event-banner, body.ob-tour #banner, body.ob-tour #toasts { visibility: hidden; }
 .ob-pips { display: none !important; }
-#ob-skip.ob-exit { position: fixed; top: calc(var(--safe-top) + 90px); right: 12px; left: auto; bottom: auto; transform: none; min-height: 36px; padding: 6px 10px;
+#ob-skip.ob-exit { position: fixed; top: calc(var(--safe-top) + 90px); right: calc(12px + var(--safe-r, 0px)); left: auto; bottom: auto; transform: none; min-height: 36px; padding: 6px 10px;
   border: 0; background: none; box-shadow: none; color: rgba(255, 242, 179, .7); font: 500 13px/1 var(--label); letter-spacing: .16em; text-transform: uppercase; z-index: 40; }
 /* 5 · The meteor-shower banner is a chip, stacked with the next-up chip in the same style. */
 #event-banner { top: calc(var(--safe-top) + 92px); max-width: calc(var(--vws) - 150px); padding: 7px 11px; border-radius: 99px; display: flex; align-items: baseline; gap: .35em; white-space: nowrap; overflow: hidden;

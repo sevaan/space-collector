@@ -808,7 +808,7 @@ dialog[open] { padding-left: var(--safe-l) !important; padding-right: var(--safe
 .up-next__when { white-space: nowrap; overflow: hidden; }
 .up-next__when small { letter-spacing: .1em; }
 .up-next__tile { container-type: inline-size; }
-.up-next__when { font-size: min(12px, 12.5cqi); left: 4px; right: 4px; padding-inline: 3px; }
+.up-next__when { font-size: clamp(9px, 12.5cqi, 12px); /* never 0: on the Duo the pills came up blank (iPad/Duo playtest 2026-10-24) */ left: 4px; right: 4px; padding-inline: 3px; }
 .up-next__when small { font-size: min(11px, 11cqi); }
 /* The card's picture never starts an image drag, so a flick or swipe that begins on it is the card's (as in the reveal, Duo playtest 2026-10-22). */
 #slot img { -webkit-user-drag: none; user-select: none; -webkit-touch-callout: none; }
@@ -854,3 +854,10 @@ html.embedded #stats-view::backdrop { background: transparent; }
 html.embedded #stats-body { padding-top: 16px; padding-bottom: calc(var(--safe-bottom, 0px) + 110px); } /* the tab bar stays over it now */
 html.embedded #stats-view, html.embedded #stats-view:focus, html.embedded #stats-view:focus-visible { outline: none; }
 #stats-view.instant[open], #stats-view.instant[open]::backdrop { animation: none !important; } /* opened under Settings, already in place */
+
+/* iPad/Duo playtest 2026-10-24. Observer stats in the app fills the page under the header at every width (it was a 560px
+   column over the Collection grid on wide screens), its contents kept to a readable column. The docked card page covers
+   down to the bottom edge behind the tab bar, so the grid doesn't peek out under it. */
+html.embedded #stats-view { max-width: none; }
+html.embedded #stats-body { padding-inline: max(20px, calc((100% - 620px) / 2)); }
+#viewer.docked { box-shadow: 0 calc(var(--safe-bottom, 0px) + 96px) 0 0 var(--bg); }
