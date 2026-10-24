@@ -105,12 +105,97 @@
   .e-strip .cp { position: absolute; bottom: 6px; font: 500 10px 'SC Label'; letter-spacing: .14em; color: var(--muted); transform: translateX(-50%); }
   .e-strip .k { position: absolute; left: 10px; top: 7px; font: 500 9.5px 'SC Label'; letter-spacing: .16em; color: var(--muted); }
 
+  /* P · the room's pick (C + D's edge arrows + B's card on lock) */
+  .ph.idle { background-image: url('explore-redesign/idle.webp'); }
+  .p-chip { left: 16px; top: 52px; height: 36px; border-radius: 18px; display: flex; align-items: center; gap: 8px; padding: 0 13px 0 7px; font: 500 12.5px 'SC Label'; letter-spacing: .1em; color: var(--ink); }
+  .p-chip i { width: 22px; height: 22px; border-radius: 50%; border: 1px solid #8fb3d977; position: relative; } .p-chip i::after { content: ''; position: absolute; left: 50%; top: 2px; width: 2px; height: 8px; margin-left: -1px; background: var(--orange); }
+  .p-chip b { color: var(--orange); font-weight: 500; }
+  .p-set { right: 16px; top: 52px; width: 36px; height: 36px; border-radius: 18px; display: grid; place-items: center; color: var(--ink); font-size: 15px; }
+  .p-edge { display: flex; align-items: center; gap: 6px; font: 500 10.5px/1.15 'SC Label'; letter-spacing: .08em; }
+  .p-edge .ar { width: 0; height: 0; border: 9px solid transparent; }
+  .p-edge.r { right: 4px; flex-direction: row-reverse; text-align: right; } .p-edge.r .ar { border-left-color: currentColor; border-right-width: 0; }
+  .p-edge.l { left: 4px; } .p-edge.l .ar { border-right-color: currentColor; border-left-width: 0; }
+  .p-edge b { display: block; font-weight: 500; color: var(--ink); }
+  .p-hint { left: 0; right: 0; top: 452px; text-align: center; font: 500 12px 'SC Label'; letter-spacing: .12em; color: #c9d3de; text-shadow: 0 1px 6px #000; }
+  .p-hint em { font-style: normal; color: #c8b0ff; }
+  .p-dock { left: 50%; bottom: 18px; transform: translateX(-50%); height: 52px; border-radius: 26px; display: flex; align-items: center; gap: 4px; padding: 5px; }
+  .p-dock span { height: 42px; padding: 0 16px; border-radius: 21px; display: grid; place-items: center; font: 500 11px 'SC Label'; letter-spacing: .16em; color: #c9cbb6; } .p-dock span.on { background: var(--orange); color: #140a03; }
+  .p-sheet { left: 10px; right: 10px; bottom: 116px; height: 150px; border-radius: 20px; padding: 14px; display: grid; grid-template-columns: 82px 1fr; gap: 12px; }
+  .p-card { position: relative; width: 82px; height: 122px; border-radius: 8px; border: 2px solid #e9dcb3; overflow: hidden; box-shadow: 0 0 22px #5fd08a66; transform: rotate(-4deg); background: #0b1424; }
+  .p-card::before { content: ''; position: absolute; inset: 0; background: url('../assets/art/cards/sl-8.webp') center 30% / cover; filter: blur(3px) brightness(.38) saturate(.55); transform: scale(1.1); }
+  .p-card::after { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(#ffffff0a 0 1px, transparent 1px 3px); }
+  .p-card span { position: absolute; inset: 0; display: grid; place-items: center; font: 400 26px 'SC Display'; color: #5fd08acc; z-index: 1; }
+  .p-info { position: relative; display: flex; flex-direction: column; }
+  .p-info .t { font: 500 11px 'SC Label'; letter-spacing: .14em; color: var(--unc); } .p-info .n { font: 400 17px/1.1 'SC Display'; color: var(--ink); margin: 3px 0 3px; } .p-info .w { font-size: 12.5px; color: #9fb0c2; line-height: 1.3; }
+  .p-info .xp { position: absolute; right: 0; top: 0; font: 600 12px 'SC Label'; color: var(--unc); letter-spacing: .08em; }
+  .p-info .cta { margin-top: auto; height: 42px; }
+  .p-notes { width: 340px; color: #c9d3de; font-size: 14px; }
+  .p-notes h3 { font: 500 13px 'SC Label'; letter-spacing: .18em; text-transform: uppercase; color: var(--orange); margin: 0 0 6px; }
+  .p-notes ol { margin: 0 0 16px; padding-left: 20px; } .p-notes li { margin: 0 0 8px; } .p-notes li b { color: var(--ink); }
+  .p-notes .open { border-top: 1px solid #22324a; padding-top: 12px; } .p-notes .open li { color: #d9b48a; }
+  .pick-h { font: 400 20px 'SC Display'; color: var(--ink); margin: 6px 0 4px; } .pick-sub { color: #9fb0c6; margin: 0 0 20px; max-width: 900px; }
+  .divider { height: 1px; background: #22324a; margin: 44px 0 30px; }
   .rec { max-width: 900px; margin: 44px auto 0; padding: 18px 20px; border: 1px solid #fa812744; border-radius: 14px; background: #fa81270c; color: #d7dfe8; font-size: 14.5px; }
   .rec b { color: var(--ink); } .rec ul { margin: 8px 0 0; padding-left: 18px; } .rec li { margin: 4px 0; }
 </style></head><body><div class="wrap">
 <h1>Explore, five ways</h1>
 <p class="intro">Five designers, one brief: make the moment of lining something up feel better, and get everything else out of the sky's way. Every phone uses the real sky from the app at the same moment (an Uncommon SL-8 stage in the circle). The circle itself doesn't change in any of them; what changes is everything around it.</p>
 
+<h2 class="pick-h">The room's pick, mocked</h2>
+<p class="pick-sub">C's calm screen as the base, D's arrows on the edge instead of the radar, and B's card rising when something locks on (its picture still hidden until you catch it). The sky slider stays; red night mode is in Settings. Two moments: just looking around, and locked on to something new.</p>
+<div class="row">
+
+<div class="cell">
+  <div class="ph idle">
+    <div class="stat"><span>8:30</span><span>●●● 77</span></div>
+    <div class="p-chip glass"><i></i>5 UP · <b>2 NEW</b></div>
+    <span class="p-set glass">⚙︎</span>
+    <div class="p-edge r" style="top:300px;color:var(--gold)"><i class="ar"></i><span><b>◆ RARE</b>40° →</span></div>
+    <div class="p-edge l" style="top:520px;color:#c8b0ff"><i class="ar"></i><span><b>✦ EPIC</b>← 110°</span></div>
+    <span class="p-hint">Something <em>Epic</em> is behind you on the left</span>
+    <div class="sl"><span>SEE LESS</span><i></i><span>SEE MORE</span></div>
+    <div class="p-dock glass"><span>TONIGHT</span><span class="on">EXPLORE</span><span>COLLECTION</span></div>
+  </div>
+  <div class="cap"><div class="who">Moment 1</div><h2>Looking around</h2>
+    <p>Just the sky, one chip, Settings, the slider and the dock. New things you're not facing get an arrow on that side of the screen in their rarity colour, with how far to turn. With nothing in the circle, one quiet line under it says where the best new thing is.</p></div>
+</div>
+
+<div class="cell">
+  <div class="ph">
+    <div class="stat"><span>8:30</span><span>●●● 77</span></div>
+    <div class="p-chip glass"><i></i>5 UP · <b>2 NEW</b></div>
+    <span class="p-set glass">⚙︎</span>
+    <div class="p-edge l" style="top:250px;color:#c8b0ff"><i class="ar"></i><span><b>✦ EPIC</b>← 110°</span></div>
+    <div class="p-sheet glass"><span class="p-card"><span>▲</span></span><div class="p-info"><span class="t">▲ UNCOMMON · NEW</span><span class="n">SL-8 Rocket Stage</span><span class="w">Soviet rocket stage · 1985<br>1,280 km away</span><span class="xp">+15 XP</span><span class="cta">Collect</span></div></div>
+    <div class="sl"><span>SEE LESS</span><i></i><span>SEE MORE</span></div>
+    <div class="p-dock glass"><span>TONIGHT</span><span class="on">EXPLORE</span><span>COLLECTION</span></div>
+  </div>
+  <div class="cap"><div class="who">Moment 2</div><h2>Locked on</h2>
+    <p>The card rises from the bottom as the circle locks: the picture hidden and glowing in its rarity, the name, what it is, how far, the XP, and Collect at thumb height. Tapping Collect plays today's reveal. Turn away and the card sinks back. The other arrows stay.</p></div>
+</div>
+
+<div class="p-notes">
+  <h3>What changes from today</h3>
+  <ol>
+    <li><b>Header goes.</b> No wordmark or double rule; the status bar sits on the sky. Settings becomes a round button top right.</li>
+    <li><b>Radar becomes a chip.</b> "5 up · 2 new" with a tiny heading dial; tap it for All around you, as the radar does now.</li>
+    <li><b>Edge arrows</b> replace the radar's job: up to three, the rarest new things off screen, on the side you'd turn to.</li>
+    <li><b>The Tonight chip goes</b>; Tonight is the first tab, and its countdown can live on the chip when a pass is near ("Hubble in 6 min").</li>
+    <li><b>The card under the circle becomes a sheet</b> at the bottom with the hidden card picture and Collect at thumb height.</li>
+    <li><b>Owned things</b> use the same sheet with the real picture and View card instead of Collect.</li>
+    <li><b>Slider and tabs</b> stay; the tabs become a floating dock.</li>
+  </ol>
+  <h3>Open questions</h3>
+  <ol class="open">
+    <li>Keep the "Space Collector" name anywhere on Explore? (Today it's the header.)</li>
+    <li>Arrows for new things only, or the Moon and planets too?</li>
+    <li>Should the sheet cover the sky's lower third, or sit smaller beside the circle on short phones?</li>
+  </ol>
+</div>
+
+</div>
+<div class="divider"></div>
+<h2 class="pick-h">The five directions</h2>
 <div class="row">
 
 <!-- NOW -->
