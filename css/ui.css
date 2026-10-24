@@ -551,3 +551,7 @@ body.nav-tabs.sky-open #tab-fade { display: none !important; }
    a faint cream outline like the cards' frames. Nothing shows through. */
 .sc-switch { background-color: #080f1b !important; box-shadow: 0 0 0 1px #fff2b31f, 0 10px 24px rgba(0, 0, 0, .35) !important; }
 body.night .sc-switch, html[data-theme='night'] .sc-switch { background-color: #0c0303 !important; box-shadow: 0 0 0 1px #ff6a5526, 0 10px 24px rgba(0, 0, 0, .35) !important; }
+/* Over a page (Tonight, Settings, All around you), a notice rises from the bottom, just above the tab bar, instead of
+   covering the top of the page (iPad playtest 2026-10-24: the Plus line and the TONIGHT heading went under it). */
+html body:has(.overlay.panel:not([hidden])) #toasts#toasts#toasts { top: auto !important; bottom: calc(var(--safe-bottom, 0px) + 96px) !important; clip-path: none; }
+html body:has(.overlay.panel:not([hidden])) #toasts#toasts#toasts .ticket:not(.in) { transform: translateY(calc(100% + 28px)); }

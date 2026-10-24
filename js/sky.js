@@ -1,17 +1,17 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.1115';
+import { extinction } from './sky-limit.js?v=0.1.1116';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.1115';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.1116';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.1115';
-import { createCloudGL } from './clouds-gl.js?v=0.1.1115';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.1116';
+import { createCloudGL } from './clouds-gl.js?v=0.1.1116';
 // Cloud colours by light: sunlit tops, shadowed bellies, and the horizon haze they melt into (0–1 RGB).
 const CLOUD_LIGHT = {
   day: { lit: [1, 1, 1], shade: [0.62, 0.68, 0.77], haze: [0.82, 0.87, 0.93] },
   dusk: { lit: [1, 0.8, 0.68], shade: [0.36, 0.33, 0.42], haze: [0.62, 0.5, 0.52] },
   night: { lit: [0.22, 0.25, 0.31], shade: [0.1, 0.12, 0.16], haze: [0.14, 0.15, 0.2] },
 };
-import { TIER_INFO } from './rarity.js?v=0.1.1115';
+import { TIER_INFO } from './rarity.js?v=0.1.1116';
 
 const RAD = Math.PI / 180;
 const SECRET_PX = { santa: 24, roadster: 12.4, voyager: 14.5, voyager2: 14.5, pioneer10: 11.7, pioneer11: 11.7, newhorizons: 6.4, arecibo: 6.9, halley: 8.6, sputnik: 11.2, laika: 13.3, wow: 9.8 };
@@ -300,6 +300,7 @@ export class SkyView {
     const r = ring.r + 16;
     const occupied = [{ x: ring.x - r, y: ring.y - r, w: 2 * r, h: 2 * r }];
     for (const b of this.uiBoxes ?? []) occupied.push(b); // the HUD's own boxes (main.js uiBoxes)
+    if (this.shadowBox) occupied.push(this.shadowBox);
     if (this.clearZone) {
       const z = this.clearZone;
       occupied.push({ x:z.left, y:z.top, w:z.right - z.left, h:z.bottom - z.top });
@@ -1499,7 +1500,7 @@ export class SkyView {
     this.drawBackground();
     if ((this.dayF ?? 0) < 0.2 && !this.camera) this.drawMilkyWay(milky); // no Milky Way in camera view
     if (sky && (this.dayF ?? 0) < 0.6) this.drawStars(sky, { lines: lines && this.dayF < 0.2, time: this.reducedMotion ? 0 : time, starLimit });
-    if (this.showShadow !== false) this.drawEarthShadow();
+    this.shadowBox = null; if (this.showShadow !== false) this.drawEarthShadow();
     if (deep?.length && (this.dayF ?? 0) < 0.2) this.drawDeep(deep);
     if (weather && !this.camera) this.drawWeather(weather, this.reducedMotion || this.saver ? 0 : time); // the camera shows the real clouds
     if (bodies) this.drawBodies(bodies);
@@ -1761,7 +1762,7 @@ export class SkyView {
     ctx.stroke(); ctx.setLineDash([]);
     // Always say what the line is when there’s room for it (2026-10-17, Sevaan: "we need a label for it").
     if (best) {
-      const x = best.p.x, y = best.top;
+      const x = best.p.x, y = best.top; this.shadowBox = { x: x - 116, y: y - 2, w: 232, h: 32 }; // sky names keep off it (iPad playtest 2026-10-24: Saturn sat on it)
       ctx.textAlign = 'center'; if ('letterSpacing' in ctx) ctx.letterSpacing = '1.5px';
       ctx.fillStyle = red ? 'rgba(255,110,90,.85)' : 'rgba(255,201,61,.85)'; ctx.font = `600 11px ${FONT}`; ctx.fillText(this.shadowLabel?.[0] ?? "EARTH’S SHADOW", x, y + 11);
       if ('letterSpacing' in ctx) ctx.letterSpacing = '0.5px';

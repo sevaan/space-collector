@@ -2483,3 +2483,8 @@ body:has(#onboard:not([hidden]) #ob-done:not([hidden])) #set-plus-sheet .set-she
   #debug > .set-group.set-card.on, #debug.set-tools > #test-tools { margin-top: 6px !important; }
   .ob-deck { left: 0; right: 0; }
 }
+/* Upright iPads (no fold across the middle; the unfolded Duo upright is under 700 wide): the group follows the 3×3 index
+   straight away instead of starting below an imaginary fold (iPad playtest 2026-10-24: a big empty band). */
+@media (min-width: 700px) and (min-height: 900px) and (orientation: portrait) {
+  #set-index { min-height: 0; margin-bottom: 18px; }
+}
