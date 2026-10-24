@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Floating Tabs</title>
+<!-- 2026-10-23 (Sevaan: "show me what that new footer would look like on the collection and tonight screen and current
+     ui explore screen"). The room's-pick floating dock on the real screens (explore-redesign/nd-*.webp: today's
+     Explore, Tonight and Collection captured with the tab bar removed). Two styles: words only, icon + word. -->
+<style>
+  @font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf'); font-weight: 500; }
+  @font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf'); }
+  :root { --ink: #fff2b3; --orange: #fa8127; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #04070d; color: #e8eef6; font: 15px/1.45 -apple-system, system-ui, sans-serif; padding: 28px 16px 80px; }
+  .wrap { max-width: 1180px; margin: 0 auto; }
+  h1 { font: 400 26px 'SC Display', sans-serif; color: var(--ink); margin: 0 0 6px; }
+  .intro { color: #9fb0c6; max-width: 900px; margin: 0 0 8px; }
+  h2 { font: 500 14px 'SC Label'; letter-spacing: .2em; text-transform: uppercase; color: var(--orange); margin: 30px 0 4px; }
+  .sub { color: #9fb0c6; margin: 0 0 14px; font-size: 14px; }
+  .row { display: flex; flex-wrap: wrap; gap: 30px; }
+  .cell { width: 340px; } .cap { margin-top: 8px; font: 500 13px 'SC Label'; letter-spacing: .16em; text-transform: uppercase; color: #9fb0c6; }
+  .ph { position: relative; width: 340px; height: 739px; border-radius: 44px; border: 9px solid #121722; overflow: hidden; background: #0b1424 center / cover; }
+  .ph > * { position: absolute; }
+  .fade { left: 0; right: 0; bottom: 0; height: 120px; background: linear-gradient(#080f1b00, #080f1bd9 70%); pointer-events: none; }
+  .dock { left: 50%; bottom: 18px; transform: translateX(-50%); height: 54px; border-radius: 27px; display: flex; align-items: center; gap: 4px; padding: 5px;
+    background: rgba(8,15,27,.82); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid #ffffff17; box-shadow: 0 10px 28px #000a; }
+  .dock span { height: 44px; padding: 0 17px; border-radius: 22px; display: flex; align-items: center; justify-content: center; gap: 7px; font: 500 11.5px 'SC Label'; letter-spacing: .16em; color: #c9cbb6; white-space: nowrap; }
+  .dock span.on { background: var(--orange); color: #140a03; }
+  .dock svg { width: 16px; height: 16px; flex: none; }
+  .dock.ic span { padding: 0 14px; }
+  .dock.ic span:not(.on) { padding: 0 12px; }
+  .dock.ic span:not(.on) b { display: none; } /* the others show just their icon, so the bar stays short */
+  .dock b { font-weight: 500; }
+  .note { max-width: 900px; margin: 34px 0 0; padding: 16px 18px; border: 1px solid #22324a; border-radius: 14px; color: #c9d3de; font-size: 14px; }
+  .note b { color: var(--ink); }
+</style></head><body><div class="wrap">
+<h1>Floating tabs</h1>
+<p class="intro">The tabs from the room's pick, as a floating pill instead of today's full-width bar, on your three main screens as they are today. The page you're on is solid orange. On pages that scroll (Tonight, Collection) a soft fade sits behind it so lists don't run into it.</p>
+<div id="board"></div>
+<div class="note"><b>What changes:</b> the bar is about 40% narrower and floats 18 px off the bottom, so more of the sky (and the list) shows round it. The orange top line on today's bar becomes the solid orange pill. Tap targets stay 44 px tall. <b>Style 2</b> keeps the other two tabs as icons only, so the pill is shortest; the room liked Style 1 for the first week (words teach the tabs) and Style 2 after. They could be one setting, or Style 1 until you've visited each tab a few times.</div>
+</div>
+<script>
+const I = {
+  tonight: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M10 3 L11.6 8.4 L17 10 L11.6 11.6 L10 17 L8.4 11.6 L3 10 L8.4 8.4z"/><path d="M18 14 L18.8 16.2 L21 17 L18.8 17.8 L18 20 L17.2 17.8 L15 17 L17.2 16.2z"/></svg>',
+  explore: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2.2"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3" stroke-linecap="round"/></svg>',
+  collection: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="6" y="3" width="12" height="17" rx="2"/><path d="M9 20.5 h8 a2 2 0 0 0 2-2 V6"/></svg>',
+};
+const screens = [['explore', 'Explore', 'nd-explore'], ['tonight', 'Tonight', 'nd-tonight'], ['collection', 'Collection', 'nd-collection']];
+const dock = (on, icons) => `<div class="dock${icons ? ' ic' : ''}">${['tonight', 'explore', 'collection'].map((t) => `<span class="${t === on ? 'on' : ''}">${icons ? I[t] : ''}<b>${t.toUpperCase()}</b></span>`).join('')}</div>`;
+const row = (icons) => screens.map(([id, name, img]) => `<div class="cell"><div class="ph" style="background-image:url('explore-redesign/${img}.webp')">${id === 'explore' ? '' : '<span class="fade"></span>'}${dock(id, icons)}</div><div class="cap">${name}</div></div>`).join('');
+document.getElementById('board').innerHTML = `<h2>Style 1 · words</h2><p class="sub">As in the mockup: three words, the page you're on in orange.</p><div class="row">${row(false)}</div>
+<h2>Style 2 · icon + word</h2><p class="sub">The page you're on shows its icon and name; the other two are just icons.</p><div class="row">${row(true)}</div>`;
+</script>
+</body></html>

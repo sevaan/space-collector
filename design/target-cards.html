@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Target Cards</title>
+<!-- 2026-10-23 (Sevaan: "I like the card when something is in the target… show me my current UI with every type of
+     target card in it in that style"). The real Explore screen (explore-redesign/current-idle.webp: today's header,
+     radar, Tonight chip, slider and tabs, nothing in the circle) with the room's-pick card at the bottom for every
+     kind of thing the circle can name. The circle is recoloured per state on top of the captured one. -->
+<style>
+  @font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf'); font-weight: 500; }
+  @font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf'); }
+  :root { --ink: #fff2b3; --muted: #a9b0a4; --orange: #fa8127; --gold: #ffc93d; --line: #22324a;
+    --common: #c9d3de; --unc: #5fd08a; --rare: #6ea8ff; --epic: #e46ad6; --leg: #ffc93d; --red: #ff6a55; --blue: #6ea8ff; --green: #5fe08a; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #04070d; color: #e8eef6; font: 15px/1.45 -apple-system, system-ui, sans-serif; padding: 28px 16px 80px; }
+  .wrap { max-width: 1480px; margin: 0 auto; }
+  h1 { font: 400 26px 'SC Display', sans-serif; color: var(--ink); margin: 0 0 6px; }
+  .intro { color: #9fb0c6; max-width: 980px; margin: 0 0 10px; }
+  h2.grp { font: 500 14px 'SC Label'; letter-spacing: .2em; text-transform: uppercase; color: var(--orange); margin: 34px 0 14px; }
+  .row { display: flex; flex-wrap: wrap; gap: 28px; }
+  .cell { width: 340px; }
+  .cap { margin-top: 10px; } .cap b { display: block; font: 500 14px 'SC Label'; letter-spacing: .14em; text-transform: uppercase; color: var(--ink); } .cap span { color: #9fb0c2; font-size: 13.5px; }
+
+  .ph { position: relative; width: 340px; height: 739px; border-radius: 44px; border: 9px solid #121722; overflow: hidden; background: #0b1424 url('explore-redesign/current-idle.webp') center / cover; }
+  .ph > * { position: absolute; }
+  /* the circle, recoloured: covers the captured cream one (centre 170,369; r 55.5) */
+  .rg { left: 112px; top: 311px; width: 116px; height: 116px; border-radius: 50%; border: 2.5px solid var(--c); box-shadow: 0 0 16px color-mix(in srgb, var(--c) 60%, transparent), inset 0 0 12px color-mix(in srgb, var(--c) 30%, transparent); }
+  .tk { background: var(--c); width: 2.5px; height: 12px; }
+  .tk.t { left: 169px; top: 297px; } .tk.b { left: 169px; top: 429px; } .tk.l { left: 98px; top: 368px; width: 12px; height: 2.5px; } .tk.r { left: 230px; top: 368px; width: 12px; height: 2.5px; }
+  .obj { left: 170px; top: 369px; transform: translate(-50%, -50%); }
+  .fade { left: 106px; top: 305px; width: 128px; height: 128px; border-radius: 50%; background: conic-gradient(var(--gold) 0 64%, #ffc93d22 0); mask: radial-gradient(closest-side, transparent 92%, #000 93%); }
+  .fade-t { left: 0; right: 0; top: 357px; text-align: center; font: 600 13px 'SC Label'; letter-spacing: .14em; color: var(--gold); text-shadow: 0 1px 6px #000; }
+  .hold { left: 106px; top: 305px; width: 128px; height: 128px; border-radius: 50%; background: conic-gradient(var(--gold) 0 40%, #ffc93d22 0); mask: radial-gradient(closest-side, transparent 92%, #000 93%); }
+
+  /* the card at the bottom (the room's pick): above the slider, under the circle */
+  .sh { left: 10px; right: 10px; bottom: 150px; min-height: 128px; border-radius: 18px; padding: 12px; display: grid; grid-template-columns: 70px 1fr; gap: 12px;
+    background: rgba(8,15,27,.86); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid #ffffff14; box-shadow: 0 -2px 0 var(--c) inset, 0 12px 30px #0009; }
+  .sh::before { content: ''; position: absolute; left: 14px; right: 14px; top: 0; height: 3px; border-radius: 0 0 3px 3px; background: var(--c); }
+  .ar { position: relative; width: 70px; height: 104px; border-radius: 7px; border: 2px solid #e9dcb3; overflow: hidden; background: #0b1424; transform: rotate(-4deg); box-shadow: 0 0 18px color-mix(in srgb, var(--c) 45%, transparent); }
+  .ar i { position: absolute; inset: 0; background: center 30% / cover; }
+  .ar.hid i { filter: blur(3px) brightness(.38) saturate(.55); transform: scale(1.1); }
+  .ar.hid::after { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(#ffffff0a 0 1px, transparent 1px 3px); }
+  .ar b { position: absolute; inset: 0; display: grid; place-items: center; font: 400 22px 'SC Display'; color: var(--c); z-index: 1; text-shadow: 0 0 10px #000; }
+  .ar.glyph { border-color: color-mix(in srgb, var(--c) 70%, #000); background: radial-gradient(circle at 50% 40%, color-mix(in srgb, var(--c) 22%, #0b1424), #070c16); display: grid; place-items: center; }
+  .ar.glyph b { position: static; font-size: 30px; }
+  .in { position: relative; display: flex; flex-direction: column; min-width: 0; }
+  .in .k { font: 500 10.5px/1.25 'SC Label'; letter-spacing: .13em; text-transform: uppercase; color: var(--kc, var(--c)); padding-right: 54px; }
+  .in .n { font: 400 16px/1.1 'SC Display'; color: var(--ink); margin: 3px 0 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .in .w { font-size: 12px; color: #9fb0c2; line-height: 1.3; margin-bottom: 8px; }
+  .in .m { position: absolute; right: 0; top: 0; font: 600 11.5px 'SC Label'; letter-spacing: .06em; color: var(--mc, var(--unc)); text-align: right; }
+  .in .bt { margin-top: auto; height: 36px; flex: none; border-radius: 10px; display: grid; place-items: center; font: 600 13px 'SC Label'; letter-spacing: .2em; text-transform: uppercase; }
+  .bt.go { background: var(--orange); color: #140a03; }
+  .bt.ol { border: 1.5px solid #fff2b388; color: var(--ink); background: #ffffff08; }
+  .bt.bl { background: var(--blue); color: #06101e; }
+  .bt.gr { background: var(--green); color: #05140a; }
+  .bt.gd { border: 1.5px solid var(--gold); color: var(--gold); background: #ffc93d12; }
+  .bt.no { border: 1px dashed #ffffff22; color: var(--muted); font-size: 11.5px; letter-spacing: .14em; }
+  .lc { position: absolute; left: 0; right: 0; bottom: 0; height: 13px; background: #c23a2a; color: #fff; font: 600 7.5px/13px 'SC Label'; letter-spacing: .1em; text-align: center; z-index: 2; }
+  .note { max-width: 980px; margin: 36px 0 0; padding: 16px 18px; border: 1px solid #22324a; border-radius: 14px; color: #c9d3de; font-size: 14px; }
+  .note b { color: var(--ink); }
+</style></head><body><div class="wrap">
+<h1>Target cards</h1>
+<p class="intro">Your current Explore screen (header, radar, Tonight chip, slider, tabs, as they are today), with every kind of target shown in the new style: one card that rises at the bottom, just above the slider, instead of the card under the circle. The circle takes the state's colour as it does today. Each card has the same parts: a picture on the left, a coloured line saying what it is, the name, one or two plain facts, and one button (or none, when there's nothing to do).</p>
+<div id="board"></div>
+<div class="note"><b>Not shown:</b> the daytime ones (the buried dinosaur bones, satellites hidden by daylight, tonight's pass markers in the day sky) follow the same card, on the pale day sky; and the very first catch in the tour, which is the "New card" card with the tour's words. <b>Rules the room suggested:</b> one card at a time; it rises when the circle locks and sinks 0.6 s after it lets go; the button is always in the same place; nothing collectable never gets an orange button.</div>
+</div>
+<script>
+const A = (f) => `../assets/art/cards/${f}.webp`;
+const svg = {
+  sat: '<svg width="26" height="18" viewBox="0 0 26 18"><rect x="10" y="5" width="6" height="8" fill="#fff2b3"/><rect x="0" y="6" width="9" height="6" fill="#6ea8ff"/><rect x="17" y="6" width="9" height="6" fill="#6ea8ff"/></svg>',
+  stage: '<svg width="24" height="12" viewBox="0 0 24 12"><rect x="2" y="2" width="17" height="8" rx="3" fill="#5fd08a"/><path d="M19 3 L24 1 V11 L19 9z" fill="#5fd08a"/></svg>',
+  star: '<svg width="14" height="14" viewBox="0 0 14 14"><circle cx="7" cy="7" r="3.2" fill="#fff6d8"/><circle cx="7" cy="7" r="6.5" fill="#fff6d833"/></svg>',
+  moon: '<svg width="28" height="28" viewBox="0 0 28 28"><circle cx="14" cy="14" r="12" fill="#3a3a33"/><path d="M14 2 A12 12 0 0 1 14 26 A7 12 0 0 0 14 2z" fill="#f4ecc8"/></svg>',
+  planet: '<svg width="34" height="20" viewBox="0 0 34 20"><ellipse cx="17" cy="10" rx="16" ry="4" fill="none" stroke="#e8d7a0" stroke-width="1.6"/><circle cx="17" cy="10" r="6" fill="#e8c98a"/></svg>',
+  plane: '<svg width="26" height="26" viewBox="0 0 26 26"><path d="M13 2 L15 10 L24 14 V16 L15 14 L14 21 L17 23 V24 L13 23 L9 24 V23 L12 21 L11 14 L2 16 V14 L11 10z" fill="#ff6a55"/></svg>',
+  ufo: '<svg width="30" height="16" viewBox="0 0 30 16"><ellipse cx="15" cy="10" rx="14" ry="4" fill="#5fe08a"/><path d="M8 9 A7 7 0 0 1 22 9z" fill="#c8ffd9"/></svg>',
+  galaxy: '<svg width="34" height="16" viewBox="0 0 34 16"><ellipse cx="17" cy="8" rx="16" ry="5" fill="#c8b0ff33"/><ellipse cx="17" cy="8" rx="9" ry="3" fill="#e9dcff88"/><circle cx="17" cy="8" r="2" fill="#fff"/></svg>',
+  earth: '<svg width="30" height="30" viewBox="0 0 30 30"><circle cx="15" cy="15" r="13" fill="#2f6fae"/><path d="M8 9 C12 6 16 10 13 14 C10 17 14 22 9 22 C6 19 5 12 8 9z M19 7 C23 9 25 14 22 17 C19 15 21 11 19 7z" fill="#6fae6a"/></svg>',
+};
+const groups = [
+  ['Something to collect', [
+    { c: 'var(--orange)', kc: 'var(--unc)', obj: svg.stage, art: A('sl-8'), hid: 1, gem: '▲', k: '▲ Uncommon · New', n: 'SL-8 Rocket Stage', w: 'Soviet rocket stage · 1985<br>1,280 km away', m: '+15 XP', bt: ['go', 'Collect'], cap: ['New card', 'The everyday case. Picture hidden until you catch it.'] },
+    { c: 'var(--orange)', kc: 'var(--rare)', obj: svg.sat, art: A('hubble'), hid: 1, gem: '◆', k: '◆ Rare · New · Last chance', n: 'Swift', w: 'NASA space telescope · 2004<br>Falls in about 12 days', m: '+25 XP', bt: ['go', 'Collect'], lc: 1, cap: ['Last chance', 'A falling satellite: a red band on the picture, the fall in the facts.'] },
+    { c: 'var(--orange)', kc: 'var(--gold)', obj: svg.sat, art: A('iss'), hid: 1, gem: '◆', k: '★ Tonight’s headliner · Rare', n: 'Space Station', w: 'Crew on board right now<br>420 km up · high in the south', m: '+50 XP', mc: 'var(--gold)', bt: ['go', 'Collect'], cap: ['Tonight’s headliner', 'Gold line and the headliner’s XP (card + 25).'] },
+    { c: 'var(--orange)', kc: 'var(--common)', obj: svg.star, art: A('star-deneb'), hid: 1, gem: '●', k: '● Common · New · in Cygnus', n: 'Deneb', w: 'Star · one of the brightest we know<br>~2,600 light-years away', m: '+10 XP', bt: ['go', 'Collect'], cap: ['A star', 'Which constellation it’s in, and how far.'] },
+    { c: 'var(--orange)', kc: 'var(--unc)', obj: svg.planet, art: A('planet-saturn'), hid: 1, gem: '▲', k: '▲ Uncommon · New', n: 'Saturn', w: 'Planet · rings you can see in binoculars<br>1.43 billion km tonight', m: '+15 XP', bt: ['go', 'Collect'], cap: ['A planet', 'Its real distance tonight.'] },
+    { c: 'var(--orange)', kc: 'var(--rare)', obj: svg.galaxy, art: A('deep-andromeda'), hid: 1, gem: '◆', k: '◆ Rare · New · Galaxy', n: 'Andromeda Galaxy', w: 'The farthest thing you can see<br>2.5 million light-years', m: '+25 XP', bt: ['go', 'Collect'], cap: ['Deep sky', 'Clusters, nebulae and galaxies.'] },
+    { c: 'var(--orange)', kc: 'var(--common)', obj: svg.earth, art: A('planet-earth'), hid: 1, gem: '●', k: '● Common · New · Look down', n: 'Earth', w: 'Right under your feet<br>12,742 km across', m: '+10 XP', bt: ['go', 'Collect'], cap: ['Earth', 'Point the phone straight down.'] },
+  ]],
+  ['Stamps and second looks', [
+    { c: 'var(--orange)', kc: 'var(--orange)', obj: svg.moon, art: A('moon'), gem: '', k: 'New phase stamp · 4 of 8', n: 'The Moon', w: 'Waxing gibbous · 81% lit<br>384,400 km', m: '+10 XP', bt: ['go', 'Stamp it'], cap: ['Moon phase', 'You own the Moon; a phase you haven’t stamped is still a catch.'] },
+    { c: 'var(--orange)', kc: '#7fd6e8', obj: svg.sat, art: A('fleet-starlink'), gem: '', k: 'New launch stamp · Starlink', n: 'Starlink 31244', w: 'Launch 2026-201 · 2 weeks ago<br>5 of 19 launches stamped', m: '+10 XP', bt: ['go', 'Stamp it'], cap: ['Fleet stamp', 'A Starlink, OneWeb… launch you haven’t stamped.'] },
+    { c: 'var(--ink)', kc: 'var(--muted)', mc: 'var(--muted)', obj: svg.sat, art: A('hubble'), gem: '', k: 'In your collection · Silver', n: 'Hubble Space Telescope', w: 'Seen on 4 nights<br>6 more for Gold', m: '', bt: ['ol', 'View card'], cap: ['Already yours', 'Cream circle, real picture, View card. Seeing it again logs the night by itself.'] },
+    { c: 'var(--orange)', kc: '#ff9ad6', obj: svg.stage, art: A('sl-8'), hid: 1, gem: '▲', k: '✦ Shiny chance · fades in 8 s', n: 'SL-8 Rocket Stage', w: 'Catch it the moment it slips<br>into Earth’s shadow', m: '+100 XP', mc: '#ff9ad6', bt: ['go', 'Collect at the fade'], fade: 1, cap: ['Catch the fade', 'The gold countdown runs round the circle; the card says why.'] },
+  ]],
+  ['Not a card, or not yet', [
+    { c: 'var(--red)', kc: 'var(--red)', mc: 'var(--muted)', obj: svg.plane, glyph: '✈', k: 'Just a plane · not a card', n: 'AC 852 · Air Canada', w: 'Toronto → London<br>35,000 ft · 880 km/h', m: '', bt: ['no', 'Planes aren’t collectable'], cap: ['A plane', 'Red circle, the flight and route, no button.'] },
+    { c: 'var(--blue)', kc: 'var(--blue)', mc: 'var(--blue)', obj: '', art: A('hubble'), hid: 1, gem: '◆', k: 'Appears here at 8:52 PM · in 22 min', n: 'Hubble Space Telescope', w: '◆ Rare · new to you<br>Rises in the west, climbs high', m: '', bt: ['bl', 'Remind me at 8:42'], cap: ['Coming up here', 'After Show me: where it will appear, and the reminder.'] },
+    { c: '#c9c3a0', kc: 'var(--muted)', mc: 'var(--muted)', obj: '', art: A('tiangong'), hid: 1, gem: '◆', k: 'Below the horizon · not collected yet', n: 'Tiangong', w: 'Over the North Pacific<br>In your sky at 9:47 PM', m: '', bt: ['no', 'Wait for it to rise'], cap: ['Below the horizon', 'Looking down through the Earth at what’s coming.'] },
+    { c: 'var(--muted)', kc: 'var(--muted)', mc: 'var(--muted)', obj: svg.star, glyph: '✧', k: 'A named star · not a card', n: 'Mirfak', w: 'Brightest star in Perseus<br>Magnitude 1.8', m: '', bt: ['no', 'Not every star is a card'], cap: ['A star that isn’t a card', 'Named so you learn the sky, nothing to catch.'] },
+  ]],
+  ['Secrets and surprises', [
+    { c: 'var(--gold)', kc: 'var(--gold)', mc: 'var(--gold)', obj: '', glyph: '?', k: 'Something’s here…', n: 'Hold steady', w: 'Keep it in the circle<br>to find out what it is', m: '2 s', bt: ['gd', 'Hold steady'], hold: 1, cap: ['A secret', 'Gold circle filling as you hold; no name until it’s found.'] },
+    { c: 'var(--green)', kc: 'var(--green)', mc: 'var(--green)', obj: svg.ufo, glyph: '◉', k: '✦ Unidentified', n: '???', w: 'Quick, it won’t stay', m: '', bt: ['gr', 'Tap to collect'], cap: ['The UFO', 'Green everything. Gone in seconds.'] },
+    { c: 'var(--orange)', kc: 'var(--orange)', mc: 'var(--muted)', obj: '', glyph: '☝︎', k: 'Motion paused', n: 'Tap to wake the sky', w: 'Motion pauses while<br>you’re away from the app', m: '', bt: ['go', 'Wake the sky'], cap: ['Tap to wake', 'Back in the app: one tap to start following the phone again.'] },
+  ]],
+];
+const card = (v) => {
+  const art = v.glyph ? `<span class="ar glyph"><b>${v.glyph}</b></span>` : `<span class="ar${v.hid ? ' hid' : ''}"><i style="background-image:url('${v.art}')"></i>${v.hid && v.gem ? `<b>${v.gem}</b>` : ''}${v.lc ? '<span class="lc">LAST CHANCE</span>' : ''}</span>`;
+  return `<div class="cell"><div class="ph" style="--c:${v.c}">
+    <span class="rg"></span><span class="tk t"></span><span class="tk b"></span><span class="tk l"></span><span class="tk r"></span>
+    ${v.obj ? `<span class="obj">${v.obj}</span>` : ''}${v.fade ? '<span class="fade"></span><span class="fade-t">FADES IN 8S</span>' : ''}${v.hold ? '<span class="hold"></span>' : ''}
+    <div class="sh">${art}<div class="in" style="${v.kc ? `--kc:${v.kc};` : ''}${v.mc ? `--mc:${v.mc};` : ''}"><span class="k">${v.k}</span><span class="n">${v.n}</span><span class="w">${v.w}</span>${v.m ? `<span class="m">${v.m}</span>` : ''}<span class="bt ${v.bt[0]}">${v.bt[1]}</span></div></div>
+  </div><div class="cap"><b>${v.cap[0]}</b><span>${v.cap[1]}</span></div></div>`;
+};
+document.getElementById('board').innerHTML = groups.map(([g, vs]) => `<h2 class="grp">${g}</h2><div class="row">${vs.map(card).join('')}</div>`).join('');
+</script>
+</body></html>
