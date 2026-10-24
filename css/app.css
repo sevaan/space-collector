@@ -2466,3 +2466,12 @@ body.stats-open #nav-more .nm-set { transform: translateY(-14px); opacity: 0; } 
 body.stats-open #sky-header .header-buttons > :not(#nav-more) { visibility: hidden; }
 #set-plus-sheet .set-sheet-card { will-change: transform; } /* drawn once, then slid (first-open stutter, 2026-10-24) */
 body.col-instant #collection-frame { transition: none !important; } /* opened under Settings for Observer stats (2026-10-24) */
+/* Red night mode (iOS playtest 2026-10-24): rarity words with an inline tier colour ("2 Rare" in the haul, "Uncommon" in
+   Coming up, recap and run tiers) went dark brown through the red filter; they take the night's bright red instead. */
+body.night :is(#visible, #ob-done, #recap, #around, #discover, #toasts) [style*="color:#"] { color: var(--gold) !important; }
+/* Plus over the after-tour Tonight page (iOS playtest 2026-10-24): that page covers the shared header, so the Plus
+   page goes full height with its own title row and ✕ (#plus-x) instead of a header you can't see or tap. */
+body:has(#onboard:not([hidden]) #ob-done:not([hidden])) #set-plus-sheet { top: 0; }
+body:has(#onboard:not([hidden]) #ob-done:not([hidden])) #set-plus-sheet .set-sheet-card > .crew-top { display: flex !important; }
+body:has(#onboard:not([hidden]) #ob-done:not([hidden])) #set-plus-sheet .set-sheet-card { height: 100dvh !important; padding-top: 0 !important; }
+body:has(#onboard:not([hidden]) #ob-done:not([hidden])) #set-plus-sheet .set-sheet-card > .starfield { height: 100dvh; margin-bottom: -100dvh; }
