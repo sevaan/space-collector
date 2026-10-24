@@ -547,3 +547,7 @@ body:has(.overlay.panel:not([hidden])) :is(#radar, #nextpass, #toast-tray) { tra
 .sc-switch__item .ico { display: none !important; }
 /* No fade behind the tabs on the Tonight page (2026-10-24, Sevaan: "remove the fade entirely"). */
 body.nav-tabs.sky-open #tab-fade { display: none !important; }
+/* Tab bar stands apart from content under it (2026-10-24, Sevaan picked design/tabs-separation.html 1): fully solid, with
+   a faint cream outline like the cards' frames. Nothing shows through. */
+.sc-switch { background-color: #080f1b !important; box-shadow: 0 0 0 1px #fff2b31f, 0 10px 24px rgba(0, 0, 0, .35) !important; }
+body.night .sc-switch, html[data-theme='night'] .sc-switch { background-color: #0c0303 !important; box-shadow: 0 0 0 1px #ff6a5526, 0 10px 24px rgba(0, 0, 0, .35) !important; }
