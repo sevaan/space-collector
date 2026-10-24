@@ -846,3 +846,10 @@ html, body { overflow-x: clip; }
 @media (max-width: 699px) {
   #viewer:not(.docked):not(:has(#v-up:not([hidden]))) .viewer-scroll > #slot { min-height: calc(100dvh - var(--safe-top, 0px) - var(--safe-bottom, 0px) - 102px); align-items: center; }
 }
+/* Observer stats under Explore's shared header (2026-10-24, Sevaan): inside the app the page starts at the header's line
+   and its own eyebrow + ✕ row goes (the header says OBSERVER STATS and its button is the ✕). */
+html.embedded #stats-view { margin-top: var(--col-top); height: calc(100% - var(--col-top)); }
+html.embedded #stats-view > .viewer-header { display: none; }
+html.embedded #stats-view::backdrop { background: transparent; }
+html.embedded #stats-body { padding-bottom: calc(var(--safe-bottom, 0px) + 110px); } /* the tab bar stays over it now */
+html.embedded #stats-view, html.embedded #stats-view:focus, html.embedded #stats-view:focus-visible { outline: none; }

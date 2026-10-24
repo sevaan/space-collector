@@ -1,30 +1,30 @@
-import { pullToClose } from './pull-close.js?v=0.1.1098';
-import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.1098';
-import { computeStats, statsHtml } from './stats.js?v=0.1.1098';
-import { nightKey } from './observation.js?v=0.1.1098';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1098';
-import { sfx } from './sfx.js?v=0.1.1098';
-import { expandFacts } from './catalog-facts.js?v=0.1.1098';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.1098';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1098';
-import { ticket } from './toast.js?v=0.1.1098';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.1098';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.1098';
-import { cardArt } from './art.js?v=0.1.1098';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.1098';
-import { applyBack } from './card-backs.js?v=0.1.1098';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.1098';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1098';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.1098';
-import { STORIES } from './stories.js?v=0.1.1098';
-import { loadConstellations, conList } from './constellations.js?v=0.1.1098';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.1098';
-import { eventBadges, nextEvent } from './events.js?v=0.1.1098';
-import { shareCardEl } from './share-card.js?v=0.1.1098';
-import { forgetSighting } from './cloud-backup.js?v=0.1.1098';
-import { allSightings, deleteSighting } from './store.js?v=0.1.1098';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.1098';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.1098';
+import { pullToClose } from './pull-close.js?v=0.1.1100';
+import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.1100';
+import { computeStats, statsHtml } from './stats.js?v=0.1.1100';
+import { nightKey } from './observation.js?v=0.1.1100';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1100';
+import { sfx } from './sfx.js?v=0.1.1100';
+import { expandFacts } from './catalog-facts.js?v=0.1.1100';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.1100';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1100';
+import { ticket } from './toast.js?v=0.1.1100';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.1100';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.1100';
+import { cardArt } from './art.js?v=0.1.1100';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.1100';
+import { applyBack } from './card-backs.js?v=0.1.1100';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.1100';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1100';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.1100';
+import { STORIES } from './stories.js?v=0.1.1100';
+import { loadConstellations, conList } from './constellations.js?v=0.1.1100';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.1100';
+import { eventBadges, nextEvent } from './events.js?v=0.1.1100';
+import { shareCardEl } from './share-card.js?v=0.1.1100';
+import { forgetSighting } from './cloud-backup.js?v=0.1.1100';
+import { allSightings, deleteSighting } from './store.js?v=0.1.1100';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.1100';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.1100';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -1023,7 +1023,11 @@ if (EMBED) {
   // Explore’s switcher sits over this page; while a card, patch or the stats are open it steps aside so it doesn’t
   // cover their bottom rows (playtest 2026-10-11: the sighting list’s delete × was under it).
   { const dlgs = ['viewer', 'patch-view', 'stats-view'].map((id) => document.getElementById(id)).filter(Boolean); let was = null;
-    const tell = () => { const on = dlgs.some((d) => d.open && !d.classList.contains('docked')); if (on !== was) { was = on; window.parent.postMessage({ sc: 'modal', on }, location.origin); } };
+    // Observer stats isn't full screen: it sits under Explore's header like every page (2026-10-24, Sevaan), so it tells
+    // Explore 'stats' (header words + its ✕) instead of 'modal'.
+    let statsWas = false;
+    const tell = () => { const on = dlgs.some((d) => d.open && !d.classList.contains('docked') && d.id !== 'stats-view'); if (on !== was) { was = on; window.parent.postMessage({ sc: 'modal', on }, location.origin); }
+      const st = $('stats-view').open && !$('stats-view').classList.contains('leaving'); if (st !== statsWas) { statsWas = st; window.parent.postMessage({ sc: 'stats', on: st }, location.origin); } };
     const mo = new MutationObserver(tell); dlgs.forEach((d) => mo.observe(d, { attributes: true, attributeFilter: ['open', 'class'] })); }
   document.addEventListener('click', (e) => {
     // The Collection pill itself: already here, so stay (QA 2026-10-08: it loaded cards.html without ?embed inside
@@ -1041,6 +1045,7 @@ if (EMBED) {
     if (e.data.sc === 'open' || e.data.sc === 'show') setSwitch(document.querySelector('.sc-switch'), 'right', false); // shown again: pill on Collection
     if ((e.data.sc === 'open' || e.data.sc === 'show') && e.data.key === '#stats') { statsFromSettings = true; const go = () => (state.ready ? openStats() : setTimeout(go, 200)); go(); } // from Settings → Observer stats
     else if ((e.data.sc === 'open' || e.data.sc === 'show') && e.data.key) openKey(e.data.key);
+    if (e.data.sc === 'stats-close') { closeStats(); return; } // the ✕ in Explore's header
     if (e.data.sc === 'back') { // Android Back from the app shell: close the top thing here, else go back to Explore
       if ($('stats-view').open) closeStats(); else if ($('patch-view').open) closePatch(); else if ($('viewer').open) closeViewer();
       else window.parent.postMessage({ sc: 'explore' }, location.origin);

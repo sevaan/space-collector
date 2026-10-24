@@ -2458,3 +2458,7 @@ body.night .kt-fan img { border-color: #5a1d18; }
 body.plus-open #nav-more .nm-set { transform: translateY(-14px); opacity: 0; } body.plus-open #nav-more .nm-x { transform: none; opacity: 1; }
 body.plus-open #sky-header { background: var(--bg); box-shadow: 0 calc(-1 * var(--safe-top)) 0 0 var(--bg); position: fixed; z-index: 81; visibility: visible !important; opacity: 1 !important; }
 body.plus-open #sky-header .header-buttons > :not(#nav-more) { visibility: hidden; } /* just its ✕, like Settings */
+/* Room between the header's double rule and the first Settings card (2026-10-24, Sevaan: it touched the lines). */
+#debug .set-group.set-card.set-first { margin-top: 16px; }
+body.stats-open #nav-more .nm-set { transform: translateY(-14px); opacity: 0; } body.stats-open #nav-more .nm-x { transform: none; opacity: 1; }
+body.stats-open #sky-header .header-buttons > :not(#nav-more) { visibility: hidden; }
