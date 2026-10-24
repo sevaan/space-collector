@@ -1,52 +1,52 @@
-import { pullToClose } from './pull-close.js?v=0.1.1105';
-import { TESTER } from './build-flavor.js?v=0.1.1105';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1105';
-import * as Secrets from './secrets.js?v=0.1.1105';
-import { STORY_BY_SECRET } from './stories.js?v=0.1.1105';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.1105';
-import * as Ufo from './ufo.js?v=0.1.1105';
-import * as Fossil from './fossil.js?v=0.1.1105';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.1105';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1105';
-import { toast, ticket, dropToast, toastPending, onTicketShown, iconSvg } from './toast.js?v=0.1.1105';
-import { VERSION } from './version.js?v=0.1.1105';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, overEarth, RisingSoon, setBinocularMode, setSkyLimit, toWorker } from './orbit.js?v=0.1.1105';
-import { placeName } from './geo.js?v=0.1.1105';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, SLIDER_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.1105';
-import { conArt } from './con-art.js?v=0.1.1105';
-import { fetchWeather, tonightSky, skyClearAt, goodSkyAt } from './weather.js?v=0.1.1105';
-import { CON_FIGURES } from './con-figures.js?v=0.1.1105';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress, starDistance } from './constellations.js?v=0.1.1105';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.1105';
-import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.1105';
-import { eventOf, activeEvent, nextEvent } from './events.js?v=0.1.1105';
-import { conList } from './constellations.js?v=0.1.1105';
-import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination, hasSensorView, resumeSensors, needsPermission } from './sensors.js?v=0.1.1105';
-import { SkyView, shortName, stripLandscape } from './sky.js?v=0.1.1105';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.1105';
-import { isPlus, setPlusForTesting, onPlus, PLUS_PRICES, initStore, storePlans, buyPlus, restorePlus, rcTestStore, storeOpen } from './plus.js?v=0.1.1105';
-import { isNative, getPosition, saveFile, notifyAt, cancelNotify, haptic, onNative, nativeChrome, plugin } from './native.js?v=0.1.1105';
-import { initBackup, onBackupChange, backupSoon, clearBackup, backupStatus } from './cloud-backup.js?v=0.1.1105';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.1105';
-import { cardArt } from './art.js?v=0.1.1105';
-import { renderCard, miniCard, cardLevel, artImage, lockedArt, attachTilt, attachGyro, throwOff, attachFlip, turnCard } from './card.js?v=0.1.1105';
-import { applyBack, CARD_BACKS, backUnlocked, chosenBack, chooseBack, backEarned, showBackNext } from './card-backs.js?v=0.1.1105';
-import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.1105';
-import { audioCtx } from './audio-ctx.js?v=0.1.1105';
-import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume, musicAway } from './music.js?v=0.1.1105';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss, onRevealSwipeIntoBinder } from './reveal.js?v=0.1.1105';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel, moonPhaseOf, MOON_PHASES } from './card-model.js?v=0.1.1105';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.1105';
-import { naturalTargets, SOLAR_SYSTEM, DEEP_SKY, NATURAL } from './natural.js?v=0.1.1105';
-import { placeFromTimeZone } from './tz-places.js?v=0.1.1105';
-import { TIER_INFO } from './rarity.js?v=0.1.1105';
-import { SETS, albumList } from './sets.js?v=0.1.1105';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.1105';
-import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.1105';
-import { shareCardEl } from './share-card.js?v=0.1.1105';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.1105';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.1105';
-import { addStarfield } from './starfield.js?v=0.1.1105';
+import { pullToClose } from './pull-close.js?v=0.1.1106';
+import { TESTER } from './build-flavor.js?v=0.1.1106';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1106';
+import * as Secrets from './secrets.js?v=0.1.1106';
+import { STORY_BY_SECRET } from './stories.js?v=0.1.1106';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.1106';
+import * as Ufo from './ufo.js?v=0.1.1106';
+import * as Fossil from './fossil.js?v=0.1.1106';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.1106';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1106';
+import { toast, ticket, dropToast, toastPending, onTicketShown, iconSvg } from './toast.js?v=0.1.1106';
+import { VERSION } from './version.js?v=0.1.1106';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, overEarth, RisingSoon, setBinocularMode, setSkyLimit, toWorker } from './orbit.js?v=0.1.1106';
+import { placeName } from './geo.js?v=0.1.1106';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, SLIDER_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.1106';
+import { conArt } from './con-art.js?v=0.1.1106';
+import { fetchWeather, tonightSky, skyClearAt, goodSkyAt } from './weather.js?v=0.1.1106';
+import { CON_FIGURES } from './con-figures.js?v=0.1.1106';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress, starDistance } from './constellations.js?v=0.1.1106';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.1106';
+import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.1106';
+import { eventOf, activeEvent, nextEvent } from './events.js?v=0.1.1106';
+import { conList } from './constellations.js?v=0.1.1106';
+import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination, hasSensorView, resumeSensors, needsPermission } from './sensors.js?v=0.1.1106';
+import { SkyView, shortName, stripLandscape } from './sky.js?v=0.1.1106';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.1106';
+import { isPlus, setPlusForTesting, onPlus, PLUS_PRICES, initStore, storePlans, buyPlus, restorePlus, rcTestStore, storeOpen } from './plus.js?v=0.1.1106';
+import { isNative, getPosition, saveFile, notifyAt, cancelNotify, haptic, onNative, nativeChrome, plugin } from './native.js?v=0.1.1106';
+import { initBackup, onBackupChange, backupSoon, clearBackup, backupStatus } from './cloud-backup.js?v=0.1.1106';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.1106';
+import { cardArt } from './art.js?v=0.1.1106';
+import { renderCard, miniCard, cardLevel, artImage, lockedArt, attachTilt, attachGyro, throwOff, attachFlip, turnCard } from './card.js?v=0.1.1106';
+import { applyBack, CARD_BACKS, backUnlocked, chosenBack, chooseBack, backEarned, showBackNext } from './card-backs.js?v=0.1.1106';
+import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.1106';
+import { audioCtx } from './audio-ctx.js?v=0.1.1106';
+import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume, musicAway } from './music.js?v=0.1.1106';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss, onRevealSwipeIntoBinder } from './reveal.js?v=0.1.1106';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel, moonPhaseOf, MOON_PHASES } from './card-model.js?v=0.1.1106';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.1106';
+import { naturalTargets, SOLAR_SYSTEM, DEEP_SKY, NATURAL } from './natural.js?v=0.1.1106';
+import { placeFromTimeZone } from './tz-places.js?v=0.1.1106';
+import { TIER_INFO } from './rarity.js?v=0.1.1106';
+import { SETS, albumList } from './sets.js?v=0.1.1106';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.1106';
+import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.1106';
+import { shareCardEl } from './share-card.js?v=0.1.1106';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.1106';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.1106';
+import { addStarfield } from './starfield.js?v=0.1.1106';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -1346,6 +1346,7 @@ function showCaptureCard(obj) {
     ...gain.achievements.map((a) => ({ kind: 'patch', text: a.name })),
     ...(gain.event ? [{ kind: 'event', text: gain.event }] : []),
     ...(gain.rankUp ? [{ kind: 'rank', text: `New rank: ${gain.rankUp}` }] : [])];
+  if (gain.rankUp || gain.achievements.length) reviewAfterReveal = true; /* a milestone: a calm moment to ask for a review once the card is put away (2026-10-24) */
   // Reunited (2026-10-17): this catch completes a stage-and-satellite pair from one launch.
   { const mate = sightings.length === 1 && model.partners?.find((k) => k !== key && ownedCardKeys().has(k));
     if (mate) news.unshift({ kind: 'reunion', text: `Reunited with ${label(state.cardModels.get(mate) ?? { name: mate })}` }); }
@@ -1400,7 +1401,7 @@ let revealShare = null;
 $('rv-share').addEventListener('click', async () => {
   const r = revealShare, btn = $('rv-share'); if (!r) return;
   btn.disabled = true;
-  try { const how = await shareCardEl(r.card, r.o, { title: titleFor(r.o), rank: progressNow(state.sightings).rank.name, fact: factFor(r.o) }); if (how === 'downloaded') toast('Saved the card image.'); }
+  try { const how = await shareCardEl(r.card, r.o, { title: titleFor(r.o), rank: progressNow(state.sightings).rank.name, fact: factFor(r.o) }); if (how === 'downloaded') toast('Saved the card image.'); else if (how === 'shared') reviewAfterReveal = true; }
   catch (e) { console.error('share failed', e?.message ?? e, e?.stack ?? ''); ticket({ kind: 'error', sticky: true, eyebrow: 'COULDN’T SHARE', line: 'The card image couldn’t be made', sub: String(e?.message ?? e).slice(0, 80) }); }
   btn.disabled = false;
 });
@@ -3352,6 +3353,7 @@ function intoBinder() {
 function closePanel(id = activePanel) {
   if (!id) return;
   if (id === 'reveal' && matchMedia('(prefers-reduced-motion: reduce)').matches) revealIntoBinder = false;
+  if (id === 'reveal' && reviewAfterReveal) { reviewAfterReveal = false; setTimeout(() => maybeAskReview('milestone'), 4000); }
   if (id === 'reveal') { stopReveal(); if (tourRevealLeaving) { const go = tourRevealLeaving; tourRevealLeaving = null; go(); } }
   const el = $(id); activePanel = null; $('hud').inert = false;
   if (id === 'debug' && document.body.classList.contains('set-open')) { document.body.classList.remove('set-open'); setPageHeader(collectionOpen ? 'collection' : 'explore'); $('nav-more').setAttribute('aria-label', 'Settings'); }
@@ -4221,6 +4223,43 @@ function radarTip(delay = 3000) {
 // which ends on it anyway), once tonight’s plan is ready and nothing else is up. 'tonightDay' = the local date shown.
 const todayKey = () => { const d = new Date(); return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`; };
 function markTonightSeen() { try { localStorage.setItem('tonightDay', todayKey()); } catch {} }
+// Asking for a review (2026-10-24, Sevaan; iOS only, Apple's own prompt, never our own pre-prompt). Only at calm good
+// moments: the weekly recap closed, a milestone card put away, a card shared, the 5th/10th night by day. Never with
+// something in the circle, a card/page/tour up, in red night mode, close to a pass, on a cloudy night, or in the dark
+// outside. Gates: 3+ nights, 10+ cards, first sighting 4+ days ago, 60+ days since the last ask (Apple caps it at 3 a year).
+let reviewAfterReveal = false;
+function reviewReady() {
+  const real = state.sightings.filter((s) => !s.sim);
+  const cards = new Set(real.map((s) => s.cardKey)).size, nights = new Set(real.map((s) => nightKey(s.time, s.lon ?? 0))).size;
+  const first = real.reduce((m, s) => Math.min(m, s.time), Infinity);
+  let last = 0; try { last = +localStorage.getItem('reviewAsk') || 0; } catch {}
+  return { ok: cards >= 10 && nights >= 3 && Date.now() - first >= 4 * 864e5 && Date.now() - last >= 60 * 864e5, nights };
+}
+function reviewCalm() {
+  const b = document.body.classList;
+  if (activePanel || collectionOpen || !$('reveal').hidden || !$('recap').hidden || !$('ob-done').hidden || !$('start').hidden) return false;
+  if (b.contains('night') || b.contains('ob-tour') || b.contains('calib') || document.querySelector('.set-sheet:not([hidden]), .patch-coins')) return false;
+  if (!$('discover').hidden || !$('plane').hidden || state.pinnedId) return false;
+  const t = now().getTime();
+  try { if (state.tonight && tonightPasses(state.tonight, t).some((p) => p.fresh && p.start > t - 5 * 60e3 && p.start < t + 20 * 60e3)) return false; } catch {}
+  if (cloudAt?.(t)) return false;
+  return true;
+}
+async function maybeAskReview(why, { force = false } = {}) {
+  if (!isNative() || globalThis.Capacitor?.getPlatform?.() !== 'ios') { if (force) ticket({ kind: 'info', line: 'Reviews are asked in the iPhone app', ms: 2600 }); return false; }
+  if (!force && (!reviewReady().ok || !reviewCalm())) return false;
+  try { localStorage.setItem('reviewAsk', String(Date.now())); localStorage.setItem('reviewWhy', why); } catch {}
+  try { await plugin('Review')?.request(); return true; } catch { return false; }
+}
+// The 5th and 10th night: asked by day once the sky has settled (from quickStart).
+function reviewOnNight(tries = 0) {
+  const { ok, nights } = reviewReady(); if (!ok || ![5, 10].includes(nights)) return;
+  let done = ''; try { done = localStorage.getItem('reviewNight') || ''; } catch {}
+  if (done === String(nights) || !document.body.classList.contains('day')) return;
+  if (!reviewCalm()) { if (tries < 20) setTimeout(() => reviewOnNight(tries + 1), 6000); return; }
+  try { localStorage.setItem('reviewNight', String(nights)); } catch {}
+  maybeAskReview(`night${nights}`);
+}
 // Weekly recap (playtest 2026-10-09, #15): the first visit of a new week, if you observed last week, opens on a card
 // summing it up: new cards, sightings, nights, XP, your rarest find, the streak, and what’s coming this week. Share it
 // or swipe on. Once per week (localStorage recapWeek).
@@ -4259,7 +4298,7 @@ function weeklyRecap(tries = 0) {
     <div class="rc-actions"><button type="button" class="rc-share">Share my week</button><button type="button" class="rc-go">Explore the sky →</button></div>`;
   el.hidden = false; requestAnimationFrame(() => el.classList.add('in'));
   { const c = el.querySelector('.rc-card'); const t = attachTilt(c); try { attachGyro?.(c, t); } catch {} }
-  const close = () => { el.classList.remove('in'); setTimeout(() => { el.hidden = true; }, 320); };
+  const close = () => { el.classList.remove('in'); setTimeout(() => { el.hidden = true; }, 320); setTimeout(() => maybeAskReview('recap'), 2500); };
   el.querySelector('.rc-go').onclick = close;
   el.querySelector('.rc-share').onclick = async () => {
     const text = `My week in Space Collector: ${fresh.length} new card${fresh.length === 1 ? '' : 's'}, ${week.length} sighting${week.length === 1 ? '' : 's'} over ${nights} night${nights === 1 ? '' : 's'}${best ? `. Rarest: ${label(best)} (${tier.label})` : ''}. https://spacecollector.app`;
@@ -4500,6 +4539,7 @@ async function quickStart() {
   setTimeout(releaseLaterPatches, 6000); // if the app closed before the first catch’s held-back patches came in
   enterSky(); requestLocation(); keepAwake();
   setTimeout(() => weeklyRecap(), 1200); // a new week opens on last week’s recap (playtest #15)
+  setTimeout(() => reviewOnNight(), 20000); /* the 5th / 10th night, by day, once things settle */
   setTimeout(() => dailyTonight(), 1500); // the day’s first visit opens on the Tonight page (after the recap)
   let ok = false;
   try { ok = await startSensors(); } catch {}
@@ -4598,6 +4638,7 @@ window.addEventListener('message', (e) => {
   // rises over the Collection, which closes without its slide once Settings has landed.
   if (e.data.sc === 'explore') { if (e.data.more) { const back = statsReturn; statsReturn = undefined; settingsOverCollection(); if (back && back !== 'collection') { settingsFrom = back === 'sky' ? 'sky' : null; setTimeout(() => { if (activePanel === 'debug') closeCollection(false, true); }, 440); } } else closeCollection(); } // back from stats opened in Settings: Settings, then wherever Settings came from
   if (e.data.sc === 'modal') document.body.classList.toggle('col-modal', !!e.data.on); // a card or stats open in there
+  if (e.data.sc === 'review') { const ask = (n = 0) => { if (!collectionOpen) setTimeout(() => maybeAskReview('share'), 2500); else if (n < 120) setTimeout(() => ask(n + 1), 2000); }; ask(); return; } /* asked once back on the sky */
   if (e.data.sc === 'stats') { // Observer stats open in the Collection: the shared header names it and its ✕ closes it (2026-10-24)
     if (e.data.on) statsReady(); // opened from Settings: Settings slides away onto it now
     document.body.classList.toggle('stats-open', !!e.data.on);
@@ -5277,6 +5318,7 @@ $('secret-cta').addEventListener('click', (e) => { const id = e.currentTarget.da
 $('btn-santa')?.addEventListener('click', () => { Secrets.summonSanta(now().getTime()); closePanel('debug'); toast("Santa’s sleigh is crossing now (night only).", 3000); });
 // Testing tools (2026-10-18, Sevaan): one of each kind of notification, queued the way real ones are, with a patch
 // badge earned at the same moment so the two can be seen together. Nothing is saved.
+$('btn-review')?.addEventListener('click', () => { closePanel('debug'); setTimeout(() => maybeAskReview('test', { force: true }), 700); });
 $('btn-toasts')?.addEventListener('click', () => {
   closePanel('debug');
   setTimeout(() => {

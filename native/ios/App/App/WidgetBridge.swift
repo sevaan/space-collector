@@ -2,6 +2,7 @@ import Foundation
 import UIKit
 import Capacitor
 import WidgetKit
+import StoreKit
 
 // Widgets (2026-10-22, design/widgets.html): the web app hands over tonight's plan (js/main.js sendWidgets) and this
 // saves it where the widget extension (SCWidgets) can read it: plan.json in the App Group "group.<app id>", with the
@@ -43,6 +44,26 @@ public class WidgetBridgePlugin: CAPPlugin, CAPBridgedPlugin {
                 try plan.data(using: .utf8)?.write(to: dir.appendingPathComponent("plan.json"), options: .atomic)
             } catch { call.reject("Couldn't save the plan"); return }
             DispatchQueue.main.async { WidgetCenter.shared.reloadAllTimelines(); call.resolve() }
+        }
+    }
+}
+
+// Review prompt (2026-10-24, Sevaan): Apple's own "Enjoying Space Collector?" sheet. Apple decides whether it actually
+// shows (at most three times a year; never in TestFlight, always in a simulator/Xcode build). The web app only calls
+// this at calm moments (js/main.js maybeAskReview). Lives in this file so the Xcode project needs no new entry.
+public class ReviewPlugin: CAPPlugin, CAPBridgedPlugin {
+    public let identifier = "ReviewPlugin"
+    public let jsName = "Review"
+    public let pluginMethods: [CAPPluginMethod] = [
+        CAPPluginMethod(name: "request", returnType: CAPPluginReturnPromise),
+    ]
+    @objc func request(_ call: CAPPluginCall) {
+        DispatchQueue.main.async {
+            guard let scene = UIApplication.shared.connectedScenes.first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene else {
+                call.reject("No active window"); return
+            }
+            if #available(iOS 16.0, *) { AppStore.requestReview(in: scene) } else { SKStoreReviewController.requestReview(in: scene) }
+            call.resolve()
         }
     }
 }
