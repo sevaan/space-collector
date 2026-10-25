@@ -2730,3 +2730,10 @@ body.night .tc .acts.pick .pk.pk-card { border-color: #7a2a22; } body.night .tc 
    Collection grid's near-black. */
 .d-mini .mini-face.locked .card__art { filter: none; }
 .d-mini .card-art-image--locked { filter: blur(6px) brightness(.85) saturate(.8); }
+#bd-res .bd-acts[hidden] { display: none; }
+/* The Moon lesson points at the card's own row of phases (flow playtest 2026-10-25) */
+#reveal .mn-phases.teach-glow { border-radius: .5em; box-shadow: 0 0 0 .15em #fa8127, 0 0 1.2em #fa812788; animation: teachGlow 1.6s ease-in-out infinite; }
+@keyframes teachGlow { 50% { box-shadow: 0 0 0 .15em #fa8127aa, 0 0 .5em #fa812744; } }
+body.night #reveal .mn-phases.teach-glow { box-shadow: 0 0 0 .15em #ff6a55; }
+@media (prefers-reduced-motion: reduce) { #reveal .mn-phases.teach-glow { animation: none; } }
+#debug .set-sl-sub .sm-inline { display: inline; min-height: 0; padding: 0; margin: 0; font: inherit; letter-spacing: inherit; color: var(--orange, #fa8127); background: none; border: 0; text-decoration: underline; text-underline-offset: 2px; }

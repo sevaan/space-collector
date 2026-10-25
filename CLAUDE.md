@@ -1805,3 +1805,18 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - 2026-10-25 (Sevaan: uncollected stars should have the same tone as uncollected objects): an uncollected constellation star (and a chart-only deep-sky object) shows its own star chart hidden like a painted picture (.art-locked.art-locked--chart: blurred, dimmed, scan lines) instead of the near-empty outline, on full cards, tiles and the ticket mini card (a touch brighter there).
 - 2026-10-25 (Sevaan): the Inside / Outside tour card is gone; the tour is 3 steps (Find your sky, Point and look, Know when to look up) then the first catch. state.tourWhere stays null, so the inside/outside wording never shows; the big first target at night (rareFirst: ISS or a new Rare+ rising within 15 min) now applies to everyone at night. The slider is taught only by Match your sky, the first time it's dark. Left unused: assets/art/tour pictures, OB_ART.inside/outside, the .pk-card styles (design/where-cards.html A), the tour's choice-card support.
 - 2026-10-25 FIX (Sevaan: Uranus collectable with nothing in the circle): past Dark site the slider's binocular boost lets the circle catch faint planets (naturalTargets binoLimit = stars + boost), but drawBodies only drew planets to the naked-eye star limit. sky.planetBoost (a getter on state.limit.boost) now raises the planet drawing limit the same way. Checked: Uranus mag 5.6 is targetable only at slider 23.5 (boost 1.6), and is now drawn there.
+- 2026-10-25 flow playtest fixes (report in that session's scratchpad hunt3/):
+  - Themed week: weekNightsLeft (tonight if it's night + evenings before Monday noon). No notice or box once the last night is over (Monday morning); "…tonight" on the last night, else "by Sunday night"; box says "N nights left" / "last night"; country tiles only use passes before the week ends.
+  - Tour close page: "Quiet overhead" instead of "Late night" before 11 PM; its reminder is free (freeKey) on day one; the button always reads "Remind me at …".
+  - The day-one appointment needs a real location (not the time-zone city's sky).
+  - rareFirst needs 3+ minutes of visible pass.
+  - Birthday sheet: no Remind/Show buttons when there's no pass; Show me works days ahead; years end last year; kinder no-match line.
+  - Halloween teaser on the day says "Tonight … Find it tonight".
+  - Tour card no longer says "It's up right now. It's low now."
+  - Moon lesson: no second row of phases; it points at the card's own row (.mn-phases.teach-glow).
+  - Tonight's haul with nothing new: "Quiet overhead" + when satellites pass again, no empty bars; "the run below: about +N XP".
+  - One name: "Tonight's headliner" (Settings row, notification title, appointment).
+  - fmtTime zero-pads 24-hour times (01:50).
+  - The Sun safety toast waits until after the tour.
+  - Settings → Your sky: the Match row is merged into the slider row ("Match outside" link).
+  - Match your sky also reaches finger players, and waits while a notice is showing.
