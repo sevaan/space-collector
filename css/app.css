@@ -2661,3 +2661,18 @@ body:has(#moon-check:not([hidden])) #toast-tray, body:has(#fade-tip:not([hidden]
 #sky-match.compact b { display: none; }
 /* Day before month where the phone writes dates that way (US/UK playtest 2026-10-25) */
 #bday-sheet .bd-pick.day-first #bd-d { order: -1; }
+
+/* A little card in the sky's own ticket and in "Just a plane" (2026-10-25, Sevaan): the card it is (picture hidden until
+   it's yours), like the new-find ticket; for a plane a card with the plane in it. */
+#tk .tk-body, #plane .p-ticket .p-body { display: flex; flex-direction: column; gap: 4px; min-width: 0; flex: 1; }
+#tk #tk-mini { display: none; }
+#tk.has-mini { flex-direction: row; align-items: center; gap: 12px; }
+#tk.has-mini #tk-mini, #plane .p-ticket .p-mini { display: block; flex: none; width: 72px; height: 108px; --mini-s: .2571; transform: rotate(-3deg); filter: drop-shadow(0 6px 12px #000c); pointer-events: none; }
+#plane .p-ticket { flex-direction: row !important; align-items: center; gap: 12px !important; }
+#plane .p-card { display: grid; place-items: center; width: 100%; height: 100%; box-sizing: border-box; border-radius: 6px; border: 2px solid #c9cdd6; background: radial-gradient(circle at 50% 40%, #1b2a44, #0b1424 70%); box-shadow: inset 0 0 0 2px #0b1424, inset 0 0 0 3px #fff2b340; }
+#plane .p-card svg { width: 40px; height: 40px; fill: var(--plane, #ff6b5e); transform: rotate(35deg); filter: drop-shadow(0 0 8px #ff6b5e66); }
+body.night #plane .p-card svg { fill: #ff6a55; }
+@media (max-height: 720px) {
+  #tk.has-mini #tk-mini, #plane .p-ticket .p-mini { width: 56px; height: 84px; --mini-s: .2; }
+  #plane .p-card svg { width: 30px; height: 30px; }
+}
