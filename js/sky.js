@@ -1,17 +1,17 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.1157';
+import { extinction } from './sky-limit.js?v=0.1.1158';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.1157';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.1158';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.1157';
-import { createCloudGL } from './clouds-gl.js?v=0.1.1157';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.1158';
+import { createCloudGL } from './clouds-gl.js?v=0.1.1158';
 // Cloud colours by light: sunlit tops, shadowed bellies, and the horizon haze they melt into (0–1 RGB).
 const CLOUD_LIGHT = {
   day: { lit: [1, 1, 1], shade: [0.62, 0.68, 0.77], haze: [0.82, 0.87, 0.93] },
   dusk: { lit: [1, 0.8, 0.68], shade: [0.36, 0.33, 0.42], haze: [0.62, 0.5, 0.52] },
   night: { lit: [0.22, 0.25, 0.31], shade: [0.1, 0.12, 0.16], haze: [0.14, 0.15, 0.2] },
 };
-import { TIER_INFO } from './rarity.js?v=0.1.1157';
+import { TIER_INFO } from './rarity.js?v=0.1.1158';
 
 const RAD = Math.PI / 180;
 const SECRET_PX = { santa: 24, roadster: 12.4, voyager: 14.5, voyager2: 14.5, pioneer10: 11.7, pioneer11: 11.7, newhorizons: 6.4, arecibo: 6.9, halley: 8.6, sputnik: 11.2, laika: 13.3, wow: 9.8 };
@@ -561,7 +561,7 @@ export class SkyView {
     // Named in the ticket under the circle (2026-10-17, design/target-states B), not painted around it.
     const g = hit.g, owned = g.owned ?? (g.obj && typeof this.ownedObj === 'function' ? this.ownedObj(g.obj) : undefined), status = owned ? 'In your collection' : 'Not collected yet';
     // Below the horizon the ticket just says whether you have it (2026-10-25, Sevaan: "Remove the text 'below the horizon' and the dot"); the card and the time say the rest.
-    const head = kickerOf ? kickerOf(g) : owned === undefined ? (/HORIZON/.test(kicker) ? '' : kicker) : /HORIZON/.test(kicker) ? status : `${kicker} · ${status}`;
+    const head = kickerOf ? kickerOf(g) : owned === undefined ? (/HORIZON/.test(kicker) ? '' : kicker) : /HORIZON/.test(kicker) ? '' : `${kicker} · ${status}`; /* below the horizon: no status line either, the card shows it (2026-10-25, Sevaan) */
     const tail = [g.note ? g.note.replace(/^up /, 'comes up ') : '', g.where ? `in the ${g.where}` : ''].filter(Boolean).join(' · ');
     if (this.ticket?.ink !== 'fossil') this.ticket = { ink: kickerOf ? 'later' : /DAYLIGHT/.test(kicker) ? 'hidden' : 'below', k: head, n: g.name, m: [g.what, tail].filter(Boolean).join(' · '), o: g.obj ?? null }; // the bones you’re holding keep the label (2026-10-18 playtest)
     return hit;
