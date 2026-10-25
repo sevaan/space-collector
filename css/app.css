@@ -2532,3 +2532,20 @@ body.night .od-ring { background: conic-gradient(#ff6a55 calc(var(--f, .5) * 360
 .tc .acts.pick .pk small { font: 500 11px/1.2 var(--label); letter-spacing: .12em; text-transform: uppercase; color: color-mix(in srgb, var(--text) 70%, transparent); }
 .tc .acts.pick .pk:active { border-color: var(--gold); background: #f2c14e1a; }
 body.night .tc .acts.pick .pk svg * { stroke: #ff6a55; } body.night .tc .acts.pick .pk svg [fill="#fff2b3"] { fill: #ff6a55; }
+/* Match your sky (2026-10-25, Sevaan; design/tour-rethink.html 05): a card over the sky slider, pointing at it */
+#sky-match { position: fixed; z-index: 6; left: 50%; transform: translateX(-50%); width: min(320px, calc(var(--vws, 100vw) - 32px)); box-sizing: border-box; padding: 12px 14px 12px; border-radius: 16px; background: rgba(10, 18, 31, .96); border-top: 2px solid var(--gold); box-shadow: 0 10px 30px #0008; color: var(--text); display: grid; gap: 6px; animation: smIn .35s cubic-bezier(.2,.9,.3,1); }
+#sky-match[hidden] { display: none; }
+#sky-match small { font: 500 10.5px/1 var(--label); letter-spacing: .2em; text-transform: uppercase; color: var(--gold); }
+#sky-match b { font: 400 16px/1.2 var(--display); text-wrap: balance; }
+#sky-match #sm-read { font: 500 12px/1.2 var(--label); letter-spacing: .12em; text-transform: uppercase; color: #fa8127; }
+#sky-match .sm-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+#sky-match #sm-done { flex: none; min-height: 40px; padding: 0 18px; border: 0; border-radius: 12px; background: #1d2a3c; color: var(--text); font: 500 13px/1 var(--label); letter-spacing: .16em; text-transform: uppercase; cursor: pointer; }
+#sky-match.done #sm-done { background: #4fd18b22; color: #4fd18b; }
+#sky-match.out { opacity: 0; transform: translate(-50%, 10px); transition: opacity .3s, transform .3s; }
+#sky-match .sm-arrow { position: absolute; left: 50%; bottom: -9px; width: 16px; height: 16px; margin-left: -8px; background: rgba(10, 18, 31, .96); transform: rotate(45deg); border-radius: 0 0 3px 0; }
+@keyframes smIn { from { opacity: 0; transform: translate(-50%, 14px); } to { opacity: 1; transform: translate(-50%, 0); } }
+#skybar.matching #sky-range::-webkit-slider-thumb { animation: smPulse 1.6s ease-in-out infinite; }
+@keyframes smPulse { 0%, 100% { box-shadow: 0 0 0 0 #fa812700; } 50% { box-shadow: 0 0 0 8px #fa812755; } }
+body.night #sky-match { border-top-color: #ff6a55; color: #ff7f70; } body.night #sky-match small, body.night #sky-match #sm-read { color: #ff6a55; }
+@media (prefers-reduced-motion: reduce) { #sky-match, #skybar.matching #sky-range::-webkit-slider-thumb { animation: none; } }
+body.sky-matching #discover, body.sky-matching #plane, body.sky-matching #tk, body.sky-matching #guidance { visibility: hidden !important; } /* the card sits where the circle's ticket goes; matching takes a few seconds */
