@@ -23,6 +23,7 @@ struct Wx: Codable { let ok: Bool; let line: String; let next: String }
 struct Plan: Codable {
     let at: Double, place: String, plus: Bool, dusk: Double?, dawn: Double, eve: Double
     let chain: [Step], list: [Pass], run: [Pass], back: Double?, haul: Haul, bars: [Double], wx: Wx?, missions: Int
+    let clock: String? // the app's Settings → Clock: "12", "24" or "auto" (2026-10-25: the widget used the phone's own)
     var duskDate: Date? { dusk.map { Date(timeIntervalSince1970: $0 / 1000) } }
     var dawnDate: Date { Date(timeIntervalSince1970: dawn / 1000) }
 }
@@ -34,7 +35,9 @@ enum Store {
     }
     static func plan() -> Plan? {
         guard let d = dir, let data = try? Data(contentsOf: d.appendingPathComponent("plan.json")) else { return nil }
-        return try? JSONDecoder().decode(Plan.self, from: data)
+        let plan = try? JSONDecoder().decode(Plan.self, from: data)
+        WidgetClock.pref = plan?.clock
+        return plan
     }
     static func art(_ name: String?) -> UIImage? {
         guard let n = name, let d = dir else { return nil }
@@ -119,7 +122,13 @@ struct TierLine: View {
         }.lineLimit(1)
     }
 }
-func timeText(_ d: Date) -> Text { Text(d, style: .time) }
+// Times follow the app's Clock setting; "auto" (or an older plan without it) follows the phone, as before.
+enum WidgetClock { static var pref: String? }
+func timeText(_ d: Date) -> Text {
+    guard let p = WidgetClock.pref, p == "12" || p == "24" else { return Text(d, style: .time) }
+    let f = DateFormatter(); f.locale = Locale.current; f.dateFormat = p == "24" ? "HH:mm" : "h:mm a"
+    return Text(f.string(from: d))
+}
 
 // The target circle with the card's picture in it; the ring empties over the last hour before the pass.
 struct RingArt: View {

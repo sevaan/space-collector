@@ -4,7 +4,8 @@
 // facts only state what the catalogue says today (orbit, launch date and site) or simple date
 // comparisons. No extrapolating today’s orbit back over decades (lifetime laps or distance).
 
-import { orbitStats, titleCase, siteName, ownerName } from './facts.js?v=0.1.1148';
+import { orbitStats, titleCase, siteName, ownerName } from './facts.js?v=0.1.1149';
+import { localText } from './localize.js?v=0.1.1149';
 
 const FAMILY = [
   [/^IRIDIUM 33 DEB/, 'A piece of the **first accidental collision between two intact satellites**: Iridium 33 hit the dead Kosmos 2251 in 2009.'],
@@ -52,7 +53,7 @@ export const debrisOf = (o) => (o?.type === 'debris' ? debrisCache?.[o.id] ?? nu
 // The researched programme a satellite belongs to (e.g. 'strela-1m'), once loadLore has run.
 export const seriesKeyOf = (o) => seriesCache?.members?.[o.id] ?? null;
 
-const shortDate = (iso) => new Date(`${iso}T12:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+const shortDate = (iso) => new Date(`${iso}T12:00:00Z`).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' });
 
 export function titleFor(o) {
   if (o.natural) return o.name;
@@ -84,7 +85,7 @@ export function lapsPerDay(o) {
   return o.period ? 1440 / o.period : null;
 }
 
-const launchDay = (iso) => new Date(`${iso}T12:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+const launchDay = (iso) => new Date(`${iso}T12:00:00Z`).toLocaleDateString(undefined, { day: 'numeric', month: 'long', year: 'numeric' });
 
 // Facts computed from the catalogue, for objects without a hand-written or family fact. Each one is
 // true as stated: today’s orbit, the launch record, or a date comparison.
@@ -332,8 +333,8 @@ export function thirdStat(o, sizeLabel, seenMembers = 0) {
   return s ? { label: s[0], value: s[1] } : { label: 'LAUNCHED', value: o.launch?.slice(0, 4) ?? String(o.year ?? '—') };
 }
 
-// **bold** → <b>, everything else escaped.
+// **bold** → <b>, everything else escaped. In the player's units, clock and spelling first (js/localize.js, 2026-10-25).
 export function richText(s) {
-  const esc = String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const esc = String(localText(s)).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   return esc.replace(/\*\*(.+?)\*\*/g, '<b>$1</b>');
 }

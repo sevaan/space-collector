@@ -1,36 +1,37 @@
-import { pullToClose } from './pull-close.js?v=0.1.1148';
-import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.1148';
-import { computeStats, statsHtml } from './stats.js?v=0.1.1148';
-import { nightKey } from './observation.js?v=0.1.1148';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1148';
-import { sfx } from './sfx.js?v=0.1.1148';
-import { expandFacts } from './catalog-facts.js?v=0.1.1148';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.1148';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1148';
-import { ticket } from './toast.js?v=0.1.1148';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.1148';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.1148';
-import { cardArt } from './art.js?v=0.1.1148';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.1148';
-import { applyBack } from './card-backs.js?v=0.1.1148';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.1148';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1148';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.1148';
-import { STORIES } from './stories.js?v=0.1.1148';
-import { loadConstellations, conList } from './constellations.js?v=0.1.1148';
-import { RANKS, progress, readDeals, readWeekThemes, xpCarry } from './progress.js?v=0.1.1148';
-import { eventBadges, nextEvent } from './events.js?v=0.1.1148';
-import { shareCardEl } from './share-card.js?v=0.1.1148';
-import { forgetSighting } from './cloud-backup.js?v=0.1.1148';
-import { allSightings, deleteSighting } from './store.js?v=0.1.1148';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.1148';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.1148';
+import { pullToClose } from './pull-close.js?v=0.1.1149';
+import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.1149';
+import { computeStats, statsHtml } from './stats.js?v=0.1.1149';
+import { nightKey } from './observation.js?v=0.1.1149';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1149';
+import { sfx } from './sfx.js?v=0.1.1149';
+import { expandFacts } from './catalog-facts.js?v=0.1.1149';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.1149';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1149';
+import { ticket } from './toast.js?v=0.1.1149';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.1149';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.1149';
+import { cardArt } from './art.js?v=0.1.1149';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.1149';
+import { applyBack } from './card-backs.js?v=0.1.1149';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.1149';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1149';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.1149';
+import { STORIES } from './stories.js?v=0.1.1149';
+import { loadConstellations, conList } from './constellations.js?v=0.1.1149';
+import { RANKS, progress, readDeals, readWeekThemes, xpCarry } from './progress.js?v=0.1.1149';
+import { eventBadges, nextEvent } from './events.js?v=0.1.1149';
+import { shareCardEl } from './share-card.js?v=0.1.1149';
+import { forgetSighting } from './cloud-backup.js?v=0.1.1149';
+import { allSightings, deleteSighting } from './store.js?v=0.1.1149';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.1149';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.1149';
+import { localText } from './localize.js?v=0.1.1149';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const hasSightings = (c) => state.sightingsByKey.has(c.key);
-const dateLabel = (time) => new Date(time).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+const dateLabel = (time) => new Date(time).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
 function notice(message) { $('notice').hidden = !message; $('notice').textContent = message; }
@@ -767,7 +768,7 @@ function showCard() {
       const where = s.el != null ? `${Math.round(s.el)}° up in the ${DIR_WORD[points[Math.round(((s.az % 360) + 360) % 360 / 45) % 8]] ?? points[Math.round(((s.az % 360) + 360) % 360 / 45) % 8]}` : '';
       // Fleet cards: which launch this sighting was (its stamp), with the launch date.
       const launch = c.launches && s.stampKey ? c.launches.find((l) => l.key === s.stampKey) : null;
-      const launchLine = c.launches ? (launch ? `Launch ${esc(s.stampKey.split(':')[1] ?? s.stampKey)} · ${launch.n ?? ''} satellites launched ${esc(new Date(`${launch.launch}T12:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }))}` : 'Launch unknown') : '';
+      const launchLine = c.launches ? (launch ? `Launch ${esc(s.stampKey.split(':')[1] ?? s.stampKey)} · ${launch.n ?? ''} satellites launched ${esc(new Date(`${launch.launch}T12:00:00Z`).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' }))}` : 'Launch unknown') : '';
       row.className = launchLine ? 'with-launch' : '';
       row.innerHTML = `<span class="h-main"><span>${esc(when)}</span>${where ? `<span> · ${esc(where)}</span>` : ''}</span>${launchLine ? `<span class="h-launch">${launchLine.replace(/\s+satellites/, ' satellites')}</span>` : ''}`; // no delete button (2026-10-14, Sevaan: people don’t need to delete when they saw it)
       row.querySelector('button')?.addEventListener('click', async () => {
@@ -1143,7 +1144,7 @@ function renderPatches() {
   wall.innerHTML = `<div class="pw-chips">${['all', ...groups].map((g) => `<button type="button" class="ui-chip pw-chip${state.patchGroup === g ? ' on' : ''}" data-g="${g}"><b>${g === 'all' ? 'All' : esc(GROUPS[g].t)}</b><span class="ui-chip__k">${(g === 'all' ? all : all.filter((a) => groupOf(a) === g)).filter((a) => a.done).length}</span></button>`).join('')}</div>
     ${state.patchGroup !== 'all' && !shown.some((a) => a.done) ? `<div class="pw-empty"><span class="empty__orbit" aria-hidden="true">✦</span><span>None yet in ${esc(GROUPS[state.patchGroup]?.t ?? 'this group')}. Each outline below says what earns it.</span></div>` : ''}
     ${state.patchGroup === 'all' && all.filter((a) => a.done).length < 3 ? (() => { const easy = ['first', 'moon', 'twilight', 'station', 'stars10'].map((id) => all.find((a) => a.id === id && !a.done)).filter(Boolean).slice(0, 3);
-      return easy.length ? `<div class="pw-start"><span>Start here</span><div class="pw-grid">${easy.map((a) => `<button type="button" class="pw-item" data-id="${a.id}">${patchHtml(a, { locked: true, prog: a.prog })}<span>${esc(a.name)}<small>${esc(a.text)}</small></span></button>`).join('')}</div></div><span class="lab" style="display:block;margin:0 4px 10px;color:#bdbea9;font:500 12px/1.2 'SC Label',sans-serif;letter-spacing:.16em;text-transform:uppercase">All patches</span>` : ''; })() : ''}
+      return easy.length ? `<div class="pw-start"><span>Start here</span><div class="pw-grid">${easy.map((a) => `<button type="button" class="pw-item" data-id="${a.id}">${patchHtml(a, { locked: true, prog: a.prog })}<span>${esc(a.name)}<small>${esc(localText(a.text))}</small></span></button>`).join('')}</div></div><span class="lab" style="display:block;margin:0 4px 10px;color:#bdbea9;font:500 12px/1.2 'SC Label',sans-serif;letter-spacing:.16em;text-transform:uppercase">All patches</span>` : ''; })() : ''}
     <div class="pw-grid">${shown.map((a) => `<button type="button" class="pw-item${a.done ? '' : ' locked'}${a.done && !patchSeen().has(a.id) ? ' new' : ''}" data-id="${a.id}" aria-label="${esc(a.name)}${a.done ? ', earned' : ', not earned yet'}">${patchHtml(a, { locked: !a.done, prog: a.prog })}<span>${esc(a.name)}</span></button>`).join('')}</div>`;
   wall.onclick = (e) => {
     const chip = e.target.closest('.pw-chip'); if (chip) { state.patchGroup = chip.dataset.g; renderPatches(); return; }
@@ -1164,7 +1165,7 @@ function openPatch(id, from = null) {
   // On a card (2026-10-09, Sevaan): the patch sits on a card like the collection’s, which you flick up and away.
   $('pv-body').innerHTML = `<div class="pv-card${a.done ? '' : ' locked'}"><div class="pv-bar"><span>Mission patch</span><span>${esc(GROUPS[groupOf(a)].t)}</span></div>
     <div class="pv-patch">${patchHtml(a, { locked: !a.done, prog: a.prog })}</div>
-    <h2>${esc(a.name)}</h2><p>${esc(a.text)}</p>
+    <h2>${esc(a.name)}</h2><p>${esc(localText(a.text))}</p>
     ${!a.done && a.prog && a.prog[1] > 1 ? `<div class="pv-prog"><div class="pv-prog__bar"><i style="width:${Math.min(100, (a.prog[0] / a.prog[1]) * 100).toFixed(1)}%"></i></div><span><b>${a.prog[0].toLocaleString()}</b> of ${a.prog[1].toLocaleString()}</span></div>` : ''}
     <div class="pv-meta">${f ? `<span class="ui-chip"><b>${f === 'gold' ? 'Gold foil' : 'Holo'}</b></span>` : ''}${a.secret ? '<span class="ui-chip"><b>Secret</b></span>' : ''}${['catalogue', 'curator', 'months12', 'anniversary', 'streak12', 'cons44'].includes(a.id) && !a.done ? '<span class="ui-chip"><b>Legendary goal</b><span class="ui-chip__k">years, not weeks</span></span>' : ''}</div>
     <div class="pv-foot"><span>${a.done ? (date ? fmtEarned(date) : 'EARNED') : 'NOT YET EARNED'}</span><b>SPACE COLLECTOR</b></div></div>

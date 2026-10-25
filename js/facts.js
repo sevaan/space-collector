@@ -59,7 +59,7 @@ export function siteName(code) { return SITES[code] ?? code ?? 'Unknown site'; }
 export function formatDate(iso) {
   if (!iso) return 'Unknown';
   const d = new Date(`${iso}T12:00:00Z`);
-  return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+  return d.toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' });
 }
 
 // Mean altitude (km) and orbital speed (km/s) from apogee/perigee.

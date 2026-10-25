@@ -5,12 +5,12 @@
 //  Everything scales with rarity (Legendary dims the sky, shockwave, held breath, slow flip, fanfare).
 // Waits use timers, not animation.finished, so a paused tab can never freeze the sequence.
 
-import { sfx, loadSfx, heartbeat } from './sfx.js?v=0.1.1148';
-import { audioCtx } from './audio-ctx.js?v=0.1.1148';
-import { TIER_INFO } from './rarity.js?v=0.1.1148';
-import { levelFor, attachTilt, attachGyro, attachFlip, throwOff, retype } from './card.js?v=0.1.1148';
-import { applyBack } from './card-backs.js?v=0.1.1148';
-import { addStarfield } from './starfield.js?v=0.1.1148';
+import { sfx, loadSfx, heartbeat } from './sfx.js?v=0.1.1149';
+import { audioCtx } from './audio-ctx.js?v=0.1.1149';
+import { TIER_INFO } from './rarity.js?v=0.1.1149';
+import { levelFor, attachTilt, attachGyro, attachFlip, throwOff, retype } from './card.js?v=0.1.1149';
+import { applyBack } from './card-backs.js?v=0.1.1149';
+import { addStarfield } from './starfield.js?v=0.1.1149';
 
 const FX = {
   common:    { particles: 14,  flip: 520,  spin: 0,   dim: 0,   shock: false, notes: [880],                            hold: 0 },
@@ -331,7 +331,7 @@ async function finish({ fx, color, fresh, seen, level, levelUp, card, alive, fle
   $('rv-sweep').classList.remove('go'); void $('rv-sweep').offsetWidth; $('rv-sweep').classList.add('go');
   await sleep(250);
   if (!alive()) return;
-  const date = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }).toUpperCase();
+  const date = new Date().toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' }).toUpperCase();
   const stampLine = fleet ? (fleet.line ?? `LAUNCH ${fleet.cospar} · ${fleet.stamps} OF ${fleet.total}`) : ''; // fleet.line: the Moon’s phase
   const conDone = !!con && con.level === 'gold';
   // 1, 10, 25, 50, 100… cards each earn a patch, and the patch coin says so; no second "milestone" toast for them (playtest 2026-10-09).

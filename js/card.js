@@ -1,21 +1,22 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { fallWords } from './last-chance.js?v=0.1.1148';
-import { useMiles } from './units.js?v=0.1.1148';
-import { feel } from './native.js?v=0.1.1148';
-import { sfx } from './sfx.js?v=0.1.1148';
-import { cardArt } from './art.js?v=0.1.1148';
-import { TIER_INFO } from './rarity.js?v=0.1.1148';
-import { SET_BY_ID } from './sets.js?v=0.1.1148';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.1148';
-import { FLEET_ABOUT, fleetAbout, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.1148';
-import { artFileFor } from './art-keys.js?v=0.1.1148';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.1148';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.1148';
-import { nightsIn } from './observation.js?v=0.1.1148';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.1148';
-import { SHINY } from './shiny.js?v=0.1.1148';
-import { conArt, cometArt } from './con-art.js?v=0.1.1148';
-import { CON_FIGURES } from './con-figures.js?v=0.1.1148';
+import { fallWords } from './last-chance.js?v=0.1.1149';
+import { useMiles } from './units.js?v=0.1.1149';
+import { feel } from './native.js?v=0.1.1149';
+import { sfx } from './sfx.js?v=0.1.1149';
+import { cardArt } from './art.js?v=0.1.1149';
+import { TIER_INFO } from './rarity.js?v=0.1.1149';
+import { SET_BY_ID } from './sets.js?v=0.1.1149';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.1149';
+import { FLEET_ABOUT, fleetAbout, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.1149';
+import { artFileFor } from './art-keys.js?v=0.1.1149';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.1149';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.1149';
+import { nightsIn } from './observation.js?v=0.1.1149';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.1149';
+import { SHINY } from './shiny.js?v=0.1.1149';
+import { conArt, cometArt } from './con-art.js?v=0.1.1149';
+import { CON_FIGURES } from './con-figures.js?v=0.1.1149';
+import { localText } from './localize.js?v=0.1.1149';
 // The animal/symbol figure belongs to the completed (gold) constellation card only (2026-10-05): a single
 // star’s card draws just the star pattern with its star marked, so the figure is a reward for finishing the set.
 // A star card’s constellation figure comes into focus as you collect the constellation’s stars (design/con-focus.html B).
@@ -111,13 +112,14 @@ function tempStrip(o) {
   if (o.type !== 'star' && o.type !== 'sun') return '';
   const K = tempK(o); if (!K) return '';
   const f = Math.max(0, Math.min(1, Math.log(K / 2500) / Math.log(30000 / 2500))), C = Math.round((K - 273) / 100) * 100;
-  return `<div class="card__temp"><i><b style="left:${(f * 100).toFixed(1)}%"></b></i><span><span>COOL · 2,000 °C</span><em>~${C.toLocaleString('en-US')} °C</em><span>30,000 °C · HOT</span></span></div>`;
+  const deg = (c) => (useMiles() ? `${(Math.round((c * 9 / 5 + 32) / 100) * 100).toLocaleString('en-US')} °F` : `${c.toLocaleString('en-US')} °C`); // °F where the player uses imperial (US/UK playtest 2026-10-25)
+  return `<div class="card__temp"><i><b style="left:${(f * 100).toFixed(1)}%"></b></i><span><span>COOL · ${deg(2000)}</span><em>~${deg(C)}</em><span>${deg(30000)} · HOT</span></span></div>`;
 }
 // Last chance (js/last-chance.js): a red bar over the picture while it’s falling; once it has fallen out of the
 // catalogue, a "Burned up" stamp on the card you kept.
 function lcMark(o) {
   if (!o.fallAt) return '';
-  const day = new Date(o.fallAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }).toUpperCase();
+  const day = new Date(o.fallAt).toLocaleDateString(undefined, { day: 'numeric', month: 'short' }).toUpperCase();
   if (o.archived && Date.now() > o.fallAt - 5 * 86400e3) return `<span class="card__burned">BURNED UP ~${day}</span>`;
   return `<span class="card__lc">LAST CHANCE · ${fallWords(o.fallAt).toUpperCase()}</span>`;
 }
@@ -150,7 +152,7 @@ export function renderCard(o, opts = {}) {
   const firstOf = (list) => Math.min(...list.map((s) => s.time));
   const byStar = new Map(); if (conCard) for (const s of sightings) byStar.set(s.cardKey, Math.min(byStar.get(s.cardKey) ?? Infinity, s.time));
   const first = !caught ? null : conCard && byStar.size ? Math.max(...byStar.values()) : firstOf(sightings);
-  const firstDate = first != null ? new Date(first).toLocaleDateString('en-GB', { month: 'short', day: '2-digit', year: 'numeric' }).toUpperCase() : '';
+  const firstDate = first != null ? new Date(first).toLocaleDateString(undefined, { month: 'short', day: '2-digit', year: 'numeric' }).toUpperCase() : '';
   const nat = !!o.natural;
   const identifier = nat ? o.code : o.members ? `${o.members.length.toLocaleString('en-US')} SATELLITES` : o.runOf > 1 ? `NO. ${o.runNo} OF ${o.runOf}` : `NORAD ${o.id}`;
   const identity = o.type === 'story' ? (secretStory ? 'Hidden somewhere in the sky' : o.when) : nat ? (conCard ? (o.system ? 'Planetary system' : o.zodiac ? 'Zodiac constellation' : 'Constellation') : o.type === 'star' ? `Star in ${o.constellation}` : o.type === 'deepsky' ? o.kind : o.type === 'comet' ? 'Comet' : o.type === 'sun' ? 'Star' : o.type === 'moon' ? 'Natural satellite' : 'Planet') : fleet ? 'Satellite fleet' : o.type === 'rocket-body' && o.parent ? `Carried ${titleCase(o.parent).replace(/\bCosmos\b/g, 'Kosmos')}${o.launch ? ` · ${o.launch.slice(0, 4)}` : ''}` : o.type === 'debris' && o.launch ? `${debrisOf(o)?.what ?? TYPE_LABEL[o.type] ?? 'Debris'} · ${o.launch.slice(0, 4)}` : TYPE_LABEL[o.type] ?? 'Orbital object'; // what it carried and when, so same-name stages differ
@@ -193,7 +195,7 @@ export function renderCard(o, opts = {}) {
     <div class="card__heading"><h3 class="card__name">${esc(title)}</h3>
     <div class="card__identity"><span>${esc(sub)}</span><span class="card__mono">${esc(identifier)}</span></div></div>
     ${tempStrip(o)}
-    <div class="card__stats m4" style="--n:${four.length}">${four.map(inUnits).map(([label, value, unit], i) => `<div><span class="card__label">${esc(label)}</span><b${nat ? statClass(value, unit, i) : ''}>${esc(value).replace(/(\d)\.(\d)/g, '$1<i class="dp">.</i>$2') /* the display font's point nearly vanishes: 2.3 read 23 (web playtest 2026-10-22) */}${unit ? `<small>${esc(unit)}</small>` : ''}</b></div>`).join('')}</div>
+    <div class="card__stats m4" style="--n:${four.length}">${four.map(inUnits).map(([label, value, unit], i) => `<div><span class="card__label">${esc(localText(label))}</span><b${nat ? statClass(value, unit, i) : ''}>${esc(value).replace(/(\d)\.(\d)/g, '$1<i class="dp">.</i>$2') /* the display font's point nearly vanishes: 2.3 read 23 (web playtest 2026-10-22) */}${unit ? `<small>${esc(unit)}</small>` : ''}</b></div>`).join('')}</div>
     ${factBlock}
     <div class="card__footer"><span class="card__status${caught ? ' is-collected' : ''}"><span class="card__status-icon" aria-hidden="true">${caught ? '✓' : ''}</span><span>${caught ? `COLLECTED · ${esc(firstDate)}` : 'NOT YET COLLECTED'}</span>${caught && !o.natural ? `<span class="card__seen-count">${seenLine(level, conCard || fleet ? 0 : nightsIn(sightings), sightings.length)}</span>` : ''}</span><span class="card__brand">${o.setNumber && o.setSize > 1 ? `<small class="card__no">${String(o.setNumber).padStart(String(o.setSize).length, '0')}/${o.setSize}</small>` : ''}SPACE COLLECTOR</span></div>
     <div class="card__shine"></div><div class="card__glare"></div>
@@ -269,8 +271,8 @@ function dotMap(o, stamps, latest, summary = '', latestLine = '', trains = null)
   return `<div class="fl-dots"><div class="fl-head"><span class="card__note-label">${stamps.size.toLocaleString('en-US')} LAUNCH${stamps.size === 1 ? '' : 'ES'}</span>${latestLine ? `<span class="fl-latest"><i></i><span class="fl-type" style="--n:${latestLine.length}">${esc(latestLine)}</span></span>` : ''}</div><div class="fl-grid" style="--cols:${cols};--gap:${gap}">${dots}</div><div class="fl-years"><span>${esc(y0)}</span>${summary ? `<span class="fl-sum">${esc(summary)}</span>` : ''}<span>${esc(y1)}</span></div></div>`;
 }
 
-const shortDay = (t) => new Date(t).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }).toUpperCase();
-const launchDay = (iso) => (iso ? new Date(`${iso}T12:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : 'unknown date');
+const shortDay = (t) => new Date(t).toLocaleDateString(undefined, { day: 'numeric', month: 'short' }).toUpperCase();
+const launchDay = (iso) => (iso ? new Date(`${iso}T12:00:00Z`).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' }) : 'unknown date');
 function inkStamp(stamp, launch, i, big = false) {
   const cospar = stamp.key.split(':')[1] ?? stamp.key;
   const r = [-8, 6, -3, 10, -12, 4, 8, -6][i % 8];
@@ -296,7 +298,7 @@ export function renderPassport(o, sightings) {
   const empty = Math.min(left, rest.length % 4 ? 4 - (rest.length % 4) : 4);
   const next = nextLevel(o.family, level).toLowerCase().replace(/^./, (c) => c.toUpperCase());
   el.innerHTML = `<h2>Passport · ${history.length} of ${o.launches.length} launches</h2>
-    ${newest ? `<div class="passport__latest">${inkStamp(newest, byKey.get(newest.key), 0, true)}<p>Newest stamp: <b>launch ${esc(newest.key.split(':')[1] ?? newest.key)}</b>${byKey.get(newest.key) ? `, ${byKey.get(newest.key).n} satellites launched ${esc(launchDay(byKey.get(newest.key).launch))}` : ''}.<br>Seen ${esc(new Date(newest.time).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }))}. ${level === 'gold' ? 'Top level reached.' : `${esc(next)} launches.`}</p></div>` : ''}
+    ${newest ? `<div class="passport__latest">${inkStamp(newest, byKey.get(newest.key), 0, true)}<p>Newest stamp: <b>launch ${esc(newest.key.split(':')[1] ?? newest.key)}</b>${byKey.get(newest.key) ? `, ${byKey.get(newest.key).n} satellites launched ${esc(launchDay(byKey.get(newest.key).launch))}` : ''}.<br>Seen ${esc(new Date(newest.time).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' }))}. ${level === 'gold' ? 'Top level reached.' : `${esc(next)} launches.`}</p></div>` : ''}
     ${rest.length || empty ? `<div class="passport__stamps">${rest.map((st, i) => inkStamp(st, byKey.get(st.key), i + 1)).join('')}${'<div class="ink-stamp blank"><span>?</span></div>'.repeat(empty)}</div>` : ''}`;
   return el;
 }
@@ -319,7 +321,7 @@ export function renderCardTile(o, opts = {}) {
   tile.style.setProperty('--set', set.color); tile.style.setProperty('--tier', tier.color);
   const hide = o.story && !caught; // an unfound story stays a secret, read aloud too (QA 2026-10-16)
   tile.setAttribute('aria-label', `${hide ? 'Secret story' : title}, ${hide ? 'Story' : tier.label}, ${caught ? `collected, ${sightings.length} sightings` : 'not collected'}. View card`);
-  tile.innerHTML = `${lvlUp ? `<span class="tile-lvl tile-lvl--${lvl}">${lvl.toUpperCase()}</span>` : ''}<span class="card-tile__set">${esc(set.name)}</span><span class="card-tile__art">${conCard && o.system ? (caught && artImage(o, 'small') ? `<img class="card-art-image" src="${artImage(o, 'small')}" alt="" loading="lazy" decoding="async">` : lockedArt(o, caught, set.color, 'small')) : o.natural === 'constellation' ? conArt(o.data, null, caught ? conFig(o.con) : {}) : o.type === 'comet' && caught ? cometArt(o.key) : o.type === 'deepsky' && caught && !artImage(o, 'small') && CON_BY_ID.get(o.conId) ? conArt(CON_BY_ID.get(o.conId).data, null, { mark: o }) : o.con && !o.skyName && caught && CON_BY_ID.get(o.con) ? conArt(CON_BY_ID.get(o.con).data, o.hip, {}) : caught && artImage(o, 'small') ? `<img class="card-art-image" src="${artImage(o, 'small')}" alt="" loading="lazy" decoding="async">` : lockedArt(o, caught, set.color, 'small')}</span><span class="card-tile__body"><span class="card-tile__tier"><i aria-hidden="true">${tier.gem}</i> ${tier.label}</span><span class="card-tile__name">${esc(title)}</span>${opts.sub ? `<span class="card-tile__sub">${esc(opts.sub)}</span>` : ''}<span class="card-tile__status">${caught ? (o.natural === 'constellation' ? `✓ ${new Set(sightings.map((x) => x.cardKey)).size} of ${o.stars.length} ${o.system ? 'worlds' : 'stars'}` : o.launches ? `✓ ${stampsIn(sightings).size} of ${o.launches.length} launches` : `✓ Collected ${new Date(Math.min(...sightings.map((s) => s.time))).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`) : conCard && prog.have ? `${prog.have} of ${prog.total} ${o.system ? 'worlds' : 'stars'} found` : 'Not yet collected'}</span></span>`;
+  tile.innerHTML = `${lvlUp ? `<span class="tile-lvl tile-lvl--${lvl}">${lvl.toUpperCase()}</span>` : ''}<span class="card-tile__set">${esc(set.name)}</span><span class="card-tile__art">${conCard && o.system ? (caught && artImage(o, 'small') ? `<img class="card-art-image" src="${artImage(o, 'small')}" alt="" loading="lazy" decoding="async">` : lockedArt(o, caught, set.color, 'small')) : o.natural === 'constellation' ? conArt(o.data, null, caught ? conFig(o.con) : {}) : o.type === 'comet' && caught ? cometArt(o.key) : o.type === 'deepsky' && caught && !artImage(o, 'small') && CON_BY_ID.get(o.conId) ? conArt(CON_BY_ID.get(o.conId).data, null, { mark: o }) : o.con && !o.skyName && caught && CON_BY_ID.get(o.con) ? conArt(CON_BY_ID.get(o.con).data, o.hip, {}) : caught && artImage(o, 'small') ? `<img class="card-art-image" src="${artImage(o, 'small')}" alt="" loading="lazy" decoding="async">` : lockedArt(o, caught, set.color, 'small')}</span><span class="card-tile__body"><span class="card-tile__tier"><i aria-hidden="true">${tier.gem}</i> ${tier.label}</span><span class="card-tile__name">${esc(title)}</span>${opts.sub ? `<span class="card-tile__sub">${esc(opts.sub)}</span>` : ''}<span class="card-tile__status">${caught ? (o.natural === 'constellation' ? `✓ ${new Set(sightings.map((x) => x.cardKey)).size} of ${o.stars.length} ${o.system ? 'worlds' : 'stars'}` : o.launches ? `✓ ${stampsIn(sightings).size} of ${o.launches.length} launches` : `✓ Collected ${new Date(Math.min(...sightings.map((s) => s.time))).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}`) : conCard && prog.have ? `${prog.have} of ${prog.total} ${o.system ? 'worlds' : 'stars'} found` : 'Not yet collected'}</span></span>`;
   return tile;
 }
 
