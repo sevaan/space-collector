@@ -1836,3 +1836,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - Not done: γ Sextantis (5.07) is collectable at a dark site but sky.json only draws to 5.0; planets 2–3.75° up may hide behind the tallest trees.
 - 2026-10-25 (Sevaan): the Tonight tab's next-card hero keeps showing the real picture of a card you don't have yet ("It’s fine being visible"); everywhere else uncollected art is blurred.
 - 2026-10-25: SC Tester installed on Sevaan's iPhone (web v0.1.1169). The widget's sample Plan(...) call needed the new clock: field (missing it made Swift give up type-checking); split into lets.
+- 2026-10-25 (Sevaan: a shiny Moon card was hard to see): iPhone Safari drops blend modes on a card turning in 3D, so the shiny soft-light cream foil became a cream wash over the whole card. .card.shiny .card__shine is now a narrow warm band (normal blend, transparent elsewhere) that sweeps with the tilt.

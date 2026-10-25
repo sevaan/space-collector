@@ -691,3 +691,8 @@
 .art-locked--chart > svg { display: block; width: 100%; height: 100%; filter: blur(8px) brightness(1.5) contrast(1.1) saturate(.8); transform: scale(1.15); } /* charts are mostly navy: brighter than a picture to read the same (visual playtest 2026-10-25) */
 .card-tile .art-locked--chart > svg { filter: blur(4px) brightness(1.5) contrast(1.1) saturate(.8); }
 .d-mini .art-locked--chart > svg { filter: blur(5px) brightness(1.8) contrast(1.1) saturate(.9); } /* charts are mostly navy, so a touch brighter to match a picture's tone */
+/* Shiny, readable (2026-10-25, Sevaan: a shiny Moon card was "hard to see"). iPhone Safari drops blend modes on a card
+   turning in 3D, so the soft-light cream foil above became a plain cream wash over the whole card. Now it's a narrow
+   warm band that sweeps across as you tilt, clear everywhere else, so it reads the same with or without the blend. */
+.card.shiny .card__shine { mix-blend-mode: normal; filter: none; opacity: calc(.75 + var(--o, 0) * .25);
+  background: linear-gradient(110deg, transparent 38%, rgba(255, 242, 179, .16) 44%, rgba(255, 207, 122, .26) 48%, rgba(250, 129, 39, .2) 52%, rgba(255, 179, 161, .16) 56%, transparent 62%) var(--bgx, 50%) var(--bgy, 50%) / 300% 300%; }
