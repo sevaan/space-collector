@@ -6,8 +6,8 @@
 //   iCloud key 'sc-backup' = { v: 1, s: [sightings], gone: [ids deleted], st: { progress keys }, at }
 // Sync merges both ways and never loses anything earned: sightings are a union by a stable id (time + card + object),
 // minus ids someone deleted; progress keys merge as in the old account sync.
-import { allSightings, addSighting, deleteSighting } from './store.js?v=0.1.1134';
-import { plugin, onNative, isNative } from './native.js?v=0.1.1134';
+import { allSightings, addSighting, deleteSighting } from './store.js?v=0.1.1135';
+import { plugin, onNative, isNative } from './native.js?v=0.1.1135';
 
 const KEY = 'sc-backup';
 const STATE_KEYS = ['secrets', 'fossilFound', 'ufoFound', 'missionDeals', 'xpCarry2', 'patchSeen', 'patchDates', 'backEarned', 'rankFloor2'];

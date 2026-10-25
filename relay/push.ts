@@ -105,7 +105,7 @@ export async function cron() {
 }
 
 // ---------- Anonymous usage and error reports ----------
-const NAMES = new Set(["install", "open", "night", "end", "tour", "motion", "calib", "plus", "err"]);
+const NAMES = new Set(["install", "open", "night", "end", "tour", "motion", "calib", "plus", "err", "sky"]);
 async function ensureTable() {
   await sqlite.execute(`CREATE TABLE IF NOT EXISTS sc_events (ts INTEGER, iid TEXT, v TEXT, p TEXT, x INTEGER, name TEXT, d TEXT)`);
 }
@@ -142,6 +142,16 @@ async function stats(all: boolean): Promise<Response> {
   const plats = await q(`SELECT p, COUNT(DISTINCT iid) FROM sc_events WHERE ${W} GROUP BY p`);
   const vers = await q(`SELECT v, COUNT(DISTINCT iid) FROM sc_events WHERE ${W} GROUP BY v ORDER BY MAX(ts) DESC LIMIT 6`);
   const plus = await q(`SELECT json_extract(d, '$.s'), COUNT(DISTINCT iid) FROM sc_events WHERE ${W} AND name = 'plus' GROUP BY 1`);
+  // The tour (2026-10-25): where people said they were, own location or the time-zone city, the day-one reminder, the
+  // big first target outside at night, and Match your sky. Distinct installs.
+  const by = async (s: string, k: string) => q(`SELECT json_extract(d, '$.${k}'), COUNT(DISTINCT iid) FROM sc_events WHERE ${W} AND name = 'tour' AND json_extract(d, '$.s') = '${s}' GROUP BY 1 ORDER BY 2 DESC`);
+  const tWhere = await by("where", "where"), tDone = await by("done", "where"), tLoc = await by("loc", "loc"), tRare = await by("rare", "pick");
+  const tRemind = await one(`SELECT COUNT(DISTINCT iid) FROM sc_events WHERE ${W} AND name = 'tour' AND json_extract(d, '$.s') = 'remind'`);
+  const tFin = await one(`SELECT COUNT(DISTINCT iid) FROM sc_events WHERE ${W} AND name = 'tour' AND json_extract(d, '$.s') = 'done'`);
+  const tRareCaught = await one(`SELECT COUNT(DISTINCT e.iid) FROM sc_events e WHERE ${W.replace("x", "e.x")} AND e.name = 'tour' AND json_extract(e.d, '$.s') = 'rare' AND EXISTS (SELECT 1 FROM sc_events n WHERE n.iid = e.iid AND n.name = 'night' AND json_extract(n.d, '$.f') = 1)`);
+  const mShown = await one(`SELECT COUNT(DISTINCT iid) FROM sc_events WHERE ${W} AND name = 'sky' AND json_extract(d, '$.s') = 'match-shown'`);
+  const mDone = await q(`SELECT COUNT(DISTINCT iid), AVG(CAST(json_extract(d, '$.sb') AS REAL)) FROM sc_events WHERE ${W} AND name = 'sky' AND json_extract(d, '$.s') = 'match'`);
+  const list = (rs: any[]) => rs.map((r) => `${r[0] ?? "–"}: ${r[1]}`).join(" · ") || "–";
   const pct = (a: number, b: number) => (b ? `${Math.round((100 * a) / b)}%` : "–");
   const esc = (t: unknown) => String(t ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]!));
   const row = (k: string, v: string, sub = "") => `<tr><th>${k}</th><td>${v}</td><td class="m">${sub}</td></tr>`;
@@ -151,6 +161,7 @@ async function stats(all: boolean): Promise<Response> {
 table{border-collapse:collapse;width:100%;max-width:760px}th,td{text-align:left;padding:7px 10px;border-bottom:1px solid #22324a;vertical-align:top}th{font-weight:500;color:#c9d3de;width:46%}td{color:#fff2b3;font-variant-numeric:tabular-nums}.m{color:#9fb0c6;font-size:13px}p{color:#9fb0c6;max-width:760px}a{color:#fa8127}</style>
 <h1>Space Collector · usage</h1><p>Anonymous: a random ID per install, no places or names. ${all ? 'Including test builds · <a href="?">players only</a>' : 'Players only (test builds left out) · <a href="?all=1">include test builds</a>'}. Updated ${new Date().toUTCString()}.</p>
 <h2>The first night</h2><table>${row("New installs", String(installs))}${row("Caught a card on their first night", pct(firstNight, installs), `${firstNight} of ${installs}`)}${row("Finished the tour", esc(tour.map((r) => `${r[0]}: ${r[1]}`).join(" · ") || "–"))}${row("Motion", esc(motion.map((r) => `${r[0]}: ${r[1]}`).join(" · ") || "–"), "live = the phone steers; drag = finger; none = no sensors")}</table>
+<h2>The tour</h2><table>${row("Where they were", esc(list(tWhere)), "inside / outside, at the tour's question")}${row("Finished, by where", esc(list(tDone)))}${row("Location", esc(list(tLoc)), "own = shared it; tz = the time-zone city")}${row("Set the day-one reminder", pct(tRemind, tFin), `${tRemind} of ${tFin} who finished`)}${row("Big first target, outside at night", esc(list(tRare)), `${tRareCaught} caught a card that night`)}${row("Match your sky", pct(Number(mDone[0]?.[0] ?? 0), mShown), `${mDone[0]?.[0] ?? 0} of ${mShown} shown${mDone[0]?.[1] ? ` · average ${Number(mDone[0][1]).toFixed(1)}` : ""}`)}</table>
 <h2>Coming back (nights with a catch)</h2><table>${row("Caught on 1+ nights", String(any1))}${row("2+ nights", pct(reached(2), any1), String(reached(2)))}${row("3+ nights", pct(reached(3), any1), String(reached(3)))}${row("7+ nights", pct(reached(7), any1), String(reached(7)))}${row("14+ nights", pct(reached(14), any1), String(reached(14)))}</table>
 <h2>Coming back (days since install, any open)</h2><table>${row("Opened again on day 1+", pct(dRet(1), days.length), `${dRet(1)} of ${days.length}`)}${row("Day 3+", pct(dRet(3), days.length), String(dRet(3)))}${row("Day 7+", pct(dRet(7), days.length), String(dRet(7)))}${row("Day 28+", pct(dRet(28), days.length), String(dRet(28)))}</table>
 <h2>Sessions</h2><table>${row("Ended without a catch", pct(Number(e[0]), Number(e[1])), `${e[0]} of ${e[1]}`)}${row("…of those after dark", pct(Number(e[2]), Number(e[3])), `${e[2]} of ${e[3]} dark sessions`)}${row("Plus", esc(plus.map((r) => `${r[0]}: ${r[1]}`).join(" · ") || "–"))}</table>
