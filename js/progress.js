@@ -1,7 +1,7 @@
 // Player progress from the sighting log: XP and observer rank, tonight’s three missions, a weekly streak and
 // achievements. Everything is derived from the saved sightings (nothing extra is stored), so it can’t drift.
 // info(cardKey) -> { tier, type, owner, launch, natural, con } | null. No DOM.
-import { nightKey } from './observation.js?v=0.1.1132';
+import { nightKey } from './observation.js?v=0.1.1133';
 
 // A longer climb (2026-10-12, playtest room: three ranks on night 1, Mission Control in about two weeks), with two
 // prestige ranks past Mission Control. Nobody drops a rank they had on the old curve (rankFloor below).
@@ -280,6 +280,7 @@ export function progress(sightings, info, { constellations = [], albums = [], no
         if (s.time - Date.parse(i.launch) <= 30 * 86400e3 && s.time >= Date.parse(i.launch)) a.brandNew = true;
       }
       if (s.headliner) { xp += 25; a.headliners = (a.headliners ?? 0) + 1; } // tonight’s headliner (main.js headliner)
+      if (s.peak) { xp += 10; a.peaks = (a.peaks ?? 0) + 1; } // caught within 30 s of its highest point (main.js atPeak, 2026-10-25)
       if (s.lastChance) a.witness = (a.witness ?? 0) + 1; // collected while it was falling (js/last-chance.js)
       if (i?.reunion) { const r = reunionRoles.get(i.reunion) ?? reunionRoles.set(i.reunion, new Set()).get(i.reunion); r.add(i.role); }
     }

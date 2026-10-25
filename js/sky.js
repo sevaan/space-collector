@@ -1,17 +1,17 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.1132';
+import { extinction } from './sky-limit.js?v=0.1.1133';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.1132';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.1133';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.1132';
-import { createCloudGL } from './clouds-gl.js?v=0.1.1132';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.1133';
+import { createCloudGL } from './clouds-gl.js?v=0.1.1133';
 // Cloud colours by light: sunlit tops, shadowed bellies, and the horizon haze they melt into (0–1 RGB).
 const CLOUD_LIGHT = {
   day: { lit: [1, 1, 1], shade: [0.62, 0.68, 0.77], haze: [0.82, 0.87, 0.93] },
   dusk: { lit: [1, 0.8, 0.68], shade: [0.36, 0.33, 0.42], haze: [0.62, 0.5, 0.52] },
   night: { lit: [0.22, 0.25, 0.31], shade: [0.1, 0.12, 0.16], haze: [0.14, 0.15, 0.2] },
 };
-import { TIER_INFO } from './rarity.js?v=0.1.1132';
+import { TIER_INFO } from './rarity.js?v=0.1.1133';
 
 const RAD = Math.PI / 180;
 const SECRET_PX = { santa: 24, roadster: 12.4, voyager: 14.5, voyager2: 14.5, pioneer10: 11.7, pioneer11: 11.7, newhorizons: 6.4, arecibo: 6.9, halley: 8.6, sputnik: 11.2, laika: 13.3, wow: 9.8 };
@@ -1549,6 +1549,11 @@ export class SkyView {
     this.targetPos = null;
     this.hits = []; // where each visible satellite was drawn, for tap-to-select (js/main.js)
     if (focus?.trail?.length && focus.look.visible) this.drawTrail(focus.trail, true);
+    // The pass's highest point on the target's path (2026-10-25, design/catch-feel.html 04): a small gold diamond, brighter
+    // within 30 s of it. main sets peakMark for a new find whose pass has a real top.
+    if (this.peakMark && focus?.look.visible) { const q = this.project(enuFromAzEl(this.peakMark.az, this.peakMark.el)); if (q && this.onScreen(q, 0)) { ctx.save(); const on = this.peakMark.now, gold = this.theme === THEMES.night ? '#ff6a55' : '#f2c14e';
+      if (on) this.glow(q.x, q.y, 16, this.theme === THEMES.night ? [255, 106, 85] : [242, 193, 78], 0.5);
+      ctx.translate(q.x, q.y); ctx.rotate(Math.PI / 4); ctx.fillStyle = gold; ctx.strokeStyle = '#080f1b'; ctx.lineWidth = 1.5; ctx.globalAlpha = on ? 1 : 0.8; ctx.beginPath(); ctx.rect(-3.5, -3.5, 7, 7); ctx.fill(); ctx.stroke(); ctx.restore(); } }
     for (const it of items) {
       const { look } = it;
       const isTarget = it.obj.id === targetId;
