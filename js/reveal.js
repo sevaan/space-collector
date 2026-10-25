@@ -5,12 +5,12 @@
 //  Everything scales with rarity (Legendary dims the sky, shockwave, held breath, slow flip, fanfare).
 // Waits use timers, not animation.finished, so a paused tab can never freeze the sequence.
 
-import { sfx, loadSfx, heartbeat } from './sfx.js?v=0.1.1149';
-import { audioCtx } from './audio-ctx.js?v=0.1.1149';
-import { TIER_INFO } from './rarity.js?v=0.1.1149';
-import { levelFor, attachTilt, attachGyro, attachFlip, throwOff, retype } from './card.js?v=0.1.1149';
-import { applyBack } from './card-backs.js?v=0.1.1149';
-import { addStarfield } from './starfield.js?v=0.1.1149';
+import { sfx, loadSfx, heartbeat } from './sfx.js?v=0.1.1150';
+import { audioCtx } from './audio-ctx.js?v=0.1.1150';
+import { TIER_INFO } from './rarity.js?v=0.1.1150';
+import { levelFor, attachTilt, attachGyro, attachFlip, throwOff, retype } from './card.js?v=0.1.1150';
+import { applyBack } from './card-backs.js?v=0.1.1150';
+import { addStarfield } from './starfield.js?v=0.1.1150';
 
 const FX = {
   common:    { particles: 14,  flip: 520,  spin: 0,   dim: 0,   shock: false, notes: [880],                            hold: 0 },
@@ -115,7 +115,7 @@ function sizeCard(cardEl) {
   const under = teach ?? (root.classList.contains('has-rank') ? $('rv-rank') : $('reveal-view')), bot = (under.offsetHeight ? under.offsetTop : H) - 8;
   // Grow (or shrink) it to the room there really is: the 270 above is a guess, and on phones it left the card small with
   // dead space above and below (Sevaan 2026-10-22: "has room to be bigger"). 20px a side, 14 at most (big screens).
-  cf = Math.max(5, Math.min(Math.min(innerWidth, innerHeight) >= 600 ? 18 : 14, (bot - top) / em, (root.clientWidth - 40) / 28)); /* same cap as the first pass (iPad playtest 2026-10-24: this clamped it back to 14) */
+  cf = Math.max(5, Math.min(Math.min(innerWidth, innerHeight) >= 600 ? 18 : 14, 0.95 * (bot - top) / em, 0.95 * (root.clientWidth - 40) / 28)); /* 5% smaller for air above and below (Sevaan 2026-10-25: "just a tiny bit") */ /* same cap as the first pass (iPad playtest 2026-10-24: this clamped it back to 14) */
   root.style.setProperty('--cf', `${cf}px`);
   if (h.offsetTop >= top && h.offsetTop + h.offsetHeight <= bot) return;
   root.style.setProperty('--rv-y', `${((top + bot) / 2 - H / 2).toFixed(1)}px`);

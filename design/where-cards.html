@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Inside or outside</title>
+<!-- 2026-10-25 design board (Sevaan: "This card could look a lot better. Make inside and outside each look like a card.")
+     Four ways to draw the tour's step 2 choices as cards. Mock-ups only, nothing built. The background is a real capture
+     (design/tour-rethink/day-tsky.webp, WebKit, 402 × 874); everything over it is measured in that phone's points (--u). -->
+<style>
+@font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf'); }
+@font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf'); }
+:root { --ink: #fff2b3; --mu: #bdbea9; --or: #fa8127; --gold: #f2c14e; --steel: #6f8fae; --line: #1d2a3c; --navy: #080f1b; --silver: #c9cdd6; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #04080f; color: var(--ink); font: 15px/1.4 system-ui, sans-serif; padding: 26px 20px 80px; }
+h1 { font: 400 28px 'SC Display'; margin: 0 0 4px; } .lead { color: var(--mu); margin: 0 0 26px; max-width: 900px; }
+.idea { margin: 0 0 54px; max-width: 1180px; }
+.idea h2 { font: 400 21px/1.15 'SC Display'; margin: 0 0 6px; display: flex; gap: 10px; align-items: baseline; }
+.idea h2 .no { font: 500 15px 'SC Label'; color: var(--or); letter-spacing: .1em; min-width: 22px; }
+.idea > p { color: var(--mu); margin: 0 0 14px; font-size: 14px; max-width: 820px; }
+.idea > p b { color: var(--ink); font-weight: 600; }
+.row { display: flex; gap: 30px; flex-wrap: wrap; align-items: flex-start; }
+.cell { width: 340px; max-width: 100%; }
+.cap { margin: 10px 0 0; font: 500 13px 'SC Label'; letter-spacing: .16em; text-transform: uppercase; color: var(--mu); }
+.cap b { color: var(--or); font-weight: 500; }
+
+/* ── the phone ── */
+.ph { position: relative; width: 100%; aspect-ratio: 402 / 874; border-radius: 30px; overflow: hidden; border: 1px solid #1a2436; background: var(--navy) center top / 100% auto no-repeat; container-type: inline-size; }
+.ph.day { background-image: url(tour-rethink/day-tsky.webp); }
+.ph.night { background-image: url(tour-rethink/night-tsky.webp); }
+.ph * { --u: calc(100cqw / 402); }
+/* the tour card, as built: top two-thirds over the sky */
+.tc { position: absolute; left: calc(var(--u) * 16); right: calc(var(--u) * 16); top: calc(var(--u) * 352); bottom: calc(var(--u) * -30);
+  border-radius: calc(var(--u) * 22); background: #0a1220; border: calc(var(--u) * 4) solid #c9cdd6; box-shadow: 0 0 0 calc(var(--u) * 1) #0008, 0 calc(var(--u) * -10) calc(var(--u) * 40) #0007;
+  padding: calc(var(--u) * 16) calc(var(--u) * 16) 0; }
+.tc::before { content: ''; position: absolute; inset: calc(var(--u) * 6); border: 1px solid #fff2b330; border-radius: calc(var(--u) * 16); pointer-events: none; }
+.tc .top { display: flex; justify-content: space-between; font: 500 calc(var(--u) * 12.5) 'SC Label'; letter-spacing: .2em; text-transform: uppercase; padding-bottom: calc(var(--u) * 9); border-bottom: 1px solid #fff2b333; }
+.tc .top b { color: var(--or); font-weight: 500; }
+.tc h3 { font: 400 calc(var(--u) * 27)/1.02 'SC Display'; margin: calc(var(--u) * 14) 0 calc(var(--u) * 6); text-transform: uppercase; }
+.tc .when { display: flex; justify-content: space-between; font: 500 calc(var(--u) * 12) 'SC Label'; letter-spacing: .18em; text-transform: uppercase; color: var(--mu); padding-bottom: calc(var(--u) * 10); border-bottom: 1px solid #fff2b326; }
+.tc .sub { font-size: calc(var(--u) * 13.5); color: #c8c9b8; margin: calc(var(--u) * 10) 0 0; }
+.picks { position: relative; margin-top: calc(var(--u) * 14); }
+
+/* shared: a choice card */
+.ch { position: relative; border-radius: calc(var(--u) * 12); overflow: hidden; transition: transform .35s cubic-bezier(.2,1.4,.4,1), box-shadow .35s, opacity .35s, filter .35s; }
+.art { position: relative; overflow: hidden; }
+.art svg { display: block; width: 100%; height: 100%; }
+.nm { font: 400 calc(var(--u) * 19)/1 'SC Display'; }
+.ty { font: 500 calc(var(--u) * 10.5)/1.15 'SC Label'; letter-spacing: .16em; text-transform: uppercase; color: var(--mu); }
+.picked .ch.off { opacity: .45; filter: saturate(.4); transform: scale(.96); }
+.tw { animation: tw 2.6s ease-in-out infinite; } .tw:nth-child(2n) { animation-delay: -.9s; } .tw:nth-child(3n) { animation-delay: -1.7s; }
+@keyframes tw { 0%, 100% { opacity: 1; } 50% { opacity: .25; } }
+.dash { stroke-dasharray: 2 4; animation: dash 1.2s linear infinite; } @keyframes dash { to { stroke-dashoffset: -12; } }
+.sheen::after { content: ''; position: absolute; inset: 0; background: linear-gradient(115deg, transparent 30%, #fff3 45%, transparent 60%); background-size: 260% 100%; animation: sheen 5s ease-in-out infinite; pointer-events: none; mix-blend-mode: screen; }
+@keyframes sheen { 0%, 60% { background-position: 130% 0; } 100% { background-position: -130% 0; } }
+
+/* ── A · two game cards ── */
+.A { display: grid; grid-template-columns: 1fr 1fr; gap: calc(var(--u) * 12); }
+.A .ch { aspect-ratio: 2 / 3.05; background: #0b1424; border: calc(var(--u) * 2.5) solid var(--silver); padding: calc(var(--u) * 5); display: flex; flex-direction: column; box-shadow: 0 calc(var(--u) * 6) calc(var(--u) * 16) #0009; }
+.A .ch::before { content: ''; position: absolute; inset: calc(var(--u) * 4); border: 1px solid #fff2b340; border-radius: calc(var(--u) * 8); pointer-events: none; z-index: 2; }
+.A .hd { display: flex; justify-content: space-between; align-items: center; padding: calc(var(--u) * 4) calc(var(--u) * 6) calc(var(--u) * 5); font: 500 calc(var(--u) * 9.5) 'SC Label'; letter-spacing: .18em; text-transform: uppercase; color: var(--mu); }
+.A .hd i { font-style: normal; color: var(--or); }
+.A .art { flex: 1; border-radius: calc(var(--u) * 5); border: 1px solid #fff2b326; }
+.A .ft { padding: calc(var(--u) * 7) calc(var(--u) * 5) calc(var(--u) * 4); display: grid; gap: calc(var(--u) * 3); }
+.A .st { display: flex; justify-content: space-between; border-top: 1px solid #fff2b326; margin-top: calc(var(--u) * 4); padding-top: calc(var(--u) * 4); font: 500 calc(var(--u) * 9) 'SC Label'; letter-spacing: .14em; text-transform: uppercase; color: var(--mu); }
+.A .st b { color: var(--ink); font-weight: 500; }
+.A.picked .ch.on { transform: translateY(calc(var(--u) * -8)) rotate(-1.5deg); border-color: var(--or); box-shadow: 0 0 0 calc(var(--u) * 2) #fa812755, 0 calc(var(--u) * 14) calc(var(--u) * 26) #000b, 0 0 calc(var(--u) * 30) #fa812766; }
+
+/* ── B · full-bleed picture cards ── */
+.B { display: grid; grid-template-columns: 1fr 1fr; gap: calc(var(--u) * 12); }
+.B .ch { aspect-ratio: 2 / 3; border: calc(var(--u) * 2) solid #f2c14e99; box-shadow: 0 calc(var(--u) * 8) calc(var(--u) * 18) #000a; }
+.B .art { position: absolute; inset: 0; }
+.B .gem { position: absolute; top: calc(var(--u) * 8); left: calc(var(--u) * 8); font: 500 calc(var(--u) * 9.5) 'SC Label'; letter-spacing: .16em; text-transform: uppercase; padding: calc(var(--u) * 3) calc(var(--u) * 7); border-radius: 99px; background: #080f1bcc; border: 1px solid #fff2b340; }
+.B .gem.o { color: var(--or); border-color: #fa812777; }
+.B .lab { position: absolute; left: 0; right: 0; bottom: 0; padding: calc(var(--u) * 34) calc(var(--u) * 10) calc(var(--u) * 11); background: linear-gradient(transparent, #080f1bf2 55%); display: grid; gap: calc(var(--u) * 4); }
+.B .lab .nm { font-size: calc(var(--u) * 21); }
+.B.picked .ch.on { transform: scale(1.04); border-color: var(--or); box-shadow: 0 0 0 calc(var(--u) * 2) #fa8127aa, 0 0 calc(var(--u) * 34) #fa812788, 0 calc(var(--u) * 12) calc(var(--u) * 24) #000b; }
+.B .ok { position: absolute; top: calc(var(--u) * 8); right: calc(var(--u) * 8); width: calc(var(--u) * 24); height: calc(var(--u) * 24); border-radius: 50%; background: var(--or); color: #0b1018; display: none; place-items: center; font: 700 calc(var(--u) * 14)/1 system-ui; }
+.B.picked .ch.on .ok, .D.picked .ch.on .ok { display: grid; }
+
+/* ── C · two wide ticket cards, stacked ── */
+.C { display: grid; gap: calc(var(--u) * 10); }
+.C .ch { height: calc(var(--u) * 128); display: grid; grid-template-columns: calc(var(--u) * 132) 1fr; background: #0d1729; border: 1px solid #fff2b340; box-shadow: 0 calc(var(--u) * 6) calc(var(--u) * 14) #0008; }
+.C .ch::before { content: ''; position: absolute; left: calc(var(--u) * 132); top: calc(var(--u) * -6); bottom: calc(var(--u) * -6); width: 0; border-left: 2px dashed #fff2b340; }
+.C .ch .nub { position: absolute; left: calc(var(--u) * 125); width: calc(var(--u) * 14); height: calc(var(--u) * 14); border-radius: 50%; background: #0a1220; }
+.C .ch .nub.t { top: calc(var(--u) * -7); } .C .ch .nub.b { bottom: calc(var(--u) * -7); }
+.C .art { height: 100%; }
+.C .tx { padding: calc(var(--u) * 13) calc(var(--u) * 14); display: grid; align-content: center; gap: calc(var(--u) * 5); }
+.C .tx .k { font: 500 calc(var(--u) * 10) 'SC Label'; letter-spacing: .2em; text-transform: uppercase; color: var(--or); }
+.C .tx .nm { font-size: calc(var(--u) * 22); }
+.C .tx p { margin: 0; font-size: calc(var(--u) * 12.5); line-height: 1.3; color: #c8c9b8; }
+.C.picked .ch.on { border-color: var(--or); box-shadow: 0 0 0 calc(var(--u) * 1.5) var(--or), 0 0 calc(var(--u) * 26) #fa812766; transform: translateX(calc(var(--u) * 4)); }
+
+/* ── D · a hand of two cards ── */
+.D { height: calc(var(--u) * 270); }
+.D .ch { position: absolute; top: calc(var(--u) * 10); width: calc(var(--u) * 156); aspect-ratio: 2 / 3; background: #0b1424; border: calc(var(--u) * 3) solid var(--silver); box-shadow: 0 calc(var(--u) * 10) calc(var(--u) * 22) #000b; padding: calc(var(--u) * 6); display: flex; flex-direction: column; }
+.D .ch:first-child { left: calc(var(--u) * 14); transform: rotate(-7deg); transform-origin: 80% 110%; }
+.D .ch:last-child { right: calc(var(--u) * 14); transform: rotate(7deg); transform-origin: 20% 110%; }
+.D .art { flex: 1; border-radius: calc(var(--u) * 6); }
+.D .ft { text-align: center; padding: calc(var(--u) * 8) 0 calc(var(--u) * 3); display: grid; gap: calc(var(--u) * 4); }
+.D .ok { position: absolute; top: calc(var(--u) * 12); right: calc(var(--u) * 12); width: calc(var(--u) * 24); height: calc(var(--u) * 24); border-radius: 50%; background: var(--or); color: #0b1018; display: none; place-items: center; font: 700 calc(var(--u) * 14)/1 system-ui; }
+.D .hint { position: absolute; left: 0; right: 0; bottom: 0; text-align: center; font: 500 calc(var(--u) * 11) 'SC Label'; letter-spacing: .2em; text-transform: uppercase; color: var(--mu); }
+.D.picked .ch.on { transform: rotate(0deg) translateY(calc(var(--u) * -16)) scale(1.06); border-color: var(--or); z-index: 2; box-shadow: 0 0 calc(var(--u) * 34) #fa812788, 0 calc(var(--u) * 16) calc(var(--u) * 28) #000c; }
+.D.picked .ch.off { opacity: .5; }
+.D:not(.picked) .ch:first-child { animation: handL 5s ease-in-out infinite; } .D:not(.picked) .ch:last-child { animation: handR 5s ease-in-out infinite; }
+@keyframes handL { 0%, 100% { transform: rotate(-7deg); } 50% { transform: rotate(-8.5deg) translateY(calc(var(--u) * -3)); } }
+@keyframes handR { 0%, 100% { transform: rotate(7deg); } 50% { transform: rotate(8.5deg) translateY(calc(var(--u) * -3)); } }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
+</style></head><body>
+<h1>Inside or outside, as cards</h1>
+<p class="lead">Step 2 of the tour, drawn four ways. Each option shows the card resting and with Outside tapped. Pictures change with the time of day (Sun by day, Moon and stars at night); option A is also shown at night. The title, time and "Dark at" lines stay as they are.</p>
+
+<template id="tc"><div class="tc"><div class="top"><span>Space Collector</span><b>◆ Step 2 of 4</b></div><h3>Where are you<br>right now?</h3><div class="when"><span>4:39 PM</span><span>Dark at 6:43 PM</span></div><div class="picks"></div></div></template>
+
+<section class="idea"><h2><span class="no">A</span>Two game cards</h2>
+<p>Each choice is a small card in the game's own style: silver frame, header, a painted window, name, type line and a stat row like a real card's. The one you tap lifts and glows orange; the other steps back. <b>Most like the rest of the game.</b></p>
+<div class="row" id="rowA"></div></section>
+
+<section class="idea"><h2><span class="no">B</span>Picture cards</h2>
+<p>The scene fills the card edge to edge, gold edge, a chip on top ("Anywhere" / "The real thing") and the name over a dark fade at the bottom. <b>The biggest pictures, the fewest words.</b></p>
+<div class="row" id="rowB"></div></section>
+
+<section class="idea"><h2><span class="no">C</span>Wide tickets</h2>
+<p>Two full-width cards stacked like tickets: picture on the stub, then what it means for tonight in a sentence. <b>Room to say what happens next; easy to tap one-handed.</b></p>
+<div class="row" id="rowC"></div></section>
+
+<section class="idea"><h2><span class="no">D</span>A hand of two</h2>
+<p>The two cards are dealt as a hand, fanned and gently breathing. Tap one and it rises out of the hand and straightens; then the tour moves on. <b>The most playful; like picking a card.</b></p>
+<div class="row" id="rowD"></div></section>
+
+<script>
+const ART = {
+  inside: (night) => `<svg viewBox="0 0 120 120" preserveAspectRatio="xMidYMid slice"><defs>
+    <linearGradient id="wl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1a2840"/><stop offset="1" stop-color="#101a2c"/></linearGradient>
+    <linearGradient id="ws${night?1:0}" x1="0" y1="0" x2="0" y2="1">${night ? '<stop offset="0" stop-color="#0a1430"/><stop offset="1" stop-color="#1d3360"/>' : '<stop offset="0" stop-color="#3f74b8"/><stop offset="1" stop-color="#9cc0e2"/>'}</linearGradient>
+    <radialGradient id="lamp" cx=".22" cy=".58" r=".5"><stop offset="0" stop-color="#ffb35a" stop-opacity=".45"/><stop offset="1" stop-color="#ffb35a" stop-opacity="0"/></radialGradient></defs>
+    <rect width="120" height="120" fill="url(#wl)"/><rect width="120" height="120" fill="url(#lamp)"/>
+    <rect x="44" y="14" width="56" height="58" rx="2" fill="url(#ws${night?1:0})"/>
+    ${night ? '<circle class="tw" cx="56" cy="26" r=".9" fill="#fff"/><circle class="tw" cx="88" cy="22" r="1" fill="#fff"/><circle class="tw" cx="70" cy="44" r=".8" fill="#fff"/><circle class="tw" cx="94" cy="52" r=".7" fill="#fff"/><path d="M88 34a7 7 0 1 1 -9 -9a5.5 5.5 0 0 0 9 9z" fill="#fff2b3"/>' : '<circle cx="86" cy="30" r="6" fill="#fff8d8"/><path d="M50 60 q8 -6 16 0 q6 -4 12 1" fill="none" stroke="#fff" stroke-opacity=".7" stroke-width="2"/>'}
+    <path d="M72 14 V72 M44 43 H100" stroke="#fff2b3" stroke-width="2.4"/><rect x="44" y="14" width="56" height="58" rx="2" fill="none" stroke="#fff2b3" stroke-width="2.6"/>
+    <rect x="40" y="72" width="64" height="4" rx="1" fill="#fff2b3"/>
+    <path d="M14 70 h10 l-3 -14 h-4 z" fill="#f2c14e"/><path d="M19 70 V96" stroke="#fff2b3" stroke-width="1.6"/><path d="M12 96 h14" stroke="#fff2b3" stroke-width="2"/>
+    <rect x="0" y="100" width="120" height="20" fill="#0b1322"/><path d="M0 100 H120" stroke="#fff2b333"/>
+    <rect x="52" y="82" width="12" height="20" rx="2.4" transform="rotate(-18 58 92)" fill="#0b1424" stroke="#fff2b3" stroke-width="1.6"/>
+    <path class="dash" d="M60 82 L80 34" stroke="#fa8127" stroke-width="1.6" fill="none"/><circle cx="81" cy="32" r="2.2" fill="#fa8127"/></svg>`,
+  outside: (night) => `<svg viewBox="0 0 120 120" preserveAspectRatio="xMidYMid slice"><defs>
+    <linearGradient id="os${night?1:0}" x1="0" y1="0" x2="0" y2="1">${night ? '<stop offset="0" stop-color="#050b1c"/><stop offset=".75" stop-color="#16294d"/><stop offset="1" stop-color="#2a3f63"/>' : '<stop offset="0" stop-color="#3a6fb4"/><stop offset=".8" stop-color="#9dc2e4"/><stop offset="1" stop-color="#c4dbe9"/>'}</linearGradient>
+    <radialGradient id="sg" cx=".72" cy=".24" r=".3"><stop offset="0" stop-color="#fff8d8" stop-opacity=".55"/><stop offset="1" stop-color="#fff8d8" stop-opacity="0"/></radialGradient></defs>
+    <rect width="120" height="120" fill="url(#os${night?1:0})"/>
+    ${night ? '<path d="M0 40 Q60 10 120 30 L120 46 Q60 26 0 56Z" fill="#fff" opacity=".07"/><circle class="tw" cx="18" cy="16" r="1" fill="#fff"/><circle class="tw" cx="40" cy="30" r=".8" fill="#fff"/><circle class="tw" cx="58" cy="12" r="1.1" fill="#fff"/><circle class="tw" cx="104" cy="50" r=".8" fill="#fff"/><circle class="tw" cx="30" cy="54" r=".7" fill="#fff"/><circle class="tw" cx="96" cy="14" r=".9" fill="#fff"/><path d="M94 30a9 9 0 1 1 -12 -12a7 7 0 0 0 12 12z" fill="#fff2b3"/>' : '<rect width="120" height="120" fill="url(#sg)"/><circle cx="86" cy="28" r="9" fill="#fff8d8"/>'}
+    <path d="M0 84 Q30 72 64 80 T120 76 V120 H0Z" fill="${night ? '#1d2c3c' : '#7f9b8f'}"/>
+    <g fill="${night ? '#0d1820' : '#2f4a35'}"><path d="M8 92 l6 -22 l6 22z"/><path d="M18 92 l4 -14 l4 14z"/><path d="M98 90 l6 -24 l6 24z"/><path d="M90 90 l4 -12 l4 12z"/></g>
+    <path d="M0 92 Q60 84 120 90 V120 H0Z" fill="${night ? '#141f17' : '#4d6e3e'}"/>
+    <g stroke="#fff2b3" stroke-width="1.8" stroke-linecap="round" fill="none"><circle cx="58" cy="78" r="3.2" fill="#0b1424"/><path d="M58 82 V96 M58 96 l-4 9 M58 96 l4 9 M58 86 l7 -7"/></g>
+    <rect x="63.5" y="74" width="5" height="8" rx="1" transform="rotate(30 66 78)" fill="#0b1424" stroke="#fff2b3" stroke-width="1.2"/>
+    <path class="dash" d="M68 73 L44 30" stroke="#fa8127" stroke-width="1.6" fill="none"/><circle cx="43" cy="28" r="2.2" fill="#fa8127"/></svg>`,
+};
+const C = {
+  inside: { k: 'Indoors', nm: 'Inside', ty: 'Indoors, anywhere', chip: 'Anywhere', st: ['Learn the ropes', 'Any time'], p: 'Practise through the roof. The sky is still up there.' },
+  outside: { k: 'Under the open sky', nm: 'Outside', ty: 'Under the open sky', chip: 'The real thing', st: ['See it for real', 'Best after dark'], p: 'Point at the real thing and catch what you see.' },
+};
+function choices(kind, night) {
+  return ['inside', 'outside'].map((w) => { const c = C[w], art = ART[w](night);
+    if (kind === 'A') return `<div class="ch ${w === 'outside' ? 'on' : 'off'} sheen"><div class="hd"><span>Where · 0${w === 'inside' ? 1 : 2}</span><i>◆</i></div><div class="art">${art}</div><div class="ft"><div class="nm">${c.nm}</div><div class="ty">${c.ty}</div><div class="st"><span>${c.st[0]}</span><b>${c.st[1]}</b></div></div></div>`;
+    if (kind === 'B') return `<div class="ch ${w === 'outside' ? 'on' : 'off'}"><div class="art">${art}</div><span class="gem ${w === 'outside' ? 'o' : ''}">${c.chip}</span><span class="ok">✓</span><div class="lab"><div class="nm">${c.nm}</div><div class="ty">${c.ty}</div></div></div>`;
+    if (kind === 'C') return `<div class="ch ${w === 'outside' ? 'on' : 'off'}"><div class="art">${art}</div><i class="nub t"></i><i class="nub b"></i><div class="tx"><div class="k">${c.k}</div><div class="nm">${c.nm}</div><p>${c.p}</p></div></div>`;
+    return `<div class="ch ${w === 'outside' ? 'on' : 'off'} sheen"><div class="art">${art}</div><span class="ok">✓</span><div class="ft"><div class="nm">${c.nm}</div><div class="ty">${c.ty}</div></div></div>`;
+  }).join('') + (kind === 'D' ? '<div class="hint">Tap a card</div>' : '');
+}
+function phone(kind, { picked = false, night = false } = {}) {
+  const ph = document.createElement('div'); ph.className = `ph ${night ? 'night' : 'day'}`;
+  ph.append(document.getElementById('tc').content.cloneNode(true));
+  if (night) { ph.querySelector('.when').innerHTML = '<span>9:12 PM</span><span>It’s dark now</span>'; }
+  const pk = ph.querySelector('.picks'); pk.className = `picks ${kind}${picked ? ' picked' : ''}`; pk.innerHTML = choices(kind, night);
+  return ph;
+}
+const cell = (ph, cap) => { const c = document.createElement('div'); c.className = 'cell'; c.append(ph); const p = document.createElement('p'); p.className = 'cap'; p.innerHTML = cap; c.append(p); return c; };
+for (const k of ['A', 'B', 'C', 'D']) {
+  const row = document.getElementById('row' + k);
+  row.append(cell(phone(k), 'Resting'), cell(phone(k, { picked: true }), '<b>Outside</b> tapped'));
+  if (k === 'A') row.append(cell(phone(k, { night: true }), 'At night'));
+}
+</script>
+</body></html>
