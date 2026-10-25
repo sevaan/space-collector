@@ -22,6 +22,9 @@ export const SECRET_PATCHES = {
   laika: { id: 'laika', name: 'Good Dog', text: 'You remembered Laika on the anniversary of Sputnik 2, 3 November 1957.' },
   apollo11: { id: 'apollo11', name: 'One Small Step', text: 'You looked at the Moon on 20 July, the day people first landed on it.' },
   twohomes: { id: 'twohomes', name: 'Two Homes', text: 'You caught the ISS and Tiangong within ten minutes of each other.' },
+  // Halloween (2026-10-25, Sevaan; design/come-back.html 05): one night a year a long-dead satellite haunts the sky. A new
+  // patch each year (next year can be a different ghost).
+  ghost2026: { id: 'ghost2026', name: 'Ghost Satellite', text: 'You caught a dead satellite on Halloween 2026: silent for years, and still going round.' },
 };
 for (const p of Object.values(SECRET_PATCHES)) { p.secret = true; p.icon = ''; }
 // Secrets that give a story card (js/stories.js) give no patch (2026-10-14, Sevaan). Patches already earned before this

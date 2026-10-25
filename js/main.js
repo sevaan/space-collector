@@ -1,53 +1,53 @@
-import { pullToClose } from './pull-close.js?v=0.1.1135';
-import { TESTER } from './build-flavor.js?v=0.1.1135';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1135';
-import * as Secrets from './secrets.js?v=0.1.1135';
-import { STORY_BY_SECRET } from './stories.js?v=0.1.1135';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.1135';
-import * as Ufo from './ufo.js?v=0.1.1135';
-import * as Fossil from './fossil.js?v=0.1.1135';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.1135';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1135';
-import { toast, ticket, dropToast, toastPending, onTicketShown, iconSvg } from './toast.js?v=0.1.1135';
-import { VERSION } from './version.js?v=0.1.1135';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, overEarth, RisingSoon, setBinocularMode, setSkyLimit, toWorker } from './orbit.js?v=0.1.1135';
-import { placeName } from './geo.js?v=0.1.1135';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, SLIDER_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.1135';
-import { conArt } from './con-art.js?v=0.1.1135';
-import { fetchWeather, tonightSky, skyClearAt, goodSkyAt } from './weather.js?v=0.1.1135';
-import { CON_FIGURES } from './con-figures.js?v=0.1.1135';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress, starDistance } from './constellations.js?v=0.1.1135';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.1135';
-import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.1135';
-import { eventOf, activeEvent, nextEvent } from './events.js?v=0.1.1135';
-import { conList } from './constellations.js?v=0.1.1135';
-import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination, hasSensorView, resumeSensors, needsPermission } from './sensors.js?v=0.1.1135';
-import { SkyView, shortName, stripLandscape } from './sky.js?v=0.1.1135';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.1135';
-import { isPlus, setPlusForTesting, onPlus, PLUS_PRICES, initStore, storePlans, buyPlus, restorePlus, rcTestStore, storeOpen } from './plus.js?v=0.1.1135';
-import { isNative, getPosition, saveFile, notifyAt, cancelNotify, haptic, onNative, nativeChrome, plugin } from './native.js?v=0.1.1135';
-import { initBackup, onBackupChange, backupSoon, clearBackup, backupStatus } from './cloud-backup.js?v=0.1.1135';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.1135';
-import { cardArt } from './art.js?v=0.1.1135';
-import { renderCard, miniCard, cardLevel, artImage, lockedArt, attachTilt, attachGyro, throwOff, attachFlip, turnCard, phasePath } from './card.js?v=0.1.1135';
-import { applyBack, CARD_BACKS, backUnlocked, chosenBack, chooseBack, backEarned, showBackNext } from './card-backs.js?v=0.1.1135';
-import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.1135';
-import { audioCtx } from './audio-ctx.js?v=0.1.1135';
-import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume, musicAway } from './music.js?v=0.1.1135';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss, onRevealSwipeIntoBinder, teachRoom } from './reveal.js?v=0.1.1135';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel, moonPhaseOf, moonPhaseAt, MOON_PHASES } from './card-model.js?v=0.1.1135';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.1135';
-import { naturalTargets, SOLAR_SYSTEM, DEEP_SKY, NATURAL } from './natural.js?v=0.1.1135';
-import { placeFromTimeZone } from './tz-places.js?v=0.1.1135';
-import { TIER_INFO } from './rarity.js?v=0.1.1135';
-import { SETS, albumList } from './sets.js?v=0.1.1135';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.1135';
-import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.1135';
-import { note, send as sendNotes, noteError, daysSinceInstall } from './field-notes.js?v=0.1.1135';
-import { shareCardEl } from './share-card.js?v=0.1.1135';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.1135';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.1135';
-import { addStarfield } from './starfield.js?v=0.1.1135';
+import { pullToClose } from './pull-close.js?v=0.1.1136';
+import { TESTER } from './build-flavor.js?v=0.1.1136';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1136';
+import * as Secrets from './secrets.js?v=0.1.1136';
+import { STORY_BY_SECRET } from './stories.js?v=0.1.1136';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.1136';
+import * as Ufo from './ufo.js?v=0.1.1136';
+import * as Fossil from './fossil.js?v=0.1.1136';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.1136';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1136';
+import { toast, ticket, dropToast, toastPending, onTicketShown, iconSvg } from './toast.js?v=0.1.1136';
+import { VERSION } from './version.js?v=0.1.1136';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, overEarth, RisingSoon, setBinocularMode, setSkyLimit, toWorker } from './orbit.js?v=0.1.1136';
+import { placeName } from './geo.js?v=0.1.1136';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, SLIDER_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.1136';
+import { conArt } from './con-art.js?v=0.1.1136';
+import { fetchWeather, tonightSky, skyClearAt, goodSkyAt } from './weather.js?v=0.1.1136';
+import { CON_FIGURES } from './con-figures.js?v=0.1.1136';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress, starDistance } from './constellations.js?v=0.1.1136';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.1136';
+import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.1136';
+import { eventOf, activeEvent, nextEvent } from './events.js?v=0.1.1136';
+import { conList } from './constellations.js?v=0.1.1136';
+import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination, hasSensorView, resumeSensors, needsPermission } from './sensors.js?v=0.1.1136';
+import { SkyView, shortName, stripLandscape } from './sky.js?v=0.1.1136';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.1136';
+import { isPlus, setPlusForTesting, onPlus, PLUS_PRICES, initStore, storePlans, buyPlus, restorePlus, rcTestStore, storeOpen } from './plus.js?v=0.1.1136';
+import { isNative, getPosition, saveFile, notifyAt, cancelNotify, haptic, onNative, nativeChrome, plugin } from './native.js?v=0.1.1136';
+import { initBackup, onBackupChange, backupSoon, clearBackup, backupStatus } from './cloud-backup.js?v=0.1.1136';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.1136';
+import { cardArt } from './art.js?v=0.1.1136';
+import { renderCard, miniCard, cardLevel, artImage, lockedArt, attachTilt, attachGyro, throwOff, attachFlip, turnCard, phasePath } from './card.js?v=0.1.1136';
+import { applyBack, CARD_BACKS, backUnlocked, chosenBack, chooseBack, backEarned, showBackNext } from './card-backs.js?v=0.1.1136';
+import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.1136';
+import { audioCtx } from './audio-ctx.js?v=0.1.1136';
+import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume, musicAway } from './music.js?v=0.1.1136';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss, onRevealSwipeIntoBinder, teachRoom } from './reveal.js?v=0.1.1136';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel, moonPhaseOf, moonPhaseAt, MOON_PHASES } from './card-model.js?v=0.1.1136';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.1136';
+import { naturalTargets, SOLAR_SYSTEM, DEEP_SKY, NATURAL } from './natural.js?v=0.1.1136';
+import { placeFromTimeZone } from './tz-places.js?v=0.1.1136';
+import { TIER_INFO } from './rarity.js?v=0.1.1136';
+import { SETS, albumList } from './sets.js?v=0.1.1136';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.1136';
+import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.1136';
+import { note, send as sendNotes, noteError, daysSinceInstall } from './field-notes.js?v=0.1.1136';
+import { shareCardEl } from './share-card.js?v=0.1.1136';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.1136';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.1136';
+import { addStarfield } from './starfield.js?v=0.1.1136';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -676,6 +676,7 @@ function tick(ts) {
   // The first catch after the tour is quiet (2026-10-17, Sevaan): no notifications while its target is still pinned,
   // until you catch it (obFinish clears tourCatchId) or tap it away (tapSky changes pinnedId). js/toast.js holds them.
   { const fc = state.tourCatchId != null && state.pinnedId === state.tourCatchId; if (fc !== document.body.classList.contains('first-catch')) document.body.classList.toggle('first-catch', fc); }
+  sky.ghostId = ghostNight(d.getTime()) && !secretFound[GHOST.patch] ? ghostPass()?.id ?? null : null; // Halloween: it shimmers green
   sky.showShadow = state.showShadow && state.tourCatchId == null; sky.fade = fadeCountdown(target, d); // not during the first catch: noise at that moment (playtest 2026-10-17)
   // Earth’s shadow at the height of the satellite in the circle (2026-10-17, Sevaan: an SL-8 past the line was still lit;
   // the line was for 500 km and it flies far higher). Otherwise 500 km, a typical low orbit. Rounded to 50 km.
@@ -1096,10 +1097,10 @@ function renderTarget(target, d) {
     if (eligible) {
       disc.hidden = false; guide.hidden = true;
       const newStamp = ownsCard(o) && o.id !== state.tourCatchId; // fleet card already owned: this launch is a new stamp (a replayed tour's catch is shown as new, not a stamp)
-      setTxt($('d-tier'), newStamp ? 'New stamp' : tier.label + inCon(o) + lcTag(o));
-      $('d-tier').style.setProperty('--find-tier', newStamp ? 'var(--cyan)' : tier.color); $('d-tier').dataset.gem = newStamp ? '✦' : tier.gem;
+      setTxt($('d-tier'), isGhost(o, d.getTime()) ? 'BOO · Ghost satellite' : newStamp ? 'New stamp' : tier.label + inCon(o) + lcTag(o));
+      { const boo = isGhost(o, d.getTime()); $('d-tier').style.setProperty('--find-tier', boo ? '#7dffb0' : newStamp ? 'var(--cyan)' : tier.color); $('d-tier').dataset.gem = boo ? '?' : newStamp ? '✦' : tier.gem; }
       const pk = peakPass(o, d.getTime()), pl = pk && peakWords(pk, d.getTime()); sky.peakMark = pk && d.getTime() < pk.peakAt + 30e3 ? { az: pk.peakAz, el: pk.peakEl, now: Math.abs(d.getTime() - pk.peakAt) <= 30e3 } : null;
-      setTxt($('d-name'), label(o)); setTxt($('d-dist'), pl ?? distText(o, l)); setDiscMini(o);
+      setTxt($('d-name'), label(o)); setTxt($('d-dist'), isGhost(o, d.getTime()) ? '' : pl ?? distText(o, l)); setDiscMini(o); /* the ghost's BOO needs the room */
       $('d-switch').hidden = !sw; setTxt($('d-switch'), sw);
       const quiet = isQuiet(o) && o.id !== state.tourCatchId; // the tour’s first catch is often a (quiet) star: always say what to do (playtest 2026-10-09)
       $('d-cta').hidden = false; disc.classList.toggle('quiet', quiet); disc.classList.remove('owned'); $('d-hit').setAttribute('aria-label', 'Collect this object'); // quiet targets (stars by default) keep the Collect button too (2026-10-12, Sevaan); quiet only drops the inner ring and snap. FIX 2026-10-14: this code had been swallowed by the comment, so a new find after an owned one opened as 'Seen again'
@@ -1118,8 +1119,8 @@ function renderTarget(target, d) {
   bar.hidden = true; barTargetId = null;
   if (eligible || collected) {
     disc.hidden = false; guide.hidden = true; disc.classList.add('owned'); disc.classList.remove('quiet'); $('d-hit').setAttribute('aria-label', 'View this card');
-    setTxt($('d-tier'), tier.label + inCon(o) + lcTag(o)); $('d-tier').style.setProperty('--find-tier', tier.color); $('d-tier').dataset.gem = tier.gem;
-    setTxt($('d-name'), label(o)); setTxt($('d-dist'), distText(o, l)); setDiscMini(o);
+    { const boo = isGhost(o, d.getTime()); setTxt($('d-tier'), boo ? 'BOO · Ghost satellite' : tier.label + inCon(o) + lcTag(o)); $('d-tier').style.setProperty('--find-tier', boo ? '#7dffb0' : tier.color); $('d-tier').dataset.gem = boo ? '?' : tier.gem; }
+    setTxt($('d-name'), label(o)); setTxt($('d-dist'), isGhost(o, d.getTime()) ? '' : distText(o, l)); setDiscMini(o);
     $('d-cta').hidden = false; setTxt($('d-cta'), 'View card');
     $('d-sub').hidden = true; // no "Seen on N nights" line under View card (2026-10-14, Sevaan): the card’s footer and frame show its level
     $('d-switch').hidden = true;
@@ -1491,7 +1492,7 @@ async function recordSighting(obj, d, l = null) {
     const nightsBefore = realNights(); state.sightings.unshift(saved); session.catches++; if (realNights() > nightsBefore) noteNight(saved);
     for (const id of ['tonight', 'rank', 'sun-safety', 'guide']) dropToast(id); // a catch clears the notes that were waiting for one (playtest room 2026-10-12)
     backupSoon(); // into iCloud shortly (js/cloud-backup.js)
-    checkTwoHomes(saved);
+    checkTwoHomes(saved); checkGhost(saved);
     return saved;
   } catch {
     buzz('warning'); ticket({ kind: 'error', sticky: true, id: 'save-fail', eyebrow: 'COULDN’T SAVE', line: 'That card didn’t save', sub: 'Close private browsing or free up space, then try again.' });
@@ -1572,6 +1573,43 @@ function peakPass(o, t) {
 }
 const atPeak = (o, t) => { const p = peakPass(o, t); return !!p && Math.abs(t - p.peakAt) <= 30e3; };
 function peakWords(p, t) { const s = Math.round((p.peakAt - t) / 1000); if (s > 120 || s < -30) return null; return Math.abs(s) <= 30 ? 'Peak · now' : `Peak in ${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`; }
+// Halloween (2026-10-25, Sevaan; design/come-back.html 05): on the night of 31 October a long-dead satellite haunts the
+// sky. Which one is picked for each player from tonight's plan, so everyone has one that really passes over them: a
+// member of the Dead Satellites Society set, peaking 20°+, preferring Envisat (NORAD 27386, silent since 2012, about
+// mag 2), else the brightest (testing found Envisat had no pass over Peterborough that night). Lined up that night it
+// shimmers green with a BOO; catching it (new or again) earns a secret patch with the year on it. The Tonight page
+// teases it the week before. The night runs noon to noon, so after midnight counts.
+const GHOST = { prefer: 27386, patch: 'ghost2026', year: 2026 };
+const DEAD = SETS.find((x) => x.id === 'dead-sats');
+function ghostPass(T = state.tonight) {
+  if (!T || !ghostNight(T.dusk ?? now().getTime())) return null;
+  const t = now().getTime();
+  if (T._ghost !== undefined && (!T._ghost || T._ghost.end > t)) return T._ghost;
+  // One ghost for the whole night (playtest 2026-10-25: re-picking from a newer plan swapped satellites mid-evening): the
+  // first pick is kept (localStorage ghostPick) and its next pass used while it has one.
+  let keep = null; try { keep = JSON.parse(localStorage.getItem('ghostPick') ?? 'null'); } catch {}
+  const withObj = (q) => ({ ...q, obj: state.byId.get(q.id) });
+  if (keep?.year === GHOST.year) { const q = T.passes.filter((x) => x.id === keep.id && x.end > t).sort((a, b) => a.start - b.start)[0]; if (q && state.byId.get(q.id)) return (T._ghost = withObj(q)); }
+  const ps = T.passes.filter((q) => q.peakEl >= 20 && q.end > t).map(withObj).filter((q) => q.obj && !q.obj.family && DEAD?.test(q.obj));
+  const eve = eveningEnd(T), inEve = (q) => (q.start <= eve ? 1 : 0); // this evening first: a 5 AM ghost helps few people
+  const g = ps.sort((a, b) => inEve(b) - inEve(a) || (b.id === GHOST.prefer) - (a.id === GHOST.prefer) || (a.mag ?? 9) - (b.mag ?? 9) || a.start - b.start)[0] ?? null;
+  if (g && ['ready', 'stale', 'manual'].includes(state.locationStatus)) try { localStorage.setItem('ghostPick', JSON.stringify({ year: GHOST.year, id: g.id })); } catch {} // kept only for a real location
+  return (T._ghost = g);
+}
+const isGhost = (o, t) => ghostNight(t) && !secretFound[GHOST.patch] && ghostPass()?.id === o.id;
+const ghostNight = (t = now().getTime()) => { const d = new Date(t - 12 * 3600e3); return d.getFullYear() === GHOST.year && d.getMonth() === 9 && d.getDate() === 31; };
+const ghostWeek = (t = now().getTime()) => { const d = new Date(t); return d.getFullYear() === GHOST.year && d.getMonth() === 9 && d.getDate() >= 24 && d.getDate() < 31; };
+function checkGhost(s) { if (ghostNight(s.time) && !secretFound[GHOST.patch] && ghostPass()?.id === s.objectId) setTimeout(() => earnSecret(GHOST.patch), 1200); }
+function ghostBox(T, t0) {
+  if (secretFound[GHOST.patch]) return null;
+  const el = document.createElement('div'); el.className = 'ghost-box';
+  if (ghostWeek(t0)) { el.innerHTML = '<span class="gq" aria-hidden="true">?</span><span><small>Saturday, Oct 31 · one night only</small><b>Something’s haunting the sky</b><i>A satellite that died long ago will be out after dark. Find it that night.</i></span>'; return el; }
+  if (!ghostNight(t0)) return null;
+  const p0 = ghostPass(T), p = p0 && p0.end > t0 ? p0 : null;
+  el.innerHTML = `<span class="gq" aria-hidden="true">?</span><span><small>Tonight only · Halloween</small><b>Something’s haunting the sky</b><i>${p ? `It passes at ${escapeHtml(fmtTime(p.start))}, ${escapeHtml(whereWords({ el: p.peakEl, az: p.peakAz }).toLowerCase())}.` : 'It doesn’t pass over you tonight. Look again after dawn passes, or next year.'}</i></span>${p ? `<button type="button" class="pill-o gh-go"><span class="ico-svg">${ICON_TARGET}</span> Show me</button>` : ''}`;
+  if (p) el.querySelector('.gh-go').addEventListener('click', (e) => { flyToCircle(e.currentTarget); showMePass(p); });
+  return el;
+}
 function headlinerXp(o) { return (isNewFind(o) ? CARD_XP[cardModel(o).tier] ?? 10 : 0) + 25; }
 function nowHero(list, vis) {
   clearInterval(heroTimer); cancelAnimationFrame(heroRaf); heroKey = null;
@@ -2447,6 +2485,7 @@ function renderRun(T, t0, wxT, peak) {
   const box = document.createElement('div'); box.className = 'run';
   box.innerHTML = `<div class="t-head">Tonight’s run${overcast ? ' · if it clears' : ''}</div>`;
   const head = headliner(T);
+  const ghostEl = ghostBox(T, t0); // Halloween (the week before, and the night itself): first thing in the run
   if (head && head.end > t0 && cardKeyFor(head.obj) !== heroKey) { // Tonight’s headliner, first thing in the tab (design/fun-and-learning.html)
     const hk = `${head.obj.id}@${head.start}`, hEl = document.createElement('div'); hEl.className = 'headliner';
     hEl.innerHTML = `<span class="k">Tonight’s headliner</span><b>${escapeHtml(yearLabel(head.obj))}</b><small>${fmtTime(head.start)} · ${escapeHtml(whereWords({ el: head.peakEl, az: head.peakAz }).toLowerCase())} · +${(isNewFind(head.obj) ? XP[(state.cardModels.get(cardKeyFor(head.obj)) ?? head.obj).tier] ?? 10 : 0) + 25} XP</small>
@@ -2455,6 +2494,7 @@ function renderRun(T, t0, wxT, peak) {
     hEl.querySelector('.hl-bell')?.addEventListener('click', (e) => { const b = e.currentTarget; openPassRemind(head, hk, (on) => b.classList.toggle('on', on)); });
     box.insertBefore(hEl, box.firstChild);
   }
+  if (ghostEl) box.insertBefore(ghostEl, box.firstChild);
   const reminders = [];
   for (const st of stops) {
     const el = document.createElement('div');
@@ -3153,7 +3193,7 @@ const isHeadliner = (obj) => { const h = headliner(state.tonight); return !!h &&
 // only when the forecast is clear then. 2) Catch of the day: tonight’s headliner, 5 minutes before it rises (was 10; 2026-10-15), if you don’t
 // have it and it’s clear. Anything else comes only from reminders you set. Native app only (local notifications);
 // rescheduled whenever tonight’s plan or the forecast changes. Settings: prefs nLookUp / nCatch (both on by default).
-const NOTE_LOOK = 7120, NOTE_CATCH = 7110, NOTE_RARE = [7130, 7131];
+const NOTE_LOOK = 7120, NOTE_CATCH = 7110, NOTE_RARE = [7130, 7131], NOTE_GHOST = 7150;
 const notePref = (k) => readPref(k, true);
 async function notesAllowed() { if (!isNative()) return false; try { return (await plugin('LocalNotifications').checkPermissions()).display === 'granted'; } catch { return false; } }
 function lookUpAt(T) {
@@ -3183,6 +3223,10 @@ async function scheduleNotesNow(T) {
   if (notePref('nCatch') && h && h.start - 5 * 60000 > t0 && !quiet(h.start - 5 * 60000) && isNewFind(h.obj) && clear(h.start)) {
     await notifyAt(h.start - 5 * 60000, `${fmtTime(h.start)}: catch of the day`, `Catch ${label(h.obj)} for +${headlinerXp(h.obj)} XP. Look ${whereWords({ el: h.peakEl, az: h.peakAz }).toLowerCase()}.`, { id: NOTE_CATCH });
   }
+  // Halloween night (design/come-back.html 05): one notification at dusk if the ghost passes on a clear evening.
+  await cancelNotify(NOTE_GHOST);
+  if (T?.dusk && ghostNight(T.dusk) && !secretFound[GHOST.patch]) { const g = ghostPass(T);
+    if (g && T.dusk > t0 + 60000 && clear(g.start)) await notifyAt(T.dusk, 'Tonight: something’s haunting the sky', `A satellite that died long ago passes at ${fmtTime(g.start)}. Find it tonight.`, { id: NOTE_GHOST }); }
   // Rare alerts (Plus, 2026-10-16, Sevaan; off by default): up to 2 a night, for a new Rare or better (no fleets) passing
   // on a clear evening, 5 min ahead, 30 min apart, never 11 pm to 7 am, and never the headliner (Catch of the day has it).
   for (const id of NOTE_RARE) await cancelNotify(id);

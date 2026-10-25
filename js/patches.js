@@ -3,7 +3,7 @@
 // group (or the date earned) along the bottom, one icon in the middle. Milestones get gold foil, the rarest holo
 // (css/ui.css .patch--gold / .patch--holo). Shared by Explore (the earning moment, its toast) and Collection (the wall).
 
-import { CON_BY_ID } from './constellations.js?v=0.1.1135';
+import { CON_BY_ID } from './constellations.js?v=0.1.1136';
 
 export const GROUPS = {
   collect: { c: '#14284a', t: 'Collection' }, rarity: { c: '#3a2259', t: 'Rarity' }, rocket: { c: '#5a2a1a', t: 'Rockets' },
@@ -129,7 +129,7 @@ const UFO_ART = (id) => `<defs><linearGradient id="${id}beam" x1="0" y1="0" x2="
   ${[[-30, -22], [26, -26], [-18, -34], [34, -6], [-36, 0], [12, -38]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="1" fill="${INK}" opacity=".7"/>`).join('')}
   <path d="M-9 -4 L-24 30 L24 30 L9 -4Z" fill="url(#${id}beam)"/>
   <g transform="translate(0 -8) scale(1.7)"><path d="M-6 -1 Q-5 -7 0 -7 Q5 -7 6 -1Z" fill="#cfe8ff" fill-opacity=".85"/><ellipse rx="14" ry="4.2" fill="${INK}"/><ellipse rx="14" ry="4.2" fill="none" stroke="#c9b67a" stroke-width=".8"/><circle cx="-8" cy=".5" r="1.3" fill="#7dff8a"/><circle cx="0" cy="1.6" r="1.3" fill="#7dff8a"/><circle cx="8" cy=".5" r="1.3" fill="#7dff8a"/></g>`;
-const SECRET_TWILL = { plus: '#14284a', santa: '#6a1d1d', roadster: '#14284a', meteor: '#22265a', voyager: '#0f1b2a', dizzy: '#3a2259', voyager2: '#0f1b2a', pioneer10: '#2a1d0c', pioneer11: '#1f1a2e', newhorizons: '#101c2c', wow: '#2a0f12' };
+const SECRET_TWILL = { ghost2026: '#123a2a', plus: '#14284a', santa: '#6a1d1d', roadster: '#14284a', meteor: '#22265a', voyager: '#0f1b2a', dizzy: '#3a2259', voyager2: '#0f1b2a', pioneer10: '#2a1d0c', pioneer11: '#1f1a2e', newhorizons: '#101c2c', wow: '#2a0f12' };
 const SLEIGH = '<g fill="#fff2b3">' + [0, 1, 2].map((k) => `<g transform="translate(${k * 13 - 30} ${4 - k * 2})"><path d="M0 5 Q3 1 8 2 L10 0 L9.5 4 Q11 6 8 7 L3 7 Z"/><path d="M8.5 1 l1.5 -3.5 M10 1 l2 -3" stroke="#fff2b3" stroke-width=".8"/></g>`).join('') + '</g><path d="M10 6 Q11 0 20 0 L30 0 Q34 0 33 5 L32 8 L12 8 Z" fill="#d94f38"/><path d="M8 11 L34 11 Q37 11 36 8" fill="none" stroke="#fff2b3" stroke-width="1.6"/><circle cx="24" cy="-3" r="3" fill="#fff2b3"/><circle cx="-28" cy="5" r="1.4" fill="#ff4a3a"/>';
 const SECRET_ART = {
   // Plus Member (2026-10-16, design/plus-sheet-card.html): the brass telescope from the Plus card and one star, all inside
@@ -140,6 +140,8 @@ const SECRET_ART = {
     + '<circle cy="4" r="3.4" fill="#8a6420"/></g>',
   santa: () => `<g transform="translate(-2 -6) scale(1.25)">${SLEIGH}</g>`,
   roadster: () => '<g transform="translate(-27 -12)"><path d="M2 16 Q4 8 16 7 L24 2 L36 2 L44 8 Q52 9 52 16 Z" fill="#d22b2b"/><circle cx="13" cy="17" r="4" fill="#111"/><circle cx="41" cy="17" r="4" fill="#111"/><circle cx="29" cy="6" r="3.4" fill="#f4f4f4"/></g>',
+  // Halloween 2026: a little ghost with solar panels for arms (Envisat), a green glow and the year.
+  ghost2026: () => '<circle r="30" fill="#7dffb0" opacity=".08"/><rect x="-36" y="-6" width="16" height="10" rx="1" fill="#7a8fb0" stroke="#fff2b3" stroke-width="1"/><rect x="20" y="-6" width="16" height="10" rx="1" fill="#7a8fb0" stroke="#fff2b3" stroke-width="1"/><path d="M-14 18 V-4 a14 14 0 0 1 28 0 V18 l-4.7 -4 -4.7 4 -4.6 -4 -4.6 4 -4.7 -4 Z" fill="#e8fff0" stroke="#7dffb0" stroke-width="1.5"/><ellipse cx="-5" cy="-2" rx="2.6" ry="3.6" fill="#123a2a"/><ellipse cx="5" cy="-2" rx="2.6" ry="3.6" fill="#123a2a"/><ellipse cx="0" cy="7" rx="3" ry="2.2" fill="#123a2a"/><text y="34" text-anchor="middle" font-size="9" fill="#7dffb0" font-family="SC Display, sans-serif">2026</text>',
   meteor: () => '<path d="M-26 -22 L10 14" stroke="#fff2b3" stroke-width="3" stroke-linecap="round"/><circle cx="10" cy="14" r="4" fill="#fff"/>',
   voyager: () => '<circle r="18" fill="#2a1a08" stroke="#e2b53c" stroke-width="7"/><circle r="4" fill="#e2b53c"/><circle cx="26" cy="-20" r="2.4" fill="#8fd0ff"/>',
   dizzy: () => '<path d="M0 0 m-4 0 a4 4 0 1 1 8 0 a8 8 0 1 1 -16 0 a12 12 0 1 1 24 0 a16 16 0 1 1 -32 0" fill="none" stroke="#fff2b3" stroke-width="2.4"/>',
