@@ -2524,3 +2524,11 @@ body.ob-tour #ud-now, body.calib #ud-now, body:has(#wake:not([hidden])) #ud-now,
 .od-appt-t i { font: 500 11px/1.2 var(--label); font-style: normal; letter-spacing: .12em; text-transform: uppercase; color: #7fb2ff; margin-top: 2px; }
 .od-tl.small .it { padding-bottom: 12px; } .od-tl.small b { font-size: 15px; } .od-tl.small span { font-size: 14px; }
 body.night .od-ring { background: conic-gradient(#ff6a55 calc(var(--f, .5) * 360deg), #ff6a5522 0); } body.night .od-appt-t small, body.night .od-appt-t i { color: #ff6a55 !important; }
+/* Inside or out (2026-10-25, Sevaan; design/tour-rethink.html 01 B): two equal choice tiles on the tour card */
+.tc .acts.pick { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.tc .acts.pick .pk { height: auto; min-height: 150px; padding: 14px 8px 12px; display: grid; justify-items: center; align-content: center; gap: 4px; border-radius: 14px; background: #ffffff0d; border: 1px solid #fff2b326; color: var(--text); white-space: normal; text-transform: none; letter-spacing: 0; }
+.tc .acts.pick .pk svg { width: 92px; height: 74px; margin-bottom: 4px; }
+.tc .acts.pick .pk b { font: 400 18px/1.1 var(--display); color: var(--text); }
+.tc .acts.pick .pk small { font: 500 11px/1.2 var(--label); letter-spacing: .12em; text-transform: uppercase; color: color-mix(in srgb, var(--text) 70%, transparent); }
+.tc .acts.pick .pk:active { border-color: var(--gold); background: #f2c14e1a; }
+body.night .tc .acts.pick .pk svg * { stroke: #ff6a55; } body.night .tc .acts.pick .pk svg [fill="#fff2b3"] { fill: #ff6a55; }
