@@ -2719,3 +2719,9 @@ body.night #tk-m .tk-tier { color: #ff7f70; }
 body.night .tc .pk-card .pk-art img { filter: grayscale(1) sepia(1) hue-rotate(-50deg) saturate(3) brightness(.8); }
 body.night .tc .acts.pick .pk.pk-card { border-color: #7a2a22; } body.night .tc .acts.pick.picked .pk.pk-card.on { border-color: #ff6a55; }
 @media (prefers-reduced-motion: reduce) { .tc .acts.pick .pk.pk-card { transition: none; } }
+/* While Match your sky is up the slider is fully awake and bright orange, like while dragging (2026-10-25, Sevaan) */
+#skybar.matching, #skybar.matching.resting { opacity: 1 !important; }
+#skybar.matching #sky-range::-webkit-slider-runnable-track { background: linear-gradient(90deg, var(--sb-hot, #fa8127) 0 var(--p,50%), color-mix(in srgb, var(--edge) 55%, transparent) var(--p,50%)); }
+#skybar.matching #sky-range::-moz-range-progress { background: var(--sb-hot, #fa8127); }
+#skybar.matching #sky-range::-webkit-slider-thumb { border-color: var(--sb-hot, #fa8127); }
+#skybar.matching #sky-range::-moz-range-thumb { border-color: var(--sb-hot, #fa8127); }
