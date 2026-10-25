@@ -1,17 +1,17 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.1151';
+import { extinction } from './sky-limit.js?v=0.1.1152';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.1151';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.1152';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.1151';
-import { createCloudGL } from './clouds-gl.js?v=0.1.1151';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.1152';
+import { createCloudGL } from './clouds-gl.js?v=0.1.1152';
 // Cloud colours by light: sunlit tops, shadowed bellies, and the horizon haze they melt into (0–1 RGB).
 const CLOUD_LIGHT = {
   day: { lit: [1, 1, 1], shade: [0.62, 0.68, 0.77], haze: [0.82, 0.87, 0.93] },
   dusk: { lit: [1, 0.8, 0.68], shade: [0.36, 0.33, 0.42], haze: [0.62, 0.5, 0.52] },
   night: { lit: [0.22, 0.25, 0.31], shade: [0.1, 0.12, 0.16], haze: [0.14, 0.15, 0.2] },
 };
-import { TIER_INFO } from './rarity.js?v=0.1.1151';
+import { TIER_INFO } from './rarity.js?v=0.1.1152';
 
 const RAD = Math.PI / 180;
 const SECRET_PX = { santa: 24, roadster: 12.4, voyager: 14.5, voyager2: 14.5, pioneer10: 11.7, pioneer11: 11.7, newhorizons: 6.4, arecibo: 6.9, halley: 8.6, sputnik: 11.2, laika: 13.3, wow: 9.8 };
@@ -1537,7 +1537,7 @@ export class SkyView {
     if (below?.length && belowSats?.length) { const ids = new Set(below.filter((g) => g.obj).map((g) => g.obj.id)); belowSats = belowSats.filter((s) => !ids.has(s.obj.id)); } // a pass is drawn once
     if (this.basis.back[2] < 0.15 && this.feetA < 0.98) this.drawBelowSky(sky, belowSats, belowStarLimit);
     if (daySats?.length && this.basis.back[2] > -0.15) this.drawDaySats(daySats); else this.dayHitId = null;
-    if ((below?.length || belowSats?.length) && this.basis.back[2] < 0.15 && this.feetA < 0.98) this.drawBelow([...(below ?? []), ...(belowSats ?? []).map((s) => ({ enu: s.enu, kind: 'dot', id: s.obj.id, name: s.name, what: s.what, place: s.place, note: s.note ?? '', where: '', owned: s.owned }))]);
+    if ((below?.length || belowSats?.length) && this.basis.back[2] < 0.15 && this.feetA < 0.98) this.drawBelow([...(below ?? []), ...(belowSats ?? []).map((s) => ({ enu: s.enu, kind: 'dot', id: s.obj.id, obj: s.obj, name: s.name, what: s.what, place: s.place, note: s.note ?? '', where: '', owned: s.owned }))]);
     this.drawFeet(feet); // the ring at your feet shows what’s UP and which way to face (2026-10-13, Sevaan)
     this.drawRising(rising);
     this.drawGrid();
