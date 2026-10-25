@@ -135,6 +135,8 @@ body.night #plane { --plane:#ff3b2b; }
 .tc .acts { display:flex; gap:10px; }
 .tc .acts button { flex:1; height:50px; border:0; border-radius:12px; font:500 13px/1 var(--label); letter-spacing:.14em; text-transform:uppercase; white-space:nowrap; cursor:pointer; }
 .tc .acts .yes { background:var(--gold); color:#0b1120; } .tc .acts .no { background:#ffffff10; color:var(--text); }
+/* Location step (2026-10-25): two real choices, stacked, the main one on top */
+.tc.stack .acts { flex-direction:column-reverse; gap:8px; } .tc.stack .acts button { flex:none; height:46px; }
 .tc .shine { position:absolute; inset:0; z-index:3; pointer-events:none; mix-blend-mode:soft-light; background-repeat:no-repeat; background-size:260% 100%; background-position:var(--bgx, 50%) 0;
   background-image:linear-gradient(115deg, transparent 30%, rgba(143,240,255,.35) 42%, rgba(255,143,216,.3) 50%, rgba(255,224,138,.35) 58%, transparent 70%); opacity:calc(.35 + var(--o, 0) * .4); }
 .tc.gold { border-color:#e2b53c; box-shadow:inset 0 0 0 5px var(--bg), inset 0 0 0 6px #f7d77a66, 0 -14px 50px #000b; }
