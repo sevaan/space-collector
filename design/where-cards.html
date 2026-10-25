@@ -82,7 +82,7 @@ h1 { font: 400 28px 'SC Display'; margin: 0 0 4px; } .lead { color: var(--mu); m
 .C .ch .nub { position: absolute; left: calc(var(--u) * 125); width: calc(var(--u) * 14); height: calc(var(--u) * 14); border-radius: 50%; background: #0a1220; }
 .C .ch .nub.t { top: calc(var(--u) * -7); } .C .ch .nub.b { bottom: calc(var(--u) * -7); }
 .C .art { height: 100%; }
-.C .art img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.art img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .C .tx { padding: calc(var(--u) * 13) calc(var(--u) * 14); display: grid; align-content: center; gap: calc(var(--u) * 5); }
 .C .tx .k { font: 500 calc(var(--u) * 10) 'SC Label'; letter-spacing: .2em; text-transform: uppercase; color: var(--or); }
 .C .tx .nm { font-size: calc(var(--u) * 22); }
@@ -106,7 +106,7 @@ h1 { font: 400 28px 'SC Display'; margin: 0 0 4px; } .lead { color: var(--mu); m
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
 </style></head><body>
 <h1>Inside or outside, as cards</h1>
-<p class="lead">Step 2 of the tour, drawn four ways. Each option shows the card resting and with Outside tapped. Pictures change with the time of day (Sun by day, Moon and stars at night); option A is also shown at night. The title, time and "Dark at" lines stay as they are.</p>
+<p class="lead">Step 2 of the tour, drawn four ways. Each option shows the card resting, with Outside tapped, and at night, all with the painted pictures (try 1; C2 shows both tries). Pictures change with the time of day (Sun by day, Moon and stars at night); option A is also shown at night. The title, time and "Dark at" lines stay as they are.</p>
 
 <template id="tc"><div class="tc"><div class="top"><span>Space Collector</span><b>◆ Step 2 of 4</b></div><h3>Where are you<br>right now?</h3><div class="when"><span>4:39 PM</span><span>Dark at 6:43 PM</span></div><div class="picks"></div></div></template>
 
@@ -181,8 +181,7 @@ const cell = (ph, cap) => { const c = document.createElement('div'); c.className
   for (const n of [1, 2]) { row.append(cell(phone('C', { paint: n }), `Try ${n} · by day`), cell(phone('C', { paint: n, night: true, picked: true }), `Try ${n} · at night, <b>Outside</b> tapped`)); } }
 for (const k of ['A', 'B', 'C', 'D']) {
   const row = document.getElementById('row' + k);
-  row.append(cell(phone(k), 'Resting'), cell(phone(k, { picked: true }), '<b>Outside</b> tapped'));
-  if (k === 'A') row.append(cell(phone(k, { night: true }), 'At night'));
+  row.append(cell(phone(k, { paint: 1 }), 'Resting'), cell(phone(k, { picked: true, paint: 1 }), '<b>Outside</b> tapped'), cell(phone(k, { night: true, paint: 1 }), 'At night'));
 }
 </script>
 </body></html>
