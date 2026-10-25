@@ -5,12 +5,12 @@
 //  Everything scales with rarity (Legendary dims the sky, shockwave, held breath, slow flip, fanfare).
 // Waits use timers, not animation.finished, so a paused tab can never freeze the sequence.
 
-import { sfx, loadSfx, heartbeat } from './sfx.js?v=0.1.1125';
-import { audioCtx } from './audio-ctx.js?v=0.1.1125';
-import { TIER_INFO } from './rarity.js?v=0.1.1125';
-import { levelFor, attachTilt, attachGyro, attachFlip, throwOff, retype } from './card.js?v=0.1.1125';
-import { applyBack } from './card-backs.js?v=0.1.1125';
-import { addStarfield } from './starfield.js?v=0.1.1125';
+import { sfx, loadSfx, heartbeat } from './sfx.js?v=0.1.1126';
+import { audioCtx } from './audio-ctx.js?v=0.1.1126';
+import { TIER_INFO } from './rarity.js?v=0.1.1126';
+import { levelFor, attachTilt, attachGyro, attachFlip, throwOff, retype } from './card.js?v=0.1.1126';
+import { applyBack } from './card-backs.js?v=0.1.1126';
+import { addStarfield } from './starfield.js?v=0.1.1126';
 
 const FX = {
   common:    { particles: 14,  flip: 520,  spin: 0,   dim: 0,   shock: false, notes: [880],                            hold: 0 },
@@ -111,13 +111,30 @@ function sizeCard(cardEl) {
   const h = $('rv-holder'), H = root.clientHeight;
   if (!H || !h.offsetHeight) return;
   const news = $('rv-news'), top = Math.max($('rv-top').offsetTop + $('rv-top').offsetHeight, news ? news.offsetTop + 26 : 0) + 8; /* clear the chips row too */
-  const under = root.classList.contains('has-rank') ? $('rv-rank') : $('reveal-view'), bot = (under.offsetHeight ? under.offsetTop : H) - 8;
+  const teach = root.classList.contains('teaching') ? $('rv-teach') : null; /* the lesson panel under the card (2026-10-25) */
+  const under = teach ?? (root.classList.contains('has-rank') ? $('rv-rank') : $('reveal-view')), bot = (under.offsetHeight ? under.offsetTop : H) - 8;
   // Grow (or shrink) it to the room there really is: the 270 above is a guess, and on phones it left the card small with
   // dead space above and below (Sevaan 2026-10-22: "has room to be bigger"). 20px a side, 14 at most (big screens).
   cf = Math.max(5, Math.min(Math.min(innerWidth, innerHeight) >= 600 ? 18 : 14, (bot - top) / em, (root.clientWidth - 40) / 28)); /* same cap as the first pass (iPad playtest 2026-10-24: this clamped it back to 14) */
   root.style.setProperty('--cf', `${cf}px`);
   if (h.offsetTop >= top && h.offsetTop + h.offsetHeight <= bot) return;
   root.style.setProperty('--rv-y', `${((top + bot) / 2 - H / 2).toFixed(1)}px`);
+}
+
+// A lesson panel under the card (2026-10-25, Sevaan; design/first-night.html 04): the card shrinks to make room above
+// it, eased over a third of a second (instant under Reduce Motion), and grows back when it goes.
+export function teachRoom(on) {
+  const root = $('reveal'); if (!sizedCard || root.hidden) return;
+  const read = (k, d) => { const v = parseFloat(getComputedStyle(root).getPropertyValue(k)); return Number.isFinite(v) ? v : d; };
+  const from = read('--cf', 12), fromY = read('--rv-y', 22);
+  root.classList.toggle('teaching', on); sizeCard(sizedCard);
+  const to = read('--cf', from), toY = read('--rv-y', 22);
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches || (Math.abs(to - from) < 0.05 && Math.abs(toY - fromY) < 0.5)) return;
+  const t0 = performance.now(), ms = 320;
+  const step = (t) => { const u = Math.min(1, (t - t0) / ms), e = 1 - (1 - u) ** 3;
+    root.style.setProperty('--cf', `${(from + (to - from) * e).toFixed(3)}px`); root.style.setProperty('--rv-y', `${(fromY + (toY - fromY) * e).toFixed(2)}px`);
+    if (u < 1) requestAnimationFrame(step); };
+  root.style.setProperty('--cf', `${from}px`); root.style.setProperty('--rv-y', `${fromY}px`); requestAnimationFrame(step);
 }
 
 // card: rendered card element. o: catalogue card (for tier). seen: sightings of this card incl. this one.

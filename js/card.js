@@ -1,21 +1,21 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { fallWords } from './last-chance.js?v=0.1.1125';
-import { useMiles } from './units.js?v=0.1.1125';
-import { feel } from './native.js?v=0.1.1125';
-import { sfx } from './sfx.js?v=0.1.1125';
-import { cardArt } from './art.js?v=0.1.1125';
-import { TIER_INFO } from './rarity.js?v=0.1.1125';
-import { SET_BY_ID } from './sets.js?v=0.1.1125';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.1125';
-import { FLEET_ABOUT, fleetAbout, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.1125';
-import { artFileFor } from './art-keys.js?v=0.1.1125';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.1125';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.1125';
-import { nightsIn } from './observation.js?v=0.1.1125';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.1125';
-import { SHINY } from './shiny.js?v=0.1.1125';
-import { conArt, cometArt } from './con-art.js?v=0.1.1125';
-import { CON_FIGURES } from './con-figures.js?v=0.1.1125';
+import { fallWords } from './last-chance.js?v=0.1.1126';
+import { useMiles } from './units.js?v=0.1.1126';
+import { feel } from './native.js?v=0.1.1126';
+import { sfx } from './sfx.js?v=0.1.1126';
+import { cardArt } from './art.js?v=0.1.1126';
+import { TIER_INFO } from './rarity.js?v=0.1.1126';
+import { SET_BY_ID } from './sets.js?v=0.1.1126';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.1126';
+import { FLEET_ABOUT, fleetAbout, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.1126';
+import { artFileFor } from './art-keys.js?v=0.1.1126';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.1126';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.1126';
+import { nightsIn } from './observation.js?v=0.1.1126';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.1126';
+import { SHINY } from './shiny.js?v=0.1.1126';
+import { conArt, cometArt } from './con-art.js?v=0.1.1126';
+import { CON_FIGURES } from './con-figures.js?v=0.1.1126';
 // The animal/symbol figure belongs to the completed (gold) constellation card only (2026-10-05): a single
 // star’s card draws just the star pattern with its star marked, so the figure is a reward for finishing the set.
 // A star card’s constellation figure comes into focus as you collect the constellation’s stars (design/con-focus.html B).
@@ -242,7 +242,7 @@ function moonShade(k) {
 }
 // The lit part of the Moon for phase k (1–7; 0 is new): the right half, then the terminator as an ellipse arc. Waning
 // phases are the waxing ones mirrored.
-function phasePath(k) {
+export function phasePath(k) {
   if (k === 4) return 'M0,-15 A15,15 0 1 1 0,15 A15,15 0 1 1 0,-15 Z';
   const w = Math.min(k, 8 - k);
   return w === 2 ? 'M0,-15 A15,15 0 0 1 0,15 Z' : `M0,-15 A15,15 0 0 1 0,15 A10,15 0 0 ${w === 1 ? 0 : 1} 0,-15 Z`;
