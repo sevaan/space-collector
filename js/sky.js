@@ -1,17 +1,17 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.1166';
+import { extinction } from './sky-limit.js?v=0.1.1167';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.1166';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.1167';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.1166';
-import { createCloudGL } from './clouds-gl.js?v=0.1.1166';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.1167';
+import { createCloudGL } from './clouds-gl.js?v=0.1.1167';
 // Cloud colours by light: sunlit tops, shadowed bellies, and the horizon haze they melt into (0–1 RGB).
 const CLOUD_LIGHT = {
   day: { lit: [1, 1, 1], shade: [0.62, 0.68, 0.77], haze: [0.82, 0.87, 0.93] },
   dusk: { lit: [1, 0.8, 0.68], shade: [0.36, 0.33, 0.42], haze: [0.62, 0.5, 0.52] },
   night: { lit: [0.22, 0.25, 0.31], shade: [0.1, 0.12, 0.16], haze: [0.14, 0.15, 0.2] },
 };
-import { TIER_INFO } from './rarity.js?v=0.1.1166';
+import { TIER_INFO } from './rarity.js?v=0.1.1167';
 
 const RAD = Math.PI / 180;
 const SECRET_PX = { santa: 24, roadster: 12.4, voyager: 14.5, voyager2: 14.5, pioneer10: 11.7, pioneer11: 11.7, newhorizons: 6.4, arecibo: 6.9, halley: 8.6, sputnik: 11.2, laika: 13.3, wow: 9.8 };
@@ -1421,7 +1421,7 @@ export class SkyView {
         // it is). Apparent magnitude after the air near the horizon; anything fainter than tonight’s limit (the sky
         // slider, twilight, the Moon) isn’t drawn, so Neptune no longer shows to the naked eye.
         const elDeg = Math.asin(Math.min(1, Math.max(-1, b.enu[2]))) * 180 / Math.PI, m = b.mag + extinction(elDeg);
-        if (this.starLimit != null && m > this.starLimit) continue;
+        if (this.starLimit != null && m > this.starLimit + (this.planetBoost ?? 0)) continue; // past Dark site the slider reaches binocular planets too, as the circle does (2026-10-25, Sevaan: Uranus collectable but not drawn)
         // By day only Venus can show, and only when it’s well clear of the Sun (30°+), when people really can spot it;
         // closer in it’s lost in the glare and looking for it means looking near the Sun (2026-10-11, Sevaan asked).
         const sunSep = sun ? Math.acos(Math.max(-1, Math.min(1, sun.enu[0] * b.enu[0] + sun.enu[1] * b.enu[1] + sun.enu[2] * b.enu[2]))) * 180 / Math.PI : 180;
