@@ -2725,3 +2725,8 @@ body.night .tc .acts.pick .pk.pk-card { border-color: #7a2a22; } body.night .tc 
 #skybar.matching #sky-range::-moz-range-progress { background: var(--sb-hot, #fa8127); }
 #skybar.matching #sky-range::-webkit-slider-thumb { border-color: var(--sb-hot, #fa8127); }
 #skybar.matching #sky-range::-moz-range-thumb { border-color: var(--sb-hot, #fa8127); }
+/* The ticket's mini card shows the uncollected art you can make out (2026-10-25, Sevaan: "Instead of no art in the
+   uncollected mini card can we have the uncollected version of the art?"): softly blurred and a little dim, not the
+   Collection grid's near-black. */
+.d-mini .mini-face.locked .card__art { filter: none; }
+.d-mini .card-art-image--locked { filter: blur(6px) brightness(.85) saturate(.8); }
