@@ -1,17 +1,17 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.1131';
+import { extinction } from './sky-limit.js?v=0.1.1132';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.1131';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.1132';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.1131';
-import { createCloudGL } from './clouds-gl.js?v=0.1.1131';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.1132';
+import { createCloudGL } from './clouds-gl.js?v=0.1.1132';
 // Cloud colours by light: sunlit tops, shadowed bellies, and the horizon haze they melt into (0–1 RGB).
 const CLOUD_LIGHT = {
   day: { lit: [1, 1, 1], shade: [0.62, 0.68, 0.77], haze: [0.82, 0.87, 0.93] },
   dusk: { lit: [1, 0.8, 0.68], shade: [0.36, 0.33, 0.42], haze: [0.62, 0.5, 0.52] },
   night: { lit: [0.22, 0.25, 0.31], shade: [0.1, 0.12, 0.16], haze: [0.14, 0.15, 0.2] },
 };
-import { TIER_INFO } from './rarity.js?v=0.1.1131';
+import { TIER_INFO } from './rarity.js?v=0.1.1132';
 
 const RAD = Math.PI / 180;
 const SECRET_PX = { santa: 24, roadster: 12.4, voyager: 14.5, voyager2: 14.5, pioneer10: 11.7, pioneer11: 11.7, newhorizons: 6.4, arecibo: 6.9, halley: 8.6, sputnik: 11.2, laika: 13.3, wow: 9.8 };
@@ -148,6 +148,9 @@ function inkIsDark(c) {
   const m = /^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})/i.exec(c), n = m ? m.slice(1).map((h) => parseInt(h, 16)) : (String(c).match(/[\d.]+/g) ?? []).slice(0, 3).map(Number);
   return n.length === 3 && 0.299 * n[0] + 0.587 * n[1] + 0.114 * n[2] < 110;
 }
+// A rarity colour as [r, g, b] for glow(), cached.
+const TIER_RGB = new Map();
+function tierRgb(tier) { if (!TIER_RGB.has(tier)) { const h = (TIER_INFO[tier]?.color ?? '#fa8127').replace('#', ''); TIER_RGB.set(tier, [0, 2, 4].map((k) => parseInt(h.slice(k, k + 2), 16))); } return TIER_RGB.get(tier); }
 export class SkyView {
   constructor(canvas) {
     this.canvas = canvas;
@@ -1565,7 +1568,12 @@ export class SkyView {
       const radius = size / 2;
       ctx.save();
       if (targetId && !isTarget) ctx.globalAlpha = look.visible ? 0.60 : 0.35;
-      if (look.visible || isTarget) this.glow(p.x, p.y, radius * (isTarget ? 2.5 : 1.6), t.satGlow, isTarget ? 0.36 : 0.13);
+      // What's worth aiming at (2026-10-25, Sevaan; design/catch-feel.html 02): things new to you breathe a soft halo in
+      // their rarity colour; ones you already have are drawn at 45%, so the eye goes to the right light.
+      const fresh = look.visible && !isTarget && this.ownedObj ? !this.ownedObj(it.obj) : null;
+      if (fresh === false) ctx.globalAlpha *= 0.45;
+      if (fresh) { const rgb = this.theme === THEMES.night || !it.obj.tier || it.obj.tier === 'common' ? t.satGlow : tierRgb(it.obj.tier); this.glow(p.x, p.y, radius * 4.6, rgb, this.reducedMotion ? 0.62 : 0.55 + 0.2 * Math.sin(time / 650 + (it.obj.id % 7))); }
+      else if (look.visible || isTarget) this.glow(p.x, p.y, radius * (isTarget ? 2.5 : 1.6), t.satGlow, isTarget ? 0.36 : 0.13);
       // Locked on: the object takes its rarity colour (matching its label); Common stays cream.
       const tierColor = isTarget && this.theme !== THEMES.night && it.obj.tier && it.obj.tier !== 'common' ? TIER_INFO[it.obj.tier]?.color : null;
       this.drawIcon(this.iconKind(it.obj), p.x, p.y, size, look.visible || isTarget ? (tierColor ?? (isTarget ? t.satHot : t.sat)) : t.dim);
