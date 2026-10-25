@@ -2655,3 +2655,7 @@ body.night #moon-check { border-top-color: #ff6a55; color: #ff7f70; } body.night
 @media (min-height: 760px) { .tc .acts.pick .pk { min-height: 190px; } } /* the Where card's tiles fill the card on tall phones */
 body.night .wc-a-top .wc-dot { background: #ff6a55; box-shadow: none; } body.night #rv-teach .tc-ok { background: #ff6a55; color: #120606; }
 @media (max-width: 380px) { .ft-pill { left: calc(var(--safe-l, 0px) + 122px); } }
+/* Returning playtest fixes (2026-10-25) */
+body:has(#moon-check:not([hidden])) #toast-tray, body:has(#fade-tip:not([hidden])) #toast-tray, body.sky-matching #toast-tray { visibility: hidden; } /* tucked chips sat on the cards above the circle */
+.ghost-box { flex-wrap: wrap; } .ghost-box > span:nth-child(2) { flex: 1 1 200px; } .ghost-box .gh-go { margin-left: 52px; } /* the button under the words, like the train box */
+#sky-match.compact b { display: none; }

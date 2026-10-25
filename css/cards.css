@@ -684,3 +684,4 @@
 .card__stats b i.dp { font-style: normal; margin: 0 .08em 0 .1em; }
 /* A launch caught as a Starlink train (2026-10-25): its dot gets a small ring */
 .fl-grid i.train { box-shadow: 0 0 0 .12em #5fd08a; }
+.card--retro .fl-grid i.train, .card--retro .fl-grid i.latest.train { box-shadow: 0 0 0 .12em #5fd08a; } /* beats the newest-stamp ring: a train is usually the newest (returning playtest 2026-10-25) */

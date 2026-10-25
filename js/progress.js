@@ -1,7 +1,7 @@
 // Player progress from the sighting log: XP and observer rank, tonight’s three missions, a weekly streak and
 // achievements. Everything is derived from the saved sightings (nothing extra is stored), so it can’t drift.
 // info(cardKey) -> { tier, type, owner, launch, natural, con } | null. No DOM.
-import { nightKey } from './observation.js?v=0.1.1145';
+import { nightKey } from './observation.js?v=0.1.1146';
 
 // A longer climb (2026-10-12, playtest room: three ranks on night 1, Mission Control in about two weeks), with two
 // prestige ranks past Mission Control. Nobody drops a rank they had on the old curve (rankFloor below).
@@ -32,7 +32,7 @@ const yearOf = (i) => Number(String(i?.launch ?? '').slice(0, 4)) || null;
 export const WEEK_THEMES = [
   { id: 'stages', name: 'Rocket stage week', short: 'Stage Week', text: 'Catch three rocket stages from different countries.', icon: 'R/B', need: 3,
     have: (w) => new Set(w.filter((s) => s.info?.type === 'rocket-body').map((s) => countryOf(s.info.owner))).size },
-  { id: 'old', name: 'Old-timers week', short: 'Old-Timers', text: 'Catch three things launched before 1970.', icon: '<70', need: 3,
+  { id: 'old', name: 'Old-timers week', short: 'Old-Timer Week', text: 'Catch three things launched before 1970.', icon: '<70', need: 3,
     have: (w) => new Set(w.filter((s) => !s.info?.natural && yearOf(s.info) && yearOf(s.info) < 1970).map((s) => s.cardKey)).size },
   { id: 'stations', name: 'Station week', short: 'Station Week', text: 'Catch both space stations: the ISS and Tiangong.', icon: 'ISS', need: 2,
     have: (w) => ['25544', '48274'].filter((k) => w.some((s) => String(s.cardKey) === k)).length },
