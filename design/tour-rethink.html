@@ -1,0 +1,681 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Inside or out</title>
+<!-- 2026-10-25 design board: the tour learns where the player is (inside / outside, day / night), the three ways
+     through, the "Match your sky" slider card, the flow and the open questions. Mock-ups only, nothing built.
+     Sister board: design/first-night.html. Backgrounds are real captures (design/tour-rethink/*.webp, WebKit, 402 × 874)
+     with the proposed parts drawn over them in the phone's own points. -->
+<link rel="stylesheet" href="../css/icons.css">
+<style>
+@font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf'); }
+@font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf'); }
+@property --sat { syntax: '<integer>'; inherits: true; initial-value: 312; }
+@property --s { syntax: '<integer>'; inherits: true; initial-value: 359; }
+@property --mm { syntax: '<integer>'; inherits: true; initial-value: 5; }
+@property --ss { syntax: '<integer>'; inherits: true; initial-value: 59; }
+:root { --ink: #fff2b3; --mu: #bdbea9; --or: #fa8127; --gold: #f2c14e; --steel: #6f8fae; --line: #1d2a3c; --card: #0e1828; --unc: #4fd18b; --rare: #4da3ff; --red: #ff7f70; --navy: #080f1b; --blue: #7fb2ff; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #04080f; color: var(--ink); font: 15px/1.4 system-ui, sans-serif; padding: 26px 20px 80px; }
+h1 { font: 400 28px 'SC Display'; margin: 0 0 4px; } .lead { color: var(--mu); margin: 0 0 8px; max-width: 1100px; }
+.how { color: var(--mu); font-size: 13px; margin: 0 0 26px; max-width: 1100px; }
+.how b { color: var(--ink); }
+.sec { font: 500 14px 'SC Label'; letter-spacing: .26em; text-transform: uppercase; color: var(--mu); border-top: 1px solid var(--line); padding-top: 14px; margin: 44px 0 18px; max-width: 1180px; }
+.sec b { color: var(--ink); font-weight: 500; }
+.idea { margin: 0 0 46px; max-width: 1180px; }
+.idea h2 { font: 400 21px/1.15 'SC Display'; margin: 0 0 6px; display: flex; gap: 10px; align-items: baseline; }
+.idea h2 .no { font: 500 15px 'SC Label'; color: var(--or); letter-spacing: .1em; min-width: 22px; }
+.idea > p { color: var(--mu); margin: 0 0 8px; font-size: 14px; max-width: 820px; }
+.idea > p b { color: var(--ink); font-weight: 600; }
+.tags { display: flex; gap: 6px; flex-wrap: wrap; margin: 0 0 14px; }
+.tag { font: 500 11.5px 'SC Label'; letter-spacing: .16em; text-transform: uppercase; padding: 3px 8px; border-radius: 6px; border: 1px solid #2c3b52; color: var(--mu); }
+.tag.s { color: var(--unc); border-color: #2c5a40; } .tag.m { color: var(--gold); border-color: #5f4e22; } .tag.l { color: var(--or); border-color: #6a3a18; }
+.tag.f { color: var(--steel); }
+.row { display: flex; gap: 30px; flex-wrap: wrap; align-items: flex-start; }
+.cell { width: 360px; max-width: 100%; }
+.cap { margin: 10px 0 0; font: 500 13px 'SC Label'; letter-spacing: .16em; text-transform: uppercase; color: var(--mu); }
+.cap b { color: var(--or); font-weight: 500; } .cap.today b { color: #8d93a0; }
+.cn { margin: 4px 0 0; font-size: 13px; color: #9aa3b2; }
+.cn b { color: var(--ink); font-weight: 600; }
+.today { font-size: 12.5px; color: #8d93a0; margin: 16px 0 0; max-width: 820px; }
+.today b { color: var(--mu); font-weight: 600; }
+.ico { display: inline-block; width: 1em; height: 1em; background: currentColor; -webkit-mask: var(--m) center / contain no-repeat; mask: var(--m) center / contain no-repeat; vertical-align: -.14em; }
+
+/* ── the phone: a real capture at 402 × 874, everything on it measured in that phone's points (--u) ── */
+.ph { position: relative; width: 100%; aspect-ratio: 402 / 874; border-radius: 30px; overflow: hidden; border: 1px solid #1a2436; background: var(--navy) center top / 100% auto no-repeat; container-type: inline-size; }
+.ph * { --u: calc(100cqw / 402); }
+.ab { position: absolute; }
+.stars { position: absolute; inset: 0; pointer-events: none; background:
+  radial-gradient(1px 1px at 12% 18%, #fff8 50%, transparent), radial-gradient(1px 1px at 72% 12%, #fff9 50%, transparent), radial-gradient(1.4px 1.4px at 44% 36%, #fffa 50%, transparent),
+  radial-gradient(1px 1px at 86% 44%, #fff7 50%, transparent), radial-gradient(1px 1px at 22% 62%, #fff6 50%, transparent), radial-gradient(1.2px 1.2px at 58% 72%, #fff8 50%, transparent),
+  radial-gradient(1px 1px at 92% 82%, #fff6 50%, transparent), radial-gradient(1px 1px at 8% 88%, #fff7 50%, transparent), radial-gradient(1px 1px at 34% 8%, #fff6 50%, transparent),
+  radial-gradient(1px 1px at 64% 28%, #fff6 50%, transparent), radial-gradient(1px 1px at 28% 46%, #fff5 50%, transparent), radial-gradient(1px 1px at 80% 64%, #fff6 50%, transparent); }
+.lbl { font: 500 calc(var(--u) * 12) 'SC Label'; letter-spacing: .18em; text-transform: uppercase; }
+.tap { position: absolute; width: calc(var(--u) * 34); height: calc(var(--u) * 34); border-radius: 50%; border: 2px solid #fffa; background: #ffffff22; pointer-events: none; opacity: 0; }
+@keyframes tapping { 0%, 52% { opacity: 0; transform: scale(1.6); } 58% { opacity: 1; transform: scale(1); } 70%, 100% { opacity: 0; transform: scale(.85); } }
+.live { display: inline-block; width: calc(var(--u) * 7); height: calc(var(--u) * 7); border-radius: 50%; background: var(--unc); box-shadow: 0 0 0 0 #4fd18b88; animation: livePulse 1.6s infinite; vertical-align: .08em; }
+@keyframes livePulse { 0% { box-shadow: 0 0 0 0 #4fd18b99; } 80%, 100% { box-shadow: 0 0 0 calc(var(--u) * 7) #4fd18b00; } }
+.sat-n { counter-reset: n var(--sat); animation: satTick 9s infinite steps(1); }
+.sat-n::before { content: counter(n); }
+@keyframes satTick { 0% { --sat: 312; } 14% { --sat: 313; } 31% { --sat: 311; } 47% { --sat: 312; } 60% { --sat: 314; } 74% { --sat: 313; } 88% { --sat: 312; } }
+
+/* ── 01 · live number on the welcome card ── */
+.n1a { left: calc(var(--u) * 196); top: calc(var(--u) * 213); width: calc(var(--u) * 155); height: calc(var(--u) * 24); border-radius: calc(var(--u) * 12); background: #0c1626; border: 1px solid #fa812777; display: flex; align-items: center; justify-content: center; gap: calc(var(--u) * 6); color: var(--or); font: 600 calc(var(--u) * 11.5)/1 'SC Label'; letter-spacing: .14em; text-transform: uppercase; white-space: nowrap; }
+.n1a .sat-n { color: var(--ink); font-family: 'SC Display'; letter-spacing: 0; font-size: calc(var(--u) * 12.5); }
+.n1b { left: calc(var(--u) * 55); top: calc(var(--u) * 606); width: calc(var(--u) * 292); display: flex; align-items: center; gap: calc(var(--u) * 12); padding: calc(var(--u) * 8) calc(var(--u) * 12); border-radius: calc(var(--u) * 10); background: #fa812714; border: 1px solid #fa812744; }
+.n1b .big { font: 400 calc(var(--u) * 34)/1 'SC Display'; color: var(--or); min-width: calc(var(--u) * 70); text-shadow: 0 0 calc(var(--u) * 14) #fa812755; }
+.n1b .t { font: 600 calc(var(--u) * 13.5)/1.15 'SC Label'; letter-spacing: .03em; color: var(--ink); }
+.n1b .t small { display: block; margin-top: calc(var(--u) * 3); font-size: calc(var(--u) * 10.5); letter-spacing: .16em; text-transform: uppercase; color: var(--mu); }
+.n1b .t small .live { margin-right: calc(var(--u) * 4); }
+.ph.n1b-wrap::after { content: ''; }
+
+/* ── the tour card (.tc in css/app.css), redrawn for mock-ups ── */
+.tc { position: absolute; left: calc(var(--u) * 21); width: calc(var(--u) * 360); top: calc(var(--u) * 404); height: calc(var(--u) * 560); border-radius: calc(var(--u) * 22); background: var(--navy); border: calc(var(--u) * 4) solid #adbcc8; box-shadow: inset 0 0 0 calc(var(--u) * 5) var(--navy), inset 0 0 0 calc(var(--u) * 6) #bcb58566, 0 calc(var(--u) * -14) calc(var(--u) * 50) #000b; overflow: hidden; }
+.tc.gold { border-color: #e2b53c; box-shadow: inset 0 0 0 calc(var(--u) * 5) var(--navy), inset 0 0 0 calc(var(--u) * 6) #f7d77a66, 0 calc(var(--u) * -14) calc(var(--u) * 50) #000b; }
+.tc .in { padding: calc(var(--u) * 16) calc(var(--u) * 20) calc(var(--u) * 18); display: flex; flex-direction: column; height: calc(var(--u) * 466); }
+.tc .bar { display: flex; justify-content: space-between; padding-bottom: calc(var(--u) * 8); border-bottom: 1px solid #bcb58588; font: 500 calc(var(--u) * 12)/1.2 'SC Label'; letter-spacing: .18em; text-transform: uppercase; }
+.tc .bar .tier { color: var(--or); }
+.tc h3 { margin: calc(var(--u) * 12) 0 calc(var(--u) * 4); font: 400 calc(var(--u) * 27)/1 'SC Display'; letter-spacing: -.035em; text-transform: uppercase; }
+.tc .sub { display: flex; justify-content: space-between; color: var(--mu); padding-bottom: calc(var(--u) * 10); border-bottom: 1px solid #bcb58544; font: 500 calc(var(--u) * 12)/1.2 'SC Label'; letter-spacing: .18em; text-transform: uppercase; }
+.tc .sub .hot { color: var(--or); }
+.tc .art { position: relative; flex: 1; margin: calc(var(--u) * 12) 0; border-radius: calc(var(--u) * 10); overflow: hidden; border: 1px solid #214551; background: radial-gradient(circle at 50% 45%, #15294a, #080e1a 75%); display: grid; place-items: center; }
+.tc p { margin: 0 0 calc(var(--u) * 14); color: #e8e3c9; font-size: calc(var(--u) * 14.5); line-height: 1.42; }
+.tc .acts { display: flex; gap: calc(var(--u) * 10); }
+.tc .acts span { flex: 1; height: calc(var(--u) * 50); display: grid; place-items: center; border-radius: calc(var(--u) * 12); font: 500 calc(var(--u) * 13)/1 'SC Label'; letter-spacing: .14em; text-transform: uppercase; white-space: nowrap; }
+.tc .acts .yes { background: var(--or); color: #0b1120; } .tc .acts .no { background: #ffffff10; color: var(--ink); }
+
+/* ── 05 · location card, proposed bottom ── */
+.loc5 { left: calc(var(--u) * 42); top: calc(var(--u) * 700); width: calc(var(--u) * 318); height: calc(var(--u) * 174); padding-left: calc(var(--u) * 3); background: var(--navy); padding-top: calc(var(--u) * 4); }
+.loc5 p { margin: 0 0 calc(var(--u) * 9); color: #e8e3c9; font-size: calc(var(--u) * 14); line-height: 1.36; }
+.loc5 .b { height: calc(var(--u) * 42); border-radius: calc(var(--u) * 12); display: flex; align-items: center; justify-content: center; gap: calc(var(--u) * 8); font: 500 calc(var(--u) * 13)/1 'SC Label'; letter-spacing: .14em; text-transform: uppercase; white-space: nowrap; }
+.loc5 .b + .b { margin-top: calc(var(--u) * 8); }
+.loc5 .yes { background: var(--or); color: #0b1120; }
+.loc5 .alt { background: #ffffff10; color: var(--ink); }
+.loc5 .alt small { font-size: calc(var(--u) * 11); color: var(--mu); letter-spacing: .1em; }
+.loc5 .tap { left: calc(var(--u) * 260); top: calc(var(--u) * 60); animation: tapping 4s infinite; animation-delay: 1s; }
+
+/* ── 02 · the Tonight page (#ob-done), redrawn ── */
+.od { position: absolute; inset: 0; background: var(--navy); padding: calc(var(--u) * 124) calc(var(--u) * 24) calc(var(--u) * 54); display: flex; flex-direction: column; }
+.od .x { position: absolute; right: calc(var(--u) * 22); top: calc(var(--u) * 64); font: 500 calc(var(--u) * 24) 'SC Label'; color: var(--ink); }
+.od .ey { font: 500 calc(var(--u) * 13)/1.25 'SC Label'; letter-spacing: .17em; color: var(--or); text-transform: uppercase; }
+.od h3 { margin: calc(var(--u) * 10) 0 0; font: 400 calc(var(--u) * 36)/.98 'SC Display'; letter-spacing: -.045em; text-transform: uppercase; }
+.od h3.mixed { text-transform: none; letter-spacing: -.03em; font-size: calc(var(--u) * 29); line-height: 1.04; }
+.od h3 em { font-style: normal; color: var(--or); }
+.od .sub { margin-top: calc(var(--u) * 12); font: 500 calc(var(--u) * 12)/1.3 'SC Label'; letter-spacing: .16em; text-transform: uppercase; color: var(--mu); }
+.tl { margin-top: calc(var(--u) * 30); }
+.tl .it { position: relative; display: grid; grid-template-columns: calc(var(--u) * 66) 1fr; gap: calc(var(--u) * 12); padding: 0 0 calc(var(--u) * 16) calc(var(--u) * 20); }
+.tl .it::before { content: ''; position: absolute; left: calc(var(--u) * 4); top: calc(var(--u) * 6); width: calc(var(--u) * 9); height: calc(var(--u) * 9); border-radius: 50%; background: #344654; }
+.tl .it::after { content: ''; position: absolute; left: calc(var(--u) * 8); top: calc(var(--u) * 18); bottom: calc(var(--u) * -2); width: 1px; background: #344654; }
+.tl .it:last-child::after { display: none; }
+.tl .it.hot::before { background: var(--or); box-shadow: 0 0 calc(var(--u) * 10) var(--or); }
+.tl b { font: 400 calc(var(--u) * 16) 'SC Display'; white-space: nowrap; font-weight: 400; }
+.tl span { font: 500 calc(var(--u) * 14.5)/1.3 'SC Label'; color: #fff2b3cc; letter-spacing: .03em; }
+.tl em { font-style: normal; color: var(--or); }
+.tl.small { margin-top: calc(var(--u) * 18); opacity: .8; }
+.tl.small .it { padding-bottom: calc(var(--u) * 10); } .tl.small b { font-size: calc(var(--u) * 14); } .tl.small span { font-size: calc(var(--u) * 13.5); }
+.cta { display: flex; align-items: center; justify-content: space-between; height: calc(var(--u) * 58); padding: 0 calc(var(--u) * 22); border-radius: calc(var(--u) * 14); font: 500 calc(var(--u) * 15)/1 'SC Label'; letter-spacing: .18em; text-transform: uppercase; }
+.cta.o { background: var(--or); color: #0b1120; } .cta.ghost { background: #ffffff10; color: var(--ink); }
+.cta + .cta { margin-top: calc(var(--u) * 10); }
+.od .push { margin-top: auto; }
+/* the appointment ticket */
+.appt { margin-top: calc(var(--u) * 22); display: flex; gap: calc(var(--u) * 14); align-items: center; padding: calc(var(--u) * 12); border-radius: calc(var(--u) * 16); background: #0e1a2c; border: 1px solid #2a3d58; border-top: calc(var(--u) * 3) solid var(--rare); }
+.appt .pic { position: relative; flex: none; width: calc(var(--u) * 70); height: calc(var(--u) * 70); }
+.appt .pic img { position: absolute; inset: calc(var(--u) * 7); width: calc(var(--u) * 56); height: calc(var(--u) * 56); border-radius: 50%; object-fit: cover; }
+.appt .pic svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.appt .w { flex: 1; min-width: 0; }
+.appt .k { font: 500 calc(var(--u) * 11)/1.2 'SC Label'; letter-spacing: .16em; text-transform: uppercase; color: var(--rare); }
+.appt .n { font: 400 calc(var(--u) * 17)/1.1 'SC Display'; margin: calc(var(--u) * 3) 0; }
+.appt .d { font: 500 calc(var(--u) * 13)/1.25 'SC Label'; color: var(--mu); letter-spacing: .03em; }
+.appt .free { display: inline-block; margin-top: calc(var(--u) * 5); font: 500 calc(var(--u) * 10.5)/1 'SC Label'; letter-spacing: .14em; text-transform: uppercase; color: var(--unc); border: 1px solid #2c5a40; border-radius: calc(var(--u) * 5); padding: calc(var(--u) * 3) calc(var(--u) * 6); }
+.bellcta { position: relative; overflow: visible; background: transparent !important; }
+.bellcta .tap { left: calc(var(--u) * 296); top: calc(var(--u) * 12); animation: tapping 6s infinite; animation-delay: -.6s; }
+.bellcta .a, .bellcta .b { position: absolute; inset: 0; display: flex; align-items: center; justify-content: space-between; padding: 0 calc(var(--u) * 22); }
+.bellcta .a { animation: ctaA 6s infinite; background: var(--or); color: #0b1120; border-radius: calc(var(--u) * 14); } .bellcta .b { animation: ctaB 6s infinite; background: #0e1a2c; color: var(--or); box-shadow: inset 0 0 0 calc(var(--u) * 1.5) var(--or); border-radius: calc(var(--u) * 14); }
+.bellcta .ico { width: calc(var(--u) * 20); height: calc(var(--u) * 20); }
+.bellcta .b .ico { animation: bellSwing 6s infinite; transform-origin: 50% 10%; }
+@keyframes ctaA { 0%, 44% { opacity: 1; } 48%, 94% { opacity: 0; } 100% { opacity: 1; } }
+@keyframes ctaB { 0%, 44% { opacity: 0; } 48%, 94% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes bellSwing { 0%, 48% { transform: none; } 52% { transform: rotate(18deg); } 56% { transform: rotate(-14deg); } 60% { transform: rotate(8deg); } 64%, 100% { transform: none; } }
+
+/* ── 03 · rare pass first ── */
+.cd { position: relative; margin-top: calc(var(--u) * 16); width: calc(var(--u) * 128); height: calc(var(--u) * 128); }
+.cd svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.cd img { position: absolute; left: 18%; top: 18%; width: 64%; height: 64%; border-radius: 50%; object-fit: cover; }
+.cd .ring { fill: none; stroke: var(--or); stroke-width: 5; stroke-linecap: round; stroke-dasharray: 289 289; transform: rotate(-90deg); transform-origin: 50% 50%; animation: ringDown 60s linear infinite; }
+@keyframes ringDown { from { stroke-dashoffset: 0; } to { stroke-dashoffset: 48; } }
+.clock { counter-reset: m var(--mm) s var(--ss); animation: count 60s linear infinite; --mm: calc(var(--s) / 60 - .5); --ss: calc(var(--s) - var(--mm) * 60); }
+.clock::before { content: counter(m) ':' counter(s, decimal-leading-zero); }
+@keyframes count { from { --s: 359; } to { --s: 300; } }
+.cdt { position: absolute; left: 0; right: 0; bottom: calc(var(--u) * 10); text-align: center; font: 400 calc(var(--u) * 22)/1 'SC Display'; color: var(--ink); text-shadow: 0 0 calc(var(--u) * 10) #000; }
+.cdt small { display: block; margin-top: calc(var(--u) * 3); font: 500 calc(var(--u) * 10.5) 'SC Label'; letter-spacing: .18em; color: var(--mu); text-transform: uppercase; }
+.tc .art .dir { position: absolute; left: calc(var(--u) * 14); top: calc(var(--u) * 12); font: 500 calc(var(--u) * 11) 'SC Label'; letter-spacing: .16em; color: var(--mu); text-transform: uppercase; }
+.tc .art .dir b { color: var(--or); font-weight: 500; }
+.tc .art .nw { position: absolute; left: calc(var(--u) * 16); top: calc(var(--u) * 34); width: calc(var(--u) * 46); height: calc(var(--u) * 46); }
+.tc.waiting { animation: dealIn 7s infinite; }
+@keyframes dealIn { 0% { transform: translateY(40%); } 10%, 100% { transform: none; } }
+/* the waiting pill and the Moon in the circle */
+.wait-pill { left: calc(var(--u) * 128); top: calc(var(--u) * 150); width: calc(var(--u) * 256); height: calc(var(--u) * 46); border-radius: calc(var(--u) * 14); background: rgba(8, 15, 27, .96); border: 1px solid #2a3d58; border-top: calc(var(--u) * 3) solid var(--rare); display: flex; align-items: center; gap: calc(var(--u) * 10); padding: 0 calc(var(--u) * 12) 0 calc(var(--u) * 8); }
+.wait-pill img { width: calc(var(--u) * 30); height: calc(var(--u) * 30); border-radius: 50%; object-fit: cover; }
+.wait-pill .t { flex: 1; font: 500 calc(var(--u) * 13)/1.15 'SC Label'; letter-spacing: .04em; color: var(--ink); }
+.wait-pill .t small { display: block; font-size: calc(var(--u) * 10.5); letter-spacing: .16em; text-transform: uppercase; color: var(--rare); }
+.wait-pill .clock { font: 400 calc(var(--u) * 16) 'SC Display'; color: var(--ink); }
+.moon-in { left: calc(var(--u) * 181); top: calc(var(--u) * 417); width: calc(var(--u) * 40); height: calc(var(--u) * 40); border-radius: 50%; background: radial-gradient(circle at 38% 36%, #fffbe6, #e8dfb8 55%, #b9ae86); box-shadow: 0 0 calc(var(--u) * 26) #fff2b366; }
+.ret-or { left: calc(var(--u) * 135); top: calc(var(--u) * 371); width: calc(var(--u) * 132); height: calc(var(--u) * 132); border-radius: 50%; border: calc(var(--u) * 2.4) solid var(--or); box-shadow: 0 0 calc(var(--u) * 18) #fa812755; animation: breathe 2.2s infinite ease-in-out; }
+@keyframes breathe { 50% { box-shadow: 0 0 calc(var(--u) * 30) #fa812799; } }
+.tk { left: calc(var(--u) * 51); top: calc(var(--u) * 528); width: calc(var(--u) * 300); border-radius: calc(var(--u) * 16); background: rgba(8, 15, 27, .96); border-top: calc(var(--u) * 3) solid var(--or); padding: calc(var(--u) * 10) calc(var(--u) * 14) calc(var(--u) * 12); text-align: center; }
+.tk .k { display: flex; justify-content: space-between; font: 500 calc(var(--u) * 11)/1.2 'SC Label'; letter-spacing: .16em; text-transform: uppercase; color: #c9ccd1; }
+.tk .k span:last-child { color: var(--mu); }
+.tk .n { margin: calc(var(--u) * 5) 0 calc(var(--u) * 9); font: 400 calc(var(--u) * 21)/1 'SC Display'; text-align: left; }
+.tk .c { height: calc(var(--u) * 42); border-radius: 99px; background: #fa812724; box-shadow: inset 0 0 0 1px var(--or); color: var(--or); display: grid; place-items: center; font: 500 calc(var(--u) * 15)/1 'SC Label'; letter-spacing: .2em; text-transform: uppercase; }
+.wait-line { left: calc(var(--u) * 51); top: calc(var(--u) * 640); width: calc(var(--u) * 300); text-align: center; font: 500 calc(var(--u) * 12.5)/1.3 'SC Label'; letter-spacing: .12em; text-transform: uppercase; color: var(--mu); }
+.wait-line b { color: var(--blue); font-weight: 500; }
+
+/* ── 04 · reveal + one lesson ── */
+.rv-bg { position: absolute; inset: 0; background: linear-gradient(#0c1d29, #080f1b); }
+.rv-top { left: calc(var(--u) * 20); right: calc(var(--u) * 20); top: calc(var(--u) * 64); display: flex; justify-content: space-between; align-items: baseline; }
+.rv-top .e { font: 500 calc(var(--u) * 14) 'SC Label'; letter-spacing: .2em; color: var(--or); }
+.rv-top .e i { font-style: normal; color: #5fd08a; margin-left: calc(var(--u) * 8); }
+.rv-top .x { font: 500 calc(var(--u) * 24) 'SC Label'; color: var(--ink); }
+.rc { position: absolute; width: calc(var(--u) * 196); aspect-ratio: 28 / 42; border-radius: calc(var(--u) * 12); background: #0b1626; border: calc(var(--u) * 3) solid #e9dfae; box-shadow: inset 0 0 0 calc(var(--u) * 3) #0b1626, inset 0 0 0 calc(var(--u) * 4) #e9dfae55, 0 calc(var(--u) * 20) calc(var(--u) * 50) #000b; padding: calc(var(--u) * 9); display: flex; flex-direction: column; gap: calc(var(--u) * 6); }
+.rc .w { position: relative; aspect-ratio: 4 / 3; border-radius: calc(var(--u) * 5); overflow: hidden; } .rc .w img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.rc .chip { position: absolute; top: calc(var(--u) * 5); font: 600 calc(var(--u) * 8)/1 'SC Label'; letter-spacing: .14em; padding: calc(var(--u) * 3) calc(var(--u) * 5); border-radius: calc(var(--u) * 3); background: #080f1bcc; text-transform: uppercase; }
+.rc .chip.l { left: calc(var(--u) * 5); color: var(--rare); } .rc .chip.r { right: calc(var(--u) * 5); color: var(--ink); }
+.rc .t { font: 400 calc(var(--u) * 15)/1.05 'SC Display'; text-transform: uppercase; }
+.rc .ty { font: 500 calc(var(--u) * 9.5) 'SC Label'; letter-spacing: .12em; color: var(--mu); text-transform: uppercase; }
+.rc .st { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid #2a3a52; border-bottom: 1px solid #2a3a52; }
+.rc .st div { padding: calc(var(--u) * 4) calc(var(--u) * 3); border-right: 1px solid #2a3a52; font: 400 calc(var(--u) * 11) 'SC Display'; } .rc .st div:last-child { border: 0; }
+.rc .st small { display: block; font: 500 calc(var(--u) * 7) 'SC Label'; letter-spacing: .1em; color: var(--mu); }
+.rc .ln { height: calc(var(--u) * 4); background: #22324a; border-radius: 2px; } .rc .ln.s { width: 66%; }
+.rc .ft { margin-top: auto; display: flex; justify-content: space-between; font: 500 calc(var(--u) * 8) 'SC Label'; letter-spacing: .14em; color: var(--mu); text-transform: uppercase; border-top: 1px solid #2a3a52; padding-top: calc(var(--u) * 4); }
+.teach { left: calc(var(--u) * 16); right: calc(var(--u) * 16); top: calc(var(--u) * 530); border-radius: calc(var(--u) * 18); background: rgba(12, 23, 37, .97); border: 1px solid #2a3d58; border-top: calc(var(--u) * 3) solid var(--gold); padding: calc(var(--u) * 14) calc(var(--u) * 16) calc(var(--u) * 14); animation: teachUp 8s infinite cubic-bezier(.2,.9,.3,1); }
+@keyframes teachUp { 0%, 8% { transform: translateY(120%); opacity: 0; } 18%, 100% { transform: none; opacity: 1; } }
+.teach .k { font: 500 calc(var(--u) * 11) 'SC Label'; letter-spacing: .18em; color: var(--gold); text-transform: uppercase; }
+.teach .h { margin: calc(var(--u) * 4) 0 calc(var(--u) * 12); font: 400 calc(var(--u) * 18)/1.15 'SC Display'; }
+.lv { display: flex; justify-content: space-between; align-items: flex-end; gap: calc(var(--u) * 8); }
+.lv > div { flex: 1; text-align: center; }
+.lv .mc { position: relative; margin: 0 auto; width: calc(var(--u) * 70); aspect-ratio: 28 / 42; border-radius: calc(var(--u) * 7); background: #0b1626; border: calc(var(--u) * 2) solid #e9dfae; padding: calc(var(--u) * 4); display: flex; flex-direction: column; gap: calc(var(--u) * 3); opacity: .4; animation: lvOn 8s infinite; }
+.lv .mc .w { aspect-ratio: 4 / 3; border-radius: calc(var(--u) * 3); overflow: hidden; } .lv .mc img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.lv .mc i { display: block; height: calc(var(--u) * 3); background: #22324a; border-radius: 2px; } .lv .mc i.s { width: 60%; }
+.lv .mc.silver { border-color: #e6edf5; box-shadow: inset 0 0 0 calc(var(--u) * 1.5) #0b1626, inset 0 0 0 calc(var(--u) * 2.5) #e6edf5, 0 0 calc(var(--u) * 10) #cfe0ff44; }
+.lv .mc.gold { border-color: var(--gold); box-shadow: 0 0 calc(var(--u) * 16) #f2c14e88; }
+.lv .mc.bronze { opacity: 1; animation: none; outline: calc(var(--u) * 2) dashed #fa8127aa; outline-offset: calc(var(--u) * 4); }
+.lv .mc.silver { animation-delay: .9s; } .lv .mc.gold { animation-delay: 1.8s; }
+@keyframes lvOn { 0%, 22% { opacity: .4; transform: none; } 27% { opacity: 1; transform: translateY(calc(var(--u) * -6)) scale(1.06); } 32%, 92% { opacity: 1; transform: none; } 100% { opacity: .4; } }
+.lv b { display: block; margin-top: calc(var(--u) * 8); font: 500 calc(var(--u) * 12) 'SC Label'; letter-spacing: .14em; text-transform: uppercase; }
+.lv b.s { color: #dfe7f0; } .lv b.g { color: var(--gold); }
+.lv small { display: block; font: 500 calc(var(--u) * 11) 'SC Label'; letter-spacing: .06em; color: var(--mu); }
+.lv .arrow { flex: none; align-self: center; margin-top: calc(var(--u) * -30); font: 400 calc(var(--u) * 16) 'SC Display'; color: #4a5a74; }
+.teach .ok { margin-top: calc(var(--u) * 12); height: calc(var(--u) * 42); border-radius: calc(var(--u) * 12); background: #ffffff10; display: grid; place-items: center; font: 500 calc(var(--u) * 13) 'SC Label'; letter-spacing: .18em; text-transform: uppercase; }
+.phases { display: flex; justify-content: space-between; margin: calc(var(--u) * 2) 0 calc(var(--u) * 6); }
+.phases div { text-align: center; }
+.phases svg { width: calc(var(--u) * 32); height: calc(var(--u) * 32); display: block; margin: 0 auto; opacity: .35; animation: lvOn 8s infinite; }
+.phases div.on svg { opacity: 1; animation: none; filter: drop-shadow(0 0 calc(var(--u) * 6) #fff2b388); }
+.phases div:nth-child(2) svg { animation-delay: .2s; } .phases div:nth-child(3) svg { animation-delay: .4s; } .phases div:nth-child(4) svg { animation-delay: .6s; }
+.phases div:nth-child(5) svg { animation-delay: .8s; } .phases div:nth-child(6) svg { animation-delay: 1s; } .phases div:nth-child(7) svg { animation-delay: 1.2s; } .phases div:nth-child(8) svg { animation-delay: 1.4s; }
+.phases small { display: block; margin-top: calc(var(--u) * 3); font: 500 calc(var(--u) * 8.5) 'SC Label'; letter-spacing: .08em; color: var(--mu); text-transform: uppercase; }
+.phases .on small { color: var(--or); }
+
+/* ── 06 · the tool ── */
+.tool { width: 560px; max-width: 100%; border: 1.5px dashed #3a4a62; border-radius: 16px; padding: 16px 18px 18px; background: #0a111c; }
+.tool .stamp { display: inline-block; font: 500 11.5px 'SC Label'; letter-spacing: .2em; text-transform: uppercase; color: #04080f; background: var(--steel); border-radius: 5px; padding: 3px 8px; margin-bottom: 12px; }
+.tool .url { font: 12px ui-monospace, Menlo, monospace; color: #7d8aa0; margin-bottom: 12px; }
+.tool table { width: 100%; border-collapse: collapse; font: 13.5px/1.35 ui-monospace, Menlo, monospace; color: #d5dbe4; }
+.tool td { padding: 8px 6px; border-bottom: 1px solid #1d2a3c; vertical-align: middle; }
+.tool td:first-child { color: #a9b4c4; width: 44%; }
+.tool td.v b { color: #fff; font-weight: 600; }
+.tool tr.focus td { background: #fa81270f; } .tool tr.focus td:first-child { color: var(--ink); box-shadow: inset 3px 0 0 var(--or); }
+.tool .bar { height: 8px; border-radius: 4px; background: #1d2a3c; overflow: hidden; width: 120px; display: inline-block; vertical-align: middle; margin-left: 8px; }
+.tool .bar i { display: block; height: 100%; background: var(--or); border-radius: 4px; }
+.tool .bar i.g { background: var(--unc); }
+.tool .delta { font-size: 12px; color: var(--unc); margin-left: 6px; }
+.tool .foot { margin-top: 12px; font: 12.5px/1.45 system-ui; color: #8d93a0; }
+.tool .foot b { color: var(--mu); }
+
+/* ── 07 · daytime home ── */
+.ud { left: calc(var(--u) * 51); top: calc(var(--u) * 528); width: calc(var(--u) * 300); border-radius: calc(var(--u) * 16); background: rgba(8, 15, 27, .96); display: flex; align-items: center; gap: calc(var(--u) * 12); padding: calc(var(--u) * 8) calc(var(--u) * 8) calc(var(--u) * 8) calc(var(--u) * 16); box-shadow: 0 calc(var(--u) * 6) calc(var(--u) * 18) #08101b33; }
+.ud .moon { flex: none; width: calc(var(--u) * 22); height: calc(var(--u) * 22); fill: none; stroke: var(--blue); stroke-width: 1.8; stroke-linejoin: round; }
+.ud .w { flex: 1; min-width: 0; }
+.ud b { display: block; font: 400 calc(var(--u) * 17)/1.1 'SC Display'; font-weight: 400; white-space: nowrap; }
+.ud span { display: block; font: 500 calc(var(--u) * 12)/1.2 'SC Label'; letter-spacing: .08em; text-transform: uppercase; color: #c3c9d1; }
+.ud .bell { flex: none; width: calc(var(--u) * 44); height: calc(var(--u) * 44); border-radius: calc(var(--u) * 12); background: var(--blue); color: #0b1018; display: grid; place-items: center; }
+.ud .bell .ico { width: calc(var(--u) * 19); height: calc(var(--u) * 19); }
+.nowlbl { left: 0; right: 0; top: calc(var(--u) * 604); text-align: center; font: 500 calc(var(--u) * 12) 'SC Label'; letter-spacing: .2em; text-transform: uppercase; color: #142236; text-shadow: 0 0 calc(var(--u) * 6) #ffffffaa; }
+.chips { left: calc(var(--u) * 16); right: calc(var(--u) * 16); top: calc(var(--u) * 626); display: flex; justify-content: center; gap: calc(var(--u) * 8); }
+.chip7 { position: relative; display: flex; align-items: center; gap: calc(var(--u) * 7); height: calc(var(--u) * 44); padding: 0 calc(var(--u) * 12) 0 calc(var(--u) * 5); border-radius: 99px; background: rgba(8, 15, 27, .92); box-shadow: inset 0 0 0 1px #fff2b333; }
+.chip7 img { width: calc(var(--u) * 34); height: calc(var(--u) * 34); border-radius: 50%; object-fit: cover; }
+.chip7 .t { font: 500 calc(var(--u) * 14)/1.05 'SC Label'; letter-spacing: .04em; color: var(--ink); white-space: nowrap; }
+.chip7 .t small { display: block; font-size: calc(var(--u) * 10); letter-spacing: .14em; text-transform: uppercase; color: var(--mu); }
+.chip7.go { animation: chipGo 5s infinite; }
+@keyframes chipGo { 0%, 55% { box-shadow: inset 0 0 0 1px #fff2b333; } 60%, 90% { box-shadow: inset 0 0 0 calc(var(--u) * 1.5) var(--or), 0 0 calc(var(--u) * 14) #fa812766; } 100% { box-shadow: inset 0 0 0 1px #fff2b333; } }
+.chips .tap { left: calc(var(--u) * 140); top: calc(var(--u) * 5); animation: tapping 5s infinite; }
+.plan7 { left: 0; right: 0; top: calc(var(--u) * 690); text-align: center; }
+.plan7 span { display: inline-block; padding: calc(var(--u) * 7) calc(var(--u) * 14); border-radius: 99px; background: #ffffff8c; font: 500 calc(var(--u) * 13)/1 'SC Label'; letter-spacing: .18em; text-transform: uppercase; color: #142236; }
+.aim-arrow { left: calc(var(--u) * 40); top: calc(var(--u) * 418); width: calc(var(--u) * 34); height: calc(var(--u) * 34); border-radius: 50%; background: var(--or); box-shadow: 0 0 0 calc(var(--u) * 6) #fa812744; display: grid; place-items: center; opacity: 0; animation: arrowIn 5s infinite; }
+.aim-arrow::before { content: ''; width: 0; height: 0; border: calc(var(--u) * 7) solid transparent; border-right: calc(var(--u) * 11) solid #0b1018; margin-left: calc(var(--u) * -8); }
+@keyframes arrowIn { 0%, 60% { opacity: 0; transform: translateX(calc(var(--u) * 20)); } 66%, 92% { opacity: 1; transform: none; } 100% { opacity: 0; } }
+.steer { left: calc(var(--u) * 101); top: calc(var(--u) * 340); width: calc(var(--u) * 200); text-align: center; border-radius: calc(var(--u) * 12); background: rgba(8, 15, 27, .9); padding: calc(var(--u) * 6) calc(var(--u) * 10); opacity: 0; animation: arrowIn 5s infinite; }
+.steer small { display: block; font: 500 calc(var(--u) * 10.5) 'SC Label'; letter-spacing: .16em; color: var(--gold); text-transform: uppercase; }
+.steer span { font: 500 calc(var(--u) * 13) 'SC Label'; letter-spacing: .06em; color: var(--ink); }
+/* B: one compact card */
+.dc { left: calc(var(--u) * 41); top: calc(var(--u) * 528); width: calc(var(--u) * 320); border-radius: calc(var(--u) * 18); background: rgba(8, 15, 27, .96); padding: calc(var(--u) * 12) calc(var(--u) * 14); box-shadow: 0 calc(var(--u) * 8) calc(var(--u) * 24) #08101b44; }
+.dc .hd { display: flex; align-items: center; gap: calc(var(--u) * 10); padding-bottom: calc(var(--u) * 10); border-bottom: 1px solid #ffffff14; }
+.dc .hd .moon { flex: none; width: calc(var(--u) * 20); height: calc(var(--u) * 20); fill: none; stroke: var(--blue); stroke-width: 1.8; }
+.dc .hd b { flex: 1; font: 400 calc(var(--u) * 16)/1.1 'SC Display'; font-weight: 400; }
+.dc .hd span { font: 500 calc(var(--u) * 11.5) 'SC Label'; letter-spacing: .12em; text-transform: uppercase; color: #c3c9d1; }
+.dc .lb { margin: calc(var(--u) * 10) 0 calc(var(--u) * 8); font: 500 calc(var(--u) * 11) 'SC Label'; letter-spacing: .18em; text-transform: uppercase; color: var(--or); }
+.dc .tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: calc(var(--u) * 8); }
+.dc .tile { position: relative; text-align: center; border-radius: calc(var(--u) * 10); padding: calc(var(--u) * 6) calc(var(--u) * 4) calc(var(--u) * 7); background: #ffffff08; box-shadow: inset 0 0 0 1px #fff2b322; }
+.dc .tile img { width: calc(var(--u) * 46); height: calc(var(--u) * 46); border-radius: 50%; object-fit: cover; display: block; margin: 0 auto calc(var(--u) * 5); }
+.dc .tile b { display: block; font: 500 calc(var(--u) * 13.5)/1 'SC Label'; letter-spacing: .04em; font-weight: 500; }
+.dc .tile small { display: block; margin-top: calc(var(--u) * 2); font: 500 calc(var(--u) * 10) 'SC Label'; letter-spacing: .12em; text-transform: uppercase; color: var(--mu); }
+.dc .tile .new { position: absolute; top: calc(var(--u) * 4); right: calc(var(--u) * 4); font: 600 calc(var(--u) * 8) 'SC Label'; letter-spacing: .12em; color: #0b1018; background: var(--or); border-radius: calc(var(--u) * 3); padding: calc(var(--u) * 2) calc(var(--u) * 4); }
+.dc .tile.owned { opacity: .7; }
+.dc .ft { display: flex; justify-content: space-between; align-items: center; margin-top: calc(var(--u) * 10); padding-top: calc(var(--u) * 10); border-top: 1px solid #ffffff14; }
+.dc .ft span { font: 500 calc(var(--u) * 13) 'SC Label'; letter-spacing: .16em; text-transform: uppercase; color: var(--ink); }
+.dc .ft .bell { display: flex; align-items: center; gap: calc(var(--u) * 6); height: calc(var(--u) * 34); padding: 0 calc(var(--u) * 12); border-radius: calc(var(--u) * 10); background: var(--blue); color: #0b1018; font: 500 calc(var(--u) * 12) 'SC Label'; letter-spacing: .12em; text-transform: uppercase; }
+.dc .tile.go { animation: chipGo 5s infinite; }
+.dc .tap { left: calc(var(--u) * 50); top: calc(var(--u) * 70); animation: tapping 5s infinite; }
+.cover-bar { left: calc(var(--u) * 40); top: calc(var(--u) * 524); width: calc(var(--u) * 322); height: calc(var(--u) * 74); }
+
+.top { max-width: 1180px; margin-top: 30px; border: 1px solid #6b5a2c; border-radius: 22px; padding: 22px 24px; background: radial-gradient(ellipse at 20% 0%, #1d1a10, #0b1220 60%); }
+.top h2 { font: 400 24px 'SC Display'; margin: 0 0 4px; } .top > p { color: var(--mu); margin: 0 0 16px; }
+.top ol { margin: 0; padding: 0; list-style: none; counter-reset: t; display: grid; gap: 12px; }
+.top li { counter-increment: t; display: grid; grid-template-columns: 44px 1fr; gap: 6px; align-items: baseline; }
+.top li::before { content: counter(t); font: 400 26px 'SC Display'; color: var(--gold); }
+.top li b { font: 400 17px 'SC Display'; font-weight: 400; } .top li span { color: var(--mu); display: block; font-size: 14px; }
+.note { color: #8d93a0; font-size: 13px; max-width: 1100px; margin-top: 26px; }
+.note b { color: var(--mu); }
+@media (prefers-reduced-motion: reduce) { .ph *, .ph *::before { animation-duration: 0s !important; animation-iteration-count: 1 !important; } }
+@media (max-width: 420px) { body { padding: 20px 12px 60px; } .cell { width: 100%; } .tool td:first-child { width: 50%; } .tool .bar { display: none; } }
+
+/* ═══ tour-rethink additions ═══ */
+.tag.n { color: var(--or); border-color: #6a3a18; }
+.cap.rec b::after { content: ' · my pick'; color: var(--gold); }
+.cap.no b { color: #8d93a0; text-decoration: line-through; text-decoration-color: #ff7f7088; }
+.tc .in.tall { height: calc(var(--u) * 466); }
+.tc h3.two { font-size: calc(var(--u) * 25); line-height: 1.02; }
+.tc .art svg { width: 100%; height: 100%; display: block; }
+.tc p.sm { font-size: calc(var(--u) * 13.5); margin-bottom: calc(var(--u) * 10); }
+/* the fork's two big choices */
+.ch { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: calc(var(--u) * 10); margin: calc(var(--u) * 12) 0 calc(var(--u) * 12); }
+.ch > div { position: relative; border-radius: calc(var(--u) * 14); border: 1.5px solid #2a3d58; background: radial-gradient(circle at 50% 38%, #15294a, #0a1222 78%); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: calc(var(--u) * 6); padding: calc(var(--u) * 8); text-align: center; }
+.ch svg { width: calc(var(--u) * 104); height: calc(var(--u) * 84); }
+.ch b { font: 400 calc(var(--u) * 21)/1 'SC Display'; text-transform: uppercase; letter-spacing: -.02em; }
+.ch small { font: 500 calc(var(--u) * 11.5)/1.25 'SC Label'; letter-spacing: .12em; text-transform: uppercase; color: var(--mu); }
+.ch > div.lit { border-color: var(--or); background: radial-gradient(circle at 50% 38%, #3a2412, #120d10 80%); box-shadow: 0 0 calc(var(--u) * 18) #fa812744; }
+.ch > div.lit b { color: var(--or); }
+.ch .guess { position: absolute; top: calc(var(--u) * 7); right: calc(var(--u) * 7); font: 600 calc(var(--u) * 9.5)/1 'SC Label'; letter-spacing: .14em; color: #0b1120; background: var(--or); border-radius: calc(var(--u) * 4); padding: calc(var(--u) * 3) calc(var(--u) * 5); text-transform: uppercase; }
+.ch .tap { left: 50%; top: 50%; margin: calc(var(--u) * -17) 0 0 calc(var(--u) * -17); animation: tapping 4.5s infinite; animation-delay: .8s; }
+.unsure { text-align: center; font: 500 calc(var(--u) * 12.5)/1 'SC Label'; letter-spacing: .18em; text-transform: uppercase; color: var(--mu); padding: calc(var(--u) * 4) 0 calc(var(--u) * 2); }
+.unsure span { border-bottom: 1px dotted #bdbea966; padding-bottom: calc(var(--u) * 2); }
+.ctx { display: flex; justify-content: space-between; margin-top: calc(var(--u) * 2); font: 500 calc(var(--u) * 12)/1.2 'SC Label'; letter-spacing: .16em; text-transform: uppercase; color: var(--mu); padding-bottom: calc(var(--u) * 10); border-bottom: 1px solid #bcb58544; }
+.ctx .hot { color: var(--or); }
+/* new / changed markers on a phone */
+.badge { position: absolute; z-index: 5; font: 600 calc(var(--u) * 10.5)/1 'SC Label'; letter-spacing: .16em; text-transform: uppercase; padding: calc(var(--u) * 4) calc(var(--u) * 7); border-radius: calc(var(--u) * 5); background: var(--or); color: #0b1120; box-shadow: 0 calc(var(--u) * 2) calc(var(--u) * 8) #0008; }
+.badge.ch2 { background: var(--gold); }
+/* the first-target pill, Sevaan's wording */
+.ft-pill { left: calc(var(--u) * 122); top: calc(var(--u) * 148); width: calc(var(--u) * 262); height: calc(var(--u) * 48); border-radius: calc(var(--u) * 14); background: rgba(8, 15, 27, .96); border: 1px solid #2a3d58; border-top: calc(var(--u) * 3) solid var(--rare); display: flex; align-items: center; gap: calc(var(--u) * 9); padding: 0 calc(var(--u) * 12) 0 calc(var(--u) * 8); }
+.ft-pill img { width: calc(var(--u) * 30); height: calc(var(--u) * 30); border-radius: 50%; object-fit: cover; }
+.ft-pill .t { flex: 1; min-width: 0; font: 500 calc(var(--u) * 13.5)/1.1 'SC Label'; letter-spacing: .04em; color: var(--ink); white-space: nowrap; }
+.ft-pill .t small { display: block; font-size: calc(var(--u) * 10.5); letter-spacing: .18em; text-transform: uppercase; color: var(--rare); margin-bottom: calc(var(--u) * 2); }
+.ft-pill .c { font: 400 calc(var(--u) * 17)/1 'SC Display'; color: var(--ink); }
+.ft-pill.go { border-color: #6a3a18; border-top-color: var(--or); animation: pillGo 1.4s infinite ease-in-out; }
+.ft-pill.go .t small { color: var(--or); }
+.ft-pill.go .c { color: var(--or); }
+@keyframes pillGo { 50% { box-shadow: 0 0 calc(var(--u) * 20) #fa812777; } }
+.clock.c2 { animation-name: count2; }
+@keyframes count2 { from { --s: 334; } to { --s: 275; } }
+/* the ticket under the circle (today's target card, redrawn) */
+.tk2 { left: calc(var(--u) * 41); top: calc(var(--u) * 528); width: calc(var(--u) * 320); border-radius: calc(var(--u) * 16); background: rgba(8, 15, 27, .97); border-top: calc(var(--u) * 3) solid var(--tc, var(--or)); display: flex; align-items: center; gap: calc(var(--u) * 12); padding: calc(var(--u) * 10) calc(var(--u) * 12); }
+.tk2 .mini { flex: none; width: calc(var(--u) * 46); aspect-ratio: 28 / 42; border-radius: calc(var(--u) * 5); background: #0b1626; border: calc(var(--u) * 1.5) solid #e9dfae; padding: calc(var(--u) * 3); display: flex; flex-direction: column; gap: calc(var(--u) * 2); }
+.tk2 .mini img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: calc(var(--u) * 2); }
+.tk2 .mini i { display: block; height: calc(var(--u) * 2.5); background: #22324a; border-radius: 2px; }
+.tk2 .w { flex: 1; min-width: 0; }
+.tk2 .k { display: flex; justify-content: space-between; font: 500 calc(var(--u) * 11)/1.2 'SC Label'; letter-spacing: .14em; text-transform: uppercase; color: #c9ccd1; }
+.tk2 .n { margin-top: calc(var(--u) * 3); font: 400 calc(var(--u) * 18)/1.05 'SC Display'; }
+.tk2 .b { flex: none; height: calc(var(--u) * 40); padding: 0 calc(var(--u) * 14); border-radius: 99px; background: #fa812724; box-shadow: inset 0 0 0 1px var(--or); color: var(--or); display: grid; place-items: center; font: 500 calc(var(--u) * 13.5)/1 'SC Label'; letter-spacing: .18em; text-transform: uppercase; }
+.tk2 .b.view { background: #ffffff12; box-shadow: inset 0 0 0 1px #fff2b333; color: var(--mu); }
+.ret-cr { left: calc(var(--u) * 135); top: calc(var(--u) * 371); width: calc(var(--u) * 132); height: calc(var(--u) * 132); border-radius: 50%; border: calc(var(--u) * 2.4) solid #e9dfae; }
+.edge { left: calc(var(--u) * 12); top: calc(var(--u) * 420); width: calc(var(--u) * 34); height: calc(var(--u) * 34); border-radius: 50%; background: var(--or); box-shadow: 0 0 0 calc(var(--u) * 6) #fa812744; display: grid; place-items: center; animation: edgeP 1.2s infinite ease-in-out; }
+.edge::before { content: ''; border: calc(var(--u) * 7) solid transparent; border-right: calc(var(--u) * 11) solid #0b1018; margin-left: calc(var(--u) * -8); }
+@keyframes edgeP { 50% { box-shadow: 0 0 0 calc(var(--u) * 12) #fa812711; } }
+.steer2 { left: calc(var(--u) * 81); top: calc(var(--u) * 528); width: calc(var(--u) * 240); text-align: center; border-radius: calc(var(--u) * 12); background: rgba(8, 15, 27, .94); padding: calc(var(--u) * 7) calc(var(--u) * 10); border-top: calc(var(--u) * 3) solid var(--rare); }
+.steer2 small { display: block; font: 500 calc(var(--u) * 10.5) 'SC Label'; letter-spacing: .16em; color: var(--rare); text-transform: uppercase; }
+.steer2 span { font: 500 calc(var(--u) * 14) 'SC Label'; letter-spacing: .06em; color: var(--ink); white-space: nowrap; }
+.dark-ov { position: absolute; left: 0; right: 0; top: calc(var(--u) * 262); height: calc(var(--u) * 450); background: linear-gradient(#0a162100, #0a1621d9 8%, #0a1621d9 88%, #0a162100); }
+.reti { left: calc(var(--u) * 135); top: calc(var(--u) * 371); width: calc(var(--u) * 132); height: calc(var(--u) * 132); border-radius: 50%; border: calc(var(--u) * 1.6) solid #c9bf94; }
+.reti::before, .reti::after { content: ''; position: absolute; background: #c9bf94; }
+.reti::before { left: 50%; top: calc(var(--u) * -18); width: calc(var(--u) * 1.6); height: calc(var(--u) * 164); margin-left: calc(var(--u) * -.8); -webkit-mask: linear-gradient(#000 0 calc(var(--u) * 12), transparent 0 calc(100% - var(--u) * 12), #000 0); mask: linear-gradient(#000 0 calc(var(--u) * 12), transparent 0 calc(100% - var(--u) * 12), #000 0); }
+.reti::after { top: 50%; left: calc(var(--u) * -18); height: calc(var(--u) * 1.6); width: calc(var(--u) * 164); margin-top: calc(var(--u) * -.8); -webkit-mask: linear-gradient(90deg, #000 0 calc(var(--u) * 12), transparent 0 calc(100% - var(--u) * 12), #000 0); mask: linear-gradient(90deg, #000 0 calc(var(--u) * 12), transparent 0 calc(100% - var(--u) * 12), #000 0); }
+.few { position: absolute; left: 0; right: 0; top: calc(var(--u) * 270); height: calc(var(--u) * 420); background:
+  radial-gradient(1.6px 1.6px at 22% 14%, #fffd 50%, transparent), radial-gradient(1.8px 1.8px at 70% 22%, #fffe 50%, transparent), radial-gradient(1.3px 1.3px at 58% 48%, #fffb 50%, transparent),
+  radial-gradient(1.4px 1.4px at 12% 66%, #fffb 50%, transparent), radial-gradient(2px 2px at 84% 70%, #fff 50%, transparent), radial-gradient(1.3px 1.3px at 38% 86%, #fffb 50%, transparent); }
+.more { position: absolute; left: 0; right: 0; top: calc(var(--u) * 140); height: calc(var(--u) * 560); opacity: .9; background:
+  radial-gradient(1px 1px at 6% 8%, #fff8 50%, transparent), radial-gradient(1px 1px at 18% 30%, #fff7 50%, transparent), radial-gradient(1px 1px at 31% 12%, #fff7 50%, transparent), radial-gradient(1px 1px at 47% 24%, #fff6 50%, transparent),
+  radial-gradient(1px 1px at 63% 9%, #fff7 50%, transparent), radial-gradient(1px 1px at 77% 35%, #fff6 50%, transparent), radial-gradient(1px 1px at 91% 18%, #fff7 50%, transparent), radial-gradient(1px 1px at 9% 47%, #fff6 50%, transparent),
+  radial-gradient(1px 1px at 26% 58%, #fff7 50%, transparent), radial-gradient(1px 1px at 52% 64%, #fff6 50%, transparent), radial-gradient(1px 1px at 71% 54%, #fff7 50%, transparent), radial-gradient(1px 1px at 88% 61%, #fff6 50%, transparent),
+  radial-gradient(1px 1px at 15% 80%, #fff6 50%, transparent), radial-gradient(1px 1px at 44% 92%, #fff7 50%, transparent), radial-gradient(1px 1px at 66% 83%, #fff6 50%, transparent), radial-gradient(1px 1px at 94% 90%, #fff7 50%, transparent),
+  radial-gradient(1px 1px at 36% 40%, #fff6 50%, transparent), radial-gradient(1px 1px at 81% 76%, #fff6 50%, transparent), radial-gradient(1px 1px at 4% 72%, #fff6 50%, transparent), radial-gradient(1px 1px at 57% 34%, #fff7 50%, transparent); }
+/* match your sky: the slider redrawn over the real one */
+.sl-mask { left: calc(var(--u) * 82); top: calc(var(--u) * 716); width: calc(var(--u) * 238); height: calc(var(--u) * 36); background: rgb(10, 22, 33); }
+.sl-track { left: calc(var(--u) * 87); top: calc(var(--u) * 732); width: calc(var(--u) * 226); height: calc(var(--u) * 3); border-radius: 2px; background: #2a3d4c; }
+.sl-fill { left: calc(var(--u) * 87); top: calc(var(--u) * 732); height: calc(var(--u) * 3); border-radius: 2px; background: #7a3e1d; }
+.sl-knob { top: calc(var(--u) * 721); width: calc(var(--u) * 26); height: calc(var(--u) * 26); margin-left: calc(var(--u) * -13); border-radius: 50%; background: rgb(10, 22, 33); border: calc(var(--u) * 2.4) solid #a2572a; }
+.sl-knob.pulse { animation: knobP 1.6s infinite; }
+@keyframes knobP { 0% { box-shadow: 0 0 0 0 #fa8127aa; border-color: #fa8127; } 70%, 100% { box-shadow: 0 0 0 calc(var(--u) * 14) #fa812700; border-color: #a2572a; } }
+.sl-knob.drag { border-color: var(--or); background: var(--or); box-shadow: 0 0 calc(var(--u) * 14) #fa812799; }
+.sl-fill.drag { background: var(--or); }
+.sl-knob.rest { border-color: #e9dfae; background: #e9dfae; }
+.sl-fill.rest { background: #c9a978; }
+.finger { width: calc(var(--u) * 34); height: calc(var(--u) * 34); margin: calc(var(--u) * -17) 0 0 calc(var(--u) * -17); border-radius: 50%; border: 2px solid #fffa; background: #ffffff22; }
+.ms { left: calc(var(--u) * 41); width: calc(var(--u) * 320); border-radius: calc(var(--u) * 16); background: rgba(8, 15, 27, .97); border: 1px solid #2a3d58; border-top: calc(var(--u) * 3) solid var(--gold); padding: calc(var(--u) * 11) calc(var(--u) * 14) calc(var(--u) * 12); }
+.ms::after { content: ''; position: absolute; left: var(--ax, calc(var(--u) * 120)); bottom: calc(var(--u) * -9); margin-left: calc(var(--u) * -9); border: calc(var(--u) * 9) solid transparent; border-bottom: 0; border-top-color: rgba(8, 15, 27, .97); filter: drop-shadow(0 1px 0 #2a3d58); }
+.ms .k { display: flex; justify-content: space-between; font: 500 calc(var(--u) * 11)/1.2 'SC Label'; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); }
+.ms .k span:last-child { color: var(--mu); letter-spacing: 0; font-size: calc(var(--u) * 15); line-height: .7; }
+.ms .h { margin-top: calc(var(--u) * 5); font: 500 calc(var(--u) * 15.5)/1.28 'SC Label'; letter-spacing: .02em; color: var(--ink); }
+.ms .big { margin-top: calc(var(--u) * 4); font: 400 calc(var(--u) * 22)/1 'SC Display'; }
+.ms .big small { font: 500 calc(var(--u) * 13) 'SC Label'; letter-spacing: .08em; color: var(--mu); margin-left: calc(var(--u) * 6); }
+.ms .f { margin-top: calc(var(--u) * 6); font: 500 calc(var(--u) * 11)/1.2 'SC Label'; letter-spacing: .14em; text-transform: uppercase; color: #8d93a0; }
+.ms .ok { color: var(--unc); }
+.ms.fade { animation: msOut 6s infinite; }
+@keyframes msOut { 0%, 70% { opacity: 1; } 85%, 100% { opacity: 0; transform: translateY(calc(var(--u) * 8)); } }
+.setrow { left: calc(var(--u) * 25); top: calc(var(--u) * 472); width: calc(var(--u) * 352); height: calc(var(--u) * 50); background: #080f1b; border-top: 1px solid #1d2a3c; display: flex; align-items: center; gap: calc(var(--u) * 14); padding: 0 calc(var(--u) * 14) 0 calc(var(--u) * 13); box-shadow: inset 0 0 0 1px #fa812744; }
+.setrow .ic { width: calc(var(--u) * 18); height: calc(var(--u) * 18); color: var(--ink); }
+.setrow .w { flex: 1; min-width: 0; }
+.setrow b { display: block; font: 500 calc(var(--u) * 15.5)/1.15 'SC Label'; letter-spacing: .03em; color: var(--ink); font-weight: 500; }
+.setrow small { display: block; font: 500 calc(var(--u) * 12)/1.2 'SC Label'; letter-spacing: .03em; color: var(--mu); }
+.setrow .go { font: 500 calc(var(--u) * 13.5) 'SC Label'; letter-spacing: .18em; color: var(--or); text-transform: uppercase; }
+/* inside Tonight page tweaks */
+.od h3.mixed.sm { font-size: calc(var(--u) * 27); }
+.caught { margin-top: calc(var(--u) * 22); display: flex; gap: calc(var(--u) * 12); }
+.caught .c { flex: 1; display: flex; align-items: center; gap: calc(var(--u) * 10); padding: calc(var(--u) * 9); border-radius: calc(var(--u) * 14); background: #0e1a2c; border: 1px solid #2a3d58; border-top: calc(var(--u) * 3) solid var(--tc, var(--rare)); }
+.caught img { width: calc(var(--u) * 40); height: calc(var(--u) * 40); border-radius: 50%; object-fit: cover; }
+.caught b { display: block; font: 400 calc(var(--u) * 14)/1.1 'SC Display'; font-weight: 400; }
+.caught small { display: block; margin-top: calc(var(--u) * 2); font: 500 calc(var(--u) * 10.5) 'SC Label'; letter-spacing: .14em; text-transform: uppercase; color: var(--tc, var(--rare)); }
+.ask { margin-top: calc(var(--u) * 8); text-align: center; font: 500 calc(var(--u) * 11.5)/1.3 'SC Label'; letter-spacing: .12em; text-transform: uppercase; color: #8d93a0; }
+/* the flow diagram */
+.flow { max-width: 1180px; border: 1px solid var(--line); border-radius: 18px; background: #070d17; padding: 14px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.flow svg { display: block; width: 100%; min-width: 980px; height: auto; }
+.flow-key { display: flex; gap: 18px; flex-wrap: wrap; font: 500 12.5px 'SC Label'; letter-spacing: .14em; text-transform: uppercase; color: var(--mu); margin: 0 0 10px 4px; }
+.flow-key i { display: inline-block; width: 22px; height: 12px; border-radius: 3px; vertical-align: -1px; margin-right: 6px; }
+.why { max-width: 820px; margin: 14px 0 0; padding: 14px 16px; border-radius: 14px; border: 1px solid var(--line); background: #0a111c; font-size: 13.5px; color: var(--mu); }
+.why b { color: var(--ink); font-weight: 600; }
+.why ul { margin: 6px 0 0; padding-left: 18px; } .why li { margin: 3px 0; }
+.qs { max-width: 1180px; margin-top: 30px; border: 1px solid #2c3b52; border-radius: 22px; padding: 22px 24px; background: #0a111c; }
+.qs h2 { font: 400 24px 'SC Display'; margin: 0 0 4px; } .qs > p { color: var(--mu); margin: 0 0 16px; }
+.qs dl { margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px 22px; }
+.qs dt { font: 400 16px/1.2 'SC Display'; color: var(--ink); }
+.qs dd { margin: 4px 0 0; color: var(--mu); font-size: 13.5px; }
+.qs dd b { color: var(--gold); font-weight: 600; }
+code { font: 12.5px ui-monospace, Menlo, monospace; color: #c9d3e1; background: #ffffff0d; padding: 1px 5px; border-radius: 4px; }
+@media (max-width: 420px) { .qs, .top { padding: 18px 16px; } .flow { padding: 10px; } }
+
+.row + .today, .row + .why { margin-top: 22px; }
+.flow-hint { display: none; font: 500 12px 'SC Label'; letter-spacing: .14em; text-transform: uppercase; color: var(--or); margin: 0 0 8px 4px; }
+@media (max-width: 1000px) { .flow-hint { display: block; } }
+</style></head><body>
+<h1>Inside or out</h1>
+<p class="lead">The tour doesn’t know where the player is. Most people install it indoors and by day, yet two of our best first-night ideas only work for someone outside in the dark. This board adds one quick question to the tour and shows what changes for each answer. It also covers a separate “match your sky” moment that waits until the player really is outside at night.</p>
+<p class="how"><b>How to read it:</b> each mock-up sits on a real capture of today’s app (Toronto, Oct 25, a fresh player), with the proposed part drawn on top. Grey <b>Today</b> captions show the app as it is now. Orange captions are the proposal, and gold marks <b>my pick</b>. Times and passes are examples. Sister board: <a href="first-night.html" style="color:var(--or)">The first night</a>.</p>
+
+<!-- ═══════════════ THE FORK ═══════════════ -->
+<div class="sec"><b>The question</b> · one tap that tells the tour where you are</div>
+
+<div class="idea">
+<h2><span class="no">01</span>“Where are you right now?”</h2>
+<p>A card with two big choices, <b>Inside</b> and <b>Outside</b>, each with a small line drawing, plus a quiet <b>Not sure</b> link underneath. No permission is asked and nothing can go wrong, so it’s one tap. The answer changes the copy on the motion card, the first target and the last page of the tour. The clock and location already tell us whether it’s dark.</p>
+<p><b>Where it goes:</b> A puts it first. B puts it after location, which I prefer. Once the place is known, the card can say real things (“2:14 PM in Toronto · dark at 6:43 PM”). The location ask also still comes while the player is paying full attention, and the woken sky is already behind the card.</p>
+<div class="tags"><span class="tag s">Small</span><span class="tag f">One new tour card · copy</span></div>
+<div class="row">
+  <div class="cell"><div class="ph" style="background-image:url(tour-rethink/day-t1.webp)"></div>
+    <p class="cap today"><b>Today · step 1</b></p><p class="cn">Location first, then motion, then notifications. Nothing asks where you are.</p></div>
+  <div class="cell"><div class="ph" style="background-image:url(tour-rethink/day-t1.webp)">
+    <div class="tc"><div class="in"><div class="bar"><span>Space Collector</span><span class="tier">◆ Step 1 of 3</span></div>
+      <h3 class="two">Where are you right now?</h3><div class="ctx"><span>So we start you right</span><span></span></div>
+      <div class="ch"><div><svg viewBox="0 0 104 84" fill="none" stroke="#fff2b3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 46 L52 16 L90 46"/><path d="M24 40 V80 H80 V40"/><path d="M44 80 V62 H58 V80"/><rect x="62" y="50" width="10" height="9"/><path d="M52 58 L78 8" stroke="#fa8127" stroke-dasharray="2 4"/><circle cx="80" cy="6" r="2.2" fill="#fa8127" stroke="none"/><circle cx="20" cy="10" r="1.2" fill="#fff2b3" stroke="none"/><circle cx="34" cy="4" r="1" fill="#fff2b3" stroke="none"/></svg><b>Inside</b><small>Indoors, anywhere</small></div>
+        <div><svg viewBox="0 0 104 84" fill="none" stroke="#fff2b3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 74 Q52 66 100 74"/><path d="M16 74 L22 50 L28 74 M18 64 h8 M86 74 L91 54 L96 74 M88 66 h6"/><path d="M50 74 v-10 M50 64 l-4 6 M50 64 l4 6 M50 60 a3 3 0 1 0 .1 0" /><path d="M78 30a10 10 0 1 1 -13 -14a8 8 0 0 0 13 14z" fill="#fff2b3" stroke="none"/><circle cx="24" cy="18" r="1.4" fill="#fff2b3" stroke="none"/><circle cx="42" cy="8" r="1.1" fill="#fff2b3" stroke="none"/><circle cx="58" cy="30" r="1.2" fill="#fff2b3" stroke="none"/><path d="M30 34 L46 26" stroke="#fa8127" stroke-dasharray="2 4"/></svg><b>Outside</b><small>Under the open sky</small></div></div>
+      <div class="unsure"><span>Not sure</span></div></div></div></div>
+    <p class="cap"><b>A · The very first card</b></p><p class="cn">Over the blurred, asleep sky. It reads as a plain sorting question. It can’t say anything about your sky yet, because we don’t know where you are.</p></div>
+  <div class="cell"><div class="ph" style="background-image:url(tour-rethink/day-tsky.webp)">
+    <div class="tc"><div class="in"><div class="bar"><span>Space Collector</span><span class="tier">◆ Step 2 of 3</span></div>
+      <h3 class="two">Where are you right now?</h3><div class="ctx"><span>2:14 PM · Toronto</span><span class="hot">Dark at 6:43 PM</span></div>
+      <div class="ch"><div><svg viewBox="0 0 104 84" fill="none" stroke="#fff2b3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 46 L52 16 L90 46"/><path d="M24 40 V80 H80 V40"/><path d="M44 80 V62 H58 V80"/><rect x="62" y="50" width="10" height="9"/><path d="M52 58 L78 8" stroke="#fa8127" stroke-dasharray="2 4"/><circle cx="80" cy="6" r="2.2" fill="#fa8127" stroke="none"/><circle cx="20" cy="10" r="1.2" fill="#fff2b3" stroke="none"/><circle cx="34" cy="4" r="1" fill="#fff2b3" stroke="none"/></svg><b>Inside</b><small>Indoors, anywhere</small></div>
+        <div><svg viewBox="0 0 104 84" fill="none" stroke="#fff2b3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 74 Q52 66 100 74"/><path d="M16 74 L22 50 L28 74 M18 64 h8 M86 74 L91 54 L96 74 M88 66 h6"/><path d="M50 74 v-10 M50 64 l-4 6 M50 64 l4 6 M50 60 a3 3 0 1 0 .1 0" /><circle cx="78" cy="22" r="9" fill="#fff2b3" stroke="none"/><path d="M78 6v4 M78 34v4 M62 22h4 M90 22h4 M67 11l3 3 M86 30l3 3 M89 11l-3 3 M70 30l-3 3" stroke-width="1.6"/><path d="M30 40 L60 28" stroke="#fa8127" stroke-dasharray="2 4"/></svg><b>Outside</b><small>Under the open sky</small><span class="tap"></span></div></div>
+      <div class="unsure"><span>Not sure</span></div></div></div></div>
+    <p class="cap rec"><b>B · Right after location</b></p><p class="cn">The sky has just woken behind it. The card knows the time and when it gets dark, and the Outside drawing turns from Moon to Sun by day. The step count stays at 3 (see 07).</p></div>
+  <div class="cell"><div class="ph" style="background-image:url(tour-rethink/day-tsky.webp)">
+    <div class="tc"><div class="in"><div class="bar"><span>Space Collector</span><span class="tier">◆ Step 2 of 3</span></div>
+      <h3 class="two">Where are you right now?</h3><div class="ctx"><span>2:14 PM · Toronto</span><span class="hot">Dark at 6:43 PM</span></div>
+      <div class="ch"><div class="lit"><span class="guess">Likely</span><svg viewBox="0 0 104 84" fill="none" stroke="#fa8127" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 46 L52 16 L90 46"/><path d="M24 40 V80 H80 V40"/><path d="M44 80 V62 H58 V80"/><rect x="62" y="50" width="10" height="9"/><path d="M52 58 L78 8" stroke-dasharray="2 4"/><circle cx="80" cy="6" r="2.2" fill="#fa8127" stroke="none"/></svg><b>Inside</b><small>Indoors, anywhere</small></div>
+        <div><svg viewBox="0 0 104 84" fill="none" stroke="#fff2b3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 74 Q52 66 100 74"/><path d="M16 74 L22 50 L28 74 M18 64 h8 M86 74 L91 54 L96 74 M88 66 h6"/><path d="M50 74 v-10 M50 64 l-4 6 M50 64 l4 6 M50 60 a3 3 0 1 0 .1 0" /><circle cx="78" cy="22" r="9" fill="#fff2b3" stroke="none"/></svg><b>Outside</b><small>Under the open sky</small></div></div>
+      <div class="unsure"><span>Not sure</span></div></div></div></div>
+    <p class="cap no"><b>C · Inside pre-lit by day</b></p><p class="cn">Tempting, since it’s nearly always right by day. But people tap the lit one without reading, which makes the answer worthless as data. I’d have no default; the time line in B already does the nudging.</p></div>
+</div>
+<p class="today"><b>Recommendation:</b> B, with no default and both choices the same weight. “Not sure” behaves like Inside, because that copy is safe anywhere (“point your phone anywhere”), and it’s recorded as <code>where: 'unsure'</code>. At night the card reads “9:30 PM · Toronto · It’s dark now”, and the Outside drawing shows the Moon.</p>
+</div>
+
+<!-- ═══════════════ BRANCHES ═══════════════ -->
+<div class="sec"><b>The three ways through</b> · inside · outside at night · outside by day</div>
+
+<div class="idea">
+<h2><span class="no">02</span>Inside: point anywhere, then make a date</h2>
+<p>Nothing scary and no “go outside” wall. The motion card says the sky follows the phone even through the ceiling, and the first card is still the Sun or Moon, caught through the roof (that already works today; we just never say so). The tour ends on the appointment page from the first-night board, now worded as a call to go out: <b>“Head out at 7:52 PM for the Space Station.”</b> The button on that page is where notifications get asked for.</p>
+<div class="tags"><span class="tag s">Small</span><span class="tag f">Copy only · uses today’s appointment page</span></div>
+<div class="row">
+  <div class="cell"><div class="ph" style="background-image:url(tour-rethink/day-tsky.webp)">
+    <div class="tc"><div class="in"><div class="bar"><span>Space Collector</span><span class="tier">◆ Step 3 of 3</span></div>
+      <h3>Point and look</h3><div class="sub"><span>Inside works fine</span><span></span></div>
+      <div class="art"><svg viewBox="0 0 300 120" aria-hidden="true"><path d="M70 112 L150 70 L230 112" fill="none" stroke="#fff2b3" stroke-opacity=".35" stroke-width="1.5" stroke-dasharray="4 5"/><g transform="translate(150 58)"><rect x="-22" y="-40" width="44" height="80" rx="9" fill="#0c1725" stroke="#fff2b3" stroke-width="2"/><circle r="12" fill="none" stroke="#fa8127" stroke-width="2"/><circle r="2.4" fill="#fa8127"/></g><g fill="none" stroke="#fa8127" stroke-width="1.6" stroke-linecap="round"><path d="M92 36 Q70 58 92 80"/><path d="M78 26 Q48 58 78 90" opacity=".5"/><path d="M208 36 Q230 58 208 80"/><path d="M222 26 Q252 58 222 90" opacity=".5"/></g><circle cx="262" cy="16" r="6" fill="#fff2b3"/><circle cx="40" cy="20" r="1.4" fill="#fff2b3"/></svg></div>
+      <p>The sky is up there even through the roof. Turn on motion and point your phone anywhere. The circle shows what’s there.</p>
+      <div class="acts"><span class="no">Use a finger</span><span class="yes">Allow motion</span></div></div></div></div>
+    <p class="cap"><b>1 · Motion, said for indoors</b></p><p class="cn">Same card, new words. Outside it reads “Hold your phone up like a window on the sky.”</p></div>
+  <div class="cell"><div class="ph" style="background-image:url(tour-rethink/day-tsky.webp)">
+    <div class="tc gold"><div class="in"><div class="bar"><span>Space Collector</span><span class="tier">◆ Your first card</span></div>
+      <h3>Catch the Sun</h3><div class="sub"><span>Through the roof</span><span class="hot">Halfway up · south</span></div>
+      <div class="art"><svg viewBox="0 0 300 130" aria-hidden="true"><path d="M40 124 L150 66 L260 124" fill="none" stroke="#fff2b3" stroke-opacity=".35" stroke-width="1.5" stroke-dasharray="4 5"/><circle cx="130" cy="78" r="26" fill="none" stroke="#fff2b3" stroke-opacity=".6" stroke-width="1.5"/><circle cx="130" cy="78" r="3" fill="#fff2b3" opacity=".7"/><path d="M156 66 L214 38" stroke="#fa8127" stroke-width="3" stroke-linecap="round"/><path d="M218 36 L203 35 L210 47 Z" fill="#fa8127"/><circle cx="244" cy="26" r="13" fill="#fff2b3"/><circle cx="244" cy="26" r="22" fill="#fff2b3" opacity=".14"/><text x="130" y="122" text-anchor="middle" fill="#fa8127" font-family="SC Label, Arial Narrow, sans-serif" font-size="12" letter-spacing="2">TURN RIGHT A LITTLE · UP</text></svg></div>
+      <p>It’s up there now, ceiling or not. Follow the arrow, then tap Collect. Aim the phone, never your eyes.</p>
+      <div class="acts"><span class="yes">Show me where</span></div></div></div></div>
+    <p class="cap"><b>2 · The first card, through the roof</b></p><p class="cn">The dashed roofline in the picture says it before the words do. Same live arrow as today.</p></div>
+  <div class="cell"><div class="ph"><div class="od"><span class="x">✕</span>
+    <span class="ey">Your first card · the Sun</span><h3 class="mixed">Head out at 7:52 PM for the <em>Space Station</em>.</h3><span class="sub">It’s dark from 6:43 PM. We’ll tell you when to step outside.</span>
+    <div class="appt"><div class="pic"><svg viewBox="0 0 70 70"><circle cx="35" cy="35" r="32" fill="none" stroke="#2a3d58" stroke-width="3"/><circle cx="35" cy="35" r="32" fill="none" stroke="#4da3ff" stroke-width="3" stroke-dasharray="150 201" transform="rotate(-90 35 35)" stroke-linecap="round"/></svg><img src="../assets/art/cards/sm/iss.webp" alt=""></div>
+      <div class="w"><div class="k">◆ Rare · in 5 h 38 min</div><div class="n">Space Station</div><div class="d">Rises in the west, climbs high in the south</div><span class="free">Reminders for it are free</span></div></div>
+    <div class="tl small"><div class="it"><b>6:43</b><span>Dark</span></div><div class="it"><b>8:40</b><span>Busiest · 41 up at once</span></div></div>
+    <div class="push"></div>
+    <div class="cta o bellcta"><span class="a"><span>Tell me at 7:42 PM</span><span class="ico" data-ico="bell"></span></span><span class="b"><span>✓ We’ll tell you at 7:42</span><span class="ico" data-ico="bell"></span></span><span class="tap"></span></div>
+    <div class="cta ghost"><span>Explore the sky</span><span>→</span></div></div></div>
+    <p class="cap"><b>3 · Ends on a date</b></p><p class="cn">The headline is an instruction, not a fact. This is the one place we ask for notifications, and it’s for something they want.</p></div>
+  <div class="cell"><div class="ph" style="background-image:url(tour-rethink/appt-today.webp);background-color:#080f1b"></div>
+    <p class="cap today"><b>Today · the close (built Oct 25)</b></p><p class="cn">Real capture: no evening ISS over Toronto this week, so it falls back to the headliner (Tiangong). The proposal only changes the words.</p></div>
+</div>
+<p class="today"><b>Inside at night:</b> same flow, but the last page skips the date and says “It’s dark out now. Step outside and the circle will show you more.” The Match card in 05 catches them later if they do go out.</p>
+</div>
+
+<div class="idea">
+<h2><span class="no">03</span>Outside at night: the first target can be the big one</h2>
+<p>This is the only branch where the rare-first idea makes sense. If the ISS or a Rare-or-better pass rises within <b>15 minutes</b>, the gold card offers it with a countdown. While they wait, they catch the Moon (or the surest thing up), and a pill under the header keeps the clock: <b>FIRST TARGET · Space Station · NW · 5:34</b>. At 1:00 left the pill turns orange and the arrow swings back. If nothing big is near, today’s surest-catch card plays as it does now.</p>
+<div class="tags"><span class="tag m">Medium</span><span class="tag f">Tour logic · a pill · one switch</span></div>
+<div class="row">
+  <div class="cell"><div class="ph" style="background-image:url(tour-rethink/night-tsky.webp)">
+    <div class="tc gold"><div class="in"><div class="bar"><span>Space Collector</span><span class="tier">◆ First target</span></div>
+      <h3>The Space Station</h3><div class="sub"><span>Rises in the NW</span><span class="hot">in <span class="clock"></span></span></div>
+      <div class="art"><span class="dir">Look <b>northwest</b> · low</span>
+        <div class="cd"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="none" stroke="#2a3a52" stroke-width="5"/><circle class="ring" cx="50" cy="50" r="46"/><path d="M50 -1v8 M50 93v8 M-1 50h8 M93 50h8" stroke="#fa8127" stroke-width="3"/></svg><img src="../assets/art/cards/sm/iss.webp" alt=""></div></div>
+      <p>The brightest thing passing tonight, and it’s nearly here. Catch the Moon while you wait.</p>
+      <div class="acts"><span class="no">Catch the Moon</span><span class="yes">Show me where</span></div></div></div></div>
+    <p class="cap"><b>1 · The assignment</b></p><p class="cn">“First target” in the corner (Sevaan’s wording), live countdown, ring emptying. “Catch the Moon” is the easy way to start.</p></div>
+  <div class="cell"><div class="ph" style="background-image:url(tour-rethink/night-sky.webp)">
+    <div class="ab ft-pill"><img src="../assets/art/cards/sm/iss.webp" alt=""><span class="t"><small>First target</small>Space Station · NW</span><span class="c clock c2"></span></div>
+    <div class="ab ret-or"></div><div class="ab moon-in"></div>
+    <div class="ab tk2"><span class="mini"><img src="../assets/art/cards/sm/moon.webp" alt=""><i></i><i></i></span><span class="w"><span class="k"><span>● Common</span><span>384,000 km</span></span><span class="n" style="display:block">The Moon</span></span><span class="b">Collect</span></div>
+    <div class="ab wait-line" style="top:calc(var(--u) * 602)">Then back to the <b>Space Station</b> at 1:00 left</div></div>
+    <p class="cap"><b>2 · While you wait</b></p><p class="cn">The Moon is in the circle with Collect. The pill sits under the header, clear of the radar, and keeps counting. Tap it to aim back early.</p></div>
+  <div class="cell"><div class="ph" style="background-image:url(tour-rethink/night-sky.webp)">
+    <div class="ab ft-pill go"><img src="../assets/art/cards/sm/iss.webp" alt=""><span class="t"><small>First target · rising</small>Space Station · NW</span><span class="c">1:00</span></div>
+    <div class="ab ret-cr"></div><div class="ab edge"></div>
+    <div class="ab steer2"><small>Space Station · rises in 1:00</small><span>← Turn left · low in the northwest</span></div>
+    <div class="badge" style="right:calc(var(--u) * 18);top:calc(var(--u) * 210)">✓ Moon caught</div></div>
+    <p class="cap"><b>3 · The switch at 1:00</b></p><p class="cn">After the Moon’s reveal, the pill goes orange and pulses, the arrow at the edge points round to it, and the line under the circle steers. Their Moon now shows the plain cream circle.</p></div>
+  <div class="cell"><div class="ph"><div class="od"><span class="x">✕</span>
+    <span class="ey">Your first night · 2 cards</span><h3 class="mixed sm">You caught the <em>Space Station</em> on night one.</h3><span class="sub">Clear until 2 AM · 41 up at 8:40 PM</span>
+    <div class="caught"><div class="c"><img src="../assets/art/cards/sm/iss.webp" alt=""><span><b>Space Station</b><small>◆ Rare · +40 XP</small></span></div><div class="c" style="--tc:#c9ccd1"><img src="../assets/art/cards/sm/moon.webp" alt=""><span><b>The Moon</b><small>● Common · +10 XP</small></span></div></div>
+    <div class="tl small" style="opacity:1;margin-top:calc(var(--u) * 22)"><div class="it hot"><b>8:40</b><span>Busiest · 41 up at once</span></div><div class="it"><b>9:15</b><span><em>Tiangong</em> · Rare · new to you</span></div><div class="it"><b>7:08</b><span>Dawn: the sky closes</span></div></div>
+    <div class="push"></div>
+    <div class="cta o"><span>Tell me when to look up</span><span class="ico" data-ico="bell"></span></div><div class="ask">Clear nights and big passes · two a day at most</div>
+    <div class="cta ghost"><span>Keep exploring</span><span>→</span></div></div></div>
+    <p class="cap"><b>4 · How it ends</b></p><p class="cn">Both cards, then what’s still to come tonight. The notification ask lives on this page’s button. The one-time lesson panel plays on the ISS reveal before this.</p></div>
+</div>
+<p class="today"><b>Missed it?</b> If the pass is lost (behind a tree, under cloud, or they wandered off), the pill reads “Missed it · next pass Tue 6:12 AM” for a minute and the tour ends on their Moon. It isn’t a failure, just a date. <b>No big pass within 15 min:</b> today’s card (“Catch the Moon · Low in the east”) runs unchanged.</p>
+</div>
+
+<div class="idea">
+<h2><span class="no">04</span>Outside by day: same as inside, plus a time</h2>
+<p>They’re already outdoors, so the message isn’t “go out later” but “stay, or come back at dark”. Everything else is the Inside flow: the Sun (or a daytime Moon) first, then a date. The ISS can’t be seen in daylight, so rare-first never applies here.</p>
+<div class="tags"><span class="tag s">Small</span><span class="tag f">Copy only</span></div>
+<div class="row">
+  <div class="cell"><div class="ph" style="background-image:url(tour-rethink/day-tsky.webp)">
+    <div class="tc gold"><div class="in"><div class="bar"><span>Space Collector</span><span class="tier">◆ Your first card</span></div>
+      <h3>Catch the Sun</h3><div class="sub"><span>Our star</span><span class="hot">Halfway up · south</span></div>
+      <div class="art"><svg viewBox="0 0 300 120" aria-hidden="true"><circle cx="150" cy="60" r="30" fill="none" stroke="#fff2b3" stroke-opacity=".6" stroke-width="1.5"/><circle cx="150" cy="60" r="36" fill="none" stroke="#627a8b" stroke-opacity=".5" stroke-dasharray="2 5"/><path d="M186 60 L222 60" stroke="#fa8127" stroke-width="3" stroke-linecap="round"/><path d="M228 60 L216 52 L216 68 Z" fill="#fa8127"/><circle cx="150" cy="60" r="3" fill="#fff2b3" opacity=".7"/><text x="150" y="114" text-anchor="middle" fill="#fa8127" font-family="SC Label, Arial Narrow, sans-serif" font-size="12" letter-spacing="2">TURN RIGHT A LITTLE</text></svg></div>
+      <p>The stars come out at 6:43 PM. Until then, the Sun is the one to catch. Aim the phone, never your eyes.</p>
+      <div class="acts"><span class="yes">Show me where</span></div></div></div></div>
+    <p class="cap"><b>1 · The first card</b></p><p class="cn">Today’s card with one honest line on top: you’re early, and here’s when it gets good.</p></div>
+  <div class="cell"><div class="ph"><div class="od"><span class="x">✕</span>
+    <span class="ey">Your first card · the Sun</span><h3 class="mixed">The stars come out at <em>6:43 PM</em>.</h3><span class="sub">Stay out, or we’ll call you back for the Space Station at 7:52.</span>
+    <div class="appt"><div class="pic"><svg viewBox="0 0 70 70"><circle cx="35" cy="35" r="32" fill="none" stroke="#2a3d58" stroke-width="3"/><circle cx="35" cy="35" r="32" fill="none" stroke="#4da3ff" stroke-width="3" stroke-dasharray="150 201" transform="rotate(-90 35 35)" stroke-linecap="round"/></svg><img src="../assets/art/cards/sm/iss.webp" alt=""></div>
+      <div class="w"><div class="k">◆ Rare · 7:52 PM</div><div class="n">Space Station</div><div class="d">Rises in the west, climbs high in the south</div><span class="free">Reminders for it are free</span></div></div>
+    <div class="tl small"><div class="it"><b>6:43</b><span>Stars out · Venus first, low in the SW</span></div><div class="it"><b>8:40</b><span>Busiest · 41 up at once</span></div></div>
+    <div class="push"></div>
+    <div class="cta o"><span>Tell me at 7:42 PM</span><span class="ico" data-ico="bell"></span></div>
+    <div class="cta ghost"><span>Explore the sky</span><span>→</span></div></div></div>
+    <p class="cap"><b>2 · Ends on dark</b></p><p class="cn">Leads with dark instead of the pass, because they’re already out. Same ticket and button as Inside.</p></div>
+</div>
+</div>
+
+<!-- ═══════════════ MATCH YOUR SKY ═══════════════ -->
+<div class="sec"><b>Later, outside</b> · the sky slider, matched to the real sky</div>
+
+<div class="idea">
+<h2><span class="no">05</span>“Match your sky”, once, when they’re really out</h2>
+<p>Replaces the old “compare it with Orion” idea, and isn’t part of the tour. It shows <b>once</b>, the first time the app is open after dark with motion live and the phone held above about 20° for about 10 seconds (so they’re outside, looking up) with nothing in the circle. A small card sits just above the sky slider with an arrow pointing down at it, and the knob pulses. They slide until the screen looks like the sky, and the readout says what that means.</p>
+<div class="tags"><span class="tag m">Medium</span><span class="tag f">One card · a trigger · Settings row</span></div>
+<div class="row">
+  <div class="cell"><div class="ph" style="background-image:url(tour-rethink/night-sky.webp)">
+    <div class="more"></div>
+    <div class="ab sl-mask"></div><div class="ab sl-track"></div><div class="ab sl-fill" style="width:calc(var(--u) * 74)"></div><div class="ab sl-knob pulse" style="left:calc(var(--u) * 161)"></div>
+    <div class="ab ms" style="top:calc(var(--u) * 596);--ax:calc(var(--u) * 120)"><div class="k"><span>Match your sky</span><span>×</span></div><div class="h">Slide until the stars on screen look like the ones above you.</div><div class="f">Works whichever way you face</div></div></div>
+    <p class="cap"><b>1 · Card up</b></p><p class="cn">Right after ten steady seconds looking up. The arrow points at the knob, which pulses.</p></div>
+  <div class="cell"><div class="ph" style="background-image:url(tour-rethink/night-sky.webp)">
+    <div class="dark-ov"></div><div class="few"></div><div class="ab reti"></div>
+    <div class="ab sl-mask"></div><div class="ab sl-track"></div><div class="ab sl-fill drag" style="width:calc(var(--u) * 36)"></div><div class="ab sl-knob drag" style="left:calc(var(--u) * 123)"></div><div class="ab finger" style="left:calc(var(--u) * 123);top:calc(var(--u) * 734)"></div>
+    <div class="ab ms" style="top:calc(var(--u) * 604);--ax:calc(var(--u) * 82)"><div class="k"><span>Match your sky</span><span>×</span></div><div class="big">Suburbs <small>about 900 stars</small></div><div class="f">Keep going till it looks right</div></div></div>
+    <p class="cap"><b>2 · Mid-drag</b></p><p class="cn">Faint stars fade live as they slide left (the slider already does this). The card turns into the readout.</p></div>
+  <div class="cell"><div class="ph" style="background-image:url(tour-rethink/night-sky.webp)">
+    <div class="dark-ov"></div><div class="few"></div><div class="ab reti"></div>
+    <div class="ab sl-mask"></div><div class="ab sl-track"></div><div class="ab sl-fill" style="width:calc(var(--u) * 36)"></div><div class="ab sl-knob" style="left:calc(var(--u) * 123)"></div>
+    <div class="ab ms fade" style="top:calc(var(--u) * 604);--ax:calc(var(--u) * 82)"><div class="k"><span class="ok">✓ Matched</span><span></span></div><div class="big">Suburbs <small>about 900 stars</small></div><div class="f">Tonight’s plan now uses your sky</div></div></div>
+    <p class="cap"><b>3 · Done</b></p><p class="cn">Let go, wait two seconds: ✓, tonight’s plan reruns for that sky, and the card fades. It never comes back on its own.</p></div>
+  <div class="cell"><div class="ph" style="background-image:url(tour-rethink/settings-sky.webp);background-color:#080f1b">
+    <div class="ab setrow"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/><circle cx="12" cy="12" r="1.6" fill="currentColor"/></svg><span class="w"><b>Match it to the real sky</b><small>Look up, then slide till it matches</small></span><span class="go">Match</span></div>
+    <div class="badge" style="right:calc(var(--u) * 96);top:calc(var(--u) * 480)">New</div></div>
+    <p class="cap"><b>Settings → Your sky</b></p><p class="cn">A row under the slider opens the same card over the sky. Night owl moves down one row.</p></div>
+</div>
+<div class="why"><b>Why this beats the Orion idea</b>
+<ul><li><b>Works facing any direction.</b> Whatever is on screen is compared with whatever is above you, so no constellation has to be up, found or known.</li>
+<li><b>Only asks when the answer is real.</b> After dark, motion live and the phone held high for ten seconds means they’re outside looking up. It never shows indoors or by day, where the comparison would be nonsense.</li>
+<li><b>Uses what’s already built.</b> The slider fades stars live while dragging and reruns Tonight on release. The new parts are the trigger, the card and a <code>sky {s:'match', sb}</code> note.</li></ul></div>
+<p class="today"><b>Today:</b> the slider sits there unlabelled except SEE LESS / SEE MORE, and new players start halfway (Suburbs). Nothing ever asks them to set it.</p>
+</div>
+
+<!-- ═══════════════ FLOW ═══════════════ -->
+<div class="sec"><b>The whole flow</b> · what’s new, and where we’d count it</div>
+
+<div class="idea">
+<h2><span class="no">06</span>One page</h2>
+<p>From the welcome card to the sky. The notifications step leaves the tour and becomes the button on the last page. Three notes (blue dots) are enough to see which way people go and whether each way ends in a catch.</p>
+<div class="flow-key"><span><i style="background:#0e1828;border:1px solid #3a4a62"></i>As today</span><span><i style="background:#1a120c;border:1.5px solid #fa8127"></i>New</span><span><i style="background:#14120a;border:1.5px dashed #f2c14e"></i>Changed words</span><span><i style="background:#6f8fae;border-radius:50%;width:12px"></i>Usage note</span></div>
+<p class="flow-hint">Swipe sideways to see the whole flow ›</p>
+<div class="flow"><svg viewBox="0 0 1252 690" role="img" aria-label="Tour flow: welcome, location, where are you, motion, then inside, outside by day and outside at night branches, first catch, Tonight page, sky, and later the Match your sky card">
+<style>
+.bx{rx:10;ry:10}.t0{fill:#0e1828;stroke:#3a4a62;stroke-width:1.2}.tn{fill:#1a120c;stroke:#fa8127;stroke-width:1.6}.tc2{fill:#14120a;stroke:#f2c14e;stroke-width:1.4;stroke-dasharray:5 4}.tx{fill:#2a2f38;stroke:#3a4a62;stroke-dasharray:3 4;opacity:.7}
+.h{font:400 14px 'SC Display';fill:#fff2b3}.s{font:500 12.5px 'SC Label';letter-spacing:.04em;fill:#bdbea9}.lb{font:500 11.5px 'SC Label';letter-spacing:.16em;text-transform:uppercase;fill:#fa8127}.lg{fill:#8d93a0}
+.ln{fill:none;stroke:#5d6f88;stroke-width:1.6}.lo{stroke:#fa8127}.ld{stroke-dasharray:5 5}.tm{fill:#6f8fae}.tt{font:11px ui-monospace,Menlo,monospace;fill:#8fb0d2}.st{text-decoration:line-through}
+</style>
+<defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#5d6f88"/></marker><marker id="ao" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#fa8127"/></marker></defs>
+<!-- spine -->
+<rect class="bx t0" x="20" y="30" width="110" height="64"/><text class="h" x="32" y="56">Welcome</text><text class="s" x="32" y="76">card · Begin</text>
+<rect class="bx t0" x="150" y="30" width="150" height="64"/><text class="h" x="162" y="56">1 · Your sky</text><text class="s" x="162" y="76">location or time-zone city</text>
+<rect class="bx tn" x="320" y="30" width="150" height="64"/><text class="h" x="332" y="56">2 · Where are you?</text><text class="s" x="332" y="76">Inside · Outside · Not sure</text>
+<rect class="bx tc2" x="490" y="30" width="150" height="64"/><text class="h" x="502" y="56">3 · Point and look</text><text class="s" x="502" y="76">motion · words per answer</text>
+<path class="ln" d="M130 62H148" marker-end="url(#ar)"/><path class="ln" d="M300 62H318" marker-end="url(#ar)"/><path class="ln lo" d="M470 62H488" marker-end="url(#ao)"/>
+<circle class="tm" cx="464" cy="30" r="6"/><text class="tt" x="320" y="112">tour {s:'where', where}</text>
+<rect class="bx tx" x="690" y="26" width="300" height="50"/><text class="h st" x="704" y="48" style="fill:#8d93a0">Step 3 · Know when to look up</text><text class="s" x="704" y="66">leaves the tour → the last page’s button</text>
+<!-- trunk -->
+<path class="ln" d="M640 62H656V470"/>
+<text class="lb" x="664" y="138">Inside · or not sure</text><text class="lb" x="664" y="248">Outside · by day</text><text class="lb" x="664" y="346">Outside · at night</text>
+<path class="ln" d="M656 176H674" marker-end="url(#ar)"/>
+<rect class="bx tc2" x="676" y="146" width="260" height="60"/><text class="h" x="688" y="170">First card: Sun, Moon, brightest</text><text class="s" x="688" y="190">“The sky is up there through the roof”</text>
+<path class="ln" d="M656 286H674" marker-end="url(#ar)"/>
+<rect class="bx tc2" x="676" y="256" width="260" height="60"/><text class="h" x="688" y="280">First card: the Sun</text><text class="s" x="688" y="300">“The stars come out at 6:43 PM”</text>
+<path class="ln" d="M656 440H670"/>
+<path d="M722 402L772 440L722 478L672 440Z" fill="#1a120c" stroke="#fa8127" stroke-width="1.6"/><text class="s" x="722" y="436" text-anchor="middle" style="fill:#fff2b3">ISS / Rare+</text><text class="s" x="722" y="452" text-anchor="middle">≤ 15 min?</text>
+<path class="ln lo" d="M772 440H782V395H794" marker-end="url(#ao)"/><text class="lb" x="760" y="388">yes</text>
+<path class="ln" d="M772 440H782V500H794" marker-end="url(#ar)"/><text class="lb" x="760" y="520" style="fill:#8d93a0">no</text>
+<rect class="bx tn" x="796" y="355" width="156" height="82"/><text class="h" x="808" y="377">First target</text><text class="s" x="808" y="396">countdown to the rise,</text><text class="s" x="808" y="412">the Moon while you wait,</text><text class="s" x="808" y="428">back to it at 1:00</text>
+<rect class="bx t0" x="796" y="470" width="156" height="60"/><text class="h" x="808" y="494">First card: surest</text><text class="s" x="808" y="514">Moon, planet or a star</text>
+<!-- catch -->
+<rect class="bx t0" x="970" y="146" width="100" height="384"/><text class="h" x="980" y="320">First catch</text><text class="s" x="980" y="340">reveal</text><text class="s" x="980" y="358">+ one lesson</text>
+<path class="ln" d="M936 176H968" marker-end="url(#ar)"/><path class="ln" d="M936 286H968" marker-end="url(#ar)"/><path class="ln lo" d="M952 395H968" marker-end="url(#ao)"/><path class="ln" d="M952 500H968" marker-end="url(#ar)"/>
+<!-- endings -->
+<rect class="bx tc2" x="1086" y="146" width="150" height="136"/><text class="lb" x="1098" y="168">Inside · by day</text><text class="h" x="1098" y="188">Tonight page</text><text class="s" x="1098" y="206">a date: “Head out at</text><text class="s" x="1098" y="222">7:52 PM” or “Stars at 6:43”</text><text class="lb" x="1098" y="246">Tell me at 7:42</text><text class="s" x="1098" y="264">asks for notifications</text>
+<rect class="bx tc2" x="1086" y="360" width="150" height="136"/><text class="lb" x="1098" y="382">Outside at night</text><text class="h" x="1098" y="402">Tonight page</text><text class="s" x="1098" y="420">first night · cards</text><text class="s" x="1098" y="436">caught · still to come</text><text class="lb" x="1098" y="460">Tell me when to</text><text class="lb" x="1098" y="476">look up</text>
+<path class="ln" d="M1070 214H1084" marker-end="url(#ar)"/><path class="ln" d="M1070 428H1084" marker-end="url(#ar)"/>
+<circle class="tm" cx="1230" cy="146" r="6"/><circle class="tm" cx="1230" cy="360" r="6"/>
+<text class="tt" x="1086" y="304">tour {s:'done',</text><text class="tt" x="1086" y="318">where, first}</text>
+<!-- sky -->
+<rect class="bx t0" x="1086" y="560" width="150" height="56"/><text class="h" x="1098" y="584">Explore the sky</text><text class="s" x="1098" y="603">the game</text>
+<path class="ln" d="M1160 496V558" marker-end="url(#ar)"/><path class="ln" d="M1236 230H1246V588H1238" marker-end="url(#ar)"/>
+<!-- later -->
+<rect class="bx tn" x="656" y="560" width="300" height="70" style="stroke-dasharray:6 4"/><text class="h" x="668" y="584">Later · Match your sky card (once)</text><text class="s" x="668" y="603">after dark · motion live · phone up 20°+ for 10 s</text><text class="s" x="668" y="620">nothing in the circle</text>
+<rect class="bx tn" x="970" y="560" width="100" height="70"/><text class="h" x="980" y="584">Settings</text><text class="s" x="980" y="603">Your sky ›</text><text class="s" x="980" y="620">Match it</text>
+<path class="ln lo" d="M970 595H958" marker-end="url(#ao)"/>
+<path class="ln lo ld" d="M1160 616V668H806V632" marker-end="url(#ao)"/>
+<circle class="tm" cx="656" cy="560" r="6"/><text class="tt" x="668" y="652">sky {s:'match', sb}</text>
+<text class="s" x="20" y="200" style="font-size:12px;fill:#8d93a0">Inside at night ends on</text><text class="s" x="20" y="216" style="font-size:12px;fill:#8d93a0">“It’s dark out now, step outside”.</text>
+<text class="s" x="20" y="250" style="font-size:12px;fill:#8d93a0">Skip at any point: tour {s:'skip', at}</text>
+</svg></div>
+<p class="today"><b>What the notes answer:</b> how many people say Inside (is our guess right?), first-night catch rate by branch, how often a rare-first target is actually caught (<code>first: 'iss'</code> vs the Moon fallback), and how many people match their sky. All three notes go through <code>note()</code> in js/field-notes.js and show on /stats.</p>
+</div>
+
+<!-- ═══════════════ STEPS + QUESTIONS ═══════════════ -->
+<div class="sec"><b>Keeping it short</b> · still three steps</div>
+
+<div class="idea">
+<h2><span class="no">07</span>Three steps, not four</h2>
+<p>Adding a question shouldn’t make the tour longer. Proposed: <b>1 Find your sky · 2 Where are you? · 3 Point and look</b>. Notifications move out of the tour to the button on the last page (“Tell me at 7:42 PM” / “Tell me when to look up”). There the ask comes with a reason the player has just seen, which is the same move the appointment page already makes for the ISS. The fork is a single tap with no system prompt, so it costs less than the step it replaces.</p>
+<div class="tags"><span class="tag s">Small</span><span class="tag f">Reorder · the ask moves</span></div>
+<p class="today"><b>The other way:</b> keep 4 steps (location, fork, motion, notifications). It’s simpler to build, and the extra step is a quick tap. But each system prompt in a row loses people, and an early notification ask has no reason behind it yet. Our own /stats can settle it: compare tour finish rate and day-one notification opt-in before and after.</p>
+</div>
+
+<div class="top"><h2>What I’d do</h2><p>In this order, smallest first.</p>
+<ol>
+<li><div><b>01 B · The question, after location, no default</b><span>One card and three notes. Everything else hangs off the answer, and the data tells us if the rest is worth it.</span></div></li>
+<li><div><b>02 + 04 · The words for inside and by day</b><span>Copy on cards we already have, and the appointment page we built today. This covers most first runs.</span></div></li>
+<li><div><b>07 · Notifications out of the tour, onto the last page</b><span>Watch the opt-in rate; put it back if it drops.</span></div></li>
+<li><div><b>05 · Match your sky</b><span>A trigger and a card on the existing slider, with no tour changes.</span></div></li>
+<li><div><b>03 · Rare-first at night</b><span>The rarest case (outside, dark, and a big pass inside 15 minutes) and the riskiest logic: wait, switch targets, and recover from a miss. Build it last and judge it by <code>first: 'iss'</code>.</span></div></li>
+</ol></div>
+
+<div class="qs"><h2>Open questions</h2><p>Things I’d want Sevaan’s call on before building.</p>
+<dl>
+<div><dt>Should “Not sure” exist?</dt><dd>I’d keep it, small. Some people are on a balcony or by a window, and a forced choice makes them guess. It behaves like Inside, whose copy is safe anywhere. <b>If under 5% use it</b>, drop it.</dd></div>
+<div><dt>They say Outside, but it’s cloudy</dt><dd>The forecast already knows. Outside under cloud should behave like Inside, with copy that admits it: “Cloudy right now. The Moon’s behind it, but it still counts.” No rare-first, because a countdown to something they can’t see is a let-down.</dd></div>
+<div><dt>Inside at night, then they walk out</dt><dd>Nothing to redo in the tour. The Match card (05) is the one that catches them, because its trigger is looking up after dark, not the tour answer. Rare-first is a first-night-only treat, so they miss it. Fine.</dd></div>
+<div><dt>Do we trust the answer for good?</dt><dd>No. It’s only for the tour and the first night. After that, behaviour (looking up, after dark, for a while) is the signal, as in 05. We never ask again.</dd></div>
+<div><dt>Rare-first: is 15 minutes right?</dt><dd>Long enough that it happens sometimes, short enough that the Moon fills the wait. Notes would tell us how often it fires at all. In late October there are no evening ISS passes over Toronto, so it would mostly be other Rares.</dd></div>
+<div><dt>Location refused, at night, “Outside”</dt><dd>The time-zone city’s sky is close but not theirs, so a countdown to a pass could be minutes off. I’d turn rare-first off without a real location.</dd></div>
+<div><dt>Match card and the slider’s day state</dt><dd>By day the slider is hidden, so the card can’t show by day anyway. If the Moon is bright, the slider readout already counts it in; the card should say “The Moon’s washing out the faint ones” when it’s over 70% lit.</dd></div>
+<div><dt>Notification ask on the last page</dt><dd>If they close the page with the ✕, they’re never asked. Is the Settings row plus the first reminder bell enough of a second chance? I think yes.</dd></div>
+</dl></div>
+
+<p class="note"><b>Built on:</b> <code>runOnboarding</code> / <code>obCard</code> / <code>firstTarget</code> / <code>obFinish</code> (incl. the Oct 25 appointment block) in js/main.js, the <code>.tc</code> card in css/app.css, the sky slider <code>#skybar</code> / <code>#sky-range</code>, and the backgrounds in design/tour-rethink/ (WebKit, 402 × 874, fresh player at 2:00 PM and 8:30 PM, plus a seeded player at 9:30 PM for the clean sky and Settings).</p>
+</body></html>
