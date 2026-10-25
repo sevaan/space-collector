@@ -92,14 +92,14 @@ h1 { font: 400 28px 'SC Display'; margin: 0 0 4px; } .lead { color: var(--mu); m
 .D { height: calc(var(--u) * 270); }
 .D .ch { position: absolute; top: calc(var(--u) * 10); width: calc(var(--u) * 156); aspect-ratio: 2 / 3; background: #0b1424; border: calc(var(--u) * 3) solid var(--silver); box-shadow: 0 calc(var(--u) * 10) calc(var(--u) * 22) #000b; padding: calc(var(--u) * 6); display: flex; flex-direction: column; }
 .D .ch:first-child { left: calc(var(--u) * 14); transform: rotate(-7deg); transform-origin: 80% 110%; }
-.D .ch:last-child { right: calc(var(--u) * 14); transform: rotate(7deg); transform-origin: 20% 110%; }
+.D .ch:nth-child(2) { right: calc(var(--u) * 14); transform: rotate(7deg); transform-origin: 20% 110%; }
 .D .art { flex: 1; border-radius: calc(var(--u) * 6); }
 .D .ft { text-align: center; padding: calc(var(--u) * 8) 0 calc(var(--u) * 3); display: grid; gap: calc(var(--u) * 4); }
 .D .ok { position: absolute; top: calc(var(--u) * 12); right: calc(var(--u) * 12); width: calc(var(--u) * 24); height: calc(var(--u) * 24); border-radius: 50%; background: var(--or); color: #0b1018; display: none; place-items: center; font: 700 calc(var(--u) * 14)/1 system-ui; }
 .D .hint { position: absolute; left: 0; right: 0; bottom: 0; text-align: center; font: 500 calc(var(--u) * 11) 'SC Label'; letter-spacing: .2em; text-transform: uppercase; color: var(--mu); }
 .D.picked .ch.on { transform: rotate(0deg) translateY(calc(var(--u) * -16)) scale(1.06); border-color: var(--or); z-index: 2; box-shadow: 0 0 calc(var(--u) * 34) #fa812788, 0 calc(var(--u) * 16) calc(var(--u) * 28) #000c; }
 .D.picked .ch.off { opacity: .5; }
-.D:not(.picked) .ch:first-child { animation: handL 5s ease-in-out infinite; } .D:not(.picked) .ch:last-child { animation: handR 5s ease-in-out infinite; }
+.D:not(.picked) .ch:first-child { animation: handL 5s ease-in-out infinite; } .D:not(.picked) .ch:nth-child(2) { animation: handR 5s ease-in-out infinite; }
 @keyframes handL { 0%, 100% { transform: rotate(-7deg); } 50% { transform: rotate(-8.5deg) translateY(calc(var(--u) * -3)); } }
 @keyframes handR { 0%, 100% { transform: rotate(7deg); } 50% { transform: rotate(8.5deg) translateY(calc(var(--u) * -3)); } }
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
@@ -153,8 +153,8 @@ const ART = {
     <path class="dash" d="M68 73 L44 30" stroke="#fa8127" stroke-width="1.6" fill="none"/><circle cx="43" cy="28" r="2.2" fill="#fa8127"/></svg>`,
 };
 const C = {
-  inside: { k: 'Indoors', nm: 'Inside', ty: 'Indoors, anywhere', chip: 'Anywhere', st: ['Learn the ropes', 'Any time'], p: 'Practise through the roof. The sky is still up there.' },
-  outside: { k: 'Under the open sky', nm: 'Outside', ty: 'Under the open sky', chip: 'The real thing', st: ['See it for real', 'Best after dark'], p: 'Point at the real thing and catch what you see.' },
+  inside: { k: 'Indoors', nm: 'Inside', ty: 'Indoors, anywhere', chip: 'Anywhere', st: ['Practise', 'Any time'], p: 'Practise through the roof. The sky is still up there.' },
+  outside: { k: 'Under the open sky', nm: 'Outside', ty: 'Under the open sky', chip: 'The real thing', st: ['The real sky', 'After dark'], p: 'Point at the real thing and catch what you see.' },
 };
 function choices(kind, night) {
   return ['inside', 'outside'].map((w) => { const c = C[w], art = ART[w](night);
