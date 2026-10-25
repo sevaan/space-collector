@@ -1,53 +1,53 @@
-import { pullToClose } from './pull-close.js?v=0.1.1170';
-import { TESTER } from './build-flavor.js?v=0.1.1170';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1170';
-import * as Secrets from './secrets.js?v=0.1.1170';
-import { STORY_BY_SECRET } from './stories.js?v=0.1.1170';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.1170';
-import * as Ufo from './ufo.js?v=0.1.1170';
-import * as Fossil from './fossil.js?v=0.1.1170';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.1170';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1170';
-import { toast, ticket, dropToast, toastPending, onTicketShown, iconSvg } from './toast.js?v=0.1.1170';
-import { VERSION } from './version.js?v=0.1.1170';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, overEarth, RisingSoon, setBinocularMode, setSkyLimit, toWorker } from './orbit.js?v=0.1.1170';
-import { placeName } from './geo.js?v=0.1.1170';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, SLIDER_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.1170';
-import { conArt } from './con-art.js?v=0.1.1170';
-import { fetchWeather, tonightSky, skyClearAt, goodSkyAt } from './weather.js?v=0.1.1170';
-import { CON_FIGURES } from './con-figures.js?v=0.1.1170';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress, starDistance } from './constellations.js?v=0.1.1170';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.1170';
-import { progress as progressOf, missionsFor, readDeals, readWeekThemes, WEEK_THEMES, countryOf, weekStartOf, weekThemeFor, xpCarry } from './progress.js?v=0.1.1170';
-import { eventOf, activeEvent, nextEvent } from './events.js?v=0.1.1170';
-import { conList } from './constellations.js?v=0.1.1170';
-import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination, hasSensorView, resumeSensors, needsPermission } from './sensors.js?v=0.1.1170';
-import { SkyView, shortName, stripLandscape } from './sky.js?v=0.1.1170';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.1170';
-import { isPlus, setPlusForTesting, onPlus, PLUS_PRICES, initStore, storePlans, buyPlus, restorePlus, rcTestStore, storeOpen } from './plus.js?v=0.1.1170';
-import { isNative, getPosition, saveFile, notifyAt, cancelNotify, haptic, onNative, nativeChrome, plugin } from './native.js?v=0.1.1170';
-import { initBackup, onBackupChange, backupSoon, clearBackup, backupStatus } from './cloud-backup.js?v=0.1.1170';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.1170';
-import { cardArt } from './art.js?v=0.1.1170';
-import { renderCard, miniCard, cardLevel, artImage, lockedArt, attachTilt, attachGyro, throwOff, attachFlip, turnCard, phasePath } from './card.js?v=0.1.1170';
-import { applyBack, CARD_BACKS, backUnlocked, chosenBack, chooseBack, backEarned, showBackNext } from './card-backs.js?v=0.1.1170';
-import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.1170';
-import { audioCtx } from './audio-ctx.js?v=0.1.1170';
-import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume, musicAway } from './music.js?v=0.1.1170';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss, onRevealSwipeIntoBinder, teachRoom } from './reveal.js?v=0.1.1170';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel, moonPhaseOf, moonPhaseAt, MOON_PHASES } from './card-model.js?v=0.1.1170';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.1170';
-import { naturalTargets, SOLAR_SYSTEM, DEEP_SKY, NATURAL, NATURAL_BY_KEY } from './natural.js?v=0.1.1170';
-import { placeFromTimeZone } from './tz-places.js?v=0.1.1170';
-import { TIER_INFO } from './rarity.js?v=0.1.1170';
-import { SETS, albumList } from './sets.js?v=0.1.1170';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.1170';
-import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.1170';
-import { note, send as sendNotes, noteError, daysSinceInstall } from './field-notes.js?v=0.1.1170';
-import { shareCardEl } from './share-card.js?v=0.1.1170';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.1170';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.1170';
-import { addStarfield } from './starfield.js?v=0.1.1170';
+import { pullToClose } from './pull-close.js?v=0.1.1171';
+import { TESTER } from './build-flavor.js?v=0.1.1171';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1171';
+import * as Secrets from './secrets.js?v=0.1.1171';
+import { STORY_BY_SECRET } from './stories.js?v=0.1.1171';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.1171';
+import * as Ufo from './ufo.js?v=0.1.1171';
+import * as Fossil from './fossil.js?v=0.1.1171';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.1171';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1171';
+import { toast, ticket, dropToast, toastPending, onTicketShown, iconSvg } from './toast.js?v=0.1.1171';
+import { VERSION } from './version.js?v=0.1.1171';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, overEarth, RisingSoon, setBinocularMode, setSkyLimit, toWorker } from './orbit.js?v=0.1.1171';
+import { placeName } from './geo.js?v=0.1.1171';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, SLIDER_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.1171';
+import { conArt } from './con-art.js?v=0.1.1171';
+import { fetchWeather, tonightSky, skyClearAt, goodSkyAt } from './weather.js?v=0.1.1171';
+import { CON_FIGURES } from './con-figures.js?v=0.1.1171';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress, starDistance } from './constellations.js?v=0.1.1171';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.1171';
+import { progress as progressOf, missionsFor, readDeals, readWeekThemes, WEEK_THEMES, countryOf, weekStartOf, weekThemeFor, xpCarry } from './progress.js?v=0.1.1171';
+import { eventOf, activeEvent, nextEvent } from './events.js?v=0.1.1171';
+import { conList } from './constellations.js?v=0.1.1171';
+import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination, hasSensorView, resumeSensors, needsPermission } from './sensors.js?v=0.1.1171';
+import { SkyView, shortName, stripLandscape } from './sky.js?v=0.1.1171';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.1171';
+import { isPlus, setPlusForTesting, onPlus, PLUS_PRICES, initStore, storePlans, buyPlus, restorePlus, rcTestStore, storeOpen } from './plus.js?v=0.1.1171';
+import { isNative, getPosition, saveFile, notifyAt, cancelNotify, haptic, onNative, nativeChrome, plugin } from './native.js?v=0.1.1171';
+import { initBackup, onBackupChange, backupSoon, clearBackup, backupStatus } from './cloud-backup.js?v=0.1.1171';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.1171';
+import { cardArt } from './art.js?v=0.1.1171';
+import { renderCard, miniCard, cardLevel, artImage, lockedArt, attachTilt, attachGyro, throwOff, attachFlip, turnCard, phasePath } from './card.js?v=0.1.1171';
+import { applyBack, CARD_BACKS, backUnlocked, chosenBack, chooseBack, backEarned, showBackNext } from './card-backs.js?v=0.1.1171';
+import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.1171';
+import { audioCtx } from './audio-ctx.js?v=0.1.1171';
+import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume, musicAway } from './music.js?v=0.1.1171';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss, onRevealSwipeIntoBinder, teachRoom } from './reveal.js?v=0.1.1171';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel, moonPhaseOf, moonPhaseAt, MOON_PHASES } from './card-model.js?v=0.1.1171';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.1171';
+import { naturalTargets, SOLAR_SYSTEM, DEEP_SKY, NATURAL, NATURAL_BY_KEY } from './natural.js?v=0.1.1171';
+import { placeFromTimeZone } from './tz-places.js?v=0.1.1171';
+import { TIER_INFO } from './rarity.js?v=0.1.1171';
+import { SETS, albumList } from './sets.js?v=0.1.1171';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.1171';
+import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.1171';
+import { note, send as sendNotes, noteError, daysSinceInstall } from './field-notes.js?v=0.1.1171';
+import { shareCardEl } from './share-card.js?v=0.1.1171';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.1171';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.1171';
+import { addStarfield } from './starfield.js?v=0.1.1171';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -1413,7 +1413,6 @@ function showCaptureCard(obj) {
     ...(gain.event ? [{ kind: 'event', text: gain.event }] : []),
     ...(sightings[0]?.peak ? [{ kind: 'peak', text: 'Caught at its peak', xp: 10 }] : []),
     ...(sightings[0]?.train ? [{ kind: 'train', text: 'Caught as a train' }] : []),
-    ...(sightings.length === 1 && readBday()?.id === obj.id ? [{ kind: 'birthday', text: 'Birthday twin' }] : []),
     ...(() => { const w = progressNow(state.sightings).week, w0 = w && progressNow(state.sightings.slice(1)).week; return w && w.have >= w.need && w0 && w0.have < w0.need ? [{ kind: 'mission', text: `${w.name} done`, xp: 150 }] : []; })(), // the week's +150 says so (returning playtest 2026-10-25)
     ...(gain.rankUp ? [{ kind: 'rank', text: `New rank: ${gain.rankUp}` }] : [])];
   if ((gain.rankUp || gain.achievements.length) && reviewable()) reviewAfterReveal = true; /* a milestone: a calm moment to ask for a review once the card is put away (2026-10-24) */
@@ -3360,16 +3359,10 @@ async function scheduleNotesNow(T) {
   // and a constellation could all fire on one evening). Highest first: the Halloween ghost, your birthday satellite, a
   // Starlink train, then a seasonal return. "Told" flags remember the pass they were for, so the many reschedules before
   // it (each one cancels first) put the same notification back instead of losing it.
-  for (const id of [NOTE_SEASON, NOTE_BDAY, NOTE_TRAIN, NOTE_GHOST]) await cancelNotify(id);
+  for (const id of [NOTE_SEASON, NOTE_BDAY, NOTE_TRAIN, NOTE_GHOST]) await cancelNotify(id); // NOTE_BDAY: cancels any birthday notification left from before it was removed
   const readJ = (k) => { try { return JSON.parse(localStorage.getItem(k) ?? '{}') ?? {}; } catch { return {}; } }, saveJ = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} };
   const special = (() => {
     if (T?.dusk && ghostNight(T.dusk) && !secretFound[GHOST.patch]) { const g = ghostPass(T); if (g && g.end > t0 && T.dusk > t0 + 60000 && clear(g.start)) return { at: T.dusk, title: 'Tonight: something’s haunting the sky', body: `A satellite that died long ago passes at ${fmtTime(g.start)}. Find it tonight.`, id: NOTE_GHOST }; }
-    const bd = readBday(), bo = bd && state.byId.get(bd.id);
-    if (bo) { const told = readJ('bdayTold2'), isBday = (t) => { const d = new Date(t); return d.getMonth() + 1 === bd.m && d.getDate() === bd.d; };
-      const q = T.passes.filter((x) => x.id === bo.id && x.start - 10 * 60000 > t0 && x.start <= eveningEnd(T) && x.peakEl >= 20 && clear(x.start) && !quiet(x.start - 10 * 60000)).sort((a, b) => a.start - b.start)[0];
-      if (q && (!told.first || told.first === q.start || (isBday(q.start) && told.bday !== new Date(q.start).getFullYear()))) { const w = bdayMatch(bd.y, bd.m, bd.d);
-        return { at: q.start - 10 * 60000, title: `${fmtTime(q.start)}: your birthday satellite`, body: `${label(bo)} ${w?.how === 'same' ? 'launched the day you were born' : w?.how === 'near' ? `launched ${Math.abs(w.days)} day${Math.abs(w.days) === 1 ? '' : 's'} ${w.days > 0 ? 'after' : 'before'} you were born` : 'shares your birthday'}. Look ${whereWords({ el: q.peakEl, az: q.peakAz }).toLowerCase()}.`, id: NOTE_BDAY,
-          mark: () => { const t2 = readJ('bdayTold2'); t2.first ??= q.start; if (isBday(q.start)) t2.bday = new Date(q.start).getFullYear(); saveJ('bdayTold2', t2); } }; } }
     if (notePref('nTrain')) { const told = readJ('trainTold2');
       const tr = tonightTrains(T, t0).find((x) => (!told[x.key] || told[x.key] === x.start) && x.start - 10 * 60000 > t0 && x.start <= eveningEnd(T) && !quiet(x.start - 10 * 60000) && clear(x.start));
       if (tr) return { at: tr.start - 10 * 60000, title: `${fmtTime(tr.start)}: a Starlink train`, body: `${trainWords(tr)}. Look ${dirWord(tr.first.riseAz)}: it ${tr.first.peakEl >= 60 ? 'climbs high' : tr.first.peakEl >= 30 ? 'climbs halfway up' : 'stays low'}.`, id: NOTE_TRAIN, mark: () => { const t2 = readJ('trainTold2'); t2[tr.key] = tr.start; saveJ('trainTold2', t2); } }; }
@@ -4943,57 +4936,8 @@ function trainHere(o, t) { const tr = trainOf(o, t); if (!tr || !state.tonight) 
   const c = tonightTrains(state.tonight, t - 20 * 60e3).find((x) => x.key === tr.key); if (!c) return null;
   const q = state.tonight.passes.find((x) => x.id === o.id && t >= x.start - 60e3 && t <= x.end + 60e3); return q && q.start >= c.start - 60e3 && q.start <= c.start + 6 * 60e3 ? c : null; }
 const trainWords = (tr) => `${tr.count} satellites in a line, launched ${tr.days === 0 ? 'today' : tr.days === 1 ? 'yesterday' : `${tr.days} days ago`}`;
-// Your birthday satellite (2026-10-25, Sevaan; design/come-back.html 06). Settings → Collection → Your birthday (kept only
-// on this phone: localStorage birthday, not in the iCloud backup). It finds something launched that day that's still up,
-// bright enough to see (not debris or fleets; satellites before stages, then the brightest). Most dates have none, so:
-// the same day → the nearest launch within 14 days → the same date in another year. Its first catch says "Birthday twin";
-// its first good pass on a clear evening is a free notification, and so is a pass on your birthday each year.
-const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-function readBday() { try { return JSON.parse(localStorage.getItem('birthday') ?? 'null'); } catch { return null; } }
-function bdayMatch(y, m, d) {
-  const want = Date.UTC(y, m - 1, d), md = `-${String(m).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
-  const pool = (state.catalog?.objects ?? []).filter((o) => o.launch && !o.family && o.type !== 'debris' && (o.stdMag ?? 9) <= 6);
-  const rank = (o) => (o.kind === 'PAY' ? 0 : 1) * 10 + (o.stdMag ?? 9);
-  const best = (list) => list.sort((a, b) => rank(a) - rank(b))[0] ?? null;
-  const day = (o) => Math.round((Date.parse(`${o.launch}T00:00:00Z`) - want) / 864e5);
-  const exact = best(pool.filter((o) => day(o) === 0)); if (exact) return { o: exact, how: 'same', days: 0 };
-  const near = pool.filter((o) => Math.abs(day(o)) <= 14).sort((a, b) => Math.abs(day(a)) - Math.abs(day(b)) || rank(a) - rank(b))[0]; if (near) return { o: near, how: 'near', days: day(near) };
-  const sameDate = pool.filter((o) => o.launch.endsWith(md)).sort((a, b) => Math.abs(Number(a.launch.slice(0, 4)) - y) - Math.abs(Number(b.launch.slice(0, 4)) - y) || rank(a) - rank(b))[0];
-  return sameDate ? { o: sameDate, how: 'date', days: 0 } : null;
-}
-const bdayWords = (m) => { const nm = label(m.o); return m.how === 'same' ? ['Born the same day', `${nm} went up the day you were born.`] : m.how === 'near' ? ['Almost twins', `${nm} went up ${Math.abs(m.days)} day${Math.abs(m.days) === 1 ? '' : 's'} ${m.days > 0 ? 'after' : 'before'} you were born.`] : ['Same birthday', `${nm} went up on your birthday in ${m.o.launch.slice(0, 4)}.`]; };
-function nextPassOf(o) { return new Promise((res) => { const w = new Worker(new URL(`./find-worker.js?v=${VERSION}`, import.meta.url), { type: 'module' }); const done = (v) => { w.terminate(); res(v); }; setTimeout(() => done(null), 20000);
-  w.onmessage = ({ data }) => done(data.passes?.[o.id] ?? null); w.postMessage({ requestId: 1, context: '', objects: toWorker([o]), observer: state.observer, startMs: now().getTime(), sb: state.skySb, binoculars: state.binoculars }); }); }
-function renderBdayRow() { const b = readBday(); setTxt($('set-bday-val'), b ? new Date(b.y, b.m - 1, b.d).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' }) : 'Add'); }
-async function showBday(m) {
-  const box = $('bd-res'), [eye, line] = bdayWords(m), o = m.o, mdl = cardModel(o); let img = ''; try { img = artImage(mdl, 'small') ?? ''; } catch {}
-  const laps = o.period ? Math.round(1440 / o.period) : null, owned = !isNewFind(o);
-  box.hidden = false; box.innerHTML = `<small>${escapeHtml(eye)}</small><b>${escapeHtml(line)}</b><div class="bd-card">${img ? `<img src="${escapeHtml(img)}" alt="">` : ''}<span><i>${owned ? '✓ In your collection' : 'Not yet collected'}</i><em>${escapeHtml(launchDate(o.launch))}.${laps ? ` It still goes round ${laps} times a day.` : ''} <span id="bd-when">Finding its next pass…</span></em></span></div><div class="bd-acts"><button type="button" class="pill-o" id="bd-remind" disabled><span class="ico-svg">${ICON_BELL}</span> Remind me</button><button type="button" class="pill-g" id="bd-show" disabled><span class="ico-svg">${ICON_TARGET}</span> Show me</button></div>`;
-  const p = await nextPassOf(o); if (!box.isConnected) return;
-  if (!p) { box.querySelector('.bd-acts')?.setAttribute('hidden', ''); /* no pass: no dead buttons (flow playtest 2026-10-25) */ setTxt($('bd-when'), (o.stdMag ?? 9) > 3.5 ? 'It’s faint, and doesn’t pass where you can see it in the next 10 days. A darker sky (the slider) or binoculars help.' : 'It doesn’t pass where you can see it in the next 10 days.'); return; }
-  const day = new Date(p.start), today = new Date(now()), tmw = new Date(today.getTime() + 864e5); const dw = day.toDateString() === today.toDateString() ? (day.getHours() < 12 ? 'this morning' : 'tonight') : day.toDateString() === tmw.toDateString() ? (day.getHours() < 12 ? 'tomorrow morning' : 'tomorrow') : day.toLocaleDateString(undefined, { weekday: 'long' });
-  setTxt($('bd-when'), `It passes ${dw} at ${fmtTime(p.start)}.`);
-  const pp = { ...p, obj: o }, k = `bday@${p.start}`;
-  $('bd-remind').disabled = false; $('bd-remind').onclick = async () => { const r = await remindPass(pp, k); if (r) { reminded.add(k); $('bd-remind').classList.add('on'); } };
-  $('bd-show').disabled = false; /* Show me works days ahead too: it points to where it will appear */ $('bd-show').onclick = () => { closeSheet($('bday-sheet')); closePanel('debug'); setTimeout(() => showMePass(pp), 350); };
-}
-const launchDate = (iso) => new Date(`${iso}T12:00:00Z`).toLocaleDateString(undefined, { day: 'numeric', month: 'long', year: 'numeric' });
-{ const ms = $('bd-m'), ds = $('bd-d'), ys = $('bd-y'), yNow = new Date().getFullYear();
-  ms.innerHTML = MONTHS.map((n, i) => `<option value="${i + 1}">${n}</option>`).join(''); ds.innerHTML = Array.from({ length: 31 }, (_, i) => `<option>${i + 1}</option>`).join('');
-  ys.innerHTML = Array.from({ length: yNow - 1920 }, (_, i) => `<option>${yNow - 1 - i}</option>`) /* up to last year */.join(''); // from 1920: before 1957 it finds the same date in another year
-  // Only real dates, none in the future (returning playtest 2026-10-25: Feb 30 and next December were accepted).
-  const fitDays = () => { const n = new Date(Number(ys.value), Number(ms.value), 0).getDate(), v = Math.min(Number(ds.value) || 1, n); ds.innerHTML = Array.from({ length: n }, (_, i) => `<option>${i + 1}</option>`).join(''); ds.value = String(v); };
-  ms.addEventListener('change', fitDays); ys.addEventListener('change', fitDays);
-  { const pt = new Intl.DateTimeFormat().formatToParts(new Date(2020, 11, 25)).map((x) => x.type); if (pt.indexOf('day') < pt.indexOf('month')) ds.parentElement.classList.add('day-first'); } // Day / Month / Year where the phone writes dates that way
-  $('set-bday-open').addEventListener('click', () => { const b = readBday(); ms.value = String(b?.m ?? 6); ys.value = String(b?.y ?? 1990); fitDays(); ds.value = String(b?.d ?? 15); $('bd-clear').hidden = !b; $('bd-res').hidden = true; if (b) { const m = bdayMatch(b.y, b.m, b.d); if (m) showBday(m); } openSheet('bday-sheet'); });
-  $('bd-find').addEventListener('click', () => { const y = Number(ys.value), m = Number(ms.value), d = Math.min(Number(ds.value), new Date(y, m, 0).getDate());
-    if (new Date(y, m - 1, d).getTime() > now().getTime()) { $('bd-res').hidden = false; $('bd-res').innerHTML = '<b>That date hasn’t happened yet. Pick your birthday.</b>'; return; }
-    const r = bdayMatch(y, m, d);
-    if (!r) { $('bd-res').hidden = false; $('bd-res').innerHTML = '<b>Nothing launched around then is still up where you could see it.</b>'; return; }
-    try { localStorage.setItem('birthday', JSON.stringify({ y, m, d, id: r.o.id })); localStorage.removeItem('bdayTold'); } catch {}
-    $('bd-clear').hidden = false; renderBdayRow(); showBday(r); if (state.tonight) scheduleNotes(state.tonight).catch(() => {}); });
-  $('bd-clear').addEventListener('click', () => { try { localStorage.removeItem('birthday'); } catch {} $('bd-res').hidden = true; $('bd-clear').hidden = true; renderBdayRow(); });
-  renderBdayRow(); }
+// The birthday satellite was removed (2026-10-25, Sevaan: "Remove the whole your birthday thing"); its saved date is cleared once.
+try { localStorage.removeItem('birthday'); localStorage.removeItem('bdayTold2'); localStorage.removeItem('bdayTold'); } catch {}
 // The in-app notice: once a day, on the first open before the pass.
 function almostNotice(tries = 0) {
   if (!state.tonight) { if (tries < 40) setTimeout(() => almostNotice(tries + 1), 500); return; }

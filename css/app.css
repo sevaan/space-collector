@@ -2619,21 +2619,6 @@ body.night .train-box { border-color: #ff6a5544; background: #170707; } body.nig
 #fade-tip small { display: block; margin-bottom: 3px; font: 500 10.5px/1 var(--label); letter-spacing: .18em; text-transform: uppercase; color: #f2c14e; }
 #fade-tip i { position: absolute; left: 50%; bottom: -7px; width: 12px; height: 12px; margin-left: -6px; background: rgba(10, 18, 31, .96); transform: rotate(45deg); }
 body.night #fade-tip { border-top-color: #ff6a55; color: #ff7f70; } body.night #fade-tip small { color: #ff6a55; }
-/* Your birthday satellite (2026-10-25, Sevaan; design/come-back.html 06) */
-#bday-sheet .bd-pick { display: grid; grid-template-columns: 1.4fr .8fr 1fr; gap: 8px; margin: 10px 0 12px; }
-#bday-sheet select { min-height: 44px; padding: 0 10px; border-radius: 12px; border: 1px solid #ffffff22; background: #0f1a2a; color: var(--text); font: 500 16px var(--label); }
-#bd-res { display: grid; gap: 6px; margin-top: 14px; padding-top: 12px; border-top: 1px solid #ffffff14; }
-#bd-res[hidden] { display: none; }
-#bd-res small { font: 500 11px/1.2 var(--label); letter-spacing: .16em; text-transform: uppercase; color: var(--gold); }
-#bd-res > b { font: 400 18px/1.2 var(--display); color: var(--text); text-wrap: balance; }
-#bd-res .bd-card { display: flex; gap: 12px; align-items: center; }
-#bd-res .bd-card img { width: 64px; height: 64px; border-radius: 12px; object-fit: cover; flex: none; }
-#bd-res .bd-card span { display: grid; gap: 3px; }
-#bd-res .bd-card i { font: 500 11px/1.2 var(--label); font-style: normal; letter-spacing: .12em; text-transform: uppercase; color: #aab3bf; }
-#bd-res .bd-card em { font: 500 14px/1.35 var(--label); font-style: normal; color: color-mix(in srgb, var(--text) 85%, transparent); }
-#bd-res .bd-acts { display: flex; gap: 8px; margin-top: 6px; }
-#bd-res .bd-acts button:disabled { opacity: .45; }
-#bd-res .bd-acts .on { border-color: var(--gold); color: var(--gold); }
 /* The Moon check (2026-10-25, Sevaan; design/real-sky.html 02): above the circle, the next time the Moon is in it */
 #moon-check { position: fixed; z-index: 5; left: 50%; transform: translate(-50%, -100%); width: min(290px, calc(var(--vws, 100vw) - 40px)); box-sizing: border-box; padding: 10px 12px 12px; border-radius: 14px; background: rgba(10, 18, 31, .96); border-top: 2px solid #7fb2ff; color: var(--text); display: grid; gap: 6px; animation: ui-rise var(--m-norm, .3s) var(--ease-out, ease-out); }
 #moon-check[hidden] { display: none; }
@@ -2660,7 +2645,6 @@ body:has(#moon-check:not([hidden])) #toast-tray, body:has(#fade-tip:not([hidden]
 .ghost-box { flex-wrap: wrap; } .ghost-box > span:nth-child(2) { flex: 1 1 200px; } .ghost-box .gh-go { margin-left: 52px; } /* the button under the words, like the train box */
 #sky-match.compact b { display: none; }
 /* Day before month where the phone writes dates that way (US/UK playtest 2026-10-25) */
-#bday-sheet .bd-pick.day-first #bd-d { order: -1; }
 
 /* A little card in the sky's own ticket and in "Just a plane" (2026-10-25, Sevaan): the card it is (picture hidden until
    it's yours), like the new-find ticket; for a plane a card with the plane in it. */
@@ -2730,7 +2714,6 @@ body.night .tc .acts.pick .pk.pk-card { border-color: #7a2a22; } body.night .tc 
    Collection grid's near-black. */
 .d-mini .mini-face.locked .card__art { filter: none; }
 .d-mini .card-art-image--locked { filter: blur(6px) brightness(.85) saturate(.8); }
-#bd-res .bd-acts[hidden] { display: none; }
 /* The Moon lesson points at the card's own row of phases (flow playtest 2026-10-25) */
 #reveal .mn-phases.teach-glow { border-radius: .5em; box-shadow: 0 0 0 .15em #fa8127, 0 0 1.2em #fa812788; animation: teachGlow 1.6s ease-in-out infinite; }
 @keyframes teachGlow { 50% { box-shadow: 0 0 0 .15em #fa8127aa, 0 0 .5em #fa812744; } }
