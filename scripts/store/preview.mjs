@@ -107,6 +107,7 @@ for (const kind of which === 'all' ? Object.keys(OUT) : [which]) {
       for (let i = 0; i < 90; i++) { const left = await p.evaluate(() => window.__store.sky.fade?.left ?? 99); if (left < 1.3) break; await w(60); }
       mark('collect'); await p.click('#d-cta', { timeout: 3000 }).catch((e) => console.log(kind, 'no Collect (fade)', e.message.slice(0, 60)));
       await w(250); await flipNow(); await w(300); await tilt(3600); await w(400); });
+    await p.mouse.move(vw / 2, vh * 0.42); await w(500); await p.locator('#rv-holder').screenshot({ path: join(tmp, 'fade-card.png'), omitBackground: true }).catch(() => {});
     await p.evaluate(() => { document.getElementById('reveal').querySelector('.x-close')?.click(); const s = window.__store.state; s.pinnedId = null; window.__aim = null; }); await w(800);
   }
 
@@ -116,6 +117,7 @@ for (const kind of which === 'all' ? Object.keys(OUT) : [which]) {
   const t4 = await take(async (mark) => { mark('hold');
     for (let i = 0; i < 40 && !(await p.evaluate(() => !document.getElementById('reveal').hidden)); i++) await w(200);
     mark('reveal'); await w(1000); await flipNow(); await w(300); await tilt(3600); await w(400); });
+  await p.mouse.move(vw / 2, vh * 0.42); await w(500); await p.locator('#rv-holder').screenshot({ path: join(tmp, 'story-card.png'), omitBackground: true }).catch(() => {});
   await p.evaluate(() => { document.getElementById('reveal').querySelector('.x-close')?.click(); window.__aimAt = null; }); await w(800);
   await p.evaluate(() => localStorage.setItem('cardBack', 'mission-control')); // the ISS keeps the everyday back (finding Voyager adopts the Golden Record one)
 
@@ -149,6 +151,7 @@ for (const kind of which === 'all' ? Object.keys(OUT) : [which]) {
   await p.evaluate(() => document.getElementById('nav-explore').click()); await w(2500);
   await chrome(['rec-sky', 'rec-end']);
   await p.evaluate(() => { const s = window.__store.state; s.pinnedId = null; s.drag.el = 34; window.__aim = null; window.__aimAt = null; window.__pan = 0.06; }); await w(600);
+  await p.evaluate(() => { window.__store.sky.drawReticle = () => {}; }); // the end card's sky: no circle behind the title
   const t7 = await take(async (mark) => { mark('in'); await w(2600); });
   await b.close();
 
@@ -182,7 +185,7 @@ for (const kind of which === 'all' ? Object.keys(OUT) : [which]) {
       html, body { margin: 0; background: transparent; width: ${vw}px; height: ${vh}px; overflow: hidden; }
       #band { position: absolute; left: 0; right: 0; top: 77%; height: 18%; background: linear-gradient(transparent, rgba(4,7,13,.55) 30%, rgba(4,7,13,.55) 75%, transparent); opacity: 0; }
       #cap { position: absolute; left: 6%; right: 6%; top: 80%; height: 12%; display: grid; place-items: center; text-align: center; text-wrap: balance; color: #fff2b3;
-        font: 400 ${Math.round(vw * 0.076)}px/1.05 'SC Display', Impact, sans-serif; text-shadow: 0 0 ${Math.round(vw * 0.045)}px rgba(250,129,39,.5), 0 ${Math.max(2, Math.round(vw * 0.006))}px 0 #000, 0 0 ${Math.round(vw * 0.06)}px rgba(0,0,0,.95), 0 0 4px #000; opacity: 0; }
+        font: 400 ${Math.round(vw * 0.076)}px/1 'SC Display', Impact, sans-serif; text-shadow: 0 0 ${Math.round(vw * 0.045)}px rgba(250,129,39,.5), 0 ${Math.max(2, Math.round(vw * 0.006))}px 0 #000, 0 0 ${Math.round(vw * 0.06)}px rgba(0,0,0,.95), 0 0 4px #000; opacity: 0; }
       #cap b { color: #fa8127; font-weight: 400; }
       #end { position: absolute; inset: 0; opacity: 0; }
       #end .shade { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 46%, rgba(4,7,13,.15), rgba(4,7,13,.75) 75%); }
@@ -197,7 +200,7 @@ for (const kind of which === 'all' ? Object.keys(OUT) : [which]) {
       const t = i / FPS, c = CAPS.find(([a, z]) => t >= a && t < z);
       const st = { capOp: 0, scale: 1, blur: 0, html: '', endOp: 0, titleOp: 0, titleScale: 1, subOp: 0 };
       if (c) { const [a, z, text, o = {}] = c, k = o.settled ? 1 : (t - a) / 0.42, out = Math.min(1, Math.max(0, (z - t) / 0.3));
-        st.html = text.replace(/\*(.+?)\*/g, '<b>$1</b>'); st.capOp = Math.min(1, k * 3) * out; st.scale = 1 + 0.7 * (1 - ease(k)); st.blur = 4 * (1 - ease(k)); }
+        st.html = '<span>' + text.replace(/\*(.+?)\*/g, '<b>$1</b>') + '</span>'; /* one item: the grid stacked bare words and the orange word as separate rows (Sevaan: too much space between the lines) */ st.capOp = Math.min(1, k * 3) * out; st.scale = 1 + 0.7 * (1 - ease(k)); st.blur = 4 * (1 - ease(k)); }
       if (t >= 26.4) { st.endOp = Math.min(1, (t - 26.4) / 0.4); const k = (t - 27.0) / 0.42; st.titleOp = t >= 27.0 ? Math.min(1, k * 3) : 0; st.titleScale = 1 + 0.7 * (1 - ease(k)); st.subOp = Math.min(1, Math.max(0, (t - 27.45) / 0.35)); }
       await cp.evaluate((st) => { const cap = document.getElementById('cap'); if (cap.dataset.h !== st.html) { cap.innerHTML = st.html; cap.dataset.h = st.html; }
         cap.style.opacity = st.capOp; cap.style.transform = `scale(${st.scale})`; cap.style.filter = st.blur > 0.05 ? `blur(${st.blur}px)` : 'none'; document.getElementById('band').style.opacity = st.capOp;

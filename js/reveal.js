@@ -5,12 +5,12 @@
 //  Everything scales with rarity (Legendary dims the sky, shockwave, held breath, slow flip, fanfare).
 // Waits use timers, not animation.finished, so a paused tab can never freeze the sequence.
 
-import { sfx, loadSfx, heartbeat } from './sfx.js?v=0.1.1120';
-import { audioCtx } from './audio-ctx.js?v=0.1.1120';
-import { TIER_INFO } from './rarity.js?v=0.1.1120';
-import { levelFor, attachTilt, attachGyro, attachFlip, throwOff, retype } from './card.js?v=0.1.1120';
-import { applyBack } from './card-backs.js?v=0.1.1120';
-import { addStarfield } from './starfield.js?v=0.1.1120';
+import { sfx, loadSfx, heartbeat } from './sfx.js?v=0.1.1121';
+import { audioCtx } from './audio-ctx.js?v=0.1.1121';
+import { TIER_INFO } from './rarity.js?v=0.1.1121';
+import { levelFor, attachTilt, attachGyro, attachFlip, throwOff, retype } from './card.js?v=0.1.1121';
+import { applyBack } from './card-backs.js?v=0.1.1121';
+import { addStarfield } from './starfield.js?v=0.1.1121';
 
 const FX = {
   common:    { particles: 14,  flip: 520,  spin: 0,   dim: 0,   shock: false, notes: [880],                            hold: 0 },
@@ -229,8 +229,13 @@ export async function playReveal({ card, o, seen, origin, fleet = null, progress
   // Swap faces on the edge-on frame, read from the turn’s own clock (2026-10-17). Safari ignores backface-visibility
   // here (the card’s children have their own transforms), so relying on it showed the front mirrored mid-turn; a
   // plain half-time timer could drift a frame and flash.
-  { const a = $('rv-flipper').getAnimations().at(-1), half = flipMs / 2;
-    const tick = () => { if (!alive()) return; const t = a?.currentTime ?? half; if (t >= half || a?.playState === 'finished') showFace('front'); else requestAnimationFrame(tick); };
+  // Epic and Legendary spin a whole extra turn on the way (540°), so one swap at half-time left the back showing from
+  // behind for a quarter turn (2026-10-24, Sevaan: the Golden Record flip was janky). Each frame shows whichever face
+  // is toward you, read from the card's actual angle (cos θ < 0: the front, which sits turned 180° inside the flipper).
+  { const a = $('rv-flipper').getAnimations().at(-1), fl = $('rv-flipper');
+    const tick = () => { if (!alive()) return; const done = !a || a.playState === 'finished';
+      if (done) { showFace('front'); return; }
+      const m = new DOMMatrix(getComputedStyle(fl).transform); showFace(m.m11 < 0 ? 'front' : 'back'); requestAnimationFrame(tick); };
     requestAnimationFrame(tick); }
   await flipped;
   if (!alive()) return;
