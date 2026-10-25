@@ -2573,3 +2573,12 @@ body.night .ft-pill { border-top-color: #ff6a55; } body.night .ft-pill small { c
 @keyframes ghostBob { 50% { transform: translateY(-3px); } }
 body.night .ghost-box { border-color: #ff6a5555; background: #170707; } body.night .ghost-box .gq { color: #ff6a55; background: #2a0c0a; box-shadow: none; } body.night .ghost-box small { color: #ff6a55; }
 @media (prefers-reduced-motion: reduce) { .ghost-box .gq { animation: none; } }
+/* Almost there tonight (2026-10-25, Sevaan; design/come-back.html 01) */
+.almost-box { display: grid; gap: 4px; margin: 0 0 14px; padding: 12px 14px; border-radius: 16px; border: 1px solid #d6dde655; background: #10161f; }
+.almost-box .k { font: 500 11px/1.2 var(--label); letter-spacing: .16em; text-transform: uppercase; color: #d6dde6; }
+.almost-box b { font: 400 17px/1.15 var(--display); color: var(--text); margin-bottom: 4px; }
+.almost-box .al-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; min-height: 40px; padding: 0 2px; border: 0; border-top: 1px solid #ffffff10; background: none; color: var(--text); font: 500 14px/1.2 var(--label); text-align: left; cursor: pointer; }
+.almost-box .al-row span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.almost-box .al-row i { flex: none; font-style: normal; color: color-mix(in srgb, var(--text) 75%, transparent); }
+.almost-box em { font-style: normal; } .almost-box em.silver { color: #d6dde6; } .almost-box em.gold { color: #f2c14e; }
+body.night .almost-box { border-color: #ff6a5544; background: #170707; } body.night .almost-box .k, body.night .almost-box em { color: #ff6a55; }
