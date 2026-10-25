@@ -2694,3 +2694,28 @@ body.night #tk-m .tk-tier { color: #ff7f70; }
 #discover .d-ticket.has-mini { box-sizing: border-box; min-height: 150px; align-content: center; }
 #discover .d-ticket.has-mini #d-name { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
 @media (max-height: 720px) { #discover .d-ticket.has-mini { min-height: 124px; } }
+
+/* Inside / Outside as two little game cards (Sevaan picked design/where-cards.html A, 2026-10-25): silver frame, a
+   header, a painted picture (assets/art/tour, day or night), name, type line and a stat row. The tapped one lifts and
+   glows orange while the other steps back, then the deck moves on. */
+.tc .acts.pick { gap: 12px; align-items: start; }
+.tc .acts.pick .pk.pk-card { position: relative; display: flex; flex-direction: column; align-items: stretch; justify-items: stretch; gap: 0; min-height: 0; height: auto; aspect-ratio: 2 / 3.05;
+  padding: 5px; border-radius: 12px; background: #0b1424; border: 2.5px solid #c9cdd6; box-shadow: 0 6px 16px #0009; text-align: left; overflow: hidden;
+  transition: transform .35s cubic-bezier(.2, 1.4, .4, 1), box-shadow .35s, opacity .35s, filter .35s, border-color .35s; }
+.tc .acts.pick .pk.pk-card::before { content: ''; position: absolute; inset: 4px; border: 1px solid #fff2b340; border-radius: 8px; pointer-events: none; z-index: 2; }
+.tc .pk-card .pk-hd { display: flex; justify-content: space-between; align-items: center; padding: 4px 6px 5px; font: 500 9.5px/1 var(--label); letter-spacing: .18em; text-transform: uppercase; color: var(--muted); }
+.tc .pk-card .pk-hd i { font-style: normal; color: var(--orange, #fa8127); }
+.tc .pk-card .pk-art { flex: 1; min-height: 0; border-radius: 5px; border: 1px solid #fff2b326; overflow: hidden; background: #0b1424; }
+.tc .pk-card .pk-art img, .tc .pk-card .pk-art svg { display: block; width: 100%; height: 100%; object-fit: cover; margin: 0; }
+.tc .acts.pick .pk.pk-card b { margin: 7px 5px 0; font: 400 19px/1 var(--display); color: var(--text); }
+.tc .acts.pick .pk.pk-card small { margin: 3px 5px 0; font: 500 10.5px/1.15 var(--label); letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+.tc .pk-card .pk-st { display: flex; justify-content: space-between; gap: 6px; margin: 6px 5px 2px; padding-top: 5px; border-top: 1px solid #fff2b326; font: 500 9px/1.1 var(--label); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+.tc .pk-card .pk-st em { font-style: normal; color: var(--text); }
+.tc .acts.pick .pk.pk-card:active { background: #0b1424; border-color: #fa8127; }
+.tc .acts.pick.picked .pk.pk-card.on { transform: translateY(-8px) rotate(-1.5deg); border-color: #fa8127; box-shadow: 0 0 0 2px #fa812755, 0 14px 26px #000b, 0 0 30px #fa812766; }
+.tc .acts.pick.picked .pk.pk-card:not(.on) { opacity: .45; filter: saturate(.4); transform: scale(.96); }
+@media (max-height: 760px) { .tc .acts.pick .pk.pk-card { aspect-ratio: 2 / 2.5; } .tc .pk-card .pk-st { display: none; } }
+@media (max-height: 640px) { .tc .acts.pick .pk.pk-card { aspect-ratio: 1 / 1.05; } }
+body.night .tc .pk-card .pk-art img { filter: grayscale(1) sepia(1) hue-rotate(-50deg) saturate(3) brightness(.8); }
+body.night .tc .acts.pick .pk.pk-card { border-color: #7a2a22; } body.night .tc .acts.pick.picked .pk.pk-card.on { border-color: #ff6a55; }
+@media (prefers-reduced-motion: reduce) { .tc .acts.pick .pk.pk-card { transition: none; } }

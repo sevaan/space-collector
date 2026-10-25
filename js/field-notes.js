@@ -4,9 +4,9 @@
 // small batches to the push val (relay/push.ts, POST /t); its /stats page shows the first-night catch rate and how many come
 // back. Settings → Help → "Share anonymous usage" (pref 'share', on by default) stops them. File named to stay clear of
 // content blockers' lists (see CLAUDE.md: avoid push / ads / track / analytics / beacon in js/ file names).
-import { VERSION } from './version.js?v=0.1.1159';
-import { isNative } from './native.js?v=0.1.1159';
-import { TESTER } from './build-flavor.js?v=0.1.1159';
+import { VERSION } from './version.js?v=0.1.1160';
+import { isNative } from './native.js?v=0.1.1160';
+import { TESTER } from './build-flavor.js?v=0.1.1160';
 
 const URL_ = 'https://sevaan--54192ae4c4ad11f18b0f1607ee4eb77e.web.val.run/t';
 const ls = { get: (k) => { try { return localStorage.getItem(k); } catch { return null; } }, set: (k, v) => { try { localStorage.setItem(k, v); } catch {} } };
