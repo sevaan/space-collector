@@ -71,6 +71,16 @@ for (const kind of which === 'all' ? Object.keys(OUT) : [which]) {
     await fn((k) => { marks[k] = now(); }); await cdp.send('Page.stopScreencast'); await w(150); const tk = { frames, marks, t0 }; frames = null; return tk; };
   // Turn the sealed card over now: tap it (again, if it hadn't landed yet) until its face shows.
   const flipNow = async () => { for (let i = 0; i < 16; i++) { if (await p.evaluate(() => document.getElementById('rv-back')?.style.visibility === 'hidden')) return; await p.locator('#rv-holder').click({ timeout: 600 }).catch(() => {}); await w(200); } };
+  // A clean picture of the card on screen for the end card: untilted, the whole card (it's taller than its holder, which
+  // cut the bottoms off: 2026-10-24, Sevaan), on a transparent background so the rounded corners stay clean.
+  const cardShot = async (path) => {
+    await p.mouse.move(2, 2); await w(900); // off the card: the tilt springs back flat
+    await p.evaluate(() => { const st = document.createElement('style'); st.id = 'shoot'; st.textContent = '#reveal { background: transparent !important; } #reveal > :not(#rv-holder), #reveal .starfield, #rv-glow { visibility: hidden !important; } html, body { background: transparent !important; } #sky, #hud { visibility: hidden !important; }'; document.head.append(st); });
+    await w(150);
+    const r = await p.evaluate(() => { const c = document.querySelector('#reveal-card .card') ?? document.getElementById('reveal-card'), b = c.getBoundingClientRect(); return { x: b.left, y: b.top, width: b.width, height: b.height }; });
+    const m = 8; await p.screenshot({ path, omitBackground: true, clip: { x: Math.max(0, r.x - m), y: Math.max(0, r.y - m), width: r.width + 2 * m, height: r.height + 2 * m } }).catch((e) => console.log(kind, 'card shot', e.message.slice(0, 60)));
+    await p.evaluate(() => document.getElementById('shoot')?.remove());
+  };
   // Hand-tilt a card under the mouse, so the foil and glare move.
   const tilt = async (ms) => { const r = await p.locator('#rv-holder').boundingBox().catch(() => null); if (!r) return w(ms); const pts = [[0.5, 0.45], [0.25, 0.3], [0.75, 0.35], [0.7, 0.7], [0.3, 0.62], [0.5, 0.45]]; const step = ms / pts.length;
     for (const [x, y] of pts) { await p.mouse.move(r.x + r.width * x, r.y + r.height * y, { steps: 6 }); await w(Math.max(0, step - 90)); } };
@@ -107,7 +117,7 @@ for (const kind of which === 'all' ? Object.keys(OUT) : [which]) {
       for (let i = 0; i < 90; i++) { const left = await p.evaluate(() => window.__store.sky.fade?.left ?? 99); if (left < 1.3) break; await w(60); }
       mark('collect'); await p.click('#d-cta', { timeout: 3000 }).catch((e) => console.log(kind, 'no Collect (fade)', e.message.slice(0, 60)));
       await w(250); await flipNow(); await w(300); await tilt(3600); await w(400); });
-    await p.mouse.move(vw / 2, vh * 0.42); await w(500); await p.locator('#rv-holder').screenshot({ path: join(tmp, 'fade-card.png'), omitBackground: true }).catch(() => {});
+    await cardShot(join(tmp, 'fade-card.png'));
     await p.evaluate(() => { document.getElementById('reveal').querySelector('.x-close')?.click(); const s = window.__store.state; s.pinnedId = null; window.__aim = null; }); await w(800);
   }
 
@@ -117,7 +127,7 @@ for (const kind of which === 'all' ? Object.keys(OUT) : [which]) {
   const t4 = await take(async (mark) => { mark('hold');
     for (let i = 0; i < 40 && !(await p.evaluate(() => !document.getElementById('reveal').hidden)); i++) await w(200);
     mark('reveal'); await w(1000); await flipNow(); await w(300); await tilt(3600); await w(400); });
-  await p.mouse.move(vw / 2, vh * 0.42); await w(500); await p.locator('#rv-holder').screenshot({ path: join(tmp, 'story-card.png'), omitBackground: true }).catch(() => {});
+  await cardShot(join(tmp, 'story-card.png'));
   await p.evaluate(() => { document.getElementById('reveal').querySelector('.x-close')?.click(); window.__aimAt = null; }); await w(800);
   await p.evaluate(() => localStorage.setItem('cardBack', 'mission-control')); // the ISS keeps the everyday back (finding Voyager adopts the Golden Record one)
 
@@ -133,7 +143,7 @@ for (const kind of which === 'all' ? Object.keys(OUT) : [which]) {
     await w(500); await tilt(3300); await w(500);
   });
   await p.mouse.move(vw / 2, vh * 0.42); await w(500);
-  const issCard = join(tmp, 'iss-card.png'); await p.locator('#rv-holder').screenshot({ path: issCard, omitBackground: true }).catch(() => {});
+  const issCard = join(tmp, 'iss-card.png'); await cardShot(issCard);
   await p.evaluate(() => { document.getElementById('reveal').querySelector('.x-close')?.click(); window.__aim = null; }); await w(800);
 
   // Take 5 · the Collection, scrolling steadily (~350 px/s) · Take 6 · the patch wall, slowly.
@@ -191,8 +201,8 @@ for (const kind of which === 'all' ? Object.keys(OUT) : [which]) {
       #end { position: absolute; inset: 0; opacity: 0; }
       #end .shade { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 40%, rgba(4,7,13,.25), rgba(4,7,13,.88) 72%); }
       #end img { position: absolute; filter: drop-shadow(0 ${Math.round(u * 0.04)}px ${Math.round(u * 0.08)}px rgba(0,0,0,.75)); transform-origin: 50% 85%; }
-      #end .cl, #end .cr { width: ${(u * 0.43).toFixed(0)}px; top: ${(vh * 0.21).toFixed(0)}px; left: 50%; margin-left: ${(-u * 0.215).toFixed(0)}px; }
-      #end .cc { width: ${(u * 0.5).toFixed(0)}px; top: ${(vh * 0.165).toFixed(0)}px; left: 50%; margin-left: ${(-u * 0.25).toFixed(0)}px; }
+      #end .cl, #end .cr { width: ${(u * 0.48).toFixed(0)}px; top: ${(vh * 0.215).toFixed(0)}px; left: 50%; margin-left: ${(-u * 0.24).toFixed(0)}px; }
+      #end .cc { width: ${(u * 0.57).toFixed(0)}px; top: ${(vh * 0.17).toFixed(0)}px; left: 50%; margin-left: ${(-u * 0.285).toFixed(0)}px; }
       #end .t { position: absolute; left: 0; right: 0; top: 67%; text-align: center; white-space: nowrap; font: 400 ${Math.round(u * 0.1)}px/1 'SC Display', Impact, sans-serif; color: #fff2b3; text-shadow: 0 0 ${Math.round(u * 0.05)}px rgba(250,129,39,.5), 0 3px 0 #000; }
       #end .rule { position: absolute; left: 50%; top: 73.3%; width: 27%; height: 1px; transform: translateX(-50%); background: linear-gradient(90deg, transparent, #fff2b366, transparent); }
       #end .s { position: absolute; left: 0; right: 0; top: 75.5%; text-align: center; font: 500 ${Math.round(u * 0.047)}px/1 'SC Label', sans-serif; letter-spacing: .26em; text-transform: uppercase; color: #fff2b3; }
@@ -209,7 +219,7 @@ for (const kind of which === 'all' ? Object.keys(OUT) : [which]) {
       await cp.evaluate((st) => { const cap = document.getElementById('cap'); if (cap.dataset.h !== st.html) { cap.innerHTML = st.html; cap.dataset.h = st.html; }
         cap.style.opacity = st.capOp; cap.style.transform = `scale(${st.scale})`; cap.style.filter = st.blur > 0.05 ? `blur(${st.blur}px)` : 'none'; document.getElementById('band').style.opacity = st.capOp;
         const e = document.getElementById('end'); e.style.opacity = st.endOp; const tt = e.querySelector('.t'); tt.style.opacity = st.titleOp; tt.style.transform = `scale(${st.titleScale})`; e.querySelector('.s').style.opacity = st.subOp; e.querySelector('.rule').style.opacity = st.subOp;
-        const f = st.fan, sx = Math.min(innerWidth, innerHeight * 0.4615) * 0.22 * f; e.querySelector('.cl').style.transform = `translateX(${-sx}px) rotate(${-14 * f}deg)`; e.querySelector('.cr').style.transform = `translateX(${sx}px) rotate(${14 * f}deg)`; e.querySelector('.cc').style.transform = `translateY(${(1 - f) * innerHeight * 0.04}px)`; }, st);
+        const f = st.fan, sx = Math.min(innerWidth, innerHeight * 0.4615) * 0.17 * f; e.querySelector('.cl').style.transform = `translateX(${-sx}px) rotate(${-11 * f}deg)`; e.querySelector('.cr').style.transform = `translateX(${sx}px) rotate(${11 * f}deg)`; /* every card edge stays on screen */ e.querySelector('.cc').style.transform = `translateY(${(1 - f) * innerHeight * 0.04}px)`; }, st);
       await cp.screenshot({ path: join(capDir, `${String(i).padStart(4, '0')}.png`), omitBackground: true });
     }
     await cb.close(); }
