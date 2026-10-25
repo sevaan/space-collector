@@ -14,10 +14,19 @@
 //   POST /schedule     { sub: PushSubscriptionJSON, alerts: [{ at, title, body, tag }], place?: { lat, lon } }  (replaces that phone's list;
 //                      place is rounded to 1 decimal and used only to check the weather before sending)
 //   POST /unsubscribe  { endpoint }
+//
+// Anonymous usage and error reports (2026-10-24, Sevaan: "how do I know if people are coming back?"). The app sends small
+// batches of game events, tied only to a random ID made on the phone (no location, no names, no device IDs), and they're
+// kept in this val's SQLite. Settings → Help → "Share anonymous usage" turns it off.
+//   POST /t      text/plain JSON { i: install id, v: app version, p: ios|android|web, x: 1 for test builds, e: [[name, ms, data]] }
+//   GET  /stats  the dashboard (aggregates only): first-night catch rate, nights and days people come back, motion,
+//                the tour, sessions without a catch, top errors, versions. ?all=1 includes test builds.
 import webpush from "npm:web-push@3.6.7";
 import { blob } from "https://esm.town/v/std/blob";
+import { sqlite } from "https://esm.town/v/std/sqlite";
 
 const ALLOWED = [/^https:\/\/sevaan\.github\.io$/, /^http:\/\/localhost(:\d+)?$/, /^http:\/\/127\.0\.0\.1(:\d+)?$/];
+const APP_ORIGINS = [...ALLOWED, /^capacitor:\/\/localhost$/, /^https:\/\/localhost$/, /^https:\/\/spacecollector\.app$/]; // the native apps' web views, for usage reports
 const SUBJECT = "https://sevaan.github.io/space-collector/";
 // How often the cron runs (Val Town free plan: every 15 min, the minimum). Alerts go out up to one interval early,
 // never late; the text says the pass time, so early is fine. If the cron ever runs more often, lower CRON_MINUTES.
@@ -49,7 +58,9 @@ const load = async (): Promise<Record<string, Entry>> => (await blob.getJSON("sc
 const save = (subs: Record<string, Entry>) => blob.setJSON("sc-subs", subs);
 
 export default async function handler(req: Request): Promise<Response> {
-  const origin = req.headers.get("Origin") ?? "";
+  const origin = req.headers.get("Origin") ?? "", path0 = new URL(req.url).pathname;
+  if (path0 === "/t") return report(req, origin);
+  if (path0 === "/stats" && req.method === "GET") return stats(new URL(req.url).searchParams.get("all") === "1");
   if (!ALLOWED.some((re) => re.test(origin))) return new Response("Forbidden", { status: 403 });
   const cors = { "Access-Control-Allow-Origin": origin, "Access-Control-Allow-Headers": "Content-Type", Vary: "Origin" };
   if (req.method === "OPTIONS") return new Response(null, { headers: { ...cors, "Access-Control-Allow-Methods": "GET, POST" } });
@@ -91,4 +102,59 @@ export async function cron() {
     }
   }
   await save(subs);
+}
+
+// ---------- Anonymous usage and error reports ----------
+const NAMES = new Set(["install", "open", "night", "end", "tour", "motion", "calib", "plus", "err"]);
+async function ensureTable() {
+  await sqlite.execute(`CREATE TABLE IF NOT EXISTS sc_events (ts INTEGER, iid TEXT, v TEXT, p TEXT, x INTEGER, name TEXT, d TEXT)`);
+}
+async function report(req: Request, origin: string): Promise<Response> {
+  const ok = APP_ORIGINS.some((re) => re.test(origin));
+  const cors = ok ? { "Access-Control-Allow-Origin": origin, Vary: "Origin" } : {};
+  if (!ok) return new Response("Forbidden", { status: 403 });
+  if (req.method === "OPTIONS") return new Response(null, { headers: { ...cors, "Access-Control-Allow-Methods": "POST", "Access-Control-Allow-Headers": "Content-Type" } });
+  if (req.method !== "POST") return new Response("not found", { status: 404, headers: cors });
+  let b: any; try { b = JSON.parse((await req.text()).slice(0, 40_000)); } catch { return new Response("bad", { status: 400, headers: cors }); }
+  const iid = String(b?.i ?? ""); if (!/^[a-f0-9]{16,40}$/.test(iid)) return new Response("bad id", { status: 400, headers: cors });
+  const v = String(b?.v ?? "").slice(0, 20), p = ["ios", "android", "web"].includes(b?.p) ? b.p : "web", x = b?.x ? 1 : 0, now = Date.now();
+  const rows = (Array.isArray(b?.e) ? b.e : []).slice(0, 60).filter((e: any) => Array.isArray(e) && NAMES.has(e[0]))
+    .map((e: any) => ({ sql: "INSERT INTO sc_events (ts, iid, v, p, x, name, d) VALUES (?, ?, ?, ?, ?, ?, ?)", args: [Math.min(now, Math.max(now - 30 * 86400_000, Number(e[1]) || now)), iid, v, p, x, String(e[0]), JSON.stringify(e[2] ?? {}).slice(0, 600)] }));
+  if (rows.length) { await ensureTable(); await sqlite.batch(rows); }
+  return new Response(null, { status: 204, headers: cors });
+}
+async function stats(all: boolean): Promise<Response> {
+  await ensureTable();
+  const W = all ? "1=1" : "x = 0";
+  const q = async (sql: string) => (await sqlite.execute(sql)).rows as any[];
+  const one = async (sql: string) => Number((await q(sql))[0]?.[0] ?? 0);
+  const installs = await one(`SELECT COUNT(DISTINCT iid) FROM sc_events WHERE ${W} AND name = 'install'`);
+  const firstNight = await one(`SELECT COUNT(DISTINCT iid) FROM sc_events WHERE ${W} AND name = 'night' AND json_extract(d, '$.f') = 1 AND iid IN (SELECT iid FROM sc_events WHERE name = 'install')`);
+  const maxN = await q(`SELECT n, COUNT(*) FROM (SELECT iid, MAX(CAST(json_extract(d, '$.n') AS INTEGER)) AS n FROM sc_events WHERE ${W} AND name = 'night' GROUP BY iid) GROUP BY n ORDER BY n`);
+  const reached = (k: number) => maxN.filter((r) => Number(r[0]) >= k).reduce((a, r) => a + Number(r[1]), 0);
+  const any1 = reached(1);
+  const days = await q(`SELECT iid, MAX(CAST(json_extract(d, '$.dsi') AS INTEGER)) FROM sc_events WHERE ${W} AND name = 'open' GROUP BY iid`);
+  const dRet = (k: number) => days.filter((r) => Number(r[1]) >= k).length;
+  const motion = await q(`SELECT json_extract(d, '$.s'), COUNT(DISTINCT iid) FROM sc_events WHERE ${W} AND name = 'motion' GROUP BY 1 ORDER BY 2 DESC`);
+  const tour = await q(`SELECT json_extract(d, '$.s'), COUNT(DISTINCT iid) FROM sc_events WHERE ${W} AND name = 'tour' GROUP BY 1 ORDER BY 2 DESC`);
+  const ends = await q(`SELECT SUM(CASE WHEN CAST(json_extract(d, '$.c') AS INTEGER) = 0 THEN 1 ELSE 0 END), COUNT(*), SUM(CASE WHEN json_extract(d, '$.dark') = 1 AND CAST(json_extract(d, '$.c') AS INTEGER) = 0 THEN 1 ELSE 0 END), SUM(CASE WHEN json_extract(d, '$.dark') = 1 THEN 1 ELSE 0 END) FROM sc_events WHERE ${W} AND name = 'end'`);
+  const errs = await q(`SELECT json_extract(d, '$.m'), COUNT(*), COUNT(DISTINCT iid), MAX(v), MAX(ts) FROM sc_events WHERE ${W} AND name = 'err' GROUP BY 1 ORDER BY 2 DESC LIMIT 15`);
+  const plats = await q(`SELECT p, COUNT(DISTINCT iid) FROM sc_events WHERE ${W} GROUP BY p`);
+  const vers = await q(`SELECT v, COUNT(DISTINCT iid) FROM sc_events WHERE ${W} GROUP BY v ORDER BY MAX(ts) DESC LIMIT 6`);
+  const plus = await q(`SELECT json_extract(d, '$.s'), COUNT(DISTINCT iid) FROM sc_events WHERE ${W} AND name = 'plus' GROUP BY 1`);
+  const pct = (a: number, b: number) => (b ? `${Math.round((100 * a) / b)}%` : "–");
+  const esc = (t: unknown) => String(t ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]!));
+  const row = (k: string, v: string, sub = "") => `<tr><th>${k}</th><td>${v}</td><td class="m">${sub}</td></tr>`;
+  const e = (ends[0] ?? [0, 0, 0, 0]).map((n: unknown) => Number(n) || 0);
+  const html = `<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Space Collector · usage</title>
+<style>body{margin:0;padding:24px 16px;background:#080f1b;color:#e8eef6;font:15px/1.45 -apple-system,system-ui,sans-serif}h1{font-size:22px;color:#fff2b3;margin:0 0 4px}h2{font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:#fa8127;margin:26px 0 8px}
+table{border-collapse:collapse;width:100%;max-width:760px}th,td{text-align:left;padding:7px 10px;border-bottom:1px solid #22324a;vertical-align:top}th{font-weight:500;color:#c9d3de;width:46%}td{color:#fff2b3;font-variant-numeric:tabular-nums}.m{color:#9fb0c6;font-size:13px}p{color:#9fb0c6;max-width:760px}a{color:#fa8127}</style>
+<h1>Space Collector · usage</h1><p>Anonymous: a random ID per install, no places or names. ${all ? 'Including test builds · <a href="?">players only</a>' : 'Players only (test builds left out) · <a href="?all=1">include test builds</a>'}. Updated ${new Date().toUTCString()}.</p>
+<h2>The first night</h2><table>${row("New installs", String(installs))}${row("Caught a card on their first night", pct(firstNight, installs), `${firstNight} of ${installs}`)}${row("Finished the tour", esc(tour.map((r) => `${r[0]}: ${r[1]}`).join(" · ") || "–"))}${row("Motion", esc(motion.map((r) => `${r[0]}: ${r[1]}`).join(" · ") || "–"), "live = the phone steers; drag = finger; none = no sensors")}</table>
+<h2>Coming back (nights with a catch)</h2><table>${row("Caught on 1+ nights", String(any1))}${row("2+ nights", pct(reached(2), any1), String(reached(2)))}${row("3+ nights", pct(reached(3), any1), String(reached(3)))}${row("7+ nights", pct(reached(7), any1), String(reached(7)))}${row("14+ nights", pct(reached(14), any1), String(reached(14)))}</table>
+<h2>Coming back (days since install, any open)</h2><table>${row("Opened again on day 1+", pct(dRet(1), days.length), `${dRet(1)} of ${days.length}`)}${row("Day 3+", pct(dRet(3), days.length), String(dRet(3)))}${row("Day 7+", pct(dRet(7), days.length), String(dRet(7)))}${row("Day 28+", pct(dRet(28), days.length), String(dRet(28)))}</table>
+<h2>Sessions</h2><table>${row("Ended without a catch", pct(Number(e[0]), Number(e[1])), `${e[0]} of ${e[1]}`)}${row("…of those after dark", pct(Number(e[2]), Number(e[3])), `${e[2]} of ${e[3]} dark sessions`)}${row("Plus", esc(plus.map((r) => `${r[0]}: ${r[1]}`).join(" · ") || "–"))}</table>
+<h2>Errors</h2><table>${errs.map((r) => row(esc(r[0]), String(r[1]), `${r[2]} installs · v${esc(r[3])} · ${new Date(Number(r[4])).toISOString().slice(0, 16).replace("T", " ")}`)).join("") || row("None reported", "")}</table>
+<h2>Who</h2><table>${row("Platforms", esc(plats.map((r) => `${r[0]}: ${r[1]}`).join(" · ")))}${row("Latest versions", esc(vers.map((r) => `${r[0]}: ${r[1]}`).join(" · ")))}</table>`;
+  return new Response(html, { headers: { "Content-Type": "text/html; charset=utf-8" } });
 }

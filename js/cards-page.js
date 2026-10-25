@@ -1,30 +1,30 @@
-import { pullToClose } from './pull-close.js?v=0.1.1121';
-import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.1121';
-import { computeStats, statsHtml } from './stats.js?v=0.1.1121';
-import { nightKey } from './observation.js?v=0.1.1121';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1121';
-import { sfx } from './sfx.js?v=0.1.1121';
-import { expandFacts } from './catalog-facts.js?v=0.1.1121';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.1121';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1121';
-import { ticket } from './toast.js?v=0.1.1121';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.1121';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.1121';
-import { cardArt } from './art.js?v=0.1.1121';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.1121';
-import { applyBack } from './card-backs.js?v=0.1.1121';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.1121';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1121';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.1121';
-import { STORIES } from './stories.js?v=0.1.1121';
-import { loadConstellations, conList } from './constellations.js?v=0.1.1121';
-import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.1121';
-import { eventBadges, nextEvent } from './events.js?v=0.1.1121';
-import { shareCardEl } from './share-card.js?v=0.1.1121';
-import { forgetSighting } from './cloud-backup.js?v=0.1.1121';
-import { allSightings, deleteSighting } from './store.js?v=0.1.1121';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.1121';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.1121';
+import { pullToClose } from './pull-close.js?v=0.1.1122';
+import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.1122';
+import { computeStats, statsHtml } from './stats.js?v=0.1.1122';
+import { nightKey } from './observation.js?v=0.1.1122';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1122';
+import { sfx } from './sfx.js?v=0.1.1122';
+import { expandFacts } from './catalog-facts.js?v=0.1.1122';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.1122';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1122';
+import { ticket } from './toast.js?v=0.1.1122';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.1122';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.1122';
+import { cardArt } from './art.js?v=0.1.1122';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.1122';
+import { applyBack } from './card-backs.js?v=0.1.1122';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.1122';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1122';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.1122';
+import { STORIES } from './stories.js?v=0.1.1122';
+import { loadConstellations, conList } from './constellations.js?v=0.1.1122';
+import { RANKS, progress, readDeals, xpCarry } from './progress.js?v=0.1.1122';
+import { eventBadges, nextEvent } from './events.js?v=0.1.1122';
+import { shareCardEl } from './share-card.js?v=0.1.1122';
+import { forgetSighting } from './cloud-backup.js?v=0.1.1122';
+import { allSightings, deleteSighting } from './store.js?v=0.1.1122';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.1122';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.1122';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -1027,6 +1027,9 @@ try { sessionStorage.setItem('scBooted', '1'); } catch {} // the app is open: go
 // "12 cards · not backed up · Sign in ›" under the heading until you sign in (2026-10-11, design/auth-moments.html 3).
 // Inside the app it asks Explore to open the sign-in sheet; on its own it goes to Settings.
 const EMBED = window.parent !== window && new URLSearchParams(location.search).has('embed');
+// Errors here go to Explore's anonymous usage notes (js/field-notes.js), which this page doesn't load itself.
+if (EMBED) { const tellErr = (m, src, l, c) => { try { window.parent.postMessage({ sc: 'err', m: String(m ?? '').slice(0, 200), s: 'cards:' + String(src ?? '').replace(/^.*\//, '').replace(/\?.*$/, ''), l: l | 0, c: c | 0 }, location.origin); } catch {} };
+  addEventListener('error', (e) => { if (e?.message) tellErr(e.message, e.filename, e.lineno, e.colno); }); addEventListener('unhandledrejection', (e) => tellErr(e?.reason?.message ?? String(e?.reason), '', 0, 0)); }
 if (EMBED) {
   document.documentElement.classList.add('embedded');
   // Explore’s switcher sits over this page; while a card, patch or the stats are open it steps aside so it doesn’t
