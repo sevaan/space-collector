@@ -2493,3 +2493,21 @@ body:has(#onboard:not([hidden]) #ob-done:not([hidden])) #set-plus-sheet .set-she
 
 /* hidden means hidden on the plane ticket's route line (Android playtest 2026-10-24: a star's ticket showed the last plane's "Cessna 172"; the display:block !important above beat [hidden]). */
 #plane .p-ticket .p-route[hidden], #plane .p-ticket [hidden] { display: none !important; }
+/* By day, under the until-dark bar: what you can catch right now (2026-10-25, Sevaan; design/first-night.html 07 A) */
+#ud-now { position: fixed; left: 50%; transform: translateX(-50%); z-index: 3; width: min(390px, calc(var(--vws, 100vw) - 24px)); display: grid; justify-items: center; gap: 8px; pointer-events: none; }
+#ud-now[hidden] { display: none; }
+#ud-now .ud-now-h { font: 500 11px/1 var(--label); letter-spacing: .2em; text-transform: uppercase; color: #fff; text-shadow: 0 1px 6px rgba(8, 15, 27, .6); }
+#ud-now .ud-now-h[hidden] { display: none; }
+#ud-now .ud-chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+#ud-now .ud-chip { pointer-events: auto; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 4px 14px 4px 4px; border: 1px solid rgba(255, 242, 179, .14); border-radius: 99px; background: rgba(8, 15, 27, .9); color: #fff2b3; cursor: pointer; text-align: left; }
+#ud-now .ud-chip img, #ud-now .ud-chip > i { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; flex: none; background: #12233a; }
+#ud-now .ud-chip span { display: grid; gap: 1px; }
+#ud-now .ud-chip b { font: 400 14px/1.1 var(--display); white-space: nowrap; }
+#ud-now .ud-chip small { font: 500 10.5px/1.1 var(--label); letter-spacing: .14em; text-transform: uppercase; color: #c3c9d1; white-space: nowrap; }
+#ud-now .ud-chip.new small { color: #fa8127; }
+#ud-now .ud-chip.on { border-color: #fa8127; box-shadow: 0 0 0 1px #fa8127; }
+#ud-now .ud-plan { pointer-events: auto; min-height: 36px; margin-top: 4px; padding: 0 16px; border: 0; border-radius: 99px; background: rgba(255, 255, 255, .88); color: #0b1120; font: 500 12px/1 var(--label); letter-spacing: .16em; text-transform: uppercase; cursor: pointer; }
+body.night #ud-now .ud-chip { border-color: #ff6a5533; } body.night #ud-now .ud-chip b { color: #ff7f70; } body.night #ud-now .ud-chip small, body.night #ud-now .ud-chip.new small { color: #e8705f; }
+body.night #ud-now .ud-chip.on { border-color: #ff6a55; box-shadow: 0 0 0 1px #ff6a55; } body.night #ud-now .ud-plan { background: #ff6a55; color: #120606; }
+body.ob-tour #ud-now, body.calib #ud-now, body:has(#wake:not([hidden])) #ud-now, body.folded #ud-now { display: none; }
+#ud-now.compact .ud-plan { display: none; }

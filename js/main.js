@@ -1,53 +1,53 @@
-import { pullToClose } from './pull-close.js?v=0.1.1124';
-import { TESTER } from './build-flavor.js?v=0.1.1124';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1124';
-import * as Secrets from './secrets.js?v=0.1.1124';
-import { STORY_BY_SECRET } from './stories.js?v=0.1.1124';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.1124';
-import * as Ufo from './ufo.js?v=0.1.1124';
-import * as Fossil from './fossil.js?v=0.1.1124';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.1124';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1124';
-import { toast, ticket, dropToast, toastPending, onTicketShown, iconSvg } from './toast.js?v=0.1.1124';
-import { VERSION } from './version.js?v=0.1.1124';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, overEarth, RisingSoon, setBinocularMode, setSkyLimit, toWorker } from './orbit.js?v=0.1.1124';
-import { placeName } from './geo.js?v=0.1.1124';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, SLIDER_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.1124';
-import { conArt } from './con-art.js?v=0.1.1124';
-import { fetchWeather, tonightSky, skyClearAt, goodSkyAt } from './weather.js?v=0.1.1124';
-import { CON_FIGURES } from './con-figures.js?v=0.1.1124';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress, starDistance } from './constellations.js?v=0.1.1124';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.1124';
-import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.1124';
-import { eventOf, activeEvent, nextEvent } from './events.js?v=0.1.1124';
-import { conList } from './constellations.js?v=0.1.1124';
-import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination, hasSensorView, resumeSensors, needsPermission } from './sensors.js?v=0.1.1124';
-import { SkyView, shortName, stripLandscape } from './sky.js?v=0.1.1124';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.1124';
-import { isPlus, setPlusForTesting, onPlus, PLUS_PRICES, initStore, storePlans, buyPlus, restorePlus, rcTestStore, storeOpen } from './plus.js?v=0.1.1124';
-import { isNative, getPosition, saveFile, notifyAt, cancelNotify, haptic, onNative, nativeChrome, plugin } from './native.js?v=0.1.1124';
-import { initBackup, onBackupChange, backupSoon, clearBackup, backupStatus } from './cloud-backup.js?v=0.1.1124';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.1124';
-import { cardArt } from './art.js?v=0.1.1124';
-import { renderCard, miniCard, cardLevel, artImage, lockedArt, attachTilt, attachGyro, throwOff, attachFlip, turnCard } from './card.js?v=0.1.1124';
-import { applyBack, CARD_BACKS, backUnlocked, chosenBack, chooseBack, backEarned, showBackNext } from './card-backs.js?v=0.1.1124';
-import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.1124';
-import { audioCtx } from './audio-ctx.js?v=0.1.1124';
-import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume, musicAway } from './music.js?v=0.1.1124';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss, onRevealSwipeIntoBinder } from './reveal.js?v=0.1.1124';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel, moonPhaseOf, MOON_PHASES } from './card-model.js?v=0.1.1124';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.1124';
-import { naturalTargets, SOLAR_SYSTEM, DEEP_SKY, NATURAL } from './natural.js?v=0.1.1124';
-import { placeFromTimeZone } from './tz-places.js?v=0.1.1124';
-import { TIER_INFO } from './rarity.js?v=0.1.1124';
-import { SETS, albumList } from './sets.js?v=0.1.1124';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.1124';
-import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.1124';
-import { note, send as sendNotes, noteError, daysSinceInstall } from './field-notes.js?v=0.1.1124';
-import { shareCardEl } from './share-card.js?v=0.1.1124';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.1124';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.1124';
-import { addStarfield } from './starfield.js?v=0.1.1124';
+import { pullToClose } from './pull-close.js?v=0.1.1125';
+import { TESTER } from './build-flavor.js?v=0.1.1125';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1125';
+import * as Secrets from './secrets.js?v=0.1.1125';
+import { STORY_BY_SECRET } from './stories.js?v=0.1.1125';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.1125';
+import * as Ufo from './ufo.js?v=0.1.1125';
+import * as Fossil from './fossil.js?v=0.1.1125';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.1125';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1125';
+import { toast, ticket, dropToast, toastPending, onTicketShown, iconSvg } from './toast.js?v=0.1.1125';
+import { VERSION } from './version.js?v=0.1.1125';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, overEarth, RisingSoon, setBinocularMode, setSkyLimit, toWorker } from './orbit.js?v=0.1.1125';
+import { placeName } from './geo.js?v=0.1.1125';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, SLIDER_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.1125';
+import { conArt } from './con-art.js?v=0.1.1125';
+import { fetchWeather, tonightSky, skyClearAt, goodSkyAt } from './weather.js?v=0.1.1125';
+import { CON_FIGURES } from './con-figures.js?v=0.1.1125';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress, starDistance } from './constellations.js?v=0.1.1125';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.1125';
+import { progress as progressOf, missionsFor, readDeals, xpCarry } from './progress.js?v=0.1.1125';
+import { eventOf, activeEvent, nextEvent } from './events.js?v=0.1.1125';
+import { conList } from './constellations.js?v=0.1.1125';
+import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination, hasSensorView, resumeSensors, needsPermission } from './sensors.js?v=0.1.1125';
+import { SkyView, shortName, stripLandscape } from './sky.js?v=0.1.1125';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.1125';
+import { isPlus, setPlusForTesting, onPlus, PLUS_PRICES, initStore, storePlans, buyPlus, restorePlus, rcTestStore, storeOpen } from './plus.js?v=0.1.1125';
+import { isNative, getPosition, saveFile, notifyAt, cancelNotify, haptic, onNative, nativeChrome, plugin } from './native.js?v=0.1.1125';
+import { initBackup, onBackupChange, backupSoon, clearBackup, backupStatus } from './cloud-backup.js?v=0.1.1125';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.1125';
+import { cardArt } from './art.js?v=0.1.1125';
+import { renderCard, miniCard, cardLevel, artImage, lockedArt, attachTilt, attachGyro, throwOff, attachFlip, turnCard } from './card.js?v=0.1.1125';
+import { applyBack, CARD_BACKS, backUnlocked, chosenBack, chooseBack, backEarned, showBackNext } from './card-backs.js?v=0.1.1125';
+import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.1125';
+import { audioCtx } from './audio-ctx.js?v=0.1.1125';
+import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume, musicAway } from './music.js?v=0.1.1125';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss, onRevealSwipeIntoBinder } from './reveal.js?v=0.1.1125';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel, moonPhaseOf, MOON_PHASES } from './card-model.js?v=0.1.1125';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.1125';
+import { naturalTargets, SOLAR_SYSTEM, DEEP_SKY, NATURAL } from './natural.js?v=0.1.1125';
+import { placeFromTimeZone } from './tz-places.js?v=0.1.1125';
+import { TIER_INFO } from './rarity.js?v=0.1.1125';
+import { SETS, albumList } from './sets.js?v=0.1.1125';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.1125';
+import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.1125';
+import { note, send as sendNotes, noteError, daysSinceInstall } from './field-notes.js?v=0.1.1125';
+import { shareCardEl } from './share-card.js?v=0.1.1125';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.1125';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.1125';
+import { addStarfield } from './starfield.js?v=0.1.1125';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -5285,14 +5285,51 @@ function untilDark(target) {
   ghRemind();
   const el = $('until-dark'), T = state.tonight, now0 = now().getTime();
   const show = document.body.classList.contains('day') && (state.basis?.back?.[2] ?? 1) > 0 && !target && !state.planeHit && T?.dusk && T.dusk > now0 && $('discover').hidden && !sky.dayHitId && !sky.ghostHitId;
-  if (!show) { if (!el.hidden) el.hidden = true; return; }
-  // With seconds (2026-10-11, Sevaan). Only a new minute rolls; the seconds just tick.
+  if (!show) { if (!el.hidden) el.hidden = true; udNow(false); return; }
+  // Design A (2026-10-25, Sevaan; design/first-night.html 07): "Dark at 6:43 PM" over "In 2 h 2 min", and under the bar
+  // what you can catch right now. (Was "Dark in 2 h 24 min" over "At 7:00 PM", 2026-10-17.) Minutes, seconds only in the last one.
   const secs = Math.max(0, Math.floor((T.dusk - now0) / 1000)), h = Math.floor(secs / 3600), m = Math.floor(secs / 60) % 60, sc = secs % 60;
-  const txt = `Dark in ${h ? `${h} h ` : ''}${h || m ? `${m} min` : `${sc} s`}`.trim(); // the slim bar (2026-10-17, design/target-states Until dark C): minutes, seconds only in the last one
-  if (txt !== udLast) { const roll = !!udLast && !matchMedia('(prefers-reduced-motion: reduce)').matches && txt.replace(/\d+ s/, '') !== udLast.replace(/\d+ s/, ''); /* no roll under Reduce Motion: it could stop half-way (iOS playtest 2026-10-20) */ udLast = txt; setTxt($('ud-time'), txt); if (roll) { $('ud-time').classList.remove('roll'); void $('ud-time').offsetWidth; $('ud-time').classList.add('roll'); } if ($('ud-bell').dataset.dusk !== String(T.dusk)) { $('ud-bell').dataset.dusk = String(T.dusk); udRender(); }; }
-  const rc = sky.ring ?? { y: sky.cy, r: sky.reticlePx }; el.style.top = `${rc.y + rc.r + 26}px`;
+  const left = `In ${h ? `${h} h ` : ''}${h || m ? `${m} min` : `${sc} s`}`.trim(), r = udReminder();
+  setTxt($('ud-time'), `Dark at ${fmtTime(T.dusk)}`); setTxt($('ud-at'), r ? `${left} · reminder ${fmtTime(r.t)} ✓` : left);
+  if ($('ud-bell').dataset.dusk !== String(T.dusk)) { $('ud-bell').dataset.dusk = String(T.dusk); udRender(); }
+  const rc = sky.ring ?? { y: sky.cy, r: sky.reticlePx }, top = rc.y + rc.r + 26; el.style.top = `${top}px`;
   el.hidden = false;
+  udNow(true, top);
 }
+// "Right now you can catch" (2026-10-25, Sevaan; design/first-night.html 07 A): chips for the Sun, the Moon and any planet
+// up and visible now, each saying yours or new; a tap steers you there (guideTo). Then "Tonight’s plan ›". The list is
+// rebuilt at most once a second and only when it changes; it steps aside if it would reach the tab bar.
+let udNowKey = '', udNowAt = 0, udNowH = 0, udNowH2 = 0, udBarH = 64, udNavTop = Infinity;
+function udNow(show, top = 0) {
+  const box = $('ud-now');
+  if (!show) { if (!box.hidden) box.hidden = true; return; }
+  const t = performance.now();
+  if (t - udNowAt > 1000) {
+    udNowAt = t;
+    const order = { sun: 0, moon: 1, planet: 2 };
+    const list = (state.naturals ?? []).filter((n) => n.look.visible && n.obj.type in order).sort((a, b) => order[a.obj.type] - order[b.obj.type] || (a.look.mag ?? 9) - (b.look.mag ?? 9)).slice(0, 3);
+    const key = list.map((n) => `${n.obj.id}:${isNewFind(n.obj) ? 1 : 0}`).join(',') + `|${state.pinnedId ?? ''}`;
+    if (key !== udNowKey) {
+      udNowKey = key;
+      $('ud-chips').innerHTML = list.map((n) => { const fresh = isNewFind(n.obj), name = label(n.obj).replace(/^the /i, ''); let src = ''; try { src = artImage(cardModel(n.obj), 'small') ?? ''; } catch {}
+        return `<button type="button" class="ud-chip${fresh ? ' new' : ''}${state.pinnedId === n.obj.id ? ' on' : ''}" data-id="${escapeHtml(String(n.obj.id))}">${src ? `<img src="${escapeHtml(src)}" alt="" decoding="async">` : '<i></i>'}<span><b>${escapeHtml(name)}</b><small>${fresh ? 'New' : '✓ Yours'}</small></span></button>`; }).join('');
+      box.querySelector('.ud-now-h').hidden = !list.length;
+      box.hidden = false; box.classList.remove('compact'); udNowH = box.offsetHeight; box.classList.add('compact'); udNowH2 = box.offsetHeight; box.classList.remove('compact'); udBarH = $('until-dark').offsetHeight || udBarH;
+    }
+    udNavTop = $('nav').getBoundingClientRect().top || innerHeight;
+  }
+  // On a short screen the plan button goes first, then the whole row, rather than sit on the tab bar.
+  const y = top + udBarH + 14, fits = y + udNowH <= udNavTop - 10, fits2 = y + udNowH2 <= udNavTop - 10;
+  box.style.top = `${y}px`;
+  if (box.classList.contains('compact') === fits) box.classList.toggle('compact', !fits);
+  if (box.hidden === fits2) box.hidden = !fits2;
+}
+$('ud-chips').addEventListener('click', (e) => {
+  const c = e.target.closest('.ud-chip'); if (!c) return;
+  const n = (state.naturals ?? []).find((x) => String(x.obj.id) === c.dataset.id); if (!n) return;
+  buzz(8); guideTo(n.obj, n.look); udNowKey = ''; udNowAt = 0; // lights the chip at the next check
+});
+$('ud-plan').addEventListener('click', () => openSky('tonight'));
 
 // Countdown → reminder (2026-10-08, design/until-dark.html). A native notification (no calendar files since 2026-10-12).
 // Remembered for tonight in localStorage 'udRemind' = { t, label }.
@@ -5315,7 +5352,7 @@ function udRender() {
   // "Remind me at 7:00 PM" (2026-10-17, Sevaan): the time of dark is on the button, not on a line of its own.
   const dusk = state.tonight?.dusk;
   b.classList.toggle('on', !!r); b.setAttribute('aria-label', r ? `Reminder at ${fmtTime(r.t)}. Change it` : dusk ? `Remind me at ${fmtTime(dusk)}` : 'Remind me');
-  setTxt($('ud-at'), r ? `Reminder at ${fmtTime(r.t)} ✓` : dusk ? `At ${fmtTime(dusk)}` : '');
+  // (the line under it, the countdown and the reminder, is written by untilDark each frame; 2026-10-25)
 }
 $('ud-bell').addEventListener('click', () => {
   udChoices = udOptions(); if (!udChoices.length) return;
