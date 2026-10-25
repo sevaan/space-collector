@@ -1,0 +1,682 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The catch, the feel</title>
+<style>
+@font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf'); }
+@font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf'); }
+:root { --ink: #fff2b3; --mu: #bdbea9; --or: #fa8127; --gold: #f2c14e; --steel: #6f8fae; --line: #1d2a3c; --card: #0e1828; --unc: #5fd08a; --rare: #4aa8ff; --red: #ff7f70;
+  --t-com: #9aa4b1; --t-unc: #5fd08a; --t-rare: #4aa8ff; --t-epic: #e46ad6; --t-leg: #ffc545; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #04080f; color: var(--ink); font: 15px/1.4 system-ui, sans-serif; padding: 26px 20px 80px; }
+h1 { font: 400 28px 'SC Display'; margin: 0 0 4px; } .lead { color: var(--mu); margin: 0 0 8px; max-width: 1100px; }
+.how { color: var(--mu); font-size: 13px; margin: 0 0 26px; max-width: 1100px; }
+.how b { color: var(--ink); }
+.sec { font: 500 14px 'SC Label'; letter-spacing: .26em; text-transform: uppercase; color: var(--mu); border-top: 1px solid var(--line); padding-top: 14px; margin: 40px 0 18px; max-width: 1180px; }
+.sec b { color: var(--ink); font-weight: 500; }
+.idea { max-width: 1180px; margin: 0 0 46px; }
+.idea > h2 { font: 400 21px/1.15 'SC Display'; margin: 0 0 6px; display: flex; gap: 10px; align-items: baseline; }
+.idea > h2 .no { font: 500 15px 'SC Label'; color: var(--or); letter-spacing: .1em; min-width: 22px; }
+.idea > p { color: var(--mu); margin: 0 0 8px; font-size: 14px; max-width: 760px; }
+.idea > p b { color: var(--ink); font-weight: 600; }
+.row { display: flex; gap: 30px; flex-wrap: wrap; align-items: flex-start; }
+.opt { width: 360px; }
+.opt.wide { width: 750px; max-width: 100%; }
+.opt h3 { font: 500 13px 'SC Label'; letter-spacing: .22em; text-transform: uppercase; color: var(--mu); margin: 0 0 8px; display: flex; gap: 8px; align-items: center; }
+.opt h3 .pill { font: 500 11px 'SC Label'; letter-spacing: .16em; padding: 2px 7px; border-radius: 6px; border: 1px solid #2c3b52; }
+.opt h3 .pill.t { color: #8d93a0; } .opt h3 .pill.p { color: var(--or); border-color: #6a3a18; }
+.opt > p { color: var(--mu); margin: 10px 0 0; font-size: 13.5px; }
+.opt > p b { color: var(--ink); font-weight: 600; }
+.tags { display: flex; gap: 6px; flex-wrap: wrap; margin: 0 0 14px; }
+.tag { font: 500 11.5px 'SC Label'; letter-spacing: .16em; text-transform: uppercase; padding: 3px 8px; border-radius: 6px; border: 1px solid #2c3b52; color: var(--mu); }
+.tag.s { color: var(--unc); border-color: #2c5a40; } .tag.m { color: var(--gold); border-color: #5f4e22; } .tag.l { color: var(--or); border-color: #6a3a18; }
+.tag.f { color: var(--steel); }
+.today { font-size: 12.5px; color: #8d93a0; margin: 10px 0 0; }
+.today b { color: var(--mu); font-weight: 600; }
+.rules { margin: 10px 0 0; padding: 12px 14px; border: 1px solid #22344e; border-radius: 12px; background: #0b1424; font-size: 13px; color: var(--mu); }
+.rules h4 { margin: 0 0 6px; font: 500 12px 'SC Label'; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); }
+.rules ul { margin: 0; padding-left: 18px; } .rules li { margin: 3px 0; } .rules li b { color: var(--ink); font-weight: 600; }
+
+/* sound buttons */
+.snds { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+.snd { font: 500 12px 'SC Label'; letter-spacing: .12em; text-transform: uppercase; color: var(--ink); background: #0e1a29; border: 1px solid #2c3b52; border-radius: 8px; padding: 6px 10px; cursor: pointer; }
+.snd:hover { border-color: var(--or); } .snd.on { border-color: var(--or); color: var(--or); }
+
+/* the phone */
+.ph { width: 360px; height: 400px; position: relative; overflow: hidden; border-radius: 30px; border: 1px solid #1a2436; background: radial-gradient(ellipse at 50% 30%, #0f1d31, #070d18 70%); }
+.ph.tall { height: 520px; }
+.ph::before { content: ''; position: absolute; inset: 0; pointer-events: none; background:
+  radial-gradient(1px 1px at 12% 18%, #fff8 50%, transparent), radial-gradient(1px 1px at 72% 12%, #fff9 50%, transparent), radial-gradient(1.4px 1.4px at 44% 36%, #fffa 50%, transparent),
+  radial-gradient(1px 1px at 86% 44%, #fff7 50%, transparent), radial-gradient(1px 1px at 22% 62%, #fff6 50%, transparent), radial-gradient(1.2px 1.2px at 58% 72%, #fff8 50%, transparent),
+  radial-gradient(1px 1px at 92% 82%, #fff6 50%, transparent), radial-gradient(1px 1px at 8% 88%, #fff7 50%, transparent), radial-gradient(1px 1px at 34% 8%, #fff6 50%, transparent); }
+.ph.shot::before { display: none; }
+.ph.shot img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; display: block; }
+.ph.shot .badge { position: absolute; right: 12px; bottom: 12px; font: 500 11px 'SC Label'; letter-spacing: .18em; color: #0b1018; background: var(--mu); border-radius: 6px; padding: 3px 7px; }
+.lbl { font: 500 11px 'SC Label'; letter-spacing: .2em; text-transform: uppercase; color: var(--mu); }
+.cue { position: absolute; font: 500 11px 'SC Label'; letter-spacing: .16em; text-transform: uppercase; padding: 3px 7px; border-radius: 10px; background: #0b1424; border: 1px solid #2c3b52; color: #55607a; z-index: 9; white-space: nowrap; }
+.cue::before { content: '◉ '; } .cue.snd2::before { content: '♪ '; }
+@keyframes cueOn { 0%, 100% { color: #55607a; border-color: #2c3b52; box-shadow: none; } 3%, 9% { color: var(--ink); border-color: var(--or); box-shadow: 0 0 12px #fa812766; } }
+
+/* the target circle (drawReticle: one ring in the state colour over a dark halo, four ticks) */
+.ret { position: absolute; overflow: visible; }
+.ret .halo { fill: none; stroke: rgba(8,15,27,.28); stroke-width: 6; }
+.ret .ring { fill: none; stroke: var(--rc, var(--or)); stroke-width: 2.25; filter: drop-shadow(0 0 6px var(--rc, var(--or))); }
+.ret .tk { stroke: var(--rc, var(--or)); stroke-width: 2; }
+.ret .tkh { stroke: rgba(8,15,27,.28); stroke-width: 5; }
+
+/* the ticket under the circle (.tk-card in css/app.css) */
+.tkt { position: absolute; left: 22px; right: 22px; padding: 10px 12px 12px; border-radius: 14px; background: rgba(9,16,28,.96); border-top: 3px solid var(--tk, var(--or)); display: flex; gap: 11px; box-shadow: 0 10px 28px #0008; }
+.tkt .tx { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.tkt .tr { font: 500 11px/1.25 'SC Label'; letter-spacing: .18em; text-transform: uppercase; color: var(--tc, var(--t-com)); display: flex; justify-content: space-between; white-space: nowrap; }
+.tkt .tr small { font: inherit; color: #c3c9d1; letter-spacing: .06em; }
+.tkt .nm { font: 400 16px/1.1 'SC Display'; color: var(--ink); }
+.tkt .bt { margin-top: 5px; height: 34px; border-radius: 9px; background: var(--tk, var(--or)); color: #0b1018; display: grid; place-items: center; font: 500 13px 'SC Label'; letter-spacing: .26em; }
+
+/* a real-looking card, sized by font-size (28 × 42 em like the app) */
+.rc { font-size: var(--fs, 4px); width: 28em; height: 42em; border-radius: 1.6em; background: #0b1626; border: .35em solid #e9dfae; box-shadow: inset 0 0 0 .6em #0b1626, inset 0 0 0 .75em #e9dfae44, 0 1.5em 3em #0009; padding: 1.3em; display: flex; flex-direction: column; gap: .8em; overflow: hidden; }
+.rc .a { position: relative; height: 19em; flex: none; border-radius: .7em; overflow: hidden; background: #08101c; }
+.rc .a img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.rc .ch { position: absolute; left: .8em; top: .8em; font: 500 1.5em/1 'SC Label'; letter-spacing: .12em; color: var(--t); border: .06em solid var(--t); background: #0b1626d9; border-radius: .35em; padding: .25em .45em; white-space: nowrap; }
+.rc .n { font: 400 2.7em/1 'SC Display'; text-transform: uppercase; }
+.rc .s { font: 500 1.6em/1.1 'SC Label'; color: var(--mu); }
+.rc .st { display: grid; grid-template-columns: repeat(4, 1fr); border-top: .1em solid #2a3a52; border-bottom: .1em solid #2a3a52; height: 4.6em; }
+.rc .st i { border-right: .1em solid #2a3a52; position: relative; } .rc .st i:last-child { border: 0; }
+.rc .st i::after { content: ''; position: absolute; left: .6em; top: 1.2em; width: 60%; height: 1.4em; background: #fff2b31f; border-radius: .2em; }
+.rc .fx { border-left: .3em solid var(--or); padding-left: .8em; display: flex; flex-direction: column; gap: .7em; padding-top: .3em; }
+.rc .fx i { height: 1em; background: #fff2b326; border-radius: .2em; } .rc .fx i:last-child { width: 60%; }
+.rc .ft { margin-top: auto; border-top: .1em solid #e9dfae44; height: 3em; }
+
+/* reveal chips (.rv-chip) */
+.rvtop { position: absolute; left: 18px; right: 18px; top: 18px; display: flex; justify-content: space-between; align-items: center; font: 500 13px 'SC Label'; letter-spacing: .2em; color: var(--fxc, var(--t-rare)); }
+.rvtop .xp { color: #5fd08a; } .rvtop .dot { color: var(--mu); }
+.rvtop .x { color: var(--ink); font-size: 22px; letter-spacing: 0; }
+.chips { position: absolute; left: 18px; right: 18px; top: 50px; display: flex; gap: 6px; }
+.chip2 { display: inline-flex; align-items: center; gap: 5px; height: 26px; padding: 0 9px; border-radius: 13px; white-space: nowrap; background: #0e1a29e6; border: 1px solid #627a8b; color: var(--ink); font: 500 12.5px/1 'SC Label'; letter-spacing: .05em; text-transform: uppercase; }
+.chip2 i { font-style: normal; color: var(--or); } .chip2 b { font-weight: 500; color: var(--or); margin-left: 2px; }
+.chip2.gold { border-color: #f2c14e99; } .chip2.gold i, .chip2.gold b { color: var(--gold); }
+
+/* ───── 1 · quick commons ───── */
+.q1 .ret { left: 100px; top: 64px; width: 160px; height: 160px; }
+.q1 .sat { position: absolute; left: 168px; top: 132px; width: 24px; height: 24px; color: #fff2b3; animation: q1sat 6s infinite; }
+@keyframes q1sat { 0%, 26% { opacity: 1; transform: none; } 30%, 88% { opacity: 0; transform: scale(.4); } 96%, 100% { opacity: 1; transform: none; } }
+.q1 .ret { animation: q1ret 6s infinite; }
+@keyframes q1ret { 0%, 24% { --rc: #fa8127; filter: none; } 27% { filter: drop-shadow(0 0 14px #fa8127); } 32%, 88% { opacity: .55; } 96%, 100% { opacity: 1; } }
+.q1 .tkt { top: 368px; animation: q1tkt 6s infinite; }
+@keyframes q1tkt { 0%, 26% { opacity: 1; transform: none; } 32%, 88% { opacity: 0; transform: translateY(14px); } 95%, 100% { opacity: 1; transform: none; } }
+.q1 .tkt .bt { position: relative; overflow: hidden; }
+.q1 .tkt .bt::after { content: ''; position: absolute; left: 50%; top: 50%; width: 10px; height: 10px; border-radius: 50%; background: #fff8; transform: translate(-50%,-50%) scale(0); animation: q1press 6s infinite; }
+@keyframes q1press { 0%, 20% { transform: translate(-50%,-50%) scale(0); opacity: 1; } 27% { transform: translate(-50%,-50%) scale(30); opacity: 0; } 100% { opacity: 0; } }
+.q1 .stack { position: absolute; left: 152px; top: 244px; width: 56px; height: 84px; }
+.q1 .stack .rc { position: absolute; left: 0; top: 0; --fs: 2px; transform-origin: 50% 90%; }
+.q1 .stack .rc:nth-child(1) { transform: rotate(-12deg) translateX(-6px); } .q1 .stack .rc:nth-child(2) { transform: rotate(-4deg); }
+.q1 .stack .rc:nth-child(3) { transform: rotate(5deg) translateX(4px); animation: q1top 6s infinite; }
+@keyframes q1top { 0%, 46% { opacity: 0; } 47%, 92% { opacity: 1; transform: rotate(5deg) translateX(4px); } 50% { transform: rotate(9deg) translate(4px, 3px) scale(.96); } 54% { transform: rotate(5deg) translateX(4px); } 97%, 100% { opacity: 0; } }
+.q1 .stack { animation: q1bump 6s infinite; }
+@keyframes q1bump { 0%, 46% { transform: none; } 49% { transform: translateY(4px) scale(1.06); } 54%, 100% { transform: none; } }
+.q1 .fly { position: absolute; left: 152px; top: 116px; --fs: 2px; animation: q1fly 6s infinite cubic-bezier(.45,0,.3,1); opacity: 0; }
+@keyframes q1fly { 0%, 26% { opacity: 0; transform: scale(.2); } 29% { opacity: 1; transform: scale(1.25) rotate(-4deg); } 33% { transform: scale(1.15) rotate(-2deg); } 46% { opacity: 1; transform: translate(4px, 128px) rotate(5deg) scale(1); } 47%, 100% { opacity: 0; transform: translate(4px, 128px) rotate(5deg); } }
+.q1 .cnt { position: absolute; left: 222px; top: 266px; font: 500 12px 'SC Label'; letter-spacing: .16em; color: var(--ink); background: rgba(9,16,28,.92); border: 1px solid #2c3b52; border-radius: 10px; padding: 4px 9px; display: flex; gap: 4px; align-items: center; }
+.q1 .cnt .roll { display: inline-block; height: 15px; overflow: hidden; vertical-align: bottom; color: var(--or); }
+.q1 .cnt .roll span { display: block; animation: q1roll 6s infinite; } .q1 .cnt .roll b { display: block; height: 15px; font-weight: 500; }
+@keyframes q1roll { 0%, 47% { transform: none; } 51%, 94% { transform: translateY(-15px); } 100% { transform: none; } }
+.q1 .cnt { animation: q1cnt 6s infinite; transform-origin: 0 50%; }
+@keyframes q1cnt { 0%, 47% { border-color: #2c3b52; } 49% { border-color: var(--or); transform: scale(1.12); box-shadow: 0 0 14px #fa812766; } 58%, 100% { transform: none; border-color: #2c3b52; box-shadow: none; } }
+.q1 .cue { bottom: 14px; animation: cueOn 6s infinite; }
+.q1 .c1 { left: 14px; animation-delay: 1.4s; } .q1 .c2 { left: 128px; animation-delay: 2.65s; } .q1 .c3 { left: 222px; animation-delay: 2.7s; }
+
+.q1b .dim { position: absolute; inset: 0; background: #04080fcc; backdrop-filter: blur(2px); }
+.q1b .hd { position: absolute; left: 0; right: 0; top: 22px; text-align: center; }
+.q1b .hd b { display: block; font: 400 20px 'SC Display'; margin-top: 4px; font-weight: 400; }
+.q1b .fan { position: absolute; left: 0; right: 0; top: 150px; height: 260px; }
+.q1b .fc { position: absolute; left: 152px; top: 40px; --fs: 2px; transform-origin: 50% 260%; animation: q1fan 6s infinite cubic-bezier(.3,1.3,.5,1); }
+@keyframes q1fan { 0%, 10% { transform: translate(0, 170px) rotate(0) scale(.7); } 24%, 92% { transform: rotate(var(--r)) scale(1.35); } 100% { transform: translate(0, 170px) rotate(0) scale(.7); } }
+.q1b .fc.pk { z-index: 4; animation-name: q1pick; }
+@keyframes q1pick { 0%, 10% { transform: translate(0, 170px) rotate(0) scale(.7); } 24%, 44% { transform: rotate(var(--r)) scale(1.35); } 48% { transform: rotate(var(--r)) scale(1.25); } 60%, 86% { transform: translate(0, 372px) rotate(0) scale(3.1); } 92% { transform: rotate(var(--r)) scale(1.35); } 100% { transform: translate(0, 170px) rotate(0) scale(.7); } }
+.q1b .ring { position: absolute; z-index: 6; left: 226px; top: 200px; width: 40px; height: 40px; border-radius: 50%; border: 2px solid #fff8; opacity: 0; animation: q1ring 6s infinite; }
+@keyframes q1ring { 0%, 40% { opacity: 0; transform: scale(1.6); } 46% { opacity: 1; transform: scale(1); } 52%, 100% { opacity: 0; transform: scale(.8); } }
+.q1b .ft { position: absolute; left: 0; right: 0; bottom: 30px; text-align: center; font: 500 13px 'SC Label'; letter-spacing: .14em; color: var(--gold); text-transform: uppercase; }
+.q1b .ft small { display: block; color: var(--mu); font-size: 12px; letter-spacing: .1em; margin-top: 4px; text-transform: none; }
+.q1b .cue { left: 14px; top: 72px; animation: cueOn 6s infinite; animation-delay: 2.7s; }
+
+/* ───── 2 · worth aiming at ───── */
+.skyp { width: 360px; max-width: 100%; border-radius: 30px; border: 1px solid #1a2436; display: block; background: radial-gradient(ellipse at 50% 30%, #0f1d31, #070d18 70%); }
+@keyframes breathe { 0%, 100% { opacity: .55; transform: scale(1); } 50% { opacity: .95; transform: scale(1.12); } }
+.skyp .halo { transform-box: fill-box; transform-origin: center; animation: breathe 2.8s ease-in-out infinite; }
+.legend { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 10px; font: 500 12px 'SC Label'; letter-spacing: .12em; text-transform: uppercase; color: var(--mu); }
+.legend span { display: inline-flex; gap: 6px; align-items: center; }
+.legend i { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+
+/* ───── 3 · chains ───── */
+.q3 .ret { left: 100px; top: 96px; width: 160px; height: 160px; animation: q3ret 9s infinite; }
+@keyframes q3ret { 0%, 3%, 37%, 40%, 67%, 70%, 100% { filter: none; } 1.5%, 38.5%, 68.5% { filter: drop-shadow(0 0 16px #fa8127); } }
+.q3 .s { position: absolute; width: 22px; height: 22px; color: #fff2b3; opacity: 0; }
+.q3 .s1 { animation: q3s1 9s infinite linear; } .q3 .s2 { animation: q3s2 9s infinite linear; } .q3 .s3 { animation: q3s3 9s infinite linear; }
+@keyframes q3s1 { 0% { opacity: 1; transform: translate(169px, 165px); } 2% { opacity: 0; transform: translate(169px, 165px) scale(.3); } 100% { opacity: 0; } }
+@keyframes q3s2 { 0%, 22% { opacity: 0; transform: translate(20px, 300px); } 24% { opacity: 1; } 38% { opacity: 1; transform: translate(169px, 165px); } 40%, 100% { opacity: 0; transform: translate(169px, 165px) scale(.3); } }
+@keyframes q3s3 { 0%, 52% { opacity: 0; transform: translate(330px, 40px); } 54% { opacity: 1; } 68% { opacity: 1; transform: translate(169px, 165px); } 70%, 100% { opacity: 0; transform: translate(169px, 165px) scale(.3); } }
+.q3 .pip { position: absolute; left: 186px; top: 70px; display: flex; align-items: center; gap: 7px; padding: 4px 10px 4px 5px; border-radius: 16px; background: rgba(9,16,28,.94); border: 1px solid #fa812799; font: 500 12px 'SC Label'; letter-spacing: .14em; color: var(--ink); animation: q3pip 9s infinite; transform-origin: 0 50%; }
+@keyframes q3pip { 0%, 2% { opacity: 0; transform: scale(.6); } 5%, 92% { opacity: 1; transform: none; } 39% { transform: scale(1.18); } 43% { transform: none; } 69% { transform: scale(1.18); } 73% { transform: none; } 97%, 100% { opacity: 0; transform: scale(.8); } }
+.q3 .pip svg { width: 22px; height: 22px; }
+.q3 .pip .tr2 { fill: none; stroke: #2c3b52; stroke-width: 3; } .q3 .pip .tm { fill: none; stroke: var(--or); stroke-width: 3; stroke-dasharray: 50.3; transform: rotate(-90deg); transform-origin: 11px 11px; animation: q3tm 9s infinite linear; }
+@keyframes q3tm { 0%, 4% { stroke-dashoffset: 0; } 38% { stroke-dashoffset: 30; } 39% { stroke-dashoffset: 0; } 68% { stroke-dashoffset: 28; } 69% { stroke-dashoffset: 0; } 95% { stroke-dashoffset: 50.3; } 100% { stroke-dashoffset: 50.3; } }
+.q3 .pip .w { width: 88px; display: inline-block; height: 15px; overflow: hidden; vertical-align: bottom; }
+.q3 .pip .w span { display: block; animation: q3w 9s infinite; } .q3 .pip .w b { display: block; height: 15px; font-weight: 500; }
+.q3 .pip .w b em { font-style: normal; color: var(--or); }
+@keyframes q3w { 0%, 38% { transform: none; } 39%, 68% { transform: translateY(-15px); } 69%, 92% { transform: translateY(-30px); } 93%, 100% { transform: translateY(-45px); } }
+.q3 .gl { position: absolute; left: 0; right: 0; top: 300px; text-align: center; font: 500 12px 'SC Label'; letter-spacing: .14em; color: var(--mu); text-transform: uppercase; }
+.q3 .gl b { color: var(--or); font-weight: 500; }
+.q3 .xpf { position: absolute; left: 252px; top: 40px; font: 400 16px 'SC Display'; color: #5fd08a; opacity: 0; }
+.q3 .xpf.a { animation: q3xp 9s infinite; animation-delay: 3.5s; } .q3 .xpf.b { animation: q3xp 9s infinite; animation-delay: 6.2s; }
+@keyframes q3xp { 0% { opacity: 0; transform: translateY(8px); } 3% { opacity: 1; transform: none; } 14% { opacity: 0; transform: translateY(-18px); } 100% { opacity: 0; } }
+.q3 .cue { bottom: 16px; animation: cueOn 9s infinite; }
+.q3 .c1 { left: 14px; animation-delay: -.2s; } .q3 .c2 { left: 92px; animation-delay: 3.25s; } .q3 .c3 { left: 170px; animation-delay: 5.95s; } .q3 .c4 { left: 248px; animation-delay: 3.3s; }
+
+.rvp .rc { position: absolute; left: 50%; top: 92px; --fs: 9.5px; transform: translateX(-50%); }
+.rvp .chips .chip2 { opacity: 0; animation: chipIn 5s infinite; }
+.rvp .chips .chip2:nth-child(2) { animation-delay: .26s; }
+@keyframes chipIn { 0%, 18% { opacity: 0; transform: translateY(-6px) scale(.7); } 24% { opacity: 1; transform: scale(1.08); } 28%, 92% { opacity: 1; transform: none; } 100% { opacity: 0; } }
+.rvp .glow { position: absolute; left: 50%; top: 470px; width: 300px; height: 30px; margin-left: -150px; border-radius: 50%; background: radial-gradient(closest-side, color-mix(in srgb, var(--fxc) 50%, transparent), transparent); filter: blur(6px); }
+
+/* ───── 4 · peak ───── */
+.q4 svg.sk { position: absolute; inset: 0; width: 100%; height: 100%; }
+.q4 .tkt { top: 400px; --tk: var(--or); }
+.q4 .tkt .tr .rl { display: inline-block; height: 14px; overflow: hidden; vertical-align: bottom; }
+.q4 .tkt .tr .rl span { display: block; animation: q4rl 8s infinite; } .q4 .tkt .tr .rl b { display: block; height: 14px; font-weight: 500; }
+@keyframes q4rl { 0%, 23% { transform: none; } 24%, 43% { transform: translateY(-14px); } 44%, 56% { transform: translateY(-28px); } 57%, 67% { transform: translateY(-42px); } 68%, 100% { transform: translateY(-56px); } }
+.q4 .cue { left: 14px; top: 14px; animation: cueOn 8s infinite; animation-delay: 3.3s; }
+
+/* ───── 5 · ambience ───── */
+.setc { margin: 18px 14px 0; border: 1.5px solid #e9dfae; border-radius: 14px; box-shadow: inset 0 0 0 4px #070d18, inset 0 0 0 5px #e9dfae26; overflow: hidden; position: relative; z-index: 1; background: #070d18e6; }
+.setc .hb { display: flex; justify-content: space-between; padding: 9px 14px; background: #f2c14e14; border-bottom: 1px solid #e9dfae33; font: 500 13px 'SC Label'; letter-spacing: .22em; color: var(--gold); }
+.setc .r { display: flex; align-items: center; gap: 12px; padding: 11px 14px; border-bottom: 1px solid var(--line); }
+.setc .r:last-child { border: 0; }
+.setc .ic { width: 20px; height: 20px; color: var(--ink); flex: none; display: grid; place-items: center; font-size: 15px; }
+.setc .r .t { flex: 1; min-width: 0; font: 500 15.5px/1.2 'SC Label'; letter-spacing: .02em; }
+.setc .r .t small { display: block; font-size: 12.5px; color: var(--mu); letter-spacing: .03em; }
+.setc .r.new { background: linear-gradient(90deg, #fa812714, transparent 70%); }
+.setc .newt { font: 500 9.5px 'SC Label'; letter-spacing: .16em; color: #0b1018; background: var(--or); border-radius: 4px; padding: 1px 4px; margin-left: 6px; vertical-align: 2px; }
+.sw2 { font: 500 12px 'SC Label'; letter-spacing: .14em; border: 1px solid #b8c0cc; border-radius: 7px; padding: 3px 9px; color: var(--mu); background: none; cursor: pointer; }
+.sw2.on { color: var(--or); border-color: var(--or); }
+.prev { font: 500 12px 'SC Label'; letter-spacing: .14em; color: var(--ink); border: 1px solid #2c3b52; background: #0e1a29; border-radius: 7px; padding: 3px 8px; cursor: pointer; }
+.prev.on { color: var(--or); border-color: var(--or); }
+.vol { flex: 1; height: 4px; border-radius: 2px; background: linear-gradient(90deg, var(--or) var(--v), #2c3b52 var(--v)); position: relative; }
+.vol::after { content: ''; position: absolute; left: var(--v); top: -7px; width: 18px; height: 18px; margin-left: -9px; border-radius: 50%; background: #fff2b3; }
+.eq { display: flex; gap: 2px; align-items: flex-end; height: 14px; }
+.eq i { width: 3px; background: var(--or); border-radius: 1px; height: 30%; }
+.prev.on + .eq i, .eq.live i { animation: eq .9s infinite ease-in-out; } .eq i:nth-child(2) { animation-delay: .2s !important; } .eq i:nth-child(3) { animation-delay: .45s !important; }
+@keyframes eq { 0%, 100% { height: 25%; } 50% { height: 100%; } }
+.mixg { display: grid; grid-template-columns: 80px repeat(3, 1fr); gap: 8px; }
+.mixg .h { font: 500 12px 'SC Label'; letter-spacing: .2em; text-transform: uppercase; color: var(--mu); align-self: end; padding-bottom: 2px; }
+.mixg .h b { display: block; font-weight: 500; color: var(--ink); letter-spacing: .1em; }
+.mixg .rh { font: 400 15px 'SC Display'; align-self: center; display: flex; flex-direction: column; gap: 2px; }
+.mixg .rh small { font: 500 11px 'SC Label'; letter-spacing: .12em; color: var(--mu); text-transform: uppercase; }
+.cell { border: 1px solid #22344e; border-radius: 12px; background: #0b1424; padding: 9px 10px 10px; cursor: pointer; text-align: left; color: var(--ink); font: inherit; display: flex; flex-direction: column; gap: 5px; min-height: 120px; }
+.cell:hover { border-color: #3a4f6e; } .cell.on { border-color: var(--or); box-shadow: 0 0 0 1px var(--or), 0 0 18px #fa812733; }
+.cell .w { font: 500 12.5px/1.25 'SC Label'; letter-spacing: .04em; color: var(--mu); min-height: 32px; }
+.cell .bars { display: grid; grid-template-columns: 58px 1fr; gap: 3px 6px; align-items: center; font: 500 10.5px 'SC Label'; letter-spacing: .12em; text-transform: uppercase; color: #8d93a0; }
+.cell .bars s { text-decoration: none; height: 5px; border-radius: 3px; background: #1d2a3c; position: relative; overflow: hidden; }
+.cell .bars s::after { content: ''; position: absolute; inset: 0 auto 0 0; width: var(--l); background: var(--c, var(--steel)); border-radius: 3px; }
+.cell .pl { font: 500 11px 'SC Label'; letter-spacing: .16em; color: var(--or); margin-top: auto; }
+.cell.on .pl::before { content: '■ '; } .cell:not(.on) .pl::before { content: '▶ '; }
+.mixctl { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; margin-top: 12px; font: 500 13px 'SC Label'; letter-spacing: .08em; color: var(--mu); }
+.mixctl label { display: inline-flex; gap: 6px; align-items: center; cursor: pointer; }
+
+/* ───── 6 · notices ───── */
+.tlw { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 30px; max-width: 1180px; }
+.tlh { font: 400 18px 'SC Display'; margin: 0 0 4px; display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+.tlh small { font: 500 12px 'SC Label'; letter-spacing: .16em; text-transform: uppercase; color: var(--mu); }
+.tlh small b { color: var(--or); font-weight: 500; }
+.tl { position: relative; padding-left: 64px; }
+.tl::before { content: ''; position: absolute; left: 50px; top: 6px; bottom: 6px; width: 2px; background: #22344e; }
+.ev { position: relative; margin: 0 0 8px; min-height: 40px; }
+.ev .tm { position: absolute; left: -64px; top: 8px; width: 42px; text-align: right; font: 400 12px 'SC Display'; color: var(--mu); }
+.ev::before { content: ''; position: absolute; left: -18px; top: 12px; width: 10px; height: 10px; border-radius: 50%; background: #4a5a74; }
+.ev.int::before { background: var(--or); box-shadow: 0 0 8px #fa812799; }
+.nt { display: grid; grid-template-columns: 30px minmax(0, 1fr) auto; gap: 9px; align-items: start; padding: 8px 10px; border-radius: 12px; background: rgba(9,16,28,.97); border-top: 3px solid var(--k, #c9cbb6); box-shadow: 0 6px 16px #0006; }
+.nt .ti { width: 30px; height: 30px; border-radius: 8px; background: color-mix(in srgb, var(--k) 18%, transparent); color: var(--k); display: grid; place-items: center; font-size: 14px; }
+.nt .ey { font: 500 10.5px/1.25 'SC Label'; letter-spacing: .18em; text-transform: uppercase; color: var(--k); }
+.nt .ln { font: 500 15px/1.15 'SC Label'; color: var(--ink); letter-spacing: .02em; }
+.nt .sb { font: 500 12px/1.25 'SC Label'; color: #aab6c3; letter-spacing: .03em; }
+.nt .xp { font: 400 14px 'SC Display'; color: var(--k); align-self: center; }
+.ty { position: absolute; right: 8px; top: -7px; font: 500 9.5px 'SC Label'; letter-spacing: .16em; text-transform: uppercase; color: #8d93a0; background: #04080f; padding: 0 4px; }
+.ev.drop .nt { opacity: .35; filter: grayscale(.8); } .ev.drop .nt .ln { text-decoration: line-through; }
+.ev.drop::before { background: #3a2424; }
+.ev .vd { display: inline-block; margin-top: 4px; font: 500 11px 'SC Label'; letter-spacing: .14em; text-transform: uppercase; padding: 2px 7px; border-radius: 6px; border: 1px solid; }
+.vd.keep { color: var(--unc); border-color: #2c5a40; } .vd.merge { color: #8fb3cf; border-color: #2c4a62; } .vd.delay { color: var(--gold); border-color: #5f4e22; } .vd.drop { color: var(--red); border-color: #6a2a24; }
+.ev .why { font-size: 12px; color: #8d93a0; margin-left: 6px; }
+.ev.page .nt { border-top-color: #e9dfae; background: #0d1828; }
+.ev.reveal .nt { border-top-color: var(--k); background: #0c1d29; }
+.top { max-width: 1180px; margin-top: 48px; border: 1px solid #6b5a2c; border-radius: 22px; padding: 22px 24px; background: radial-gradient(ellipse at 20% 0%, #1d1a10, #0b1220 60%); }
+.top h2 { font: 400 24px 'SC Display'; margin: 0 0 4px; } .top > p { color: var(--mu); margin: 0 0 16px; }
+.top ol { margin: 0; padding: 0; list-style: none; counter-reset: t; display: grid; gap: 12px; }
+.top li { counter-increment: t; display: grid; grid-template-columns: 44px 1fr; gap: 6px; align-items: baseline; }
+.top li::before { content: counter(t); font: 400 26px 'SC Display'; color: var(--gold); }
+.top li b { font: 400 17px 'SC Display'; font-weight: 400; } .top li span { color: var(--mu); display: block; font-size: 14px; }
+.note { color: #8d93a0; font-size: 13px; max-width: 1100px; margin-top: 26px; }
+@media (prefers-reduced-motion: reduce) { .ph *, .skyp * { animation-duration: 0s !important; animation-iteration-count: 1 !important; } }
+@media (max-width: 820px) { .tlw { grid-template-columns: 1fr; } }
+@media (max-width: 420px) { body { padding: 20px 12px 60px; } .opt, .ph { width: 100%; max-width: 360px; } .mixg { grid-template-columns: 54px repeat(3, 1fr); gap: 5px; } .cell { padding: 7px 6px; min-height: 0; } .cell .bars { grid-template-columns: 1fr; } .cell .w { font-size: 11.5px; } .tl { padding-left: 52px; } .tl::before { left: 40px; } .ev .tm { left: -52px; width: 36px; font-size: 11px; } .ev::before { left: -16px; } }
+</style></head><body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <!-- the sky's own icons (js/sky.js drawIcon), drawn at u = 10 -->
+  <symbol id="i-sat" viewBox="-12 -12 24 24"><g fill="currentColor" transform="rotate(-20)"><rect x="-2.6" y="-2.6" width="5.2" height="5.2"/><rect x="-10" y="-2" width="6.2" height="4" opacity=".85"/><rect x="3.8" y="-2" width="6.2" height="4" opacity=".85"/><rect x="-4" y="-.4" width="8" height=".8"/></g></symbol>
+  <symbol id="i-rocket" viewBox="-12 -12 24 24"><g fill="currentColor" transform="rotate(-40)"><rect x="-9.5" y="-2.6" width="15.5" height="5.2" rx="1.2"/><path d="M6 -2 L9.8 -3.4 L9.8 3.4 L6 2 Z"/></g></symbol>
+  <symbol id="i-debris" viewBox="-12 -12 24 24"><g fill="currentColor" transform="rotate(17) scale(1.25)"><path d="M-7 -1.5 L-.5 -5.5 L2 -.5 L-1 2.5 L-5.5 3Z"/><path d="M3 -7.5 L7.5 -5.5 L5.5 -2.5Z"/><path d="M3.5 3 L8 2 L6.5 6.5 L4 6Z"/></g></symbol>
+  <symbol id="i-station" viewBox="-12 -12 24 24"><g fill="currentColor" transform="rotate(-11)"><rect x="-10" y="-.6" width="20" height="1.2"/><g opacity=".85"><rect x="-8.5" y="-6.2" width="2.2" height="5"/><rect x="-8.5" y="1.2" width="2.2" height="5"/><rect x="-5.5" y="-6.2" width="2.2" height="5"/><rect x="-5.5" y="1.2" width="2.2" height="5"/><rect x="4.5" y="-6.2" width="2.2" height="5"/><rect x="4.5" y="1.2" width="2.2" height="5"/><rect x="7.5" y="-6.2" width="2.2" height="5"/><rect x="7.5" y="1.2" width="2.2" height="5"/></g><rect x="-3" y="-1.6" width="6" height="3.2"/><rect x="-1" y="-3.4" width="2" height="6.8"/></g></symbol>
+  <radialGradient id="hg"><stop offset="0" stop-color="#fff" stop-opacity=".9"/><stop offset=".35" stop-color="#fff" stop-opacity=".35"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+</defs></svg>
+
+<h1>The catch, the feel</h1>
+<p class="lead">Six ideas to make the core loop feel better: aim, catch, keep going. Three change how a catch plays out (quick Commons, chains, the peak bonus); three are about what you notice around it (what's worth aiming at, the night's sound, and how many notices a first night throws at you). Each has today beside the proposal.</p>
+<p class="how"><b>How to read the mock-ups:</b> the <span style="color:var(--ink)">◉</span> tags light up orange when the phone would buzz, <span style="color:var(--ink)">♪</span> when a sound would play. The ▶ buttons play the game's real sounds. Cards, art, icons and the target circle are the app's own (sizes and colours copied from css/reveal.css, css/app.css and js/sky.js); the two “Today” screenshots are captures of the real app. <b>Effort:</b> <span style="color:var(--unc)">small</span> an afternoon, <span style="color:var(--gold)">medium</span> a day or two, <span style="color:var(--or)">large</span> more.</p>
+
+<!-- ═══════════════ A CORE LOOP THAT FEELS GOOD ═══════════════ -->
+<div class="sec"><b>A core loop that feels good</b> · catch more, stop less</div>
+
+<div class="idea">
+<h2><span class="no">01</span>Quick Commons</h2>
+<p>A Common you've never had <b>snaps into a little stack under the circle</b> instead of opening the full sealed-card reveal: a mini card pops out of the circle, drops onto the stack with a click and a buzz, and the count says “+3 tonight”. You never leave the sky. Uncommon and up keep the whole reveal, so the big moments stay big. The first card you ever catch, and the first of each kind (first star, first stage, the Moon), always get the full reveal.</p>
+<div class="tags"><span class="tag m">Medium</span><span class="tag f">Motion · haptic · sound · flow</span></div>
+<div class="row">
+  <div class="opt"><h3><span class="pill t">Today</span>Every catch opens this</h3>
+    <div class="ph tall shot"><img style="object-position:50% 46%" src="catch-feel/today-reveal.jpg" alt="The real catch reveal: NEW CARD, the full card, rank bar"><span class="badge">REAL APP</span></div>
+    <p class="today"><b>Today:</b> every new card, Common or not, takes over the screen: flash, sealed card, flip, sweep, then a flick or ✕ back to the sky. About 3–4 s each. On a busy night that's twenty times.</p>
+    <div class="snds"><button class="snd" data-s="arrive,flip@700,r_common@1250">▶ Today’s Common</button></div>
+  </div>
+  <div class="opt"><h3><span class="pill p">Proposed</span>Snap, stack, keep aiming</h3>
+    <div class="ph tall q1">
+      <svg class="ret" viewBox="-80 -80 160 160"><circle class="halo" r="46"/><circle class="ring" r="46"/><g><line class="tkh" x1="0" y1="-52" x2="0" y2="-64"/><line class="tkh" x1="0" y1="52" x2="0" y2="64"/><line class="tkh" x1="-52" y1="0" x2="-64" y2="0"/><line class="tkh" x1="52" y1="0" x2="64" y2="0"/><line class="tk" x1="0" y1="-52" x2="0" y2="-64"/><line class="tk" x1="0" y1="52" x2="0" y2="64"/><line class="tk" x1="-52" y1="0" x2="-64" y2="0"/><line class="tk" x1="52" y1="0" x2="64" y2="0"/></g></svg>
+      <svg class="sat"><use href="#i-rocket"/></svg>
+      <div class="stack"><div class="rc" data-rc="sl-8|SL-8 Stage|common"></div><div class="rc" data-rc="russian-stage|SL-3 Stage|common"></div><div class="rc" data-rc="cz-4|CZ-4C Stage|common"></div></div>
+      <div class="fly rc" data-rc="cz-4|CZ-4C Stage|common"></div>
+      <div class="cnt">+<span class="roll"><span><b>2</b><b>3</b></span></span> TONIGHT</div>
+      <div class="tkt" style="--tc:var(--t-com)"><div class="rc" data-rc="cz-4|CZ-4C Stage|common|locked" style="--fs:1.7px;flex:none"></div><div class="tx"><div class="tr">● Common · new <small>1,240 km</small></div><div class="nm">CZ-4C Rocket Stage</div><div class="bt">COLLECT</div></div></div>
+      <span class="cue c1">tap</span><span class="cue snd2 c2">click</span><span class="cue c3">buzz</span>
+    </div>
+    <div class="snds"><button class="snd" data-s="collect,stamp@520">▶ Quick catch</button><button class="snd" data-s="seen">▶ Alt: soft tick</button></div>
+    <p><b>The mini card is the real card, shrunk</b> (the same miniCard the Collection uses), so it already looks like yours. +XP floats off the stack in green. A Quick Common that also earns a rank-up or a patch turns into a full reveal, so news never hides in the stack.</p>
+  </div>
+  <div class="opt"><h3><span class="pill p">Proposed</span>Tap the stack</h3>
+    <div class="ph tall q1b">
+      <div class="dim"></div>
+      <div class="hd"><span class="lbl" style="color:var(--or)">Tonight’s quick catches</span><b>5 Commons · +50 XP</b></div>
+      <div class="fan">
+        <div class="fc rc" style="--r:-28deg" data-rc="sl-8|SL-8 Stage|common"></div>
+        <div class="fc rc" style="--r:-14deg" data-rc="russian-stage|SL-3 Stage|common"></div>
+        <div class="fc rc" style="--r:0deg" data-rc="thor-upper|Thor Burner 2|common"></div>
+        <div class="fc rc pk" style="--r:14deg" data-rc="cz-4|CZ-4C Stage|common"></div>
+        <div class="fc rc" style="--r:28deg" data-rc="star-vega|Vega|common"></div>
+      </div>
+      <i class="ring"></i>
+      <div class="ft">Tap one for its card<small>They’re already in your collection</small></div>
+      <span class="cue">lift</span>
+    </div>
+    <p>Tapping the stack fans out <b>tonight's quick catches</b>; tap one and it grows into the full card (flip, tilt, share, as in the viewer). The stack sits under the circle all night and empties at dawn. Long-press it to send it away early.</p>
+    <div class="rules"><h4>Which reveal you get</h4><ul>
+      <li><b>Your very first card</b>: full reveal, always.</li>
+      <li><b>First of a kind</b> (first star, stage, planet, Moon, fleet): full reveal.</li>
+      <li><b>Common</b>: quick stack.</li>
+      <li><b>Uncommon · Rare · Epic · Legendary</b>: full reveal, unchanged.</li>
+      <li><b>Shiny, rank-up or patch on a Common</b>: full reveal.</li>
+      <li>Settings → “Show every card” for people who love the flip.</li></ul></div>
+  </div>
+</div>
+</div>
+
+<div class="idea">
+<h2><span class="no">02</span>See what’s worth aiming at</h2>
+<p>In the sky, everything looks the same today: a satellite you've had for weeks is as bright as one you've never caught. Give the ones <b>new to you a soft halo</b> in their rarity colour that breathes slowly, and draw the ones you own a little dimmer. You can scan a patch of sky and know where to point before anything is in the circle.</p>
+<div class="tags"><span class="tag s">Small</span><span class="tag f">Sky drawing</span></div>
+<div class="row">
+  <div class="opt"><h3><span class="pill t">Today</span>All the same</h3><svg class="skyp" id="sky-today" viewBox="0 0 360 340"></svg>
+    <p class="today"><b>Today:</b> every icon is cream; only the one in the circle takes its tier colour. The radar's “8 new” badge says there's something new, but not which.</p></div>
+  <div class="opt"><h3><span class="pill p">Proposed</span>New glows, owned steps back</h3><svg class="skyp" id="sky-new" viewBox="0 0 360 340"></svg>
+    <div class="legend"><span><i style="background:radial-gradient(#5fd08a,#5fd08a00 70%)"></i>New · halo in tier colour</span><span><i style="background:#fff2b366"></i>Yours · 45%</span></div></div>
+  <div class="opt"><div class="rules" style="margin-top:28px"><h4>Rules</h4><ul>
+    <li><b>New card</b>: full-strength icon plus a breathing halo (18 px, tier colour, 2.8 s). Epic/Legendary halos a touch bigger.</li>
+    <li><b>New stamp</b> on a fleet or Moon phase you own: a smaller, plain cream halo.</li>
+    <li><b>Owned</b>: icon at 45%, name at 60%. Still targetable.</li>
+    <li>Labels follow: new names stay full; owned ones drop first when crowded.</li>
+    <li><b>Red mode</b>: halos in red; the shape (▲ ◆ ✦ ★) carries the tier, as on cards.</li>
+    <li>Pairs with the radar badge: the badge says “3 new”, the halos say where.</li></ul></div>
+    <p>Cheap to draw: one cached glow sprite per tier, stamped like the radar's heat glows. Same rule could light the dots on All around you.</p></div>
+</div>
+</div>
+
+<div class="idea">
+<h2><span class="no">03</span>Chains</h2>
+<p>Catching two or three new cards <b>within one pass window</b> builds a chain. A small counter appears beside the circle with a ring that runs down; catch another before it empties and the chain grows: <b>Chain ×2 · +10 XP</b>, ×3 · +20. On the reveal the chain shows as a chip next to the card's XP. Busy windows (a Starlink train, the 9 PM rush) become a little game of keeping it alive.</p>
+<div class="tags"><span class="tag m">Medium</span><span class="tag f">Scoring · motion · haptic</span></div>
+<div class="row">
+  <div class="opt"><h3><span class="pill p">Proposed</span>The counter by the circle</h3>
+    <div class="ph tall q3">
+      <svg class="ret" viewBox="-80 -80 160 160"><circle class="halo" r="46"/><circle class="ring" r="46"/><line class="tk" x1="0" y1="-52" x2="0" y2="-64"/><line class="tk" x1="0" y1="52" x2="0" y2="64"/><line class="tk" x1="-52" y1="0" x2="-64" y2="0"/><line class="tk" x1="52" y1="0" x2="64" y2="0"/></svg>
+      <svg class="s s1"><use href="#i-sat"/></svg><svg class="s s2"><use href="#i-rocket"/></svg><svg class="s s3"><use href="#i-sat"/></svg>
+      <div class="pip"><svg viewBox="0 0 22 22"><circle class="tr2" cx="11" cy="11" r="8"/><circle class="tm" cx="11" cy="11" r="8"/></svg><span class="w"><span><b>CHAIN ×1</b><b>CHAIN ×2 <em>+10</em></b><b>CHAIN ×3 <em>+20</em></b><b>CHAIN DONE</b></span></span></div>
+      <span class="xpf a">+10 XP</span><span class="xpf b">+20 XP</span>
+      <div class="gl">Catch another new one <b>before the ring runs out</b></div>
+      <span class="cue c1">catch</span><span class="cue c2">catch</span><span class="cue c3">catch</span><span class="cue snd2 c4">xp tick</span>
+    </div>
+    <div class="snds"><button class="snd" data-s="xp,xp@110,xp@220">▶ Chain grows</button><button class="snd" data-s="mission">▶ Chain ×3</button></div>
+  </div>
+  <div class="opt"><h3><span class="pill p">Proposed</span>…and its reward on the reveal</h3>
+    <div class="ph tall rvp" style="--fxc:var(--t-unc)">
+      <div class="rvtop"><span>NEW CARD <span class="dot">·</span> <span class="xp">+15 XP</span></span><span class="x">✕</span></div>
+      <div class="chips"><span class="chip2"><i>◆◆</i>Chain ×2<b>+10</b></span><span class="chip2 gold"><i>◆</i>Rush hour</span></div>
+      <div class="glow"></div>
+      <div class="rc" data-rc="globalstar|Globalstar|uncommon"></div>
+    </div>
+    <p>The chain chip uses the reveal's existing news row (.rv-chip), so it lands with the same tick as missions. With Quick Commons, a chain on Commons shows on the stack instead (“×2” on the counter).</p>
+  </div>
+  <div class="opt"><div class="rules" style="margin-top:28px"><h4>Rules</h4><ul>
+    <li><b>Only new cards</b> (and new stamps) count. Repeat sightings don't break it or add to it.</li>
+    <li><b>Window</b>: 90 s after each catch, the ring's length. Long enough to turn to the next pass, short enough to feel live.</li>
+    <li><b>Reward</b>: ×2 +10, ×3 +20, ×4 +30, then +30 each. Cap at ×6.</li>
+    <li>The counter hides under pages and the reveal; its clock keeps going.</li>
+    <li>Best chain goes in Observer stats; a patch at ×5 (“Rush Hour”).</li>
+    <li>Not during the tour, so the first catch stays calm.</li></ul></div>
+    <p class="today"><b>Today:</b> each catch is scored alone (10 / 15 / 25 / 40 / 60 XP by tier). Nothing rewards a good run.</p></div>
+</div>
+</div>
+
+<div class="idea">
+<h2><span class="no">04</span>Peak bonus</h2>
+<p>Every pass has a highest point. Mark it on the pass's path with <b>a small tick</b>, and catching within 30 s either side of it gives “<b>Caught at its peak · +10 XP</b>”. It teaches people to wait for the best view (higher means brighter and easier) and gives a reason to follow Show me early rather than grab it low on the horizon.</p>
+<div class="tags"><span class="tag s">Small</span><span class="tag f">Scoring · sky drawing</span></div>
+<div class="row">
+  <div class="opt"><h3><span class="pill t">Today</span>The ticket today</h3>
+    <div class="ph tall shot"><img style="object-position:50% 62%" src="catch-feel/today-target.jpg" alt="The real target ticket over the ISS: Rare · Headliner, Collect"><span class="badge">REAL APP</span></div>
+    <p class="today"><b>Today:</b> the path shows where it's going (orange dashes), but not when it's best. A catch at 12° scores the same as one overhead.</p></div>
+  <div class="opt"><h3><span class="pill p">Proposed</span>The tick on the path</h3>
+    <div class="ph tall q4"><svg class="sk" id="peak-sky" viewBox="0 0 360 520"></svg>
+      <div class="tkt" style="--tc:var(--t-rare)"><div class="rc" data-rc="hubble|Hubble|rare|locked" style="--fs:1.7px;flex:none"></div><div class="tx"><div class="tr">◆ Rare · new <small><span class="rl"><span><b>PEAK IN 0:24</b><b>PEAK IN 0:12</b><b>PEAK · NOW</b><b>PEAK +0:18</b><b>PASSED PEAK</b></span></span></small></div><div class="nm">Hubble Space Telescope</div><div class="bt">COLLECT</div></div></div>
+      <span class="cue">tick at peak</span>
+    </div>
+    <div class="snds"><button class="snd" data-s="lock">▶ Enter window</button><button class="snd" data-s="levelup@0">▶ Peak bonus</button></div>
+  </div>
+  <div class="opt"><h3><span class="pill p">Proposed</span>The result</h3>
+    <div class="ph tall rvp" style="--fxc:var(--t-rare)">
+      <div class="rvtop"><span>NEW CARD <span class="dot">·</span> <span class="xp">+35 XP</span></span><span class="x">✕</span></div>
+      <div class="chips"><span class="chip2 gold"><i>▲</i>Caught at its peak<b>+10</b></span></div>
+      <div class="glow"></div>
+      <div class="rc" data-rc="hubble|Hubble Space Telescope|rare"></div>
+    </div>
+    <div class="rules"><h4>Rules</h4><ul>
+      <li>Peak = highest elevation (the planner's peakEl/peakAt, already computed). Window ±30 s.</li>
+      <li>The tick and the bright ±30 s stretch of path show only on the target's path and Show me.</li>
+      <li>Ticket kicker counts down to it: “Peak in 0:12”, “Peak · now”.</li>
+      <li>Not for passes that peak in shadow, or under 20° (no real “top”).</li>
+      <li>Stacks with chains and the headliner (+25).</li></ul></div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════ FEEL AND POLISH ═══════════════ -->
+<div class="sec"><b>Feel and polish</b> · the night around the catch</div>
+
+<div class="idea">
+<h2><span class="no">05</span>Night ambience</h2>
+<p>A <b>very quiet bed</b> under the music: a little wind, crickets at dusk, an owl late, the first birds at dawn, rain when it's raining. It follows the real forecast and the time, so the phone sounds like the night you're standing in. I'd ship it on, at about −48 LUFS (well under the sound effects and the music), ducking with the music during a reveal.</p>
+<div class="tags"><span class="tag m">Medium</span><span class="tag f">Sound · settings</span></div>
+<div class="row">
+  <div class="opt"><h3><span class="pill p">Proposed</span>Settings → Sound</h3>
+    <div class="ph" style="height:430px">
+      <div style="position:relative;z-index:1;padding:18px 18px 0"><div style="font:400 17px 'SC Display'">SETTINGS</div><div class="lbl" style="margin-top:2px">Make it yours</div></div>
+      <div class="setc"><div class="hb"><span>SOUND</span><span>07</span></div>
+        <div class="r"><span class="ic">♫</span><div class="t">Music<small>“Permafrost”, Scott Buckley</small></div><button class="sw2 on" type="button">ON</button></div>
+        <div class="r"><span class="ic">♫</span><div class="vol" style="--v:50%"></div></div>
+        <div class="r"><span class="ic">♪</span><div class="t">Sound effects</div><button class="sw2 on" type="button">ON</button></div>
+        <div class="r new"><span class="ic">☾</span><div class="t">Night sounds<span class="newt">NEW</span><small id="ns-sub">Follows your sky · now: clear, dusk</small></div><button class="prev" id="ns-prev" type="button">▶ HEAR</button><button class="sw2 on" id="ns-sw" type="button">ON</button></div>
+        <div class="r"><span class="ic">◎</span><div class="t">Vibration</div><button class="sw2 on" type="button">ON</button></div>
+      </div>
+    </div>
+    <p>“Hear” plays 10 s of tonight's mix, so you can judge it without waiting. The row sits under Music because it's another layer of the same thing. Generated live (WebAudio noise and oscillators, as here), so it costs no downloads.</p>
+  </div>
+  <div class="opt wide"><h3><span class="pill p">Proposed</span>How it changes · tap a box to hear it</h3>
+    <div class="mixg" id="mixg"></div>
+    <div class="mixctl"><label><input type="checkbox" id="mix-music"> Under the music (“Permafrost” at 50%)</label><span>Previews are louder than in the game, so you can hear them.</span><button class="snd" id="mix-stop" type="button">■ Stop</button></div>
+    <div class="rules"><h4>Rules</h4><ul>
+      <li><b>Sky</b> from the forecast hour you're in (weather.js), <b>time</b> from the Sun: dusk until −18°, midnight, dawn from −18° rising.</li>
+      <li>Changes crossfade over 20 s, never a jump. Fog and snow: hush (wind only, softer).</li>
+      <li>Ducks to 35% with the music during reveals; pauses with the app.</li>
+      <li>Red mode, Battery saver: unchanged (sound costs little).</li>
+      <li>By day: off. The bed belongs to the night.</li></ul></div>
+    <p class="today"><b>Today:</b> “Permafrost” loops; with music off, the sky is silent between effects.</p>
+  </div>
+</div>
+</div>
+
+<div class="idea">
+<h2><span class="no">06</span>Notice audit</h2>
+<p>A typical <b>first night</b>, start to finish, with every notice, chip, coin and page it produces today, from the real calls in js/main.js, js/reveal.js and earnPatch. On the right, the same night with a few rules: <b>half of it merged into things you see anyway, delayed to a quiet moment, or dropped</b>. Example night: clear, 8:30 PM start, a meteor shower on, six catches.</p>
+<div class="tags"><span class="tag s">Small</span><span class="tag f">Copy · rules</span></div>
+<div class="tlw">
+  <div><div class="tlh">Today <small id="cnt-today"></small></div><div class="tl" id="tl-today"></div></div>
+  <div><div class="tlh">Proposed <small id="cnt-new"></small></div><div class="tl" id="tl-new"></div></div>
+</div>
+<div class="rules" style="max-width:1180px;margin-top:18px"><h4>The rule set</h4><ul>
+  <li><b>1 · Answers always show.</b> Anything that answers your tap (reminder set, couldn't save, purchase) shows at once.</li>
+  <li><b>2 · The reveal carries its own news.</b> Missions, rank, patches and progress earned by a catch are chips on that reveal, never a banner later.</li>
+  <li><b>3 · Fold into what you'll see anyway.</b> Patches and the meteor shower from the first catch go onto the Tonight page, which opens right after it.</li>
+  <li><b>4 · Progress only at milestones.</b> Constellations speak at halfway and complete; the first star of one is a line on its card (“1 of 5 in Lyra”), not a notice.</li>
+  <li><b>5 · Help waits for evidence.</b> The compass nudge needs two misses (a lock that slides off, a Not quite) and never comes before the first catch.</li>
+  <li><b>6 · One unasked notice per five minutes.</b> Extras queue; anything older than 15 min when its turn comes is dropped.</li>
+  <li><b>7 · First of its kind gets a moment.</b> Fits with Quick Commons: the first star, stage and Moon still reveal in full.</li></ul></div>
+</div>
+
+<div class="top"><h2>What I’d build first</h2><p>If I could only do three, in this order.</p>
+<ol>
+<li><div><b>06 · The notice rules</b><span>No new art, mostly deleting and moving calls. It makes the first night calmer, and every other idea here adds a notice, so the rules should come first.</span></div></li>
+<li><div><b>01 · Quick Commons</b><span>The biggest change to how a night feels: more time aiming, less time tapping cards away. Commons are most of what people catch.</span></div></li>
+<li><div><b>02 · What's worth aiming at</b><span>Small, and it makes the sky readable at a glance. It also makes 01 and 03 work better: you can see where the next new one is.</span></div></li>
+</ol></div>
+
+<p class="note">Notes: chains and the peak bonus change scoring, so the XP carry and rank curve (js/progress.js) would need a look; both are small next to tier XP. Night-sound levels are guesses until measured with scripts/sfx-levels.py against the music. Constellation star counts and the patch names on the first-night timeline are illustrative (First Light, Early Bird and Stage Hand are real). Reduce Motion stops every mock-up here.</p>
+
+<script>
+/* ── real-looking cards from data-rc="art|name|tier|locked" ── */
+const TIER = { common: ['●', 'COMMON', 'var(--t-com)'], uncommon: ['▲', 'UNCOMMON', 'var(--t-unc)'], rare: ['◆', 'RARE', 'var(--t-rare)'], epic: ['✦', 'EPIC', 'var(--t-epic)'], legendary: ['★', 'LEGENDARY', 'var(--t-leg)'] };
+const SUBS = { 'sl-8': 'Soviet rocket stage · 1976', 'russian-stage': 'Soviet rocket stage · 1971', 'cz-4': 'Chinese rocket stage · 2019', 'thor-upper': 'American rocket stage · 1968', 'star-vega': 'Star in Lyra', globalstar: 'Fleet · 4 launches', hubble: 'Space telescope · 1990' };
+document.querySelectorAll('[data-rc]').forEach((el) => {
+  const [art, name, tier, locked] = el.dataset.rc.split('|'), [g, w, c] = TIER[tier];
+  el.style.setProperty('--t', c);
+  const big = !el.closest('.stack, .fan, .tkt') && !el.classList.contains('fly');
+  el.innerHTML = `<div class="a"><img src="../assets/art/cards/${big ? '' : 'sm/'}${art}.webp" alt="" style="${locked ? 'filter:blur(3px) brightness(.38) saturate(.6)' : ''}"><span class="ch">${g} ${w}</span></div><div class="n">${name}</div><div class="s">${SUBS[art] ?? ''}</div><div class="st"><i></i><i></i><i></i><i></i></div><div class="fx"><i></i><i></i><i></i></div><div class="ft"></div>`;
+});
+
+/* ── sounds ── */
+const sndCache = {};
+function playList(list) { for (const part of list.split(',')) { const [n, d] = part.split('@'); setTimeout(() => { const a = (sndCache[n] ??= new Audio(`../assets/audio/sfx/${n}.mp3`)).cloneNode(); a.volume = .7; a.play().catch(() => {}); }, +(d || 0)); } }
+document.querySelectorAll('.snd[data-s]').forEach((b) => b.addEventListener('click', () => playList(b.dataset.s)));
+
+/* ── 02 · sky patch, today vs proposed ── */
+const OBJ = [ // x, y, icon, state (new/own), tier, name
+  [70, 70, 'sat', 'new', 'unc', 'COSMOS 1408'], [262, 58, 'rocket', 'own', 'com', 'SL-8 R/B'], [312, 132, 'sat', 'own', 'com', ''], [118, 150, 'rocket', 'new', 'rare', 'THOR AGENA D'],
+  [228, 196, 'station', 'own', 'rare', 'ISS'], [52, 236, 'debris', 'own', 'com', ''], [150, 268, 'sat', 'new', 'epic', 'NUSTAR'], [300, 268, 'rocket', 'own', 'com', ''], [190, 104, 'debris', 'new', 'com', ''], [34, 150, 'sat', 'own', 'unc', ''] ];
+const TC = { com: '#9aa4b1', unc: '#5fd08a', rare: '#4aa8ff', epic: '#e46ad6', leg: '#ffc545' };
+function starsSvg() { let s = ''; let seed = 7; const r = () => (seed = (seed * 9301 + 49297) % 233280) / 233280; for (let i = 0; i < 70; i++) s += `<circle cx="${(r() * 360).toFixed(1)}" cy="${(r() * 340).toFixed(1)}" r="${(0.4 + r() * 0.9).toFixed(2)}" fill="#fff" opacity="${(0.25 + r() * 0.6).toFixed(2)}"/>`; return s; }
+function skySvg(proposed) {
+  let s = `<path d="M-10 330 Q 180 300 370 330" stroke="#6f8fae55" fill="none" stroke-dasharray="3 5"/>` + starsSvg();
+  s += `<g opacity=".5"><path d="M0 120 Q 180 40 360 20" stroke="#fff2b333" fill="none"/></g>`;
+  for (const [x, y, ic, st, t, nm] of OBJ) {
+    const isNew = st === 'new', size = ic === 'station' ? 26 : 20;
+    if (proposed && isNew) { const R = t === 'epic' || t === 'leg' ? 22 : 17; s += `<circle class="halo" cx="${x}" cy="${y}" r="${R}" fill="url(#hg)" style="color:${TC[t]}"/>`.replace('url(#hg)', `url(#hg-${t})`); }
+    const op = proposed ? (isNew ? 1 : .45) : 1;
+    s += `<use href="#i-${ic}" x="${x - size / 2}" y="${y - size / 2}" width="${size}" height="${size}" style="color:#fff2b3" opacity="${op}"/>`;
+    if (nm) s += `<text x="${x + 14}" y="${y - 10}" font-family="SC Label" font-size="11" letter-spacing="1.4" fill="#fff2b3" opacity="${proposed ? (isNew ? .95 : .55) : .85}">${nm}</text>`;
+  }
+  // the circle, empty
+  s += `<g transform="translate(180 200)" opacity=".9"><circle r="34" fill="none" stroke="rgba(8,15,27,.28)" stroke-width="6"/><circle r="34" fill="none" stroke="#bdbea9" stroke-width="1.5"/>${[0, 90, 180, 270].map((a) => `<line x1="0" y1="-40" x2="0" y2="-52" stroke="#bdbea9" stroke-width="2" transform="rotate(${a})"/>`).join('')}<path d="M-3 0H3M0 -3V3" stroke="#bdbea9"/></g>`;
+  let defs = '<defs>' + Object.entries(TC).map(([k, c]) => `<radialGradient id="hg-${k}"><stop offset="0" stop-color="${c}" stop-opacity=".85"/><stop offset=".4" stop-color="${c}" stop-opacity=".35"/><stop offset="1" stop-color="${c}" stop-opacity="0"/></radialGradient>`).join('') + '</defs>';
+  return defs + s;
+}
+document.getElementById('sky-today').innerHTML = skySvg(false);
+document.getElementById('sky-new').innerHTML = skySvg(true);
+
+/* ── 04 · the pass, its peak tick and the ±30 s window ── */
+(() => {
+  const P0 = [14, 470], P1 = [180, -40], P2 = [352, 450];
+  const Q = (t) => [(1 - t) ** 2 * P0[0] + 2 * (1 - t) * t * P1[0] + t * t * P2[0], (1 - t) ** 2 * P0[1] + 2 * (1 - t) * t * P1[1] + t * t * P2[1]];
+  let tp = 0, ym = 1e9; for (let t = 0; t <= 1; t += .001) { const y = Q(t)[1]; if (y < ym) { ym = y; tp = t; } }
+  const seg = (a, b) => { let d = ''; for (let t = a; t <= b + 1e-9; t += .01) { const [x, y] = Q(Math.min(t, b)); d += (d ? 'L' : 'M') + x.toFixed(1) + ' ' + y.toFixed(1); } return d; };
+  const w = .07, [px, py] = Q(tp);
+  const full = seg(0, 1);
+  const svg = document.getElementById('peak-sky');
+  svg.innerHTML = `${starsSvg()}
+   <rect x="0" y="470" width="360" height="60" fill="#070c13"/><path d="M0 470 Q 60 462 120 468 T 240 464 T 360 470" stroke="#1d2a3c" fill="none"/>
+   <path d="${seg(0, .2)}" stroke="#fff2b333" stroke-width="1.5" fill="none"/>
+   <path d="${seg(.2, 1)}" stroke="#fa8127aa" stroke-width="1.5" fill="none" stroke-dasharray="4 7"/>
+   <path d="${seg(tp - w, tp + w)}" stroke="#f2c14e" stroke-width="5" fill="none" stroke-linecap="round" opacity=".28"><animate attributeName="opacity" values=".28;.28;.85;.85;.28;.28" keyTimes="0;.42;.44;.56;.58;1" dur="8s" repeatCount="indefinite"/></path>
+   <path d="${seg(tp - w, tp + w)}" stroke="#f2c14e" stroke-width="2" fill="none" stroke-linecap="round"/>
+   <g transform="translate(${px} ${py})"><line x1="0" y1="-12" x2="0" y2="12" stroke="#f2c14e" stroke-width="2.5"/><circle r="3" fill="#f2c14e"/>
+    <text x="0" y="-20" text-anchor="middle" font-family="SC Label" font-size="12" letter-spacing="1.8" fill="#f2c14e">PEAK · 9:14:30 PM</text>
+    <text x="0" y="28" text-anchor="middle" font-family="SC Label" font-size="10.5" letter-spacing="1.4" fill="#bdbea9">±30 S · +10 XP</text></g>
+   <g><g transform="translate(-14 -14)"><use href="#i-sat" width="28" height="28" style="color:#4aa8ff"/></g>
+    <g><circle r="34" fill="none" stroke="rgba(8,15,27,.28)" stroke-width="6"/><circle r="34" fill="none" stroke="#fa8127" stroke-width="2.25"><animate attributeName="stroke" values="#fa8127;#fa8127;#f2c14e;#f2c14e;#fa8127;#fa8127" keyTimes="0;.42;.44;.56;.58;1" dur="8s" repeatCount="indefinite"/></circle>
+     ${[0, 90, 180, 270].map((a) => `<line x1="0" y1="-40" x2="0" y2="-52" stroke="#fa8127" stroke-width="2" transform="rotate(${a})"/>`).join('')}</g>
+    <animateMotion dur="8s" repeatCount="indefinite" keyPoints="0.1;0.9" keyTimes="0;1" calcMode="linear" path="${full}"/></g>`;
+})();
+
+/* ── 05 · night sounds (WebAudio, generated) ── */
+const MIX = {
+  clear:  { dusk: { wind: .10, cut: 380, crickets: 3, rate: .55, w: 'Crickets in full song, a light breeze' }, midnight: { wind: .07, cut: 300, crickets: 2, rate: 1.0, owl: 1, w: 'Slower crickets, an owl now and then' }, dawn: { wind: .08, cut: 350, crickets: 1, rate: 1.5, birds: .7, w: 'Last crickets, first birds' } },
+  cloudy: { dusk: { wind: .22, cut: 560, crickets: 1, rate: .8, w: 'More wind, a few crickets' }, midnight: { wind: .24, cut: 620, crickets: 1, rate: 1.4, w: 'Wind in the trees, quiet otherwise' }, dawn: { wind: .2, cut: 520, birds: .25, w: 'Wind, a bird or two' } },
+  rain:   { dusk: { wind: .14, cut: 700, rain: .2, w: 'Soft rain on leaves' }, midnight: { wind: .16, cut: 700, rain: .26, w: 'Steady rain, drips' }, dawn: { wind: .12, cut: 650, rain: .16, w: 'Rain easing' } },
+};
+const SKY_W = { clear: ['Clear', 'stars out'], cloudy: ['Cloudy', 'no stars'], rain: ['Rain', 'if you’re out'] };
+const TIME_W = { dusk: ['Dusk', 'Sun −6° to −18°'], midnight: ['Midnight', 'full dark'], dawn: ['Dawn', 'from −18° rising'] };
+const mg = document.getElementById('mixg');
+mg.innerHTML = `<span></span>` + Object.entries(TIME_W).map(([k, [a, b]]) => `<span class="h"><b>${a}</b>${b}</span>`).join('') +
+  Object.keys(MIX).map((sk) => `<span class="rh">${SKY_W[sk][0]}<small>${SKY_W[sk][1]}</small></span>` + Object.keys(TIME_W).map((tm) => { const m = MIX[sk][tm]; const bar = (l, v, c) => `<span>${l}</span><s style="--l:${Math.round(v * 100)}%;--c:${c}"></s>`;
+    return `<button class="cell" type="button" data-sk="${sk}" data-tm="${tm}"><span class="w">${m.w}</span><span class="bars">${bar('Wind', m.wind / .26, '#6f8fae')}${bar('Crickets', (m.crickets ?? 0) / 3, '#5fd08a')}${bar(tm === 'midnight' ? 'Owl' : 'Birds', tm === 'midnight' ? (m.owl ?? 0) * .6 : (m.birds ?? 0), '#f2c14e')}${bar('Rain', (m.rain ?? 0) / .26, '#4aa8ff')}</span><span class="pl">Hear it</span></button>`; }).join('')).join('');
+
+let AC = null, amb = null;
+function ctx() { if (!AC) AC = new (window.AudioContext || window.webkitAudioContext)(); if (AC.state !== 'running') AC.resume(); return AC; }
+function noise(kind, secs = 6) {
+  const a = ctx(), n = a.sampleRate * secs, b = a.createBuffer(1, n, a.sampleRate), d = b.getChannelData(0);
+  let last = 0, b0 = 0, b1 = 0, b2 = 0;
+  for (let i = 0; i < n; i++) { const w = Math.random() * 2 - 1;
+    if (kind === 'brown') { last = (last + 0.02 * w) / 1.02; d[i] = last * 3.5; }
+    else if (kind === 'pink') { b0 = .99765 * b0 + w * .099046; b1 = .963 * b1 + w * .2965164; b2 = .57 * b2 + w * 1.0526913; d[i] = (b0 + b1 + b2 + w * .1848) * .11; }
+    else d[i] = w; }
+  const drift = d[n - 1] - d[0]; for (let i = 0; i < n; i++) d[i] -= drift * i / n; // loops without a click
+  return b;
+}
+function stopAmb(fade = .8) {
+  if (!amb) return; const a = amb; amb = null;
+  a.master.gain.cancelScheduledValues(AC.currentTime); a.master.gain.setTargetAtTime(0, AC.currentTime, fade / 3);
+  clearInterval(a.timer); setTimeout(() => a.stops.forEach((s) => { try { s.stop(); } catch {} }), fade * 1000 + 200);
+  document.querySelectorAll('.cell.on').forEach((c) => c.classList.remove('on'));
+  const p = document.getElementById('ns-prev'); p.classList.remove('on'); p.textContent = '▶ HEAR';
+  music.pause();
+}
+const music = new Audio('../assets/audio/permafrost.m4a'); music.loop = true; music.volume = .35;
+function startAmb(m, secs = 0) {
+  stopAmb(.3);
+  const a = ctx(), t0 = a.currentTime, master = a.createGain(); master.gain.value = 0; master.connect(a.destination);
+  master.gain.setTargetAtTime(.9, t0, .6);
+  const stops = [], st = { master, stops, timer: 0 };
+  // wind: brown noise, low-passed, with slow gusts
+  if (m.wind) {
+    const src = a.createBufferSource(); src.buffer = noise('brown', 8); src.loop = true;
+    const lp = a.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = m.cut; lp.Q.value = .3;
+    const g = a.createGain(); g.gain.value = m.wind * 1.6;
+    const lfo = a.createOscillator(), lg = a.createGain(); lfo.frequency.value = .07; lg.gain.value = m.wind * .9; lfo.connect(lg).connect(g.gain);
+    const lfo2 = a.createOscillator(), lg2 = a.createGain(); lfo2.frequency.value = .13; lg2.gain.value = m.cut * .35; lfo2.connect(lg2).connect(lp.frequency);
+    src.connect(lp).connect(g).connect(master); src.start(); lfo.start(); lfo2.start(); stops.push(src, lfo, lfo2);
+  }
+  // rain: pink noise band + the odd drip
+  if (m.rain) {
+    const src = a.createBufferSource(); src.buffer = noise('pink', 6); src.loop = true;
+    const hp = a.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 900;
+    const lp = a.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 6500;
+    const g = a.createGain(); g.gain.value = m.rain * 1.4;
+    src.connect(hp).connect(lp).connect(g).connect(master); src.start(); stops.push(src);
+  }
+  // crickets: each a ~4.4 kHz tone gated into three quick pulses
+  const crickets = Array.from({ length: m.crickets ?? 0 }, (_, i) => {
+    const o = a.createOscillator(), g = a.createGain(), pan = a.createStereoPanner ? a.createStereoPanner() : a.createGain();
+    o.frequency.value = 4300 + i * 260 + Math.random() * 80; g.gain.value = 0; if (pan.pan) pan.pan.value = [-.6, .5, -.1][i] ?? 0;
+    o.connect(g).connect(pan).connect(master); o.start(); stops.push(o);
+    return { g, next: t0 + .3 + Math.random() * .8, vol: [.05, .035, .025][i] ?? .02 };
+  });
+  let nextBird = t0 + 1 + Math.random() * 2, nextOwl = t0 + 2.5, nextDrip = t0 + .4;
+  const blip = (t, f0, f1, dur, vol, type = 'sine', lpf = 0) => {
+    const o = a.createOscillator(), g = a.createGain(); o.type = type; o.frequency.setValueAtTime(f0, t); o.frequency.exponentialRampToValueAtTime(f1, t + dur * .7);
+    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol, t + Math.min(.03, dur * .25)); g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+    let out = g; o.connect(g); if (lpf) { const l = a.createBiquadFilter(); l.type = 'lowpass'; l.frequency.value = lpf; g.connect(l); out = l; }
+    out.connect(master); o.start(t); o.stop(t + dur + .05);
+  };
+  const sched = () => {
+    const now = a.currentTime, ahead = now + .5;
+    for (const c of crickets) while (c.next < ahead) {
+      for (let p = 0; p < 3; p++) { const s = c.next + p * .045; c.g.gain.setValueAtTime(0, s); c.g.gain.linearRampToValueAtTime(c.vol, s + .006); c.g.gain.setValueAtTime(c.vol, s + .022); c.g.gain.linearRampToValueAtTime(0, s + .03); }
+      c.next += m.rate * (.75 + Math.random() * .5);
+    }
+    if (m.birds) while (nextBird < ahead) { const f = 2600 + Math.random() * 900; blip(nextBird, f, f * 1.45, .14, .05 * m.birds); if (Math.random() < .5) blip(nextBird + .18, f * 1.2, f * .9, .12, .04 * m.birds); nextBird += (1.2 + Math.random() * 2.4) / m.birds; }
+    if (m.owl) while (nextOwl < ahead) { blip(nextOwl, 380, 360, .42, .09, 'triangle', 700); blip(nextOwl + .62, 400, 350, .55, .08, 'triangle', 700); nextOwl += 9 + Math.random() * 6; }
+    if (m.rain) while (nextDrip < ahead) { const f = 1700 + Math.random() * 1500; blip(nextDrip, f, f * .7, .06, .035 * m.rain / .2); nextDrip += .15 + Math.random() * .7; }
+  };
+  sched(); st.timer = setInterval(sched, 120);
+  amb = st;
+  if (document.getElementById('mix-music').checked) { music.currentTime = 30; music.play().catch(() => {}); }
+  if (secs) setTimeout(() => { if (amb === st) stopAmb(1.2); }, secs * 1000);
+}
+mg.addEventListener('click', (e) => {
+  const c = e.target.closest('.cell'); if (!c) return;
+  if (c.classList.contains('on')) { stopAmb(); return; }
+  const m = MIX[c.dataset.sk][c.dataset.tm]; startAmb(m); c.classList.add('on');
+  document.getElementById('ns-sub').textContent = `Follows your sky · now: ${c.dataset.sk}, ${c.dataset.tm}`;
+});
+document.getElementById('mix-stop').addEventListener('click', () => stopAmb());
+document.getElementById('ns-prev').addEventListener('click', (e) => {
+  const b = e.currentTarget; if (b.classList.contains('on')) { stopAmb(); return; }
+  const [, sk, tm] = document.getElementById('ns-sub').textContent.match(/now: (\w+), (\w+)/) ?? [, 'clear', 'dusk'];
+  startAmb(MIX[sk][tm], 10); b.classList.add('on'); b.textContent = '■ 10 S';
+  document.querySelector(`.cell[data-sk="${sk}"][data-tm="${tm}"]`)?.classList.add('on');
+});
+document.getElementById('ns-sw').addEventListener('click', (e) => { const b = e.currentTarget, on = !b.classList.contains('on'); b.classList.toggle('on', on); b.textContent = on ? 'ON' : 'OFF'; if (!on) stopAmb(); });
+
+/* ── 06 · the first night, today vs proposed ── */
+// type: ask (permission), page, reveal, chip (on a reveal), coin (patch coin), banner (top notice). int = stops you / takes the screen.
+const K = { orange: '#fa8127', gold: '#f1c04e', steel: '#8fb3cf', info: '#c9cbb6', red: '#ff7a64', cream: '#e9dfae' };
+const NIGHT = [
+  { t: '8:31', ty: 'page', k: K.cream, ic: '⌖', ey: 'TOUR 1 OF 3', ln: 'Find your sky', sb: 'Share your location', int: 1, v: ['keep', 'You asked to start'] },
+  { t: '8:31', ty: 'ask', k: K.info, ic: '?', ey: 'IPHONE', ln: '“Allow location?”', int: 1, v: ['keep', 'Needed'] },
+  { t: '8:32', ty: 'page', k: K.cream, ic: '◎', ey: 'TOUR 2 OF 3', ln: 'Point and look', sb: 'Turn on motion', int: 1, v: ['keep', ''] },
+  { t: '8:32', ty: 'page', k: K.cream, ic: '♪', ey: 'TOUR 3 OF 3', ln: 'Know when to look up', sb: 'Notifications', int: 1, v: ['keep', ''] },
+  { t: '8:33', ty: 'banner', k: K.orange, ic: '✛', ey: 'COMPASS', ln: 'Needs a nudge', sb: 'Wave the phone in a slow figure-8…', int: 1, v: ['delay', 'Rule 5: only after two misses'] },
+  { t: '8:34', ty: 'reveal', k: '#9aa4b1', ic: '●', ey: 'NEW CARD · +10 XP', ln: 'The Moon', sb: 'The tour’s catch: sealed card, flip, rank bar', int: 1, v: ['keep', 'First card: full reveal'] },
+  { t: '8:34', ty: 'chip', k: K.orange, ic: '◎', ey: 'ON THE REVEAL', ln: 'First Light', int: 0, v: ['keep', ''] },
+  { t: '8:35', ty: 'page', k: K.cream, ic: '☾', ey: 'TONIGHT', ln: 'You’re set · Tonight looks good', sb: 'Timeline, best pass, missions', int: 1, v: ['keep', 'Now also holds the patch and the shower'] },
+  { t: '8:36', ty: 'coin', k: K.orange, ic: '◎', ey: 'PATCH EARNED', ln: 'Early Bird', sb: 'Coin, then rolls into Collection', int: 1, v: ['merge', 'Into the Tonight page (rule 3)'] },
+  { t: '8:36', ty: 'banner', k: K.gold, ic: '☄', ey: 'METEOR SHOWER', ln: 'Orionids tonight', sb: 'Collect any card to earn its badge', int: 1, v: ['merge', 'Into the Tonight page (rule 3)'] },
+  { t: '8:39', ty: 'reveal', k: '#9aa4b1', ic: '●', ey: 'NEW CARD · +10 XP', ln: 'SL-8 Rocket Stage', int: 1, v: ['keep', 'First stage: full reveal (rule 7)'] },
+  { t: '8:39', ty: 'chip', k: K.orange, ic: '◆', ey: 'ON THE REVEAL', ln: 'Catch a satellite', xp: '+50', int: 0, v: ['keep', ''] },
+  { t: '8:40', ty: 'coin', k: K.orange, ic: '◎', ey: 'PATCH EARNED', ln: 'Stage Hand', int: 1, v: ['merge', 'A chip on that reveal (rule 2)'] },
+  { t: '8:42', ty: 'reveal', k: '#9aa4b1', ic: '●', ey: 'NEW CARD · +10 XP', ln: 'Vega', int: 1, v: ['keep', 'First star: full reveal'] },
+  { t: '8:42', ty: 'banner', k: K.steel, ic: '✦', ey: 'LYRA', ln: '1 of 5 stars', sb: '4 to go', int: 1, v: ['drop', 'A line on the card (rule 4)'] },
+  { t: '8:45', ty: 'reveal', k: '#5fd08a', ic: '▲', ey: 'NEW CARD · +15 XP', ln: 'Saturn', int: 1, v: ['keep', 'Uncommon: full reveal'] },
+  { t: '8:48', ty: 'reveal', k: '#9aa4b1', ic: '●', ey: 'NEW CARD · +10 XP', ln: 'Deneb', int: 1, v: ['merge', 'Quick Common: onto the stack (idea 01)'] },
+  { t: '8:48', ty: 'banner', k: K.steel, ic: '✦', ey: 'CYGNUS', ln: '1 of 9 stars', sb: '8 to go', int: 1, v: ['drop', 'Rule 4'] },
+  { t: '8:51', ty: 'reveal', k: '#9aa4b1', ic: '●', ey: 'NEW CARD · +10 XP', ln: 'Altair', int: 1, v: ['merge', 'Quick Common: onto the stack'] },
+  { t: '8:51', ty: 'banner', k: K.steel, ic: '✦', ey: 'AQUILA', ln: '1 of 8 stars', sb: '7 to go', int: 1, v: ['drop', 'Rule 4'] },
+  { t: '8:55', ty: 'banner', k: K.steel, ic: '♪', ey: 'REMINDER SET', ln: '9:06 PM', sb: 'Before Hubble', int: 0, v: ['keep', 'Answers your tap (rule 1)'] },
+  { t: '9:02', ty: 'banner', k: K.orange, ic: '✛', ey: 'COMPASS', ln: 'Needs a nudge', sb: 'After a lock slid off twice', int: 1, v: ['delay', 'The 8:33 one, now with a reason'], onlyNew: 1 },
+];
+const TY = { ask: 'System ask', page: 'Page', reveal: 'Catch reveal', chip: 'Reveal chip', coin: 'Patch coin', banner: 'Notice' };
+const VD = { keep: 'Kept', merge: 'Merged', delay: 'Delayed', drop: 'Dropped' };
+function row(e, proposed) {
+  const cls = ['ev', e.int ? 'int' : '', e.ty === 'page' || e.ty === 'ask' ? 'page' : '', e.ty === 'reveal' ? 'reveal' : '', proposed && (e.v[0] === 'drop' || e.v[0] === 'merge' || (e.v[0] === 'delay' && !e.onlyNew)) ? 'drop' : ''].join(' ');
+  const vd = proposed ? `<div><span class="vd ${e.v[0]}">${VD[e.v[0]]}</span>${e.v[1] ? `<span class="why">${e.v[1]}</span>` : ''}</div>` : '';
+  return `<div class="${cls}"><span class="tm">${e.t}</span><div class="nt" style="--k:${e.k}"><span class="ti">${e.ic}</span><div><div class="ey">${e.ey}</div><div class="ln">${e.ln}</div>${e.sb ? `<div class="sb">${e.sb}</div>` : ''}</div>${e.xp ? `<span class="xp">${e.xp}</span>` : '<span></span>'}</div><span class="ty">${TY[e.ty]}</span>${vd}</div>`;
+}
+const todayList = NIGHT.filter((e) => !e.onlyNew);
+document.getElementById('tl-today').innerHTML = todayList.map((e) => row(e, false)).join('');
+document.getElementById('tl-new').innerHTML = NIGHT.map((e) => row(e, true)).join('');
+const live = NIGHT.filter((e) => e.onlyNew || !['drop', 'merge'].includes(e.v[0]) && !(e.v[0] === 'delay'));
+const intN = (l) => l.filter((e) => e.int).length;
+document.getElementById('cnt-today').innerHTML = `<b>${todayList.length}</b> moments · <b>${intN(todayList)}</b> take the screen`;
+document.getElementById('cnt-new').innerHTML = `<b>${live.length}</b> moments · <b>${intN(live)}</b> take the screen`;
+</script>
+</body></html>

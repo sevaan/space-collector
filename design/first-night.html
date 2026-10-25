@@ -1,0 +1,473 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>First night</title>
+<!-- 2026-10-25 design board: seven ideas for a new player's first minute, the tour and the daytime home.
+     Mock-ups only, nothing built. Backgrounds are real captures of the app (design/first-night/*.webp, Playwright,
+     402 × 874) with the proposed parts drawn over them. -->
+<link rel="stylesheet" href="../css/icons.css">
+<style>
+@font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf'); }
+@font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf'); }
+@property --sat { syntax: '<integer>'; inherits: true; initial-value: 312; }
+@property --s { syntax: '<integer>'; inherits: true; initial-value: 359; }
+@property --mm { syntax: '<integer>'; inherits: true; initial-value: 5; }
+@property --ss { syntax: '<integer>'; inherits: true; initial-value: 59; }
+:root { --ink: #fff2b3; --mu: #bdbea9; --or: #fa8127; --gold: #f2c14e; --steel: #6f8fae; --line: #1d2a3c; --card: #0e1828; --unc: #4fd18b; --rare: #4da3ff; --red: #ff7f70; --navy: #080f1b; --blue: #7fb2ff; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #04080f; color: var(--ink); font: 15px/1.4 system-ui, sans-serif; padding: 26px 20px 80px; }
+h1 { font: 400 28px 'SC Display'; margin: 0 0 4px; } .lead { color: var(--mu); margin: 0 0 8px; max-width: 1100px; }
+.how { color: var(--mu); font-size: 13px; margin: 0 0 26px; max-width: 1100px; }
+.how b { color: var(--ink); }
+.sec { font: 500 14px 'SC Label'; letter-spacing: .26em; text-transform: uppercase; color: var(--mu); border-top: 1px solid var(--line); padding-top: 14px; margin: 44px 0 18px; max-width: 1180px; }
+.sec b { color: var(--ink); font-weight: 500; }
+.idea { margin: 0 0 46px; max-width: 1180px; }
+.idea h2 { font: 400 21px/1.15 'SC Display'; margin: 0 0 6px; display: flex; gap: 10px; align-items: baseline; }
+.idea h2 .no { font: 500 15px 'SC Label'; color: var(--or); letter-spacing: .1em; min-width: 22px; }
+.idea > p { color: var(--mu); margin: 0 0 8px; font-size: 14px; max-width: 820px; }
+.idea > p b { color: var(--ink); font-weight: 600; }
+.tags { display: flex; gap: 6px; flex-wrap: wrap; margin: 0 0 14px; }
+.tag { font: 500 11.5px 'SC Label'; letter-spacing: .16em; text-transform: uppercase; padding: 3px 8px; border-radius: 6px; border: 1px solid #2c3b52; color: var(--mu); }
+.tag.s { color: var(--unc); border-color: #2c5a40; } .tag.m { color: var(--gold); border-color: #5f4e22; } .tag.l { color: var(--or); border-color: #6a3a18; }
+.tag.f { color: var(--steel); }
+.row { display: flex; gap: 30px; flex-wrap: wrap; align-items: flex-start; }
+.cell { width: 360px; max-width: 100%; }
+.cap { margin: 10px 0 0; font: 500 13px 'SC Label'; letter-spacing: .16em; text-transform: uppercase; color: var(--mu); }
+.cap b { color: var(--or); font-weight: 500; } .cap.today b { color: #8d93a0; }
+.cn { margin: 4px 0 0; font-size: 13px; color: #9aa3b2; }
+.cn b { color: var(--ink); font-weight: 600; }
+.today { font-size: 12.5px; color: #8d93a0; margin: 16px 0 0; max-width: 820px; }
+.today b { color: var(--mu); font-weight: 600; }
+.ico { display: inline-block; width: 1em; height: 1em; background: currentColor; -webkit-mask: var(--m) center / contain no-repeat; mask: var(--m) center / contain no-repeat; vertical-align: -.14em; }
+
+/* ── the phone: a real capture at 402 × 874, everything on it measured in that phone's points (--u) ── */
+.ph { position: relative; width: 100%; aspect-ratio: 402 / 874; border-radius: 30px; overflow: hidden; border: 1px solid #1a2436; background: var(--navy) center top / 100% auto no-repeat; container-type: inline-size; }
+.ph * { --u: calc(100cqw / 402); }
+.ab { position: absolute; }
+.stars { position: absolute; inset: 0; pointer-events: none; background:
+  radial-gradient(1px 1px at 12% 18%, #fff8 50%, transparent), radial-gradient(1px 1px at 72% 12%, #fff9 50%, transparent), radial-gradient(1.4px 1.4px at 44% 36%, #fffa 50%, transparent),
+  radial-gradient(1px 1px at 86% 44%, #fff7 50%, transparent), radial-gradient(1px 1px at 22% 62%, #fff6 50%, transparent), radial-gradient(1.2px 1.2px at 58% 72%, #fff8 50%, transparent),
+  radial-gradient(1px 1px at 92% 82%, #fff6 50%, transparent), radial-gradient(1px 1px at 8% 88%, #fff7 50%, transparent), radial-gradient(1px 1px at 34% 8%, #fff6 50%, transparent),
+  radial-gradient(1px 1px at 64% 28%, #fff6 50%, transparent), radial-gradient(1px 1px at 28% 46%, #fff5 50%, transparent), radial-gradient(1px 1px at 80% 64%, #fff6 50%, transparent); }
+.lbl { font: 500 calc(var(--u) * 12) 'SC Label'; letter-spacing: .18em; text-transform: uppercase; }
+.tap { position: absolute; width: calc(var(--u) * 34); height: calc(var(--u) * 34); border-radius: 50%; border: 2px solid #fffa; background: #ffffff22; pointer-events: none; opacity: 0; }
+@keyframes tapping { 0%, 52% { opacity: 0; transform: scale(1.6); } 58% { opacity: 1; transform: scale(1); } 70%, 100% { opacity: 0; transform: scale(.85); } }
+.live { display: inline-block; width: calc(var(--u) * 7); height: calc(var(--u) * 7); border-radius: 50%; background: var(--unc); box-shadow: 0 0 0 0 #4fd18b88; animation: livePulse 1.6s infinite; vertical-align: .08em; }
+@keyframes livePulse { 0% { box-shadow: 0 0 0 0 #4fd18b99; } 80%, 100% { box-shadow: 0 0 0 calc(var(--u) * 7) #4fd18b00; } }
+.sat-n { counter-reset: n var(--sat); animation: satTick 9s infinite steps(1); }
+.sat-n::before { content: counter(n); }
+@keyframes satTick { 0% { --sat: 312; } 14% { --sat: 313; } 31% { --sat: 311; } 47% { --sat: 312; } 60% { --sat: 314; } 74% { --sat: 313; } 88% { --sat: 312; } }
+
+/* ── 01 · live number on the welcome card ── */
+.n1a { left: calc(var(--u) * 196); top: calc(var(--u) * 213); width: calc(var(--u) * 155); height: calc(var(--u) * 24); border-radius: calc(var(--u) * 12); background: #0c1626; border: 1px solid #fa812777; display: flex; align-items: center; justify-content: center; gap: calc(var(--u) * 6); color: var(--or); font: 600 calc(var(--u) * 11.5)/1 'SC Label'; letter-spacing: .14em; text-transform: uppercase; white-space: nowrap; }
+.n1a .sat-n { color: var(--ink); font-family: 'SC Display'; letter-spacing: 0; font-size: calc(var(--u) * 12.5); }
+.n1b { left: calc(var(--u) * 55); top: calc(var(--u) * 606); width: calc(var(--u) * 292); display: flex; align-items: center; gap: calc(var(--u) * 12); padding: calc(var(--u) * 8) calc(var(--u) * 12); border-radius: calc(var(--u) * 10); background: #fa812714; border: 1px solid #fa812744; }
+.n1b .big { font: 400 calc(var(--u) * 34)/1 'SC Display'; color: var(--or); min-width: calc(var(--u) * 70); text-shadow: 0 0 calc(var(--u) * 14) #fa812755; }
+.n1b .t { font: 600 calc(var(--u) * 13.5)/1.15 'SC Label'; letter-spacing: .03em; color: var(--ink); }
+.n1b .t small { display: block; margin-top: calc(var(--u) * 3); font-size: calc(var(--u) * 10.5); letter-spacing: .16em; text-transform: uppercase; color: var(--mu); }
+.n1b .t small .live { margin-right: calc(var(--u) * 4); }
+.ph.n1b-wrap::after { content: ''; }
+
+/* ── the tour card (.tc in css/app.css), redrawn for mock-ups ── */
+.tc { position: absolute; left: calc(var(--u) * 21); width: calc(var(--u) * 360); top: calc(var(--u) * 404); height: calc(var(--u) * 560); border-radius: calc(var(--u) * 22); background: var(--navy); border: calc(var(--u) * 4) solid #adbcc8; box-shadow: inset 0 0 0 calc(var(--u) * 5) var(--navy), inset 0 0 0 calc(var(--u) * 6) #bcb58566, 0 calc(var(--u) * -14) calc(var(--u) * 50) #000b; overflow: hidden; }
+.tc.gold { border-color: #e2b53c; box-shadow: inset 0 0 0 calc(var(--u) * 5) var(--navy), inset 0 0 0 calc(var(--u) * 6) #f7d77a66, 0 calc(var(--u) * -14) calc(var(--u) * 50) #000b; }
+.tc .in { padding: calc(var(--u) * 16) calc(var(--u) * 20) calc(var(--u) * 18); display: flex; flex-direction: column; height: calc(var(--u) * 466); }
+.tc .bar { display: flex; justify-content: space-between; padding-bottom: calc(var(--u) * 8); border-bottom: 1px solid #bcb58588; font: 500 calc(var(--u) * 12)/1.2 'SC Label'; letter-spacing: .18em; text-transform: uppercase; }
+.tc .bar .tier { color: var(--or); }
+.tc h3 { margin: calc(var(--u) * 12) 0 calc(var(--u) * 4); font: 400 calc(var(--u) * 27)/1 'SC Display'; letter-spacing: -.035em; text-transform: uppercase; }
+.tc .sub { display: flex; justify-content: space-between; color: var(--mu); padding-bottom: calc(var(--u) * 10); border-bottom: 1px solid #bcb58544; font: 500 calc(var(--u) * 12)/1.2 'SC Label'; letter-spacing: .18em; text-transform: uppercase; }
+.tc .sub .hot { color: var(--or); }
+.tc .art { position: relative; flex: 1; margin: calc(var(--u) * 12) 0; border-radius: calc(var(--u) * 10); overflow: hidden; border: 1px solid #214551; background: radial-gradient(circle at 50% 45%, #15294a, #080e1a 75%); display: grid; place-items: center; }
+.tc p { margin: 0 0 calc(var(--u) * 14); color: #e8e3c9; font-size: calc(var(--u) * 14.5); line-height: 1.42; }
+.tc .acts { display: flex; gap: calc(var(--u) * 10); }
+.tc .acts span { flex: 1; height: calc(var(--u) * 50); display: grid; place-items: center; border-radius: calc(var(--u) * 12); font: 500 calc(var(--u) * 13)/1 'SC Label'; letter-spacing: .14em; text-transform: uppercase; white-space: nowrap; }
+.tc .acts .yes { background: var(--or); color: #0b1120; } .tc .acts .no { background: #ffffff10; color: var(--ink); }
+
+/* ── 05 · location card, proposed bottom ── */
+.loc5 { left: calc(var(--u) * 42); top: calc(var(--u) * 700); width: calc(var(--u) * 318); height: calc(var(--u) * 174); padding-left: calc(var(--u) * 3); background: var(--navy); padding-top: calc(var(--u) * 4); }
+.loc5 p { margin: 0 0 calc(var(--u) * 9); color: #e8e3c9; font-size: calc(var(--u) * 14); line-height: 1.36; }
+.loc5 .b { height: calc(var(--u) * 42); border-radius: calc(var(--u) * 12); display: flex; align-items: center; justify-content: center; gap: calc(var(--u) * 8); font: 500 calc(var(--u) * 13)/1 'SC Label'; letter-spacing: .14em; text-transform: uppercase; white-space: nowrap; }
+.loc5 .b + .b { margin-top: calc(var(--u) * 8); }
+.loc5 .yes { background: var(--or); color: #0b1120; }
+.loc5 .alt { background: #ffffff10; color: var(--ink); }
+.loc5 .alt small { font-size: calc(var(--u) * 11); color: var(--mu); letter-spacing: .1em; }
+.loc5 .tap { left: calc(var(--u) * 260); top: calc(var(--u) * 60); animation: tapping 4s infinite; animation-delay: 1s; }
+
+/* ── 02 · the Tonight page (#ob-done), redrawn ── */
+.od { position: absolute; inset: 0; background: var(--navy); padding: calc(var(--u) * 124) calc(var(--u) * 24) calc(var(--u) * 54); display: flex; flex-direction: column; }
+.od .x { position: absolute; right: calc(var(--u) * 22); top: calc(var(--u) * 64); font: 500 calc(var(--u) * 24) 'SC Label'; color: var(--ink); }
+.od .ey { font: 500 calc(var(--u) * 13)/1.25 'SC Label'; letter-spacing: .17em; color: var(--or); text-transform: uppercase; }
+.od h3 { margin: calc(var(--u) * 10) 0 0; font: 400 calc(var(--u) * 36)/.98 'SC Display'; letter-spacing: -.045em; text-transform: uppercase; }
+.od h3.mixed { text-transform: none; letter-spacing: -.03em; font-size: calc(var(--u) * 29); line-height: 1.04; }
+.od h3 em { font-style: normal; color: var(--or); }
+.od .sub { margin-top: calc(var(--u) * 12); font: 500 calc(var(--u) * 12)/1.3 'SC Label'; letter-spacing: .16em; text-transform: uppercase; color: var(--mu); }
+.tl { margin-top: calc(var(--u) * 30); }
+.tl .it { position: relative; display: grid; grid-template-columns: calc(var(--u) * 66) 1fr; gap: calc(var(--u) * 12); padding: 0 0 calc(var(--u) * 16) calc(var(--u) * 20); }
+.tl .it::before { content: ''; position: absolute; left: calc(var(--u) * 4); top: calc(var(--u) * 6); width: calc(var(--u) * 9); height: calc(var(--u) * 9); border-radius: 50%; background: #344654; }
+.tl .it::after { content: ''; position: absolute; left: calc(var(--u) * 8); top: calc(var(--u) * 18); bottom: calc(var(--u) * -2); width: 1px; background: #344654; }
+.tl .it:last-child::after { display: none; }
+.tl .it.hot::before { background: var(--or); box-shadow: 0 0 calc(var(--u) * 10) var(--or); }
+.tl b { font: 400 calc(var(--u) * 16) 'SC Display'; white-space: nowrap; font-weight: 400; }
+.tl span { font: 500 calc(var(--u) * 14.5)/1.3 'SC Label'; color: #fff2b3cc; letter-spacing: .03em; }
+.tl em { font-style: normal; color: var(--or); }
+.tl.small { margin-top: calc(var(--u) * 18); opacity: .8; }
+.tl.small .it { padding-bottom: calc(var(--u) * 10); } .tl.small b { font-size: calc(var(--u) * 14); } .tl.small span { font-size: calc(var(--u) * 13.5); }
+.cta { display: flex; align-items: center; justify-content: space-between; height: calc(var(--u) * 58); padding: 0 calc(var(--u) * 22); border-radius: calc(var(--u) * 14); font: 500 calc(var(--u) * 15)/1 'SC Label'; letter-spacing: .18em; text-transform: uppercase; }
+.cta.o { background: var(--or); color: #0b1120; } .cta.ghost { background: #ffffff10; color: var(--ink); }
+.cta + .cta { margin-top: calc(var(--u) * 10); }
+.od .push { margin-top: auto; }
+/* the appointment ticket */
+.appt { margin-top: calc(var(--u) * 22); display: flex; gap: calc(var(--u) * 14); align-items: center; padding: calc(var(--u) * 12); border-radius: calc(var(--u) * 16); background: #0e1a2c; border: 1px solid #2a3d58; border-top: calc(var(--u) * 3) solid var(--rare); }
+.appt .pic { position: relative; flex: none; width: calc(var(--u) * 70); height: calc(var(--u) * 70); }
+.appt .pic img { position: absolute; inset: calc(var(--u) * 7); width: calc(var(--u) * 56); height: calc(var(--u) * 56); border-radius: 50%; object-fit: cover; }
+.appt .pic svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.appt .w { flex: 1; min-width: 0; }
+.appt .k { font: 500 calc(var(--u) * 11)/1.2 'SC Label'; letter-spacing: .16em; text-transform: uppercase; color: var(--rare); }
+.appt .n { font: 400 calc(var(--u) * 17)/1.1 'SC Display'; margin: calc(var(--u) * 3) 0; }
+.appt .d { font: 500 calc(var(--u) * 13)/1.25 'SC Label'; color: var(--mu); letter-spacing: .03em; }
+.appt .free { display: inline-block; margin-top: calc(var(--u) * 5); font: 500 calc(var(--u) * 10.5)/1 'SC Label'; letter-spacing: .14em; text-transform: uppercase; color: var(--unc); border: 1px solid #2c5a40; border-radius: calc(var(--u) * 5); padding: calc(var(--u) * 3) calc(var(--u) * 6); }
+.bellcta { position: relative; overflow: visible; background: transparent !important; }
+.bellcta .tap { left: calc(var(--u) * 296); top: calc(var(--u) * 12); animation: tapping 6s infinite; animation-delay: -.6s; }
+.bellcta .a, .bellcta .b { position: absolute; inset: 0; display: flex; align-items: center; justify-content: space-between; padding: 0 calc(var(--u) * 22); }
+.bellcta .a { animation: ctaA 6s infinite; background: var(--or); color: #0b1120; border-radius: calc(var(--u) * 14); } .bellcta .b { animation: ctaB 6s infinite; background: #0e1a2c; color: var(--or); box-shadow: inset 0 0 0 calc(var(--u) * 1.5) var(--or); border-radius: calc(var(--u) * 14); }
+.bellcta .ico { width: calc(var(--u) * 20); height: calc(var(--u) * 20); }
+.bellcta .b .ico { animation: bellSwing 6s infinite; transform-origin: 50% 10%; }
+@keyframes ctaA { 0%, 44% { opacity: 1; } 48%, 94% { opacity: 0; } 100% { opacity: 1; } }
+@keyframes ctaB { 0%, 44% { opacity: 0; } 48%, 94% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes bellSwing { 0%, 48% { transform: none; } 52% { transform: rotate(18deg); } 56% { transform: rotate(-14deg); } 60% { transform: rotate(8deg); } 64%, 100% { transform: none; } }
+
+/* ── 03 · rare pass first ── */
+.cd { position: relative; margin-top: calc(var(--u) * 16); width: calc(var(--u) * 128); height: calc(var(--u) * 128); }
+.cd svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.cd img { position: absolute; left: 18%; top: 18%; width: 64%; height: 64%; border-radius: 50%; object-fit: cover; }
+.cd .ring { fill: none; stroke: var(--or); stroke-width: 5; stroke-linecap: round; stroke-dasharray: 289 289; transform: rotate(-90deg); transform-origin: 50% 50%; animation: ringDown 60s linear infinite; }
+@keyframes ringDown { from { stroke-dashoffset: 0; } to { stroke-dashoffset: 48; } }
+.clock { counter-reset: m var(--mm) s var(--ss); animation: count 60s linear infinite; --mm: calc(var(--s) / 60 - .5); --ss: calc(var(--s) - var(--mm) * 60); }
+.clock::before { content: counter(m) ':' counter(s, decimal-leading-zero); }
+@keyframes count { from { --s: 359; } to { --s: 300; } }
+.cdt { position: absolute; left: 0; right: 0; bottom: calc(var(--u) * 10); text-align: center; font: 400 calc(var(--u) * 22)/1 'SC Display'; color: var(--ink); text-shadow: 0 0 calc(var(--u) * 10) #000; }
+.cdt small { display: block; margin-top: calc(var(--u) * 3); font: 500 calc(var(--u) * 10.5) 'SC Label'; letter-spacing: .18em; color: var(--mu); text-transform: uppercase; }
+.tc .art .dir { position: absolute; left: calc(var(--u) * 14); top: calc(var(--u) * 12); font: 500 calc(var(--u) * 11) 'SC Label'; letter-spacing: .16em; color: var(--mu); text-transform: uppercase; }
+.tc .art .dir b { color: var(--or); font-weight: 500; }
+.tc .art .nw { position: absolute; left: calc(var(--u) * 16); top: calc(var(--u) * 34); width: calc(var(--u) * 46); height: calc(var(--u) * 46); }
+.tc.waiting { animation: dealIn 7s infinite; }
+@keyframes dealIn { 0% { transform: translateY(40%); } 10%, 100% { transform: none; } }
+/* the waiting pill and the Moon in the circle */
+.wait-pill { left: calc(var(--u) * 128); top: calc(var(--u) * 150); width: calc(var(--u) * 256); height: calc(var(--u) * 46); border-radius: calc(var(--u) * 14); background: rgba(8, 15, 27, .96); border: 1px solid #2a3d58; border-top: calc(var(--u) * 3) solid var(--rare); display: flex; align-items: center; gap: calc(var(--u) * 10); padding: 0 calc(var(--u) * 12) 0 calc(var(--u) * 8); }
+.wait-pill img { width: calc(var(--u) * 30); height: calc(var(--u) * 30); border-radius: 50%; object-fit: cover; }
+.wait-pill .t { flex: 1; font: 500 calc(var(--u) * 13)/1.15 'SC Label'; letter-spacing: .04em; color: var(--ink); }
+.wait-pill .t small { display: block; font-size: calc(var(--u) * 10.5); letter-spacing: .16em; text-transform: uppercase; color: var(--rare); }
+.wait-pill .clock { font: 400 calc(var(--u) * 16) 'SC Display'; color: var(--ink); }
+.moon-in { left: calc(var(--u) * 181); top: calc(var(--u) * 417); width: calc(var(--u) * 40); height: calc(var(--u) * 40); border-radius: 50%; background: radial-gradient(circle at 38% 36%, #fffbe6, #e8dfb8 55%, #b9ae86); box-shadow: 0 0 calc(var(--u) * 26) #fff2b366; }
+.ret-or { left: calc(var(--u) * 135); top: calc(var(--u) * 371); width: calc(var(--u) * 132); height: calc(var(--u) * 132); border-radius: 50%; border: calc(var(--u) * 2.4) solid var(--or); box-shadow: 0 0 calc(var(--u) * 18) #fa812755; animation: breathe 2.2s infinite ease-in-out; }
+@keyframes breathe { 50% { box-shadow: 0 0 calc(var(--u) * 30) #fa812799; } }
+.tk { left: calc(var(--u) * 51); top: calc(var(--u) * 528); width: calc(var(--u) * 300); border-radius: calc(var(--u) * 16); background: rgba(8, 15, 27, .96); border-top: calc(var(--u) * 3) solid var(--or); padding: calc(var(--u) * 10) calc(var(--u) * 14) calc(var(--u) * 12); text-align: center; }
+.tk .k { display: flex; justify-content: space-between; font: 500 calc(var(--u) * 11)/1.2 'SC Label'; letter-spacing: .16em; text-transform: uppercase; color: #c9ccd1; }
+.tk .k span:last-child { color: var(--mu); }
+.tk .n { margin: calc(var(--u) * 5) 0 calc(var(--u) * 9); font: 400 calc(var(--u) * 21)/1 'SC Display'; text-align: left; }
+.tk .c { height: calc(var(--u) * 42); border-radius: 99px; background: #fa812724; box-shadow: inset 0 0 0 1px var(--or); color: var(--or); display: grid; place-items: center; font: 500 calc(var(--u) * 15)/1 'SC Label'; letter-spacing: .2em; text-transform: uppercase; }
+.wait-line { left: calc(var(--u) * 51); top: calc(var(--u) * 640); width: calc(var(--u) * 300); text-align: center; font: 500 calc(var(--u) * 12.5)/1.3 'SC Label'; letter-spacing: .12em; text-transform: uppercase; color: var(--mu); }
+.wait-line b { color: var(--blue); font-weight: 500; }
+
+/* ── 04 · reveal + one lesson ── */
+.rv-bg { position: absolute; inset: 0; background: linear-gradient(#0c1d29, #080f1b); }
+.rv-top { left: calc(var(--u) * 20); right: calc(var(--u) * 20); top: calc(var(--u) * 64); display: flex; justify-content: space-between; align-items: baseline; }
+.rv-top .e { font: 500 calc(var(--u) * 14) 'SC Label'; letter-spacing: .2em; color: var(--or); }
+.rv-top .e i { font-style: normal; color: #5fd08a; margin-left: calc(var(--u) * 8); }
+.rv-top .x { font: 500 calc(var(--u) * 24) 'SC Label'; color: var(--ink); }
+.rc { position: absolute; width: calc(var(--u) * 196); aspect-ratio: 28 / 42; border-radius: calc(var(--u) * 12); background: #0b1626; border: calc(var(--u) * 3) solid #e9dfae; box-shadow: inset 0 0 0 calc(var(--u) * 3) #0b1626, inset 0 0 0 calc(var(--u) * 4) #e9dfae55, 0 calc(var(--u) * 20) calc(var(--u) * 50) #000b; padding: calc(var(--u) * 9); display: flex; flex-direction: column; gap: calc(var(--u) * 6); }
+.rc .w { position: relative; aspect-ratio: 4 / 3; border-radius: calc(var(--u) * 5); overflow: hidden; } .rc .w img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.rc .chip { position: absolute; top: calc(var(--u) * 5); font: 600 calc(var(--u) * 8)/1 'SC Label'; letter-spacing: .14em; padding: calc(var(--u) * 3) calc(var(--u) * 5); border-radius: calc(var(--u) * 3); background: #080f1bcc; text-transform: uppercase; }
+.rc .chip.l { left: calc(var(--u) * 5); color: var(--rare); } .rc .chip.r { right: calc(var(--u) * 5); color: var(--ink); }
+.rc .t { font: 400 calc(var(--u) * 15)/1.05 'SC Display'; text-transform: uppercase; }
+.rc .ty { font: 500 calc(var(--u) * 9.5) 'SC Label'; letter-spacing: .12em; color: var(--mu); text-transform: uppercase; }
+.rc .st { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid #2a3a52; border-bottom: 1px solid #2a3a52; }
+.rc .st div { padding: calc(var(--u) * 4) calc(var(--u) * 3); border-right: 1px solid #2a3a52; font: 400 calc(var(--u) * 11) 'SC Display'; } .rc .st div:last-child { border: 0; }
+.rc .st small { display: block; font: 500 calc(var(--u) * 7) 'SC Label'; letter-spacing: .1em; color: var(--mu); }
+.rc .ln { height: calc(var(--u) * 4); background: #22324a; border-radius: 2px; } .rc .ln.s { width: 66%; }
+.rc .ft { margin-top: auto; display: flex; justify-content: space-between; font: 500 calc(var(--u) * 8) 'SC Label'; letter-spacing: .14em; color: var(--mu); text-transform: uppercase; border-top: 1px solid #2a3a52; padding-top: calc(var(--u) * 4); }
+.teach { left: calc(var(--u) * 16); right: calc(var(--u) * 16); top: calc(var(--u) * 530); border-radius: calc(var(--u) * 18); background: rgba(12, 23, 37, .97); border: 1px solid #2a3d58; border-top: calc(var(--u) * 3) solid var(--gold); padding: calc(var(--u) * 14) calc(var(--u) * 16) calc(var(--u) * 14); animation: teachUp 8s infinite cubic-bezier(.2,.9,.3,1); }
+@keyframes teachUp { 0%, 8% { transform: translateY(120%); opacity: 0; } 18%, 100% { transform: none; opacity: 1; } }
+.teach .k { font: 500 calc(var(--u) * 11) 'SC Label'; letter-spacing: .18em; color: var(--gold); text-transform: uppercase; }
+.teach .h { margin: calc(var(--u) * 4) 0 calc(var(--u) * 12); font: 400 calc(var(--u) * 18)/1.15 'SC Display'; }
+.lv { display: flex; justify-content: space-between; align-items: flex-end; gap: calc(var(--u) * 8); }
+.lv > div { flex: 1; text-align: center; }
+.lv .mc { position: relative; margin: 0 auto; width: calc(var(--u) * 70); aspect-ratio: 28 / 42; border-radius: calc(var(--u) * 7); background: #0b1626; border: calc(var(--u) * 2) solid #e9dfae; padding: calc(var(--u) * 4); display: flex; flex-direction: column; gap: calc(var(--u) * 3); opacity: .4; animation: lvOn 8s infinite; }
+.lv .mc .w { aspect-ratio: 4 / 3; border-radius: calc(var(--u) * 3); overflow: hidden; } .lv .mc img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.lv .mc i { display: block; height: calc(var(--u) * 3); background: #22324a; border-radius: 2px; } .lv .mc i.s { width: 60%; }
+.lv .mc.silver { border-color: #e6edf5; box-shadow: inset 0 0 0 calc(var(--u) * 1.5) #0b1626, inset 0 0 0 calc(var(--u) * 2.5) #e6edf5, 0 0 calc(var(--u) * 10) #cfe0ff44; }
+.lv .mc.gold { border-color: var(--gold); box-shadow: 0 0 calc(var(--u) * 16) #f2c14e88; }
+.lv .mc.bronze { opacity: 1; animation: none; outline: calc(var(--u) * 2) dashed #fa8127aa; outline-offset: calc(var(--u) * 4); }
+.lv .mc.silver { animation-delay: .9s; } .lv .mc.gold { animation-delay: 1.8s; }
+@keyframes lvOn { 0%, 22% { opacity: .4; transform: none; } 27% { opacity: 1; transform: translateY(calc(var(--u) * -6)) scale(1.06); } 32%, 92% { opacity: 1; transform: none; } 100% { opacity: .4; } }
+.lv b { display: block; margin-top: calc(var(--u) * 8); font: 500 calc(var(--u) * 12) 'SC Label'; letter-spacing: .14em; text-transform: uppercase; }
+.lv b.s { color: #dfe7f0; } .lv b.g { color: var(--gold); }
+.lv small { display: block; font: 500 calc(var(--u) * 11) 'SC Label'; letter-spacing: .06em; color: var(--mu); }
+.lv .arrow { flex: none; align-self: center; margin-top: calc(var(--u) * -30); font: 400 calc(var(--u) * 16) 'SC Display'; color: #4a5a74; }
+.teach .ok { margin-top: calc(var(--u) * 12); height: calc(var(--u) * 42); border-radius: calc(var(--u) * 12); background: #ffffff10; display: grid; place-items: center; font: 500 calc(var(--u) * 13) 'SC Label'; letter-spacing: .18em; text-transform: uppercase; }
+.phases { display: flex; justify-content: space-between; margin: calc(var(--u) * 2) 0 calc(var(--u) * 6); }
+.phases div { text-align: center; }
+.phases svg { width: calc(var(--u) * 32); height: calc(var(--u) * 32); display: block; margin: 0 auto; opacity: .35; animation: lvOn 8s infinite; }
+.phases div.on svg { opacity: 1; animation: none; filter: drop-shadow(0 0 calc(var(--u) * 6) #fff2b388); }
+.phases div:nth-child(2) svg { animation-delay: .2s; } .phases div:nth-child(3) svg { animation-delay: .4s; } .phases div:nth-child(4) svg { animation-delay: .6s; }
+.phases div:nth-child(5) svg { animation-delay: .8s; } .phases div:nth-child(6) svg { animation-delay: 1s; } .phases div:nth-child(7) svg { animation-delay: 1.2s; } .phases div:nth-child(8) svg { animation-delay: 1.4s; }
+.phases small { display: block; margin-top: calc(var(--u) * 3); font: 500 calc(var(--u) * 8.5) 'SC Label'; letter-spacing: .08em; color: var(--mu); text-transform: uppercase; }
+.phases .on small { color: var(--or); }
+
+/* ── 06 · the tool ── */
+.tool { width: 560px; max-width: 100%; border: 1.5px dashed #3a4a62; border-radius: 16px; padding: 16px 18px 18px; background: #0a111c; }
+.tool .stamp { display: inline-block; font: 500 11.5px 'SC Label'; letter-spacing: .2em; text-transform: uppercase; color: #04080f; background: var(--steel); border-radius: 5px; padding: 3px 8px; margin-bottom: 12px; }
+.tool .url { font: 12px ui-monospace, Menlo, monospace; color: #7d8aa0; margin-bottom: 12px; }
+.tool table { width: 100%; border-collapse: collapse; font: 13.5px/1.35 ui-monospace, Menlo, monospace; color: #d5dbe4; }
+.tool td { padding: 8px 6px; border-bottom: 1px solid #1d2a3c; vertical-align: middle; }
+.tool td:first-child { color: #a9b4c4; width: 44%; }
+.tool td.v b { color: #fff; font-weight: 600; }
+.tool tr.focus td { background: #fa81270f; } .tool tr.focus td:first-child { color: var(--ink); box-shadow: inset 3px 0 0 var(--or); }
+.tool .bar { height: 8px; border-radius: 4px; background: #1d2a3c; overflow: hidden; width: 120px; display: inline-block; vertical-align: middle; margin-left: 8px; }
+.tool .bar i { display: block; height: 100%; background: var(--or); border-radius: 4px; }
+.tool .bar i.g { background: var(--unc); }
+.tool .delta { font-size: 12px; color: var(--unc); margin-left: 6px; }
+.tool .foot { margin-top: 12px; font: 12.5px/1.45 system-ui; color: #8d93a0; }
+.tool .foot b { color: var(--mu); }
+
+/* ── 07 · daytime home ── */
+.ud { left: calc(var(--u) * 51); top: calc(var(--u) * 528); width: calc(var(--u) * 300); border-radius: calc(var(--u) * 16); background: rgba(8, 15, 27, .96); display: flex; align-items: center; gap: calc(var(--u) * 12); padding: calc(var(--u) * 8) calc(var(--u) * 8) calc(var(--u) * 8) calc(var(--u) * 16); box-shadow: 0 calc(var(--u) * 6) calc(var(--u) * 18) #08101b33; }
+.ud .moon { flex: none; width: calc(var(--u) * 22); height: calc(var(--u) * 22); fill: none; stroke: var(--blue); stroke-width: 1.8; stroke-linejoin: round; }
+.ud .w { flex: 1; min-width: 0; }
+.ud b { display: block; font: 400 calc(var(--u) * 17)/1.1 'SC Display'; font-weight: 400; white-space: nowrap; }
+.ud span { display: block; font: 500 calc(var(--u) * 12)/1.2 'SC Label'; letter-spacing: .08em; text-transform: uppercase; color: #c3c9d1; }
+.ud .bell { flex: none; width: calc(var(--u) * 44); height: calc(var(--u) * 44); border-radius: calc(var(--u) * 12); background: var(--blue); color: #0b1018; display: grid; place-items: center; }
+.ud .bell .ico { width: calc(var(--u) * 19); height: calc(var(--u) * 19); }
+.nowlbl { left: 0; right: 0; top: calc(var(--u) * 604); text-align: center; font: 500 calc(var(--u) * 12) 'SC Label'; letter-spacing: .2em; text-transform: uppercase; color: #142236; text-shadow: 0 0 calc(var(--u) * 6) #ffffffaa; }
+.chips { left: calc(var(--u) * 16); right: calc(var(--u) * 16); top: calc(var(--u) * 626); display: flex; justify-content: center; gap: calc(var(--u) * 8); }
+.chip7 { position: relative; display: flex; align-items: center; gap: calc(var(--u) * 7); height: calc(var(--u) * 44); padding: 0 calc(var(--u) * 12) 0 calc(var(--u) * 5); border-radius: 99px; background: rgba(8, 15, 27, .92); box-shadow: inset 0 0 0 1px #fff2b333; }
+.chip7 img { width: calc(var(--u) * 34); height: calc(var(--u) * 34); border-radius: 50%; object-fit: cover; }
+.chip7 .t { font: 500 calc(var(--u) * 14)/1.05 'SC Label'; letter-spacing: .04em; color: var(--ink); white-space: nowrap; }
+.chip7 .t small { display: block; font-size: calc(var(--u) * 10); letter-spacing: .14em; text-transform: uppercase; color: var(--mu); }
+.chip7.go { animation: chipGo 5s infinite; }
+@keyframes chipGo { 0%, 55% { box-shadow: inset 0 0 0 1px #fff2b333; } 60%, 90% { box-shadow: inset 0 0 0 calc(var(--u) * 1.5) var(--or), 0 0 calc(var(--u) * 14) #fa812766; } 100% { box-shadow: inset 0 0 0 1px #fff2b333; } }
+.chips .tap { left: calc(var(--u) * 140); top: calc(var(--u) * 5); animation: tapping 5s infinite; }
+.plan7 { left: 0; right: 0; top: calc(var(--u) * 690); text-align: center; }
+.plan7 span { display: inline-block; padding: calc(var(--u) * 7) calc(var(--u) * 14); border-radius: 99px; background: #ffffff8c; font: 500 calc(var(--u) * 13)/1 'SC Label'; letter-spacing: .18em; text-transform: uppercase; color: #142236; }
+.aim-arrow { left: calc(var(--u) * 40); top: calc(var(--u) * 418); width: calc(var(--u) * 34); height: calc(var(--u) * 34); border-radius: 50%; background: var(--or); box-shadow: 0 0 0 calc(var(--u) * 6) #fa812744; display: grid; place-items: center; opacity: 0; animation: arrowIn 5s infinite; }
+.aim-arrow::before { content: ''; width: 0; height: 0; border: calc(var(--u) * 7) solid transparent; border-right: calc(var(--u) * 11) solid #0b1018; margin-left: calc(var(--u) * -8); }
+@keyframes arrowIn { 0%, 60% { opacity: 0; transform: translateX(calc(var(--u) * 20)); } 66%, 92% { opacity: 1; transform: none; } 100% { opacity: 0; } }
+.steer { left: calc(var(--u) * 101); top: calc(var(--u) * 340); width: calc(var(--u) * 200); text-align: center; border-radius: calc(var(--u) * 12); background: rgba(8, 15, 27, .9); padding: calc(var(--u) * 6) calc(var(--u) * 10); opacity: 0; animation: arrowIn 5s infinite; }
+.steer small { display: block; font: 500 calc(var(--u) * 10.5) 'SC Label'; letter-spacing: .16em; color: var(--gold); text-transform: uppercase; }
+.steer span { font: 500 calc(var(--u) * 13) 'SC Label'; letter-spacing: .06em; color: var(--ink); }
+/* B: one compact card */
+.dc { left: calc(var(--u) * 41); top: calc(var(--u) * 528); width: calc(var(--u) * 320); border-radius: calc(var(--u) * 18); background: rgba(8, 15, 27, .96); padding: calc(var(--u) * 12) calc(var(--u) * 14); box-shadow: 0 calc(var(--u) * 8) calc(var(--u) * 24) #08101b44; }
+.dc .hd { display: flex; align-items: center; gap: calc(var(--u) * 10); padding-bottom: calc(var(--u) * 10); border-bottom: 1px solid #ffffff14; }
+.dc .hd .moon { flex: none; width: calc(var(--u) * 20); height: calc(var(--u) * 20); fill: none; stroke: var(--blue); stroke-width: 1.8; }
+.dc .hd b { flex: 1; font: 400 calc(var(--u) * 16)/1.1 'SC Display'; font-weight: 400; }
+.dc .hd span { font: 500 calc(var(--u) * 11.5) 'SC Label'; letter-spacing: .12em; text-transform: uppercase; color: #c3c9d1; }
+.dc .lb { margin: calc(var(--u) * 10) 0 calc(var(--u) * 8); font: 500 calc(var(--u) * 11) 'SC Label'; letter-spacing: .18em; text-transform: uppercase; color: var(--or); }
+.dc .tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: calc(var(--u) * 8); }
+.dc .tile { position: relative; text-align: center; border-radius: calc(var(--u) * 10); padding: calc(var(--u) * 6) calc(var(--u) * 4) calc(var(--u) * 7); background: #ffffff08; box-shadow: inset 0 0 0 1px #fff2b322; }
+.dc .tile img { width: calc(var(--u) * 46); height: calc(var(--u) * 46); border-radius: 50%; object-fit: cover; display: block; margin: 0 auto calc(var(--u) * 5); }
+.dc .tile b { display: block; font: 500 calc(var(--u) * 13.5)/1 'SC Label'; letter-spacing: .04em; font-weight: 500; }
+.dc .tile small { display: block; margin-top: calc(var(--u) * 2); font: 500 calc(var(--u) * 10) 'SC Label'; letter-spacing: .12em; text-transform: uppercase; color: var(--mu); }
+.dc .tile .new { position: absolute; top: calc(var(--u) * 4); right: calc(var(--u) * 4); font: 600 calc(var(--u) * 8) 'SC Label'; letter-spacing: .12em; color: #0b1018; background: var(--or); border-radius: calc(var(--u) * 3); padding: calc(var(--u) * 2) calc(var(--u) * 4); }
+.dc .tile.owned { opacity: .7; }
+.dc .ft { display: flex; justify-content: space-between; align-items: center; margin-top: calc(var(--u) * 10); padding-top: calc(var(--u) * 10); border-top: 1px solid #ffffff14; }
+.dc .ft span { font: 500 calc(var(--u) * 13) 'SC Label'; letter-spacing: .16em; text-transform: uppercase; color: var(--ink); }
+.dc .ft .bell { display: flex; align-items: center; gap: calc(var(--u) * 6); height: calc(var(--u) * 34); padding: 0 calc(var(--u) * 12); border-radius: calc(var(--u) * 10); background: var(--blue); color: #0b1018; font: 500 calc(var(--u) * 12) 'SC Label'; letter-spacing: .12em; text-transform: uppercase; }
+.dc .tile.go { animation: chipGo 5s infinite; }
+.dc .tap { left: calc(var(--u) * 50); top: calc(var(--u) * 70); animation: tapping 5s infinite; }
+.cover-bar { left: calc(var(--u) * 40); top: calc(var(--u) * 524); width: calc(var(--u) * 322); height: calc(var(--u) * 74); }
+
+.top { max-width: 1180px; margin-top: 30px; border: 1px solid #6b5a2c; border-radius: 22px; padding: 22px 24px; background: radial-gradient(ellipse at 20% 0%, #1d1a10, #0b1220 60%); }
+.top h2 { font: 400 24px 'SC Display'; margin: 0 0 4px; } .top > p { color: var(--mu); margin: 0 0 16px; }
+.top ol { margin: 0; padding: 0; list-style: none; counter-reset: t; display: grid; gap: 12px; }
+.top li { counter-increment: t; display: grid; grid-template-columns: 44px 1fr; gap: 6px; align-items: baseline; }
+.top li::before { content: counter(t); font: 400 26px 'SC Display'; color: var(--gold); }
+.top li b { font: 400 17px 'SC Display'; font-weight: 400; } .top li span { color: var(--mu); display: block; font-size: 14px; }
+.note { color: #8d93a0; font-size: 13px; max-width: 1100px; margin-top: 26px; }
+.note b { color: var(--mu); }
+@media (prefers-reduced-motion: reduce) { .ph *, .ph *::before { animation-duration: 0s !important; animation-iteration-count: 1 !important; } }
+@media (max-width: 420px) { body { padding: 20px 12px 60px; } .cell { width: 100%; } .tool td:first-child { width: 50%; } .tool .bar { display: none; } }
+</style></head><body>
+
+<h1>The first night</h1>
+<p class="lead">Seven ideas for the first few minutes: a hook before the tour starts, a tour that ends with a plan, and a daytime home that says what to do now. Each mock-up sits on a real capture of today’s app (Toronto, Oct 25), with the proposed part drawn on top.</p>
+<p class="how"><b>How to read it:</b> grey <b>Today</b> captions are the app as it is. Orange captions are the proposal. Numbers and times are examples. <b>Effort:</b> <span style="color:var(--unc)">small</span> is an afternoon, <span style="color:var(--gold)">medium</span> a day or two, <span style="color:var(--or)">large</span> more. Animations are light and stop under Reduce Motion.</p>
+
+<!-- ═══════════════ HOOK ═══════════════ -->
+<div class="sec"><b>Hook in the first minute</b> · before the tour, and the moment it ends</div>
+
+<div class="idea">
+<h2><span class="no">01</span>A live number on the welcome card</h2>
+<p>The card says the sky is yours to collect, but it doesn’t prove there’s anything up there. One live count does: <b>“312 satellites are above you right now.”</b> It works by day too, because it counts everything above your horizon, sunlit or not, so it’s never zero. It ticks up and down a little as things rise and set. Before location is allowed it uses the time-zone city and says so.</p>
+<div class="tags"><span class="tag s">Small</span><span class="tag f">Copy · motion</span></div>
+<div class="row">
+  <div class="cell"><div class="ph" style="background-image:url(first-night/welcome-front.webp)"></div>
+    <p class="cap today"><b>Today</b></p><p class="cn">The pictures say how. Nothing says what’s up there now.</p></div>
+  <div class="cell"><div class="ph" style="background-image:url(first-night/welcome-front.webp)">
+    <div class="ab n1a"><span class="live"></span><span class="sat-n"></span> above you now</div></div>
+    <p class="cap"><b>A · In the top bar</b></p><p class="cn">Replaces “Your first mission”. Quiet, always in view, the green dot pulses. Easy to miss, which may be fine.</p></div>
+  <div class="cell"><div class="ph" style="background-image:url(first-night/welcome-front.webp)">
+    <div class="ab n1b"><span class="big sat-n"></span><span class="t">satellites are above you right now<small><span class="live"></span>Over Toronto · live</small></span></div></div>
+    <p class="cap"><b>B · A big number above the footer</b></p><p class="cn">Uses the empty space under the text. The number is the first thing you read after the title. <b>My pick.</b></p></div>
+</div>
+</div>
+
+<div class="idea">
+<h2><span class="no">02</span>Day one ends with an appointment</h2>
+<p>Most first catches happen by day, on the Sun or the Moon. Today the close page then shows a whole timeline. Proposed: it leads with <b>one concrete plan</b>: “The Space Station passes over you tonight at 7:52 PM. We’ll tell you.” The big button sets the reminder (ISS reminders are always free), and the bell swings when it’s on. The rest of the timeline sits smaller underneath. No ISS tonight? Use tonight’s headliner.</p>
+<div class="tags"><span class="tag s">Small</span><span class="tag f">Copy · layout</span></div>
+<div class="row">
+  <div class="cell"><div class="ph"><div class="od"><span class="x">✕</span>
+    <span class="ey">You’re set</span><h3>Tonight<br>looks good.</h3><span class="sub">Dark from 6:43 PM · clear until 2 AM</span>
+    <div class="tl">
+      <div class="it"><b>6:43</b><span>It’s dark: go now</span></div>
+      <div class="it hot"><b>7:52</b><span><em>Space Station</em> · Rare · new to you</span></div>
+      <div class="it"><b>8:40</b><span>Busiest · 41 objects up at once</span></div>
+      <div class="it"><b>7:08</b><span>Dawn: the sky closes</span></div></div>
+    <div class="push"></div><div class="cta o"><span>Remind me</span><span>→</span></div><div class="cta ghost"><span>Explore the sky</span><span>→</span></div></div></div>
+    <p class="cap today"><b>Today</b></p><p class="cn">Good information, but it reads like a timetable. The best pass is one row of four.</p></div>
+  <div class="cell"><div class="ph"><div class="od"><span class="x">✕</span>
+    <span class="ey">Your first card · the Sun</span><h3 class="mixed">The <em>Space Station</em> passes over you tonight at 7:52 PM.</h3><span class="sub">We’ll tell you when to look up.</span>
+    <div class="appt"><div class="pic"><svg viewBox="0 0 70 70"><circle cx="35" cy="35" r="32" fill="none" stroke="#2a3d58" stroke-width="3"/><circle cx="35" cy="35" r="32" fill="none" stroke="#4da3ff" stroke-width="3" stroke-dasharray="150 201" transform="rotate(-90 35 35)" stroke-linecap="round"/></svg><img src="../assets/art/cards/sm/iss.webp" alt=""></div>
+      <div class="w"><div class="k">◆ Rare · in 3 h 12 min</div><div class="n">Space Station</div><div class="d">Rises in the west, climbs high in the south</div><span class="free">Reminders for it are free</span></div></div>
+    <div class="tl small">
+      <div class="it"><b>6:43</b><span>Dark</span></div>
+      <div class="it"><b>8:40</b><span>Busiest · 41 up at once</span></div></div>
+    <div class="push"></div>
+    <div class="cta o bellcta"><span class="a"><span>Tell me at 7:42 PM</span><span class="ico" data-ico="bell"></span></span><span class="b"><span>✓ We’ll tell you at 7:42</span><span class="ico" data-ico="bell"></span></span><span class="tap"></span></div>
+    <div class="cta ghost"><span>Explore the sky</span><span>→</span></div></div></div>
+    <p class="cap"><b>Proposed</b></p><p class="cn">One headline, one picture, one button. The ring around the picture is the countdown, like the widget.</p></div>
+</div>
+</div>
+
+<div class="idea">
+<h2><span class="no">03</span>If something big is close, start with it</h2>
+<p>When the ISS or a Rare-or-better pass rises within <b>15 minutes</b>, the tour’s first assignment is that, not the Sun or Moon. The gold card counts down with the object in the circle. Waiting six minutes with nothing to do is the risk, so it offers a <b>fallback</b>: catch the Moon now, and a small pill keeps counting at the top. A minute before it rises, the arrow switches back to it.</p>
+<div class="tags"><span class="tag m">Medium</span><span class="tag f">Tour logic · motion</span></div>
+<div class="row">
+  <div class="cell"><div class="ph" style="background-image:url(first-night/night-clean.webp)">
+    <div class="tc gold waiting"><div class="in"><div class="bar"><span>Space Collector</span><span class="tier">◆ Your first card</span></div>
+      <h3>The Space Station</h3><div class="sub"><span>Rises in the NW</span><span class="hot">in <span class="clock"></span></span></div>
+      <div class="art"><span class="dir">Look <b>northwest</b> · low</span>
+        <div class="cd"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="none" stroke="#2a3a52" stroke-width="5"/><circle class="ring" cx="50" cy="50" r="46"/><path d="M50 -1v8 M50 93v8 M-1 50h8 M93 50h8" stroke="#fa8127" stroke-width="3"/></svg><img src="../assets/art/cards/sm/iss.webp" alt=""></div></div>
+      <p>It’s the brightest thing that passes tonight, and it’s nearly here. While you wait, the Moon is up now.</p>
+      <div class="acts"><span class="no">Catch the Moon</span><span class="yes">Show me where</span></div></div></div></div>
+    <p class="cap"><b>The assignment</b></p><p class="cn">Same gold card as today, with a live countdown (5:59, 5:58…) and the ring emptying.</p></div>
+  <div class="cell"><div class="ph" style="background-image:url(first-night/night-clean.webp)">
+    <div class="ab wait-pill"><img src="../assets/art/cards/sm/iss.webp" alt=""><span class="t"><small>Your first card</small>Space Station · NW</span><span class="clock"></span></div>
+    <div class="ab ret-or"></div><div class="ab moon-in"></div>
+    <div class="ab tk"><div class="k"><span>● Common</span><span>384,000 km</span></div><div class="n">The Moon</div><div class="c">Collect</div></div>
+    <div class="ab wait-line">Then back to the <b>Space Station</b> at 1:00 left</div></div>
+    <p class="cap"><b>While you wait</b></p><p class="cn">The Moon is in the circle with Collect. The pill under the header keeps the clock. Tap it to aim back.</p></div>
+</div>
+<p class="today"><b>Today:</b> the first target is always the surest catch (Sun, then Moon, then the brightest planet, star or satellite), named “Your first catch · Up right now”.</p>
+</div>
+
+<!-- ═══════════════ TOUR ═══════════════ -->
+<div class="sec"><b>The tour</b> · one lesson, one less wall, and how we’d know</div>
+
+<div class="idea">
+<h2><span class="no">04</span>Teach one thing after the first catch</h2>
+<p>Right after the first card lands, one small panel rises under it and teaches the reason to come back: <b>“Come back on another night and this card levels up.”</b> Bronze, silver, gold light up in turn, with your card ringed where it is now. One “Got it” and it’s gone. The catch: the Sun and Moon don’t level (since Oct 21), so for the Moon the lesson is its phases, and for the Sun it waits for your first satellite.</p>
+<div class="tags"><span class="tag s">Small</span><span class="tag f">Copy · motion</span></div>
+<div class="row">
+  <div class="cell"><div class="ph"><div class="rv-bg"></div><div class="stars"></div>
+    <div class="ab rv-top"><span class="e">NEW CARD<i>+25 XP</i></span><span class="x">✕</span></div>
+    <div class="rc" style="left:calc(var(--u) * 103);top:calc(var(--u) * 110)"><div class="w"><img src="../assets/art/cards/sm/iss.webp" alt=""><span class="chip l">◆ Rare</span><span class="chip r">Icons</span></div>
+      <div class="t">Space Station</div><div class="ty">Crewed space station · 1998</div>
+      <div class="st"><div><small>Height</small>420 km</div><div><small>Speed</small>27,600</div><div><small>Laps</small>15.5</div></div>
+      <div class="ln"></div><div class="ln"></div><div class="ln s"></div><div class="ft"><span>Oct 25, 2026</span><span>Bronze</span></div></div>
+    <div class="ab teach"><div class="k">One more thing</div><div class="h">Come back on another night and this card levels up.</div>
+      <div class="lv"><div><div class="mc bronze"><div class="w"><img src="../assets/art/cards/sm/iss.webp" alt=""></div><i></i><i class="s"></i></div><b>Bronze</b><small>Tonight</small></div>
+        <span class="arrow">›</span><div><div class="mc silver"><div class="w"><img src="../assets/art/cards/sm/iss.webp" alt=""></div><i></i><i class="s"></i></div><b class="s">Silver</b><small>3 nights</small></div>
+        <span class="arrow">›</span><div><div class="mc gold"><div class="w"><img src="../assets/art/cards/sm/iss.webp" alt=""></div><i></i><i class="s"></i></div><b class="g">Gold</b><small>10 nights</small></div></div>
+      <div class="ok">Got it</div></div></div>
+    <p class="cap"><b>A · A satellite</b></p><p class="cn">Silver gets the bright double ring, gold the gold frame and glow, the same edges as the Collection.</p></div>
+  <div class="cell"><div class="ph"><div class="rv-bg"></div><div class="stars"></div>
+    <div class="ab rv-top"><span class="e">NEW CARD<i>+10 XP</i></span><span class="x">✕</span></div>
+    <div class="rc" style="left:calc(var(--u) * 103);top:calc(var(--u) * 110)"><div class="w"><img src="../assets/art/cards/sm/moon.webp" alt=""><span class="chip l" style="color:#c9ccd1">● Common</span><span class="chip r">Wanderers</span></div>
+      <div class="t">The Moon</div><div class="ty">Earth’s moon · waxing gibbous</div>
+      <div class="st"><div><small>Distance</small>384,400</div><div><small>Lit</small>81%</div><div><small>Phases</small>1 / 8</div></div>
+      <div class="ln"></div><div class="ln"></div><div class="ln s"></div><div class="ft"><span>Oct 25, 2026</span><span>Phase stamps</span></div></div>
+    <div class="ab teach"><div class="k">One more thing</div><div class="h">The Moon has eight phases. Catch each one to fill this card.</div>
+      <div class="phases">
+        <div><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="13" fill="#1a2436" stroke="#fff2b3" stroke-width="1.2"/></svg><small>New</small></div>
+        <div><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="13" fill="#1a2436" stroke="#fff2b3" stroke-width="1.2"/><path d="M16 3a13 13 0 0 1 0 26a7 13 0 0 0 0-26z" fill="#fff2b3"/></svg><small>Crescent</small></div>
+        <div><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="13" fill="#1a2436" stroke="#fff2b3" stroke-width="1.2"/><path d="M16 3a13 13 0 0 1 0 26z" fill="#fff2b3"/></svg><small>Quarter</small></div>
+        <div class="on"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="13" fill="#1a2436" stroke="#fff2b3" stroke-width="1.2"/><path d="M16 3a13 13 0 0 1 0 26a7 13 0 0 1 0-26z" fill="#fff2b3"/></svg><small>Gibbous</small></div>
+        <div><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="13" fill="#fff2b3"/></svg><small>Full</small></div>
+        <div><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="13" fill="#1a2436" stroke="#fff2b3" stroke-width="1.2"/><path d="M16 3a13 13 0 0 0 0 26a7 13 0 0 0 0-26z" fill="#fff2b3"/></svg><small>Gibbous</small></div>
+        <div><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="13" fill="#1a2436" stroke="#fff2b3" stroke-width="1.2"/><path d="M16 3a13 13 0 0 0 0 26z" fill="#fff2b3"/></svg><small>Quarter</small></div>
+        <div><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="13" fill="#1a2436" stroke="#fff2b3" stroke-width="1.2"/><path d="M16 3a13 13 0 0 0 0 26a7 13 0 0 1 0-26z" fill="#fff2b3"/></svg><small>Crescent</small></div>
+      </div>
+      <div class="ok">Got it</div></div></div>
+    <p class="cap"><b>B · The Moon</b></p><p class="cn">Same panel, about its phase stamps. Tonight’s phase glows, the rest light in a wave.</p></div>
+</div>
+</div>
+
+<div class="idea">
+<h2><span class="no">05</span>Location feels optional</h2>
+<p>“Use my location / Not now” reads like a permission wall, and “Not now” sounds like you’ll miss something. Proposed: <b>the second button is a real choice</b>, a place picked from your phone’s time zone (we already do this). You can start right away either way, and change it in Settings later.</p>
+<div class="tags"><span class="tag s">Small</span><span class="tag f">Copy</span></div>
+<div class="row">
+  <div class="cell"><div class="ph" style="background-image:url(first-night/tour-loc.webp)"></div>
+    <p class="cap today"><b>Today</b></p><p class="cn">Two buttons, side by side, and the second one is a no.</p></div>
+  <div class="cell"><div class="ph" style="background-image:url(first-night/tour-loc.webp)">
+    <div class="ab loc5"><p>Share your location so the sky on screen matches yours. Or start with Toronto, picked from your phone’s time zone.</p>
+      <div class="b yes">Use my location</div><div class="b alt">Use Toronto <small>· from your time zone</small></div><span class="tap"></span></div></div>
+    <p class="cap"><b>Proposed</b></p><p class="cn">Stacked, full width, the place named in the button. Both go straight on to the motion card.</p></div>
+</div>
+</div>
+
+<div class="idea">
+<h2><span class="no">06</span>How we’d judge the tour</h2>
+<p>Not a player screen. This is the <b>/stats</b> dashboard we already have (anonymous usage, test builds left out), with the rows that matter for this board. Change one thing at a time, then compare two weeks before with two weeks after. The tour count already exists (<code>tour</code> done / skip); the others are small additions.</p>
+<div class="tags"><span class="tag s">Small</span><span class="tag f">The tool</span></div>
+<div class="tool"><span class="stamp">The tool · not in the app</span>
+  <div class="url">space-collector-push … /stats · last 14 days · real builds only</div>
+  <table>
+    <tr class="focus"><td>Finished the tour</td><td class="v">done <b>62</b> · skip <b>18</b><span class="bar"><i style="width:78%"></i></span> <b>78%</b></td></tr>
+    <tr><td>Location: own / time zone</td><td class="v"><b>51</b> · <b>23</b> <span class="delta">new row for 05</span></td></tr>
+    <tr><td>First card on night one</td><td class="v"><b>71%</b><span class="bar"><i class="g" style="width:71%"></i></span></td></tr>
+    <tr><td>Reminder set on day one</td><td class="v"><b>29%</b><span class="bar"><i style="width:29%"></i></span> <span class="delta">new row for 02</span></td></tr>
+    <tr><td>Came back for night 2</td><td class="v"><b>34%</b><span class="bar"><i class="g" style="width:34%"></i></span></td></tr>
+    <tr><td>Rare-first tour, caught it</td><td class="v"><b>9</b> of <b>14</b> <span class="delta">new row for 03</span></td></tr>
+  </table>
+  <div class="foot"><b>Read it this way:</b> the tour is working if “Finished” holds and “Came back for night 2” goes up. Numbers here are made up for the mock.</div></div>
+</div>
+
+<!-- ═══════════════ DAY ═══════════════ -->
+<div class="sec"><b>Clarity by day</b> · what to do when it isn’t dark yet</div>
+
+<div class="idea">
+<h2><span class="no">07</span>A proper daytime home</h2>
+<p>By day the space under the circle only counts down to dark. Proposed: it also says <b>what you can catch right now</b> (the Sun, the Moon, Venus when it’s far enough from the Sun) as chips you tap to be steered there, and gives a way into <b>Tonight’s plan</b>. The times are from the capture day, so dark is 6:43 PM.</p>
+<div class="tags"><span class="tag m">Medium</span><span class="tag f">Layout · motion</span></div>
+<div class="row">
+  <div class="cell"><div class="ph" style="background-image:url(first-night/day-today.webp)"></div>
+    <p class="cap today"><b>Today</b></p><p class="cn">A slim countdown and a bell. Nothing to do until dark.</p></div>
+  <div class="cell"><div class="ph" style="background-image:url(first-night/day-clean.webp)">
+    <div class="ab steer"><small>The Moon</small><span>← Turn left · low in the east</span></div><div class="ab aim-arrow"></div>
+    <div class="ab ud"><svg class="moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg><div class="w"><b>Dark at 6:43 PM</b><span>In 2 h 2 min</span></div><span class="bell"><span class="ico" data-ico="bell"></span></span></div>
+    <div class="ab nowlbl">Right now you can catch</div>
+    <div class="ab chips"><span class="chip7"><img src="../assets/art/cards/sm/sun.webp" alt=""><span class="t">Sun<small>✓ yours</small></span></span><span class="chip7 go"><img src="../assets/art/cards/sm/moon.webp" alt=""><span class="t">Moon<small>New</small></span></span><span class="chip7"><img src="../assets/art/cards/sm/planet-venus.webp" alt=""><span class="t">Venus<small>New</small></span></span><span class="tap"></span></div>
+    <div class="ab plan7"><span>Tonight’s plan ›</span></div></div>
+    <p class="cap"><b>A · Chips under the circle</b></p><p class="cn">Tap Moon: the chip lights, the arrow and steering pill appear. Stays light on the sky.</p></div>
+  <div class="cell"><div class="ph" style="background-image:url(first-night/day-clean.webp)">
+    <div class="ab dc"><div class="hd"><svg class="moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg><b>Dark at 6:43 PM</b><span>in 2 h 2 min</span></div>
+      <div class="lb">Catch now</div>
+      <div class="tiles"><div class="tile owned"><img src="../assets/art/cards/sm/sun.webp" alt=""><b>Sun</b><small>✓ Yours</small></div><div class="tile go"><span class="new">NEW</span><img src="../assets/art/cards/sm/moon.webp" alt=""><b>Moon</b><small>Low · E</small></div><div class="tile"><span class="new">NEW</span><img src="../assets/art/cards/sm/planet-venus.webp" alt=""><b>Venus</b><small>Low · SW</small></div><span class="tap" style="left:calc(var(--u) * 143);top:calc(var(--u) * 84)"></span></div>
+      <div class="ft"><span>Tonight’s plan ›</span><span class="bell"><span class="ico" data-ico="bell"></span>Remind me</span></div></div></div>
+    <p class="cap"><b>B · One compact card</b></p><p class="cn">Everything in one dark card: tidier and easier to read on a bright sky, but it covers more of it. <b>My pick</b> for a first-time player.</p></div>
+</div>
+</div>
+
+<div class="top"><h2>If I had to order them</h2><p>Small ones first, then the one with real logic in it.</p>
+<ol>
+<li><div><b>01 · A live number (B)</b><span>Cheapest way to make “every light is a card” feel true before anyone goes outside.</span></div></li>
+<li><div><b>02 · An appointment</b><span>Turns a daytime first catch into a reason to open the app tonight. Measurable with one new row.</span></div></li>
+<li><div><b>07 · A daytime home (B)</b><span>Most first opens happen by day; this gives them something to do.</span></div></li>
+<li><div><b>05 · Location optional</b><span>A copy change. Watch the tour finish rate.</span></div></li>
+<li><div><b>04, then 03</b><span>04 is small once the Sun/Moon cases are decided. 03 needs the tour to wait and switch targets, so it’s the riskiest.</span></div></li>
+</ol></div>
+
+<p class="note"><b>Open questions:</b> 01 needs a fast count of everything above the horizon (the catalogue sweep covers it, but before location it’s the time-zone city). 02 assumes an ISS pass tonight; late October in Toronto has none in the evening, so it would name the headliner instead. 04: natural cards have no levels, so a Sun first catch has nothing to level; I’d hold the lesson for the first satellite. 07: Venus only shows by day 30° or more from the Sun, and the Moon by day needs 15% lit; the chips list only what really qualifies. 03 and the B options cover more of the sky than today.</p>
+</body></html>

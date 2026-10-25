@@ -1,0 +1,488 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Reasons to come back</title>
+<style>
+@font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf'); }
+@font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf'); }
+:root { --ink: #fff2b3; --mu: #bdbea9; --or: #fa8127; --gold: #f2c14e; --steel: #8fb3cf; --line: #1d2a3c; --card: #0e1828; --unc: #5fd08a; --rare: #4aa8ff; --epic: #e46ad6; --leg: #ffc545; --com: #9aa4b1; --red: #ff7f70; --ghost: #b8ffd9; --silver: #d9dee6; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #04080f; color: var(--ink); font: 15px/1.4 system-ui, sans-serif; padding: 26px 20px 80px; }
+h1 { font: 400 28px 'SC Display'; margin: 0 0 4px; } .lead { color: var(--mu); margin: 0 0 8px; max-width: 1100px; }
+.how { color: var(--mu); font-size: 13px; margin: 0 0 26px; max-width: 1100px; }
+.how b { color: var(--ink); }
+.sec { font: 500 14px 'SC Label'; letter-spacing: .26em; text-transform: uppercase; color: var(--mu); border-top: 1px solid var(--line); padding-top: 14px; margin: 40px 0 18px; max-width: 1180px; }
+.sec b { color: var(--ink); font-weight: 500; }
+.row { display: flex; gap: 30px; flex-wrap: wrap; align-items: flex-start; }
+.idea { max-width: 1180px; margin: 0 0 54px; }
+.idea > h2 { font: 400 22px/1.15 'SC Display'; margin: 0 0 6px; display: flex; gap: 10px; align-items: baseline; }
+.idea > h2 .no { font: 500 16px 'SC Label'; color: var(--or); letter-spacing: .1em; min-width: 22px; }
+.idea > p { color: var(--mu); margin: 0 0 8px; font-size: 14px; max-width: 760px; }
+.idea > p b { color: var(--ink); font-weight: 600; }
+.tags { display: flex; gap: 6px; flex-wrap: wrap; margin: 0 0 16px; }
+.tag { font: 500 11.5px 'SC Label'; letter-spacing: .16em; text-transform: uppercase; padding: 3px 8px; border-radius: 6px; border: 1px solid #2c3b52; color: var(--mu); }
+.tag.s { color: var(--unc); border-color: #2c5a40; } .tag.m { color: var(--gold); border-color: #5f4e22; } .tag.l { color: var(--or); border-color: #6a3a18; }
+.tag.f { color: var(--steel); }
+.shot { width: 360px; }
+.shot h3 { font: 500 12px 'SC Label'; letter-spacing: .2em; text-transform: uppercase; color: var(--or); margin: 0 0 8px; }
+.shot h3 span { color: #6f7a87; }
+.shot .cap { font-size: 12.5px; color: #8d93a0; margin: 8px 0 0; }
+.shot .cap b { color: var(--mu); font-weight: 600; }
+.idea > p.facts { font-size: 12.5px; color: #8d93a0; margin: 26px 0 0; max-width: 760px; border-left: 2px solid #2c3b52; padding-left: 10px; }
+.idea > p.facts b { color: var(--mu); font-weight: 600; }
+
+/* the phone (as in slick-ideas) */
+.ph { width: 360px; height: 400px; position: relative; overflow: hidden; border-radius: 30px; border: 1px solid #1a2436; background: radial-gradient(ellipse at 50% 30%, #0f1d31, #070d18 70%); }
+.ph.tall { height: 520px; }
+.ph::before { content: ''; position: absolute; inset: 0; pointer-events: none; background:
+  radial-gradient(1px 1px at 12% 18%, #fff8 50%, transparent), radial-gradient(1px 1px at 72% 12%, #fff9 50%, transparent), radial-gradient(1.4px 1.4px at 44% 36%, #fffa 50%, transparent),
+  radial-gradient(1px 1px at 86% 44%, #fff7 50%, transparent), radial-gradient(1px 1px at 22% 62%, #fff6 50%, transparent), radial-gradient(1.2px 1.2px at 58% 72%, #fff8 50%, transparent),
+  radial-gradient(1px 1px at 92% 82%, #fff6 50%, transparent), radial-gradient(1px 1px at 8% 88%, #fff7 50%, transparent), radial-gradient(1px 1px at 34% 8%, #fff6 50%, transparent); }
+.ph.page::before { opacity: .35; }
+.lbl { font: 500 11px 'SC Label'; letter-spacing: .2em; text-transform: uppercase; color: var(--mu); }
+
+/* the app's shared header */
+.hdr { position: absolute; left: 0; right: 0; top: 0; height: 58px; padding-top: 12px; text-align: center; background: #080f1b; z-index: 5; }
+.hdr b { display: block; font: 400 15px 'SC Display'; letter-spacing: .04em; }
+.hdr small { display: block; font: 500 9.5px 'SC Label'; letter-spacing: .26em; color: var(--mu); margin-top: 2px; }
+.hdr::after { content: ''; position: absolute; left: 14px; right: 14px; bottom: 0; height: 3px; border-top: 1px solid #bcb58566; border-bottom: 1px solid #bcb58566; }
+.tabs { position: absolute; left: 12px; right: 12px; bottom: 10px; height: 40px; border-radius: 12px; background: #080f1b; box-shadow: 0 0 0 1px #fff2b31f; display: grid; grid-template-columns: repeat(3, 1fr); z-index: 5; font: 500 12px/40px 'SC Label'; letter-spacing: .2em; text-align: center; color: #c9cbb6; }
+.tabs span.on { color: var(--or); background: linear-gradient(var(--or), var(--or)) top / 100% 3px no-repeat; }
+.tabs span:first-child.on { border-radius: 12px 0 0 0; } .tabs span:last-child.on { border-radius: 0 12px 0 0; }
+
+/* in-app notice: top banner (css/ui.css "#toasts .ticket", design/notifications-all.html) */
+.nt { --k: #c9cbb6; position: absolute; left: 10px; right: 10px; top: 66px; z-index: 6; display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; gap: 10px; align-items: start; padding: 10px 12px 11px 10px;
+  border-radius: 14px; background: rgba(9, 16, 28, .97); border-top: 3px solid var(--k); box-shadow: 0 10px 24px rgba(0,0,0,.45), inset 0 0 0 1px rgba(255,255,255,.05); }
+.nt.k-or { --k: var(--or); } .nt.k-gold { --k: #f1c04e; } .nt.k-steel { --k: var(--steel); } .nt.k-ghost { --k: var(--ghost); } .nt.k-silver { --k: var(--silver); }
+.nt .ic { width: 34px; height: 34px; border-radius: 9px; display: grid; place-items: center; color: var(--k); background: color-mix(in srgb, var(--k) 15%, transparent); overflow: hidden; }
+.nt .ic img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.nt .ic.round { border-radius: 50%; box-shadow: 0 0 0 1.5px var(--k); }
+.nt .ic svg { width: 19px; height: 19px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.nt .eb { font: 500 10.5px/1.25 'SC Label'; letter-spacing: .18em; text-transform: uppercase; color: var(--k); }
+.nt .tt { margin-top: 2px; font: 500 16.5px/1.12 'SC Label'; letter-spacing: .02em; color: var(--ink); }
+.nt .dt { margin-top: 3px; font: 500 13px/1.28 'SC Label'; letter-spacing: .03em; color: #aab6c3; }
+.nt .dt .go { color: var(--k); white-space: nowrap; }
+.nt .x { font: 500 17px 'SC Label'; color: #7f8fa1; margin: -3px -2px 0 0; }
+.nt .xp { align-self: center; font: 400 16px 'SC Display'; color: var(--k); white-space: nowrap; } .nt .xp small { font: 500 10px 'SC Label'; letter-spacing: .12em; color: #aab6c3; margin-left: 2px; }
+
+/* iOS lock screen */
+.lock { background: radial-gradient(140% 80% at 50% 110%, #c06a4c 0%, #5b3d5c 32%, #1c2546 62%, #0a1024 100%); }
+.lock.cool { background: radial-gradient(140% 80% at 50% 110%, #2d5f8a 0%, #24395f 38%, #121b38 66%, #070b18 100%); }
+.lock::before { display: none; }
+.lk-date { position: absolute; top: 34px; left: 0; right: 0; text-align: center; color: #fffd; font: 600 15px -apple-system, system-ui, sans-serif; }
+.lk-time { position: absolute; top: 50px; left: 0; right: 0; text-align: center; color: #fffe; font: 700 74px/1 -apple-system, 'SF Pro Rounded', system-ui, sans-serif; letter-spacing: -2px; }
+.ios { position: absolute; left: 10px; right: 10px; padding: 11px 13px; border-radius: 20px; background: rgba(45, 45, 66, .5); -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px); color: #fff;
+  display: grid; grid-template-columns: 36px 1fr; gap: 10px; font: 14px/1.28 -apple-system, system-ui, sans-serif; }
+.ios i { width: 36px; height: 36px; border-radius: 9px; background: #080f1b url('../icons/icon-180.png') center / cover; align-self: start; margin-top: 1px; }
+.ios .h { display: flex; justify-content: space-between; gap: 8px; } .ios .h b { font-weight: 600; } .ios .h span { color: #ffffff8c; font-size: 12.5px; white-space: nowrap; }
+.ios .bd { color: #ffffffe0; }
+.ios.under { transform: scale(.94); opacity: .55; z-index: 0; }
+.lk-hint { position: absolute; bottom: 12px; left: 0; right: 0; text-align: center; font: 12px -apple-system, system-ui, sans-serif; color: #ffffff80; }
+
+/* pages (Tonight, Settings) */
+.pg { position: absolute; left: 0; right: 0; top: 58px; bottom: 58px; padding: 14px 14px 0; overflow: hidden; }
+.eyeb { font: 500 11px 'SC Label'; letter-spacing: .22em; text-transform: uppercase; color: var(--mu); margin: 0 0 8px; display: flex; justify-content: space-between; }
+.eyeb em { font-style: normal; color: var(--or); }
+.rw { display: grid; grid-template-columns: 52px 42px 1fr auto; gap: 9px; align-items: center; padding: 8px 10px; border-radius: 12px; background: #0e1828; border: 1px solid #1c2a40; margin-bottom: 8px; }
+.rw .t { font: 400 14px/1.05 'SC Display'; } .rw .t small { display: block; font: 500 10.5px 'SC Label'; letter-spacing: .1em; color: var(--mu); margin-top: 3px; }
+.rw .a { width: 42px; height: 42px; border-radius: 50%; overflow: hidden; background: #0b1626; box-shadow: 0 0 0 1.5px #ffffff26; }
+.rw .a img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.rw .n { font: 500 15px/1.12 'SC Label'; letter-spacing: .02em; min-width: 0; } .rw .n small { display: block; font-size: 12px; color: #aab6c3; letter-spacing: .04em; margin-top: 1px; }
+.rw .g { font: 500 10.5px 'SC Label'; letter-spacing: .14em; text-transform: uppercase; display: block; }
+.rw .btns { display: flex; gap: 6px; color: var(--mu); } .rw .btns svg { width: 19px; height: 19px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.rw.hi { border-color: #5d6878; background: linear-gradient(100deg, #18243a, #0e1828 60%); }
+.rw.hi .a { box-shadow: 0 0 0 2px var(--silver), 0 0 12px #d9dee666; }
+.pips { display: inline-flex; gap: 3px; vertical-align: 1px; margin-right: 5px; } .pips i { width: 7px; height: 7px; border-radius: 50%; border: 1px solid var(--silver); } .pips i.on { background: var(--silver); }
+.chipx { display: inline-block; font: 500 10.5px 'SC Label'; letter-spacing: .14em; text-transform: uppercase; padding: 2px 6px; border-radius: 5px; color: #0b1018; background: var(--silver); margin-top: 3px; }
+.box { border: 1px solid #2c3b52; border-radius: 16px; background: #0b1424; padding: 12px; margin-bottom: 10px; position: relative; }
+.box.gold { border-color: #6b5a2c; background: radial-gradient(ellipse at 15% 0%, #1d1a10, #0b1424 60%); }
+.box h4 { font: 400 17px/1.1 'SC Display'; margin: 2px 0 4px; }
+.box p { margin: 0; font: 500 13px/1.3 'SC Label'; letter-spacing: .03em; color: #aab6c3; }
+.btn { display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 14px; border-radius: 10px; font: 500 13px 'SC Label'; letter-spacing: .14em; text-transform: uppercase; background: var(--or); color: #1a0f05; }
+.btn.o { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1px #bcb58588; }
+.btn svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* the sky */
+.trees { position: absolute; left: 0; right: 0; bottom: 0; height: 70px; z-index: 1; }
+.ret { position: absolute; left: 100px; top: 96px; width: 160px; height: 160px; z-index: 2; --rc: #e9dfae; overflow: visible; }
+.ret.or { --rc: var(--or); } .ret.gh { --rc: var(--ghost); }
+.tk { --k: var(--or); position: absolute; left: 22px; right: 22px; top: 268px; z-index: 4; display: grid; grid-template-columns: 44px 1fr; gap: 10px; align-items: center; padding: 9px 11px; border-radius: 14px; background: rgba(9,16,28,.94); border-top: 3px solid var(--k); box-shadow: 0 10px 24px #0008; }
+.tk img.mi { width: 44px; height: 66px; object-fit: cover; object-position: top; border-radius: 5px; }
+.tk .eb { font: 500 10.5px 'SC Label'; letter-spacing: .18em; text-transform: uppercase; color: var(--k); display: flex; justify-content: space-between; }
+.tk .eb span { color: #aab6c3; letter-spacing: .08em; }
+.tk .nm { font: 400 17px/1.05 'SC Display'; margin: 2px 0 3px; }
+.tk .sb { font: 500 12.5px/1.25 'SC Label'; letter-spacing: .03em; color: #aab6c3; }
+.tk .btn { height: 30px; margin-top: 6px; font-size: 12px; }
+.lab-sky { position: absolute; z-index: 3; font: 500 11px 'SC Label'; letter-spacing: .14em; text-transform: uppercase; color: var(--mu); }
+
+/* idea 1 */
+.rad { position: absolute; left: 14px; top: 70px; width: 70px; height: 70px; border-radius: 50%; border: 1px solid #3a4a5c; opacity: .6; }
+
+/* idea 2: Orion rising */
+.orion { position: absolute; left: 60px; bottom: 26px; width: 300px; opacity: .35; transform: rotate(-24deg); filter: saturate(.8); z-index: 0; mix-blend-mode: screen; -webkit-mask: radial-gradient(closest-side, #000 55%, transparent); mask: radial-gradient(closest-side, #000 55%, transparent); }
+.count7 { display: flex; gap: 6px; margin: 10px 0 8px; } .count7 i { flex: 1; height: 26px; border-radius: 6px; background: #16243a; font: 500 11px/26px 'SC Label'; letter-spacing: .08em; color: #6f7a87; text-align: center; font-style: normal; }
+.count7 i.on { background: #2a2210; color: var(--gold); box-shadow: inset 0 0 0 1px #6b5a2c; } .count7 i.pk { background: var(--gold); color: #1b1405; }
+.streaks { position: absolute; inset: 0; pointer-events: none; }
+.streaks i { position: absolute; width: 70px; height: 1.5px; background: linear-gradient(90deg, transparent, #fff8); transform: rotate(32deg); }
+
+/* idea 3 */
+.week { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin: 10px 0 8px; }
+.cty { border-radius: 10px; background: #0e1828; border: 1px solid #1c2a40; padding: 6px 4px 5px; text-align: center; font: 500 11px/1.15 'SC Label'; letter-spacing: .08em; color: var(--mu); }
+.cty img { width: 46px; height: 46px; border-radius: 50%; object-fit: cover; display: block; margin: 0 auto 4px; opacity: .45; filter: grayscale(.6); }
+.cty.got { border-color: var(--or); color: var(--ink); background: #1d1409; } .cty.got img { opacity: 1; filter: none; box-shadow: 0 0 0 2px var(--or); }
+.cty small { display: block; color: #6f7a87; letter-spacing: .04em; font-size: 10.5px; } .cty.got small { color: var(--or); }
+.wkb { position: absolute; right: 12px; top: 10px; width: 56px; height: 56px; }
+.bar3 { height: 5px; border-radius: 3px; background: #1d2a3c; overflow: hidden; } .bar3 i { display: block; height: 100%; width: 33.3%; background: var(--or); }
+.patch-slot { display: block; } .patch-slot svg { width: 100%; height: 100%; display: block; }
+.earn { position: absolute; left: 0; right: 0; top: 70px; text-align: center; z-index: 3; }
+.earn .patch-slot { width: 170px; height: 170px; margin: 0 auto; filter: drop-shadow(0 10px 30px #fa812744); }
+.earn h4 { font: 400 22px/1.05 'SC Display'; margin: 12px 0 4px; } .earn p { margin: 0 30px; font: 500 14px/1.3 'SC Label'; letter-spacing: .03em; color: #aab6c3; }
+.earn .eb { font: 500 11px 'SC Label'; letter-spacing: .24em; color: var(--or); margin-bottom: 8px; }
+.wall { position: absolute; left: 16px; right: 16px; bottom: 72px; display: flex; justify-content: center; gap: 10px; z-index: 3; }
+.wall .patch-slot { width: 58px; height: 58px; } .wall .patch-slot.lk { opacity: .5; }
+
+/* idea 4: Starlink train */
+.train { position: absolute; inset: 0; z-index: 2; }
+.stamp { position: absolute; z-index: 4; font: 400 17px/1 'SC Display'; letter-spacing: .06em; color: var(--or); border: 3px solid var(--or); border-radius: 8px; padding: 6px 10px 5px; text-align: center; transform: rotate(-8deg); background: #080f1bcc; box-shadow: 0 0 18px #fa812755; }
+.stamp small { display: block; font: 500 10.5px 'SC Label'; letter-spacing: .2em; margin-top: 3px; }
+.cardimg { position: absolute; z-index: 3; border-radius: 12px; box-shadow: 0 18px 40px #000b; }
+
+/* idea 5: ghost */
+.gfog { position: absolute; left: 70px; top: 70px; width: 220px; height: 220px; border-radius: 50%; z-index: 1; background: radial-gradient(closest-side, #b8ffd955, #7fffd41c 55%, transparent); animation: gpulse 3.2s ease-in-out infinite; }
+@keyframes gpulse { 50% { transform: scale(1.08); opacity: .7; } }
+.gsat { position: absolute; left: 165px; top: 162px; width: 30px; height: 30px; z-index: 3; filter: drop-shadow(0 0 6px var(--ghost)) drop-shadow(0 0 14px #7fffd4aa); animation: gdrift 3.2s ease-in-out infinite; }
+@keyframes gdrift { 50% { transform: translate(2px, -3px); opacity: .55; } }
+.ret.gh circle:last-of-type { filter: drop-shadow(0 0 6px var(--ghost)); }
+.boo { position: absolute; left: 0; right: 0; top: 70px; text-align: center; font: 400 30px 'SC Display'; letter-spacing: .3em; color: var(--ghost); text-shadow: 0 0 14px #7fffd4, 0 0 30px #7fffd480; z-index: 3; animation: gflick 3.2s steps(1) infinite; }
+@keyframes gflick { 0%, 60%, 64%, 100% { opacity: 1; } 62% { opacity: .3; } }
+.tease { position: relative; display: grid; grid-template-columns: 56px 1fr; gap: 12px; align-items: center; }
+.tease .sil { width: 56px; height: 84px; border-radius: 8px; background: #0b1626 url('come-back/envisat.webp') center / cover; filter: blur(5px) grayscale(1) brightness(.5); box-shadow: 0 0 0 2px #b8ffd966; }
+.tease .q { position: absolute; left: 0; top: 0; width: 56px; height: 84px; display: grid; place-items: center; font: 400 26px 'SC Display'; color: var(--ghost); text-shadow: 0 0 10px #7fffd4; }
+.box.ghost { border-color: #2c5a4a; background: radial-gradient(ellipse at 10% 0%, #0f2a22, #0b1424 60%); }
+.box.ghost h4 { color: var(--ghost); }
+
+/* idea 6: birthday */
+.set { border: 1px solid #b8c0cc66; border-radius: 12px; overflow: hidden; margin-bottom: 10px; }
+.set .hd { background: #1a1a10; color: var(--gold); font: 500 11px 'SC Label'; letter-spacing: .22em; padding: 6px 12px; display: flex; justify-content: space-between; border-bottom: 1px solid #b8c0cc33; }
+.set .r { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 10px 12px; border-bottom: 1px solid #1d2a3c; font: 500 15px 'SC Label'; letter-spacing: .02em; }
+.set .r:last-child { border: 0; } .set .r small { display: block; color: #aab6c3; font-size: 12px; letter-spacing: .04em; } .set .r .v { color: var(--mu); font-size: 13px; white-space: nowrap; }
+.set .r.hi { background: #1d1409; } .set .r.hi .v { color: var(--or); }
+.sheet { position: absolute; left: 0; right: 0; bottom: 0; z-index: 7; background: #111d30; border-top: 1px solid #2c3b52; border-radius: 22px 22px 0 0; padding: 12px 16px 16px; box-shadow: 0 -20px 40px #0009; }
+.sheet .grab { width: 36px; height: 4px; border-radius: 2px; background: #3a4a62; margin: 0 auto 10px; }
+.sheet h4 { font: 400 18px 'SC Display'; margin: 0 0 3px; } .sheet p { margin: 0 0 10px; font: 500 13px/1.3 'SC Label'; color: #aab6c3; letter-spacing: .03em; }
+.wheel { display: grid; grid-template-columns: 1.4fr 1fr 1.2fr; gap: 6px; height: 104px; position: relative; margin-bottom: 12px; }
+.wheel::before { content: ''; position: absolute; left: 0; right: 0; top: 36px; height: 32px; border-radius: 8px; background: #fa81271c; box-shadow: inset 0 0 0 1px #fa812755; }
+.wheel div { text-align: center; font: 500 15px/32px 'SC Label'; letter-spacing: .06em; color: #55607a; position: relative; padding-top: 4px; }
+.wheel div b { display: block; color: var(--ink); font-weight: 500; font-size: 17px; }
+.bday { position: absolute; left: 0; right: 0; top: 64px; text-align: center; z-index: 3; }
+.bday .eb { font: 500 11px 'SC Label'; letter-spacing: .24em; color: var(--gold); }
+.bday h4 { font: 400 20px/1.1 'SC Display'; margin: 6px 26px 0; }
+.bday .cardimg { position: relative; display: block; width: 150px; margin: 14px auto 0; transform: rotate(-3deg); box-shadow: 0 0 0 2px var(--gold), 0 14px 36px #000c, 0 0 40px #f2c14e33; }
+.ribbon { position: absolute; left: 50%; top: 150px; transform: translateX(-50%) rotate(-3deg); z-index: 4; background: var(--gold); color: #1b1405; font: 400 13px 'SC Display'; letter-spacing: .08em; padding: 5px 12px 4px; border-radius: 4px; white-space: nowrap; box-shadow: 0 6px 14px #0008; }
+.bday p { margin: 10px 30px 0; font: 500 14px/1.3 'SC Label'; letter-spacing: .03em; color: #aab6c3; }
+.bc { position: relative; width: 150px; margin: 0 auto; transform: rotate(-3deg); } .bc .cardimg { transform: none; }
+.nyc { position: absolute; left: 6px; right: 6px; bottom: 6px; height: 16px; border-radius: 0 0 6px 6px; background: #0b1424; font: 500 8.5px/16px 'SC Label'; letter-spacing: .16em; text-transform: uppercase; color: var(--mu); padding-left: 8px; }
+.conf { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
+.conf i { position: absolute; width: 5px; height: 9px; border-radius: 1px; opacity: .8; }
+
+.note { color: #8d93a0; font-size: 13px; max-width: 1100px; margin-top: 26px; }
+.top { max-width: 1180px; margin-top: 48px; border: 1px solid #6b5a2c; border-radius: 22px; padding: 22px 24px; background: radial-gradient(ellipse at 20% 0%, #1d1a10, #0b1220 60%); }
+.top h2 { font: 400 24px 'SC Display'; margin: 0 0 4px; } .top > p { color: var(--mu); margin: 0 0 16px; }
+.top ol { margin: 0; padding: 0; list-style: none; counter-reset: t; display: grid; gap: 12px; }
+.top li { counter-increment: t; display: grid; grid-template-columns: 44px 1fr; gap: 6px; align-items: baseline; }
+.top li::before { content: counter(t); font: 400 26px 'SC Display'; color: var(--gold); }
+.top li b { font: 400 17px 'SC Display'; font-weight: 400; } .top li span { color: var(--mu); display: block; font-size: 14px; }
+@media (prefers-reduced-motion: reduce) { .ph * { animation: none !important; } }
+@media (max-width: 420px) { body { padding: 20px 12px 60px; } .shot { width: 100%; max-width: 360px; } .ph { width: 100%; max-width: 360px; } .ret { left: calc(50% - 80px); } }
+</style></head><body>
+
+<h1>Reasons to come back</h1>
+<p class="lead">Six ideas that give you a reason to open Space Collector on a night you otherwise wouldn’t, and a few small surprises when you do. Each one is mocked the way it would really look: the notice that comes down in the app, the notification on your lock screen, and the row or card it adds to the Tonight page.</p>
+<p class="how"><b>How to read this:</b> the phones are the app’s own pieces (header, top notices, Tonight rows, the circle and its ticket), with real card renders and real art. The words are proposals. <b>Effort:</b> <span style="color:var(--unc)">small</span> is a day or so, <span style="color:var(--gold)">medium</span> a few days, <span style="color:var(--or)">large</span> more. Every notification here would live inside the existing rule of <b>two a day at most, only on a clear night</b>, with its own switch in Settings → Notifications.</p>
+
+<!-- ─────────────── REASONS TO COME BACK ─────────────── -->
+<div class="sec"><b>Reasons to come back</b> · progress you can almost touch, the sky changing with the seasons, a theme for the week</div>
+
+<div class="idea"><h2><span class="no">01</span>Almost there</h2>
+<p>When a card you own is <b>one night from its next level</b> (seen on 2 nights → Silver at 3, or 9 → Gold at 10) and it passes tonight on a clear evening, we say so. It’s the strongest nudge we have: it’s about a card you already care about, and it only takes one catch. Satellites and stages only (the Moon, planets and stars don’t level), fleets use stamps instead.</p>
+<div class="tags"><span class="tag s">Small</span><span class="tag f">Notice · notification · Tonight row</span></div>
+<div class="row">
+
+<div class="shot"><h3>In the app <span>· top notice</span></h3>
+<div class="ph"><div class="hdr"><b>SPACE COLLECTOR</b><small>COLLECT THE NIGHT SKY</small></div>
+  <div class="rad"></div>
+  <div class="nt k-silver"><div class="ic round"><img src="../assets/art/cards/sm/iss.webp" alt=""></div>
+    <div><div class="eb">One night from Silver</div><div class="tt">Space Station passes at 7:52 PM</div><div class="dt">See it tonight and its card turns silver. High in the southwest. <span class="go">Show me ›</span></div></div><div class="x">✕</div></div>
+  <svg class="ret" viewBox="-80 -80 160 160" style="top:150px"><circle r="58" fill="none" stroke="#0008" stroke-width="7"/><circle r="58" fill="none" stroke="var(--rc)" stroke-width="2"/><path d="M0 -72v12M0 60v12M-72 0h12M60 0h12" stroke="var(--rc)" stroke-width="2"/></svg>
+  <svg class="trees" viewBox="0 0 360 70" preserveAspectRatio="none"><path d="M0 70V48l14-4 6-16 6 14 10-6 8-20 8 22 12-4 10 6 16-10 6-14 6 14 20 2 14-8 8-18 8 18 16 6 18-6 6-16 6 16 14-2 16 8 10-10 8-14 8 14 16 6 18-4 14 8V70z" fill="#050a12"/></svg>
+  <div class="tabs"><span>TONIGHT</span><span class="on">EXPLORE</span><span>COLLECTION</span></div></div>
+<p class="cap"><b>When:</b> the first time you open the app on that day, any time before the pass. Silver-grey edge, since it’s about a level, not a reward yet.</p></div>
+
+<div class="shot"><h3>Lock screen <span>· 30 min before</span></h3>
+<div class="ph lock"><div class="lk-date">Thursday, October 29</div><div class="lk-time">7:22</div>
+  <div class="ios" style="top:180px"><i></i><div><div class="h"><b>7:52 PM: one night from Silver</b><span>now</span></div><div class="bd">Catch the Space Station tonight and its card turns silver. Look southwest: it climbs high.</div></div></div>
+  <div class="lk-hint">Swipe up to open</div></div>
+<p class="cap"><b>Today:</b> nothing, unless you set a reminder yourself. <b>Proposed:</b> it takes the Catch of the day slot when the headliner is something you already have.</p></div>
+
+<div class="shot"><h3>Tonight page <span>· today vs proposed</span></h3>
+<div class="ph page tall"><div class="hdr"><b>TONIGHT</b><small>PETERBOROUGH · 6:40 PM</small></div>
+  <div class="pg">
+    <div class="eyeb"><span>Today</span></div>
+    <div class="rw"><div class="t">7:52<small>PM · SW</small></div><div class="a"><img src="../assets/art/cards/sm/iss.webp" alt=""></div><div class="n"><span class="g" style="color:var(--rare)">◆ Rare</span>International Space Station<small>High in the southwest · very bright</small></div><div class="btns"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7.5"/><circle cx="12" cy="12" r="2.4"/></svg><svg viewBox="0 0 24 24"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg></div></div>
+    <div class="eyeb" style="margin-top:16px"><span>Proposed</span><em>Almost there</em></div>
+    <div class="rw hi"><div class="t">7:52<small>PM · SW</small></div><div class="a"><img src="../assets/art/cards/sm/iss.webp" alt=""></div><div class="n"><span class="g" style="color:var(--rare)">◆ Rare</span>International Space Station<small><span class="pips"><i class="on"></i><i class="on"></i><i></i></span>One more night for Silver</small></div><div class="btns"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7.5"/><circle cx="12" cy="12" r="2.4"/></svg><svg viewBox="0 0 24 24"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg></div></div>
+    <div class="box" style="margin-top:14px"><div class="lbl" style="color:var(--silver)">Almost there tonight</div><h4>2 cards can level up</h4><p>Space Station · 7:52 PM → Silver<br>SL-8 stage · 9:18 PM → Gold</p></div>
+  </div>
+  <div class="tabs"><span class="on">TONIGHT</span><span>EXPLORE</span><span>COLLECTION</span></div></div>
+<p class="cap">The silver ring on the picture and three pips say it without a sentence. A small “Almost there” box sits above Tonight’s run when two or more can level up.</p></div>
+
+</div>
+<p class="facts"><b>Facts used:</b> levels count observing nights (bronze 1, silver 3, gold 10; js/card.js cardLevel). Natural cards have no levels since 2026-10-21. ISS is Rare with the ICON badge. The time and directions are examples; the real ones come from tonight’s plan.</p>
+</div>
+
+<div class="idea"><h2><span class="no">02</span>Seasonal returns</h2>
+<p>The sky has a calendar, and the app could keep it. Two kinds of “it’s back”: a <b>constellation returning to the evening sky</b> (Orion in late autumn, Leo in spring, Scorpius in summer), sent once a year on the first evening it’s clear of the trees by mid-evening; and a <b>meteor shower count-in</b> a week ahead, so you can plan the night instead of finding out on the day. The shower one carries the badge you can earn that night.</p>
+<div class="tags"><span class="tag m">Medium</span><span class="tag f">Notification · notice · Tonight card</span></div>
+<div class="row">
+
+<div class="shot"><h3>Lock screen <span>· Orion is back</span></h3>
+<div class="ph lock cool"><div class="lk-date">Thursday, November 19</div><div class="lk-time">8:41</div>
+  <div class="ios" style="top:180px"><i></i><div><div class="h"><b>9:30 PM: Orion is back</b><span>now</span></div><div class="bd">The Hunter is clear of the trees in the east. First evening this season. 20 of its 23 stars are new to you.</div></div></div>
+  <div class="lk-hint">Swipe up to open</div></div>
+<p class="cap"><b>Rule:</b> once a year per constellation, the first clear evening it’s fully 10° up by 9:30 PM. Only constellations with stars you still need.</p></div>
+
+<div class="shot"><h3>In the app <span>· notice over the sky</span></h3>
+<div class="ph"><div class="hdr"><b>SPACE COLLECTOR</b><small>COLLECT THE NIGHT SKY</small></div>
+  <img class="orion" src="../assets/art/con/Ori.webp" alt="">
+  <div class="nt k-gold"><div class="ic"><img src="../assets/art/con/Ori.webp" alt="" style="object-fit:cover;transform:scale(1.4)"></div>
+    <div><div class="eb">Back in the evening sky</div><div class="tt">Orion is back</div><div class="dt">Low in the east, rising. 3 of 23 stars found. <span class="go">Show me ›</span></div></div><div class="x">✕</div></div>
+  <span class="lab-sky" style="left:150px;top:300px;color:var(--gold)">ORION · RISING</span>
+  <svg class="trees" viewBox="0 0 360 70" preserveAspectRatio="none"><path d="M0 70V48l14-4 6-16 6 14 10-6 8-20 8 22 12-4 10 6 16-10 6-14 6 14 20 2 14-8 8-18 8 18 16 6 18-6 6-16 6 16 14-2 16 8 10-10 8-14 8 14 16 6 18-4 14 8V70z" fill="#050a12"/></svg>
+  <div class="tabs"><span>TONIGHT</span><span class="on">EXPLORE</span><span>COLLECTION</span></div></div>
+<p class="cap">The figure art fades in over the real stars on that first evening only, like an old star atlas. After that it’s the usual constellation lines.</p></div>
+
+<div class="shot"><h3>Lock screen <span>· shower count-in</span></h3>
+<div class="ph lock cool"><div class="lk-date">Sunday, December 6</div><div class="lk-time">6:10</div>
+  <div class="ios" style="top:180px"><i></i><div><div class="h"><b>In 7 days: the Geminids</b><span>now</span></div><div class="bd">Up to 150 an hour, the best shower of the year. Peak night is next Sunday. Catch any card that night for its badge.</div></div></div>
+  <div class="ios under" style="top:286px"><i></i><div><div class="h"><b>Until 9:40 PM: best viewing</b><span>Fri</span></div><div class="bd">It’s dark and clear. See what’s in your sky.</div></div></div>
+  <div class="lk-hint">Swipe up to open</div></div>
+<p class="cap">One count-in a week out, then the usual meteor-shower notice on the night. Only for the big ones (Quadrantids, Perseids, Geminids).</p></div>
+
+<div class="shot"><h3>Tonight page <span>· coming up this season</span></h3>
+<div class="ph page tall"><div class="hdr"><b>TONIGHT</b><small>PETERBOROUGH · 6:10 PM</small></div>
+  <div class="streaks"><i style="left:210px;top:120px"></i><i style="left:260px;top:160px;width:50px"></i><i style="left:180px;top:190px;width:40px"></i></div>
+  <div class="pg">
+    <div class="box gold"><div class="lbl" style="color:var(--gold)">Meteor shower · in 7 days</div><h4>Geminids</h4><p>Up to 150 an hour, the best of the year. Peak night: Sunday, December 13.</p>
+      <div class="count7"><i class="on">MON</i><i class="on">TUE</i><i class="on">WED</i><i class="on">THU</i><i class="on">FRI</i><i class="on">SAT</i><i class="pk">SUN</i></div>
+      <p style="font-size:12px">Catch any card that night to earn the <b style="color:var(--gold);font-weight:500">Geminids 2026</b> badge. <span style="color:var(--gold)">Remind me ›</span></p></div>
+    <div class="box"><div class="lbl">Back this season</div><div style="display:grid;grid-template-columns:72px 1fr;gap:10px;align-items:center;margin-top:6px"><img src="../assets/art/con/Ori.webp" alt="" style="width:72px;height:48px;object-fit:cover;border-radius:6px"><div><h4 style="font-size:15px;margin:0">Orion · from 9:30 PM</h4><p style="font-size:12px">3 of 23 stars found</p></div></div>
+      <div style="display:grid;grid-template-columns:72px 1fr;gap:10px;align-items:center;margin-top:8px"><img src="../assets/art/con/Gem.webp" alt="" style="width:72px;height:48px;object-fit:cover;border-radius:6px"><div><h4 style="font-size:15px;margin:0">Gemini · from 10 PM</h4><p style="font-size:12px">Where the Geminids come from</p></div></div></div>
+  </div>
+  <div class="tabs"><span class="on">TONIGHT</span><span>EXPLORE</span><span>COLLECTION</span></div></div></div>
+
+</div>
+<p class="facts"><b>Facts used:</b> Geminids from js/events.js (peak Dec 14, “up to 150 an hour, the best of the year”); peak night 13→14 Dec 2026 is Sunday night. Orion has 23 collectable stars in data/constellations.json. <b>Approximate:</b> “clear of the trees by 9:30 PM around Nov 19” is my estimate for ~44° N; the real date and time would be computed from the star positions for your place.</p>
+</div>
+
+<div class="idea"><h2><span class="no">03</span>Themed weeks</h2>
+<p>A small goal that runs Monday to Sunday, the same for everyone, with its own <b>week badge</b>. It gives a quiet week a shape and sends you after things you’d normally skip. This one: <b>“Rocket stage week: catch three from different countries.”</b> Others in the rotation: Old-timers week (launched before 1970), Station week (ISS and Tiangong), Fleet week (stamp three launches), Planet week. The week only picks themes your sky can actually deliver.</p>
+<div class="tags"><span class="tag m">Medium</span><span class="tag f">Notice · Tonight card · patch</span></div>
+<div class="row">
+
+<div class="shot"><h3>Monday <span>· the week starts</span></h3>
+<div class="ph"><div class="hdr"><b>SPACE COLLECTOR</b><small>COLLECT THE NIGHT SKY</small></div>
+  <div class="nt k-or"><div class="ic"><svg viewBox="0 0 24 24"><g transform="rotate(35 12 12)"><rect x="9" y="3" width="6" height="14" rx="1.5"/><path d="M9 17l-2 4h10l-2-4"/></g></svg></div>
+    <div><div class="eb">This week</div><div class="tt">Rocket stage week</div><div class="dt">Catch three stages from three different countries by Sunday. <span class="go">See the week ›</span></div></div><div class="x">✕</div></div>
+  <svg class="ret" viewBox="-80 -80 160 160" style="top:160px"><circle r="58" fill="none" stroke="#0008" stroke-width="7"/><circle r="58" fill="none" stroke="var(--rc)" stroke-width="2"/><path d="M0 -72v12M0 60v12M-72 0h12M60 0h12" stroke="var(--rc)" stroke-width="2"/></svg>
+  <svg class="trees" viewBox="0 0 360 70" preserveAspectRatio="none"><path d="M0 70V48l14-4 6-16 6 14 10-6 8-20 8 22 12-4 10 6 16-10 6-14 6 14 20 2 14-8 8-18 8 18 16 6 18-6 6-16 6 16 14-2 16 8 10-10 8-14 8 14 16 6 18-4 14 8V70z" fill="#050a12"/></svg>
+  <div class="tabs"><span>TONIGHT</span><span class="on">EXPLORE</span><span>COLLECTION</span></div></div>
+<p class="cap">One notice on the first open of the week. No push notification for it: it’s a reason to look, not a reason to be pinged.</p></div>
+
+<div class="shot"><h3>Tonight page <span>· the week card, 1 of 3</span></h3>
+<div class="ph page tall"><div class="hdr"><b>TONIGHT</b><small>PETERBOROUGH · 7:05 PM</small></div>
+  <div class="pg">
+    <div class="box" style="border-color:#6a3a18;background:radial-gradient(ellipse at 15% 0%,#22140a,#0b1424 60%)">
+      <span class="patch-slot wkb" data-p='{"id":"stage","name":"Stage Week","sub":"WEEK 45"}' data-locked="1"></span>
+      <div class="lbl" style="color:var(--or)">This week · 4 days left</div><h4>Rocket stage week</h4><p style="margin-right:64px">Catch three rocket stages from different countries.</p>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin:10px 0 4px"><span class="lbl" style="color:var(--ink)">1 of 3</span><span class="lbl">+150 XP · week badge</span></div>
+      <div class="bar3"><i></i></div>
+      <div class="week">
+        <div class="cty got"><img src="../assets/art/cards/sm/long-march-3.webp" alt="">China<small>✓ CZ-3 stage</small></div>
+        <div class="cty"><img src="../assets/art/cards/sm/sl-8.webp" alt="">Soviet / Russia<small>8:12 PM tonight</small></div>
+        <div class="cty"><img src="../assets/art/cards/sm/thor-upper.webp" alt="">USA<small>9:40 PM tonight</small></div>
+        <div class="cty"><img src="../assets/art/cards/sm/ariane-early.webp" alt="">Europe<small>Thu</small></div>
+        <div class="cty"><img src="../assets/art/cards/sm/h2a.webp" alt="">Japan<small>not this week</small></div>
+        <div class="cty"><img src="../assets/art/cards/sm/pslv.webp" alt="">India<small>Sat</small></div>
+      </div>
+      <p style="font-size:12px">Two more countries pass tonight. <span style="color:var(--or)">Show me ›</span></p>
+    </div>
+  </div>
+  <div class="tabs"><span class="on">TONIGHT</span><span>EXPLORE</span><span>COLLECTION</span></div></div>
+<p class="cap">Countries, not flags: the names read in red night mode and don’t need emoji. Each tile says when one passes, so the card is also a plan.</p></div>
+
+<div class="shot"><h3>Earned <span>· the week badge</span></h3>
+<div class="ph tall"><div class="hdr"><b>SPACE COLLECTOR</b><small>COLLECT THE NIGHT SKY</small></div>
+  <div class="earn"><div class="eb">WEEK BADGE EARNED</div><span class="patch-slot" data-p='{"id":"stage","name":"Stage Week","sub":"WEEK 45 · 2026"}'></span>
+    <h4>Rocket stage week</h4><p>China, Soviet Union and the USA. Three countries, one week.</p></div>
+  <div class="wall"><span class="patch-slot" data-p='{"id":"station","name":"Station Week","sub":"WEEK 43"}'></span><span class="patch-slot" data-p='{"id":"oldtimer","name":"Old-timers","sub":"WEEK 44"}'></span><span class="patch-slot" data-p='{"id":"stage","name":"Stage Week","sub":"WEEK 45"}'></span><span class="patch-slot lk" data-p='{"id":"starlink","name":"Fleet Week","sub":"WEEK 46"}' data-locked="1"></span></div>
+  <div class="tabs"><span>TONIGHT</span><span class="on">EXPLORE</span><span>COLLECTION</span></div></div>
+<p class="cap">Week badges are patches in their own group on the wall, a row that fills up week by week. Miss one and it comes back in the rotation later.</p></div>
+
+</div>
+<p class="facts"><b>Facts used:</b> the catalogue has rocket stages from the Soviet Union/Russia (625), USA (429), China (247), France/Europe (154), India (40) and Japan (38) by owner, so three countries in a week is doable from most of the northern hemisphere. Stage art is the real small art (long-march-3, sl-8, thor-upper, ariane-early, h2a, pslv). Patches are drawn by the real js/patches.js.</p>
+</div>
+
+<!-- ─────────────── SURPRISE AND DELIGHT ─────────────── -->
+<div class="sec"><b>Surprise and delight</b> · real events in the sky, one-night secrets, something that’s only yours</div>
+
+<div class="idea"><h2><span class="no">04</span>Starlink trains</h2>
+<p>For a few days after a launch, a new batch of Starlinks flies <b>in a line, one after another</b>, low and bright before they spread out. It’s the one thing people see and ask “what was that?”. The app already treats Starlinks under 60 days old as bright. When a fresh launch passes in a train on a clear evening, it becomes an event: a notification, a special look in the circle, and a stamp on the Starlink card that says you caught it as a train.</p>
+<div class="tags"><span class="tag m">Medium</span><span class="tag f">Notification · sky · stamp</span></div>
+<div class="row">
+
+<div class="shot"><h3>Lock screen <span>· 10 min before</span></h3>
+<div class="ph lock"><div class="lk-date">Thursday, October 15</div><div class="lk-time">8:04</div>
+  <div class="ios" style="top:180px"><i></i><div><div class="h"><b>8:14 PM: a Starlink train</b><span>now</span></div><div class="bd">27 satellites in a line, launched 2 days ago. Look west: it climbs high, then fades in the east.</div></div></div>
+  <div class="lk-hint">Swipe up to open</div></div>
+<p class="cap">Its own switch (Starlink trains), on by default. Only in the first days after a launch, when they’re still bunched up and bright.</p></div>
+
+<div class="shot"><h3>In the sky <span>· the train in the circle</span></h3>
+<div class="ph tall"><div class="hdr"><b>SPACE COLLECTOR</b><small>COLLECT THE NIGHT SKY</small></div>
+  <svg class="train" viewBox="0 0 360 400"><g id="tr"></g></svg>
+  <svg class="ret or" viewBox="-80 -80 160 160"><circle r="58" fill="none" stroke="#0008" stroke-width="7"/><circle r="58" fill="none" stroke="var(--rc)" stroke-width="2"/><path d="M0 -72v12M0 60v12M-72 0h12M60 0h12" stroke="var(--rc)" stroke-width="2"/></svg>
+  <span class="lab-sky" style="left:228px;top:104px;color:var(--or)">27 IN A LINE</span>
+  <div class="tk"><img class="mi" src="come-back/starlink.webp" alt=""><div><div class="eb">Starlink train<span>~550 km</span></div><div class="nm">Starlink · 27 satellites</div><div class="sb">Launched 2 days ago · new stamp</div><span class="btn">Collect</span></div></div>
+  <svg class="trees" viewBox="0 0 360 70" preserveAspectRatio="none"><path d="M0 70V48l14-4 6-16 6 14 10-6 8-20 8 22 12-4 10 6 16-10 6-14 6 14 20 2 14-8 8-18 8 18 16 6 18-6 6-16 6 16 14-2 16 8 10-10 8-14 8 14 16 6 18-4 14 8V70z" fill="#050a12"/></svg>
+  <div class="tabs"><span>TONIGHT</span><span class="on">EXPLORE</span><span>COLLECTION</span></div></div>
+<p class="cap">The dots move along the line in the real app (each is its own satellite). Lining up any one of them catches the train: one tap, one stamp.</p></div>
+
+<div class="shot"><h3>The stamp <span>· caught as a train</span></h3>
+<div class="ph tall"><div class="hdr" style="background:transparent"><b style="font:500 11px 'SC Label';letter-spacing:.24em;color:var(--or)">NEW STAMP · CAUGHT AS A TRAIN</b></div>
+  <img class="cardimg" src="come-back/starlink.webp" alt="" style="left:80px;top:50px;width:200px">
+  <div class="stamp" style="left:186px;top:230px">TRAIN<small>13 OCT 2026</small></div>
+  <div class="tabs" style="background:transparent;box-shadow:none;color:var(--gold);grid-template-columns:1fr;letter-spacing:.14em">VIEW IN COLLECTION ›</div></div>
+<p class="cap">On the card, the launch’s dot gets a tiny train mark, so a fleet card shows which launches you saw as trains. A patch, <b>Choo choo</b>, after five.</p></div>
+
+</div>
+<p class="facts"><b>Facts used:</b> the latest Starlink launch in today’s catalogue is 13 Oct 2026 (2026-232), 27 satellites; the mock dates it 15 Oct to say “2 days ago”. Trains are brightest in the first few days and spread out over a week or two as they raise their orbits (the app already gives Starlinks under 60 days stdMag 5.0). <b>Approximate:</b> “~550 km” is a typical early parking height; the real ticket shows the live range.</p>
+</div>
+
+<div class="idea"><h2><span class="no">05</span>Halloween: the ghost satellite</h2>
+<p>One night a year, October 31, a <b>long-dead satellite</b> haunts the sky. It’s really up there and really silent: lining it up gives it a ghostly green shimmer and a BOO, and catching it earns a secret patch. It ties into the existing <b>Dead Satellites Society</b> set. A week before, the Tonight page teases it without saying what it is. Two candidates, both true:</p>
+<div class="tags"><span class="tag s">Small</span><span class="tag f">Teaser · sky · secret patch</span><span class="tag l">Halloween is in 6 days</span></div>
+<div class="row">
+
+<div class="shot"><h3>The week before <span>· teaser on Tonight</span></h3>
+<div class="ph page"><div class="hdr"><b>TONIGHT</b><small>PETERBOROUGH · 7:30 PM</small></div>
+  <div class="pg">
+    <div class="box ghost"><div class="tease"><div class="sil"></div><div class="q">?</div><div><div class="lbl" style="color:var(--ghost)">Saturday, Oct 31 · one night only</div><h4>Something’s haunting the sky</h4><p>A satellite that died long ago will be out after dark. Find it before midnight.</p></div></div></div>
+    <div class="rw"><div class="t">7:52<small>PM · SW</small></div><div class="a"><img src="../assets/art/cards/sm/iss.webp" alt=""></div><div class="n"><span class="g" style="color:var(--rare)">◆ Rare</span>International Space Station<small>High in the southwest</small></div><div class="btns"></div></div>
+  </div>
+  <div class="tabs"><span class="on">TONIGHT</span><span>EXPLORE</span><span>COLLECTION</span></div></div>
+<p class="cap">Shown from the 24th. On the night itself the box says where it is and when, like a headliner, plus one notification at dusk: “Tonight: something’s haunting the sky”.</p></div>
+
+<div class="shot"><h3>In the sky <span>· A: Envisat</span></h3>
+<div class="ph tall"><div class="hdr"><b>SPACE COLLECTOR</b><small>COLLECT THE NIGHT SKY</small></div>
+  <div class="gfog"></div>
+  <div class="boo">BOO</div>
+  <svg class="gsat" viewBox="-15 -15 30 30"><rect x="-4" y="-5" width="8" height="10" fill="#e9fff3"/><rect x="-14" y="-3" width="9" height="6" fill="#b8ffd9"/><rect x="5" y="-3" width="9" height="6" fill="#b8ffd9"/></svg>
+  <svg class="ret gh" viewBox="-80 -80 160 160"><circle r="58" fill="none" stroke="#0008" stroke-width="7"/><circle r="58" fill="none" stroke="var(--rc)" stroke-width="2"/><path d="M0 -72v12M0 60v12M-72 0h12M60 0h12" stroke="var(--rc)" stroke-width="2"/></svg>
+  <div class="tk" style="--k:var(--ghost)"><img class="mi" src="come-back/envisat.webp" alt="" style="filter:grayscale(.6) brightness(.8) sepia(.3) hue-rotate(90deg)"><div><div class="eb">BOO · Ghost satellite<span>773 km</span></div><div class="nm">Envisat</div><div class="sb">Silent since 2012 · still up there</div><span class="btn" style="background:var(--ghost);color:#062014">Collect</span></div></div>
+  <svg class="trees" viewBox="0 0 360 70" preserveAspectRatio="none"><path d="M0 70V48l14-4 6-16 6 14 10-6 8-20 8 22 12-4 10 6 16-10 6-14 6 14 20 2 14-8 8-18 8 18 16 6 18-6 6-16 6 16 14-2 16 8 10-10 8-14 8 14 16 6 18-4 14 8V70z" fill="#050a12"/></svg>
+  <div class="tabs"><span>TONIGHT</span><span class="on">EXPLORE</span><span>COLLECTION</span></div></div>
+<p class="cap"><b>A: Envisat.</b> Europe’s 8-tonne Earth-watcher, lost contact April 2012. Bright (about magnitude 2), so most people can actually catch it on the night. My pick.</p></div>
+
+<div class="shot"><h3>In the sky <span>· B: Vanguard 1</span></h3>
+<div class="ph tall"><div class="hdr"><b>SPACE COLLECTOR</b><small>COLLECT THE NIGHT SKY</small></div>
+  <div class="gfog"></div>
+  <div class="boo">BOO</div>
+  <svg class="gsat" viewBox="-15 -15 30 30"><circle r="5" fill="#e9fff3"/><path d="M3 -3l9 -9M-3 -3l-9 -9M3 3l9 9M-3 3l-9 9" stroke="#b8ffd9" stroke-width="1.2"/></svg>
+  <svg class="ret gh" viewBox="-80 -80 160 160"><circle r="58" fill="none" stroke="#0008" stroke-width="7"/><circle r="58" fill="none" stroke="var(--rc)" stroke-width="2"/><path d="M0 -72v12M0 60v12M-72 0h12M60 0h12" stroke="var(--rc)" stroke-width="2"/></svg>
+  <div class="tk" style="--k:var(--ghost)"><img class="mi" src="come-back/vanguard.webp" alt="" style="filter:grayscale(.6) brightness(.8) sepia(.3) hue-rotate(90deg)"><div><div class="eb">BOO · Ghost satellite<span>3,850 km</span></div><div class="nm">Vanguard 1</div><div class="sb">Silent since 1964 · the oldest thing in orbit</div><span class="btn" style="background:var(--ghost);color:#062014">Hold to find</span></div></div>
+  <svg class="trees" viewBox="0 0 360 70" preserveAspectRatio="none"><path d="M0 70V48l14-4 6-16 6 14 10-6 8-20 8 22 12-4 10 6 16-10 6-14 6 14 20 2 14-8 8-18 8 18 16 6 18-6 6-16 6 16 14-2 16 8 10-10 8-14 8 14 16 6 18-4 14 8V70z" fill="#050a12"/></svg>
+  <div class="tabs"><span>TONIGHT</span><span class="on">EXPLORE</span><span>COLLECTION</span></div></div>
+<p class="cap"><b>B: Vanguard 1.</b> The better story, but it’s binoculars-only (about magnitude 7.5), so it would have to work like Voyager: invisible until it’s in the circle, hold 4 s to find it.</p></div>
+
+<div class="shot"><h3>The secret patch</h3>
+<div class="ph"><div class="hdr"><b>SPACE COLLECTOR</b><small>COLLECT THE NIGHT SKY</small></div>
+  <div class="earn"><div class="eb" style="color:var(--ghost)">SECRET PATCH</div><span class="patch-slot" data-ghost="1" data-p='{"id":"oldtimer","name":"Ghost Satellite","secret":true,"sub":"HALLOWEEN 2026"}' style="filter:drop-shadow(0 0 24px #7fffd455)"></span>
+    <h4>Ghost Satellite</h4><p>You found Envisat on Halloween. Silent since 2012, still going round every 100 minutes.</p></div>
+  <div class="tabs"><span>TONIGHT</span><span class="on">EXPLORE</span><span>COLLECTION</span></div></div>
+<p class="cap">A patch with the year on it, so each Halloween is its own (and it can be a different ghost each year: Envisat, then TIROS 1, then Vanguard…).</p></div>
+
+</div>
+<p class="facts"><b>Facts checked against the catalogue and cards:</b> Envisat is NORAD 27386, launched 2002, stdMag 2.0, Common, in the Dead Satellites Society set; its card fact says contact was lost in April 2012. Vanguard 1 is NORAD 5, launched 17 March 1958, stdMag 7.5 (binoculars), Legendary; its card says its radio fell silent in 1964. Oct 31 2026 is a Saturday. <b>Approximate:</b> the km in the tickets are typical heights (Envisat ~770 km; Vanguard’s orbit runs ~650 to ~3,800 km), not live ranges. “Every 100 minutes” for Envisat: ~14.4 laps a day, so about 100 min. Keep it true: the green shimmer is our effect, not something you’d see.</p>
+</div>
+
+<div class="idea"><h2><span class="no">06</span>Your birthday satellite</h2>
+<p>Settings asks for your birthday (<b>stored only on this phone</b>, never sent anywhere) and finds something that <b>went up the day you were born</b> and is still up there. When it passes on a clear night, you hear about it. It’s a card that belongs to you in a way no other card does, and a great thing to show a friend.</p>
+<div class="tags"><span class="tag m">Medium</span><span class="tag f">Settings · reveal · notification</span></div>
+<div class="row">
+
+<div class="shot"><h3>Settings <span>· your birthday</span></h3>
+<div class="ph tall"><div class="hdr"><b>SETTINGS</b><small>MAKE IT YOURS</small></div>
+  <div class="pg" style="bottom:0">
+    <div class="set"><div class="hd"><span>01 · COLLECTION</span></div>
+      <div class="r"><div>Card back<small>Mission Control</small></div><span class="v">›</span></div>
+      <div class="r hi"><div>Your birthday<small>Only on this phone</small></div><span class="v">Add ›</span></div></div>
+  </div>
+  <div class="sheet"><div class="grab"></div><h4>Your birthday</h4><p>We’ll look for something launched that day that’s still up there. It stays on this phone.</p>
+    <div class="wheel"><div>May<b>June</b>July</div><div>22<b>23</b>24</div><div>1980<b>1981</b>1982</div></div>
+    <span class="btn" style="width:100%;justify-content:center">Find my satellite</span></div></div>
+<p class="cap">One row in Collection. The year matters: without it we can only do “launched on your birthday” (see below).</p></div>
+
+<div class="shot"><h3>The reveal <span>· born the same day</span></h3>
+<div class="ph tall"><div class="conf" id="conf"></div>
+  <div class="bday"><div class="eb">BORN THE SAME DAY</div><h4>NOAA 7 went up the day you were born.</h4>
+    <div class="bc"><img class="cardimg" src="come-back/noaa7.webp" alt=""><span class="nyc">○ Not yet collected</span></div>
+    <p>23 June 1981. It still goes round 14 times a day. It passes Thursday at 9:12 PM.</p>
+    <div style="display:flex;gap:8px;justify-content:center;margin-top:12px"><span class="btn"><svg viewBox="0 0 24 24"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg>Remind me</span><span class="btn o">Show me</span></div></div>
+  <div class="ribbon">23 JUNE 1981</div></div>
+<p class="cap">The card arrives face up but un-collected (picture shown, “Not yet collected” in the footer) until you catch it. Its first catch says “BIRTHDAY TWIN” in the reveal.</p></div>
+
+<div class="shot"><h3>Lock screen <span>· on the pass</span></h3>
+<div class="ph lock"><div class="lk-date">Thursday, October 29</div><div class="lk-time">9:02</div>
+  <div class="ios" style="top:180px"><i></i><div><div class="h"><b>9:12 PM: your birthday satellite</b><span>now</span></div><div class="bd">NOAA 7 launched the day you were born. Look north: it climbs halfway up.</div></div></div>
+  <div class="lk-hint">Swipe up to open</div></div>
+<p class="cap">A free reminder, like the ISS: never needs Plus. Sent for the first good pass, then on your birthday each year if it passes that night.</p></div>
+
+<div class="shot"><h3>No exact match <span>· most people</span></h3>
+<div class="ph page"><div class="hdr"><b>SETTINGS</b><small>MAKE IT YOURS</small></div>
+  <div class="pg" style="bottom:0">
+    <div class="box"><div class="lbl" style="color:var(--gold)">Born 9 May 1984</div><h4>Kosmos 1550</h4><p>Launched two days after you. Nothing from your exact day is still up and bright enough to see.</p></div>
+    <div class="box"><div class="lbl" style="color:var(--gold)">Also yours</div><h4>MACSAT 1 and 2</h4><p>Launched on your birthday, 9 May 1990. Binoculars help.</p></div>
+    <p style="font:500 12.5px/1.3 'SC Label';color:#8d93a0;margin:4px 2px 0;letter-spacing:.03em">We always say which it is: your day, a few days off, or your birthday in another year.</p>
+  </div></div>
+<p class="cap">The honest fallback, in order: the same day → the nearest launch within about two weeks → the same date in another year.</p></div>
+
+</div>
+<p class="facts"><b>Facts checked:</b> NOAA 7 is NORAD 12553, launched 23 June 1981, Common, stdMag 4.05 (a dark-sky catch from a city it may be hard). Kosmos 1550 launched 11 May 1984; MACSAT 1 and 2 launched 9 May 1990 (stdMag ~6, binoculars). The brief’s example, <b>Kosmos 1408, isn’t usable: Russia destroyed it in its November 2021 anti-satellite test</b>, so it isn’t in the catalogue. <b>Important:</b> in today’s catalogue only about 7% of days from 1960–2010 have a launch with something still up and bright enough (that isn’t debris), so an exact match is the lucky case; same month-and-day in some year covers 363 of 366 dates. The pass day and time (“Thursday at 9:12 PM”, “north, halfway up”) are examples.</p>
+</div>
+
+<!-- ─────────────── PICKS ─────────────── -->
+<div class="top"><h2>My order</h2><p>If I could build three first:</p>
+<ol>
+<li><div><b>05 · Halloween: the ghost satellite</b><span>Small, and it’s six days away. Envisat makes it catchable for almost everyone, and it’s a natural first post for the App Store and socials.</span></div></li>
+<li><div><b>01 · Almost there</b><span>The cheapest reason to come back: it uses levels you already have and a pass we already know about. It fits in the existing Catch of the day slot.</span></div></li>
+<li><div><b>04 · Starlink trains</b><span>It answers the question people actually ask about the sky. Fresh launches every week mean it happens often.</span></div></li>
+</ol></div>
+
+<p class="note">Notes: every notification here obeys the existing rules (at most two a day, only when the forecast is clear, never 11 PM to 7 AM). Seasonal returns and the birthday satellite are free; nothing here needs Plus. Mock-ups use real card renders captured from review.html into design/come-back/, the real small art and constellation figures, and real patches drawn by js/patches.js.</p>
+
+<script type="module">
+// Real patches from the app's own drawing code (paths fixed for this folder).
+try {
+  const { patchSvg } = await import('../js/patches.js');
+  for (const el of document.querySelectorAll('.patch-slot')) {
+    let s = patchSvg(JSON.parse(el.dataset.p), { locked: !!el.dataset.locked }).replaceAll('href="assets/', 'href="../assets/');
+    if (el.dataset.ghost) s = s.replaceAll('#4a3420', '#123a2a').replaceAll('fill="#fff2b3"', 'fill="#d8ffe9"');
+    el.innerHTML = s;
+  }
+} catch (e) { console.warn('patches', e); }
+// The Starlink train: a line of dots through the circle.
+const g = document.getElementById('tr');
+if (g) { let h = ''; for (let i = 0; i < 27; i++) { const t = i / 26, x = 40 + t * 300, y = 300 - t * 230 + Math.sin(i * 1.7) * 1.5; const inC = Math.hypot(x - 180, y - 176) < 60; h += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${inC ? 2.4 : 1.7}" fill="#fff" opacity="${inC ? 1 : 0.55 + 0.35 * Math.sin(i)}"/>`; } g.innerHTML = `<path d="M40 300 L340 70" stroke="#fa812733" stroke-width="10" stroke-linecap="round"/>` + h; }
+// A little confetti for the birthday.
+const c = document.getElementById('conf');
+if (c) { const cols = ['#f2c14e', '#fa8127', '#fff2b3', '#4aa8ff', '#e46ad6']; let h = ''; for (let i = 0; i < 26; i++) { const x = (i * 37) % 340 + 10, y = (i * 53) % 150 + 10; h += `<i style="left:${x}px;top:${y}px;background:${cols[i % 5]};transform:rotate(${(i * 47) % 180}deg)"></i>`; } c.innerHTML = h; }
+</script>
+</body></html>

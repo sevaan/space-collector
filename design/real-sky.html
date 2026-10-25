@@ -1,0 +1,458 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Real sky, real situations</title>
+<link rel="stylesheet" href="../css/icons.css">
+<style>
+@font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf'); }
+@font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf'); }
+:root { --ink: #fff2b3; --mu: #bdbea9; --or: #fa8127; --gold: #f2c14e; --steel: #6f8fae; --line: #1d2a3c; --card: #0e1828; --unc: #4fd18b; --rare: #4da3ff; --red: #ff7f70;
+  --navy: #080f1b; --tkbg: rgba(8, 15, 27, .96); --later: #7fb2ff; --fade: #ffc93d; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #04080f; color: var(--ink); font: 15px/1.4 system-ui, sans-serif; padding: 26px 20px 80px; }
+h1 { font: 400 28px 'SC Display'; margin: 0 0 4px; } .lead { color: var(--mu); margin: 0 0 8px; max-width: 1100px; }
+.how { color: var(--mu); font-size: 13px; margin: 0 0 26px; max-width: 1100px; }
+.how b { color: var(--ink); }
+.sec { font: 500 14px 'SC Label'; letter-spacing: .26em; text-transform: uppercase; color: var(--mu); border-top: 1px solid var(--line); padding-top: 14px; margin: 40px 0 18px; max-width: 1580px; }
+.sec b { color: var(--ink); font-weight: 500; }
+.row { display: flex; gap: 30px; flex-wrap: wrap; align-items: flex-start; }
+/* one idea = a heading block, then a row of phones */
+.idea { margin: 0 0 48px; max-width: 1580px; }
+.idea > h2 { font: 400 21px/1.15 'SC Display'; margin: 0 0 6px; display: flex; gap: 10px; align-items: baseline; }
+.idea > h2 .no { font: 500 15px 'SC Label'; color: var(--or); letter-spacing: .1em; min-width: 22px; }
+.idea > p { color: var(--mu); margin: 0 0 8px; font-size: 14px; max-width: 900px; }
+.idea > p b { color: var(--ink); font-weight: 600; }
+.tags { display: flex; gap: 6px; flex-wrap: wrap; margin: 0 0 16px; }
+.tag { font: 500 11.5px 'SC Label'; letter-spacing: .16em; text-transform: uppercase; padding: 3px 8px; border-radius: 6px; border: 1px solid #2c3b52; color: var(--mu); }
+.tag.s { color: var(--unc); border-color: #2c5a40; } .tag.m { color: var(--gold); border-color: #5f4e22; } .tag.l { color: var(--or); border-color: #6a3a18; }
+.tag.f { color: var(--steel); }
+.opt { width: 360px; }
+.opt > .lab { font: 500 13px 'SC Label'; letter-spacing: .2em; text-transform: uppercase; color: var(--mu); margin: 0 0 8px; display: flex; gap: 8px; align-items: center; }
+.opt > .lab .ab { font: 500 11px 'SC Label'; letter-spacing: .16em; padding: 2px 7px; border-radius: 5px; background: #fa812722; color: var(--or); }
+.opt > .lab .ab.t { background: #ffffff10; color: var(--mu); }
+.today { font-size: 12.5px; color: #8d93a0; margin: 10px 0 0; }
+.today b { color: var(--mu); font-weight: 600; }
+.ico { display: inline-block; width: 18px; height: 18px; background: currentColor; flex: none; -webkit-mask: var(--m) center / contain no-repeat; mask: var(--m) center / contain no-repeat; }
+
+/* ── the phone (slick-ideas frame, taller so the whole Explore screen fits) ── */
+.ph { width: 360px; height: 680px; position: relative; overflow: hidden; border-radius: 30px; border: 1px solid #1a2436; background: radial-gradient(ellipse at 50% 30%, #0f1d31, #070d18 70%); }
+.ph .bg { position: absolute; left: 0; width: 360px; display: block; pointer-events: none; }
+.ph .bg.sleep { filter: blur(5px) brightness(.55); }
+.ph .stat { position: absolute; left: 0; right: 0; top: 0; height: 26px; padding: 7px 22px 0; display: flex; justify-content: space-between; font: 600 12px system-ui; color: #fff; z-index: 6; }
+.ph .hdr { position: absolute; left: 0; right: 0; top: 26px; height: 70px; padding: 0 18px; display: flex; align-items: center; justify-content: space-between; z-index: 5;
+  background: linear-gradient(var(--navy) 62%, #080f1bd0 86%, transparent); }
+.ph .hdr::after { content: ''; position: absolute; left: 18px; right: 18px; bottom: 6px; height: 3px; border-block: 1px solid #627a8b; opacity: .65; }
+.wm { font: 400 15px/1.1 'SC Display'; letter-spacing: -.03em; color: var(--ink); }
+.wm span { display: block; color: var(--mu); font: 500 11px/1.2 'SC Label'; letter-spacing: .18em; margin-top: 5px; }
+.hdr .gear { color: var(--ink); width: 22px; height: 22px; }
+.ph .tabs { position: absolute; left: 16px; right: 16px; bottom: 14px; height: 50px; border-radius: 16px; background: var(--navy); box-shadow: 0 0 0 1px #fff2b31f; display: flex; z-index: 5; overflow: hidden; }
+.ph .tabs b { flex: 1; display: grid; place-items: center; font: 500 13px 'SC Label'; letter-spacing: .18em; color: #c9cbb6; font-weight: 500; }
+.ph .tabs b.on { color: var(--or); box-shadow: inset 0 3px 0 var(--or); }
+.ph .sl { position: absolute; left: 34px; right: 34px; bottom: 80px; display: grid; grid-template-columns: auto 1fr auto; gap: 9px; align-items: center; z-index: 4; opacity: .7; }
+.ph .sl i { font: 500 11px 'SC Label'; letter-spacing: .16em; color: var(--mu); font-style: normal; }
+.ph .sl .tr { position: relative; height: 3px; border-radius: 2px; background: #2c3b52; }
+.ph .sl .tr::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: var(--v, 50%); border-radius: 2px; background: #8a4a1e; }
+.ph .sl .tr::after { content: ''; position: absolute; left: var(--v, 50%); top: 50%; width: 18px; height: 18px; margin: -9px 0 0 -9px; border-radius: 50%; background: var(--ink); box-shadow: 0 1px 4px #0008; }
+.ph .sl.hot { opacity: 1; } .ph .sl.hot .tr::before { background: var(--or); } .ph .sl.hot .tr::after { background: var(--or); box-shadow: 0 0 0 6px #fa812733, 0 0 16px #fa8127aa; }
+.ph .sl .rd { grid-column: 1 / -1; text-align: center; font: 500 12px 'SC Label'; letter-spacing: .14em; text-transform: uppercase; color: var(--ink); }
+.ph .rad { position: absolute; left: 14px; top: 104px; width: 80px; height: 80px; z-index: 4; }
+.ph .rad svg { width: 80px; height: 80px; }
+.ph .rad small { display: block; text-align: center; margin-top: 2px; font: 500 11px 'SC Label'; letter-spacing: .14em; color: var(--mu); }
+.ph svg.ret { position: absolute; left: 0; top: 0; width: 360px; height: 680px; pointer-events: none; z-index: 2; }
+.ph .dim { position: absolute; inset: 0; background: #04070dcc; z-index: 6; }
+
+/* ticket under the circle (css/app.css .tk-card) */
+.tk { position: absolute; left: 45px; top: 422px; width: 270px; padding: 11px 13px 13px; border-radius: 13px; background: var(--tkbg); border-top: 3px solid var(--tkc, var(--or)); box-shadow: 0 10px 24px #0006; z-index: 4; display: flex; gap: 11px; }
+.tk .col { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.tk .k { font: 500 11.5px/1.25 'SC Label'; letter-spacing: .18em; text-transform: uppercase; color: var(--tkk, var(--tkc, var(--or))); display: flex; justify-content: space-between; gap: 8px; white-space: nowrap; }
+.tk .k em { font-style: normal; color: #c3c9d1; letter-spacing: .1em; }
+.tk .n { font: 400 18px/1.12 'SC Display'; color: var(--ink); }
+.tk .m { font: 500 13px/1.3 'SC Label'; letter-spacing: .04em; color: #c3c9d1; }
+.tk .m.g { color: var(--fade); }
+.tk .b { margin-top: 6px; min-height: 42px; border-radius: 10px; display: grid; place-items: center; background: var(--tkc, var(--or)); color: #0b1018; font: 500 13px 'SC Label'; letter-spacing: .2em; text-transform: uppercase; }
+.tk .b.o { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1.5px #fff2b366; }
+.tk .bb { display: flex; gap: 8px; } .tk .bb .b { flex: 1; letter-spacing: .14em; }
+.tk .mini { flex: none; width: 54px; height: 81px; border-radius: 6px; border: 2px solid #e9dfae; background: #0b1626; padding: 3px; display: flex; flex-direction: column; gap: 3px; }
+.tk .mini .w { height: 46%; border-radius: 3px; overflow: hidden; } .tk .mini .w img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.tk .mini .w.lk img { filter: blur(1.5px) brightness(.38) saturate(.6); }
+.tk .mini i { display: block; height: 3px; border-radius: 2px; background: #22324a; } .tk .mini i.s { width: 60%; }
+.tk.slim { padding: 10px 13px 11px; }
+
+/* notice from under the header (css/ui.css top banners) */
+.note2 { position: absolute; left: 8px; right: 8px; top: 102px; z-index: 7; display: flex; gap: 11px; align-items: center; padding: 11px 12px; border-radius: 14px; background: #0c1725f7; border-top: 3px solid var(--nc, var(--gold)); box-shadow: 0 10px 26px #0009; }
+.note2 .tile { width: 42px; height: 42px; flex: none; border-radius: 10px; overflow: hidden; display: grid; place-items: center; background: #ffffff10; color: var(--nc, var(--gold)); }
+.note2 .tile img { width: 100%; height: 100%; object-fit: cover; }
+.note2 .tx { flex: 1; min-width: 0; }
+.note2 .tx small { display: block; font: 500 11px 'SC Label'; letter-spacing: .18em; text-transform: uppercase; color: var(--nc, var(--gold)); }
+.note2 .tx b { display: block; font: 400 15px/1.2 'SC Display'; font-weight: 400; color: var(--ink); margin-top: 2px; }
+.note2 .tx span { display: block; font: 500 13px/1.3 'SC Label'; color: #c3c9d1; margin-top: 2px; }
+.note2 .xp { font: 400 15px 'SC Display'; color: var(--nc, var(--gold)); }
+.note2.shiny { border-top: 0; } .note2.shiny::before { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 3px; border-radius: 14px 14px 0 0; background: linear-gradient(90deg, #ffb3d9, #ffe19a, #9ff0d4, #a8c8ff, #e3b0ff, #ffb3d9); background-size: 200% 100%; animation: sheen 3s linear infinite; }
+.note2.shiny .tile { box-shadow: inset 0 0 0 1.5px #ffe19a; position: relative; }
+.note2.shiny .tile::after { content: ''; position: absolute; inset: 0; background: linear-gradient(115deg, transparent 30%, #ffffff66 50%, transparent 70%); background-size: 250% 100%; animation: sheen 2.4s linear infinite; }
+@keyframes sheen { from { background-position: 100% 0; } to { background-position: -100% 0; } }
+
+/* tour card (css/app.css .tc), top two-thirds showing */
+.tcard { position: absolute; left: 10px; right: 10px; top: 254px; height: 520px; border-radius: 22px; background: var(--navy); border: 4px solid #adbcc8; box-shadow: inset 0 0 0 5px var(--navy), inset 0 0 0 6px #bcb58566, 0 -14px 50px #000b; z-index: 6; padding: 14px 16px; }
+.tcard .bar { display: flex; justify-content: space-between; padding-bottom: 7px; border-bottom: 1px solid #bcb58588; font: 500 11.5px 'SC Label'; letter-spacing: .18em; text-transform: uppercase; color: var(--mu); }
+.tcard .bar b { color: var(--or); font-weight: 500; }
+.tcard h3 { margin: 10px 0 4px; font: 400 23px/1 'SC Display'; letter-spacing: -.035em; text-transform: uppercase; color: var(--ink); }
+.tcard .sub { color: var(--mu); padding-bottom: 8px; border-bottom: 1px solid #bcb58544; font: 500 11.5px 'SC Label'; letter-spacing: .16em; text-transform: uppercase; }
+.tcard p { margin: 0 0 10px; color: #e8e3c9; font-size: 13.5px; line-height: 1.4; }
+.tcard .acts { display: flex; gap: 10px; }
+.tcard .acts span { flex: 1; height: 46px; border-radius: 12px; display: grid; place-items: center; font: 500 13px 'SC Label'; letter-spacing: .14em; text-transform: uppercase; }
+.tcard .acts .yes { background: var(--or); color: #0b1120; } .tcard .acts .no { background: #ffffff10; color: var(--ink); }
+
+/* three sky pictures */
+.skies { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; margin: 10px 0; }
+.sk { border-radius: 9px; overflow: hidden; border: 1.5px solid #2a3a52; background: #0b1424; position: relative; }
+.sk svg { display: block; width: 100%; height: auto; }
+.sk .cap { padding: 5px 4px 6px; text-align: center; font: 500 11.5px/1.15 'SC Label'; letter-spacing: .12em; text-transform: uppercase; color: var(--ink); }
+.sk .cap small { display: block; font-size: 10.5px; letter-spacing: .06em; text-transform: none; color: var(--mu); margin-top: 1px; }
+.sk.on { border-color: var(--or); box-shadow: 0 0 0 2px #fa812755, 0 0 18px #fa812744; }
+.sk.on::after { content: '✓'; position: absolute; right: 5px; top: 5px; width: 18px; height: 18px; border-radius: 50%; background: var(--or); color: #120a02; font: 700 11px/18px system-ui; text-align: center; }
+
+/* settings (field cards, 2026-10-21) */
+.set { position: absolute; left: 0; right: 0; top: 96px; bottom: 0; background: var(--navy); padding: 14px 14px 0; z-index: 3; overflow: hidden; }
+.scard { border: 1.5px solid #e9dcb3aa; border-radius: 12px; box-shadow: inset 0 0 0 3px var(--navy), inset 0 0 0 4px #e9dcb322; overflow: hidden; margin-bottom: 14px; }
+.scard .h { display: flex; justify-content: space-between; padding: 8px 12px; background: #e9dcb314; color: var(--gold); font: 500 12px 'SC Label'; letter-spacing: .2em; text-transform: uppercase; }
+.srow { display: flex; align-items: center; gap: 11px; padding: 11px 12px; border-top: 1px solid #ffffff12; }
+.srow .ico { color: var(--ink); width: 19px; height: 19px; }
+.srow .t { flex: 1; min-width: 0; } .srow .t b { display: block; font: 500 15px 'SC Label'; color: #f3ead0; letter-spacing: .02em; font-weight: 500; }
+.srow .t small { display: block; font: 500 12.5px/1.25 'SC Label'; color: var(--mu); }
+.srow .v { font: 500 13px 'SC Label'; letter-spacing: .12em; color: var(--mu); text-transform: uppercase; }
+.srow .tg { font: 500 11.5px 'SC Label'; letter-spacing: .14em; padding: 3px 8px; border-radius: 6px; border: 1px solid #b8c0cc66; color: var(--mu); }
+.srow .tg.on { color: var(--or); border-color: var(--or); }
+.srow .mt { position: relative; height: 3px; margin-top: 9px; border-radius: 2px; background: #2c3b52; }
+.srow .mt::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 50%; background: var(--or); border-radius: 2px; }
+.srow .mt::after { content: ''; position: absolute; left: 50%; top: 50%; width: 15px; height: 15px; margin: -7.5px; border-radius: 50%; background: var(--ink); }
+.srow.new { background: #fa81270f; box-shadow: inset 3px 0 0 var(--or); }
+.newtag { font: 500 10.5px 'SC Label'; letter-spacing: .16em; color: #120a02; background: var(--or); border-radius: 4px; padding: 1px 5px; margin-left: 6px; vertical-align: 2px; }
+
+/* bottom sheet */
+.sheet { position: absolute; left: 0; right: 0; bottom: 0; z-index: 7; border-radius: 22px 22px 0 0; background: #0e1a2b; border-top: 1px solid #2c3b52; padding: 10px 16px 18px; box-shadow: 0 -16px 40px #000a; }
+.sheet .grab { width: 40px; height: 4px; border-radius: 2px; background: #ffffff30; margin: 0 auto 12px; }
+.sheet .ey { font: 500 11.5px 'SC Label'; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); }
+.sheet h3 { font: 400 20px/1.15 'SC Display'; margin: 4px 0 6px; color: var(--ink); }
+.sheet p { margin: 0 0 12px; font: 500 14px/1.35 'SC Label'; color: var(--mu); letter-spacing: .02em; }
+.chips { display: flex; gap: 6px; margin: 0 0 4px; }
+.chips span { font: 500 12px 'SC Label'; letter-spacing: .14em; text-transform: uppercase; padding: 6px 11px; border-radius: 99px; border: 1px solid #ffffff2a; color: var(--mu); }
+.chips span.on { border-color: var(--or); color: var(--or); background: #fa812714; }
+.btn { height: 46px; border-radius: 12px; display: grid; place-items: center; font: 500 13px 'SC Label'; letter-spacing: .16em; text-transform: uppercase; border: 1px solid #ffffff2a; color: #f3ead0; }
+.btn.p { background: var(--or); border-color: var(--or); color: #120a02; }
+.foot { display: flex; justify-content: space-between; margin-top: 10px; font: 500 13px 'SC Label'; letter-spacing: .08em; color: var(--mu); }
+.foot b { color: var(--gold); font-weight: 500; }
+
+/* line up the sky card (css/app.css #calib .cb-card) */
+.cb { position: absolute; left: 12px; right: 12px; bottom: 14px; z-index: 6; padding: 15px 15px 9px; border-radius: 20px; background: #0b1424f4; border: 1px solid #ffffff22; box-shadow: 0 10px 30px #0008; }
+.cb .k { font: 500 12px 'SC Label'; letter-spacing: .18em; text-transform: uppercase; color: var(--or); }
+.cb h3 { margin: 6px 0; font: 400 19px/1.15 'SC Display'; color: var(--ink); }
+.cb p { margin: 0 0 13px; font: 500 14.5px/1.35 'SC Label'; color: #a9b0a4; letter-spacing: .02em; }
+.cb .bb { display: flex; gap: 8px; } .cb .bb .btn { flex: 1; font-size: 12.5px; letter-spacing: .12em; }
+.cb .foot { margin-top: 4px; }
+.cbpill { position: absolute; left: 50%; top: 40px; transform: translateX(-50%); padding: 7px 13px; border-radius: 99px; background: #0b1424ee; border: 1px solid #ffffff26; font: 500 12px 'SC Label'; letter-spacing: .14em; text-transform: uppercase; color: var(--ink); white-space: nowrap; z-index: 6; }
+.tagl { position: absolute; font: 500 11px/1.25 'SC Label'; letter-spacing: .14em; text-transform: uppercase; color: #fff2b3bb; white-space: nowrap; z-index: 3; text-shadow: 0 1px 4px #000; }
+
+/* window mode */
+.hatch { position: absolute; top: 0; bottom: 0; z-index: 1; background: repeating-linear-gradient(135deg, #02040acc 0 8px, #2a3a52aa 8px 10px); }
+.hatch::before { content: ''; position: absolute; top: 0; bottom: 0; width: 0; border-left: 2px dashed #fa8127aa; }
+.hatch.r::before { left: 0; } .hatch.l::before { right: 0; }
+.wchip { position: absolute; right: 14px; top: 110px; z-index: 5; display: flex; align-items: center; gap: 7px; padding: 6px 10px 6px 9px; border-radius: 10px; background: #0c1725f2; border-top: 3px solid var(--or); font: 500 12px 'SC Label'; letter-spacing: .14em; text-transform: uppercase; color: var(--ink); box-shadow: 0 6px 16px #0007; }
+.wchip .ico { width: 15px; height: 15px; color: var(--or); } .wchip i { font-style: normal; color: var(--mu); margin-left: 3px; }
+.dial { position: relative; width: 236px; height: 236px; margin: 4px auto 12px; }
+.dial svg { width: 236px; height: 236px; }
+.four { display: grid; grid-template-columns: repeat(3, 72px); grid-template-rows: repeat(3, 62px); gap: 8px; justify-content: center; margin: 6px 0 14px; }
+.four span { border-radius: 14px; border: 1.5px solid #ffffff22; display: grid; place-items: center; font: 400 22px 'SC Display'; color: var(--ink); background: #ffffff06; }
+.four span small { display: block; font: 500 10.5px 'SC Label'; letter-spacing: .14em; color: var(--mu); text-align: center; margin-top: -10px; }
+.four span.on { border-color: var(--or); color: var(--or); background: #fa812718; box-shadow: 0 0 18px #fa812733; }
+.four .home, .four .x { border: 0; background: none; color: var(--mu); }
+.four .home svg { width: 44px; height: 44px; }
+
+/* tonight page bits */
+.pg { position: absolute; left: 0; right: 0; top: 96px; bottom: 0; background: var(--navy); padding: 14px 16px; z-index: 3; }
+.pg .h2 { font: 500 12px 'SC Label'; letter-spacing: .2em; text-transform: uppercase; color: var(--mu); margin: 14px 0 9px; display: flex; justify-content: space-between; }
+.pg .big { font: 400 20px/1.15 'SC Display'; color: var(--ink); margin: 2px 0 2px; }
+.pg .sub2 { font: 500 13px 'SC Label'; color: var(--mu); letter-spacing: .04em; }
+.stop { display: flex; gap: 10px; align-items: center; padding: 10px 11px; border-radius: 14px; background: #0f1d31; border: 1px solid #22344e; margin-bottom: 8px; }
+.stop .tm { width: 52px; flex: none; font: 400 15px/1.1 'SC Display'; color: var(--ink); }
+.stop .tm small { display: block; font: 500 11px 'SC Label'; letter-spacing: .08em; color: var(--mu); margin-top: 2px; }
+.stop .tx { flex: 1; min-width: 0; } .stop .tx b { display: block; font: 500 15px/1.15 'SC Label'; color: var(--ink); font-weight: 500; }
+.stop .tx small { display: block; font: 500 12px/1.3 'SC Label'; color: var(--mu); letter-spacing: .03em; }
+.stop .tx .tr2 { font: 500 11px 'SC Label'; letter-spacing: .16em; text-transform: uppercase; }
+.stop .ib { width: 34px; height: 34px; flex: none; display: grid; place-items: center; color: var(--ink); border-radius: 10px; }
+.stop .ib .ico { width: 19px; height: 19px; }
+.stop.thru { box-shadow: inset 3px 0 0 var(--or); }
+.wbar { display: flex; align-items: center; gap: 10px; padding: 9px 11px; border-radius: 12px; border: 1px solid #fa812755; background: #fa81270f; }
+.wbar .ico { color: var(--or); width: 20px; height: 20px; }
+.wbar b { font: 500 14px 'SC Label'; color: var(--ink); font-weight: 500; flex: 1; letter-spacing: .02em; }
+.wbar span { font: 500 12px 'SC Label'; letter-spacing: .14em; color: var(--or); }
+
+/* nudge styles */
+.ghint { position: absolute; left: 0; right: 0; top: 418px; text-align: center; z-index: 4; font: 500 12.5px 'SC Label'; letter-spacing: .16em; text-transform: uppercase; color: #fff2b3d0; text-shadow: 0 1px 6px #080f1b; }
+.ghint b { color: var(--or); font-weight: 500; }
+.edge { position: absolute; z-index: 4; width: 34px; height: 34px; border-radius: 50%; background: var(--or); display: grid; place-items: center; color: #120a02; font: 700 16px system-ui; box-shadow: 0 0 0 0 #fa812799; animation: pulse 1.6s infinite; }
+@keyframes pulse { 0% { box-shadow: 0 0 0 0 #fa812799; } 70%, 100% { box-shadow: 0 0 0 14px #fa812700; } }
+.edge + .el { position: absolute; z-index: 4; font: 500 11.5px/1.2 'SC Label'; letter-spacing: .14em; color: var(--ink); text-align: right; text-shadow: 0 1px 5px #000; }
+.timer { position: absolute; left: 50%; top: 220px; transform: translateX(-50%); z-index: 4; font: 500 11px 'SC Label'; letter-spacing: .16em; color: #8d93a0; border: 1px dashed #8d93a066; border-radius: 99px; padding: 3px 9px; white-space: nowrap; }
+
+/* fade teaching */
+.teach { position: absolute; left: 104px; right: 12px; top: 150px; z-index: 5; padding: 10px 13px 11px; border-radius: 13px; background: var(--tkbg); border: 1px solid #ffc93d66; box-shadow: 0 8px 22px #0008, 0 0 18px #ffc93d22; }
+.teach::after { content: ''; position: absolute; left: 76px; bottom: -7px; width: 12px; height: 12px; margin-left: -6px; background: #0b121e; border-right: 1px solid #ffc93d66; border-bottom: 1px solid #ffc93d66; transform: rotate(45deg); }
+.teach small { display: block; font: 500 11px 'SC Label'; letter-spacing: .2em; text-transform: uppercase; color: var(--fade); }
+.teach span { display: block; font: 500 14.5px/1.3 'SC Label'; color: var(--ink); letter-spacing: .02em; margin-top: 3px; }
+.ringpulse { animation: rp .9s ease-in-out infinite alternate; transform-origin: 180px 340px; }
+@keyframes rp { from { opacity: .75; } to { opacity: 1; } }
+.satfade { animation: sf 2.6s ease-in infinite; }
+@keyframes sf { 0%, 30% { opacity: 1; } 85%, 100% { opacity: .12; } }
+
+.top { max-width: 1180px; margin-top: 30px; border: 1px solid #6b5a2c; border-radius: 22px; padding: 22px 24px; background: radial-gradient(ellipse at 20% 0%, #1d1a10, #0b1220 60%); }
+.top h2 { font: 400 24px 'SC Display'; margin: 0 0 4px; } .top > p { color: var(--mu); margin: 0 0 16px; }
+.top ol { margin: 0; padding: 0; list-style: none; counter-reset: t; display: grid; gap: 12px; }
+.top li { counter-increment: t; display: grid; grid-template-columns: 44px 1fr; gap: 6px; align-items: baseline; }
+.top li::before { content: counter(t); font: 400 26px 'SC Display'; color: var(--gold); }
+.top li b { font: 400 17px 'SC Display'; font-weight: 400; } .top li span { color: var(--mu); display: block; font-size: 14px; }
+.note { color: #8d93a0; font-size: 13px; max-width: 1100px; margin-top: 26px; }
+.note b { color: var(--mu); }
+@media (prefers-reduced-motion: reduce) { .ph * { animation: none !important; } }
+@media (max-width: 420px) { body { padding: 20px 12px 60px; } .opt { width: 100%; max-width: 360px; } .ph { width: 360px; max-width: 100%; } }
+</style></head><body>
+
+<h1>Real sky, real situations</h1>
+<p class="lead">Five changes for the player who’s standing in an actual backyard, a bright city, or behind a window, and for the moments at night when the screen should say a little more. Each idea shows what the app does today and what I’d change.</p>
+<p class="how"><b>How to read the mock-ups:</b> the phones are the real Explore screen at 90% size, with sky backgrounds captured from the app tonight (Toronto area, 9:15 PM) and real card art. <b>Today</b> phones are the current app; <b>Proposed</b> or <b>A / B</b> are the change. <b>Effort:</b> <span style="color:var(--unc)">small</span> is an afternoon, <span style="color:var(--gold)">medium</span> a day or two, <span style="color:var(--or)">large</span> more.</p>
+
+<!-- ─────────────── SECTION 1 ─────────────── -->
+<div class="sec"><b>Works for the player’s real situation</b> · bright skies, wrong compasses, stuck indoors</div>
+
+<div class="idea">
+<h2><span class="no">01</span>Which looks like your sky?</h2>
+<p>The sky slider asks people to judge “how dark is your sky” with no reference, so most leave it at the default. Instead, on the first night, show <b>three small pictures of Orion</b> as it looks from a city, the suburbs and the countryside (the faint stars drop out as the sky gets brighter). Tap the one that matches what you see and the slider jumps there. This is the <b>Globe at Night</b> method (globeatnight.org): since 2006 people have measured light pollution by matching Orion to star charts of different limiting magnitudes. We use three charts, not seven. When Orion isn’t up in the evening (about April to October), the Big Dipper takes its place.</p>
+<div class="tags"><span class="tag m">Medium</span><span class="tag f">Tour step · Settings</span></div>
+<div class="row">
+  <div class="opt"><div class="lab"><span class="ab">Proposed</span>As a tour card</div><div class="ph" data-m="m1a"></div>
+    <p class="today">A fourth tour card after Location, before the first catch. “Not sure” leaves the slider halfway, as now. The pictures use the real positions and brightness of Orion’s stars; stars fainter than 2.5 (city), 4 (suburbs) and 6 (countryside) are left out.</p></div>
+  <div class="opt"><div class="lab"><span class="ab">Proposed</span>The sky wakes up set</div><div class="ph" data-m="m1b"></div>
+    <p class="today"><b>Today:</b> the slider sits halfway for everyone, so a city player sees stars on screen that aren’t in their sky, and a countryside player misses faint satellites. Here the slider glides to the picked spot as the sky wakes, then rests.</p></div>
+  <div class="opt"><div class="lab"><span class="ab">Proposed</span>Settings → Your sky</div><div class="ph" data-m="m1c"></div>
+    <p class="today">One new row under the slider. Its value says what you last picked, so the slider and the picture never disagree in words.</p></div>
+  <div class="opt"><div class="lab"><span class="ab">Proposed</span>The sheet, Big Dipper season</div><div class="ph" data-m="m1d"></div>
+    <p class="today">From Settings, the same choice as a sheet. In late October evenings Orion isn’t up until after 11 PM, so it opens on the Big Dipper, low in the north; the chips let you switch.</p></div>
+</div>
+</div>
+
+<div class="idea">
+<h2><span class="no">02</span>Moon check</h2>
+<p>The compass on many phones is off by 5–20°, and the player has no way to know. The Moon is the one thing everyone can find in the real sky. So the <b>first time someone catches the Moon</b>, after the reveal, the ticket under the circle asks one plain question: <b>is the real Moon in the circle?</b> Yes ends it. “It’s off” opens Line up the sky already pointed at the Moon, which is the reference it would pick anyway.</p>
+<div class="tags"><span class="tag s">Small</span><span class="tag f">Uses Line up the sky</span></div>
+<div class="row">
+  <div class="opt"><div class="lab"><span class="ab t">Today</span>After the Moon’s reveal</div><div class="ph" data-m="m2a"></div>
+    <p class="today"><b>Today:</b> you’re back on the sky with View card. If the drawn Moon is 10° to the side of the real one, nothing says so, and every satellite after it is off by the same amount.</p></div>
+  <div class="opt"><div class="lab"><span class="ab">Proposed</span>The one-time question</div><div class="ph" data-m="m2b"></div>
+    <p class="today">Shown once, in place of the View card ticket, about a second after the reveal closes. It only shows if the Moon is 10°+ up. Ignoring it (turning away) counts as no answer and it asks again next Moon.</p></div>
+  <div class="opt"><div class="lab"><span class="ab">Proposed</span>“It’s off” → Line up the sky</div><div class="ph" data-m="m2c"></div>
+    <p class="today">Opens the existing Line up flow on step A with the Moon as the reference. The drawn Moon stays where the app thinks it is, with a dashed ring, so the gap is obvious.</p></div>
+  <div class="opt"><div class="lab"><span class="ab">Proposed</span>Lined up</div><div class="ph" data-m="m2d"></div>
+    <p class="today">The usual “Sky lined up” notice and the View card ticket back. Settings → Aiming → Last lined up reads “Against the Moon · just now”.</p></div>
+</div>
+</div>
+
+<div class="idea">
+<h2><span class="no">03</span>Window mode</h2>
+<p>Lots of people will try this from inside: a balcony door, a bedroom window, a car. Today the app happily points at a satellite behind the wall. <b>Window mode</b> asks which way your window faces, then the sky <b>only shows that slice</b> (the rest is hatched as wall), and Tonight lists <b>only the passes that cross it</b>: “3 passes through your window tonight”. It also explains why some nights look empty from inside.</p>
+<div class="tags"><span class="tag l">Large</span><span class="tag f">Settings · Explore · Tonight</span></div>
+<div class="row">
+  <div class="opt"><div class="lab"><span class="ab">A</span>Picker: four directions</div><div class="ph" data-m="m3a"></div>
+    <p class="today">The simplest. Four big buttons and “Use my phone”: hold the phone flat against the glass and tap, and it reads the heading. A window is treated as 90° wide.</p></div>
+  <div class="opt"><div class="lab"><span class="ab">B</span>Picker: eight directions</div><div class="ph" data-m="m3b"></div>
+    <p class="today">A dial with eight slices and a width choice (narrow window 60°, wide 100°). More exact, a little more to think about. My pick: A with the phone button, since the phone knows better than the player.</p></div>
+  <div class="opt"><div class="lab"><span class="ab">Proposed</span>The sky through the window</div><div class="ph" data-m="m3c"></div>
+    <p class="today">Past the window’s edge the sky is hatched and dimmed, and nothing there can be targeted. The radar shows the window as a lit wedge. A chip under the header says the mode is on; ✕ turns it off.</p></div>
+  <div class="opt"><div class="lab"><span class="ab">Proposed</span>Tonight, filtered</div><div class="ph" data-m="m3d"></div>
+    <p class="today">Rows show the minutes each pass is inside the window, not its whole pass. The rest are one tap away, never hidden for good.</p></div>
+</div>
+</div>
+
+<!-- ─────────────── SECTION 2 ─────────────── -->
+<div class="sec"><b>Clarity at night</b> · when the screen should say a little more</div>
+
+<div class="idea">
+<h2><span class="no">04</span>Empty-sky nudge</h2>
+<p>A new player often points at a patch of sky with nothing in it, waits, and decides the app doesn’t work. After about <b>20 seconds at night with nothing in the circle</b>, a gentle line under the circle says so and points to where the action is: <b>“Nothing lit here · 3 up to the east ›”</b>. Tapping it steers you there with the normal arrow. It counts only new cards that are lit right now, and it goes away the moment you move.</p>
+<div class="tags"><span class="tag s">Small</span><span class="tag f">Explore</span></div>
+<div class="row">
+  <div class="opt"><div class="lab"><span class="ab t">Today</span>20 seconds of nothing</div><div class="ph" data-m="m4a"></div>
+    <p class="today"><b>Today:</b> an empty circle and silence. The radar does show the glows, but new players don’t read it yet.</p></div>
+  <div class="opt"><div class="lab"><span class="ab">A</span>A ticket, like the others</div><div class="ph" data-m="m4b"></div>
+    <p class="today">Uses the same dark ticket as every other state under the circle, in the grey “guidance” colour, so it reads as part of the system. The whole ticket is the button.</p></div>
+  <div class="opt"><div class="lab"><span class="ab">B</span>One quiet line + edge arrow</div><div class="ph" data-m="m4c"></div>
+    <p class="today">Lighter: one line of text under the circle and the pulsing orange edge arrow on the side to turn. Less to read; easier to miss. My pick: A for the first three nights, then B.</p></div>
+  <div class="opt"><div class="lab"><span class="ab">Proposed</span>After the tap</div><div class="ph" data-m="m4d"></div>
+    <p class="today">The usual steering ticket and edge arrow, aimed at the rarest of the three. When it reaches the circle, the normal Collect ticket takes over.</p></div>
+</div>
+</div>
+
+<div class="idea">
+<h2><span class="no">05</span>Teach the fade, live</h2>
+<p>Catch the fade is the best skill in the game, and nobody finds it on their own. The gold ring that runs down (“FADES IN 8S”) means nothing the first time. So the <b>first time the countdown ring appears</b>, one line explains it right there: <b>“It’s about to slip into Earth’s shadow. Tap Collect just as it vanishes for a shiny.”</b> Then the shiny notice says what you did, so it sticks.</p>
+<div class="tags"><span class="tag s">Small</span><span class="tag f">Explore · notice</span></div>
+<div class="row">
+  <div class="opt"><div class="lab"><span class="ab">A</span>A callout above the circle</div><div class="ph" data-m="m5a"></div>
+    <p class="today">Points at the ring itself, so the ring and the words connect. Sits between the header and the circle, where nothing else lives at night.</p></div>
+  <div class="opt"><div class="lab"><span class="ab">B</span>Inside the ticket</div><div class="ph" data-m="m5b"></div>
+    <p class="today">The ticket’s meta line turns gold and says it. Nothing new on screen, but it’s further from the ring, and the taller ticket pushes the sky slider aside (as tall tickets already do). My pick: A.</p></div>
+  <div class="opt"><div class="lab"><span class="ab">Proposed</span>The last three seconds</div><div class="ph" data-m="m5c"></div>
+    <p class="today">The ring brightening to NOW! and the object fading are <b>today’s</b> behaviour. With the line above, the player now knows this is the moment. The line stays until the tap or the fade.</p></div>
+  <div class="opt"><div class="lab"><span class="ab">Proposed</span>The shiny notice</div><div class="ph" data-m="m5d"></div>
+    <p class="today">After the reveal, the notice names the move: “You caught it as it slipped into Earth’s shadow.” <b>Today</b> the reveal says SHINY but nothing says what earned it. If the tap was late, a one-time line instead: “Just missed it. Next time tap as it vanishes.”</p></div>
+</div>
+</div>
+
+<div class="top"><h2>Order I’d build them</h2><p>Smallest and most useful first.</p>
+<ol>
+<li><div><b>05 · Teach the fade</b><span>An afternoon. Turns the best skill in the game from a secret into something every player tries on their first fade.</span></div></li>
+<li><div><b>02 · Moon check</b><span>Small, because Line up the sky already exists. It finds wrong compasses on the night they matter, instead of never.</span></div></li>
+<li><div><b>04 · Empty-sky nudge</b><span>Small. Rescues the “it doesn’t work” first night.</span></div></li>
+<li><div><b>01 · Which looks like your sky?</b><span>Medium. The pictures are the work; the slider mapping is already there.</span></div></li>
+<li><div><b>03 · Window mode</b><span>Large: it touches targeting, the radar and the Tonight planner. Worth doing once the others are in.</span></div></li>
+</ol></div>
+
+<p class="note"><b>Notes.</b> Slider mapping for 01: City → 17.5 (Bright city), Suburbs → 19.45 (today’s default), Countryside → 21.3; Globe at Night publishes the matching limiting magnitudes. Orion is high enough in the evening from about November to March; outside that the card uses the Big Dipper. All one-time prompts are saved per device and skipped under the tour. Red night mode turns every new piece red like the rest of the HUD.</p>
+
+<script>
+/* ── shared pieces ── */
+const S = 360 / 402;              // mock = real app × 0.9
+const CX = 180, CY = 340, R = 59; // the circle in a 360 × 680 phone
+const sky = (img, sy = 437, cls = '') => `<img class="bg ${cls}" src="real-sky/${img}" style="top:${(CY - sy * S).toFixed(1)}px" alt="">`;
+const stat = (t = '9:15') => `<div class="stat"><span>${t}</span><span>●●● ▮</span></div>`;
+const hdr = (a = 'SPACE COLLECTOR', b = 'COLLECT THE NIGHT SKY', x = false) => `<div class="hdr"><div class="wm">${a}<span>${b}</span></div>${x ? '<span style="font:500 24px SC Label;color:var(--ink)">✕</span>' : '<svg class="gear" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/></svg>'}</div>`;
+const tabs = (on = 1) => `<div class="tabs">${['TONIGHT', 'EXPLORE', 'COLLECTION'].map((t, i) => `<b class="${i === on ? 'on' : ''}">${t}</b>`).join('')}</div>`;
+const slider = (v = 50, hot = false, rd = '') => `<div class="sl ${hot ? 'hot' : ''}" style="--v:${v}%">${rd ? `<div class="rd">${rd}</div>` : ''}<i>SEE LESS</i><div class="tr"></div><i>SEE MORE</i></div>`;
+// radar: heading-up heat dial, glows for things up; wedge = window
+const radar = (opts = {}) => { const { wedge = null, n = '14 up', top = 104 } = opts;
+  const g = [[30, 34, '#4da3ff'], [58, 28, '#fa8127'], [52, 52, '#ffffff'], [26, 56, '#ffffff'], [62, 44, '#fa8127'], [44, 20, '#ffffff']];
+  return `<div class="rad" style="top:${top}px"><svg viewBox="0 0 80 80"><defs><radialGradient id="rg"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient></defs>
+  <circle cx="40" cy="40" r="37" fill="#0b1424e6" stroke="#bcb585" stroke-opacity=".55"/><circle cx="40" cy="40" r="24" fill="none" stroke="#627a8b" stroke-opacity=".5"/>
+  ${wedge ? `<path d="M40 40 L${40 + 37 * Math.sin(wedge[0] * Math.PI / 180)} ${40 - 37 * Math.cos(wedge[0] * Math.PI / 180)} A37 37 0 0 1 ${40 + 37 * Math.sin(wedge[1] * Math.PI / 180)} ${40 - 37 * Math.cos(wedge[1] * Math.PI / 180)} Z" fill="#fa8127" fill-opacity=".22" stroke="#fa8127" stroke-opacity=".7"/>` : ''}
+  ${g.map(([x, y, c]) => `<circle cx="${x}" cy="${y}" r="7" fill="${c}" opacity=".35"/>`).join('')}
+  <path d="M40 40 L33 8 A33 33 0 0 1 47 8 Z" fill="#fff2b3" fill-opacity=".12"/><text x="40" y="12" text-anchor="middle" font-family="SC Label" font-size="9" fill="#fff2b3">N</text></svg><small>${n}</small></div>`; };
+// the sight (js/sky.js drawReticle): one ring over a dark halo + four ticks
+const ret = (ink = 'rgba(233,223,174,.7)', locked = false, extra = '') => `<svg class="ret" viewBox="0 0 360 680">
+  <circle cx="${CX}" cy="${CY}" r="${R}" fill="none" stroke="rgba(8,15,27,.28)" stroke-width="6"/>
+  ${locked ? `<circle cx="${CX}" cy="${CY}" r="${R}" fill="none" stroke="${ink}" stroke-width="6" opacity=".25" style="filter:blur(4px)"/>` : ''}
+  <circle cx="${CX}" cy="${CY}" r="${R}" fill="none" stroke="${ink}" stroke-width="${locked ? 2.25 : 1.5}"/>
+  ${[0, 90, 180, 270].map((a) => { const c = Math.cos(a * Math.PI / 180), s = Math.sin(a * Math.PI / 180); return `<line x1="${CX + c * (R + 6)}" y1="${CY + s * (R + 6)}" x2="${CX + c * (R + 17)}" y2="${CY + s * (R + 17)}" stroke="rgba(8,15,27,.3)" stroke-width="5"/><line x1="${CX + c * (R + 6)}" y1="${CY + s * (R + 6)}" x2="${CX + c * (R + 17)}" y2="${CY + s * (R + 17)}" stroke="${ink}" stroke-width="2"/>`; }).join('')}
+  ${extra}</svg>`;
+const mini = (art, locked = true) => `<div class="mini"><div class="w ${locked ? 'lk' : ''}"><img src="../assets/art/cards/sm/${art}.webp" alt=""></div><i></i><i class="s"></i><i></i></div>`;
+const explore = (body, o = {}) => `${sky(o.img ?? 'east.jpg', o.sy ?? 437, o.cls ?? '')}${stat(o.t)}${hdr()}${o.radar === false ? '' : radar(o.rad)}${body}${o.slider === false ? '' : slider(o.v ?? 50, o.hot, o.rd)}${o.tabs === false ? '' : tabs(o.tab ?? 1)}`;
+const ico = (n) => `<span class="ico" data-ico="${n}"></span>`;
+
+/* ── Orion / Big Dipper, real positions (RA h, Dec °, mag) ── */
+const ORION = [[5.919,7.41,.5],[5.242,-8.20,.13],[5.419,6.35,1.64],[5.796,-9.67,2.06],[5.679,-1.94,1.77],[5.604,-1.20,1.69],[5.533,-.30,2.23],[5.585,9.93,3.39],[5.579,9.49,4.39],[5.613,9.29,4.09],[5.590,-5.91,2.77],[5.588,-5.39,4.0],[5.591,-4.84,4.6],[5.408,-2.40,3.36],[4.830,6.96,3.19],[4.844,8.90,4.35],[4.853,5.61,3.68],[4.904,2.44,3.71],[4.909,10.15,4.65],[4.976,1.71,4.47],[4.940,13.51,4.07],[4.877,14.25,4.74],[6.040,9.65,4.12],[6.130,14.77,4.42],[6.200,14.21,4.48],[5.906,20.28,4.39],[5.999,20.14,4.63],[5.645,-2.60,3.80],[5.655,4.12,4.57],[5.449,3.10,4.59],[5.293,-6.84,3.60],[5.399,-7.81,4.13],[5.131,-5.09,2.79]];
+const DIPPER = [[11.062,61.75,1.79],[11.031,56.38,2.37],[11.897,53.69,2.44],[12.257,57.03,3.31],[12.900,55.96,1.77],[13.399,54.93,2.27],[13.792,49.31,1.86],[13.420,54.99,3.99],[9.525,63.06,3.67],[11.161,44.50,3.01],[10.372,41.50,3.06],[9.849,59.04,3.80],[11.767,47.78,3.71],[12.354,47.78,5.0]];
+let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+function chart(stars, { ra0, dec0, k, limit, look, fill = 40 }) {
+  seed = 7;
+  const cosd = Math.cos(dec0 * Math.PI / 180), pts = stars.map(([ra, dec, m]) => [50 - (ra - ra0) * 15 * cosd * k, 60 - (dec - dec0) * k, m]);
+  for (let i = 0; i < fill; i++) pts.push([rnd() * 100, rnd() * 120, 4.3 + rnd() * 1.7]); // the faint field
+  const bg = { city: '<rect width="100" height="120" fill="#1f2632"/><rect width="100" height="120" fill="url(#glow-city)"/>',
+    sub: '<rect width="100" height="120" fill="#121c2e"/><rect width="100" height="120" fill="url(#glow-sub)"/>',
+    dark: '<rect width="100" height="120" fill="#060a14"/><path d="M-10 120 C 20 80, 10 40, 30 -5 L 50 -5 C 30 40, 42 80, 20 120 Z" fill="#9fb3d8" opacity=".07"/>' }[look];
+  const shown = pts.filter((p) => p[2] <= limit);
+  return { n: shown.length, svg: `<svg viewBox="0 0 100 120"><defs>
+    <radialGradient id="glow-city" cx=".5" cy="1.1" r="1"><stop offset="0" stop-color="#c88a52" stop-opacity=".55"/><stop offset=".7" stop-color="#6a5a52" stop-opacity=".15"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+    <radialGradient id="glow-sub" cx=".5" cy="1.15" r=".9"><stop offset="0" stop-color="#7a6a5a" stop-opacity=".35"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient></defs>${bg}
+    ${shown.map(([x, y, m]) => { const r = Math.max(.42, .4 + (6.3 - m) * .33); return `${m < 2.5 ? `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(r * 2.4).toFixed(2)}" fill="#fff6d6" opacity=".14"/>` : ''}<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r.toFixed(2)}" fill="${m < 1 && x < 40 ? '#ffd2a0' : '#fff8e6'}"/>`; }).join('')}</svg>` }; }
+const LOOKS = [['City', 2.5, 'city'], ['Suburbs', 4.0, 'sub'], ['Countryside', 6.0, 'dark']];
+const skies = (which, on = 1) => `<div class="skies">${LOOKS.map(([name, lim, look], i) => { const c = which === 'orion' ? chart(ORION, { ra0: 5.5, dec0: 4.5, k: 3.2, limit: lim, look }) : chart(DIPPER, { ra0: 12.2, dec0: 54.5, k: 2.7, limit: lim, look, fill: 34 });
+  return `<div class="sk ${i === on ? 'on' : ''}">${c.svg}<div class="cap">${name}<small>${i === 0 ? 'only the brightest' : i === 1 ? 'a few dozen' : 'too many to count'}</small></div></div>`; }).join('')}</div>`;
+
+/* ── 01 ── */
+const M = {};
+M.m1a = () => `${sky('south.jpg', 437, 'sleep')}${stat('11:05')}${hdr()}
+  <div class="tcard"><div class="bar"><b>Your sky</b><span>Step 3 of 4</span></div>
+  <h3>Which looks like your sky?</h3><div class="sub">Orion · low in the southeast</div>
+  ${skies('orion', 1)}
+  <p>Step outside and find Orion’s belt. Tap the picture that looks most like the real thing.</p>
+  <div class="acts"><span class="no">Not sure</span><span class="yes">This one</span></div></div>`;
+M.m1b = () => explore(`${ret()}<div class="note2" style="--nc:var(--steel)"><div class="tile">${ico('stars')}</div><div class="tx"><small>Your sky</small><b>Set to the suburbs</b><span>Slide it if the screen shows more than you see.</span></div></div>`, { img: 'south.jpg', sy: 437, hot: true, v: 31, rd: 'Suburbs · about 900 stars', rad: { top: 186 } });
+M.m1c = () => `${stat()}${hdr('SETTINGS', 'MAKE IT YOURS', true)}<div class="set">
+  <div class="scard"><div class="h"><span>Your sky</span><span>02</span></div>
+   <div class="srow">${ico('stars')}<div class="t"><b>Sky · Suburbs</b><div class="mt"></div></div></div>
+   <div class="srow new">${ico('constellation')}<div class="t"><b>Match it to the real sky<span class="newtag">NEW</span></b><small>Compare three pictures with what you see</small></div><span class="v">›</span></div>
+   <div class="srow">${ico('pin')}<div class="t"><b>Location</b><small>Using where you are now</small></div><span class="v">›</span></div>
+   <div class="srow">${ico('owl')}<div class="t"><b>Night owl</b><small>Plan to dawn, not just the evening</small></div><span class="tg">OFF</span></div></div>
+  <div class="scard"><div class="h"><span>Aiming</span><span>03</span></div>
+   <div class="srow">${ico('north')}<div class="t"><b>Compass</b><small>Is the sky drifting or off to one side?</small></div><span class="tg on">LINE UP</span></div>
+   <div class="srow">${ico('compass')}<div class="t"><b>Last lined up</b><small>Not yet</small></div><span class="v">0°</span></div></div></div>`;
+M.m1d = () => `${stat()}${hdr('SETTINGS', 'MAKE IT YOURS', true)}<div class="set" style="filter:brightness(.45)"><div class="scard"><div class="h"><span>Your sky</span><span>02</span></div><div class="srow">${ico('stars')}<div class="t"><b>Sky · Suburbs</b><div class="mt"></div></div></div></div></div>
+  <div class="dim" style="background:#04070d66"></div>
+  <div class="sheet"><div class="grab"></div><div class="ey">Your sky</div><h3>Which looks like your sky?</h3>
+  <div class="chips"><span>Orion</span><span class="on">Big Dipper</span></div>
+  <p style="margin:6px 0 0">Look low in the north for the Big Dipper, then pick the closest match.</p>
+  ${skies('dipper', 0)}
+  <div class="btn p">Use this one</div><div class="foot"><span>Cancel</span><span>About this</span></div></div>`;
+
+/* ── 02 ── */
+const moonTk = (inner) => `<div class="tk" style="--tkc:#fff2b3;--tkk:#c9cbb6">${inner}</div>`;
+M.m2a = () => explore(`${ret('#fff2b3', true)}${moonTk(`${mini('moon', false)}<div class="col"><div class="k">● Common<em>384,000 km</em></div><div class="n">Moon</div><div class="b">View card</div></div>`)}`, { img: 'moon.jpg' });
+M.m2b = () => explore(`${ret('#fff2b3', true)}${moonTk(`<div class="col"><div class="k" style="color:var(--gold)">Quick check · once</div><div class="n">Is the real Moon in the circle?</div><div class="m">Look past your phone at the sky.</div><div class="bb"><div class="b">Yes</div><div class="b o">It’s off</div></div></div>`)}`, { img: 'moon.jpg' });
+M.m2c = () => `${sky('east.jpg')}${stat()}${hdr('LINE UP THE SKY', 'STEP 1 OF 2', true)}
+  ${ret('#fa8127', true, `<circle cx="264" cy="344" r="20" fill="none" stroke="#fff2b3" stroke-opacity=".8" stroke-width="1.5" stroke-dasharray="4 4"/><path d="M${CX} ${CY} m${R + 22} 0" stroke="none"/><line x1="${CX + R + 20}" y1="${CY + 4}" x2="242" y2="${CY + 4}" stroke="#fff2b3" stroke-opacity=".5" stroke-dasharray="2 4"/>`)}
+  <span class="tagl" style="right:10px;top:372px;text-align:right">Drawn Moon<br>where the app<br>thinks it is</span>
+  <span class="tagl" style="left:118px;top:254px;color:var(--or)">Point here at the real one</span>
+  <div class="cb"><div class="k">Find the Moon</div><h3>Point the circle at the real Moon</h3><p>It’s up in the east. Hold it in the middle of the circle, then tap. The drawn Moon will jump into place.</p><div class="bb"><span class="btn">Drag instead</span><span class="btn p">It’s in the circle</span></div><div class="foot"><span>Cancel</span><b>Reset to the phone’s compass</b></div></div>`;
+M.m2d = () => explore(`${ret('#fff2b3', true)}<div class="note2" style="--nc:#5fd08a"><div class="tile">${ico('north')}</div><div class="tx"><small>Sky lined up</small><b>Turned 7° east, against the Moon</b><span>Change it in Settings → Aiming.</span></div></div>${moonTk(`${mini('moon', false)}<div class="col"><div class="k">● Common<em>384,000 km</em></div><div class="n">Moon</div><div class="b">View card</div></div>`)}`, { img: 'moon.jpg', rad: { top: 186 } });
+
+/* ── 03 ── */
+const house = `<svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M7 21 L22 9 L37 21 V36 H7 Z"/><rect x="17" y="24" width="10" height="9"/><path d="M22 24v9M17 28.5h10"/></svg>`;
+M.m3a = () => `${sky('south.jpg', 437, 'sleep')}${stat()}${hdr()}<div class="dim" style="background:#04070d55"></div>
+  <div class="sheet"><div class="grab"></div><div class="ey">Window mode</div><h3>Which way does your window face?</h3>
+  <p>We’ll only show the sky you can see through it, and the passes that cross it.</p>
+  <div class="four"><span class="x"></span><span>N</span><span class="x"></span><span>W</span><span class="home">${house}</span><span>E</span><span class="x"></span><span class="on">S</span><span class="x"></span></div>
+  <div class="btn" style="margin-bottom:8px;gap:8px;display:flex;justify-content:center;align-items:center">${ico('compass')} Use my phone</div>
+  <div style="font:500 12.5px/1.3 SC Label;color:var(--mu);text-align:center;margin-bottom:12px">Hold it flat against the glass and tap.</div>
+  <div class="btn p">Show my window</div></div>`;
+const dial = () => { const dirs = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW']; let s = '';
+  dirs.forEach((d, i) => { const a0 = (i * 45 - 22.5) * Math.PI / 180, a1 = (i * 45 + 22.5) * Math.PI / 180, r0 = 46, r1 = 112, on = d === 'SE';
+    const P = (r, a) => `${118 + r * Math.sin(a)} ${118 - r * Math.cos(a)}`;
+    s += `<path d="M${P(r0, a0)} L${P(r1, a0)} A${r1} ${r1} 0 0 1 ${P(r1, a1)} L${P(r0, a1)} A${r0} ${r0} 0 0 0 ${P(r0, a0)} Z" fill="${on ? '#fa8127' : '#ffffff'}" fill-opacity="${on ? .26 : .04}" stroke="${on ? '#fa8127' : '#ffffff22'}" stroke-width="1.2"/>`;
+    const am = i * 45 * Math.PI / 180; s += `<text x="${118 + 80 * Math.sin(am)}" y="${118 - 80 * Math.cos(am) + 6}" text-anchor="middle" font-family="SC Display" font-size="${d.length > 1 ? 14 : 17}" fill="${on ? '#fa8127' : '#fff2b3'}">${d}</text>`; });
+  return `<div class="dial"><svg viewBox="0 0 236 236">${s}<g transform="translate(96 96)" color="#bdbea9" style="color:#bdbea9">${house.replace('<svg', '<svg width="44" height="44"')}</g></svg></div>`; };
+M.m3b = () => `${sky('south.jpg', 437, 'sleep')}${stat()}${hdr()}<div class="dim" style="background:#04070d55"></div>
+  <div class="sheet"><div class="grab"></div><div class="ey">Window mode</div><h3>Which way does your window face?</h3>
+  ${dial()}
+  <div class="chips" style="justify-content:center;margin-bottom:12px"><span>Narrow</span><span class="on">Wide</span><span>Door / balcony</span></div>
+  <div class="btn p">Show my window</div><div class="foot"><span>Use my phone</span><span>Cancel</span></div></div>`;
+M.m3c = () => explore(`<div class="hatch r" style="left:262px;right:0"></div><span class="tagl" style="left:270px;top:470px;line-height:1.3">Wall<br><span style="color:var(--mu)">past SW</span></span>
+  ${ret()}<div class="wchip"><span style="width:16px;height:16px;color:var(--or);display:inline-flex">${house}</span>Window · S<i>✕</i></div>`, { img: 'south.jpg', rad: { wedge: [295, 385], n: '5 in view' } });
+M.m3d = () => `${stat()}${hdr('TONIGHT', 'PETERBOROUGH · 9:15 PM')}<div class="pg">
+  <div class="wbar"><span style="width:20px;height:20px;color:var(--or);display:inline-flex">${house}</span><b>Window mode · facing south</b><span>OFF</span></div>
+  <div class="h2"><span>Through your window</span><span>3</span></div>
+  <div class="big">3 passes through your window tonight</div><div class="sub2" style="margin-bottom:12px">Times are when each one is inside the window.</div>
+  <div class="stop thru"><div class="tm">9:42<small>in 27 min</small></div><div class="tx"><span class="tr2" style="color:var(--rare)">◆ Rare · new</span><b>Kosmos 1408 Stage</b><small>9:42–9:45 PM · halfway up in the SE</small></div><span class="ib">${ico('ring')}</span><span class="ib">${ico('bell')}</span></div>
+  <div class="stop thru"><div class="tm">10:18<small>in 1 h</small></div><div class="tx"><span class="tr2" style="color:var(--unc)">▲ Uncommon · new</span><b>Hubble</b><small>10:18–10:21 PM · low in the S</small></div><span class="ib">${ico('ring')}</span><span class="ib">${ico('bell')}</span></div>
+  <div class="stop thru"><div class="tm">11:04<small>in 2 h</small></div><div class="tx"><span class="tr2" style="color:#c9ccd1">● Common</span><b>SL-8 Rocket Stage</b><small>11:04–11:06 PM · high in the S</small></div><span class="ib">${ico('ring')}</span><span class="ib">${ico('bell')}</span></div>
+  <div class="h2" style="margin-top:18px"><span>14 more on the other side of the house</span><span style="color:var(--or);white-space:nowrap">Show ›</span></div></div>${tabs(0)}`;
+
+/* ── 04 ── east.jpg, an empty patch above the Moon ── */
+const E = { img: 'empty.jpg', sy: 600 };
+M.m4a = () => explore(`${ret()}<div class="timer">◷ 20 s · nothing in the circle</div>`, E);
+M.m4b = () => explore(`${ret()}<div class="tk slim" style="--tkc:#9fb0c2"><div class="col"><div class="k">Nothing lit here</div><div class="n" style="display:flex;justify-content:space-between;align-items:center">3 up to the east <span style="color:var(--or);font-size:20px">→</span></div><div class="m">The rarest: a Kosmos rocket stage.</div></div></div>`, E);
+M.m4c = () => explore(`${ret()}<div class="ghint">Nothing lit here · <b>3 up to the east ›</b></div><div class="edge" style="right:10px;top:323px">→</div><div class="el" style="right:52px;top:326px">3 UP<br><span style="color:var(--mu)">EAST</span></div>`, E);
+M.m4d = () => explore(`${ret()}<div class="tk slim" style="--tkc:#9fb0c2"><div class="col"><div class="k">Kosmos 1408 Rocket Stage</div><div class="n">Turn right →</div><div class="m">Low in the east · 2 more up nearby</div></div></div><div class="edge" style="right:10px;top:323px">→</div>`, E);
+
+/* ── 05 ── a rocket stage in the circle, south.jpg patch ── */
+const stage = (cls = '') => `<g class="${cls}" transform="translate(${CX} ${CY}) rotate(-28)"><circle r="16" fill="#fff6d6" opacity=".12"/><rect x="-10" y="-4.2" width="17" height="8.4" rx="1.5" fill="#fff2b3"/><path d="M7 -3.2 L12 -5.5 L12 5.5 L7 3.2 Z" fill="#e9dfae"/><path d="M-10 -4.2 h2 v8.4 h-2 z" fill="#c7bd93"/></g>`;
+const fadeRing = (frac, now = false) => { const r = R + 11, a = frac * 2 * Math.PI, x = CX + r * Math.sin(a), y = CY - r * Math.cos(a);
+  return `<circle cx="${CX}" cy="${CY}" r="${r}" fill="none" stroke="rgba(255,201,61,.18)" stroke-width="3"/>
+  <path class="${now ? 'ringpulse' : ''}" d="M${CX} ${CY - r} A${r} ${r} 0 ${frac > .5 ? 1 : 0} 1 ${x} ${y}" fill="none" stroke="${now ? '#ffd54a' : 'rgba(255,201,61,.85)'}" stroke-width="${now ? 4.5 : 3}" stroke-linecap="round"/>
+  <text x="${CX}" y="${CY + R - 12}" text-anchor="middle" font-family="SC Label" font-size="${now ? 13 : 11}" letter-spacing="2" fill="${now ? '#ffd54a' : 'rgba(255,201,61,.9)'}" style="paint-order:stroke" stroke="#000" stroke-opacity=".5" stroke-width="2">${now ? 'NOW!' : 'FADES IN 8S'}</text>`; };
+const findTk = (meta) => `<div class="tk" style="--tkc:#fa8127;--tkk:var(--rare)">${mini('cz-4')}<div class="col"><div class="k">◆ Rare<em>1,040 km</em></div><div class="n">CZ-4C Rocket Stage</div>${meta}<div class="b">Collect</div></div></div>`;
+const F = { img: 'west.jpg', sy: 560 };
+M.m5a = () => explore(`${ret('#fa8127', true, fadeRing(.4) + stage())}<div class="teach"><small>✦ Catch the fade</small><span>It’s about to slip into Earth’s shadow. Tap Collect just as it vanishes for a shiny.</span></div>${findTk('')}`, F);
+M.m5b = () => explore(`${ret('#fa8127', true, fadeRing(.4) + stage())}${findTk('<div class="m g">✦ It’s about to slip into Earth’s shadow. Tap Collect just as it vanishes for a shiny.</div>')}`, { ...F, slider: false });
+M.m5c = () => explore(`${ret('#fa8127', true, fadeRing(.1, true) + stage('satfade'))}<div class="teach"><small>✦ Catch the fade</small><span>It’s about to slip into Earth’s shadow. Tap Collect just as it vanishes for a shiny.</span></div>${findTk('')}`, F);
+M.m5d = () => explore(`${ret()}<div class="note2 shiny" style="--nc:#ffd8a8"><div class="tile"><img src="../assets/art/cards/sm/cz-4.webp" alt=""></div><div class="tx"><small>✦ Shiny · caught the fade</small><b>CZ-4C Rocket Stage</b><span>You caught it as it slipped into Earth’s shadow.</span></div><div class="xp">+100</div></div>`, { ...F, rad: { top: 186 } });
+
+for (const el of document.querySelectorAll('.ph[data-m]')) el.innerHTML = M[el.dataset.m]();
+</script>
+</body></html>
