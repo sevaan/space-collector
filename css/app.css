@@ -2549,3 +2549,16 @@ body.night .tc .acts.pick .pk svg * { stroke: #ff6a55; } body.night .tc .acts.pi
 body.night #sky-match { border-top-color: #ff6a55; color: #ff7f70; } body.night #sky-match small, body.night #sky-match #sm-read { color: #ff6a55; }
 @media (prefers-reduced-motion: reduce) { #sky-match, #skybar.matching #sky-range::-webkit-slider-thumb { animation: none; } }
 body.sky-matching #discover, body.sky-matching #plane, body.sky-matching #tk, body.sky-matching #guidance { visibility: hidden !important; } /* the card sits where the circle's ticket goes; matching takes a few seconds */
+/* FIRST TARGET pill (2026-10-25, Sevaan; design/tour-rethink.html 03): under the header while you wait for the big one */
+.ft-pill { position: fixed; z-index: 7; top: calc(var(--safe-top) + 92px); left: calc(var(--safe-l, 0px) + 124px); right: calc(var(--safe-r, 0px) + 14px); max-width: 300px; margin-left: auto; display: flex; align-items: center; gap: 10px; padding: 7px 14px 7px 7px; border: 1px solid #ffffff1a; border-top: 2px solid #7fb2ff; border-radius: 16px; background: rgba(10, 18, 31, .95); color: var(--text); text-align: left; cursor: pointer; transform: translateY(var(--toast-push, 0px)); transition: transform .45s, opacity .4s; }
+.ft-pill img, .ft-pill > i { width: 40px; height: 40px; flex: none; border-radius: 50%; object-fit: cover; background: #12233a; }
+.ft-pill span { display: grid; gap: 2px; min-width: 0; flex: 1; }
+.ft-pill small { font: 500 10.5px/1 var(--label); letter-spacing: .18em; text-transform: uppercase; color: #7fb2ff; }
+.ft-pill b { font: 400 14px/1.15 var(--display); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ft-pill em { font: 400 22px/1 var(--display); font-style: normal; font-variant-numeric: tabular-nums; color: var(--text); }
+.ft-pill.rising { border-top-color: #fa8127; animation: ftPulse 1.4s ease-in-out infinite; } .ft-pill.rising small { color: #fa8127; }
+@keyframes ftPulse { 50% { box-shadow: 0 0 0 4px #fa812733; } }
+.ft-pill.out { opacity: 0; }
+body.ob-tour .ft-pill, body.col-open .ft-pill, body:has(.overlay.panel:not([hidden])) .ft-pill, body:has(#reveal:not([hidden])) .ft-pill, body:has(#ob-done:not([hidden])) .ft-pill { visibility: hidden; }
+body.night .ft-pill { border-top-color: #ff6a55; } body.night .ft-pill small { color: #ff6a55; } body.night .ft-pill b, body.night .ft-pill em { color: #ff7f70; }
+@media (prefers-reduced-motion: reduce) { .ft-pill.rising { animation: none; } }
