@@ -864,3 +864,8 @@ html.embedded #stats-body { padding-inline: max(20px, calc((100% - 620px) / 2));
 
 /* Red mode leaves the patch wall's SVGs unfiltered (iPad playtest 2026-10-24: a filter on every patch made WebKit drop or
    misplace most of them); the page's red multiply layer turns them red. */
+/* Twinkling stars inside the mission patch card (2026-10-25, Sevaan), behind the patch and the words */
+.pv-card { position: relative; overflow: hidden; }
+.pv-card > .starfield { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+.pv-card > :not(.starfield) { position: relative; z-index: 1; }
+.pv-card > .starfield i { opacity: calc(var(--o) * .8); }
