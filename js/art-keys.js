@@ -1,5 +1,5 @@
-import { ART_FILES } from './art-files.js?v=0.1.1144';
-import { debrisOf } from './lore.js?v=0.1.1144';
+import { ART_FILES } from './art-files.js?v=0.1.1145';
+import { debrisOf } from './lore.js?v=0.1.1145';
 // Which illustration each card uses. The illustrator’s brief (scripts/art-brief.py) is generated from this
 // table, and when the art arrives the card renderer can load assets/art/cards/<key>.webp, falling back to
 // the drawn art in js/art.js. Every card maps to exactly one key. Order of rules matters.

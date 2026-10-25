@@ -2648,3 +2648,10 @@ body.night #moon-check { border-top-color: #ff6a55; color: #ff7f70; } body.night
 @media (max-width: 380px) { .ft-pill { left: calc(var(--safe-l, 0px) + 112px); } .ft-pill img, .ft-pill > i { display: none; } .ft-pill { padding-left: 12px; } }
 #fade-tip.by-radar, #moon-check.by-radar { transform: translate(0, -100%); width: auto; right: calc(var(--safe-r, 0px) + 14px); }
 #fade-tip.by-radar i, #moon-check.by-radar i { left: var(--ax, 50%); }
+/* First-run playtest fixes (2026-10-25) */
+.ob-done .od-pass { display: inline; } /* a wrapped name no longer leaves "· tier" starting the next line */
+@media (max-width: 360px) { #rv-teach .tc-moons i { display: none; } #rv-teach .tc-moons span.now i { display: block; } } /* phase names collided at 320 */
+@media (max-height: 640px) { #rv-teach { padding: 9px 12px 10px; } #rv-teach > b { font-size: 14px; margin: 3px 0 7px; } #rv-teach .tc-mini { width: 38px; } #rv-teach .tc-ok { min-height: 40px; } #rv-teach .tc-levels { margin-bottom: 7px; } } /* a smaller panel, so the card stays readable on an SE */
+@media (min-height: 760px) { .tc .acts.pick .pk { min-height: 190px; } } /* the Where card's tiles fill the card on tall phones */
+body.night .wc-a-top .wc-dot { background: #ff6a55; box-shadow: none; } body.night #rv-teach .tc-ok { background: #ff6a55; color: #120606; }
+@media (max-width: 380px) { .ft-pill { left: calc(var(--safe-l, 0px) + 122px); } }
