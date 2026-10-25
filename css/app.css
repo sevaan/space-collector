@@ -2634,3 +2634,13 @@ body.night #fade-tip { border-top-color: #ff6a55; color: #ff7f70; } body.night #
 #bd-res .bd-acts { display: flex; gap: 8px; margin-top: 6px; }
 #bd-res .bd-acts button:disabled { opacity: .45; }
 #bd-res .bd-acts .on { border-color: var(--gold); color: var(--gold); }
+/* The Moon check (2026-10-25, Sevaan; design/real-sky.html 02): above the circle, the next time the Moon is in it */
+#moon-check { position: fixed; z-index: 5; left: 50%; transform: translate(-50%, -100%); width: min(290px, calc(var(--vws, 100vw) - 40px)); box-sizing: border-box; padding: 10px 12px 12px; border-radius: 14px; background: rgba(10, 18, 31, .96); border-top: 2px solid #7fb2ff; color: var(--text); display: grid; gap: 6px; animation: ui-rise var(--m-norm, .3s) var(--ease-out, ease-out); }
+#moon-check[hidden] { display: none; }
+#moon-check small { font: 500 10.5px/1 var(--label); letter-spacing: .18em; text-transform: uppercase; color: #7fb2ff; }
+#moon-check b { font: 400 16px/1.2 var(--display); }
+#moon-check > span { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+#moon-check button { min-height: 44px; border: 0; border-radius: 12px; font: 500 13px/1 var(--label); letter-spacing: .14em; text-transform: uppercase; cursor: pointer; background: #1d2a3c; color: var(--text); }
+#moon-check .mc-yes { background: #7fb2ff; color: #0b1120; }
+#moon-check i { position: absolute; left: 50%; bottom: -7px; width: 12px; height: 12px; margin-left: -6px; background: rgba(10, 18, 31, .96); transform: rotate(45deg); }
+body.night #moon-check { border-top-color: #ff6a55; color: #ff7f70; } body.night #moon-check small { color: #ff6a55; } body.night #moon-check .mc-yes { background: #ff6a55; color: #120606; }
