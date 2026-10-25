@@ -1,9 +1,9 @@
 // Orbit view (2026-10-14, Sevaan; design/fun-and-learning.html): one tap on a satellite card in the collection viewer
 // turns its picture into a small globe: the ground track for the orbit before and after now, where it is right now
 // (moving live), and where you are. Tap again for the picture. Coarse coastlines from js/geo.js. Canvas, no DOM beyond it.
-import { satrecFor, overEarth } from './orbit.js?v=0.1.1127';
-import { useMiles } from './units.js?v=0.1.1127';
-import { LAND, placeName } from './geo.js?v=0.1.1127';
+import { satrecFor, overEarth } from './orbit.js?v=0.1.1128';
+import { useMiles } from './units.js?v=0.1.1128';
+import { LAND, placeName } from './geo.js?v=0.1.1128';
 
 const RAD = Math.PI / 180;
 // Orthographic projection of (lat, lon) onto a globe of radius R centred at (cx, cy), looking at (lat0, lon0).
