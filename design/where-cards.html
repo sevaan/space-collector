@@ -82,6 +82,7 @@ h1 { font: 400 28px 'SC Display'; margin: 0 0 4px; } .lead { color: var(--mu); m
 .C .ch .nub { position: absolute; left: calc(var(--u) * 125); width: calc(var(--u) * 14); height: calc(var(--u) * 14); border-radius: 50%; background: #0a1220; }
 .C .ch .nub.t { top: calc(var(--u) * -7); } .C .ch .nub.b { bottom: calc(var(--u) * -7); }
 .C .art { height: 100%; }
+.C .art img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .C .tx { padding: calc(var(--u) * 13) calc(var(--u) * 14); display: grid; align-content: center; gap: calc(var(--u) * 5); }
 .C .tx .k { font: 500 calc(var(--u) * 10) 'SC Label'; letter-spacing: .2em; text-transform: uppercase; color: var(--or); }
 .C .tx .nm { font-size: calc(var(--u) * 22); }
@@ -121,6 +122,10 @@ h1 { font: 400 28px 'SC Display'; margin: 0 0 4px; } .lead { color: var(--mu); m
 <p>Two full-width cards stacked like tickets: picture on the stub, then what it means for tonight in a sentence. <b>Room to say what happens next; easy to tap one-handed.</b></p>
 <div class="row" id="rowC"></div></section>
 
+<section class="idea"><h2><span class="no">C2</span>Wide tickets, painted</h2>
+<p>Design C with new pictures in the cards' own print style (navy and cream inks, hatching, halftone dots): no stick figures, just a hand holding the phone up. Two tries of each, day and night. <b>Pick a try for each picture.</b></p>
+<div class="row" id="rowC2"></div><p class="cap" style="margin-top:26px">The pictures, full size</p><div class="row" style="gap:18px"><figure style="margin:0;width:260px"><img src="where-cards/inside-day-1.webp" style="width:100%;border-radius:12px;display:block"><figcaption class="cap">inside · by day · <b>try 1</b></figcaption></figure><figure style="margin:0;width:260px"><img src="where-cards/inside-day-2.webp" style="width:100%;border-radius:12px;display:block"><figcaption class="cap">inside · by day · <b>try 2</b></figcaption></figure><figure style="margin:0;width:260px"><img src="where-cards/inside-night-1.webp" style="width:100%;border-radius:12px;display:block"><figcaption class="cap">inside · at night · <b>try 1</b></figcaption></figure><figure style="margin:0;width:260px"><img src="where-cards/inside-night-2.webp" style="width:100%;border-radius:12px;display:block"><figcaption class="cap">inside · at night · <b>try 2</b></figcaption></figure><figure style="margin:0;width:260px"><img src="where-cards/outside-day-1.webp" style="width:100%;border-radius:12px;display:block"><figcaption class="cap">outside · by day · <b>try 1</b></figcaption></figure><figure style="margin:0;width:260px"><img src="where-cards/outside-day-2.webp" style="width:100%;border-radius:12px;display:block"><figcaption class="cap">outside · by day · <b>try 2</b></figcaption></figure><figure style="margin:0;width:260px"><img src="where-cards/outside-night-1.webp" style="width:100%;border-radius:12px;display:block"><figcaption class="cap">outside · at night · <b>try 1</b></figcaption></figure><figure style="margin:0;width:260px"><img src="where-cards/outside-night-2.webp" style="width:100%;border-radius:12px;display:block"><figcaption class="cap">outside · at night · <b>try 2</b></figcaption></figure></div></section>
+
 <section class="idea"><h2><span class="no">D</span>A hand of two</h2>
 <p>The two cards are dealt as a hand, fanned and gently breathing. Tap one and it rises out of the hand and straightens; then the tour moves on. <b>The most playful; like picking a card.</b></p>
 <div class="row" id="rowD"></div></section>
@@ -156,22 +161,24 @@ const C = {
   inside: { k: 'Indoors', nm: 'Inside', ty: 'Indoors, anywhere', chip: 'Anywhere', st: ['Practise', 'Any time'], p: 'Practise through the roof. The sky is still up there.' },
   outside: { k: 'Under the open sky', nm: 'Outside', ty: 'Under the open sky', chip: 'The real thing', st: ['The real sky', 'After dark'], p: 'Point at the real thing and catch what you see.' },
 };
-function choices(kind, night) {
-  return ['inside', 'outside'].map((w) => { const c = C[w], art = ART[w](night);
+function choices(kind, night, paint) {
+  return ['inside', 'outside'].map((w) => { const c = C[w], art = paint ? `<img src="where-cards/${w}-${night ? 'night' : 'day'}-${paint}.webp" alt="">` : ART[w](night);
     if (kind === 'A') return `<div class="ch ${w === 'outside' ? 'on' : 'off'} sheen"><div class="hd"><span>Where · 0${w === 'inside' ? 1 : 2}</span><i>◆</i></div><div class="art">${art}</div><div class="ft"><div class="nm">${c.nm}</div><div class="ty">${c.ty}</div><div class="st"><span>${c.st[0]}</span><b>${c.st[1]}</b></div></div></div>`;
     if (kind === 'B') return `<div class="ch ${w === 'outside' ? 'on' : 'off'}"><div class="art">${art}</div><span class="gem ${w === 'outside' ? 'o' : ''}">${c.chip}</span><span class="ok">✓</span><div class="lab"><div class="nm">${c.nm}</div><div class="ty">${c.ty}</div></div></div>`;
     if (kind === 'C') return `<div class="ch ${w === 'outside' ? 'on' : 'off'}"><div class="art">${art}</div><i class="nub t"></i><i class="nub b"></i><div class="tx"><div class="k">${c.k}</div><div class="nm">${c.nm}</div><p>${c.p}</p></div></div>`;
     return `<div class="ch ${w === 'outside' ? 'on' : 'off'} sheen"><div class="art">${art}</div><span class="ok">✓</span><div class="ft"><div class="nm">${c.nm}</div><div class="ty">${c.ty}</div></div></div>`;
   }).join('') + (kind === 'D' ? '<div class="hint">Tap a card</div>' : '');
 }
-function phone(kind, { picked = false, night = false } = {}) {
+function phone(kind, { picked = false, night = false, paint = 0 } = {}) {
   const ph = document.createElement('div'); ph.className = `ph ${night ? 'night' : 'day'}`;
   ph.append(document.getElementById('tc').content.cloneNode(true));
   if (night) { ph.querySelector('.when').innerHTML = '<span>9:12 PM</span><span>It’s dark now</span>'; }
-  const pk = ph.querySelector('.picks'); pk.className = `picks ${kind}${picked ? ' picked' : ''}`; pk.innerHTML = choices(kind, night);
+  const pk = ph.querySelector('.picks'); pk.className = `picks ${kind}${picked ? ' picked' : ''}`; pk.innerHTML = choices(kind, night, paint);
   return ph;
 }
 const cell = (ph, cap) => { const c = document.createElement('div'); c.className = 'cell'; c.append(ph); const p = document.createElement('p'); p.className = 'cap'; p.innerHTML = cap; c.append(p); return c; };
+{ const row = document.getElementById('rowC2');
+  for (const n of [1, 2]) { row.append(cell(phone('C', { paint: n }), `Try ${n} · by day`), cell(phone('C', { paint: n, night: true, picked: true }), `Try ${n} · at night, <b>Outside</b> tapped`)); } }
 for (const k of ['A', 'B', 'C', 'D']) {
   const row = document.getElementById('row' + k);
   row.append(cell(phone(k), 'Resting'), cell(phone(k, { picked: true }), '<b>Outside</b> tapped'));
