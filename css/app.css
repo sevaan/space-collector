@@ -2613,3 +2613,9 @@ body.night .week-box .wk-prog em { background: linear-gradient(90deg, #ff6a55 va
 .train-box i { font: 500 13px/1.3 var(--label); font-style: normal; color: color-mix(in srgb, var(--text) 78%, transparent); margin-bottom: 6px; }
 .train-box .tr-go { justify-self: start; }
 body.night .train-box { border-color: #ff6a5544; background: #170707; } body.night .train-box .k { color: #ff6a55; }
+/* Teach the fade (2026-10-25, Sevaan; design/real-sky.html 05 A): a callout above the circle, the first time */
+#fade-tip { position: fixed; z-index: 4; left: 50%; transform: translate(-50%, -100%); width: min(290px, calc(var(--vws, 100vw) - 40px)); box-sizing: border-box; padding: 10px 12px; border-radius: 14px; background: rgba(10, 18, 31, .96); border-top: 2px solid #f2c14e; color: var(--text); font: 500 14px/1.3 var(--label); pointer-events: none; text-wrap: balance; animation: ui-rise var(--m-norm, .3s) var(--ease-out, ease-out); }
+#fade-tip[hidden] { display: none; }
+#fade-tip small { display: block; margin-bottom: 3px; font: 500 10.5px/1 var(--label); letter-spacing: .18em; text-transform: uppercase; color: #f2c14e; }
+#fade-tip i { position: absolute; left: 50%; bottom: -7px; width: 12px; height: 12px; margin-left: -6px; background: rgba(10, 18, 31, .96); transform: rotate(45deg); }
+body.night #fade-tip { border-top-color: #ff6a55; color: #ff7f70; } body.night #fade-tip small { color: #ff6a55; }
