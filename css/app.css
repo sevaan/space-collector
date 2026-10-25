@@ -2659,3 +2659,5 @@ body.night .wc-a-top .wc-dot { background: #ff6a55; box-shadow: none; } body.nig
 body:has(#moon-check:not([hidden])) #toast-tray, body:has(#fade-tip:not([hidden])) #toast-tray, body.sky-matching #toast-tray { visibility: hidden; } /* tucked chips sat on the cards above the circle */
 .ghost-box { flex-wrap: wrap; } .ghost-box > span:nth-child(2) { flex: 1 1 200px; } .ghost-box .gh-go { margin-left: 52px; } /* the button under the words, like the train box */
 #sky-match.compact b { display: none; }
+/* Day before month where the phone writes dates that way (US/UK playtest 2026-10-25) */
+#bday-sheet .bd-pick.day-first #bd-d { order: -1; }

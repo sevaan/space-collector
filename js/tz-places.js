@@ -60,6 +60,15 @@ export const TZ_PLACES = {
   'Australia/Brisbane': [-27.47, 153.03, 'Brisbane'], 'Australia/Sydney': [-33.87, 151.21, 'Sydney'], 'Australia/Melbourne': [-37.81, 144.96, 'Melbourne'],
   'Australia/Hobart': [-42.88, 147.33, 'Hobart'], 'Pacific/Auckland': [-36.85, 174.76, 'Auckland'], 'Pacific/Fiji': [-18.14, 178.44, 'Suva'],
   'Pacific/Guam': [13.44, 144.79, 'Hagåtña'],
+  // US and UK zones that fell back to Peterborough (US/UK playtest 2026-10-25): each to a nearby city in the same zone.
+  'America/Adak': [51.88, -176.66, 'Adak'], 'America/Nome': [64.5, -165.41, 'Nome'], 'America/Sitka': [57.05, -135.33, 'Sitka'],
+  'America/Yakutat': [59.55, -139.73, 'Yakutat'], 'America/Metlakatla': [55.13, -131.57, 'Metlakatla'],
+  'America/Indiana/Knox': [41.88, -87.63, 'Chicago'], 'America/Indiana/Tell_City': [37.95, -86.77, 'Tell City'], 'America/Indiana/Vincennes': [38.68, -87.53, 'Vincennes'],
+  'America/Indiana/Petersburg': [38.49, -87.28, 'Petersburg'], 'America/Indiana/Marengo': [38.37, -86.34, 'Marengo'], 'America/Indiana/Vevay': [38.75, -85.07, 'Vevay'],
+  'America/Indiana/Winamac': [41.05, -86.6, 'Winamac'], 'America/Kentucky/Monticello': [36.83, -84.85, 'Monticello'],
+  'America/North_Dakota/Center': [47.12, -101.3, 'Bismarck'], 'America/North_Dakota/Beulah': [47.26, -101.78, 'Beulah'], 'America/North_Dakota/New_Salem': [46.84, -101.41, 'New Salem'],
+  'America/Menominee': [45.11, -87.61, 'Menominee'],
+  'Europe/Jersey': [49.19, -2.11, 'St Helier'], 'Europe/Guernsey': [49.46, -2.54, 'St Peter Port'], 'Europe/Isle_of_Man': [54.15, -4.48, 'Douglas'], 'Europe/Belfast': [54.6, -5.93, 'Belfast'],
 };
 export function placeFromTimeZone(tz = (() => { try { return Intl.DateTimeFormat().resolvedOptions().timeZone; } catch { return ''; } })()) {
   const p = TZ_PLACES[tz]; if (!p) return null;
