@@ -4,7 +4,7 @@
 //    kg → lb, tonnes → tons, °C → °F, keeping about as many figures as the original number had.
 //  - A 24-hour clock (Settings → Clock, or the phone's): "1 AM" → "01:00".
 //  - US English phones: colour → color, centre → center, catalogue → catalog… (a fixed word list, whole words only).
-import { useMiles } from './units.js?v=0.1.1154';
+import { useMiles } from './units.js?v=0.1.1155';
 
 const num = (s) => Number(String(s).replace(/,/g, ''));
 // Round n to about as many significant figures as the source number showed (at least 2), and write it with commas.

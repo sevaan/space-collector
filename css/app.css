@@ -2676,3 +2676,7 @@ body.night #plane .p-card svg { fill: #ff6a55; }
   #tk.has-mini #tk-mini, #plane .p-ticket .p-mini { width: 56px; height: 84px; --mini-s: .2; }
   #plane .p-card svg { width: 30px; height: 30px; }
 }
+/* The rarity in its own colour in the sky's ticket (2026-10-25, Sevaan); parts never split, so no line starts with "·". */
+#tk-m .tk-seg { white-space: nowrap; }
+#tk-m .tk-tier { font-weight: inherit; color: var(--c); }
+body.night #tk-m .tk-tier { color: #ff7f70; }
