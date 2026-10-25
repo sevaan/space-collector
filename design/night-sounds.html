@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Night sounds</title>
+<style>
+@font-face { font-family: 'SC Label'; src: url('../fonts/BarlowCondensed-Medium.ttf'); }
+@font-face { font-family: 'SC Display'; src: url('../fonts/RussoOne-Regular.ttf'); }
+:root { --ink: #fff2b3; --mu: #bdbea9; --or: #fa8127; --gold: #f2c14e; --steel: #6f8fae; --line: #1d2a3c; --card: #0e1828; --unc: #5fd08a; --rare: #4aa8ff; --red: #ff7f70; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #04080f; color: var(--ink); font: 15px/1.4 system-ui, sans-serif; padding: 26px 20px 80px; }
+a { color: var(--steel); } a:hover { color: var(--ink); }
+h1 { font: 400 28px 'SC Display'; margin: 0 0 4px; } .lead { color: var(--mu); margin: 0 0 8px; max-width: 1100px; }
+.how { color: var(--mu); font-size: 13px; margin: 0 0 26px; max-width: 1100px; }
+.how b { color: var(--ink); }
+.sec { font: 500 14px 'SC Label'; letter-spacing: .26em; text-transform: uppercase; color: var(--mu); border-top: 1px solid var(--line); padding-top: 14px; margin: 40px 0 18px; max-width: 1180px; }
+.sec b { color: var(--ink); font-weight: 500; }
+.idea { max-width: 1180px; margin: 0 0 40px; }
+.idea > h2 { font: 400 21px/1.15 'SC Display'; margin: 0 0 6px; display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+.idea > h2 .no { font: 500 15px 'SC Label'; color: var(--or); letter-spacing: .1em; min-width: 22px; }
+.idea > h2 .opt2 { font: 500 11px 'SC Label'; letter-spacing: .16em; padding: 2px 7px; border-radius: 6px; border: 1px solid #2c3b52; color: #8d93a0; text-transform: uppercase; }
+.idea > p { color: var(--mu); margin: 0 0 12px; font-size: 14px; max-width: 760px; }
+.idea > p b { color: var(--ink); font-weight: 600; }
+.tags { display: flex; gap: 6px; flex-wrap: wrap; margin: 0 0 14px; }
+.tag { font: 500 11.5px 'SC Label'; letter-spacing: .16em; text-transform: uppercase; padding: 3px 8px; border-radius: 6px; border: 1px solid #2c3b52; color: var(--mu); }
+.tag.s { color: var(--unc); border-color: #2c5a40; } .tag.m { color: var(--gold); border-color: #5f4e22; } .tag.f { color: var(--steel); }
+.snd { font: 500 12px 'SC Label'; letter-spacing: .12em; text-transform: uppercase; color: var(--ink); background: #0e1a29; border: 1px solid #2c3b52; border-radius: 8px; padding: 6px 10px; cursor: pointer; }
+.snd:hover { border-color: var(--or); } .snd.on { border-color: var(--or); color: var(--or); }
+.rules { margin: 10px 0 0; padding: 12px 14px; border: 1px solid #22344e; border-radius: 12px; background: #0b1424; font-size: 13px; color: var(--mu); }
+.rules h4 { margin: 0 0 6px; font: 500 12px 'SC Label'; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); }
+.rules ul { margin: 0; padding-left: 18px; } .rules li { margin: 3px 0; } .rules li b { color: var(--ink); font-weight: 600; }
+
+/* the global switch bar */
+.bar { position: sticky; top: 0; z-index: 20; display: flex; gap: 14px; align-items: center; flex-wrap: wrap; padding: 10px 14px; margin: 0 -14px 6px; max-width: 1208px; background: #04080fee; backdrop-filter: blur(6px); border-bottom: 1px solid var(--line); font: 500 13px 'SC Label'; letter-spacing: .08em; color: var(--mu); }
+.sw { display: inline-flex; gap: 8px; align-items: center; cursor: pointer; user-select: none; background: none; border: 0; color: inherit; font: inherit; letter-spacing: inherit; padding: 0; }
+.sw i { width: 34px; height: 20px; border-radius: 10px; background: #1d2a3c; border: 1px solid #2c3b52; position: relative; flex: none; transition: background .15s; }
+.sw i::after { content: ''; position: absolute; left: 2px; top: 2px; width: 14px; height: 14px; border-radius: 50%; background: var(--mu); transition: left .15s, background .15s; }
+.sw[aria-checked="true"] { color: var(--ink); } .sw[aria-checked="true"] i { background: #3a2210; border-color: var(--or); } .sw[aria-checked="true"] i::after { left: 16px; background: var(--or); }
+.bar select { font: 500 13px 'SC Label'; letter-spacing: .06em; color: var(--ink); background: #0e1a29; border: 1px solid #2c3b52; border-radius: 7px; padding: 3px 6px; }
+.bar .lvl { display: inline-flex; gap: 6px; align-items: center; }
+.bar .lvl[hidden] { display: none; }
+.bar .now { margin-left: auto; color: var(--or); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* mix panel */
+.mix { max-width: 1180px; border: 1px solid #6b5a2c; border-radius: 22px; padding: 20px 22px 22px; background: radial-gradient(ellipse at 20% 0%, #1d1a10, #0b1220 60%); margin: 18px 0 10px; }
+.mix h2 { font: 400 22px 'SC Display'; margin: 0 0 4px; } .mix > p { color: var(--mu); margin: 0 0 14px; font-size: 14px; max-width: 760px; }
+.picks { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; margin-bottom: 16px; }
+.pk { border: 1px solid #22344e; border-radius: 12px; background: #0b1424; padding: 8px 10px 10px; }
+.pk .h { font: 500 12px 'SC Label'; letter-spacing: .2em; text-transform: uppercase; color: var(--mu); display: flex; justify-content: space-between; }
+.pk .h small { font: inherit; letter-spacing: .1em; color: #6f7686; }
+.pk .ch { display: flex; gap: 5px; margin-top: 7px; }
+.pk .ch button { flex: 1; font: 400 14px 'SC Display'; color: var(--mu); background: #0e1a29; border: 1px solid #2c3b52; border-radius: 8px; padding: 5px 0; cursor: pointer; }
+.pk .ch button:hover { border-color: #4a5f80; } .pk .ch button.on { color: #0b1018; background: var(--gold); border-color: var(--gold); }
+.runs { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.runs .snd { padding: 8px 12px; font-size: 13px; }
+.tline { margin-top: 14px; position: relative; display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
+.tline span { font: 500 11.5px 'SC Label'; letter-spacing: .14em; text-transform: uppercase; color: #8d93a0; border-top: 3px solid #22344e; padding-top: 5px; transition: color .3s, border-color .3s; }
+.tline span b { display: block; font-weight: 500; letter-spacing: .06em; text-transform: none; color: #6f7686; font-size: 12px; }
+.tline span.on { color: var(--ink); border-top-color: var(--or); } .tline span.on b { color: var(--mu); }
+.tline .ph { position: absolute; top: -3px; width: 2px; height: 9px; background: var(--ink); left: 0; display: none; border-radius: 1px; box-shadow: 0 0 6px var(--ink); }
+.copy { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-top: 16px; }
+.copy code { font: 500 14px 'SC Label'; letter-spacing: .06em; color: var(--ink); background: #0b1424; border: 1px solid #22344e; border-radius: 8px; padding: 6px 10px; }
+.copy .ok { font: 500 12px 'SC Label'; letter-spacing: .14em; text-transform: uppercase; color: var(--unc); }
+
+/* candidate rows */
+.cands { display: grid; gap: 8px; max-width: 1180px; }
+.cand { display: grid; grid-template-columns: 44px 30px minmax(0, 1.25fr) 96px minmax(0, 1.6fr) 74px; gap: 4px 12px; align-items: center; padding: 10px 12px; border: 1px solid #1d2a3c; border-radius: 12px; background: #0a1322; }
+.cand.picked { border-color: #6b5a2c; background: linear-gradient(90deg, #f2c14e12, #0a1322 60%); }
+.cand.playing { border-color: var(--or); box-shadow: 0 0 0 1px var(--or), 0 0 18px #fa812733; }
+.cand .pl { width: 40px; height: 40px; border-radius: 50%; border: 1px solid #2c3b52; background: #0e1a29; color: var(--ink); font-size: 14px; cursor: pointer; display: grid; place-items: center; }
+.cand .pl:hover { border-color: var(--or); } .cand.playing .pl { color: var(--or); border-color: var(--or); }
+.cand .n { font: 400 20px 'SC Display'; color: var(--gold); text-align: center; }
+.cand .nm { min-width: 0; }
+.cand .nm b { display: block; font: 500 15.5px/1.2 'SC Label'; letter-spacing: .02em; color: var(--ink); font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cand .nm small { display: block; font: 500 12.5px/1.3 'SC Label'; letter-spacing: .04em; color: var(--mu); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cand .nm small a { color: var(--steel); text-decoration: none; } .cand .nm small a:hover { color: var(--ink); text-decoration: underline; }
+.cand .nm .cc { color: var(--unc); }
+.cand .ln { font: 500 12.5px/1.3 'SC Label'; letter-spacing: .06em; color: var(--mu); }
+.cand .ln b { display: block; font: 400 14px 'SC Display'; color: var(--ink); font-weight: 400; letter-spacing: 0; }
+.cand .nt { font-size: 13px; color: var(--mu); line-height: 1.35; }
+.cand .pick { font: 500 12px 'SC Label'; letter-spacing: .14em; text-transform: uppercase; color: var(--mu); background: none; border: 1px solid #2c3b52; border-radius: 7px; padding: 5px 8px; cursor: pointer; }
+.cand .pick:hover { border-color: var(--gold); color: var(--ink); }
+.cand.picked .pick { color: #0b1018; background: var(--gold); border-color: var(--gold); }
+.prog { grid-column: 3 / -1; height: 2px; background: #1d2a3c; border-radius: 1px; overflow: hidden; display: none; }
+.cand.playing .prog { display: block; } .prog i { display: block; height: 100%; width: 0; background: var(--or); }
+.note { color: #8d93a0; font-size: 13px; max-width: 1100px; margin-top: 26px; }
+.note b { color: var(--mu); }
+@media (max-width: 900px) {
+  .cand { grid-template-columns: 44px 26px minmax(0, 1fr) auto; grid-template-areas: 'pl n nm pick' 'pl n ln ln' '. . nt nt' '. . prog prog'; }
+  .cand .pl { grid-area: pl; align-self: start; } .cand .n { grid-area: n; align-self: start; padding-top: 6px; } .cand .nm { grid-area: nm; } .cand .pick { grid-area: pick; align-self: start; }
+  .cand .ln { grid-area: ln; } .cand .ln b { display: inline; margin-right: 6px; } .cand .nt { grid-area: nt; } .prog { grid-area: prog; }
+}
+@media (max-width: 420px) { body { padding: 20px 12px 60px; } .bar { margin: 0 -12px 6px; padding: 8px 12px; gap: 10px; } .bar .now { margin-left: 0; flex-basis: 100%; } .mix { padding: 16px 14px; } .picks { grid-template-columns: 1fr 1fr; gap: 8px; } .cand { padding: 10px; gap: 4px 8px; } .cand .nm small { white-space: normal; } }
+</style></head><body>
+
+<h1>Night sounds</h1>
+<p class="lead">Real recordings for the proposed night ambience: a very quiet bed under “Permafrost” that follows the time and the weather (idea 05 on <a href="catch-feel.html">The catch, the feel</a>). Every file is <b style="color:var(--ink)">CC0</b> (public domain): no credit needed, can't be withdrawn.</p>
+<p class="how"><b>How to use it:</b> ▶ plays a candidate on its own, loud enough to judge. Turn on <b>Play under the music</b> to hear it at an in-game level (music at 50% × 0.15, the night bed well under it). Pick one per slot, then play a whole night in the <b>Mix</b>. Each clip is a 32 s seamless loop (the end is crossfaded into the start), all levelled to −30 LUFS so they compare fairly. Your picks are saved in this browser.</p>
+
+<div class="bar" id="bar">
+  <button class="sw" id="sw-music" type="button" role="switch" aria-checked="false"><i></i>Play under the music</button>
+  <span class="lvl" id="lvl" hidden>Night bed <select id="bed"><option value="-42">−42 LUFS · level with music</option><option value="-48" selected>−48 LUFS · proposed</option><option value="-54">−54 LUFS · faint</option></select></span>
+  <button class="snd" id="stop" type="button">■ Stop</button>
+  <span class="now" id="now"></span>
+</div>
+
+<div class="mix" id="mix">
+  <h2>Mix · a whole night in a minute</h2>
+  <p>Pick one per slot and hear the night play through: <b style="color:var(--ink)">dusk</b> (crickets and wind), <b style="color:var(--ink)">midnight</b> (the owl, the crickets slowing, the wind), <b style="color:var(--ink)">dawn</b> (first birds). In the game each change crossfades over 20 s; here each part lasts 20 s so you hear the shape quickly. The optional still-night and snow layers join only once you've picked one (the snow mix uses snow 1 until you do).</p>
+  <div class="picks" id="picks"></div>
+  <div class="runs">
+    <button class="snd" type="button" data-run="clear">▶ Clear night</button>
+    <button class="snd" type="button" data-run="rain">▶ Rainy night</button>
+    <button class="snd" type="button" data-run="snow">▶ Snow / fog (hush)</button>
+  </div>
+  <div class="tline" id="tline"><i class="ph" id="playhead"></i><span data-p="0">Dusk<b id="tl0"></b></span><span data-p="1">Midnight<b id="tl1"></b></span><span data-p="2">Dawn<b id="tl2"></b></span></div>
+  <div class="copy"><button class="snd" id="copy" type="button">Copy my picks</button><code id="picktext"></code><span class="ok" id="copied"></span></div>
+</div>
+
+<div id="slots"></div>
+
+<p class="note"><b>Notes.</b> The descriptions under each clip come from the recordist's own notes and a level scan of the file (where the louder moments fall), not from listening, so trust your ears over them. Clips are cut from Freesound's 128 kbps preview MP3s (the full-quality originals need a free login); for the game we'd fetch the originals and re-cut the chosen loops. Originals, titles, authors, links and licence for every file are in <code>night-sounds/sources.json</code>; the untouched downloads are in <code>night-sounds/raw/</code>.</p>
+
+<script>
+const SLOTS = [{"key": "wind", "short": "Wind", "name": "Wind", "title": "Gentle night wind", "when": "clear nights, under everything", "want": "The base layer on a clear night: <b>a soft breath of wind in leaves</b>, no gusts, no roar. It runs all night under the other sounds.", "items": [{"n": 1, "id": "718411", "file": "night-sounds/wind-1.m4a", "title": "sweet wind in automn foliage", "author": "bruno.auzet", "url": "https://freesound.org/people/bruno.auzet/sounds/718411/", "start": 49.5, "len": 32.0, "orig": 225.617, "note": "Soft wind through autumn leaves in a French forest, no birds (recordist's note). The most even of the three: about 3 dB of swell, nothing sticks out."}, {"n": 2, "id": "715696", "file": "night-sounds/wind-2.m4a", "title": "130914 Wind in pine trees, slow light, forest, pink noise Sarah's cottage ON", "author": "TRP", "url": "https://freesound.org/people/TRP/sounds/715696/", "start": 14.5, "len": 32.0, "orig": 216.029, "note": "Light wind in pine trees at an Ontario cottage. A smooth, airy hush, close to pink noise; steady across the loop."}, {"n": 3, "id": "187756", "file": "night-sounds/wind-3.m4a", "title": "Wind in a tree in the Mojave Desert (California, USA)", "author": "felix.blume", "url": "https://freesound.org/people/felix.blume/sounds/187756/", "start": 148, "len": 32.0, "orig": 239.117, "note": "Light wind in a lone desert tree (Mojave). Darker and breathier, slow 3–4 dB swells; no gusts or cars in this cut, though the recording was made near a road."}]}, {"key": "crickets", "short": "Crickets", "name": "Crickets & katydids", "title": "An evening field", "when": "dusk, summer to autumn", "want": "Dusk in a field: <b>crickets in full song</b>, thinning out as the night goes on. In the game it would fade with the season.", "items": [{"n": 1, "id": "867940", "file": "night-sounds/crickets-1.m4a", "title": "Montana Crickets at Sunset in Late August", "author": "i_o_i", "url": "https://freesound.org/people/i_o_i/sounds/867940/", "start": 0.5, "len": 29.0, "orig": 92.053, "note": "Montana crickets at sunset, late August. Chirping crickets over a little wind; the loudest chirps peak about 6 dB over the bed. Cut to 29 s to skip mic bumps later in the file."}, {"n": 2, "id": "571208", "file": "night-sounds/crickets-2.m4a", "title": "180903 Evening summer insects crickets thick country field PEC.mp3", "author": "TRP", "url": "https://freesound.org/people/TRP/sounds/571208/", "start": 27, "len": 32.0, "orig": 168.821, "note": "Evening summer insects in a thick country field. A dense, very steady high shimmer (under 2 dB of change), more ‘wall of insects’ than single chirps."}, {"n": 3, "id": "532301", "file": "night-sounds/crickets-3.m4a", "title": "Night Woods", "author": "widgetstudios", "url": "https://freesound.org/people/widgetstudios/sounds/532301/", "start": 97, "len": 32.0, "orig": 207.624, "note": "Night woods in Pennsylvania, late summer: crickets and katydids. Steady, full chorus with katydid rasps; the most ‘deep woods’ of the three."}]}, {"key": "owl", "short": "Owl", "name": "Owl", "title": "A distant owl", "when": "late night", "want": "Late night, <b>an owl now and then, far off</b>. Sparse calls, so the bed has moments of nothing.", "items": [{"n": 1, "id": "825822", "file": "night-sounds/owl-1.m4a", "title": "20250907_01h05 Gergueil D104 Forest - Distant Owl", "author": "Sadiquecat", "url": "https://freesound.org/people/Sadiquecat/sounds/825822/", "start": 23.5, "len": 32.0, "orig": 77.2765, "note": "An owl in the distance in a Burgundy forest at night. Faint calls about every 5–7 s (0:02, 0:15, 0:22, 0:28) over a quiet bed with a fine high insect tick. The most distant; also the busiest."}, {"n": 2, "id": "363472", "file": "night-sounds/owl-2.m4a", "title": "OwlAndTheHarvestMoon.wav", "author": "Sclolex", "url": "https://freesound.org/people/Sclolex/sounds/363472/", "start": 4, "len": 32.0, "orig": 170.044, "note": "A great horned owl on the night of the Harvest Moon, crickets underneath. Two hoot bouts (0:04 and 0:23), deep and fairly close; the rest is cricket bed."}, {"n": 3, "id": "457749", "file": "night-sounds/owl-3.m4a", "title": "Great horned owls dialog 09/20/2017", "author": "PianoFarm", "url": "https://freesound.org/people/PianoFarm/sounds/457749/", "start": 77, "len": 32.0, "orig": 199.181, "note": "Two great horned owls calling to each other at midnight, very quiet surroundings. Two exchanges (0:02–0:07 and 0:23–0:28), low hoots with long silences."}]}, {"key": "rain", "short": "Rain", "name": "Rain", "title": "Soft steady rain", "when": "when the forecast says rain", "want": "<b>Soft steady rain</b>, no thunder, replacing the crickets and the owl when it's raining.", "items": [{"n": 1, "id": "640655", "file": "night-sounds/rain-1.m4a", "title": "Soft rain.WAV", "author": "barkenov", "url": "https://freesound.org/people/barkenov/sounds/640655/", "start": 23, "len": 32.0, "orig": 61.0967, "note": "Soft rain in a garden at night. A very quiet original (raised about 26 dB), so a fine hiss with the odd close drip at 0:06 and 0:20."}, {"n": 2, "id": "416227", "file": "night-sounds/rain-2.m4a", "title": "gentle rainfall.wav", "author": "rasunter255", "url": "https://freesound.org/people/rasunter255/sounds/416227/", "start": 13, "len": 32.0, "orig": 171.7, "note": "Gentle rain in New Hampshire woods. The fullest, most natural rainfall; it swells and eases (about 10 dB of swing) and there's one low thump near 0:28."}, {"n": 3, "id": "868071", "file": "night-sounds/rain-3.m4a", "title": "Quiet early morning rain", "author": "richwise", "url": "https://freesound.org/people/richwise/sounds/868071/", "start": 6, "len": 32.0, "orig": 68.8942, "note": "Quiet early-morning rain on leaves through an open window. Soft patter with some low room/house rumble underneath (raised about 25 dB)."}]}, {"key": "dawn", "short": "Dawn", "name": "Dawn", "title": "First birds before sunrise", "when": "from −18° rising", "want": "The end of the night: <b>the first birds</b>, quietly, before the Sun is up.", "items": [{"n": 1, "id": "466242", "file": "night-sounds/dawn-1.m4a", "title": "Dawn chorus - Hampshire countryside Springtime", "author": "richwise", "url": "https://freesound.org/people/richwise/sounds/466242/", "start": 8, "len": 32.0, "orig": 592.778, "note": "Hampshire countryside just before sunrise, a freezing April morning, far from roads. Scattered songbirds over a low rumble (the recordist mentions distant aircraft); bursts at 0:08 and 0:24."}, {"n": 2, "id": "757868", "file": "night-sounds/dawn-2.m4a", "title": "Morning in swiss mountain", "author": "xkeril", "url": "https://freesound.org/people/xkeril/sounds/757868/", "start": 80, "len": 32.0, "orig": 117.7, "note": "Swiss mountain forest before sunrise: birds slowly waking, a little wind, a river far off. The sparsest and quietest: a few calls (0:02, 0:10, 0:18) over a soft wash."}, {"n": 3, "id": "745273", "file": "night-sounds/dawn-3.m4a", "title": "Bird ambience. Coniferous forest dawn chorus.", "author": "SamsterBirdies", "url": "https://freesound.org/people/SamsterBirdies/sounds/745273/", "start": 11.5, "len": 32.0, "orig": 589.098, "note": "Dawn chorus in a coniferous forest by a lake. The clearest birdsong of the three, bright and continuous, almost no low noise."}]}, {"key": "still", "short": "Still", "name": "Still night", "title": "A calm still night", "when": "windless, between the other sounds", "optional": true, "want": "Outdoors on a <b>still night, almost nothing</b>: the air itself. Could sit under everything at a very low level so silence never sounds like a dropout.", "items": [{"n": 1, "id": "539817", "file": "night-sounds/still-1.m4a", "title": "night park quiet ambiance sitting from the bench (mono).wav", "author": "Federico_Casazza", "url": "https://freesound.org/people/Federico_Casazza/sounds/539817/", "start": 130, "len": 32.0, "orig": 233.044, "note": "A quiet night park from a bench (mono). Extremely even (under 1 dB); a low, soft hum that's probably a distant town."}, {"n": 2, "id": "212785", "file": "night-sounds/still-2.m4a", "title": "Night between the streams (front)", "author": "blaukreuz", "url": "https://freesound.org/people/blaukreuz/sounds/212785/", "start": 2, "len": 32.0, "orig": 41.7214, "note": "Night in a garden between two streams in the Odenwald, December. A soft, even water-and-air bed; the stream is faint but it is water."}, {"n": 3, "id": "857163", "file": "night-sounds/still-3.m4a", "title": "Quiet Night Atmosphere – Soft Crickets (Eagle Mountain, Utah)", "author": "Goldenboy76", "url": "https://freesound.org/people/Goldenboy76/sounds/857163/", "start": 175, "len": 32.0, "orig": 535.769, "note": "A quiet summer night in Utah with soft, far-off crickets. Gentle and constant; a little low rumble under it (raised about 20 dB)."}]}, {"key": "snow", "short": "Snow", "name": "Snow & hush", "title": "Light snow, hush wind", "when": "snow and fog", "optional": true, "want": "For snow and fog: <b>a muffled hush</b>, softer than the clear-night wind, with no crickets or birds.", "items": [{"n": 1, "id": "845502", "file": "night-sounds/snow-1.m4a", "title": "Quiet Winter Night with Light Snow & Wind – Altenthann Ambience - 260215_001", "author": "TSP-Talk", "url": "https://freesound.org/people/TSP-Talk/sounds/845502/", "start": 215, "len": 32.0, "orig": 466.628, "note": "A winter night in a Bavarian village at 23:00, light snow, open window. Low and muffled with a faint village rumble; the calm stretch before the snow picks up."}, {"n": 2, "id": "637566", "file": "night-sounds/snow-2.m4a", "title": "forest light wind through bare trees winter GREAT FOR FALLING SNOW.flac", "author": "kyles", "url": "https://freesound.org/people/kyles/sounds/637566/", "start": 2.5, "len": 32.0, "orig": 55.2103, "note": "Light wind through bare winter trees (‘great for falling snow’, says the recordist). A soft, slightly hollow airy wash; one low bump at 0:30."}, {"n": 3, "id": "676801", "file": "night-sounds/snow-3.m4a", "title": "2023 leaves snow wind forest_MIXPRE-759.wav", "author": "peterkotrha", "url": "https://freesound.org/people/peterkotrha/sounds/676801/", "start": 3, "len": 32.0, "orig": 78.5243, "note": "Soft winter wind near a Slovak forest, snow falling onto dry oak leaves. Very quiet original (raised about 30 dB): a fine hiss with tiny leaf ticks at 0:07 and 0:25."}]}];
+const KEY = 'sc-night-picks';
+const $ = (id) => document.getElementById(id);
+const fmt = (s) => `${Math.floor(s / 60)}:${String(Math.round(s % 60)).padStart(2, '0')}`;
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+/* ── picks ── */
+let picks = {};
+try { picks = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch { picks = {}; }
+const savePicks = () => { try { localStorage.setItem(KEY, JSON.stringify(picks)); } catch {} };
+const slotOf = (k) => SLOTS.find((s) => s.key === k);
+const pickOf = (k) => { const s = slotOf(k); if (!s || !s.items.length) return null; return s.items.find((c) => c.n === picks[k]) || s.items[0]; };
+function pickText() { return SLOTS.filter((s) => picks[s.key]).map((s) => `${s.key}=${picks[s.key]}`).join(' ') || '(nothing picked yet)'; }
+function setPick(k, n) {
+  picks[k] = picks[k] === n ? undefined : n; if (picks[k] === undefined) delete picks[k]; savePicks();
+  document.querySelectorAll(`.cand[data-k="${k}"]`).forEach((r) => r.classList.toggle('picked', +r.dataset.n === picks[k]));
+  document.querySelectorAll(`.pk[data-k="${k}"] button`).forEach((b) => b.classList.toggle('on', +b.dataset.n === picks[k]));
+  $('picktext').textContent = pickText(); $('copied').textContent = '';
+}
+
+/* ── render ── */
+$('picks').innerHTML = SLOTS.map((s) => `<div class="pk" data-k="${s.key}"><div class="h">${esc(s.short)}${s.optional ? '<small>optional</small>' : ''}</div><div class="ch">${s.items.map((c) => `<button type="button" data-n="${c.n}" class="${picks[s.key] === c.n ? 'on' : ''}" aria-label="${esc(s.short)} ${c.n}">${c.n}</button>`).join('')}</div></div>`).join('');
+$('slots').innerHTML = SLOTS.map((s, i) => `
+<div class="sec"><b>${esc(s.name)}</b> · ${esc(s.when)}</div>
+<div class="idea" id="slot-${s.key}">
+<h2><span class="no">${String(i + 1).padStart(2, '0')}</span>${esc(s.title)}${s.optional ? '<span class="opt2">Optional</span>' : ''}</h2>
+<p>${s.want}</p>
+<div class="cands">${s.items.map((c) => `
+  <div class="cand${picks[s.key] === c.n ? ' picked' : ''}" data-k="${s.key}" data-n="${c.n}">
+    <button class="pl" type="button" aria-label="Play ${esc(s.short)} ${c.n}">▶</button>
+    <span class="n">${c.n}</span>
+    <span class="nm"><b title="${esc(c.title)}">${esc(c.title)}</b><small>${esc(c.author)} · <a href="${esc(c.url)}" target="_blank" rel="noopener">Freesound #${c.id}</a> · <span class="cc">CC0</span></small></span>
+    <span class="ln"><b>${fmt(c.len)} loop</b>cut at ${fmt(c.start)} of ${fmt(c.orig)}</span>
+    <span class="nt">${c.note}</span>
+    <button class="pick" type="button">Pick</button>
+    <span class="prog"><i></i></span>
+  </div>`).join('')}</div>
+</div>`).join('');
+$('picktext').textContent = pickText();
+
+/* ── audio: WebAudio when served over http (gapless loops), <audio> elements on file:// ── */
+const WA = /^https?:$/.test(location.protocol) && !!(window.AudioContext || window.webkitAudioContext);
+let AC = null; const BUF = {};
+function ctx() { if (!AC) AC = new (window.AudioContext || window.webkitAudioContext)(); if (AC.state !== 'running') AC.resume(); return AC; }
+const buf = (f) => (BUF[f] ??= fetch(f).then((r) => { if (!r.ok) throw new Error(f + ' ' + r.status); return r.arrayBuffer(); }).then((b) => ctx().decodeAudioData(b)));
+class Voice {
+  constructor(file) { this.file = file; this.g = 0; this.dead = false; }
+  async start(g, fade = 1.2) {
+    if (WA) {
+      const a = ctx(), b = await buf(this.file); if (this.dead) return;
+      this.src = a.createBufferSource(); this.src.buffer = b; this.src.loop = true; this.gn = a.createGain(); this.gn.gain.value = 0;
+      this.src.connect(this.gn).connect(a.destination); this.src.start(); this.t0 = a.currentTime; this.dur = b.duration;
+    } else {
+      this.el = new Audio(this.file); this.el.loop = true; this.el.volume = 0; this.dur = 32;
+      try { await this.el.play(); } catch {} if (this.dead) { this.el.pause(); return; }
+    }
+    this.ramp(g, fade);
+  }
+  ramp(g, secs) {
+    this.g = g;
+    if (this.gn) { const t = AC.currentTime, p = this.gn.gain; p.cancelScheduledValues(t); p.setValueAtTime(p.value, t); p.linearRampToValueAtTime(g, t + Math.max(.02, secs)); }
+    else if (this.el) { clearInterval(this.iv); const from = this.el.volume, t0 = performance.now(), d = Math.max(20, secs * 1000);
+      this.iv = setInterval(() => { const k = Math.min(1, (performance.now() - t0) / d); this.el.volume = Math.max(0, Math.min(1, from + (g - from) * k)); if (k >= 1) clearInterval(this.iv); }, 40); }
+  }
+  pos() { if (this.src) return ((AC.currentTime - this.t0) % this.dur) / this.dur; if (this.el && this.el.duration) return this.el.currentTime / this.el.duration; return 0; }
+  stop(fade = .6) { this.dead = true; this.ramp(0, fade); setTimeout(() => { try { this.src && this.src.stop(); } catch {} if (this.el) { this.el.pause(); this.el.src = ''; } clearInterval(this.iv); }, fade * 1000 + 120); }
+}
+
+/* the music, at the in-game level: musicVolume 0.5 × LEVEL 0.15 (js/music.js) */
+const MUSIC_GAIN = 0.5 * 0.15;
+const music = new Audio('../assets/audio/permafrost.m4a'); music.loop = true; music.volume = MUSIC_GAIN;
+let underMusic = false;
+const bedGain = () => underMusic ? Math.pow(10, (+$('bed').value - -30) / 20) : 1; // clips are at −30 LUFS
+function musicSync(on) { if (on && underMusic) { if (music.paused) { music.currentTime = 50; music.play().catch(() => {}); } } else music.pause(); }
+
+/* ── single-candidate player ── */
+let solo = null, soloRow = null, raf = 0;
+function stopAll() {
+  if (solo) { solo.stop(); solo = null; } if (soloRow) soloRow.classList.remove('playing'), soloRow.querySelector('.pl').textContent = '▶'; soloRow = null;
+  stopMix(); musicSync(false); $('now').textContent = ''; cancelAnimationFrame(raf);
+}
+function playRow(row) {
+  const was = row === soloRow; stopAll(); if (was) return;
+  const s = slotOf(row.dataset.k), c = s.items.find((x) => x.n === +row.dataset.n);
+  solo = new Voice(c.file); solo.start(bedGain()); soloRow = row; row.classList.add('playing'); row.querySelector('.pl').textContent = '■';
+  musicSync(true); $('now').textContent = `▶ ${s.short} ${c.n} · ${c.title}`;
+  const bar = row.querySelector('.prog i'); const tick = () => { if (solo) { bar.style.width = (solo.pos() * 100).toFixed(1) + '%'; raf = requestAnimationFrame(tick); } }; tick();
+}
+document.addEventListener('click', (e) => {
+  const row = e.target.closest('.cand');
+  if (row && e.target.closest('.pl')) playRow(row);
+  else if (row && e.target.closest('.pick')) setPick(row.dataset.k, +row.dataset.n);
+  const pb = e.target.closest('.pk button'); if (pb) setPick(pb.closest('.pk').dataset.k, +pb.dataset.n);
+  const run = e.target.closest('[data-run]'); if (run) runMix(run.dataset.run, run);
+});
+$('stop').onclick = stopAll;
+$('sw-music').onclick = () => {
+  underMusic = !underMusic; $('sw-music').setAttribute('aria-checked', underMusic); $('lvl').hidden = !underMusic;
+  if (solo) { solo.ramp(bedGain(), .8); musicSync(true); } if (mix) { mix.master = bedGain(); applyPhase(mix.phase, 1); musicSync(true); }
+};
+$('bed').onchange = () => { if (solo) solo.ramp(bedGain(), .5); if (mix) { mix.master = bedGain(); applyPhase(mix.phase, .5); } };
+
+/* ── the mix: three parts, each layer crossfades between them ── */
+const PART = 20, XF = 5, MIXDOWN = .62; // layers sum, so the mix sits a little lower
+const PLANS = {
+  clear: { label: 'Clear night', parts: [{ wind: .55, crickets: 1 }, { wind: .65, crickets: .3, owl: .9, still: .5 }, { wind: .45, crickets: .08, dawn: 1 }] },
+  rain:  { label: 'Rainy night', parts: [{ rain: 1, wind: .3, crickets: .15 }, { rain: 1, wind: .35 }, { rain: .75, wind: .3, dawn: .3 }] },
+  snow:  { label: 'Snow / fog',  parts: [{ snow: 1, still: .5 }, { snow: 1, still: .55, owl: .35 }, { snow: .85, still: .45, dawn: .2 }] },
+};
+let mix = null;
+// optional slots (still, snow) join a mix only when picked, except snow in its own mix
+const mixPick = (k, kind) => { const s = slotOf(k); if (!s) return null; if (s.optional && !picks[k] && !(kind === 'snow' && k === 'snow')) return null; return pickOf(k); };
+function stopMix() { if (!mix) return; Object.values(mix.voices).forEach((v) => v.stop(.8)); clearInterval(mix.iv); mix.btn.classList.remove('on'); mix.btn.textContent = '▶ ' + PLANS[mix.kind].label; mix = null;
+  document.querySelectorAll('.tline span').forEach((s) => s.classList.remove('on')); $('playhead').style.display = 'none'; }
+function applyPhase(p, secs) { const parts = PLANS[mix.kind].parts[p]; for (const [k, v] of Object.entries(mix.voices)) v.ramp((parts[k] || 0) * mix.master * MIXDOWN, secs); }
+function runMix(kind, btn) {
+  const same = mix && mix.kind === kind; stopAll(); if (same) return;
+  const plan = PLANS[kind], used = [...new Set(plan.parts.flatMap(Object.keys))].filter((k) => mixPick(k, kind));
+  mix = { kind, btn, voices: {}, master: bedGain(), phase: 0, t0: performance.now() };
+  used.forEach((k) => { const v = new Voice(mixPick(k, kind).file); mix.voices[k] = v; v.start(0, .1); });
+  btn.classList.add('on'); btn.textContent = '■ ' + plan.label; musicSync(true);
+  plan.parts.forEach((pt, i) => { $('tl' + i).textContent = Object.entries(pt).sort((a, b) => b[1] - a[1]).filter(([k]) => used.includes(k)).map(([k]) => `${slotOf(k).short.toLowerCase()} ${pickOf(k).n}`).join(' · '); });
+  $('now').textContent = `▶ ${plan.label}: ` + used.map((k) => `${k}=${pickOf(k).n}`).join(' ');
+  setTimeout(() => mix && mix.kind === kind && applyPhase(0, 2.5), 150);
+  const ph = $('playhead'); ph.style.display = 'block';
+  const spans = document.querySelectorAll('.tline span');
+  mix.iv = setInterval(() => {
+    if (!mix) return; const t = (performance.now() - mix.t0) / 1000, total = PART * 3;
+    ph.style.left = Math.min(100, t / total * 100) + '%';
+    const p = Math.min(2, Math.floor(t / PART)); spans.forEach((s, i) => s.classList.toggle('on', i === p));
+    if (p !== mix.phase) { mix.phase = p; applyPhase(p, XF); }
+    if (t > total) stopAll();
+  }, 100);
+}
+
+/* ── copy ── */
+$('copy').onclick = async () => {
+  const t = pickText(); let ok = false;
+  try { await navigator.clipboard.writeText(t); ok = true; } catch {
+    const ta = document.createElement('textarea'); ta.value = t; document.body.appendChild(ta); ta.select(); try { ok = document.execCommand('copy'); } catch {} ta.remove(); }
+  $('copied').textContent = ok ? 'Copied' : 'Select and copy the text';
+};
+</script>
+</body></html>
