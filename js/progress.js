@@ -1,7 +1,7 @@
 // Player progress from the sighting log: XP and observer rank, tonight’s three missions, a weekly streak and
 // achievements. Everything is derived from the saved sightings (nothing extra is stored), so it can’t drift.
 // info(cardKey) -> { tier, type, owner, launch, natural, con } | null. No DOM.
-import { nightKey } from './observation.js?v=0.1.1143';
+import { nightKey } from './observation.js?v=0.1.1144';
 
 // A longer climb (2026-10-12, playtest room: three ranks on night 1, Mission Control in about two weeks), with two
 // prestige ranks past Mission Control. Nobody drops a rank they had on the old curve (rankFloor below).
@@ -41,8 +41,12 @@ export const WEEK_THEMES = [
   { id: 'planets', name: 'Planet week', short: 'Planet Week', text: 'Catch three different planets.', icon: 'PL', need: 3,
     have: (w) => new Set(w.filter((s) => String(s.cardKey).startsWith('planet:')).map((s) => s.cardKey)).size },
 ];
-export const weekStartOf = (t) => { const d = new Date(t); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() - ((d.getDay() + 6) % 7)); return d.getTime(); };
-export const weekThemeFor = (ws, chosen = null) => WEEK_THEMES.find((x) => x.id === chosen?.[ws]) ?? WEEK_THEMES[Math.floor(ws / 604800000 + 0.5) % WEEK_THEMES.length];
+// Weeks run on observing nights (noon to noon), so Sunday night after midnight still counts for Sunday's week; the
+// theme index is the local calendar week, so it's the same for everyone whatever their time zone (bug hunt 2026-10-25).
+export const weekStartOf = (t) => { const d = new Date(t - 12 * 3600e3); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() - ((d.getDay() + 6) % 7)); return d.getTime(); };
+const weekIndex = (ws) => { const d = new Date(ws); return Math.floor((Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / 864e5 + 3) / 7); };
+export const weekThemeFor = (ws, chosen = null) => WEEK_THEMES.find((x) => x.id === chosen?.[ws]) ?? WEEK_THEMES[weekIndex(ws) % WEEK_THEMES.length];
+const WEEKS_FROM = new Date(2026, 9, 26).getTime(); // weeks count from when they started (an update gave old weeks' XP at once)
 export function readWeekThemes() { try { return JSON.parse(localStorage.getItem('weekThemes')) || {}; } catch { return {}; } }
 const real = (sightings) => sightings.filter((s) => !s.sim).slice().sort((a, b) => a.time - b.time);
 const year = (iso) => (iso ? Number(String(iso).slice(0, 4)) : null);
@@ -349,7 +353,7 @@ export function progress(sightings, info, { constellations = [], albums = [], no
   const weeks = new Map(), firstStamp = new Set();
   for (const s of list) { const ws = weekStartOf(s.time), e = { ...s, info: info(s.cardKey) }; if (s.stampKey && !String(s.stampKey).startsWith('MOON:') && !firstStamp.has(s.stampKey)) { firstStamp.add(s.stampKey); e.newStampKey = s.stampKey; } if (!weeks.has(ws)) weeks.set(ws, []); weeks.get(ws).push(e); }
   a.weekThemes = new Set();
-  for (const [ws, w] of weeks) { const th = weekThemeFor(ws, weekThemes); if (th.have(w) >= th.need) { xp += WEEK_XP; a.weekThemes.add(th.id); } }
+  for (const [ws, w] of weeks) { if (ws < WEEKS_FROM) continue; const th = weekThemeFor(ws, weekThemes); if (th.have(w) >= th.need) { xp += WEEK_XP; a.weekThemes.add(th.id); } }
   const wsNow = weekStartOf(now), thNow = weekThemeFor(wsNow, weekThemes), wNow = weeks.get(wsNow) ?? [];
   const week = { id: thNow.id, name: thNow.name, text: thNow.text, need: thNow.need, have: Math.min(thNow.need, thNow.have(wNow)), start: wsNow, sightings: wNow };
   const st = streaks(list, now); a.bestStreak = st.best;

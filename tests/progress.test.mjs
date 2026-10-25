@@ -50,7 +50,7 @@ test('XP: a new card caught at its peak gets +10 (2026-10-25)', () => {
   assert.equal(peak - plain, 10);
 });
 test('themed weeks: stage week done with three countries gives +150 and the badge (2026-10-25)', () => {
-  const ws = Date.parse('2026-10-05T04:00:00Z'); // a Monday, local midnight in Ontario
+  const ws = new Date(2026, 10, 2).getTime(); // a Monday, local midnight (weeks count from 2026-10-26)
   const id = 'stages', themes = { [new Date(ws).setHours(0, 0, 0, 0)]: id };
   const I = { ...INFO, c: { tier: 'common', type: 'rocket-body', owner: 'US', launch: '1990-01-01' }, d: { tier: 'common', type: 'rocket-body', owner: 'PRC', launch: '2010-01-01' } };
   const inf = (k) => I[k] ?? null, t = ws + 2 * 86400e3, sg = (k, m) => ({ cardKey: k, time: t + m * 60e3, lon: -78.3, el: 40 });

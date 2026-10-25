@@ -1,17 +1,17 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.1143';
+import { extinction } from './sky-limit.js?v=0.1.1144';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.1143';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.1144';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.1143';
-import { createCloudGL } from './clouds-gl.js?v=0.1.1143';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.1144';
+import { createCloudGL } from './clouds-gl.js?v=0.1.1144';
 // Cloud colours by light: sunlit tops, shadowed bellies, and the horizon haze they melt into (0–1 RGB).
 const CLOUD_LIGHT = {
   day: { lit: [1, 1, 1], shade: [0.62, 0.68, 0.77], haze: [0.82, 0.87, 0.93] },
   dusk: { lit: [1, 0.8, 0.68], shade: [0.36, 0.33, 0.42], haze: [0.62, 0.5, 0.52] },
   night: { lit: [0.22, 0.25, 0.31], shade: [0.1, 0.12, 0.16], haze: [0.14, 0.15, 0.2] },
 };
-import { TIER_INFO } from './rarity.js?v=0.1.1143';
+import { TIER_INFO } from './rarity.js?v=0.1.1144';
 
 const RAD = Math.PI / 180;
 const SECRET_PX = { santa: 24, roadster: 12.4, voyager: 14.5, voyager2: 14.5, pioneer10: 11.7, pioneer11: 11.7, newhorizons: 6.4, arecibo: 6.9, halley: 8.6, sputnik: 11.2, laika: 13.3, wow: 9.8 };
@@ -1575,9 +1575,9 @@ export class SkyView {
       if (targetId && !isTarget) ctx.globalAlpha = look.visible ? 0.60 : 0.35;
       // What's worth aiming at (2026-10-25, Sevaan; design/catch-feel.html 02): things new to you breathe a soft halo in
       // their rarity colour; ones you already have are drawn at 45%, so the eye goes to the right light.
-      const fresh = look.visible && !isTarget && this.ownedObj ? !this.ownedObj(it.obj) : null;
+      const fresh = look.visible && !isTarget && this.ownedObj && !it.obj.family ? !this.ownedObj(it.obj) : null; // not fleets: every fresh Starlink launch would breathe (bug hunt 2026-10-25)
       if (fresh === false && it.obj.id !== this.ghostId) ctx.globalAlpha *= 0.45;
-      if (it.obj.id === this.ghostId && (look.visible || isTarget)) this.glow(p.x, p.y, radius * (isTarget ? 7 : 5), [125, 255, 176], this.reducedMotion ? 0.7 : 0.55 + 0.3 * Math.sin(time / 380)); // Halloween: the ghost shimmers green
+      if (it.obj.id === this.ghostId && (look.visible || isTarget)) this.glow(p.x, p.y, radius * (isTarget ? 7 : 5), this.theme === THEMES.night ? [255, 106, 85] : [125, 255, 176], this.reducedMotion ? 0.7 : 0.55 + 0.3 * Math.sin(time / 380)); // Halloween: the ghost shimmers green
       if (fresh) { const rgb = this.theme === THEMES.night || !it.obj.tier || it.obj.tier === 'common' ? t.satGlow : tierRgb(it.obj.tier); this.glow(p.x, p.y, radius * 4.6, rgb, this.reducedMotion ? 0.62 : 0.55 + 0.2 * Math.sin(time / 650 + (it.obj.id % 7))); }
       else if (look.visible || isTarget) this.glow(p.x, p.y, radius * (isTarget ? 2.5 : 1.6), t.satGlow, isTarget ? 0.36 : 0.13);
       // Locked on: the object takes its rarity colour (matching its label); Common stays cream.

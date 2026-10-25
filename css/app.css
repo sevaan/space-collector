@@ -2644,3 +2644,7 @@ body.night #fade-tip { border-top-color: #ff6a55; color: #ff7f70; } body.night #
 #moon-check .mc-yes { background: #7fb2ff; color: #0b1120; }
 #moon-check i { position: absolute; left: 50%; bottom: -7px; width: 12px; height: 12px; margin-left: -6px; background: rgba(10, 18, 31, .96); transform: rotate(45deg); }
 body.night #moon-check { border-top-color: #ff6a55; color: #ff7f70; } body.night #moon-check small { color: #ff6a55; } body.night #moon-check .mc-yes { background: #ff6a55; color: #120606; }
+/* The FIRST TARGET pill on narrow phones (bug hunt 2026-10-25): no picture, closer to the radar, so the name has room */
+@media (max-width: 380px) { .ft-pill { left: calc(var(--safe-l, 0px) + 112px); } .ft-pill img, .ft-pill > i { display: none; } .ft-pill { padding-left: 12px; } }
+#fade-tip.by-radar, #moon-check.by-radar { transform: translate(0, -100%); width: auto; right: calc(var(--safe-r, 0px) + 14px); }
+#fade-tip.by-radar i, #moon-check.by-radar i { left: var(--ax, 50%); }

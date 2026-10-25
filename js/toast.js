@@ -49,12 +49,12 @@ export const ICONS = {
 const KIND_ICON = { mission: 'diamond', rank: 'chevrons', event: 'star', xp: 'stamp', patch: 'card', compass: 'compass', info: 'info', error: 'alert', shiny: 'sparkle' };
 const KIND_TONE = { mission: 'orange', rank: 'orange', patch: 'orange', compass: 'orange', event: 'gold', xp: 'steel', info: 'info', error: 'red', shiny: 'shiny' };
 export const iconSvg = (name) => `<svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[name] ?? ICONS.info}</svg>`;
-export function ticket({ kind = 'info', eyebrow = '', line = '', sub = '', icon = '', tone = '', xp = 0, ms = 3000, href = null, html = false, delay = 0, id = null, art = '', celebrate = false, sticky = false, action = null, go = null, unasked = false }) {
+export function ticket({ kind = 'info', eyebrow = '', line = '', sub = '', icon = '', tone = '', xp = 0, ms = 3000, href = null, html = false, delay = 0, id = null, art = '', celebrate = false, sticky = false, action = null, go = null, unasked = false, onShow = null }) {
   if (id && toastPending(id)) dropToast(id); // the same message again replaces the old one
   // Only a direct answer to something done on an open page (a reminder set there, an error) may show over it. Progress from a
   // catch (worlds, stars, patches, missions) waits for the page to close, even if it was queued before it opened (iOS playtest 2026-10-19).
   const inPanel = !delay && !['xp', 'rank', 'mission', 'event', 'patch', 'shiny', 'milestone', 'complete'].includes(kind) && !!document.querySelector('.overlay.panel:not([hidden])');
-  queue.push({ kind, eyebrow, line, sub, icon, tone, xp, ms, href, html, id, art, celebrate, sticky, action, go, inPanel, unasked, made: Date.now(), at: Date.now() + delay });
+  queue.push({ kind, eyebrow, line, sub, icon, tone, xp, ms, href, html, id, art, celebrate, sticky, action, go, inPanel, unasked, onShow, made: Date.now(), at: Date.now() + delay });
   pump();
 }
 export function toastPending(id) { return live.has(id) || queue.some((q) => q.id === id); }
@@ -128,6 +128,7 @@ function pump() {
 }
 function show(t) {
   busy = true;
+  try { t.onShow?.(); } catch {} // a once-a-week/year notice counts as seen when it really shows, not when it's queued (bug hunt 2026-10-25)
   const el = document.createElement('div');
   el.className = `ticket ticket--${t.kind} tone-${t.tone || KIND_TONE[t.kind] || 'info'}${t.href || t.action ? ' linked' : ''}${t.art ? ' ticket--art' : ''}${t.sticky ? ' ticket--sticky' : ''}`;
   el.dataset.eyebrow = (t.eyebrow ?? '').toUpperCase(); if (t.id) el.dataset.id = t.id;
