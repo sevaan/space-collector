@@ -6,6 +6,7 @@
 // dismissed") stay until tapped or closed with their ✕. They don’t hold up the queue: ordinary toasts keep coming above
 // them. At most two stay up; a third sends the oldest away. `action` runs on a tap (like `href`, without a page).
 const queue = [];
+let lastUnasked = -Infinity, heldT = 0;
 const live = new Map();
 let busy = false;
 const stickies = new Set(), shelf = []; // shelf: sticky elements, oldest first; only the newest shows
@@ -48,12 +49,12 @@ export const ICONS = {
 const KIND_ICON = { mission: 'diamond', rank: 'chevrons', event: 'star', xp: 'stamp', patch: 'card', compass: 'compass', info: 'info', error: 'alert', shiny: 'sparkle' };
 const KIND_TONE = { mission: 'orange', rank: 'orange', patch: 'orange', compass: 'orange', event: 'gold', xp: 'steel', info: 'info', error: 'red', shiny: 'shiny' };
 export const iconSvg = (name) => `<svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[name] ?? ICONS.info}</svg>`;
-export function ticket({ kind = 'info', eyebrow = '', line = '', sub = '', icon = '', tone = '', xp = 0, ms = 3000, href = null, html = false, delay = 0, id = null, art = '', celebrate = false, sticky = false, action = null, go = null }) {
+export function ticket({ kind = 'info', eyebrow = '', line = '', sub = '', icon = '', tone = '', xp = 0, ms = 3000, href = null, html = false, delay = 0, id = null, art = '', celebrate = false, sticky = false, action = null, go = null, unasked = false }) {
   if (id && toastPending(id)) dropToast(id); // the same message again replaces the old one
   // Only a direct answer to something done on an open page (a reminder set there, an error) may show over it. Progress from a
   // catch (worlds, stars, patches, missions) waits for the page to close, even if it was queued before it opened (iOS playtest 2026-10-19).
   const inPanel = !delay && !['xp', 'rank', 'mission', 'event', 'patch', 'shiny', 'milestone', 'complete'].includes(kind) && !!document.querySelector('.overlay.panel:not([hidden])');
-  queue.push({ kind, eyebrow, line, sub, icon, tone, xp, ms, href, html, id, art, celebrate, sticky, action, go, inPanel, at: Date.now() + delay });
+  queue.push({ kind, eyebrow, line, sub, icon, tone, xp, ms, href, html, id, art, celebrate, sticky, action, go, inPanel, unasked, made: Date.now(), at: Date.now() + delay });
   pump();
 }
 export function toastPending(id) { return live.has(id) || queue.some((q) => q.id === id); }
@@ -106,7 +107,15 @@ function pump() {
   if (busy || !queue.length) return;
   // With a page open, a notice made on that page goes ahead of older ones waiting for the page to close (code review
   // 2026-10-23: "Welcome to Plus" sat behind a notice from Explore).
-  let qi = 0; if (!queue[0].inPanel && document.querySelector('.overlay.panel:not([hidden])')) { const j = queue.findIndex((q) => q.inPanel); if (j > 0) qi = j; }
+  // One unasked notice per five minutes (2026-10-25, Sevaan; design/catch-feel.html 06 rule 6): things you didn't ask for
+  // (compass, meteor shower, Plus invite, a card back adopted) wait their turn behind the last one; anything still
+  // waiting after 15 minutes is dropped. Answers and catch news are never held.
+  for (let i = queue.length - 1; i >= 0; i--) if (queue[i].unasked && Date.now() - queue[i].made > 15 * 60e3) queue.splice(i, 1);
+  if (!queue.length) return;
+  const held = (q) => q.unasked && Date.now() - lastUnasked < 5 * 60e3;
+  let qi = queue.findIndex((q) => !held(q));
+  if (qi < 0) { clearTimeout(heldT); heldT = setTimeout(pump, Math.max(1000, lastUnasked + 5 * 60e3 - Date.now())); return; } // not busy: an answer arriving meanwhile still shows at once
+  if (!queue[qi].inPanel && document.querySelector('.overlay.panel:not([hidden])')) { const j = queue.findIndex((q) => q.inPanel && !held(q)); if (j > qi) qi = j; }
   const t = queue[qi], wait = t.at - Date.now();
   if (wait > 0) { busy = true; setTimeout(() => { busy = false; pump(); }, wait); return; }
   // Never over a card reveal or a patch moment (2026-10-08 playtest: toasts covered the new card); they wait their turn.
@@ -115,7 +124,7 @@ function pump() {
   if (!document.querySelector('.set-sheet.in') && !(t.inPanel && document.querySelector('.overlay.panel:not([hidden])')) /* a page's own answer shows on it, whatever waits on the sky (web QA 2026-10-24) */ && document.querySelector('#start:not([hidden]), #reveal:not([hidden]), .patch-moment, .patch-coins, body.patch-waiting, #ob-done:not([hidden]), body.first-catch')) { /* body.first-catch: the first catch after the tour (main.js) */ busy = true; setTimeout(() => { busy = false; pump(); }, 500); return; }
   // One sticky on screen at a time (2026-10-13 playtest: two stacked stickies covered 40% of an SE). A new one shows
   // straight away and the older one is shelved until it goes (2026-10-18 playtest: NEW RANK waited forever behind TONIGHT).
-  const [cur] = queue.splice(qi, 1); return show(cur);
+  const [cur] = queue.splice(qi, 1); if (cur.unasked) lastUnasked = Date.now(); return show(cur);
 }
 function show(t) {
   busy = true;
