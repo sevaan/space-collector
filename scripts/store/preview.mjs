@@ -178,7 +178,8 @@ for (const kind of which === 'all' ? Object.keys(OUT) : [which]) {
   // The caption track and the end card, drawn by the browser frame by frame on a transparent page.
   const capDir = join(tmp, 'caps'); mkdirSync(capDir, { recursive: true });
   { const cb = await chromium.launch(), cp = await cb.newPage({ viewport: { width: vw, height: vh }, deviceScaleFactor: W / vw });
-    const card = 'data:image/png;base64,' + readFileSync(issCard).toString('base64');
+    const u = Math.min(vw, vh * 0.4615); // the end card is laid out for a phone-shaped area, so a wide screen doesn't blow it up
+    const png = (f) => 'data:image/png;base64,' + readFileSync(join(tmp, f)).toString('base64'), card = png('iss-card.png'), cardL = png('fade-card.png'), cardR = png('story-card.png');
     await cp.setContent(`<!doctype html><html><head><style>
       @font-face { font-family: 'SC Display'; src: url('data:font/ttf;base64,${readFileSync(join(ROOT, 'fonts/RussoOne-Regular.ttf')).toString('base64')}'); }
       @font-face { font-family: 'SC Label'; src: url('data:font/ttf;base64,${readFileSync(join(ROOT, 'fonts/BarlowCondensed-Medium.ttf')).toString('base64')}'); font-weight: 500; }
@@ -188,23 +189,27 @@ for (const kind of which === 'all' ? Object.keys(OUT) : [which]) {
         font: 400 ${Math.round(vw * 0.076)}px/1 'SC Display', Impact, sans-serif; text-shadow: 0 0 ${Math.round(vw * 0.045)}px rgba(250,129,39,.5), 0 ${Math.max(2, Math.round(vw * 0.006))}px 0 #000, 0 0 ${Math.round(vw * 0.06)}px rgba(0,0,0,.95), 0 0 4px #000; opacity: 0; }
       #cap b { color: #fa8127; font-weight: 400; }
       #end { position: absolute; inset: 0; opacity: 0; }
-      #end .shade { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 46%, rgba(4,7,13,.15), rgba(4,7,13,.75) 75%); }
-      #end img { position: absolute; left: 50%; top: 9%; width: 54%; transform: translateX(-50%) rotate(-3deg); filter: drop-shadow(0 18px 40px rgba(0,0,0,.7)) drop-shadow(0 0 30px rgba(250,129,39,.25)); }
-      #end .t { position: absolute; left: 0; right: 0; top: 66%; text-align: center; font: 400 ${Math.round(vw * 0.105)}px/1 'SC Display', Impact, sans-serif; color: #fff2b3; text-shadow: 0 0 ${Math.round(vw * 0.05)}px rgba(250,129,39,.55), 0 3px 0 #000; }
-      #end .s { position: absolute; left: 0; right: 0; top: 74.5%; text-align: center; font: 500 ${Math.round(vw * 0.05)}px/1.35 'SC Label', sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #fff2b3; }
-      #end .s b { display: block; color: #fa8127; font-weight: 500; }
-    </style></head><body><div id="band"></div><div id="cap"></div><div id="end"><div class="shade"></div><img src="${card}"><div class="t">SPACE COLLECTOR</div><div class="s">Collect the night sky<b>Free. No ads.</b></div></div></body></html>`);
+      #end .shade { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 40%, rgba(4,7,13,.25), rgba(4,7,13,.88) 72%); }
+      #end img { position: absolute; filter: drop-shadow(0 ${Math.round(u * 0.04)}px ${Math.round(u * 0.08)}px rgba(0,0,0,.75)); transform-origin: 50% 85%; }
+      #end .cl, #end .cr { width: ${(u * 0.43).toFixed(0)}px; top: ${(vh * 0.21).toFixed(0)}px; left: 50%; margin-left: ${(-u * 0.215).toFixed(0)}px; }
+      #end .cc { width: ${(u * 0.5).toFixed(0)}px; top: ${(vh * 0.165).toFixed(0)}px; left: 50%; margin-left: ${(-u * 0.25).toFixed(0)}px; }
+      #end .t { position: absolute; left: 0; right: 0; top: 67%; text-align: center; white-space: nowrap; font: 400 ${Math.round(u * 0.1)}px/1 'SC Display', Impact, sans-serif; color: #fff2b3; text-shadow: 0 0 ${Math.round(u * 0.05)}px rgba(250,129,39,.5), 0 3px 0 #000; }
+      #end .rule { position: absolute; left: 50%; top: 73.3%; width: 27%; height: 1px; transform: translateX(-50%); background: linear-gradient(90deg, transparent, #fff2b366, transparent); }
+      #end .s { position: absolute; left: 0; right: 0; top: 75.5%; text-align: center; font: 500 ${Math.round(u * 0.047)}px/1 'SC Label', sans-serif; letter-spacing: .26em; text-transform: uppercase; color: #fff2b3; }
+      #end .s b { display: block; margin-top: .85em; font-size: .9em; letter-spacing: .2em; color: #fa8127; font-weight: 500; }
+    </style></head><body><div id="band"></div><div id="cap"></div><div id="end"><div class="shade"></div><img class="cl" src="${cardL}"><img class="cr" src="${cardR}"><img class="cc" src="${card}"><div class="t">SPACE COLLECTOR</div><div class="rule"></div><div class="s">Collect the night sky<b>Free · No ads</b></div></div></body></html>`);
     await cp.evaluate(async () => { await document.fonts.load('40px "SC Display"'); await document.fonts.load('500 20px "SC Label"'); await document.fonts.ready; });
     const N = Math.round(END * FPS), ease = (x) => 1 - Math.pow(1 - Math.min(1, Math.max(0, x)), 3);
     for (let i = 0; i < N; i++) {
       const t = i / FPS, c = CAPS.find(([a, z]) => t >= a && t < z);
-      const st = { capOp: 0, scale: 1, blur: 0, html: '', endOp: 0, titleOp: 0, titleScale: 1, subOp: 0 };
+      const st = { capOp: 0, scale: 1, blur: 0, html: '', endOp: 0, titleOp: 0, titleScale: 1, subOp: 0, fan: 0 };
       if (c) { const [a, z, text, o = {}] = c, k = o.settled ? 1 : (t - a) / 0.42, out = Math.min(1, Math.max(0, (z - t) / 0.3));
         st.html = '<span>' + text.replace(/\*(.+?)\*/g, '<b>$1</b>') + '</span>'; /* one item: the grid stacked bare words and the orange word as separate rows (Sevaan: too much space between the lines) */ st.capOp = Math.min(1, k * 3) * out; st.scale = 1 + 0.7 * (1 - ease(k)); st.blur = 4 * (1 - ease(k)); }
-      if (t >= 26.4) { st.endOp = Math.min(1, (t - 26.4) / 0.4); const k = (t - 27.0) / 0.42; st.titleOp = t >= 27.0 ? Math.min(1, k * 3) : 0; st.titleScale = 1 + 0.7 * (1 - ease(k)); st.subOp = Math.min(1, Math.max(0, (t - 27.45) / 0.35)); }
+      if (t >= 26.4) { st.endOp = Math.min(1, (t - 26.4) / 0.4); const k = (t - 27.0) / 0.42; st.titleOp = t >= 27.0 ? Math.min(1, k * 3) : 0; st.titleScale = 1 + 0.7 * (1 - ease(k)); st.subOp = Math.min(1, Math.max(0, (t - 27.45) / 0.35)); st.fan = ease((t - 26.45) / 0.6); }
       await cp.evaluate((st) => { const cap = document.getElementById('cap'); if (cap.dataset.h !== st.html) { cap.innerHTML = st.html; cap.dataset.h = st.html; }
         cap.style.opacity = st.capOp; cap.style.transform = `scale(${st.scale})`; cap.style.filter = st.blur > 0.05 ? `blur(${st.blur}px)` : 'none'; document.getElementById('band').style.opacity = st.capOp;
-        const e = document.getElementById('end'); e.style.opacity = st.endOp; const tt = e.querySelector('.t'); tt.style.opacity = st.titleOp; tt.style.transform = `scale(${st.titleScale})`; e.querySelector('.s').style.opacity = st.subOp; }, st);
+        const e = document.getElementById('end'); e.style.opacity = st.endOp; const tt = e.querySelector('.t'); tt.style.opacity = st.titleOp; tt.style.transform = `scale(${st.titleScale})`; e.querySelector('.s').style.opacity = st.subOp; e.querySelector('.rule').style.opacity = st.subOp;
+        const f = st.fan, sx = Math.min(innerWidth, innerHeight * 0.4615) * 0.22 * f; e.querySelector('.cl').style.transform = `translateX(${-sx}px) rotate(${-14 * f}deg)`; e.querySelector('.cr').style.transform = `translateX(${sx}px) rotate(${14 * f}deg)`; e.querySelector('.cc').style.transform = `translateY(${(1 - f) * innerHeight * 0.04}px)`; }, st);
       await cp.screenshot({ path: join(capDir, `${String(i).padStart(4, '0')}.png`), omitBackground: true });
     }
     await cb.close(); }
