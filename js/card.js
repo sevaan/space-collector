@@ -1,21 +1,21 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { fallWords } from './last-chance.js?v=0.1.1139';
-import { useMiles } from './units.js?v=0.1.1139';
-import { feel } from './native.js?v=0.1.1139';
-import { sfx } from './sfx.js?v=0.1.1139';
-import { cardArt } from './art.js?v=0.1.1139';
-import { TIER_INFO } from './rarity.js?v=0.1.1139';
-import { SET_BY_ID } from './sets.js?v=0.1.1139';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.1139';
-import { FLEET_ABOUT, fleetAbout, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.1139';
-import { artFileFor } from './art-keys.js?v=0.1.1139';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.1139';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.1139';
-import { nightsIn } from './observation.js?v=0.1.1139';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.1139';
-import { SHINY } from './shiny.js?v=0.1.1139';
-import { conArt, cometArt } from './con-art.js?v=0.1.1139';
-import { CON_FIGURES } from './con-figures.js?v=0.1.1139';
+import { fallWords } from './last-chance.js?v=0.1.1140';
+import { useMiles } from './units.js?v=0.1.1140';
+import { feel } from './native.js?v=0.1.1140';
+import { sfx } from './sfx.js?v=0.1.1140';
+import { cardArt } from './art.js?v=0.1.1140';
+import { TIER_INFO } from './rarity.js?v=0.1.1140';
+import { SET_BY_ID } from './sets.js?v=0.1.1140';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.1140';
+import { FLEET_ABOUT, fleetAbout, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.1140';
+import { artFileFor } from './art-keys.js?v=0.1.1140';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.1140';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.1140';
+import { nightsIn } from './observation.js?v=0.1.1140';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.1140';
+import { SHINY } from './shiny.js?v=0.1.1140';
+import { conArt, cometArt } from './con-art.js?v=0.1.1140';
+import { CON_FIGURES } from './con-figures.js?v=0.1.1140';
 // The animal/symbol figure belongs to the completed (gold) constellation card only (2026-10-05): a single
 // star’s card draws just the star pattern with its star marked, so the figure is a reward for finishing the set.
 // A star card’s constellation figure comes into focus as you collect the constellation’s stars (design/con-focus.html B).
@@ -164,7 +164,7 @@ export function renderCard(o, opts = {}) {
   const mStamps = moonCard ? stampsIn(sightings) : null, mLatest = moonCard ? moonPhaseOf(latestStamp(sightings)) : null;
   const moonBlock = moonCard ? `<div class="fl-dots mn-phases"><div class="fl-head"><span class="card__note-label">PHASES · ${mStamps.size}/8</span>${mLatest != null ? `<span class="fl-latest"><i></i>${esc(MOON_PHASES[mLatest])}</span>` : ''}</div><div class="mn-row">${MOON_PHASES.map((name, k) => `<svg viewBox="-20 -20 40 40" class="${mStamps.has(`MOON:${k}`) ? 'on' : ''}${k === mLatest ? ' latest' : ''}${k ? '' : ' nm'}" role="img" aria-label="${esc(name)}${mStamps.has(`MOON:${k}`) ? '' : ' (not yet)'}"><circle r="15"></circle>${k ? `<path d="${phasePath(k)}"${k > 4 ? ' transform="scale(-1,1)"' : ''}></path>` : ''}</svg>`).join('')}</div></div>` : '';
   const factBlock = moonCard ? moonBlock + `<div class="card__fact"><p>${richText(factFor(o))}</p></div>`
-    : fleet ? dotMap(o, stamps, lk, `${stamps.size} / ${o.launches.length} stamped` /* no "N more for Silver" (2026-10-12, Sevaan: it wrapped and took room from the art) */, latestLine) + (FLEET_ABOUT[o.family] ? `<div class="card__fact fl-about"><p>${richText(fleetAbout(o.family, stamps.size))}</p></div>` : '')
+    : fleet ? dotMap(o, stamps, lk, `${stamps.size} / ${o.launches.length} stamped` /* no "N more for Silver" (2026-10-12, Sevaan: it wrapped and took room from the art) */, latestLine, new Set(sightings.filter((x) => x.train && x.stampKey).map((x) => x.stampKey))) + (FLEET_ABOUT[o.family] ? `<div class="card__fact fl-about"><p>${richText(fleetAbout(o.family, stamps.size))}</p></div>` : '')
     : conCard ? `<div class="card__fact"><p>${richText(prog.level === 'gold' ? factFor(o).replace(/Collect all \d+ of its stars to turn this card \*\*gold\*\*\./, `You’ve found **all ${prog.total}** of its stars.`).replace(/Collect the Sun, the Moon and all \*\*seven\*\* planets to turn this card \*\*gold\*\*\./, `You’ve seen **all nine** of them yourself.`) : factFor(o))}</p><p class="con-progress">${o.stars.map((k) => `<i class="${(opts.ownedKeys ?? new Set()).has(k) ? 'on' : ''}"></i>`).join('')}<span>${prog.have} / ${prog.total} ${o.system ? 'WORLDS' : 'STARS'}${prog.level === 'gold' ? ' · COMPLETE' : ''}</span></p></div>`
     : secretStory ? '<div class="card__fact"><p>Somewhere in the sky there’s a story waiting. Keep looking, at night, in odd places, on special days.</p></div>'
     : `<div class="card__fact"><p>${richText(factFor(o))}</p></div>`; // the fact shows on cards you don’t have too: it’s what makes you want one (2026-10-13, Sevaan)
@@ -261,10 +261,10 @@ const latestStamp = (sightings) => stampHistory(sightings.filter((s) => !s.sim))
 
 // Every launch in the fleet as a dot, oldest to newest; stamped ones filled, the newest ringed.
 // The heading counts your stamps ("3 LAUNCHES", 2026-10-20, Sevaan: was "EVERY LAUNCH"); summary ("3 / 422 stamped") sits between the first and last launch years, under the dots.
-function dotMap(o, stamps, latest, summary = '', latestLine = '') {
+function dotMap(o, stamps, latest, summary = '', latestLine = '', trains = null) {
   // Huge fleets (Starlink, 400+ launches) get finer dots in about six rows, so the grid doesn’t eat the picture (2026-10-14).
   const n = o.launches.length, cols = n > 200 ? Math.min(72, Math.ceil(n / 6)) : n > 60 ? 18 : Math.min(14, Math.max(10, n)), gap = n > 200 ? '.1em' : '.45em';
-  const dots = o.launches.map((l) => `<i class="${stamps.has(l.key) ? 'on' : ''}${l.key === latest ? ' latest' : ''}"></i>`).join('');
+  const dots = o.launches.map((l) => `<i class="${stamps.has(l.key) ? 'on' : ''}${l.key === latest ? ' latest' : ''}${trains?.has(l.key) ? ' train' : ''}"></i>`).join(''); // .train: caught as a Starlink train (2026-10-25)
   const y0 = o.launches[0]?.launch?.slice(0, 4) ?? '', y1 = o.launches.at(-1)?.launch?.slice(0, 4) ?? '';
   return `<div class="fl-dots"><div class="fl-head"><span class="card__note-label">${stamps.size.toLocaleString('en-US')} LAUNCH${stamps.size === 1 ? '' : 'ES'}</span>${latestLine ? `<span class="fl-latest"><i></i><span class="fl-type" style="--n:${latestLine.length}">${esc(latestLine)}</span></span>` : ''}</div><div class="fl-grid" style="--cols:${cols};--gap:${gap}">${dots}</div><div class="fl-years"><span>${esc(y0)}</span>${summary ? `<span class="fl-sum">${esc(summary)}</span>` : ''}<span>${esc(y1)}</span></div></div>`;
 }

@@ -1,7 +1,7 @@
 // Player progress from the sighting log: XP and observer rank, tonight’s three missions, a weekly streak and
 // achievements. Everything is derived from the saved sightings (nothing extra is stored), so it can’t drift.
 // info(cardKey) -> { tier, type, owner, launch, natural, con } | null. No DOM.
-import { nightKey } from './observation.js?v=0.1.1139';
+import { nightKey } from './observation.js?v=0.1.1140';
 
 // A longer climb (2026-10-12, playtest room: three ranks on night 1, Mission Control in about two weeks), with two
 // prestige ranks past Mission Control. Nobody drops a rank they had on the old curve (rankFloor below).
@@ -227,6 +227,7 @@ export const ACHIEVEMENTS = [
   { id: 'gold3', name: 'Inner Circle', text: 'Three gold cards', icon: 'Au3', done: (a) => a.goldCards >= 3 },
   { id: 'roadtrip', name: 'Road Trip', text: 'Sightings from two places more than 100 km apart', icon: '100k', done: (a) => a.spreadKm >= 100 },
   // Missions
+  { id: 'choochoo', name: 'Choo Choo', text: 'Catch five Starlink trains', icon: 'TRN', done: (a) => (a.trains ?? 0) >= 5 },
   { id: 'missions10', name: 'On Assignment', text: 'Complete 10 missions', icon: 'M10', done: (a) => a.missionsDone >= 10 },
   { id: 'fullhouse', name: 'Full House', text: 'Complete all three missions in one night', icon: '3/3', done: (a) => a.fullHouse },
   { id: 'missions50', name: 'Veteran', text: 'Complete 50 missions', icon: 'M50', done: (a) => a.missionsDone >= 50 },
@@ -245,7 +246,7 @@ const PROG = {
   wanderers: (a) => [a.wanderers, 6], stars10: (a) => [a.stars, 10], deep3: (a) => [a.deep ?? 0, 3], deep10: (a) => [a.deep ?? 0, 10], cons5: (a) => [a.cons, 5], zodiac: (a) => [a.zodiac, 12], cons25: (a) => [a.cons, 18], cons44: (a) => [a.cons, 44],
   compass: (a) => [a.quadrants.size, 4], marathon: (a) => [a.maxNight, 10], months3: (a) => [a.months.size, 3], months12: (a) => [a.months.size, 12],
   streak4: (a) => [a.bestStreak, 4], streak12: (a) => [a.bestStreak, 12], silver: (a) => [a.maxNightsOnCard, 3], gold: (a) => [a.maxNightsOnCard, 10], gold3: (a) => [a.goldCards, 3],
-  missions10: (a) => [a.missionsDone, 10], missions50: (a) => [a.missionsDone, 50],
+  choochoo: (a) => [a.trains ?? 0, 5], missions10: (a) => [a.missionsDone, 10], missions50: (a) => [a.missionsDone, 50],
 };
 
 // Weeks with at least one sighting -> current and best streak of consecutive weeks. Weeks run in 7-day blocks from
@@ -302,6 +303,7 @@ export function progress(sightings, info, { constellations = [], albums = [], no
         if (s.time - Date.parse(i.launch) <= 30 * 86400e3 && s.time >= Date.parse(i.launch)) a.brandNew = true;
       }
       if (s.headliner) { xp += 25; a.headliners = (a.headliners ?? 0) + 1; } // tonight’s headliner (main.js headliner)
+      if (s.train) a.trains = (a.trains ?? 0) + 1; // a fresh Starlink launch caught as a train (main.js trainOf)
       if (s.peak) { xp += 10; a.peaks = (a.peaks ?? 0) + 1; } // caught within 30 s of its highest point (main.js atPeak, 2026-10-25)
       if (s.lastChance) a.witness = (a.witness ?? 0) + 1; // collected while it was falling (js/last-chance.js)
       if (i?.reunion) { const r = reunionRoles.get(i.reunion) ?? reunionRoles.set(i.reunion, new Set()).get(i.reunion); r.add(i.role); }

@@ -682,3 +682,5 @@
 :where(html[data-theme='night'], body.night) .card-tile.card-tile--mini.shiny::after { background: #ff6a55; }
 /* A decimal point in a stat value gets room either side (web playtest 2026-10-22: 2.3 laps a day read as 23). */
 .card__stats b i.dp { font-style: normal; margin: 0 .08em 0 .1em; }
+/* A launch caught as a Starlink train (2026-10-25): its dot gets a small ring */
+.fl-grid i.train { box-shadow: 0 0 0 .12em #5fd08a; }
