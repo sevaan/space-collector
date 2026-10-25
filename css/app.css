@@ -2511,3 +2511,16 @@ body.night #ud-now .ud-chip { border-color: #ff6a5533; } body.night #ud-now .ud-
 body.night #ud-now .ud-chip.on { border-color: #ff6a55; box-shadow: 0 0 0 1px #ff6a55; } body.night #ud-now .ud-plan { background: #ff6a55; color: #120606; }
 body.ob-tour #ud-now, body.calib #ud-now, body:has(#wake:not([hidden])) #ud-now, body.folded #ud-now { display: none; }
 #ud-now.compact .ud-plan { display: none; }
+/* Day one ends with an appointment (2026-10-25, Sevaan; design/first-night.html 02): one pass, one picture, one button */
+#ob-done-title.appt { font-size: clamp(24px, 7vw, 30px); line-height: 1.12; text-wrap: balance; }
+.od-appt { display: flex; align-items: center; gap: 14px; margin: 4px 0 18px; padding: 12px 14px; border-radius: 16px; background: rgba(10, 18, 31, .9); border: 1px solid #ffffff14; }
+.od-ring { position: relative; flex: none; width: 66px; height: 66px; border-radius: 50%; display: grid; place-items: center;
+  background: conic-gradient(var(--tier, #4da3ff) calc(var(--f, .5) * 360deg), #ffffff1a 0); }
+.od-ring img { width: 58px; height: 58px; border-radius: 50%; object-fit: cover; background: #0b1424; border: 2px solid #0a121f; }
+.od-appt-t { display: grid; gap: 2px; min-width: 0; }
+.od-appt-t small { font: 500 11px/1.2 var(--label); letter-spacing: .14em; text-transform: uppercase; }
+.od-appt-t b { font: 400 19px/1.15 var(--display); color: var(--text); }
+.od-appt-t > span { font: 500 13px/1.3 var(--label); color: color-mix(in srgb, var(--text) 80%, transparent); letter-spacing: .02em; }
+.od-appt-t i { font: 500 11px/1.2 var(--label); font-style: normal; letter-spacing: .12em; text-transform: uppercase; color: #7fb2ff; margin-top: 2px; }
+.od-tl.small .it { padding-bottom: 12px; } .od-tl.small b { font-size: 15px; } .od-tl.small span { font-size: 14px; }
+body.night .od-ring { background: conic-gradient(#ff6a55 calc(var(--f, .5) * 360deg), #ff6a5522 0); } body.night .od-appt-t small, body.night .od-appt-t i { color: #ff6a55 !important; }
