@@ -1,7 +1,7 @@
 // Player progress from the sighting log: XP and observer rank, tonight’s three missions, a weekly streak and
 // achievements. Everything is derived from the saved sightings (nothing extra is stored), so it can’t drift.
 // info(cardKey) -> { tier, type, owner, launch, natural, con } | null. No DOM.
-import { nightKey } from './observation.js?v=0.1.1138';
+import { nightKey } from './observation.js?v=0.1.1139';
 
 // A longer climb (2026-10-12, playtest room: three ranks on night 1, Mission Control in about two weeks), with two
 // prestige ranks past Mission Control. Nobody drops a rank they had on the old curve (rankFloor below).
@@ -22,6 +22,28 @@ function rankFloor(xp) {
 const TIER_XP = { common: 10, uncommon: 15, rare: 25, epic: 40, legendary: 60 };
 const LEGACY_TIER_XP = { common: 10, uncommon: 20, rare: 40, epic: 80, legendary: 150 };
 const REPEAT_XP = 5, SHINY_XP = 100, MISSION_XP = 50, CON_XP = 200;
+// Themed weeks (2026-10-25, Sevaan; design/come-back.html 03): a small goal from Monday to Sunday, the same for everyone
+// (a rotation by week; main.js may swap in the next theme when this sky can't deliver it, kept in localStorage
+// weekThemes). +150 XP each week it's done, and the theme's week badge (a patch in the Weeks group) the first time.
+export const WEEK_XP = 150;
+const COUNTRY = { CIS: 'Soviet Union / Russia', US: 'USA', PRC: 'China', FR: 'Europe', ESA: 'Europe', IND: 'India', JPN: 'Japan', SEAL: 'Sea Launch', SKOR: 'South Korea', IRAN: 'Iran', UK: 'UK', AUS: 'Australia', NKOR: 'North Korea' };
+export const countryOf = (owner) => COUNTRY[owner] ?? owner ?? 'Unknown';
+const yearOf = (i) => Number(String(i?.launch ?? '').slice(0, 4)) || null;
+export const WEEK_THEMES = [
+  { id: 'stages', name: 'Rocket stage week', short: 'Stage Week', text: 'Catch three rocket stages from different countries.', icon: 'R/B', need: 3,
+    have: (w) => new Set(w.filter((s) => s.info?.type === 'rocket-body').map((s) => countryOf(s.info.owner))).size },
+  { id: 'old', name: 'Old-timers week', short: 'Old-Timers', text: 'Catch three things launched before 1970.', icon: '<70', need: 3,
+    have: (w) => new Set(w.filter((s) => !s.info?.natural && yearOf(s.info) && yearOf(s.info) < 1970).map((s) => s.cardKey)).size },
+  { id: 'stations', name: 'Station week', short: 'Station Week', text: 'Catch both space stations: the ISS and Tiangong.', icon: 'ISS', need: 2,
+    have: (w) => ['25544', '48274'].filter((k) => w.some((s) => String(s.cardKey) === k)).length },
+  { id: 'fleet', name: 'Fleet week', short: 'Fleet Week', text: 'Stamp three new launches on your fleet cards.', icon: 'FLT', need: 3,
+    have: (w) => new Set(w.filter((s) => s.newStampKey).map((s) => s.newStampKey)).size },
+  { id: 'planets', name: 'Planet week', short: 'Planet Week', text: 'Catch three different planets.', icon: 'PL', need: 3,
+    have: (w) => new Set(w.filter((s) => String(s.cardKey).startsWith('planet:')).map((s) => s.cardKey)).size },
+];
+export const weekStartOf = (t) => { const d = new Date(t); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() - ((d.getDay() + 6) % 7)); return d.getTime(); };
+export const weekThemeFor = (ws, chosen = null) => WEEK_THEMES.find((x) => x.id === chosen?.[ws]) ?? WEEK_THEMES[Math.floor(ws / 604800000 + 0.5) % WEEK_THEMES.length];
+export function readWeekThemes() { try { return JSON.parse(localStorage.getItem('weekThemes')) || {}; } catch { return {}; } }
 const real = (sightings) => sightings.filter((s) => !s.sim).slice().sort((a, b) => a.time - b.time);
 const year = (iso) => (iso ? Number(String(iso).slice(0, 4)) : null);
 const soviet = (i) => i?.owner === 'CIS';
@@ -252,7 +274,7 @@ export function streaks(sightings, now = Date.now(), cloudy = cloudyDays()) {
 }
 
 // constellations: [{ id, stars: [cardKey], zodiac }] for completion counts.
-export function progress(sightings, info, { constellations = [], albums = [], now = Date.now(), deals = null, carry = 0, tierXp = TIER_XP, lon = null } = {}) {
+export function progress(sightings, info, { constellations = [], albums = [], now = Date.now(), deals = null, carry = 0, tierXp = TIER_XP, lon = null, weekThemes = null } = {}) {
   const list = real(sightings);
   const seenCard = new Set(), seenNight = new Set(), nights = new Map();
   let xp = 0;
@@ -321,6 +343,13 @@ export function progress(sightings, info, { constellations = [], albums = [], no
     if (night !== firstNight && challengeFor(night).done(n, n[0].time)) xp += MISSION_XP;
   }
   a.reunions = [...reunionRoles.values()].filter((r) => r.size === 2).length; // launches where you own the stage and its satellite
+  // Themed weeks: each week's sightings against that week's theme. Fleet stamps count only the first time you stamp a launch.
+  const weeks = new Map(), firstStamp = new Set();
+  for (const s of list) { const ws = weekStartOf(s.time), e = { ...s, info: info(s.cardKey) }; if (s.stampKey && !String(s.stampKey).startsWith('MOON:') && !firstStamp.has(s.stampKey)) { firstStamp.add(s.stampKey); e.newStampKey = s.stampKey; } if (!weeks.has(ws)) weeks.set(ws, []); weeks.get(ws).push(e); }
+  a.weekThemes = new Set();
+  for (const [ws, w] of weeks) { const th = weekThemeFor(ws, weekThemes); if (th.have(w) >= th.need) { xp += WEEK_XP; a.weekThemes.add(th.id); } }
+  const wsNow = weekStartOf(now), thNow = weekThemeFor(wsNow, weekThemes), wNow = weeks.get(wsNow) ?? [];
+  const week = { id: thNow.id, name: thNow.name, text: thNow.text, need: thNow.need, have: Math.min(thNow.need, thNow.have(wNow)), start: wsNow, sightings: wNow };
   const st = streaks(list, now); a.bestStreak = st.best;
   const tonightKey = nightKey(now, lon ?? list[list.length - 1]?.lon ?? 0) /* where you are now, as the deal was made (bug hunt 2026-10-22: travel split them) */, tonight = nights.get(tonightKey) ?? [];
   const missions = missionsOf(tonightKey, { first: !nights.size || tonightKey === firstNight, deals }).map((m) => ({ id: m.id, text: m.text, done: m.done(tonight, now) }));
@@ -336,5 +365,6 @@ export function progress(sightings, info, { constellations = [], albums = [], no
   const ch = challengeFor(tonightKey), challenge = list.length && tonightKey !== firstNight ? { id: ch.id, text: ch.text, done: ch.done(tonight, now) } : null; // not on a first night: the starter set is enough
   // A filled album earns its own gold-foil patch (2026-10-10, playtest #17).
   for (const al of albums) { const have = al.keys.filter((k) => seenCard.has(k)).length; achievements.push({ id: `album-${al.id}`, album: al.id, name: al.name, sub: 'Gold album', icon: '', text: `Fill the ${al.name.replace(/^The /, "")} album to gold: ${al.goal.toLocaleString("en-US")} cards`, done: have >= al.goal, prog: [Math.min(have, al.goal), al.goal] }); }
-  return { xp, rank, missions, challenge, streak: st, achievements, cards: a.cards };
+  for (const th of WEEK_THEMES) achievements.push({ id: `week-${th.id}`, week: th.id, name: th.short, sub: 'Week badge', icon: th.icon, text: `${th.text.replace(/\.$/, '')} in one week`, done: a.weekThemes.has(th.id), prog: [a.weekThemes.has(th.id) ? 1 : 0, 1] });
+  return { xp, rank, missions, challenge, streak: st, achievements, cards: a.cards, week };
 }

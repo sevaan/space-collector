@@ -6,11 +6,11 @@
 //   iCloud key 'sc-backup' = { v: 1, s: [sightings], gone: [ids deleted], st: { progress keys }, at }
 // Sync merges both ways and never loses anything earned: sightings are a union by a stable id (time + card + object),
 // minus ids someone deleted; progress keys merge as in the old account sync.
-import { allSightings, addSighting, deleteSighting } from './store.js?v=0.1.1138';
-import { plugin, onNative, isNative } from './native.js?v=0.1.1138';
+import { allSightings, addSighting, deleteSighting } from './store.js?v=0.1.1139';
+import { plugin, onNative, isNative } from './native.js?v=0.1.1139';
 
 const KEY = 'sc-backup';
-const STATE_KEYS = ['secrets', 'fossilFound', 'ufoFound', 'missionDeals', 'xpCarry2', 'patchSeen', 'patchDates', 'backEarned', 'rankFloor2'];
+const STATE_KEYS = ['secrets', 'fossilFound', 'ufoFound', 'missionDeals', 'weekThemes', 'xpCarry2', 'patchSeen', 'patchDates', 'backEarned', 'rankFloor2'];
 const ls = { get: (k) => { try { return localStorage.getItem(k); } catch { return null; } }, set: (k, v) => { try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, v); } catch {} } };
 const json = (k, d) => { try { return JSON.parse(ls.get(k)) ?? d; } catch { return d; } };
 const kv = () => (isNative() && /iP(hone|ad|od)|Mac/.test(navigator.userAgent) ? plugin('ICloudKV') : null);

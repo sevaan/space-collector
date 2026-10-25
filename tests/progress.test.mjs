@@ -49,3 +49,14 @@ test('XP: a new card caught at its peak gets +10 (2026-10-25)', () => {
   const plain = progress([s('a', 0)], info, { now: T + 3600e3 }).xp, peak = progress([s('a', 0, { peak: true })], info, { now: T + 3600e3 }).xp;
   assert.equal(peak - plain, 10);
 });
+test('themed weeks: stage week done with three countries gives +150 and the badge (2026-10-25)', () => {
+  const ws = Date.parse('2026-10-05T04:00:00Z'); // a Monday, local midnight in Ontario
+  const id = 'stages', themes = { [new Date(ws).setHours(0, 0, 0, 0)]: id };
+  const I = { ...INFO, c: { tier: 'common', type: 'rocket-body', owner: 'US', launch: '1990-01-01' }, d: { tier: 'common', type: 'rocket-body', owner: 'PRC', launch: '2010-01-01' } };
+  const inf = (k) => I[k] ?? null, t = ws + 2 * 86400e3, sg = (k, m) => ({ cardKey: k, time: t + m * 60e3, lon: -78.3, el: 40 });
+  const two = progress([sg('a', 0), sg('c', 5)], inf, { now: t + 3600e3, weekThemes: themes }), three = progress([sg('a', 0), sg('c', 5), sg('d', 10)], inf, { now: t + 3600e3, weekThemes: themes });
+  assert.equal(two.week.id, 'stages'); assert.equal(two.week.have, 2);
+  assert.equal(three.week.have, 3);
+  assert.equal(three.xp - two.xp, 10 + 150); // the third stage's own XP, plus the week
+  assert.ok(three.achievements.find((x) => x.id === 'week-stages').done);
+});

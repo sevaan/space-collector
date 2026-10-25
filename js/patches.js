@@ -3,15 +3,15 @@
 // group (or the date earned) along the bottom, one icon in the middle. Milestones get gold foil, the rarest holo
 // (css/ui.css .patch--gold / .patch--holo). Shared by Explore (the earning moment, its toast) and Collection (the wall).
 
-import { CON_BY_ID } from './constellations.js?v=0.1.1138';
+import { CON_BY_ID } from './constellations.js?v=0.1.1139';
 
 export const GROUPS = {
   collect: { c: '#14284a', t: 'Collection' }, rarity: { c: '#3a2259', t: 'Rarity' }, rocket: { c: '#5a2a1a', t: 'Rockets' },
   nation: { c: '#173d5c', t: 'Nations' }, history: { c: '#4a3a22', t: 'History' }, fleet: { c: '#10433f', t: 'Fleets' },
   planet: { c: '#5a3814', t: 'Solar system' }, album: { c: '#4a3a12', t: 'Albums' }, con: { c: '#22265a', t: 'Constellations' }, sky: { c: '#1d4a2a', t: 'Sky skills' },
-  time: { c: '#4f1c27', t: 'Time' }, secret: { c: '#4a3420', t: 'Secret' }, member: { c: '#14284a', t: 'Members' },
+  time: { c: '#4f1c27', t: 'Time' }, secret: { c: '#4a3420', t: 'Secret' }, member: { c: '#14284a', t: 'Members' }, week: { c: '#1f3d3a', t: 'Weeks' },
 };
-export const GROUP_ORDER = ['member', 'secret', 'album', 'collect', 'rarity', 'rocket', 'nation', 'history', 'fleet', 'planet', 'con', 'sky', 'time'];
+export const GROUP_ORDER = ['member', 'secret', 'week', 'album', 'collect', 'rarity', 'rocket', 'nation', 'history', 'fleet', 'planet', 'con', 'sky', 'time'];
 
 const GROUP_OF = {
   collect: 'first ten twentyfive fifty hundred archivist curator catalogue sightings100 station stations satellites50 silver gold gold3 missions10',
@@ -26,7 +26,7 @@ const GROUP_OF = {
   time: 'twilight owl dawn marathon double hattrick months3 months12 streak4 streak12 anniversary',
 };
 const groupById = new Map(Object.entries(GROUP_OF).flatMap(([g, ids]) => ids.split(' ').map((id) => [id, g])));
-export const groupOf = (a) => (a.id === 'plus' ? 'member' : a.secret ? 'secret' : a.album ? 'album' : a.con === 'solar' ? 'planet' : a.con ? 'con' : groupById.get(a.id) ?? 'collect');
+export const groupOf = (a) => (a.id === 'plus' ? 'member' : a.secret ? 'secret' : a.week ? 'week' : a.album ? 'album' : a.con === 'solar' ? 'planet' : a.con ? 'con' : groupById.get(a.id) ?? 'collect');
 
 // Picture icons where one reads better than the achievement’s text icon.
 const GLYPH = {
