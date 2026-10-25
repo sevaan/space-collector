@@ -2011,10 +2011,6 @@
   "fact": "A white star spinning so fast that it **bulges** at its middle. In about 485,000 years it will make its **closest pass** by the Sun.",
   "source": "https://en.wikipedia.org/wiki/HD_42818"
  },
- "63121": {
-  "fact": "The fainter of the two stars that make up **Cor Caroli**, “Charles’s Heart”. A small telescope easily splits it from its brighter partner.",
-  "source": "https://en.wikipedia.org/wiki/Cor_Caroli"
- },
  "33579": {
   "fact": "About **4.7 million years ago** it was the brightest star in our night sky, far brighter than Sirius is now. It’s a blue giant about 410 light-years away.",
   "source": "https://en.wikipedia.org/wiki/Epsilon_Canis_Majoris"
@@ -2936,5 +2932,9 @@
  "98543": {
   "fact": "A white star with unusual **metal lines** in its light, now starting to grow older and bigger. It’s about 240 light-years away and heading toward us.",
   "source": "https://en.wikipedia.org/wiki/15_Vulpeculae"
+ },
+ "63125": {
+  "fact": "**Cor Caroli**, “Charles’s Heart”, named for King Charles I of England. A small telescope splits it in two; this is the brighter star, with a strong, patchy **magnetic field** that makes its light flicker slightly.",
+  "source": "https://en.wikipedia.org/wiki/Cor_Caroli"
  }
 }

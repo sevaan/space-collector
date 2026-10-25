@@ -1,4 +1,4 @@
-import { extinction } from './sky-limit.js?v=0.1.1168';
+import { extinction } from './sky-limit.js?v=0.1.1169';
 // The Moon, the naked-eye planets and the brightest named stars, as collectible cards.
 // Positions come from js/celestial.js (state.bodies, state.skyEnu); this file holds the card facts and
 // the "can you see it right now" rules. No DOM. Every fact must be true; approximate values say so.
@@ -162,7 +162,7 @@ export function naturalTargets(bodies, stars, extra = [], starLimit = 6.5, binoL
     // to the Sun was collectable at 1 PM). Low planets in twilight need some height to clear the glow (Mercury at 3°).
     const sunSep = sun ? Math.acos(Math.max(-1, Math.min(1, b.enu[0] * sun.enu[0] + b.enu[1] * sun.enu[1] + b.enu[2] * sun.enu[2]) / ((Math.hypot(...b.enu) * Math.hypot(...sun.enu)) || 1))) * 180 / Math.PI : 180;
     const moonOk = sunEl < -6 ? b.illum >= 0.03 : b.illum >= 0.15 && sunSep >= 30;
-    const visible = b.kind === 'sun' ? el > -0.8 /* catchable until its top edge sets (2026-10-21, Sevaan: it was still showing at sunset); refraction lifts it ~0.6° */ : b.kind === 'moon' ? el > 0 && moonOk : b.kind === 'planet' && !faint && sunEl > -12 && el < 6 && b.name !== 'Venus' ? false : faint ? el > 5 && sunEl < -12 && b.mag + extinction(el) <= Math.max(starLimit, binoLimit ?? -99) : el > 2 && sunEl < brightLimit(b.mag);
+    const visible = b.kind === 'sun' ? el > -0.8 /* catchable until its top edge sets (2026-10-21, Sevaan: it was still showing at sunset); refraction lifts it ~0.6° */ : b.kind === 'moon' ? el > 0 && moonOk : b.kind === 'planet' && !faint && sunEl > -12 && el < 6 && b.name !== 'Venus' ? false : faint ? el > 5 && sunEl < -12 && b.mag + extinction(el) <= Math.max(starLimit, binoLimit ?? -99) : el > 2 && sunEl < brightLimit(b.mag) && b.mag + extinction(el) <= Math.max(starLimit, binoLimit ?? -99); /* a bright planet must beat the same limit the sky drawing uses (sky playtest 2026-10-25: Mars at 5° in a city sky was collectable but not drawn) */
     out.push({ obj, look: { az: azOf(b.enu), el, mag: b.mag, visible, enu: b.enu, phaseName: b.phaseName, illum: b.illum, distKm: b.distKm } });
   }
   out.push({ obj: earthCard, look: { az: 0, el: -90, mag: -99, visible: true, enu: [0, 0, -1] } }); // straight down, always there

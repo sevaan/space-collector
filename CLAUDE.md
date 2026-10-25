@@ -1820,3 +1820,17 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - The Sun safety toast waits until after the tour.
   - Settings → Your sky: the Match row is merged into the slider row ("Match outside" link).
   - Match your sky also reaches finger players, and waits while a notice is showing.
+- 2026-10-25 visual + sky playtest fixes (reports in that session's scratchpad hunt1/, hunt2/):
+  - One ticket height: Collect / View card, the sky's ticket with a card, and the plane / named-star ticket are all 150px (136 under 720px tall). A pass marker with Set reminder is 168 / 152, with its detail kept to one line. Names clamp to 2 lines, details to 3 (2 on short screens), plane routes to 2. Plane and star detail lines use segLine (no line starts with "·", units stay with numbers).
+  - The headliner says so in the marker's kicker ("★ Headliner · 8:05 PM"), not the detail.
+  - The rarity line reads "Common · Perseus" (no "in"), and trains read "Train · 5 in a line", so they fit beside the distance.
+  - Uncollected star charts are brighter (blur + brightness 1.5, 1.8 in the ticket) to match uncollected pictures.
+  - The Match your sky card goes compact when it would cover the circle (it was measured mid-animation).
+  - Settings at 320px: values shrink with an ellipsis and links never wrap.
+  - Daytime crescent Moon: drawn whenever collectable (one 15% threshold).
+  - Bright planets must beat the same limit the sky drawing uses (Mars low in a city sky was collectable but not drawn).
+  - The UFO is one more thing in the circle (ufoAngle → state.ufoAng): anything farther from the middle steps aside.
+  - Tonight's pass marker keeps the ticket over a satellite hidden by daylight.
+  - Red mode by day hides the stars and the Milky Way (sky.lightF from the Sun, whatever the theme).
+  - Canes Venatici's card star is now Cor Caroli (HIP 63125, mag 2.89; was α¹ CVn, HIP 63121, mag 5.6). Old sightings keyed star:hip63121 won't attach to it.
+  - Not done: γ Sextantis (5.07) is collectable at a dark site but sky.json only draws to 5.0; planets 2–3.75° up may hide behind the tallest trees.

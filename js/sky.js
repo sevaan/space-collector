@@ -1,17 +1,17 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.1168';
+import { extinction } from './sky-limit.js?v=0.1.1169';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.1168';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.1169';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.1168';
-import { createCloudGL } from './clouds-gl.js?v=0.1.1168';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.1169';
+import { createCloudGL } from './clouds-gl.js?v=0.1.1169';
 // Cloud colours by light: sunlit tops, shadowed bellies, and the horizon haze they melt into (0–1 RGB).
 const CLOUD_LIGHT = {
   day: { lit: [1, 1, 1], shade: [0.62, 0.68, 0.77], haze: [0.82, 0.87, 0.93] },
   dusk: { lit: [1, 0.8, 0.68], shade: [0.36, 0.33, 0.42], haze: [0.62, 0.5, 0.52] },
   night: { lit: [0.22, 0.25, 0.31], shade: [0.1, 0.12, 0.16], haze: [0.14, 0.15, 0.2] },
 };
-import { TIER_INFO } from './rarity.js?v=0.1.1168';
+import { TIER_INFO } from './rarity.js?v=0.1.1169';
 
 const RAD = Math.PI / 180;
 const SECRET_PX = { santa: 24, roadster: 12.4, voyager: 14.5, voyager2: 14.5, pioneer10: 11.7, pioneer11: 11.7, newhorizons: 6.4, arecibo: 6.9, halley: 8.6, sputnik: 11.2, laika: 13.3, wow: 9.8 };
@@ -422,7 +422,7 @@ export class SkyView {
     ctx.restore();
     // One in the circle: name it in full above and below the circle, like things below the horizon (2026-10-13).
     const timed = ghosts.filter((g) => g.time && g.enu[2] > 0);
-    const hit = timed.length && !this.ghostBusy ? this.ghostHit(timed.map((g) => ({ ...g, kicker: `Here tonight · ${g.time}` })), '', '20,34,54', { day: true, kickerOf: (g) => g.kicker }) : null;
+    const hit = timed.length && !this.ghostBusy ? this.ghostHit(timed.map((g) => ({ ...g, kicker: `${g.head ? '★ Headliner' : 'Here tonight'} · ${g.time}` })), '', '20,34,54', { day: true, kickerOf: (g) => g.kicker }) : null;
     this.ghostHitId = hit?.g.id ?? null;
   }
 
@@ -573,7 +573,7 @@ export class SkyView {
     const night = this.theme === THEMES.night, INK = night ? '255,110,90' : '20,34,54';
     this.drawHalo(sats, 1, night ? this.theme.sat : 'rgba(24,40,62,.9)');
     this.dayHitId = null;
-    if (!this.belowFree) return;
+    if (!this.belowFree || this.ghostHitId != null) return; // tonight's pass marker in the circle keeps the ticket (sky playtest 2026-10-25: a daylight satellite overwrote it)
     const hit = this.ghostHit(sats, 'HIDDEN BY DAYLIGHT', INK, { day: !night });
     this.dayHitId = hit?.g.id ?? null;
   }
@@ -1404,7 +1404,7 @@ export class SkyView {
       if (!this.onScreen(p, 30)) continue;
       if (b.kind === 'moon') {
         // In daylight a thin or new Moon is invisible: don’t paint a black disc on a blue sky (2026-10-08 playtest).
-        if ((this.dayF ?? 0) > 0.3 && (b.illum ?? 1) < 0.25) continue;
+        if ((this.dayF ?? 0) > 0.3 && (b.illum ?? 1) < 0.15) continue;
         const radius = 12;
         this.glow(p.x, p.y, 34, t.starRGB, 0.2);
         this.drawMoon(p, radius, sun ? this.brightLimbAngle(b.enu, sun.enu, p) : 0, b.phaseAngle);
@@ -1500,11 +1500,12 @@ export class SkyView {
     const ctx = this.ctx, t = this.theme;
     // Day factor: 0 at night, 1 in full daylight (civil twilight in between). Drives the sky tone and what shows.
     this.dayF = this.theme === THEMES.night ? 0 : Math.max(0, Math.min(1, (sunEl + 8) / 12));
+    this.lightF = Math.max(0, Math.min(1, (sunEl + 8) / 12)); // daylight whatever the theme: red mode by day hides the stars too (sky playtest 2026-10-25)
     this.starLimit = starLimit; this.sunEl = sunEl;
     { const s = bodies?.find?.((b) => b.kind === 'sun'); this.sunAz = s ? (Math.atan2(s.enu[0], s.enu[1]) / RAD + 360) % 360 : null; this.sunEnu = s?.enu ?? null; }
     this.drawBackground();
-    if ((this.dayF ?? 0) < 0.2 && !this.camera) this.drawMilkyWay(milky); // no Milky Way in camera view
-    if (sky && (this.dayF ?? 0) < 0.6) this.drawStars(sky, { lines: lines && this.dayF < 0.2, time: this.reducedMotion ? 0 : time, starLimit });
+    if (this.lightF < 0.2 && !this.camera) this.drawMilkyWay(milky); // no Milky Way in camera view
+    if (sky && this.lightF < 0.6) this.drawStars(sky, { lines: lines && this.dayF < 0.2, time: this.reducedMotion ? 0 : time, starLimit });
     this.shadowBox = null; if (this.showShadow !== false) this.drawEarthShadow();
     if (deep?.length && (this.dayF ?? 0) < 0.2) this.drawDeep(deep);
     if (weather && !this.camera) this.drawWeather(weather, this.reducedMotion || this.saver ? 0 : time); // the camera shows the real clouds
@@ -1521,7 +1522,7 @@ export class SkyView {
     // drawn again over the landscape, clipped at the horizon line, so it peeks up above it.
     if (bodies) for (const b of bodies) {
       if ((b.kind !== 'moon' && b.kind !== 'sun') || b.enu[2] < -0.02 || b.enu[2] > 0.12) continue;
-      if (b.kind === 'moon' && (this.dayF ?? 0) > 0.3 && (b.illum ?? 1) < 0.25) continue;
+      if (b.kind === 'moon' && (this.dayF ?? 0) > 0.3 && (b.illum ?? 1) < 0.15) continue;
       const az = Math.atan2(b.enu[0], b.enu[1]) / RAD, pts = [];
       for (let d = -12; d <= 12; d += 3) { const q = this.project(enuFromAzEl(az + d, 0)); if (q) pts.push(q); }
       if (pts.length < 2) continue;

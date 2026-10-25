@@ -2686,14 +2686,14 @@ body.night #tk-m .tk-tier { color: #ff7f70; }
 #plane.ident.ident-card .p-mini { display: block !important; }
 /* One height for the sky's ticket with a card (2026-10-25, Sevaan: "the boxes jump around when sweeping over objects
    fast"): the name keeps at most two lines and the detail three, centred in a box sized for the most they need. */
-#tk.has-mini { box-sizing: border-box; min-height: 142px; }
+
 #tk.has-mini #tk-n { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
 #tk.has-mini #tk-m { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; }
 #tk.has-mini #tk-m[hidden] { display: none; }
-@media (max-height: 720px) { #tk.has-mini { min-height: 118px; } }
-#discover .d-ticket.has-mini { box-sizing: border-box; min-height: 150px; align-content: center; }
+
+
 #discover .d-ticket.has-mini #d-name { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
-@media (max-height: 720px) { #discover .d-ticket.has-mini { min-height: 124px; } }
+
 
 /* Inside / Outside as two little game cards (Sevaan picked design/where-cards.html A, 2026-10-25): silver frame, a
    header, a painted picture (assets/art/tour, day or night), name, type line and a stat row. The tapped one lifts and
@@ -2737,3 +2737,25 @@ body.night .tc .acts.pick .pk.pk-card { border-color: #7a2a22; } body.night .tc 
 body.night #reveal .mn-phases.teach-glow { box-shadow: 0 0 0 .15em #ff6a55; }
 @media (prefers-reduced-motion: reduce) { #reveal .mn-phases.teach-glow { animation: none; } }
 #debug .set-sl-sub .sm-inline { display: inline; min-height: 0; padding: 0; margin: 0; font: inherit; letter-spacing: inherit; color: var(--orange, #fa8127); background: none; border: 0; text-decoration: underline; text-underline-offset: 2px; }
+
+/* One height for every ticket under the circle (visual playtest 2026-10-25: Collect 150, below the horizon 142, plane and
+   star 137, and less on short screens, so sweeping still jumped): 150px (136 under 720px tall) for the Collect / View card
+   ticket, the sky's own ticket with a card, and the plane / named-star ticket; names clamp to 2 lines, details to 3. A
+   pass marker with Set reminder is taller (168 / 152): its detail keeps to one line so it never grows past that. */
+#discover .d-ticket.has-mini, #tk.has-mini, #plane .p-ticket { box-sizing: border-box; min-height: 150px; }
+#discover .d-ticket.has-mini { align-content: center; }
+#tk.has-mini:has(#tk-act > button:not([hidden])) { min-height: 168px; }
+#tk.has-mini:has(#tk-act > button:not([hidden])) #tk-m { -webkit-line-clamp: 1; }
+#plane .p-ticket #p-name { display: -webkit-box !important; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+#plane .p-ticket #p-info { display: -webkit-box !important; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; }
+#plane .p-ticket .p-route { white-space: normal !important; display: -webkit-box !important; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+#plane .p-ticket .p-route[hidden] { display: none !important; }
+#p-info .tk-seg { white-space: nowrap; }
+@media (max-height: 720px) {
+  #discover .d-ticket.has-mini, #tk.has-mini, #plane .p-ticket { min-height: 136px; }
+  #tk.has-mini:has(#tk-act > button:not([hidden])) { min-height: 152px; }
+  #tk.has-mini #tk-m, #plane .p-ticket #p-info { -webkit-line-clamp: 2; }
+}
+/* Settings at 320 wide: a long value shrinks with an ellipsis instead of pushing the chevron off; links never wrap */
+.set-row > .set-val { flex: 0 1 auto; min-width: 0; }
+#debug .set-link { white-space: nowrap; }
