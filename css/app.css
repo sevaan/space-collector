@@ -2680,3 +2680,6 @@ body.night #plane .p-card svg { fill: #ff6a55; }
 #tk-m .tk-seg { white-space: nowrap; }
 #tk-m .tk-tier { font-weight: inherit; color: var(--c); }
 body.night #tk-m .tk-tier { color: #ff7f70; }
+/* A named star that isn't a card borrows the plane's ticket (renderIdent): no plane card, cream edge (2026-10-25, Sevaan) */
+#plane.ident .p-mini { display: none !important; }
+#plane.ident { --tk: #c9cbb6; }
