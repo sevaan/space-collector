@@ -1835,3 +1835,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - Canes Venatici's card star is now Cor Caroli (HIP 63125, mag 2.89; was α¹ CVn, HIP 63121, mag 5.6). Old sightings keyed star:hip63121 won't attach to it.
   - Not done: γ Sextantis (5.07) is collectable at a dark site but sky.json only draws to 5.0; planets 2–3.75° up may hide behind the tallest trees.
 - 2026-10-25 (Sevaan): the Tonight tab's next-card hero keeps showing the real picture of a card you don't have yet ("It’s fine being visible"); everywhere else uncollected art is blurred.
+- 2026-10-25: SC Tester installed on Sevaan's iPhone (web v0.1.1169). The widget's sample Plan(...) call needed the new clock: field (missing it made Swift give up type-checking); split into lets.

@@ -469,8 +469,12 @@ enum Sample {
         }
         let iss = pass("25544@0", "Space Station", "rare", 12, "High in the southeast", "High · SE", icon: true, art: "iss")
         let list = [pass("1@1", "Radiation Sat (5E-1)", "rare", 23, "High in the southeast", "High · SE"), pass("2@2", "Kosmos 422", "epic", 45, "Halfway up in the north", "Halfway · N", kick: "headliner"), pass("3@3", "Hubble", "rare", 71, "Low in the south", "Low · S")]
-        return Plan(at: now, place: "Peterborough", plus: true, dusk: now - 90 * min, dawn: now + 600 * min, eve: now + 180 * min,
-                    chain: [Step(from: now, pass: iss)], list: [iss] + list, run: [iss] + list, back: nil,
-                    haul: Haul(n: 39, top: "rare", topN: 1), bars: [3, 5, 8, 12, 15, 18, 16, 12, 9, 7, 5, 4, 3, 2, 2, 3], wx: Wx(ok: true, line: "Clear", next: ""), missions: 3)
+        let all: [Pass] = [iss] + list
+        let dusk: Double = now - 90 * min, dawn: Double = now + 600 * min, eve: Double = now + 180 * min
+        let bars: [Double] = [3, 5, 8, 12, 15, 18, 16, 12, 9, 7, 5, 4, 3, 2, 2, 3]
+        let haul = Haul(n: 39, top: "rare", topN: 1), wx = Wx(ok: true, line: "Clear", next: "")
+        return Plan(at: now, place: "Peterborough", plus: true, dusk: dusk, dawn: dawn, eve: eve,
+                    chain: [Step(from: now, pass: iss)], list: all, run: all, back: nil,
+                    haul: haul, bars: bars, wx: wx, missions: 3, clock: nil)
     }
 }
