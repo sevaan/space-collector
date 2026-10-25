@@ -2684,3 +2684,13 @@ body.night #tk-m .tk-tier { color: #ff7f70; }
 #plane.ident .p-mini { display: none !important; }
 #plane.ident { --tk: #c9cbb6; }
 #plane.ident.ident-card .p-mini { display: block !important; }
+/* One height for the sky's ticket with a card (2026-10-25, Sevaan: "the boxes jump around when sweeping over objects
+   fast"): the name keeps at most two lines and the detail three, centred in a box sized for the most they need. */
+#tk.has-mini { box-sizing: border-box; min-height: 142px; }
+#tk.has-mini #tk-n { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+#tk.has-mini #tk-m { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; }
+#tk.has-mini #tk-m[hidden] { display: none; }
+@media (max-height: 720px) { #tk.has-mini { min-height: 118px; } }
+#discover .d-ticket.has-mini { box-sizing: border-box; min-height: 150px; align-content: center; }
+#discover .d-ticket.has-mini #d-name { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+@media (max-height: 720px) { #discover .d-ticket.has-mini { min-height: 124px; } }
