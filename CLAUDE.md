@@ -1848,3 +1848,16 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - 15 more missions (progress.js: china, sixties, eighties, fade, peak, moon, low, station, sats3, nations3, late, debris2, europe, asia, planets2), each dealt only when tonight can give it (main.js dealMissions).
   - 7 more themed weeks (moon, stars, debris, china, deep, shiny, high): 12 in all. Weeks counted from 2026-10-26, so none completed under the old 5-week rotation.
 - 2026-10-25 (Sevaan): the radar no longer moves down when a notice comes in (removed from the --toast-push list in css/ui.css).
+- 2026-10-25 (Sevaan: free for commercial use before selling Plus; terms research in that session's scratchpad apiterms.md):
+  - worker/ = our own server on Cloudflare Workers (personal account only, never Roundtrip's). Routes:
+    - /wx: MET Norway, cached 30 min per 0.1°, reshaped to js/weather.js's { now, hours } with WMO-like codes.
+    - /planes: adsb.lol only, cached 8 s; adsb.fi was non-commercial.
+    - /catalog and /comets: the repo's daily files, cached 3 h.
+    - /t and /stats: usage reports and the dashboard, in D1.
+  - Tested with `wrangler dev --local`. NOT deployed yet: needs `npx wrangler login` on Sevaan's personal Cloudflare account, `npx wrangler d1 create space-collector-usage` (put the id in worker/wrangler.toml), `npx wrangler deploy`. Then set DEPLOYED in js/server.js.
+  - js/server.js SERVER (empty = the old sources; localStorage scServer overrides for testing). weather.js, planes.js and field-notes.js use it.
+  - Plane routes are gone (adsbdb's data isn't licensed for this): the airline comes from the callsign prefix.
+  - City search is offline: data/cities.json from scripts/build-cities.py (GeoNames cities15000, 34k places, 2.1 MB, loaded on first search) via js/cities.js. "london uk", "paris, texas" and the like work.
+  - js/fresh-data.js: the phone apps keep the newest catalogue (theirs or one fetched daily from /catalog into IndexedDB), so satellite data stays fresh without new builds. Only once SERVER is set.
+  - Credits line in Settings → About adds MET Norway, adsb.lol (ODbL), GeoNames and NASA/JPL. The privacy policy still names Open-Meteo/adsb.fi: update both copies when the server goes live.
+  - The Val Town val stays for web push (web test build only).

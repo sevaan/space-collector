@@ -31,10 +31,10 @@ test('a new observing context clears old predictions and rejects a late old-loca
 test('clearing a city query prevents its pending response from repopulating old results', async () => {
   let input, task, resolveFetch;
   const box={innerHTML:'',querySelectorAll:()=>[]}, q={value:'London',addEventListener:(_t,fn)=>input=fn};
-  const ctx={ $:id=>id==='loc-results'?box:q, setTimeout:fn=>{task=fn;return 1;},clearTimeout:()=>{},fetch:()=>new Promise(r=>resolveFetch=r),AbortSignal:{timeout:()=>undefined},escapeHtml:s=>s};
+  const ctx={ $:id=>id==='loc-results'?box:q, setTimeout:fn=>{task=fn;return 1;},clearTimeout:()=>{},searchCities:()=>new Promise(r=>resolveFetch=r),escapeHtml:s=>s}; // offline city search (2026-10-25)
   vm.runInNewContext(between(main,'{ let qt = 0, qn = 0;',"document.querySelectorAll('[data-close]')"),ctx);
   input(); const pending=task(); q.value='';input();
-  resolveFetch({json:async()=>({results:[{name:'London',latitude:51.5,longitude:-0.1}]})});
+  resolveFetch([{name:'London',region:'England',country:'United Kingdom',lat:51.5,lon:-0.1}]);
   await pending; assert.equal(box.innerHTML,'');
 });
 
