@@ -1,7 +1,7 @@
 // Player progress from the sighting log: XP and observer rank, tonight’s three missions, a weekly streak and
 // achievements. Everything is derived from the saved sightings (nothing extra is stored), so it can’t drift.
 // info(cardKey) -> { tier, type, owner, launch, natural, con } | null. No DOM.
-import { nightKey } from './observation.js?v=0.1.1172';
+import { nightKey } from './observation.js?v=0.1.1173';
 
 // A longer climb (2026-10-12, playtest room: three ranks on night 1, Mission Control in about two weeks), with two
 // prestige ranks past Mission Control. Nobody drops a rank they had on the old curve (rankFloor below).
@@ -40,6 +40,21 @@ export const WEEK_THEMES = [
     have: (w) => new Set(w.filter((s) => s.newStampKey).map((s) => s.newStampKey)).size },
   { id: 'planets', name: 'Planet week', short: 'Planet Week', text: 'Catch three different planets.', icon: 'PL', need: 3,
     have: (w) => new Set(w.filter((s) => String(s.cardKey).startsWith('planet:')).map((s) => s.cardKey)).size },
+  // Seven more (2026-10-25, Sevaan): twelve in all, so a theme comes back about once a season.
+  { id: 'moon', name: 'Moon week', short: 'Moon Week', text: 'Catch the Moon in three different phases.', icon: 'MN', need: 3,
+    have: (w) => new Set(w.filter((s) => String(s.stampKey ?? '').startsWith('MOON:')).map((s) => s.stampKey)).size },
+  { id: 'stars', name: 'Star week', short: 'Star Week', text: 'Collect ten new constellation stars.', icon: '✦10', need: 10,
+    have: (w) => new Set(w.filter((s) => s.info?.con && s.first).map((s) => s.cardKey)).size },
+  { id: 'debris', name: 'Debris week', short: 'Debris Week', text: 'Spot three different pieces of space debris.', icon: 'DEB', need: 3,
+    have: (w) => new Set(w.filter((s) => s.info?.type === 'debris').map((s) => s.cardKey)).size },
+  { id: 'china', name: 'China week', short: 'China Week', text: 'Catch three different Chinese satellites or rocket stages.', icon: 'CN', need: 3,
+    have: (w) => new Set(w.filter((s) => s.info?.owner === 'PRC').map((s) => s.cardKey)).size },
+  { id: 'deep', name: 'Deep sky week', short: 'Deep Sky Week', text: 'Find two star clusters, nebulae or galaxies.', icon: 'DSO', need: 2,
+    have: (w) => new Set(w.filter((s) => s.info?.type === 'deepsky').map((s) => s.cardKey)).size },
+  { id: 'shiny', name: 'Shiny week', short: 'Shiny Week', text: 'Catch one shiny: catch the fade, beside the Moon, or straight overhead.', icon: 'SH', need: 1,
+    have: (w) => (w.some((s) => s.shiny) ? 1 : 0) },
+  { id: 'high', name: 'High flyer week', short: 'High Flyer Week', text: 'Catch five things more than 60° up.', icon: '60°', need: 5,
+    have: (w) => w.filter((s) => s.el >= 60).length },
 ];
 // Weeks run on observing nights (noon to noon), so Sunday night after midnight still counts for Sunday's week; the
 // theme index is the local calendar week, so it's the same for everyone whatever their time zone (bug hunt 2026-10-25).
@@ -72,6 +87,23 @@ export const MISSIONS = [
   { id: 'deep', text: 'Find a star cluster or galaxy', done: (n) => n.some((s) => s.info?.type === 'deepsky') },
   { id: 'rarenew', text: 'Collect a new Rare card or better', done: (n) => n.some((s) => s.first && ['rare', 'epic', 'legendary'].includes(s.info?.tier)) },
   { id: 'levelup2', text: 'Turn a card silver or gold', done: (n) => n.some((s) => s.lv) },
+  // Fifteen more (2026-10-25, Sevaan: so a night's three don't repeat within a week or two). main.js dealMissions only
+  // deals the ones tonight's sky can give.
+  { id: 'china', text: 'Spot something from China', done: (n) => n.some((s) => s.info?.owner === 'PRC') },
+  { id: 'sixties', text: 'Find something launched in the 1960s', done: (n) => n.some((s) => !s.info?.natural && year(s.info?.launch) >= 1960 && year(s.info?.launch) < 1970) },
+  { id: 'eighties', text: 'Find something launched in the 1980s', done: (n) => n.some((s) => !s.info?.natural && year(s.info?.launch) >= 1980 && year(s.info?.launch) < 1990) },
+  { id: 'fade', text: 'Catch the fade: tap Collect as it goes dark', done: (n) => n.some((s) => s.shiny === 'eclipse') },
+  { id: 'peak', text: 'Catch a new card at its highest point', done: (n) => n.some((s) => s.peak) },
+  { id: 'moon', text: 'Catch the Moon', done: (n) => n.some((s) => s.cardKey === 'moon') },
+  { id: 'low', text: 'Catch something skimming low, under 20° up', done: (n) => n.some((s) => !s.info?.natural && s.el != null && s.el < 20) },
+  { id: 'station', text: 'Catch a space station', done: (n) => n.some((s) => ['25544', '48274'].includes(String(s.cardKey))) },
+  { id: 'sats3', text: 'Catch three different satellites', done: (n) => new Set(n.filter((s) => s.info && !s.info.natural && s.info.type !== 'rocket-body' && s.info.type !== 'debris').map((s) => s.cardKey)).size >= 3 },
+  { id: 'nations3', text: 'Catch things from three different countries', done: (n) => new Set(n.filter((s) => s.info?.owner).map((s) => countryOf(s.info.owner))).size >= 3 },
+  { id: 'late', text: 'Catch something after midnight', done: (n) => n.some((s) => new Date(s.time).getHours() < 6) },
+  { id: 'debris2', text: 'Spot two different pieces of debris', done: (n) => new Set(n.filter((s) => s.info?.type === 'debris').map((s) => s.cardKey)).size >= 2 },
+  { id: 'europe', text: 'Spot something European', done: (n) => n.some((s) => ['FR', 'ESA', 'UK', 'GER', 'IT', 'EUME', 'EUTE', 'SPN', 'NETH', 'SWED', 'NOR', 'DEN', 'BEL', 'POL', 'CZ', 'POR', 'LUXE', 'FIN'].includes(s.info?.owner)) },
+  { id: 'asia', text: 'Spot something from Japan or India', done: (n) => n.some((s) => ['JPN', 'IND'].includes(s.info?.owner)) },
+  { id: 'planets2', text: 'See two different planets', done: (n) => new Set(n.filter((s) => String(s.cardKey).startsWith('planet:')).map((s) => s.cardKey)).size >= 2 },
 ];
 // Retired from the draw but kept so past nights still score the same.
 const RETIRED = [

@@ -537,7 +537,7 @@ body.night #nav-sky .nav-sky-v { color: #c4584a; }
    swipes back up under it. The header (moon, Settings) is never covered. The radar, chips and tucked notices step down
    by the notices' height (--toast-push, js/toast.js) while one shows. */
 html body #toasts#toasts#toasts { top: calc(var(--safe-top, env(safe-area-inset-top, 0px)) + 86px) !important; width: min(440px, calc(var(--vws, 100vw) - 20px)) !important; clip-path: inset(0 -40px -100vh -40px); }
-#radar, #nextpass, #event-banner, #toast-tray, .patch-coins, #whatsthis { translate: 0 var(--toast-push, 0px); transition: translate .45s cubic-bezier(.2, .9, .3, 1); }
+#nextpass, #event-banner, #toast-tray, .patch-coins, #whatsthis { translate: 0 var(--toast-push, 0px); /* not the radar: it stays put (2026-10-25, Sevaan) */ transition: translate .45s cubic-bezier(.2, .9, .3, 1); }
 body:has(.overlay.panel:not([hidden])) :is(#radar, #nextpass, #toast-tray) { translate: none; }
 @media (prefers-reduced-motion: reduce) { #radar, #nextpass, #event-banner, #toast-tray, .patch-coins { transition: none; } }
 /* Tabs, words only, 54 px (2026-10-24, Sevaan picked design/footer-blend.html A): today's glass, orange word and orange
