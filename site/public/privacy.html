@@ -31,10 +31,9 @@
   <div class="box"><p style="margin:0">The short version: your location is used to work out your sky. There are no accounts. Your collection stays on your phone and in your own phone backup (iCloud or Android). There are no ads, no tracking and no selling of data.</p></div>
 
   <h2>Your location</h2>
-  <p>Space Collector needs to know roughly where you are to show what’s in your sky, and it works the sky out on your phone. On iPhone it asks for your precise location, so planes overhead are labelled in the right spot; you can turn Precise Location off when it asks, or later in Settings, and everything else works just the same. On Android it asks for approximate location only. Two things need a rounded position (about 1 km), which it shares with:</p>
+  <p>Space Collector needs to know roughly where you are to show what’s in your sky, and it works the sky out on your phone. On iPhone it asks for your precise location, so planes overhead are labelled in the right spot; you can turn Precise Location off when it asks, or later in Settings, and everything else works just the same. On Android it asks for approximate location only. One thing needs a rounded position (about 1 km to 10 km), which it shares with:</p>
   <ul>
-    <li><b>Open-Meteo</b>, for the weather forecast, and to look up a place by name if you search for one in Settings (it gets only the name you type);</li>
-    <li><b>our plane relay</b>, which asks public flight-tracking services (adsb.lol, or adsb.fi if that one is busy) for aircraft near you, so the app can say “Just a plane”. It doesn’t keep a record of where you were.</li>
+    <li><b>our server</b> (at spacecollector.app, run on Google Cloud for Space Collector), which gets the weather forecast for your area from <b>MET Norway</b> and asks the public flight-tracking network <b>adsb.lol</b> for aircraft near you, so the app can say “Just a plane”. It doesn’t keep a record of where you were. Searching for a place by name in Settings happens on your phone, from a list of cities built into the app.</li>
   </ul>
   <p>You can choose a place by hand instead in Settings, and the app works without your location at all (it shows an example sky).</p>
 
@@ -49,7 +48,7 @@
   <p>Space Collector Plus is sold through the App Store or Google Play. We don’t see your payment details. To know whether you have Plus, the app uses RevenueCat, a purchase service: it receives an anonymous ID for this install and your Plus purchase history from the store, and nothing else about you.</p>
 
   <h2>Usage and error reports</h2>
-  <p>To learn whether the game works for people (does a first night end with a card? do people come back on other nights?), the app sends a few anonymous notes: when it’s opened, each night you catch something, how long a session lasted and how many cards it found, whether the phone’s motion sensors work, the tour finished or skipped, and errors that stop something working. They’re tied to a random ID made on your phone, not to you: no location, no name, no device identifier, nothing from your contacts or photos. They’re kept on our server (Val Town) and used only to improve the game. You can turn them off any time in <b>Settings → Help → Share anonymous usage</b>.</p>
+  <p>To learn whether the game works for people (does a first night end with a card? do people come back on other nights?), the app sends a few anonymous notes: when it’s opened, each night you catch something, how long a session lasted and how many cards it found, whether the phone’s motion sensors work, the tour finished or skipped, and errors that stop something working. They’re tied to a random ID made on your phone, not to you: no location, no name, no device identifier, nothing from your contacts or photos. They’re kept on our server (Google Cloud, in Space Collector’s own project) and used only to improve the game. You can turn them off any time in <b>Settings → Help → Share anonymous usage</b>.</p>
 
   <h2>What we don’t do</h2>
   <ul>
