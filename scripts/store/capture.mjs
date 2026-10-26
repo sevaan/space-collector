@@ -13,18 +13,47 @@ import { ROOT, DEVICES, setup, aimBest, hideNoise, storeExtras, storeStorage, ca
 
 const args = process.argv.slice(2), which = args.find((a) => !a.startsWith('--')) ?? 'all';
 const when = args.find((a) => a.startsWith('--when='))?.slice(7);
-const OUT = join(ROOT, 'store/raw'); mkdirSync(OUT, { recursive: true });
+// 2026-10-26 store set (review room + Sevaan): two locales (--locale=en-US → miles, US spelling, into store/raw-us; else
+// en-CA → km, into store/raw), and a second evening (--later, default 2026-11-02) for the shots that need the new
+// features: the daytime home, Tonight from the top (headliner and countdown), and "every night" (the week, missions).
+const locale = args.find((a) => a.startsWith('--locale='))?.slice(9) ?? 'en-CA', us = locale === 'en-US';
+const later = args.find((a) => a.startsWith('--later='))?.slice(8) ?? '2026-11-02T19:30:00-05:00';
+const OUT = join(ROOT, us ? 'store/raw-us' : 'store/raw'); mkdirSync(OUT, { recursive: true });
 
 for (const kind of which === 'all' ? Object.keys(DEVICES) : [which]) {
-  const b = await webkit.launch(), night = captureNight(when);
-  const { p, errs } = await setup(b, kind, { when, heroIss: true, clear: true, extra: storeExtras(night), storage: storeStorage(night) });
+  const b = await webkit.launch();
+  // The later evening: by day (14:30), then Tonight at the top and the week + missions further down.
+  { const day = new Date(Date.parse(later) - 5 * 3600e3), n2 = new Date(later);
+    const { p, ctx, errs } = await setup(b, kind, { when: day.toISOString(), heroIss: true, clear: true, extra: storeExtras(n2), storage: storeStorage(n2), locale });
+    const w = (ms) => p.waitForTimeout(ms), shot = (n) => p.screenshot({ path: join(OUT, `${kind}-${n}.png`) });
+    await p.addStyleTag({ content: '#toasts, .patch-coins, .pc-badge, .radar-tip, #tk, #discover, #help-card, #sky-match { display: none !important; } #sky-plus-line { display: none !important; }' });
+    for (let i = 0; i < 30 && !(await p.evaluate(() => !!window.__store.state.tonight)); i++) await w(1000);
+    // Look toward tonight's headliner's rise point, a little above it, so its marker and the "Right now you can catch" chips show.
+    // The sky draws tonight's pass markers (dashed rings, "NAME · 7:54 PM"); look just beside the first one, so it and its
+    // neighbours sit in view around the empty circle.
+    await p.evaluate(() => { const sk = window.__store.sky, f = sk.drawGhosts.bind(sk); sk.drawGhosts = (g) => { window.__gh = g; return f(g); }; window.__store.state.drag.on = true; });
+    await w(2500);
+    const aim = await p.evaluate(() => { const st = window.__store.state, g = (window.__gh ?? []).filter((x) => x.enu?.[2] > 0.1)[0]; if (!g) return null;
+      const [e, n, u] = g.enu; st.drag.az = (Math.atan2(e, n) * 180 / Math.PI + 360 + 16) % 360; st.drag.el = Math.asin(u) * 180 / Math.PI - 9; return g.name; });
+    await w(3000); await shot('day'); console.log(kind, 'day aim:', aim);
+    await p.clock.fastForward(Math.round(n2 - day)); await w(4000);
+    await p.click('#nav-sky'); await w(5000); await p.evaluate(() => { document.getElementById('visible').scrollTop = 0; }); await w(900); await shot('tonight');
+    await p.evaluate(() => {
+      /* Scroll whichever box actually scrolls (the page on phones, a book page on iPad/Duo). If the week box is
+         already near the top (book layouts), go on to the missions so the shot isn't the Tonight shot again. */
+      const scroller = (el) => { for (let n = el.parentElement; n; n = n.parentElement) { const o = getComputedStyle(n).overflowY; if ((o === 'auto' || o === 'scroll') && n.scrollHeight > n.clientHeight) return n; } return document.getElementById('visible'); };
+      const v = document.getElementById('visible'), wk = v.querySelector('.week-box'), ms = document.getElementById('sj-missions');
+      let el = wk ?? ms; if (!el) return;
+      let sc = scroller(el); if (wk && ms && wk.getBoundingClientRect().top - sc.getBoundingClientRect().top < sc.clientHeight * 0.4) { el = ms; sc = scroller(ms); }
+      sc.scrollTop += el.getBoundingClientRect().top - sc.getBoundingClientRect().top - 70;
+    }); await w(900); await shot('every');
+    console.log(kind, 'later session', errs.length ? errs : 'no page errors'); await ctx.close(); }
+  const night = captureNight(when);
+  const { p, errs } = await setup(b, kind, { when, heroIss: true, clear: true, extra: storeExtras(night), storage: storeStorage(night), locale });
   const w = (ms) => p.waitForTimeout(ms), shot = (n) => p.screenshot({ path: join(OUT, `${kind}-${n}.png`) });
   const duo = kind === 'duo';
   // Tonight first, while it's still the evening (the hero shot moves the clock on to the ISS pass).
   await hideNoise(p); await p.addStyleTag({ content: '#sky-plus-line { display: none !important; }' }); // no Plus banner in a store shot
-  await p.click('#nav-sky'); await w(4500);
-  if (!duo) await p.evaluate(() => { const v = document.getElementById('visible'), h = document.getElementById('sky-tonight-head'); if (h) v.scrollTop += h.getBoundingClientRect().top - v.getBoundingClientRect().top - 8; }); // Tonight: the haul, the headliner, the run
-  await w(900); await shot('tonight'); await p.click('#nav-explore'); await w(1800);
   // A secret: Voyager 1's spot held in the circle (20:24 that evening) → the Pale Blue Dot story card, turned over
   await p.clock.fastForward(Math.max(0, Date.parse('2026-10-17T20:24:00-04:00') - await p.evaluate(() => Date.now()))); await w(800);
   for (let i = 0; i < 40 && !(await p.evaluate(() => !document.getElementById('reveal').hidden)); i++) {
@@ -35,9 +64,6 @@ for (const kind of which === 'all' ? Object.keys(DEVICES) : [which]) {
   console.log(kind, 'aim:', await aimBest(p)); await w(900); await shot('sky');
   await p.click('#d-cta').catch((e) => console.log(kind, 'no Collect:', e.message.slice(0, 80))); await w(3300); await shot('reveal');
   await p.locator('#reveal .x-close').first().click().catch(() => {}); await w(1500);
-  // All around you (the radar): the horizon all the way round
-  await p.click('#radar').catch(() => {}); await w(3200); await shot('around');
-  await p.click('#nav-more').catch(() => {}); await w(1200);
   // The Collection, scrolled past the rank card so the grid fills the frame
   await p.click('#nav-collection'); await w(3500);
   const f = p.frameLocator('#collection-frame');

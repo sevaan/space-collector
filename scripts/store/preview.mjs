@@ -16,34 +16,39 @@ import { ROOT, DEVICES, setup, hideNoise, jumpToHero, storeExtras, storeStorage,
 
 const args = process.argv.slice(2), which = args.find((a) => !a.startsWith('--')) ?? 'all';
 const when = args.find((a) => a.startsWith('--when='))?.slice(7) ?? '2026-10-17T19:30:00-04:00';
+const locale = args.find((a) => a.startsWith('--locale='))?.slice(9) ?? 'en-CA', US = locale === 'en-US'; // 2026-10-26: en-US (miles) → store/appstore/<device>-us
 const OUT = { phone: [886, 1920], pad: [1200, 1600] };
 // The phone records at 443 × 960 @2x so the frames are exactly 886 × 1920; the iPad at its own size, scaled to 1200 × 1600.
 const REC = { phone: { ...DEVICES.phone, viewport: { width: 443, height: 960 }, deviceScaleFactor: 2 }, pad: DEVICES.pad };
 const FPS = 30;
 
 // The edit: where each clip starts in the cut (S), the transition into it (ffmpeg xfade), and the cut's length.
-const S = [0, 5.0, 8.4, 14.0, 21.0, 24.4, 26.4], END = 28.6;
-const TR = [null, ['fade', 0.33], ['fade', 0.5], ['fadeblack', 0.5], ['fade', 0.3], ['fade', 0.2], ['fade', 0.4]];
+// 2026-10-26 cut (review room): ISS hook → every light is a card → Tonight → the fade → the secret (shorter) → missions
+// every night → Collection → patches → end card.
+const S = [0, 3.8, 6.6, 9.6, 14.0, 18.0, 21.0, 24.0, 25.8], END = 29.0;
+const TR = [null, ['fade', 0.25], ['fade', 0.33], ['fade', 0.5], ['fadeblack', 0.4], ['fade', 0.3], ['fade', 0.3], ['fade', 0.2], ['fade', 0.4]];
+const ENDCARD = 26.2; // when the end card fades in
 const DUR = S.map((s, k) => (k < S.length - 1 ? S[k + 1] + TR[k + 1][1] - s : END - s));
 // Captions on the cut's timeline (*word* in orange). The end card is drawn by the caption track too.
 const CAPS = [
-  [0.0, 1.25, 'That light is the *Space Station*', { settled: true }],
-  [2.1, 4.8, 'Catch it. Keep its *card*.'],
-  [5.1, 8.3, 'Know when to *look up*'],
-  [8.6, 13.6, 'Catch the fade, get a *shiny*'],
-  [14.6, 17.6, 'Some lights hide a *secret*'],
-  [18.4, 20.8, 'Every card is a *true story*'],
-  [21.2, 24.1, '*Thousands* of real cards'],
-  [24.6, 26.3, '180+ mission *patches*'],
+  [0.1, 1.15, 'That light is the *Space Station*'],
+  [1.6, 3.7, 'Catch it. Keep its *card*.'],
+  [4.0, 6.5, 'Every light up there is a *card*'],
+  [6.8, 9.5, 'Know when to *look up*'],
+  [9.9, 13.8, 'Catch the fade, get a *shiny*'],
+  [14.4, 17.8, 'Some lights hide a *secret*'],
+  [18.3, 20.9, 'New missions *every night*'],
+  [21.2, 23.9, '*Thousands* of real cards'],
+  [24.2, 25.7, '180+ mission *patches*'],
 ];
-const KEEP = new Set(['collect', 'flip', 'shiny', 'secret', 'r_common', 'r_uncommon', 'r_rare', 'r_epic', 'r_legend', 'arrive']);
+const KEEP = new Set(['collect', 'flip', 'shiny', 'secret', 'r_common', 'r_uncommon', 'r_rare', 'r_epic', 'r_legend', 'arrive', 'lock']);
 
 for (const kind of which === 'all' ? Object.keys(OUT) : [which]) {
   DEVICES[kind] = REC[kind];
   const [W, H] = OUT[kind], vw = REC[kind].viewport.width, vh = REC[kind].viewport.height;
   const tmp = join(ROOT, 'scripts/.cache/preview-' + kind); rmSync(tmp, { recursive: true, force: true }); mkdirSync(tmp, { recursive: true });
   const b = await chromium.launch();
-  const night = captureNight(when), { p, ctx, errs } = await setup(b, kind, { when, heroIss: true, clear: true, extra: storeExtras(night), storage: storeStorage(night) });
+  const night = captureNight(when), { p, ctx, errs } = await setup(b, kind, { when, heroIss: true, clear: true, extra: storeExtras(night), storage: storeStorage(night), locale });
   await hideNoise(p);
   const w = (ms) => p.waitForTimeout(ms), now = () => Date.now() / 1000;
   const at = (t) => p.clock.setSystemTime(new Date(t));
@@ -57,7 +62,7 @@ for (const kind of which === 'all' ? Object.keys(OUT) : [which]) {
   // Steering through the app's own drag view, eased like a hand: __aim = an object id, or __aimAt = {ra, dec}.
   await p.evaluate(() => { const st = window.__store.state; st.drag.on = true; st.pinnedId = null; window.__pan = 0; window.__aim = null; window.__aimAt = null;
     const step = () => { const s = window.__store.state, e = window.__ease ?? 0.06; let az = null, el = null;
-      if (window.__aim != null) { const it = s.items.find((x) => x.obj.id === window.__aim); if (it) { az = it.look.az; el = it.look.el; } }
+      if (window.__aim != null) { const it = s.items.find((x) => x.obj.id === window.__aim) ?? (s.naturals ?? []).find((x) => x.obj.key === window.__aim); if (it) { az = it.look.az; el = it.look.el; } }
       else if (window.__aimAt) { const q = window.__store.skyAt(window.__aimAt.ra, window.__aimAt.dec); az = q.az; el = q.el; }
       if (az != null) { const da = ((az - s.drag.az + 540) % 360) - 180; s.drag.az = (s.drag.az + da * e + 360) % 360; s.drag.el += (Math.max(el, 12) - s.drag.el) * e; }
       else s.drag.az = (s.drag.az + window.__pan + 360) % 360;
@@ -126,21 +131,39 @@ for (const kind of which === 'all' ? Object.keys(OUT) : [which]) {
   await p.evaluate(() => { const s = window.__store.state; s.pinnedId = null; const q = window.__store.skyAt(258.2, 12.1); s.drag.az = q.az; s.drag.el = q.el; window.__ease = 0.4; window.__aimAt = { ra: 258.2, dec: 12.1 }; });
   const t4 = await take(async (mark) => { mark('hold');
     for (let i = 0; i < 40 && !(await p.evaluate(() => !document.getElementById('reveal').hidden)); i++) await w(200);
-    mark('reveal'); await w(1000); await flipNow(); await w(300); await tilt(3600); await w(400); });
+    mark('reveal'); await w(250); await flipNow(); await w(300); await tilt(2600); await w(300); }); // flip at once: the Golden Record back only flashes (2026-10-26)
   await cardShot(join(tmp, 'story-card.png'));
   await p.evaluate(() => { document.getElementById('reveal').querySelector('.x-close')?.click(); window.__aimAt = null; }); await w(800);
   await p.evaluate(() => localStorage.setItem('cardBack', 'mission-control')); // the ISS keeps the everyday back (finding Voyager adopts the Golden Record one)
+
+  // Take 8 · every light is a card: one pan where the circle passes three things and the ticket's card changes each time.
+  const trio = await p.evaluate(() => { const s = window.__store.state, up = (s.items ?? []).filter((x) => x.look?.visible && x.look.el > 20 && !x.obj.family);
+    // three satellites or stages, close together in the sky so the pan is short (no Moon: its guidance pill clipped)
+    const pick = up.filter((x) => !/DEB/.test(x.obj.name)).sort((a, b) => a.look.az - b.look.az);
+    let best = null; for (let i = 0; i + 2 < pick.length; i++) { const span = pick[i + 2].look.az - pick[i].look.az; if (span > 6 && (!best || span < best.span)) best = { i, span }; }
+    return best ? pick.slice(best.i, best.i + 3).map((x) => x.obj.id) : pick.slice(0, 3).map((x) => x.obj.id); });
+  console.log(kind, 'every-light', trio);
+  await p.evaluate((id) => { window.__ease = 0.5; window.__aim = id; }, trio[0]); await w(1500);
+  const t8 = await take(async (mark) => { mark('in'); for (const id of trio) { await p.evaluate((id) => { window.__ease = 0.14; window.__aim = id; }, id); await w(950); } await w(300); });
+  await p.evaluate(() => { window.__aim = null; });
+  // Take 9 · missions every night: Tonight, scrolled to tonight's missions.
+  await p.evaluate(() => document.getElementById('nav-sky').click()); await w(2500);
+  await p.evaluate(() => { const v = document.getElementById('visible'), el = v.querySelector('.week-box') ?? document.getElementById('sj-missions'); if (el) v.scrollTop += el.getBoundingClientRect().top - v.getBoundingClientRect().top - 90; }); await w(900);
+  const t9 = await take(async (mark) => { mark('in'); await p.evaluate(() => new Promise((done) => { const v = document.getElementById('visible'), y0 = v.scrollTop, t0 = performance.now(); const go = (t) => { v.scrollTop = y0 + (t - t0) / 1000 * 40; if (t - t0 < 3200) requestAnimationFrame(go); else done(); }; requestAnimationFrame(go); })); });
+  await p.evaluate(() => document.getElementById('nav-explore').click()); await w(1500); await chrome(['rec-sky']);
 
   // Take 1 · the ISS already in the circle → Collect → its card, turned over at once and tilted.
   await jumpToHero(p);
   await chrome(['rec-sky']);
   await p.evaluate(() => { const s = window.__store.state, it = s.items.find((x) => x.obj.type === 'station' && x.look?.visible && !s.sightings.some((y) => String(y.objectId) === String(x.obj.id)));
-    if (it) { s.drag.az = it.look.az; s.drag.el = it.look.el; window.__aim = it.obj.id; window.__ease = 0.3; } });
-  await w(1800);
-  const t1 = await take(async (mark) => {
-    await w(1600); mark('collect'); await p.click('#d-cta', { timeout: 3000 }).catch((e) => console.log(kind, 'no Collect (ISS)', e.message.slice(0, 60)));
-    await w(700); await flipNow();
-    await w(500); await tilt(3300); await w(500);
+    if (it) { s.drag.az = (it.look.az + 28) % 360; s.drag.el = it.look.el - 8; window.__issId = it.obj.id; } }); // start beside it: the hook moves (2026-10-26)
+  await w(1200);
+  const t1 = await take(async (mark) => { mark('in');
+    await w(250); await p.evaluate(() => { window.__ease = 0.045; window.__aim = window.__issId; }); await w(700); // the circle visibly slides onto it (~0.9 s)
+    for (let i = 0; i < 30 && !(await p.evaluate(() => !document.getElementById('discover').hidden && !!document.querySelector('#d-cta:not([hidden])'))); i++) await w(60);
+    await w(250); mark('collect'); await p.click('#d-cta', { timeout: 3000 }).catch((e) => console.log(kind, 'no Collect (ISS)', e.message.slice(0, 60)));
+    await w(450); await flipNow();
+    await w(300); await tilt(2600); await w(300);
   });
   await p.mouse.move(vw / 2, vh * 0.42); await w(500);
   const issCard = join(tmp, 'iss-card.png'); await cardShot(issCard);
@@ -166,9 +189,9 @@ for (const kind of which === 'all' ? Object.keys(OUT) : [which]) {
   await b.close();
 
   // The clips: each take trimmed from its in-point for its length in the edit, at a constant 30 fps.
-  const tk = [t1, t2, t3, t4, t5, t6, t7];
+  const tk = [t1, t8, t2, t3, t4, t9, t5, t6, t7];
   if (!t3) throw new Error('no fade take');
-  const ins = [t1.marks.collect - 1.0, t2.marks.in, t3.marks.collect - 1.8, t4.marks.hold + 3.0, t5.marks.in, t6.marks.in, t7.marks.in];
+  const ins = [t1.marks.collect - 1.0, t8.marks.in, t2.marks.in, t3.marks.collect - 1.8, t4.marks.hold + 3.2, t9.marks.in, t5.marks.in, t6.marks.in, t7.marks.in];
   const clips = tk.map((t, k) => {
     const a = ins[k], d = DUR[k], fr = t.frames;
     let first = fr.findIndex((x, i) => (fr[i + 1]?.t ?? Infinity) > a); if (first < 0) first = fr.length - 1;
@@ -215,7 +238,7 @@ for (const kind of which === 'all' ? Object.keys(OUT) : [which]) {
       const st = { capOp: 0, scale: 1, blur: 0, html: '', endOp: 0, titleOp: 0, titleScale: 1, subOp: 0, fan: 0 };
       if (c) { const [a, z, text, o = {}] = c, k = o.settled ? 1 : (t - a) / 0.42, out = Math.min(1, Math.max(0, (z - t) / 0.3));
         st.html = '<span>' + text.replace(/\*(.+?)\*/g, '<b>$1</b>') + '</span>'; /* one item: the grid stacked bare words and the orange word as separate rows (Sevaan: too much space between the lines) */ st.capOp = Math.min(1, k * 3) * out; st.scale = 1 + 0.7 * (1 - ease(k)); st.blur = 4 * (1 - ease(k)); }
-      if (t >= 26.4) { st.endOp = Math.min(1, (t - 26.4) / 0.4); const k = (t - 27.0) / 0.42; st.titleOp = t >= 27.0 ? Math.min(1, k * 3) : 0; st.titleScale = 1 + 0.7 * (1 - ease(k)); st.subOp = Math.min(1, Math.max(0, (t - 27.45) / 0.35)); st.fan = ease((t - 26.45) / 0.6); }
+      if (t >= ENDCARD) { st.endOp = Math.min(1, (t - ENDCARD) / 0.4); const k = (t - ENDCARD - 0.6) / 0.42; st.titleOp = t >= ENDCARD + 0.6 ? Math.min(1, k * 3) : 0; st.titleScale = 1 + 0.7 * (1 - ease(k)); st.subOp = Math.min(1, Math.max(0, (t - ENDCARD - 1.05) / 0.35)); st.fan = ease((t - ENDCARD - 0.05) / 0.6); }
       await cp.evaluate((st) => { const cap = document.getElementById('cap'); if (cap.dataset.h !== st.html) { cap.innerHTML = st.html; cap.dataset.h = st.html; }
         cap.style.opacity = st.capOp; cap.style.transform = `scale(${st.scale})`; cap.style.filter = st.blur > 0.05 ? `blur(${st.blur}px)` : 'none'; document.getElementById('band').style.opacity = st.capOp;
         const e = document.getElementById('end'); e.style.opacity = st.endOp; const tt = e.querySelector('.t'); tt.style.opacity = st.titleOp; tt.style.transform = `scale(${st.titleScale})`; e.querySelector('.s').style.opacity = st.subOp; e.querySelector('.rule').style.opacity = st.subOp;
@@ -228,14 +251,14 @@ for (const kind of which === 'all' ? Object.keys(OUT) : [which]) {
   const mapT = (t) => { for (let k = tk.length - 1; k >= 0; k--) { const x = t - ins[k]; if (x >= 0 && x <= DUR[k] && t >= tk[k].t0 - 0.2) return S[k] + x; } return null; };
   const last = {}, events = sfx.map(([n, t]) => [n, mapT(t)]).filter(([n, t]) => t != null && t > 0 && t < END - 0.4 && KEEP.has(n)).sort((a, b) => a[1] - b[1])
     .filter(([n, t]) => { if (t - (last[n] ?? -9) < 0.4) return false; last[n] = t; return true; });
-  events.push(['shiny', 27.0]);
+  events.push(['shiny', ENDCARD + 0.6]);
   const NORM = (() => { try { return JSON.parse(readFileSync(join(ROOT, 'js/sfx.js'), 'utf8').match(/const NORM = (\{[^}]*\})/)[1]); } catch { return {}; } })();
   const ain = ['-ss', '109.6', '-i', join(ROOT, 'assets/audio/permafrost.m4a')]; events.forEach(([n]) => ain.push('-i', join(ROOT, 'assets/audio/sfx', n + '.mp3')));
   let af = `[2:a]atrim=0:${END},asetpts=N/SR/TB,volume=0.38,afade=t=in:st=0:d=0.15,afade=t=out:st=${(END - 1.0).toFixed(2)}:d=1.0[mus];`; const lab = ['[mus]'];
   events.forEach(([n, t], i) => { const ms = Math.round(t * 1000), g = Math.min(1.4, 0.55 * (NORM[n] ?? 1)); af += `[${i + 3}:a]aformat=sample_rates=48000:channel_layouts=stereo,volume=${g.toFixed(3)},adelay=${ms}|${ms}[e${i}];`; lab.push(`[e${i}]`); });
   af += `${lab.join('')}amix=inputs=${lab.length}:normalize=0:duration=first,alimiter=limit=0.9,loudnorm=I=-16:TP=-1.5:LRA=11[aout]`;
   console.log(kind, 'sounds', events.map(([n, t]) => `${n}@${t.toFixed(1)}`).join(' '));
-  const out = join(ROOT, 'store/appstore', kind); mkdirSync(out, { recursive: true });
+  const out = join(ROOT, 'store/appstore', US ? `${kind}-us` : kind); mkdirSync(out, { recursive: true });
   execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-i', vjoin, '-framerate', String(FPS), '-i', join(capDir, '%04d.png'), ...ain, '-filter_complex', `[0:v][1:v]overlay=0:0:format=auto,format=yuv420p[v];${af}`,
     '-map', '[v]', '-map', '[aout]', '-t', END.toFixed(3), '-c:v', 'libx264', '-profile:v', 'high', '-crf', '17', '-preset', 'slow', '-r', String(FPS), '-c:a', 'aac', '-b:a', '256k', '-ar', '48000', '-movflags', '+faststart', join(out, 'preview.mp4')]);
   console.log(kind, '→', join(out, 'preview.mp4'), errs.length ? errs : '');

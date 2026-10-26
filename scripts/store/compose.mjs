@@ -5,27 +5,28 @@
 // duo (2026-10-22): the iPhone Duo's inner display on its side, 2853 × 2007: the caption in a band across the top, the
 // screen below with the Duo's status bar drawn in its 84pt strip down the right-hand edge.
 import { chromium } from 'playwright';
-import { readdirSync, mkdirSync, readFileSync } from 'node:fs';
+import { readdirSync, mkdirSync, readFileSync, unlinkSync } from 'node:fs';
 import { join } from 'node:path';
 import { ROOT } from './common.mjs';
 
 // Marketing pass (2026-10-19, Sevaan's "room full of marketers"): screenshot 1 states the whole idea, the shiny ISS
 // moves up to 3 (collectors buy rarity), every eyebrow is a fact and every headline a feeling; "Free · no ads" closes.
 // ORDER sets the App Store order (file numbers); CAPTIONS sets the words. Change either and re-run this script.
-export const ORDER = ['sky', 'reveal', 'card', 'tonight', 'story', 'collection', 'moon', 'patches', 'around']; // 2026-10-24 writers' room (script A) + Sevaan: 9 shots, the 9th to decide
+export const ORDER = ['sky', 'reveal', 'collection', 'card', 'tonight', 'story', 'day', 'every', 'patches', 'moon']; // 2026-10-26 review room: the grid moves up to 3 (search shows 3), two new shots (by day, every night), All around you cut, the Moon an optional 10th
 export const CAPTIONS = {
   sky: ['Point your phone at the sky', 'Every light up there has a name'],
   reveal: ['Line it up · tap Collect', 'Catch it. Keep its card.'],
-  card: ['Caught as it went dark', 'Catch the fade, get a shiny'], // the shiny Hubble ("Caught the fade" on its tag)
+  card: ['Tap as it slips into Earth’s shadow', 'Catch the fade, get a shiny'], // the shiny Hubble ("Caught the fade" on its tag)
   tonight: ['Tonight, timed to the minute', 'Know when to look up'],
   story: ['Hidden in the sky', 'Some lights hide a secret'], // Pale Blue Dot, found at Voyager 1's spot
-  collection: ['Stations · rockets · planets', '4,000+ real cards to find'],
-  moon: ['One Moon, eight phases', 'Come back night after night'],
+  collection: ['Stations · rockets · planets · stars', '4,000+ real cards to find'],
+  moon: ['One Moon, eight phases', 'Collect every phase'],
   patches: ['Free · no ads · no loot boxes', '180+ patches to earn'],
-  around: ['A full 360° of sky', 'See what’s all around you'],
+  day: ['Catch the Sun and Moon by day', 'Plan tonight’s catches'],
+  every: ['30 missions · 12 themed weeks', 'Something new every night'],
 };
 const SIZE = { phone: [1206, 2622], pad: [2064, 2752], duo: [2853, 2007] };
-const which = process.argv[2] ?? 'all', RAW = join(ROOT, 'store/raw');
+const which = process.argv.slice(2).find((a) => !a.startsWith('--')) ?? 'all', US = process.argv.includes('--us'), RAW = join(ROOT, US ? 'store/raw-us' : 'store/raw'); // --us: the US set (miles), into store/appstore/<device>-us
 const data = (f, type) => `data:${type};base64,${readFileSync(f).toString('base64')}`; // inline: a page from setContent can't load file:// URLs
 const font = (f) => data(join(ROOT, 'fonts', f), 'font/ttf');
 
@@ -96,7 +97,7 @@ body { background: radial-gradient(90% 55% at 50% 0%, #17304d 0%, #0b1628 45%, #
 
 const b = await chromium.launch();
 for (const kind of which === 'all' ? Object.keys(SIZE) : [which]) {
-  const out = join(ROOT, 'store/appstore', kind); mkdirSync(out, { recursive: true });
+  const out = join(ROOT, 'store/appstore', US ? `${kind}-us` : kind); mkdirSync(out, { recursive: true }); for (const f of readdirSync(out)) if (/^\d+-\w+\.png$/.test(f)) unlinkSync(join(out, f)); // a fresh set each time
   const shots = readdirSync(RAW).filter((f) => f.startsWith(kind + '-') && f.endsWith('.png')).sort();
   const pg = await b.newPage({ viewport: { width: SIZE[kind][0], height: SIZE[kind][1] }, deviceScaleFactor: 1 });
   for (const f of shots) {

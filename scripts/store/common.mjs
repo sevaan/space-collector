@@ -36,10 +36,12 @@ function collection(now, { heroIss = false } = {}) {
 // A returning player on a clear evening: seeded collection, the App Store safe areas, no testing button.
 // clear: the weather can't be fetched, so the Tonight page shows the plan without a forecast (2026-10-22: a date picked for a
 // good ISS pass came out 'Overcast all night', the real forecast for that week).
-export async function setup(browser, kind, { when, video = null, extra = [], heroIss = false, clear = false, storage = {} } = {}) {
+// locale (2026-10-26, Sevaan: units for the US App Store): 'en-US' gives miles, °F and US spelling (the app's auto units);
+// 'en-CA' gives km and °C for every other storefront.
+export async function setup(browser, kind, { when, video = null, extra = [], heroIss = false, clear = false, storage = {}, locale = 'en-CA' } = {}) {
   const d = DEVICES[kind], at = when ? new Date(when) : nextEvening();
   const ctx = await browser.newContext({ viewport: d.viewport, deviceScaleFactor: d.deviceScaleFactor, isMobile: d.isMobile, hasTouch: d.hasTouch, userAgent: d.userAgent,
-    serviceWorkers: 'block', timezoneId: PLACE.tz, geolocation: { latitude: PLACE.latitude, longitude: PLACE.longitude }, permissions: ['geolocation'], ...(video ? { recordVideo: video } : {}) });
+    serviceWorkers: 'block', locale, timezoneId: PLACE.tz, geolocation: { latitude: PLACE.latitude, longitude: PLACE.longitude }, permissions: ['geolocation'], ...(video ? { recordVideo: video } : {}) });
   await ctx.addInitScript(([t, bt, r]) => { const add = () => { const s = document.createElement('style');
     s.textContent = `:root, html.standalone { --safe-top: ${t}px !important; --safe-bottom: ${bt}px !important;${r ? ` --safe-r: ${r}px !important;` : ''} } #peak-toggle { display: none !important; }`; document.head.append(s); };
     if (document.head) add(); else document.addEventListener('DOMContentLoaded', add); }, [d.safeTop, d.safeBottom, d.safeR ?? 0]);
@@ -47,7 +49,8 @@ export async function setup(browser, kind, { when, video = null, extra = [], her
   await ctx.route(/\/js\/main\.js/, async (route) => { const r = await route.fetch(); await route.fulfill({ response: r, body: (await r.text()) + '\n;window.__store = { state, sky, skyAt: (ra, dec) => { const v = eqToEnu(now(), state.observer)(starVector(ra, dec)); return { az: (Math.atan2(v[0], v[1]) * 180 / Math.PI + 360) % 360, el: Math.asin(v[2]) * 180 / Math.PI }; } };', headers: { ...r.headers(), 'content-type': 'text/javascript' } }); });
   // Log the app's sounds with their wall-clock time (the promo puts them in its soundtrack at the same moments).
   await ctx.route(/\/js\/sfx\.js/, async (route) => { const r = await route.fetch(); const body = (await r.text()).replace('export function sfx(name, { gain = 1, gap = 0, delay = 0 } = {}) {', 'export function sfx(name, { gain = 1, gap = 0, delay = 0 } = {}) { (window.__sfxLog ??= []).push([name, Date.now() + delay * 1000]); try { window.__sfxReal?.(name, delay); } catch {}'); await route.fulfill({ response: r, body, headers: { ...r.headers(), 'content-type': 'text/javascript' } }); });
-  if (clear) await ctx.route(/open-meteo\.com/, (route) => route.abort());
+  if (clear) await ctx.route(/open-meteo\.com|spacecollector\.app\/api\/wx/, (route) => route.abort());
+  await ctx.route(/spacecollector\.app\/api\/(planes|t)\b/, (route) => route.abort()); // our server (2026-10-26): no live planes, no usage notes from store footage
   await ctx.route(/adsb|val\.run|adsbdb/, (route) => route.abort()); // no live planes in store footage (one crossed the circle in a take, 2026-10-24)
   await ctx.clock.install({ time: at });
   const p = await ctx.newPage(), errs = []; p.on('pageerror', (e) => errs.push(e.message));

@@ -1,22 +1,22 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { fallWords } from './last-chance.js?v=0.1.1175';
-import { useMiles } from './units.js?v=0.1.1175';
-import { feel } from './native.js?v=0.1.1175';
-import { sfx } from './sfx.js?v=0.1.1175';
-import { cardArt } from './art.js?v=0.1.1175';
-import { TIER_INFO } from './rarity.js?v=0.1.1175';
-import { SET_BY_ID } from './sets.js?v=0.1.1175';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.1175';
-import { FLEET_ABOUT, fleetAbout, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.1175';
-import { artFileFor } from './art-keys.js?v=0.1.1175';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.1175';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.1175';
-import { nightsIn } from './observation.js?v=0.1.1175';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.1175';
-import { SHINY } from './shiny.js?v=0.1.1175';
-import { conArt, cometArt } from './con-art.js?v=0.1.1175';
-import { CON_FIGURES } from './con-figures.js?v=0.1.1175';
-import { localText } from './localize.js?v=0.1.1175';
+import { fallWords } from './last-chance.js?v=0.1.1176';
+import { useMiles } from './units.js?v=0.1.1176';
+import { feel } from './native.js?v=0.1.1176';
+import { sfx } from './sfx.js?v=0.1.1176';
+import { cardArt } from './art.js?v=0.1.1176';
+import { TIER_INFO } from './rarity.js?v=0.1.1176';
+import { SET_BY_ID } from './sets.js?v=0.1.1176';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.1176';
+import { FLEET_ABOUT, fleetAbout, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.1176';
+import { artFileFor } from './art-keys.js?v=0.1.1176';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.1176';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.1176';
+import { nightsIn } from './observation.js?v=0.1.1176';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.1176';
+import { SHINY } from './shiny.js?v=0.1.1176';
+import { conArt, cometArt } from './con-art.js?v=0.1.1176';
+import { CON_FIGURES } from './con-figures.js?v=0.1.1176';
+import { localText } from './localize.js?v=0.1.1176';
 // The animal/symbol figure belongs to the completed (gold) constellation card only (2026-10-05): a single
 // star’s card draws just the star pattern with its star marked, so the figure is a reward for finishing the set.
 // A star card’s constellation figure comes into focus as you collect the constellation’s stars (design/con-focus.html B).
@@ -91,12 +91,12 @@ const orbitIcon = '<svg viewBox="0 0 32 24" fill="none" aria-hidden="true"><circ
 // Same rule as main.js setUnits: imperial, metric, or auto by the phone's region. km and km/h stats are converted when
 // shown, keeping about as many figures as the km number had.
 function inUnits([label, value, unit]) {
-  if (!/^km(\/h)?$/.test(unit ?? '') || !useMiles()) return [label, value, unit];
-  const u = unit === 'km' ? 'mi' : 'mph', m = /^(~?)([\d,]+(?:\.\d+)?)$/.exec(String(value));
+  const mm = /^((?:bn|M) )?km(\/h)?$/.exec(unit ?? ''); if (!mm || !useMiles()) return [label, value, unit]; // "bn km" (Pale Blue Dot) too, 2026-10-26
+  const u = `${mm[1] ?? ''}${mm[2] ? 'mph' : 'mi'}`, m = /^(~?)([\d,]+(?:\.\d+)?)$/.exec(String(value));
   if (!m) return [label, value, u];
   const digits = m[2].replace(/[,.]/g, '').replace(/^0+/, ''), sig = Math.max(2, digits.replace(/0+$/, '').length);
-  const n = Number(m[2].replace(/,/g, '')) * 0.621371, step = 10 ** Math.max(0, Math.floor(Math.log10(n)) + 1 - sig);
-  return [label, m[1] + (Math.round(n / step) * step).toLocaleString('en-US'), u];
+  const n = Number(m[2].replace(/,/g, '')) * 0.621371, e = Math.floor(Math.log10(n)) + 1 - sig, step = 10 ** e;
+  return [label, m[1] + (Math.round(n / step) * step).toLocaleString('en-US', { maximumFractionDigits: Math.max(0, -e) }), u];
 }
 export function orbitalCardStats(o) {
   const stats = orbitStats(o), span = o.apogee != null && o.perigee != null ? o.apogee - o.perigee : null;
@@ -155,7 +155,7 @@ export function renderCard(o, opts = {}) {
   const firstDate = first != null ? new Date(first).toLocaleDateString(undefined, { month: 'short', day: '2-digit', year: 'numeric' }).toUpperCase() : '';
   const nat = !!o.natural;
   const identifier = nat ? o.code : o.members ? `${o.members.length.toLocaleString('en-US')} SATELLITES` : o.runOf > 1 ? `NO. ${o.runNo} OF ${o.runOf}` : `NORAD ${o.id}`;
-  const identity = o.type === 'story' ? (secretStory ? 'Hidden somewhere in the sky' : o.when) : nat ? (conCard ? (o.system ? 'Planetary system' : o.zodiac ? 'Zodiac constellation' : 'Constellation') : o.type === 'star' ? `Star in ${o.constellation}` : o.type === 'deepsky' ? o.kind : o.type === 'comet' ? 'Comet' : o.type === 'sun' ? 'Star' : o.type === 'moon' ? 'Natural satellite' : 'Planet') : fleet ? 'Satellite fleet' : o.type === 'rocket-body' && o.parent ? `Carried ${titleCase(o.parent).replace(/\bCosmos\b/g, 'Kosmos')}${o.launch ? ` · ${o.launch.slice(0, 4)}` : ''}` : o.type === 'debris' && o.launch ? `${debrisOf(o)?.what ?? TYPE_LABEL[o.type] ?? 'Debris'} · ${o.launch.slice(0, 4)}` : TYPE_LABEL[o.type] ?? 'Orbital object'; // what it carried and when, so same-name stages differ
+  const identity = o.type === 'story' ? (secretStory ? 'Hidden somewhere in the sky' : localText(o.when)) : nat ? (conCard ? (o.system ? 'Planetary system' : o.zodiac ? 'Zodiac constellation' : 'Constellation') : o.type === 'star' ? `Star in ${o.constellation}` : o.type === 'deepsky' ? o.kind : o.type === 'comet' ? 'Comet' : o.type === 'sun' ? 'Star' : o.type === 'moon' ? 'Natural satellite' : 'Planet') : fleet ? 'Satellite fleet' : o.type === 'rocket-body' && o.parent ? `Carried ${titleCase(o.parent).replace(/\bCosmos\b/g, 'Kosmos')}${o.launch ? ` · ${o.launch.slice(0, 4)}` : ''}` : o.type === 'debris' && o.launch ? `${debrisOf(o)?.what ?? TYPE_LABEL[o.type] ?? 'Debris'} · ${o.launch.slice(0, 4)}` : TYPE_LABEL[o.type] ?? 'Orbital object'; // what it carried and when, so same-name stages differ
   const ageText = age == null ? '' : age === 0 ? 'Less than a year ago' : `${age} ${age === 1 ? 'year' : 'years'} ago`;
   // Fleet cards: the ringed dot is your newest stamp; say which launch that was (the dots alone don’t).
   const lk = fleet ? latestStamp(sightings) : null, ll = lk ? o.launches.find((l) => l.key === lk) : null;

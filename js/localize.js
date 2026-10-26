@@ -4,7 +4,7 @@
 //    kg → lb, tonnes → tons, °C → °F, keeping about as many figures as the original number had.
 //  - A 24-hour clock (Settings → Clock, or the phone's): "1 AM" → "01:00".
 //  - US English phones: colour → color, centre → center, catalogue → catalog… (a fixed word list, whole words only).
-import { useMiles } from './units.js?v=0.1.1175';
+import { useMiles } from './units.js?v=0.1.1176';
 
 const num = (s) => Number(String(s).replace(/,/g, ''));
 // Round n to about as many significant figures as the source number showed (at least 2), and write it with commas.
@@ -18,6 +18,8 @@ function like(src, n, minSig = 2) {
 const N = '(\\d[\\d,]*(?:\\.\\d+)?)';
 function imperial(t) {
   return t
+    // "6 billion km", "150 million km" → miles, keeping the word (2026-10-26: the Pale Blue Dot card in the US store shots)
+    .replace(new RegExp(`${N}\\s?(million|billion) (km|kilometres|kilometers)\\b`, 'g'), (_, a, w) => `${like(a, num(a) * 0.621371)} ${w} miles`)
     // ranges first, so both numbers change: "650 to 3,800 km"
     .replace(new RegExp(`${N}\\s*(to|and|–|-)\\s*${N}\\s?(km|kilometres|kilometers)\\b(?!\\/)`, 'g'), (_, a, w, b, u) => `${like(a, num(a) * 0.621371)}${w === '–' || w === '-' ? w : ` ${w} `}${like(b, num(b) * 0.621371)} ${/^k/.test(u) && u.length > 2 ? 'miles' : 'mi'}`)
     .replace(new RegExp(`(~?)${N}\\s?km\\/h\\b`, 'g'), (_, t2, a) => `${t2}${like(a, num(a) * 0.621371)} mph`)

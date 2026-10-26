@@ -3,6 +3,7 @@ node_modules/
 .claude/
 scripts/.cache/
 store/raw/
+store/raw-us/
 store/appstore/
 store/promo/
 store/zen-sounds-reel.mp3

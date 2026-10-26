@@ -4,18 +4,20 @@ Kept here so they can be edited and pasted again. Screenshots and previews: `sto
 
 ## App Information page
 - **Name:** Space Collector
-- **Subtitle (30):** Collect the night sky
+- **Subtitle (30):** Spot satellites, collect cards
+  (2026-10-26 review room: the subtitle is searched; "Collect the night sky" stays as the in-app, website and end-card tagline.)
 - **Primary category:** Games → Adventure; secondary: Education
 - **Privacy Policy URL:** https://spacecollector.app/privacy
 
 ## Version page
 **Promotional text (170):**
-Point your phone at the night sky and collect what’s really passing over you: the Space Station, Hubble, old rocket stages, the planets and the stars.
+Catch the ISS, Starlink trains and the Moon beside Jupiter. New every night: 30 missions, 12 themed weeks and sky events, all free.
+(Promo text can be changed any time without App Review: use it for anything seasonal.)
 
 **Description (4,000):**
-Every moving light in the night sky has a name. Space Collector turns each one into a card.
+Every light in the night sky has a name. Space Collector turns each one into a card. Hold your phone up, line one up in the circle, tap Collect: the Space Station, Hubble, rocket stages, the planets, the Moon and the stars.
 
-Hold your phone up to the sky. Satellites, rocket stages, the International Space Station, the planets, the Moon and the brightest stars show up right where they really are, worked out from real orbits for where you’re standing. Line one up in the circle, tap Collect, and its card is yours.
+Everything shows up right where it really is, worked out from real orbits for where you’re standing.
 
 HOW TO PLAY
 • Point your phone at the sky.
@@ -26,26 +28,33 @@ THOUSANDS OF REAL CARDS
 Space stations and telescopes, weather satellites, Cold War relics, rocket stages from the 1960s, the planets, the Moon and the stars. Every card has real numbers and one true fact. Rarity is how hard something is to see, never what you pay.
 
 PLAN YOUR NIGHT
-Tonight’s plan shows when it gets dark, the best pass to catch, the busiest moment and the weather, so you know when to step outside.
+Tonight’s plan shows when it gets dark, the best pass to catch with a countdown, the busiest moment and the weather, so you know when to step outside.
+
+SOMETHING NEW EVERY NIGHT
+30 nightly missions, a new themed week every Monday, sky events like the Moon meeting a planet, supermoons, eclipses and meteor showers, Starlink trains, and the Moon’s eight phases to stamp.
+
+WORKS BY DAY TOO
+Catch the Sun and the Moon, and see when tonight gets dark and what’s coming over.
 
 SHINY CARDS
 Catch something at a lucky moment, like slipping into Earth’s shadow, passing right beside the Moon, straight overhead or just launched, and its card comes out shiny. Catch a full Moon for a shiny Moon.
 
 MISSIONS, PATCHES AND SECRETS
-Nightly missions, more than 180 mission patches, constellations to finish star by star, ranks from Stargazer to Voyager, and a few secrets hidden in the sky. Some are even under your feet.
+30 nightly missions, more than 180 mission patches, constellations to finish star by star, ranks from Stargazer to Voyager, and a few secrets hidden in the sky. Some are even under your feet.
 
 FREE. NO ADS. NO LOOT BOXES.
 The sky, every card, every patch and every mission are free.
 
 SPACE COLLECTOR PLUS (optional)
-Pass reminders for any pass you choose, Rare alerts when a new Rare or better card passes, the shiny forecast, six card back designs and a members-only patch. Monthly, yearly (with a 7-day free trial) or once, forever. Shared with Family Sharing.
+Pass reminders for any pass you choose (Space Station reminders are always free), Rare alerts when a new Rare or better card passes, home and lock screen widgets, the shiny forecast, six card back designs and a members-only patch. Monthly, yearly (with a 7-day free trial) or once, forever. Shared with Family Sharing.
 
 Subscriptions renew automatically unless cancelled at least 24 hours before the end of the current period, and are charged to your Apple Account. Manage or cancel them in your Apple Account settings.
 Terms of Use: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
 Privacy: https://spacecollector.app/privacy
 
 **Keywords (100):**
-satellite,astronomy,stargazing,night sky,ISS,planets,stars,constellation,moon,telescope,cards,game
+ISS,stargazing,astronomy,night sky,tracker,spotting,planets,stars,constellation,moon,meteor,trading
+(2026-10-26: no "telescope" (wrong users) or "game"; no words already in the name or subtitle; no "Starlink" (a trademark).)
 
 **Support URL:** https://spacecollector.app
 **Marketing URL:** https://spacecollector.app
@@ -76,7 +85,7 @@ PERMISSIONS
 - Camera: NSCameraUsageDescription belongs to an experimental camera view in the hidden Testing tools only; it is not part of the normal app and is never requested otherwise.
 
 DATA
-No ads, no tracking, no analytics in the app. The collection stays on the device and in the player's own iCloud key-value storage. Weather (Open-Meteo) and aircraft lookups (to say "Just a plane") use a rounded location. Privacy Policy: https://spacecollector.app/privacy
+No ads and no tracking. The app sends a few anonymous usage notes (random ID, no location; can be turned off in Settings → Help). The collection stays on the device and in the player's own iCloud key-value storage. Weather (MET Norway) and aircraft (adsb.lol) come through our own server at spacecollector.app with a rounded location. Privacy Policy: https://spacecollector.app/privacy
 
 CONTACT
 hello@spacecollector.app

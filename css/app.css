@@ -2758,3 +2758,13 @@ body.calib #help-card, body.ob-tour #help-card { display: none !important; }
 /* The help card sits just under the header (it's taller than the Moon check, so above the circle it hit the radar) */
 #help-card { top: calc(var(--safe-top, 0px) + 92px); transform: translateX(-50%); }
 #help-card i { display: none; }
+
+/* 2026-10-26 (Sevaan): more room between the mini card and the words in the circle's tickets. */
+#discover .d-ticket.has-mini { column-gap: 20px; }
+#tk.has-mini { gap: 20px; }
+#plane .p-ticket { gap: 20px !important; }
+@media (max-height: 720px) {
+  #discover .d-ticket.has-mini { column-gap: 16px; }
+  #tk.has-mini { gap: 16px; }
+  #plane .p-ticket { gap: 16px !important; }
+}
