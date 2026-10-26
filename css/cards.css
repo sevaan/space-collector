@@ -702,3 +702,17 @@
 /* A fragment's picture: its parent broken apart (js/shape-art.js shatterArt), named bottom left. */
 .card__art .shape-art { position: absolute; inset: 0; width: 100%; height: 100%; }
 .art-credit--from { right: auto; left: .5em; color: #fff2b3; }
+/* A fragment's card (design/fragment-cards.html A, 2026-10-26): the picture window holds where it came from and its set. */
+.card__art:has(> .frag) { background: radial-gradient(circle at 30% 30%, #13264a, #080f1b 75%); }
+.frag { position: absolute; inset: 0; padding: 2.9em 1.1em .9em; display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto auto auto 1fr; column-gap: .9em; row-gap: .55em; align-content: start; }
+.frag-thumb { grid-row: 1; width: 5.2em; height: 5.2em; border-radius: 50%; object-fit: cover; border: .18em solid #e9dfc2; }
+.frag-from { align-self: center; display: flex; flex-direction: column; gap: .2em; }
+.frag-from small { font: 500 .95em/1 var(--label, 'SC Label', sans-serif); letter-spacing: .16em; text-transform: uppercase; color: #9aa7b4; }
+.frag-from b { font: 400 1.45em/1.05 var(--display, 'SC Display', sans-serif); color: #fff2b3; text-transform: uppercase; }
+.frag-count { grid-column: 1 / -1; font: 500 .95em/1 var(--label, 'SC Label', sans-serif); letter-spacing: .14em; text-transform: uppercase; color: #9aa7b4; }
+.frag-dots { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(13, 1.25em); gap: .42em; }
+.frag-dots i { width: 1.25em; height: 1.25em; border-radius: 50%; border: 1px solid #627a8b; box-sizing: border-box; }
+.frag-dots i.on { background: #fa8127; border-color: #fa8127; } .frag-dots i.me { background: #fff2b3; border-color: #fff2b3; box-shadow: 0 0 0 .22em #fa812766; }
+.frag-tl { grid-column: 1 / -1; align-self: end; display: flex; gap: .5em; flex-wrap: wrap; font: 500 .9em/1.2 var(--label, 'SC Label', sans-serif); letter-spacing: .1em; text-transform: uppercase; color: #bdbea9; }
+.frag-tl span + span::before { content: '·'; margin-right: .5em; color: #627a8b; }
+body.night .frag-dots i.on, body.night .frag-dots i.me { background: #ff6a55; border-color: #ff6a55; }

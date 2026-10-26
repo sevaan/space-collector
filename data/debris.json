@@ -13,25 +13,61 @@
 "what": "Fragment",
 "fact": "A **fragment** of the Thor Ablestar rocket that launched Transit 4A in 1961. Two hours later its upper stage blew apart: the first known accidental breakup in space.",
 "parent": "THOR ABLESTAR",
-"parentArt": "thor-upper"
+"parentArt": "thor-upper",
+"group": [
+122,
+126,
+127,
+130,
+134,
+141
+],
+"tracked": 314
 },
 "126": {
 "what": "Fragment",
 "fact": "A **fragment** of the Thor Ablestar rocket that launched Transit 4A in 1961. Two hours later its upper stage blew apart: the first known accidental breakup in space.",
 "parent": "THOR ABLESTAR",
-"parentArt": "thor-upper"
+"parentArt": "thor-upper",
+"group": [
+122,
+126,
+127,
+130,
+134,
+141
+],
+"tracked": 314
 },
 "127": {
 "what": "Fragment",
 "fact": "A **fragment** of the Thor Ablestar rocket that launched Transit 4A in 1961. Two hours later its upper stage blew apart: the first known accidental breakup in space.",
 "parent": "THOR ABLESTAR",
-"parentArt": "thor-upper"
+"parentArt": "thor-upper",
+"group": [
+122,
+126,
+127,
+130,
+134,
+141
+],
+"tracked": 314
 },
 "130": {
 "what": "Fragment",
 "fact": "A **fragment** of the Thor Ablestar rocket that launched Transit 4A in 1961. Two hours later its upper stage blew apart: the first known accidental breakup in space.",
 "parent": "THOR ABLESTAR",
-"parentArt": "thor-upper"
+"parentArt": "thor-upper",
+"group": [
+122,
+126,
+127,
+130,
+134,
+141
+],
+"tracked": 314
 },
 "133": {
 "what": "Despin weight",
@@ -42,13 +78,31 @@
 "what": "Fragment",
 "fact": "A **fragment** of the Thor Ablestar rocket that launched Transit 4A in 1961. Two hours later its upper stage blew apart: the first known accidental breakup in space.",
 "parent": "THOR ABLESTAR",
-"parentArt": "thor-upper"
+"parentArt": "thor-upper",
+"group": [
+122,
+126,
+127,
+130,
+134,
+141
+],
+"tracked": 314
 },
 "141": {
 "what": "Fragment",
 "fact": "A **fragment** of the Thor Ablestar rocket that launched Transit 4A in 1961. Two hours later its upper stage blew apart: the first known accidental breakup in space.",
 "parent": "THOR ABLESTAR",
-"parentArt": "thor-upper"
+"parentArt": "thor-upper",
+"group": [
+122,
+126,
+127,
+130,
+134,
+141
+],
+"tracked": 314
 },
 "700": {
 "what": "Insulation blanket",
@@ -75,7 +129,11 @@
 "what": "Fragment",
 "fact": "A **fragment** of Thor Ablestar, launched in 1964. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "THOR ABLESTAR",
-"parentArt": "thor-upper"
+"parentArt": "thor-upper",
+"group": [
+1099
+],
+"tracked": 11
 },
 "1316": {
 "what": "Heat shield",
@@ -104,19 +162,49 @@
 "what": "Fragment",
 "fact": "A **fragment** of Titan 3C Transtage, launched in 1965. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "TITAN 3C TRANSTAGE",
-"parentArt": "titan-transtage"
+"parentArt": "titan-transtage",
+"group": [
+1642,
+1646,
+1653,
+1680,
+1682,
+1684,
+1716
+],
+"tracked": 470
 },
 "1646": {
 "what": "Fragment",
 "fact": "A **fragment** of Titan 3C Transtage, launched in 1965. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "TITAN 3C TRANSTAGE",
-"parentArt": "titan-transtage"
+"parentArt": "titan-transtage",
+"group": [
+1642,
+1646,
+1653,
+1680,
+1682,
+1684,
+1716
+],
+"tracked": 470
 },
 "1653": {
 "what": "Fragment",
 "fact": "A **fragment** of Titan 3C Transtage, launched in 1965. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "TITAN 3C TRANSTAGE",
-"parentArt": "titan-transtage"
+"parentArt": "titan-transtage",
+"group": [
+1642,
+1646,
+1653,
+1680,
+1682,
+1684,
+1716
+],
+"tracked": 470
 },
 "1668": {
 "what": "Adapter",
@@ -127,25 +215,65 @@
 "what": "Fragment",
 "fact": "A **fragment** of Titan 3C Transtage, launched in 1965. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "TITAN 3C TRANSTAGE",
-"parentArt": "titan-transtage"
+"parentArt": "titan-transtage",
+"group": [
+1642,
+1646,
+1653,
+1680,
+1682,
+1684,
+1716
+],
+"tracked": 470
 },
 "1682": {
 "what": "Fragment",
 "fact": "A **fragment** of Titan 3C Transtage, launched in 1965. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "TITAN 3C TRANSTAGE",
-"parentArt": "titan-transtage"
+"parentArt": "titan-transtage",
+"group": [
+1642,
+1646,
+1653,
+1680,
+1682,
+1684,
+1716
+],
+"tracked": 470
 },
 "1684": {
 "what": "Fragment",
 "fact": "A **fragment** of Titan 3C Transtage, launched in 1965. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "TITAN 3C TRANSTAGE",
-"parentArt": "titan-transtage"
+"parentArt": "titan-transtage",
+"group": [
+1642,
+1646,
+1653,
+1680,
+1682,
+1684,
+1716
+],
+"tracked": 470
 },
 "1716": {
 "what": "Fragment",
 "fact": "A **fragment** of Titan 3C Transtage, launched in 1965. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "TITAN 3C TRANSTAGE",
-"parentArt": "titan-transtage"
+"parentArt": "titan-transtage",
+"group": [
+1642,
+1646,
+1653,
+1680,
+1682,
+1684,
+1716
+],
+"tracked": 470
 },
 "2337": {
 "what": "Satellite part",
@@ -155,109 +283,221 @@
 "what": "Fragment",
 "fact": "A **fragment** of Kosmos 249, a Soviet anti-satellite interceptor. In 1968 it flew close past a target satellite in a test, then blew itself up.",
 "parent": "COSMOS 249",
-"parentArt": "asat-interceptor"
+"parentArt": "asat-interceptor",
+"group": [
+3506
+],
+"tracked": 107
 },
 "3555": {
 "what": "Fragment",
 "fact": "A **fragment** of Kosmos 252, a Soviet anti-satellite interceptor. In 1968 it exploded next to the target satellite Kosmos 248 and destroyed it.",
 "parent": "COSMOS 252",
-"parentArt": "asat-interceptor"
+"parentArt": "asat-interceptor",
+"group": [
+3555,
+3561
+],
+"tracked": 138
 },
 "3561": {
 "what": "Fragment",
 "fact": "A **fragment** of Kosmos 252, a Soviet anti-satellite interceptor. In 1968 it exploded next to the target satellite Kosmos 248 and destroyed it.",
 "parent": "COSMOS 252",
-"parentArt": "asat-interceptor"
+"parentArt": "asat-interceptor",
+"group": [
+3555,
+3561
+],
+"tracked": 138
 },
 "4084": {
 "what": "Fragment",
 "fact": "A **fragment** of a Kosmos-3M rocket (US code name SL-8), launched in 1969. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "SL-8",
-"parentArt": "sl-8"
+"parentArt": "sl-8",
+"group": [
+4084
+],
+"tracked": 0
 },
 "4209": {
 "what": "Fragment",
 "fact": "A **fragment** of Thorad Agena D, launched in 1969. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "THORAD AGENA D",
-"parentArt": "agena"
+"parentArt": "agena",
+"group": [
+4209,
+4216,
+4217
+],
+"tracked": 259
 },
 "4216": {
 "what": "Fragment",
 "fact": "A **fragment** of Thorad Agena D, launched in 1969. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "THORAD AGENA D",
-"parentArt": "agena"
+"parentArt": "agena",
+"group": [
+4209,
+4216,
+4217
+],
+"tracked": 259
 },
 "4217": {
 "what": "Fragment",
 "fact": "A **fragment** of Thorad Agena D, launched in 1969. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "THORAD AGENA D",
-"parentArt": "agena"
+"parentArt": "agena",
+"group": [
+4209,
+4216,
+4217
+],
+"tracked": 259
 },
 "4607": {
 "what": "Fragment",
 "fact": "A **fragment** of Thorad Agena D, launched in 1970. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "THORAD AGENA D",
-"parentArt": "agena"
+"parentArt": "agena",
+"group": [
+4607,
+4611,
+4614,
+4657,
+4675,
+4719
+],
+"tracked": 441
 },
 "4611": {
 "what": "Fragment",
 "fact": "A **fragment** of Thorad Agena D, launched in 1970. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "THORAD AGENA D",
-"parentArt": "agena"
+"parentArt": "agena",
+"group": [
+4607,
+4611,
+4614,
+4657,
+4675,
+4719
+],
+"tracked": 441
 },
 "4614": {
 "what": "Fragment",
 "fact": "A **fragment** of Thorad Agena D, launched in 1970. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "THORAD AGENA D",
-"parentArt": "agena"
+"parentArt": "agena",
+"group": [
+4607,
+4611,
+4614,
+4657,
+4675,
+4719
+],
+"tracked": 441
 },
 "4617": {
 "what": "Fragment",
 "fact": "A **fragment** of Kosmos 374, a Soviet anti-satellite interceptor. In 1970 it flew close past the target satellite Kosmos 373 in a test, then blew itself up.",
 "parent": "COSMOS 374",
-"parentArt": "asat-interceptor"
+"parentArt": "asat-interceptor",
+"group": [
+4617
+],
+"tracked": 96
 },
 "4628": {
 "what": "Fragment",
 "fact": "A **fragment** of Kosmos 375, a Soviet anti-satellite interceptor. In 1970 it flew close past the target satellite Kosmos 373 in a test, then blew itself up.",
 "parent": "COSMOS 375",
-"parentArt": "asat-interceptor"
+"parentArt": "asat-interceptor",
+"group": [
+4628,
+4629
+],
+"tracked": 46
 },
 "4629": {
 "what": "Fragment",
 "fact": "A **fragment** of Kosmos 375, a Soviet anti-satellite interceptor. In 1970 it flew close past the target satellite Kosmos 373 in a test, then blew itself up.",
 "parent": "COSMOS 375",
-"parentArt": "asat-interceptor"
+"parentArt": "asat-interceptor",
+"group": [
+4628,
+4629
+],
+"tracked": 46
 },
 "4657": {
 "what": "Fragment",
 "fact": "A **fragment** of Thorad Agena D, launched in 1970. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "THORAD AGENA D",
-"parentArt": "agena"
+"parentArt": "agena",
+"group": [
+4607,
+4611,
+4614,
+4657,
+4675,
+4719
+],
+"tracked": 441
 },
 "4675": {
 "what": "Fragment",
 "fact": "A **fragment** of Thorad Agena D, launched in 1970. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "THORAD AGENA D",
-"parentArt": "agena"
+"parentArt": "agena",
+"group": [
+4607,
+4611,
+4614,
+4657,
+4675,
+4719
+],
+"tracked": 441
 },
 "4719": {
 "what": "Fragment",
 "fact": "A **fragment** of Thorad Agena D, launched in 1970. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "THORAD AGENA D",
-"parentArt": "agena"
+"parentArt": "agena",
+"group": [
+4607,
+4611,
+4614,
+4657,
+4675,
+4719
+],
+"tracked": 441
 },
 "5017": {
 "what": "Fragment",
 "fact": "A **fragment** of Kosmos 397, a Soviet anti-satellite interceptor. In 1971 it exploded next to the target satellite Kosmos 394 and destroyed it.",
 "parent": "COSMOS 397",
-"parentArt": "asat-interceptor"
+"parentArt": "asat-interceptor",
+"group": [
+5017
+],
+"tracked": 118
 },
 "5052": {
 "what": "Fragment",
 "fact": "A piece from the 1971 launch of **Kosmos 400** on a Kosmos-3M (SL-8) rocket. Kosmos 400 was a Soviet target satellite, blown apart weeks later in an anti-satellite weapon test.",
 "parent": "SL-8",
-"parentArt": "sl-8"
+"parentArt": "sl-8",
+"group": [
+5052
+],
+"tracked": 0
 },
 "5384": {
 "what": "Canister",
@@ -272,361 +512,912 @@
 "what": "Fragment",
 "fact": "A **fragment** catalogued to a 1967 Delta launch, though nobody is sure which rocket it really came from. Pieces like this break off and keep circling for years.",
 "parent": "DELTA 1",
-"parentArt": "delta-early"
+"parentArt": "delta-early",
+"group": [
+5987
+],
+"tracked": 17
 },
 "6210": {
 "what": "Fragment",
 "fact": "A **fragment** of a Kosmos-3M rocket (US code name SL-8), launched in 1972. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "SL-8",
-"parentArt": "sl-8"
+"parentArt": "sl-8",
+"group": [
+6210
+],
+"tracked": 0
 },
 "6277": {
 "what": "Fragment",
 "fact": "A **fragment** of a Kosmos-3M rocket (US code name SL-8), launched in 1972. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "SL-8",
-"parentArt": "sl-8"
+"parentArt": "sl-8",
+"group": [
+6277
+],
+"tracked": 0
 },
 "7012": {
 "what": "Fragment",
 "fact": "A **fragment** of Delta 1, launched in 1973. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "DELTA 1",
-"parentArt": "delta-early"
+"parentArt": "delta-early",
+"group": [
+7012,
+7013,
+7015,
+7018,
+7019,
+7028,
+7029,
+7032,
+7057,
+7079,
+7138,
+7147
+],
+"tracked": 220
 },
 "7013": {
 "what": "Fragment",
 "fact": "A **fragment** of Delta 1, launched in 1973. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "DELTA 1",
-"parentArt": "delta-early"
+"parentArt": "delta-early",
+"group": [
+7012,
+7013,
+7015,
+7018,
+7019,
+7028,
+7029,
+7032,
+7057,
+7079,
+7138,
+7147
+],
+"tracked": 220
 },
 "7015": {
 "what": "Fragment",
 "fact": "A **fragment** of Delta 1, launched in 1973. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "DELTA 1",
-"parentArt": "delta-early"
+"parentArt": "delta-early",
+"group": [
+7012,
+7013,
+7015,
+7018,
+7019,
+7028,
+7029,
+7032,
+7057,
+7079,
+7138,
+7147
+],
+"tracked": 220
 },
 "7018": {
 "what": "Fragment",
 "fact": "A **fragment** of Delta 1, launched in 1973. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "DELTA 1",
-"parentArt": "delta-early"
+"parentArt": "delta-early",
+"group": [
+7012,
+7013,
+7015,
+7018,
+7019,
+7028,
+7029,
+7032,
+7057,
+7079,
+7138,
+7147
+],
+"tracked": 220
 },
 "7019": {
 "what": "Fragment",
 "fact": "A **fragment** of Delta 1, launched in 1973. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "DELTA 1",
-"parentArt": "delta-early"
+"parentArt": "delta-early",
+"group": [
+7012,
+7013,
+7015,
+7018,
+7019,
+7028,
+7029,
+7032,
+7057,
+7079,
+7138,
+7147
+],
+"tracked": 220
 },
 "7028": {
 "what": "Fragment",
 "fact": "A **fragment** of Delta 1, launched in 1973. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "DELTA 1",
-"parentArt": "delta-early"
+"parentArt": "delta-early",
+"group": [
+7012,
+7013,
+7015,
+7018,
+7019,
+7028,
+7029,
+7032,
+7057,
+7079,
+7138,
+7147
+],
+"tracked": 220
 },
 "7029": {
 "what": "Fragment",
 "fact": "A **fragment** of Delta 1, launched in 1973. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "DELTA 1",
-"parentArt": "delta-early"
+"parentArt": "delta-early",
+"group": [
+7012,
+7013,
+7015,
+7018,
+7019,
+7028,
+7029,
+7032,
+7057,
+7079,
+7138,
+7147
+],
+"tracked": 220
 },
 "7032": {
 "what": "Fragment",
 "fact": "A **fragment** of Delta 1, launched in 1973. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "DELTA 1",
-"parentArt": "delta-early"
+"parentArt": "delta-early",
+"group": [
+7012,
+7013,
+7015,
+7018,
+7019,
+7028,
+7029,
+7032,
+7057,
+7079,
+7138,
+7147
+],
+"tracked": 220
 },
 "7057": {
 "what": "Fragment",
 "fact": "A **fragment** of Delta 1, launched in 1973. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "DELTA 1",
-"parentArt": "delta-early"
+"parentArt": "delta-early",
+"group": [
+7012,
+7013,
+7015,
+7018,
+7019,
+7028,
+7029,
+7032,
+7057,
+7079,
+7138,
+7147
+],
+"tracked": 220
 },
 "7079": {
 "what": "Fragment",
 "fact": "A **fragment** of Delta 1, launched in 1973. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "DELTA 1",
-"parentArt": "delta-early"
+"parentArt": "delta-early",
+"group": [
+7012,
+7013,
+7015,
+7018,
+7019,
+7028,
+7029,
+7032,
+7057,
+7079,
+7138,
+7147
+],
+"tracked": 220
 },
 "7138": {
 "what": "Fragment",
 "fact": "A **fragment** of Delta 1, launched in 1973. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "DELTA 1",
-"parentArt": "delta-early"
+"parentArt": "delta-early",
+"group": [
+7012,
+7013,
+7015,
+7018,
+7019,
+7028,
+7029,
+7032,
+7057,
+7079,
+7138,
+7147
+],
+"tracked": 220
 },
 "7147": {
 "what": "Fragment",
 "fact": "A **fragment** of Delta 1, launched in 1973. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "DELTA 1",
-"parentArt": "delta-early"
+"parentArt": "delta-early",
+"group": [
+7012,
+7013,
+7015,
+7018,
+7019,
+7028,
+7029,
+7032,
+7057,
+7079,
+7138,
+7147
+],
+"tracked": 220
 },
 "8136": {
 "what": "Fragment",
 "fact": "A **fragment** of Thorad Delta 1, launched in 1974. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "THORAD DELTA 1",
-"parentArt": "delta-early"
+"parentArt": "delta-early",
+"group": [
+8136,
+8139,
+8140,
+8142,
+8184,
+8310,
+8311,
+8398
+],
+"tracked": 184
 },
 "8139": {
 "what": "Fragment",
 "fact": "A **fragment** of Thorad Delta 1, launched in 1974. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "THORAD DELTA 1",
-"parentArt": "delta-early"
+"parentArt": "delta-early",
+"group": [
+8136,
+8139,
+8140,
+8142,
+8184,
+8310,
+8311,
+8398
+],
+"tracked": 184
 },
 "8140": {
 "what": "Fragment",
 "fact": "A **fragment** of Thorad Delta 1, launched in 1974. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "THORAD DELTA 1",
-"parentArt": "delta-early"
+"parentArt": "delta-early",
+"group": [
+8136,
+8139,
+8140,
+8142,
+8184,
+8310,
+8311,
+8398
+],
+"tracked": 184
 },
 "8142": {
 "what": "Fragment",
 "fact": "A **fragment** of Thorad Delta 1, launched in 1974. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "THORAD DELTA 1",
-"parentArt": "delta-early"
+"parentArt": "delta-early",
+"group": [
+8136,
+8139,
+8140,
+8142,
+8184,
+8310,
+8311,
+8398
+],
+"tracked": 184
 },
 "8184": {
 "what": "Fragment",
 "fact": "A **fragment** of Thorad Delta 1, launched in 1974. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "THORAD DELTA 1",
-"parentArt": "delta-early"
+"parentArt": "delta-early",
+"group": [
+8136,
+8139,
+8140,
+8142,
+8184,
+8310,
+8311,
+8398
+],
+"tracked": 184
 },
 "8310": {
 "what": "Fragment",
 "fact": "A **fragment** of Thorad Delta 1, launched in 1974. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "THORAD DELTA 1",
-"parentArt": "delta-early"
+"parentArt": "delta-early",
+"group": [
+8136,
+8139,
+8140,
+8142,
+8184,
+8310,
+8311,
+8398
+],
+"tracked": 184
 },
 "8311": {
 "what": "Fragment",
 "fact": "A **fragment** of Thorad Delta 1, launched in 1974. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "THORAD DELTA 1",
-"parentArt": "delta-early"
+"parentArt": "delta-early",
+"group": [
+8136,
+8139,
+8140,
+8142,
+8184,
+8310,
+8311,
+8398
+],
+"tracked": 184
 },
 "8319": {
 "what": "Fragment",
 "fact": "A **fragment** of Delta 1, launched in 1972. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "DELTA 1",
-"parentArt": "delta-early"
+"parentArt": "delta-early",
+"group": [
+8319
+],
+"tracked": 244
 },
 "8398": {
 "what": "Fragment",
 "fact": "A **fragment** of Thorad Delta 1, launched in 1974. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "THORAD DELTA 1",
-"parentArt": "delta-early"
+"parentArt": "delta-early",
+"group": [
+8136,
+8139,
+8140,
+8142,
+8184,
+8310,
+8311,
+8398
+],
+"tracked": 184
 },
 "8685": {
 "what": "Fragment",
 "fact": "A **fragment** of Delta 1, launched in 1975. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "DELTA 1",
-"parentArt": "delta-early"
+"parentArt": "delta-early",
+"group": [
+8685,
+8956,
+8980
+],
+"tracked": 207
 },
 "8826": {
 "what": "Fragment",
 "fact": "A **fragment** of Meteor 1-10, launched in 1971. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "METEOR 1-10",
-"parentArt": "meteor"
+"parentArt": "meteor",
+"group": [
+8826
+],
+"tracked": 20
 },
 "8956": {
 "what": "Fragment",
 "fact": "A **fragment** of Delta 1, launched in 1975. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "DELTA 1",
-"parentArt": "delta-early"
+"parentArt": "delta-early",
+"group": [
+8685,
+8956,
+8980
+],
+"tracked": 207
 },
 "8980": {
 "what": "Fragment",
 "fact": "A **fragment** of Delta 1, launched in 1975. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "DELTA 1",
-"parentArt": "delta-early"
+"parentArt": "delta-early",
+"group": [
+8685,
+8956,
+8980
+],
+"tracked": 207
 },
 "9016": {
 "what": "Fragment",
 "fact": "A piece from the 1976 launch of **Kosmos 839** on a Kosmos-3M (SL-8) rocket. Kosmos 839 was a Soviet target satellite, destroyed weeks later in an anti-satellite weapon test.",
 "parent": "SL-8",
-"parentArt": "sl-8"
+"parentArt": "sl-8",
+"group": [
+9016
+],
+"tracked": 69
 },
 "10013": {
 "what": "Fragment",
 "fact": "A piece from a 1977 launch of a Soviet **target satellite** on a Kosmos-3M (SL-8) rocket. Targets like this were chased by interceptors in anti-satellite weapon tests.",
 "parent": "SL-8",
-"parentArt": "sl-8"
+"parentArt": "sl-8",
+"group": [
+10013
+],
+"tracked": 0
 },
 "10184": {
 "what": "Fragment",
 "fact": "A **fragment** of Delta 1, launched in 1977. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "DELTA 1",
-"parentArt": "delta-early"
+"parentArt": "delta-early",
+"group": [
+10184,
+10188,
+10234
+],
+"tracked": 179
 },
 "10188": {
 "what": "Fragment",
 "fact": "A **fragment** of Delta 1, launched in 1977. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "DELTA 1",
-"parentArt": "delta-early"
+"parentArt": "delta-early",
+"group": [
+10184,
+10188,
+10234
+],
+"tracked": 179
 },
 "10234": {
 "what": "Fragment",
 "fact": "A **fragment** of Delta 1, launched in 1977. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "DELTA 1",
-"parentArt": "delta-early"
+"parentArt": "delta-early",
+"group": [
+10184,
+10188,
+10234
+],
+"tracked": 179
 },
 "10518": {
 "what": "Fragment",
 "fact": "A piece from a 1977 launch of a Soviet **target satellite** on a Kosmos-3M (SL-8) rocket. Targets like this were chased by interceptors in anti-satellite weapon tests.",
 "parent": "SL-8",
-"parentArt": "sl-8"
+"parentArt": "sl-8",
+"group": [
+10518
+],
+"tracked": 0
 },
 "10656": {
 "what": "Fragment",
 "fact": "A **fragment** of Delta 1, launched in 1976. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "DELTA 1",
-"parentArt": "delta-early"
+"parentArt": "delta-early",
+"group": [
+10656,
+10658,
+10660,
+10762,
+10766,
+12528
+],
+"tracked": 184
 },
 "10658": {
 "what": "Fragment",
 "fact": "A **fragment** of Delta 1, launched in 1976. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "DELTA 1",
-"parentArt": "delta-early"
+"parentArt": "delta-early",
+"group": [
+10656,
+10658,
+10660,
+10762,
+10766,
+12528
+],
+"tracked": 184
 },
 "10660": {
 "what": "Fragment",
 "fact": "A **fragment** of Delta 1, launched in 1976. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "DELTA 1",
-"parentArt": "delta-early"
+"parentArt": "delta-early",
+"group": [
+10656,
+10658,
+10660,
+10762,
+10766,
+12528
+],
+"tracked": 184
 },
 "10730": {
 "what": "Fragment",
 "fact": "A **fragment** of Delta 1, launched in 1975. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "DELTA 1",
-"parentArt": "delta-early"
+"parentArt": "delta-early",
+"group": [
+10730
+],
+"tracked": 3
 },
 "10762": {
 "what": "Fragment",
 "fact": "A **fragment** of Delta 1, launched in 1976. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "DELTA 1",
-"parentArt": "delta-early"
+"parentArt": "delta-early",
+"group": [
+10656,
+10658,
+10660,
+10762,
+10766,
+12528
+],
+"tracked": 184
 },
 "10766": {
 "what": "Fragment",
 "fact": "A **fragment** of Delta 1, launched in 1976. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "DELTA 1",
-"parentArt": "delta-early"
+"parentArt": "delta-early",
+"group": [
+10656,
+10658,
+10660,
+10762,
+10766,
+12528
+],
+"tracked": 184
 },
 "11752": {
 "what": "Fragment",
 "fact": "A piece from the 1980 launch of **Kosmos 1171** on a Kosmos-3M (SL-8) rocket. Kosmos 1171 was a Soviet target satellite; the interceptor sent after it, Kosmos 1174, missed.",
 "parent": "SL-8",
-"parentArt": "sl-8"
+"parentArt": "sl-8",
+"group": [
+11752
+],
+"tracked": 1
 },
 "12151": {
 "what": "Fragment",
 "fact": "A piece from the 1981 launch of **Kosmos 1241** on a Kosmos-3M (SL-8) rocket. Kosmos 1241 was a Soviet target satellite that survived two interceptor attacks.",
 "parent": "SL-8",
-"parentArt": "sl-8"
+"parentArt": "sl-8",
+"group": [
+12151
+],
+"tracked": 0
 },
 "12166": {
 "what": "Fragment",
 "fact": "A **fragment** of Delta 1, launched in 1978. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "DELTA 1",
-"parentArt": "delta-early"
+"parentArt": "delta-early",
+"group": [
+12166,
+12171,
+12174,
+12175,
+12176
+],
+"tracked": 248
 },
 "12171": {
 "what": "Fragment",
 "fact": "A **fragment** of Delta 1, launched in 1978. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "DELTA 1",
-"parentArt": "delta-early"
+"parentArt": "delta-early",
+"group": [
+12166,
+12171,
+12174,
+12175,
+12176
+],
+"tracked": 248
 },
 "12174": {
 "what": "Fragment",
 "fact": "A **fragment** of Delta 1, launched in 1978. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "DELTA 1",
-"parentArt": "delta-early"
+"parentArt": "delta-early",
+"group": [
+12166,
+12171,
+12174,
+12175,
+12176
+],
+"tracked": 248
 },
 "12175": {
 "what": "Fragment",
 "fact": "A **fragment** of Delta 1, launched in 1978. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "DELTA 1",
-"parentArt": "delta-early"
+"parentArt": "delta-early",
+"group": [
+12166,
+12171,
+12174,
+12175,
+12176
+],
+"tracked": 248
 },
 "12176": {
 "what": "Fragment",
 "fact": "A **fragment** of Delta 1, launched in 1978. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "DELTA 1",
-"parentArt": "delta-early"
+"parentArt": "delta-early",
+"group": [
+12166,
+12171,
+12174,
+12175,
+12176
+],
+"tracked": 248
 },
 "12528": {
 "what": "Fragment",
 "fact": "A **fragment** of Delta 1, launched in 1976. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "DELTA 1",
-"parentArt": "delta-early"
+"parentArt": "delta-early",
+"group": [
+10656,
+10658,
+10660,
+10762,
+10766,
+12528
+],
+"tracked": 184
 },
 "12648": {
 "what": "Fragment",
 "fact": "A **fragment** of Kosmos 1275, a Soviet navigation satellite that broke apart in July 1981, seven weeks after launch. The cause is unknown: maybe a battery blast, maybe space junk.",
 "parent": "COSMOS 1275",
-"parentArt": "parus"
+"parentArt": "parus",
+"group": [
+12648,
+12650,
+12653,
+12662,
+12664,
+12670,
+12676,
+12692
+],
+"tracked": 478
 },
 "12650": {
 "what": "Fragment",
 "fact": "A **fragment** of Kosmos 1275, a Soviet navigation satellite that broke apart in July 1981, seven weeks after launch. The cause is unknown: maybe a battery blast, maybe space junk.",
 "parent": "COSMOS 1275",
-"parentArt": "parus"
+"parentArt": "parus",
+"group": [
+12648,
+12650,
+12653,
+12662,
+12664,
+12670,
+12676,
+12692
+],
+"tracked": 478
 },
 "12653": {
 "what": "Fragment",
 "fact": "A **fragment** of Kosmos 1275, a Soviet navigation satellite that broke apart in July 1981, seven weeks after launch. The cause is unknown: maybe a battery blast, maybe space junk.",
 "parent": "COSMOS 1275",
-"parentArt": "parus"
+"parentArt": "parus",
+"group": [
+12648,
+12650,
+12653,
+12662,
+12664,
+12670,
+12676,
+12692
+],
+"tracked": 478
 },
 "12662": {
 "what": "Fragment",
 "fact": "A **fragment** of Kosmos 1275, a Soviet navigation satellite that broke apart in July 1981, seven weeks after launch. The cause is unknown: maybe a battery blast, maybe space junk.",
 "parent": "COSMOS 1275",
-"parentArt": "parus"
+"parentArt": "parus",
+"group": [
+12648,
+12650,
+12653,
+12662,
+12664,
+12670,
+12676,
+12692
+],
+"tracked": 478
 },
 "12664": {
 "what": "Fragment",
 "fact": "A **fragment** of Kosmos 1275, a Soviet navigation satellite that broke apart in July 1981, seven weeks after launch. The cause is unknown: maybe a battery blast, maybe space junk.",
 "parent": "COSMOS 1275",
-"parentArt": "parus"
+"parentArt": "parus",
+"group": [
+12648,
+12650,
+12653,
+12662,
+12664,
+12670,
+12676,
+12692
+],
+"tracked": 478
 },
 "12670": {
 "what": "Fragment",
 "fact": "A **fragment** of Kosmos 1275, a Soviet navigation satellite that broke apart in July 1981, seven weeks after launch. The cause is unknown: maybe a battery blast, maybe space junk.",
 "parent": "COSMOS 1275",
-"parentArt": "parus"
+"parentArt": "parus",
+"group": [
+12648,
+12650,
+12653,
+12662,
+12664,
+12670,
+12676,
+12692
+],
+"tracked": 478
 },
 "12676": {
 "what": "Fragment",
 "fact": "A **fragment** of Kosmos 1275, a Soviet navigation satellite that broke apart in July 1981, seven weeks after launch. The cause is unknown: maybe a battery blast, maybe space junk.",
 "parent": "COSMOS 1275",
-"parentArt": "parus"
+"parentArt": "parus",
+"group": [
+12648,
+12650,
+12653,
+12662,
+12664,
+12670,
+12676,
+12692
+],
+"tracked": 478
 },
 "12692": {
 "what": "Fragment",
 "fact": "A **fragment** of Kosmos 1275, a Soviet navigation satellite that broke apart in July 1981, seven weeks after launch. The cause is unknown: maybe a battery blast, maybe space junk.",
 "parent": "COSMOS 1275",
-"parentArt": "parus"
+"parentArt": "parus",
+"group": [
+12648,
+12650,
+12653,
+12662,
+12664,
+12670,
+12676,
+12692
+],
+"tracked": 478
 },
 "12814": {
 "what": "Fragment",
 "fact": "A **fragment** of Kosmos 1124, a Soviet missile early-warning satellite (Oko) launched in 1979. It broke apart in orbit a few weeks after launch.",
 "parent": "COSMOS 1124",
-"parentArt": "classic-satellite-2"
+"parentArt": "classic-satellite-2",
+"group": [
+12814
+],
+"tracked": 5
 },
 "12817": {
 "what": "Fragment",
 "fact": "A **fragment** of Kosmos 1191, a Soviet missile early-warning satellite (Oko) launched in 1980. Like several of its sisters, it later broke apart in orbit.",
 "parent": "COSMOS 1191",
-"parentArt": "classic-satellite-2"
+"parentArt": "classic-satellite-2",
+"group": [
+12817,
+13999,
+27897
+],
+"tracked": 10
 },
 "12893": {
 "what": "Fragment",
 "fact": "A **fragment** of Kosmos 1261, a Soviet missile early-warning satellite (Oko) launched in 1981. Like several of its sisters, it later broke apart in orbit.",
 "parent": "COSMOS 1261",
-"parentArt": "classic-satellite-1"
+"parentArt": "classic-satellite-1",
+"group": [
+12893,
+27796
+],
+"tracked": 10
 },
 "13261": {
 "what": "Fragment",
 "fact": "A piece from the 1982 launch of **Kosmos 1375** on a Kosmos-3M (SL-8) rocket. Kosmos 1375 was the target in the Soviet Union’s last anti-satellite weapon test.",
 "parent": "SL-8",
-"parentArt": "sl-8"
+"parentArt": "sl-8",
+"group": [
+13261,
+16206,
+16209
+],
+"tracked": 61
 },
 "13783": {
 "what": "Dewar cover",
@@ -637,19 +1428,35 @@
 "what": "Fragment",
 "fact": "A **fragment** of Titan 3C Transtage, launched in 1965. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "TITAN 3C TRANSTAGE",
-"parentArt": "titan-transtage"
+"parentArt": "titan-transtage",
+"group": [
+13906,
+13957
+],
+"tracked": 107
 },
 "13957": {
 "what": "Fragment",
 "fact": "A **fragment** of Titan 3C Transtage, launched in 1965. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "TITAN 3C TRANSTAGE",
-"parentArt": "titan-transtage"
+"parentArt": "titan-transtage",
+"group": [
+13906,
+13957
+],
+"tracked": 107
 },
 "13999": {
 "what": "Fragment",
 "fact": "A **fragment** of Kosmos 1191, a Soviet missile early-warning satellite (Oko) launched in 1980. Like several of its sisters, it later broke apart in orbit.",
 "parent": "COSMOS 1191",
-"parentArt": "classic-satellite-2"
+"parentArt": "classic-satellite-2",
+"group": [
+12817,
+13999,
+27897
+],
+"tracked": 10
 },
 "15166": {
 "what": "SYLDA",
@@ -660,13 +1467,25 @@
 "what": "Fragment",
 "fact": "A **fragment** of Kosmos 1375, a Soviet target satellite launched in 1982. It was the target in the Soviet Union’s last anti-satellite weapon test.",
 "parent": "COSMOS 1375",
-"parentArt": "asat-target"
+"parentArt": "asat-target",
+"group": [
+13261,
+16206,
+16209
+],
+"tracked": 61
 },
 "16209": {
 "what": "Fragment",
 "fact": "A **fragment** of Kosmos 1375, a Soviet target satellite launched in 1982. It was the target in the Soviet Union’s last anti-satellite weapon test.",
 "parent": "COSMOS 1375",
-"parentArt": "asat-target"
+"parentArt": "asat-target",
+"group": [
+13261,
+16206,
+16209
+],
+"tracked": 61
 },
 "16616": {
 "what": "Adapter",
@@ -677,38 +1496,70 @@
 "what": "Fragment",
 "fact": "A **fragment** of the Ariane 1 rocket that launched France’s SPOT 1 satellite in 1986. Its spent third stage blew apart that November, one of the worst breakups ever.",
 "parent": "ARIANE 1",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+17129
+],
+"tracked": 495
 },
 "17254": {
 "what": "Fragment",
 "fact": "Its **origin is uncertain**. The US catalogue links it to a 1986 Ariane launch, but independent analysis suggests debris from an **earlier Ariane launch in 1983**.",
 "source": "https://planet4589.org/space/gcat/tsv/cat/satcat.tsv",
 "parent": "ARIANE 3",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+17254
+],
+"tracked": 3
 },
 "17255": {
 "what": "Fragment",
 "fact": "A **fragment** of the Ariane 1 rocket that sent ESA’s **Giotto** probe to Halley’s Comet in 1985. The rocket’s spent stage stayed behind in orbit and later shed pieces like this.",
 "parent": "ARIANE 1",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+17255,
+17325,
+19857,
+19951,
+26684
+],
+"tracked": 13
 },
 "17325": {
 "what": "Fragment",
 "fact": "A **fragment** of the Ariane 1 rocket that sent ESA’s **Giotto** probe to Halley’s Comet in 1985. The rocket’s spent stage stayed behind in orbit and later shed pieces like this.",
 "parent": "ARIANE 1",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+17255,
+17325,
+19857,
+19951,
+26684
+],
+"tracked": 13
 },
 "18571": {
 "what": "Fragment",
 "fact": "A **fragment** of Ariane 3, launched in 1987. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "ARIANE 3",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+18571
+],
+"tracked": 3
 },
 "18765": {
 "what": "Fragment",
 "fact": "A piece of a **SOZ ullage motor** dropped by a Proton rocket’s upper stage in 1985. These small motors kept leftover fuel, and dozens have exploded in orbit.",
 "parent": "SL-12",
-"parentArt": "sl-12"
+"parentArt": "sl-12",
+"group": [
+18765
+],
+"tracked": 5
 },
 "19219": {
 "what": "SPELDA",
@@ -719,25 +1570,50 @@
 "what": "Fragment",
 "fact": "A **fragment** of the Ariane 1 rocket that sent ESA’s **Giotto** probe to Halley’s Comet in 1985. The rocket’s spent stage stayed behind in orbit and later shed pieces like this.",
 "parent": "ARIANE 1",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+17255,
+17325,
+19857,
+19951,
+26684
+],
+"tracked": 13
 },
 "19951": {
 "what": "Fragment",
 "fact": "A **fragment** of the Ariane 1 rocket that sent ESA’s **Giotto** probe to Halley’s Comet in 1985. The rocket’s spent stage stayed behind in orbit and later shed pieces like this.",
 "parent": "ARIANE 1",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+17255,
+17325,
+19857,
+19951,
+26684
+],
+"tracked": 13
 },
 "20127": {
 "what": "Fragment",
 "fact": "A **fragment** of Ariane 3, launched in 1988. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "ARIANE 3",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+20127,
+20488
+],
+"tracked": 6
 },
 "20229": {
 "what": "Fragment",
 "fact": "A **fragment** of Ariane 3, launched in 1989. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "ARIANE 3",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+20229
+],
+"tracked": 0
 },
 "20328": {
 "what": "Dewar cap",
@@ -748,13 +1624,22 @@
 "what": "Fragment",
 "fact": "A **fragment** of Ariane 3, launched in 1988. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "ARIANE 3",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+20127,
+20488
+],
+"tracked": 6
 },
 "20674": {
 "what": "Fragment",
 "fact": "A **fragment** of Ariane 3, launched in 1984. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "ARIANE 3",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+20674
+],
+"tracked": 4
 },
 "20718": {
 "what": "SPELDA",
@@ -765,61 +1650,131 @@
 "what": "Fragment",
 "fact": "A **fragment** of a Long March 4 (CZ-4) rocket, launched in 1990. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "CZ-4",
-"parentArt": "cz-4"
+"parentArt": "cz-4",
+"group": [
+20849,
+20853,
+20855,
+20858
+],
+"tracked": 102
 },
 "20853": {
 "what": "Fragment",
 "fact": "A **fragment** of a Long March 4 (CZ-4) rocket, launched in 1990. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "CZ-4",
-"parentArt": "cz-4"
+"parentArt": "cz-4",
+"group": [
+20849,
+20853,
+20855,
+20858
+],
+"tracked": 102
 },
 "20855": {
 "what": "Fragment",
 "fact": "A **fragment** of a Long March 4 (CZ-4) rocket, launched in 1990. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "CZ-4",
-"parentArt": "cz-4"
+"parentArt": "cz-4",
+"group": [
+20849,
+20853,
+20855,
+20858
+],
+"tracked": 102
 },
 "20858": {
 "what": "Fragment",
 "fact": "A **fragment** of a Long March 4 (CZ-4) rocket, launched in 1990. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "CZ-4",
-"parentArt": "cz-4"
+"parentArt": "cz-4",
+"group": [
+20849,
+20853,
+20855,
+20858
+],
+"tracked": 102
 },
 "21109": {
 "what": "Fragment",
 "fact": "A **fragment** of a Kosmos-3M rocket (US code name SL-8), launched in 1991. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "SL-8",
-"parentArt": "sl-8"
+"parentArt": "sl-8",
+"group": [
+21109,
+21137,
+21162,
+21184,
+27745
+],
+"tracked": 109
 },
 "21137": {
 "what": "Fragment",
 "fact": "A **fragment** of a Kosmos-3M rocket (US code name SL-8), launched in 1991. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "SL-8",
-"parentArt": "sl-8"
+"parentArt": "sl-8",
+"group": [
+21109,
+21137,
+21162,
+21184,
+27745
+],
+"tracked": 109
 },
 "21162": {
 "what": "Fragment",
 "fact": "A **fragment** of a Kosmos-3M rocket (US code name SL-8), launched in 1991. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "SL-8",
-"parentArt": "sl-8"
+"parentArt": "sl-8",
+"group": [
+21109,
+21137,
+21162,
+21184,
+27745
+],
+"tracked": 109
 },
 "21184": {
 "what": "Fragment",
 "fact": "A **fragment** of a Kosmos-3M rocket (US code name SL-8), launched in 1991. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "SL-8",
-"parentArt": "sl-8"
+"parentArt": "sl-8",
+"group": [
+21109,
+21137,
+21162,
+21184,
+27745
+],
+"tracked": 109
 },
 "21276": {
 "what": "Fragment",
 "fact": "A **fragment** of Delta 1, launched in 1975. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "DELTA 1",
-"parentArt": "delta-early"
+"parentArt": "delta-early",
+"group": [
+21276,
+21281
+],
+"tracked": 307
 },
 "21281": {
 "what": "Fragment",
 "fact": "A **fragment** of Delta 1, launched in 1975. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "DELTA 1",
-"parentArt": "delta-early"
+"parentArt": "delta-early",
+"group": [
+21276,
+21281
+],
+"tracked": 307
 },
 "21818": {
 "what": "SPELDA",
@@ -835,67 +1790,221 @@
 "what": "Fragment",
 "fact": "A **fragment** of a Zenit rocket (US code name SL-16), launched in 1992. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "SL-16",
-"parentArt": "sl-16"
+"parentArt": "sl-16",
+"group": [
+22294,
+22327,
+22331,
+22335,
+22337,
+22350,
+22354,
+22358,
+22371,
+22394,
+22417
+],
+"tracked": 280
 },
 "22327": {
 "what": "Fragment",
 "fact": "A **fragment** of a Zenit rocket (US code name SL-16), launched in 1992. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "SL-16",
-"parentArt": "sl-16"
+"parentArt": "sl-16",
+"group": [
+22294,
+22327,
+22331,
+22335,
+22337,
+22350,
+22354,
+22358,
+22371,
+22394,
+22417
+],
+"tracked": 280
 },
 "22331": {
 "what": "Fragment",
 "fact": "A **fragment** of a Zenit rocket (US code name SL-16), launched in 1992. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "SL-16",
-"parentArt": "sl-16"
+"parentArt": "sl-16",
+"group": [
+22294,
+22327,
+22331,
+22335,
+22337,
+22350,
+22354,
+22358,
+22371,
+22394,
+22417
+],
+"tracked": 280
 },
 "22335": {
 "what": "Fragment",
 "fact": "A **fragment** of a Zenit rocket (US code name SL-16), launched in 1992. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "SL-16",
-"parentArt": "sl-16"
+"parentArt": "sl-16",
+"group": [
+22294,
+22327,
+22331,
+22335,
+22337,
+22350,
+22354,
+22358,
+22371,
+22394,
+22417
+],
+"tracked": 280
 },
 "22337": {
 "what": "Fragment",
 "fact": "A **fragment** of a Zenit rocket (US code name SL-16), launched in 1992. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "SL-16",
-"parentArt": "sl-16"
+"parentArt": "sl-16",
+"group": [
+22294,
+22327,
+22331,
+22335,
+22337,
+22350,
+22354,
+22358,
+22371,
+22394,
+22417
+],
+"tracked": 280
 },
 "22350": {
 "what": "Fragment",
 "fact": "A **fragment** of a Zenit rocket (US code name SL-16), launched in 1992. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "SL-16",
-"parentArt": "sl-16"
+"parentArt": "sl-16",
+"group": [
+22294,
+22327,
+22331,
+22335,
+22337,
+22350,
+22354,
+22358,
+22371,
+22394,
+22417
+],
+"tracked": 280
 },
 "22354": {
 "what": "Fragment",
 "fact": "A **fragment** of a Zenit rocket (US code name SL-16), launched in 1992. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "SL-16",
-"parentArt": "sl-16"
+"parentArt": "sl-16",
+"group": [
+22294,
+22327,
+22331,
+22335,
+22337,
+22350,
+22354,
+22358,
+22371,
+22394,
+22417
+],
+"tracked": 280
 },
 "22358": {
 "what": "Fragment",
 "fact": "A **fragment** of a Zenit rocket (US code name SL-16), launched in 1992. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "SL-16",
-"parentArt": "sl-16"
+"parentArt": "sl-16",
+"group": [
+22294,
+22327,
+22331,
+22335,
+22337,
+22350,
+22354,
+22358,
+22371,
+22394,
+22417
+],
+"tracked": 280
 },
 "22371": {
 "what": "Fragment",
 "fact": "A **fragment** of a Zenit rocket (US code name SL-16), launched in 1992. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "SL-16",
-"parentArt": "sl-16"
+"parentArt": "sl-16",
+"group": [
+22294,
+22327,
+22331,
+22335,
+22337,
+22350,
+22354,
+22358,
+22371,
+22394,
+22417
+],
+"tracked": 280
 },
 "22394": {
 "what": "Fragment",
 "fact": "A **fragment** of a Zenit rocket (US code name SL-16), launched in 1992. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "SL-16",
-"parentArt": "sl-16"
+"parentArt": "sl-16",
+"group": [
+22294,
+22327,
+22331,
+22335,
+22337,
+22350,
+22354,
+22358,
+22371,
+22394,
+22417
+],
+"tracked": 280
 },
 "22417": {
 "what": "Fragment",
 "fact": "A **fragment** of a Zenit rocket (US code name SL-16), launched in 1992. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "SL-16",
-"parentArt": "sl-16"
+"parentArt": "sl-16",
+"group": [
+22294,
+22327,
+22331,
+22335,
+22337,
+22350,
+22354,
+22358,
+22371,
+22394,
+22417
+],
+"tracked": 280
 },
 "22577": {
 "what": "Cover",
@@ -906,79 +2015,212 @@
 "what": "Fragment",
 "fact": "A **fragment** of Ariane 42P+, launched in 1992. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "ARIANE 42P+",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+22670,
+26850,
+34184,
+34198
+],
+"tracked": 28
 },
 "22850": {
 "what": "Fragment",
 "fact": "A **fragment** of Ariane 44L+, launched in 1992. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "ARIANE 44L+",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+22850,
+23237,
+23238,
+23239,
+23241,
+23242,
+23244,
+23245,
+32999,
+34180
+],
+"tracked": 17
 },
 "23237": {
 "what": "Fragment",
 "fact": "A **fragment** of Ariane 44L+, launched in 1992. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "ARIANE 44L+",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+22850,
+23237,
+23238,
+23239,
+23241,
+23242,
+23244,
+23245,
+32999,
+34180
+],
+"tracked": 17
 },
 "23238": {
 "what": "Fragment",
 "fact": "A **fragment** of Ariane 44L+, launched in 1992. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "ARIANE 44L+",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+22850,
+23237,
+23238,
+23239,
+23241,
+23242,
+23244,
+23245,
+32999,
+34180
+],
+"tracked": 17
 },
 "23239": {
 "what": "Fragment",
 "fact": "A **fragment** of Ariane 44L+, launched in 1992. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "ARIANE 44L+",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+22850,
+23237,
+23238,
+23239,
+23241,
+23242,
+23244,
+23245,
+32999,
+34180
+],
+"tracked": 17
 },
 "23241": {
 "what": "Fragment",
 "fact": "A **fragment** of Ariane 44L+, launched in 1992. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "ARIANE 44L+",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+22850,
+23237,
+23238,
+23239,
+23241,
+23242,
+23244,
+23245,
+32999,
+34180
+],
+"tracked": 17
 },
 "23242": {
 "what": "Fragment",
 "fact": "A **fragment** of Ariane 44L+, launched in 1992. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "ARIANE 44L+",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+22850,
+23237,
+23238,
+23239,
+23241,
+23242,
+23244,
+23245,
+32999,
+34180
+],
+"tracked": 17
 },
 "23244": {
 "what": "Fragment",
 "fact": "A **fragment** of Ariane 44L+, launched in 1992. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "ARIANE 44L+",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+22850,
+23237,
+23238,
+23239,
+23241,
+23242,
+23244,
+23245,
+32999,
+34180
+],
+"tracked": 17
 },
 "23245": {
 "what": "Fragment",
 "fact": "A **fragment** of Ariane 44L+, launched in 1992. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "ARIANE 44L+",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+22850,
+23237,
+23238,
+23239,
+23241,
+23242,
+23244,
+23245,
+32999,
+34180
+],
+"tracked": 17
 },
 "23409": {
 "what": "Fragment",
 "fact": "A **fragment** of a Zenit rocket (US code name SL-16), launched in 1994. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "SL-16",
-"parentArt": "sl-16"
+"parentArt": "sl-16",
+"group": [
+23409
+],
+"tracked": 6
 },
 "23483": {
 "what": "Fragment",
 "fact": "A **fragment** of a Rokot rocket (US code name SL-19), launched in 1994. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "SL-19",
-"parentArt": "rokot"
+"parentArt": "rokot",
+"group": [
+23483,
+23484,
+23489
+],
+"tracked": 25
 },
 "23484": {
 "what": "Fragment",
 "fact": "A **fragment** of a Rokot rocket (US code name SL-19), launched in 1994. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "SL-19",
-"parentArt": "rokot"
+"parentArt": "rokot",
+"group": [
+23483,
+23484,
+23489
+],
+"tracked": 25
 },
 "23489": {
 "what": "Fragment",
 "fact": "A **fragment** of a Rokot rocket (US code name SL-19), launched in 1994. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "SL-19",
-"parentArt": "rokot"
+"parentArt": "rokot",
+"group": [
+23483,
+23484,
+23489
+],
+"tracked": 25
 },
 "23867": {
 "what": "SPELDA",
@@ -989,7 +2231,11 @@
 "what": "Fragment",
 "fact": "A **fragment** of a Zenit rocket (US code name SL-16), launched in 1996. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "SL-16",
-"parentArt": "sl-16"
+"parentArt": "sl-16",
+"group": [
+24303
+],
+"tracked": 7
 },
 "24700": {
 "what": "Cryostat cover",
@@ -1000,31 +2246,67 @@
 "what": "Fragment",
 "fact": "A **fragment** of Ariane 44L, launched in 1991. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "ARIANE 44L",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+24723,
+24724,
+24741,
+24751,
+28573
+],
+"tracked": 15
 },
 "24724": {
 "what": "Fragment",
 "fact": "A **fragment** of Ariane 44L, launched in 1991. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "ARIANE 44L",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+24723,
+24724,
+24741,
+24751,
+28573
+],
+"tracked": 15
 },
 "24741": {
 "what": "Fragment",
 "fact": "A **fragment** of Ariane 44L, launched in 1991. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "ARIANE 44L",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+24723,
+24724,
+24741,
+24751,
+28573
+],
+"tracked": 15
 },
 "24751": {
 "what": "Fragment",
 "fact": "A **fragment** of Ariane 44L, launched in 1991. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "ARIANE 44L",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+24723,
+24724,
+24741,
+24751,
+28573
+],
+"tracked": 15
 },
 "24833": {
 "what": "Fragment",
 "fact": "A piece from the 1997 Proton launch (US code name SL-12) of **Kosmos 2344**, a Russian Arkon spy satellite. It has circled Earth ever since.",
 "parent": "SL-12",
-"parentArt": "sl-12"
+"parentArt": "sl-12",
+"group": [
+24833
+],
+"tracked": 0
 },
 "24843": {
 "what": "Cover",
@@ -1035,13 +2317,21 @@
 "what": "Fragment",
 "fact": "A **fragment** of NOAA 7, launched in 1981. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "NOAA 7",
-"parentArt": "us-weather"
+"parentArt": "us-weather",
+"group": [
+24914
+],
+"tracked": 6
 },
 "24990": {
 "what": "Fragment",
 "fact": "A piece of a **SOZ ullage motor** dropped by a Proton rocket’s upper stage in 1987. These small motors kept leftover fuel, and dozens have exploded in orbit.",
 "parent": "SL-12",
-"parentArt": "sl-12"
+"parentArt": "sl-12",
+"group": [
+24990
+],
+"tracked": 54
 },
 "25026": {
 "what": "SPELTRA",
@@ -1052,7 +2342,11 @@
 "what": "Fragment",
 "fact": "A **fragment** of Delta 2, launched in 1998. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "DELTA 2",
-"parentArt": "delta-2"
+"parentArt": "delta-2",
+"group": [
+25138
+],
+"tracked": 0
 },
 "25161": {
 "what": "Dual payload fitting",
@@ -1063,49 +2357,135 @@
 "what": "Fragment",
 "fact": "A **fragment** of the Ariane 4 rocket that launched ESA’s star-mapping satellite **Hipparcos** in 1989. Its spent third stage stayed in orbit and later shed pieces like this.",
 "parent": "ARIANE 44LP",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+25279,
+25282,
+25844,
+27047,
+27048,
+27659,
+27660
+],
+"tracked": 11
 },
 "25282": {
 "what": "Fragment",
 "fact": "A **fragment** of the Ariane 4 rocket that launched ESA’s star-mapping satellite **Hipparcos** in 1989. Its spent third stage stayed in orbit and later shed pieces like this.",
 "parent": "ARIANE 44LP",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+25279,
+25282,
+25844,
+27047,
+27048,
+27659,
+27660
+],
+"tracked": 11
 },
 "25538": {
 "what": "Fragment",
 "fact": "A **fragment** of Ariane 44LP, launched in 1988. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "ARIANE 44LP",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+25538,
+25539,
+25540,
+25541,
+25542,
+25543,
+26812,
+33547
+],
+"tracked": 18
 },
 "25539": {
 "what": "Fragment",
 "fact": "A **fragment** of Ariane 44LP, launched in 1988. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "ARIANE 44LP",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+25538,
+25539,
+25540,
+25541,
+25542,
+25543,
+26812,
+33547
+],
+"tracked": 18
 },
 "25540": {
 "what": "Fragment",
 "fact": "A **fragment** of Ariane 44LP, launched in 1988. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "ARIANE 44LP",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+25538,
+25539,
+25540,
+25541,
+25542,
+25543,
+26812,
+33547
+],
+"tracked": 18
 },
 "25541": {
 "what": "Fragment",
 "fact": "A **fragment** of Ariane 44LP, launched in 1988. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "ARIANE 44LP",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+25538,
+25539,
+25540,
+25541,
+25542,
+25543,
+26812,
+33547
+],
+"tracked": 18
 },
 "25542": {
 "what": "Fragment",
 "fact": "A **fragment** of Ariane 44LP, launched in 1988. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "ARIANE 44LP",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+25538,
+25539,
+25540,
+25541,
+25542,
+25543,
+26812,
+33547
+],
+"tracked": 18
 },
 "25543": {
 "what": "Fragment",
 "fact": "A **fragment** of Ariane 44LP, launched in 1988. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "ARIANE 44LP",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+25538,
+25539,
+25540,
+25541,
+25542,
+25543,
+26812,
+33547
+],
+"tracked": 18
 },
 "25733": {
 "what": "Adapter",
@@ -1116,13 +2496,28 @@
 "what": "Fragment",
 "fact": "A **fragment** of the Ariane 4 rocket that launched ESA’s star-mapping satellite **Hipparcos** in 1989. Its spent third stage stayed in orbit and later shed pieces like this.",
 "parent": "ARIANE 44LP",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+25279,
+25282,
+25844,
+27047,
+27048,
+27659,
+27660
+],
+"tracked": 11
 },
 "25928": {
 "what": "Fragment",
 "fact": "A **fragment** of Ariane 44LP, launched in 1991. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "ARIANE 44LP",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+25928,
+28040
+],
+"tracked": 11
 },
 "26035": {
 "what": "Adapter",
@@ -1137,25 +2532,53 @@
 "what": "Fragment",
 "fact": "A **fragment** of the Long March 4B rocket that launched the CBERS-1 and SACI-1 satellites in 1999. Its spent third stage blew apart in March 2000.",
 "parent": "CZ-4B",
-"parentArt": "cz-4"
+"parentArt": "cz-4",
+"group": [
+26121,
+26220,
+26222,
+26338
+],
+"tracked": 433
 },
 "26220": {
 "what": "Fragment",
 "fact": "A **fragment** of the Long March 4B rocket that launched the CBERS-1 and SACI-1 satellites in 1999. Its spent third stage blew apart in March 2000.",
 "parent": "CZ-4B",
-"parentArt": "cz-4"
+"parentArt": "cz-4",
+"group": [
+26121,
+26220,
+26222,
+26338
+],
+"tracked": 433
 },
 "26222": {
 "what": "Fragment",
 "fact": "A **fragment** of the Long March 4B rocket that launched the CBERS-1 and SACI-1 satellites in 1999. Its spent third stage blew apart in March 2000.",
 "parent": "CZ-4B",
-"parentArt": "cz-4"
+"parentArt": "cz-4",
+"group": [
+26121,
+26220,
+26222,
+26338
+],
+"tracked": 433
 },
 "26338": {
 "what": "Fragment",
 "fact": "A **fragment** of the Long March 4B rocket that launched the CBERS-1 and SACI-1 satellites in 1999. Its spent third stage blew apart in March 2000.",
 "parent": "CZ-4B",
-"parentArt": "cz-4"
+"parentArt": "cz-4",
+"group": [
+26121,
+26220,
+26222,
+26338
+],
+"tracked": 433
 },
 "26471": {
 "what": "SPELDA",
@@ -1176,25 +2599,56 @@
 "what": "Fragment",
 "fact": "A **fragment** of Kosmos 1285, launched in 1981. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "COSMOS 1285",
-"parentArt": "classic-satellite-2"
+"parentArt": "classic-satellite-2",
+"group": [
+26680,
+27800
+],
+"tracked": 24
 },
 "26681": {
 "what": "Fragment",
 "fact": "A **fragment** of Ariane 1, launched in 1984. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "ARIANE 1",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+26681
+],
+"tracked": 7
 },
 "26684": {
 "what": "Fragment",
 "fact": "A **fragment** of the Ariane 1 rocket that sent ESA’s **Giotto** probe to Halley’s Comet in 1985. The rocket’s spent stage stayed behind in orbit and later shed pieces like this.",
 "parent": "ARIANE 1",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+17255,
+17325,
+19857,
+19951,
+26684
+],
+"tracked": 13
 },
 "26717": {
 "what": "Fragment",
 "fact": "A **fragment** of Ariane 2, launched in 1989. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "ARIANE 2",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+26717,
+26726,
+26727,
+26728,
+26729,
+27033,
+27034,
+27039,
+27042,
+27046,
+33556
+],
+"tracked": 86
 },
 "26722": {
 "what": "SYLDA",
@@ -1205,49 +2659,133 @@
 "what": "Fragment",
 "fact": "A **fragment** of Ariane 2, launched in 1989. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "ARIANE 2",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+26717,
+26726,
+26727,
+26728,
+26729,
+27033,
+27034,
+27039,
+27042,
+27046,
+33556
+],
+"tracked": 86
 },
 "26727": {
 "what": "Fragment",
 "fact": "A **fragment** of Ariane 2, launched in 1989. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "ARIANE 2",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+26717,
+26726,
+26727,
+26728,
+26729,
+27033,
+27034,
+27039,
+27042,
+27046,
+33556
+],
+"tracked": 86
 },
 "26728": {
 "what": "Fragment",
 "fact": "A **fragment** of Ariane 2, launched in 1989. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "ARIANE 2",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+26717,
+26726,
+26727,
+26728,
+26729,
+27033,
+27034,
+27039,
+27042,
+27046,
+33556
+],
+"tracked": 86
 },
 "26729": {
 "what": "Fragment",
 "fact": "A **fragment** of Ariane 2, launched in 1989. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "ARIANE 2",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+26717,
+26726,
+26727,
+26728,
+26729,
+27033,
+27034,
+27039,
+27042,
+27046,
+33556
+],
+"tracked": 86
 },
 "26795": {
 "what": "Fragment",
 "fact": "A **fragment** of a small ullage motor dropped by a Proton rocket’s upper stage in 1990. More than 50 of these motors, left with fuel inside, have since burst apart in orbit.",
 "parent": "SL-12",
-"parentArt": "sl-12"
+"parentArt": "sl-12",
+"group": [
+26795
+],
+"tracked": 1
 },
 "26807": {
 "what": "Fragment",
 "fact": "A **fragment** of Ariane 3, launched in 1988. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "ARIANE 3",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+26807,
+27026,
+27027
+],
+"tracked": 10
 },
 "26812": {
 "what": "Fragment",
 "fact": "A **fragment** of Ariane 44LP, launched in 1988. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "ARIANE 44LP",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+25538,
+25539,
+25540,
+25541,
+25542,
+25543,
+26812,
+33547
+],
+"tracked": 18
 },
 "26850": {
 "what": "Fragment",
 "fact": "A **fragment** of Ariane 42P+, launched in 1992. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "ARIANE 42P+",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+22670,
+26850,
+34184,
+34198
+],
+"tracked": 28
 },
 "27000": {
 "what": "Dual payload fitting",
@@ -1258,67 +2796,177 @@
 "what": "Fragment",
 "fact": "A **fragment** of Ariane 3, launched in 1986. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "ARIANE 3",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+27025
+],
+"tracked": 4
 },
 "27026": {
 "what": "Fragment",
 "fact": "A **fragment** of Ariane 3, launched in 1988. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "ARIANE 3",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+26807,
+27026,
+27027
+],
+"tracked": 10
 },
 "27027": {
 "what": "Fragment",
 "fact": "A **fragment** of Ariane 3, launched in 1988. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "ARIANE 3",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+26807,
+27026,
+27027
+],
+"tracked": 10
 },
 "27033": {
 "what": "Fragment",
 "fact": "A **fragment** of Ariane 2, launched in 1989. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "ARIANE 2",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+26717,
+26726,
+26727,
+26728,
+26729,
+27033,
+27034,
+27039,
+27042,
+27046,
+33556
+],
+"tracked": 86
 },
 "27034": {
 "what": "Fragment",
 "fact": "A **fragment** of Ariane 2, launched in 1989. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "ARIANE 2",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+26717,
+26726,
+26727,
+26728,
+26729,
+27033,
+27034,
+27039,
+27042,
+27046,
+33556
+],
+"tracked": 86
 },
 "27039": {
 "what": "Fragment",
 "fact": "A **fragment** of Ariane 2, launched in 1989. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "ARIANE 2",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+26717,
+26726,
+26727,
+26728,
+26729,
+27033,
+27034,
+27039,
+27042,
+27046,
+33556
+],
+"tracked": 86
 },
 "27042": {
 "what": "Fragment",
 "fact": "A **fragment** of Ariane 2, launched in 1989. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "ARIANE 2",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+26717,
+26726,
+26727,
+26728,
+26729,
+27033,
+27034,
+27039,
+27042,
+27046,
+33556
+],
+"tracked": 86
 },
 "27046": {
 "what": "Fragment",
 "fact": "A **fragment** of Ariane 2, launched in 1989. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "ARIANE 2",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+26717,
+26726,
+26727,
+26728,
+26729,
+27033,
+27034,
+27039,
+27042,
+27046,
+33556
+],
+"tracked": 86
 },
 "27047": {
 "what": "Fragment",
 "fact": "A **fragment** of the Ariane 4 rocket that launched ESA’s star-mapping satellite **Hipparcos** in 1989. Its spent third stage stayed in orbit and later shed pieces like this.",
 "parent": "ARIANE 44LP",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+25279,
+25282,
+25844,
+27047,
+27048,
+27659,
+27660
+],
+"tracked": 11
 },
 "27048": {
 "what": "Fragment",
 "fact": "A **fragment** of the Ariane 4 rocket that launched ESA’s star-mapping satellite **Hipparcos** in 1989. Its spent third stage stayed in orbit and later shed pieces like this.",
 "parent": "ARIANE 44LP",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+25279,
+25282,
+25844,
+27047,
+27048,
+27659,
+27660
+],
+"tracked": 11
 },
 "27124": {
 "what": "Fragment",
 "fact": "A **fragment** of the PSLV rocket launched in 2001. Its fourth stage blew apart that December, two months after launch, into more than 300 tracked pieces.",
 "parent": "PSLV",
-"parentArt": "pslv"
+"parentArt": "pslv",
+"group": [
+27124
+],
+"tracked": 371
 },
 "27433": {
 "what": "Adapter",
@@ -1334,7 +2982,11 @@
 "what": "Fragment",
 "fact": "A **part** of Kosmos 2392, a Russian military satellite launched in 2002, that came loose in orbit and now circles on its own.",
 "parent": "SL-12",
-"parentArt": "sl-12"
+"parentArt": "sl-12",
+"group": [
+27476
+],
+"tracked": 61
 },
 "27494": {
 "what": "Cover",
@@ -1350,25 +3002,53 @@
 "what": "Fragment",
 "fact": "A **fragment** of Ariane 2, launched in 1988. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "ARIANE 2",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+27593,
+27594,
+27595,
+28562,
+33534
+],
+"tracked": 7
 },
 "27594": {
 "what": "Fragment",
 "fact": "A **fragment** of Ariane 2, launched in 1988. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "ARIANE 2",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+27593,
+27594,
+27595,
+28562,
+33534
+],
+"tracked": 7
 },
 "27595": {
 "what": "Fragment",
 "fact": "A **fragment** of Ariane 2, launched in 1988. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "ARIANE 2",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+27593,
+27594,
+27595,
+28562,
+33534
+],
+"tracked": 7
 },
 "27626": {
 "what": "Fragment",
 "fact": "A **fragment** of Ariane 2, launched in 1988. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "ARIANE 2",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+27626
+],
+"tracked": 9
 },
 "27646": {
 "what": "Fuel tank",
@@ -1379,13 +3059,33 @@
 "what": "Fragment",
 "fact": "A **fragment** of the Ariane 4 rocket that launched ESA’s star-mapping satellite **Hipparcos** in 1989. Its spent third stage stayed in orbit and later shed pieces like this.",
 "parent": "ARIANE 44LP",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+25279,
+25282,
+25844,
+27047,
+27048,
+27659,
+27660
+],
+"tracked": 11
 },
 "27660": {
 "what": "Fragment",
 "fact": "A **fragment** of the Ariane 4 rocket that launched ESA’s star-mapping satellite **Hipparcos** in 1989. Its spent third stage stayed in orbit and later shed pieces like this.",
 "parent": "ARIANE 44LP",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+25279,
+25282,
+25844,
+27047,
+27048,
+27659,
+27660
+],
+"tracked": 11
 },
 "27717": {
 "what": "SYLDA",
@@ -1396,19 +3096,37 @@
 "what": "Fragment",
 "fact": "A **fragment** of a Kosmos-3M rocket (US code name SL-8), launched in 1991. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "SL-8",
-"parentArt": "sl-8"
+"parentArt": "sl-8",
+"group": [
+21109,
+21137,
+21162,
+21184,
+27745
+],
+"tracked": 109
 },
 "27796": {
 "what": "Fragment",
 "fact": "A **fragment** of Kosmos 1261, a Soviet missile early-warning satellite (Oko) launched in 1981. Like several of its sisters, it later broke apart in orbit.",
 "parent": "COSMOS 1261",
-"parentArt": "classic-satellite-1"
+"parentArt": "classic-satellite-1",
+"group": [
+12893,
+27796
+],
+"tracked": 10
 },
 "27800": {
 "what": "Fragment",
 "fact": "A **fragment** of Kosmos 1285, launched in 1981. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "COSMOS 1285",
-"parentArt": "classic-satellite-2"
+"parentArt": "classic-satellite-2",
+"group": [
+26680,
+27800
+],
+"tracked": 24
 },
 "27821": {
 "what": "Fuel tank",
@@ -1424,31 +3142,59 @@
 "what": "Fragment",
 "fact": "A **fragment** of Kosmos 917, launched in 1977. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "COSMOS 917",
-"parentArt": "classic-satellite-2"
+"parentArt": "classic-satellite-2",
+"group": [
+27883,
+27884,
+27888
+],
+"tracked": 16
 },
 "27884": {
 "what": "Fragment",
 "fact": "A **fragment** of Kosmos 917, launched in 1977. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "COSMOS 917",
-"parentArt": "classic-satellite-2"
+"parentArt": "classic-satellite-2",
+"group": [
+27883,
+27884,
+27888
+],
+"tracked": 16
 },
 "27888": {
 "what": "Fragment",
 "fact": "A **fragment** of Kosmos 917, launched in 1977. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "COSMOS 917",
-"parentArt": "classic-satellite-2"
+"parentArt": "classic-satellite-2",
+"group": [
+27883,
+27884,
+27888
+],
+"tracked": 16
 },
 "27897": {
 "what": "Fragment",
 "fact": "A **fragment** of Kosmos 1191, a Soviet missile early-warning satellite (Oko) launched in 1980. Like several of its sisters, it later broke apart in orbit.",
 "parent": "COSMOS 1191",
-"parentArt": "classic-satellite-2"
+"parentArt": "classic-satellite-2",
+"group": [
+12817,
+13999,
+27897
+],
+"tracked": 10
 },
 "27905": {
 "what": "Fragment",
 "fact": "A **fragment** of Kosmos 1382, launched in 1982. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "COSMOS 1382",
-"parentArt": "classic-satellite-2"
+"parentArt": "classic-satellite-2",
+"group": [
+27905
+],
+"tracked": 3
 },
 "27950": {
 "what": "SYLDA",
@@ -1464,13 +3210,24 @@
 "what": "Fragment",
 "fact": "A **fragment** of Ariane 44LP, launched in 1991. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "ARIANE 44LP",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+25928,
+28040
+],
+"tracked": 11
 },
 "28041": {
 "what": "Fragment",
 "fact": "A **fragment** of Ariane 44L, launched in 1991. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "ARIANE 44L",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+28041,
+28575,
+28576
+],
+"tracked": 13
 },
 "28116": {
 "what": "Fuel tank",
@@ -1521,25 +3278,53 @@
 "what": "Fragment",
 "fact": "A **fragment** of Ariane 2, launched in 1988. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "ARIANE 2",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+27593,
+27594,
+27595,
+28562,
+33534
+],
+"tracked": 7
 },
 "28573": {
 "what": "Fragment",
 "fact": "A **fragment** of Ariane 44L, launched in 1991. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "ARIANE 44L",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+24723,
+24724,
+24741,
+24751,
+28573
+],
+"tracked": 15
 },
 "28575": {
 "what": "Fragment",
 "fact": "A **fragment** of Ariane 44L, launched in 1991. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "ARIANE 44L",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+28041,
+28575,
+28576
+],
+"tracked": 13
 },
 "28576": {
 "what": "Fragment",
 "fact": "A **fragment** of Ariane 44L, launched in 1991. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "ARIANE 44L",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+28041,
+28575,
+28576
+],
+"tracked": 13
 },
 "28661": {
 "what": "Fuel tank",
@@ -1614,13 +3399,23 @@
 "what": "Fragment",
 "fact": "A **fragment** of China’s Fengyun 1C weather satellite (1999), smashed by a Chinese anti-satellite missile test in 2007 that made more than 3,000 tracked pieces.",
 "parent": "FENGYUN 1C",
-"parentArt": "chinese-eo"
+"parentArt": "chinese-eo",
+"group": [
+29945,
+29956
+],
+"tracked": 3533
 },
 "29956": {
 "what": "Fragment",
 "fact": "A **fragment** of China’s Fengyun 1C weather satellite (1999), smashed by a Chinese anti-satellite missile test in 2007 that made more than 3,000 tracked pieces.",
 "parent": "FENGYUN 1C",
-"parentArt": "chinese-eo"
+"parentArt": "chinese-eo",
+"group": [
+29945,
+29956
+],
+"tracked": 3533
 },
 "31103": {
 "what": "Fuel tank",
@@ -1646,25 +3441,53 @@
 "what": "Fragment",
 "fact": "A **fragment** of the Breeze-M stage that failed to deliver Arabsat 4A in 2006. Stranded with fuel still aboard, it exploded over Australia a year later.",
 "parent": "BREEZE-M",
-"parentArt": "briz"
+"parentArt": "briz",
+"group": [
+32025,
+32026,
+32030,
+32038
+],
+"tracked": 106
 },
 "32026": {
 "what": "Fragment",
 "fact": "A **fragment** of the Breeze-M stage that failed to deliver Arabsat 4A in 2006. Stranded with fuel still aboard, it exploded over Australia a year later.",
 "parent": "BREEZE-M",
-"parentArt": "briz"
+"parentArt": "briz",
+"group": [
+32025,
+32026,
+32030,
+32038
+],
+"tracked": 106
 },
 "32030": {
 "what": "Fragment",
 "fact": "A **fragment** of the Breeze-M stage that failed to deliver Arabsat 4A in 2006. Stranded with fuel still aboard, it exploded over Australia a year later.",
 "parent": "BREEZE-M",
-"parentArt": "briz"
+"parentArt": "briz",
+"group": [
+32025,
+32026,
+32030,
+32038
+],
+"tracked": 106
 },
 "32038": {
 "what": "Fragment",
 "fact": "A **fragment** of the Breeze-M stage that failed to deliver Arabsat 4A in 2006. Stranded with fuel still aboard, it exploded over Australia a year later.",
 "parent": "BREEZE-M",
-"parentArt": "briz"
+"parentArt": "briz",
+"group": [
+32025,
+32026,
+32030,
+32038
+],
+"tracked": 106
 },
 "32255": {
 "what": "SYLDA",
@@ -1690,7 +3513,20 @@
 "what": "Fragment",
 "fact": "A **fragment** of Ariane 44L+, launched in 1992. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "ARIANE 44L+",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+22850,
+23237,
+23238,
+23239,
+23241,
+23242,
+23244,
+23245,
+32999,
+34180
+],
+"tracked": 17
 },
 "33277": {
 "what": "SYLDA",
@@ -1736,49 +3572,117 @@
 "what": "Fragment",
 "fact": "A **fragment** of Ariane 2, launched in 1988. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "ARIANE 2",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+27593,
+27594,
+27595,
+28562,
+33534
+],
+"tracked": 7
 },
 "33547": {
 "what": "Fragment",
 "fact": "A **fragment** of Ariane 44LP, launched in 1988. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "ARIANE 44LP",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+25538,
+25539,
+25540,
+25541,
+25542,
+25543,
+26812,
+33547
+],
+"tracked": 18
 },
 "33556": {
 "what": "Fragment",
 "fact": "A **fragment** of Ariane 2, launched in 1989. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "ARIANE 2",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+26717,
+26726,
+26727,
+26728,
+26729,
+27033,
+27034,
+27039,
+27042,
+27046,
+33556
+],
+"tracked": 86
 },
 "33584": {
 "what": "Fragment",
 "fact": "A **fragment** of Ariane 2, launched in 1989. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "ARIANE 2",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+33584
+],
+"tracked": 3
 },
 "33768": {
 "what": "Fragment",
 "fact": "A **fragment** of Kosmos 2251, a Russian satellite launched in 1993. In 2009 the dead satellite hit Iridium 33, the first accidental crash between two whole satellites.",
 "parent": "COSMOS 2251",
-"parentArt": "strela-2m"
+"parentArt": "strela-2m",
+"group": [
+33768
+],
+"tracked": 1714
 },
 "34180": {
 "what": "Fragment",
 "fact": "A **fragment** of Ariane 44L+, launched in 1992. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "ARIANE 44L+",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+22850,
+23237,
+23238,
+23239,
+23241,
+23242,
+23244,
+23245,
+32999,
+34180
+],
+"tracked": 17
 },
 "34184": {
 "what": "Fragment",
 "fact": "A **fragment** of Ariane 42P+, launched in 1992. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "ARIANE 42P+",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+22670,
+26850,
+34184,
+34198
+],
+"tracked": 28
 },
 "34198": {
 "what": "Fragment",
 "fact": "A **fragment** of Ariane 42P+, launched in 1992. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "ARIANE 42P+",
-"parentArt": "ariane-early"
+"parentArt": "ariane-early",
+"group": [
+22670,
+26850,
+34184,
+34198
+],
+"tracked": 28
 },
 "34712": {
 "what": "Fuel tank",
@@ -1794,7 +3698,11 @@
 "what": "Fragment",
 "fact": "A **fragment** of a Long March 3A rocket, launched in 2007. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "CZ-3A",
-"parentArt": "long-march-3"
+"parentArt": "long-march-3",
+"group": [
+35552
+],
+"tracked": 39
 },
 "35689": {
 "what": "Fairing piece",
@@ -1830,7 +3738,11 @@
 "what": "Fragment",
 "fact": "A **fragment** of Yaogan 1, a Chinese radar satellite launched in 2006 that broke apart in orbit in February 2010.",
 "parent": "YAOGAN-1",
-"parentArt": "chinese-eo"
+"parentArt": "chinese-eo",
+"group": [
+36365
+],
+"tracked": 7
 },
 "36399": {
 "what": "Fuel tank",
@@ -1891,19 +3803,64 @@
 "what": "Fragment",
 "fact": "A **fragment** of the Breeze-M stage that stranded the AMC-14 satellite in 2008. Left with fuel still aboard, it blew apart in October 2010.",
 "parent": "BREEZE-M",
-"parentArt": "briz"
+"parentArt": "briz",
+"group": [
+37200,
+37201,
+37204,
+38565,
+38573,
+38579,
+38588,
+38590,
+38592,
+38647,
+38648,
+38651
+],
+"tracked": 121
 },
 "37201": {
 "what": "Fragment",
 "fact": "A **fragment** of the Breeze-M stage that stranded the AMC-14 satellite in 2008. Left with fuel still aboard, it blew apart in October 2010.",
 "parent": "BREEZE-M",
-"parentArt": "briz"
+"parentArt": "briz",
+"group": [
+37200,
+37201,
+37204,
+38565,
+38573,
+38579,
+38588,
+38590,
+38592,
+38647,
+38648,
+38651
+],
+"tracked": 121
 },
 "37204": {
 "what": "Fragment",
 "fact": "A **fragment** of the Breeze-M stage that stranded the AMC-14 satellite in 2008. Left with fuel still aboard, it blew apart in October 2010.",
 "parent": "BREEZE-M",
-"parentArt": "briz"
+"parentArt": "briz",
+"group": [
+37200,
+37201,
+37204,
+38565,
+38573,
+38579,
+38588,
+38590,
+38592,
+38647,
+38648,
+38651
+],
+"tracked": 121
 },
 "37220": {
 "what": "Fuel tank",
@@ -1914,7 +3871,11 @@
 "what": "Fragment",
 "fact": "A **fragment** of NOAA 11, launched in 1988. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "NOAA 11",
-"parentArt": "us-weather"
+"parentArt": "us-weather",
+"group": [
+37241
+],
+"tracked": 2
 },
 "37260": {
 "what": "Fuel tank",
@@ -1958,7 +3919,11 @@
 "what": "Fragment",
 "fact": "A **fragment** of NOAA 12, launched in 1991. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "NOAA 12",
-"parentArt": "us-weather"
+"parentArt": "us-weather",
+"group": [
+37832
+],
+"tracked": 4
 },
 "37845": {
 "what": "Fuel tank",
@@ -1984,7 +3949,20 @@
 "what": "Fragment",
 "fact": "A **fragment** of a Long March 3C rocket, launched in 2012. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "CZ-3C",
-"parentArt": "long-march-3"
+"parentArt": "long-march-3",
+"group": [
+38095,
+40197,
+40203,
+40207,
+40853,
+40855,
+40858,
+40860,
+40862,
+40863
+],
+"tracked": 42
 },
 "38100": {
 "what": "Fuel tank",
@@ -2015,55 +3993,190 @@
 "what": "Fragment",
 "fact": "A **fragment** of the Breeze-M stage that stranded the AMC-14 satellite in 2008. Left with fuel still aboard, it blew apart in October 2010.",
 "parent": "BREEZE-M",
-"parentArt": "briz"
+"parentArt": "briz",
+"group": [
+37200,
+37201,
+37204,
+38565,
+38573,
+38579,
+38588,
+38590,
+38592,
+38647,
+38648,
+38651
+],
+"tracked": 121
 },
 "38573": {
 "what": "Fragment",
 "fact": "A **fragment** of the Breeze-M stage that stranded the AMC-14 satellite in 2008. Left with fuel still aboard, it blew apart in October 2010.",
 "parent": "BREEZE-M",
-"parentArt": "briz"
+"parentArt": "briz",
+"group": [
+37200,
+37201,
+37204,
+38565,
+38573,
+38579,
+38588,
+38590,
+38592,
+38647,
+38648,
+38651
+],
+"tracked": 121
 },
 "38579": {
 "what": "Fragment",
 "fact": "A **fragment** of the Breeze-M stage that stranded the AMC-14 satellite in 2008. Left with fuel still aboard, it blew apart in October 2010.",
 "parent": "BREEZE-M",
-"parentArt": "briz"
+"parentArt": "briz",
+"group": [
+37200,
+37201,
+37204,
+38565,
+38573,
+38579,
+38588,
+38590,
+38592,
+38647,
+38648,
+38651
+],
+"tracked": 121
 },
 "38588": {
 "what": "Fragment",
 "fact": "A **fragment** of the Breeze-M stage that stranded the AMC-14 satellite in 2008. Left with fuel still aboard, it blew apart in October 2010.",
 "parent": "BREEZE-M",
-"parentArt": "briz"
+"parentArt": "briz",
+"group": [
+37200,
+37201,
+37204,
+38565,
+38573,
+38579,
+38588,
+38590,
+38592,
+38647,
+38648,
+38651
+],
+"tracked": 121
 },
 "38590": {
 "what": "Fragment",
 "fact": "A **fragment** of the Breeze-M stage that stranded the AMC-14 satellite in 2008. Left with fuel still aboard, it blew apart in October 2010.",
 "parent": "BREEZE-M",
-"parentArt": "briz"
+"parentArt": "briz",
+"group": [
+37200,
+37201,
+37204,
+38565,
+38573,
+38579,
+38588,
+38590,
+38592,
+38647,
+38648,
+38651
+],
+"tracked": 121
 },
 "38592": {
 "what": "Fragment",
 "fact": "A **fragment** of the Breeze-M stage that stranded the AMC-14 satellite in 2008. Left with fuel still aboard, it blew apart in October 2010.",
 "parent": "BREEZE-M",
-"parentArt": "briz"
+"parentArt": "briz",
+"group": [
+37200,
+37201,
+37204,
+38565,
+38573,
+38579,
+38588,
+38590,
+38592,
+38647,
+38648,
+38651
+],
+"tracked": 121
 },
 "38647": {
 "what": "Fragment",
 "fact": "A **fragment** of the Breeze-M stage that stranded the AMC-14 satellite in 2008. Left with fuel still aboard, it blew apart in October 2010.",
 "parent": "BREEZE-M",
-"parentArt": "briz"
+"parentArt": "briz",
+"group": [
+37200,
+37201,
+37204,
+38565,
+38573,
+38579,
+38588,
+38590,
+38592,
+38647,
+38648,
+38651
+],
+"tracked": 121
 },
 "38648": {
 "what": "Fragment",
 "fact": "A **fragment** of the Breeze-M stage that stranded the AMC-14 satellite in 2008. Left with fuel still aboard, it blew apart in October 2010.",
 "parent": "BREEZE-M",
-"parentArt": "briz"
+"parentArt": "briz",
+"group": [
+37200,
+37201,
+37204,
+38565,
+38573,
+38579,
+38588,
+38590,
+38592,
+38647,
+38648,
+38651
+],
+"tracked": 121
 },
 "38651": {
 "what": "Fragment",
 "fact": "A **fragment** of the Breeze-M stage that stranded the AMC-14 satellite in 2008. Left with fuel still aboard, it blew apart in October 2010.",
 "parent": "BREEZE-M",
-"parentArt": "briz"
+"parentArt": "briz",
+"group": [
+37200,
+37201,
+37204,
+38565,
+38573,
+38579,
+38588,
+38590,
+38592,
+38647,
+38648,
+38651
+],
+"tracked": 121
 },
 "38654": {
 "what": "Fuel tank",
@@ -2074,7 +4187,11 @@
 "what": "Fragment",
 "fact": "A **fragment** of NOAA 14, launched in 1994. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "NOAA 14",
-"parentArt": "us-weather"
+"parentArt": "us-weather",
+"group": [
+38732
+],
+"tracked": 1
 },
 "38863": {
 "what": "Adapter",
@@ -2150,13 +4267,23 @@
 "what": "Fragment",
 "fact": "A **fragment** of a Long March 4C rocket, launched in 2013. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "CZ-4C",
-"parentArt": "cz-4"
+"parentArt": "cz-4",
+"group": [
+39243,
+39244
+],
+"tracked": 0
 },
 "39244": {
 "what": "Fragment",
 "fact": "A **fragment** of a Long March 4C rocket, launched in 2013. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "CZ-4C",
-"parentArt": "cz-4"
+"parentArt": "cz-4",
+"group": [
+39243,
+39244
+],
+"tracked": 0
 },
 "39254": {
 "what": "Rocket stage",
@@ -2171,73 +4298,233 @@
 "what": "Fragment",
 "fact": "A **fragment** of a Long March 3B rocket, launched in 2010. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "CZ-3B",
-"parentArt": "long-march-3"
+"parentArt": "long-march-3",
+"group": [
+39334,
+39335
+],
+"tracked": 30
 },
 "39335": {
 "what": "Fragment",
 "fact": "A **fragment** of a Long March 3B rocket, launched in 2010. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "CZ-3B",
-"parentArt": "long-march-3"
+"parentArt": "long-march-3",
+"group": [
+39334,
+39335
+],
+"tracked": 30
 },
 "39338": {
 "what": "Fragment",
 "fact": "A **fragment** of a Long March 3C rocket, launched in 2010. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "CZ-3C",
-"parentArt": "long-march-3"
+"parentArt": "long-march-3",
+"group": [
+39338,
+39340,
+39341,
+39345,
+39346,
+39347,
+39348,
+39349,
+39351,
+39352,
+40174,
+40819
+],
+"tracked": 61
 },
 "39340": {
 "what": "Fragment",
 "fact": "A **fragment** of a Long March 3C rocket, launched in 2010. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "CZ-3C",
-"parentArt": "long-march-3"
+"parentArt": "long-march-3",
+"group": [
+39338,
+39340,
+39341,
+39345,
+39346,
+39347,
+39348,
+39349,
+39351,
+39352,
+40174,
+40819
+],
+"tracked": 61
 },
 "39341": {
 "what": "Fragment",
 "fact": "A **fragment** of a Long March 3C rocket, launched in 2010. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "CZ-3C",
-"parentArt": "long-march-3"
+"parentArt": "long-march-3",
+"group": [
+39338,
+39340,
+39341,
+39345,
+39346,
+39347,
+39348,
+39349,
+39351,
+39352,
+40174,
+40819
+],
+"tracked": 61
 },
 "39345": {
 "what": "Fragment",
 "fact": "A **fragment** of a Long March 3C rocket, launched in 2010. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "CZ-3C",
-"parentArt": "long-march-3"
+"parentArt": "long-march-3",
+"group": [
+39338,
+39340,
+39341,
+39345,
+39346,
+39347,
+39348,
+39349,
+39351,
+39352,
+40174,
+40819
+],
+"tracked": 61
 },
 "39346": {
 "what": "Fragment",
 "fact": "A **fragment** of a Long March 3C rocket, launched in 2010. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "CZ-3C",
-"parentArt": "long-march-3"
+"parentArt": "long-march-3",
+"group": [
+39338,
+39340,
+39341,
+39345,
+39346,
+39347,
+39348,
+39349,
+39351,
+39352,
+40174,
+40819
+],
+"tracked": 61
 },
 "39347": {
 "what": "Fragment",
 "fact": "A **fragment** of a Long March 3C rocket, launched in 2010. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "CZ-3C",
-"parentArt": "long-march-3"
+"parentArt": "long-march-3",
+"group": [
+39338,
+39340,
+39341,
+39345,
+39346,
+39347,
+39348,
+39349,
+39351,
+39352,
+40174,
+40819
+],
+"tracked": 61
 },
 "39348": {
 "what": "Fragment",
 "fact": "A **fragment** of a Long March 3C rocket, launched in 2010. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "CZ-3C",
-"parentArt": "long-march-3"
+"parentArt": "long-march-3",
+"group": [
+39338,
+39340,
+39341,
+39345,
+39346,
+39347,
+39348,
+39349,
+39351,
+39352,
+40174,
+40819
+],
+"tracked": 61
 },
 "39349": {
 "what": "Fragment",
 "fact": "A **fragment** of a Long March 3C rocket, launched in 2010. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "CZ-3C",
-"parentArt": "long-march-3"
+"parentArt": "long-march-3",
+"group": [
+39338,
+39340,
+39341,
+39345,
+39346,
+39347,
+39348,
+39349,
+39351,
+39352,
+40174,
+40819
+],
+"tracked": 61
 },
 "39351": {
 "what": "Fragment",
 "fact": "A **fragment** of a Long March 3C rocket, launched in 2010. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "CZ-3C",
-"parentArt": "long-march-3"
+"parentArt": "long-march-3",
+"group": [
+39338,
+39340,
+39341,
+39345,
+39346,
+39347,
+39348,
+39349,
+39351,
+39352,
+40174,
+40819
+],
+"tracked": 61
 },
 "39352": {
 "what": "Fragment",
 "fact": "A **fragment** of a Long March 3C rocket, launched in 2010. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "CZ-3C",
-"parentArt": "long-march-3"
+"parentArt": "long-march-3",
+"group": [
+39338,
+39340,
+39341,
+39345,
+39346,
+39347,
+39348,
+39349,
+39351,
+39352,
+40174,
+40819
+],
+"tracked": 61
 },
 "39357": {
 "what": "Subsatellite",
@@ -2292,67 +4579,233 @@
 "what": "Fragment",
 "fact": "A **fragment** of a Long March 3C rocket, launched in 2010. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "CZ-3C",
-"parentArt": "long-march-3"
+"parentArt": "long-march-3",
+"group": [
+39338,
+39340,
+39341,
+39345,
+39346,
+39347,
+39348,
+39349,
+39351,
+39352,
+40174,
+40819
+],
+"tracked": 61
 },
 "40179": {
 "what": "Fragment",
 "fact": "A **fragment** of a Long March 3B rocket, launched in 2011. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "CZ-3B",
-"parentArt": "long-march-3"
+"parentArt": "long-march-3",
+"group": [
+40179,
+40180,
+40184,
+40185,
+40187,
+40189,
+40193,
+40839,
+40848,
+40851,
+40852,
+42471,
+42473
+],
+"tracked": 39
 },
 "40180": {
 "what": "Fragment",
 "fact": "A **fragment** of a Long March 3B rocket, launched in 2011. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "CZ-3B",
-"parentArt": "long-march-3"
+"parentArt": "long-march-3",
+"group": [
+40179,
+40180,
+40184,
+40185,
+40187,
+40189,
+40193,
+40839,
+40848,
+40851,
+40852,
+42471,
+42473
+],
+"tracked": 39
 },
 "40184": {
 "what": "Fragment",
 "fact": "A **fragment** of a Long March 3B rocket, launched in 2011. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "CZ-3B",
-"parentArt": "long-march-3"
+"parentArt": "long-march-3",
+"group": [
+40179,
+40180,
+40184,
+40185,
+40187,
+40189,
+40193,
+40839,
+40848,
+40851,
+40852,
+42471,
+42473
+],
+"tracked": 39
 },
 "40185": {
 "what": "Fragment",
 "fact": "A **fragment** of a Long March 3B rocket, launched in 2011. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "CZ-3B",
-"parentArt": "long-march-3"
+"parentArt": "long-march-3",
+"group": [
+40179,
+40180,
+40184,
+40185,
+40187,
+40189,
+40193,
+40839,
+40848,
+40851,
+40852,
+42471,
+42473
+],
+"tracked": 39
 },
 "40187": {
 "what": "Fragment",
 "fact": "A **fragment** of a Long March 3B rocket, launched in 2011. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "CZ-3B",
-"parentArt": "long-march-3"
+"parentArt": "long-march-3",
+"group": [
+40179,
+40180,
+40184,
+40185,
+40187,
+40189,
+40193,
+40839,
+40848,
+40851,
+40852,
+42471,
+42473
+],
+"tracked": 39
 },
 "40189": {
 "what": "Fragment",
 "fact": "A **fragment** of a Long March 3B rocket, launched in 2011. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "CZ-3B",
-"parentArt": "long-march-3"
+"parentArt": "long-march-3",
+"group": [
+40179,
+40180,
+40184,
+40185,
+40187,
+40189,
+40193,
+40839,
+40848,
+40851,
+40852,
+42471,
+42473
+],
+"tracked": 39
 },
 "40193": {
 "what": "Fragment",
 "fact": "A **fragment** of a Long March 3B rocket, launched in 2011. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "CZ-3B",
-"parentArt": "long-march-3"
+"parentArt": "long-march-3",
+"group": [
+40179,
+40180,
+40184,
+40185,
+40187,
+40189,
+40193,
+40839,
+40848,
+40851,
+40852,
+42471,
+42473
+],
+"tracked": 39
 },
 "40197": {
 "what": "Fragment",
 "fact": "A **fragment** of a Long March 3C rocket, launched in 2012. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "CZ-3C",
-"parentArt": "long-march-3"
+"parentArt": "long-march-3",
+"group": [
+38095,
+40197,
+40203,
+40207,
+40853,
+40855,
+40858,
+40860,
+40862,
+40863
+],
+"tracked": 42
 },
 "40203": {
 "what": "Fragment",
 "fact": "A **fragment** of a Long March 3C rocket, launched in 2012. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "CZ-3C",
-"parentArt": "long-march-3"
+"parentArt": "long-march-3",
+"group": [
+38095,
+40197,
+40203,
+40207,
+40853,
+40855,
+40858,
+40860,
+40862,
+40863
+],
+"tracked": 42
 },
 "40207": {
 "what": "Fragment",
 "fact": "A **fragment** of a Long March 3C rocket, launched in 2012. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "CZ-3C",
-"parentArt": "long-march-3"
+"parentArt": "long-march-3",
+"group": [
+38095,
+40197,
+40203,
+40207,
+40853,
+40855,
+40858,
+40860,
+40862,
+40863
+],
+"tracked": 42
 },
 "40260": {
 "what": "Fuel tank",
@@ -2363,13 +4816,23 @@
 "what": "Fragment",
 "fact": "A **fragment** of a Long March 4C rocket, launched in 2014. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "CZ-4C",
-"parentArt": "cz-4"
+"parentArt": "cz-4",
+"group": [
+40342,
+40343
+],
+"tracked": 3
 },
 "40343": {
 "what": "Fragment",
 "fact": "A **fragment** of a Long March 4C rocket, launched in 2014. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "CZ-4C",
-"parentArt": "cz-4"
+"parentArt": "cz-4",
+"group": [
+40342,
+40343
+],
+"tracked": 3
 },
 "40366": {
 "what": "Fuel tank",
@@ -2390,67 +4853,224 @@
 "what": "Fragment",
 "fact": "A **fragment** of a Long March 3C rocket, launched in 2010. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "CZ-3C",
-"parentArt": "long-march-3"
+"parentArt": "long-march-3",
+"group": [
+39338,
+39340,
+39341,
+39345,
+39346,
+39347,
+39348,
+39349,
+39351,
+39352,
+40174,
+40819
+],
+"tracked": 61
 },
 "40839": {
 "what": "Fragment",
 "fact": "A **fragment** of a Long March 3B rocket, launched in 2011. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "CZ-3B",
-"parentArt": "long-march-3"
+"parentArt": "long-march-3",
+"group": [
+40179,
+40180,
+40184,
+40185,
+40187,
+40189,
+40193,
+40839,
+40848,
+40851,
+40852,
+42471,
+42473
+],
+"tracked": 39
 },
 "40848": {
 "what": "Fragment",
 "fact": "A **fragment** of a Long March 3B rocket, launched in 2011. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "CZ-3B",
-"parentArt": "long-march-3"
+"parentArt": "long-march-3",
+"group": [
+40179,
+40180,
+40184,
+40185,
+40187,
+40189,
+40193,
+40839,
+40848,
+40851,
+40852,
+42471,
+42473
+],
+"tracked": 39
 },
 "40851": {
 "what": "Fragment",
 "fact": "A **fragment** of a Long March 3B rocket, launched in 2011. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "CZ-3B",
-"parentArt": "long-march-3"
+"parentArt": "long-march-3",
+"group": [
+40179,
+40180,
+40184,
+40185,
+40187,
+40189,
+40193,
+40839,
+40848,
+40851,
+40852,
+42471,
+42473
+],
+"tracked": 39
 },
 "40852": {
 "what": "Fragment",
 "fact": "A **fragment** of a Long March 3B rocket, launched in 2011. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "CZ-3B",
-"parentArt": "long-march-3"
+"parentArt": "long-march-3",
+"group": [
+40179,
+40180,
+40184,
+40185,
+40187,
+40189,
+40193,
+40839,
+40848,
+40851,
+40852,
+42471,
+42473
+],
+"tracked": 39
 },
 "40853": {
 "what": "Fragment",
 "fact": "A **fragment** of a Long March 3C rocket, launched in 2012. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "CZ-3C",
-"parentArt": "long-march-3"
+"parentArt": "long-march-3",
+"group": [
+38095,
+40197,
+40203,
+40207,
+40853,
+40855,
+40858,
+40860,
+40862,
+40863
+],
+"tracked": 42
 },
 "40855": {
 "what": "Fragment",
 "fact": "A **fragment** of a Long March 3C rocket, launched in 2012. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "CZ-3C",
-"parentArt": "long-march-3"
+"parentArt": "long-march-3",
+"group": [
+38095,
+40197,
+40203,
+40207,
+40853,
+40855,
+40858,
+40860,
+40862,
+40863
+],
+"tracked": 42
 },
 "40858": {
 "what": "Fragment",
 "fact": "A **fragment** of a Long March 3C rocket, launched in 2012. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "CZ-3C",
-"parentArt": "long-march-3"
+"parentArt": "long-march-3",
+"group": [
+38095,
+40197,
+40203,
+40207,
+40853,
+40855,
+40858,
+40860,
+40862,
+40863
+],
+"tracked": 42
 },
 "40860": {
 "what": "Fragment",
 "fact": "A **fragment** of a Long March 3C rocket, launched in 2012. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "CZ-3C",
-"parentArt": "long-march-3"
+"parentArt": "long-march-3",
+"group": [
+38095,
+40197,
+40203,
+40207,
+40853,
+40855,
+40858,
+40860,
+40862,
+40863
+],
+"tracked": 42
 },
 "40862": {
 "what": "Fragment",
 "fact": "A **fragment** of a Long March 3C rocket, launched in 2012. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "CZ-3C",
-"parentArt": "long-march-3"
+"parentArt": "long-march-3",
+"group": [
+38095,
+40197,
+40203,
+40207,
+40853,
+40855,
+40858,
+40860,
+40862,
+40863
+],
+"tracked": 42
 },
 "40863": {
 "what": "Fragment",
 "fact": "A **fragment** of a Long March 3C rocket, launched in 2012. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "CZ-3C",
-"parentArt": "long-march-3"
+"parentArt": "long-march-3",
+"group": [
+38095,
+40197,
+40203,
+40207,
+40853,
+40855,
+40858,
+40860,
+40862,
+40863
+],
+"tracked": 42
 },
 "40884": {
 "what": "Fuel tank",
@@ -2495,19 +5115,31 @@
 "what": "Fragment",
 "fact": "A **fragment** of a small ullage motor dropped by a Proton rocket’s upper stage in 1994. More than 50 of these motors, left with fuel inside, have since burst apart in orbit.",
 "parent": "SL-12",
-"parentArt": "sl-12"
+"parentArt": "sl-12",
+"group": [
+41675
+],
+"tracked": 1
 },
 "41677": {
 "what": "Fragment",
 "fact": "A **fragment** of a small ullage motor dropped by a Proton rocket’s upper stage in 2007. More than 50 of these motors, left with fuel inside, have since burst apart in orbit.",
 "parent": "SL-12",
-"parentArt": "sl-12"
+"parentArt": "sl-12",
+"group": [
+41677
+],
+"tracked": 25
 },
 "41699": {
 "what": "Fragment",
 "fact": "A **fragment** of a small ullage motor dropped by a Proton rocket’s upper stage in 2010. More than 50 of these motors, left with fuel inside, have since burst apart in orbit.",
 "parent": "SL-12",
-"parentArt": "sl-12"
+"parentArt": "sl-12",
+"group": [
+41699
+],
+"tracked": 32
 },
 "41750": {
 "what": "SYLDA",
@@ -2523,18 +5155,54 @@
 "what": "Fragment",
 "fact": "A **fragment** of DMSP 5D-2 F12, launched in 1994. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "DMSP 5D-2 F12",
-"parentArt": "us-weather"
+"parentArt": "us-weather",
+"group": [
+41835
+],
+"tracked": 4
 },
 "42471": {
 "what": "Fragment",
 "fact": "A **fragment** of a Long March 3B rocket, launched in 2011. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "CZ-3B",
-"parentArt": "long-march-3"
+"parentArt": "long-march-3",
+"group": [
+40179,
+40180,
+40184,
+40185,
+40187,
+40189,
+40193,
+40839,
+40848,
+40851,
+40852,
+42471,
+42473
+],
+"tracked": 39
 },
 "42473": {
 "what": "Fragment",
 "fact": "A **fragment** of a Long March 3B rocket, launched in 2011. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "CZ-3B",
-"parentArt": "long-march-3"
+"parentArt": "long-march-3",
+"group": [
+40179,
+40180,
+40184,
+40185,
+40187,
+40189,
+40193,
+40839,
+40848,
+40851,
+40852,
+42471,
+42473
+],
+"tracked": 39
 }
 }
