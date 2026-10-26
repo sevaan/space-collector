@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><base href="../"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Outreach ideas</title>
+<link rel="stylesheet" href="css/cards.css"><link rel="stylesheet" href="css/ui.css">
+<style>
+  :root { --ink: #fff2b3; --muted: #9aa7b4; --or: #fa8127; --nav: #080f1b; }
+  body { margin: 0; background: #05090f; color: var(--ink); font: 15px/1.45 system-ui, sans-serif; padding: 28px 24px 60px; }
+  h1 { font: 400 30px/1.1 'SC Display', 'Russo One', sans-serif; margin: 0 0 6px; } p.lead { color: #bdbea9; max-width: 900px; margin: 0 0 26px; }
+  .row { display: flex; gap: 28px; flex-wrap: wrap; align-items: flex-start; }
+  .lab { font: 500 12px/1 'SC Label', sans-serif; letter-spacing: .18em; text-transform: uppercase; color: var(--or); margin: 0 0 6px; }
+  .note { color: var(--muted); font-size: 13px; max-width: 330px; margin: 0 0 12px; min-height: 3.6em; }
+  .phone { width: 340px; height: 700px; border-radius: 44px; background: var(--nav); border: 10px solid #1a2333; box-shadow: 0 20px 50px #000a; position: relative; overflow: hidden; }
+  .bar { position: absolute; top: 0; left: 0; right: 0; height: 74px; padding: 30px 22px 0; box-sizing: border-box; border-bottom: 3px double #3a4a62; display: flex; justify-content: space-between; align-items: center; }
+  .bar b { font: 400 17px/1 'SC Display', sans-serif; } .bar small { display: block; font: 500 10px/1 'SC Label', sans-serif; letter-spacing: .2em; color: var(--muted); margin-top: 5px; }
+  .x { font: 500 20px/1 'SC Label', sans-serif; color: var(--ink); }
+  .body { position: absolute; top: 74px; left: 0; right: 0; bottom: 0; overflow: auto; padding: 16px 18px 24px; box-sizing: border-box; }
+  .card { font-size: 9.6px; margin: 0 auto; }
+  .lm { display: flex; gap: 10px; justify-content: center; margin-top: 12px; }
+  .lm a { font: 500 12px/1 'SC Label', sans-serif; letter-spacing: .14em; text-transform: uppercase; color: var(--or); text-decoration: none; border: 1px solid #fa812766; border-radius: 999px; padding: 9px 14px; }
+  .src { font: 500 .9em/1 'SC Label', sans-serif; letter-spacing: .12em; text-transform: uppercase; color: var(--or); margin-left: .4em; white-space: nowrap; }
+  /* reveal */
+  .rv { position: absolute; inset: 0; background: radial-gradient(circle at 50% 40%, #13264a, #060b14 70%); }
+  .rv .top { position: absolute; top: 34px; left: 18px; right: 18px; display: flex; justify-content: space-between; font: 500 11px/1 'SC Label', sans-serif; letter-spacing: .18em; color: #e46ad6; }
+  .rv .top i { font-style: normal; color: #5fd08a; }
+  .rv .cardwrap { position: absolute; top: 70px; left: 50%; transform: translateX(-50%); }
+  .why { position: absolute; left: 16px; right: 16px; bottom: 78px; background: #0e1a29f2; border: 1px solid #627a8b; border-top: 3px solid var(--or); border-radius: 14px; padding: 11px 13px; font-size: 13.5px; line-height: 1.4; color: #e8e3c9; }
+  .why small { display: block; font: 500 10.5px/1 'SC Label', sans-serif; letter-spacing: .18em; text-transform: uppercase; color: var(--or); margin-bottom: 6px; }
+  .why b { color: var(--ink); }
+  .rank { position: absolute; left: 22px; right: 22px; bottom: 30px; font: 500 10px/1 'SC Label', sans-serif; letter-spacing: .16em; color: var(--muted); display: flex; justify-content: space-between; }
+  .rank::after { content: ''; position: absolute; left: 0; right: 0; top: 16px; height: 4px; border-radius: 4px; background: linear-gradient(90deg, var(--or) 38%, #24324a 38%); }
+  /* settings-style card */
+  .scard { border: 1px solid #e9dfc2aa; border-radius: 14px; margin: 0 0 14px; overflow: hidden; }
+  .scard h4 { margin: 0; padding: 9px 13px; background: #1a2333; font: 500 11px/1 'SC Label', sans-serif; letter-spacing: .18em; text-transform: uppercase; color: #e7b75f; display: flex; justify-content: space-between; }
+  .item { padding: 10px 13px; border-top: 1px solid #ffffff12; font-size: 13px; color: #e8e3c9; }
+  .item b { display: block; color: var(--ink); font-weight: 600; } .item span { color: var(--muted); font-size: 12px; }
+  .item a { color: var(--or); text-decoration: none; font-size: 12px; }
+  .sheet { position: absolute; left: 0; right: 0; bottom: 0; background: #0b1424; border-top: 1px solid #627a8b; border-radius: 22px 22px 0 0; padding: 18px 18px 26px; box-shadow: 0 -20px 40px #000a; }
+  .sheet h3 { margin: 0 0 6px; font: 400 20px/1.1 'SC Display', sans-serif; } .sheet p { margin: 0 0 12px; color: #c9cbb6; font-size: 13.5px; }
+  .meter { display: flex; gap: 10px; align-items: center; margin: 4px 0 14px; } .meter b { font: 400 26px/1 'SC Display', sans-serif; } .meter span { color: var(--muted); font-size: 12px; }
+  .btn { display: block; text-align: center; padding: 13px; border-radius: 14px; font: 500 13px/1 'SC Label', sans-serif; letter-spacing: .16em; text-transform: uppercase; }
+  .btn.p { background: var(--or); color: #0b1018; } .btn.s { color: var(--ink); margin-top: 6px; }
+  .sky { position: absolute; inset: 74px 0 0; background: radial-gradient(circle at 50% 30%, #0f1d33, #060b14); }
+  .sky i { position: absolute; width: 2px; height: 2px; border-radius: 50%; background: #fff2b3; }
+</style></head><body>
+<h1>Outreach ideas</h1>
+<p class="lead">What a space agency's education office would want to see, mocked on real screens: sources you can check, doors to the real missions, the science of why you can see a satellite, honest credits, and an opt-in way for players to contribute real data.</p>
+<div class="row">
+  <div><div class="lab">1 · Sources and "Learn more"</div><div class="note">A "Source" link on every fact (opens the page it came from). Big mission cards get links to the official mission page and, for the ISS, NASA's Spot the Station.</div>
+    <div class="phone"><div class="bar"><div><b>INTERNATIONAL…</b><small>CARD 1 OF 214</small></div><span class="x">✕</span></div><div class="body" id="p1"></div></div></div>
+  <div><div class="lab">2 · Why can I see it?</div><div class="note">One line on the catch, worked out from the real geometry at that moment: sunlight on it while you're in the dark. A different line by day, for stars, for the Moon.</div>
+    <div class="phone"><div class="rv"><div class="top"><span>NEW CARD <i>· +25 XP</i></span><span style="color:#fff2b3">✕</span></div><div class="cardwrap" id="p2"></div>
+      <div class="why"><small>Why can I see it?</small>The Sun set 1 h 12 min ago where you are, but the Space Station is <b>420 km up, still in sunlight</b>. You're seeing sunlight bouncing off its solar panels.</div>
+      <div class="rank"><span>TRACKER</span><span>1,400 / 3,000</span></div></div></div></div>
+  <div><div class="lab">3 · Credits and sources</div><div class="note">Settings → About → Credits and sources: every data set and picture source, with its licence. No logos, no hint of endorsement.</div>
+    <div class="phone"><div class="bar"><div><b>CREDITS</b><small>AND SOURCES</small></div><span class="x">✕</span></div><div class="body">
+      <div class="scard"><h4>Where the sky comes from <span>01</span></h4>
+        <div class="item"><b>Satellite orbits</b><span>CelesTrak (T. S. Kelso), updated daily</span></div>
+        <div class="item"><b>Shapes, sizes, debris history</b><span>GCAT, J. McDowell · CC BY 4.0</span></div>
+        <div class="item"><b>Stars and constellations</b><span>Hipparcos (ESA) · d3-celestial (O. Frommert)</span></div>
+        <div class="item"><b>Weather</b><span>MET Norway · CC BY 4.0</span></div>
+        <div class="item"><b>Planes</b><span>adsb.lol · ODbL</span></div></div>
+      <div class="scard"><h4>Pictures <span>02</span></h4>
+        <div class="item"><b>Photographs and official illustrations</b><span>NASA, ESA, ESO, JAXA, NOAA, US Air Force, Smithsonian and photographers on Wikimedia Commons. Each card names its own source.</span><br><a href="#">See every picture and licence ›</a></div>
+        <div class="item"><b>Milky Way</b><span>ESO / S. Brunier · CC BY 4.0</span></div></div>
+      <div class="scard"><h4>Music and sounds <span>03</span></h4>
+        <div class="item"><b>"Permafrost"</b><span>Scott Buckley · CC BY 4.0</span></div></div>
+      <div class="scard"><h4>A note <span>04</span></h4>
+        <div class="item"><span>Space Collector is an independent app. It isn't made or endorsed by NASA, ESA or any space agency; their pictures are used under their public-domain and open licences.</span></div></div>
+    </div></div></div>
+  <div><div class="lab">4 · Share my sky reading</div><div class="note">Opt-in, once you've matched the slider to your real sky: send that brightness to Globe at Night, the citizen-science light-pollution count. Only a rounded place and the reading.</div>
+    <div class="phone"><div class="bar"><div><b>SPACE COLLECTOR</b><small>COLLECT THE NIGHT SKY</small></div><span class="x">⚙</span></div><div class="sky" id="stars"></div>
+      <div class="sheet"><h3>Share your sky with science?</h3><p>You matched the slider to your real sky. Globe at Night collects readings like this from people all over the world to map light pollution.</p>
+        <div class="meter"><b>Suburbs · 19.4</b><span>magnitude per arcsec² · about 550 stars</span></div>
+        <p style="font-size:12px;color:#9aa7b4">Sends only your reading, the time and your place rounded to about 10 km. Nothing else.</p>
+        <span class="btn p">Share this reading</span><span class="btn s">Not now</span></div></div></div>
+</div>
+<script type="module">
+const V = (await fetch('version.json', { cache: 'no-store' }).then((r) => r.json())).version, at = (f) => import(new URL(`js/${f}?v=${V}`, document.baseURI).href);
+const [{ expandFacts }, { renderCard }, { buildCards }, { loadLore }] = await Promise.all(['catalog-facts.js', 'card.js', 'card-model.js', 'lore.js'].map(at));
+const cat = await fetch('data/catalog.json').then((r) => r.json()); for (const o of cat.objects) expandFacts(o);
+await loadLore();
+const iss = buildCards(cat).find((x) => Number(x.id) === 25544), sight = [{ time: Date.parse('2026-10-01T03:00:00Z'), cardKey: iss.key, objectId: iss.id }];
+const a = renderCard(iss, { sightings: sight }); a.querySelector('.card__fact p')?.insertAdjacentHTML('beforeend', '<a class="src">Source ›</a>');
+document.getElementById('p1').append(a);
+document.getElementById('p1').insertAdjacentHTML('beforeend', '<div class="lm"><a href="#">ISS at NASA ›</a><a href="#">Spot the Station ›</a></div><p style="text-align:center;color:#9aa7b4;font-size:12px;margin:10px 0 0">Now over the South Pacific · 260 mi up</p>');
+const b = renderCard(iss, { sightings: sight }); b.style.fontSize = '8.4px'; document.getElementById('p2').append(b);
+const sk = document.getElementById('stars'); for (let i = 0; i < 70; i++) sk.insertAdjacentHTML('beforeend', `<i style="left:${Math.random() * 100}%;top:${Math.random() * 60}%;opacity:${(0.3 + Math.random() * 0.7).toFixed(2)}"></i>`);
+document.body.dataset.ready = '1';
+</script></body></html>
