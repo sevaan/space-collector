@@ -2,12 +2,26 @@
 "51": {
 "what": "Canister half",
 "art": "echo-canister",
-"fact": "Half of the **metal canister** that carried NASA’s **Echo 1** balloon into orbit in 1960. In space the canister split in two and the folded balloon inflated into a 30-metre silver sphere."
+"fact": "Half of the **metal canister** that carried NASA’s **Echo 1** balloon into orbit in 1960. In space the canister split in two and the folded balloon inflated into a 30-metre silver sphere.",
+"parent": "ECHO 1",
+"parentArt": "early-satellite-2",
+"group": [
+51,
+53
+],
+"tracked": 1
 },
 "53": {
 "what": "Canister half",
 "art": "echo-canister",
-"fact": "Half of the **metal canister** that carried NASA’s **Echo 1** balloon into orbit in 1960. In space the canister split in two and the folded balloon inflated into a 30-metre silver sphere."
+"fact": "Half of the **metal canister** that carried NASA’s **Echo 1** balloon into orbit in 1960. In space the canister split in two and the folded balloon inflated into a 30-metre silver sphere.",
+"parent": "ECHO 1",
+"parentArt": "early-satellite-2",
+"group": [
+51,
+53
+],
+"tracked": 1
 },
 "122": {
 "what": "Fragment",
@@ -19,6 +33,7 @@
 126,
 127,
 130,
+133,
 134,
 141
 ],
@@ -34,6 +49,7 @@
 126,
 127,
 130,
+133,
 134,
 141
 ],
@@ -49,6 +65,7 @@
 126,
 127,
 130,
+133,
 134,
 141
 ],
@@ -64,6 +81,7 @@
 126,
 127,
 130,
+133,
 134,
 141
 ],
@@ -72,7 +90,19 @@
 "133": {
 "what": "Despin weight",
 "art": "despin-weight",
-"fact": "Probably a **yo-yo despin weight** from the **Transit 4A** navigation satellite (1961). Weights on cables unwound to slow the satellite’s spin, then let go and flew off on their own."
+"fact": "Probably a **yo-yo despin weight** from the **Transit 4A** navigation satellite (1961). Weights on cables unwound to slow the satellite’s spin, then let go and flew off on their own.",
+"parent": "THOR ABLESTAR",
+"parentArt": "thor-upper",
+"group": [
+122,
+126,
+127,
+130,
+133,
+134,
+141
+],
+"tracked": 314
 },
 "134": {
 "what": "Fragment",
@@ -84,6 +114,7 @@
 126,
 127,
 130,
+133,
 134,
 141
 ],
@@ -99,6 +130,7 @@
 126,
 127,
 130,
+133,
 134,
 141
 ],
@@ -106,24 +138,58 @@
 },
 "700": {
 "what": "Insulation blanket",
-"fact": "A scrap of **insulation** from Atlas Centaur 2 (1963), the first Centaur stage to reach orbit. Centaur burned super-cold liquid hydrogen, so it was wrapped to stop its fuel boiling away."
+"fact": "A scrap of **insulation** from Atlas Centaur 2 (1963), the first Centaur stage to reach orbit. Centaur burned super-cold liquid hydrogen, so it was wrapped to stop its fuel boiling away.",
+"parent": "ATLAS CENTAUR 2",
+"parentArt": "centaur",
+"group": [
+700,
+701
+],
+"tracked": 15
 },
 "701": {
 "what": "Insulation blanket",
-"fact": "A scrap of **insulation** from Atlas Centaur 2 (1963), the first Centaur stage to reach orbit. Centaur burned super-cold liquid hydrogen, so it was wrapped to stop its fuel boiling away."
+"fact": "A scrap of **insulation** from Atlas Centaur 2 (1963), the first Centaur stage to reach orbit. Centaur burned super-cold liquid hydrogen, so it was wrapped to stop its fuel boiling away.",
+"parent": "ATLAS CENTAUR 2",
+"parentArt": "centaur",
+"group": [
+700,
+701
+],
+"tracked": 15
 },
 "742": {
 "what": "Canister half",
-"fact": "Half of the **metal canister** that carried NASA’s **Echo 2** balloon into orbit in 1964. In space the canister split in two and the balloon inflated into a 41-metre sphere."
+"fact": "Half of the **metal canister** that carried NASA’s **Echo 2** balloon into orbit in 1964. In space the canister split in two and the balloon inflated into a 41-metre sphere.",
+"parent": "ECHO 2",
+"parentArt": "early-satellite-3",
+"group": [
+742,
+743
+],
+"tracked": 0
 },
 "743": {
 "what": "Canister half",
-"fact": "Half of the **metal canister** that carried NASA’s **Echo 2** balloon into orbit in 1964. In space the canister split in two and the balloon inflated into a 41-metre sphere."
+"fact": "Half of the **metal canister** that carried NASA’s **Echo 2** balloon into orbit in 1964. In space the canister split in two and the balloon inflated into a 41-metre sphere.",
+"parent": "ECHO 2",
+"parentArt": "early-satellite-3",
+"group": [
+742,
+743
+],
+"tracked": 0
 },
 "901": {
 "what": "Adapter",
 "art": "avum-adaptor",
-"fact": "A **payload adapter** from the OPS 5798 launch in 1964: the structure that held a satellite to the rocket until it was released."
+"fact": "A **payload adapter** from the OPS 5798 launch in 1964: the structure that held a satellite to the rocket until it was released.",
+"parent": "OPS 5798",
+"parentArt": "us-military",
+"group": [
+901
+],
+"tracked": 1
 },
 "1099": {
 "what": "Fragment",
@@ -137,26 +203,60 @@
 },
 "1316": {
 "what": "Heat shield",
-"fact": "A **heat shield** from SNAPSHOT (1965), the US satellite that flew the first nuclear reactor in space. The shield was let go in orbit and still circles today."
+"fact": "A **heat shield** from SNAPSHOT (1965), the US satellite that flew the first nuclear reactor in space. The shield was let go in orbit and still circles today.",
+"parent": "OPS 4682",
+"parentArt": "us-military",
+"group": [
+1316,
+1389
+],
+"tracked": 206
 },
 "1389": {
 "what": "Heat shield",
-"fact": "A **heat shield** from SNAPSHOT (1965), the US satellite that flew the first nuclear reactor in space. The shield was let go in orbit and still circles today."
+"fact": "A **heat shield** from SNAPSHOT (1965), the US satellite that flew the first nuclear reactor in space. The shield was let go in orbit and still circles today.",
+"parent": "OPS 4682",
+"parentArt": "us-military",
+"group": [
+1316,
+1389
+],
+"tracked": 206
 },
 "1425": {
 "what": "Adapter",
 "art": "avum-adaptor",
-"fact": "A **payload adapter** from a Thor Ablestar launch in 1965: the structure that held a satellite to the rocket until it was released."
+"fact": "A **payload adapter** from a Thor Ablestar launch in 1965: the structure that held a satellite to the rocket until it was released.",
+"parent": "THOR ABLESTAR",
+"parentArt": "thor-upper",
+"group": [
+1425
+],
+"tracked": 10
 },
 "1511": {
 "what": "Adapter",
 "art": "avum-adaptor",
-"fact": "A **payload adapter** from a Thor Ablestar launch in 1965: the structure that held a satellite to the rocket until it was released."
+"fact": "A **payload adapter** from a Thor Ablestar launch in 1965: the structure that held a satellite to the rocket until it was released.",
+"parent": "THOR ABLESTAR",
+"parentArt": "thor-upper",
+"group": [
+1511,
+1522
+],
+"tracked": 6
 },
 "1522": {
 "what": "Adapter",
 "art": "avum-adaptor",
-"fact": "A **payload adapter** from a Thor Ablestar launch in 1965: the structure that held a satellite to the rocket until it was released."
+"fact": "A **payload adapter** from a Thor Ablestar launch in 1965: the structure that held a satellite to the rocket until it was released.",
+"parent": "THOR ABLESTAR",
+"parentArt": "thor-upper",
+"group": [
+1511,
+1522
+],
+"tracked": 6
 },
 "1642": {
 "what": "Fragment",
@@ -167,6 +267,7 @@
 1642,
 1646,
 1653,
+1668,
 1680,
 1682,
 1684,
@@ -183,6 +284,7 @@
 1642,
 1646,
 1653,
+1668,
 1680,
 1682,
 1684,
@@ -199,6 +301,7 @@
 1642,
 1646,
 1653,
+1668,
 1680,
 1682,
 1684,
@@ -209,7 +312,20 @@
 "1668": {
 "what": "Adapter",
 "art": "avum-adaptor",
-"fact": "A **payload adapter** from the Titan 3C Transtage launch in 1965: the structure that held a satellite to the rocket until it was released."
+"fact": "A **payload adapter** from the Titan 3C Transtage launch in 1965: the structure that held a satellite to the rocket until it was released.",
+"parent": "TITAN 3C TRANSTAGE",
+"parentArt": "titan-transtage",
+"group": [
+1642,
+1646,
+1653,
+1668,
+1680,
+1682,
+1684,
+1716
+],
+"tracked": 470
 },
 "1680": {
 "what": "Fragment",
@@ -220,6 +336,7 @@
 1642,
 1646,
 1653,
+1668,
 1680,
 1682,
 1684,
@@ -236,6 +353,7 @@
 1642,
 1646,
 1653,
+1668,
 1680,
 1682,
 1684,
@@ -252,6 +370,7 @@
 1642,
 1646,
 1653,
+1668,
 1680,
 1682,
 1684,
@@ -268,6 +387,7 @@
 1642,
 1646,
 1653,
+1668,
 1680,
 1682,
 1684,
@@ -277,7 +397,13 @@
 },
 "2337": {
 "what": "Satellite part",
-"fact": "A part from the 1966 launch of **OV1-8**, a US Air Force test satellite on an Atlas rocket. OV1-8 was a 9-metre ball of aluminium wire, built to bounce radio signals."
+"fact": "A part from the 1966 launch of **OV1-8**, a US Air Force test satellite on an Atlas rocket. OV1-8 was a 9-metre ball of aluminium wire, built to bounce radio signals.",
+"parent": "ATLAS D",
+"parentArt": "atlas",
+"group": [
+2337
+],
+"tracked": 1
 },
 "3506": {
 "what": "Fragment",
@@ -501,12 +627,24 @@
 },
 "5384": {
 "what": "Canister",
-"fact": "The **canister** that carried a folded US Air Force test balloon, AVL-802, into orbit in 1971. That one launch released eight small research spheres."
+"fact": "The **canister** that carried a folded US Air Force test balloon, AVL-802, into orbit in 1971. That one launch released eight small research spheres.",
+"parent": "1971-067",
+"parentArt": "modern-satellite-1",
+"group": [
+5384
+],
+"tracked": 0
 },
 "5975": {
 "what": "Yo-yo weight",
 "art": "despin-weight",
-"fact": "Probably a **yo-yo despin weight** from the Delta rocket that launched NATO 2A in 1970. Weights on cables unwound to slow its spinning top stage, then let go."
+"fact": "Probably a **yo-yo despin weight** from the Delta rocket that launched NATO 2A in 1970. Weights on cables unwound to slow its spinning top stage, then let go.",
+"parent": "DELTA 1",
+"parentArt": "delta-early",
+"group": [
+5975
+],
+"tracked": 0
 },
 "5987": {
 "what": "Fragment",
@@ -1422,7 +1560,13 @@
 "13783": {
 "what": "Dewar cover",
 "art": "iso-cover",
-"fact": "The **dewar cover** of IRAS, the 1983 infrared telescope that mapped nearly the whole sky. It was let go in orbit so the cold telescope could see."
+"fact": "The **dewar cover** of IRAS, the 1983 infrared telescope that mapped nearly the whole sky. It was let go in orbit so the cold telescope could see.",
+"parent": "IRAS",
+"parentArt": "sat-iras",
+"group": [
+13783
+],
+"tracked": 3
 },
 "13906": {
 "what": "Fragment",
@@ -1461,7 +1605,14 @@
 "15166": {
 "what": "SYLDA",
 "art": "sylda",
-"fact": "The **SYLDA** from the first Ariane 3 launch, in 1984: a hollow shell that let one rocket carry two satellites, one hidden inside it and one sitting on top."
+"fact": "The **SYLDA** from the first Ariane 3 launch, in 1984: a hollow shell that let one rocket carry two satellites, one hidden inside it and one sitting on top.",
+"parent": "ARIANE 3",
+"parentArt": "ariane-early",
+"group": [
+15166,
+20674
+],
+"tracked": 4
 },
 "16206": {
 "what": "Fragment",
@@ -1490,7 +1641,14 @@
 "16616": {
 "what": "Adapter",
 "art": "avum-adaptor",
-"fact": "A **payload adapter** from the Ariane 1 launch in 1986: the structure that held a satellite to the rocket until it was released."
+"fact": "A **payload adapter** from the Ariane 1 launch in 1986: the structure that held a satellite to the rocket until it was released.",
+"parent": "ARIANE 1",
+"parentArt": "ariane-early",
+"group": [
+16616,
+17129
+],
+"tracked": 495
 },
 "17129": {
 "what": "Fragment",
@@ -1498,6 +1656,7 @@
 "parent": "ARIANE 1",
 "parentArt": "ariane-early",
 "group": [
+16616,
 17129
 ],
 "tracked": 495
@@ -1564,7 +1723,13 @@
 "19219": {
 "what": "SPELDA",
 "art": "spelda",
-"fact": "The **SPELDA** from the very first Ariane 4 launch, in 1988: a tall shell that carried one satellite inside it and a second on top, so one rocket could launch both."
+"fact": "The **SPELDA** from the very first Ariane 4 launch, in 1988: a tall shell that carried one satellite inside it and a second on top, so one rocket could launch both.",
+"parent": "ARIANE 44LP",
+"parentArt": "ariane-early",
+"group": [
+19219
+],
+"tracked": 0
 },
 "19857": {
 "what": "Fragment",
@@ -1618,7 +1783,13 @@
 "20328": {
 "what": "Dewar cap",
 "art": "iso-cover",
-"fact": "The **dewar cap** of COBE, the 1989 satellite that mapped the faint afterglow of the Big Bang. It was let go so the cold instruments could see."
+"fact": "The **dewar cap** of COBE, the 1989 satellite that mapped the faint afterglow of the Big Bang. It was let go so the cold instruments could see.",
+"parent": "COBE",
+"parentArt": "sat-cobe",
+"group": [
+20328
+],
+"tracked": 101
 },
 "20488": {
 "what": "Fragment",
@@ -1637,6 +1808,7 @@
 "parent": "ARIANE 3",
 "parentArt": "ariane-early",
 "group": [
+15166,
 20674
 ],
 "tracked": 4
@@ -1644,7 +1816,13 @@
 "20718": {
 "what": "SPELDA",
 "art": "spelda",
-"fact": "The **SPELDA** from an Ariane 44L launch in 1990: a tall shell that carried one satellite inside it and a second on top, so one rocket could launch both."
+"fact": "The **SPELDA** from an Ariane 44L launch in 1990: a tall shell that carried one satellite inside it and a second on top, so one rocket could launch both.",
+"parent": "ARIANE 44L",
+"parentArt": "ariane-early",
+"group": [
+20718
+],
+"tracked": 0
 },
 "20849": {
 "what": "Fragment",
@@ -1779,12 +1957,34 @@
 "21818": {
 "what": "SPELDA",
 "art": "spelda",
-"fact": "The **SPELDA** from an Ariane 44L launch in 1991: a tall shell that carried one satellite inside it and a second on top, so one rocket could launch both."
+"fact": "The **SPELDA** from an Ariane 44L launch in 1991: a tall shell that carried one satellite inside it and a second on top, so one rocket could launch both.",
+"parent": "ARIANE 44L",
+"parentArt": "ariane-early",
+"group": [
+21818
+],
+"tracked": 0
 },
 "21942": {
 "what": "SPELDA",
 "art": "spelda",
-"fact": "The **SPELDA** from an Ariane 44L+ launch in 1992: a tall shell that carried one satellite inside it and a second on top, so one rocket could launch both."
+"fact": "The **SPELDA** from an Ariane 44L+ launch in 1992: a tall shell that carried one satellite inside it and a second on top, so one rocket could launch both.",
+"parent": "ARIANE 44L+",
+"parentArt": "ariane-early",
+"group": [
+21942,
+22850,
+23237,
+23238,
+23239,
+23241,
+23242,
+23244,
+23245,
+32999,
+34180
+],
+"tracked": 17
 },
 "22294": {
 "what": "Fragment",
@@ -2009,7 +2209,13 @@
 "22577": {
 "what": "Cover",
 "art": "lens-cover",
-"fact": "A **cover** from a separation motor on a Zenit rocket (US code name SL-16), launched in 1993, let go once its job of protecting the motor was done."
+"fact": "A **cover** from a separation motor on a Zenit rocket (US code name SL-16), launched in 1993, let go once its job of protecting the motor was done.",
+"parent": "SL-16",
+"parentArt": "sl-16",
+"group": [
+22577
+],
+"tracked": 101
 },
 "22670": {
 "what": "Fragment",
@@ -2030,6 +2236,7 @@
 "parent": "ARIANE 44L+",
 "parentArt": "ariane-early",
 "group": [
+21942,
 22850,
 23237,
 23238,
@@ -2049,6 +2256,7 @@
 "parent": "ARIANE 44L+",
 "parentArt": "ariane-early",
 "group": [
+21942,
 22850,
 23237,
 23238,
@@ -2068,6 +2276,7 @@
 "parent": "ARIANE 44L+",
 "parentArt": "ariane-early",
 "group": [
+21942,
 22850,
 23237,
 23238,
@@ -2087,6 +2296,7 @@
 "parent": "ARIANE 44L+",
 "parentArt": "ariane-early",
 "group": [
+21942,
 22850,
 23237,
 23238,
@@ -2106,6 +2316,7 @@
 "parent": "ARIANE 44L+",
 "parentArt": "ariane-early",
 "group": [
+21942,
 22850,
 23237,
 23238,
@@ -2125,6 +2336,7 @@
 "parent": "ARIANE 44L+",
 "parentArt": "ariane-early",
 "group": [
+21942,
 22850,
 23237,
 23238,
@@ -2144,6 +2356,7 @@
 "parent": "ARIANE 44L+",
 "parentArt": "ariane-early",
 "group": [
+21942,
 22850,
 23237,
 23238,
@@ -2163,6 +2376,7 @@
 "parent": "ARIANE 44L+",
 "parentArt": "ariane-early",
 "group": [
+21942,
 22850,
 23237,
 23238,
@@ -2225,7 +2439,13 @@
 "23867": {
 "what": "SPELDA",
 "art": "spelda",
-"fact": "The **SPELDA** from an Ariane 44L launch in 1996: a tall shell that carried one satellite inside it and a second on top, so one rocket could launch both."
+"fact": "The **SPELDA** from an Ariane 44L launch in 1996: a tall shell that carried one satellite inside it and a second on top, so one rocket could launch both.",
+"parent": "ARIANE 44L+3",
+"parentArt": "ariane-early",
+"group": [
+23867
+],
+"tracked": 0
 },
 "24303": {
 "what": "Fragment",
@@ -2240,7 +2460,13 @@
 "24700": {
 "what": "Cryostat cover",
 "art": "iso-cover",
-"fact": "The **cryostat cover** of ESA’s Infrared Space Observatory. It was thrown off after launch in 1995 so the telescope, chilled with liquid helium, could see the infrared sky."
+"fact": "The **cryostat cover** of ESA’s Infrared Space Observatory. It was thrown off after launch in 1995 so the telescope, chilled with liquid helium, could see the infrared sky.",
+"parent": "ISO",
+"parentArt": "classic-satellite-2",
+"group": [
+24700
+],
+"tracked": 0
 },
 "24723": {
 "what": "Fragment",
@@ -2304,20 +2530,28 @@
 "parent": "SL-12",
 "parentArt": "sl-12",
 "group": [
-24833
+24833,
+24843
 ],
 "tracked": 0
 },
 "24843": {
 "what": "Cover",
 "art": "lens-cover",
-"fact": "A **cover** from Kosmos 2344 (1997), let go in orbit once its job of protecting an instrument or motor was done."
+"fact": "A **cover** from Kosmos 2344 (1997), let go in orbit once its job of protecting an instrument or motor was done.",
+"parent": "COSMOS 2344",
+"parentArt": "classic-satellite-2",
+"group": [
+24833,
+24843
+],
+"tracked": 0
 },
 "24914": {
 "what": "Fragment",
 "fact": "A **fragment** of NOAA 7, launched in 1981. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "NOAA 7",
-"parentArt": "us-weather",
+"parentArt": "sat-noaa-6-noaa-7-noaa-12",
 "group": [
 24914
 ],
@@ -2336,7 +2570,13 @@
 "25026": {
 "what": "SPELTRA",
 "art": "speltra",
-"fact": "The **SPELTRA** from an Ariane 5 launch in 1997: a big carbon-fibre shell, as wide as the rocket, that held one satellite inside while another rode on top."
+"fact": "The **SPELTRA** from an Ariane 5 launch in 1997: a big carbon-fibre shell, as wide as the rocket, that held one satellite inside while another rode on top.",
+"parent": "ARIANE 5",
+"parentArt": "ariane-5",
+"group": [
+25026
+],
+"tracked": 0
 },
 "25138": {
 "what": "Fragment",
@@ -2351,7 +2591,13 @@
 "25161": {
 "what": "Dual payload fitting",
 "art": "dpaf",
-"fact": "The **dual payload attach fitting** from a Taurus launch in 1998: a canister that hid one satellite inside while a second sat on top."
+"fact": "The **dual payload attach fitting** from a Taurus launch in 1998: a canister that hid one satellite inside while a second sat on top.",
+"parent": "TAURUS",
+"parentArt": "classic-satellite-1",
+"group": [
+25161
+],
+"tracked": 0
 },
 "25279": {
 "what": "Fragment",
@@ -2490,7 +2736,15 @@
 "25733": {
 "what": "Adapter",
 "art": "avum-adaptor",
-"fact": "A **payload adapter** from the first Long March 4B launch, in 1999. Fengyun-1C sat on it: the weather satellite China later destroyed in a 2007 missile test."
+"fact": "A **payload adapter** from the first Long March 4B launch, in 1999. Fengyun-1C sat on it: the weather satellite China later destroyed in a 2007 missile test.",
+"parent": "CZ-4B",
+"parentArt": "cz-4",
+"group": [
+25733,
+29945,
+29956
+],
+"tracked": 3533
 },
 "25844": {
 "what": "Fragment",
@@ -2521,12 +2775,24 @@
 },
 "26035": {
 "what": "Adapter",
-"fact": "A **payload adapter** from the Taurus launch in 1999: the structure that held a satellite to the rocket until it was released."
+"fact": "A **payload adapter** from the Taurus launch in 1999: the structure that held a satellite to the rocket until it was released.",
+"parent": "TAURUS",
+"parentArt": "classic-satellite-1",
+"group": [
+26035
+],
+"tracked": 0
 },
 "26109": {
 "what": "SYLDA",
 "art": "sylda",
-"fact": "The **SYLDA** from an Ariane 5 launch in 2000: a hollow shell that let one rocket carry two satellites, one hidden inside it and one sitting on top."
+"fact": "The **SYLDA** from an Ariane 5 launch in 2000: a hollow shell that let one rocket carry two satellites, one hidden inside it and one sitting on top.",
+"parent": "ARIANE 5",
+"parentArt": "ariane-5",
+"group": [
+26109
+],
+"tracked": 0
 },
 "26121": {
 "what": "Fragment",
@@ -2583,17 +2849,35 @@
 "26471": {
 "what": "SPELDA",
 "art": "spelda",
-"fact": "The **SPELDA** from an Ariane 44LP launch in 2000: a tall shell that carried one satellite inside it and a second on top, so one rocket could launch both."
+"fact": "The **SPELDA** from an Ariane 44LP launch in 2000: a tall shell that carried one satellite inside it and a second on top, so one rocket could launch both.",
+"parent": "ARIANE 44LP",
+"parentArt": "ariane-early",
+"group": [
+26471
+],
+"tracked": 0
 },
 "26497": {
 "what": "Upper stage",
 "art": "sylda",
-"fact": "Probably the spent **EPS upper stage** of the Ariane 5 that launched Astra 2B and GE-7 in 2000, though the US catalogue lists it as a SYLDA shell."
+"fact": "Probably the spent **EPS upper stage** of the Ariane 5 that launched Astra 2B and GE-7 in 2000, though the US catalogue lists it as a SYLDA shell.",
+"parent": "ARIANE 5",
+"parentArt": "ariane-5",
+"group": [
+26497
+],
+"tracked": 0
 },
 "26613": {
 "what": "Adapter",
 "art": "sylda",
-"fact": "Probably a **payload adapter** from the Ariane 5 launch in 2000 that carried PAS-1R and the AMSAT-OSCAR 40 radio ham satellite, though the US catalogue calls it a SYLDA."
+"fact": "Probably a **payload adapter** from the Ariane 5 launch in 2000 that carried PAS-1R and the AMSAT-OSCAR 40 radio ham satellite, though the US catalogue calls it a SYLDA.",
+"parent": "ARIANE 5",
+"parentArt": "ariane-5",
+"group": [
+26613
+],
+"tracked": 0
 },
 "26680": {
 "what": "Fragment",
@@ -2653,7 +2937,13 @@
 "26722": {
 "what": "SYLDA",
 "art": "sylda",
-"fact": "The **SYLDA** from an Ariane 5 launch in 2001: a hollow shell that let one rocket carry two satellites, one hidden inside it and one sitting on top."
+"fact": "The **SYLDA** from an Ariane 5 launch in 2001: a hollow shell that let one rocket carry two satellites, one hidden inside it and one sitting on top.",
+"parent": "ARIANE 5",
+"parentArt": "ariane-5",
+"group": [
+26722
+],
+"tracked": 0
 },
 "26726": {
 "what": "Fragment",
@@ -2790,7 +3080,13 @@
 "27000": {
 "what": "Dual payload fitting",
 "art": "dpaf",
-"fact": "The **dual payload attach fitting** from a Delta 2 launch in 2001: a canister that hid one satellite inside while a second sat on top."
+"fact": "The **dual payload attach fitting** from a Delta 2 launch in 2001: a canister that hid one satellite inside while a second sat on top.",
+"parent": "DELTA 2",
+"parentArt": "delta-2",
+"group": [
+27000
+],
+"tracked": 3
 },
 "27025": {
 "what": "Fragment",
@@ -2971,12 +3267,24 @@
 "27433": {
 "what": "Adapter",
 "art": "avum-adaptor",
-"fact": "A **payload adapter** from the Long March 4B launch in 2002: the structure that held a satellite to the rocket until it was released."
+"fact": "A **payload adapter** from the Long March 4B launch in 2002: the structure that held a satellite to the rocket until it was released.",
+"parent": "CZ-4B",
+"parentArt": "cz-4",
+"group": [
+27433
+],
+"tracked": 0
 },
 "27463": {
 "what": "SYLDA",
 "art": "sylda",
-"fact": "The **SYLDA** from an Ariane 5 launch in 2002: a hollow shell that let one rocket carry two satellites, one hidden inside it and one sitting on top."
+"fact": "The **SYLDA** from an Ariane 5 launch in 2002: a hollow shell that let one rocket carry two satellites, one hidden inside it and one sitting on top.",
+"parent": "ARIANE 5",
+"parentArt": "ariane-5",
+"group": [
+27463
+],
+"tracked": 0
 },
 "27476": {
 "what": "Fragment",
@@ -2984,19 +3292,33 @@
 "parent": "SL-12",
 "parentArt": "sl-12",
 "group": [
-27476
+27476,
+27494
 ],
 "tracked": 61
 },
 "27494": {
 "what": "Cover",
 "art": "lens-cover",
-"fact": "A **cover** from Kosmos 2392 (2002), let go in orbit once its job of protecting an instrument or motor was done."
+"fact": "A **cover** from Kosmos 2392 (2002), let go in orbit once its job of protecting an instrument or motor was done.",
+"parent": "COSMOS 2392",
+"parentArt": "modern-satellite-3",
+"group": [
+27476,
+27494
+],
+"tracked": 61
 },
 "27511": {
 "what": "SYLDA",
 "art": "sylda",
-"fact": "The **SYLDA** from an Ariane 5 launch in 2002: a hollow shell that let one rocket carry two satellites, one hidden inside it and one sitting on top."
+"fact": "The **SYLDA** from an Ariane 5 launch in 2002: a hollow shell that let one rocket carry two satellites, one hidden inside it and one sitting on top.",
+"parent": "ARIANE 5",
+"parentArt": "ariane-5",
+"group": [
+27511
+],
+"tracked": 0
 },
 "27593": {
 "what": "Fragment",
@@ -3053,7 +3375,13 @@
 "27646": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2002): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2002): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+27646
+],
+"tracked": 0
 },
 "27659": {
 "what": "Fragment",
@@ -3090,7 +3418,13 @@
 "27717": {
 "what": "SYLDA",
 "art": "sylda",
-"fact": "The **SYLDA** from an Ariane 5 launch in 2003: a hollow shell that let one rocket carry two satellites, one hidden inside it and one sitting on top."
+"fact": "The **SYLDA** from an Ariane 5 launch in 2003: a hollow shell that let one rocket carry two satellites, one hidden inside it and one sitting on top.",
+"parent": "ARIANE 5",
+"parentArt": "ariane-5",
+"group": [
+27717
+],
+"tracked": 0
 },
 "27745": {
 "what": "Fragment",
@@ -3131,12 +3465,24 @@
 "27821": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2003): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2003): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+27821
+],
+"tracked": 0
 },
 "27833": {
 "what": "SYLDA",
 "art": "sylda",
-"fact": "The **SYLDA** from an Ariane 5 launch in 2003: a hollow shell that let one rocket carry two satellites, one hidden inside it and one sitting on top."
+"fact": "The **SYLDA** from an Ariane 5 launch in 2003: a hollow shell that let one rocket carry two satellites, one hidden inside it and one sitting on top.",
+"parent": "ARIANE 5",
+"parentArt": "ariane-5",
+"group": [
+27833
+],
+"tracked": 0
 },
 "27883": {
 "what": "Fragment",
@@ -3199,12 +3545,26 @@
 "27950": {
 "what": "SYLDA",
 "art": "sylda",
-"fact": "The **SYLDA** from an Ariane 5 launch in 2003: a hollow shell that let one rocket carry two satellites, one hidden inside it and one sitting on top."
+"fact": "The **SYLDA** from an Ariane 5 launch in 2003: a hollow shell that let one rocket carry two satellites, one hidden inside it and one sitting on top.",
+"parent": "ARIANE 5",
+"parentArt": "ariane-5",
+"group": [
+27950,
+27952
+],
+"tracked": 0
 },
 "27952": {
 "what": "SYLDA",
 "art": "sylda",
-"fact": "The **SYLDA** from an Ariane 5 launch in 2003: a hollow shell that let one rocket carry two satellites, one hidden inside it and one sitting on top."
+"fact": "The **SYLDA** from an Ariane 5 launch in 2003: a hollow shell that let one rocket carry two satellites, one hidden inside it and one sitting on top.",
+"parent": "ARIANE 5",
+"parentArt": "ariane-5",
+"group": [
+27950,
+27952
+],
+"tracked": 0
 },
 "28040": {
 "what": "Fragment",
@@ -3232,47 +3592,103 @@
 "28116": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2003): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2003): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+28116
+],
+"tracked": 0
 },
 "28188": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2004): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2004): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+28188
+],
+"tracked": 0
 },
 "28237": {
 "what": "Fairing piece",
 "art": "fairing-half",
-"fact": "Part of the **lower fairing** from an H-2A launch in 2002: a shell that hid a second payload beneath the first, and was cast off in orbit once its job was done."
+"fact": "Part of the **lower fairing** from an H-2A launch in 2002: a shell that hid a second payload beneath the first, and was cast off in orbit once its job was done.",
+"parent": "H-2A",
+"parentArt": "modern-satellite-4",
+"group": [
+28237,
+28243
+],
+"tracked": 0
 },
 "28243": {
 "what": "Fairing piece",
 "art": "fairing-half",
-"fact": "Part of the **lower fairing** from an H-2A launch in 2002: a shell that hid a second payload beneath the first, and was cast off in orbit once its job was done."
+"fact": "Part of the **lower fairing** from an H-2A launch in 2002: a shell that hid a second payload beneath the first, and was cast off in orbit once its job was done.",
+"parent": "H-2A",
+"parentArt": "modern-satellite-4",
+"group": [
+28237,
+28243
+],
+"tracked": 0
 },
 "28359": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2004): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2004): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+28359
+],
+"tracked": 0
 },
 "28374": {
 "what": "Plume shield",
 "art": "dnepr-shield",
-"fact": "A **gas-dynamic shield** from a Dnepr launch (2004): it protected the satellites from the upper stage’s engine plume, then was pushed away."
+"fact": "A **gas-dynamic shield** from a Dnepr launch (2004): it protected the satellites from the upper stage’s engine plume, then was pushed away.",
+"parent": "SL-24",
+"parentArt": "dnepr",
+"group": [
+28374
+],
+"tracked": 0
 },
 "28395": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2004): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2004): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+28395
+],
+"tracked": 0
 },
 "28477": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2004): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2004): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+28477
+],
+"tracked": 0
 },
 "28528": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2005): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2005): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+28528
+],
+"tracked": 0
 },
 "28562": {
 "what": "Fragment",
@@ -3329,71 +3745,155 @@
 "28661": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2005): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2005): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+28661
+],
+"tracked": 0
 },
 "28870": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2005): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2005): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+28870
+],
+"tracked": 0
 },
 "28887": {
 "what": "SYLDA",
 "art": "sylda",
-"fact": "The **SYLDA** from an Ariane 5 launch in 2005: a hollow shell that let one rocket carry two satellites, one hidden inside it and one sitting on top."
+"fact": "The **SYLDA** from an Ariane 5 launch in 2005: a hollow shell that let one rocket carry two satellites, one hidden inside it and one sitting on top.",
+"parent": "ARIANE 5",
+"parentArt": "ariane-5",
+"group": [
+28887
+],
+"tracked": 0
 },
 "28914": {
 "what": "SYLDA",
 "art": "sylda",
-"fact": "The **SYLDA** from an Ariane 5 launch in 2005: a hollow shell that let one rocket carry two satellites, one hidden inside it and one sitting on top."
+"fact": "The **SYLDA** from an Ariane 5 launch in 2005: a hollow shell that let one rocket carry two satellites, one hidden inside it and one sitting on top.",
+"parent": "ARIANE 5",
+"parentArt": "ariane-5",
+"group": [
+28914
+],
+"tracked": 0
 },
 "28926": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2005): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2005): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+28926
+],
+"tracked": 0
 },
 "28947": {
 "what": "SYLDA",
 "art": "sylda",
-"fact": "The **SYLDA** from an Ariane 5 launch in 2006: a hollow shell that let one rocket carry two satellites, one hidden inside it and one sitting on top."
+"fact": "The **SYLDA** from an Ariane 5 launch in 2006: a hollow shell that let one rocket carry two satellites, one hidden inside it and one sitting on top.",
+"parent": "ARIANE 5",
+"parentArt": "ariane-5",
+"group": [
+28947
+],
+"tracked": 0
 },
 "29054": {
 "what": "Lens cover",
 "art": "lens-cover",
-"fact": "The **telescope cover** of Japan’s **AKARI** infrared space telescope, let go after launch in 2006 so the telescope could open its eye."
+"fact": "The **telescope cover** of Japan’s **AKARI** infrared space telescope, let go after launch in 2006 so the telescope could open its eye.",
+"parent": "ASTRO-F",
+"parentArt": "modern-satellite-1",
+"group": [
+29054
+],
+"tracked": 1
 },
 "29110": {
 "what": "Dual payload fitting",
 "art": "dpaf",
-"fact": "The **dual payload attach fitting** from a Delta 2 launch in 2006: a canister that hid one satellite inside while a second sat on top."
+"fact": "The **dual payload attach fitting** from a Delta 2 launch in 2006: a canister that hid one satellite inside while a second sat on top.",
+"parent": "DELTA 2",
+"parentArt": "delta-2",
+"group": [
+29110
+],
+"tracked": 1
 },
 "29164": {
 "what": "SYLDA",
 "art": "sylda",
-"fact": "The **SYLDA** from an Ariane 5 launch in 2006: a hollow shell that let one rocket carry two satellites, one hidden inside it and one sitting on top."
+"fact": "The **SYLDA** from an Ariane 5 launch in 2006: a hollow shell that let one rocket carry two satellites, one hidden inside it and one sitting on top.",
+"parent": "ARIANE 5",
+"parentArt": "ariane-5",
+"group": [
+29164
+],
+"tracked": 0
 },
 "29256": {
 "what": "Rocket stage",
-"fact": "The **third stage** of the Dnepr rocket that launched the Genesis I space habitat test in 2006. Dnepr was a Soviet SS-18 nuclear missile turned into a satellite launcher."
+"fact": "The **third stage** of the Dnepr rocket that launched the Genesis I space habitat test in 2006. Dnepr was a Soviet SS-18 nuclear missile turned into a satellite launcher.",
+"parent": "SL-24",
+"parentArt": "dnepr",
+"group": [
+29256
+],
+"tracked": 3
 },
 "29271": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2006): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2006): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+29271
+],
+"tracked": 0
 },
 "29274": {
 "what": "SYLDA",
 "art": "sylda",
-"fact": "The **SYLDA** from an Ariane 5 launch in 2006: a hollow shell that let one rocket carry two satellites, one hidden inside it and one sitting on top."
+"fact": "The **SYLDA** from an Ariane 5 launch in 2006: a hollow shell that let one rocket carry two satellites, one hidden inside it and one sitting on top.",
+"parent": "ARIANE 5",
+"parentArt": "ariane-5",
+"group": [
+29274
+],
+"tracked": 0
 },
 "29528": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2006): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2006): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+29528
+],
+"tracked": 0
 },
 "29649": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2006): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2006): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+29649
+],
+"tracked": 0
 },
 "29945": {
 "what": "Fragment",
@@ -3401,6 +3901,7 @@
 "parent": "FENGYUN 1C",
 "parentArt": "chinese-eo",
 "group": [
+25733,
 29945,
 29956
 ],
@@ -3412,6 +3913,7 @@
 "parent": "FENGYUN 1C",
 "parentArt": "chinese-eo",
 "group": [
+25733,
 29945,
 29956
 ],
@@ -3420,22 +3922,46 @@
 "31103": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2007): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2007): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+31103
+],
+"tracked": 0
 },
 "31120": {
 "what": "Plume shield",
 "art": "dnepr-shield",
-"fact": "A **gas-dynamic shield** from a Dnepr launch (2007): it protected the satellites from the upper stage’s engine plume, then was pushed away."
+"fact": "A **gas-dynamic shield** from a Dnepr launch (2007): it protected the satellites from the upper stage’s engine plume, then was pushed away.",
+"parent": "SL-24",
+"parentArt": "dnepr",
+"group": [
+31120
+],
+"tracked": 0
 },
 "31791": {
 "what": "Plume shield",
 "art": "dnepr-shield",
-"fact": "A **gas-dynamic shield** from a Dnepr launch (2007): it protected the satellites from the upper stage’s engine plume, then was pushed away."
+"fact": "A **gas-dynamic shield** from a Dnepr launch (2007): it protected the satellites from the upper stage’s engine plume, then was pushed away.",
+"parent": "SL-24",
+"parentArt": "dnepr",
+"group": [
+31791
+],
+"tracked": 0
 },
 "31863": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2007): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2007): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+31863
+],
+"tracked": 0
 },
 "32025": {
 "what": "Fragment",
@@ -3492,22 +4018,46 @@
 "32255": {
 "what": "SYLDA",
 "art": "sylda",
-"fact": "The **SYLDA** from an Ariane 5 launch in 2007: a hollow shell that let one rocket carry two satellites, one hidden inside it and one sitting on top."
+"fact": "The **SYLDA** from an Ariane 5 launch in 2007: a hollow shell that let one rocket carry two satellites, one hidden inside it and one sitting on top.",
+"parent": "ARIANE 5",
+"parentArt": "ariane-5",
+"group": [
+32255
+],
+"tracked": 1
 },
 "32374": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2007): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2007): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+32374
+],
+"tracked": 0
 },
 "32390": {
 "what": "SYLDA",
 "art": "sylda",
-"fact": "The **SYLDA** from an Ariane 5 launch in 2007: a hollow shell that let one rocket carry two satellites, one hidden inside it and one sitting on top."
+"fact": "The **SYLDA** from an Ariane 5 launch in 2007: a hollow shell that let one rocket carry two satellites, one hidden inside it and one sitting on top.",
+"parent": "ARIANE 5",
+"parentArt": "ariane-5",
+"group": [
+32390
+],
+"tracked": 0
 },
 "32480": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2008): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2008): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+32480
+],
+"tracked": 1
 },
 "32999": {
 "what": "Fragment",
@@ -3515,6 +4065,7 @@
 "parent": "ARIANE 44L+",
 "parentArt": "ariane-early",
 "group": [
+21942,
 22850,
 23237,
 23238,
@@ -3531,42 +4082,90 @@
 "33277": {
 "what": "SYLDA",
 "art": "sylda",
-"fact": "The **SYLDA** from an Ariane 5 launch in 2008: a hollow shell that let one rocket carry two satellites, one hidden inside it and one sitting on top."
+"fact": "The **SYLDA** from an Ariane 5 launch in 2008: a hollow shell that let one rocket carry two satellites, one hidden inside it and one sitting on top.",
+"parent": "ARIANE 5",
+"parentArt": "ariane-5",
+"group": [
+33277
+],
+"tracked": 0
 },
 "33279": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2008): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2008): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+33279
+],
+"tracked": 0
 },
 "33318": {
 "what": "Plume shield",
 "art": "dnepr-shield",
-"fact": "A **gas-dynamic shield** from a Dnepr launch (2008): it protected the satellites from the upper stage’s engine plume, then was pushed away."
+"fact": "A **gas-dynamic shield** from a Dnepr launch (2008): it protected the satellites from the upper stage’s engine plume, then was pushed away.",
+"parent": "SL-24",
+"parentArt": "dnepr",
+"group": [
+33318
+],
+"tracked": 0
 },
 "33374": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2008): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2008): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+33374
+],
+"tracked": 0
 },
 "33398": {
 "what": "Plume shield",
 "art": "dnepr-shield",
-"fact": "A **gas-dynamic shield** from a Dnepr launch (2008): it protected the satellites from the upper stage’s engine plume, then was pushed away."
+"fact": "A **gas-dynamic shield** from a Dnepr launch (2008): it protected the satellites from the upper stage’s engine plume, then was pushed away.",
+"parent": "SL-24",
+"parentArt": "dnepr",
+"group": [
+33398
+],
+"tracked": 0
 },
 "33437": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2008): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2008): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+33437
+],
+"tracked": 0
 },
 "33454": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2008): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2008): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+33454
+],
+"tracked": 0
 },
 "33461": {
 "what": "SYLDA",
 "art": "sylda",
-"fact": "The **SYLDA** from an Ariane 5 launch in 2008: a hollow shell that let one rocket carry two satellites, one hidden inside it and one sitting on top."
+"fact": "The **SYLDA** from an Ariane 5 launch in 2008: a hollow shell that let one rocket carry two satellites, one hidden inside it and one sitting on top.",
+"parent": "ARIANE 5",
+"parentArt": "ariane-5",
+"group": [
+33461
+],
+"tracked": 0
 },
 "33534": {
 "what": "Fragment",
@@ -3645,6 +4244,7 @@
 "parent": "ARIANE 44L+",
 "parentArt": "ariane-early",
 "group": [
+21942,
 22850,
 23237,
 23238,
@@ -3687,12 +4287,24 @@
 "34712": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2009): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2009): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+34712
+],
+"tracked": 0
 },
 "35495": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2009): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2009): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+35495
+],
+"tracked": 0
 },
 "35552": {
 "what": "Fragment",
@@ -3707,32 +4319,68 @@
 "35689": {
 "what": "Fairing piece",
 "art": "fairing-half",
-"fact": "Part of the **payload housing** from the Dnepr launch in 2009: the fairing and platforms that held a cluster of small satellites, cast off in orbit once they were released."
+"fact": "Part of the **payload housing** from the Dnepr launch in 2009: the fairing and platforms that held a cluster of small satellites, cast off in orbit once they were released.",
+"parent": "SL-24",
+"parentArt": "dnepr",
+"group": [
+35689
+],
+"tracked": 0
 },
 "35875": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2009): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2009): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+35875
+],
+"tracked": 0
 },
 "36038": {
 "what": "Adapter",
 "art": "avum-adaptor",
-"fact": "A **payload adapter** from the Rockot launch in 2009: the structure that held a satellite to the rocket until it was released."
+"fact": "A **payload adapter** from the Rockot launch in 2009: the structure that held a satellite to the rocket until it was released.",
+"parent": "SL-19",
+"parentArt": "rokot",
+"group": [
+36038
+],
+"tracked": 0
 },
 "36103": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2009): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2009): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+36103
+],
+"tracked": 0
 },
 "36133": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2009): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2009): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+36133
+],
+"tracked": 0
 },
 "36360": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2010): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2010): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+36360
+],
+"tracked": 0
 },
 "36365": {
 "what": "Fragment",
@@ -3747,57 +4395,139 @@
 "36399": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2010): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2010): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+36399
+],
+"tracked": 0
 },
 "36417": {
 "what": "Adapter",
 "art": "avum-adaptor",
-"fact": "A **payload adapter** from the Long March 4C launch in 2010: the structure that held a satellite to the rocket until it was released."
+"fact": "A **payload adapter** from the Long March 4C launch in 2010: the structure that held a satellite to the rocket until it was released.",
+"parent": "CZ-4C",
+"parentArt": "cz-4",
+"group": [
+36417,
+36418
+],
+"tracked": 0
 },
 "36418": {
 "what": "Adapter",
 "art": "avum-adaptor",
-"fact": "A **payload adapter** from the Long March 4C launch in 2010: the structure that held a satellite to the rocket until it was released."
+"fact": "A **payload adapter** from the Long March 4C launch in 2010: the structure that held a satellite to the rocket until it was released.",
+"parent": "CZ-4C",
+"parentArt": "cz-4",
+"group": [
+36417,
+36418
+],
+"tracked": 0
 },
 "36501": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2010): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2010): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+36501
+],
+"tracked": 0
 },
 "36510": {
 "what": "Plume shield",
 "art": "dnepr-shield",
-"fact": "A **gas-dynamic shield** from a Dnepr launch (2010): it protected the satellites from the upper stage’s engine plume, then was pushed away."
+"fact": "A **gas-dynamic shield** from a Dnepr launch (2010): it protected the satellites from the upper stage’s engine plume, then was pushed away.",
+"parent": "SL-24",
+"parentArt": "dnepr",
+"group": [
+36510
+],
+"tracked": 0
 },
 "36594": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2010): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2010): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+36594
+],
+"tracked": 0
 },
 "36601": {
 "what": "Plume shield",
 "art": "dnepr-shield",
-"fact": "A **gas-dynamic shield** from a Dnepr launch (2010): it protected the satellites from the upper stage’s engine plume, then was pushed away."
+"fact": "A **gas-dynamic shield** from a Dnepr launch (2010): it protected the satellites from the upper stage’s engine plume, then was pushed away.",
+"parent": "SL-24",
+"parentArt": "dnepr",
+"group": [
+36601,
+36602
+],
+"tracked": 0
 },
 "36602": {
 "what": "Fairing piece",
 "art": "fairing-half",
-"fact": "Part of the **payload housing** from the Dnepr launch in 2010: the fairing and platforms that held a cluster of small satellites, cast off in orbit once they were released."
+"fact": "Part of the **payload housing** from the Dnepr launch in 2010: the fairing and platforms that held a cluster of small satellites, cast off in orbit once they were released.",
+"parent": "SL-24",
+"parentArt": "dnepr",
+"group": [
+36601,
+36602
+],
+"tracked": 0
 },
 "36794": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2010): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2010): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+36794
+],
+"tracked": 0
 },
 "37187": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2010): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2010): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+37187
+],
+"tracked": 0
 },
 "37198": {
 "what": "Fragment",
 "art": "briz-apt",
-"fact": "A **fragment** of the Breeze-M stage that stranded the AMC-14 satellite in 2008. Left with fuel still aboard, it blew apart in October 2010."
+"fact": "A **fragment** of the Breeze-M stage that stranded the AMC-14 satellite in 2008. Left with fuel still aboard, it blew apart in October 2010.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+37198,
+37200,
+37201,
+37204,
+38565,
+38573,
+38579,
+38588,
+38590,
+38592,
+38647,
+38648,
+38651
+],
+"tracked": 121
 },
 "37200": {
 "what": "Fragment",
@@ -3805,6 +4535,7 @@
 "parent": "BREEZE-M",
 "parentArt": "briz",
 "group": [
+37198,
 37200,
 37201,
 37204,
@@ -3826,6 +4557,7 @@
 "parent": "BREEZE-M",
 "parentArt": "briz",
 "group": [
+37198,
 37200,
 37201,
 37204,
@@ -3847,6 +4579,7 @@
 "parent": "BREEZE-M",
 "parentArt": "briz",
 "group": [
+37198,
 37200,
 37201,
 37204,
@@ -3865,13 +4598,19 @@
 "37220": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2010): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2010): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+37220
+],
+"tracked": 0
 },
 "37241": {
 "what": "Fragment",
 "fact": "A **fragment** of NOAA 11, launched in 1988. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "NOAA 11",
-"parentArt": "us-weather",
+"parentArt": "sat-noaa-8-noaa-9-noaa-10-noaa-11-noaa-13-no",
 "group": [
 37241
 ],
@@ -3880,46 +4619,94 @@
 "37260": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2010): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2010): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+37260
+],
+"tracked": 0
 },
 "37347": {
 "what": "Fuel tank",
-"fact": "A dropped **fuel tank** from a Russian **Fregat** upper stage (2011), let go once it was empty."
+"fact": "A dropped **fuel tank** from a Russian **Fregat** upper stage (2011), let go once it was empty.",
+"parent": "FREGAT",
+"parentArt": "fregat",
+"group": [
+37347
+],
+"tracked": 1
 },
 "37604": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2011): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2011): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+37604
+],
+"tracked": 1
 },
 "37750": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2011): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2011): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+37750
+],
+"tracked": 0
 },
 "37756": {
 "what": "Fuel tank",
-"fact": "A dropped **fuel tank** from a Russian **Fregat** upper stage (2011), let go once it was empty."
+"fact": "A dropped **fuel tank** from a Russian **Fregat** upper stage (2011), let go once it was empty.",
+"parent": "FREGAT",
+"parentArt": "fregat",
+"group": [
+37756
+],
+"tracked": 347
 },
 "37796": {
 "what": "Fairing piece",
 "art": "fairing-half",
-"fact": "Part of the **payload housing** from the Dnepr launch in 2011: the fairing and platforms that held a cluster of small satellites, cast off in orbit once they were released."
+"fact": "Part of the **payload housing** from the Dnepr launch in 2011: the fairing and platforms that held a cluster of small satellites, cast off in orbit once they were released.",
+"parent": "SL-24",
+"parentArt": "dnepr",
+"group": [
+37796
+],
+"tracked": 0
 },
 "37808": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2011): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2011): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+37808
+],
+"tracked": 0
 },
 "37828": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2011): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2011): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+37828
+],
+"tracked": 0
 },
 "37832": {
 "what": "Fragment",
 "fact": "A **fragment** of NOAA 12, launched in 1991. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "NOAA 12",
-"parentArt": "us-weather",
+"parentArt": "sat-noaa-6-noaa-7-noaa-12",
 "group": [
 37832
 ],
@@ -3928,22 +4715,46 @@
 "37845": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2011): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2011): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+37845
+],
+"tracked": 0
 },
 "37871": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2011): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2011): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+37871
+],
+"tracked": 0
 },
 "37935": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2011): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2011): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+37935
+],
+"tracked": 0
 },
 "38089": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2012): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2012): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+38089
+],
+"tracked": 0
 },
 "38095": {
 "what": "Fragment",
@@ -3967,27 +4778,57 @@
 "38100": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2012): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2012): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+38100
+],
+"tracked": 0
 },
 "38246": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2012): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2012): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+38246
+],
+"tracked": 0
 },
 "38344": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2012): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2012): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+38344
+],
+"tracked": 10
 },
 "38347": {
 "what": "Adapter",
 "art": "avum-adaptor",
-"fact": "A **payload adapter** from the H-2A launch in 2012: the structure that held a satellite to the rocket until it was released."
+"fact": "A **payload adapter** from the H-2A launch in 2012: the structure that held a satellite to the rocket until it was released.",
+"parent": "H-2A",
+"parentArt": "modern-satellite-4",
+"group": [
+38347
+],
+"tracked": 39
 },
 "38554": {
 "what": "SYLDA",
 "art": "sylda",
-"fact": "The **SYLDA** from an Ariane 5 launch in 2012: a hollow shell that let one rocket carry two satellites, one hidden inside it and one sitting on top."
+"fact": "The **SYLDA** from an Ariane 5 launch in 2012: a hollow shell that let one rocket carry two satellites, one hidden inside it and one sitting on top.",
+"parent": "ARIANE 5",
+"parentArt": "ariane-5",
+"group": [
+38554
+],
+"tracked": 0
 },
 "38565": {
 "what": "Fragment",
@@ -3995,6 +4836,7 @@
 "parent": "BREEZE-M",
 "parentArt": "briz",
 "group": [
+37198,
 37200,
 37201,
 37204,
@@ -4016,6 +4858,7 @@
 "parent": "BREEZE-M",
 "parentArt": "briz",
 "group": [
+37198,
 37200,
 37201,
 37204,
@@ -4037,6 +4880,7 @@
 "parent": "BREEZE-M",
 "parentArt": "briz",
 "group": [
+37198,
 37200,
 37201,
 37204,
@@ -4058,6 +4902,7 @@
 "parent": "BREEZE-M",
 "parentArt": "briz",
 "group": [
+37198,
 37200,
 37201,
 37204,
@@ -4079,6 +4924,7 @@
 "parent": "BREEZE-M",
 "parentArt": "briz",
 "group": [
+37198,
 37200,
 37201,
 37204,
@@ -4100,6 +4946,7 @@
 "parent": "BREEZE-M",
 "parentArt": "briz",
 "group": [
+37198,
 37200,
 37201,
 37204,
@@ -4121,6 +4968,7 @@
 "parent": "BREEZE-M",
 "parentArt": "briz",
 "group": [
+37198,
 37200,
 37201,
 37204,
@@ -4142,6 +4990,7 @@
 "parent": "BREEZE-M",
 "parentArt": "briz",
 "group": [
+37198,
 37200,
 37201,
 37204,
@@ -4163,6 +5012,7 @@
 "parent": "BREEZE-M",
 "parentArt": "briz",
 "group": [
+37198,
 37200,
 37201,
 37204,
@@ -4181,13 +5031,19 @@
 "38654": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2012): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2012): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+38654
+],
+"tracked": 0
 },
 "38732": {
 "what": "Fragment",
 "fact": "A **fragment** of NOAA 14, launched in 1994. Pieces like this break off old rockets and satellites when they crack, explode or collide, and keep circling for years.",
 "parent": "NOAA 14",
-"parentArt": "us-weather",
+"parentArt": "sat-noaa-8-noaa-9-noaa-10-noaa-11-noaa-13-no",
 "group": [
 38732
 ],
@@ -4196,72 +5052,159 @@
 "38863": {
 "what": "Adapter",
 "art": "avum-adaptor",
-"fact": "A **payload adapter** from the Long March 2C launch in 2012: the structure that held a satellite to the rocket until it was released."
+"fact": "A **payload adapter** from the Long March 2C launch in 2012: the structure that held a satellite to the rocket until it was released.",
+"parent": "CZ-2C",
+"parentArt": "cz-2",
+"group": [
+38863
+],
+"tracked": 0
 },
 "38869": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2012): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2012): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+38869
+],
+"tracked": 0
 },
 "38979": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2012): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2012): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+38979
+],
+"tracked": 0
 },
 "39010": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2012): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2012): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+39010
+],
+"tracked": 0
 },
 "39015": {
 "what": "Cover",
 "art": "lens-cover",
-"fact": "A **cover** from a Long March 4C rocket (2012), let go in orbit once its job of protecting an instrument or motor was done."
+"fact": "A **cover** from a Long March 4C rocket (2012), let go in orbit once its job of protecting an instrument or motor was done.",
+"parent": "CZ-4C",
+"parentArt": "cz-4",
+"group": [
+39015,
+39016
+],
+"tracked": 1
 },
 "39016": {
 "what": "Cover",
 "art": "lens-cover",
-"fact": "A **cover** from a Long March 4C rocket (2012), let go in orbit once its job of protecting an instrument or motor was done."
+"fact": "A **cover** from a Long March 4C rocket (2012), let go in orbit once its job of protecting an instrument or motor was done.",
+"parent": "CZ-4C",
+"parentArt": "cz-4",
+"group": [
+39015,
+39016
+],
+"tracked": 1
 },
 "39094": {
 "what": "Adapter",
 "art": "avum-adaptor",
-"fact": "A **payload adapter** from the PSLV launch in 2013: the structure that held a satellite to the rocket until it was released."
+"fact": "A **payload adapter** from the PSLV launch in 2013: the structure that held a satellite to the rocket until it was released.",
+"parent": "PSLV",
+"parentArt": "pslv",
+"group": [
+39094
+],
+"tracked": 0
 },
 "39124": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2013): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2013): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+39124
+],
+"tracked": 0
 },
 "39129": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2013): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2013): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+39129
+],
+"tracked": 1
 },
 "39162": {
 "what": "Adapter",
 "art": "avum-adaptor",
-"fact": "A **payload adapter** from the Vega launch in 2013: the top of VESPA, the structure that let Vega carry a second satellite tucked beneath the first."
+"fact": "A **payload adapter** from the Vega launch in 2013: the top of VESPA, the structure that let Vega carry a second satellite tucked beneath the first.",
+"parent": "AVUM",
+"parentArt": "modern-satellite-3",
+"group": [
+39162
+],
+"tracked": 7
 },
 "39165": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2013): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2013): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+39165
+],
+"tracked": 0
 },
 "39174": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2013): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2013): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+39174
+],
+"tracked": 0
 },
 "39212": {
 "what": "Adapter",
 "art": "avum-adaptor",
-"fact": "A **payload adapter** from the Long March 4C launch in 2013: the structure that held a satellite to the rocket until it was released."
+"fact": "A **payload adapter** from the Long March 4C launch in 2013: the structure that held a satellite to the rocket until it was released.",
+"parent": "CZ-4C",
+"parentArt": "cz-4",
+"group": [
+39212,
+39357
+],
+"tracked": 0
 },
 "39236": {
 "what": "SYLDA",
 "art": "sylda",
-"fact": "The **SYLDA** from an Ariane 5 launch in 2013: a hollow shell that let one rocket carry two satellites, one hidden inside it and one sitting on top."
+"fact": "The **SYLDA** from an Ariane 5 launch in 2013: a hollow shell that let one rocket carry two satellites, one hidden inside it and one sitting on top.",
+"parent": "ARIANE 5",
+"parentArt": "ariane-5",
+"group": [
+39236
+],
+"tracked": 0
 },
 "39243": {
 "what": "Fragment",
@@ -4287,12 +5230,24 @@
 },
 "39254": {
 "what": "Rocket stage",
-"fact": "The **post-boost stage** of the very first Epsilon rocket, which launched Japan’s Hisaki planet-watching telescope in 2013. This small extra stage fine-tuned the final orbit."
+"fact": "The **post-boost stage** of the very first Epsilon rocket, which launched Japan’s Hisaki planet-watching telescope in 2013. This small extra stage fine-tuned the final orbit.",
+"parent": "EPSILON",
+"parentArt": "modern-satellite-3",
+"group": [
+39254
+],
+"tracked": 0
 },
 "39287": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2013): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2013): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+39287
+],
+"tracked": 0
 },
 "39334": {
 "what": "Fragment",
@@ -4528,52 +5483,115 @@
 },
 "39357": {
 "what": "Subsatellite",
-"fact": "A small object let go in 2013 by China’s **Shiyan 7** satellite, which then flew close to it again in what looked like tests of chasing and catching satellites."
+"fact": "A small object let go in 2013 by China’s **Shiyan 7** satellite, which then flew close to it again in what looked like tests of chasing and catching satellites.",
+"parent": "SHIYAN-7",
+"parentArt": "chinese-eo",
+"group": [
+39212,
+39357
+],
+"tracked": 0
 },
 "39362": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2013): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2013): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+39362
+],
+"tracked": 0
 },
 "39450": {
 "what": "Fairing piece",
 "art": "fairing-half",
-"fact": "Part of the **payload housing** from the Dnepr launch in 2013: the fairing and platforms that held a cluster of small satellites, cast off in orbit once they were released."
+"fact": "Part of the **payload housing** from the Dnepr launch in 2013: the fairing and platforms that held a cluster of small satellites, cast off in orbit once they were released.",
+"parent": "SL-24",
+"parentArt": "dnepr",
+"group": [
+39450
+],
+"tracked": 0
 },
 "39477": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2013): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2013): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+39477
+],
+"tracked": 0
 },
 "39511": {
 "what": "SYLDA",
 "art": "sylda",
-"fact": "The **SYLDA** from an Ariane 5 launch in 2014: a hollow shell that let one rocket carry two satellites, one hidden inside it and one sitting on top."
+"fact": "The **SYLDA** from an Ariane 5 launch in 2014: a hollow shell that let one rocket carry two satellites, one hidden inside it and one sitting on top.",
+"parent": "ARIANE 5",
+"parentArt": "ariane-5",
+"group": [
+39511
+],
+"tracked": 0
 },
 "39524": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2014): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2014): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+39524
+],
+"tracked": 1
 },
 "40049": {
 "what": "Fairing piece",
 "art": "fairing-half",
-"fact": "Part of the **payload housing** from the Dnepr launch in 2014: the fairing and platforms that held a cluster of small satellites, cast off in orbit once they were released."
+"fact": "Part of the **payload housing** from the Dnepr launch in 2014: the fairing and platforms that held a cluster of small satellites, cast off in orbit once they were released.",
+"parent": "SL-24 PLAT",
+"parentArt": "dnepr",
+"group": [
+40049
+],
+"tracked": 0
 },
 "40078": {
 "what": "Adapter",
 "art": "avum-adaptor",
-"fact": "A **payload adapter** from the Soyuz-Fregat launch in 2014: the structure that held a satellite to the rocket until it was released."
+"fact": "A **payload adapter** from the Soyuz-Fregat launch in 2014: the structure that held a satellite to the rocket until it was released.",
+"parent": "FREGAT",
+"parentArt": "fregat",
+"group": [
+40078
+],
+"tracked": 0
 },
 "40113": {
 "what": "Adapter",
 "art": "avum-adaptor",
-"fact": "A **payload adapter** from the Long March 4C launch in 2014: the structure that held a satellite to the rocket until it was released."
+"fact": "A **payload adapter** from the Long March 4C launch in 2014: the structure that held a satellite to the rocket until it was released.",
+"parent": "CZ-4C",
+"parentArt": "cz-4",
+"group": [
+40113,
+40114
+],
+"tracked": 2
 },
 "40114": {
 "what": "Adapter",
 "art": "avum-adaptor",
-"fact": "A **payload adapter** from the Long March 4C launch in 2014: the structure that held a satellite to the rocket until it was released."
+"fact": "A **payload adapter** from the Long March 4C launch in 2014: the structure that held a satellite to the rocket until it was released.",
+"parent": "CZ-4C",
+"parentArt": "cz-4",
+"group": [
+40113,
+40114
+],
+"tracked": 2
 },
 "40174": {
 "what": "Fragment",
@@ -4810,7 +5828,13 @@
 "40260": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2014): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2014): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+40260
+],
+"tracked": 1
 },
 "40342": {
 "what": "Fragment",
@@ -4837,17 +5861,35 @@
 "40366": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2014): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2014): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+40366
+],
+"tracked": 0
 },
 "40386": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2015): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2015): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+40386
+],
+"tracked": 0
 },
 "40507": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2015): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2015): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+40507
+],
+"tracked": 0
 },
 "40819": {
 "what": "Fragment",
@@ -5075,41 +6117,89 @@
 "40884": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2015): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2015): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+40884
+],
+"tracked": 0
 },
 "40986": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2015): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2015): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+40986
+],
+"tracked": 0
 },
 "41108": {
 "what": "Fuel tank",
-"fact": "A dropped **fuel tank** from a Russian **Fregat** upper stage (2015), let go once it was empty."
+"fact": "A dropped **fuel tank** from a Russian **Fregat** upper stage (2015), let go once it was empty.",
+"parent": "FREGAT",
+"parentArt": "fregat",
+"group": [
+41108
+],
+"tracked": 3
 },
 "41193": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2015): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2015): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+41193
+],
+"tracked": 0
 },
 "41312": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2016): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2016): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+41312
+],
+"tracked": 0
 },
 "41390": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2016): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2016): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+41390
+],
+"tracked": 0
 },
 "41583": {
 "what": "Fuel tank",
 "art": "briz-apt",
-"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2016): a ring-shaped tank wrapped round the stage, dropped once it was empty."
+"fact": "The extra **fuel tank** of a Russian **Breeze-M** stage (2016): a ring-shaped tank wrapped round the stage, dropped once it was empty.",
+"parent": "BREEZE-M",
+"parentArt": "briz",
+"group": [
+41583
+],
+"tracked": 0
 },
 "41594": {
 "what": "SYLDA",
 "art": "sylda",
-"fact": "The **SYLDA** from an Ariane 5 launch in 2016: a hollow shell that let one rocket carry two satellites, one hidden inside it and one sitting on top."
+"fact": "The **SYLDA** from an Ariane 5 launch in 2016: a hollow shell that let one rocket carry two satellites, one hidden inside it and one sitting on top.",
+"parent": "ARIANE 5",
+"parentArt": "ariane-5",
+"group": [
+41594
+],
+"tracked": 0
 },
 "41675": {
 "what": "Fragment",
@@ -5144,12 +6234,24 @@
 "41750": {
 "what": "SYLDA",
 "art": "sylda",
-"fact": "The **SYLDA** from an Ariane 5 launch in 2016: a hollow shell that let one rocket carry two satellites, one hidden inside it and one sitting on top."
+"fact": "The **SYLDA** from an Ariane 5 launch in 2016: a hollow shell that let one rocket carry two satellites, one hidden inside it and one sitting on top.",
+"parent": "ARIANE 5",
+"parentArt": "ariane-5",
+"group": [
+41750
+],
+"tracked": 36
 },
 "41792": {
 "what": "Adapter",
 "art": "avum-adaptor",
-"fact": "A **payload adapter** from the PSLV launch in 2016: the structure that held a satellite to the rocket until it was released."
+"fact": "A **payload adapter** from the PSLV launch in 2016: the structure that held a satellite to the rocket until it was released.",
+"parent": "PSLV",
+"parentArt": "pslv",
+"group": [
+41792
+],
+"tracked": 0
 },
 "41835": {
 "what": "Fragment",

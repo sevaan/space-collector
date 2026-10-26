@@ -22,19 +22,19 @@ const deb = JSON.parse(readFileSync(R + 'data/debris.json', 'utf8'));
 let n = 0, miss = [];
 for (const [id, d] of Object.entries(deb)) {
   delete d.parent; delete d.parentArt; delete d.group; delete d.tracked; delete d.launchTag;
-  if (d.what !== 'Fragment' || (d.art && ART_FILES.has(`deb-${d.art}`))) continue;
+  // every debris card gets its parent and tracked count (2026-10-26, Sevaan: all debris use the tracking report)
   const raw = names.get(id) ?? ''; const parent = raw.replace(/\s*(DEB\b.*|\[.*\]|\(.*\))\s*$/g, '').trim(); if (!parent) continue;
   const rocket = /^(DELTA|THOR|ARIANE|CZ-|SL-|BREEZE|TITAN|ATLAS|AGENA|PSLV|FREGAT|CENTAUR)/.test(parent);
   const alt = parent.replace(/^COSMOS /, 'KOSMOS-'); // GCAT writes Kosmos-1275
   const g = byName.get(parent) ?? byName.get(alt) ?? byName.get(`${parent} R/B`) ?? [...byName.entries()].find(([k]) => k.startsWith(parent + ' ') || k.startsWith(alt + ' '))?.[1];
   const card = { id: Number(g?.Satcat) || 0, name: rocket ? `${parent} R/B` : parent, type: rocket ? 'rocket-body' : 'payload', launch: g?.LDate?.slice(0, 4) ?? '' };
   const art = artFileFor(card, { [card.id]: ser[card.id] ?? plKey(g?.PLName) });
-  if (!ART_FILES.has(art)) { miss.push(`${id} ${parent} → ${art}`); continue; }
-  d.parent = parent; d.parentArt = art; d.launchTag = tagOf.get(Number(id)) ?? cospar.get(id).slice(0, 8); n++;
+  if (!ART_FILES.has(art)) miss.push(`${id} ${parent} → ${art}`);
+  d.parent = parent; if (ART_FILES.has(art)) d.parentArt = art; d.launchTag = tagOf.get(Number(id)) ?? cospar.get(id).slice(0, 8); n++;
 }
 // Pieces of the same launch in the game (the fragment card's dots), and how many GCAT has ever tracked from it.
 const groups = new Map();
-for (const [id, d] of Object.entries(deb)) if (d.parentArt) { const g = groups.get(d.launchTag) ?? []; g.push(Number(id)); groups.set(d.launchTag, g); }
-for (const [id, d] of Object.entries(deb)) if (d.parentArt) { d.group = groups.get(d.launchTag).sort((a, b) => a - b); d.tracked = trackedBy.get(d.launchTag) ?? 0; delete d.launchTag; }
+for (const [id, d] of Object.entries(deb)) if (d.launchTag) { const g = groups.get(d.launchTag) ?? []; g.push(Number(id)); groups.set(d.launchTag, g); }
+for (const [, d] of Object.entries(deb)) if (d.launchTag) { d.group = groups.get(d.launchTag).sort((a, b) => a - b); d.tracked = trackedBy.get(d.launchTag) ?? 0; delete d.launchTag; }
 writeFileSync(R + 'data/debris.json', JSON.stringify(deb, null, 1).replace(/^ +/gm, '') + '\n'); // the file's own layout (one key per line, no indent)
-console.log(n, 'fragments linked to their parent'); if (miss.length) console.log('no picture:', miss.slice(0, 20));
+console.log(n, 'debris cards linked to their parent'); if (miss.length) console.log('no picture:', miss.slice(0, 20));

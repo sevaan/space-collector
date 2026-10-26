@@ -1,25 +1,25 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { fallWords } from './last-chance.js?v=0.1.1209';
-import { useMiles } from './units.js?v=0.1.1209';
-import { feel } from './native.js?v=0.1.1209';
-import { sfx } from './sfx.js?v=0.1.1209';
-import { cardArt } from './art.js?v=0.1.1209';
-import { TIER_INFO } from './rarity.js?v=0.1.1209';
-import { SET_BY_ID } from './sets.js?v=0.1.1209';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.1209';
-import { FLEET_ABOUT, fleetAbout, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.1209';
-import { artFileFor } from './art-keys.js?v=0.1.1209';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.1209';
-import { orbitGlobe } from './orbit-view.js?v=0.1.1209';
-import { ART_SHARED } from './art-shared.js?v=0.1.1209';
-import { ART_CREDITS } from './art-credits.js?v=0.1.1209';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.1209';
-import { nightsIn } from './observation.js?v=0.1.1209';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.1209';
-import { SHINY } from './shiny.js?v=0.1.1209';
-import { conArt, cometArt } from './con-art.js?v=0.1.1209';
-import { CON_FIGURES } from './con-figures.js?v=0.1.1209';
-import { localText } from './localize.js?v=0.1.1209';
+import { fallWords } from './last-chance.js?v=0.1.1210';
+import { useMiles } from './units.js?v=0.1.1210';
+import { feel } from './native.js?v=0.1.1210';
+import { sfx } from './sfx.js?v=0.1.1210';
+import { cardArt } from './art.js?v=0.1.1210';
+import { TIER_INFO } from './rarity.js?v=0.1.1210';
+import { SET_BY_ID } from './sets.js?v=0.1.1210';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.1210';
+import { FLEET_ABOUT, fleetAbout, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.1210';
+import { artFileFor } from './art-keys.js?v=0.1.1210';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.1210';
+import { orbitGlobe } from './orbit-view.js?v=0.1.1210';
+import { ART_SHARED } from './art-shared.js?v=0.1.1210';
+import { ART_CREDITS } from './art-credits.js?v=0.1.1210';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.1210';
+import { nightsIn } from './observation.js?v=0.1.1210';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.1210';
+import { SHINY } from './shiny.js?v=0.1.1210';
+import { conArt, cometArt } from './con-art.js?v=0.1.1210';
+import { CON_FIGURES } from './con-figures.js?v=0.1.1210';
+import { localText } from './localize.js?v=0.1.1210';
 // The animal/symbol figure belongs to the completed (gold) constellation card only (2026-10-05): a single
 // star’s card draws just the star pattern with its star marked, so the figure is a reward for finishing the set.
 // A star card’s constellation figure comes into focus as you collect the constellation’s stars (design/con-focus.html B).
@@ -91,9 +91,9 @@ function fragReport(o, mini) {
   const d = debrisOf(o), year = String(o.launch ?? '').slice(0, 4), laps = o.period ? 1440 / o.period : 0;
   const parent = titleFor({ name: d.parent, type: /^(DELTA|THOR|ARIANE|CZ-|SL-|BREEZE|TITAN|ATLAS|AGENA|PSLV)/.test(d.parent) ? 'rocket-body' : 'payload' });
   const h = Math.round(((Number(o.perigee) || 0) + (Number(o.apogee) || 0)) / 2), height = useMiles() ? `${Math.round(h * 0.621371).toLocaleString('en-US')} mi` : `${h.toLocaleString('en-US')} km`;
-  const row = (k, v) => `<dt>${k}</dt><dd>${v}</dd>`;
+  const row = (k, v) => `<dt>${k}</dt><dd>${v}</dd>`, what = d.what && d.what !== 'Fragment' ? d.what : '';
   return `<div class="frag"><div class="frag-orbit-box"></div><div class="frag-cap">Orbit · ${height} up${laps ? ` · ${laps.toFixed(laps < 10 ? 1 : 0)} laps a day` : ''}</div>`
-    + `<dl class="frag-rep">${row('From', esc(parent))}${year ? row('Launched', year) : ''}${d.tracked > 1 ? row('Pieces', `${d.tracked.toLocaleString()} tracked`) : ''}</dl></div>`;
+    + `<dl class="frag-rep">${what ? row('What', esc(what)) : ''}${row('From', esc(parent))}${year ? row('Launched', year) : ''}${d.tracked > 1 ? row('Pieces', `${d.tracked.toLocaleString()} tracked`) : ''}</dl></div>`;
 }
 function asFragmentCard(el, o, mini) { // rearrange a rendered card into the tracking report
   const face = el.querySelector('.card__face'), art = face.querySelector('.card__art'), head = face.querySelector('.card__heading');
