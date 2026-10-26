@@ -12,6 +12,7 @@ def call(method, url, body=None, raw=None, ctype='application/json'):
   try: return json.load(urllib.request.urlopen(req, timeout=120)) if True else None
   except urllib.error.HTTPError as e: sys.exit(f'{method} {url}: {e.code} {e.read().decode()[:400]}')
 config = {'cleanUrls': True, 'trailingSlashBehavior': 'REMOVE',
+  'rewrites': [{'glob': '/api/**', 'run': {'serviceId': 'api', 'region': 'us-central1'}}], # our server (functions/index.js), 2026-10-26
   'headers': [{'glob': '**/*.@(png|jpg|webp|mp4)', 'headers': {'Cache-Control': 'public, max-age=604800'}}]}
 v = call('POST', f'{API}/{SITE}/versions', {'config': config})['name']
 files, blobs = {}, {}

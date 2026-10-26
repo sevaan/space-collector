@@ -1,0 +1,10 @@
+{
+  "name": "space-collector-api",
+  "type": "module",
+  "main": "index.js",
+  "engines": { "node": "22" },
+  "dependencies": {
+    "@google-cloud/functions-framework": "^3.4.0",
+    "@google-cloud/firestore": "^7.11.0"
+  }
+}
