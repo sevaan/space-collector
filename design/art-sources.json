@@ -1,0 +1,2373 @@
+[
+ {
+  "art": "classic-satellite-3",
+  "uses": 293,
+  "category": "generic",
+  "object": "Catch-all \"satellite 1975-1999\" (variation 3 of 3)",
+  "sources": [],
+  "wrong": "Drawn as a CubeSat (small cube with whip antennas). CubeSats didn't exist before 2003, and this variation is used for 293 cards including STARLETTE, which is a 24 cm sphere covered in reflectors (a real photo/drawing exists, licence unclear: eoPortal/CNES).",
+  "note": "See classic-satellite-1. Most visibly wrong of the generic set; swap first."
+ },
+ {
+  "art": "sl-8",
+  "uses": 286,
+  "category": "photo-by",
+  "object": "Kosmos-3M second stage (SL-8 R/B) - most common rocket body",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Plececk_10.jpg",
+    "licence": "CC BY 4.0",
+    "credit": "Ministry of Defence of the Russian Federation (mil.ru)",
+    "shows": "Kosmos-3M at Plesetsk (whole rocket, ground)"
+   },
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Cosmos3M.jpg",
+    "licence": "CC BY-SA 4.0",
+    "credit": "Trash777",
+    "shows": "Kosmos-3M on display at Baikonur"
+   }
+  ],
+  "wrong": "",
+  "note": "No in-orbit photo. Russian MoD media is CC BY 4.0 (credit \"Минобороны России\" / mil.ru). Museum rockets show the second stage end-on. 286 cards share one honest picture: fine."
+ },
+ {
+  "art": "classic-satellite-2",
+  "uses": 266,
+  "category": "generic",
+  "object": "Catch-all \"satellite 1975-1999\" (variation 2 of 3)",
+  "sources": [],
+  "wrong": "",
+  "note": "See classic-satellite-1. Shows a Salyut-like cylinder with two wings and a cone: looks like a crewed module, misleading for Landsat 2 or a Cosmos."
+ },
+ {
+  "art": "classic-satellite-1",
+  "uses": 244,
+  "category": "generic",
+  "object": "Catch-all \"satellite 1975-1999\" (variation 1 of 3)",
+  "sources": [],
+  "wrong": "",
+  "note": "The three classic-satellite pictures cover 803 cards from 110 name families, but 665 of them are \"Cosmos\" (a cover name for dozens of Soviet types: Zenit/Yantar recon, Strela, Parus, Tselina, Okean, US-K, Taifun, etc.), plus Landsat, SPOT, Okean, Kiku, Nova, Intercosmos, Starlette, GEOS... At least 30 visually distinct buses. Honest options: (1) for Cosmos, use data/series.json (already maps many NORAD ids to programmes) to route each to a per-programme picture (Strela, Parus, Tselina, Zenit, Meteor already exist); (2) give the remainder a deliberately schematic \"unknown satellite\" silhouette or a line-drawing of the satellite's own catalogue shape class; (3) for named Western ones with PD photos (Landsat, GEOS, NOAA/Nova) add own pictures. Picture shows a busy box with dish and one wing: reads as a specific but non-existent satellite."
+ },
+ {
+  "art": "modern-satellite-1",
+  "uses": 158,
+  "category": "generic",
+  "object": "Catch-all \"satellite 2000 onward\" (variation 1 of 4: large EO box with big wing)",
+  "sources": [],
+  "wrong": "",
+  "note": "The four modern-satellite pictures cover 584 cards in 369 name families (Cosmos 69, Formosat, Sentinel, CYGNSS, Hawk, RapidEye, COSMO-SkyMed, Cartosat, Jason, WorldView, CBERS, Kompsat, CanX...). Too varied to depict; assignment is by NORAD id, so a CubeSat card can get the big EO bus and vice versa. Suggest picking the variation by size (RCS in the catalogue, or stdMag) so at least big/small match, and/or a schematic silhouette. Many of these have agency PD photos (NASA, NOAA) or CC BY-SA IGO (ESA Sentinels) if you ever want per-satellite art."
+ },
+ {
+  "art": "modern-satellite-3",
+  "uses": 147,
+  "category": "generic",
+  "object": "Catch-all \"satellite 2000 onward\" (variation 3 of 4: CubeSat with four wings)",
+  "sources": [],
+  "wrong": "",
+  "note": "The four modern-satellite pictures cover 584 cards in 369 name families (Cosmos 69, Formosat, Sentinel, CYGNSS, Hawk, RapidEye, COSMO-SkyMed, Cartosat, Jason, WorldView, CBERS, Kompsat, CanX...). Too varied to depict; assignment is by NORAD id, so a CubeSat card can get the big EO bus and vice versa. Suggest picking the variation by size (RCS in the catalogue, or stdMag) so at least big/small match, and/or a schematic silhouette. Many of these have agency PD photos (NASA, NOAA) or CC BY-SA IGO (ESA Sentinels) if you ever want per-satellite art."
+ },
+ {
+  "art": "modern-satellite-2",
+  "uses": 146,
+  "category": "generic",
+  "object": "Catch-all \"satellite 2000 onward\" (variation 2 of 4: mid-size with two wings and camera)",
+  "sources": [],
+  "wrong": "",
+  "note": "The four modern-satellite pictures cover 584 cards in 369 name families (Cosmos 69, Formosat, Sentinel, CYGNSS, Hawk, RapidEye, COSMO-SkyMed, Cartosat, Jason, WorldView, CBERS, Kompsat, CanX...). Too varied to depict; assignment is by NORAD id, so a CubeSat card can get the big EO bus and vice versa. Suggest picking the variation by size (RCS in the catalogue, or stdMag) so at least big/small match, and/or a schematic silhouette. Many of these have agency PD photos (NASA, NOAA) or CC BY-SA IGO (ESA Sentinels) if you ever want per-satellite art."
+ },
+ {
+  "art": "modern-satellite-4",
+  "uses": 133,
+  "category": "generic",
+  "object": "Catch-all \"satellite 2000 onward\" (variation 4 of 4: octagonal bus with two wings)",
+  "sources": [],
+  "wrong": "",
+  "note": "The four modern-satellite pictures cover 584 cards in 369 name families (Cosmos 69, Formosat, Sentinel, CYGNSS, Hawk, RapidEye, COSMO-SkyMed, Cartosat, Jason, WorldView, CBERS, Kompsat, CanX...). Too varied to depict; assignment is by NORAD id, so a CubeSat card can get the big EO bus and vice versa. Suggest picking the variation by size (RCS in the catalogue, or stdMag) so at least big/small match, and/or a schematic silhouette. Many of these have agency PD photos (NASA, NOAA) or CC BY-SA IGO (ESA Sentinels) if you ever want per-satellite art."
+ },
+ {
+  "art": "debris-rocket-2",
+  "uses": 115,
+  "category": "generic",
+  "object": "Rocket debris (variation 2 of 3)",
+  "sources": [],
+  "wrong": "Shows an intact rocket stage with its engine, not debris. \"DEB\" objects are fragments: bits of tank skin, insulation, adapter rings.",
+  "note": "312 cards, 15 families: Ariane 88 + Ariane 44LP 19 (incl. 1986 Ariane V16 H10 breakup), CZ 60, SL 54, Delta 38, Thor Ablestar 11, Titan 10, Thorad Agena 9, Fregat 4... There is essentially no photographic imagery of orbital debris fragments. data/debris.json already identifies 158 named pieces (SYLDA, SPELDA, fairings, despin weights...). Suggest: a schematic \"fragment cloud\" picture for unnamed fragments plus the deb-* pictures for named parts; avoid showing a whole stage."
+ },
+ {
+  "art": "sl-14",
+  "uses": 109,
+  "category": "photo-restricted",
+  "object": "Tsyklon-3 third stage (SL-14 R/B)",
+  "sources": [],
+  "wrong": "",
+  "note": "Yuzhnoye/Roscosmos photos copyright; Commons has only drawings (\"Tsyklon-3.svg\"). No in-orbit imagery. Treat drawing as traced from Yuzhnoye diagrams."
+ },
+ {
+  "art": "debris-rocket-1",
+  "uses": 101,
+  "category": "generic",
+  "object": "Rocket debris (variation 1 of 3)",
+  "sources": [],
+  "wrong": "Shows an intact rocket stage with its engine, not debris. \"DEB\" objects are fragments: bits of tank skin, insulation, adapter rings.",
+  "note": "312 cards, 15 families: Ariane 88 + Ariane 44LP 19 (incl. 1986 Ariane V16 H10 breakup), CZ 60, SL 54, Delta 38, Thor Ablestar 11, Titan 10, Thorad Agena 9, Fregat 4... There is essentially no photographic imagery of orbital debris fragments. data/debris.json already identifies 158 named pieces (SYLDA, SPELDA, fairings, despin weights...). Suggest: a schematic \"fragment cloud\" picture for unnamed fragments plus the deb-* pictures for named parts; avoid showing a whole stage."
+ },
+ {
+  "art": "chinese-eo",
+  "uses": 97,
+  "category": "generic",
+  "object": "Chinese Earth-observation satellite (Yaogan/Shijian/Shiyan/Jilin/Fengyun/Gaofen/Chuangxin)",
+  "sources": [],
+  "wrong": "",
+  "note": "97 cards across 8 families and many unrelated buses (Fengyun 1 1980s weather sats, Yaogan radar/optical/SIGINT triplets, Jilin, Gaofen). Photos are CAST/CNSA/Xinhua copyright: photo-restricted. China News Service YouTube stills on Commons are CC BY 3.0/4.0 and sometimes show satellites: worth a look per family. Suggest splitting at least Fengyun-1 (examples FENGYUN 1A/1B/1C) and keeping the rest schematic."
+ },
+ {
+  "art": "debris-rocket-3",
+  "uses": 96,
+  "category": "generic",
+  "object": "Rocket debris (variation 3 of 3)",
+  "sources": [],
+  "wrong": "Shows an intact rocket stage with its engine, not debris. \"DEB\" objects are fragments: bits of tank skin, insulation, adapter rings.",
+  "note": "312 cards, 15 families: Ariane 88 + Ariane 44LP 19 (incl. 1986 Ariane V16 H10 breakup), CZ 60, SL 54, Delta 38, Thor Ablestar 11, Titan 10, Thorad Agena 9, Fregat 4... There is essentially no photographic imagery of orbital debris fragments. data/debris.json already identifies 158 named pieces (SYLDA, SPELDA, fairings, despin weights...). Suggest: a schematic \"fragment cloud\" picture for unnamed fragments plus the deb-* pictures for named parts; avoid showing a whole stage."
+ },
+ {
+  "art": "ariane-5",
+  "uses": 94,
+  "category": "photo-by",
+  "object": "Ariane 5 upper stage (EPS / ESC-A)",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Ariane_5_EPS_Upper_Stage.jpg",
+    "licence": "CC BY 4.0",
+    "credit": "SkywalkerPL / Wikimedia Commons",
+    "shows": "EPS storable upper stage"
+   }
+  ],
+  "wrong": "",
+  "note": "94 cards. ESA/CNES/Arianespace photos of ESC-A in integration exist (ESA ones sometimes CC BY-SA 3.0 IGO). Picture shows one stage type for both EPS and ESC-A: they look different (ESC-A is a wide cryogenic stage with HM7B)."
+ },
+ {
+  "art": "sl-12",
+  "uses": 87,
+  "category": "photo-restricted",
+  "object": "Proton Blok-DM upper stage (SL-12 aux motor)",
+  "sources": [],
+  "wrong": "The 87 cards are \"SL-12 R/B(AUX MOTOR)\": Blok-DM's jettisoned SOZ ullage-motor pods (small boxes), not the whole Blok-DM stage shown.",
+  "note": "Cards are actually \"SL-12 R/B(AUX MOTOR)\" = the small SOZ ullage motor units dropped by Blok-DM, not the whole Blok-DM. Art shows the full stage with spherical tanks, so it's the wrong object for 87 cards. RSC Energia photos copyright; museum Blok-D exists. Licence not checked on a file page (ran out of budget for this one)."
+ },
+ {
+  "art": "briz-tank",
+  "uses": 85,
+  "category": "no-photo",
+  "object": "Briz-M drop tank (debris)",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Maquettes_étages_Briz_M_et_KM.jpg",
+    "licence": "CC BY-SA 4.0",
+    "credit": "Pline",
+    "shows": "Briz-M model incl. the toroidal tank"
+   }
+  ],
+  "wrong": "",
+  "note": "No photo of a dropped tank in orbit. Several have exploded, so a torn torus isn't wrong, but \"BREEZE-M DEB [TANK]\" are mostly intact tanks."
+ },
+ {
+  "art": "early-satellite-3",
+  "uses": 84,
+  "category": "generic",
+  "object": "Catch-all \"satellite before 1975\" (variation 3 of 3)",
+  "sources": [],
+  "wrong": "Looks like a crewed Vostok/station module with antennas; used for VANGUARD 2/3 (small spheres) and EXPLORER 11. Misleading.",
+  "note": "237 cards, 47 families: Cosmos 149, Explorer 12, Transit 6, GGSE 5, SECOR 5, Solrad 4, OAO 3, Vanguard 2, Telstar 2, Alouette 2, Relay 2, Elektron, ISIS, Timation, Aureole... Most US ones have PD photos (NASA/NRL/USAF/Navy), e.g. Transit (US Navy), Explorer (NASA), OAO (NASA), Telstar (NASA/Bell, check). Suggest: per-family pictures for Explorer/Transit/Solrad/SECOR/OAO, and the Cosmos ones routed via series.json (DS-P1, Zenit etc.)."
+ },
+ {
+  "art": "early-satellite-2",
+  "uses": 82,
+  "category": "generic",
+  "object": "Catch-all \"satellite before 1975\" (variation 2 of 3)",
+  "sources": [],
+  "wrong": "",
+  "note": "237 cards, 47 families: Cosmos 149, Explorer 12, Transit 6, GGSE 5, SECOR 5, Solrad 4, OAO 3, Vanguard 2, Telstar 2, Alouette 2, Relay 2, Elektron, ISIS, Timation, Aureole... Most US ones have PD photos (NASA/NRL/USAF/Navy), e.g. Transit (US Navy), Explorer (NASA), OAO (NASA), Telstar (NASA/Bell, check). Suggest: per-family pictures for Explorer/Transit/Solrad/SECOR/OAO, and the Cosmos ones routed via series.json (DS-P1, Zenit etc.)."
+ },
+ {
+  "art": "smallsat",
+  "uses": 82,
+  "category": "generic",
+  "object": "Small satellite / CubeSat / amateur OSCAR",
+  "sources": [],
+  "wrong": "",
+  "note": "82 cards, 19 families: OSCAR 13, AprizeSat 10, Flock 10, RADIO 8, SaudiSat 6, SkySat 7, Bandwagon 6, UoSAT 5, UniSat 5, Lemur 4, unidentified ISS objects. Only Flock/Lemur/ISS CubeSats really look like this; OSCAR 5-7 were 1970s boxes, SkySat is a 100 kg hexagonal prism. Planet's Dove/SkySat photos are company copyright (some CC BY-SA 4.0 on Commons, not checked); NASA PD photos of CubeSat deployments from the ISS (e.g. JEM small satellite orbital deployer) exist and are the honest generic picture for the ISS ones."
+ },
+ {
+  "art": "us-military",
+  "uses": 73,
+  "category": "generic",
+  "object": "US military satellite (OPS / USA)",
+  "sources": [],
+  "wrong": "",
+  "note": "73 cards (OPS 58, USA 15). 1960s OPS numbers hide everything from Corona film-return capsules (on Agena) to GGSE/Poppy, Transit, Gambit. Some declassified photos are PD (NRO/USAF: Corona, Poppy, GRAB at NRL), but mapping each OPS number to its type would need research. Keep anonymous on purpose: a deliberately schematic \"classified\" silhouette is the honest answer. Current picture invents a specific-looking drum with gear."
+ },
+ {
+  "art": "early-satellite-1",
+  "uses": 71,
+  "category": "generic",
+  "object": "Catch-all \"satellite before 1975\" (variation 1 of 3)",
+  "sources": [],
+  "wrong": "",
+  "note": "237 cards, 47 families: Cosmos 149, Explorer 12, Transit 6, GGSE 5, SECOR 5, Solrad 4, OAO 3, Vanguard 2, Telstar 2, Alouette 2, Relay 2, Elektron, ISIS, Timation, Aureole... Most US ones have PD photos (NASA/NRL/USAF/Navy), e.g. Transit (US Navy), Explorer (NASA), OAO (NASA), Telstar (NASA/Bell, check). Suggest: per-family pictures for Explorer/Transit/Solrad/SECOR/OAO, and the Cosmos ones routed via series.json (DS-P1, Zenit etc.)."
+ },
+ {
+  "art": "cz-4",
+  "uses": 70,
+  "category": "photo-restricted",
+  "object": "CZ-4/4B/4C third stage",
+  "sources": [],
+  "wrong": "",
+  "note": "Drawn from Sevaan's reference photos (CASC/SAST, copyright). Onboard camera footage stills exist (copyright)."
+ },
+ {
+  "art": "long-march-3",
+  "uses": 70,
+  "category": "photo-restricted",
+  "object": "Long March 3 third stage (and CZ-5/7A/8 upper stages)",
+  "sources": [],
+  "wrong": "",
+  "note": "CASC/CALT photos copyright; Xinhua/CNS. China News Service YouTube stills on Commons are CC BY: check for stage footage. Rule lumps CZ-3, CZ-5, CZ-7A and CZ-8 upper stages under one picture (they share YF-75 twin engines but differ in size)."
+ },
+ {
+  "art": "delta-early",
+  "uses": 67,
+  "category": "photo-pd",
+  "object": "Thor-Delta / Delta 1 second stage",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Delta-K_second_stage_for_Delta_294_mission_(KSC-02PD-2058).jpg",
+    "licence": "Public domain (NASA)",
+    "credit": "NASA",
+    "shows": "Delta-K second stage (later variant) on the ground"
+   }
+  ],
+  "wrong": "",
+  "note": "Early Delta second stages (Able derived) have NASA/USAF PD photos in archives (not checked)."
+ },
+ {
+  "art": "ariane-early",
+  "uses": 54,
+  "category": "photo-restricted",
+  "object": "Ariane 1-4 third stage (H10)",
+  "sources": [],
+  "wrong": "",
+  "note": "CNES/ESA copyright; museum Ariane 1/4 at Le Bourget have CC BY-SA photos (Pline), not checked for the H10 stage. Licence not checked on a file page (ran out of budget for this one)."
+ },
+ {
+  "art": "centaur",
+  "uses": 49,
+  "category": "photo-pd",
+  "object": "Centaur upper stage",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Centaur_Upper_Stage_Installation_Recognizes_Trailblazing_Space_Program_(8706282).jpg",
+    "licence": "Public domain (US Space Force)",
+    "credit": "U.S. Space Force photo by Van Ha",
+    "shows": "A Centaur stage on display"
+   }
+  ],
+  "wrong": "Shows 3-4 small nozzles at the base; Centaur flies with one or two RL10 engines (the art brief itself says two).",
+  "note": "DVIDS/USSF photos are PD. NASA also has many Centaur photos."
+ },
+ {
+  "art": "meteor",
+  "uses": 49,
+  "category": "photo-restricted",
+  "object": "Meteor weather satellite (Soviet/Russian)",
+  "sources": [],
+  "wrong": "",
+  "note": "49 cards (Meteor-1/2/3 47, Meteor-M 2). Meteor-1/2 museum pieces exist (Museum of Cosmonautics, Moscow; their Flickr is CC0 for many exhibits, not checked for Meteor). Roscosmos/VNIIEM photos are copyright. Art is a reasonable cylinder-with-panels. Licence not checked on a file page (ran out of budget for this one)."
+ },
+ {
+  "art": "us-weather",
+  "uses": 47,
+  "category": "generic",
+  "object": "US weather satellite (TIROS / NOAA / DMSP / Nimbus / ITOS)",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:ESSA_3_and_4.jpg",
+    "licence": "Public domain (NOAA)",
+    "credit": "NOAA Photo Library",
+    "shows": "TIROS-family drum satellites (ESSA)"
+   },
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Calibrating_the_cameras_on_a_TIROS_satellite_spac011525727x800x800.jpg",
+    "licence": "Public domain (NOAA)",
+    "credit": "NOAA Photo Library",
+    "shows": "TIROS on the ground"
+   }
+  ],
+  "wrong": "Drawn as a box with one long solar wing (TIROS-N/NOAA style); the example cards TIROS 1-5 are 18-sided solar-cell drums with no wings.",
+  "note": "47 cards, 6 types: NOAA (TIROS-N bus) 19, DMSP 12, TIROS 8, Nimbus 6, ITOS 1, TIROS-N 1. All have NOAA/NASA/USAF PD photos. Easy win: split into TIROS drum (reuse ESSA picture), Nimbus (butterfly), and TIROS-N/NOAA/DMSP box."
+ },
+ {
+  "art": "cz-2",
+  "uses": 46,
+  "category": "photo-restricted",
+  "object": "CZ-2C/2D/2F second stage",
+  "sources": [],
+  "wrong": "",
+  "note": "CASC copyright."
+ },
+ {
+  "art": "sl-3",
+  "uses": 46,
+  "category": "photo-restricted",
+  "object": "Vostok Blok E upper stage (SL-3 R/B)",
+  "sources": [],
+  "wrong": "",
+  "note": "Museum examples (Vostok rocket at VDNKh Moscow, Kaluga) have CC BY-SA photos on Commons (not checked). Licence not checked on a file page (ran out of budget for this one)."
+ },
+ {
+  "art": "kick-motor",
+  "uses": 43,
+  "category": "photo-pd",
+  "object": "Payload kick motor (PAM-D / Star 48 / Altair)",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:PAM-D_rocket_stage.jpg",
+    "licence": "Public domain (tagged)",
+    "credit": "uncredited",
+    "shows": "PAM-D stage"
+   },
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:S07-03-079_-_STS-007_-_Deployment_of_the_PALAPA-B1_satellite_-_DPLA_-_7be21e89166da9deb139b75b6186c32b.jpg",
+    "licence": "Public domain (NASA)",
+    "credit": "NASA JSC",
+    "shows": "Palapa B1 on its PAM-D leaving the shuttle bay, in orbit"
+   }
+  ],
+  "wrong": "",
+  "note": "43 cards / 26 families (OV1 R/B is actually the Altair-2 module; Leasat used its own motor; others PAM-D/Star 48/AKM). Shuttle-era deployment photos are PD and show the real thing in orbit. Art (sphere + nozzle) matches Star 48."
+ },
+ {
+  "art": "delta-2",
+  "uses": 42,
+  "category": "photo-pd",
+  "object": "Delta II second stage",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Delta_II_second_stage.jpg",
+    "licence": "Public domain (NASA)",
+    "credit": "NASA/George Shelton",
+    "shows": "Delta II second stage at KSC"
+   },
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Second_stage_of_Aquarius_SAC-D_Delta_II_7320-10C.jpg",
+    "licence": "Public domain (USAF)",
+    "credit": "VAFB/30th Space Wing",
+    "shows": "Delta II second stage at Vandenberg"
+   }
+  ],
+  "wrong": "",
+  "note": "Ground photos of the real stage."
+ },
+ {
+  "art": "electron",
+  "uses": 40,
+  "category": "photo-restricted",
+  "object": "Electron kick stage",
+  "sources": [],
+  "wrong": "",
+  "note": "Rocket Lab photos are copyright (press use only). Art (disc) is plausible."
+ },
+ {
+  "art": "falcon-9",
+  "uses": 37,
+  "category": "photo-by",
+  "object": "Falcon 9 second stage",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Falcon_9_Rocket_2nd_Stage_Engine_Test.jpg",
+    "licence": "CC0",
+    "credit": "SpaceX",
+    "shows": "Second stage with MVac on a test stand"
+   }
+  ],
+  "wrong": "Merlin Vacuum nozzle drawn small and dark; the real nozzle extension is huge (exit ~3.3 m on a 3.7 m stage), thin, often glowing; the stage is also much longer and slimmer.",
+  "note": "CC0 SpaceX image (2015 era); trademark caution. Rule also maps FALCON 1 R/B here (different, much smaller stage)."
+ },
+ {
+  "art": "scout",
+  "uses": 36,
+  "category": "photo-pd",
+  "object": "Scout fourth stage (Altair)",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Altair_X248-A2_rocket_stage.jpg",
+    "licence": "Public domain (Smithsonian)",
+    "credit": "Smithsonian Institution",
+    "shows": "Altair X248 stage (the type used as Scout/Vanguard upper stage)"
+   },
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Scout-D_rocket_-_Smithsonian_Air_and_Space_Museum_-_2012-05-15_(7246252390)_(cropped).jpg",
+    "licence": "CC BY-SA 2.0",
+    "credit": "Tim Evanson",
+    "shows": "Whole Scout-D at NASM"
+   }
+  ],
+  "wrong": "",
+  "note": "Smithsonian marks this one PD on Commons (NASM open access CC0 images). Good real reference for the spent fourth stage."
+ },
+ {
+  "art": "molniya-rocket",
+  "uses": 34,
+  "category": "photo-restricted",
+  "object": "Molniya Blok L / upper stage (SL-6 R/B(2))",
+  "sources": [],
+  "wrong": "",
+  "note": "Museum/drawings only. Licence not checked on a file page (ran out of budget for this one)."
+ },
+ {
+  "art": "pslv",
+  "uses": 33,
+  "category": "photo-restricted",
+  "object": "PSLV fourth stage (PS4)",
+  "sources": [],
+  "wrong": "",
+  "note": "ISRO copyright (non-commercial use with credit)."
+ },
+ {
+  "art": "debris-satellite-1",
+  "uses": 31,
+  "category": "no-photo",
+  "object": "Satellite fragments (variation 1 of 2)",
+  "sources": [],
+  "wrong": "",
+  "note": "56 cards: Cosmos 32 (incl. Cosmos 2251 collision, ASAT tests), Echo balloon pieces 4, NOAA 4, OPS 3, Fengyun 1C ASAT debris... No photos of fragments exist. ESA/NASA debris visualisations are renders. Bent panel/foil shards drawing is honest if labelled."
+ },
+ {
+  "art": "long-march-6a",
+  "uses": 29,
+  "category": "photo-restricted",
+  "object": "Long March 6A upper stage",
+  "sources": [],
+  "wrong": "",
+  "note": "SAST copyright. Note the art brief asks for \"the whole rocket with boosters\" but in orbit is only the second stage (art was redone 2026-10-14 as the stage)."
+ },
+ {
+  "art": "thor-upper",
+  "uses": 29,
+  "category": "photo-pd",
+  "object": "Thor Able-Star upper stage",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Thor_Able_Star_with_Courier_1B,_Oct_4_1960.JPG",
+    "licence": "Public domain (USAF)",
+    "credit": "NASA/USAF via Jonathan's Space Home Page",
+    "shows": "Thor Able-Star rocket on the pad"
+   }
+  ],
+  "wrong": "",
+  "note": "Whole rocket only; Able-Star stage itself rarely photographed. 115+101+96 debris cards are also Thor Ablestar fragments (1961 Transit 4A stage explosion)."
+ },
+ {
+  "art": "pegasus",
+  "uses": 27,
+  "category": "photo-pd",
+  "object": "Pegasus / Minotaur / Taurus upper stage",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Stargazer_and_Pegasus_F43_in_flight_over_Atlantic_(KSC-20161212-PH_LAL01_0009).jpg",
+    "licence": "Public domain (NASA)",
+    "credit": "NASA/Lori Losey",
+    "shows": "Pegasus XL under the L-1011 (whole rocket)"
+   }
+  ],
+  "wrong": "",
+  "note": "Upper stages alone: Northrop Grumman copyright. Art shows a generic dark stage, fine. Rule also catches Minotaur and Taurus (different stages)."
+ },
+ {
+  "art": "debris-satellite-2",
+  "uses": 25,
+  "category": "no-photo",
+  "object": "Satellite fragments (variation 2 of 2)",
+  "sources": [],
+  "wrong": "",
+  "note": "56 cards: Cosmos 32 (incl. Cosmos 2251 collision, ASAT tests), Echo balloon pieces 4, NOAA 4, OPS 3, Fengyun 1C ASAT debris... No photos of fragments exist. ESA/NASA debris visualisations are renders. Bent panel/foil shards drawing is honest if labelled."
+ },
+ {
+  "art": "briz",
+  "uses": 23,
+  "category": "photo-by",
+  "object": "Briz-M upper stage",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Maquettes_étages_Briz_M_et_KM.jpg",
+    "licence": "CC BY-SA 4.0",
+    "credit": "Pline",
+    "shows": "Models of Briz-M and Briz-KM, Paris Air Show 2013"
+   },
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:KVTK_and_\"Briz-M\"_upper_stages_layout_on_MAKS-2021_airshow.jpg",
+    "licence": "CC BY-SA 4.0",
+    "credit": "Kirill Borisenko",
+    "shows": "Briz-M mock-up, MAKS 2021"
+   }
+  ],
+  "wrong": "",
+  "note": "Models/mock-ups; Khrunichev photos copyright."
+ },
+ {
+  "art": "h2a",
+  "uses": 23,
+  "category": "photo-restricted",
+  "object": "H-II / H-IIA second stage",
+  "sources": [],
+  "wrong": "",
+  "note": "JAXA/MHI copyright (JAXA allows some use with credit; commercial needs permission)."
+ },
+ {
+  "art": "sl-16",
+  "uses": 22,
+  "category": "photo-restricted",
+  "object": "Zenit-2 second stage (SL-16 R/B)",
+  "sources": [],
+  "wrong": "",
+  "note": "Yuzhnoye copyright; Sea Launch/Zenit photos exist on Commons, mostly launches. Licence not checked on a file page (ran out of budget for this one)."
+ },
+ {
+  "art": "molniya",
+  "uses": 21,
+  "category": "photo-by",
+  "object": "Molniya communications satellite",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Molniya_1_in_Kaluga_1.jpg",
+    "licence": "CC BY 4.0",
+    "credit": "Stolbovsky / Wikimedia Commons",
+    "shows": "Real Molniya-1 at the Tsiolkovsky Museum, Kaluga"
+   },
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:FP2A8708_(37296933972).jpg",
+    "licence": "CC0",
+    "credit": "Museum of Cosmonautics (Музей Космонавтики), Flickr",
+    "shows": "Model of Molniya 1"
+   }
+  ],
+  "wrong": "",
+  "note": "No in-orbit photos (Soviet). Art was redrawn from a real photo (2026-10-15) and looks right."
+ },
+ {
+  "art": "strela-3",
+  "uses": 21,
+  "category": "photo-restricted",
+  "object": "Strela-3 / Gonets relay",
+  "sources": [],
+  "wrong": "",
+  "note": "Gonets-D1 and Strela-3 photos are ISS Reshetnev/Roscosmos copyright. Licence not checked on a file page (ran out of budget for this one)."
+ },
+ {
+  "art": "ius",
+  "uses": 19,
+  "category": "photo-pd",
+  "object": "Inertial Upper Stage (IUS)",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:STS-29_TDRS-4_deployment.jpg",
+    "licence": "Public domain (NASA)",
+    "credit": "NASA",
+    "shows": "IUS with TDRS-D just after deployment from Discovery, in orbit"
+   },
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:STS-26_TDRS-C_deployment.jpg",
+    "licence": "Public domain (NASA)",
+    "credit": "NASA",
+    "shows": "IUS/TDRS-C deploy"
+   }
+  ],
+  "wrong": "",
+  "note": "Real in-orbit photos of the exact stage."
+ },
+ {
+  "art": "agena",
+  "uses": 17,
+  "category": "photo-pd",
+  "object": "Agena upper stage (Thor-Agena B/D R/B)",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Agena_Target_Docking_vehicle_seen_from_Gemini_8_spacecraft_(s66-25774).jpg",
+    "licence": "Public domain (NASA)",
+    "credit": "NASA Johnson Space Center",
+    "shows": "Real Agena (target-vehicle version) in orbit, from Gemini 8"
+   },
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Profile_of_Agena_Docking_Target_-_GPN-2000-001345.jpg",
+    "licence": "Public domain (NASA)",
+    "credit": "NASA",
+    "shows": "Profile of the Agena in orbit"
+   }
+  ],
+  "wrong": "",
+  "note": "One of the few rocket stages ever photographed in orbit. The Gemini ATV has a docking collar the Thor-Agena stages lacked, but the body/engine end is the same."
+ },
+ {
+  "art": "dnepr",
+  "uses": 16,
+  "category": "photo-restricted",
+  "object": "Dnepr / SS-18 stage",
+  "sources": [],
+  "wrong": "",
+  "note": "Kosmotras photos copyright. Licence not checked on a file page (ran out of budget for this one)."
+ },
+ {
+  "art": "atlas",
+  "uses": 14,
+  "category": "photo-pd",
+  "object": "Atlas booster / sustainer (Atlas D/F R/B)",
+  "sources": [],
+  "wrong": "",
+  "note": "NASA/USAF Atlas photos are PD (many on Commons, not checked individually). In orbit the Atlas core itself reached orbit on early flights; ground photos of the balloon-tank core are plentiful."
+ },
+ {
+  "art": "irs",
+  "uses": 12,
+  "category": "photo-restricted",
+  "object": "IRS (Indian Remote Sensing) / Resourcesat / Oceansat",
+  "sources": [],
+  "wrong": "",
+  "note": "ISRO images: ISRO website terms allow non-commercial use with credit; commercial use unclear. Art was checked against references 2026-10-06."
+ },
+ {
+  "art": "cz-12",
+  "uses": 10,
+  "category": "photo-restricted",
+  "object": "CZ-12 second stage",
+  "sources": [],
+  "wrong": "",
+  "note": "CASC copyright."
+ },
+ {
+  "art": "essa",
+  "uses": 9,
+  "category": "photo-pd",
+  "object": "ESSA (TIROS Operational System)",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:ESSA_3_and_4.jpg",
+    "licence": "Public domain (NOAA)",
+    "credit": "NOAA",
+    "shows": "ESSA 3 and 4 drums"
+   },
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:ESSA_3_Spac0003.jpg",
+    "licence": "Public domain (NOAA)",
+    "credit": "NOAA Photo Library",
+    "shows": "ESSA 3 with side camera"
+   }
+  ],
+  "wrong": "",
+  "note": "Art redrawn from reference 2026-10-15, looks right."
+ },
+ {
+  "art": "titan-transtage",
+  "uses": 9,
+  "category": "photo-pd",
+  "object": "Titan III Transtage",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Transtage_rocket_stage.jpg",
+    "licence": "Public domain (tagged)",
+    "credit": "USAF (uncredited)",
+    "shows": "Transtage stage (small)"
+   },
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Titan_3C_with_Transtage_4_(Jun._18_1965).png",
+    "licence": "Public domain (USAF)",
+    "credit": "USAF",
+    "shows": "Titan IIIC launch"
+   }
+  ],
+  "wrong": "",
+  "note": "Licence of \"Transtage rocket stage.jpg\" has no author on Commons; probably USAF but verify."
+ },
+ {
+  "art": "n1-rocket",
+  "uses": 8,
+  "category": "photo-restricted",
+  "object": "N-I / N-II / H-I second stage",
+  "sources": [],
+  "wrong": "",
+  "note": "NASDA/JAXA copyright; it's a licence-built Delta second stage, so NASA PD Delta photos are a fair visual reference."
+ },
+ {
+  "art": "ov1",
+  "uses": 8,
+  "category": "photo-pd",
+  "object": "OV1 (Orbiting Vehicle 1) satellites",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:OV1-15.jpg",
+    "licence": "Public domain (USAF)",
+    "credit": "Air Force Cambridge Research Laboratories",
+    "shows": "OV1-15 satellite"
+   }
+  ],
+  "wrong": "",
+  "note": "USAF photos are PD. Art drawn from Sevaan's OV1-14 photo."
+ },
+ {
+  "art": "parus",
+  "uses": 8,
+  "category": "photo-by",
+  "object": "Parus / Tsikada / Nadezhda navigation sat",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Tsikada_M-3.jpg",
+    "licence": "CC BY-SA 4.0",
+    "credit": "Vitaly V. Kuzmin (vitalykuzmin.net)",
+    "shows": "Tsikada-M display model at an exhibition"
+   }
+  ],
+  "wrong": "",
+  "note": "Display model photo, share-alike. Nadezhda (examples) share the bus."
+ },
+ {
+  "art": "rocket-stage",
+  "uses": 8,
+  "category": "generic",
+  "object": "Unidentified rocket stage",
+  "sources": [],
+  "wrong": "",
+  "note": "11 cards / 7 families: Mu M-stages, AVUM (Vega), H-stages, Black Arrow (photo of Waxwing/Prospero era: UK National Archives/ Science Museum, check), TLV, YZ (Chinese Yuanzheng). A deliberately schematic stage is the honest choice; AVUM and Black Arrow could get real ones."
+ },
+ {
+  "art": "rokot",
+  "uses": 8,
+  "category": "photo-restricted",
+  "object": "Rokot / Briz-KM (SL-19)",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Maquettes_étages_Briz_M_et_KM.jpg",
+    "licence": "CC BY-SA 4.0",
+    "credit": "Pline",
+    "shows": "Briz-KM model"
+   }
+  ],
+  "wrong": "",
+  "note": "Model photo only."
+ },
+ {
+  "art": "fregat",
+  "uses": 7,
+  "category": "photo-by",
+  "object": "Fregat upper stage",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Fregat_rocket_stage_at_MAKS-2015.jpg",
+    "licence": "CC BY-SA 4.0",
+    "credit": "Vitaly V. Kuzmin",
+    "shows": "Fregat stage at MAKS 2015"
+   }
+  ],
+  "wrong": "",
+  "note": "Art redrawn from a real photo 2026-10-15."
+ },
+ {
+  "art": "gslv",
+  "uses": 6,
+  "category": "photo-restricted",
+  "object": "GSLV upper stage",
+  "sources": [],
+  "wrong": "",
+  "note": "ISRO copyright."
+ },
+ {
+  "art": "diamant",
+  "uses": 5,
+  "category": "photo-by",
+  "object": "Diamant third stage",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Fusee-Diamant-A-Musee-du-Bourget_P1010661.jpg",
+    "licence": "CC BY-SA 3.0",
+    "credit": "Pline",
+    "shows": "Diamant A at Le Bourget museum"
+   },
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Diamant_A.jpg",
+    "licence": "Public domain (SDASM, no known restrictions)",
+    "credit": "San Diego Air & Space Museum Archives",
+    "shows": "Diamant A photo"
+   }
+  ],
+  "wrong": "",
+  "note": "SDASM Flickr items are \"no known copyright restrictions\"."
+ },
+ {
+  "art": "kinetica-1",
+  "uses": 5,
+  "category": "photo-restricted",
+  "object": "Kinetica-1 (Lijian-1) upper stage",
+  "sources": [],
+  "wrong": "",
+  "note": "CAS Space copyright."
+ },
+ {
+  "art": "cz-6c",
+  "uses": 4,
+  "category": "photo-restricted",
+  "object": "CZ-6C / CZ-6 upper stage",
+  "sources": [],
+  "wrong": "",
+  "note": "Stand-in for CZ-6 too. CASC copyright."
+ },
+ {
+  "art": "jielong-3",
+  "uses": 4,
+  "category": "photo-restricted",
+  "object": "Jielong-3 upper stage (also stand-in for CZ-11)",
+  "sources": [],
+  "wrong": "",
+  "note": "CALT copyright. Stand-in for CZ-11."
+ },
+ {
+  "art": "lusat",
+  "uses": 4,
+  "category": "photo-restricted",
+  "object": "AMSAT Microsat (PACSAT, DOVE, WEBERSAT, LUSAT)",
+  "sources": [],
+  "wrong": "",
+  "note": "AMSAT photos / QSL cards are copyright AMSAT; ask AMSAT (they usually grant for educational use). Licence not checked on a file page (ran out of budget for this one)."
+ },
+ {
+  "art": "nuri",
+  "uses": 4,
+  "category": "photo-restricted",
+  "object": "Nuri (KSLV-II) third stage",
+  "sources": [],
+  "wrong": "",
+  "note": "KARI copyright."
+ },
+ {
+  "art": "rocket-stage-1",
+  "uses": 3,
+  "category": "generic",
+  "object": "Generic cylinder for Mu stages (M-4S / M-3H)",
+  "sources": [],
+  "wrong": "",
+  "note": "3 cards. ISAS copyright for real refs."
+ },
+ {
+  "art": "soyuz-rocket",
+  "uses": 3,
+  "category": "photo-restricted",
+  "object": "Soyuz Blok I third stage (SL-4)",
+  "sources": [],
+  "wrong": "",
+  "note": "Roscosmos launch photos: some Roscosmos media on Commons is tagged CC BY 4.0/CC BY-SA 4.0 (e.g. \"Strela Konder-E1 Launch.jpg\" CC BY-SA 4.0 Роскосмос); check each. Blok I alone: no in-orbit photo. Licence not checked on a file page (ran out of budget for this one)."
+ },
+ {
+  "art": "epsilon",
+  "uses": 2,
+  "category": "photo-restricted",
+  "object": "Epsilon upper stage",
+  "sources": [],
+  "wrong": "",
+  "note": "JAXA/IHI copyright."
+ },
+ {
+  "art": "firefly-alpha",
+  "uses": 2,
+  "category": "photo-restricted",
+  "object": "Firefly Alpha second stage",
+  "sources": [],
+  "wrong": "",
+  "note": "Firefly copyright; NASA/USSF launch photos (PD) of Alpha exist, whole rocket only. Licence not checked on a file page (ran out of budget for this one)."
+ },
+ {
+  "art": "gravity-1",
+  "uses": 2,
+  "category": "photo-restricted",
+  "object": "Gravity-1 upper stage",
+  "sources": [],
+  "wrong": "",
+  "note": "Orienspace copyright."
+ },
+ {
+  "art": "qaem",
+  "uses": 2,
+  "category": "photo-by",
+  "object": "Qaem-100 (whole rocket; stage in orbit is its third stage)",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Qaem_100_on_the_TEL.jpg",
+    "licence": "CC BY 4.0",
+    "credit": "Tasnim News Agency",
+    "shows": "Qaem-100 on its launcher"
+   },
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Qaem-100_flight_3.jpg",
+    "licence": "CC BY 4.0",
+    "credit": "Tasnim News Agency",
+    "shows": "Launch"
+   }
+  ],
+  "wrong": "",
+  "note": "Tasnim releases its photos under CC BY 4.0. Political sensitivity (IRGC programme) worth a thought."
+ },
+ {
+  "art": "russian-stage",
+  "uses": 2,
+  "category": "generic",
+  "object": "Other Soviet/Russian upper stage (SL-23 / SL-26)",
+  "sources": [],
+  "wrong": "",
+  "note": "2 cards (SL-23 = Zenit-3SL? / SL-26 = Soyuz-2.1v Volga?). Too few to matter; schematic is fine."
+ },
+ {
+  "art": "start-rocket",
+  "uses": 2,
+  "category": "photo-restricted",
+  "object": "Start-1 upper stage (SL-18)",
+  "sources": [],
+  "wrong": "",
+  "note": "Licence not checked on a file page (ran out of budget for this one)."
+ },
+ {
+  "art": "vanguard-rocket",
+  "uses": 2,
+  "category": "photo-pd",
+  "object": "Vanguard third stage",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Vanguard_rocket-05.jpg",
+    "licence": "Public domain (NASA)",
+    "credit": "NASA (SP-4202)",
+    "shows": "Vanguard third stage motor being prepared"
+   },
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Altair_X248-A2_rocket_stage.jpg",
+    "licence": "Public domain (Smithsonian)",
+    "credit": "Smithsonian Institution",
+    "shows": "Altair (later Vanguard-derived) stage"
+   }
+  ],
+  "wrong": "",
+  "note": "Vanguard 1's third stage is still in orbit too."
+ },
+ {
+  "art": "zhuque-2",
+  "uses": 2,
+  "category": "photo-restricted",
+  "object": "Zhuque-2 second stage",
+  "sources": [],
+  "wrong": "",
+  "note": "LandSpace copyright."
+ },
+ {
+  "art": "ajisai",
+  "uses": 1,
+  "category": "photo-restricted",
+  "object": "Ajisai (EGS), Japanese geodetic mirror ball",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Ajisai_Satellite.jpg",
+    "licence": "Tagged \"Public domain\" on Commons but author unknown; source is the NASA ILRS page, image probably JAXA",
+    "credit": "unknown (likely JAXA)",
+    "shows": "The real mirror-covered sphere"
+   }
+  ],
+  "wrong": "",
+  "note": "Commons PD claim is shaky (unknown author, NASA site hosting a JAXA picture). Treat as restricted unless JAXA confirms; JAXA images generally need permission for commercial use. Art is plausible (sphere with mirrors and reflectors)."
+ },
+ {
+  "art": "cat",
+  "uses": 1,
+  "category": "photo-restricted",
+  "object": "CAT 4 (Ariane test capsule, 1981)",
+  "sources": [],
+  "wrong": "",
+  "note": "Source photo was ESA/CNES/Arianespace (futura-sciences). ESA photos may be CC BY-SA 3.0 IGO only if on esa.int with that licence; CNES/Arianespace are copyright. Licence not checked on a file page (ran out of budget for this one)."
+ },
+ {
+  "art": "chollima-1",
+  "uses": 1,
+  "category": "photo-restricted",
+  "object": "Chollima-1 (North Korea)",
+  "sources": [],
+  "wrong": "",
+  "note": "KCNA images: copyright status contested; avoid."
+ },
+ {
+  "art": "cz-10b",
+  "uses": 1,
+  "category": "photo-restricted",
+  "object": "CZ-10B upper stage",
+  "sources": [],
+  "wrong": "",
+  "note": "Drawn from a CASC slide; copyright."
+ },
+ {
+  "art": "deep-andromeda",
+  "uses": 1,
+  "category": "photo-pd",
+  "object": "Andromeda Galaxy (M31)",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Andromeda_Galaxy_(PIA04921).jpg",
+    "licence": "Public domain (NASA)",
+    "credit": "NASA/JPL/Caltech (GALEX)",
+    "shows": "Ultraviolet whole galaxy (bluish)"
+   },
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Andromeda_Galaxy_(with_h-alpha).jpg",
+    "licence": "CC BY 2.0",
+    "credit": "Adam Evans",
+    "shows": "Visible-light amateur photo, the familiar look"
+   }
+  ],
+  "wrong": "",
+  "note": "For the familiar visible look the CC BY 2.0 one is best; NASA PD ones are UV/IR."
+ },
+ {
+  "art": "deep-beehive",
+  "uses": 1,
+  "category": "photo-by",
+  "object": "Beehive Cluster (M44)",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Beehive_cluster_(M44).jpg",
+    "licence": "CC0",
+    "credit": "Taavi Niittee",
+    "shows": "Amateur wide view"
+   },
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:M44,_NGC_2632_(noao-m44).jpg",
+    "licence": "CC BY 4.0",
+    "credit": "NOIRLab/NSF/AURA",
+    "shows": "Observatory view"
+   }
+  ],
+  "wrong": "",
+  "note": ""
+ },
+ {
+  "art": "deep-carina-nebula",
+  "uses": 1,
+  "category": "photo-by",
+  "object": "Carina Nebula",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Carina_Nebula_by_ESO.jpg",
+    "licence": "CC BY 4.0",
+    "credit": "ESO",
+    "shows": "Colour composite"
+   }
+  ],
+  "wrong": "",
+  "note": "JWST \"Cosmic Cliffs\" is NASA/ESA/CSA/STScI (PD on Commons via NASA) but shows only part."
+ },
+ {
+  "art": "deep-double-cluster",
+  "uses": 1,
+  "category": "photo-by",
+  "object": "Double Cluster (h and χ Persei)",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Double_Cluster_in_Perseus_(49571872261).jpg",
+    "licence": "CC0",
+    "credit": "Stephen Rahn (Flickr)",
+    "shows": "Both clusters"
+   }
+  ],
+  "wrong": "",
+  "note": "CC0 = no credit required (effectively PD)."
+ },
+ {
+  "art": "deep-hercules-cluster",
+  "uses": 1,
+  "category": "photo-pd",
+  "object": "Hercules Cluster (M13)",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Messier_13_Hubble_WikiSky.jpg",
+    "licence": "Public domain (NASA)",
+    "credit": "NASA, STScI, WikiSky",
+    "shows": "Hubble core of M13"
+   }
+  ],
+  "wrong": "",
+  "note": ""
+ },
+ {
+  "art": "deep-lagoon-nebula",
+  "uses": 1,
+  "category": "photo-by",
+  "object": "Lagoon Nebula (M8)",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Lagoon_Nebula_(ESO).jpg",
+    "licence": "CC BY 4.0",
+    "credit": "ESO/S. Guisard",
+    "shows": "Wide Field Imager view"
+   }
+  ],
+  "wrong": "",
+  "note": ""
+ },
+ {
+  "art": "deep-lmc",
+  "uses": 1,
+  "category": "photo-pd",
+  "object": "Large Magellanic Cloud",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Large.mc.arp.750pix.jpg",
+    "licence": "Public domain (NASA)",
+    "credit": "NASA/Ames Research Center",
+    "shows": "Wide view of the LMC (750 px, low-res)"
+   }
+  ],
+  "wrong": "",
+  "note": "Higher-res CC BY 4.0 ESO wide-field LMC images exist (not checked). Art: the 2026-10-12 note fixed \"not a spiral\"."
+ },
+ {
+  "art": "deep-omega-centauri",
+  "uses": 1,
+  "category": "photo-by",
+  "object": "Omega Centauri",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Omega_Centauri_by_ESO.jpg",
+    "licence": "CC BY 4.0",
+    "credit": "ESO",
+    "shows": "Whole cluster"
+   }
+  ],
+  "wrong": "",
+  "note": ""
+ },
+ {
+  "art": "deep-orion-nebula",
+  "uses": 1,
+  "category": "photo-pd",
+  "object": "Orion Nebula (M42)",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Orion_Nebula_-_Hubble_2006_mosaic_18000.jpg",
+    "licence": "Public domain (NASA)",
+    "credit": "NASA, ESA, M. Robberto (STScI/ESA) and the Hubble Space Telescope Orion Treasury Project Team",
+    "shows": "Hubble mosaic"
+   }
+  ],
+  "wrong": "",
+  "note": ""
+ },
+ {
+  "art": "deep-pleiades",
+  "uses": 1,
+  "category": "photo-pd",
+  "object": "Pleiades (M45)",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Pleiades_large.jpg",
+    "licence": "Public domain (NASA)",
+    "credit": "NASA, ESA, AURA/Caltech, Palomar Observatory",
+    "shows": "Classic blue reflection-nebula view"
+   }
+  ],
+  "wrong": "",
+  "note": ""
+ },
+ {
+  "art": "deep-smc",
+  "uses": 1,
+  "category": "photo-by",
+  "object": "Small Magellanic Cloud",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Small_Magellanic_Cloud_(Digitized_Sky_Survey_2).jpg",
+    "licence": "CC BY 4.0",
+    "credit": "ESA/Hubble and Digitized Sky Survey 2",
+    "shows": "Whole SMC"
+   }
+  ],
+  "wrong": "",
+  "note": ""
+ },
+ {
+  "art": "deep-triangulum",
+  "uses": 1,
+  "category": "photo-by",
+  "object": "Triangulum Galaxy (M33)",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:VST_snaps_a_very_detailed_view_of_the_Triangulum_Galaxy.jpg",
+    "licence": "CC BY 4.0",
+    "credit": "ESO",
+    "shows": "VST visible-light M33"
+   },
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:M33_(Chandra-VLT-Swift_composite).jpg",
+    "licence": "Public domain (NASA)",
+    "credit": "X-ray: NASA/CXC/SAO; Optical: ESO/VLT; UV: NASA/Swift",
+    "shows": "Composite (PD per Commons)"
+   }
+  ],
+  "wrong": "",
+  "note": ""
+ },
+ {
+  "art": "duplex",
+  "uses": 1,
+  "category": "photo-restricted",
+  "object": "DUPLEX CubeSat",
+  "sources": [],
+  "wrong": "",
+  "note": "University/team photo; copyright unless team says otherwise. Licence not checked on a file page (ran out of budget for this one)."
+ },
+ {
+  "art": "equator-s",
+  "uses": 1,
+  "category": "photo-restricted",
+  "object": "Equator-S (MPE)",
+  "sources": [],
+  "wrong": "",
+  "note": "MPE/DLR photo; copyright. Licence not checked on a file page (ran out of budget for this one)."
+ },
+ {
+  "art": "fleet-kuiper",
+  "uses": 1,
+  "category": "photo-restricted",
+  "object": "Amazon Leo / Project Kuiper (fleet card)",
+  "sources": [],
+  "wrong": "",
+  "note": "Amazon photos copyright; USSF launch photos (PD) show rockets only. Licence not checked on a file page (ran out of budget for this one)."
+ },
+ {
+  "art": "fleet-oneweb",
+  "uses": 1,
+  "category": "photo-pd",
+  "object": "OneWeb (fleet card)",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:KSC-20170316-PH_KLS01_0007~orig.jpg",
+    "licence": "Public domain (NASA)",
+    "credit": "NASA/Kim Shiflett",
+    "shows": "Early-2017 model of a OneWeb satellite at KSC"
+   }
+  ],
+  "wrong": "",
+  "note": "Model, not flight unit, but the right shape. Public domain (NASA). No implied endorsement; don't use NASA insignia/logos as decoration."
+ },
+ {
+  "art": "fleet-qianfan",
+  "uses": 1,
+  "category": "photo-restricted",
+  "object": "Qianfan / Thousand Sails (fleet card)",
+  "sources": [],
+  "wrong": "",
+  "note": "SSST/Shanghai Academy renders and photos copyright. Licence not checked on a file page (ran out of budget for this one)."
+ },
+ {
+  "art": "fleet-starlink",
+  "uses": 1,
+  "category": "photo-by",
+  "object": "Starlink (fleet card)",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Starlink_Mission_(47926144123).jpg",
+    "licence": "CC0",
+    "credit": "Official SpaceX Photos (Flickr)",
+    "shows": "Stack of 60 Starlink v1 satellites in orbit before release, May 2019"
+   }
+  ],
+  "wrong": "",
+  "note": "CC0 (effectively PD) on its file page, but SpaceX marks; no endorsement. Shows the stacked train-to-be, which matches the card's \"train\" idea. Later SpaceX Flickr uploads are CC BY-NC (not usable)."
+ },
+ {
+  "art": "globalstar",
+  "uses": 1,
+  "category": "photo-restricted",
+  "object": "Globalstar (fleet card)",
+  "sources": [],
+  "wrong": "",
+  "note": "Thales/SS-Loral factory photos are copyright. USSF launch photos are PD but show rockets, not satellites. 2nd-gen Globalstar satellites at Thales: restricted. Art is close to 1st gen trapezoid. Licence not checked on a file page (ran out of budget for this one)."
+ },
+ {
+  "art": "hokushin",
+  "uses": 1,
+  "category": "photo-restricted",
+  "object": "HOKUSHIN-1 CubeSat",
+  "sources": [],
+  "wrong": "",
+  "note": "Team photo/CAD; copyright. Licence not checked on a file page (ran out of budget for this one)."
+ },
+ {
+  "art": "hubble",
+  "uses": 1,
+  "category": "photo-pd",
+  "object": "Hubble Space Telescope (HST, 20580)",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:HST-SM4.jpeg",
+    "licence": "Public domain (NASA)",
+    "credit": "NASA / crew of STS-125",
+    "shows": "Hubble after Servicing Mission 4, from departing Atlantis, May 2009 (its final configuration)"
+   },
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:HST-2009-01a.jpg",
+    "licence": "Public domain (NASA)",
+    "credit": "NASA (crew of STS-125)",
+    "shows": "Alternate SM4 departure view"
+   }
+  ],
+  "wrong": "Solar arrays are far too small and not a matched pair amidships (real ones are ~7 m wings either side of the tube); the tube is squat with an orange-lined open rear; the high-gain antenna booms are roughly right.",
+  "note": "Public domain (NASA). No implied endorsement; don't use NASA insignia/logos as decoration."
+ },
+ {
+  "art": "iridium",
+  "uses": 1,
+  "category": "photo-by",
+  "object": "Iridium (fleet card)",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Iridium_Satellite.jpg",
+    "licence": "CC BY 2.0",
+    "credit": "Cliff (Flickr)",
+    "shows": "Iridium Block 1 at the National Air and Space Museum"
+   },
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Iridium_satellite.jpg",
+    "licence": "CC BY-SA 2.0",
+    "credit": "ideonexus (Flickr)",
+    "shows": "Iridium built from spares, NASM"
+   }
+  ],
+  "wrong": "Block 1 is a long triangular prism with three door-sized main mission antennas and two wings at one end; the picture's body/antennas are muddled. Also the fleet now includes Iridium NEXT (different shape).",
+  "note": "Museum photos with attribution."
+ },
+ {
+  "art": "iss",
+  "uses": 1,
+  "category": "photo-pd",
+  "object": "International Space Station (ISS (ZARYA), 25544)",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:ISS_from_the_SpaceX_Crew_Dragon_Endeavor_during_Flyaround_(iss066e079893).jpg",
+    "licence": "Public domain (NASA)",
+    "credit": "NASA / Thomas Pesquet (ESA)",
+    "shows": "Whole station, current configuration incl. iROSA arrays, from Crew Dragon fly-around, 8 Nov 2021"
+   },
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:ISS_from_the_SpaceX_Crew_Dragon_Endeavor_during_Flyaround_(iss066e080432).jpg",
+    "licence": "Public domain (NASA)",
+    "credit": "NASA / Thomas Pesquet (ESA)",
+    "shows": "Same fly-around, different angle"
+   }
+  ],
+  "wrong": "Solar arrays don't match the real station: the right-hand side has a jumble of 5+ wing blankets including an extra tilted one floating off the end, the two sides aren't mirror pairs, there are no iROSA roll-out arrays (added 2021-23), and the Russian segment hangs below the truss instead of running forward along the flight path with Zvezda's small cross arrays. Exactly the \"extra panels\" complaint.",
+  "note": "NASA fly-around photos are the gold standard and current. Taken by an ESA astronaut but catalogued by NASA JSC as PD on Commons; fine. No identifiable astronauts in frame. Note NASA media guidelines: no endorsement, no NASA logo use."
+ },
+ {
+  "art": "kuaizhou",
+  "uses": 1,
+  "category": "photo-restricted",
+  "object": "Kuaizhou upper stage",
+  "sources": [],
+  "wrong": "",
+  "note": "ExPace copyright."
+ },
+ {
+  "art": "lvm3",
+  "uses": 1,
+  "category": "photo-restricted",
+  "object": "LVM3 upper stage (C25)",
+  "sources": [],
+  "wrong": "",
+  "note": "ISRO copyright."
+ },
+ {
+  "art": "moon",
+  "uses": 1,
+  "category": "photo-pd",
+  "object": "The Moon",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Moon_nearside_LRO_5000.jpg",
+    "licence": "Public domain (NASA)",
+    "credit": "NASA/GSFC/Arizona State University (LRO)",
+    "shows": "Full nearside mosaic, high-res"
+   },
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:FullMoon2010.jpg",
+    "licence": "CC BY-SA 3.0",
+    "credit": "Gregory H. Revera",
+    "shows": "Classic telescope photo of the full Moon (share-alike)"
+   }
+  ],
+  "wrong": "Surface is invented: the real nearside pattern (Mare Imbrium, Serenitatis, Tranquillitatis, Tycho's rays) isn't there; extra bright ray craters in wrong places, and a second cratered body sits behind it. Anyone who has looked at the Moon will notice.",
+  "note": "The LRO mosaic is PD and looks like what you see. The card also shades by phase in-app (moonShade), which works on a photo too."
+ },
+ {
+  "art": "orbcomm",
+  "uses": 1,
+  "category": "photo-restricted",
+  "object": "Orbcomm (fleet card)",
+  "sources": [],
+  "wrong": "Drawn as a dish antenna with rectangular panels on a truss; Orbcomm OG1 satellites are flat discs with two round hinged solar panels and a boom; OG2 are small boxes with two wings. Neither has a big dish.",
+  "note": "Company photos (Orbital/SNC) copyright; OG2 launch photos (USAF PD) show rockets only. Licence not checked on a file page (ran out of budget for this one)."
+ },
+ {
+  "art": "planet-earth",
+  "uses": 1,
+  "category": "photo-pd",
+  "object": "Earth",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:The_Blue_Marble_(remastered).jpg",
+    "licence": "Public domain (NASA)",
+    "credit": "NASA / Apollo 17 crew",
+    "shows": "Whole Earth, 7 Dec 1972"
+   }
+  ],
+  "wrong": "",
+  "note": "DSCOVR/EPIC daily whole-Earth images (epic.gsfc.nasa.gov) are also NASA PD. Public domain (NASA). No implied endorsement; don't use NASA insignia/logos as decoration."
+ },
+ {
+  "art": "planet-jupiter",
+  "uses": 1,
+  "category": "photo-pd",
+  "object": "Jupiter",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Jupiter_and_its_shrunken_Great_Red_Spot.jpg",
+    "licence": "Public domain (NASA)",
+    "credit": "NASA, ESA, and A. Simon (GSFC)",
+    "shows": "Hubble full disc, 2014"
+   }
+  ],
+  "wrong": "",
+  "note": "Hubble images credited \"NASA, ESA\" from hubblesite are PD on Commons; ESA/Hubble (esahubble.org) releases are CC BY 4.0. Art is fine."
+ },
+ {
+  "art": "planet-mars",
+  "uses": 1,
+  "category": "photo-pd",
+  "object": "Mars",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Mars_from_Hubble_(Dec._13,_1990).jpg",
+    "licence": "Public domain (NASA)",
+    "credit": "NASA/ESA/STScI",
+    "shows": "Hubble global view (early, modest res)"
+   },
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:OSIRIS_Mars_true_color.jpg",
+    "licence": "CC BY-SA 3.0 IGO",
+    "credit": "ESA & MPS for OSIRIS Team MPS/UPD/LAM/IAA/RSSD/INTA/UPM/DASP/IDA",
+    "shows": "True-colour Mars from Rosetta (share-alike)"
+   }
+  ],
+  "wrong": "",
+  "note": "\"Mars in opposition 2016\" is CC BY 4.0 (ESA/Hubble credit: NASA, ESA, Hubble Heritage Team, J. Bell, M. Wolff). Viking global mosaics are NASA PD too. Art is fine."
+ },
+ {
+  "art": "planet-mercury",
+  "uses": 1,
+  "category": "photo-pd",
+  "object": "Mercury",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Mercury_in_color_-_Prockter07-edit1.jpg",
+    "licence": "Public domain (NASA)",
+    "credit": "NASA/Johns Hopkins University APL/Carnegie Institution (MESSENGER)",
+    "shows": "Enhanced-colour global view"
+   }
+  ],
+  "wrong": "Too orange/tan; real Mercury is grey-brown. (Already recoloured once on 2026-10-14; still reads warm.)",
+  "note": "Public domain (NASA). No implied endorsement; don't use NASA insignia/logos as decoration."
+ },
+ {
+  "art": "planet-neptune",
+  "uses": 1,
+  "category": "photo-pd",
+  "object": "Neptune",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Neptune_-_Voyager_2_(29347980845)_flatten_crop.jpg",
+    "licence": "Public domain (NASA data)",
+    "credit": "NASA/JPL/Voyager-ISS / processed by Kevin M. Gill / Aster Cowart",
+    "shows": "Voyager 2 full disc with Great Dark Spot"
+   }
+  ],
+  "wrong": "",
+  "note": "Dark spot is the 1989 Voyager look (gone since 1994): fine for a portrait. Art OK."
+ },
+ {
+  "art": "planet-saturn",
+  "uses": 1,
+  "category": "photo-pd",
+  "object": "Saturn",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Saturn_during_Equinox.jpg",
+    "licence": "Public domain (NASA)",
+    "credit": "NASA/JPL/Space Science Institute (Cassini)",
+    "shows": "Natural-colour Saturn and rings"
+   }
+  ],
+  "wrong": "Has a Jupiter-style Great Red Spot on the globe. Saturn has no red spot; its bands are muted gold.",
+  "note": "Public domain (NASA). No implied endorsement; don't use NASA insignia/logos as decoration."
+ },
+ {
+  "art": "planet-uranus",
+  "uses": 1,
+  "category": "photo-pd",
+  "object": "Uranus",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Uranus_as_seen_by_NASA's_Voyager_2_(remastered)_-_JPEG_converted.jpg",
+    "licence": "Public domain (NASA)",
+    "credit": "NASA/JPL (Voyager 2)",
+    "shows": "Near-featureless cyan disc"
+   }
+  ],
+  "wrong": "Ring drawn bright and solid; Uranus's rings are dark and invisible in ordinary photos. Minor.",
+  "note": "Public domain (NASA). No implied endorsement; don't use NASA insignia/logos as decoration."
+ },
+ {
+  "art": "planet-venus",
+  "uses": 1,
+  "category": "photo-pd",
+  "object": "Venus",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Venus_from_Mariner_10.jpg",
+    "licence": "Public domain (NASA)",
+    "credit": "NASA/JPL-Caltech",
+    "shows": "Newly processed Mariner 10 view (2020)"
+   },
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Venus-real_color.jpg",
+    "licence": "Public domain (NASA data)",
+    "credit": "NASA / processed by Ricardo Nunes",
+    "shows": "Near true colour, nearly featureless (low-res 480 px)"
+   }
+  ],
+  "wrong": "Drawn with bold white/grey swirl bands like a gas giant; in visible light Venus is a nearly blank pale yellow-cream disc.",
+  "note": "Public domain (NASA). No implied endorsement; don't use NASA insignia/logos as decoration."
+ },
+ {
+  "art": "star-achernar",
+  "uses": 1,
+  "category": "no-photo",
+  "object": "Achernar",
+  "sources": [],
+  "wrong": "",
+  "note": "Stars are points of light; no telescope resolves most of them, so a \"portrait\" can only be an illustration. Honest options: a real wide-field photo of the star in its constellation (many CC BY/CC0 amateur shots, ESO/NOIRLab CC BY 4.0), or keep the illustration and label it \"artist's impression\". Licence not checked on a file page (ran out of budget for this one)."
+ },
+ {
+  "art": "star-acrux",
+  "uses": 1,
+  "category": "no-photo",
+  "object": "Acrux",
+  "sources": [],
+  "wrong": "",
+  "note": "Stars are points of light; no telescope resolves most of them, so a \"portrait\" can only be an illustration. Honest options: a real wide-field photo of the star in its constellation (many CC BY/CC0 amateur shots, ESO/NOIRLab CC BY 4.0), or keep the illustration and label it \"artist's impression\". Licence not checked on a file page (ran out of budget for this one)."
+ },
+ {
+  "art": "star-aldebaran",
+  "uses": 1,
+  "category": "no-photo",
+  "object": "Aldebaran",
+  "sources": [],
+  "wrong": "",
+  "note": "Stars are points of light; no telescope resolves most of them, so a \"portrait\" can only be an illustration. Honest options: a real wide-field photo of the star in its constellation (many CC BY/CC0 amateur shots, ESO/NOIRLab CC BY 4.0), or keep the illustration and label it \"artist's impression\". Licence not checked on a file page (ran out of budget for this one)."
+ },
+ {
+  "art": "star-alpha-centauri",
+  "uses": 1,
+  "category": "photo-by",
+  "object": "Alpha Centauri",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Alpha_Centauri_3_Panel_(DSS,_Hubble,_Webb)_(weic2515b).jpg",
+    "licence": "CC BY 4.0",
+    "credit": "NASA, ESA, CSA, STScI, DSS, A. Sanghi (Caltech), C. Beichman (JPL), D. Mawet (Caltech) et al.",
+    "shows": "DSS/Hubble/Webb views of the pair"
+   }
+  ],
+  "wrong": "",
+  "note": "Stars are points of light; no telescope resolves most of them, so a \"portrait\" can only be an illustration. Honest options: a real wide-field photo of the star in its constellation (many CC BY/CC0 amateur shots, ESO/NOIRLab CC BY 4.0), or keep the illustration and label it \"artist's impression\". Licence not checked on a file page (ran out of budget for this one)."
+ },
+ {
+  "art": "star-altair",
+  "uses": 1,
+  "category": "photo-restricted",
+  "object": "Altair",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Altair_PR_image6_(orange).jpg",
+    "licence": "Tagged Public domain on Commons; origin is a University of Michigan/CHARA press image (Ming Zhao, John Monnier), status doubtful",
+    "credit": "Ming Zhao, John Monnier (U. Michigan)",
+    "shows": "Interferometric image of the squashed fast-rotating star"
+   }
+  ],
+  "wrong": "",
+  "note": "The real image that supports the card's squashed-star fact; licence unclear, ask U-M. Art kept original (restyle failed)."
+ },
+ {
+  "art": "star-antares",
+  "uses": 1,
+  "category": "photo-by",
+  "object": "Antares",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:VLTI_reconstructed_view_of_the_surface_of_Antares.jpg",
+    "licence": "CC BY 4.0",
+    "credit": "ESO/K. Ohnaka",
+    "shows": "Interferometric image of the surface"
+   }
+  ],
+  "wrong": "",
+  "note": "Resolved surface; scientific-looking."
+ },
+ {
+  "art": "star-arcturus",
+  "uses": 1,
+  "category": "no-photo",
+  "object": "Arcturus",
+  "sources": [],
+  "wrong": "",
+  "note": "Stars are points of light; no telescope resolves most of them, so a \"portrait\" can only be an illustration. Honest options: a real wide-field photo of the star in its constellation (many CC BY/CC0 amateur shots, ESO/NOIRLab CC BY 4.0), or keep the illustration and label it \"artist's impression\". Licence not checked on a file page (ran out of budget for this one)."
+ },
+ {
+  "art": "star-betelgeuse",
+  "uses": 1,
+  "category": "photo-by",
+  "object": "Betelgeuse",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Betelgeuse_captured_by_ALMA.jpg",
+    "licence": "CC BY 4.0",
+    "credit": "ALMA (ESO/NAOJ/NRAO)/E. O'Gorman/P. Kervella",
+    "shows": "Real resolved image of the star's surface (orange blob)"
+   }
+  ],
+  "wrong": "",
+  "note": "One of very few resolved stellar surfaces; a blob, not a pretty portrait."
+ },
+ {
+  "art": "star-canopus",
+  "uses": 1,
+  "category": "no-photo",
+  "object": "Canopus",
+  "sources": [],
+  "wrong": "",
+  "note": "Stars are points of light; no telescope resolves most of them, so a \"portrait\" can only be an illustration. Honest options: a real wide-field photo of the star in its constellation (many CC BY/CC0 amateur shots, ESO/NOIRLab CC BY 4.0), or keep the illustration and label it \"artist's impression\". Licence not checked on a file page (ran out of budget for this one)."
+ },
+ {
+  "art": "star-capella",
+  "uses": 1,
+  "category": "no-photo",
+  "object": "Capella",
+  "sources": [],
+  "wrong": "",
+  "note": "Stars are points of light; no telescope resolves most of them, so a \"portrait\" can only be an illustration. Honest options: a real wide-field photo of the star in its constellation (many CC BY/CC0 amateur shots, ESO/NOIRLab CC BY 4.0), or keep the illustration and label it \"artist's impression\". Licence not checked on a file page (ran out of budget for this one)."
+ },
+ {
+  "art": "star-deneb",
+  "uses": 1,
+  "category": "no-photo",
+  "object": "Deneb",
+  "sources": [],
+  "wrong": "",
+  "note": "Stars are points of light; no telescope resolves most of them, so a \"portrait\" can only be an illustration. Honest options: a real wide-field photo of the star in its constellation (many CC BY/CC0 amateur shots, ESO/NOIRLab CC BY 4.0), or keep the illustration and label it \"artist's impression\". Licence not checked on a file page (ran out of budget for this one)."
+ },
+ {
+  "art": "star-fomalhaut",
+  "uses": 1,
+  "category": "photo-pd",
+  "object": "Fomalhaut",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:NASA's_Hubble_Reveals_Rogue_Planetary_Orbit_For_Fomalhaut_B.jpg",
+    "licence": "Public domain (NASA)",
+    "credit": "NASA, ESA, and P. Kalas (UC Berkeley and SETI Institute)",
+    "shows": "Hubble image of the dust ring (star masked)"
+   }
+  ],
+  "wrong": "",
+  "note": "Matches the card (dust ring). JWST ring images exist too."
+ },
+ {
+  "art": "star-hadar",
+  "uses": 1,
+  "category": "no-photo",
+  "object": "Hadar",
+  "sources": [],
+  "wrong": "",
+  "note": "Stars are points of light; no telescope resolves most of them, so a \"portrait\" can only be an illustration. Honest options: a real wide-field photo of the star in its constellation (many CC BY/CC0 amateur shots, ESO/NOIRLab CC BY 4.0), or keep the illustration and label it \"artist's impression\". Licence not checked on a file page (ran out of budget for this one)."
+ },
+ {
+  "art": "star-polaris",
+  "uses": 1,
+  "category": "no-photo",
+  "object": "Polaris",
+  "sources": [],
+  "wrong": "",
+  "note": "CHARA resolved Polaris (2024, spotted surface) but those images are Georgia State/CHARA copyright: restricted. Stars are points of light; no telescope resolves most of them, so a \"portrait\" can only be an illustration. Honest options: a real wide-field photo of the star in its constellation (many CC BY/CC0 amateur shots, ESO/NOIRLab CC BY 4.0), or keep the illustration and label it \"artist's impression\"."
+ },
+ {
+  "art": "star-pollux",
+  "uses": 1,
+  "category": "no-photo",
+  "object": "Pollux",
+  "sources": [],
+  "wrong": "",
+  "note": "Stars are points of light; no telescope resolves most of them, so a \"portrait\" can only be an illustration. Honest options: a real wide-field photo of the star in its constellation (many CC BY/CC0 amateur shots, ESO/NOIRLab CC BY 4.0), or keep the illustration and label it \"artist's impression\". Licence not checked on a file page (ran out of budget for this one)."
+ },
+ {
+  "art": "star-procyon",
+  "uses": 1,
+  "category": "no-photo",
+  "object": "Procyon",
+  "sources": [],
+  "wrong": "",
+  "note": "Stars are points of light; no telescope resolves most of them, so a \"portrait\" can only be an illustration. Honest options: a real wide-field photo of the star in its constellation (many CC BY/CC0 amateur shots, ESO/NOIRLab CC BY 4.0), or keep the illustration and label it \"artist's impression\". Licence not checked on a file page (ran out of budget for this one)."
+ },
+ {
+  "art": "star-regulus",
+  "uses": 1,
+  "category": "no-photo",
+  "object": "Regulus",
+  "sources": [],
+  "wrong": "",
+  "note": "Stars are points of light; no telescope resolves most of them, so a \"portrait\" can only be an illustration. Honest options: a real wide-field photo of the star in its constellation (many CC BY/CC0 amateur shots, ESO/NOIRLab CC BY 4.0), or keep the illustration and label it \"artist's impression\". Licence not checked on a file page (ran out of budget for this one)."
+ },
+ {
+  "art": "star-rigel",
+  "uses": 1,
+  "category": "no-photo",
+  "object": "Rigel",
+  "sources": [],
+  "wrong": "",
+  "note": "Stars are points of light; no telescope resolves most of them, so a \"portrait\" can only be an illustration. Honest options: a real wide-field photo of the star in its constellation (many CC BY/CC0 amateur shots, ESO/NOIRLab CC BY 4.0), or keep the illustration and label it \"artist's impression\". Licence not checked on a file page (ran out of budget for this one)."
+ },
+ {
+  "art": "star-sirius",
+  "uses": 1,
+  "category": "photo-pd",
+  "object": "Sirius",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Sirius_A_and_B_Hubble_photo.jpg",
+    "licence": "Public domain (NASA)",
+    "credit": "NASA, ESA, H. Bond (STScI), and M. Barstow (University of Leicester)",
+    "shows": "Hubble: Sirius A with the tiny white dwarf Sirius B"
+   }
+  ],
+  "wrong": "",
+  "note": "Real image showing the companion; star itself is overexposed with spikes."
+ },
+ {
+  "art": "star-spica",
+  "uses": 1,
+  "category": "no-photo",
+  "object": "Spica",
+  "sources": [],
+  "wrong": "",
+  "note": "Stars are points of light; no telescope resolves most of them, so a \"portrait\" can only be an illustration. Honest options: a real wide-field photo of the star in its constellation (many CC BY/CC0 amateur shots, ESO/NOIRLab CC BY 4.0), or keep the illustration and label it \"artist's impression\". Licence not checked on a file page (ran out of budget for this one)."
+ },
+ {
+  "art": "star-vega",
+  "uses": 1,
+  "category": "no-photo",
+  "object": "Vega",
+  "sources": [],
+  "wrong": "",
+  "note": "Hubble/JWST images of Vega's dust disc exist (NASA/ESA/CSA, PD/CC BY 4.0, not checked). Stars are points of light; no telescope resolves most of them, so a \"portrait\" can only be an illustration. Honest options: a real wide-field photo of the star in its constellation (many CC BY/CC0 amateur shots, ESO/NOIRLab CC BY 4.0), or keep the illustration and label it \"artist's impression\"."
+ },
+ {
+  "art": "sun",
+  "uses": 1,
+  "category": "photo-pd",
+  "object": "The Sun",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:The_Sun_by_the_Atmospheric_Imaging_Assembly_of_NASA's_Solar_Dynamics_Observatory_-_20100819.jpg",
+    "licence": "Public domain (NASA)",
+    "credit": "NASA/SDO (AIA)",
+    "shows": "Sun at 304 Å (orange, prominences on the limb)"
+   },
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Faculae_and_Sunspots_at_Solar_Maximum_and_Solar_Minimum_(SVS4892_-_SolarMax_HMIintensity_1024p30).webm",
+    "licence": "Public domain (NASA)",
+    "credit": "NASA Scientific Visualization Studio / SDO HMI",
+    "shows": "Visible-light disc with sunspots (video; grab a frame)"
+   }
+  ],
+  "wrong": "Prominences drawn as symmetric handle-like loops stuck on the rim; stylised but not wrong in spirit.",
+  "note": "Public domain (NASA). No implied endorsement; don't use NASA insignia/logos as decoration."
+ },
+ {
+  "art": "teamsat",
+  "uses": 1,
+  "category": "photo-restricted",
+  "object": "TeamSat (Ariane 502 passenger)",
+  "sources": [],
+  "wrong": "",
+  "note": "ESA photo; ESA Multimedia images are often CC BY-SA 3.0 IGO but older ones are \"ESA\" copyright; check the specific esa.int page. Licence not checked on a file page (ran out of budget for this one)."
+ },
+ {
+  "art": "tiangong",
+  "uses": 1,
+  "category": "photo-by",
+  "object": "Tiangong / China Space Station (CSS (TIANHE), 48274)",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Rear_view_of_Tiangong_Space_Station.jpg",
+    "licence": "CC BY 4.0",
+    "credit": "China Manned Space Engineering Office, via Space (Science Partner Journal) doi:10.34133/space.0035",
+    "shows": "Real photo of the complete T-shaped station from behind: Mengtian, Tianhe, Wentian, with docked craft"
+   }
+  ],
+  "wrong": "Layout is wrong: the real station is a T with Wentian and Mengtian on opposite sides of Tianhe's forward node, each carrying a huge pair of flexible arrays (~27 m each side) that dwarf everything; Tianhe's own arrays are small. The picture shows a cross/zig-zag of modules, the big arrays on one module only, and odd small panels.",
+  "note": "CC BY 4.0 (no share-alike) because CMSEO published it in an open-access journal; credit line required. Other CMSA flyaround photos (Shenzhou-15/17 departure) are copyrighted by CMSA/Xinhua: photo-restricted. Wikimedia renderings by Shujianyang are CC BY-SA 4.0 (renders, not photos)."
+ },
+ {
+  "art": "tsyklon-2",
+  "uses": 1,
+  "category": "photo-restricted",
+  "object": "Tsyklon-2 second stage (SL-11)",
+  "sources": [],
+  "wrong": "",
+  "note": "Drawings only (\"Tsyklon-2.svg\", attribution licence). Licence not checked on a file page (ran out of budget for this one)."
+ },
+ {
+  "art": "vanguard-1",
+  "uses": 1,
+  "category": "photo-pd",
+  "object": "Vanguard 1 (oldest satellite still in orbit)",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Vanguard_1.jpg",
+    "licence": "Public domain (NASA)",
+    "credit": "NASA / NSSDC",
+    "shows": "The satellite with its six antennas (small, retouched)"
+   },
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Vanguard_1_satellite_(flight_backup)_-_Udvar-Hazy_Center.JPG",
+    "licence": "Public domain (released by photographer Daderot)",
+    "credit": "Daderot / Wikimedia Commons (credit appreciated)",
+    "shows": "Flight backup at the Smithsonian Udvar-Hazy Center"
+   }
+  ],
+  "wrong": "",
+  "note": "Also a PD NRL photo of the team mounting it in the rocket. The NSSDC image is low-res (347 px); the museum spare is high-res."
+ },
+ {
+  "art": "asat-interceptor",
+  "uses": 0,
+  "category": "no-photo",
+  "object": "IS-A / I2P interceptor",
+  "sources": [],
+  "wrong": "",
+  "note": "n=0. A mock-up is shown at some Russian museums (photos CC BY-SA possible, not checked)."
+ },
+ {
+  "art": "asat-target",
+  "uses": 0,
+  "category": "no-photo",
+  "object": "DS-P1-M ASAT target",
+  "sources": [],
+  "wrong": "",
+  "note": "n=0. Drawings only."
+ },
+ {
+  "art": "deb-avum-adaptor",
+  "uses": 0,
+  "category": "no-photo",
+  "object": "Vega AVUM adaptor",
+  "sources": [],
+  "wrong": "",
+  "note": "Debris piece identified by data/debris.json; uses counted 0 by art-use.json (assignment happens via debrisOf, so check). No in-orbit photos; ground references: ESA/Avio ground photos only (ESA ones may be CC BY-SA 3.0 IGO)."
+ },
+ {
+  "art": "deb-briz-apt",
+  "uses": 0,
+  "category": "no-photo",
+  "object": "Briz-M APT drop tank",
+  "sources": [],
+  "wrong": "",
+  "note": "Debris piece identified by data/debris.json; uses counted 0 by art-use.json (assignment happens via debrisOf, so check). No in-orbit photos; ground references: see briz-tank"
+ },
+ {
+  "art": "deb-despin-weight",
+  "uses": 0,
+  "category": "no-photo",
+  "object": "Yo-yo despin weight",
+  "sources": [],
+  "wrong": "",
+  "note": "Debris piece identified by data/debris.json; uses counted 0 by art-use.json (assignment happens via debrisOf, so check). No in-orbit photos; ground references: NASA PD diagrams/photos of yo-yo despin systems exist (not checked)."
+ },
+ {
+  "art": "deb-dnepr-shield",
+  "uses": 0,
+  "category": "no-photo",
+  "object": "Dnepr gas-dynamic shield",
+  "sources": [],
+  "wrong": "",
+  "note": "Debris piece identified by data/debris.json; uses counted 0 by art-use.json (assignment happens via debrisOf, so check). No in-orbit photos; ground references: Kosmotras copyright."
+ },
+ {
+  "art": "deb-dpaf",
+  "uses": 0,
+  "category": "no-photo",
+  "object": "Dual payload attach fitting",
+  "sources": [],
+  "wrong": "",
+  "note": "Debris piece identified by data/debris.json; uses counted 0 by art-use.json (assignment happens via debrisOf, so check). No in-orbit photos; ground references: ULA/ESA ground photos."
+ },
+ {
+  "art": "deb-echo-canister",
+  "uses": 0,
+  "category": "no-photo",
+  "object": "Echo balloon canister half",
+  "sources": [],
+  "wrong": "",
+  "note": "Debris piece identified by data/debris.json; uses counted 0 by art-use.json (assignment happens via debrisOf, so check). No in-orbit photos; ground references: NASA PD photos of the Echo canister exist (not checked)."
+ },
+ {
+  "art": "deb-fairing-half",
+  "uses": 0,
+  "category": "no-photo",
+  "object": "Payload fairing half",
+  "sources": [],
+  "wrong": "",
+  "note": "Debris piece identified by data/debris.json; uses counted 0 by art-use.json (assignment happens via debrisOf, so check). No in-orbit photos; ground references: Many ground/ocean-recovery photos (NASA/SpaceX CC0 2015-era); none in orbit."
+ },
+ {
+  "art": "deb-iso-cover",
+  "uses": 0,
+  "category": "no-photo",
+  "object": "ISO telescope cover",
+  "sources": [],
+  "wrong": "",
+  "note": "Debris piece identified by data/debris.json; uses counted 0 by art-use.json (assignment happens via debrisOf, so check). No in-orbit photos; ground references: ESA copyright."
+ },
+ {
+  "art": "deb-lens-cover",
+  "uses": 0,
+  "category": "no-photo",
+  "object": "Camera lens cover",
+  "sources": [],
+  "wrong": "",
+  "note": "Debris piece identified by data/debris.json; uses counted 0 by art-use.json (assignment happens via debrisOf, so check). No in-orbit photos; ground references: none"
+ },
+ {
+  "art": "deb-spelda",
+  "uses": 0,
+  "category": "no-photo",
+  "object": "SPELDA (Ariane 4 dual-launch structure)",
+  "sources": [],
+  "wrong": "",
+  "note": "Debris piece identified by data/debris.json; uses counted 0 by art-use.json (assignment happens via debrisOf, so check). No in-orbit photos; ground references: ESA/Arianespace."
+ },
+ {
+  "art": "deb-speltra",
+  "uses": 0,
+  "category": "no-photo",
+  "object": "SPELTRA (Ariane 4 external dual-launch structure)",
+  "sources": [],
+  "wrong": "",
+  "note": "Debris piece identified by data/debris.json; uses counted 0 by art-use.json (assignment happens via debrisOf, so check). No in-orbit photos; ground references: ESA/Arianespace."
+ },
+ {
+  "art": "deb-sylda",
+  "uses": 0,
+  "category": "no-photo",
+  "object": "SYLDA (Ariane dual-launch adapter)",
+  "sources": [],
+  "wrong": "",
+  "note": "Debris piece identified by data/debris.json; uses counted 0 by art-use.json (assignment happens via debrisOf, so check). No in-orbit photos; ground references: ESA/Arianespace; ESA images may be CC BY-SA 3.0 IGO."
+ },
+ {
+  "art": "geodetic",
+  "uses": 0,
+  "category": "photo-restricted",
+  "object": "Sfera / Geo-IK geodesy satellite",
+  "sources": [],
+  "wrong": "",
+  "note": "n=0. Museum pieces may exist; Reshetnev copyright. Licence not checked on a file page (ran out of budget for this one)."
+ },
+ {
+  "art": "h3",
+  "uses": 0,
+  "category": "photo-restricted",
+  "object": "H3 second stage",
+  "sources": [],
+  "wrong": "",
+  "note": "n=0. JAXA/MHI copyright."
+ },
+ {
+  "art": "indian-stage",
+  "uses": 0,
+  "category": "photo-restricted",
+  "object": "Indian upper stage (unused)",
+  "sources": [],
+  "wrong": "",
+  "note": "n=0."
+ },
+ {
+  "art": "long-march",
+  "uses": 0,
+  "category": "photo-restricted",
+  "object": "Long March 2/4 (generic, unused)",
+  "sources": [],
+  "wrong": "",
+  "note": "n=0: no card uses it now."
+ },
+ {
+  "art": "mu-rocket",
+  "uses": 0,
+  "category": "photo-restricted",
+  "object": "Mu rocket (unused)",
+  "sources": [],
+  "wrong": "",
+  "note": "n=0. JAXA/ISAS copyright."
+ },
+ {
+  "art": "rocket-stage-2",
+  "uses": 0,
+  "category": "generic",
+  "object": "Generic stage variation (unused)",
+  "sources": [],
+  "wrong": "",
+  "note": "n=0."
+ },
+ {
+  "art": "russian-recon",
+  "uses": 0,
+  "category": "photo-restricted",
+  "object": "Persona / Bars-M / Lotos-S",
+  "sources": [],
+  "wrong": "",
+  "note": "n=0. Classified; TsSKB-Progress renders only."
+ },
+ {
+  "art": "solar-system",
+  "uses": 0,
+  "category": "no-photo",
+  "object": "The Solar System (poster diagram)",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Pale_Blue_Dot_from_Voyager_1_-_PIA23645.png",
+    "licence": "Public domain (NASA)",
+    "credit": "NASA/JPL-Caltech",
+    "shows": "(only real \"family portrait\" is Voyager 1's 1990 mosaic of six planets as dots)"
+   }
+  ],
+  "wrong": "",
+  "note": "Inherently a diagram; a montage of the PD planet photos above (sizes to scale) would be honest and all-PD. Not a photo subject."
+ },
+ {
+  "art": "story-apollo11",
+  "uses": 0,
+  "category": "photo-pd",
+  "object": "Apollo 11 landing (20 July 1969)",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:AS11-40-5903_-_Buzz_Aldrin_by_Neil_Armstrong_(full_frame).jpg",
+    "licence": "Public domain (NASA)",
+    "credit": "NASA / Neil Armstrong",
+    "shows": "Buzz Aldrin on the Moon (AS11-40-5903)"
+   }
+  ],
+  "wrong": "",
+  "note": "Identifiable astronaut: NASA guidance says don't imply endorsement; Aldrin is alive and has publicity rights, so avoid using his image to sell/advertise. AS11-40-5927 (LM Eagle on the surface, no person) is a safer PD choice."
+ },
+ {
+  "art": "story-arecibo",
+  "uses": 0,
+  "category": "photo-by",
+  "object": "Arecibo radio telescope / 1974 message",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Arecibo_Observatory_Aerial_View.jpg",
+    "licence": "CC BY 4.0",
+    "credit": "H. Schweiker/WIYN and NOAO/AURA/NSF",
+    "shows": "Aerial view of the dish and suspended platform, 2012"
+   },
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Arecibo_Observatory_Black_and_White.jpg",
+    "licence": "Public domain (NASA)",
+    "credit": "NASA (SP-419)",
+    "shows": "B&W view of the dish"
+   }
+  ],
+  "wrong": "",
+  "note": "The PD option is old and B&W. The 1974 Arecibo message graphic itself is PD-ineligible/simple. Art OK (dish in jungle with platform)."
+ },
+ {
+  "art": "story-grand-tour",
+  "uses": 0,
+  "category": "photo-pd",
+  "object": "Voyager 2 Grand Tour",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Voyager_Development_Test_Model_PIA21730.jpg",
+    "licence": "Public domain (NASA)",
+    "credit": "NASA/JPL",
+    "shows": "Voyager spacecraft (test model) in full"
+   },
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Pale_Blue_Dot_from_Voyager_1_-_PIA23645.png",
+    "licence": "Public domain (NASA)",
+    "credit": "NASA/JPL-Caltech",
+    "shows": "(real Voyager imagery of planets; planet photos above are PD)"
+   }
+  ],
+  "wrong": "",
+  "note": "No photo of Voyager in flight exists; ground models/test articles are the reference. A montage of Voyager 2's own Jupiter/Saturn/Uranus/Neptune photos (all PD) would tell the story honestly."
+ },
+ {
+  "art": "story-halley",
+  "uses": 0,
+  "category": "photo-pd",
+  "object": "Halley's Comet (1986)",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Lspn_comet_halley.jpg",
+    "licence": "Public domain (NASA)",
+    "credit": "NASA/W. Liller",
+    "shows": "Halley from Easter Island, 8 March 1986"
+   }
+  ],
+  "wrong": "",
+  "note": "Giotto nucleus images are ESA/MPS (copyright, restricted). Art shows an orbit ellipse diagram, fine as story art."
+ },
+ {
+  "art": "story-heart",
+  "uses": 0,
+  "category": "photo-pd",
+  "object": "Pluto's heart (New Horizons, 2015)",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Pluto_in_True_Color_-_High-Res.jpg",
+    "licence": "Public domain (NASA)",
+    "credit": "NASA/Johns Hopkins University APL/Southwest Research Institute",
+    "shows": "True-colour Pluto with Tombaugh Regio"
+   }
+  ],
+  "wrong": "",
+  "note": "New Horizons in flight: no photo; NASA renders and the flight spare/models are references. Art OK."
+ },
+ {
+  "art": "story-laika",
+  "uses": 0,
+  "category": "photo-restricted",
+  "object": "Laika / Sputnik 2 (1957)",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Replica_of_Sputnik-2.jpg",
+    "licence": "CC BY 4.0",
+    "credit": "Stolbovsky / Wikimedia Commons",
+    "shows": "Full-size Sputnik 2 replica (museum)"
+   },
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Laika_ac_Sputnik_2_Replica_(6995685051).jpg",
+    "licence": "CC BY-SA 2.0",
+    "credit": "Laika ac (Flickr)",
+    "shows": "Replica with dog cabin"
+   }
+  ],
+  "wrong": "Shows the dog looking out of a big round porthole; Sputnik 2's cabin had no window.",
+  "note": "Photos of Laika herself are Soviet (TASS/RIA) with murky status; Commons has stamps (PD in source countries). Replica photos are usable with attribution."
+ },
+ {
+  "art": "story-pale-blue-dot",
+  "uses": 0,
+  "category": "photo-pd",
+  "object": "Pale Blue Dot (Voyager 1, 1990)",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Pale_Blue_Dot_from_Voyager_1_-_PIA23645.png",
+    "licence": "Public domain (NASA)",
+    "credit": "NASA/JPL-Caltech",
+    "shows": "The 2020 reprocessed Pale Blue Dot"
+   },
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Voyager_Proof_Test_Model_PIA21477.jpg",
+    "licence": "Public domain (NASA)",
+    "credit": "NASA/JPL",
+    "shows": "Voyager spacecraft model"
+   }
+  ],
+  "wrong": "",
+  "note": "The actual photo is the perfect card picture for this story. Public domain (NASA). No implied endorsement; don't use NASA insignia/logos as decoration."
+ },
+ {
+  "art": "story-plaque",
+  "uses": 0,
+  "category": "photo-pd",
+  "object": "Pioneer plaque",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Pioneer10-plaque.jpg",
+    "licence": "Public domain (NASA)",
+    "credit": "NASA Ames (design Carl Sagan, Frank Drake, Linda Salzman Sagan)",
+    "shows": "The gold-anodised plaque"
+   },
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Pioneer_plaque_mounted_on_the_spacecraft.jpg",
+    "licence": "Public domain (NASA)",
+    "credit": "NASA",
+    "shows": "Plaque on the spacecraft"
+   }
+  ],
+  "wrong": "",
+  "note": "Plaque artwork is NASA PD. Contains nude figures: fine but note age rating. Art: plaque shape fine."
+ },
+ {
+  "art": "story-ringside",
+  "uses": 0,
+  "category": "photo-pd",
+  "object": "Pioneer 11 at Saturn (1979)",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Pioneer_11_Image_of_Saturn_and_Its_Moon_Titan.jpg",
+    "licence": "Public domain (NASA)",
+    "credit": "NASA Ames",
+    "shows": "Pioneer 11's own image of Saturn and Titan"
+   },
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Pioneer_plaque_mounted_on_the_spacecraft.jpg",
+    "licence": "Public domain (NASA)",
+    "credit": "NASA",
+    "shows": "Pioneer spacecraft body (ground)"
+   }
+  ],
+  "wrong": "The spacecraft is drawn more like Voyager; Pioneer 11 is a big dish on a hexagonal bus with two RTG booms, no scan platform. Minor.",
+  "note": "No photo of Pioneer in flight; Pioneer test-article photos at NASM are references."
+ },
+ {
+  "art": "story-sputnik",
+  "uses": 0,
+  "category": "photo-pd",
+  "object": "Sputnik 1 (1957)",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Sputnik_asm.jpg",
+    "licence": "Public domain (NASA)",
+    "credit": "NSSDC, NASA",
+    "shows": "Sputnik 1 replica (the classic polished sphere with 4 antennas)"
+   }
+  ],
+  "wrong": "",
+  "note": "No photo of the flight unit in orbit; Soviet originals restricted. Art is accurate."
+ },
+ {
+  "art": "story-starman",
+  "uses": 0,
+  "category": "photo-by",
+  "object": "Starman / Tesla Roadster (Falcon Heavy, 2018)",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Elon_Musk's_Tesla_Roadster_(40110297852).jpg",
+    "licence": "CC0 (SpaceX released to public domain)",
+    "credit": "SpaceX (credit courteous, not required)",
+    "shows": "Real onboard photo: Starman in the Roadster with Earth behind"
+   }
+  ],
+  "wrong": "",
+  "note": "Licence is CC0, effectively photo-pd, but trademarks: Tesla and SpaceX logos/marks are visible, so don't imply endorsement. SpaceX's later Flickr uploads switched to CC BY-NC 2.0 (not usable); this one is CC0 on its file page."
+ },
+ {
+  "art": "story-two-homes",
+  "uses": 0,
+  "category": "photo-by",
+  "object": "ISS and Tiangong in one night",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:ISS_from_the_SpaceX_Crew_Dragon_Endeavor_during_Flyaround_(iss066e079893).jpg",
+    "licence": "Public domain (NASA)",
+    "credit": "NASA / Thomas Pesquet (ESA)",
+    "shows": "ISS"
+   },
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Rear_view_of_Tiangong_Space_Station.jpg",
+    "licence": "CC BY 4.0",
+    "credit": "China Manned Space Engineering Office (doi:10.34133/space.0035)",
+    "shows": "Tiangong"
+   }
+  ],
+  "wrong": "Both stations inherit the hero art problems: ISS with odd arrays, and the right-hand \"Tiangong\" drawn as a mini-ISS truss rather than a T of three modules.",
+  "note": "A side-by-side of the two real photos is possible (one PD, one CC BY 4.0, credit needed)."
+ },
+ {
+  "art": "story-wow",
+  "uses": 0,
+  "category": "photo-pd",
+  "object": "Wow! signal (Big Ear, 1977)",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Wow_signal.jpg",
+    "licence": "Tagged Public domain on Commons",
+    "credit": "Credit: Big Ear Radio Observatory and North American AstroPhysical Observatory (NAAPO)",
+    "shows": "Scan of the original printout with \"Wow!\" circled"
+   }
+  ],
+  "wrong": "",
+  "note": "Commons tags it PD (a computer printout is arguably not creative), but Big Ear/NAAPO ask for credit: give it anyway. Big Ear photos (the flat reflector) are NAAPO copyright: restricted. Art correctly shows Big Ear as a flat reflector + paraboloid wall."
+ },
+ {
+  "art": "strela-1m",
+  "uses": 0,
+  "category": "photo-restricted",
+  "object": "Strela-1M",
+  "sources": [],
+  "wrong": "",
+  "note": "n=0 in current catalogue. Soviet; few photos. Licence not checked on a file page (ran out of budget for this one)."
+ },
+ {
+  "art": "strela-2m",
+  "uses": 0,
+  "category": "photo-restricted",
+  "object": "Strela-2M",
+  "sources": [
+   {
+    "url": "https://commons.wikimedia.org/wiki/File:Strela-2M.jpg",
+    "licence": "CC BY-SA 3.0",
+    "credit": "Rlandmann",
+    "shows": "A drawing/composite of Strela-2M (not a photo)"
+   }
+  ],
+  "wrong": "",
+  "note": "n=0."
+ },
+ {
+  "art": "taifun",
+  "uses": 0,
+  "category": "no-photo",
+  "object": "Taifun-1 calibration sphere",
+  "sources": [],
+  "wrong": "",
+  "note": "n=0. Drawings only."
+ },
+ {
+  "art": "tselina",
+  "uses": 0,
+  "category": "no-photo",
+  "object": "Tselina ELINT satellite",
+  "sources": [],
+  "wrong": "",
+  "note": "n=0. Drawings only."
+ },
+ {
+  "art": "us-a",
+  "uses": 0,
+  "category": "no-photo",
+  "object": "US-A RORSAT (nuclear radar sat)",
+  "sources": [],
+  "wrong": "",
+  "note": "n=0. Soviet military; only line drawings (e.g. Gunter's, CIA documents which are PD) and a few museum reactor parts. Treat as no-photo."
+ }
+]
