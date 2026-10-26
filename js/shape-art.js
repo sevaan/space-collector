@@ -119,3 +119,105 @@ export function fragmentArt(seedKey = 'x', caption = 'FRAGMENT · SIZE NOT KNOWN
   }
   return wrap(g, caption);
 }
+
+// ---- Scene styles (2026-10-26, Sevaan: "how would you make them feel closer to the rest of the cards?") ----
+// The same shape and proportions as shapeArt, drawn as a small scene like the painted cards: navy sky with a few stars,
+// Earth's limb along the bottom, the body seen at a slight three-quarter angle and lit from the upper left. Materials
+// stay neutral (bare metal body, blue solar cells): the catalogue doesn't say gold foil, so it isn't drawn.
+// style 'lit' = shaded colour; 'engraved' = the same scene in fine ink hatching, like the restyled card art.
+export function shapeScene(spec, { style = 'lit', seed = 1, note = '' } = {}) {
+  const sh = parseShape(spec.shape);
+  let L = Number(spec.L) || 0, D = Number(spec.D) || 0; const S = Number(spec.S) || 0;
+  if (!L && !D) L = D = 1; if (!L) L = D; if (!D) D = L;
+  if (sh.base === 'sphere' || sh.base === 'cube') L = D = Math.max(L, D);
+  const wings = sh.pan > 0 && S > D * 1.15, whips = !wings && sh.ant > 0;
+  const ENG = style === 'engraved', id = `s${seed}${style[0]}`;
+  const across = Math.max(D, S || D) * 1.08, depthK = 0.42;
+  const k = Math.min(300 / across, 150 / (L + D * depthK * 0.6));
+  const cx = 200, cy = 158, bw = D * k, bh = L * k, dx = bw * depthK * 0.55, dy = -bw * depthK * 0.38; // depth goes up-right
+  const bx = cx - bw / 2 - dx / 2, by = cy - bh / 2 - dy / 2;
+  let rnd = (() => { let s = (Number(seed) || 7) * 9301 % 233280 || 7; return () => (s = (s * 9301 + 49297) % 233280) / 233280; })();
+  // palette / fills
+  const C = ENG ? { sky1: '#0e1b2e', sky2: '#060c16', light: `url(#${id}h1)`, mid: `url(#${id}h2)`, dark: `url(#${id}h3)`, panel: `url(#${id}h2)`, panelTop: `url(#${id}h1)`, line: '#efe2b8', earth: `url(#${id}h1)` }
+    : { sky1: '#13264a', sky2: '#070d18', light: `url(#${id}gl)`, mid: `url(#${id}gm)`, dark: '#1d2a3c', panel: `url(#${id}gp)`, panelTop: '#2f5a9a', line: '#e9dfc2', earth: `url(#${id}ge)` };
+  const hatch = (n, gap, w, ang) => `<pattern id="${id}${n}" width="${gap}" height="${gap}" patternUnits="userSpaceOnUse" patternTransform="rotate(${ang})"><rect width="${gap}" height="${gap}" fill="#0b1626"/><line x1="0" y1="0" x2="0" y2="${gap}" stroke="#efe2b8" stroke-width="${w}"/></pattern>`;
+  const defs = `<defs><radialGradient id="${id}sky" cx="40%" cy="30%" r="85%"><stop offset="0" stop-color="${C.sky1}"/><stop offset="1" stop-color="${C.sky2}"/></radialGradient>`
+    + (ENG ? hatch('h1', 6, 0.7, 45) + hatch('h2', 3.6, 0.8, 45) + hatch('h3', 2.4, 0.9, -45)
+      : `<linearGradient id="${id}gl" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#d9dde2"/><stop offset=".45" stop-color="#9aa6b4"/><stop offset="1" stop-color="#4c5869"/></linearGradient>`
+      + `<linearGradient id="${id}gm" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c9ced6"/><stop offset="1" stop-color="#7e8a99"/></linearGradient>`
+      + `<linearGradient id="${id}gp" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2d5fa8"/><stop offset=".5" stop-color="#173c76"/><stop offset="1" stop-color="#0e2550"/></linearGradient>`
+      + `<radialGradient id="${id}gs" cx="35%" cy="32%" r="70%"><stop offset="0" stop-color="#eef1f4"/><stop offset=".55" stop-color="#8e9aa9"/><stop offset="1" stop-color="#2c3746"/></radialGradient>`
+      + `<linearGradient id="${id}ge" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6fb2e6"/><stop offset=".08" stop-color="#2f6aa8"/><stop offset="1" stop-color="#0d2547"/></linearGradient>`)
+    + `</defs>`;
+  let g = `<rect width="400" height="300" fill="url(#${id}sky)"/>`;
+  for (let i = 0; i < 46; i++) { const x = rnd() * 400, y = rnd() * 230; g += `<circle cx="${f1(x)}" cy="${f1(y)}" r="${f1(0.4 + rnd() * 0.9)}" fill="#fff2b3" opacity="${f1(0.2 + rnd() * 0.6)}"/>`; }
+  g += `<path d="M-40 300 Q200 238 440 300 Z" fill="${C.earth}" stroke="${ENG ? '#efe2b8' : '#9fd0f5'}" stroke-width="${ENG ? 1 : 1.5}" stroke-opacity="${ENG ? 0.8 : 0.7}"/>`;
+  if (!ENG) g += `<path d="M-40 300 Q200 232 440 300" fill="none" stroke="#8fd0ff" stroke-width="6" stroke-opacity=".18"/>`;
+  const st = `stroke="${C.line}" stroke-width="${ENG ? 1.1 : 0.8}" stroke-linejoin="round"`;
+  let parts = '';
+  const wing = (x0, y0, len, depth, side) => { // a flat solar wing seen at the same angle
+    const ex = x0 + side * len, a = [x0, y0], b = [ex, y0], c = [ex + depth * 0.9, y0 - depth * 0.62], d = [x0 + depth * 0.9, y0 - depth * 0.62];
+    const pts = [a, b, c, d].map((p) => `${f1(p[0])},${f1(p[1])}`).join(' ');
+    let cells = ''; const nc = Math.max(3, Math.round(Math.abs(len) / 14));
+    for (let i = 1; i < nc; i++) { const t = i / nc, x1 = x0 + side * len * t; cells += `<line x1="${f1(x1)}" y1="${f1(y0)}" x2="${f1(x1 + depth * 0.9)}" y2="${f1(y0 - depth * 0.62)}"/>`; }
+    cells += `<line x1="${f1(x0 + depth * 0.45)}" y1="${f1(y0 - depth * 0.31)}" x2="${f1(ex + depth * 0.45)}" y2="${f1(y0 - depth * 0.31)}"/>`;
+    return `<polygon points="${pts}" fill="${C.panel}" ${st}/><g stroke="${C.line}" stroke-opacity="${ENG ? 0.55 : 0.3}" stroke-width=".6">${cells}</g>`;
+  };
+  // wings behind the body
+  if (wings) {
+    const sides = sh.pan === 1 ? [1] : [-1, 1], per = Math.max(1, Math.round(sh.pan / sides.length));
+    const reach = (sh.pan === 1 ? S - D : (S - D) / 2) * k, depth = Math.min(bh * 0.55, Math.max(10, reach * 0.3));
+    for (const sgn of sides) for (let i = 0; i < per; i++) {
+      const y0 = by + bh * (per === 1 ? 0.6 : 0.4 + i * 0.35), x0 = sgn > 0 ? bx + bw + dx * 0.5 + 4 : bx - 4;
+      parts += `<line x1="${f1(sgn > 0 ? bx + bw + dx * 0.5 : bx)}" y1="${f1(y0 - depth * 0.3)}" x2="${f1(x0)}" y2="${f1(y0 - depth * 0.3)}" stroke="${C.line}" stroke-width="1.2"/>` + wing(x0, y0, reach - 4, depth, sgn);
+    }
+  }
+  // the body
+  if (sh.base === 'sphere' || sh.base === 'ell') {
+    const r = bw / 2, rcx = cx, rcy = cy;
+    parts += ENG ? `<ellipse cx="${f1(rcx)}" cy="${f1(rcy)}" rx="${f1(r)}" ry="${f1(bh / 2)}" fill="${C.mid}" ${st}/><path d="M${f1(rcx - r * 0.2)} ${f1(rcy - bh / 2)} A${f1(r)} ${f1(bh / 2)} 0 0 1 ${f1(rcx + r)} ${f1(rcy)} A${f1(r * 0.6)} ${f1(bh * 0.4)} 0 0 0 ${f1(rcx - r * 0.2)} ${f1(rcy - bh / 2)}Z" fill="${C.dark}" stroke="none"/><ellipse cx="${f1(rcx)}" cy="${f1(rcy)}" rx="${f1(r)}" ry="${f1(bh / 2)}" fill="none" ${st}/>`
+      : `<ellipse cx="${f1(rcx)}" cy="${f1(rcy)}" rx="${f1(r)}" ry="${f1(bh / 2)}" fill="url(#${id}gs)" ${st}/>`;
+  } else if (/cyl|cone|dcone/.test(sh.base)) {
+    const ry = Math.max(3, bw * 0.16), topW = sh.base === 'cone' ? bw * 0.45 : sh.taper ? bw * 0.78 : bw, x = cx - bw / 2, y = cy - bh / 2;
+    const tx = cx - topW / 2;
+    if (sh.base === 'dcone') parts += `<path d="M${f1(cx)} ${f1(y)} L${f1(x + bw)} ${f1(cy)} L${f1(cx)} ${f1(y + bh)} L${f1(x)} ${f1(cy)} Z" fill="${C.light}" ${st}/><path d="M${f1(cx)} ${f1(y)} L${f1(x + bw)} ${f1(cy)} L${f1(cx)} ${f1(y + bh)} Z" fill="${C.dark}" fill-opacity="${ENG ? 1 : 0.45}" ${st}/>`;
+    else {
+      parts += `<path d="M${f1(tx)} ${f1(y)} L${f1(x)} ${f1(y + bh)} A${f1(bw / 2)} ${f1(ry)} 0 0 0 ${f1(x + bw)} ${f1(y + bh)} L${f1(tx + topW)} ${f1(y)} Z" fill="${C.light}" ${st}/>`;
+      if (sh.sides) { const vis = Math.ceil(sh.sides / 2); for (let i = 1; i < vis; i++) { const t = 0.5 - Math.cos((Math.PI * i) / vis) / 2; parts += `<line x1="${f1(tx + topW * t)}" y1="${f1(y)}" x2="${f1(x + bw * t)}" y2="${f1(y + bh + ry * Math.sin(Math.PI * t))}" stroke="${C.line}" stroke-opacity="${ENG ? 0.8 : 0.35}" stroke-width=".7"/>`; } }
+      parts += `<ellipse cx="${f1(cx)}" cy="${f1(y)}" rx="${f1(topW / 2)}" ry="${f1(ry * topW / bw)}" fill="${C.mid}" ${st}/>`;
+      if (sh.pan && !wings) for (let i = 0; i < 3; i++) parts += `<line x1="${f1(x + bw * 0.08)}" y1="${f1(y + bh * (0.3 + i * 0.2))}" x2="${f1(x + bw * 0.92)}" y2="${f1(y + bh * (0.3 + i * 0.2))}" stroke="${ENG ? C.line : '#2d5fa8'}" stroke-width="${ENG ? 0.7 : 2}" stroke-opacity=".7"/>`;
+    }
+  } else { // box (and cube / prism / irregular, drawn as a box)
+    const F = [[bx, by], [bx + bw, by], [bx + bw, by + bh], [bx, by + bh]], T = [[bx, by], [bx + dx, by + dy], [bx + bw + dx, by + dy], [bx + bw, by]], R = [[bx + bw, by], [bx + bw + dx, by + dy], [bx + bw + dx, by + bh + dy], [bx + bw, by + bh]];
+    const poly = (p, fill) => `<polygon points="${p.map((q) => `${f1(q[0])},${f1(q[1])}`).join(' ')}" fill="${fill}" ${st}/>`;
+    parts += poly(R, C.dark) + poly(T, C.mid) + poly(F, C.light);
+    if (sh.pan && !wings && bw > 14 && bh > 14) { // panels on the body itself
+      const px = bx + bw * 0.14, py = by + bh * 0.2, pw = bw * 0.72, ph = bh * 0.6; let cl = '';
+      for (let i = 1; i < 4; i++) cl += `<line x1="${f1(px + pw * i / 4)}" y1="${f1(py)}" x2="${f1(px + pw * i / 4)}" y2="${f1(py + ph)}"/>`;
+      parts += `<rect x="${f1(px)}" y="${f1(py)}" width="${f1(pw)}" height="${f1(ph)}" fill="${C.panel}" ${st}/><g stroke="${C.line}" stroke-opacity=".35" stroke-width=".6">${cl}</g>`;
+    }
+  }
+  if (sh.ant) { // whips from the lower corners (as long as the catalogue span says, else short stubs)
+    const n = Math.min(sh.ant, 4), len = whips && S > D ? ((S - D) / 2) * k / Math.cos(0.5) : Math.max(16, bh * 0.45);
+    const roots = [[cx - bw / 2, cy + bh / 2], [cx + bw / 2, cy + bh / 2], [cx - bw / 2, cy - bh / 2], [cx + bw / 2, cy - bh / 2]];
+    for (let i = 0; i < n; i++) { const [x, y] = roots[i], sx = i % 2 ? 1 : -1, sy = i < 2 ? 1 : -1; parts += `<line x1="${f1(x)}" y1="${f1(y)}" x2="${f1(x + sx * len * Math.cos(0.5))}" y2="${f1(y + sy * len * Math.sin(0.5))}" stroke="${C.line}" stroke-width="1.2" stroke-linecap="round"/>`; }
+  }
+  if (sh.boom) parts += `<line x1="${f1(cx)}" y1="${f1(cy - bh / 2)}" x2="${f1(cx)}" y2="${f1(Math.max(40, cy - bh * 1.3))}" stroke="${C.line}" stroke-width="1.2"/><circle cx="${f1(cx)}" cy="${f1(Math.max(40, cy - bh * 1.3))}" r="3" fill="${C.line}"/>`;
+  if (spec.empty) parts = ''; // just the sky and Earth (fragmentScene draws its own pieces)
+  if (!ENG && parts) parts = `<g filter="drop-shadow(0 6px 8px #0008)">${parts}</g>`;
+  return `<svg class="shape-art" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">${defs}${g}${parts}${note ? `<text x="22" y="290" fill="#fff2b3" fill-opacity=".75" font-size="11" letter-spacing="1.2" font-family="'SC Label', 'Barlow Condensed', sans-serif">${note}</text>` : ''}</svg>`;
+}
+
+// Debris in the same two styles: a few broken pieces tumbling above Earth.
+export function fragmentScene(seedKey = 'x', { style = 'lit' } = {}) {
+  let seed = [...String(seedKey)].reduce((a, c) => (a * 31 + c.charCodeAt(0)) % 2147483647, 11) || 11;
+  const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647, ENG = style === 'engraved', id = `f${String(seedKey).replace(/\W/g, '')}${style[0]}`;
+  const svg = shapeScene({ shape: 'Box', L: 1, D: 1, empty: true }, { style, seed: seedKey });
+  let g = '';
+  for (let i = 0, n = 3 + Math.floor(rnd() * 2); i < n; i++) {
+    const cx = 120 + rnd() * 160, cy = 95 + rnd() * 100, r = i === 0 ? 40 : 12 + rnd() * 18, m = 6 + Math.floor(rnd() * 4); let d = '';
+    for (let j = 0; j < m; j++) { const a = (j / m) * Math.PI * 2 + rnd() * 0.5, rr = r * (0.55 + rnd() * 0.6); d += `${j ? 'L' : 'M'}${f1(cx + rr * Math.cos(a))} ${f1(cy + rr * Math.sin(a) * 0.8)} `; }
+    g += `<path d="${d}Z" fill="${ENG ? `url(#s${seedKey}eh2)` : (i % 2 ? '#7e8a99' : '#aab3bf')}" stroke="#efe2b8" stroke-width="${ENG ? 1.1 : 0.8}" stroke-linejoin="round"/>`;
+  }
+  return svg.replace('</svg>', `${ENG ? g : `<g filter="drop-shadow(0 5px 6px #0008)">${g}</g>`}</svg>`);
+}
