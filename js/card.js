@@ -1,25 +1,25 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { fallWords } from './last-chance.js?v=0.1.1207';
-import { useMiles } from './units.js?v=0.1.1207';
-import { feel } from './native.js?v=0.1.1207';
-import { sfx } from './sfx.js?v=0.1.1207';
-import { cardArt } from './art.js?v=0.1.1207';
-import { TIER_INFO } from './rarity.js?v=0.1.1207';
-import { SET_BY_ID } from './sets.js?v=0.1.1207';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.1207';
-import { FLEET_ABOUT, fleetAbout, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.1207';
-import { artFileFor } from './art-keys.js?v=0.1.1207';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.1207';
-import { orbitGlobe } from './orbit-view.js?v=0.1.1207';
-import { ART_SHARED } from './art-shared.js?v=0.1.1207';
-import { ART_CREDITS } from './art-credits.js?v=0.1.1207';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.1207';
-import { nightsIn } from './observation.js?v=0.1.1207';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.1207';
-import { SHINY } from './shiny.js?v=0.1.1207';
-import { conArt, cometArt } from './con-art.js?v=0.1.1207';
-import { CON_FIGURES } from './con-figures.js?v=0.1.1207';
-import { localText } from './localize.js?v=0.1.1207';
+import { fallWords } from './last-chance.js?v=0.1.1208';
+import { useMiles } from './units.js?v=0.1.1208';
+import { feel } from './native.js?v=0.1.1208';
+import { sfx } from './sfx.js?v=0.1.1208';
+import { cardArt } from './art.js?v=0.1.1208';
+import { TIER_INFO } from './rarity.js?v=0.1.1208';
+import { SET_BY_ID } from './sets.js?v=0.1.1208';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.1208';
+import { FLEET_ABOUT, fleetAbout, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.1208';
+import { artFileFor } from './art-keys.js?v=0.1.1208';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.1208';
+import { orbitGlobe } from './orbit-view.js?v=0.1.1208';
+import { ART_SHARED } from './art-shared.js?v=0.1.1208';
+import { ART_CREDITS } from './art-credits.js?v=0.1.1208';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.1208';
+import { nightsIn } from './observation.js?v=0.1.1208';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.1208';
+import { SHINY } from './shiny.js?v=0.1.1208';
+import { conArt, cometArt } from './con-art.js?v=0.1.1208';
+import { CON_FIGURES } from './con-figures.js?v=0.1.1208';
+import { localText } from './localize.js?v=0.1.1208';
 // The animal/symbol figure belongs to the completed (gold) constellation card only (2026-10-05): a single
 // star’s card draws just the star pattern with its star marked, so the figure is a reward for finishing the set.
 // A star card’s constellation figure comes into focus as you collect the constellation’s stars (design/con-focus.html B).
@@ -72,13 +72,15 @@ const ART_STARS_EXTRA = {
   'star-deneb': { r: 1.4907, s: [[0.08, 0.12], [0.1, 0.85], [0.92, 0.12], [0.9, 0.85], [0.2, 0.62]] },
 };
 // A picture shared by several cards gets a gentle tint picked by the card's own id, so the same photo or painting looks
-// different from card to card (2026-10-26, Sevaan). Warm, teal, blue, violet, rose, gold; pictures only one card uses
+// different from card to card (2026-10-26, Sevaan). Tints from the app’s palette (below); pictures only one card uses
 // stay as they are.
-const TINTS = [0, 150, 185, 215, 265, 315, 20];
+// Tints stay in the app's own colours (2026-10-26, Sevaan: the full hue wheel gave pinks, purples and greens): untinted,
+// warm cream, gold, burnt orange, steel blue, deep navy-steel.
+const TINTS = ['', 'sepia(.22) saturate(.9) brightness(1.03)', 'sepia(.45) saturate(1.1)', 'sepia(.5) hue-rotate(-14deg) saturate(1.35)', 'sepia(.35) hue-rotate(168deg) saturate(.75)', 'sepia(.4) hue-rotate(182deg) saturate(.85) brightness(.9)'];
 function tintFilter(o, file) {
   if (!ART_SHARED.has(file)) return '';
-  const id = Number(o.id) || [...String(o.key ?? o.id)].reduce((a, c) => a + c.charCodeAt(0), 0), h = TINTS[id % TINTS.length];
-  return `filter: sepia(.4) hue-rotate(${h}deg) saturate(1.2)`;
+  const id = Number(o.id) || [...String(o.key ?? o.id)].reduce((a, c) => a + c.charCodeAt(0), 0), f = TINTS[id % TINTS.length];
+  return f ? `filter: ${f}` : '';
 }
 function artTint(o) { const pa = debrisOf(o)?.parentArt, f = tintFilter(o, pa && ART_FILES.has(pa) ? pa : artFileFor(o, { [o.id]: seriesKeyOf(o) })); return f ? ` style="${f}"` : ''; }
 // A fragment's card, design B "tracking report" of design/fragment-cards.html, followed exactly (2026-10-26, Sevaan): the
