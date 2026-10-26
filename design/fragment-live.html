@@ -1,15 +1,17 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><base href="../"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Fragment cards (live)</title>
-<link rel="stylesheet" href="css/cards.css"><link rel="stylesheet" href="css/ui.css">
-<style>body { margin: 0; background: #080f1b; padding: 24px; } .g { display: grid; grid-template-columns: repeat(4, 280px); gap: 22px; } .card { font-size: 10px; }</style></head><body>
+<link rel="stylesheet" href="css/cards.css"><link rel="stylesheet" href="css/ui.css"><link rel="stylesheet" href="css/collection.css">
+<style>body { margin: 0; background: #080f1b; padding: 24px; } .g { display: grid; grid-template-columns: repeat(3, 280px); gap: 22px; } .card { font-size: 10px; }</style></head><body>
 <div class="g" id="g"></div>
 <script type="module">
 const V = (await fetch('version.json', { cache: 'no-store' }).then((r) => r.json())).version, at = (f) => import(new URL(`js/${f}?v=${V}`, document.baseURI).href);
-const [{ expandFacts }, { renderCard }, { buildCards }, { loadLore }, { loadConstellations }] = await Promise.all(['catalog-facts.js', 'card.js', 'card-model.js', 'lore.js', 'constellations.js'].map(at));
+const [{ expandFacts }, { renderCard, attachFlip }, { buildCards }, { loadLore }, { loadConstellations }] = await Promise.all(['catalog-facts.js', 'card.js', 'card-model.js', 'lore.js', 'constellations.js'].map(at));
 const cat = await fetch('data/catalog.json').then((r) => r.json()); for (const o of cat.objects) expandFacts(o);
 await Promise.all([loadLore(), loadConstellations()]);
 const cards = buildCards(cat), owned = new Set(['126', '134', '32026']); // pretend a few other pieces are found
-for (const id of [122, 32025, 33768, 5987]) { const c = cards.find((x) => Number(x.id) === id); if (!c) continue;
-  document.getElementById('g').append(renderCard(c, { sightings: [{ time: Date.parse('2026-10-01T03:00:00Z'), cardKey: c.key, objectId: c.id }], ownedKeys: new Set([...owned, c.key]) })); }
+for (const id of [122, 32025, 33768, 5987, 25544, 13012]) { const c = cards.find((x) => Number(x.id) === id); if (!c) continue;
+  const el = renderCard(c, { sightings: [{ time: Date.parse('2026-10-01T03:00:00Z'), cardKey: c.key, objectId: c.id }], ownedKeys: new Set([...owned, c.key]) });
+  document.getElementById('g').append(el);
+  if (!el.classList.contains('card--frag')) { attachFlip(el); setTimeout(() => { const r = el.getBoundingClientRect(), ev = (t) => el.dispatchEvent(new PointerEvent(t, { clientX: r.x + 80, clientY: r.y + 80, bubbles: true, pointerType: 'mouse' })); ev('pointerdown'); ev('pointerup'); el.dispatchEvent(new MouseEvent('click', { clientX: r.x + 80, clientY: r.y + 80, bubbles: true })); }, 300); } } // satellites: open their globe
 document.body.dataset.ready = '1';
 </script></body></html>
