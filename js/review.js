@@ -3,16 +3,16 @@
 // picture" shows one card for each art file (most satellites share a picture by kind) with how many cards use it.
 // Stars (☆) are saved in this browser (localStorage 'reviewStars'); "Copy starred" puts a list on the clipboard to
 // hand back. Not linked from the app.
-import { expandFacts } from './catalog-facts.js?v=0.1.1208';
-import { renderCard, miniCard, artImage } from './card.js?v=0.1.1208';
-import { ART_CREDITS } from './art-credits.js?v=0.1.1208';
-import { buildCards } from './card-model.js?v=0.1.1208';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1208';
-import { loadLore, titleFor, debrisOf } from './lore.js?v=0.1.1208';
-import './stories.js?v=0.1.1208';
-import { CON_FIGURES } from './con-figures.js?v=0.1.1208';
-import { loadConstellations, CON_BY_ID } from './constellations.js?v=0.1.1208';
-import { loadComets } from './comets.js?v=0.1.1208';
+import { expandFacts } from './catalog-facts.js?v=0.1.1209';
+import { renderCard, miniCard, artImage } from './card.js?v=0.1.1209';
+import { ART_CREDITS } from './art-credits.js?v=0.1.1209';
+import { buildCards } from './card-model.js?v=0.1.1209';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1209';
+import { loadLore, titleFor, debrisOf } from './lore.js?v=0.1.1209';
+import './stories.js?v=0.1.1209';
+import { CON_FIGURES } from './con-figures.js?v=0.1.1209';
+import { loadConstellations, CON_BY_ID } from './constellations.js?v=0.1.1209';
+import { loadComets } from './comets.js?v=0.1.1209';
 
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
@@ -95,10 +95,23 @@ function list() {
   return { out, one };
 }
 
+// Random mix (2026-10-26, Sevaan: "a page of random cards of each kind, and I can keep refreshing"): six random cards of
+// every kind (fragment debris counted apart from named pieces), grouped by kind; press again for a new set. Touching
+// any filter or the search goes back to the normal list.
+let mix = null;
+const kindOf = (c) => (c._type === 'debris' && debrisOf(c)?.group ? 'fragment' : c._type);
+function randomMix(per = 6) {
+  const by = new Map(); for (const c of cards) { const k = kindOf(c); if (!by.has(k)) by.set(k, []); by.get(k).push(c); }
+  const out = [];
+  for (const [, cs] of [...by].sort((a, b) => String(a[0]).localeCompare(String(b[0])))) {
+    const pool = cs.slice(); for (let i = 0; i < per && pool.length; i++) out.push({ c: pool.splice(Math.floor(Math.random() * pool.length), 1)[0], n: 1 });
+  }
+  return out;
+}
 function render() {
-  const { out, one } = list(), grid = $('grid');
+  const { out, one } = mix ? { out: mix, one: false } : list(), grid = $('grid');
   io.disconnect(); grid.replaceChildren();
-  $('count').textContent = `${out.length.toLocaleString()} shown · ${cards.length.toLocaleString()} cards · ${NEW_ART.size} new pictures · ${stars.size} starred`;
+  $('count').textContent = `${mix ? 'Random mix · ' : ''}${out.length.toLocaleString()} shown · ${cards.length.toLocaleString()} cards · ${NEW_ART.size} new pictures · ${stars.size} starred`;
   const frag = document.createDocumentFragment();
   for (const { c, n } of out) {
     const k = starKey(c, one), el = document.createElement('div');
@@ -220,3 +233,6 @@ $('clear').addEventListener('click', () => { if (stars.size && confirm(`Clear al
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !$('view').hidden) { $('view').hidden = true; $('view').replaceChildren(); } });
 setInterval(async () => { const n = NEW_ART.size; await loadNewArt(); if (NEW_ART.size !== n) render(); }, 60000); // new pictures appear as they arrive
 boot().catch((e) => { $('count').textContent = `Couldn’t load: ${e.message}`; });
+
+$('random').addEventListener('click', () => { mix = randomMix(); render(); scrollTo(0, 0); });
+for (const el of document.querySelectorAll('header input, header select, .bar input, .bar select')) for (const ev of ['input', 'change']) el.addEventListener(ev, () => { mix = null; }, true);
