@@ -553,5 +553,511 @@
   "licence": "Public domain",
   "source": "https://commons.wikimedia.org/wiki/File:330-PSA-262-61_(USN_710980)_(21836863865).jpg",
   "shows": "Transit 4B (left) with its rider TRAAC, US Navy artwork"
+ },
+ "sat-alsat-1n": {
+  "credit": "Algérien fier, CC BY-SA 4.0",
+  "licence": "CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Satellite_alg%C3%A9rien.jpg",
+  "shows": "Render of Alsat-1N cubesat"
+ },
+ "sat-sac-c": {
+  "credit": "Juandedeboca, CC BY-SA 4.0",
+  "licence": "CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Maqt2SACC.JPG",
+  "shows": "SAC-C model at CONAE"
+ },
+ "sat-sac-d": {
+  "credit": "NASA / Public domain",
+  "licence": "Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:Aquarius_SAC-D_satellite.png",
+  "shows": "Aquarius/SAC-D in orbit (NASA render)"
+ },
+ "sat-brite-austria-unibrite-brite-ca1-toronto": {
+  "credit": "M Z Wojalski (Mirosław Zbigniew Wojalski), CC BY-SA 4.0",
+  "licence": "CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:V_Sieradzka_Konferencja_Kosmiczna_Satelita_Lem_-_model_2014_MZW_100_8550.jpg",
+  "shows": "BRITE nanosatellite model (Lem)",
+  "sibling": "BRITE-PL1 Lem (model)"
+ },
+ "sat-scd-2": {
+  "credit": "INPE, Attribution",
+  "licence": "Attribution",
+  "source": "https://commons.wikimedia.org/wiki/File:SCD-2_montagem.jpg",
+  "shows": "SCD-2 during integration"
+ },
+ "sat-alouette-1-s-27-alouette-2": {
+  "credit": "User:Captmondo, CC BY-SA 3.0",
+  "licence": "CC BY-SA 3.0",
+  "source": "https://commons.wikimedia.org/wiki/File:CanadianAirAndSpaceMuseum-AlouetteIReplica-Feb2109.jpg",
+  "shows": "Alouette 1 replica, Canada Aviation and Space Museum",
+  "sibling": "Alouette 1 replica"
+ },
+ "sat-geo-ik-1": {
+  "credit": "Vitaly V. Kuzmin, CC BY-SA 4.0",
+  "licence": "CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:GEO-IK_spacecraft_-_ParkPatriot2015part13-482.jpg",
+  "shows": "GEO-IK at Park Patriot"
+ },
+ "sat-cosmos-1045-intercosmos-22": {
+  "credit": "Rama, CC BY-SA 2.0 fr",
+  "licence": "CC BY-SA 2.0 fr",
+  "source": "https://commons.wikimedia.org/wiki/File:Meteor_2-IMG_7645.jpg",
+  "shows": "Meteor-2 model",
+  "sibling": "Meteor-2 (model)"
+ },
+ "sat-cosmos-1305": {
+  "credit": "Motokoka, CC BY-SA 4.0",
+  "licence": "CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Molniya_(satellite),_Cosmo_Isle_Hakui.jpg",
+  "shows": "Molniya at Cosmo Isle Hakui",
+  "sibling": "Molniya (museum)"
+ },
+ "sat-sich-1-cosmos-1766-cosmos-1869": {
+  "credit": "Державне космічне агентство України, CC BY 4.0",
+  "licence": "CC BY 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Sich-1.jpg",
+  "shows": "Sich-1 render (State Space Agency of Ukraine)",
+  "sibling": "Sich-1 (Okean-O1 type)"
+ },
+ "sat-okean-o": {
+  "credit": "Державне космічне агентство України, CC BY 4.0",
+  "licence": "CC BY 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Ocean-O.jpg",
+  "shows": "Okean-O render"
+ },
+ "sat-resurs-o1-n4-resurs-o1": {
+  "credit": "El Salvador, CC0",
+  "licence": "CC0",
+  "source": "https://commons.wikimedia.org/wiki/File:RESURS-O1-4_%D0%9A%D0%90_%D0%A0%D0%B5%D1%81%D1%83%D1%80%D1%81-%D0%9E1_%E2%84%964.jpg",
+  "shows": "Resurs-O1-4 before launch",
+  "sibling": "Resurs-O1 No.4"
+ },
+ "sat-earthcare": {
+  "credit": "ESA, CC BY-SA 3.0 IGO",
+  "licence": "CC BY-SA 3.0 IGO",
+  "source": "https://commons.wikimedia.org/wiki/File:Cleaning_EarthCARE_ESA25462753.jpg",
+  "shows": "EarthCARE being cleaned before shipment (ESA)"
+ },
+ "sat-ers-1": {
+  "credit": "ESA, CC BY-SA 3.0 IGO",
+  "licence": "CC BY-SA 3.0 IGO",
+  "source": "https://commons.wikimedia.org/wiki/File:ERS-1_ESA382541_(cropped).jpg",
+  "shows": "ERS-1 in orbit (ESA)"
+ },
+ "sat-cryosat-2": {
+  "credit": "Mike Peel (www.mikepeel.net), CC BY-SA 4.0",
+  "licence": "CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:At_Noordwijk_2024_029.jpg",
+  "shows": "CryoSat replica at Space Expo Noordwijk",
+  "sibling": "CryoSat full-size replica"
+ },
+ "sat-hipparcos": {
+  "credit": "Michael Perryman, CC BY-SA 3.0",
+  "licence": "CC BY-SA 3.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Hipparcos-testing-estec.jpg",
+  "shows": "Hipparcos in ESTEC Large Solar Simulator"
+ },
+ "sat-sentinel-1a-sentinel-1b": {
+  "credit": "Rama, CC BY-SA 2.0 fr",
+  "licence": "CC BY-SA 2.0 fr",
+  "source": "https://commons.wikimedia.org/wiki/File:Sentinel_1-IMG_5874-white.jpg",
+  "shows": "Sentinel-1 model",
+  "sibling": "model (radar antenna missing)"
+ },
+ "sat-envisat": {
+  "credit": "Dkassing, CC BY-SA 3.0",
+  "licence": "CC BY-SA 3.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Space_Expo-Noordwijk.jpg",
+  "shows": "Full-scale Envisat model, Space Expo Noordwijk",
+  "sibling": "full-scale model"
+ },
+ "sat-estcube-1": {
+  "credit": "Erik Kulu, ESTCube-1 team / Public domain",
+  "licence": "Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:Estcube-1_2012-12-27.jpg",
+  "shows": "ESTCube-1 first assembly"
+ },
+ "sat-metop-a-metop-b": {
+  "credit": "NASA / Public domain",
+  "licence": "Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:MetOp-A_%26_-B_spacecraft_model.png",
+  "shows": "MetOp-A/-B model (NASA)"
+ },
+ "sat-iceye-x25-iceye-x35-iceye-x5": {
+  "credit": "Defensie Nederland, CC BY-SA 4.0",
+  "licence": "CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:ICEYE_SAR_satellite_Netherlands.png",
+  "shows": "ICEYE SAR satellite render"
+ },
+ "sat-a-1-asterix": {
+  "credit": "Pline, CC BY-SA 3.0",
+  "licence": "CC BY-SA 3.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Asterix_Musee_du_Bourget_P1020341.JPG",
+  "shows": "Astérix (A-1) at Musée de l'Air et de l'Espace",
+  "sibling": "flight spare / museum example"
+ },
+ "sat-pleiades-1a-pleiades-1b": {
+  "credit": "Tiraden, CC BY-SA 4.0",
+  "licence": "CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Pl%C3%A9iades_(satellite).jpg",
+  "shows": "Pléiades model, CNES stand, Paris Air Show 2019",
+  "sibling": "model"
+ },
+ "sat-diademe-1-diademe-2-diapason-d1-a": {
+  "credit": "Pline, CC BY-SA 3.0",
+  "licence": "CC BY-SA 3.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Satellite-D1-Diad%C3%A8me_Musee_du_Bourget_P1010671.JPG",
+  "shows": "Diadème D-1 at Musée de l'Air et de l'Espace",
+  "sibling": "Diadème (D-1 type)"
+ },
+ "sat-fr-1": {
+  "credit": "Pline, CC BY-SA 3.0",
+  "licence": "CC BY-SA 3.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Satellite_FR_1_musee_du_Bourget_P1020343.JPG",
+  "shows": "FR-1 mockup at Musée de l'Air et de l'Espace",
+  "sibling": "mockup"
+ },
+ "sat-calipso": {
+  "credit": "NASA / Public domain",
+  "licence": "Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:CALIPSO_spacecraft_model.png",
+  "shows": "CALIPSO spacecraft model (NASA)"
+ },
+ "sat-jason-2-ostm": {
+  "credit": "NASA / Public domain",
+  "licence": "Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:OSTM-Jason-2-Spacecraft.jpg",
+  "shows": "OSTM/Jason-2 spacecraft (NASA)"
+ },
+ "sat-sonate-2": {
+  "credit": "Wikiluri, CC BY-SA 4.0",
+  "licence": "CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Sonate2_Satellit.png",
+  "shows": "SONATE-2 satellite"
+ },
+ "sat-terrasar-x-tandem-x": {
+  "credit": "DLR, CC BY 3.0",
+  "licence": "CC BY 3.0",
+  "source": "https://commons.wikimedia.org/wiki/File:TDX-Formation.jpg",
+  "shows": "TerraSAR-X and TanDEM-X in formation (DLR)",
+  "sibling": "TerraSAR-X and TanDEM-X together"
+ },
+ "sat-pratham": {
+  "credit": "Sikkaanmol, CC BY-SA 4.0",
+  "licence": "CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Pratham_FM.jpg",
+  "shows": "Pratham flight model at ISAC"
+ },
+ "sat-pisat": {
+  "credit": "Gauravagarwal.27395, CC BY-SA 4.0",
+  "licence": "CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:PISAT_Flight_Model.jpg",
+  "shows": "PISat flight model after testing"
+ },
+ "sat-midori-ii-adeos-ii": {
+  "credit": "w:NASA (w:Jet Propulsion Laboratory) / Public domain",
+  "licence": "Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:Adeos2.jpg",
+  "shows": "ADEOS-II artist's drawing (NASA/JPL)"
+ },
+ "sat-alos-2": {
+  "credit": "Syced, CC0",
+  "licence": "CC0",
+  "source": "https://commons.wikimedia.org/wiki/File:Inside_JAXA_Space_Dome_8.jpg",
+  "shows": "ALOS-2 model, JAXA Space Dome",
+  "sibling": "scale model"
+ },
+ "sat-adras-j": {
+  "credit": "Astroscale, CC BY-SA 4.0",
+  "licence": "CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:ADRAS-J_Phase_I_(cropped).png",
+  "shows": "ADRAS-J (Astroscale)"
+ },
+ "sat-gosat-ibuki": {
+  "credit": "Polimerek, CC BY-SA 3.0",
+  "licence": "CC BY-SA 3.0",
+  "source": "https://commons.wikimedia.org/wiki/File:JAXA_Greenhouse_observing_satelite_2.jpg",
+  "shows": "GOSAT at Tsukuba Space Center",
+  "sibling": "full-size exhibit"
+ },
+ "sat-gpm-core": {
+  "credit": "NASA / Public domain",
+  "licence": "Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:Global_Precipitation_Measurement_spacecraft_model.png",
+  "shows": "GPM Core Observatory (NASA)"
+ },
+ "sat-kirari-oicets": {
+  "credit": "Polimerek, CC BY-SA 3.0",
+  "licence": "CC BY-SA 3.0",
+  "source": "https://commons.wikimedia.org/wiki/File:JAXA_Kiriani_test_satelite.jpg",
+  "shows": "Kirari (OICETS) at Tsukuba Space Center",
+  "sibling": "exhibit model"
+ },
+ "sat-halca-muses-b": {
+  "credit": "ISAS JAXA, CC BY 3.0",
+  "licence": "CC BY 3.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Haruka_HALCA_VSOP_MUSES-B.jpg",
+  "shows": "HALCA during solar-array check at Uchinoura (ISAS/JAXA)"
+ },
+ "sat-hinode-solar-b": {
+  "credit": "NASA/GSFC/C. Meaney / Public domain",
+  "licence": "Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:SOLAR-B_artists_concept.jpg",
+  "shows": "Solar-B (Hinode) artist's concept (NASA)"
+ },
+ "sat-hisaki-sprint-a": {
+  "credit": "テレストレラッソ, CC BY-SA 4.0",
+  "licence": "CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:SPIRINT-A_%27Hisaki%27_Model.jpg",
+  "shows": "Hisaki (SPRINT-A) model",
+  "sibling": "model"
+ },
+ "sat-arase-erg": {
+  "credit": "宇宙航空研究開発機構・宇宙科学研究所(JAXA/ISAS), CC BY 4.0",
+  "licence": "CC BY 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:ERGsat_Appearance_atPressConference.jpg",
+  "shows": "ERG (Arase) unveiled to the press (JAXA/ISAS)"
+ },
+ "sat-kyokko-exos-a": {
+  "credit": "掬茶, CC BY-SA 4.0",
+  "licence": "CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Scale_model_of_the_Kyokko_(EXOS-A,_1978-014A)_exhibited_at_Noshiro_City_Children%27s_Center.jpg",
+  "shows": "Kyokko (EXOS-A) half-scale model, Noshiro",
+  "sibling": "1/2-scale model"
+ },
+ "sat-perusat-1": {
+  "credit": "Galería del Ministerio de Defensa del Perú, CC BY 2.0",
+  "licence": "CC BY 2.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Per%C3%BA_Sat_-_1_(Modelo).jpg",
+  "shows": "PerúSAT-1 model (Peruvian Ministry of Defence)",
+  "sibling": "model"
+ },
+ "sat-dfh-1": {
+  "credit": "Brücke-Osteuropa, CC0",
+  "licence": "CC0",
+  "source": "https://commons.wikimedia.org/wiki/File:DFH-1_Satellite.jpg",
+  "shows": "Dong Fang Hong 1 at exhibition in Hohhot",
+  "sibling": "exhibit replica"
+ },
+ "sat-fengyun-3a-fengyun-3b-fengyun-3c": {
+  "credit": "Hibiki Watabe, CC BY 2.0",
+  "licence": "CC BY 2.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Fengyun_3_satellite_mockup.jpg",
+  "shows": "Fengyun-3 mockup, Shanghai Science & Technology Museum",
+  "sibling": "mockup"
+ },
+ "sat-gaofen-1": {
+  "credit": "AKAMGO yalms, CC BY-SA 4.0",
+  "licence": "CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:HK_WCN_%E7%81%A3%E4%BB%94%E5%8C%97_Wan_Chai_North_%E9%A6%99%E6%B8%AF%E6%9C%83%E5%B1%95_HKCEC_%E5%89%B5%E7%A7%91%E5%8D%9A%E8%A6%BD_InnoTech_Expo_HKSAR_%E8%88%AA%E5%A4%A9%E5%99%A8_outer_spacecraft_%E9%AB%98%E5%88%86%E4%B8%83%E8%99%9F_%E8%A1%9B%E6%98%9F_Gaofen_Six_December_2022_Px3_03.jpg",
+  "shows": "Gaofen-6 model, InnoTech Expo Hong Kong",
+  "sibling": "Gaofen-6 model (sibling design)"
+ },
+ "sat-formosat-2-rocsat-2": {
+  "credit": "SSR2000, CC BY-SA 3.0",
+  "licence": "CC BY-SA 3.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Model_of_FORMOSAT-2_in_NSPO,_Taiwan-2.JPG",
+  "shows": "FORMOSAT-2 model at NSPO",
+  "sibling": "model"
+ },
+ "sat-formosat-3-fm1-formosat-3-fm2-formosat-3": {
+  "credit": "SSR2000, CC BY-SA 3.0",
+  "licence": "CC BY-SA 3.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Model_of_FORMOSAT-3_in_NSPO,_Taiwan.JPG",
+  "shows": "FORMOSAT-3 model at NSPO",
+  "sibling": "model"
+ },
+ "sat-nanosat-1-nanosat-1b": {
+  "credit": "Benjamín Núñez González, CC BY-SA 4.0",
+  "licence": "CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Nanosat_01,_INTA,_Madrid,_2015.jpg",
+  "shows": "Nanosat-01 reproduction (INTA) at Homsec 2015",
+  "sibling": "Nanosat-01 reproduction"
+ },
+ "sat-knacksat-2": {
+  "credit": "Siravijbb, CC BY-SA 4.0",
+  "licence": "CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:KNACKSAT-2_in_clean_room.jpg",
+  "shows": "KNACKSAT-2 in clean room at KMUTNB"
+ },
+ "sat-dubaisat-2": {
+  "credit": "Emirates Institution for Advanced Science and Technology, CC BY-SA 3.0",
+  "licence": "CC BY-SA 3.0",
+  "source": "https://commons.wikimedia.org/wiki/File:DubaiSat-2.jpg",
+  "shows": "DubaiSat-2 (EIAST)"
+ },
+ "sat-funcube-1-ao-73": {
+  "credit": "Wouter Weggelaar (Pa3weg at English Wikipedia), CC BY 3.0",
+  "licence": "CC BY 3.0",
+  "source": "https://commons.wikimedia.org/wiki/File:FUNcube-1.jpg",
+  "shows": "FUNcube-1 in ISIS clean room, Delft"
+ },
+ "sat-dmc3-fm1-dmc3-fm2-dmc3-fm3": {
+  "credit": "Rama, CC BY-SA 2.0 fr",
+  "licence": "CC BY-SA 2.0 fr",
+  "source": "https://commons.wikimedia.org/wiki/File:SSTL-300-IMG_7888.jpg",
+  "shows": "SSTL-300 satellite 1:5 model",
+  "sibling": "SSTL-300 1:5 model (same bus)"
+ },
+ "sat-prospero-black-arrow": {
+  "credit": "Geni, CC BY-SA 4.0",
+  "licence": "CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Prospero_X-3_model_2012.JPG",
+  "shows": "Prospero X-3 flight spare, Science Museum London",
+  "sibling": "flight spare"
+ },
+ "sat-polyitan-1": {
+  "credit": "Firef7y, CC BY-SA 3.0",
+  "licence": "CC BY-SA 3.0",
+  "source": "https://commons.wikimedia.org/wiki/File:PolyITAN-1_in_container.jpg",
+  "shows": "PolyITAN-1 in its launch container",
+  "sibling": "in launch container"
+ },
+ "sat-vrss-1": {
+  "credit": "Cristóbal Alvarado Minic, CC BY 2.0",
+  "licence": "CC BY 2.0",
+  "source": "https://commons.wikimedia.org/wiki/File:VRSS-1_satellite.jpg",
+  "shows": "VRSS-1 1:25 scale replica",
+  "sibling": "1:25 replica"
+ },
+ "sat-tabletsat-aurora": {
+  "credit": "Alena.svinareva, CC BY-SA 4.0",
+  "licence": "CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:SPUTNIX_TabletSat-Aurora.jpg",
+  "shows": "TabletSat-Aurora (SPUTNIX)"
+ },
+ "sat-eutelsat-w3b": {
+  "credit": "Guy Lebègue, CC BY-SA 3.0",
+  "licence": "CC BY-SA 3.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Eutelsat_w3b.JPG",
+  "shows": "Eutelsat W3 1/10-scale mockup",
+  "sibling": "1/10 mockup of a Eutelsat W3-series Spacebus 4000C3 (not W3B itself)"
+ },
+ "sat-crocube": {
+  "credit": "User:Mnalis, CC BY-SA 4.0",
+  "licence": "CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:CroCube_nanosatellite_crop.jpg",
+  "shows": "CroCube in the Technical Museum, Zagreb"
+ },
+ "sat-lasarsat": {
+  "credit": "DoSpace - Association for Student Space Exploration, CC BY-SA 4.0",
+  "licence": "CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:LASARsat_(cropped).jpg",
+  "shows": "LASARsat during tests"
+ },
+ "sat-antelsat": {
+  "credit": "ANTELSAT Team, Aerospace Corp, CC0",
+  "licence": "CC0",
+  "source": "https://commons.wikimedia.org/wiki/File:2U_ANTELSAT_CubeSat.jpg",
+  "shows": "AntelSat before launch"
+ },
+ "sat-yaogan-4-yaogan-7-shiyan-2-sy-2": {
+  "credit": "Cristóbal Alvarado Minic, CC BY 2.0",
+  "licence": "CC BY 2.0",
+  "source": "https://commons.wikimedia.org/wiki/File:VRSS-1_satellite.jpg",
+  "shows": "CAST-2000 platform satellite replica (VRSS-1)",
+  "sibling": "VRSS-1 replica (same CAST-2000 platform)"
+ },
+ "sat-astro-h-hitomi": {
+  "credit": "宇宙航空研究開発機構・宇宙科学研究所(JAXA/ISAS), CC BY 4.0",
+  "licence": "CC BY 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:ASTRO-H_%27HITOMI%27.jpg",
+  "shows": "ASTRO-H (Hitomi) unveiled at Tsukuba Space Center (JAXA/ISAS)"
+ },
+ "sat-arirang-5-kompsat-5": {
+  "credit": "ImpMK, CC0",
+  "licence": "CC0",
+  "source": "https://commons.wikimedia.org/wiki/File:KOMPSAT-5_STM.jpg",
+  "shows": "KOMPSAT-5 structural-thermal model, Naro Space Center",
+  "sibling": "structural-thermal model"
+ },
+ "sat-uk-dmc-uk-dmc-2-alsat-1": {
+  "credit": "Mike Peel (www.mikepeel.net), CC BY-SA 4.0",
+  "licence": "CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:At_the_Science_Museum,_London_2025_126.jpg",
+  "shows": "UK-DMC1 1:5 scale model, Science Museum London",
+  "sibling": "UK-DMC1 1:5 model (SSTL-100 DMC family)"
+ },
+ "sat-gcom-w1-shizuku": {
+  "credit": "Syced, CC0",
+  "licence": "CC0",
+  "source": "https://commons.wikimedia.org/wiki/File:Artefacts_at_Tsukuba_Space_Center_exhibition_hall_22.jpg",
+  "shows": "GCOM-W (Shizuku) 1/50 model, Tsukuba Space Center",
+  "sibling": "1/50 scale model"
+ },
+ "sat-cosmos-2416-rodnik-s-1-cosmos-2452-rodni": {
+  "credit": "Pline, CC BY-SA 3.0",
+  "licence": "CC BY-SA 3.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Gonets-M-Salon-du-Bourget-2013-DSC_0043.jpg",
+  "shows": "Gonets-M satellite model, Paris Air Show 2013",
+  "sibling": "Gonets-M model (Rodnik is the military twin of Gonets-M)"
+ },
+ "sat-cosmos-2199-cosmos-2201-strela-3": {
+  "credit": "Pline, CC BY-SA 3.0",
+  "licence": "CC BY-SA 3.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Gonets-M-Salon-du-Bourget-2013-DSC_0043.jpg",
+  "shows": "Gonets-M satellite model, Paris Air Show 2013",
+  "sibling": "Gonets-M model (later derivative of the Strela-3 design)"
+ },
+ "sat-cosmos-2123-rs-12-13-informator-1-rs-14": {
+  "credit": "Музей Космонавтики from Россия, CC0",
+  "licence": "CC0",
+  "source": "https://commons.wikimedia.org/wiki/File:3F9A5697_(36924794750).jpg",
+  "shows": "Nadezhda satellite scale model, Memorial Museum of Cosmonautics",
+  "sibling": "Nadezhda model (Tsikada-family navigation bus)"
+ },
+ "sat-elektron-1-elektron-3": {
+  "credit": "Музей Космонавтики from Россия, CC0",
+  "licence": "CC0",
+  "source": "https://commons.wikimedia.org/wiki/File:FP2A8706_(37296934282).jpg",
+  "shows": "Elektron 1 and 2 full-scale models, Memorial Museum of Cosmonautics",
+  "sibling": "1:1 models of Elektron 2 (left) and Elektron 1 (right, per caption order); Elektron 3 matches Elektron 1"
+ },
+ "sat-alos-daichi": {
+  "credit": "テレストレラッソ, CC BY-SA 4.0",
+  "licence": "CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:ALOS_TsukubaSpaceDome01.jpg",
+  "shows": "ALOS (Daichi) at Tsukuba Space Dome",
+  "sibling": "exhibit model"
+ },
+ "sat-smos": {
+  "credit": "DLR German Aerospace Center, CC BY 2.0",
+  "licence": "CC BY 2.0",
+  "source": "https://commons.wikimedia.org/wiki/File:SMOS_scale_model_(7628219434)_(2).jpg",
+  "shows": "SMOS scale model (DLR)",
+  "sibling": "scale model"
+ },
+ "sat-arirang-2-kompsat-2": {
+  "credit": "KARI, KOGL Type 1",
+  "licence": "KOGL Type 1",
+  "source": "https://commons.wikimedia.org/wiki/File:G_SA_KOMPSAT-2_01.jpg",
+  "shows": "KOMPSAT-2 (Arirang-2) artist rendering (KARI)"
+ },
+ "sat-kiku-4-ets-iii": {
+  "credit": "Syced, CC0",
+  "licence": "CC0",
+  "source": "https://commons.wikimedia.org/wiki/File:Artefacts_at_Tsukuba_Space_Center_exhibition_hall_35.jpg",
+  "shows": "ETS-III (Kiku-4) full-size model, Tsukuba Space Center",
+  "sibling": "1:1 model"
+ },
+ "sat-kiku-1-ets-i": {
+  "credit": "Syced, CC0",
+  "licence": "CC0",
+  "source": "https://commons.wikimedia.org/wiki/File:Artifacts_at_Tsukuba_Space_Center_Space_Dome_exhibition_hall_5.jpg",
+  "shows": "ETS-I (Kiku) full-size model, Tsukuba Space Dome",
+  "sibling": "1:1 model"
+ },
+ "sat-cute-1-co-55": {
+  "credit": "Motokoka, CC BY-SA 4.0",
+  "licence": "CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Ultra-compact_Artificial_Satellites_CUTE-I.jpg",
+  "shows": "CUTE-I at Gifu-Kakamigahara Air and Space Museum",
+  "sibling": "museum piece"
+ },
+ "sat-samsat-ionosphere-rs75s": {
+  "credit": "Alky samara, CC BY-SA 4.0",
+  "licence": "CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:SamSat-ION_in_vertical_test_rig.jpg",
+  "shows": "SamSat-ION in vertical test rig (Samara University)"
  }
 }
