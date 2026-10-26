@@ -1,25 +1,25 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { fallWords } from './last-chance.js?v=0.1.1205';
-import { useMiles } from './units.js?v=0.1.1205';
-import { feel } from './native.js?v=0.1.1205';
-import { sfx } from './sfx.js?v=0.1.1205';
-import { cardArt } from './art.js?v=0.1.1205';
-import { TIER_INFO } from './rarity.js?v=0.1.1205';
-import { SET_BY_ID } from './sets.js?v=0.1.1205';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.1205';
-import { FLEET_ABOUT, fleetAbout, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.1205';
-import { artFileFor } from './art-keys.js?v=0.1.1205';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.1205';
-import { orbitGlobe } from './orbit-view.js?v=0.1.1205';
-import { ART_SHARED } from './art-shared.js?v=0.1.1205';
-import { ART_CREDITS } from './art-credits.js?v=0.1.1205';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.1205';
-import { nightsIn } from './observation.js?v=0.1.1205';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.1205';
-import { SHINY } from './shiny.js?v=0.1.1205';
-import { conArt, cometArt } from './con-art.js?v=0.1.1205';
-import { CON_FIGURES } from './con-figures.js?v=0.1.1205';
-import { localText } from './localize.js?v=0.1.1205';
+import { fallWords } from './last-chance.js?v=0.1.1206';
+import { useMiles } from './units.js?v=0.1.1206';
+import { feel } from './native.js?v=0.1.1206';
+import { sfx } from './sfx.js?v=0.1.1206';
+import { cardArt } from './art.js?v=0.1.1206';
+import { TIER_INFO } from './rarity.js?v=0.1.1206';
+import { SET_BY_ID } from './sets.js?v=0.1.1206';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.1206';
+import { FLEET_ABOUT, fleetAbout, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.1206';
+import { artFileFor } from './art-keys.js?v=0.1.1206';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.1206';
+import { orbitGlobe } from './orbit-view.js?v=0.1.1206';
+import { ART_SHARED } from './art-shared.js?v=0.1.1206';
+import { ART_CREDITS } from './art-credits.js?v=0.1.1206';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.1206';
+import { nightsIn } from './observation.js?v=0.1.1206';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.1206';
+import { SHINY } from './shiny.js?v=0.1.1206';
+import { conArt, cometArt } from './con-art.js?v=0.1.1206';
+import { CON_FIGURES } from './con-figures.js?v=0.1.1206';
+import { localText } from './localize.js?v=0.1.1206';
 // The animal/symbol figure belongs to the completed (gold) constellation card only (2026-10-05): a single
 // star’s card draws just the star pattern with its star marked, so the figure is a reward for finishing the set.
 // A star card’s constellation figure comes into focus as you collect the constellation’s stars (design/con-focus.html B).
@@ -537,7 +537,7 @@ const myPlace = () => { try { const o = JSON.parse(localStorage.getItem('observe
 // The default single tap on a full card (2026-10-26, Sevaan: "shouldn't the tap globe work anywhere?"): a card with an orbit
 // swaps its picture for the live globe (js/orbit-view.js); tap again for the picture. Fragment cards show the globe always.
 function orbitTap(el) {
-  const o = el._card, art = el.querySelector('.card__art'); if (!o?.el || o.natural || o.archived || !art || el.classList.contains('card--frag')) return null;
+  const o = el._card, art = el.querySelector('.card__art'); if (!o?.el || o.natural || o.archived || !art || o.type === 'debris') return null; // debris: no tap (fragments already show their orbit)
   let globe = null; el.classList.add('can-orbit');
   return () => { if (!el.isConnected) return; if (globe) { globe.stop(); globe = null; art.classList.remove('orbiting'); return; }
     globe = orbitGlobe(o, art, myPlace()); if (globe) art.classList.add('orbiting'); };
