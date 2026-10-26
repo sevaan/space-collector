@@ -1,9 +1,9 @@
 // Orbit view (2026-10-14, Sevaan; design/fun-and-learning.html): one tap on a satellite card in the collection viewer
 // turns its picture into a small globe: the ground track for the orbit before and after now, where it is right now
 // (moving live), and where you are. Tap again for the picture. Coarse coastlines from js/geo.js. Canvas, no DOM beyond it.
-import { satrecFor, overEarth } from './orbit.js?v=0.1.1200';
-import { useMiles } from './units.js?v=0.1.1200';
-import { LAND, placeName } from './geo.js?v=0.1.1200';
+import { satrecFor, overEarth } from './orbit.js?v=0.1.1202';
+import { useMiles } from './units.js?v=0.1.1202';
+import { LAND, placeName } from './geo.js?v=0.1.1202';
 
 const RAD = Math.PI / 180;
 // Orthographic projection of (lat, lon) onto a globe of radius R centred at (cx, cy), looking at (lat0, lon0).
@@ -13,7 +13,7 @@ function proj(lat, lon, lat0, lon0, R, cx, cy) {
   return { x: cx + R * Math.cos(p) * Math.sin(l), y: cy - R * (Math.cos(p0) * Math.sin(p) - Math.sin(p0) * Math.cos(p) * Math.cos(l)), front: cosc > 0 };
 }
 // obj: the card (needs `el`); host: the element to fill; me: { lat, lon } or null. Returns { stop() }.
-export function orbitGlobe(obj, host, me) {
+export function orbitGlobe(obj, host, me, { once = false } = {}) {
   const o = { ...obj, satrec: obj.satrec ?? satrecFor(obj) };
   if (!o.satrec) return null;
   const canvas = document.createElement('canvas'); canvas.className = 'orbit-globe';
@@ -21,6 +21,8 @@ export function orbitGlobe(obj, host, me) {
   const ctx = canvas.getContext('2d'), still = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const periodMin = obj.el ? 1440 / obj.el[1] : 95;
   let trackAt = 0, track = [], lat0 = 20, lon0 = 0, raf = 0, now0 = performance.now();
+  let seed = (Number(obj.id) || 7) % 2147483646 + 1; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  const stars = Array.from({ length: 70 }, () => ({ x: rnd(), y: rnd(), r: 0.4 + rnd() * 0.9, a: 0.25 + rnd() * 0.6, f: 500 + rnd() * 1400, p: rnd() * 6.3 }));
   const sample = () => {
     const t = Date.now(); track = [];
     for (let m = -periodMin * 0.5; m <= periodMin * 1.25; m += periodMin / 120) { const g = overEarth(o, new Date(t + m * 60000)); if (g) track.push({ m, lat: g.lat, lon: g.lon }); }
@@ -36,7 +38,8 @@ export function orbitGlobe(obj, host, me) {
     const R = Math.min(W, H) * 0.4, cx = W / 2, cy = H / 2;
     // starry backdrop
     ctx.fillStyle = '#050a12'; ctx.fillRect(0, 0, W, H);
-    for (let i = 0; i < 50; i++) { ctx.fillStyle = 'rgba(255,242,179,.35)'; ctx.fillRect((i * 97.3) % W, (i * 57.1) % H, 1.2, 1.2); }
+    for (const st of stars) { const a = still || once ? st.a : st.a * (0.45 + 0.55 * (0.5 + 0.5 * Math.sin(ts / st.f + st.p))); // each star twinkles on its own beat (2026-10-26, Sevaan)
+      ctx.fillStyle = `rgba(255,242,179,${a.toFixed(2)})`; ctx.beginPath(); ctx.arc(st.x * W, st.y * H, st.r, 0, Math.PI * 2); ctx.fill(); }
     const g = ctx.createRadialGradient(cx - R * 0.35, cy - R * 0.35, R * 0.1, cx, cy, R); g.addColorStop(0, '#3d6f9e'); g.addColorStop(1, '#122b45');
     ctx.fillStyle = g; ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2); ctx.fill();
     ctx.save(); ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2); ctx.clip();
@@ -66,8 +69,9 @@ export function orbitGlobe(obj, host, me) {
       ctx.fillStyle = 'rgba(250,129,39,.25)'; ctx.beginPath(); ctx.arc(p.x, p.y, 8 + pulse, 0, Math.PI * 2); ctx.fill();
       ctx.fillStyle = '#fa8127'; ctx.strokeStyle = '#fff2b3'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(p.x, p.y, 5, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
     }
-    raf = requestAnimationFrame(draw);
+    if (!once && canvas.isConnected) raf = requestAnimationFrame(draw); // stops by itself when its card is gone
   };
+  if (once) { lat0 = Math.max(-50, Math.min(50, (overEarth(o, new Date())?.lat ?? 0) * 0.6)); } // a still frame starts already centred
   raf = requestAnimationFrame(draw);
   return { stop() { cancelAnimationFrame(raf); canvas.remove(); } };
 }

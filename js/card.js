@@ -1,24 +1,25 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { fallWords } from './last-chance.js?v=0.1.1200';
-import { useMiles } from './units.js?v=0.1.1200';
-import { feel } from './native.js?v=0.1.1200';
-import { sfx } from './sfx.js?v=0.1.1200';
-import { cardArt } from './art.js?v=0.1.1200';
-import { TIER_INFO } from './rarity.js?v=0.1.1200';
-import { SET_BY_ID } from './sets.js?v=0.1.1200';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.1200';
-import { FLEET_ABOUT, fleetAbout, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.1200';
-import { artFileFor } from './art-keys.js?v=0.1.1200';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.1200';
-import { ART_SHARED } from './art-shared.js?v=0.1.1200';
-import { ART_CREDITS } from './art-credits.js?v=0.1.1200';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.1200';
-import { nightsIn } from './observation.js?v=0.1.1200';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.1200';
-import { SHINY } from './shiny.js?v=0.1.1200';
-import { conArt, cometArt } from './con-art.js?v=0.1.1200';
-import { CON_FIGURES } from './con-figures.js?v=0.1.1200';
-import { localText } from './localize.js?v=0.1.1200';
+import { fallWords } from './last-chance.js?v=0.1.1202';
+import { useMiles } from './units.js?v=0.1.1202';
+import { feel } from './native.js?v=0.1.1202';
+import { sfx } from './sfx.js?v=0.1.1202';
+import { cardArt } from './art.js?v=0.1.1202';
+import { TIER_INFO } from './rarity.js?v=0.1.1202';
+import { SET_BY_ID } from './sets.js?v=0.1.1202';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.1202';
+import { FLEET_ABOUT, fleetAbout, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.1202';
+import { artFileFor } from './art-keys.js?v=0.1.1202';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.1202';
+import { orbitGlobe } from './orbit-view.js?v=0.1.1202';
+import { ART_SHARED } from './art-shared.js?v=0.1.1202';
+import { ART_CREDITS } from './art-credits.js?v=0.1.1202';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.1202';
+import { nightsIn } from './observation.js?v=0.1.1202';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.1202';
+import { SHINY } from './shiny.js?v=0.1.1202';
+import { conArt, cometArt } from './con-art.js?v=0.1.1202';
+import { CON_FIGURES } from './con-figures.js?v=0.1.1202';
+import { localText } from './localize.js?v=0.1.1202';
 // The animal/symbol figure belongs to the completed (gold) constellation card only (2026-10-05): a single
 // star’s card draws just the star pattern with its star marked, so the figure is a reward for finishing the set.
 // A star card’s constellation figure comes into focus as you collect the constellation’s stars (design/con-focus.html B).
@@ -83,34 +84,13 @@ function artTint(o) { const pa = debrisOf(o)?.parentArt, f = tintFilter(o, pa &&
 // A fragment's card, design B "tracking report" of design/fragment-cards.html, followed exactly (2026-10-26, Sevaan): the
 // two chips (rarity · TRACKED OBJECT), the name, a big sketch of this piece's real orbit (Earth to scale, the ellipse from
 // its own perigee and apogee) with "ORBIT · height · laps a day", a report (From · Launched · Pieces tracked), the fact and
-// the footer. No picture window, no stats row. data/debris.json: parent, parentArt, tracked (scripts/build-debris-parents.mjs).
-function orbitSketch(o, animate = true) {
-  const RE = 6371, per = Math.max(150, Number(o.perigee) || 500), apo = Math.max(per, Number(o.apogee) || per);
-  const a = RE + (per + apo) / 2, c = a - (RE + per), b = Math.sqrt(a * a - c * c), k = Math.min(122 / a, 40 / b), e = c / a;
-  const ex = 130 - c * k; // ellipse centre: Earth sits at the focus, perigee to the right
-  // The piece moves at its true relative speed (2026-10-26, Sevaan: "can the orbits be animated?"): Kepler's equation at
-  // 48 equal steps in time gives where it is; a loop takes a few seconds, quicker for lower orbits.
-  let move = '';
-  if (animate && !(typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches)) {
-    const pts = [];
-    for (let i = 0; i <= 48; i++) { const M = (2 * Math.PI * i) / 48; let E = M; for (let j = 0; j < 8; j++) E -= (E - e * Math.sin(E) - M) / (1 - e * Math.cos(E));
-      pts.push([ex + a * k * Math.cos(E), 45 - b * k * Math.sin(E)]); }
-    const path = pts.map((q, i) => `${i ? 'L' : 'M'}${q[0].toFixed(1)} ${q[1].toFixed(1)}`).join(' ');
-    const seg = pts.slice(1).map((q, i) => Math.hypot(q[0] - pts[i][0], q[1] - pts[i][1])), tot = seg.reduce((x, y) => x + y, 0) || 1;
-    let run = 0; const keyPoints = [0, ...seg.map((d) => (run += d) / tot)].map((v) => Math.min(1, v).toFixed(4)).join(';'), keyTimes = pts.map((_, i) => (i / 48).toFixed(4)).join(';');
-    const dur = Math.max(4, Math.min(14, (o.period || 100) / 12)).toFixed(1);
-    move = `<circle r="4" fill="#fff2b3"><animateMotion dur="${dur}s" repeatCount="indefinite" path="${path}" keyPoints="${keyPoints}" keyTimes="${keyTimes}" calcMode="linear"/></circle>`;
-  }
-  return `<div class="frag-orbit-box"><svg class="frag-orbit" viewBox="0 0 260 90" aria-hidden="true"><circle cx="130" cy="45" r="${(RE * k).toFixed(1)}" fill="#1d4f8a" stroke="#9fd0f5" stroke-opacity=".6"/>`
-    + `<ellipse cx="${ex.toFixed(1)}" cy="45" rx="${(a * k).toFixed(1)}" ry="${(b * k).toFixed(1)}" fill="none" stroke="#fa8127" stroke-dasharray="3 4"/>`
-    + (move || `<circle cx="${(ex + a * k).toFixed(1)}" cy="45" r="4" fill="#fff2b3"/>`) + `</svg></div>`;
-}
+// the footer. No picture window, no stats row. The orbit is the live globe (js/orbit-view.js), not a drawing. data/debris.json: parent, parentArt, tracked (scripts/build-debris-parents.mjs).
 function fragReport(o, mini) {
   const d = debrisOf(o), year = String(o.launch ?? '').slice(0, 4), laps = o.period ? 1440 / o.period : 0;
   const parent = titleFor({ name: d.parent, type: /^(DELTA|THOR|ARIANE|CZ-|SL-|BREEZE|TITAN|ATLAS|AGENA|PSLV)/.test(d.parent) ? 'rocket-body' : 'payload' });
   const h = Math.round(((Number(o.perigee) || 0) + (Number(o.apogee) || 0)) / 2), height = useMiles() ? `${Math.round(h * 0.621371).toLocaleString('en-US')} mi` : `${h.toLocaleString('en-US')} km`;
   const row = (k, v) => `<dt>${k}</dt><dd>${v}</dd>`;
-  return `<div class="frag">${orbitSketch(o, !mini)}<div class="frag-cap">Orbit · ${height} up${laps ? ` · ${laps.toFixed(laps < 10 ? 1 : 0)} laps a day` : ''}</div>`
+  return `<div class="frag"><div class="frag-orbit-box"></div><div class="frag-cap">Orbit · ${height} up${laps ? ` · ${laps.toFixed(laps < 10 ? 1 : 0)} laps a day` : ''}</div>`
     + `<dl class="frag-rep">${row('From', esc(parent))}${year ? row('Launched', year) : ''}${d.tracked > 1 ? row('Pieces', `${d.tracked.toLocaleString()} tracked`) : ''}</dl></div>`;
 }
 function asFragmentCard(el, o, mini) { // rearrange a rendered card into the tracking report
@@ -120,6 +100,8 @@ function asFragmentCard(el, o, mini) { // rearrange a rendered card into the tra
   if (tier) top.append(tier); if (set) { set.querySelector('span span').textContent = 'TRACKED OBJECT'; top.append(set); }
   art.remove(); face.querySelector('.card__identity')?.remove(); face.querySelector('.card__stats')?.remove(); face.querySelector('.temp-strip')?.remove();
   head.before(top); head.insertAdjacentHTML('afterend', fragReport(o, mini)); el.classList.add('card--frag');
+  // its picture is the live globe of its orbit (2026-10-26, Sevaan: "for debris just use the globe"); one still frame on tiles
+  const box = el.querySelector('.frag-orbit-box'); requestAnimationFrame(() => { if (box.isConnected) orbitGlobe(o, box, myPlace(), { once: mini }); });
 }
 // Real photos (2026-10-26, Sevaan: no "AI slop") carry a small credit and no added sparkles.
 function artStars(o) {
@@ -258,6 +240,7 @@ export function renderCard(o, opts = {}) {
     <div class="card__back" aria-hidden="true"><div class="back-holo"></div><div class="back-glare"></div></div>
     ${extinct ? `<div class="card__stamp">REENTERED${o.decay ? `<small>${esc(formatDate(o.decay)).toUpperCase()}</small>` : ''}</div>` : ''}
   </div></div>`;
+  el._card = o;
   if (debrisOf(o)?.group) asFragmentCard(el, o, opts.mini);
   if (!opts.mini) fitFact(el);
   return el;
@@ -549,7 +532,17 @@ export function turnCard(el, { from, to, ms = 520, lift = 1, back = el.querySele
   return { finished, cancel: () => { settle(); } };
 }
 
-export function attachFlip(el, { onBack, onTap } = {}) {
+// Where the player is, for the globe's YOU pin (the observer both pages save).
+const myPlace = () => { try { const o = JSON.parse(localStorage.getItem('observer')); return o && Number.isFinite(o.lat) ? { lat: o.lat, lon: o.lon } : null; } catch { return null; } };
+// The default single tap on a full card (2026-10-26, Sevaan: "shouldn't the tap globe work anywhere?"): a card with an orbit
+// swaps its picture for the live globe (js/orbit-view.js); tap again for the picture. Fragment cards show the globe always.
+function orbitTap(el) {
+  const o = el._card, art = el.querySelector('.card__art'); if (!o?.el || o.natural || o.archived || !art || el.classList.contains('card--frag')) return null;
+  let globe = null; el.classList.add('can-orbit');
+  return () => { if (!el.isConnected) return; if (globe) { globe.stop(); globe = null; art.classList.remove('orbiting'); return; }
+    globe = orbitGlobe(o, art, myPlace()); if (globe) art.classList.add('orbiting'); };
+}
+export function attachFlip(el, { onBack, onTap = orbitTap(el) } = {}) {
   // onTap (2026-10-14, orbit view): a single tap, fired once it’s clear no second tap is coming; a double tap flips.
   let flipped = false, busy = false, lastTap = 0, lastX = 0, lastY = 0, tapTimer = 0, downX = 0, downY = 0;
   const single = () => { clearTimeout(tapTimer); if (onTap) tapTimer = setTimeout(() => { if (!flipped) onTap(); }, 330); };

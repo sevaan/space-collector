@@ -714,6 +714,8 @@ body.night .card--frag .frag-orbit ellipse { stroke: #ff6a55; }
 .card--frag .frag-top { margin-bottom: .5em; }
 .card--frag .frag-top .m-set { border: 1px solid #627a8b; border-radius: .5em; padding: .35em .7em; background: none; }
 .card--frag .frag-top .m-set span { white-space: nowrap; }
-.card--frag .frag-orbit-box { position: relative; height: 10em; border-radius: .8em; overflow: hidden; }
+.card--frag .frag-orbit-box { position: relative; height: 13em; border-radius: .8em; overflow: hidden; }
 .card--frag .frag-orbit-box svg.frag-orbit { height: 100%; }
 .card--frag .frag-orbit-box.orbiting svg.frag-orbit { opacity: 0; } /* tapped: the live globe (js/orbit-view.js) takes its place */
+.card--frag .frag-orbit-box { background: #050a12; } .card--frag .frag-orbit-box .orbit-globe { position: absolute; inset: 0; width: 100%; height: 100%; }
+.card__art .orbit-globe { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; } /* the tap globe on any card (also in collection.css) */
