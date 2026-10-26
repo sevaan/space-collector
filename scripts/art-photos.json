@@ -249,5 +249,309 @@
   "licence": "PD",
   "source": "https://commons.wikimedia.org/wiki/File:Moon_nearside_LRO_5000.jpg",
   "note": "disc placed at (603,510) r 322 in 1194×896 to sit exactly under the phase shadow (card.js moonShade)"
+ },
+ "sat-vanguard-3": {
+  "credit": "NASA",
+  "licence": "Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:Vanguard_3.jpg",
+  "shows": "Vanguard 3 satellite on display"
+ },
+ "sat-explorer-7": {
+  "credit": "US Army",
+  "licence": "Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:Explorer7.jpg",
+  "shows": "Explorer 7 on its Juno II launcher at the Cape"
+ },
+ "sat-transit-2a": {
+  "credit": "Daderot (CC0)",
+  "licence": "CC0",
+  "source": "https://commons.wikimedia.org/wiki/File:Transit_2A,_model_of_navigational_satellite,_Applied_Physics_Laboratory,_Johns_Hopkins_University,_1960_-_National_Electronics_Museum_-_DSC00554.JPG",
+  "shows": "Transit 2A model (APL) at the National Electronics Museum"
+ },
+ "sat-telstar-1": {
+  "credit": "Rama, CC BY-SA 3.0 fr",
+  "licence": "CC BY-SA 3.0 fr",
+  "source": "https://commons.wikimedia.org/wiki/File:Telstar_satellite-CnAM_35181-IMG_5408-black.jpg",
+  "shows": "Telstar satellite (Musee des Arts et Metiers example)"
+ },
+ "sat-telstar-2-a-41": {
+  "credit": "Rama, CC BY-SA 3.0 fr",
+  "licence": "CC BY-SA 3.0 fr",
+  "source": "https://commons.wikimedia.org/wiki/File:Telstar_satellite-CnAM_35181-IMG_5408-black.jpg",
+  "shows": "Telstar satellite (Musee des Arts et Metiers example)",
+  "sibling": "Telstar 1 type - Telstar 2 was a near-identical copy"
+ },
+ "sat-relay-1-a-15": {
+  "credit": "NASA",
+  "licence": "Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:Relay_1_2.jpg",
+  "shows": "Relay 1 communications satellite"
+ },
+ "sat-relay-2": {
+  "credit": "NASA",
+  "licence": "Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:Relay_1_2.jpg",
+  "shows": "Relay 1 communications satellite",
+  "sibling": "Relay 1 - Relay 2 was a near-identical copy"
+ },
+ "sat-ops-4682-snapshot": {
+  "credit": "US DOE (SDASM archive)",
+  "licence": "Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:Snapshot_satellite_with_SNAP-10A_reactor_HD.6D.563_(10967640793).jpg",
+  "shows": "SNAPSHOT spacecraft with SNAP-10A reactor, contemporary artwork"
+ },
+ "sat-ov2-1-lcs-2": {
+  "credit": "USAF (archive.org scan)",
+  "licence": "Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:Ov2-3.jpg",
+  "shows": "OV2-3 satellite",
+  "sibling": "OV2-3 - same OV2 design as OV2-1"
+ },
+ "sat-ov3-3": {
+  "credit": "NASA",
+  "licence": "Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:Ov3-3.jpg",
+  "shows": "OV3-3 satellite"
+ },
+ "sat-oao-2": {
+  "credit": "NASA",
+  "licence": "Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:Orbiting_Astronomical_Observatory_2.jpg",
+  "shows": "OAO 2 in the clean room"
+ },
+ "sat-oao-3-copernicus": {
+  "credit": "NASA",
+  "licence": "Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:50th_Anniversary_of_NASA%27s_Copernicus_Mission_(SVS14189_-_72-HC-705_full_).jpg",
+  "shows": "OAO 3 Copernicus in the clean room"
+ },
+ "sat-nimbus-3": {
+  "credit": "NOAA",
+  "licence": "Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:Nimbus-3.jpg",
+  "shows": "Nimbus 3 weather satellite over Earth (NOAA image)"
+ },
+ "sat-nimbus-2-nimbus-4": {
+  "credit": "NOAA",
+  "licence": "Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:Nimbus-3.jpg",
+  "shows": "Nimbus 3 weather satellite over Earth (NOAA image)",
+  "sibling": "Nimbus 3 - same early Nimbus design"
+ },
+ "sat-explorer-40-injun-5": {
+  "credit": "NASA",
+  "licence": "Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:EXPLORER_40.jpg",
+  "shows": "Explorer 40 / Injun 5"
+ },
+ "sat-itos-1-tiros-m": {
+  "credit": "NOAA",
+  "licence": "Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:ITOS_meteorological_satellite_(2268-462).jpg",
+  "shows": "ITOS meteorological satellite over Earth (NOAA image)"
+ },
+ "sat-noaa-1-noaa-2-itos-d-noaa-3-noaa-4-noaa-": {
+  "credit": "NOAA",
+  "licence": "Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:ITOS_meteorological_satellite_(2268-462).jpg",
+  "shows": "ITOS meteorological satellite over Earth (NOAA image)",
+  "sibling": "ITOS series (NOAA 1-5 were ITOS-A/D/E/F/G, same bus)"
+ },
+ "sat-seasat-1": {
+  "credit": "NASA/JPL",
+  "licence": "Public domain",
+  "source": "https://images.nasa.gov/details/PIA15816",
+  "shows": "Seasat in orbit (NASA/JPL image)"
+ },
+ "sat-tiros-n": {
+  "credit": "NOAA",
+  "licence": "Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:TIROS-N_satellite_(2268-458).jpg",
+  "shows": "TIROS-N satellite over Earth (NOAA illustration)"
+ },
+ "sat-noaa-6-noaa-7-noaa-12": {
+  "credit": "NOAA",
+  "licence": "Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:TIROS-N_satellite_(2268-458).jpg",
+  "shows": "TIROS-N satellite over Earth (NOAA illustration)",
+  "sibling": "TIROS-N - first of the same series"
+ },
+ "sat-noaa-19": {
+  "credit": "NASA/Vandenberg AFB",
+  "licence": "Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:NOAA-N%27_satellite_in_Vandenberg_AFB_clean_room.jpg",
+  "shows": "NOAA-N Prime (NOAA 19) in the Vandenberg clean room"
+ },
+ "sat-noaa-8-noaa-9-noaa-10-noaa-11-noaa-13-no": {
+  "credit": "NASA/Vandenberg AFB",
+  "licence": "Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:NOAA-N%27_satellite_in_Vandenberg_AFB_clean_room.jpg",
+  "shows": "NOAA-N Prime (NOAA 19) in the Vandenberg clean room",
+  "sibling": "NOAA 19 (NOAA-N Prime) - same Advanced TIROS-N bus"
+ },
+ "sat-dynamics-explorer-1": {
+  "credit": "NASA / University of Iowa",
+  "licence": "Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:Dynamics_Explorer_1_and_2_(Explorer_62_and_Explorer_63).jpg",
+  "shows": "Dynamics Explorer 1 and 2 stacked for testing"
+ },
+ "sat-iras": {
+  "credit": "NASA",
+  "licence": "Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:The_nearly_completed_IRAS_spacecraft_in_the_clean_room_at_the_Jet_Propulsion_Laboratory.png",
+  "shows": "IRAS nearly complete in the JPL clean room"
+ },
+ "sat-landsat-5": {
+  "credit": "NASA",
+  "licence": "Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:Landsat_4_Satellite_During_Final_Assembly.jpg",
+  "shows": "Landsat 4 during final assembly",
+  "sibling": "Landsat 4 - Landsat 5 was its identical twin"
+ },
+ "sat-cobe": {
+  "credit": "NASA",
+  "licence": "Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:COBE_Celebrates_35th_Launch_Anniversary_(SVS14715_-_COBE_satellite_diagram_no_labels).jpg",
+  "shows": "COBE in orbit, NASA artist concept (unlabelled version)"
+ },
+ "sat-quikscat": {
+  "credit": "NASA / JPL",
+  "licence": "Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:QuikScat.jpg",
+  "shows": "QuikSCAT, NASA/JPL illustration"
+ },
+ "sat-fuse-1": {
+  "credit": "NASA",
+  "licence": "Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:FUSE_prelaunch_crop.jpg",
+  "shows": "FUSE before launch"
+ },
+ "sat-acrimsat": {
+  "credit": "NASA/JPL",
+  "licence": "Public domain",
+  "source": "https://images.nasa.gov/details/PIA18157",
+  "shows": "ACRIMSAT, NASA artist concept"
+ },
+ "sat-jason-1": {
+  "credit": "NASA/JPL",
+  "licence": "Public domain",
+  "source": "https://images.nasa.gov/details/PIA04237",
+  "shows": "Jason-1 over Earth, NASA artist concept"
+ },
+ "sat-jason-3": {
+  "credit": "NASA/JPL-Caltech",
+  "licence": "Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:Jason-3-in-orbit.jpg",
+  "shows": "Jason-3 in orbit, NOAA/NASA rendering"
+ },
+ "sat-swift": {
+  "credit": "NASA/KSC",
+  "licence": "Public domain",
+  "source": "https://images.nasa.gov/details/KSC-04pd2110",
+  "shows": "Swift in the KSC clean room"
+ },
+ "sat-st5-a-st5-c": {
+  "credit": "NASA",
+  "licence": "Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:Space_Technology_5.jpg",
+  "shows": "Space Technology 5 micro-satellites, NASA artwork"
+ },
+ "sat-cloudsat": {
+  "credit": "NASA SVS",
+  "licence": "Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:CloudSat_-_Artist_Concept_3.jpg",
+  "shows": "CloudSat, NASA/JPL artist concept"
+ },
+ "sat-themis-a-themis-d-themis-e": {
+  "credit": "NASA/JPL",
+  "licence": "Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:Five_THEMIS_satellites_on_the_probe_carrier.jpg",
+  "shows": "The five THEMIS probes on their probe carrier",
+  "sibling": "Group photo of all five identical THEMIS probes"
+ },
+ "sat-fgrst-glast": {
+  "credit": "NASA/Kim Shiflett",
+  "licence": "Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:GLAST_on_the_payload_attach_fitting.jpg",
+  "shows": "GLAST (Fermi) on its payload attach fitting"
+ },
+ "sat-tacsat-4": {
+  "credit": "US Naval Research Laboratory",
+  "licence": "Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:TacSat-4_in_the_Kodiak_Launch_Complex_clean_room_(110922-F-AB000-001).jpg",
+  "shows": "TacSat-4 in the Kodiak Launch Complex clean room"
+ },
+ "sat-rbsp-b": {
+  "credit": "NASA",
+  "licence": "Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:Van_Allen_Probes_spacecraft_model.png",
+  "shows": "Van Allen Probe spacecraft model (transparent background)",
+  "sibling": "One of the two identical Van Allen Probes"
+ },
+ "sat-iris": {
+  "credit": "NASA",
+  "licence": "Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:IRIS_spacecraft_model.png",
+  "shows": "IRIS spacecraft rendering"
+ },
+ "sat-dande": {
+  "credit": "Brenden Hogan, CC BY-SA 3.0",
+  "licence": "CC BY-SA 3.0",
+  "source": "https://commons.wikimedia.org/wiki/File:DANDE.jpg",
+  "shows": "DANDE in launch configuration (team rendering)"
+ },
+ "sat-oco-2": {
+  "credit": "NASA/JPL",
+  "licence": "Public domain",
+  "source": "https://images.nasa.gov/details/PIA17800",
+  "shows": "OCO-2 in space, NASA/JPL illustration"
+ },
+ "sat-csswe": {
+  "credit": "CSSWE team, CC BY-SA 3.0",
+  "licence": "CC BY-SA 3.0",
+  "source": "https://commons.wikimedia.org/wiki/File:CSSWE_CubeSat_and_PPOD_prior_to_integration.png",
+  "shows": "CSSWE CubeSat beside its P-POD before integration"
+ },
+ "sat-catsat": {
+  "credit": "NASA/KSC",
+  "licence": "Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:Firefly_Demo-2_Payload_Processing_-_CatSat_Integration_(KSC-20240425-PH-FRF01_0004).jpg",
+  "shows": "University of Arizona CatSat awaiting integration"
+ },
+ "sat-explorer-25-injun-4": {
+  "credit": "NASA",
+  "licence": "Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:Injun_4_(Explorer_25)_satellite.jpg",
+  "shows": "Injun 4 (Explorer 25) satellite"
+ },
+ "sat-terra": {
+  "credit": "NASA",
+  "licence": "Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:Terra_spacecraft_model.png",
+  "shows": "Terra spacecraft rendering (NASA)"
+ },
+ "sat-suomi-npp": {
+  "credit": "NASA SVS",
+  "licence": "Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:Suomi_NPP_satellite.jpg",
+  "shows": "Suomi NPP spacecraft rendering (NASA)"
+ },
+ "sat-landsat-3": {
+  "credit": "NASA / GE",
+  "licence": "Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:Landsat_3_spacecraft.jpg",
+  "shows": "Landsat 3 during integration at GE"
+ },
+ "sat-traac": {
+  "credit": "US Navy",
+  "licence": "Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:TRAAC_(330-PSA-262-61,_USN_710980,_21836863865)_(cropped).jpg",
+  "shows": "TRAAC satellite, US Navy artwork"
+ },
+ "sat-transit-4b": {
+  "credit": "US Navy",
+  "licence": "Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:330-PSA-262-61_(USN_710980)_(21836863865).jpg",
+  "shows": "Transit 4B (left) with its rider TRAAC, US Navy artwork"
  }
 }
