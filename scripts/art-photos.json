@@ -243,5 +243,11 @@
   "credit": "NASA",
   "licence": "PD",
   "source": "https://commons.wikimedia.org/wiki/File:Television_Infrared_Observation_Satellite_TIROS_-_GPN-2003-00028.jpg"
+ },
+ "moon": {
+  "credit": "NASA/GSFC/ASU (LRO)",
+  "licence": "PD",
+  "source": "https://commons.wikimedia.org/wiki/File:Moon_nearside_LRO_5000.jpg",
+  "note": "disc placed at (603,510) r 322 in 1194×896 to sit exactly under the phase shadow (card.js moonShade)"
  }
 }
