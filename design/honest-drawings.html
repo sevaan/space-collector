@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><base href="../"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Honest drawings</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/cards.css"><link rel="stylesheet" href="css/ui.css">
+<style>
+  body { margin: 0; background: #080f1b; color: #fff2b3; font: 15px/1.45 system-ui, sans-serif; padding: 28px 24px 60px; }
+  h1 { font: 400 30px/1.1 'SC Display', 'Russo One', sans-serif; margin: 0 0 6px; } p.lead { color: #bdbea9; max-width: 820px; margin: 0 0 26px; }
+  .grid { display: grid; grid-template-columns: repeat(4, 280px); gap: 30px 22px; }
+  .pair h3 { font: 500 12px/1.2 'SC Label', sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #fa8127; margin: 0 0 4px; }
+  .pair small { display: block; color: #9aa7b4; font-size: 12px; min-height: 2.8em; margin: 0 0 8px; }
+  .pair .card { font-size: 10px; } .pair .was { margin-top: 10px; display: flex; gap: 8px; align-items: center; color: #9aa7b4; font-size: 12px; }
+  .pair .was img { width: 96px; border-radius: 6px; }
+  .card__art .shape-art { position: absolute; inset: 0; width: 100%; height: 100%; }
+</style></head><body>
+<h1>Honest drawings</h1>
+<p class="lead">For satellites with no free photo: each card drawn to scale from its own catalogue entry (shape, length, diameter, span, from GCAT by J. McDowell). Nothing added that the catalogue doesn't say. Debris gets broken fragments instead of a whole rocket stage. The small picture under each card is what it shows today.</p>
+<div class="grid" id="g"></div>
+<script type="module">
+const V = (await fetch('version.json', { cache: 'no-store' }).then((r) => r.json())).version, at = (f) => import(new URL(`js/${f}?v=${V}`, document.baseURI).href);
+const [{ expandFacts }, { renderCard, artImage }, { buildCards }, { loadLore, titleFor }, { loadConstellations }, { shapeArt, fragmentArt }] = await Promise.all(['catalog-facts.js', 'card.js', 'card-model.js', 'lore.js', 'constellations.js', 'shape-art.js'].map(at));
+const cat = await fetch('data/catalog.json').then((r) => r.json()); for (const o of cat.objects) expandFacts(o);
+await Promise.all([loadLore(), loadConstellations()]);
+const SH = await fetch('data/shapes.json').then((r) => r.json());
+const cards = buildCards(cat);
+const WANT = [/^STARLETTE$/, /^LANDSAT 2$/, /^FENGYUN 1A$/, /^EXPLORER 7$/, /^OSCAR 3/, /TRANSIT 9|^OPS 4412/, /^COSMOS 1500$|^KOSMOS 1500$/, /^NIMBUS 2$/, /^FLOCK 4/, /^SAUDISAT 1C/, /^COSMOS 2|^KOSMOS 2/, /DEB/];
+const picked = [];
+for (const re of WANT) { const c = cards.find((x) => !picked.includes(x) && re.test(String(x.name ?? '').toUpperCase()) && (re.source === 'DEB' ? /debris/.test(x.type ?? '') || /DEB/.test(x.name) : SH[x.id])); if (c) picked.push(c); }
+for (const c of picked) {
+  const s = SH[c.id], el = renderCard(c, { sightings: [{ time: Date.parse('2026-10-01T03:00:00Z'), cardKey: c.key, objectId: c.id }] });
+  const old = artImage(c), art = el.querySelector('.card__art');
+  const svg = s ? shapeArt({ shape: s[0], L: s[1], D: s[2], S: s[3] }, { caption: s[4] ? `${s[4].toUpperCase()} BUS` : '' }) : fragmentArt(c.id);
+  art.querySelectorAll('img, .art-stars, .art-credit, svg').forEach((n) => n.remove()); art.insertAdjacentHTML('beforeend', svg + '<span class="art-credit">Drawn to scale · data: GCAT (J. McDowell)</span>');
+  const d = document.createElement('div'); d.className = 'pair';
+  d.innerHTML = `<h3>${c.name}</h3><small>${s ? `GCAT: ${s[0]} · ${s[1]} × ${s[2]} m, span ${s[3]} m` : 'Debris: no size in the catalogue'}</small>`;
+  d.append(el); if (old) d.insertAdjacentHTML('beforeend', `<div class="was"><img src="${old}">today</div>`);
+  document.getElementById('g').append(d);
+}
+document.body.dataset.ready = '1';
+</script></body></html>
