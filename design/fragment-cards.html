@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fragment card layouts</title>
+<link rel="stylesheet" href="../css/cards.css">
+<style>
+  body { margin: 0; background: #080f1b; color: #fff2b3; font: 15px/1.45 system-ui, sans-serif; padding: 28px 24px 60px; }
+  h1 { font: 400 30px/1.1 'SC Display', 'Russo One', sans-serif; margin: 0 0 6px; } p.lead { color: #bdbea9; max-width: 860px; margin: 0 0 26px; }
+  .grid { display: grid; grid-template-columns: repeat(3, 280px); gap: 18px 26px; } .h { grid-column: 1 / -1; margin: 18px 0 0; }
+  .h b { font: 500 13px/1 'SC Label', sans-serif; letter-spacing: .18em; text-transform: uppercase; color: #fa8127; } .h span { color: #9aa7b4; font-size: 13px; display: block; margin-top: 4px; }
+  .lab { font: 500 12px/1 'SC Label', sans-serif; letter-spacing: .16em; text-transform: uppercase; margin: 0 0 8px; }
+  /* the card shell: same size, frame and colours as a mission card (28 × 42em at 10px) */
+  .fc { font-size: 10px; width: 28em; height: 42em; box-sizing: border-box; border-radius: 1.4em; background: #0b1626; position: relative; overflow: hidden;
+    border: .3em solid #e9dfc2; box-shadow: inset 0 0 0 .35em #0b1626, inset 0 0 0 .45em #bcb58566; padding: 1.4em 1.6em 1.2em; display: flex; flex-direction: column; gap: .9em; color: #fff2b3; }
+  .chip { display: inline-flex; gap: .4em; align-items: center; height: 1.9em; padding: 0 .7em; border-radius: .5em; border: 1px solid #627a8b; font: 500 1.05em/1 'SC Label', sans-serif; letter-spacing: .14em; text-transform: uppercase; }
+  .top { display: flex; justify-content: space-between; align-items: center; }
+  .name { font: 400 2.5em/.95 'SC Display', sans-serif; letter-spacing: -.02em; text-transform: uppercase; margin: 0; }
+  .sub { font: 500 1.15em/1.2 'SC Label', sans-serif; letter-spacing: .08em; color: #bdbea9; text-transform: uppercase; }
+  .fact { font: 400 1.25em/1.45 Georgia, serif; color: #e8e3c9; border-left: .25em solid #fa8127; padding-left: .8em; margin: 0; }
+  .fact b { color: #fff2b3; }
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: .6em; border-top: 1px solid #bcb58566; padding-top: .6em; }
+  .stats div { font: 500 .95em/1.2 'SC Label', sans-serif; letter-spacing: .12em; color: #9aa7b4; text-transform: uppercase; } .stats b { display: block; font: 400 1.7em/1.1 'SC Display', sans-serif; color: #fff2b3; letter-spacing: 0; }
+  .foot { margin-top: auto; display: flex; justify-content: space-between; align-items: end; border-top: 1px solid #bcb58566; padding-top: .6em; font: 500 1em/1 'SC Label', sans-serif; letter-spacing: .12em; color: #bdbea9; text-transform: uppercase; }
+  .foot i { font: 400 1em/1 'SC Display', sans-serif; font-style: normal; color: #fff2b3; letter-spacing: 0; }
+  .dots { display: grid; grid-template-columns: repeat(12, 1fr); gap: .45em; } .dots i { aspect-ratio: 1; border-radius: 50%; border: 1px solid #627a8b; }
+  .dots i.on { background: #fa8127; border-color: #fa8127; } .dots i.me { background: #fff2b3; border-color: #fff2b3; box-shadow: 0 0 0 .25em #fa812755; }
+  .thumb { width: 6.4em; height: 6.4em; border-radius: 50%; object-fit: cover; border: .2em solid #e9dfc2; flex: none; }
+  .tl { display: grid; grid-template-columns: repeat(3, 1fr); position: relative; padding-top: 1.3em; } .tl::before { content: ''; position: absolute; left: 8%; right: 8%; top: .45em; height: 1px; background: #bcb58588; }
+  .tl div { text-align: center; position: relative; font: 500 .95em/1.2 'SC Label', sans-serif; letter-spacing: .1em; color: #9aa7b4; text-transform: uppercase; }
+  .tl div::before { content: ''; position: absolute; left: 50%; top: -1.3em; width: .9em; height: .9em; margin-left: -.45em; border-radius: 50%; background: #0b1626; border: 1px solid #e9dfc2; }
+  .tl div.x::before { background: #fa8127; border-color: #fa8127; } .tl b { display: block; font: 400 1.5em/1.1 'SC Display', sans-serif; color: #fff2b3; letter-spacing: 0; }
+  /* B: tracking report */
+  .rep { border: 1px dashed #627a8b; border-radius: .8em; padding: .9em 1em; display: grid; grid-template-columns: auto 1fr; gap: .4em 1em; font: 500 1.05em/1.25 'SC Label', sans-serif; letter-spacing: .1em; text-transform: uppercase; }
+  .rep dt { color: #9aa7b4; } .rep dd { margin: 0; color: #fff2b3; }
+  .big { font: 400 4.2em/1 'SC Display', sans-serif; letter-spacing: -.02em; } .big small { font: 500 .28em/1 'SC Label', sans-serif; letter-spacing: .16em; color: #9aa7b4; display: block; margin-bottom: .4em; text-transform: uppercase; }
+  .orbit { width: 100%; height: 9em; }
+  /* C: family */
+  .banner { height: 9.5em; margin: -1.4em -1.6em 0; position: relative; overflow: hidden; }
+  .banner img { width: 100%; height: 100%; object-fit: cover; opacity: .55; filter: saturate(.7); }
+  .banner::after { content: ''; position: absolute; inset: 0; background: linear-gradient(transparent 40%, #0b1626); }
+  .banner span { position: absolute; left: 1.6em; bottom: .6em; z-index: 1; font: 500 1.05em/1 'SC Label', sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #fff2b3; }
+  .tree { position: relative; height: 7.5em; } .tree svg { width: 100%; height: 100%; }
+</style></head><body>
+<h1>Fragment card layouts</h1>
+<p class="lead">Less picture, more story: each fragment belongs to a breakup, so the card shows where it came from, when it broke up, and how many pieces of that breakup you've found (lit) — this one glowing. Same card size, frame and fonts as the others.</p>
+<div class="grid" id="g"></div>
+<script>
+const EX = [
+  { name: 'Delta 1 Debris', parent: 'Delta 1 rocket stage', img: '../assets/art/cards/delta-early.webp', launched: '1967', broke: 'After 1967', brokeNote: 'Date not known', pieces: 34, found: [2, 5, 9], me: 5, tier: '★ Legendary', height: '8,960 mi', laps: '2.9', up: '59 yrs',
+    fact: 'A <b>fragment</b> catalogued to a 1967 Delta launch, though nobody is sure which rocket it really came from. Pieces like this break off and keep circling for years.' },
+  { name: 'Breeze-M Debris', parent: 'Breeze-M upper stage', img: '../assets/art/cards/briz.webp', launched: '2006', broke: '2007', brokeNote: 'Exploded over Australia', pieces: 16, found: [0, 1, 7, 11], me: 7, tier: '● Common', height: '4,705 mi', laps: '5.3', up: '20 yrs',
+    fact: 'A <b>fragment</b> of the Breeze-M stage that failed to deliver Arabsat 4A in 2006. Stranded with fuel still aboard, it <b>exploded over Australia</b> a year later.' },
+  { name: 'Kosmos 2251 Debris', parent: 'Kosmos 2251 (Strela-2M)', img: '../assets/art/cards/strela-2m.webp', launched: '1993', broke: '2009', brokeNote: 'Hit Iridium 33', pieces: 1, found: [], me: 0, tier: '▲ Uncommon', height: '646 mi', laps: '14', up: '33 yrs',
+    fact: 'A <b>fragment</b> of Kosmos 2251, a Russian satellite launched in 1993. In 2009 the dead satellite <b>hit Iridium 33</b>, the first accidental crash between two whole satellites.' },
+];
+const dots = (e) => Array.from({ length: e.pieces }, (_, i) => `<i class="${i === e.me ? 'me' : e.found.includes(i) ? 'on' : ''}"></i>`).join('');
+const foot = (e) => `<div class="foot"><span>✓ Collected · Sep 30, 2026</span><i>SPACE COLLECTOR</i></div>`;
+// A · Piece of a set: parent as a small round portrait, the pieces as a dot grid, a three-step timeline.
+const A = (e) => `<div class="fc"><div class="top"><span class="chip">${e.tier}</span><span class="chip">Space junk</span></div>
+  <div style="display:flex;gap:1em;align-items:center"><img class="thumb" src="${e.img}"><div><p class="name">${e.name}</p><div class="sub">A piece of the ${e.parent}</div></div></div>
+  <div><div class="lab" style="font-size:1em;color:#9aa7b4">Piece ${e.me + 1} of ${e.pieces} · ${e.found.length + 1} found</div><div class="dots">${dots(e)}</div></div>
+  <div class="tl"><div><b>${e.launched}</b>Launched</div><div class="x"><b>${e.broke}</b>${e.brokeNote}</div><div><b>Now</b>Still circling</div></div>
+  <p class="fact">${e.fact}</p>${foot(e)}</div>`;
+// B · Tracking report: no picture at all; the piece's own numbers, an orbit sketch, the breakup as a report.
+const B = (e) => `<div class="fc"><div class="top"><span class="chip">${e.tier}</span><span class="chip">Tracked object</span></div>
+  <p class="name">${e.name}</p>
+  <svg class="orbit" viewBox="0 0 260 90"><circle cx="130" cy="45" r="22" fill="#1d4f8a" stroke="#9fd0f5" stroke-opacity=".6"/><ellipse cx="130" cy="45" rx="${e.laps < 5 ? 120 : 70}" ry="${e.laps < 5 ? 40 : 30}" fill="none" stroke="#fa8127" stroke-dasharray="3 4"/><circle cx="${e.laps < 5 ? 250 : 200}" cy="45" r="4" fill="#fff2b3"/><text x="130" y="88" text-anchor="middle" fill="#9aa7b4" font-size="9" letter-spacing="1.5" font-family="'SC Label'">ORBIT · ${e.height.toUpperCase()} UP · ${e.laps} LAPS A DAY</text></svg>
+  <dl class="rep"><dt>From</dt><dd>${e.parent}</dd><dt>Launched</dt><dd>${e.launched}</dd><dt>Broke up</dt><dd>${e.broke} · ${e.brokeNote}</dd><dt>Pieces</dt><dd>${e.pieces} tracked · ${e.found.length + 1} found</dd></dl>
+  <p class="fact">${e.fact}</p>${foot(e)}</div>`;
+// C · Family: the parent as a faded banner, a tree from it to its pieces (found lit, this one glowing).
+const C = (e) => { const n = Math.min(e.pieces, 16), xs = Array.from({ length: n }, (_, i) => 14 + (i * 232) / Math.max(1, n - 1));
+  const lines = xs.map((x, i) => `<path d="M130 4 C130 34 ${x.toFixed(1)} 30 ${x.toFixed(1)} 60" fill="none" stroke="${i === e.me ? '#fff2b3' : e.found.includes(i) ? '#fa8127' : '#627a8b'}" stroke-opacity="${i === e.me || e.found.includes(i) ? 1 : .5}"/><circle cx="${x.toFixed(1)}" cy="64" r="${i === e.me ? 5 : 3.5}" fill="${i === e.me ? '#fff2b3' : e.found.includes(i) ? '#fa8127' : '#0b1626'}" stroke="${i === e.me ? '#fff2b3' : e.found.includes(i) ? '#fa8127' : '#627a8b'}"/>`).join('');
+  return `<div class="fc"><div class="banner"><img src="${e.img}"><span>${e.parent} · broke up ${e.broke}</span></div>
+  <div class="top" style="margin-top:-.3em"><span class="chip">${e.tier}</span><span class="chip">Piece ${e.me + 1} of ${e.pieces}</span></div>
+  <p class="name">${e.name}</p>
+  <div class="tree"><svg viewBox="0 0 260 75">${lines}${e.pieces > n ? `<text x="252" y="74" text-anchor="end" fill="#9aa7b4" font-size="8">+${e.pieces - n} more</text>` : ''}</svg></div>
+  <div class="stats"><div><b>${e.height}</b>Up</div><div><b>${e.laps}</b>Laps a day</div><div><b>${e.up}</b>Up there</div></div>
+  <p class="fact">${e.fact}</p>${foot(e)}</div>`; };
+const g = document.getElementById('g');
+for (const e of EX) {
+  g.insertAdjacentHTML('beforeend', `<div class="h"><b>${e.name}</b><span>${e.pieces} pieces of this breakup in the game</span></div>`);
+  for (const [l, f] of [['A · Piece of a set', A], ['B · Tracking report', B], ['C · Family tree', C]]) g.insertAdjacentHTML('beforeend', `<div><div class="lab">${l}</div>${f(e)}</div>`);
+}
+document.body.dataset.ready = '1';
+</script></body></html>

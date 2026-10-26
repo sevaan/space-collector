@@ -255,3 +255,31 @@ export function shatterArt(href, seedKey = 'x', label = '', { box = [0.2, 0.25, 
     + `<image href="${href}" width="400" height="300" preserveAspectRatio="xMidYMid slice" filter="url(#${id}b)" opacity=".3"/>${g}</svg>`
     + (label ? `<span class="art-credit art-credit--from">${label}</span>` : '');
 }
+
+// Two other ways to show a fragment (2026-10-26, Sevaan didn't like the cracked look): mode 'breakup' = the parent intact
+// but smaller, a few small pieces of it flying off and fading; mode 'piece' = the parent dim in the background with one
+// jagged piece of it sharp in front (that piece is this card).
+export function fragmentFrom(href, seedKey = 'x', { mode = 'breakup', tint = '' } = {}) {
+  let seed = [...String(seedKey)].reduce((a, c) => (a * 31 + c.charCodeAt(0)) % 2147483647, 17) || 17;
+  const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647, id = `ff${String(seedKey).replace(/\W/g, '')}${mode[0]}`;
+  const shard = (cx, cy, r) => { const m = 6 + Math.floor(rnd() * 3); let pts = []; for (let j = 0; j < m; j++) { const a = (j / m) * Math.PI * 2 + rnd() * 0.6, rr = r * (0.5 + rnd() * 0.6); pts.push([cx + rr * Math.cos(a), cy + rr * Math.sin(a) * 0.85]); } return pts; };
+  const P = (pts) => pts.map((v) => `${f1(v[0])},${f1(v[1])}`).join(' ');
+  let defs = `<filter id="${id}b"><feGaussianBlur stdDeviation="2.5"/></filter>`, g = '';
+  if (mode === 'piece') {
+    const pts = shard(200, 165, 62);
+    defs += `<clipPath id="${id}c"><polygon points="${P(pts)}"/></clipPath>`;
+    g += `<image href="${href}" width="400" height="300" preserveAspectRatio="xMidYMid slice" opacity=".28" style="filter:grayscale(.6)"/>`;
+    g += `<g transform="translate(200 165) scale(1.25) rotate(${f1((rnd() - 0.5) * 30)}) translate(-200 -165)"><polygon points="${P(pts)}" fill="#000" opacity=".5" transform="translate(5 7)" filter="url(#${id}b)"/><g clip-path="url(#${id}c)"><image href="${href}" width="400" height="300" preserveAspectRatio="xMidYMid slice"/></g><polygon points="${P(pts)}" fill="none" stroke="#fff2b3" stroke-opacity=".7" stroke-width="1"/></g>`;
+  } else {
+    defs += `<radialGradient id="${id}fg"><stop offset=".55" stop-color="#fff"/><stop offset="1" stop-color="#000"/></radialGradient><mask id="${id}m"><rect width="400" height="300" fill="url(#${id}fg)"/></mask>`;
+    g += `<g transform="translate(140 150) scale(.7) translate(-200 -165)"><image href="${href}" width="400" height="300" preserveAspectRatio="xMidYMid slice" mask="url(#${id}m)"/></g>`; // edges fade into the sky
+    for (let i = 0; i < 6; i++) { // small pieces of the same picture, flying out to the right and fading
+      const sx = 160 + rnd() * 80, sy = 120 + rnd() * 90, r = 7 + rnd() * 10, pts = shard(sx, sy, r);
+      const tx = 70 + i * 22 + rnd() * 20, ty = (rnd() - 0.45) * 90, op = 1 - i * 0.12;
+      defs += `<clipPath id="${id}c${i}"><polygon points="${P(pts)}"/></clipPath>`;
+      g += `<line x1="${f1(sx + tx - 26)}" y1="${f1(sy + ty - 8)}" x2="${f1(sx + tx - r)}" y2="${f1(sy + ty - r * 0.3)}" stroke="#fff2b3" stroke-opacity="${f1(op * 0.3)}" stroke-width="1"/>`;
+      g += `<g transform="translate(${f1(tx)} ${f1(ty)}) rotate(${f1(rnd() * 60 - 30)} ${f1(sx)} ${f1(sy)})" opacity="${f1(op)}"><g clip-path="url(#${id}c${i})"><image href="${href}" width="400" height="300" preserveAspectRatio="xMidYMid slice" transform="translate(${f1(sx - 200)} ${f1(sy - 165)}) scale(1)"/></g><polygon points="${P(pts)}" fill="none" stroke="#fff2b3" stroke-opacity=".6" stroke-width=".8"/></g>`;
+    }
+  }
+  return `<svg class="shape-art fragment-from" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"${tint ? ` style="${tint}"` : ''}><defs>${defs}</defs><rect width="400" height="300" fill="#070d18"/>${g}</svg>`;
+}
