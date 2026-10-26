@@ -2775,3 +2775,16 @@ body.calib #help-card, body.ob-tour #help-card { display: none !important; }
   #help-card > span { grid-template-columns: repeat(3, 1fr); gap: 6px; }
   #help-card > span button { min-height: 44px; padding: 4px; font-size: 11px; letter-spacing: .08em; line-height: 1.15; }
 }
+/* Folded iPhone Duo (iPad/Duo playtest 2026-10-26): the deck stays centred on the circle (which is centred on the whole
+   screen), so the card keeps --vws (clear of the side strip on both sides); on a card that narrow, button words wrap
+   instead of running past the button, letters close up, and the top bar keeps each side on one line. */
+.ob-deck { left: 0 !important; right: 0 !important; }
+.tc .acts button { white-space: normal; line-height: 1.15; padding: 0 10px; }
+.tc { container-type: inline-size; }
+@container (max-width: 300px) { .tc .acts button { letter-spacing: .1em; } .tc .bar, .tc .sub { letter-spacing: .12em; } }
+.tc .bar > *, .tc .sub > * { white-space: nowrap; }
+/* Tabs: on a narrow bar (folded Duo) the words close up so COLLECTION fits its third. */
+.sc-switch { container-type: inline-size; }
+@container (max-width: 250px) { .sc-switch__item { letter-spacing: .1em !important; font-size: 11px !important; } }
+/* Big screens (iPad playtest 2026-10-26: "RARE · HEADLI…" on an iPad): the circle's tickets are wider there. */
+@media (min-width: 600px) and (min-height: 600px) { :root { --tk-w: 360px; } }
