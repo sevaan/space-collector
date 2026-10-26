@@ -3,15 +3,16 @@
 // picture" shows one card for each art file (most satellites share a picture by kind) with how many cards use it.
 // Stars (☆) are saved in this browser (localStorage 'reviewStars'); "Copy starred" puts a list on the clipboard to
 // hand back. Not linked from the app.
-import { expandFacts } from './catalog-facts.js?v=0.1.1179';
-import { renderCard, miniCard, artImage } from './card.js?v=0.1.1179';
-import { buildCards } from './card-model.js?v=0.1.1179';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1179';
-import { loadLore, titleFor, debrisOf } from './lore.js?v=0.1.1179';
-import './stories.js?v=0.1.1179';
-import { CON_FIGURES } from './con-figures.js?v=0.1.1179';
-import { loadConstellations, CON_BY_ID } from './constellations.js?v=0.1.1179';
-import { loadComets } from './comets.js?v=0.1.1179';
+import { expandFacts } from './catalog-facts.js?v=0.1.1181';
+import { renderCard, miniCard, artImage } from './card.js?v=0.1.1181';
+import { ART_CREDITS } from './art-credits.js?v=0.1.1181';
+import { buildCards } from './card-model.js?v=0.1.1181';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1181';
+import { loadLore, titleFor, debrisOf } from './lore.js?v=0.1.1181';
+import './stories.js?v=0.1.1181';
+import { CON_FIGURES } from './con-figures.js?v=0.1.1181';
+import { loadConstellations, CON_BY_ID } from './constellations.js?v=0.1.1181';
+import { loadComets } from './comets.js?v=0.1.1181';
 
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
@@ -42,6 +43,7 @@ async function dropBaked() {
 }
 async function loadNewArt() { try { NEW_ART = new Set(await (await fetch('design/restyle-preview/manifest.json', { cache: 'no-store' })).json()); } catch {} }
 function markNew(el, c) {
+  if (c._art && ART_CREDITS[c._art]) return true; // a real photo (2026-10-26): shown as it is, never the restyle preview
   const isNew = c._art && NEW_ART.has(c._art);
   if (isNew) for (const im of el.querySelectorAll('.card__art img.card-art-image')) { im.src = `design/restyle-preview/${c._art}.webp?t=${ART_T}`; }
   return isNew;
@@ -74,11 +76,11 @@ function face(c, full = false) {
 }
 
 // Draw a tile’s card only when it scrolls near the screen (there are thousands).
-const io = new IntersectionObserver((es) => { for (const e of es) if (e.isIntersecting) { const slot = e.target; io.unobserve(slot); slot.replaceChildren(face(slot._card)); slot.classList.toggle('old-art', !(slot._card._art && NEW_ART.has(slot._card._art))); slot.classList.toggle('framed', !!(slot._card._art && frames[slot._card._art])); } }, { rootMargin: '600px 0px' });
+const io = new IntersectionObserver((es) => { for (const e of es) if (e.isIntersecting) { const slot = e.target; io.unobserve(slot); slot.replaceChildren(face(slot._card)); slot.classList.toggle('old-art', !(slot._card._art && (ART_CREDITS[slot._card._art] || NEW_ART.has(slot._card._art)))); slot.classList.toggle('framed', !!(slot._card._art && frames[slot._card._art])); } }, { rootMargin: '600px 0px' });
 
 function list() {
   const q = $('q').value.trim().toLowerCase(), type = $('type').value, tier = $('tier').value, art = $('art').value, one = $('one').checked, only = $('starred').checked;
-  let out = cards.filter((c) => (!type || c._type === type) && (!tier || c.tier === tier) && (!art || (art === 'painted') === !!c._art)
+  let out = cards.filter((c) => (!type || c._type === type) && (!tier || c.tier === tier) && (!art || (art === 'photo' ? !!ART_CREDITS[c._art] : (art === 'painted') === (!!c._art && !ART_CREDITS[c._art])))
     && (!q || `${c._name} ${c._type} ${c._art ?? 'drawn'} ${c.key} ${c.id}`.toLowerCase().includes(q)));
   if (one) { // one card per painted picture; drawn cards stay one each
     const by = new Map();

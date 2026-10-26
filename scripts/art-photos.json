@@ -1,0 +1,247 @@
+{
+ "iss": {
+  "credit": "NASA",
+  "licence": "PD",
+  "source": "https://images.nasa.gov/details/iss056e201248"
+ },
+ "hubble": {
+  "credit": "NASA",
+  "licence": "PD",
+  "source": "https://commons.wikimedia.org/wiki/File:HST-SM4.jpeg"
+ },
+ "tiangong": {
+  "credit": "CMSEO, CC BY 4.0",
+  "licence": "CC BY 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Rear_view_of_Tiangong_Space_Station.jpg"
+ },
+ "vanguard-1": {
+  "credit": "NASA",
+  "licence": "PD",
+  "source": "https://commons.wikimedia.org/wiki/File:Vanguard_1.jpg"
+ },
+ "sun": {
+  "credit": "NASA/SDO",
+  "licence": "PD",
+  "source": "https://commons.wikimedia.org/wiki/File:The_Sun_by_the_Atmospheric_Imaging_Assembly_of_NASA's_Solar_Dynamics_Observatory_-_20100819.jpg"
+ },
+ "planet-earth": {
+  "credit": "NASA, Apollo 17",
+  "licence": "PD",
+  "source": "https://commons.wikimedia.org/wiki/File:The_Blue_Marble_(remastered).jpg"
+ },
+ "planet-jupiter": {
+  "credit": "NASA, ESA, A. Simon",
+  "licence": "PD",
+  "source": "https://commons.wikimedia.org/wiki/File:Jupiter_and_its_shrunken_Great_Red_Spot.jpg"
+ },
+ "planet-mars": {
+  "credit": "ESA & MPS/OSIRIS, CC BY-SA 3.0 IGO",
+  "licence": "CC BY-SA 3.0 IGO",
+  "source": "https://commons.wikimedia.org/wiki/File:OSIRIS_Mars_true_color.jpg"
+ },
+ "planet-mercury": {
+  "credit": "NASA/JHUAPL/Carnegie",
+  "licence": "PD",
+  "source": "https://commons.wikimedia.org/wiki/File:Mercury_in_color_-_Prockter07-edit1.jpg"
+ },
+ "planet-neptune": {
+  "credit": "NASA/JPL, Voyager 2",
+  "licence": "PD",
+  "source": "https://commons.wikimedia.org/wiki/File:Neptune_-_Voyager_2_(29347980845)_flatten_crop.jpg"
+ },
+ "planet-saturn": {
+  "credit": "NASA/JPL/SSI",
+  "licence": "PD",
+  "source": "https://commons.wikimedia.org/wiki/File:Saturn_during_Equinox.jpg"
+ },
+ "planet-uranus": {
+  "credit": "NASA/JPL, Voyager 2",
+  "licence": "PD",
+  "source": "https://commons.wikimedia.org/wiki/File:Uranus_as_seen_by_NASA's_Voyager_2_(remastered)_-_JPEG_converted.jpg"
+ },
+ "planet-venus": {
+  "credit": "NASA/JPL-Caltech",
+  "licence": "PD",
+  "source": "https://commons.wikimedia.org/wiki/File:Venus_from_Mariner_10.jpg"
+ },
+ "star-sirius": {
+  "credit": "NASA, ESA, H. Bond, M. Barstow",
+  "licence": "PD",
+  "source": "https://commons.wikimedia.org/wiki/File:Sirius_A_and_B_Hubble_photo.jpg"
+ },
+ "star-betelgeuse": {
+  "credit": "ALMA (ESO/NAOJ/NRAO)/E. O’Gorman/P. Kervella, CC BY 4.0",
+  "licence": "CC BY 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Betelgeuse_captured_by_ALMA.jpg"
+ },
+ "star-antares": {
+  "credit": "ESO/K. Ohnaka, CC BY 4.0",
+  "licence": "CC BY 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:VLTI_reconstructed_view_of_the_surface_of_Antares.jpg"
+ },
+ "deep-andromeda": {
+  "credit": "Adam Evans, CC BY 2.0",
+  "licence": "CC BY 2.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Andromeda_Galaxy_(with_h-alpha).jpg"
+ },
+ "deep-beehive": {
+  "credit": "NOIRLab/NSF/AURA, CC BY 4.0",
+  "licence": "CC BY 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:M44,_NGC_2632_(noao-m44).jpg"
+ },
+ "deep-carina-nebula": {
+  "credit": "ESO, CC BY 4.0",
+  "licence": "CC BY 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Carina_Nebula_by_ESO.jpg"
+ },
+ "deep-double-cluster": {
+  "credit": "Stephen Rahn, CC0",
+  "licence": "CC0",
+  "source": "https://commons.wikimedia.org/wiki/File:Double_Cluster_in_Perseus_(49571872261).jpg"
+ },
+ "deep-hercules-cluster": {
+  "credit": "NASA/STScI/WikiSky",
+  "licence": "PD",
+  "source": "https://commons.wikimedia.org/wiki/File:Messier_13_Hubble_WikiSky.jpg"
+ },
+ "deep-lagoon-nebula": {
+  "credit": "ESO/S. Guisard, CC BY 4.0",
+  "licence": "CC BY 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Lagoon_Nebula_(ESO).jpg"
+ },
+ "deep-lmc": {
+  "credit": "NASA/Ames",
+  "licence": "PD",
+  "source": "https://commons.wikimedia.org/wiki/File:Large.mc.arp.750pix.jpg"
+ },
+ "deep-omega-centauri": {
+  "credit": "ESO, CC BY 4.0",
+  "licence": "CC BY 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Omega_Centauri_by_ESO.jpg"
+ },
+ "deep-orion-nebula": {
+  "credit": "NASA, ESA, M. Robberto",
+  "licence": "PD",
+  "source": "https://commons.wikimedia.org/wiki/File:Orion_Nebula_-_Hubble_2006_mosaic_18000.jpg"
+ },
+ "deep-pleiades": {
+  "credit": "NASA, ESA, AURA/Caltech",
+  "licence": "PD",
+  "source": "https://commons.wikimedia.org/wiki/File:Pleiades_large.jpg"
+ },
+ "deep-smc": {
+  "credit": "ESA/Hubble & DSS2, CC BY 4.0",
+  "licence": "CC BY 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Small_Magellanic_Cloud_(Digitized_Sky_Survey_2).jpg"
+ },
+ "deep-triangulum": {
+  "credit": "NASA/CXC/SAO; ESO; NASA/Swift",
+  "licence": "PD",
+  "source": "https://commons.wikimedia.org/wiki/File:M33_(Chandra-VLT-Swift_composite).jpg"
+ },
+ "fleet-starlink": {
+  "credit": "SpaceX, CC0",
+  "licence": "CC0",
+  "source": "https://commons.wikimedia.org/wiki/File:Starlink_Mission_(47926144123).jpg"
+ },
+ "iridium": {
+  "credit": "Cliff (Flickr), CC BY 2.0",
+  "licence": "CC BY 2.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Iridium_Satellite.jpg"
+ },
+ "agena": {
+  "credit": "NASA, Gemini 8",
+  "licence": "PD",
+  "source": "https://commons.wikimedia.org/wiki/File:Profile_of_Agena_Docking_Target_-_GPN-2000-001345.jpg"
+ },
+ "ius": {
+  "credit": "NASA",
+  "licence": "PD",
+  "source": "https://commons.wikimedia.org/wiki/File:STS-26_TDRS-C_deployment.jpg"
+ },
+ "kick-motor": {
+  "credit": "NASA",
+  "licence": "PD",
+  "source": "https://commons.wikimedia.org/wiki/File:S07-03-079_-_STS-007_-_Deployment_of_the_PALAPA-B1_satellite_-_DPLA_-_7be21e89166da9deb139b75b6186c32b.jpg"
+ },
+ "titan-transtage": {
+  "credit": "US Air Force",
+  "licence": "PD",
+  "source": "https://commons.wikimedia.org/wiki/File:Transtage_rocket_stage.jpg"
+ },
+ "ov1": {
+  "credit": "US Air Force (AFCRL)",
+  "licence": "PD",
+  "source": "https://commons.wikimedia.org/wiki/File:OV1-15.jpg"
+ },
+ "vanguard-rocket": {
+  "credit": "Smithsonian NASM",
+  "licence": "PD",
+  "source": "https://commons.wikimedia.org/wiki/File:Altair_X248-A2_rocket_stage.jpg"
+ },
+ "scout": {
+  "credit": "Smithsonian NASM",
+  "licence": "PD",
+  "source": "https://commons.wikimedia.org/wiki/File:Altair_X248-A2_rocket_stage.jpg"
+ },
+ "story-apollo11": {
+  "credit": "NASA, Neil Armstrong",
+  "licence": "PD",
+  "source": "https://commons.wikimedia.org/wiki/File:AS11-40-5903_-_Buzz_Aldrin_by_Neil_Armstrong_(full_frame).jpg"
+ },
+ "story-arecibo": {
+  "credit": "H. Schweiker/WIYN and NOAO/AURA/NSF, CC BY 4.0",
+  "licence": "CC BY 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Arecibo_Observatory_Aerial_View.jpg"
+ },
+ "story-grand-tour": {
+  "credit": "NASA/JPL",
+  "licence": "PD",
+  "source": "https://commons.wikimedia.org/wiki/File:Voyager_Development_Test_Model_PIA21730.jpg"
+ },
+ "story-halley": {
+  "credit": "NASA/W. Liller",
+  "licence": "PD",
+  "source": "https://commons.wikimedia.org/wiki/File:Lspn_comet_halley.jpg"
+ },
+ "story-heart": {
+  "credit": "NASA/JHUAPL/SwRI",
+  "licence": "PD",
+  "source": "https://commons.wikimedia.org/wiki/File:Pluto_in_True_Color_-_High-Res.jpg"
+ },
+ "story-pale-blue-dot": {
+  "credit": "NASA/JPL-Caltech",
+  "licence": "PD",
+  "source": "https://commons.wikimedia.org/wiki/File:Pale_Blue_Dot_from_Voyager_1_-_PIA23645.png"
+ },
+ "story-plaque": {
+  "credit": "NASA Ames",
+  "licence": "PD",
+  "source": "https://commons.wikimedia.org/wiki/File:Pioneer10-plaque.jpg"
+ },
+ "story-ringside": {
+  "credit": "NASA Ames, Pioneer 11",
+  "licence": "PD",
+  "source": "https://commons.wikimedia.org/wiki/File:Pioneer_11_Image_of_Saturn_and_Its_Moon_Titan.jpg"
+ },
+ "story-sputnik": {
+  "credit": "NASA/NSSDC",
+  "licence": "PD",
+  "source": "https://commons.wikimedia.org/wiki/File:Sputnik_asm.jpg"
+ },
+ "story-starman": {
+  "credit": "SpaceX, CC0",
+  "licence": "CC0",
+  "source": "https://commons.wikimedia.org/wiki/File:Elon_Musk's_Tesla_Roadster_(40110297852).jpg"
+ },
+ "story-wow": {
+  "credit": "Big Ear Radio Observatory/NAAPO",
+  "licence": "PD",
+  "source": "https://commons.wikimedia.org/wiki/File:Wow_signal.jpg"
+ },
+ "tiros": {
+  "credit": "NASA",
+  "licence": "PD",
+  "source": "https://commons.wikimedia.org/wiki/File:Television_Infrared_Observation_Satellite_TIROS_-_GPN-2003-00028.jpg"
+ }
+}

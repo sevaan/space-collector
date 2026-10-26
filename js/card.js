@@ -1,22 +1,23 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { fallWords } from './last-chance.js?v=0.1.1179';
-import { useMiles } from './units.js?v=0.1.1179';
-import { feel } from './native.js?v=0.1.1179';
-import { sfx } from './sfx.js?v=0.1.1179';
-import { cardArt } from './art.js?v=0.1.1179';
-import { TIER_INFO } from './rarity.js?v=0.1.1179';
-import { SET_BY_ID } from './sets.js?v=0.1.1179';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.1179';
-import { FLEET_ABOUT, fleetAbout, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.1179';
-import { artFileFor } from './art-keys.js?v=0.1.1179';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.1179';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.1179';
-import { nightsIn } from './observation.js?v=0.1.1179';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.1179';
-import { SHINY } from './shiny.js?v=0.1.1179';
-import { conArt, cometArt } from './con-art.js?v=0.1.1179';
-import { CON_FIGURES } from './con-figures.js?v=0.1.1179';
-import { localText } from './localize.js?v=0.1.1179';
+import { fallWords } from './last-chance.js?v=0.1.1181';
+import { useMiles } from './units.js?v=0.1.1181';
+import { feel } from './native.js?v=0.1.1181';
+import { sfx } from './sfx.js?v=0.1.1181';
+import { cardArt } from './art.js?v=0.1.1181';
+import { TIER_INFO } from './rarity.js?v=0.1.1181';
+import { SET_BY_ID } from './sets.js?v=0.1.1181';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.1181';
+import { FLEET_ABOUT, fleetAbout, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.1181';
+import { artFileFor } from './art-keys.js?v=0.1.1181';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.1181';
+import { ART_CREDITS } from './art-credits.js?v=0.1.1181';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.1181';
+import { nightsIn } from './observation.js?v=0.1.1181';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.1181';
+import { SHINY } from './shiny.js?v=0.1.1181';
+import { conArt, cometArt } from './con-art.js?v=0.1.1181';
+import { CON_FIGURES } from './con-figures.js?v=0.1.1181';
+import { localText } from './localize.js?v=0.1.1181';
 // The animal/symbol figure belongs to the completed (gold) constellation card only (2026-10-05): a single
 // star’s card draws just the star pattern with its star marked, so the figure is a reward for finishing the set.
 // A star card’s constellation figure comes into focus as you collect the constellation’s stars (design/con-focus.html B).
@@ -68,8 +69,11 @@ const ART_STARS_EXTRA = {
   'star-antares': { r: 1.4907, s: STAR_CORNERS }, 'star-vega': { r: 1.4907, s: STAR_CORNERS },
   'star-deneb': { r: 1.4907, s: [[0.08, 0.12], [0.1, 0.85], [0.92, 0.12], [0.9, 0.85], [0.2, 0.62]] },
 };
+// Real photos (2026-10-26, Sevaan: no "AI slop") carry a small credit and no added sparkles.
 function artStars(o) {
-  const file = artFileFor(o, { [o.id]: seriesKeyOf(o) }), st = ART_STARS[file]?.s?.length ? ART_STARS[file] : ART_STARS_EXTRA[file];
+  const file = artFileFor(o, { [o.id]: seriesKeyOf(o) });
+  if (ART_CREDITS[file]) return `<span class="art-credit">Photo: ${esc(ART_CREDITS[file])}</span>`;
+  const st = ART_STARS[file]?.s?.length ? ART_STARS[file] : ART_STARS_EXTRA[file];
   if (!st?.s.length) return '';
   const seed = (Number(o.id) || 7) % 97;
   return `<div class="art-stars" style="--ar:${st.r}">${st.s.map(([x, y], i) => `<i style="left:${(x * 100).toFixed(2)}%;top:${(y * 100).toFixed(2)}%;--d:${(((i * 37 + seed) % 50) / 10).toFixed(1)}s;--t:${(2.6 + ((i * 13 + seed) % 20) / 10).toFixed(1)}s"></i>`).join('')}</div>`;

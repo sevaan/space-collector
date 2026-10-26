@@ -1,5 +1,5 @@
-import { ART_FILES } from './art-files.js?v=0.1.1179';
-import { debrisOf } from './lore.js?v=0.1.1179';
+import { ART_FILES } from './art-files.js?v=0.1.1181';
+import { debrisOf } from './lore.js?v=0.1.1181';
 // Which illustration each card uses. The illustrator’s brief (scripts/art-brief.py) is generated from this
 // table, and when the art arrives the card renderer can load assets/art/cards/<key>.webp, falling back to
 // the drawn art in js/art.js. Every card maps to exactly one key. Order of rules matters.
@@ -50,12 +50,13 @@ export const ART = {
   'globalstar': ['Satellites', 2, 'Globalstar', 'Globalstar phone satellite: trapezoidal body with two solar wings.', 'https://en.wikipedia.org/wiki/Globalstar'],
   'orbcomm': ['Satellites', 2, 'Orbcomm', 'Orbcomm messaging satellite: flat disc-shaped body with solar panels and an antenna mast.', 'https://en.wikipedia.org/wiki/Orbcomm'],
   'iridium': ['Satellites', 3, 'Iridium', 'Iridium phone satellite: long triangular body with three flat antenna panels and two solar wings.', 'https://en.wikipedia.org/wiki/Iridium_satellite_constellation'],
+  'tiros': ['Satellites', 2, 'TIROS weather satellite', 'The 18-sided drum of TIROS 1–10, the first weather satellites (NASA photo).', 'https://en.wikipedia.org/wiki/TIROS'],
   'us-weather': ['Satellites', 2, 'US weather satellite (TIROS / NOAA / DMSP)', 'American polar weather satellite: box body with a long solar array and instrument platform.', 'https://en.wikipedia.org/wiki/TIROS'],
   'chinese-eo': ['Satellites', 2, 'Chinese Earth-observation satellite', 'Yaogan / Shijian / Jilin / Gaofen family: box body with deployed solar wings.', 'https://en.wikipedia.org/wiki/Yaogan'],
   'smallsat': ['Satellites', 2, 'Small satellite / CubeSat', 'Shoebox-sized satellite with fold-out solar panels (Flock, SkySat, amateur-radio OSCARs).', 'https://en.wikipedia.org/wiki/CubeSat'],
   'us-military': ['Satellites', 2, 'US military satellite (OPS / USA)', 'Classified American satellite. Mostly 1960s Air Force OPS payloads: small drums and boxes with antennas. Keep it anonymous, no real classified designs.', 'https://en.wikipedia.org/wiki/Corona_(satellite)'],
   'early-satellite': ['Satellites', 2, 'Early satellite (before 1975)', 'Space-race era satellite: a drum or sphere covered in solar cells, with whip antennas (Explorer, Transit, OV, SECOR, Cosmos).', 'https://en.wikipedia.org/wiki/Explorer_program', 3],
-  'classic-satellite': ['Satellites', 2, 'Satellite, 1975 to 1999', 'Box-shaped satellite with two solar wings and a dish or antennas (Landsat, SPOT, Resurs, amateur and science satellites).', '', 3],
+  'classic-satellite': ['Satellites', 2, 'Satellite, 1975 to 1999', 'Box-shaped satellite with two solar wings and a dish or antennas (Landsat, SPOT, Resurs, amateur and science satellites).', '', 2], /* was 3: variation 3 is a CubeSat, which didn't exist before 2003 (art sort 2026-10-26) */
   'modern-satellite': ['Satellites', 2, 'Satellite, 2000 onward', 'Modern satellite with deployable solar panels: one large Earth-observation type, one mid-size, one shoebox CubeSat-style.', '', 4],
   // ---- Rocket stages ----
   'sl-8': ['Rocket stages', 2, 'Kosmos-3M rocket (SL-8)', 'The whole Kosmos-3M: a slim two-stage Soviet rocket, pale grey-green, with a small payload fairing. The spent second stage of this rocket is the most common rocket body in the sky.', 'https://space.skyrocket.de/doc_lau/kosmos-3.htm'],
@@ -145,7 +146,7 @@ export function artKeyFor(card, seriesOf = {}) {
   }
   if (SERIES[seriesOf[card.id]]) return SERIES[seriesOf[card.id]];
   const rules = [[/^(IRS-|RESOURCESAT|OCEANSAT)/, 'irs'], [/^MOLNIYA/, 'molniya'], [/^METEOR/, 'meteor'], [/^GONETS/, 'strela-3'], [/^(NADEZHDA|TSIKADA)/, 'parus'], [/^GLOBALSTAR/, 'globalstar'],
-    [/^ORBCOMM/, 'orbcomm'], [/^IRIDIUM/, 'iridium'], [/^(NOAA|TIROS|ESSA|NIMBUS|DMSP|ITOS)/, 'us-weather'],
+    [/^ORBCOMM/, 'orbcomm'], [/^IRIDIUM/, 'iridium'], [/^TIROS[ -]?(10|[1-9])\b/, 'tiros'], /* real photos (2026-10-26) */ [/^(NOAA|TIROS|ESSA|NIMBUS|DMSP|ITOS)/, 'us-weather'],
     [/^(YAOGAN|JILIN|GAOFEN|SHIJIAN|SJ-|SHIYAN|CHUANGXIN|FENGYUN)/, 'chinese-eo'], [/^(OPS|USA)\b/, 'us-military'], [/^(FLOCK|SKYSAT|LEMUR|DOVE|CUBESAT|.*OSCAR|UOSAT|RADIO|APRIZESAT|UNISAT|SAUDISAT|BANDWAGON)/, 'smallsat']];
   for (const [re, key] of rules) if (re.test(n)) return key;
   const y = Number(String(card.launch ?? '').slice(0, 4)) || 2000;

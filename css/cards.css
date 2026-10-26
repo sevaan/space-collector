@@ -696,3 +696,6 @@
    warm band that sweeps across as you tilt, clear everywhere else, so it reads the same with or without the blend. */
 .card.shiny .card__shine { mix-blend-mode: normal; filter: none; opacity: calc(.75 + var(--o, 0) * .25);
   background: linear-gradient(110deg, transparent 38%, rgba(255, 242, 179, .16) 44%, rgba(255, 207, 122, .26) 48%, rgba(250, 129, 39, .2) 52%, rgba(255, 179, 161, .16) 56%, transparent 62%) var(--bgx, 50%) var(--bgy, 50%) / 300% 300%; }
+/* Photo credit on a card picture that's a real photo (2026-10-26; js/art-credits.js). Tiny, bottom right, readable on
+   any photo; full cards only (artStars isn't drawn on mini cards). */
+.art-credit { position: absolute; z-index: 3; right: .5em; bottom: .4em; max-width: 70%; padding: .15em .45em; border-radius: .4em; background: #080f1bb3; color: #fff2b3cc; font: 500 .55em/1.2 var(--label, 'SC Label', sans-serif); letter-spacing: .04em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; pointer-events: none; }
