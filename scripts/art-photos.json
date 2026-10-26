@@ -1059,5 +1059,131 @@
   "licence": "CC BY-SA 4.0",
   "source": "https://commons.wikimedia.org/wiki/File:SamSat-ION_in_vertical_test_rig.jpg",
   "shows": "SamSat-ION in vertical test rig (Samara University)"
+ },
+ "bus-cubesat-1u": {
+  "credit": "Erik Kulu / University of Tartu ESTCube team, CC BY 3.0",
+  "licence": "CC BY 3.0",
+  "source": "https://commons.wikimedia.org/wiki/File:ESTCube-1_illustration.jpg",
+  "shows": "Official team illustration of ESTCube-1 (1U CubeSat) in orbit above Earth",
+  "sibling": "ESTCube-1 is a card in this bus. Alt: File:FUNcube-1.jpg (CC BY 3.0, real photo, card FUNcube-1)."
+ },
+ "bus-cubesat-6u": {
+  "credit": "Wikiluri, CC BY-SA 4.0",
+  "licence": "CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Sonate2_Satellit.png",
+  "shows": "Photo of the real SONATE-2 6U CubeSat with solar wings deployed on a lab bench",
+  "sibling": "SONATE-2 is a card in this bus. Space alt: NASA PREFIRE illustration (PIA25778, PD) but satellites are tiny in frame."
+ },
+ "bus-cubesat-2u": {
+  "credit": "ANTELSAT team (CC0)",
+  "licence": "CC0",
+  "source": "https://commons.wikimedia.org/wiki/File:2U_ANTELSAT_CubeSat.jpg",
+  "shows": "Photo of the ANTELSAT 2U CubeSat on a bench",
+  "sibling": "ANTELSAT is a card in this bus. Only 640x480. NASA JSC has sharper 2U photos (e.g. GHS-01, jsc2025e064342) if resolution matters."
+ },
+ "bus-gnb": {
+  "credit": "M Z Wojalski, CC BY-SA 4.0",
+  "licence": "CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:V_Sieradzka_Konferencja_Kosmiczna_Satelita_Lem_-_model_2014_MZW_100_8550.jpg",
+  "shows": "Model of the BRITE-PL Lem nanosatellite (Generic Nanosatellite Bus) on a stand",
+  "sibling": "BRITE-PL1 Lem is a card in this bus. 787x942. Alt: File:Polish satellite BRITE Heweliusz model in Gdansk 19.8.2014.jpg (CC BY-SA 4.0) but it has a projected slide with text behind it."
+ },
+ "bus-nimbus": {
+  "credit": "NOAA",
+  "licence": "Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:Graphic_of_NIMBUS_satellite_in_orbit_(2268-168).jpg",
+  "shows": "NOAA painting of a Nimbus satellite in orbit above Earth",
+  "sibling": "Landsat 1-3 (ERTS) used the Nimbus bus too; this shows the Nimbus form."
+ },
+ "bus-sstl-100": {
+  "credit": "Mike Peel (www.mikepeel.net), CC BY-SA 4.0",
+  "licence": "CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:At_the_Science_Museum,_London_2025_127.jpg",
+  "shows": "1:5 model of UK-DMC1 in a Science Museum London case",
+  "sibling": "UK-DMC is a card. Museum label text and a strip of portraits sit at the bottom of the frame; crop to the box."
+ },
+ "bus-microstar": {
+  "credit": "SSR2000, CC BY-SA 3.0",
+  "licence": "CC BY-SA 3.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Model_of_FORMOSAT-3_in_NSPO,_Taiwan-2.JPG",
+  "shows": "Model of FORMOSAT-3/COSMIC hanging in NSPO Taiwan",
+  "sibling": "FORMOSAT-3 FM1-6 are cards. Exhibit screens with text below the model; crop to the box."
+ },
+ "bus-nrl-multi": {
+  "credit": "National Reconnaissance Office",
+  "licence": "Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:Poppy_(Type_2).jpg",
+  "shows": "NRO photo of a POPPY (Type 2) ELINT satellite in a studio, B/W",
+  "sibling": "The GGSE-4/5 and OPS 5712/7613 cards are POPPY satellites. Alt: CC0 museum photo of POPPY at the National Cryptologic Museum, but a lettered sign is behind it."
+ },
+ "bus-nrl-20": {
+  "credit": "U.S. Navy / Naval Research Laboratory",
+  "licence": "Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:Galactic_Radiation_and_Background_satellite_1.jpg",
+  "shows": "Model of the 20-inch GRAB / SOLRAD 1 sphere on a plinth against blue",
+  "sibling": "SOLRAD 1 (GREB) is a card. Vanguard 2 and 3 are the same 20-inch class."
+ },
+ "bus-ministar": {
+  "credit": "NASA",
+  "licence": "Public domain (NASA)",
+  "source": "https://images.nasa.gov/details/PIA18157",
+  "shows": "NASA artist concept of ACRIMSAT",
+  "sibling": "ACRIMSAT is a card in this bus. 800x688."
+ },
+ "bus-proteus": {
+  "credit": "NASA/JPL",
+  "licence": "Public domain (NASA)",
+  "source": "https://images.nasa.gov/details/PIA14439",
+  "shows": "NASA/JPL artist concept of Jason-3 over California",
+  "sibling": "Jason-3 is a card. Jason-1/2 have the same Proteus look. 8192px source."
+ },
+ "bus-secor": {
+  "credit": "William R. Corliss / NASA SP-133",
+  "licence": "Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:Secor1.jpg",
+  "shows": "B/W photo of the SECOR Type I geodetic box satellite with its whip antenna",
+  "sibling": "SECOR 1B/3/4 are cards. The box covers only the satellite body; the mast rises to the top edge."
+ },
+ "bus-tiros-n": {
+  "credit": "NOAA",
+  "licence": "Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:TIROS-N_satellite_(2268-458).jpg",
+  "shows": "NOAA painting of TIROS-N in orbit",
+  "sibling": "TIROS-N is a card."
+ },
+ "bus-bcp-2000": {
+  "credit": "NASA/JPL",
+  "licence": "Public domain (NASA)",
+  "source": "https://images.nasa.gov/details/PIA03013",
+  "shows": "NASA/JPL artist concept of CloudSat above a hurricane, radar beam below",
+  "sibling": "CloudSat is a card."
+ },
+ "bus-leostar-2": {
+  "credit": "NASA/JPL-Caltech",
+  "licence": "Public domain (NASA)",
+  "source": "https://images.nasa.gov/details/PIA18374",
+  "shows": "NASA/JPL rendering of OCO-2 above Earth",
+  "sibling": "OCO-2 is a card. 10666px source."
+ },
+ "bus-kompsat": {
+  "credit": "KARI (KOGL Type 1)",
+  "licence": "KOGL Type 1",
+  "source": "https://commons.wikimedia.org/wiki/File:G_SA_KOMPSAT-2_01.jpg",
+  "shows": "KARI rendering of KOMPSAT-2 over Earth",
+  "sibling": "KOMPSAT-2 is a card. KOGL Type 1 is Korea's open government licence: attribution only, commercial use allowed. KARI also has a KOMPSAT-3 render (G SA KOMPS-3 01.jpg)."
+ },
+ "bus-irs-2": {
+  "credit": "ISRO (GODL-India)",
+  "licence": "GODL-India",
+  "source": "https://commons.wikimedia.org/wiki/File:PSLV-C40-_Cartosat-2F_satellite_undergoing_solar_panel_deployment_test.jpg",
+  "shows": "Cartosat-2F with solar arrays deployed during a deployment test",
+  "sibling": "Sibling: Cartosat-2F (same Cartosat-2 series bus). GODL-India is India's open data licence: attribution, commercial use allowed."
+ },
+ "bus-flexbus": {
+  "credit": "Mike Peel (www.mikepeel.net), CC BY-SA 4.0",
+  "licence": "CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:At_Noordwijk_2024_028.jpg",
+  "shows": "Full-size CryoSat-2 model outdoors at Space Expo Noordwijk",
+  "sibling": "CryoSat-2 is a card. Sky background, not a room. ESA alt: File:CryoSat model ESA384323.jpg (ESA, CC BY-SA 3.0 IGO), but the satellite is smaller in that frame."
  }
 }
