@@ -2789,3 +2789,11 @@ body.calib #help-card, body.ob-tour #help-card { display: none !important; }
 /* Big screens (iPad playtest 2026-10-26: "RARE · HEADLI…" on an iPad): the circle's tickets are wider there. */
 @media (min-width: 600px) and (min-height: 600px) { :root { --tk-w: 360px; } }
 .pr-fold-time { white-space: nowrap; } /* "5:08 AM" wrapped under a bell (iPhone playtest 2026-10-26) */
+/* Credits and sources sheet (2026-10-26) */
+#set-credits-sheet .set-sheet-card { max-height: calc(100dvh - var(--safe-top, 0px) - 40px); overflow-y: auto; }
+#set-credits-sheet h3 { margin: 4px 0 14px; }
+#credits-body .set-card { margin: 0 0 14px; }
+.cr-row, .cr-pic { padding: 10px 14px; border-top: 1px solid #ffffff12; display: grid; gap: 2px; font-size: 13px; color: #c9cbb6; }
+.cr-row b, .cr-pic b { color: var(--text, #fff2b3); font-weight: 600; } .cr-pic b { font: 500 12px/1.2 var(--label, 'SC Label', sans-serif); letter-spacing: .12em; text-transform: uppercase; } .cr-row a, .cr-pic a { color: #fa8127; text-decoration: none; }
+.cr-pics summary { padding: 11px 14px; border-top: 1px solid #ffffff12; color: #fa8127; font: 500 12px/1.2 var(--label, 'SC Label', sans-serif); letter-spacing: .14em; text-transform: uppercase; cursor: pointer; }
+body.night .cr-row a, body.night .cr-pic a, body.night .cr-pics summary { color: #ff6a55; }
