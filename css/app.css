@@ -2742,3 +2742,19 @@ body.night #reveal .mn-phases.teach-glow { box-shadow: 0 0 0 .15em #ff6a55; }
 /* Settings at 320 wide: a long value shrinks with an ellipsis instead of pushing the chevron off; links never wrap */
 .set-row > .set-val { flex: 0 1 auto; min-width: 0; }
 #debug .set-link { white-space: nowrap; }
+/* Nothing caught yet? (#help-card, 2026-10-25): the Moon check's card, three choices stacked */
+#help-card { position: fixed; z-index: 5; left: 50%; transform: translate(-50%, -100%); width: min(300px, calc(var(--vws, 100vw) - 40px)); box-sizing: border-box; padding: 12px 14px 14px; border-radius: 16px; background: rgba(10, 18, 31, .96); border-top: 3px solid #fa8127; color: var(--text, #fff2b3); display: grid; gap: 8px; box-shadow: 0 10px 30px #000a; }
+#help-card[hidden] { display: none; }
+#help-card small { font: 500 10.5px/1 var(--label); letter-spacing: .18em; text-transform: uppercase; color: #fa8127; }
+#help-card b { font: 400 16px/1.2 var(--display); padding-right: 28px; }
+#help-card > span { display: grid; gap: 6px; }
+#help-card > span button { min-height: 44px; border: 0; border-radius: 12px; font: 500 13px/1 var(--label); letter-spacing: .14em; text-transform: uppercase; cursor: pointer; background: #1c2a40; color: var(--text, #fff2b3); }
+#help-card .hc-show { background: #fa8127 !important; color: #0b1018 !important; }
+#help-card .hc-x { position: absolute; top: 8px; right: 8px; width: 36px; height: 36px; border: 0; background: none; color: var(--muted, #bdbea9); font-size: 16px; cursor: pointer; }
+#help-card i { position: absolute; left: 50%; bottom: -7px; width: 12px; height: 12px; margin-left: -6px; background: rgba(10, 18, 31, .96); transform: rotate(45deg); }
+#help-card.by-radar i { left: var(--ax, 50%); }
+body.night #help-card { border-top-color: #ff6a55; color: #ff7f70; } body.night #help-card small { color: #ff6a55; } body.night #help-card .hc-show { background: #ff6a55 !important; color: #120606 !important; }
+body.calib #help-card, body.ob-tour #help-card { display: none !important; }
+/* The help card sits just under the header (it's taller than the Moon check, so above the circle it hit the radar) */
+#help-card { top: calc(var(--safe-top, 0px) + 92px); transform: translateX(-50%); }
+#help-card i { display: none; }
