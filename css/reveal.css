@@ -164,3 +164,4 @@ body.night .rv-chip--reunion { color: #ff7f70; border-color: #ff7f7066; }
 #reveal.teaching #rv-rank, #reveal.teaching #reveal-view { visibility: hidden; }
 body.night #rv-teach { border-top-color: #ff6a55; color: #ff7f70; } body.night #rv-teach > small, body.night #rv-teach .tc-lv b { color: #ff6a55 !important; }
 @media (prefers-reduced-motion: reduce) { #rv-teach, #rv-teach.out, #rv-teach .tc-mini, #rv-teach .tc-moons span { animation-duration: .01s; animation-delay: 0s; } }
+#rv-news::-webkit-scrollbar { display: none; }

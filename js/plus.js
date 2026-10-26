@@ -3,7 +3,7 @@
 // (2026-10-16): the purchase belongs to the player’s Apple ID / Google account, no sign-in of ours. The last answer is
 // kept (localStorage 'plusStore') so Plus holds offline. The testing toggle (Settings → Testing tools → "Plus
 // (testing)", 'plusTest') still turns it on anywhere; the website never sells Plus.
-import { plugin, isNative, onNative } from './native.js?v=0.1.1178';
+import { plugin, isNative, onNative } from './native.js?v=0.1.1179';
 
 // RevenueCat public SDK keys (safe in the app). The Test Store key works with no App Store / Play setup; swap in the
 // appl_ / goog_ keys from RevenueCat → Project settings → API keys once the store apps are connected.
@@ -42,6 +42,13 @@ export function initStore() {
   // will close now"). So the Test Store key is only used when Settings → Testing tools → "RevenueCat Test Store" is on
   // (simulator and Xcode debug builds); otherwise there’s no store until the real appl_/goog_ keys are in RC_KEYS.
   if (key.startsWith('test_') && ls.get('rcTestStore') !== '1') return null;
+  // A release build closes itself a few seconds after setup with the Test Store key, and did so on every launch after,
+  // so the switch could never be turned off again (iPhone playtest 2026-10-26, build 33). A launch that dies within 20 s
+  // of using it switches it off for the next one.
+  if (key === TEST_KEY && isNative()) {
+    if (ls.get('rcTestPending')) { ls.set('rcTestStore', '0'); ls.set('rcTestPending', ''); return null; }
+    ls.set('rcTestPending', '1'); setTimeout(() => ls.set('rcTestPending', ''), 20000);
+  }
   ready = p.configure({ apiKey: key }).then(() => true).catch((e) => { console.warn('store setup failed', e?.message ?? e); ready = null; return false; });
   ready.then((ok) => ok && refreshPlus());
   if (!watching) { watching = true; onNative('App', 'appStateChange', ({ isActive }) => { if (isActive) refreshPlus(); }); } // bought or cancelled elsewhere; once, though a failed setup retries (bug hunt 2026-10-22)

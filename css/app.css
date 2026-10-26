@@ -2788,3 +2788,4 @@ body.calib #help-card, body.ob-tour #help-card { display: none !important; }
 @container (max-width: 250px) { .sc-switch__item { letter-spacing: .1em !important; font-size: 11px !important; } }
 /* Big screens (iPad playtest 2026-10-26: "RARE · HEADLI…" on an iPad): the circle's tickets are wider there. */
 @media (min-width: 600px) and (min-height: 600px) { :root { --tk-w: 360px; } }
+.pr-fold-time { white-space: nowrap; } /* "5:08 AM" wrapped under a bell (iPhone playtest 2026-10-26) */

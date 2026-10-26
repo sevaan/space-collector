@@ -5,12 +5,12 @@
 //  Everything scales with rarity (Legendary dims the sky, shockwave, held breath, slow flip, fanfare).
 // Waits use timers, not animation.finished, so a paused tab can never freeze the sequence.
 
-import { sfx, loadSfx, heartbeat } from './sfx.js?v=0.1.1178';
-import { audioCtx } from './audio-ctx.js?v=0.1.1178';
-import { TIER_INFO } from './rarity.js?v=0.1.1178';
-import { levelFor, attachTilt, attachGyro, attachFlip, throwOff, retype } from './card.js?v=0.1.1178';
-import { applyBack } from './card-backs.js?v=0.1.1178';
-import { addStarfield } from './starfield.js?v=0.1.1178';
+import { sfx, loadSfx, heartbeat } from './sfx.js?v=0.1.1179';
+import { audioCtx } from './audio-ctx.js?v=0.1.1179';
+import { TIER_INFO } from './rarity.js?v=0.1.1179';
+import { levelFor, attachTilt, attachGyro, attachFlip, throwOff, retype } from './card.js?v=0.1.1179';
+import { applyBack } from './card-backs.js?v=0.1.1179';
+import { addStarfield } from './starfield.js?v=0.1.1179';
 
 const FX = {
   common:    { particles: 14,  flip: 520,  spin: 0,   dim: 0,   shock: false, notes: [880],                            hold: 0 },
@@ -384,7 +384,7 @@ function showNews(news, alive) {
     c.innerHTML = `${n.kind === 'more' ? '' : `<i aria-hidden="true">${NEWS_ICON[n.kind] ?? '◆'}</i>`}${esc(n.text)}${n.xp ? `<b>+${n.xp}</b>` : ''}`;
     if (n.kind === 'more') { // tap to see the rest (iOS playtest 2026-10-20: it was a dead tap)
       c.setAttribute('role', 'button'); c.tabIndex = 0; c.style.pointerEvents = 'auto'; c.style.cursor = 'pointer';
-      c.addEventListener('click', () => { c.remove(); box.style.flexWrap = 'wrap'; for (const m of rest) { const x = document.createElement('span'); x.className = `rv-chip rv-chip--${m.kind} in`; x.innerHTML = `<i aria-hidden="true">${NEWS_ICON[m.kind] ?? '◆'}</i>${esc(m.text)}${m.xp ? `<b>+${m.xp}</b>` : ''}`; wireAct(x, m); box.append(x); } }, { once: true });
+      c.addEventListener('click', () => { c.remove(); Object.assign(box.style, { overflowX: 'auto', pointerEvents: 'auto', touchAction: 'pan-x', scrollbarWidth: 'none' }); /* one row you can swipe along: wrapped rows ran onto the card (iPhone playtest 2026-10-26) */ for (const m of rest) { const x = document.createElement('span'); x.className = `rv-chip rv-chip--${m.kind} in`; x.innerHTML = `<i aria-hidden="true">${NEWS_ICON[m.kind] ?? '◆'}</i>${esc(m.text)}${m.xp ? `<b>+${m.xp}</b>` : ''}`; wireAct(x, m); box.append(x); } }, { once: true });
     }
     wireAct(c, n); /* e.g. "see them all" card backs → Plus (2026-10-24) */
     box.append(c); requestAnimationFrame(() => c.classList.add('in'));
