@@ -1,9 +1,10 @@
 // Live aircraft near you, so the app can say "Just a plane" when you line one up by mistake.
-// Positions come from adsb.lol (community ADS-B receivers) through our relay (relay/handler.ts), because
-// adsb.lol doesn’t allow browser requests directly. The airline comes from the callsign's prefix.
+// Positions come from adsb.lol (community ADS-B receivers): straight from the phone in the apps, through our server
+// on the website, because adsb.lol doesn’t allow browser requests directly. The airline comes from the callsign's prefix.
 // No DOM here. Positions are extrapolated between fetches using ground speed, track and climb rate.
 
-import { SERVER } from './server.js?v=0.1.1176';
+import { SERVER } from './server.js?v=0.1.1177';
+import { plugin } from './native.js?v=0.1.1177';
 // Empty = feature off. localStorage 'planeRelay' overrides it (testing). Our server's /planes (adsb.lol only) once it's
 // deployed; until then the Val Town relay (relay/handler.ts).
 const RELAY = SERVER ? `${SERVER}/planes` : 'https://sevaan--cd67f53abd3511f18ee51607ee4eb77e.web.val.run'; // relay/handler.ts on Val Town
@@ -85,7 +86,15 @@ export class PlaneTracker {
     if (Date.now() - this.lastFetch < wait) return;
     this.busy = true; this.lastFetch = Date.now();
     const q = `${url.replace(/\/$/, '')}${/\/planes$/.test(url) ? '' : '/'}?lat=${obs.lat.toFixed(2)}&lon=${obs.lon.toFixed(2)}&dist=${RADIUS_NM}`;
-    fetch(q, { signal: AbortSignal.timeout?.(8000) }).then((r) => (r.ok ? r.json() : Promise.reject(new Error(r.status))))
+    // In the apps each phone asks adsb.lol itself through Capacitor's native HTTP (no CORS there): adsb.lol turns away
+    // cloud servers (Val Town got 429s, our Cloud Run server 502s on every request, 2026-10-26), but not phones.
+    let over = null; try { over = localStorage.getItem('planeRelay'); } catch {}
+    const http = !over && plugin('CapacitorHttp');
+    const get = http
+      ? http.request({ url: `https://api.adsb.lol/v2/point/${obs.lat.toFixed(2)}/${obs.lon.toFixed(2)}/${RADIUS_NM}`, method: 'GET', connectTimeout: 8000, readTimeout: 8000 })
+        .then((r) => (r?.status === 200 ? (typeof r.data === 'string' ? JSON.parse(r.data) : r.data) : Promise.reject(new Error(r?.status))))
+      : fetch(q, { signal: AbortSignal.timeout?.(8000) }).then((r) => (r.ok ? r.json() : Promise.reject(new Error(r.status))));
+    get
       .then((j) => { this.planes = parse(j); this.failures = 0; })
       .catch(() => { this.failures++; })
       .finally(() => { this.busy = false; });

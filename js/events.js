@@ -2,7 +2,7 @@
 // peak nights to earn that year’s badge (Logbook). Peak dates are the usual annual ones (International
 // Meteor Organization calendar); the window runs from the evening before the peak to the morning after.
 // No DOM.
-import { SKY_EVENTS } from './sky-events-data.js?v=0.1.1176';
+import { SKY_EVENTS } from './sky-events-data.js?v=0.1.1177';
 const SHOWERS = [
   { id: 'quadrantids', name: 'Quadrantids', month: 1, day: 3, rate: 'up to 80 an hour, in a short peak' },
   { id: 'lyrids', name: 'Lyrids', month: 4, day: 22, rate: 'up to 18 an hour' },
@@ -23,11 +23,11 @@ export function eventsAround(time = Date.now()) {
   const out = [];
   for (const yr of [y - 1, y, y + 1]) for (const s of SHOWERS) {
     const peak = new Date(yr, s.month - 1, s.day, 12);
-    out.push({ id: `${s.id}-${yr}`, kind: 'shower', name: `${s.name} ${yr}`, shower: s.name, rate: s.rate, peak: peak.getTime(), start: peak.getTime() - 30 * 3600e3, end: peak.getTime() + 20 * 3600e3 });
+    out.push({ id: `${s.id}-${yr}`, kind: 'shower', name: `${s.name} ${yr}`, shower: s.name, rate: s.rate, peak: peak.getTime(), day: peak.getTime(), start: peak.getTime() - 30 * 3600e3, end: peak.getTime() + 20 * 3600e3 });
   }
   for (const e of SKY_EVENTS) { const [yy, mm, dd] = e.date.split('-').map(Number); if (Math.abs(yy - y) > 1) continue;
     const start = new Date(yy, mm - 1, dd, 12).getTime();
-    out.push({ id: `${e.id}-${e.date}`, kind: e.kind, name: e.name, text: e.text, body: e.body ?? null, peak: start + 12 * 3600e3, start, end: start + 24 * 3600e3 }); }
+    out.push({ id: `${e.id}-${e.date}`, kind: e.kind, name: e.name, text: e.text, body: e.body ?? null, peak: start + 12 * 3600e3, day: start, start, end: start + 24 * 3600e3 }); }
   // A shower and a sky event on the same night: the shower wins (it has the better story and the shooting star).
   const list = out.sort((a, b) => a.start - b.start).filter((e, i, all) => e.kind === 'shower' || !all.some((o) => o.kind === 'shower' && o.start < e.end && e.start < o.end));
   cache = { y, list }; return list;

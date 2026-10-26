@@ -56,8 +56,10 @@ for (let i = 1; i < daily.length - 1; i++) { const il = (s) => s.Moon.illum ?? 0
 const SEASONS = { 2026: ['03-20', '06-21', '09-22', '12-21'], 2027: ['03-20', '06-21', '09-23', '12-22'], 2028: ['03-20', '06-20', '09-22', '12-21'], 2029: ['03-20', '06-21', '09-22', '12-21'], 2030: ['03-20', '06-21', '09-22', '12-21'] };
 const SNAME = [['March equinox', 'Day and night are about the same length everywhere.'], ['June solstice', 'The longest day in the north, the longest night in the south.'], ['September equinox', 'Day and night are about the same length everywhere.'], ['December solstice', 'The longest night of the year in the north.']];
 for (let y = from; y <= to; y++) (SEASONS[y] ?? []).forEach((md, k) => out.push({ id: ['equinox-mar', 'solstice-jun', 'equinox-sep', 'solstice-dec'][k], kind: 'season', date: `${y}-${md}`, name: SNAME[k][0], text: `${SNAME[k][1]} Catch any card tonight for the badge.` }));
-// Lunar eclipses (NASA eclipse catalogue; total and partial only). Seen wherever the Moon is up at the time.
-const ECL = [['2026-03-03', 'total'], ['2026-08-28', 'partial'], ['2028-01-12', 'partial'], ['2028-07-06', 'partial'], ['2028-12-31', 'total'], ['2029-06-26', 'total'], ['2029-12-20', 'total'], ['2030-06-15', 'partial']];
+// Lunar eclipses (NASA eclipse catalogue; total and partial only). Seen wherever the Moon is up at the time. Dates are
+// the observing night (the evening it starts) where it's seen, not NASA's UTC date: the 2028-01-12 04:13 and 2029-06-26
+// 03:22 UTC eclipses are the nights of the 11th and 25th in the Americas and Europe (bug hunt 2026-10-26).
+const ECL = [['2026-03-03', 'total'], ['2026-08-28', 'partial'], ['2028-01-11', 'partial'], ['2028-07-06', 'partial'], ['2028-12-31', 'total'], ['2029-06-25', 'total'], ['2029-12-20', 'total'], ['2030-06-15', 'partial']];
 for (const [dt, k] of ECL) if (+dt.slice(0, 4) >= from && +dt.slice(0, 4) <= to) out.push({ id: 'eclipse', kind: 'eclipse', date: dt, name: `${k === 'total' ? 'Total' : 'Partial'} lunar eclipse`, body: 'moon',
   text: `Earth's shadow ${k === 'total' ? 'covers the whole Moon, turning it a deep red' : 'takes a bite out of the Moon'}. If the Moon is up where you are, catch it for the badge.` });
 

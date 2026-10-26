@@ -2768,3 +2768,10 @@ body.calib #help-card, body.ob-tour #help-card { display: none !important; }
   #tk.has-mini { gap: 16px; }
   #plane .p-ticket { gap: 16px !important; }
 }
+/* Short phones (bug hunt 2026-10-26: at 320×568 the help card covered the radar and the circle for two minutes): its
+   three choices go in a row, so the card ends well above the circle (it may still sit over the radar). */
+@media (max-height: 720px) {
+  #help-card { padding: 10px 12px 12px; gap: 6px; }
+  #help-card > span { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  #help-card > span button { min-height: 44px; padding: 4px; font-size: 11px; letter-spacing: .08em; line-height: 1.15; }
+}

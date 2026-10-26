@@ -3,8 +3,8 @@
 // after a few weeks. So once a day the app fetches today's catalogue from our server (/catalog, built daily by the
 // repo's GitHub Action) and keeps it in IndexedDB; the next launch uses whichever copy is newer, the kept one or the
 // one in the app. The website always loads its own (it's redeployed with every catalogue). No DOM.
-import { SERVER } from './server.js?v=0.1.1176';
-import { isNative } from './native.js?v=0.1.1176';
+import { SERVER } from './server.js?v=0.1.1177';
+import { isNative } from './native.js?v=0.1.1177';
 const DB = 'sc-data', STORE = 'files';
 const idb = () => new Promise((res, rej) => { const r = indexedDB.open(DB, 1); r.onupgradeneeded = () => r.result.createObjectStore(STORE); r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); });
 const get = async (k) => { const db = await idb(); return new Promise((res, rej) => { const t = db.transaction(STORE).objectStore(STORE).get(k); t.onsuccess = () => res(t.result ?? null); t.onerror = () => rej(t.error); }); };
@@ -22,6 +22,9 @@ export async function refreshCatalog(haveAt) {
   try {
     const r = await fetch(`${SERVER}/catalog`, { signal: AbortSignal.timeout?.(30000) }); if (!r.ok) return;
     const text = await r.text(), at = Date.parse(/"generated"\s*:\s*"([^"]+)"/.exec(text.slice(0, 2000))?.[1] ?? '') || 0;
-    if (at > haveAt) await put('catalog', { at, text });
+    // Keep it only if it really is a catalogue (bug hunt 2026-10-26: a bad copy used to be kept and loaded forever).
+    if (at > haveAt) { const j = JSON.parse(text); if (Array.isArray(j?.objects) && j.objects.length > 1000) await put('catalog', { at, text }); }
   } catch {}
 }
+// The kept copy failed to load: forget it, so the app's own copy is used (boot() retries with it at once).
+export async function dropCatalog() { try { await put('catalog', null); } catch {} }

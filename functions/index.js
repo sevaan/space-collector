@@ -6,7 +6,7 @@
 //   GET  /api/planes?lat&lon&dist   adsb.lol (ODbL); cached 8 s
 //   GET  /api/catalog, /api/comets  the repo's daily files (the phone apps keep fresh data with them); cached 3 h
 //   POST /api/t                 anonymous usage reports → Firestore collection sc_events
-//   GET  /api/stats             the dashboard (?all=1 includes test builds)
+//   GET  /api/stats?key=…       the dashboard (?all=1 includes test builds); the key is the STATS_KEY env var
 import functions from '@google-cloud/functions-framework';
 import { Firestore } from '@google-cloud/firestore';
 import { DatabaseSync } from 'node:sqlite';
@@ -16,6 +16,14 @@ const UA = 'SpaceCollector/1.0 (https://spacecollector.app; hello@spacecollector
 const REPO_RAW = 'https://raw.githubusercontent.com/sevaan/space-collector/main/';
 const mem = new Map(); // per-instance cache on top of the CDN's
 async function cached(key, ms, make) { const h = mem.get(key); if (h && Date.now() - h.at < ms) return h.body; const body = await make(); if (body != null) { mem.set(key, { at: Date.now(), body }); if (mem.size > 2000) mem.clear(); } return body; }
+// A small per-instance rate limit per caller (Cloud Run puts the caller first in X-Forwarded-For). Bug hunt 2026-10-26:
+// with no limit, a script walking a lat/lon grid would turn every request into a MET Norway call under our User-Agent.
+const hits = new Map();
+function limited(req, kind, perMin) {
+  const ip = String(req.get('X-Forwarded-For') ?? req.ip ?? '').split(',')[0].trim() || '?', k = `${kind}/${ip}`, now = Date.now();
+  let h = hits.get(k); if (!h || now - h.at > 60e3) { h = { at: now, n: 0 }; hits.set(k, h); if (hits.size > 5000) hits.clear(); }
+  return ++h.n > perMin;
+}
 const coord = (q) => { const lat = Number(q.lat), lon = Number(q.lon); return Number.isFinite(lat) && Number.isFinite(lon) && Math.abs(lat) <= 90 && Math.abs(lon) <= 180 ? { lat: Math.round(lat * 10) / 10, lon: Math.round(lon * 10) / 10 } : null; };
 function wmo(sym = '') {
   const s = String(sym).replace(/_(day|night|polartwilight)$/, '');
@@ -49,8 +57,15 @@ async function report(body) {
   return 204;
 }
 // The dashboard reuses the SQL from the Val Town / Worker versions over an in-memory SQLite of the events.
+// /stats needs ?key=STATS_KEY (an env var set at deploy), reads only the last 120 days and is cached 10 minutes per
+// instance, so a public URL can't run up Firestore reads or tie up the instances (bug hunt 2026-10-26).
+let statsMemo = null;
 async function stats(all) {
-  const snap = await db.collection('sc_events').get();
+  if (statsMemo && statsMemo.all === all && Date.now() - statsMemo.at < 10 * 60e3) return statsMemo.html;
+  const html = await statsNow(all); statsMemo = { at: Date.now(), all, html }; return html;
+}
+async function statsNow(all) {
+  const snap = await db.collection('sc_events').where('ts', '>', Date.now() - 120 * 86400e3).get();
   const s = new DatabaseSync(':memory:'); s.exec('CREATE TABLE sc_events (ts INTEGER, iid TEXT, v TEXT, p TEXT, x INTEGER, name TEXT, d TEXT)');
   const ins = s.prepare('INSERT INTO sc_events VALUES (?, ?, ?, ?, ?, ?, ?)');
   s.exec('BEGIN'); for (const doc of snap.docs) { const e = doc.data(); ins.run(e.ts, e.iid, e.v, e.p, e.x, e.name, e.d); } s.exec('COMMIT');
@@ -65,9 +80,10 @@ functions.http('api', async (req, res) => {
   const path = req.path.replace(/^\/api/, '').replace(/\/$/, '') || '/';
   const json = (body, sMax) => { if (body == null) return res.status(502).send('unavailable'); res.set('Content-Type', 'application/json'); res.set('Cache-Control', `public, max-age=${Math.min(sMax, 300)}, s-maxage=${sMax}`); return res.send(body); };
   try {
-    if (path === '/stats' && req.method === 'GET') { res.set('Content-Type', 'text/html; charset=utf-8'); res.set('Cache-Control', 'private, no-store'); return res.send(await stats(req.query.all === '1')); }
-    if (path === '/t' && req.method === 'POST') { if (!ok) return res.status(403).send('Forbidden'); return res.status(await report(typeof req.body === 'string' ? req.body : req.rawBody?.toString() ?? JSON.stringify(req.body))).send(''); }
+    if (path === '/stats' && req.method === 'GET') { if (!process.env.STATS_KEY || req.query.key !== process.env.STATS_KEY) return res.status(404).send('not found'); res.set('Content-Type', 'text/html; charset=utf-8'); res.set('Cache-Control', 'private, no-store'); return res.send(await stats(req.query.all === '1')); }
+    if (path === '/t' && req.method === 'POST') { if (!ok) return res.status(403).send('Forbidden'); if (limited(req, 't', 20)) return res.status(429).send('slow down'); return res.status(await report(typeof req.body === 'string' ? req.body : req.rawBody?.toString() ?? JSON.stringify(req.body))).send(''); }
     if (!ok && origin) return res.status(403).send('Forbidden');
+    if ((path === '/wx' || path === '/planes') && limited(req, 'q', 60)) return res.status(429).send('slow down');
     if (path === '/wx') { const p = coord(req.query); return p ? json(await weather(p), 1800) : res.status(400).send('bad lat/lon'); }
     if (path === '/planes') { const p = coord(req.query), d = Math.min(100, Math.max(1, Math.round(Number(req.query.dist ?? 40)))); return p ? json(await planes(p, d), 8) : res.status(400).send('bad lat/lon'); }
     if (path === '/catalog') { res.set('Access-Control-Allow-Origin', '*'); return json(await repoFile('data/catalog.json'), 3 * 3600); }
@@ -118,7 +134,7 @@ async function statsHtml(env, all) {
   const html = `<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Space Collector · usage</title>
 <style>body{margin:0;padding:24px 16px;background:#080f1b;color:#e8eef6;font:15px/1.45 -apple-system,system-ui,sans-serif}h1{font-size:22px;color:#fff2b3;margin:0 0 4px}h2{font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:#fa8127;margin:26px 0 8px}
 table{border-collapse:collapse;width:100%;max-width:760px}th,td{text-align:left;padding:7px 10px;border-bottom:1px solid #22324a;vertical-align:top}th{font-weight:500;color:#c9d3de;width:46%}td{color:#fff2b3;font-variant-numeric:tabular-nums}.m{color:#9fb0c6;font-size:13px}p{color:#9fb0c6;max-width:760px}a{color:#fa8127}</style>
-<h1>Space Collector · usage</h1><p>Anonymous: a random ID per install, no places or names. ${all ? 'Including test builds · <a href="?">players only</a>' : 'Players only (test builds left out) · <a href="?all=1">include test builds</a>'}. Updated ${new Date().toUTCString()}.</p>
+<h1>Space Collector · usage</h1><p>Anonymous: a random ID per install, no places or names. ${all ? `Including test builds · <a href="?key=${encodeURIComponent(process.env.STATS_KEY ?? '')}">players only</a>` : `Players only (test builds left out) · <a href="?all=1&amp;key=${encodeURIComponent(process.env.STATS_KEY ?? '')}">include test builds</a>`}. Updated ${new Date().toUTCString()}.</p>
 <h2>The first night</h2><table>${row("New installs", String(installs))}${row("Caught a card on their first night", pct(firstNight, installs), `${firstNight} of ${installs}`)}${row("Finished the tour", esc(tour.map((r) => `${r[0]}: ${r[1]}`).join(" · ") || "–"))}${row("Motion", esc(motion.map((r) => `${r[0]}: ${r[1]}`).join(" · ") || "–"), "live = the phone steers; drag = finger; none = no sensors")}</table>
 <h2>The tour</h2><table>${row("Location", esc(list(tLoc)), "own = shared it; tz = the time-zone city")}${row("Set the day-one reminder", pct(tRemind, tFin), `${tRemind} of ${tFin} who finished`)}${row("Big first target, outside at night", esc(list(tRare)), `${tRareCaught} caught a card that night`)}${row("Match your sky", pct(Number(mDone[0]?.[0] ?? 0), mShown), `${mDone[0]?.[0] ?? 0} of ${mShown} shown${mDone[0]?.[1] ? ` · average ${Number(mDone[0][1]).toFixed(1)}` : ""}`)}</table>
 <h2>Compass</h2><table>${row("Lined up the sky", String(Number(cal[0]) || 0), `${Number(cal[1]) || 0} installs · against: ${esc(list(calRef))}`)}${row("Average turn", cal[4] ? `${Math.round(Number(cal[2]))}°` : "–", "how far people turned the sky to match the real one")}${row("Turned 20° or more", pct(Number(cal[3]) || 0, Number(cal[4]) || 0), "a big turn means a poor compass")}${row("Moon check", esc(list(moonChk)), "moon-off = the drawn Moon was off")}</table>
