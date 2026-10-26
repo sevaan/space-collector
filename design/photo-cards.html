@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><base href="../"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Photo card mocks</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/cards.css">
+<link rel="stylesheet" href="css/ui.css">
+<style>
+  body { margin: 0; background: #080f1b; color: #fff2b3; font: 15px/1.45 system-ui, sans-serif; padding: 28px 24px 60px; }
+  h1 { font: 400 30px/1.1 'SC Display', 'Russo One', sans-serif; margin: 0 0 6px; } p.lead { color: #bdbea9; max-width: 760px; margin: 0 0 26px; }
+  .row { margin: 0 0 34px; } .row h2 { font: 500 13px/1 'SC Label', sans-serif; letter-spacing: .18em; text-transform: uppercase; color: #fa8127; margin: 0 0 6px; }
+  .row .src { color: #9aa7b4; font-size: 13px; margin: 0 0 12px; }
+  .cols { display: grid; grid-template-columns: repeat(4, 280px); gap: 22px; }
+  .col h3 { font: 500 12px/1 'SC Label', sans-serif; letter-spacing: .16em; text-transform: uppercase; color: #fff2b3; margin: 0 0 4px; }
+  .col small { display: block; color: #9aa7b4; font-size: 12px; margin: 0 0 10px; min-height: 2.9em; }
+  .col .card { font-size: 10px; }
+</style></head><body>
+<h1>Real photos on the cards</h1>
+<p class="lead">The same four cards four ways: today's AI picture, the real NASA photo, the photo with a fixed (non-AI) colour treatment in the card palette, and the photo repainted by the image model in the card's style with every part kept. All photos are NASA, public domain.</p>
+<div id="rows"></div>
+<script type="module">
+const V = (await fetch('version.json', { cache: 'no-store' }).then((r) => r.json())).version, at = (f) => import(new URL(`js/${f}?v=${V}`, document.baseURI).href);
+const [{ expandFacts }, { renderCard }, { buildCards }, { loadLore }, { loadConstellations }] = await Promise.all(['catalog-facts.js', 'card.js', 'card-model.js', 'lore.js', 'constellations.js'].map(at));
+const ROWS = [
+  { key: 'ISS', id: 25544, n: 'iss', src: 'NASA photo iss056e201248: the ISS from Soyuz MS-08, 4 Oct 2018' },
+  { id: 20580, n: 'hubble', src: 'NASA photo s125e011615: Hubble on Atlantis’s arm before release, STS-125, May 2009. Painted: the model turned the NASA lettering into made-up text.' },
+  { key: 'moon', n: 'moon', src: 'NASA/GSFC Scientific Visualization Studio: full Moon from Lunar Reconnaissance Orbiter data' },
+  { key: 'planet:saturn', n: 'saturn', src: 'NASA/JPL-Caltech/SSI PIA17172: Saturn backlit by the Sun, Cassini, 19 Jul 2013. Painted: the model added a second planet at the bottom and lit Saturn from the front, though told to keep everything.' },
+];
+const COLS = [['Now', 'Today’s AI illustration', null], ['Photo', 'The NASA photo as it is', 'photo'], ['Stylized photo', 'Same photo, fixed colour treatment: navy, steel and cream with a fine print dot', 'styled'], ['Painted photo', 'Photo repainted in the card style by the image model, told to keep every part', 'painted']];
+const cat = await fetch('data/catalog.json').then((r) => r.json()); for (const o of cat.objects) expandFacts(o);
+await Promise.all([loadLore(), loadConstellations()]);
+const cards = buildCards(cat);
+for (const r of ROWS) {
+  const c = cards.find((x) => (r.id && Number(x.id) === r.id) || x.key === r.key); if (!c) continue;
+  const row = document.createElement('div'); row.className = 'row';
+  row.innerHTML = `<h2>${c.name ?? r.n}</h2><div class="src">${r.src}</div><div class="cols"></div>`;
+  for (const [h, sub, v] of COLS) {
+    const col = document.createElement('div'); col.className = 'col'; col.innerHTML = `<h3>${h}</h3><small>${sub}</small>`;
+    const el = renderCard(c, { sightings: [{ time: Date.parse('2026-10-01T03:00:00Z'), cardKey: c.key, objectId: c.id }] });
+    if (v) for (const im of el.querySelectorAll('img.card-art-image')) { im.src = `design/photo-cards/${r.n}-${v}.jpg`; im.removeAttribute('srcset'); }
+    if (v) el.querySelectorAll('.art-stars, .card__art-stars').forEach((s) => s.remove());
+    col.append(el); row.querySelector('.cols').append(col);
+  }
+  document.getElementById('rows').append(row);
+}
+document.body.dataset.ready = '1';
+</script></body></html>
