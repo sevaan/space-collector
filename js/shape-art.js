@@ -221,3 +221,37 @@ export function fragmentScene(seedKey = 'x', { style = 'lit' } = {}) {
   }
   return svg.replace('</svg>', `${ENG ? g : `<g filter="drop-shadow(0 5px 6px #0008)">${g}</g>`}</svg>`);
 }
+
+// A fragment shows the object it came from, broken apart (2026-10-26, Sevaan): the parent's own picture cut into a few
+// pieces by random straight cracks (seeded by the card, so it's always the same break), each piece drifting a little
+// outward and turning. The gaps show dark sky. href is the parent's picture; label names it.
+function splitPoly(poly, p, d) { // cut a convex polygon by the line through p with direction d → [left, right]
+  const side = (q) => (q[0] - p[0]) * d[1] - (q[1] - p[1]) * d[0], A = [], B = [];
+  for (let i = 0; i < poly.length; i++) {
+    const a = poly[i], b = poly[(i + 1) % poly.length], sa = side(a), sb = side(b);
+    (sa >= 0 ? A : B).push(a);
+    if ((sa >= 0) !== (sb >= 0)) { const t = sa / (sa - sb), x = [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t]; A.push(x); B.push(x); }
+  }
+  return [A, B].filter((q) => q.length >= 3);
+}
+export function shatterArt(href, seedKey = 'x', label = '', { box = [0.2, 0.25, 0.8, 0.85], tint = '' } = {}) {
+  let seed = [...String(seedKey)].reduce((a, c) => (a * 31 + c.charCodeAt(0)) % 2147483647, 13) || 13;
+  const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  let pieces = [[[0, 0], [400, 0], [400, 300], [0, 300]]];
+  const [l, t, r, b] = box.map((v, i) => v * (i % 2 ? 300 : 400));
+  for (let cut = 0; cut < 3; cut++) { // three cracks, each through the object itself (its box in the picture)
+    const p = [l + (r - l) * (0.25 + rnd() * 0.5), t + (b - t) * (0.25 + rnd() * 0.5)], a = (0.15 + rnd() * 0.7) * Math.PI, d = [Math.cos(a), Math.sin(a)];
+    pieces = pieces.flatMap((q) => splitPoly(q, p, d));
+  }
+  const id = `sh${String(seedKey).replace(/\W/g, '')}`, ox = (l + r) / 2, oy = (t + b) / 2;
+  let defs = `<filter id="${id}b"><feGaussianBlur stdDeviation="5"/></filter>`, g = '';
+  pieces.forEach((q, i) => {
+    const cx = q.reduce((s, v) => s + v[0], 0) / q.length, cy = q.reduce((s, v) => s + v[1], 0) / q.length;
+    const tx = (cx - ox) * (0.06 + rnd() * 0.06), ty = (cy - oy) * (0.06 + rnd() * 0.06), rot = (rnd() - 0.5) * 7;
+    defs += `<clipPath id="${id}c${i}"><polygon points="${q.map((v) => `${f1(v[0])},${f1(v[1])}`).join(' ')}"/></clipPath>`;
+    g += `<g transform="translate(${f1(tx)} ${f1(ty)}) rotate(${f1(rot)} ${f1(cx)} ${f1(cy)})"><g clip-path="url(#${id}c${i})"><image href="${href}" width="400" height="300" preserveAspectRatio="xMidYMid slice"/></g></g>`;
+  });
+  return `<svg class="shape-art shatter-art" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"${tint ? ` style="${tint}"` : ''}><defs>${defs}</defs>`
+    + `<image href="${href}" width="400" height="300" preserveAspectRatio="xMidYMid slice" filter="url(#${id}b)" opacity=".3"/>${g}</svg>`
+    + (label ? `<span class="art-credit art-credit--from">${label}</span>` : '');
+}
