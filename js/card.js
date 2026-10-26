@@ -1,24 +1,24 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { fallWords } from './last-chance.js?v=0.1.1194';
-import { useMiles } from './units.js?v=0.1.1194';
-import { feel } from './native.js?v=0.1.1194';
-import { sfx } from './sfx.js?v=0.1.1194';
-import { cardArt } from './art.js?v=0.1.1194';
-import { TIER_INFO } from './rarity.js?v=0.1.1194';
-import { SET_BY_ID } from './sets.js?v=0.1.1194';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.1194';
-import { FLEET_ABOUT, fleetAbout, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.1194';
-import { artFileFor } from './art-keys.js?v=0.1.1194';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.1194';
-import { ART_SHARED } from './art-shared.js?v=0.1.1194';
-import { ART_CREDITS } from './art-credits.js?v=0.1.1194';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.1194';
-import { nightsIn } from './observation.js?v=0.1.1194';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.1194';
-import { SHINY } from './shiny.js?v=0.1.1194';
-import { conArt, cometArt } from './con-art.js?v=0.1.1194';
-import { CON_FIGURES } from './con-figures.js?v=0.1.1194';
-import { localText } from './localize.js?v=0.1.1194';
+import { fallWords } from './last-chance.js?v=0.1.1197';
+import { useMiles } from './units.js?v=0.1.1197';
+import { feel } from './native.js?v=0.1.1197';
+import { sfx } from './sfx.js?v=0.1.1197';
+import { cardArt } from './art.js?v=0.1.1197';
+import { TIER_INFO } from './rarity.js?v=0.1.1197';
+import { SET_BY_ID } from './sets.js?v=0.1.1197';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.1197';
+import { FLEET_ABOUT, fleetAbout, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.1197';
+import { artFileFor } from './art-keys.js?v=0.1.1197';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.1197';
+import { ART_SHARED } from './art-shared.js?v=0.1.1197';
+import { ART_CREDITS } from './art-credits.js?v=0.1.1197';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.1197';
+import { nightsIn } from './observation.js?v=0.1.1197';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.1197';
+import { SHINY } from './shiny.js?v=0.1.1197';
+import { conArt, cometArt } from './con-art.js?v=0.1.1197';
+import { CON_FIGURES } from './con-figures.js?v=0.1.1197';
+import { localText } from './localize.js?v=0.1.1197';
 // The animal/symbol figure belongs to the completed (gold) constellation card only (2026-10-05): a single
 // star’s card draws just the star pattern with its star marked, so the figure is a reward for finishing the set.
 // A star card’s constellation figure comes into focus as you collect the constellation’s stars (design/con-focus.html B).
@@ -80,28 +80,32 @@ function tintFilter(o, file) {
   return `filter: sepia(.4) hue-rotate(${h}deg) saturate(1.2)`;
 }
 function artTint(o) { const pa = debrisOf(o)?.parentArt, f = tintFilter(o, pa && ART_FILES.has(pa) ? pa : artFileFor(o, { [o.id]: seriesKeyOf(o) })); return f ? ` style="${f}"` : ''; }
-// A fragment's card, design B "tracking report" of design/fragment-cards.html (2026-10-26, Sevaan): no big picture. The
-// window holds a sketch of this piece's real orbit (Earth to scale, the ellipse from its own perigee and apogee) and a
-// report: where it came from (with the parent as a small stamp), launched, pieces ever tracked from that launch (GCAT),
-// and how many of that launch's pieces in the game you've found, one dot each (lit, this one glowing). data/debris.json
-// carries parent, parentArt, group and tracked (scripts/build-debris-parents.mjs).
+// A fragment's card, design B "tracking report" of design/fragment-cards.html, followed exactly (2026-10-26, Sevaan): the
+// two chips (rarity · TRACKED OBJECT), the name, a big sketch of this piece's real orbit (Earth to scale, the ellipse from
+// its own perigee and apogee) with "ORBIT · height · laps a day", a report (From · Launched · Pieces tracked), the fact and
+// the footer. No picture window, no stats row. data/debris.json: parent, parentArt, tracked (scripts/build-debris-parents.mjs).
 function orbitSketch(o) {
   const RE = 6371, per = Math.max(150, Number(o.perigee) || 500), apo = Math.max(per, Number(o.apogee) || per);
-  const a = RE + (per + apo) / 2, c = a - (RE + per), b = Math.sqrt(a * a - c * c), k = Math.min(118 / a, 34 / b);
-  const ex = 140 - c * k; // ellipse centre: Earth sits at the focus, perigee to the right
-  return `<svg class="frag-orbit" viewBox="0 0 280 76" aria-hidden="true"><ellipse cx="${ex.toFixed(1)}" cy="38" rx="${(a * k).toFixed(1)}" ry="${(b * k).toFixed(1)}" fill="none" stroke="#fa8127" stroke-width="1.1" stroke-dasharray="3 4"/>`
-    + `<circle cx="140" cy="38" r="${(RE * k).toFixed(1)}" fill="#1d4f8a" stroke="#9fd0f5" stroke-opacity=".6"/><circle cx="${(ex - a * k).toFixed(1)}" cy="38" r="3.6" fill="#fff2b3"/></svg>`;
+  const a = RE + (per + apo) / 2, c = a - (RE + per), b = Math.sqrt(a * a - c * c), k = Math.min(122 / a, 40 / b);
+  const ex = 130 - c * k; // ellipse centre: Earth sits at the focus, perigee to the right
+  return `<svg class="frag-orbit" viewBox="0 0 260 90" aria-hidden="true"><circle cx="130" cy="45" r="${(RE * k).toFixed(1)}" fill="#1d4f8a" stroke="#9fd0f5" stroke-opacity=".6"/>`
+    + `<ellipse cx="${ex.toFixed(1)}" cy="45" rx="${(a * k).toFixed(1)}" ry="${(b * k).toFixed(1)}" fill="none" stroke="#fa8127" stroke-dasharray="3 4"/><circle cx="${(ex + a * k).toFixed(1)}" cy="45" r="4" fill="#fff2b3"/></svg>`;
 }
-function fragPanel(o, opts, revealed) {
-  const d = debrisOf(o), ids = d.group ?? [o.id], owned = opts.ownedKeys;
-  const found = (id) => Number(id) === Number(o.id) ? revealed : !!owned?.has(String(id));
-  const me = ids.indexOf(Number(o.id)), nFound = ids.filter(found).length, year = String(o.launch ?? '').slice(0, 4);
+function fragReport(o) {
+  const d = debrisOf(o), year = String(o.launch ?? '').slice(0, 4), laps = o.period ? 1440 / o.period : 0;
   const parent = titleFor({ name: d.parent, type: /^(DELTA|THOR|ARIANE|CZ-|SL-|BREEZE|TITAN|ATLAS|AGENA|PSLV)/.test(d.parent) ? 'rocket-body' : 'payload' });
-  const t = tintFilter(o, d.parentArt), stamp = `<img class="frag-thumb${revealed ? '' : ' card-art-image--locked'}" src="assets/art/cards/sm/${d.parentArt}.webp" alt=""${t ? ` style="${t}"` : ''}>`;
-  const dots = ids.length > 1 ? `<span class="frag-dots">${ids.map((id, i) => `<i class="${i === me ? 'me' : found(id) ? 'on' : ''}"></i>`).join('')}</span>` : '';
+  const h = Math.round(((Number(o.perigee) || 0) + (Number(o.apogee) || 0)) / 2), height = useMiles() ? `${Math.round(h * 0.621371).toLocaleString('en-US')} mi` : `${h.toLocaleString('en-US')} km`;
   const row = (k, v) => `<dt>${k}</dt><dd>${v}</dd>`;
-  return `<div class="frag">${orbitSketch(o)}${stamp}<dl class="frag-rep">${row('From', esc(parent))}${year ? row('Launched', year) : ''}${d.tracked > 1 ? row('Tracked', `${d.tracked.toLocaleString()} pieces`) : ''}`
-    + `${row('In game', ids.length > 1 ? `${ids.length} · ${nFound} found` : 'Only this one')}</dl>${dots}</div>`;
+  return `<div class="frag">${orbitSketch(o)}<div class="frag-cap">Orbit · ${height} up${laps ? ` · ${laps.toFixed(laps < 10 ? 1 : 0)} laps a day` : ''}</div>`
+    + `<dl class="frag-rep">${row('From', esc(parent))}${year ? row('Launched', year) : ''}${d.tracked > 1 ? row('Pieces', `${d.tracked.toLocaleString()} tracked`) : ''}</dl></div>`;
+}
+function asFragmentCard(el, o) { // rearrange a rendered card into the tracking report
+  const face = el.querySelector('.card__face'), art = face.querySelector('.card__art'), head = face.querySelector('.card__heading');
+  const tier = art.querySelector('.m-tier'), set = art.querySelector('.m-set');
+  const top = document.createElement('div'); top.className = 'frag-top';
+  if (tier) top.append(tier); if (set) { set.querySelector('span span').textContent = 'TRACKED OBJECT'; top.append(set); }
+  art.remove(); face.querySelector('.card__identity')?.remove(); face.querySelector('.card__stats')?.remove(); face.querySelector('.temp-strip')?.remove();
+  head.before(top); head.insertAdjacentHTML('afterend', fragReport(o)); el.classList.add('card--frag');
 }
 // Real photos (2026-10-26, Sevaan: no "AI slop") carry a small credit and no added sparkles.
 function artStars(o) {
@@ -229,7 +233,7 @@ export function renderCard(o, opts = {}) {
   el.classList.add('card--mission'); if (moonCard) el.classList.add('mn-card'); // the phase row needs room: a shorter picture (css/cards.css)
   el.innerHTML = `
   <div class="card__rotator"><div class="card__face">
-    <div class="card__art" data-art-slot aria-hidden="true">${lcMark(o)}${o.partners && caught && opts.ownedKeys && o.partners.some((k) => opts.ownedKeys.has(k)) ? '<span class="m-chip m-reunion">⇄ REUNITED</span>' : ''}${conCard && o.system ? (revealed && artImage(o) ? `<img class="card-art-image"${artTint(o)} src="${artImage(o, AS)}" alt="" decoding="async">${opts.mini ? '' : artStars(o)}` : lockedArt(o, revealed, set.color, opts.mini ? 'small' : undefined)) : conCard ? conArt(o.data, null, revealed ? conFig(o.con) : {}) : o.type === 'comet' && revealed ? cometArt(o.key) : o.type === 'deepsky' && revealed && !artImage(o) && CON_BY_ID.get(o.conId) ? conArt(CON_BY_ID.get(o.conId).data, null, { mark: o }) : o.con && !o.skyName && revealed && CON_BY_ID.get(o.con) ? conArt(CON_BY_ID.get(o.con).data, o.hip, conFocus(o, opts.ownedKeys)) : !revealed && o.con && !o.skyName && CON_BY_ID.get(o.con) ? `<span class="art-locked art-locked--chart">${conArt(CON_BY_ID.get(o.con).data, o.hip, conFocus(o, opts.ownedKeys))}</span>` : !revealed && o.type === 'deepsky' && !artImage(o) && CON_BY_ID.get(o.conId) ? `<span class="art-locked art-locked--chart">${conArt(CON_BY_ID.get(o.conId).data, null, { mark: o })}</span>` : debrisOf(o)?.group ? fragPanel(o, opts, revealed) : revealed && artImage(o) ? `<img class="card-art-image"${artTint(o)} src="${artImage(o, AS)}" alt="" decoding="async">${opts.mini ? '' : artStars(o)}${moonCard && mLatest != null && mLatest !== 4 ? moonShade(mLatest) : ''}` : lockedArt(o, revealed, set.color, opts.mini ? 'small' : undefined)}${shinyOf ? `<span class="shiny-tag">✦ SHINY · ${esc(SHINY[shinyOf].label.toUpperCase())}</span>` : ''}<span class="m-chip m-tier card__tier"><i aria-hidden="true">${tier.gem}</i>${esc(tier.label.toUpperCase())}${o.icon ? '<b class="card__icon-badge">ICON</b>' : ''}</span><span class="m-chip m-set card__setbar"><span><span>${esc(set.name.toUpperCase())}</span></span></span><div class="card__foil"></div></div>
+    <div class="card__art" data-art-slot aria-hidden="true">${lcMark(o)}${o.partners && caught && opts.ownedKeys && o.partners.some((k) => opts.ownedKeys.has(k)) ? '<span class="m-chip m-reunion">⇄ REUNITED</span>' : ''}${conCard && o.system ? (revealed && artImage(o) ? `<img class="card-art-image"${artTint(o)} src="${artImage(o, AS)}" alt="" decoding="async">${opts.mini ? '' : artStars(o)}` : lockedArt(o, revealed, set.color, opts.mini ? 'small' : undefined)) : conCard ? conArt(o.data, null, revealed ? conFig(o.con) : {}) : o.type === 'comet' && revealed ? cometArt(o.key) : o.type === 'deepsky' && revealed && !artImage(o) && CON_BY_ID.get(o.conId) ? conArt(CON_BY_ID.get(o.conId).data, null, { mark: o }) : o.con && !o.skyName && revealed && CON_BY_ID.get(o.con) ? conArt(CON_BY_ID.get(o.con).data, o.hip, conFocus(o, opts.ownedKeys)) : !revealed && o.con && !o.skyName && CON_BY_ID.get(o.con) ? `<span class="art-locked art-locked--chart">${conArt(CON_BY_ID.get(o.con).data, o.hip, conFocus(o, opts.ownedKeys))}</span>` : !revealed && o.type === 'deepsky' && !artImage(o) && CON_BY_ID.get(o.conId) ? `<span class="art-locked art-locked--chart">${conArt(CON_BY_ID.get(o.conId).data, null, { mark: o })}</span>` : revealed && artImage(o) ? `<img class="card-art-image"${artTint(o)} src="${artImage(o, AS)}" alt="" decoding="async">${opts.mini ? '' : artStars(o)}${moonCard && mLatest != null && mLatest !== 4 ? moonShade(mLatest) : ''}` : lockedArt(o, revealed, set.color, opts.mini ? 'small' : undefined)}${shinyOf ? `<span class="shiny-tag">✦ SHINY · ${esc(SHINY[shinyOf].label.toUpperCase())}</span>` : ''}<span class="m-chip m-tier card__tier"><i aria-hidden="true">${tier.gem}</i>${esc(tier.label.toUpperCase())}${o.icon ? '<b class="card__icon-badge">ICON</b>' : ''}</span><span class="m-chip m-set card__setbar"><span><span>${esc(set.name.toUpperCase())}</span></span></span><div class="card__foil"></div></div>
     <div class="card__heading"><h3 class="card__name">${esc(title)}</h3>
     <div class="card__identity"><span>${esc(sub)}</span><span class="card__mono">${esc(identifier)}</span></div></div>
     ${tempStrip(o)}
@@ -240,6 +244,7 @@ export function renderCard(o, opts = {}) {
     <div class="card__back" aria-hidden="true"><div class="back-holo"></div><div class="back-glare"></div></div>
     ${extinct ? `<div class="card__stamp">REENTERED${o.decay ? `<small>${esc(formatDate(o.decay)).toUpperCase()}</small>` : ''}</div>` : ''}
   </div></div>`;
+  if (debrisOf(o)?.group) asFragmentCard(el, o);
   if (!opts.mini) fitFact(el);
   return el;
 }

@@ -702,16 +702,15 @@
 /* A fragment's picture: its parent broken apart (js/shape-art.js shatterArt), named bottom left. */
 .card__art .shape-art { position: absolute; inset: 0; width: 100%; height: 100%; }
 .art-credit--from { right: auto; left: .5em; color: #fff2b3; }
-/* A fragment's card (design/fragment-cards.html B, tracking report, 2026-10-26): its orbit and a report in the window. */
-.card__art:has(> .frag) { background: radial-gradient(circle at 50% 30%, #13264a, #080f1b 75%); }
-.frag { position: absolute; inset: 0; padding: 2.5em 1em .8em; display: flex; flex-direction: column; gap: .5em; }
-.frag-orbit { width: 100%; height: 5.6em; flex: none; }
-.frag-thumb { position: absolute; right: 1.1em; top: 9.6em; width: 3.6em; height: 3.6em; border-radius: 50%; object-fit: cover; border: .15em solid #e9dfc2; z-index: 1; }
-.frag-rep { margin: 0; border: 1px dashed #627a8b; border-radius: .7em; padding: .6em 4.6em .6em .8em; display: grid; grid-template-columns: auto 1fr; gap: .3em .9em; font: 500 .95em/1.2 var(--label, 'SC Label', sans-serif); letter-spacing: .1em; text-transform: uppercase; }
-.frag-rep dt { color: #9aa7b4; } .frag-rep dd { margin: 0; color: #fff2b3; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.frag-dots { display: flex; flex-wrap: wrap; gap: .38em; padding-left: .2em; }
-.frag-dots i { width: 1.05em; height: 1.05em; border-radius: 50%; border: 1px solid #627a8b; box-sizing: border-box; }
-.frag-dots i.on { background: #fa8127; border-color: #fa8127; } .frag-dots i.me { background: #fff2b3; border-color: #fff2b3; box-shadow: 0 0 0 .2em #fa812766; }
-body.night .frag-dots i.on, body.night .frag-dots i.me { background: #ff6a55; border-color: #ff6a55; } body.night .frag-orbit ellipse { stroke: #ff6a55; }
-.card__art .frag svg.frag-orbit { position: static; width: 100%; height: 5.6em; inset: auto; } /* not the full-window rule for drawn art */
-.card__art .frag img.frag-thumb { position: absolute; }
+/* A fragment's card: design B "tracking report" of design/fragment-cards.html, as drawn (2026-10-26). */
+.card--frag .frag-top { display: flex; justify-content: space-between; align-items: center; }
+.card--frag .frag-top .m-chip { position: static; inset: auto; transform: none; }
+.card--frag .frag { display: flex; flex-direction: column; gap: .7em; }
+.card--frag svg.frag-orbit { width: 100%; height: 10em; display: block; }
+.card--frag .frag-cap { margin-top: -.4em; text-align: center; font: 500 .95em/1 var(--label, 'SC Label', sans-serif); letter-spacing: .15em; text-transform: uppercase; color: #9aa7b4; }
+.card--frag .frag-rep { margin: 0; border: 1px dashed #627a8b; border-radius: .8em; padding: .9em 1em; display: grid; grid-template-columns: auto 1fr; gap: .45em 1em; font: 500 1.05em/1.25 var(--label, 'SC Label', sans-serif); letter-spacing: .1em; text-transform: uppercase; }
+.card--frag .frag-rep dt { color: #9aa7b4; } .card--frag .frag-rep dd { margin: 0; color: #fff2b3; min-width: 0; }
+body.night .card--frag .frag-orbit ellipse { stroke: #ff6a55; }
+.card--frag .frag-top { margin-bottom: .5em; }
+.card--frag .frag-top .m-set { border: 1px solid #627a8b; border-radius: .5em; padding: .35em .7em; background: none; }
+.card--frag .frag-top .m-set span { white-space: nowrap; }

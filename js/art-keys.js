@@ -1,5 +1,6 @@
-import { ART_FILES } from './art-files.js?v=0.1.1194';
-import { debrisOf } from './lore.js?v=0.1.1194';
+import { ART_FILES } from './art-files.js?v=0.1.1197';
+import { debrisOf } from './lore.js?v=0.1.1197';
+import { PHOTO_MAP } from './art-photo-map.js?v=0.1.1197';
 // Which illustration each card uses. The illustrator’s brief (scripts/art-brief.py) is generated from this
 // table, and when the art arrives the card renderer can load assets/art/cards/<key>.webp, falling back to
 // the drawn art in js/art.js. Every card maps to exactly one key. Order of rules matters.
@@ -129,6 +130,7 @@ export function artKeyFor(card, seriesOf = {}) {
   if (card.natural) return card.system ? 'solar-system' : card.type === 'sun' ? 'sun' : card.type === 'moon' ? 'moon' : card.type === 'earth' ? 'planet-earth' : card.type === 'planet' ? `planet-${card.name.toLowerCase()}` : card.type === 'deepsky' ? `deep-${card.key.split(':')[1]}` : `star-${card.key.split(':')[1]}`;
   if (card.launches) return { GLOBALSTAR: 'globalstar', ORBCOMM: 'orbcomm', IRIDIUM: 'iridium' }[card.family] ?? `fleet-${card.family.toLowerCase()}`; // the newer fleets use their satellite’s picture
   if (NAMED[card.id]) return NAMED[card.id];
+  if (PHOTO_MAP[card.id]) return PHOTO_MAP[card.id]; // its own photo or official illustration (js/art-photo-map.js)
   if (card.issDeploy && /^ISS OBJECT/.test(String(card.name ?? ''))) return 'smallsat'; // an unidentified CubeSat from the ISS
   const n = String(card.name ?? '').toUpperCase();
   if (card.type === 'debris' && debrisOf(card)?.art && ART_FILES.has(`deb-${debrisOf(card).art}`)) return `deb-${debrisOf(card).art}`; // what it really is (data/debris.json)
