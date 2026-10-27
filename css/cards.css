@@ -719,3 +719,6 @@ body.night .card--frag .frag-orbit ellipse { stroke: #ff6a55; }
 .card--frag .frag-orbit-box.orbiting svg.frag-orbit { opacity: 0; } /* tapped: the live globe (js/orbit-view.js) takes its place */
 .card--frag .frag-orbit-box { background: #050a12; } .card--frag .frag-orbit-box .orbit-globe { position: absolute; inset: 0; width: 100%; height: 100%; }
 .card__art .orbit-globe { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; } /* the tap globe on any card (also in collection.css) */
+/* Source › after a card's fact (2026-10-26, design/nasa-ideas.html 1): opens the page that backs it */
+.card__fact a.src { font: 500 .78em/1 var(--label, 'SC Label', sans-serif); letter-spacing: .12em; text-transform: uppercase; color: #fa8127; text-decoration: none; white-space: nowrap; pointer-events: auto; }
+body.night .card__fact a.src { color: #ff6a55; }

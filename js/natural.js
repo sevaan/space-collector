@@ -1,4 +1,4 @@
-import { extinction } from './sky-limit.js?v=0.1.1213';
+import { extinction } from './sky-limit.js?v=0.1.1214';
 // The Moon, the naked-eye planets and the brightest named stars, as collectible cards.
 // Positions come from js/celestial.js (state.bodies, state.skyEnu); this file holds the card facts and
 // the "can you see it right now" rules. No DOM. Every fact must be true; approximate values say so.
@@ -62,7 +62,7 @@ const STARS = [
   ['Alpha Centauri', 'Rigil Kentaurus', 'α Cen', 'Centaurus', '4.4', 'common', -0.01, 'Part of the **nearest star system** to the Sun. Its faint third star, Proxima, is the closest star of all.'],
   ['Vega', 'Vega', 'α Lyr', 'Lyra', '25', 'common', 0.03, 'One corner of the **Summer Triangle**, with Deneb and Altair. In about 12,000 years, Earth’s wobble will make it the North Star.'],
   ['Capella', 'Capella', 'α Aur', 'Auriga', '43', 'common', 0.08, 'It looks like one star, but it’s **four**: two yellow giants orbiting each other, plus a faint pair of red dwarfs.'],
-  ['Rigel', 'Rigel', 'β Ori', 'Orion', '~860', 'common', 0.18, 'Orion’s bright **blue-white foot**, a supergiant tens of thousands of times brighter than the Sun.'],
+  ['Rigel', 'Rigel', 'β Ori', 'Orion', '~860', 'common', 0.18, 'Orion’s bright **blue-white foot**, a supergiant over 100,000 times brighter than the Sun.'],
   ['Procyon', 'Procyon', 'α CMi', 'Canis Minor', '11.5', 'common', 0.4, 'One of our **closest neighbours**, just over 11 light-years away. Like Sirius, it has a faint white-dwarf companion.'],
   ['Achernar', 'Achernar', 'α Eri', 'Eridanus', '139', 'common', 0.45, 'It spins so fast it’s **squashed**: much wider across its middle than from pole to pole.'],
   ['Betelgeuse', 'Betelgeuse', 'α Ori', 'Orion', '~550', 'common', 0.45, 'A **red supergiant** in Orion’s shoulder. Put it where the Sun is and it would reach past the orbit of Mars.'],

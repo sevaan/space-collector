@@ -3,8 +3,8 @@
 // Every star in a stick figure (magnitude <= 5) is its own card; the constellation card turns gold when
 // you own all of them. Bright stars that already have cards (Regulus, Spica…) count as members.
 // No DOM.
-import { NATURAL, NATURAL_BY_KEY, SOLAR_SYSTEM } from './natural.js?v=0.1.1213';
-import { starVector } from './celestial.js?v=0.1.1213';
+import { NATURAL, NATURAL_BY_KEY, SOLAR_SYSTEM } from './natural.js?v=0.1.1214';
+import { starVector } from './celestial.js?v=0.1.1214';
 
 const GEN = { Ari: 'Arietis', Tau: 'Tauri', Gem: 'Geminorum', Cnc: 'Cancri', Leo: 'Leonis', Vir: 'Virginis', Lib: 'Librae', Sco: 'Scorpii', Sgr: 'Sagittarii',
   Cap: 'Capricorni', Aqr: 'Aquarii', Psc: 'Piscium', Ori: 'Orionis', BigDipper: 'Ursae Majoris', UMi: 'Ursae Minoris', Cas: 'Cassiopeiae', Cyg: 'Cygni', Cru: 'Crucis',
@@ -128,7 +128,7 @@ function register(data) {
           key, id: key, card: key, natural: 'star', type: 'star', name, skyName: null, hip: s.hip, tier: tierFor(s.mag), order: order++,
           code: s.bayer ? `${s.bayer} ${abbr}` : s.flam ? `${s.flam} ${abbr}` : `HIP ${s.hip}`, constellation: conName, mag: s.mag,
           stats: [['BRIGHTNESS', s.mag.toFixed(1).replace('-', '−'), 'mag'], ...(starDist[s.hip] ? [['DISTANCE', lyText(starDist[s.hip]), 'ly']] : []), ['CONSTELLATION', conName, ''], ['COLOUR', fix?.colour ?? colourOf(s.bv), '']],
-          fact: starFacts[s.hip]?.fact ?? `One of the **${c.stars.length} stars** that draw **${c.name}**, ${c.nick}, and the **${ordinal(i + 1)}brightest** of them.`,
+          src: starFacts[s.hip]?.source, fact: starFacts[s.hip]?.fact ?? `One of the **${c.stars.length} stars** that draw **${c.name}**, ${c.nick}, and the **${ordinal(i + 1)}brightest** of them.`,
         };
         NATURAL.push(card); NATURAL_BY_KEY.set(key, card);
       }

@@ -1,25 +1,25 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { fallWords } from './last-chance.js?v=0.1.1213';
-import { useMiles } from './units.js?v=0.1.1213';
-import { feel } from './native.js?v=0.1.1213';
-import { sfx } from './sfx.js?v=0.1.1213';
-import { cardArt } from './art.js?v=0.1.1213';
-import { TIER_INFO } from './rarity.js?v=0.1.1213';
-import { SET_BY_ID } from './sets.js?v=0.1.1213';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.1213';
-import { FLEET_ABOUT, fleetAbout, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.1213';
-import { artFileFor } from './art-keys.js?v=0.1.1213';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.1213';
-import { orbitGlobe } from './orbit-view.js?v=0.1.1213';
-import { ART_SHARED } from './art-shared.js?v=0.1.1213';
-import { ART_CREDITS } from './art-credits.js?v=0.1.1213';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.1213';
-import { nightsIn } from './observation.js?v=0.1.1213';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.1213';
-import { SHINY } from './shiny.js?v=0.1.1213';
-import { conArt, cometArt } from './con-art.js?v=0.1.1213';
-import { CON_FIGURES } from './con-figures.js?v=0.1.1213';
-import { localText } from './localize.js?v=0.1.1213';
+import { fallWords } from './last-chance.js?v=0.1.1214';
+import { useMiles } from './units.js?v=0.1.1214';
+import { feel } from './native.js?v=0.1.1214';
+import { sfx } from './sfx.js?v=0.1.1214';
+import { cardArt } from './art.js?v=0.1.1214';
+import { TIER_INFO } from './rarity.js?v=0.1.1214';
+import { SET_BY_ID } from './sets.js?v=0.1.1214';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.1214';
+import { FLEET_ABOUT, fleetAbout, factSourceUrl, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.1214';
+import { artFileFor } from './art-keys.js?v=0.1.1214';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.1214';
+import { orbitGlobe } from './orbit-view.js?v=0.1.1214';
+import { ART_SHARED } from './art-shared.js?v=0.1.1214';
+import { ART_CREDITS } from './art-credits.js?v=0.1.1214';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.1214';
+import { nightsIn } from './observation.js?v=0.1.1214';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.1214';
+import { SHINY } from './shiny.js?v=0.1.1214';
+import { conArt, cometArt } from './con-art.js?v=0.1.1214';
+import { CON_FIGURES } from './con-figures.js?v=0.1.1214';
+import { localText } from './localize.js?v=0.1.1214';
 // The animal/symbol figure belongs to the completed (gold) constellation card only (2026-10-05): a single
 // star’s card draws just the star pattern with its star marked, so the figure is a reward for finishing the set.
 // A star card’s constellation figure comes into focus as you collect the constellation’s stars (design/con-focus.html B).
@@ -205,11 +205,12 @@ export function renderCard(o, opts = {}) {
   const moonCard = o.type === 'moon' && !!o.natural && revealed;
   const mStamps = moonCard ? stampsIn(sightings) : null, mLatest = moonCard ? moonPhaseOf(latestStamp(sightings)) : null;
   const moonBlock = moonCard ? `<div class="fl-dots mn-phases"><div class="fl-head"><span class="card__note-label">PHASES · ${mStamps.size}/8</span>${mLatest != null ? `<span class="fl-latest"><i></i>${esc(MOON_PHASES[mLatest])}</span>` : ''}</div><div class="mn-row">${MOON_PHASES.map((name, k) => `<svg viewBox="-20 -20 40 40" class="${mStamps.has(`MOON:${k}`) ? 'on' : ''}${k === mLatest ? ' latest' : ''}${k ? '' : ' nm'}" role="img" aria-label="${esc(name)}${mStamps.has(`MOON:${k}`) ? '' : ' (not yet)'}"><circle r="15"></circle>${k ? `<path d="${phasePath(k)}"${k > 4 ? ' transform="scale(-1,1)"' : ''}></path>` : ''}</svg>`).join('')}</div></div>` : '';
-  const factBlock = moonCard ? moonBlock + `<div class="card__fact"><p>${richText(factFor(o))}</p></div>`
-    : fleet ? dotMap(o, stamps, lk, `${stamps.size} / ${o.launches.length} stamped` /* no "N more for Silver" (2026-10-12, Sevaan: it wrapped and took room from the art) */, latestLine, new Set(sightings.filter((x) => x.train && x.stampKey).map((x) => x.stampKey))) + (FLEET_ABOUT[o.family] ? `<div class="card__fact fl-about"><p>${richText(fleetAbout(o.family, stamps.size))}</p></div>` : '')
+  const srcLink = (text) => { const u = !opts.mini && !secretStory && factSourceUrl(o, text); return u ? ` <a class="src" href="${esc(u)}" target="_blank" rel="noopener">Source ›</a>` : ''; }; // design/nasa-ideas.html 1
+  const factBlock = moonCard ? moonBlock + `<div class="card__fact"><p>${richText(factFor(o))}${srcLink()}</p></div>`
+    : fleet ? dotMap(o, stamps, lk, `${stamps.size} / ${o.launches.length} stamped` /* no "N more for Silver" (2026-10-12, Sevaan: it wrapped and took room from the art) */, latestLine, new Set(sightings.filter((x) => x.train && x.stampKey).map((x) => x.stampKey))) + (FLEET_ABOUT[o.family] ? `<div class="card__fact fl-about"><p>${richText(fleetAbout(o.family, stamps.size))}${srcLink(fleetAbout(o.family, stamps.size))}</p></div>` : '')
     : conCard ? `<div class="card__fact"><p>${richText(prog.level === 'gold' ? factFor(o).replace(/Collect all \d+ of its stars to turn this card \*\*gold\*\*\./, `You’ve found **all ${prog.total}** of its stars.`).replace(/Collect the Sun, the Moon and all \*\*seven\*\* planets to turn this card \*\*gold\*\*\./, `You’ve seen **all nine** of them yourself.`) : factFor(o))}</p><p class="con-progress">${o.stars.map((k) => `<i class="${(opts.ownedKeys ?? new Set()).has(k) ? 'on' : ''}"></i>`).join('')}<span>${prog.have} / ${prog.total} ${o.system ? 'WORLDS' : 'STARS'}${prog.level === 'gold' ? ' · COMPLETE' : ''}</span></p></div>`
     : secretStory ? '<div class="card__fact"><p>Somewhere in the sky there’s a story waiting. Keep looking, at night, in odd places, on special days.</p></div>'
-    : `<div class="card__fact"><p>${richText(factFor(o))}</p></div>`; // the fact shows on cards you don’t have too: it’s what makes you want one (2026-10-13, Sevaan)
+    : `<div class="card__fact"><p>${richText(factFor(o))}${srcLink()}</p></div>`; // the fact shows on cards you don’t have too: it’s what makes you want one (2026-10-13, Sevaan)
   // Long facts take room from the art, not the card: each line past three shrinks the art window (about
   // 52 characters a line), so every card stays the same height.
   // Fleet cards with a big launch grid plus the fleet’s fact can run past the card’s 42em: once it’s on the page,
@@ -565,6 +566,7 @@ export function attachFlip(el, { onBack, onTap = orbitTap(el) } = {}) {
   };
   let lastTouchUp = 0;
   const onUp = (e) => {
+    if (e.target.closest?.('a')) return; // a link on the card (Source ›) is a link, not a tap or flip
     if (e.pointerType !== 'mouse') lastTouchUp = performance.now();
     if (el.dataset.swiping || !still(e)) return;
     if (e.pointerType === 'mouse') { single(); return; } // mice: dblclick flips and cancels the single tap

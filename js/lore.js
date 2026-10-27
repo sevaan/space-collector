@@ -4,8 +4,8 @@
 // facts only state what the catalogue says today (orbit, launch date and site) or simple date
 // comparisons. No extrapolating today’s orbit back over decades (lifetime laps or distance).
 
-import { orbitStats, titleCase, siteName, ownerName } from './facts.js?v=0.1.1213';
-import { localText } from './localize.js?v=0.1.1213';
+import { orbitStats, titleCase, siteName, ownerName } from './facts.js?v=0.1.1214';
+import { localText } from './localize.js?v=0.1.1214';
 
 const FAMILY = [
   [/^IRIDIUM 33 DEB/, 'A piece of the **first accidental collision between two intact satellites**: Iridium 33 hit the dead Kosmos 2251 in 2009.'],
@@ -37,10 +37,12 @@ const GOOGLE = '1998-09-04';   // Google founded
 const IPHONE = '2007-06-29';   // first iPhone on sale
 
 let loreCache = null, seriesCache = null, purposeCache = null, debrisCache = null, factsCache = null, rocketFacts = [];
+let srcCache = {};
 export async function loadLore(url = 'data/lore.json', seriesUrl = url.replace('lore.json', 'series.json'), purposeUrl = url.replace('lore.json', 'purpose.json')) {
   const get = async (u) => { try { return await (await fetch(u)).json(); } catch { return {}; } };
   [loreCache, seriesCache, purposeCache, debrisCache, factsCache] = await Promise.all([get(url), get(seriesUrl), get(purposeUrl), get(url.replace('lore.json', 'debris.json')), get(url.replace('lore.json', 'facts.json'))]);
   rocketFacts = (factsCache?.rockets ?? []).map((r) => ({ ...r, re: new RegExp(r.match) }));
+  srcCache = await get(url.replace('lore.json', 'fact-sources.json'));
   return loreCache;
 }
 // Researched facts (pre-launch writing review, 2026-10-15; data/facts.json, each with its source): one per satellite in
@@ -311,6 +313,25 @@ export function factFor(o, now = new Date()) {
   return list.length ? list[Number(o.id) % list.length] : 'A tracked object in Earth orbit.';
 }
 
+// The page that backs the fact a card is showing (2026-10-26, design/nasa-ideas.html 1, Sevaan): same order as factFor.
+// null when there's no single page (family lines, the generic purpose lines). data/fact-sources.json covers natural,
+// story and fleet facts; the rest carry their own `source`.
+export function factSourceUrl(o, factText) {
+  const one = (x) => (Array.isArray(x) ? x[0] : x) || null;
+  if (o.natural === 'story') return srcCache?.stories?.[o.key] ?? null;
+  if (o.natural) return one(o.src) ?? srcCache?.natural?.[o.key] ?? null;
+  if (o.launches) return factText ? srcCache?.fleets?.[factText] ?? null : null;
+  if (o.members) return null;
+  const hand = loreCache?.[o.id]; if (hand?.fact) return one(hand.source);
+  const deb = debrisOf(o); if (deb) return deb.source ?? null;
+  if (researched(o)) return one(factsCache.sats[o.id].source);
+  if (rocketFact(o)) return one(rocketFacts.find((x) => x.re.test(o.name ?? ''))?.source);
+  if (o.issDeploy && /^ISS OBJECT/.test(o.name ?? '')) return (srcCache?.catalogue ?? '').replace('{id}', o.id) || null;
+  const series = seriesOf(o); if (series) return one(series.source);
+  if (FAMILY.some(([re, , kinds]) => re.test(o.name) && (!kinds || kinds.includes(o.kind)))) return null;
+  if (purposeFact(o)) return PURPOSE.some(([re]) => re.test(o.name)) && o.type === 'satellite' ? null : srcCache?.ucs ?? null;
+  return (srcCache?.catalogue ?? '').replace('{id}', o.id) || null;
+}
 // Where a card’s fact comes from (for the catalogue export and checks).
 export function factSourceFor(o) {
   if (o.natural || loreCache?.[o.id]?.fact) return 'Hand-written';
