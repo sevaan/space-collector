@@ -139,17 +139,6 @@
   "licence": "PD",
   "source": "https://commons.wikimedia.org/wiki/File:M33_(Chandra-VLT-Swift_composite).jpg"
  },
- "fleet-starlink": {
-  "credit": "Jud McCranie",
-  "licence": "CC BY-SA 4.0",
-  "source": "https://commons.wikimedia.org/wiki/File:Starlink_6_satellites.jpg",
-  "shows": "Real night-sky Starlink 'train': seven satellites as evenly spaced dashes in a line across a starry violet sky (Starlink-6 batch, 2020). Exactly what players see; wide 2:1 frame, crop to the band."
- },
- "iridium": {
-  "credit": "Cliff (Flickr), CC BY 2.0",
-  "licence": "CC BY 2.0",
-  "source": "https://commons.wikimedia.org/wiki/File:Iridium_Satellite.jpg"
- },
  "agena": {
   "credit": "NASA, Gemini 8",
   "licence": "PD",
@@ -1276,29 +1265,5 @@
   "licence": "CC BY-SA 4.0",
   "source": "https://commons.wikimedia.org/wiki/File:Vega_DSS.png",
   "shows": "Vega, Digitized Sky Survey colour cutout centred on the star (Epsilon Lyrae double-double at upper left)"
- },
- "fleet-oneweb": {
-  "credit": "ISRO",
-  "licence": "GODL-India",
-  "source": "https://commons.wikimedia.org/wiki/File:LVM3_M2,_OneWeb_India-1_campaign_16.jpg",
-  "shows": "Real OneWeb satellites: a full stack of 36 gold-foil OneWeb spacecraft on the dispenser, ISRO cleanroom, plain cream background (2022). Very sharp, ideal."
- },
- "fleet-kuiper": {
-  "credit": "U.S. Space Force / Gwendolyn Kurz",
-  "licence": "Public domain",
-  "source": "https://commons.wikimedia.org/wiki/File:KA-03_cropped.png",
-  "shows": "FALLBACK, LAUNCH ONLY (no satellite visible): Atlas V lifting off with an Amazon Kuiper batch (KA-03), pad towers and orange exhaust cloud, daylight."
- },
- "globalstar": {
-  "credit": "Charles Boyer",
-  "licence": "CC BY 2.0",
-  "source": "https://commons.wikimedia.org/wiki/File:SpaceX_Falcon_9_Globalstar_FM15,_06-19-2022_(52156896018).jpg",
-  "shows": "FALLBACK, LAUNCH ONLY: long-exposure golden arc of the Falcon 9 carrying Globalstar FM15 (2022) over water at night."
- },
- "orbcomm": {
-  "credit": "SpaceX",
-  "licence": "CC0",
-  "source": "https://commons.wikimedia.org/wiki/File:ORBCOMM-2_(23815832891).jpg",
-  "shows": "FALLBACK, LAUNCH ONLY: long exposure of the Dec 2015 ORBCOMM-2 launch (11 OG2 satellites) with the first booster's return-to-launch-site arcs, night."
  }
 }
