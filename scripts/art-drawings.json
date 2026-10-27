@@ -1,0 +1,13 @@
+{
+ "draw-aerocube-8": {
+  "ids": [
+   41852,
+   41853
+  ],
+  "refs": [
+   "https://www.nanosats.eu/sat/aerocube-8",
+   "https://space.skyrocket.de/doc_sdat/aerocube-8-impact.htm"
+  ],
+  "description": "1.5U CubeSat, gold-bronze body, black corner rails, two violet solar cells per side, vent grille, two top apertures, two long wire antennas"
+ }
+}
