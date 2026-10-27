@@ -140,9 +140,10 @@
   "source": "https://commons.wikimedia.org/wiki/File:M33_(Chandra-VLT-Swift_composite).jpg"
  },
  "fleet-starlink": {
-  "credit": "SpaceX, CC0",
-  "licence": "CC0",
-  "source": "https://commons.wikimedia.org/wiki/File:Starlink_Mission_(47926144123).jpg"
+  "credit": "Jud McCranie",
+  "licence": "CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Starlink_6_satellites.jpg",
+  "shows": "Real night-sky Starlink 'train': seven satellites as evenly spaced dashes in a line across a starry violet sky (Starlink-6 batch, 2020). Exactly what players see; wide 2:1 frame, crop to the band."
  },
  "iridium": {
   "credit": "Cliff (Flickr), CC BY 2.0",
@@ -1185,5 +1186,119 @@
   "source": "https://commons.wikimedia.org/wiki/File:At_Noordwijk_2024_028.jpg",
   "shows": "Full-size CryoSat-2 model outdoors at Space Expo Noordwijk",
   "sibling": "CryoSat-2 is a card. Sky background, not a room. ESA alt: File:CryoSat model ESA384323.jpg (ESA, CC BY-SA 3.0 IGO), but the satellite is smaller in that frame."
+ },
+ "star-achernar": {
+  "credit": "Roberto Mura / DSS via Aladin (CC BY-SA 4.0)",
+  "licence": "CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Achernar_DSS.png",
+  "shows": "Achernar, Digitized Sky Survey colour cutout centred on the star"
+ },
+ "star-aldebaran": {
+  "credit": "NASA, ESA, STScI (CC BY-SA 4.0)",
+  "licence": "CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Aldebaran.jpg",
+  "shows": "Aldebaran's orange glow in a sky-survey field (crop of ESA/Hubble heic1309c Hyades view)"
+ },
+ "star-alpha-centauri": {
+  "credit": "ESA/Hubble & NASA (CC BY 4.0)",
+  "licence": "CC BY 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Best_image_of_Alpha_Centauri_A_and_B.jpg",
+  "shows": "Hubble image resolving Alpha Centauri A (left) and B (right) as two spiked stars"
+ },
+ "star-altair": {
+  "credit": "J. Aleu (public domain)",
+  "licence": "Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:Altair,_Tarazed_and_Alshain.jpg",
+  "shows": "Altair (bright blue-white star, left) with Tarazed and Alshain in a Milky Way field, diffusion-filter photo"
+ },
+ "star-arcturus": {
+  "credit": "Roberto Mura / DSS via Aladin (CC BY-SA 4.0)",
+  "licence": "CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Arcturus_DSS.png",
+  "shows": "Arcturus, Digitized Sky Survey colour cutout centred on the star"
+ },
+ "star-canopus": {
+  "credit": "NASA (public domain)",
+  "licence": "Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:Canopus.jpg",
+  "shows": "Canopus photographed from the ISS (Expedition 6) against a dense southern star field"
+ },
+ "star-capella": {
+  "credit": "Roberto Mura / DSS via Aladin (CC BY-SA 4.0)",
+  "licence": "CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Capella_DSS.png",
+  "shows": "Capella, Digitized Sky Survey colour cutout centred on the star"
+ },
+ "star-deneb": {
+  "credit": "Roberto Mura / DSS via Aladin (CC BY-SA 4.0)",
+  "licence": "CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Deneb_DSS.png",
+  "shows": "Deneb, Digitized Sky Survey colour cutout amid Cygnus Milky Way dust"
+ },
+ "star-fomalhaut": {
+  "credit": "NASA, ESA, Digitized Sky Survey 2 (Davide De Martin) (CC BY 4.0)",
+  "licence": "CC BY 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Wide-field_view_of_the_sky_around_the_bright_star_Fomalhaut_(eso1216c).jpg",
+  "shows": "Fomalhaut, DSS2 wide-field view centred on the star"
+ },
+ "star-polaris": {
+  "credit": "Roberto Mura / DSS via Aladin (CC BY-SA 4.0)",
+  "licence": "CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Polaris_DSS.png",
+  "shows": "Polaris, Digitized Sky Survey colour cutout centred on the star"
+ },
+ "star-procyon": {
+  "credit": "Kevin M. Gill (CC BY 2.0)",
+  "licence": "CC BY 2.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Procyon_-_(%CE%B1_Canis_Minoris)_-_March_20_2006_(46017503015).jpg",
+  "shows": "Procyon through a telescope with diffraction spikes, surrounding star field"
+ },
+ "star-regulus": {
+  "credit": "Roberto Mura / DSS via Aladin (CC BY-SA 4.0)",
+  "licence": "CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Regulus_DSS.png",
+  "shows": "Regulus, Digitized Sky Survey colour cutout centred on the star (Leo I dwarf galaxy faint just above)"
+ },
+ "star-rigel": {
+  "credit": "Roberto Mura / DSS via Aladin (CC BY-SA 4.0)",
+  "licence": "CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Rigel_DSS.png",
+  "shows": "Rigel, Digitized Sky Survey colour cutout with the Witch Head Nebula at upper right"
+ },
+ "star-spica": {
+  "credit": "Roberto Mura / DSS via Aladin (CC BY-SA 4.0)",
+  "licence": "CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Spica_DSS.png",
+  "shows": "Spica, Digitized Sky Survey colour cutout centred on the star"
+ },
+ "star-vega": {
+  "credit": "Roberto Mura / DSS via Aladin (CC BY-SA 4.0)",
+  "licence": "CC BY-SA 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Vega_DSS.png",
+  "shows": "Vega, Digitized Sky Survey colour cutout centred on the star (Epsilon Lyrae double-double at upper left)"
+ },
+ "fleet-oneweb": {
+  "credit": "ISRO",
+  "licence": "GODL-India",
+  "source": "https://commons.wikimedia.org/wiki/File:LVM3_M2,_OneWeb_India-1_campaign_16.jpg",
+  "shows": "Real OneWeb satellites: a full stack of 36 gold-foil OneWeb spacecraft on the dispenser, ISRO cleanroom, plain cream background (2022). Very sharp, ideal."
+ },
+ "fleet-kuiper": {
+  "credit": "U.S. Space Force / Gwendolyn Kurz",
+  "licence": "Public domain",
+  "source": "https://commons.wikimedia.org/wiki/File:KA-03_cropped.png",
+  "shows": "FALLBACK, LAUNCH ONLY (no satellite visible): Atlas V lifting off with an Amazon Kuiper batch (KA-03), pad towers and orange exhaust cloud, daylight."
+ },
+ "globalstar": {
+  "credit": "Charles Boyer",
+  "licence": "CC BY 2.0",
+  "source": "https://commons.wikimedia.org/wiki/File:SpaceX_Falcon_9_Globalstar_FM15,_06-19-2022_(52156896018).jpg",
+  "shows": "FALLBACK, LAUNCH ONLY: long-exposure golden arc of the Falcon 9 carrying Globalstar FM15 (2022) over water at night."
+ },
+ "orbcomm": {
+  "credit": "SpaceX",
+  "licence": "CC0",
+  "source": "https://commons.wikimedia.org/wiki/File:ORBCOMM-2_(23815832891).jpg",
+  "shows": "FALLBACK, LAUNCH ONLY: long exposure of the Dec 2015 ORBCOMM-2 launch (11 OG2 satellites) with the first booster's return-to-launch-site arcs, night."
  }
 }
