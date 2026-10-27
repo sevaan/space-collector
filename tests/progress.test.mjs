@@ -60,3 +60,34 @@ test('themed weeks: stage week done with three countries gives +150 and the badg
   assert.equal(three.xp - two.xp, 10 + 150); // the third stage's own XP, plus the week
   assert.ok(three.achievements.find((x) => x.id === 'week-stages').done);
 });
+
+test('Star week counts new constellation stars (bug hunt 2026-10-27: the weeks loop had no first flag)', () => {
+  const ws = new Date(2026, 10, 2).getTime(); // a Monday
+  const themes = { [new Date(ws).setHours(0, 0, 0, 0)]: 'stars' };
+  const I = { ...INFO }; for (let k = 0; k < 12; k++) I[`st${k}`] = { tier: 'common', type: 'star', natural: 'star', con: 'Ori' };
+  const inf = (k) => I[k] ?? null, t = ws + 2 * 86400e3, sg = (k, m) => ({ cardKey: k, time: t + m * 60e3, lon: -78.3, el: 40 });
+  const nine = progress(Array.from({ length: 9 }, (_, k) => sg(`st${k}`, k)), inf, { now: t + 3600e3, weekThemes: themes });
+  assert.equal(nine.week.id, 'stars'); assert.equal(nine.week.have, 9);
+  const ten = progress(Array.from({ length: 11 }, (_, k) => sg(`st${k}`, k)), inf, { now: t + 3600e3, weekThemes: themes });
+  assert.equal(ten.week.have, 10);
+  assert.ok(ten.achievements.find((x) => x.id === 'week-stars').done);
+  const again = progress([sg('st0', 0), sg('st0', 5), sg('st0', 10)], inf, { now: t + 3600e3, weekThemes: themes });
+  assert.equal(again.week.have, 1); // the same star again is not a new one
+});
+test('fleet cards level by stamps, not nights (bug hunt 2026-10-27)', () => {
+  const I = { ...INFO, STARLINK: { tier: 'common', type: 'satellite', owner: 'US', launch: '2019-05-24' } };
+  const inf = (k) => I[k] ?? null, night = nightKey(T, -78.3), deals = { [night]: ['levelup2', 'china', 'deep'] };
+  const sl = (n, dayOffset) => ({ cardKey: 'STARLINK', stampKey: `STARLINK:2024-${String(n).padStart(3, '0')}`, time: T + dayOffset * 86400e3 + n * 60e3, lon: -78.3, el: 40 });
+  // one launch seen on three nights: the card stays bronze, so no level-up mission and no Regular Visitor
+  const nights3 = progress([s('b', -3 * 86400), sl(1, -2), sl(1, -1), sl(1, 0)], inf, { now: T + 3600e3, deals });
+  assert.equal(nights3.missions.find((m) => m.id === 'levelup2').done, false);
+  assert.equal(nights3.achievements.find((x) => x.id === 'silver').done, false);
+  // the tenth launch stamped tonight turns Starlink silver
+  const ten = progress([s('b', -3 * 86400), ...Array.from({ length: 10 }, (_, k) => sl(k + 1, 0))], inf, { now: T + 3600e3, deals });
+  assert.equal(ten.missions.find((m) => m.id === 'levelup2').done, true);
+  // 50 Starlink launches and two fleets at 10: three gold cards
+  const golds = [s('b', -3 * 86400), ...Array.from({ length: 50 }, (_, k) => sl(k + 1, 0)),
+    ...Array.from({ length: 10 }, (_, k) => ({ cardKey: 'ONEWEB', stampKey: `ONEWEB:2024-${k}`, time: T + 100e3 + k, lon: -78.3, el: 40 })),
+    ...Array.from({ length: 10 }, (_, k) => ({ cardKey: 'KUIPER', stampKey: `KUIPER:2024-${k}`, time: T + 200e3 + k, lon: -78.3, el: 40 }))];
+  assert.equal(progress(golds, inf, { now: T + 3600e3, deals }).achievements.find((x) => x.id === 'gold3').done, true);
+});

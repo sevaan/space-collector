@@ -1,31 +1,31 @@
-import { pullToClose } from './pull-close.js?v=0.1.1220';
-import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.1220';
-import { computeStats, statsHtml } from './stats.js?v=0.1.1220';
-import { nightKey } from './observation.js?v=0.1.1220';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1220';
-import { sfx } from './sfx.js?v=0.1.1220';
-import { expandFacts } from './catalog-facts.js?v=0.1.1220';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.1220';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1220';
-import { ticket } from './toast.js?v=0.1.1220';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.1220';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.1220';
-import { cardArt } from './art.js?v=0.1.1220';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.1220';
-import { applyBack } from './card-backs.js?v=0.1.1220';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.1220';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1220';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.1220';
-import { STORIES } from './stories.js?v=0.1.1220';
-import { loadConstellations, conList } from './constellations.js?v=0.1.1220';
-import { RANKS, progress, readDeals, readWeekThemes, xpCarry } from './progress.js?v=0.1.1220';
-import { eventBadges, nextEvent } from './events.js?v=0.1.1220';
-import { shareCardEl } from './share-card.js?v=0.1.1220';
-import { forgetSighting } from './cloud-backup.js?v=0.1.1220';
-import { allSightings, deleteSighting } from './store.js?v=0.1.1220';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.1220';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.1220';
-import { localText } from './localize.js?v=0.1.1220';
+import { pullToClose } from './pull-close.js?v=0.1.1221';
+import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.1221';
+import { computeStats, statsHtml } from './stats.js?v=0.1.1221';
+import { nightKey } from './observation.js?v=0.1.1221';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1221';
+import { sfx } from './sfx.js?v=0.1.1221';
+import { expandFacts } from './catalog-facts.js?v=0.1.1221';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.1221';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1221';
+import { ticket } from './toast.js?v=0.1.1221';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.1221';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.1221';
+import { cardArt } from './art.js?v=0.1.1221';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.1221';
+import { applyBack } from './card-backs.js?v=0.1.1221';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.1221';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1221';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.1221';
+import { STORIES } from './stories.js?v=0.1.1221';
+import { loadConstellations, conList } from './constellations.js?v=0.1.1221';
+import { RANKS, progress, readDeals, readWeekThemes, xpCarry } from './progress.js?v=0.1.1221';
+import { eventBadges, nextEvent } from './events.js?v=0.1.1221';
+import { shareCardEl } from './share-card.js?v=0.1.1221';
+import { forgetSighting } from './cloud-backup.js?v=0.1.1221';
+import { allSightings, deleteSighting } from './store.js?v=0.1.1221';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.1221';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.1221';
+import { localText } from './localize.js?v=0.1.1221';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -503,7 +503,7 @@ function renderFind() {
   if (!q && !findSuggest && EMBED) { window.parent.postMessage({ sc: 'find-suggest' }, location.origin); grid.insertAdjacentHTML('beforeend', '<p class="find-none">Finding what you can see this week…</p>'); return; }
   state.list = list;
   $('results').textContent = q ? `${list.length}${list.length === 30 ? '+' : ''} found` : 'Search any satellite, rocket or planet';
-  const head = document.createElement('div'); head.className = 'find-head'; head.textContent = q ? '' : 'New ones you can see this week'; // not just Rares: Uncommons fill in (2026-10-18 playtest) if (!q) grid.append(head);
+  const head = document.createElement('div'); head.className = 'find-head'; head.textContent = q ? '' : 'New ones you can see this week'; /* not just Rares: Uncommons fill in (2026-10-18 playtest) */ if (!q) grid.append(head); /* (the // comment had swallowed this since 2026-10-18; fixed 2026-10-27) */
   if (!list.length) { grid.insertAdjacentHTML('beforeend', q ? '<p class="find-none">Nothing by that name. Try “ISS”, “Hubble” or “Starlink”.</p>' : '<p class="find-none">Nothing new passes this week. Search any satellite to see when it’s next up.</p>'); return; }
   const need = [];
   for (const c of list) {

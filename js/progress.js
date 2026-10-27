@@ -1,7 +1,8 @@
 // Player progress from the sighting log: XP and observer rank, tonight’s three missions, a weekly streak and
 // achievements. Everything is derived from the saved sightings (nothing extra is stored), so it can’t drift.
 // info(cardKey) -> { tier, type, owner, launch, natural, con } | null. No DOM.
-import { nightKey } from './observation.js?v=0.1.1220';
+import { nightKey } from './observation.js?v=0.1.1221';
+import { fleetThresholds } from './card-model.js?v=0.1.1221';
 
 // A longer climb (2026-10-12, playtest room: three ranks on night 1, Mission Control in about two weeks), with two
 // prestige ranks past Mission Control. Nobody drops a rank they had on the old curve (rankFloor below).
@@ -320,9 +321,11 @@ export function progress(sightings, info, { constellations = [], albums = [], no
     owners: new Set(), ownerCount: {}, fleet: {}, maxEl: -90, minSatEl: null, quadrants: new Set(), faintest: null, brightestSat: null,
     closest: null, farthest: null, maxNight: 0, months: new Set(), spanDays: 0, maxNightsOnCard: 0, goldCards: 0, spreadKm: 0, missionsDone: 0, fullHouse: false };
   // (Legacy XP reads tier0, each object’s tier before the 2026-10-10 difficulty re-tier.)
-  const firsts = [], nightsOnCard = new Map(), fleetStamps = new Map(), places = [], placeSeen = new Set(), reunionRoles = new Map();
+  const firsts = [], firstFlags = [], nightsOnCard = new Map(), fleetStamps = new Map(), places = [], placeSeen = new Set(), reunionRoles = new Map();
   for (const s of list) {
     const i = info(s.cardKey), night = nightKey(s.time, s.lon ?? 0), first = !seenCard.has(s.cardKey), nk = `${s.cardKey}|${night}`;
+    firstFlags.push(first); // in list order, for the weeks loop below (Star week needs it; bug hunt 2026-10-27)
+    const fam = s.stampKey && !String(s.stampKey).startsWith('MOON:') ? String(s.stampKey).split(':')[0] : null; // a fleet card (Starlink…): levelled by stamps, not nights
     if (first) {
       seenCard.add(s.cardKey); xp += tierXp[(tierXp === LEGACY_TIER_XP && i?.tier0) || i?.tier] ?? 10; a.cards++; firsts.push(s.time);
       if (s.time - (firsts[firsts.length - 2] ?? -Infinity) <= 60000) a.double = true;
@@ -346,9 +349,9 @@ export function progress(sightings, info, { constellations = [], albums = [], no
     }
     else if (!seenNight.has(nk)) xp += REPEAT_XP;
     let lv = false;
-    if (!seenNight.has(nk) && !i?.natural) { const c = (nightsOnCard.get(s.cardKey) ?? 0) + 1; /* no levels for the Moon, planets, stars… (2026-10-21, Sevaan) */ nightsOnCard.set(s.cardKey, c); lv = c === 3 || c === 10; }
+    if (!seenNight.has(nk) && !i?.natural && !fam) { const c = (nightsOnCard.get(s.cardKey) ?? 0) + 1; /* no levels for the Moon, planets, stars… (2026-10-21, Sevaan) */ nightsOnCard.set(s.cardKey, c); lv = c === 3 || c === 10; }
     seenNight.add(nk);
-    if (s.stampKey) { const fam = String(s.stampKey).split(':')[0]; if (!fleetStamps.has(fam)) fleetStamps.set(fam, new Set()); fleetStamps.get(fam).add(s.stampKey); }
+    if (s.stampKey) { const f = String(s.stampKey).split(':')[0]; if (!fleetStamps.has(f)) fleetStamps.set(f, new Set()); const set = fleetStamps.get(f); if (!set.has(s.stampKey)) { set.add(s.stampKey); if (fam) { const [, sv, g] = fleetThresholds(fam); lv = set.size === sv || set.size === g; } } } // fleet level-ups as card.js fleetLevel counts them (bug hunt 2026-10-27: nights had been counted here)
     if (s.shiny) { xp += SHINY_XP; a.shinies++; }
     if (i?.tier) a.tiers.add(i.tier);
     const d = new Date(s.time); a.hours.push(d.getHours()); a.months.add(`${d.getFullYear()}-${d.getMonth()}`);
@@ -367,6 +370,7 @@ export function progress(sightings, info, { constellations = [], albums = [], no
   for (const c of constellations) if (c.stars.every((k) => seenCard.has(k))) { if (!c.system) a.cons++; xp += CON_XP; if (c.zodiac) a.zodiac++; }
   for (const [fam, set] of fleetStamps) a.fleet[fam] = set.size;
   for (const n of nightsOnCard.values()) { a.maxNightsOnCard = Math.max(a.maxNightsOnCard, n); if (n >= 10) a.goldCards++; } // gold = 10 nights, as card.js levelFor (2026-10-12)
+  for (const [fam, set] of fleetStamps) if (fam !== 'MOON' && set.size >= fleetThresholds(fam)[2]) a.goldCards++; // a fleet card is gold by stamps
   if (list.length) a.spanDays = (list[list.length - 1].time - list[0].time) / 86400e3;
   // Farthest pair of observing places, in km (equirectangular is plenty at this scale).
   for (let x = 0; x < places.length; x++) for (let y = x + 1; y < places.length; y++) {
@@ -383,7 +387,7 @@ export function progress(sightings, info, { constellations = [], albums = [], no
   a.reunions = [...reunionRoles.values()].filter((r) => r.size === 2).length; // launches where you own the stage and its satellite
   // Themed weeks: each week's sightings against that week's theme. Fleet stamps count only the first time you stamp a launch.
   const weeks = new Map(), firstStamp = new Set();
-  for (const s of list) { const ws = weekStartOf(s.time), e = { ...s, info: info(s.cardKey) }; if (s.stampKey && !String(s.stampKey).startsWith('MOON:') && !firstStamp.has(s.stampKey)) { firstStamp.add(s.stampKey); e.newStampKey = s.stampKey; } if (!weeks.has(ws)) weeks.set(ws, []); weeks.get(ws).push(e); }
+  for (const [k, s] of list.entries()) { const ws = weekStartOf(s.time), e = { ...s, info: info(s.cardKey), first: firstFlags[k] }; if (s.stampKey && !String(s.stampKey).startsWith('MOON:') && !firstStamp.has(s.stampKey)) { firstStamp.add(s.stampKey); e.newStampKey = s.stampKey; } if (!weeks.has(ws)) weeks.set(ws, []); weeks.get(ws).push(e); }
   a.weekThemes = new Set();
   for (const [ws, w] of weeks) { if (ws < WEEKS_FROM) continue; const th = weekThemeFor(ws, weekThemes); if (th.have(w) >= th.need) { xp += WEEK_XP; a.weekThemes.add(th.id); } }
   const wsNow = weekStartOf(now), thNow = weekThemeFor(wsNow, weekThemes), wNow = weeks.get(wsNow) ?? [];
