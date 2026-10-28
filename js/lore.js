@@ -4,8 +4,8 @@
 // facts only state what the catalogue says today (orbit, launch date and site) or simple date
 // comparisons. No extrapolating today’s orbit back over decades (lifetime laps or distance).
 
-import { orbitStats, titleCase, siteName, ownerName } from './facts.js?v=0.1.1239';
-import { localText } from './localize.js?v=0.1.1239';
+import { orbitStats, titleCase, siteName, ownerName } from './facts.js?v=0.1.1240';
+import { localText } from './localize.js?v=0.1.1240';
 
 const FAMILY = [
   [/^IRIDIUM 33 DEB/, 'A piece of the **first accidental collision between two intact satellites**: Iridium 33 hit the dead Kosmos 2251 in 2009.'],
@@ -43,6 +43,7 @@ export async function loadLore(url = 'data/lore.json', seriesUrl = url.replace('
   [loreCache, seriesCache, purposeCache, debrisCache, factsCache] = await Promise.all([get(url), get(seriesUrl), get(purposeUrl), get(url.replace('lore.json', 'debris.json')), get(url.replace('lore.json', 'facts.json'))]);
   rocketFacts = (factsCache?.rockets ?? []).map((r) => ({ ...r, re: new RegExp(r.match) }));
   srcCache = await get(url.replace('lore.json', 'fact-sources.json'));
+  rolesCache = await get(url.replace('lore.json', 'roles.json'));
   return loreCache;
 }
 // Researched facts (pre-launch writing review, 2026-10-15; data/facts.json, each with its source): one per satellite in
@@ -279,8 +280,12 @@ const ROLE_NAME = [[/^NOAA|^METEOR|^GOES|^METOP|^FENGYUN|DMSP|^TIROS|^NIMBUS|^EL
   [/^IRIDIUM|^GLOBALSTAR|^ORBCOMM|^INTELSAT|^MOLNIYA|^STRELA|^GONETS|^TELSTAR|^RELAY|^ECHO/, 'Communications satellite'], [/^YAOGAN|^NROL|^LACROSSE|^KH-/, 'Spy satellite'], [/^OPS \d|^USA \d/, 'Military satellite'],
   [/^FLOCK|^DOVE \d|^SKYSAT/, 'Earth-imaging satellite'], [/^CYGFM|^CYGNSS/, 'Earth science satellite'], [/^FORTE\b/, 'Test satellite'], [/^CUBESAT|SAT-?\d*$/, 'Small satellite']];
 export const ownerWord = (owner, year) => (owner === 'CIS' ? (year && year < 1992 ? 'Soviet' : 'Russian') : { US: 'American', PRC: 'Chinese', JPN: 'Japanese', FR: 'French', ESA: 'European', CA: 'Canadian', IT: 'Italian', IND: 'Indian', UK: 'British', GER: 'German', SKOR: 'South Korean', ISRA: 'Israeli', BRAZ: 'Brazilian', ARGN: 'Argentinian', IRAN: 'Iranian', NKOR: 'North Korean', TURK: 'Turkish', AUS: 'Australian' }[owner] ?? '');
+// What each satellite does, written per card (2026-10-27 writing pass, Sevaan: "the reader should know what every satellite
+// is for"): data/roles.json { NORAD id: role }. Checked first; the older rules below are the fallback.
+let rolesCache = null;
 export function roleOf(o) {
   if (o.type === 'station') return 'Space station';
+  const written = rolesCache?.[o.id]; if (written) return written;
   const named = ROLE_NAME.slice(0, -1).find(([re]) => re.test(String(o.name ?? '').toUpperCase()))?.[1]; if (named) return named; // the hand-picked list knows the famous ones best; its last entry ("…SAT" = small satellite) is only a fallback (QA 2026-10-16)
   const r = purposeCache?.sats?.[o.id];
   if (r) { const [, purpose, detail] = r; const hit = (detail && ROLE_DETAIL.find(([re]) => re.test(detail))) || ROLE_PURPOSE.find(([re]) => re.test(purpose)); if (hit) return hit[1]; }

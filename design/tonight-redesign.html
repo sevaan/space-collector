@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><base href="../"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tonight redesign</title>
+<link rel="stylesheet" href="css/cards.css"><link rel="stylesheet" href="css/ui.css">
+<style>
+  :root { --ink: #fff2b3; --text: #e8e3c9; --muted: #9aa7b4; --or: #fa8127; --gold: #e7b75f; --nav: #080f1b; --steel: #8fb4d8; --line: #22344a; --panel: #0e1a29;
+    --common: #9aa4b1; --uncommon: #5fd08a; --rare: #4aa8ff; --epic: #e46ad6; --legendary: #ffc545; --shiny: #e46ad6; }
+  body { margin: 0; background: #05090f; color: var(--ink); font: 15px/1.45 system-ui, sans-serif; padding: 28px 24px 60px; }
+  h1 { font: 400 30px/1.1 'SC Display', 'Russo One', sans-serif; margin: 0 0 6px; } h2 { font: 400 22px/1.1 'SC Display', sans-serif; margin: 44px 0 8px; }
+  p.lead { color: #bdbea9; max-width: 1040px; margin: 0 0 22px; }
+  .row { display: flex; gap: 28px; flex-wrap: wrap; align-items: flex-start; }
+  .lab { font: 500 12px/1 'SC Label', sans-serif; letter-spacing: .18em; text-transform: uppercase; color: var(--or); margin: 0 0 6px; }
+  .note { color: var(--muted); font-size: 13px; max-width: 340px; margin: 0 0 12px; min-height: 7.4em; }
+  .note b { color: var(--text); font-weight: 600; }
+  .phone { width: 340px; height: 700px; border-radius: 44px; background: var(--nav); border: 10px solid #1a2333; box-shadow: 0 20px 50px #000a; position: relative; overflow: hidden; box-sizing: border-box; }
+  .bar { position: absolute; top: 0; left: 0; right: 0; height: 74px; padding: 30px 20px 0; box-sizing: border-box; border-bottom: 3px double #3a4a62; display: flex; justify-content: space-between; align-items: center; background: var(--nav); z-index: 3; }
+  .bar b { font: 400 17px/1 'SC Display', sans-serif; } .bar small { display: block; font: 500 10px/1 'SC Label', sans-serif; letter-spacing: .2em; color: var(--muted); margin-top: 5px; text-transform: uppercase; }
+  .bar .x { width: 22px; height: 16px; border-top: 2px solid var(--ink); border-bottom: 2px solid var(--ink); opacity: .8; position: relative; } .bar .x::after { content: ''; position: absolute; left: 0; right: 0; top: 7px; border-top: 2px solid var(--ink); }
+  .tabs { position: absolute; left: 12px; right: 12px; bottom: 12px; height: 52px; border-radius: 18px; background: #080f1bf2; box-shadow: 0 0 0 1px #fff2b31f, 0 -10px 24px #080f1b; display: grid; grid-template-columns: repeat(3, 1fr); font: 500 12px/52px 'SC Label', sans-serif; letter-spacing: .16em; text-transform: uppercase; text-align: center; color: #c9cbb6; z-index: 3; }
+  .tabs .on { color: var(--or); box-shadow: inset 0 3px 0 var(--or); border-radius: 18px 18px 0 0; }
+  .body { position: absolute; top: 74px; left: 0; right: 0; bottom: 0; overflow: hidden; padding: 12px 16px 90px; box-sizing: border-box; }
+  .scrolled::before { content: attr(data-tag); position: absolute; top: 10px; left: 50%; transform: translateX(-50%); z-index: 4; font: 500 9px/1 'SC Label', sans-serif; letter-spacing: .2em; color: #0b1018; background: var(--muted); padding: 3px 6px; border-radius: 4px; }
+  .k { font: 500 11px/1 'SC Label', sans-serif; letter-spacing: .18em; text-transform: uppercase; color: var(--or); }
+  .k.g { color: var(--gold); } .k.m { color: var(--muted); }
+  .sec { display: flex; justify-content: space-between; align-items: baseline; margin: 18px 0 2px; }
+  .sec .k + span { font: 500 11px/1 'SC Label', sans-serif; letter-spacing: .14em; color: var(--muted); text-transform: uppercase; }
+
+  /* Night strip: the whole night in one line (replaces haul, Dark chip, Every pass chart and jump chips) */
+  .strip { display: block; width: 100%; padding: 0; border: 0; background: none; color: inherit; text-align: left; margin: 0 0 12px; }
+  .strip .say { font: 500 14px/1.25 'SC Label', sans-serif; color: var(--text); margin: 0 0 6px; letter-spacing: .01em; }
+  .strip .say b { font-weight: 500; color: var(--ink); } .strip .say em { font-style: normal; color: var(--gold); }
+  .strip svg { display: block; width: 100%; height: 44px; overflow: visible; }
+  .strip .ax { display: flex; justify-content: space-between; font: 500 9.5px/1 'SC Label', sans-serif; letter-spacing: .14em; color: var(--muted); text-transform: uppercase; margin-top: 4px; }
+
+  /* Hero */
+  .hero { --c: var(--uncommon); position: relative; border-radius: 18px; border: 1px solid color-mix(in srgb, var(--c) 45%, transparent); background: radial-gradient(ellipse at 30% 0%, color-mix(in srgb, var(--c) 16%, transparent), transparent 70%), var(--panel); padding: 12px 12px 12px; }
+  .hero .top { display: flex; gap: 12px; align-items: center; margin-top: 8px; }
+  .hero .mc { flex: none; width: 92px; aspect-ratio: 28/42; --mini-s: .3286; transform: rotate(-4deg); border-radius: 5px; box-shadow: 0 10px 22px #0008, 0 0 20px color-mix(in srgb, var(--c) 35%, transparent); }
+  .hero .mc .mini-face { width: 100%; height: 100%; }
+  .hero .side { min-width: 0; flex: 1; display: grid; gap: 3px; }
+  .cd { font: 400 24px/1 'SC Display', sans-serif; color: var(--ink); font-variant-numeric: tabular-nums; } .cd small { font: 500 11px/1 'SC Label', sans-serif; letter-spacing: .18em; color: var(--muted); display: block; margin-top: 4px; text-transform: uppercase; }
+  .tierl { font: 500 11.5px/1.1 'SC Label', sans-serif; letter-spacing: .14em; text-transform: uppercase; color: var(--c); }
+  .nm { font: 400 18px/1.08 'SC Display', sans-serif; color: var(--ink); }
+  .wh { font: 500 13px/1.25 'SC Label', sans-serif; color: var(--muted); }
+  .wh b { color: var(--text); font-weight: 500; }
+  .acts { display: flex; gap: 8px; margin-top: 12px; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 16px; border-radius: 99px; font: 500 12.5px/1 'SC Label', sans-serif; letter-spacing: .16em; text-transform: uppercase; box-sizing: border-box; white-space: nowrap; }
+  .btn.o { flex: 1; background: #fa81272b; border: 1px solid var(--or); color: var(--or); }
+  .btn.solid { flex: 1; background: var(--or); color: #0b1018; border: 1px solid var(--or); }
+  .btn.g { background: #ffffff0d; border: 1px solid var(--line); color: var(--ink); }
+  .btn.g.dim { opacity: .45; } .btn .free { font-size: 10px; letter-spacing: .12em; color: var(--uncommon); }
+  .ib { flex: none; width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: #ffffff08; border: 1px solid var(--line); color: var(--ink); box-sizing: border-box; }
+  .ib.dim { opacity: .38; } .ib.free { border-color: #5fd08a88; color: var(--uncommon); }
+  .ib svg, .btn svg { width: 19px; height: 19px; }
+  .pill { display: inline-flex; align-items: center; gap: 4px; padding: 3px 7px; border-radius: 6px; background: #ffffff0f; font: 500 11px/1.15 'SC Label', sans-serif; letter-spacing: .06em; color: var(--text); white-space: nowrap; }
+  .pill.xp { color: var(--uncommon); } .pill.sh { color: #f3b5ec; background: #e46ad61f; } .pill.ms { color: var(--gold); background: #e7b75f1a; } .pill.wk { color: #7fd6c8; background: #3cb4a01a; } .pill.lv { color: #d9dde3; background: #c0c8d41f; }
+  .pills { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 5px; }
+
+  /* Up now: one row, not two lists */
+  .up { display: flex; gap: 6px; overflow: hidden; margin: 6px -16px 0 0; padding-right: 16px; }
+  .chip { flex: none; display: flex; gap: 7px; align-items: center; min-height: 44px; padding: 0 10px 0 6px; border-radius: 12px; border: 1px solid var(--line); background: #0b1626; box-sizing: border-box; }
+  .chip i { width: 26px; height: 26px; border-radius: 50%; background: #16243a; display: grid; place-items: center; font: 500 12px/1 'SC Label', sans-serif; font-style: normal; color: var(--c, var(--common)); }
+  .chip b { display: block; font: 500 13px/1.1 'SC Label', sans-serif; color: var(--ink); font-weight: 500; } .chip small { display: block; font: 500 10.5px/1.1 'SC Label', sans-serif; color: var(--muted); letter-spacing: .04em; }
+  .chip.seen { opacity: .7; border-style: dashed; }
+
+  /* Run: each pass once, everything it earns on it */
+  .run { position: relative; }
+  .r { position: relative; display: grid; grid-template-columns: 48px minmax(0, 1fr) 44px; gap: 10px; align-items: center; padding: 10px 0; border-top: 1px solid #ffffff12; }
+  .r .t b { display: block; font: 400 15px/1 'SC Display', sans-serif; color: var(--ink); font-variant-numeric: tabular-nums; }
+  .r .t small { display: block; margin-top: 4px; font: 500 10.5px/1 'SC Label', sans-serif; letter-spacing: .06em; color: var(--muted); }
+  .r .t small.soon { color: var(--or); }
+  .r .n b { display: block; font: 500 15px/1.15 'SC Label', sans-serif; color: var(--ink); font-weight: 500; }
+  .r .n b span { color: var(--muted); }
+  .r .n .w { font: 500 12px/1.25 'SC Label', sans-serif; color: var(--muted); margin-top: 2px; }
+  .r .n .w .g { color: var(--c); }
+  .r.next { margin: 0 -10px; padding: 10px; border-radius: 14px; border: 1px solid #fa812755; background: #fa81270d; }
+  .r.next + .r { border-top: 0; }
+  .r.moment { grid-template-columns: 48px 1fr; padding: 7px 0; } .r.moment .n { font: 500 12.5px/1.2 'SC Label', sans-serif; color: var(--muted); }
+  .r.moment .t b { font-size: 13px; color: var(--muted); }
+  .r.pin { grid-template-columns: 48px 1fr; padding: 8px 0; } .r.pin .n { font: 500 13px/1.2 'SC Label', sans-serif; color: var(--gold); } .r.pin .t b { color: var(--gold); }
+  .r.grey { opacity: .55; }
+  .part { font: 500 10.5px/1 'SC Label', sans-serif; letter-spacing: .18em; color: var(--muted); text-transform: uppercase; padding: 14px 0 6px; border-top: 1px solid #ffffff12; }
+  .more { display: flex; justify-content: space-between; align-items: center; min-height: 44px; padding: 0 2px; border-top: 1px solid #ffffff12; font: 500 13.5px/1 'SC Label', sans-serif; color: var(--text); }
+  .more b { color: var(--or); font-weight: 500; letter-spacing: .12em; font-size: 12px; } .more .plus { font: 600 9.5px/1 'SC Label', sans-serif; letter-spacing: .12em; padding: 3px 5px; border-radius: 4px; background: var(--gold); color: #0b1018; margin-left: 6px; }
+
+  /* Missions with where to do them */
+  .ms { display: grid; grid-template-columns: 18px minmax(0, 1fr) auto; gap: 8px; align-items: start; padding: 9px 0; border-top: 1px solid #ffffff12; }
+  .ms i { width: 11px; height: 11px; border: 1.5px solid var(--gold); transform: rotate(45deg); margin: 4px 0 0 2px; }
+  .ms b { display: block; font: 500 14.5px/1.15 'SC Label', sans-serif; color: var(--ink); font-weight: 500; }
+  .ms small { display: block; font: 500 12px/1.25 'SC Label', sans-serif; color: var(--muted); margin-top: 2px; } .ms small em { font-style: normal; color: var(--or); }
+  .ms .xp { font: 500 12px/1 'SC Label', sans-serif; letter-spacing: .08em; color: var(--uncommon); padding-top: 3px; }
+  .ms.wk i { border-color: #7fd6c8; } .ms.wk .xp { color: #7fd6c8; }
+  .ms.ev i { border-color: #b8a4ff; border-radius: 50%; transform: none; }
+
+  /* Weather / quiet heroes */
+  .wx { border-radius: 18px; border: 1px solid #8fa3b844; background: linear-gradient(#111d2e, #0c1626); padding: 14px; }
+  .wx h3 { margin: 6px 0 4px; font: 400 22px/1.08 'SC Display', sans-serif; }
+  .wx p { margin: 0; font: 500 13.5px/1.3 'SC Label', sans-serif; color: var(--text); }
+  .nights { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin: 12px 0 2px; }
+  .nights div { border: 1px solid #ffffff1c; border-radius: 10px; padding: 7px 4px; text-align: center; font: 500 10.5px/1.2 'SC Label', sans-serif; letter-spacing: .1em; color: var(--muted); text-transform: uppercase; }
+  .nights div b { display: block; font: 400 15px/1.2 'SC Display', sans-serif; letter-spacing: 0; color: var(--text); margin: 3px 0 1px; text-transform: none; }
+  .nights .ok { border-color: #5fd08a88; color: var(--uncommon); background: #5fd08a12; } .nights .ok b { color: var(--ink); }
+  .teach { display: flex; gap: 10px; align-items: flex-start; padding: 11px 12px; border-radius: 14px; background: #0b1626; border: 1px solid var(--line); margin-top: 10px; font: 500 13px/1.3 'SC Label', sans-serif; color: var(--text); }
+  .teach .ic { flex: none; width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: #e7b75f1f; color: var(--gold); font: 400 14px/1 'SC Display', sans-serif; }
+  .teach b { display: block; font: 500 10.5px/1 'SC Label', sans-serif; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; font-weight: 500; }
+
+  /* Deck alternative */
+  .deck { position: relative; height: 300px; margin: 6px 0 4px; }
+  .deck .dc { position: absolute; top: 10px; width: 180px; aspect-ratio: 28/42; --mini-s: .6429; border-radius: 9px; box-shadow: 0 14px 30px #000b; }
+  .deck .dc .mini-face { width: 100%; height: 100%; }
+  .deck .dc.a { left: 54px; z-index: 3; box-shadow: 0 14px 30px #000b, 0 0 26px #5fd08a55; } .deck .dc.b { left: 168px; transform: scale(.86) rotate(5deg); transform-origin: 0 50%; z-index: 2; opacity: .8; } .deck .dc.c { left: 190px; transform: scale(.74) rotate(9deg); transform-origin: 0 50%; z-index: 1; opacity: .5; }
+  .deck .when { position: absolute; left: 54px; top: 0; z-index: 4; transform: translateY(-4px); }
+  .dots { display: flex; gap: 5px; justify-content: center; margin: 2px 0 8px; } .dots i { width: 6px; height: 6px; border-radius: 50%; background: #ffffff2a; } .dots i.on { background: var(--or); width: 16px; border-radius: 4px; }
+
+  .why { max-width: 1040px; color: #c9cbb6; font-size: 14px; line-height: 1.55; }
+  .why b { color: var(--ink); }
+  table.aud { border-collapse: collapse; max-width: 1080px; font-size: 13.5px; color: #d6d3bd; margin-top: 8px; }
+  table.aud td, table.aud th { border-top: 1px solid #ffffff18; padding: 8px 10px; vertical-align: top; text-align: left; }
+  table.aud th { font: 500 11px/1 'SC Label', sans-serif; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+  table.aud td:first-child { font: 400 18px/1 'SC Display', sans-serif; color: var(--or); width: 28px; }
+  table.aud td b { color: var(--ink); }
+  .shots { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 8px; }
+  .shots figure { margin: 0; flex: none; } .shots img { width: 200px; border-radius: 16px; border: 1px solid #ffffff1c; display: block; }
+  .shots figcaption { font: 500 10.5px/1.2 'SC Label', sans-serif; letter-spacing: .12em; color: var(--muted); text-transform: uppercase; margin-top: 5px; }
+</style></head><body>
+<h1>Tonight, redesigned</h1>
+<p class="lead">The Tonight page answers one question: <b>what should I go outside and catch, and when?</b> Today it answers it four times in four different row styles across 4.7 screens. The redesign shows <b>each pass once</b>, puts everything that pass earns (new card, XP, shiny chance, mission, week theme, level up) <b>on that pass</b>, and folds the haul, the Dark chip, the Every-pass chart and the jump chips into one <b>night strip</b> at the top. Same look: navy, cream, burnt orange, Russo One and Barlow Condensed, the real mini cards.</p>
+
+<h2>Recommended</h2>
+<div class="row">
+  <div><div class="lab">A · Night, top of the page</div><div class="note"><b>Night strip</b> replaces the jump chips, haul card, “Dark 6:40 PM” and the Every pass chart: one sentence and the whole night at a glance (best window in orange, the headliner’s star, now). <b>One hero</b> (“headliner” said once, time said once). <b>Up now</b> is one row of chips, not two lists and a full Saturn card. The Plus banner is gone from the top.</div>
+    <div class="phone" id="pA1"></div></div>
+  <div><div class="lab">A · Night, scrolled</div><div class="note"><b>Tonight’s run</b> is the only list. Coming up = its first rows (the next one is lit), shiny chances and missions are pills on the passes that deliver them, the headliner is a one-line pin. Missions say <b>where</b> to do them. The whole page is about 2.5 screens in this 320 px frame, under 2 on a real phone (was 4.7). Plus is asked for once, where the bells are.</div>
+    <div class="phone scrolled" data-tag="SCROLLED · RUN" id="pA2"></div></div>
+  <div><div class="lab">A · Night, end of the page</div><div class="note"><b>Missions say where.</b> “Catch a rocket stage → 8:40 PM Thorad Agena D, south”. The week theme and Saturday’s event are one line each here, not cards that split the plan. The page ends with one row to all 327 passes (the chart already lives in the night strip).</div>
+    <div class="phone scrolled" data-tag="SCROLLED · END" id="pA3"></div></div>
+</div>
+<div class="row" style="margin-top:34px">
+  <div><div class="lab">B · Daytime</div><div class="note">By day nothing is “coming up” for 4 hours, so the hero is <b>dark in 4 h 10 min</b> with the free until-dark reminder. Tonight’s headliner is previewed small (no countdown that reads “5 h 12 min”). The run starts with the evening’s first good pass; the Sun is the only thing “up now”, with the one true safety line.</div>
+    <div class="phone" id="pB"></div></div>
+  <div><div class="lab">C · Cloudy night</div><div class="note">Today the hero still counts down “20 min 44 s · Show me” under “Overcast all night”. Here the <b>weather is the hero</b>: next clear night with the free reminder for it. The run is kept but collapsed and greyed (“if you spot a gap, these count”). Something true to learn while you wait: why cloud hides satellites without stopping them.</div>
+    <div class="phone" id="pC"></div></div>
+  <div><div class="lab">D · Almost nothing up (2:30 AM)</div><div class="note">A quiet gap is normal and has a true reason (the low satellites overhead are in Earth’s shadow). Say it, give the <b>time it wakes up</b>, and offer what <i>is</i> worth doing now: planets you can see again for a level, the Moon’s new phase. No stale “Dark 6:40 PM”, no all-night “200 new cards”.</div>
+    <div class="phone" id="pD"></div></div>
+</div>
+<div class="row" style="margin-top:34px">
+  <div><div class="lab">E · Bolder: the run as a deck</div><div class="note">The same content as A, but tonight’s run is a <b>hand of real cards</b> you swipe through in time order; the night strip above scrubs it. It leans on what the game already does best (the cards) and makes “what will I get” literal. Costs more to build and hides the list; a good option if A tests flat.</div>
+    <div class="phone" id="pE"></div></div>
+</div>
+
+<h2>Why: the audit</h2>
+<p class="why">Captured on the running app at 402 × 874 (WebKit, @3x), Peterborough area, Tue Oct 27 2026: 8:30 PM clear, 8:30 PM overcast all night, 2:30 PM, and 2:30 AM. Ranked by how much each one costs the player.</p>
+<table class="aud">
+  <tr><th>#</th><th>Problem</th><th>Seen</th></tr>
+  <tr><td>1</td><td><b>The same pass is shown up to 3 times in 3 designs.</b> Kosmos 2406 at 8:34 is in Coming up, Tonight’s run and Shiny chances; Iridium 36, Thorad Agena D and SL-8 are in Coming up and the run; the headliner’s time is in the hero, its mini card and “Best between 8:36 and 9:07”. The page reads as repetitive because it is.</td><td>Night 8:30 PM</td></tr>
+  <tr><td>2</td><td><b>Too long: 3,483 px, 4.7 screens.</b> The plan (Tonight’s run) starts on screen 3, after Now, Coming up, New to you, Seen before (one full-size Saturn card), the haul, a Halloween teaser and the week theme.</td><td>All</td></tr>
+  <tr><td>3</td><td><b>Six row designs for one thing (a pass).</b> Coming up rows (“8:34 / 4 min”), run cards (“8:34 PM”, 2 round buttons, pills), the shiny row, New to you rows, Seen before mini cards, the alarm cards in All passes. Times appear as 8:34, 8:34 PM, 4 min and 4 h 38 m.</td><td>Night, day</td></tr>
+  <tr><td>4</td><td><b>The rewards aren’t tied to the passes that deliver them.</b> “Catch a rocket stage” and “Catch a space station” don’t point at the 8:40 Thorad Agena D or the 6:06 AM ISS in the run above; Old-timers week (“before 1970”) doesn’t mark Thorad Agena D · 1969. Missions are a to-do list with no way to do them.</td><td>Night</td></tr>
+  <tr><td>5</td><td><b>Weather contradicts the hero.</b> Overcast all night, yet the hero still counts down “20 min 44 s · Show me” and the run is full colour. The cloud is one grey line inside the card.</td><td>Cloudy</td></tr>
+  <tr><td>6</td><td><b>Stale or wrong-time content.</b> “Dark 6:40 PM” shown at 8:30 PM and at 2:30 AM; “200 new cards” at 2:30 AM counts the whole night; by day “Coming up” lists passes 4 h 38 min away.</td><td>Day, 2:30 AM</td></tr>
+  <tr><td>7</td><td><b>Plus is everywhere.</b> A banner above the content, dimmed bells on every row, a big orange SET REMINDERS · PLUS and “+7 more tonight · PLUS”: four asks on one page. The banner pushes the hero down on every visit.</td><td>All</td></tr>
+  <tr><td>8</td><td><b>Hero repeats itself.</b> “Tonight’s headliner · +40 XP”, then “Uncommon · new · / headliner” (wraps to two lines), and the time three times (card footer, countdown, “· 8:51 PM”).</td><td>Night, day</td></tr>
+  <tr><td>9</td><td><b>Jump chips don’t pay their way.</b> 6 chips, 2 cut off at 402 px; a “Tonight” chip on a page titled Tonight; 36 px tall (under 44); the lit chip is wrong near the end (Shiny stays lit over Missions and Every pass). They exist because the page is long; fix the length and they can go.</td><td>All</td></tr>
+  <tr><td>10</td><td><b>Jargon and weak numbers.</b> “the run below: about +60 XP”, “Best between”, “new by rarity” over five bars where four are 2 px lines; “Busiest: 6 objects up at once” mid-list; two rows both called “SL-8 Rocket Stage” in Coming up with no year to tell them apart.</td><td>Night, day</td></tr>
+  <tr><td>11</td><td><b>Low-value content sits high.</b> “Seen before · 1” renders a full Saturn card (~200 px), heavier than any new thing; six Common “faint” rows lead New to you; the Halloween teaser and week theme sit between the haul and the run, splitting the plan.</td><td>Night, 2:30 AM</td></tr>
+</table>
+<div class="shots" id="shots"></div>
+
+<h2>What changes, in one list</h2>
+<p class="why">
+<b>Removed:</b> jump chips; Plus banner at the top; Coming up as its own list; Shiny chances as its own list; the haul card; the separate Every pass chart; Seen before as full cards; the big SET REMINDERS button.<br>
+<b>Merged:</b> haul + Dark + Every pass chart → <b>night strip</b> (tap it for all passes). Coming up + run + shiny chances → <b>one run</b>, next pass lit. Missions, week theme and level-ups → <b>pills on the passes</b>, and missions say where.<br>
+<b>Kept:</b> the hero with the real mini card and countdown, XP everywhere, the rarity colours and shapes, Show me and the bell (ISS bells marked free, others dimmed), All passes.<br>
+<b>States:</b> day, cloudy and quiet each get their own hero; the run never pretends.<br>
+<b>Build order if you like A:</b> (1) one run with pills and the lit next row, drop Coming up and Shiny lists; (2) night strip, drop haul/Every pass card/chips; (3) state heroes for cloudy, day, quiet; (4) missions with “where”.
+</p>
+
+<script type="module">
+const V = (await fetch('version.json', { cache: 'no-store' }).then((r) => r.json())).version, at = (f) => import(new URL(`js/${f}?v=${V}`, document.baseURI).href);
+const { loadCatalog } = await at('orbit.js'); const { buildCards } = await at('card-model.js'); const { miniCard } = await at('card.js');
+const T = { common: ['●', 'Common', 'var(--common)'], uncommon: ['▲', 'Uncommon', 'var(--uncommon)'], rare: ['◆', 'Rare', 'var(--rare)'], epic: ['✦', 'Epic', 'var(--epic)'], legendary: ['★', 'Legendary', 'var(--legendary)'] };
+const TARGET = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="7.5"/><circle cx="12" cy="12" r="2.4" fill="currentColor" stroke="none"/><path d="M12 1.8v3.4M12 18.8v3.4M1.8 12h3.4M18.8 12h3.4"/></svg>';
+const BELL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.6 2H4.4z"/><path d="M10 20.6a2.2 2.2 0 0 0 4 0" stroke-linecap="round"/></svg>';
+const CLOUD = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M7 18h10.5a4 4 0 0 0 .4-8 6 6 0 0 0-11.5 1.6A3.3 3.3 0 0 0 7 18z"/></svg>';
+const MOON = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M19 14.5A7.5 7.5 0 1 1 9.5 5a6 6 0 0 0 9.5 9.5z"/></svg>';
+
+const frame = (title, sub, body, tab = 0) => `<div class="bar"><div><b>${title}</b><small>${sub}</small></div><span class="x"></span></div><div class="body">${body}</div><div class="tabs"><span class="${tab === 0 ? 'on' : ''}">Tonight</span><span>Explore</span><span>Collection</span></div>`;
+
+// Night strip: dusk → dawn as 16 bars of how busy the sky is; best window, headliner star, now.
+function strip({ say, bars, now, best, head, cloud, left = 'Dark 6:40 PM', mid = 'Midnight', midAt = 0.42, right = 'Dawn 7:16 AM', nowLabel = 'Now' }) {
+  const W = 288, H = 44, n = bars.length, bw = W / n, max = Math.max(...bars);
+  let s = `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">`;
+  if (best) s += `<rect x="${best[0] * W}" y="0" width="${(best[1] - best[0]) * W}" height="${H - 6}" rx="3" fill="#fa81271f"/>`;
+  bars.forEach((v, i) => { const h = Math.max(2, (v / max) * (H - 12)), x = i * bw + 1.5, inBest = best && (i + .5) / n >= best[0] && (i + .5) / n <= best[1] + .03;
+    s += `<rect x="${x}" y="${H - 6 - h}" width="${bw - 3}" height="${h}" rx="1.5" fill="${inBest ? '#fa8127' : '#3a4d6b'}"/>`; });
+  if (cloud) s += `<rect x="${cloud[0] * W}" y="0" width="${(cloud[1] - cloud[0]) * W}" height="${H - 6}" fill="url(#hatch)"/><defs><pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="#8fa3b822"/><line x1="0" y1="0" x2="0" y2="6" stroke="#8fa3b866" stroke-width="2"/></pattern></defs>`;
+  if (head != null) s += `<text x="${head * W}" y="9" text-anchor="middle" font-size="10" fill="#e7b75f">★</text>`;
+  if (now != null) s += `<line x1="${now * W}" x2="${now * W}" y1="-2" y2="${H - 4}" stroke="#fff2b3" stroke-width="1.5"/><circle cx="${now * W}" cy="-2" r="3" fill="#fff2b3"/>`;
+  s += `<line x1="0" x2="${W}" y1="${H - 5}" y2="${H - 5}" stroke="#ffffff22"/></svg>`;
+  return `<div class="strip"><div class="say">${say}</div>${s}<div class="ax"><span>${left}</span><span>${mid}</span><span>${right} ›</span></div></div>`;
+}
+const NIGHT = [6, 9, 7, 4, 2, 1, .6, .5, .5, .5, .6, 1.4, 5, 9, 12, 7];
+const row = ({ t, rel, soon, tier, name, yr, where, pills = [], bell = 'dim', next, grey }) => {
+  const [g, l, c] = T[tier];
+  return `<div class="r${next ? ' next' : ''}${grey ? ' grey' : ''}" style="--c:${c}"><div class="t"><b>${t}</b><small class="${soon ? 'soon' : ''}">${rel}</small></div>
+    <div class="n"><b>${name}${yr ? ` <span>· ${yr}</span>` : ''}</b><div class="w"><span class="g">${g} ${l}</span> · ${where}</div>${pills.length ? `<div class="pills">${pills.join('')}</div>` : ''}</div>
+    ${bell === 'go' ? `<span class="ib" style="border-color:#fa8127;color:#fa8127">${TARGET}</span>` : `<span class="ib ${bell}">${BELL}</span>`}</div>`;
+};
+const P = { new: (xp) => `<span class="pill xp">New card +${xp}</span>`, shiny: '<span class="pill sh">✦ Shiny chance · catch the fade</span>', ms: (t) => `<span class="pill ms">◇ ${t} +50</span>`, wk: (t) => `<span class="pill wk">${t}</span>`, lv: (t) => `<span class="pill lv">${t}</span>`, free: '<span class="pill xp">Reminder free</span>' };
+const hero = ({ kick, cd, unit = 'to go', tier, name, what, where, cardId, status, actions, c }) => `<div class="hero" style="--c:${c ?? T[tier][2]}"><div class="k g" style="text-align:center">${kick}</div>
+  <div class="top"><div class="mc" data-card="${cardId}" data-status="${status}"></div><div class="side">${cd ? `<div class="cd">${cd}<small>${unit}</small></div>` : ''}<div class="tierl">${T[tier][0]} ${T[tier][1]} · new</div><div class="nm">${name}</div><div class="wh">${what}</div><div class="wh"><b>${where}</b></div></div></div>
+  <div class="acts">${actions}</div></div>`;
+const showMe = `<span class="btn o">${TARGET} Show me</span>`, bellDim = `<span class="ib dim">${BELL}</span>`;
+
+// ---------- A: night ----------
+const A = `${strip({ say: '<b>35 new cards tonight.</b> Best <em>8:36 to 9:07 PM</em>, busiest again before dawn.', bars: NIGHT, now: .145, best: [.155, .2], head: .17 })}
+  ${hero({ kick: 'Tonight’s headliner · +40 XP', cd: '20 min 44 s', tier: 'uncommon', name: 'Delta 1 Rocket Stage', what: 'Carried Nimbus 5 · 1972', where: '8:51 PM · almost overhead', cardId: 6306, status: '8:51 PM', actions: `${showMe}${bellDim}` })}
+  <div class="sec"><span class="k">Up now · 6 new</span><span>Tap to aim</span></div>
+  <div class="up"><span class="chip" style="--c:var(--common)"><i>☾</i><span><b>Moon</b><small>New phase · E low</small></span></span><span class="chip"><i>●</i><span><b>Meteor 2-6</b><small>NE · halfway</small></span></span><span class="chip"><i>●</i><span><b>SL-16 stage</b><small>W · halfway</small></span></span><span class="chip seen" style="--c:var(--uncommon)"><i>▲</i><span><b>Saturn</b><small>Seen · SE</small></span></span></div>
+  <div class="sec"><span class="k">Tonight’s run</span><span>about +60 XP</span></div>
+  <div class="run">
+    ${row({ t: '8:34', rel: 'in 4 min', soon: 1, tier: 'common', name: 'Kosmos 2406', where: 'low in the north', pills: [P.shiny], bell: 'go', next: 1 })}
+    ${row({ t: '8:36', rel: 'in 6 min', soon: 1, tier: 'uncommon', name: 'Iridium 36', where: 'high in the north', pills: [P.new(15)] })}
+    ${row({ t: '8:40', rel: 'in 10 min', tier: 'uncommon', name: 'Thorad Agena D stage', yr: '1969', where: 'halfway up, south', pills: [P.new(15), P.ms('Rocket stage'), P.wk('Old-timers 1 / 3')] })}
+    ${row({ t: '8:45', rel: 'in 15 min', tier: 'uncommon', name: 'SL-8 Rocket Stage', yr: '1974', where: 'high in the east', pills: [P.new(15)] })}
+    <div class="r pin"><div class="t"><b>8:51</b></div><div class="n">★ The headliner, almost overhead · +40 XP</div></div>
+    <div class="r moment"><div class="t"><b>8:54</b></div><div class="n">Busiest this evening: 6 up at once</div></div>
+    ${row({ t: '9:05', rel: 'in 35 min', tier: 'uncommon', name: 'Globalstar M082', where: 'high in the southeast', pills: [P.new(15)] })}
+    <div class="part">Before dawn</div>
+    ${row({ t: '6:06', rel: 'AM', tier: 'rare', name: 'Space Station', where: 'halfway up, north · very bright', pills: [P.ms('Space station'), P.lv('2 nights → Silver'), P.free], bell: 'free' })}
+    <div class="more"><span>Reminders for every pass <span class="plus">PLUS</span></span><b>›</b></div>
+    <div class="more"><span>7 more shiny chances <span class="plus">PLUS</span></span><b>›</b></div>
+  </div>
+  <div class="sec"><span class="k">Missions · 0 of 4</span><span>+200 XP</span></div>
+  <div class="ms"><i></i><span><b>Catch a rocket stage</b><small>Next: <em>8:40 PM</em> Thorad Agena D, south</small></span><span class="xp">+50</span></div>
+  <div class="ms"><i></i><span><b>Catch a space station</b><small>Next: <em>6:06 AM</em> the Space Station, north</small></span><span class="xp">+50</span></div>
+  <div class="ms"><i></i><span><b>3 stars in one constellation</b><small>Cassiopeia’s W is high in the northeast now</small></span><span class="xp">+50</span></div>
+  <div class="ms"><i></i><span><b>See a planet again</b><small>Saturn, southeast, 32° up · sky challenge</small></span><span class="xp">+50</span></div>
+  <div class="ms wk"><i></i><span><b>Old-timers week · 0 of 3</b><small>Launched before 1970 · <em>8:40 PM</em> counts</small></span><span class="xp">+150</span></div>
+  <div class="ms ev"><i></i><span><b>Sat Oct 31 · something’s haunting the sky</b><small>One night only, after dark</small></span><span class="xp"></span></div>
+  <div class="more"><span>All 327 passes tonight</span><b>See all ›</b></div>`;
+document.getElementById('pA1').innerHTML = frame('TONIGHT', 'Your sky · 8:30 PM', A);
+document.getElementById('pA2').innerHTML = frame('TONIGHT', 'Your sky · 8:30 PM', A);
+document.getElementById('pA3').innerHTML = frame('TONIGHT', 'Your sky · 8:30 PM', A);
+
+// ---------- B: day ----------
+const B = `<div class="wx" style="border-color:#e7b75f55;background:radial-gradient(ellipse at 20% 0%,#e7b75f1c,transparent 70%),#0e1a29"><div class="k g">Not dark yet</div><h3>Dark in 4 h 10 min</h3><p>Look up from 6:40 PM. The best of tonight is 7:41 to 8:37 PM: 226 new cards, 2 of them Rare.</p>
+    <div class="acts"><span class="btn solid">${BELL} Tell me at dark · free</span></div></div>
+  <div style="margin-top:12px">${strip({ say: '<b>Tonight:</b> busiest at <em>7:30 PM</em>, 20 up at once.', bars: [14, 20, 9, 4, 2, 1, .6, .5, .5, .5, .6, 1, 4, 8, 11, 12], best: [.06, .14], head: .1, nowLabel: '' })}</div>
+  <div class="hero" style="--c:var(--uncommon);padding:10px 12px"><div class="top" style="margin:0"><div class="mc" data-card="4783" data-status="7:43 PM" style="width:64px;--mini-s:.2286"></div><div class="side"><div class="k g">Tonight’s headliner · +40 XP</div><div class="nm" style="font-size:16px">Kosmos 381</div><div class="wh">Soviet satellite · 1970</div><div class="wh"><b>7:43 PM · high in the south</b></div></div></div></div>
+  <div class="sec"><span class="k">Tonight’s run</span><span>about +80 XP</span></div>
+  ${row({ t: '7:17', rel: 'PM', tier: 'uncommon', name: 'CZ-2C Rocket Stage', yr: '2022', where: 'low in the east', pills: [P.shiny] })}
+  ${row({ t: '7:41', rel: 'PM', tier: 'rare', name: 'ESSA 1', yr: '1966', where: 'high in the southeast', pills: [P.new(25), P.wk('Old-timers 1 / 3')] })}
+  ${row({ t: '8:09', rel: 'PM', tier: 'uncommon', name: 'Thor Agena D stage', yr: '1964', where: 'high in the southwest', pills: [P.new(15), P.ms('Rocket stage')] })}
+  <div class="sec"><span class="k">Up now · 1 new</span><span>By day</span></div>
+  <div class="up"><span class="chip" style="--c:var(--legendary)"><i>☀</i><span><b>The Sun</b><small>New card · SW low · never look at it</small></span></span></div>`;
+document.getElementById('pB').innerHTML = frame('TONIGHT', 'Your sky · 2:30 PM', B);
+
+// ---------- C: cloudy ----------
+const C = `<div class="wx"><div class="k m" style="display:flex;gap:8px;align-items:center"><span style="color:var(--steel)">${CLOUD}</span>Tonight’s sky</div><h3>Overcast all night</h3><p>Thursday looks clear from dark until 2 AM. If you spot a gap tonight, catches still count.</p>
+    <div class="nights"><div>Tue<b>Cloud</b>tonight</div><div>Wed<b>Cloud</b>&nbsp;</div><div class="ok">Thu<b>Clear</b>6:38 PM</div><div>Fri<b>Patchy</b>&nbsp;</div></div>
+    <div class="acts"><span class="btn solid">${BELL} Remind me Thursday</span></div></div>
+  <div class="teach"><span class="ic">i</span><span><b>Why they still count</b>Cloud sits a few kilometres up; satellites fly hundreds of kilometres higher. Tonight’s run still passes over you, just out of sight.</span></div>
+  <div style="margin-top:12px">${strip({ say: '<b>37 new cards</b> pass behind the cloud tonight.', bars: NIGHT, now: .145, best: [.155, .2], head: .17, cloud: [0, 1] })}</div>
+  <div class="sec"><span class="k m">If it clears</span><span>3 of 37</span></div>
+  ${row({ t: '8:51', rel: 'in 21 min', tier: 'uncommon', name: 'Delta 1 Rocket Stage', yr: '1972', where: 'almost overhead · headliner', pills: [P.new(40)], grey: 1 })}
+  ${row({ t: '8:40', rel: 'in 10 min', tier: 'uncommon', name: 'Thorad Agena D stage', yr: '1969', where: 'halfway up, south', pills: [P.new(15)], grey: 1 })}
+  <div class="more"><span>Show the whole run</span><b>›</b></div>`;
+document.getElementById('pC').innerHTML = frame('TONIGHT', 'Your sky · 8:30 PM', C);
+
+// ---------- D: quiet ----------
+const D = `<div class="wx" style="border-color:#3a4d6b"><div class="k m" style="display:flex;gap:8px;align-items:center"><span style="color:var(--gold)">${MOON}</span>A quiet patch</div><h3>Back at 4:35 AM</h3><p>Right now the low satellites over you are in Earth’s shadow, so they’re dark. Sunlight reaches them again before dawn: 15 up at once by 6:19 AM.</p>
+    <div class="acts"><span class="btn o">${BELL} Remind me at 4:25 <span class="pill" style="background:var(--gold);color:#0b1018;font-size:9.5px">PLUS</span></span></div><p style="margin-top:8px;color:var(--muted);font-size:12px">The Space Station at 6:06 AM: reminder free.</p></div>
+  <div style="margin-top:12px">${strip({ say: '<b>Quiet until 4:35 AM.</b> Busiest at <em>6:19 AM</em>.', bars: NIGHT, now: .62, best: [.81, .94], head: .86 })}</div>
+  <div class="sec"><span class="k">Worth it now</span><span>3 planets up</span></div>
+  <div class="up" style="flex-wrap:wrap;margin-right:0;padding:0"><span class="chip"><i>☾</i><span><b>Moon</b><small>New phase · S high</small></span></span><span class="chip seen" style="--c:var(--uncommon);opacity:1;border-style:solid"><i>▲</i><span><b>Jupiter</b><small>See again · E</small></span></span><span class="chip seen" style="--c:var(--uncommon);opacity:1;border-style:solid"><i>▲</i><span><b>Saturn</b><small>See again · SW</small></span></span><span class="chip seen" style="--c:var(--uncommon);opacity:1;border-style:solid"><i>▲</i><span><b>Mars</b><small>See again · E</small></span></span></div>
+  <div class="sec"><span class="k">Before dawn</span><span>about +60 XP</span></div>
+  ${row({ t: '4:35', rel: 'in 2 h', tier: 'uncommon', name: 'Globalstar M080', where: 'high in the north', pills: [P.new(15)] })}
+  ${row({ t: '5:39', rel: 'in 3 h', tier: 'rare', name: 'Thor Burner 2 stage', yr: '1968', where: 'almost overhead · headliner', pills: [P.new(50), P.wk('Old-timers 1 / 3')] })}`;
+document.getElementById('pD').innerHTML = frame('TONIGHT', 'Your sky · 2:30 AM', D);
+
+// ---------- E: deck ----------
+const E = `${strip({ say: '<b>35 new cards tonight.</b> Swipe through the run.', bars: NIGHT, now: .145, best: [.155, .2], head: .17 })}
+  <div class="deck"><span class="when k">8:40 PM · in 10 min</span><div class="dc a" data-card="4159" data-status="8:40 PM · S"></div><div class="dc b" data-card="7443" data-status="8:45 PM"></div><div class="dc c" data-card="25544" data-status="6:06 AM"></div></div>
+  <div class="dots"><i></i><i></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i></div>
+  <div style="text-align:center"><div class="nm">Thorad Agena D stage</div><div class="wh">Halfway up in the south · 3 of 8 tonight</div><div class="pills" style="justify-content:center">${P.new(15)}${P.ms('Rocket stage')}</div></div>
+  <div class="acts">${showMe}${bellDim}</div>`;
+document.getElementById('pE').innerHTML = frame('TONIGHT', 'Your sky · 8:30 PM', E);
+
+// Real mini cards
+const cat = await loadCatalog('data/catalog.json'), models = new Map(buildCards(cat).map((c) => [c.key, c]));
+for (const el of document.querySelectorAll('[data-card]')) { const m = models.get(el.dataset.card); if (m) el.append(miniCard(m, { status: el.dataset.status, preview: true })); else el.textContent = '?'; }
+// A2 shows the page scrolled to the run and missions
+const a2 = document.querySelector('#pA2 .body'); a2.scrollTop = a2.querySelector('.run').previousElementSibling.offsetTop - 4;
+const a3 = document.querySelector('#pA3 .body'); a3.scrollTop = a3.scrollHeight;
+const sh = document.getElementById('shots');
+for (const [f, c] of [['night-00', 'Now 8:30 PM · top'], ['night-01', 'Coming up → New to you'], ['night-02', 'Seen before → haul'], ['night-03', 'Teasers → run'], ['night-04', 'Run → shiny → missions'], ['night-05', 'Missions → every pass'], ['cloudy-00', 'Overcast · hero still counts down'], ['day-00', '2:30 PM · coming up in 4 h'], ['late-02', '2:30 AM · “Dark 6:40 PM”']])
+  sh.insertAdjacentHTML('beforeend', `<figure><img src="design/tonight-redesign/${f}.png" alt="${c}" loading="lazy"><figcaption>${c}</figcaption></figure>`);
+document.body.dataset.ready = '1';
+</script></body></html>
