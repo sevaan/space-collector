@@ -4,11 +4,11 @@
 // the sky), seen from 35° above the orbit's own plane with the low point to the right, the Earth to scale in the middle
 // turning underneath (your spot marked), and the object moving round at its true relative speed, a lap in 4–14 s.
 // Parts of the ring behind the Earth are faint. Twinkling stars behind. Canvas only. Coastlines: js/coast.js.
-import { satrecFor, overEarth } from './orbit.js?v=0.1.1247';
-import * as sat from './lib/satellite.js?v=0.1.1247';
-import { useMiles } from './units.js?v=0.1.1247';
-import { placeName } from './geo.js?v=0.1.1247';
-import { COAST } from './coast.js?v=0.1.1247';
+import { satrecFor, overEarth } from './orbit.js?v=0.1.1248';
+import * as sat from './lib/satellite.js?v=0.1.1248';
+import { useMiles } from './units.js?v=0.1.1248';
+import { placeName } from './geo.js?v=0.1.1248';
+import { COAST } from './coast.js?v=0.1.1248';
 
 const RAD = Math.PI / 180, RE = 6371;
 const dot = (a, b) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
@@ -160,7 +160,7 @@ export function orbitGlobe(obj, host, me, { once = false, style } = {}) {
       ctx.strokeStyle = 'rgba(250,170,100,.6)'; ctx.lineWidth = 1.1; disc(); ctx.stroke();
     }
     // you
-    if (me) { const p = onEarth(me.lat, me.lon); if (p.front) { ctx.fillStyle = '#fff2b3'; ctx.beginPath(); ctx.arc(p.x, p.y, 2.6, 0, Math.PI * 2); ctx.fill(); ctx.font = '600 9px "SC Label", "Barlow Condensed", sans-serif'; ctx.fillText('YOU', p.x + 4, p.y - 3); } }
+    if (me) { const p = onEarth(me.lat, me.lon); if (p.front) { ctx.save(); ctx.fillStyle = 'rgba(255,77,77,.25)'; ctx.beginPath(); ctx.arc(p.x, p.y, 7, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = '#ff4d4d'; ctx.strokeStyle = '#fff2b3'; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.arc(p.x, p.y, 3.6, 0, Math.PI * 2); ctx.fill(); ctx.stroke(); ctx.font = '700 9.5px "SC Label", "Barlow Condensed", sans-serif'; ctx.fillStyle = '#ff6a6a'; ctx.fillText('YOU', p.x + 8, p.y + 3); ctx.restore(); /* you: red with a cream ring, unlike any satellite dot (2026-10-27, Sevaan) */ } }
     // the ring in front of the Earth
     ctx.lineWidth = 1.8; ctx.strokeStyle = 'rgba(250,129,39,.9)'; ringPath(true);
     // it, now (moving)

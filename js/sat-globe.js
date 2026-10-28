@@ -3,12 +3,12 @@
 // sky's own model, satellite.js), around a blueprint Earth (design/earth-styles.html C) that turns slowly, you marked.
 // Dots are in the card's rarity colour; the rarest few in view are named. Tap a dot to open its card. Draws only while
 // it's on screen. Fleet cards (Starlink and co.) aren't on it yet.
-import * as sat from './lib/satellite.js?v=0.1.1247';
-import { satrecFor } from './orbit.js?v=0.1.1247';
-import { COAST } from './coast.js?v=0.1.1247';
-import { TIER_INFO } from './rarity.js?v=0.1.1247';
-import { earthMap } from './orbit-view.js?v=0.1.1247';
-import { placeName } from './geo.js?v=0.1.1247';
+import * as sat from './lib/satellite.js?v=0.1.1248';
+import { satrecFor } from './orbit.js?v=0.1.1248';
+import { COAST } from './coast.js?v=0.1.1248';
+import { TIER_INFO } from './rarity.js?v=0.1.1248';
+import { earthMap } from './orbit-view.js?v=0.1.1248';
+import { placeName } from './geo.js?v=0.1.1248';
 
 const RAD = Math.PI / 180, RE = 6371, TILT = 20 * RAD;
 // A dot's name: whole words up to about 18 letters ("THOR AGENA D", not "THOR AGENA D ROCKET ST").
@@ -66,7 +66,7 @@ export function satGlobe(host, { me = null, onPick = null } = {}) {
     }
     const at = ctx.createRadialGradient(cx, cy, R * 0.86, cx, cy, R * 1.01); at.addColorStop(0, 'rgba(120,180,255,0)'); at.addColorStop(1, 'rgba(140,195,255,.35)'); ctx.fillStyle = at; disc(); ctx.fill();
     let youAt = null;
-    if (me) { const p = P(me.lat, me.lon); if (p.z > 0) { youAt = p; ctx.fillStyle = '#fff2b3'; ctx.beginPath(); ctx.arc(p.x, p.y, 2.4, 0, Math.PI * 2); ctx.fill(); ctx.font = '600 9px "SC Label", "Barlow Condensed", sans-serif'; ctx.fillText('YOU', p.x + 4, p.y - 3); } }
+    if (me) { const p = P(me.lat, me.lon); if (p.z > 0) { youAt = p; ctx.save(); ctx.fillStyle = 'rgba(255,77,77,.25)'; ctx.beginPath(); ctx.arc(p.x, p.y, 7, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = '#ff4d4d'; ctx.strokeStyle = '#fff2b3'; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.arc(p.x, p.y, 3.6, 0, Math.PI * 2); ctx.fill(); ctx.stroke(); ctx.font = '700 9.5px "SC Label", "Barlow Condensed", sans-serif'; ctx.fillStyle = '#ff6a6a'; ctx.fillText('YOU', p.x + 8, p.y + 3); ctx.restore(); /* you: red with a cream ring, unlike any satellite dot (2026-10-27, Sevaan) */ } }
     // your satellites: behind the Earth faint, in front bright, the rarest few in front named
     const front = [];
     for (const it of items) { if (!it.ok) continue; const p = P(it.lat, it.lon, lift(it.h)); it.p = p;
