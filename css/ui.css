@@ -453,7 +453,7 @@ body:has(#discover:not([hidden])) #toast-tray #banner:not([hidden]) { display: f
 @media (prefers-reduced-motion: reduce) { html body #toasts#toasts#toasts .ticket, html body #toasts#toasts#toasts .ticket.in { transform: none; transition: opacity .2s !important; } }
 /* Tucked stay-up notices: small chips under the header on the right (js/toast.js tray), icon + kind line; tap to open. */
 #toast-tray { position: fixed; z-index: 30; right: calc(12px + var(--safe-r, 0px)); top: calc(var(--safe-top, env(safe-area-inset-top, 0px)) + 143px); display: flex; flex-direction: column; align-items: flex-end; gap: 6px; pointer-events: none; }
-body:not(:has(#nextpass:not([hidden]))) #toast-tray { top: calc(var(--safe-top, env(safe-area-inset-top, 0px)) + 101px); }
+#toast-tray { top: calc(var(--safe-top, env(safe-area-inset-top, 0px)) + 101px); } /* level with the top of the radar: the Next chip it used to sit under is gone (2026-10-24), but it is only CSS-hidden, so the old :not([hidden]) test always pushed the chips 42px lower */
 #toast-tray .ticket { --k: #c9cbb6; pointer-events: auto; display: flex; align-items: center; gap: 8px; padding: 5px 12px 5px 5px; border: 0; border-top: 2px solid var(--k); border-radius: 12px; background: rgba(9, 16, 28, .94); box-shadow: 0 6px 16px rgba(0,0,0,.35); cursor: pointer; opacity: 0; transform: translateX(16px); transition: opacity .25s ease, transform .35s cubic-bezier(.2,.9,.3,1.1); }
 #toast-tray .ticket.in { opacity: 1; transform: none; }
 #toast-tray .ticket.tone-orange { --k: #fa8127; } #toast-tray .ticket.tone-gold { --k: #f1c04e; } #toast-tray .ticket.tone-steel { --k: #8fb3cf; } #toast-tray .ticket.tone-red { --k: #ff7a64; }
