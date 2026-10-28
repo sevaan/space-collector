@@ -975,3 +975,16 @@ body.night .fd-pass .fd-w em, body.night .fd-pill.new, body.night .fd-pass .fd-w
 /* Patches filter chips run to the screen edge and fade out instead of being cut mid-word. */
 .pw-chips { margin-left: calc(-1 * var(--main-pad, 20px)) !important; margin-right: calc(-1 * var(--main-pad, 20px)) !important; padding-left: var(--main-pad, 20px) !important; padding-right: var(--main-pad, 20px) !important; -webkit-mask-image: linear-gradient(90deg, transparent, #000 16px, #000 calc(100% - 28px), transparent) !important; mask-image: linear-gradient(90deg, transparent, #000 16px, #000 calc(100% - 28px), transparent) !important; }
 .st-goal i { z-index: 1; }
+
+/* Day one (under 5 cards; UX playtest 2026-10-28): the cards get the screen. No search or filters yet, and the rank card
+   drops its ladder picture. */
+body.few-cards[data-view="owned"] .collection-tools, body.few-cards:not([data-view]) .collection-tools { display: none; }
+body.few-cards .lb-pic .lb-ladder { display: none; }
+body.few-cards .logbook .lb-pic { height: 44px !important; min-height: 0; background: none; border-bottom: 0; }
+
+/* Short phones (iPhone SE; UX playtest 2026-10-28): the first screen was all rank card. Under 700px tall the ladder picture
+   goes and the rank card is just rank, XP and its bar, so the cards start on the first screen. */
+@media (max-height: 700px) {
+  .logbook .lb-pic .lb-ladder { display: none; }
+  .logbook .lb-pic, .logbook.compact .lb-pic { height: 44px !important; background: none; border-bottom: 0; }
+}

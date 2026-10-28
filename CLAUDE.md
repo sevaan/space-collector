@@ -2011,3 +2011,14 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - Bells: a set Now-hero bell is orange (the .free rule had won); Explore's dark bell is a quiet outline when off, orange when set.
   - First-night page: after Remind me, the line says "We’ll tell you at 6:34 PM." and no late "Reminder set" notice follows onto Explore (remindPass quiet).
   - Welcome card top: "Your first mission" + "1,080 tracked overhead" (no repeated brand). Tour title "Catch the Sun". Skip pill fits. Sound volume uses the dial icon. Until-dark line "In 5h 8m". Plus kit "Never miss one."
+- 2026-10-28 · v0.1.1282 (Sevaan: "Fix them all", the designer playtest's open calls):
+  - First catch: "View in collection" becomes a solid orange Continue (tourContinue: #reveal.rv-tour, drops .ui-link, whose !important background hid it) that puts the card away onto the Tonight page; the rank bar sits 62px up for it.
+  - First-night page after dark: the orange button goes to what's happening now (a new card rising within 15 min: "Find Kosmos 1045 · in 3 min" → showMePass; else a new planet or the Moon up: "Aim at Saturn" → aimAt); Remind me steps back to the dark button. Its ✕ never steers (dataset.steer).
+  - One count for "new tonight": nightStats(T, t0).fresh (new cards still to come this evening) for the strip, the day hero, the widget haul and the first-night page ("Clear all night · 45 new cards tonight"; "objects at the peak" is gone there).
+  - Day-one Collection (body.few-cards, 1–4 cards): no search/filters, no ladder picture, no Your objects card; streak line "Week 1 · your streak has begun".
+  - Day-one Tonight (!settledIn(): the first two nights): run rows show only New card +N, Headliner and Reminder free; no shiny Plus line; missions without the week, Halloween, showers, constellations or sky events.
+  - Night 2: nightTwoCard() opens the Tonight page on the second observing night: "Night 2 · Welcome back / Good to see you again.", tonight's new headliner (Show me) or the first open mission, and "Any card you see again tonight counts toward Silver (3 nights)."
+  - Settings: Motion and Drag to look are one row, "Look around with: Motion / Finger" (#look-row, renderLook; #chk-drag/#retry-motion/#set-motion kept hidden inside it so the old wiring works).
+  - Short phones (max-height 700px): the rank card drops its ladder picture.
+  - The Sun card is named "Sun" (like Moon, Earth, the planets).
+  - One answer per pass: planPass() gives Find and the card viewer tonight's plan's times and directions for any pass the plan has (the find worker sampled other minutes: Tiangong "south" vs "southeast"), so their reminder keys match Tonight's too.

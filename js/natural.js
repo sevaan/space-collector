@@ -1,4 +1,4 @@
-import { extinction } from './sky-limit.js?v=0.1.1281';
+import { extinction } from './sky-limit.js?v=0.1.1282';
 // The Moon, the naked-eye planets and the brightest named stars, as collectible cards.
 // Positions come from js/celestial.js (state.bodies, state.skyEnu); this file holds the card facts and
 // the "can you see it right now" rules. No DOM. Every fact must be true; approximate values say so.
@@ -6,7 +6,7 @@ import { extinction } from './sky-limit.js?v=0.1.1281';
 
 // The Sun: catchable by day (the Sun card is the daytime loop). You aim the phone, not your eyes.
 const sunCard = {
-  key: 'sun', id: 'sun', natural: 'sun', type: 'sun', name: 'The Sun', tier: 'common', /* Common: everyone sees it every day (2026-10-12, Sevaan; was Rare, Epic before that) */ order: 0, code: 'OUR STAR',
+  key: 'sun', id: 'sun', natural: 'sun', type: 'sun', name: 'Sun', tier: 'common', /* Common: everyone sees it every day (2026-10-12, Sevaan; was Rare, Epic before that) */ order: 0, code: 'OUR STAR',
   far: ['8.3', 'LIGHT-MINUTES AWAY'],
   stats: [['DIAMETER', '1,392,700', 'km'], ['EQUATOR SPIN', '~25', 'd'], ['AGE', '4.6', 'billion yr']],
   fact: 'It holds **99.8% of all the mass** in our solar system. The energy in today’s sunlight spent about **170,000 years** bouncing out from its core, then just 8 minutes crossing space to you.',

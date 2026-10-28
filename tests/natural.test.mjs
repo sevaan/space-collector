@@ -40,7 +40,7 @@ test('Moon, Earth, seven planets, 21 stars and 16 deep-sky objects become cards 
   const cards = buildCards({ objects: [], families: {} }).filter((c) => c.natural);
   assert.equal(cards.length, 47); // 30 + 16 deep-sky (2026-10-11) + Earth (2026-10-16)
   assert.equal(cards.filter((c) => c.set === 'deep-sky').length, 16);
-  assert.deepEqual(cards.filter((c) => c.set === 'wanderers').map((c) => c.name), ['The Sun', 'Moon', 'Earth', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune']);
+  assert.deepEqual(cards.filter((c) => c.set === 'wanderers').map((c) => c.name), ['Sun', 'Moon', 'Earth', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune']);
   assert.ok(!cards.some((c) => c.key === 'system:solar'));
   assert.equal(SOLAR_SYSTEM.stars.length, 9); assert.ok(SOLAR_SYSTEM.stars.includes('planet:neptune') && SOLAR_SYSTEM.stars.includes('moon') && SOLAR_SYSTEM.stars.includes('sun'));
   assert.equal(cards.filter((c) => c.set === 'bright-stars').length, 21);

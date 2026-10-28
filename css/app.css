@@ -3134,3 +3134,7 @@ body.night .tn-strip .bars i { background: #7a3533; }
 body.ob-tour #radar-new { display: none !important; }
 /* Random card back: a little fan of real backs, not empty outlines (designer playtest 2026-10-28). */
 .back-rand i { background-color: #01121c !important; background-position: center !important; background-size: contain !important; background-repeat: no-repeat !important; border-color: #c9c1a066 !important; }
+
+/* Night 2 welcome on the Tonight page (UX playtest 2026-10-28) */
+.tn-wx.night2 { border-color: #fa812755; background: radial-gradient(ellipse at 85% 0%, #fa81271f, transparent 70%), #0e1a29; }
+body.night .tn-wx.night2 { border-color: #ff6a5555; background: #0c0303; }

@@ -1,33 +1,33 @@
-import { pullToClose } from './pull-close.js?v=0.1.1281';
-import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.1281';
-import { computeStats, statsHtml } from './stats.js?v=0.1.1281';
-import { nightKey } from './observation.js?v=0.1.1281';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1281';
-import { sfx } from './sfx.js?v=0.1.1281';
-import { expandFacts } from './catalog-facts.js?v=0.1.1281';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.1281';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1281';
-import { ticket } from './toast.js?v=0.1.1281';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.1281';
-import { satGlobe } from './sat-globe.js?v=0.1.1281';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.1281';
-import { cardArt } from './art.js?v=0.1.1281';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.1281';
-import { applyBack } from './card-backs.js?v=0.1.1281';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.1281';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1281';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.1281';
-import { STORIES } from './stories.js?v=0.1.1281';
-import { loadConstellations, conList, CON_BY_ID } from './constellations.js?v=0.1.1281';
-import { conArt } from './con-art.js?v=0.1.1281';
-import { RANKS, progress, readDeals, readWeekThemes, xpCarry } from './progress.js?v=0.1.1281';
-import { eventBadges, nextEvent } from './events.js?v=0.1.1281';
-import { shareCardEl } from './share-card.js?v=0.1.1281';
-import { forgetSighting } from './cloud-backup.js?v=0.1.1281';
-import { allSightings, deleteSighting } from './store.js?v=0.1.1281';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.1281';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.1281';
-import { localText } from './localize.js?v=0.1.1281';
+import { pullToClose } from './pull-close.js?v=0.1.1282';
+import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.1282';
+import { computeStats, statsHtml } from './stats.js?v=0.1.1282';
+import { nightKey } from './observation.js?v=0.1.1282';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1282';
+import { sfx } from './sfx.js?v=0.1.1282';
+import { expandFacts } from './catalog-facts.js?v=0.1.1282';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.1282';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1282';
+import { ticket } from './toast.js?v=0.1.1282';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.1282';
+import { satGlobe } from './sat-globe.js?v=0.1.1282';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.1282';
+import { cardArt } from './art.js?v=0.1.1282';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.1282';
+import { applyBack } from './card-backs.js?v=0.1.1282';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.1282';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1282';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.1282';
+import { STORIES } from './stories.js?v=0.1.1282';
+import { loadConstellations, conList, CON_BY_ID } from './constellations.js?v=0.1.1282';
+import { conArt } from './con-art.js?v=0.1.1282';
+import { RANKS, progress, readDeals, readWeekThemes, xpCarry } from './progress.js?v=0.1.1282';
+import { eventBadges, nextEvent } from './events.js?v=0.1.1282';
+import { shareCardEl } from './share-card.js?v=0.1.1282';
+import { forgetSighting } from './cloud-backup.js?v=0.1.1282';
+import { allSightings, deleteSighting } from './store.js?v=0.1.1282';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.1282';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.1282';
+import { localText } from './localize.js?v=0.1.1282';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -447,7 +447,7 @@ function renderLogbook() {
     ${cur > 0 ? `<path d="M${pts.slice(0, cur + 1).map((q) => q.join(' ')).join(' L')}" fill="none" stroke="#fa8127" stroke-width="2"/>` : ''}<!-- ranks you have passed: solid (2026-10-14) -->
     ${pts[cur + 1] ? `<path d="M${pts[cur].join(' ')} L${pts[cur][0] + (pts[cur + 1][0] - pts[cur][0]) * into} ${pts[cur][1] + (pts[cur + 1][1] - pts[cur][1]) * into}" stroke="#fa8127" stroke-width="2"/>` : ''}
     ${rungs.map(([, n], i) => { const [x, y] = pts[i]; return `<circle cx="${x}" cy="${y}" r="${i === cur ? 6 : 4}" fill="${i <= cur ? '#fa8127' : '#0b1626'}" ${i > cur ? 'stroke="#fff2b3" stroke-dasharray="2 2"' : ''}/>${i === cur ? `<circle cx="${x}" cy="${y}" r="12" fill="none" stroke="#fa8127" opacity=".5"/>` : ''}<text x="${x}" y="${y + 20}" text-anchor="middle" font-family="SC Label, Arial Narrow" font-size="9.5" letter-spacing="1.5" fill="${i >= cur ? '#fff2b3' : '#bdbea9'}">${n.length > 12 && n.includes(' ') ? n.toUpperCase().split(' ').map((w, k) => `<tspan x="${x}" dy="${k ? 11 : 0}">${esc(w)}</tspan>`).join('') /* two lines: FLIGHT CONTROLLER ran off the card (web playtest 2026-10-22) */ : esc(n.toUpperCase())}</text>${i === cur + 1 ? `<text x="${x}" y="${y - 14}" text-anchor="middle" font-family="SC Label, Arial Narrow" font-size="9" letter-spacing="1.5" fill="#fa8127">NEXT</text>` : ''}`; }).join('')}</svg>`;
-  const streak = p.streak.current >= 2 ? `${p.streak.current}-week streak` : p.streak.current ? 'Week 1 started · keep it going next week' : 'Observe this week to start a streak'; // the flame is earned at week 2 (playtest 2026-10-09)
+  const streak = p.streak.current >= 2 ? `${p.streak.current}-week streak` : p.streak.current ? 'Week 1 · your streak has begun' : 'Observe this week to start a streak'; // the flame is earned at week 2 (playtest 2026-10-09)
   const ev = eventBadges(state.raw), nx = nextEvent();
   // At risk (a streak going, nothing logged yet this week): a Remind me for Saturday evening (QA 2026-10-09: the button
   // was lost in the card redesign, so remindStreak was unreachable).
@@ -480,7 +480,8 @@ function renderSatCard() {
     satG = satGlobe($('sg-pic'), { me, onPick: (k) => openKey(k) });
   }
   const n = satG.set(owned.map((c) => ({ ...c, title: titleFor(c) })));
-  sec.hidden = !n; $('lb-deck').classList.toggle('two', !!n);
+  const few = new Set(state.raw.filter((s) => !s.sim).map((s) => String(s.cardKey))).size < 5; /* day one: only the rank, compact (UX 2026-10-28) */
+  sec.hidden = !n || few; $('lb-deck').classList.toggle('two', !!n);
   $('sg-title').textContent = `Your ${n.toLocaleString()} collected object${n === 1 ? '' : 's'}`; /* the count in the title, the globe takes the rest (2026-10-27, Sevaan) */
   if (!deckSet) { deckSet = true; deckWire(); deckPick(); }
 }
@@ -622,7 +623,7 @@ function renderView() {
   if (state.view === 'albums') { const caught = state.cards.filter(hasSightings).length; $('owned-count').textContent = caught.toLocaleString(); renderAlbums(); return; }
   const caught = state.cards.filter(hasSightings).length;
   $('owned-count').textContent = caught.toLocaleString();
-  document.body.classList.toggle('has-cards', caught > 0); // the intro banner is for an empty collection only (UX room 2026-10-12)
+  document.body.classList.toggle('has-cards', caught > 0); document.body.classList.toggle('few-cards', caught > 0 && caught < 5); /* day one: the cards get the room, search and filters wait (UX 2026-10-28) */ // the intro banner is for an empty collection only (UX room 2026-10-12)
   $('count').textContent = caught ? `${caught.toLocaleString()} ${caught === 1 ? 'card' : 'cards'} collected. Every one, a moment under the sky.` : 'Real objects. Remarkable stories. Yours to discover.';
   const ps = planStart(); state.planKeys = new Set(ps.keys());
   state.list = state.cards.filter(matches).sort((a, b) => {

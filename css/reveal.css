@@ -172,3 +172,9 @@ body.night #rv-teach { border-top-color: #ff6a55; color: #ff7f70; } body.night #
 /* Reveal eyebrow: even space around the dot; the top row on the 20px gutter. */
 .rv-dot { font-style: normal; color: currentColor; margin: 0 .35em 0 .25em; }
 #rv-top { left: calc(20px + var(--safe-l, 0px)) !important; right: calc(20px + var(--safe-r, 0px)) !important; }
+
+/* The first catch: Continue is the main button (UX playtest 2026-10-28) */
+#reveal.rv-tour #reveal-view { left: 50%; right: auto; width: min(var(--nav-w, 335px), calc(100vw - 40px)); translate: -50% 0; height: 44px; display: grid; place-items: center;
+  background: #fa8127; color: #0b1018; border-radius: 12px; font: 600 15px/1 var(--label, 'SC Label'), sans-serif; letter-spacing: .14em; text-transform: uppercase; text-decoration: none; box-shadow: 0 6px 18px #0008; }
+body.night #reveal.rv-tour #reveal-view { background: #ff6a55; color: #120606; }
+#reveal.rv-tour #rv-rank { bottom: calc(var(--safe-bottom, 0px) + 62px); }
