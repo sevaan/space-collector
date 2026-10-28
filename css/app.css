@@ -3050,3 +3050,11 @@ body.credits-open #nav-more .nm-set { transform: translateY(-14px); opacity: 0; 
 body.credits-open #sky-header { background: var(--bg); box-shadow: 0 calc(-1 * var(--safe-top)) 0 0 var(--bg); position: fixed; z-index: 81; visibility: visible !important; opacity: 1 !important; }
 body.credits-open #sky-header .header-buttons > :not(#nav-more) { visibility: hidden; }
 body.night #set-credits-sheet .set-sheet-card { background: #090303; }
+/* How to play: real mini cards (2026-10-28) */
+.ht-real { display: block; line-height: 0; }
+.ht-real .mini-face { --mini-s: .3; filter: drop-shadow(0 6px 12px #000b); }
+.ht-real.shiny .mini-face { --mini-s: .42; }
+.ht-real.fleet .mini-face { --mini-s: .32; }
+.ht-real.lvl-s .mini-face { box-shadow: 0 0 0 2px #dfe6ee, 0 0 12px rgba(223,230,238,.45); }
+.ht-real.lvl-g .mini-face { box-shadow: 0 0 0 2px #ffc93d, 0 0 16px rgba(255,201,61,.55); }
+.ht-col .ht-real.fleet + .ht-phases { margin-top: 2px; }
