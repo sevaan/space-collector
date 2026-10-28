@@ -627,8 +627,8 @@
 .card-tile--retro .tile-lvl { right: 6px; }
 /* The welcome card keeps one edge colour as it turns (2026-10-20, Sevaan: the gold rim of the back became the front's
    cream at the edge-on frame): the front's frame is the back's gold. */
-.card.wc-mission .card__face { border-color: #ffc545 !important; }
-.card.wc-mission .card__face::after { box-shadow: inset 0 0 0 .09em #a87b22, 0 0 0 .17em #ffd56a !important; }
+#wc-holder > .card.wc-mission > .card__rotator > .card__face, .card.wc-mission > .card__face { border-color: #ffc545 !important; }
+#wc-holder > .card.wc-mission > .card__rotator > .card__face::after, .card.wc-mission > .card__face::after { box-shadow: inset 0 0 0 .09em #a87b22, 0 0 0 .17em #ffd56a !important; }
 .card.wc-mission .card__back { border-width: 2px; }
 /* Collection tiles show the card's own rounded frame, uncut (2026-10-20, Sevaan: "the border of the card gets cut off").
    The tile used to clip the card with a rounding almost exactly on the card's edge, which ate its thin outer rim at each
@@ -730,3 +730,8 @@ body.night .card__fact a.src { color: #ff6a55; }
 /* Card facts: the orange rule runs the length of the words, not down the empty space under a short fact (designer playtest 2026-10-28). */
 .card--mission .card__fact { border-left-color: transparent !important; padding-left: 0 !important; }
 .card--mission .card__fact > p { border-left: .22em solid var(--accent, #fa8127); padding-left: 1em; }
+/* The welcome card's top bar stays one line (2026-10-28, Sevaan: "1,073 tracked overhead" wrapped both halves) */
+.wc-a-top { letter-spacing: .16em; gap: .8em; } .wc-a-top > span { white-space: nowrap; }
+.wa-card.is-mini { overflow: visible; border-radius: 0; } .wa-card.is-mini::after { display: none; }
+.wa-card.is-mini .mini-face { box-shadow: 0 .6em 1.4em rgba(0, 0, 0, .5); }
+.wc-holder .mini-face > .card { font-size: 10px; } /* the welcome card sets every .card inside it to its own --cf */

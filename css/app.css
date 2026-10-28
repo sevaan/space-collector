@@ -3138,3 +3138,7 @@ body.ob-tour #radar-new { display: none !important; }
 /* Night 2 welcome on the Tonight page (UX playtest 2026-10-28) */
 .tn-wx.night2 { border-color: #fa812755; background: radial-gradient(ellipse at 85% 0%, #fa81271f, transparent 70%), #0e1a29; }
 body.night .tn-wx.night2 { border-color: #ff6a5555; background: #0c0303; }
+/* Reminder sheet rows (2026-10-28, Sevaan: "Notifications are off in Settings" wrapped): the time column is only as wide as
+   the time, and a row's answer stays on one line. */
+.pr-row .t { width: auto; min-width: 5.2em; }
+.pr-row .w small { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
