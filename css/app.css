@@ -2934,3 +2934,4 @@ body.night :is(#visible .nh-bell.free, #visible .tn-r .bell.free, .tn-wx .nights
 
 /* Reminder buttons on the Tonight hero: just the words, centred (2026-10-27, Sevaan: no FREE tag) */
 .tn-btn { justify-content: center; }
+.nowrap { white-space: nowrap; }
