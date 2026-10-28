@@ -79,13 +79,13 @@ IN-APP PURCHASE (Space Collector Plus)
 Settings → Space Collector Plus, or any bell icon marked PLUS. Options: Monthly ($1.99), Yearly ($14.99 with a 7-day free trial for new subscribers), Forever ($29.99, one-time, non-consumable). Restore purchases is on the same sheet, with links to the Terms of Use (Apple standard EULA) and our Privacy Policy. Every card, patch and mission is free; Plus adds extras (unlimited pass reminders, card backs, the full shiny forecast). Purchases use RevenueCat with StoreKit.
 
 PERMISSIONS
-- Location (While Using): to work out the sky above the player. On iPhone it asks for precise location so aircraft overhead are placed correctly ("Just a plane" labels); the sky itself works with approximate location too. NSLocationAlwaysAndWhenInUseUsageDescription is present only because the location plugin references that API (ITMS-90683); the app never requests Always.
+- Location (While Using): to work out the sky above the player. iOS shows its standard When-In-Use prompt, where the player can leave Precise on or turn it off; the app works the same either way (approximate is enough for the sky; precise only places aircraft overhead a little better). NSLocationAlwaysAndWhenInUseUsageDescription is present only because the location plugin references that API (ITMS-90683); the app never requests Always.
 - Motion: to know where the phone is pointing.
 - Notifications (optional): reminders the player sets for a pass, plus a few alerts on clear evenings (a "look up" alert and tonight's best pass; Plus adds rare-pass alerts). Each can be turned off in Settings.
 - Camera: NSCameraUsageDescription belongs to an experimental camera view in the hidden Testing tools only; it is not part of the normal app and is never requested otherwise.
 
 DATA
-No ads and no tracking. The app sends a few anonymous usage notes (random ID, no location; can be turned off in Settings → Help). The collection stays on the device and in the player's own iCloud key-value storage. Weather (MET Norway) and aircraft (adsb.lol) come through our own server at spacecollector.app with a rounded location. Privacy Policy: https://spacecollector.app/privacy
+No ads and no tracking. The app sends a few anonymous usage notes (random ID, no location; can be turned off in Settings → Help). The collection stays on the device and in the player's own iCloud key-value storage. Weather (MET Norway) comes through our own server at spacecollector.app, and aircraft (adsb.lol) are asked for directly from the phone, both with a rounded location. Privacy Policy: https://spacecollector.app/privacy
 
 CONTACT
 hello@spacecollector.app
