@@ -1854,5 +1854,231 @@
    "https://en.wikipedia.org/wiki/Diamant"
   ],
   "description": "A spent solid-rocket upper stage drifting and slowly tumbling in orbit, no flame, no exhaust. A stubby plain cylinder about 1.7 m long for the body and 0.80 m in diameter, about 2.1 m with the nozzle (roughly 2.6 to 1, noticeably fatter than a pencil), made of filament-wound fibreglass with a smooth matte off-white ablative outer coating, faint helical winding texture, thin circumferential seams. Forward end: a short cylindrical skirt the same diameter housing a narrow ring of electronics, closed by a shallow domed cover with a small stub antenna on its rim; on top an empty, short, open conical payload adapter ring about half the stage diameter, the small spherical satellite gone. Aft end: a short open cylindrical skirt around the rounded rear dome; a single fixed nozzle protrudes about 0.4 m, a flared egg-cup-shaped bell in dark charred brown-black composite. No fins, no fairing, no equipment bay, no spin rockets, no solar panels, no markings visible."
+ },
+ "draw-strela-3": {
+  "ids": [
+   27056,
+   27464,
+   27868,
+   28420,
+   32956,
+   35500
+  ],
+  "refs": [
+   "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  ],
+  "description": "Small cylinder about 1.5 m tall and 1.0 m across, sides covered in body-mounted solar cells, one long gravity-gradient boom with a tip mass pointing away from Earth; no deployable solar wings. ~225 kg. Gonets-D1 is the civilian version and is described as similar, so the two can likely share a drawing. Earth's limb below has blue oceans and white clouds (not orange)."
+ },
+ "draw-tselina-2": {
+  "ids": [
+   28352,
+   31792
+  ],
+  "refs": [
+   "https://space.skyrocket.de/doc_sdat/tselina-2.htm"
+  ],
+  "description": "Large (~3,200 kg) cylinder, an enlarged Tselina-D bus, about 4.5 m long and 1.4 m across, two deployable solar wings, plus a gravity-gradient boom; three-axis stabilised. Exact antenna layout not published. Earth's limb below has blue oceans and white clouds (not orange)."
+ },
+ "draw-strela-1m": {
+  "ids": [
+   27560
+  ],
+  "refs": [
+   "https://space.skyrocket.de/doc_sdat/mozhayets.htm"
+  ],
+  "description": "Small octagonal-ish cylinder about 0.8 m across, all its sides covered in solar cells, short whip antennas, no solar wings. Earth's limb below has blue oceans and white clouds (not orange)."
+ },
+ "draw-sterkh": {
+  "ids": [
+   35636
+  ],
+  "refs": [
+   "https://en.wikipedia.org/wiki/Sterkh"
+  ],
+  "description": "Small box about 1 m across with two flat rectangular solar panels on either side and one short antenna; from its Earth-facing end a very long, very thin gravity-gradient boom (many times longer than the body) runs straight down out of frame toward Earth, ending in a small tip weight. Earth's limb below has blue oceans and white clouds (not orange)."
+ },
+ "draw-myriade": {
+  "ids": [
+   28368,
+   38008
+  ],
+  "refs": [
+   "https://en.wikipedia.org/wiki/Myriade"
+  ],
+  "description": "~60 cm cube, 100-200 kg; one or two deployable flat solar wings; payload-specific add-ons (DEMETER: long boom-mounted magnetometer/sensor arms; ELISA: small cubes with extra RF antennas, flown as a 4-ship cluster)."
+ },
+ "draw-cosmo-skymed": {
+  "ids": [
+   32376,
+   33412,
+   37216
+  ],
+  "refs": [
+   "https://en.wikipedia.org/wiki/COSMO-SkyMed"
+  ],
+  "description": "~1,700 kg box-shaped bus (Thales Alenia PRIMA); long flat X-band SAR antenna panel (~5.7 x 1.4 m) along one side; two deployable solar wings; four identical craft."
+ },
+ "draw-cubesat-3u": {
+  "ids": [
+   39428
+  ],
+  "refs": [
+   "https://en.wikipedia.org/wiki/Delfi-n3Xt"
+  ],
+  "description": "A tall narrow three-unit CubeSat: three 10 cm cubes stacked into one 10 x 10 x 34 cm bar with aluminium rails along its edges. Four long thin solar panels, each as long as the bar, are hinged at one end and fold out at an angle like petals. Thin tape-measure antennas stick out from the other end. Earth's limb below has blue oceans and white clouds (not orange)."
+ },
+ "draw-gomspace-16u": {
+  "ids": [
+   63212
+  ],
+  "refs": [
+   "https://smallsatnews.com/2025/03/19/startical-launches-their-first-satellite-iod-1/"
+  ],
+  "description": "16U CubeSat (~23 x 23 x 45 cm) by GomSpace; VHF antenna and ADS-B receiver antennas; solar panels (layout not confirmed)."
+ },
+ "draw-worldview-bcp5000": {
+  "ids": [
+   32060
+  ],
+  "refs": [
+   "https://en.wikipedia.org/wiki/WorldView-1"
+  ],
+  "description": "Tall ~3.6 m prism bus around a big telescope (aperture at one end), deployable solar arrays, CMG attitude control; ~2,500 kg."
+ },
+ "draw-xss-10": {
+  "ids": [
+   27664
+  ],
+  "refs": [
+   "https://en.wikipedia.org/wiki/XSS-10 ; https://space.skyrocket.de/doc_sdat/xss-10.htm (text)"
+  ],
+  "description": "28 kg battery-powered micro-satellite with camera/star sensor and small thrusters; flew around the Delta II second stage."
+ },
+ "draw-ims-1": {
+  "ids": [
+   37388
+  ],
+  "refs": [
+   "https://en.wikipedia.org/wiki/YouthSat"
+  ],
+  "description": "Small (~60 cm) cube-ish box, ~80-90 kg, two deployable rectangular solar panels on opposite sides, camera/instrument on the nadir face, small antennas."
+ },
+ "draw-micro-labsat": {
+  "ids": [
+   27600
+  ],
+  "refs": [
+   "https://space.skyrocket.de/doc_sdat/mlabsat.htm"
+  ],
+  "description": "~54 kg box microsat (about 60 x 60 x 50 cm) with body-mounted solar cells, small cameras, flew piggyback on H-IIA F4."
+ },
+ "draw-servis": {
+  "ids": [
+   28060,
+   36588
+  ],
+  "refs": [
+   "https://space.skyrocket.de/doc_sdat/servis-1.htm"
+  ],
+  "description": "~980 kg MELCO-built box bus with two deployable solar wings, test-component trays on the body; SERVIS-1 and -2 are the same design."
+ },
+ "draw-socrates": {
+  "ids": [
+   39768
+  ],
+  "refs": [
+   "https://space.skyrocket.de/doc_sdat/socrates.htm"
+  ],
+  "description": "A 50 cm cube with every face covered in dark blue solar cells (no solar wings at all). On one face a small round laser-terminal telescope sits on a two-axis gimbal. A couple of short antennas. Earth's limb below has blue oceans and white clouds (not orange)."
+ },
+ "draw-sohla-1": {
+  "ids": [
+   33496
+  ],
+  "refs": [
+   "https://space.skyrocket.de/doc_sdat/sohla-1.htm"
+  ],
+  "description": "Spin-stabilised 50 cm cube, 50 kg, solar cells on the faces, short antennas; built by Higashi-Osaka SMEs with JAXA support."
+ },
+ "draw-sstl-microsat-70": {
+  "ids": [
+   26548
+  ],
+  "refs": [
+   "https://en.wikipedia.org/wiki/TiungSAT-1"
+  ],
+  "description": "~50-70 kg SSTL box (about 60 x 35 x 35 cm stack of module trays) with body-mounted solar panels on four sides and a short gravity-gradient boom / whip antennas."
+ },
+ "draw-cast968": {
+  "ids": [
+   33320
+  ],
+  "refs": [
+   "https://space.skyrocket.de/doc_sdat/hj-1a.htm"
+  ],
+  "description": "~350-470 kg box with two deployable solar wings; HJ-1A/B carry wide-field cameras on the nadir face (HJ-1A adds a hyperspectral imager)."
+ },
+ "draw-lilacsat-2": {
+  "ids": [
+   40908
+  ],
+  "refs": [
+   "https://en.wikipedia.org/wiki/LilacSat-2"
+  ],
+  "description": "11 kg cube 20 x 20 x 20 cm, body-mounted solar cells, VHF/UHF whip antennas; Harbin Institute of Technology amateur/edu sat."
+ },
+ "draw-yaogan-1-sar": {
+  "ids": [
+   29092
+  ],
+  "refs": [
+   "https://space.skyrocket.de/doc_sdat/yaogan-1.htm"
+  ],
+  "description": "A large rectangular box-shaped spacecraft bus with a very long, flat, rectangular radar antenna panel (dark, gridded, about three times the body's length and as tall as the body) mounted lengthwise along one side, plus two rectangular solar wings on the other sides. Earth's limb below has blue oceans and white clouds (not orange)."
+ },
+ "draw-wn5000": {
+  "ids": [
+   41900
+  ],
+  "refs": [
+   "https://space.skyrocket.de/doc_sdat/xinghuo-01.htm"
+  ],
+  "description": "~40-70 kg box microsat with two deployable fixed solar panels; Spark 01/02 hyperspectral imagers and Yijian share it."
+ },
+ "draw-zhuhai-1-ohs": {
+  "ids": [
+   44536
+  ],
+  "refs": [
+   "https://space.skyrocket.de/doc_sdat/zhuhai-1-ohs.htm"
+  ],
+  "description": "~67 kg box microsat, two deployable solar panels, hyperspectral camera on the nadir face (Orbita Aerospace, 2018-2019 batches)."
+ },
+ "draw-phoenix-eye-2": {
+  "ids": [
+   41556
+  ],
+  "refs": [
+   "https://space.skyrocket.de/doc_sdat/zy-3.htm"
+  ],
+  "description": "A large box-shaped bus with two rectangular solar wings. On its Earth-facing underside three camera barrels point down at different angles, one forward, one straight down, one backward, plus a fourth smaller camera. Earth's limb below has blue oceans and white clouds (not orange)."
+ },
+ "draw-leostar-500-xo": {
+  "ids": [
+   33396
+  ],
+  "refs": [
+   "https://space.skyrocket.de/doc_sdat/theos.htm"
+  ],
+  "description": "~750-900 kg hexagonal bus about 2.1 m tall and 2 m wide, one deployable fixed solar array, large Earth-pointing telescope. Earth's limb below has blue oceans and white clouds (not orange)."
+ },
+ "draw-astrosat-100": {
+  "ids": [
+   39160
+  ],
+  "refs": [
+   "https://en.wikipedia.org/wiki/VNREDSat-1"
+  ],
+  "description": "~120 kg cube about 60 cm, four small deployable solar panels in a cross/fan, Korsch telescope (NAOMI) on one face."
  }
 }
