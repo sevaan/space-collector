@@ -3058,3 +3058,6 @@ body.night #set-credits-sheet .set-sheet-card { background: #090303; }
 .ht-real.lvl-s .mini-face { box-shadow: 0 0 0 2px #dfe6ee, 0 0 12px rgba(223,230,238,.45); }
 .ht-real.lvl-g .mini-face { box-shadow: 0 0 0 2px #ffc93d, 0 0 16px rgba(255,201,61,.55); }
 .ht-col .ht-real.fleet + .ht-phases { margin-top: 2px; }
+/* The circle's reminder button: words and bell stay inside it at any width (2026-10-28, Sevaan). */
+#gh-remind { max-width: 100%; overflow: hidden; white-space: nowrap; letter-spacing: .1em !important; padding-inline: 12px !important; gap: 8px; }
+#gh-remind .ico { flex: none; }
