@@ -3,7 +3,7 @@
 // (2026-10-16): the purchase belongs to the player’s Apple ID / Google account, no sign-in of ours. The last answer is
 // kept (localStorage 'plusStore') so Plus holds offline. The testing toggle (Settings → Testing tools → "Plus
 // (testing)", 'plusTest') still turns it on anywhere; the website never sells Plus.
-import { plugin, isNative, onNative } from './native.js?v=0.1.1235';
+import { plugin, isNative, onNative } from './native.js?v=0.1.1236';
 
 // RevenueCat public SDK keys (safe in the app). The Test Store key works with no App Store / Play setup; swap in the
 // appl_ / goog_ keys from RevenueCat → Project settings → API keys once the store apps are connected.

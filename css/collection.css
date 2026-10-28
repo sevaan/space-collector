@@ -901,3 +901,6 @@ body:not(.has-cards) .lb-deck { display: none; }
   .lb-deck, .lb-deck.two { margin: 0; padding: 0; } .lb-track { display: block; }
   .lb-track > #logbook { transform: none !important; filter: none !important; }
 }
+/* The rank card sets the stack's height, as tall as it was on its own (2026-10-27, Sevaan); the objects card fits it, the globe taking what's left. */
+#sat-card > .lb-rot { min-height: 0; }
+#sat-card .sg-pic { min-height: 120px; }
