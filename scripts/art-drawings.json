@@ -2080,5 +2080,14 @@
    "https://en.wikipedia.org/wiki/VNREDSat-1"
   ],
   "description": "~120 kg cube about 60 cm, four small deployable solar panels in a cross/fan, Korsch telescope (NAOMI) on one face."
+ },
+ "fleet-starlink": {
+  "ids": [
+   "STARLINK"
+  ],
+  "refs": [
+   "SpaceX V1.5 / V2 / V3 comparison render (shape described in words, not fed to the model)"
+  ],
+  "description": "Starlink V2 Mini: thin dark slab body with corner domes, two long flat solar wings in line; a faint train behind"
  }
 }
