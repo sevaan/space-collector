@@ -988,3 +988,7 @@ body.few-cards .logbook .lb-pic { height: 44px !important; min-height: 0; backgr
   .logbook .lb-pic .lb-ladder { display: none; }
   .logbook .lb-pic, .logbook.compact .lb-pic { height: 44px !important; background: none; border-bottom: 0; }
 }
+/* Without its ladder picture (day one, short phones) the open rank card is only as tall as what's in it (2026-10-28,
+   Sevaan: it kept a full card's height and left a big empty middle). */
+body.few-cards .logbook .lb-rot { min-height: 0; }
+@media (max-height: 700px) { .logbook .lb-rot { min-height: 0; } }
