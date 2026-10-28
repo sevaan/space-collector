@@ -1,57 +1,57 @@
-import { pullToClose } from './pull-close.js?v=0.1.1291';
-import { TESTER } from './build-flavor.js?v=0.1.1291';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1291';
-import * as Secrets from './secrets.js?v=0.1.1291';
-import { STORY_BY_SECRET } from './stories.js?v=0.1.1291';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.1291';
-import * as Ufo from './ufo.js?v=0.1.1291';
-import * as Fossil from './fossil.js?v=0.1.1291';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.1291';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1291';
-import { toast, ticket, dropToast, toastPending, onTicketShown, iconSvg, dropPageNotices } from './toast.js?v=0.1.1291';
-import { VERSION } from './version.js?v=0.1.1291';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, overEarth, RisingSoon, setBinocularMode, setSkyLimit, toWorker } from './orbit.js?v=0.1.1291';
-import { placeName } from './geo.js?v=0.1.1291';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, SLIDER_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.1291';
-import { conArt } from './con-art.js?v=0.1.1291';
-import { fetchWeather, tonightSky, skyClearAt, goodSkyAt } from './weather.js?v=0.1.1291';
-import { CON_FIGURES } from './con-figures.js?v=0.1.1291';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress, starDistance } from './constellations.js?v=0.1.1291';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.1291';
-import { progress as progressOf, missionsFor, readDeals, readWeekThemes, WEEK_THEMES, countryOf, weekStartOf, weekThemeFor, xpCarry } from './progress.js?v=0.1.1291';
-import { eventOf, activeEvent, nextEvent, activeShower, nextShower, eventLine } from './events.js?v=0.1.1291';
-import { localText } from './localize.js?v=0.1.1291';
-import { searchCities } from './cities.js?v=0.1.1291';
-import { catalogUrl, refreshCatalog, dropCatalog } from './fresh-data.js?v=0.1.1291';
-import { conList } from './constellations.js?v=0.1.1291';
-import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination, hasSensorView, resumeSensors, needsPermission } from './sensors.js?v=0.1.1291';
-import { SkyView, shortName, stripLandscape } from './sky.js?v=0.1.1291';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.1291';
-import { isPlus, setPlusForTesting, onPlus, PLUS_PRICES, initStore, storePlans, buyPlus, restorePlus, rcTestStore, storeOpen } from './plus.js?v=0.1.1291';
-import { isNative, getPosition, saveFile, notifyAt, cancelNotify, haptic, onNative, nativeChrome, plugin } from './native.js?v=0.1.1291';
-import { initBackup, onBackupChange, backupSoon, clearBackup, backupStatus } from './cloud-backup.js?v=0.1.1291';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.1291';
-import { cardArt } from './art.js?v=0.1.1291';
-import { renderCard, miniCard, cardLevel, artImage, lockedArt, attachTilt, attachGyro, throwOff, attachFlip, turnCard, phasePath } from './card.js?v=0.1.1291';
-import { applyBack, CARD_BACKS, backUnlocked, chosenBack, chooseBack, backEarned, showBackNext } from './card-backs.js?v=0.1.1291';
-import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.1291';
-import { audioCtx } from './audio-ctx.js?v=0.1.1291';
-import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume, musicAway } from './music.js?v=0.1.1291';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss, onRevealSwipeIntoBinder, teachRoom } from './reveal.js?v=0.1.1291';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel, moonPhaseOf, moonPhaseAt, MOON_PHASES } from './card-model.js?v=0.1.1291';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.1291';
-import { naturalTargets, SOLAR_SYSTEM, DEEP_SKY, NATURAL, NATURAL_BY_KEY } from './natural.js?v=0.1.1291';
-import { placeFromTimeZone } from './tz-places.js?v=0.1.1291';
-import { TIER_INFO } from './rarity.js?v=0.1.1291';
-import { SETS, albumList } from './sets.js?v=0.1.1291';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.1291';
-import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.1291';
-import { note, send as sendNotes, noteError, daysSinceInstall } from './field-notes.js?v=0.1.1291';
-import { shareCardEl } from './share-card.js?v=0.1.1291';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.1291';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.1291';
-import { addStarfield } from './starfield.js?v=0.1.1291';
-import { ART_SOURCES } from './art-credits.js?v=0.1.1291';
+import { pullToClose } from './pull-close.js?v=0.1.1292';
+import { TESTER } from './build-flavor.js?v=0.1.1292';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1292';
+import * as Secrets from './secrets.js?v=0.1.1292';
+import { STORY_BY_SECRET } from './stories.js?v=0.1.1292';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.1292';
+import * as Ufo from './ufo.js?v=0.1.1292';
+import * as Fossil from './fossil.js?v=0.1.1292';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.1292';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1292';
+import { toast, ticket, dropToast, toastPending, onTicketShown, iconSvg, dropPageNotices } from './toast.js?v=0.1.1292';
+import { VERSION } from './version.js?v=0.1.1292';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, overEarth, RisingSoon, setBinocularMode, setSkyLimit, toWorker } from './orbit.js?v=0.1.1292';
+import { placeName } from './geo.js?v=0.1.1292';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, SLIDER_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.1292';
+import { conArt } from './con-art.js?v=0.1.1292';
+import { fetchWeather, tonightSky, skyClearAt, goodSkyAt } from './weather.js?v=0.1.1292';
+import { CON_FIGURES } from './con-figures.js?v=0.1.1292';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress, starDistance } from './constellations.js?v=0.1.1292';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.1292';
+import { progress as progressOf, missionsFor, readDeals, readWeekThemes, WEEK_THEMES, countryOf, weekStartOf, weekThemeFor, xpCarry } from './progress.js?v=0.1.1292';
+import { eventOf, activeEvent, nextEvent, activeShower, nextShower, eventLine } from './events.js?v=0.1.1292';
+import { localText } from './localize.js?v=0.1.1292';
+import { searchCities } from './cities.js?v=0.1.1292';
+import { catalogUrl, refreshCatalog, dropCatalog } from './fresh-data.js?v=0.1.1292';
+import { conList } from './constellations.js?v=0.1.1292';
+import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination, hasSensorView, resumeSensors, needsPermission } from './sensors.js?v=0.1.1292';
+import { SkyView, shortName, stripLandscape } from './sky.js?v=0.1.1292';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.1292';
+import { isPlus, setPlusForTesting, onPlus, PLUS_PRICES, initStore, storePlans, buyPlus, restorePlus, rcTestStore, storeOpen } from './plus.js?v=0.1.1292';
+import { isNative, getPosition, saveFile, notifyAt, cancelNotify, haptic, onNative, nativeChrome, plugin } from './native.js?v=0.1.1292';
+import { initBackup, onBackupChange, backupSoon, clearBackup, backupStatus } from './cloud-backup.js?v=0.1.1292';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.1292';
+import { cardArt } from './art.js?v=0.1.1292';
+import { renderCard, miniCard, cardLevel, artImage, lockedArt, attachTilt, attachGyro, throwOff, attachFlip, turnCard, phasePath } from './card.js?v=0.1.1292';
+import { applyBack, CARD_BACKS, backUnlocked, chosenBack, chooseBack, backEarned, showBackNext } from './card-backs.js?v=0.1.1292';
+import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.1292';
+import { audioCtx } from './audio-ctx.js?v=0.1.1292';
+import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume, musicAway } from './music.js?v=0.1.1292';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss, onRevealSwipeIntoBinder, teachRoom } from './reveal.js?v=0.1.1292';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel, moonPhaseOf, moonPhaseAt, MOON_PHASES } from './card-model.js?v=0.1.1292';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.1292';
+import { naturalTargets, SOLAR_SYSTEM, DEEP_SKY, NATURAL, NATURAL_BY_KEY } from './natural.js?v=0.1.1292';
+import { placeFromTimeZone } from './tz-places.js?v=0.1.1292';
+import { TIER_INFO } from './rarity.js?v=0.1.1292';
+import { SETS, albumList } from './sets.js?v=0.1.1292';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.1292';
+import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.1292';
+import { note, send as sendNotes, noteError, daysSinceInstall } from './field-notes.js?v=0.1.1292';
+import { shareCardEl } from './share-card.js?v=0.1.1292';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.1292';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.1292';
+import { addStarfield } from './starfield.js?v=0.1.1292';
+import { ART_SOURCES } from './art-credits.js?v=0.1.1292';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -1112,14 +1112,16 @@ function setDiscMini(o) {
   try { const own = state.sightings.some((x) => !x.sim && x.cardKey === key); $('d-mini').replaceChildren(stripCard(o, !own ? 'Not yet collected' : isNewFind(o) ? 'New stamp' : 'In your collection')); /* a launch or phase to stamp says so (web QA 2026-10-24) */ }
   catch { $('d-mini').replaceChildren(); }
 }
+let sunToastUp = false;
 function renderTarget(target, d) {
   sky.peakMark = null; // set again below for a new find with a real top (the peak bonus)
   const bar = $('target'), disc = $('discover'), guide = $('guidance');
   $('callout').hidden = true;
   document.body.classList.toggle('secret-on', !!(state.secretInCircle || state.ufoInCircle)); // a secret owns the circle: hide the star’s name at once
+  if (sunToastUp && target?.obj.key !== 'sun') { sunToastUp = false; dropToast('sun-safety'); } /* off the Sun, the warning goes (2026-10-28, Sevaan) */
   if (!target) { bar.hidden = disc.hidden = guide.hidden = true; state.newFind = false; state.dismissedId = null; shownTargetId = barTargetId = null; announceTarget(''); return; }
   // The Sun’s safety line before anyone aims at it, once a session (playtest room 2026-10-11: it only showed on the card).
-  if (target.obj.key === 'sun' && !sunWarned && !document.body.classList.contains('ob-tour') && !activePanel && !collectionOpen && !document.querySelector('.set-sheet:not([hidden])')) { /* only with the sky on screen (2026-10-28, Sevaan: it came up over the Plus page) */ /* not during the tour, where toasts are hidden and the card says it (flow playtest 2026-10-25) */ sunWarned = true; ticket({ kind: 'info', tone: 'gold', icon: 'sun', id: 'sun-safety', ms: 3800, eyebrow: 'THE SUN', line: 'Don’t look straight at it', sub: 'Keep your eyes on the screen.' }); } // the Sun warning is a heads-up, gone after ~6 s (2026-10-13 playtest)
+  if (target.obj.key === 'sun' && !sunWarned && !document.body.classList.contains('ob-tour') && !activePanel && !collectionOpen && !document.querySelector('.set-sheet:not([hidden])')) { /* only with the sky on screen (2026-10-28, Sevaan: it came up over the Plus page) */ /* not during the tour, where toasts are hidden and the card says it (flow playtest 2026-10-25) */ sunWarned = true; sunToastUp = true; ticket({ kind: 'info', tone: 'gold', icon: 'sun', id: 'sun-safety', ms: 3800, eyebrow: 'THE SUN', line: 'Don’t look straight at it', sub: 'Keep your eyes on the screen.' }); } // the Sun warning is a heads-up, gone after ~6 s (2026-10-13 playtest)
   shownTargetId = target.obj.id; state.shownTarget = target;
   if (state.dismissedId != null && target.obj.id !== state.dismissedId) state.dismissedId = null; // a closed mini card returns once you’ve moved on
   const o = target.obj, l = target.look;

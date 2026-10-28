@@ -2036,3 +2036,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - 2026-10-28 · v0.1.1289 (Sevaan): Settings sky slider subtitle is one line: 'Right is darker · Match outside'.
 - 2026-10-28 · v0.1.1290 (Sevaan): Sky labels has no subtitle.
 - 2026-10-28 · v0.1.1291 (Sevaan): Plus kit tile 'Rare alerts' is now 'Sky alerts · Rare passes, Starlink trains and sky events.' and lights when the Plus page opens from a train or sky-event switch (why 'alerts').
+- 2026-10-28 · v0.1.1292 (Sevaan): the Sun's safety notice is dropped (dropToast 'sun-safety', also from the queue) as soon as the circle is off the Sun.
