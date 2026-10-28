@@ -11,7 +11,7 @@
   .card { font-size: 10.5px; }
 </style></head><body>
 <h1>Earth styles</h1>
-<p class="lead">The same NOAA 12 debris card five times, each with a different Earth in its live orbit view. Pick a letter. The orbits and satellites are real; only the Earth changes.</p>
+<p class="lead">The same NOAA 12 debris card six times, each with a different Earth in its live orbit view. Pick a letter. The orbits and satellites are real; only the Earth changes.</p>
 <div class="row" id="row"></div>
 <script type="module">
 const V = (await fetch('version.json', { cache: 'no-store' }).then((r) => r.json())).version, at = (f) => import(new URL(`js/${f}?v=${V}`, document.baseURI).href);
@@ -23,6 +23,7 @@ const S = [['engraved', 'A · Engraved', 'Cream land with fine hatching, deep bl
   ['daynight', 'B · Day and night', 'Lit by the real Sun at this moment: the night side is in shadow, with a soft line between.'],
   ['blueprint', 'C · Blueprint', 'In the app (Sevaan’s pick): coastlines in cream ink on dark navy, a finer grid, no fill.'],
   ['dots', 'D · Dot globe', 'Land as evenly spaced cream dots, brighter where the light falls.'],
+  ['realistic', 'F · Realistic', 'NASA’s Blue Marble photo map wrapped on the globe, lit by the real Sun (night side dark), with a thin blue atmosphere.'],
   ['poster', 'E · Poster', 'Flat poster colours from the cards: steel blue sea, burnt orange land, cream outlines.']];
 const row = document.getElementById('row'), me = { lat: 44.3, lon: -78.3 };
 for (const [style, name, note] of S) {

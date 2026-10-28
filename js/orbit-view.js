@@ -4,11 +4,11 @@
 // the sky), seen from 35° above the orbit's own plane with the low point to the right, the Earth to scale in the middle
 // turning underneath (your spot marked), and the object moving round at its true relative speed, a lap in 4–14 s.
 // Parts of the ring behind the Earth are faint. Twinkling stars behind. Canvas only. Coastlines: js/coast.js.
-import { satrecFor, overEarth } from './orbit.js?v=0.1.1240';
-import * as sat from './lib/satellite.js?v=0.1.1240';
-import { useMiles } from './units.js?v=0.1.1240';
-import { placeName } from './geo.js?v=0.1.1240';
-import { COAST } from './coast.js?v=0.1.1240';
+import { satrecFor, overEarth } from './orbit.js?v=0.1.1241';
+import * as sat from './lib/satellite.js?v=0.1.1241';
+import { useMiles } from './units.js?v=0.1.1241';
+import { placeName } from './geo.js?v=0.1.1241';
+import { COAST } from './coast.js?v=0.1.1241';
 
 const RAD = Math.PI / 180, RE = 6371;
 const dot = (a, b) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
@@ -17,6 +17,17 @@ const norm = (a) => { const l = Math.hypot(...a) || 1; return [a[0] / l, a[1] / 
 const eci = (pv) => (pv && pv.position && Number.isFinite(pv.position.x) ? [pv.position.x, pv.position.y, pv.position.z] : null);
 // A point on Earth's surface (lat, lon in degrees) in space coordinates at Greenwich sidereal angle g.
 const ground = (lat, lon, g, r = RE) => { const p = lat * RAD, l = lon * RAD + g; return [r * Math.cos(p) * Math.cos(l), r * Math.cos(p) * Math.sin(l), r * Math.sin(p)]; };
+
+// The realistic Earth's map: NASA's Blue Marble (land_shallow_topo, public domain), 1024×512 in assets/sky/earth.webp,
+// read once into pixels (2026-10-27, Sevaan asked for a realistic option).
+let MAP = null, mapLoading = null;
+function earthMap() {
+  if (MAP || mapLoading) return MAP;
+  mapLoading = (async () => { try { const im = new Image(); im.src = new URL('../assets/sky/earth.webp', import.meta.url).href; await im.decode();
+    const c = document.createElement('canvas'); c.width = im.naturalWidth; c.height = im.naturalHeight; const x = c.getContext('2d'); x.drawImage(im, 0, 0);
+    MAP = { w: c.width, h: c.height, d: x.getImageData(0, 0, c.width, c.height).data }; } catch { /* stays on the fallback */ } })();
+  return null;
+}
 
 // Land as a grid of evenly spaced dots (the 'dots' style), worked out once from the coastlines.
 let DOTS = null;
@@ -44,7 +55,7 @@ export function orbitGlobe(obj, host, me, { once = false, style } = {}) {
   const right = norm(cross(q, c)), up = norm(cross(c, right));
   const uv = (r) => [dot(r, right), dot(r, up), dot(r, c)];
   // Day and night: the Sun's direction in this view (it stays put in space while the Earth turns), and the night side as a soft mask.
-  const sunV = (() => { const r = sat.sunPos(sat.jday(new Date(t0))).rsun; return norm(uv(r)); })();
+  const sunE = norm(sat.sunPos(sat.jday(new Date(t0))).rsun), sunV = norm(uv(sunE)); let rc = null, rimg = null; // the Sun stays put in space while the Earth turns
   let nightCv = null; const nightMask = () => { if (nightCv) return nightCv; const N = 160; nightCv = document.createElement('canvas'); nightCv.width = nightCv.height = N; const cx2 = nightCv.getContext('2d'), im = cx2.createImageData(N, N);
     for (let j = 0; j < N; j++) for (let i = 0; i < N; i++) { const x = (i + 0.5) / N * 2 - 1, y = 1 - (j + 0.5) / N * 2, rr = x * x + y * y; if (rr > 1) continue; const z = Math.sqrt(1 - rr), d = x * sunV[0] + y * sunV[1] + z * sunV[2];
       const a = Math.min(1, Math.max(0, (0.08 - d) / 0.16)); const o = (j * N + i) * 4; im.data[o] = 4; im.data[o + 1] = 9; im.data[o + 2] = 20; im.data[o + 3] = Math.round(a * 205); }
@@ -98,7 +109,23 @@ export function orbitGlobe(obj, host, me, { once = false, style } = {}) {
     const farShade = (a = 0.72, lx = -0.4, ly = -0.45) => { const sh = ctx.createRadialGradient(cx + R * lx, cy + R * ly, R * 0.2, cx + R * lx * 0.25, cy + R * ly * 0.25, R * 1.25); sh.addColorStop(0, 'rgba(5,12,24,0)'); sh.addColorStop(0.55, 'rgba(5,12,24,.08)'); sh.addColorStop(1, `rgba(5,12,24,${a})`); ctx.fillStyle = sh; ctx.fillRect(cx - R, cy - R, R * 2, R * 2); };
     const hatch = (clip, color, gap) => { if (R <= 18) return; ctx.save(); ctx.clip(clip); ctx.strokeStyle = color; ctx.lineWidth = 0.7; ctx.beginPath();
       for (let d = -2 * R; d <= 2 * R; d += gap) { ctx.moveTo(cx + d - R, cy - R); ctx.lineTo(cx + d + R, cy + R); } ctx.stroke(); ctx.restore(); };
-    if (look === 'blueprint') {
+    if (look === 'realistic') {
+      const map = earthMap(); glowRim('120,170,255', 0.45);
+      if (!map) { ocean('#2a5b8a', '#163a5e', '#081627'); } else {
+        // every pixel of the disc: the point on the globe under it, turned back to latitude/longitude, looked up in the map, lit by the real Sun
+        const N = Math.max(60, Math.min(320, Math.round(R * 2 * Math.min(1.5, dpr)))); if (!rc || rc.width !== N) { rc = document.createElement('canvas'); rc.width = rc.height = N; rimg = rc.getContext('2d').createImageData(N, N); }
+        const px = rimg.data, sx = sunE[0], sy = sunE[1], sz = sunE[2], cg = Math.cos(g), sg = Math.sin(g);
+        for (let j = 0; j < N; j++) { const yv = 1 - (j + 0.5) / N * 2; for (let i = 0; i < N; i++) { const xv = (i + 0.5) / N * 2 - 1, rr = xv * xv + yv * yv, o = (j * N + i) * 4; if (rr > 1) { px[o + 3] = 0; continue; }
+          const zv = Math.sqrt(1 - rr), X = xv * right[0] + yv * up[0] + zv * c[0], Y = xv * right[1] + yv * up[1] + zv * c[1], Z = xv * right[2] + yv * up[2] + zv * c[2];
+          const ex = X * cg + Y * sg, ey = -X * sg + Y * cg; // into the turning Earth's frame
+          const lon = Math.atan2(ey, ex), lat = Math.asin(Math.max(-1, Math.min(1, Z)));
+          const u = Math.floor(((lon / (2 * Math.PI) + 0.5) % 1 + 1) % 1 * map.w), v = Math.min(map.h - 1, Math.floor((0.5 - lat / Math.PI) * map.h)), q = (v * map.w + u) * 4;
+          const sun = X * sx + Y * sy + Z * sz, day = Math.min(1, Math.max(0, (sun + 0.12) / 0.24)), lit = (0.14 + 0.86 * day) * (0.55 + 0.45 * zv);
+          px[o] = map.d[q] * lit; px[o + 1] = map.d[q + 1] * lit; px[o + 2] = Math.min(255, map.d[q + 2] * lit + (1 - day) * 10); px[o + 3] = 255; } }
+        rc.getContext('2d').putImageData(rimg, 0, 0); ctx.save(); disc(); ctx.clip(); ctx.imageSmoothingEnabled = true; ctx.drawImage(rc, cx - R, cy - R, R * 2, R * 2); ctx.restore();
+      }
+      const at = ctx.createRadialGradient(cx, cy, R * 0.86, cx, cy, R * 1.01); at.addColorStop(0, 'rgba(120,180,255,0)'); at.addColorStop(1, 'rgba(140,195,255,.35)'); ctx.fillStyle = at; disc(); ctx.fill();
+    } else if (look === 'blueprint') {
       ocean('#1f4369', '#0f2542', '#050d18'); /* light and shade for some dimension (2026-10-27, Sevaan) */
       ctx.save(); disc(); ctx.clip(); grid('rgba(143,180,216,.2)', 15); const land = landPath(); ctx.fillStyle = 'rgba(143,180,216,.1)'; ctx.fill(land);
       ctx.strokeStyle = 'rgba(255,242,179,.85)'; ctx.lineWidth = 1; ctx.stroke(coastPath());
