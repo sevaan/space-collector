@@ -2035,3 +2035,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - 2026-10-28 · v0.1.1288 (Sevaan): Circle highlights has its own Debris switch (hlKind 'debris'; until set it follows Rocket stages) and a UFOs switch, on by default; off means the UFO never flies (ufoState/ufoAngle check hlOn('ufo')).
 - 2026-10-28 · v0.1.1289 (Sevaan): Settings sky slider subtitle is one line: 'Right is darker · Match outside'.
 - 2026-10-28 · v0.1.1290 (Sevaan): Sky labels has no subtitle.
+- 2026-10-28 · v0.1.1291 (Sevaan): Plus kit tile 'Rare alerts' is now 'Sky alerts · Rare passes, Starlink trains and sky events.' and lights when the Plus page opens from a train or sky-event switch (why 'alerts').
