@@ -29,8 +29,12 @@ public class WidgetBridgePlugin: CAPPlugin, CAPBridgedPlugin {
             for rel in art {
                 let name = ((rel as NSString).lastPathComponent as NSString).deletingPathExtension
                 let out = artDir.appendingPathComponent(name + ".png")
-                if fm.fileExists(atPath: out.path) { continue }
                 let src = Bundle.main.bundleURL.appendingPathComponent("public").appendingPathComponent(rel)
+                // Re-make the copy when the app's picture is newer (2026-10-28, Sevaan: widgets kept the old art after
+                // pictures were replaced under the same name). Each new build's files are newer, so this runs once per build.
+                if let outDate = (try? fm.attributesOfItem(atPath: out.path))?[.modificationDate] as? Date,
+                   let srcDate = (try? fm.attributesOfItem(atPath: src.path))?[.modificationDate] as? Date,
+                   outDate >= srcDate { continue }
                 guard let img = UIImage(contentsOfFile: src.path) else { continue }
                 let side: CGFloat = 240, s = side / min(img.size.width, img.size.height)
                 let size = CGSize(width: img.size.width * s, height: img.size.height * s)
