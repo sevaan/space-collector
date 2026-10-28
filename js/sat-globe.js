@@ -3,16 +3,17 @@
 // sky's own model, satellite.js), around a blueprint Earth (design/earth-styles.html C) that turns slowly, you marked.
 // Dots are in the card's rarity colour; the rarest few in view are named. Tap a dot to open its card. Draws only while
 // it's on screen. Fleet cards (Starlink and co.) aren't on it yet.
-import * as sat from './lib/satellite.js?v=0.1.1254';
-import { satrecFor } from './orbit.js?v=0.1.1254';
-import { COAST } from './coast.js?v=0.1.1254';
-import { TIER_INFO } from './rarity.js?v=0.1.1254';
-import { earthMap } from './orbit-view.js?v=0.1.1254';
-import { placeName } from './geo.js?v=0.1.1254';
+import * as sat from './lib/satellite.js?v=0.1.1255';
+import { satrecFor } from './orbit.js?v=0.1.1255';
+import { COAST } from './coast.js?v=0.1.1255';
+import { TIER_INFO } from './rarity.js?v=0.1.1255';
+import { earthMap } from './orbit-view.js?v=0.1.1255';
+import { placeName } from './geo.js?v=0.1.1255';
 
 const RAD = Math.PI / 180, RE = 6371, TILT = 20 * RAD;
 // A dot's name: whole words up to about 18 letters ("THOR AGENA D", not "THOR AGENA D ROCKET ST").
-const shortLabel = (t) => { const w = String(t).replace(/ Rocket Stage$/i, ' stage').toUpperCase().split(' '); let o = ''; for (const x of w) { if ((o + ' ' + x).trim().length > 18 && o) break; o = (o + ' ' + x).trim(); } return o; };
+const SHORT = [[/^International Space Station/i, 'ISS'], [/^Tiangong Space Station/i, 'TIANGONG'], [/^Hubble Space Telescope/i, 'HUBBLE']];
+const shortLabel = (t) => { for (const [re, n] of SHORT) if (re.test(t)) return n; const w = String(t).replace(/\s*\([^)]*\)/g, '').replace(/ Rocket Stage$/i, ' stage').toUpperCase().split(' '); /* no brackets, famous ones short (playtest 2026-10-27: "INTERNATIONAL", "OPS 6182 (DMSP") */ let o = ''; for (const x of w) { if ((o + ' ' + x).trim().length > 18 && o) break; o = (o + ' ' + x).trim(); } return o; };
 const RANK = { common: 0, uncommon: 1, rare: 2, epic: 3, legendary: 4 };
 // How high a dot sits off the surface: true up to 2,000 km, squeezed beyond so high orbits stay in the picture.
 const lift = (h) => (h < 2000 ? h : 2000 + Math.min(h - 2000, 40000) * 0.04) / RE;

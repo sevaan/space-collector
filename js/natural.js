@@ -1,4 +1,4 @@
-import { extinction } from './sky-limit.js?v=0.1.1254';
+import { extinction } from './sky-limit.js?v=0.1.1255';
 // The Moon, the naked-eye planets and the brightest named stars, as collectible cards.
 // Positions come from js/celestial.js (state.bodies, state.skyEnu); this file holds the card facts and
 // the "can you see it right now" rules. No DOM. Every fact must be true; approximate values say so.
@@ -50,7 +50,8 @@ const PLANETS = [
 function lightLeft(ly) {
   const year = Math.round(new Date().getFullYear() - Number(ly.replace(/[~,]/g, '')));
   // Before year 1 it’s BC (playtest room 2026-10-11: "~-5474 AD" for the Double Cluster).
-  return `${ly.startsWith('~') ? '~' : ''}${year < 1 ? `${(1 - year).toLocaleString('en-US')} BC` : year < 1000 ? `${year} AD` : year}`;
+  const t = ly.startsWith('~') ? '~' : '';
+  return year < 1 ? `${t}${(1 - year).toLocaleString('en-US')} BC` : year < 1000 ? `${t}${year} AD` : `in ${t}${year}`; // a bare "~1449" read as a number (playtest 2026-10-27)
 }
 
 // Star: [card name, name in data/sky.json, designation, constellation, distance (light-years), tier,

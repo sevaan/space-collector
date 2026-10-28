@@ -722,3 +722,5 @@ body.night .card--frag .frag-orbit ellipse { stroke: #ff6a55; }
 /* Source › after a card's fact (2026-10-26, design/nasa-ideas.html 1): opens the page that backs it */
 .card__fact a.src { font: 500 .78em/1 var(--label, 'SC Label', sans-serif); letter-spacing: .12em; text-transform: uppercase; color: #fa8127; text-decoration: none; white-space: nowrap; pointer-events: auto; }
 body.night .card__fact a.src { color: #ff6a55; }
+/* The photo credit belongs to the picture: hidden while the orbit view shows (playtest 2026-10-27) */
+.card__art.orbiting .art-credit { display: none; }

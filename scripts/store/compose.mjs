@@ -25,7 +25,7 @@ export const CAPTIONS = {
   day: ['Catch the Sun and Moon by day', 'Plan tonight’s catches'],
   every: ['30 missions · 12 themed weeks', 'Something new every night'],
 };
-const SIZE = { phone: [1206, 2622], pad: [2064, 2752], duo: [2853, 2007] };
+const SIZE = { phone: [1206, 2622], pad: [2064, 2752], duo: [2853, 2007], android: [1080, 2160] };
 const which = process.argv.slice(2).find((a) => !a.startsWith('--')) ?? 'all', US = process.argv.includes('--us'), RAW = join(ROOT, US ? 'store/raw-us' : 'store/raw'); // --us: the US set (miles), into store/appstore/<device>-us
 const data = (f, type) => `data:${type};base64,${readFileSync(f).toString('base64')}`; // inline: a page from setContent can't load file:// URLs
 const font = (f) => data(join(ROOT, 'fonts', f), 'font/ttf');
@@ -65,7 +65,8 @@ function page(kind, img, caption) {
   if (kind === 'duo') return duoPage(img, caption);
   const [eyebrow, line] = caption;
   const [W, H] = SIZE[kind], pad = kind === 'pad';
-  const shotW = pad ? 1660 : 1000, top = pad ? 600 : 590, radius = pad ? 64 : 84, sb = pad ? 48 : 162; // status bar height in the shot
+  const andr = kind === 'android'; // Google Play: the phone layout at 1080 wide, a status bar of 24pt and no island
+  const shotW = pad ? 1660 : andr ? 896 : 1000, top = pad ? 600 : andr ? 520 : 590, radius = pad ? 64 : andr ? 70 : 84, sb = pad ? 48 : andr ? 72 : 162; // status bar height in the shot
   const scale = shotW / W;
   return `<!doctype html><html><head><meta charset="utf-8"><style>
 @font-face { font-family: D; src: url('${font('RussoOne-Regular.ttf')}'); }
@@ -81,7 +82,7 @@ body { background: radial-gradient(90% 55% at 50% 0%, #17304d 0%, #0b1628 45%, #
 .dev img { width: 100%; height: 100%; display: block; }
 .sbar { position: absolute; left: 0; right: 0; top: 0; height: ${sb * scale}px; display: flex; align-items: center; justify-content: space-between; padding: 0 ${pad ? 40 : 74}px; box-sizing: border-box; font: 600 ${pad ? 30 : 46}px/1 -apple-system, 'SF Pro Text', system-ui, sans-serif; color: #fff; }
 .sbar svg { height: ${pad ? 22 : 34}px; margin-left: ${pad ? 10 : 14}px; }
-.island { position: absolute; left: 50%; top: ${pad ? 0 : 33 * scale}px; width: ${pad ? 0 : 372 * scale}px; height: ${pad ? 0 : 110 * scale}px; transform: translateX(-50%); border-radius: 99px; background: #000; }
+.island { position: absolute; left: 50%; top: ${pad ? 0 : 33 * scale}px; width: ${pad || andr ? 0 : 372 * scale}px; height: ${pad ? 0 : 110 * scale}px; transform: translateX(-50%); border-radius: 99px; background: #000; }
 </style></head><body>
 <div class="stars">${Array.from({ length: 90 }, (_, i) => { const x = (i * 9301 + 49297) % 233280 / 233280, y = (i * 7919 + 1543) % 104729 / 104729, r = i % 11 === 0 ? 3 : 1.6; return `<i style="left:${(x * W).toFixed(0)}px;top:${(y * H * 0.7).toFixed(0)}px;width:${r}px;height:${r}px;opacity:${(0.25 + (i % 5) * 0.12).toFixed(2)}"></i>`; }).join('')}</div>
 <div class="cap"><div class="eb">${eyebrow}</div><div class="hl">${line}</div></div>

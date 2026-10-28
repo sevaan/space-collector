@@ -71,7 +71,7 @@ ${card('iss', cx, 0, ch, 2)}
 </body></html>`;
 }
 const b = await chromium.launch();
-for (const [W, H] of [[5244, 2950], [3840, 1646]]) {
+for (const [W, H] of [[5244, 2950], [3840, 1646], [1024, 500]]) { // 1024 × 500: the Google Play feature graphic (2026-10-27)
   const pg = await b.newPage({ viewport: { width: W, height: H }, deviceScaleFactor: 1 });
   await pg.setContent(page(W, H), { waitUntil: 'load' }); await pg.evaluate(() => document.fonts.ready);
   await pg.screenshot({ path: join(OUT, `header-${W}x${H}.png`) }); console.log('header', W, H);

@@ -19,8 +19,8 @@ export function conArt(con, highlightHip = null, { w = 360, h = 240, figure = nu
   const proj = (ra, dec) => { const v = vec(ra, dec), d = v[0] * z[0] + v[1] * z[1] + v[2] * z[2]; return [-(v[0] * east[0] + v[1] * east[1] + v[2] * east[2]) / d, (v[0] * north[0] + v[1] * north[1] + v[2] * north[2]) / d]; };
   const pts = [...stars, ...(mark ? [mark] : [])].map((s) => proj(s.ra, s.dec)); // the mark is framed too
   const xs = pts.map((p) => p[0]), ys = pts.map((p) => p[1]);
-  const pad = 26, minX = Math.min(...xs), maxX = Math.max(...xs), minY = Math.min(...ys), maxY = Math.max(...ys);
-  const k = Math.min((w - 2 * pad) / Math.max(1e-6, maxX - minX), (h - 2 * pad) / Math.max(1e-6, maxY - minY));
+  const pad = 26, padX = 46, minX = Math.min(...xs), maxX = Math.max(...xs), minY = Math.min(...ys), maxY = Math.max(...ys);
+  const k = Math.min((w - 2 * padX) / Math.max(1e-6, maxX - minX), /* padX: the card's 4:3 window crops ~20 units off each side of this 3:2 chart (playtest 2026-10-27: Denebola's ring was cut) */ (h - 2 * pad) / Math.max(1e-6, maxY - minY));
   const ox = w / 2 - k * (minX + maxX) / 2, oy = h / 2 + k * (minY + maxY) / 2;
   const at = (p) => [ox + k * p[0], oy - k * p[1]];
   // A seeded scatter of faint background stars, so each chart looks a little different.

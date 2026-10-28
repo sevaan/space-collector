@@ -12,6 +12,8 @@ export const DEVICES = {
   phone: { viewport: { width: 402, height: 874 }, deviceScaleFactor: 3, isMobile: true, hasTouch: true, userAgent: PHONE_UA, safeTop: 54, safeBottom: 30 },
   pad: { viewport: { width: 1032, height: 1376 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true, userAgent: PAD_UA, safeTop: 24, safeBottom: 20 },
   duo: { viewport: { width: 951, height: 669 }, deviceScaleFactor: 3, isMobile: true, hasTouch: true, userAgent: PHONE_UA, safeTop: 0, safeBottom: 20, safeR: 84 },
+  // Google Play phone (2026-10-27): 1080 × 2160, exactly Play's 2:1 limit (360 × 720 @3x), Android status bar and gesture bar.
+  android: { viewport: { width: 360, height: 720 }, deviceScaleFactor: 3, isMobile: true, hasTouch: true, userAgent: 'Mozilla/5.0 (Linux; Android 15; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Mobile Safari/537.36', safeTop: 24, safeBottom: 16 },
 };
 // Toronto-ish, so the sky and the Tonight plan are real for a place with a big audience.
 export const PLACE = { latitude: 44.3, longitude: -78.3, tz: 'America/Toronto' };
