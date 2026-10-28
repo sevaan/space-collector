@@ -4,11 +4,11 @@
 // the sky), seen from 35° above the orbit's own plane with the low point to the right, the Earth to scale in the middle
 // turning underneath (your spot marked), and the object moving round at its true relative speed, a lap in 4–14 s.
 // Parts of the ring behind the Earth are faint. Twinkling stars behind. Canvas only. Coastlines: js/coast.js.
-import { satrecFor, overEarth } from './orbit.js?v=0.1.1227';
-import * as sat from './lib/satellite.js?v=0.1.1227';
-import { useMiles } from './units.js?v=0.1.1227';
-import { placeName } from './geo.js?v=0.1.1227';
-import { COAST } from './coast.js?v=0.1.1227';
+import { satrecFor, overEarth } from './orbit.js?v=0.1.1228';
+import * as sat from './lib/satellite.js?v=0.1.1228';
+import { useMiles } from './units.js?v=0.1.1228';
+import { placeName } from './geo.js?v=0.1.1228';
+import { COAST } from './coast.js?v=0.1.1228';
 
 const RAD = Math.PI / 180, RE = 6371;
 const dot = (a, b) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
@@ -31,7 +31,7 @@ function landDots() { if (DOTS) return DOTS; DOTS = [];
 
 // obj: the card (needs `el`); host: the element to fill; me: { lat, lon } or null; once: draw one still frame.
 export function orbitGlobe(obj, host, me, { once = false, style } = {}) {
-  let look = style; if (!look) { try { look = localStorage.getItem('globeStyle'); } catch { /* storage off */ } }
+  let look = style; if (!look) { try { look = localStorage.getItem('globeStyle'); } catch { /* storage off */ } } look ||= 'blueprint'; /* Sevaan's pick, 2026-10-27 (design/earth-styles.html C) */
   const satrec = obj.satrec ?? satrecFor(obj); if (!satrec) return null;
   const P = satrec.no ? (2 * Math.PI) / satrec.no : 95; // minutes per lap
   const t0 = Date.now(), ring = [];

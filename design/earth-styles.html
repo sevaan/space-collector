@@ -19,9 +19,9 @@ const [{ expandFacts }, { renderCard }, { buildCards }, { loadLore }, { orbitGlo
 const cat = await fetch('data/catalog.json').then((r) => r.json()); for (const o of cat.objects) expandFacts(o);
 await loadLore();
 const c = buildCards(cat).find((x) => Number(x.id) === 37832), sight = [{ time: Date.parse('2026-09-30T03:00:00Z'), cardKey: c.key, objectId: c.id }];
-const S = [['engraved', 'A · Engraved', 'Now in the app: cream land with fine hatching, deep blue ocean, orange glow on the rim.'],
+const S = [['engraved', 'A · Engraved', 'Cream land with fine hatching, deep blue ocean, orange glow on the rim.'],
   ['daynight', 'B · Day and night', 'Lit by the real Sun at this moment: the night side is in shadow, with a soft line between.'],
-  ['blueprint', 'C · Blueprint', 'A chart: coastlines in cream ink on dark navy, a finer grid, no fill.'],
+  ['blueprint', 'C · Blueprint', 'In the app (Sevaan’s pick): coastlines in cream ink on dark navy, a finer grid, no fill.'],
   ['dots', 'D · Dot globe', 'Land as evenly spaced cream dots, brighter where the light falls.'],
   ['poster', 'E · Poster', 'Flat poster colours from the cards: steel blue sea, burnt orange land, cream outlines.']];
 const row = document.getElementById('row'), me = { lat: 44.3, lon: -78.3 };
