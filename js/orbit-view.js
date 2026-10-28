@@ -4,11 +4,11 @@
 // the sky), seen from 35° above the orbit's own plane with the low point to the right, the Earth to scale in the middle
 // turning underneath (your spot marked), and the object moving round at its true relative speed, a lap in 4–14 s.
 // Parts of the ring behind the Earth are faint. Twinkling stars behind. Canvas only. Coastlines: js/coast.js.
-import { satrecFor, overEarth } from './orbit.js?v=0.1.1228';
-import * as sat from './lib/satellite.js?v=0.1.1228';
-import { useMiles } from './units.js?v=0.1.1228';
-import { placeName } from './geo.js?v=0.1.1228';
-import { COAST } from './coast.js?v=0.1.1228';
+import { satrecFor, overEarth } from './orbit.js?v=0.1.1230';
+import * as sat from './lib/satellite.js?v=0.1.1230';
+import { useMiles } from './units.js?v=0.1.1230';
+import { placeName } from './geo.js?v=0.1.1230';
+import { COAST } from './coast.js?v=0.1.1230';
 
 const RAD = Math.PI / 180, RE = 6371;
 const dot = (a, b) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
@@ -94,9 +94,11 @@ export function orbitGlobe(obj, host, me, { once = false, style } = {}) {
     const hatch = (clip, color, gap) => { if (R <= 18) return; ctx.save(); ctx.clip(clip); ctx.strokeStyle = color; ctx.lineWidth = 0.7; ctx.beginPath();
       for (let d = -2 * R; d <= 2 * R; d += gap) { ctx.moveTo(cx + d - R, cy - R); ctx.lineTo(cx + d + R, cy + R); } ctx.stroke(); ctx.restore(); };
     if (look === 'blueprint') {
-      ctx.fillStyle = '#0a1a2e'; disc(); ctx.fill();
-      ctx.save(); disc(); ctx.clip(); grid('rgba(143,180,216,.2)', 15); const land = landPath(); ctx.fillStyle = 'rgba(143,180,216,.08)'; ctx.fill(land);
-      ctx.strokeStyle = 'rgba(255,242,179,.85)'; ctx.lineWidth = 1; ctx.stroke(land); farShade(0.5); ctx.restore();
+      ocean('#1f4369', '#0f2542', '#050d18'); /* light and shade for some dimension (2026-10-27, Sevaan) */
+      ctx.save(); disc(); ctx.clip(); grid('rgba(143,180,216,.2)', 15); const land = landPath(); ctx.fillStyle = 'rgba(143,180,216,.1)'; ctx.fill(land);
+      ctx.strokeStyle = 'rgba(255,242,179,.85)'; ctx.lineWidth = 1; ctx.stroke(land);
+      const hi = ctx.createRadialGradient(cx - R * 0.42, cy - R * 0.48, 0, cx - R * 0.42, cy - R * 0.48, R * 0.7); hi.addColorStop(0, 'rgba(190,220,255,.16)'); hi.addColorStop(1, 'rgba(190,220,255,0)'); ctx.fillStyle = hi; ctx.fillRect(cx - R, cy - R, R * 2, R * 2);
+      farShade(0.7); ctx.restore();
       ctx.strokeStyle = 'rgba(255,242,179,.7)'; ctx.lineWidth = 1.2; disc(); ctx.stroke();
     } else if (look === 'dots') {
       glowRim('250,129,39', 0.32); ocean('#1d3f63', '#11294a', '#081627'); ctx.save(); disc(); ctx.clip(); ctx.fillStyle = '#efe4bf';

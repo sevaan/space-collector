@@ -1,31 +1,32 @@
-import { pullToClose } from './pull-close.js?v=0.1.1228';
-import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.1228';
-import { computeStats, statsHtml } from './stats.js?v=0.1.1228';
-import { nightKey } from './observation.js?v=0.1.1228';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1228';
-import { sfx } from './sfx.js?v=0.1.1228';
-import { expandFacts } from './catalog-facts.js?v=0.1.1228';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.1228';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1228';
-import { ticket } from './toast.js?v=0.1.1228';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.1228';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.1228';
-import { cardArt } from './art.js?v=0.1.1228';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.1228';
-import { applyBack } from './card-backs.js?v=0.1.1228';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.1228';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1228';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.1228';
-import { STORIES } from './stories.js?v=0.1.1228';
-import { loadConstellations, conList } from './constellations.js?v=0.1.1228';
-import { RANKS, progress, readDeals, readWeekThemes, xpCarry } from './progress.js?v=0.1.1228';
-import { eventBadges, nextEvent } from './events.js?v=0.1.1228';
-import { shareCardEl } from './share-card.js?v=0.1.1228';
-import { forgetSighting } from './cloud-backup.js?v=0.1.1228';
-import { allSightings, deleteSighting } from './store.js?v=0.1.1228';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.1228';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.1228';
-import { localText } from './localize.js?v=0.1.1228';
+import { pullToClose } from './pull-close.js?v=0.1.1230';
+import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.1230';
+import { computeStats, statsHtml } from './stats.js?v=0.1.1230';
+import { nightKey } from './observation.js?v=0.1.1230';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1230';
+import { sfx } from './sfx.js?v=0.1.1230';
+import { expandFacts } from './catalog-facts.js?v=0.1.1230';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.1230';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1230';
+import { ticket } from './toast.js?v=0.1.1230';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.1230';
+import { satGlobe } from './sat-globe.js?v=0.1.1230';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.1230';
+import { cardArt } from './art.js?v=0.1.1230';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.1230';
+import { applyBack } from './card-backs.js?v=0.1.1230';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.1230';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1230';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.1230';
+import { STORIES } from './stories.js?v=0.1.1230';
+import { loadConstellations, conList } from './constellations.js?v=0.1.1230';
+import { RANKS, progress, readDeals, readWeekThemes, xpCarry } from './progress.js?v=0.1.1230';
+import { eventBadges, nextEvent } from './events.js?v=0.1.1230';
+import { shareCardEl } from './share-card.js?v=0.1.1230';
+import { forgetSighting } from './cloud-backup.js?v=0.1.1230';
+import { allSightings, deleteSighting } from './store.js?v=0.1.1230';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.1230';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.1230';
+import { localText } from './localize.js?v=0.1.1230';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -458,7 +459,37 @@ function renderLogbook() {
     <div class="lb-events">${ev.map((e) => `<span class="ui-chip ui-chip--earned">✦ <b>${esc(e.name.replace(/\s*\d{4}$/, ''))}</b></span>`).join('')}${nx ? `<span class="ui-chip"><span class="ui-chip__k">Next:</span><b>${esc(nx.name.replace(/\s*\d{4}$/, ''))}</b><span class="ui-chip__k">· ${new Date(nx.day ?? nx.start + 30 * 3600e3).toLocaleDateString([], { month: 'short', day: 'numeric' })}</span></span>` : ''}</div></div>`;
   state.achievements = p.achievements;
   lbLast = { xp: p.xp, into, at: p.rank.at, next: p.rank.next };
+  renderSatCard();
   requestAnimationFrame(tabsPin);
+}
+
+// Your satellites beside the rank card (2026-10-27, Sevaan): two cards at the top of the Collection, the same size, swiped
+// between, with two dots under them (satellites first). Each visit opens on one or the other at random. The globe is
+// js/sat-globe.js: everything you own with an orbit (not fleets, not the Moon, planets or stars), live. Tap a dot for its card.
+let satG = null;
+function renderSatCard() {
+  const sec = $('sat-card'); if (!sec) return;
+  const owned = [...new Set(state.raw.map((s) => String(s.cardKey)))].map((k) => state.byKey.get(k)).filter((c) => c && !c.natural && !c.launches && !c.family && c.el);
+  if (!satG) {
+    sec.innerHTML = '<div class="lb-rot"><div class="sg-face"><div class="lb-top"><span>Your satellites</span><span class="sg-live"><i></i>Live</span></div><div class="sg-pic" id="sg-pic"></div><div class="lb-rankrow"><span class="lb-name" id="sg-n"></span><span class="lb-xp">in orbit now</span></div><div class="lb-to sg-where"><span id="sg-where"></span></div></div></div>';
+    let me = null; try { const o = JSON.parse(localStorage.getItem('observer')); if (o && Number.isFinite(o.lat)) me = { lat: o.lat, lon: o.lon }; } catch {}
+    satG = satGlobe($('sg-pic'), { me, onPick: (k) => openKey(k) });
+    setInterval(() => { if (!document.hidden && !sec.hidden) $('sg-where').textContent = satG.where(); }, 4500);
+  }
+  const n = satG.set(owned.map((c) => ({ ...c, title: titleFor(c) })));
+  sec.hidden = !n; $('lb-dots').hidden = !n;
+  $('sg-n').textContent = n.toLocaleString(); $('sg-where').textContent = satG.where();
+  if (!deckSet) { deckSet = true; deckWire(); deckPick(); }
+}
+let deckSet = false;
+const deckStep = () => { const t = $('lb-track'); return t.children[1].offsetLeft - t.children[0].offsetLeft || t.clientWidth; };
+function deckGo(i, smooth = true) { const t = $('lb-track'); if ($('sat-card').hidden) return; t.scrollTo({ left: i * deckStep(), behavior: smooth ? 'smooth' : 'instant' }); deckDots(i); }
+function deckDots(i) { [...$('lb-dots').children].forEach((b, k) => b.setAttribute('aria-current', String(k === i))); }
+function deckPick() { requestAnimationFrame(() => deckGo(Math.random() < 0.5 ? 0 : 1, false)); }
+function deckWire() {
+  const t = $('lb-track');
+  t.addEventListener('scroll', () => deckDots(Math.round(t.scrollLeft / deckStep())), { passive: true });
+  [...$('lb-dots').children].forEach((b, k) => (b.onclick = () => { deckGo(k); feel('select'); }));
 }
 
 // Find (2026-10-13, Sevaan: "someone may want to search up an object like the ISS to preview the card and then set an
@@ -1071,6 +1102,7 @@ if (EMBED) {
     if ((e.data.sc === 'open' || e.data.sc === 'show') && nightPending != null) { setNight(nightPending); nightPending = null; }
     if ((e.data.sc === 'open' || e.data.sc === 'show') && awayDirty) { awayDirty = false; if (state.ready) render(); }
     if (e.data.sc === 'open' || e.data.sc === 'show') { if (state.ready) primeSince(); setTimeout(() => { if (state.ready) replaySince(); }, 480); }
+    if ((e.data.sc === 'open' || e.data.sc === 'show') && deckSet) deckPick(); /* a different card on top some visits (2026-10-27, Sevaan) */
     if (e.data.sc === 'open' || e.data.sc === 'show') { clearTimeout(awayT); awayT = setTimeout(() => document.documentElement.classList.remove('away'), 460); } // after the slide-up lands (2026-10-17 perf): restarting every twinkle and shimmer mid-slide hitched
     if (e.data.sc === 'tonight') { state.plan = readPlan(); if (state.ready && state.view === 'find' && !state.query) { findSuggest = null; renderFind(); } if (state.ready && ['owned', 'discover'].includes(state.view)) { if (document.documentElement.classList.contains('away')) awayDirty = true; else render(); } } // hidden: render when shown (jank playtest 2026-10-17)
   });

@@ -869,3 +869,31 @@ html.embedded #stats-body { padding-inline: max(20px, calc((100% - 620px) / 2));
 .pv-card > .starfield { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
 .pv-card > :not(.starfield) { position: relative; z-index: 1; }
 .pv-card > .starfield i { opacity: calc(var(--o) * .8); }
+/* Your satellites and your rank (2026-10-27, Sevaan): two cards side by side, one screen wide each, swiped between with
+   snap, the same height (the taller sets it), two dots under them. Book sizes keep just the rank bar. */
+.lb-deck { margin: 6px 0 22px; }
+.lb-track { display: flex; gap: 14px; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain; align-items: stretch; }
+.lb-track::-webkit-scrollbar { display: none; }
+.lb-track > .logbook { flex: 0 0 100%; min-width: 0; margin: 0; scroll-snap-align: center; scroll-snap-stop: always; }
+.lb-track > .logbook > .lb-rot { height: 100%; box-sizing: border-box; }
+.lb-dots { display: flex; justify-content: center; gap: 2px; margin-top: 6px; }
+.lb-dots button { width: 28px; height: 24px; padding: 0; border: 0; background: none; display: grid; place-items: center; cursor: pointer; }
+.lb-dots button::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: #fff2b344; transition: background .2s ease, transform .2s ease; }
+.lb-dots button[aria-current="true"]::before { background: #fa8127; transform: scale(1.2); }
+.sg-face { display: flex; flex-direction: column; height: 100%; }
+.sg-pic { position: relative; flex: 1 1 auto; min-height: 180px; border-bottom: 1px solid #bcb58588; background: radial-gradient(ellipse at 50% 110%, #1d3350, #070d18 70%); overflow: hidden; }
+.sg-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: pan-x pan-y; }
+.sg-live { display: inline-flex; align-items: center; gap: 6px; color: #5fd08a; }
+.sg-live i { width: 6px; height: 6px; border-radius: 50%; background: #5fd08a; box-shadow: 0 0 6px #5fd08a; animation: sgLive 2s ease-in-out infinite; }
+@keyframes sgLive { 50% { opacity: .35; } }
+@media (prefers-reduced-motion: reduce) { .sg-live i { animation: none; } }
+.sg-card .lb-name { font-variant-numeric: tabular-nums; }
+.sg-where { min-height: 2.6em; padding-bottom: 12px; }
+:where(html[data-theme="night"], body.night) .lb-dots button[aria-current="true"]::before { background: #ff6a55; }
+:where(html[data-theme="night"], body.night) .sg-live { color: #ff7f70; } :where(html[data-theme="night"], body.night) .sg-live i { background: #ff6a55; box-shadow: none; }
+body:not(.has-cards) .lb-deck { display: none; }
+@media (min-width: 820px) and (min-height: 560px) and (orientation: landscape), (min-width: 600px) and (min-height: 900px) and (orientation: portrait) {
+  #sat-card, .lb-dots { display: none !important; }
+  .lb-deck { margin: 0; } .lb-track { overflow: visible; display: block; }
+  .lb-track > .logbook { margin: revert-layer; }
+}
