@@ -2797,3 +2797,6 @@ body.calib #help-card, body.ob-tour #help-card { display: none !important; }
 .cr-row b, .cr-pic b { color: var(--text, #fff2b3); font-weight: 600; } .cr-pic b { font: 500 12px/1.2 var(--label, 'SC Label', sans-serif); letter-spacing: .12em; text-transform: uppercase; } .cr-row a, .cr-pic a { color: #fa8127; text-decoration: none; }
 .cr-pics summary { padding: 11px 14px; border-top: 1px solid #ffffff12; color: #fa8127; font: 500 12px/1.2 var(--label, 'SC Label', sans-serif); letter-spacing: .14em; text-transform: uppercase; cursor: pointer; }
 body.night .cr-row a, body.night .cr-pic a, body.night .cr-pics summary { color: #ff6a55; }
+/* Join the crew never scrolls sideways (2026-10-27, Sevaan, iPhone): the card scrolled with overflow auto both ways, so the
+   shooting star's path and an edge star a pixel past the side let iOS pan it. Up and down only. */
+#set-plus-sheet .set-sheet-card { overflow-x: hidden !important; overscroll-behavior-x: none; touch-action: pan-y; }
