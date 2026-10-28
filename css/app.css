@@ -3033,3 +3033,4 @@ body.night #debug .set-range::-webkit-slider-thumb { background: #ff7f70; box-sh
 body.night #debug .set-card { background: #120505 !important; border-color: #2e1010 !important; }
 body.night #debug .set-tog { background: #3a1410 !important; } body.night #debug .set-tog:checked { background: #ff6a55 !important; }
 body.night #debug .set-tog::before { background: #ff7f70 !important; } body.night #debug .set-tog:checked::before { background: #120505 !important; }
+#tk-m .tk-seg.long, #p-info .tk-seg.long { white-space: normal; }
