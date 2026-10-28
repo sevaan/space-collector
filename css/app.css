@@ -2935,3 +2935,8 @@ body.night :is(#visible .nh-bell.free, #visible .tn-r .bell.free, .tn-wx .nights
 /* Reminder buttons on the Tonight hero: just the words, centred (2026-10-27, Sevaan: no FREE tag) */
 .tn-btn { justify-content: center; }
 .nowrap { white-space: nowrap; }
+/* The cloudy hero has the weather in it (2026-10-27, Sevaan): the same drifting cloud (and rain) as the bad-weather page, behind the words. */
+.tn-wx.cloudy { position: relative; overflow: hidden; isolation: isolate; }
+.tn-wx.cloudy > .tn-sky { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+.tn-wx.cloudy > .tn-sky .wx-clouds { top: -30px; height: 300px; }
+.tn-wx.cloudy > .tn-sky .wx-rain { height: 100%; }
