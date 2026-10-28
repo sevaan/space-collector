@@ -2931,3 +2931,6 @@ body.night :is(#visible .nh-bell.free, #visible .tn-r .bell.free, .tn-wx .nights
 #visible .tn-wx h3 { text-transform: none; letter-spacing: 0; }
 .b-alarm.needs-plus { position: absolute; } /* .needs-plus set position: relative and pulled the hidden alarm out from under each row in the full list (found 2026-10-27) */
 #sky-later #tonight-list > .tn-run:first-child > .tn-sec:first-child { margin-top: 4px; }
+
+/* Reminder buttons on the Tonight hero: just the words, centred (2026-10-27, Sevaan: no FREE tag) */
+.tn-btn { justify-content: center; }
