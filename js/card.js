@@ -1,25 +1,25 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { fallWords } from './last-chance.js?v=0.1.1230';
-import { useMiles } from './units.js?v=0.1.1230';
-import { feel } from './native.js?v=0.1.1230';
-import { sfx } from './sfx.js?v=0.1.1230';
-import { cardArt } from './art.js?v=0.1.1230';
-import { TIER_INFO } from './rarity.js?v=0.1.1230';
-import { SET_BY_ID } from './sets.js?v=0.1.1230';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.1230';
-import { FLEET_ABOUT, fleetAbout, factSourceUrl, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.1230';
-import { artFileFor } from './art-keys.js?v=0.1.1230';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.1230';
-import { orbitGlobe } from './orbit-view.js?v=0.1.1230';
-import { ART_SHARED } from './art-shared.js?v=0.1.1230';
-import { ART_CREDITS } from './art-credits.js?v=0.1.1230';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.1230';
-import { nightsIn } from './observation.js?v=0.1.1230';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.1230';
-import { SHINY } from './shiny.js?v=0.1.1230';
-import { conArt, cometArt } from './con-art.js?v=0.1.1230';
-import { CON_FIGURES } from './con-figures.js?v=0.1.1230';
-import { localText } from './localize.js?v=0.1.1230';
+import { fallWords } from './last-chance.js?v=0.1.1231';
+import { useMiles } from './units.js?v=0.1.1231';
+import { feel } from './native.js?v=0.1.1231';
+import { sfx } from './sfx.js?v=0.1.1231';
+import { cardArt } from './art.js?v=0.1.1231';
+import { TIER_INFO } from './rarity.js?v=0.1.1231';
+import { SET_BY_ID } from './sets.js?v=0.1.1231';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.1231';
+import { FLEET_ABOUT, fleetAbout, factSourceUrl, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.1231';
+import { artFileFor } from './art-keys.js?v=0.1.1231';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.1231';
+import { orbitGlobe } from './orbit-view.js?v=0.1.1231';
+import { ART_SHARED } from './art-shared.js?v=0.1.1231';
+import { ART_CREDITS } from './art-credits.js?v=0.1.1231';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.1231';
+import { nightsIn } from './observation.js?v=0.1.1231';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.1231';
+import { SHINY } from './shiny.js?v=0.1.1231';
+import { conArt, cometArt } from './con-art.js?v=0.1.1231';
+import { CON_FIGURES } from './con-figures.js?v=0.1.1231';
+import { localText } from './localize.js?v=0.1.1231';
 // The animal/symbol figure belongs to the completed (gold) constellation card only (2026-10-05): a single
 // star’s card draws just the star pattern with its star marked, so the figure is a reward for finishing the set.
 // A star card’s constellation figure comes into focus as you collect the constellation’s stars (design/con-focus.html B).
@@ -551,8 +551,11 @@ export function attachFlip(el, { onBack, onTap = orbitTap(el) } = {}) {
   // onTap (2026-10-14, orbit view): a single tap, fired once it’s clear no second tap is coming; a double tap flips.
   let flipped = false, busy = false, lastTap = 0, lastX = 0, lastY = 0, tapTimer = 0, downX = 0, downY = 0;
   const single = () => { clearTimeout(tapTimer); if (onTap) tapTimer = setTimeout(() => { if (!flipped) onTap(); }, 330); };
-  el.addEventListener('pointerdown', (e) => { downX = e.clientX; downY = e.clientY; });
-  const still = (e) => Math.hypot(e.clientX - downX, e.clientY - downY) < 10;
+  // A tap only counts if it started on this card, and not in its first half second (2026-10-27, Sevaan: a card opened
+  // from the grid switched to its orbit by itself; the tap that opened it was finishing on the new card).
+  const born = performance.now(); let armed = false;
+  el.addEventListener('pointerdown', (e) => { downX = e.clientX; downY = e.clientY; armed = performance.now() - born > 500; });
+  const still = (e) => { const ok = armed && Math.hypot(e.clientX - downX, e.clientY - downY) < 10; return ok; };
   const back = el.querySelector('.card__back');
   // Smooth back-and-forth (2026-10-14, Sevaan: flipping back and forth was janky): the old animation is dropped instead
   // of piling up (each one used to stay with fill: forwards), the faces swap on the frame the card is edge-on (read from
@@ -570,7 +573,8 @@ export function attachFlip(el, { onBack, onTap = orbitTap(el) } = {}) {
   const onUp = (e) => {
     if (e.target.closest?.('a')) return; // a link on the card (Source ›) is a link, not a tap or flip
     if (e.pointerType !== 'mouse') lastTouchUp = performance.now();
-    if (el.dataset.swiping || !still(e)) return;
+    if (el.dataset.swiping || !still(e)) { armed = false; return; }
+    armed = false;
     if (e.pointerType === 'mouse') { single(); return; } // mice: dblclick flips and cancels the single tap
     const now = performance.now();
     if (now - lastTap < 320 && Math.hypot(e.clientX - lastX, e.clientY - lastY) < 30) { lastTap = 0; clearTimeout(tapTimer); flip(); }
