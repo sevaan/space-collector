@@ -1265,5 +1265,38 @@
   "licence": "CC BY-SA 4.0",
   "source": "https://commons.wikimedia.org/wiki/File:Vega_DSS.png",
   "shows": "Vega, Digitized Sky Survey colour cutout centred on the star (Epsilon Lyrae double-double at upper left)"
+ },
+ "sat-aqua-aura": {
+  "credit": "NASA",
+  "licence": "Public domain (NASA)",
+  "source": "https://commons.wikimedia.org/wiki/File:Aura_spacecraft_model.png",
+  "shows": "NASA rendering of Aura on a transparent background, solar wing deployed (2275x841)",
+  "sibling": "Aura is shown; Aqua is built on the same spacecraft"
+ },
+ "sat-landsat-8": {
+  "credit": "NASA Goddard Conceptual Image Lab",
+  "licence": "Public domain (NASA)",
+  "source": "https://commons.wikimedia.org/wiki/File:LDCM_Landsat_8_spacecraft_model.png",
+  "shows": "Rendering of Landsat 8 on a transparent background (3000x1583)"
+ },
+ "sat-smap": {
+  "credit": "NASA/JPL-Caltech",
+  "licence": "Public domain (NASA)",
+  "source": "https://commons.wikimedia.org/wiki/File:SMAP_spacecraft_model.png",
+  "shows": "SMAP rendering with deployed reflector on transparent background (2500x3000)"
+ },
+ "sat-resurs-dk": {
+  "credit": "Музей Космонавтики (Memorial Museum of Cosmonautics), CC0",
+  "licence": "CC0",
+  "source": "https://commons.wikimedia.org/wiki/File:3F9A5714_(36484520454).jpg",
+  "shows": "Detailed Resurs-DK scale model hanging in the Memorial Museum of Cosmonautics",
+  "sibling": "museum model"
+ },
+ "sat-cygnss": {
+  "credit": "NASA",
+  "licence": "Public domain (NASA)",
+  "source": "https://commons.wikimedia.org/wiki/File:CYGNSS_concept_art.jpeg",
+  "shows": "NASA artist's concept of one CYGNSS satellite above a hurricane (1920x1080)",
+  "sibling": "artist’s concept"
  }
 }
