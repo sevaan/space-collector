@@ -4,8 +4,8 @@
 // facts only state what the catalogue says today (orbit, launch date and site) or simple date
 // comparisons. No extrapolating today’s orbit back over decades (lifetime laps or distance).
 
-import { orbitStats, titleCase, siteName, ownerName } from './facts.js?v=0.1.1241';
-import { localText } from './localize.js?v=0.1.1241';
+import { orbitStats, titleCase, siteName, ownerName } from './facts.js?v=0.1.1243';
+import { localText } from './localize.js?v=0.1.1243';
 
 const FAMILY = [
   [/^IRIDIUM 33 DEB/, 'A piece of the **first accidental collision between two intact satellites**: Iridium 33 hit the dead Kosmos 2251 in 2009.'],
@@ -301,6 +301,7 @@ export function factFor(o, now = new Date()) {
   if (o.natural) return o.fact;
   if (o.launches) return fleetFact(o);
   if (o.members) return familyFact(o, now);
+  const rw = factsCache?.rewrite?.[o.id]?.fact; if (rw) return rw; // the 2026-10-27 writing pass wins over everything below
   const hand = loreCache?.[o.id]?.fact;
   if (hand) return hand;
   const deb = debrisOf(o); if (deb) return deb.fact;
@@ -327,6 +328,7 @@ export function factSourceUrl(o, factText) {
   if (o.natural) return one(o.src) ?? srcCache?.natural?.[o.key] ?? null;
   if (o.launches) return factText ? srcCache?.fleets?.[factText] ?? null : null;
   if (o.members) return null;
+  const rw = factsCache?.rewrite?.[o.id]; if (rw?.fact) return rw.source ?? null;
   const hand = loreCache?.[o.id]; if (hand?.fact) return one(hand.source);
   const deb = debrisOf(o); if (deb) return deb.source ?? null;
   if (researched(o)) return one(factsCache.sats[o.id].source);

@@ -3,11 +3,12 @@
 // sky's own model, satellite.js), around a blueprint Earth (design/earth-styles.html C) that turns slowly, you marked.
 // Dots are in the card's rarity colour; the rarest few in view are named. Tap a dot to open its card. Draws only while
 // it's on screen. Fleet cards (Starlink and co.) aren't on it yet.
-import * as sat from './lib/satellite.js?v=0.1.1241';
-import { satrecFor } from './orbit.js?v=0.1.1241';
-import { COAST } from './coast.js?v=0.1.1241';
-import { TIER_INFO } from './rarity.js?v=0.1.1241';
-import { placeName } from './geo.js?v=0.1.1241';
+import * as sat from './lib/satellite.js?v=0.1.1243';
+import { satrecFor } from './orbit.js?v=0.1.1243';
+import { COAST } from './coast.js?v=0.1.1243';
+import { TIER_INFO } from './rarity.js?v=0.1.1243';
+import { earthMap } from './orbit-view.js?v=0.1.1243';
+import { placeName } from './geo.js?v=0.1.1243';
 
 const RAD = Math.PI / 180, RE = 6371, TILT = 20 * RAD;
 // A dot's name: whole words up to about 18 letters ("THOR AGENA D", not "THOR AGENA D ROCKET ST").
@@ -21,6 +22,7 @@ const lift = (h) => (h < 2000 ? h : 2000 + Math.min(h - 2000, 40000) * 0.04) / R
 export function satGlobe(host, { me = null, onPick = null } = {}) {
   const cv = document.createElement('canvas'); cv.className = 'sg-canvas'; host.appendChild(cv);
   const ctx = cv.getContext('2d');
+  let rc = null, rimg = null, sunV = [1, 0, 0];
   let items = [], rot = me ? me.lon : -80, last = 0, raf = 0, shown = false, posAt = 0, turn = 0;
   const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const io = new IntersectionObserver(([e]) => { shown = e.isIntersecting; if (shown && !raf) raf = requestAnimationFrame(draw); }, { threshold: 0.05 });
@@ -28,6 +30,7 @@ export function satGlobe(host, { me = null, onPick = null } = {}) {
   const away = () => document.hidden || document.documentElement.classList.contains('away');
   function place(t) {
     const g = sat.gstime(new Date(t));
+    { const sv = sat.sunPos(sat.jday(new Date(t))).rsun, n = Math.hypot(...sv) || 1, x = sv[0] / n, y = sv[1] / n; sunV = [x * Math.cos(g) + y * Math.sin(g), -x * Math.sin(g) + y * Math.cos(g), sv[2] / n]; } // the Sun over the turning Earth
     for (const it of items) { const pv = sat.propagate(it.s, new Date(t)); if (!pv?.position || !Number.isFinite(pv.position.x)) { it.ok = false; continue; }
       const geo = sat.eciToGeodetic(pv.position, g); it.lat = geo.latitude / RAD; it.lon = geo.longitude / RAD; it.h = geo.height; it.ok = true; }
   }
@@ -47,21 +50,21 @@ export function satGlobe(host, { me = null, onPick = null } = {}) {
       return { x: cx + x * R, y: cy - y * R, z, behind: z < 0 && x * x + y * y < 1 }; };
     const disc = () => { ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2); };
     // the blueprint Earth: dark navy, a fine grid, cream coastlines, shade on the far side, a cream rim
-    const oc = ctx.createRadialGradient(cx - R * 0.4, cy - R * 0.45, R * 0.05, cx, cy, R * 1.02); oc.addColorStop(0, '#1f4369'); oc.addColorStop(0.55, '#0f2542'); oc.addColorStop(1, '#050d18'); ctx.fillStyle = oc; disc(); ctx.fill(); // lit from the upper left (2026-10-27, Sevaan: some dimension)
-    ctx.save(); disc(); ctx.clip();
-    ctx.strokeStyle = 'rgba(143,180,216,.2)'; ctx.lineWidth = 1;
-    for (let la = -75; la <= 75; la += 15) { ctx.beginPath(); let pen = false; for (let lo = -180; lo <= 180; lo += 6) { const p = P(la, lo); if (p.z <= 0) { pen = false; continue; } pen ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y); pen = true; } ctx.stroke(); }
-    for (let lo = -180; lo < 180; lo += 15) { ctx.beginPath(); let pen = false; for (let la = -90; la <= 90; la += 6) { const p = P(la, lo); if (p.z <= 0) { pen = false; continue; } pen ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y); pen = true; } ctx.stroke(); }
-    const land = new Path2D();
-    for (const ring of COAST) { const ps = ring.map(([lo, la]) => P(la, lo)); if (!ps.some((p) => p.z > 0)) continue;
-      ps.forEach((p, i) => { const q = p.z > 0 ? p : (() => { const dx = p.x - cx, dy = p.y - cy, k = Math.hypot(dx, dy) || 1; return { x: cx + (dx / k) * R, y: cy + (dy / k) * R }; })(); i ? land.lineTo(q.x, q.y) : land.moveTo(q.x, q.y); }); land.closePath(); }
-    const coast = new Path2D(); /* only the near side, pen lifted across the back: stroking the fill path drew chords across the globe (2026-10-27) */
-    for (const ring of COAST) { let pen = false; for (const [lo, la] of ring) { const p = P(la, lo); if (p.z <= 0) { pen = false; continue; } pen ? coast.lineTo(p.x, p.y) : coast.moveTo(p.x, p.y); pen = true; } }
-    ctx.fillStyle = 'rgba(143,180,216,.1)'; ctx.fill(land); ctx.strokeStyle = 'rgba(255,242,179,.85)'; ctx.lineWidth = 1; ctx.stroke(coast);
-    const hi = ctx.createRadialGradient(cx - R * 0.42, cy - R * 0.48, 0, cx - R * 0.42, cy - R * 0.48, R * 0.7); hi.addColorStop(0, 'rgba(190,220,255,.16)'); hi.addColorStop(1, 'rgba(190,220,255,0)'); ctx.fillStyle = hi; ctx.fillRect(cx - R, cy - R, R * 2, R * 2);
-    const sh = ctx.createRadialGradient(cx - R * 0.4, cy - R * 0.45, R * 0.2, cx - R * 0.1, cy - R * 0.1, R * 1.25); sh.addColorStop(0, 'rgba(5,12,24,0)'); sh.addColorStop(0.55, 'rgba(5,12,24,.08)'); sh.addColorStop(1, 'rgba(5,12,24,.7)');
-    ctx.fillStyle = sh; ctx.fillRect(cx - R, cy - R, R * 2, R * 2); ctx.restore();
-    ctx.strokeStyle = 'rgba(255,242,179,.7)'; ctx.lineWidth = 1.2; disc(); ctx.stroke();
+    // the realistic Earth (2026-10-27, Sevaan's pick, design/earth-styles.html F): NASA's Blue Marble map on the globe, lit by the real Sun
+    const map = earthMap();
+    const glow = ctx.createRadialGradient(cx, cy, R * 0.96, cx, cy, R * 1.14); glow.addColorStop(0, 'rgba(120,170,255,.45)'); glow.addColorStop(0.35, 'rgba(120,170,255,.15)'); glow.addColorStop(1, 'rgba(120,170,255,0)'); ctx.fillStyle = glow; ctx.beginPath(); ctx.arc(cx, cy, R * 1.14, 0, Math.PI * 2); ctx.fill();
+    if (!map) { ctx.fillStyle = '#163a5e'; disc(); ctx.fill(); } else {
+      const N = Math.max(80, Math.min(320, Math.round(R * 2 * Math.min(1.5, d)))); if (!rc || rc.width !== N) { rc = document.createElement('canvas'); rc.width = rc.height = N; rimg = rc.getContext('2d').createImageData(N, N); }
+      const px = rimg.data, ct = Math.cos(TILT), st = Math.sin(TILT), r0 = rot * RAD;
+      for (let j = 0; j < N; j++) { const yv = 1 - (j + 0.5) / N * 2; for (let i = 0; i < N; i++) { const xv = (i + 0.5) / N * 2 - 1, rr = xv * xv + yv * yv, o = (j * N + i) * 4; if (rr > 1) { px[o + 3] = 0; continue; }
+        const zv = Math.sqrt(1 - rr), y0 = yv * ct + zv * st, z0 = -yv * st + zv * ct; // undo the tilt
+        const lat = Math.asin(Math.max(-1, Math.min(1, y0))), lon = r0 + Math.atan2(xv, z0);
+        const u = Math.floor(((lon / (2 * Math.PI) + 0.5) % 1 + 1) % 1 * map.w), v = Math.min(map.h - 1, Math.floor((0.5 - lat / Math.PI) * map.h)), q = (v * map.w + u) * 4;
+        const cl = Math.cos(lat), sun = cl * Math.cos(lon) * sunV[0] + cl * Math.sin(lon) * sunV[1] + Math.sin(lat) * sunV[2], day = Math.min(1, Math.max(0, (sun + 0.12) / 0.24)), lit = (0.34 + 0.66 * day) * (0.55 + 0.45 * zv); /* night side dimmed, not black: you see the continents at night too */
+        px[o] = map.d[q] * lit * (1 - 0.25 * (1 - day)); px[o + 1] = map.d[q + 1] * lit * (1 - 0.1 * (1 - day)); px[o + 2] = Math.min(255, map.d[q + 2] * lit + (1 - day) * 22); px[o + 3] = 255; } }
+      rc.getContext('2d').putImageData(rimg, 0, 0); ctx.save(); disc(); ctx.clip(); ctx.drawImage(rc, cx - R, cy - R, R * 2, R * 2); ctx.restore();
+    }
+    const at = ctx.createRadialGradient(cx, cy, R * 0.86, cx, cy, R * 1.01); at.addColorStop(0, 'rgba(120,180,255,0)'); at.addColorStop(1, 'rgba(140,195,255,.35)'); ctx.fillStyle = at; disc(); ctx.fill();
     let youAt = null;
     if (me) { const p = P(me.lat, me.lon); if (p.z > 0) { youAt = p; ctx.fillStyle = '#fff2b3'; ctx.beginPath(); ctx.arc(p.x, p.y, 2.4, 0, Math.PI * 2); ctx.fill(); ctx.font = '600 9px "SC Label", "Barlow Condensed", sans-serif'; ctx.fillText('YOU', p.x + 4, p.y - 3); } }
     // your satellites: behind the Earth faint, in front bright, the rarest few in front named

@@ -4,11 +4,11 @@
 // the sky), seen from 35° above the orbit's own plane with the low point to the right, the Earth to scale in the middle
 // turning underneath (your spot marked), and the object moving round at its true relative speed, a lap in 4–14 s.
 // Parts of the ring behind the Earth are faint. Twinkling stars behind. Canvas only. Coastlines: js/coast.js.
-import { satrecFor, overEarth } from './orbit.js?v=0.1.1241';
-import * as sat from './lib/satellite.js?v=0.1.1241';
-import { useMiles } from './units.js?v=0.1.1241';
-import { placeName } from './geo.js?v=0.1.1241';
-import { COAST } from './coast.js?v=0.1.1241';
+import { satrecFor, overEarth } from './orbit.js?v=0.1.1243';
+import * as sat from './lib/satellite.js?v=0.1.1243';
+import { useMiles } from './units.js?v=0.1.1243';
+import { placeName } from './geo.js?v=0.1.1243';
+import { COAST } from './coast.js?v=0.1.1243';
 
 const RAD = Math.PI / 180, RE = 6371;
 const dot = (a, b) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
@@ -21,7 +21,7 @@ const ground = (lat, lon, g, r = RE) => { const p = lat * RAD, l = lon * RAD + g
 // The realistic Earth's map: NASA's Blue Marble (land_shallow_topo, public domain), 1024×512 in assets/sky/earth.webp,
 // read once into pixels (2026-10-27, Sevaan asked for a realistic option).
 let MAP = null, mapLoading = null;
-function earthMap() {
+export function earthMap() {
   if (MAP || mapLoading) return MAP;
   mapLoading = (async () => { try { const im = new Image(); im.src = new URL('../assets/sky/earth.webp', import.meta.url).href; await im.decode();
     const c = document.createElement('canvas'); c.width = im.naturalWidth; c.height = im.naturalHeight; const x = c.getContext('2d'); x.drawImage(im, 0, 0);
@@ -42,7 +42,7 @@ function landDots() { if (DOTS) return DOTS; DOTS = [];
 
 // obj: the card (needs `el`); host: the element to fill; me: { lat, lon } or null; once: draw one still frame.
 export function orbitGlobe(obj, host, me, { once = false, style } = {}) {
-  let look = style; if (!look) { try { look = localStorage.getItem('globeStyle'); } catch { /* storage off */ } } look ||= 'blueprint'; /* Sevaan's pick, 2026-10-27 (design/earth-styles.html C) */
+  let look = style; if (!look) { try { look = localStorage.getItem('globeStyle'); } catch { /* storage off */ } } look ||= 'realistic'; /* Sevaan's pick, 2026-10-27 (design/earth-styles.html F; was C blueprint) */
   const satrec = obj.satrec ?? satrecFor(obj); if (!satrec) return null;
   const P = satrec.no ? (2 * Math.PI) / satrec.no : 95; // minutes per lap
   const t0 = Date.now(), ring = [];
@@ -120,8 +120,8 @@ export function orbitGlobe(obj, host, me, { once = false, style } = {}) {
           const ex = X * cg + Y * sg, ey = -X * sg + Y * cg; // into the turning Earth's frame
           const lon = Math.atan2(ey, ex), lat = Math.asin(Math.max(-1, Math.min(1, Z)));
           const u = Math.floor(((lon / (2 * Math.PI) + 0.5) % 1 + 1) % 1 * map.w), v = Math.min(map.h - 1, Math.floor((0.5 - lat / Math.PI) * map.h)), q = (v * map.w + u) * 4;
-          const sun = X * sx + Y * sy + Z * sz, day = Math.min(1, Math.max(0, (sun + 0.12) / 0.24)), lit = (0.14 + 0.86 * day) * (0.55 + 0.45 * zv);
-          px[o] = map.d[q] * lit; px[o + 1] = map.d[q + 1] * lit; px[o + 2] = Math.min(255, map.d[q + 2] * lit + (1 - day) * 10); px[o + 3] = 255; } }
+          const sun = X * sx + Y * sy + Z * sz, day = Math.min(1, Math.max(0, (sun + 0.12) / 0.24)), lit = (0.34 + 0.66 * day) * (0.55 + 0.45 * zv); /* night side dimmed, not black: you see the continents at night too */
+          px[o] = map.d[q] * lit * (1 - 0.25 * (1 - day)); px[o + 1] = map.d[q + 1] * lit * (1 - 0.1 * (1 - day)); px[o + 2] = Math.min(255, map.d[q + 2] * lit + (1 - day) * 22); px[o + 3] = 255; } }
         rc.getContext('2d').putImageData(rimg, 0, 0); ctx.save(); disc(); ctx.clip(); ctx.imageSmoothingEnabled = true; ctx.drawImage(rc, cx - R, cy - R, R * 2, R * 2); ctx.restore();
       }
       const at = ctx.createRadialGradient(cx, cy, R * 0.86, cx, cy, R * 1.01); at.addColorStop(0, 'rgba(120,180,255,0)'); at.addColorStop(1, 'rgba(140,195,255,.35)'); ctx.fillStyle = at; disc(); ctx.fill();

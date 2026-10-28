@@ -44,13 +44,15 @@ test('date comparisons use the real dates', () => {
   assert.ok(!at('2007-06-30').some((f) => f.includes('iPhone')));
 });
 
+const REWRITE = read('data/facts.json').rewrite ?? {};
 test('researched Kosmos series facts reach their satellites, and each series cites a source', () => {
   for (const [key, ser] of Object.entries(series.series)) for (const src of [ser.source].flat()) assert.match(src, /^https:\/\//, key);
   const byId = new Map(cards.map((c) => [String(c.id), c]));
   for (const [id, key] of Object.entries(series.members)) {
     const c = byId.get(id); if (!c) continue;
     const ser = series.series[key];
-    const expected = lore[id]?.fact ?? (ser.facts ? ser.facts[Number(id) % ser.facts.length] : ser.fact);
+    const rw = REWRITE[id]?.fact; /* the 2026-10-27 writing pass overrides the series line */
+    const expected = rw ?? lore[id]?.fact ?? (ser.facts ? ser.facts[Number(id) % ser.facts.length] : ser.fact);
     assert.equal(factFor(c), expected, `${c.name} (${key})`);
   }
   assert.match(factFor(byId.get('13301')), /British Columbia/);   // Kosmos 1383, COSPAS 1

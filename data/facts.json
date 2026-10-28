@@ -6658,5 +6658,1899 @@
    ],
    "source": "https://en.wikipedia.org/wiki/Gravity-1"
   }
- ]
+ ],
+ "rewrite": {
+  "46": {
+   "fact": "Secretly a **spy satellite**, the first ever to spy from orbit. Its Sun experiment was a cover story: it also caught **Soviet radar signals**.",
+   "source": "https://en.wikipedia.org/wiki/Solrad_1"
+  },
+  "116": {
+   "fact": "Carried **SNAP-3**, the **first nuclear power source** ever used in space, alongside its solar cells. It shared its rocket with two other satellites.",
+   "source": "https://space.skyrocket.de/doc_sdat/transit-4.htm"
+  },
+  "704": {
+   "fact": "The **first navigation satellite** put into regular use. Powered by a small **nuclear generator**, it guided Navy ships and submarines until late 1964.",
+   "source": "https://space.skyrocket.de/doc_sdat/transit-5bn.htm"
+  },
+  "729": {
+   "fact": "Radio signals flashed between it and portable ground stations to fix exact positions. That tied **islands and continents** onto one map.",
+   "source": "https://space.skyrocket.de/doc_sdat/secor.htm"
+  },
+  "731": {
+   "fact": "Secretly **Poppy 3B**, a Navy spy satellite that recorded **Soviet radar signals**. The public only ever heard its cover name.",
+   "source": "https://space.skyrocket.de/doc_sdat/poppy_20in.htm"
+  },
+  "870": {
+   "fact": "Studied the **ionosphere**, the electric layer of air that bounces radio waves, by firing radio signals down at it from above. Its longest antennas stretched **18 metres**.",
+   "source": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1964-051A"
+  },
+  "1271": {
+   "fact": "Secretly **Poppy 4B**, a Navy spy satellite that listened for **Soviet radar** signals. A Sun-watching science satellite on the same rocket served as the cover story.",
+   "source": "https://space.skyrocket.de/doc_sdat/poppy_24in.htm"
+  },
+  "2122": {
+   "fact": "Its infrared sensors measured the **faint glow of the sky**. It shared its rocket with its twin, **OV1-4**.",
+   "source": "https://space.skyrocket.de/doc_sdat/ov1.htm"
+  },
+  "2801": {
+   "fact": "Not a working satellite at all: a **dummy** built like a Soviet navigation satellite. It flew in place of a real one to test a new rocket, the **Kosmos-3M**.",
+   "source": "https://space.skyrocket.de/doc_sdat/zaliv-gvm.htm"
+  },
+  "2873": {
+   "fact": "Secretly one of the Navy’s **Poppy 5** spy satellites, launched in 1967 and upgraded to catch radar signals from **Soviet anti-missile defences**.",
+   "source": "https://space.skyrocket.de/doc_sdat/poppy_24in.htm"
+  },
+  "3081": {
+   "fact": "A battery-powered test for the Soviet **radar satellites** that tracked ships at sea. It tried out every part except the **nuclear reactor** the later ones carried.",
+   "source": "https://space.skyrocket.de/doc_sdat/us-ao.htm"
+  },
+  "3129": {
+   "fact": "Flashed **bright lights** so cameras could photograph it against the stars. That let Soviet mapmakers fix faraway points to within about **30 metres**.",
+   "source": "https://space.skyrocket.de/doc_sdat/sfera.htm"
+  },
+  "3158": {
+   "fact": "A battery-powered test for the Soviet **radar satellites** that tracked ships at sea. It tried out every part except the **nuclear reactor** the later ones carried.",
+   "source": "https://space.skyrocket.de/doc_sdat/us-ao.htm"
+  },
+  "3504": {
+   "fact": "A satellite built to **chase down another satellite** and destroy it. It flew in the Soviet Union’s first **anti-satellite** weapon tests, from 1968 to 1971.",
+   "source": "https://space.skyrocket.de/doc_sdat/i2p.htm"
+  },
+  "3530": {
+   "fact": "A satellite built to **chase down another satellite** and destroy it. It flew in the Soviet Union’s first **anti-satellite** weapon tests, from 1968 to 1971.",
+   "source": "https://space.skyrocket.de/doc_sdat/i2p.htm"
+  },
+  "3576": {
+   "fact": "Flashed **bright lights** so cameras could photograph it against the stars. That let Soviet mapmakers fix faraway points to within about **30 metres**.",
+   "source": "https://space.skyrocket.de/doc_sdat/sfera.htm"
+  },
+  "3669": {
+   "fact": "Studied the **ionosphere**, the electrified upper air that bounces radio signals around the world. In 1984 Canada lent it to **Japan**, which ran it until 1990.",
+   "source": "https://en.wikipedia.org/wiki/ISIS-I"
+  },
+  "3818": {
+   "fact": "Flashed **bright lights** so cameras could photograph it against the stars. That let Soviet mapmakers fix faraway points to within about **30 metres**.",
+   "source": "https://space.skyrocket.de/doc_sdat/sfera.htm"
+  },
+  "4254": {
+   "fact": "Flashed **bright lights** so cameras could photograph it against the stars. That let Soviet mapmakers fix faraway points to within about **30 metres**.",
+   "source": "https://space.skyrocket.de/doc_sdat/sfera.htm"
+  },
+  "4295": {
+   "fact": "Secretly **Poppy 6D**, one of four Navy spy satellites launched together. As a team they listened from orbit for **Soviet radar** signals.",
+   "source": "https://space.skyrocket.de/doc_sdat/poppy_mf.htm"
+  },
+  "4564": {
+   "fact": "Part of a Soviet radar satellite that tracked ships, powered by a **nuclear reactor**. It was boosted up here when its job ended. A sister, **Kosmos 954**, fell on Canada in 1978.",
+   "source": "https://space.skyrocket.de/doc_sdat/us-a.htm"
+  },
+  "4588": {
+   "fact": "A Soviet military **message relay**. Another of its kind, Kosmos 2251, was wrecked in the **first accidental collision** between two intact satellites.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-2m.htm"
+  },
+  "4594": {
+   "fact": "A satellite built to **chase down another satellite** and destroy it. It flew in the Soviet Union’s first **anti-satellite** weapon tests, from 1968 to 1971.",
+   "source": "https://space.skyrocket.de/doc_sdat/i2p.htm"
+  },
+  "4598": {
+   "fact": "A satellite built to **chase down another satellite** and destroy it. It flew in the Soviet Union’s first **anti-satellite** weapon tests, from 1968 to 1971.",
+   "source": "https://space.skyrocket.de/doc_sdat/i2p.htm"
+  },
+  "4964": {
+   "fact": "A satellite built to **chase down another satellite** and destroy it. It flew in the Soviet Union’s first **anti-satellite** weapon tests, from 1968 to 1971.",
+   "source": "https://space.skyrocket.de/doc_sdat/i2p.htm"
+  },
+  "5105": {
+   "fact": "Part of a Soviet radar satellite that tracked ships, powered by a **nuclear reactor**. It was boosted up here when its job ended. A sister, **Kosmos 954**, fell on Canada in 1978.",
+   "source": "https://space.skyrocket.de/doc_sdat/us-a.htm"
+  },
+  "5174": {
+   "fact": "A Soviet military **message relay**. Another of its kind, Kosmos 2251, was wrecked in the **first accidental collision** between two intact satellites.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-2m.htm"
+  },
+  "5180": {
+   "fact": "Flashed **bright lights** so cameras could photograph it against the stars. That let Soviet mapmakers fix faraway points to within about **30 metres**.",
+   "source": "https://space.skyrocket.de/doc_sdat/sfera.htm"
+  },
+  "5397": {
+   "fact": "An Air Force satellite that measured the **charged gas** in the upper atmosphere. Once in orbit, it set loose **eight small spheres** of its own.",
+   "source": "https://space.skyrocket.de/doc_sdat/ov1p.htm"
+  },
+  "5614": {
+   "fact": "Flashed **bright lights** so cameras could photograph it against the stars. That let Soviet mapmakers fix faraway points to within about **30 metres**.",
+   "source": "https://space.skyrocket.de/doc_sdat/sfera.htm"
+  },
+  "5705": {
+   "fact": "One of **52 Strela-2M** Soviet military relays. Each recorded messages over one part of the world and **played them back** over another.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-2m.htm"
+  },
+  "5721": {
+   "fact": "Part of a Soviet radar satellite that tracked ships, powered by a **nuclear reactor**. It was boosted up here when its job ended. A sister, **Kosmos 954**, fell on Canada in 1978.",
+   "source": "https://space.skyrocket.de/doc_sdat/us-a.htm"
+  },
+  "5905": {
+   "fact": "Flashed **bright lights** so cameras could photograph it against the stars. That let Soviet mapmakers fix faraway points to within about **30 metres**.",
+   "source": "https://space.skyrocket.de/doc_sdat/sfera.htm"
+  },
+  "6059": {
+   "fact": "One of **52 Strela-2M** Soviet military relays. Each recorded messages over one part of the world and **played them back** over another.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-2m.htm"
+  },
+  "6154": {
+   "fact": "Part of a Soviet radar satellite that tracked ships, powered by a **nuclear reactor**. It was boosted up here when its job ended. A sister, **Kosmos 954**, fell on Canada in 1978.",
+   "source": "https://space.skyrocket.de/doc_sdat/us-a.htm"
+  },
+  "6236": {
+   "fact": "The first satellite built by **AMSAT**, a club of radio hobbyists. Running on just **3.5 watts** of solar power, it relayed amateurs’ signals for nearly five years.",
+   "source": "https://en.wikipedia.org/wiki/AMSAT-OSCAR_6"
+  },
+  "6319": {
+   "fact": "Flashed **bright lights** so cameras could photograph it against the stars. That let Soviet mapmakers fix faraway points to within about **30 metres**.",
+   "source": "https://space.skyrocket.de/doc_sdat/sfera.htm"
+  },
+  "6323": {
+   "fact": "One of **52 Strela-2M** Soviet military relays. Each recorded messages over one part of the world and **played them back** over another.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-2m.htm"
+  },
+  "6825": {
+   "fact": "Flashed **bright lights** so cameras could photograph it against the stars. That let Soviet mapmakers fix faraway points to within about **30 metres**.",
+   "source": "https://space.skyrocket.de/doc_sdat/sfera.htm"
+  },
+  "6965": {
+   "fact": "One of **52 Strela-2M** Soviet military relays. Each recorded messages over one part of the world and **played them back** over another.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-2m.htm"
+  },
+  "7005": {
+   "fact": "Part of a Soviet radar satellite that tracked ships, powered by a **nuclear reactor**. It was boosted up here when its job ended. A sister, **Kosmos 954**, fell on Canada in 1978.",
+   "source": "https://space.skyrocket.de/doc_sdat/us-a.htm"
+  },
+  "7281": {
+   "fact": "Flashed **bright lights** so cameras could photograph it against the stars. That let Soviet mapmakers fix faraway points to within about **30 metres**.",
+   "source": "https://space.skyrocket.de/doc_sdat/sfera.htm"
+  },
+  "7291": {
+   "fact": "Part of a Soviet radar satellite that tracked ships, powered by a **nuclear reactor**. It was boosted up here when its job ended. A sister, **Kosmos 954**, fell on Canada in 1978.",
+   "source": "https://space.skyrocket.de/doc_sdat/us-a.htm"
+  },
+  "7297": {
+   "fact": "Part of a Soviet radar satellite that tracked ships, powered by a **nuclear reactor**. It was boosted up here when its job ended. A sister, **Kosmos 954**, fell on Canada in 1978.",
+   "source": "https://space.skyrocket.de/doc_sdat/us-a.htm"
+  },
+  "7424": {
+   "fact": "Flashed **bright lights** so cameras could photograph it against the stars. That let Soviet mapmakers fix faraway points to within about **30 metres**.",
+   "source": "https://space.skyrocket.de/doc_sdat/sfera.htm"
+  },
+  "7433": {
+   "fact": "One of **52 Strela-2M** Soviet military relays. Each recorded messages over one part of the world and **played them back** over another.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-2m.htm"
+  },
+  "7663": {
+   "fact": "Flashed **bright lights** so cameras could photograph it against the stars. That let Soviet mapmakers fix faraway points to within about **30 metres**.",
+   "source": "https://space.skyrocket.de/doc_sdat/sfera.htm"
+  },
+  "7718": {
+   "fact": "Part of a Soviet radar satellite that tracked ships, powered by a **nuclear reactor**. It was boosted up here when its job ended. A sister, **Kosmos 954**, fell on Canada in 1978.",
+   "source": "https://space.skyrocket.de/doc_sdat/us-a.htm"
+  },
+  "7727": {
+   "fact": "Part of a **nuclear-powered** radar satellite that spied on ships, and was boosted to this higher orbit when its job was done. A sister, **Kosmos 954**, fell on Canada in 1978.",
+   "source": "https://space.skyrocket.de/doc_sdat/us-a.htm"
+  },
+  "7736": {
+   "fact": "A Soviet military **navigation** satellite. Like its civilian twin Tsikada, it used **gravity**, not fuel, to keep one side pointed at Earth.",
+   "source": "https://space.skyrocket.de/doc_sdat/parus.htm"
+  },
+  "7820": {
+   "fact": "Each Strela-1M military message relay lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "7822": {
+   "fact": "Like other Strela-1M military message relays, it was left to **drift freely** around its orbit, so the fleet spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "7823": {
+   "fact": "Each Strela-1M military message relay lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "7825": {
+   "fact": "Like other Strela-1M military message relays, it was left to **drift freely** around its orbit, so the fleet spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "7826": {
+   "fact": "Each Strela-1M military message relay lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "7828": {
+   "fact": "Like other Strela-1M military message relays, it was left to **drift freely** around its orbit, so the fleet spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "8072": {
+   "fact": "A Soviet military **navigation** satellite. Like its civilian twin Tsikada, it used **gravity**, not fuel, to keep one side pointed at Earth.",
+   "source": "https://space.skyrocket.de/doc_sdat/parus.htm"
+  },
+  "8195": {
+   "fact": "Carried programmes for the Soviet **Orbita TV network**. Only **17** Molniya-2s were launched before newer models replaced them.",
+   "source": "https://en.wikipedia.org/wiki/Molniya_(satellite)"
+  },
+  "8285": {
+   "fact": "Each Strela-1M military message relay lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "8287": {
+   "fact": "Like other Strela-1M military message relays, it was left to **drift freely** around its orbit, so the fleet spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "8288": {
+   "fact": "Each Strela-1M military message relay lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "8290": {
+   "fact": "Like other Strela-1M military message relays, it was left to **drift freely** around its orbit, so the fleet spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "8291": {
+   "fact": "Each Strela-1M military message relay lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "8343": {
+   "fact": "One of **52 Strela-2M** military message relays. Three were lost before reaching orbit, and the rest circled about **800 km up**.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-2m.htm"
+  },
+  "8419": {
+   "fact": "A Soviet military **navigation** satellite. Nearly **100 Parus satellites** were launched between 1974 and 2010, all from Plesetsk.",
+   "source": "https://space.skyrocket.de/doc_sdat/parus.htm"
+  },
+  "8458": {
+   "fact": "Recorded military messages over one part of the world and played them back over another. A sister satellite, **Kosmos 2251**, was destroyed in the **first accidental collision** between two intact satellites.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-2m.htm"
+  },
+  "8473": {
+   "fact": "Part of a **nuclear-powered** radar satellite that spied on ships, and was boosted to this higher orbit when its job was done. A sister, **Kosmos 954**, fell on Canada in 1978.",
+   "source": "https://space.skyrocket.de/doc_sdat/us-a.htm"
+  },
+  "8591": {
+   "fact": "A Soviet military **navigation** satellite. Like its civilian twin Tsikada, it used **gravity**, not fuel, to keep one side pointed at Earth.",
+   "source": "https://space.skyrocket.de/doc_sdat/parus.htm"
+  },
+  "8608": {
+   "fact": "Like other Strela-1M military message relays, it was left to **drift freely** around its orbit, so the fleet spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "8609": {
+   "fact": "Each Strela-1M military message relay lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "8611": {
+   "fact": "Like other Strela-1M military message relays, it was left to **drift freely** around its orbit, so the fleet spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "8612": {
+   "fact": "Each Strela-1M military message relay lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "8614": {
+   "fact": "Like other Strela-1M military message relays, it was left to **drift freely** around its orbit, so the fleet spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "8688": {
+   "fact": "An armoured **target** for Soviet anti-satellite weapons. Two interceptors, **Kosmos 804 and 814**, practised on it without destroying it, then brought themselves down.",
+   "source": "https://en.wikipedia.org/wiki/Kosmos_803"
+  },
+  "8890": {
+   "fact": "Like other Strela-1M military message relays, it was left to **drift freely** around its orbit, so the fleet spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "8891": {
+   "fact": "Each Strela-1M military message relay lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "8893": {
+   "fact": "Like other Strela-1M military message relays, it was left to **drift freely** around its orbit, so the fleet spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "8894": {
+   "fact": "Each Strela-1M military message relay lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "8896": {
+   "fact": "Like other Strela-1M military message relays, it was left to **drift freely** around its orbit, so the fleet spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "8923": {
+   "fact": "One of **52 Strela-2M** military message relays. Three were lost before reaching orbit, and the rest circled about **800 km up**.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-2m.htm"
+  },
+  "9022": {
+   "fact": "Recorded military messages over one part of the world and played them back over another. A sister satellite, **Kosmos 2251**, was destroyed in the **first accidental collision** between two intact satellites.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-2m.htm"
+  },
+  "9443": {
+   "fact": "One of **52 Strela-2M** military message relays. Three were lost before reaching orbit, and the rest circled about **800 km up**.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-2m.htm"
+  },
+  "9486": {
+   "fact": "Part of a **nuclear-powered** radar satellite that spied on ships, and was boosted to this higher orbit when its job was done. A sister, **Kosmos 954**, fell on Canada in 1978.",
+   "source": "https://space.skyrocket.de/doc_sdat/us-a.htm"
+  },
+  "9494": {
+   "fact": "Part of a **nuclear-powered** radar satellite that spied on ships, and was boosted to this higher orbit when its job was done. A sister, **Kosmos 954**, fell on Canada in 1978.",
+   "source": "https://space.skyrocket.de/doc_sdat/us-a.htm"
+  },
+  "9509": {
+   "fact": "A Soviet military **navigation** satellite. Like its civilian twin Tsikada, it used **gravity**, not fuel, to keep one side pointed at Earth.",
+   "source": "https://space.skyrocket.de/doc_sdat/parus.htm"
+  },
+  "9589": {
+   "fact": "Like other Strela-1M military message relays, it was left to **drift freely** around its orbit, so the fleet spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "9590": {
+   "fact": "Each Strela-1M military message relay lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "9592": {
+   "fact": "Like other Strela-1M military message relays, it was left to **drift freely** around its orbit, so the fleet spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "9593": {
+   "fact": "Each Strela-1M military message relay lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "9595": {
+   "fact": "Like other Strela-1M military message relays, it was left to **drift freely** around its orbit, so the fleet spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "9634": {
+   "fact": "A Soviet **anti-satellite interceptor**. In December 1976 it caught up with its target, **Kosmos 880**, and destroyed it.",
+   "source": "https://en.wikipedia.org/wiki/Kosmos_880"
+  },
+  "9637": {
+   "fact": "A Soviet military **navigation** satellite. Nearly **100 Parus satellites** were launched between 1974 and 2010, all from Plesetsk.",
+   "source": "https://space.skyrocket.de/doc_sdat/parus.htm"
+  },
+  "10010": {
+   "fact": "An armoured **target** for Soviet anti-satellite weapons. Two interceptors, Kosmos 910 and 918, went after it in 1977, and **both attempts failed**.",
+   "source": "https://en.wikipedia.org/wiki/Kosmos_909"
+  },
+  "10120": {
+   "fact": "Recorded military messages over one part of the world and played them back over another. A sister satellite, **Kosmos 2251**, was destroyed in the **first accidental collision** between two intact satellites.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-2m.htm"
+  },
+  "10141": {
+   "fact": "A Soviet military **navigation** satellite. Nearly **100 Parus satellites** were launched between 1974 and 2010, all from Plesetsk.",
+   "source": "https://space.skyrocket.de/doc_sdat/parus.htm"
+  },
+  "10282": {
+   "fact": "Like other Strela-1M military message relays, it was left to **drift freely** around its orbit, so the fleet spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "10286": {
+   "fact": "Each Strela-1M military message relay lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "10288": {
+   "fact": "Like other Strela-1M military message relays, it was left to **drift freely** around its orbit, so the fleet spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "10289": {
+   "fact": "Each Strela-1M military message relay lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "10291": {
+   "fact": "Like other Strela-1M military message relays, it was left to **drift freely** around its orbit, so the fleet spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "10292": {
+   "fact": "Each Strela-1M military message relay lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "10352": {
+   "fact": "A Soviet military **navigation** satellite. Like its civilian twin Tsikada, it used **gravity**, not fuel, to keep one side pointed at Earth.",
+   "source": "https://space.skyrocket.de/doc_sdat/parus.htm"
+  },
+  "10358": {
+   "fact": "Part of a **nuclear-powered** radar satellite that spied on ships, and was boosted to this higher orbit when its job was done. A sister, **Kosmos 954**, fell on Canada in 1978.",
+   "source": "https://space.skyrocket.de/doc_sdat/us-a.htm"
+  },
+  "10512": {
+   "fact": "An armoured **target** for Soviet anti-satellite weapons. Two interceptors, Kosmos 970 and 1009, were sent after it, and both tests **left it intact**.",
+   "source": "https://en.wikipedia.org/wiki/Kosmos_967"
+  },
+  "10520": {
+   "fact": "Recorded military messages over one part of the world and played them back over another. A sister satellite, **Kosmos 2251**, was destroyed in the **first accidental collision** between two intact satellites.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-2m.htm"
+  },
+  "10585": {
+   "fact": "Like other Strela-1M military message relays, it was left to **drift freely** around its orbit, so the fleet spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "10586": {
+   "fact": "Each Strela-1M military message relay lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "10588": {
+   "fact": "Like other Strela-1M military message relays, it was left to **drift freely** around its orbit, so the fleet spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "10589": {
+   "fact": "Each Strela-1M military message relay lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "10676": {
+   "fact": "Recorded military messages over one part of the world and played them back over another. A sister satellite, **Kosmos 2251**, was destroyed in the **first accidental collision** between two intact satellites.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-2m.htm"
+  },
+  "10744": {
+   "fact": "A Soviet military **navigation** satellite. Nearly **100 Parus satellites** were launched between 1974 and 2010, all from Plesetsk.",
+   "source": "https://space.skyrocket.de/doc_sdat/parus.htm"
+  },
+  "10930": {
+   "fact": "Like other Strela-1M military message relays, it was left to **drift freely** around its orbit, so the fleet spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "10931": {
+   "fact": "Each Strela-1M military message relay lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "10933": {
+   "fact": "Like other Strela-1M military message relays, it was left to **drift freely** around its orbit, so the fleet spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "10934": {
+   "fact": "Each Strela-1M military message relay lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "10936": {
+   "fact": "Like other Strela-1M military message relays, it was left to **drift freely** around its orbit, so the fleet spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "10937": {
+   "fact": "Each Strela-1M military message relay lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "10961": {
+   "fact": "One of **52 Strela-2M** military message relays. Three were lost before reaching orbit, and the rest circled about **800 km up**.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-2m.htm"
+  },
+  "11042": {
+   "fact": "Each Strela-1M military message relay lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "11044": {
+   "fact": "Like other Strela-1M military message relays, it was left to **drift freely** around its orbit, so the fleet spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "11045": {
+   "fact": "Each Strela-1M military message relay lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "11047": {
+   "fact": "Like other Strela-1M military message relays, it was left to **drift freely** around its orbit, so the fleet spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "11048": {
+   "fact": "Each Strela-1M military message relay lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "11050": {
+   "fact": "Like other Strela-1M military message relays, it was left to **drift freely** around its orbit, so the fleet spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "11111": {
+   "fact": "One of **52 Strela-2M** military message relays. Three were lost before reaching orbit, and the rest circled about **800 km up**.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-2m.htm"
+  },
+  "11128": {
+   "fact": "Like other Strela-1M military message relays, it was left to **drift freely** around its orbit, so the fleet spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "11129": {
+   "fact": "Each Strela-1M military message relay lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "11131": {
+   "fact": "Like other Strela-1M military message relays, it was left to **drift freely** around its orbit, so the fleet spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "11132": {
+   "fact": "Each Strela-1M military message relay lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "11134": {
+   "fact": "Like other Strela-1M military message relays, it was left to **drift freely** around its orbit, so the fleet spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "11135": {
+   "fact": "Each Strela-1M military message relay lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "11296": {
+   "fact": "Like other Strela-1M military message relays, it was left to **drift freely** around its orbit, so the fleet spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "11297": {
+   "fact": "Each Strela-1M military message relay lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "11299": {
+   "fact": "Like other Strela-1M military message relays, it was left to **drift freely** around its orbit, so the fleet spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "11300": {
+   "fact": "Each Strela-1M military message relay lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "11302": {
+   "fact": "Like other Strela-1M military message relays, it was left to **drift freely** around its orbit, so the fleet spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "11303": {
+   "fact": "Each Strela-1M military message relay lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "11308": {
+   "fact": "A Soviet military **navigation** satellite. Nearly **100 Parus satellites** were launched between 1974 and 2010, all from Plesetsk.",
+   "source": "https://space.skyrocket.de/doc_sdat/parus.htm"
+  },
+  "11320": {
+   "fact": "A Soviet military **navigation** satellite. Nearly **100 Parus satellites** were launched between 1974 and 2010, all from Plesetsk.",
+   "source": "https://space.skyrocket.de/doc_sdat/parus.htm"
+  },
+  "11378": {
+   "fact": "A Soviet military **navigation** satellite. Like its civilian twin Tsikada, it used **gravity**, not fuel, to keep one side pointed at Earth.",
+   "source": "https://space.skyrocket.de/doc_sdat/parus.htm"
+  },
+  "11425": {
+   "fact": "One of **52 Strela-2M** military message relays. Three were lost before reaching orbit, and the rest circled about **800 km up**.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-2m.htm"
+  },
+  "11510": {
+   "fact": "Recorded military messages over one part of the world and played them back over another. A sister satellite, **Kosmos 2251**, was destroyed in the **first accidental collision** between two intact satellites.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-2m.htm"
+  },
+  "11539": {
+   "fact": "Like other Strela-1M military message relays, it was left to **drift freely** around its orbit, so the fleet spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "11540": {
+   "fact": "Each Strela-1M military message relay lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "11542": {
+   "fact": "Like other Strela-1M military message relays, it was left to **drift freely** around its orbit, so the fleet spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "11543": {
+   "fact": "Each Strela-1M military message relay lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "11545": {
+   "fact": "Like other Strela-1M military message relays, it was left to **drift freely** around its orbit, so the fleet spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "11573": {
+   "fact": "One of **52 Strela-2M** military message relays. Three were lost before reaching orbit, and the rest circled about **800 km up**.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-2m.htm"
+  },
+  "11585": {
+   "fact": "A Soviet military **navigation** satellite. Like its civilian twin Tsikada, it used **gravity**, not fuel, to keep one side pointed at Earth.",
+   "source": "https://space.skyrocket.de/doc_sdat/parus.htm"
+  },
+  "11680": {
+   "fact": "A Soviet military **navigation** satellite. Nearly **100 Parus satellites** were launched between 1974 and 2010, all from Plesetsk.",
+   "source": "https://space.skyrocket.de/doc_sdat/parus.htm"
+  },
+  "11692": {
+   "fact": "Like other Strela-1M military message relays, it was left to **drift freely** around its orbit, so the fleet spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "11693": {
+   "fact": "Each Strela-1M military message relay lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "11695": {
+   "fact": "Like other Strela-1M military message relays, it was left to **drift freely** around its orbit, so the fleet spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "11696": {
+   "fact": "Each Strela-1M military message relay lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "11698": {
+   "fact": "Like other Strela-1M military message relays, it was left to **drift freely** around its orbit, so the fleet spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "11750": {
+   "fact": "An armoured **target** for Soviet anti-satellite weapons. Its interceptor, Kosmos 1174, **missed it three times** in three days and was then ordered to blow itself up.",
+   "source": "https://en.wikipedia.org/wiki/Kosmos_1171"
+  },
+  "11765": {
+   "fact": "Sent to destroy the target satellite Kosmos 1171, it **missed three times** in three days. Controllers then ordered it to **blow itself up**.",
+   "source": "https://en.wikipedia.org/wiki/Kosmos_1171"
+  },
+  "11788": {
+   "fact": "Part of a **nuclear-powered** radar satellite that spied on ships, and was boosted to this higher orbit when its job was done. A sister, **Kosmos 954**, fell on Canada in 1978.",
+   "source": "https://space.skyrocket.de/doc_sdat/us-a.htm"
+  },
+  "11803": {
+   "fact": "A Soviet military **navigation** satellite. Nearly **100 Parus satellites** were launched between 1974 and 2010, all from Plesetsk.",
+   "source": "https://space.skyrocket.de/doc_sdat/parus.htm"
+  },
+  "11869": {
+   "fact": "One of **52 Strela-2M** military message relays. Three were lost before reaching orbit, and the rest circled about **800 km up**.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-2m.htm"
+  },
+  "11875": {
+   "fact": "Like other Strela-1M military message relays, it was left to **drift freely** around its orbit, so the fleet spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "11876": {
+   "fact": "Each Strela-1M military message relay lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "11878": {
+   "fact": "Like other Strela-1M military message relays, it was left to **drift freely** around its orbit, so the fleet spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "11879": {
+   "fact": "Each Strela-1M military message relay lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "11881": {
+   "fact": "Like other Strela-1M military message relays, it was left to **drift freely** around its orbit, so the fleet spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "11882": {
+   "fact": "Each Strela-1M military message relay lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "12107": {
+   "fact": "Each Strela-1M military message relay lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "12109": {
+   "fact": "Like other Strela-1M military message relays, it was left to **drift freely** around its orbit, so the fleet spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "12110": {
+   "fact": "Each Strela-1M military message relay lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "12112": {
+   "fact": "Like other Strela-1M military message relays, it was left to **drift freely** around its orbit, so the fleet spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "12113": {
+   "fact": "Each Strela-1M military message relay lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "12149": {
+   "fact": "In 1981 a Soviet **anti-satellite** interceptor, Kosmos 1243, reached this target, but its **explosive charge failed to go off**. A second attempt, by Kosmos 1258, also failed.",
+   "source": "https://en.wikipedia.org/wiki/Kosmos_1241"
+  },
+  "12295": {
+   "fact": "Rode the **first flight** of Japan’s N-II rocket to prove it could launch **weather and TV satellites**. It also tested its own onboard equipment, and worked until 1984.",
+   "source": "https://global.jaxa.jp/projects/sat/ets4/index.html"
+  },
+  "12319": {
+   "fact": "A **nuclear-powered** radar satellite that spied on ships. It could **eject its reactor core**, which was meant to break up and burn away high in the atmosphere, reducing radioactive contamination on the ground.",
+   "source": "https://space.skyrocket.de/doc_sdat/us-a.htm"
+  },
+  "12320": {
+   "fact": "Each Strela-1M military message relay lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "12322": {
+   "fact": "Like other Strela-1M military message relays, it was left to **drift freely** around its orbit, so the fleet spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "12323": {
+   "fact": "Each Strela-1M military message relay lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "12325": {
+   "fact": "Like other Strela-1M military message relays, it was left to **drift freely** around its orbit, so the fleet spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "12326": {
+   "fact": "Each Strela-1M military message relay lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "12409": {
+   "fact": "A **nuclear-powered** radar satellite that spied on ships. It could **eject its reactor core**, which was meant to break up and burn away high in the atmosphere, reducing radioactive contamination on the ground.",
+   "source": "https://space.skyrocket.de/doc_sdat/us-a.htm"
+  },
+  "12442": {
+   "fact": "Recorded military messages over one part of the world and played them back over another. A sister satellite, **Kosmos 2251**, was destroyed in the **first accidental collision** between two intact satellites.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-2m.htm"
+  },
+  "12546": {
+   "fact": "A test capsule that rode the **third flight** of Europe’s Ariane 1 rocket. It shared the trip with the weather satellite **Meteosat 2** and India’s APPLE.",
+   "source": "https://www.esa.int/ESA_Multimedia/Images/2019/05/Ariane_L03"
+  },
+  "12637": {
+   "fact": "Like other Strela-1M military message relays, it was left to **drift freely** around its orbit, so the fleet spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "12638": {
+   "fact": "Each Strela-1M military message relay lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "12640": {
+   "fact": "Like other Strela-1M military message relays, it was left to **drift freely** around its orbit, so the fleet spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "12641": {
+   "fact": "Each Strela-1M military message relay lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "12643": {
+   "fact": "Like other Strela-1M military message relays, it was left to **drift freely** around its orbit, so the fleet spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "12645": {
+   "fact": "**Bulgaria’s first satellite**, nicknamed Bulgaria 1300 for the 1300th birthday of the Bulgarian state. It studied the **ionosphere and magnetosphere** around Earth.",
+   "source": "https://en.wikipedia.org/wiki/Interkosmos_22"
+  },
+  "12783": {
+   "fact": "A **nuclear-powered** radar satellite that spied on ships. It could **eject its reactor core**, which was meant to break up and burn away high in the atmosphere, reducing radioactive contamination on the ground.",
+   "source": "https://space.skyrocket.de/doc_sdat/us-a.htm"
+  },
+  "12791": {
+   "fact": "One of **52 Strela-2M** military message relays. Three were lost before reaching orbit, and the rest circled about **800 km up**.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-2m.htm"
+  },
+  "12835": {
+   "fact": "A Soviet military **navigation** satellite. Nearly **100 Parus satellites** were launched between 1974 and 2010, all from Plesetsk.",
+   "source": "https://space.skyrocket.de/doc_sdat/parus.htm"
+  },
+  "12879": {
+   "fact": "Measured the exact **shape of Earth**. It pinned down positions on the ground for accurate maps and studied the shape of the **ocean surface**.",
+   "source": "https://space.skyrocket.de/doc_sdat/geo-ik.htm"
+  },
+  "12976": {
+   "fact": "Like other Strela-1M military message relays, it was left to **drift freely** around its orbit, so the fleet spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "12977": {
+   "fact": "Each Strela-1M military message relay lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "12979": {
+   "fact": "Like other Strela-1M military message relays, it was left to **drift freely** around its orbit, so the fleet spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "12980": {
+   "fact": "Each Strela-1M military message relay lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "12982": {
+   "fact": "Like other Strela-1M military message relays, it was left to **drift freely** around its orbit, so the fleet spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "12997": {
+   "fact": "Built by the radio club of **DOSAAF**, a Soviet youth training group, and launched with **five sister satellites** on one rocket. It was an experiment, with no relay open to the public.",
+   "source": "https://space.skyrocket.de/doc_sdat/rs-3.htm"
+  },
+  "13000": {
+   "fact": "One of **six Soviet amateur radio satellites** launched together on a single rocket. Built by a **radio club** as an experiment, it had no relay for the public to use.",
+   "source": "https://space.skyrocket.de/doc_sdat/rs-3.htm"
+  },
+  "13027": {
+   "fact": "One of **52 Strela-2M** military message relays. Three were lost before reaching orbit, and the rest circled about **800 km up**.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-2m.htm"
+  },
+  "13033": {
+   "fact": "A Soviet military **navigation** satellite. Nearly **100 Parus satellites** were launched between 1974 and 2010, all from Plesetsk.",
+   "source": "https://space.skyrocket.de/doc_sdat/parus.htm"
+  },
+  "13127": {
+   "fact": "A Soviet military **navigation** satellite. Like its civilian twin Tsikada, it used **gravity**, not fuel, to keep one side pointed at Earth.",
+   "source": "https://space.skyrocket.de/doc_sdat/parus.htm"
+  },
+  "13148": {
+   "fact": "Recorded military messages over one part of the world and played them back over another. A sister satellite, **Kosmos 2251**, was destroyed in the **first accidental collision** between two intact satellites.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-2m.htm"
+  },
+  "13160": {
+   "fact": "Each Strela-1M military message relay lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "13162": {
+   "fact": "Like other Strela-1M military message relays, it was left to **drift freely** around its orbit, so the fleet spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "13163": {
+   "fact": "Each Strela-1M military message relay lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "13165": {
+   "fact": "Like other Strela-1M military message relays, it was left to **drift freely** around its orbit, so the fleet spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "13166": {
+   "fact": "Each Strela-1M military message relay lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "13175": {
+   "fact": "A **nuclear-powered** radar satellite that spied on ships. It could **eject its reactor core**, which was meant to break up and burn away high in the atmosphere, reducing radioactive contamination on the ground.",
+   "source": "https://space.skyrocket.de/doc_sdat/us-a.htm"
+  },
+  "13241": {
+   "fact": "One of **52 Strela-2M** military message relays. Three were lost before reaching orbit, and the rest circled about **800 km up**.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-2m.htm"
+  },
+  "13243": {
+   "fact": "A **nuclear-powered** radar satellite that spied on ships. It could **eject its reactor core**, which was meant to break up and burn away high in the atmosphere, reducing radioactive contamination on the ground.",
+   "source": "https://space.skyrocket.de/doc_sdat/us-a.htm"
+  },
+  "13259": {
+   "fact": "An armoured **target** for Soviet anti-satellite weapons. In June 1982 it was the target of the **last Soviet anti-satellite test**, by the interceptor Kosmos 1379.",
+   "source": "https://en.wikipedia.org/wiki/Kosmos_1375"
+  },
+  "13375": {
+   "fact": "Like other Strela-1M military message relays, it was left to **drift freely** around its orbit, so the fleet spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "13376": {
+   "fact": "Each Strela-1M military message relay lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "13378": {
+   "fact": "Like other Strela-1M military message relays, it was left to **drift freely** around its orbit, so the fleet spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "13379": {
+   "fact": "Each Strela-1M military message relay lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "13381": {
+   "fact": "Like other Strela-1M military message relays, it was left to **drift freely** around its orbit, so the fleet spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "13382": {
+   "fact": "Each Strela-1M military message relay lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "13589": {
+   "fact": "Measured the exact **shape of Earth**. It pinned down positions on the ground for accurate maps and studied the shape of the **ocean surface**.",
+   "source": "https://space.skyrocket.de/doc_sdat/geo-ik.htm"
+  },
+  "13600": {
+   "fact": "Part of a **nuclear-powered** radar satellite that spied on ships, and was boosted to this higher orbit when its job was done. A sister, **Kosmos 954**, fell on Canada in 1978.",
+   "source": "https://space.skyrocket.de/doc_sdat/us-a.htm"
+  },
+  "13648": {
+   "fact": "Recorded military messages over one part of the world and played them back over another. A sister satellite, **Kosmos 2251**, was destroyed in the **first accidental collision** between two intact satellites.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-2m.htm"
+  },
+  "13757": {
+   "fact": "A Soviet military **navigation** satellite. Like its civilian twin Tsikada, it used **gravity**, not fuel, to keep one side pointed at Earth.",
+   "source": "https://space.skyrocket.de/doc_sdat/parus.htm"
+  },
+  "13762": {
+   "fact": "Like other Strela-1M military message relays, it was left to **drift freely** around its orbit, so the fleet spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "13763": {
+   "fact": "Each Strela-1M military message relay lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "13765": {
+   "fact": "Like other Strela-1M military message relays, it was left to **drift freely** around its orbit, so the fleet spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "13766": {
+   "fact": "Each Strela-1M military message relay lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "13768": {
+   "fact": "Like other Strela-1M military message relays, it was left to **drift freely** around its orbit, so the fleet spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "13912": {
+   "fact": "Built to study the **Sun**, Earth’s magnetism and space particles. A fault in its rocket’s top stage meant it **never separated** from the rocket, so it never worked.",
+   "source": "https://en.wikipedia.org/wiki/OV2-3"
+  },
+  "13991": {
+   "fact": "One of **52 Strela-2M** military message relays launched. Three were lost before reaching orbit, and the rest circled about **800 km up**.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-2m.htm"
+  },
+  "14171": {
+   "fact": "A Strela-1M military message relay. Each lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "14173": {
+   "fact": "A Strela-1M military **message relay**. These satellites were left to **drift freely**, so over time they spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "14174": {
+   "fact": "A Strela-1M military message relay. Each lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "14176": {
+   "fact": "A Strela-1M military **message relay**. These satellites were left to **drift freely**, so over time they spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "14177": {
+   "fact": "A Strela-1M military message relay. Each lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "14240": {
+   "fact": "Recorded military messages over one part of the world and played them back over another. A sister, Kosmos 2251, was destroyed in the **first accidental collision** between two intact satellites.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-2m.htm"
+  },
+  "14401": {
+   "fact": "One of **52 Strela-2M** military message relays launched. Three were lost before reaching orbit, and the rest circled about **800 km up**.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-2m.htm"
+  },
+  "14611": {
+   "fact": "A Strela-1M military **message relay**. These satellites were left to **drift freely**, so over time they spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "14612": {
+   "fact": "A Strela-1M military message relay. Each lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "14614": {
+   "fact": "A Strela-1M military **message relay**. These satellites were left to **drift freely**, so over time they spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "14615": {
+   "fact": "A Strela-1M military message relay. Each lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "14617": {
+   "fact": "A Strela-1M military **message relay**. These satellites were left to **drift freely**, so over time they spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "14618": {
+   "fact": "A Strela-1M military message relay. Each lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "14759": {
+   "fact": "One of **52 Strela-2M** military message relays launched. Three were lost before reaching orbit, and the rest circled about **800 km up**.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-2m.htm"
+  },
+  "14965": {
+   "fact": "A Parus military **navigation** satellite. Nearly **100** were launched from 1974 to 2010, all from the Plesetsk launch site.",
+   "source": "https://space.skyrocket.de/doc_sdat/parus.htm"
+  },
+  "14998": {
+   "fact": "A Strela-1M military **message relay**. These satellites were left to **drift freely**, so over time they spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "14999": {
+   "fact": "A Strela-1M military message relay. Each lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "15001": {
+   "fact": "A Strela-1M military **message relay**. These satellites were left to **drift freely**, so over time they spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "15002": {
+   "fact": "A Strela-1M military message relay. Each lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "15004": {
+   "fact": "A Strela-1M military **message relay**. These satellites were left to **drift freely**, so over time they spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "15005": {
+   "fact": "A Strela-1M military message relay. Each lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "15031": {
+   "fact": "One of **52 Strela-2M** military message relays launched. Three were lost before reaching orbit, and the rest circled about **800 km up**.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-2m.htm"
+  },
+  "15085": {
+   "fact": "A Soviet radar satellite that watched ships, powered by a **nuclear reactor**. It could **eject its reactor core**, which was meant to break up and burn away high in the atmosphere if it fell.",
+   "source": "https://space.skyrocket.de/doc_sdat/us-a.htm"
+  },
+  "15292": {
+   "fact": "A Parus military **navigation** satellite. Nearly **100** were launched from 1974 to 2010, all from the Plesetsk launch site.",
+   "source": "https://space.skyrocket.de/doc_sdat/parus.htm"
+  },
+  "15469": {
+   "fact": "A Strela-3 military **message relay**. A long **boom** let gravity keep it pointed at Earth, with no fuel needed.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "15470": {
+   "fact": "A Strela-3 military **message relay**. It could hold about **12 megabits** of messages at a time, about one and a half megabytes.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "15472": {
+   "fact": "A Strela-3 military **message relay**. A long **boom** let gravity keep it pointed at Earth, with no fuel needed.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "15473": {
+   "fact": "A Strela-3 military **message relay**. It could hold about **12 megabits** of messages at a time, about one and a half megabytes.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "15482": {
+   "fact": "Recorded military messages over one part of the world and played them back over another. A sister, Kosmos 2251, was destroyed in the **first accidental collision** between two intact satellites.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-2m.htm"
+  },
+  "15505": {
+   "fact": "A Parus military **navigation** satellite. Nearly **100** were launched from 1974 to 2010, all from the Plesetsk launch site.",
+   "source": "https://space.skyrocket.de/doc_sdat/parus.htm"
+  },
+  "15617": {
+   "fact": "A Strela-1M military message relay. Each lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "15619": {
+   "fact": "A Strela-1M military **message relay**. These satellites were left to **drift freely**, so over time they spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "15620": {
+   "fact": "A Strela-1M military message relay. Each lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "15622": {
+   "fact": "A Strela-1M military **message relay**. These satellites were left to **drift freely**, so over time they spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "15623": {
+   "fact": "A Strela-1M military message relay. Each lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "16011": {
+   "fact": "One of **52 Strela-2M** military message relays launched. Three were lost before reaching orbit, and the rest circled about **800 km up**.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-2m.htm"
+  },
+  "16138": {
+   "fact": "A Strela-3 military **message relay**. A long **boom** let gravity keep it pointed at Earth, with no fuel needed.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "16139": {
+   "fact": "A Strela-3 military **message relay**. It could hold about **12 megabits** of messages at a time, about one and a half megabytes.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "16141": {
+   "fact": "A Strela-3 military **message relay**. A long **boom** let gravity keep it pointed at Earth, with no fuel needed.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "16142": {
+   "fact": "A Strela-3 military **message relay**. It could hold about **12 megabits** of messages at a time, about one and a half megabytes.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "16291": {
+   "fact": "A Parus military **navigation** satellite. Nearly **100** were launched from 1974 to 2010, all from the Plesetsk launch site.",
+   "source": "https://space.skyrocket.de/doc_sdat/parus.htm"
+  },
+  "16450": {
+   "fact": "A Strela-1M military **message relay**. These satellites were left to **drift freely**, so over time they spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "16451": {
+   "fact": "A Strela-1M military message relay. Each lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "16453": {
+   "fact": "A Strela-1M military **message relay**. These satellites were left to **drift freely**, so over time they spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "16454": {
+   "fact": "A Strela-1M military message relay. Each lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "16456": {
+   "fact": "A Strela-1M military **message relay**. These satellites were left to **drift freely**, so over time they spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "16647": {
+   "fact": "A Soviet radar satellite that watched ships, powered by a **nuclear reactor**. It could **eject its reactor core**, which was meant to break up and burn away high in the atmosphere if it fell.",
+   "source": "https://space.skyrocket.de/doc_sdat/us-a.htm"
+  },
+  "16681": {
+   "fact": "One of **52 Strela-2M** military message relays launched. Three were lost before reaching orbit, and the rest circled about **800 km up**.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-2m.htm"
+  },
+  "16759": {
+   "fact": "A Strela-1M military **message relay**. These satellites were left to **drift freely**, so over time they spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "16760": {
+   "fact": "A Strela-1M military message relay. Each lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "16762": {
+   "fact": "A Strela-1M military **message relay**. These satellites were left to **drift freely**, so over time they spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "16763": {
+   "fact": "A Strela-1M military message relay. Each lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "16765": {
+   "fact": "A Strela-1M military **message relay**. These satellites were left to **drift freely**, so over time they spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "16798": {
+   "fact": "A Parus military **navigation** satellite. Nearly **100** were launched from 1974 to 2010, all from the Plesetsk launch site.",
+   "source": "https://space.skyrocket.de/doc_sdat/parus.htm"
+  },
+  "16860": {
+   "fact": "Recorded military messages over one part of the world and played them back over another. A sister, Kosmos 2251, was destroyed in the **first accidental collision** between two intact satellites.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-2m.htm"
+  },
+  "16917": {
+   "fact": "A Soviet radar satellite that watched ships, powered by a **nuclear reactor**. It could **eject its reactor core**, which was meant to break up and burn away high in the atmosphere if it fell.",
+   "source": "https://space.skyrocket.de/doc_sdat/us-a.htm"
+  },
+  "16952": {
+   "fact": "Recorded military messages over one part of the world and played them back over another. A sister, Kosmos 2251, was destroyed in the **first accidental collision** between two intact satellites.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-2m.htm"
+  },
+  "17138": {
+   "fact": "A Strela-1M military message relay. Each lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "17140": {
+   "fact": "A Strela-1M military **message relay**. These satellites were left to **drift freely**, so over time they spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "17141": {
+   "fact": "A Strela-1M military message relay. Each lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "17143": {
+   "fact": "A Strela-1M military **message relay**. These satellites were left to **drift freely**, so over time they spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "17144": {
+   "fact": "A Strela-1M military message relay. Each lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "17239": {
+   "fact": "A Parus military **navigation** satellite. Nearly **100** were launched from 1974 to 2010, all from the Plesetsk launch site.",
+   "source": "https://space.skyrocket.de/doc_sdat/parus.htm"
+  },
+  "17303": {
+   "fact": "One of **52 Strela-2M** military message relays launched. Three were lost before reaching orbit, and the rest circled about **800 km up**.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-2m.htm"
+  },
+  "17369": {
+   "fact": "The **first satellite to fly a TOPAZ nuclear reactor**. It tested the reactor together with a new kind of **electric rocket engine**.",
+   "source": "https://en.wikipedia.org/wiki/TOPAZ_nuclear_reactor"
+  },
+  "17582": {
+   "fact": "A Strela-3 military **message relay**. It could hold about **12 megabits** of messages at a time, about one and a half megabytes.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "17584": {
+   "fact": "A Strela-3 military **message relay**. A long **boom** let gravity keep it pointed at Earth, with no fuel needed.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "17585": {
+   "fact": "A Strela-3 military **message relay**. It could hold about **12 megabits** of messages at a time, about one and a half megabytes.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "17587": {
+   "fact": "A Strela-3 military **message relay**. A long **boom** let gravity keep it pointed at Earth, with no fuel needed.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "18010": {
+   "fact": "Flew in a team of three, spaced **30 to 240 km** apart. By comparing the radar signals each one heard, the team could work out **where a ship was**.",
+   "source": "https://space.skyrocket.de/doc_sdat/noss-1.htm"
+  },
+  "18095": {
+   "fact": "One of **52 Strela-2M** military message relays launched. Three were lost before reaching orbit, and the rest circled about **800 km up**.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-2m.htm"
+  },
+  "18113": {
+   "fact": "A Strela-1M military message relay. Each lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "18115": {
+   "fact": "A Strela-1M military **message relay**. These satellites were left to **drift freely**, so over time they spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "18116": {
+   "fact": "A Strela-1M military message relay. Each lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "18118": {
+   "fact": "A Strela-1M military **message relay**. These satellites were left to **drift freely**, so over time they spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "18119": {
+   "fact": "A Strela-1M military message relay. Each lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "18123": {
+   "fact": "The first of its family to carry a **microwave sensor**. In July 2024 it **broke apart** in orbit, shedding at least five pieces of debris.",
+   "source": "https://space.skyrocket.de/doc_sdat/dmsp-5d2.htm"
+  },
+  "18160": {
+   "fact": "A Parus military **navigation** satellite. Nearly **100** were launched from 1974 to 2010, all from the Plesetsk launch site.",
+   "source": "https://space.skyrocket.de/doc_sdat/parus.htm"
+  },
+  "18334": {
+   "fact": "A Strela-3 military **message relay**. A long **boom** let gravity keep it pointed at Earth, with no fuel needed.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "18335": {
+   "fact": "A Strela-3 military **message relay**. It could hold about **12 megabits** of messages at a time, about one and a half megabytes.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "18337": {
+   "fact": "A Strela-3 military **message relay**. A long **boom** let gravity keep it pointed at Earth, with no fuel needed.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "18338": {
+   "fact": "A Strela-3 military **message relay**. It could hold about **12 megabits** of messages at a time, about one and a half megabytes.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "18585": {
+   "fact": "One of **52 Strela-2M** military message relays launched. Three were lost before reaching orbit, and the rest circled about **800 km up**.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-2m.htm"
+  },
+  "18665": {
+   "fact": "A Soviet radar satellite that watched ships, powered by a **nuclear reactor**. It could **eject its reactor core**, which was meant to break up and burn away high in the atmosphere if it fell.",
+   "source": "https://space.skyrocket.de/doc_sdat/us-a.htm"
+  },
+  "18709": {
+   "fact": "A Parus military **navigation** satellite. Nearly **100** were launched from 1974 to 2010, all from the Plesetsk launch site.",
+   "source": "https://space.skyrocket.de/doc_sdat/parus.htm"
+  },
+  "18788": {
+   "fact": "A Strela-3 military **message relay**. It could hold about **12 megabits** of messages at a time, about one and a half megabytes.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "18790": {
+   "fact": "A Strela-3 military **message relay**. A long **boom** let gravity keep it pointed at Earth, with no fuel needed.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "18791": {
+   "fact": "A Strela-3 military **message relay**. It could hold about **12 megabits** of messages at a time, about one and a half megabytes.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "18793": {
+   "fact": "A Strela-3 military **message relay**. A long **boom** let gravity keep it pointed at Earth, with no fuel needed.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "18937": {
+   "fact": "A Strela-1M military **message relay**. These satellites were left to **drift freely**, so over time they spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "18938": {
+   "fact": "A Strela-1M military message relay. Each lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "18940": {
+   "fact": "A Strela-1M military **message relay**. These satellites were left to **drift freely**, so over time they spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "18941": {
+   "fact": "A Strela-1M military message relay. Each lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "18943": {
+   "fact": "A Strela-1M military **message relay**. These satellites were left to **drift freely**, so over time they spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "18944": {
+   "fact": "A Strela-1M military message relay. Each lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "18957": {
+   "fact": "A Soviet radar satellite that watched ships, powered by a **nuclear reactor**. It could **eject its reactor core**, which was meant to break up and burn away high in the atmosphere if it fell.",
+   "source": "https://space.skyrocket.de/doc_sdat/us-a.htm"
+  },
+  "18985": {
+   "fact": "A Parus military **navigation** satellite. Nearly **100** were launched from 1974 to 2010, all from the Plesetsk launch site.",
+   "source": "https://space.skyrocket.de/doc_sdat/parus.htm"
+  },
+  "19038": {
+   "fact": "Recorded military messages over one part of the world and played them back over another. A sister, Kosmos 2251, was destroyed in the **first accidental collision** between two intact satellites.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-2m.htm"
+  },
+  "19256": {
+   "fact": "Recorded military messages over one part of the world and played them back over another. A sister, Kosmos 2251, was destroyed in the **first accidental collision** between two intact satellites.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-2m.htm"
+  },
+  "19324": {
+   "fact": "A Parus military **navigation** satellite. Nearly **100** were launched from 1974 to 2010, all from the Plesetsk launch site.",
+   "source": "https://space.skyrocket.de/doc_sdat/parus.htm"
+  },
+  "19419": {
+   "fact": "Oscar is radio code for O, for **operational**: this was a working Navy Transit navigation satellite. When GPS took over in 1996, it got a new job watching the **ionosphere**.",
+   "source": "https://space.skyrocket.de/doc_sdat/transit-o.htm"
+  },
+  "19769": {
+   "fact": "One of **52 Strela-2M** military message relays launched. Three were lost before reaching orbit, and the rest circled about **800 km up**.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-2m.htm"
+  },
+  "19786": {
+   "fact": "A Strela-3 military **message relay**. A long **boom** let gravity keep it pointed at Earth, with no fuel needed.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "19787": {
+   "fact": "A Strela-3 military **message relay**. It could hold about **12 megabits** of messages at a time, about one and a half megabytes.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "19789": {
+   "fact": "A Strela-3 military **message relay**. A long **boom** let gravity keep it pointed at Earth, with no fuel needed.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "19790": {
+   "fact": "A Strela-3 military **message relay**. It could hold about **12 megabits** of messages at a time, about one and a half megabytes.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "19851": {
+   "fact": "Unlike the US, the Soviet Union didn’t keep separate military and civilian weather satellites. Meteor-2s like this one did **both jobs**.",
+   "source": "https://en.wikipedia.org/wiki/Meteor_(satellite)"
+  },
+  "19903": {
+   "fact": "A Strela-1M military **message relay**. These satellites were left to **drift freely**, so over time they spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "19904": {
+   "fact": "A Strela-1M military message relay. Each lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "19906": {
+   "fact": "A Strela-1M military **message relay**. These satellites were left to **drift freely**, so over time they spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "19907": {
+   "fact": "A Strela-1M military message relay. Each lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "19909": {
+   "fact": "A Strela-1M military **message relay**. These satellites were left to **drift freely**, so over time they spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "19921": {
+   "fact": "A Parus military **navigation** satellite. Nearly **100** were launched from 1974 to 2010, all from the Plesetsk launch site.",
+   "source": "https://space.skyrocket.de/doc_sdat/parus.htm"
+  },
+  "20149": {
+   "fact": "A Parus military **navigation** satellite. Nearly **100** were launched from 1974 to 2010, all from the Plesetsk launch site.",
+   "source": "https://space.skyrocket.de/doc_sdat/parus.htm"
+  },
+  "20233": {
+   "fact": "A Strela-3 military **message relay**. A long **boom** let gravity keep it pointed at Earth, with no fuel needed.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "20234": {
+   "fact": "A Strela-3 military **message relay**. It could hold about **12 megabits** of messages at a time, about one and a half megabytes.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "20236": {
+   "fact": "A Strela-3 military **message relay**. A long **boom** let gravity keep it pointed at Earth, with no fuel needed.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "20237": {
+   "fact": "A Strela-3 military **message relay**. It could hold about **12 megabits** of messages at a time, about one and a half megabytes.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "20261": {
+   "fact": "Nicknamed **Aktivny**, it beamed very low-pitched radio waves into space from a huge loop antenna with a **10 kW transmitter**. A small Czech satellite, Magion 2, flew nearby to listen.",
+   "source": "https://space.skyrocket.de/doc_sdat/interkosmos-24.htm"
+  },
+  "20432": {
+   "fact": "Recorded military messages over one part of the world and played them back over another. A sister, Kosmos 2251, was destroyed in the **first accidental collision** between two intact satellites.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-2m.htm"
+  },
+  "20437": {
+   "fact": "A **digital post office** in orbit, built at the **University of Surrey**. It stored messages and passed them on, which is handy for remote or disaster-hit places.",
+   "source": "https://space.skyrocket.de/doc_sdat/uosat-3.htm"
+  },
+  "20527": {
+   "fact": "A Parus military **navigation** satellite. Nearly **100** were launched from 1974 to 2010, all from the Plesetsk launch site.",
+   "source": "https://space.skyrocket.de/doc_sdat/parus.htm"
+  },
+  "20549": {
+   "fact": "A Strela-1M military message relay. Each lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "20551": {
+   "fact": "A Strela-1M military **message relay**. These satellites were left to **drift freely**, so over time they spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "20552": {
+   "fact": "A Strela-1M military message relay. Each lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "20554": {
+   "fact": "A Strela-1M military **message relay**. These satellites were left to **drift freely**, so over time they spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "20555": {
+   "fact": "A Strela-1M military message relay. Each lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "20670": {
+   "fact": "The US kept separate weather satellites for the military and for forecasters. The Soviet Union used **one type for both**, and Meteor 2-19 was one of these **shared** weather watchers.",
+   "source": "https://en.wikipedia.org/wiki/Meteor_(satellite)"
+  },
+  "20735": {
+   "fact": "A Strela-3 military **message relay**. It could hold about **12 megabits** of messages at a time, about one and a half megabytes.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "20737": {
+   "fact": "A Strela-3 military **message relay**. A long **boom** let gravity keep it pointed at Earth, with no fuel needed.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "20738": {
+   "fact": "A Strela-3 military **message relay**. It could hold about **12 megabits** of messages at a time, about one and a half megabytes.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "20740": {
+   "fact": "A Strela-3 military **message relay**. A long **boom** let gravity keep it pointed at Earth, with no fuel needed.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "21014": {
+   "fact": "Recorded military messages over one part of the world and played them back over another. A sister, Kosmos 2251, was destroyed in the **first accidental collision** between two intact satellites.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-2m.htm"
+  },
+  "21028": {
+   "fact": "A Strela-3 military **message relay**. A long **boom** let gravity keep it pointed at Earth, with no fuel needed.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "21029": {
+   "fact": "A Strela-3 military **message relay**. It could hold about **12 megabits** of messages at a time, about one and a half megabytes.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "21031": {
+   "fact": "A Strela-3 military **message relay**. A long **boom** let gravity keep it pointed at Earth, with no fuel needed.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "21032": {
+   "fact": "A Strela-3 military **message relay**. It could hold about **12 megabits** of messages at a time, about one and a half megabytes.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "21100": {
+   "fact": "A Strela-1M military **message relay**. These satellites were left to **drift freely**, so over time they spread out evenly around the planet.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "21101": {
+   "fact": "A Strela-1M military message relay. Each lasted only about six months, so the network was **topped up once or twice a year** with a fresh batch of eight.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-1m.htm"
+  },
+  "21130": {
+   "fact": "One of nearly **100 Parus** military navigation satellites, all launched from **Plesetsk** between 1974 and 2010.",
+   "source": "https://space.skyrocket.de/doc_sdat/parus.htm"
+  },
+  "21299": {
+   "fact": "A military **message relay** that could store about **12 megabits** of messages at a time: about one and a half megabytes.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "21302": {
+   "fact": "A military **message relay** that could store about **12 megabits** of messages at a time: about one and a half megabytes.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "21418": {
+   "fact": "A military **message relay**: it recorded messages over one part of the world and played them back over another. A sister satellite, Kosmos 2251, was destroyed in the **first accidental collision** between two intact satellites.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-2m.htm"
+  },
+  "21728": {
+   "fact": "A military **message relay** that could store about **12 megabits** of messages at a time: about one and a half megabytes.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "21731": {
+   "fact": "A military **message relay** that could store about **12 megabits** of messages at a time: about one and a half megabytes.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "21779": {
+   "fact": "A military **message relay** that could store about **12 megabits** of messages at a time: about one and a half megabytes.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "21782": {
+   "fact": "A military **message relay** that could store about **12 megabits** of messages at a time: about one and a half megabytes.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "21796": {
+   "fact": "One of nearly **100 Parus** military navigation satellites, all launched from **Plesetsk** between 1974 and 2010.",
+   "source": "https://space.skyrocket.de/doc_sdat/parus.htm"
+  },
+  "21937": {
+   "fact": "One of nearly **100 Parus** military navigation satellites, all launched from **Plesetsk** between 1974 and 2010.",
+   "source": "https://space.skyrocket.de/doc_sdat/parus.htm"
+  },
+  "22006": {
+   "fact": "One of nearly **100 Parus** military navigation satellites, all launched from **Plesetsk** between 1974 and 2010.",
+   "source": "https://space.skyrocket.de/doc_sdat/parus.htm"
+  },
+  "22034": {
+   "fact": "A military **message relay** that could store about **12 megabits** of messages at a time: about one and a half megabytes.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "22037": {
+   "fact": "A military **message relay** that could store about **12 megabits** of messages at a time: about one and a half megabytes.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "22080": {
+   "fact": "A military **message relay**: it recorded messages over one part of the world and played them back over another. A sister satellite, Kosmos 2251, was destroyed in the **first accidental collision** between two intact satellites.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-2m.htm"
+  },
+  "22184": {
+   "fact": "A military **message relay** that could store about **12 megabits** of messages at a time: about one and a half megabytes.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "22187": {
+   "fact": "A military **message relay** that could store about **12 megabits** of messages at a time: about one and a half megabytes.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "22207": {
+   "fact": "One of nearly **100 Parus** military navigation satellites, all launched from **Plesetsk** between 1974 and 2010.",
+   "source": "https://space.skyrocket.de/doc_sdat/parus.htm"
+  },
+  "22646": {
+   "fact": "A military **message relay** that could store about **12 megabits** of messages at a time: about one and a half megabytes.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "22649": {
+   "fact": "A military **message relay** that could store about **12 megabits** of messages at a time: about one and a half megabytes.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "22688": {
+   "fact": "A military **message relay** that could store about **12 megabits** of messages at a time: about one and a half megabytes.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "22691": {
+   "fact": "A military **message relay** that could store about **12 megabits** of messages at a time: about one and a half megabytes.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "22888": {
+   "fact": "One of nearly **100 Parus** military navigation satellites, all launched from **Plesetsk** between 1974 and 2010.",
+   "source": "https://space.skyrocket.de/doc_sdat/parus.htm"
+  },
+  "23000": {
+   "fact": "A military **message relay** that could store about **12 megabits** of messages at a time: about one and a half megabytes.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "23003": {
+   "fact": "A military **message relay** that could store about **12 megabits** of messages at a time: about one and a half megabytes.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "23092": {
+   "fact": "One of nearly **100 Parus** military navigation satellites, all launched from **Plesetsk** between 1974 and 2010.",
+   "source": "https://space.skyrocket.de/doc_sdat/parus.htm"
+  },
+  "23441": {
+   "fact": "A military **message relay** that could store about **12 megabits** of messages at a time: about one and a half megabytes.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "23444": {
+   "fact": "A military **message relay** that could store about **12 megabits** of messages at a time: about one and a half megabytes.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "23773": {
+   "fact": "One of nearly **100 Parus** military navigation satellites, all launched from **Plesetsk** between 1974 and 2010.",
+   "source": "https://space.skyrocket.de/doc_sdat/parus.htm"
+  },
+  "23792": {
+   "fact": "A military **message relay** that could store about **12 megabits** of messages at a time: about one and a half megabytes.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "24304": {
+   "fact": "One of nearly **100 Parus** military navigation satellites, all launched from **Plesetsk** between 1974 and 2010.",
+   "source": "https://space.skyrocket.de/doc_sdat/parus.htm"
+  },
+  "24725": {
+   "fact": "A military **message relay** that could store about **12 megabits** of messages at a time: about one and a half megabytes.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "24772": {
+   "fact": "One of nearly **100 Parus** military navigation satellites, all launched from **Plesetsk** between 1974 and 2010.",
+   "source": "https://space.skyrocket.de/doc_sdat/parus.htm"
+  },
+  "25160": {
+   "fact": "One of the first **space burials**: a container bolted to the rocket’s last stage, holding lipstick-sized capsules with a symbolic **7 grams** of cremated remains.",
+   "source": "https://space.skyrocket.de/doc_sdat/celestis-01.htm"
+  },
+  "25364": {
+   "fact": "A military **message relay** that could store about **12 megabits** of messages at a time: about one and a half megabytes.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "25367": {
+   "fact": "A military **message relay** that could store about **12 megabits** of messages at a time: about one and a half megabytes.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "25395": {
+   "fact": "A copy of Chile’s first satellite, FASat-Alfa, which **never separated** from the satellite it rode up with. This copy carried an instrument to watch the **ozone layer**.",
+   "source": "https://space.skyrocket.de/doc_sdat/fasat-alfa.htm"
+  },
+  "26818": {
+   "fact": "One of nearly **100 Parus** military navigation satellites, all launched from **Plesetsk** between 1974 and 2010.",
+   "source": "https://space.skyrocket.de/doc_sdat/parus.htm"
+  },
+  "27056": {
+   "fact": "A military **message relay** that could store about **12 megabits** of messages at a time: about one and a half megabytes.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "27436": {
+   "fact": "One of nearly **100 Parus** military navigation satellites, all launched from **Plesetsk** between 1974 and 2010.",
+   "source": "https://space.skyrocket.de/doc_sdat/parus.htm"
+  },
+  "28220": {
+   "fact": "China’s first test of a **digital camera satellite** that could map land in **3D stereo**. It tried out technology for later military spy satellites.",
+   "source": "https://space.skyrocket.de/doc_sdat/sy-1.htm"
+  },
+  "28419": {
+   "fact": "A Strela-3 military **message relay**. It stores messages from one ground station and **delivers them later** to another, and from 2002 these went up one to three at a time on smaller rockets.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "28420": {
+   "fact": "A Strela-3 military **message relay**. It stores messages from one ground station and **delivers them later** to another, and from 2002 these went up one to three at a time on smaller rockets.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "28523": {
+   "fact": "Built by **scholars and students** of Moscow State University for its 250th birthday. The 30 kg satellite studied flashes of light in Earth’s air and **radiation** in space.",
+   "source": "https://en.wikipedia.org/wiki/Universitetsky-Tatyana"
+  },
+  "29107": {
+   "fact": "The **first** satellite to measure clouds’ height and inner structure all over the world, slicing through them with **radar**. Planned for two years, it lasted 18.",
+   "source": "https://space.skyrocket.de/doc_sdat/cloudsat.htm"
+  },
+  "29268": {
+   "fact": "Its camera, made with partners in Israel and Germany, could see details down to **1 metre**. It helped map the Korean peninsula and plan for **disasters**.",
+   "source": "https://space.skyrocket.de/doc_sdat/kompsat-2.htm"
+  },
+  "29499": {
+   "fact": "A **4,244 kg** giant, Europe’s first weather satellite to circle over the poles. It measured temperature and moisture through the air, day and night, and relayed **rescue signals**.",
+   "source": "https://space.skyrocket.de/doc_sdat/metop.htm"
+  },
+  "31490": {
+   "fact": "China calls it a remote-sensing satellite, but it is thought to double as a **military spy camera**. It works as an optical partner to the radar-carrying **Yaogan 1**.",
+   "source": "https://space.skyrocket.de/doc_sdat/yaogan-2.htm"
+  },
+  "32376": {
+   "fact": "One of four Italian **radar** satellites that can look at the same place **several times a day**, in any weather. They are used for defence and for watching disasters.",
+   "source": "https://en.wikipedia.org/wiki/COSMO-SkyMed"
+  },
+  "32954": {
+   "fact": "A Strela-3 military **message relay**. It stores messages from one ground station and **delivers them later** to another, and from 2002 these went up one to three at a time on smaller rockets.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "32955": {
+   "fact": "A Strela-3 military **message relay**. It stores messages from one ground station and **delivers them later** to another, and from 2002 these went up one to three at a time on smaller rockets.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "32956": {
+   "fact": "A Strela-3 military **message relay**. It stores messages from one ground station and **delivers them later** to another, and from 2002 these went up one to three at a time on smaller rockets.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "33752": {
+   "fact": "One of two French test satellites that looked for the **heat of missile launches** against Earth below. Together they were Europe’s first trial of a space **early-warning** system.",
+   "source": "https://space.skyrocket.de/doc_sdat/spirale-1.htm"
+  },
+  "35498": {
+   "fact": "A Strela-3 military **message relay**. It stores messages from one ground station and **delivers them later** to another, and from 2002 these went up one to three at a time on smaller rockets.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "35500": {
+   "fact": "A Strela-3 military **message relay**. It stores messages from one ground station and **delivers them later** to another, and from 2002 these went up one to three at a time on smaller rockets.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "35635": {
+   "fact": "One of nearly **100 Parus** military navigation satellites. All of them were launched from Plesetsk, between 1974 and 2010.",
+   "source": "https://space.skyrocket.de/doc_sdat/parus.htm"
+  },
+  "35871": {
+   "fact": "Its name means **Ball Lens In The Space**: a ball of **layered glass** that bounced laser beams back to Earth for precise tracking. A collision with debris ended its useful tracking mission in 2013.",
+   "source": "https://en.wikipedia.org/wiki/BLITS"
+  },
+  "38007": {
+   "fact": "One of four French spy **microsatellites** flying a few kilometres apart to record **radar and radio** signals. They tested ideas for a future system called CERES.",
+   "source": "https://en.wikipedia.org/wiki/ELISA_(satellite)"
+  },
+  "38038": {
+   "fact": "Ziyuan means **resources**. A Chinese-only cousin of the China-Brazil satellites, it mapped land and disasters with a camera that saw things about **2.4 metres** across.",
+   "source": "https://space.skyrocket.de/doc_sdat/zy-1-02c.htm"
+  },
+  "38733": {
+   "fact": "A Strela-3 military **message relay**. It stores messages from one ground station and **delivers them later** to another, and from 2002 these went up one to three at a time on smaller rockets.",
+   "source": "https://space.skyrocket.de/doc_sdat/strela-3.htm"
+  },
+  "38995": {
+   "fact": "Its long, looping **Molniya orbit** swings out to about 39,000 km. That keeps it in view of the **Arctic** for most of each lap, where normal communications satellites reach poorly.",
+   "source": "https://en.wikipedia.org/wiki/Meridian_(satellite)"
+  },
+  "40969": {
+   "fact": "The **first satellite** built and run by students at the University of Alaska Fairbanks. Meant to photograph Arctic **snow and ice**, it never sent a signal, probably because of a stuck switch.",
+   "source": "https://space.skyrocket.de/doc_sdat/arc-1.htm"
+  },
+  "41456": {
+   "fact": "Its **radar** saw through clouds and darkness along a strip up to **700 km** wide. A power failure ended its mission in 2021, and ESA retired it in 2022.",
+   "source": "https://space.skyrocket.de/doc_sdat/sentinel-1.htm"
+  },
+  "43880": {
+   "fact": "A **1 kg** cube from Germany’s University of Würzburg. It was built to test **tiny electric thrusters** for steering and moving satellites this small.",
+   "source": "https://space.skyrocket.de/doc_sdat/uwe-4.htm"
+  },
+  "52754": {
+   "fact": "Part of HawkEye 360’s fleet, which maps **radio signals** around the world to keep watch on traffic **by air, land and sea**.",
+   "source": "https://space.skyrocket.de/doc_sdat/hawk-a.htm"
+  },
+  "52756": {
+   "fact": "One of a **trio** of satellites flying together to pinpoint where radio signals come from on Earth. That helps find radio interference and locate **emergency beacons**.",
+   "source": "https://space.skyrocket.de/doc_sdat/hawk-a.htm"
+  },
+  "52757": {
+   "fact": "Flies in a **cluster of three** that work together to find where radio signals on Earth come from. The same trick can help rescuers find **emergency beacons** faster.",
+   "source": "https://space.skyrocket.de/doc_sdat/hawk-a.htm"
+  },
+  "58258": {
+   "fact": "A **6U CubeSat**, about the size of a shoebox, built by the company OrbAstro for a customer that has **never been named**.",
+   "source": "https://space.skyrocket.de/doc_sdat/orbastro-pc1.htm"
+  },
+  "61744": {
+   "fact": "Still unidentified. It shared one Soyuz rocket with **54 other spacecraft**, including two Ionosfera satellites that study the electrified **upper air** to help forecast space weather.",
+   "source": "https://russianspaceweb.com/ionosfera-1-2.html"
+  },
+  "61750": {
+   "fact": "One of a record **53 small passengers** on a single Russian rocket, the most ever for Russia. Trackers haven’t yet worked out **which one** it is.",
+   "source": "https://russianspaceweb.com/ionosfera-1-2.html"
+  },
+  "61764": {
+   "fact": "A CubeSat from **Moscow School No. 2086**. It was one of a record **53 small passengers** on one Russian rocket.",
+   "source": "https://russianspaceweb.com/ionosfera-1-2.html"
+  },
+  "61768": {
+   "fact": "An unidentified object from a Russian launch of two **Ionosfera** satellites, which measure charged particles high above Earth to help predict **space weather**.",
+   "source": "https://russianspaceweb.com/ionosfera-1-2.html"
+  },
+  "62395": {
+   "fact": "Still unidentified. It came from **Bandwagon-2**, a SpaceX rideshare carrying **30 payloads**, among them two new weather satellites for the company Tomorrow.io.",
+   "source": "https://satellitetoday.com/launch/2024/12/22/spacex-launches-30-payloads-in-second-bandwagon-mission"
+  },
+  "62396": {
+   "fact": "Not yet identified. It flew on SpaceX’s **Bandwagon-2** rideshare, which carried **30 payloads**, including radar, weather and radio-tracking satellites.",
+   "source": "https://satellitetoday.com/launch/2024/12/22/spacex-launches-30-payloads-in-second-bandwagon-mission"
+  },
+  "62399": {
+   "fact": "Not yet matched to a name. It rode SpaceX’s **Bandwagon-2** rideshare, which also carried **Jackal**, a robotic spacecraft built to practise manoeuvring and tracking.",
+   "source": "https://satellitetoday.com/launch/2024/12/22/spacex-launches-30-payloads-in-second-bandwagon-mission"
+  },
+  "62404": {
+   "fact": "An unidentified object from **Bandwagon-2**. Unlike SpaceX’s Transporter rideshares, which fly over the poles, Bandwagon flights head to a **mid-inclination orbit**.",
+   "source": "https://satellitetoday.com/launch/2024/12/22/spacex-launches-30-payloads-in-second-bandwagon-mission"
+  },
+  "66515": {
+   "fact": "Comes from **Shenzhou 21**, which flew three astronauts to China’s space station. Four **mice** went with them, China’s first study of rodents in orbit.",
+   "source": "https://en.wikipedia.org/wiki/Shenzhou_21"
+  },
+  "5": {
+   "fact": "The **oldest human-made object still in orbit**, up since 1958. It was the **first satellite to run on solar power**; its radio went quiet in 1964.",
+   "source": "https://www.nasa.gov/image-article/vanguard-satellite-1958/"
+  },
+  "11": {
+   "fact": "Built to photograph **cloud cover**, a first. But its spent rocket bumped it after separating, and the wobble **spoiled the pictures**.",
+   "source": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1959-001A"
+  },
+  "20": {
+   "fact": "Mapped **Earth’s magnetic field** and found the lower edge of the **Van Allen radiation belts**. It should stay up for about **300 years**.",
+   "source": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1959-007A"
+  },
+  "22": {
+   "fact": "The first satellite to measure **Earth’s heat balance**: how much sunlight we soak up and how much heat we give off. It found Earth absorbs **more sunlight** than expected.",
+   "source": "https://news.wisc.edu/satellite-anniversary-marks-50-years-of-studying-climate-from-space"
+  },
+  "29": {
+   "fact": "The **first successful weather satellite**. In 78 days it sent back about **23,000 pictures**, and forecasters saw whole storms from above for the first time.",
+   "source": "https://en.wikipedia.org/wiki/TIROS-1"
+  },
+  "58": {
+   "fact": "The first satellite to **store messages and send them on**. Its first job: relaying a message from **President Eisenhower** to the United Nations.",
+   "source": "https://en.wikipedia.org/wiki/Courier_1B"
+  },
+  "107": {
+   "fact": "The **first gamma-ray telescope** in space. It caught just **22 gamma rays** from the sky, and gamma-ray astronomy began.",
+   "source": "https://en.wikipedia.org/wiki/Explorer_11"
+  },
+  "205": {
+   "fact": "Carried the **first poem in orbit**, by a Yale professor, engraved on its instrument panel. A 1962 **nuclear test in space** later wrecked its solar cells.",
+   "source": "https://en.wikipedia.org/wiki/TRAAC"
+  },
+  "424": {
+   "fact": "Canada’s first satellite. It studied the **ionosphere**, the electrified upper air, by bouncing radio waves off it from above, and worked for **10 years**.",
+   "source": "https://space.skyrocket.de/doc_sdat/alouette.htm"
+  },
+  "446": {
+   "fact": "Named for the **Army, Navy, NASA and Air Force**. It fired **bright flashes** so cameras could photograph it against the stars and measure the **shape of Earth**.",
+   "source": "https://en.wikipedia.org/wiki/ANNA_1B"
+  },
+  "671": {
+   "fact": "A Navy satellite that measured **space radiation**, including a man-made radiation belt from a nuclear test slowly **fading away**. It sent useful data for **over 11 years**.",
+   "source": "https://space.skyrocket.de/doc_sdat/transit-5e1.htm"
+  },
+  "1291": {
+   "fact": "Watched the **Sun’s X-rays**. With no recorder on board, it beamed every reading **live** to stations around the world. Seven other satellites shared its rocket.",
+   "source": "https://en.wikipedia.org/wiki/SOLRAD_7B"
+  },
+  "2389": {
+   "fact": "Helped find the **plasmapause**, the outer edge of the bubble of charged gas around Earth, and measured the **radiation** that can damage spacecraft.",
+   "source": "https://en.wikipedia.org/wiki/OV3-3"
+  },
+  "4382": {
+   "fact": "China’s first satellite. At **173 kg** it outweighed the first satellites of the four earlier space nations **put together**, and it played the song **“The East Is Red”**.",
+   "source": "https://en.wikipedia.org/wiki/Dong_Fang_Hong_I"
+  },
+  "7530": {
+   "fact": "Its batteries died in 1981. In 2002 one shorted battery broke open and it **came back to life**, running on **sunlight alone**, so it only works in daylight.",
+   "source": "https://www.amsat.org/two-way-satellites/ao-7/"
+  },
+  "7646": {
+   "fact": "A ball just **24 cm wide**, with a heavy uranium core and 60 mirrors. Lasers bounced off it helped map Earth’s gravity and the **ocean tides**.",
+   "source": "https://en.wikipedia.org/wiki/Starlette_(satellite)"
+  },
+  "20580": {
+   "fact": "About the size of a school bus. Astronauts flew up **five times** to repair and upgrade it, and it helped pin down the **age of the universe**.",
+   "source": "https://science.nasa.gov/mission/hubble/overview/hubble-by-the-numbers/"
+  },
+  "21574": {
+   "fact": "Its radar measured the sea surface so precisely that scientists could map the **ocean floor** beneath it. It worked for **nine years**, until a gyroscope failed.",
+   "source": "https://en.wikipedia.org/wiki/ERS-1"
+  },
+  "22076": {
+   "fact": "A NASA and French mission that measured the **height of the sea** across the world every **ten days**, with record accuracy, showing how ocean currents flow.",
+   "source": "https://space.skyrocket.de/doc_sdat/topex-poseidon.htm"
+  },
+  "25544": {
+   "fact": "About the size of a football field, flying at **28,000 km/h**: fast enough to cross Canada in about 12 minutes. People have lived on board since **2000**.",
+   "source": "https://www.nasa.gov/international-space-station/space-station-facts-and-figures/"
+  },
+  "25730": {
+   "fact": "In 2007 China destroyed this weather satellite with a missile in a weapons test, creating the **largest cloud of space junk** in history.",
+   "source": "https://en.wikipedia.org/wiki/Fengyun-1C"
+  },
+  "25994": {
+   "fact": "The flagship of NASA’s climate-watching fleet. Its name, Latin for **Earth**, was picked in a naming contest for **high school students**.",
+   "source": "https://en.wikipedia.org/wiki/Terra_(satellite)"
+  },
+  "26113": {
+   "fact": "It went silent in 2005. In 2018 a **radio amateur in British Columbia**, hunting for a secret spy satellite, heard it instead: IMAGE was **alive after 12 years**.",
+   "source": "https://www.arrl.org/news/canadian-radio-amateur-finds-resurrected-nasa-satellite"
+  },
+  "27421": {
+   "fact": "Its camera looked **forwards and backwards at once**, taking 3D pictures that measured the height of the land to within about **10 to 15 metres**.",
+   "source": "https://space.skyrocket.de/doc_sdat/spot-5.htm"
+  },
+  "27424": {
+   "fact": "Studies Earth’s **water**: clouds, rain, sea ice and snow. Its Japanese microwave sensor was built to last three years and worked for **over nine**.",
+   "source": "https://space.skyrocket.de/doc_sdat/eos-pm-1.htm"
+  },
+  "28654": {
+   "fact": "Its twin was **badly damaged in a factory accident** before launch. Besides watching the weather, this one listens for **distress beacons** for search and rescue.",
+   "source": "https://space.skyrocket.de/doc_sdat/noaa-n.htm"
+  },
+  "32382": {
+   "fact": "Its radar sees through **cloud and darkness**. It was the first commercial one to send and receive waves in **several polarizations**, which helps tell **ice, land and ships** apart.",
+   "source": "https://space.skyrocket.de/doc_sdat/radarsat-2.htm"
+  },
+  "36797": {
+   "fact": "A **6 kg** cube 20 cm wide that listens for ships’ **identity beacons**, which normally reach only about 50 km, to track vessels far out at sea.",
+   "source": "https://space.skyrocket.de/doc_sdat/aissat-1.htm"
+  },
+  "39084": {
+   "fact": "Photographs the whole Earth every **16 days**, over **700 scenes a day**, for maps, farms and forests. It started out as the Landsat Data Continuity Mission.",
+   "source": "https://en.wikipedia.org/wiki/Landsat_8"
+  }
+ }
 }
