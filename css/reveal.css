@@ -169,3 +169,6 @@ body.night #rv-teach { border-top-color: #ff6a55; color: #ff7f70; } body.night #
 /* Style audit (2026-10-28): the chip row starts on the 20px margin and fades out at the right instead of cutting a word. */
 #rv-news { left: calc(20px + var(--safe-l, 0px)); right: calc(20px + var(--safe-r, 0px)); -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 28px), transparent); mask-image: linear-gradient(90deg, #000 calc(100% - 28px), transparent); }
 .rv-roll > span { color: var(--gold, #fa8127); } /* XP is orange everywhere */
+/* Reveal eyebrow: even space around the dot; the top row on the 20px gutter. */
+.rv-dot { font-style: normal; color: currentColor; margin: 0 .35em 0 .25em; }
+#rv-top { left: calc(20px + var(--safe-l, 0px)) !important; right: calc(20px + var(--safe-r, 0px)) !important; }

@@ -3086,3 +3086,51 @@ body.night .tn-btn.done { background: #ff6a55 !important; color: #120505 !import
 body.stats-over-set #collection-frame { z-index: 79 !important; transform: none !important; opacity: 0 !important; transition: opacity .25s ease !important; }
 body.stats-over-set.stats-shown #collection-frame { opacity: 1 !important; }
 body.stats-over-set #nav { visibility: hidden !important; }
+
+/* ===== Designer playtests (2026-10-28): visual and UX polish before the first TestFlight ===== */
+/* Switches read the right way round: a cream knob in both states, the track says on (orange) or off (dim). */
+#debug .set-tog::before { background: #8a8f86 !important; }
+#debug .set-tog:checked::before { background: #fff2b3 !important; }
+body.night #debug .set-tog::before { background: #6a2a24 !important; } body.night #debug .set-tog:checked::before { background: #ffd0c8 !important; }
+body.night #debug .set-tog { background: #2a0d0a !important; }
+/* Daytime Explore: "Right now you can catch" in dark ink on the pale sky. */
+body.day #ud-now .ud-now-h { color: #143046; text-shadow: 0 0 6px rgba(255, 255, 255, .55); }
+/* Red mode: inactive tabs and the Tonight strip's bars stay readable. */
+body.night .sc-switch__item:not([aria-current]) { color: #e8705f !important; }
+body.night .tn-strip .bars i { background: #7a3533; }
+/* Tonight's run: the time lines up with the name on tall rows; the lit row's box bleeds past the margins but its content
+   stays in line with the other rows. */
+.tn-r { align-items: start; } .tn-r .t { padding-top: 2px; } .tn-r .acts { align-self: center; }
+.tn-r.next { margin: 2px 0 !important; padding: 10px 0 !important; border: 0 !important; background: none !important; }
+.tn-r.next::before { content: ''; position: absolute; inset: 0 -10px; border-radius: 14px; border: 1px solid #fa812755; background: #fa81270d; z-index: -1; pointer-events: none; }
+.tn-run { isolation: isolate; }
+.tl-nextclear { margin-top: 0; }
+/* The radar's new-count badge clears the header rule. */
+#radar-new { top: -2px; }
+/* How to play: soft edges on slide pictures; the shiny card fits the frame. */
+.ht-pic > svg { -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); }
+.ht-real.shiny .mini-face { --mini-s: .37; }
+.ht-real { display: grid; justify-items: center; gap: 6px; line-height: 1; } .ht-real > em { font: 600 12px/1 var(--label); font-style: normal; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.ht-real.lvl-s > em { color: #dfe6ee; } .ht-real.lvl-g > em { color: #ffc93d; }
+/* Gutters: panels sit on the 20px gutter like the header rule. */
+.crew-kit, #credits-body .set-card { margin-left: 0 !important; margin-right: 0 !important; }
+#around .ar-wrap { margin-left: 0; margin-right: 0; }
+#debug .set-bar { left: 0 !important; }
+/* Location sheet: "Use these" is the secondary button; Privacy is a normal link. */
+#location-form button[type=submit] { border: 1px solid var(--gold) !important; background: #fa81271f !important; color: var(--gold) !important; border-radius: 12px !important; }
+.set-sl-note a { color: var(--muted); }
+/* Circle highlights: chosen chips are filled. */
+.set-chip input:checked + span { background: #fa812726; border-color: var(--gold) !important; color: var(--gold); }
+.set-chip input:checked + span::before { content: '✓ '; }
+/* A pass bell that's set is orange everywhere, the free one too. */
+#visible .nh-bell.on, #visible .nh-bell.free.on { color: var(--gold) !important; border-color: var(--gold) !important; }
+#visible .nh-bell.on .fillme { fill: currentColor; }
+/* Explore's dark bell: quiet outline when off, orange when set (it was brighter off than on). */
+#until-dark.tk-card #ud-bell:not(.on), #ud-bell:not(.on) { background: transparent !important; color: #c3d6ea !important; box-shadow: inset 0 0 0 1.5px #c3d6ea88 !important; }
+#until-dark.tk-card #ud-bell.on, #ud-bell.on { background: var(--gold) !important; color: #0b1018 !important; box-shadow: none !important; }
+/* Tour Skip fits its words. */
+#ob-skip { min-width: 64px; padding-inline: 14px !important; }
+.tn-chip .tn-chip-art { flex: none; width: 28px; height: 28px; border-radius: 50%; object-fit: cover; }
+body.ob-tour #radar-new { display: none !important; }
+/* Random card back: a little fan of real backs, not empty outlines (designer playtest 2026-10-28). */
+.back-rand i { background-color: #01121c !important; background-position: center !important; background-size: contain !important; background-repeat: no-repeat !important; border-color: #c9c1a066 !important; }

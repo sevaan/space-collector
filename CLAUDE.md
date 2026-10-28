@@ -1995,3 +1995,19 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - 2026-10-28 (Sevaan: widgets showed the old art): WidgetBridge.swift copied each card picture into the App Group once and skipped it forever after, so pictures replaced under the same name (iss, tiangong…) stayed old in widgets. It now re-makes a copy when the bundled picture is newer than the copy (modification dates), i.e. once per new build. Needs a native build.
 - 2026-10-28 · v0.1.1279 (Sevaan): the ICON badge's word is centred in its pill (inline-block, the trailing letter-spacing taken back on the right, caps lifted to the middle).
 - 2026-10-28 · v0.1.1280 (Sevaan): Falcon 9 stage art: the left/right edge strips (an old extension with a visible seam through the Earth) repainted by Nano Banana Pro from magenta bands and blended back (old in design/ai-art-before-photos/falcon-9-seam.webp). Tiangong card: the complete-station rendering 'Tiangong Space Station Rendering 2022.07' (Shujianyang, CC BY-SA 4.0) replaces the cropped CMSEO rear view (kept as design/ai-art-before-photos/tiangong-rear-view.webp).
+- 2026-10-28 · v0.1.1281 designer playtests (visual + new-player UX; reports and shots in the session scratchpad ux1/ and ux2/). Fixed:
+  - Settings switches: cream knob both states, dim knob off (they read backwards); red mode too.
+  - Daytime "Right now you can catch" in dark ink; it lists only things new to you (an owned Sun was a dead end), else just the plan button.
+  - Card facts: the orange rule follows the words (on the p), not the empty space under short facts.
+  - Constellations album header keeps its "·" off line starts and drops "(10 stars)"; "binoculars · Match outside" glued.
+  - Circle ticket: headliner shows as ★ in the rarity line. Units stay with numbers in facts (richText no-break space).
+  - Red mode: inactive tabs and Tonight strip bars readable. Off-palette #7f93a8 greys → cream muted.
+  - Observer stats goal bars inset on a track. Tonight run: times top-aligned with names; the lit row's box bleeds but its content lines up.
+  - Radar badge clear of the header rule and hidden during the tour. All around you skips compass letters cut by the edges.
+  - How to play: soft picture edges, shiny card fits, Bronze/Silver/Gold labels.
+  - Reveal eyebrow dot spacing, top row on the 20px gutter. Tonight "Up now" chips show Sun/Moon/planet pictures.
+  - Find hides the "Search any…" line when nothing is typed. Patches chips run to the edge with a fade. Gutters 20px for Plus kit, credits, All around you, Settings headings.
+  - Location sheet "Use these" is the orange secondary button; Privacy link muted. Highlight chips filled with ✓ when chosen. Random card back tile is a fan of real backs.
+  - Bells: a set Now-hero bell is orange (the .free rule had won); Explore's dark bell is a quiet outline when off, orange when set.
+  - First-night page: after Remind me, the line says "We’ll tell you at 6:34 PM." and no late "Reminder set" notice follows onto Explore (remindPass quiet).
+  - Welcome card top: "Your first mission" + "1,080 tracked overhead" (no repeated brand). Tour title "Catch the Sun". Skip pill fits. Sound volume uses the dial icon. Until-dark line "In 5h 8m". Plus kit "Never miss one."

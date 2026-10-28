@@ -1,33 +1,33 @@
-import { pullToClose } from './pull-close.js?v=0.1.1280';
-import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.1280';
-import { computeStats, statsHtml } from './stats.js?v=0.1.1280';
-import { nightKey } from './observation.js?v=0.1.1280';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1280';
-import { sfx } from './sfx.js?v=0.1.1280';
-import { expandFacts } from './catalog-facts.js?v=0.1.1280';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.1280';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1280';
-import { ticket } from './toast.js?v=0.1.1280';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.1280';
-import { satGlobe } from './sat-globe.js?v=0.1.1280';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.1280';
-import { cardArt } from './art.js?v=0.1.1280';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.1280';
-import { applyBack } from './card-backs.js?v=0.1.1280';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.1280';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1280';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.1280';
-import { STORIES } from './stories.js?v=0.1.1280';
-import { loadConstellations, conList, CON_BY_ID } from './constellations.js?v=0.1.1280';
-import { conArt } from './con-art.js?v=0.1.1280';
-import { RANKS, progress, readDeals, readWeekThemes, xpCarry } from './progress.js?v=0.1.1280';
-import { eventBadges, nextEvent } from './events.js?v=0.1.1280';
-import { shareCardEl } from './share-card.js?v=0.1.1280';
-import { forgetSighting } from './cloud-backup.js?v=0.1.1280';
-import { allSightings, deleteSighting } from './store.js?v=0.1.1280';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.1280';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.1280';
-import { localText } from './localize.js?v=0.1.1280';
+import { pullToClose } from './pull-close.js?v=0.1.1281';
+import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.1281';
+import { computeStats, statsHtml } from './stats.js?v=0.1.1281';
+import { nightKey } from './observation.js?v=0.1.1281';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1281';
+import { sfx } from './sfx.js?v=0.1.1281';
+import { expandFacts } from './catalog-facts.js?v=0.1.1281';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.1281';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1281';
+import { ticket } from './toast.js?v=0.1.1281';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.1281';
+import { satGlobe } from './sat-globe.js?v=0.1.1281';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.1281';
+import { cardArt } from './art.js?v=0.1.1281';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.1281';
+import { applyBack } from './card-backs.js?v=0.1.1281';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.1281';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1281';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.1281';
+import { STORIES } from './stories.js?v=0.1.1281';
+import { loadConstellations, conList, CON_BY_ID } from './constellations.js?v=0.1.1281';
+import { conArt } from './con-art.js?v=0.1.1281';
+import { RANKS, progress, readDeals, readWeekThemes, xpCarry } from './progress.js?v=0.1.1281';
+import { eventBadges, nextEvent } from './events.js?v=0.1.1281';
+import { shareCardEl } from './share-card.js?v=0.1.1281';
+import { forgetSighting } from './cloud-backup.js?v=0.1.1281';
+import { allSightings, deleteSighting } from './store.js?v=0.1.1281';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.1281';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.1281';
+import { localText } from './localize.js?v=0.1.1281';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -312,6 +312,7 @@ function renderAlbums() {
   }
   try { localStorage.setItem('albumLevels', JSON.stringify(lv)); } catch {}
   $('grid').append(frag);
+  $('results').hidden = false;
   $('results').textContent = 'Fill each album to turn it gold.';
 }
 function renderAlbumHead() {
@@ -319,8 +320,8 @@ function renderAlbumHead() {
   if (state.set === 'all' || state.view === 'albums') { head.hidden = true; return; }
   const set = SETS.find((s) => s.id === state.set), st = albumStats(state.set);
   head.hidden = false; head.style.setProperty('--set', set.color); head.classList.toggle('gold', st.level === 3);
-  head.innerHTML = `<div><span class="album__name">${esc(set.name)}</span><span class="album__count">${set.id === 'constellations' ? `${albumCount(set, st)} · ${st.have.length.toLocaleString()} of ${st.cards.length.toLocaleString()} stars` : `<b>${st.have.length.toLocaleString()}</b> / ${st.cards.length.toLocaleString()} collected`}${st.level ? ` · ${LEVELS[st.level - 1]} album` : ''}</span></div>${albumBar(st)}
-    <span class="album__next">${st.level === 3 ? 'Gold album. Every card here is a bonus.' : `${(st.next - st.have.length).toLocaleString()} more${unit(set)} for a ${LEVELS[st.level]} album (${st.next.toLocaleString()}${unit(set) || ' cards'})`}</span>`;
+  head.innerHTML = `<div><span class="album__name">${esc(set.name)}</span><span class="album__count">${set.id === 'constellations' ? `<span class="nw">${albumCount(set, st)} ·</span> <span class="nw">${st.have.length.toLocaleString()} of ${st.cards.length.toLocaleString()} stars</span>` : `<b>${st.have.length.toLocaleString()}</b> / ${st.cards.length.toLocaleString()} collected`}${st.level ? ` · ${LEVELS[st.level - 1]} album` : ''}</span></div>${albumBar(st)}
+    <span class="album__next">${st.level === 3 ? 'Gold album. Every card here is a bonus.' : `${(st.next - st.have.length).toLocaleString()} more${unit(set)} for a ${LEVELS[st.level]} album`}</span>`;
 }
 
 // ---------- logbook: rank, streak, tonight’s missions, achievements (js/progress.js) ----------
@@ -558,7 +559,7 @@ function renderFind() {
   else list = (findSuggest ?? []).map((p) => state.cards.find((c) => c.id === p.id) ?? state.byKey.get(state.keyOfId?.get(p.id))).filter(Boolean); // from Explore’s plans: tonight and this week
   if (!q && !findSuggest && EMBED) { window.parent.postMessage({ sc: 'find-suggest' }, location.origin); grid.insertAdjacentHTML('beforeend', '<p class="find-none">Finding what you can see this week…</p>'); return; }
   state.list = list;
-  $('results').textContent = q ? `${list.length}${list.length === 30 ? '+' : ''} found` : 'Search any satellite, rocket or planet';
+  $('results').textContent = q ? `${list.length}${list.length === 30 ? '+' : ''} found` : ''; $('results').hidden = !q; /* the search box already says what to do (designer playtest 2026-10-28) */
   const head = document.createElement('div'); head.className = 'find-head'; head.textContent = q ? '' : 'New ones you can see this week'; /* not just Rares: Uncommons fill in (2026-10-18 playtest) */ if (!q) grid.append(head); /* (the // comment had swallowed this since 2026-10-18; fixed 2026-10-27) */
   if (!list.length) { grid.insertAdjacentHTML('beforeend', q ? '<p class="find-none">Nothing by that name. Try “ISS”, “Hubble” or “Starlink”.</p>' : '<p class="find-none">Nothing new passes this week. Search any satellite to see when it’s next up.</p>'); return; }
   const need = [];
@@ -640,6 +641,7 @@ function renderView() {
   });
   state.titleCount = new Map(); for (const c of state.list) state.titleCount.set(titleFor(c), (state.titleCount.get(titleFor(c)) ?? 0) + 1);
   const total = state.list.length;
+  $('results').hidden = false;
   $('results').textContent = `${total.toLocaleString()} ${total === 1 ? 'card' : 'cards'}${state.view === 'owned' ? ' in your collection' : ' in the field guide'}`;
   markFilters();
   $('reset-filters').hidden = state.view === 'patches' || !state.query && state.set === 'all' && state.rarity === 'all' && (state.sort ?? 'auto') === 'auto';
@@ -1197,6 +1199,7 @@ function renderPatches() {
   for (const k of Object.keys(sec)) dates[k] ??= sec[k];
   if (fossil) dates.fossil ??= fossil.at;
   const done = all.filter((a) => a.done).length;
+  $('results').hidden = false;
   $('results').textContent = `${done} of ${all.length} patches earned`;
   const groups = GROUP_ORDER.filter((g) => all.some((a) => groupOf(a) === g));
   const shown = all.filter((a) => state.patchGroup === 'all' || groupOf(a) === state.patchGroup)

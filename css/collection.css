@@ -418,12 +418,12 @@ body.night::after { content: ''; position: fixed; inset: 0; z-index: 2147483646;
 .st-tier { display:grid; grid-template-columns:7.2em minmax(0,1fr) 5.6em; gap:10px; align-items:center; }
 .st-tl { font:500 13px/1 'SC Label', sans-serif; letter-spacing:.1em; text-transform:uppercase; color:var(--c); white-space:nowrap; }
 .st-tb { height:8px; border-radius:4px; background:#18263a; overflow:hidden; } .st-tb i { display:block; height:100%; border-radius:4px; background:var(--c); }
-.st-tn { text-align:right; font:500 14px/1 'SC Label', sans-serif; color:#fff2b3; font-variant-numeric:tabular-nums; } .st-tn small { color:#7f93a8; }
+.st-tn { text-align:right; font:500 14px/1 'SC Label', sans-serif; color:#fff2b3; font-variant-numeric:tabular-nums; } .st-tn small { color:#bdbea9; }
 .st-goals { display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:10px; }
 .st-goal { position:relative; overflow:hidden; border-radius:12px; background:#0f1d30; border:1px solid #22344a; padding:12px 12px 14px; display:grid; gap:4px; }
-.st-goal b { font:400 24px/1 'SC Display', 'Russo One', sans-serif; color:#fff2b3; font-variant-numeric:tabular-nums; } .st-goal b small { font-size:15px; color:#7f93a8; }
+.st-goal b { font:400 24px/1 'SC Display', 'Russo One', sans-serif; color:#fff2b3; font-variant-numeric:tabular-nums; } .st-goal b small { font-size:15px; color:#bdbea9; }
 .st-goal span { font:500 13px/1.2 'SC Label', sans-serif; letter-spacing:.12em; text-transform:uppercase; color:#e6e2c4; }
-.st-goal em { font:500 12px/1.2 'SC Label', sans-serif; letter-spacing:.04em; color:#7f93a8; font-style:normal; }
+.st-goal em { font:500 12px/1.2 'SC Label', sans-serif; letter-spacing:.04em; color:#bdbea9; font-style:normal; }
 .st-goal i { position:absolute; left:0; bottom:0; height:3px; width:calc(var(--p) * 100%); background:#fa8127; }
 .st-hls { display:grid; gap:10px; }
 .st-hl { display:grid; grid-template-columns:64px minmax(0,1fr); gap:12px; align-items:center; }
@@ -441,7 +441,7 @@ body.night::after { content: ''; position: fixed; inset: 0; z-index: 2147483646;
 .st-bar em { font:500 11px/1 'SC Label', sans-serif; color:#fff2b3; font-style:normal; min-height:11px; }
 .st-bar span { width:100%; min-height:2px; border-radius:4px 4px 1px 1px; background:#2a3a50; }
 .st-bar.now span, .st-bar span[style*="height:"]:not([style*="height:0%"]) { background:linear-gradient(#fa8127,#c9622a); }
-.st-bar small { font:500 11px 'SC Label', sans-serif; color:#7f93a8; } .st-bar.now small { color:#fa8127; }
+.st-bar small { font:500 11px 'SC Label', sans-serif; color:#bdbea9; } .st-bar.now small { color:#fa8127; }
 .st-map { width:100%; height:auto; display:block; }
 .st-rare { display:grid; gap:8px; } .st-rare div { display:grid; grid-template-columns:48px auto minmax(0,1fr) auto; gap:10px; align-items:center; }
 .st-rare img, .st-rare .st-noart { width:48px; height:36px; object-fit:cover; border-radius:6px; }
@@ -968,3 +968,10 @@ body.night .fd-pass .fd-w em, body.night .fd-pill.new, body.night .fd-pass .fd-w
 /* "Tap for its orbit" sits bottom-left, clear of the photo credit at the bottom right (playtest 2026-10-28). */
 .can-orbit .card__art::after { right: auto; left: .8em; }
 .fd-yr { font-weight: 500; color: var(--muted); }
+/* Observer stats: the goal bars sit inside their tiles on a track. */
+.st-goal i { left: 12px; right: auto; bottom: 10px; height: 3px; border-radius: 2px; width: calc(var(--p) * (100% - 24px)); }
+.st-goal::after { content: ''; position: absolute; left: 12px; right: 12px; bottom: 10px; height: 3px; border-radius: 2px; background: #ffffff12; }
+.st-goal { padding-bottom: 20px; }
+/* Patches filter chips run to the screen edge and fade out instead of being cut mid-word. */
+.pw-chips { margin-left: calc(-1 * var(--main-pad, 20px)) !important; margin-right: calc(-1 * var(--main-pad, 20px)) !important; padding-left: var(--main-pad, 20px) !important; padding-right: var(--main-pad, 20px) !important; -webkit-mask-image: linear-gradient(90deg, transparent, #000 16px, #000 calc(100% - 28px), transparent) !important; mask-image: linear-gradient(90deg, transparent, #000 16px, #000 calc(100% - 28px), transparent) !important; }
+.st-goal i { z-index: 1; }

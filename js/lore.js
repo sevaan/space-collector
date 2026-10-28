@@ -4,8 +4,8 @@
 // facts only state what the catalogue says today (orbit, launch date and site) or simple date
 // comparisons. No extrapolating today’s orbit back over decades (lifetime laps or distance).
 
-import { orbitStats, titleCase, siteName, ownerName } from './facts.js?v=0.1.1280';
-import { localText } from './localize.js?v=0.1.1280';
+import { orbitStats, titleCase, siteName, ownerName } from './facts.js?v=0.1.1281';
+import { localText } from './localize.js?v=0.1.1281';
 
 const FAMILY = [
   [/^IRIDIUM 33 DEB/, 'A piece of the **first accidental collision between two intact satellites**: Iridium 33 hit the dead Kosmos 2251 in 2009.'],
@@ -364,5 +364,5 @@ export function thirdStat(o, sizeLabel, seenMembers = 0) {
 // **bold** → <b>, everything else escaped. In the player's units, clock and spelling first (js/localize.js, 2026-10-25).
 export function richText(s) {
   const esc = String(localText(s)).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-  return esc.replace(/\*\*(.+?)\*\*/g, '<b>$1</b>');
+  return esc.replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/(\d) (km\/h|km\/s|mph|km|mi|cm|mm|m|kg|lb|t|tons?|tonnes?|°C|°F|ly|AU|light-years?|years?|days?|minutes?|hours?|metres?|meters?|feet|ft|inches)\b/g, '$1\u00a0$2'); // a number never ends a line apart from its unit (designer playtest 2026-10-28: "3.8 / cm")
 }

@@ -727,3 +727,6 @@ body.night .card__fact a.src { color: #ff6a55; }
 /* ICON badge: words optically centred (2026-10-28, Sevaan): the trailing letter-spacing is taken back on the right, and
    the caps sit in the middle instead of on the baseline. */
 .card__icon-badge { display: inline-block; vertical-align: .08em; padding: .2em calc(.45em - .14em) .16em .45em; line-height: 1; }
+/* Card facts: the orange rule runs the length of the words, not down the empty space under a short fact (designer playtest 2026-10-28). */
+.card--mission .card__fact { border-left-color: transparent !important; padding-left: 0 !important; }
+.card--mission .card__fact > p { border-left: .22em solid var(--accent, #fa8127); padding-left: 1em; }
