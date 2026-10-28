@@ -724,3 +724,6 @@ body.night .card--frag .frag-orbit ellipse { stroke: #ff6a55; }
 body.night .card__fact a.src { color: #ff6a55; }
 /* The photo credit belongs to the picture: hidden while the orbit view shows (playtest 2026-10-27) */
 .card__art.orbiting .art-credit { display: none; }
+/* ICON badge: words optically centred (2026-10-28, Sevaan): the trailing letter-spacing is taken back on the right, and
+   the caps sit in the middle instead of on the baseline. */
+.card__icon-badge { display: inline-block; vertical-align: .08em; padding: .2em calc(.45em - .14em) .16em .45em; line-height: 1; }
