@@ -933,3 +933,24 @@ body.night .find-row::before { background: #ff6a55; }
   body[data-view]:not([data-view="owned"]) .lb-deck { display: none; }
 }
 .can-orbit .card__art::after { letter-spacing: .03em; } /* hints in sentence case (style audit 2026-10-28) */
+/* Find rows read like Tonight's run (style audit 2026-10-28): a divided list, not boxes; the card's picture, the name,
+   rarity · where · cloud, when, then pills; the same round target and bell. */
+.grid.find-mode { gap: 0; }
+.find-row { grid-template-columns: 52px minmax(0, 1fr) auto; gap: 12px; padding: 12px 0; border: 0 !important; border-top: 1px solid #ffffff12 !important; border-radius: 0; background: none; }
+.find-row::before { display: none; }
+.find-head + .find-row { border-top-color: transparent !important; }
+.fd-art { width: 52px; height: 52px; border-radius: 8px; }
+.fd-main { gap: 3px; }
+.fd-main b { font: 600 15.5px/1.15 var(--label, 'SC Label', sans-serif); }
+.fd-pass { display: grid; gap: 2px; font: 500 13px/1.25 var(--label, 'SC Label', sans-serif); color: var(--muted); }
+.fd-pass .fd-w em { font-style: normal; color: var(--c); }
+.fd-pass .fd-when { color: var(--muted); } .fd-pass .fd-when b { color: var(--text); font-weight: 600; } .fd-pass .fd-when .soon { color: #fa8127; }
+.fd-pills { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
+.fd-pill { display: inline-flex; align-items: center; padding: 3px 7px; border-radius: 6px; background: #ffffff0f; font: 600 12px/1.15 var(--label, 'SC Label', sans-serif); letter-spacing: .03em; color: var(--text); white-space: nowrap; }
+.fd-pill.new { color: #fa8127; } .fd-pill.own { color: var(--muted); } .fd-pill.lc { color: #ff8f7a; background: #ff6a5520; }
+.fd-acts { gap: 4px; }
+.fd-acts .ic { width: 44px; height: 44px; border: 1px solid #22344a; background: #ffffff08; color: var(--text); }
+.fd-acts .ic.on { border-color: #fa8127; color: #fa8127; }
+body.night .fd-pass .fd-w em, body.night .fd-pill.new, body.night .fd-pass .fd-when .soon { color: #ff7f70 !important; }
+.fd-pass .fd-when { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .fd-pass .fd-when b { font: 600 14px/1.25 var(--label, 'SC Label', sans-serif); }
+.fd-pass b { display: inline !important; -webkit-line-clamp: unset; } /* ".fd-main b" (the name's two-line clamp) also caught the time and made it a block */

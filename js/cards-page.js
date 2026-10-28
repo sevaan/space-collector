@@ -1,32 +1,32 @@
-import { pullToClose } from './pull-close.js?v=0.1.1260';
-import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.1260';
-import { computeStats, statsHtml } from './stats.js?v=0.1.1260';
-import { nightKey } from './observation.js?v=0.1.1260';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1260';
-import { sfx } from './sfx.js?v=0.1.1260';
-import { expandFacts } from './catalog-facts.js?v=0.1.1260';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.1260';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1260';
-import { ticket } from './toast.js?v=0.1.1260';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.1260';
-import { satGlobe } from './sat-globe.js?v=0.1.1260';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.1260';
-import { cardArt } from './art.js?v=0.1.1260';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.1260';
-import { applyBack } from './card-backs.js?v=0.1.1260';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.1260';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1260';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.1260';
-import { STORIES } from './stories.js?v=0.1.1260';
-import { loadConstellations, conList } from './constellations.js?v=0.1.1260';
-import { RANKS, progress, readDeals, readWeekThemes, xpCarry } from './progress.js?v=0.1.1260';
-import { eventBadges, nextEvent } from './events.js?v=0.1.1260';
-import { shareCardEl } from './share-card.js?v=0.1.1260';
-import { forgetSighting } from './cloud-backup.js?v=0.1.1260';
-import { allSightings, deleteSighting } from './store.js?v=0.1.1260';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.1260';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.1260';
-import { localText } from './localize.js?v=0.1.1260';
+import { pullToClose } from './pull-close.js?v=0.1.1261';
+import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.1261';
+import { computeStats, statsHtml } from './stats.js?v=0.1.1261';
+import { nightKey } from './observation.js?v=0.1.1261';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1261';
+import { sfx } from './sfx.js?v=0.1.1261';
+import { expandFacts } from './catalog-facts.js?v=0.1.1261';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.1261';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1261';
+import { ticket } from './toast.js?v=0.1.1261';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.1261';
+import { satGlobe } from './sat-globe.js?v=0.1.1261';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.1261';
+import { cardArt } from './art.js?v=0.1.1261';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.1261';
+import { applyBack } from './card-backs.js?v=0.1.1261';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.1261';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1261';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.1261';
+import { STORIES } from './stories.js?v=0.1.1261';
+import { loadConstellations, conList } from './constellations.js?v=0.1.1261';
+import { RANKS, progress, readDeals, readWeekThemes, xpCarry } from './progress.js?v=0.1.1261';
+import { eventBadges, nextEvent } from './events.js?v=0.1.1261';
+import { shareCardEl } from './share-card.js?v=0.1.1261';
+import { forgetSighting } from './cloud-backup.js?v=0.1.1261';
+import { allSightings, deleteSighting } from './store.js?v=0.1.1261';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.1261';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.1261';
+import { localText } from './localize.js?v=0.1.1261';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -520,19 +520,26 @@ function nightWord(t) {
   const tonightKey = nowD.getHours() < 6 ? nightOf(nowD.getTime()) : nowD.toDateString(), tmrKey = new Date(new Date(tonightKey).getTime() + 86400e3 + 3600e3).toDateString();
   return { today: nightOf(t) === tonightKey, tmr: nightOf(t) === tmrKey };
 }
+// A Find row reads like a row in Tonight's run (style audit 2026-10-28): rarity · where · cloud on one line, then when.
+// Each part keeps its "·" at its end, so a wrapped line never starts with one.
+const findJoin = (parts) => parts.filter(Boolean).map((x, i, a) => `<span class="nw">${x}${i < a.length - 1 ? ' ·' : ''}</span>`).join(' ');
+const findDur = (m) => { const h = Math.floor(m / 60), r = m % 60; return h ? `${h}h${r ? ` ${r}m` : ''}` : `${Math.max(1, m)} min`; };
 function findPassLine(c) {
-  if (c.natural) return c.natural === 'star' ? 'A star · out on clear nights' : c.type === 'sun' ? 'By day' : 'Look for it on a clear night';
-  if (c.launches) return 'A fleet · passes most nights';
-  if (!EMBED) return 'Open in the app for passes';
+  const t = TIER_INFO[c.tier] ?? TIER_INFO.common, tier = `<em>${t.gem} ${t.label}</em>`;
+  const line = (where, when) => `<span class="fd-w">${findJoin([tier, ...where])}</span>${when ? `<span class="fd-when">${when}</span>` : ''}`;
+  if (c.natural) return line([c.natural === 'star' ? 'a star, out on clear nights' : c.type === 'sun' ? 'by day' : 'on a clear night']);
+  if (c.launches) return line(['a fleet, passes most nights']);
+  if (!EMBED) return line([], 'Open in the app for passes');
   const p = findPasses.get(c.id);
-  if (p === undefined) return '<span class="fd-wait">Finding its next pass…</span>';
-  if (!p) return 'Not visible from here in the next 10 days';
+  if (p === undefined) return line([], '<span class="fd-wait">Finding its next pass…</span>');
+  if (!p) return line([], 'Not visible from here in the next 10 days');
   // "Tonight" means the observing night, not the calendar day, so a 4:57 AM pass is tonight’s like the card viewer says
   // (Android playtest 2026-10-19: Find said "Tomorrow 4:57 AM" for the same pass).
-  const d = new Date(p.start), { today, tmr } = nightWord(p.start);
+  const d = new Date(p.start), { today, tmr } = nightWord(p.start), mins = Math.round((p.start - Date.now()) / 60000);
   const day = today ? 'Tonight' : tmr ? 'Tomorrow' : d.toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' });
   const where = `${p.peakEl >= 60 ? 'high' : p.peakEl >= 30 ? 'halfway up' : 'low'} in the ${({ N: 'north', NE: 'northeast', E: 'east', SE: 'southeast', S: 'south', SW: 'southwest', W: 'west', NW: 'northwest' })[['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'][Math.round(p.peakAz / 45) % 8]]}`;
-  return `<b>${day} ${hm(d)}</b><span class="fd-where">${p.cloud ? '<span class="fd-cloud">cloud forecast</span>' : where}</span>`; // where on its own line: no line starting with "·" (iOS playtest 2026-10-20)
+  const when = `<b>${day} ${hm(d)}</b>${mins > 0 && mins < 24 * 60 ? ` <span class="${mins < 15 ? 'soon' : ''}">· in ${findDur(mins)}</span>` : mins <= 0 ? ' <span class="soon">· up now</span>' : ''}`;
+  return line([where, p.cloud ? '<span class="fd-cloud">cloud forecast</span>' : ''], when);
 }
 const TGT = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="7.5"/><circle cx="12" cy="12" r="2.5" fill="currentColor"/><path d="M12 1.5v4M12 18.5v4M1.5 12h4M18.5 12h4"/></svg>';
 const BEL = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg>';
@@ -556,7 +563,7 @@ function renderFind() {
   for (const c of list) {
     const t = TIER_INFO[c.tier] ?? TIER_INFO.common, owned = hasSightings(c), row = document.createElement('div'); row.className = 'find-row'; row.style.setProperty('--c', t.color);
     const art = owned && artImage(c, 'small') ? `<img src="${artImage(c, 'small')}" alt="" loading="lazy">` : lockedArt(c, owned, t.color, 'small');
-    row.innerHTML = `<span class="fd-art">${art}</span><span class="fd-main"><b>${esc(titleFor(c))}</b><small><em>${t.gem} ${t.label}</em>${c.fallAt && !c.archived ? ' · <em class="lc-pill">Last chance</em>' : ''}${owned ? ' · <i>in your collection</i>' : ''}</small><span class="fd-pass" data-id="${esc(String(c.id))}">${findPassLine(c)}</span></span><span class="fd-acts"></span>`;
+    row.innerHTML = `<span class="fd-art">${art}</span><span class="fd-main"><b>${esc(titleFor(c))}</b><span class="fd-pass" data-id="${esc(String(c.id))}">${findPassLine(c)}</span><span class="fd-pills">${owned ? '<span class="fd-pill own">In your collection</span>' : '<span class="fd-pill new">New card</span>'}${c.fallAt && !c.archived ? '<span class="fd-pill lc">Last chance</span>' : ''}</span></span><span class="fd-acts"></span>`;
     row.addEventListener('click', (e) => { if (e.target.closest('.fd-acts')) return; openViewer(list.indexOf(c), row.getBoundingClientRect()); });
     grid.append(row); if (!c.natural && !c.launches && !findPasses.has(c.id)) need.push(c.id); else findActs(row, c);
   }
