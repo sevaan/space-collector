@@ -3039,3 +3039,14 @@ body.night #debug .set-tog::before { background: #ff7f70 !important; } body.nigh
 .d-cta.done > span:first-child .ico, .nt-bell.done > span:first-child .ico { color: #0b1018 !important; }
 .d-cta.done > span:last-child, .nt-bell.done > span:last-child { font-size: 18px; letter-spacing: 0; color: #0b1018 !important; }
 body.night .d-cta.done, body.night .nt-bell.done { background: #ff6a55 !important; color: #120505 !important; }
+/* Credits under the shared header (2026-10-28, Sevaan), like the Plus page: full height under the header line, no title of its own. */
+#set-credits-sheet { top: calc(var(--safe-top, 0px) + 80px); }
+#set-credits-sheet .set-sheet-card { height: calc(100dvh - var(--safe-top, 0px) - 80px); max-height: none !important; border-radius: 0; border-top: 0; background: #080f1b; padding-top: 14px; }
+#set-credits-sheet .set-grab, #set-credits-sheet .set-sheet-card > h3 { display: none; }
+#credits-body > .set-card:first-child { margin-top: 30px !important; }
+#credits-body > .set-card:first-child .set-bar { display: none; }
+#credits-body > .set-card:first-child { margin-top: 6px !important; }
+body.credits-open #nav-more .nm-set { transform: translateY(-14px); opacity: 0; } body.credits-open #nav-more .nm-x { transform: none; opacity: 1; }
+body.credits-open #sky-header { background: var(--bg); box-shadow: 0 calc(-1 * var(--safe-top)) 0 0 var(--bg); position: fixed; z-index: 81; visibility: visible !important; opacity: 1 !important; }
+body.credits-open #sky-header .header-buttons > :not(#nav-more) { visibility: hidden; }
+body.night #set-credits-sheet .set-sheet-card { background: #090303; }
