@@ -139,7 +139,7 @@ body.night #plane { --plane:#ff3b2b; }
 .tc.stack .acts { flex-direction:column-reverse; gap:8px; } .tc.stack .acts button { flex:none; height:46px; }
 .tc .shine { position:absolute; inset:0; z-index:3; pointer-events:none; mix-blend-mode:soft-light; background-repeat:no-repeat; background-size:260% 100%; background-position:var(--bgx, 50%) 0;
   background-image:linear-gradient(115deg, transparent 30%, rgba(143,240,255,.35) 42%, rgba(255,143,216,.3) 50%, rgba(255,224,138,.35) 58%, transparent 70%); opacity:calc(.35 + var(--o, 0) * .4); }
-.tc.gold { border-color:#e2b53c; box-shadow:inset 0 0 0 5px var(--bg), inset 0 0 0 6px #f7d77a66, 0 -14px 50px #000b; }
+.tc.gold { border-color:#ffc93d; box-shadow:inset 0 0 0 5px var(--bg), inset 0 0 0 6px #f7d77a66, 0 -14px 50px #000b; }
 /* the sky reacting: an orange bloom behind the circle when something switches on */
 body.ob-tour #skybar, body.ob-tour #nav, body.ob-tour #target, body.ob-tour #discover, body.ob-tour #nextpass, body.ob-tour #guidance { visibility:hidden; }
 .ob-bloom { position:fixed; inset:0; z-index:24; pointer-events:none; background:radial-gradient(circle at 50% 50%, #fa812744, transparent 50%); opacity:0; }
@@ -771,7 +771,7 @@ body.night #ufo-cta { background: var(--gold) !important; color: #120606 !import
 @keyframes tc-shimmer { 0% { background-position: 100% 0; opacity: 1; } 92% { opacity: 1; } 100% { background-position: 0% 0; opacity: 0; } }
 .tc.gold .shine { opacity: 0; } /* the catch card has no standing glint; only the one shimmer */
 .tc.gold.shimmer { animation: tc-glow 1.6s ease-in-out 1; }
-@keyframes tc-glow { 50% { box-shadow: inset 0 0 0 5px var(--bg), inset 0 0 0 6px #f7d77acc, 0 0 40px #e2b53c66, 0 -14px 50px #000b; } }
+@keyframes tc-glow { 50% { box-shadow: inset 0 0 0 5px var(--bg), inset 0 0 0 6px #f7d77acc, 0 0 40px #ffc93d66, 0 -14px 50px #000b; } }
 
 /* Welcome card truly centred (2026-10-09, Sevaan): the hint, Begin and the note under it no longer count toward the
    centring; they hang just below the card. --cf (the card's size unit) moves up to the stage so they can use it. */
@@ -871,7 +871,7 @@ body.day .patch-coins { bottom: calc(var(--safe-bottom, 0px) + 114px); }
 .rc-foot { margin-top: 12px; border-top: 1px solid #bcb58566; flex-direction: column; gap: 6px; color: #bdbea9; } .rc-foot b { color: #fff2b3; font-weight: 500; }
 .rc-actions { display: flex; flex-direction: column; gap: 10px; width: min(100%, 340px); }
 .rc-actions button { height: 48px; border-radius: 12px; border: 0; font: 500 14px/1 var(--label); letter-spacing: .16em; text-transform: uppercase; cursor: pointer; }
-.rc-plus { margin-top: 4px; min-height: 44px; padding: 0 12px; background: none; border: 0; color: #f2c14e; font: 500 13px/1.2 var(--label); letter-spacing: .12em; text-transform: uppercase; cursor: pointer; } /* the Plus line (2026-10-24) */
+.rc-plus { margin-top: 4px; min-height: 44px; padding: 0 12px; background: none; border: 0; color: #ffc93d; font: 500 13px/1.2 var(--label); letter-spacing: .12em; text-transform: uppercase; cursor: pointer; } /* the Plus line (2026-10-24) */
 body.night .rc-plus { color: #ff6a55; }
 .rc-share { background: var(--orange, #fa8127); color: #080f1b; } .rc-go { background: #ffffff12; color: #fff2b3; }
 /* Account sheet (2026-10-10): stacked full-width buttons with a little air between them. */
@@ -1316,11 +1316,11 @@ body.night .wk4-moon::after { background: #ff7f70; }
 
 /* Week night card: "Remind me at dark" is the card's footer (2026-10-13, Sevaan). */
 .wk4-pick { padding-bottom: 0; overflow: hidden; }
-.wk4-foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 6px -16px 0; padding: 14px 16px; border: 0; border-top: 1px solid #f2c14e99; background: none; color: #f2c14e; font: 600 14px/1 var(--label); letter-spacing: .16em; text-transform: uppercase; cursor: pointer; }
+.wk4-foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 6px -16px 0; padding: 14px 16px; border: 0; border-top: 1px solid #ffc93d99; background: none; color: #ffc93d; font: 600 14px/1 var(--label); letter-spacing: .16em; text-transform: uppercase; cursor: pointer; }
 .wk4-foot .ico { width: 16px; height: 16px; vertical-align: -3px; margin-right: 6px; }
 .wk4-foot .wf-t { color: var(--muted); letter-spacing: .1em; }
 .wk4-foot.on { color: var(--gold); }
-.wk4-foot:active { background: #f2c14e14; }
+.wk4-foot:active { background: #ffc93d14; }
 .wk4-pick:not(:has(.wk4-foot)) { padding-bottom: 16px; }
 .wk4-foot { padding: 20px 16px 22px; margin-top: 10px; }
 /* The footer bell rings once every 10 s until a reminder is set (2026-10-13, Sevaan). */
@@ -1333,7 +1333,7 @@ body.night .wk4-moon::after { background: #ff7f70; }
 #visible .t-head:first-child, #vtab-tonight .t-head:first-child, #week-body .t-head:first-child { margin-top: 4px !important; }
 :is(#visible, #vtab-tonight, #week-body) .t-head + * { margin-top: 0 !important; }
 :is(#visible) .t-head + .vis-row2 { padding-top: 2px; }
-.wk4-foot { background: #f2c14e14; } .wk4-foot:active { background: #f2c14e26; } .wk4-foot.on { background: #f2c14e0a; }
+.wk4-foot { background: #ffc93d14; } .wk4-foot:active { background: #ffc93d26; } .wk4-foot.on { background: #ffc93d0a; }
 
 
 /* Next-card hero: one shimmer in its rarity colour when you arrive on Now (2026-10-13, Sevaan). */
@@ -1508,7 +1508,7 @@ body:has(.overlay.panel:not([hidden]))::before { content: ''; position: fixed; l
 #plane .p-ticket .p-meta { font: 500 13px/1.3 var(--label) !important; letter-spacing: .06em !important; text-transform: none !important; color: #c3c9d1 !important; text-shadow: none !important; }
 
 /* Lining it up (and a pass that hasn't risen yet): the hint is the coloured line, the name under it */
-#guidance:not(.first) { --tk: #9fb0c2; box-sizing: border-box; width: var(--tk-w) !important; max-width: none !important; padding: 12px 14px 14px !important; border-radius: 14px !important; background: var(--tk-bg) !important;
+#guidance:not(.first) { --tk: #bdbea9; box-sizing: border-box; width: var(--tk-w) !important; max-width: none !important; padding: 12px 14px 14px !important; border-radius: 14px !important; background: var(--tk-bg) !important;
   border: 0 !important; border-top: 3px solid var(--tk) !important; box-shadow: 0 10px 24px rgba(0, 0, 0, .35) !important; text-shadow: none !important; text-align: left !important; display: flex !important; flex-direction: column-reverse; gap: 4px; }
 #guidance.later:not(.first) { --tk: #7fb2ff; }
 #guidance:not(.first) span { font: 500 12px/1.25 var(--label) !important; letter-spacing: .18em !important; text-transform: uppercase; color: var(--tk) !important; }
@@ -1851,7 +1851,7 @@ body.is-plus .set-row .plus-tag { display: none; } /* Plus already: no PLUS tag 
 #pr-opts { display: grid; gap: 8px; }
 .pr-row { display: flex; align-items: center; gap: 12px; width: 100%; padding: 13px 14px; border-radius: 14px; border: 1px solid #26314a; background: #0b1220; color: inherit; text-align: left; cursor: pointer; }
 .pr-row .t { font: 400 19px var(--display); width: 6.2em; flex: none; white-space: nowrap; }
-.pr-row .w { flex: 1; min-width: 0; } .pr-row .w b { display: block; font: 500 15px var(--label); letter-spacing: .06em; text-transform: uppercase; } .pr-row .w b i { font-style: normal; color: var(--gold, #e2b53c); }
+.pr-row .w { flex: 1; min-width: 0; } .pr-row .w b { display: block; font: 500 15px var(--label); letter-spacing: .06em; text-transform: uppercase; } .pr-row .w b i { font-style: normal; color: var(--gold, #ffc93d); }
 .pr-row .w small { display: block; margin-top: 2px; font-size: 13px; color: var(--ui-muted, #bdbea9); }
 .pr-row .chk { color: #fa8127; font-size: 18px; visibility: hidden; } .pr-row.on { border-color: #fa8127; background: #20190f; } .pr-row.on .chk { visibility: visible; }
 .pr-row:active { transform: scale(.985); }
@@ -1863,7 +1863,7 @@ body.night .pr-row.on { border-color: #ff6a55; background: #1a0705; } body.night
 .now-missions { margin: 0 0 4px; }
 .now-missions .nm { display: flex; align-items: center; gap: 12px; padding: 11px 2px; border-bottom: 1px solid #1d2a3c; font: 500 15.5px/1.25 var(--label); letter-spacing: .03em; color: var(--ink, #fff2b3); }
 .now-missions .nm i { width: 11px; height: 11px; flex: none; transform: rotate(45deg); border: 1.5px solid #bcb585; }
-.now-missions .nm span { flex: 1; } .now-missions .nm small { display: block; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--gold, #e2b53c); margin-top: 2px; }
+.now-missions .nm span { flex: 1; } .now-missions .nm small { display: block; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--gold, #ffc93d); margin-top: 2px; }
 .now-missions .nm b { font: 500 13px var(--label); letter-spacing: .08em; color: #5fd08a; }
 .now-missions .nm.done span { color: #bdbea9; text-decoration: line-through; text-decoration-color: #fa8127; } .now-missions .nm.done i { background: #fa8127; border-color: #fa8127; } .now-missions .nm.done b { opacity: .5; }
 body.night .now-missions .nm b { color: #ff7f70; } body.night .now-missions .nm { border-color: #2e1010; }
@@ -2021,7 +2021,7 @@ body.around-open #nav-more .nm-set { transform: translateY(-14px); opacity: 0; }
    dimmed (no PLUS tag on every row); a tap still opens the Plus sheet. */
 #visible .needs-plus::after { display: none; }
 #visible .needs-plus, #visible .bell.soon { opacity: .5; }
-.sky-plus-line { display: flex; align-items: center; gap: 9px; width: 100%; margin: 10px 0 2px; padding: 10px 12px; min-height: 44px; border-radius: 12px; border: 1px solid #f2c14e44; background: #f2c14e10; color: var(--ink, #fff2b3); font: 500 13.5px/1.25 var(--label); text-align: left; cursor: pointer; }
+.sky-plus-line { display: flex; align-items: center; gap: 9px; width: 100%; margin: 10px 0 2px; padding: 10px 12px; min-height: 44px; border-radius: 12px; border: 1px solid #ffc93d44; background: #ffc93d10; color: var(--ink, #fff2b3); font: 500 13.5px/1.25 var(--label); text-align: left; cursor: pointer; }
 .sky-plus-line[hidden] { display: none; }
 .sky-plus-line .ico-svg { color: var(--gold); display: grid; } .sky-plus-line .ico-svg svg { width: 16px; height: 16px; }
 .sky-plus-line span:nth-child(2) { flex: 1; } .sky-plus-line b { color: var(--gold); font-size: 16px; }
@@ -2157,7 +2157,7 @@ body.night #debug .set-ok { color: #ff7f70; background: #ff6a5514; box-shadow: i
 #debug .set-card { border: 1px solid #c9c1a0; outline: 0; border-radius: 12px; padding: 0; overflow: hidden; background: #080f1b;
   box-shadow: inset 0 0 0 3px #080f1b, inset 0 0 0 4px #c9c1a055; margin-bottom: 14px; }
 #debug .set-bar { padding: 9px 14px; background: #0e1828; border-bottom: 1px solid #2c3b52; }
-#debug .set-bar h3, #debug .set-bar b { font: 500 12px/1 var(--label); letter-spacing: .18em; color: #f2c14e; }
+#debug .set-bar h3, #debug .set-bar b { font: 500 12px/1 var(--label); letter-spacing: .18em; color: #ffc93d; }
 #debug .set-card .set-row, #test-tools .set-test > .set-row { padding: 0 14px !important; border-top: 1px solid #16233a; }
 #debug .set-card .set-bar + .set-row, #debug .set-card .set-bar + .set-slider { border-top: 0; }
 #debug .set-card .set-slider--row { display: flex; gap: 12px; align-items: flex-start; padding: 12px 14px 10px; border-top: 1px solid #16233a; }
@@ -2206,7 +2206,7 @@ body.night #debug .set-seg button.on { box-shadow: inset 0 0 0 1px #ff6a55; }
 .ht-row, .ht-col { display: flex; gap: 12px; align-items: center; justify-content: center; } .ht-col { flex-direction: column; gap: 10px; }
 .ht-mini { width: 64px; aspect-ratio: 28 / 42; border-radius: 6px; background: #0b1626 center 30% / cover no-repeat; box-shadow: 0 0 0 2px #c9a26a, 0 6px 14px rgba(0,0,0,.5); }
 .ht-mini.lvl-s { box-shadow: 0 0 0 2px #dfe6ee, 0 0 12px rgba(223,230,238,.45), 0 6px 14px rgba(0,0,0,.5); }
-.ht-mini.lvl-g { box-shadow: 0 0 0 2px #f2c14e, 0 0 16px rgba(242,193,78,.55), 0 6px 14px rgba(0,0,0,.5); }
+.ht-mini.lvl-g { box-shadow: 0 0 0 2px #ffc93d, 0 0 16px rgba(255, 201, 61,.55), 0 6px 14px rgba(0,0,0,.5); }
 .ht-col .ht-mini { width: 54px; }
 .ht-mini.shiny { width: 84px; position: relative; overflow: hidden; box-shadow: 0 0 0 2px transparent, 0 6px 14px rgba(0,0,0,.5); outline: 2px solid; outline-color: #ff8ad8; animation: htShine 3s linear infinite; }
 .ht-mini.shiny::after { content: '✦'; position: absolute; top: 4px; right: 6px; color: #fff; font-size: 14px; text-shadow: 0 0 6px #fff; }
@@ -2349,7 +2349,7 @@ body.calib #hud, body.calib #nav, body.calib #skybar, body.calib #toasts, body.c
 #calib .cb-b.p { background: #fa8127; border-color: #fa8127; color: #120a02; }
 #calib .cb-foot { display: flex; justify-content: space-between; margin-top: 6px; }
 #calib .cb-foot button { min-height: 40px; padding: 0 4px; background: none; border: 0; color: var(--muted, #a9b0a4); font: 500 13px/1 var(--label); letter-spacing: .08em; }
-#calib .cb-foot #cb-reset { color: #f2c14e; }
+#calib .cb-foot #cb-reset { color: #ffc93d; }
 body.night #calib .cb-k, body.night #calib .cb-foot #cb-reset { color: #ff7f70; }
 body.night #calib .cb-b.p { background: #ff6a55; border-color: #ff6a55; }
 
@@ -2368,7 +2368,7 @@ body.night #calib .cb-b.p { background: #ff6a55; border-color: #ff6a55; }
 .crew-patch { width: 168px; margin: 10px auto 14px !important; filter: drop-shadow(0 16px 30px #000c); }
 .crew-patch .patch, .crew-patch svg { display: block; width: 100%; height: auto; }
 .crew-big { font: 400 28px/1.1 var(--display, 'Russo One'); color: var(--ink, #fff2b3); text-align: center; margin: 0 0 10px; text-wrap: balance; }
-.crew-body { color: #c9d3de; font-size: 15px; line-height: 1.5; text-align: center; margin: 0 0 6px; text-wrap: pretty; }
+.crew-body { color: #e6e2c4; font-size: 15px; line-height: 1.5; text-align: center; margin: 0 0 6px; text-wrap: pretty; }
 .crew-sec { display: flex; align-items: center; gap: 10px; margin: 22px 0 10px; font: 500 12px var(--label); letter-spacing: .2em; text-transform: uppercase; color: var(--muted, #a9b0a4); }
 .crew-sec::after { content: ''; flex: 1; height: 1px; background: #22324a; }
 .crew-kit { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
@@ -2379,7 +2379,7 @@ body.night #calib .cb-b.p { background: #ff6a55; border-color: #ff6a55; }
 .crew-kit .kt-i i { font-style: normal; font-family: -apple-system, system-ui, sans-serif; }
 .crew-kit .kt-i .ico { width: 20px; height: 20px; }
 .crew-kit b { display: block; margin: 6px 0 2px; font: 500 16px/1.15 var(--label); letter-spacing: .03em; color: var(--ink, #fff2b3); }
-.crew-kit small { display: block; color: #9fb0c2; font-size: 13px; line-height: 1.35; }
+.crew-kit small { display: block; color: #bdbea9; font-size: 13px; line-height: 1.35; }
 .kt-fan { position: relative; width: 146px; height: 70px; }
 .kt-fan img { position: absolute; bottom: 2px; width: 40px; height: 60px; object-fit: cover; border-radius: 4px; border: 1.5px solid #e9dcb3; box-shadow: 0 4px 10px #000a; transform: rotate(var(--r)); transform-origin: 50% 100%; }
 .kt-patch { width: 62px; display: block; filter: drop-shadow(0 4px 8px #000a); }
@@ -2530,7 +2530,7 @@ body.night .od-ring { background: conic-gradient(#ff6a55 calc(var(--f, .5) * 360
 .tc .acts.pick .pk svg { width: 92px; height: 74px; margin-bottom: 4px; }
 .tc .acts.pick .pk b { font: 400 18px/1.1 var(--display); color: var(--text); }
 .tc .acts.pick .pk small { font: 500 11px/1.2 var(--label); letter-spacing: .12em; text-transform: uppercase; color: color-mix(in srgb, var(--text) 70%, transparent); }
-.tc .acts.pick .pk:active { border-color: var(--gold); background: #f2c14e1a; }
+.tc .acts.pick .pk:active { border-color: var(--gold); background: #ffc93d1a; }
 body.night .tc .acts.pick .pk svg * { stroke: #ff6a55; } body.night .tc .acts.pick .pk svg [fill="#fff2b3"] { fill: #ff6a55; }
 /* Match your sky (2026-10-25, Sevaan; design/tour-rethink.html 05): a card over the sky slider, pointing at it */
 #sky-match { position: fixed; z-index: 6; left: 50%; transform: translateX(-50%); width: min(320px, calc(var(--vws, 100vw) - 32px)); box-sizing: border-box; padding: 12px 14px 12px; border-radius: 16px; background: rgba(10, 18, 31, .96); border-top: 2px solid var(--gold); box-shadow: 0 10px 30px #0008; color: var(--text); display: grid; gap: 6px; animation: smIn .35s cubic-bezier(.2,.9,.3,1); }
@@ -2580,11 +2580,11 @@ body.night .ghost-box { border-color: #ff6a5555; background: #170707; } body.nig
 .almost-box .al-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; min-height: 40px; padding: 0 2px; border: 0; border-top: 1px solid #ffffff10; background: none; color: var(--text); font: 500 14px/1.2 var(--label); text-align: left; cursor: pointer; }
 .almost-box .al-row span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .almost-box .al-row i { flex: none; font-style: normal; color: color-mix(in srgb, var(--text) 75%, transparent); }
-.almost-box em { font-style: normal; } .almost-box em.silver { color: #d6dde6; } .almost-box em.gold { color: #f2c14e; }
+.almost-box em { font-style: normal; } .almost-box em.silver { color: #d6dde6; } .almost-box em.gold { color: #ffc93d; }
 body.night .almost-box { border-color: #ff6a5544; background: #170707; } body.night .almost-box .k, body.night .almost-box em { color: #ff6a55; }
 /* Seasonal returns (2026-10-25, Sevaan; design/come-back.html 02): a big meteor shower within the week, constellations back */
-.season-box { display: grid; gap: 10px; margin: 0 0 14px; padding: 12px 14px; border-radius: 16px; border: 1px solid #f2c14e44; background: #14160f; }
-.season-box .k { display: block; font: 500 11px/1.2 var(--label); letter-spacing: .16em; text-transform: uppercase; color: #f2c14e; }
+.season-box { display: grid; gap: 10px; margin: 0 0 14px; padding: 12px 14px; border-radius: 16px; border: 1px solid #ffc93d44; background: #14160f; }
+.season-box .k { display: block; font: 500 11px/1.2 var(--label); letter-spacing: .16em; text-transform: uppercase; color: #ffc93d; }
 .season-box b { display: block; font: 400 18px/1.15 var(--display); color: var(--text); }
 .season-box i { display: block; font: 500 13px/1.3 var(--label); font-style: normal; color: color-mix(in srgb, var(--text) 78%, transparent); margin: 2px 0 8px; }
 .season-box .sb-remind.on { border-color: var(--gold); color: var(--gold); }
@@ -2614,9 +2614,9 @@ body.night .week-box .wk-prog em { background: linear-gradient(90deg, #ff6a55 va
 .train-box .tr-go { justify-self: start; }
 body.night .train-box { border-color: #ff6a5544; background: #170707; } body.night .train-box .k { color: #ff6a55; }
 /* Teach the fade (2026-10-25, Sevaan; design/real-sky.html 05 A): a callout above the circle, the first time */
-#fade-tip { position: fixed; z-index: 4; left: 50%; transform: translate(-50%, -100%); width: min(290px, calc(var(--vws, 100vw) - 40px)); box-sizing: border-box; padding: 10px 12px; border-radius: 14px; background: rgba(10, 18, 31, .96); border-top: 2px solid #f2c14e; color: var(--text); font: 500 14px/1.3 var(--label); pointer-events: none; text-wrap: balance; animation: ui-rise var(--m-norm, .3s) var(--ease-out, ease-out); }
+#fade-tip { position: fixed; z-index: 4; left: 50%; transform: translate(-50%, -100%); width: min(290px, calc(var(--vws, 100vw) - 40px)); box-sizing: border-box; padding: 10px 12px; border-radius: 14px; background: rgba(10, 18, 31, .96); border-top: 2px solid #ffc93d; color: var(--text); font: 500 14px/1.3 var(--label); pointer-events: none; text-wrap: balance; animation: ui-rise var(--m-norm, .3s) var(--ease-out, ease-out); }
 #fade-tip[hidden] { display: none; }
-#fade-tip small { display: block; margin-bottom: 3px; font: 500 10.5px/1 var(--label); letter-spacing: .18em; text-transform: uppercase; color: #f2c14e; }
+#fade-tip small { display: block; margin-bottom: 3px; font: 500 10.5px/1 var(--label); letter-spacing: .18em; text-transform: uppercase; color: #ffc93d; }
 #fade-tip i { position: absolute; left: 50%; bottom: -7px; width: 12px; height: 12px; margin-left: -6px; background: rgba(10, 18, 31, .96); transform: rotate(45deg); }
 body.night #fade-tip { border-top-color: #ff6a55; color: #ff7f70; } body.night #fade-tip small { color: #ff6a55; }
 /* The Moon check (2026-10-25, Sevaan; design/real-sky.html 02): above the circle, the next time the Moon is in it */
@@ -2816,7 +2816,7 @@ body.night .cr-row a, body.night .cr-pic a, body.night .cr-pics summary { color:
 .tn-strip .bars i.cl { background: repeating-linear-gradient(135deg, #8fa3b866 0 2px, #3a4d6b 2px 5px); }
 .tn-strip .bars i.sk { height: 30%; background: #22344a; animation: tn-sk 1.4s ease-in-out infinite alternate; }
 .tn-strip .band { position: absolute; top: 0; bottom: 0; border-radius: 4px; background: #fa81271f; }
-.tn-strip .star { position: absolute; top: -6px; transform: translateX(-50%); font-size: 12px; line-height: 1; color: #e7b75f; z-index: 2; }
+.tn-strip .star { position: absolute; top: -6px; transform: translateX(-50%); font-size: 12px; line-height: 1; color: #ffc93d; z-index: 2; }
 .tn-strip .nowm { position: absolute; top: -4px; bottom: -2px; width: 0; border-left: 1.5px solid var(--text); z-index: 3; }
 .tn-strip .nowm::before { content: ''; position: absolute; top: -3px; left: -4.25px; width: 7px; height: 7px; border-radius: 50%; background: var(--text); }
 .tn-strip .ax { position: relative; display: flex; justify-content: space-between; margin-top: 5px; font: 500 11px/1 var(--label); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
@@ -2833,10 +2833,10 @@ body.night .cr-row a, body.night .cr-pic a, body.night .cr-pics summary { color:
 #visible .nh-bell.free, #visible .tn-r .bell.free { border-color: #5fd08a88; color: #5fd08a; opacity: 1; }
 /* State heroes: day, cloudy, quiet */
 .tn-wx { margin: 14px 0 0; padding: 14px; border-radius: 18px; border: 1px solid #8fa3b844; background: linear-gradient(#111d2e, #0c1626); }
-.tn-wx.day { border-color: #e7b75f55; background: radial-gradient(ellipse at 20% 0%, #e7b75f1c, transparent 70%), #0e1a29; }
+.tn-wx.day { border-color: #ffc93d55; background: radial-gradient(ellipse at 20% 0%, #ffc93d1c, transparent 70%), #0e1a29; }
 .tn-wx.quiet { border-color: #3a4d6b; }
 .tn-wx .k { display: flex; gap: 8px; align-items: center; font: 600 12px/1 var(--label); letter-spacing: .18em; text-transform: uppercase; color: var(--muted); }
-.tn-wx .k.gold { color: #e7b75f; } .tn-wx.quiet .k .ico { color: #e7b75f; }
+.tn-wx .k.gold { color: #ffc93d; } .tn-wx.quiet .k .ico { color: #ffc93d; }
 .tn-wx h3 { margin: 8px 0 4px; font: 400 22px/1.08 var(--display); color: var(--text); }
 .tn-wx p { margin: 0; font: 500 14px/1.35 var(--label); color: var(--text); text-wrap: pretty; }
 .tn-wx p.small { margin-top: 8px; font-size: 12.5px; color: var(--muted); }
@@ -2848,14 +2848,14 @@ body.night .cr-row a, body.night .cr-pic a, body.night .cr-pics summary { color:
 .tn-btn.o { justify-content: center; background: #fa81271f; border: 1px solid var(--gold); color: var(--gold); }
 .tn-btn.done { background: #0e1a29; color: var(--gold); }
 .tn-btn .ico-svg svg { width: 18px; height: 18px; display: block; }
-.tn-btn .plus, .tn-more .plus { font: 600 10px/1 var(--label); letter-spacing: .12em; padding: 3px 5px; border-radius: 4px; background: #e7b75f; color: #0b1018; margin-left: 6px; }
+.tn-btn .plus, .tn-more .plus { font: 600 10px/1 var(--label); letter-spacing: .12em; padding: 3px 5px; border-radius: 4px; background: #ffc93d; color: #0b1018; margin-left: 6px; }
 .tn-wx .nights { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin: 12px 0 2px; }
 .tn-wx .nights div { border: 1px solid #ffffff1c; border-radius: 10px; padding: 7px 4px; text-align: center; font: 500 11px/1.2 var(--label); letter-spacing: .08em; color: var(--muted); text-transform: uppercase; overflow: hidden; }
 .tn-wx .nights b { display: block; font: 400 15px/1.2 var(--display); letter-spacing: 0; color: var(--text); margin: 3px 0 1px; text-transform: none; }
 .tn-wx .nights .ok { border-color: #5fd08a88; color: #5fd08a; background: #5fd08a12; }
 .tn-teach { display: flex; gap: 10px; align-items: flex-start; padding: 11px 12px; border-radius: 14px; background: #0b1626; border: 1px solid #22344a; margin-top: 10px; font: 500 13.5px/1.3 var(--label); color: var(--text); }
-.tn-teach .ic { flex: none; width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: #e7b75f1f; color: #e7b75f; font: 400 14px/1 var(--display); }
-.tn-teach b { display: block; font: 600 11px/1 var(--label); letter-spacing: .16em; text-transform: uppercase; color: #e7b75f; margin-bottom: 4px; }
+.tn-teach .ic { flex: none; width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: #ffc93d1f; color: #ffc93d; font: 400 14px/1 var(--display); }
+.tn-teach b { display: block; font: 600 11px/1 var(--label); letter-spacing: .16em; text-transform: uppercase; color: #ffc93d; margin-bottom: 4px; }
 /* Section heads */
 .tn-sec { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin: 22px 0 6px; }
 .tn-sec .k { font: 600 12px/1 var(--label); letter-spacing: .18em; text-transform: uppercase; color: var(--gold); }
@@ -2891,13 +2891,13 @@ body.night .cr-row a, body.night .cr-pic a, body.night .cr-pics summary { color:
 .tn-r.moment, .tn-r.pin { grid-template-columns: 52px minmax(0, 1fr); padding: 8px 0; cursor: default; }
 .tn-r.moment .t b { font-size: 13.5px; color: var(--muted); }
 .tn-r.moment .n { font: 500 13.5px/1.25 var(--label); color: var(--muted); display: flex; align-items: center; gap: 6px; }
-.tn-r.pin { cursor: pointer; } .tn-r.pin .t b, .tn-r.pin .n { color: #e7b75f; } .tn-r.pin .n { font: 600 14px/1.25 var(--label); }
+.tn-r.pin { cursor: pointer; } .tn-r.pin .t b, .tn-r.pin .n { color: #ffc93d; } .tn-r.pin .n { font: 600 14px/1.25 var(--label); }
 .tn-part { font: 600 11.5px/1 var(--label); letter-spacing: .18em; text-transform: uppercase; color: var(--muted); padding: 16px 0 6px; border-top: 1px solid #ffffff12; }
 .tn-run.grey .tn-r { opacity: .55; }
 .tn-pills { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
 .tn-r .tn-pill { display: inline-flex; align-items: center; padding: 3px 7px; border-radius: 6px; background: #ffffff0f; font: 600 12px/1.15 var(--label); letter-spacing: .03em; color: var(--text); white-space: nowrap; }
-.tn-r .tn-pill.xp { color: #5fd08a; } .tn-r .tn-pill.sh { color: #f3b5ec; background: #e46ad61f; } .tn-r .tn-pill.ms { color: #e7b75f; background: #e7b75f1a; }
-.tn-r .tn-pill.wk { color: #7fd6c8; background: #3cb4a01a; } .tn-r .tn-pill.lv { color: #d9dde3; background: #c0c8d41f; } .tn-r .tn-pill.hd { color: #e7b75f; background: #e7b75f26; }
+.tn-r .tn-pill.xp { color: #5fd08a; } .tn-r .tn-pill.sh { color: #f3b5ec; background: #e46ad61f; } .tn-r .tn-pill.ms { color: #ffc93d; background: #ffc93d1a; }
+.tn-r .tn-pill.wk { color: #7fd6c8; background: #3cb4a01a; } .tn-r .tn-pill.lv { color: #d9dde3; background: #c0c8d41f; } .tn-r .tn-pill.hd { color: #ffc93d; background: #ffc93d26; }
 .tn-r .tn-pill.lc { color: #ff8f7a; background: #ff6a5520; } .tn-r .tn-pill.rn { color: #7fd6c8; background: #3cb4a01a; } .tn-r .tn-pill.tr { color: #9be37f; background: #5fd08a18; } .tn-r .tn-pill.gh { color: #9be37f; background: #5fd08a18; }
 .tn-more { display: flex; width: 100%; justify-content: space-between; align-items: center; gap: 10px; min-height: 48px; padding: 0 2px; border: 0; border-top: 1px solid #ffffff12; background: none; font: 500 14.5px/1.2 var(--label); color: var(--text); text-align: left; cursor: pointer; }
 .tn-more > span { display: inline-flex; align-items: center; gap: 6px; }
@@ -2906,11 +2906,11 @@ body.night .cr-row a, body.night .cr-pic a, body.night .cr-pics summary { color:
 /* Missions say where */
 .tn-ms { display: grid; grid-template-columns: 18px minmax(0, 1fr) auto; gap: 8px; align-items: start; width: 100%; padding: 10px 0; border: 0; border-top: 1px solid #ffffff12; background: none; color: inherit; text-align: left; font: inherit; }
 button.tn-ms { cursor: pointer; } button.tn-ms:active { background: #ffffff06; }
-.tn-ms > i { width: 11px; height: 11px; border: 1.5px solid #e7b75f; transform: rotate(45deg); margin: 4px 0 0 2px; }
+.tn-ms > i { width: 11px; height: 11px; border: 1.5px solid #ffc93d; transform: rotate(45deg); margin: 4px 0 0 2px; }
 .tn-ms b { display: block; font: 600 15px/1.2 var(--label); color: var(--text); }
 .tn-ms small { display: block; font: 500 13px/1.3 var(--label); color: var(--muted); margin-top: 2px; } .tn-ms small em { font-style: normal; color: var(--gold); }
 .tn-ms .xp { font: 600 12.5px/1 var(--label); letter-spacing: .06em; color: #5fd08a; padding-top: 3px; }
-.tn-ms.done { opacity: .6; } .tn-ms.done > i { background: #e7b75f; } .tn-ms.done b { text-decoration: line-through; text-decoration-color: #ffffff55; }
+.tn-ms.done { opacity: .6; } .tn-ms.done > i { background: #ffc93d; } .tn-ms.done b { text-decoration: line-through; text-decoration-color: #ffffff55; }
 .tn-ms.wk > i { border-color: #7fd6c8; } .tn-ms.wk .xp { color: #7fd6c8; }
 .tn-ms.ev > i { border-color: #b8a4ff; border-radius: 50%; transform: none; } .tn-ms.gh > i { border-color: #9be37f; }
 #visible .tn-r .needs-plus, #visible .nh-bell.needs-plus { opacity: .45; }
@@ -2956,3 +2956,61 @@ body:has(#start:not([hidden])) :is(.patch-coins, .pc-badge) { visibility: hidden
 @media (max-height: 720px) {
   #discover .d-ticket.has-mini { grid-template-columns: 62px minmax(0, 1fr); }
 }
+
+/* ===== Style audit (2026-10-28, Sevaan: "fix those things"): one of each ===== */
+/* Buttons: one main shape (12px corners, 50px tall, centred words) and one secondary (12px, 44px). */
+.d-cta { height: auto; min-height: 50px; border-radius: 12px; justify-content: center; gap: 10px; }
+.tc .acts button { border-radius: 12px; }
+.tn-btn { border-radius: 12px; min-height: 50px; justify-content: center; }
+.plus-cta { border-radius: 12px; min-height: 50px; }
+.pill-o, .pill-g { border-radius: 12px; }
+.panel .pill:not(.x-close) { border-radius: 12px; min-height: 44px; }
+/* Fonts: the game's label font everywhere, never the phone's system font. */
+.crew-body, .crew-kit small, .tc p, .cr-row { font-family: var(--label, 'SC Label', sans-serif); letter-spacing: .03em; }
+/* Section headings: one style (13px, .16em, orange); a muted version for helper lines. */
+.tn-sec .k, .tn-wx .k, .nh-k, .headliner .k, .season-box .k, .train-box .k, .crew-sec, #debug .set-bar h3, #debug .set-bar b { font: 500 13px/1.1 var(--label) !important; letter-spacing: .16em !important; text-transform: uppercase; }
+.tn-wx .k, .tn-wx .k.gold, .nh-k, .crew-sec, #debug .set-bar h3, #debug .set-bar b { color: var(--gold) !important; }
+.tn-sec .k.m { color: var(--muted) !important; }
+/* Panels: 14px corners for big panels, 12px for small tiles. */
+.tn-wx, .now-hero, .headliner, .run-haul, .run-stop, .almost-box, .season-box, .train-box, .ghost-box, .sky-plus-line { border-radius: 14px !important; }
+/* The two Tonight heroes read as a pair: same corners, heading on the left in the same orange; the tint shows the state. */
+.now-hero .nh-k { justify-self: start; }
+/* XP is orange everywhere (green stays Uncommon's). */
+.tn-r .tn-pill.xp, .tn-ms .xp, .now-missions .nm b { color: var(--gold) !important; }
+.tn-r .tn-pill.fr { color: var(--muted); }
+/* Tonight pills: one colour per kind. Missions yellow, headliner orange, week teal, reunion silver-blue, trains/ghost green. */
+.tn-r .tn-pill.hd { color: var(--gold); background: #fa812726; }
+.tn-r .tn-pill.rn { color: #c6d4e2; background: #c0c8d41f; }
+.tn-ms .xp { color: var(--gold) !important; }
+.tn-ms > i { border-color: #ffc93d; }
+/* A set reminder is orange everywhere; a free one is just a normal bell. */
+#gh-remind.on, #ud-bell.on, #until-dark.tk-card #ud-bell.on { color: var(--gold) !important; box-shadow: inset 0 0 0 1.5px var(--gold) !important; }
+#visible .nh-bell.free, #visible .tn-r .bell.free { border-color: #22344a; color: var(--text); }
+/* The lit "next" run row stays inside the 20px margins. */
+.tn-r.next { margin: 2px 0; padding: 10px 8px; }
+/* Hints: muted sentence case. */
+.tn-sec > span:last-child { font: 500 13px/1 var(--label); letter-spacing: .03em; text-transform: none; }
+/* All around you: one "new" badge colour. */
+.ar-card.new { border-color: color-mix(in srgb, var(--gold) 60%, transparent) !important; box-shadow: 0 0 14px -6px var(--gold) !important; }
+.ar-card em { background: var(--gold) !important; color: #0b1018 !important; }
+/* Settings: one link style; Turn on as a link, not a tag. */
+#calib-open, #debug #retry-motion, #nudge-reset { background: none !important; border: 0 !important; box-shadow: none !important; padding: 0 !important; min-height: 44px; color: var(--gold) !important; font: 500 13px/1 var(--label) !important; letter-spacing: .14em !important; text-transform: uppercase; text-decoration: none !important; }
+/* The Plus kit's icons are line icons. */
+.crew-kit .kt-i .ico { width: 22px; height: 22px; }
+/* The Tonight page leaves room for the last row above the tab bar. */
+body:is(.nav-tabs, .nav-lens) #visible { padding-bottom: calc(var(--safe-bottom, 0px) + 124px); }
+/* Red mode: the reveal's NEW CARD stays bright. */
+body.night #reveal-eyebrow { color: var(--gold) !important; }
+#debug .set-sl-sub .sm-inline { text-decoration: none; font-weight: 600; }
+/* One slider look in Settings: thin track, orange fill to a cream knob. */
+#debug .set-range::-webkit-slider-runnable-track { height: 4px; border-radius: 2px; background: linear-gradient(90deg, #fa8127 var(--p, 50%), #22324a var(--p, 50%)); }
+#debug .set-range::-moz-range-progress { height: 4px; border-radius: 2px; background: #fa8127; }
+#debug .set-range::-webkit-slider-thumb { width: 20px; height: 20px; margin-top: -8px; background: #fff2b3; box-shadow: 0 0 0 3px #080f1b; }
+#debug .set-range::-moz-range-thumb { width: 20px; height: 20px; background: #fff2b3; }
+body.night #debug .set-range::-webkit-slider-runnable-track { background: linear-gradient(90deg, #ff6a55 var(--p, 50%), #3a1410 var(--p, 50%)); }
+body.night #debug .set-range::-webkit-slider-thumb { background: #ff7f70; box-shadow: 0 0 0 3px #120505; }
+.tn-r .t b .ap { font: 600 10px/1 var(--label); font-style: normal; letter-spacing: .06em; margin-left: 2px; color: var(--muted); }
+.tn-r { grid-template-columns: 64px minmax(0, 1fr) auto; } .tn-r.moment, .tn-r.pin { grid-template-columns: 64px minmax(0, 1fr); }
+/* Welcome card: one instruction ("Swipe up to begin" in its footer). The button stays for keyboards and screen readers. */
+.wc-after .wc-swipe { display: none; }
+.wc-after #btn-start { position: absolute !important; width: 1px; height: 1px; min-height: 0 !important; padding: 0 !important; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }

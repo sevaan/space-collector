@@ -2,8 +2,8 @@
 // badges"). Your history under the sky, from the sighting log plus what the Collection page already knows (rank,
 // patches, constellations, stories, albums). computeStats(sightings, byKey, nightKey, year, ctx) -> numbers;
 // statsHtml(st) -> the panel. No network; the map uses js/geo.js’s coarse outlines.
-import { LAND } from './geo.js?v=0.1.1259';
-import { TIER_INFO, TIERS } from './rarity.js?v=0.1.1259';
+import { LAND } from './geo.js?v=0.1.1260';
+import { TIER_INFO, TIERS } from './rarity.js?v=0.1.1260';
 
 const RANK = { common: 0, uncommon: 1, rare: 2, epic: 3, legendary: 4 };
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -59,7 +59,7 @@ export function statsHtml(st) {
   const since = st.since ? day(st.since, { month: 'long', year: 'numeric' }) : '';
   const max = Math.max(1, ...st.months), nowM = new Date().getMonth();
   // Rank header, like the rank card: name, XP, how far to the next.
-  const rank = x.rank ? `<div class="st-rank"><div><small>Observer rank</small><b>${esc(x.rank.name)}</b></div><div class="st-xp"><b>${n(x.rank.xp)}</b><small>XP${x.rank.next ? ` · ${n(x.rank.next - x.rank.xp)} to go` : ''}</small></div></div>` : '';
+  const rank = x.rank ? `<div class="st-rank"><div><small>Observer rank</small><b>${esc(x.rank.name)}</b></div><div class="st-xp"><b>${n(x.rank.xp)}</b><small>XP${x.rank.next ? ` · ${n(x.rank.next - x.rank.xp)} to ${esc(x.rank.nextName || 'go')}` : ''}</small></div></div>` : '';
   // The collection, by rarity.
   const coll = `<section class="st-sec"><div class="st-head"><span>The collection</span><span class="st-big"><b>${n(st.cards)}</b> / ${n(st.total)} cards</span></div>
     <div class="st-tiers">${st.tiers.map((r) => { const t = TIER_INFO[r.t]; const pct = r.all ? r.have / r.all : 0; return `<div class="st-tier" style="--c:${t.color}"><span class="st-tl">${t.gem} ${esc(t.label)}</span><span class="st-tb"><i style="width:${Math.max(pct ? 2 : 0, pct * 100).toFixed(1)}%"></i></span><span class="st-tn">${n(r.have)} <small>/ ${n(r.all)}</small></span></div>`; }).join('')}</div></section>`;
@@ -82,10 +82,10 @@ export function statsHtml(st) {
     <div class="st-bars" aria-label="Nights out by month">${st.months.map((v, i) => `<div class="st-bar${i === nowM ? ' now' : ''}"><em>${v || ''}</em><span style="height:${(v / max) * 100}%"></span><small>${MONTHS[i][0]}</small></div>`).join('')}</div></section>`;
   // Highlights, each with its card’s picture.
   const thumb = (c) => { const u = x.art?.(c); return u ? `<img src="${u}" alt="" loading="lazy">` : `<span class="st-noart" style="color:${tierOf(c).color}">${c.natural === 'star' ? '✦' : tierOf(c).gem}</span>`; }; // stars have no painted picture: a mark, not an empty box (iOS playtest 2026-10-20)
-  const hl = (label, c, line) => c ? `<div class="st-hl">${thumb(c)}<div><small>${esc(label)}</small><b>${esc(title(c))}</b><span>${esc(line)}</span></div></div>` : '';
+  const hl = (label, c, line, tier) => c ? `<div class="st-hl">${thumb(c)}<div><small>${esc(label)}</small><b>${esc(title(c))}</b><span>${tier ? `<em style="color:${tierOf(c).color};font-style:normal">${tierOf(c).gem} ${tierOf(c).label}</em> · ` : ''}${esc(line)}</span></div></div>` : ''; /* the rarest find shows its rarity in its colour and shape (style audit 2026-10-28) */
   const top = st.rarest[0];
   const highlights = `<section class="st-sec"><div class="st-head"><span>Highlights</span></div><div class="st-hls">
-    ${top ? hl('Rarest find', top.c, `${tierOf(top.c).label} · ${day(top.s.time)}`) : ''}
+    ${top ? hl('Rarest find', top.c, day(top.s.time), true) : ''}
     ${st.most && st.most.nights > 1 ? hl('Most seen', st.most.c, `On ${plural(st.most.nights, 'night')}`) : ''}
     ${st.firstCard ? hl('Your first card', st.firstCard.c, day(st.firstCard.s.time)) : ''}
     ${st.busiest ? `<div class="st-hl st-hl--day"><span class="st-cal"><small>${esc(day(st.busiest.t, { month: 'short' }))}</small><b>${new Date(st.busiest.t).getDate()}</b></span><div><small>Best day</small><b>${esc(day(st.busiest.t, { weekday: 'long', month: 'long', day: 'numeric' }))}</b><span>${plural(st.busiest.cards.size, 'card')} seen</span></div></div>` : ''}

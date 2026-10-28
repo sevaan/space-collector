@@ -1937,3 +1937,18 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - 2026-10-28: Build 1.0 (35) archived (web v0.1.1257: today's playtest fixes, Tonight redesign, writing pass, drawings, realistic Earth, Your objects); opened in Organizer, not uploaded. SC Tester reinstalled.
 - 2026-10-28 · v0.1.1258 (Sevaan): the Sun card's fact drops the safety warning (the first-aim notice covers that) and says: 99.8% of the solar system's mass; today's sunlight spent ~170,000 years getting out of the core, then 8 minutes to you (NASA Sun facts page, already its source).
 - 2026-10-28 · v0.1.1259 (Sevaan): the mini card in the circle's tickets (Collect/View card, the sky's ticket, plane/star) sits 6px further in from the left edge (margin-left; the Collect grid column 78px, 62 on short screens).
+- 2026-10-28 · v0.1.1260 style audit fixes (Sevaan: "fix those things"; report from a style-audit agent, my picks on the design calls). End-of-file blocks marked "Style audit (2026-10-28)" in css/app.css, collection.css, ui.css, reveal.css:
+  - Golds: two only. --ui-gold (#fa8127, actions) and --ui-medal (#ffc93d, Gold / Legendary-ish / PLUS / missions); #e7b75f, #f2c14e and #e2b53c in app.css/reveal.css became #ffc93d. Off-palette blue-grey text (#9fb3c8, #c9d3dd, #9fb0c2, #c9d3de) is cream now.
+  - XP is orange everywhere (reveal +XP, run pills, missions); green is Uncommon's only. "Reminder free" pill is muted (.tn-pill.fr).
+  - Buttons: main 12px corners, 50px, centred (.d-cta, .tn-btn, .plus-cta, tour buttons, .ui-btn); secondary 12px (.pill-o/.pill-g, .panel .pill).
+  - Panels 14px corners (Tonight heroes, headliner, run boxes, Stats sections). The Tonight heroes' headings are left-aligned, 13px/.16em orange like every section heading (Settings bars, Plus sections too).
+  - Fonts: SC Label replaces the system font on the Plus page, tour cards, credits, sighting dates, Stats sublines.
+  - durWords(mins, short) in main.js: "2 h 5 min" in sentences, "2h 5m" in columns (relWords, tickets, full list, the day hero). Run times always carry a small AM/PM (runTime, column 64px); the strip always says "Dark 6:40 PM"; cloudy nights show PM; cards-page times zero-pad on a 24-hour clock (hm).
+  - A set reminder is orange everywhere (#gh-remind, #ud-bell, run bells); a free bell is a normal bell.
+  - Red mode: rarity words in Stats and Find bright red; reveal NEW CARD red.
+  - Plus kit icons are line icons (new gem / widgets / sparkle in css/icons.css). Up now chips always show the rarity shape. All around you's NEW badge is orange.
+  - Tab bar orange edge inset 18px inside its corners. Settings: Line up / Turn on / Reset as plain orange links; volume sliders share the sky slider's look (--p fill set from main.js).
+  - Welcome card: only the footer's "Swipe up to begin" (the "↑ Swipe away" above it is hidden; #btn-start kept for keyboards).
+  - Hints in sentence case ("Tap to aim", "Tap for its orbit"). Stats: rank and highlight names in capitals, rarest find in its rarity colour and shape, "XP · 1,615 to Navigator", tile labels block. Reveal chips start on the 20px margin and fade at the right. The lit next row stays in the margins. Search/Filters one corner/border, Filters fixed width.
+  - Short phones (≤720px tall): the rank/objects deck shows on Mine only.
+  - Not done: one shared row design for Tonight's run and Find (only the cloud note style matches now); Settings field-card frame colour left as Sevaan picked it.

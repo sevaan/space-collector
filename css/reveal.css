@@ -134,23 +134,23 @@ body.night .rv-chip--reunion { color: #ff7f70; border-color: #ff7f7066; }
 /* One lesson after the first catch (2026-10-25, Sevaan; design/first-night.html 04): a panel under the card. The card
    makes room above it (reveal.js teachRoom); the rank bar and View in collection step aside meanwhile. */
 #rv-teach { position: absolute; z-index: 6; left: 50%; bottom: calc(var(--safe-bottom, 0px) + 14px); transform: translateX(-50%); box-sizing: border-box; width: min(380px, calc(100% - 28px));
-  padding: 12px 14px 12px; border-radius: 16px; background: rgba(10, 18, 31, .97); border-top: 2px solid #f2c14e; box-shadow: 0 10px 30px #0008; color: #fff2b3; animation: tcIn .36s cubic-bezier(.2,.9,.3,1); }
+  padding: 12px 14px 12px; border-radius: 16px; background: rgba(10, 18, 31, .97); border-top: 2px solid #ffc93d; box-shadow: 0 10px 30px #0008; color: #fff2b3; animation: tcIn .36s cubic-bezier(.2,.9,.3,1); }
 #rv-teach.out { animation: tcOut .24s ease-in forwards; }
 @keyframes tcIn { from { opacity: 0; transform: translate(-50%, 24px); } to { opacity: 1; transform: translate(-50%, 0); } }
 @keyframes tcOut { to { opacity: 0; transform: translate(-50%, 18px); } }
-#rv-teach > small { display: block; font: 500 10.5px/1 var(--label); letter-spacing: .2em; text-transform: uppercase; color: #f2c14e; }
+#rv-teach > small { display: block; font: 500 10.5px/1 var(--label); letter-spacing: .2em; text-transform: uppercase; color: #ffc93d; }
 #rv-teach > b { display: block; margin: 5px 0 10px; font: 400 16px/1.2 var(--display); text-wrap: balance; }
 #rv-teach .tc-levels { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; align-items: center; gap: 6px; margin-bottom: 10px; }
 #rv-teach .tc-levels > em { font-style: normal; color: #6f7f93; font-size: 16px; }
 #rv-teach .tc-lv { display: grid; justify-items: center; gap: 3px; }
 #rv-teach .tc-mini { display: block; width: 52px; aspect-ratio: 28 / 39.2; border-radius: 6px; overflow: hidden; background: #12233a; border: 2px solid #b8834f; opacity: .55; filter: saturate(.6); animation: tcLight .5s ease-out forwards; }
 #rv-teach .tc-lv.silver .tc-mini { border-color: #d6dde6; box-shadow: 0 0 0 1px #d6dde6; animation-delay: .5s; }
-#rv-teach .tc-lv.gold .tc-mini { border-color: #f2c14e; box-shadow: 0 0 10px #f2c14e88; animation-delay: 1s; }
+#rv-teach .tc-lv.gold .tc-mini { border-color: #ffc93d; box-shadow: 0 0 10px #ffc93d88; animation-delay: 1s; }
 #rv-teach .tc-lv.bronze .tc-mini { animation-delay: 0s; outline: 1.5px dashed #fa8127; outline-offset: 3px; }
 #rv-teach .tc-mini img { width: 100%; height: 62%; object-fit: cover; display: block; }
 @keyframes tcLight { to { opacity: 1; filter: none; } }
 #rv-teach .tc-lv b { font: 500 11px/1 var(--label); letter-spacing: .16em; text-transform: uppercase; color: #e3c7a8; }
-#rv-teach .tc-lv.silver b { color: #d6dde6; } #rv-teach .tc-lv.gold b { color: #f2c14e; }
+#rv-teach .tc-lv.silver b { color: #d6dde6; } #rv-teach .tc-lv.gold b { color: #ffc93d; }
 #rv-teach .tc-lv i { font: 500 11px/1 var(--label); font-style: normal; color: #aab3bf; }
 #rv-teach .tc-moons { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 3px; margin-bottom: 10px; }
 #rv-teach .tc-moons span { display: grid; justify-items: center; gap: 4px; opacity: .4; animation: tcLight .4s ease-out forwards; animation-delay: var(--d); }
@@ -165,3 +165,7 @@ body.night .rv-chip--reunion { color: #ff7f70; border-color: #ff7f7066; }
 body.night #rv-teach { border-top-color: #ff6a55; color: #ff7f70; } body.night #rv-teach > small, body.night #rv-teach .tc-lv b { color: #ff6a55 !important; }
 @media (prefers-reduced-motion: reduce) { #rv-teach, #rv-teach.out, #rv-teach .tc-mini, #rv-teach .tc-moons span { animation-duration: .01s; animation-delay: 0s; } }
 #rv-news::-webkit-scrollbar { display: none; }
+
+/* Style audit (2026-10-28): the chip row starts on the 20px margin and fades out at the right instead of cutting a word. */
+#rv-news { left: calc(20px + var(--safe-l, 0px)); right: calc(20px + var(--safe-r, 0px)); -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 28px), transparent); mask-image: linear-gradient(90deg, #000 calc(100% - 28px), transparent); }
+.rv-roll > span { color: var(--gold, #fa8127); } /* XP is orange everywhere */

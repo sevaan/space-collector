@@ -407,13 +407,13 @@ body.night::after { content: ''; position: fixed; inset: 0; z-index: 2147483646;
 /* Observer stats, redesigned (2026-10-16, Sevaan): rank on top, the collection by rarity, what you've earned, highlights
    with their cards' pictures, time under the sky, the map and the rarest finds. Sections are framed like the field cards. */
 .st-rank { display:flex; justify-content:space-between; align-items:flex-end; gap:12px; padding:16px 18px; margin:4px 0 14px; border-radius:16px; border:1px solid #2a3a48; background:radial-gradient(120% 140% at 0% 0%, #1b2f48, #0e1a29 60%); }
-.st-rank small { display:block; font:500 12px/1 'SC Label', sans-serif; letter-spacing:.2em; text-transform:uppercase; color:#9fb3c8; margin-bottom:6px; }
+.st-rank small { display:block; font:500 12px/1 'SC Label', sans-serif; letter-spacing:.2em; text-transform:uppercase; color:#bdbea9; margin-bottom:6px; }
 .st-rank b { font:400 28px/1 'SC Display', 'Russo One', sans-serif; color:#fff2b3; }
 .st-xp { text-align:right; } .st-xp b { color:#fa8127; font-size:24px; display:block; } .st-xp small { margin:4px 0 0; letter-spacing:.12em; }
 .st-sec { border:1px solid #22344a; border-radius:16px; background:#0b1524; padding:14px 16px 16px; margin:0 0 12px; }
 .st-head { display:flex; justify-content:space-between; align-items:baseline; gap:10px; font:500 13px/1.2 'SC Label', sans-serif; letter-spacing:.18em; text-transform:uppercase; color:#fa8127; margin:0 0 12px; }
-.st-since { font:500 12px/1.2 'SC Label', sans-serif; letter-spacing:.12em; color:#9fb3c8; text-transform:uppercase; }
-.st-big { color:#9fb3c8; letter-spacing:.08em; } .st-big b { font:400 20px/1 'SC Display', 'Russo One', sans-serif; color:#fff2b3; letter-spacing:0; }
+.st-since { font:500 12px/1.2 'SC Label', sans-serif; letter-spacing:.12em; color:#bdbea9; text-transform:uppercase; }
+.st-big { color:#bdbea9; letter-spacing:.08em; } .st-big b { font:400 20px/1 'SC Display', 'Russo One', sans-serif; color:#fff2b3; letter-spacing:0; }
 .st-tiers { display:grid; gap:9px; }
 .st-tier { display:grid; grid-template-columns:7.2em minmax(0,1fr) 5.6em; gap:10px; align-items:center; }
 .st-tl { font:500 13px/1 'SC Label', sans-serif; letter-spacing:.1em; text-transform:uppercase; color:var(--c); white-space:nowrap; }
@@ -422,20 +422,20 @@ body.night::after { content: ''; position: fixed; inset: 0; z-index: 2147483646;
 .st-goals { display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:10px; }
 .st-goal { position:relative; overflow:hidden; border-radius:12px; background:#0f1d30; border:1px solid #22344a; padding:12px 12px 14px; display:grid; gap:4px; }
 .st-goal b { font:400 24px/1 'SC Display', 'Russo One', sans-serif; color:#fff2b3; font-variant-numeric:tabular-nums; } .st-goal b small { font-size:15px; color:#7f93a8; }
-.st-goal span { font:500 13px/1.2 'SC Label', sans-serif; letter-spacing:.12em; text-transform:uppercase; color:#c9d3dd; }
+.st-goal span { font:500 13px/1.2 'SC Label', sans-serif; letter-spacing:.12em; text-transform:uppercase; color:#e6e2c4; }
 .st-goal em { font:500 12px/1.2 'SC Label', sans-serif; letter-spacing:.04em; color:#7f93a8; font-style:normal; }
 .st-goal i { position:absolute; left:0; bottom:0; height:3px; width:calc(var(--p) * 100%); background:#fa8127; }
 .st-hls { display:grid; gap:10px; }
 .st-hl { display:grid; grid-template-columns:64px minmax(0,1fr); gap:12px; align-items:center; }
 .st-hl img, .st-noart { width:64px; height:48px; object-fit:cover; border-radius:8px; background:#0a1220; box-shadow:0 0 0 1px #2a3a48; }
-.st-hl small { display:block; font:500 11px/1 'SC Label', sans-serif; letter-spacing:.2em; text-transform:uppercase; color:#9fb3c8; margin-bottom:4px; }
+.st-hl small { display:block; font:500 11px/1 'SC Label', sans-serif; letter-spacing:.2em; text-transform:uppercase; color:#bdbea9; margin-bottom:4px; }
 .st-hl b { display:block; font:400 17px/1.15 'SC Display', 'Russo One', sans-serif; color:#fff2b3; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-.st-hl span { font-size:13px; color:#9fb3c8; }
+.st-hl span { font-size:13px; color:#bdbea9; }
 .st-cal { width:64px; height:48px; border-radius:8px; background:#fff2b3; color:#0b1524; display:grid; place-items:center; align-content:center; gap:1px; }
 .st-cal small { margin:0; color:#c9622a; font-size:10px; letter-spacing:.14em; } .st-cal b { color:#0b1524; font-size:20px; }
 .st-tiles { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin:0 0 14px; }
 .st-tile { background:#0f1d30; border:1px solid #22344a; border-radius:12px; padding:10px 4px; text-align:center; }
-.st-tile b { display:block; font:400 22px/1.1 'SC Display', 'Russo One', sans-serif; color:#fff2b3; } .st-tile small { font:500 11px/1.15 'SC Label', sans-serif; letter-spacing:.08em; text-transform:uppercase; color:#9fb3c8; }
+.st-tile b { display:block; font:400 22px/1.1 'SC Display', 'Russo One', sans-serif; color:#fff2b3; } .st-tile small { font:500 11px/1.15 'SC Label', sans-serif; letter-spacing:.08em; text-transform:uppercase; color:#bdbea9; }
 .st-bars { display:grid; grid-template-columns:repeat(12,1fr); gap:5px; height:96px; align-items:end; }
 .st-bar { display:flex; flex-direction:column; align-items:center; height:100%; justify-content:flex-end; gap:3px; }
 .st-bar em { font:500 11px/1 'SC Label', sans-serif; color:#fff2b3; font-style:normal; min-height:11px; }
@@ -446,7 +446,7 @@ body.night::after { content: ''; position: fixed; inset: 0; z-index: 2147483646;
 .st-rare { display:grid; gap:8px; } .st-rare div { display:grid; grid-template-columns:48px auto minmax(0,1fr) auto; gap:10px; align-items:center; }
 .st-rare img, .st-rare .st-noart { width:48px; height:36px; object-fit:cover; border-radius:6px; }
 .st-rare b { font:400 15px/1.1 'SC Display', 'Russo One', sans-serif; color:#fff2b3; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-.st-rt { font:500 12px/1 'SC Label', sans-serif; letter-spacing:.06em; white-space:nowrap; } .st-rare small { color:#9fb3c8; font-size:12px; }
+.st-rt { font:500 12px/1 'SC Label', sans-serif; letter-spacing:.06em; white-space:nowrap; } .st-rare small { color:#bdbea9; font-size:12px; }
 .st-empty { color:#bdbea9; padding:24px 4px; text-align:center; }
 /* Inside the app, Explore's switcher sits on top of this page, so the page's own copy is hidden (2026-10-11) */
 html.embedded .bottom-nav { visibility: hidden; }
@@ -475,7 +475,7 @@ body.has-cards .collection-intro { display: none; }
 .logbook.compact .lb-pic { display: block; height: 96px; }
 .lb-bar { height: 6px; margin: 2px 16px 6px; border-radius: 99px; background: #22344a; overflow: hidden; }
 .lb-bar i { display: block; height: 100%; border-radius: 99px; background: linear-gradient(90deg, #c4621c, #fa8127); }
-.lb-to { display: flex; justify-content: space-between; gap: 10px; margin: 0 16px 12px; font: 500 13px/1.2 var(--label, 'Barlow Condensed', sans-serif); letter-spacing: .06em; color: #9fb3c8; }
+.lb-to { display: flex; justify-content: space-between; gap: 10px; margin: 0 16px 12px; font: 500 13px/1.2 var(--label, 'Barlow Condensed', sans-serif); letter-spacing: .06em; color: #bdbea9; }
 .lb-to b { color: #fff2b3; font-weight: 600; }
 .logbook .lb-more { position: absolute; right: 16px; margin: 0; z-index: 2; }
 .logbook .lb-rankrow { padding-right: 16px; }
@@ -486,13 +486,13 @@ body.has-cards .collection-intro { display: none; }
 /* Find (2026-10-13): a search-first list. */
 .grid.find-mode { display: grid; grid-template-columns: minmax(0, 1fr) !important; gap: 8px; }
 .find-head { font: 600 13px/1 var(--label, 'Barlow Condensed', sans-serif); letter-spacing: .16em; text-transform: uppercase; color: var(--ui-gold, #fa8127); margin: 4px 0 2px; }
-.find-none { color: #9fb3c8; text-align: center; padding: 30px 10px; }
+.find-none { color: #bdbea9; text-align: center; padding: 30px 10px; }
 .find-row { display: grid; grid-template-columns: 52px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 10px 12px; border-radius: 14px; background: #0e1a29; border: 1px solid #22344a; border-left: 3px solid var(--c); cursor: pointer; }
 .fd-art { width: 52px; height: 52px; border-radius: 10px; overflow: hidden; background: radial-gradient(circle at 50% 40%, #1a2b40, #0a1220); }
 .fd-art img { width: 100%; height: 100%; object-fit: cover; display: block; } .fd-blank { display: block; width: 100%; height: 100%; }
 .fd-main { display: grid; gap: 2px; min-width: 0; }
 .fd-main b { font: 600 16px/1.15 var(--label, 'Barlow Condensed', sans-serif); color: #fff2b3; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.fd-main small { font: 500 12.5px/1.2 var(--label, 'Barlow Condensed', sans-serif); color: #9fb3c8; } .fd-main small em { font-style: normal; font-weight: 600; color: var(--c); } .fd-main small i { font-style: normal; color: #5fd08a; }
+.fd-main small { font: 500 12.5px/1.2 var(--label, 'Barlow Condensed', sans-serif); color: #bdbea9; } .fd-main small em { font-style: normal; font-weight: 600; color: var(--c); } .fd-main small i { font-style: normal; color: #5fd08a; }
 .fd-pass { font: 500 13px/1.25 var(--label, 'Barlow Condensed', sans-serif); color: #c9d6e3; } .fd-pass b { color: #fff2b3; font-weight: 600; } .fd-wait { color: #627a8b; }
 .fd-acts { display: flex; gap: 6px; }
 .fd-acts .ic { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; border: 1px solid #22344a; background: #0a1220; color: #e6ecf5; cursor: pointer; }
@@ -538,7 +538,7 @@ body.albums-view .album__name { overflow-wrap: normal; }
 .card__art.orbiting > img, .card__art.orbiting > .card-art-stars { visibility: hidden; }
 .v-where { margin: 10px auto 0; text-align: center; font: 600 13px/1.3 var(--label, 'SC Label', sans-serif); letter-spacing: .06em; color: #fff2b3; max-width: 34ch; }
 .v-where::before { content: '●'; color: #fa8127; margin-right: 6px; }
-.can-orbit .card__art::after { content: 'TAP FOR ITS ORBIT'; position: absolute; right: .8em; bottom: .7em; z-index: 3; font: 600 .95em/1 var(--label, 'Barlow Condensed', sans-serif); letter-spacing: .14em; color: #fff2b3cc; background: #050a12aa; padding: .3em .55em; border-radius: .4em; pointer-events: none; }
+.can-orbit .card__art::after { content: 'Tap for its orbit'; position: absolute; right: .8em; bottom: .7em; z-index: 3; font: 600 .95em/1 var(--label, 'Barlow Condensed', sans-serif); letter-spacing: .14em; color: #fff2b3cc; background: #050a12aa; padding: .3em .55em; border-radius: .4em; pointer-events: none; }
 .can-orbit .card__art.orbiting::after { content: 'TAP FOR THE PICTURE'; }
 /* Target and bell centred in their buttons (2026-10-14, Sevaan): the viewer's button padding pushed them off. */
 .fd-acts .ic { padding: 0; line-height: 0; box-sizing: border-box; }
@@ -559,7 +559,7 @@ html.away *, html.away *::before, html.away *::after { animation-play-state: pau
 .up-next__when { top: calc(2.1em + 8px) !important; }
 .v-up { width: min(100%, var(--card-w, 340px)); box-sizing: border-box; margin: 14px auto 0; padding: 12px 14px; border-radius: 14px; border: 1px solid #fa812766; background: #0e1a29; display: grid; gap: 10px; }
 .v-up[hidden] { display: none; }
-.v-up__when { margin: 0; font: 600 13px/1.25 'SC Label', 'Barlow Condensed', sans-serif; letter-spacing: .14em; text-transform: uppercase; color: var(--muted, #9fb3c8); }
+.v-up__when { margin: 0; font: 600 13px/1.25 'SC Label', 'Barlow Condensed', sans-serif; letter-spacing: .14em; text-transform: uppercase; color: var(--muted, #bdbea9); }
 .v-up__when b { color: #fa8127; font-weight: 600; }
 .v-up__btns { display: grid; grid-template-columns: 1fr auto; gap: 8px; }
 #viewer .v-up .v-up__btns button, .v-up__soon { min-height: 44px; border-radius: 10px; padding: 0 14px; font: 600 13px/1 'SC Label', 'Barlow Condensed', sans-serif; letter-spacing: .14em; text-transform: uppercase; display: flex; align-items: center; justify-content: center; gap: 8px; border: 0; cursor: pointer; }
@@ -571,8 +571,8 @@ html.away *, html.away *::before, html.away *::after { animation-play-state: pau
 /* With the Up tonight panel showing, the card shrinks so the panel's buttons fit on screen without scrolling. */
 #viewer:has(#v-up:not([hidden])) #slot .card { font-size: min(14px, calc((var(--vws) - 40px) / 28 * .95), calc((100dvh - 330px) / 42)); }
 /* Constellations album: stars as a quiet second line under the constellations count (2026-10-16). */
-.album__sub { display: block; font: 500 13px/1.2 'SC Label', 'Barlow Condensed', sans-serif; letter-spacing: .06em; color: var(--muted, #9fb3c8); margin-top: 2px; }
-.v-up__cloud { margin: 6px 0 0; font: 500 13px/1.3 'SC Label', 'Barlow Condensed', sans-serif; letter-spacing: .04em; color: #9fb3c8; }
+.album__sub { display: block; font: 500 13px/1.2 'SC Label', 'Barlow Condensed', sans-serif; letter-spacing: .06em; color: var(--muted, #bdbea9); margin-top: 2px; }
+.v-up__cloud { margin: 6px 0 0; font: 500 13px/1.3 'SC Label', 'Barlow Condensed', sans-serif; letter-spacing: .04em; color: #bdbea9; }
 
 /* 2026-10-17 (Sevaan: "I don't like the text in the button wrapping"): the pass buttons stay on one line. "at" is gone,
    the spacing is a little tighter, and the icon never squeezes. */
@@ -906,3 +906,30 @@ body:not(.has-cards) .lb-deck { display: none; }
 #sat-card .sg-pic { min-height: 120px; }
 /* Your objects: just the title and the globe (2026-10-27, Sevaan); the globe fills the card. */
 #sat-card .sg-pic { border-bottom: 0; }
+
+/* ===== Style audit (2026-10-28) ===== */
+/* Search box and Filters button: one corner, one border, and Filters keeps its width when its dot shows. */
+.search, .collection-tools .search { border-radius: 10px; border: 1px solid var(--line); }
+.filters-btn { border-radius: 10px; min-width: 104px; justify-content: center; position: relative; }
+.filters-btn.active::after { position: absolute; top: 8px; right: 8px; }
+/* Fonts: the game's label font, not the phone's. */
+.viewer-history p, .st-hl span, .st-rare small { font-family: 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .03em; }
+/* Panels: 14px corners. */
+.st-sec { border-radius: 14px; }
+/* Stats: tile labels sit right under their number; rank names in capitals like the rank card. */
+.st-tile small { display: block; margin-top: 4px; }
+.st-rank b, .st-rank h2, .st-rank-name { text-transform: uppercase; }
+.st-hl b { text-transform: uppercase; }
+/* Section labels: one style. */
+#results { font-size: 13px; letter-spacing: .16em; }
+.st-since, .st-rank small, .st-hl small { letter-spacing: .16em; }
+/* Find: the cloud note like Tonight's (no italic); the bell bright like Tonight's. */
+.fd-cloud { font-style: normal; color: var(--muted); }
+/* Red mode: rarity words stay bright through the red filter in Stats, Find and dialogs. */
+body.night :is(.st-tl, .fd-main small em, .st-rt) { color: #ff7f70 !important; }
+body.night .find-row::before { background: #ff6a55; }
+/* Short phones: Albums, Patches and Find get the space; the rank/objects deck shows on Mine. */
+@media (max-height: 720px) {
+  body[data-view]:not([data-view="owned"]) .lb-deck { display: none; }
+}
+.can-orbit .card__art::after { letter-spacing: .03em; } /* hints in sentence case (style audit 2026-10-28) */

@@ -1,32 +1,32 @@
-import { pullToClose } from './pull-close.js?v=0.1.1259';
-import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.1259';
-import { computeStats, statsHtml } from './stats.js?v=0.1.1259';
-import { nightKey } from './observation.js?v=0.1.1259';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1259';
-import { sfx } from './sfx.js?v=0.1.1259';
-import { expandFacts } from './catalog-facts.js?v=0.1.1259';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.1259';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1259';
-import { ticket } from './toast.js?v=0.1.1259';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.1259';
-import { satGlobe } from './sat-globe.js?v=0.1.1259';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.1259';
-import { cardArt } from './art.js?v=0.1.1259';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.1259';
-import { applyBack } from './card-backs.js?v=0.1.1259';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.1259';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1259';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.1259';
-import { STORIES } from './stories.js?v=0.1.1259';
-import { loadConstellations, conList } from './constellations.js?v=0.1.1259';
-import { RANKS, progress, readDeals, readWeekThemes, xpCarry } from './progress.js?v=0.1.1259';
-import { eventBadges, nextEvent } from './events.js?v=0.1.1259';
-import { shareCardEl } from './share-card.js?v=0.1.1259';
-import { forgetSighting } from './cloud-backup.js?v=0.1.1259';
-import { allSightings, deleteSighting } from './store.js?v=0.1.1259';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.1259';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.1259';
-import { localText } from './localize.js?v=0.1.1259';
+import { pullToClose } from './pull-close.js?v=0.1.1260';
+import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.1260';
+import { computeStats, statsHtml } from './stats.js?v=0.1.1260';
+import { nightKey } from './observation.js?v=0.1.1260';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1260';
+import { sfx } from './sfx.js?v=0.1.1260';
+import { expandFacts } from './catalog-facts.js?v=0.1.1260';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.1260';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1260';
+import { ticket } from './toast.js?v=0.1.1260';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.1260';
+import { satGlobe } from './sat-globe.js?v=0.1.1260';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.1260';
+import { cardArt } from './art.js?v=0.1.1260';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.1260';
+import { applyBack } from './card-backs.js?v=0.1.1260';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.1260';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1260';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.1260';
+import { STORIES } from './stories.js?v=0.1.1260';
+import { loadConstellations, conList } from './constellations.js?v=0.1.1260';
+import { RANKS, progress, readDeals, readWeekThemes, xpCarry } from './progress.js?v=0.1.1260';
+import { eventBadges, nextEvent } from './events.js?v=0.1.1260';
+import { shareCardEl } from './share-card.js?v=0.1.1260';
+import { forgetSighting } from './cloud-backup.js?v=0.1.1260';
+import { allSightings, deleteSighting } from './store.js?v=0.1.1260';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.1260';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.1260';
+import { localText } from './localize.js?v=0.1.1260';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -330,7 +330,7 @@ function remindStreak() {
   let ahead = (6 - d.getDay() + 7) % 7; if (ahead === 0 && d.getTime() < Date.now()) ahead = 7; // this Saturday, unless 8 pm has passed
   d.setDate(d.getDate() + ahead);
   (isNative() ? notifyAt(d.getTime(), 'This week: keep your streak', 'One sighting is all it takes. See what’s up tonight.', { id: 7140 }) /* one fixed id: tapping twice replaces it instead of stacking two (bug hunt 2026-10-20) */ : Promise.resolve('app-only'))
-    .then((r) => ticket({ kind: 'mission', tone: 'steel', icon: 'bell', eyebrow: 'STREAK', line: r === 'on' ? `We’ll remind you Saturday at ${d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}.` /* the phone's clock (US/UK playtest 2026-10-25) */ : r === 'app-only' ? 'Reminders work in the Space Collector app.' : r === 'denied' ? 'Notifications are off for Space Collector.' : 'Couldn’t set a reminder here.', ms: 4000 }));
+    .then((r) => ticket({ kind: 'mission', tone: 'steel', icon: 'bell', eyebrow: 'STREAK', line: r === 'on' ? `We’ll remind you Saturday at ${hm(d)}.` /* the phone's clock (US/UK playtest 2026-10-25) */ : r === 'app-only' ? 'Reminders work in the Space Collector app.' : r === 'denied' ? 'Notifications are off for Space Collector.' : 'Couldn’t set a reminder here.', ms: 4000 }));
 }
 // Observer stats (free for everyone, 2026-10-12): a link under the rank card opens #stats-view.
 function openStats({ instant = false } = {}) { /* instant: already there under Settings, no slide (2026-10-24) */
@@ -344,7 +344,7 @@ function openStats({ instant = false } = {}) { /* instant: already there under S
   const lv = SETS.map((set) => albumStats(set.id)).filter((a) => a.cards.length);
   const cd = conDone();
   const ctx = { cards: state.cards, title: titleFor, art: (c) => artImage(c, 'small'),
-    rank: { name: p.rank.name, xp: p.xp, next: p.rank.next },
+    rank: { name: p.rank.name, xp: p.xp, next: p.rank.next, nextName: p.rank.nextName },
     patches: [p.achievements.filter((a) => a.done).length + extra, p.achievements.length + extra],
     events: eventBadges(state.raw).length, cons: [cd.done, cd.total],
     stories: [STORIES.filter((st) => state.sightingsByKey.has(st.key)).length, STORIES.length],
@@ -532,7 +532,7 @@ function findPassLine(c) {
   const d = new Date(p.start), { today, tmr } = nightWord(p.start);
   const day = today ? 'Tonight' : tmr ? 'Tomorrow' : d.toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' });
   const where = `${p.peakEl >= 60 ? 'high' : p.peakEl >= 30 ? 'halfway up' : 'low'} in the ${({ N: 'north', NE: 'northeast', E: 'east', SE: 'southeast', S: 'south', SW: 'southwest', W: 'west', NW: 'northwest' })[['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'][Math.round(p.peakAz / 45) % 8]]}`;
-  return `<b>${day} ${d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}</b><span class="fd-where">${p.cloud ? '<span class="fd-cloud">cloud forecast</span>' : where}</span>`; // where on its own line: no line starting with "·" (iOS playtest 2026-10-20)
+  return `<b>${day} ${hm(d)}</b><span class="fd-where">${p.cloud ? '<span class="fd-cloud">cloud forecast</span>' : where}</span>`; // where on its own line: no line starting with "·" (iOS playtest 2026-10-20)
 }
 const TGT = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="7.5"/><circle cx="12" cy="12" r="2.5" fill="currentColor"/><path d="M12 1.5v4M12 18.5v4M1.5 12h4M18.5 12h4"/></svg>';
 const BEL = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg>';
@@ -656,7 +656,7 @@ function renderView() {
   for (const slot of $('grid').children) if (!slot.classList.contains('up-next')) observer.observe(slot);
 }
 const DIR_WORD = { N: 'north', NE: 'northeast', E: 'east', SE: 'southeast', S: 'south', SW: 'southwest', W: 'west', NW: 'northwest' };
-const hm = (t) => new Date(t).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+const hm = (t) => { const x = new Date(t).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }); return /^\d:\d\d$/.test(x) ? `0${x}` : x; }; /* like Explore's fmtTime: 01:50 on a 24-hour clock (style audit 2026-10-28) */
 // The pass panel (2026-10-16, Sevaan: the small next-pass pill "needs redesigning"): one design for every pass. A pass in
 // tonight’s plan (find = false) says "Up tonight"; any other next pass from the Find search (find = true) says when.
 // Both get the big Remind me and Show me; they reach Explore as up-remind/up-show or find-remind/find-show.
@@ -702,7 +702,7 @@ function appendUpNext(total) {
       const c = state.byKey.get(x.key); if (!c || seen.has(x.key) || hasSightings(c)) continue; seen.add(x.key);
       const slot = document.createElement('div'); slot.className = 'tile-slot up-next';
       const tile = renderCardTile(c, { sightings: [] }); tile.classList.add('up-next__tile');
-      const when = new Date(x.start).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+      const when = hm(x.start);
       tile.insertAdjacentHTML('afterbegin', `<span class="up-next__when"><small>Up tonight</small>${esc(when)} · ${esc(x.dir)}</span>`);
       tile.setAttribute('aria-label', `${titleFor(c)}, up tonight at ${when} in the ${x.dir}. Preview the card`);
       // Tap previews the card in the viewer (2026-10-16, Sevaan: a tap used to set a reminder blind); the viewer’s
@@ -813,7 +813,7 @@ function showCard() {
     const points = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
     for (const s of [...sightings].sort((a, b) => b.time - a.time)) {
       const row = document.createElement('p');
-      const when = `${dateLabel(s.time)} · ${new Date(s.time).toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' })}`;
+      const when = `${dateLabel(s.time)} · ${hm(s.time)}`;
       const where = s.el != null ? `${Math.round(s.el)}° up in the ${DIR_WORD[points[Math.round(((s.az % 360) + 360) % 360 / 45) % 8]] ?? points[Math.round(((s.az % 360) + 360) % 360 / 45) % 8]}` : '';
       // Fleet cards: which launch this sighting was (its stamp), with the launch date.
       const launch = c.launches && s.stampKey ? c.launches.find((l) => l.key === s.stampKey) : null;
