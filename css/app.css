@@ -3034,3 +3034,8 @@ body.night #debug .set-card { background: #120505 !important; border-color: #2e1
 body.night #debug .set-tog { background: #3a1410 !important; } body.night #debug .set-tog:checked { background: #ff6a55 !important; }
 body.night #debug .set-tog::before { background: #ff7f70 !important; } body.night #debug .set-tog:checked::before { background: #120505 !important; }
 #tk-m .tk-seg.long, #p-info .tk-seg.long { white-space: normal; }
+/* A reminder that's on is unmistakable: filled orange, dark words, a tick (2026-10-28, Sevaan). Tap again to turn it off. */
+.d-cta.done, .nt-bell.done { background: var(--gold) !important; color: #0b1018 !important; box-shadow: none !important; }
+.d-cta.done > span:first-child .ico, .nt-bell.done > span:first-child .ico { color: #0b1018 !important; }
+.d-cta.done > span:last-child, .nt-bell.done > span:last-child { font-size: 18px; letter-spacing: 0; color: #0b1018 !important; }
+body.night .d-cta.done, body.night .nt-bell.done { background: #ff6a55 !important; color: #120505 !important; }
