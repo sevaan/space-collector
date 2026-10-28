@@ -2942,3 +2942,7 @@ body.night :is(#visible .nh-bell.free, #visible .tn-r .bell.free, .tn-wx .nights
 .tn-wx.cloudy > .tn-sky .wx-rain { height: 100%; }
 /* Run time column never wraps "in 2h 40m" (playtest 2026-10-27) */
 .tn-r .t small { white-space: nowrap; }
+/* Playtest 2026-10-27 */
+#discover .d-ticket.has-mini #d-tier { letter-spacing: .08em !important; } /* "UNCOMMON · OPHIUCHUS" fits beside the distance */
+#help-card .hc-line[hidden] { display: none; }
+#reveal .mn-phases.teach-glow { padding: .3em .45em; margin: -.3em -.45em; } /* room inside the glow ring, without moving the card's layout */
