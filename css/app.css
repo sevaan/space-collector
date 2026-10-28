@@ -2940,3 +2940,6 @@ body.night :is(#visible .nh-bell.free, #visible .tn-r .bell.free, .tn-wx .nights
 .tn-wx.cloudy > .tn-sky { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
 .tn-wx.cloudy > .tn-sky .wx-clouds { top: -30px; height: 300px; }
 .tn-wx.cloudy > .tn-sky .wx-rain { height: 100%; }
+/* The Tonight hero cards (cloudy, day, quiet) wear the Collection cards' frame (2026-10-27, Sevaan): the silver double rule of the rank and Your objects cards. */
+.tn-wx, .tn-wx.day, .tn-wx.quiet, .tn-wx.cloudy { border-radius: 14px; border: 2px solid #adbcc8; box-shadow: inset 0 0 0 1px #657786, 0 10px 26px #0007; }
+:where(html[data-theme="night"], body.night) :is(.tn-wx, .tn-wx.day, .tn-wx.quiet, .tn-wx.cloudy) { border-color: #52221f; box-shadow: inset 0 0 0 1px #3a1716, 0 10px 26px #0007; }

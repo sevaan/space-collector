@@ -1926,3 +1926,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - 2026-10-27 · v0.1.1247 (Sevaan): the week line on Tonight reads "Catch three things launched before 1970 · 6 nights left" then "Next: 3:55 AM OPS 0340, east" (passLine, like the missions); times never split (em.nowrap).
 - 2026-10-27 · v0.1.1248 (Sevaan): YOU on both globes is a red dot (#ff4d4d) with a cream ring, a faint red halo and a red label, unlike every satellite dot.
 - 2026-10-27 · v0.1.1249 (Sevaan): the cloudy Tonight hero has the weather in it: cloudsHtml (dark, 0.85, 1 for rain/snow/fog/storm) drifting behind the words, plus rainHtml(50) on rain/storm (.tn-wx.cloudy > .tn-sky, z-index -1, isolation).
+- 2026-10-27 · v0.1.1251 (Sevaan): the Tonight hero cards (cloudy, day, quiet: .tn-wx) wear the Collection cards' frame: 14px corners, 2px #adbcc8 border, inner 1px #657786 line, soft drop shadow; red in night mode.
