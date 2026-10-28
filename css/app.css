@@ -2949,3 +2949,10 @@ body.night :is(#visible .nh-bell.free, #visible .tn-r .bell.free, .tn-wx .nights
 /* Short phones (375×667): the first-night page scrolls and sits higher, so Explore the sky is on screen (Settings playtest 2026-10-27) */
 @media (max-height: 720px) { #ob-done:not(.nt) { overflow-y: auto; padding-top: calc(var(--safe-top) + 48px); } #ob-done:not(.nt) .od-body { margin-top: 18px; } #ob-done:not(.nt) .spacer { flex-basis: 12px; } }
 body:has(#start:not([hidden])) :is(.patch-coins, .pc-badge) { visibility: hidden; } /* not over the welcome card */
+
+/* A little room left of the mini card in the circle's tickets (2026-10-28, Sevaan) */
+#discover .d-ticket.has-mini { grid-template-columns: 78px minmax(0, 1fr); }
+#discover .d-ticket.has-mini .d-mini, #tk.has-mini #tk-mini, #plane .p-ticket .p-mini { margin-left: 6px; }
+@media (max-height: 720px) {
+  #discover .d-ticket.has-mini { grid-template-columns: 62px minmax(0, 1fr); }
+}
