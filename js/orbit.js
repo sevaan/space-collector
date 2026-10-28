@@ -1,9 +1,9 @@
 // Orbit math: where every object is in the observer’s sky, and whether it can be seen.
 // Pure functions, no DOM, so this module carries over unchanged to a native wrapper.
 
-import { expandFacts } from './catalog-facts.js?v=0.1.1289';
-import * as sat from './lib/satellite.js?v=0.1.1289';
-import { extinction, starlinkStdMag } from './sky-limit.js?v=0.1.1289';
+import { expandFacts } from './catalog-facts.js?v=0.1.1290';
+import * as sat from './lib/satellite.js?v=0.1.1290';
+import { extinction, starlinkStdMag } from './sky-limit.js?v=0.1.1290';
 
 const RAD = Math.PI / 180;
 const EARTH_RADIUS_KM = 6371;
