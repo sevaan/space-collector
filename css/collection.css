@@ -904,3 +904,5 @@ body:not(.has-cards) .lb-deck { display: none; }
 /* The rank card sets the stack's height, as tall as it was on its own (2026-10-27, Sevaan); the objects card fits it, the globe taking what's left. */
 #sat-card > .lb-rot { min-height: 0; }
 #sat-card .sg-pic { min-height: 120px; }
+/* Your objects: just the title and the globe (2026-10-27, Sevaan); the globe fills the card. */
+#sat-card .sg-pic { border-bottom: 0; }

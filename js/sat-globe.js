@@ -3,13 +3,15 @@
 // sky's own model, satellite.js), around a blueprint Earth (design/earth-styles.html C) that turns slowly, you marked.
 // Dots are in the card's rarity colour; the rarest few in view are named. Tap a dot to open its card. Draws only while
 // it's on screen. Fleet cards (Starlink and co.) aren't on it yet.
-import * as sat from './lib/satellite.js?v=0.1.1238';
-import { satrecFor } from './orbit.js?v=0.1.1238';
-import { COAST } from './coast.js?v=0.1.1238';
-import { TIER_INFO } from './rarity.js?v=0.1.1238';
-import { placeName } from './geo.js?v=0.1.1238';
+import * as sat from './lib/satellite.js?v=0.1.1239';
+import { satrecFor } from './orbit.js?v=0.1.1239';
+import { COAST } from './coast.js?v=0.1.1239';
+import { TIER_INFO } from './rarity.js?v=0.1.1239';
+import { placeName } from './geo.js?v=0.1.1239';
 
 const RAD = Math.PI / 180, RE = 6371, TILT = 20 * RAD;
+// A dot's name: whole words up to about 18 letters ("THOR AGENA D", not "THOR AGENA D ROCKET ST").
+const shortLabel = (t) => { const w = String(t).replace(/ Rocket Stage$/i, ' stage').toUpperCase().split(' '); let o = ''; for (const x of w) { if ((o + ' ' + x).trim().length > 18 && o) break; o = (o + ' ' + x).trim(); } return o; };
 const RANK = { common: 0, uncommon: 1, rare: 2, epic: 3, legendary: 4 };
 // How high a dot sits off the surface: true up to 2,000 km, squeezed beyond so high orbits stay in the picture.
 const lift = (h) => (h < 2000 ? h : 2000 + Math.min(h - 2000, 40000) * 0.04) / RE;
@@ -60,7 +62,8 @@ export function satGlobe(host, { me = null, onPick = null } = {}) {
     const sh = ctx.createRadialGradient(cx - R * 0.4, cy - R * 0.45, R * 0.2, cx - R * 0.1, cy - R * 0.1, R * 1.25); sh.addColorStop(0, 'rgba(5,12,24,0)'); sh.addColorStop(0.55, 'rgba(5,12,24,.08)'); sh.addColorStop(1, 'rgba(5,12,24,.7)');
     ctx.fillStyle = sh; ctx.fillRect(cx - R, cy - R, R * 2, R * 2); ctx.restore();
     ctx.strokeStyle = 'rgba(255,242,179,.7)'; ctx.lineWidth = 1.2; disc(); ctx.stroke();
-    if (me) { const p = P(me.lat, me.lon); if (p.z > 0) { ctx.fillStyle = '#fff2b3'; ctx.beginPath(); ctx.arc(p.x, p.y, 2.4, 0, Math.PI * 2); ctx.fill(); ctx.font = '600 9px "SC Label", "Barlow Condensed", sans-serif'; ctx.fillText('YOU', p.x + 4, p.y - 3); } }
+    let youAt = null;
+    if (me) { const p = P(me.lat, me.lon); if (p.z > 0) { youAt = p; ctx.fillStyle = '#fff2b3'; ctx.beginPath(); ctx.arc(p.x, p.y, 2.4, 0, Math.PI * 2); ctx.fill(); ctx.font = '600 9px "SC Label", "Barlow Condensed", sans-serif'; ctx.fillText('YOU', p.x + 4, p.y - 3); } }
     // your satellites: behind the Earth faint, in front bright, the rarest few in front named
     const front = [];
     for (const it of items) { if (!it.ok) continue; const p = P(it.lat, it.lon, lift(it.h)); it.p = p;
@@ -73,6 +76,7 @@ export function satGlobe(host, { me = null, onPick = null } = {}) {
     const named = [];
     for (const it of front.sort((a, b) => b.rank - a.rank || b.icon - a.icon).slice(0, 8)) { if (named.length >= 3) break;
       if (named.some((n) => Math.abs(n.p.x - it.p.x) < 70 && Math.abs(n.p.y - it.p.y) < 14)) continue;
+      if (youAt && Math.abs(youAt.y - it.p.y) < 14 && it.p.x - 10 < youAt.x + 30 && it.p.x + 110 > youAt.x) continue; // not on top of YOU
       const w = ctx.measureText(it.label).width, left = it.p.x + 6 + w > W - 4; ctx.fillText(it.label, left ? it.p.x - 6 - w : it.p.x + 6, it.p.y + 3); named.push(it); }
     raf = requestAnimationFrame(draw);
   }
@@ -86,7 +90,7 @@ export function satGlobe(host, { me = null, onPick = null } = {}) {
   return {
     set(cards) {
       items = cards.map((c) => { const s = c.satrec ?? satrecFor(c); if (!s) return null; const rank = RANK[c.tier] ?? 0;
-        return { key: c.key, s, rank, icon: c.icon ? 1 : 0, col: TIER_INFO[c.tier]?.color ?? '#fff2b3', label: (c.short ?? c.title ?? c.name ?? '').toUpperCase().slice(0, 22), name: c.title ?? c.name }; }).filter(Boolean);
+        return { key: c.key, s, rank, icon: c.icon ? 1 : 0, col: TIER_INFO[c.tier]?.color ?? '#fff2b3', label: shortLabel(c.short ?? c.title ?? c.name ?? ''), name: c.title ?? c.name }; }).filter(Boolean);
       place(Date.now()); posAt = 0;
       if (shown && !raf) raf = requestAnimationFrame(draw);
       return items.length;
