@@ -2022,3 +2022,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - Short phones (max-height 700px): the rank card drops its ladder picture.
   - The Sun card is named "Sun" (like Moon, Earth, the planets).
   - One answer per pass: planPass() gives Find and the card viewer tonight's plan's times and directions for any pass the plan has (the find worker sampled other minutes: Tiangong "south" vs "southeast"), so their reminder keys match Tonight's too.
+- 2026-10-28: SC Tester reinstalled on Sevaan's iPhone (web v0.1.1282: designer playtest calls, plus the widget art fix in WidgetBridge.swift).
