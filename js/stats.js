@@ -2,8 +2,8 @@
 // badges"). Your history under the sky, from the sighting log plus what the Collection page already knows (rank,
 // patches, constellations, stories, albums). computeStats(sightings, byKey, nightKey, year, ctx) -> numbers;
 // statsHtml(st) -> the panel. No network; the map uses js/geo.js’s coarse outlines.
-import { LAND } from './geo.js?v=0.1.1275';
-import { TIER_INFO, TIERS } from './rarity.js?v=0.1.1275';
+import { LAND } from './geo.js?v=0.1.1276';
+import { TIER_INFO, TIERS } from './rarity.js?v=0.1.1276';
 
 const RANK = { common: 0, uncommon: 1, rare: 2, epic: 3, legendary: 4 };
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -67,10 +67,10 @@ export function statsHtml(st) {
   const goal = (label, have, all, sub = '') => `<div class="st-goal"><b>${n(have)}${all != null ? `<small> / ${n(all)}</small>` : ''}</b><span>${esc(label)}</span>${sub ? `<em>${esc(sub)}</em>` : ''}${all ? `<i style="--p:${Math.min(1, have / all).toFixed(3)}"></i>` : ''}</div>`;
   const goals = `<section class="st-sec"><div class="st-head"><span>Earned</span></div><div class="st-goals">
     ${x.patches ? goal('Mission patches', x.patches[0], x.patches[1]) : ''}
-    ${x.events != null ? goal('Event badges', x.events, null, 'Meteor showers') : ''}
+    ${x.events != null ? goal(x.events === 1 ? 'Event badge' : 'Event badges', x.events, null, 'Meteor showers') : ''}
     ${x.cons ? goal('Constellations', x.cons[0], x.cons[1], 'Every star found') : ''}
     ${x.stories ? goal('Hidden stories', x.stories[0], x.stories[1]) : ''}
-    ${goal('Shiny cards', st.shinies, null)}
+    ${goal(st.shinies === 1 ? 'Shiny card' : 'Shiny cards', st.shinies, null)}
     ${x.albums ? goal('Gold albums', x.albums.gold, x.albums.total, `${x.albums.silver} silver · ${x.albums.bronze} bronze`) : ''}
   </div></section>`;
   // Your time out there.

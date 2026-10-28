@@ -3061,3 +3061,21 @@ body.night #set-credits-sheet .set-sheet-card { background: #090303; }
 /* The circle's reminder button: words and bell stay inside it at any width (2026-10-28, Sevaan). */
 #gh-remind { max-width: 100%; overflow: hidden; white-space: nowrap; letter-spacing: .1em !important; padding-inline: 12px !important; gap: 8px; }
 #gh-remind .ico { flex: none; }
+/* Playtest polish (2026-10-28) */
+body.look-down #skybar { opacity: 0 !important; pointer-events: none; transition: opacity .3s; }
+#visible .tn-r .acts .bell.on, #visible .tn-r .acts .bell.free.on { color: var(--gold); border-color: var(--gold); }
+.tn-r .n .w .nw { white-space: nowrap; }
+.od-tl b .ap { font: 600 10px/1 var(--label); letter-spacing: .06em; margin-left: 2px; color: var(--muted); font-style: normal; }
+.tn-btn.done { background: var(--gold) !important; color: #0b1018 !important; border-color: var(--gold) !important; }
+.tn-btn.done .ico { color: #0b1018 !important; }
+body.night .tn-btn.done { background: #ff6a55 !important; color: #120505 !important; }
+/* Settings design B: a divider between every visible row; none above the first (hidden rows don't count). */
+#debug .set-card > .set-row:first-of-type { border-top: 1px solid #ffffff10 !important; }
+#debug .set-card > .set-bar + .set-row, #debug .set-card > .set-bar + [hidden] + .set-row, #debug .set-card > .set-bar + .set-slider { border-top: 0 !important; }
+/* Credits: no rule above the first row of a panel; the pictures list inset like the rows. */
+#credits-body .set-bar + .cr-row { border-top: 0; }
+#credits-body .cr-pics summary { padding: 12px 14px; }
+/* Circle ticket: the rarity line fits more ("COMMON · PISCIS AUSTRINUS", "UNCOMMON · HEADLINER"). */
+#discover .d-ticket.has-mini #d-tier { letter-spacing: .04em !important; }
+/* Radar: the new-count badge sits clear of the compass letters. */
+#radar-new { top: -8px; left: 84px; }

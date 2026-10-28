@@ -965,3 +965,6 @@ body.night .fd-pass .fd-w em, body.night .fd-pill.new, body.night .fd-pass .fd-w
    overflow), cut to the page's width. And a little room above the search row once it pins. */
 .collection-tabs { box-shadow: 0 0 0 100vmax var(--bg, #080f1b); clip-path: inset(-12px -100vmax 0 -100vmax); }
 .collection-tools { margin-top: 2px; padding-top: 10px; }
+/* "Tap for its orbit" sits bottom-left, clear of the photo credit at the bottom right (playtest 2026-10-28). */
+.can-orbit .card__art::after { right: auto; left: .8em; }
+.fd-yr { font-weight: 500; color: var(--muted); }

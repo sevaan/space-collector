@@ -1971,3 +1971,14 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - 2026-10-28 · v0.1.1273 (Sevaan): How to play shows real mini cards (htReal: ISS at 1/3/10 nights for bronze/silver/gold, Starlink with 3 launches stamped, a shiny Hubble), and its last button is Done, closing back to where it was opened (it used to jump to Tonight). Settings → Sound: Vibration is the last row.
 - 2026-10-28 · v0.1.1274 (Sevaan: 'Reminder at 6:34 PM' didn't fit): the circle's reminder button (#gh-remind) reads 'Reminder on ✓' when set (Set reminder otherwise), nowrap, clipped inside, tighter letter-spacing.
 - 2026-10-28 · v0.1.1275 (Sevaan picked E): the Starlink fleet card picture is a drawing of a Starlink V2 Mini (thin dark slab, corner domes, two long flat wings, a faint train behind), from a written description of SpaceX's V1.5/V2/V3 comparison render that Sevaan sent (the render itself was not given to the model). Replaces an uncredited SpaceX photo (kept in design/ai-art-before-photos/fleet-starlink-spacex-photo.webp).
+- 2026-10-28 · v0.1.1276 polish playtest fixes (agent report; scripts and shots in the session scratchpad polish/):
+  - fleet cards' "Launched Sep 28,, 2026" double comma (card.js latestLine adds the comma only when missing);
+  - Tonight's "Tell me at dark": on state is filled orange "Reminder on ✓", and it shares one state with Explore's until-dark bell (udRemind written/cleared from both sides);
+  - a set ISS bell is orange (the .bell.free rule had won); "Reminder free" pill hidden once used;
+  - Settings B dividers between every visible row (the :first-of-type rule had removed some; a hidden first row no longer leaves a stray line); Credits panels have no top rule, the pictures list is inset;
+  - "Tap for its orbit" moved bottom-left, clear of the photo credit; circle ticket rarity line tighter letter-spacing; Circle highlights value "Satellites +3";
+  - Find rows add the launch year for rocket stages and debris ("SL-8 Rocket Stage · 1967");
+  - Missions header counts the themed week too; How to play's Done has no arrow; Observer stats "1 shiny card / 1 event badge";
+  - the radar's new-count badge sits above the dial, off the compass letters; the sky slider hides while looking below the horizon (body.look-down from belowGhosts);
+  - Tonight run where-lines keep phrases whole (nowrap parts, the dot glued with a no-break space); first-night page timelines keep AM/PM (runTime); durations count down (floor) like Explore's; ghost line capitalised.
+  - Not changed: Observer stats from Settings lighting the Collection tab, the REMINDER SET notice following to the next page, Patches Stations/Both Stations sharing a picture, the Constellations album placeholder, repeated Settings icons, Moon phases as drawn circles in How to play.

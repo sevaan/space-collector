@@ -1,25 +1,25 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { fallWords } from './last-chance.js?v=0.1.1275';
-import { useMiles } from './units.js?v=0.1.1275';
-import { feel } from './native.js?v=0.1.1275';
-import { sfx } from './sfx.js?v=0.1.1275';
-import { cardArt } from './art.js?v=0.1.1275';
-import { TIER_INFO } from './rarity.js?v=0.1.1275';
-import { SET_BY_ID } from './sets.js?v=0.1.1275';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.1275';
-import { FLEET_ABOUT, fleetAbout, factSourceUrl, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.1275';
-import { artFileFor } from './art-keys.js?v=0.1.1275';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.1275';
-import { orbitGlobe } from './orbit-view.js?v=0.1.1275';
-import { ART_SHARED } from './art-shared.js?v=0.1.1275';
-import { ART_CREDITS } from './art-credits.js?v=0.1.1275';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.1275';
-import { nightsIn } from './observation.js?v=0.1.1275';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.1275';
-import { SHINY } from './shiny.js?v=0.1.1275';
-import { conArt, cometArt } from './con-art.js?v=0.1.1275';
-import { CON_FIGURES } from './con-figures.js?v=0.1.1275';
-import { localText } from './localize.js?v=0.1.1275';
+import { fallWords } from './last-chance.js?v=0.1.1276';
+import { useMiles } from './units.js?v=0.1.1276';
+import { feel } from './native.js?v=0.1.1276';
+import { sfx } from './sfx.js?v=0.1.1276';
+import { cardArt } from './art.js?v=0.1.1276';
+import { TIER_INFO } from './rarity.js?v=0.1.1276';
+import { SET_BY_ID } from './sets.js?v=0.1.1276';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.1276';
+import { FLEET_ABOUT, fleetAbout, factSourceUrl, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.1276';
+import { artFileFor } from './art-keys.js?v=0.1.1276';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.1276';
+import { orbitGlobe } from './orbit-view.js?v=0.1.1276';
+import { ART_SHARED } from './art-shared.js?v=0.1.1276';
+import { ART_CREDITS } from './art-credits.js?v=0.1.1276';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.1276';
+import { nightsIn } from './observation.js?v=0.1.1276';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.1276';
+import { SHINY } from './shiny.js?v=0.1.1276';
+import { conArt, cometArt } from './con-art.js?v=0.1.1276';
+import { CON_FIGURES } from './con-figures.js?v=0.1.1276';
+import { localText } from './localize.js?v=0.1.1276';
 // The animal/symbol figure belongs to the completed (gold) constellation card only (2026-10-05): a single
 // star’s card draws just the star pattern with its star marked, so the figure is a reward for finishing the set.
 // A star card’s constellation figure comes into focus as you collect the constellation’s stars (design/con-focus.html B).
@@ -200,7 +200,7 @@ export function renderCard(o, opts = {}) {
   const ageText = age == null ? '' : age === 0 ? 'Less than a year ago' : `${age} ${age === 1 ? 'year' : 'years'} ago`;
   // Fleet cards: the ringed dot is your newest stamp; say which launch that was (the dots alone don’t).
   const lk = fleet ? latestStamp(sightings) : null, ll = lk ? o.launches.find((l) => l.key === lk) : null;
-  const latestLine = ll ? `Launched ${launchDay(ll.launch).replace(/ (\d{4})$/, ', $1')}` : ''; // sits right of the grid’s heading
+  const latestLine = ll ? `Launched ${launchDay(ll.launch).replace(/([^,]) (\d{4})$/, '$1, $2') /* en-US/CA already have the comma (playtest 2026-10-28: 'Sep 28,, 2026') */}` : ''; // sits right of the grid’s heading
   // The Moon: its phases as stamps, like a fleet’s launches (2026-10-17, Sevaan): eight moons, lit once you’ve seen the
   // Moon in that phase, your newest ringed, then the fact.
   const moonCard = o.type === 'moon' && !!o.natural && revealed;
