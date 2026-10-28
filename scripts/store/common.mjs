@@ -74,11 +74,11 @@ export function storeExtras(at) {
   for (const [key, name] of [['star:vega', 'Vega'], ['star:arcturus', 'Arcturus']]) out.push({ time: t - 5 * D, cardKey: key, objectId: key, name, type: 'star', ...here });
   return out;
 }
-export const storeStorage = (at) => { const t = at.getTime() - 6 * 864e5; return { fossilFound: JSON.stringify({ at: t }), secrets: JSON.stringify({ dizzy: t - 864e5 }) }; };
+export const storeStorage = (at) => { const t = at.getTime() - 6 * 864e5; return { fossilFound: JSON.stringify({ at: t }), secrets: JSON.stringify({ dizzy: t - 864e5 }), skyMatched: '1', fadeTaught: '1', moonChecked: '1' }; }; // one-time tips already seen (2026-10-28: Match your sky sat over the hero)
 export const captureNight = (when) => (when ? new Date(when) : (() => { const d = new Date(); d.setHours(20, 30, 0, 0); return d; })());
 
 // No notices, badges or tips over the shots.
-export const hideNoise = (p) => p.addStyleTag({ content: '#toasts, .patch-coins, .pc-badge, .radar-tip, #until-dark { display: none !important; }' });
+export const hideNoise = (p) => p.addStyleTag({ content: '#toasts, .patch-coins, .pc-badge, .radar-tip, #until-dark, #sky-match, #fade-tip, #moon-check, #help-card { display: none !important; }' });
 
 // Point at the best new thing up (a station, then rarer, then brighter), steadying the view on it; if nothing is up,
 // move the clock on a few minutes and look again.
