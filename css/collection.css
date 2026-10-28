@@ -960,3 +960,8 @@ body.night .fd-pass .fd-w em, body.night .fd-pill.new, body.night .fd-pass .fd-w
 .fd-mini .mini-face.locked .card__art { filter: none; }
 .fd-mini .card-art-image--locked { filter: blur(6px) brightness(.85) saturate(.8); }
 .fd-mini .art-locked--chart > svg { filter: blur(5px) brightness(1.8) contrast(1.1) saturate(.9); }
+/* Pinned tabs and search (2026-10-28, Sevaan): the tab row scrolls sideways (overflow-x), which clipped its own
+   backdrop, so cards showed through at the right of Find. Its backdrop is now a box-shadow (not clipped by its own
+   overflow), cut to the page's width. And a little room above the search row once it pins. */
+.collection-tabs { box-shadow: 0 0 0 100vmax var(--bg, #080f1b); clip-path: inset(-12px -100vmax 0 -100vmax); }
+.collection-tools { margin-top: 2px; padding-top: 10px; }
