@@ -3,7 +3,7 @@
 // group (or the date earned) along the bottom, one icon in the middle. Milestones get gold foil, the rarest holo
 // (css/ui.css .patch--gold / .patch--holo). Shared by Explore (the earning moment, its toast) and Collection (the wall).
 
-import { CON_BY_ID } from './constellations.js?v=0.1.1277';
+import { CON_BY_ID } from './constellations.js?v=0.1.1278';
 
 export const GROUPS = {
   collect: { c: '#14284a', t: 'Collection' }, rarity: { c: '#3a2259', t: 'Rarity' }, rocket: { c: '#5a2a1a', t: 'Rockets' },
@@ -31,7 +31,7 @@ export const groupOf = (a) => (a.id === 'plus' ? 'member' : a.secret ? 'secret' 
 // Picture icons where one reads better than the achievement’s text icon.
 const GLYPH = {
   first: 'star', legend: 'star5', shiny: 'spark', shiny5: 'spark', stage: 'stage', stages25: 'stage', junk: 'debris',
-  station: 'station', stations: 'station', nations: 'globe', diplomat: 'globe', race: 'versus', sputnik: 'sputnik',
+  station: 'station', stations: 'stations2', /* Both Stations: the ISS and Tiangong side by side (playtest 2026-10-28: it shared Stations' picture) */ nations: 'globe', diplomat: 'globe', race: 'versus', sputnik: 'sputnik',
   oldtimer: 'sputnik', starlink: 'train', starlink10: 'train', starlink50: 'train', fleets: 'anchor', moon: 'moon', mars: 'mars',
   saturn: 'saturn', wanderers: 'saturn', stars10: 'con', deep3: 'con', deep10: 'con', constellation: 'con', cons5: 'con', cons25: 'con', cons44: 'con', zenith: 'zenith',
   compass: 'compass', faint: 'eye', owl: 'owl',
@@ -58,6 +58,7 @@ function glyph(k, text) {
     stage: `<g transform="rotate(35)"><rect x="-8" y="-24" width="16" height="40" rx="3" fill="${INK}"/><path d="M-8 16 L-13 28 L13 28 L8 16Z" fill="${OR}"/><rect x="-8" y="-12" width="16" height="3" fill="#5a2a1a"/></g>`,
     debris: `<path d="M-14 -6 L-4 -14 L4 -8 L0 0 Z" fill="${INK}"/><path d="M6 4 L16 2 L14 12 L4 12Z" fill="${OR}"/><path d="M-12 8 L-6 6 L-6 14Z" fill="${INK}"/><circle cx="10" cy="-12" r="2.5" fill="${INK}"/>`,
     station: `<rect x="-4" y="-16" width="8" height="32" fill="${INK}"/><rect x="-26" y="-10" width="16" height="7" fill="${OR}"/><rect x="10" y="-10" width="16" height="7" fill="${OR}"/><rect x="-26" y="3" width="16" height="7" fill="${OR}"/><rect x="10" y="3" width="16" height="7" fill="${OR}"/><rect x="-10" y="-1" width="20" height="2" fill="${INK}"/>`,
+    stations2: `<g transform="translate(-14 -6) scale(.6)"><rect x="-4" y="-16" width="8" height="32" fill="${INK}"/><rect x="-26" y="-10" width="16" height="7" fill="${OR}"/><rect x="10" y="-10" width="16" height="7" fill="${OR}"/><rect x="-26" y="3" width="16" height="7" fill="${OR}"/><rect x="10" y="3" width="16" height="7" fill="${OR}"/><rect x="-10" y="-1" width="20" height="2" fill="${INK}"/></g><g transform="translate(15 7)"><rect x="-3" y="-11" width="6" height="22" rx="2" fill="${INK}"/><rect x="-11" y="-2.5" width="22" height="5" rx="2" fill="${INK}"/><rect x="-15" y="-13" width="9" height="5" fill="${OR}"/><rect x="6" y="-13" width="9" height="5" fill="${OR}"/><rect x="-15" y="8" width="9" height="5" fill="${OR}"/><rect x="6" y="8" width="9" height="5" fill="${OR}"/></g>`,
     globe: `<circle r="22" fill="none" stroke="${INK}" stroke-width="3"/><ellipse rx="9" ry="22" fill="none" stroke="${INK}" stroke-width="2"/><path d="M-22 0H22M-19 -11H19M-19 11H19" stroke="${INK}" stroke-width="2"/><circle cx="14" cy="-14" r="4" fill="${OR}"/>`,
     versus: `<path d="M-20 -20 L18 18 M-20 18 L18 -20" stroke="${INK}" stroke-width="5" stroke-linecap="round"/><circle cx="-20" cy="-20" r="5" fill="#d33"/><circle cx="18" cy="-20" r="5" fill="#4a7bd8"/>`,
     sputnik: `<circle r="10" fill="${INK}"/><path d="M6 6 L28 22 M8 2 L30 10 M-6 6 L-26 24 M-8 2 L-30 12" stroke="${INK}" stroke-width="2"/>`,

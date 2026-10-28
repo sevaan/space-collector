@@ -57,6 +57,12 @@ export function ticket({ kind = 'info', eyebrow = '', line = '', sub = '', icon 
   queue.push({ kind, eyebrow, line, sub, icon, tone, xp, ms, href, html, id, art, celebrate, sticky, action, go, inPanel, unasked, onShow, made: Date.now(), at: Date.now() + delay });
   pump();
 }
+// A notice made on a page answers something done there, so it goes when you leave that page or open something over it
+// (2026-10-28 playtest: "Reminder set" followed onto the Plus page and back to Explore).
+export function dropPageNotices() {
+  for (let i = queue.length - 1; i >= 0; i--) if (queue[i].inPanel) queue.splice(i, 1);
+  document.querySelectorAll('#toasts .ticket[data-panel], #toast-tray .ticket[data-panel]').forEach((el) => el._dismiss?.());
+}
 export function toastPending(id) { return live.has(id) || queue.some((q) => q.id === id); }
 export function dropToast(id) {
   for (let i = queue.length - 1; i >= 0; i--) if (queue[i].id === id) queue.splice(i, 1);
@@ -169,6 +175,7 @@ function show(t) {
   let holding = !t.sticky;
   const timer = t.sticky ? 0 : setInterval(() => { const hid = getComputedStyle(el).display === 'none'; if (hid && holding && !el.dataset.panel && queue.some((q) => q.inPanel) && document.querySelector('.overlay.panel:not([hidden])')) { /* only for one that may show over the page; the rest keep waiting in order (code review 2026-10-23) */ holding = false; busy = false; pump(); } if (!stackSeen() || hid) return; left -= 250; if (left <= 0) dismiss(); }, 250); // hidden (a page open, shelved, no room): the clock waits
   if (t.id) live.set(t.id, dismiss);
+  el._dismiss = dismiss;
   // A notice that stays (Tonight, Example location, a new rank…) comes down as a banner like the rest, then after 6 s
   // tucks into a small chip under the header (#toast-tray) so it never sits over the header’s buttons; tap the chip to
   // open it again, ✕ or a swipe up to send it away. A newer one tucks the older ones straight away (2026-10-18).

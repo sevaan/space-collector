@@ -1,32 +1,33 @@
-import { pullToClose } from './pull-close.js?v=0.1.1277';
-import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.1277';
-import { computeStats, statsHtml } from './stats.js?v=0.1.1277';
-import { nightKey } from './observation.js?v=0.1.1277';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1277';
-import { sfx } from './sfx.js?v=0.1.1277';
-import { expandFacts } from './catalog-facts.js?v=0.1.1277';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.1277';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1277';
-import { ticket } from './toast.js?v=0.1.1277';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.1277';
-import { satGlobe } from './sat-globe.js?v=0.1.1277';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.1277';
-import { cardArt } from './art.js?v=0.1.1277';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.1277';
-import { applyBack } from './card-backs.js?v=0.1.1277';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.1277';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1277';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.1277';
-import { STORIES } from './stories.js?v=0.1.1277';
-import { loadConstellations, conList } from './constellations.js?v=0.1.1277';
-import { RANKS, progress, readDeals, readWeekThemes, xpCarry } from './progress.js?v=0.1.1277';
-import { eventBadges, nextEvent } from './events.js?v=0.1.1277';
-import { shareCardEl } from './share-card.js?v=0.1.1277';
-import { forgetSighting } from './cloud-backup.js?v=0.1.1277';
-import { allSightings, deleteSighting } from './store.js?v=0.1.1277';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.1277';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.1277';
-import { localText } from './localize.js?v=0.1.1277';
+import { pullToClose } from './pull-close.js?v=0.1.1278';
+import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.1278';
+import { computeStats, statsHtml } from './stats.js?v=0.1.1278';
+import { nightKey } from './observation.js?v=0.1.1278';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1278';
+import { sfx } from './sfx.js?v=0.1.1278';
+import { expandFacts } from './catalog-facts.js?v=0.1.1278';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.1278';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1278';
+import { ticket } from './toast.js?v=0.1.1278';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.1278';
+import { satGlobe } from './sat-globe.js?v=0.1.1278';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.1278';
+import { cardArt } from './art.js?v=0.1.1278';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.1278';
+import { applyBack } from './card-backs.js?v=0.1.1278';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.1278';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1278';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.1278';
+import { STORIES } from './stories.js?v=0.1.1278';
+import { loadConstellations, conList, CON_BY_ID } from './constellations.js?v=0.1.1278';
+import { conArt } from './con-art.js?v=0.1.1278';
+import { RANKS, progress, readDeals, readWeekThemes, xpCarry } from './progress.js?v=0.1.1278';
+import { eventBadges, nextEvent } from './events.js?v=0.1.1278';
+import { shareCardEl } from './share-card.js?v=0.1.1278';
+import { forgetSighting } from './cloud-backup.js?v=0.1.1278';
+import { allSightings, deleteSighting } from './store.js?v=0.1.1278';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.1278';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.1278';
+import { localText } from './localize.js?v=0.1.1278';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -302,7 +303,8 @@ function renderAlbums() {
     const b = document.createElement('button'); b.type = 'button';
     const crossed = (lv[set.id] ?? st.level) < st.level; lv[set.id] = st.level;
     b.className = `album${st.level === 3 ? ' gold' : ''}${latest ? '' : ' empty'}${crossed ? ' crossed' : ''}`; b.style.setProperty('--set', set.color);
-    b.innerHTML = `<span class="album__art">${img ? `<img src="${img}" alt="" loading="lazy">` : cardArt(show, { accent: set.color, silhouette: !latest })}</span>
+    const ori = set.id === 'constellations' ? CON_BY_ID.get('Ori') : null; /* a real chart for the Constellations album, not the crosshair placeholder (playtest 2026-10-28) */
+    b.innerHTML = `<span class="album__art">${ori ? conArt(ori.data, null, { w: 360, h: 240 }) : img ? `<img src="${img}" alt="" loading="lazy">` : cardArt(show, { accent: set.color, silhouette: !latest })}</span>
       <span class="album__body"><span class="album__top"><span class="album__name">${esc(set.name)}</span><span class="album__count">${albumCount(set, st)}</span></span>${set.id === 'constellations' ? `<span class="album__sub">${st.have.length.toLocaleString()} of ${st.cards.length.toLocaleString()} stars</span>` : ''}
       ${albumBar(st)}<span class="album__foot">${st.level ? `<span class="album__level l${st.level}">${LEVELS[st.level - 1]}</span>` : ''}<span class="album__next">${st.level === 3 ? 'Complete' : `${(st.next - st.have.length).toLocaleString()} more${unit(set)} for ${LEVELS[st.level]}`}</span></span></span>`;
     b.addEventListener('click', () => { state.set = set.id; $('set-filter').value = set.id; setView('discover'); requestAnimationFrame(() => { const tools = document.querySelector('.collection-tools'), pin = tools ? parseFloat(getComputedStyle(tools).top) + tools.offsetHeight : 160, head = $('album-head'); /* where the tools sit once pinned, not where they are now (web QA 2026-10-24: it barely scrolled) */ window.scrollTo({ top: Math.max(0, (head.hidden ? $('grid') : head).getBoundingClientRect().top + scrollY - pin - 8), behavior: 'smooth' }); }); }); // the album's name lands just under the pinned tabs and search (web playtest 2026-10-22: it scrolled under them)

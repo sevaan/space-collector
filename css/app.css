@@ -3082,3 +3082,7 @@ body.night .tn-btn.done { background: #ff6a55 !important; color: #120505 !import
 /* Settings → Card back shows the back itself, tilted like a card (design/card-back-row.html B, 2026-10-28) */
 .set-back-thumb { flex: none; width: 30px; height: 42px; margin-left: auto; border-radius: 4px; background: #01121c center / contain no-repeat; box-shadow: 0 0 0 1px #c9c1a066, 0 4px 10px #000a; transform: rotate(-4deg); }
 .set-back-thumb.random { box-shadow: 0 0 0 1px #c9c1a066, 4px -3px 0 -1px #0e1a29, 4px -3px 0 0 #c9c1a066, 0 4px 10px #000a; }
+/* Observer stats over Settings (2026-10-28): fades in once, no tab bar, no slide. */
+body.stats-over-set #collection-frame { z-index: 79 !important; transform: none !important; opacity: 0 !important; transition: opacity .25s ease !important; }
+body.stats-over-set.stats-shown #collection-frame { opacity: 1 !important; }
+body.stats-over-set #nav { visibility: hidden !important; }

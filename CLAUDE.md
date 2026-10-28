@@ -1983,3 +1983,10 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - Tonight run where-lines keep phrases whole (nowrap parts, the dot glued with a no-break space); first-night page timelines keep AM/PM (runTime); durations count down (floor) like Explore's; ghost line capitalised.
   - Not changed: Observer stats from Settings lighting the Collection tab, the REMINDER SET notice following to the next page, Patches Stations/Both Stations sharing a picture, the Constellations album placeholder, repeated Settings icons, Moon phases as drawn circles in How to play.
 - 2026-10-28 · v0.1.1277 (Sevaan picked design/card-back-row.html B): Settings → Card back shows the chosen back itself on the right of the row (#set-back-thumb, 30×42, tilted -4°), its name as the subtitle (#set-back-val); Random shows the default back with a second card's edge behind it.
+- 2026-10-28 · v0.1.1278 (Sevaan: "yes" to the six recommendations):
+  - Observer stats from Settings is a page over Settings: the Collection opens hidden with the stats up (col-instant), fades in once (body.stats-over-set / stats-shown, frame z 79), no tab bar, nothing lit; its ✕ fades it out onto Settings, which never moved (statsBackToSettings; the frame's {sc:'explore'} is caught while statsOverSet).
+  - toast.js dropPageNotices(): notices made on a page (data-panel) go when that page closes (closePanel) or a sheet opens over it (openSheet).
+  - Both Stations patch has its own glyph (stations2: ISS and Tiangong side by side).
+  - Constellations album cover is the Orion chart (conArt), not the crosshair placeholder.
+  - Settings rows each have their own line icon (20 new in css/icons.css: crown, ruler, clock, planet, galaxy, sun, tag, eye, star, train, gem, meteor, volume, dial, book, chat, gauge, heart, info, trash).
+  - How to play's stamps slide shows the real Moon card (4 of 8 phases stamped) beside Starlink (htReal keys).
