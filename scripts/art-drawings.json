@@ -9,5 +9,1819 @@
    "https://space.skyrocket.de/doc_sdat/aerocube-8-impact.htm"
   ],
   "description": "1.5U CubeSat, gold-bronze body, black corner rails, two violet solar cells per side, vent grille, two top apertures, two long wire antennas"
+ },
+ "draw-canx-2": {
+  "ids": [
+   32790
+  ],
+  "refs": [
+   "https://www.eoportal.org/satellite-missions/canx-2",
+   "https://www.nanosats.eu/sat/canx-2"
+  ],
+  "description": "3U CubeSat, a tall rectangular box 10 x 10 x 34 cm with four bare-aluminium corner rails running its full length. The long faces are pale grey-blue anodised aluminium carrying a few separate pairs of small dark-blue/black triple-junction solar cells (22 cells total, body-mounted only; no deployable panels). One long face has a round white dome (GPS antenna) near one end and small sensor windows; a short end face shows a small red dot (propulsion thruster nozzle). A thin rod boom about the body length sticks out diagonally from one end carrying a small grey box at its tip (magnetometer). Four thin wire whip antennas (UHF quad-canted turnstile) splay outward from the corners, roughly 30-50 cm long, plus one longer wire (VHF beacon). Small flat patch antennas on faces. Overall look: slim grey cubesat with sparse black cells, a dome, and a boom with a box on its end."
+ },
+ "draw-ghgsat-c": {
+  "ids": [
+   46278,
+   56204,
+   56186
+  ],
+  "refs": [
+   "https://www.eoportal.org/satellite-missions/ghgsat-constellation",
+   "https://space.skyrocket.de/doc_sdat/ghgsat-d.htm (text only)",
+   "https://en.wikipedia.org/wiki/GHGSat"
+  ],
+  "description": "About 16 kg microsatellite on SFL's NEMO bus: a rectangular box roughly 20 x 30 x 40 cm, long axis vertical. Body is satin silver/grey aluminium with a darker grey frame; two long faces are almost fully covered with dark blue-black solar cells in a grid. At the Earth-facing bottom end a short silver cylindrical lens barrel/baffle (about 10 cm across) protrudes from the end plate: the imaging methane spectrometer aperture. A small round star-tracker/camera port on one side face near the top. Three or four thin wire whip antennas stick out from the top corners at angles. Some company renders of the C-series show optional pre-deployed flat solar wings (one rectangular dark-blue panel hinged to each long edge, about the size of the face) - if used, two wings sticking out sideways like a butterfly. Clean, compact, industrial look; no dish."
+ },
+ "draw-horyu-2": {
+  "ids": [
+   38340
+  ],
+  "refs": [
+   "https://www.eoportal.org/satellite-missions/horyu-2",
+   "https://www.nanosats.eu/sat/horyu-2"
+  ],
+  "description": "7 kg near-cubic nanosatellite, 35 x 31 x 31.5 cm, bare silver aluminium frame and panels with many visible screws. Each side face is a patchwork of experiments rather than uniform solar cells: a black panel framed in red-orange tape carrying rows of small black solar cells (the 300 V high-voltage array, about 12 x 21 cm) on the lower part of one face; above it a gold/orange-framed panel with two black film solar cells; a green printed-circuit-board panel with sensors; a small red square sticker/sensor and a small camera lens. An adjacent face has a large grid of red-orange/copper experimental cells. Top face plain silver with a thin wire loop antenna rail around its edge. Sits on a round silver separation ring at the bottom. No deployable panels; small wire antennas only."
+ },
+ "draw-kks-1": {
+  "ids": [
+   33499
+  ],
+  "refs": [
+   "https://www.nanosats.eu/sat/kks-1",
+   "https://www.eoportal.org/satellite-missions/kks-1"
+  ],
+  "description": "Tiny 3 kg cube, 15 cm on each side. Bare silver aluminium frame and panels; each face carries a single large black solar cell panel framed by gold/amber Kapton tape (cells fill most of each face). One face has a small round camera window. Corner fittings are white. A single thin straight wire antenna, several times longer than the cube, projects from one corner (renders show a long thin black rod). No deployable panels. Looks like a small silver dice with black windows."
+ },
+ "draw-stars-kukai": {
+  "ids": [
+   33498
+  ],
+  "refs": [
+   "https://www.eoportal.org/satellite-missions/stars",
+   "https://www.nanosats.eu/sat/stars-1"
+  ],
+  "description": "Two-part tethered satellite. Mother: a box 16 x 16 x 25 cm with gold-foil and silver aluminium surfaces and black solar cells on the faces, with two flat rectangular solar paddles (white frames holding 2x4 dark-green/black cells) deployed out to either side like wings. Daughter: a smaller box 16 x 16 x 16 cm, white/silver with blue-black solar cells, a small square solar paddle and a jointed arm link on top. The two are connected by a thin tether (up to a few metres) running from a reel inside the mother; the mother has a conical funnel-shaped docking cone where the daughter docks. Draw the gold-and-white mother with its two wings and the small daughter floating away on a fine line."
+ },
+ "draw-jugnu": {
+  "ids": [
+   37839
+  ],
+  "refs": [
+   "https://www.nanosats.eu/sat/jugnu",
+   "https://en.wikipedia.org/wiki/Jugnu_(satellite)",
+   "https://space.skyrocket.de/doc_sdat/jugnu.htm (text only)"
+  ],
+  "description": "3U CubeSat, about 10 x 10 x 34 cm, 3 kg. Clear/silver aluminium frame with four corner rails; each long face carries a column of dark blue solar cells (two columns of rectangular cells) separated by green circuit-board edges. Near the top, two thin flat black tape-spring antennas stick straight out sideways in opposite directions (each about as long as the satellite is wide x2), plus another short one lower. Bottom end has transparent/silver deployer feet. The Earth-facing end holds a near-infrared camera lens (black cylindrical lens visible on the integration stack). Simple, slim, blue-faced cubesat."
+ },
+ "draw-tigrisat": {
+  "ids": [
+   40043
+  ],
+  "refs": [
+   "https://www.nanosats.eu/sat/tigrisat",
+   "https://space.skyrocket.de/doc_sdat/tigrisat.htm (text only)"
+  ],
+  "description": "3U CubeSat, 10 x 10 x 34 cm, 3 kg. Silver anodised aluminium rails along all four long edges. Each long face is covered top to bottom with a column of glossy black solar cells (about seven to eight cells per face) separated by thin gold-coloured strips. Top end face is gold/amber (Kapton-covered PCB) with a small slot and a single long thin metal tape antenna sticking out sideways from the top. No deployable panels. A small RGB camera looks out of one end. Plain, very classic black-and-silver 3U cubesat."
+ },
+ "draw-leopard": {
+  "ids": [
+   67687
+  ],
+  "refs": [
+   "https://www.nanosats.eu/sat/leopard"
+  ],
+  "description": "3U CubeSat (10 x 10 x 34 cm) from Kyushu Institute of Technology, with two long deployable solar panel wings. The body is black-anodised with black solar cells on its faces; at the top end two flat green-PCB solar panels each about 30 cm long unfold straight out to either side in a T-shape, each carrying a row of about seven black cells outlined in red, so the deployed span is roughly 70 cm. A small round camera lens and a white circular sensor are on the top face between the wings. Two thin straight black wire antennas stick out sideways from the body, one near the top and one near the middle. Looks like a black tower with a long flat crossbar of cells."
+ },
+ "draw-kosar": {
+  "ids": [
+   61769
+  ],
+  "refs": [
+   "https://www.nanosats.eu/sat/kosar",
+   "https://space.skyrocket.de/doc_sdat/kowsar.htm (text only)"
+  ],
+  "description": "Iranian 30 kg Earth-imaging CubeSat-standard satellite, estimated 24U (about 40 x 30 x 20 cm box). Dark grey/graphite metal body with many visible screws. Four deployable solar wings hinge out from the top edges, forming an X/cross when seen from above: each wing is a rectangular panel with a white frame holding grey-blue rounded-corner solar cells in a grid. Two or three long thin gold-coloured rod antennas project diagonally downward from the bottom corners. The camera looks out of the bottom face. Stowed, the wings fold down against the sides like a tent."
+ },
+ "draw-innosat-3": {
+  "ids": [
+   64894
+  ],
+  "refs": [
+   "https://www.nanosats.eu/sat/innosat-3"
+  ],
+  "description": "Geoscan-built 3U CubeSat (about 10 x 10 x 34 cm) for AIS ship tracking. The body is dark navy-blue solar cells on all long faces with a silver frame. From one end, four very long thin straight antennas (yellow-gold coloured tape/rod antennas, each several times the body length) radiate outward in an X pattern, plus a couple of shorter whips; renders show the satellite as a small blue box at the centre of a big four-armed X of thin yellow lines. Mostly a small cubesat dwarfed by its antennas."
+ },
+ "draw-polytech-universe-5": {
+  "ids": [
+   61745
+  ],
+  "refs": [
+   "https://www.nanosats.eu/sat/polytech-universe-5"
+  ],
+  "description": "3U CubeSat (10 x 10 x 34 cm, 4.4 kg) built by STC for St Petersburg Polytechnic. Silver aluminium corner rails; long faces carry rows of black solar cells mounted on bright green circuit-board panels, with a yellow strip/band around the middle on the real flight unit. One long face is a green PCB with a large flat spiral (Archimedean coil) antenna printed on it in gold/yellow, with a slim deployable rod antenna lying along the side. One end carries a small silver box module (deployer/thruster block). No deployable solar panels."
+ },
+ "draw-geoscan-3u-mirea": {
+  "ids": [
+   61785,
+   61749
+  ],
+  "refs": [
+   "https://www.nanosats.eu/sat/rtu-mirea1",
+   "https://www.nanosats.eu/sat/vizard-ion"
+  ],
+  "description": "Geoscan 3U CubeSat platform, 10 x 10 x 34 cm, about 3 kg. Black-anodised rails and frame; long faces covered with dark black solar cells, with large bright yellow rectangular labels/Kapton patches on some panels, and edges of green circuit boards visible. One end plate is white with small square sensor windows and the name printed; the other end has a camera lens. Vizard-Ion's end face carries a small round plasma thruster (copper-coloured spoked grille, about 4 cm across) that glows pink-purple when firing. Thin tape antennas folded along the edges. No deployable panels."
+ },
+ "draw-sputnix-3u": {
+  "ids": [
+   61764,
+   61763
+  ],
+  "refs": [
+   "https://www.nanosats.eu/sat/sit-2086",
+   "https://www.nanosats.eu/sat/sit-hse"
+  ],
+  "description": "Sputnix OrbiCraft-based 3U CubeSat, 10 x 10 x 34 cm, about 3.2 kg. Silver aluminium rails along the long edges; the long faces are bright green circuit-board panels carrying large dark grey/black solar cells with clipped corners (two or three per unit section), with thin copper wire antennas taped diagonally across some panels. One end face is green PCB with a small square green patch antenna; the other end has a camera aperture. Small red tag labels on the flight units. No deployable panels."
+ },
+ "draw-sitro-ais": {
+  "ids": [
+   61780,
+   61786,
+   61778,
+   61776,
+   61788,
+   61774,
+   61773,
+   61771
+  ],
+  "refs": [
+   "https://www.nanosats.eu/sat/sitro-ais"
+  ],
+  "description": "Sputnix-built 3U CubeSat for Sitronics' AIS ship-tracking constellation, 10 x 10 x 34 cm. Grey-brown aluminium rails; long faces covered in glossy black solar cells (clipped corners) on black/green circuit panels, with a small round camera/sensor window near the lower third. One lower face is a black panel with a gold logo artwork (a stylised compass rose and gold figure) and the Sputnix name. Thin antennas are folded along the edges and deploy as short whips. No deployable panels. Identical units were photographed lined up in a row."
+ },
+ "draw-srmsat": {
+  "ids": [
+   37841
+  ],
+  "refs": [
+   "https://www.eoportal.org/satellite-missions/srmsat",
+   "https://www.nanosats.eu/sat/srmsat"
+  ],
+  "description": "10.4 kg cube-shaped nanosatellite, 28.6 x 28.6 x 29.4 cm. Silver aluminium frame; three side faces each carry a single body-mounted panel of blue silicon solar cells in a 4x4 grid; the remaining faces and top are wrapped in shiny gold foil (MLI). On top: a white hemispherical dome (GPS/puck antenna) and three thin vertical white rod antennas (one monopole, two others) standing up 20-30 cm. Small spectrometer window on the Earth-facing bottom. No deployable panels."
+ },
+ "draw-techsat": {
+  "ids": [
+   25397
+  ],
+  "refs": [
+   "https://www.eoportal.org/satellite-missions/techsat",
+   "https://space.skyrocket.de/doc_sdat/techsat-1.htm (text only)"
+  ],
+  "description": "Israeli Technion microsatellite, a cube 44.5 x 44.5 x 44.5 cm, 48 kg. Four side faces and the top carry body-mounted dark blue-black thin-film solar cells in a fine grid; the Earth-facing bottom (fifth) panel has no cells and is bare silver aluminium carrying instruments: several antennas, a laser retroreflector array, a UV sensor and a camera lens. From the bottom corners four thin whip antennas angle outward and downward, and a long single rod antenna points straight down from the centre. Silver structural flange around the bottom edge."
+ },
+ "draw-vesselsat": {
+  "ids": [
+   37840
+  ],
+  "refs": [
+   "https://www.eoportal.org/satellite-missions/vesselsat",
+   "https://space.skyrocket.de/doc_sdat/vesselsat-1.htm (text only)"
+  ],
+  "description": "LuxSpace microsatellite, a 30 cm cube, 29 kg. Five faces (sides and top) covered with dark blue-black triple-junction solar cells in a grid, framed by copper/gold-coloured edges; small red and silver sensor patches between cells. Four long thin antennas (dark red/brown rods) stick out diagonally upward from the top corners like insect legs, plus thin wire dipoles at the bottom. The bottom has a round silver separation ring adapter. No deployable panels."
+ },
+ "draw-weos": {
+  "ids": [
+   27599
+  ],
+  "refs": [
+   "https://www.eoportal.org/satellite-missions/weos",
+   "https://space.skyrocket.de/doc_sdat/weos.htm (text only)"
+  ],
+  "description": "Chiba Institute of Technology microsatellite, a box 52 x 52 x 45 cm, 47 kg. Side faces covered with body-mounted black/dark-blue silicon solar cells in a grid, with bright green-edged frames at the corners; gold surfaces in drawings. From the top centre a 3 m long thin lattice gravity-gradient boom (open triangular truss) extends straight up with a small 3 kg cylindrical tip mass at its end - the boom is about six times the body height. The Earth-facing bottom carries a cross-dipole S-band antenna and a UHF sleeve-dipole whip pointing down. Sits on a dark separation ring."
+ },
+ "draw-fedsat": {
+  "ids": [
+   27598
+  ],
+  "refs": [
+   "https://www.eoportal.org/satellite-missions/fedsat",
+   "https://en.wikipedia.org/wiki/FedSat"
+  ],
+  "description": "Australian 58 kg microsatellite, a cube about 50-60 cm per side (MicroSIL bus). All outer side faces are covered with body-mounted GaAs solar cells, rendered as deep blue grid panels with a thin white/silver frame. One face has a large round green ring-shaped feature (Ka-band/communication payload) and small round gold/red ports; a small white disk sensor near a corner. A cluster of short gold/red cylindrical items (thrusters/antenna feeds) on one corner. A 2.5 m thin magnetometer boom extends from one face carrying a small sensor head at its tip, and a gravity-gradient boom points toward Earth. A few thin whip antennas from the corners."
+ },
+ "draw-razaksat": {
+  "ids": [
+   35578
+  ],
+  "refs": [
+   "https://www.eoportal.org/satellite-missions/razaksat",
+   "https://en.wikipedia.org/wiki/RazakSAT"
+  ],
+  "description": "Malaysian 190 kg Earth-imaging minisatellite (Satrec SI-200 bus), a hexagonal prism about 1.2 m across and 1.2 m tall. Body panels white/silver with gold-coloured edge framing and struts. Three rectangular deployable solar panels (black GaAs cells, gold frames) hinge out from the upper edges of alternate hexagon faces, angled like petals/wings around the body. The top carries a large teal/blue-grey cylindrical camera barrel (the 30 cm aperture MAC telescope) pointing along the axis; small dish/antennas and a black disc-shaped antenna under the base. In the lab the panels are stowed flat against the sides showing a black grid of cells."
+ },
+ "draw-sar-lupe": {
+  "ids": [
+   31797
+  ],
+  "refs": [
+   "https://www.eoportal.org/satellite-missions/sar-lupe",
+   "https://en.wikipedia.org/wiki/SAR-Lupe"
+  ],
+  "description": "German military radar satellite, 770 kg, about 4 x 3 x 2 m. A tall slab-like box body (about 2.6 m tall, 1.15 m wide) with white/light grey sides, one large flat side covered by a fixed body-mounted solar panel (dark blue cells in horizontal strips with white gaps, copper-coloured edge). Attached along the other side is a large fixed offset parabolic dish 3.3 x 2.7 m, dark grey with a gold-edged rib structure on its back, curving like a scoop. A long white cylindrical boom (about 2 m) sticks out diagonally from the body near the dish, carrying the feed horn at its tip that illuminates the dish. No deployable solar wings."
+ },
+ "draw-spirale": {
+  "ids": [
+   33751,
+   33752
+  ],
+  "refs": [
+   "https://www.eoportal.org/satellite-missions/spirale",
+   "https://en.wikipedia.org/wiki/Spirale"
+  ],
+  "description": "French early-warning demonstrator microsatellite, about 120 kg, Myriade bus 60 x 60 x 85 cm. The cubic body is wrapped in black and dark-grey crinkled thermal blanket (MLI) with mottled sheen. On the top face sits a white cylindrical infrared telescope tube with a short white sunshade, pointing out sideways. A single deployable solar wing on one side: two square dark violet-blue panels with fine cell grids, on a short yoke with a drive mechanism, one panel notched at a corner. A thin rod antenna sticks out from the bottom. Compact black box with a white telescope and one blue wing."
+ },
+ "draw-badr-b": {
+  "ids": [
+   27003
+  ],
+  "refs": [
+   "https://www.eoportal.org/satellite-missions/badr-b",
+   "https://space.skyrocket.de/doc_sdat/badr-b.htm (text only)"
+  ],
+  "description": "Pakistani 68.5 kg microsatellite, a box 51 x 51 x 46.5 cm. Side faces fully covered with body-mounted solar panels: rows of small dark cells on a red-brown/copper background, gold-anodised edge frame, with a few bright red square patches. The top face also has a panel of grey-blue cells. On top: a gold cylindrical canister (the stowed gravity-gradient boom, which deploys to 6 m with a tip mass) and a short white cylindrical antenna on a mast at one corner. The Earth-facing bottom holds VHF/UHF/S-band antennas and the CCD camera. When deployed, a long thin boom extends straight up."
+ },
+ "draw-starlette-stella": {
+  "ids": [
+   7646,
+   22824
+  ],
+  "refs": [
+   "https://en.wikipedia.org/wiki/Starlette_and_Stella",
+   "https://commons.wikimedia.org/wiki/File:Starlette_Satellite.jpg",
+   "https://space.skyrocket.de/doc_sdat/starlette.htm (text only)"
+  ],
+  "description": "Passive laser-ranging ball, a solid sphere 24 cm in diameter (47-48 kg; dense uranium-238 core). Outer shell is smooth matte grey-silver aluminium, studded with 60 round recessed sockets spaced evenly over the whole surface; each socket holds a glass corner-cube retroreflector that looks like a dark circular window with a faceted three-way prism pattern inside (glints of silver/black). No antennas, panels or power - just a heavy cratered metal ball, a little like a golf ball with large dimples."
+ },
+ "draw-larets": {
+  "ids": [
+   27944
+  ],
+  "refs": [
+   "https://commons.wikimedia.org/wiki/File:Larets_Microsatellite_MAKS_2011.jpg",
+   "https://space.skyrocket.de/doc_sdat/larets.htm (text only)"
+  ],
+  "description": "Passive Russian laser-ranging sphere, 21.5 cm diameter, 23 kg. Smooth white/light-grey painted metal (brass body) ball covered with about 60 circular recessed holes evenly spaced, each holding a corner-cube retroreflector - dark glassy discs with faceted prism centres, some catching silver highlights. No antennas, panels or appendages. Looks like a white ball pocked with dark round windows."
+ },
+ "draw-westpac": {
+  "ids": [
+   25398
+  ],
+  "refs": [
+   "https://space.skyrocket.de/doc_sdat/westpac.htm (text only)",
+   "https://ilrs.gsfc.nasa.gov"
+  ],
+  "description": "Australian passive laser-ranging sphere, about 24.5 cm in diameter, 23.5 kg, built in Russia like Larets. A metal (brass) ball covered evenly with 60 corner-cube retroreflectors set deep into round recessed holes (Fizeau-style deep recesses so only one reflector returns light at a time). Draw as a light metallic ball with 60 dark circular pits, each with a glassy faceted prism at the bottom. No antennas or panels. (Description from text plus the near-identical Larets; no direct photo found.)"
+ },
+ "draw-blits": {
+  "ids": [
+   35871
+  ],
+  "refs": [
+   "https://en.wikipedia.org/wiki/BLITS",
+   "https://commons.wikimedia.org/wiki/File:BLITS_Satellite_scheme.gif",
+   "https://ilrs.gsfc.nasa.gov/missions/satellite_missions/past_missions/blit_general.html"
+  ],
+  "description": "A 17 cm solid glass ball (7.5 kg) - a spherical lens retroreflector. Made of two outer glass hemispheres glued around an inner glass ball lens 10.7 cm across. One hemisphere is clear, transparent pale-yellowish glass so you can see the inner sphere as a slightly yellow/amber ball inside; the other hemisphere is coated outside with a mirror-like aluminium layer under varnish, appearing silver/white. So the object looks like a glass marble half clear and half silvered. No antennas, panels or other parts."
+ },
+ "draw-reflector": {
+  "ids": [
+   27005
+  ],
+  "refs": [
+   "https://space.skyrocket.de/doc_sdat/reflector.htm (text only)",
+   "https://ilrs.gsfc.nasa.gov/missions/satellite_missions/past_missions/refl_general.html"
+  ],
+  "description": "Passive 8 kg laser-ranging test object. A white four-sided pyramid (base about 46 cm wide, 53 cm tall) with a white mast rising from its apex; the extendable mast reaches about 1.43 m total. Small white holder blocks at defined nodes - the pyramid base corners, mid-mast and the top tip - each carry clusters of small rectangular glass retroreflector prisms (32 reflectors total). The very top is a small cross-shaped cluster of holders. All white; no solar cells or antennas."
+ },
+ "draw-latinsat": {
+  "ids": [
+   27612
+  ],
+  "refs": [
+   "https://www.eoportal.org/satellite-missions/aprizesat-3-4",
+   "https://space.skyrocket.de/doc_sdat/unisat-1.htm (text only)"
+  ],
+  "description": "SpaceQuest-built Aprize-type microsatellite: a cube about 25 cm on a side made of stacked aluminium trays (silver edges and many screw heads). Every face is covered with black solar cells in a grid separated by thin silver lines, with a small bright yellow square patch in the middle of each side face. On the top face a small round white/cream patch antenna and four thin straight whip antennas angled out from the top edges like a crossed X. Rests on a round silver base ring. (Based on the near-identical SpaceQuest AprizeSat bus.)"
+ },
+ "draw-newsat": {
+  "ids": [
+   56203,
+   56202
+  ],
+  "refs": [
+   "https://commons.wikimedia.org/wiki/File:Satellogic_Render_NewSat.png",
+   "https://commons.wikimedia.org/wiki/File:%C3%91uSat_mockup_at_Satellogic_HQ.jpg",
+   "https://en.wikipedia.org/wiki/%C3%91uSat"
+  ],
+  "description": "Satellogic NewSat Earth-imaging microsatellite, about 51 x 57 x 82 cm, 38-41 kg. Upper part is a square box whose faces are tiled with black solar cells in rows, framed by thin grey/silver edges, with a small square gold patch on one face. Below it the body narrows into a dark copper-brown/bronze cylinder (the telescope housing) ending in a round aperture ring at the bottom. One face carries a flat square gold-colored array of small square patch elements (8x8 grid) and a small gold double-patch antenna panel below it. A small cylindrical star tracker sticks out at the side of the upper box. Parts of the lower body are wrapped in crinkled silver foil. No deployable panels."
+ },
+ "draw-astrosat": {
+  "ids": [
+   40930
+  ],
+  "refs": [
+   "https://en.wikipedia.org/wiki/AstroSat",
+   "https://www.eoportal.org/satellite-missions/astrosat",
+   "https://commons.wikimedia.org/wiki/File:Astrosat-1_in_deployed_configuration.png"
+  ],
+  "description": "India's 1513 kg space observatory, IRS-type cuboid bus about 1.96 x 1.75 x 1.3 m wrapped in shiny gold MLI foil. Two solar wings, one on each side, each made of two large rectangular panels of dark blue/black cells, giving a long straight span. On the top deck stand the instruments: two long parallel cylindrical UV telescopes (UVIT, white/grey tubes ~40 cm aperture, with hinged lids), three large boxy X-ray counters (LAXPC) and the square Soft X-ray Telescope tube, plus the CZT imager box - a crowded cluster of rectangular and cylindrical white/gold instrument housings. A small Scanning Sky Monitor on a rotating platform at one side, and a phased-array antenna panel on the bottom."
+ },
+ "draw-eos-08": {
+  "ids": [
+   60454
+  ],
+  "refs": [
+   "https://commons.wikimedia.org/wiki/File:Render_of_EOS-08_aka_Microsat-2C_in_deployed_configuration.png",
+   "https://commons.wikimedia.org/wiki/File:Spacecraft_EOS-08_aka_Microsat-2C_in_clean_room.png",
+   "https://space.skyrocket.de/doc_sdat/eos-08.htm (text only)"
+  ],
+  "description": "ISRO 175 kg microsatellite (IMS-1 bus), a boxy body roughly 0.9 m cube, wrapped mostly in crinkled copper/gold and orange-gold MLI foil, with bright yellow padded blanket covers on instrument boxes. On top: a round black telescope opening ringed in white (the infrared EOIR camera), plus small boxes and a dual-gimbal antenna. One face has a black grid panel (phased-array antenna/radiator). Two long flexible solar wings stick straight out from opposite sides, each a narrow light-beige/cream rectangle about 2 m long, divided into several sections with fine cell grid lines (flexible solar panel)."
+ },
+ "draw-nvs-02": {
+  "ids": [
+   62850
+  ],
+  "refs": [
+   "https://commons.wikimedia.org/wiki/File:GSLV-F15_NVS-02_Pre-launch_image_of_NVS-02.webp",
+   "https://en.wikipedia.org/wiki/NVS-02",
+   "https://www.eoportal.org/satellite-missions/nvs-02"
+  ],
+  "description": "Indian navigation satellite, 2250 kg, I-2K bus: a box about 1.5 x 1.5 x 2.5 m tall, covered in bright gold crinkled MLI foil with silver/white radiator patches. On one side, a single solar wing of large rectangular panels with dark navy cells in a fine grid (stowed against the side before launch, deployed as a long wing in orbit). The Earth-facing top carries a large flat L-band/S-band helical phased-array navigation antenna panel and a C-band dish; a small laser retroreflector array. In orbit: gold box with one long dark wing extending sideways and antennas pointing down at Earth."
+ },
+ "draw-scd-1": {
+  "ids": [
+   22490
+  ],
+  "refs": [
+   "https://en.wikipedia.org/wiki/Sat%C3%A9lite_de_Coleta_de_Dados",
+   "https://commons.wikimedia.org/wiki/File:SCD-1_no_foguete.jpg",
+   "https://commons.wikimedia.org/wiki/File:Integra%C3%A7%C3%A3o_do_SCD-1.jpg"
+  ],
+  "description": "Brazilian 115 kg spin-stabilized data-collection satellite shaped like an octagonal prism 1 m across and about 70 cm tall. All eight side faces are covered in body-mounted solar cells: dark blue/black cell grids with thin copper/red-brown framing lines. The flat top and bottom octagons are dark with a silver/white centre, and each carries antennas: a single thin rod antenna sticking straight out along the spin axis from the top centre, and antennas on the bottom face. No deployable panels. Looks like a dark octagonal drum."
+ },
+ "draw-azur": {
+  "ids": [
+   4221
+  ],
+  "refs": [
+   "https://commons.wikimedia.org/wiki/File:Azur.jpg",
+   "https://space.skyrocket.de/doc_sdat/azur.htm (text only)"
+  ],
+  "description": "Germany's first satellite (1969), 71 kg. A cylindrical body about 0.75 m in diameter and similar height, with its side covered by body-mounted solar cells in a grid (dark cells, silver framing), and a short truncated cone at one end ending in a smaller flat ring. Several thin long antenna rods/booms project diagonally outward at both ends (turnstile style) and a straight boom along the axis from the flat end. Silver metal ends. Black-and-white archive drawing only; colours inferred as dark cells on silver structure."
+ },
+ "draw-amsat-microsat": {
+  "ids": [
+   22826
+  ],
+  "refs": [
+   "https://space.skyrocket.de/doc_sdat/itamsat.htm (text only)",
+   "https://en.wikipedia.org/wiki/AMSAT"
+  ],
+  "description": "AMSAT-NA 'Microsat' bus amateur satellite, 11 kg: a small cube about 23 x 23 x 23 cm made of five stacked machined aluminium trays (horizontal seams visible on each side). Each of the four sides and the top carries a single body-mounted solar panel of dark blue/black cells in a frame. A single long thin whip antenna (2 m band, about 50 cm) projects straight up from the top, and four short whip antennas (70 cm band) project from the bottom corners in a canted turnstile. No deployable panels. (Same design as PACSAT/LUSAT; no photo of ITAMSAT itself found.)"
+ },
+ "draw-iso": {
+  "ids": [
+   23715
+  ],
+  "refs": [
+   "https://www.esa.int/Science_Exploration/Space_Science/ISO_overview",
+   "https://en.wikipedia.org/wiki/Infrared_Space_Observatory",
+   "https://sci.esa.int/web/iso/-/33072-the-iso-spacecraft"
+  ],
+  "description": "ESA infrared telescope, 2.5 t, 5.3 m tall, 3.6 m wide, 2.8 m deep. The main body is a tall upright cylinder (the liquid-helium cryostat holding a 60 cm telescope) wrapped in matte white thermal blanket, its top cut at a slant into a curved hood/sunshade with a thin gold-foil rim. Along one whole side stands a tall flat rectangular sunshield panel, as tall as the cylinder, whose outer face is covered in dark solar cells arranged in many thin horizontal stripes (black/dark-blue strips with silver lines) - it is the only solar array; no deployable wings. Small white boxy star trackers stick out on the side opposite. At the bottom a wider white box-shaped service module (electronics, hydrazine) with a short black cross-shaped antenna and a launcher ring underneath. Overall: a white silo with a slanted top and a striped dark panel on one side."
+ },
+ "draw-australis-oscar-5": {
+  "ids": [
+   4321
+  ],
+  "refs": [
+   "https://en.wikipedia.org/wiki/Australis-OSCAR_5",
+   "https://collections.museumsvictoria.com.au/items/404874",
+   "https://galacticjourney.org/tag/ao-5/"
+  ],
+  "description": "First Australian satellite built by Melbourne University students (1970), 17.7 kg, battery-powered (no solar cells). A plain rectangular box about 44 x 30 x 16 cm with a bright silver/white metal finish. Antennas made from steel tape-measure strips: a horizontal dipole with one arm about 50 cm long sticking straight out each side of the box, and a single vertical whip about 67 cm long rising from the top. Simple, flat, shoebox-like shape. (From the museum engineering model and team photo.)"
+ },
+ "draw-isis-2": {
+  "ids": [
+   5104
+  ],
+  "refs": [
+   "https://www.asc-csa.gc.ca/eng/satellites/isis.asp",
+   "https://en.wikipedia.org/wiki/ISIS-II",
+   "https://www.ucalgary.ca/aurora/history-overview/isis",
+   "https://en.wikipedia.org/wiki/ISIS_(satellite)"
+  ],
+  "description": "Canadian ionospheric research satellite (RCA Ltd., 1971), about 264 kg. Body is a squat multi-faceted (octagonal-style) polyhedron, roughly a metre across - like a short drum with chamfered upper and lower bevels - with nearly every facet covered by silver-framed panels of dark blue silicon solar cells. Flat top and bottom with a circular collar. Two pairs of extremely long thin sounder dipole antennas (silver tape booms) extend from the equator in a cross, the longer pair reaching about 73 m tip to tip and the shorter 18.7 m, so in full view the body is a small dot at the centre of a huge cross. Several shorter whip antennas and a central mast with a small knob also project from the top and bottom."
+ },
+ "draw-aist-2t": {
+  "ids": [
+   67253,
+   67254
+  ],
+  "refs": [
+   "https://russianspaceweb.com/aist2t.html",
+   "https://space.skyrocket.de/doc_sdat/aist-2t.htm (text only)"
+  ],
+  "description": "Russian stereo Earth-imaging pair from RKTs Progress (Samara), 670 kg each, envelope about 2.2 x 1.3 x 2.7 m. Pre-launch photos show each satellite as a large box wrapped in bright orange thermal blankets, with a dark black grid solar panel folded flat against one side, a cluster of round black camera apertures (dual stereo cameras) on one end face, and several short copper/bronze-coloured horn or thruster nozzles projecting from the end corners. In orbit the folded black solar panels would unfold to the sides (deployed shape not shown in released images)."
+ },
+ "draw-rassvet": {
+  "ids": [
+   68373,
+   100083,
+   100089,
+   100092
+  ],
+  "refs": [
+   "https://militarnyi.com/en/articles/rassvet-threat-ukraine-democratic-world/",
+   "https://en.wikipedia.org/wiki/Bureau_1440",
+   "https://space.skyrocket.de/doc_sdat/rassvet-3.htm (text only)"
+  ],
+  "description": "Bureau 1440 broadband LEO satellite (Rassvet-3 about 370 kg, krypton electric thrusters, laser inter-satellite links). Factory photos of a Bureau 1440 satellite show a compact box body wrapped in gold foil with white radiator panels, red cylindrical caps and small gold-foil instrument boxes on top, flanked by a single long straight solar array on each side: each wing made of three or four flat rectangular panels hinged end to end, covered with black solar cells with clipped corners in a dense grid on a silver frame - the wings are many times longer than the body. Note: the photo may show an earlier Rassvet generation; Rassvet-3 details are unpublished."
+ },
+ "draw-yubileiny": {
+  "ids": [
+   32953
+  ],
+  "refs": [
+   "https://www.eoportal.org/satellite-missions/yubileiny",
+   "https://space.skyrocket.de/doc_sdat/yubileyniy.htm (text only)"
+  ],
+  "description": "Russian ISS-Reshetnev microsatellite, 48 kg. A hexagonal prism about 0.4 m across and roughly 0.6-1 m long, the six long sides covered in black solar cells in a neat grid within gold-coloured frame strips. One end deck carries a tangle of small instruments, red-capped connectors and short antennas. Two long thin straight booms extend in opposite directions from the body (gravity-gradient/magnetometer booms, several times the body length), one ending in a small sphere, plus a few thin whip antennas angled out from the lower end."
+ },
+ "draw-shinsei": {
+  "ids": [
+   5485
+  ],
+  "refs": [
+   "https://www.isas.jaxa.jp/en/missions/spacecraft/past/shinsei.html",
+   "https://space.skyrocket.de/doc_sdat/ss-1.htm (text only)"
+  ],
+  "description": "Japan's first scientific satellite (1971), 66 kg. A faceted polyhedral body, roughly an octagonal prism with bevelled top and bottom (about 75 cm across), all facets covered with dark navy-blue solar cells in fine grids within silver frame strips; a couple of small instrument windows (one square glassy sensor, one white plate) on the side. From the top a thin mast carries a cross-shaped turnstile of four short whips; a long thin copper-coloured rod antenna sticks out sideways from the equator; from the bottom four curved whip antennas splay downward and a long straight rod points out diagonally."
+ },
+ "draw-tansei": {
+  "ids": [
+   4952
+  ],
+  "refs": [
+   "https://www.isas.jaxa.jp/en/missions/spacecraft/past/tansei.html",
+   "https://space.skyrocket.de/doc_sdat/ms-t1.htm (text only)"
+  ],
+  "description": "Japanese technology test satellite (1971), 63 kg, battery-powered only. A 26-sided polyhedral body about 71 cm across the flats, finished in glossy black panels with a few small white rectangular patches and a couple of round sensor windows; a short shiny silver cylindrical collar at the bottom. Four thin straight whip antennas splay up from the top edge and four longer slightly curved whip antennas splay out and down from the bottom collar. No solar cells."
+ },
+ "draw-proiteres": {
+  "ids": [
+   38756
+  ],
+  "refs": [
+   "https://www.eoportal.org/satellite-missions/proiteres",
+   "https://space.skyrocket.de/doc_sdat/proiteres.htm (text only)"
+  ],
+  "description": "Osaka Institute of Technology nanosatellite, a 30 cm cube, 15 kg. Five faces covered with body-mounted blue/navy silicon solar cells in a fine grid framed by red wiring and yellow tape tabs; the top panel has a square central hole framed in gold. One face holds a high-resolution camera window and two small square pulsed-plasma thruster ports (which emit violet/pink plumes when firing). An extendable zig-zag lattice (scissor/pantograph) boom about 1-2 m long extends from one face, carrying a small magnetic sensor box at its tip. Thin dipole antenna wires."
+ },
+ "draw-tubsat-b": {
+  "ids": [
+   22971
+  ],
+  "refs": [
+   "https://www.eoportal.org/satellite-missions/tubsat",
+   "https://space.skyrocket.de/doc_sdat/tubsat-b.htm (text only)"
+  ],
+  "description": "TU Berlin microsatellite (1994), box 38 x 38 x 50 cm, 40-45 kg. Two adjacent long sides carry large flat panels of dark blue-black solar cells in vertical strips with silver frames, angled at the corner. The open top end shows a wide round silver-foil-wrapped telescope barrel (1 m focal length camera) with a smaller cylindrical tube beside it; exposed electronics boxes and gold/brown components on the other sides. Sits on a round silver base plate."
+ },
+ "draw-fengyun-1": {
+  "ids": [
+   25730
+  ],
+  "refs": [
+   "https://www.eoportal.org/satellite-missions/fy-1",
+   "https://space.skyrocket.de/doc_sdat/fy-1.htm (text only)",
+   "https://en.wikipedia.org/wiki/Fengyun"
+  ],
+  "description": "Chinese polar weather satellite, 954 kg, three-axis stabilized. A box-shaped body wrapped in mottled silver-grey/gold thermal blanket, with two long deployable solar wings sticking out from opposite sides; each wing has three rectangular panels of dark blue cells in a 2x2 grid with white frames. On the Earth-facing bottom: scanning radiometer (MVISR) optics with a radiant cooler, and a round antenna. (From the CMA illustration.)"
+ },
+ "draw-jas-1": {
+  "ids": [
+   16909,
+   20480
+  ],
+  "refs": [
+   "https://space.skyrocket.de/doc_sdat/jas-1.htm (text only)",
+   "https://ja.wikipedia.org/wiki/JAS-1",
+   "https://www.amsat.org/happy-20th-birthday-to-fo-29/"
+  ],
+  "description": "Japan Amateur Radio League satellite, 50 kg. A 26-sided polyhedron about 40-44 cm across and 47 cm tall - a near-spherical faceted ball made of square and triangular facets, each covered by a body-mounted panel of dark blue silicon solar cells in a silver aluminium frame. A ring of turnstile antennas (four bent whips) around the base and four transmitting whip antennas extending from the top. Shape matches the photographed JAS-2."
+ },
+ "draw-jas-2": {
+  "ids": [
+   24278
+  ],
+  "refs": [
+   "https://www.amsat.org/happy-20th-birthday-to-fo-29/",
+   "https://amsat-uk.org/satellites/fuji-oscar-29-jas-2/",
+   "https://ja.wikipedia.org/wiki/JAS-2"
+  ],
+  "description": "Japanese amateur radio satellite (1996), 50 kg. A 26-sided polyhedron 44 cm across the faces and 47 cm tall: square and triangular facets forming a faceted ball, each covered with GaAs solar cells that look dark purple/indigo with a slight iridescence, edged by bright silver frames. A silver cylindrical separation collar at the bottom; around it a ring of thin bent whip antennas (turnstile receiving antennas), and four thin transmitting whips from the top. Many small silver rod stubs at the facet corners."
+ },
+ "draw-kagayaki": {
+  "ids": [
+   33495
+  ],
+  "refs": [
+   "https://aprsaf.org/newsmails_newsletters/pastnews_2008/feature_51.php",
+   "https://space.skyrocket.de/doc_sdat/kagayaki.htm (text only)"
+  ],
+  "description": "SORUN Corporation microsatellite, a 30 cm cube (20-28 kg), gravity-gradient stabilised. Official concept art shows a gold/yellow-framed cube with four deployable square solar panels (deep blue cells, bright yellow frames) hinged out from the body edges at angles, a long thin dark inflatable boom extending from the top with a yellow ring partway along and a small yellow box (camera) at its tip, and a large thin square sheet (de-orbit 'parachute' printed with children's colourful handprint artwork) spread out near the boom. Built only as concept imagery; the flight model was never photographed in public sources."
+ },
+ "draw-edusat": {
+  "ids": [
+   37788
+  ],
+  "refs": [
+   "https://www.eoportal.org/satellite-missions/edusat",
+   "https://en.wikipedia.org/wiki/EduSAT"
+  ],
+  "description": "Sapienza University (GAUSS) / ASI educational nanosatellite, about 10 kg, a squat box 31.5 x 31.5 x 26 cm with a modular aluminium structure. The four sides carry body-mounted solar panels, each a grid of dark blue-black cells inside a white frame. The top deck is a bright yellow circuit board carrying a tan/brown rectangular payload box and a small black cylinder (camera/sensor). One long thin whip antenna points straight up from the top and another straight down from the bottom (UHF), plus a small S-band patch underneath."
+ },
+ "draw-haishao-1": {
+  "ids": [
+   62190
+  ],
+  "refs": [
+   "https://english.aircas.ac.cn/newsroom/re/202506/t20250630_1046457.html",
+   "https://english.cas.cn/newsroom/news/202412/t20241213_894459.shtml"
+  ],
+  "description": "Chinese Academy of Sciences very-low-orbit (350 km) SAR satellite. The official infographic shows a compact box body wrapped entirely in crinkled gold foil, with two straight solar wings, one on each side, each made of three rectangular panels of dark grey/black cells in a grid with thin silver frames (span several times the body width). The radar antenna is not distinguished in the released image (likely the flat Earth-facing underside)."
+ },
+ "draw-shenzhou-orbital-module": {
+  "ids": [
+   67481,
+   66515,
+   69328
+  ],
+  "refs": [
+   "https://en.wikipedia.org/wiki/Shenzhou_(spacecraft)",
+   "https://commons.wikimedia.org/wiki/File:Post_S-7_Shenzhou_spacecraft.png",
+   "https://commons.wikimedia.org/wiki/File:Shenzhou_spacecraft_assembly.jpg",
+   "https://commons.wikimedia.org/wiki/File:Shenzhou_spacecraft_ground_test.png"
+  ],
+  "description": "The discarded forward (orbital) module of a crewed Shenzhou. It is a squat cylinder roughly 2.2 m across. The aft end is a short rounded cone/dome where it joined the descent capsule; the front end narrows to a ring carrying the androgynous docking mechanism (a flat circular docking collar with guide petals). Covered in white/silver-white thermal blanket with small gold and red fittings, handrails and a few short antenna stubs. From Shenzhou 8 on the orbital module has NO solar panels of its own, so draw it bare. Note: catalogue does not state which module; Gunter/Wikipedia show only the orbital module is left in orbit."
+ },
+ "draw-xiwang-1": {
+  "ids": [
+   36122
+  ],
+  "refs": [
+   "https://space.skyrocket.de/doc_sdat/xw-1.htm",
+   "https://db.satnogs.org/satellite/36122"
+  ],
+  "description": "50 kg Chinese amateur-radio microsatellite. A box about as wide as it is tall, with vertical gold rails at the corners. All side faces are covered in body-mounted dark blue-black solar cells set in many small rectangular panels with gold/brass frames and edge rails. A small square gold label plate sits low on the front face. The top is flat, with short monopole antenna stubs. It is mounted on a grey conical adapter. No deployable panels."
+ },
+ "draw-saudisat-1": {
+  "ids": [
+   26545,
+   26549,
+   27607
+  ],
+  "refs": [
+   "https://space.skyrocket.de/doc_sdat/saudisat-1.htm",
+   "https://db.satnogs.org/satellite/27607"
+  ],
+  "description": "10 kg Saudi microsatellite, a 23 cm cube. Every face is covered in body-mounted dark blue solar cells in a grid, framed by bright bare-aluminium edge rails and corner posts. A single thin whip antenna stands up from one top corner. No deployable panels or booms."
+ },
+ "draw-saudicomsat": {
+  "ids": [
+   28369,
+   28370,
+   31125,
+   31127,
+   31124,
+   31121,
+   31119
+  ],
+  "refs": [
+   "https://space.skyrocket.de/doc_sdat/saudicomsat-1.htm",
+   "https://commons.wikimedia.org/wiki/File:EgyptSat-1_SaudiSat-3_satellite_cluster.jpg"
+  ],
+  "description": "12 kg store-and-forward microsatellites built by KACST on the Saudisat-1 design. Small cube about 25 cm on a side. All faces are covered in dark blue-black body-mounted solar cells, with silver aluminium frame edges. Thin whip antennas come off the top and bottom. No deployables. The 2007 cluster photo shows these small solar-covered cubes beside EgyptSat-1."
+ },
+ "draw-kent-ridge-1": {
+  "ids": [
+   41167
+  ],
+  "refs": [
+   "https://www.eoportal.org/satellite-missions/kent-ridge-1",
+   "https://space.skyrocket.de/doc_sdat/kent-ridge-1.htm"
+  ],
+  "description": "78 kg Singapore hyperspectral microsatellite (BST LEOS-50 bus), a flat box 575 x 572 x 384 mm. The body is matte black/dark grey. One long side face and about half of the top deck are covered in body-mounted black solar cells edged in orange-red Kapton. One end face carries the camera optics: one large round black lens barrel and two smaller black lens barrels side by side, plus four cream-coloured short cylinders (star trackers) in a 2 x 2 group above them. The top deck has two shallow black sensor cut-outs, a white circular patch, and three thin gold rod antennas sticking out at an angle from the top edges. No deployable panels."
+ },
+ "draw-velox-ci": {
+  "ids": [
+   41166
+  ],
+  "refs": [
+   "https://www.eoportal.org/satellite-missions/velox-ci",
+   "https://space.skyrocket.de/doc_sdat/velox-c1.htm"
+  ],
+  "description": "123 kg Singapore (NTU) GPS radio-occultation minisatellite, a box 61.5 x 60.8 x 84.8 cm. One large side face carries body-mounted solar cells, and two deployable rectangular solar panels (black cell side) hinge from that face's long edges and open out like doors to either side. The body is wrapped in gold and silver thermal blanket with a yellow/olive radiator panel. The top deck holds two gold helical GPS antennas, red and blue patch antennas and small sensors."
+ },
+ "draw-velox-i": {
+  "ids": [
+   40057
+  ],
+  "refs": [
+   "https://www.nanosats.eu/sat/velox-i-n-sat",
+   "https://space.skyrocket.de/doc_sdat/velox-i.htm",
+   "https://db.satnogs.org/satellite/40057"
+  ],
+  "description": "Singapore's first nanosatellite (NTU), roughly a 3.5U CubeSat, about 10 x 10 x 35 cm, with an anodised silver/grey aluminium frame. At one end four flat rectangular deployable solar panels spring out at right angles to form a cross / X of fins. At the other end is a camera that pushes out on spring-loaded mounts, ending in a hexagonal end cap. Parts of the body are wrapped in copper-coloured foil and black solar cells. The camera end is a small short hexagonal lens cap on a few thin springs, smaller than the body is wide; nothing like a bolt or screw head."
+ },
+ "draw-uosat-kitsat-bus": {
+  "ids": [
+   22077,
+   22828,
+   20437,
+   20438,
+   21575
+  ],
+  "refs": [
+   "https://space.skyrocket.de/doc_sdat/kitsat-1.htm",
+   "https://space.skyrocket.de/doc_sdat/uosat-3.htm",
+   "https://commons.wikimedia.org/wiki/File:Kitsat-1_Satellite_Artist%27s_Concept.png",
+   "https://en.wikipedia.org/wiki/UoSAT-5"
+  ],
+  "description": "SSTL modular microsatellite (about 50 kg), a tall box about 35 x 35 x 60-67 cm. All four long sides are covered in body-mounted dark blue solar cells in two panels per face, held in gold/brass-coloured frames. The top and bottom are light grey. A long, thin gravity-gradient boom rises straight up from the top, ending in a small gold box-shaped tip mass (several metres long). A shorter, slimmer rod sticks up beside it, ending in a small white box. Short whip antennas point down from the bottom corners. The bottom has a round launch-interface ring. KITSAT reused the UoSAT-5 bus, so all five share this look."
+ },
+ "draw-snipe": {
+  "ids": [
+   56749
+  ],
+  "refs": [
+   "https://www.nanosats.eu/sat/kasi-sat",
+   "https://db.satnogs.org/satellite/56749"
+  ],
+  "description": "Korean (KASI) 6U CubeSat for ionospheric plasma formation flying, identified by SatNOGS as SNIPE A. Body about 10 x 22 x 34 cm with a gold/copper-coloured anodised frame and black solar cells on the long sides. At one end two large deployable solar panels open out flat to each side, making a wide T: each wing is copper-brown with rows of black rounded-corner cells. Other features: a Langmuir probe, a solid-state telescope window, thin UHF tape antennas, and a short boom with a small magnetometer."
+ },
+ "draw-anser": {
+  "ids": [
+   58019,
+   58018,
+   62644
+  ],
+  "refs": [
+   "https://www.nanosats.eu/sat/anser",
+   "https://space.skyrocket.de/doc_sdat/anser.htm"
+  ],
+  "description": "Spanish INTA 3U CubeSats (about 10 x 10 x 34 cm) working as a three-satellite water-quality cluster. Grey aluminium frame with black body-mounted solar cells on the long faces, edged in red/copper and yellow. Two long deployable solar panels hinge from opposite long edges and open out flat as wings, grey on the back with copper-orange cell strips. One end has a short round camera barrel (Followers carry a compact Cassegrain hyperspectral camera; Leader-S a small panchromatic camera). Thin wire antennas stick out diagonally from the ends."
+ },
+ "draw-intasat": {
+  "ids": [
+   7531
+  ],
+  "refs": [
+   "https://space.skyrocket.de/doc_sdat/intasat.htm",
+   "https://en.wikipedia.org/wiki/INTASAT"
+  ],
+  "description": "Spain's first satellite (1974, 20 kg). Text-only reference: a 12-sided right prism 44.2 cm across opposite corners and 41 cm tall, its side faces covered in solar cells. A thin beacon antenna sticks out about 175 cm from the centre of EACH end along the spin axis, so it looks like a drum on a long needle. Four 49 cm telemetry whips angle diagonally outward from one end. Note: no photo was found; drawn from the dimensions only."
+ },
+ "draw-optos": {
+  "ids": [
+   39420
+  ],
+  "refs": [
+   "https://www.nanosats.eu/sat/optos",
+   "https://space.skyrocket.de/doc_sdat/optos.htm"
+  ],
+  "description": "INTA 3U CubeSat, about 10 x 10 x 34 cm. The frame is gold-anodised/yellow aluminium with four rails. All four long sides are covered in body-mounted solar cells, dark blue-black, each side with two columns of panels separated by the frame. The top end deck holds a small instrument with a round shutter. Two pairs of thin tape/whip antennas splay out diagonally from the top corners (about one body-length long). No deployable panels."
+ },
+ "draw-munin": {
+  "ids": [
+   26621
+  ],
+  "refs": [
+   "https://www.eoportal.org/satellite-missions/munin",
+   "https://space.skyrocket.de/doc_sdat/munin.htm"
+  ],
+  "description": "6 kg Swedish auroral nanosatellite, nearly a cube 21 x 21 x 22 cm. All six faces are covered in small dark blue-black silicon solar cells in a neat grid with white seams. The top solar panel stands off the body on four short posts, leaving a gap where a round grey cylinder (the MEDUSA particle spectrometer) shows. A short thin rod antenna sticks out from one side. No booms, no deployables."
+ },
+ "draw-astrocast-0": {
+  "ids": [
+   43798
+  ],
+  "refs": [
+   "https://www.nanosats.eu/sat/astrocast-0",
+   "https://space.skyrocket.de/doc_sdat/astrocast-0.htm"
+  ],
+  "description": "4 kg Swiss IoT demonstrator 3U CubeSat (10 x 10 x 34 cm). Black anodised rails with copper-orange PCB edges. Black body-mounted solar cells on all four long sides, 5-6 cells per side. The top end deck is green PCB with a GPS patch and small black sensor. Two deployable solar arrays (per Gunter) fold out from the long sides as flat wings of black cells. It has a laser-ranging corner-cube reflector and a small GOMSpace propulsion nozzle."
+ },
+ "draw-connecta-t1": {
+  "ids": [
+   55012
+  ],
+  "refs": [
+   "https://www.nanosats.eu/sat/connecta-t1",
+   "https://db.satnogs.org/satellite/55012"
+  ],
+  "description": "Plan-S (Turkey) 3U IoT CubeSat. Body 10 x 10 x 34 cm with a light/white aluminium frame with red dot tabs. Black body-mounted solar cells, two per long face. Two large deployable solar wings open flat from the top end, one to each side. Each wing has two panels with many dark blue cells in three columns, so the deployed span is several times the body width. A short black stub/whip antenna stands up from the top, and four thin long tape antennas stick out from the bottom end in a cross."
+ },
+ "draw-turksat-3usat": {
+  "ids": [
+   39152
+  ],
+  "refs": [
+   "https://www.nanosats.eu/sat/turksat-3usat",
+   "https://space.skyrocket.de/doc_sdat/turksat-3usat.htm"
+  ],
+  "description": "4 kg ITU (Istanbul) 3U voice-transponder CubeSat built on an ISIS structure, 10 x 10 x 34 cm. Black anodised rails and frame. All four long faces are covered in black solar cells in 6 rows, with small white/silver hold-down hinges and red-brown tabs. The top end has white round fittings and a small camera. Several long thin silver whip antennas (VHF/UHF) stick out from the end, longer than the body. No deployable panels."
+ },
+ "draw-deorbitsail": {
+  "ids": [
+   40719
+  ],
+  "refs": [
+   "https://www.eoportal.org/satellite-missions/deorbitsail",
+   "https://www.nanosats.eu/sat/deorbitsail",
+   "https://space.skyrocket.de/doc_sdat/deorbitsail.htm"
+  ],
+  "description": "3U CubeSat (10 x 10 x 34 cm) that deployed a 5 x 5 m square drag sail. The body has black solar cells with copper/orange-edged panels. Four deployable solar panels at the base flip out to lie flat in one plane, making a cross. Thin wire antennas stick out from the top. Four thin booms reach out diagonally from the top of the body and stretch a huge square, very thin aluminised sail (silver/gold-copper, crinkled sheen) split into four triangles. The cubesat sits at its centre. The sail dwarfs the satellite."
+ },
+ "draw-snap-1": {
+  "ids": [
+   26386
+  ],
+  "refs": [
+   "https://www.nanosats.eu/sat/snap-1",
+   "https://space.skyrocket.de/doc_sdat/snap-1.htm"
+  ],
+  "description": "6.5 kg SSTL nanosatellite (2000), a small box roughly 30 cm across. Its faces are solar panels of black cells in a grid with an orange-gold Kapton border. Through the open structure you can see a gold-anodised internal frame and wiring. A small white disc fitting sits on top. It carries a pencil-sized butane thruster and a machine-vision camera. Photo shows it on its launch-separation posts."
+ },
+ "draw-strand-1": {
+  "ids": [
+   39090
+  ],
+  "refs": [
+   "https://www.eoportal.org/satellite-missions/strand-1",
+   "https://www.nanosats.eu/sat/strand-1",
+   "https://space.skyrocket.de/doc_sdat/strand-1.htm"
+  ],
+  "description": "SSTL smartphone 3U CubeSat, 10 x 10 x 34 cm, 4.3 kg, in a silver Pumpkin solid-walled chassis. Two deployable solar panels hinge along the long edges and open as flat 'wings', each with a column of 7 dark blue-black cells edged in red-orange on a pale cream/gold backing. The body face between them has small black windows (the smartphone camera and a VGA camera) and a round lens. Two thin monopole antennas (VHF and UHF) stick out from one end. A green nadir panel is visible in renders."
+ },
+ "draw-strv-1a": {
+  "ids": [
+   23125
+  ],
+  "refs": [
+   "https://www.eoportal.org/satellite-missions/strv-1",
+   "https://space.skyrocket.de/doc_sdat/strv-1.htm"
+  ],
+  "description": "52 kg UK DRA technology microsatellite for GTO, a near-cube 440 x 440 x 420 mm. Four body-mounted GaAs solar panels in a fine grid of dark cells on the sides. Black edges and a black panel with a vent grille. The top is bare metal with a round plate, a short cylindrical fitting and a small antenna. Small black sensor boxes and a nozzle stick out at the side. No deployables."
+ },
+ "draw-strv-1cd": {
+  "ids": [
+   26610,
+   26611
+  ],
+  "refs": [
+   "https://www.eoportal.org/satellite-missions/strv-1",
+   "https://space.skyrocket.de/doc_sdat/strv-1.htm"
+  ],
+  "description": "UK DERA follow-ons to STRV-1a/b, about 100 kg each. A cube 700 mm on each side with body-mounted GaAs solar cells in a fine dark grid on all side faces (dark blue-black), plus small black and gold instrument patches. A short mast/antenna stands on top. No deployable arrays. The two satellites look the same."
+ },
+ "draw-ampte-cce": {
+  "ids": [
+   15199
+  ],
+  "refs": [
+   "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1984-088A",
+   "https://en.wikipedia.org/wiki/AMPTE-CCE",
+   "https://commons.wikimedia.org/wiki/File:CCE_AMPTE-1.jpg",
+   "https://space.skyrocket.de/doc_sdat/explorer_cce.htm"
+  ],
+  "description": "242 kg JHU/APL spin-stabilised magnetosphere satellite. A squat square box about 1.2 m across, with a smaller central drum on top topped by a short cone (the Star-13B motor nozzle). Four flat square solar panels stick straight out horizontally from the four top corners, like a pinwheel / four-leaf table. Short thin whip antennas stand on the panel corners. From the bottom side a long thin boom (2.4 m) slants out with a small round magnetometer sensor at its tip."
+ },
+ "draw-anna-1b": {
+  "ids": [
+   446
+  ],
+  "refs": [
+   "https://en.wikipedia.org/wiki/ANNA_1B",
+   "https://commons.wikimedia.org/wiki/File:ANNA_1B.jpg"
+  ],
+  "description": "1962 geodetic satellite, a 0.91 m sphere (161 kg). The top and bottom hemispheres are dark and smooth (the top holds the flashing optical beacon). Around the equator runs a wide belt of flat rectangular solar-cell panels with bright frames, forming a many-sided band. A communications antenna is wound in a spiral over the surface."
+ },
+ "draw-courier-1b": {
+  "ids": [
+   58
+  ],
+  "refs": [
+   "https://en.wikipedia.org/wiki/Courier_1B",
+   "https://commons.wikimedia.org/wiki/File:Courier-1A.jpg"
+  ],
+  "description": "1960 Army/Philco active-repeater communications satellite, a 129.5 cm sphere (225 kg). Almost the whole surface is tiled with small dark blue-purple solar cells in curved rows. A narrow white/silver equatorial band carries a small dark rectangular window and a round red-orange badge. Short antenna stubs stick out at the equator. Courier 1A (same design) is the reference photo."
+ },
+ "draw-explorer-11": {
+  "ids": [
+   107
+  ],
+  "refs": [
+   "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1961-013A",
+   "https://en.wikipedia.org/wiki/Explorer_11"
+  ],
+  "description": "1961 gamma-ray satellite (37 kg). An octagonal aluminium box (30.5 x 30.5 x 58.5 cm) with solar cells on its faces sits on top of a slim cylinder (15.2 cm diameter, 52.2 cm long, the burnt-out final stage). The whole thing is a long rod-like shape that tumbles end over end. Around the joint a ring of looped wire antennas spreads out like flower petals. The top end has a flat octagonal cap with sensors."
+ },
+ "draw-explorer-16": {
+  "ids": [
+   506
+  ],
+  "refs": [
+   "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1962-070A",
+   "https://en.wikipedia.org/wiki/Explorer_16"
+  ],
+  "description": "1962 micrometeoroid satellite, a tall cylinder about 61 cm across and 193 cm long built around the spent Scout 4th stage. Most of the length is wrapped in many vertical rows of shiny stainless-steel pressurised half-cylinder detector cells (ribbed silver look) with dark bands. The top nose section is a short dark drum with solar cells and small windows. Four thin whip antennas stick out sideways from the nose. The bottom is the rocket stage end."
+ },
+ "draw-explorer-20": {
+  "ids": [
+   870
+  ],
+  "refs": [
+   "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1964-051A",
+   "https://commons.wikimedia.org/wiki/File:Explorer-20_IE-A.jpg"
+  ],
+  "description": "1964 topside ionospheric sounder (44.5 kg). A short cylinder capped top and bottom by truncated cones, like a spinning-top / lantern. All three sections are covered in rows of small dark solar cells with bright metal ribs. From the equator six very long, thin sounding antennas reach straight out: one opposite pair 18.3 m long and four others 9.1 m long. A small ion probe on a short boom sticks up from the upper cone."
+ },
+ "draw-solrad-8": {
+  "ids": [
+   1738
+  ],
+  "refs": [
+   "https://en.wikipedia.org/wiki/Explorer_30",
+   "https://commons.wikimedia.org/wiki/File:SOLRAD_8.jpg",
+   "https://commons.wikimedia.org/wiki/File:Solrad_8_or_explorer_30_2x.jpg"
+  ],
+  "description": "1965 NRL solar X-ray monitor. A near-spherical, polished metal body (about the size of a beach ball) with a raised equatorial belt holding 14 photometer windows that point outward. Several round patches of blue-black solar cells are set into the upper and lower hemispheres. One thin antenna sticks straight up from the top pole, and four long whip antennas splay out diagonally around the middle."
+ },
+ "draw-geos": {
+  "ids": [
+   1726,
+   3093
+  ],
+  "refs": [
+   "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1965-089A",
+   "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1968-002A",
+   "https://commons.wikimedia.org/wiki/File:Geos-1.jpg",
+   "https://en.wikipedia.org/wiki/Explorer_29"
+  ],
+  "description": "NASA geodetic satellites (387/469 kg), an octagonal drum about 1.2 m across. The eight sides are dark solar-cell panels with bright frames. The flat top deck holds a large white/silver hemispherical dome with concentric bands, round optical-beacon flash lamps in shallow cups, and a small white cone, and patches of honeycomb-like small reflector cubes. Text says 322 quartz laser corner-reflector cubes sit on fibreglass panels on the bottom rim. A long, thin gravity-gradient boom with a small end mass sticks straight up. GEOS 2 is the same design."
+ },
+ "draw-explorer-31": {
+  "ids": [
+   1806
+  ],
+  "refs": [
+   "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1965-098B",
+   "https://commons.wikimedia.org/wiki/File:Explorer_31_(DME_A).jpg"
+  ],
+  "description": "1965 ionospheric direct-measurement satellite. A short many-sided (roughly octagonal) drum. Its side faces are solar-cell panels in rectangular dark grids, some with louvre-like strips. The flat top deck carries small sensor plates and a short central mast ending in a small round knob (spherical mass spectrometer). The lower body is dark. Two cylindrical electrostatic probes stick out sideways from opposite sides (23 cm guard rings with 46 cm collectors)."
+ },
+ "draw-apex-aries": {
+  "ids": [
+   59129
+  ],
+  "refs": [
+   "https://www.apexspace.com/products/aries",
+   "https://db.satnogs.org/satellite/59129"
+  ],
+  "description": "Apex's first mid-size LEO bus (Aries, up to ~150 kg payload class). A boxy light-grey/silver aluminium body with white square radiator patches, wider than it is tall. Two large flat, black, rectangular deployable solar panels sit low on either side. Each is held out by long thin diagonal struts from hinge arms at the top corners of the body, giving a wide tent/'M' outline from the front. A circular interface ring is on top. Note: references are Apex product renders."
+ },
+ "draw-aprizesat-1-2": {
+  "ids": [
+   28372,
+   28366
+  ],
+  "refs": [
+   "https://space.skyrocket.de/doc_sdat/aprizesat-1_latinsat-1.htm",
+   "https://www.eoportal.org/satellite-missions/aprizesat-3-4"
+  ],
+  "description": "SpaceQuest Microsat-class store-and-forward satellites, about 10-12 kg. A small stack of aluminium trays forming a cube about 25 cm on a side. All six faces carry body-mounted dark solar cells in a grid with bare-aluminium edges and corner rods. Thin whip antennas stick out from the top and bottom. Same SpaceQuest structure family as AprizeSat 3+ and AO-51."
+ },
+ "draw-aprizesat-3plus": {
+  "ids": [
+   35686,
+   35684,
+   37792,
+   39416,
+   39425,
+   40018,
+   40019
+  ],
+  "refs": [
+   "https://www.eoportal.org/satellite-missions/aprizesat-3-4",
+   "https://space.skyrocket.de/doc_sdat/aprizesat-1_latinsat-1.htm"
+  ],
+  "description": "SpaceQuest AIS microsatellite, a 25 cm cube (13 kg) of stacked aluminium trays. Each side face is covered in black triple-junction cells in a 3 x 5 grid with thin gold seams. A bright yellow rectangular patch sits in the middle of each side. Edges are silver aluminium with corner rods and conical steel feet. On top: a white dome-shaped GPS/patch antenna in the centre and four long thin whip antennas angled out from the corners in an X."
+ },
+ "draw-cinema": {
+  "ids": [
+   38764,
+   39424,
+   39426
+  ],
+  "refs": [
+   "https://www.eoportal.org/satellite-missions/cinema",
+   "https://www.nanosats.eu/sat/cinema",
+   "https://space.skyrocket.de/doc_sdat/cinema.htm"
+  ],
+  "description": "Berkeley/Kyung Hee 3U CubeSat (10 x 10 x 34 cm), spin-stabilised. The long faces are covered in small dark blue cells on green-edged panels with gold Kapton and silver rails. One long face has the round gold STEIN particle-detector aperture. A thin 1 m STACER boom sticks out at an angle from one end, carrying a small magnetometer cube at its tip. Short UHF antenna whips. CINEMA 2 and 3 (KHUSAT-2/3) are the same build."
+ },
+ "draw-dove-3": {
+  "ids": [
+   39429
+  ],
+  "refs": [
+   "https://www.nanosats.eu/sat/dove-3",
+   "https://space.skyrocket.de/doc_sdat/dove-1.htm"
+  ],
+  "description": "Early Planet Labs 3U imaging CubeSat (10 x 10 x 34 cm, ~5.8 kg). Dark grey/black anodised frame. The long sides are covered with stowed solar panels whose backs are silver-white with a triangular web pattern. One end is the camera: a 90 mm round black telescope aperture in a light-grey end plate. A hinged flap on that end holds a square GPS patch and a thin flat antenna sticking sideways. Early Doves deployed four 10 x 30 cm solar panels from the camera end in a 'dart' shape."
+ },
+ "draw-superdove": {
+  "ids": [
+   60511,
+   62621,
+   62636,
+   58273,
+   58328,
+   58271,
+   58320,
+   58282,
+   58280
+  ],
+  "refs": [
+   "https://www.nanosats.eu/sat/dove-flock",
+   "https://space.skyrocket.de/doc_sdat/dove-1.htm"
+  ],
+  "description": "Planet SuperDove 3U imaging CubeSat (10 x 10 x 34 cm). The body is dark blue anodised aluminium with silver rails. Stowed, the long sides show large black solar cells with white grout lines. One end is the camera end: a round black telescope aperture inside a white/cream circular lens hood. In flight two large solar panels unfold to lie flat in one plane to the left and right, making a broad flat wing about three body-widths across. Their sun side is dark cells, the back is white board with gold traces. A short flat antenna arm sticks out on a hinged end flap with a round patch antenna."
+ },
+ "draw-ao-51": {
+  "ids": [
+   28375
+  ],
+  "refs": [
+   "https://space.skyrocket.de/doc_sdat/amsat-echo.htm",
+   "https://commons.wikimedia.org/wiki/File:AO-51-2.jpg"
+  ],
+  "description": "10 kg AMSAT/SpaceQuest Microsat, a cube about 25 cm (10 in) built from five stacked aluminium trays. Each face is a body-mounted solar panel of dark blue cells in a 3 x 4 grid with thin copper seams, framed by silver aluminium edges with screws. A small square blue sensor window sits on one face. Several thin antennas stick out from the top and bottom, and there is a metal lifting bracket on top."
+ },
+ "draw-eyesat": {
+  "ids": [
+   22825
+  ],
+  "refs": [
+   "https://space.skyrocket.de/doc_sdat/eyesat.htm",
+   "https://db.satnogs.org/satellite/22825"
+  ],
+  "description": "12 kg Interferometrics microsatellite on the AMSAT-NA Microsat frame: a cube about 23 cm made of stacked aluminium trays. Body-mounted dark blue solar cells sit in panels with gold/bronze frames on the sides, and silver corners. Thin whip antennas come off the top and bottom. (The pre-flight photo shows a red 'remove before flight' cover over one face, which was not flown.)"
+ },
+ "draw-ratsat": {
+  "ids": [
+   33393
+  ],
+  "refs": [
+   "https://space.skyrocket.de/doc_sdat/ratsat.htm",
+   "https://commons.wikimedia.org/wiki/File:RatSat_Falcon_1.png"
+  ],
+  "description": "165 kg SpaceX boilerplate payload, a tall hexagonal prism about 1.5 m high made of plain brushed aluminium panels. 'SPACEX' is written vertically down one face in big blue letters with the swoosh 'X', and a hexagonal RatSat rat mission patch sits near the top of another face. It stays bolted on a gold-anodised conical adapter on the Falcon 1 second stage. No solar panels or antennas."
+ },
+ "draw-mtusi-1": {
+  "ids": [
+   61750
+  ],
+  "refs": [
+   "https://www.nanosats.eu/sat/mtusi-1",
+   "https://db.satnogs.org/satellite/61750"
+  ],
+  "description": "Russian university 6U-XL CubeSat (MTUSI, Moscow). An upright box about 10 x 22 x 37 cm with black anodised frame. Almost all faces are covered in small black solar cells in a dense grid. The upper part of one narrow face carries four round gold dome-shaped patch antennas in a 2 x 2 group (one replaced by a red cap). Holds a cosmic-ray detector and an ADS-B receiver. No deployable panels visible."
+ },
+ "draw-parcae": {
+  "ids": [
+   16631,
+   18009,
+   18010,
+   18025
+  ],
+  "refs": [
+   "https://www.thespacereview.com/article/4963/1",
+   "https://www.thespacereview.com/archive/4963k.jpg",
+   "https://www.thespacereview.com/archive/4963l.jpg",
+   "https://space.skyrocket.de/doc_sdat/noss-1.htm (text only)"
+  ],
+  "description": "'Suitcase-sized' gravity-gradient-stabilised signals-intelligence satellite (flown as a triplet), drawn from the NRL display model released after the 2023 declassification. Body: a low, flat prism, about three times as wide as it is tall, whose plan is an elongated octagon (a rectangle with strongly chamfered corners). The top deck and sloping chamfer facets are silver/aluminium with dark-blue solar-cell patches in irregular blocks; the vertical side walls are silver with a grid of small square tiles. Solar arrays: four long, narrow, flat deployable panels, one hinged at the middle of each side, so seen from above they form a large X/cross; each panel is a thin strip roughly three to four times the body length, mid-blue cells in a silver frame, with a few notches cut into its edges. One long thin silver gravity-gradient boom rises straight up from the centre of the top deck, ending in a small cone-shaped tip mass. No dish. Overall look: a flat silver box with a four-bladed cross of blue panels and one tall mast."
+ },
+ "draw-noss-msd": {
+  "ids": [
+   16591,
+   17997
+  ],
+  "refs": [
+   "https://www.thespacereview.com/article/4963/1",
+   "https://www.thespacereview.com/archive/4963l.jpg",
+   "https://www.thespacereview.com/archive/4963m.jpg",
+   "https://www.thespacereview.com/archive/4963j.jpg"
+  ],
+  "description": "The spinning carrier that dispensed the three PARCAE satellites and stayed in orbit; draw it after its passengers have left. Main body: a large shallow dish-shaped plume shield (the payload envelope was 84 in / 2.1 m across), dark grey, open face forward. Inside the dish: a central grey cylindrical drum with a large round end plate, and from its centre a long tapered grey cone pointing outward along the spin axis, with three or four thin whip antennas splayed from the cone tip. Clustered around the drum: several grey metallic spherical tanks. Across the dish face runs a long straight grey box-section beam (two folding arms end to end, slightly longer than the dish is wide), each end carrying a small rectangular thruster pod. Finish: matte gunmetal grey throughout, no solar arrays of its own. Illustrate as a grey dish with a cone spike and a crossbar of arms; the satellite was described as looking like a lollipop when its LIPS boom was out."
+ },
+ "draw-poppy-24in": {
+  "ids": [
+   730,
+   1291,
+   1271
+  ],
+  "refs": [
+   "https://commons.wikimedia.org/wiki/File:Poppy_(Type_2).jpg",
+   "https://commons.wikimedia.org/wiki/File:POPPY_3_satellite_(cropped).jpg",
+   "https://en.wikipedia.org/wiki/Poppy_(satellite)",
+   "https://space.skyrocket.de/doc_sdat/poppy_24in.htm (text only)"
+  ],
+  "description": "NRL signals-intelligence satellite (Solrad 7A rode on Poppy 3A, Solrad 7B on Poppy 4A). Shape: a 61 cm (24 in) sphere split at the equator by an added cylindrical band, giving an overall length of about 81 cm, so it looks like a slightly elongated ball with a belt. Finish: polished aluminium. The upper and lower hemispheres carry eight large body-mounted solar patches (dark blue-black cells in a fine grid, framed in silver) arranged around the ball; the silver equatorial band has a row of small round sensor ports/windows and bolts. Antennas: four thin whip antennas from the upper hemisphere and four from the lower hemisphere, splayed outward at about 45 degrees like a pin-cushion, each roughly the sphere's diameter long; one long whip straight up and one straight down along the axis. A short rectangular arm (box-section boom about half the sphere diameter long) juts sideways from the band with a small square plate on its end. Small instrument boxes on the top pole. No deployable solar panels."
+ },
+ "draw-ggse-poppy": {
+  "ids": [
+   1244,
+   1292
+  ],
+  "refs": [
+   "https://commons.wikimedia.org/wiki/File:POPPY_4C_(cropped).jpg",
+   "https://commons.wikimedia.org/wiki/File:POPPY_4D_(cropped).jpg",
+   "https://en.wikipedia.org/wiki/Poppy_(satellite)",
+   "https://en.wikipedia.org/wiki/GGSE-1",
+   "https://space.skyrocket.de/doc_sdat/poppy_24in.htm (text only)"
+  ],
+  "description": "24-inch Poppy satellites carrying the Gravity Gradient Stabilization Experiment. Body as the 24-in Poppy: a 61 cm polished-aluminium sphere with a cylindrical belt (81 cm long overall), eight dark body-mounted solar-cell patches, and eight thin whip antennas splayed outward from the upper and lower hemispheres, with a couple of round dark sensor windows on the body. The difference is a very long, thin metal-tape gravity-gradient rod (GGSE-1's was 8.5 m, more than ten body-lengths) extending from the top of the sphere, ending in a small 12.7 cm metal damper ball. GGSE 2 (Poppy 4C): a single long rod up to the end ball. GGSE 3 (Poppy 4D): three long rods, one up and two down in a wide V, each with a small end mass. Draw the sphere small against the long hairline booms."
+ },
+ "draw-poppy-multifaceted": {
+  "ids": [
+   2873,
+   4256
+  ],
+  "refs": [
+   "https://commons.wikimedia.org/wiki/File:POPPY_intelligence_satellite_-_National_Cryptologic_Museum_-_DSC07964.JPG",
+   "https://commons.wikimedia.org/wiki/File:POPPY_7.jpg",
+   "https://space.skyrocket.de/doc_sdat/poppy_mf.htm (text only)"
+  ],
+  "description": "Third-generation NRL Poppy ELINT satellite (P/L 152 flew in the Poppy 5 cluster of 1967, P/L 1 in Poppy 6 in 1969). Shape: a multifaceted egg/ovoid about 68 cm (27 in) in diameter and 81-86 cm long, built from rows of flat trapezoidal facets (roughly a 12-sided polyhedral barrel tapering to domed ends). Finish: bright polished aluminium framing; most facets carry body-mounted solar panels of dark navy-blue cells in a grid, with some bare silver facets around the waist. Around the equator: a ring of cream/white cylindrical caps and nozzles (ammonia micro-thrusters and sensors) sticking out, plus several small cream round knobs on the lower facets. Antennas: four long thin whip antennas from the upper shoulder and four from the lower shoulder, splayed out at about 45 degrees, each longer than the body. A short mast with a small fitting on top (gravity-gradient boom attachment); in orbit a long boom with a small end mass extended from one pole. No deployable panels. Plain dark starry sky behind it: no constellation lines or drawings in the background."
+ },
+ "draw-transit-5e1": {
+  "ids": [
+   671
+  ],
+  "refs": [
+   "https://commons.wikimedia.org/wiki/File:Apl6338c.jpg",
+   "https://space.skyrocket.de/doc_sdat/transit-5e1.htm (text only)"
+  ],
+  "description": "JHU/APL research satellite on the Transit 5A bus. Body: a short octagonal drum, wider than tall (roughly 2:1), its sides dark/blue solar cells and its ends flat round silver plates with a few small round sensor ports. Solar panels: four long, narrow, flat rectangular paddles attached around the drum's equator at 90-degree spacing and lying in one plane, forming a big cross/X many times the body width; each paddle is a slender silver frame, open lattice near the root and with a solar-cell section toward the outer end. Antennas: a thin whip runs out past the tip of each paddle and short diagonal crossing whips at paddle tips (whip and dipole system). Small instrument stubs (particle detectors, sun sensors) on the body. Draw as a small dark octagonal barrel at the centre of a four-armed silver cross."
+ },
+ "draw-dmsp-block1": {
+  "ids": [
+   369,
+   734,
+   735,
+   812,
+   813,
+   2125,
+   1580
+  ],
+  "refs": [
+   "https://commons.wikimedia.org/wiki/File:DMSP_Block-1.jpg",
+   "https://en.wikipedia.org/wiki/Defense_Meteorological_Satellite_Program",
+   "https://space.skyrocket.de/doc_sdat/dmsp-1.htm (text only)",
+   "https://space.skyrocket.de/doc_sdat/dmsp-2.htm (text only)"
+  ],
+  "description": "RCA-built, TIROS-derived spin-stabilised military weather satellite (Block 2 kept the same shape). Shape: a 10-sided polyhedral drum 23 in (58 cm) across and 21 in (53 cm) high, about as tall as wide. The upper three-quarters of every side facet and the flat top are covered in copper/bronze-coloured solar cells in a fine rectangular grid with thin red-orange seams between facets. The bottom quarter is a dark navy/black band; on one facet of the band is a round camera lens port with a silver ring (the vidicon TV camera looking out sideways). Under the drum a slightly wider gold/copper base ring with small spin-rocket nozzles and fittings around it. Antennas: one short thin whip straight up from the centre of the top, and four long thin whip antennas hanging down and slightly outward from the base ring. No deployable panels."
+ },
+ "draw-dmsp-block4": {
+  "ids": [
+   2418,
+   2669,
+   2920,
+   2980,
+   3266,
+   3510,
+   4047
+  ],
+  "refs": [
+   "https://commons.wikimedia.org/wiki/File:DMSP_Block-4.jpg",
+   "https://en.wikipedia.org/wiki/Defense_Meteorological_Satellite_Program",
+   "https://space.skyrocket.de/doc_sdat/dmsp-4a.htm (text only)",
+   "https://space.skyrocket.de/doc_sdat/dmsp-4b.htm (text only)"
+  ],
+  "description": "Spin-stabilised military weather satellite, 30 in (76 cm) in diameter and 29 in (74 cm) high, 175 lb. Shape: a multi-faceted (roughly 12-sided) drum, slightly wider than tall. Side facets alternate: tall rectangular panels of dark/black solar cells in silver frames, and white-painted facets, two of which have tall arched (rounded-top) openings near the bottom where the two canted vidicon cameras and radiometer look out. A thin silver rim runs round the top edge. Below the drum is a narrower equipment ring/base with exposed boxes, cabling and small fittings. On top, near the centre, a cluster of three short upright silver cylinders (sensor/antenna housings). Overall: a white-and-black faceted can with a black-paneled skirt look, no deployable panels or booms visible."
+ },
+ "draw-transit-4a": {
+  "ids": [
+   116
+  ],
+  "refs": [
+   "https://commons.wikimedia.org/wiki/File:Solrad_3,_Injun,_Transit_IV_A.jpg",
+   "https://commons.wikimedia.org/wiki/File:Transit-4A_Injun-1_Solrad-3.jpg",
+   "https://space.skyrocket.de/doc_sdat/transit-4.htm (text only)"
+  ],
+  "description": "JHU/APL navigation satellite (also carried the first SNAP-3 nuclear power source). Shape: a nearly cylindrical drum made of 22 flat vertical faces (a 22-sided prism) with flat top and base, 109 cm in diameter and 79 cm high, i.e. wider than tall. Finish: polished aluminium with most of the side covered by body-mounted solar cells arranged as vertical strips of dark rectangular cells; the strips have staggered lengths (some full height, some only the lower half), so the band of cells reads like a bar chart around the drum, separated by bright metal. Top and bottom edges have thin rims. Antennas: thin whip antennas angle outward from the upper rim and from the lower rim (four splayed up, four splayed down). No deployable panels or booms."
+ },
+ "draw-solrad3-injun1": {
+  "ids": [
+   117
+  ],
+  "refs": [
+   "https://commons.wikimedia.org/wiki/File:Solrad_3,_Injun,_Transit_IV_A.jpg",
+   "https://commons.wikimedia.org/wiki/File:Injun.jpg",
+   "https://commons.wikimedia.org/wiki/File:Galactic_Radiation_and_Background_satellite_1.jpg",
+   "https://space.skyrocket.de/doc_sdat/injun-1.htm (text only)"
+  ],
+  "description": "Two satellites that never separated in orbit, so draw them stacked. Lower part, Injun 1 (University of Iowa): a short cylinder slightly wider than it is tall, bright aluminium skin carrying many small rectangular blocks of dark solar cells in vertical columns, with three round detector ports (portholes) in a vertical row on one side; a narrower round collar/flange at the base; two thin whip antennas sloping out from the sides. Upper part, Solrad 3 / GRAB 2 (NRL): a 51 cm (20 in) polished-gold/silver sphere sitting on top of the cylinder on a short neck, carrying several large circular solar-cell patches (dark cells in a round frame) on its surface and four thin whip antennas around its middle. Overall: a ball perched on a can, both shiny metal, spiked with whips."
+ },
+ "draw-transit-o": {
+  "ids": [
+   2176,
+   2754,
+   2119,
+   1864,
+   2401,
+   2965,
+   897,
+   965,
+   3133,
+   2807,
+   1514,
+   1420
+  ],
+  "refs": [
+   "https://commons.wikimedia.org/wiki/File:Transit-o.jpg",
+   "https://en.wikipedia.org/wiki/Transit_(satellite_navigation_system)",
+   "https://space.skyrocket.de/doc_sdat/transit-o.htm (text only)",
+   "https://www.thespacereview.com/article/4740/1"
+  ],
+  "description": "Operational US Navy Transit ('Oscar') navigation satellite, close to the Transit 5C-1 design, gravity-gradient stabilised. Body: a small octagonal prism (the related Transit 5BN body was 46 cm across and 30 cm high), gold/silver metal with equipment and antenna fittings on its Earth-facing end. Solar panels: four long, narrow, flat rectangular paddles hinged to the body's sides, lying roughly in one plane in an X at right angles, each several times the body's width; each paddle carries dark-blue solar cells in two or three sections separated by short bare silver gaps, silver frame (hysteresis damping rods on the panels). Boom: one very long thin gravity-gradient boom rising from the top of the body (many times longer than the panel span) ending in a small dark end-mass. Antennas on the Earth-facing end below the body. Overall: a small four-bladed 'windmill' of dark panels at the bottom of a hair-thin mast."
+ },
+ "draw-transit-5bn": {
+  "ids": [
+   670,
+   704
+  ],
+  "refs": [
+   "https://www.thespacereview.com/article/4740/1",
+   "https://www.thespacereview.com/archive/4740c.jpg",
+   "https://www.thespacereview.com/archive/4740g.jpg",
+   "https://space.skyrocket.de/doc_sdat/transit-5bn.htm (text only)"
+  ],
+  "description": "First nuclear-powered navigation satellites (SNAP-9A). Body: an octagonal prism 46 cm (18 in) across and 30 cm (12 in) high, aluminium/white. Forward (Earth-facing) end: a round open wire-frame antenna ground plane wider than the body, like an upturned spoked wheel/umbrella, with four short high-frequency antenna stubs and four low-frequency antenna reflectors around its rim; directly behind it, between ground plane and body, sits the SNAP-9A radioisotope generator, a ribbed cylinder 30 cm across and 20 cm high, with radial fins. Around the lower body: four flat stabilising fins sticking out radially, each covered with small solar-cell panels (24 small auxiliary solar panels in total, dark cells). Aft end: a slender aerodynamic skirt and an extendible gravity-gradient boom with a coiled libration-damping spring and a small cylindrical end mass carrying a flashing light. Mass 69-75 kg."
+ },
+ "draw-transit-5e": {
+  "ids": [
+   705,
+   959
+  ],
+  "refs": [
+   "https://commons.wikimedia.org/wiki/File:Apl6338c.jpg",
+   "https://space.skyrocket.de/doc_sdat/transit-5e3.htm (text only)",
+   "https://space.skyrocket.de/doc_sdat/transit-5e5.htm (text only)"
+  ],
+  "description": "JHU/APL research satellites built on the Transit 5A bus, same configuration as Transit 5E-1 (the only one pictured). Body: a short octagonal drum, wider than tall, with flat silver end plates and small sensor ports. Four long narrow flat solar paddles attached around the equator at 90 degrees in one plane, forming a large cross; each is a slender silver frame with dark solar cells toward its outer end. Thin whip antennas run out beyond the paddle tips (whip and dipole system). Transit 5E-5 additionally had a rubidium-vapour magnetometer sensor head on a 16 ft (4.9 m) telescoping boom extended from the body, and ultraviolet telescopes looking out of the body."
+ },
+ "draw-porcupine": {
+  "ids": [
+   1272,
+   1577
+  ],
+  "refs": [
+   "https://commons.wikimedia.org/wiki/File:Dodecapole-1_Porcupine-1.jpg",
+   "https://commons.wikimedia.org/wiki/File:Dodecapole_I_1.jpg",
+   "https://commons.wikimedia.org/wiki/File:Dodecapole_I_2.jpg",
+   "https://space.skyrocket.de/doc_sdat/dodecapole-1.htm (text only)"
+  ],
+  "description": "NRL passive radar-calibration target. Body: a 26 cm polished, mirror-bright aluminium sphere. On its surface sit twelve evenly spaced round fittings (one per face of an imaginary dodecahedron): flat circular plates with small rectangular canisters, linked by thin wires running over the sphere. From each fitting a telescoping hollow rod 1.27 cm thick and 7.62 m long extends straight out, perpendicular to the surface, so in orbit it is a tiny shiny ball at the centre of twelve very long, thin, evenly spread spikes (a sea-urchin / star-burst, the rods about 30 times the sphere's diameter). No solar cells, no other antennas."
+ },
+ "draw-oscar3": {
+  "ids": [
+   1293
+  ],
+  "refs": [
+   "https://commons.wikimedia.org/wiki/File:Oscar3linedrawing.jpg",
+   "https://en.wikipedia.org/wiki/OSCAR_3"
+  ],
+  "description": "Third amateur-radio satellite, 15 kg. A rectangular box 18 x 30 x 43 cm (7 x 12 x 17 in) of magnesium-lithium alloy, covered in shiny aluminium foil tape with some areas painted with black/white thermal stripes; panels of small solar cells mounted on the faces (for the beacon). Antennas: four long thin quarter-wave whip antennas, one sticking out from each of four sides, each more than twice the box's length, arranged so they cross the box like an X when seen from the side. No deployable panels."
+ },
+ "draw-oscar6": {
+  "ids": [
+   6236
+  ],
+  "refs": [
+   "https://commons.wikimedia.org/wiki/File:AMSAT-Oscar6.jpg",
+   "https://commons.wikimedia.org/wiki/File:AO-6.jpg",
+   "https://en.wikipedia.org/wiki/AMSAT-OSCAR_6"
+  ],
+  "description": "AMSAT's first long-life amateur satellite, 18.2 kg. A low rectangular box, about twice as long as it is wide and roughly half as tall as it is wide, with every face covered in body-mounted solar cells: dark blue-black rectangular cells in grids on the top and sides, inside thin gold/silver frames with rows of exposed bolts along the edges. Small silver antenna mounting brackets and folded antenna elements are clipped along the top edges (stowed for launch; in orbit they stand out as thin whips). No deployable solar panels."
+ },
+ "draw-ov3-4": {
+  "ids": [
+   2201
+  ],
+  "refs": [
+   "https://commons.wikimedia.org/wiki/File:Ov3_satellite.jpg",
+   "https://en.wikipedia.org/wiki/OV3-4",
+   "https://space.skyrocket.de/doc_sdat/ov3.htm (text only)"
+  ],
+  "description": "USAF Orbiting Vehicle 3 radiation satellite (Space General Corp.). Body: an octagonal prism 0.74 m long and 0.74 m wide (about a cube), with 2560 body-mounted solar cells covering the side faces in rectangular panels (dark cells in fine grids, three panels stacked per face) separated by bare metal frames. Experiments are mounted on booms: a double-folding boom from one end corner carrying a round instrument package, a short boom with a small cylindrical sensor on the opposite side; three short whip antennas at 90 degrees around the aft end. Spin-stabilised, slightly asymmetric once the booms are out."
+ },
+ "draw-timation1": {
+  "ids": [
+   2847
+  ],
+  "refs": [
+   "https://commons.wikimedia.org/wiki/File:Timation_I_(rectangular_object_in_center_of_photo).jpg",
+   "https://space.skyrocket.de/doc_sdat/timation.htm (text only)"
+  ],
+  "description": "NRL navigation-clock satellite, forerunner of GPS. A compact rectangular box, roughly twice as wide as it is deep, with silver aluminium top and black/dark side walls. The top face carries four rectangular solar-cell windows in a 2 x 2 arrangement (dark cells in a fine louvre-like grid, silver frames) with bare silver metal between them. Thin black edges and small fittings on the corners. No deployable panels visible; small antennas on the Earth face."
+ },
+ "draw-oscar7": {
+  "ids": [
+   7530
+  ],
+  "refs": [
+   "https://en.wikipedia.org/wiki/AMSAT-OSCAR_7",
+   "https://en.wikipedia.org/wiki/File:AMSAT-OSCAR_7.jpg",
+   "https://space.skyrocket.de/doc_sdat/amsat-p2b.htm (text only)"
+  ],
+  "description": "Amateur-radio satellite, 28.6 kg. Shape: an octagonal prism 360 mm high and 424 mm across (slightly wider than tall), every side facet and the top covered in body-mounted solar cells (blue cells in grids) framed by bright aluminium edges. Antennas: four thin radio masts mounted at 90-degree intervals around one end, canted outward (circularly polarised VHF/UHF turnstile), plus a much longer thin HF dipole (two long whips) sticking straight out from opposite sides. Small cylindrical fitting on one end. No deployable panels."
+ },
+ "draw-flock-superdove": {
+  "ids": [
+   58318,
+   58322
+  ],
+  "refs": [
+   "https://www.nanosats.eu/sat/dove-flock",
+   "https://airandspace.si.edu (Dove-Flock NASM object photos via nanosats.eu)",
+   "https://digitalcommons.usu.edu/smallsat/2021/ (Planet: Automated fleet commissioning workflows, Fig. 1 SuperDove)",
+   "https://commons.wikimedia.org/wiki/File:Two_Cubesats_from_Planet_Labs.jpg"
+  ],
+  "description": "Planet SuperDove 3U CubeSat imager: a long box 10 x 10 x about 34 cm, aluminium frame anodised dark navy-blue, with a black top face and white rectangular radiator patches on the long sides. One small end carries the round telescope aperture (black lens tube in a silver ring) and, hinged beside it, a cream/white square antenna flap with a short thin whip sticking out. Solar arrays: two large flat deployable panels hinged along the two bottom long edges, unfolded to lie flat out to the sides like wings, together about four times the body's width and as long as the body; the sun side is dark solar cells, the back side is white with gold traces and fittings. Overall: a dark blue bar sitting on a wide flat plate."
+ },
+ "draw-lemur1": {
+  "ids": [
+   40044
+  ],
+  "refs": [
+   "https://www.nanosats.eu/sat/lemur-1"
+  ],
+  "description": "Spire's first 3U CubeSat (10 x 10 x 34 cm). Glossy black body: all four long sides covered in body-mounted black solar cells in long rectangular panels with thin silver/red edging along the rails; black anodised rails at the corners. One end of a long side has a large round/oval camera window (clear glass aperture) for the 5 m imager. Small dark end plates. No deployable panels; thin tape-measure whip antennas at one end in orbit."
+ },
+ "draw-lemur2": {
+  "ids": [
+   42845,
+   58336,
+   59146
+  ],
+  "refs": [
+   "https://www.nanosats.eu/sat/lemur-2",
+   "https://commons.wikimedia.org/wiki/File:ISS-47_CubeSat_deployment_-_Lemur-2.jpg"
+  ],
+  "description": "Spire 3U weather/ship-tracking CubeSat, 10 x 10 x 34 cm. Body: silver-grey aluminium rails with dark (near-black) body-mounted solar cells on the long faces, cells edged in orange/gold Kapton. Later units (as pictured by Spire) unfold four flat solar panels, two hinged from each of two opposite long edges, so the craft becomes a flat 'book' about five body-widths wide: each panel holds two columns of large dark cells framed in bright orange. One end carries a green circuit-board face and a short thin antenna stub; tape whip antennas at the ends. Exact panel layout varied between LEMUR-2 builds."
+ },
+ "draw-blacksky-gen2": {
+  "ids": [
+   49772,
+   49469,
+   49950,
+   49949,
+   44499
+  ],
+  "refs": [
+   "https://spaceflightnow.com/wp-content/uploads/2020/06/blacksky56.jpg",
+   "https://spacenews.com/?p=102476",
+   "https://space.skyrocket.de/doc_sdat/blacksky-global.htm (text only)"
+  ],
+  "description": "About 55 kg imaging microsatellite built by LeoStella (photo shows units stowed for launch). Lower body: a squat rectangular box, roughly a cube, with white-painted panels on two faces and silver/gold-foil (MLI) on the others, plus two small gold cone-shaped horn antennas on one face. Rising from the top: a tall cylindrical telescope tube (24 cm aperture SpaceView imager) wrapped in shiny silver insulation, taller than the box. Alongside the tube a tall rectangular frame panel braced by a diagonal strut (solar array folded for launch; it swings out as a flat wing in orbit). Overall: a box with a silver chimney-like telescope on top."
+ },
+ "draw-hawkeye-defiant": {
+  "ids": [
+   48957,
+   48931,
+   48948,
+   52757,
+   52756,
+   52754
+  ],
+  "refs": [
+   "https://www.eoportal.org/satellite-missions/hawkeye-360",
+   "https://utias-sfl.net/three-hawkeye-360-formation-flying-microsatellites-built-by-space-flight-laboratory-sfl-successfully-launched",
+   "https://www.janes.com/defence-news/news-detail/hawkeye-360-expands-satellite-based-rf-data-collection"
+  ],
+  "description": "RF-geolocation microsatellites on SFL's 30 kg DEFIANT bus. Body: a cube-like box with bare polished aluminium walls; one face has a few body-mounted dark solar cells, a square white-grid patch antenna and a smaller square gold/white patch antenna; another face has a large silver ring (separation interface) with a red cylindrical thruster/fitting in its centre; a white dome-shaped antenna on top and another on the bottom; small gold connectors and harness. Solar panels: two flat deployable panels hinged on opposite vertical edges, swung out like open doors on either side of the body, each about as large as a body face: dark blue cells with wavy/scalloped cell edges in a 4 x 7 grid, aluminium frames. Flown three at a time in formation."
+ },
+ "draw-mandrake2": {
+  "ids": [
+   48907,
+   48908
+  ],
+  "refs": [
+   "https://www.darpa.mil/news/2021/blackjack-deployes-mandrake-satellite",
+   "https://militaryembedded.com/comms/satellites/two-mandrake-2-satellites-deployed-under-darpas-blackjack-program",
+   "https://space.skyrocket.de/doc_sdat/mandrake-2.htm (text only)"
+  ],
+  "description": "DARPA Blackjack optical-crosslink demonstrators built by Astro Digital. Body: a compact upright box (roughly 2:1 tall), aluminium/silver structure with dark solar cells on its faces and a round port on the front. One large flat solar array wing: two tall panels of dark cells in a fine grid, hinged together, attached to one side of the body and opened out flat, the wing much taller than the body. A gold-coloured triangular truss bracket with lightening holes on top joins the wing to the body. Optical terminal aperture on the body (laser link). The two satellites are mirror images."
+ },
+ "draw-jawsat": {
+  "ids": [
+   26061
+  ],
+  "refs": [
+   "https://www.eoportal.org/satellite-missions/jawsat",
+   "https://commons.wikimedia.org/wiki/File:JAWSAT_(OSCAR_39).jpg",
+   "https://space.skyrocket.de/doc_sdat/jawsat.htm (text only)"
+  ],
+  "description": "An open box-frame satellite (Multi-Payload Adaptor) made of aluminium isogrid panels with triangular lattice cut-outs: frame 71 x 71 x 76 cm (whole spacecraft about 90 x 90 x 107 cm, 191 kg). After releasing its passengers it carries: the PEST plasma experiment and NASA's Attitude Control Platform (a gold box marked ACP) inside the lattice, a black box-like instrument enclosure on one corner, small cylindrical tanks, cables, and empty mounting stations where OPAL (hexagonal), ASUSat (octagonal) and the FalconSat cube (on top) were attached. Silver/grey metal with gold accents; solar panels mounted on the structure."
+ },
+ "draw-opal": {
+  "ids": [
+   26063
+  ],
+  "refs": [
+   "https://www.eoportal.org/satellite-missions/opal",
+   "https://space.skyrocket.de/doc_sdat/opal.htm (text only)"
+  ],
+  "description": "Stanford SSDL 'Orbiting Picosat Automatic Launcher'. A hexagonal prism about as tall as it is wide (6 mm aluminium honeycomb panels), its six side panels and top and bottom covered in dark body-mounted solar cells with gold/orange Kapton edging and silver frames. One side panel is replaced by the picosat launcher face: a stack of four rectangular launch-tube doors (silver, with small labels) under a gold-coloured panel carrying the OPAL logo. Four quarter-wave monopole antennas about 17.5 cm long stick out diagonally from the top corners. A small mast/fitting on top centre."
+ },
+ "draw-artemis-thelma": {
+  "ids": [
+   26091
+  ],
+  "refs": [
+   "https://www.nanosats.eu/sat/artemis-thelma",
+   "https://www.eoportal.org/satellite-missions/opal"
+  ],
+  "description": "Santa Clara University picosatellite ejected from OPAL. A long thin flat bar-shaped box 20 x 7.5 x 2.5 cm, 0.6 kg, of plain brushed aluminium with grooves along its face. At one end a small round eyelet/ring fitting; from the other end a long flat steel-tape antenna about as long as the box sticks out at an angle (VLF/communications antenna). No visible solar arrays."
+ },
+ "draw-artemis-jak": {
+  "ids": [
+   26093
+  ],
+  "refs": [
+   "https://www.nanosats.eu/sat/artemis-jak",
+   "https://www.eoportal.org/satellite-missions/opal"
+  ],
+  "description": "Santa Clara University beacon picosatellite (0.2 kg) ejected from OPAL. A small flat rectangular aluminium box about 10 x 7.5 x 2.5 cm, bare silver metal with a band of gold/yellow tape wrapped around its middle. A thin flat steel-tape antenna (about the box's length) sticks out from one end, with a few fine wires. No solar arrays visible."
+ },
+ "draw-mesat1": {
+  "ids": [
+   60209
+  ],
+  "refs": [
+   "https://www.nanosats.eu/sat/mesat-1"
+  ],
+  "description": "3U CubeSat (10 x 10 x 34 cm) with AMSAT's linear transponder. Body: black anodised rails, all four long faces covered in body-mounted dark solar cells, two cells per 1U section with clipped corners, framed by thin gold/yellow PCB borders. One end carries a short black cylindrical fitting. Antennas: four thin straight whip antennas, each about as long as the body, sticking out from near the top end in a cross (turnstile). No deployable panels."
+ },
+ "draw-minxss2": {
+  "ids": [
+   43758
+  ],
+  "refs": [
+   "https://www.nanosats.eu/sat/minxss-2",
+   "https://www.eoportal.org/satellite-missions/minxss"
+  ],
+  "description": "University of Colorado 3U CubeSat solar X-ray spectrometer, about 4 kg. Body 10 x 10 x 34 cm with silver aluminium rails; the long faces carry large black solar cells on green circuit-board panels with gold hinges. Solar power: one body-mounted 3U panel on the sun-facing side plus a deployed double panel (20 x 34 cm) opened out flat to one side as a single wing. One small end (the sun-pointing end) is white/silver with a small square instrument aperture (dark with a purple tint). Two steel-tape monopole antennas stick out."
+ },
+ "draw-el-camino-real": {
+  "ids": [
+   44408
+  ],
+  "refs": [
+   "https://www.nanosats.eu/sat/momentus-x1"
+  ],
+  "description": "Momentus water-plasma propulsion test CubeSat. A rectangular box about twice as long as it is tall, with a bright aluminium skeleton frame (rails and cross-bars), long faces covered in body-mounted black solar cells in tidy grids, and one end panel bright red. No deployable panels visible."
+ },
+ "draw-pcsat": {
+  "ids": [
+   26931
+  ],
+  "refs": [
+   "https://commons.wikimedia.org/wiki/File:Bruninga-PCSat-Sept-2001.jpg",
+   "https://commons.wikimedia.org/wiki/File:PCSat_1.jpg",
+   "https://space.skyrocket.de/doc_sdat/pcsat.htm (text only)"
+  ],
+  "description": "US Naval Academy amateur APRS satellite. A cube, about 25 cm a side (judging by the people holding it), every face covered by four square body-mounted solar panels in a 2 x 2 grid: dark blue cells with thin white grid lines, separated by narrow silver frame bars and bolts. A silver base plate. Thin flat tape-measure whip antennas stick straight out from the faces. No deployable panels."
+ },
+ "draw-sapphire": {
+  "ids": [
+   26932
+  ],
+  "refs": [
+   "https://commons.wikimedia.org/wiki/File:SapphireMsmall.jpg",
+   "https://space.skyrocket.de/doc_sdat/sapphire.htm (text only)"
+  ],
+  "description": "Stanford SSDL student satellite. A squat hexagonal prism, wider than it is tall (about knee-to-waist height across), with silver aluminium frame edges. The six side panels carry vertical columns of dark body-mounted solar cells; the top tray shows electronics and colourful wiring at the edges. Short whip antennas at the top corners. No deployable panels."
+ },
+ "draw-pelican": {
+  "ids": [
+   58296
+  ],
+  "refs": [
+   "https://www.eoportal.org/satellite-missions/planet-pelican",
+   "https://space.skyrocket.de/doc_sdat/pelican.htm (text only)"
+  ],
+  "description": "Planet's high-resolution imaging SmallSat (first of the series). Bus: a box 0.56 x 0.56 x 0.40 m, grey/silver aluminium panels. One side face carries a large round aperture ring (telescope/payload port, toothed silver ring); the Earth face has a big round dark lens-like opening. Two deployable solar wings, one hinged from each of two opposite top edges, each made of two flat rectangular panels end to end, opened out level so the total span is several times the body width; panels with chamfered outer corners and small blue hinge fittings. Rendered in grey in Planet's images (sun side would be dark cells)."
+ },
+ "draw-popacs": {
+  "ids": [
+   39269,
+   39270
+  ],
+  "refs": [
+   "https://www.nanosats.eu/sat/popacs",
+   "https://space.skyrocket.de/doc_sdat/popacs.htm (text only)"
+  ],
+  "description": "Passive atmospheric-density calibration spheres. Each is a 10 cm hollow metal sphere filled with sand (POPACS 2 and 3 weigh 1.5 and 2 kg), shiny bare aluminium, outwardly identical, no antennas, cells or appendages. Draw as a small smooth polished metal ball."
+ },
+ "draw-quakesat": {
+  "ids": [
+   27845
+  ],
+  "refs": [
+   "https://www.nanosats.eu/sat/quakesat",
+   "https://www.eoportal.org/satellite-missions/quakesat",
+   "https://en.wikipedia.org/wiki/Quakesat"
+  ],
+  "description": "First 3U CubeSat, 4.5 kg, body slightly larger than 10 x 10 x 30 cm. Black body covered with body-mounted solar cells, silver corner rails. From one end a long grey telescoping magnetometer boom (0.6 m) points straight out along the body axis, ending in a small white tip. Around that end four thin whip antennas splay out sideways. From the other end four flat double-sided solar panel wings hinge out and splay down and outward like the legs of a stand, each about as long as the body, dark cells in silver frames. Deployed size about 150 x 80 x 80 cm."
+ },
+ "draw-ravan": {
+  "ids": [
+   41849
+  ],
+  "refs": [
+   "https://www.eoportal.org/satellite-missions/ravan",
+   "https://space.skyrocket.de/doc_sdat/ravan.htm (text only)"
+  ],
+  "description": "JHU/APL Earth radiation-budget demonstrator on a Blue Canyon 3U CubeSat bus (10 x 10 x 34 cm). Body wrapped in shiny silver foil with visible diagonal X-bracing on one face. Four deployable solar arrays, two hinged on each side of one long face, unfolded flat into a single wide wing about five body-widths across, each panel with two columns of large dark-blue cells in silver frames. The radiometer payload occupies the 1U section at one end with small doors; two star-tracker openings in the upper section; a UHF antenna extends from one edge."
+ },
+ "draw-sedsat1": {
+  "ids": [
+   25509
+  ],
+  "refs": [
+   "https://commons.wikimedia.org/wiki/File:SEDSAT_1.jpg",
+   "https://en.wikipedia.org/wiki/SEDSAT-1"
+  ],
+  "description": "University of Alabama in Huntsville student satellite. A box-shaped (roughly cubic) body with every face covered by body-mounted black solar cells in a fine grid, framed by copper/orange-gold edge rails, with a couple of small gold rectangular patches on one face. A short silver cylindrical fitting on top. Launched attached to a long SEDS tether system; no deployable panels."
+ },
+ "draw-sherpa-fx2": {
+  "ids": [
+   48958
+  ],
+  "refs": [
+   "https://www.eoportal.org/satellite-missions/sherpa",
+   "https://space.skyrocket.de/doc_sdat/sherpa-fx.htm (text only)",
+   "https://spaceflightnow.com (Spaceflight Inc. Sherpa photos)"
+  ],
+  "description": "Spaceflight Inc. free-flying satellite dispenser (no propulsion), with the TagSat-2 hosted payload attached. Structure: a flat octagonal ring frame (ESPA-class, about 61 cm bolt pattern) of gold/bronze anodised aluminium plates with large rectangular lightening cut-outs and X cross-bracing on the side walls, rows of bolt holes, and a honeycomb deck plate over the top. Small red covers and cable harnesses on the deck; empty deployer mounts and one or two small CubeSat-sized boxes (hosted payloads) remain bolted on after the customers leave. No solar wings."
+ },
+ "draw-skysat-c": {
+  "ids": [
+   42987
+  ],
+  "refs": [
+   "https://www.eoportal.org/satellite-missions/skysat",
+   "https://keeptrack.space/satellite/42987"
+  ],
+  "description": "Planet SkySat C-series high-resolution imager (about 110 kg, SSL-built). Body: a tall rectangular box, its long sides covered by body-mounted dark blue solar panels with a faint cell grid, thin dark edges; no deployable wings. At the base, projecting forward, a flat silver deck shaped like a figure-eight that holds a large round silver dish/disc (aperture cover and high-rate antenna) beside a round black telescope aperture ringed in black with a small bright centre, plus a short downward bracket. Overall: a blue solar box with a big round lens and a silver disc at its foot."
+ },
+ "draw-geos3": {
+  "ids": [
+   7734
+  ],
+  "refs": [
+   "https://commons.wikimedia.org/wiki/File:Geos-3.gif",
+   "https://commons.wikimedia.org/wiki/File:Geos-3.gif (NASA artist concept, Stanley 1979 JGR fig. 1)",
+   "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1975-027A",
+   "https://space.skyrocket.de/doc_sdat/geos-3.htm"
+  ],
+  "description": "Compact geodetic satellite, about 1.22 m across and 1.11 m tall. Body is an eight-sided (octagonal) drum whose upper half tapers into a truncated eight-sided pyramid; every facet of the drum and pyramid is covered with dark blue-black body-mounted solar cells in rectangular panels framed by thin silver metal edges (no deployable wings). Bottom (Earth-facing) end is a flat silver base carrying a shallow parabolic dish for the radar altimeter, about two-thirds of the base diameter, ringed by a band of small glittering laser retroreflector cubes angled outward. Next to the dish: a short stubby cylindrical S-band transponder antenna, two small C-band antennas, and a VHF turnstile antenna made of crossed thin loop/whip elements hanging below. From the centre of the top of the pyramid a thin metal-ribbon gravity-gradient boom extends up about 6 m (five times the body height); in the NASA artist concept it is drawn as a thin zig-zag ribbon, ending in a small flat drum/disc-shaped end mass. Small flat ATS-relay antenna patches sit on the upper pyramid facets."
+ },
+ "draw-us-p-eorsat": {
+  "ids": [
+   14064
+  ],
+  "refs": [
+   "https://www.globalsecurity.org/space/world/russia/eorsat.htm",
+   "https://www.globalsecurity.org/space/world/russia/images/us-p-image01.jpg",
+   "https://space.skyrocket.de/doc_sdat/us-p.htm"
+  ],
+  "description": "Long Soviet electronic-intelligence satellite (about 2.5-3 t). Main body is a long polished silver cylinder made of several stacked sections of slightly different diameter; at one end a propulsion block with a ring frame, round nozzle openings and small spherical tanks and stubby antennas. From the other end of the cylinder a flat, pale grey-green cross-shaped antenna platform extends: long flat rectangular arms in a cross, their surfaces studded with dozens of copper/orange circular antenna elements of different sizes (the passive radio-interception receivers). Beyond the platform, two very large flat solar wings extend lengthwise, parallel to the body axis, one on each side; each wing is several rectangular panels joined end to end, drawn as an open lattice of triangular truss cells with dark green frame edges and pale cell areas, making the whole craft long and arrow-like. Overall proportions: wings roughly as long as the body again, total length several times the cylinder diameter. Body silver/white, details orange-copper and green. Based on a single Russian illustration."
+ },
+ "draw-oko-us-k": {
+  "ids": [
+   15952
+  ],
+  "refs": [
+   "https://www.russianspaceweb.com/oko.html",
+   "https://space.skyrocket.de/doc_sdat/us-k.htm"
+  ],
+  "description": "First-generation Soviet missile early-warning satellite (about 2.4 t, NPO Lavochkin). Central body is a boxy grey-white equipment frame mounted on top of a squat white cylindrical propulsion section ringed with small spherical tanks. From the body a long dark/black cylindrical infrared telescope tube with a sunshade extends at an angle, roughly as long as the body is tall, with a ribbed outer surface. Two deployable solar wings stick out on opposite sides; each wing is a stepped cross shape: an inner panel of dark blue cells (about 3 columns by 2 rows) plus an outer panel offset higher, giving each wing a staircase silhouette; cells dark blue in light grid frames. A small antenna on a thin angled boom with a forked tip projects from the lower side of the body; small sensor boxes and rod antennas around the top. Wing span several times the body width."
+ },
+ "draw-tselina-r": {
+  "ids": [
+   21422,
+   22626
+  ],
+  "refs": [
+   "https://www.russianspaceweb.com/tselina.html",
+   "https://space.skyrocket.de/doc_sdat/tselina-r.htm",
+   "https://space.skyrocket.de/doc_sdat/tselina-d.htm"
+  ],
+  "description": "Soviet Yuzhnoye-built signals-intelligence satellite (about 1.75-2 t), same layout as Tselina-D and the civilian Sich/Okean. Body is a tall vertical pressurised cylinder, light grey-green with white bands, its lower part slightly wider, topped by a short tapering cone and a small open-frame cage of struts. From the top a long thin gravity-gradient boom rises straight up, about as long as the body or longer, ending in a small ball/end mass. Two deployable solar panels attach to the middle of the cylinder on opposite sides, angled outward and upward like ears; each is a roughly square panel of dark blue cells in a grid. Around the base ring several long, flat, blade-shaped light grey/white antenna panels radiate horizontally outward like the spokes of a flat star, each as long as the body is wide, with thin wire/whip antennas with small forked (red-tipped in the Yuzhnoye drawing) ends hanging between them. Overall silhouette: a vertical rocket-like cylinder standing on a flat star of blades with two solar ears and a tall mast."
+ },
+ "draw-zaliv-tsiklon": {
+  "ids": [
+   7768
+  ],
+  "refs": [
+   "https://www.russianspaceweb.com/parus.html",
+   "https://en.wikipedia.org/wiki/Parus_(satellite)",
+   "https://en.wikipedia.org/wiki/List_of_Kosmos_satellites_(501%E2%80%93750)",
+   "https://space.skyrocket.de/doc_sdat/zaliv.htm (text only)"
+  ],
+  "description": "Soviet first-generation navigation satellite (NPO PM / Reshetnev, KAUR-1 drum bus, about 800 kg). Body is an upright drum (cylinder) about 2 m in diameter and 3 m long (roughly 1.5 times as long as wide). The whole curved side is covered with dark blue-black body-mounted solar cells laid out as a grid of rectangular panels separated by thin silver seams; no large deployable solar wings on the original Tsiklon. One end has a lighter silver/white ring and end plate with a short conical or boxy fitting in the centre; from this end a single very thin straight gravity-gradient boom extends far out, many times the drum length, with a tiny end mass at its tip. A few thin rod/whip antennas stick out at angles from the opposite end of the drum. Reference pictures: Reshetnev drawing of the original Tsyklon (blue cell-covered drum, long thin boom) and Reshetnev assembly photo of the closely related Parus on the same bus (black cell-covered drum with a small open lattice mast and antenna cluster on top). The VDNKh display copy of Tsyklon/Parus additionally shows two small square lattice panels near the top end; omit them unless drawing the later Parus version."
+ },
+ "draw-nova": {
+  "ids": [
+   12458,
+   15362
+  ],
+  "refs": [
+   "https://www.eoportal.org/satellite-missions/transit (Figure 6: Artist's view of the Nova spacecraft, JHU/APL)",
+   "https://space.skyrocket.de/doc_sdat/nova.htm (text only)",
+   "https://en.wikipedia.org/wiki/Transit_(satellite)"
+  ],
+  "description": "US Navy Transit navigation satellite of the improved NOVA series (RCA-built from the JHU/APL TIP design, about 170 kg). Central body is a short cylindrical/octagonal drum, silver-grey, only about as wide as it is tall (well under 1 m). Four long, narrow rectangular deployable solar paddles stick straight out from the body in a flat plus/cross shape, at 90 degrees to each other; each paddle is a slender blade several times the body diameter long, with blue cells on a white frame, attached to the body by a short thin strut. From the top of the body a long boom rises at a slant: a cylindrical silver DISCOS drag-compensation module sits just above the body, then a long open lattice (triangular-truss) boom about 6 m long, ending in a rounded copper/orange-coloured end mass shaped like a short barrel with domed ends. Underside (Earth-facing) carries short antenna stubs. Silhouette: a flat four-bladed cross with a tall thin lattice mast and a copper knob on top. Based on the single JHU/APL artist's view of Nova."
+ },
+ "draw-argos": {
+  "ids": [
+   25634
+  ],
+  "refs": [
+   "https://www.eoportal.org/satellite-missions/argos (Figures 1-2, AFRL)",
+   "https://en.wikipedia.org/wiki/Advanced_Research_and_Global_Observation_Satellite",
+   "https://space.skyrocket.de/doc_sdat/argos.htm (text only)"
+  ],
+  "description": "Large USAF Space Test Program experiment satellite (Boeing/Rockwell, 2,720 kg). Body is a big boxy rectangular bus, roughly cube-like but a little longer than wide, its faces pale silver-grey / light blue-grey with a cluttered surface of many instrument boxes bolted on (nine experiments). One end face carries a gold/amber foil-wrapped section. On the side facing forward there is a large square instrument aperture with a dark grid-like face (the USA X-ray instrument), plus small cylindrical telescopes and boxes (GIMI, HIRAAS, EUVIP) on the Earth-facing side and a small round radio beacon antenna (CERTO) and stubs on top. A short boom with a small thruster head (ESEX arcjet) projects from one face. Two deployable solar wings attach on opposite sides of the body via short yokes; each wing is three large square-ish panels in a row, together making a total span roughly six to seven times the body width; cells are deep blue in a fine grid with thin white gaps between panels. Wings are flat and in-line with each other, forming a long straight bar through the body."
+ },
+ "draw-forte": {
+  "ids": [
+   24920
+  ],
+  "refs": [
+   "https://www.eoportal.org/satellite-missions/forte (Figures 1-2, LANL/SNL)",
+   "https://en.wikipedia.org/wiki/FORTE",
+   "https://space.skyrocket.de/doc_sdat/forte.htm (text only)"
+  ],
+  "description": "Los Alamos/Sandia lightning and radio-transient satellite (210 kg). Body is an eight-sided (octagonal) column about 2.1 m tall and roughly 1 m across, built as three stacked octagonal cages: the upper cage tapers inward toward a smaller flat octagonal top deck, giving a bullet/tapered-lantern shape. All side facets are covered with body-mounted solar panels: dark blue cells in a regular grid with white/silver framing (24 solar panels, no deployable wings). The top deck is plain white/silver; a small round sensor port sits on one side facet. From the bottom (nadir) end a long, thin, open lattice mast about 11 m long extends straight down (many times the body length), orange/copper-coloured, threaded through a row of grey ring-shaped spacers evenly spaced along it. Along the mast stick out pairs of thin straight orange antenna rods in two perpendicular planes, longest near the body (up to about 5 m tip-to-tip) and shortening toward the far end: a log-periodic turnstile antenna that looks like a giant tapering fishbone/TV aerial."
+ },
+ "draw-kitsat-3": {
+  "ids": [
+   25756
+  ],
+  "refs": [
+   "https://www.eoportal.org/satellite-missions/kitsat-3 (Figures 2, 5, 7, SaTReC/KAIST)",
+   "https://en.wikipedia.org/wiki/KITSAT-3"
+  ],
+  "description": "Korean remote-sensing microsatellite (110 kg), a rectangular box 49.5 x 60.4 x 85.2 cm, taller than wide. Body walls are covered in shiny gold/copper-coloured foil and aluminium honeycomb panels. Four flat rectangular solar panels, each the full height of a side, are hinged along the vertical body edges and swing open like doors/wings (two shown open on either side in the deployed illustration); panels carry dark blue-black solar cells in vertical strips with silver frame edges. On one broad face: a short dark-green/black cylindrical camera tube (MEIS, 10 cm aperture) sticking straight out, a round silver disc (electron temperature probe), and two small flat square patch antennas (S-band and X-band) near the bottom. On the top deck: two small cylindrical star-sensor tubes, a small box with a funnel (particle telescope), a sun sensor and an Earth-horizon sensor box. A short magnetometer rod sits on one panel tip. Base sits on a round separation ring."
+ },
+ "draw-kompsat-1": {
+  "ids": [
+   26032
+  ],
+  "refs": [
+   "https://www.eoportal.org/satellite-missions/kompsat-1 (Figures 1-2, KARI)",
+   "https://en.wikipedia.org/wiki/KOMPSAT-1",
+   "https://commons.wikimedia.org/wiki/File:G_SA_KOMPS-1_01.jpg"
+  ],
+  "description": "Korean Earth-observation satellite (TRW-heritage bus, 470 kg). Body is a hexagonal prism 1.33 m across and 2.33 m long, lying lengthwise; its long flat side facets carry dark blue/violet body-mounted solar cells framed by bright gold foil, and the end caps and edges are gold/amber foil. At the Earth-facing end the body narrows into a gold-foiled instrument section with a square box carrying the round lens of the EOC camera and, below it, the OSMI ocean scanner box. Two deployable solar wings stick out on opposite sides near the middle of the body, each on a short boom; each wing is a long narrow strip of about four to five rectangular panels in a row with dark blue cells and thin white gaps between panels, total span about four times the body length. A thin rod with a small dish-shaped antenna hangs below the instrument end, and small sensors/booms project from the body. Colour scheme: gold foil plus deep blue cells."
+ },
+ "draw-viking-se": {
+  "ids": [
+   16614
+  ],
+  "refs": [
+   "https://commons.wikimedia.org/wiki/File:Viking_Satellite_on_Ariane_Adapter.jpg",
+   "https://commons.wikimedia.org/wiki/File:Viking_Satellite_Final_Assembly.jpg",
+   "https://commons.wikimedia.org/wiki/File:Viking_Satellite_Thermal_Blankets.jpg",
+   "https://en.wikipedia.org/wiki/Viking_(satellite)"
+  ],
+  "description": "Sweden's first satellite (SAAB/Boeing, 520 kg with motor). Shape is a flat, wide octagonal disc 1.9 m across and only 0.5 m thick (pancake proportions, nearly four times wider than tall). In the flight photos the side walls are wrapped in crinkled silver thermal blanket with large gold-foil panels on the facets; the top face is covered in crinkled silver foil inside a prominent riveted metal ring (a copy of the Ariane payload-adapter ring, which SPOT 1 sat on), with small white and boxy instruments and a pair of fat foil-wrapped cylindrical camera tubes (auroral UV imager) poking out of one edge. Under the disc, at the centre, is the bell-shaped nozzle of a Star 26C rocket motor. Spin-stabilised; once in orbit four very thin wire antennas 40 m long are spooled out radially from the rim (like the spokes of a huge wheel, far longer than the body), two stiff 4 m rods extend axially up and down from the centre, each wire/rod ending in a small sensor ball, and two short radial booms carry magnetometer heads. Solar cells are not clearly visible in the available photos; draw the body as described (silver/gold foil disc) rather than inventing wing panels."
+ },
+ "draw-iss-b-ume": {
+  "ids": [
+   10674
+  ],
+  "refs": [
+   "https://www.jaxa.jp/projects/sat/iss/index_j.html (photo + specifications)",
+   "https://space.skyrocket.de/doc_sdat/iss.htm (text only)"
+  ],
+  "description": "Japanese ionosphere-sounding satellite (NASDA, 141 kg, spin-stabilised). Body is a short cylinder (many-sided drum) about 94 cm in diameter and 82 cm tall, slightly wider than tall. The whole curved side is covered by body-mounted solar cells arranged as an irregular patchwork of small dark grey-blue rectangular panels with silver gaps, giving a shiny mosaic look; top and bottom edges have a thin silver rim. No deployable wings. Beneath the drum (as photographed on its launch adapter) is a narrower silver equipment base. Ionosonde sounding antennas (long wire dipoles) were deployed in orbit but are not shown in the reference photo; if drawn, show them as very thin straight wires extending from the rim. Based on one JAXA pre-launch photo of the Ume series."
+ },
+ "draw-mos-1": {
+  "ids": [
+   20478
+  ],
+  "refs": [
+   "https://www.jaxa.jp/projects/sat/mos1/index_j.html (artist view + specifications)",
+   "https://space.skyrocket.de/doc_sdat/mos-1.htm (text only)"
+  ],
+  "description": "Japan's first Earth-observation satellite type (NEC/NASDA, 740 kg); MOS-1b is identical to MOS-1. Body is a rectangular box about 1.3 x 1.5 x 2.4 m covered almost entirely in bright gold/orange foil, with a busy surface of smaller protruding boxes, square sensor windows and two round white/silver radiometer dish-faces (the MSR microwave radiometer) on the Earth-facing side. A single deployable solar paddle (one wing only) extends from one side of the box on a short boom: a long, narrow, flat rectangular wing many times the body length, with dark blue cells, angled away from the body. Asymmetric silhouette: gold box at one end, single long blue wing trailing off to the other side."
+ },
+ "draw-magion-5": {
+  "ids": [
+   24292
+  ],
+  "refs": [
+   "http://www.ufa.cas.cz/html/magion/images/mag5.jpg (IAP Prague photo)",
+   "https://www.ufa.cas.cz/en/institute-structure/department-of-ionosphere-and-aeronomy/magion-history/magion-4/",
+   "https://www.ufa.cas.cz/en/institute-structure/department-of-ionosphere-and-aeronomy/magion-history/magion-5-technical-data/"
+  ],
+  "description": "Czech magnetospheric subsatellite of the Interball-2 project (Institute of Atmospheric Physics, Prague, 68.5 kg, spin-stabilised with spin axis toward the Sun); Magion 4 and 5 are the same design. Body is a squat octagonal (eight-sided) prism less than 1 m across, its side facets covered with small dark blue solar cell panels in white frames and the end face a silver/white plate with small red-capped sensors, connectors and a central round instrument. From the body radiate eight deployable solar paddles in a star/cross pattern (four long and four shorter, alternating), each a narrow rectangular strip of two or three dark-blue cell panels in white aluminium frames, the long ones ending in a dark-grey plain tip panel with a small gold-coloured disc sensor. Many thin black whip antennas and wire booms stick out between the paddles, two of them ending in small black spheres (probes), and a small white dish-shaped sensor sits on a short side boom. Solar power is 8 groups of small 196 mm square cell panels (SB1-8). Red protective tags/caps dot the structure in the lab photo (omit in flight). Note: the different-looking Magion museum model on Wikimedia Commons is an earlier Magion type, not this design. Overall: a spiky eight-armed star with a cell-covered octagonal hub."
+ },
+ "draw-hilat": {
+  "ids": [
+   14154
+  ],
+  "refs": [
+   "https://secwww.jhuapl.edu/techdigest/Content/techdigest/pdf/V05-N02/05-02-Potocki.pdf (Fig. 1, orbital configuration)",
+   "https://space.skyrocket.de/doc_sdat/hilat.htm (text only)"
+  ],
+  "description": "USAF/DNA ionospheric research satellite built by JHU/APL from the refurbished Navy Transit 'Oscar 16' navigation satellite. Small, compact central body (well under 1 m across), a short multi-sided drum with stacked equipment decks, light grey/white. Four long, narrow, flat solar panels, each 167.6 cm long by 25.4 cm wide, stick straight out from the middle of the body at right angles to each other in a flat cross/windmill shape, so the span is several times the body size; panels have dark blue-black cells with lighter frame edges. Short whip/dipole antennas stick out at the tips of two opposing panels, and a small magnetometer sensor sits at the tip of another. From the top of the body a very long thin gravity-gradient boom (the 85-foot / about 26 m Transit boom) rises straight up, many times the panel length, ending in a small knob-shaped end mass. On the bottom (Earth-facing) side: small instrument boxes (drift meter, particle spectrometer), a short beacon antenna, and the Auroral Ionospheric Mapper scanner. Silhouette: a flat four-armed cross with a hair-thin mast."
+ },
+ "draw-polar-bear": {
+  "ids": [
+   17070
+  ],
+  "refs": [
+   "https://secwww.jhuapl.edu/techdigest/Content/techdigest/pdf/V08-N03/08-03-Peterson.pdf (Fig. 1, orbital configuration)",
+   "https://secwww.jhuapl.edu/techdigest/Content/techdigest/pdf/V08-N03/08-03-McCloskey.pdf",
+   "https://space.skyrocket.de/doc_sdat/polar-bear.htm (text only)"
+  ],
+  "description": "USAF/DNA auroral research satellite built by JHU/APL from the 1963 Transit 'Oscar 17' navigation satellite that had hung in the Smithsonian; a museum piece flown to space. The original Oscar body is a small white hexagonal drum; APL stacked new sections on it: a 'pedestal' with box-shaped electronics on top, and below it a 'penthouse' and a wide, flat, round experiment deck (a disc noticeably wider than the body) on the Earth-facing end, from which a stubby cylindrical beacon antenna and the boxy AIRS auroral imager scanner project downward. Four long, narrow, flat solar panels (about 1.7 m / 5.5 ft long each, quite slender) radiate from the body at right angles in a flat cross, like the sails of a windmill; dark blue-black cells, light edges. Small forked dipole antennas sit at the tips of two opposite panels and a triaxial magnetometer sensor at the tip of another. A very thin Bi-STEM gravity-gradient boom rises straight up from the top, ending in a small round eddy-current damper ball. Body light grey/white with Teflon-white surfaces."
+ },
+ "draw-wideband-p76-5": {
+  "ids": [
+   8860
+  ],
+  "refs": [
+   "https://www.eoportal.org/satellite-missions/transit (Figure 3: Transit Oscar deployed, JHU/APL)",
+   "https://space.skyrocket.de/doc_sdat/wideband.htm (text only)",
+   "https://en.wikipedia.org/wiki/Transit_(satellite)"
+  ],
+  "description": "USAF Space Test Program radio-propagation satellite built by JHU/APL on the Navy Transit 'Oscar 15' navigation satellite (73 kg), carrying only a multi-frequency radio beacon. No picture of Wideband itself was found; draw it as the standard Transit Oscar: a small, short octagonal/cylindrical drum body (roughly 0.5 m across), silver-grey/white with gold detailing, with four long narrow flat solar paddles sticking straight out at right angles in a flat cross (each paddle several times the body diameter, dark blue cells with white frames), a very long hair-thin gravity-gradient boom rising from the top ending in a small dark end mass, and short antenna stubs on the Earth-facing underside. Same family look as HILAT and Polar BEAR, but without their added instrument decks."
+ },
+ "draw-swas": {
+  "ids": [
+   25560
+  ],
+  "refs": [
+   "https://commons.wikimedia.org/wiki/File:Swas_1.jpg",
+   "https://en.wikipedia.org/wiki/Submillimeter_Wave_Astronomy_Satellite",
+   "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1998-071A"
+  ],
+  "description": "NASA Small Explorer radio telescope (GSFC bus, Ball telescope, 288 kg), about 1.63 m tall and 1.02 m across. Body is an upright column: the lower spacecraft bus is a squat, slightly tapered drum wrapped in dark/black and gold foil with small square radiator patches; above it the instrument section is a cluster of shiny silver cylinders (receiver and electronics housings) with orange/gold foil between them, all capped at the top by a flat round/oval dark sun-shade lid over the telescope opening (the telescope is a 55 x 71 cm elliptical off-axis Cassegrain dish inside). A thin gold-foiled strut and small instruments run up one side. Two deployable solar wings stick out on opposite sides from the middle of the body; each wing is two large flat rectangular panels hinged together end to end, the wing slightly bent at the hinge, shown pale silver-grey/white in the NASA artwork with thin dark frame lines; total span roughly four times the body width."
+ },
+ "draw-toms-ep": {
+  "ids": [
+   23940
+  ],
+  "refs": [
+   "https://commons.wikimedia.org/wiki/File:TOMS-EP_1.jpg",
+   "https://commons.wikimedia.org/wiki/File:TOMS-EP_2.jpg",
+   "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1996-037A",
+   "https://space.skyrocket.de/doc_sdat/toms-ep.htm (text only)"
+  ],
+  "description": "NASA ozone-mapping satellite built by TRW (T100/Eagle bus, about 295 kg). Body is a squat multi-sided (hexagonal) prism, silver-grey with a ribbed/panelled look, about as tall as wide, with the TOMS instrument (a small box with a scanning window) on the Earth-facing end. Two flat deployable solar wings stick out on opposite sides from the upper body on short booms; each wing is mid/light blue and roughly rectangular but with a distinctive scalloped outer end made of three rounded lobes (like a rounded three-fingered paddle), with small dark rectangular cut-outs/fittings. Wings are wider than the body is tall and together span about three to four body widths. Based only on low-resolution NASA animation frames, so fine details are uncertain."
+ },
+ "draw-topex-poseidon": {
+  "ids": [
+   22076
+  ],
+  "refs": [
+   "https://www.eoportal.org/satellite-missions/topex-poseidon (Figures 3-5, NASA/JPL)",
+   "https://commons.wikimedia.org/wiki/File:TOPEX-Poseidon-drawing.png",
+   "https://en.wikipedia.org/wiki/TOPEX/Poseidon"
+  ],
+  "description": "NASA/CNES ocean-altimetry satellite (Fairchild Multimission Modular Spacecraft bus, 2,400 kg). Body is a long, boxy assembly about 5.5 m long, 6.6 m tall and 2.8 m deep, made of two parts: a satellite bus module (a triangular-section MMS frame carrying three square-faced subsystem boxes: attitude control, power and propulsion, faced in light grey/white with louvre radiators) and a larger rectangular instrument module wrapped in bright gold/amber foil with some pale blue-grey panels. On the Earth-facing underside: a large round 1.5 m radar-altimeter dish pointing straight down, ringed by laser retroreflector cubes, plus a small downward rod (DORIS antenna) at one corner. On one end: a round microwave-radiometer reflector. From the top: a 1.2 m white high-gain dish on a short mast, and a very tall thin mast carrying a small flat disc GPS antenna. A single, very large, flat rectangular solar wing extends to one side on a boom: 8.9 m long by 3.3 m wide, four large panels in a row, dark blue/grey cells; the wing is longer than the body. Asymmetric silhouette: gold box with one huge flat panel."
+ },
+ "draw-radarsat-1": {
+  "ids": [
+   23710
+  ],
+  "refs": [
+   "https://www.eoportal.org/satellite-missions/radarsat-1 (Figures 1-2, MDA/CSA, DLR)",
+   "https://commons.wikimedia.org/wiki/File:Radarsat-1.gif",
+   "https://en.wikipedia.org/wiki/Radarsat-1"
+  ],
+  "description": "Canadian radar Earth-observation satellite (Ball Aerospace bus, 3,200 kg). Central body is an upright rectangular box (bus module below, SAR payload module above) wrapped in crinkled gold/bronze foil with a few square blue radiator panels and small antennas on top. Its defining feature is a very long, flat, narrow SAR antenna running horizontally underneath and to both sides: 15 m long by 1.5 m wide, five panels end to end, also covered in crinkled gold foil, held to the body by a thin triangular strut frame. Above it, two deployable solar wings stick out on opposite sides on short angled struts (V-shaped attachments); each wing is five tall rectangular panels side by side with deep blue cells in a fine grid and thin silver edges. Silhouette: a gold box with two blue wings above and a long gold plank below, about the same total length as the wing span."
+ },
+ "draw-spot-mk1": {
+  "ids": [
+   20436
+  ],
+  "refs": [
+   "https://www.eoportal.org/satellite-missions/spot-1-2-3 (artist view, Airbus/CNES)",
+   "https://en.wikipedia.org/wiki/SPOT_(satellite)",
+   "https://space.skyrocket.de/doc_sdat/spot-1.htm (text only)"
+  ],
+  "description": "French Earth-observation satellite on the SPOT Mk.1 bus (Matra, about 1,800 kg), identical to SPOT 1 and 3. Body is a long rectangular box, roughly 2 x 2 m in section and about twice as long, entirely covered in crinkled bright gold foil, with square white/silver radiator windows set in rows on the sides and a small round white dish antenna on the underside. At the front end sit the two HRV cameras: two large gold-foiled instrument housings side by side, each ending in an angled box-shaped mirror head (the steerable viewing mirrors), giving the front a chunky twin-snouted look. A single deployable solar wing on a boom sticks out from the rear end on one side only, roughly perpendicular to the body: a long flat strip of square panels with deep blue cells and thin white gaps, about as long as or longer than the body. Asymmetric silhouette: gold box with one long blue wing. It has ONLY ONE solar wing, on one side; the other side has no wing at all."
+ },
+ "draw-spot-4": {
+  "ids": [
+   25260
+  ],
+  "refs": [
+   "https://www.eoportal.org/satellite-missions/spot-4 (Figure 1 and HRVIR/VEGETATION illustrations, CNES)",
+   "https://en.wikipedia.org/wiki/SPOT_(satellite)",
+   "https://space.skyrocket.de/doc_sdat/spot-4.htm (text only)"
+  ],
+  "description": "French Earth-observation satellite on the larger SPOT Mk.2 bus (about 2,750 kg). Same family look as SPOT 1-3 but bigger: a long rectangular box covered in bright gold foil with darker rectangular radiator patches and square windows on the sides, and small antennas below. At the front, the two HRVIR cameras form a pair of large gold-foiled housings with angled mirror heads, and a smaller boxy VEGETATION wide-angle camera sits on top with a round lens. A single solar wing on a boom extends from the rear on one side: five large rectangular panels (25 m2 total, 8,640 silicon cells) with pale lavender-blue cells, drawn in the CNES artwork as a tall sheet of squares two panels wide. Asymmetric silhouette: gold box with one large flat wing."
+ },
+ "draw-sunsat": {
+  "ids": [
+   25636
+  ],
+  "refs": [
+   "https://www.eoportal.org/satellite-missions/sunsat (Figures 1-3, Stellenbosch University / NASA GSFC)",
+   "https://en.wikipedia.org/wiki/SUNSAT",
+   "https://space.skyrocket.de/doc_sdat/sunsat.htm (text only)"
+  ],
+  "description": "South Africa's first satellite (Stellenbosch University students, 64 kg). Body is an upright rectangular box 45 x 45 x 62 cm (slightly taller than wide), built as stacked trays between a base and top plate. All four sides are covered edge to edge with body-mounted solar panels: very dark blue-black cells in a dense fine grid with thin copper/red edging and silver corner rails (no deployable wings). The top plate is silver/gold with sensors (horizon, sun and star sensors) and the boom canister; one side (the bottom/nadir face) has a round imager aperture, the camera being a 10 cm telescope tube. Several thin straight whip antennas stick out at angles from the edges of the box. From the top a thin gravity-gradient boom about 2.5-3 m long (several times the body height) extends straight out, ending in a squat round tip mass (about 4.4 kg) shaped like a short drum ringed with corner-cube laser reflectors (a hemispherical annulus of 8 retroreflectors)."
+ },
+ "draw-sstl-dga-elint": {
+  "ids": [
+   23606,
+   25978
+  ],
+  "refs": [
+   "https://www.sstl.co.uk/space-portfolio/launched-missions/1990-1999/cerise-launched-1995 (photo)",
+   "https://www.sstl.co.uk/space-portfolio/launched-missions/1990-1999/clementine-launched-1999 (photo)",
+   "https://en.wikipedia.org/wiki/Cerise_(satellite)",
+   "https://space.skyrocket.de/doc_sdat/clementine.htm (text only)"
+  ],
+  "description": "Two 50 kg French military signals-intelligence microsatellites on the Surrey Satellite Technology Microsat-70 platform (Cerise 1995, its successor Clementine 1999; the 1999 'CLEMENTINE' is this French satellite, not NASA's lunar probe). Body is a compact upright box roughly 0.5 m on a side (about as tall as wide in the SSTL photos); every side wall is a body-mounted solar panel of very dark navy-blue cells in a fine grid of thin gold/silver interconnect lines, framed with thin red/copper edging and silver corner rails. The top plate is plain silver aluminium with a large round flange plate in the centre carrying a short silver cylinder (the gravity-gradient boom canister), small boxes at the corners and thin straight rod antennas angled up from the corners. At the base, four flat rectangular deployable solar panels are hinged to the bottom edges and fold outward and downward like the petals of an opening flower (dark backs with red wiring and silver hinge bars visible). In orbit a thin gravity-gradient boom about 6 m long extends from the top (Cerise lost about 4.2 m of its boom to a debris collision in 1996, the first verified satellite collision)."
+ },
+ "draw-tmsat-1": {
+  "ids": [
+   25396
+  ],
+  "refs": [
+   "https://www.sstl.co.uk/space-portfolio/launched-missions/1990-1999/thai-paht-tmsat-launched-1998 (photo)",
+   "https://www.ne.jp/asahi/hamradio/jj1wtk/tmsat1detail.htm",
+   "https://space.skyrocket.de/doc_sdat/tmsat-1.htm (text only)",
+   "https://www.eoportal.org/satellite-missions/fasat-bravo (sister SSTL microsat launched on the same Zenit: 60 x 36 x 36 cm)"
+  ],
+  "description": "Thailand's first satellite, an SSTL-built microsatellite (55 kg) for Mahanakorn University. Body is a tall upright rectangular box roughly 36 x 36 cm in section and about 60 cm tall (the size of its SSTL sister FASat-Bravo, launched on the same rocket) (under shoulder height of a person). All four sides are body-mounted solar panels: very dark navy-black GaAs cells (2 x 4 cm each, 42 per panel string) in a dense grid with tiny gold contacts, each side split into an upper and lower panel by a thin red/maroon bar, framed by red-brown edging and clear/silver corner rails. On the top deck sit small red/pink anodised boxes with four short monopole whip antennas (thin silver/black rods) angled up from the corners, plus two fatter rods; the bottom has a round separation ring and more monopoles. A gravity-gradient boom with a small end weight extends from the top in orbit. No deployable wings. Carries small wide-angle and narrow-angle cameras looking out of the base."
+ },
+ "draw-aureole-3": {
+  "ids": [
+   12848
+  ],
+  "refs": [
+   "https://regards.cnes.fr/cdpp/html/Accueil/missions/arcad3/arcad3_en.html (photo of the Oreol-3 spacecraft)",
+   "https://space.skyrocket.de/doc_sdat/oreol-3.htm (text only)",
+   "https://cdaweb.gsfc.nasa.gov/pub/data/arcad/general.txt"
+  ],
+  "description": "Soviet-French auroral research satellite (Interkosmos AUOS-type platform, about 1,030 kg). Central body is a pressurised cylinder 1.6 m in diameter and 2.7 m tall, silver/white metal. Its sun-facing end is a flat round end plate (silver-white, with the name 'OREOL-3' in Cyrillic in red/black letters on the photographed unit) studded around its rim with a ring of small round sensor ports. Around this end, eight deployable flat solar panels fan out radially like the petals of a sunflower or the blades of a windmill: each is a rectangular panel, longer than it is wide, slightly wider at its outer end, with a pale grey/silver surface divided by a grid of cell lines, attached by short struts so there is a gap between the panels and the drum. Between the panels stick out several thin sensor booms (six instrument booms in total), short rod antennas and a small white cylindrical sensor and dish. Silhouette from the end: a round hub with an eight-petalled ring of panels and spiky booms; from the side: a squat cylinder with a flared skirt of panels at one end. Gravity-gradient/magnetic stabilised."
+ },
+ "draw-astrid-2": {
+  "ids": [
+   25568
+  ],
+  "refs": [
+   "https://angeo.copernicus.org/articles/19/589/2001/angeo-19-589-2001.pdf (Fig. 2 spacecraft drawing)",
+   "https://space.irfu.se/astrid2/",
+   "https://space.skyrocket.de/doc_sdat/astrid-2.htm (text only)"
+  ],
+  "description": "Swedish auroral-research microsatellite (Swedish Space Corporation, 29-30 kg), spin-stabilised and Sun-pointing, said to be 'about the size and weight of an overhead projector'. Body is a low square box 45 x 45 x 30 cm (wider than tall), silver/black with small instruments on its faces (a round MEDUSA particle analyser on one side, the PIA photometer on top). Six solar panels in total: two fixed on the top face and four deployable flat rectangular panels hinged to the top edges that swing out horizontally, all in one plane facing the spin axis (toward the Sun), giving a flat cross/plus shape about 1.7 x 1.1 m; cells dark. Two short (0.61 m) thin booms stick out from the tips of two opposite panels, each ending in a tiny 10 mm sphere (Langmuir probes), and four very long hair-thin wire booms with small probes extend radially in the spin plane. A hinged two-part rod boom hangs below the box carrying the magnetometer and a star camera at its end."
+ },
+ "draw-cbers-1": {
+  "ids": [
+   25940
+  ],
+  "refs": [
+   "https://www.eoportal.org/satellite-missions/cbers-1-2 (Figures 1, 6, 7, INPE)",
+   "https://www.gov.br/inpe/pt-br/programas/cbers/sobre-o-cbers-1/cbers-1-2-e-2b/descricao (illustrations)",
+   "https://en.wikipedia.org/wiki/CBERS-1"
+  ],
+  "description": "China-Brazil Earth-resources satellite (CAST Phoenix-Eye 1 bus, 1,450 kg). Body is an upright rectangular box 1.8 x 2.0 x 2.2 m, wrapped almost entirely in bright yellow-gold foil, made of a lower service module and an upper payload module with a horizontal band between them. A single large deployable solar wing (one side only) sticks out from one upper side on a short angled yoke: 6.3 m long by 2.6 m wide, three tall rectangular panels side by side, deep blue cells with thin lighter panel gaps; the wing is much bigger than the body. On the Earth-facing bottom face: the CCD camera and infrared scanner apertures, a WFI wide-field camera, small thruster clusters, and several antennas, including a long straight downward rod (UHF/VHF) and short stubby S-band and UHF antennas at the lower corners; a small sun sensor and two short rod antennas on top. Silhouette: a gold box with one big blue rectangular sail."
  }
 }
