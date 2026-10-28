@@ -2946,3 +2946,6 @@ body.night :is(#visible .nh-bell.free, #visible .tn-r .bell.free, .tn-wx .nights
 #discover .d-ticket.has-mini #d-tier { letter-spacing: .08em !important; } /* "UNCOMMON · OPHIUCHUS" fits beside the distance */
 #help-card .hc-line[hidden] { display: none; }
 #reveal .mn-phases.teach-glow { padding: .3em .45em; margin: -.3em -.45em; } /* room inside the glow ring, without moving the card's layout */
+/* Short phones (375×667): the first-night page scrolls and sits higher, so Explore the sky is on screen (Settings playtest 2026-10-27) */
+@media (max-height: 720px) { #ob-done:not(.nt) { overflow-y: auto; padding-top: calc(var(--safe-top) + 48px); } #ob-done:not(.nt) .od-body { margin-top: 18px; } #ob-done:not(.nt) .spacer { flex-basis: 12px; } }
+body:has(#start:not([hidden])) :is(.patch-coins, .pc-badge) { visibility: hidden; } /* not over the welcome card */
