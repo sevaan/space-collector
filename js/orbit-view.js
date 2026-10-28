@@ -4,10 +4,11 @@
 // the sky), seen from 35° above the orbit's own plane with the low point to the right, the Earth to scale in the middle
 // turning underneath (your spot marked), and the object moving round at its true relative speed, a lap in 4–14 s.
 // Parts of the ring behind the Earth are faint. Twinkling stars behind. Canvas only. Coastlines: js/geo.js.
-import { satrecFor, overEarth } from './orbit.js?v=0.1.1222';
-import * as sat from './lib/satellite.js?v=0.1.1222';
-import { useMiles } from './units.js?v=0.1.1222';
-import { LAND, placeName } from './geo.js?v=0.1.1222';
+import { satrecFor, overEarth } from './orbit.js?v=0.1.1223';
+import * as sat from './lib/satellite.js?v=0.1.1223';
+import { useMiles } from './units.js?v=0.1.1223';
+import { placeName } from './geo.js?v=0.1.1223';
+import { COAST } from './coast.js?v=0.1.1223';
 
 const RAD = Math.PI / 180, RE = 6371;
 const dot = (a, b) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
@@ -59,18 +60,27 @@ export function orbitGlobe(obj, host, me, { once = false } = {}) {
       ctx.stroke(); };
     ctx.lineWidth = 1.6; ctx.setLineDash([]); ctx.strokeStyle = 'rgba(250,129,39,.28)'; ringPath(false);
     // the Earth
-    const gr = ctx.createRadialGradient(cx - R * 0.35, cy - R * 0.35, R * 0.1, cx, cy, R); gr.addColorStop(0, '#3d6f9e'); gr.addColorStop(1, '#122b45');
+    // (2026-10-27, like the card art's Earth: an orange glow on the rim, a deep ocean lit from the upper left, cream land with fine engraved hatching, the far side in shade)
+    const glow = ctx.createRadialGradient(cx, cy, R * 0.96, cx, cy, R * 1.14); glow.addColorStop(0, 'rgba(250,129,39,.42)'); glow.addColorStop(0.35, 'rgba(250,129,39,.14)'); glow.addColorStop(1, 'rgba(250,129,39,0)');
+    ctx.fillStyle = glow; ctx.beginPath(); ctx.arc(cx, cy, R * 1.14, 0, Math.PI * 2); ctx.fill();
+    const gr = ctx.createRadialGradient(cx - R * 0.4, cy - R * 0.45, R * 0.05, cx, cy, R * 1.02); gr.addColorStop(0, '#4f86b6'); gr.addColorStop(0.55, '#24527f'); gr.addColorStop(1, '#0b1d33');
     ctx.fillStyle = gr; ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2); ctx.fill();
     ctx.save(); ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2); ctx.clip();
     const onEarth = (lat, lon) => { const p = uv(ground(lat, lon, g)); return { x: cx + p[0] * k, y: cy - p[1] * k, front: p[2] > 0 }; };
-    if (R > 12) { ctx.strokeStyle = 'rgba(143,180,216,.16)'; ctx.lineWidth = 1;
+    if (R > 12) { ctx.strokeStyle = 'rgba(143,180,216,.12)'; ctx.lineWidth = 1;
       for (let la = -60; la <= 60; la += 30) { ctx.beginPath(); let pen = false; for (let lo = -180; lo <= 180; lo += 8) { const p = onEarth(la, lo); if (!p.front) { pen = false; continue; } pen ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y); pen = true; } ctx.stroke(); }
       for (let lo = -180; lo < 180; lo += 30) { ctx.beginPath(); let pen = false; for (let la = -90; la <= 90; la += 8) { const p = onEarth(la, lo); if (!p.front) { pen = false; continue; } pen ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y); pen = true; } ctx.stroke(); } }
-    ctx.fillStyle = 'rgba(233,223,184,.55)';
-    for (const [, poly] of LAND) { const ps = poly.map(([lo, la]) => onEarth(la, lo)); if (!ps.some((p) => p.front)) continue;
-      ctx.beginPath(); ps.forEach((p, i) => { const q2 = p.front ? p : (() => { const dx = p.x - cx, dy = p.y - cy, d = Math.hypot(dx, dy) || 1; return { x: cx + (dx / d) * R, y: cy + (dy / d) * R }; })(); i ? ctx.lineTo(q2.x, q2.y) : ctx.moveTo(q2.x, q2.y); }); ctx.fill(); }
+    const land = new Path2D();
+    for (const poly of COAST) { const ps = poly.map(([lo, la]) => onEarth(la, lo)); if (!ps.some((p) => p.front)) continue;
+      ps.forEach((p, i) => { const q2 = p.front ? p : (() => { const dx = p.x - cx, dy = p.y - cy, d = Math.hypot(dx, dy) || 1; return { x: cx + (dx / d) * R, y: cy + (dy / d) * R }; })(); i ? land.lineTo(q2.x, q2.y) : land.moveTo(q2.x, q2.y); }); land.closePath(); }
+    ctx.fillStyle = 'rgba(233,223,184,.9)'; ctx.fill(land);
+    if (R > 18) { ctx.save(); ctx.clip(land); ctx.strokeStyle = 'rgba(18,40,64,.22)'; ctx.lineWidth = 0.7; ctx.beginPath(); const gap = Math.max(2.4, R / 42);
+      for (let d = -2 * R; d <= 2 * R; d += gap) { ctx.moveTo(cx + d - R, cy - R); ctx.lineTo(cx + d + R, cy + R); } ctx.stroke(); ctx.restore(); }
+    ctx.strokeStyle = 'rgba(12,30,52,.6)'; ctx.lineWidth = 0.8; ctx.stroke(land);
+    const shade = ctx.createRadialGradient(cx - R * 0.4, cy - R * 0.45, R * 0.2, cx - R * 0.1, cy - R * 0.1, R * 1.25); shade.addColorStop(0, 'rgba(5,12,24,0)'); shade.addColorStop(0.55, 'rgba(5,12,24,.08)'); shade.addColorStop(1, 'rgba(5,12,24,.72)');
+    ctx.fillStyle = shade; ctx.fillRect(cx - R, cy - R, R * 2, R * 2);
     ctx.restore();
-    ctx.strokeStyle = 'rgba(143,180,216,.5)'; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2); ctx.stroke();
+    ctx.strokeStyle = 'rgba(250,170,100,.6)'; ctx.lineWidth = 1.1; ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2); ctx.stroke();
     // you
     if (me) { const p = onEarth(me.lat, me.lon); if (p.front) { ctx.fillStyle = '#fff2b3'; ctx.beginPath(); ctx.arc(p.x, p.y, 2.6, 0, Math.PI * 2); ctx.fill(); ctx.font = '600 9px "SC Label", "Barlow Condensed", sans-serif'; ctx.fillText('YOU', p.x + 4, p.y - 3); } }
     // the ring in front of the Earth

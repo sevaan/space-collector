@@ -1,25 +1,25 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { fallWords } from './last-chance.js?v=0.1.1222';
-import { useMiles } from './units.js?v=0.1.1222';
-import { feel } from './native.js?v=0.1.1222';
-import { sfx } from './sfx.js?v=0.1.1222';
-import { cardArt } from './art.js?v=0.1.1222';
-import { TIER_INFO } from './rarity.js?v=0.1.1222';
-import { SET_BY_ID } from './sets.js?v=0.1.1222';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.1222';
-import { FLEET_ABOUT, fleetAbout, factSourceUrl, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.1222';
-import { artFileFor } from './art-keys.js?v=0.1.1222';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.1222';
-import { orbitGlobe } from './orbit-view.js?v=0.1.1222';
-import { ART_SHARED } from './art-shared.js?v=0.1.1222';
-import { ART_CREDITS } from './art-credits.js?v=0.1.1222';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.1222';
-import { nightsIn } from './observation.js?v=0.1.1222';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.1222';
-import { SHINY } from './shiny.js?v=0.1.1222';
-import { conArt, cometArt } from './con-art.js?v=0.1.1222';
-import { CON_FIGURES } from './con-figures.js?v=0.1.1222';
-import { localText } from './localize.js?v=0.1.1222';
+import { fallWords } from './last-chance.js?v=0.1.1223';
+import { useMiles } from './units.js?v=0.1.1223';
+import { feel } from './native.js?v=0.1.1223';
+import { sfx } from './sfx.js?v=0.1.1223';
+import { cardArt } from './art.js?v=0.1.1223';
+import { TIER_INFO } from './rarity.js?v=0.1.1223';
+import { SET_BY_ID } from './sets.js?v=0.1.1223';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.1223';
+import { FLEET_ABOUT, fleetAbout, factSourceUrl, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.1223';
+import { artFileFor } from './art-keys.js?v=0.1.1223';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.1223';
+import { orbitGlobe } from './orbit-view.js?v=0.1.1223';
+import { ART_SHARED } from './art-shared.js?v=0.1.1223';
+import { ART_CREDITS } from './art-credits.js?v=0.1.1223';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.1223';
+import { nightsIn } from './observation.js?v=0.1.1223';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.1223';
+import { SHINY } from './shiny.js?v=0.1.1223';
+import { conArt, cometArt } from './con-art.js?v=0.1.1223';
+import { CON_FIGURES } from './con-figures.js?v=0.1.1223';
+import { localText } from './localize.js?v=0.1.1223';
 // The animal/symbol figure belongs to the completed (gold) constellation card only (2026-10-05): a single
 // star’s card draws just the star pattern with its star marked, so the figure is a reward for finishing the set.
 // A star card’s constellation figure comes into focus as you collect the constellation’s stars (design/con-focus.html B).
@@ -82,7 +82,8 @@ function tintFilter(o, file) {
   const id = Number(o.id) || [...String(o.key ?? o.id)].reduce((a, c) => a + c.charCodeAt(0), 0), f = TINTS[id % TINTS.length];
   return f ? `filter: ${f}` : '';
 }
-function artTint(o) { const pa = debrisOf(o)?.parentArt, f = tintFilter(o, pa && ART_FILES.has(pa) ? pa : artFileFor(o, { [o.id]: seriesKeyOf(o) })); return f ? ` style="${f}"` : ''; }
+// Tints on shared pictures are off (2026-10-27, Sevaan); TINTS/tintFilter kept in case they come back.
+function artTint(o) { return ''; const pa = debrisOf(o)?.parentArt, f = tintFilter(o, pa && ART_FILES.has(pa) ? pa : artFileFor(o, { [o.id]: seriesKeyOf(o) })); return f ? ` style="${f}"` : ''; }
 // A fragment's card, design B "tracking report" of design/fragment-cards.html, followed exactly (2026-10-26, Sevaan): the
 // two chips (rarity · TRACKED OBJECT), the name, a big sketch of this piece's real orbit (Earth to scale, the ellipse from
 // its own perigee and apogee) with "ORBIT · height · laps a day", a report (From · Launched · Pieces tracked), the fact and
