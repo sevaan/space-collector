@@ -2038,3 +2038,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - 2026-10-28 · v0.1.1291 (Sevaan): Plus kit tile 'Rare alerts' is now 'Sky alerts · Rare passes, Starlink trains and sky events.' and lights when the Plus page opens from a train or sky-event switch (why 'alerts').
 - 2026-10-28 · v0.1.1292 (Sevaan): the Sun's safety notice is dropped (dropToast 'sun-safety', also from the queue) as soon as the circle is off the Sun.
 - 2026-10-28 · v0.1.1293 (Sevaan: closing Observer stats was janky): over Settings, the header ✕ fades the stats out first (statsBackToSettings directly; the frame used to close the stats instantly, flashing the Collection), and stats-over-set stays until col-open is gone so the tab bar doesn't pop over Settings.
+- 2026-10-28 · v0.1.1294 (Sevaan): the night strip's headliner star is kept inside the strip (left clamped 7px from each end), so it isn't cut in half at dusk.
