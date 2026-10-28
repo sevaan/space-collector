@@ -844,7 +844,8 @@ html, body { overflow-x: clip; }
 #viewer .v-share[hidden] { display: none; }
 #viewer .v-share.busy { opacity: .45; }
 @media (max-width: 699px) {
-  #viewer:not(.docked):not(:has(#v-up:not([hidden]))) .viewer-scroll > #slot { min-height: calc(100dvh - var(--safe-top, 0px) - var(--safe-bottom, 0px) - 102px); align-items: center; }
+  #viewer:not(.docked):not(:has(#v-up:not([hidden]))) .viewer-scroll > #slot { min-height: calc(100dvh - var(--safe-top, 0px) - var(--safe-bottom, 0px) - 102px - var(--v-where-h, 0px)); align-items: center; }
+  #viewer:has(#v-where:not([hidden])) { --v-where-h: 64px; } /* the "Now over…" line is part of the view: the card centres above it (2026-10-27, Sevaan: more space above than below) */
 }
 /* Observer stats under Explore's shared header (2026-10-24, Sevaan): inside the app the page starts at the header's line
    and its own eyebrow + ✕ row goes (the header says OBSERVER STATS and its button is the ✕). */
