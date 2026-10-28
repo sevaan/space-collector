@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><base href="../"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Night summary and your satellites</title>
+<link rel="stylesheet" href="css/cards.css"><link rel="stylesheet" href="css/ui.css">
+<style>
+  :root { --ink: #fff2b3; --muted: #9aa7b4; --or: #fa8127; --gold: #e7b75f; --nav: #080f1b; --steel: #8fb4d8; }
+  body { margin: 0; background: #05090f; color: var(--ink); font: 15px/1.45 system-ui, sans-serif; padding: 28px 24px 60px; }
+  h1 { font: 400 30px/1.1 'SC Display', 'Russo One', sans-serif; margin: 0 0 6px; } h2 { font: 400 22px/1.1 'SC Display', sans-serif; margin: 40px 0 6px; }
+  p.lead { color: #bdbea9; max-width: 980px; margin: 0 0 22px; }
+  .row { display: flex; gap: 28px; flex-wrap: wrap; align-items: flex-start; }
+  .lab { font: 500 12px/1 'SC Label', sans-serif; letter-spacing: .18em; text-transform: uppercase; color: var(--or); margin: 0 0 6px; }
+  .note { color: var(--muted); font-size: 13px; max-width: 330px; margin: 0 0 12px; min-height: 4.4em; }
+  .phone { width: 340px; height: 700px; border-radius: 44px; background: var(--nav); border: 10px solid #1a2333; box-shadow: 0 20px 50px #000a; position: relative; overflow: hidden; }
+  .bar { position: absolute; top: 0; left: 0; right: 0; height: 74px; padding: 30px 22px 0; box-sizing: border-box; border-bottom: 3px double #3a4a62; display: flex; justify-content: space-between; align-items: center; background: var(--nav); z-index: 3; }
+  .bar b { font: 400 17px/1 'SC Display', sans-serif; } .bar small { display: block; font: 500 10px/1 'SC Label', sans-serif; letter-spacing: .2em; color: var(--muted); margin-top: 5px; }
+  .x { font: 500 20px/1 'SC Label', sans-serif; color: var(--ink); }
+  .tabs { position: absolute; left: 14px; right: 14px; bottom: 16px; height: 54px; border-radius: 18px; background: #080f1b; box-shadow: 0 0 0 1px #fff2b31f; display: grid; grid-template-columns: repeat(3, 1fr); font: 500 12px/54px 'SC Label', sans-serif; letter-spacing: .16em; text-transform: uppercase; text-align: center; color: #c9cbb6; z-index: 3; }
+  .tabs .on { color: var(--or); box-shadow: inset 0 3px 0 var(--or); border-radius: 18px 18px 0 0; }
+  .body { position: absolute; top: 74px; left: 0; right: 0; bottom: 0; overflow: hidden; padding: 16px 16px 90px; box-sizing: border-box; }
+  .sky { position: absolute; inset: 0; background: radial-gradient(circle at 50% 30%, #0f1d33, #060b14); }
+  .sky i { position: absolute; width: 2px; height: 2px; border-radius: 50%; background: #fff2b3; animation: tw 3s ease-in-out infinite; }
+  @keyframes tw { 50% { opacity: .25; } }
+  .eyebrow { font: 500 10.5px/1 'SC Label', sans-serif; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); }
+  /* reveal */
+  .rv-top { position: absolute; top: 34px; left: 18px; right: 18px; display: flex; justify-content: space-between; align-items: baseline; font: 500 11px/1 'SC Label', sans-serif; letter-spacing: .18em; color: var(--ink); z-index: 2; }
+  .rv-top .xp { color: #5fd08a; font-size: 10px; opacity: .8; margin-left: 6px; }
+  .rv-card { position: absolute; top: 64px; left: 50%; transform: translateX(-50%); z-index: 2; }
+  .one { position: absolute; top: 46px; left: 50%; transform: translateX(-50%); padding: 6px 12px; border-radius: 999px; background: #1b0f1fcc; border: 1px solid #e46ad6aa; color: #f3b5ec; font: 500 10.5px/1 'SC Label', sans-serif; letter-spacing: .16em; white-space: nowrap; z-index: 3; }
+  .rv-foot { position: absolute; bottom: 22px; left: 0; right: 0; text-align: center; color: var(--gold); font: 500 12px/1 'SC Label', sans-serif; letter-spacing: .14em; text-transform: uppercase; z-index: 2; }
+  /* summary card */
+  .sum { position: absolute; top: 60px; left: 18px; right: 18px; bottom: 96px; border-radius: 16px; background: linear-gradient(#0e1a2b, #0a1322); border: 1px solid #e9dfc2aa; box-shadow: 0 0 0 4px #0a1322, 0 0 0 5px #e9dfc2, 0 20px 40px #000a; padding: 14px 14px 12px; box-sizing: border-box; display: flex; flex-direction: column; gap: 10px; z-index: 2; }
+  .sum h3 { margin: 2px 0 0; font: 400 25px/1.05 'SC Display', sans-serif; }
+  .sum .sub { color: var(--muted); font-size: 12px; margin-top: -4px; }
+  .arts { display: flex; gap: 6px; } .arts figure { margin: 0; flex: 1; border-radius: 8px; overflow: hidden; border: 1px solid #ffffff22; position: relative; aspect-ratio: 4/3; background: #000; }
+  .arts img { width: 100%; height: 100%; object-fit: cover; display: block; } .arts figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 10px 5px 3px; background: linear-gradient(transparent, #000c); font: 500 9.5px/1.1 'SC Label', sans-serif; letter-spacing: .06em; }
+  .arts .shiny { box-shadow: 0 0 0 2px #e46ad6; }
+  .lines { display: grid; gap: 7px; font-size: 13px; color: #e8e3c9; }
+  .lines div { display: flex; justify-content: space-between; gap: 10px; border-top: 1px solid #ffffff12; padding-top: 7px; }
+  .lines b { font: 500 12px/1.3 'SC Label', sans-serif; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+  .lines span { text-align: right; } .ok { color: #5fd08a; }
+  .pts { display: flex; gap: 6px; align-items: center; } .pts .patch { width: 44px; height: 44px; }
+  .rank { font: 500 11px/1 'SC Label', sans-serif; letter-spacing: .14em; color: var(--muted); }
+  .rank .bar2 { height: 5px; border-radius: 5px; background: #24324a; margin-top: 6px; overflow: hidden; } .rank .bar2 i { display: block; height: 100%; width: 0; background: var(--or); transition: width 1.4s cubic-bezier(.2,.8,.2,1); }
+  .acts { position: absolute; left: 18px; right: 18px; bottom: 26px; display: flex; gap: 10px; z-index: 2; }
+  .btn { flex: 1; text-align: center; padding: 13px; border-radius: 14px; font: 500 12.5px/1 'SC Label', sans-serif; letter-spacing: .16em; text-transform: uppercase; }
+  .btn.p { background: var(--or); color: #0b1018; } .btn.s { color: var(--ink); box-shadow: inset 0 0 0 1px #fff2b355; }
+  /* Tonight cloudy */
+  .wx { border: 1px solid #ffffff1c; border-radius: 16px; padding: 14px; background: #0c1626; margin-bottom: 12px; }
+  .wx h4 { margin: 4px 0 2px; font: 400 21px/1.1 'SC Display', sans-serif; } .wx p { margin: 0; color: #c9cbb6; font-size: 13px; }
+  .roll { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border: 1px solid #ffffff1c; border-radius: 14px; overflow: hidden; margin: 10px 0 12px; }
+  .roll div { padding: 10px 8px; text-align: center; border-left: 1px solid #ffffff14; } .roll div:first-child { border: 0; }
+  .roll b { display: block; font: 400 22px/1 'SC Display', sans-serif; } .roll small { font: 500 9.5px/1.2 'SC Label', sans-serif; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+  .rowp { display: flex; gap: 10px; align-items: center; padding: 9px 0; border-top: 1px solid #ffffff12; font-size: 13px; }
+  .rowp img { width: 46px; height: 34px; object-fit: cover; border-radius: 6px; filter: blur(2px) brightness(.8); } .rowp .t { color: var(--steel); font: 500 12px/1 'SC Label', sans-serif; letter-spacing: .1em; width: 58px; }
+  .rowp .n { flex: 1; } .rowp .n small { display: block; color: var(--muted); font-size: 11px; }
+  .safe { display: flex; gap: 9px; align-items: center; padding: 10px 12px; border-radius: 12px; background: #11261c; border: 1px solid #5fd08a55; color: #bfe9cc; font-size: 13px; margin-bottom: 10px; }
+  .link { display: flex; justify-content: space-between; align-items: center; padding: 12px; border-radius: 14px; background: #101c2e; border: 1px solid #627a8b88; font-size: 13.5px; }
+  .link b { color: var(--or); font: 500 12px/1 'SC Label', sans-serif; letter-spacing: .14em; }
+  /* globe page */
+  .gl { position: absolute; top: 74px; left: 0; right: 0; height: 330px; }
+  .gl canvas { width: 100%; height: 100%; display: block; }
+  .gchips { position: absolute; top: 410px; left: 14px; right: 14px; display: flex; gap: 6px; overflow: hidden; }
+  .gchips span { padding: 7px 10px; border-radius: 999px; border: 1px solid #ffffff26; font: 500 10.5px/1 'SC Label', sans-serif; letter-spacing: .12em; text-transform: uppercase; color: #c9cbb6; white-space: nowrap; } .gchips .on { color: var(--or); border-color: var(--or); }
+  .glist { position: absolute; top: 450px; left: 14px; right: 14px; bottom: 82px; overflow: hidden; }
+  .gi { display: flex; gap: 10px; align-items: center; padding: 8px 0; border-top: 1px solid #ffffff12; font-size: 13px; } .gi img { width: 46px; height: 34px; object-fit: cover; border-radius: 6px; }
+  .gi .n { flex: 1; } .gi .n small { display: block; color: var(--muted); font-size: 11px; } .gi em { font-style: normal; font: 500 11px/1 'SC Label', sans-serif; letter-spacing: .1em; color: var(--steel); text-align: right; }
+  /* collection */
+  .rankc { border: 1px solid #e9dfc2aa; border-radius: 14px; padding: 12px; margin-bottom: 10px; }
+  .rankc .r { display: flex; justify-content: space-between; font: 400 18px/1 'SC Display', sans-serif; }
+  .lastn { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 10px; border-top: 1px solid #ffffff14; font-size: 13px; color: #e8e3c9; } .lastn b { color: var(--gold); font: 500 11.5px/1 'SC Label', sans-serif; letter-spacing: .14em; }
+  .gban { position: relative; height: 112px; border-radius: 14px; overflow: hidden; border: 1px solid #627a8b88; margin-bottom: 12px; background: #060c16; }
+  .gban canvas { position: absolute; right: -30px; top: -34px; width: 190px; height: 190px; }
+  .gban .w { position: absolute; left: 14px; top: 16px; width: 160px; } .gban .w b { display: block; font: 400 18px/1.1 'SC Display', sans-serif; margin: 6px 0 4px; } .gban .w small { color: var(--muted); font-size: 12px; }
+  .ctabs { display: flex; gap: 16px; font: 500 12px/1 'SC Label', sans-serif; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); padding: 2px 2px 10px; border-bottom: 1px solid #ffffff14; margin-bottom: 10px; } .ctabs .on { color: var(--ink); box-shadow: 0 10px 0 -8px var(--or); }
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; } .grid3 div { aspect-ratio: 28/42; border-radius: 8px; border: 1px solid #e9dfc2aa; background: #0b1424 center/cover; }
+  .where { max-width: 980px; color: #c9cbb6; font-size: 14px; line-height: 1.55; margin: 6px 0 0; } .where b { color: var(--ink); }
+</style></head><body>
+<h1>Night summary and your satellites</h1>
+<p class="lead">Two pieces from the feedback. <b>One</b>: a catch shows the card and at most one extra; everything else (missions, patches, rank, the week) gathers into a <b>Last night</b> card that opens once, the next time you open the app. <b>Two</b>: a live globe of <b>every satellite you own</b>, where they are right now, reached from the Collection and from a cloudy night's Tonight page.</p>
+
+<h2>1 · Quieter catches, one summary</h2>
+<div class="row">
+  <div><div class="lab">A · The catch, quieter</div><div class="note">The card plus the single most important extra (here: shiny). XP is small beside NEW CARD. No rank bar unless you rank up. Missions, patches, a constellation's progress wait for the summary.</div>
+    <div class="phone"><div class="sky" id="s1"></div>
+      <div class="rv-top"><span>NEW CARD<span class="xp">+40 XP</span></span><span>✕</span></div>
+      <div class="one">✦ SHINY · CAUGHT THE FADE</div>
+      <div class="rv-card" id="rv"></div>
+      <div class="rv-foot">View in collection ›</div></div></div>
+  <div><div class="lab">B · Last night</div><div class="note">Opens once, the first time you open the app after a night out (like the weekly recap, which it replaces on Mondays). Everything that waited lands here, in order, with the rank bar filling.</div>
+    <div class="phone"><div class="sky" id="s2"></div>
+      <div class="sum">
+        <div class="eyebrow">Last night · Tue 27 Oct</div>
+        <h3>4 new cards</h3><div class="sub">9 sightings · 8:04 to 10:31 PM · Peterborough</div>
+        <div class="arts"><figure class="shiny"><img src="assets/art/cards/sm/hubble.webp" alt=""><figcaption>✦ Hubble</figcaption></figure><figure><img src="assets/art/cards/sm/sat-alos-2.webp" alt=""><figcaption>ALOS-2</figcaption></figure><figure><img src="assets/art/cards/sm/cz-4.webp" alt=""><figcaption>CZ-4C stage</figcaption></figure></div>
+        <div class="lines">
+          <div><b>Missions</b><span class="ok">3 of 3 ✓ · +150 XP</span></div>
+          <div><b>Levelled up</b><span>ISS turned <span style="color:#dfe6ee">silver</span></span></div>
+          <div><b>Constellations</b><span>Cygnus 6 of 9 stars</span></div>
+          <div><b>Week</b><span>Rocket stage week · 2 of 3</span></div>
+        </div>
+        <div><div class="eyebrow" style="margin-bottom:6px">2 patches earned</div><div class="pts" id="pts"></div></div>
+        <div class="rank">TRACKER → NAVIGATOR <span style="float:right">2,640 / 3,000 XP</span><div class="bar2"><i id="rk"></i></div></div>
+      </div>
+      <div class="acts"><span class="btn s">Share</span><span class="btn p">Tonight’s sky ›</span></div></div></div>
+  <div><div class="lab">C · Where it lives after</div><div class="note">Missed it, or want it again? The Collection’s rank card gets a <b>Last night</b> row that reopens it. The rank card stays the home of XP and missions.</div>
+    <div class="phone"><div class="bar"><div><b>YOUR COLLECTION</b><small>212 CARDS · TRACKER</small></div><span class="x">⚙</span></div>
+      <div class="body">
+        <div class="rankc"><div class="eyebrow">Observer rank</div><div class="r" style="margin-top:8px"><span>Tracker</span><span style="color:var(--or);font-size:14px">2,640 XP</span></div>
+          <div class="lastn"><span>Last night · 4 new · 2 patches</span><b>SEE IT ›</b></div></div>
+        <div class="ctabs"><span class="on">Mine</span><span>Albums</span><span>Patches</span><span>Find</span></div>
+        <div class="grid3"><div style="background-image:url(assets/art/cards/sm/hubble.webp)"></div><div style="background-image:url(assets/art/cards/sm/iss.webp)"></div><div style="background-image:url(assets/art/cards/sm/sat-alos-2.webp)"></div><div style="background-image:url(assets/art/cards/sm/cz-4.webp)"></div><div style="background-image:url(assets/art/cards/sm/moon.webp)"></div><div style="background-image:url(assets/art/cards/sm/planet-saturn.webp)"></div></div>
+      </div>
+      <div class="tabs"><span>Tonight</span><span>Explore</span><span class="on">Collection</span></div></div></div>
+</div>
+
+<h2>2 · Your satellites, live</h2>
+<div class="row">
+  <div><div class="lab">D · The globe page</div><div class="note">Every satellite, station and stage you own, where it is this second (the same model as the sky), the Earth turning underneath and you marked. Drag to spin. Filter chips. Tap one: its orbit and its card. Under it: what’s doing something interesting.</div>
+    <div class="phone"><div class="bar"><div><b>YOUR SATELLITES</b><small>37 IN ORBIT · LIVE</small></div><span class="x">✕</span></div>
+      <div class="gl"><canvas id="g1"></canvas></div>
+      <div class="gchips"><span class="on">All 37</span><span>Stations</span><span>Satellites</span><span>Stages</span><span>Fleets</span></div>
+      <div class="glist" id="gl"></div>
+      <div class="tabs"><span>Tonight</span><span>Explore</span><span class="on">Collection</span></div></div></div>
+  <div><div class="lab">E · Way in: the Collection</div><div class="note">A live banner at the top of Mine, above the cards. The little globe is the real one, turning. Tap to open the page.</div>
+    <div class="phone"><div class="bar"><div><b>YOUR COLLECTION</b><small>212 CARDS · TRACKER</small></div><span class="x">⚙</span></div>
+      <div class="body">
+        <div class="gban"><canvas id="g2"></canvas><div class="w"><span class="eyebrow">Live</span><b>37 of yours in orbit</b><small>Hubble is over the Pacific</small></div></div>
+        <div class="ctabs"><span class="on">Mine</span><span>Albums</span><span>Patches</span><span>Find</span></div>
+        <div class="grid3"><div style="background-image:url(assets/art/cards/sm/hubble.webp)"></div><div style="background-image:url(assets/art/cards/sm/iss.webp)"></div><div style="background-image:url(assets/art/cards/sm/sat-alos-2.webp)"></div><div style="background-image:url(assets/art/cards/sm/cz-4.webp)"></div><div style="background-image:url(assets/art/cards/sm/moon.webp)"></div><div style="background-image:url(assets/art/cards/sm/planet-saturn.webp)"></div><div style="background-image:url(assets/art/cards/sm/agena.webp)"></div><div style="background-image:url(assets/art/cards/sm/centaur.webp)"></div><div style="background-image:url(assets/art/cards/sm/sat-arase-erg.webp)"></div></div>
+      </div>
+      <div class="tabs"><span>Tonight</span><span>Explore</span><span class="on">Collection</span></div></div></div>
+  <div><div class="lab">F · Way in: a cloudy night</div><div class="note">The Tonight page on a cloudy night: the roll call of what’s passing behind the cloud, "your streak is safe", and the globe as the thing to do instead.</div>
+    <div class="phone"><div class="bar"><div><b>TONIGHT</b><small>PETERBOROUGH · 9:04 PM</small></div><span class="x">⚙</span></div>
+      <div class="body">
+        <div class="wx"><div class="eyebrow" style="color:var(--steel)">Overcast until 2 AM</div><h4>Behind the cloud tonight</h4><p>They’re still up there. If a gap opens, anything you can see still counts.</p>
+          <div class="roll"><div><b>47</b><small>passing over now</small></div><div><b style="color:var(--or)">3</b><small>new to you</small></div><div><b>9:12</b><small>best one</small></div></div>
+          <div class="rowp"><span class="t">9:12 PM</span><img src="assets/art/cards/sm/sat-alos-daichi.webp" alt=""><span class="n">ALOS (Daichi)<small>◆ Rare · new · high in the south</small></span></div>
+          <div class="rowp"><span class="t">9:40 PM</span><img src="assets/art/cards/sm/agena.webp" alt=""><span class="n">Agena D stage · 1967<small>▲ Uncommon · new</small></span></div></div>
+        <div class="safe">✓ <span>Cloudy night logged. <b>Your streak is safe.</b></span></div>
+        <div class="link"><span>While it’s cloudy: see where your 37 satellites are right now</span><b>OPEN ›</b></div>
+        <div class="link" style="margin-top:10px"><span>Next clear night: Thursday · 2 Rares</span><b>PLAN ›</b></div>
+      </div>
+      <div class="tabs"><span class="on">Tonight</span><span>Explore</span><span>Collection</span></div></div></div>
+</div>
+<p class="where"><b>Where they live, in short.</b> The <b>Last night</b> card opens by itself once, on the first open after a night out, and is always one tap away from the Collection’s rank card. The weekly recap folds into it on Mondays. The <b>satellites globe</b> is a page of the Collection (banner at the top of Mine), linked from the Tonight page when it’s cloudy or daytime, and from a card’s orbit view (“See all of yours ›”).</p>
+
+<script type="module">
+const V = (await fetch('version.json', { cache: 'no-store' }).then((r) => r.json())).version, at = (f) => import(new URL(`js/${f}?v=${V}`, document.baseURI).href);
+const [{ expandFacts }, { renderCard }, { buildCards }, { loadLore }, { patchHtml }, { ACHIEVEMENTS }, sat, { satrecFor }, { COAST }] = await Promise.all(['catalog-facts.js', 'card.js', 'card-model.js', 'lore.js', 'patches.js', 'progress.js', 'lib/satellite.js', 'orbit.js', 'coast.js'].map(at));
+for (const id of ['s1', 's2']) { const s = document.getElementById(id); for (let i = 0; i < 70; i++) s.insertAdjacentHTML('beforeend', `<i style="left:${Math.random() * 100}%;top:${Math.random() * 100}%;opacity:${(.3 + Math.random() * .7).toFixed(2)};animation-delay:${(Math.random() * 3).toFixed(2)}s"></i>`); }
+const cat = await fetch('data/catalog.json').then((r) => r.json()); for (const o of cat.objects) expandFacts(o);
+await loadLore();
+const cards = buildCards(cat), hub = cards.find((x) => Number(x.id) === 20580);
+const t0 = Date.parse('2026-10-27T23:00:00Z');
+const el = renderCard(hub, { sightings: [{ time: t0, cardKey: hub.key, objectId: hub.id, shiny: 'eclipse' }] }); el.style.fontSize = '9.3px'; document.getElementById('rv').append(el);
+document.getElementById('pts').innerHTML = ['first', ...ACHIEVEMENTS.filter((a) => a.id !== 'first').slice(3, 4).map((a) => a.id)].map((id) => patchHtml(ACHIEVEMENTS.find((a) => a.id === id), {})).join('') + '<span style="color:#c9cbb6;font-size:12px;margin-left:4px">First Light · ' + ACHIEVEMENTS.filter((a) => a.id !== 'first')[3].name + '</span>';
+setTimeout(() => (document.getElementById('rk').style.width = '88%'), 600);
+
+// The globe of "your" satellites: 37 real objects, propagated live.
+const pick = [25544, 20580, 48274, 22076, 25994, 27424, 39084, 28654, 33591, 43013, 7646, 25730, 32382, 40376, 26113];
+let own = pick.map((id) => cat.objects.find((o) => Number(o.id) === id)).filter(Boolean);
+for (const o of cat.objects) { if (own.length >= 37) break; if (!o.family && !/DEB/.test(o.name) && Math.abs(o.id * 7919) % 97 === 3) own.push(o); }
+own = own.map((o) => ({ o, s: satrecFor(o), card: cards.find((c) => String(c.id) === String(o.id)) })).filter((x) => x.s);
+const RAD = Math.PI / 180, ME = { lat: 44.3, lon: -78.3 };
+function globe(cv, { labels = true, small = false } = {}) {
+  const ctx = cv.getContext('2d'); let rot = -78, dragX = null;
+  if (!small) { cv.onpointerdown = (e) => { dragX = e.clientX; cv.setPointerCapture(e.pointerId); }; cv.onpointermove = (e) => { if (dragX != null) { rot -= (e.clientX - dragX) * 0.4; dragX = e.clientX; } }; cv.onpointerup = () => (dragX = null); }
+  const draw = () => {
+    const W = cv.clientWidth, H = cv.clientHeight, d = 2; if (cv.width !== W * d) { cv.width = W * d; cv.height = H * d; } ctx.setTransform(d, 0, 0, d, 0, 0);
+    ctx.clearRect(0, 0, W, H); const cx = W / 2, cy = H / 2, R = Math.min(W, H) * (small ? 0.4 : 0.36), tilt = 22 * RAD;
+    if (dragX == null && !small) rot += 0.03; if (small) rot += 0.08;
+    const P = (lat, lon, h = 0) => { const la = lat * RAD, lo = (lon - rot) * RAD, r = R * (1 + h / 6371); const x = Math.cos(la) * Math.sin(lo), y0 = Math.sin(la), z0 = Math.cos(la) * Math.cos(lo);
+      const y = y0 * Math.cos(tilt) - z0 * Math.sin(tilt), z = y0 * Math.sin(tilt) + z0 * Math.cos(tilt); return { x: cx + x * r, y: cy - y * r, z }; };
+    if (!small) for (let i = 0; i < 40; i++) { ctx.fillStyle = `rgba(255,242,179,${0.2 + ((i * 37) % 10) / 20})`; ctx.fillRect((i * 97) % W, (i * 53) % H, 1.2, 1.2); }
+    const gl = ctx.createRadialGradient(cx, cy, R * 0.96, cx, cy, R * 1.14); gl.addColorStop(0, 'rgba(250,129,39,.4)'); gl.addColorStop(1, 'rgba(250,129,39,0)'); ctx.fillStyle = gl; ctx.beginPath(); ctx.arc(cx, cy, R * 1.14, 0, 7); ctx.fill();
+    const gr = ctx.createRadialGradient(cx - R * .4, cy - R * .45, R * .05, cx, cy, R * 1.02); gr.addColorStop(0, '#4f86b6'); gr.addColorStop(.55, '#24527f'); gr.addColorStop(1, '#0b1d33'); ctx.fillStyle = gr; ctx.beginPath(); ctx.arc(cx, cy, R, 0, 7); ctx.fill();
+    ctx.save(); ctx.beginPath(); ctx.arc(cx, cy, R, 0, 7); ctx.clip(); ctx.fillStyle = 'rgba(233,223,184,.9)'; ctx.strokeStyle = 'rgba(12,30,52,.6)'; ctx.lineWidth = .7;
+    for (const ring of COAST) { const ps = ring.map(([lo, la]) => P(la, lo)); if (!ps.some((p) => p.z > 0)) continue; ctx.beginPath(); ps.forEach((p, i) => { const q = p.z > 0 ? p : { x: cx + (p.x - cx) / (Math.hypot(p.x - cx, p.y - cy) || 1) * R, y: cy + (p.y - cy) / (Math.hypot(p.x - cx, p.y - cy) || 1) * R }; i ? ctx.lineTo(q.x, q.y) : ctx.moveTo(q.x, q.y); }); ctx.fill(); ctx.stroke(); }
+    const sh = ctx.createRadialGradient(cx - R * .4, cy - R * .45, R * .2, cx - R * .1, cy - R * .1, R * 1.25); sh.addColorStop(0, 'rgba(5,12,24,0)'); sh.addColorStop(1, 'rgba(5,12,24,.7)'); ctx.fillStyle = sh; ctx.fillRect(cx - R, cy - R, 2 * R, 2 * R); ctx.restore();
+    const me = P(ME.lat, ME.lon); if (me.z > 0) { ctx.fillStyle = '#fff2b3'; ctx.beginPath(); ctx.arc(me.x, me.y, 2.4, 0, 7); ctx.fill(); if (!small) { ctx.font = '600 9px "SC Label", sans-serif'; ctx.fillText('YOU', me.x + 4, me.y - 3); } }
+    const now = new Date(), g = sat.gstime(now);
+    for (const it of own) { const pv = sat.propagate(it.s, now); if (!pv?.position) continue; const geo = sat.eciToGeodetic(pv.position, g); it.lat = geo.latitude / RAD; it.lon = geo.longitude / RAD; it.h = geo.height;
+      const p = P(it.lat, it.lon, Math.min(it.h, 2500) * 0.9); it.p = p; const front = p.z > -0.15; const big = [25544, 48274, 20580].includes(Number(it.o.id));
+      ctx.globalAlpha = front ? 1 : 0.25; ctx.fillStyle = big ? '#fa8127' : '#fff2b3'; ctx.beginPath(); ctx.arc(p.x, p.y, big ? 3.4 : 2, 0, 7); ctx.fill();
+      if (big && labels && front) { ctx.font = '600 10px "SC Label", sans-serif'; ctx.fillStyle = '#fff2b3'; ctx.fillText(it.o.id == 25544 ? 'ISS' : it.o.id == 20580 ? 'HUBBLE' : 'TIANGONG', p.x + 6, p.y + 3); } }
+    ctx.globalAlpha = 1; requestAnimationFrame(draw);
+  }; draw();
+}
+globe(document.getElementById('g1')); globe(document.getElementById('g2'), { labels: false, small: true });
+const art = (it) => it.card ? `assets/art/cards/sm/${(await_art(it.card))}.webp` : '';
+function await_art(c) { return c.artFile ?? 'classic-satellite-2'; }
+const { artFileFor } = await at('art-keys.js'); const { seriesKeyOf, titleFor } = await at('lore.js'); const { placeName } = await at('geo.js');
+const words = (it) => it.lat == null ? '' : `${Math.abs(it.lat).toFixed(0)}°${it.lat >= 0 ? 'N' : 'S'} · ${Math.round(it.h).toLocaleString()} km up`;
+setTimeout(() => {
+  const top = own.slice(0, 6), lines = top.map((it) => `Over ${placeName(it.lat, it.lon)}`.replace('Over the ', 'Over the '));
+  document.getElementById('gl').innerHTML = top.map((it, i) => `<div class="gi"><img src="assets/art/cards/sm/${artFileFor(it.o, { [it.o.id]: seriesKeyOf(it.o) })}.webp" onerror="this.style.visibility='hidden'" alt=""><span class="n">${titleFor(it.o)}<small>${words(it)}</small></span><em>${lines[i]}</em></div>`).join('');
+}, 600);
+document.body.dataset.ready = '1';
+</script></body></html>
