@@ -1298,5 +1298,46 @@
   "source": "https://commons.wikimedia.org/wiki/File:CYGNSS_concept_art.jpeg",
   "shows": "NASA artist's concept of one CYGNSS satellite above a hurricane (1920x1080)",
   "sibling": "artist’s concept"
+ },
+ "sat-coriolis": {
+  "credit": "US Navy / NRL",
+  "licence": "Public domain (US Navy)",
+  "source": "https://commons.wikimedia.org/wiki/File:Windsat.jpg",
+  "shows": "WindSat payload in a test chamber: big white reflector on a gold truss above the gold-wrapped instrument deck (2400x3000)",
+  "sibling": "its WindSat antenna payload"
+ },
+ "sat-risat-1": {
+  "credit": "ISRO (GODL-India)",
+  "licence": "GODL-India",
+  "source": "https://commons.wikimedia.org/wiki/File:PSLV-C52,_EOS-04_(aka_RISAT-1A)_-_Spacecraft_EOS-04_atop_launch_vehicle_before_encapsulation.jpg",
+  "shows": "EOS-04 (RISAT-1A, a rebuild of RISAT-1 on the same design) on the PSLV fourth stage before fairing closure, 4912x7360",
+  "sibling": "its twin EOS-04 (RISAT-1A), folded for launch"
+ },
+ "sat-cbers-4": {
+  "credit": "CBERS/INPE – Divulgação",
+  "licence": "Attribution only (INPE: reuse allowed with credit 'CBERS/INPE – Divulgação')",
+  "source": "https://commons.wikimedia.org/wiki/File:CBERS-4_001.jpg",
+  "shows": "CBERS-4 flight model in the integration hall in China, gold MLI, solar wing stowed"
+ },
+ "sat-koronas-foton": {
+  "credit": "Алексей Кочемасов (Aleksey Kochemasov), CC0",
+  "licence": "CC0",
+  "source": "https://commons.wikimedia.org/wiki/File:Coronas-photon.png",
+  "shows": "3D render of Koronas-Foton on a transparent background",
+  "sibling": "3D model"
+ },
+ "sat-rapideye": {
+  "credit": "Rmatt, CC BY-SA 3.0",
+  "licence": "CC BY-SA 3.0 (dual with GFDL; use the CC BY-SA option)",
+  "source": "https://commons.wikimedia.org/wiki/File:RapidEye_Satellites_Artist_Impression.jpg",
+  "shows": "Artist impression of the RapidEye constellation imaging Earth (1450x1050)",
+  "sibling": "artist’s impression of RapidEye; Sapphire and TechDemoSat-1 share the SSTL-150 platform"
+ },
+ "sat-jilin-1-video": {
+  "credit": "China News Service (中国新闻社), CC BY 4.0",
+  "licence": "CC BY 4.0",
+  "source": "https://commons.wikimedia.org/wiki/File:Jilin-1_Smart_Video_(Shipin)_Satellite.png",
+  "shows": "A Jilin-1 smart video (Shipin) satellite flight unit during mechanical testing, 1268x1080",
+  "sibling": "a Jilin-1 video satellite of the same design"
  }
 }
