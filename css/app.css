@@ -2800,3 +2800,5 @@ body.night .cr-row a, body.night .cr-pic a, body.night .cr-pics summary { color:
 /* Join the crew never scrolls sideways (2026-10-27, Sevaan, iPhone): the card scrolled with overflow auto both ways, so the
    shooting star's path and an edge star a pixel past the side let iOS pan it. Up and down only. */
 #set-plus-sheet .set-sheet-card { overflow-x: hidden !important; overscroll-behavior-x: none; touch-action: pan-y; }
+/* No turning arrow on the Tonight hero (2026-10-27, Sevaan): the card already says where; Show me does the steering. Gets the height back. */
+#visible .nh-dir { display: none !important; }

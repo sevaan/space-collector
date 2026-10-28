@@ -4,11 +4,11 @@
 // the sky), seen from 35° above the orbit's own plane with the low point to the right, the Earth to scale in the middle
 // turning underneath (your spot marked), and the object moving round at its true relative speed, a lap in 4–14 s.
 // Parts of the ring behind the Earth are faint. Twinkling stars behind. Canvas only. Coastlines: js/coast.js.
-import { satrecFor, overEarth } from './orbit.js?v=0.1.1236';
-import * as sat from './lib/satellite.js?v=0.1.1236';
-import { useMiles } from './units.js?v=0.1.1236';
-import { placeName } from './geo.js?v=0.1.1236';
-import { COAST } from './coast.js?v=0.1.1236';
+import { satrecFor, overEarth } from './orbit.js?v=0.1.1238';
+import * as sat from './lib/satellite.js?v=0.1.1238';
+import { useMiles } from './units.js?v=0.1.1238';
+import { placeName } from './geo.js?v=0.1.1238';
+import { COAST } from './coast.js?v=0.1.1238';
 
 const RAD = Math.PI / 180, RE = 6371;
 const dot = (a, b) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
@@ -84,6 +84,11 @@ export function orbitGlobe(obj, host, me, { once = false, style } = {}) {
       for (const poly of COAST) { const ps = poly.map(([lo, la]) => onEarth(la, lo)); if (!ps.some((p) => p.front)) continue;
         ps.forEach((p, i) => { const q2 = p.front ? p : (() => { const dx = p.x - cx, dy = p.y - cy, d = Math.hypot(dx, dy) || 1; return { x: cx + (dx / d) * R, y: cy + (dy / d) * R }; })(); i ? land.lineTo(q2.x, q2.y) : land.moveTo(q2.x, q2.y); }); land.closePath(); }
       return land; };
+    // Coastlines to stroke: only the parts on the near side, pen lifted across the back (2026-10-27, Sevaan: a jagged line
+    // crossed the globe; the fill path's back points are pulled to the rim, and stroking that drew chords across it).
+    const coastPath = () => { const c = new Path2D();
+      for (const poly of COAST) { let pen = false; for (const [lo, la] of poly) { const p = onEarth(la, lo); if (!p.front) { pen = false; continue; } pen ? c.lineTo(p.x, p.y) : c.moveTo(p.x, p.y); pen = true; } }
+      return c; };
     const grid = (alpha, step = 30) => { if (R <= 12) return; ctx.strokeStyle = alpha; ctx.lineWidth = 1;
       for (let la = -90 + step; la < 90; la += step) { ctx.beginPath(); let pen = false; for (let lo = -180; lo <= 180; lo += 6) { const p = onEarth(la, lo); if (!p.front) { pen = false; continue; } pen ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y); pen = true; } ctx.stroke(); }
       for (let lo = -180; lo < 180; lo += step) { ctx.beginPath(); let pen = false; for (let la = -90; la <= 90; la += 6) { const p = onEarth(la, lo); if (!p.front) { pen = false; continue; } pen ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y); pen = true; } ctx.stroke(); } };
@@ -96,7 +101,7 @@ export function orbitGlobe(obj, host, me, { once = false, style } = {}) {
     if (look === 'blueprint') {
       ocean('#1f4369', '#0f2542', '#050d18'); /* light and shade for some dimension (2026-10-27, Sevaan) */
       ctx.save(); disc(); ctx.clip(); grid('rgba(143,180,216,.2)', 15); const land = landPath(); ctx.fillStyle = 'rgba(143,180,216,.1)'; ctx.fill(land);
-      ctx.strokeStyle = 'rgba(255,242,179,.85)'; ctx.lineWidth = 1; ctx.stroke(land);
+      ctx.strokeStyle = 'rgba(255,242,179,.85)'; ctx.lineWidth = 1; ctx.stroke(coastPath());
       const hi = ctx.createRadialGradient(cx - R * 0.42, cy - R * 0.48, 0, cx - R * 0.42, cy - R * 0.48, R * 0.7); hi.addColorStop(0, 'rgba(190,220,255,.16)'); hi.addColorStop(1, 'rgba(190,220,255,0)'); ctx.fillStyle = hi; ctx.fillRect(cx - R, cy - R, R * 2, R * 2);
       farShade(0.7); ctx.restore();
       ctx.strokeStyle = 'rgba(255,242,179,.7)'; ctx.lineWidth = 1.2; disc(); ctx.stroke();
@@ -109,7 +114,7 @@ export function orbitGlobe(obj, host, me, { once = false, style } = {}) {
       ctx.strokeStyle = 'rgba(250,170,100,.55)'; ctx.lineWidth = 1; disc(); ctx.stroke();
     } else if (look === 'poster') {
       ctx.fillStyle = '#2f5f87'; disc(); ctx.fill();
-      ctx.save(); disc(); ctx.clip(); const land = landPath(); ctx.fillStyle = '#d9772e'; ctx.fill(land); ctx.strokeStyle = '#fff2b3'; ctx.lineWidth = 1.1; ctx.stroke(land);
+      ctx.save(); disc(); ctx.clip(); const land = landPath(); ctx.fillStyle = '#d9772e'; ctx.fill(land); ctx.strokeStyle = '#fff2b3'; ctx.lineWidth = 1.1; ctx.stroke(coastPath());
       const hl = ctx.createLinearGradient(cx - R, cy - R, cx + R, cy + R); hl.addColorStop(0, 'rgba(255,242,179,.18)'); hl.addColorStop(0.5, 'rgba(255,242,179,0)'); hl.addColorStop(0.62, 'rgba(5,12,24,.0)'); hl.addColorStop(1, 'rgba(5,12,24,.5)');
       ctx.fillStyle = hl; ctx.fillRect(cx - R, cy - R, R * 2, R * 2); ctx.restore();
       ctx.strokeStyle = '#fff2b3'; ctx.lineWidth = 1.6; disc(); ctx.stroke();
@@ -117,14 +122,14 @@ export function orbitGlobe(obj, host, me, { once = false, style } = {}) {
       const sv = sunV, lx = sv[0] * 0.45, ly = -sv[1] * 0.45;
       glowRim('143,190,235', 0.35); ocean('#5a93c4', '#2a5b8a', '#0e2540', lx, ly);
       ctx.save(); disc(); ctx.clip(); grid('rgba(143,180,216,.1)'); const land = landPath(); ctx.fillStyle = 'rgba(233,223,184,.92)'; ctx.fill(land);
-      ctx.strokeStyle = 'rgba(12,30,52,.5)'; ctx.lineWidth = 0.7; ctx.stroke(land);
+      ctx.strokeStyle = 'rgba(12,30,52,.5)'; ctx.lineWidth = 0.7; ctx.stroke(coastPath());
       ctx.drawImage(nightMask(), cx - R, cy - R, R * 2, R * 2); ctx.restore();
       ctx.strokeStyle = 'rgba(180,210,240,.45)'; ctx.lineWidth = 1; disc(); ctx.stroke();
     } else { // engraved (the default): an orange glow on the rim, a deep ocean lit from the upper left, cream land with fine engraved hatching, the far side in shade
       glowRim('250,129,39', 0.42); ocean('#4f86b6', '#24527f', '#0b1d33');
       ctx.save(); disc(); ctx.clip(); grid('rgba(143,180,216,.12)'); const land = landPath();
       ctx.fillStyle = 'rgba(233,223,184,.9)'; ctx.fill(land); hatch(land, 'rgba(18,40,64,.22)', Math.max(2.4, R / 42));
-      ctx.strokeStyle = 'rgba(12,30,52,.6)'; ctx.lineWidth = 0.8; ctx.stroke(land); farShade(); ctx.restore();
+      ctx.strokeStyle = 'rgba(12,30,52,.6)'; ctx.lineWidth = 0.8; ctx.stroke(coastPath()); farShade(); ctx.restore();
       ctx.strokeStyle = 'rgba(250,170,100,.6)'; ctx.lineWidth = 1.1; disc(); ctx.stroke();
     }
     // you

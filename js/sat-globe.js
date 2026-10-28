@@ -3,11 +3,11 @@
 // sky's own model, satellite.js), around a blueprint Earth (design/earth-styles.html C) that turns slowly, you marked.
 // Dots are in the card's rarity colour; the rarest few in view are named. Tap a dot to open its card. Draws only while
 // it's on screen. Fleet cards (Starlink and co.) aren't on it yet.
-import * as sat from './lib/satellite.js?v=0.1.1236';
-import { satrecFor } from './orbit.js?v=0.1.1236';
-import { COAST } from './coast.js?v=0.1.1236';
-import { TIER_INFO } from './rarity.js?v=0.1.1236';
-import { placeName } from './geo.js?v=0.1.1236';
+import * as sat from './lib/satellite.js?v=0.1.1238';
+import { satrecFor } from './orbit.js?v=0.1.1238';
+import { COAST } from './coast.js?v=0.1.1238';
+import { TIER_INFO } from './rarity.js?v=0.1.1238';
+import { placeName } from './geo.js?v=0.1.1238';
 
 const RAD = Math.PI / 180, RE = 6371, TILT = 20 * RAD;
 const RANK = { common: 0, uncommon: 1, rare: 2, epic: 3, legendary: 4 };
@@ -53,7 +53,9 @@ export function satGlobe(host, { me = null, onPick = null } = {}) {
     const land = new Path2D();
     for (const ring of COAST) { const ps = ring.map(([lo, la]) => P(la, lo)); if (!ps.some((p) => p.z > 0)) continue;
       ps.forEach((p, i) => { const q = p.z > 0 ? p : (() => { const dx = p.x - cx, dy = p.y - cy, k = Math.hypot(dx, dy) || 1; return { x: cx + (dx / k) * R, y: cy + (dy / k) * R }; })(); i ? land.lineTo(q.x, q.y) : land.moveTo(q.x, q.y); }); land.closePath(); }
-    ctx.fillStyle = 'rgba(143,180,216,.1)'; ctx.fill(land); ctx.strokeStyle = 'rgba(255,242,179,.85)'; ctx.lineWidth = 1; ctx.stroke(land);
+    const coast = new Path2D(); /* only the near side, pen lifted across the back: stroking the fill path drew chords across the globe (2026-10-27) */
+    for (const ring of COAST) { let pen = false; for (const [lo, la] of ring) { const p = P(la, lo); if (p.z <= 0) { pen = false; continue; } pen ? coast.lineTo(p.x, p.y) : coast.moveTo(p.x, p.y); pen = true; } }
+    ctx.fillStyle = 'rgba(143,180,216,.1)'; ctx.fill(land); ctx.strokeStyle = 'rgba(255,242,179,.85)'; ctx.lineWidth = 1; ctx.stroke(coast);
     const hi = ctx.createRadialGradient(cx - R * 0.42, cy - R * 0.48, 0, cx - R * 0.42, cy - R * 0.48, R * 0.7); hi.addColorStop(0, 'rgba(190,220,255,.16)'); hi.addColorStop(1, 'rgba(190,220,255,0)'); ctx.fillStyle = hi; ctx.fillRect(cx - R, cy - R, R * 2, R * 2);
     const sh = ctx.createRadialGradient(cx - R * 0.4, cy - R * 0.45, R * 0.2, cx - R * 0.1, cy - R * 0.1, R * 1.25); sh.addColorStop(0, 'rgba(5,12,24,0)'); sh.addColorStop(0.55, 'rgba(5,12,24,.08)'); sh.addColorStop(1, 'rgba(5,12,24,.7)');
     ctx.fillStyle = sh; ctx.fillRect(cx - R, cy - R, R * 2, R * 2); ctx.restore();
@@ -63,8 +65,8 @@ export function satGlobe(host, { me = null, onPick = null } = {}) {
     const front = [];
     for (const it of items) { if (!it.ok) continue; const p = P(it.lat, it.lon, lift(it.h)); it.p = p;
       ctx.globalAlpha = p.behind ? 0.22 : 1; ctx.fillStyle = it.col;
-      if (!p.behind) { ctx.shadowColor = it.col; ctx.shadowBlur = it.rank >= 2 ? 8 : 4; }
-      ctx.beginPath(); ctx.arc(p.x, p.y, it.rank >= 3 ? 3.4 : it.rank >= 2 ? 2.8 : 2.1, 0, Math.PI * 2); ctx.fill(); ctx.shadowBlur = 0;
+      if (!p.behind && it.rank >= 2) { ctx.globalAlpha = 0.25; ctx.beginPath(); ctx.arc(p.x, p.y, it.rank >= 3 ? 7 : 5.5, 0, Math.PI * 2); ctx.fill(); ctx.globalAlpha = 1; } /* a soft halo, not shadowBlur (slow on phones) */
+      ctx.beginPath(); ctx.arc(p.x, p.y, it.rank >= 3 ? 3.4 : it.rank >= 2 ? 2.8 : 2.1, 0, Math.PI * 2); ctx.fill();
       if (!p.behind && p.z > -0.2) front.push(it); }
     ctx.globalAlpha = 1;
     ctx.font = '600 9.5px "SC Label", "Barlow Condensed", sans-serif'; ctx.fillStyle = '#fff2b3';
