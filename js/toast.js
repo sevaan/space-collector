@@ -53,7 +53,7 @@ export function ticket({ kind = 'info', eyebrow = '', line = '', sub = '', icon 
   if (id && toastPending(id)) dropToast(id); // the same message again replaces the old one
   // Only a direct answer to something done on an open page (a reminder set there, an error) may show over it. Progress from a
   // catch (worlds, stars, patches, missions) waits for the page to close, even if it was queued before it opened (iOS playtest 2026-10-19).
-  const inPanel = !delay && !unasked /* an unasked notice is never a page's answer (returning playtest 2026-10-25) */ && !['xp', 'rank', 'mission', 'event', 'patch', 'shiny', 'milestone', 'complete'].includes(kind) && !!document.querySelector('.overlay.panel:not([hidden])');
+  const inPanel = !delay && !unasked /* an unasked notice is never a page's answer (returning playtest 2026-10-25) */ && !['xp', 'rank', 'mission', 'event', 'patch', 'shiny', 'milestone', 'complete'].includes(kind) && !!document.querySelector('.overlay.panel:not([hidden]), .set-sheet:not([hidden])'); /* a sheet's own answers (a failed purchase) still show on it */
   queue.push({ kind, eyebrow, line, sub, icon, tone, xp, ms, href, html, id, art, celebrate, sticky, action, go, inPanel, unasked, onShow, made: Date.now(), at: Date.now() + delay });
   pump();
 }
