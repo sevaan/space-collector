@@ -1,32 +1,32 @@
-import { pullToClose } from './pull-close.js?v=0.1.1233';
-import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.1233';
-import { computeStats, statsHtml } from './stats.js?v=0.1.1233';
-import { nightKey } from './observation.js?v=0.1.1233';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1233';
-import { sfx } from './sfx.js?v=0.1.1233';
-import { expandFacts } from './catalog-facts.js?v=0.1.1233';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.1233';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1233';
-import { ticket } from './toast.js?v=0.1.1233';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.1233';
-import { satGlobe } from './sat-globe.js?v=0.1.1233';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.1233';
-import { cardArt } from './art.js?v=0.1.1233';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.1233';
-import { applyBack } from './card-backs.js?v=0.1.1233';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.1233';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1233';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.1233';
-import { STORIES } from './stories.js?v=0.1.1233';
-import { loadConstellations, conList } from './constellations.js?v=0.1.1233';
-import { RANKS, progress, readDeals, readWeekThemes, xpCarry } from './progress.js?v=0.1.1233';
-import { eventBadges, nextEvent } from './events.js?v=0.1.1233';
-import { shareCardEl } from './share-card.js?v=0.1.1233';
-import { forgetSighting } from './cloud-backup.js?v=0.1.1233';
-import { allSightings, deleteSighting } from './store.js?v=0.1.1233';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.1233';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.1233';
-import { localText } from './localize.js?v=0.1.1233';
+import { pullToClose } from './pull-close.js?v=0.1.1235';
+import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.1235';
+import { computeStats, statsHtml } from './stats.js?v=0.1.1235';
+import { nightKey } from './observation.js?v=0.1.1235';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1235';
+import { sfx } from './sfx.js?v=0.1.1235';
+import { expandFacts } from './catalog-facts.js?v=0.1.1235';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.1235';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1235';
+import { ticket } from './toast.js?v=0.1.1235';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.1235';
+import { satGlobe } from './sat-globe.js?v=0.1.1235';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.1235';
+import { cardArt } from './art.js?v=0.1.1235';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.1235';
+import { applyBack } from './card-backs.js?v=0.1.1235';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.1235';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1235';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.1235';
+import { STORIES } from './stories.js?v=0.1.1235';
+import { loadConstellations, conList } from './constellations.js?v=0.1.1235';
+import { RANKS, progress, readDeals, readWeekThemes, xpCarry } from './progress.js?v=0.1.1235';
+import { eventBadges, nextEvent } from './events.js?v=0.1.1235';
+import { shareCardEl } from './share-card.js?v=0.1.1235';
+import { forgetSighting } from './cloud-backup.js?v=0.1.1235';
+import { allSightings, deleteSighting } from './store.js?v=0.1.1235';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.1235';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.1235';
+import { localText } from './localize.js?v=0.1.1235';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -463,33 +463,50 @@ function renderLogbook() {
   requestAnimationFrame(tabsPin);
 }
 
-// Your satellites beside the rank card (2026-10-27, Sevaan): two cards at the top of the Collection, the same size, swiped
-// between, with two dots under them (satellites first). Each visit opens on one or the other at random. The globe is
-// js/sat-globe.js: everything you own with an orbit (not fleets, not the Moon, planets or stars), live. Tap a dot for its card.
+// Your objects and your rank (2026-10-27, Sevaan): two cards at the top of the Collection, one in front and the other
+// peeking out behind it; swipe either way and they swap. Each visit opens on one or the other at random. The objects card
+// is js/sat-globe.js: everything you own with an orbit (satellites, stations, stages, debris; not fleets, not the Moon,
+// planets or stars), where it is now. Tap a dot for its card.
 let satG = null;
 function renderSatCard() {
   const sec = $('sat-card'); if (!sec) return;
   const owned = [...new Set(state.raw.map((s) => String(s.cardKey)))].map((k) => state.byKey.get(k)).filter((c) => c && !c.natural && !c.launches && !c.family && c.el);
   if (!satG) {
-    sec.innerHTML = '<div class="lb-rot"><div class="sg-face"><div class="lb-top"><span>Your satellites</span><span class="sg-live"><i></i>Live</span></div><div class="sg-pic" id="sg-pic"></div><div class="lb-rankrow"><span class="lb-name" id="sg-n"></span><span class="lb-xp">in orbit now</span></div><div class="lb-to sg-where"><span id="sg-where"></span></div></div></div>';
+    sec.innerHTML = '<div class="lb-rot"><div class="sg-face"><div class="lb-top"><span>Your objects</span><span class="sg-live"><i></i>Live</span></div><div class="sg-pic" id="sg-pic"></div><div class="lb-rankrow"><span class="lb-name" id="sg-n"></span><span class="lb-xp">in orbit now</span></div><div class="lb-to sg-where"><span id="sg-where"></span></div></div></div>';
     let me = null; try { const o = JSON.parse(localStorage.getItem('observer')); if (o && Number.isFinite(o.lat)) me = { lat: o.lat, lon: o.lon }; } catch {}
     satG = satGlobe($('sg-pic'), { me, onPick: (k) => openKey(k) });
     setInterval(() => { if (!document.hidden && !sec.hidden) $('sg-where').textContent = satG.where(); }, 4500);
   }
   const n = satG.set(owned.map((c) => ({ ...c, title: titleFor(c) })));
-  sec.hidden = !n; $('lb-dots').hidden = !n;
+  sec.hidden = !n; $('lb-deck').classList.toggle('two', !!n);
   $('sg-n').textContent = n.toLocaleString(); $('sg-where').textContent = satG.where();
   if (!deckSet) { deckSet = true; deckWire(); deckPick(); }
 }
-let deckSet = false;
-const deckStep = () => { const t = $('lb-track'); return t.children[1].offsetLeft - t.children[0].offsetLeft || t.clientWidth; };
-function deckGo(i, smooth = true) { const t = $('lb-track'); if ($('sat-card').hidden) return; t.scrollTo({ left: i * deckStep(), behavior: smooth ? 'smooth' : 'instant' }); deckDots(i); }
-function deckDots(i) { [...$('lb-dots').children].forEach((b, k) => b.setAttribute('aria-current', String(k === i))); }
-function deckPick() { requestAnimationFrame(() => deckGo(Math.random() < 0.5 ? 0 : 1, false)); }
+let deckSet = false, deckBusy = false;
+const deckCards = () => [$('sat-card'), $('logbook')];
+function deckFront(i, instant = false) { // i: 0 = objects in front, 1 = rank in front
+  const d = $('lb-deck'); if (instant) { d.classList.add('instant'); requestAnimationFrame(() => requestAnimationFrame(() => d.classList.remove('instant'))); }
+  deckCards().forEach((c, k) => { c.classList.toggle('lb-front', k === i); c.classList.toggle('lb-back', k !== i); c.setAttribute('aria-hidden', String(k !== i)); c.style.transform = ''; });
+}
+function deckPick() { if ($('sat-card').hidden || DOCK_Q.matches) return deckFront(1, true); /* book sizes show only the rank */ deckFront(Math.random() < 0.5 ? 0 : 1, true); }
+function deckSwap(dir) { // the front card flies off to that side and settles behind; the back one comes forward
+  if (deckBusy) return; const front = deckCards().findIndex((c) => c.classList.contains('lb-front')); if (front < 0) return;
+  deckBusy = true; const f = deckCards()[front]; f.classList.add('lb-leaving'); f.style.transform = `translateX(${dir * 115}%) rotate(${dir * 8}deg)`; feel('select'); sfx('page', { gain: 0.5 });
+  setTimeout(() => { f.classList.remove('lb-leaving'); deckFront(1 - front); setTimeout(() => (deckBusy = false), 320); }, 200);
+}
 function deckWire() {
-  const t = $('lb-track');
-  t.addEventListener('scroll', () => deckDots(Math.round(t.scrollLeft / deckStep())), { passive: true });
-  [...$('lb-dots').children].forEach((b, k) => (b.onclick = () => { deckGo(k); feel('select'); }));
+  const d = $('lb-deck'); let x0 = 0, y0 = 0, dx = 0, on = false, dragging = false, t0 = 0, card = null;
+  d.addEventListener('pointerdown', (e) => { if (!d.classList.contains('two') || deckBusy) return; card = e.target.closest('.lb-front'); if (!card) return; on = true; dragging = false; x0 = e.clientX; y0 = e.clientY; dx = 0; t0 = performance.now(); });
+  d.addEventListener('pointermove', (e) => { if (!on) return; dx = e.clientX - x0; const dy = e.clientY - y0;
+    if (!dragging) { if (Math.abs(dx) < 10 || Math.abs(dx) < Math.abs(dy)) { if (Math.abs(dy) > 12) on = false; return; } dragging = true; card.classList.add('lb-drag'); try { d.setPointerCapture(e.pointerId); } catch {} }
+    card.style.transform = `translateX(${dx}px) rotate(${dx / 40}deg)`; });
+  const end = () => { if (!on) return; on = false; if (!dragging) return; card.classList.remove('lb-drag');
+    const fast = Math.abs(dx) / Math.max(1, performance.now() - t0) > 0.5;
+    if (Math.abs(dx) > 70 || (fast && Math.abs(dx) > 24)) deckSwap(Math.sign(dx)); else card.style.transform = '';
+    d.dataset.dragged = '1'; setTimeout(() => delete d.dataset.dragged, 0); };
+  d.addEventListener('pointerup', end); d.addEventListener('pointercancel', end);
+  d.addEventListener('click', (e) => { if (d.dataset.dragged) { e.stopPropagation(); e.preventDefault(); } }, true); // a swipe isn't a tap
+  d.addEventListener('click', (e) => { const b = e.target.closest('.lb-back'); if (b && d.classList.contains('two')) { e.stopPropagation(); e.preventDefault(); deckSwap(-1); } }, true); // tapping the peeking card brings it forward
 }
 
 // Find (2026-10-13, Sevaan: "someone may want to search up an object like the ISS to preview the card and then set an
