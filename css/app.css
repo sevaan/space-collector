@@ -3014,3 +3014,22 @@ body.night #debug .set-range::-webkit-slider-thumb { background: #ff7f70; box-sh
 /* Welcome card: one instruction ("Swipe up to begin" in its footer). The button stays for keyboards and screen readers. */
 .wc-after .wc-swipe { display: none; }
 .wc-after #btn-start { position: absolute !important; width: 1px; height: 1px; min-height: 0 !important; padding: 0 !important; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+/* ===== Settings, design B "Quiet panels" (2026-10-28, Sevaan; design/settings-looks.html B): an orange heading above
+   each group, then one plain panel like the Tonight page's (14px corners, the soft edge), and real switches.
+   The numbered bars and the boxed ON/OFF tags are gone. ===== */
+#debug .set-card { position: relative; overflow: visible; margin-top: 40px !important; border: 1px solid #22344a !important; outline: 0 !important; box-shadow: none !important; border-radius: 14px !important; background: #0e1a29 !important; padding: 0 !important; }
+#debug .set-card.set-first { margin-top: 44px !important; }
+#debug .set-bar { position: absolute; left: 4px; right: 4px; top: -28px; padding: 0 !important; background: none !important; border: 0 !important; }
+#debug .set-bar b { display: none; }
+#debug .set-bar h3 { color: var(--gold) !important; }
+#debug .set-card > .set-row:first-of-type, #debug .set-card .set-bar + .set-row, #debug .set-card .set-bar + .set-slider { border-top: 0 !important; }
+#debug .set-card .set-row, #debug .set-card .set-slider--row { border-top-color: #ffffff10 !important; }
+#debug .set-tog { width: 46px !important; min-width: 0; height: 28px !important; padding: 0 !important; border-radius: 99px !important; background: #2a3a4c !important; box-shadow: none !important; display: inline-block; }
+#debug .set-tog::before { content: '' !important; position: absolute !important; top: 3px; left: 3px; width: 22px !important; height: 22px !important; border-radius: 50% !important; background: var(--text) !important; transition: transform .22s cubic-bezier(.3, 1.3, .5, 1) !important; }
+#debug .set-tog:checked { background: var(--gold) !important; box-shadow: none !important; }
+#debug .set-tog:checked::before { transform: translateX(18px) !important; background: #080f1b !important; }
+#debug .set-tog:disabled { opacity: .45; }
+body.night #debug .set-card { background: #120505 !important; border-color: #2e1010 !important; }
+body.night #debug .set-tog { background: #3a1410 !important; } body.night #debug .set-tog:checked { background: #ff6a55 !important; }
+body.night #debug .set-tog::before { background: #ff7f70 !important; } body.night #debug .set-tog:checked::before { background: #120505 !important; }
