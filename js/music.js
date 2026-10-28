@@ -3,11 +3,11 @@
 // play sound before one), loops, dips under card reveals, and pauses when the app is hidden.
 // iPhone Safari ignores an audio element’s volume, so the level goes through Web Audio (a gain node). The page’s
 // audio session is "ambient", so the ring/silent switch mutes it and it never stops the player’s own music.
-import { audioCtx } from './audio-ctx.js?v=0.1.1286';
+import { audioCtx } from './audio-ctx.js?v=0.1.1287';
 const SRC = 'assets/audio/permafrost.m4a', LEVEL = 0.15; // halved 2026-10-11 (Sevaan)
 let ctx = null, el = null, gain = null, node = null, playing = false;
 
-export const musicVolume = () => { try { const v = parseFloat(localStorage.getItem('musicVol')); return Number.isFinite(v) ? Math.max(0, Math.min(1, v)) : 0.5; } catch { return 0.5; } }; // default 50% (2026-10-19, Sevaan; was 75%)
+export const musicVolume = () => { try { const v = parseFloat(localStorage.getItem('musicVol')); return Number.isFinite(v) ? Math.max(0, Math.min(1, v)) : 0.25; } catch { return 0.25; } } /* 25% by default (2026-10-28, Sevaan) */; // default 50% (2026-10-19, Sevaan; was 75%)
 const level = () => LEVEL * musicVolume();
 // Settings slider: save and glide to the new level.
 export function setMusicVolume(v) { try { localStorage.setItem('musicVol', String(v)); } catch {} if (playing) fadeTo(level(), 0.15); }

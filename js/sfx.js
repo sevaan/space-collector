@@ -3,8 +3,8 @@
 // "Notification Sound 2" by deadrobotmusic (Freesound, CC0), softened. Files: assets/audio/sfx/<name>.mp3.
 // Decoded once into memory after the first tap, played through the shared context (js/audio-ctx.js) so they’re instant.
 // Off with Settings → Sounds and vibration (localStorage sound = '0').
-import { audioCtx } from './audio-ctx.js?v=0.1.1286';
-import { VERSION } from './version.js?v=0.1.1286';
+import { audioCtx } from './audio-ctx.js?v=0.1.1287';
+import { VERSION } from './version.js?v=0.1.1287';
 export const SFX = ['lock', 'collect', 'arrive', 'flip', 'r_common', 'r_uncommon', 'r_rare', 'r_epic', 'r_legend', 'shiny', 'seen', 'stamp', 'levelup', 'xp',
   'mission', 'rankup', 'patch', 'coinroll', 'complete', 'secret', 'fossil', 'ufo', 'welcome', 'swipe', 'step', 'toggle', 'toast', 'page', 'rattle', 'plane'];
 const BASE = new URL('../assets/audio/sfx/', import.meta.url).href;
@@ -12,7 +12,7 @@ const bufs = new Map(), last = new Map();
 let loading = null;
 // Everything plays at a quarter of the files' level (2026-10-11, Sevaan halved it twice), times the Settings volume (0–1).
 const LEVEL = 0.25; // halved again 2026-10-11
-export const sfxVolume = () => { try { const v = parseFloat(localStorage.getItem('sfxVol')); return Number.isFinite(v) ? Math.max(0, Math.min(1, v)) : 0.75; } catch { return 0.75; } }; // default 75% (2026-10-19, Sevaan)
+export const sfxVolume = () => { try { const v = parseFloat(localStorage.getItem('sfxVol')); return Number.isFinite(v) ? Math.max(0, Math.min(1, v)) : 0.5; } catch { return 0.5; } } /* 50% by default (2026-10-28, Sevaan) */; // default 75% (2026-10-19, Sevaan)
 const soundOff = () => { try { return localStorage.getItem('sound') === '0'; } catch { return false; } };
 export function loadSfx() {
   const ctx = audioCtx(); if (!ctx || loading) return loading;

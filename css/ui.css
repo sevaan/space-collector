@@ -553,8 +553,9 @@ body.nav-tabs.sky-open #tab-fade { display: none !important; }
 body.night .sc-switch, html[data-theme='night'] .sc-switch { background-color: #0c0303 !important; box-shadow: 0 0 0 1px #ff6a5526, 0 10px 24px rgba(0, 0, 0, .35) !important; }
 /* Over a page (Tonight, Settings, All around you), a notice rises from the bottom, just above the tab bar, instead of
    covering the top of the page (iPad playtest 2026-10-24: the Plus line and the TONIGHT heading went under it). */
-html body:has(.overlay.panel:not([hidden])) #toasts#toasts#toasts { top: auto !important; bottom: calc(var(--safe-bottom, 0px) + 96px) !important; clip-path: none; }
-html body:has(.overlay.panel:not([hidden])) #toasts#toasts#toasts .ticket:not(.in) { transform: translateY(calc(100% + 28px)); }
+/* Replaced (2026-10-28, Sevaan: "in the settings the notifications still appear near the bottom"): pages now sit under the
+   shared header, so a notice comes out from under it on every page, the same as on Explore. */
+html body:has(.overlay.panel:not([hidden])) #toasts#toasts#toasts, html body:has(.set-sheet:not([hidden])) #toasts#toasts#toasts { top: calc(var(--safe-top, env(safe-area-inset-top, 0px)) + 86px) !important; bottom: auto !important; flex-direction: column !important; clip-path: inset(0 -40px -100vh -40px); }
 
 /* ===== Style audit (2026-10-28) ===== */
 /* Shared main button: 12px corners like every other main button. */
