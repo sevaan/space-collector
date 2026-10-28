@@ -2802,3 +2802,132 @@ body.night .cr-row a, body.night .cr-pic a, body.night .cr-pics summary { color:
 #set-plus-sheet .set-sheet-card { overflow-x: hidden !important; overscroll-behavior-x: none; touch-action: pan-y; }
 /* No turning arrow on the Tonight hero (2026-10-27, Sevaan): the card already says where; Show me does the steering. Gets the height back. */
 #visible .nh-dir { display: none !important; }
+
+/* ---------- The Tonight page, design A (2026-10-27, Sevaan picked A from design/tonight-redesign.html) ----------
+   Night strip, one hero, Up now chips, Tonight's run with pills, missions that say where, one row to every pass. */
+#visible .sky-jump[hidden], #visible .sky-plus-line[hidden], #visible #sky-tonight-head[hidden], #visible #tonight-summary[hidden], #visible #visible-hint[hidden], #visible #next-pass-info[hidden] { display: none !important; }
+#tn-strip { margin: 14px 0 12px; }
+.tn-strip { display: block; width: 100%; padding: 0; border: 0; background: none; color: inherit; text-align: left; cursor: pointer; font: inherit; }
+.tn-strip .say { display: block; font: 500 15px/1.3 var(--label); color: var(--muted); margin: 0 0 8px; text-wrap: pretty; }
+.tn-strip .say b { font-weight: 600; color: var(--text); } .tn-strip .say em { font-style: normal; color: var(--gold); font-weight: 600; }
+.tn-strip .bars { position: relative; display: flex; align-items: flex-end; gap: 3px; height: 46px; padding-top: 6px; border-bottom: 1px solid #ffffff22; }
+.tn-strip .bars i { flex: 1; min-width: 0; border-radius: 2px 2px 0 0; background: #3a4d6b; position: relative; z-index: 1; }
+.tn-strip .bars i.past { opacity: .45; } .tn-strip .bars i.best { background: var(--gold); }
+.tn-strip .bars i.cl { background: repeating-linear-gradient(135deg, #8fa3b866 0 2px, #3a4d6b 2px 5px); }
+.tn-strip .bars i.sk { height: 30%; background: #22344a; animation: tn-sk 1.4s ease-in-out infinite alternate; }
+.tn-strip .band { position: absolute; top: 0; bottom: 0; border-radius: 4px; background: #fa81271f; }
+.tn-strip .star { position: absolute; top: -6px; transform: translateX(-50%); font-size: 12px; line-height: 1; color: #e7b75f; z-index: 2; }
+.tn-strip .nowm { position: absolute; top: -4px; bottom: -2px; width: 0; border-left: 1.5px solid var(--text); z-index: 3; }
+.tn-strip .nowm::before { content: ''; position: absolute; top: -3px; left: -4.25px; width: 7px; height: 7px; border-radius: 50%; background: var(--text); }
+.tn-strip .ax { position: relative; display: flex; justify-content: space-between; margin-top: 5px; font: 500 11px/1 var(--label); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.tn-strip .ax .mid { position: absolute; top: 0; transform: translateX(-50%); }
+.tn-strip.cloudy .say b { color: var(--muted); }
+.tn-strip:active .bars { opacity: .8; }
+@keyframes tn-sk { to { opacity: .45; } }
+@media (prefers-reduced-motion: reduce) { .tn-strip .bars i.sk { animation: none; } }
+/* Hero: the time once (the countdown, then the clock time with where). Compact by day: no countdown. */
+.nh-where { font: 600 13.5px/1.25 var(--label); color: var(--text); }
+.now-hero.compact { padding: 12px; gap: 4px; }
+.now-hero.compact .nh-card { width: 76px; --mini-s: .2714; }
+.now-hero.compact .nh-name { font-size: 18px; }
+#visible .nh-bell.free, #visible .tn-r .bell.free { border-color: #5fd08a88; color: #5fd08a; opacity: 1; }
+/* State heroes: day, cloudy, quiet */
+.tn-wx { margin: 14px 0 0; padding: 14px; border-radius: 18px; border: 1px solid #8fa3b844; background: linear-gradient(#111d2e, #0c1626); }
+.tn-wx.day { border-color: #e7b75f55; background: radial-gradient(ellipse at 20% 0%, #e7b75f1c, transparent 70%), #0e1a29; }
+.tn-wx.quiet { border-color: #3a4d6b; }
+.tn-wx .k { display: flex; gap: 8px; align-items: center; font: 600 12px/1 var(--label); letter-spacing: .18em; text-transform: uppercase; color: var(--muted); }
+.tn-wx .k.gold { color: #e7b75f; } .tn-wx.quiet .k .ico { color: #e7b75f; }
+.tn-wx h3 { margin: 8px 0 4px; font: 400 22px/1.08 var(--display); color: var(--text); }
+.tn-wx p { margin: 0; font: 500 14px/1.35 var(--label); color: var(--text); text-wrap: pretty; }
+.tn-wx p.small { margin-top: 8px; font-size: 12.5px; color: var(--muted); }
+.tn-wx .acts { display: flex; gap: 8px; margin-top: 12px; }
+.tn-btn { flex: 1; display: inline-flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 46px; padding: 0 16px; border-radius: 999px; font: 600 13px/1.1 var(--label); letter-spacing: .12em; text-transform: uppercase; cursor: pointer; }
+.tn-btn > span:first-child { display: inline-flex; align-items: center; gap: 8px; text-align: left; }
+.tn-btn.solid { background: var(--gold); border: 1px solid var(--gold); color: var(--ink-on-gold); }
+.tn-btn.solid .free { font-size: 11px; opacity: .8; }
+.tn-btn.o { justify-content: center; background: #fa81271f; border: 1px solid var(--gold); color: var(--gold); }
+.tn-btn.done { background: #0e1a29; color: var(--gold); }
+.tn-btn .ico-svg svg { width: 18px; height: 18px; display: block; }
+.tn-btn .plus, .tn-more .plus { font: 600 10px/1 var(--label); letter-spacing: .12em; padding: 3px 5px; border-radius: 4px; background: #e7b75f; color: #0b1018; margin-left: 6px; }
+.tn-wx .nights { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin: 12px 0 2px; }
+.tn-wx .nights div { border: 1px solid #ffffff1c; border-radius: 10px; padding: 7px 4px; text-align: center; font: 500 11px/1.2 var(--label); letter-spacing: .08em; color: var(--muted); text-transform: uppercase; overflow: hidden; }
+.tn-wx .nights b { display: block; font: 400 15px/1.2 var(--display); letter-spacing: 0; color: var(--text); margin: 3px 0 1px; text-transform: none; }
+.tn-wx .nights .ok { border-color: #5fd08a88; color: #5fd08a; background: #5fd08a12; }
+.tn-teach { display: flex; gap: 10px; align-items: flex-start; padding: 11px 12px; border-radius: 14px; background: #0b1626; border: 1px solid #22344a; margin-top: 10px; font: 500 13.5px/1.3 var(--label); color: var(--text); }
+.tn-teach .ic { flex: none; width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: #e7b75f1f; color: #e7b75f; font: 400 14px/1 var(--display); }
+.tn-teach b { display: block; font: 600 11px/1 var(--label); letter-spacing: .16em; text-transform: uppercase; color: #e7b75f; margin-bottom: 4px; }
+/* Section heads */
+.tn-sec { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin: 22px 0 6px; }
+.tn-sec .k { font: 600 12px/1 var(--label); letter-spacing: .18em; text-transform: uppercase; color: var(--gold); }
+.tn-sec .k.m { color: var(--muted); }
+.tn-sec > span:last-child { font: 600 11.5px/1 var(--label); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+/* Up now: one row of chips */
+.tn-up { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; margin: 4px -20px 0; padding: 0 20px 2px; }
+.tn-up::-webkit-scrollbar { display: none; }
+.tn-chip { flex: none; display: flex; gap: 8px; align-items: center; min-height: 48px; max-width: 220px; padding: 4px 12px 4px 6px; border-radius: 12px; border: 1px solid #22344a; background: #0b1626; color: inherit; text-align: left; cursor: pointer; font: inherit; }
+.tn-chip i { flex: none; width: 28px; height: 28px; border-radius: 50%; background: #16243a; display: grid; place-items: center; font: 500 13px/1 var(--label); font-style: normal; color: var(--c, var(--muted)); }
+.tn-chip > span { min-width: 0; }
+.tn-chip b { display: block; font: 600 14px/1.15 var(--label); color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tn-chip small { display: block; font: 500 12px/1.2 var(--label); color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tn-chip.seen { border-style: dashed; opacity: .75; }
+.tn-chip:active { background: #13213a; }
+/* Tonight's run */
+.tn-run { position: relative; }
+.tn-r { position: relative; display: grid; grid-template-columns: 52px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 10px 0; border-top: 1px solid #ffffff12; cursor: pointer; }
+.tn-r .t b { display: block; font: 400 16px/1 var(--display); color: var(--text); font-variant-numeric: tabular-nums; }
+.tn-r .t small { display: block; margin-top: 5px; font: 600 11.5px/1.1 var(--label); letter-spacing: .04em; color: var(--muted); }
+.tn-r .t small.soon { color: var(--gold); }
+.tn-r .n > b { display: block; font: 600 15.5px/1.15 var(--label); color: var(--text); overflow-wrap: anywhere; }
+.tn-r .n > b span { color: var(--muted); font-weight: 500; }
+.tn-r .n .w { font: 500 13px/1.25 var(--label); color: var(--muted); margin-top: 2px; }
+.tn-r .n .w .g { color: var(--c); }
+.tn-r .acts { display: flex; gap: 4px; }
+.tn-r .acts .ic { width: 44px; height: 44px; display: grid; place-items: center; border-radius: 50%; border: 1px solid #22344a; background: #ffffff08; color: var(--text); padding: 0; cursor: pointer; }
+.tn-r .acts .bell.on { color: var(--gold); border-color: var(--gold); }
+.tn-r .acts .bell.on .fillme { fill: currentColor; }
+.tn-r.next { margin: 2px -10px; padding: 10px; border-radius: 14px; border: 1px solid #fa812755; background: #fa81270d; }
+.tn-r.next + .tn-r, .tn-r.next + .tn-part { border-top-color: transparent; }
+.tn-r.next .showme { border-color: var(--gold); color: var(--gold); background: #fa81271a; }
+.tn-r.moment, .tn-r.pin { grid-template-columns: 52px minmax(0, 1fr); padding: 8px 0; cursor: default; }
+.tn-r.moment .t b { font-size: 13.5px; color: var(--muted); }
+.tn-r.moment .n { font: 500 13.5px/1.25 var(--label); color: var(--muted); display: flex; align-items: center; gap: 6px; }
+.tn-r.pin { cursor: pointer; } .tn-r.pin .t b, .tn-r.pin .n { color: #e7b75f; } .tn-r.pin .n { font: 600 14px/1.25 var(--label); }
+.tn-part { font: 600 11.5px/1 var(--label); letter-spacing: .18em; text-transform: uppercase; color: var(--muted); padding: 16px 0 6px; border-top: 1px solid #ffffff12; }
+.tn-run.grey .tn-r { opacity: .55; }
+.tn-pills { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+.tn-r .tn-pill { display: inline-flex; align-items: center; padding: 3px 7px; border-radius: 6px; background: #ffffff0f; font: 600 12px/1.15 var(--label); letter-spacing: .03em; color: var(--text); white-space: nowrap; }
+.tn-r .tn-pill.xp { color: #5fd08a; } .tn-r .tn-pill.sh { color: #f3b5ec; background: #e46ad61f; } .tn-r .tn-pill.ms { color: #e7b75f; background: #e7b75f1a; }
+.tn-r .tn-pill.wk { color: #7fd6c8; background: #3cb4a01a; } .tn-r .tn-pill.lv { color: #d9dde3; background: #c0c8d41f; } .tn-r .tn-pill.hd { color: #e7b75f; background: #e7b75f26; }
+.tn-r .tn-pill.lc { color: #ff8f7a; background: #ff6a5520; } .tn-r .tn-pill.rn { color: #7fd6c8; background: #3cb4a01a; } .tn-r .tn-pill.tr { color: #9be37f; background: #5fd08a18; } .tn-r .tn-pill.gh { color: #9be37f; background: #5fd08a18; }
+.tn-more { display: flex; width: 100%; justify-content: space-between; align-items: center; gap: 10px; min-height: 48px; padding: 0 2px; border: 0; border-top: 1px solid #ffffff12; background: none; font: 500 14.5px/1.2 var(--label); color: var(--text); text-align: left; cursor: pointer; }
+.tn-more > span { display: inline-flex; align-items: center; gap: 6px; }
+.tn-more > b { color: var(--gold); font-weight: 600; letter-spacing: .12em; font-size: 12.5px; text-transform: uppercase; white-space: nowrap; }
+.tn-more.tn-all { margin-top: 10px; }
+/* Missions say where */
+.tn-ms { display: grid; grid-template-columns: 18px minmax(0, 1fr) auto; gap: 8px; align-items: start; width: 100%; padding: 10px 0; border: 0; border-top: 1px solid #ffffff12; background: none; color: inherit; text-align: left; font: inherit; }
+button.tn-ms { cursor: pointer; } button.tn-ms:active { background: #ffffff06; }
+.tn-ms > i { width: 11px; height: 11px; border: 1.5px solid #e7b75f; transform: rotate(45deg); margin: 4px 0 0 2px; }
+.tn-ms b { display: block; font: 600 15px/1.2 var(--label); color: var(--text); }
+.tn-ms small { display: block; font: 500 13px/1.3 var(--label); color: var(--muted); margin-top: 2px; } .tn-ms small em { font-style: normal; color: var(--gold); }
+.tn-ms .xp { font: 600 12.5px/1 var(--label); letter-spacing: .06em; color: #5fd08a; padding-top: 3px; }
+.tn-ms.done { opacity: .6; } .tn-ms.done > i { background: #e7b75f; } .tn-ms.done b { text-decoration: line-through; text-decoration-color: #ffffff55; }
+.tn-ms.wk > i { border-color: #7fd6c8; } .tn-ms.wk .xp { color: #7fd6c8; }
+.tn-ms.ev > i { border-color: #b8a4ff; border-radius: 50%; transform: none; } .tn-ms.gh > i { border-color: #9be37f; }
+#visible .tn-r .needs-plus, #visible .nh-bell.needs-plus { opacity: .45; }
+/* Red night mode: rarity colours become the night's red, like the rest of the page */
+body.night :is(.tn-r, .tn-chip) { --c: var(--gold) !important; }
+body.night :is(.tn-r .tn-pill, .tn-ms small em, .tn-ms .xp, .tn-strip .star, .tn-r.pin .t b, .tn-r.pin .n, .tn-wx .k.gold, .tn-teach b, .tn-teach .ic) { color: var(--gold) !important; }
+body.night :is(.tn-r .tn-pill) { background: #2a0d0a !important; }
+body.night .tn-strip .bars i { background: #4a1b17; } body.night .tn-strip .bars i.best { background: var(--gold); }
+body.night :is(.tn-wx, .tn-teach, .tn-chip) { background: #120606; border-color: var(--edge-soft); }
+body.night .tn-ms > i { border-color: var(--gold); }
+body.night .tn-btn .plus, body.night .tn-more .plus { background: var(--gold); }
+body.night :is(#visible .nh-bell.free, #visible .tn-r .bell.free, .tn-wx .nights .ok) { color: var(--gold); border-color: var(--gold); }
+/* Book (iPhone Duo unfolded, iPads): hero and run on the left page, missions and the full list on the right */
+@media (min-width: 820px) and (min-height: 560px) and (orientation: landscape), (min-width: 600px) and (min-height: 900px) and (orientation: portrait) {
+  #sky-later .tn-sec:first-child, #sky-later #tonight-list > .tn-sec:first-child { margin-top: 4px; }
+  .tn-up { margin-left: 0; margin-right: 0; padding: 0 0 2px; }
+}
+#visible .tn-wx h3 { text-transform: none; letter-spacing: 0; }
+.b-alarm.needs-plus { position: absolute; } /* .needs-plus set position: relative and pulled the hidden alarm out from under each row in the full list (found 2026-10-27) */
+#sky-later #tonight-list > .tn-run:first-child > .tn-sec:first-child { margin-top: 4px; }
