@@ -1823,5 +1823,36 @@
    "https://en.wikipedia.org/wiki/CBERS-1"
   ],
   "description": "China-Brazil Earth-resources satellite (CAST Phoenix-Eye 1 bus, 1,450 kg). Body is an upright rectangular box 1.8 x 2.0 x 2.2 m, wrapped almost entirely in bright yellow-gold foil, made of a lower service module and an upper payload module with a horizontal band between them. A single large deployable solar wing (one side only) sticks out from one upper side on a short angled yoke: 6.3 m long by 2.6 m wide, three tall rectangular panels side by side, deep blue cells with thin lighter panel gaps; the wing is much bigger than the body. On the Earth-facing bottom face: the CCD camera and infrared scanner apertures, a WFI wide-field camera, small thruster clusters, and several antennas, including a long straight downward rod (UHF/VHF) and short stubby S-band and UHF antennas at the lower corners; a small sun sensor and two short rod antennas on top. Silhouette: a gold box with one big blue rectangular sail."
+ },
+ "draw-diamant-a": {
+  "ids": [
+   1805,
+   2017,
+   2671,
+   2682
+  ],
+  "refs": [
+   "http://marc.mistral.free.fr/aventure/lrba/diamant/histoire%20diamants%20a/histoire%20diamant%20a.htm",
+   "http://marc.mistral.free.fr/aventure/lrba/diamant/histoire%20diamants%20a/diamantA_dessin_etage_3_small.jpg",
+   "https://fr.wikipedia.org/wiki/Diamant_(fusée)",
+   "https://en.wikipedia.org/wiki/Diamant",
+   "https://commons.wikimedia.org/wiki/File:Satellite_Astérix_sur_son_adaptateur.jpg",
+   "https://commons.wikimedia.org/wiki/File:Maquette_du_satellite_Astérix_IAC_2022.jpg",
+   "https://commons.wikimedia.org/wiki/Category:Diamant_at_the_Musée_de_l'Air"
+  ],
+  "description": "A spent solid-rocket upper stage drifting and slowly tumbling in orbit, no flame, no exhaust. A plain, slender cylinder about 2.0 m long overall and 0.66 m in diameter (roughly 3 to 1), made of filament-wound fibreglass with a smooth matte off-white ablative outer coating, faint helical winding texture, a few thin circumferential seams. Forward end: a short cylindrical skirt the same diameter, capped by a shallow domed cover with one small knob-like pressure fitting and a small stub radar-transponder antenna on the rim; on top sits an empty open payload adapter, a short squat white aluminium cone about 0.55 m across with four round lightening holes and a bolted ring, satellite gone. Aft end: a short open cylindrical skirt around the rounded rear dome, from which a single fixed nozzle protrudes about 0.4 m, an egg-cup-shaped flared bell nearly half the stage diameter at its mouth, dark charred brown-black composite. No fins, no fairing, no equipment bay, no spin rockets, no solar panels, no markings visible. The adapter cone sits on the FRONT END of the stage, in line with the cylinder’s axis, opposite the nozzle; nothing is attached to the side of the cylinder."
+ },
+ "draw-diamant-bp4": {
+  "ids": [
+   7647
+  ],
+  "refs": [
+   "http://marc.mistral.free.fr/aventure/lrba/diamant/histoire%20diamants%20b/histoire%20diamant%20b.htm",
+   "http://marc.mistral.free.fr/aventure/lrba/diamant/histoire%20diamants%20b/diamantB_dessin_etage_3_small.jpg",
+   "http://marc.mistral.free.fr/aventure/lrba/diamant/histoire%20diamants%20b/diamantBP4_dessin_etage_2_et_3_small.jpg",
+   "https://fr.wikipedia.org/wiki/Diamant_(fusée)",
+   "https://en.wikipedia.org/wiki/Diamant"
+  ],
+  "description": "A spent solid-rocket upper stage drifting and slowly tumbling in orbit, no flame, no exhaust. A stubby plain cylinder about 1.7 m long for the body and 0.80 m in diameter, about 2.1 m with the nozzle (roughly 2.6 to 1, noticeably fatter than a pencil), made of filament-wound fibreglass with a smooth matte off-white ablative outer coating, faint helical winding texture, thin circumferential seams. Forward end: a short cylindrical skirt the same diameter housing a narrow ring of electronics, closed by a shallow domed cover with a small stub antenna on its rim; on top an empty, short, open conical payload adapter ring about half the stage diameter, the small spherical satellite gone. Aft end: a short open cylindrical skirt around the rounded rear dome; a single fixed nozzle protrudes about 0.4 m, a flared egg-cup-shaped bell in dark charred brown-black composite. No fins, no fairing, no equipment bay, no spin rockets, no solar panels, no markings visible."
  }
 }
