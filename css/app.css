@@ -3334,3 +3334,9 @@ body.night .mc { box-shadow: 0 0 0 1.5px #ff6a55; }
 .sw-card .face { position: absolute; inset: 0; border-radius: 4px; overflow: hidden; box-shadow: 0 0 0 1.5px var(--c); }
 .sw-card .face .mini-face { --mini-s: .1214; } .sw-card.lead .face .mini-face { --mini-s: .1571; }
 .sw-card .tm { position: absolute; left: 50%; top: 100%; transform: translateX(-50%) rotate(6deg); margin-top: 5px; white-space: nowrap; font: 600 11px var(--label); color: #fff2b3; text-shadow: 0 1px 4px #070f1d; }
+/* Mission cards, round 2 (2026-10-29, Sevaan): the picture takes the free space (4:3 at least, never cropped to a strip),
+   the words sit under it with no gap, and nothing is greyed out. */
+.mc { min-height: 0; opacity: 1 !important; color: inherit !important; }
+.mc .art { flex: 1 1 auto; height: auto; min-height: 0; aspect-ratio: 4 / 3; background-size: cover; background-position: center; }
+.mc b { flex: none; padding-top: 6px; } .mc small { flex: none; margin-top: 3px; }
+.mc .art.empty { aspect-ratio: 4 / 3; }
