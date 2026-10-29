@@ -2210,3 +2210,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - **Card viewer:** the bottom room is !important (the base rule's !important won), so "Preview artwork" under an uncollected card isn't cut off.
 - 2026-10-29 · v0.1.1396 (Sevaan): the Night 2 card's app icon is 32 px (was 44).
 - 2026-10-29 · v0.1.1397: the Night 2 card adds 'Cloud is forecast then, so look for a gap.' when its pass is under forecast cloud.
+- 2026-10-29 · v0.1.1398 (Sevaan): sky window paths are drawn from 7° up, so the climb off the horizon doesn't draw as a hook.
