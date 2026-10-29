@@ -3,8 +3,8 @@
 // on the website, because adsb.lol doesn’t allow browser requests directly. The airline comes from the callsign's prefix.
 // No DOM here. Positions are extrapolated between fetches using ground speed, track and climb rate.
 
-import { SERVER } from './server.js?v=0.1.1299';
-import { plugin } from './native.js?v=0.1.1299';
+import { SERVER } from './server.js?v=0.1.1300';
+import { plugin } from './native.js?v=0.1.1300';
 // Empty = feature off. localStorage 'planeRelay' overrides it (testing). Our server's /planes (adsb.lol only) once it's
 // deployed; until then the Val Town relay (relay/handler.ts).
 const RELAY = SERVER ? `${SERVER}/planes` : 'https://sevaan--cd67f53abd3511f18ee51607ee4eb77e.web.val.run'; // relay/handler.ts on Val Town
@@ -116,11 +116,14 @@ export class PlaneTracker {
   // Airline + origin/destination for a callsign, or null. Cached; undefined while loading.
   route(callsign) {
     if (!callsign || !/^[A-Z]{3}\d/.test(callsign)) return null; // registrations (private planes) have no route
-    // No route lookup any more (2026-10-25: adsbdb's route data isn't licensed for an app that sells a subscription):
-    // the airline from the callsign's prefix and the flight number.
+    // The airline from the callsign's prefix, and the usual route from our server (2026-10-28, Sevaan): Virtual Radar
+    // Server's standing data (CC0) by callsign. Only the callsign is sent. adsbdb was dropped 2026-10-25 for its licence.
     if (this.routes.has(callsign)) return this.routes.get(callsign);
     const airline = airlineFor(callsign, null), r = airline ? { airline, flight: callsign, from: '', to: '' } : null;
-    this.routes.set(callsign, r); return r;
+    this.routes.set(callsign, r); if (this.routes.size > 300) this.routes.delete(this.routes.keys().next().value);
+    if (r && SERVER) fetch(`${SERVER}/route?cs=${encodeURIComponent(callsign)}`, { signal: AbortSignal.timeout?.(8000) })
+      .then((x) => (x.ok ? x.json() : null)).then((j) => { const st = j?.route; if (st?.length >= 2) { const nm = (a) => a.city || a.iata || a.icao; r.from = nm(st[0]); r.to = nm(st[st.length - 1]); } }).catch(() => {});
+    return r;
   }
 }
 

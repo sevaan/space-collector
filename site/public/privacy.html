@@ -33,7 +33,7 @@
   <h2>Your location</h2>
   <p>Space Collector needs to know roughly where you are to show what’s in your sky, and it works the sky out on your phone. On iPhone it asks for your precise location, so planes overhead are labelled in the right spot; you can turn Precise Location off when it asks, or later in Settings, and everything else works just the same. On Android it asks for approximate location only. One thing needs a rounded position (about 1 km to 10 km), which it shares with:</p>
   <ul>
-    <li><b>our server</b> (at spacecollector.app, run on Google Cloud for Space Collector), which gets the weather forecast for your area from <b>MET Norway</b> and asks the public flight-tracking network <b>adsb.lol</b> for aircraft near you, so the app can say “Just a plane”. It doesn’t keep a record of where you were. Searching for a place by name in Settings happens on your phone, from a list of cities built into the app.</li>
+    <li><b>our server</b> (at spacecollector.app, run on Google Cloud for Space Collector), which gets the weather forecast for your area from <b>MET Norway</b> and asks the public flight-tracking network <b>adsb.lol</b> for aircraft near you, so the app can say “Just a plane”. To show where a flight is going, the app sends our server only that flight’s number (like ACA851); its usual route comes from Virtual Radar Server’s public route list. It doesn’t keep a record of where you were. Searching for a place by name in Settings happens on your phone, from a list of cities built into the app.</li>
   </ul>
   <p>You can choose a place by hand instead in Settings, and the app works without your location at all (it shows an example sky).</p>
 

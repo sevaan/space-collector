@@ -5,6 +5,7 @@
 //   GET  /api/wx?lat&lon        MET Norway (CC BY 4.0), reshaped for js/weather.js; cached 30 min per 0.1°
 //   GET  /api/planes?lat&lon&dist   adsb.lol (ODbL); cached 8 s
 //   GET  /api/catalog, /api/comets  the repo's daily files (the phone apps keep fresh data with them); cached 3 h
+//   GET  /api/route?cs=ACA851   usual route for an airline callsign, from Virtual Radar Server's standing data (CC0); cached a day
 //   POST /api/t                 anonymous usage reports → Firestore collection sc_events
 //   GET  /api/stats?key=…       the dashboard (?all=1 includes test builds); the key is the STATS_KEY env var
 import functions from '@google-cloud/functions-framework';
@@ -83,7 +84,8 @@ functions.http('api', async (req, res) => {
     if (path === '/stats' && req.method === 'GET') { if (!process.env.STATS_KEY || req.query.key !== process.env.STATS_KEY) return res.status(404).send('not found'); res.set('Content-Type', 'text/html; charset=utf-8'); res.set('Cache-Control', 'private, no-store'); return res.send(await stats(req.query.all === '1')); }
     if (path === '/t' && req.method === 'POST') { if (!ok) return res.status(403).send('Forbidden'); if (limited(req, 't', 20)) return res.status(429).send('slow down'); return res.status(await report(typeof req.body === 'string' ? req.body : req.rawBody?.toString() ?? JSON.stringify(req.body))).send(''); }
     if (!ok && origin) return res.status(403).send('Forbidden');
-    if ((path === '/wx' || path === '/planes') && limited(req, 'q', 60)) return res.status(429).send('slow down');
+    if ((path === '/wx' || path === '/planes' || path === '/route') && limited(req, 'q', 60)) return res.status(429).send('slow down');
+    if (path === '/route') { const cs = String(req.query.cs ?? '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 8); return /^[A-Z]{3}\d/.test(cs) ? json(await route(cs), 86400) : res.status(400).send('bad callsign'); }
     if (path === '/wx') { const p = coord(req.query); return p ? json(await weather(p), 1800) : res.status(400).send('bad lat/lon'); }
     if (path === '/planes') { const p = coord(req.query), d = Math.min(100, Math.max(1, Math.round(Number(req.query.dist ?? 40)))); return p ? json(await planes(p, d), 8) : res.status(400).send('bad lat/lon'); }
     if (path === '/catalog') { res.set('Access-Control-Allow-Origin', '*'); return json(await repoFile('data/catalog.json'), 3 * 3600); }
@@ -91,6 +93,33 @@ functions.http('api', async (req, res) => {
     return res.status(404).send('not found');
   } catch (e) { return res.status(502).send(`error: ${String(e?.message ?? e).slice(0, 200)}`); }
 });
+
+// Flight routes (2026-10-28, Sevaan): Virtual Radar Server's standing data, CC0 (github.com/vradarserver/standing-data).
+// One CSV per airline (routes/schema-01/A/ACA-all.csv: Callsign,…,AirportCodes "CYYZ-RJTT") and one per two-letter
+// ICAO prefix for airports. Fetched on demand and kept a day per instance; only the callsign is ever asked about.
+const SD = 'https://raw.githubusercontent.com/vradarserver/standing-data/main/';
+const sdMem = new Map();
+async function sdCsv(file) {
+  const h = sdMem.get(file); if (h && Date.now() - h.at < 864e5) return h.rows;
+  let rows = new Map();
+  try {
+    const r = await fetch(SD + file, { headers: { 'User-Agent': UA }, signal: AbortSignal.timeout(6000) });
+    if (r.ok) { const lines = (await r.text()).replace(/^\uFEFF/, '').split(/\r?\n/).filter(Boolean), head = lines.shift().split(',');
+      for (const l of lines) { const v = l.split(','); const o = {}; head.forEach((k, i) => (o[k] = v[i])); rows.set(v[0], o); } }
+    else if (r.status !== 404) return h?.rows ?? new Map();
+  } catch { return h?.rows ?? new Map(); }
+  sdMem.set(file, { at: Date.now(), rows }); if (sdMem.size > 400) sdMem.delete(sdMem.keys().next().value);
+  return rows;
+}
+async function route(cs) {
+  const code = cs.slice(0, 3), row = (await sdCsv(`routes/schema-01/${code[0]}/${code}-all.csv`)).get(cs);
+  if (!row?.AirportCodes) return JSON.stringify({ cs, route: null });
+  const stops = await Promise.all(row.AirportCodes.split('-').filter(Boolean).slice(0, 6).map(async (c) => {
+    const a = (await sdCsv(`airports/schema-01/${c[0]}/${c.slice(0, 2)}.csv`)).get(c);
+    return { icao: c, iata: a?.IATA || null, name: a?.Name || null, city: a?.Location || null, cc: a?.CountryISO2 || null };
+  }));
+  return JSON.stringify({ cs, route: stops });
+}
 
 async function statsHtml(env, all) {
   const W = all ? "1=1" : "x = 0";
