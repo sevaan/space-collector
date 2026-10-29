@@ -3221,3 +3221,17 @@ body.night #debug .notes-off .set-main { color: #ff7f70; }
 .tnp-job.dusk .now-hero, .tnp-job.dawn .now-hero, .tnp-job.all .now-hero { margin-top: 8px; }
 .tnp-job.dusk .tnp-fades, .tnp-job.dawn .tnp-fades, .tnp-job.all .tnp-fades { margin: 12px 2px 0; }
 .tnp-job.cloudy .tnp-cloud { margin: 6px 2px 0; }
+/* Rain and snow in the night chart: patterns that repeat every 12 / 14 px, moved down exactly that far and started
+   again, on the compositor (2026-10-29, Sevaan: the rain was janky). Still under Reduce Motion. */
+.tnr-wx .tnr-rain { animation: tnrRain .36s linear infinite; will-change: transform; }
+.tnr-wx .tnr-snow { animation: tnrSnow 2.6s linear infinite; will-change: transform; }
+.tnr-wx .tnr-sway { animation: tnrSway 3.2s ease-in-out infinite alternate; }
+@keyframes tnrRain { from { transform: translateY(0); } to { transform: translateY(12px); } }
+@keyframes tnrSnow { from { transform: translateY(0); } to { transform: translateY(14px); } }
+@keyframes tnrSway { from { transform: translateX(-1.5px); } to { transform: translateX(1.5px); } }
+@media (prefers-reduced-motion: reduce) { .tnr-wx .tnr-rain, .tnr-wx .tnr-snow, .tnr-wx .tnr-sway { animation: none; } }
+/* Up now chips carry a tiny real card (2026-10-29, Sevaan). 30 × 45 px: the card at 280 px scaled by --mini-s. */
+.tn-chip { padding-left: 5px; min-height: 56px; }
+.tn-chip-mini { flex: none; width: 30px; height: 45px; --mini-s: .1072; border-radius: 3px; overflow: hidden; box-shadow: 0 1px 4px #0008; }
+.tn-chip-mini .mini-face { --mini-s: .1072; }
+.tn-chip-mini .card__art .art-locked, .tn-chip-mini .mini-face.locked .card__art img { filter: blur(2px) brightness(.85); }
