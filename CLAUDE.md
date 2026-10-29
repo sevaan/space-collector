@@ -2211,3 +2211,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - 2026-10-29 · v0.1.1396 (Sevaan): the Night 2 card's app icon is 32 px (was 44).
 - 2026-10-29 · v0.1.1397: the Night 2 card adds 'Cloud is forecast then, so look for a gap.' when its pass is under forecast cloud.
 - 2026-10-29 · v0.1.1398 (Sevaan): sky window paths are drawn from 7° up, so the climb off the horizon doesn't draw as a hook.
+- 2026-10-29: Build 1.0 (43) archived (web v0.1.1398: build-42 playtest fixes: headliner/busiest by forecast, shared tonight reminder in the sheet, Plus over the card viewer, Earth as the dusk first catch, Night 2 icon/cloud line, gentler sky-window paths). Opened in Organizer, not uploaded. SC Tester reinstalled with v0.1.1398.
