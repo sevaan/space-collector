@@ -3452,3 +3452,9 @@ body.night .tn-chip.tile .tn-chip-mini em { background: #ff6a55; color: #120606;
 .tn-ms .xp .ev-bell.on { background: #fa8127; border-color: #fa8127; color: #0b1018; }
 .tn-ms .xp .ev-bell.needs-plus { opacity: .7; }
 body.night .tn-ms .xp .ev-bell.on { background: #ff6a55; border-color: #ff6a55; color: #120606; }
+
+/* The sky window's bell by day, the same reminder as Explore's until-dark bell (2026-10-29, Sevaan) */
+.sw-bell { position: absolute; z-index: 5; top: 14px; right: 16px; width: 44px; height: 44px; padding: 0; border-radius: 12px; border: 1px solid #ffffff33; background: #0b1018b3; color: #fff2b3; display: grid; place-items: center; cursor: pointer; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+.sw-bell svg { width: 20px; height: 20px; }
+.sw-bell.on { background: #fa8127; border-color: #fa8127; color: #0b1018; }
+body.night .sw-bell.on { background: #ff6a55; border-color: #ff6a55; color: #120606; }
