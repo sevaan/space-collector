@@ -1,25 +1,25 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { fallWords } from './last-chance.js?v=0.1.1310';
-import { useMiles } from './units.js?v=0.1.1310';
-import { feel } from './native.js?v=0.1.1310';
-import { sfx } from './sfx.js?v=0.1.1310';
-import { cardArt } from './art.js?v=0.1.1310';
-import { TIER_INFO } from './rarity.js?v=0.1.1310';
-import { SET_BY_ID } from './sets.js?v=0.1.1310';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.1310';
-import { FLEET_ABOUT, fleetAbout, factSourceUrl, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.1310';
-import { artFileFor } from './art-keys.js?v=0.1.1310';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.1310';
-import { orbitGlobe } from './orbit-view.js?v=0.1.1310';
-import { ART_SHARED } from './art-shared.js?v=0.1.1310';
-import { ART_CREDITS } from './art-credits.js?v=0.1.1310';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.1310';
-import { nightsIn } from './observation.js?v=0.1.1310';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.1310';
-import { SHINY } from './shiny.js?v=0.1.1310';
-import { conArt, cometArt } from './con-art.js?v=0.1.1310';
-import { CON_FIGURES } from './con-figures.js?v=0.1.1310';
-import { localText } from './localize.js?v=0.1.1310';
+import { fallWords } from './last-chance.js?v=0.1.1311';
+import { useMiles } from './units.js?v=0.1.1311';
+import { feel } from './native.js?v=0.1.1311';
+import { sfx } from './sfx.js?v=0.1.1311';
+import { cardArt } from './art.js?v=0.1.1311';
+import { TIER_INFO } from './rarity.js?v=0.1.1311';
+import { SET_BY_ID } from './sets.js?v=0.1.1311';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.1311';
+import { FLEET_ABOUT, fleetAbout, factSourceUrl, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.1311';
+import { artFileFor } from './art-keys.js?v=0.1.1311';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.1311';
+import { orbitGlobe } from './orbit-view.js?v=0.1.1311';
+import { ART_SHARED } from './art-shared.js?v=0.1.1311';
+import { ART_CREDITS } from './art-credits.js?v=0.1.1311';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.1311';
+import { nightsIn } from './observation.js?v=0.1.1311';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.1311';
+import { SHINY } from './shiny.js?v=0.1.1311';
+import { conArt, cometArt } from './con-art.js?v=0.1.1311';
+import { CON_FIGURES } from './con-figures.js?v=0.1.1311';
+import { localText } from './localize.js?v=0.1.1311';
 // The animal/symbol figure belongs to the completed (gold) constellation card only (2026-10-05): a single
 // star’s card draws just the star pattern with its star marked, so the figure is a reward for finishing the set.
 // A star card’s constellation figure comes into focus as you collect the constellation’s stars (design/con-focus.html B).
@@ -556,7 +556,7 @@ export function attachFlip(el, { onBack, onTap = orbitTap(el) } = {}) {
   const born = performance.now(); let armed = false;
   let downAt = 0;
   el.addEventListener('pointerdown', (e) => { downX = e.clientX; downY = e.clientY; downAt = performance.now(); armed = downAt - born > 700; });
-  const still = (e) => { const ok = armed && performance.now() - downAt < 600 && Math.hypot(e.clientX - downX, e.clientY - downY) < 10; armed = false; return ok; }; /* one real, quick tap on the card, once (2026-10-28: the orbit must never open by itself) */
+  const still = (e) => { const ok = armed && performance.now() - downAt < 300 && Math.hypot(e.clientX - downX, e.clientY - downY) < 8; /* a quick tap, not a press to tilt (2026-10-28, Sevaan) */ armed = false; return ok; }; /* one real, quick tap on the card, once (2026-10-28: the orbit must never open by itself) */
   const back = el.querySelector('.card__back');
   // Smooth back-and-forth (2026-10-14, Sevaan: flipping back and forth was janky): the old animation is dropped instead
   // of piling up (each one used to stay with fill: forwards), the faces swap on the frame the card is edge-on (read from
