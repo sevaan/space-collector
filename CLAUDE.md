@@ -2220,3 +2220,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - 2026-10-29 · v0.1.1404 (Sevaan):
   - **Night 2 card:** no "See the missions" button; its text runs the full width (normal wrapping, not text-wrap: pretty).
   - **Night part drop-down** (.tnx-list): no lighter box. Its rows sit on the page, indented under the part with a thin line down the left.
+- 2026-10-29 · v0.1.1405 (Sevaan: the text changed while he was reading it): the Night 2 card's line is kept for the night once shown (localStorage n2Text {night, lead, until}); it changes only after the pass it names has gone by.
