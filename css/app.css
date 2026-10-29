@@ -3428,3 +3428,19 @@ body.night .tnp-nights .nights .nb { border-color: #ff6a55; color: #ff6a55; } bo
 .tnp-nights .nights { padding-top: 8px; } .tnp-nights .nights > div { padding-top: 12px; }
 .tnp-nights .nights .nb { top: -8px; right: -4px; width: 22px; height: 22px; border-width: 1.2px; }
 .tnp-nights .nights .nb .ico { width: 12px; height: 12px; }
+
+/* Up now as card tiles (2026-10-29, Sevaan): a real card, NEW tag and rarity glow for new ones, name and where to look under it */
+.tn-up { gap: 12px; }
+.tn-chip.tile { flex-direction: column; align-items: stretch; gap: 8px; width: 104px; max-width: none; min-height: 0; padding: 8px 8px 10px; border-radius: 14px; background: #0e1a29; border: 1px solid #22344a; text-align: left; }
+.tn-chip.tile .tn-chip-mini { position: relative; width: 88px; height: 132px; overflow: visible; border-radius: 6px; box-shadow: 0 4px 12px #0009; }
+.tn-chip.tile .tn-chip-mini .mini-face { --mini-s: .3143; border-radius: 6px; overflow: hidden; }
+.tn-chip.tile.new .tn-chip-mini { box-shadow: 0 0 0 1.5px var(--c), 0 0 16px color-mix(in srgb, var(--c) 55%, transparent), 0 4px 12px #0009; }
+.tn-chip.tile .tn-chip-mini::after { display: none; }
+.tn-chip.tile .tn-chip-mini em { position: absolute; z-index: 2; top: -7px; left: -5px; padding: 2px 7px; border-radius: 6px; background: var(--c); color: #0b1018; font: 700 10px/1.3 var(--label); letter-spacing: .1em; text-transform: uppercase; font-style: normal; box-shadow: 0 2px 6px #0008; }
+.tn-chip.tile b { font-size: 14px; white-space: normal; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.tn-chip.tile small { white-space: normal; line-height: 1.25; }
+.tn-chip.tile small .gm { font-style: normal; color: var(--c); }
+.tn-chip.tile.seen { opacity: .8; border-style: dashed; }
+.tn-chip.tile:active { transform: scale(.97); }
+body.night .tn-chip.tile .tn-chip-mini em { background: #ff6a55; color: #120606; }
+.tn-chip.tile small i.gm { display: inline; width: auto; height: auto; background: none; border-radius: 0; font: inherit; color: var(--c); }
