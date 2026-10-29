@@ -2154,3 +2154,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - 2026-10-29 · v0.1.1378 (Sevaan):
   - **Bells on "Also tonight" dated rows:** the Halloween teaser, a meteor shower (replaces tap-the-row), constellations back and the week's sky event each get a bell (evBell). It sets a reminder for dusk that evening (constellations: 9:30 PM). Free players get the Plus page ("Sky event reminders are part of the crew kit", lead 'events').
   - **Settings card back row:** 8px more room above and below the card. It has to out-rank `#debug .set-card .set-row { padding: 0 14px !important }`.
+- 2026-10-29 · v0.1.1379 (Sevaan): Night owl switch removed (evening-first picks for everyone; the page still shows the rest of the night). Sky window paths are thinned to 6 px apart and drawn as a smooth curve (a slow high pass, ESSA 1, had hundreds of points a pixel apart and its dashes wobbled).
