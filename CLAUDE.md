@@ -2053,3 +2053,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - 2026-10-28 · v0.1.1304 (Sevaan): the Constellations album row is the same height as the others: its count reads '3 / 88' and the extra 'N of 709 stars' line is gone from the list (the album's own header still has both).
 - 2026-10-28 · v0.1.1305 (Sevaan): patches on the wall keep their NEW tag and orange glow ring: each .pw-item has 16px padding with -16px margin, since content-visibility clips paint to its box.
 - 2026-10-28 · v0.1.1306 (Sevaan: big gap under the search box on Find): the empty results row is hidden on Find when there's no count or Clear filters, and the first Find heading sits 18px under the search row.
+- 2026-10-28 · v0.1.1307 (Sevaan: stats opened from the rank card closed to Settings): statsFromSettings is cleared when stats open from the rank card and when the Collection is left (the Settings ✕ path closes stats from Explore and never reset it).

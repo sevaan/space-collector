@@ -1,33 +1,33 @@
-import { pullToClose } from './pull-close.js?v=0.1.1306';
-import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.1306';
-import { computeStats, statsHtml } from './stats.js?v=0.1.1306';
-import { nightKey } from './observation.js?v=0.1.1306';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1306';
-import { sfx } from './sfx.js?v=0.1.1306';
-import { expandFacts } from './catalog-facts.js?v=0.1.1306';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.1306';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1306';
-import { ticket } from './toast.js?v=0.1.1306';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.1306';
-import { satGlobe } from './sat-globe.js?v=0.1.1306';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.1306';
-import { cardArt } from './art.js?v=0.1.1306';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.1306';
-import { applyBack } from './card-backs.js?v=0.1.1306';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.1306';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1306';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.1306';
-import { STORIES } from './stories.js?v=0.1.1306';
-import { loadConstellations, conList, CON_BY_ID } from './constellations.js?v=0.1.1306';
-import { conArt } from './con-art.js?v=0.1.1306';
-import { RANKS, progress, readDeals, readWeekThemes, xpCarry } from './progress.js?v=0.1.1306';
-import { eventBadges, nextEvent } from './events.js?v=0.1.1306';
-import { shareCardEl } from './share-card.js?v=0.1.1306';
-import { forgetSighting } from './cloud-backup.js?v=0.1.1306';
-import { allSightings, deleteSighting } from './store.js?v=0.1.1306';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.1306';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.1306';
-import { localText } from './localize.js?v=0.1.1306';
+import { pullToClose } from './pull-close.js?v=0.1.1307';
+import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.1307';
+import { computeStats, statsHtml } from './stats.js?v=0.1.1307';
+import { nightKey } from './observation.js?v=0.1.1307';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1307';
+import { sfx } from './sfx.js?v=0.1.1307';
+import { expandFacts } from './catalog-facts.js?v=0.1.1307';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.1307';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1307';
+import { ticket } from './toast.js?v=0.1.1307';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.1307';
+import { satGlobe } from './sat-globe.js?v=0.1.1307';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.1307';
+import { cardArt } from './art.js?v=0.1.1307';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.1307';
+import { applyBack } from './card-backs.js?v=0.1.1307';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.1307';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1307';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.1307';
+import { STORIES } from './stories.js?v=0.1.1307';
+import { loadConstellations, conList, CON_BY_ID } from './constellations.js?v=0.1.1307';
+import { conArt } from './con-art.js?v=0.1.1307';
+import { RANKS, progress, readDeals, readWeekThemes, xpCarry } from './progress.js?v=0.1.1307';
+import { eventBadges, nextEvent } from './events.js?v=0.1.1307';
+import { shareCardEl } from './share-card.js?v=0.1.1307';
+import { forgetSighting } from './cloud-backup.js?v=0.1.1307';
+import { allSightings, deleteSighting } from './store.js?v=0.1.1307';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.1307';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.1307';
+import { localText } from './localize.js?v=0.1.1307';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -434,7 +434,7 @@ function renderLogbook() {
   const done = p.achievements.filter((a) => a.done).length;
   // Tapping the card opens Observer stats (2026-10-17, Sevaan); its own buttons (Missions ›, Remind me), the mission
   // list and the events row keep doing their own thing.
-  el.onclick = (e) => { if (e.target.closest('#streak-remind')) return remindStreak(); if (e.target.closest('button, a, .lb-mission, .lb-foot')) return; openStats(); };
+  el.onclick = (e) => { if (e.target.closest('#streak-remind')) return remindStreak(); if (e.target.closest('button, a, .lb-mission, .lb-foot')) return; statsFromSettings = false; openStats(); }; /* from the rank card it closes back to the Collection (2026-10-28, Sevaan) */
   el.style.cursor = 'pointer';
   // Front (2026-10-08, design/rank-card.html C): your rank ladder as the picture (twinkling stars), the rank and
   // XP, tonight’s missions, and Events at the foot.
@@ -1128,7 +1128,7 @@ if (EMBED) {
     }
     if (e.data.sc === 'refresh') refreshSightings();
     // Hidden behind the sky, its animations (twinkles, shimmers, drift) pause (2026-10-16 perf sweep).
-    if (e.data.sc === 'away') { saveVisit(); closePeek(); clearTimeout(awayT); document.documentElement.classList.add('away'); for (const id of ['viewer', 'stats-view', 'patch-view']) { const d = $(id); if (d?.open && !d.classList.contains('docked')) { d.classList.remove('leaving'); d.close(); } } if (returnView) backFromBorrowed(); } // leaving the Collection closes whatever was open in it (bug hunt 2026-10-17: after Show me the viewer stayed open, clipped under the header)
+    if (e.data.sc === 'away') { statsFromSettings = false; saveVisit(); closePeek(); clearTimeout(awayT); document.documentElement.classList.add('away'); for (const id of ['viewer', 'stats-view', 'patch-view']) { const d = $(id); if (d?.open && !d.classList.contains('docked')) { d.classList.remove('leaving'); d.close(); } } if (returnView) backFromBorrowed(); } // leaving the Collection closes whatever was open in it (bug hunt 2026-10-17: after Show me the viewer stayed open, clipped under the header)
     if ((e.data.sc === 'open' || e.data.sc === 'show') && nightPending != null) { setNight(nightPending); nightPending = null; }
     if ((e.data.sc === 'open' || e.data.sc === 'show') && awayDirty) { awayDirty = false; if (state.ready) render(); }
     if (e.data.sc === 'open' || e.data.sc === 'show') { if (state.ready) primeSince(); setTimeout(() => { if (state.ready) replaySince(); }, 480); }
