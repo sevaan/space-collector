@@ -2118,3 +2118,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - **Line under the headline:** "Space Station at 6:07 AM, +42 new cards" (one line).
   - **Mission constellation charts:** the figure at 31% and the stars twinkle (mcTw).
 - 2026-10-29 · v0.1.1344 (Sevaan): a sky-window card mid-spin shows the sky behind it: .sw-card is see-through and its fill, ring and glow (lead's pulse too, swGlowFace) live on the turning .face.
+- 2026-10-29 · v0.1.1346 (Sevaan): Tonight's mission cards only turn over when tapped (mcTap; no more Show me / Aim from them). Turn all of them face down and they're shuffled like three-card monte (6 animated swaps, never ending in the same order), then dealt open one by one like the daily opening (mcDealOpen). The new order (mcOrder, per night) and any face-down cards (mcDown) survive the page's minute refresh; nothing re-renders mid-shuffle (mcBusy). Reduce Motion: no animation, still reordered.
