@@ -3366,3 +3366,20 @@ body.night .mc { box-shadow: 0 0 0 1.5px #ff6a55; }
 .mc .art { margin: 0 6px; }
 .mc b { padding: 6px 7px 0; font-size: 12px; line-height: 1.1; }
 .mc small { padding: 3px 7px 7px; font-size: 10.5px; line-height: 1.15; }
+
+/* Sky window cards: the back that shows while a card spins (2026-10-29, Sevaan) */
+.sw-card .face .bk { position: absolute; inset: 0; background: center/cover no-repeat; opacity: 0; pointer-events: none; }
+.sw-card.show-back .face .bk { opacity: 1; }
+/* Mission constellation charts: the figure at half strength so the stars stand out, and the stars twinkle (2026-10-29, Sevaan) */
+.mc .art.svg image { opacity: .31; }
+.mc .art.svg circle { transform-box: fill-box; transform-origin: center; animation: mcTw 3.4s ease-in-out infinite; }
+.mc .art.svg circle:nth-of-type(3n) { animation-duration: 4.1s; animation-delay: -1.3s; }
+.mc .art.svg circle:nth-of-type(3n+1) { animation-duration: 2.9s; animation-delay: -2.2s; }
+.mc .art.svg circle:nth-of-type(5n) { animation-duration: 4.8s; animation-delay: -.6s; }
+@keyframes mcTw { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: .35; transform: scale(.75); } }
+@media (prefers-reduced-motion: reduce) { .mc .art.svg circle { animation: none; } }
+/* More, brighter twinkles in the sky window (2026-10-29, Sevaan) */
+.sw-sky .sw-stars { opacity: 1; }
+.sw-sky .sw-stars i { box-shadow: 0 0 4px #fff2b3aa; }
+.sw-sky .sw-stars i:nth-child(7n) { --s: 2.6px !important; box-shadow: 0 0 6px 1px #fff2b3; }
+.sw-text p { max-width: 360px; }

@@ -2111,3 +2111,9 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - **Daily face-down deal:** the first time the Tonight page is seen each day, the cards are dealt face down in your card back. Once they're 60% on screen they turn over one by one, 380 ms apart, with the flip sound (mcFlipWhenSeen). localStorage mcFlipDay holds the date; under Reduce Motion they just appear.
   - **Constellation card:** shows conArt (the figure with its stars and lines over it, the ones you have lit) instead of the figure alone.
   - **Chart rain:** tiny drops (ellipses) instead of streaks.
+- 2026-10-29 · v0.1.1343 (Sevaan), Tonight's sky window and mission cards:
+  - **Moon and planet names** keep clear of each other (below, above, right, then left of the dot; dropped if all collide).
+  - **Card spins:** every 4–9 s one random card turns over and spins once (swSpinLoop: rotateY 360 on .face, showing your card back in the middle half). Only while the page is open; none under Reduce Motion.
+  - **Stars:** 120 twinkling stars, brighter and with a glow.
+  - **Line under the headline:** "Space Station at 6:07 AM, +42 new cards" (one line).
+  - **Mission constellation charts:** the figure at 31% and the stars twinkle (mcTw).
