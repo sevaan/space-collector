@@ -2133,3 +2133,7 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - The picture can shrink to 24px.
   - Checked every mission at 150/114/100/86px cards, i.e. down to a 320pt phone.
 - 2026-10-29 · v0.1.1357 (Sevaan): the Tonight page's next-nights strip (cloudNights) has no "Remind me tomorrow" button. Every clear (isGoodNight) night still ahead has a round alarm badge on its corner (.nb). A tap sets a free reminder (key clear@<time>, freeKey) for when that night's clear spell starts: clearFrom, else the night's start at dark. It turns orange when set, and a second tap turns it off.
+- 2026-10-29 · v0.1.1362 (Sevaan):
+  - **Sky window cards:** every card can be tapped. Each arc keeps its source pass (`src`). A tap uses the plan's pass for that object nearest its time, then any planned pass for it, then the source. It used to need an exact start match, so cards from a night part's head/station did nothing. One card per object (Tiangong showed twice).
+  - **Mission shuffle no longer empties the row.** The minute refresh rebuilt the page mid-shuffle and the guard skipped drawing the missions. Now it skips only while the shuffling row is still on the page (mcBusyRow); at the end the row on screen gets the new order and is dealt open. Swaps use a placeholder. Testing hook: window.__tnRefresh().
+  - **Mission cards never repeat a picture in the row:** a repeat takes the next free one from that mission's MC_FALL list, then GENERIC.
