@@ -2182,3 +2182,21 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - **≤360 px:** the first-night eyebrow clears the ✕, "Explore the sky anyway" stays on one line, and Settings' Plus value isn't cut.
   - **Not reproduced:** one reveal changed from +220 XP shiny/peak to +110 plain after "Got it" (Ariane 40 R/B at 86°); three retries were consistent. Watch for it.
 - 2026-10-29: Build 1.0 (40) archived earlier today (web v0.1.1372), and Build 1.0 (41) now (web v0.1.1387: Tonight page round 3, mission cards (flip, shuffle, fit), Up now tiles, Tonight page reminders need Plus except until-dark, Pass alerts rename, Sky events Plus, no Night owl / weather strip, both playtests' fixes). Opened in Organizer, not uploaded. SC Tester reinstalled with v0.1.1387.
+- 2026-10-29 · v0.1.1390, fixes from the iOS simulator playtest of build 41:
+  - **No page zoom in the apps:** the viewport gets maximum-scale=1, user-scalable=no when isNative. Fast taps had zoomed the app to 1.5× with no way back; the website keeps pinch zoom.
+  - **Tonight page reminder rules** apply whenever it renders (skyRendering wraps renderVisible/renderTonight), so no "Reminder free" tag shows there. An ISS row had shown one, then the bell asked for Plus.
+  - **One tonight reminder:** the first-night page's reminder is recorded as udRemind with its pass key (udAdopt), so Explore's until-dark bell and the sky window bell show it. Choosing another time in the until-dark sheet replaces it (udDropAdopted), and undo clears it.
+  - **One forecast rule** (skyOkAt: clear by the hour, not before tonight's clearing or after the cloud rolls in) for the go window, the headline's pick and the until-dark sheet's busiest moment. Tonight had said "Go out at 7:15" while the first-night page said "Clear by 9:00 PM".
+  - **Mission cards:** a tap during a flip waits its turn instead of being dropped (el._flip).
+  - **Tour aim words** with a finger say "Drag left · down"; there's no "Aim the phone" hint for the Sun then.
+  - **Header clock:** the Tonight header's time ticks every 15 s while open.
+  - **Notices:** "Reminder set" notices are kind info, so they show on the page; the first-night page's reminder is quiet (its button shows it).
+  - **Collection frame and native:** isNative() asks the app window (capOf), so the frame's links (card "Source ›") open in the in-app browser, not Safari.
+  - **Reset everything** uses the app's confirm sheet (askConfirm: title, what happens, red action, Cancel), not confirm().
+  - **Card viewer:** its last line clears the home bar.
+  - **Daytime marker:** its time label is dark ink by day (white on cloud was unreadable).
+  - **Wording:** "Rises SE · up to 68°" doesn't repeat the direction; the Plus kit says "Every card back"; How to play says the dark bell is free and pass reminders come with Plus.
+  - **Not changed:**
+    - Red mode can't tint the iOS status bar text (system white or black only).
+    - The Collection header sliding under the status bar as the keyboard opens (iOS moves the page).
+    - The Match your sky tip over a ticket (tickets hide while it's up).

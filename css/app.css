@@ -3473,3 +3473,8 @@ body.night .sw-bell.on { background: #ff6a55; border-color: #ff6a55; color: #120
   #ob-explore { letter-spacing: .06em; font-size: 13px; } #ob-explore span { white-space: nowrap; }
   #set-plus-open .set-val, #set-plus-open [id$="-val"] { flex: none; overflow: visible; text-overflow: clip; }
 }
+
+/* The app's confirm sheet (2026-10-29) */
+#confirm-sheet .cf-body { margin: 6px 0 16px; font: 500 15px/1.4 var(--label); color: var(--ui-muted, #bdbea9); }
+#confirm-sheet .cf-danger { background: #d9463b; color: #fff; border-color: #d9463b; justify-content: center; }
+#confirm-sheet #cf-cancel { display: block; margin: 12px auto 0; }

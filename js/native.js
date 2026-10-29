@@ -1,6 +1,7 @@
 // Running inside the native iPhone/Android app (Capacitor, native/)? Then a few things go through native plugins
 // instead of the browser APIs. Plugins are reached through the bridge Capacitor injects (no bundler needed).
-export const isNative = () => !!globalThis.Capacitor?.isNativePlatform?.();
+/* the Collection's frame asks the app window too (iOS playtest 2026-10-29: its links fell through to Safari because the frame has no bridge of its own) */
+export const isNative = () => !!capOf()?.isNativePlatform?.();
 // A native plugin as an object of async methods, called through the bridge’s nativePromise (the @capacitor/core
 // registerPlugin helper isn’t loaded, since the web app has no bundler).
 // The Collection runs in an iframe, and Android's Capacitor refuses plugin calls made from a frame ("Plugin execution
