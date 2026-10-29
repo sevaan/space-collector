@@ -28,5 +28,8 @@ export function attachTileTilt(root) {
   const reset = (e) => { const tile = e.target.closest?.('.card-tile'); if (!tile) return; tile.style.transition = 'transform .45s cubic-bezier(.2,.9,.3,1.2)'; set(tile, 0, 0); };
   root.addEventListener('pointerdown', move);
   root.addEventListener('pointermove', (e) => { if (e.buttons || e.pointerType === 'touch') move(e); });
-  for (const t of ['pointerup', 'pointercancel', 'pointerleave', 'pointerout']) root.addEventListener(t, reset);
+  for (const t of ['pointerup', 'pointercancel', 'pointerleave', 'pointerout', 'click']) root.addEventListener(t, reset);
+  /* a tap that opens a card can leave its tile tipped (the viewer takes the pointer), which cut off its top edge: every
+     tile goes flat again whenever a dialog closes (2026-10-28, Sevaan) */
+  document.addEventListener('close', () => { for (const t of root.querySelectorAll('.card-tile[style*="transform"]')) set(t, 0, 0); }, true);
 }
