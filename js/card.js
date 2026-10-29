@@ -1,25 +1,25 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { fallWords } from './last-chance.js?v=0.1.1309';
-import { useMiles } from './units.js?v=0.1.1309';
-import { feel } from './native.js?v=0.1.1309';
-import { sfx } from './sfx.js?v=0.1.1309';
-import { cardArt } from './art.js?v=0.1.1309';
-import { TIER_INFO } from './rarity.js?v=0.1.1309';
-import { SET_BY_ID } from './sets.js?v=0.1.1309';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.1309';
-import { FLEET_ABOUT, fleetAbout, factSourceUrl, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.1309';
-import { artFileFor } from './art-keys.js?v=0.1.1309';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.1309';
-import { orbitGlobe } from './orbit-view.js?v=0.1.1309';
-import { ART_SHARED } from './art-shared.js?v=0.1.1309';
-import { ART_CREDITS } from './art-credits.js?v=0.1.1309';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.1309';
-import { nightsIn } from './observation.js?v=0.1.1309';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.1309';
-import { SHINY } from './shiny.js?v=0.1.1309';
-import { conArt, cometArt } from './con-art.js?v=0.1.1309';
-import { CON_FIGURES } from './con-figures.js?v=0.1.1309';
-import { localText } from './localize.js?v=0.1.1309';
+import { fallWords } from './last-chance.js?v=0.1.1310';
+import { useMiles } from './units.js?v=0.1.1310';
+import { feel } from './native.js?v=0.1.1310';
+import { sfx } from './sfx.js?v=0.1.1310';
+import { cardArt } from './art.js?v=0.1.1310';
+import { TIER_INFO } from './rarity.js?v=0.1.1310';
+import { SET_BY_ID } from './sets.js?v=0.1.1310';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.1310';
+import { FLEET_ABOUT, fleetAbout, factSourceUrl, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.1310';
+import { artFileFor } from './art-keys.js?v=0.1.1310';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.1310';
+import { orbitGlobe } from './orbit-view.js?v=0.1.1310';
+import { ART_SHARED } from './art-shared.js?v=0.1.1310';
+import { ART_CREDITS } from './art-credits.js?v=0.1.1310';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.1310';
+import { nightsIn } from './observation.js?v=0.1.1310';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.1310';
+import { SHINY } from './shiny.js?v=0.1.1310';
+import { conArt, cometArt } from './con-art.js?v=0.1.1310';
+import { CON_FIGURES } from './con-figures.js?v=0.1.1310';
+import { localText } from './localize.js?v=0.1.1310';
 // The animal/symbol figure belongs to the completed (gold) constellation card only (2026-10-05): a single
 // star’s card draws just the star pattern with its star marked, so the figure is a reward for finishing the set.
 // A star card’s constellation figure comes into focus as you collect the constellation’s stars (design/con-focus.html B).
@@ -542,7 +542,7 @@ const myPlace = () => { try { const o = JSON.parse(localStorage.getItem('observe
 // The default single tap on a full card (2026-10-26, Sevaan: "shouldn't the tap globe work anywhere?"): a card with an orbit
 // swaps its picture for the live globe (js/orbit-view.js); tap again for the picture. Fragment cards show the globe always.
 function orbitTap(el) {
-  const o = el._card, art = el.querySelector('.card__art'); if (!o?.el || o.natural || o.archived || !art || o.type === 'debris') return null; // debris: no tap (fragments already show their orbit)
+  const o = el._card, art = el.querySelector('.card__art'); if (!o?.el || o.natural || o.archived || !art || o.type === 'debris' || art.querySelector('.art-locked')) return null; /* not yours yet: just its hidden picture, no orbit (2026-10-28, Sevaan) */ // debris: no tap (fragments already show their orbit)
   let globe = null; el.classList.add('can-orbit');
   return () => { if (!el.isConnected) return; if (globe) { globe.stop(); globe = null; art.classList.remove('orbiting'); return; }
     globe = orbitGlobe(o, art, myPlace()); if (globe) art.classList.add('orbiting'); };
@@ -554,8 +554,9 @@ export function attachFlip(el, { onBack, onTap = orbitTap(el) } = {}) {
   // A tap only counts if it started on this card, and not in its first half second (2026-10-27, Sevaan: a card opened
   // from the grid switched to its orbit by itself; the tap that opened it was finishing on the new card).
   const born = performance.now(); let armed = false;
-  el.addEventListener('pointerdown', (e) => { downX = e.clientX; downY = e.clientY; armed = performance.now() - born > 500; });
-  const still = (e) => { const ok = armed && Math.hypot(e.clientX - downX, e.clientY - downY) < 10; return ok; };
+  let downAt = 0;
+  el.addEventListener('pointerdown', (e) => { downX = e.clientX; downY = e.clientY; downAt = performance.now(); armed = downAt - born > 700; });
+  const still = (e) => { const ok = armed && performance.now() - downAt < 600 && Math.hypot(e.clientX - downX, e.clientY - downY) < 10; armed = false; return ok; }; /* one real, quick tap on the card, once (2026-10-28: the orbit must never open by itself) */
   const back = el.querySelector('.card__back');
   // Smooth back-and-forth (2026-10-14, Sevaan: flipping back and forth was janky): the old animation is dropped instead
   // of piling up (each one used to stay with fill: forwards), the faces swap on the frame the card is edge-on (read from
