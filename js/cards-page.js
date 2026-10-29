@@ -1,33 +1,33 @@
-import { pullToClose } from './pull-close.js?v=0.1.1298';
-import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.1298';
-import { computeStats, statsHtml } from './stats.js?v=0.1.1298';
-import { nightKey } from './observation.js?v=0.1.1298';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1298';
-import { sfx } from './sfx.js?v=0.1.1298';
-import { expandFacts } from './catalog-facts.js?v=0.1.1298';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.1298';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1298';
-import { ticket } from './toast.js?v=0.1.1298';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.1298';
-import { satGlobe } from './sat-globe.js?v=0.1.1298';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.1298';
-import { cardArt } from './art.js?v=0.1.1298';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.1298';
-import { applyBack } from './card-backs.js?v=0.1.1298';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.1298';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1298';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.1298';
-import { STORIES } from './stories.js?v=0.1.1298';
-import { loadConstellations, conList, CON_BY_ID } from './constellations.js?v=0.1.1298';
-import { conArt } from './con-art.js?v=0.1.1298';
-import { RANKS, progress, readDeals, readWeekThemes, xpCarry } from './progress.js?v=0.1.1298';
-import { eventBadges, nextEvent } from './events.js?v=0.1.1298';
-import { shareCardEl } from './share-card.js?v=0.1.1298';
-import { forgetSighting } from './cloud-backup.js?v=0.1.1298';
-import { allSightings, deleteSighting } from './store.js?v=0.1.1298';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.1298';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.1298';
-import { localText } from './localize.js?v=0.1.1298';
+import { pullToClose } from './pull-close.js?v=0.1.1299';
+import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.1299';
+import { computeStats, statsHtml } from './stats.js?v=0.1.1299';
+import { nightKey } from './observation.js?v=0.1.1299';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1299';
+import { sfx } from './sfx.js?v=0.1.1299';
+import { expandFacts } from './catalog-facts.js?v=0.1.1299';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.1299';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1299';
+import { ticket } from './toast.js?v=0.1.1299';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.1299';
+import { satGlobe } from './sat-globe.js?v=0.1.1299';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.1299';
+import { cardArt } from './art.js?v=0.1.1299';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.1299';
+import { applyBack } from './card-backs.js?v=0.1.1299';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.1299';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1299';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.1299';
+import { STORIES } from './stories.js?v=0.1.1299';
+import { loadConstellations, conList, CON_BY_ID } from './constellations.js?v=0.1.1299';
+import { conArt } from './con-art.js?v=0.1.1299';
+import { RANKS, progress, readDeals, readWeekThemes, xpCarry } from './progress.js?v=0.1.1299';
+import { eventBadges, nextEvent } from './events.js?v=0.1.1299';
+import { shareCardEl } from './share-card.js?v=0.1.1299';
+import { forgetSighting } from './cloud-backup.js?v=0.1.1299';
+import { allSightings, deleteSighting } from './store.js?v=0.1.1299';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.1299';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.1299';
+import { localText } from './localize.js?v=0.1.1299';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -1246,13 +1246,7 @@ function openPatch(id, from = null) {
     for (const el of d.querySelectorAll('.pv-card > :not(.pv-patch), .pv-hint')) el.animate([{ opacity: 0, transform: 'translateY(8px)' }, { opacity: 1, transform: 'none' }], { duration: 300, delay: 160, easing: 'ease-out', fill: 'backwards' });
   }
   const patch = d.querySelector('.patch'), host = d.querySelector('.pv-patch');
-  // The patch leans toward your finger or the phone’s tilt, and the foil sheen follows.
-  const lean = (nx, ny) => { host.style.transform = `perspective(700px) rotateY(${(nx * 16).toFixed(1)}deg) rotateX(${(-ny * 16).toFixed(1)}deg)`; patch.classList.add('tilt'); patch.style.setProperty('--x', `${(50 + nx * 50).toFixed(0)}%`); };
-  host.onpointermove = (e) => { const r = host.getBoundingClientRect(); lean((e.clientX - r.left) / r.width - 0.5, (e.clientY - r.top) / r.height - 0.5); };
-  host.onpointerleave = () => { host.style.transform = ''; };
-  const ori = (e) => { if (e.gamma == null) return; lean(Math.max(-0.5, Math.min(0.5, e.gamma / 50)), Math.max(-0.5, Math.min(0.5, ((e.beta ?? 45) - 45) / 50))); };
-  addEventListener('deviceorientation', ori);
-  d.addEventListener('close', () => removeEventListener('deviceorientation', ori), { once: true });
+  /* No tilt on patches (2026-10-28, Sevaan): they're cloth, they sit still. */
 }
 let patchFrom = null;
 function closePatch() {
