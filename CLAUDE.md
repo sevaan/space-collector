@@ -2117,3 +2117,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - **Stars:** 120 twinkling stars, brighter and with a glow.
   - **Line under the headline:** "Space Station at 6:07 AM, +42 new cards" (one line).
   - **Mission constellation charts:** the figure at 31% and the stars twinkle (mcTw).
+- 2026-10-29 · v0.1.1344 (Sevaan): a sky-window card mid-spin shows the sky behind it: .sw-card is see-through and its fill, ring and glow (lead's pulse too, swGlowFace) live on the turning .face.

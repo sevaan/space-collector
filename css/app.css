@@ -3383,3 +3383,10 @@ body.night .mc { box-shadow: 0 0 0 1.5px #ff6a55; }
 .sw-sky .sw-stars i { box-shadow: 0 0 4px #fff2b3aa; }
 .sw-sky .sw-stars i:nth-child(7n) { --s: 2.6px !important; box-shadow: 0 0 6px 1px #fff2b3; }
 .sw-text p { max-width: 360px; }
+/* The spinning card shows the sky behind it, not a dark box (2026-10-29, Sevaan): the button itself is see-through and
+   the card's fill, ring and glow live on the face that turns. */
+.sw-card, .sw-card.lead { background: transparent; box-shadow: none; animation: none; }
+.sw-card .face { background: #0a1322; box-shadow: 0 0 0 1.5px var(--c), 0 0 14px var(--c), 0 2px 8px #000a; }
+.sw-card.lead .face { animation: swGlowFace 2.4s ease-in-out infinite; }
+@keyframes swGlowFace { 50% { box-shadow: 0 0 0 1.5px var(--c), 0 0 22px var(--c), 0 2px 8px #000a; } }
+@media (prefers-reduced-motion: reduce) { .sw-card.lead .face { animation: none; } }
