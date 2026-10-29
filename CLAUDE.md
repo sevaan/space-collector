@@ -2222,3 +2222,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - **Night part drop-down** (.tnx-list): no lighter box. Its rows sit on the page, indented under the part with a thin line down the left.
 - 2026-10-29 · v0.1.1405 (Sevaan: the text changed while he was reading it): the Night 2 card's line is kept for the night once shown (localStorage n2Text {night, lead, until}); it changes only after the pass it names has gone by.
 - 2026-10-29 · v0.1.1406 (Sevaan): the Tonight sky window sits in a container like the page's other boxes (14 px corners, #22344a edge, shadow, within the page margins; it was full-bleed).
+- 2026-10-29 · v0.1.1407 (Sevaan): the first-night page's main button steers only when the sky is clear now (skyOkAt), with plain words ('Show me what’s up now' / 'Aim at Saturn'), never the catalogue name. Under cloud it stays 'Explore the sky'.
