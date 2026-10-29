@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Next Nights Options</title>
+<link rel="stylesheet" href="../css/cards.css?v=nn1"><link rel="stylesheet" href="../css/icons.css?v=nn1">
+<style>
+  :root { --bg:#080f1b; --panel:#0e1a29; --edge:#22344a; --cream:#fff2b3; --muted:#bdbea9; --orange:#fa8127; --gold:#ffc93d; --slate:#8b93a6; --display:'SC Display',Impact,sans-serif; --label:'SC Label','Arial Narrow',sans-serif; }
+  html, body { background: var(--bg); color: var(--cream); margin: 0; }
+  body { padding: 28px 20px 70px; font: 15px/1.4 var(--label); }
+  h1 { font: 400 26px var(--display); margin: 0 0 4px; } p.lead { color: var(--muted); margin: 0 0 8px; max-width: 760px; }
+  .opts { display: grid; grid-template-columns: repeat(auto-fill, minmax(362px, 1fr)); gap: 40px 28px; margin-top: 24px; }
+  .opt > h2 { font: 600 13px var(--label); letter-spacing: .16em; text-transform: uppercase; color: var(--orange); margin: 0 0 4px; }
+  .opt > p { color: var(--muted); font-size: 14px; margin: 0 0 12px; max-width: 362px; }
+  .phone { width: 362px; }
+  .k { font: 600 13px var(--label); letter-spacing: .16em; text-transform: uppercase; color: var(--orange); margin: 0 0 10px; display: flex; justify-content: space-between; }
+  .k span:last-child { color: var(--muted); letter-spacing: .04em; text-transform: none; font-weight: 500; }
+  .panel { background: var(--panel); border: 1px solid var(--edge); border-radius: 14px; }
+  .ico { display: inline-block; width: 18px; height: 18px; vertical-align: middle; background: currentColor; flex: none; -webkit-mask: var(--m) center / contain no-repeat; mask: var(--m) center / contain no-repeat; }
+  .tap { cursor: pointer; }
+
+  /* A · Forecast row, bell under the day */
+  .a { display: grid; grid-template-columns: repeat(5, 1fr); padding: 14px 6px 10px; }
+  .a > div { display: grid; justify-items: center; gap: 4px; padding: 0 2px; border-right: 1px solid #ffffff0d; }
+  .a > div:last-child { border-right: 0; }
+  .a .d { font: 500 13px var(--label); color: var(--muted); } .a .ico { width: 22px; height: 22px; color: var(--slate); }
+  .a .w { font: 600 13px var(--label); color: var(--slate); }
+  .a .good .ico, .a .good .w { color: var(--orange); }
+  .a .bell { margin-top: 6px; height: 28px; min-width: 52px; padding: 0 8px; border-radius: 14px; border: 1px solid #fa812766; background: transparent; color: var(--orange); display: inline-flex; align-items: center; justify-content: center; gap: 4px; font: 600 11px var(--label); }
+  .a .bell .ico { width: 13px; height: 13px; color: inherit; }
+  .a .bell.on { background: var(--orange); color: #0b1018; border-color: var(--orange); }
+  .a .bell.none { visibility: hidden; }
+
+  /* B · List, one evening per row */
+  .b { padding: 4px 0; }
+  .b .row { display: grid; grid-template-columns: 26px 64px 1fr 40px; align-items: center; gap: 10px; padding: 10px 14px; border-top: 1px solid #ffffff0f; }
+  .b .row:first-child { border-top: 0; }
+  .b .ico { width: 22px; height: 22px; color: var(--slate); } .b .good .ico { color: var(--orange); }
+  .b .d { font: 600 15px var(--label); color: var(--cream); } .b .row:not(.good) .d { color: var(--slate); }
+  .b .w { font: 500 14px/1.2 var(--label); color: var(--muted); } .b .good .w b { color: var(--orange); font-weight: 600; }
+  .b .bell { width: 40px; height: 40px; border-radius: 50%; border: 1px solid #fa812766; background: transparent; color: var(--orange); display: grid; place-items: center; }
+  .b .bell .ico { width: 16px; height: 16px; color: inherit; } .b .bell.on { background: var(--orange); color: #0b1018; }
+
+  /* C · Little skies */
+  .c { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; padding: 10px; }
+  .c .sky { position: relative; aspect-ratio: 2 / 3; border-radius: 9px; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; padding: 7px 4px 6px; text-align: center; }
+  .c .sky.clear { background: radial-gradient(ellipse at 50% 120%, #1c3150, #070f1e 70%); box-shadow: inset 0 0 0 1.5px #fa8127aa, 0 0 14px #fa812733; }
+  .c .sky.patchy { background: radial-gradient(ellipse at 50% 120%, #233652, #0b1424 70%); box-shadow: inset 0 0 0 1px #fa812755; }
+  .c .sky.cloud { background: linear-gradient(#2a3446, #1a2231); box-shadow: inset 0 0 0 1px #ffffff14; }
+  .c .stars i { position: absolute; width: 2px; height: 2px; border-radius: 50%; background: var(--cream); animation: tw 3s ease-in-out infinite; }
+  @keyframes tw { 50% { opacity: .2; } }
+  .c .cl { position: absolute; left: -10%; right: -10%; height: 36%; background: radial-gradient(ellipse at 30% 60%, #6b778c 0 30%, transparent 31%), radial-gradient(ellipse at 60% 50%, #7d889c 0 34%, transparent 35%), radial-gradient(ellipse at 80% 65%, #66728a 0 28%, transparent 29%); opacity: .9; }
+  .c .d { position: relative; font: 600 12px var(--label); color: var(--cream); }
+  .c .w { position: relative; font: 600 11px var(--label); color: var(--muted); }
+  .c .clear .w, .c .patchy .w { color: var(--orange); }
+  .c .bell { position: relative; margin: 0 auto; width: 30px; height: 30px; border-radius: 50%; border: 1px solid #fa8127aa; background: #0b1018aa; color: var(--orange); display: grid; place-items: center; }
+  .c .bell .ico { width: 14px; height: 14px; color: inherit; } .c .bell.on { background: var(--orange); color: #0b1018; }
+  .c .ok { position: relative; font: 600 10.5px var(--label); color: var(--orange); }
+
+  /* D · Best night first */
+  .d1 { padding: 14px; display: grid; gap: 12px; }
+  .best { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; align-items: center; padding: 12px 14px; border-radius: 12px; background: linear-gradient(120deg, #1d2c46, #12203a); box-shadow: inset 0 0 0 1px #fa812755; }
+  .best small { grid-column: 1 / -1; font: 600 11px var(--label); letter-spacing: .16em; text-transform: uppercase; color: var(--orange); }
+  .best h3 { margin: 0; font: 400 20px/1.1 var(--display); color: var(--cream); } .best p { margin: 2px 0 0; font: 500 13px var(--label); color: var(--muted); }
+  .best .btn { height: 44px; padding: 0 14px; border-radius: 12px; border: 0; background: var(--orange); color: #0b1018; font: 600 13px var(--label); letter-spacing: .08em; text-transform: uppercase; display: inline-flex; align-items: center; gap: 6px; }
+  .best .btn.on { background: transparent; color: var(--orange); box-shadow: inset 0 0 0 1.5px var(--orange); }
+  .best .btn .ico { width: 15px; height: 15px; }
+  .strip { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; }
+  .strip > div { text-align: center; padding: 6px 0 4px; border-radius: 8px; font: 500 12px var(--label); color: var(--muted); }
+  .strip .ico { display: block; margin: 3px auto; width: 18px; height: 18px; color: var(--slate); }
+  .strip .good .ico { color: var(--orange); } .strip .sel { background: #fa81271a; box-shadow: inset 0 0 0 1px #fa812766; color: var(--cream); }
+  .strip .dot { display: block; width: 5px; height: 5px; margin: 2px auto 0; border-radius: 50%; background: var(--orange); }
+  .verdict { margin-top: 30px; color: var(--muted); max-width: 760px; } .verdict b { color: var(--cream); }
+</style></head>
+<body>
+<h1>Next nights · four ways</h1>
+<p class="lead">Same forecast in each (Tonight patchy, Fri patchy, Sat cloud, Sun clear, Mon cloud) at phone width. Tap any bell or button to see its “on” state. In each, the reminder comes when that night’s clear spell starts (at dark, or later if it clears later).</p>
+<div class="opts">
+
+<section class="opt"><h2>A · Bell under the day</h2><p>Today’s row, but the bell sits in the column as a small pill with the time it’ll ring. Nothing floats on corners; cloudy days keep the space so columns line up.</p>
+<div class="phone"><div class="k"><span>Next nights</span><span>Tap a bell to be told</span></div>
+<div class="panel a">
+  <div class="good"><span class="d">Tonight</span><span class="ico" data-ico="cloud-part"></span><span class="w">Patchy</span><button class="bell tap"><span class="ico" data-ico="bell"></span>9 PM</button></div>
+  <div class="good"><span class="d">Fri</span><span class="ico" data-ico="cloud-part"></span><span class="w">Patchy</span><button class="bell tap on"><span class="ico" data-ico="bell"></span>6:41</button></div>
+  <div><span class="d">Sat</span><span class="ico" data-ico="cloud"></span><span class="w">Cloud</span><button class="bell none"></button></div>
+  <div class="good"><span class="d">Sun</span><span class="ico" data-ico="stars"></span><span class="w">Clear</span><button class="bell tap"><span class="ico" data-ico="bell"></span>6:39</button></div>
+  <div><span class="d">Mon</span><span class="ico" data-ico="cloud"></span><span class="w">Cloud</span><button class="bell none"></button></div>
+</div></div></section>
+
+<section class="opt"><h2>B · One evening per row</h2><p>A short list that reads like a forecast: what the evening does in words, and a proper 40 px bell on the right for the good ones. Easiest to read and tap; takes more height.</p>
+<div class="phone"><div class="k"><span>Next nights</span><span>Evenings only</span></div>
+<div class="panel b">
+  <div class="row good"><span class="ico" data-ico="cloud-part"></span><span class="d">Tonight</span><span class="w"><b>Clear from 9 PM</b><br>cloud until then</span><button class="bell tap"><span class="ico" data-ico="bell"></span></button></div>
+  <div class="row good"><span class="ico" data-ico="cloud-part"></span><span class="d">Fri</span><span class="w"><b>Breaks in the cloud</b><br>from dark, 6:41 PM</span><button class="bell tap on"><span class="ico" data-ico="bell"></span></button></div>
+  <div class="row"><span class="ico" data-ico="cloud"></span><span class="d">Sat</span><span class="w">Cloudy all evening</span><span></span></div>
+  <div class="row good"><span class="ico" data-ico="stars"></span><span class="d">Sun</span><span class="w"><b>Clear all evening</b><br>best night this week</span><button class="bell tap"><span class="ico" data-ico="bell"></span></button></div>
+  <div class="row"><span class="ico" data-ico="cloud"></span><span class="d">Mon</span><span class="w">Cloudy all evening</span><span></span></div>
+</div></div></section>
+
+<section class="opt"><h2>C · Little skies</h2><p>Each night is a small card-shaped window: twinkling stars on clear nights, cloud drifting over the cloudy ones. Good nights glow and carry the bell; once set it says when.</p>
+<div class="phone"><div class="k"><span>Next nights</span><span></span></div>
+<div class="panel c" id="c"></div></div></section>
+
+<section class="opt"><h2>D · Best night first</h2><p>Leads with the answer, the best night coming, with one big button. The five days sit under it; tap another good day and the top card switches to it.</p>
+<div class="phone"><div class="k"><span>Next nights</span><span></span></div>
+<div class="panel d1">
+  <div class="best"><small>Best night coming</small><div><h3>Sunday</h3><p>Clear all evening · dark at 6:39 PM</p></div><button class="btn tap"><span class="ico" data-ico="bell"></span>Tell me</button></div>
+  <div class="strip">
+    <div class="good">Tonight<span class="ico" data-ico="cloud-part"></span>Patchy</div>
+    <div class="good">Fri<span class="ico" data-ico="cloud-part"></span>Patchy<span class="dot"></span></div>
+    <div>Sat<span class="ico" data-ico="cloud"></span>Cloud</div>
+    <div class="good sel">Sun<span class="ico" data-ico="stars"></span>Clear</div>
+    <div>Mon<span class="ico" data-ico="cloud"></span>Cloud</div>
+  </div>
+</div></div></section>
+
+</div>
+<p class="verdict"><b>My pick: B.</b> It answers the real question (“when can I go out?”) in words, the bells are full-size targets in a predictable place, and it handles “clear from 9 PM” better than one word can. C is the most delightful and matches the sky window above it, but it’s small. D is best when you only care about one night.</p>
+<script>
+  const days = [['Tonight', 'patchy', 'Patchy', '9 PM'], ['Fri', 'patchy', 'Patchy', '6:41'], ['Sat', 'cloud', 'Cloud'], ['Sun', 'clear', 'Clear', '6:39'], ['Mon', 'cloud', 'Cloud']];
+  const c = document.getElementById('c');
+  for (const [d, k, w, t] of days) {
+    const el = document.createElement('div'); el.className = `sky ${k}`;
+    let stars = ''; if (k !== 'cloud') for (let i = 0; i < (k === 'clear' ? 14 : 6); i++) stars += `<i style="left:${Math.random() * 90 + 4}%;top:${Math.random() * 55 + 4}%;animation-delay:${-Math.random() * 3}s"></i>`;
+    const clouds = k === 'cloud' ? '<span class="cl" style="top:12%"></span><span class="cl" style="top:40%;left:-30%"></span>' : k === 'patchy' ? '<span class="cl" style="top:30%;opacity:.55"></span>' : '';
+    el.innerHTML = `<span class="stars">${stars}</span>${clouds}<span class="d">${d}</span>${t ? `<button class="bell tap${d === 'Fri' ? ' on' : ''}"><span class="ico" data-ico="bell"></span></button>` : '<span></span>'}<span class="w">${w}</span>`;
+    c.append(el);
+  }
+  document.addEventListener('click', (e) => { const b = e.target.closest('.tap'); if (!b) return; b.classList.toggle('on'); if (b.classList.contains('btn')) b.lastChild.textContent = b.classList.contains('on') ? 'Reminder on' : 'Tell me'; });
+</script>
+</body></html>
