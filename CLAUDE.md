@@ -2144,3 +2144,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - **"Set reminders for the run" removed:** it set one for every stop.
 - 2026-10-29 · v0.1.1366 (Sevaan): the website test build shows the same Settings as the apps. The Notifications rows (Tonight, Sky events, Sky alerts, Quiet hours) and Rate Space Collector show there too. On the website the switches only remember the choice (no permission asked, nothing scheduled); Plus gating still applies.
 - 2026-10-29 · v0.1.1367 (Sevaan): "Sky alerts" is now "Pass alerts" everywhere (Settings row, Android notification category, Plus kit tile, test page). Pref key nAlerts unchanged.
+- 2026-10-29 · v0.1.1368 (Sevaan): the next-nights strip under the night parts (cloudNights, with its clear-night badges) is removed. Coming nights live on the all-cloud card and the bad-weather page; tonight's cloud is on the chart.
