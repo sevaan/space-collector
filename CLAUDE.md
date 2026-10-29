@@ -2224,3 +2224,10 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - 2026-10-29 · v0.1.1406 (Sevaan): the Tonight sky window sits in a container like the page's other boxes (14 px corners, #22344a edge, shadow, within the page margins; it was full-bleed).
 - 2026-10-29 · v0.1.1407 (Sevaan): the first-night page's main button steers only when the sky is clear now (skyOkAt), with plain words ('Show me what’s up now' / 'Aim at Saturn'), never the catalogue name. Under cloud it stays 'Explore the sky'.
 - 2026-10-29 · v0.1.1408 (Sevaan: 'the Tonight page does all this'): no first-night page after the tour's first catch. obFinish puts it away at once (hideDone: the night's other patches, Collection if asked) and opens the Tonight tab. The old page code is still there, unreachable.
+- 2026-10-29 · v0.1.1411 (Sevaan):
+  - **After the tour's first catch you're back on Explore** (no Tonight tab, no first-night page).
+  - **Tonight ↔ Explore is lighter:**
+    - The sky holds its last frame while the Tonight page slides away (tick skips while #visible.leaving).
+    - The page's star twinkles, card glow, rain and shimmer pause during its slides, and the sky bell's blur is off.
+    - #visible has will-change: transform; #tonight-list and #tn-run use content-visibility: auto (not the missions: fitCards measures them).
+    - Headless 4× CPU: Tonight→Explore went from 39 to ~68 frames in 1.5 s.

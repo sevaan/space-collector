@@ -3501,3 +3501,11 @@ body.night .tnx-list { border-left-color: #5a1f1a; }
 .sw-sky .sw-bell ~ .sw-text { right: 60px; }
 .sw-sky .sw-bell { top: 12px; right: 12px; }
 body.night .sw-sky { border-color: #3a1512; }
+
+/* While the Tonight page slides in or out, its costliest effects rest (2026-10-29, Sevaan: slow Tonight ↔ Explore) */
+#visible:not(.opened) :is(.starfield i, .sw-card.lead .face, .tnr-rain, .tnr-snow, .tnr-sway, .mc .art::after),
+#visible.leaving :is(.starfield i, .sw-card.lead .face, .tnr-rain, .tnr-snow, .tnr-sway, .mc .art::after) { animation-play-state: paused !important; }
+#visible:not(.opened) .sw-bell, #visible.leaving .sw-bell { -webkit-backdrop-filter: none; backdrop-filter: none; }
+#visible { will-change: transform; }
+/* The lower half of the Tonight page is skipped by the renderer until it's near the screen (2026-10-29 perf) */
+#tonight-list, #tn-run { content-visibility: auto; contain-intrinsic-size: auto 900px; } /* not the missions: their text is fitted by measuring */
