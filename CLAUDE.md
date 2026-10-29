@@ -2157,3 +2157,20 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - 2026-10-29 · v0.1.1379 (Sevaan): Night owl switch removed (evening-first picks for everyone; the page still shows the rest of the night). Sky window paths are thinned to 6 px apart and drawn as a smooth curve (a slow high pass, ESSA 1, had hundreds of points a pixel apart and its dashes wobbled).
 - 2026-10-29 · v0.1.1381 (Sevaan): by day the Tonight sky window has a bell (top right, .sw-bell). It opens the same 'Remind me tonight' sheet as Explore's until-dark bell (dark / best pass / busiest), and both bells light together (udRender). From the Tonight page, setting it needs Plus like every reminder there.
 - 2026-10-29 · v0.1.1382 (Sevaan): the until-dark reminder (key 'until-dark') is free everywhere, the Tonight sky window's bell included; every other Tonight page reminder still needs Plus.
+- 2026-10-29 · v0.1.1386, fixes from the Tonight page playtest:
+  - **Sky window text:**
+    - The headline keeps clear of the daytime bell, and is smaller at ≤360 px.
+    - No double full stop after "a.m.".
+    - The Earth's shadow clear time matches the forecast line ("clears around 12 AM"); "Clear from" only at 60%+ clear.
+    - No satellite cards over the star hours.
+    - "Go out at" is never after the pass the line names.
+    - After dark the kicker names the part, not "Tonight".
+  - **Sky window labels:** names stay inside the window and off the Earth's-shadow caption; the Moon and planets are never drawn half off the edge.
+  - **Earth's shadow is fixed for the night** once a plan covering dusk finds it (localStorage nightShadow, matched within 20 min of dusk). Parts no longer move half an hour between plans, and a plan made after dark no longer counts the unknown early hours as empty.
+  - **Timeline part labels** are placed over their own stretch (left + width); past parts are dimmed, not collapsed.
+  - **Mission cards:**
+    - One title size and one detail size across the row (fitCards { uniform }).
+    - The detail line isn't line-clamped, so the fitter shrinks it instead of WebKit hiding its end.
+    - Never a bare glyph: fallback art.
+    - A repeat-avoiding alternative pass prefers this evening.
+  - **Small fixes:** "Also tonight" bells line up with the other bells; Up now names reserve two lines; the hero card's label says what a tap does.

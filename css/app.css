@@ -3458,3 +3458,12 @@ body.night .tn-ms .xp .ev-bell.on { background: #ff6a55; border-color: #ff6a55; 
 .sw-bell svg { width: 20px; height: 20px; }
 .sw-bell.on { background: #fa8127; border-color: #fa8127; color: #0b1018; }
 body.night .sw-bell.on { background: #ff6a55; border-color: #ff6a55; color: #120606; }
+/* Playtest 2026-10-29: the headline keeps clear of the daytime bell; narrow phones get a smaller headline so the cards have sky */
+.sw-bell ~ .sw-text { right: 64px; }
+@media (max-width: 360px) { .sw-text h3 { font-size: 28px !important; } .sw-text p { font-size: 13px; } }
+.tn-ms .xp .ev-bell { margin-right: 0; }
+.tn-chip.tile b { min-height: 2.3em; }
+.mc small { display: block; -webkit-line-clamp: unset; } /* the fitter shrinks it instead of WebKit's line clamp hiding its end (playtest 2026-10-29) */
+/* part labels sit over their own stretch of the chart, even once one has passed (playtest 2026-10-29) */
+.tnr-parts { position: relative; height: 19px; display: block; }
+.tnr-parts span { position: absolute; top: 0; } .tnr-parts span.past { opacity: .45; }
