@@ -3275,3 +3275,25 @@ body.night #debug .notes-off .set-main { color: #ff7f70; }
 .tnp-nights .tn-btn { margin-top: 10px; width: 100%; }
 .sw-text h3 { text-transform: none !important; letter-spacing: 0 !important; font-family: var(--display) !important; font-size: 36px !important; }
 .sw-sky { height: 300px; }
+/* Tonight round 3, Sevaan's notes (2026-10-29): tappable parts with a tiny card, the rest by rarity, a weather icon; an
+   opened part lists its passes with Show me and a bell; Earth's shadow as a dome on the chart; bigger Up now cards. */
+.tnp { grid-template-columns: 32px 1fr auto; cursor: pointer; }
+.tnp.past { cursor: default; }
+.tnp-mini { width: 30px; height: 45px; } .tnp-mini .mini-face, .tnx-mini .mini-face { --mini-s: .1072; }
+.tnp-m small { display: block; margin-top: 1px; font: 500 13px var(--label); color: var(--ui-muted, #bdbea9); }
+.tnp .odds .ico { display: block; width: 18px; height: 18px; margin: 0 auto 2px; color: currentColor; } .tnp .odds.go .ico { color: #fa8127; } .tnp .odds.maybe .ico { color: #ffc93d; } .tnp .odds.skip .ico { color: #8b93a6; }
+.tnp.open { border-bottom: 0; } .tnp::after { content: '›'; grid-column: 3; display: none; }
+.tnx-list { margin: 0 -8px 8px; padding: 4px 10px 10px; border-radius: 0 0 14px 14px; background: #0e1a29; border: 1px solid #22344a; border-top: 0; }
+.tnx { display: grid; grid-template-columns: 32px 1fr 40px 40px; gap: 10px; align-items: center; padding: 8px 0; border-top: 1px solid #ffffff10; cursor: pointer; }
+.tnx:first-child { border-top: 0; } .tnx-mini { width: 30px; height: 45px; }
+.tnx b { display: block; font: 600 15px/1.15 var(--label); color: #fff2b3; } .tnx small { font: 500 12.5px var(--label); color: var(--ui-muted, #bdbea9); } .tnx small i { font-style: normal; }
+.tnx .ic { width: 40px; height: 40px; border-radius: 50%; border: 1px solid #45576a; background: none; color: #fff2b3; display: grid; place-items: center; padding: 0; } .tnx .ic svg { width: 18px; height: 18px; }
+.tnx .ic.bell.on { background: #fa8127; border-color: #fa8127; color: #0b1018; }
+.tnx-note { margin: 8px 2px 2px; font-size: 13px; color: var(--ui-muted, #bdbea9); }
+.tnx-all { display: block; width: 100%; margin-top: 6px; padding: 10px 0 2px; border: 0; background: none; color: #fa8127; font: 600 12px var(--label); letter-spacing: .14em; text-transform: uppercase; text-align: left; cursor: pointer; }
+.tnp-nights .nights .ico { display: block; width: 18px; height: 18px; margin: 3px auto 1px; color: #8b93a6; } .tnp-nights .nights .ok .ico { color: #fa8127; }
+/* Earth's shadow on the chart: a dome rising off the ground, like the real shadow climbing the sky. */
+.tnr-plot .shade { bottom: 18px; top: 8px; margin: 0 -2%; border-radius: 50% 50% 0 0 / 100% 100% 0 0; background: radial-gradient(ellipse at 50% 100%, rgba(1,3,8,.82), rgba(3,7,15,.6) 70%, rgba(3,7,15,.35)); box-shadow: inset 0 1.5px 0 rgba(255,201,61,.35); opacity: 1; }
+/* Up now: bigger cards. */
+.tn-chip { min-height: 78px; padding: 6px 12px 6px 6px; }
+.tn-chip-mini { width: 44px; height: 66px; } .tn-chip-mini .mini-face { --mini-s: .1571; }
