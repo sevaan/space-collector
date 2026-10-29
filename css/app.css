@@ -3235,3 +3235,43 @@ body.night #debug .notes-off .set-main { color: #ff7f70; }
 .tn-chip-mini { flex: none; width: 30px; height: 45px; --mini-s: .1072; border-radius: 3px; overflow: hidden; box-shadow: 0 1px 4px #0008; }
 .tn-chip-mini .mini-face { --mini-s: .1072; }
 .tn-chip-mini .card__art .art-locked, .tn-chip-mini .mini-face.locked .card__art img { filter: blur(2px) brightness(.85); }
+
+/* ---------- The Tonight page, round 3 (2026-10-29): the sky window, the chase, the star hours ---------- */
+.sw { margin-top: 2px; }
+.sw-sky { position: relative; height: 270px; margin: 0 -20px; overflow: hidden; background: #070f1d; isolation: isolate; }
+.sw-sky canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; }
+.sw-sky .sw-stars { position: absolute; inset: 0 0 25% 0; z-index: 1; pointer-events: none; opacity: .9; }
+.sw-sky .sw-wx { position: absolute; inset: 0 0 20% 0; z-index: 2; pointer-events: none; opacity: .9; }
+.sw-text { position: absolute; left: 20px; right: 20px; top: 14px; z-index: 4; pointer-events: none; text-shadow: 0 1px 10px #070f1d, 0 0 2px #070f1d; }
+.sw-text .k { display: block; font: 600 12px var(--label); letter-spacing: .16em; text-transform: uppercase; color: #fa8127; }
+.sw-text h3 { margin: 4px 0 2px; font: 400 36px/1.02 var(--display); color: #fff2b3; } .sw-text h3 em { font-style: normal; color: #fa8127; }
+.sw-text p { margin: 4px 0 0; max-width: 300px; font-size: 14.5px; line-height: 1.3; color: #e6e2c4; } .sw-text p em { font-style: normal; color: #fff2b3; font-weight: 600; }
+.sw-card { position: absolute; z-index: 3; width: 34px; aspect-ratio: 2 / 3; margin: 0; padding: 0; border: 1.5px solid var(--c); border-radius: 4px; background-size: cover; background-position: center; transform: translate(-50%, -50%) rotate(-6deg); box-shadow: 0 0 14px var(--c), 0 2px 8px #000a; cursor: pointer; }
+.sw-card.lead { width: 44px; transform: translate(-50%, -50%) rotate(-4deg); animation: swGlow 2.4s ease-in-out infinite; }
+.sw-card span { position: absolute; left: 50%; top: 100%; transform: translateX(-50%) rotate(6deg); margin-top: 5px; white-space: nowrap; font: 600 11px var(--label); color: #fff2b3; text-shadow: 0 1px 4px #070f1d; }
+@keyframes swGlow { 50% { box-shadow: 0 0 22px var(--c), 0 2px 8px #000a; } }
+@media (prefers-reduced-motion: reduce) { .sw-card.lead { animation: none; } }
+#tn-timeline { margin-top: 12px; }
+#tn-timeline .tnr-plot { height: 96px; }
+.tnr-plot .goband { position: absolute; top: 0; bottom: 18px; background: linear-gradient(#fa812733, #fa812711); border-left: 1px solid #fa812799; border-right: 1px solid #fa812799; z-index: 0; }
+.sw-hand-head { display: flex; justify-content: space-between; align-items: baseline; margin: 18px 2px 8px; } .sw-hand-head .k { font: 600 13px var(--label); letter-spacing: .16em; text-transform: uppercase; color: #fa8127; } .sw-hand-head > span:last-child { font-size: 13px; color: var(--ui-muted, #bdbea9); }
+.sw-hand { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.sw-h { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 0; border: 0; background: none; color: inherit; font: inherit; text-align: center; cursor: pointer; }
+.sw-h .cardslot { display: block; width: 100%; max-width: 92px; aspect-ratio: 2 / 3; border-radius: 7px; overflow: hidden; box-shadow: 0 0 0 1.5px var(--c), 0 0 16px color-mix(in srgb, var(--c) 55%, transparent), 0 4px 12px #0009; margin-bottom: 6px; }
+.sw-h .cardslot.back { background-size: cover; background-position: center; }
+.sw-h .cardslot .mini-face { --mini-s: .3286; }
+.sw-h.got .cardslot { box-shadow: 0 0 0 1.5px var(--c), 0 4px 12px #0009; }
+.sw-h .t { font: 600 11px var(--label); letter-spacing: .14em; text-transform: uppercase; color: var(--c); } .sw-h .t i { font-style: normal; }
+.sw-h b { font: 600 14px/1.15 var(--label); color: #fff2b3; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .sw-h small { font: 500 12.5px var(--label); color: var(--ui-muted, #bdbea9); }
+.tnp-why { margin: 6px 0 8px; font-size: 14px; color: #e6e2c4; }
+.tnp-body .mini-slot { width: 30px; height: 45px; justify-self: center; } .tnp-body .mini-slot .mini-face { --mini-s: .1072; }
+.tnp-body .tag { display: inline-block; margin-top: 4px; font: 600 11px var(--label); letter-spacing: .06em; font-style: normal; padding: 1px 7px; border-radius: 5px; background: #ffc93d18; color: #ffc93d; }
+.tnp-body em { font: 600 12px var(--label) !important; letter-spacing: .12em; text-transform: uppercase; color: #fa8127 !important; }
+.tnp-back { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 10px; border-top: 1px solid #ffffff12; font-size: 14.5px; color: #e6e2c4; } .tnp-back b { color: #fff2b3; font-weight: 600; }
+.tnp-back .bell { width: 40px; height: 40px; border-radius: 50%; border: 1px solid #45576a; background: none; color: #fff2b3; display: grid; place-items: center; } .tnp-back .bell.on { background: #fa8127; color: #0b1018; border-color: #fa8127; } .tnp-back .bell svg { width: 18px; height: 18px; }
+.tnp-nights { margin-top: 12px; padding: 12px; border-radius: 14px; border: 1px solid #22344a; background: #0e1a29; }
+.tnp-nights .nights { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; text-align: center; font: 500 12px var(--label); color: var(--ui-muted, #bdbea9); }
+.tnp-nights .nights div { padding: 6px 0; border-radius: 8px; background: #ffffff06; } .tnp-nights .nights b { display: block; font: 600 13px var(--label); color: #8b93a6; } .tnp-nights .nights .ok b { color: #fa8127; }
+.tnp-nights .tn-btn { margin-top: 10px; width: 100%; }
+.sw-text h3 { text-transform: none !important; letter-spacing: 0 !important; font-family: var(--display) !important; font-size: 36px !important; }
+.sw-sky { height: 300px; }

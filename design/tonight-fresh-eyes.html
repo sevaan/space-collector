@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tonight: Fresh Eyes</title>
+<style>
+@font-face{font-family:L;src:url(../fonts/BarlowCondensed-Medium.ttf)}
+@font-face{font-family:D;src:url(../fonts/RussoOne-Regular.ttf)}
+:root{--navy:#080f1b;--panel:#0e1a29;--edge:#22344a;--cream:#fff2b3;--mut:#fff2b399;--dim:#fff2b366;--or:#fa8127;--gold:#ffc93d;--unc:#5fd08a;--rare:#4aa3ff;--epic:#e46ad6}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#050a13;color:var(--cream);font:17px/1.45 L,system-ui,sans-serif;padding:48px 40px 80px}
+.doc{max-width:1200px;margin:0 auto}
+h1{font:400 40px/1.1 D;color:var(--or);margin-bottom:8px}
+h2{font:400 22px/1.2 D;color:var(--or);margin:56px 0 6px}
+.sub{color:var(--mut);max-width:860px;font-size:18px}
+.verdict{margin:26px 0 8px;padding:20px 24px;border:1px solid var(--edge);border-left:4px solid var(--or);background:var(--panel);border-radius:14px;font-size:19px;max-width:1000px}
+.verdict b{color:var(--gold);font-weight:500}
+ol.weak{list-style:none;counter-reset:w;display:grid;grid-template-columns:1fr 1fr;gap:12px 28px;margin-top:18px}
+ol.weak li{counter-increment:w;padding:14px 16px 14px 52px;position:relative;background:var(--panel);border:1px solid var(--edge);border-radius:12px}
+ol.weak li::before{content:counter(w,decimal-leading-zero);position:absolute;left:14px;top:13px;font:400 18px D;color:var(--or)}
+ol.weak b{color:var(--cream)} ol.weak li{color:var(--mut)} ol.weak q{color:var(--cream);quotes:"“" "”"}
+.tag{display:inline-block;font:500 12px L;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-right:6px}
+.keep{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}
+.keep div{background:var(--panel);border:1px solid var(--edge);border-radius:12px;padding:14px 16px;color:var(--mut)}
+.keep b{display:block;color:var(--unc);font-weight:500;letter-spacing:.06em;text-transform:uppercase;font-size:13px;margin-bottom:4px}
+.phones{display:flex;gap:24px;justify-content:center;margin-top:22px;align-items:flex-start}
+.ph-wrap{width:390px}
+.ph-cap{font:400 15px D;color:var(--gold);margin-bottom:4px}
+.ph-note{color:var(--mut);font-size:15px;margin-bottom:10px;min-height:96px}
+/* ---- phone ---- */
+.ph{width:390px;height:844px;background:radial-gradient(120% 60% at 50% 0,#0d1f30,var(--navy) 70%);border:2px solid #2a3a50;border-radius:44px;overflow:hidden;position:relative;font-size:16px}
+.ph .hdr{height:96px;padding-top:44px;text-align:center;border-bottom:3px double #fff2b333}
+.ph .hdr b{display:block;font:400 17px D;letter-spacing:.06em}
+.ph .hdr small{font-size:12px;letter-spacing:.18em;color:var(--mut);text-transform:uppercase}
+.ph .body{padding:14px 18px}
+.tabs{position:absolute;left:18px;right:18px;bottom:20px;height:54px;background:#080f1b;border:1px solid #fff2b31f;border-radius:16px;display:flex;font:500 14px L;letter-spacing:.18em;text-transform:uppercase}
+.tabs span{flex:1;display:grid;place-items:center;color:#c9cbb6}
+.tabs span.on{color:var(--or);box-shadow:inset 0 3px 0 var(--or)}
+.k{font:500 12px L;letter-spacing:.18em;text-transform:uppercase;color:var(--mut)}
+.k.o{color:var(--or)} .k.g{color:var(--gold)}
+.big{font:400 30px/1.05 D;margin:4px 0 4px}
+.big em{font-style:normal;color:var(--or)}
+.line{color:var(--mut);font-size:15px}
+.line b{color:var(--cream);font-weight:500}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;height:48px;border-radius:12px;background:var(--or);color:#0b1018;font:500 15px L;letter-spacing:.14em;text-transform:uppercase;margin-top:12px}
+.btn.ghost{background:transparent;color:var(--or);border:1px solid #fa812766}
+.row2{display:flex;gap:10px}.row2 .btn{flex:1}
+/* chase hand */
+.chase{margin-top:16px;background:var(--panel);border:1px solid var(--edge);border-radius:14px;padding:12px 14px 14px}
+.chase .hd{display:flex;justify-content:space-between;align-items:baseline}
+.hand{display:flex;justify-content:center;gap:0;margin-top:10px;height:150px}
+.mc{width:92px;height:138px;border-radius:9px;border:2px solid #adbcc8;background:#0b1626;position:relative;overflow:hidden;box-shadow:0 8px 18px #0008}
+.mc img{width:100%;height:58%;object-fit:cover;display:block}
+.mc .n{font:400 10.5px/1.1 D;padding:4px 6px 0;text-transform:uppercase}
+.mc .t{font:500 12px L;color:var(--or);padding:2px 6px 0}
+.mc .gm{position:absolute;top:5px;left:5px;font:500 10px L;letter-spacing:.1em;background:#080f1bcc;border-radius:5px;padding:1px 5px;text-transform:uppercase}
+.mc.r{border-color:var(--rare);box-shadow:0 0 14px #4aa3ff55,0 8px 18px #0008} .mc.r .gm{color:var(--rare)}
+.hand .mc:nth-child(1){transform:rotate(-7deg) translateY(8px);margin-right:-8px}
+.hand .mc:nth-child(3){transform:rotate(7deg) translateY(8px);margin-left:-8px}
+.hand .mc:nth-child(2){z-index:2}
+.mc.later{opacity:.75}
+/* strip */
+.strip{margin-top:14px}
+.strip svg{display:block;width:100%;height:auto}
+.strip .ax{display:flex;justify-content:space-between;font-size:12px;color:var(--dim);margin-top:2px}
+/* rows */
+.rows{margin-top:10px}
+.r{display:grid;grid-template-columns:62px 1fr auto;align-items:center;gap:8px;height:50px;border-top:1px solid #fff2b31a;font-size:15px}
+.r .tm{font:400 15px D}.r .tm small{font:500 10px L;color:var(--mut);margin-left:2px}
+.r .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.r .nm i{font-style:normal;margin-right:4px}
+.r .pl{font:500 12px L;color:var(--or);background:#fa81271a;border-radius:6px;padding:2px 7px}
+.r .pl.g{color:var(--gold);background:#ffc93d1a}
+.u{color:var(--unc)}.ra{color:var(--rare)}
+.chip{display:inline-flex;gap:6px;align-items:center;font:500 13px L;border:1px solid var(--edge);background:var(--panel);border-radius:999px;padding:5px 11px;margin:8px 6px 0 0}
+.chip b{color:var(--gold);font-weight:500}
+/* hero */
+.hero{margin-top:12px;border:1px solid #4aa3ff66;border-radius:16px;background:linear-gradient(160deg,#10243a,#0b1626);padding:14px;display:grid;grid-template-columns:122px 1fr;gap:14px;box-shadow:0 0 24px #4aa3ff22}
+.hero.moon{border-color:#ffc93d55;box-shadow:0 0 24px #ffc93d1f}
+.hero .card{width:122px;height:183px;border-radius:10px;border:2px solid var(--rare);background:#0b1626;overflow:hidden;transform:rotate(-3deg)}
+.hero.moon .card{border-color:#adbcc8}
+.hero .card img{width:100%;height:62%;object-fit:cover;display:block}
+.hero .card .n{font:400 12px/1.1 D;padding:5px 7px 0;text-transform:uppercase}
+.cd{font:400 34px/1 D;margin:2px 0 2px}
+.cd small{font-size:16px;color:var(--mut)}
+.pills{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.pills span{font:500 12px L;border-radius:6px;padding:2px 7px;background:#fa81271a;color:var(--or)}
+.pills span.m{background:#ffc93d1a;color:var(--gold)}
+.hero .btn{height:42px;margin-top:10px}
+.tick{margin-top:12px;display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border-radius:12px;background:#0e1a29;border:1px solid var(--edge);font-size:14px;color:var(--mut)}
+.tick b{color:var(--cream);font-weight:500}
+.dots{display:flex;gap:4px}.dots i{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--gold)}
+.dots i.f{background:var(--gold)}
+.fold{position:absolute;left:0;right:0;top:770px;border-top:1px dashed #ff4d4d88}
+.fold span{position:absolute;right:8px;top:-17px;font:500 10px L;letter-spacing:.14em;color:#ff7b7b;text-transform:uppercase}
+.why{font-size:13px;color:var(--mut);margin-top:10px}.why a{color:var(--or);text-decoration:none}
+/* changes */
+table{width:100%;border-collapse:collapse;margin-top:16px;font-size:16px}
+td,th{padding:10px 12px;border-top:1px solid var(--edge);vertical-align:top;text-align:left}
+th{font:500 12px L;letter-spacing:.16em;text-transform:uppercase;color:var(--mut)}
+td:first-child{font:400 18px D;color:var(--or);width:40px}
+td.e{font:400 16px D;width:46px;text-align:center}
+td.e.S{color:var(--unc)}td.e.M{color:var(--gold)}td.e.L{color:var(--epic)}
+td b{font-weight:500}
+td .w{color:var(--mut)}
+.foot{margin-top:28px;color:var(--dim);font-size:14px}
+</style></head><body><div class="doc">
+
+<h1>Tonight, with fresh eyes</h1>
+<p class="sub">A room that had never seen the app: a live-service collecting-game product designer, a visual/interaction designer (Weather, Flighty, Strava school), and two players: <b>Cas</b>, who opens it a few nights a month, and <b>Kee</b>, who wants every card. We looked at the captures for Peterborough, Ontario on 29 Oct 2026: afternoon, dusk, Earth’s shadow and dawn.</p>
+
+<div class="verdict"><b>Verdict.</b> The page is accurate and well drawn, but it doesn’t have an opinion. Four different pickers answer “what’s best tonight”, and they disagree. Every pass shows up three or four times in different shapes. Below the fold is a list of 20 near-identical Uncommon rows. Cas can’t tell in five seconds whether to go out, when, or for what. Kee sees no chase, no progress and no reason why tonight is better than tomorrow. The parts of the night (dusk, Earth’s shadow, dawn) are a good idea and the countdown card is the best thing on the page. <b>Build the first screen around one window, one chase and one next action, and push everything else down.</b></div>
+
+<h2>1 · What’s weak</h2>
+<ol class="weak">
+<li><span class="tag">Hierarchy</span><b>Four pickers, four answers.</b> At dusk (8:02 PM) the headline says <q>Best bet: Space Station at 6:07 a.m.</q>, the hero card says Tonight’s headliner is the <b>Uncommon</b> SL-8 stage at 8:16 PM, and a <b>Rare</b> Radiation Sat (5E-1) passes at 8:05, three minutes away, as row 2 of the run. In the afternoon the ★ Headliner is Tiangong, but the lit row is Kosmos 2142 (Uncommon).</li>
+<li><span class="tag">Redundancy</span><b>The same pass, four times.</b> Afternoon Tiangong shows in the headline, the chart gem, the Dusk plan row (<q>Tiangong Space Station + 46 more</q>) and its run row. At dawn the ISS is the headline, the hero, a <q>6:07 The headliner</q> pin and a Dawn plan row. Dark time appears three times: <q>Dark in 7 h 39 min · 6:42 p.m.</q>, the run’s <q>6:42 PM Dark enough to start</q> and the button.</li>
+<li><span class="tag">First screen</span><b>In the afternoon there are no cards.</b> It’s a collecting game, but the first screen at 11 AM is a sentence, a bar chart, three text rows and a button. The thing that sells the night (card art for what you could own by 8 PM) only appears at dusk.</li>
+<li><span class="tag">Density</span><b>The run is a wall.</b> 20+ rows about 83 pt tall, almost all <q>▲ Uncommon · high in the east · New card +15</q>, each with two 44 pt round buttons (40+ identical circles). Names like <q>OPS 6182 (DMSP 5D-1 F3)</q> mean nothing to Cas, and nothing ranks them. Rare and Uncommon look the same apart from a small gem.</li>
+<li><span class="tag">Wrong scale</span><b>A plan written as a countdown.</b> At 11 AM every row says <q>in 8h 15m</q>, <q>in 8h 41m</q>, <q>in 18h 22m</q>. Hours away, people need clock times and a window, not 20 countdowns.</li>
+<li><span class="tag">Shadow</span><b>Earth’s shadow lectures and doesn’t act.</b> At 1:03 AM the card spends six lines explaining shadow. The Moon row says <q>Up in the east from about 1:00 a.m.</q>, so it’s up <i>now</i>, while the mission below says <q>Collect a planet or the Moon · Look for one</q>. There’s no Collect or Aim on the one thing you can actually catch.</li>
+<li><span class="tag">Contradiction</span><b>“Dark until about 4:30” isn’t true.</b> The same screen’s run starts with a lit SL-8 at <b>4:17 AM</b>, and the missions say <q>Next: 4:00 a.m. Kosmos 1589</q>. The edge of the shadow and the first lit pass come from different sources.</li>
+<li><span class="tag">Missions</span><b>Progress sits three screens down and points elsewhere.</b> <q>Missions · 0 of 3</q> is the only progression on the page, and it’s at the very bottom. At dusk it suggests <q>GSLV stage · 2025</q> and <q>SJ-12</q>, which aren’t in the hero or the run. The mission and the pass never meet on one row.</li>
+<li><span class="tag">Missing</span><b>Nothing about me, nothing to chase.</b> There’s no collection count, no streak, no “1 night from Silver”, no caught-tonight tally and no rare drop. Live-service games sell <i>tonight</i> as scarce (“3 Rares you’ve never had; the ISS only before dawn”). Here every night looks the same.</li>
+<li><span class="tag">Copy</span><b>Small things that read as unfinished:</b> <q>7:20 p.m..</q> (double full stop); <q>p.m.</q> in the plan but <q>PM</q> in the run; <q>Space Station + 41 more</q> (which station?); <q>· 1965</q> orphaned in the fade rush; two <q>Over for tonight</q> rows taking 240 pt at dawn; <q>Busiest this evening</q> listed at 7:43 and again at 8:04; <q>Reminder free</q>; the legend row spends a whole line on four ground lines.</li>
+</ol>
+
+<h2>Keep</h2>
+<div class="keep">
+<div><b>The countdown card</b>The real card art beside a big countdown and Show me (dusk and dawn captures) is the strongest moment on the page. Make it the default, not the exception.</div>
+<div><b>Dusk / Earth’s shadow / Dawn</b>A true and teachable model of the night that no other sky app gives you. Keep it as the frame, but make it a thin strip rather than a chapter.</div>
+<div><b>Missions that name a pass</b><q>Next: 6:44 p.m. Ariane 5 stage, east</q> is exactly right. Move it onto the pass.</div>
+<div><b>The fade rush</b>A real skill moment with a shiny reward. As one chip with a count it’s exciting; as a two-column list it isn’t.</div>
+<div><b>Free ISS reminder</b>A generous hook. Say it as a benefit (“Free alert”), not a label.</div>
+<div><b>The look</b>Navy, cream, orange, Russo + Barlow and the card frames are distinctive. The problems are structure and copy, not style.</div>
+</div>
+
+<style>
+.magic{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:16px}
+.magic div{background:var(--panel);border:1px solid var(--edge);border-radius:12px;padding:14px 16px;color:var(--mut);font-size:15.5px}
+.magic b{display:block;color:var(--gold);font:400 15px D;margin-bottom:4px}
+.lines{display:grid;grid-template-columns:330px 1fr;gap:24px;align-items:center;margin-top:16px;background:var(--panel);border:1px solid var(--edge);border-radius:14px;padding:18px 20px}
+.lines .v{font:400 18px D;color:var(--or);margin-bottom:6px}
+.lines p{color:var(--mut)} .lines p b{color:var(--cream);font-weight:500}
+/* scenes */
+.scene{position:relative;height:330px;overflow:hidden}
+.scene .sky{position:absolute;inset:0}
+.s-pre .sky{background:linear-gradient(#060e1d 0%,#0c2142 48%,#1d3558 74%,#5a4a5a 90%,#b0663e 100%)}
+.s-dusk .sky{background:linear-gradient(#050c19 0%,#0a1c38 55%,#1a2c4c 80%,#4a3a4c 94%,#8a4c36 100%)}
+.s-night .sky{background:linear-gradient(#02060d 0%,#050d1b 60%,#0a1628 100%)}
+.scene .mw{position:absolute;left:-40%;top:-30%;width:180%;height:120%;background:url(../assets/sky/milkyway.webp) center 50%/1500px 750px no-repeat;transform:rotate(-28deg);mix-blend-mode:screen}
+.s-pre .mw{opacity:.18}.s-dusk .mw{opacity:.22}.s-night .mw{opacity:.6}
+.stars{position:absolute;inset:0}
+.stars i{position:absolute;width:2px;height:2px;border-radius:50%;background:#fff6d6;animation:tw 3s ease-in-out infinite}
+@keyframes tw{50%{opacity:.25}}
+.scene svg{position:absolute;inset:0;width:100%;height:100%}
+.over{position:absolute;left:18px;right:18px;top:14px;text-shadow:0 2px 12px #000c}
+.over .big{font-size:31px;margin:2px 0}
+.over .line{color:#fff2b3cc}
+.tok{position:absolute;width:36px;height:52px;border-radius:5px;background:#01121c url(../assets/art/backs/back-collector.webp) center/cover;border:1.5px solid var(--rare);box-shadow:0 0 14px #4aa3ffaa;transform:translate(-50%,-50%) rotate(-6deg)}
+.tok.face{background-size:cover;background-position:center 30%}
+.tok.gold{border-color:var(--gold);box-shadow:0 0 16px #ffc93daa}
+.tlab{position:absolute;transform:translate(-50%,0);font:500 11.5px L;letter-spacing:.06em;color:var(--cream);text-shadow:0 1px 6px #000;white-space:nowrap}
+.tlab b{color:var(--or);font-weight:500}
+.moond{position:absolute;border-radius:50%;background:radial-gradient(circle at 38% 36%,#fffbe6,#efe2b0 55%,#c9b98a);box-shadow:0 0 30px 10px #fff2b355,0 0 90px 30px #fff2b322}
+.pl{position:absolute;border-radius:50%}
+/* below the scene */
+.below{padding:12px 18px}
+.hand2{display:flex;gap:10px;margin-top:8px}
+.sc{flex:1;text-align:center}
+.sc .bk{height:118px;border-radius:9px;background:#01121c url(../assets/art/backs/back-collector.webp) center/cover;border:2px solid var(--rare);box-shadow:0 0 18px #4aa3ff66;position:relative;overflow:hidden}
+.sc .bk::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 35%,#ffffff2e 48%,transparent 60%)}
+.sc .bk.far{opacity:.55;box-shadow:none;border-color:#4aa3ff88}
+.sc .g{font:500 11px L;letter-spacing:.12em;color:var(--rare);margin-top:6px;text-transform:uppercase}
+.sc .n{font:400 12px/1.15 D;margin-top:2px}
+.sc .t{font:500 13px L;color:var(--or)}
+.hero2{display:grid;grid-template-columns:118px 1fr;gap:14px;align-items:center;margin-top:-58px;position:relative}
+.hero2 .card{width:118px;height:177px;border-radius:10px;border:2px solid var(--rare);background:#0b1626;overflow:hidden;transform:rotate(-4deg);box-shadow:0 0 30px #4aa3ff77,0 12px 24px #000a}
+.hero2.moon .card{border-color:#adbcc8;box-shadow:0 0 34px #fff2b355,0 12px 24px #000a}
+.hero2 .card img{width:100%;height:64%;object-fit:cover;display:block}
+.hero2 .card .n{font:400 11.5px/1.1 D;padding:5px 7px 0;text-transform:uppercase}
+.hero2 .side{padding-top:52px}
+.tally{display:flex;align-items:center;justify-content:space-between;margin-top:12px;padding:9px 12px;border-radius:12px;background:var(--panel);border:1px solid var(--edge);font-size:14px;color:var(--mut)}
+.tally b{color:var(--cream);font-weight:500}
+.mini3{display:flex;gap:5px}.mini3 i{width:16px;height:23px;border-radius:3px;background:#01121c url(../assets/art/backs/back-collector.webp) center/cover;border:1px solid var(--rare)}
+.nightbar{margin-top:12px;position:relative;height:22px;border-radius:11px;background:linear-gradient(90deg,#1d3558,#0a1628 22%,#03070f 28%,#03070f 70%,#0a1628 78%,#1d3558);border:1px solid var(--edge)}
+.nightbar .w{position:absolute;top:-3px;bottom:-3px;border-radius:9px;border:1.5px solid var(--or);box-shadow:0 0 10px #fa8127aa}
+.nightbar .lab{position:absolute;top:26px;font:500 11px L;letter-spacing:.08em;color:var(--mut);transform:translateX(-50%);white-space:nowrap}
+</style>
+
+<h2>2 · Make it magic</h2>
+<p class="sub">The owner is right: the sky view, the reveal, the welcome card and the collection all feel like a game, and this page feels like a report. A bar chart, a legend and 20 rows are the language of a weather app. The fix isn’t decoration. The page should show <b>the night itself</b> and <b>the cards you could own by morning</b>, and the “when to go out” answer should come out of that picture.</p>
+<div class="magic">
+<div><b>The sky is the hero</b>The top third of the page is a window onto tonight’s real sky: the gradient for the Sun’s height (Explore already saves <i>skyTone</i>), the app’s own pines and hills (<i>stripLandscape</i>), twinkling stars, the Milky Way photo at night and the forecast’s real drifting clouds. It changes through the day, so opening the page at 11 AM, 8 PM and 1 AM feels different.</div>
+<div><b>Passes are paths, not rows</b>Tonight’s best catches are drawn as glowing arcs across that sky, from where they rise to where they fade, each with its card riding on it. You can see the night’s shape at a glance: “two big ones in the southeast just after dark”.</div>
+<div><b>Cards stay sealed</b>The chase is a hand of <i>face-down</i> cards in the Collection’s back, glowing in their rarity colour, each with a time. Anticipation is the most collectible feeling there is: you go out to turn them over. Caught ones flip face up on the page.</div>
+<div><b>Times live in the picture</b>The window is a glowing bracket on a dusk-to-dawn bar that looks like the sky (twilight blue, shadow black). No bars to count, no legend. The full chart moves to “All passes” for keen players.</div>
+</div>
+
+<div class="lines">
+<svg viewBox="0 0 330 92" style="width:330px"><rect width="330" height="92" rx="10" fill="#080f1b"/>
+<g opacity=".45"><line x1="20" y1="64" x2="310" y2="64" stroke="#fff2b3" stroke-width="2"/><line x1="160" y1="70" x2="310" y2="70" stroke="#c88a6a" stroke-width="2"/><line x1="200" y1="76" x2="310" y2="76" stroke="#d6b88a" stroke-width="2"/></g>
+<line x1="20" y1="20" x2="310" y2="56" stroke="#ff4d4d" stroke-width="2"/><line x1="20" y1="56" x2="310" y2="20" stroke="#ff4d4d" stroke-width="2"/>
+<text x="20" y="16" fill="#fff2b399" font-family="L" font-size="12">Moon · Mars · Jupiter · Saturn</text></svg>
+<div><div class="v">Moon and planet lines: cut them from the chart, and cut the legend.</div>
+<p>At 2 pt thick, pale and stacked at the foot of the chart, they read as a broken axis. They need a whole legend row to decode, and they answer a question nobody asks of a pass chart (“which hours is Saturn above 8°?”). The Moon and planets matter at two moments: <b>by day, as “what you can catch tonight even if satellites go quiet”</b>, and <b>in Earth’s shadow, as the stars of the show</b>. So draw them as themselves: a glowing Moon disc and coloured planet dots in the sky scene, each with a rise time (“Jupiter 2:30”). In the shadow part they become the hero card. The one exception is a bright Moon washing out the sky, which deserves one line of copy (“Bright Moon after 10 PM: fainter ones vanish”), not a line on a chart.</p></div>
+</div>
+
+<h2>3 · A better first screen</h2>
+<p class="sub">One rule for every moment: <b>the sky as it is (or will be) → the cards in it → one next action</b>. One picker (rarest new card, then soonest) feeds the headline, the hero, the sky arcs and the notification. The full run moves behind “All passes”. The dashed red line is the fold on a 390 × 844 phone. Counts the captures don’t show (window size, cards in the window) are illustrative. On a phone the stars twinkle and clouds drift.</p>
+
+<div class="phones">
+
+<!-- AFTERNOON -->
+<div class="ph-wrap">
+<div class="ph-cap">A · Afternoon, 11:03 AM: a preview of tonight</div>
+<div class="ph-note">By day the window shows <i>tonight’s</i> sky at its best moment, with the chase drawn on it. The chase is a hand of sealed cards. Clock times only, and one button.</div>
+<div class="ph">
+ <div class="hdr"><b>TONIGHT</b><small>Peterborough · 11:03 AM</small></div>
+ <div class="scene s-pre" data-stars="55" data-land="1">
+  <div class="sky"></div><div class="mw"></div><div class="stars"></div>
+  <svg viewBox="0 0 390 330"><defs><filter id="gA"><feGaussianBlur stdDeviation="2.4"/></filter></defs>
+   <g fill="none" stroke-linecap="round">
+    <path d="M330 300 Q 270 120 150 286" stroke="#4aa3ff" stroke-width="6" opacity=".35" filter="url(#gA)"/><path d="M330 300 Q 270 120 150 286" stroke="#4aa3ff" stroke-width="1.6" stroke-dasharray="5 6"/>
+    <path d="M370 268 Q 250 60 40 270" stroke="#4aa3ff" stroke-width="6" opacity=".3" filter="url(#gA)"/><path d="M370 268 Q 250 60 40 270" stroke="#4aa3ff" stroke-width="1.6" stroke-dasharray="5 6"/>
+   </g></svg>
+  <svg class="land" viewBox="0 0 390 330"></svg>
+  <div class="tok" style="left:258px;top:204px"></div><div class="tlab" style="left:258px;top:234px"><b>7:20</b> Tiangong</div>
+  <div class="tok" style="left:176px;top:174px"></div><div class="tlab" style="left:176px;top:134px"><b>7:46</b> ESSA 1</div>
+  <div class="over"><div class="k o">Tonight · dark at 6:42 PM</div><div class="big">Go out at <em>7:15</em></div><div class="line">Two new Rares cross the southeast<br>in the first hour of dark.</div></div>
+ </div>
+ <div class="below">
+  <div style="display:flex;justify-content:space-between"><span class="k g">Tonight’s chase · sealed</span><span class="k">turn them over outside</span></div>
+  <div class="hand2">
+   <div class="sc"><div class="bk"></div><div class="g">◆ Rare</div><div class="n">Tiangong</div><div class="t">7:20 PM</div></div>
+   <div class="sc"><div class="bk"></div><div class="g">◆ Rare</div><div class="n">ESSA 1</div><div class="t">7:46 PM</div></div>
+   <div class="sc"><div class="bk far"></div><div class="g">◆ Rare</div><div class="n">Space Station</div><div class="t">6:08 AM</div></div>
+  </div>
+  <div class="btn">🔔&nbsp; Tell me at 7:05 PM</div>
+  <div class="nightbar"><div class="w" style="left:4%;width:12%"></div><span class="lab" style="left:10%">7:15–7:50</span><span class="lab" style="left:49%">Earth’s shadow · Moon &amp; planets</span><span class="lab" style="left:88%">ISS 6:08</span></div>
+ </div>
+ <div class="fold"><span>fold</span></div>
+ <div class="tabs"><span class="on">Tonight</span><span>Explore</span><span>Collection</span></div>
+</div></div>
+
+<!-- DUSK -->
+<div class="ph-wrap">
+<div class="ph-cap">B · Dusk, 8:02 PM: the headliner is coming</div>
+<div class="ph-note">The live sky: the last glow in the west and Earth’s shadow climbing in the east (the real Belt of Venus). The next Rare rises on its arc, and its card sits on the horizon, face up and glowing, counting down. Three sealed backs track the night.</div>
+<div class="ph">
+ <div class="hdr"><b>TONIGHT</b><small>Peterborough · 8:02 PM</small></div>
+ <div class="scene s-dusk" data-stars="80" data-land="1">
+  <div class="sky"></div><div class="mw"></div><div class="stars"></div>
+  <svg viewBox="0 0 390 330"><defs><filter id="gB"><feGaussianBlur stdDeviation="2.6"/></filter><linearGradient id="belt" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#0a1426" stop-opacity="0"/><stop offset=".5" stop-color="#03070f" stop-opacity=".55"/><stop offset="1" stop-color="#03070f" stop-opacity=".75"/></linearGradient></defs>
+   <path d="M210 330 Q 300 200 400 214 L400 330Z" fill="url(#belt)"/>
+   <path d="M210 330 Q 300 200 400 214" fill="none" stroke="#ffc93d" stroke-width="1" stroke-dasharray="3 5" opacity=".6"/>
+   <text x="380" y="232" fill="#ffc93daa" font-family="L" font-size="10.5" text-anchor="end" letter-spacing="1.2">EARTH’S SHADOW RISING</text>
+   <g fill="none" stroke-linecap="round">
+    <path d="M350 300 Q 230 30 40 230" stroke="#4aa3ff" stroke-width="7" opacity=".45" filter="url(#gB)"/><path d="M350 300 Q 300 186 262 152" stroke="#4aa3ff" stroke-width="2.2"/><path d="M262 152 Q 180 70 40 230" stroke="#4aa3ff" stroke-width="1.6" stroke-dasharray="5 6"/>
+    <path d="M300 310 Q 200 160 90 300" stroke="#5fd08a" stroke-width="1.2" stroke-dasharray="3 6" opacity=".55"/>
+    <path d="M60 300 Q 140 180 250 310" stroke="#5fd08a" stroke-width="1.2" stroke-dasharray="3 6" opacity=".55"/>
+   </g>
+   <circle cx="262" cy="152" r="4" fill="#cfe6ff"/><circle cx="262" cy="152" r="10" fill="#4aa3ff" opacity=".35" filter="url(#gB)"/>
+  </svg>
+  <svg class="land" viewBox="0 0 390 330"></svg>
+  <div class="tlab" style="left:270px;top:120px"><b>8:05</b> rises E</div>
+  <div class="over"><div class="k" style="color:var(--rare)">◆ Rare · new to you · rising in the east</div><div class="big" style="font-size:44px">2:51</div></div>
+ </div>
+ <div class="below">
+  <div class="hero2">
+   <div class="card"><img src="../assets/art/cards/sm/classic-satellite-2.webp" alt=""><div class="n">Radiation Sat (5E-1)</div></div>
+   <div class="side">
+    <div class="big" style="font-size:22px">Radiation Sat</div>
+    <div class="line">Halfway up in the <b>east</b> · 8:05 PM</div>
+    <div class="pills"><span>New card +25</span><span class="m">◇ Satellite +50</span></div>
+    <div class="btn" style="height:42px">◎ Show me</div>
+   </div>
+  </div>
+  <div class="tally"><span><b>0 caught</b> · 3 Rares left tonight</span><span class="mini3"><i></i><i></i><i></i></span></div>
+  <div><span class="chip">✦ <b>Fade rush</b> 8:05–8:11 · 6 shiny chances</span></div>
+ </div>
+ <div class="fold"><span>fold</span></div>
+ <div class="tabs"><span class="on">Tonight</span><span>Explore</span><span>Collection</span></div>
+</div></div>
+
+<!-- SHADOW -->
+<div class="ph-wrap">
+<div class="ph-cap">C · Earth’s shadow, 1:03 AM: the Moon’s turn</div>
+<div class="ph-note">The deepest sky of the night, with the Milky Way. Earth’s shadow is drawn as a dome where the satellites sleep, faint and still. The Moon glows in the east and Mars and Jupiter wait at the horizon. The explanation is the picture.</div>
+<div class="ph">
+ <div class="hdr"><b>TONIGHT</b><small>Peterborough · 1:03 AM</small></div>
+ <div class="scene s-night" data-stars="140" data-land="1">
+  <div class="sky"></div><div class="mw"></div><div class="stars"></div>
+  <svg viewBox="0 0 390 330"><defs><filter id="gC"><feGaussianBlur stdDeviation="3"/></filter></defs>
+   <path d="M-20 330 Q 195 -40 410 330Z" fill="#000" opacity=".32"/>
+   <path d="M-20 330 Q 195 -40 410 330" fill="none" stroke="#ffc93d" stroke-width="1.1" stroke-dasharray="3 5" opacity=".55"/>
+   <g fill="#9fb3c8" opacity=".35"><circle cx="120" cy="170" r="1.6"/><circle cx="170" cy="120" r="1.6"/><circle cx="230" cy="190" r="1.6"/><circle cx="90" cy="230" r="1.6"/><circle cx="200" cy="230" r="1.6"/><circle cx="150" cy="200" r="1.6"/><circle cx="260" cy="150" r="1.6"/></g>
+   <text x="195" y="196" fill="#ffc93daa" font-family="L" font-size="11" text-anchor="middle" letter-spacing="1.4">EARTH’S SHADOW · SATELLITES ASLEEP</text>
+  </svg>
+  <svg class="land" viewBox="0 0 390 330"></svg>
+  <div class="moond" style="left:300px;top:206px;width:40px;height:40px"></div>
+  <div class="tlab" style="left:320px;top:250px"><b>Moon</b> up now</div>
+  <div class="pl" style="left:352px;top:282px;width:7px;height:7px;background:#e07a5a;box-shadow:0 0 10px #e07a5a"></div>
+  <div class="tlab" style="left:350px;top:292px;font-size:10.5px">Mars 2:00</div>
+  <div class="tlab" style="left:236px;top:292px;font-size:10.5px">Jupiter 2:30 ↑</div>
+  <div class="over"><div class="k g">Satellites wake at 4:17 AM</div><div class="big">The Moon has<br>the <em>sky</em></div></div>
+ </div>
+ <div class="below">
+  <div class="hero2 moon">
+   <div class="card"><img src="../assets/art/cards/sm/moon.webp" alt=""><div class="n">Moon</div></div>
+   <div class="side">
+    <div class="line">Low in the <b>east</b> · a phase you haven’t stamped</div>
+    <div class="pills"><span>New phase stamp</span><span class="m">◇ Planet or Moon +50</span></div>
+    <div class="btn" style="height:42px">◎ Aim at it</div>
+   </div>
+  </div>
+  <div class="tally"><span>Next sealed card · <b>Space Station 6:08 AM</b></span><span class="pills" style="margin:0"><span class="m">🔔 Free alert</span></span></div>
+ </div>
+ <div class="fold"><span>fold</span></div>
+ <div class="tabs"><span class="on">Tonight</span><span>Explore</span><span>Collection</span></div>
+</div></div>
+
+</div>
+
+<h2>4 · Changes, ranked</h2>
+<table>
+<tr><th>#</th><th>Change</th><th>Effort</th></tr>
+<tr><td>1</td><td><b>One picker for the night.</b> Rarest new card, then soonest, then brightest. It feeds the headline, the hero, the sky arcs and Catch of the day. A Rare in the same part always beats an Uncommon. <span class="w">(Fixes dusk: SL-8 Uncommon 8:16 vs Radiation Sat Rare 8:05; and “Best bet ISS 6:07 AM” at 8 PM.)</span></td><td class="e M">M</td></tr>
+<tr><td>2</td><td><b>Replace the bar chart with a sky window</b> (~330 pt): skyTone gradient for the hour (by day, tonight’s best moment), the landscape from stripLandscape, twinkling stars (addStarfield), the Milky Way at night, and the forecast’s clouds drifting in it (cloudsHtml / weatherSvgApp). The headline sits on the sky.</td><td class="e L">L</td></tr>
+<tr><td>3</td><td><b>Draw the chase as arcs in that sky</b>: the 2–3 best passes as glowing dashed paths (riseAz → peak → set, projected like All around you does), each carrying its card token and time. The next one is solid where it has risen.</td><td class="e M">M</td></tr>
+<tr><td>4</td><td><b>Tonight’s chase as sealed cards</b>: the 3 best new cards face down in the player’s own back with a rarity glow, name and clock time; caught ones flip face up on the page (turnCard). Tap = card preview / Show me / alert.</td><td class="e M">M</td></tr>
+<tr><td>5</td><td><b>Cut the Moon/planet chart lines and the legend.</b> Draw the Moon (lit phase) and bright planets in the sky window at their place, with rise times. Bright-Moon wash-out becomes one line of copy.</td><td class="e S">S</td></tr>
+<tr><td>6</td><td><b>Cut the duplicates and lead with the window.</b> The headline is “Go out at 7:15” (from the best-window stat), with one button “Tell me at 7:05 PM”. Drop the plan rows’ “+ 46 more”, the run’s “Dark enough to start” / “Over for tonight” rows and the second “Busiest”. A dusk-to-dawn night bar with the window bracketed replaces the part tabs.</td><td class="e S">S</td></tr>
+<tr><td>7</td><td><b>Earth’s shadow: the picture explains, the card acts.</b> A dome over the sky window with sleeping satellites; the Moon/planet hero with Aim at it and the mission it ticks. The six-line lecture becomes “Why? ›”. Say “up now” when it is.</td><td class="e S">S</td></tr>
+<tr><td>8</td><td><b>Shrink the run</b> to the next 4 worth it (Rare+, first of a kind, a mission or stamp pass) as 50 pt one-line rows with one action. The rest goes behind “All N passes” (where the full chart can live). Hours away: clock times only.</td><td class="e M">M</td></tr>
+<tr><td>9</td><td><b>The night is about me:</b> a live tally with three tiny sealed backs that flip as you catch (“1 caught · 2 Rares left”), and missions as ◇ pills on the cards they tick, not a block at the bottom.</td><td class="e M">M</td></tr>
+<tr><td>10</td><td><b>Shadow edge = first lit pass</b>, so “satellites wake at” matches the run and the missions (4:17, not 4:30).</td><td class="e S">S</td></tr>
+<tr><td>11</td><td><b>Copy sweep:</b> one time style (PM), no “p.m..”, say which station, no orphan “·” in the fade rush, “Free alert” not “Reminder free”, the fade rush as one chip with a count.</td><td class="e S">S</td></tr>
+<tr><td>12</td><td><b>Scarcity for keen players:</b> “Only tonight this week” / “Next Rare like this: Sat” on the sealed cards, from planner runs of the next nights.</td><td class="e L">L</td></tr>
+</table>
+<p class="foot">Board for Sevaan · design/tonight-fresh-eyes.html · built from the captures in the session scratchpad tonightshots/ and design/tonight-fresh-combined.html. No app code changed.</p>
+</div>
+<script>
+// stars + landscape (pines and hills, like the app's tree line)
+function rnd(s){return()=>(s=(s*16807)%2147483647)/2147483647}
+document.querySelectorAll('.scene').forEach((sc,k)=>{const r=rnd(7+k*13),st=sc.querySelector('.stars'),n=+sc.dataset.stars;
+ for(let i=0;i<n;i++){const e=document.createElement('i'),z=r();e.style.left=(r()*100)+'%';e.style.top=(r()*82)+'%';const s=z>.92?2.6:z>.7?1.8:1.1;e.style.width=e.style.height=s+'px';e.style.opacity=.35+r()*.6;e.style.animationDelay=(-r()*3)+'s';e.style.animationDuration=(2+r()*3)+'s';st.appendChild(e)}
+ const L=sc.querySelector('svg.land'),night=sc.classList.contains('s-night');let d='M0 330 L0 300';for(let x=0;x<=390;x+=26)d+=` Q ${x+13} ${294+r()*12} ${x+26} ${298+r()*8}`;d+=' L390 330Z';
+ let far='M0 330 L0 290';for(let x=0;x<=390;x+=40)far+=` Q ${x+20} ${276+r()*14} ${x+40} ${284+r()*8}`;far+=' L390 330Z';
+ let pines='';for(let x=-4;x<400;x+=7+r()*12){if(r()<.35)continue;const h=12+r()*26,w=h*.32,b=300+r()*6;pines+=`M${x} ${b} L${x+w/2} ${b-h} L${x+w} ${b}Z`}
+ L.innerHTML=`<path d="${far}" fill="${night?'#060d18':'#0b1830'}"/><path d="${pines}" fill="#03070e"/><path d="${d}" fill="#03070e"/>`;});
+</script>
+</body></html>
