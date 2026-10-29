@@ -2209,3 +2209,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - **Dusk install:** the tour's first catch falls back to Earth ("Nothing's up until it gets dark, so start under your feet: Earth is a card too.") when nothing at all is up between sunset and dark. A dusk install had been pointed at a stage below the horizon.
   - **Card viewer:** the bottom room is !important (the base rule's !important won), so "Preview artwork" under an uncollected card isn't cut off.
 - 2026-10-29 · v0.1.1396 (Sevaan): the Night 2 card's app icon is 32 px (was 44).
+- 2026-10-29 · v0.1.1397: the Night 2 card adds 'Cloud is forecast then, so look for a gap.' when its pass is under forecast cloud.
