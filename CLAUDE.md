@@ -2150,3 +2150,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - A mission card whose picture would repeat first switches to another pass tonight that also does the job (MISSION_PASS), so its picture and its line name the same thing. It had shown Tiangong's picture over "Space Station · 6:07 AM".
   - The missions header XP counts the cards only (+150, not +300 with the week's theme).
   - Sky window: Moon/planet names are placed after the cards, keeping off the cards and their times as well as each other.
+- 2026-10-29 · v0.1.1373 (Sevaan): tapping the Tonight hero's card aims at it / Show me, like its button, instead of spinning out the uncollected card preview.
