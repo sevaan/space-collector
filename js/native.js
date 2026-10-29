@@ -89,7 +89,7 @@ export async function notifyAt(at, title, body, { id, link, actions, night } = {
     let p = await ln.checkPermissions(); if (p.display !== 'granted') p = await ln.requestPermissions();
     if (p.display !== 'granted') return 'denied';
     const n = { id: id ?? notifId++, title, body, schedule: { at: new Date(at), allowWhileIdle: true }, isExactNotification: false }; // a few minutes' slack is fine; exact alarms send Android players to a system screen and need a Play-restricted permission (Android playtest 2026-10-19)
-    if (link) n.extra = { link };
+    if (link || night) n.extra = { link, night }; // night: which night a "Not tonight" tap is about
     if (actions) { await noteActions(); n.actionTypeId = actions; }
     if (night) { n.threadIdentifier = night; n.group = night; }
     await ln.schedule({ notifications: [n] });

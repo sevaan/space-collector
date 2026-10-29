@@ -1,57 +1,57 @@
-import { pullToClose } from './pull-close.js?v=0.1.1313';
-import { TESTER } from './build-flavor.js?v=0.1.1313';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1313';
-import * as Secrets from './secrets.js?v=0.1.1313';
-import { STORY_BY_SECRET } from './stories.js?v=0.1.1313';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.1313';
-import * as Ufo from './ufo.js?v=0.1.1313';
-import * as Fossil from './fossil.js?v=0.1.1313';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.1313';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1313';
-import { toast, ticket, dropToast, toastPending, onTicketShown, iconSvg, dropPageNotices } from './toast.js?v=0.1.1313';
-import { VERSION } from './version.js?v=0.1.1313';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, overEarth, RisingSoon, setBinocularMode, setSkyLimit, toWorker } from './orbit.js?v=0.1.1313';
-import { placeName } from './geo.js?v=0.1.1313';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, SLIDER_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.1313';
-import { conArt } from './con-art.js?v=0.1.1313';
-import { fetchWeather, tonightSky, skyClearAt, goodSkyAt } from './weather.js?v=0.1.1313';
-import { CON_FIGURES } from './con-figures.js?v=0.1.1313';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress, starDistance } from './constellations.js?v=0.1.1313';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.1313';
-import { progress as progressOf, missionsFor, readDeals, readWeekThemes, WEEK_THEMES, countryOf, weekStartOf, weekThemeFor, xpCarry } from './progress.js?v=0.1.1313';
-import { eventOf, activeEvent, nextEvent, activeShower, nextShower, eventLine } from './events.js?v=0.1.1313';
-import { localText } from './localize.js?v=0.1.1313';
-import { searchCities } from './cities.js?v=0.1.1313';
-import { catalogUrl, refreshCatalog, dropCatalog } from './fresh-data.js?v=0.1.1313';
-import { conList } from './constellations.js?v=0.1.1313';
-import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination, hasSensorView, resumeSensors, needsPermission } from './sensors.js?v=0.1.1313';
-import { SkyView, shortName, stripLandscape } from './sky.js?v=0.1.1313';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.1313';
-import { isPlus, setPlusForTesting, onPlus, PLUS_PRICES, initStore, storePlans, buyPlus, restorePlus, rcTestStore, storeOpen } from './plus.js?v=0.1.1313';
-import { isNative, getPosition, saveFile, notifyAt, cancelNotify, haptic, onNative, nativeChrome, plugin } from './native.js?v=0.1.1313';
-import { initBackup, onBackupChange, backupSoon, clearBackup, backupStatus } from './cloud-backup.js?v=0.1.1313';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.1313';
-import { cardArt } from './art.js?v=0.1.1313';
-import { renderCard, miniCard, cardLevel, artImage, lockedArt, attachTilt, attachGyro, throwOff, attachFlip, turnCard, phasePath } from './card.js?v=0.1.1313';
-import { applyBack, CARD_BACKS, backUnlocked, chosenBack, chooseBack, backEarned, showBackNext } from './card-backs.js?v=0.1.1313';
-import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.1313';
-import { audioCtx } from './audio-ctx.js?v=0.1.1313';
-import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume, musicAway } from './music.js?v=0.1.1313';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss, onRevealSwipeIntoBinder, teachRoom } from './reveal.js?v=0.1.1313';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel, moonPhaseOf, moonPhaseAt, MOON_PHASES } from './card-model.js?v=0.1.1313';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.1313';
-import { naturalTargets, SOLAR_SYSTEM, DEEP_SKY, NATURAL, NATURAL_BY_KEY } from './natural.js?v=0.1.1313';
-import { placeFromTimeZone } from './tz-places.js?v=0.1.1313';
-import { TIER_INFO } from './rarity.js?v=0.1.1313';
-import { SETS, albumList } from './sets.js?v=0.1.1313';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.1313';
-import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.1313';
-import { note, send as sendNotes, noteError, daysSinceInstall } from './field-notes.js?v=0.1.1313';
-import { shareCardEl } from './share-card.js?v=0.1.1313';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.1313';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.1313';
-import { addStarfield } from './starfield.js?v=0.1.1313';
-import { ART_SOURCES } from './art-credits.js?v=0.1.1313';
+import { pullToClose } from './pull-close.js?v=0.1.1314';
+import { TESTER } from './build-flavor.js?v=0.1.1314';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1314';
+import * as Secrets from './secrets.js?v=0.1.1314';
+import { STORY_BY_SECRET } from './stories.js?v=0.1.1314';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.1314';
+import * as Ufo from './ufo.js?v=0.1.1314';
+import * as Fossil from './fossil.js?v=0.1.1314';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.1314';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1314';
+import { toast, ticket, dropToast, toastPending, onTicketShown, iconSvg, dropPageNotices } from './toast.js?v=0.1.1314';
+import { VERSION } from './version.js?v=0.1.1314';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, overEarth, RisingSoon, setBinocularMode, setSkyLimit, toWorker } from './orbit.js?v=0.1.1314';
+import { placeName } from './geo.js?v=0.1.1314';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, SLIDER_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.1314';
+import { conArt } from './con-art.js?v=0.1.1314';
+import { fetchWeather, tonightSky, skyClearAt, goodSkyAt } from './weather.js?v=0.1.1314';
+import { CON_FIGURES } from './con-figures.js?v=0.1.1314';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress, starDistance } from './constellations.js?v=0.1.1314';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.1314';
+import { progress as progressOf, missionsFor, readDeals, readWeekThemes, WEEK_THEMES, countryOf, weekStartOf, weekThemeFor, xpCarry } from './progress.js?v=0.1.1314';
+import { eventOf, activeEvent, nextEvent, activeShower, nextShower, eventLine } from './events.js?v=0.1.1314';
+import { localText } from './localize.js?v=0.1.1314';
+import { searchCities } from './cities.js?v=0.1.1314';
+import { catalogUrl, refreshCatalog, dropCatalog } from './fresh-data.js?v=0.1.1314';
+import { conList } from './constellations.js?v=0.1.1314';
+import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination, hasSensorView, resumeSensors, needsPermission } from './sensors.js?v=0.1.1314';
+import { SkyView, shortName, stripLandscape } from './sky.js?v=0.1.1314';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.1314';
+import { isPlus, setPlusForTesting, onPlus, PLUS_PRICES, initStore, storePlans, buyPlus, restorePlus, rcTestStore, storeOpen } from './plus.js?v=0.1.1314';
+import { isNative, getPosition, saveFile, notifyAt, cancelNotify, haptic, onNative, nativeChrome, plugin } from './native.js?v=0.1.1314';
+import { initBackup, onBackupChange, backupSoon, clearBackup, backupStatus } from './cloud-backup.js?v=0.1.1314';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.1314';
+import { cardArt } from './art.js?v=0.1.1314';
+import { renderCard, miniCard, cardLevel, artImage, lockedArt, attachTilt, attachGyro, throwOff, attachFlip, turnCard, phasePath } from './card.js?v=0.1.1314';
+import { applyBack, CARD_BACKS, backUnlocked, chosenBack, chooseBack, backEarned, showBackNext } from './card-backs.js?v=0.1.1314';
+import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.1314';
+import { audioCtx } from './audio-ctx.js?v=0.1.1314';
+import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume, musicAway } from './music.js?v=0.1.1314';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss, onRevealSwipeIntoBinder, teachRoom } from './reveal.js?v=0.1.1314';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel, moonPhaseOf, moonPhaseAt, MOON_PHASES } from './card-model.js?v=0.1.1314';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.1314';
+import { naturalTargets, SOLAR_SYSTEM, DEEP_SKY, NATURAL, NATURAL_BY_KEY } from './natural.js?v=0.1.1314';
+import { placeFromTimeZone } from './tz-places.js?v=0.1.1314';
+import { TIER_INFO } from './rarity.js?v=0.1.1314';
+import { SETS, albumList } from './sets.js?v=0.1.1314';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.1314';
+import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.1314';
+import { note, send as sendNotes, noteError, daysSinceInstall } from './field-notes.js?v=0.1.1314';
+import { shareCardEl } from './share-card.js?v=0.1.1314';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.1314';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.1314';
+import { addStarfield } from './starfield.js?v=0.1.1314';
+import { ART_SOURCES } from './art-credits.js?v=0.1.1314';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -2299,7 +2299,7 @@ function passText(p) {
   if (o.id === 48274) return { title: `${when} · Tiangong, China’s station`, body: `${path}. Bright and steady for a few minutes.` };
   if (o.family) return isNewFind(o) ? { title: `${when} · ${card.familyName ?? 'Fleet'}, a new stamp`, body: `A launch you haven’t stamped yet. ${path}.` } : { title: `${when} · ${label(o)}`, body: `${path}.` };
   const year = Number(String(o.launch ?? '').slice(0, 4)) || null;
-  return { title: `${when} · ${label(o)}`, body: `${path}.${o.type === 'rocket-body' && year ? ` Left over from a ${year} launch.` : ''}${isNewFind(o) ? ` A ${tierWord(o)} you don’t have yet.` : ''}` };
+  return { title: `${when} · ${label(o)}`, body: `${path}.${o.type === 'rocket-body' && year ? ` Left over from a ${year} launch.` : ''}${isNewFind(o) ? ` ${/^[AEIOU]/.test(tierWord(o)) ? 'An' : 'A'} ${tierWord(o)} you don’t have yet.` : ''}` };
 }
 function dealMissions(T) {
   if (!T?.passes) return;
@@ -2889,7 +2889,7 @@ function renderMissionsA(list, T, t0, msNext = new Map(), pr = null) {
   if (sh) { const rk = `shower-${sh.e.id}`, day = new Date(sh.night).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
     const el = line(`ev${reminded.has(rk) ? ' on' : ''}`, `${escapeHtml(day)} · the ${escapeHtml(sh.e.shower)}`, `${escapeHtml(sh.e.rate[0].toUpperCase() + sh.e.rate.slice(1))} · ${reminded.has(rk) ? 'reminder on' : 'tap for a free reminder'}`, '', async () => {
       if (reminded.has(rk)) return; FREE_KEYS.add(rk); const dusk = (() => { const d = new Date(sh.night); for (let u = d.setHours(16, 0, 0, 0); u < d.getTime() + 8 * 3600e3; u += 60000) if (frame(new Date(u), state.observer).sunEl < DARK_SUN_ELEVATION) return u; return sh.night; })();
-      const r = await setReminder({ at: dusk, title: `Tonight · The ${sh.e.shower} peak`, body: `${sh.e.rate[0].toUpperCase()}${sh.e.rate.slice(1)}, away from lights. Any catch tonight earns the badge.`, key: rk });
+      const r = await setReminder({ at: dusk, title: `Tonight · The ${sh.e.shower} peak`, body: `${meteorRate(sh.e.rate)[0].toUpperCase()}${meteorRate(sh.e.rate).slice(1)}. Any catch tonight earns the badge.`, key: rk });
       if (reminderToast(r, dusk)) { reminded.add(rk); el.querySelector('small').textContent = `${sh.e.rate[0].toUpperCase() + sh.e.rate.slice(1)} · reminder on`; } });
     void el; }
   for (const b of consBack(t0)) line('ev', `${escapeHtml(b.c.name)} is back this season`, `From ${escapeHtml(fmtTime(at930(t0)))} · ${b.have} of ${b.c.stars.length} stars found`, '', null);
@@ -3503,11 +3503,11 @@ async function scheduleNotesNow(T) {
   await cancelNotify(NOTE_LOOK); await cancelNotify(NOTE_CATCH); for (const id of ALERT_IDS) await cancelNotify(id); // old automatic pass alerts
   for (const id of [NOTE_SEASON, NOTE_BDAY, NOTE_TRAIN, NOTE_GHOST, ...NOTE_RARE]) await cancelNotify(id); // NOTE_BDAY: cancels any birthday notification left from before it was removed
   const t0 = Date.now(), clear = (t) => goodSkyAt(state.weather, t); // only on a good night, never on unknown weather
-  if (notTonightNow()) return; // "Not tonight" on a notification: nothing more the app sends itself until tomorrow
+  if (notTonightNow(T)) return; // "Not tonight" on a notification: nothing more the app sends itself that night
   const quiet = (t) => { const hr = new Date(t).getHours(); return hr >= 23 || hr < 7; }; // nothing the app sends itself between 11 pm and 7 am
   // Every automatic notification opens where it's about, has Show me · Not tonight, and groups with tonight's others
   // (notifications plan 2026-10-29). Wording from the writers' room: the time first, then " · ".
-  const night = `night-${nightKey(t0, state.observer.lon ?? 0)}`;
+  const night = `night-${nightKey(T?.dusk ?? t0, state.observer.lon ?? 0)}`; // the evening it's about (review room 2026-10-29: keyed on now, a morning open read as the night before)
   const auto = (at, title, body, id, link = 'spacecollector://tonight') => notifyAt(at, title, body, { id, link, actions: 'auto', night });
   const passLink = (p) => `spacecollector://pass/${p.id ?? p.obj.id}@${p.start}`;
   const where = (p) => whereWords({ el: p.peakEl, az: p.peakAz }).toLowerCase();
@@ -3538,12 +3538,12 @@ async function scheduleNotesNow(T) {
     if (isPlus() && notePref('nTrain')) { const told = readJ('trainTold2');
       const tr = tonightTrains(T, t0).find((x) => (!told[x.key] || told[x.key] === x.start) && x.start - 10 * 60000 > t0 && x.start <= eveningEnd(T) && !quiet(x.start - 10 * 60000) && clear(x.start));
       if (tr) return { at: tr.start - 10 * 60000, title: `${fmtTime(tr.start)} · A Starlink train`, body: `About ${trainWords(tr)}. ${pathWords(tr.first)}.`, id: NOTE_TRAIN, link: passLink(tr.first), mark: () => { const t2 = readJ('trainTold2'); t2[tr.key] = tr.start; saveJ('trainTold2', t2); } }; }
-    if (events && T?.dusk && T.dusk > t0 + 60000 && clear(T.dusk + 2 * 3600e3)) { const pk = showerPeakTonight(T.dusk); if (pk) return { at: T.dusk, title: `Tonight · The ${pk.shower} peak`, body: `${pk.rate[0].toUpperCase()}${pk.rate.slice(1)}, away from lights. Any catch tonight earns the badge.`, id: NOTE_SEASON }; }
+    if (events && T?.dusk && T.dusk > t0 + 60000 && clear(T.dusk + 2 * 3600e3)) { const pk = showerPeakTonight(T.dusk); if (pk) return { at: T.dusk, title: `Tonight · The ${pk.shower} peak`, body: `${meteorRate(pk.rate)[0].toUpperCase()}${meteorRate(pk.rate).slice(1)}. Any catch tonight earns the badge.`, id: NOTE_SEASON }; }
     if (events && settledIn()) { const noted = readJ('conBackNote'), at = at930(t0), sh = showerSoon(t0), six = new Date(t0).setHours(18, 0, 0, 0);
       const b = consBack(t0).find((x) => !noted[x.c.con] || noted[x.c.con] === at);
       if (b && at > t0 + 60000 && clear(at)) { const all = b.c.stars.length, nw = all - b.have, nick = b.c.data?.nick;
         return { at, title: `${fmtTime(at)} · ${b.c.name} is back`, /* the clock setting, not a fixed "9:30 PM" (US/UK playtest 2026-10-25) */ body: `${nick ? `${nick[0].toUpperCase()}${nick.slice(1)} is` : 'It’s'} up in the evening again.${nw === all ? ` All ${all} of its stars are new to you.` : nw ? ` ${nw} of its ${all} stars are new to you.` : ''}`, id: NOTE_SEASON, mark: () => { const n2 = readJ('conBackNote'); n2[b.c.con] = at; saveJ('conBackNote', n2); } }; }
-      if (sh && sh.days === 7 && six > t0 + 60000) return { at: six, title: `In 7 days · The ${sh.e.shower}`, body: `${new Date(sh.night).toLocaleDateString(undefined, { weekday: 'long' })} night: ${sh.e.rate} from a dark place. Any catch that night earns the badge.`, id: NOTE_SEASON }; }
+      if (sh && sh.days === 7 && six > t0 + 60000) return { at: six, title: `In 7 days · The ${sh.e.shower}`, body: `${new Date(sh.night).toLocaleDateString(undefined, { weekday: 'long' })} night: ${meteorRate(sh.e.rate)}. Any catch that night earns the badge.`, id: NOTE_SEASON }; }
     return null;
   })();
   if (special) { await auto(special.at, special.title, special.body, special.id, special.link); special.mark?.(); }
@@ -3568,9 +3568,12 @@ function showerPeakTonight(dusk) {
 // "Not tonight" on a notification: cancels the rest of tonight's automatic ones and keeps them off until tomorrow's
 // plan (localStorage notTonight = the night). Reminders you set are left alone.
 const AUTO_NOTES = () => [NOTE_LOOK, NOTE_CATCH, NOTE_GHOST, NOTE_SEASON, NOTE_TRAIN, ...NOTE_RARE];
-function notTonightNow() { try { return localStorage.getItem('notTonight') === String(nightKey(Date.now(), state.observer.lon ?? 0)); } catch { return false; } }
-async function notTonight() {
-  try { localStorage.setItem('notTonight', String(nightKey(Date.now(), state.observer.lon ?? 0))); } catch {}
+// The night comes with the notification (iOS can hand a background tap over days later), else tonight's plan.
+function notTonightNow(T) { try { return !!T?.dusk && localStorage.getItem('notTonight') === `night-${nightKey(T.dusk, state.observer.lon ?? 0)}`; } catch { return false; } }
+async function notTonight(night) {
+  night ??= state.tonight?.dusk ? `night-${nightKey(state.tonight.dusk, state.observer.lon ?? 0)}` : null; if (!night) return;
+  try { localStorage.setItem('notTonight', night); } catch {}
+  if (state.tonight?.dusk && night !== `night-${nightKey(state.tonight.dusk, state.observer.lon ?? 0)}`) return; // an old tap: that night is over
   for (const id of AUTO_NOTES()) await cancelNotify(id);
 }
 // Opening the app in the evening means you don’t need the Look up nudge tonight.
@@ -5107,6 +5110,8 @@ function almostThere(T = state.tonight, t0 = now().getTime()) {
 // while you still need some of its stars. 2) A big meteor shower a week ahead (Quadrantids, Perseids, Geminids).
 const SEASON_CONS = ['Ori', 'Tau', 'Gem', 'Leo', 'Vir', 'Boo', 'Sco', 'Sgr', 'Lyr', 'Cyg', 'Aql', 'Peg'];
 const BIG_SHOWERS = ['Quadrantids', 'Perseids', 'Geminids'];
+// "up to 150 an hour" says 150 of what in a notification (review room 2026-10-29): "up to 150 shooting stars an hour".
+const meteorRate = (r) => String(r ?? '').replace(/^up to (\d+) an hour/, 'up to $1 shooting stars an hour');
 let conStarV = null;
 const at930 = (t) => { const d = new Date(t); d.setHours(21, 30, 0, 0); return d.getTime(); };
 function conUpAt(con, t) { conStarV ??= new Map(CON_STARS.map((c) => [c.key, c.v])); const f = eqToEnu(new Date(t), state.observer); return con.stars.every((k) => { const v = conStarV.get(k); return v && Math.asin(Math.max(-1, Math.min(1, f(v)[2]))) * 180 / Math.PI > 10; }); }
@@ -6098,7 +6103,7 @@ if (isNative()) {
   // A tap on a notification (notifications plan 2026-10-29): the pass it's about (Show me) or the Tonight page, through
   // the widgets' own links, so a cold start waits for the sky the same way. "Not tonight" silences the rest of tonight.
   onNative('LocalNotifications', 'localNotificationActionPerformed', ({ actionId, notification }) => {
-    if (actionId === 'nottonight') { notTonight().catch(() => {}); return; }
+    if (actionId === 'nottonight') { notTonight(notification?.extra?.night).catch(() => {}); return; }
     openWidgetLink(notification?.extra?.link ?? 'spacecollector://tonight');
   });
   plugin('App')?.getLaunchUrl().then((r) => r?.url && openWidgetLink(r.url)).catch(() => {});
