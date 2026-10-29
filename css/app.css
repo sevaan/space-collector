@@ -3402,3 +3402,15 @@ body.night .mc { box-shadow: 0 0 0 1.5px #ff6a55; }
 .tn-wx.night2 .n2-msg { min-width: 0; }
 .tn-wx.night2 > .acts { grid-column: 2; }
 body.night .tn-wx.night2 .n2-icon { filter: grayscale(1) sepia(1) saturate(4) hue-rotate(320deg) brightness(.8); }
+.mc b { -webkit-line-clamp: 4; } /* long goals ("Space Race: a Soviet object and an American one") get a fourth line; the picture gives way */
+
+/* Turn a card silver or gold: the picture shimmers in that metal (2026-10-29, Sevaan) */
+.mc[data-lvl] .art { position: relative; overflow: hidden; }
+.mc[data-lvl] .art::after { content: ''; position: absolute; inset: 0; pointer-events: none; mix-blend-mode: screen; background-size: 250% 100%;
+  animation: mcMetal 2.8s ease-in-out infinite; }
+.mc[data-lvl='silver'] .art::after { background-image: linear-gradient(105deg, transparent 30%, #d9e2ecaa 44%, #ffffffee 50%, #b8c6d4aa 56%, transparent 70%); }
+.mc[data-lvl='gold'] .art::after { background-image: linear-gradient(105deg, transparent 30%, #ffc93daa 44%, #fff2b3ee 50%, #e7a93caa 56%, transparent 70%); }
+.mc[data-lvl='silver'] .art { box-shadow: 0 0 0 1px #d9e2ec88, 0 0 10px #d9e2ec44; }
+.mc[data-lvl='gold'] .art { box-shadow: 0 0 0 1px #ffc93d99, 0 0 10px #ffc93d55; }
+@keyframes mcMetal { 0% { background-position: 130% 0; } 60%, 100% { background-position: -30% 0; } }
+@media (prefers-reduced-motion: reduce) { .mc[data-lvl] .art::after { animation: none; background-position: 50% 0; opacity: .5; } }

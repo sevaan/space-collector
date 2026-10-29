@@ -34,12 +34,12 @@ const EX = {
   firstcard: ['moon', 'Moon · high in the southeast', 'First night only'],
   satellite: ['iss', 'Space Station · 7:20 PM', 'First night only'],
   stage: ['rocket-stage', 'SL-8 stage · 1976 · 6:44 PM', 'Most nights'],
-  old: ['sat-explorer-7', 'Explorer 7 · 1959 · 8:12 PM', 'Most nights'],
+  old: ['early-satellite-1', 'Kosmos 44 · 1964 · 8:12 PM', 'Most nights'],
   star: ['con:Lyr', 'Lyra · up by 9:30 PM', 'Clear, dark nights'],
   recent: ['draw-flock-superdove', 'SuperDove · 2023 · 7:58 PM', 'Most nights'],
-  soviet: ['molniya', 'Molniya 1-87 · 9:03 PM', 'Most nights'],
+  soviet: ['russian-recon', 'Molniya 1-87 · 9:03 PM', 'Most nights'],
   epic: ['hubble', 'Hubble · 6:51 PM', 'When an Epic+ passes'],
-  race: ['sat-explorer-7', 'Kosmos 1589 + Explorer 7', 'Most nights'],
+  race: ['molniya', 'Kosmos 1589 + Explorer 7', 'Most nights'],
   high: ['iss', 'Space Station · 72° up · 7:20 PM', 'When something passes high'],
   planet: ['planet-saturn', 'Saturn · up now', 'When a planet or the Moon is up'],
   junk: ['debris-rocket-1', 'Kosmos 2251 debris · 8:40 PM', 'Most nights'],
@@ -47,9 +47,9 @@ const EX = {
   conset: ['con:Ori', 'Orion · up by 9:30 PM', 'Clear, dark nights'],
   deep: ['deep-pleiades', 'Pleiades · up now', 'Dark nights, cluster up'],
   rarenew: ['sat-envisat', 'Envisat · 8:05 PM', 'When a new Rare+ passes'],
-  levelup2: ['iridium', 'Iridium 33 turns silver · 7:41 PM', 'When a card is a night away'],
+  levelup2: ['iridium', 'Iridium 33 turns gold · 7:41 PM', 'When a card is a night away'],
   china: ['cz-4', 'CZ-4C stage · 2019 · 8:22 PM', 'When a Chinese object passes'],
-  sixties: ['early-satellite-1', 'OV1-10 · 1966 · 9:15 PM', 'Most nights'],
+  sixties: ['draw-explorer-16', 'Explorer 16 · 1962 · 9:15 PM', 'Most nights'],
   eighties: ['sat-iras', 'IRAS · 1983 · 7:33 PM', 'Most nights'],
   fade: ['sat-landsat-8', 'Landsat 8 fades · 6:58 PM', 'Evenings with a shadow entry'],
   peak: ['draw-topex-poseidon', 'TOPEX/Poseidon peaks · 8:30 PM', 'Most nights'],
@@ -69,7 +69,7 @@ const card = (m) => {
   let pic;
   if (art.startsWith('con:')) { const c = CON_BY_ID.get(art.slice(4)); pic = `<span class="art svg">${conArt(c.data, null, { w: 140, h: 105, lit: new Set(), figure: `../assets/art/con/${c.con}.webp` })}</span>`; }
   else pic = `<span class="art" style="background-image:url('${A(art)}')"></span>`;
-  const b = document.createElement('button'); b.className = 'mc';
+  const b = document.createElement('button'); b.className = 'mc'; if (m.id === 'levelup2') b.dataset.lvl = 'gold';
   b.innerHTML = `<span class="top"><span>Mission</span><span>+50</span></span>${pic}<b>${m.text.replace(/\.$/, '')}</b><small>${sub}</small>`;
   return b;
 };
