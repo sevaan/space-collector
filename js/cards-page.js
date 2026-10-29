@@ -1,33 +1,33 @@
-import { pullToClose } from './pull-close.js?v=0.1.1308';
-import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.1308';
-import { computeStats, statsHtml } from './stats.js?v=0.1.1308';
-import { nightKey } from './observation.js?v=0.1.1308';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1308';
-import { sfx } from './sfx.js?v=0.1.1308';
-import { expandFacts } from './catalog-facts.js?v=0.1.1308';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.1308';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1308';
-import { ticket } from './toast.js?v=0.1.1308';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.1308';
-import { satGlobe } from './sat-globe.js?v=0.1.1308';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.1308';
-import { cardArt } from './art.js?v=0.1.1308';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.1308';
-import { applyBack } from './card-backs.js?v=0.1.1308';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.1308';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1308';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.1308';
-import { STORIES } from './stories.js?v=0.1.1308';
-import { loadConstellations, conList, CON_BY_ID } from './constellations.js?v=0.1.1308';
-import { conArt } from './con-art.js?v=0.1.1308';
-import { RANKS, progress, readDeals, readWeekThemes, xpCarry } from './progress.js?v=0.1.1308';
-import { eventBadges, nextEvent } from './events.js?v=0.1.1308';
-import { shareCardEl } from './share-card.js?v=0.1.1308';
-import { forgetSighting } from './cloud-backup.js?v=0.1.1308';
-import { allSightings, deleteSighting } from './store.js?v=0.1.1308';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.1308';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.1308';
-import { localText } from './localize.js?v=0.1.1308';
+import { pullToClose } from './pull-close.js?v=0.1.1309';
+import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.1309';
+import { computeStats, statsHtml } from './stats.js?v=0.1.1309';
+import { nightKey } from './observation.js?v=0.1.1309';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1309';
+import { sfx } from './sfx.js?v=0.1.1309';
+import { expandFacts } from './catalog-facts.js?v=0.1.1309';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.1309';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1309';
+import { ticket } from './toast.js?v=0.1.1309';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.1309';
+import { satGlobe } from './sat-globe.js?v=0.1.1309';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.1309';
+import { cardArt } from './art.js?v=0.1.1309';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.1309';
+import { applyBack } from './card-backs.js?v=0.1.1309';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.1309';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1309';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.1309';
+import { STORIES } from './stories.js?v=0.1.1309';
+import { loadConstellations, conList, CON_BY_ID } from './constellations.js?v=0.1.1309';
+import { conArt } from './con-art.js?v=0.1.1309';
+import { RANKS, progress, readDeals, readWeekThemes, xpCarry } from './progress.js?v=0.1.1309';
+import { eventBadges, nextEvent } from './events.js?v=0.1.1309';
+import { shareCardEl } from './share-card.js?v=0.1.1309';
+import { forgetSighting } from './cloud-backup.js?v=0.1.1309';
+import { allSightings, deleteSighting } from './store.js?v=0.1.1309';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.1309';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.1309';
+import { localText } from './localize.js?v=0.1.1309';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -347,7 +347,7 @@ function openStats({ instant = false } = {}) { /* instant: already there under S
   const lv = SETS.map((set) => albumStats(set.id)).filter((a) => a.cards.length);
   const cd = conDone();
   const ctx = { cards: state.cards, title: titleFor, art: (c) => artImage(c, 'small'),
-    rank: { name: p.rank.name, xp: p.xp, next: p.rank.next, nextName: p.rank.nextName },
+    rank: { name: p.rank.name, xp: p.xp, next: p.rank.next, nextName: p.rank.nextName, at: p.rank.at },
     patches: [p.achievements.filter((a) => a.done).length + extra, p.achievements.length + extra],
     events: eventBadges(state.raw).length, cons: [cd.done, cd.total],
     stories: [STORIES.filter((st) => state.sightingsByKey.has(st.key)).length, STORIES.length],

@@ -1034,3 +1034,10 @@ body[data-view="find"] .grid.find-mode > .find-head:first-child { margin-top: 18
 #stats-body > :last-child { margin-bottom: 28px; }
 :where(body.night, html[data-theme="night"]) #stats-view .st-head { color: #ff6a55; }
 :where(body.night, html[data-theme="night"]) #stats-view .st-rank { border-color: #ff6a5555; background: #0c0303; }
+/* the stats rank is the slim dial card (2026-10-28) */
+#stats-view .st-rank.lb-dial { display: flex; align-items: center; justify-content: flex-start; gap: 14px; padding: 14px 16px; }
+#stats-view .st-rank .lbd-name { font-size: 23px; }
+#stats-view .st-rank .lbd-to b { font: 500 14px/1.2 'SC Label', sans-serif; color: #fff2b3; text-transform: none; letter-spacing: 0; }
+#stats-view .st-rank .lb-xp { font: 500 14px/1 'SC Label', sans-serif; letter-spacing: .1em; color: #bdbea9; } #stats-view .st-rank .lb-xp b { font: 400 22px/1 'SC Display', 'Russo One', sans-serif; color: #fa8127; }
+#stats-view .st-rank .lbd-ring b { font: 400 15px/1 'SC Display', 'Russo One', sans-serif; color: #fff2b3; }
+#stats-view .st-rank .lbd-ring b small { margin: 4px 0 0; font: 500 10px/1 'SC Label', sans-serif; letter-spacing: .14em; color: #bdbea9; }

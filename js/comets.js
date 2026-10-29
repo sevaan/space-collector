@@ -3,7 +3,7 @@
 // and above the horizon at night). Positions come from their orbits: perihelion distance q, eccentricity e,
 // inclination i, node om, argument of perihelion w (degrees, J2000 ecliptic), perihelion time tp (Julian day).
 // Brightness: m = M1 + 5 log10(Δ) + K1 log10(r), Δ and r in AU. No DOM.
-import { NATURAL, NATURAL_BY_KEY } from './natural.js?v=0.1.1308';
+import { NATURAL, NATURAL_BY_KEY } from './natural.js?v=0.1.1309';
 const RAD = Math.PI / 180, K = 0.01720209895; // Gaussian gravitational constant
 const jd = (date) => date.getTime() / 86400000 + 2440587.5;
 
