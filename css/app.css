@@ -3390,3 +3390,15 @@ body.night .mc { box-shadow: 0 0 0 1.5px #ff6a55; }
 .sw-card.lead .face { animation: swGlowFace 2.4s ease-in-out infinite; }
 @keyframes swGlowFace { 50% { box-shadow: 0 0 0 1.5px var(--c), 0 0 22px var(--c), 0 2px 8px #000a; } }
 @media (prefers-reduced-motion: reduce) { .sw-card.lead .face { animation: none; } }
+/* Mission titles grow with the card (2026-10-29, Sevaan): 12.5px on a phone, up to 22px on wide screens */
+.mc { container-type: inline-size; }
+.mc b { font-size: clamp(12px, 11.2cqi, 22px); }
+.mc small { font-size: clamp(10.5px, 6.4cqi, 14px); }
+.mc .art { flex: 0 1 auto; min-height: 40px; } /* the picture gives way a little when a title needs three lines */
+
+/* The Night 2 card speaks as the app: its icon on the left, like a message (2026-10-29, Sevaan) */
+.tn-wx.night2 { display: grid; grid-template-columns: 44px 1fr; column-gap: 14px; align-items: start; }
+.tn-wx.night2 .n2-icon { width: 44px; height: 44px; border-radius: 10px; box-shadow: 0 0 0 1px #ffffff1f, 0 2px 8px #0008; margin-top: 2px; }
+.tn-wx.night2 .n2-msg { min-width: 0; }
+.tn-wx.night2 > .acts { grid-column: 2; }
+body.night .tn-wx.night2 .n2-icon { filter: grayscale(1) sepia(1) saturate(4) hue-rotate(320deg) brightness(.8); }

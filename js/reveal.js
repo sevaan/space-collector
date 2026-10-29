@@ -5,12 +5,12 @@
 //  Everything scales with rarity (Legendary dims the sky, shockwave, held breath, slow flip, fanfare).
 // Waits use timers, not animation.finished, so a paused tab can never freeze the sequence.
 
-import { sfx, loadSfx, heartbeat } from './sfx.js?v=0.1.1346';
-import { audioCtx } from './audio-ctx.js?v=0.1.1346';
-import { TIER_INFO } from './rarity.js?v=0.1.1346';
-import { levelFor, attachTilt, attachGyro, attachFlip, throwOff, retype } from './card.js?v=0.1.1346';
-import { applyBack } from './card-backs.js?v=0.1.1346';
-import { addStarfield } from './starfield.js?v=0.1.1346';
+import { sfx, loadSfx, heartbeat } from './sfx.js?v=0.1.1349';
+import { audioCtx } from './audio-ctx.js?v=0.1.1349';
+import { TIER_INFO } from './rarity.js?v=0.1.1349';
+import { levelFor, attachTilt, attachGyro, attachFlip, throwOff, retype } from './card.js?v=0.1.1349';
+import { applyBack } from './card-backs.js?v=0.1.1349';
+import { addStarfield } from './starfield.js?v=0.1.1349';
 
 const FX = {
   common:    { particles: 14,  flip: 520,  spin: 0,   dim: 0,   shock: false, notes: [880],                            hold: 0 },
