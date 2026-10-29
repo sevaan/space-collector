@@ -3297,3 +3297,14 @@ body.night #debug .notes-off .set-main { color: #ff7f70; }
 /* Up now: bigger cards. */
 .tn-chip { min-height: 78px; padding: 6px 12px 6px 6px; }
 .tn-chip-mini { width: 44px; height: 66px; } .tn-chip-mini .mini-face { --mini-s: .1571; }
+/* Part rows: no verdict pills; a bell for the start of each part (2026-10-29, Sevaan). */
+.tnp { grid-template-columns: 32px 1fr auto 40px; }
+.tnp-bell { width: 40px; height: 40px; border-radius: 50%; border: 1px solid #45576a; background: none; color: #fff2b3; display: grid; place-items: center; padding: 0; cursor: pointer; }
+.tnp-bell svg { width: 18px; height: 18px; } .tnp-bell.on { background: #fa8127; border-color: #fa8127; color: #0b1018; }
+.tnp.hi { margin: 4px -8px; }
+/* Tiny cards keep their rounded edge: the card's own frame is too thin to survive the scale-down (its corners vanished),
+   so the slot clips to a rounded box and draws the cream edge at screen size, as Collection tiles do. */
+:is(.tnp-mini, .tnx-mini, .tn-chip-mini, .mini-slot) { position: relative; border-radius: 4px; overflow: hidden; }
+:is(.tnp-mini, .tnx-mini, .tn-chip-mini, .mini-slot)::after { content: ''; position: absolute; inset: 0; border: 1px solid #adbcc8; border-radius: inherit; pointer-events: none; }
+:is(.tnp-mini, .tnx-mini, .tn-chip-mini, .mini-slot):empty::after { display: none; }
+.tn-chip-mini { border-radius: 5px; }
