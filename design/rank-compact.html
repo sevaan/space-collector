@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Compact rank card</title>
+<style>
+@font-face { font-family: 'L'; src: url('../fonts/BarlowCondensed-Medium.ttf'); }
+@font-face { font-family: 'D'; src: url('../fonts/RussoOne-Regular.ttf'); }
+:root { --bg: #080f1b; --ink: #fff2b3; --muted: #bdbea9; --gold: #fa8127; --medal: #ffc93d; --steel: #344654; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #1b2230; color: var(--ink); font: 500 15px/1.3 'L', sans-serif; padding: 24px 16px 40px; }
+h1 { font: 400 24px 'D'; margin: 0 0 6px; } .lead { color: var(--muted); margin: 0 0 22px; max-width: 900px; }
+.row { display: flex; flex-wrap: wrap; gap: 26px; }
+.opt { width: 370px; } .opt h2 { font: 400 17px 'D'; margin: 0 0 4px; } .opt p { margin: 0 0 10px; color: var(--muted); font-size: 14px; min-height: 56px; } .opt p b { color: var(--gold); font-weight: 500; }
+.phone { background: var(--bg); border-radius: 22px; padding: 16px 14px 20px; border: 1px solid #2c3648; }
+.card { border: 2px solid #adbcc8; border-radius: 14px; box-shadow: inset 0 0 0 1px #657786; background: #0a1120; overflow: hidden; position: relative; }
+.top { display: flex; justify-content: space-between; padding: 9px 14px; font-size: 12px; letter-spacing: .2em; text-transform: uppercase; border-bottom: 1px solid #bcb58555; }
+.top span:last-child { color: var(--gold); }
+.name { font: 400 26px/1 'D'; text-transform: uppercase; }
+.xp { font: 400 22px/1 'D'; color: var(--gold); } .xp small { font: 500 13px 'L'; color: var(--muted); letter-spacing: .14em; margin-left: 3px; }
+.to { font-size: 13.5px; color: var(--muted); } .to b { color: var(--ink); font-weight: 500; }
+.lnk { color: var(--gold); font-size: 12.5px; letter-spacing: .16em; text-transform: uppercase; white-space: nowrap; }
+.tabs { display: flex; gap: 26px; margin: 16px 4px 0; font-size: 17px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid #2c3648; padding-bottom: 8px; } .tabs b { color: var(--ink); font-weight: 500; border-bottom: 3px solid var(--gold); padding-bottom: 6px; margin-bottom: -11px; }
+
+/* A · Ring: the rank as a dial, progress around it */
+.A .body { display: flex; align-items: center; gap: 14px; padding: 14px; }
+.A .ring { width: 74px; height: 74px; flex: none; position: relative; }
+.A .ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+.A .ring b { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; font: 400 13px 'D'; color: var(--ink); text-align: center; line-height: 1; }
+.A .ring b small { display: block; text-transform: uppercase; font: 500 10px 'L'; letter-spacing: .14em; color: var(--muted); margin-top: 3px; }
+.A .m { flex: 1; min-width: 0; display: grid; gap: 6px; }
+.A .m .l1 { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; } .A .name { font-size: 23px; }
+
+/* B · Rank road: every rank as a star on one line, you glowing */
+.B .road { position: relative; height: 54px; margin: 10px 18px 0; }
+.B .road .line { position: absolute; left: 0; right: 0; top: 22px; height: 2px; background: repeating-linear-gradient(90deg, #4a5d72 0 3px, transparent 3px 7px); }
+.B .road .done { position: absolute; left: 0; top: 22px; height: 2px; background: var(--gold); }
+.B .st { position: absolute; top: 14px; width: 18px; height: 18px; margin-left: -9px; display: grid; place-items: center; }
+.B .st i { width: 8px; height: 8px; border-radius: 50%; background: #0a1120; border: 1.5px dashed #8a9aac; }
+.B .st.past i { background: var(--gold); border: 0; }
+.B .st.me i { width: 14px; height: 14px; background: var(--gold); border: 0; box-shadow: 0 0 0 4px #fa812733, 0 0 14px #fa8127; }
+.B .st span { position: absolute; top: 22px; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+.B .st.me span { color: var(--ink); }
+.B .bottom { display: flex; justify-content: space-between; align-items: center; padding: 6px 14px 13px; }
+
+/* C · Orbit: you're a satellite on your way round to the next rank */
+.C .body { position: relative; padding: 14px 14px 13px; display: grid; gap: 6px; }
+.C svg.orb { position: absolute; right: -6px; top: 50%; width: 112px; height: 112px; transform: translateY(-50%); opacity: .95; }
+.C .l1 { display: flex; align-items: baseline; gap: 10px; position: relative; } .C .body { padding-right: 120px; min-height: 108px; } .C .name { font-size: 23px; }
+.C .rel { position: relative; }
+
+/* D · Gauge: an instrument strip with rank ticks */
+.D .head { display: flex; justify-content: space-between; align-items: baseline; padding: 14px 14px 4px; }
+.D .gauge { position: relative; margin: 6px 14px 0; height: 30px; }
+.D .ticks { position: absolute; inset: 0 0 12px 0; background: repeating-linear-gradient(90deg, #4a5d72 0 1px, transparent 1px 8px); opacity: .7; }
+.D .fill { position: absolute; left: 0; top: 0; bottom: 12px; background: linear-gradient(90deg, #fa812733, #fa8127); border-radius: 2px; }
+.D .ptr { position: absolute; top: -4px; bottom: 8px; width: 2px; background: var(--ink); box-shadow: 0 0 8px #fff2b3; }
+.D .mk { position: absolute; bottom: -2px; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); transform: translateX(-50%); white-space: nowrap; }
+.D .foot { display: flex; justify-content: space-between; padding: 8px 14px 12px; }
+.rec { display: inline-block; margin-left: 6px; font: 600 11px 'L'; letter-spacing: .12em; padding: 2px 6px; border-radius: 5px; background: var(--gold); color: var(--bg); vertical-align: 3px; }
+</style></head><body>
+<h1>Compact rank card</h1>
+<p class="lead">Today's compact card is 250 px of mostly empty space with a flat bar. Each option is about half that and makes the rank itself the picture. Same numbers in each: Stargazer, 180 XP, 120 to Spotter (60%). Missions › still opens the missions.</p>
+<div class="row">
+
+<div class="opt A"><h2>A · Rank dial</h2><p><b>Recommended.</b> Your rank sits in a dial that fills in orange as you go, like the circle you aim with. Everything on one row; about 105 px tall.</p>
+<div class="phone"><div class="card"><div class="top"><span>Observer rank</span><span>Week 1 · streak begun</span></div>
+<div class="body"><div class="ring"><svg viewBox="0 0 74 74"><circle cx="37" cy="37" r="32" fill="none" stroke="#24344a" stroke-width="5"/><circle cx="37" cy="37" r="32" fill="none" stroke="#fa8127" stroke-width="5" stroke-linecap="round" stroke-dasharray="120.6 201"/><g stroke="#fff2b355" stroke-width="1.5"><line x1="37" y1="0" x2="37" y2="5"/><line x1="74" y1="37" x2="69" y2="37"/><line x1="37" y1="74" x2="37" y2="69"/><line x1="0" y1="37" x2="5" y2="37"/></g></svg><b>60%<small>to next</small></b></div>
+<div class="m"><div class="l1"><span class="name">Stargazer</span><span class="xp">180<small>XP</small></span></div><div class="l1"><span class="to">120 XP to <b>Spotter</b></span><span class="lnk">Missions ›</span></div></div></div></div>
+<div class="tabs"><b>Mine</b><span>Albums</span><span>Patches</span><span>Find</span></div></div></div>
+
+<div class="opt B"><h2>B · Rank road</h2><p>All eight ranks as stars on one dotted line, the ones you've passed lit, yours glowing, the line drawn up to where you are. Shows the whole climb at a glance; about 125 px.</p>
+<div class="phone"><div class="card"><div class="top"><span>Observer rank</span><span>Week 1 · streak begun</span></div>
+<div class="road"><div class="line"></div><div class="done" style="width:8.6%"></div>
+<div class="st me" style="left:0%"><i></i><span style="left:-4px">You</span></div><div class="st" style="left:14.3%"><i></i></div><div class="st" style="left:28.6%"><i></i></div><div class="st" style="left:42.9%"><i></i></div><div class="st" style="left:57.1%"><i></i></div><div class="st" style="left:71.4%"><i></i></div><div class="st" style="left:85.7%"><i></i></div><div class="st" style="left:100%"><i></i><span style="right:-4px">Voyager</span></div></div>
+<div class="bottom"><span><span class="name" style="font-size:22px">Stargazer</span> <span class="xp" style="font-size:18px;margin-left:6px">180<small>XP</small></span></span><span class="lnk">Missions ›</span></div>
+<div class="bottom" style="padding-top:0"><span class="to">120 XP to <b>Spotter</b> · 60%</span></div></div>
+<div class="tabs"><b>Mine</b><span>Albums</span><span>Patches</span><span>Find</span></div></div></div>
+
+<div class="opt C"><h2>C · In orbit</h2><p>A faint orbit curves behind the words with a small satellite on it, partway round: how far you are to the next rank. Quiet, very "space"; about 110 px.</p>
+<div class="phone"><div class="card"><div class="top"><span>Observer rank</span><span>Week 1 · streak begun</span></div>
+<div class="body"><svg class="orb" viewBox="0 0 190 190"><ellipse cx="95" cy="95" rx="80" ry="34" transform="rotate(-18 95 95)" fill="none" stroke="#4a5d72" stroke-width="1.5" stroke-dasharray="3 5"/><circle cx="95" cy="95" r="26" fill="#1d3b5c" stroke="#6f8fa8"/><path d="M75 88 q10 -8 20 -2 t18 2" fill="none" stroke="#fff2b355" stroke-width="2"/><path d="M175 70 A80 34 -18 0 1 30 140" transform="rotate(0)" fill="none" stroke="#fa8127" stroke-width="3" stroke-linecap="round" opacity="0"/><circle cx="40" cy="128" r="6" fill="#fff2b3"/><circle cx="40" cy="128" r="13" fill="#fff2b326"/><text x="95" y="182" text-anchor="middle" fill="#bdbea9" font-family="L" font-size="16" letter-spacing="2">60% ROUND</text></svg>
+<div class="l1"><span class="name">Stargazer</span><span class="xp">180<small>XP</small></span></div>
+<div class="rel to">120 XP to <b>Spotter</b></div>
+<div class="rel"><span class="lnk">Missions ›</span></div></div></div>
+<div class="tabs"><b>Mine</b><span>Albums</span><span>Patches</span><span>Find</span></div></div></div>
+
+<div class="opt D"><h2>D · Instrument gauge</h2><p>The flat bar becomes a ruled gauge with a bright needle and your rank and the next one named at its ends. Closest to today, just tighter; about 120 px.</p>
+<div class="phone"><div class="card"><div class="top"><span>Observer rank</span><span>Week 1 · streak begun</span></div>
+<div class="head"><span class="name">Stargazer</span><span class="xp">180<small>XP</small></span></div>
+<div class="gauge"><div class="ticks"></div><div class="fill" style="width:60%"></div><div class="ptr" style="left:60%"></div><span class="mk" style="left:6%">Stargazer</span><span class="mk" style="left:92%">Spotter</span></div>
+<div class="foot"><span class="to">120 XP to go · 60%</span><span class="lnk">Missions ›</span></div></div>
+<div class="tabs"><b>Mine</b><span>Albums</span><span>Patches</span><span>Find</span></div></div></div>
+
+</div>
+</body></html>

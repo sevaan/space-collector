@@ -992,3 +992,22 @@ body.few-cards .logbook .lb-pic { height: 44px !important; min-height: 0; backgr
    Sevaan: it kept a full card's height and left a big empty middle). */
 body.few-cards .logbook .lb-rot { min-height: 0; }
 @media (max-height: 700px) { .logbook .lb-rot { min-height: 0; } }
+
+/* Slim rank card, design/rank-compact.html A (2026-10-28, Sevaan): with no ladder picture (day one, short phones) the rank
+   sits beside a dial that fills as you go; one row, Missions › on it. */
+.lb-dial { display: none; }
+body.few-cards .lb-dial { display: flex; }
+body.few-cards .logbook :is(.lb-pic, .lb-rankrow, .lb-bar, .lb-to) { display: none !important; }
+@media (max-height: 700px) { .lb-dial { display: flex; } .logbook :is(.lb-pic, .lb-rankrow, .lb-bar, .lb-to) { display: none !important; } }
+.lb-dial { align-items: center; gap: 14px; padding: 14px 16px; }
+.lbd-ring { position: relative; width: 74px; height: 74px; flex: none; }
+.lbd-ring svg { width: 100%; height: 100%; display: block; }
+.lbd-ring b { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; font: 400 15px/1 var(--display, 'Russo One'); color: var(--ink, #fff2b3); }
+.lbd-ring b small { font: 500 10px/1 var(--label); letter-spacing: .14em; text-transform: uppercase; color: var(--muted, #bdbea9); margin-top: 4px; }
+.lbd-m { flex: 1; min-width: 0; display: grid; gap: 8px; }
+.lbd-l { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+.lbd-name { font: 400 23px/1 var(--display, 'Russo One'); text-transform: uppercase; color: var(--ink, #fff2b3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.lb-dial .lb-xp { white-space: nowrap; }
+.lbd-to { font-size: 14px; color: var(--muted, #bdbea9); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; } .lbd-to b { color: var(--ink, #fff2b3); font-weight: 500; }
+.lbd-more { flex: none; background: none; border: 0; padding: 6px 0; min-height: 32px; color: var(--gold, #fa8127); font: 500 13px var(--label); letter-spacing: .16em; text-transform: uppercase; cursor: pointer; }
+:where(html[data-theme="night"], body.night) .lbd-ring circle[stroke="#fa8127"] { stroke: #ff6a55; }
