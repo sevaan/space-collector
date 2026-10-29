@@ -3478,3 +3478,9 @@ body.night .sw-bell.on { background: #ff6a55; border-color: #ff6a55; color: #120
 #confirm-sheet .cf-body { margin: 6px 0 16px; font: 500 15px/1.4 var(--label); color: var(--ui-muted, #bdbea9); }
 #confirm-sheet .cf-danger { background: #d9463b; color: #fff; border-color: #d9463b; justify-content: center; }
 #confirm-sheet #cf-cancel { display: block; margin: 12px auto 0; }
+/* Plus opened from a card in the Collection (its viewer covers the shared header): the page goes full height on top with
+   its own title row and ✕, like over the first-night page (iOS playtest 2026-10-29: it sat under the viewer's counter) */
+body.col-modal #set-plus-sheet { top: 0; z-index: 95; }
+body.col-modal #set-plus-sheet .set-sheet-card > .crew-top { display: flex !important; }
+body.col-modal #set-plus-sheet .set-sheet-card { height: 100dvh !important; padding-top: 0 !important; }
+body.col-modal #set-plus-sheet .set-sheet-card > .starfield { height: 100dvh; margin-bottom: -100dvh; }
