@@ -2146,3 +2146,7 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - 2026-10-29 · v0.1.1367 (Sevaan): "Sky alerts" is now "Pass alerts" everywhere (Settings row, Android notification category, Plus kit tile, test page). Pref key nAlerts unchanged.
 - 2026-10-29 · v0.1.1368 (Sevaan): the next-nights strip under the night parts (cloudNights, with its clear-night badges) is removed. Coming nights live on the all-cloud card and the bad-weather page; tonight's cloud is on the chart.
 - 2026-10-29 · v0.1.1370 (Sevaan: "up now could look better"): Tonight's Up now chips are card tiles (.tn-chip.tile): the real card at 88×132 with its picture (miniCard preview), a NEW / NEW PHASE tag and a glow in the rarity colour for new ones, then the name and '● S halfway up' under it. Cards you own are dashed ('Yours · S'). The by-day header reads 'Tap one to aim'.
+- 2026-10-29 · v0.1.1372, playtest fixes before the build:
+  - A mission card whose picture would repeat first switches to another pass tonight that also does the job (MISSION_PASS), so its picture and its line name the same thing. It had shown Tiangong's picture over "Space Station · 6:07 AM".
+  - The missions header XP counts the cards only (+150, not +300 with the week's theme).
+  - Sky window: Moon/planet names are placed after the cards, keeping off the cards and their times as well as each other.
