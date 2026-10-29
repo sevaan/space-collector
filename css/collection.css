@@ -1042,4 +1042,4 @@ body[data-view="find"] .grid.find-mode > .find-head:first-child { margin-top: 18
 #stats-view .st-rank .lbd-ring b { font: 400 15px/1 'SC Display', 'Russo One', sans-serif; color: #fff2b3; }
 #stats-view .st-rank .lbd-ring b small { margin: 4px 0 0; font: 500 10px/1 'SC Label', sans-serif; letter-spacing: .14em; color: #bdbea9; }
 /* The last line under a card ("Not yet collected · record a live sighting…") clears the home bar (iOS playtest 2026-10-29) */
-#viewer .viewer-scroll { padding-bottom: calc(max(var(--safe-bottom, 0px), env(safe-area-inset-bottom, 0px)) + 40px); }
+#viewer .viewer-scroll { padding-bottom: calc(max(var(--safe-bottom, 0px), env(safe-area-inset-bottom, 0px)) + 56px) !important; } /* the earlier rule out-ranked it (build 42 playtest: Preview artwork cut off) */

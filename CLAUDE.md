@@ -2205,3 +2205,6 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - 2026-10-29 · v0.1.1392 (build 42 playtest): the Plus page opened over a Collection card viewer (body.col-modal) is full height from the top with its own title row and ✕ (it started under the header line, leaving the viewer's counter over it). Reminders from the Collection (Up tonight panel, Find) ask for Plus before the time picker.
 - 2026-10-29 · v0.1.1393 (build 42 playtest): nightStats' busiest moment (the run's 'Busiest this evening', the day and quiet heroes) is the busiest clear moment (skyOkAt), like the first-night page and the bell sheet.
 - 2026-10-29 · v0.1.1394 (Sevaan): a daytime pass marker lined up in the circle has a clearly dashed ring (5/6 dashes, 2.2 px, no leftover glow) so it reads as not there yet; it looked solid on the phone.
+- 2026-10-29 · v0.1.1395 (build 42 playtest):
+  - **Dusk install:** the tour's first catch falls back to Earth ("Nothing's up until it gets dark, so start under your feet: Earth is a card too.") when nothing at all is up between sunset and dark. A dusk install had been pointed at a stage below the horizon.
+  - **Card viewer:** the bottom room is !important (the base rule's !important won), so "Preview artwork" under an uncollected card isn't cut off.
