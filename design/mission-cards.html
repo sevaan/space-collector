@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mission Cards</title>
+<link rel="stylesheet" href="../css/cards.css"><link rel="stylesheet" href="../css/app.css"><link rel="stylesheet" href="../css/ui.css">
+<style>
+  html, body { background: #080f1b; color: #fff2b3; margin: 0; overflow: auto; height: auto; position: static; }
+  body { padding: 28px 20px 60px; font: 15px/1.4 var(--label); }
+  h1 { font: 400 26px var(--display); margin: 0 0 4px; } h2 { font: 600 14px var(--label); letter-spacing: .16em; text-transform: uppercase; color: #fa8127; margin: 34px 0 12px; }
+  p.lead { color: #bdbea9; max-width: 760px; margin: 0 0 6px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, 150px); gap: 22px 14px; }
+  .cell { display: grid; gap: 6px; } .cell code { font: 500 12px var(--label); color: #8fb3cf; letter-spacing: .04em; }
+  .cell .when { font: 500 12px/1.3 var(--label); color: #bdbea9; }
+  .phone { width: 362px; } .phone .mc-row { --n: 3; }
+  .note { color: #bdbea9; max-width: 760px; } .note b { color: #fff2b3; }
+  .mc { pointer-events: none; }
+</style></head>
+<body>
+<h1>Tonight’s missions · every card</h1>
+<p class="lead">All 33 missions (3 for a first night, 30 in the nightly draw), drawn with the app’s own card styles. Pictures and the line under each title are examples. In the app, they come from tonight’s sky.</p>
+<h2>At phone size (3 across, 402 pt screen)</h2>
+<div class="phone"><div class="mc-row" id="phone"></div></div>
+<h2>First night</h2><div class="grid" id="starter"></div>
+<h2>The nightly draw · 30</h2><div class="grid" id="draw"></div>
+<h2>Is that enough?</h2>
+<div class="note" id="note"></div>
+<script type="module">
+import { MISSIONS, STARTER } from '../js/progress.js';
+import { loadConstellations, CON_BY_ID } from '../js/constellations.js';
+import { conArt } from '../js/con-art.js';
+await loadConstellations('../data/constellations.json');
+const A = (f) => `../assets/art/cards/sm/${f}.webp`;
+/* example picture + line for each mission, and when it can be dealt (the app only deals what tonight can give) */
+const EX = {
+  firstcard: ['moon', 'Moon · high in the southeast', 'First night only'],
+  satellite: ['iss', 'Space Station · 7:20 PM', 'First night only'],
+  stage: ['rocket-stage', 'SL-8 stage · 1976 · 6:44 PM', 'Most nights'],
+  old: ['sat-explorer-7', 'Explorer 7 · 1959 · 8:12 PM', 'Most nights'],
+  star: ['con:Lyr', 'Lyra · up by 9:30 PM', 'Clear, dark nights'],
+  recent: ['draw-flock-superdove', 'SuperDove · 2023 · 7:58 PM', 'Most nights'],
+  soviet: ['molniya', 'Molniya 1-87 · 9:03 PM', 'Most nights'],
+  epic: ['hubble', 'Hubble · 6:51 PM', 'When an Epic+ passes'],
+  race: ['sat-explorer-7', 'Kosmos 1589 + Explorer 7', 'Most nights'],
+  high: ['iss', 'Space Station · 72° up · 7:20 PM', 'When something passes high'],
+  planet: ['planet-saturn', 'Saturn · up now', 'When a planet or the Moon is up'],
+  junk: ['debris-rocket-1', 'Kosmos 2251 debris · 8:40 PM', 'Most nights'],
+  again: ['iridium', 'Iridium 33 · 7:41 PM', 'Once you own cards'],
+  conset: ['con:Ori', 'Orion · up by 9:30 PM', 'Clear, dark nights'],
+  deep: ['deep-pleiades', 'Pleiades · up now', 'Dark nights, cluster up'],
+  rarenew: ['sat-envisat', 'Envisat · 8:05 PM', 'When a new Rare+ passes'],
+  levelup2: ['iridium', 'Iridium 33 turns silver · 7:41 PM', 'When a card is a night away'],
+  china: ['cz-4', 'CZ-4C stage · 2019 · 8:22 PM', 'When a Chinese object passes'],
+  sixties: ['early-satellite-1', 'OV1-10 · 1966 · 9:15 PM', 'Most nights'],
+  eighties: ['sat-iras', 'IRAS · 1983 · 7:33 PM', 'Most nights'],
+  fade: ['sat-landsat-8', 'Landsat 8 fades · 6:58 PM', 'Evenings with a shadow entry'],
+  peak: ['draw-topex-poseidon', 'TOPEX/Poseidon peaks · 8:30 PM', 'Most nights'],
+  moon: ['moon', 'Moon · halfway up in the east', 'When the Moon is up'],
+  low: ['sat-cryosat-2', 'CryoSat-2 · 14° up · 7:12 PM', 'Most nights'],
+  station: ['iss', 'Tiangong · 7:20 PM', 'When a station passes'],
+  sats3: ['sat-jason-3', 'Kosmos 1589 · 3:59 AM', 'Most nights'],
+  nations3: ['sat-cbers-4', 'CBERS-4 · 8:48 PM', 'Most nights'],
+  late: ['planet-jupiter', 'SL-16 stage · 12:40 AM', 'Night owls, or late passes'],
+  debris2: ['deb-sylda', 'SYLDA · 1984 · 9:22 PM', 'Most nights'],
+  europe: ['ariane-5', 'Ariane 5 stage · 2004 · 5:24 AM', 'When a European object passes'],
+  asia: ['h2a', 'H-IIA stage · 2018 · 8:02 PM', 'When a Japanese or Indian object passes'],
+  planets2: ['planet-mars', 'Mars and Jupiter · up now', 'When two planets are up'],
+};
+const card = (m) => {
+  const [art, sub] = EX[m.id] ?? ['classic-satellite-1', ''];
+  let pic;
+  if (art.startsWith('con:')) { const c = CON_BY_ID.get(art.slice(4)); pic = `<span class="art svg">${conArt(c.data, null, { w: 140, h: 105, lit: new Set(), figure: `../assets/art/con/${c.con}.webp` })}</span>`; }
+  else pic = `<span class="art" style="background-image:url('${A(art)}')"></span>`;
+  const b = document.createElement('button'); b.className = 'mc';
+  b.innerHTML = `<span class="top"><span>Mission</span><span>+50</span></span>${pic}<b>${m.text.replace(/\.$/, '')}</b><small>${sub}</small>`;
+  return b;
+};
+const cell = (m) => { const d = document.createElement('div'); d.className = 'cell'; d.append(card(m)); d.insertAdjacentHTML('beforeend', `<code>${m.id}</code><span class="when">${EX[m.id]?.[2] ?? ''}</span>`); return d; };
+for (const id of ['europe', 'sats3', 'star']) document.getElementById('phone').append(card(MISSIONS.find((m) => m.id === id)));
+STARTER.forEach((m) => document.getElementById('starter').append(cell(m)));
+MISSIONS.forEach((m) => document.getElementById('draw').append(cell(m)));
+const always = MISSIONS.filter((m) => /Most nights/.test(EX[m.id]?.[2] ?? '')).length;
+document.getElementById('note').innerHTML = `<p><b>${MISSIONS.length} missions</b> in the draw, 3 dealt a night, each only if tonight can give it. About <b>${always}</b> can be dealt on almost any clear night; the rest need something specific overhead (a planet, the Moon, a station, a Chinese or European pass, a high or late pass, a dark sky).</p>
+<p>With ~${always} always-possible missions, the same three-mission set repeats rarely, but the same <i>individual</i> missions (rocket stage, old, Soviet, debris, three satellites) will show up most weeks. More missions would help most in two places: <b>things that change through the year</b> (seasonal constellations, meteor showers, the Moon's phase) and <b>skill</b> (fade, peak, low, two passes close together).</p>`;
+</script>
+</body></html>

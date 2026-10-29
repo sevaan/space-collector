@@ -2122,3 +2122,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - 2026-10-29 · v0.1.1349 (Sevaan):
   - **Mission titles** grow with the card (container query: clamp(12px, 11.2cqi, 22px), detail line too). The picture gives way a little when a title needs three lines, so nothing overflows on a phone.
   - **Night 2 card** shows the app icon on the left (icons/icon-180.png, 44px rounded), as if the app is talking to you; red-tinted in night mode.
+- 2026-10-29: design/mission-cards.html shows every mission (3 first-night, 30 in the draw) as a real mission card with the app's CSS, example pictures and lines, and when each can be dealt.
