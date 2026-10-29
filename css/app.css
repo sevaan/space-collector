@@ -3416,3 +3416,15 @@ body.night .tn-wx.night2 .n2-icon { filter: grayscale(1) sepia(1) saturate(4) hu
 @media (prefers-reduced-motion: reduce) { .mc[data-lvl] .art::after { animation: none; background-position: 50% 0; opacity: .5; } }
 .mc.long b { font-size: clamp(11px, 9.6cqi, 19px); }
 .mc .art { min-height: 24px; }
+
+/* Alarm badge on each clear night (2026-10-29, Sevaan) */
+.tnp-nights .nights div { position: relative; }
+.tnp-nights .nights .nb { position: absolute; top: -7px; right: -5px; width: 26px; height: 26px; padding: 0; border-radius: 50%; border: 1.5px solid #fa8127; background: #0e1a29; color: #fa8127; display: grid; place-items: center; cursor: pointer; }
+.tnp-nights .nights .nb::before { content: ''; position: absolute; inset: -9px; } /* a 44px tap area */
+.tnp-nights .nights .nb .ico { width: 14px; height: 14px; margin: 0; color: inherit; }
+.tnp-nights .nights .nb.on { background: #fa8127; color: #0b1018; box-shadow: 0 0 10px #fa812788; }
+.tnp-nights .nights { padding-top: 6px; }
+body.night .tnp-nights .nights .nb { border-color: #ff6a55; color: #ff6a55; } body.night .tnp-nights .nights .nb.on { background: #ff6a55; color: #120606; }
+.tnp-nights .nights { padding-top: 8px; } .tnp-nights .nights > div { padding-top: 12px; }
+.tnp-nights .nights .nb { top: -8px; right: -4px; width: 22px; height: 22px; border-width: 1.2px; }
+.tnp-nights .nights .nb .ico { width: 12px; height: 12px; }

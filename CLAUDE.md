@@ -2132,3 +2132,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - Long goals (30+ characters) start a size smaller (.mc.long).
   - The picture can shrink to 24px.
   - Checked every mission at 150/114/100/86px cards, i.e. down to a 320pt phone.
+- 2026-10-29 · v0.1.1357 (Sevaan): the Tonight page's next-nights strip (cloudNights) has no "Remind me tomorrow" button. Every clear (isGoodNight) night still ahead has a round alarm badge on its corner (.nb). A tap sets a free reminder (key clear@<time>, freeKey) for when that night's clear spell starts: clearFrom, else the night's start at dark. It turns orange when set, and a second tap turns it off.
