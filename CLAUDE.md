@@ -2143,3 +2143,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - **Free elsewhere:** ISS passes, until dark and clear nights stay free on Explore and the first-night page.
   - **"Set reminders for the run" removed:** it set one for every stop.
 - 2026-10-29 · v0.1.1366 (Sevaan): the website test build shows the same Settings as the apps. The Notifications rows (Tonight, Sky events, Sky alerts, Quiet hours) and Rate Space Collector show there too. On the website the switches only remember the choice (no permission asked, nothing scheduled); Plus gating still applies.
+- 2026-10-29 · v0.1.1367 (Sevaan): "Sky alerts" is now "Pass alerts" everywhere (Settings row, Android notification category, Plus kit tile, test page). Pref key nAlerts unchanged.

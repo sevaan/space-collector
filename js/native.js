@@ -109,7 +109,7 @@ function noteChannels() {
     ['asked', 'Reminders you set', 'The passes and moments you asked to be told about', 4],
     ['tonight', 'Tonight', 'Tonight’s headliner, and when a clear night is worth it', 3],
     ['events', 'Sky events', 'Meteor showers, Halloween and constellations coming back', 3],
-    ['alerts', 'Sky alerts', 'Rare passes and Starlink trains (Plus)', 3],
+    ['alerts', 'Pass alerts', 'Rare passes and Starlink trains (Plus)', 3],
   ].map(([id, name, description, importance]) => ln.createChannel({ id, name, description, importance, visibility: 1 }).catch(() => {})));
   return channelsReady;
 }

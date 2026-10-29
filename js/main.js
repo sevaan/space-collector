@@ -1,58 +1,58 @@
-import { pullToClose } from './pull-close.js?v=0.1.1366';
-import { TESTER } from './build-flavor.js?v=0.1.1366';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1366';
-import * as Secrets from './secrets.js?v=0.1.1366';
-import { STORY_BY_SECRET } from './stories.js?v=0.1.1366';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.1366';
-import * as Ufo from './ufo.js?v=0.1.1366';
-import * as Fossil from './fossil.js?v=0.1.1366';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.1366';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1366';
-import { toast, ticket, dropToast, toastPending, onTicketShown, iconSvg, dropPageNotices } from './toast.js?v=0.1.1366';
-import { VERSION } from './version.js?v=0.1.1366';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, overEarth, RisingSoon, setBinocularMode, setSkyLimit, toWorker } from './orbit.js?v=0.1.1366';
-import { placeName } from './geo.js?v=0.1.1366';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, SLIDER_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.1366';
-import { fitCards } from './fit-text.js?v=0.1.1366';
-import { conArt } from './con-art.js?v=0.1.1366';
-import { fetchWeather, tonightSky, skyClearAt, goodSkyAt } from './weather.js?v=0.1.1366';
-import { CON_FIGURES } from './con-figures.js?v=0.1.1366';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress, starDistance } from './constellations.js?v=0.1.1366';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.1366';
-import { progress as progressOf, missionsFor, readDeals, readWeekThemes, WEEK_THEMES, countryOf, weekStartOf, weekThemeFor, xpCarry } from './progress.js?v=0.1.1366';
-import { eventOf, activeEvent, nextEvent, activeShower, nextShower, eventLine } from './events.js?v=0.1.1366';
-import { localText } from './localize.js?v=0.1.1366';
-import { searchCities } from './cities.js?v=0.1.1366';
-import { catalogUrl, refreshCatalog, dropCatalog } from './fresh-data.js?v=0.1.1366';
-import { conList } from './constellations.js?v=0.1.1366';
-import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination, hasSensorView, resumeSensors, needsPermission } from './sensors.js?v=0.1.1366';
-import { SkyView, shortName, stripLandscape } from './sky.js?v=0.1.1366';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.1366';
-import { isPlus, setPlusForTesting, onPlus, PLUS_PRICES, initStore, storePlans, buyPlus, restorePlus, rcTestStore, storeOpen } from './plus.js?v=0.1.1366';
-import { isNative, getPosition, saveFile, notifyAt, cancelNotify, haptic, onNative, nativeChrome, plugin } from './native.js?v=0.1.1366';
-import { initBackup, onBackupChange, backupSoon, clearBackup, backupStatus } from './cloud-backup.js?v=0.1.1366';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.1366';
-import { cardArt } from './art.js?v=0.1.1366';
-import { renderCard, miniCard, cardLevel, artImage, lockedArt, attachTilt, attachGyro, throwOff, attachFlip, turnCard, phasePath } from './card.js?v=0.1.1366';
-import { applyBack, CARD_BACKS, backUnlocked, chosenBack, chooseBack, backEarned, showBackNext } from './card-backs.js?v=0.1.1366';
-import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.1366';
-import { audioCtx } from './audio-ctx.js?v=0.1.1366';
-import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume, musicAway } from './music.js?v=0.1.1366';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss, onRevealSwipeIntoBinder, teachRoom } from './reveal.js?v=0.1.1366';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel, moonPhaseOf, moonPhaseAt, MOON_PHASES } from './card-model.js?v=0.1.1366';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.1366';
-import { naturalTargets, SOLAR_SYSTEM, DEEP_SKY, NATURAL, NATURAL_BY_KEY } from './natural.js?v=0.1.1366';
-import { placeFromTimeZone } from './tz-places.js?v=0.1.1366';
-import { TIER_INFO } from './rarity.js?v=0.1.1366';
-import { SETS, albumList } from './sets.js?v=0.1.1366';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.1366';
-import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.1366';
-import { note, send as sendNotes, noteError, daysSinceInstall } from './field-notes.js?v=0.1.1366';
-import { shareCardEl } from './share-card.js?v=0.1.1366';
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.1366';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.1366';
-import { addStarfield } from './starfield.js?v=0.1.1366';
-import { ART_SOURCES } from './art-credits.js?v=0.1.1366';
+import { pullToClose } from './pull-close.js?v=0.1.1367';
+import { TESTER } from './build-flavor.js?v=0.1.1367';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1367';
+import * as Secrets from './secrets.js?v=0.1.1367';
+import { STORY_BY_SECRET } from './stories.js?v=0.1.1367';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.1367';
+import * as Ufo from './ufo.js?v=0.1.1367';
+import * as Fossil from './fossil.js?v=0.1.1367';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.1367';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1367';
+import { toast, ticket, dropToast, toastPending, onTicketShown, iconSvg, dropPageNotices } from './toast.js?v=0.1.1367';
+import { VERSION } from './version.js?v=0.1.1367';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, overEarth, RisingSoon, setBinocularMode, setSkyLimit, toWorker } from './orbit.js?v=0.1.1367';
+import { placeName } from './geo.js?v=0.1.1367';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, SLIDER_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.1367';
+import { fitCards } from './fit-text.js?v=0.1.1367';
+import { conArt } from './con-art.js?v=0.1.1367';
+import { fetchWeather, tonightSky, skyClearAt, goodSkyAt } from './weather.js?v=0.1.1367';
+import { CON_FIGURES } from './con-figures.js?v=0.1.1367';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress, starDistance } from './constellations.js?v=0.1.1367';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.1367';
+import { progress as progressOf, missionsFor, readDeals, readWeekThemes, WEEK_THEMES, countryOf, weekStartOf, weekThemeFor, xpCarry } from './progress.js?v=0.1.1367';
+import { eventOf, activeEvent, nextEvent, activeShower, nextShower, eventLine } from './events.js?v=0.1.1367';
+import { localText } from './localize.js?v=0.1.1367';
+import { searchCities } from './cities.js?v=0.1.1367';
+import { catalogUrl, refreshCatalog, dropCatalog } from './fresh-data.js?v=0.1.1367';
+import { conList } from './constellations.js?v=0.1.1367';
+import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination, hasSensorView, resumeSensors, needsPermission } from './sensors.js?v=0.1.1367';
+import { SkyView, shortName, stripLandscape } from './sky.js?v=0.1.1367';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.1367';
+import { isPlus, setPlusForTesting, onPlus, PLUS_PRICES, initStore, storePlans, buyPlus, restorePlus, rcTestStore, storeOpen } from './plus.js?v=0.1.1367';
+import { isNative, getPosition, saveFile, notifyAt, cancelNotify, haptic, onNative, nativeChrome, plugin } from './native.js?v=0.1.1367';
+import { initBackup, onBackupChange, backupSoon, clearBackup, backupStatus } from './cloud-backup.js?v=0.1.1367';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.1367';
+import { cardArt } from './art.js?v=0.1.1367';
+import { renderCard, miniCard, cardLevel, artImage, lockedArt, attachTilt, attachGyro, throwOff, attachFlip, turnCard, phasePath } from './card.js?v=0.1.1367';
+import { applyBack, CARD_BACKS, backUnlocked, chosenBack, chooseBack, backEarned, showBackNext } from './card-backs.js?v=0.1.1367';
+import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.1367';
+import { audioCtx } from './audio-ctx.js?v=0.1.1367';
+import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume, musicAway } from './music.js?v=0.1.1367';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss, onRevealSwipeIntoBinder, teachRoom } from './reveal.js?v=0.1.1367';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel, moonPhaseOf, moonPhaseAt, MOON_PHASES } from './card-model.js?v=0.1.1367';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.1367';
+import { naturalTargets, SOLAR_SYSTEM, DEEP_SKY, NATURAL, NATURAL_BY_KEY } from './natural.js?v=0.1.1367';
+import { placeFromTimeZone } from './tz-places.js?v=0.1.1367';
+import { TIER_INFO } from './rarity.js?v=0.1.1367';
+import { SETS, albumList } from './sets.js?v=0.1.1367';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.1367';
+import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.1367';
+import { note, send as sendNotes, noteError, daysSinceInstall } from './field-notes.js?v=0.1.1367';
+import { shareCardEl } from './share-card.js?v=0.1.1367';
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.1367';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.1367';
+import { addStarfield } from './starfield.js?v=0.1.1367';
+import { ART_SOURCES } from './art-credits.js?v=0.1.1367';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -4105,11 +4105,11 @@ const isHeadliner = (obj) => { const h = headliner(state.tonight); return !!h &&
 // automatic pass alerts are gone. 1) Look up: at the start of the evening’s best hour (from dusk, never after 10:30 pm),
 // only when the forecast is clear then. 2) Catch of the day: tonight’s headliner, 5 minutes before it rises (was 10; 2026-10-15), if you don’t
 // have it and it’s clear. Anything else comes only from reminders you set. Native app only (local notifications);
-// rescheduled whenever tonight’s plan or the forecast changes. Settings: Tonight (nTonight; was nLookUp + nCatch), Sky events (nMeteor), Sky alerts (nAlerts, Plus) and quiet hours.
+// rescheduled whenever tonight’s plan or the forecast changes. Settings: Tonight (nTonight; was nLookUp + nCatch), Sky events (nMeteor), Pass alerts (nAlerts, Plus) and quiet hours.
 const NOTE_LOOK = 7120, NOTE_CATCH = 7110, NOTE_RARE = [7130, 7131], NOTE_LEGEND = [7132, 7133, 7134], NOTE_GHOST = 7150, NOTE_SEASON = 7160, NOTE_TRAIN = 7170, NOTE_BDAY = 7180;
 const notePref = (k) => readPref(k, true);
-// One Tonight switch (was Look up + Tonight's headliner) and one Sky alerts switch (was Rare alerts + Starlink trains):
-// players who had either half on keep it on. Sky alerts default on, so a Plus trial hears them (user panel 2026-10-29).
+// One Tonight switch (was Look up + Tonight's headliner) and one Pass alerts switch (was Rare alerts + Starlink trains):
+// players who had either half on keep it on. Pass alerts default on, so a Plus trial hears them (user panel 2026-10-29).
 const tonightOn = () => readPref('nTonight', readPref('nLookUp', true) || readPref('nCatch', true));
 const alertsOn = () => readPref('nAlerts', true);
 async function notesAllowed() { if (!isNative()) return false; try { return (await plugin('LocalNotifications').checkPermissions()).display === 'granted'; } catch { return false; } }
@@ -4208,7 +4208,7 @@ async function scheduleNotesNow(T) {
     return null;
   })();
   if (special) { await auto(special.at, special.title, special.body, special.id, special.link, special.id === NOTE_TRAIN ? 'alerts' : 'events'); special.mark?.(); }
-  // Sky alerts (Plus): a new Rare or better (no fleets) on a clear evening, 5 min ahead, never in quiet hours, never the
+  // Pass alerts (Plus): a new Rare or better (no fleets) on a clear evening, 5 min ahead, never in quiet hours, never the
   // headliner. Up to 2 a night, 30 min apart; Legendaries always (up to 3 more), since missing one is the worst outcome
   // for a collector (user panel 2026-10-29).
   if (isPlus() && alertsOn()) {
@@ -4353,7 +4353,7 @@ function updateNextPassChip() {
 $('nextpass').addEventListener('click', () => { showVTab('tonight'); openPanel('visible'); });
 
 // Settings → Notifications (notifications plan step 2, 2026-10-29): Tonight (the headliner, almost there and Look up,
-// once two switches), Sky events (free), Sky alerts (Plus: rare passes and Starlink trains, on as soon as Plus starts)
+// once two switches), Sky events (free), Pass alerts (Plus: rare passes and Starlink trains, on as soon as Plus starts)
 // and Quiet hours. App only. Turning one on asks for notifications if needed; a banner row says when the phone has
 // them switched off for the app.
 /* shown on the website too, so the test build looks like the app (2026-10-29, Sevaan); there the switches only remember */
@@ -5026,7 +5026,7 @@ function renderPlus() {
   try { $('chk-plus-test').checked = localStorage.getItem('plusTest') === '1'; } catch {} // the testing switch only; a store purchase doesn’t flip it
   $('plus-buy').hidden = on; $('plus-thanks').hidden = !on;
   if (!on && $('chk-meteor')) $('chk-meteor').checked = false;
-  if (!on && $('chk-alerts')) $('chk-alerts').checked = false; // Sky alerts are a Plus perk
+  if (!on && $('chk-alerts')) $('chk-alerts').checked = false; // Pass alerts are a Plus perk
 }
 $('plus-restore').addEventListener('click', async () => {
   if (!isNative()) { toast('Purchases are in the App Store and Google Play apps.', 3500); return; }
@@ -5049,7 +5049,7 @@ let plusPlan = 'year';
 const KIT = {
   backs: ['', 'Pick the back every card shows, or a different one each flip.'],
   reminders: ['Pass reminders', 'Never miss one.'],
-  rare: ['Sky alerts', 'Rare passes, Starlink trains and sky events.'], /* one tile for the pings the app sends itself (2026-10-28, Sevaan) */
+  rare: ['Pass alerts', 'Rare passes, Starlink trains and sky events.'], /* one tile for the pings the app sends itself (2026-10-28, Sevaan) */
   widgets: ['Widgets', 'Tonight, at a glance.'],
   shiny: ['Shiny forecast', 'Where shinies can happen.'],
   patch: ['The member patch', 'On your patch wall for good, even if you stop.'],
@@ -7122,7 +7122,7 @@ function noteSamples() {
       ['Meteor shower in 7 days', '', sh && NOTE_TEXT.shower7({ e: sh, night: sh.peak - 864e5 }), null, auto('events')],
       ['Constellation back', '“All 23 of its stars are new to you”, not “23 of its 23”.', con && NOTE_TEXT.conBack(con, at930(t0)), null, auto('events')],
     ]],
-    ['Sky alerts · Plus', [
+    ['Pass alerts · Plus', [
       ['A new Rare', 'The real rarity in the title.', rare && alertText(rare), link(rare), auto('alerts')],
       ['A new Legendary', 'Legendaries are never capped.', legend && alertText(legend), link(legend), auto('alerts')],
       ['A new fleet stamp', '“stamp”, not “batch”.', fleet && alertText(fleet), link(fleet), auto('alerts')],
@@ -7146,9 +7146,9 @@ function noteSamples() {
     'Long-press one (iPhone) or expand it (Android): automatic ones have Show me · Not tonight, pass reminders Show me.',
     'Not tonight: send an automatic one, swipe the app away, tap Not tonight on it, reopen here: the line below says it’s on.',
     'Several sent together stack as one group in Notification Centre.',
-    'Settings → Notifications: Tonight, Sky events (no PLUS), Sky alerts PLUS, Quiet hours (times follow your 12/24 h clock).',
+    'Settings → Notifications: Tonight, Sky events PLUS, Pass alerts PLUS, Quiet hours (times follow your 12/24 h clock).',
     'Turn notifications off for the app in the phone’s Settings, come back: the “Notifications are off” row shows.',
-    'Android: the app’s notification settings list Reminders you set, Tonight, Sky events and Sky alerts.',
+    'Android: the app’s notification settings list Reminders you set, Tonight, Sky events and Pass alerts.',
     'Android: a reminder for 10 minutes before arrives up to 8 minutes early, never late.',
     'Replay the tour: step 3 ends “A few times a week, never on a cloudy night.”',
     'Time away: leave the app and don’t open it for a few days. One arrives in the evening, then nothing more if you open it.',
