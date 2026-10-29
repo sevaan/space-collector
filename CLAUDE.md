@@ -2106,3 +2106,8 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - **Night 2 card:** no Show me button.
   - **No sky challenge** on the Tonight tab's missions or the daily Tonight page; the counts are the 3 missions.
   - **Constellation mission card taps:** steer to the constellation's brightest star you still need, even below the horizon or too faint. state.guideStar keeps that pin alive from the full naturalTargets list (allNat).
+- 2026-10-29 · v0.1.1340 (Sevaan): Tonight's mission cards:
+  - **Size and shape:** as many columns as missions (--n), so three cards fill the row. Each card is a playing card's 2:3 with a 4:3 picture.
+  - **Daily face-down deal:** the first time the Tonight page is seen each day, the cards are dealt face down in your card back. Once they're 60% on screen they turn over one by one, 380 ms apart, with the flip sound (mcFlipWhenSeen). localStorage mcFlipDay holds the date; under Reduce Motion they just appear.
+  - **Constellation card:** shows conArt (the figure with its stars and lines over it, the ones you have lit) instead of the figure alone.
+  - **Chart rain:** tiny drops (ellipses) instead of streaks.
