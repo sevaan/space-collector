@@ -1,4 +1,4 @@
-import { SERVER } from './server.js?v=0.1.1398';
+import { SERVER } from './server.js?v=0.1.1401';
 // Local weather from Open-Meteo (free, no key, CORS-open): what the sky is doing now, and whether tonight is
 // worth it. No DOM. Cached half an hour per place. Everything here is best-effort: no weather, no change.
 //
@@ -7,6 +7,14 @@ import { SERVER } from './server.js?v=0.1.1398';
 
 const CACHE_MS = 30 * 60e3;
 let cache = null;
+// The last forecast is kept on the phone too, so a fresh launch has it from the first frame instead of assuming a clear
+// sky until the network answers (2026-10-29, Sevaan: Tonight said 'Go out at 7:15', then flipped to 'Clear from 11 PM').
+const keep = (c) => { try { localStorage.setItem('wxCache', JSON.stringify(c)); } catch {} };
+export function keptWeather(lat, lon, maxAge = 3 * 3600e3) {
+  try { const c = JSON.parse(localStorage.getItem('wxCache') ?? 'null'), key = `${lat.toFixed(2)},${lon.toFixed(2)}`;
+    if (c && c.key === key && Date.now() - c.at < maxAge) { cache ??= c; return c.data; } } catch {}
+  return null;
+}
 
 export function kindOf(code) {
   if (code == null) return null;
@@ -29,7 +37,7 @@ export async function fetchWeather(lat, lon) {
     if (!r.ok) throw new Error(String(r.status));
     const j = await r.json();
     const data = { now: { cloud: j.now?.cloud ?? 0, code: j.now?.code ?? 0, kind: kindOf(j.now?.code ?? 0) }, hours: (j.hours ?? []).map((h) => ({ ...h, kind: kindOf(h.code) })), at: Date.now() };
-    cache = { key, at: Date.now(), data };
+    cache = { key, at: Date.now(), data }; keep(cache);
     return data;
   }
   const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat.toFixed(2)}&longitude=${lon.toFixed(2)}&current=cloud_cover,weather_code&hourly=cloud_cover,weather_code,temperature_2m,wind_speed_10m&forecast_days=7&timeformat=unixtime&timezone=auto`;
@@ -38,7 +46,7 @@ export async function fetchWeather(lat, lon) {
   const j = await res.json();
   const hours = (j.hourly?.time ?? []).map((t, i) => ({ t: t * 1000, cloud: j.hourly.cloud_cover[i], code: j.hourly.weather_code[i], kind: kindOf(j.hourly.weather_code[i]), temp: j.hourly.temperature_2m?.[i] ?? null, wind: j.hourly.wind_speed_10m?.[i] ?? null }));
   const data = { now: { cloud: j.current?.cloud_cover ?? 0, code: j.current?.weather_code ?? 0, kind: kindOf(j.current?.weather_code ?? 0) }, hours, at: Date.now() };
-  cache = { key, at: Date.now(), data };
+  cache = { key, at: Date.now(), data }; keep(cache);
   return data;
 }
 

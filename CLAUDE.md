@@ -2212,3 +2212,7 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - 2026-10-29 · v0.1.1397: the Night 2 card adds 'Cloud is forecast then, so look for a gap.' when its pass is under forecast cloud.
 - 2026-10-29 · v0.1.1398 (Sevaan): sky window paths are drawn from 7° up, so the climb off the horizon doesn't draw as a hook.
 - 2026-10-29: Build 1.0 (43) archived (web v0.1.1398: build-42 playtest fixes: headliner/busiest by forecast, shared tonight reminder in the sheet, Plus over the card viewer, Earth as the dusk first catch, Night 2 icon/cloud line, gentler sky-window paths). Opened in Organizer, not uploaded. SC Tester reinstalled with v0.1.1398.
+- 2026-10-29 · v0.1.1401 (Sevaan: "first it said clear, go out at 7:15, then switched to clear from 11 PM; the page didn't open smoothly"):
+  - **The last forecast is kept on the phone** (weather.js keep / keptWeather, localStorage wxCache, good for 3 h) and used from launch, instead of assuming a clear sky until the network answers. A fresh forecast that changes the next 18 hours redraws an open Tonight page at once.
+  - **showVTab skips the full redraw** when the page was drawn under 45 s ago with nothing changed (skySig: plan, forecast, sightings, Plus, red mode, place). Each redraw costs ~75 ms script + layout on a phone.
+  - **Background pre-draw:** every 40 s, in idle time while on Explore, the page is drawn in the background so opening it is mostly just the slide. Measured at 4× CPU: the open's long task went from ~300–360 ms to ~215 ms; a reopen within 45 s skips it.
