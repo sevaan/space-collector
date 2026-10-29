@@ -3487,3 +3487,11 @@ body.col-modal #set-plus-sheet .set-sheet-card > .starfield { height: 100dvh; ma
 /* Night 2 card's app icon a size smaller (2026-10-29, Sevaan) */
 .tn-wx.night2 { grid-template-columns: 32px 1fr; column-gap: 12px; }
 .tn-wx.night2 .n2-icon { width: 32px; height: 32px; border-radius: 8px; margin-top: 4px; }
+/* Night 2 card: the text runs the full width beside the icon (2026-10-29, Sevaan: it wrapped too early) */
+.tn-wx.night2 .n2-msg p, .tn-wx.night2 .n2-msg h3 { max-width: none; padding-right: 0; }
+.tn-wx.night2 { padding-right: 18px; }
+.tn-wx.night2 .n2-msg p { text-wrap: wrap; } /* "pretty" evened the lines and left a ragged gap on the right */
+/* A night part's drop-down: no lighter box (it read as a separate panel with its top cut off, 2026-10-29, Sevaan); its
+   rows sit on the page, indented under the part with a thin line down the left */
+.tnx-list { margin: 2px 0 12px 26px; padding: 0 0 0 14px; background: none; border: 0; border-left: 2px solid #2c3d55; border-radius: 0; }
+body.night .tnx-list { border-left-color: #5a1f1a; }

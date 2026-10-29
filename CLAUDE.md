@@ -2217,3 +2217,6 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - **showVTab skips the full redraw** when the page was drawn under 45 s ago with nothing changed (skySig: plan, forecast, sightings, Plus, red mode, place). Each redraw costs ~75 ms script + layout on a phone.
   - **Background pre-draw:** every 40 s, in idle time while on Explore, the page is drawn in the background so opening it is mostly just the slide. Measured at 4× CPU: the open's long task went from ~300–360 ms to ~215 ms; a reopen within 45 s skips it.
 - 2026-10-29: Build 1.0 (44) archived (web v0.1.1401: forecast kept for launch, smoother Tonight page opening). Opened in Organizer, not uploaded. SC Tester reinstalled with v0.1.1401.
+- 2026-10-29 · v0.1.1404 (Sevaan):
+  - **Night 2 card:** no "See the missions" button; its text runs the full width (normal wrapping, not text-wrap: pretty).
+  - **Night part drop-down** (.tnx-list): no lighter box. Its rows sit on the page, indented under the part with a thin line down the left.
