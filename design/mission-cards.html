@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Mission Cards</title>
-<link rel="stylesheet" href="../css/cards.css"><link rel="stylesheet" href="../css/app.css"><link rel="stylesheet" href="../css/ui.css">
+<link rel="stylesheet" href="../css/cards.css?v=b2"><link rel="stylesheet" href="../css/app.css?v=b2"><link rel="stylesheet" href="../css/ui.css?v=b2">
 <style>
   html, body { background: #080f1b; color: #fff2b3; margin: 0; overflow: auto; height: auto; position: static; }
   body { padding: 28px 20px 60px; font: 15px/1.4 var(--label); }
@@ -27,6 +27,8 @@
 import { MISSIONS, STARTER } from '../js/progress.js';
 import { loadConstellations, CON_BY_ID } from '../js/constellations.js';
 import { conArt } from '../js/con-art.js';
+import { fitCards } from '../js/fit-text.js';
+window.fitAll = () => fitCards(document.querySelectorAll('.mc'));
 await loadConstellations('../data/constellations.json');
 const A = (f) => `../assets/art/cards/sm/${f}.webp`;
 /* example picture + line for each mission, and when it can be dealt (the app only deals what tonight can give) */
@@ -69,7 +71,7 @@ const card = (m) => {
   let pic;
   if (art.startsWith('con:')) { const c = CON_BY_ID.get(art.slice(4)); pic = `<span class="art svg">${conArt(c.data, null, { w: 140, h: 105, lit: new Set(), figure: `../assets/art/con/${c.con}.webp` })}</span>`; }
   else pic = `<span class="art" style="background-image:url('${A(art)}')"></span>`;
-  const b = document.createElement('button'); b.className = 'mc'; if (m.id === 'levelup2') b.dataset.lvl = 'gold';
+  const b = document.createElement('button'); b.className = 'mc' + (m.text.length > 30 ? ' long' : ''); if (m.id === 'levelup2') b.dataset.lvl = 'gold';
   b.innerHTML = `<span class="top"><span>Mission</span><span>+50</span></span>${pic}<b>${m.text.replace(/\.$/, '')}</b><small>${sub}</small>`;
   return b;
 };
@@ -77,6 +79,7 @@ const cell = (m) => { const d = document.createElement('div'); d.className = 'ce
 for (const id of ['europe', 'sats3', 'star']) document.getElementById('phone').append(card(MISSIONS.find((m) => m.id === id)));
 STARTER.forEach((m) => document.getElementById('starter').append(cell(m)));
 MISSIONS.forEach((m) => document.getElementById('draw').append(cell(m)));
+requestAnimationFrame(() => window.fitAll());
 const always = MISSIONS.filter((m) => /Most nights/.test(EX[m.id]?.[2] ?? '')).length;
 document.getElementById('note').innerHTML = `<p><b>${MISSIONS.length} missions</b> in the draw, 3 dealt a night, each only if tonight can give it. About <b>${always}</b> can be dealt on almost any clear night; the rest need something specific overhead (a planet, the Moon, a station, a Chinese or European pass, a high or late pass, a dark sky).</p>
 <p>With ~${always} always-possible missions, the same three-mission set repeats rarely, but the same <i>individual</i> missions (rocket stage, old, Soviet, debris, three satellites) will show up most weeks. More missions would help most in two places: <b>things that change through the year</b> (seasonal constellations, meteor showers, the Moon's phase) and <b>skill</b> (fade, peak, low, two passes close together).</p>`;

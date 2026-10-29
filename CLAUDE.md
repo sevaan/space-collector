@@ -2127,3 +2127,8 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - **Level-up missions** (levelup, levelup2): the picture shimmers in the metal the card is turning (data-lvl silver/gold, from almostThere's `to`; silver when unknown), with a matching edge.
   - **Mission titles** may take 4 lines (the picture gives way).
   - **design/mission-cards.html:** the old / Space Race / Soviet / sixties examples use drawn art instead of museum photos.
+- 2026-10-29 · v0.1.1355 (Sevaan: "make sure the text always fits"):
+  - js/fit-text.js `fitCards(cards, parts, min 8)` shrinks a card's title and detail together, half a pixel at a time, until neither is clipped and the card overflows nothing. It runs after the missions render and on resize.
+  - Long goals (30+ characters) start a size smaller (.mc.long).
+  - The picture can shrink to 24px.
+  - Checked every mission at 150/114/100/86px cards, i.e. down to a 320pt phone.

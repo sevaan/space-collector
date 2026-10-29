@@ -3414,3 +3414,5 @@ body.night .tn-wx.night2 .n2-icon { filter: grayscale(1) sepia(1) saturate(4) hu
 .mc[data-lvl='gold'] .art { box-shadow: 0 0 0 1px #ffc93d99, 0 0 10px #ffc93d55; }
 @keyframes mcMetal { 0% { background-position: 130% 0; } 60%, 100% { background-position: -30% 0; } }
 @media (prefers-reduced-motion: reduce) { .mc[data-lvl] .art::after { animation: none; background-position: 50% 0; opacity: .5; } }
+.mc.long b { font-size: clamp(11px, 9.6cqi, 19px); }
+.mc .art { min-height: 24px; }
