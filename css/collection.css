@@ -1016,3 +1016,21 @@ body.few-cards .logbook :is(.lb-pic, .lb-rankrow, .lb-bar, .lb-to) { display: no
 /* Find with nothing typed: no empty results row above the list (2026-10-28, Sevaan: a big gap under the search box) */
 body[data-view="find"] .result-row:has(> #results[hidden], > #results:empty):has(> #reset-filters[hidden]) { display: none; }
 body[data-view="find"] .grid.find-mode > .find-head:first-child { margin-top: 18px; }
+
+/* ===== Observer stats restyled like the rest of the app (2026-10-28, Sevaan: "looks different to the other pages") =====
+   Same sections, Tonight/Settings language: each section's label sits above a quiet panel (#0e1a29, soft edge, 14px), the
+   rank is a hero like Tonight's, tiles inside a panel are flat, bars are the Tonight strip's slate and orange. */
+#stats-view .st-rank { border-radius: 14px; border: 1px solid #fa812755; background: radial-gradient(ellipse at 85% 0%, #fa81271f, transparent 70%), #0e1a29; box-shadow: none; padding: 16px; margin: 6px 0 4px; }
+#stats-view .st-sec { position: relative; margin: 40px 0 0; padding: 14px; border-radius: 14px; border: 1px solid #22344a; background: #0e1a29; }
+#stats-view .st-head { position: absolute; left: 2px; right: 2px; top: -26px; margin: 0; font: 500 13px/1.1 'SC Label', sans-serif !important; letter-spacing: .16em; text-transform: uppercase; color: #fa8127; }
+#stats-view .st-head .st-since, #stats-view .st-head .st-big { letter-spacing: .1em; color: #bdbea9; }
+#stats-view .st-head .st-big b { font-size: 14px; }
+#stats-view :is(.st-goal, .st-tile) { background: #ffffff06; border: 1px solid #ffffff0f; border-radius: 10px; }
+#stats-view .st-tb { height: 5px; background: #22324a; }
+#stats-view .st-bar span { background: #2d4058; border-radius: 3px 3px 0 0; }
+#stats-view .st-bar.now span, #stats-view .st-bar span[style*="height:"]:not([style*="height:0%"]) { background: #fa8127; }
+#stats-view .st-hls > * + *, #stats-view .st-rare > * + * { border-top: 1px solid #ffffff12; padding-top: 10px; }
+#stats-view .st-hl img, #stats-view .st-noart { border-radius: 6px; }
+#stats-body > :last-child { margin-bottom: 28px; }
+:where(body.night, html[data-theme="night"]) #stats-view .st-head { color: #ff6a55; }
+:where(body.night, html[data-theme="night"]) #stats-view .st-rank { border-color: #ff6a5555; background: #0c0303; }

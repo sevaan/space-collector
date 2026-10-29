@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Observer stats redesign</title>
+<style>
+@font-face { font-family: 'L'; src: url('../fonts/BarlowCondensed-Medium.ttf'); }
+@font-face { font-family: 'D'; src: url('../fonts/RussoOne-Regular.ttf'); }
+:root { --bg: #080f1b; --ink: #fff2b3; --muted: #bdbea9; --gold: #fa8127; --medal: #ffc93d; --unc: #57d184; --rare: #4f9bff; --epic: #e46ad6; --leg: #ffc93d; --panel: #0e1a29; --edge: #22344a; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #1b2230; color: var(--ink); font: 500 15px/1.3 'L', sans-serif; padding: 24px 16px 40px; }
+h1 { font: 400 24px 'D'; margin: 0 0 6px; } .lead { color: var(--muted); margin: 0 0 22px; max-width: 1000px; }
+.row { display: flex; flex-wrap: wrap; gap: 26px; align-items: flex-start; }
+.opt { width: 380px; } .opt > h2 { font: 400 17px 'D'; margin: 0 0 4px; } .opt > p { margin: 0 0 10px; color: var(--muted); font-size: 14px; min-height: 74px; } .opt > p b { color: var(--gold); font-weight: 500; }
+.phone { background: var(--bg); border-radius: 22px; padding: 0 16px 22px; border: 1px solid #2c3648; overflow: hidden; }
+.hdr { padding: 26px 4px 12px; border-bottom: 3px double #627a8b; margin: 0 -2px 4px; display: flex; justify-content: space-between; align-items: center; }
+.hdr b { display: block; font: 400 19px 'D'; text-transform: uppercase; } .hdr small { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); } .hdr i { font-style: normal; font-size: 24px; }
+.sec { display: flex; justify-content: space-between; align-items: baseline; margin: 22px 2px 10px; font-size: 13px; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); } .sec span { color: var(--muted); letter-spacing: .1em; font-size: 12px; }
+.say { font-size: 16px; line-height: 1.35; color: var(--muted); margin: 14px 2px 10px; } .say b { color: var(--ink); font-weight: 500; } .say em { font-style: normal; color: var(--gold); }
+.bars { display: flex; align-items: flex-end; gap: 3px; height: 54px; border-bottom: 1px solid #ffffff22; margin: 0 2px; } .bars i { flex: 1; background: #2d4058; border-radius: 3px 3px 0 0; } .bars i.on { background: var(--gold); }
+.ax { display: flex; justify-content: space-between; font-size: 11px; letter-spacing: .14em; color: var(--muted); margin: 6px 2px 0; text-transform: uppercase; }
+.list > div { display: flex; align-items: center; gap: 12px; padding: 11px 2px; border-top: 1px solid #ffffff12; } .list > div:last-child { border-bottom: 1px solid #ffffff12; }
+.t { width: 56px; flex: none; font: 400 17px/1 'D'; } .t small { display: block; font: 500 11px 'L'; letter-spacing: .1em; color: var(--muted); margin-top: 4px; text-transform: uppercase; }
+.n { flex: 1; min-width: 0; } .n b { display: block; font-weight: 500; font-size: 16px; } .n small { display: block; font-size: 13px; color: var(--muted); }
+.v { font: 400 16px 'D'; white-space: nowrap; } .v small { font: 500 12px 'L'; color: var(--muted); margin-left: 2px; }
+.pill { display: inline-block; margin-top: 5px; font-size: 12px; padding: 2px 8px; border-radius: 6px; background: #fa81271c; color: var(--gold); } .pill.g { background: #ffc93d1c; color: var(--medal); } .pill.s { background: #ffffff10; color: var(--muted); }
+.mini { width: 40px; height: 60px; flex: none; border-radius: 4px; border: 1.5px solid #e9dfb8; background: center/cover no-repeat; box-shadow: 0 4px 10px #0008; }
+.ic { width: 40px; height: 40px; flex: none; border-radius: 50%; display: grid; place-items: center; background: #ffffff08; color: var(--ink); font-size: 18px; }
+.bar { display: block; height: 4px; border-radius: 2px; background: #22324a; margin-top: 6px; overflow: hidden; } .bar i { display: block; height: 100%; background: var(--c, var(--gold)); }
+.hero { margin-top: 16px; padding: 16px; border-radius: 14px; border: 1px solid #fa812755; background: radial-gradient(ellipse at 85% 0%, #fa81271f, transparent 70%), var(--panel); }
+.hero .k { font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); }
+.dial { display: flex; align-items: center; gap: 14px; margin-top: 10px; }
+.ring { width: 76px; height: 76px; flex: none; position: relative; } .ring svg { width: 100%; height: 100%; } .ring b { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; font: 400 15px/1 'D'; } .ring b small { font: 500 10px 'L'; letter-spacing: .14em; color: var(--muted); margin-top: 4px; }
+.big { font: 400 26px/1 'D'; text-transform: uppercase; } .xp { color: var(--gold); font: 400 20px 'D'; } .xp small { font: 500 12px 'L'; color: var(--muted); letter-spacing: .14em; margin-left: 3px; }
+.chips { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; } .chips span { padding: 5px 10px; border-radius: 999px; border: 1px solid #ffffff1c; font-size: 13px; color: var(--muted); } .chips b { color: var(--ink); font-weight: 500; margin-right: 4px; }
+.showcase { display: flex; gap: 16px; align-items: center; margin-top: 12px; } .showcase .card { width: 104px; height: 156px; flex: none; border-radius: 8px; border: 2px solid #adbcc8; background: center 30%/cover no-repeat; transform: rotate(-5deg); box-shadow: 0 10px 24px #000a, 0 0 22px #e46ad655; }
+.mono { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.gem { color: var(--c); }
+.rec { display: inline-block; margin-left: 6px; font: 600 11px 'L'; letter-spacing: .12em; padding: 2px 6px; border-radius: 5px; background: var(--gold); color: var(--bg); vertical-align: 3px; }
+</style></head><body>
+<h1>Observer stats, Tonight style</h1>
+<p class="lead">Tonight's language: orange labels sitting above content (not inside boxes), divided lists with a time-like column on the left, one hero card at the top, a sentence over a bar strip, and small pills. Each option uses that language; they differ in what leads. Same sample player: Stargazer 310 XP, 10 cards over 2 nights, rarest find The Andromeda Galaxy (Epic).</p>
+<div class="row">
+
+<!-- A -->
+<div class="opt"><h2>A · Your sky so far <span class="rec">Recommended</span></h2><p>Mirrors Tonight top to bottom: a rank hero (the new dial), a sentence over a month strip, then every section as a divided list. Collection rows read like run rows: gem, rarity, bar, count. Highlights get the run's small cards.</p>
+<div class="phone">
+ <div class="hdr"><span><b>Observer stats</b><small>Your nights under the sky</small></span><i>✕</i></div>
+ <div class="hero"><span class="k">Observer rank</span>
+  <div class="dial"><span class="ring"><svg viewBox="0 0 76 76"><circle cx="38" cy="38" r="33" fill="none" stroke="#24344a" stroke-width="5"/><circle cx="38" cy="38" r="33" fill="none" stroke="#fa8127" stroke-width="5" stroke-linecap="round" stroke-dasharray="129 208" transform="rotate(-90 38 38)"/></svg><b>62%<small>TO NEXT</small></b></span>
+  <span><span class="big">Stargazer</span><br><span class="xp">310<small>XP</small></span><br><span class="mono">190 XP to Spotter</span></span></div></div>
+ <p class="say"><b>2 nights out</b> since Oct 28. Best night <em>Oct 28</em>: 8 cards.</p>
+ <div class="bars"><i style="height:4%"></i><i style="height:4%"></i><i style="height:4%"></i><i style="height:4%"></i><i style="height:4%"></i><i style="height:4%"></i><i style="height:4%"></i><i style="height:4%"></i><i style="height:4%"></i><i class="on" style="height:90%"></i><i style="height:4%"></i><i style="height:4%"></i></div>
+ <div class="ax"><span>Jan</span><span>Oct</span><span>Dec</span></div>
+ <div class="sec">The collection<span>10 of 4,850</span></div>
+ <div class="list">
+  <div><span class="t" style="color:#bdbea9">●</span><span class="n"><b>Common</b><span class="bar"><i style="width:4%;--c:#bdbea9"></i></span></span><span class="v">6<small>/ 1,809</small></span></div>
+  <div><span class="t gem" style="--c:var(--unc)">▲</span><span class="n"><b>Uncommon</b><span class="bar"><i style="width:3%;--c:var(--unc)"></i></span></span><span class="v">3<small>/ 1,795</small></span></div>
+  <div><span class="t gem" style="--c:var(--epic)">✦</span><span class="n"><b>Epic</b><span class="bar"><i style="width:5%;--c:var(--epic)"></i></span></span><span class="v">1<small>/ 383</small></span></div>
+ </div>
+ <div class="sec">Highlights</div>
+ <div class="list">
+  <div><span class="mini" style="background-image:url(../assets/art/cards/sm/deep-andromeda.webp)"></span><span class="n"><b>The Andromeda Galaxy</b><small>Rarest find · Oct 28</small><span class="pill" style="background:#e46ad61c;color:#e46ad6">✦ Epic</span></span></div>
+  <div><span class="mini" style="background-image:url(../assets/art/cards/sm/sun.webp)"></span><span class="n"><b>Sun</b><small>Your first card · Oct 28</small></span></div>
+ </div>
+ <div class="sec">Earned<span>2 patches</span></div>
+ <div class="list">
+  <div><span class="ic">◉</span><span class="n"><b>Mission patches</b><small>First Light, Moonstruck</small></span><span class="v">2<small>/ 198</small></span></div>
+  <div><span class="ic">✶</span><span class="n"><b>Constellations</b><small>Every star found</small></span><span class="v">0<small>/ 88</small></span></div>
+ </div>
+</div></div>
+
+<!-- B -->
+<div class="opt"><h2>B · Showcase first</h2><p>Leads with your rarest find as a hero, like Tonight's "New to you": the real card tilted beside its story. Rank and numbers become a row of chips under it, then the same divided lists. The most visual; rank is less prominent.</p>
+<div class="phone">
+ <div class="hdr"><span><b>Observer stats</b><small>Your nights under the sky</small></span><i>✕</i></div>
+ <div class="hero" style="border-color:#e46ad655;background:radial-gradient(ellipse at 20% 0%, #e46ad61f, transparent 70%), var(--panel)"><span class="k" style="color:#e46ad6">Your rarest find</span>
+  <div class="showcase"><span class="card" style="background-image:url(../assets/art/cards/sm/deep-andromeda.webp)"></span><span><span class="big" style="font-size:22px">The Andromeda Galaxy</span><br><span class="pill" style="background:#e46ad61c;color:#e46ad6">✦ Epic</span><br><span class="mono">Caught Oct 28 · 2.5 million light-years</span></span></div>
+  <div class="chips"><span><b>Stargazer</b>310 XP</span><span><b>10</b>cards</span><span><b>2</b>nights</span><span><b>2</b>patches</span></div></div>
+ <div class="sec">Your nights<span>since Oct 28</span></div>
+ <div class="bars"><i style="height:4%"></i><i style="height:4%"></i><i style="height:4%"></i><i style="height:4%"></i><i style="height:4%"></i><i style="height:4%"></i><i style="height:4%"></i><i style="height:4%"></i><i style="height:4%"></i><i class="on" style="height:90%"></i><i style="height:4%"></i><i style="height:4%"></i></div>
+ <div class="ax"><span>Jan</span><span>Oct</span><span>Dec</span></div>
+ <div class="sec">The collection<span>10 of 4,850</span></div>
+ <div class="list">
+  <div><span class="t" style="color:#bdbea9">●</span><span class="n"><b>Common</b><span class="bar"><i style="width:4%;--c:#bdbea9"></i></span></span><span class="v">6<small>/ 1,809</small></span></div>
+  <div><span class="t gem" style="--c:var(--unc)">▲</span><span class="n"><b>Uncommon</b><span class="bar"><i style="width:3%;--c:var(--unc)"></i></span></span><span class="v">3<small>/ 1,795</small></span></div>
+ </div>
+</div></div>
+
+<!-- C -->
+<div class="opt"><h2>C · Night log</h2><p>Your history as a run, newest first: each observing night is a row like a Tonight stop, date in the time column, its cards as small pictures, pills for what it earned. A compact rank row on top. Feels like a logbook you scroll back through; totals live in one sentence.</p>
+<div class="phone">
+ <div class="hdr"><span><b>Observer stats</b><small>Your nights under the sky</small></span><i>✕</i></div>
+ <div class="hero" style="padding:12px 14px"><div class="dial" style="margin:0"><span class="ring" style="width:58px;height:58px"><svg viewBox="0 0 76 76"><circle cx="38" cy="38" r="33" fill="none" stroke="#24344a" stroke-width="6"/><circle cx="38" cy="38" r="33" fill="none" stroke="#fa8127" stroke-width="6" stroke-linecap="round" stroke-dasharray="129 208" transform="rotate(-90 38 38)"/></svg><b style="font-size:12px">62%</b></span><span><span class="big" style="font-size:21px">Stargazer</span> <span class="xp" style="font-size:17px">310<small>XP</small></span><br><span class="mono">190 XP to Spotter</span></span></div></div>
+ <p class="say"><b>10 cards</b> over <b>2 nights</b>, from <b>1 place</b>. Longest run: 2 nights.</p>
+ <div class="sec">Your nights<span>newest first</span></div>
+ <div class="list">
+  <div style="align-items:flex-start"><span class="t">Oct 29<small>Thu</small></span><span class="n"><b>2 new cards</b><small>Peterborough · 8:12 – 9:40 PM</small><span style="display:flex;gap:5px;margin-top:6px"><span class="mini" style="width:28px;height:42px;background-image:url(../assets/art/cards/sm/planet-saturn.webp)"></span><span class="mini" style="width:28px;height:42px;background-image:url(../assets/art/cards/sm/moon.webp)"></span></span><span class="pill">+55 XP</span> <span class="pill g">◉ Moonstruck</span></span></div>
+  <div style="align-items:flex-start"><span class="t">Oct 28<small>Wed</small></span><span class="n"><b>8 new cards</b><small>Peterborough · 1:30 – 10:02 PM · best night</small><span style="display:flex;gap:5px;margin-top:6px"><span class="mini" style="width:28px;height:42px;background-image:url(../assets/art/cards/sm/deep-andromeda.webp)"></span><span class="mini" style="width:28px;height:42px;background-image:url(../assets/art/cards/sm/sun.webp)"></span><span class="mini" style="width:28px;height:42px;background-image:url(../assets/art/cards/sm/planet-earth.webp)"></span><span class="mono" style="align-self:center">+5</span></span><span class="pill">+255 XP</span> <span class="pill g">◉ First Light</span> <span class="pill" style="background:#e46ad61c;color:#e46ad6">✦ Epic find</span></span></div>
+ </div>
+ <div class="sec">The collection<span>10 of 4,850</span></div>
+ <div class="list">
+  <div><span class="t" style="color:#bdbea9">●</span><span class="n"><b>Common</b><span class="bar"><i style="width:4%;--c:#bdbea9"></i></span></span><span class="v">6<small>/ 1,809</small></span></div>
+ </div>
+</div></div>
+
+</div>
+</body></html>
