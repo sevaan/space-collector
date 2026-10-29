@@ -3146,3 +3146,24 @@ body.night .tn-wx.night2 { border-color: #ff6a5555; background: #0c0303; }
 body:has(.set-sheet:not([hidden])) #toasts .ticket:not([data-panel]) { display: none !important; }
 .tn-strip .bars { overflow: visible; } .tn-strip { overflow: visible; } /* the headliner star never cut at the edge (2026-10-28) */
 .set-back-thumb { margin-right: 10px; } /* its right edge lines up with the value above it ("Free") (2026-10-28, Sevaan) */
+
+/* Notifications card (notifications plan step 2, 2026-10-29): quiet hours as two small choosers in one row, and a
+   banner row when the phone has notifications switched off for the app. */
+#debug .q-sel { display: flex; align-items: center; gap: 4px; margin-left: auto; flex: none; }
+#debug .q-sel .set-select { margin-left: 0; max-width: none; padding: 0 18px 0 8px; }
+#debug .q-sel i { font-style: normal; color: var(--ui-muted, #bdbea9); }
+#debug .notes-off .set-main { color: #ffd2ad; } #debug .notes-off .set-ic { background: #5a2a1a !important; }
+body.night #debug .notes-off .set-main { color: #ff7f70; }
+
+/* Testing tools → Test phone notifications (2026-10-29) */
+#set-notetest-sheet .set-sheet-card { max-height: calc(100dvh - var(--safe-top, 0px) - 40px); overflow-y: auto; }
+#set-notetest-sheet .nt-lead { margin: 0 0 12px; color: var(--ui-muted, #bdbea9); font-size: 14px; }
+#set-notetest-sheet h4 { margin: 18px 0 6px; font: 600 12px var(--label); letter-spacing: .16em; text-transform: uppercase; color: #fa8127; }
+.ntt { display: grid; grid-template-columns: 28px 1fr auto; gap: 10px; align-items: start; padding: 10px 0; border-top: 1px solid #ffffff12; }
+.ntt input { width: 20px; height: 20px; margin: 2px 0 0; accent-color: #fa8127; }
+.ntt b { display: block; font-weight: 500; font-size: 15px; color: #fff2b3; } .ntt small { display: block; color: #bdbea9; font-size: 13px; line-height: 1.35; }
+.ntt .pv { margin-top: 6px; padding: 7px 9px; border-radius: 10px; background: #e9edf514; font: 400 13px/1.3 -apple-system, system-ui, sans-serif; color: #e6e9f2; }
+.ntt .pv strong { display: block; font-weight: 600; }
+.ntt button { height: 34px; padding: 0 12px; border-radius: 10px; border: 1px solid #fa812777; background: transparent; color: #fa8127; font: 600 12px var(--label); letter-spacing: .1em; text-transform: uppercase; white-space: nowrap; }
+.ntt button.sent { background: #fa8127; color: #0b1018; }
+.ntt.check { grid-template-columns: 28px 1fr; }

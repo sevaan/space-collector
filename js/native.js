@@ -82,7 +82,9 @@ let notifId = 1000;
 // link: where a tap goes ('spacecollector://pass/<id>@<start>' or 'spacecollector://tonight', the widgets' own links).
 // actions: 'auto' (Show me · Not tonight, for the ones the app sends itself) or 'pass' (Show me, for a pass you asked for).
 // Notifications plan 2026-10-29 (design/notifications-plan.html): taps go somewhere, and a night is grouped together.
-export async function notifyAt(at, title, body, { id, link, actions, night } = {}) {
+// channel: the Android category it's filed under ('asked' | 'tonight' | 'events' | 'alerts'), so a player can mute one
+// kind in the phone's own settings without losing the rest; the names match the Settings rows.
+export async function notifyAt(at, title, body, { id, link, actions, night, channel } = {}) {
   if (!isNative()) return 'unsupported';
   const ln = plugin('LocalNotifications');
   try {
@@ -92,9 +94,22 @@ export async function notifyAt(at, title, body, { id, link, actions, night } = {
     if (link || night) n.extra = { link, night }; // night: which night a "Not tonight" tap is about
     if (actions) { await noteActions(); n.actionTypeId = actions; }
     if (night) { n.threadIdentifier = night; n.group = night; }
+    if (channel && globalThis.Capacitor?.getPlatform?.() === 'android') { await noteChannels(); n.channelId = channel; }
     await ln.schedule({ notifications: [n] });
     return 'on';
   } catch { return 'unsupported'; }
+}
+// Android notification categories (notifications plan 2026-10-29). Made once per launch; making one again changes nothing.
+let channelsReady = null;
+function noteChannels() {
+  const ln = plugin('LocalNotifications');
+  channelsReady ??= Promise.all([
+    ['asked', 'Reminders you set', 'The passes and moments you asked to be told about', 4],
+    ['tonight', 'Tonight', 'Tonight’s headliner, and when a clear night is worth it', 3],
+    ['events', 'Sky events', 'Meteor showers, Halloween and constellations coming back', 3],
+    ['alerts', 'Sky alerts', 'Rare passes and Starlink trains (Plus)', 3],
+  ].map(([id, name, description, importance]) => ln.createChannel({ id, name, description, importance, visibility: 1 }).catch(() => {})));
+  return channelsReady;
 }
 // The buttons under a notification (long-press on iPhone, expand on Android). Registered once per launch.
 let actionsReady = null;
