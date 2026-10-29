@@ -3445,3 +3445,10 @@ body.night .tnp-nights .nights .nb { border-color: #ff6a55; color: #ff6a55; } bo
 body.night .tn-chip.tile .tn-chip-mini em { background: #ff6a55; color: #120606; }
 .tn-chip.tile small i.gm { display: inline; width: auto; height: auto; background: none; border-radius: 0; font: inherit; color: var(--c); }
 #debug .set-card .set-row#set-back-open { padding-top: 8px !important; padding-bottom: 8px !important; } /* breathing room around the card back (2026-10-29, Sevaan) */
+
+/* Bells on dated rows in "Also tonight" (2026-10-29, Sevaan) */
+.tn-ms .xp .ev-bell { width: 40px; height: 40px; margin: -6px -4px 0 0; padding: 0; border-radius: 50%; border: 1px solid #22344a; background: #0e1a29; color: var(--ui-muted, #bdbea9); display: grid; place-items: center; cursor: pointer; }
+.tn-ms .xp .ev-bell svg { width: 18px; height: 18px; }
+.tn-ms .xp .ev-bell.on { background: #fa8127; border-color: #fa8127; color: #0b1018; }
+.tn-ms .xp .ev-bell.needs-plus { opacity: .7; }
+body.night .tn-ms .xp .ev-bell.on { background: #ff6a55; border-color: #ff6a55; color: #120606; }

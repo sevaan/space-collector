@@ -2151,3 +2151,6 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - The missions header XP counts the cards only (+150, not +300 with the week's theme).
   - Sky window: Moon/planet names are placed after the cards, keeping off the cards and their times as well as each other.
 - 2026-10-29 · v0.1.1373 (Sevaan): tapping the Tonight hero's card aims at it / Show me, like its button, instead of spinning out the uncollected card preview.
+- 2026-10-29 · v0.1.1378 (Sevaan):
+  - **Bells on "Also tonight" dated rows:** the Halloween teaser, a meteor shower (replaces tap-the-row), constellations back and the week's sky event each get a bell (evBell). It sets a reminder for dusk that evening (constellations: 9:30 PM). Free players get the Plus page ("Sky event reminders are part of the crew kit", lead 'events').
+  - **Settings card back row:** 8px more room above and below the card. It has to out-rank `#debug .set-card .set-row { padding: 0 14px !important }`.

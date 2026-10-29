@@ -1,7 +1,7 @@
 // Story cards (2026-10-14, Sevaan; design/card-redesign.html): moments and history, not objects you can point at. Each is
 // earned by finding a secret (js/secrets.js): the deep-space probes, the Wow! signal, Starman, and the dated and hidden
 // ones. Registered as natural cards (natural: 'story'), album "Stories". Facts must stay true. Art: assets/art/cards/story-*.
-import { NATURAL, NATURAL_BY_KEY } from './natural.js?v=0.1.1377';
+import { NATURAL, NATURAL_BY_KEY } from './natural.js?v=0.1.1378';
 
 const S = (id, secret, name, when, stats, fact) => ({ key: `story:${id}`, id: `story:${id}`, card: `story:${id}`, natural: 'story', type: 'story', story: true, secret, name, when, code: 'STORY', tier: 'epic', stats, fact, art: id });
 export const STORIES = [
