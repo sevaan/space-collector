@@ -1,8 +1,8 @@
 // Player progress from the sighting log: XP and observer rank, tonight’s three missions, a weekly streak and
 // achievements. Everything is derived from the saved sightings (nothing extra is stored), so it can’t drift.
 // info(cardKey) -> { tier, type, owner, launch, natural, con } | null. No DOM.
-import { nightKey } from './observation.js?v=0.1.1300';
-import { fleetThresholds } from './card-model.js?v=0.1.1300';
+import { nightKey } from './observation.js?v=0.1.1301';
+import { fleetThresholds } from './card-model.js?v=0.1.1301';
 
 // A longer climb (2026-10-12, playtest room: three ranks on night 1, Mission Control in about two weeks), with two
 // prestige ranks past Mission Control. Nobody drops a rank they had on the old curve (rankFloor below).
@@ -13,6 +13,7 @@ export const RANKS = [
 const LEGACY_RANKS = [[0, 'Stargazer'], [200, 'Spotter'], [600, 'Tracker'], [1500, 'Navigator'], [4000, 'Flight Controller'], [10000, 'Mission Control']];
 // The rank a player already held on the old curve, worked out once and kept (localStorage rankFloor2).
 function rankFloor(xp) {
+  return 0; /* retired before launch (2026-10-28, Sevaan: Navigator after 10 cards): nobody outside testing played on the old curve */
   try { const v = localStorage.getItem('rankFloor2'); if (v != null) return Number(v) || 0; } catch { return 0; }
   let li = 0; for (let k = 0; k < LEGACY_RANKS.length; k++) if (xp >= LEGACY_RANKS[k][0]) li = k;
   try { localStorage.setItem('rankFloor2', String(li)); } catch {}
@@ -157,6 +158,7 @@ export function readDeals() { try { return JSON.parse(localStorage.getItem('miss
 // The one-time carry that keeps an existing player’s rank through the flatter XP (see TIER_XP): the XP needed to
 // reach the rank the old numbers gave them. Worked out once, the first time the new numbers run, and kept.
 export function xpCarry(sightings, info, opts = {}) {
+  return 0; /* retired before launch with rankFloor (2026-10-28) */
   try { const v = localStorage.getItem('xpCarry2'); if (v != null) return Number(v) || 0; } catch {} // v2: after the difficulty re-tier (2026-10-10)
   let carry = 0;
   if (real(sightings).length) {
