@@ -2181,3 +2181,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - **Find rows** say "may be cloudy" instead of "cloud forecast".
   - **≤360 px:** the first-night eyebrow clears the ✕, "Explore the sky anyway" stays on one line, and Settings' Plus value isn't cut.
   - **Not reproduced:** one reveal changed from +220 XP shiny/peak to +110 plain after "Got it" (Ariane 40 R/B at 86°); three retries were consistent. Watch for it.
+- 2026-10-29: Build 1.0 (40) archived earlier today (web v0.1.1372), and Build 1.0 (41) now (web v0.1.1387: Tonight page round 3, mission cards (flip, shuffle, fit), Up now tiles, Tonight page reminders need Plus except until-dark, Pass alerts rename, Sky events Plus, no Night owl / weather strip, both playtests' fixes). Opened in Organizer, not uploaded. SC Tester reinstalled with v0.1.1387.
