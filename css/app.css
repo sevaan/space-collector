@@ -3145,3 +3145,4 @@ body.night .tn-wx.night2 { border-color: #ff6a5555; background: #0c0303; }
 /* Sky notices wait under sheets too, like under pages (2026-10-28, Sevaan: the Sun warning showed over the Plus page) */
 body:has(.set-sheet:not([hidden])) #toasts .ticket:not([data-panel]) { display: none !important; }
 .tn-strip .bars { overflow: visible; } .tn-strip { overflow: visible; } /* the headliner star never cut at the edge (2026-10-28) */
+.set-back-thumb { margin-right: 10px; } /* its right edge lines up with the value above it ("Free") (2026-10-28, Sevaan) */

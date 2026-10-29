@@ -2058,3 +2058,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - 2026-10-28 · v0.1.1309 (Sevaan): Observer stats' rank uses the Collection's slim dial card (lb-dial markup in js/stats.js; stats gets rank.at for the dial's progress).
 - 2026-10-28 · v0.1.1310 (Sevaan: an uncollected card switched to its orbit by itself): cards you don't have never get the orbit view (orbitTap skips locked art; cards-page canOrbit needs sightings); the orbit tap needs a quick (<600 ms) tap that began on the card 700 ms+ after it appeared, and arms once per press.
 - 2026-10-28 · v0.1.1311 (Sevaan: pressing a card to tilt it opened the orbit): the orbit tap must be under 300 ms and 8 px; a press to tilt never counts. (A double tap to flip uses the same rule.)
+- 2026-10-28 · v0.1.1312 (Sevaan): Settings card back thumbnail moved 10px left so it lines up under the Plus row's Free.
