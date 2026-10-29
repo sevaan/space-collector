@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Missions as cards</title>
+<style>
+@font-face { font-family: 'L'; src: url('../fonts/BarlowCondensed-Medium.ttf'); }
+@font-face { font-family: 'D'; src: url('../fonts/RussoOne-Regular.ttf'); }
+:root { --bg: #080f1b; --ink: #fff2b3; --muted: #bdbea9; --gold: #fa8127; --medal: #ffc93d; --unc: #57d184; --rare: #4f9bff; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #1b2230; color: var(--ink); font: 500 15px/1.35 'L', sans-serif; padding: 26px 20px 50px; }
+h1 { font: 400 26px 'D'; margin: 0 0 6px; } h2 { font: 400 19px 'D'; margin: 0 0 4px; }
+.lead { color: var(--muted); max-width: 1180px; margin: 0 0 22px; } .lead b { color: var(--ink); font-weight: 500; }
+.row { display: flex; flex-wrap: wrap; gap: 28px; align-items: flex-start; }
+.opt { width: 390px; } .opt > p { color: var(--muted); font-size: 14px; margin: 0 0 12px; min-height: 92px; } .opt > p b { color: var(--gold); font-weight: 500; }
+.phone { background: var(--bg); border-radius: 26px; border: 1px solid #2c3648; overflow: hidden; padding-bottom: 18px; }
+.hdr { padding: 20px 20px 10px; border-bottom: 3px double #627a8b; } .hdr b { display: block; font: 400 19px 'D'; } .hdr small { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+.sky { position: relative; height: 150px; background: radial-gradient(ellipse at 70% 120%, #2a3d5e, transparent 60%), linear-gradient(#070f1d, #13223a); overflow: hidden; }
+.sky::before { content: ''; position: absolute; inset: 0; background: radial-gradient(1px 1px at 20% 30%, #fff8, transparent), radial-gradient(1px 1px at 60% 20%, #fff9, transparent), radial-gradient(1px 1px at 80% 45%, #fff7, transparent), radial-gradient(1px 1px at 35% 60%, #fff6, transparent), radial-gradient(1px 1px at 90% 15%, #fff8, transparent), linear-gradient(110deg, transparent 30%, #aab6d01a 45%, #c8bea51f 52%, transparent 66%); }
+.sky .hills { position: absolute; left: 0; right: 0; bottom: 0; height: 26px; background: #050a12; clip-path: polygon(0 60%, 8% 40%, 14% 55%, 22% 30%, 30% 50%, 40% 35%, 52% 55%, 60% 38%, 70% 52%, 80% 30%, 88% 48%, 100% 36%, 100% 100%, 0 100%); }
+.sky .t { position: absolute; left: 20px; top: 14px; } .sky .t span { font: 600 11px 'L'; letter-spacing: .16em; color: var(--gold); text-transform: uppercase; } .sky .t b { display: block; font: 400 28px/1.05 'D'; } .sky .t b em { font-style: normal; color: var(--gold); }
+.sec { display: flex; justify-content: space-between; align-items: baseline; margin: 16px 20px 8px; } .sec .k { font: 600 13px 'L'; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); } .sec span:last-child { font-size: 13px; color: var(--muted); }
+.hand { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 0 20px; } .hand div { aspect-ratio: 2/3; border-radius: 7px; background: center/cover url(../assets/art/backs/back-collector.webp) #01121c; box-shadow: 0 0 0 1.5px var(--c), 0 0 14px color-mix(in srgb, var(--c) 55%, transparent); }
+.hand small { display: block; text-align: center; margin-top: 4px; font-size: 12px; color: var(--muted); }
+.art { background: center/cover no-repeat #0b1626; }
+
+/* A · mission cards, card-shaped, four across */
+.a-row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; padding: 0 20px; }
+.a-card { position: relative; aspect-ratio: 2/3; border-radius: 7px; overflow: hidden; background: linear-gradient(#0e1b2e, #0a1322); box-shadow: 0 0 0 1.5px #c9a64a, inset 0 0 0 3px #0a1322, inset 0 0 0 4px #c9a64a66; display: flex; flex-direction: column; }
+.a-card .top { font: 600 8px 'L'; letter-spacing: .12em; color: var(--medal); padding: 6px 6px 3px; }
+.a-card .art { height: 42%; margin: 0 6px; border-radius: 3px; }
+.a-card b { font: 400 10px/1.12 'D'; padding: 5px 6px 0; } .a-card small { font-size: 9.5px; line-height: 1.15; color: var(--muted); padding: 2px 6px 0; margin-top: auto; padding-bottom: 6px; }
+.a-card .xp { position: absolute; right: 5px; top: 5px; font: 600 9px 'L'; color: var(--gold); }
+.a-card.done { box-shadow: 0 0 0 1.5px var(--medal), 0 0 14px #ffc93d88; } .a-card.done::after { content: 'COMPLETE'; position: absolute; left: 50%; top: 38%; transform: translate(-50%, -50%) rotate(-14deg); font: 400 11px 'D'; letter-spacing: .1em; color: var(--medal); border: 2px solid var(--medal); border-radius: 5px; padding: 1px 6px; background: #0a1322cc; }
+.a-card.ch { box-shadow: 0 0 0 1.5px #8fb3ff, inset 0 0 0 3px #0a1322, inset 0 0 0 4px #8fb3ff55; } .a-card.ch .top { color: #8fb3ff; }
+
+/* B · wide tickets you swipe */
+.b-strip { display: flex; gap: 10px; padding: 0 20px; overflow: hidden; }
+.b-card { flex: none; width: 300px; display: grid; grid-template-columns: 74px 1fr; gap: 12px; padding: 10px; border-radius: 14px; background: #0e1a29; border: 1px solid #c9a64a88; position: relative; }
+.b-card .art { width: 74px; height: 104px; border-radius: 6px; box-shadow: 0 0 0 1px #adbcc8; }
+.b-card .k { font: 600 10px 'L'; letter-spacing: .16em; color: var(--medal); text-transform: uppercase; } .b-card b { display: block; font: 400 16px/1.15 'D'; margin: 3px 0 4px; } .b-card small { display: block; font-size: 13px; color: var(--muted); }
+.b-card .go { display: inline-block; margin-top: 8px; padding: 5px 12px; border-radius: 9px; background: var(--gold); color: #0b1018; font: 600 11px 'L'; letter-spacing: .12em; text-transform: uppercase; }
+.b-card .xp { position: absolute; right: 12px; top: 10px; font: 600 12px 'L'; color: var(--gold); }
+.b-card::before { content: ''; position: absolute; left: 92px; top: 8px; bottom: 8px; border-left: 1.5px dashed #ffffff22; }
+.dots { display: flex; gap: 6px; justify-content: center; margin-top: 8px; } .dots i { width: 6px; height: 6px; border-radius: 50%; background: #ffffff33; } .dots i.on { background: var(--gold); }
+
+/* C · a fanned hand of mission cards */
+.c-fan { position: relative; height: 196px; margin: 4px 20px 0; }
+.c-card { position: absolute; bottom: 0; left: 50%; width: 112px; aspect-ratio: 2/3; border-radius: 8px; overflow: hidden; background: linear-gradient(#0e1b2e, #0a1322); box-shadow: 0 0 0 1.5px #c9a64a, 0 6px 16px #000a; transform-origin: 50% 120%; display: flex; flex-direction: column; }
+.c-card .top { font: 600 9px 'L'; letter-spacing: .14em; color: var(--medal); text-align: center; padding: 7px 0 4px; } .c-card .art { height: 46%; margin: 0 7px; border-radius: 4px; }
+.c-card b { font: 400 12.5px/1.1 'D'; padding: 6px 7px 0; } .c-card small { font-size: 11px; color: var(--muted); padding: 3px 7px; line-height: 1.15; }
+.c-note { text-align: center; font-size: 13px; color: var(--muted); margin-top: 8px; }
+
+/* D · patches on cards */
+.d-row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 7px; padding: 0 20px; }
+.d-card { aspect-ratio: 2/3; border-radius: 7px; background: linear-gradient(#0e1b2e, #0a1322); box-shadow: 0 0 0 1.5px #45576a; display: flex; flex-direction: column; align-items: center; padding: 8px 5px 6px; text-align: center; }
+.d-patch { width: 44px; height: 44px; font-size: 16px; border-radius: 50%; display: grid; place-items: center; font: 400 20px 'D'; color: #fff2b3; background: radial-gradient(circle at 35% 30%, #3a5683, #1b2c4a 70%); box-shadow: 0 0 0 3px #c9a64a, 0 0 0 5px #0a1322, 0 0 0 6px #c9a64a77, inset 0 0 0 1.5px #ffffff33; margin: 4px 0 8px; position: relative; }
+.d-patch::after { content: ''; position: absolute; inset: 4px; border-radius: 50%; border: 1.5px dashed #ffffff40; }
+.d-card.todo .d-patch { filter: grayscale(.7) brightness(.7); }
+.d-card b { font: 400 10.5px/1.1 'D'; } .d-card small { font-size: 10px; line-height: 1.15; color: var(--muted); margin-top: 3px; } .d-card .xp { margin-top: auto; font: 600 10px 'L'; color: var(--gold); }
+.d-card.ch { box-shadow: 0 0 0 1.5px #8fb3ff88; } .d-card.ch .d-patch { background: radial-gradient(circle at 35% 30%, #46658f, #24344a 70%); box-shadow: 0 0 0 3px #8fb3ff, 0 0 0 5px #0a1322, 0 0 0 6px #8fb3ff77; }
+.notes { max-width: 1240px; margin-top: 30px; background: #121a28; border: 1px solid #2c3648; border-radius: 12px; padding: 14px 18px; color: #e6e2c4; }
+.notes h3 { margin: 0 0 6px; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); font-weight: 500; } .notes ul { margin: 0; padding-left: 18px; } .notes li { margin: 4px 0; } .notes b { color: var(--ink); font-weight: 500; }
+</style></head><body>
+<h1>Missions as cards</h1>
+<p class="lead">Tonight’s real missions, moved to the top of the page above Tonight’s chase: <b>Spot something European</b> (next: the Ariane 5 stage at 5:24 AM), <b>Catch three different satellites</b> (next: Kosmos 1589 at 3:59 AM), <b>Collect a constellation star</b> (after dark, 6:42 PM) and the sky challenge <b>Turn a card silver or gold</b>. Each option shows the same moment (11 AM, cloudy evening) with one mission already done to show the finished state. Every card says the pass that finishes it, and a tap is Show me.</p>
+<div class="row">
+
+<div class="opt"><h2>A · Mission cards</h2><p><b>Recommended.</b> Four small cards in a row, the same shape as the chase below: a gold-framed mission card with the picture of the thing that finishes it, the goal, and when. Done ones get a COMPLETE stamp and glow. The sky challenge is the blue one. Reads at a glance; one tap aims.</p>
+<div class="phone"><div class="hdr"><b>TONIGHT</b><small>Toronto · 11:24 AM</small></div>
+ <div class="sky"><div class="t"><span>Overcast all evening · clears around midnight</span><b>Best from <em>4:30 AM</em></b></div><div class="hills"></div></div>
+ <div class="sec"><span class="k">Tonight’s missions</span><span>1 of 4 · +200 XP</span></div>
+ <div class="a-row">
+  <div class="a-card"><span class="top">MISSION</span><span class="art" style="background-image:url(../assets/art/cards/sm/ariane-5.webp)"></span><b>Spot something European</b><small>Ariane 5 stage · 5:24 AM</small><span class="xp">+50</span></div>
+  <div class="a-card"><span class="top">MISSION</span><span class="art" style="background-image:url(../assets/art/cards/sm/russian-recon.webp)"></span><b>Three different satellites</b><small>1 of 3 · next 3:59 AM</small><span class="xp">+50</span></div>
+  <div class="a-card done"><span class="top">MISSION</span><span class="art" style="background-image:url(../assets/art/cards/sm/star-capella.webp)"></span><b>A constellation star</b><small>Capella ✓</small><span class="xp">+50</span></div>
+  <div class="a-card ch"><span class="top">CHALLENGE</span><span class="art" style="background-image:url(../assets/art/cards/sm/sl-8.webp)"></span><b>Turn a card silver</b><small>SL-8 stage, 3rd night</small><span class="xp">+50</span></div>
+ </div>
+ <div class="sec"><span class="k">Tonight’s chase</span></div>
+ <div class="hand"><div style="--c:#57d184"></div><div style="--c:#4f9bff"></div><div style="--c:#4f9bff"></div></div>
+</div></div>
+
+<div class="opt"><h2>B · Mission tickets</h2><p>Bigger and more to read: one wide ticket at a time with the card picture, the goal, the pass that finishes it and a <b>Show me</b> button right on it. Swipe for the next mission. Best when the “how” matters more than seeing all four at once.</p>
+<div class="phone"><div class="hdr"><b>TONIGHT</b><small>Toronto · 11:24 AM</small></div>
+ <div class="sky"><div class="t"><span>Overcast all evening · clears around midnight</span><b>Best from <em>4:30 AM</em></b></div><div class="hills"></div></div>
+ <div class="sec"><span class="k">Tonight’s missions</span><span>1 of 4 · +200 XP</span></div>
+ <div class="b-strip">
+  <div class="b-card"><span class="art" style="background-image:url(../assets/art/cards/sm/ariane-5.webp)"></span><span><span class="k">Mission 1 of 4</span><b>Spot something European</b><small>Ariane 5 stage · 2004<br>5:24 AM · high in the northeast</small><span class="go">Show me</span></span><span class="xp">+50</span></div>
+  <div class="b-card"><span class="art" style="background-image:url(../assets/art/cards/sm/russian-recon.webp)"></span><span><span class="k">Mission 2</span><b>Three satellites</b></span></div>
+ </div>
+ <div class="dots"><i class="on"></i><i></i><i></i><i></i></div>
+ <div class="sec"><span class="k">Tonight’s chase</span></div>
+ <div class="hand"><div style="--c:#57d184"></div><div style="--c:#4f9bff"></div><div style="--c:#4f9bff"></div></div>
+</div></div>
+
+<div class="opt"><h2>C · A fanned hand</h2><p>The missions are held like a hand of cards, fanned, the next one to do in front and largest. Tap to spread them out. The most game-like, and it rhymes with the sealed chase below, but you see one mission clearly rather than all four.</p>
+<div class="phone"><div class="hdr"><b>TONIGHT</b><small>Toronto · 11:24 AM</small></div>
+ <div class="sky"><div class="t"><span>Overcast all evening · clears around midnight</span><b>Best from <em>4:30 AM</em></b></div><div class="hills"></div></div>
+ <div class="sec"><span class="k">Tonight’s missions</span><span>1 of 4 · +200 XP</span></div>
+ <div class="c-fan">
+  <div class="c-card" style="transform: translateX(-50%) translateX(-92px) rotate(-14deg) scale(.86)"><span class="top">CHALLENGE</span><span class="art" style="background-image:url(../assets/art/cards/sm/sl-8.webp)"></span><b>Turn a card silver</b></div>
+  <div class="c-card" style="transform: translateX(-50%) translateX(92px) rotate(14deg) scale(.86)"><span class="top">MISSION</span><span class="art" style="background-image:url(../assets/art/cards/sm/star-capella.webp)"></span><b>A constellation star ✓</b></div>
+  <div class="c-card" style="transform: translateX(-50%) translateX(46px) rotate(7deg) scale(.93)"><span class="top">MISSION</span><span class="art" style="background-image:url(../assets/art/cards/sm/russian-recon.webp)"></span><b>Three satellites</b></div>
+  <div class="c-card" style="transform: translateX(-50%); width: 122px"><span class="top">MISSION · NEXT</span><span class="art" style="background-image:url(../assets/art/cards/sm/ariane-5.webp)"></span><b>Spot something European</b><small>Ariane 5 stage · 5:24 AM</small></div>
+ </div>
+ <p class="c-note">Tap to spread · Show me on the front card</p>
+ <div class="sec"><span class="k">Tonight’s chase</span></div>
+ <div class="hand"><div style="--c:#57d184"></div><div style="--c:#4f9bff"></div><div style="--c:#4f9bff"></div></div>
+</div></div>
+
+<div class="opt"><h2>D · Patch cards</h2><p>Each mission card carries the patch-style emblem it’s working toward, faded until it’s done, then stitched in full colour. Ties the nightly missions to the patch wall people already like, and finishing one feels like earning something you keep.</p>
+<div class="phone"><div class="hdr"><b>TONIGHT</b><small>Toronto · 11:24 AM</small></div>
+ <div class="sky"><div class="t"><span>Overcast all evening · clears around midnight</span><b>Best from <em>4:30 AM</em></b></div><div class="hills"></div></div>
+ <div class="sec"><span class="k">Tonight’s missions</span><span>1 of 4 · +200 XP</span></div>
+ <div class="d-row">
+  <div class="d-card todo"><span class="d-patch">EU</span><b>Something European</b><small>5:24 AM</small><span class="xp">+50</span></div>
+  <div class="d-card todo"><span class="d-patch">3</span><b>Three satellites</b><small>1 of 3</small><span class="xp">+50</span></div>
+  <div class="d-card"><span class="d-patch">★</span><b>A constellation star</b><small>Done</small><span class="xp">+50</span></div>
+  <div class="d-card ch todo"><span class="d-patch">Ag</span><b>Silver or gold</b><small>Challenge</small><span class="xp">+50</span></div>
+ </div>
+ <div class="sec"><span class="k">Tonight’s chase</span></div>
+ <div class="hand"><div style="--c:#57d184"></div><div style="--c:#4f9bff"></div><div style="--c:#4f9bff"></div></div>
+</div></div>
+
+</div>
+<div class="notes"><h3>For every option</h3><ul>
+ <li><b>Where:</b> right under the sky window, above Tonight’s chase. The missions list lower on the page goes; the week’s theme and the night’s news stay down there.</li>
+ <li><b>The picture</b> is the card of the pass that finishes the mission (the Ariane 5 stage, Kosmos 1589). Missions about stars or planets show the thing that’s up; done ones show what you caught.</li>
+ <li><b>A tap</b> aims at it (Show me for a pass, Aim for a star or planet), the same as the chase cards.</li>
+ <li><b>Finishing one</b> during the night: the card flips to its COMPLETE side with the +50, like the reveal.</li>
+</ul></div>
+</body></html>

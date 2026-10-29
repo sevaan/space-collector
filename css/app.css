@@ -3248,7 +3248,7 @@ body.night #debug .notes-off .set-main { color: #ff7f70; }
 .sw-text p { margin: 4px 0 0; max-width: 300px; font-size: 14.5px; line-height: 1.3; color: #e6e2c4; } .sw-text p em { font-style: normal; color: #fff2b3; font-weight: 600; }
 .sw-card { position: absolute; z-index: 3; width: 34px; aspect-ratio: 2 / 3; margin: 0; padding: 0; border: 1.5px solid var(--c); border-radius: 4px; background-size: cover; background-position: center; transform: translate(-50%, -50%) rotate(-6deg); box-shadow: 0 0 14px var(--c), 0 2px 8px #000a; cursor: pointer; }
 .sw-card.lead { width: 44px; transform: translate(-50%, -50%) rotate(-4deg); animation: swGlow 2.4s ease-in-out infinite; }
-.sw-card span { position: absolute; left: 50%; top: 100%; transform: translateX(-50%) rotate(6deg); margin-top: 5px; white-space: nowrap; font: 600 11px var(--label); color: #fff2b3; text-shadow: 0 1px 4px #070f1d; }
+/* (the time label's style lives on .sw-card .tm below) */
 @keyframes swGlow { 50% { box-shadow: 0 0 22px var(--c), 0 2px 8px #000a; } }
 @media (prefers-reduced-motion: reduce) { .sw-card.lead { animation: none; } }
 #tn-timeline { margin-top: 12px; }
@@ -3308,3 +3308,29 @@ body.night #debug .notes-off .set-main { color: #ff7f70; }
 :is(.tnp-mini, .tnx-mini, .tn-chip-mini, .mini-slot)::after { content: ''; position: absolute; inset: 0; border: 1px solid #adbcc8; border-radius: inherit; pointer-events: none; }
 :is(.tnp-mini, .tnx-mini, .tn-chip-mini, .mini-slot):empty::after { display: none; }
 .tn-chip-mini { border-radius: 5px; }
+/* Tonight's missions as cards (2026-10-29, design/tonight-mission-cards.html A). */
+#tn-missions .sw-hand-head { margin-top: 16px; }
+.mc-row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.mc { position: relative; display: flex; flex-direction: column; aspect-ratio: 2 / 3; padding: 0; border: 0; border-radius: 7px; overflow: hidden; text-align: left; color: inherit; font: inherit; cursor: pointer;
+  background: linear-gradient(#0e1b2e, #0a1322); box-shadow: 0 0 0 1.5px #c9a64a, inset 0 0 0 3px #0a1322, inset 0 0 0 4px #c9a64a66; }
+.mc:disabled { cursor: default; }
+.mc .top { display: flex; justify-content: space-between; padding: 6px 6px 3px; font: 600 9px var(--label); letter-spacing: .12em; text-transform: uppercase; color: #ffc93d; } .mc .top span:last-child { color: #fa8127; letter-spacing: .04em; }
+.mc .art { display: block; height: 40%; margin: 0 6px; border-radius: 3px; background: center/cover no-repeat #0b1626; box-shadow: 0 0 0 1px #ffffff1a; }
+.mc b { padding: 5px 6px 0; font: 400 10.5px/1.12 var(--display); color: #fff2b3; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.mc small { margin-top: auto; padding: 2px 6px 6px; font: 500 10px/1.15 var(--label); color: var(--ui-muted, #bdbea9); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.mc.ch { box-shadow: 0 0 0 1.5px #8fb3ff, inset 0 0 0 3px #0a1322, inset 0 0 0 4px #8fb3ff55; } .mc.ch .top span:first-child { color: #8fb3ff; }
+.mc.done { box-shadow: 0 0 0 1.5px #ffc93d, 0 0 14px #ffc93d88; }
+.mc.done::after { content: 'COMPLETE'; position: absolute; left: 50%; top: 36%; transform: translate(-50%, -50%) rotate(-14deg); font: 400 10px var(--display); letter-spacing: .08em; color: #ffc93d; border: 2px solid #ffc93d; border-radius: 5px; padding: 1px 5px; background: #0a1322cc; }
+.mc:not(:disabled):active { transform: scale(.97); }
+.tn-sec.also:has(+ .tn-all) { display: none; }
+body.night .mc { box-shadow: 0 0 0 1.5px #ff6a55; }
+.mc { aspect-ratio: auto; min-height: 150px; }
+.mc .art { height: 52px; flex: none; }
+.mc .art.empty { display: grid; place-items: center; font-size: 22px; color: #ffc93d99; background: radial-gradient(circle at 50% 40%, #1d2c46, #0b1626); }
+.mc.ch .art.empty { color: #8fb3ffaa; }
+.mc b { font-size: 10.5px; -webkit-line-clamp: 4; }
+/* Arc cards show their front (2026-10-29, Sevaan). */
+.sw-card { background: #0a1322; overflow: visible; border: 0; box-shadow: 0 0 14px var(--c), 0 2px 8px #000a; }
+.sw-card .face { position: absolute; inset: 0; border-radius: 4px; overflow: hidden; box-shadow: 0 0 0 1.5px var(--c); }
+.sw-card .face .mini-face { --mini-s: .1214; } .sw-card.lead .face .mini-face { --mini-s: .1571; }
+.sw-card .tm { position: absolute; left: 50%; top: 100%; transform: translateX(-50%) rotate(6deg); margin-top: 5px; white-space: nowrap; font: 600 11px var(--label); color: #fff2b3; text-shadow: 0 1px 4px #070f1d; }
