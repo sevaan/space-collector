@@ -2101,3 +2101,8 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - 2026-10-29 · v0.1.1331 (Sevaan): one gem per chart bar (the headliner's ★ if it's in that half hour, else the rarest new card, stations a touch ahead of equals); Earth's shadow on the chart has no outline and a blurred, soft edge.
 - 2026-10-29 · v0.1.1333 (Sevaan): the chart has a second, hard-edged Earth's-shadow dome (.shade-top, rgba(0,2,8,.36), z above the cloud stacks) over the soft one, so the curve shows across cloudy bars; the cards on the sky window's arcs show the collected look (miniCard { preview: true }, real picture) like the countdown card.
 - 2026-10-29 · v0.1.1334 (Sevaan): the Tonight's chase row (the sealed hand) is removed from the page; tonightHand still feeds the sky window's arcs when there's no go window or clear part.
+- 2026-10-29 · v0.1.1336 (Sevaan):
+  - **Sky window arcs:** each pass's real path from track() (15 s steps), broken where it wraps. 180° across. Everything sits under the headline. Each card sits at its path's highest point on screen, hidden if there isn't one.
+  - **Night 2 card:** no Show me button.
+  - **No sky challenge** on the Tonight tab's missions or the daily Tonight page; the counts are the 3 missions.
+  - **Constellation mission card taps:** steer to the constellation's brightest star you still need, even below the horizon or too faint. state.guideStar keeps that pin alive from the full naturalTargets list (allNat).
