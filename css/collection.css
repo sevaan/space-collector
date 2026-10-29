@@ -1011,3 +1011,5 @@ body.few-cards .logbook :is(.lb-pic, .lb-rankrow, .lb-bar, .lb-to) { display: no
 .lbd-to { font-size: 14px; color: var(--muted, #bdbea9); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; } .lbd-to b { color: var(--ink, #fff2b3); font-weight: 500; }
 .lbd-more { flex: none; background: none; border: 0; padding: 6px 0; min-height: 32px; color: var(--gold, #fa8127); font: 500 13px var(--label); letter-spacing: .16em; text-transform: uppercase; cursor: pointer; }
 :where(html[data-theme="night"], body.night) .lbd-ring circle[stroke="#fa8127"] { stroke: #ff6a55; }
+/* content-visibility clips each patch at its own box: give it room for the NEW tag and the glow ring (2026-10-28, Sevaan) */
+.pw-item { padding: 16px; margin: -16px; }

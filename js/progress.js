@@ -1,8 +1,8 @@
 // Player progress from the sighting log: XP and observer rank, tonight’s three missions, a weekly streak and
 // achievements. Everything is derived from the saved sightings (nothing extra is stored), so it can’t drift.
 // info(cardKey) -> { tier, type, owner, launch, natural, con } | null. No DOM.
-import { nightKey } from './observation.js?v=0.1.1304';
-import { fleetThresholds } from './card-model.js?v=0.1.1304';
+import { nightKey } from './observation.js?v=0.1.1305';
+import { fleetThresholds } from './card-model.js?v=0.1.1305';
 
 // A longer climb (2026-10-12, playtest room: three ranks on night 1, Mission Control in about two weeks), with two
 // prestige ranks past Mission Control. Nobody drops a rank they had on the old curve (rankFloor below).
