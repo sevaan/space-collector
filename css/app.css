@@ -3484,3 +3484,6 @@ body.col-modal #set-plus-sheet { top: 0; z-index: 95; }
 body.col-modal #set-plus-sheet .set-sheet-card > .crew-top { display: flex !important; }
 body.col-modal #set-plus-sheet .set-sheet-card { height: 100dvh !important; padding-top: 0 !important; }
 body.col-modal #set-plus-sheet .set-sheet-card > .starfield { height: 100dvh; margin-bottom: -100dvh; }
+/* Night 2 card's app icon a size smaller (2026-10-29, Sevaan) */
+.tn-wx.night2 { grid-template-columns: 32px 1fr; column-gap: 12px; }
+.tn-wx.night2 .n2-icon { width: 32px; height: 32px; border-radius: 8px; margin-top: 4px; }
