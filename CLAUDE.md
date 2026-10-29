@@ -2201,3 +2201,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
     - The Collection header sliding under the status bar as the keyboard opens (iOS moves the page).
     - The Match your sky tip over a ticket (tickets hide while it's up).
 - 2026-10-29: Build 1.0 (42) archived (web v0.1.1390: iOS playtest fixes on top of 41); opened in Organizer, not uploaded. SC Tester reinstalled with v0.1.1390.
+- 2026-10-29 · v0.1.1391 (build 42 playtest): tonight's headliner prefers a pass under a clear sky (skyOkAt), and the sky window's line doesn't name a pick under cloud. The until-dark sheet's best pass prefers clear sky, and the sheet always lists and ticks the reminder already set (one set on the first-night page included).
