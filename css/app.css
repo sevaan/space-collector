@@ -3167,3 +3167,57 @@ body.night #debug .notes-off .set-main { color: #ff7f70; }
 .ntt button { height: 34px; padding: 0 12px; border-radius: 10px; border: 1px solid #fa812777; background: transparent; color: #fa8127; font: 600 12px var(--label); letter-spacing: .1em; text-transform: uppercase; white-space: nowrap; }
 .ntt button.sent { background: #fa8127; color: #0b1018; }
 .ntt.check { grid-template-columns: 28px 1fr; }
+
+/* ---------- The Tonight page, round 2 (2026-10-29, design/tonight-fresh-combined.html) ---------- */
+.tnr-say { margin: 4px 0 10px; font: 400 21px/1.2 var(--display, 'SC Display'); color: #fff2b3; text-wrap: balance; } .tnr-say em { font-style: normal; color: #fa8127; }
+.tnr-ev { margin: 6px 0 10px; padding: 9px 11px; border-radius: 12px; background: #ffc93d14; border: 1px solid #ffc93d55; color: #ffe9a6; font-size: 14px; display: flex; gap: 8px; } .tnr-ev b { color: #fff2b3; font-weight: 600; }
+.tnr { display: block; width: 100%; padding: 0; border: 0; background: none; color: inherit; text-align: left; font: inherit; cursor: pointer; }
+.tnr-parts { display: flex; margin: 0 0 4px; font: 500 10.5px var(--label); letter-spacing: .14em; text-transform: uppercase; color: var(--ui-muted, #bdbea9); }
+.tnr-parts span { text-align: center; border-bottom: 2px solid #2c3648; padding-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .tnr-parts span.on { color: #fa8127; border-color: #fa8127; }
+.tnr-plot { position: relative; display: block; height: 128px; border-radius: 12px; background: linear-gradient(#0d1a2c, #0a1322); overflow: hidden; border: 1px solid #22344a; }
+.tnr-plot .twi { position: absolute; top: 0; bottom: 0; left: 0; background: linear-gradient(90deg, #3a2a3a66, transparent); } .tnr-plot .twi.r { right: 0; width: auto; background: linear-gradient(270deg, #3a2a3a66, transparent); }
+.tnr-plot .shade { position: absolute; top: 0; bottom: 18px; background: repeating-linear-gradient(90deg, #04070d 0 2px, #060b14 2px 5px); opacity: .55; }
+.tnr-plot .bar { position: absolute; bottom: 18px; border-radius: 3px 3px 0 0; transform: scaleX(.6); }
+.tnr-plot .bar.go { background: #fa8127; box-shadow: 0 0 10px #fa812788; } .tnr-plot .bar.no { background: repeating-linear-gradient(135deg, #5d6878 0 3px, #3b4554 3px 6px); }
+.tnr-plot .bar.moonlit { background: linear-gradient(#fff2b355 0 55%, #fa8127 55%); box-shadow: none; } .tnr-plot .bar.past { opacity: .35; }
+.tnr-plot .ground { position: absolute; left: 0; right: 0; bottom: 0; height: 18px; border-top: 1px solid #2b3c52; background: #070d17; }
+.tnr-plot .bod { position: absolute; height: 2px; border-radius: 1px; }
+.tnr-plot .gem { position: absolute; z-index: 2; font-size: 12px; transform: translateX(-50%); text-shadow: 0 0 6px currentColor; }
+.tnr-plot .nowl { position: absolute; top: -4px; bottom: -4px; width: 2px; background: #fa8127; box-shadow: 0 0 8px #fa8127; z-index: 3; }
+.tnr-plot .tnr-wx { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+.tnr-plot .unk { position: absolute; top: 8px; left: 50%; transform: translateX(-50%); font: 500 10px var(--label); letter-spacing: .14em; text-transform: uppercase; color: var(--ui-muted, #bdbea9); background: #0b1626; border: 1px dashed #fff2b344; border-radius: 5px; padding: 1px 7px; z-index: 3; }
+.tnr-plot .met { position: absolute; width: 16px; height: 1.5px; background: linear-gradient(90deg, transparent, #fff2b3); transform: rotate(28deg); z-index: 2; border-radius: 1px; box-shadow: 0 0 4px #fff2b3; animation: tnrMet 4s linear infinite; opacity: 0; }
+@keyframes tnrMet { 0% { opacity: 0; translate: -14px -7px; } 3% { opacity: 1; } 12% { opacity: 0; translate: 22px 11px; } 100% { opacity: 0; translate: 22px 11px; } }
+@media (prefers-reduced-motion: reduce) { .tnr-plot .met { animation: none; opacity: .8; } }
+.tnr-ax { display: flex; justify-content: space-between; margin-top: 4px; font: 500 11px var(--label); letter-spacing: .06em; color: var(--ui-muted, #bdbea9); }
+.tnr-bods { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 6px; font-size: 11.5px; color: var(--ui-muted, #bdbea9); } .tnr-bods i { display: inline-block; width: 14px; height: 3px; border-radius: 2px; vertical-align: 3px; margin-right: 4px; }
+.tnp-wrap { margin-top: 14px; }
+.tnp-plan { display: flex; justify-content: space-between; align-items: baseline; margin: 0 2px 4px; } .tnp-plan .k { font: 500 13px var(--label); letter-spacing: .16em; text-transform: uppercase; color: #fa8127; } .tnp-plan .dk { font-size: 13.5px; color: var(--ui-muted, #bdbea9); }
+.tnp { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center; padding: 10px 2px; border-top: 1px solid #ffffff12; }
+.tnp .n { display: block; font: 500 11.5px var(--label); letter-spacing: .16em; text-transform: uppercase; color: var(--ui-muted, #bdbea9); } .tnp .n em { font-style: normal; letter-spacing: .04em; text-transform: none; margin-left: 6px; }
+.tnp b { display: block; font-weight: 500; font-size: 16px; color: #fff2b3; margin-top: 1px; }
+.tnp.hi { margin: 4px -8px; padding: 10px; border-radius: 14px; border: 1px solid #fa812766; background: radial-gradient(ellipse at 100% 0%, #fa812722, transparent 70%), #0e1a29; } .tnp.hi .n { color: #fa8127; }
+.tnp.dim { opacity: .62; } .tnp.past { opacity: .45; }
+.tnp .v { display: inline-block; font: 600 10.5px var(--label); letter-spacing: .14em; text-transform: uppercase; padding: 1px 7px; border-radius: 5px; margin-left: 4px; vertical-align: 2px; }
+.tnp .v.go { background: #fa8127; color: #0b1018; } .tnp .v.maybe { background: #ffc93d22; color: #ffc93d; } .tnp .v.skip { background: #ffffff10; color: #8b93a6; }
+.tnp .odds { text-align: center; min-width: 52px; } .tnp .odds b { font: 400 19px var(--display, 'SC Display'); margin: 0; } .tnp .odds small { font: 500 10px var(--label); letter-spacing: .14em; text-transform: uppercase; color: var(--ui-muted, #bdbea9); }
+.tnp .odds.go b { color: #fa8127; } .tnp .odds.maybe b { color: #ffc93d; } .tnp .odds.skip b { color: #8b93a6; }
+.tnp-job { margin: 0 0 6px; border-radius: 14px; padding: 13px 14px; border: 1px solid #fa812766; background: radial-gradient(ellipse at 100% 0%, #fa812726, transparent 70%), #0e1a29; }
+.tnp-job.cloudy { border-color: #8b93a655; background: radial-gradient(ellipse at 100% 0%, #8792a133, transparent 70%), #0e1a29; }
+.tnp-job.shadow, .tnp-job.nodark { border-color: #ffc93d66; background: radial-gradient(ellipse at 100% 0%, #ffc93d22, transparent 70%), #0e1a29; }
+.tnp-k { display: flex; justify-content: space-between; align-items: baseline; } .tnp-k > span { font: 500 13px var(--label); letter-spacing: .16em; text-transform: uppercase; color: #fa8127; } .tnp-job.shadow .tnp-k > span, .tnp-job.nodark .tnp-k > span { color: #ffc93d; }
+.tnp-k small { color: var(--ui-muted, #bdbea9); letter-spacing: .1em; margin-left: 6px; } .tnp-k b { font: 400 16px var(--display, 'SC Display'); } .tnp-k b.go { color: #fa8127; } .tnp-k b.maybe { color: #ffc93d; } .tnp-k b.skip { color: #8b93a6; }
+.tnp-job h4 { font: 400 21px/1.15 var(--display, 'SC Display'); margin: 6px 0 6px; color: #fff2b3; } .tnp-job > p, .tnp-cloud { margin: 4px 0 6px; color: #e6e2c4; font-size: 14.5px; }
+.tnp-job .now-hero { margin-top: 10px; }
+.tnp-job .why { display: flex; gap: 10px; align-items: center; margin: 2px 0 8px; padding: 8px 10px; border-radius: 10px; background: #ffffff06; font-size: 13.5px; color: #e6e2c4; } .tnp-job .why svg { flex: none; }
+.tnp-body { display: grid; grid-template-columns: 44px 1fr auto; gap: 10px; align-items: center; width: 100%; padding: 8px 0; border: 0; border-top: 1px solid #ffffff10; background: none; color: inherit; text-align: left; font: inherit; cursor: pointer; }
+.tnp-body img, .tnp-body .dot { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 1.5px solid #e9dfb8; } .tnp-body .dot { width: 14px; height: 14px; justify-self: center; border: 0; }
+.tnp-body b { display: block; font-weight: 500; font-size: 15.5px; color: #fff2b3; } .tnp-body small { color: var(--ui-muted, #bdbea9); font-size: 13px; } .tnp-body em { font-style: normal; font: 400 14px var(--display, 'SC Display'); color: #fff2b3; } .tnp-body.later { cursor: default; opacity: .8; }
+.tnp-job .acts { margin-top: 10px; }
+.tnp-fades { margin-top: 10px; padding-top: 8px; border-top: 1px solid #ffffff12; } .tnp-fades .k { font: 500 12px var(--label); letter-spacing: .16em; text-transform: uppercase; color: #f09be6; }
+.tnp-fades div { display: grid; grid-template-columns: 1fr 1fr; gap: 3px 12px; margin: 6px 0 4px; font-size: 13.5px; color: #e6e2c4; } .tnp-fades b { font: 400 13px var(--display, 'SC Display'); color: #fa8127; margin-right: 5px; } .tnp-fades small { color: var(--ui-muted, #bdbea9); }
+/* Dusk, Dawn and lit-all-night: the hero is the card; the part is just its header line (no box in a box). */
+.tnp-job.dusk, .tnp-job.dawn, .tnp-job.all { border: 0; background: none; padding: 0; }
+.tnp-job.dusk .now-hero, .tnp-job.dawn .now-hero, .tnp-job.all .now-hero { margin-top: 8px; }
+.tnp-job.dusk .tnp-fades, .tnp-job.dawn .tnp-fades, .tnp-job.all .tnp-fades { margin: 12px 2px 0; }
+.tnp-job.cloudy .tnp-cloud { margin: 6px 2px 0; }

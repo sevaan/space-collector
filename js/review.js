@@ -3,16 +3,16 @@
 // picture" shows one card for each art file (most satellites share a picture by kind) with how many cards use it.
 // Stars (☆) are saved in this browser (localStorage 'reviewStars'); "Copy starred" puts a list on the clipboard to
 // hand back. Not linked from the app.
-import { expandFacts } from './catalog-facts.js?v=0.1.1316';
-import { renderCard, miniCard, artImage } from './card.js?v=0.1.1316';
-import { ART_CREDITS } from './art-credits.js?v=0.1.1316';
-import { buildCards } from './card-model.js?v=0.1.1316';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1316';
-import { loadLore, titleFor, debrisOf } from './lore.js?v=0.1.1316';
-import './stories.js?v=0.1.1316';
-import { CON_FIGURES } from './con-figures.js?v=0.1.1316';
-import { loadConstellations, CON_BY_ID } from './constellations.js?v=0.1.1316';
-import { loadComets } from './comets.js?v=0.1.1316';
+import { expandFacts } from './catalog-facts.js?v=0.1.1317';
+import { renderCard, miniCard, artImage } from './card.js?v=0.1.1317';
+import { ART_CREDITS } from './art-credits.js?v=0.1.1317';
+import { buildCards } from './card-model.js?v=0.1.1317';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1317';
+import { loadLore, titleFor, debrisOf } from './lore.js?v=0.1.1317';
+import './stories.js?v=0.1.1317';
+import { CON_FIGURES } from './con-figures.js?v=0.1.1317';
+import { loadConstellations, CON_BY_ID } from './constellations.js?v=0.1.1317';
+import { loadComets } from './comets.js?v=0.1.1317';
 
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
