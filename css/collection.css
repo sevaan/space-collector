@@ -1013,3 +1013,6 @@ body.few-cards .logbook :is(.lb-pic, .lb-rankrow, .lb-bar, .lb-to) { display: no
 :where(html[data-theme="night"], body.night) .lbd-ring circle[stroke="#fa8127"] { stroke: #ff6a55; }
 /* content-visibility clips each patch at its own box: give it room for the NEW tag and the glow ring (2026-10-28, Sevaan) */
 .pw-item { padding: 16px; margin: -16px; }
+/* Find with nothing typed: no empty results row above the list (2026-10-28, Sevaan: a big gap under the search box) */
+body[data-view="find"] .result-row:has(> #results[hidden], > #results:empty):has(> #reset-filters[hidden]) { display: none; }
+body[data-view="find"] .grid.find-mode > .find-head:first-child { margin-top: 18px; }
