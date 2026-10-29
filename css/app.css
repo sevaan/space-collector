@@ -3343,3 +3343,6 @@ body.night .mc { box-shadow: 0 0 0 1.5px #ff6a55; }
 /* Earth's shadow on the chart: no outline, a soft edge like a real shadow (2026-10-29, Sevaan). */
 .tnr-plot .shade { box-shadow: none; filter: blur(6px); background: radial-gradient(ellipse at 50% 100%, rgba(1,3,8,.9), rgba(2,5,12,.7) 60%, rgba(3,7,15,.4)); }
 .tnr-plot .shade { filter: blur(5px); background: radial-gradient(ellipse at 50% 100%, rgba(0,1,5,.97), rgba(1,3,9,.85) 55%, rgba(2,5,12,.55)); }
+/* The shadow's hard-edged dome again, faint, over everything (clouds included), so its curve reads across the cloudy bars (2026-10-29, Sevaan). */
+.tnr-plot .shade-top { position: absolute; bottom: 18px; top: 8px; margin: 0 -2%; border-radius: 50% 50% 0 0 / 100% 100% 0 0; background: rgba(0,2,8,.28); z-index: 3; pointer-events: none; }
+.tnr-plot .shade-top { background: rgba(0,2,8,.36); box-shadow: inset 0 1px 0 rgba(255,255,255,.08); }
