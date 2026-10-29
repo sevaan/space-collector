@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Notifications plan</title>
+<style>
+@font-face { font-family: 'L'; src: url('../fonts/BarlowCondensed-Medium.ttf'); }
+@font-face { font-family: 'D'; src: url('../fonts/RussoOne-Regular.ttf'); }
+:root { --bg: #080f1b; --ink: #fff2b3; --muted: #bdbea9; --gold: #fa8127; --medal: #ffc93d; --unc: #57d184; --rare: #4f9bff; --epic: #e46ad6; --panel: #0e1a29; --edge: #22344a; --blue: #8fb3ff; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #1b2230; color: var(--ink); font: 500 15px/1.4 'L', sans-serif; padding: 28px 22px 60px; }
+h1 { font: 400 28px 'D'; margin: 0 0 6px; } h2 { font: 400 20px 'D'; margin: 34px 0 10px; } h3 { margin: 0 0 6px; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); font-weight: 500; }
+.lead { color: var(--muted); max-width: 1180px; margin: 0 0 18px; font-size: 16px; } .lead b, .box b { color: var(--ink); font-weight: 500; }
+.grid { display: grid; gap: 14px; } .g2 { grid-template-columns: 1fr 1fr; } .g3 { grid-template-columns: repeat(3, 1fr); } .g4 { grid-template-columns: repeat(4, 1fr); }
+.wrap { max-width: 1500px; }
+.box { background: #121a28; border: 1px solid #2c3648; border-radius: 12px; padding: 14px 16px; color: #e6e2c4; } .box.o { border-color: #fa812766; } .box.b { border-color: #8fb3ff66; } .box.g { border-color: #57d18466; }
+.box ul { margin: 0; padding-left: 18px; } .box li { margin: 4px 0; } .box p { margin: 0 0 8px; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; } th { text-align: left; font-weight: 500; font-size: 11.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); padding: 6px 8px; border-bottom: 1px solid #ffffff22; } td { padding: 7px 8px; border-top: 1px solid #ffffff10; vertical-align: top; color: #e6e2c4; } td b { color: var(--ink); font-weight: 500; }
+.free { color: var(--unc); } .plus { color: var(--medal); } .tag { display: inline-block; font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; padding: 1px 6px; border-radius: 5px; border: 1px solid currentColor; margin-left: 4px; vertical-align: 1px; }
+.new { color: var(--blue); } .chg { color: var(--gold); }
+/* lock screen */
+.lock { width: 390px; border-radius: 44px; padding: 54px 14px 26px; background: radial-gradient(ellipse at 50% 0%, #2a3f63, #0b1424 60%); border: 1px solid #2c3648; }
+.lock .clock { text-align: center; font: 300 74px/1 -apple-system, 'Helvetica Neue', sans-serif; color: #f4f6ff; letter-spacing: -1px; } .lock .date { text-align: center; color: #d8def0; font: 500 17px -apple-system, sans-serif; margin-bottom: 26px; }
+.nt { background: #e9edf5d9; color: #0f1522; border-radius: 22px; padding: 11px 13px; margin-bottom: 8px; font: 400 14.5px/1.3 -apple-system, 'Helvetica Neue', sans-serif; display: grid; grid-template-columns: 38px 1fr 54px; gap: 10px; align-items: center; backdrop-filter: blur(10px); }
+.nt i { width: 38px; height: 38px; border-radius: 9px; background: #080f1b; display: grid; place-items: center; }
+.nt i::before { content: ''; width: 20px; height: 20px; border-radius: 50%; border: 2px solid #fa8127; }
+.nt b { display: block; font-weight: 600; } .nt small { color: #5a6275; font-size: 12.5px; float: right; font-weight: 400; }
+.nt .art { width: 54px; height: 54px; border-radius: 9px; background: center/cover no-repeat #0b1626; }
+.nt .art.hid { filter: blur(3px) brightness(.6); }
+.nt.ts { box-shadow: 0 0 0 1.5px #fa8127; } .acts { display: flex; gap: 6px; margin: -2px 0 10px 4px; } .acts span { background: #e9edf5b3; color: #0f1522; font: 600 13px -apple-system, sans-serif; padding: 7px 12px; border-radius: 14px; }
+.cap { color: var(--muted); font-size: 13px; margin: 6px 0 0; }
+/* settings */
+.set { width: 390px; background: var(--bg); border-radius: 24px; padding: 18px 16px; border: 1px solid #2c3648; }
+.set .t { font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); margin: 0 0 8px 2px; }
+.set .card { background: #0e1a29; border: 1px solid #22344a; border-radius: 14px; }
+.set .row { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center; padding: 12px 14px; border-top: 1px solid #ffffff10; } .set .row:first-child { border-top: 0; }
+.set .row b { display: block; font-weight: 500; font-size: 16px; } .set .row span { color: var(--muted); font-size: 13.5px; }
+.sw { width: 44px; height: 26px; border-radius: 13px; background: var(--gold); position: relative; } .sw::after { content: ''; position: absolute; right: 3px; top: 3px; width: 20px; height: 20px; border-radius: 50%; background: var(--ink); } .sw.off { background: #2c3648; } .sw.off::after { left: 3px; right: auto; background: #8b93a6; }
+.set .foot { color: var(--muted); font-size: 13px; margin: 10px 4px 0; }
+.set .warn { margin: 0 0 10px; padding: 10px 12px; border-radius: 12px; border: 1px solid #fa812766; background: #fa812714; font-size: 14px; color: #ffd2ad; } .set .warn em { font-style: normal; color: var(--gold); float: right; }
+.pt { display: inline-block; font-size: 10px; letter-spacing: .12em; color: var(--medal); border: 1px solid #ffc93d66; border-radius: 4px; padding: 0 5px; margin-left: 6px; vertical-align: 2px; }
+.step { display: grid; grid-template-columns: 34px 1fr 54px; gap: 10px; padding: 9px 0; border-top: 1px solid #ffffff10; } .step:first-of-type { border-top: 0; } .step .n { font: 400 20px 'D'; color: var(--gold); } .step .e { font: 400 14px 'D'; color: var(--muted); text-align: right; }
+.flag { color: var(--medal); }
+</style></head><body><div class="wrap">
+
+<h1>Device notifications: the plan</h1>
+<p class="lead">Two new rooms looked at this: three UX designers (games and retention, calm utility apps, astronomy apps) and two UX writers (games, calm utility). Below is their work combined, with my calls where they clash with things you've already decided. <b>Their verdict: the app's taste in what to send is good; how it sends is weak.</b> Everything is worked out on the phone while the app is open, so alerts can't check the weather when they fire, someone who hasn't opened the app for a few days gets nothing, and tapping a notification doesn't take you anywhere.</p>
+
+<div class="grid g3">
+ <div class="box o"><h3>Fix how it sends</h3><ul><li><b>Tap goes somewhere:</b> straight to the sky aimed at the thing, or to the Tonight page.</li><li><b>Two buttons:</b> Show me · Not tonight (silences the rest of tonight's automatic ones, instead of turning everything off).</li><li><b>Android arrives late:</b> its delivery window runs to 4 min <i>after</i> the time, so "5 minutes before" can land after rising. End the window at the time instead.</li></ul></div>
+ <div class="box o"><h3>Send more, where it's worth it</h3><ul><li><b>Come back:</b> someone away for 3, 7 and 21 days gets one notification each, naming a real pass, then silence.</li><li><b>Tell me if it breaks</b> becomes a real notification.</li><li><b>Meteor shower peak night</b>, eclipses, last chance, planet at its best.</li></ul></div>
+ <div class="box o"><h3>Keep it from being muted</h3><ul><li>A budget per evening by kind, not one daily number. What you asked for is never limited.</li><li>Look up only on nights that are worth it, at most 4 a week.</li><li>If 5 in a row are ignored, the nightly nudges drop to one a week until you open the app.</li></ul></div>
+</div>
+
+<h2>What it looks like</h2>
+<div class="grid g3" style="grid-template-columns: repeat(3, 390px); gap: 26px;">
+ <div><div class="lock"><div class="clock">7:15</div><div class="date">Friday, October 30</div>
+  <div class="nt ts"><i></i><span><small>now</small><b>7:20 PM · Tonight’s headliner</b>Tiangong, worth +25 XP. Look halfway up in the southwest.</span><span class="art hid" style="background-image:url(../assets/art/cards/sm/tiangong.webp)"></span></div>
+  <div class="acts"><span>Show me</span><span>Not tonight</span></div>
+ </div><p class="cap">An evening: the headliner (orange edge = time-sensitive, breaks through Focus) with a hidden-art card so the reveal isn't spoiled.</p></div>
+ <div><div class="lock"><div class="clock">10:58</div><div class="date">Thursday, October 29</div>
+  <div class="nt ts"><i></i><span><small>now</small><b>11:40 PM · The cloud should break</b>Clear from about 11:40 PM to 2 AM, says the forecast. The Moon and Saturn are up.</span><span class="art" style="background-image:url(../assets/art/cards/sm/planet-saturn.webp)"></span></div>
+  <div class="acts"><span>Show me</span><span>Remind me</span></div>
+  <div class="nt"><i></i><span><small>6:00 PM</small><b>In 7 days · The Geminids</b>Sunday night: up to 150 shooting stars an hour from a dark place. Any catch that night earns the badge.</span><span></span></div>
+ </div><p class="cap">Tonight's real case: asked for on the cloudy page, sent only if the forecast really opens a dark stretch worth it. If it never clears, nothing is sent.</p></div>
+ <div><div class="lock"><div class="clock">7:22</div><div class="date">Sunday, November 1</div>
+  <div class="nt"><i></i><span><small>now</small><b>7:44 PM · The Space Station</b>Comes up in the west, climbs high in the south. If it’s clear, it’s the brightest thing that moves.</span><span class="art" style="background-image:url(../assets/art/cards/sm/iss.webp)"></span></div>
+  <div class="nt"><i></i><span><small>Sat</small><b>Tonight · A ghost in the sky</b>Dead for decades, still flying. It passes at 7:57 PM, halfway up in the east. Once a year.</span><span></span></div>
+ </div><p class="cap">Coming back: three days away gets one notification about a real pass, worded honestly ("if it's clear"), never "we miss you". And the Halloween ghost, which should be free.</p></div>
+</div>
+
+<h2>Every notification, recommended</h2>
+<div class="box"><table>
+<tr><th style="width:230px">Notification</th><th style="width:300px">When</th><th>Only if</th><th style="width:90px">Who</th><th style="width:110px">Change</th></tr>
+<tr><td colspan="5" style="color:var(--gold);letter-spacing:.14em;font-size:12px;text-transform:uppercase;padding-top:12px">Ones you asked for · never limited, ignore quiet hours</td></tr>
+<tr><td><b>Pass reminder</b> (any bell)</td><td>10, 5 or 0 min before (your choice)</td><td>Paused while cloud is forecast; says so if it fires under cloud</td><td><span class="free">ISS free</span> · <span class="plus">rest Plus</span></td><td>wording</td></tr>
+<tr><td><b>Until dark</b></td><td>At dark, the best pass, or the busiest moment</td><td>none</td><td class="free">Free</td><td>fix degrees</td></tr>
+<tr><td><b>Tell me if it breaks</b></td><td>When the forecast opens a dark stretch of 45+ min with something worth it, 40+ min ahead</td><td>Checked by our server; ends at dawn; silent if it never clears</td><td class="free">Free</td><td class="new">new</td></tr>
+<tr><td><b>Clear-night reminder</b></td><td>Dark on the night you picked</td><td>Cancelled if that night turns cloudy</td><td class="free">Free</td><td>wording</td></tr>
+<tr><td colspan="5" style="color:var(--gold);letter-spacing:.14em;font-size:12px;text-transform:uppercase;padding-top:12px">Tonight · one a night, clear nights only</td></tr>
+<tr><td><b>Tonight’s headliner</b></td><td>5 min before (8 on Android)</td><td>New to you, easy for your sky, clear, no reminder near it</td><td class="free">Free</td><td>timing</td></tr>
+<tr><td><b>Almost there</b></td><td>30 min before</td><td>A card one night from Silver/Gold, when there's no headliner</td><td class="free">Free</td><td></td></tr>
+<tr><td><b>Look up</b></td><td>Start of the busiest dark hour</td><td>Clear <b>and worth it</b>: 3+ new cards, a new Rare+, or the first clear night after 3+ cloudy; max 4 a week; skipped if you opened the app</td><td class="free">Free</td><td class="chg">tighter</td></tr>
+<tr><td colspan="5" style="color:var(--gold);letter-spacing:.14em;font-size:12px;text-transform:uppercase;padding-top:12px">Sky events · a few a year</td></tr>
+<tr><td><b>Halloween ghost</b></td><td>Dusk, 31 October</td><td>A ghost pass on a clear evening</td><td class="free">Free</td><td class="chg">was Plus</td></tr>
+<tr><td><b>Meteor shower</b> · 7 days out, and peak night</td><td>6 PM a week before; dusk of the peak night</td><td>Big showers (smaller ones when the Moon is dim); badge not earned</td><td class="free">Free</td><td class="chg">peak night new; was Plus</td></tr>
+<tr><td><b>Lunar eclipse</b></td><td>A dusk heads-up with Remind me (most happen in quiet hours), then the moment</td><td>Visible from you, clear</td><td class="free">Free</td><td class="new">new</td></tr>
+<tr><td><b>Constellation back</b> · <b>planet at its best</b></td><td>9:30 PM / dusk</td><td>Still need stars or the card; clear</td><td class="free">Free</td><td>own switch</td></tr>
+<tr><td colspan="5" style="color:var(--gold);letter-spacing:.14em;font-size:12px;text-transform:uppercase;padding-top:12px">Sky alerts · the app watching the sky for you</td></tr>
+<tr><td><b>Rare pass</b></td><td>5 min before (8 on Android)</td><td>New Rare+, up to 2 a night, says the real tier ("A new Legendary")</td><td class="plus">Plus</td><td class="chg">on by default</td></tr>
+<tr><td><b>Starlink train</b></td><td>10 min before</td><td>Fresh launch, 5+ in a line, once per launch</td><td class="plus">Plus</td><td></td></tr>
+<tr><td><b>Last chance</b></td><td>Its last good evening pass before it falls</td><td>Clear</td><td class="plus">Plus</td><td class="new">new</td></tr>
+<tr><td colspan="5" style="color:var(--gold);letter-spacing:.14em;font-size:12px;text-transform:uppercase;padding-top:12px">Coming back</td></tr>
+<tr><td><b>Day 3 · day 7 · day 21</b></td><td>Before a real pass that evening (the Space Station, a headliner), or a real reason on day 21; then silence</td><td>You have at least one card; cancelled the moment you open the app</td><td class="free">Free</td><td class="new">new</td></tr>
+<tr><td><b>Streak</b></td><td>The last clear evening of a streak week</td><td>Streak 2+ weeks, nothing caught this week; never on a cloudy week</td><td class="free">Free</td><td class="chg">automatic</td></tr>
+<tr><td><b>Plus trial ends</b></td><td>10 AM, 2 days before</td><td>Trial only</td><td class="plus">Plus</td><td class="new">new</td></tr>
+</table></div>
+
+<h2>How often</h2>
+<div class="grid g3">
+ <div class="box"><h3>Per evening</h3><ul><li><b>Asked for:</b> unlimited.</li><li><b>Automatic:</b> one from Tonight, one sky event, and for Plus up to two sky alerts. So free tops out at 2, Plus at 4, on a big night.</li><li>Two within 20 minutes merge into one ("…then a Rare at 7:31").</li></ul></div>
+ <div class="box"><h3>Per week</h3><ul><li>Look up and streak: <b>4 a week</b> at most.</li><li>Constellations, planets, 7-day shower notices: <b>2 a week</b>.</li><li>Expected: a free player in a clear week gets 3–5, a Plus player 6–9, someone away gets 3 over three weeks, then nothing.</li></ul></div>
+ <div class="box"><h3>Quiet and brakes</h3><ul><li>Nothing automatic 11 PM–7 AM; with Night owl, 2–7 AM.</li><li>5 ignored in a row → nightly nudges drop to 1 a week until you open the app.</li><li>Never notify on unknown weather. Never the same title two days running.</li></ul></div>
+</div>
+
+<h2>Settings and permission</h2>
+<div class="grid" style="grid-template-columns: 390px 390px 1fr; gap: 26px;">
+ <div class="set"><div class="t">Notifications</div><div class="card">
+  <div class="row"><span><b>Tonight</b><span>The headliner, and when a clear night is worth it</span></span><span class="sw"></span></div>
+  <div class="row"><span><b>Sky events</b><span>Meteor showers, eclipses, Halloween, constellations coming back</span></span><span class="sw"></span></div>
+  <div class="row"><span><b>Sky alerts <span class="pt">PLUS</span></b><span>Rare passes, Starlink trains, last chances</span></span><span class="sw off"></span></div>
+  <div class="row"><span><b>Night owl</b><span>Plan and notify until dawn</span></span><span class="sw off"></span></div>
+ </div><p class="foot">Nothing between 11 PM and 7 AM, except reminders you set. Never on a cloudy night.</p></div>
+ <div class="set"><div class="t">Notifications · turned off on the phone</div><div class="warn">Notifications are off on this phone<em>Open Settings ›</em></div><div class="card" style="opacity:.45">
+  <div class="row"><span><b>Tonight</b><span>The headliner, and when a clear night is worth it</span></span><span class="sw"></span></div>
+  <div class="row"><span><b>Sky events</b><span>Meteor showers, eclipses, Halloween…</span></span><span class="sw"></span></div>
+ </div><p class="foot">Reminders you set are the bells; they don't need a switch. Android gets four channels with the same names, so its own settings screen agrees.</p></div>
+ <div class="box"><h3>Asking for permission</h3>
+  <ul><li><b>Keep the tour's step 3</b> ("Know when to look up"). You put it back on 18 October. The designers wanted to move the system prompt to the first-night appointment, but you've already decided this, so I'd keep it in the tour.</li>
+  <li><b>When someone taps Not now</b> on iPhone, ask for <b>quiet delivery</b> (provisional). Notifications then land silently in Notification Center with Apple's own Keep / Turn off. The first one should be a daytime "Tonight: Tiangong at 7:20 PM", since a quiet 5-minute alert is useless.</li>
+  <li>The first-night appointment ("Tell me at 7:42 PM") becomes the second chance to ask.</li>
+  <li><b>Android</b> allows two asks before "don't ask again": the tour, then a bell you tap later. After that, the bell opens the phone's settings.</li>
+  <li><b>When it's off:</b> the bells say "Notifications are off" on the button, and Settings shows the banner. Never ask again by ourselves.</li></ul>
+  <h3 style="margin-top:12px">Tour wording</h3><p>"We’ll tell you when it’s worth stepping outside, and a few minutes before the best catch flies over." · Turn on · Not now</p></div>
+</div>
+
+<h2>Plus</h2>
+<div class="grid g2">
+ <div class="box g"><h3>Free</h3><p>Everything that's part of the game or comes back once a year: the headliner, almost there, <b>tell me if it breaks</b>, look up, coming back, streak, every <b>sky event including Halloween</b>, and reminders for the Space Station, dark, a clear night and a shower's peak.</p><p>Moving sky events back to free follows your rule ("everything playable is free"): showers and Halloween earn badges and patches, and they're the notifications that make people keep you allowed.</p></div>
+ <div class="box" style="border-color:#ffc93d66"><h3 style="color:var(--medal)">Plus</h3><p><b>Reminders for any pass</b> (the bell) and <b>Sky alerts</b> (rare passes, Starlink trains, last chance, with the shiny chance mentioned when there is one). Convenience, not content: the passes are all on the Tonight page anyway.</p><ul><li><b>Turn Sky alerts on when Plus starts.</b> Today Rare alerts start off, so a trial can go 7 days without hearing one.</li><li>The Plus page names the thing you tapped: "Reminders for Hubble are part of the crew kit."</li><li>A "your trial ends in 2 days" notification (fewer refunds and angry reviews).</li><li><span class="flag">I'd skip</span> the designers' weekly "Rares passed while you were inside" line for free players. You took Plus nudges off Explore on 27 October, and this is the same thing.</li></ul></div>
+</div>
+
+<h2>The words</h2>
+<div class="grid g2">
+ <div class="box"><h3>Voice rules (from the writers)</h3><ul>
+  <li><b>Time first, then a middle dot:</b> "7:42 PM · The Space Station". A colon reads "19:42: Tiangong" on a 24-hour clock.</li>
+  <li><b>"Now" only when it stays true:</b> "Now · It’s dark", never "Now · 14 satellites up" (it's read late).</li>
+  <li><b>One path sentence everywhere:</b> "Comes up in the west, climbs high in the south."</li>
+  <li><b>Use the real tier:</b> "A new Legendary", not "a rare find".</li>
+  <li><b>Honest about weather:</b> "should", "about", "says the forecast".</li>
+  <li>No guilt, no "we miss you", no exclamation marks, no emoji, never the app's name.</li></ul></div>
+ <div class="box"><h3>Wording bugs to fix now</h3><ul>
+  <li>The until-dark "best pass" notification still says "<b>40° above the horizon</b>".</li>
+  <li>A new player is told "<b>23 of its 23 stars</b> are new to you" when a constellation comes back.</li>
+  <li>Fleet alerts say "a new Starlink <b>batch</b>": the game's word is stamp.</li>
+  <li>Rare alerts call an Epic or a Legendary "<b>a rare find</b>".</li>
+  <li>Look up's title opens on an end time ("Until 9:02 PM: best viewing"), which reads like store hours.</li></ul></div>
+</div>
+
+<h2>What I'd build, in order</h2>
+<div class="box">
+ <div class="step"><span class="n">1</span><span><b>Halloween free</b> (the ghost notification and switch), before Saturday. Needs a TestFlight build to reach you by then.</span><span class="e">S</span></div>
+ <div class="step"><span class="n">2</span><span><b>Tap goes somewhere</b> + Show me / Not tonight buttons; <b>Android timing</b>; the <b>wording</b> (all notifications in the writers' voice, the five bugs above).</span><span class="e">S</span></div>
+ <div class="step"><span class="n">3</span><span><b>Settings</b> down to Tonight / Sky events / Sky alerts PLUS / Night owl, the off banner, four Android channels; sky events free; Sky alerts on when Plus starts.</span><span class="e">M</span></div>
+ <div class="step"><span class="n">4</span><span><b>Coming back</b> (day 3, 7, 21) and the automatic <b>streak</b>; the <b>budget</b> (per evening, per week, merge, the brake).</span><span class="e">M</span></div>
+ <div class="step"><span class="n">5</span><span><b>The new Tonight page</b> (shifts, the night chart, every state).</span><span class="e">L</span></div>
+ <div class="step"><span class="n">6</span><span><b>Tell me if it breaks</b> on our server: a scheduled function in the Space Collector Firebase project watches the forecast for the people who asked and sends through Firebase push. Stores a rounded location until dawn (one line in the privacy policy). Later every automatic alert can check the weather at the moment it fires.</span><span class="e">L</span></div>
+ <div class="step"><span class="n">7</span><span><b>Card pictures in notifications</b> (hidden art for cards you don't have), time-sensitive for passes you asked for and the headliner, quiet delivery after Not now.</span><span class="e">M</span></div>
+ <p class="cap" style="margin-top:8px">Not recommended: snooze (a pass won't wait), a weekly push digest, Live Activities for single passes (maybe later for a cloud-break or shower night, which last hours).</p>
+</div>
+
+<h2>Your calls</h2>
+<div class="grid g2">
+ <div class="box b"><ul>
+  <li><b>Halloween free now?</b> It means a build this week.</li>
+  <li><b>Sky events back to free</b> (you made them Plus on 28 October)?</li>
+  <li><b>Merge Look up and the headliner</b> into one Tonight switch?</li>
+ </ul></div>
+ <div class="box b"><ul>
+  <li><b>Coming-back notifications</b> (3, 7, 21 days)?</li>
+  <li><b>The server for Tell me if it breaks</b> (a new Firebase function with push; costs a little, needs deploying)?</li>
+ </ul></div>
+</div>
+</div></body></html>

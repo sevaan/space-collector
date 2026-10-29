@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tonight rethink</title>
+<style>
+@font-face { font-family: 'L'; src: url('../fonts/BarlowCondensed-Medium.ttf'); }
+@font-face { font-family: 'D'; src: url('../fonts/RussoOne-Regular.ttf'); }
+:root { --bg: #080f1b; --ink: #fff2b3; --muted: #bdbea9; --gold: #fa8127; --medal: #ffc93d; --unc: #57d184; --rare: #4f9bff; --epic: #e46ad6; --panel: #0e1a29; --edge: #22344a; --blue: #8fb3ff; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #1b2230; color: var(--ink); font: 500 15px/1.35 'L', sans-serif; padding: 26px 18px 50px; }
+h1 { font: 400 26px 'D'; margin: 0 0 6px; } h2 { font: 400 19px 'D'; margin: 0 0 6px; }
+.lead { color: var(--muted); max-width: 1100px; margin: 0 0 20px; }
+.room { display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: 14px; margin-bottom: 30px; }
+.room .q { background: #121a28; border: 1px solid #2c3648; border-radius: 12px; padding: 12px 14px; }
+.room .who { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); } .room .who span { color: var(--muted); letter-spacing: .06em; text-transform: none; margin-left: 6px; }
+.room p { margin: 6px 0 0; color: #e6e2c4; }
+.take { background: #1d2738; border: 1px solid #fa812755; border-radius: 12px; padding: 14px 16px; margin: 0 0 30px; max-width: 1100px; } .take ol { margin: 6px 0 0; padding-left: 20px; } .take li { margin: 4px 0; color: #e6e2c4; } .take b { color: var(--ink); }
+.row { display: flex; flex-wrap: wrap; gap: 26px; align-items: flex-start; }
+.opt { width: 384px; } .opt > p { color: var(--muted); font-size: 14px; margin: 0 0 10px; min-height: 92px; } .opt > p b { color: var(--gold); font-weight: 500; }
+.phone { background: var(--bg); border-radius: 24px; padding: 0 16px 20px; border: 1px solid #2c3648; overflow: hidden; }
+.hdr { padding: 24px 2px 12px; border-bottom: 3px double #627a8b; display: flex; justify-content: space-between; }
+.hdr b { display: block; font: 400 19px 'D'; } .hdr small { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+.k { font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); }
+.sec { display: flex; justify-content: space-between; margin: 20px 2px 8px; font-size: 13px; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); } .sec span { color: var(--muted); letter-spacing: .08em; font-size: 12px; }
+.verdict { margin-top: 14px; border-radius: 16px; padding: 16px; border: 1px solid #57d18466; background: radial-gradient(ellipse at 90% 0%, #57d18426, transparent 65%), var(--panel); }
+.verdict h3 { font: 400 28px/1.05 'D'; margin: 6px 0 4px; } .verdict p { margin: 0; color: var(--muted); } .verdict p b { color: var(--ink); font-weight: 500; }
+.win { display: flex; align-items: center; gap: 10px; margin-top: 12px; } .win .t { font: 400 22px 'D'; color: var(--gold); } .win small { color: var(--muted); }
+.btn { display: flex; align-items: center; justify-content: center; gap: 8px; height: 46px; border-radius: 12px; background: var(--gold); color: #0b1018; font: 600 14px 'L'; letter-spacing: .14em; text-transform: uppercase; margin-top: 12px; } .btn.o { background: transparent; border: 1px solid #fa812777; color: var(--gold); } .btn.b { background: var(--blue); }
+.pick { display: grid; grid-template-columns: 54px 1fr; gap: 12px; padding: 12px 0; border-top: 1px solid #ffffff12; }
+.mini { width: 54px; height: 81px; border-radius: 5px; border: 1.5px solid #e9dfb8; background: center/cover no-repeat #0b1626; box-shadow: 0 5px 12px #0009; }
+.mini.lock { filter: blur(1.2px) brightness(.7); }
+.pick b { font-size: 17px; display: block; } .pick .why { color: #e6e2c4; font-size: 14px; } .pick .meta { color: var(--muted); font-size: 13px; }
+.pill { display: inline-block; margin: 5px 4px 0 0; font-size: 12px; padding: 2px 8px; border-radius: 6px; background: #fa81271c; color: var(--gold); } .pill.m { background: #ffc93d1c; color: var(--medal); } .pill.r { background: #4f9bff1c; color: var(--rare); } .pill.g { background: #57d1841c; color: var(--unc); }
+.more { display: flex; justify-content: space-between; padding: 12px 2px; border-top: 1px solid #ffffff12; border-bottom: 1px solid #ffffff12; color: var(--muted); } .more b { color: var(--gold); font-weight: 500; }
+.live { margin-top: 14px; border-radius: 18px; padding: 16px; background: radial-gradient(ellipse at 50% 0%, #fa812733, transparent 70%), var(--panel); border: 1px solid #fa812766; text-align: center; }
+.live .count { font: 400 54px/1 'D'; color: var(--ink); margin: 8px 0 2px; } .live .name { font: 400 22px 'D'; } .live .dir { display: flex; justify-content: center; gap: 8px; align-items: center; color: var(--muted); margin-top: 4px; }
+.arrow { width: 54px; height: 54px; border-radius: 50%; border: 2px solid #fa8127; display: grid; place-items: center; margin: 10px auto 0; font-size: 26px; color: var(--gold); transform: rotate(-40deg); }
+.ticker { display: flex; gap: 8px; overflow: hidden; margin-top: 10px; } .ticker div { flex: none; width: 112px; border-radius: 12px; border: 1px solid var(--edge); background: var(--panel); padding: 8px; } .ticker b { display: block; font: 400 15px 'D'; } .ticker small { color: var(--muted); font-size: 12px; display: block; } .ticker .tm { color: var(--gold); font: 400 14px 'D'; }
+.board { display: grid; gap: 10px; margin-top: 12px; }
+.quest { border-radius: 14px; border: 1px solid var(--edge); background: var(--panel); padding: 12px; display: grid; grid-template-columns: 44px 1fr auto; gap: 12px; align-items: center; } .quest.hot { border-color: #ffc93d77; background: radial-gradient(ellipse at 100% 0%, #ffc93d1f, transparent 65%), var(--panel); }
+.quest .ic { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: #ffffff08; font-size: 20px; } .quest b { display: block; font-size: 16px; } .quest small { color: var(--muted); font-size: 13px; } .quest .xp { font: 400 16px 'D'; color: var(--medal); }
+.nightring { display: flex; align-items: center; gap: 14px; margin-top: 14px; border-radius: 16px; padding: 14px; border: 1px solid #ffc93d55; background: radial-gradient(ellipse at 0% 0%, #ffc93d1a, transparent 65%), var(--panel); }
+.cal { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-top: 8px; } .cal i { height: 30px; border-radius: 8px; background: #ffffff08; display: grid; place-items: center; font-style: normal; font-size: 11px; color: var(--muted); } .cal i.on { background: #fa812733; color: var(--ink); } .cal i.now { outline: 1.5px solid var(--gold); } .cal i.cl { background: repeating-linear-gradient(135deg, #ffffff08 0 4px, #ffffff14 4px 8px); }
+.rec { display: inline-block; margin-left: 6px; font: 600 11px 'L'; letter-spacing: .12em; padding: 2px 6px; border-radius: 5px; background: var(--gold); color: var(--bg); vertical-align: 3px; }
+</style></head><body>
+<h1>Tonight: what it needs to be</h1>
+<p class="lead">A room of three UX designers and five players looked at today's page (welcome card, strip chart, Up now hero, chips, an 11-stop run of near-identical Kosmos rows, missions, all passes). Their notes, the takeaways, then three redesigns.</p>
+
+<div class="room">
+ <div class="q"><div class="who">Maya<span>parent, checks at 5 pm</span></div><p>"I just want to know: is tonight worth going out, and when exactly. I had to read a chart and a sentence and still wasn't sure. Give me a yes or no and a time."</p></div>
+ <div class="q"><div class="who">Dev<span>completionist</span></div><p>"Eleven rows of 'Kosmos something · Uncommon · +15'. They're all the same to me. Tell me which three are worth it and why: the rare one, the one that finishes a set, the one that's leaving forever."</p></div>
+ <div class="q"><div class="who">Ana<span>outside, phone in hand</span></div><p>"When I'm actually out there I don't scroll. I need the next thing, huge: what, where to point, how long. Then the one after."</p></div>
+ <div class="q"><div class="who">Jordan<span>13, plays games</span></div><p>"Missions are at the very bottom and look like a to-do list. In games the daily stuff is the first thing you see, with the rewards."</p></div>
+ <div class="q"><div class="who">Sam<span>lapsed after a week</span></div><p>"Every night looked the same, so I stopped checking. I'd come back for something that only happens tonight, or a streak I don't want to break."</p></div>
+ <div class="q"><div class="who">UX lead</div><p>"Two heroes fight at the top (Night 2 welcome vs Up now). The page serves two jobs, planning by day and hunting by night, with one layout. Split them by time."</p></div>
+ <div class="q"><div class="who">Visual designer</div><p>"Names like Kosmos 1741 mean nothing. The card art is our best asset and it's hidden. Show cards, not text rows; say why each matters in plain words."</p></div>
+ <div class="q"><div class="who">Product designer</div><p>"The return hook is weak: nothing changes day to day except numbers. One thing that's unique to tonight plus a visible week streak gives people a reason to open it."</p></div>
+</div>
+<div class="take"><b>What the page must do</b><ol>
+ <li><b>Answer "should I go out, and when?"</b> in one glance: a verdict with a time window.</li>
+ <li><b>Pick for me.</b> At most three or four picks, each with a reason (rare, finishes a set, last chance, headliner). Everything else lives in "All passes".</li>
+ <li><b>Two modes.</b> By day it's a plan; outside at night it's a live "next up" with a big countdown and pointer.</li>
+ <li><b>Lead with rewards.</b> Missions and the night's unique thing at the top, not the bottom.</li>
+ <li><b>Show cards, not rows.</b> Real (obscured) card art, plain-language reasons.</li>
+ <li><b>A reason to come back:</b> tonight-only items, a visible week streak, and a teaser for tomorrow.</li>
+</ol></div>
+
+<div class="row">
+
+<!-- A -->
+<div class="opt"><h2>A · Verdict and three picks <span class="rec">Recommended</span></h2><p>One verdict card answers the question (green "Go out", amber "Short window", grey "Cloudy"), with the best window and one button. Then <b>three picks with reasons</b> (headliner, rarest, finishes a set), each a real card. Missions sit as pills on the picks that complete them. A small week strip at the foot shows your streak and tomorrow.</p>
+<div class="phone"><div class="hdr"><span><b>TONIGHT</b><small>Peterborough · 5:10 PM</small></span><span>⚙</span></div>
+ <div class="verdict"><span class="k" style="color:var(--unc)">● Go out tonight</span><h3>Clear, and busy</h3><p><b>45 new cards</b> pass this evening. The best half hour:</p>
+  <div class="win"><span class="t">8:30 – 9:05 PM</span><small>dark from 6:38</small></div>
+  <div class="btn b">🔔 Tell me at 8:20</div></div>
+ <div class="sec">Your three picks<span>about +115 XP</span></div>
+ <div class="pick"><span class="mini" style="background-image:url(../assets/art/cards/sm/iss.webp)"></span><span><span class="k" style="color:var(--medal)">★ Headliner · 6:08 AM</span><b>International Space Station</b><span class="why">The brightest thing that moves. Free reminder.</span><br><span class="pill r">◆ Rare +25</span><span class="pill">+25 headliner</span></span></div>
+ <div class="pick"><span class="mini lock" style="background-image:url(../assets/art/cards/sm/sat-landsat-3.webp)"></span><span><span class="k">8:52 PM · southwest</span><b>Landsat 1</b><span class="why">The first Earth-watching satellite, launched 1972.</span><br><span class="pill g">▲ New card +15</span><span class="pill m">◇ Mission: something from the 70s</span></span></div>
+ <div class="pick"><span class="mini lock" style="background-image:url(../assets/art/cards/sm/cz-4.webp)"></span><span><span class="k">8:32 PM · north</span><b>Long March 4B stage</b><span class="why">Finishes "Spot something from China".</span><br><span class="pill g">▲ New card +15</span><span class="pill m">◇ Mission +50</span></span></div>
+ <div class="more"><span>42 more new cards tonight</span><b>All passes ›</b></div>
+ <div class="sec">This week<span>3-night streak</span></div>
+ <div class="cal"><i class="on">M</i><i class="on">T</i><i class="on now">W</i><i>T</i><i class="cl">F</i><i>S</i><i>S</i></div>
+</div></div>
+
+<!-- B -->
+<div class="opt"><h2>B · Day plan, night radar</h2><p>The page changes with the clock. <b>By day</b> it's A's verdict and picks. <b>Outside after dark</b> it becomes a live screen: the next new card huge, a countdown, a pointer that turns with your phone, and "Aim at it". The following three ride along as a ticker. Built for the person standing in the yard.</p>
+<div class="phone"><div class="hdr"><span><b>TONIGHT</b><small>Live · 8:31 PM</small></span><span>⚙</span></div>
+ <div class="live"><span class="k">Next new card</span><div class="count">0:42</div><div class="name">Kosmos 1045</div><div class="dir">▲ Uncommon · high in the southeast</div>
+  <div class="arrow">➤</div><div class="mono" style="color:var(--muted);font-size:13px;margin-top:6px">Turn left, then up</div>
+  <div class="btn">◎ Aim at it</div></div>
+ <div class="sec">Then<span>tap one to switch</span></div>
+ <div class="ticker"><div><span class="tm">8:36</span><b>Globalstar</b><small>New stamp · E</small></div><div><span class="tm">8:43</span><b>Kosmos 385</b><small>New · W</small></div><div><span class="tm">8:52</span><b>Landsat 1</b><small>Mission · SW</small></div></div>
+ <div class="sec">Tonight so far<span>2 of 3 missions</span></div>
+ <div class="more" style="border-bottom:0"><span>4 caught · +70 XP</span><b>Plan ›</b></div>
+</div></div>
+
+<!-- C -->
+<div class="opt"><h2>C · Tonight's board</h2><p>Frames each night as a short, game-like board: <b>three quests</b> with rewards up top (the headliner, a mission, a tonight-only thing), a ring that fills as you finish them, your week streak, and tomorrow's teaser. Passes appear inside the quests that need them. The most "come back daily"; least like a timetable.</p>
+<div class="phone"><div class="hdr"><span><b>TONIGHT</b><small>Wednesday · clear</small></span><span>⚙</span></div>
+ <div class="nightring"><svg width="66" height="66" viewBox="0 0 76 76"><circle cx="38" cy="38" r="32" fill="none" stroke="#24344a" stroke-width="6"/><circle cx="38" cy="38" r="32" fill="none" stroke="#ffc93d" stroke-width="6" stroke-linecap="round" stroke-dasharray="67 201" transform="rotate(-90 38 38)"/><text x="38" y="44" text-anchor="middle" fill="#fff2b3" font-family="D" font-size="17">1/3</text></svg><span><span class="k" style="color:var(--medal)">Tonight's board</span><br><b style="font:400 20px 'D'">Finish all three</b><br><small style="color:var(--muted)">+150 XP and a night bonus · go out 8:30 – 9:05</small></span></div>
+ <div class="board">
+  <div class="quest hot"><span class="ic">★</span><span><b>Catch the Space Station</b><small>6:08 AM · halfway up in the north · reminder free</small></span><span class="xp">+50</span></div>
+  <div class="quest"><span class="ic">◇</span><span><b>Spot something from China</b><small>Easiest: Long March 4B at 8:32 PM, north</small></span><span class="xp">+50</span></div>
+  <div class="quest" style="opacity:.6"><span class="ic">✓</span><span><b>Collect a planet</b><small>Done: Saturn at 7:58 PM</small></span><span class="xp">+50</span></div>
+ </div>
+ <div class="sec">Only tonight</div>
+ <div class="quest"><span class="ic">⋯</span><span><b>A Starlink train</b><small>5 in a line · 9:14 PM · launched 6 days ago</small></span><span class="xp">stamp</span></div>
+ <div class="sec">Your week<span>Tomorrow: 5 new Rares</span></div>
+ <div class="cal"><i class="on">M</i><i class="on">T</i><i class="on now">W</i><i>T</i><i class="cl">F</i><i>S</i><i>S</i></div>
+</div></div>
+
+</div>
+</body></html>

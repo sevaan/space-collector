@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tonight in shifts</title>
+<style>
+@font-face { font-family: 'L'; src: url('../fonts/BarlowCondensed-Medium.ttf'); }
+@font-face { font-family: 'D'; src: url('../fonts/RussoOne-Regular.ttf'); }
+:root { --bg: #080f1b; --ink: #fff2b3; --muted: #bdbea9; --gold: #fa8127; --medal: #ffc93d; --unc: #57d184; --rare: #4f9bff; --epic: #e46ad6; --panel: #0e1a29; --edge: #22344a; --cloud: #8a96a6; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #1b2230; color: var(--ink); font: 500 15px/1.35 'L', sans-serif; padding: 26px 22px 50px; }
+h1 { font: 400 28px 'D'; margin: 0 0 6px; } h2 { font: 400 19px 'D'; margin: 0 0 6px; } h3 { font: 400 15px 'D'; margin: 0 0 6px; letter-spacing: .02em; }
+.lead { color: var(--muted); max-width: 1180px; margin: 0 0 22px; font-size: 16px; }
+.top { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; max-width: 1240px; margin-bottom: 30px; }
+.box { background: #121a28; border: 1px solid #2c3648; border-radius: 12px; padding: 14px 16px; }
+.box.hot { border-color: #fa812766; background: #1d2738; }
+.box .k { font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); display: block; margin-bottom: 6px; }
+.box ul { margin: 0; padding-left: 18px; } .box li { margin: 5px 0; color: #e6e2c4; } .box b { color: var(--ink); font-weight: 500; }
+.box p { margin: 0 0 8px; color: #e6e2c4; }
+.shifts { display: flex; gap: 10px; margin: 10px 0 2px; } .shifts div { flex: 1; border-radius: 10px; padding: 8px 10px; background: #0e1a29; border: 1px solid var(--edge); font-size: 14px; color: #e6e2c4; } .shifts b { display: block; font: 400 14px 'D'; color: var(--gold); }
+.row { display: flex; flex-wrap: wrap; gap: 28px; align-items: flex-start; }
+.opt { width: 380px; } .opt > p { color: var(--muted); font-size: 14px; margin: 0 0 12px; min-height: 120px; } .opt > p b { color: var(--gold); font-weight: 500; }
+.opt h2 small { font: 500 13px 'L'; color: var(--muted); letter-spacing: .08em; text-transform: uppercase; display: block; margin-top: 2px; }
+
+/* phone */
+.phone { width: 380px; height: 812px; background: var(--bg); border-radius: 28px; border: 1px solid #2c3648; overflow: hidden; display: flex; flex-direction: column; position: relative; }
+.hdr { padding: 22px 18px 10px; border-bottom: 3px double #627a8b; display: flex; justify-content: space-between; align-items: end; flex: none; }
+.hdr b { display: block; font: 400 19px 'D'; } .hdr small { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+.scr { flex: 1; overflow: hidden; padding: 0 16px; }
+.k { font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); }
+.sec { display: flex; justify-content: space-between; margin: 14px 2px 7px; font-size: 13px; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); } .sec span { color: var(--muted); letter-spacing: .06em; font-size: 12px; text-transform: none; }
+
+/* shift card */
+.shift { margin-top: 12px; border-radius: 16px; padding: 14px 15px; background: var(--panel); border: 1px solid var(--edge); position: relative; overflow: hidden; isolation: isolate; }
+.shift.lit { border-color: #fa812766; background: radial-gradient(ellipse at 90% 0%, #fa812726, transparent 65%), var(--panel); }
+.shift.cloudy { border-color: #8a96a655; }
+.shift.planet { border-color: #ffc93d66; background: radial-gradient(ellipse at 100% 0%, #ffc93d1c, transparent 60%), var(--panel); }
+.shift .tag { display: inline-flex; gap: 6px; align-items: center; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); }
+.shift .tag i { font-style: normal; padding: 1px 7px; border-radius: 6px; letter-spacing: .1em; }
+.tag i.cl { background: #8a96a62e; color: #d6dce4; } .tag i.ok { background: #57d1842a; color: var(--unc); } .tag i.pt { background: #ffc93d22; color: var(--medal); }
+.shift h3.big { font: 400 27px/1.05 'D'; margin: 7px 0 5px; }
+.shift p { margin: 0; color: #e6e2c4; font-size: 15px; } .shift p b { color: var(--ink); font-weight: 500; }
+.clouds { position: absolute; inset: 0; z-index: -1; opacity: .5;
+  background: radial-gradient(60px 26px at 18% 22%, #5f6b7c, transparent 70%), radial-gradient(90px 30px at 52% 12%, #4f5b6b, transparent 70%), radial-gradient(80px 28px at 86% 30%, #5f6b7c, transparent 70%), radial-gradient(120px 34px at 30% 78%, #46525f, transparent 70%), radial-gradient(110px 30px at 78% 86%, #4f5b6b, transparent 70%); }
+
+/* ribbon */
+.rib { display: block; width: 348px; height: 104px; margin-top: 12px; }
+.ribcap { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+/* catch rows */
+.c { display: grid; grid-template-columns: 44px 1fr auto; gap: 11px; align-items: center; padding: 9px 0; border-top: 1px solid #ffffff12; }
+.c:first-of-type { border-top: 0; }
+.mini { display: block; width: 44px; height: 64px; border-radius: 5px; border: 1.5px solid #e9dfb8; background: center/cover no-repeat #0b1626; box-shadow: 0 4px 10px #0009; }
+.mini.lock { filter: blur(1px) brightness(.72); } .mini.dim { opacity: .45; filter: grayscale(.6) blur(.6px); }
+.c b { display: block; font-size: 17px; line-height: 1.1; } .c .w { color: #e6e2c4; font-size: 14px; } .c .m { color: var(--muted); font-size: 13px; }
+.c .t { font: 400 16px 'D'; color: var(--gold); text-align: right; } .c .t small { display: block; font: 500 12px 'L'; color: var(--muted); }
+.c.grey b, .c.grey .w { color: #aeb4ba; } .c.grey .t { color: #aeb4ba; }
+.pill { display: inline-block; margin: 4px 4px 0 0; font-size: 12px; padding: 1px 7px; border-radius: 6px; background: #fa81271c; color: var(--gold); }
+.pill.r { background: #4f9bff1f; color: var(--rare); } .pill.u { background: #57d1841c; color: var(--unc); } .pill.s { background: linear-gradient(90deg, #ffc93d26, #e46ad626); color: #ffe0a0; } .pill.m { background: #ffc93d1c; color: var(--medal); } .pill.cl { background: #8a96a62a; color: #d6dce4; }
+
+/* quest tiles */
+.quest { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 4px; }
+.qt { border-radius: 12px; border: 1px solid var(--edge); background: var(--panel); padding: 8px 6px 7px; text-align: center; }
+.qt.now { border-color: #ffc93d88; } .qt.soon { border-style: dashed; }
+.qt .mini { width: 46px; height: 68px; margin: 0 auto 5px; }
+.qt b { display: block; font-size: 15px; } .qt small { display: block; color: var(--muted); font-size: 12px; line-height: 1.15; } .qt em { font-style: normal; display: block; font: 400 13px 'D'; color: var(--medal); margin-top: 3px; }
+.qbar b { white-space: nowrap; } .qbar { gap: 10px; display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding: 9px 11px; border-radius: 12px; background: #ffc93d14; border: 1px solid #ffc93d44; font-size: 14px; color: #e6e2c4; } .qbar b { font: 400 15px 'D'; color: var(--medal); }
+
+/* countdown */
+.count { display: flex; align-items: center; gap: 14px; margin-top: 10px; }
+.count .n { font: 400 52px/1 'D'; } .count .n small { font: 500 14px 'L'; color: var(--muted); display: block; letter-spacing: .1em; text-transform: uppercase; margin-top: 4px; }
+.face { width: 74px; height: 74px; border-radius: 50%; border: 2px solid var(--gold); display: grid; place-items: center; position: relative; flex: none; }
+.face::before { content: ''; position: absolute; inset: 7px; border-radius: 50%; border: 1px dashed #fa812766; }
+.face span { font-size: 30px; color: var(--gold); display: block; }
+.dirw { font-size: 16px; color: var(--ink); } .dirw small { display: block; color: var(--muted); font-size: 13px; }
+
+/* rush */
+.rush { margin-top: 4px; display: grid; grid-template-columns: 1fr 1fr; column-gap: 14px; }
+.rush div { display: grid; grid-template-columns: 38px 1fr; gap: 6px; padding: 5px 0; border-top: 1px solid #ffffff10; font-size: 15px; align-items: center; } .rush div:nth-child(-n+2) { border-top: 0; }
+.rush .tm { font: 400 15px 'D'; color: var(--gold); } .rush .sh { color: #ffe0a0; font-size: 13px; }
+.rush.grey div, .rush.grey .tm, .rush.grey .sh { color: #9aa1a8; }
+
+/* dock */
+.dock { flex: none; padding: 10px 16px 12px; background: linear-gradient(#080f1b00, #080f1b 22%); }
+.btn { display: flex; align-items: center; justify-content: center; gap: 8px; height: 50px; border-radius: 12px; background: var(--gold); color: #0b1018; font: 600 15px 'L'; letter-spacing: .14em; text-transform: uppercase; }
+.btn.o { background: transparent; border: 1px solid #fa812777; color: var(--gold); height: 44px; }
+.btn.b { background: #8fb3ff; }
+.dock .two { display: grid; grid-template-columns: 1fr 50px; gap: 8px; }
+.dock .sq { height: 50px; border-radius: 12px; border: 1px solid #fa812777; display: grid; place-items: center; color: var(--gold); font-size: 20px; }
+.dock .sq.set { background: #fa8127; color: #0b1018; }
+.tabs { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 10px; height: 46px; border-radius: 14px; background: #0b1424; border: 1px solid #fff2b31f; font: 500 13px 'L'; letter-spacing: .14em; text-transform: uppercase; color: #c9cbb6; overflow: hidden; }
+.tabs span { display: grid; place-items: center; } .tabs span.on { color: var(--gold); box-shadow: inset 0 3px 0 var(--gold); }
+.dockhint { text-align: center; color: var(--muted); font-size: 12px; margin-top: 6px; }
+
+.thumbzone { position: absolute; left: 0; right: 0; bottom: 0; height: 150px; border-top: 1px dashed #57d18455; pointer-events: none; }
+.thumbzone::after { content: 'thumb zone'; position: absolute; left: 12px; top: 3px; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: #57d18499; }
+
+.note { color: var(--muted); font-size: 13px; margin-top: 8px; }
+.also { margin-top: 10px; font-size: 14px; color: #e6e2c4; } .also b { color: var(--gold); font-weight: 500; }
+
+/* red mode */
+.redwrap { display: flex; gap: 26px; align-items: flex-start; margin-top: 34px; }
+.phone.red { width: 300px; height: 640px; }
+.redbox { position: relative; }
+.redbox::after { content: ''; position: absolute; inset: 0; border-radius: 28px; background: #ff2a1a; mix-blend-mode: multiply; pointer-events: none; }
+.redbox .scale { width: 380px; height: 812px; transform: scale(.79); transform-origin: top left; }
+.redclip { width: 300px; height: 642px; overflow: hidden; border-radius: 28px; }
+</style></head><body>
+
+<h1>Tonight, in shifts</h1>
+<p class="lead">A fresh take on the Tonight page, drawn from one real night over Peterborough: Thursday 29 October 2026. Overcast all evening, clear only from midnight to 2 AM (when almost no satellite is lit), patchy cloud for the Space Station at 6:07 AM. Every pass, time, direction and cloud figure below is real. Planet positions come from the app's own celestial.js.</p>
+
+<div class="top">
+ <div class="box">
+  <span class="k">What tonight-combined gets wrong (from the field)</span>
+  <ul>
+   <li><b>It's drawn for a perfect night that didn't happen.</b> "Clear, and busy" is the hero, and cloud gets one footnote ("picks greyed, if it clears"). In Ontario in October, cloud is the normal case. Run tonight's real sky through it and three of its four states just say "no".</li>
+   <li><b>Earth's shadow reads as dead air.</b> "Nothing for 15+ min" shrinks the page to one line. But 9:30 PM to 4 AM is the longest, darkest stretch of the night, and tonight it's the only clear part. That's exactly when the page goes quiet.</li>
+   <li><b>The surest catches aren't on it.</b> The Moon and planets are up every night, whatever the satellite count. They only show up as a past "✓ Saturn". A page about the sky shouldn't be satellites-only.</li>
+   <li><b>The hand can't reach the action.</b> "Aim at it" sits halfway down a 15-part column. With one cold hand and gloves, the thumb lives in the bottom third, and that's where the week strip is. Here the one action always sits there.</li>
+   <li><b>Direction comes as text or a puzzle.</b> "southwest", then "Turn left, then up" with an arrow that only makes sense once you've read three lines. And a 6:08 AM headliner sits above everything else at 10:40 PM, so "Good night" is said while the best thing is still 7 hours away.</li>
+  </ul>
+ </div>
+ <div class="box hot">
+  <span class="k">The concept</span>
+  <p><b>The real sky runs the night in three shifts, and the page follows them.</b> At the <b>Dusk shift</b> the satellites are lit by a Sun you can't see, and they slip into Earth's shadow one by one, which makes it the shiny rush. During the <b>Shadow shift</b> (Planet hour), Earth's shadow covers the satellite sky and the Moon, planets and stars take over, with their own quest. The <b>Dawn shift</b> is when the satellites come back before sunrise. The page always opens on the shift you're in, or the next good one. It does one job in big type, with the button under your thumb. Cloud is drawn over the shifts as a real layer, so it never wipes the plan. It moves the play to the clear part, and anything spotted through a gap still counts. Tonight that turns an "overcast, sorry" into "your window is midnight, it's Planet hour, here's the quest".</p>
+  <div class="shifts"><div><b>Dusk 6:37–9:30 PM</b>Satellites lit · fades = shinies · busiest 7:21 PM, 19 up</div><div><b>Planet hour 9:30–4</b>Earth's shadow covers them · Moon, Saturn, Mars, Jupiter</div><div><b>Dawn 4–7:18 AM</b>Satellites back · Space Station 6:07 AM</div></div>
+ </div>
+</div>
+
+<div class="row">
+
+<!-- 1 · 8:38 AM -->
+<div class="opt"><h2>8:38 AM · the plan<small>sunrise, cloud coming, real night</small></h2>
+<p>By day the page answers one thing: <b>when's my window tonight?</b> The night ribbon shows the three shifts, with tonight's cloud drawn on top as hatching and Earth's shadow as the dark tide in the middle. The verdict is a time, not a mood. You can still play now: <b>the Moon is up in the west</b>, so there's something to catch before work (the ◎ beside the alarm, with one line saying why).</p>
+<div class="phone">
+ <div class="hdr"><span><b>TONIGHT</b><small>Peterborough · 8:38 AM</small></span><span>⚙</span></div>
+ <div class="scr">
+  <div class="shift planet"><span class="tag">Your window <i class="ok">Clear 12–2 AM</i></span>
+   <h3 class="big">Midnight is the one</h3>
+   <p>Cloud all evening, then it clears <b>from 12 to 2 AM</b>. That's Planet hour: the Moon, Saturn, Mars and Jupiter in one clear sky.</p></div>
+  <svg class="rib" data-now="-1" data-hl="shadow"></svg>
+  <div class="sec">Three shifts tonight<span>dark 6:37 PM – 7:18 AM</span></div>
+  <div class="c grey"><span class="mini dim" style="background-image:url(../assets/art/cards/sm/tiangong.webp)"></span><span><span class="k" style="color:#aeb4ba">Dusk shift</span><b>Tiangong ◆</b><span class="w">Passes above solid cloud</span></span><span class="t">7:20<small>PM</small></span></div>
+  <div class="c"><span class="mini" style="background-image:url(../assets/art/cards/sm/planet-saturn.webp)"></span><span><span class="k" style="color:var(--medal)">Planet hour · best bet</span><b>4 Wanderers</b><span class="w">Moon, Saturn, Mars, Jupiter</span><br><span class="pill m">◇ Shift quest +50</span></span><span class="t">12–2<small>AM, clear</small></span></div>
+  <div class="c"><span class="mini lock" style="background-image:url(../assets/art/cards/sm/iss.webp)"></span><span><span class="k">Dawn shift</span><b>Space Station ◆</b><span class="w">Some cloud, worth a try</span></span><span class="t">6:07<small>AM</small></span></div>
+ </div>
+ <div class="dock"><div class="two"><span class="btn">⏰ Wake me at 11:50 PM</span><span class="sq">◎</span></div><div class="dockhint">◎ Catch now: the Moon, low in the west · new phase stamp</div><div class="tabs"><span class="on">Tonight</span><span>Explore</span><span>Collection</span></div></div>
+</div></div>
+
+<!-- 2 · 6:30 PM -->
+<div class="opt"><h2>6:30 PM · under cloud<small>dusk shift, 97% cloud</small></h2>
+<p><b>Honest, not hopeless.</b> The card has real cloud in it and says plainly that you won't see Tiangong. The passes are still listed, greyed, because they really do fly over, and a gap really counts. Then the page hands you <b>Plan B in one tap</b>. Saturn is up in the east right now, behind the cloud, so a break could give you a card straight away.</p>
+<div class="phone">
+ <div class="hdr"><span><b>TONIGHT</b><small>Peterborough · 6:30 PM</small></span><span>⚙</span></div>
+ <div class="scr">
+  <div class="shift cloudy"><div class="clouds"></div><span class="tag">Dusk shift <i class="cl">☁ Overcast till 11 PM</i></span>
+   <h3 class="big">Behind the cloud</h3>
+   <p>The satellites still fly. You just can't see them tonight. <b>Spot a gap and anything you catch counts.</b></p></div>
+  <svg class="rib" data-now="0.5" data-hl="dusk"></svg>
+  <div class="sec">Passing above the cloud<span>if it breaks</span></div>
+  <div class="c grey"><span class="mini dim" style="background-image:url(../assets/art/cards/sm/tiangong.webp)"></span><span><b>Tiangong ◆</b><span class="w">Halfway up in the southwest</span><br><span class="pill cl">✦ then 6 fades, 7:51–8:09</span></span><span class="t">7:20<small>PM</small></span></div>
+  <div class="c grey"><span class="mini dim" style="background-image:url(../assets/art/cards/sm/planet-saturn.webp)"></span><span><b>Saturn ▲</b><span class="w">Low in the east, up now</span></span><span class="t">Now</span></div>
+  <div class="sec">Plan B<span>forecast clear</span></div>
+  <div class="shift planet" style="margin-top:0;padding:11px 13px"><span class="tag" style="color:var(--medal)">Planet hour · 12–2 AM</span>
+   <p style="margin-top:4px">Moon, Saturn, Mars and Jupiter. <b>Catch 3 for the shift quest.</b> Mars rises about 12:55, Jupiter about 1:30.</p></div>
+ </div>
+ <div class="dock"><div class="two"><span class="btn b">☁ Ping me if it breaks</span><span class="sq set">⏰</span></div><div class="dockhint">Midnight alarm is set ✓</div><div class="tabs"><span class="on">Tonight</span><span>Explore</span><span>Collection</span></div></div>
+</div></div>
+
+<!-- 3 · 12:30 AM -->
+<div class="opt"><h2>12:30 AM · clear, no satellites<small>shadow shift, planet hour</small></h2>
+<p>This is the hard case: <b>a perfect clear sky and zero lit satellites</b>. So the page turns it into a mode, not an apology. A tiny diagram says <b>why</b> once (you're on Earth's night side, and so are the satellites overhead). Then come <b>four quest tiles with real art</b>, two up now and two with their rise times. One more clear-sky reason to stay out: Orion is rising.</p>
+<div class="phone" id="p-planet">
+ <div class="hdr"><span><b>TONIGHT</b><small>Peterborough · 12:30 AM</small></span><span>⚙</span></div>
+ <div class="scr">
+  <div class="shift planet"><span class="tag">Shadow shift <i class="ok">Clear till 2 AM</i></span>
+   <div style="display:grid;grid-template-columns:1fr 112px;gap:10px;align-items:center">
+    <div><h3 class="big">Planet hour</h3><p>Earth's shadow covers the sky above you, so satellites are dark until about <b>4 AM</b>. The Moon and planets are far beyond it.</p></div>
+    <svg viewBox="0 0 112 104" width="112" height="104" aria-label="Earth's shadow">
+     <rect x="31" y="0" width="50" height="62" fill="#02060c"/>
+     <line x1="31" y1="0" x2="31" y2="62" stroke="#ffc93d" stroke-dasharray="3 3" stroke-width="1"/><line x1="81" y1="0" x2="81" y2="62" stroke="#ffc93d" stroke-dasharray="3 3" stroke-width="1"/>
+     <circle cx="56" cy="62" r="40" fill="none" stroke="#627a8b" stroke-dasharray="2 3"/>
+     <circle cx="56" cy="62" r="25" fill="#16314a" stroke="#fff2b3" stroke-width="1.2"/>
+     <path d="M31 62 a25 25 0 0 0 50 0 z" fill="#4f7aa8"/>
+     <circle cx="56" cy="37" r="3" fill="#ff4d4d"/><text x="56" y="31" fill="#fff2b3" font-size="8" text-anchor="middle" font-family="L">YOU</text>
+     <circle cx="41" cy="25" r="3" fill="#33404f"/><circle cx="71" cy="25" r="3" fill="#33404f"/>
+     <circle cx="17" cy="82" r="3.4" fill="#fa8127"/><circle cx="95" cy="82" r="3.4" fill="#fa8127"/>
+     <text x="56" y="100" fill="#ffc93d" font-size="9" text-anchor="middle" font-family="L">☀ SUN BELOW</text>
+     <text x="56" y="12" fill="#bdbea9" font-size="7.5" text-anchor="middle" font-family="L" letter-spacing=".08em">SHADOW</text>
+    </svg></div></div>
+  <div class="sec">Shift quest · 3 of the Wanderers<span>before 2 AM · +50</span></div>
+  <div class="quest">
+   <div class="qt now"><span class="mini" style="background-image:url(../assets/art/cards/sm/moon.webp)"></span><b>Moon</b><small>Halfway up, east</small><em>Up now</em></div>
+   <div class="qt now"><span class="mini" style="background-image:url(../assets/art/cards/sm/planet-saturn.webp)"></span><b>Saturn</b><small>Halfway up, south</small><em>Up now</em></div>
+   <div class="qt soon"><span class="mini lock" style="background-image:url(../assets/art/cards/sm/planet-mars.webp)"></span><b>Mars</b><small>Rises east-northeast</small><em>~12:55</em></div>
+   <div class="qt soon"><span class="mini lock" style="background-image:url(../assets/art/cards/sm/planet-jupiter.webp)"></span><b>Jupiter</b><small>Rises east-northeast</small><em>~1:30</em></div>
+  </div>
+  <div class="qbar"><span>The Moon is waning gibbous tonight, a <b>new phase stamp</b></span><b>0 / 3</b></div>
+  <div class="also"><b>Also up:</b> Orion, climbing in the east-southeast. Its stars are cards too.</div>
+  <svg class="rib" data-now="6.5" data-hl="shadow"></svg>
+ </div>
+ <div class="dock"><div class="two"><span class="btn">◎ Aim at the Moon</span><span class="sq">⏰</span></div><div class="dockhint">Next satellite 4:07 AM · cloud back at 3</div><div class="tabs"><span class="on">Tonight</span><span>Explore</span><span>Collection</span></div></div>
+</div></div>
+
+<!-- 4 · 6:00 AM -->
+<div class="opt"><h2>6:00 AM · the Space Station<small>dawn shift, 40% cloud</small></h2>
+<p>Seven minutes out, the page is <b>one object, one countdown, one direction</b>. The direction is a compass face that turns with the phone, plus the path in words ("comes up in the north-northwest, climbs high into the northeast"). The cloud is said straight: <b>it may slip behind one, so keep the circle on it</b>. While you wait, Mars and Jupiter are high in the southeast.</p>
+<div class="phone">
+ <div class="hdr"><span><b>TONIGHT</b><small>Peterborough · 6:00 AM</small></span><span>⚙</span></div>
+ <div class="scr">
+  <div class="shift lit"><span class="tag">Dawn shift <i class="pt">☁ Some cloud</i></span>
+   <div class="count"><div class="face"><span style="transform:rotate(-38deg)">➤</span></div><div class="n">7:00<small>until it rises</small></div></div>
+   <h3 class="big" style="margin-top:10px">Space Station ◆</h3>
+   <p class="dirw">Comes up in the north-northwest, climbs high into the northeast.<small>Four minutes up · the brightest thing that moves</small></p>
+   <div class="note" style="color:#d6dce4">☁ 4 in 10 chance of cloud. It may slip behind one, so keep the circle on it.</div></div>
+  <div class="sec">While you wait<span>busiest 6:07, 12 up</span></div>
+  <div class="c"><span class="mini" style="background-image:url(../assets/art/cards/sm/planet-mars.webp)"></span><span><b>Mars ▲</b><span class="w">High in the southeast</span></span><span class="t">Now</span></div>
+  <div class="c"><span class="mini" style="background-image:url(../assets/art/cards/sm/planet-jupiter.webp)"></span><span><b>Jupiter ▲</b><span class="w">High in the southeast, just below Mars</span></span><span class="t">Now</span></div>
+ </div>
+ <div class="dock"><div class="two"><span class="btn">◎ Show me where it rises</span><span class="sq set">⏰</span></div><div class="dockhint">Then a Long March 2D stage at 6:15 · sky closes 7:18 AM</div><div class="tabs"><span class="on">Tonight</span><span>Explore</span><span>Collection</span></div></div>
+</div></div>
+
+<!-- 5 · clear variant -->
+<div class="opt"><h2>7:10 PM · the same night, if clear<small>clear-night variant, same passes</small></h2>
+<p>Same page, same evening, no cloud. <b>The Dusk shift is the main event</b>, and Earth's shadow is what makes it exciting. Tiangong slips into the shadow mid-pass (catch the fade for a shiny), then <b>six satellites fade in twenty minutes</b>. That fade rush is the night's shiny moment, laid out as a timetable. Planet hour waits underneath as the encore.</p>
+<div class="phone">
+ <div class="hdr"><span><b>TONIGHT</b><small>Peterborough · 7:10 PM</small></span><span>⚙</span></div>
+ <div class="scr">
+  <div class="shift lit"><span class="tag">Dusk shift <i class="ok">Clear</i></span>
+   <h3 class="big">The fade rush</h3>
+   <p>As Earth's shadow rises, satellites wink out one by one. <b>Tap Collect as one vanishes</b> for a shiny.</p>
+   <div class="c" style="margin-top:8px;border-top:1px solid #ffffff14"><span class="mini lock" style="background-image:url(../assets/art/cards/sm/tiangong.webp)"></span><span><span class="k">In 10 min · first fade</span><b>Tiangong ◆</b><span class="w">Halfway up in the southwest, fades mid-pass</span><br><span class="pill r">◆ Rare +25</span><span class="pill s">✦ Shiny chance</span></span><span class="t">7:20</span></div></div>
+  <svg class="rib" data-now="1.17" data-hl="dusk" data-clear="1"></svg>
+  <div class="sec">Then six more fades ✦<span>7:51–8:09 PM</span></div>
+  <div class="rush">
+   <div><span class="tm">7:51</span><span>Kosmos 249 ●</span></div>
+   <div><span class="tm">7:56</span><span>Atlas Centaur stage ●</span></div>
+   <div><span class="tm">7:58</span><span>Electron kick stage ●</span></div>
+   <div><span class="tm">8:01</span><span>Meteor 1-14 ●</span></div>
+   <div><span class="tm">8:05</span><span>Long March 6 stage ●</span></div>
+   <div><span class="tm">8:09</span><span>Yaogan-16 01A ●</span></div>
+  </div>
+  <div class="also"><b>Encore, 9:30 PM on:</b> Planet hour. The Moon rises about 8:45.</div>
+ </div>
+ <div class="dock"><div class="two"><span class="btn">◎ Show me Tiangong</span><span class="sq">⏰</span></div><div class="dockhint">Busiest at 7:21 PM · 19 up at once</div><div class="tabs"><span class="on">Tonight</span><span>Explore</span><span>Collection</span></div></div>
+</div></div>
+
+</div>
+
+<div class="redwrap">
+ <div class="redbox"><div class="redclip"><div class="scale" id="red-slot"></div></div></div>
+ <div class="box" style="max-width:640px">
+  <span class="k">Red night mode · Planet hour, as the eye sees it</span>
+  <ul>
+   <li><b>Nothing relies on colour alone.</b> Rarity keeps its shape (● ▲ ◆ ✦ ★). Cloud is hatching, not a grey tone. Earth's shadow has a dashed edge. The "now" line is a solid bar. All of it survives the red multiply, and it also helps colour-blind players in daylight.</li>
+   <li><b>One bright thing per screen.</b> The dock button is the only solid fill, so a dark-adapted eye lands on it, and on nothing else. Panels stay near black, with text at full red, never dim brown.</li>
+   <li><b>Offer it, don't force it.</b> When Planet hour starts and you're aiming at a real dark sky, the shift card shows one chip: "Going dark? Turn on red". No auto-switch (the after-dark auto mode was removed on 2026-10-21).</li>
+   <li><b>Gloves and cold.</b> 50px targets in the bottom 170px, no swipes needed for the main job, and the countdown and direction readable at arm's length (52px numbers).</li>
+  </ul>
+ </div>
+</div>
+
+<script>
+// Night ribbon: 6 PM → 7:30 AM. Real data for Thu 29 Oct 2026, Peterborough.
+const SPAN = 13.5, W = 348, H = 104, X0 = 4, XW = W - 8;
+const x = t => X0 + (t / SPAN) * XW;
+const CURVE = [1,6,14,10,4,2,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,2,4,12,9,0];   // half-hourly from 6:37 PM
+const CLOUD = [97,97,97,97,97,66,2,1,2,84,97,29,40,97];                    // per hour from 6 PM
+const SHADOW = [[0.62,0.08],[1.5,0.42],[2.5,0.76],[3.5,1],[10,1],[11,0.72],[12,0.42],[13.3,0.08]];
+function ribbon(svg) {
+  const now = +svg.dataset.now, hl = svg.dataset.hl, clear = svg.dataset.clear === '1';
+  const cy = 18, ch = 50, cb = cy + ch, ly = cb + 4, lh = 13;
+  let s = `<defs><pattern id="h${Math.random().toString(36).slice(2,6)}" patternUnits="userSpaceOnUse" width="5" height="5" patternTransform="rotate(45)"><rect width="2.2" height="5" fill="#aab4c0"/></pattern></defs>`;
+  const pid = s.match(/id="(h\w+)"/)[1];
+  // daylight edges
+  s += `<rect x="${x(0)}" y="${cy}" width="${x(0.617)-x(0)}" height="${ch}" fill="#1a2a3c"/><rect x="${x(13.3)}" y="${cy}" width="${x(SPAN)-x(13.3)}" height="${ch}" fill="#1a2a3c"/>`;
+  s += `<rect x="${x(0.617)}" y="${cy}" width="${x(13.3)-x(0.617)}" height="${ch}" fill="#0c1726"/>`;
+  // shift labels
+  const shifts = [['dusk','DUSK',0.617,3.5],['shadow','PLANET HOUR',3.5,10],['dawn','DAWN',10,13.3]];
+  for (const [id, lab, a, b] of shifts) {
+    const on = id === hl;
+    s += `<rect x="${x(a)+.5}" y="1" width="${x(b)-x(a)-1}" height="14" rx="4" fill="${on ? '#fa812733' : '#ffffff08'}"/>`;
+    s += `<text x="${(x(a)+x(b))/2}" y="11.5" text-anchor="middle" font-family="L" font-size="9.5" letter-spacing="1.2" fill="${on ? '#fa8127' : '#bdbea9'}">${lab}</text>`;
+  }
+  // shadow tide
+  const sh = t => { for (let i = 1; i < SHADOW.length; i++) { const [a, sa] = SHADOW[i-1], [b, sb] = SHADOW[i]; if (t <= b) return sa + (sb - sa) * (t - a) / (b - a); } return 0; };
+  let pts = [`${x(0.62)},${cb}`]; for (let t = 0.62; t <= 13.3; t += 0.1) pts.push(`${x(t).toFixed(1)},${(cb - sh(t) * ch).toFixed(1)}`); pts.push(`${x(13.3)},${cb}`);
+  s += `<polygon points="${pts.join(' ')}" fill="#02060c"/>`;
+  s += `<polyline points="${pts.slice(1,-1).join(' ')}" fill="none" stroke="#ffc93d" stroke-width="1" stroke-dasharray="3 2.5" opacity=".85"/>`;
+  s += `<text x="${x(6.75)}" y="${cy+16}" text-anchor="middle" font-family="L" font-size="8.5" letter-spacing="1.4" fill="#8f97a0">EARTH'S SHADOW</text>`;
+  s += `<text x="${x(6.75)}" y="${cy+33}" text-anchor="middle" font-family="L" font-size="10" fill="#ffc93d">◐ Moon · Saturn · Mars · Jupiter</text>`;
+  // lit satellites above the shadow
+  CURVE.forEach((n, i) => { if (!n) return; const t = 0.617 + i * 0.5 + 0.25, room = (1 - sh(t)) * ch, hgt = Math.max(2, n / 14 * room);
+    s += `<rect x="${x(t)-3.4}" y="${(cb - sh(t)*ch - hgt).toFixed(1)}" width="6.8" height="${hgt.toFixed(1)}" rx="1.5" fill="#fa8127"/>`; });
+  // passes
+  const mk = (t, lab) => { s += `<text x="${x(t)}" y="${cy-2+12}" text-anchor="middle" font-size="11" fill="#4f9bff">◆</text><text x="${x(t)+ (t > 12 ? -9 : 7)}" y="${cy+10}" text-anchor="${t > 12 ? 'end' : 'start'}" font-family="L" font-size="9" fill="#cfe0ff">${lab}</text>`; };
+  mk(1.333, 'TIANGONG'); mk(12.117, 'ISS');
+  // cloud lane
+  for (let i = 0; i < CLOUD.length; i++) { const c = clear ? 0 : CLOUD[i]; const a = x(i), b = Math.min(x(i+1), x(SPAN));
+    if (c >= 20) s += `<rect x="${a}" y="${ly}" width="${b-a}" height="${lh}" fill="url(#${pid})" opacity="${(c/100*.85).toFixed(2)}"/>`;
+    else s += `<rect x="${a}" y="${ly}" width="${b-a}" height="${lh}" fill="#57d18418"/>${clear && i>4 && i<9 ? '' : `<circle cx="${(a+b)/2}" cy="${ly+lh/2}" r="1.1" fill="#fff2b3"/>`}`; }
+  s += `<rect x="${x(0)}" y="${ly}" width="${x(SPAN)-x(0)}" height="${lh}" fill="none" stroke="#ffffff14"/>`;
+  if (!clear) s += `<text x="${x(7.5)}" y="${ly+lh-3.5}" text-anchor="middle" font-family="L" font-size="9" fill="#57d184">CLEAR</text>`;
+  else s += `<text x="${x(6.75)}" y="${ly+lh-3.5}" text-anchor="middle" font-family="L" font-size="9" fill="#57d184">CLEAR ALL NIGHT</text>`;
+  // ticks
+  [[0,'6 PM'],[3,'9'],[6,'12 AM'],[9,'3'],[12,'6 AM']].forEach(([t, l]) => { s += `<text x="${x(t)}" y="${H-3}" text-anchor="${t ? 'middle' : 'start'}" font-family="L" font-size="9.5" fill="#bdbea9">${l}</text>`; });
+  // now
+  if (now >= 0) s += `<rect x="${x(now)-1}" y="${cy-3}" width="2.4" height="${ly+lh-cy+5}" fill="#fff2b3"/><text x="${x(now)}" y="${cy-4}" text-anchor="middle" font-family="L" font-size="8.5" fill="#fff2b3"></text>`;
+  else s += `<text x="${x(0)+2}" y="${cb-4}" font-family="L" font-size="9" fill="#fff2b3">◂ NOW 8:38 AM</text>`;
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`); svg.innerHTML = s;
+}
+// red-mode copy of Planet hour
+const red = document.getElementById('p-planet').cloneNode(true); red.removeAttribute('id');
+document.getElementById('red-slot').appendChild(red);
+document.querySelectorAll('svg.rib').forEach(ribbon);
+</script>
+</body></html>

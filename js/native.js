@@ -79,15 +79,32 @@ export function haptic(kind = 'light') {
 }
 // Local notifications (pass reminders): no server, works offline. Resolves 'on' | 'denied' | 'unsupported'.
 let notifId = 1000;
-export async function notifyAt(at, title, body, { id } = {}) {
+// link: where a tap goes ('spacecollector://pass/<id>@<start>' or 'spacecollector://tonight', the widgets' own links).
+// actions: 'auto' (Show me · Not tonight, for the ones the app sends itself) or 'pass' (Show me, for a pass you asked for).
+// Notifications plan 2026-10-29 (design/notifications-plan.html): taps go somewhere, and a night is grouped together.
+export async function notifyAt(at, title, body, { id, link, actions, night } = {}) {
   if (!isNative()) return 'unsupported';
   const ln = plugin('LocalNotifications');
   try {
     let p = await ln.checkPermissions(); if (p.display !== 'granted') p = await ln.requestPermissions();
     if (p.display !== 'granted') return 'denied';
-    await ln.schedule({ notifications: [{ id: id ?? notifId++, title, body, schedule: { at: new Date(at), allowWhileIdle: true }, isExactNotification: false }] }); // a few minutes' slack is fine; exact alarms send Android players to a system screen and need a Play-restricted permission (Android playtest 2026-10-19)
+    const n = { id: id ?? notifId++, title, body, schedule: { at: new Date(at), allowWhileIdle: true }, isExactNotification: false }; // a few minutes' slack is fine; exact alarms send Android players to a system screen and need a Play-restricted permission (Android playtest 2026-10-19)
+    if (link) n.extra = { link };
+    if (actions) { await noteActions(); n.actionTypeId = actions; }
+    if (night) { n.threadIdentifier = night; n.group = night; }
+    await ln.schedule({ notifications: [n] });
     return 'on';
   } catch { return 'unsupported'; }
+}
+// The buttons under a notification (long-press on iPhone, expand on Android). Registered once per launch.
+let actionsReady = null;
+export function noteActions() {
+  if (!isNative()) return Promise.resolve();
+  actionsReady ??= plugin('LocalNotifications').registerActionTypes({ types: [
+    { id: 'auto', actions: [{ id: 'show', title: 'Show me', foreground: true }, { id: 'nottonight', title: 'Not tonight', foreground: false }] },
+    { id: 'pass', actions: [{ id: 'show', title: 'Show me', foreground: true }] },
+  ] }).catch(() => {});
+  return actionsReady;
 }
 export async function cancelNotify(id) { if (isNative()) try { await plugin('LocalNotifications').cancel({ notifications: [{ id }] }); } catch {} }
 // The app’s chrome is always dark: light status-bar icons on both platforms, from the first frame.

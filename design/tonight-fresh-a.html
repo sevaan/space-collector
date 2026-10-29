@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tonight fresh A</title>
+<style>
+@font-face { font-family: 'L'; src: url('../fonts/BarlowCondensed-Medium.ttf'); }
+@font-face { font-family: 'D'; src: url('../fonts/RussoOne-Regular.ttf'); }
+:root { --bg: #080f1b; --ink: #fff2b3; --muted: #bdbea9; --gold: #fa8127; --medal: #ffc93d; --com: #c9cbb6; --unc: #57d184; --rare: #4f9bff; --epic: #e46ad6; --panel: #0e1a29; --edge: #22344a; --blue: #8fb3ff; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #1b2230; color: var(--ink); font: 500 15px/1.35 'L', sans-serif; padding: 26px 18px 50px; }
+h1 { font: 400 28px 'D'; margin: 0 0 6px; } h2 { font: 400 19px 'D'; margin: 0 0 6px; }
+.lead { color: var(--muted); max-width: 1180px; margin: 0 0 20px; font-size: 16px; } .lead b { color: var(--ink); font-weight: 500; }
+.top { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 1240px; margin-bottom: 18px; }
+.box { background: #121a28; border: 1px solid #2c3648; border-radius: 14px; padding: 14px 16px; }
+.box.hot { border-color: #fa812766; background: radial-gradient(ellipse at 0% 0%, #fa81271a, transparent 60%), #121a28; }
+.box h2 { font-size: 16px; letter-spacing: .04em; } .box ul, .box ol { margin: 6px 0 0; padding-left: 18px; } .box li { margin: 5px 0; color: #e6e2c4; } .box li b { color: var(--ink); } .box p { margin: 6px 0 0; color: #e6e2c4; }
+.rules { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; max-width: 1240px; margin: 0 0 26px; }
+.rules div { background: #121a28; border: 1px solid #2c3648; border-radius: 12px; padding: 10px 12px; color: #e6e2c4; font-size: 14px; }
+.rules b { display: block; color: var(--gold); font-size: 12px; letter-spacing: .16em; text-transform: uppercase; margin-bottom: 3px; }
+.rules i { font-style: normal; color: var(--medal); font-size: 12px; display: block; margin-top: 4px; }
+.row { display: flex; flex-wrap: wrap; gap: 28px; align-items: flex-start; }
+.opt { width: 380px; } .opt > p { color: var(--muted); font-size: 14px; margin: 0 0 10px; min-height: 96px; } .opt > p b { color: var(--gold); font-weight: 500; }
+.opt h2 small { font: 500 13px 'L'; color: var(--muted); letter-spacing: .1em; text-transform: uppercase; margin-left: 6px; }
+
+/* phone */
+.phone { background: var(--bg); border-radius: 26px; padding: 0 16px 22px; border: 1px solid #2c3648; overflow: hidden; position: relative; }
+.hdr { padding: 22px 2px 11px; border-bottom: 3px double #627a8b; display: flex; justify-content: space-between; align-items: flex-end; }
+.hdr b { display: block; font: 400 19px 'D'; } .hdr small { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); } .hdr .gear { color: var(--muted); font-size: 17px; }
+.k { font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); }
+.sec { display: flex; justify-content: space-between; align-items: baseline; margin: 18px 0 9px; font-size: 13px; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); } .sec span { color: var(--muted); letter-spacing: .08em; font-size: 12px; } .sec span b { color: var(--medal); font-weight: 500; }
+.say { margin: 14px 0 0; font: 400 21px/1.15 'D'; } .say em { font-style: normal; color: var(--gold); }
+.sub { color: var(--muted); margin: 5px 0 0; font-size: 15px; } .sub b { color: var(--ink); font-weight: 500; }
+
+/* the hand */
+.hand { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.slot { min-width: 0; }
+.cb { position: relative; aspect-ratio: 2/3; border-radius: 8px; border: 1.5px solid #e9dfb8; background: #01121c url(../assets/art/backs/back-collector.webp) center/contain no-repeat; box-shadow: 0 8px 18px #000a; }
+.cb.r { box-shadow: 0 0 0 1px #4f9bff55, 0 0 22px #4f9bff55, 0 8px 18px #000a; }
+.cb.u { box-shadow: 0 0 0 1px #57d18444, 0 0 18px #57d18440, 0 8px 18px #000a; }
+.cb.c { box-shadow: 0 0 0 1px #c9cbb633, 0 0 14px #c9cbb630, 0 8px 18px #000a; }
+.cb.next { outline: 2px solid var(--gold); outline-offset: 3px; }
+.cb .gem { position: absolute; top: 6px; left: 6px; width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; background: #080f1bdd; font-size: 12px; border: 1px solid #ffffff22; }
+.cb .cloud { position: absolute; inset: 0; border-radius: 7px; background: radial-gradient(ellipse at 30% 40%, #7d879566 0 30%, transparent 55%), radial-gradient(ellipse at 75% 60%, #7d879577 0 28%, transparent 55%), linear-gradient(#5b667588, #2a33408a); }
+.cb .cloud::after { content: '☁'; position: absolute; right: 7px; top: 5px; font-size: 16px; color: #d9dde3; }
+/* face-up mini card */
+.face { position: absolute; inset: 0; border-radius: 7px; overflow: hidden; background: #0b1626; display: grid; grid-template-rows: 16px 1fr auto; }
+.face .bar { font-size: 9px; letter-spacing: .14em; text-transform: uppercase; padding: 2px 6px; color: #0b1018; }
+.face .art { background: center/cover no-repeat; border-top: 1px solid #ffffff22; border-bottom: 1px solid #ffffff22; }
+.face .nm { font: 400 11px/1.1 'D'; padding: 5px 6px 6px; }
+.face .tick { position: absolute; right: 6px; bottom: 26px; width: 22px; height: 22px; border-radius: 50%; background: var(--unc); color: #08130c; display: grid; place-items: center; font-size: 13px; }
+.lab { margin-top: 8px; }
+.lab .t { font: 400 15px 'D'; color: var(--gold); display: block; } .lab .t.dim { color: var(--muted); } .lab .t.done { color: var(--unc); }
+.lab .n { font-size: 15px; display: block; line-height: 1.12; } .lab .w { color: var(--muted); font-size: 12.5px; display: block; line-height: 1.2; margin-top: 2px; }
+.pill { display: inline-block; margin: 5px 3px 0 0; font-size: 11.5px; padding: 1px 6px; border-radius: 5px; background: #fa81271c; color: var(--gold); white-space: nowrap; }
+.pill.m { background: #ffc93d1c; color: var(--medal); } .pill.s { background: #ffffff10; color: #ffe7c9; } .pill.c { background: #8fb3ff1a; color: var(--blue); }
+.stamp { position: absolute; left: 50%; top: 50%; translate: -50% -50%; rotate: -16deg; padding: 4px 7px; border: 2px solid var(--blue); outline: 1px solid var(--blue); outline-offset: 2px; border-radius: 4px; font: 400 11px 'D'; letter-spacing: .08em; color: var(--blue); background: #080f1bcc; text-transform: uppercase; white-space: nowrap; }
+.full { display: flex; align-items: center; gap: 10px; margin-top: 12px; padding: 9px 11px; border-radius: 12px; background: var(--panel); border: 1px solid var(--edge); font-size: 14px; color: var(--muted); }
+.full .pips { display: flex; gap: 4px; } .full .pips i { width: 14px; height: 20px; border-radius: 3px; border: 1px solid #e9dfb8aa; background: #01121c; } .full .pips i.on { background: var(--unc); border-color: var(--unc); }
+.full b { color: var(--medal); font-weight: 500; margin-left: auto; white-space: nowrap; }
+
+/* rain check ticket */
+.rc { margin-top: 12px; display: grid; grid-template-columns: 48px 1fr; gap: 12px; align-items: center; padding: 11px 12px; border-radius: 14px; border: 1px dashed #8fb3ff77; background: #8fb3ff0d; }
+.rc .mini { width: 48px; height: 72px; border-radius: 5px; border: 1.5px solid #e9dfb8; background: center/contain no-repeat #01121c; position: relative; }
+.rc .k { color: var(--blue); } .rc b { display: block; font-size: 16px; } .rc span.w { color: var(--muted); font-size: 13.5px; display: block; }
+
+/* dial */
+.dialbox { margin-top: 6px; border-radius: 16px; background: var(--panel); border: 1px solid var(--edge); padding: 10px 6px 8px; }
+.dialbox svg { display: block; width: 100%; height: auto; }
+.legend { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; font-size: 11.5px; color: var(--muted); margin-top: 4px; letter-spacing: .04em; }
+.legend i { display: inline-block; width: 14px; height: 7px; border-radius: 2px; margin-right: 4px; vertical-align: 1px; }
+
+.btn { display: flex; align-items: center; justify-content: center; gap: 8px; height: 50px; border-radius: 12px; background: var(--gold); color: #0b1018; font: 600 14px 'L'; letter-spacing: .14em; text-transform: uppercase; margin-top: 14px; }
+.btn.o { background: transparent; border: 1px solid #fa812777; color: var(--gold); } .btn.on { background: #fa812722; border: 1px solid var(--gold); color: var(--gold); }
+.foot { display: flex; justify-content: space-between; padding: 13px 2px 0; margin-top: 14px; border-top: 1px solid #ffffff12; color: var(--muted); font-size: 14px; } .foot b { color: var(--gold); font-weight: 500; }
+.shift { display: flex; gap: 8px; overflow: hidden; } .shift > div { flex: none; width: 104px; border-radius: 12px; border: 1px solid var(--edge); background: var(--panel); padding: 7px; }
+.shift .a { display: block; height: 58px; border-radius: 7px; background: center/cover no-repeat #01121c; margin-bottom: 6px; position: relative; } .shift .a.lk { filter: blur(1.5px) brightness(.75); }
+.shift b { display: block; font-size: 14px; line-height: 1.1; } .shift small { display: block; color: var(--muted); font-size: 12px; line-height: 1.2; }
+.shift .faint { opacity: .5; }
+.why { margin-top: 12px; padding: 11px 12px; border-radius: 12px; background: #000a; border: 1px solid #ffffff14; font-size: 14px; color: #e6e2c4; display: grid; grid-template-columns: 26px 1fr; gap: 8px; } .why .ic { font-size: 18px; line-height: 1.2; color: var(--muted); }
+.big { margin-top: 14px; border-radius: 18px; padding: 16px; text-align: center; background: radial-gradient(ellipse at 50% 0%, #4f9bff33, transparent 70%), var(--panel); border: 1px solid #4f9bff66; }
+.big .cb { width: 112px; margin: 6px auto 0; }
+.big .count { font: 400 46px/1 'D'; margin: 12px 0 2px; } .big .name { font: 400 20px 'D'; } .big .w { color: var(--muted); font-size: 14.5px; margin-top: 3px; }
+.list { margin-top: 2px; } .list div { display: grid; grid-template-columns: 64px 1fr auto; gap: 8px; padding: 8px 2px; border-top: 1px solid #ffffff10; align-items: baseline; font-size: 15px; } .list .t { font: 400 14px 'D'; color: var(--gold); } .list small { color: var(--muted); font-size: 12.5px; }
+.note { color: var(--muted); font-size: 13px; margin-top: 8px; text-align: center; }
+.flag { display: inline-block; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: #0b1018; background: var(--medal); border-radius: 4px; padding: 1px 5px; margin-left: 4px; vertical-align: 2px; }
+</style></head><body>
+
+<h1>Tonight, fresh: “Tonight’s hand”</h1>
+<p class="lead">Board A from a new pair of eyes. Real sky over Peterborough, Thursday Oct 29 2026: overcast 5–10 PM, clear only 12–2 AM while every satellite sits in Earth’s shadow, ISS at 6:07 AM through 40% cloud. Every object, time and direction below comes from the planner’s output for tonight (now.json) and the app’s own planet/star positions. The last phone is the same night as if the sky were clear.</p>
+
+<div class="top">
+ <div class="box">
+  <h2>What’s still wrong with “A and B together”</h2>
+  <ul>
+   <li><b>It’s a weather report with cards attached.</b> Verdict, window, picks, list: it tells me about the sky but never gives me something to finish tonight. The rewards are 12px pills at the end of rows.</li>
+   <li><b>It assumes a clear evening.</b> Cloud got one sentence: “same layout, greyed”. On the most common Ontario night the page becomes three grey rows and no reason to come back.</li>
+   <li><b>“Clear” and “empty” are the same colour.</b> It has no idea of Earth’s shadow. Tonight’s only clear hours (12–2 AM) have zero passes, so a clear-night layout would point people at a dead sky.</li>
+   <li><b>Four systems, stapled.</b> Three picks, three missions, a headliner and a week strip are different threes. The player has to do the joining.</li>
+   <li><b>The live card copies Explore.</b> A countdown plus “turn left, then up” is the sky screen’s job. This page should send you out, not be a second sky.</li>
+   <li><b>The hook is buried.</b> “Tomorrow” and “what you missed” only appear after 10:40 PM, when most people have closed the app. “42 more new cards · All passes” trains list-scrolling instead of focus.</li>
+  </ul>
+ </div>
+ <div class="box hot">
+  <h2>The concept: Tonight’s hand</h2>
+  <p>Every night the game <b>deals you three sealed cards</b>, face down in your own card back. Each one is a real object you can actually catch tonight, picked with the forecast and Earth’s shadow already worked in, and each carries one of the night’s three missions. That gives the page one job: <b>flip all three</b>. A full hand pays a bonus. Under the hand, <b>the night dial</b> draws dusk to dawn as an arc: cloud on the outside, how busy the sky is in the middle, Earth’s shadow on the inside, your cards pinned where they happen. A night the cloud ruins isn’t wasted. Any dealt card the cloud hides gets a <b>Rain check</b> stamp and moves to your next clear night with its bonus kept. And when the sky is clear but every satellite is in Earth’s shadow, the deal switches to <b>Night shift</b> cards (the Moon, planets, stars), which don’t need sunlight. The other 718 passes are one tap away, never on the page.</p>
+ </div>
+</div>
+
+<div class="rules">
+ <div><b>How the deal is picked</b>Only objects you can really see: in a clear forecast hour, sunlit, bright enough for your sky slider. One card per mission. At least one is new to you, rarest first.</div>
+ <div><b>Full hand</b>Flip all three before dawn: +100 XP, and the hand goes into your streak.<i>New scoring · needs a yes</i></div>
+ <div><b>Rain check</b>If cloud hides a dealt card at its time, it’s stamped and dealt again on your next clear night, its bonus kept (+25). Clouds never cost you anything.<i>New scoring · needs a yes</i></div>
+ <div><b>Night shift</b>Between Earth’s shadow and dawn, the dial says so and the deal uses the Moon, planets and stars. Midnight is never an empty page.</div>
+</div>
+
+<div class="row" id="row">
+
+<!-- 1 · 8:38 AM -->
+<div class="opt"><h2>8:38 AM <small>the deal · real tonight</small></h2>
+<p>Morning: the hand is already dealt, so there’s a plan before the forecast can disappoint. The forecast is <b>stated once and already built in</b>: two cards sit in the clear midnight window, the ISS sits at dawn. Tiangong, hidden by cloud at 7:20, shows up as a <b>Rain check</b> instead of a grey row. One free reminder, for the clear window.</p>
+<div class="phone"><div class="hdr"><span><b>TONIGHT</b><small>Peterborough · 8:38 AM</small></span><span class="gear">⚙</span></div>
+ <p class="say">Cloudy evening, <em>clear after midnight.</em></p>
+ <p class="sub">Your hand is dealt around that. <b>Dark at 6:37 PM.</b></p>
+ <div class="sec">Tonight’s hand<span>full hand <b>+100</b></span></div>
+ <div class="hand">
+  <div class="slot"><div class="cb u"><span class="gem" style="color:var(--unc)">▲</span></div><div class="lab"><span class="t">12:30 AM</span><span class="n">Saturn</span><span class="w">Halfway up in the southwest</span><span class="pill m">◇ A planet +50</span></div></div>
+  <div class="slot"><div class="cb c"><span class="gem" style="color:var(--com)">●</span></div><div class="lab"><span class="t">12:30 AM</span><span class="n">The Moon</span><span class="w">Halfway up in the east</span><span class="pill">New phase stamp</span></div></div>
+  <div class="slot"><div class="cb r"><span class="gem" style="color:var(--rare)">◆</span></div><div class="lab"><span class="t">6:07 AM</span><span class="n">Space Station</span><span class="w">Rises in the north, climbs high</span><span class="pill m">◇ A station +50</span></div></div>
+ </div>
+ <div class="rc"><span class="mini" style="background-image:url(../assets/art/backs/back-collector.webp)"><span class="cb" style="position:absolute;inset:0;border:0;box-shadow:none;background:none"><span class="cloud"></span></span></span><span><span class="k">Rain check · likely</span><b>Tiangong · 7:20 PM</b><span class="w">Overcast then. If the cloud wins, it’s dealt again on your next clear night, +25 kept.</span></span></div>
+ <div class="sec">The night<span>dusk to dawn</span></div>
+ <div class="dialbox"><svg class="dial" data-wx="cloudy" data-now="" data-c1="Dark at" data-c2="6:37 PM" data-c3="in 10 hours" data-marks="80:r:✕,390:u,390:c,727:r"></svg>
+  <div class="legend"><span><i style="background:#fff2b3cc"></i>clear</span><span><i style="background:repeating-linear-gradient(135deg,#7d8795 0 3px,#3a4352 3px 6px)"></i>cloud</span><span><i style="background:#cfd3c0"></i>passes</span><span><i style="background:#000;border:1px solid #ffffff33"></i>Earth’s shadow</span></div></div>
+ <div class="btn">🔔 Wake me for the clear sky · 12:00</div>
+ <div class="foot"><span>718 passes tonight · 4 Rare</span><b>Every pass ›</b></div>
+</div></div>
+
+<!-- 2 · 6:30 PM -->
+<div class="opt"><h2>6:30 PM <small>under cloud · real tonight</small></h2>
+<p>Dusk under 100% cloud. No guilt, no grey list: the page <b>says it plainly and moves the appointment</b>. Tiangong’s card shows the Rain check it will get at 7:23 if the cloud holds. The midnight alarm is already set. “Spot a gap? It still counts” keeps the honour-system rule in view.</p>
+<div class="phone"><div class="hdr"><span><b>TONIGHT</b><small>Peterborough · 6:30 PM</small></span><span class="gear">⚙</span></div>
+ <p class="say">Overcast until <em>about 11:30.</em></p>
+ <p class="sub">Your hand plays after midnight. Nothing to lose tonight.</p>
+ <div class="sec">Tonight’s hand<span>0 of 3</span></div>
+ <div class="hand">
+  <div class="slot"><div class="cb r next" style="position:relative"><span class="gem" style="color:var(--rare)">◆</span><span class="cloud"></span><span class="stamp">Rain check?</span></div><div class="lab"><span class="t dim">7:20 PM · in 50 min</span><span class="n">Tiangong</span><span class="w">Behind cloud. A gap still counts.</span><span class="pill c">→ next clear night +25</span></div></div>
+  <div class="slot"><div class="cb u"><span class="gem" style="color:var(--unc)">▲</span></div><div class="lab"><span class="t">12:30 AM</span><span class="n">Saturn</span><span class="w">Southwest, halfway up</span><span class="pill m">◇ +50</span></div></div>
+  <div class="slot"><div class="cb c"><span class="gem" style="color:var(--com)">●</span></div><div class="lab"><span class="t">12:30 AM</span><span class="n">The Moon</span><span class="w">East, halfway up</span><span class="pill">Phase stamp</span></div></div>
+ </div>
+ <div class="full"><span class="pips"><i></i><i></i><i></i></span><span>ISS at 6:07 AM is your fourth chance</span><b>+100</b></div>
+ <div class="sec">The night<span>now · 6:30 PM</span></div>
+ <div class="dialbox"><svg class="dial" data-wx="cloudy" data-now="30" data-c1="Clear in" data-c2="5 h" data-c3="11:30 PM to 2:30 AM" data-marks="80:r,390:u,390:c,727:r"></svg></div>
+ <div class="btn on">✓ Wake me at 12:00 AM</div>
+ <div class="foot"><span>Shiny fades 7:49–8:09 · under cloud</span><b>Every pass ›</b></div>
+</div></div>
+
+<!-- 3 · 12:30 AM -->
+<div class="opt"><h2>12:30 AM <small>clear but empty · real tonight</small></h2>
+<p>The hard case. The dial’s inner band says why the sky is empty: <b>satellites are in Earth’s shadow until about 4 AM</b>. The page turns into <b>Night shift</b>: Saturn is already flipped, the Moon is next, and a strip of things that don’t need sunlight (all really up now) fills the gap. Uranus is honest: too faint with a 76% Moon.</p>
+<div class="phone"><div class="hdr"><span><b>TONIGHT</b><small>Night shift · 12:30 AM</small></span><span class="gear">⚙</span></div>
+ <p class="say">Clear now. <em>Satellites are asleep.</em></p>
+ <p class="sub">They’re in Earth’s shadow until about 4 AM. The Moon, planets and stars are yours.</p>
+ <div class="sec">Tonight’s hand<span>1 of 3</span></div>
+ <div class="hand">
+  <div class="slot"><div class="cb u" style="box-shadow:0 0 0 1px #57d18488,0 8px 18px #000a"><div class="face"><span class="bar" style="background:var(--unc)">▲ Uncommon</span><span class="art" style="background-image:url(../assets/art/cards/sm/planet-saturn.webp)"></span><span class="nm">Saturn</span><span class="tick">✓</span></div></div><div class="lab"><span class="t done">✓ 12:22 AM</span><span class="n">Saturn</span><span class="pill m">◇ Planet done +50</span></div></div>
+  <div class="slot"><div class="cb c next"><span class="gem" style="color:var(--com)">●</span></div><div class="lab"><span class="t">Up now</span><span class="n">The Moon</span><span class="w">Halfway up in the east</span><span class="pill">Phase stamp</span></div></div>
+  <div class="slot"><div class="cb r"><span class="gem" style="color:var(--rare)">◆</span></div><div class="lab"><span class="t dim">6:07 AM</span><span class="n">Space Station</span><span class="w">40% cloud forecast</span></div></div>
+ </div>
+ <div class="btn">◎ Aim at the Moon</div>
+ <div class="sec">Night shift · up now<span>clear until ~2:30</span></div>
+ <div class="shift">
+  <div><span class="a" style="background-image:url(../assets/art/cards/sm/star-capella.webp)"></span><b>Capella</b><small>High in the east</small></div>
+  <div><span class="a lk" style="background-image:url(../assets/art/cards/sm/deep-pleiades.webp)"></span><b>Pleiades</b><small>High in the southeast · new</small></div>
+  <div><span class="a lk" style="background-image:url(../assets/art/cards/sm/star-aldebaran.webp)"></span><b>Aldebaran</b><small>Halfway up, southeast · new</small></div>
+ </div>
+ <div class="shift" style="margin-top:8px">
+  <div><span class="a lk" style="background-image:url(../assets/art/cards/sm/star-betelgeuse.webp)"></span><b>Betelgeuse</b><small>Low in the east, rising</small></div>
+  <div class="faint"><span class="a lk" style="background-image:url(../assets/art/cards/sm/planet-uranus.webp)"></span><b>Uranus</b><small>Too faint with the Moon</small></div>
+  <div><span class="a" style="background:#14202f;display:grid;place-items:center;color:var(--muted);font-size:22px">⏾</span><b>4:07 AM</b><small>First satellite back</small></div>
+ </div>
+ <div class="dialbox" style="margin-top:14px"><svg class="dial" data-wx="cloudy" data-now="390" data-shadow="1" data-c1="Clear for" data-c2="2 h" data-c3="no passes till 4 AM" data-marks="390:u:✓,390:c,727:r"></svg></div>
+</div></div>
+
+<!-- 4 · 6:00 AM -->
+<div class="opt"><h2>6:00 AM <small>the last card · real tonight</small></h2>
+<p>The ISS is the card that <b>finishes the hand</b>, so it leads, sealed and glowing Rare blue, with the honest cloud line (40%, gaps likely). The button sends you to the sky; the page doesn’t try to steer. Under it, the real dawn flurry: <b>12 passes in this half hour</b>, plus Jupiter and Mars, so a cloudy ISS still leaves a good morning.</p>
+<div class="phone"><div class="hdr"><span><b>TONIGHT</b><small>Peterborough · 6:00 AM</small></span><span class="gear">⚙</span></div>
+ <div class="big"><span class="k" style="color:var(--rare)">Last card in your hand</span>
+  <div class="cb r" style="aspect-ratio:2/3"><span class="gem" style="color:var(--rare)">◆</span></div>
+  <div class="count">7:12</div><div class="name">Space Station</div>
+  <div class="w">Rises in the north at 6:07, climbs high in the northeast. 40% cloud: look for gaps.</div>
+  <div class="btn">◎ Show me where</div></div>
+ <div class="full"><span class="pips"><i class="on"></i><i class="on"></i><i></i></span><span>Saturn ✓ · Moon ✓ · flip this one</span><b>+100</b></div>
+ <div class="sec">Also before sunrise<span>dawn 7:18</span></div>
+ <div class="list">
+  <div><span class="t">6:08</span><span>Okean-2 <small>· 1990 · west</small></span><small>bright</small></div>
+  <div><span class="t">6:15</span><span>CZ-2D stage <small>· 2013 · northwest</small></span><small>bright</small></div>
+  <div><span class="t">6:16</span><span>Shijian-16 <small>· 2013 · north</small></span><small>high</small></div>
+  <div><span class="t">6:19</span><span>CZ-2C stage <small>· 2009 · west</small></span><small></small></div>
+  <div><span class="t">6:24</span><span>SL-3 stage <small>· 1988 · northwest</small></span><small></small></div>
+  <div><span class="t">now</span><span>Jupiter, Mars <small>· halfway up, southeast</small></span><small>planets</small></div>
+ </div>
+ <div class="dialbox" style="margin-top:12px"><svg class="dial" data-wx="cloudy" data-now="720" data-c1="Dawn in" data-c2="1 h 18" data-c3="12 passes this half hour" data-marks="390:u:✓,390:c:✓,727:r"></svg></div>
+</div></div>
+
+<!-- 5 · clear-night variant -->
+<div class="opt"><h2>7:12 PM <small>same night, if it were clear</small></h2>
+<p>Same planner output with a clear forecast. The deal changes: <b>three Rares in 45 minutes</b>, each carrying a mission and its own shiny chance (Tiangong slips into Earth’s shadow, ESSA 1 passes almost straight overhead). The dial lights up 7–8:30 PM and shows the shadow taking the sky after 9:30. Saturn waits in Night shift.</p>
+<div class="phone"><div class="hdr"><span><b>TONIGHT</b><small>Peterborough · 7:12 PM</small></span><span class="gear">⚙</span></div>
+ <p class="say">Clear, and <em>three Rares before 8:10.</em></p>
+ <p class="sub">Busiest at <b>7:21 PM</b>, 19 up at once. After 9:30 the satellites go dark.</p>
+ <div class="sec">Tonight’s hand<span>full hand <b>+100</b></span></div>
+ <div class="hand">
+  <div class="slot"><div class="cb r next"><span class="gem" style="color:var(--rare)">◆</span></div><div class="lab"><span class="t">7:20 · in 8 min</span><span class="n">Tiangong</span><span class="w">High in the south</span><span class="pill m">◇ Station +50</span><span class="pill s">✦ Catch the fade</span></div></div>
+  <div class="slot"><div class="cb r"><span class="gem" style="color:var(--rare)">◆</span></div><div class="lab"><span class="t">7:45 PM</span><span class="n">ESSA 1</span><span class="w">1966 · almost straight overhead</span><span class="pill m">◇ 60s +50</span><span class="pill s">✦ Overhead</span></div></div>
+  <div class="slot"><div class="cb r"><span class="gem" style="color:var(--rare)">◆</span></div><div class="lab"><span class="t">8:05 PM</span><span class="n">Radiation Sat</span><span class="w">1963 · halfway up in the east</span><span class="pill m">◇ Old-timer 2/3</span></div></div>
+ </div>
+ <div class="why"><span class="ic" style="color:#ffe7c9">✦</span><span><b style="color:var(--ink);font-weight:500">7:49–8:09 · the fade window.</b> Six satellites slip into Earth’s shadow overhead. Catch one as it vanishes for a shiny.</span></div>
+ <div class="sec">The night<span>now · 7:12 PM</span></div>
+ <div class="dialbox"><svg class="dial" data-wx="clear" data-now="72" data-c1="Tiangong in" data-c2="8 min" data-c3="busiest 7:21 PM" data-marks="80:r,105:r,125:r,727:r"></svg></div>
+ <div class="btn">◎ Show me Tiangong</div>
+ <div class="foot"><span>Later: Saturn, Vega · ISS 6:07 AM</span><b>Every pass ›</b></div>
+</div></div>
+
+</div>
+
+<p class="lead" style="margin-top:26px"><b>The three strongest ideas.</b> 1 · <b>The dealt hand</b> turns picks, missions and the headliner into one completable thing that uses the card-back fantasy the game already has. 2 · <b>Rain check</b> turns cloud from a loss into an appointment, which is what brings people back in Ontario. 3 · <b>The night dial with Earth’s shadow</b> tells the truth about “clear but empty” and hands that time to Night shift instead of an empty list. Not changed: Explore stays the only place that steers; the full pass list stays one tap away.</p>
+
+<script>
+/* the night dial: dusk (left) to dawn (right) over the top. Minutes are counted from 6:00 PM. */
+const DUSK = 37, DAWN = 798, SPAN = DAWN - DUSK;
+const W = 348, CX = 174, CY = 184;
+const WX = {
+  cloudy: [[37,270,'ov'],[270,330,'pt'],[330,510,'cl'],[510,630,'ov'],[630,690,'cl'],[690,750,'pt'],[750,798,'ov']],
+  clear: [[37,798,'cl']],
+};
+const BUSY = [[37,1],[67,6],[97,14],[127,10],[157,4],[187,2],[607,1],[667,2],[697,4],[727,12],[757,9]];
+const TIER = { c: '#c9cbb6', u: '#57d184', r: '#4f9bff' };
+const GLYPH = { c: '●', u: '▲', r: '◆' };
+const th = (m) => Math.PI - (Math.max(DUSK, Math.min(DAWN, m)) - DUSK) / SPAN * Math.PI;
+const pt = (m, r) => [CX + r * Math.cos(th(m)), CY - r * Math.sin(th(m))];
+const arc = (a, b, r) => { const [x1, y1] = pt(a, r), [x2, y2] = pt(b, r); return `M${x1.toFixed(1)} ${y1.toFixed(1)} A${r} ${r} 0 0 1 ${x2.toFixed(1)} ${y2.toFixed(1)}`; };
+let uid = 0;
+for (const svg of document.querySelectorAll('svg.dial')) {
+  const id = 'd' + (uid++);
+  const d = svg.dataset, wx = WX[d.wx];
+  const now = d.now === '' ? null : +d.now;
+  let s = `<defs><pattern id="h${id}" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="#3a4352"/><rect width="3" height="6" fill="#7d8795"/></pattern>
+    <path id="sp${id}" d="${arc(210, 600, 84)}"/></defs>`;
+  // weather ring
+  for (const [a, b, k] of wx) {
+    const col = k === 'cl' ? '#fff2b3' : k === 'ov' ? `url(#h${id})` : '#7d8795';
+    s += `<path d="${arc(a, b, 152)}" fill="none" stroke="${col}" stroke-width="${k === 'cl' ? 6 : 11}" ${k === 'pt' ? 'stroke-dasharray="4 3"' : ''} opacity="${k === 'cl' ? .85 : 1}"/>`;
+  }
+  // busy bars
+  for (let m = 37; m < 798; m += 30) {
+    const v = (BUSY.find((x) => x[0] === m) || [0, 0])[1];
+    const len = v ? 6 + v / 19 * 30 : 2;
+    const [x1, y1] = pt(m + 15, 108), [x2, y2] = pt(m + 15, 108 + len);
+    const lit = now != null && m + 15 <= now;
+    s += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${v ? (lit ? '#6f7a72' : '#cfd3c0') : '#3a4658'}" stroke-width="${v ? 7 : 3}" stroke-linecap="round"/>`;
+  }
+  // Earth's shadow band
+  s += `<path d="${arc(210, 600, 98)}" fill="none" stroke="#000" stroke-width="12" opacity="${d.shadow ? .95 : .7}"/>`;
+  s += `<path d="${arc(210, 600, 98)}" fill="none" stroke="#ffffff22" stroke-width="12" stroke-dasharray="1 5"/>`;
+  s += `<text font-family="L" font-size="9.5" letter-spacing="1.6" fill="${d.shadow ? '#fff2b3' : '#8b8e86'}"><textPath href="#sp${id}" startOffset="50%" text-anchor="middle">EARTH’S SHADOW</textPath></text>`;
+  // labels
+  const lab = (m, r, t, anchor = 'middle') => { const [x, y] = pt(m, r); return `<text x="${x}" y="${y}" font-family="L" font-size="11" fill="#bdbea9" text-anchor="${anchor}" letter-spacing=".5">${t}</text>`; };
+  s += `<text x="4" y="${CY + 12}" font-family="L" font-size="11" fill="#bdbea9">6:37 PM</text><text x="${W - 4}" y="${CY + 12}" font-family="L" font-size="11" fill="#bdbea9" text-anchor="end">7:18 AM</text>`;
+  s += lab(180, 172, '9 PM') + lab(360, 170, 'MIDNIGHT') + lab(540, 172, '3 AM');
+  // marks
+  for (const mk of d.marks.split(',')) {
+    const [m, t, flag] = mk.split(':');
+    const off = d.marks.split(',').filter((x) => x.split(':')[0] === m).indexOf(mk);
+    const [x, y] = pt(+m + off * 26, 152);
+    const done = flag === '✓', gone = flag === '✕';
+    s += `<circle cx="${x}" cy="${y}" r="10" fill="${done ? TIER[t] : '#080f1b'}" stroke="${gone ? '#8fb3ff' : TIER[t]}" stroke-width="2" ${gone ? 'stroke-dasharray="3 2"' : ''}/>`;
+    s += `<text x="${x}" y="${y + 4}" font-size="${done ? 11 : 10}" text-anchor="middle" fill="${done ? '#080f1b' : gone ? '#8fb3ff' : TIER[t]}">${done ? '✓' : GLYPH[t]}</text>`;
+  }
+  // now hand
+  if (now != null) {
+    const [x, y] = pt(now, 164), [x0, y0] = pt(now, 76);
+    s += `<line x1="${x0}" y1="${y0}" x2="${x}" y2="${y}" stroke="#fa8127" stroke-width="2.5" stroke-linecap="round"/><circle cx="${x}" cy="${y}" r="4" fill="#fa8127"/>`;
+  }
+  // centre
+  s += `<text x="${CX}" y="${CY - 44}" font-family="L" font-size="11.5" letter-spacing="2" fill="#fa8127" text-anchor="middle">${d.c1.toUpperCase()}</text>`;
+  s += `<text x="${CX}" y="${CY - 18}" font-family="D" font-size="26" fill="#fff2b3" text-anchor="middle">${d.c2}</text>`;
+  s += `<text x="${CX}" y="${CY - 2}" font-family="L" font-size="12" fill="#bdbea9" text-anchor="middle">${d.c3}</text>`;
+  svg.setAttribute('viewBox', `0 0 ${W} ${CY + 16}`);
+  svg.innerHTML = s;
+}
+</script>
+</body></html>
