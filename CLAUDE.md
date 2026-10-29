@@ -2174,3 +2174,10 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
     - Never a bare glyph: fallback art.
     - A repeat-avoiding alternative pass prefers this evening.
   - **Small fixes:** "Also tonight" bells line up with the other bells; Up now names reserve two lines; the hero card's label says what a tap does.
+- 2026-10-29 · v0.1.1387, fixes from the rest-of-app playtest:
+  - **Welcome card:** after the flip a plain tap begins, and the swipe captures the pointer, so a mouse drag ending above the card counts.
+  - **Forecast wording:** the bad-weather/first-night page uses the Tonight page's weather line, not a blanket "Cloud all night". "clears around midnight" replaces "12:00 a.m.".
+  - **Plus page leads:** from Pass alerts "Pass alerts are part of the crew kit"; from Sky events "Sky event alerts…" (lead 'skyev'). The kit tile is "Alerts · Rare passes, Starlink trains and sky events." and lights for alerts/skyev/events.
+  - **Find rows** say "may be cloudy" instead of "cloud forecast".
+  - **≤360 px:** the first-night eyebrow clears the ✕, "Explore the sky anyway" stays on one line, and Settings' Plus value isn't cut.
+  - **Not reproduced:** one reveal changed from +220 XP shiny/peak to +110 plain after "Got it" (Ariane 40 R/B at 86°); three retries were consistent. Watch for it.

@@ -3467,3 +3467,9 @@ body.night .sw-bell.on { background: #ff6a55; border-color: #ff6a55; color: #120
 /* part labels sit over their own stretch of the chart, even once one has passed (playtest 2026-10-29) */
 .tnr-parts { position: relative; height: 19px; display: block; }
 .tnr-parts span { position: absolute; top: 0; } .tnr-parts span.past { opacity: .45; }
+/* Rest-of-app playtest 2026-10-29, small screens */
+@media (max-width: 360px) {
+  #ob-done .nt-eyebrow { padding-right: 40px; display: block; } /* clear of the ✕ */
+  #ob-explore { letter-spacing: .06em; font-size: 13px; } #ob-explore span { white-space: nowrap; }
+  #set-plus-open .set-val, #set-plus-open [id$="-val"] { flex: none; overflow: visible; text-overflow: clip; }
+}
