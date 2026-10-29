@@ -2200,3 +2200,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
     - Red mode can't tint the iOS status bar text (system white or black only).
     - The Collection header sliding under the status bar as the keyboard opens (iOS moves the page).
     - The Match your sky tip over a ticket (tickets hide while it's up).
+- 2026-10-29: Build 1.0 (42) archived (web v0.1.1390: iOS playtest fixes on top of 41); opened in Organizer, not uploaded. SC Tester reinstalled with v0.1.1390.
