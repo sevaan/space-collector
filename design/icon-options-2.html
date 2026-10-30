@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>App Icon Options</title>
+<link rel="stylesheet" href="../css/cards.css?v=io2">
+<style>
+  :root { --bg:#080f1b; --cream:#fff2b3; --muted:#bdbea9; --orange:#fa8127; --gold:#ffc93d; --display:'SC Display',Impact,sans-serif; --label:'SC Label','Arial Narrow',sans-serif; }
+  html, body { background: var(--bg); color: var(--cream); margin: 0; }
+  body { padding: 28px 22px 70px; font: 15px/1.45 var(--label); }
+  h1 { font: 400 26px var(--display); margin: 0 0 4px; } p.lead { color: var(--muted); margin: 0 0 22px; max-width: 760px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px 26px; }
+  .opt { background: #0e1a29; border: 1px solid #22344a; border-radius: 16px; padding: 18px; }
+  .opt h2 { margin: 0 0 2px; font: 600 13px var(--label); letter-spacing: .16em; text-transform: uppercase; color: var(--orange); }
+  .opt p { margin: 0 0 14px; color: var(--muted); font-size: 14px; }
+  .row { display: flex; align-items: flex-end; gap: 18px; }
+  .ic { border-radius: 22.5%; overflow: hidden; box-shadow: 0 6px 18px #000a, 0 0 0 1px #ffffff14; flex: none; }
+  .ic svg, .ic img { display: block; width: 100%; height: 100%; }
+  .big { width: 150px; height: 150px; } .mid { width: 60px; height: 60px; } .sm { width: 40px; height: 40px; }
+  .home { margin-top: 14px; display: grid; grid-template-columns: repeat(4, 60px); gap: 14px 22px; padding: 16px; border-radius: 14px; background: linear-gradient(160deg, #2b3d63, #6d4a6e 60%, #c07b5e); width: max-content; }
+  .home .ic { width: 60px; height: 60px; } .home span { display: block; text-align: center; font: 500 10px/1.2 -apple-system, system-ui, sans-serif; color: #fff; margin-top: 4px; }
+  .fake { background: #ffffff33; }
+  .now { border-color: #fa812766; }
+</style></head>
+<body>
+<h1>App icon · six other directions</h1>
+<p class="lead">Each at App Store size, 60 pt (home screen) and 40 pt (Spotlight/Settings), then on a home screen next to other apps. The current icon (Lock-on) is first for comparison. Colours are the app's own: night navy, card cream, orange, gold.</p>
+<div class="grid" id="g"></div>
+<script>
+const NAVY = '#080f1b', N2 = '#13233c', CREAM = '#fff2b3', OR = '#fa8127', GOLD = '#ffc93d', STEEL = '#8fb3cf';
+const stars = (n, seed = 3, r = [1.2, 3.2], box = [0, 0, 1024, 1024]) => { let s = seed, out = ''; const rnd = () => (s = (s * 16807) % 2147483647) / 2147483647;
+  for (let i = 0; i < n; i++) out += `<circle cx="${(box[0] + rnd() * (box[2] - box[0])).toFixed(0)}" cy="${(box[1] + rnd() * (box[3] - box[1])).toFixed(0)}" r="${(r[0] + rnd() * (r[1] - r[0])).toFixed(1)}" fill="${CREAM}" opacity="${(0.35 + rnd() * 0.6).toFixed(2)}"/>`; return out; };
+const sky = (id, a = '#1b2f52', b = NAVY) => `<defs><radialGradient id="${id}" cx="50%" cy="20%" r="95%"><stop offset="0" stop-color="${a}"/><stop offset="1" stop-color="${b}"/></radialGradient></defs><rect width="1024" height="1024" fill="url(#${id})"/>`;
+const sat = (x, y, s = 1, col = CREAM, rot = -30) => `<g transform="translate(${x} ${y}) rotate(${rot}) scale(${s})"><rect x="-38" y="-30" width="76" height="60" rx="8" fill="${col}"/><rect x="-170" y="-22" width="118" height="44" rx="4" fill="${STEEL}"/><rect x="52" y="-22" width="118" height="44" rx="4" fill="${STEEL}"/><path d="M-52 0H-38M38 0H52" stroke="${col}" stroke-width="10"/>${[-150,-120,-90,72,102,132].map((px) => `<path d="M${px} -22V22" stroke="${NAVY}" stroke-width="5" opacity=".45"/>`).join('')}</g>`;
+const card = (x, y, w, rot, inner, edge = CREAM) => `<g transform="translate(${x} ${y}) rotate(${rot})"><rect x="${-w / 2}" y="${-w * 0.7}" width="${w}" height="${w * 1.4}" rx="${w * 0.08}" fill="${NAVY}" stroke="${edge}" stroke-width="${w * 0.045}"/><rect x="${-w / 2 + w * 0.09}" y="${-w * 0.7 + w * 0.09}" width="${w * 0.82}" height="${w * 0.72}" rx="${w * 0.04}" fill="${N2}"/>${inner}<rect x="${-w / 2 + w * 0.09}" y="${w * 0.22}" width="${w * 0.56}" height="${w * 0.07}" rx="${w * 0.03}" fill="${OR}"/><rect x="${-w / 2 + w * 0.09}" y="${w * 0.36}" width="${w * 0.78}" height="${w * 0.045}" rx="${w * 0.02}" fill="${CREAM}" opacity=".5"/></g>`;
+const OPTS = [
+  { name: 'Now · Lock-on', why: 'Today’s icon, for comparison.', img: '../icons/icon-512.png', now: true },
+  { name: '1 · The card', why: 'What the game is: a card, slightly tilted, a satellite in its window, stars behind. Reads as “collect” at a glance.', svg: () => `${sky('a1')}${stars(40, 5)}${card(512, 520, 470, -8, `<g>${sat(0, -200, 0.95, CREAM, -24)}</g>`)}` },
+  { name: '2 · Catch it', why: 'The moment of play: the target circle, and a satellite crossing it on its dashed path, caught orange. Busier than Lock-on but tells the story.', svg: () => `${sky('a2')}${stars(46, 9)}<path d="M120 820 Q 512 300 930 170" fill="none" stroke="${CREAM}" stroke-width="14" stroke-dasharray="40 34" opacity=".55"/><circle cx="520" cy="470" r="250" fill="none" stroke="${OR}" stroke-width="30"/>${[[520,190,520,250],[520,690,520,750],[240,470,300,470],[740,470,800,470]].map(([a,b,c,d]) => `<path d="M${a} ${b}L${c} ${d}" stroke="${OR}" stroke-width="30" stroke-linecap="round"/>`).join('')}${sat(520, 470, 0.9, CREAM, -28)}` },
+  { name: '3 · Earth’s edge', why: 'A sunlit satellite riding over the curve of the Earth at dusk, its orbit a gold arc. The most “space”, least “game”.', svg: () => `<defs><linearGradient id="a3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0b1730"/><stop offset=".62" stop-color="#1e3460"/><stop offset=".78" stop-color="#d9784a"/><stop offset="1" stop-color="#2a1d2c"/></linearGradient><radialGradient id="a3e" cx="50%" cy="0%" r="70%"><stop offset="0" stop-color="#3f6fb0"/><stop offset="1" stop-color="#0d1a33"/></radialGradient></defs><rect width="1024" height="1024" fill="url(#a3)"/>${stars(30, 11, [1.2, 3], [0, 0, 1024, 560])}<ellipse cx="512" cy="1500" rx="1150" ry="760" fill="url(#a3e)" stroke="#ffd7a3" stroke-width="10"/><ellipse cx="512" cy="760" rx="520" ry="180" fill="none" stroke="${GOLD}" stroke-width="12" stroke-dasharray="1 0" opacity=".9" transform="rotate(-12 512 760)"/>${sat(700, 560, 0.75, CREAM, -12)}` },
+  { name: '4 · The hand', why: 'Three cards fanned out: a planet, a satellite, a star. Says “collection” the loudest; the cards stay readable down to 40 pt as shapes.', svg: () => `${sky('a4', '#24375c')}${stars(30, 13)}${card(330, 560, 330, -18, `<circle cx="0" cy="-150" r="70" fill="#e4c18a"/><ellipse cx="0" cy="-150" rx="120" ry="24" fill="none" stroke="#d7b277" stroke-width="12"/>`, CREAM)}${card(690, 560, 330, 18, `<path d="M0 -215 L18 -168 68 -165 28 -135 42 -86 0 -114 -42 -86 -28 -135 -68 -165 -18 -168Z" fill="${GOLD}"/>`, GOLD)}${card(512, 500, 360, 0, `<g>${sat(0, -150, 0.62, CREAM, -24)}</g>`, OR)}` },
+  { name: '5 · Constellation lock', why: 'The target circle locked on a star in a stick-figure constellation. Calm, astronomical, a little more grown-up.', svg: () => { const pts = [[250,330],[380,300],[500,420],[650,400],[760,540],[620,660],[470,600]]; return `${sky('a5', '#172a4a')}${stars(60, 17, [1, 2.4])}<polyline points="${pts.map((p) => p.join(',')).join(' ')}" fill="none" stroke="${STEEL}" stroke-width="9" opacity=".75"/>${pts.map(([x, y], i) => `<circle cx="${x}" cy="${y}" r="${i === 3 ? 26 : 16}" fill="${i === 3 ? GOLD : CREAM}"/>`).join('')}<circle cx="650" cy="400" r="120" fill="none" stroke="${OR}" stroke-width="24"/>${[[650,250,650,290],[650,510,650,550],[500,400,540,400],[760,400,800,400]].map(([a,b,c,d]) => `<path d="M${a} ${b}L${c} ${d}" stroke="${OR}" stroke-width="24" stroke-linecap="round"/>`).join('')}`; } },
+  { name: '6 · Seal', why: 'The card back’s orbital dial as a badge: rings, ticks, a satellite on the ring, a star at the centre. Most “brand”, least literal.', svg: () => { let t = ''; for (let i = 0; i < 72; i++) { const a = i * 5 * Math.PI / 180, r1 = i % 6 ? 380 : 360, r2 = 400; t += `<path d="M${512 + Math.cos(a) * r1} ${512 + Math.sin(a) * r1}L${512 + Math.cos(a) * r2} ${512 + Math.sin(a) * r2}" stroke="${CREAM}" stroke-width="${i % 6 ? 4 : 8}" opacity=".7"/>`; } return `<rect width="1024" height="1024" fill="${NAVY}"/>${stars(24, 21)}${t}<circle cx="512" cy="512" r="330" fill="none" stroke="${GOLD}" stroke-width="14"/><circle cx="512" cy="512" r="230" fill="none" stroke="${STEEL}" stroke-width="8" stroke-dasharray="18 16"/><path d="M512 400 L536 486 622 488 552 538 578 622 512 572 446 622 472 538 402 488 488 486Z" fill="${OR}"/>${sat(512 + Math.cos(-0.7) * 330, 512 + Math.sin(-0.7) * 330, 0.55, CREAM, 50)}`; } },
+];
+const g = document.getElementById('g');
+const icon = (o, cls) => `<div class="ic ${cls}">${o.img ? `<img src="${o.img}" alt="">` : `<svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">${o.svg()}</svg>`}</div>`;
+for (const o of OPTS) {
+  const d = document.createElement('section'); d.className = `opt${o.now ? ' now' : ''}`;
+  d.innerHTML = `<h2>${o.name}</h2><p>${o.why}</p><div class="row">${icon(o, 'big')}${icon(o, 'mid')}${icon(o, 'sm')}</div>
+    <div class="home"><div><div class="ic fake"></div><span>Photos</span></div><div>${icon(o, '')}<span>Space Coll…</span></div><div><div class="ic fake"></div><span>Maps</span></div><div><div class="ic fake"></div><span>Weather</span></div></div>`;
+  g.append(d);
+}
+</script>
+</body></html>
