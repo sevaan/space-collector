@@ -1,33 +1,33 @@
-import { pullToClose } from './pull-close.js?v=0.1.1429';
-import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.1429';
-import { computeStats, statsHtml } from './stats.js?v=0.1.1429';
-import { nightKey } from './observation.js?v=0.1.1429';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1429';
-import { sfx } from './sfx.js?v=0.1.1429';
-import { expandFacts } from './catalog-facts.js?v=0.1.1429';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.1429';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1429';
-import { ticket } from './toast.js?v=0.1.1429';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.1429';
-import { satGlobe } from './sat-globe.js?v=0.1.1429';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.1429';
-import { cardArt } from './art.js?v=0.1.1429';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.1429';
-import { applyBack } from './card-backs.js?v=0.1.1429';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.1429';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1429';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.1429';
-import { STORIES } from './stories.js?v=0.1.1429';
-import { loadConstellations, conList, CON_BY_ID } from './constellations.js?v=0.1.1429';
-import { conArt } from './con-art.js?v=0.1.1429';
-import { RANKS, progress, readDeals, readWeekThemes, xpCarry } from './progress.js?v=0.1.1429';
-import { eventBadges, nextEvent } from './events.js?v=0.1.1429';
-import { shareCardEl } from './share-card.js?v=0.1.1429';
-import { forgetSighting } from './cloud-backup.js?v=0.1.1429';
-import { allSightings, deleteSighting } from './store.js?v=0.1.1429';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.1429';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.1429';
-import { localText } from './localize.js?v=0.1.1429';
+import { pullToClose } from './pull-close.js?v=0.1.1430';
+import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.1430';
+import { computeStats, statsHtml } from './stats.js?v=0.1.1430';
+import { nightKey } from './observation.js?v=0.1.1430';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1430';
+import { sfx } from './sfx.js?v=0.1.1430';
+import { expandFacts } from './catalog-facts.js?v=0.1.1430';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.1430';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1430';
+import { ticket } from './toast.js?v=0.1.1430';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.1430';
+import { satGlobe } from './sat-globe.js?v=0.1.1430';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.1430';
+import { cardArt } from './art.js?v=0.1.1430';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.1430';
+import { applyBack } from './card-backs.js?v=0.1.1430';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.1430';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1430';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.1430';
+import { STORIES } from './stories.js?v=0.1.1430';
+import { loadConstellations, conList, CON_BY_ID } from './constellations.js?v=0.1.1430';
+import { conArt } from './con-art.js?v=0.1.1430';
+import { RANKS, progress, readDeals, readWeekThemes, xpCarry } from './progress.js?v=0.1.1430';
+import { eventBadges, nextEvent } from './events.js?v=0.1.1430';
+import { shareCardEl } from './share-card.js?v=0.1.1430';
+import { forgetSighting } from './cloud-backup.js?v=0.1.1430';
+import { allSightings, deleteSighting } from './store.js?v=0.1.1430';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.1430';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.1430';
+import { localText } from './localize.js?v=0.1.1430';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -1150,7 +1150,7 @@ if (EMBED) {
   });
   window.addEventListener('message', (e) => {
     if (e.origin !== location.origin || !e.data?.sc) return;
-    if (e.data.sc === 'insets') { const r = document.documentElement.style; r.setProperty('--safe-top', `${e.data.top}px`); r.setProperty('--safe-bottom', `${e.data.bottom}px`); r.setProperty('--safe-l', `${e.data.left ?? 0}px`); r.setProperty('--safe-r', `${e.data.right ?? 0}px`); }
+    if (e.data.sc === 'insets') { embedTop = e.data.top; const r = document.documentElement.style; r.setProperty('--safe-top', `${e.data.top}px`); r.setProperty('--safe-bottom', `${e.data.bottom}px`); r.setProperty('--safe-l', `${e.data.left ?? 0}px`); r.setProperty('--safe-r', `${e.data.right ?? 0}px`); }
     if (e.data.sc === 'open' || e.data.sc === 'show') setSwitch(document.querySelector('.sc-switch'), 'right', false); // shown again: pill on Collection
     if ((e.data.sc === 'open' || e.data.sc === 'show') && e.data.key === '#stats') { statsFromSettings = true; const go = () => (state.ready ? openStats({ instant: true }) : setTimeout(go, 200)); go(); } // from Settings → Observer stats
     else if ((e.data.sc === 'open' || e.data.sc === 'show') && e.data.key) openKey(e.data.key);
@@ -1370,3 +1370,11 @@ document.addEventListener('click', (e) => {
 });
 // The standalone Collection page (not inside Explore) remembers the visit when it's left.
 if (window.parent === window) addEventListener('pagehide', saveVisit);
+/* Taps on Explore's header (2026-10-29, Sevaan: Settings did nothing on the Collection page). The frame sits under the
+   header with its top clipped away, but iPhone can still hand a tap there to the frame. Embedded and not a full-screen
+   dialog, a tap in the header band is sent up to Explore, which presses the header button under it (and the cards
+   scrolled behind the header never get it). */
+let embedTop = 0;
+const inHeader = (e) => document.documentElement.classList.contains('embedded') && !document.querySelector('dialog[open]:not(.docked):not(#stats-view)') && e.clientY < embedTop + 80;
+for (const ev of ['pointerdown', 'pointerup', 'touchstart', 'touchend', 'mousedown', 'mouseup']) document.addEventListener(ev, (e) => { if (inHeader(e.changedTouches?.[0] ?? e)) e.stopPropagation(); }, true);
+document.addEventListener('click', (e) => { if (!inHeader(e)) return; e.preventDefault(); e.stopPropagation(); window.parent.postMessage({ sc: 'header-tap', x: e.clientX, y: e.clientY }, location.origin); }, true);
