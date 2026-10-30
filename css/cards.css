@@ -196,8 +196,8 @@
 }
 
 /* Retro front. All dimensions follow the existing 28em card sizing contract. */
-@font-face{font-family:'SC Display';src:url('../fonts/RussoOne-Regular.ttf') format('truetype');font-weight:400;font-display:swap}
-@font-face{font-family:'SC Label';src:url('../fonts/BarlowCondensed-Medium.ttf') format('truetype');font-weight:500;font-display:swap}
+@font-face{font-family:'SC Display';src:url('../fonts/RussoOne-Regular.woff2') format('woff2'),url('../fonts/RussoOne-Regular.ttf') format('truetype');font-weight:400;font-display:swap}
+@font-face{font-family:'SC Label';src:url('../fonts/BarlowCondensed-Medium.woff2') format('woff2'),url('../fonts/BarlowCondensed-Medium.ttf') format('truetype');font-weight:500;font-display:swap}
 .card.card--retro { --paper:#080f1b;--ink:#fff2b3;--grey:#dfd7a7;--edge:#adbcc8;--rule:#bcb585;--accent:#fa8127;--display:'SC Display',Impact,sans-serif;--label:'SC Label','Arial Narrow',sans-serif;min-height:42em;color:var(--ink); }
 .card--retro .card__face { background:var(--paper);border:.28em solid var(--edge);border-radius:1.4em;box-shadow:inset 0 0 0 .09em #657786,inset 0 0 0 .17em #d4e0e7;padding:.75em 0 .5em; }
 .card--retro .card__rotator { border-radius:1.4em;box-shadow:0 1em 3em #0008; }

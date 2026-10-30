@@ -13,7 +13,8 @@ writeFileSync(new URL('version.json', root), JSON.stringify({ version: next }) +
 
 // import ... from './x.js' and bare import './x.js'  →  './x.js?v=NEXT'
 // (bare side-effect imports were missed until 2026-10-16: stories.js stayed at ?v=0.1.680, so cached phones kept an old copy)
-const stampImports = (s) => s.replace(/((?:from|import)\s+'\.{1,2}\/[^'?]+\.js)(\?v=[^']*)?'/g, `$1?v=${next}'`);
+// and dynamic import('./x.js') (2026-10-29: lazy-loaded modules), so a lazy load gets the same copy as a static one
+const stampImports = (s) => s.replace(/((?:from|import)\s*\(?\s*'\.{1,2}\/[^'?]+\.js)(\?v=[^']*)?'/g, `$1?v=${next}'`);
 for (const f of readdirSync(new URL('js/', root))) {
   if (!f.endsWith('.js')) continue;
   const p = new URL(`js/${f}`, root);

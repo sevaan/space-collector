@@ -10,8 +10,19 @@
 // One cache per version (2026-10-10: a phone stuck on the loader). A shared cache could hand a slow-network fallback
 // page old files mixed with new ones that don't fit together. Now each deploy's worker (scripts/bump.mjs stamps the
 // version below) starts its own cache and deletes the others, so a page only ever meets files from its own version.
-const CACHE = 'sc-0.1.1426';
-self.addEventListener('install', (e) => { self.skipWaiting(); e.waitUntil(caches.open(CACHE).then((c) => c.addAll(['./', 'index.html', 'cards.html', 'data/catalog.json', 'data/sky.json']).catch(() => {}))); });
+const CACHE = 'sc-0.1.1427';
+// Data copies carry the time they were fetched (sw-at), so they're refreshed at most every 3 hours instead of on every
+// open, and a new version's worker takes the data over from the old cache instead of downloading the 4 MB catalogue
+// again (perf audit 2026-10-29).
+const DATA_AGE = 3 * 3600e3;
+const stamp = async (r) => { const h = new Headers(r.headers); h.set('sw-at', String(Date.now())); return new Response(await r.blob(), { status: r.status, statusText: r.statusText, headers: h }); };
+self.addEventListener('install', (e) => { self.skipWaiting(); e.waitUntil(caches.open(CACHE).then(async (c) => {
+  await c.addAll(['./', 'index.html', 'cards.html']).catch(() => {});
+  for (const f of ['data/catalog.json', 'data/sky.json']) {
+    const key = new Request(new URL(f, self.registration.scope).href), old = await caches.match(key);
+    try { await c.put(key, old ?? await stamp(await fetch(key))); } catch {}
+  }
+})); });
 self.addEventListener('activate', (e) => { e.waitUntil(caches.keys().then((ks) => Promise.all(ks.filter((k) => k !== CACHE).map((k) => caches.delete(k)))).then(() => self.clients.claim())); });
 self.addEventListener('fetch', (e) => {
   const req = e.request, url = new URL(req.url);
@@ -31,7 +42,8 @@ self.addEventListener('fetch', (e) => {
   if (!versioned && /\/(assets|fonts|icons)\//.test(url.pathname)) {
     e.respondWith(caches.open(CACHE).then(async (c) => {
       const hit = await c.match(req);
-      const net = fetch(req, { cache: 'no-cache' }).then((r) => { if (r.ok) c.put(req, r.clone()); return r; });
+      if (hit && Date.now() - Number(hit.headers.get('sw-at') || 0) < 24 * 3600e3) return hit; // checked for a redrawn copy once a day, not on every use (perf audit 2026-10-29: each card picture asked the server again on every load)
+      const net = fetch(req, { cache: 'no-cache' }).then(async (r) => { if (r.status === 200) { const st = await stamp(r); c.put(req, st.clone()).catch(() => {}); return st; } return r; });
       if (hit) { e.waitUntil(net.catch(() => {})); return hit; }
       return net;
     }));
@@ -47,7 +59,8 @@ self.addEventListener('fetch', (e) => {
   e.respondWith(caches.open(CACHE).then(async (c) => {
     const key = new Request(url.origin + url.pathname);
     const hit = await c.match(key);
-    const net = fetch(req).then((r) => { if (r.ok) c.put(key, r.clone()); return r; }).catch(() => hit);
+    if (hit && Date.now() - Number(hit.headers.get('sw-at') || 0) < DATA_AGE) return hit;
+    const net = fetch(req).then(async (r) => { if (r.ok) { const st = await stamp(r); c.put(key, st.clone()); return st; } return r; }).catch(() => hit);
     if (hit) { e.waitUntil(net.catch(() => {})); return hit; }
     return net;
   }));

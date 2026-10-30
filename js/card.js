@@ -1,25 +1,26 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { fallWords } from './last-chance.js?v=0.1.1426';
-import { useMiles } from './units.js?v=0.1.1426';
-import { feel } from './native.js?v=0.1.1426';
-import { sfx } from './sfx.js?v=0.1.1426';
-import { cardArt } from './art.js?v=0.1.1426';
-import { TIER_INFO } from './rarity.js?v=0.1.1426';
-import { SET_BY_ID } from './sets.js?v=0.1.1426';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.1426';
-import { FLEET_ABOUT, fleetAbout, factSourceUrl, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.1426';
-import { artFileFor } from './art-keys.js?v=0.1.1426';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.1426';
-import { orbitGlobe } from './orbit-view.js?v=0.1.1426';
-import { ART_SHARED } from './art-shared.js?v=0.1.1426';
-import { ART_CREDITS } from './art-credits.js?v=0.1.1426';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.1426';
-import { nightsIn } from './observation.js?v=0.1.1426';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.1426';
-import { SHINY } from './shiny.js?v=0.1.1426';
-import { conArt, cometArt } from './con-art.js?v=0.1.1426';
-import { CON_FIGURES } from './con-figures.js?v=0.1.1426';
-import { localText } from './localize.js?v=0.1.1426';
+import { fallWords } from './last-chance.js?v=0.1.1427';
+import { useMiles } from './units.js?v=0.1.1427';
+import { feel } from './native.js?v=0.1.1427';
+import { sfx } from './sfx.js?v=0.1.1427';
+import { cardArt } from './art.js?v=0.1.1427';
+import { TIER_INFO } from './rarity.js?v=0.1.1427';
+import { SET_BY_ID } from './sets.js?v=0.1.1427';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.1427';
+import { FLEET_ABOUT, fleetAbout, factSourceUrl, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.1427';
+import { artFileFor } from './art-keys.js?v=0.1.1427';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.1427';
+/* the orbit view (and its 66 KB coastline) loads when a card first needs it (perf audit 2026-10-29) */
+let orbitP = null; const orbitMod = () => (orbitP ??= import('./orbit-view.js?v=0.1.1427'));
+import { ART_SHARED } from './art-shared.js?v=0.1.1427';
+import { ART_CREDITS } from './art-credits.js?v=0.1.1427';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.1427';
+import { nightsIn } from './observation.js?v=0.1.1427';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.1427';
+import { SHINY } from './shiny.js?v=0.1.1427';
+import { conArt, cometArt } from './con-art.js?v=0.1.1427';
+import { CON_FIGURES } from './con-figures.js?v=0.1.1427';
+import { localText } from './localize.js?v=0.1.1427';
 // The animal/symbol figure belongs to the completed (gold) constellation card only (2026-10-05): a single
 // star’s card draws just the star pattern with its star marked, so the figure is a reward for finishing the set.
 // A star card’s constellation figure comes into focus as you collect the constellation’s stars (design/con-focus.html B).
@@ -104,7 +105,7 @@ function asFragmentCard(el, o, mini) { // rearrange a rendered card into the tra
   art.remove(); face.querySelector('.card__identity')?.remove(); face.querySelector('.card__stats')?.remove(); face.querySelector('.temp-strip')?.remove();
   head.before(top); head.insertAdjacentHTML('afterend', fragReport(o, mini)); el.classList.add('card--frag');
   // its picture is the live globe of its orbit (2026-10-26, Sevaan: "for debris just use the globe"); one still frame on tiles
-  const box = el.querySelector('.frag-orbit-box'); requestAnimationFrame(() => { if (box.isConnected) orbitGlobe(o, box, myPlace(), { once: mini }); });
+  const box = el.querySelector('.frag-orbit-box'); orbitMod().then((m) => requestAnimationFrame(() => { if (box.isConnected) m.orbitGlobe(o, box, myPlace(), { once: mini }); }));
 }
 // Real photos (2026-10-26, Sevaan: no "AI slop") carry a small credit and no added sparkles.
 function artStars(o) {
@@ -547,9 +548,9 @@ const myPlace = () => { try { const o = JSON.parse(localStorage.getItem('observe
 // swaps its picture for the live globe (js/orbit-view.js); tap again for the picture. Fragment cards show the globe always.
 function orbitTap(el) {
   const o = el._card, art = el.querySelector('.card__art'); if (!o?.el || o.natural || o.archived || !art || o.type === 'debris' || art.querySelector('.art-locked')) return null; /* not yours yet: just its hidden picture, no orbit (2026-10-28, Sevaan) */ // debris: no tap (fragments already show their orbit)
-  let globe = null; el.classList.add('can-orbit');
-  return () => { if (!el.isConnected) return; if (globe) { globe.stop(); globe = null; art.classList.remove('orbiting'); return; }
-    globe = orbitGlobe(o, art, myPlace()); if (globe) art.classList.add('orbiting'); };
+  let globe = null, want = false; el.classList.add('can-orbit');
+  return () => { if (!el.isConnected) return; if (globe || want) { want = false; globe?.stop(); globe = null; art.classList.remove('orbiting'); return; }
+    want = true; orbitMod().then((m) => { if (!want || globe || !el.isConnected) return; want = false; globe = m.orbitGlobe(o, art, myPlace()); if (globe) art.classList.add('orbiting'); }); };
 }
 export function attachFlip(el, { onBack, onTap = orbitTap(el) } = {}) {
   // onTap (2026-10-14, orbit view): a single tap, fired once it’s clear no second tap is coming; a double tap flips.
