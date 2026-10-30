@@ -2235,3 +2235,26 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - 2026-10-29 · v0.1.1414 (Sevaan): the first-card lesson reads 'See this object again on another night and its card levels up.'
 - 2026-10-29 · v0.1.1415 (Sevaan): in the first-card lesson, the silver then the gold mini card glimmer once each (a bright band sweeps across, 1.6 s then 2.5 s in, after they light).
 - 2026-10-29 · v0.1.1416 (Sevaan: the hero's card was blank on every open, then filled in): paintNow(el) decodes a card's pictures with the frame (decoding sync, eager) and holdArt keeps up to 80 decoded pictures in memory, so a rebuilt page finds them ready. Used for the hero card, the sky window cards and the Up now tiles.
+- 2026-10-29 · v0.1.1419, performance pass (audit report in that session's scratchpad perf-audit/):
+  - **Collection tiles are recycled:** cards-page.js `recycler`, an IntersectionObserver with a 3000 px margin. Tiles far off screen go back to empty slots (img src cleared) and are rebuilt by the build observer if you scroll back. The open card is kept, and it's disconnected on re-render. A fast scroll through all 4,861 cards: 145k → 19k DOM nodes, 1,791 → 75 tiles, ~650 MB → ~0 decoded pictures.
+  - **Text helpers:**
+    - localText remembers each text's result for the current settings, keyed on units/clock/language, so the regexes only run on a first sight.
+    - usEnglish and the units region are worked out once per language.
+  - **Tonight sky window:**
+    - 36 twinkling DOM stars (was 120) over 110 fixed stars painted on its canvas, with no per-star glow.
+    - All starfields twinkle by opacity only, and pause off screen (IntersectionObserver, .sf-off).
+  - **Explore:**
+    - Satellites update only on frames that draw (after the idle skip).
+    - foldCX reads the width once per resize, not every frame.
+    - Earth's shadow draws only the strips near the view (6 sample points per strip against the view cone).
+  - **Start:**
+    - The Milky Way fallback model is built in idle time, not at module load.
+    - The welcome card isn't built for returning players.
+    - The audio context is made in idle time 6 s in.
+  - **Not done yet** (audit items):
+    - per-frame allocations in sky.js (landscape ENU precompute);
+    - one WebGL copy per frame;
+    - lore/constellation loads moved off the boot path;
+    - Collection tiles built in one pass and time-sliced;
+    - the minute refresh rebuilding the whole Tonight page;
+    - Google Fonts self-hosted; TTF to woff2; sw.js re-downloading the catalogue; lazy-loading unused modules.

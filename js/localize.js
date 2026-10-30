@@ -4,7 +4,7 @@
 //    kg → lb, tonnes → tons, °C → °F, keeping about as many figures as the original number had.
 //  - A 24-hour clock (Settings → Clock, or the phone's): "1 AM" → "01:00".
 //  - US English phones: colour → color, centre → center, catalogue → catalog… (a fixed word list, whole words only).
-import { useMiles } from './units.js?v=0.1.1416';
+import { useMiles } from './units.js?v=0.1.1419';
 
 const num = (s) => Number(String(s).replace(/,/g, ''));
 // Round n to about as many significant figures as the source number showed (at least 2), and write it with commas.
@@ -35,7 +35,7 @@ function imperial(t) {
     .replace(new RegExp(`(−|-)?${N}\\s?°C\\b`, 'g'), (_, neg, a) => { const c = (neg ? -1 : 1) * num(a), f = c * 9 / 5 + 32; return `${like(a, f, Math.abs(f) >= 1000 ? 2 : 1).replace(/^-/, '−')} °F`; });
 }
 // Hours written into texts ("between 1 and 4 AM", "5 and 9 PM") on a 24-hour clock.
-const is24 = () => { try { const c = localStorage.getItem('clock'); if (c === '24') return true; if (c === '12') return false; } catch {} return !/[AP]M|am|pm/i.test(new Date(2020, 0, 1, 13).toLocaleTimeString([], { hour: 'numeric' })); };
+const is24Raw = () => { try { const c = localStorage.getItem('clock'); if (c === '24') return true; if (c === '12') return false; } catch {} return !/[AP]M|am|pm/i.test(new Date(2020, 0, 1, 13).toLocaleTimeString([], { hour: 'numeric' })); };
 const h24 = (h, ap) => { let n = Number(h) % 12; if (/p/i.test(ap)) n += 12; return `${String(n).padStart(2, '0')}:00`; };
 function hours(t) {
   return t.replace(/\b(\d{1,2}) (and|to|–) (\d{1,2}) (AM|PM|am|pm|a\.m\.|p\.m\.)/g, (_, a, w, b, ap) => `${h24(a, ap)} ${w} ${h24(b, ap)}`)
@@ -53,12 +53,22 @@ const US = { colour: 'color', colours: 'colors', coloured: 'colored', colourful:
   sceptical: 'skeptical', jewellery: 'jewelry', storey: 'story', storeys: 'stories', greyish: 'grayish' }; // tonnes are a unit (imperial converts them), not a spelling
 const usRe = new RegExp(`\\b(${Object.keys(US).join('|')})\\b`, 'gi');
 const fit = (from, to) => (from === from.toUpperCase() ? to.toUpperCase() : from[0] === from[0].toUpperCase() ? to[0].toUpperCase() + to.slice(1) : to);
-export const usEnglish = () => { try { return /^en(-US)?$/i.test(navigator.language) && new Intl.Locale(navigator.language).maximize().region === 'US'; } catch { return false; } };
+const usEnglishRaw = () => { try { return /^en(-US)?$/i.test(navigator.language) && new Intl.Locale(navigator.language).maximize().region === 'US'; } catch { return false; } };
+/* The player's settings change rarely: read them at most once a second, and remember each text's answer for those
+   settings (perf audit 2026-10-29: 14 regexes plus locale and localStorage work on every call cost seconds in a
+   Collection scroll). */
+const usEn = new Map(); export const usEnglish = () => { const l = navigator.language; if (!usEn.has(l)) usEn.set(l, usEnglishRaw()); return usEn.get(l); };
+let flags = null, flagsKey = ''; const memo = new Map();
+const raw = (k) => { try { return localStorage.getItem(k) ?? ''; } catch { return ''; } };
+const flagsNow = () => { const key = `${raw('units')}|${raw('clock')}|${navigator.language}`; /* the expensive parts only when a setting or the language changes */
+  if (key !== flagsKey) { const f = `${useMiles() ? 1 : 0}${is24Raw() ? 1 : 0}${usEnglish() ? 1 : 0}`; if (f !== flags) memo.clear(); flags = f; flagsKey = key; } return flags; };
 export function localText(t) {
   if (!t) return t;
-  let s = String(t);
-  if (useMiles()) s = imperial(s);
-  if (is24()) s = hours(s);
-  if (usEnglish()) s = s.replace(usRe, (w) => fit(w, US[w.toLowerCase()]));
+  const f = flagsNow(), key = String(t), hit = memo.get(key); if (hit !== undefined) return hit;
+  let s = key;
+  if (f[0] === '1') s = imperial(s);
+  if (f[1] === '1') s = hours(s);
+  if (f[2] === '1') s = s.replace(usRe, (w) => fit(w, US[w.toLowerCase()]));
+  if (memo.size > 4000) memo.clear(); memo.set(key, s);
   return s;
 }

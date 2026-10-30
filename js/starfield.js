@@ -11,6 +11,8 @@ export function addStarfield(host, count = 70) {
     field.append(s);
   }
   host.prepend(field);
+  /* Twinkle only while on screen (perf audit 2026-10-29: 120 infinite animations kept style recalcs running while idle) */
+  if ('IntersectionObserver' in window) new IntersectionObserver((es) => { for (const e of es) field.classList.toggle('sf-off', !e.isIntersecting); }).observe(field);
 }
 
 // Collection tiles lean a little towards your finger while you touch them, and settle back when you let

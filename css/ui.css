@@ -566,3 +566,8 @@ html body:has(.overlay.panel:not([hidden])) #toasts#toasts#toasts, html body:has
 body.nav-tabs .sc-switch { background-size: calc(33.34% - 36px) 3px, auto !important; }
 .sc-switch[data-side='mid'] { background-position: 50% 0, 0 0 !important; }
 :where(html[data-theme='night'], body.night) { --ui-medal: #ff7f70; }
+
+/* Starfields: opacity-only twinkle (no var() in the keyframes, no scale) and resting while off screen (perf audit 2026-10-29) */
+.starfield i { animation-name: ui-twinkle-o; will-change: opacity; }
+@keyframes ui-twinkle-o { 0%, 100% { opacity: .9; } 50% { opacity: .1; } }
+.starfield.sf-off i { animation-play-state: paused; }

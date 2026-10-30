@@ -3509,3 +3509,5 @@ body.night .sw-sky { border-color: #3a1512; }
 #visible { will-change: transform; }
 /* The lower half of the Tonight page is skipped by the renderer until it's near the screen (2026-10-29 perf) */
 #tonight-list, #tn-run { content-visibility: auto; contain-intrinsic-size: auto 900px; } /* not the missions: their text is fitted by measuring */
+
+.sw-sky .sw-stars i { box-shadow: none !important; } /* no per-star glow: each one cost a paint per frame (perf audit 2026-10-29) */

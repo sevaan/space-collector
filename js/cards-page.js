@@ -1,33 +1,33 @@
-import { pullToClose } from './pull-close.js?v=0.1.1416';
-import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.1416';
-import { computeStats, statsHtml } from './stats.js?v=0.1.1416';
-import { nightKey } from './observation.js?v=0.1.1416';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1416';
-import { sfx } from './sfx.js?v=0.1.1416';
-import { expandFacts } from './catalog-facts.js?v=0.1.1416';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.1416';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1416';
-import { ticket } from './toast.js?v=0.1.1416';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.1416';
-import { satGlobe } from './sat-globe.js?v=0.1.1416';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.1416';
-import { cardArt } from './art.js?v=0.1.1416';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.1416';
-import { applyBack } from './card-backs.js?v=0.1.1416';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.1416';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1416';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.1416';
-import { STORIES } from './stories.js?v=0.1.1416';
-import { loadConstellations, conList, CON_BY_ID } from './constellations.js?v=0.1.1416';
-import { conArt } from './con-art.js?v=0.1.1416';
-import { RANKS, progress, readDeals, readWeekThemes, xpCarry } from './progress.js?v=0.1.1416';
-import { eventBadges, nextEvent } from './events.js?v=0.1.1416';
-import { shareCardEl } from './share-card.js?v=0.1.1416';
-import { forgetSighting } from './cloud-backup.js?v=0.1.1416';
-import { allSightings, deleteSighting } from './store.js?v=0.1.1416';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.1416';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.1416';
-import { localText } from './localize.js?v=0.1.1416';
+import { pullToClose } from './pull-close.js?v=0.1.1419';
+import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.1419';
+import { computeStats, statsHtml } from './stats.js?v=0.1.1419';
+import { nightKey } from './observation.js?v=0.1.1419';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1419';
+import { sfx } from './sfx.js?v=0.1.1419';
+import { expandFacts } from './catalog-facts.js?v=0.1.1419';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.1419';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1419';
+import { ticket } from './toast.js?v=0.1.1419';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.1419';
+import { satGlobe } from './sat-globe.js?v=0.1.1419';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.1419';
+import { cardArt } from './art.js?v=0.1.1419';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.1419';
+import { applyBack } from './card-backs.js?v=0.1.1419';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.1419';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1419';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.1419';
+import { STORIES } from './stories.js?v=0.1.1419';
+import { loadConstellations, conList, CON_BY_ID } from './constellations.js?v=0.1.1419';
+import { conArt } from './con-art.js?v=0.1.1419';
+import { RANKS, progress, readDeals, readWeekThemes, xpCarry } from './progress.js?v=0.1.1419';
+import { eventBadges, nextEvent } from './events.js?v=0.1.1419';
+import { shareCardEl } from './share-card.js?v=0.1.1419';
+import { forgetSighting } from './cloud-backup.js?v=0.1.1419';
+import { allSightings, deleteSighting } from './store.js?v=0.1.1419';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.1419';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.1419';
+import { localText } from './localize.js?v=0.1.1419';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -259,12 +259,23 @@ const observer = new IntersectionObserver((entries) => {
     tile.addEventListener('click', (e) => { if (tile._peeked) { tile._peeked = false; e.preventDefault(); return; } if (upWas) leaveUpList(); /* beside the grid, Up tonight’s list was still the viewer’s */ openViewer(state.list.findIndex((card) => card.key === c.key), tile.getBoundingClientRect()); });
     holdToPeek(tile, c);
     for (const im of tile.querySelectorAll('img[loading="lazy"]')) im.loading = 'eager'; // the tile is near the view already; lazy waited for the top window (off-screen)
-    target.replaceChildren(tile);
+    target.replaceChildren(tile); recycler.observe(target);
     fitTileName(tile);
     if (cascadeLeft > 0) { cascadeLeft--; target.classList.add('cascade'); target.style.setProperty('--i', String(24 - cascadeLeft)); setTimeout(() => target.classList.remove('cascade'), 1200); }
     for (const img of tile.querySelectorAll('img.card-art-image')) { if (img.complete && img.naturalWidth) img.classList.add('loaded'); else { img.addEventListener('load', () => img.classList.add('loaded'), { once: true }); img.addEventListener('error', () => img.classList.add('loaded'), { once: true }); } }
   }
-}, { root: document, rootMargin: '500px 0px' }); // root: this page’s own viewport (2026-10-17 perf pass): the default root is the
+}, { root: document, rootMargin: '500px 0px' });
+/* Tiles far off screen go back to empty slots, pictures and all, and are rebuilt if you scroll back (perf audit
+   2026-10-29: a fast scroll through every card kept 1,800 tiles and ~650 MB of decoded pictures, enough for iOS to
+   close the app). Slots keep their size, so nothing moves. The card open in the viewer is kept. */
+const recycler = new IntersectionObserver((entries) => {
+  for (const { isIntersecting, target } of entries) {
+    if (isIntersecting || !target.firstElementChild || target.classList.contains('shown')) continue;
+    for (const img of target.querySelectorAll('img')) img.removeAttribute('src');
+    target.replaceChildren(); recycler.unobserve(target); observer.observe(target);
+  }
+}, { root: document, rootMargin: '3000px 0px' });
+// (the build observer's root:) this page’s own viewport (2026-10-17 perf pass): the default root is the
 // top window, where the Collection sits off-screen while you’re on Explore, so no tile was built until it slid up and the
 // first screenful was built mid-slide. Now they’re built (and their pictures loaded) in the background.
 
@@ -647,7 +658,7 @@ function renderView() {
   $('results').textContent = `${total.toLocaleString()} ${total === 1 ? 'card' : 'cards'}${state.view === 'owned' ? ' in your collection' : ' in the field guide'}`;
   markFilters();
   $('reset-filters').hidden = state.view === 'patches' || !state.query && state.set === 'all' && state.rarity === 'all' && (state.sort ?? 'auto') === 'auto';
-  observer.disconnect();
+  observer.disconnect(); recycler.disconnect();
   $('grid').replaceChildren();
   if (!total) {
     const empty = document.createElement('div'); empty.className = 'empty';

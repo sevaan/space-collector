@@ -1,17 +1,17 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.1416';
+import { extinction } from './sky-limit.js?v=0.1.1419';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.1416';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.1419';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.1416';
-import { createCloudGL } from './clouds-gl.js?v=0.1.1416';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.1419';
+import { createCloudGL } from './clouds-gl.js?v=0.1.1419';
 // Cloud colours by light: sunlit tops, shadowed bellies, and the horizon haze they melt into (0–1 RGB).
 const CLOUD_LIGHT = {
   day: { lit: [1, 1, 1], shade: [0.62, 0.68, 0.77], haze: [0.82, 0.87, 0.93] },
   dusk: { lit: [1, 0.8, 0.68], shade: [0.36, 0.33, 0.42], haze: [0.62, 0.5, 0.52] },
   night: { lit: [0.22, 0.25, 0.31], shade: [0.1, 0.12, 0.16], haze: [0.14, 0.15, 0.2] },
 };
-import { TIER_INFO } from './rarity.js?v=0.1.1416';
+import { TIER_INFO } from './rarity.js?v=0.1.1419';
 
 const RAD = Math.PI / 180;
 const SECRET_PX = { santa: 24, roadster: 12.4, voyager: 14.5, voyager2: 14.5, pioneer10: 11.7, pioneer11: 11.7, newhorizons: 6.4, arecibo: 6.9, halley: 8.6, sputnik: 11.2, laika: 13.3, wow: 9.8 };
@@ -1751,7 +1751,11 @@ export class SkyView {
     const { cols, edges, any, all } = this._shadow, ctx = this.ctx;
     // The shade: every column added to one path and filled once, so neighbouring pieces don’t overlap into seams.
     ctx.save(); ctx.fillStyle = 'rgba(2,5,12,.22)'; ctx.beginPath();
-    for (const q of cols) this.shadeQuad(q);
+    /* only the strips near the view (perf audit 2026-10-29: all 180 were cut and projected every frame, about a third of
+       the sky's drawing): a strip is kept if any of 6 points along it is within the view's half-diagonal + 12°. */
+    const b = this.basis?.back ?? [0, 1, 0], cosLim = Math.cos(Math.min(89, Math.atan(Math.hypot(1, this.w / Math.max(1, this.h)) * Math.tan((this.fovV / 2) * RAD)) / RAD + 12) * RAD);
+    const near = (q) => { for (let k = 0; k <= 5; k++) { const t = k / 5; for (const [u, v] of [[q[0], q[3]], [q[1], q[2]]]) { const x = u[0] + (v[0] - u[0]) * t, y = u[1] + (v[1] - u[1]) * t, z = u[2] + (v[2] - u[2]) * t; if ((x * b[0] + y * b[1] + z * b[2]) / (Math.hypot(x, y, z) || 1) > cosLim) return true; } } return false; };
+    for (const q of cols) { if (near(q)) this.shadeQuad(q); }
     ctx.fill(); ctx.restore();
     if (!any || all || !edges.length) return;
     // The edge: dashed gold, one stroke per run of neighbouring crossings.
