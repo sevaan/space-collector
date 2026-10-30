@@ -2488,7 +2488,7 @@ body:has(#onboard:not([hidden]) #ob-done:not([hidden])) #set-plus-sheet .set-she
 /* Upright iPads (no fold across the middle; the unfolded Duo upright is under 700 wide): the group follows the 3×3 index
    straight away instead of starting below an imaginary fold (iPad playtest 2026-10-24: a big empty band). */
 @media (min-width: 700px) and (min-height: 900px) and (orientation: portrait) {
-  #set-index { min-height: 0; margin-bottom: 18px; }
+  #set-index { min-height: 0; margin-bottom: 48px; } /* room for the group's name, which sits above its panel (iPad playtest 2026-10-30: it touched the tabs) */
 }
 
 /* hidden means hidden on the plane ticket's route line (Android playtest 2026-10-24: a star's ticket showed the last plane's "Cessna 172"; the display:block !important above beat [hidden]). */
