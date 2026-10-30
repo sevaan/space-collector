@@ -3578,3 +3578,5 @@ body.col-typing #nav, body.col-typing #tab-fade { visibility: hidden !important;
 .tc .acts:not(.pick) .yes { order: -1; flex: none; height: 50px; }
 .tc .acts:not(.pick) .no { order: 0; flex: none; height: auto; min-height: 44px; padding: 8px 0; background: none; color: #fa8127; font: 500 14px/1.2 var(--label); letter-spacing: .12em; white-space: normal; }
 body.night .tc .acts:not(.pick) .no { color: #ff7f70; }
+/* A card with no second choice keeps its room, so its main button sits where the other steps' do (2026-10-30, Sevaan) */
+.tc .acts:not(.pick) { min-height: 96px; }
