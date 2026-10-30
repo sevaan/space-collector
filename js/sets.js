@@ -16,7 +16,7 @@ export const SETS = [
   { id: 'mega', name: 'Fleets', color: '#7c8591', test: (o) => !!o.launches || !!o.family || /^(STARLINK|ONEWEB|QIANFAN|GUOWANG|KUIPER|IRIDIUM|GLOBALSTAR|ORBCOMM|SPACEMOBILE|BLUEBIRD)/.test(o.name) }, // above the age/dead sets: a fleet card is a Fleet even if its first launch was in the 1990s
   { id: 'space-race', name: 'Space Race Relics', sub: 'Launched by 1975', color: '#e8a33d', test: (o) => year(o) && year(o) <= 1975 },
   { id: 'red-stars', name: 'Red Stars', sub: 'Soviet and Russian rocket stages', color: '#8c2334', test: (o) => o.type === 'rocket-body' && o.owner === 'CIS' },
-  { id: 'rocket-stages', name: 'Rocket Stages', sub: 'Every other country’s', color: '#2f3237', test: (o) => o.type === 'rocket-body' },
+  { id: 'rocket-stages', name: 'Rocket Stages', sub: 'Rocket stages from every other country', color: '#2f3237', test: (o) => o.type === 'rocket-body' },
   { id: 'dead-sats', name: 'Dead Satellites Society', sub: 'Satellites that no longer work', color: '#6b5b95', test: isDead },
   { id: 'junk', name: 'Space Junk', color: '#a0673a', test: (o) => o.type === 'debris' },
   { id: 'nations', name: 'Launch Nations', sub: 'Everything else, by who launched it', color: '#1f6fd1', test: () => true },
