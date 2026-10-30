@@ -1,9 +1,9 @@
 // Orbit math: where every object is in the observer’s sky, and whether it can be seen.
 // Pure functions, no DOM, so this module carries over unchanged to a native wrapper.
 
-import { expandFacts } from './catalog-facts.js?v=0.1.1421';
-import * as sat from './lib/satellite.js?v=0.1.1421';
-import { extinction, starlinkStdMag } from './sky-limit.js?v=0.1.1421';
+import { expandFacts } from './catalog-facts.js?v=0.1.1422';
+import * as sat from './lib/satellite.js?v=0.1.1422';
+import { extinction, starlinkStdMag } from './sky-limit.js?v=0.1.1422';
 
 const RAD = Math.PI / 180;
 const EARTH_RADIUS_KM = 6371;
@@ -306,15 +306,18 @@ export class SkyModel {
   items(date) {
     const t = date.getTime();
     const out = [];
+    // No per-object garbage (perf audit 2026-10-29): directions are worked inline and each entry keeps one item/look
+    // object that is updated in place, so a look held from an earlier frame follows the object.
     for (const e of this.above.values()) {
       const u = Math.max(0, Math.min(1.5, (t - e.t0) / (e.t1 - e.t0)));
-      const a = enuFromAzEl(e.s0.az, e.s0.el), b = enuFromAzEl(e.s1.az, e.s1.el);
-      const v = [a[0] + (b[0] - a[0]) * u, a[1] + (b[1] - a[1]) * u, a[2] + (b[2] - a[2]) * u];
-      const l = Math.hypot(v[0], v[1], v[2]) || 1;
-      const { az, el } = azElFromEnu([v[0] / l, v[1] / l, v[2] / l]);
+      const a0 = e.s0.az * RAD, e0 = e.s0.el * RAD, a1 = e.s1.az * RAD, e1 = e.s1.el * RAD, c0 = Math.cos(e0), c1 = Math.cos(e1);
+      const ax = c0 * Math.sin(a0), ay = c0 * Math.cos(a0), az0 = Math.sin(e0);
+      const x = ax + (c1 * Math.sin(a1) - ax) * u, y = ay + (c1 * Math.cos(a1) - ay) * u, z = az0 + (Math.sin(e1) - az0) * u;
+      const l = Math.hypot(x, y, z) || 1, el = Math.asin(Math.max(-1, Math.min(1, z / l))) / RAD;
       if (el < 0) continue;
-      const s = u < 0.5 ? e.s0 : e.s1;
-      out.push({ obj: e.obj, look: { ...s, az, el } });
+      const s = u < 0.5 ? e.s0 : e.s1, it = e.item ??= { obj: e.obj, look: {} };
+      Object.assign(it.look, s); it.look.az = (Math.atan2(x, y) / RAD + 360) % 360; it.look.el = el;
+      out.push(it);
     }
     return out;
   }

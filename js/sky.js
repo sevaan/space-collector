@@ -1,17 +1,17 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.1421';
+import { extinction } from './sky-limit.js?v=0.1.1422';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.1421';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.1422';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.1421';
-import { createCloudGL } from './clouds-gl.js?v=0.1.1421';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.1422';
+import { createCloudGL } from './clouds-gl.js?v=0.1.1422';
 // Cloud colours by light: sunlit tops, shadowed bellies, and the horizon haze they melt into (0–1 RGB).
 const CLOUD_LIGHT = {
   day: { lit: [1, 1, 1], shade: [0.62, 0.68, 0.77], haze: [0.82, 0.87, 0.93] },
   dusk: { lit: [1, 0.8, 0.68], shade: [0.36, 0.33, 0.42], haze: [0.62, 0.5, 0.52] },
   night: { lit: [0.22, 0.25, 0.31], shade: [0.1, 0.12, 0.16], haze: [0.14, 0.15, 0.2] },
 };
-import { TIER_INFO } from './rarity.js?v=0.1.1421';
+import { TIER_INFO } from './rarity.js?v=0.1.1422';
 
 const RAD = Math.PI / 180;
 const SECRET_PX = { santa: 24, roadster: 12.4, voyager: 14.5, voyager2: 14.5, pioneer10: 11.7, pioneer11: 11.7, newhorizons: 6.4, arecibo: 6.9, halley: 8.6, sputnik: 11.2, laika: 13.3, wow: 9.8 };
@@ -156,6 +156,7 @@ export class SkyView {
     this.canvas = canvas;
     this.ctx = this.mainCtx = canvas.getContext('2d'); // mainCtx: what every frame draws to, whatever happened before
     this.fovV = 70; // vertical field of view, degrees
+    this._pp = { x: 0, y: 0 }; this._pv = [0, 0, 0]; this._xy = new Float64Array(32); this._geo = new WeakMap(); // projection scratch, landscape geometry cache
     this.theme = THEMES.glass;
     this.targetPos = null;
     this.safeTop = 150;
@@ -197,6 +198,16 @@ export class SkyView {
     };
   }
 
+  // project() without the allocations: writes x/y into `out`, false when behind the phone.
+  projXY(v, out) {
+    const b = this.basis, k = b.back, z = v[0] * k[0] + v[1] * k[1] + v[2] * k[2];
+    if (z <= 0.05) return false;
+    const r = b.right, u = b.up;
+    out.x = this.cx + (this.f * (v[0] * r[0] + v[1] * r[1] + v[2] * r[2])) / z;
+    out.y = this.cy - (this.f * (v[0] * u[0] + v[1] * u[1] + v[2] * u[2])) / z;
+    return true;
+  }
+
   project(v) {
     const c = this.cam(v);
     if (c.z <= 0.05) return null;
@@ -212,25 +223,31 @@ export class SkyView {
     const ctx = this.ctx;
     let drawing = false;
     ctx.beginPath();
+    const p = this._pp;
     for (const v of vectors) {
-      const p = v[2] >= minUp ? this.project(v) : null;
-      if (!p || Math.abs(p.x) > 1e5 || Math.abs(p.y) > 1e5) { drawing = false; continue; }
+      if (!(v[2] >= minUp && this.projXY(v, p)) || Math.abs(p.x) > 1e5 || Math.abs(p.y) > 1e5) { drawing = false; continue; }
       if (drawing) ctx.lineTo(p.x, p.y); else { ctx.moveTo(p.x, p.y); drawing = true; }
     }
     ctx.stroke();
   }
 
   // Filled polygon from az/el corners; skipped if any corner is behind the phone.
+  // Allocation-free (perf audit 2026-10-29: poly and the shade strips made ~2 MB of garbage a frame): directions and
+  // screen points go through reused scratch space.
   poly(corners) {
-    const pts = [];
-    for (const [az, el] of corners) {
-      const p = this.project(enuFromAzEl(az, el));
-      if (!p || Math.abs(p.x) > 2e4 || Math.abs(p.y) > 2e4) return false;
-      pts.push(p);
+    const n = corners.length, v = this._pv, p = this._pp;
+    if (this._xy.length < n * 2) this._xy = new Float64Array(n * 4);
+    const xy = this._xy;
+    for (let i = 0; i < n; i++) {
+      const c = corners[i], a = c[0] * RAD, e = c[1] * RAD, ce = Math.cos(e);
+      v[0] = ce * Math.sin(a); v[1] = ce * Math.cos(a); v[2] = Math.sin(e);
+      if (!this.projXY(v, p) || Math.abs(p.x) > 2e4 || Math.abs(p.y) > 2e4) return false;
+      xy[i * 2] = p.x; xy[i * 2 + 1] = p.y;
     }
     const ctx = this.ctx;
     ctx.beginPath();
-    pts.forEach((p, i) => (i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y)));
+    ctx.moveTo(xy[0], xy[1]);
+    for (let i = 1; i < n; i++) ctx.lineTo(xy[i * 2], xy[i * 2 + 1]);
     ctx.closePath();
     if (this.outlineOnly) { ctx.strokeStyle = ctx.fillStyle; ctx.lineWidth = 1.1; ctx.lineJoin = 'round'; ctx.stroke(); } else ctx.fill(); // camera view: outlines
     return true;
@@ -847,8 +864,8 @@ export class SkyView {
       ctx.strokeStyle = t.haze ?? 'rgba(120, 150, 180, 1)';
       ctx.globalAlpha = alpha * base;
       ctx.lineWidth = w * this.f * RAD;
-      const pts = [];
-      for (let az = 0; az <= 360; az += 3) pts.push(enuFromAzEl(az, w * 0.3));
+      let pts = this._haze?.[w];
+      if (!pts) { pts = []; for (let az = 0; az <= 360; az += 3) pts.push(enuFromAzEl(az, w * 0.3)); (this._haze ??= {})[w] = pts; }
       this.path(pts);
     }
     ctx.globalAlpha = base;
@@ -858,10 +875,17 @@ export class SkyView {
     const mix = (night, day) => { const n = night.match(/\w\w/g).map((h) => parseInt(h, 16)), d = day.match(/\w\w/g).map((h) => parseInt(h, 16)); return `rgb(${n.map((v, i) => Math.round(v + (d[i] - v) * dF)).join(',')})`; };
     // Hills in three ranges (2026-10-08, higher fidelity): a far hazy ridge, the main hills, a near rolling band, each
     // a little greener and darker than the one behind (aerial perspective), with a lighter sunlit crest by day.
+    // The landscape never changes, so its corner lists and directions are built once per range (perf audit 2026-10-29).
+    const geo = (key, build) => { let g = this._geo.get(key); if (!g) { g = build(); this._geo.set(key, g); } return g; };
     const band = (pts, fill, crest) => {
-      if (this.camera) { ctx.save(); ctx.strokeStyle = 'rgba(255,242,179,.7)'; ctx.lineWidth = 1.2; ctx.lineJoin = 'round'; this.path(pts.map(([az, el]) => enuFromAzEl(az, el))); ctx.restore(); return; } // camera view: just the ridge line
-      for (let i = 0; i < pts.length - 1; i += 3) { const seg = pts.slice(i, i + 4); ctx.fillStyle = fill; this.poly([...seg, [seg[seg.length - 1][0], -2], [seg[0][0], -2]]); }
-      if (crest) { ctx.save(); ctx.strokeStyle = crest; ctx.lineWidth = 1.2; ctx.lineJoin = 'round'; this.path(pts.map(([az, el]) => enuFromAzEl(az, el - 0.05))); ctx.restore(); }
+      const g = geo(pts, () => {
+        const segs = [];
+        for (let i = 0; i < pts.length - 1; i += 3) { const seg = pts.slice(i, i + 4); segs.push([...seg, [seg[seg.length - 1][0], -2], [seg[0][0], -2]]); }
+        return { segs, ridge: pts.map(([az, el]) => enuFromAzEl(az, el)), crest: pts.map(([az, el]) => enuFromAzEl(az, el - 0.05)) };
+      });
+      if (this.camera) { ctx.save(); ctx.strokeStyle = 'rgba(255,242,179,.7)'; ctx.lineWidth = 1.2; ctx.lineJoin = 'round'; this.path(g.ridge); ctx.restore(); return; } // camera view: just the ridge line
+      ctx.fillStyle = fill; for (const seg of g.segs) this.poly(seg);
+      if (crest) { ctx.save(); ctx.strokeStyle = crest; ctx.lineWidth = 1.2; ctx.lineJoin = 'round'; this.path(g.crest); ctx.restore(); }
     };
     band(LANDSCAPE.ridge, dF > 0 ? mix('0c1a29', '8aa6b2') : (t.hills ?? '#0a1826'), dF > 0.4 ? `rgba(220,235,240,${(0.35 * dF).toFixed(2)})` : null);
     band(LANDSCAPE.hills, dF > 0 ? mix('0a1826', '6f8f78') : (t.hills ?? '#0a1826'), dF > 0.4 ? `rgba(200,225,180,${(0.4 * dF).toFixed(2)})` : null);
@@ -871,10 +895,13 @@ export class SkyView {
     // kept if its direction is within the screen’s half-diagonal plus a margin of where the phone points.
     const back = this.basis?.back, halfDiag = Math.atan(Math.hypot(1, this.w / Math.max(1, this.h)) * Math.tan((this.fovV / 2) * RAD)) / RAD;
     const keepCos = Math.cos(Math.min(89, halfDiag + 12) * RAD);
-    const pine = ([az, ht, w, tiers, lean, sd], body, lit) => {
+    const pine = (tr, body, lit) => {
+      const az = tr[0], ht = tr[1];
       if (back) { const a = az * RAD, e = Math.max(0.5, ht / 2) * RAD, ce = Math.cos(e); if (Math.sin(a) * ce * back[0] + Math.cos(a) * ce * back[1] + Math.sin(e) * back[2] < keepCos) return; }
+      const g = this._geo.get(tr) ?? geo(tr, () => {
+      const [, , w, tiers, lean, sd] = tr;
       const base = -0.3, trunkH = ht * 0.12, top = ht, tw = w * 0.07;
-      if (!this.camera) this.poly([[az - tw, base], [az + tw, base], [az + tw, base + trunkH + 0.05], [az - tw, base + trunkH + 0.05]]);
+      const trunk = [[az - tw, base], [az + tw, base], [az + tw, base + trunkH + 0.05], [az - tw, base + trunkH + 0.05]];
       const left = [], right = [];
       for (let k = 0; k < tiers; k++) {
         const f = k / tiers, y0 = base + trunkH + (top - trunkH - base) * f, y1 = base + trunkH + (top - trunkH - base) * ((k + 1) / tiers) * 0.98;
@@ -884,9 +911,11 @@ export class SkyView {
         right.push([x + half, y0 - 0.06], [x + half * 0.92, y0 + 0.02], [x + half * 0.42, y1 - 0.02]);
       }
       const tip = [az + lean * (top - base), top + 0.12];
-      const outline = [...left, tip, ...right.reverse()];
-      ctx.fillStyle = this.camera ? 'rgba(255,242,179,.85)' : body; this.outlineOnly = !!this.camera; this.poly(outline); this.outlineOnly = false;
-      if (lit && !this.camera) { ctx.fillStyle = lit; this.poly([...left, tip, [az + lean * (top - base) * 0.5, base + trunkH]]); }
+      return { trunk, outline: [...left, tip, ...right.reverse()], lit: [...left, tip, [az + lean * (top - base) * 0.5, base + trunkH]] };
+      });
+      if (!this.camera) this.poly(g.trunk);
+      ctx.fillStyle = this.camera ? 'rgba(255,242,179,.85)' : body; this.outlineOnly = !!this.camera; this.poly(g.outline); this.outlineOnly = false;
+      if (lit && !this.camera) { ctx.fillStyle = lit; this.poly(g.lit); }
     };
     const farC = dF > 0 ? mix('0b1622', '557265') : (t.hills ?? '#0a1826');
     if (!this.camera) for (const tr of LANDSCAPE.far) pine(tr, farC, null); // camera view: just the near row, so the outlines stay clean
@@ -1746,7 +1775,7 @@ export class SkyView {
     const s = this.sunEnu; if (!s || s[2] > -0.035 || (this.basis?.back?.[2] ?? 0) < -0.25) return; // night side only, looking up
     // Smooth edge (2026-10-17, Sevaan: "super jagged"): a 2° azimuth grid with each crossing found by bisection, instead
     // of a 6° × 3° grid joined corner to corner. The Sun barely moves, so the shape is cached until it does.
-    const H = this.shadowKm ?? 500, key = `${s.map((v) => v.toFixed(4)).join()}|${H}`; // the height of the target in the circle (main.js)
+    const H = this.shadowKm ?? 500, key = `${s[0].toFixed(4)},${s[1].toFixed(4)},${s[2].toFixed(4)}|${H}`; // the height of the target in the circle (main.js)
     if (this._shadowKey !== key) { this._shadowKey = key; this._shadow = shadowShape(s, H); }
     const { cols, edges, any, all } = this._shadow, ctx = this.ctx;
     // The shade: every column added to one path and filled once, so neighbouring pieces don’t overlap into seams.
@@ -1754,7 +1783,7 @@ export class SkyView {
     /* only the strips near the view (perf audit 2026-10-29: all 180 were cut and projected every frame, about a third of
        the sky's drawing): a strip is kept if any of 6 points along it is within the view's half-diagonal + 12°. */
     const b = this.basis?.back ?? [0, 1, 0], cosLim = Math.cos(Math.min(89, Math.atan(Math.hypot(1, this.w / Math.max(1, this.h)) * Math.tan((this.fovV / 2) * RAD)) / RAD + 12) * RAD);
-    const near = (q) => { for (let k = 0; k <= 5; k++) { const t = k / 5; for (const [u, v] of [[q[0], q[3]], [q[1], q[2]]]) { const x = u[0] + (v[0] - u[0]) * t, y = u[1] + (v[1] - u[1]) * t, z = u[2] + (v[2] - u[2]) * t; if ((x * b[0] + y * b[1] + z * b[2]) / (Math.hypot(x, y, z) || 1) > cosLim) return true; } } return false; };
+    const near = (q) => { for (let k = 0; k <= 5; k++) { const t = k / 5; for (let h = 0; h < 2; h++) { const u = h ? q[1] : q[0], v = h ? q[2] : q[3], x = u[0] + (v[0] - u[0]) * t, y = u[1] + (v[1] - u[1]) * t, z = u[2] + (v[2] - u[2]) * t; if ((x * b[0] + y * b[1] + z * b[2]) / (Math.hypot(x, y, z) || 1) > cosLim) return true; } } return false; };
     for (const q of cols) { if (near(q)) this.shadeQuad(q); }
     ctx.fill(); ctx.restore();
     if (!any || all || !edges.length) return;
@@ -1796,17 +1825,21 @@ export class SkyView {
     // dropped whole, leaving light wedges meeting overhead (2026-10-20, Sevaan). Now it's cut into short pieces along
     // its length and only the pieces behind you are skipped.
     const N = 12, mix = (u, v, t) => { const x = u[0] + (v[0] - u[0]) * t, y = u[1] + (v[1] - u[1]) * t, z = u[2] + (v[2] - u[2]) * t, l = Math.hypot(x, y, z) || 1; return [x / l, y / l, z / l]; };
-    if (q.every((e) => this.project(e))) { this.shadePiece(q); return; }
+    const p = this._pp;
+    if (this.projXY(q[0], p) && this.projXY(q[1], p) && this.projXY(q[2], p) && this.projXY(q[3], p)) { this.shadePiece(q); return; }
     for (let k = 0; k < N; k++) { const t0 = k / N, t1 = (k + 1) / N; this.shadePiece([mix(q[0], q[3], t0), mix(q[1], q[2], t0), mix(q[1], q[2], t1), mix(q[0], q[3], t1)]); }
   }
   shadePiece(q) {
-    const pts = q.map((e) => this.project(e));
-    if (pts.some((p) => !p)) return;
+    const n = q.length, p = this._pp;
+    if (this._xy.length < n * 2) this._xy = new Float64Array(n * 4);
+    const xy = this._xy;
+    for (let i = 0; i < n; i++) { if (!this.projXY(q[i], p)) return; xy[i * 2] = p.x; xy[i * 2 + 1] = p.y; }
     // Every strip wound the same way on screen (2026-10-20, Sevaan: light triangles meeting overhead). Near the zenith
     // some strips project mirrored, and in one nonzero-filled path a mirrored strip cancels its neighbour where they meet.
-    let a = 0; for (let i = 0; i < pts.length; i++) { const p = pts[i], q2 = pts[(i + 1) % pts.length]; a += p.x * q2.y - q2.x * p.y; }
-    if (a < 0) pts.reverse();
-    const ctx = this.ctx; pts.forEach((p, i) => (i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y))); ctx.closePath();
+    let a = 0; for (let i = 0; i < n; i++) { const j = (i + 1) % n; a += xy[i * 2] * xy[j * 2 + 1] - xy[j * 2] * xy[i * 2 + 1]; }
+    const ctx = this.ctx;
+    for (let s = 0; s < n; s++) { const i = a < 0 ? n - 1 - s : s; if (s) ctx.lineTo(xy[i * 2], xy[i * 2 + 1]); else ctx.moveTo(xy[i * 2], xy[i * 2 + 1]); }
+    ctx.closePath();
   }
   drawReticle(locked, time = 0, newFind = false, plane = null, quiet = false) {
     const ctx = this.ctx, t = this.theme;
