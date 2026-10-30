@@ -2231,3 +2231,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
     - The page's star twinkles, card glow, rain and shimmer pause during its slides, and the sky bell's blur is off.
     - #visible has will-change: transform; #tonight-list and #tn-run use content-visibility: auto (not the missions: fitCards measures them).
     - Headless 4× CPU: Tonight→Explore went from 39 to ~68 frames in 1.5 s.
+- 2026-10-29 · v0.1.1413 (Sevaan, Swift re-entering ~Nov 2): last-chance fall dates use a speeding-up decay model (js/last-chance.js fallAt). It takes today's sink rate from MEAN_MOTION_DOT, steps down to 150 km with air density rising exponentially, scale height 18 km at 150 → ~42 km at 250 km. Swift: Nov 14 (straight line) → Nov 4. The window is now 10 days (45 days with this model caught ~110 objects): 38 upcoming today.
