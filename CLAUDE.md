@@ -2377,3 +2377,7 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - All around you body pictures are stepped lowest-first, so the one higher in the sky is the one above.
   - Sky window: the pass the line names is always a lead card and the window is centred on it (it could fall outside the 180°).
   - Not reproduced in WebKit: two quick taps on different mission cards (both flip there; v0.1.1446's app-wide touch-action manipulation is the likely device fix). Credits-at-top was fixed in v0.1.1447.
+- 2026-10-30 · v0.1.1449, final-check code review fixes:
+  - Collection viewer: openViewer first ends a close still under way (finishClosing: cancels its animations, closes as a hand-over with redocking set, bumps viewerGen so the old closeViewer/flickClose skip their late close). Re-tapping the card just closed threw "showModal() on an open non-modal dialog" and didn't open. letTapsThrough clears redocking from a one-time close listener (the swap's close event is queued, so the old `finally` reset ran every close handler ~0.5 s early).
+  - progress.js: every night up to and including a morning starter's first evening counts as a first night (a second morning-only night lost its starters at noon: XP 170 → 70).
+  - Sky window: the pass the line names goes first in the pool and is the only lead card.
