@@ -2314,3 +2314,11 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - All around you hint: "tap a picture to aim at it" (named stars aren't tappable).
   - Checked: the Halloween ghost (Kosmos 249, 7:57 PM Oct 31 Toronto) locks with "BOO · Ghost satellite" and Collect when aimed during its 2-minute pass (session scratchpad ghost/ghost.mjs).
   - Not changed: Find countdowns use the real clock under time travel (testing only); a ✕ that seemed to ignore its first tap in the simulator (not reproduced, no guard found).
+- 2026-10-30 · v0.1.1438, new-player simulator playtest fixes (pre-release round 1; shots in that session's scratchpad pt46a/):
+  - Credits and sources, How to play and Test notifications sheets scroll with a finger (`touch-action: pan-y`; every .set-sheet-card is touch-action none for the swipe-down close, so long sheets must opt back in). Credits hid the music credit.
+  - Tonight's Up now uses satellites' positions recomputed for now (look() at frame(now())), not state.items from when the sky last ran (the loop pauses under the page; after a time jump it listed satellites in Earth's shadow and aimed at nothing).
+  - Mission cards are fitted again when the Tonight page finishes opening (MutationObserver on #visible .opened): a background draw while hidden measured nothing and left huge, clipped titles.
+  - The full pass list's "Busiest" is nightStats' busiest clear moment, the same as Tonight's run.
+  - No Night 2 card when the first catch was under 16 h ago (a morning catch then the same evening).
+  - Mission cards header: "+100 XP to go". Sky-window line puts a stage's year in brackets ("Thor Ablestar stage (1963) at 9:07 PM").
+  - Not changed: the radar badge over the compass S by day, the Collection header under the status bar while the Find keyboard is open (iOS), a few awkward wraps in the fade rush / Up now captions.

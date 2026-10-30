@@ -3535,3 +3535,6 @@ body.night #rv-teach .sp-cap > b, body.night #rv-teach .sp-go { color: #ff6a55; 
 /* Narrower phones (iPhone 17e, 390 wide): the rarity line keeps its constellation name ("UNCOMMON · OPHIUCHUS" was cut
    to "OPHIUCH…", QA 2026-10-30). */
 @media (max-width: 399px) { #discover .d-ticket #d-tier { letter-spacing: .08em !important; font-size: 11.5px !important; } #discover .d-ticket #d-dist { letter-spacing: .02em; } }
+/* Long sheets scroll with a finger: every sheet card is touch-action: none for the swipe-down close, so these must
+   opt back in (QA 2026-10-30: Credits and sources wouldn't move, hiding the music credit). */
+:is(#set-credits-sheet, #set-howto-sheet, #set-notetest-sheet) .set-sheet-card { touch-action: pan-y; overscroll-behavior: contain; }
