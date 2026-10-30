@@ -1,8 +1,8 @@
 // Player progress from the sighting log: XP and observer rank, tonight’s three missions, a weekly streak and
 // achievements. Everything is derived from the saved sightings (nothing extra is stored), so it can’t drift.
 // info(cardKey) -> { tier, type, owner, launch, natural, con } | null. No DOM.
-import { nightKey } from './observation.js?v=0.1.1436';
-import { fleetThresholds } from './card-model.js?v=0.1.1436';
+import { nightKey } from './observation.js?v=0.1.1437';
+import { fleetThresholds } from './card-model.js?v=0.1.1437';
 
 // A longer climb (2026-10-12, playtest room: three ranks on night 1, Mission Control in about two weeks), with two
 // prestige ranks past Mission Control. Nobody drops a rank they had on the old curve (rankFloor below).
@@ -396,7 +396,9 @@ export function progress(sightings, info, { constellations = [], albums = [], no
   const week = { id: thNow.id, name: thNow.name, text: thNow.text, need: thNow.need, have: Math.min(thNow.need, thNow.have(wNow)), start: wsNow, sightings: wNow };
   const st = streaks(list, now); a.bestStreak = st.best;
   const tonightKey = nightKey(now, lon ?? list[list.length - 1]?.lon ?? 0) /* where you are now, as the deal was made (bug hunt 2026-10-22: travel split them) */, tonight = nights.get(tonightKey) ?? [];
-  const missions = missionsOf(tonightKey, { first: !nights.size || tonightKey === firstNight, deals }).map((m) => ({ id: m.id, text: m.text, done: m.done(tonight, now) }));
+  // Which catch finished each mission (the first point in tonight's order where it's done), for its picture (QA 2026-10-30: every done card showed the latest catch).
+  const tonightAsc = [...tonight].sort((x, y) => x.time - y.time), finisher = (m) => { for (let i = 1; i <= tonightAsc.length; i++) if (m.done(tonightAsc.slice(0, i), now)) return tonightAsc[i - 1]; return null; };
+  const missions = missionsOf(tonightKey, { first: !nights.size || tonightKey === firstNight, deals }).map((m) => { const done = m.done(tonight, now), f = done ? finisher(m) : null; return { id: m.id, text: m.text, done, by: f ? { cardKey: f.cardKey, objectId: f.objectId } : null }; });
   xp += carry;
   let ri = 0; for (let k = 0; k < RANKS.length; k++) if (xp >= RANKS[k][0]) ri = k;
   ri = Math.max(ri, rankFloor(xp));

@@ -3532,3 +3532,6 @@ body.night .sw-sky { border-color: #3a1512; }
 body.night #rv-teach .sp-hole { box-shadow: 0 0 0 200vmax rgba(6, 0, 0, .82), 0 0 0 2px #ff6a55, 0 0 24px #ff6a5588; }
 body.night #rv-teach .sp-cap > b, body.night #rv-teach .sp-go { color: #ff6a55; } body.night #rv-teach .sp-cap > small { color: #e8705f; }
 @media (prefers-reduced-motion: reduce) { #rv-teach.spot, #rv-teach.spot.out { animation: none; } }
+/* Narrower phones (iPhone 17e, 390 wide): the rarity line keeps its constellation name ("UNCOMMON · OPHIUCHUS" was cut
+   to "OPHIUCH…", QA 2026-10-30). */
+@media (max-width: 399px) { #discover .d-ticket #d-tier { letter-spacing: .08em !important; font-size: 11.5px !important; } #discover .d-ticket #d-dist { letter-spacing: .02em; } }

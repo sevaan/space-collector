@@ -2307,3 +2307,10 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - Midnight sun: no strip, run or pass list under "Too bright tonight" (they said "Quiet until dawn" and "All 0 passes").
   - Fade rush rows are in fade order. 24-hour timeline axis keeps "03:00". Run rows and the hero say "may be cloudy" (was "cloud forecast").
   - Tour first catch Earth: "Our planet · Straight down", no "It's up right now", no left/right drag words.
+- 2026-10-30 · v0.1.1437, small-phone simulator playtest fixes (pre-release round 1; report shots in that session's scratchpad pt46b/):
+  - Done mission cards show the catch that finished each one (progress.js missions carry `by` {cardKey, objectId}: the first point in tonight's order where the mission is done), not the latest catch.
+  - Patch wall: tapping a locked patch (or a Start-here one) doesn't mark it seen, so it still gets NEW when earned.
+  - Under 400px wide the ticket's rarity line is tighter (.08em, 11.5px) so "UNCOMMON · OPHIUCHUS" fits.
+  - All around you hint: "tap a picture to aim at it" (named stars aren't tappable).
+  - Checked: the Halloween ghost (Kosmos 249, 7:57 PM Oct 31 Toronto) locks with "BOO · Ghost satellite" and Collect when aimed during its 2-minute pass (session scratchpad ghost/ghost.mjs).
+  - Not changed: Find countdowns use the real clock under time travel (testing only); a ✕ that seemed to ignore its first tap in the simulator (not reproduced, no guard found).
