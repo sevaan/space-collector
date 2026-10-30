@@ -1057,3 +1057,4 @@ body[data-view="find"] .grid.find-mode > .find-head:first-child { margin-top: 18
 /* An uncollected card's "Preview artwork" link is part of the view too, so it shows without scrolling (final iPhone 14
    check 2026-10-30). */
 @media (max-width: 699px) { #viewer:has(#v-preview:not([hidden])):not(:has(#v-where:not([hidden]))) { --v-where-h: 48px; } }
+#album-head .album__sub { display: none; } /* the list shows it; in the album's own header it pushed the count onto an indented line */

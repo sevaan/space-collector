@@ -1,33 +1,33 @@
-import { pullToClose } from './pull-close.js?v=0.1.1451';
-import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.1451';
-import { computeStats, statsHtml } from './stats.js?v=0.1.1451';
-import { nightKey } from './observation.js?v=0.1.1451';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1451';
-import { sfx } from './sfx.js?v=0.1.1451';
-import { expandFacts } from './catalog-facts.js?v=0.1.1451';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.1451';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1451';
-import { ticket } from './toast.js?v=0.1.1451';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.1451';
-import { satGlobe } from './sat-globe.js?v=0.1.1451';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.1451';
-import { cardArt } from './art.js?v=0.1.1451';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.1451';
-import { applyBack } from './card-backs.js?v=0.1.1451';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.1451';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1451';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.1451';
-import { STORIES } from './stories.js?v=0.1.1451';
-import { loadConstellations, conList, CON_BY_ID } from './constellations.js?v=0.1.1451';
-import { conArt } from './con-art.js?v=0.1.1451';
-import { RANKS, progress, readDeals, readWeekThemes, xpCarry } from './progress.js?v=0.1.1451';
-import { eventBadges, nextEvent } from './events.js?v=0.1.1451';
-import { shareCardEl } from './share-card.js?v=0.1.1451';
-import { forgetSighting } from './cloud-backup.js?v=0.1.1451';
-import { allSightings, deleteSighting } from './store.js?v=0.1.1451';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.1451';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.1451';
-import { localText } from './localize.js?v=0.1.1451';
+import { pullToClose } from './pull-close.js?v=0.1.1452';
+import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.1452';
+import { computeStats, statsHtml } from './stats.js?v=0.1.1452';
+import { nightKey } from './observation.js?v=0.1.1452';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1452';
+import { sfx } from './sfx.js?v=0.1.1452';
+import { expandFacts } from './catalog-facts.js?v=0.1.1452';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.1452';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1452';
+import { ticket } from './toast.js?v=0.1.1452';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.1452';
+import { satGlobe } from './sat-globe.js?v=0.1.1452';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.1452';
+import { cardArt } from './art.js?v=0.1.1452';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.1452';
+import { applyBack } from './card-backs.js?v=0.1.1452';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.1452';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1452';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.1452';
+import { STORIES } from './stories.js?v=0.1.1452';
+import { loadConstellations, conList, CON_BY_ID } from './constellations.js?v=0.1.1452';
+import { conArt } from './con-art.js?v=0.1.1452';
+import { RANKS, progress, readDeals, readWeekThemes, xpCarry } from './progress.js?v=0.1.1452';
+import { eventBadges, nextEvent } from './events.js?v=0.1.1452';
+import { shareCardEl } from './share-card.js?v=0.1.1452';
+import { forgetSighting } from './cloud-backup.js?v=0.1.1452';
+import { allSightings, deleteSighting } from './store.js?v=0.1.1452';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.1452';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.1452';
+import { localText } from './localize.js?v=0.1.1452';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -556,7 +556,7 @@ function nightWord(t) {
   // In the daytime, a pass tomorrow morning is "Tomorrow", not "Tonight" (final iPhone 14 check 2026-10-30: "Tonight
   // 5:22 AM" at 11 AM). Evening and night still use the observing night.
   const td = new Date(t), h = nowD.getHours();
-  if (h >= 6 && h < 17 && td.getHours() < 12 && td.toDateString() !== nowD.toDateString()) return { today: false, tmr: td.toDateString() === new Date(nowD.getTime() + 86400e3).toDateString() };
+  if (h >= 6 && h < 17 && td.getHours() >= 4 && td.getHours() < 12 && td.toDateString() !== nowD.toDateString()) return { today: false, tmr: td.toDateString() === new Date(nowD.getTime() + 86400e3).toDateString() };
   return { today: nightOf(t) === tonightKey, tmr: nightOf(t) === tmrKey };
 }
 // A Find row reads like a row in Tonight's run (style audit 2026-10-28): rarity · where · cloud on one line, then when.
@@ -969,17 +969,18 @@ function spin(card, rect, opening) {
 let viewerGen = 0;
 function letTapsThrough() { const v = $('viewer'); if (!v.open || isDocked()) return; redocking = true; try { v.close(); v.show(); } catch { redocking = false; return; } v.addEventListener('close', () => { redocking = false; }, { once: true }); v.classList.add('closing'); } // the swap's own close event is queued: the other listeners see redocking and wait for the real close
 // A new open while the old card is still spinning away: end that close now, and its late close() is skipped (viewerGen).
-function finishClosing() { const v = $('viewer'); if (!v.classList.contains('closing')) return; viewerGen++; v.classList.remove('closing'); document.getAnimations().forEach((an) => { const t = an.effect?.target; if (t && (t === v || v.contains(t))) an.cancel(); }); if (v.open) { redocking = true; v.close(); v.addEventListener('close', () => { redocking = false; }, { once: true }); } } // a hand-over to the new card, not a real close: the close listeners stand aside
+let closePending = false; // closeViewer / flickClose under way (docked too: the docked viewer has no .closing)
+function finishClosing() { const v = $('viewer'); if (closePending && !v.classList.contains('closing')) { closePending = false; viewerGen++; document.getAnimations().forEach((an) => { const t = an.effect?.target; if (t && (t === v || v.contains(t))) an.cancel(); }); return; } /* docked: the new card takes over and the old close is skipped (final review 2026-10-30) */ if (!v.classList.contains('closing')) return; closePending = false; viewerGen++; v.classList.remove('closing'); document.getAnimations().forEach((an) => { const t = an.effect?.target; if (t && (t === v || v.contains(t))) an.cancel(); }); if (v.open) { redocking = true; v.close(); v.addEventListener('close', () => { redocking = false; }, { once: true }); } } // a hand-over to the new card, not a real close: the close listeners stand aside
 async function closeViewer() {
   const c = state.list[state.index], card = $('slot').firstElementChild;
   const tile = c && document.querySelector(`.tile-slot[data-key="${CSS.escape(c.key)}"]`);
   const r = tile?.getBoundingClientRect();
   const onScreen = r && r.bottom > 0 && r.top < innerHeight && r.width > 0 && !isDocked();
   stopEffects();
-  fadeViewer(false); letTapsThrough(); const gen = viewerGen;
+  fadeViewer(false); letTapsThrough(); const gen = ++viewerGen; closePending = true;
   await spin(card, onScreen ? r : null, false);
   if (gen !== viewerGen) return; // a newer open took over
-  $('viewer').close(); $('viewer').classList.remove('closing');
+  closePending = false; $('viewer').close(); $('viewer').classList.remove('closing');
   const v = $('viewer'); // drop the held fade-outs (backdrop included) so the next open starts clean
   document.getAnimations().forEach((an) => { const t = an.effect?.target; if (t && (t === v || v.contains(t))) an.cancel(); });
 }
@@ -988,13 +989,13 @@ async function flickClose(dx, dy, dt) {
   feel('light');
   const card = $('slot').firstElementChild; sfx('swipe');
   stopEffects();
-  fadeViewer(false); letTapsThrough(); const gen = viewerGen;
+  fadeViewer(false); letTapsThrough(); const gen = ++viewerGen; closePending = true;
   if (card && !reducedMotion.matches) {
     const ms = throwOff(card, dx, dy, dt); // flies off the top at the flick’s speed, fully visible 
     await new Promise((r) => setTimeout(r, ms));
   }
   if (gen !== viewerGen) return; // a newer open took over
-  $('viewer').close(); $('viewer').classList.remove('closing');
+  closePending = false; $('viewer').close(); $('viewer').classList.remove('closing');
   const v = $('viewer');
   document.getAnimations().forEach((an) => { const t = an.effect?.target; if (t && (t === v || v.contains(t))) an.cancel(); });
 }
@@ -1323,7 +1324,7 @@ $('pv-close').addEventListener('click', closePatch);
   body.addEventListener('pointermove', (e) => { if (fl && e.pointerId === fl.id) { fl.pts.push({ x: e.clientX, y: e.clientY, t: performance.now() }); if (fl.pts.length > 12) fl.pts.shift(); y0 ??= fl.pts[0].y; const c = cardOf(); if (c && !reducedMotion.matches) c.style.transform = `translateY(${Math.min(0, e.clientY - y0)}px)`; } });
   body.addEventListener('pointerup', async (e) => {
     if (!fl || e.pointerId !== fl.id) return;
-    const pts = fl.pts; fl = null; const total = (pts[pts.length - 1]?.y ?? 0) - (pts[0]?.y ?? 0); y0 = null;
+    const pts = fl.pts; fl = null; const total = y0 == null ? 0 : (pts[pts.length - 1]?.y ?? y0) - y0; y0 = null; // from the true start (pts keeps only the last 12 moves)
     const last = pts[pts.length - 1], now = performance.now(), from = pts.find((p) => now - p.t < 140) ?? pts[0];
     const dx = last.x - from.x, dy = last.y - from.y, dt = Math.max(16, now - from.t);
     const flick = dy < -45 && last.y - pts[0].y < -60 && Math.abs(dx) < -dy * 0.9 && -dy / dt > 0.6;
