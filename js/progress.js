@@ -1,8 +1,8 @@
 // Player progress from the sighting log: XP and observer rank, tonight’s three missions, a weekly streak and
 // achievements. Everything is derived from the saved sightings (nothing extra is stored), so it can’t drift.
 // info(cardKey) -> { tier, type, owner, launch, natural, con } | null. No DOM.
-import { nightKey } from './observation.js?v=0.1.1438';
-import { fleetThresholds } from './card-model.js?v=0.1.1438';
+import { nightKey } from './observation.js?v=0.1.1439';
+import { fleetThresholds } from './card-model.js?v=0.1.1439';
 
 // A longer climb (2026-10-12, playtest room: three ranks on night 1, Mission Control in about two weeks), with two
 // prestige ranks past Mission Control. Nobody drops a rank they had on the old curve (rankFloor below).
@@ -397,7 +397,7 @@ export function progress(sightings, info, { constellations = [], albums = [], no
   const st = streaks(list, now); a.bestStreak = st.best;
   const tonightKey = nightKey(now, lon ?? list[list.length - 1]?.lon ?? 0) /* where you are now, as the deal was made (bug hunt 2026-10-22: travel split them) */, tonight = nights.get(tonightKey) ?? [];
   // Which catch finished each mission (the first point in tonight's order where it's done), for its picture (QA 2026-10-30: every done card showed the latest catch).
-  const tonightAsc = [...tonight].sort((x, y) => x.time - y.time), finisher = (m) => { for (let i = 1; i <= tonightAsc.length; i++) if (m.done(tonightAsc.slice(0, i), now)) return tonightAsc[i - 1]; return null; };
+  const tonightAsc = [...tonight].sort((x, y) => x.time - y.time), finisher = (m) => { let lo = 1, hi = tonightAsc.length; if (!hi || !m.done(tonightAsc, now)) return null; while (lo < hi) { const mid = (lo + hi) >> 1; if (m.done(tonightAsc.slice(0, mid), now)) hi = mid; else lo = mid + 1; } return tonightAsc[lo - 1]; }; // a binary search: a mission, once done, stays done as catches are added
   const missions = missionsOf(tonightKey, { first: !nights.size || tonightKey === firstNight, deals }).map((m) => { const done = m.done(tonight, now), f = done ? finisher(m) : null; return { id: m.id, text: m.text, done, by: f ? { cardKey: f.cardKey, objectId: f.objectId } : null }; });
   xp += carry;
   let ri = 0; for (let k = 0; k < RANKS.length; k++) if (xp >= RANKS[k][0]) ri = k;

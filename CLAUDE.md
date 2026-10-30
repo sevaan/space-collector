@@ -2322,3 +2322,10 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - No Night 2 card when the first catch was under 16 h ago (a morning catch then the same evening).
   - Mission cards header: "+100 XP to go". Sky-window line puts a stage's year in brackets ("Thor Ablestar stage (1963) at 9:07 PM").
   - Not changed: the radar badge over the compass S by day, the Collection header under the status bar while the Find keyboard is open (iOS), a few awkward wraps in the fade rush / Up now captions.
+- 2026-10-30 · v0.1.1439, round-2 code review of today's fixes:
+  - main.js liveSats(): satellites up now, worked out for now, from what the sky last saw plus tonight's plan's passes under way (cached 1 s). Up now and the Tonight page's redraw check (tnShapeSig `up`) both use it, so a pass that rises or goes dark while the page is open shows up / drops off.
+  - How to play is not touch-action pan-y (it doesn't scroll and it broke swipe-down there); Credits and Test notifications keep it (they lose swipe-down; ✕ closes).
+  - sw.js install: if a stale catalogue/sky copy can't be refetched, the old copy is still carried over (offline web users had none).
+  - progress.js mission finisher is a binary search over tonight's catches (was O(n²)).
+  - Spotlight lesson button shows a focus ring for keyboards only (:focus-visible).
+  - Every simulator playtest round includes the iPhone 14 simulator (E374AB6D-278A-4339-B665-7AA6DE5C39E1, iOS 27.0), Sevaan's phone.

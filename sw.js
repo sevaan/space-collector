@@ -10,7 +10,7 @@
 // One cache per version (2026-10-10: a phone stuck on the loader). A shared cache could hand a slow-network fallback
 // page old files mixed with new ones that don't fit together. Now each deploy's worker (scripts/bump.mjs stamps the
 // version below) starts its own cache and deletes the others, so a page only ever meets files from its own version.
-const CACHE = 'sc-0.1.1438';
+const CACHE = 'sc-0.1.1439';
 // Data copies carry the time they were fetched (sw-at), so they're refreshed at most every 3 hours instead of on every
 // open, and a new version's worker takes the data over from the old cache instead of downloading the 4 MB catalogue
 // again (perf audit 2026-10-29).
@@ -20,7 +20,7 @@ self.addEventListener('install', (e) => { self.skipWaiting(); e.waitUntil(caches
   await c.addAll(['./', 'index.html', 'cards.html']).catch(() => {});
   for (const f of ['data/catalog.json', 'data/sky.json']) {
     const key = new Request(new URL(f, self.registration.scope).href), prev = await caches.match(key), old = prev && Date.now() - Number(prev.headers.get('sw-at') ?? 0) < 3600e3 ? prev : null; // only a copy from the last hour, so a new version rarely meets an older catalogue (code review 2026-10-30)
-    try { await c.put(key, old ?? await stamp(await fetch(key))); } catch {}
+    try { await c.put(key, old ?? await stamp(await fetch(key))); } catch { if (prev) try { await c.put(key, prev); } catch {} } // offline: an older copy beats none
   }
 })); });
 self.addEventListener('activate', (e) => { e.waitUntil(caches.keys().then((ks) => Promise.all(ks.filter((k) => k !== CACHE).map((k) => caches.delete(k)))).then(() => self.clients.claim())); });
