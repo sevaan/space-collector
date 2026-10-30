@@ -1,17 +1,17 @@
 // Canvas renderer for the sky view. Gnomonic (pinhole camera) projection around where the phone points.
-import { extinction } from './sky-limit.js?v=0.1.1422';
+import { extinction } from './sky-limit.js?v=0.1.1423';
 // Two themes: 'glass' (ink, cream and orange celestial chart) and 'night' (all red, keeps dark adaptation).
-import { createMilkyGL } from './milkyway-gl.js?v=0.1.1422';
+import { createMilkyGL } from './milkyway-gl.js?v=0.1.1423';
 
-import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.1422';
-import { createCloudGL } from './clouds-gl.js?v=0.1.1422';
+import { enuFromAzEl, compassPoint } from './orbit.js?v=0.1.1423';
+import { createCloudGL } from './clouds-gl.js?v=0.1.1423';
 // Cloud colours by light: sunlit tops, shadowed bellies, and the horizon haze they melt into (0–1 RGB).
 const CLOUD_LIGHT = {
   day: { lit: [1, 1, 1], shade: [0.62, 0.68, 0.77], haze: [0.82, 0.87, 0.93] },
   dusk: { lit: [1, 0.8, 0.68], shade: [0.36, 0.33, 0.42], haze: [0.62, 0.5, 0.52] },
   night: { lit: [0.22, 0.25, 0.31], shade: [0.1, 0.12, 0.16], haze: [0.14, 0.15, 0.2] },
 };
-import { TIER_INFO } from './rarity.js?v=0.1.1422';
+import { TIER_INFO } from './rarity.js?v=0.1.1423';
 
 const RAD = Math.PI / 180;
 const SECRET_PX = { santa: 24, roadster: 12.4, voyager: 14.5, voyager2: 14.5, pioneer10: 11.7, pioneer11: 11.7, newhorizons: 6.4, arecibo: 6.9, halley: 8.6, sputnik: 11.2, laika: 13.3, wow: 9.8 };
@@ -196,6 +196,22 @@ export class SkyView {
       y: v[0] * b.up[0] + v[1] * b.up[1] + v[2] * b.up[2],
       z: v[0] * b.back[0] + v[1] * b.back[1] + v[2] * b.back[2],
     };
+  }
+
+  // A WebGL layer (Milky Way, clouds) for this frame. Copying a WebGL canvas into the 2D sky is the slow part, so while
+  // the view and the layer's own inputs (`key`) are unchanged the last picture is kept in a 2D canvas and drawn from
+  // there (perf audit 2026-10-29). A moving view renders and draws straight from WebGL, as before.
+  glLayer(name, key, render) {
+    const b = this.basis, sig = `${key}|${this.w}|${this.h}|${this.f.toFixed(2)}|${this.cx.toFixed(1)}|${this.cy.toFixed(1)}|${b.back.map((v) => v.toFixed(5))}|${b.up.map((v) => v.toFixed(5))}`;
+    const L = (this._gl ??= {})[name] ??= { cv: document.createElement('canvas'), sig: null, ok: false };
+    if (sig !== L.sig) { L.sig = sig; L.ok = false; return render(); }
+    if (!L.ok) {
+      const out = render(), c = L.cv;
+      if (c.width !== out.width || c.height !== out.height) { c.width = out.width; c.height = out.height; }
+      const x = c.getContext('2d'); if (!x) return out; // out of canvas memory: keep drawing from WebGL
+      x.clearRect(0, 0, c.width, c.height); x.drawImage(out, 0, 0); L.ok = true;
+    }
+    return L.cv;
   }
 
   // project() without the allocations: writes x/y into `out`, false when behind the phone.
@@ -609,8 +625,9 @@ export class SkyView {
       if (this.cloudGL && this.basis && !this.saver) { // Battery saver: the light fallback clouds
         const L = f > 0.5 ? CLOUD_LIGHT.day : f > 0 ? CLOUD_LIGHT.dusk : CLOUD_LIGHT.night;
         const sun = this.sunEnu ?? [0, -0.5, 0.5];
-        const out = this.cloudGL.render({ basis: this.basis, w: this.w, h: this.h, f: this.f, cx: this.cx, cy: this.cy, scale: 0.5, sun,
-          wind: [sec * 0.012, sec * 0.004], cover, alpha: f > 0 ? 0.95 : 0.7, ...L });
+        // Still view: the deck drifts slowly, so it's re-rendered 4 times a second, not every frame (perf audit 2026-10-29).
+        const q = Math.floor(sec * 4), out = this.glLayer('cloud', `${q}|${cover.toFixed(3)}|${f.toFixed(3)}|${sun.map((v) => v.toFixed(3))}`, () => this.cloudGL.render({ basis: this.basis, w: this.w, h: this.h, f: this.f, cx: this.cx, cy: this.cy, scale: 0.5, sun,
+          wind: [q / 4 * 0.012, q / 4 * 0.004], cover, alpha: f > 0 ? 0.95 : 0.7, ...L }));
         ctx.drawImage(out, 0, 0, this.w, this.h);
       } else {
         const n = Math.round(10 + cover * 30), rgb = f > 0.5 ? [245, 248, 250] : f > 0 ? [120, 110, 120] : [40, 50, 66];
@@ -667,8 +684,9 @@ export class SkyView {
         const night = this.theme === THEMES.night;
         // Half resolution (2026-10-16 perf sweep): copying the WebGL canvas into the 2D sky was ~60% of a frame’s work; the
         // photo is soft, so a quarter of the pixels looks the same.
-        const out = this.mwGL.render({ basis: this.basis, gal: milky.gal, w: this.w, h: this.h, f: this.f, cx: this.cx, cy: this.cy, scale: 0.5,
-          alpha: (this.theme.milkyPhoto ?? 1) * vis * (1 - Math.min(1, (this.dayF ?? 0) / 0.2)), mono: night ? 1 : 0, tint: night ? [0.75, 0.1, 0.07] : [1, 1, 1] });
+        const alpha = (this.theme.milkyPhoto ?? 1) * vis * (1 - Math.min(1, (this.dayF ?? 0) / 0.2)), g = milky.gal;
+        const out = this.glLayer('milky', `${alpha.toFixed(3)}|${night}|${g[0][0].toFixed(4)},${g[0][1].toFixed(4)},${g[2][2].toFixed(4)}`, () => this.mwGL.render({ basis: this.basis, gal: milky.gal, w: this.w, h: this.h, f: this.f, cx: this.cx, cy: this.cy, scale: 0.5,
+          alpha, mono: night ? 1 : 0, tint: night ? [0.75, 0.1, 0.07] : [1, 1, 1] }));
         const ctx = this.ctx; ctx.save(); ctx.globalCompositeOperation = 'screen'; ctx.drawImage(out, 0, 0, this.w, this.h); ctx.restore();
         return;
       }
