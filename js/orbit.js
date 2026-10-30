@@ -1,9 +1,9 @@
 // Orbit math: where every object is in the observer’s sky, and whether it can be seen.
 // Pure functions, no DOM, so this module carries over unchanged to a native wrapper.
 
-import { expandFacts } from './catalog-facts.js?v=0.1.1460';
-import * as sat from './lib/satellite.js?v=0.1.1460';
-import { extinction, starlinkStdMag } from './sky-limit.js?v=0.1.1460';
+import { expandFacts } from './catalog-facts.js?v=0.1.1461';
+import * as sat from './lib/satellite.js?v=0.1.1461';
+import { extinction, starlinkStdMag } from './sky-limit.js?v=0.1.1461';
 
 const RAD = Math.PI / 180;
 const EARTH_RADIUS_KM = 6371;
@@ -161,7 +161,7 @@ export class BelowModel {
     const n = this.objects.length, slice = Math.ceil(n / this.frames);
     for (let i = 0; i < slice; i++) {
       const o = this.objects[this.cursor]; this.cursor = (this.cursor + 1) % n;
-      if (o.stdMag == null || o.stdMag > limit) continue; // can’t reach the limit from thousands of km away
+      if (o.stdMag == null || o.stdMag > limit) { this.map.delete(o.id); continue; } // can’t reach the limit from thousands of km away (and drops out when the slider moves)
       const l = lookBelow(o, f, limit), prev = this.map.get(o.id);
       if (!l) { this.map.delete(o.id); continue; }
       this.map.set(o.id, { obj: o, t0: prev?.t1 ?? null, s0: prev?.s1 ?? null, t1: t, s1: l });
