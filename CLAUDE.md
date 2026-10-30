@@ -2346,3 +2346,11 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - Story cards have no rarity in progress: they don't count toward tier counts, the rarity set (Full Spectrum), the Epic patch, the "Epic or Legendary" or "new Rare or better" missions (they still give their XP).
   - Find: after the name match, what passes tonight (Collection's tonight plan), then brightest (stdMag), then rarer.
   - Albums: inside an album (state.set not all/tonight), the cards you have come first.
+- 2026-10-30 · v0.1.1444, iPhone 14 simulator playtest fixes (round 2; shots in that session's scratchpad pt47d/):
+  - progress.js: a player whose first night's catches were all in the morning (solar hour 5–12, which noon-to-noon nights put on the night that's ending) also gets the starter missions (and no sky challenge) on the next night, their first evening.
+  - distText: a bright star's own card distance (o.far) before Hipparcos, so the ticket and card agree (Deneb ~2,000 ly).
+  - Reveal chips on phones (<430 wide): two chips then "+N more" from three up (the third was cut mid-word).
+  - Opened night-part rows keep each part whole (.nw spans, no line starting "·").
+  - aimAt aims at the live position (look() now / liveNaturals), not where it was when the page was drawn.
+  - Timeline axis shows whole times ("1:00", not "1"). Filters dot refreshed on every render (stayed on after an album). Tapping Tonight again scrolls the page (and book pages) to the top. Match your sky also waits for a locked new star. Red mode "on" switches: dark red track, bright knob. All around you body pictures step up off each other (Mars over Jupiter).
+  - Not reproduced / left: a mission card tap during another's flip (cards are buttons with touch-action manipulation already), Observer stats "hard cut" at the bottom, the sky window not showing the dawn pass the headline names, Find "Tonight 5:22 AM" (observing-night wording, by design).

@@ -1,8 +1,8 @@
 // Player progress from the sighting log: XP and observer rank, tonight’s three missions, a weekly streak and
 // achievements. Everything is derived from the saved sightings (nothing extra is stored), so it can’t drift.
 // info(cardKey) -> { tier, type, owner, launch, natural, con } | null. No DOM.
-import { nightKey } from './observation.js?v=0.1.1443';
-import { fleetThresholds } from './card-model.js?v=0.1.1443';
+import { nightKey } from './observation.js?v=0.1.1444';
+import { fleetThresholds } from './card-model.js?v=0.1.1444';
 
 // A longer climb (2026-10-12, playtest room: three ranks on night 1, Mission Control in about two weeks), with two
 // prestige ranks past Mission Control. Nobody drops a rank they had on the old curve (rankFloor below).
@@ -380,11 +380,16 @@ export function progress(sightings, info, { constellations = [], albums = [], no
     a.spreadKm = Math.max(a.spreadKm, Math.hypot(dLat, dLon));
   }
   // Missions: every completed mission on any night counts once for XP; tonight’s three are shown.
-  const firstNight = nights.keys().next().value;
+  // A player who starts in the morning (noon-to-noon nights put a 10 AM catch on the night that's ending) still gets the
+  // starter missions on their first evening (iPhone 14 playtest 2026-10-30: a morning Sun catch used them up, and the
+  // first evening got a hard random deal).
+  const firstKey = nights.keys().next().value, solarHour = (s) => ((((Number(s.time) + (Number(s.lon) || 0) / 15 * 3600e3) % 86400e3) + 86400e3) % 86400e3) / 3600e3;
+  const morningOnly = firstKey != null && (nights.get(firstKey) ?? []).every((s) => { const h = solarHour(s); return h >= 5 && h < 12; });
+  const firstNights = new Set(firstKey == null ? [] : morningOnly ? [firstKey, firstKey + 1] : [firstKey]), firstNight = firstKey;
   for (const [night, n] of nights) {
-    const done = missionsOf(night, { first: night === firstNight, deals }).filter((m) => m.done(n, n[0].time)).length;
+    const done = missionsOf(night, { first: firstNights.has(night), deals }).filter((m) => m.done(n, n[0].time)).length;
     xp += done * MISSION_XP; a.missionsDone += done; if (done === 3) a.fullHouse = true;
-    if (night !== firstNight && challengeFor(night).done(n, n[0].time)) xp += MISSION_XP;
+    if (!firstNights.has(night) && challengeFor(night).done(n, n[0].time)) xp += MISSION_XP;
   }
   a.reunions = [...reunionRoles.values()].filter((r) => r.size === 2).length; // launches where you own the stage and its satellite
   // Themed weeks: each week's sightings against that week's theme. Fleet stamps count only the first time you stamp a launch.
@@ -398,7 +403,7 @@ export function progress(sightings, info, { constellations = [], albums = [], no
   const tonightKey = nightKey(now, lon ?? list[list.length - 1]?.lon ?? 0) /* where you are now, as the deal was made (bug hunt 2026-10-22: travel split them) */, tonight = nights.get(tonightKey) ?? [];
   // Which catch finished each mission (the first point in tonight's order where it's done), for its picture (QA 2026-10-30: every done card showed the latest catch).
   const tonightAsc = [...tonight].sort((x, y) => x.time - y.time), finisher = (m) => { let lo = 1, hi = tonightAsc.length; if (!hi || !m.done(tonightAsc, now)) return null; while (lo < hi) { const mid = (lo + hi) >> 1; if (m.done(tonightAsc.slice(0, mid), now)) hi = mid; else lo = mid + 1; } return tonightAsc[lo - 1]; }; // a binary search: a mission, once done, stays done as catches are added
-  const missions = missionsOf(tonightKey, { first: !nights.size || tonightKey === firstNight, deals }).map((m) => { const done = m.done(tonight, now), f = done ? finisher(m) : null; return { id: m.id, text: m.text, done, by: f ? { cardKey: f.cardKey, objectId: f.objectId } : null }; });
+  const missions = missionsOf(tonightKey, { first: !nights.size || firstNights.has(tonightKey), deals }).map((m) => { const done = m.done(tonight, now), f = done ? finisher(m) : null; return { id: m.id, text: m.text, done, by: f ? { cardKey: f.cardKey, objectId: f.objectId } : null }; });
   xp += carry;
   let ri = 0; for (let k = 0; k < RANKS.length; k++) if (xp >= RANKS[k][0]) ri = k;
   ri = Math.max(ri, rankFloor(xp));
@@ -408,7 +413,7 @@ export function progress(sightings, info, { constellations = [], albums = [], no
   // and so is the Solar System. The patch art is the stick figure (js/patches.js).
   for (const c of constellations) achievements.push({ id: `con-${c.id}`, con: c.id, name: c.system ? 'Solar System' : c.name, sub: c.system ? 'Home system' : c.nick.replace(/^part of /, ''), icon: '',
     text: c.system ? 'See the Sun, the Moon and all seven planets' : `Collect all ${c.stars.length} stars of ${c.name}`, done: c.stars.every((k) => seenCard.has(k)), prog: [c.stars.filter((k) => seenCard.has(k)).length, c.stars.length] });
-  const ch = challengeFor(tonightKey), challenge = list.length && tonightKey !== firstNight ? { id: ch.id, text: ch.text, done: ch.done(tonight, now) } : null; // not on a first night: the starter set is enough
+  const ch = challengeFor(tonightKey), challenge = list.length && !firstNights.has(tonightKey) ? { id: ch.id, text: ch.text, done: ch.done(tonight, now) } : null; // not on a first night: the starter set is enough
   // A filled album earns its own gold-foil patch (2026-10-10, playtest #17).
   for (const al of albums) { const have = al.keys.filter((k) => seenCard.has(k)).length; achievements.push({ id: `album-${al.id}`, album: al.id, name: al.name, sub: 'Gold album', icon: '', text: `Fill the ${al.name.replace(/^The /, "")} album to gold: ${al.goal.toLocaleString("en-US")} cards`, done: have >= al.goal, prog: [Math.min(have, al.goal), al.goal] }); }
   for (const th of WEEK_THEMES) achievements.push({ id: `week-${th.id}`, week: th.id, name: th.short, sub: 'Week badge', icon: th.icon, text: `${th.text.replace(/\.$/, '')} in one week`, done: a.weekThemes.has(th.id), prog: [a.weekThemes.has(th.id) ? 1 : 0, 1] });

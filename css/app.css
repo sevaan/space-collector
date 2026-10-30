@@ -3547,3 +3547,11 @@ body.night #rv-teach .sp-cap > b, body.night #rv-teach .sp-go { color: #ff6a55; 
 /* A sheet that's closing (or not yet in) never takes a tap: it stayed over the screen for its 260 ms slide out, so the
    next tap (a Settings row, a ✕) did nothing (round-2 playtest 2026-10-30). */
 .set-sheet:not(.in), .set-sheet:not(.in) * { pointer-events: none !important; }
+/* Opened night-part rows: each part of the line stays whole and no line starts with "·" (iPhone 14 playtest 2026-10-30: "7:16 / PM", "· high in the south"). */
+.tnx small .nw { white-space: nowrap; }
+/* Mission cards answer quick taps one after another: without touch-action, iOS read a second tap within ~0.5 s as
+   part of a double-tap and dropped it (iPhone 14 playtest 2026-10-30). */
+.mc { touch-action: manipulation; }
+/* Red night mode: an "on" switch is a dark red track with a bright knob (the red filter turned the pale knob and the
+   red track the same red; iPhone 14 playtest 2026-10-30). */
+body.night #debug .set-tog:checked { background: #7a1d14 !important; border-color: #ff6a55 !important; } body.night #debug .set-tog:checked::before { background: #ff8a7a !important; }

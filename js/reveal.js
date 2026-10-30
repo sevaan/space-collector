@@ -5,12 +5,12 @@
 //  Everything scales with rarity (Legendary dims the sky, shockwave, held breath, slow flip, fanfare).
 // Waits use timers, not animation.finished, so a paused tab can never freeze the sequence.
 
-import { sfx, loadSfx, heartbeat } from './sfx.js?v=0.1.1443';
-import { audioCtx } from './audio-ctx.js?v=0.1.1443';
-import { TIER_INFO } from './rarity.js?v=0.1.1443';
-import { levelFor, attachTilt, attachGyro, attachFlip, throwOff, retype } from './card.js?v=0.1.1443';
-import { applyBack } from './card-backs.js?v=0.1.1443';
-import { addStarfield } from './starfield.js?v=0.1.1443';
+import { sfx, loadSfx, heartbeat } from './sfx.js?v=0.1.1444';
+import { audioCtx } from './audio-ctx.js?v=0.1.1444';
+import { TIER_INFO } from './rarity.js?v=0.1.1444';
+import { levelFor, attachTilt, attachGyro, attachFlip, throwOff, retype } from './card.js?v=0.1.1444';
+import { applyBack } from './card-backs.js?v=0.1.1444';
+import { addStarfield } from './starfield.js?v=0.1.1444';
 
 const FX = {
   common:    { particles: 14,  flip: 520,  spin: 0,   dim: 0,   shock: false, notes: [880],                            hold: 0 },
@@ -376,7 +376,7 @@ function showNews(news, alive) {
   // One row: the two biggest pieces of news, then "+N" (a second row covered the card on small phones).
   const ORDER = { rank: 0, back: 1, backs: 1.5, reunion: 2, peak: 2.5, train: 2.6, birthday: 0.5, event: 3, patch: 4, mission: 5 }; // a new card back is rare news: up front (2026-10-24)
   const sorted = news.slice().sort((a, b) => (ORDER[a.kind] ?? 9) - (ORDER[b.kind] ?? 9));
-  const rest = sorted.length > 3 ? sorted.slice(2) : [];
+  const rest = sorted.length > (innerWidth < 430 ? 2 : 3) ? sorted.slice(2) : []; // three long chips don't fit a phone (iPhone 14 playtest 2026-10-30: the third was cut mid-word)
   news = rest.length ? [...sorted.slice(0, 2), { kind: 'more', text: `+${rest.length} more` }] : sorted;
   news.forEach((n, i) => setTimeout(() => {
     if (!alive()) return;
