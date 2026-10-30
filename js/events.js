@@ -2,7 +2,7 @@
 // peak nights to earn that year’s badge (Logbook). Peak dates are the usual annual ones (International
 // Meteor Organization calendar); the window runs from the evening before the peak to the morning after.
 // No DOM.
-import { SKY_EVENTS } from './sky-events-data.js?v=0.1.1459';
+import { SKY_EVENTS } from './sky-events-data.js?v=0.1.1460';
 const SHOWERS = [
   { id: 'quadrantids', name: 'Quadrantids', month: 1, day: 3, rate: 'up to 80 an hour, in a short peak' },
   { id: 'lyrids', name: 'Lyrids', month: 4, day: 22, rate: 'up to 18 an hour' },

@@ -3572,3 +3572,9 @@ body.col-typing #nav, body.col-typing #tab-fade { visibility: hidden !important;
 /* Tour main buttons at the Reset button's size: 20px, .18em (2026-10-30, Sevaan: too small) */
 .tc .acts .yes { font-size: 20px; letter-spacing: .18em; }
 @container (max-width: 300px) { .tc .acts .yes { font-size: 17px; letter-spacing: .1em; } }
+/* Tour buttons laid out like the Reset sheet (2026-10-30, Sevaan): the main action as the one big button, the other
+   choice as small orange text under it, like Cancel */
+.tc .acts:not(.pick) { flex-direction: column; gap: 2px; align-items: stretch; }
+.tc .acts:not(.pick) .yes { order: -1; flex: none; height: 50px; }
+.tc .acts:not(.pick) .no { order: 0; flex: none; height: auto; min-height: 44px; padding: 8px 0; background: none; color: #fa8127; font: 500 14px/1.2 var(--label); letter-spacing: .12em; white-space: normal; }
+body.night .tc .acts:not(.pick) .no { color: #ff7f70; }
