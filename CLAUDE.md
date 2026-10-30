@@ -2417,3 +2417,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - Testing: window.__swPaths(W), and .sw-sky._scene holds the window's scene.
 - 2026-10-30: Build 1.0 (48) archived (web v0.1.1454: sky window stress-test fixes, bell at the headline's time); opened in Organizer, not uploaded. SC Tester reinstalled with v0.1.1454.
 - 2026-10-30 · v0.1.1455 (Sevaan): the sky window's line keeps "at 7:27 PM" and each number with its word on one line; an opened night part lists its six rarest new passes in time order.
+- 2026-10-30 · v0.1.1456 (Sevaan picked it over keeping the suburban sky with a stretched slider): new players start the sky slider at its true middle, 20.95 (Countryside, stars to 6.1); the old default 19.45 sat at 31% once binoculars lengthened the slider. Anyone who has moved it keeps theirs.
