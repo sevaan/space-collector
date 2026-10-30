@@ -2408,3 +2408,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - The Halloween ghost keeps the time first shown for the night (ghostPass wraps ghostPass0; localStorage ghostAt, read once into memory) unless the pass moves 3+ minutes.
   - Rocket Stages album subtitle: "Rocket stages from every other country".
   - Verified from the tester's screenshots: card tapped after the viewer's ✕ opens; a drag closes the patch card; red-mode Settings readable; two quick mission-card taps both flip; ghost locks, catches and leads with its chip.
+- 2026-10-30: Build 1.0 (47) archived (web v0.1.1453: three playtest rounds + final checks: tiny cards, Up tonight cards, live Up now / aims, Halloween ghost payoff, notification caps, two-tap fixes, red mode, Line up, Go-out time held for the evening, and the rest of today's list); opened in Organizer, not uploaded. SC Tester reinstalled with v0.1.1453.
