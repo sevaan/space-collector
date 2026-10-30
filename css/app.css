@@ -3156,7 +3156,7 @@ body:has(.set-sheet:not([hidden])) #toasts .ticket:not([data-panel]) { display: 
 body.night #debug .notes-off .set-main { color: #ff7f70; }
 
 /* Testing tools → Test phone notifications (2026-10-29) */
-#set-notetest-sheet .set-sheet-card { max-height: calc(100dvh - var(--safe-top, 0px) - 40px); overflow-y: auto; }
+#set-notetest-sheet .set-sheet-card { max-height: calc(100dvh - var(--safe-top, 0px) - 100px); overflow-y: auto; } /* starts below the shared header, so its ✕ and title aren't under it (round-2 playtest 2026-10-30) */
 #set-notetest-sheet .nt-lead { margin: 0 0 12px; color: var(--ui-muted, #bdbea9); font-size: 14px; }
 #set-notetest-sheet h4 { margin: 18px 0 6px; font: 600 12px var(--label); letter-spacing: .16em; text-transform: uppercase; color: #fa8127; }
 .ntt { display: grid; grid-template-columns: 28px 1fr auto; gap: 10px; align-items: start; padding: 10px 0; border-top: 1px solid #ffffff12; }
@@ -3539,3 +3539,11 @@ body.night #rv-teach .sp-cap > b, body.night #rv-teach .sp-go { color: #ff6a55; 
    opt back in (QA 2026-10-30: Credits and sources wouldn't move, hiding the music credit). */
 :is(#set-credits-sheet, #set-notetest-sheet) .set-sheet-card { touch-action: pan-y; overscroll-behavior: contain; }
 #rv-teach .sp-go:focus:not(:focus-visible) { outline: none; } #rv-teach .sp-go:focus-visible { outline: 2px solid #fa8127; outline-offset: 2px; }
+/* Credits is a page, not a phone sheet, on big screens: it covers the whole width (Settings no longer shows dimmed on
+   both sides) with its text in a centred column (iPad playtest 2026-10-30). */
+#set-credits-sheet .set-sheet-card { max-width: none !important; width: 100%; padding-inline: max(18px, calc((100% - 720px) / 2)) !important; box-sizing: border-box; }
+/* Up now tile names may take a third line, a little smaller, rather than cut off ("Ariane / 5 stage…", iPad playtest 2026-10-30). */
+.tn-chip.tile b:not(:where(.mini-face *)) { -webkit-line-clamp: 3; font-size: 13px; line-height: 1.15; }
+/* A sheet that's closing (or not yet in) never takes a tap: it stayed over the screen for its 260 ms slide out, so the
+   next tap (a Settings row, a ✕) did nothing (round-2 playtest 2026-10-30). */
+.set-sheet:not(.in), .set-sheet:not(.in) * { pointer-events: none !important; }

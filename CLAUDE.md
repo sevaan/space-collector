@@ -2330,3 +2330,13 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - Spotlight lesson button shows a focus ring for keyboards only (:focus-visible).
   - Every simulator playtest round includes the iPhone 14 simulator (E374AB6D-278A-4339-B665-7AA6DE5C39E1, iOS 27.0), Sevaan's phone.
 - 2026-10-30 · v0.1.1440, round-2 iPad playtest fixes (shots in that session's scratchpad pt47c/): fleet cards' Up tonight pill is the time alone (their shorter picture put the name under the two-line pill: "STARLINK" was covered); the pill says "Up now" once the pass has risen; upright iPad Settings has 48px under the 3×3 index so the group's name (above its panel) clears the tabs. Not changed: the Tonight book on its side has a sparse right page until See all; Credits on its side is a centred column; the Earth's-shadow label can run under a ticket; Up now chip names cut at two lines.
+- 2026-10-30 · v0.1.1441, round-2 fixes (iPad polish Sevaan asked for + iPhone 17e / 18 Pro reports; shots in that session's scratchpad pt47a/, pt47b/, pt47c/):
+  - Closing sheets take no taps (`.set-sheet:not(.in)` pointer-events none): a sheet sliding out stayed over the screen 260 ms and swallowed the next tap, the likely cause of the "✕ / row needs two taps" reports.
+  - No hold-to-find secret while steering to a pass (guidePass, the tour's catch, or a pinned satellite): Pioneer 11 found itself over the Halloween ghost's rise point and its story reveal cost the 2-minute pass.
+  - main.js liveNaturals(): the Moon, planets and stars for now (refreshCelestial + updateSkyLimit at most once a sky-minute) for Up now, the redraw check, star hours and the sky-window body taps (after a time jump Saturn was listed after it set).
+  - Tonight book on its side puts the run on the right page too (runUpQ = every book size).
+  - Credits is a full-width page on big screens (text in a 720px column).
+  - The Earth's-shadow sky label also keeps off the real HUD boxes (sky.uiBoxes), not just an assumed 300px ticket.
+  - Up now tile names may take 3 lines at 13px.
+  - Test notifications sheet starts below the shared header (its ✕ was under it). Night 2 card only before tonight's first catch. Send feedback says where to write if Mail didn't open.
+  - Not changed (noted): the Ghost Satellite patch coin queues third after the catch's other patches; Ringside (story) shows EPIC on its reveal but "Story" in stats; Mine tab count updates only when Mine is shown; Find ranks by rarity over visibility; the Constellations album isn't ordered by what you own; patch dates use the real clock under time travel.
