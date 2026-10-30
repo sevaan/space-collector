@@ -809,7 +809,7 @@ dialog[open] { padding-left: var(--safe-l) !important; padding-right: var(--safe
 .up-next__when small { letter-spacing: .1em; }
 .up-next__tile { container-type: inline-size; }
 .up-next__when { font-size: clamp(9px, 12.5cqi, 12px); /* never 0: on the Duo the pills came up blank (iPad/Duo playtest 2026-10-24) */ left: 4px; right: 4px; padding-inline: 3px; }
-.up-next__when small { font-size: min(11px, 11cqi); }
+.up-next__when small { font-size: clamp(8px, 11cqi, 11px); } /* a floor like the time line: iOS sometimes resolved 11cqi to 0 and the "Up tonight" line vanished (iOS playtest of build 45) */
 /* The card's picture never starts an image drag, so a flick or swipe that begins on it is the card's (as in the reveal, Duo playtest 2026-10-22). */
 #slot img { -webkit-user-drag: none; user-select: none; -webkit-touch-callout: none; }
 /* The open card on the right page (Duo simulator, Sevaan 2026-10-22: "I have to scroll a little to see the bottom of
