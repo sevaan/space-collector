@@ -1,8 +1,8 @@
 // Player progress from the sighting log: XP and observer rank, tonight’s three missions, a weekly streak and
 // achievements. Everything is derived from the saved sightings (nothing extra is stored), so it can’t drift.
 // info(cardKey) -> { tier, type, owner, launch, natural, con } | null. No DOM.
-import { nightKey } from './observation.js?v=0.1.1444';
-import { fleetThresholds } from './card-model.js?v=0.1.1444';
+import { nightKey } from './observation.js?v=0.1.1445';
+import { fleetThresholds } from './card-model.js?v=0.1.1445';
 
 // A longer climb (2026-10-12, playtest room: three ranks on night 1, Mission Control in about two weeks), with two
 // prestige ranks past Mission Control. Nobody drops a rank they had on the old curve (rankFloor below).
@@ -385,7 +385,10 @@ export function progress(sightings, info, { constellations = [], albums = [], no
   // first evening got a hard random deal).
   const firstKey = nights.keys().next().value, solarHour = (s) => ((((Number(s.time) + (Number(s.lon) || 0) / 15 * 3600e3) % 86400e3) + 86400e3) % 86400e3) / 3600e3;
   const morningOnly = firstKey != null && (nights.get(firstKey) ?? []).every((s) => { const h = solarHour(s); return h >= 5 && h < 12; });
-  const firstNights = new Set(firstKey == null ? [] : morningOnly ? [firstKey, firstKey + 1] : [firstKey]), firstNight = firstKey;
+  const isMorning = (s) => { const h = solarHour(s); return h >= 5 && h < 12; };
+  // ...the first night with a catch after noon, or tonight if there's none yet (round-3 review: not only the very next night).
+  const firstEvening = morningOnly ? ([...nights.keys()].find((k) => (nights.get(k) ?? []).some((s) => !isMorning(s))) ?? nightKey(now, lon ?? list[list.length - 1]?.lon ?? 0)) : null;
+  const firstNights = new Set(firstKey == null ? [] : morningOnly ? [firstKey, firstEvening] : [firstKey]), firstNight = firstKey;
   for (const [night, n] of nights) {
     const done = missionsOf(night, { first: firstNights.has(night), deals }).filter((m) => m.done(n, n[0].time)).length;
     xp += done * MISSION_XP; a.missionsDone += done; if (done === 3) a.fullHouse = true;

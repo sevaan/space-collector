@@ -2354,3 +2354,8 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - aimAt aims at the live position (look() now / liveNaturals), not where it was when the page was drawn.
   - Timeline axis shows whole times ("1:00", not "1"). Filters dot refreshed on every render (stayed on after an album). Tapping Tonight again scrolls the page (and book pages) to the top. Match your sky also waits for a locked new star. Red mode "on" switches: dark red track, bright knob. All around you body pictures step up off each other (Mars over Jupiter).
   - Not reproduced / left: a mission card tap during another's flip (cards are buttons with touch-action manipulation already), Observer stats "hard cut" at the bottom, the sky window not showing the dawn pass the headline names, Find "Tonight 5:22 AM" (observing-night wording, by design).
+- 2026-10-30 · v0.1.1445, round-3 code review fixes:
+  - A pinned satellite below the horizon (not in state.items at all) is let go after a minute like one that went dark; the secrets "steering" gate counts a pinned satellite only while it's up and lit (a set satellite's pin had blocked hold-to-find secrets for good).
+  - liveNaturals cache is keyed on the place (lat|lon|stars loaded) and lasts 30 s, so a location change shows the new place's Moon and planets at once.
+  - The Halloween chip has its own kind 'ghost' (ORDER −1, patch icon and sound), so it's first even with a rank-up or card back.
+  - Morning starters: the starter missions go to the first night with a catch after noon (or tonight if none yet), not only the next night (checked: same evening and two days later get starters; after an evening catch, a normal deal).
