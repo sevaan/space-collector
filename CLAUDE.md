@@ -2340,3 +2340,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - Up now tile names may take 3 lines at 13px.
   - Test notifications sheet starts below the shared header (its ✕ was under it). Night 2 card only before tonight's first catch. Send feedback says where to write if Mail didn't open.
   - Not changed (noted): the Ghost Satellite patch coin queues third after the catch's other patches; Ringside (story) shows EPIC on its reveal but "Story" in stats; Mine tab count updates only when Mine is shown; Find ranks by rarity over visibility; the Constellations album isn't ordered by what you own; patch dates use the real clock under time travel.
+- 2026-10-30 · v0.1.1442: the Collection's Mine count is written on every render, whatever the tab (it stayed at the old number on Albums/Patches after a catch).
