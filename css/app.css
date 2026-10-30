@@ -1836,7 +1836,7 @@ body.ob-tour #sky-header .header-buttons { opacity: .35; }
 .loc-hit { display: grid; gap: 2px; text-align: left; min-height: 44px; padding: 8px 12px; border-radius: 10px; border: 1px solid #22344a; background: #0a1220; color: var(--text); }
 .loc-hit b { font: 600 15px/1.2 var(--label); } .loc-hit small { font: 500 12.5px/1.2 var(--label); color: var(--muted); letter-spacing: .04em; }
 .loc-none { margin: 6px 2px; color: var(--muted); font: 500 13px var(--label); }
-body.is-plus .set-row .plus-tag { display: none; } /* Plus already: no PLUS tag on its own perks (iOS playtest 2026-10-20) */
+/* Plus members keep the PLUS tags in Settings, so they can see what they got (2026-10-30, Sevaan; they were hidden 2026-10-20) */
 .overlay.leaving, #reveal.leaving { pointer-events: none; } /* a closing layer never eats the next tap (iOS playtest 2026-10-20: Settings and the radar needed two taps after a reveal) */
 
 /* A landed panel is a plain scroller (Android playtest 2026-10-20: stale tap regions after the slide-in). */
