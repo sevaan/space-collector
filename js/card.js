@@ -1,25 +1,25 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { fallWords } from './last-chance.js?v=0.1.1424';
-import { useMiles } from './units.js?v=0.1.1424';
-import { feel } from './native.js?v=0.1.1424';
-import { sfx } from './sfx.js?v=0.1.1424';
-import { cardArt } from './art.js?v=0.1.1424';
-import { TIER_INFO } from './rarity.js?v=0.1.1424';
-import { SET_BY_ID } from './sets.js?v=0.1.1424';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.1424';
-import { FLEET_ABOUT, fleetAbout, factSourceUrl, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.1424';
-import { artFileFor } from './art-keys.js?v=0.1.1424';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.1424';
-import { orbitGlobe } from './orbit-view.js?v=0.1.1424';
-import { ART_SHARED } from './art-shared.js?v=0.1.1424';
-import { ART_CREDITS } from './art-credits.js?v=0.1.1424';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.1424';
-import { nightsIn } from './observation.js?v=0.1.1424';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.1424';
-import { SHINY } from './shiny.js?v=0.1.1424';
-import { conArt, cometArt } from './con-art.js?v=0.1.1424';
-import { CON_FIGURES } from './con-figures.js?v=0.1.1424';
-import { localText } from './localize.js?v=0.1.1424';
+import { fallWords } from './last-chance.js?v=0.1.1425';
+import { useMiles } from './units.js?v=0.1.1425';
+import { feel } from './native.js?v=0.1.1425';
+import { sfx } from './sfx.js?v=0.1.1425';
+import { cardArt } from './art.js?v=0.1.1425';
+import { TIER_INFO } from './rarity.js?v=0.1.1425';
+import { SET_BY_ID } from './sets.js?v=0.1.1425';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.1425';
+import { FLEET_ABOUT, fleetAbout, factSourceUrl, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.1425';
+import { artFileFor } from './art-keys.js?v=0.1.1425';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.1425';
+import { orbitGlobe } from './orbit-view.js?v=0.1.1425';
+import { ART_SHARED } from './art-shared.js?v=0.1.1425';
+import { ART_CREDITS } from './art-credits.js?v=0.1.1425';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.1425';
+import { nightsIn } from './observation.js?v=0.1.1425';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.1425';
+import { SHINY } from './shiny.js?v=0.1.1425';
+import { conArt, cometArt } from './con-art.js?v=0.1.1425';
+import { CON_FIGURES } from './con-figures.js?v=0.1.1425';
+import { localText } from './localize.js?v=0.1.1425';
 // The animal/symbol figure belongs to the completed (gold) constellation card only (2026-10-05): a single
 // star’s card draws just the star pattern with its star marked, so the figure is a reward for finishing the set.
 // A star card’s constellation figure comes into focus as you collect the constellation’s stars (design/con-focus.html B).
@@ -366,7 +366,11 @@ export function renderCardTile(o, opts = {}) {
   tile.style.setProperty('--set', set.color); tile.style.setProperty('--tier', tier.color);
   const hide = o.story && !caught; // an unfound story stays a secret, read aloud too (QA 2026-10-16)
   tile.setAttribute('aria-label', `${hide ? 'Secret story' : title}, ${hide ? 'Story' : tier.label}, ${caught ? `collected, ${sightings.length} sightings` : 'not collected'}. View card`);
-  tile.innerHTML = `${lvlUp ? `<span class="tile-lvl tile-lvl--${lvl}">${lvl.toUpperCase()}</span>` : ''}<span class="card-tile__set">${esc(set.name)}</span><span class="card-tile__art">${conCard && o.system ? (caught && artImage(o, 'small') ? `<img class="card-art-image"${artTint(o)} src="${artImage(o, 'small')}" alt="" loading="lazy" decoding="async">` : lockedArt(o, caught, set.color, 'small')) : o.natural === 'constellation' ? conArt(o.data, null, caught ? conFig(o.con) : {}) : o.type === 'comet' && caught ? cometArt(o.key) : o.type === 'deepsky' && caught && !artImage(o, 'small') && CON_BY_ID.get(o.conId) ? conArt(CON_BY_ID.get(o.conId).data, null, { mark: o }) : o.con && !o.skyName && caught && CON_BY_ID.get(o.con) ? conArt(CON_BY_ID.get(o.con).data, o.hip, {}) : caught && artImage(o, 'small') ? `<img class="card-art-image"${artTint(o)} src="${artImage(o, 'small')}" alt="" loading="lazy" decoding="async">` : lockedArt(o, caught, set.color, 'small')}</span><span class="card-tile__body"><span class="card-tile__tier"><i aria-hidden="true">${tier.gem}</i> ${tier.label}</span><span class="card-tile__name">${esc(title)}</span>${opts.sub ? `<span class="card-tile__sub">${esc(opts.sub)}</span>` : ''}<span class="card-tile__status">${caught ? (o.natural === 'constellation' ? `✓ ${new Set(sightings.map((x) => x.cardKey)).size} of ${o.stars.length} ${o.system ? 'worlds' : 'stars'}` : o.launches ? `✓ ${stampsIn(sightings).size} of ${o.launches.length} launches` : `✓ Collected ${new Date(Math.min(...sightings.map((s) => s.time))).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}`) : conCard && prog.have ? `${prog.have} of ${prog.total} ${o.system ? 'worlds' : 'stars'} found` : 'Not yet collected'}</span></span>`;
+  const status = caught ? (o.natural === 'constellation' ? `✓ ${new Set(sightings.map((x) => x.cardKey)).size} of ${o.stars.length} ${o.system ? 'worlds' : 'stars'}` : o.launches ? `✓ ${stampsIn(sightings).size} of ${o.launches.length} launches` : `✓ Collected ${new Date(Math.min(...sightings.map((s) => s.time))).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}`) : conCard && prog.have ? `${prog.have} of ${prog.total} ${o.system ? 'worlds' : 'stars'} found` : 'Not yet collected';
+  /* shell: just the classes, label, badge and status line, for a tile that becomes a mini card at once (Collection;
+     perf audit 2026-10-29: the full tile, pictures and all, was built and thrown away for every card) */
+  if (opts.shell) { tile.innerHTML = `${lvlUp ? `<span class="tile-lvl tile-lvl--${lvl}">${lvl.toUpperCase()}</span>` : ''}<span class="card-tile__status">${status}</span>`; return tile; }
+  tile.innerHTML = `${lvlUp ? `<span class="tile-lvl tile-lvl--${lvl}">${lvl.toUpperCase()}</span>` : ''}<span class="card-tile__set">${esc(set.name)}</span><span class="card-tile__art">${conCard && o.system ? (caught && artImage(o, 'small') ? `<img class="card-art-image"${artTint(o)} src="${artImage(o, 'small')}" alt="" loading="lazy" decoding="async">` : lockedArt(o, caught, set.color, 'small')) : o.natural === 'constellation' ? conArt(o.data, null, caught ? conFig(o.con) : {}) : o.type === 'comet' && caught ? cometArt(o.key) : o.type === 'deepsky' && caught && !artImage(o, 'small') && CON_BY_ID.get(o.conId) ? conArt(CON_BY_ID.get(o.conId).data, null, { mark: o }) : o.con && !o.skyName && caught && CON_BY_ID.get(o.con) ? conArt(CON_BY_ID.get(o.con).data, o.hip, {}) : caught && artImage(o, 'small') ? `<img class="card-art-image"${artTint(o)} src="${artImage(o, 'small')}" alt="" loading="lazy" decoding="async">` : lockedArt(o, caught, set.color, 'small')}</span><span class="card-tile__body"><span class="card-tile__tier"><i aria-hidden="true">${tier.gem}</i> ${tier.label}</span><span class="card-tile__name">${esc(title)}</span>${opts.sub ? `<span class="card-tile__sub">${esc(opts.sub)}</span>` : ''}<span class="card-tile__status">${status}</span></span>`;
   return tile;
 }
 

@@ -1,33 +1,33 @@
-import { pullToClose } from './pull-close.js?v=0.1.1424';
-import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.1424';
-import { computeStats, statsHtml } from './stats.js?v=0.1.1424';
-import { nightKey } from './observation.js?v=0.1.1424';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1424';
-import { sfx } from './sfx.js?v=0.1.1424';
-import { expandFacts } from './catalog-facts.js?v=0.1.1424';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.1424';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1424';
-import { ticket } from './toast.js?v=0.1.1424';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.1424';
-import { satGlobe } from './sat-globe.js?v=0.1.1424';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.1424';
-import { cardArt } from './art.js?v=0.1.1424';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.1424';
-import { applyBack } from './card-backs.js?v=0.1.1424';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.1424';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1424';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.1424';
-import { STORIES } from './stories.js?v=0.1.1424';
-import { loadConstellations, conList, CON_BY_ID } from './constellations.js?v=0.1.1424';
-import { conArt } from './con-art.js?v=0.1.1424';
-import { RANKS, progress, readDeals, readWeekThemes, xpCarry } from './progress.js?v=0.1.1424';
-import { eventBadges, nextEvent } from './events.js?v=0.1.1424';
-import { shareCardEl } from './share-card.js?v=0.1.1424';
-import { forgetSighting } from './cloud-backup.js?v=0.1.1424';
-import { allSightings, deleteSighting } from './store.js?v=0.1.1424';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.1424';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.1424';
-import { localText } from './localize.js?v=0.1.1424';
+import { pullToClose } from './pull-close.js?v=0.1.1425';
+import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.1425';
+import { computeStats, statsHtml } from './stats.js?v=0.1.1425';
+import { nightKey } from './observation.js?v=0.1.1425';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1425';
+import { sfx } from './sfx.js?v=0.1.1425';
+import { expandFacts } from './catalog-facts.js?v=0.1.1425';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.1425';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1425';
+import { ticket } from './toast.js?v=0.1.1425';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.1425';
+import { satGlobe } from './sat-globe.js?v=0.1.1425';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.1425';
+import { cardArt } from './art.js?v=0.1.1425';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.1425';
+import { applyBack } from './card-backs.js?v=0.1.1425';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.1425';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1425';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.1425';
+import { STORIES } from './stories.js?v=0.1.1425';
+import { loadConstellations, conList, CON_BY_ID } from './constellations.js?v=0.1.1425';
+import { conArt } from './con-art.js?v=0.1.1425';
+import { RANKS, progress, readDeals, readWeekThemes, xpCarry } from './progress.js?v=0.1.1425';
+import { eventBadges, nextEvent } from './events.js?v=0.1.1425';
+import { shareCardEl } from './share-card.js?v=0.1.1425';
+import { forgetSighting } from './cloud-backup.js?v=0.1.1425';
+import { allSightings, deleteSighting } from './store.js?v=0.1.1425';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.1425';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.1425';
+import { localText } from './localize.js?v=0.1.1425';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -246,15 +246,33 @@ function closePeek() {
   p.wrap.classList.add('out');
 }
 let cascadeLeft = 24; // the first screenful cascades in on open (2026-10-08 polish)
+/* Tiles are built about 8 ms a frame (perf audit 2026-10-29): a fast scroll or a first open used to build two dozen full
+   cards in one go. Those nearest the screen go first. */
+const buildQ = new Set(); let buildRaf = 0, gridGen = 0;
+function pumpBuild() {
+  buildRaf = 0; const t = performance.now(), mid = innerHeight / 2;
+  const list = [...buildQ].filter((el) => el.isConnected).map((el) => [el, Math.abs(el.getBoundingClientRect().top - mid)]).sort((a, b) => a[1] - b[1]);
+  buildQ.clear();
+  for (let i = 0; i < list.length; i++) {
+    if (i && performance.now() - t > 8) { for (let j = i; j < list.length; j++) buildQ.add(list[j][0]); break; }
+    if (!list[i][0].firstElementChild) buildTile(list[i][0]);
+  }
+  if (buildQ.size) buildRaf = requestAnimationFrame(pumpBuild);
+}
 const observer = new IntersectionObserver((entries) => {
   for (const { isIntersecting, target } of entries) {
     if (!isIntersecting) continue;
-    observer.unobserve(target);
+    observer.unobserve(target); buildQ.add(target);
+  }
+  if (buildQ.size && !buildRaf) buildRaf = requestAnimationFrame(pumpBuild);
+}, { root: document, rootMargin: '500px 0px' });
+function buildTile(target) {
+  {
     const c = state.byKey.get(target.dataset.key);
-    if (!c) continue;
+    if (!c) return;
     // Two cards with the same name side by side ("Delta 1 Rocket Stage" ×2) say which is which (playtest 2026-10-09).
     const dup = (state.titleCount?.get(titleFor(c)) ?? 0) > 1, yr = c.launch ? String(c.launch).slice(0, 4) : '';
-    const tile = renderCardTile(c, { sightings: state.sightingsByKey.get(c.key) ?? [], ownedKeys: c.natural === 'constellation' ? ownedKeys() : undefined, sub: dup ? [yr, c.id && /^\d+$/.test(String(c.id)) ? `#${c.id}` : ''].filter(Boolean).join(' · ') : '' });
+    const tile = renderCardTile(c, { shell: true, sightings: state.sightingsByKey.get(c.key) ?? [], ownedKeys: c.natural === 'constellation' ? ownedKeys() : undefined, sub: dup ? [yr, c.id && /^\d+$/.test(String(c.id)) ? `#${c.id}` : ''].filter(Boolean).join(' · ') : '' });
     miniFace(tile, c); // the tile is the real card, shrunk, with the collected line over its footer (2026-10-13, Sevaan)
     tile.addEventListener('click', (e) => { if (tile._peeked) { tile._peeked = false; e.preventDefault(); return; } if (upWas) leaveUpList(); /* beside the grid, Up tonight’s list was still the viewer’s */ openViewer(state.list.findIndex((card) => card.key === c.key), tile.getBoundingClientRect()); });
     holdToPeek(tile, c);
@@ -264,7 +282,8 @@ const observer = new IntersectionObserver((entries) => {
     if (cascadeLeft > 0) { cascadeLeft--; target.classList.add('cascade'); target.style.setProperty('--i', String(24 - cascadeLeft)); setTimeout(() => target.classList.remove('cascade'), 1200); }
     for (const img of tile.querySelectorAll('img.card-art-image')) { if (img.complete && img.naturalWidth) img.classList.add('loaded'); else { img.addEventListener('load', () => img.classList.add('loaded'), { once: true }); img.addEventListener('error', () => img.classList.add('loaded'), { once: true }); } }
   }
-}, { root: document, rootMargin: '500px 0px' });
+}
+
 /* Tiles far off screen go back to empty slots, pictures and all, and are rebuilt if you scroll back (perf audit
    2026-10-29: a fast scroll through every card kept 1,800 tiles and ~650 MB of decoded pictures, enough for iOS to
    close the app). Slots keep their size, so nothing moves. The card open in the viewer is kept. */
@@ -658,7 +677,7 @@ function renderView() {
   $('results').textContent = `${total.toLocaleString()} ${total === 1 ? 'card' : 'cards'}${state.view === 'owned' ? ' in your collection' : ' in the field guide'}`;
   markFilters();
   $('reset-filters').hidden = state.view === 'patches' || !state.query && state.set === 'all' && state.rarity === 'all' && (state.sort ?? 'auto') === 'auto';
-  observer.disconnect(); recycler.disconnect();
+  observer.disconnect(); recycler.disconnect(); buildQ.clear();
   $('grid').replaceChildren();
   if (!total) {
     const empty = document.createElement('div'); empty.className = 'empty';
@@ -678,7 +697,10 @@ function renderView() {
   }
   $('grid').append(frag);
   appendUpNext(total);
-  for (const slot of $('grid').children) if (!slot.classList.contains('up-next')) observer.observe(slot);
+  /* watched 600 at a time, a frame apart (perf audit 2026-10-29: observing all ~4,900 slots in one go was a long task) */
+  const slots = [...$('grid').children].filter((x) => !x.classList.contains('up-next')), gen = ++gridGen;
+  const watch = (i) => { if (gen !== gridGen) return; for (const x of slots.slice(i, i + 600)) observer.observe(x); if (i + 600 < slots.length) requestAnimationFrame(() => watch(i + 600)); };
+  watch(0);
 }
 const DIR_WORD = { N: 'north', NE: 'northeast', E: 'east', SE: 'southeast', S: 'south', SW: 'southwest', W: 'west', NW: 'northwest' };
 const hm = (t) => { const x = new Date(t).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }); return /^\d:\d\d$/.test(x) ? `0${x}` : x; }; /* like Explore's fmtTime: 01:50 on a 24-hour clock (style audit 2026-10-28) */
