@@ -1,8 +1,8 @@
 // Player progress from the sighting log: XP and observer rank, tonight’s three missions, a weekly streak and
 // achievements. Everything is derived from the saved sightings (nothing extra is stored), so it can’t drift.
 // info(cardKey) -> { tier, type, owner, launch, natural, con } | null. No DOM.
-import { nightKey } from './observation.js?v=0.1.1442';
-import { fleetThresholds } from './card-model.js?v=0.1.1442';
+import { nightKey } from './observation.js?v=0.1.1443';
+import { fleetThresholds } from './card-model.js?v=0.1.1443';
 
 // A longer climb (2026-10-12, playtest room: three ranks on night 1, Mission Control in about two weeks), with two
 // prestige ranks past Mission Control. Nobody drops a rank they had on the old curve (rankFloor below).
@@ -78,7 +78,7 @@ export const MISSIONS = [
   { id: 'star', text: 'Collect a constellation star', done: (n) => n.some((s) => s.info?.con) },
   { id: 'recent', text: 'Catch something launched in the last 5 years', done: (n, t) => n.some((s) => !s.info?.natural && year(s.info?.launch) >= new Date(t).getFullYear() - 5) },
   { id: 'soviet', text: 'Spot something Soviet or Russian', done: (n) => n.some((s) => soviet(s.info)) },
-  { id: 'epic', text: 'Catch something Epic or Legendary', done: (n) => n.some((s) => ['epic', 'legendary'].includes(s.info?.tier)) },
+  { id: 'epic', text: 'Catch something Epic or Legendary', done: (n) => n.some((s) => s.info?.natural !== 'story' && ['epic', 'legendary'].includes(s.info?.tier)) },
   { id: 'race', text: 'Space Race: a Soviet object and an American one', done: (n) => n.some((s) => soviet(s.info)) && n.some((s) => american(s.info)) },
   { id: 'high', text: 'Catch something more than 60° up', done: (n) => n.some((s) => s.el >= 60) },
   { id: 'planet', text: 'Collect a planet or the Moon', done: (n) => n.some((s) => ['planet', 'moon'].includes(s.info?.type)) },
@@ -87,7 +87,7 @@ export const MISSIONS = [
   { id: 'again', text: 'See a card you own on a new night', done: (n) => n.some((s) => !s.first) },
   { id: 'conset', text: 'Find 3 stars in one constellation', done: (n) => { const c = {}; for (const s of n) if (s.info?.con && s.first) c[s.info.con] = (c[s.info.con] ?? 0) + 1; return Object.values(c).some((v) => v >= 3); } },
   { id: 'deep', text: 'Find a star cluster or galaxy', done: (n) => n.some((s) => s.info?.type === 'deepsky') },
-  { id: 'rarenew', text: 'Collect a new Rare card or better', done: (n) => n.some((s) => s.first && ['rare', 'epic', 'legendary'].includes(s.info?.tier)) },
+  { id: 'rarenew', text: 'Collect a new Rare card or better', done: (n) => n.some((s) => s.first && s.info?.natural !== 'story' && ['rare', 'epic', 'legendary'].includes(s.info?.tier)) },
   { id: 'levelup2', text: 'Turn a card silver or gold', done: (n) => n.some((s) => s.lv) },
   // Fifteen more (2026-10-25, Sevaan: so a night's three don't repeat within a week or two). main.js dealMissions only
   // deals the ones tonight's sky can give.
@@ -332,7 +332,7 @@ export function progress(sightings, info, { constellations = [], albums = [], no
       seenCard.add(s.cardKey); xp += tierXp[(tierXp === LEGACY_TIER_XP && i?.tier0) || i?.tier] ?? 10; a.cards++; firsts.push(s.time);
       if (s.time - (firsts[firsts.length - 2] ?? -Infinity) <= 60000) a.double = true;
       if (firsts.length >= 3 && s.time - firsts[firsts.length - 3] <= 300000) a.triple = true;
-      if (i?.tier) a.tierCount[i.tier] = (a.tierCount[i.tier] ?? 0) + 1;
+      if (i?.tier && i.natural !== 'story') a.tierCount[i.tier] = (a.tierCount[i.tier] ?? 0) + 1; // story cards have no rarity (they're shown as "Story" everywhere; round-2 playtest 2026-10-30: Ringside earned the Epic patch)
       if (i?.type && !i.natural) a.typeCount[i.type] = (a.typeCount[i.type] ?? 0) + 1;
       if (i?.owner && !i.natural) a.ownerCount[i.owner] = (a.ownerCount[i.owner] ?? 0) + 1;
       if (i?.natural) a.naturals.add(s.cardKey);
@@ -355,7 +355,7 @@ export function progress(sightings, info, { constellations = [], albums = [], no
     seenNight.add(nk);
     if (s.stampKey) { const f = String(s.stampKey).split(':')[0]; if (!fleetStamps.has(f)) fleetStamps.set(f, new Set()); const set = fleetStamps.get(f); if (!set.has(s.stampKey)) { set.add(s.stampKey); if (fam) { const [, sv, g] = fleetThresholds(fam); lv = set.size === sv || set.size === g; } } } // fleet level-ups as card.js fleetLevel counts them (bug hunt 2026-10-27: nights had been counted here)
     if (s.shiny) { xp += SHINY_XP; a.shinies++; }
-    if (i?.tier) a.tiers.add(i.tier);
+    if (i?.tier && i.natural !== 'story') a.tiers.add(i.tier);
     const d = new Date(s.time); a.hours.push(d.getHours()); a.months.add(`${d.getFullYear()}-${d.getMonth()}`);
     if (!i?.natural && i?.launch) { const y = year(i.launch); if (y && (a.oldest == null || y < a.oldest)) a.oldest = y; }
     if (i?.owner && !i.natural) a.owners.add(i.owner);

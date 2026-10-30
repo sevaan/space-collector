@@ -2341,3 +2341,8 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - Test notifications sheet starts below the shared header (its ✕ was under it). Night 2 card only before tonight's first catch. Send feedback says where to write if Mail didn't open.
   - Not changed (noted): the Ghost Satellite patch coin queues third after the catch's other patches; Ringside (story) shows EPIC on its reveal but "Story" in stats; Mine tab count updates only when Mine is shown; Find ranks by rarity over visibility; the Constellations album isn't ordered by what you own; patch dates use the real clock under time travel.
 - 2026-10-30 · v0.1.1442: the Collection's Mine count is written on every render, whatever the tab (it stayed at the old number on Albums/Patches after a catch).
+- 2026-10-30 · v0.1.1443 (Sevaan: "fix those left-as-is things too"):
+  - Halloween ghost: catching it earns the Ghost Satellite patch at once (checkGhost, no 1.2 s delay), first in the coin queue (patchFirst → unshift), and the reveal's first chip reads "Ghost Satellite · Happy Halloween" (ghostCaughtId). Checked in WebKit at 7:58 PM Oct 31 Toronto.
+  - Story cards have no rarity in progress: they don't count toward tier counts, the rarity set (Full Spectrum), the Epic patch, the "Epic or Legendary" or "new Rare or better" missions (they still give their XP).
+  - Find: after the name match, what passes tonight (Collection's tonight plan), then brightest (stdMag), then rarer.
+  - Albums: inside an album (state.set not all/tonight), the cards you have come first.

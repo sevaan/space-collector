@@ -3,8 +3,8 @@
 // "Notification Sound 2" by deadrobotmusic (Freesound, CC0), softened. Files: assets/audio/sfx/<name>.mp3.
 // Decoded once into memory after the first tap, played through the shared context (js/audio-ctx.js) so they’re instant.
 // Off with Settings → Sounds and vibration (localStorage sound = '0').
-import { audioCtx } from './audio-ctx.js?v=0.1.1442';
-import { VERSION } from './version.js?v=0.1.1442';
+import { audioCtx } from './audio-ctx.js?v=0.1.1443';
+import { VERSION } from './version.js?v=0.1.1443';
 export const SFX = ['lock', 'collect', 'arrive', 'flip', 'r_common', 'r_uncommon', 'r_rare', 'r_epic', 'r_legend', 'shiny', 'seen', 'stamp', 'levelup', 'xp',
   'mission', 'rankup', 'patch', 'coinroll', 'complete', 'secret', 'fossil', 'ufo', 'welcome', 'swipe', 'step', 'toggle', 'toast', 'page', 'rattle', 'plane'];
 const BASE = new URL('../assets/audio/sfx/', import.meta.url).href;

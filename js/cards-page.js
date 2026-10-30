@@ -1,33 +1,33 @@
-import { pullToClose } from './pull-close.js?v=0.1.1442';
-import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.1442';
-import { computeStats, statsHtml } from './stats.js?v=0.1.1442';
-import { nightKey } from './observation.js?v=0.1.1442';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1442';
-import { sfx } from './sfx.js?v=0.1.1442';
-import { expandFacts } from './catalog-facts.js?v=0.1.1442';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.1442';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1442';
-import { ticket } from './toast.js?v=0.1.1442';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.1442';
-import { satGlobe } from './sat-globe.js?v=0.1.1442';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.1442';
-import { cardArt } from './art.js?v=0.1.1442';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.1442';
-import { applyBack } from './card-backs.js?v=0.1.1442';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.1442';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1442';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.1442';
-import { STORIES } from './stories.js?v=0.1.1442';
-import { loadConstellations, conList, CON_BY_ID } from './constellations.js?v=0.1.1442';
-import { conArt } from './con-art.js?v=0.1.1442';
-import { RANKS, progress, readDeals, readWeekThemes, xpCarry } from './progress.js?v=0.1.1442';
-import { eventBadges, nextEvent } from './events.js?v=0.1.1442';
-import { shareCardEl } from './share-card.js?v=0.1.1442';
-import { forgetSighting } from './cloud-backup.js?v=0.1.1442';
-import { allSightings, deleteSighting } from './store.js?v=0.1.1442';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.1442';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.1442';
-import { localText } from './localize.js?v=0.1.1442';
+import { pullToClose } from './pull-close.js?v=0.1.1443';
+import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.1443';
+import { computeStats, statsHtml } from './stats.js?v=0.1.1443';
+import { nightKey } from './observation.js?v=0.1.1443';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1443';
+import { sfx } from './sfx.js?v=0.1.1443';
+import { expandFacts } from './catalog-facts.js?v=0.1.1443';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.1443';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1443';
+import { ticket } from './toast.js?v=0.1.1443';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.1443';
+import { satGlobe } from './sat-globe.js?v=0.1.1443';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.1443';
+import { cardArt } from './art.js?v=0.1.1443';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.1443';
+import { applyBack } from './card-backs.js?v=0.1.1443';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.1443';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1443';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.1443';
+import { STORIES } from './stories.js?v=0.1.1443';
+import { loadConstellations, conList, CON_BY_ID } from './constellations.js?v=0.1.1443';
+import { conArt } from './con-art.js?v=0.1.1443';
+import { RANKS, progress, readDeals, readWeekThemes, xpCarry } from './progress.js?v=0.1.1443';
+import { eventBadges, nextEvent } from './events.js?v=0.1.1443';
+import { shareCardEl } from './share-card.js?v=0.1.1443';
+import { forgetSighting } from './cloud-backup.js?v=0.1.1443';
+import { allSightings, deleteSighting } from './store.js?v=0.1.1443';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.1443';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.1443';
+import { localText } from './localize.js?v=0.1.1443';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -587,7 +587,10 @@ function renderFind() {
   // Short names people type for the famous ones (Android playtest 2026-10-20: "iss" listed ISS Objects first).
   const ALIAS = { iss: '25544', 'space station': '25544', hubble: '20580', hst: '20580', tiangong: '48274', css: '48274' };
   const rankQ = (c) => { const t = titleFor(c).toLowerCase(); return (ALIAS[q] === String(c.id) ? -10 : 0) + (t === q ? 0 : 6) + (c.icon || c.type === 'station' ? 0 : 3) + (t.startsWith(q) ? 0 : 1) + (c.type === 'debris' ? 2 : 0); };
-  if (q) list = state.cards.filter((c) => !c.archived && matches(c)).sort((a, b) => rankQ(a) - rankQ(b) || TIERS.indexOf(b.tier) - TIERS.indexOf(a.tier)).slice(0, 30);
+  // Then what passes over you tonight, then the brightest (easiest to see), then rarer (round-2 playtest 2026-10-30:
+  // "kosmos" led with Legendaries not visible for 10 days).
+  const tonightIds = new Set((state.plan ?? []).filter((x) => x.end > Date.now()).map((x) => x.key)), up = (c) => (tonightIds.has(c.key) ? 0 : 1), mag = (c) => c.stdMag ?? c.mag ?? 9;
+  if (q) list = state.cards.filter((c) => !c.archived && matches(c)).sort((a, b) => rankQ(a) - rankQ(b) || up(a) - up(b) || mag(a) - mag(b) || TIERS.indexOf(b.tier) - TIERS.indexOf(a.tier)).slice(0, 30);
   else list = (findSuggest ?? []).map((p) => state.cards.find((c) => c.id === p.id) ?? state.byKey.get(state.keyOfId?.get(p.id))).filter(Boolean); // from Explore’s plans: tonight and this week
   if (!q && !findSuggest && EMBED) { window.parent.postMessage({ sc: 'find-suggest' }, location.origin); grid.insertAdjacentHTML('beforeend', '<p class="find-none">Finding what you can see this week…</p>'); return; }
   state.list = list;
@@ -665,6 +668,7 @@ function renderView() {
     if (state.sort === 'rarest') return TIERS.indexOf(b.tier) - TIERS.indexOf(a.tier) || titleFor(a).localeCompare(titleFor(b));
     if (state.sort === 'az') return titleFor(a).localeCompare(titleFor(b));
     if (state.view === 'owned') return newest(b) - newest(a);
+    if (state.set !== 'all' && state.set !== 'tonight') { const o = Number(hasSightings(b)) - Number(hasSightings(a)); if (o) return o; } // inside an album, the ones you have come first (round-2 playtest 2026-10-30: 6 stars lost among 709)
     // Lead discovery with what you could catch tonight from here, soonest first (playtest 2026-10-09: it opened on a
     // wall of blurred Legendaries), then the familiar ISS and distinctive rarities, then catalogue order.
     if (ps.has(a.key) || ps.has(b.key)) return (ps.get(a.key) ?? Infinity) - (ps.get(b.key) ?? Infinity);
