@@ -2,9 +2,9 @@
 // many satellites are visible over the night. Runs off the main thread; ~4,000 objects × 1-minute steps
 // takes a few seconds. Visibility uses the same rules as the live sky: sunlit, dark sky, and brighter than
 // the limit for your sky at that moment (light pollution, twilight, Moon; js/sky-limit.js).
-import { frame, look, setSkyLimit, setBinocularMode, DARK_SUN_ELEVATION, withSatrecs } from './orbit.js?v=0.1.1427';
-import { skyLimit } from './sky-limit.js?v=0.1.1427';
-import { solarSystem, eqToEnu } from './celestial.js?v=0.1.1427';
+import { frame, look, setSkyLimit, setBinocularMode, DARK_SUN_ELEVATION, withSatrecs } from './orbit.js?v=0.1.1428';
+import { skyLimit } from './sky-limit.js?v=0.1.1428';
+import { solarSystem, eqToEnu } from './celestial.js?v=0.1.1428';
 
 const STEP0 = 60000;         // 1 minute (other nights in the week ahead use 2)
 const GAP = 3;               // a pass ends after this many minutes out of sight
@@ -29,6 +29,17 @@ self.onmessage = ({ data }) => {
     if (frame(new Date(startMs), observer).sunEl < DARK_SUN_ELEVATION) {
       let t = startMs; for (let i = 0; i < 480; i++) { const u = t - 120000; if (frame(new Date(u), observer).sunEl >= DARK_SUN_ELEVATION) break; t = u; }
       dusk = t;
+    }
+    /* The hours since dusk, counted coarsely (5-min steps, no passes) so the Tonight chart can still find where Earth's
+       shadow began (2026-10-29, Sevaan: planned at 10 PM, the shadow was drawn from 6:30 PM). Kept apart from `curve`,
+       which stays "from now", so nothing picks a busiest moment that's already gone. */
+    const pastCurve = [];
+    if (dusk != null && dusk < startMs) for (let t = dusk; t < startMs; t += 300000) {
+      const d = new Date(t), f = frame(d, observer), moon = solarSystem(d, observer).find((b) => b.kind === 'moon');
+      let mEl = -90, mIl = 0; if (moon) { const u = eqToEnu(d, observer)(moon.v); mEl = Math.asin(Math.max(-1, Math.min(1, u[2]))) * 180 / Math.PI; mIl = moon.illum; }
+      setSkyLimit(skyLimit({ sky, sb, sunEl: f.sunEl, moonEl: mEl, moonIllum: mIl }));
+      let count = 0; for (const o of pool) { const l = look(o, f); if (l && l.visible) count++; }
+      pastCurve.push([t, count]);
     }
     for (let k = 0; k <= (hours * 3600000 / STEP); k++) {
       const t = startMs + k * STEP, d = new Date(t), f = frame(d, observer);
@@ -61,6 +72,6 @@ self.onmessage = ({ data }) => {
     }
     for (const p of open.values()) passes.push(p);
     const out = passes.filter((p) => p.peakEl >= 10).map(({ miss, ...p }) => ({ ...p, mag: +p.mag.toFixed(1), peakEl: Math.round(p.peakEl) }));
-    self.postMessage({ requestId, startMs, dusk, dawn, curve, passes: out, pool: pool.length, moonIllum });
+    self.postMessage({ requestId, startMs, dusk, dawn, curve, pastCurve, passes: out, pool: pool.length, moonIllum });
   } catch (error) { self.postMessage({ requestId, error: error.message }); }
 };
