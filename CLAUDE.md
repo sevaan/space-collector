@@ -2233,3 +2233,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
     - Headless 4× CPU: Tonight→Explore went from 39 to ~68 frames in 1.5 s.
 - 2026-10-29 · v0.1.1413 (Sevaan, Swift re-entering ~Nov 2): last-chance fall dates use a speeding-up decay model (js/last-chance.js fallAt). It takes today's sink rate from MEAN_MOTION_DOT, steps down to 150 km with air density rising exponentially, scale height 18 km at 150 → ~42 km at 250 km. Swift: Nov 14 (straight line) → Nov 4. The window is now 10 days (45 days with this model caught ~110 objects): 38 upcoming today.
 - 2026-10-29 · v0.1.1414 (Sevaan): the first-card lesson reads 'See this object again on another night and its card levels up.'
+- 2026-10-29 · v0.1.1415 (Sevaan): in the first-card lesson, the silver then the gold mini card glimmer once each (a bright band sweeps across, 1.6 s then 2.5 s in, after they light).

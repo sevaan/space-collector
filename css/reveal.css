@@ -178,3 +178,11 @@ body.night #rv-teach { border-top-color: #ff6a55; color: #ff7f70; } body.night #
   background: #fa8127; color: #0b1018; border-radius: 12px; font: 600 15px/1 var(--label, 'SC Label'), sans-serif; letter-spacing: .14em; text-transform: uppercase; text-decoration: none; box-shadow: 0 6px 18px #0008; }
 body.night #reveal.rv-tour #reveal-view { background: #ff6a55; color: #120606; }
 #reveal.rv-tour #rv-rank { bottom: calc(var(--safe-bottom, 0px) + 62px); }
+/* Silver, then gold, glimmer once each after they light (2026-10-29, Sevaan): a bright band sweeps across the mini card */
+#rv-teach .tc-lv.silver .tc-mini, #rv-teach .tc-lv.gold .tc-mini { position: relative; }
+#rv-teach .tc-lv.silver .tc-mini::after, #rv-teach .tc-lv.gold .tc-mini::after { content: ''; position: absolute; inset: -20% -60%; pointer-events: none; transform: translateX(-120%) skewX(-18deg); opacity: 0;
+  animation: tcGlimmer .9s ease-in-out 1 forwards; }
+#rv-teach .tc-lv.silver .tc-mini::after { background: linear-gradient(90deg, transparent 35%, #ffffffcc 50%, transparent 65%); animation-delay: 1.6s; }
+#rv-teach .tc-lv.gold .tc-mini::after { background: linear-gradient(90deg, transparent 35%, #fff2b3ee 48%, #ffc93dcc 52%, transparent 65%); animation-delay: 2.5s; }
+@keyframes tcGlimmer { 0% { opacity: 1; transform: translateX(-120%) skewX(-18deg); } 100% { opacity: 1; transform: translateX(120%) skewX(-18deg); } }
+@media (prefers-reduced-motion: reduce) { #rv-teach .tc-mini::after { animation: none !important; } }
