@@ -1,9 +1,9 @@
 // Orbit math: where every object is in the observer’s sky, and whether it can be seen.
 // Pure functions, no DOM, so this module carries over unchanged to a native wrapper.
 
-import { expandFacts } from './catalog-facts.js?v=0.1.1419';
-import * as sat from './lib/satellite.js?v=0.1.1419';
-import { extinction, starlinkStdMag } from './sky-limit.js?v=0.1.1419';
+import { expandFacts } from './catalog-facts.js?v=0.1.1421';
+import * as sat from './lib/satellite.js?v=0.1.1421';
+import { extinction, starlinkStdMag } from './sky-limit.js?v=0.1.1421';
 
 const RAD = Math.PI / 180;
 const EARTH_RADIUS_KM = 6371;
@@ -27,14 +27,15 @@ export async function loadCatalog(url) {
   const families = data.families ?? {};
   for (const o of data.objects) {
     expandFacts(o);
-    const satrec = satrecFor(o);
-    if (!satrec || satrec.error) continue;
+    if (!Array.isArray(o.el) && !o.l1) continue; // no elements at all
     // Constellation members share their family’s facts to keep the file small.
     const fam = o.family ? families[o.family] : null;
     if (fam) Object.assign(o, { kind: 'PAY', type: 'satellite', tier: fam.tier ?? 'common', stdMag: o.family === 'STARLINK' ? starlinkStdMag(o) : o.stdMag ?? fam.stdMag, owner: fam.owner, familyName: fam.name, year: o.launch ? Number(o.launch.slice(0, 4)) : null });
     o.card ??= String(o.id);
-    o.satrec = satrec;
-    delete o.l1; delete o.l2; // el stays: last chance cards (fallAt) and the orbit globe read it (bug hunt 2026-10-22: deleting it switched both off in the app)
+    /* the orbit record is built the first time something needs it, not for all ~16,700 at load (perf audit 2026-10-29:
+       ~200 ms on a phone before the first sky frame); not enumerable, so copies for workers leave it out */
+    Object.defineProperty(o, 'satrec', { configurable: true, enumerable: false, get() { const r = satrecFor(this); Object.defineProperty(this, 'satrec', { value: r && !r.error ? r : null, writable: true, configurable: true, enumerable: false }); return this.satrec; }, set(v) { Object.defineProperty(this, 'satrec', { value: v, writable: true, configurable: true, enumerable: false }); } });
+    // l1/l2 (old TLE rows) stay: the record is built from them later. el stays: last chance cards (fallAt) and the orbit globe read it (bug hunt 2026-10-22: deleting it switched both off in the app)
     objects.push(o);
   }
   // Shared with the Collection layer so it doesn’t download and parse the catalogue again (2026-10-08 performance).
@@ -47,7 +48,7 @@ export async function loadCatalog(url) {
 const EL_FIELDS = ['EPOCH', 'MEAN_MOTION', 'ECCENTRICITY', 'INCLINATION', 'RA_OF_ASC_NODE', 'ARG_OF_PERICENTER', 'MEAN_ANOMALY', 'BSTAR', 'MEAN_MOTION_DOT', 'MEAN_MOTION_DDOT'];
 // Workers get the orbit numbers (el), not the satrecs, and rebuild them (bug hunt 2026-10-22: copying 16,710 satrecs of
 // 102 keys each into a worker held the main thread ~100 ms, ~4x the cost without them).
-export const toWorker = (list) => list.map(({ satrec, ...o }) => o);
+export const toWorker = (list) => list.map((o) => ({ ...o })); // satrec isn't enumerable, so it's left out without building it
 export function withSatrecs(list) { for (const o of list ?? []) o.satrec ??= satrecFor(o); return list; }
 export function satrecFor(o) {
   if (o.el) return sat.json2satrec({ NORAD_CAT_ID: o.id, ...Object.fromEntries(EL_FIELDS.map((k, i) => [k, o.el[i]])) });
@@ -109,6 +110,7 @@ function apparentMag(stdMag, rangeKm, r, f) {
 
 // Position of one object in the observer’s sky. Returns null if propagation fails.
 export function look(obj, f) {
+  if (!obj.satrec) return null; // bad elements
   const pv = sat.propagate(obj.satrec, f.date);
   if (!pv || !pv.position) return null;
   const r = pv.position;
@@ -126,6 +128,7 @@ export function look(obj, f) {
 
 // The point on Earth it’s over, its height and its speed: { lat, lon (degrees), altKm, kmh } or null.
 export function overEarth(obj, date) {
+  if (!obj.satrec) return null;
   const pv = sat.propagate(obj.satrec, date);
   if (!pv?.position || !pv.velocity) return null;
   const g = sat.eciToGeodetic(pv.position, sat.gstime(date)), v = pv.velocity;
@@ -136,6 +139,7 @@ export function overEarth(obj, date) {
 // and bright enough for a dark sky (limit) as it would be on a pass over you, not at its true distance (far-side
 // satellites are 10,000+ km off, and judged there almost none would show). Null when it’s above the horizon.
 export function lookBelow(obj, f, limit) {
+  if (!obj.satrec) return null; // bad elements
   const pv = sat.propagate(obj.satrec, f.date);
   if (!pv || !pv.position) return null;
   const r = pv.position;

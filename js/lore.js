@@ -4,8 +4,8 @@
 // facts only state what the catalogue says today (orbit, launch date and site) or simple date
 // comparisons. No extrapolating today’s orbit back over decades (lifetime laps or distance).
 
-import { orbitStats, titleCase, siteName, ownerName } from './facts.js?v=0.1.1419';
-import { localText } from './localize.js?v=0.1.1419';
+import { orbitStats, titleCase, siteName, ownerName } from './facts.js?v=0.1.1421';
+import { localText } from './localize.js?v=0.1.1421';
 
 const FAMILY = [
   [/^IRIDIUM 33 DEB/, 'A piece of the **first accidental collision between two intact satellites**: Iridium 33 hit the dead Kosmos 2251 in 2009.'],
@@ -40,10 +40,8 @@ let loreCache = null, seriesCache = null, purposeCache = null, debrisCache = nul
 let srcCache = {};
 export async function loadLore(url = 'data/lore.json', seriesUrl = url.replace('lore.json', 'series.json'), purposeUrl = url.replace('lore.json', 'purpose.json')) {
   const get = async (u) => { try { return await (await fetch(u)).json(); } catch { return {}; } };
-  [loreCache, seriesCache, purposeCache, debrisCache, factsCache] = await Promise.all([get(url), get(seriesUrl), get(purposeUrl), get(url.replace('lore.json', 'debris.json')), get(url.replace('lore.json', 'facts.json'))]);
+  [loreCache, seriesCache, purposeCache, debrisCache, factsCache, srcCache, rolesCache] = await Promise.all([get(url), get(seriesUrl), get(purposeUrl), get(url.replace('lore.json', 'debris.json')), get(url.replace('lore.json', 'facts.json')), get(url.replace('lore.json', 'fact-sources.json')), get(url.replace('lore.json', 'roles.json'))]) /* all at once (perf audit 2026-10-29: three rounds before) */;
   rocketFacts = (factsCache?.rockets ?? []).map((r) => ({ ...r, re: new RegExp(r.match) }));
-  srcCache = await get(url.replace('lore.json', 'fact-sources.json'));
-  rolesCache = await get(url.replace('lore.json', 'roles.json'));
   return loreCache;
 }
 // Researched facts (pre-launch writing review, 2026-10-15; data/facts.json, each with its source): one per satellite in

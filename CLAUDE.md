@@ -2258,3 +2258,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
     - Collection tiles built in one pass and time-sliced;
     - the minute refresh rebuilding the whole Tonight page;
     - Google Fonts self-hosted; TTF to woff2; sw.js re-downloading the catalogue; lazy-loading unused modules.
+- 2026-10-29 · v0.1.1421 (perf): boot fetches constellations, comets, lore and sky.json alongside the catalogue (was one after another; loadLore's 7 files in one round). Orbit records (satrec) are built lazily per object (a non-enumerable getter in orbit.js loadCatalog; look/overEarth return null without one; toWorker copies leave it out), not for all 16,700 at load.
