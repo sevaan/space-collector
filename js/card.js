@@ -1,26 +1,26 @@
 // Retro space-age cards. Text remains live; the foil follows pointer or optional phone tilt.
-import { fallWords } from './last-chance.js?v=0.1.1450';
-import { useMiles } from './units.js?v=0.1.1450';
-import { feel } from './native.js?v=0.1.1450';
-import { sfx } from './sfx.js?v=0.1.1450';
-import { cardArt } from './art.js?v=0.1.1450';
-import { TIER_INFO } from './rarity.js?v=0.1.1450';
-import { SET_BY_ID } from './sets.js?v=0.1.1450';
-import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.1450';
-import { FLEET_ABOUT, fleetAbout, factSourceUrl, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.1450';
-import { artFileFor } from './art-keys.js?v=0.1.1450';
-import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.1450';
+import { fallWords } from './last-chance.js?v=0.1.1451';
+import { useMiles } from './units.js?v=0.1.1451';
+import { feel } from './native.js?v=0.1.1451';
+import { sfx } from './sfx.js?v=0.1.1451';
+import { cardArt } from './art.js?v=0.1.1451';
+import { TIER_INFO } from './rarity.js?v=0.1.1451';
+import { SET_BY_ID } from './sets.js?v=0.1.1451';
+import { TYPE_LABEL, orbitStats, sizeLabel, formatDate, titleCase } from './facts.js?v=0.1.1451';
+import { FLEET_ABOUT, fleetAbout, factSourceUrl, debrisOf, roleOf, ownerWord, titleFor, factFor, yearsUp, lapsPerDay, thirdStat, richText, seriesKeyOf } from './lore.js?v=0.1.1451';
+import { artFileFor } from './art-keys.js?v=0.1.1451';
+import { ART_FILES, ART_STARS } from './art-files.js?v=0.1.1451';
 /* the orbit view (and its 66 KB coastline) loads when a card first needs it (perf audit 2026-10-29) */
-let orbitP = null; const orbitMod = () => (orbitP ??= import('./orbit-view.js?v=0.1.1450'));
-import { ART_SHARED } from './art-shared.js?v=0.1.1450';
-import { ART_CREDITS } from './art-credits.js?v=0.1.1450';
-import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.1450';
-import { nightsIn } from './observation.js?v=0.1.1450';
-import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.1450';
-import { SHINY } from './shiny.js?v=0.1.1450';
-import { conArt, cometArt } from './con-art.js?v=0.1.1450';
-import { CON_FIGURES } from './con-figures.js?v=0.1.1450';
-import { localText } from './localize.js?v=0.1.1450';
+let orbitP = null; const orbitMod = () => (orbitP ??= import('./orbit-view.js?v=0.1.1451'));
+import { ART_SHARED } from './art-shared.js?v=0.1.1451';
+import { ART_CREDITS } from './art-credits.js?v=0.1.1451';
+import { stampsIn, fleetLevel, fleetThresholds, sightingKeys, MOON_PHASES, moonPhaseOf } from './card-model.js?v=0.1.1451';
+import { nightsIn } from './observation.js?v=0.1.1451';
+import { CON_BY_ID, conProgress } from './constellations.js?v=0.1.1451';
+import { SHINY } from './shiny.js?v=0.1.1451';
+import { conArt, cometArt } from './con-art.js?v=0.1.1451';
+import { CON_FIGURES } from './con-figures.js?v=0.1.1451';
+import { localText } from './localize.js?v=0.1.1451';
 // The animal/symbol figure belongs to the completed (gold) constellation card only (2026-10-05): a single
 // star’s card draws just the star pattern with its star marked, so the figure is a reward for finishing the set.
 // A star card’s constellation figure comes into focus as you collect the constellation’s stars (design/con-focus.html B).
@@ -138,7 +138,7 @@ function inUnits([label, value, unit]) {
   if (!m) return [label, value, u];
   const digits = m[2].replace(/[,.]/g, '').replace(/^0+/, ''), sig = Math.max(2, digits.replace(/0+$/, '').length);
   const n = Number(m[2].replace(/,/g, '')) * 0.621371, e = Math.floor(Math.log10(n)) + 1 - sig, step = 10 ** e;
-  return [label, m[1] + (Math.round(n / step) * step).toLocaleString('en-US', { maximumFractionDigits: Math.max(0, -e) }), u];
+  return [label, m[1] + (n >= 100 ? Math.round(n) : Math.round(n / step) * step).toLocaleString('en-US', { maximumFractionDigits: n >= 100 ? 0 : Math.max(0, -e) }), u]; // whole miles from 100 up ("737 mi", not "736.9 mi" beside "477 mi"; final iPhone 14 check 2026-10-30)
 }
 export function orbitalCardStats(o) {
   const stats = orbitStats(o), span = o.apogee != null && o.perigee != null ? o.apogee - o.perigee : null;

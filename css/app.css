@@ -3556,3 +3556,15 @@ body.night #rv-teach .sp-cap > b, body.night #rv-teach .sp-go { color: #ff6a55; 
    red track the same red; iPhone 14 playtest 2026-10-30). */
 body.night #debug .set-tog:checked { background: #7a1d14 !important; border-color: #ff6a55 !important; } body.night #debug .set-tog:checked::before { background: #ff8a7a !important; }
 .tn-chip .nw:not(:where(.mini-face *)) { white-space: nowrap; }
+/* Red night mode: the danger button is a dark red with bright text, and the version line is readable (final iPhone 14
+   check 2026-10-30: red on red). */
+body.night #confirm-sheet .cf-danger { background: #5a140e !important; border-color: #ff6a55 !important; color: #ff8a7a !important; }
+body.night .set-version { color: #c2493c !important; }
+.tnp-fades .nw { white-space: nowrap; } /* codes and years stay whole in the fade rush (round-2 playtest) */
+/* "Right now you can catch" sits on a small dark pill so it reads over sky, cloud or the brown ground alike (final
+   iPhone 14 check 2026-10-30: dark ink on brown). */
+#ud-now .ud-now-h { color: #fff2b3 !important; background: rgba(8, 15, 27, .78); padding: 6px 12px 5px; border-radius: 99px; text-shadow: none !important; }
+body.night #ud-now .ud-now-h { color: #ff7f70 !important; }
+/* The new-count badge sits further off the dial's rim, clear of the compass letter at the top (round-2 playtest 2026-10-30). */
+#radar-new { left: 94px !important; top: -12px !important; }
+body.col-typing #nav, body.col-typing #tab-fade { visibility: hidden !important; }

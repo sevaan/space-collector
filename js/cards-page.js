@@ -1,33 +1,33 @@
-import { pullToClose } from './pull-close.js?v=0.1.1450';
-import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.1450';
-import { computeStats, statsHtml } from './stats.js?v=0.1.1450';
-import { nightKey } from './observation.js?v=0.1.1450';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1450';
-import { sfx } from './sfx.js?v=0.1.1450';
-import { expandFacts } from './catalog-facts.js?v=0.1.1450';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.1450';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1450';
-import { ticket } from './toast.js?v=0.1.1450';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.1450';
-import { satGlobe } from './sat-globe.js?v=0.1.1450';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.1450';
-import { cardArt } from './art.js?v=0.1.1450';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.1450';
-import { applyBack } from './card-backs.js?v=0.1.1450';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.1450';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1450';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.1450';
-import { STORIES } from './stories.js?v=0.1.1450';
-import { loadConstellations, conList, CON_BY_ID } from './constellations.js?v=0.1.1450';
-import { conArt } from './con-art.js?v=0.1.1450';
-import { RANKS, progress, readDeals, readWeekThemes, xpCarry } from './progress.js?v=0.1.1450';
-import { eventBadges, nextEvent } from './events.js?v=0.1.1450';
-import { shareCardEl } from './share-card.js?v=0.1.1450';
-import { forgetSighting } from './cloud-backup.js?v=0.1.1450';
-import { allSightings, deleteSighting } from './store.js?v=0.1.1450';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.1450';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.1450';
-import { localText } from './localize.js?v=0.1.1450';
+import { pullToClose } from './pull-close.js?v=0.1.1451';
+import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.1451';
+import { computeStats, statsHtml } from './stats.js?v=0.1.1451';
+import { nightKey } from './observation.js?v=0.1.1451';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1451';
+import { sfx } from './sfx.js?v=0.1.1451';
+import { expandFacts } from './catalog-facts.js?v=0.1.1451';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.1451';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1451';
+import { ticket } from './toast.js?v=0.1.1451';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.1451';
+import { satGlobe } from './sat-globe.js?v=0.1.1451';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.1451';
+import { cardArt } from './art.js?v=0.1.1451';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.1451';
+import { applyBack } from './card-backs.js?v=0.1.1451';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.1451';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1451';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.1451';
+import { STORIES } from './stories.js?v=0.1.1451';
+import { loadConstellations, conList, CON_BY_ID } from './constellations.js?v=0.1.1451';
+import { conArt } from './con-art.js?v=0.1.1451';
+import { RANKS, progress, readDeals, readWeekThemes, xpCarry } from './progress.js?v=0.1.1451';
+import { eventBadges, nextEvent } from './events.js?v=0.1.1451';
+import { shareCardEl } from './share-card.js?v=0.1.1451';
+import { forgetSighting } from './cloud-backup.js?v=0.1.1451';
+import { allSightings, deleteSighting } from './store.js?v=0.1.1451';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.1451';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.1451';
+import { localText } from './localize.js?v=0.1.1451';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -335,7 +335,7 @@ function renderAlbums() {
     b.className = `album${st.level === 3 ? ' gold' : ''}${latest ? '' : ' empty'}${crossed ? ' crossed' : ''}`; b.style.setProperty('--set', set.color);
     const ori = set.id === 'constellations' ? CON_BY_ID.get('Ori') : null; /* a real chart for the Constellations album, not the crosshair placeholder (playtest 2026-10-28) */
     b.innerHTML = `<span class="album__art">${ori ? conArt(ori.data, null, { w: 360, h: 240 }) : img ? `<img src="${img}" alt="" loading="lazy">` : cardArt(show, { accent: set.color, silhouette: !latest })}</span>
-      <span class="album__body"><span class="album__top"><span class="album__name">${esc(set.name)}</span><span class="album__count">${set.id === 'constellations' ? albumCount(set, st).replace(' constellations', '') : albumCount(set, st)}</span></span>
+      <span class="album__body"><span class="album__top"><span class="album__name">${esc(set.name)}${set.sub ? `<small class="album__sub">${esc(set.sub)}</small>` : ''}</span><span class="album__count">${set.id === 'constellations' ? albumCount(set, st).replace(' constellations', '') : albumCount(set, st)}</span></span>
       ${albumBar(st)}<span class="album__foot">${st.level ? `<span class="album__level l${st.level}">${LEVELS[st.level - 1]}</span>` : ''}<span class="album__next">${st.level === 3 ? 'Complete' : `${(st.next - st.have.length).toLocaleString()} more${unit(set)} for ${LEVELS[st.level]}`}</span></span></span>`;
     b.addEventListener('click', () => { state.set = set.id; $('set-filter').value = set.id; setView('discover'); requestAnimationFrame(() => { const tools = document.querySelector('.collection-tools'), pin = tools ? parseFloat(getComputedStyle(tools).top) + tools.offsetHeight : 160, head = $('album-head'); /* where the tools sit once pinned, not where they are now (web QA 2026-10-24: it barely scrolled) */ window.scrollTo({ top: Math.max(0, (head.hidden ? $('grid') : head).getBoundingClientRect().top + scrollY - pin - 8), behavior: 'smooth' }); }); }); // the album's name lands just under the pinned tabs and search (web playtest 2026-10-22: it scrolled under them)
     frag.append(b);
@@ -350,7 +350,7 @@ function renderAlbumHead() {
   if (state.set === 'all' || state.view === 'albums' || state.view === 'find') { head.hidden = true; return; }
   const set = SETS.find((s) => s.id === state.set), st = albumStats(state.set);
   head.hidden = false; head.style.setProperty('--set', set.color); head.classList.toggle('gold', st.level === 3);
-  head.innerHTML = `<div><span class="album__name">${esc(set.name)}</span><span class="album__count">${set.id === 'constellations' ? `<span class="nw">${albumCount(set, st)} ·</span> <span class="nw">${st.have.length.toLocaleString()} of ${st.cards.length.toLocaleString()} stars</span>` : `<b>${st.have.length.toLocaleString()}</b> / ${st.cards.length.toLocaleString()} collected`}${st.level ? ` · ${LEVELS[st.level - 1]} album` : ''}</span></div>${albumBar(st)}
+  head.innerHTML = `<div><span class="album__name">${esc(set.name)}${set.sub ? `<small class="album__sub">${esc(set.sub)}</small>` : ''}</span><span class="album__count">${set.id === 'constellations' ? `<span class="nw">${albumCount(set, st)} ·</span> <span class="nw">${st.have.length.toLocaleString()} of ${st.cards.length.toLocaleString()} stars</span>` : `<b>${st.have.length.toLocaleString()}</b> / ${st.cards.length.toLocaleString()} collected`}${st.level ? ` · ${LEVELS[st.level - 1]} album` : ''}</span></div>${albumBar(st)}
     <span class="album__next">${st.level === 3 ? 'Gold album. Every card here is a bonus.' : `${(st.next - st.have.length).toLocaleString()} more${unit(set)} for a ${LEVELS[st.level]} album`}</span>`;
 }
 
@@ -553,6 +553,10 @@ const findPasses = new Map(); let findReq = 0, findReminded = new Set(), findSug
 function nightWord(t) {
   const nightOf = (x) => new Date(x - 12 * 3600e3).toDateString(), nowD = new Date();
   const tonightKey = nowD.getHours() < 6 ? nightOf(nowD.getTime()) : nowD.toDateString(), tmrKey = new Date(new Date(tonightKey).getTime() + 86400e3 + 3600e3).toDateString();
+  // In the daytime, a pass tomorrow morning is "Tomorrow", not "Tonight" (final iPhone 14 check 2026-10-30: "Tonight
+  // 5:22 AM" at 11 AM). Evening and night still use the observing night.
+  const td = new Date(t), h = nowD.getHours();
+  if (h >= 6 && h < 17 && td.getHours() < 12 && td.toDateString() !== nowD.toDateString()) return { today: false, tmr: td.toDateString() === new Date(nowD.getTime() + 86400e3).toDateString() };
   return { today: nightOf(t) === tonightKey, tmr: nightOf(t) === tmrKey };
 }
 // A Find row reads like a row in Tonight's run (style audit 2026-10-28): rarity · where · cloud on one line, then when.
@@ -1215,7 +1219,10 @@ function openKey(key) {
 // Every achievement is a patch; earned ones in full colour (gold foil / holo on the special ones), the rest a faint
 // stitched outline with the name so you can see what’s out there. Group chips filter. Tap a patch for its detail.
 state.patchGroup = 'all';
-$('tab-patches').addEventListener('click', () => { feel('select'); setView('patches'); });
+// Typing (search): Explore's tab bar steps aside so it doesn't ride up over the results above the keyboard (round-2
+// playtest 2026-10-30).
+if (EMBED) { const kb = (on) => window.parent.postMessage({ sc: 'kbd', on }, location.origin); document.addEventListener('focusin', (e) => { if (e.target.matches?.('input[type=search], input[type=text], #search')) kb(true); }); document.addEventListener('focusout', (e) => { if (e.target.matches?.('input[type=search], input[type=text], #search')) kb(false); }); }
+$('tab-patches').addEventListener('click', () => { feel('select'); if (state.view === 'patches') { scrollTo({ top: 0, behavior: reducedMotion.matches ? 'auto' : 'smooth' }); return; } setView('patches'); }); // tapped again: back to the top (round-2 playtest 2026-10-30)
 let earnedCache = null;
 function earnedDates() {
   // When each patch was earned: replay your sightings in order and note when each one first turns on. Explore also
@@ -1310,18 +1317,22 @@ $('pv-close').addEventListener('click', closePatch);
   let fl = null;
   const body = $('pv-body');
   body.addEventListener('pointerdown', (e) => { if (e.target.closest('.pv-card')) fl = { id: e.pointerId, pts: [{ x: e.clientX, y: e.clientY, t: performance.now() }] }; });
-  body.addEventListener('pointermove', (e) => { if (fl && e.pointerId === fl.id) { fl.pts.push({ x: e.clientX, y: e.clientY, t: performance.now() }); if (fl.pts.length > 12) fl.pts.shift(); } });
+  // The card follows the finger up, and a long drag puts it away as well as a quick flick (round-2 playtest 2026-10-30:
+  // only a fast flick worked and the card didn't move with the finger).
+  const cardOf = () => $('patch-view').querySelector('.pv-card'); let y0 = null;
+  body.addEventListener('pointermove', (e) => { if (fl && e.pointerId === fl.id) { fl.pts.push({ x: e.clientX, y: e.clientY, t: performance.now() }); if (fl.pts.length > 12) fl.pts.shift(); y0 ??= fl.pts[0].y; const c = cardOf(); if (c && !reducedMotion.matches) c.style.transform = `translateY(${Math.min(0, e.clientY - y0)}px)`; } });
   body.addEventListener('pointerup', async (e) => {
     if (!fl || e.pointerId !== fl.id) return;
-    const pts = fl.pts; fl = null;
+    const pts = fl.pts; fl = null; const total = (pts[pts.length - 1]?.y ?? 0) - (pts[0]?.y ?? 0); y0 = null;
     const last = pts[pts.length - 1], now = performance.now(), from = pts.find((p) => now - p.t < 140) ?? pts[0];
     const dx = last.x - from.x, dy = last.y - from.y, dt = Math.max(16, now - from.t);
-    if (!(dy < -45 && last.y - pts[0].y < -60 && Math.abs(dx) < -dy * 0.9 && -dy / dt > 0.6)) return;
+    const flick = dy < -45 && last.y - pts[0].y < -60 && Math.abs(dx) < -dy * 0.9 && -dy / dt > 0.6;
+    if (!flick && total > -120) { const c = cardOf(); if (c && c.style.transform) { c.animate([{ transform: c.style.transform }, { transform: 'none' }], { duration: 220, easing: 'cubic-bezier(.2,.9,.3,1.2)' }); c.style.transform = ''; } return; } // springs back
     const d = $('patch-view'), card = d.querySelector('.pv-card');
-    if (card && !reducedMotion.matches) { d.classList.add('flicked'); await new Promise((r) => setTimeout(r, throwOff(card, dx, dy, dt))); }
-    d.close(); d.classList.remove('flicked');
+    if (card && !reducedMotion.matches) { d.classList.add('flicked'); await new Promise((r) => setTimeout(r, flick ? throwOff(card, dx, dy, dt) : throwOff(card, 0, -400, 220))); }
+    d.close(); d.classList.remove('flicked'); if (card) card.style.transform = '';
   });
-  body.addEventListener('pointercancel', () => { fl = null; });
+  body.addEventListener('pointercancel', () => { fl = null; y0 = null; const c = cardOf(); if (c) c.style.transform = ''; });
 }
 addStarfield($('patch-view'));
 $('patch-view').addEventListener('click', (e) => { if (e.target === $('patch-view')) closePatch(); });

@@ -2382,3 +2382,19 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - progress.js: every night up to and including a morning starter's first evening counts as a first night (a second morning-only night lost its starters at noon: XP 170 → 70).
   - Sky window: the pass the line names goes first in the pool and is the only lead card.
 - 2026-10-30 · v0.1.1450, final iPhone 14 check fixes: Line up from Settings shows its card over the sky (Settings opened from Tonight/Collection drew it over that page); mission cards answer on the finger lifting (main.js tapOn: pointerdown/up within 12 px and 600 ms, click as the fallback for keyboards), since iOS dropped the click of a second quick tap while the first card was still turning.
+- 2026-10-30 · v0.1.1451 (Sevaan: fix everything left except what can't be reproduced, what iOS controls, and testing-only quirks):
+  - Missions: a hint never names a pass that has begun; "Collect a new card" instead of "your first card" when you already have cards (morning starters).
+  - Observer stats: best night run counts the same nights as "Nights out"; Rarest finds names take two lines; a thumbnail that fails to load shows its mark.
+  - Red mode: the danger button (Reset everything) is dark red with bright text; the version line is readable. How to play no longer names colours ("a bright, glowing circle").
+  - Line up: the motion step has only "Not now" (no Cancel/Reset beside it).
+  - Patch detail follows the finger and a long drag up closes it as well as a flick; tapping the Patches tab again scrolls to the top.
+  - Halloween: "Nearly overhead" for passes 75°+ (the direction swung north ↔ southwest), the haunting row says "Show me ›", and the sky window's line adds "Something's haunting the sky at 7:57 PM".
+  - Tour: when your location can't be found, the next card says "Couldn't find you · <city> sky for now".
+  - Fade rush names keep codes/years whole and each pass keeps the fade time first shown. "Up from" names the time zone after a clock change (clockTime).
+  - Night-part rows: the name area is the button (role/tabindex/aria-expanded), the bell is no longer nested inside a button.
+  - Patch-earned tags are solid. "Right now you can catch" is on a small dark pill. The radar is smoked glass by day and its badge sits further off the rim.
+  - Typing in the Collection hides Explore's tab bar ({sc:'kbd'} → body.col-typing). Find: a pass tomorrow morning says "Tomorrow" in the daytime.
+  - Patches named on the reveal's chips are recorded without a second coin (earnPatch quiet).
+  - "Preview artwork" under an uncollected card is in view without scrolling (phones).
+  - Miles: whole numbers from 100 up (card stats and text). Albums show a subtitle where the name doesn't say what's in them (Red Stars = Soviet/Russian stages, Rocket Stages = every other country's…). ISS fact speed matches its stat (~27,600 km/h).
+  - Up now hero says "Now high in the …" for something up now. The star-hours line names what's up now ("Until then, Saturn and the stars"). With no passes, the sky window centres on the direction that fits most of the Moon and planets, and body cards may move up to 184 px along the horizon to find room.

@@ -1049,3 +1049,11 @@ body[data-view="find"] .grid.find-mode > .find-head:first-child { margin-top: 18
 .up-next__tile:has(.card--fleet) .up-next__when { padding-block: 3px; }
 /* The viewer on its way out lets taps through to the grid (cards-page letTapsThrough). */
 #viewer.closing, #viewer.closing * { pointer-events: none !important; }
+/* Rarest finds names take two lines rather than "Tiangong Spa…" (final iPhone 14 check 2026-10-30). */
+.st-rare b { white-space: normal !important; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; line-height: 1.12 !important; }
+/* Albums say what's in them where the name doesn't (final iPhone 14 check 2026-10-30: SL-8 stages are in Red Stars, so
+   Rocket Stages read 0 while you had two). */
+.album__sub { display: block; margin-top: 2px; font: 500 12px/1.2 'SC Label', 'Arial Narrow', sans-serif; letter-spacing: .03em; text-transform: none; color: #bdbea9; }
+/* An uncollected card's "Preview artwork" link is part of the view too, so it shows without scrolling (final iPhone 14
+   check 2026-10-30). */
+@media (max-width: 699px) { #viewer:has(#v-preview:not([hidden])):not(:has(#v-where:not([hidden]))) { --v-where-h: 48px; } }

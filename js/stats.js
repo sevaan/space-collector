@@ -2,8 +2,8 @@
 // badges"). Your history under the sky, from the sighting log plus what the Collection page already knows (rank,
 // patches, constellations, stories, albums). computeStats(sightings, byKey, nightKey, year, ctx) -> numbers;
 // statsHtml(st) -> the panel. No network; the map uses js/geo.js’s coarse outlines.
-import { LAND } from './geo.js?v=0.1.1450';
-import { TIER_INFO, TIERS } from './rarity.js?v=0.1.1450';
+import { LAND } from './geo.js?v=0.1.1451';
+import { TIER_INFO, TIERS } from './rarity.js?v=0.1.1451';
 
 const RANK = { common: 0, uncommon: 1, rare: 2, epic: 3, legendary: 4 };
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -33,7 +33,7 @@ export function computeStats(sightings, byKey, nightKey, year = null, ctx = {}) 
   const days2 = new Map(); for (const s of list) { const d = new Date(s.time), k = `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`; if (!days2.has(k)) days2.set(k, { t: s.time, cards: new Set() }); days2.get(k).cards.add(s.cardKey); }
   const busiest = [...days2.values()].sort((a, b) => b.cards.size - a.cards.size || a.t - b.t)[0] ?? null;
   // Longest run of consecutive observing nights.
-  const days = [...new Set(list.map((s) => Math.floor((s.time - 12 * 3600e3 - new Date(s.time).getTimezoneOffset() * 60000) / 86400e3)))].sort((a, b) => a - b); // local noon to noon (was UTC noon: one night in Tokyo or Sydney counted as two; bug hunt 2026-10-20)
+  const days = [...new Set(list.map((s) => Number(nightKey(s.time, s.lon ?? 0))))].sort((a, b) => a - b); // the same nights as "Nights out" (final iPhone 14 check 2026-10-30: 2 nights out but a best run of 1) // local noon to noon (was UTC noon: one night in Tokyo or Sydney counted as two; bug hunt 2026-10-20)
   let run = 0, best = 0; for (let i = 0; i < days.length; i++) { run = i && days[i] === days[i - 1] + 1 ? run + 1 : 1; best = Math.max(best, run); }
   // The card you’ve come back to most (most nights), and your very first.
   const most = [...nightsOf.entries()].map(([k, ns]) => ({ c: byKey.get(k), nights: ns.size })).filter((x) => x.c).sort((a, b) => b.nights - a.nights)[0] ?? null;
@@ -85,7 +85,7 @@ export function statsHtml(st) {
     <div class="st-tile"><b>${n(st.places.length)}</b><small>${st.places.length === 1 ? 'place' : 'places'}</small></div></div>
     <div class="st-bars" aria-label="Nights out by month">${st.months.map((v, i) => `<div class="st-bar${i === nowM ? ' now' : ''}"><em>${v || ''}</em><span style="height:${(v / max) * 100}%"></span><small>${MONTHS[i][0]}</small></div>`).join('')}</div></section>`;
   // Highlights, each with its card’s picture.
-  const thumb = (c) => { const u = x.art?.(c); return u ? `<img src="${u}" alt="" loading="lazy">` : `<span class="st-noart" style="color:${tierOf(c).color}">${c.natural === 'star' ? '✦' : tierOf(c).gem}</span>`; }; // stars have no painted picture: a mark, not an empty box (iOS playtest 2026-10-20)
+  const thumb = (c) => { const u = x.art?.(c); const mark = `<span class="st-noart" style="color:${tierOf(c).color}">${c.natural === 'star' ? '✦' : tierOf(c).gem}</span>`; return u ? `<img src="${u}" alt="" loading="lazy" onerror="this.outerHTML=this.dataset.mark" data-mark="${esc(mark)}">` /* a picture that doesn't load shows the mark (final iPhone 14 check: Pili's box was empty) */ : `<span class="st-noart" style="color:${tierOf(c).color}">${c.natural === 'star' ? '✦' : tierOf(c).gem}</span>`; }; // stars have no painted picture: a mark, not an empty box (iOS playtest 2026-10-20)
   const hl = (label, c, line, tier) => c ? `<div class="st-hl">${thumb(c)}<div><small>${esc(label)}</small><b>${esc(title(c))}</b><span>${tier ? `<em style="color:${tierOf(c).color};font-style:normal">${tierOf(c).gem} ${tierOf(c).label}</em> · ` : ''}${esc(line)}</span></div></div>` : ''; /* the rarest find shows its rarity in its colour and shape (style audit 2026-10-28) */
   const top = st.rarest[0];
   const highlights = `<section class="st-sec"><div class="st-head"><span>Highlights</span></div><div class="st-hls">

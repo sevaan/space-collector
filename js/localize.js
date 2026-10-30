@@ -4,7 +4,7 @@
 //    kg → lb, tonnes → tons, °C → °F, keeping about as many figures as the original number had.
 //  - A 24-hour clock (Settings → Clock, or the phone's): "1 AM" → "01:00".
 //  - US English phones: colour → color, centre → center, catalogue → catalog… (a fixed word list, whole words only).
-import { useMiles } from './units.js?v=0.1.1450';
+import { useMiles } from './units.js?v=0.1.1451';
 
 const num = (s) => Number(String(s).replace(/,/g, ''));
 // Round n to about as many significant figures as the source number showed (at least 2), and write it with commas.
@@ -12,7 +12,7 @@ function like(src, n, minSig = 2) {
   const digits = String(src).replace(/[,.~]/g, '').replace(/^0+/, ''), sig = Math.max(minSig, digits.replace(/0+$/, '').length || 1);
   if (!Number.isFinite(n) || n === 0) return String(n);
   const step = 10 ** (Math.floor(Math.log10(Math.abs(n))) + 1 - sig), r = Math.round(n / step) * step;
-  const dec = step < 1 ? Math.min(3, Math.round(-Math.log10(step))) : 0;
+  const dec = step < 1 && Math.abs(n) < 100 ? Math.min(3, Math.round(-Math.log10(step))) : 0; // whole numbers from 100 up
   return r.toLocaleString('en-US', { minimumFractionDigits: dec, maximumFractionDigits: dec });
 }
 const N = '(\\d[\\d,]*(?:\\.\\d+)?)';

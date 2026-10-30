@@ -578,3 +578,5 @@ body.nav-tabs .sc-switch { background-size: calc(33.34% - 36px) 3px, auto !impor
    double tap, so the first landed late on the sheet or the second was lost (round-3 playtest 2026-10-30). Elements with
    their own touch-action keep it (touch-action only narrows down the tree). */
 html, body, .set-sheet { touch-action: manipulation; }
+/* Patch-earned tags are solid, so sky labels don't show through (final iPhone 14 check 2026-10-30). */
+.pc-tag { background: #080f1b !important; }
