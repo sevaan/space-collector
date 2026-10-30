@@ -3,8 +3,8 @@
 // after a few weeks. So once a day the app fetches today's catalogue from our server (/catalog, built daily by the
 // repo's GitHub Action) and keeps it in IndexedDB; the next launch uses whichever copy is newer, the kept one or the
 // one in the app. The website always loads its own (it's redeployed with every catalogue). No DOM.
-import { SERVER } from './server.js?v=0.1.1430';
-import { isNative } from './native.js?v=0.1.1430';
+import { SERVER } from './server.js?v=0.1.1431';
+import { isNative } from './native.js?v=0.1.1431';
 const DB = 'sc-data', STORE = 'files';
 const idb = () => new Promise((res, rej) => { const r = indexedDB.open(DB, 1); r.onupgradeneeded = () => r.result.createObjectStore(STORE); r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); });
 const get = async (k) => { const db = await idb(); return new Promise((res, rej) => { const t = db.transaction(STORE).objectStore(STORE).get(k); t.onsuccess = () => res(t.result ?? null); t.onerror = () => rej(t.error); }); };

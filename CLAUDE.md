@@ -2274,3 +2274,8 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - 2026-10-29 · v0.1.1429 (Sevaan): every tiny card on the Tonight page shows the real picture, collected or not (main.js tinyCard: miniCard preview + paintNow) — the night part rows, an opened part's passes and the star hours rows; they used the blurred uncollected art.
 - 2026-10-29: SC Tester reinstalled on Sevaan's iPhone (web v0.1.1429: Earth's shadow from the hours since dusk, real pictures on Tonight's tiny cards).
 - 2026-10-29 · v0.1.1430 (Sevaan: Settings did nothing on the Collection page): the Collection frame sits under Explore's header with its top clipped away, but iPhone can hand a tap there to the frame. Embedded, a tap in the header band (safe-top + 80px; not under a full-screen dialog, Observer stats excepted) is caught in the frame (cards-page inHeader: pointer/touch stopped, click forwarded as {sc:'header-tap', x, y}) and Explore clicks the header button under it. Cards scrolled behind the header no longer take those taps either.
+- 2026-10-29 · v0.1.1431 (Sevaan):
+  - All around you's Worth a look cards are the Tonight page's Up now tiles (`.tn-chip.tile.ar-tile`: the real mini card via tinyCard, NEW / New phase tag, name, rarity shape and where).
+  - The Tonight sky window draws the Moon and bright planets as tiny cards like the passes (`.sw-card.body`, built in drawSkyWindow from `bodyAt`, kept off pass cards and the Earth's shadow caption, name under it; tap aims if it's up, else opens the card).
+  - Mission cards don't turn when they're already that way up (mcFlip0), so after a shuffle face-up cards no longer spin again.
+  - Star hours rows: description lines closer (line-height 1.3), the tag sits on the last line without stretching it.
