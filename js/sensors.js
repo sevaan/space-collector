@@ -1,6 +1,6 @@
 // Phone orientation -> where the back of the phone is pointing in the sky.
 // Produces a camera basis in local East-North-Up: right, up (screen edges) and back (view direction).
-import { declination } from './declination.js?v=0.1.1464';
+import { declination } from './declination.js?v=0.1.1465';
 
 const RAD = Math.PI / 180;
 
@@ -81,6 +81,15 @@ let offsetSeeded = false;   // any estimate at all
 let offsetTrusted = false;  // estimate came from the upright pose
 let goodSamples = 0;
 let rejectStreak = 0;
+// Is the phone moving? How fast the camera axis turns, smoothed (°/s). Compass corrections are applied only while it
+// moves, where they hide in your own motion; held still, the sky stays put (2026-10-30, Sevaan: "lifted my phone up to
+// look at the Sun and the sky started rotating": the offset eased toward a disagreeing compass while the phone was still).
+let lastBack = null, lastT = 0, turnRate = 0;
+function trackTurn(basis, t) {
+  if (lastBack && t > lastT) { const d = Math.acos(Math.max(-1, Math.min(1, lastBack[0] * basis.back[0] + lastBack[1] * basis.back[1] + lastBack[2] * basis.back[2]))) / RAD, rate = d / ((t - lastT) / 1000); turnRate += (Math.min(rate, 400) - turnRate) * 0.25; }
+  lastBack = basis.back; lastT = t; pointing.turnRate = turnRate;
+}
+const moving = () => turnRate > 6;
 function updateHeadingOffset(heading, basis) {
   const elBack = Math.asin(Math.max(-1, Math.min(1, basis.back[2]))) / RAD;
   const upright = basis.up[2] > 0.6 && Math.abs(elBack) < 40;
@@ -94,7 +103,7 @@ function updateHeadingOffset(heading, basis) {
   if (goodSamples > 20 && diff > 35) {
     // A sudden big disagreement: usually interference or a flip. Only accept it if it persists.
     pointing.compassDoubt = Math.min(1, rejectStreak / 90);
-    if (++rejectStreak < 90) return; // ~1.5 s of consistent readings at 60 Hz
+    if (++rejectStreak < 90 || !moving()) return; // ~1.5 s of consistent readings at 60 Hz, then taken on the next movement
     pointing.compassJumpAt = performance.now(); // it persisted: north really moved, so the compass was off
     // Take the new heading at once (QA 2026-10-08: it used to blend 2 % and then wait another 1.5 s, so a real change
     // took minutes to land).
@@ -106,7 +115,7 @@ function updateHeadingOffset(heading, basis) {
   // Hold steady (2026-10-08, Sevaan: the sky ticked round while the phone was still): iOS reports the compass in
   // whole degrees and it jitters, so once settled, small disagreements are ignored. After you line the sky up by hand
   // (headingLocked), only a big, persistent change (handled above) moves it.
-  if (goodSamples > 30 && (diff < 2.5 || headingLocked)) return;
+  if (goodSamples > 30 && (diff < 2.5 || headingLocked || !moving())) return;
   pointing.headingOffset = blendAngle(pointing.headingOffset, measured, goodSamples < 30 ? 0.2 : 0.02);
 }
 
@@ -116,7 +125,7 @@ function onOrientation(e, absolute) {
   if (!absolute && pointing.source === 'absolute') return;
   const basis = basisFromEuler(e.alpha, e.beta, e.gamma);
   pointing.basis = basis;
-  pointing.lastEvent = performance.now();
+  pointing.lastEvent = performance.now(); trackTurn(basis, pointing.lastEvent);
 
   if (typeof e.webkitCompassHeading === 'number' && e.webkitCompassHeading >= 0) {
     // iOS: alpha has an arbitrary zero; the compass heading pins it to true directions.
