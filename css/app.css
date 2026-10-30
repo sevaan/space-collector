@@ -3555,3 +3555,4 @@ body.night #rv-teach .sp-cap > b, body.night #rv-teach .sp-go { color: #ff6a55; 
 /* Red night mode: an "on" switch is a dark red track with a bright knob (the red filter turned the pale knob and the
    red track the same red; iPhone 14 playtest 2026-10-30). */
 body.night #debug .set-tog:checked { background: #7a1d14 !important; border-color: #ff6a55 !important; } body.night #debug .set-tog:checked::before { background: #ff8a7a !important; }
+.tn-chip .nw:not(:where(.mini-face *)) { white-space: nowrap; }

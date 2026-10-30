@@ -2370,3 +2370,10 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - All around you uses liveSats() and liveNaturals() (it showed the old sky after a time jump).
   - Credits opens at the top.
   - Not changed: the starter missions read "Collect your first card" again on a morning starter's first evening (any new card does it); big row gaps in the upright Up tonight grid; an Up tonight tile at 3:30 still saying "Up tonight" at 3:33 (its time is the pass start; it switches once loaded with Up now).
+- 2026-10-30 · v0.1.1448, round-3 iPhone 14 playtest fixes (shots in that session's scratchpad pt48a/):
+  - Find never shows an album's header (renderAlbumHead hides it on Find, and runs on Find renders).
+  - dragFollow (finger-mode Aim at it) re-aims from a fresh look() each frame, not state.items (stale for the first frames after a page; a tile's aim drifted off and stopped following).
+  - Up now / All around you tile names: the year stays with its "·" and codes like SL-8, CZ-4C never split (tileName).
+  - All around you body pictures are stepped lowest-first, so the one higher in the sky is the one above.
+  - Sky window: the pass the line names is always a lead card and the window is centred on it (it could fall outside the 180°).
+  - Not reproduced in WebKit: two quick taps on different mission cards (both flip there; v0.1.1446's app-wide touch-action manipulation is the likely device fix). Credits-at-top was fixed in v0.1.1447.
