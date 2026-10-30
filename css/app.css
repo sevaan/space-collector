@@ -3568,3 +3568,7 @@ body.night #ud-now .ud-now-h { color: #ff7f70 !important; }
 /* The new-count badge sits further off the dial's rim, clear of the compass letter at the top (round-2 playtest 2026-10-30). */
 #radar-new { left: 94px !important; top: -12px !important; }
 body.col-typing #nav, body.col-typing #tab-fade { visibility: hidden !important; }
+
+/* Tour main buttons at the Reset button's size: 20px, .18em (2026-10-30, Sevaan: too small) */
+.tc .acts .yes { font-size: 20px; letter-spacing: .18em; }
+@container (max-width: 300px) { .tc .acts .yes { font-size: 17px; letter-spacing: .1em; } }
