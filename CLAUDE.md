@@ -2364,3 +2364,9 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - No double-tap wait anywhere (`html, body, .set-sheet { touch-action: manipulation }`): two quick taps (close a sheet, then a row) were read as a double tap, landing the first late on the closing sheet (a locked card back opened Plus) or losing the second.
   - Observer stats has a Story row once you own a story card, so the rarity rows add up to the total.
   - Not changed (testing tools only): rapid +1 h taps can drop one; a card caught under time travel can get its NEW sticker back on returning to now; "Jumped ahead" doesn't show over the Collection. The iOS keyboard stays grey in red mode (system).
+- 2026-10-30 · v0.1.1447, round-3 iPad playtest fixes (shots in that session's scratchpad pt48c/):
+  - The first-catch lesson spotlight is placed again after a rotation (on resize, next frame and 350 ms later, once the reveal has re-sized the card); it had scattered the Bronze/Silver/Gold tiers.
+  - Collection viewer: while the card spins/flies away (closeViewer, flickClose) the dialog is switched to non-modal with `.closing` (pointer-events none), so a card tapped right after ✕ opens (a modal dialog kept the grid inert). The swap runs with redocking set so the close listeners wait for the real close. Checked: a second card tapped 0.15 s after ✕ opens.
+  - All around you uses liveSats() and liveNaturals() (it showed the old sky after a time jump).
+  - Credits opens at the top.
+  - Not changed: the starter missions read "Collect your first card" again on a morning starter's first evening (any new card does it); big row gaps in the upright Up tonight grid; an Up tonight tile at 3:30 still saying "Up tonight" at 3:33 (its time is the pass start; it switches once loaded with Up now).

@@ -1,33 +1,33 @@
-import { pullToClose } from './pull-close.js?v=0.1.1446';
-import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.1446';
-import { computeStats, statsHtml } from './stats.js?v=0.1.1446';
-import { nightKey } from './observation.js?v=0.1.1446';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1446';
-import { sfx } from './sfx.js?v=0.1.1446';
-import { expandFacts } from './catalog-facts.js?v=0.1.1446';
-import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.1446';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1446';
-import { ticket } from './toast.js?v=0.1.1446';
-import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.1446';
-import { satGlobe } from './sat-globe.js?v=0.1.1446';
-import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.1446';
-import { cardArt } from './art.js?v=0.1.1446';
-import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.1446';
-import { applyBack } from './card-backs.js?v=0.1.1446';
-import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.1446';
-import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1446';
-import { loadLore, titleFor, factFor } from './lore.js?v=0.1.1446';
-import { STORIES } from './stories.js?v=0.1.1446';
-import { loadConstellations, conList, CON_BY_ID } from './constellations.js?v=0.1.1446';
-import { conArt } from './con-art.js?v=0.1.1446';
-import { RANKS, progress, readDeals, readWeekThemes, xpCarry } from './progress.js?v=0.1.1446';
-import { eventBadges, nextEvent } from './events.js?v=0.1.1446';
-import { shareCardEl } from './share-card.js?v=0.1.1446';
-import { forgetSighting } from './cloud-backup.js?v=0.1.1446';
-import { allSightings, deleteSighting } from './store.js?v=0.1.1446';
-import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.1446';
-import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.1446';
-import { localText } from './localize.js?v=0.1.1446';
+import { pullToClose } from './pull-close.js?v=0.1.1447';
+import { isNative, saveFile, notifyAt, shareFile, feel } from './native.js?v=0.1.1447';
+import { computeStats, statsHtml } from './stats.js?v=0.1.1447';
+import { nightKey } from './observation.js?v=0.1.1447';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1447';
+import { sfx } from './sfx.js?v=0.1.1447';
+import { expandFacts } from './catalog-facts.js?v=0.1.1447';
+import { patchHtml, GROUPS, GROUP_ORDER, groupOf, finishOf, fmtEarned } from './patches.js?v=0.1.1447';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1447';
+import { ticket } from './toast.js?v=0.1.1447';
+import { orbitGlobe, whereLine } from './orbit-view.js?v=0.1.1447';
+import { satGlobe } from './sat-globe.js?v=0.1.1447';
+import { renderCard, miniCard, lockedArt, renderCardTile, attachTilt, attachGyro, attachFlip, artImage, throwOff, retype } from './card.js?v=0.1.1447';
+import { cardArt } from './art.js?v=0.1.1447';
+import { buildCards, cardKeyFor, normalizeSighting } from './card-model.js?v=0.1.1447';
+import { applyBack } from './card-backs.js?v=0.1.1447';
+import { SETS, assignSets, albumGoals, albumList } from './sets.js?v=0.1.1447';
+import { TIERS, TIER_INFO } from './rarity.js?v=0.1.1447';
+import { loadLore, titleFor, factFor } from './lore.js?v=0.1.1447';
+import { STORIES } from './stories.js?v=0.1.1447';
+import { loadConstellations, conList, CON_BY_ID } from './constellations.js?v=0.1.1447';
+import { conArt } from './con-art.js?v=0.1.1447';
+import { RANKS, progress, readDeals, readWeekThemes, xpCarry } from './progress.js?v=0.1.1447';
+import { eventBadges, nextEvent } from './events.js?v=0.1.1447';
+import { shareCardEl } from './share-card.js?v=0.1.1447';
+import { forgetSighting } from './cloud-backup.js?v=0.1.1447';
+import { allSightings, deleteSighting } from './store.js?v=0.1.1447';
+import { addStarfield, attachTileTilt } from './starfield.js?v=0.1.1447';
+import { SECRET_PATCHES, hasPatch } from './secrets.js?v=0.1.1447';
+import { localText } from './localize.js?v=0.1.1447';
 
 const $ = (id) => document.getElementById(id);
 const state = { raw: [], cards: [], byKey: new Map(), sightingsByKey: new Map(), seenMembers: new Map(), view: 'owned', query: '', set: 'all', rarity: 'all', list: [], index: 0, preview: false, ready: false };
@@ -958,15 +958,19 @@ function spin(card, rect, opening) {
   return new Promise((r) => setTimeout(() => { r(); card.classList.remove('turning'); if (opening) a.cancel(); }, opts.duration));
 }
 // Done: spin the card back into its tile if that tile is on screen, then close.
+// While the card spins or flies away, the grid behind takes taps (iPad playtest 2026-10-30: a card tapped right after
+// ✕ didn't open): a modal dialog makes the page inert, so for its last moments the viewer is shown non-modally and
+// lets taps through.
+function letTapsThrough() { const v = $('viewer'); if (!v.open || isDocked()) return; redocking = true; try { v.close(); v.show(); } catch {} finally { redocking = false; } v.classList.add('closing'); } // redocking: the close listeners wait for the real close
 async function closeViewer() {
   const c = state.list[state.index], card = $('slot').firstElementChild;
   const tile = c && document.querySelector(`.tile-slot[data-key="${CSS.escape(c.key)}"]`);
   const r = tile?.getBoundingClientRect();
   const onScreen = r && r.bottom > 0 && r.top < innerHeight && r.width > 0 && !isDocked();
   stopEffects();
-  fadeViewer(false);
+  fadeViewer(false); letTapsThrough();
   await spin(card, onScreen ? r : null, false);
-  $('viewer').close();
+  $('viewer').close(); $('viewer').classList.remove('closing');
   const v = $('viewer'); // drop the held fade-outs (backdrop included) so the next open starts clean
   document.getAnimations().forEach((an) => { const t = an.effect?.target; if (t && (t === v || v.contains(t))) an.cancel(); });
 }
@@ -975,12 +979,12 @@ async function flickClose(dx, dy, dt) {
   feel('light');
   const card = $('slot').firstElementChild; sfx('swipe');
   stopEffects();
-  fadeViewer(false);
+  fadeViewer(false); letTapsThrough();
   if (card && !reducedMotion.matches) {
     const ms = throwOff(card, dx, dy, dt); // flies off the top at the flick’s speed, fully visible 
     await new Promise((r) => setTimeout(r, ms));
   }
-  $('viewer').close();
+  $('viewer').close(); $('viewer').classList.remove('closing');
   const v = $('viewer');
   document.getAnimations().forEach((an) => { const t = an.effect?.target; if (t && (t === v || v.contains(t))) an.cancel(); });
 }

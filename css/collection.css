@@ -1047,3 +1047,5 @@ body[data-view="find"] .grid.find-mode > .find-head:first-child { margin-top: 18
    half the height, clear of the name (iPad playtest 2026-10-30: it covered "STARLINK"). */
 .up-next__tile:has(.card--fleet) .up-next__when small { display: none; }
 .up-next__tile:has(.card--fleet) .up-next__when { padding-block: 3px; }
+/* The viewer on its way out lets taps through to the grid (cards-page letTapsThrough). */
+#viewer.closing, #viewer.closing * { pointer-events: none !important; }
