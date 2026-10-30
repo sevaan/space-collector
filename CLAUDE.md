@@ -2299,3 +2299,11 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - sw.js carries catalog/sky over to a new version only if that copy is under an hour old.
   - Spotlight lesson: "Tap to continue" is a focused button (keyboard / VoiceOver can close it). Not done: the night-part rows and their bells are nested controls.
 - 2026-10-30 · v0.1.1435 (Sevaan: the Moon sat low in its square on All around you): the Moon, Sun and planet squares on All around you are cut around the body itself (main.js arBodyBox: bright rows/columns of a 96px copy, so stray stars don't count; 18% margin; cached per image), not the picture's middle square.
+- 2026-10-30 · v0.1.1436, time/place QA sweep fixes (pre-release round 1; scripts in that session's scratchpad pt46c/: labels.mjs takes a JSON list of {id, t, tz, lat, lon, vp} and reports sky-window overlaps):
+  - weather.js: a night with no clear hour whose worst kind is "clear" (partly cloudy codes) says "Cloud all night", not "Clear all night".
+  - Sky window: "Best now" when the best part is already under way (it said "Best from 4:30 AM" at 6:45 AM); the Moon and planet cards each take the first free spot near the body (off pass cards and their times, the Earth's-shadow caption, each other and the edges; left out if none), Moon first.
+  - The haul line says "this evening" or "before dawn" (the window it counts), not "tonight", beside part rows that count the whole night.
+  - tonightWeather: not "cloudy all evening" when any half hour of the evening is clear (Sydney: the chart showed a clear 7:30–9).
+  - Midnight sun: no strip, run or pass list under "Too bright tonight" (they said "Quiet until dawn" and "All 0 passes").
+  - Fade rush rows are in fade order. 24-hour timeline axis keeps "03:00". Run rows and the hero say "may be cloudy" (was "cloud forecast").
+  - Tour first catch Earth: "Our planet · Straight down", no "It's up right now", no left/right drag words.

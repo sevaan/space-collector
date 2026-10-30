@@ -1,4 +1,4 @@
-import { SERVER } from './server.js?v=0.1.1435';
+import { SERVER } from './server.js?v=0.1.1436';
 // Local weather from Open-Meteo (free, no key, CORS-open): what the sky is doing now, and whether tonight is
 // worth it. No DOM. Cached half an hour per place. Everything here is best-effort: no weather, no change.
 //
@@ -79,7 +79,7 @@ export function tonightSky(wx, dusk, dawn, fmt, t = Date.now()) {
   const worst = night.reduce((a, h) => (rank(h.kind) > rank(a) ? h.kind : a), 'clear');
   let line, ok;
   if (clear.every(Boolean)) { ok = true; line = 'Clear all night'; }
-  else if (!clear.some(Boolean)) { ok = false; line = `${WORD[worst] ?? 'Cloud'} all night`; }
+  else if (!clear.some(Boolean)) { ok = false; line = `${WORD[worst] === 'Clear' || !WORD[worst] ? 'Cloud' : WORD[worst]} all night`; } // partly cloudy all night is cloud, not "Clear all night" (QA 2026-10-30)
   else { ok = true; line = skyWords(night, clear, fmt, t, dusk); }
   // The next night (after this one) with a mostly clear sky, for the "come back on" line.
   let nextClear = null;
