@@ -2359,3 +2359,8 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - liveNaturals cache is keyed on the place (lat|lon|stars loaded) and lasts 30 s, so a location change shows the new place's Moon and planets at once.
   - The Halloween chip has its own kind 'ghost' (ORDER −1, patch icon and sound), so it's first even with a rank-up or card back.
   - Morning starters: the starter missions go to the first night with a catch after noon (or tonight if none yet), not only the next night (checked: same evening and two days later get starters; after an evening catch, a normal deal).
+- 2026-10-30 · v0.1.1446, round-3 iPhone 17e playtest fixes (shots in that session's scratchpad pt48b/):
+  - Notices that aren't showing take no taps (`#toasts .ticket:not(.in)` pointer-events none): one held over Settings sat invisible at the top and swallowed How to play taps for ~11 s. The Send feedback notice is gone (the row already shows hello@spacecollector.app).
+  - No double-tap wait anywhere (`html, body, .set-sheet { touch-action: manipulation }`): two quick taps (close a sheet, then a row) were read as a double tap, landing the first late on the closing sheet (a locked card back opened Plus) or losing the second.
+  - Observer stats has a Story row once you own a story card, so the rarity rows add up to the total.
+  - Not changed (testing tools only): rapid +1 h taps can drop one; a card caught under time travel can get its NEW sticker back on returning to now; "Jumped ahead" doesn't show over the Collection. The iOS keyboard stays grey in red mode (system).

@@ -571,3 +571,10 @@ body.nav-tabs .sc-switch { background-size: calc(33.34% - 36px) 3px, auto !impor
 .starfield i { animation-name: ui-twinkle-o; will-change: opacity; }
 @keyframes ui-twinkle-o { 0%, 100% { opacity: .9; } 50% { opacity: .1; } }
 .starfield.sf-off i { animation-play-state: paused; }
+/* A notice that isn't showing (waiting, held behind a page, or leaving) never takes a tap: one held over Settings sat
+   invisible at the top and swallowed taps on How to play for ~11 s (round-3 playtest 2026-10-30). */
+#toasts .ticket:not(.in), #toasts .ticket:not(.in) * { pointer-events: none !important; }
+/* No double-tap wait anywhere: two quick taps on different things (closing a sheet, then a Settings row) were read as one
+   double tap, so the first landed late on the sheet or the second was lost (round-3 playtest 2026-10-30). Elements with
+   their own touch-action keep it (touch-action only narrows down the tree). */
+html, body, .set-sheet { touch-action: manipulation; }

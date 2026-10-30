@@ -2,8 +2,8 @@
 // badges"). Your history under the sky, from the sighting log plus what the Collection page already knows (rank,
 // patches, constellations, stories, albums). computeStats(sightings, byKey, nightKey, year, ctx) -> numbers;
 // statsHtml(st) -> the panel. No network; the map uses js/geo.js’s coarse outlines.
-import { LAND } from './geo.js?v=0.1.1445';
-import { TIER_INFO, TIERS } from './rarity.js?v=0.1.1445';
+import { LAND } from './geo.js?v=0.1.1446';
+import { TIER_INFO, TIERS } from './rarity.js?v=0.1.1446';
 
 const RANK = { common: 0, uncommon: 1, rare: 2, epic: 3, legendary: 4 };
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -40,7 +40,9 @@ export function computeStats(sightings, byKey, nightKey, year = null, ctx = {}) 
   const firstCard = finds[0] ?? null;
   // The collection by rarity: owned of every card that rarity (story cards have their own count).
   const owned = new Set(first.keys()), tiers = TIERS.map((t) => ({ t, have: 0, all: 0 }));
-  for (const c of ctx.cards ?? []) { if (c.story || c.archived) continue; const row = tiers[RANK[c.tier] ?? 0]; row.all++; if (owned.has(c.key)) row.have++; }
+  const storyRow = { t: 'story', have: 0, all: 0 };
+  for (const c of ctx.cards ?? []) { if (c.archived) continue; const row = c.story ? storyRow : tiers[RANK[c.tier] ?? 0]; row.all++; if (owned.has(c.key)) row.have++; }
+  if (storyRow.have) tiers.push(storyRow); // a Story row once you have one, so the rows add up to the total (round-3 playtest 2026-10-30)
   const total = tiers.reduce((a, r) => a + r.all, 0);
   const shinies = new Set(list.filter((s) => s.shiny && !byKey.get(s.cardKey)?.launches).map((s) => s.cardKey)).size;
   return { sightings: list.length, cards: first.size, nights: nights.size, places: [...places.values()], months, rarest, busiest, bestRun: best, since: list[0]?.time ?? null, year,
@@ -64,7 +66,7 @@ export function statsHtml(st) {
   const rank = rk ? `<div class="st-rank lb-dial"><span class="lbd-ring"><svg viewBox="0 0 74 74"><circle cx="37" cy="37" r="32" fill="none" stroke="#24344a" stroke-width="5"/><circle cx="37" cy="37" r="32" fill="none" stroke="#fa8127" stroke-width="5" stroke-linecap="round" stroke-dasharray="${(into * 201.06).toFixed(1)} 202" transform="rotate(-90 37 37)"/><g stroke="#fff2b355" stroke-width="1.5"><line x1="37" y1="0" x2="37" y2="5"/><line x1="74" y1="37" x2="69" y2="37"/><line x1="37" y1="74" x2="37" y2="69"/><line x1="0" y1="37" x2="5" y2="37"/></g></svg><b>${rk.next ? `${Math.round(into * 100)}%<small>to next</small>` : 'Top<small>rank</small>'}</b></span><span class="lbd-m"><span class="lbd-l"><span class="lbd-name">${esc(rk.name)}</span><span class="lb-xp"><b>${n(rk.xp)}</b> XP</span></span><span class="lbd-l"><span class="lbd-to">${rk.next ? `${n(rk.next - rk.xp)} XP to <b>${esc(rk.nextName || 'the next rank')}</b>` : 'The top rank'}</span></span></span></div>` : '';
   // The collection, by rarity.
   const coll = `<section class="st-sec"><div class="st-head"><span>The collection</span><span class="st-big"><b>${n(st.cards)}</b> / ${n(st.total)} cards</span></div>
-    <div class="st-tiers">${st.tiers.map((r) => { const t = TIER_INFO[r.t]; const pct = r.all ? r.have / r.all : 0; return `<div class="st-tier" style="--c:${t.color}"><span class="st-tl">${t.gem} ${esc(t.label)}</span><span class="st-tb"><i style="width:${Math.max(pct ? 2 : 0, pct * 100).toFixed(1)}%"></i></span><span class="st-tn">${n(r.have)} <small>/ ${n(r.all)}</small></span></div>`; }).join('')}</div></section>`;
+    <div class="st-tiers">${st.tiers.map((r) => { const t = r.t === 'story' ? STORY : TIER_INFO[r.t]; const pct = r.all ? r.have / r.all : 0; return `<div class="st-tier" style="--c:${t.color}"><span class="st-tl">${t.gem} ${esc(t.label)}</span><span class="st-tb"><i style="width:${Math.max(pct ? 2 : 0, pct * 100).toFixed(1)}%"></i></span><span class="st-tn">${n(r.have)} <small>/ ${n(r.all)}</small></span></div>`; }).join('')}</div></section>`;
   // Badges and goals: what you’ve earned beyond cards.
   const goal = (label, have, all, sub = '') => `<div class="st-goal"><b>${n(have)}${all != null ? `<small> / ${n(all)}</small>` : ''}</b><span>${esc(label)}</span>${sub ? `<em>${esc(sub)}</em>` : ''}${all ? `<i style="--p:${Math.min(1, have / all).toFixed(3)}"></i>` : ''}</div>`;
   const goals = `<section class="st-sec"><div class="st-head"><span>Earned</span></div><div class="st-goals">
