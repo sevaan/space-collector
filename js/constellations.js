@@ -3,8 +3,8 @@
 // Every star in a stick figure (magnitude <= 5) is its own card; the constellation card turns gold when
 // you own all of them. Bright stars that already have cards (Regulus, Spica…) count as members.
 // No DOM.
-import { NATURAL, NATURAL_BY_KEY, SOLAR_SYSTEM } from './natural.js?v=0.1.1425';
-import { starVector } from './celestial.js?v=0.1.1425';
+import { NATURAL, NATURAL_BY_KEY, SOLAR_SYSTEM } from './natural.js?v=0.1.1426';
+import { starVector } from './celestial.js?v=0.1.1426';
 
 const GEN = { Ari: 'Arietis', Tau: 'Tauri', Gem: 'Geminorum', Cnc: 'Cancri', Leo: 'Leonis', Vir: 'Virginis', Lib: 'Librae', Sco: 'Scorpii', Sgr: 'Sagittarii',
   Cap: 'Capricorni', Aqr: 'Aquarii', Psc: 'Piscium', Ori: 'Orionis', BigDipper: 'Ursae Majoris', UMi: 'Ursae Minoris', Cas: 'Cassiopeiae', Cyg: 'Cygni', Cru: 'Crucis',
@@ -46,10 +46,12 @@ let loading = null, starFacts = {}, starDist = {};
 export const starDistance = (hip) => starDist[hip] ?? null; // [light-years, relative error] or null
 export function loadConstellations(url = 'data/constellations.json') {
   // Each star’s own researched fact (pre-launch writing review, 2026-10-15): data/star-facts.json, keyed by HIP.
-  const facts = fetch(url.replace('constellations.json', 'star-facts.json')).then((r) => r.json()).catch(() => ({}));
+  const facts = () => fetch(url.replace('constellations.json', 'star-facts.json')).then((r) => r.json()).catch(() => ({}));
   // Distances (2026-10-17): Hipparcos parallaxes, data/star-dist.json { hip: [light-years, relative error] }.
-  const dist = fetch(url.replace('constellations.json', 'star-dist.json')).then((r) => r.json()).then((d) => Object.fromEntries(Object.entries(d).filter(([, v]) => Array.isArray(v) && v[0] > 0 && v[1] >= 0 && v[1] < 1))).catch(() => ({}));
-  return (loading ??= Promise.all([fetch(url).then((r) => r.json()), facts, dist]).then(([d, f, ds]) => { starFacts = f ?? {}; starDist = ds ?? {}; register(d); }).catch(() => {}));
+  const dist = () => fetch(url.replace('constellations.json', 'star-dist.json')).then((r) => r.json()).then((d) => Object.fromEntries(Object.entries(d).filter(([, v]) => Array.isArray(v) && v[0] > 0 && v[1] >= 0 && v[1] < 1))).catch(() => ({}));
+  /* the Collection frame borrows Explore's parsed files (perf audit 2026-10-29); register() only reads them */
+  let sh = null; try { sh = window.parent !== window ? window.parent.__conShare : null; } catch {}
+  return (loading ??= (sh ?? (globalThis.__conShare = Promise.all([fetch(url).then((r) => r.json()), facts(), dist()]))).then(([d, f, ds]) => { starFacts = f ?? {}; starDist = ds ?? {}; register(d); }).catch(() => {}));
 }
 
 // Name and constellation fixes from the pre-launch fact check (2026-10-15): d3-celestial gives some stars a name that
