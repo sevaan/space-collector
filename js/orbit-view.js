@@ -4,11 +4,11 @@
 // the sky), seen from 35° above the orbit's own plane with the low point to the right, the Earth to scale in the middle
 // turning underneath (your spot marked), and the object moving round at its true relative speed, a lap in 4–14 s.
 // Parts of the ring behind the Earth are faint. Twinkling stars behind. Canvas only. Coastlines: js/coast.js.
-import { satrecFor, overEarth } from './orbit.js?v=0.1.1431';
-import * as sat from './lib/satellite.js?v=0.1.1431';
-import { useMiles } from './units.js?v=0.1.1431';
-import { placeName } from './geo.js?v=0.1.1431';
-import { COAST } from './coast.js?v=0.1.1431';
+import { satrecFor, overEarth } from './orbit.js?v=0.1.1432';
+import * as sat from './lib/satellite.js?v=0.1.1432';
+import { useMiles } from './units.js?v=0.1.1432';
+import { placeName } from './geo.js?v=0.1.1432';
+import { COAST } from './coast.js?v=0.1.1432';
 
 const RAD = Math.PI / 180, RE = 6371;
 const dot = (a, b) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
