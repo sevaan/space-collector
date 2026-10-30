@@ -3506,9 +3506,9 @@ body.night .sw-sky { border-color: #3a1512; }
 #visible:not(.opened) :is(.starfield i, .sw-card.lead .face, .tnr-rain, .tnr-snow, .tnr-sway, .mc .art::after),
 #visible.leaving :is(.starfield i, .sw-card.lead .face, .tnr-rain, .tnr-snow, .tnr-sway, .mc .art::after) { animation-play-state: paused !important; }
 #visible:not(.opened) .sw-bell, #visible.leaving .sw-bell { -webkit-backdrop-filter: none; backdrop-filter: none; }
-#visible { will-change: transform; }
+#visible:not(.opened), #visible.leaving { will-change: transform; } /* only while it slides: on the whole tall page iOS painted cards late as you scrolled, so they flashed in (2026-10-30, Sevaan) */
 /* The lower half of the Tonight page is skipped by the renderer until it's near the screen (2026-10-29 perf) */
-#tonight-list, #tn-run { content-visibility: auto; contain-intrinsic-size: auto 900px; } /* not the missions: their text is fitted by measuring */
+/* (#tonight-list / #tn-run content-visibility removed 2026-10-30: they were blank for a moment each time they scrolled back in) */
 
 .sw-sky .sw-stars i { box-shadow: none !important; } /* no per-star glow: each one cost a paint per frame (perf audit 2026-10-29) */
 
