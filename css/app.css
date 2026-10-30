@@ -2737,7 +2737,7 @@ body.night #reveal .mn-phases.teach-glow { box-shadow: 0 0 0 .15em #ff6a55; }
 @media (max-height: 720px) {
   #discover .d-ticket.has-mini, #tk.has-mini, #plane .p-ticket { min-height: 136px; }
   #tk.has-mini:has(#tk-act > button:not([hidden])) { min-height: 152px; }
-  #tk.has-mini #tk-m, #plane .p-ticket #p-info { -webkit-line-clamp: 2; }
+  #plane .p-ticket #p-info { -webkit-line-clamp: 2; } /* the sky's ticket keeps 3 lines: there's room (2026-10-30, Sevaan) */
 }
 /* Settings at 320 wide: a long value shrinks with an ellipsis instead of pushing the chevron off; links never wrap */
 .set-row > .set-val { flex: 0 1 auto; min-width: 0; }
