@@ -2415,3 +2415,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - The window centres on the named pass; other passes only count if within 60° of it (two far-off passes pulled Tiangong to the edge). The named pass is in the window even when it's before the go-out window ("Tiangong at 6:58 PM" had no card). A low pass still gets its card, just above the trees.
   - The sky window's bell sets a reminder for the time the headline shows ("Go out at 6:55" → 6:55; "Best from …" → that time; else dark), one tap, tap again to turn it off (swBell; key until-dark, so Explore's until-dark bell agrees). No sheet from there (Sevaan: none of the sheet's times was the 6:55 it said).
   - Testing: window.__swPaths(W), and .sw-sky._scene holds the window's scene.
+- 2026-10-30: Build 1.0 (48) archived (web v0.1.1454: sky window stress-test fixes, bell at the headline's time); opened in Organizer, not uploaded. SC Tester reinstalled with v0.1.1454.
