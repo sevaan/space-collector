@@ -2287,3 +2287,14 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - **Tour aim card with a finger** says where first, then the drag ("To your left · drag →", "Higher · drag ↓"), like the steering pill; "Drag right" beside an arrow pointing left read as a contradiction.
   - Not changed: the radar dial goes almost white over a bright cloud by day (see-through glass), the first-catch reveal's First Light chip then its patch coin on the sky, "Motion is unavailable" notice on a sensorless simulator.
 - 2026-10-30: Build 1.0 (46) archived (web v0.1.1433: build-45 playtest fixes: tiny cards no longer garbled by tile styles, Up tonight slots as real cards, finger-mode tour words); opened in Organizer, not uploaded. SC Tester reinstalled with v0.1.1433.
+- 2026-10-30 · v0.1.1434, code review of the last two days (pre-release round 1):
+  - FIX (regression from v0.1.1433): the mini-card guard is `:not(:where(.mini-face *))` (zero specificity). Plain `:not(.mini-face *)` raised `.panel h3` above `.sw-text h3`, `.tn-wx h3` and `.set-sheet h3`, so the sky-window headline and every sheet title lost their styles.
+  - Tonight notifications: the night's entry in tonightNotes is now { kind, at }; once its time has passed it still counts toward 4 nights in 7 and no second one (a re-picked headliner) is scheduled that night. Look up is un-counted on an evening open only if it hasn't gone out.
+  - Part-of-night bells show the dim Plus look on the Tonight page (they open Plus there, like every Tonight page bell except until-dark).
+  - Sky window: "Go out now" while the named pass is up (it jumped to the later window once the pass began).
+  - The Tonight page redraws fully at least every 10 minutes (tnShapeSig has a 10-min bucket), so the now line, the Moon/planets and the fade rush move.
+  - Rate Space Collector: hidden on Android (no Play listing yet); on the website it opens the App Store page.
+  - The until-dark sheet drops the first-night page's adopted reminder only after the new one is set.
+  - Stored Earth's-shadow times (nightShadow) also match the place (lat/lon to 0.1°).
+  - sw.js carries catalog/sky over to a new version only if that copy is under an hour old.
+  - Spotlight lesson: "Tap to continue" is a focused button (keyboard / VoiceOver can close it). Not done: the night-part rows and their bells are nested controls.
