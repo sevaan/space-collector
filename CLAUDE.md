@@ -2298,3 +2298,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - Stored Earth's-shadow times (nightShadow) also match the place (lat/lon to 0.1°).
   - sw.js carries catalog/sky over to a new version only if that copy is under an hour old.
   - Spotlight lesson: "Tap to continue" is a focused button (keyboard / VoiceOver can close it). Not done: the night-part rows and their bells are nested controls.
+- 2026-10-30 · v0.1.1435 (Sevaan: the Moon sat low in its square on All around you): the Moon, Sun and planet squares on All around you are cut around the body itself (main.js arBodyBox: bright rows/columns of a 96px copy, so stray stars don't count; 18% margin; cached per image), not the picture's middle square.
