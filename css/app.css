@@ -3579,3 +3579,10 @@ body.col-typing #nav, body.col-typing #tab-fade { visibility: hidden !important;
 body.night .tc .acts:not(.pick) .no { color: #ff7f70; }
 /* A card with no second choice keeps its room, so its main button sits where the other steps' do (2026-10-30, Sevaan) */
 .tc .acts:not(.pick) { min-height: 96px; }
+/* A plan for the old sky setting or place is on screen while the new one is worked out (2026-10-30, Sevaan). */
+#visible.tn-stale #tn-strip > *, #visible.tn-stale #visible-list, #visible.tn-stale #tn-run { opacity: .45; transition: opacity .3s; animation: tnStale 1.4s ease-in-out infinite alternate; pointer-events: none; }
+#visible.tn-stale #tn-strip { position: relative; }
+#visible.tn-stale #tn-strip::before { content: 'Updating for your sky…'; position: absolute; z-index: 5; top: 34%; left: 50%; transform: translateX(-50%); padding: 6px 12px; border-radius: 999px; background: rgba(8, 15, 27, .92); border: 1px solid #22344a; color: var(--ui-ink, #f3ead2); font: 600 12px/1.2 var(--label, system-ui); letter-spacing: .1em; text-transform: uppercase; white-space: nowrap; }
+@keyframes tnStale { from { opacity: .35; } to { opacity: .6; } }
+@media (prefers-reduced-motion: reduce) { #visible.tn-stale #tn-strip > *, #visible.tn-stale #visible-list, #visible.tn-stale #tn-run { animation: none; } }
+body.night #visible.tn-stale #tn-strip::before { color: #ff7f70; border-color: #5a1d17; }
