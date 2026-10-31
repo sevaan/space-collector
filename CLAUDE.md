@@ -2490,3 +2490,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 2026-10-31 · v0.1.1490 (Sevaan: fix it in Settings too): the shadow reference is gone from Line up the sky everywhere. calibRef: the Sun (sunRef, 3°+ up) by day, ahead of a pale daytime Moon; then the Moon; twilight → north; night → planet / bright star. The Sun check uses the same calibRef.
 
 2026-10-31 · SC Tester installed (v0.1.1490, line up with the Sun); build 1.0 (60) archived and opened in Organizer (not uploaded). The draft submission still uses 57.
+
+2026-10-31 · App Store Connect: version 1.0 now uses build 60; the draft submission holds iOS 1.0 (60) + the Plus group, both subscriptions and Plus Forever. Sevaan presses Submit for Review.
