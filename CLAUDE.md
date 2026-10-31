@@ -2437,3 +2437,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - 2026-10-30 · v0.1.1472 (Sevaan: too dim): planes and helicopters away from the circle are drawn at 85% (was 55%), still in the muted planeDim colour; in the circle 100% plane red as before.
 - 2026-10-30 · v0.1.1473 (Sevaan: the Tonight hero, "New to you", vanished when scrolled away and came back late): the hero isn't rebuilt (checked with a MutationObserver), so it's iOS repainting; its one-time shimmer (.now-hero.shine, a mix-blend-mode screen ::after kept by fill: both) is now removed 2.2 s after it plays.
 - 2026-10-30 · v0.1.1474 (Sevaan): the cloudy-dusk sky window line reads "The passes still go by above the clouds." (was "the cloud").
+- 2026-10-30: Build 1.0 (50) archived (web v0.1.1474: above the clouds wording); opened in Organizer, not uploaded.
+- 2026-10-30 · v0.1.1475 (Sevaan): the sky slider stays on Explore while looking below the horizon (it now sets what shows there too); the body.look-down rule hiding it is removed (the class is still set).
