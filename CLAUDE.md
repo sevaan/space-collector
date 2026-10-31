@@ -2439,3 +2439,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 - 2026-10-30 · v0.1.1474 (Sevaan): the cloudy-dusk sky window line reads "The passes still go by above the clouds." (was "the cloud").
 - 2026-10-30: Build 1.0 (50) archived (web v0.1.1474: above the clouds wording); opened in Organizer, not uploaded.
 - 2026-10-30 · v0.1.1475 (Sevaan): the sky slider stays on Explore while looking below the horizon (it now sets what shows there too); the body.look-down rule hiding it is removed (the class is still set).
+- 2026-10-30: Build 1.0 (51) archived (web v0.1.1475: sky slider stays below the horizon); opened in Organizer, not uploaded. SC Tester reinstalled.
