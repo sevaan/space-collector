@@ -2482,3 +2482,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 2026-10-31 · SC Tester installed (v0.1.1487, Sun check); build 1.0 (58) archived and opened in Organizer (not uploaded). The draft submission still uses 57.
 
 2026-10-31 · v0.1.1488 (Sevaan: put it in the card under the Sun instead of View card): the Sun and Moon checks are no longer floating cards above the circle. When a check is due (skyCheck sets c.show), the owned object's card under the circle shows #d-check ("Don't look at it · Is the real Sun in front of you?" / "Is the real Moon in the circle?", Yes / It's off) in place of View card (#d-cta). #moon-check stays in the DOM, unused.
+
+2026-10-31 · SC Tester installed (v0.1.1488, Sun check in the card); build 1.0 (59) archived and opened in Organizer (not uploaded). The draft submission still uses 57.
