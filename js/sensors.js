@@ -1,6 +1,6 @@
 // Phone orientation -> where the back of the phone is pointing in the sky.
 // Produces a camera basis in local East-North-Up: right, up (screen edges) and back (view direction).
-import { declination } from './declination.js?v=0.1.1490';
+import { declination } from './declination.js?v=0.1.1491';
 
 const RAD = Math.PI / 180;
 
@@ -11,6 +11,7 @@ export const pointing = {
   compassAccuracy: null, // iOS: ± degrees, -1 = uncalibrated
   compassJumpAt: 0,      // when the compass last swung far enough that we had to accept a big correction
   compassDoubt: 0,       // 0..1: how much the compass currently disagrees with where we think north is
+  settled: false,        // iOS: the compass has had a few seconds to wake and agrees with itself (turn directions wait for it)
   lastEvent: 0,
 };
 
@@ -90,7 +91,20 @@ function trackTurn(basis, t) {
   lastBack = basis.back; lastT = t; pointing.turnRate = turnRate;
 }
 const moving = () => turnRate > 6;
+// The compass's first seconds (2026-10-31, Sevaan: first time out, it sent him the wrong way, then the sky jumped and the
+// Sun was back where he started). iOS's first headings after the compass wakes are often stale; the steady-state rules
+// below then treated the real heading as interference and only took it ~1.5 s and a movement later. So for the first
+// EARLY_MS after the first heading, a disagreement is taken at once, and pointing.settled stays false (main.js holds the
+// turn directions) until the compass has agreed with itself for a moment.
+const EARLY_MS = 20000, SETTLE_MS = 2500, SETTLE_MAX_MS = 6000;
+let firstHeadingAt = 0, agreeSince = 0;
+// Waking up again after the app was away: the compass is stale then too, so it settles again (unless lined up by hand).
+if (typeof document !== 'undefined') document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') { firstHeadingAt = 0; pointing.settled = false; } });
+// For the turn directions: true while an iPhone's compass is still waking up (at most SETTLE_MAX_MS after its first heading).
+export const compassSettling = () => pointing.source === 'ios' && !pointing.settled && !headingLocked && firstHeadingAt > 0 && performance.now() - firstHeadingAt < SETTLE_MAX_MS;
 function updateHeadingOffset(heading, basis) {
+  const now = performance.now(); if (!firstHeadingAt) { firstHeadingAt = agreeSince = now; }
+  const early = now - firstHeadingAt < EARLY_MS;
   const elBack = Math.asin(Math.max(-1, Math.min(1, basis.back[2]))) / RAD;
   const upright = basis.up[2] > 0.6 && Math.abs(elBack) < 40;
   const measured = (heading - rawAzimuth(basis.back) + 360) % 360;
@@ -100,6 +114,15 @@ function updateHeadingOffset(heading, basis) {
   if (!offsetTrusted) { // first upright reading replaces a guess taken in a bad pose
     pointing.headingOffset = measured; offsetTrusted = true; goodSamples = 1; return;
   }
+  if (early && !headingLocked) { // settling: follow the compass closely, snapping on a real disagreement
+    if (diff > 8) { pointing.headingOffset = measured; agreeSince = now; if (pointing.settled && diff > 25) pointing.compassJumpAt = now; }
+    else pointing.headingOffset = blendAngle(pointing.headingOffset, measured, 0.2);
+    const acc = pointing.compassAccuracy, accOk = acc == null || (acc >= 0 && acc <= 30);
+    if (!pointing.settled && ((now - agreeSince > SETTLE_MS && accOk) || now - firstHeadingAt > SETTLE_MAX_MS)) pointing.settled = true;
+    rejectStreak = 0; pointing.compassDoubt = 0; goodSamples++;
+    return;
+  }
+  pointing.settled = true;
   if (goodSamples > 20 && diff > 35) {
     // A sudden big disagreement: usually interference or a flip. Only accept it if it persists.
     pointing.compassDoubt = Math.min(1, rejectStreak / 90);

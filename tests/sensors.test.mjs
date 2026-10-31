@@ -38,6 +38,7 @@ test('tipping the phone overhead does not spin the sky when iOS flips its compas
 });
 
 test('back upright, a brief compass glitch is ignored', () => {
+  clock += 21000; // past the compass's waking-up window (EARLY_MS): the steady rules from here on
   ios(40, 90, 90, 30);
   ios(40, 90, 200, 20); // a short burst of nonsense (e.g. passing a metal railing)
   const b = sensors.trueBasis();
