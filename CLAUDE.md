@@ -2450,3 +2450,4 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - Earth's shadow card chip says "Low satellites back at …" when high ones still pass.
   - Milky Way photo seam (a dark, blocky diagonal line through Orion/Taurus on the simulator): at l = ±180° the texture x jumps 1 → 0 and the GPU used a tiny dark mipmap; js/milkyway-gl.js now enables OES_standard_derivatives and uses the wrapped coordinate where it changes more smoothly (the standard seam fix). Desktop WebKit/Chromium don't show the artifact, so it's unconfirmed until seen on a phone.
   - Not changed: Tonight stale after stepping the testing clock back (testing only), the Collection's first frame blank for ~0.2 s, one Show me tap lost while the page slid in.
+- 2026-10-31: Build 1.0 (53) archived (web v0.1.1480: Halloween ghost holds one evening ghost, Milky Way seam, shadow chip); opened in Organizer, not uploaded. SC Tester reinstalled.
