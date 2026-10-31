@@ -2484,3 +2484,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 2026-10-31 · v0.1.1488 (Sevaan: put it in the card under the Sun instead of View card): the Sun and Moon checks are no longer floating cards above the circle. When a check is due (skyCheck sets c.show), the owned object's card under the circle shows #d-check ("Don't look at it · Is the real Sun in front of you?" / "Is the real Moon in the circle?", Yes / It's off) in place of View card (#d-cta). #moon-check stays in the DOM, unused.
 
 2026-10-31 · SC Tester installed (v0.1.1488, Sun check in the card); build 1.0 (59) archived and opened in Organizer (not uploaded). The draft submission still uses 57.
+
+2026-10-31 · v0.1.1489 (Sevaan: "Along my shadow" sucks): the Sun check's It's off opens Line up with the Sun as its reference (openCalib({ sun: true }) → sunRef(), Sun 3°+ up): "Line up with the Sun / Point the circle at the real Sun / Aim the phone, not your eyes…" → "It's pointing at the Sun". Settings → Line up and the other entry points still use the Moon, then the shadow by day.
