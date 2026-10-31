@@ -49,13 +49,16 @@ function page(W, H) {
   // Three zones left to right: the words (to 41%), the target circle locked on the ISS (the sky's centre, 50%), the card
   // fan (from 56%). Cards are sized from the free width so nothing ever covers the circle or runs off the edge.
   const u = H / 1000, R = 1208 / 1812;                       // R = a card's width / height
-  const free = W * 0.985 - W * 0.56, w = Math.min(free / 2.14, 0.53 * H * R), ch = w / R, cx = W * 0.56 + 1.07 * w;
+  // 2026-10-31 (Sevaan): the right card's edge ran off the banner. The circle and the fan move left by S, and the fan is
+  // sized so the tilted right card (its corner reaches ~2.23 card widths past the fan's start) ends inside 97.5%.
+  const S = W * 0.035, x0 = W * 0.56 - S;
+  const free = W * 0.975 - x0, w = Math.min(free / 2.3, 0.53 * H * R), ch = w / R, cx = x0 + 1.07 * w;
   const card = (n, x, rot, h, z, dy = 0) => `<img class="card" src="${data(join(RAW, `header-card-${n}.png`))}" style="left:${x - (h * R) / 2}px;top:${H / 2 - h / 2 + dy}px;height:${h}px;transform:rotate(${rot}deg);z-index:${z}">`;
   return `<!doctype html><html><head><meta charset="utf-8"><style>
 @font-face { font-family: D; src: url('${font('RussoOne-Regular.ttf')}'); }
 @font-face { font-family: L; src: url('${font('BarlowCondensed-Medium.ttf')}'); }
 html, body { margin: 0; width: ${W}px; height: ${H}px; overflow: hidden; background: #060b15; }
-.sky { position: absolute; inset: 0; background: url('${data(join(RAW, 'header-sky.png'))}') center / cover; filter: brightness(1.15); }
+.sky { position: absolute; inset: 0 0 0 ${-2 * S}px; background: url('${data(join(RAW, 'header-sky.png'))}') center / cover; filter: brightness(1.15); }
 .shade { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(6,11,21,.82) 0%, rgba(6,11,21,.6) 30%, rgba(6,11,21,0) 43%, rgba(6,11,21,0) 58%, rgba(6,11,21,.35) 80%, rgba(6,11,21,.5) 100%); }
 .words { position: absolute; left: ${W * 0.05}px; top: 50%; transform: translateY(-50%); width: ${W * 0.36}px; color: #fff2b3; }
 .eb { font: 500 ${30 * u}px/1 L; letter-spacing: .26em; text-transform: uppercase; color: #fa8127; white-space: nowrap; }
