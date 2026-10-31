@@ -2488,3 +2488,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 2026-10-31 · v0.1.1489 (Sevaan: "Along my shadow" sucks): the Sun check's It's off opens Line up with the Sun as its reference (openCalib({ sun: true }) → sunRef(), Sun 3°+ up): "Line up with the Sun / Point the circle at the real Sun / Aim the phone, not your eyes…" → "It's pointing at the Sun". Settings → Line up and the other entry points still use the Moon, then the shadow by day.
 
 2026-10-31 · v0.1.1490 (Sevaan: fix it in Settings too): the shadow reference is gone from Line up the sky everywhere. calibRef: the Sun (sunRef, 3°+ up) by day, ahead of a pale daytime Moon; then the Moon; twilight → north; night → planet / bright star. The Sun check uses the same calibRef.
+
+2026-10-31 · SC Tester installed (v0.1.1490, line up with the Sun); build 1.0 (60) archived and opened in Organizer (not uploaded). The draft submission still uses 57.
