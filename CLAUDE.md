@@ -2470,3 +2470,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 2026-10-31 · v0.1.1485: the until-dark card and Tonight's plan (#until-dark / #ud-now) show below the horizon too (Sevaan); they step aside only while something under the ground (belowHitId, the fossil, a secret) is lined up.
 
 2026-10-31 · SC Tester installed (v0.1.1485); build 1.0 (56) archived and opened in Organizer (not uploaded). Build 55 is the one in review.
+
+2026-10-31 · v0.1.1486: the Dark at card (#until-dark.tk-card) is centred with the translate property, not transform: its ui-rise animation animates transform, so for a moment it sat with its left edge at the middle (Sevaan, below the horizon). Checked in WebKit: centred at every point of the animation.
