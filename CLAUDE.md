@@ -2452,3 +2452,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
   - Not changed: Tonight stale after stepping the testing clock back (testing only), the Collection's first frame blank for ~0.2 s, one Show me tap lost while the page slid in.
 - 2026-10-31: Build 1.0 (53) archived (web v0.1.1480: Halloween ghost holds one evening ghost, Milky Way seam, shadow chip); opened in Organizer, not uploaded. SC Tester reinstalled.
 - 2026-10-31: store media regenerated for v0.1.1480 (all sets, US sets, previews, header; scratchpad storeall.sh, --when=2026-10-17T19:30); Desktop 'Space Collector App Store' refreshed with iPhone/iPad/iPhone Duo, their (US) versions, Android and Header; spacecollector.app updated with the 10 iPhone shots (603/904 webp) and the iPhone preview (720 px, with sound, poster at 7 s) and deployed.
+
+2026-10-31 · v0.1.1481: upright iPads: the Tonight top page grows to fit (fit-content, up to 64dvh) and mission cards are capped at 210px wide, centred (Sevaan: they were cut off at the fold). The Duo upright (<1100 tall) is unchanged. The chart's "No forecast" label is removed.

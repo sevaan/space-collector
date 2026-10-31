@@ -3586,3 +3586,11 @@ body.night .tc .acts:not(.pick) .no { color: #ff7f70; }
 @keyframes tnStale { from { opacity: .35; } to { opacity: .6; } }
 @media (prefers-reduced-motion: reduce) { #visible.tn-stale #tn-strip > *, #visible.tn-stale #visible-list, #visible.tn-stale #tn-run { animation: none; } }
 body.night #visible.tn-stale #tn-strip::before { color: #ff7f70; border-color: #5a1d17; }
+
+/* Upright iPads (2026-10-31, Sevaan: the mission cards were cut off): the top page grows to hold Tonight's missions
+   (up to 64% of the screen) and the cards stay hand-sized instead of a third of the width each. The Duo upright
+   (shorter than 1100) keeps the fold at the middle. */
+@media (min-width: 600px) and (min-height: 1100px) and (orientation: portrait) {
+  #visible:not([hidden]) { grid-template-rows: fit-content(64dvh) 40px auto minmax(0, 1fr); }
+  #tn-missions .mc-row { grid-template-columns: repeat(var(--n, 3), minmax(0, 210px)); gap: 16px; justify-content: center; }
+}
