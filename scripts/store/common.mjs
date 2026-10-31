@@ -78,7 +78,7 @@ export const storeStorage = (at) => { const t = at.getTime() - 6 * 864e5; return
 export const captureNight = (when) => (when ? new Date(when) : (() => { const d = new Date(); d.setHours(20, 30, 0, 0); return d; })());
 
 // No notices, badges or tips over the shots.
-export const hideNoise = (p) => p.addStyleTag({ content: '#toasts, .patch-coins, .pc-badge, .radar-tip, #until-dark, #sky-match, #fade-tip, #moon-check, #help-card { display: none !important; }' });
+export const hideNoise = (p) => p.addStyleTag({ content: '#toasts, .patch-coins, .pc-badge, .radar-tip, #until-dark, #sky-match, #fade-tip, #moon-check, #sun-check, #help-card { display: none !important; }' });
 
 // Point at the best new thing up (a station, then rarer, then brighter), steadying the view on it; if nothing is up,
 // move the clock on a few minutes and look again.

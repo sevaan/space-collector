@@ -655,7 +655,7 @@ body:has(#secret-cta:not([hidden])) #toasts, body:has(#secret-cta:not([hidden]))
 .ts-note { display: block; margin-top: 10px; font: 500 14px/1.3 var(--label); letter-spacing: .03em; color: color-mix(in srgb, var(--text) 75%, transparent); }
 .ts-note b { color: var(--gold); font-weight: 500; }
 /* The steering line gets a soft dark backing so it reads over trees and bright sky. */
-#guidance:not(.first) { left: 50% !important; right: auto !important; transform: translateX(-50%); width: max-content; max-width: calc(var(--vws) - 32px); padding: 7px 14px; border-radius: 99px;
+#guidance:not(.first) { left: 50% !important; right: auto !important; translate: -50% 0; /* not transform: ui-rise animates it (2026-10-31) */ width: max-content; max-width: calc(var(--vws) - 32px); padding: 7px 14px; border-radius: 99px;
   background: rgba(8, 15, 27, .55); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
 /* "0 UP" under the compass reads by day too. */
 body.day #radar-up, body.day #radar-up b { color: #fff !important; text-shadow: 0 1px 4px rgba(8, 15, 27, .55); }
@@ -2614,25 +2614,25 @@ body.night .week-box .wk-prog em { background: linear-gradient(90deg, #ff6a55 va
 .train-box .tr-go { justify-self: start; }
 body.night .train-box { border-color: #ff6a5544; background: #170707; } body.night .train-box .k { color: #ff6a55; }
 /* Teach the fade (2026-10-25, Sevaan; design/real-sky.html 05 A): a callout above the circle, the first time */
-#fade-tip { position: fixed; z-index: 4; left: 50%; transform: translate(-50%, -100%); width: min(290px, calc(var(--vws, 100vw) - 40px)); box-sizing: border-box; padding: 10px 12px; border-radius: 14px; background: rgba(10, 18, 31, .96); border-top: 2px solid #ffc93d; color: var(--text); font: 500 14px/1.3 var(--label); pointer-events: none; text-wrap: balance; animation: ui-rise var(--m-norm, .3s) var(--ease-out, ease-out); }
+#fade-tip { position: fixed; z-index: 4; left: 50%; translate: -50% -100%; /* not transform: ui-rise animates it (2026-10-31) */ width: min(290px, calc(var(--vws, 100vw) - 40px)); box-sizing: border-box; padding: 10px 12px; border-radius: 14px; background: rgba(10, 18, 31, .96); border-top: 2px solid #ffc93d; color: var(--text); font: 500 14px/1.3 var(--label); pointer-events: none; text-wrap: balance; animation: ui-rise var(--m-norm, .3s) var(--ease-out, ease-out); }
 #fade-tip[hidden] { display: none; }
 #fade-tip small { display: block; margin-bottom: 3px; font: 500 10.5px/1 var(--label); letter-spacing: .18em; text-transform: uppercase; color: #ffc93d; }
 #fade-tip i { position: absolute; left: 50%; bottom: -7px; width: 12px; height: 12px; margin-left: -6px; background: rgba(10, 18, 31, .96); transform: rotate(45deg); }
 body.night #fade-tip { border-top-color: #ff6a55; color: #ff7f70; } body.night #fade-tip small { color: #ff6a55; }
 /* The Moon check (2026-10-25, Sevaan; design/real-sky.html 02): above the circle, the next time the Moon is in it */
-#moon-check { position: fixed; z-index: 5; left: 50%; transform: translate(-50%, -100%); width: min(290px, calc(var(--vws, 100vw) - 40px)); box-sizing: border-box; padding: 10px 12px 12px; border-radius: 14px; background: rgba(10, 18, 31, .96); border-top: 2px solid #7fb2ff; color: var(--text); display: grid; gap: 6px; animation: ui-rise var(--m-norm, .3s) var(--ease-out, ease-out); }
-#moon-check[hidden] { display: none; }
-#moon-check small { font: 500 10.5px/1 var(--label); letter-spacing: .18em; text-transform: uppercase; color: #7fb2ff; }
-#moon-check b { font: 400 16px/1.2 var(--display); }
-#moon-check > span { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-#moon-check button { min-height: 44px; border: 0; border-radius: 12px; font: 500 13px/1 var(--label); letter-spacing: .14em; text-transform: uppercase; cursor: pointer; background: #1d2a3c; color: var(--text); }
-#moon-check .mc-yes { background: #7fb2ff; color: #0b1120; }
-#moon-check i { position: absolute; left: 50%; bottom: -7px; width: 12px; height: 12px; margin-left: -6px; background: rgba(10, 18, 31, .96); transform: rotate(45deg); }
-body.night #moon-check { border-top-color: #ff6a55; color: #ff7f70; } body.night #moon-check small { color: #ff6a55; } body.night #moon-check .mc-yes { background: #ff6a55; color: #120606; }
+:is(#moon-check, #sun-check) { position: fixed; z-index: 5; left: 50%; translate: -50% -100%; width: min(290px, calc(var(--vws, 100vw) - 40px)); box-sizing: border-box; padding: 10px 12px 12px; border-radius: 14px; background: rgba(10, 18, 31, .96); border-top: 2px solid #7fb2ff; color: var(--text); display: grid; gap: 6px; animation: ui-rise var(--m-norm, .3s) var(--ease-out, ease-out); }
+:is(#moon-check, #sun-check)[hidden] { display: none; }
+:is(#moon-check, #sun-check) small { font: 500 10.5px/1 var(--label); letter-spacing: .18em; text-transform: uppercase; color: #7fb2ff; }
+:is(#moon-check, #sun-check) b { font: 400 16px/1.2 var(--display); }
+:is(#moon-check, #sun-check) > span { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+:is(#moon-check, #sun-check) button { min-height: 44px; border: 0; border-radius: 12px; font: 500 13px/1 var(--label); letter-spacing: .14em; text-transform: uppercase; cursor: pointer; background: #1d2a3c; color: var(--text); }
+:is(#moon-check, #sun-check) .mc-yes { background: #7fb2ff; color: #0b1120; }
+:is(#moon-check, #sun-check) i { position: absolute; left: 50%; bottom: -7px; width: 12px; height: 12px; margin-left: -6px; background: rgba(10, 18, 31, .96); transform: rotate(45deg); }
+body.night :is(#moon-check, #sun-check) { border-top-color: #ff6a55; color: #ff7f70; } body.night :is(#moon-check, #sun-check) small { color: #ff6a55; } body.night :is(#moon-check, #sun-check) .mc-yes { background: #ff6a55; color: #120606; }
 /* The FIRST TARGET pill on narrow phones (bug hunt 2026-10-25): no picture, closer to the radar, so the name has room */
 @media (max-width: 380px) { .ft-pill { left: calc(var(--safe-l, 0px) + 112px); } .ft-pill img, .ft-pill > i { display: none; } .ft-pill { padding-left: 12px; } }
-#fade-tip.by-radar, #moon-check.by-radar { transform: translate(0, -100%); width: auto; right: calc(var(--safe-r, 0px) + 14px); }
-#fade-tip.by-radar i, #moon-check.by-radar i { left: var(--ax, 50%); }
+#fade-tip.by-radar, :is(#moon-check, #sun-check).by-radar { translate: 0 -100%; width: auto; right: calc(var(--safe-r, 0px) + 14px); }
+#fade-tip.by-radar i, :is(#moon-check, #sun-check).by-radar i { left: var(--ax, 50%); }
 /* First-run playtest fixes (2026-10-25) */
 .ob-done .od-pass { display: inline; } /* a wrapped name no longer leaves "· tier" starting the next line */
 @media (max-width: 360px) { #rv-teach .tc-moons i { display: none; } #rv-teach .tc-moons span.now i { display: block; } } /* phase names collided at 320 */
@@ -2641,7 +2641,7 @@ body.night #moon-check { border-top-color: #ff6a55; color: #ff7f70; } body.night
 body.night .wc-a-top .wc-dot { background: #ff6a55; box-shadow: none; } body.night #rv-teach .tc-ok { background: #ff6a55; color: #120606; }
 @media (max-width: 380px) { .ft-pill { left: calc(var(--safe-l, 0px) + 122px); } }
 /* Returning playtest fixes (2026-10-25) */
-body:has(#moon-check:not([hidden])) #toast-tray, body:has(#fade-tip:not([hidden])) #toast-tray, body.sky-matching #toast-tray { visibility: hidden; } /* tucked chips sat on the cards above the circle */
+body:has(:is(#moon-check, #sun-check):not([hidden])) #toast-tray, body:has(#fade-tip:not([hidden])) #toast-tray, body.sky-matching #toast-tray { visibility: hidden; } /* tucked chips sat on the cards above the circle */
 .ghost-box { flex-wrap: wrap; } .ghost-box > span:nth-child(2) { flex: 1 1 200px; } .ghost-box .gh-go { margin-left: 52px; } /* the button under the words, like the train box */
 #sky-match.compact b { display: none; }
 /* Day before month where the phone writes dates that way (US/UK playtest 2026-10-25) */

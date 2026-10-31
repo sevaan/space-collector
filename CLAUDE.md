@@ -2476,3 +2476,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 2026-10-31 · SC Tester installed (v0.1.1486); build 1.0 (57) archived and opened in Organizer (not uploaded). Build 55 is in review.
 
 2026-10-31 · App Store Connect: version 1.0 now uses build 57 (TestFlight, Sevaan uploaded); the draft submission holds iOS 1.0 (57) + the Plus group, both subscriptions and Plus Forever. Sevaan presses Submit for Review.
+
+2026-10-31 · v0.1.1487: the Sun check (Sevaan, after a TestFlight tester pointed at the Sun and was told to turn east): like the Moon check, the next time an owned Sun is back in the circle and locked (motion only), a card above the circle asks "Quick check · don't look at it / Is the real Sun in front of you? Yes / It's off"; It's off opens Line up the sky (by day: your shadow). SKY_CHECKS in main.js runs both checks (one at a time), flags moonChecked / sunChecked, usage calib {s: moon-ok|moon-off|sun-ok|sun-off}. #fade-tip, the sky checks and #guidance are centred with the translate property (ui-rise animates transform, the Dark at card bug).
