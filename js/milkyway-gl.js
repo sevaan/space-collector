@@ -7,7 +7,10 @@
 // No DOM beyond an offscreen canvas.
 
 const VS = `attribute vec2 p; void main() { gl_Position = vec4(p, 0.0, 1.0); }`;
-const FS = `precision highp float;
+// FS: at the photo's l = ±180° seam the texture x jumps 1 → 0 and the GPU picks a tiny, dark mipmap there (a blocky
+// dark line through Orion; playtest 2026-10-31). Where the wrapped coordinate changes more smoothly it's used instead.
+const FS = `#extension GL_OES_standard_derivatives : enable
+precision highp float;
 uniform sampler2D tex;
 uniform vec3 R, U, B;          // camera right / up / back in ENU
 uniform vec3 G0, G1, G2;       // galactic x / y / z axes in ENU
@@ -21,6 +24,9 @@ void main() {
   vec3 g = vec3(dot(G0, enu), dot(G1, enu), dot(G2, enu));
   float l = atan(g.y, g.x), b = asin(clamp(g.z, -1.0, 1.0));
   vec2 uv = vec2(0.5 - l / 6.28318530718, 0.5 - b / 3.14159265359);
+  #ifdef GL_OES_standard_derivatives
+  { float u2 = fract(uv.x + 0.5) - 0.5; if (fwidth(u2) < fwidth(uv.x) - 0.0001) uv.x = u2; }
+  #endif
   vec3 c = texture2D(tex, uv).rgb;
   c = mix(c, vec3(dot(c, vec3(0.3, 0.55, 0.15))) * tint, mono);
   float fade = clamp((enu.z + 0.02) / 0.2, 0.0, 1.0);   // melts into the horizon haze
@@ -31,6 +37,7 @@ export function createMilkyGL(src) {
   const canvas = typeof OffscreenCanvas !== 'undefined' ? new OffscreenCanvas(1, 1) : document.createElement('canvas');
   const gl = canvas.getContext('webgl', { alpha: false, antialias: false, preserveDrawingBuffer: true });
   if (!gl) return null;
+  gl.getExtension('OES_standard_derivatives'); // for the seam fix in FS (WebGL 1 has it on nearly every device; without it the shader still compiles)
   const sh = (type, code) => { const s = gl.createShader(type); gl.shaderSource(s, code); gl.compileShader(s); if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s)); return s; };
   const prog = gl.createProgram();
   try { gl.attachShader(prog, sh(gl.VERTEX_SHADER, VS)); gl.attachShader(prog, sh(gl.FRAGMENT_SHADER, FS)); } catch { return null; }
