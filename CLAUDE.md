@@ -2460,3 +2460,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 2026-10-31 · App Store Connect text (English (Canada)) rewritten for buyers and checked against the code: promo, description (lunar eclipses only, members' patch is Plus, Terms of Use line only), keywords (no "trading"), review notes. privacy.html: in the app the phone asks adsb.lol itself; the website goes through our server. ISS reminders on Tonight stay Plus (2026-10-29 decision), so the listing no longer says Station reminders are always free.
 
 2026-10-31 · v0.1.1483: free reminders (ISS passes, until dark, clear nights, parts of the night) are free on the Tonight page too (Sevaan); freeReminder no longer has a Tonight-only branch.
+
+2026-10-31 · App Store Connect: no English (U.S.) page (the name "Space Collector" is taken in en-US by another developer; Sevaan chose to skip it), so the US store shows the English (Canada) page; the (US) screenshot sets are not uploaded. Family Sharing is on for Plus Monthly, Plus Yearly and Plus Forever. License agreement accepted by Sevaan.
