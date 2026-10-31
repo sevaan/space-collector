@@ -2456,3 +2456,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 2026-10-31 · v0.1.1481: upright iPads: the Tonight top page grows to fit (fit-content, up to 64dvh) and mission cards are capped at 210px wide, centred (Sevaan: they were cut off at the fold). The Duo upright (<1100 tall) is unchanged. The chart's "No forecast" label is removed.
 
 2026-10-31 · Build 1.0 (54) archived (v0.1.1481); store screenshots/previews/header regenerated with the iPad mission-card fix and no "No forecast" label; Desktop "Space Collector App Store" and spacecollector.app updated.
+
+2026-10-31 · App Store Connect text (English (Canada)) rewritten for buyers and checked against the code: promo, description (lunar eclipses only, members' patch is Plus, Terms of Use line only), keywords (no "trading"), review notes. privacy.html: in the app the phone asks adsb.lol itself; the website goes through our server. ISS reminders on Tonight stay Plus (2026-10-29 decision), so the listing no longer says Station reminders are always free.
