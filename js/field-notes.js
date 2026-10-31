@@ -4,14 +4,14 @@
 // small batches to the push val (relay/push.ts, POST /t); its /stats page shows the first-night catch rate and how many come
 // back. Settings → Help → "Share anonymous usage" (pref 'share', on by default) stops them. File named to stay clear of
 // content blockers' lists (see CLAUDE.md: avoid push / ads / track / analytics / beacon in js/ file names).
-import { VERSION } from './version.js?v=0.1.1483';
-import { isNative } from './native.js?v=0.1.1483';
-import { TESTER } from './build-flavor.js?v=0.1.1483';
+import { VERSION } from './version.js?v=0.1.1484';
+import { isNative } from './native.js?v=0.1.1484';
+import { TESTER } from './build-flavor.js?v=0.1.1484';
 
-import { SERVER } from './server.js?v=0.1.1483';
+import { SERVER } from './server.js?v=0.1.1484';
 const URL_ = SERVER ? `${SERVER}/t` : 'https://sevaan--54192ae4c4ad11f18b0f1607ee4eb77e.web.val.run/t'; // our server once deployed (2026-10-25)
 const ls = { get: (k) => { try { return localStorage.getItem(k); } catch { return null; } }, set: (k, v) => { try { localStorage.setItem(k, v); } catch {} } };
-const on = () => ls.get('share') !== '0';
+const on = () => !TESTER && ls.get('share') !== '0'; /* SC Tester never sends anything (2026-10-31, Sevaan: "Don't include SC Tester in those stats ever") */
 const platform = () => (isNative() ? (globalThis.Capacitor?.getPlatform?.() === 'android' ? 'android' : 'ios') : 'web');
 // Test builds and the website (the test build) are marked, so the dashboard can leave them out.
 const testing = () => TESTER || !isNative() || ls.get('dev') === '1' || /^(localhost|127\.)/.test(location.hostname);
@@ -43,7 +43,7 @@ document.addEventListener('visibilitychange', () => { if (document.visibilitySta
 // Errors: uncaught ones and rejected promises, a few per session, each message once.
 const seen = new Set(); let errs = 0;
 export function noteError(m, src = '', line = 0, col = 0) {
-  const msg = String(m ?? '').slice(0, 200); if (!msg || seen.has(msg) || errs >= 8) return; seen.add(msg); errs++;
+  const msg = String(m ?? '').slice(0, 200); if (!msg || msg === 'Script error.' /* another site's script; the browser hides what went wrong */ || seen.has(msg) || errs >= 8) return; seen.add(msg); errs++;
   note('err', { m: msg, s: String(src ?? '').replace(/^.*\/(js\/)?/, '').replace(/\?.*$/, '').slice(0, 60), l: line | 0, c: col | 0 });
 }
 addEventListener('error', (e) => { if (e?.message) noteError(e.message, e.filename, e.lineno, e.colno); });
