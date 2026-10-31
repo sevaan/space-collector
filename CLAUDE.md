@@ -2466,3 +2466,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 2026-10-31 · App Store Connect: China mainland and Vietnam removed from availability (game licences), now 146 countries/regions. Build 1.0 (55) attached to version 1.0. Draft submission holds iOS 1.0 (55), the Space Collector Plus group with Plus Monthly + Plus Yearly, and Plus Forever; Sevaan presses Submit for Review.
 
 2026-10-31 · v0.1.1484: SC Tester never sends usage reports (field-notes on() is false when TESTER). Error-report fixes: showViewerDialog/stats-view/patch-view never call showModal on an open dialog; Tonight "Show all" keeps the panel element before the redraw (list.closest was null); "Script error." (cross-origin, no detail) is no longer reported. Clearing Firestore sc_events was blocked by the permission check; Sevaan runs: firebase firestore:delete sc_events --recursive --force --project space-collector-91cc7
+
+2026-10-31 · v0.1.1485: the until-dark card and Tonight's plan (#until-dark / #ud-now) show below the horizon too (Sevaan); they step aside only while something under the ground (belowHitId, the fossil, a secret) is lined up.
