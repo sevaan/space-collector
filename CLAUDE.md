@@ -2474,3 +2474,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 2026-10-31 · v0.1.1486: the Dark at card (#until-dark.tk-card) is centred with the translate property, not transform: its ui-rise animation animates transform, so for a moment it sat with its left edge at the middle (Sevaan, below the horizon). Checked in WebKit: centred at every point of the animation.
 
 2026-10-31 · SC Tester installed (v0.1.1486); build 1.0 (57) archived and opened in Organizer (not uploaded). Build 55 is in review.
+
+2026-10-31 · App Store Connect: version 1.0 now uses build 57 (TestFlight, Sevaan uploaded); the draft submission holds iOS 1.0 (57) + the Plus group, both subscriptions and Plus Forever. Sevaan presses Submit for Review.
