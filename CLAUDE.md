@@ -2458,3 +2458,5 @@ Accounts, secret sets/feats. (Reminders and alerts are IN scope since 2026-10-05
 2026-10-31 · Build 1.0 (54) archived (v0.1.1481); store screenshots/previews/header regenerated with the iPad mission-card fix and no "No forecast" label; Desktop "Space Collector App Store" and spacecollector.app updated.
 
 2026-10-31 · App Store Connect text (English (Canada)) rewritten for buyers and checked against the code: promo, description (lunar eclipses only, members' patch is Plus, Terms of Use line only), keywords (no "trading"), review notes. privacy.html: in the app the phone asks adsb.lol itself; the website goes through our server. ISS reminders on Tonight stay Plus (2026-10-29 decision), so the listing no longer says Station reminders are always free.
+
+2026-10-31 · v0.1.1483: free reminders (ISS passes, until dark, clear nights, parts of the night) are free on the Tonight page too (Sevaan); freeReminder no longer has a Tonight-only branch.
