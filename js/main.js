@@ -1,57 +1,57 @@
-import { pullToClose } from './pull-close.js?v=0.1.1489';
-import { TESTER } from './build-flavor.js?v=0.1.1489';
-import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1489';
-import * as Secrets from './secrets.js?v=0.1.1489';
-import { STORY_BY_SECRET } from './stories.js?v=0.1.1489';
-import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.1489';
-import * as Ufo from './ufo.js?v=0.1.1489';
-import * as Fossil from './fossil.js?v=0.1.1489';
-import { patchHtml, patchSvg } from './patches.js?v=0.1.1489';
-import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1489';
-import { toast, ticket, dropToast, toastPending, onTicketShown, iconSvg, dropPageNotices } from './toast.js?v=0.1.1489';
-import { VERSION } from './version.js?v=0.1.1489';
-import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, overEarth, RisingSoon, setBinocularMode, setSkyLimit, toWorker } from './orbit.js?v=0.1.1489';
-import { placeName } from './geo.js?v=0.1.1489';
-import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, SLIDER_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.1489';
-import { fitCards } from './fit-text.js?v=0.1.1489';
-import { conArt } from './con-art.js?v=0.1.1489';
-import { fetchWeather, keptWeather, tonightSky, skyClearAt, goodSkyAt } from './weather.js?v=0.1.1489';
-import { CON_FIGURES } from './con-figures.js?v=0.1.1489';
-import { loadConstellations, CON_STARS, CON_BY_ID, conProgress, starDistance } from './constellations.js?v=0.1.1489';
-import { shinyFor, SHINY } from './shiny.js?v=0.1.1489';
-import { progress as progressOf, missionsFor, readDeals, readWeekThemes, WEEK_THEMES, countryOf, weekStartOf, weekThemeFor, xpCarry } from './progress.js?v=0.1.1489';
-import { eventOf, activeEvent, nextEvent, activeShower, nextShower, eventLine } from './events.js?v=0.1.1489';
-import { localText } from './localize.js?v=0.1.1489';
-import { searchCities } from './cities.js?v=0.1.1489';
-import { catalogUrl, refreshCatalog, dropCatalog } from './fresh-data.js?v=0.1.1489';
-import { conList } from './constellations.js?v=0.1.1489';
-import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination, hasSensorView, resumeSensors, needsPermission } from './sensors.js?v=0.1.1489';
-import { SkyView, shortName, stripLandscape } from './sky.js?v=0.1.1489';
-import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.1489';
-import { isPlus, setPlusForTesting, onPlus, PLUS_PRICES, initStore, storePlans, buyPlus, restorePlus, rcTestStore, storeOpen } from './plus.js?v=0.1.1489';
-import { isNative, getPosition, saveFile, notifyAt, cancelNotify, haptic, onNative, nativeChrome, plugin } from './native.js?v=0.1.1489';
-import { initBackup, onBackupChange, backupSoon, clearBackup, backupStatus } from './cloud-backup.js?v=0.1.1489';
-import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.1489';
-import { cardArt } from './art.js?v=0.1.1489';
-import { renderCard, miniCard, cardLevel, artImage, lockedArt, attachTilt, attachGyro, throwOff, attachFlip, turnCard, phasePath } from './card.js?v=0.1.1489';
-import { applyBack, CARD_BACKS, backUnlocked, chosenBack, chooseBack, backEarned, showBackNext } from './card-backs.js?v=0.1.1489';
-import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.1489';
-import { audioCtx } from './audio-ctx.js?v=0.1.1489';
-import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume, musicAway } from './music.js?v=0.1.1489';
-import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss, onRevealSwipeIntoBinder } from './reveal.js?v=0.1.1489';
-import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel, moonPhaseOf, moonPhaseAt, MOON_PHASES } from './card-model.js?v=0.1.1489';
-import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.1489';
-import { naturalTargets, SOLAR_SYSTEM, DEEP_SKY, NATURAL, NATURAL_BY_KEY } from './natural.js?v=0.1.1489';
-import { placeFromTimeZone } from './tz-places.js?v=0.1.1489';
-import { TIER_INFO } from './rarity.js?v=0.1.1489';
-import { SETS, albumList } from './sets.js?v=0.1.1489';
-import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.1489';
-import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.1489';
-import { note, send as sendNotes, noteError, daysSinceInstall } from './field-notes.js?v=0.1.1489';
-const shareCardEl = (...a) => import('./share-card.js?v=0.1.1489').then((m) => m.shareCardEl(...a)); /* loaded when first shared (perf audit 2026-10-29) */
-import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.1489';
-import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.1489';
-import { addStarfield } from './starfield.js?v=0.1.1489';
+import { pullToClose } from './pull-close.js?v=0.1.1490';
+import { TESTER } from './build-flavor.js?v=0.1.1490';
+import { loadComets, comets, cometAt, NAKED_EYE } from './comets.js?v=0.1.1490';
+import * as Secrets from './secrets.js?v=0.1.1490';
+import { STORY_BY_SECRET } from './stories.js?v=0.1.1490';
+import { cloudsHtml, rainHtml } from './weather-art.js?v=0.1.1490';
+import * as Ufo from './ufo.js?v=0.1.1490';
+import * as Fossil from './fossil.js?v=0.1.1490';
+import { patchHtml, patchSvg } from './patches.js?v=0.1.1490';
+import { setSwitch, SLIDE_MS } from './switcher.js?v=0.1.1490';
+import { toast, ticket, dropToast, toastPending, onTicketShown, iconSvg, dropPageNotices } from './toast.js?v=0.1.1490';
+import { VERSION } from './version.js?v=0.1.1490';
+import { loadCatalog, frame, look, track, motion, compassPoint, enuFromAzEl, DARK_SUN_ELEVATION, SkyModel, BelowModel, overEarth, RisingSoon, setBinocularMode, setSkyLimit, toWorker } from './orbit.js?v=0.1.1490';
+import { placeName } from './geo.js?v=0.1.1490';
+import { skyLimit, SKIES, DEFAULT_SKY, SB_MIN, SB_MAX, SLIDER_MAX, sbOfSky, skyNameFor } from './sky-limit.js?v=0.1.1490';
+import { fitCards } from './fit-text.js?v=0.1.1490';
+import { conArt } from './con-art.js?v=0.1.1490';
+import { fetchWeather, keptWeather, tonightSky, skyClearAt, goodSkyAt } from './weather.js?v=0.1.1490';
+import { CON_FIGURES } from './con-figures.js?v=0.1.1490';
+import { loadConstellations, CON_STARS, CON_BY_ID, conProgress, starDistance } from './constellations.js?v=0.1.1490';
+import { shinyFor, SHINY } from './shiny.js?v=0.1.1490';
+import { progress as progressOf, missionsFor, readDeals, readWeekThemes, WEEK_THEMES, countryOf, weekStartOf, weekThemeFor, xpCarry } from './progress.js?v=0.1.1490';
+import { eventOf, activeEvent, nextEvent, activeShower, nextShower, eventLine } from './events.js?v=0.1.1490';
+import { localText } from './localize.js?v=0.1.1490';
+import { searchCities } from './cities.js?v=0.1.1490';
+import { catalogUrl, refreshCatalog, dropCatalog } from './fresh-data.js?v=0.1.1490';
+import { conList } from './constellations.js?v=0.1.1490';
+import { startSensors, trySensorsQuietly, hasLiveSensors, trueBasis, basisFromAzEl, rotateAz, pointing, nudgeHeading, getNudge, lockHeading, setCompassPlace, getDeclination, hasSensorView, resumeSensors, needsPermission } from './sensors.js?v=0.1.1490';
+import { SkyView, shortName, stripLandscape } from './sky.js?v=0.1.1490';
+import { loadSky, eqToEnu, solarSystem, milkyWayModel, galAxes, roadster, starVector } from './celestial.js?v=0.1.1490';
+import { isPlus, setPlusForTesting, onPlus, PLUS_PRICES, initStore, storePlans, buyPlus, restorePlus, rcTestStore, storeOpen } from './plus.js?v=0.1.1490';
+import { isNative, getPosition, saveFile, notifyAt, cancelNotify, haptic, onNative, nativeChrome, plugin } from './native.js?v=0.1.1490';
+import { initBackup, onBackupChange, backupSoon, clearBackup, backupStatus } from './cloud-backup.js?v=0.1.1490';
+import { addSighting, allSightings, deleteSighting } from './store.js?v=0.1.1490';
+import { cardArt } from './art.js?v=0.1.1490';
+import { renderCard, miniCard, cardLevel, artImage, lockedArt, attachTilt, attachGyro, throwOff, attachFlip, turnCard, phasePath } from './card.js?v=0.1.1490';
+import { applyBack, CARD_BACKS, backUnlocked, chosenBack, chooseBack, backEarned, showBackNext } from './card-backs.js?v=0.1.1490';
+import { sfx, loadSfx, sfxVolume } from './sfx.js?v=0.1.1490';
+import { audioCtx } from './audio-ctx.js?v=0.1.1490';
+import { musicOn, startMusic, setMusic, duckMusic, musicVolume, setMusicVolume, musicAway } from './music.js?v=0.1.1490';
+import { onRevealNews, playReveal, playView, primeReveal, stopReveal, onRevealDismiss, onRevealSwipeIntoBinder } from './reveal.js?v=0.1.1490';
+import { buildCards, cardKeyFor, stampKeyFor, normalizeSighting, stampsIn, fleetLevel, moonPhaseOf, moonPhaseAt, MOON_PHASES } from './card-model.js?v=0.1.1490';
+import { collectedDuringPass, collectedTonight, canCapture, nightsIn, nightKey } from './observation.js?v=0.1.1490';
+import { naturalTargets, SOLAR_SYSTEM, DEEP_SKY, NATURAL, NATURAL_BY_KEY } from './natural.js?v=0.1.1490';
+import { placeFromTimeZone } from './tz-places.js?v=0.1.1490';
+import { TIER_INFO } from './rarity.js?v=0.1.1490';
+import { SETS, albumList } from './sets.js?v=0.1.1490';
+import { TYPE_LABEL, ownerName, orbitStats } from './facts.js?v=0.1.1490';
+import { pushConfigured, pushOn, enablePush, disablePush, schedulePush, prefetchKey } from './pass-alerts.js?v=0.1.1490';
+import { note, send as sendNotes, noteError, daysSinceInstall } from './field-notes.js?v=0.1.1490';
+const shareCardEl = (...a) => import('./share-card.js?v=0.1.1490').then((m) => m.shareCardEl(...a)); /* loaded when first shared (perf audit 2026-10-29) */
+import { loadLore, titleFor, factFor, richText } from './lore.js?v=0.1.1490';
+import { PlaneTracker, planesAvailable, aircraftName, isHelicopter, planePath } from './planes.js?v=0.1.1490';
+import { addStarfield } from './starfield.js?v=0.1.1490';
 
 const $ = (id) => document.getElementById(id);
 const RAD = Math.PI / 180;
@@ -1562,7 +1562,7 @@ let fadeTipAt = 0, fadeTaughtC = null; // cached: these were read from localStor
 // The Sun check (2026-10-31, Sevaan; a TestFlight tester pointed at the Sun and was told to turn east): the same test by
 // day, with the Sun. Both checks now live in the object's own card under the circle, in place of View card (2026-10-31,
 // Sevaan: the floating card above the circle crowded the Sun warning): "Is the real Sun in front of you? Yes / It's off".
-// It never asks you to look at the Sun. "It's off" opens Line up the sky, which by day uses your shadow.
+// It never asks you to look at the Sun. "It's off" opens Line up the sky, which by day lines up with the Sun.
 // Each is once per device (moonChecked / sunChecked); motion only; the next time it's back in the circle after the catch.
 const SKY_CHECKS = [{ key: 'moon', flag: 'moonChecked', q: 'Is the real Moon in the circle?', armed: false, done: null, show: false },
   { key: 'sun', flag: 'sunChecked', q: 'Don’t look at it · Is the real Sun in front of you?', armed: false, done: null, show: false }];
@@ -1578,7 +1578,7 @@ function skyCheck(c, target) {
 const skyCheckFor = (o) => SKY_CHECKS.find((c) => c.show && c.key === o?.key) ?? null;
 $('d-check').addEventListener('click', (e) => { const b = e.target.closest('button'), c = SKY_CHECKS.find((x) => x.key === $('d-check').dataset.key); if (!b || !c) return; e.stopPropagation();
   c.done = true; c.show = false; try { localStorage.setItem(c.flag, '1'); } catch {} $('d-check').hidden = true; $('d-cta').hidden = false; note('calib', { s: `${c.key}-${b.classList.contains('mc-off') ? 'off' : 'ok'}` });
-  if (b.classList.contains('mc-off')) openCalib({ sun: c.key === 'sun' }); else buzz('success'); });
+  if (b.classList.contains('mc-off')) openCalib(); else buzz('success'); });
 // Nothing caught yet? (2026-10-25, Sevaan: the moment people quit): after ten minutes with the sky open after dark and
 // no catch this session, a card above the circle offers the three things that usually fix it: be shown something sure
 // (the Moon, a bright planet or star), line the sky up with the real one, or slide toward See more. Once a night.
@@ -5177,7 +5177,7 @@ const CREDITS = [
   ['Music', [['“Permafrost”', 'Scott Buckley · CC BY 4.0', 'https://www.scottbuckley.com.au']]],
 ];
 async function openCredits() {
-  const { ART_SOURCES } = await import('./art-sources.js?v=0.1.1489');
+  const { ART_SOURCES } = await import('./art-sources.js?v=0.1.1490');
   const a = (t, href) => (href ? `<a href="${escapeHtml(href)}" target="_blank" rel="noopener">${t}</a>` : t);
   const card = (title, n, rows) => `<div class="set-group set-card"><div class="set-bar"><h3>${title}</h3><b aria-hidden="true">${String(n).padStart(2, '0')}</b></div>${rows}</div>`;
   const row = (b, sub, href) => `<div class="cr-row"><b>${escapeHtml(b)}</b><span>${a(escapeHtml(sub), href)}</span></div>`;
@@ -5487,12 +5487,11 @@ const enuAz = (e) => (Math.atan2(e[0], e[1]) * 180 / Math.PI + 360) % 360, enuEl
 let calib = null;
 function calibRef() {
   const ok = (e) => { const el = enuEl(e); return el > 10 && el < 70; }; // too high and "which way" stops meaning much
+  // By day: the Sun itself, ahead of a pale daytime Moon (2026-10-31, Sevaan: "Along my shadow" sucks; it was the shadow
+  // from 2026-10-22). Players already aim the phone at the Sun to catch it; the card says aim the phone, never your eyes.
+  const sun = sunRef(); if (sun) return sun;
   const moon = state.bodies?.find((b) => b.kind === 'moon');
   if (moon && moon.illum > 0.05 && ok(moon.enu)) return { name: 'the Moon', short: 'Moon', enu: moon.enu };
-  // By day (2026-10-22, Sevaan: "if it's daytime there is no moon"): your shadow points straight away from the Sun, so
-  // aiming along it lines the sky up without anyone looking at the Sun. Needs the Sun 5°+ up for a clear shadow.
-  const sun = state.bodies?.find((b) => b.kind === 'sun');
-  if (sun && enuEl(sun.enu) > 5) return { name: 'your shadow', short: 'your shadow', shadow: true, az: (enuAz(sun.enu) + 180) % 360 };
   if ((state.frame?.sunEl ?? 0) > -4) return null; // twilight with no Moon: point at north instead (never the Sun)
   const planet = (state.bodies ?? []).filter((b) => b.kind === 'planet' && b.mag < 1.5 && ok(b.enu)).sort((a, b) => a.mag - b.mag)[0];
   if (planet) return { name: planet.name, short: planet.name, enu: planet.enu };
@@ -5506,17 +5505,16 @@ async function calibMotion() { // turn motion on inside the tap (iPhone asks her
   for (let i = 0; i < 15 && !motionLive(); i++) await new Promise((r) => setTimeout(r, 100));
   return motionLive();
 }
-// From the Sun check's "It's off" (2026-10-31, Sevaan: "Along my shadow" sucks): line up with the Sun itself, the thing
-// they were just pointing at. They aim the phone, never their eyes.
+// Line up with the Sun (2026-10-31): the daytime reference everywhere.
 function sunRef() { const sun = state.bodies?.find((b) => b.kind === 'sun'); return sun && enuEl(sun.enu) > 3 ? { name: 'the Sun', short: 'Sun', enu: sun.enu, sun: true } : null; }
 function calibFirst() {
   const doubt = pointing.source === 'ios' && (pointing.compassAccuracy === -1 || pointing.compassAccuracy > 35 || pointing.compassDoubt > 0.6);
-  calib.ref = (calib.sun && sunRef()) || calibRef(); calibStep(doubt ? 'eight' : calib.ref ? 'aim' : 'north');
+  calib.ref = calibRef(); calibStep(doubt ? 'eight' : calib.ref ? 'aim' : 'north');
 }
-async function openCalib({ sun = false } = {}) {
+async function openCalib() {
   const motion = calibMotion(); // started inside the tap (iPhone asks here); the card shows at once and waits on it (web playtest 2026-10-22: up to 1.8 s of empty sky)
   const go = async () => {
-    const mine = calib = { start: getNudge(), ref: null, step: null, x0: null, acc: 0, sun };
+    const mine = calib = { start: getNudge(), ref: null, step: null, x0: null, acc: 0 };
     document.body.classList.add('calib'); $('calib').hidden = false;
     [$('cb-k').textContent, $('cb-title').textContent, $('cb-text').textContent] = ['Line up the sky', 'Starting the compass…', 'One moment while your phone finds its bearings.'];
     $('cb-alt').hidden = $('cb-go').hidden = true; $('cb-dirs').hidden = $('cb-off').hidden = true;
@@ -5528,12 +5526,12 @@ async function openCalib({ sun = false } = {}) {
 }
 function calibStep(step) {
   calib.step = step; const r = calib.ref;
-  const w = r && !r.shadow ? whereWords({ el: enuEl(r.enu), az: enuAz(r.enu) }) : '';
+  const w = r && !r.sun ? whereWords({ el: enuEl(r.enu), az: enuAz(r.enu) }) : '';
   const T = {
     motion: ['Motion is off', 'Lining up needs your phone’s compass', 'Turn on motion so the sky follows your phone, then line it up with something you can see.', 'Not now', 'Turn on motion'],
     eight: ['First, calibrate', 'Wave your phone in a slow figure-8', 'A few times, away from metal and magnets, so the compass can find north before you line up.', 'Skip', 'Done'],
-    aim: r?.sun ? ['Line up with the Sun', 'Point the circle at the real Sun', 'Aim the phone, not your eyes: don’t look at it. When the phone points at the Sun, tap.', 'Drag instead', 'It’s pointing at the Sun'] : r?.shadow ? ['Use your shadow', 'Point the circle along your shadow', 'Stand with the Sun behind you and aim at the top of your shadow’s head. Never look at the Sun.', 'Drag instead', 'Along my shadow'] : [`Find ${r?.name ?? ''}`, `Point the circle at the real ${r?.name.replace(/^the /, '') ?? ''}`, `${w}. Hold it in the middle of the circle, then tap.`, 'Drag instead', 'It’s in the circle'],
-    drag: ['Drag to match', r && !r.shadow ? `Slide the sky until ${r.name} sits on the real one` : 'Slide the sky until it matches what you see', 'Hold the phone still and drag sideways. Only sideways moves count.', r ? 'Aim instead' : 'Point at north', 'Set'],
+    aim: r?.sun ? ['Line up with the Sun', 'Point the circle at the real Sun', 'Aim the phone, not your eyes: don’t look at it. When the phone points at the Sun, tap.', 'Drag instead', 'It’s pointing at the Sun'] : [`Find ${r?.name ?? ''}`, `Point the circle at the real ${r?.name.replace(/^the /, '') ?? ''}`, `${w}. Hold it in the middle of the circle, then tap.`, 'Drag instead', 'It’s in the circle'],
+    drag: ['Drag to match', r ? `Slide the sky until ${r.name} sits on the real one` : 'Slide the sky until it matches what you see', 'Hold the phone still and drag sideways. Only sideways moves count.', r ? 'Aim instead' : 'Point at north', 'Set'],
     north: ['Use a direction you know', 'Point the circle at north', 'Use a street you know runs north, or your phone’s Compass app. Never aim at the Sun.', 'Drag instead', 'Pointing north'],
   }[step];
   [$('cb-k').textContent, $('cb-title').textContent, $('cb-text').textContent, $('cb-alt').textContent, $('cb-go').textContent] = T;
