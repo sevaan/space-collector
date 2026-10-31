@@ -3594,3 +3594,12 @@ body.night #visible.tn-stale #tn-strip::before { color: #ff7f70; border-color: #
   #visible:not([hidden]) { grid-template-rows: fit-content(64dvh) 40px auto minmax(0, 1fr); }
   #tn-missions .mc-row { grid-template-columns: repeat(var(--n, 3), minmax(0, 210px)); gap: 16px; justify-content: center; }
 }
+/* The Sun / Moon check inside the object's card, in place of View card (2026-10-31, Sevaan). */
+#d-check { display: flex; flex-direction: column; gap: 8px; width: 100%; pointer-events: auto; }
+#d-check[hidden] { display: none; }
+#d-check small { font: 500 12px/1.3 var(--label); letter-spacing: .1em; text-transform: uppercase; color: #7fb2ff; text-wrap: balance; }
+#d-check .dc-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+#d-check button { min-height: 44px; border: 0; border-radius: 99px; font: 500 14px/1 var(--label); letter-spacing: .14em; text-transform: uppercase; cursor: pointer; background: #1d2a3c; color: var(--text); touch-action: manipulation; }
+#d-check .mc-yes { background: #7fb2ff; color: #0b1120; }
+#d-check button:active { transform: scale(.97); }
+body.night #d-check small { color: #ff6a55; } body.night #d-check .mc-yes { background: #ff6a55; color: #120606; }

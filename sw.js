@@ -10,7 +10,7 @@
 // One cache per version (2026-10-10: a phone stuck on the loader). A shared cache could hand a slow-network fallback
 // page old files mixed with new ones that don't fit together. Now each deploy's worker (scripts/bump.mjs stamps the
 // version below) starts its own cache and deletes the others, so a page only ever meets files from its own version.
-const CACHE = 'sc-0.1.1487';
+const CACHE = 'sc-0.1.1488';
 // Data copies carry the time they were fetched (sw-at), so they're refreshed at most every 3 hours instead of on every
 // open, and a new version's worker takes the data over from the old cache instead of downloading the 4 MB catalogue
 // again (perf audit 2026-10-29).
